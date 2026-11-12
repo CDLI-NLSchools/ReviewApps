@@ -281,6 +281,145 @@ window.COURSES = {
   }
 },
 
+"bio-3201": {
+  id: "bio-3201",
+  title: "Biology 3201 Review: Practice Question Bank",
+  shortName: "Biology 3201",
+  storagePrefix: "bio3201",
+  reportName: "Biology 3201",
+  language: "en",
+  bankFile: "bio-3201.js",
+  subject: "Science",
+  grade: 12,
+  listed: false,
+
+  units: {
+    1: "Cell Reproduction and the Continuity of Life",
+    2: "Genetic Basis of Heredity",
+    3: "Evolutionary Change and Biodiversity"
+  },
+
+  /* The 40 tested indicators: the 30 Knowledge outcomes (5.x, 6.x
+     and 7.x) plus the STSE outcomes that carry questions in the
+     review books (8.1 to 8.8 in Unit 1, 9.1 and 9.2 in Unit 2),
+     grouped inside their units the way the curriculum guide groups
+     them. Names are the review books' chapter titles (the STSE
+     chapters carry their STSE prefix); shared chapters give the
+     split names for 6.9/6.10, 7.3/7.4 and 7.6/7.7. The remaining
+     STSE outcomes (8.9, 9.3 to 9.8 and Unit 3's 10.x) carry no book
+     questions and are not registered. */
+  indicators: {
+    "5.1": "Mitosis and the Cell Cycle",
+    "5.2": "The Cell Cycle and Cancer",
+    "5.3": "Treatment Decisions and Values",
+    "5.4": "Meiosis",
+    "5.5": "Spermatogenesis and Oogenesis",
+    "5.6": "Reproductive Strategies",
+    "5.7": "Human Reproductive Systems",
+    "5.8": "The Human Reproductive Cycle",
+    "5.9": "Human Development",
+    "5.10": "Reproductive Technologies",
+    "8.1": "STSE: Scientific Questions and Technological Problems",
+    "8.2": "STSE: Cancer Therapies",
+    "8.3": "STSE: Analyzing Natural Systems",
+    "8.4": "STSE: Prenatal Screening Technologies",
+    "8.5": "STSE: Making the Case",
+    "8.6": "STSE: Risks and Benefits to Society",
+    "8.7": "STSE: Funding Decisions",
+    "8.8": "STSE: Stem Cells and Society",
+    "6.1": "Mendel and the Concept of the Gene",
+    "6.2": "Mendelian Genetics and Crosses",
+    "6.3": "Chromosomes and the Extensions of Mendel",
+    "6.4": "Pedigrees and Genetic Disorders",
+    "6.5": "DNA and RNA Structure",
+    "6.6": "DNA Replication",
+    "6.7": "Protein Synthesis",
+    "6.8": "Mutations",
+    "6.9": "Mutagens",
+    "6.10": "Genetic Technologies",
+    "9.1": "STSE: How Science Explains",
+    "9.2": "STSE: Evidence, Theories and Paradigms",
+    "7.1": "Natural Selection and Biodiversity",
+    "7.2": "History of Evolutionary Thought",
+    "7.3": "Evidence for Evolution",
+    "7.4": "Evidence for Evolution",
+    "7.5": "How Species Evolve",
+    "7.6": "Pace of Evolution",
+    "7.7": "Hardy-Weinberg",
+    "7.8": "Causes of Gene Pool Change",
+    "7.9": "Taxonomy and Classification",
+    "7.10": "Vertebrate Anatomy and Physiology"
+  },
+
+  unitInd: {
+    1: ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "5.10", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8"],
+    2: ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "9.1", "9.2"],
+    3: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10"]
+  },
+
+  /* Staged hints: every converted entry carries its review book's
+     Hint panel as the first hint stage. */
+  hints: true,
+
+  /* The course Table of Specifications band is 30/50/20 (PEP memo
+     summary table), so the level mix starts there instead of at the
+     chassis default of 20/60/20. */
+  defaultMix: [30, 50, 20],
+
+  timerNote: "2 hours",
+
+  presets: {
+    mid:   { units: [1, 2], cap: true, label: "Mid-course review (Units 1 and 2, Unit 2 to 6.4)", faceLabel: "Mid-course review (Units 1 and 2)" },
+    final: { units: [2, 3], label: "Final review (Units 2 and 3)", faceLabel: "Final review (Units 2 and 3)" }
+  },
+
+  /* Shown in the pool line while the mid-course cap is on. The cap
+     holds out the Unit 2 entries the bank flags postMid (indicators
+     6.5 to 6.10) whenever the mid scope is composed, the Math 2201
+     mechanism; the pilot Unit 1 slice carries no such entries yet,
+     so the Unit 2 slices must flag theirs as they land. */
+  midNote: "Mid-course scope: Unit 2 stops at indicator 6.4, so the molecular genetics questions are held out.",
+
+  /* Exam blueprints. The mid-course blueprint is the governing PEP
+     table (EECD memo, Sep 29, 2026): 60 marks, 48 selected response
+     and 12 constructed response, with per-unit level marks as
+     tabled (Unit 1: 12/18/6 of 36; Unit 2 classical genetics, to
+     indicator 6.4: 7/12/5 of 24). The memo gives no per-unit
+     selected/constructed split; the split below is proportional to
+     the unit totals, the Physics 3204 treatment. The final
+     blueprint is an ADOPTED BEST GUESS on the Physics 3204 pattern:
+     no official final table has been published, so the final
+     mirrors the mid's 60-mark shape and 30/50/20 band, split Unit 2
+     (molecular genetics) 24 and Unit 3 36. If an official PEP final
+     table surfaces, it replaces this guess outright. GAP: the
+     composer's partial-unit cap exists only for the mid preset
+     (presets.mid.cap), so the final preset's Unit 2 pool is the
+     whole unit, classical half included, until a final-side cap
+     exists; the finalNote tells students so. */
+  exam: {
+    mid: {
+      units: [1, 2], total: 60, srCount: 48, crMarks: 12,
+      perUnit: {
+        1: { sr: 29, cr: 7, levels: [12, 18, 6] },
+        2: { sr: 19, cr: 5, levels: [7, 12, 5] }
+      }
+    },
+    final: {
+      units: [2, 3], total: 60, srCount: 48, crMarks: 12,
+      perUnit: {
+        2: { sr: 19, cr: 5, levels: [7, 12, 5] },
+        3: { sr: 29, cr: 7, levels: [11, 18, 7] }
+      }
+    },
+    fallback: { srCount: 48, crMarks: 12 }
+  },
+
+  /* Shown with the pool information whenever the final scope is selected. */
+  finalNote: "Note: the final exam covers Unit 2 from indicator 6.5 (molecular genetics) plus Unit 3, but this preset's Unit 2 pool currently includes the whole unit, and no official Table of Specifications has been published for the Biology 3201 final. This preset uses an adopted best guess (60 marks in the mid-course shape, Unit 2 worth 24 and Unit 3 worth 36, at the course's 30/50/20 level split). If an official table is published, it replaces this guess.",
+
+  unitTest: { total: 25, sr: 11, cr: 14 }
+},
+
 "chem-3202": {
   id: "chem-3202",
   title: "Chemistry 3202 Review: Practice Question Bank",
