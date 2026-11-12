@@ -2314,5 +2314,196 @@ window.COURSES = {
     "3": "<b>Quadratic Equations:</b> \\(x = \\frac{-b \\pm \\sqrt{b^{2} - 4ac}}{2a}\\)",
     "5": "<b>Statistical Reasoning:</b> \\(\\sigma = \\sqrt{\\frac{\\sum (x - \\bar{x})^{2}}{n}}\\)<br>\\(z = \\frac{x - \\mu}{\\sigma}\\)"
   }
+},
+
+"math-2202": {
+  id: "math-2202",
+  title: "Math 2202 Review: Practice Question Bank",
+  shortName: "Math 2202",
+  storagePrefix: "m2202",
+  reportName: "Math 2202",
+  language: "en",
+  bankFile: "math-2202.js",
+  subject: "Mathematics",
+  grade: 11,
+  listed: false,
+
+  units: {
+    "1": "Drawing and Design",
+    "2": "Surface Area",
+    "3": "Volume and Capacity",
+    "4": "Interpreting Graphs",
+    "5": "Budgets",
+    "6": "Banking",
+    "7": "Slope and Scale",
+    "8": "Trigonometry"
+  },
+
+  /* All 85 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-2202-review/index.html,
+     UNITS at line 651, INDICATORS at line 652, UNIT_IND at line
+     653). The six formula codes (2.1 to 2.6) sit in four units'
+     lists, as the official spreadsheet places them: 103 unit
+     placements over the 85 codes. */
+  indicators: {
+    "3.17": "Draw a 2-D representation of a given 3-D object",
+    "3.18": "Draw to scale top, front and side views of a given 3-D object",
+    "3.19": "Construct a model of a 3-D object, given the top, front and side views",
+    "3.20": "Draw a 3-D object, given the top, front and side views",
+    "3.21": "Determine if given views of a 3-D object represent a given object, and explain the reasoning",
+    "3.22": "Draw, using isometric dot paper, a given 3-D object",
+    "3.23": "Draw a one-point perspective view of a given 3-D object",
+    "3.24": "Identify the point of perspective of a given one-point perspective drawing of a 3-D object",
+    "3.25": "Draw the components of a given exploded diagram, and explain their relationship to the original 3-D object",
+    "3.26": "Sketch an exploded view of a 3-D object to represent the components",
+    "3.27": "Draw to scale the components of a 3-D object",
+    "3.28": "Sketch a 2-D representation of a 3-D object, given its exploded view",
+    "3.1": "Explain, using examples, including nets, the relationship between area and surface area",
+    "3.2": "Explain how a referent can be used to estimate surface area",
+    "3.3": "Solve problems that involve determining the surface area of 3-D objects, including pyramids and spheres",
+    "3.4": "Solve contextual problems that involve the surface area of 3-D objects and that require the manipulation of formulas",
+    "3.5": "Illustrate, using examples, the effect of dimensional changes on surface area",
+    "2.1": "Solve contextual problems involving the application of a formula that does not require manipulation",
+    "2.2": "Solve contextual problems involving the application of a formula that requires manipulation",
+    "2.3": "Describe, using examples, how a given formula is used in a trade or an occupation",
+    "2.4": "Create and solve contextual problems that involve a formula",
+    "2.5": "Identify and correct errors in a solution to a problem that involves a formula",
+    "2.6": "Explain and verify why different forms of the same formula are equivalent",
+    "4.10": "Solve a problem, using unit analysis",
+    "4.11": "Solve problems within and between systems, using proportions or tables",
+    "4.12": "Identify and correct errors in a given unit analysis or proportional reasoning problem",
+    "3.6": "Explain, using examples, the difference between volume and capacity",
+    "3.7": "Identify and compare referents for volume and capacity measurements in SI and imperial units",
+    "3.8": "Identify a situation where a given SI or imperial volume unit would be used",
+    "3.9": "Estimate the volume or capacity of a 3-D object or container, using a referent",
+    "3.10": "Write a given volume or capacity measurement expressed in one SI unit cubed in another SI unit cubed",
+    "3.11": "Write a given volume or capacity measurement expressed in one imperial unit cubed in another imperial unit cubed",
+    "3.12": "Determine the volume of prisms, cones, cylinders, pyramids, spheres and composite 3-D objects, using a variety of measuring tools such as rulers, tape measures, calipers, micrometers, and displacement",
+    "3.13": "Determine the capacity of prisms, cones, pyramids, spheres and cylinders, using a variety of measuring tools and methods such as graduated cylinders, measuring cups, and measuring spoons",
+    "3.14": "Illustrate, using examples, the effect of dimensional changes on volume",
+    "3.15": "Describe the relationship between the volume of: · cones and cylinders with the same base and height · pyramids and prisms with the same base and height",
+    "3.16": "Solve contextual problems that involve the volume of a 3-D object, including composite 3-D objects, or the capacity of a container",
+    "6.1": "Determine the possible graphs that can be used to represent a given data set, and explain the advantages and disadvantages of each",
+    "6.2": "Create, with and without technology, a histogram to represent a given data set",
+    "6.3": "Solve contextual problems that involve the interpretation of a graph",
+    "6.4": "Describe trends in a given graph",
+    "6.5": "Interpolate and extrapolate values from a given graph",
+    "6.6": "Explain, using examples, how the same graph can be used to justify more than one conclusion",
+    "6.7": "Explain, using examples, how different graphic representations of the same data can be used to emphasize a point of view",
+    "1.1": "Identify income and expenses that should be included in a personal budget",
+    "1.2": "Explain considerations that must be made when developing a budget; e.g., prioritizing, recurring and unexpected expenses",
+    "1.3": "Create a personal budget based on a given income and expense data",
+    "1.4": "Collect income and expense data, and create a budget",
+    "1.5": "Modify a budget to achieve a set of personal goals",
+    "1.6": "Investigate and analyze with or without technology, “What if ...” questions related to personal budgets",
+    "1.7": "Solve problems that involve simple interest, given three of the four values in the formula I = Prt",
+    "1.8": "Compare simple and compound interest, and explain their relationship",
+    "1.9": "Solve, using a formula, a contextual problem that involves compound interest",
+    "1.10": "Explain, using examples, the effect of different compounding periods on calculations of compound interest",
+    "1.11": "Describe the type of banking services available from various financial institutions, such as online services",
+    "1.12": "Describe the type of accounts available at various financial institutions",
+    "1.13": "Identify the type of account that best meets the needs for a given set of criteria",
+    "1.14": "Describe the advantages and disadvantages of online banking",
+    "1.15": "Identify and explain various automated teller machine (ATM) service charges",
+    "1.16": "Describe the advantages and disadvantages of debit card purchases",
+    "1.17": "Describe ways that ensure the security of personal and financial information; e.g., passwords, encryptions, protection of personal identification number (PIN) and other personal identity information",
+    "1.18": "Compare advantages and disadvantages of different types of credit options, including bank and store credit cards, personal loans, lines of credit, overdraft",
+    "1.19": "Make informed decisions and plans related to the use of credit, such as service charges, interest, payday loans and sales promotions, and explain the reasoning",
+    "1.20": "Describe strategies to use credit effectively, such as negotiating interest rates, planning payment timelines, reducing accumulated debt and timing purchases",
+    "1.21": "Compare credit card options from various companies and financial institutions",
+    "1.22": "Solve contextual problems that involve credit cards or loans",
+    "1.23": "Solve contextual problems that involve credit linked to sales promotions",
+    "4.1": "Describe contexts that involve slope; e.g., ramps, roofs, road grade, flow rates within a tube, skateboard parks, ski hills",
+    "4.2": "Explain, using diagrams, the difference between two given slopes (e.g., a 3:1 and a 1:3 roof pitch), and describe the implications",
+    "4.3": "Describe the conditions under which a slope will be either 0 or undefined",
+    "4.4": "Explain, using examples and illustrations, slope as rise over run",
+    "4.5": "Verify that the slope of an object, such as a ramp or a roof, is constant",
+    "4.6": "Explain, using illustrations, the relationship between slope and angle of elevation; e.g., for a ramp with a slope of 7:100, the angle of elevation is approximately 4°",
+    "4.7": "Explain the implications, such as safety and functionality, of different slopes in a given context",
+    "4.8": "Explain, using examples and illustrations, slope as rate of change",
+    "4.9": "Solve contextual problems that involve slope or rate of change",
+    "4.13": "Describe contexts in which a scale representation is used",
+    "4.14": "Determine, using proportional reasoning, the dimensions of an object from a given scale drawing or model",
+    "4.15": "Construct a model of a 3-D object, given the scale",
+    "4.16": "Draw, with and without technology, a scale diagram of a given object",
+    "4.17": "Solve contextual problems that involve scale",
+    "5.1": "Solve contextual problems that involve angles of elevation or angles of depression",
+    "5.2": "Solve contextual problems that involve two right triangles, using the primary trigonometric ratios",
+    "5.3": "Identify all of the right triangles in a given illustration for a context",
+    "5.4": "Determine if a solution to a problem that involves two right triangles is reasonable"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 653); it agrees exactly with the codes
+     the bank entries themselves carry at each placement. */
+  unitInd: {
+    "1": ["3.17", "3.18", "3.19", "3.20", "3.21", "3.22", "3.23", "3.24", "3.25", "3.26", "3.27", "3.28"],
+    "2": ["3.1", "3.2", "3.3", "3.4", "3.5", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "4.10", "4.11", "4.12"],
+    "3": ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15", "3.16", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6"],
+    "4": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"],
+    "5": ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6"],
+    "6": ["1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18", "1.19", "1.20", "1.21", "1.22", "1.23"],
+    "7": ["4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "4.13", "4.14", "4.15", "4.16", "4.17", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6"],
+    "8": ["5.1", "5.2", "5.3", "5.4", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6"]
+  },
+
+  /* Presets: the standalone ships exactly one, "All units", on its
+     presetAll button (builder markup line 287; handler line 7860,
+     selecting Units 1 to 8 with no level mix change; the builder
+     level inputs ship at the 20/60/20 default, lines 368 to 370).
+     The shell's All wiring selects every unit in the course when
+     the config carries no allUnits key, which is the same eight
+     units, so the All preset needs no entry here. There is no
+     mid-course or final preset in this course (its tests are
+     single-unit practice tests, below): the shell hides both
+     buttons for a course whose config names neither. */
+  presets: {},
+
+  /* Staged hints: every entry in this bank carries a two-stage
+     hint (the standalone's E stores them as hint1 and hint2,
+     line 655, and its showHint reveals strategy, then first step,
+     lines 5764 to 5773). The flag turns on the shell's restored
+     hint UI for this course: the Hint button and hint box on
+     practice questions, and the face card's "a hint, " wording. */
+  hints: true,
+
+  /* Exam blueprint, translated from the standalone app's composer
+     (math-2202-review/index.html: the practice-test note at lines
+     6663 to 6672, the TEST_ constants at lines 6673 to 6676, and
+     composeExam at lines 6685 to 6731). This composer builds
+     single-unit practice tests only and returns null for a
+     multi-unit selection (the standalone's startExam, lines 6744
+     to 6749, tells the student tests are built one unit at a
+     time and points them to a practice sheet instead; the shell
+     gives the same message under exam.singleOnly). A unit test
+     is 10 selected-response questions at 1 mark each, drawn at
+     the exact level split 2/6/2 with an any-level top-up when a
+     level runs short, plus exactly three constructed-response
+     questions: one carrying 2 marks and two carrying 3, all at
+     Level 2 or 3, at least one of the three at Level 3, summing
+     to 8 marks, for 18 marks in total. The trioCr branch of the
+     shell's composer reproduces that algorithm; courses without
+     trioCr never enter it. The standalone also models the sitting
+     at TEST_MINUTES 60 (a one-hour soft timer); the shell's timer
+     text is its own generic wording for every course. No table
+     of specifications is published for this course; the bank's
+     20/60/20 level mix is a design prior. */
+  exam: {
+    singleOnly: true
+  },
+
+  unitTest: { total: 18, sr: 10, cr: 8, srLevels: [2, 6, 2], trioCr: true },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at line 5741). The official Math 2202 Formula Sheet
+     (2025-2026) places every one of its 14 formulas in the unit
+     whose indicators use it, so the standalone carries panels
+     for Units 2, 3, 6 and 7 only, and has no always-on panel. */
+  panels: {
+    "2": "<b>Surface area, from the course formula sheet</b><br>\nRectangular prism: \\(SA = 2lw + 2lh + 2wh\\)<br>\nCylinder: \\(SA = 2\\pi r^2 + 2\\pi rh\\)<br>\nCone: \\(SA = \\pi r^2 + \\pi rs\\), where \\(s\\) is the slant height<br>\nSquare pyramid: \\(SA = \\text{area of the base} + 4(\\text{area of a triangular side})\\)<br>\nSphere: \\(SA = 4\\pi r^2\\)",
+    "3": "<b>Volume and capacity, from the course formula sheet</b><br>\nRectangular prism: \\(V = lwh\\)<br>\nCylinder: \\(V = \\pi r^2 h\\)<br>\nCone: \\(V = \\frac{\\pi r^2 h}{3}\\)<br>\nSquare pyramid: \\(V = \\frac{lwh}{3}\\)<br>\nSphere: \\(V = \\frac{4\\pi r^3}{3}\\)",
+    "6": "<b>Financial formulas, from the course formula sheet</b><br>\nSimple interest: \\(I = Prt\\)<br>\nFinal value for simple interest: \\(FV = P + I\\)<br>\nFinal value for compound interest: \\(FV = P(1 + r)^t\\), or \\(FV = P\\left(1 + \\frac{r}{n}\\right)^{nt}\\)",
+    "7": "<b>Slope, from the course formula sheet</b><br>\nSlope (rate of change): \\(m = \\frac{y_2 - y_1}{x_2 - x_1}\\)"
+  }
 }
 };

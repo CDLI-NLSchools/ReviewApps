@@ -122,6 +122,7 @@
   .refpanel summary{cursor:pointer;font-weight:bold;}
   .refbody{margin-top:8px;line-height:1.55;font-size:.95rem;}
   .exbox{margin:8px 0;padding:10px 12px;border:1px solid #b7c9a8;background:#f6faf2;border-radius:8px;line-height:1.5;}
+  .hintbox{margin:8px 0;padding:8px 12px;border-left:4px solid #f2b134;background:#fff8e6;border-radius:0 8px 8px 0;line-height:1.5;}
   .exbox .opts label{display:block;margin:3px 0;}
   .timerbar{font-weight:bold;background:#eef4ff;border:1px solid #c9d4e4;border-radius:8px;padding:8px 12px;margin-bottom:10px;}
   .summarybox{margin-top:14px;border-top:2px solid #dfe6f0;padding-top:10px;}
@@ -668,7 +669,7 @@ var UNIT_IND=window.__COURSE?window.__COURSE.unitInd:{};
    through E below and publishes its constructed-response
    marks as window.__BANK_CRMARKS. */
 var BANK=[];
-function E(id,unit,indicators,level,kind,gen){BANK.push({id:id,unit:unit,indicators:indicators,level:level,kind:kind,gen:gen});}
+function E(id,unit,indicators,level,kind,gen,hints){var e={id:id,unit:unit,indicators:indicators,level:level,kind:kind,gen:gen};if(hints){e.hint1=hints[0]||"";e.hint2=hints[1]||"";}BANK.push(e);}
 </script>
 <script>
 /* Load the active course's bank module here, in order, before
@@ -970,9 +971,18 @@ function refreshFace(){
   var d;
   var n=parseInt($("countIn").value,10)||10;
   var chk=$("chkIn").value==="each"?"checked as you go":"checked all at the end";
-  d="You will get "+n+" practice questions, "+chk+", with a worked example and a full worked solution on every question.";
+  d="You will get "+n+" practice questions, "+chk+", with "+(window.__COURSE&&window.__COURSE.hints?"a hint, ":"")+"a worked example and a full worked solution on every question.";
   if($("seedIn")&&$("seedIn").value.trim())d+=" Your teacher picked these problems, so everyone gets the same set.";
   $("faceDesc").textContent=d;
+}
+function showHint(i){
+  var q=current[i];if(!q||!q._entry)return;
+  var box=$("hint"+i);if(!box)return;
+  var stage=+(box.dataset.stage||0);
+  var h1=q._entry.hint1||"",h2=q._entry.hint2||"";
+  var first=h1?stepHTML(h1):"Look at the worked example for this kind of question, then try the same first move here.";
+  if(stage===0){box.innerHTML="<b>Hint:</b> "+first;box.hidden=false;box.dataset.stage="1";}
+  else if(stage===1){box.innerHTML="<b>Hint:</b> "+first+(h2?("<br><b>First step:</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";}
 }
 function dealExample(i,n,prev){
   var q=current[i];if(!q||!q._entry)return null;
@@ -1535,7 +1545,7 @@ function examLive(ex){
   ex.crItems.forEach(function(it){cr+=it.marks;if(it.q._entry.level===3)l3+=it.marks;});
   return {sr:sr,cr:cr,l3:l3,total:sr+cr};
 }
-function examShortNow(ex){var t=examLive(ex);if(ex.single){var ut2=window.__COURSE&&window.__COURSE.unitTest;if(ut2&&ut2.pairCr){var it2=ex.srItems[0]||ex.crItems[0];var ct2=(it2&&ut2.perUnitCr&&ut2.perUnitCr[it2.q._entry.unit])||ut2.cr||7;return (t.sr<(ut2.sr||8)||t.cr<ct2);}return (t.sr<11||t.cr<14);}var u=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units.slice().sort(function(a,b){return a-b;}).join():"";return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}
+function examShortNow(ex){var t=examLive(ex);if(ex.single){var ut2=window.__COURSE&&window.__COURSE.unitTest;if(ut2&&(ut2.pairCr||ut2.trioCr)){var it2=ex.srItems[0]||ex.crItems[0];var ct2=(it2&&ut2.perUnitCr&&ut2.perUnitCr[it2.q._entry.unit])||ut2.cr||7;return (t.sr<(ut2.sr||8)||t.cr<ct2);}return (t.sr<11||t.cr<14);}var u=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units.slice().sort(function(a,b){return a-b;}).join():"";return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}
 function tExamPanelHtml(){
   if(!TEACHER||!T||T.view!=="exam"||!examState)return "";
   var ex=examState.ex;
@@ -1733,7 +1743,7 @@ function renderOnline(scroll){
       html+='<p>Your answer: <input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
       if(q.type==="num")html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
-    html+='<p><button type="button" data-check="'+i+'">Check</button> <button type="button" class="alt" data-ex="'+i+'">See a worked example</button> <button type="button" class="alt" data-sol="'+i+'">Show worked solution</button></p><div class="fb" id="fb'+i+'"></div><div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>Worked solution:</b> '+stepHTML(q.solution)+'</div>'
+    html+='<p><button type="button" data-check="'+i+'">Check</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">Hint</button> ':'')+'<button type="button" class="alt" data-ex="'+i+'">See a worked example</button> <button type="button" class="alt" data-sol="'+i+'">Show worked solution</button></p><div class="fb" id="fb'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>Worked solution:</b> '+stepHTML(q.solution)+'</div>'
       +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">Report a problem</button></p>'
       +'<div class="rep" id="rep'+i+'"><label>What is the problem?<select id="reptype'+i+'"><option>The question looks wrong or unclear</option><option>The worked solution doesn\'t work out</option><option>My answer was marked wrong but should be right</option><option>Something else is out of place</option></select></label>'
       +'<label>Anything you noticed (optional)<textarea id="repnote'+i+'" rows="3"></textarea></label>'
@@ -1745,6 +1755,7 @@ function renderOnline(scroll){
   Array.prototype.forEach.call(box.querySelectorAll("[data-check]"),function(b){b.addEventListener("click",function(){checkQ(+b.getAttribute("data-check"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-sol]"),function(b){b.addEventListener("click",function(){$("sol"+b.getAttribute("data-sol")).classList.toggle("show");});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-ex]"),function(b){b.addEventListener("click",function(){toggleExample(+b.getAttribute("data-ex"));});});
+  Array.prototype.forEach.call(box.querySelectorAll("[data-hint]"),function(b){b.addEventListener("click",function(){showHint(+b.getAttribute("data-hint"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-rep]"),function(b){b.addEventListener("click",function(){$("rep"+b.getAttribute("data-rep")).classList.toggle("show");});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-repsend]"),function(b){b.addEventListener("click",function(){openReport(+b.getAttribute("data-repsend"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-repcopy]"),function(b){b.addEventListener("click",function(){copyReport(+b.getAttribute("data-repcopy"));});});
@@ -1893,6 +1904,12 @@ function composeExam(units,inds,includePK){
          plus exactly two constructed-response entries whose marks sum
          to the unit's own target (unitTest.perUnitCr), preferring a
          pair that carries a Level 3 entry;
+       - a sibling single-unit shape (unitTest.trioCr: Math 2202)
+         shares that branch's selected-response machinery and differs
+         only in Section B: exactly three constructed-response
+         entries, one at 2 marks and two at 3 (its standalone
+         composer's TEST_CR constants), at least one of them at
+         Level 3, summing to unitTest.cr;
        - two scope rules a course may carry in its configuration,
          both read from the standalone composers that had them (Math
          2201): presets.mid.cap engages the poolFor cap for exactly
@@ -1919,12 +1936,14 @@ function composeExam(units,inds,includePK){
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
   if(C.exam&&C.exam.singleOnly&&!single)return null;
-  if(single&&ut.pairCr){
+  if(single&&(ut.pairCr||ut.trioCr)){
     /* The Math 3202 unit test, reproduced from its standalone
        composer: Section A at the exact srLevels split with an
        any-level top-up, Section B as one pair of constructed-response
        entries summing to the unit's target, Level 3 pairs preferred.
-       Only a course setting pairCr enters this branch. */
+       Only a course setting pairCr enters this branch. Math 2202
+       (trioCr) shares the Section A machinery; its Section B is
+       the trio selected below. */
     var unitP=units[0];
     var targetP=(ut.perUnitCr&&ut.perUnitCr[unitP])||ut.cr;
     var seenA={};
@@ -1945,12 +1964,33 @@ function composeExam(units,inds,includePK){
       var extraA=pool.filter(function(e){return probeType(e)==="mc";});var g2A=0;
       while(missA>0&&g2A++<600&&extraA.length){var qA=genFromA(pick(extraA));var cA=canonQ(qA);if(qA.type!=="mc"||seenA[cA])continue;seenA[cA]=1;srA.push({q:qA,marks:1});missA--;}
     }
+    var chosenA=null,crWantA=2,crTargetA=targetP;
+    if(ut.pairCr){
     var crPoolA=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
     var pairsA=[];
     for(var iA=0;iA<crPoolA.length;iA++)for(var jA=iA+1;jA<crPoolA.length;jA++){if(crPoolA[iA].marks+crPoolA[jA].marks===targetP)pairsA.push([crPoolA[iA],crPoolA[jA]]);}
     pairsA=shuffle(pairsA);
     var withL3A=pairsA.filter(function(p){return p[0].e.level===3||p[1].e.level===3;});
-    var chosenA=withL3A.length?withL3A[0]:(pairsA.length?pairsA[0]:null);
+    chosenA=withL3A.length?withL3A[0]:(pairsA.length?pairsA[0]:null);
+    } else {
+      /* Math 2202's Section B, from its standalone composer
+         (TEST_CR_COUNT 3, TEST_CR_TARGET 8): one 2-mark and two
+         3-mark entries, Level 2 or 3, at least one of the three at
+         Level 3. The standalone retries shuffled trios up to 500
+         times for one carrying a Level 3 entry, then settles for
+         any trio; both behaviours are carried here. */
+      var crPoolT=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&(CR_MARKS[e.id]===2||CR_MARKS[e.id]===3)&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+      var twosT=crPoolT.filter(function(x){return x.marks===2;});
+      var threesT=crPoolT.filter(function(x){return x.marks===3;});
+      crWantA=3;crTargetA=ut.cr;
+      if(twosT.length>=1&&threesT.length>=2){
+        for(var atT=0;atT<500&&!chosenA;atT++){
+          var selT=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
+          if(selT.some(function(x){return x.e.level===3;}))chosenA=selT;
+        }
+        if(!chosenA)chosenA=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
+      }
+    }
     var crA=[],crMarksA=0,l3A=0,shortA=missA>0;
     if(chosenA){
       var seenCA={};srA.forEach(function(it){seenCA[canonQ(it.q)]=1;});
@@ -1960,7 +2000,7 @@ function composeExam(units,inds,includePK){
         if(seenCA[c]){shortA=true;return;}
         seenCA[c]=1;crA.push({q:q,marks:x.marks});crMarksA+=x.marks;if(x.e.level===3)l3A+=x.marks;
       });
-      if(crA.length!==2)shortA=true;
+      if(crA.length!==crWantA||(ut.trioCr&&crMarksA!==crTargetA))shortA=true;
     } else shortA=true;
     crA.sort(function(a,b){return a.q._entry.level-b.q._entry.level;});
     return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};
