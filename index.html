@@ -3741,7 +3741,7 @@ if(window.__NOCOURSE){(function(){
     groups[s].sort(function(a,b){return (b[1].grade||0)-(a[1].grade||0)||(cnum(a[1])-cnum(b[1]))||(a[1].shortName<b[1].shortName?-1:1);}).forEach(function(pair){
       var id=pair[0],c=pair[1];
       var b=document.createElement("button");
-      b.type="button";b.className="alt";b.textContent=c.shortName+" Review";
+      b.type="button";b.className="alt";b.textContent=c.shortName;
       b.addEventListener("click",function(){location.search="?course="+encodeURIComponent(id);});
       row.appendChild(b);btns.push({b:b,grade:c.grade||0});
     });
