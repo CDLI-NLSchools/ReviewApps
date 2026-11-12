@@ -291,7 +291,7 @@ window.COURSES = {
   bankFile: "chem-3202.js",
   subject: "Chemistry",
   grade: 12,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "From Kinetics to Equilibrium",
@@ -462,7 +462,7 @@ window.COURSES = {
   bankFile: "chem-2202.js",
   subject: "Chemistry",
   grade: 11,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Stoichiometry",
@@ -627,7 +627,7 @@ window.COURSES = {
   bankFile: "math-3200.js",
   subject: "Mathematics",
   grade: 12,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Polynomial Functions",
@@ -1013,7 +1013,7 @@ window.COURSES = {
   bankFile: "math-3201.js",
   subject: "Mathematics",
   grade: 12,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Rational Expressions and Equations",
@@ -1322,7 +1322,7 @@ window.COURSES = {
   bankFile: "math-3202.js",
   subject: "Mathematics",
   grade: 12,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Measurement",
@@ -1579,7 +1579,7 @@ window.COURSES = {
   bankFile: "math-3208.js",
   subject: "Mathematics",
   grade: 12,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Pre-Calculus",
@@ -1893,7 +1893,7 @@ window.COURSES = {
   bankFile: "math-2200.js",
   subject: "Mathematics",
   grade: 11,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Trigonometry",
@@ -2127,7 +2127,7 @@ window.COURSES = {
   bankFile: "math-2201.js",
   subject: "Mathematics",
   grade: 11,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Acute Triangle Trigonometry",
@@ -2326,7 +2326,7 @@ window.COURSES = {
   bankFile: "math-2202.js",
   subject: "Mathematics",
   grade: 11,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Drawing and Design",
@@ -2517,7 +2517,7 @@ window.COURSES = {
   bankFile: "math-1201.js",
   subject: "Mathematics",
   grade: 10,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Measurement",
@@ -2744,7 +2744,7 @@ window.COURSES = {
   bankFile: "math-1202.js",
   subject: "Mathematics",
   grade: 10,
-  listed: false,
+  listed: true,
 
   units: {
     "1": "Consumerism and Travel",
@@ -2976,7 +2976,7 @@ window.COURSES = {
   title: "Math 9 Review: Practice Question Bank",
   subject: "Mathematics",
   grade: 9,
-  listed: false,
+  listed: true,
   storagePrefix: "m9",
   bankFile: "math-9.js",
   defaultCheckMode: "each",
@@ -3232,7 +3232,7 @@ window.COURSES = {
   title: "Math 8 Review: Practice Question Bank",
   subject: "Mathematics",
   grade: 8,
-  listed: false,
+  listed: true,
   storagePrefix: "m8",
   bankFile: "math-8.js",
   defaultCheckMode: "each",
@@ -3456,5 +3456,418 @@ window.COURSES = {
     "7": "<b>Graph choice:</b> a line graph shows change over time, a circle graph shows shares of one whole, a bar graph compares categories, a double bar graph compares two groups inside each category, and a pictograph compares amounts with symbols.<br><b>Misleading formats:</b> an axis that does not start at zero, uneven axis intervals, 3-D effects, symbols of different sizes, and showing only a chosen part of the data can all misrepresent values.<br><b>Judging a graph:</b> compare bar heights, slice sizes and claims against the actual numbers; a majority means more than half.<br><b>Independent events:</b> events that do not affect each other; the probability that both happen is the product of their separate probabilities, \\(P(A \\text{ and } B) = P(A) \\times P(B)\\).<br><b>Drawing with replacement:</b> the item is put back, so the probabilities stay the same on the second draw.",
     "8": "<b>Views:</b> top view shows which squares hold cubes; front view column heights are the tallest stack in each column; side view columns run front to back<br><b>Height maps:</b> each number is the stack height on that square; total cubes is the sum of all numbers; for a rotated object, turn the map first, then read the views<br><b>Tessellations:</b> shapes cover with no gaps and no overlaps; angles at every point add to exactly \\( 360° \\)<br><b>Interior angle</b> of a regular \\( n \\)-gon: \\( \\dfrac{(n-2) \\times 180°}{n} \\): triangle \\( 60° \\), square \\( 90° \\), pentagon \\( 108° \\), hexagon \\( 120° \\), octagon \\( 135° \\)<br><b>Single regular tessellators:</b> only shapes whose interior angle divides \\( 360° \\): triangles, squares, hexagons<br><b>Transformations:</b> translation is a slide, reflection a flip, rotation a turn; a glide reflection is a flip combined with a slide; moving a piece between paired sides keeps the fit and keeps area the same"
   }
+  },
+
+  /* Mathematics 7 (Math 7), ported from the standalone app at
+     math-7-review/ (served from the Math7Review repo). The
+     standalone's bank is bank-src.js (byte-identical to the
+     splice served inside its index.html, between the
+     BANK-SRC-BEGIN and BANK-SRC-END markers); the port's bank
+     sources are banks/math-7/, cut verbatim from bank-src.js in
+     its own order (helpers, Units 1 to 8, then the November 9,
+     2026 pool-gap fill additions), with the source's CR_MARKS
+     literal (bank-src.js line 4470) carried as the per-file
+     CRMARKS manifests: 209 entries (per-unit
+     30/21/33/26/22/24/25/28) and 74 constructed-response keys.
+     Kept out of the picker (listed:false) until Jason passes
+     it. */
+  "math-7": {
+  id: "math-7",
+  shortName: "Math 7",
+
+  /* Long name (ruling 5 in the junior scoping): the standalone
+     heads its face card "Mathematics 7 Review" (line 249) and
+     subtitles itself "Fresh practice questions for Mathematics
+     7, drawn by unit or by curriculum indicator." (line 244).
+     The header and document title keep the short name: its
+     <title> (line 6) is "Math 7 Review: Practice Question
+     Bank", carried as title below. */
+  longName: "Mathematics 7",
+  title: "Math 7 Review: Practice Question Bank",
+  subject: "Mathematics",
+  grade: 7,
+  listed: false,
+  storagePrefix: "m7",
+  bankFile: "math-7.js",
+  defaultCheckMode: "each",
+
+  /* Unit names verbatim from the standalone app (UNITS at
+     line 652). */
+  units: {
+    "1": "Patterns and Relations",
+    "2": "Integers",
+    "3": "Fractions, Decimals and Percents",
+    "4": "Circles and Area",
+    "5": "Operations with Fractions",
+    "6": "Equations",
+    "7": "Data Analysis",
+    "8": "Geometry"
+},
+
+  /* Indicator texts verbatim from the standalone app
+     (INDICATORS at line 653): 129 codes. */
+  indicators: {
+    "5.1": "Determine if a given number is divisible by 2, 3, 4, 5, 6, 8, 9 or 10, and explain why",
+    "5.2": "Sort a given set of numbers based upon their divisibility, using organizers such as Venn and Carroll diagrams",
+    "5.3": "Explain, using an example, why numbers cannot be divided by 0",
+    "5.4": "Determine the factors of a given number, using the divisibility rules",
+    "8.4": "Explain what a variable is and how it is used in a given expression",
+    "8.5": "Identify and provide an example of a constant term, numerical coefficient and variable in an expression and an equation",
+    "8.6": "Provide an example of an expression and an equation, and explain how they are similar and different",
+    "7.1": "Represent a given oral or written pattern using an algebraic expression",
+    "7.8": "Substitute a value for an unknown in a given expression, and evaluate the expression",
+    "7.7": "Formulate a linear relation to represent the relationship in a given oral or written pattern",
+    "7.9": "Create a table of values for a given linear relation by substituting values for the variable",
+    "7.10": "Create a table of values, using a linear relation, and graph the table of values (limited to discrete elements)",
+    "7.11": "Sketch the graph from a table of values created for a given linear relation, and describe the patterns found in the graph to draw conclusions; e.g., graph the relationship between n and 2n + 3",
+    "7.12": "Describe, using everyday language in spoken or written form, the relationship shown on a graph to solve problems",
+    "7.3": "Provide a context for a given linear relation that represents a pattern",
+    "7.4": "Represent a pattern in the environment, using a linear relation",
+    "7.5": "Match a given set of linear relations to a given set of graphs",
+    "7.6": "Match a given set of graphs to a given set of linear relations",
+    "7.2": "Represent a given oral or written pattern using an equation",
+    "8.12": "For problems that can be represented by linear equations of the form:  • ax + b = c  • ax - b = c  • ax = b  • x/a = b, a ≠ 0  where a, b and c are whole numbers   Model a given problem with a linear equation and solve the equation, using con",
+    "6.24": "Explain, using concrete materials such as integer tiles and diagrams, that the sum of opposite integers is zero",
+    "6.29": "Solve a given problem involving the addition and subtraction of integers",
+    "6.25": "Add two given integers, using concrete materials or pictorial representations, and record the process symbolically",
+    "6.26": "Illustrate, using a number line, the results of adding negative and positive integers",
+    "6.27": "Subtract two given integers, using concrete materials or pictorial representations, and record the process symbolically",
+    "6.28": "Illustrate, using a number line, the results of subtracting negative and positive integers",
+    "3.8": "For repeating decimals limited to 1 or 2 repeating digits   Predict the decimal representation of a given fraction, using patterns; e.g., 1/11 = 0.0909..., 2/11 = 0.1818..., 3/11 = ?",
+    "3.9": "For repeating decimals limited to 1 or 2 repeating digits   Match a given set of fractions to their decimal representations",
+    "3.10": "For repeating decimals limited to 1 or 2 repeating digits   Sort a given set of fractions as repeating or terminating decimals",
+    "3.11": "For repeating decimals limited to 1 or 2 repeating digits   Express a given fraction as a terminating or repeating decimal",
+    "3.12": "For repeating decimals limited to 1 or 2 repeating digits   Express a given terminating decimal as a fraction",
+    "3.13": "For repeating decimals limited to 1 or 2 repeating digits   Express a given repeating decimal as a fraction",
+    "3.14": "For repeating decimals limited to 1 or 2 repeating digits  Provide an example where the decimal representation of a fraction is an approximation of its exact value",
+    "3.3": "For whole numbers, positive fractions, and positive decimals (to thousandths)   Order the numbers of a given set that includes positive fractions, positive decimals and/or whole numbers in ascending or descending order, and verify the result using a varie",
+    "3.1": "For whole numbers and positive fractions  Position fractions with like and unlike denominators from a given set on a number line, and explain strategies used to determine order",
+    "3.4": "For whole numbers, positive fractions, and positive decimals (to thousandths)   Order the numbers of a given set by placing them on a number line that contains benchmarks, such as 0 and 1 or 0 and 5",
+    "3.2": "For whole numbers and positive fractions  Position a given set of positive fractions, including mixed numbers and improper fractions, on a number line and explain strategies used to determine position",
+    "3.5": "For whole numbers, positive fractions, and positive decimals (to thousandths) Identify a number that would be between two given numbers in an ordered sequence or on a number line",
+    "3.6": "For whole numbers, positive fractions, and positive decimals (to thousandths)   Identify incorrectly placed numbers in an ordered sequence or on a number line",
+    "6.5": "Solve a given problem involving the addition of two or more decimal numbers",
+    "6.6": "Solve a given problem involving the subtraction of decimal numbers",
+    "6.1": "Place the decimal in a sum or difference, using front- end estimation; e.g., for 4.5 + 0.73 + 256.458, think 4 + 256, so the sum is greater than 260",
+    "6.7": "Solve a given problem involving the multiplication of decimal numbers with two digit multipliers (whole numbers or decimals) without the use of technology",
+    "6.2": "Place the decimal in a product, using front-end estimation; e.g., for $12.33 x 2.4, think $12 x 2, so the product is greater than $24",
+    "6.9": "Solve a given problem involving the multiplication or division of decimal numbers with more than 2-digit multipliers or 1-digit divisors (whole numbers or decimals) with the use of technology",
+    "6.8": "Solve a given problem involving the division of decimal numbers for 1-digit divisors (whole numbers or decimals) without the use of technology",
+    "6.4": "Check the reasonableness of solutions, using estimation",
+    "6.3": "Place the decimal in a quotient, using front-end estimation; e.g., for 51.50 ÷ 2.1, think 50 ÷ 2, so the quotient is approximately 25",
+    "6.10": "Solve a given problem that involves operations on decimals (limited to thousandths), taking into consideration the order of operations",
+    "3.7": "Express a given percent as a fraction and a decimal",
+    "6.11": "For problems involving percents from 1% to 100%   Solve a given problem that involves finding a percent",
+    "6.12": "For problems involving percents from 1% to 100%   Determine the answer to a given percent problem where the answer requires rounding, and explain why an approximate answer is needed; e.g., total cost including taxes",
+    "9.11": "Illustrate and explain that the diameter is twice the radius in a given circle",
+    "9.12": "Draw a circle with a given radius or diameter, with and without a compass",
+    "9.7": "Illustrate and explain that the circumference is approximately three times the diameter in a given circle",
+    "9.8": "Explain that, for all circles, π is the ratio of the circumference to the diameter C/d and its value is approximately 3.14",
+    "9.10": "Solve a given contextual problem involving circles",
+    "9.1": "Illustrate and explain how the area of a rectangle can be used to determine the area of a parallelogram",
+    "9.2": "Generalize a rule to create a formula for determining the area of parallelograms",
+    "9.3": "Solve a given problem involving the area of triangles, parallelograms and/or circles",
+    "9.4": "Illustrate and explain how the area of a rectangle or a parallelogram can be used to determine the area of a triangle",
+    "9.5": "Generalize a rule to create a formula for determining the area of triangles",
+    "9.6": "Illustrate and explain how to estimate the area of a circle without the use of a formula",
+    "9.9": "Apply a formula for determining the area of a given circle",
+    "11.1": "Find and compare circle graphs in a variety of print and electronic media, such as newspapers, magazines and the Internet",
+    "11.2": "Identify common attributes of circle graphs, such as:  • title, label or legend  • the sum of the central angles is 360°  • the data is reported as a percent of the total, and the sum of the percents is equal to 100%",
+    "9.13": "Explain, using an illustration, that the sum of the central angles of a circle is 360°",
+    "11.5": "Translate percentages displayed in a circle graph into quantities to solve a given problem",
+    "11.4": "Interpret a given circle graph to answer questions",
+    "11.3": "Create and label a circle graph, with and without technology, to display a given set of data",
+    "6.13": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences  Model addition of positive fractions, using concrete representations, and record symbolically",
+    "6.14": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Determine the sum of two given positive fractions with like denominators",
+    "6.15": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Simplify a given positive fraction by identifying the common factor between the numerator and denominator",
+    "6.16": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Determine a common denominator for a given set of positive fractions",
+    "6.17": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Determine the sum of two given positive fractions with unlike denominators",
+    "6.18": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Model subtraction of positive fractions, using concrete representations, and record symbolically",
+    "6.19": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences  Determine the difference of two given positive fractions",
+    "6.20": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Model addition and subtraction of mixed numbers, using concrete representations, and record symbolically",
+    "6.21": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Determine the sum or difference of two mixed numbers",
+    "6.22": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Simplify the solution to a given problem involving the sum or difference of two positive fractions or mixed numbers.",
+    "6.23": "For positive fractions and mixed numbers with like and unlike denominators, limited to positive sums and differences   Solve a given problem involving the addition or subtraction of positive fractions or mixed numbers, and determine if the solution is rea",
+    "8.14": "For problems that can be represented by linear equations of the form:  • ax + b = c  • ax - b = c  • ax = b  • x/a = b, a ≠ 0  where a, b and c are whole numbers  Solve a given linear equation by inspection and by systematic trial",
+    "8.1": "Model the preservation of equality for each of the four operations, using concrete materials or pictorial representations, explain the process orally and record it symbolically",
+    "8.3": "Write equivalent forms of a given equation by applying the preservation of equality, and verify, using concrete materials; e.g., 3b = 12 is the same as 3b + 5 = 12 + 5 or 2r = 7 is the same as 3(2r) = 3(7)",
+    "8.13": "For problems that can be represented by linear equations of the form:  • ax + b = c  • ax - b = c  • ax = b  • x/a = b, a ≠ 0  where a, b and c are whole numbers  Draw a visual representation of the steps required to solve a given linear equ",
+    "8.15": "For problems that can be represented by linear equations of the form:  • ax + b = c  • ax - b = c  • ax = b  • x/a = b, a ≠ 0  where a, b and c are whole numbers.   Solve a given problem using a linear equation, and record the process",
+    "8.16": "For problems that can be represented by linear equations of the form:  • ax + b = c  • ax - b = c  • ax = b  • x/a = b, a ≠ 0  where a, b and c are whole numbers  Verify the solution to a given linear equation using concrete materials and di",
+    "8.17": "For problems that can be represented by linear equations of the form:  • ax + b = c  • ax - b = c  • ax = b  • x/a = b, a ≠ 0  where a, b and c are whole numbers   Substitute a possible solution for the variable in a given linear equation int",
+    "8.7": "For problems that can be represented by one- step linear equations of the form x + a = b, where a and b are integers   Represent a given problem with a linear equation and solve the equation using concrete models, e.g. counters, integer tiles",
+    "8.8": "For problems that can be represented by one- step linear equations of the form x + a = b, where a and b are integers   Draw a visual representation of the steps required to solve a given linear equation",
+    "8.9": "For problems that can be represented by one- step linear equations of the form x + a = b, where a and b are integers   Solve a given problem using a linear equation",
+    "8.10": "For problems that can be represented by one- step linear equations of the form x + a = b, where a and b are integers  Verify the solution to a given linear equation using concrete materials and diagrams",
+    "8.11": "For problems that can be represented by one- step linear equations of the form x + a = b, where a and b are integers   Substitute a possible solution for the variable in a given linear equation into the original linear equation to verify the equality",
+    "8.2": "Solve a given problem by applying preservation of equality",
+    "11.6": "Determine mean, median and mode for a given set of data, and explain why these values may be the same or different",
+    "11.7": "Determine the range for a given set of data",
+    "11.8": "Provide a context in which the mean, median or mode is the most appropriate measure of central tendency to use when reporting findings",
+    "11.9": "Solve a given problem involving the measures of central tendency",
+    "11.10": "Analyze a given set of data to identify any outliers",
+    "11.11": "Explain the effect of outliers on the measures of central tendency for a given data set",
+    "11.12": "Identify outliers in a given set of data, and justify whether or not they are to be included in reporting the measures of central tendency",
+    "11.13": "Provide examples of situations in which outliers would and would not be used in reporting the measures of central tendency",
+    "12.1": "Determine the probability of a given outcome occurring for a given probability experiment, and express it as a ratio, fraction and percent",
+    "12.2": "Provide an example of an event with a probability of 0 or 0% (impossible) and an example of an event with a probability of 1 or 100% (certain)",
+    "12.3": "For two independent events with a combined sample space of 36 or fewer elements   Provide an example of two independent events, such as:  • spinning a four section spinner and rolling an eight-sided die  • tossing a coin and rolling a twelve-sided d",
+    "12.4": "For two independent events with a combined sample space of 36 or fewer elements   Identify the sample space (all possible outcomes) for each of two independent events, using a tree diagram, table or other graphic organizer",
+    "12.5": "For two independent events with a combined sample space of 36 or fewer elements   Determine the theoretical probability of a given outcome involving two independent events",
+    "12.6": "Conduct a probability experiment for an outcome involving two independent events, with and without technology, to compare the experimental probability with the theoretical probability",
+    "12.7": "Solve a given probability problem involving two independent events",
+    "10.1": "Identify line segments on a given diagram that are parallel or perpendicular",
+    "10.2": "Describe examples of parallel line segments in the environment",
+    "10.13": "Draw a line segment parallel to another line segment, and explain why they are parallel",
+    "10.3": "Describe examples of perpendicular line segments in the environment",
+    "10.14": "Draw a line segment perpendicular to another line segment, and explain why they are perpendicular",
+    "10.4": "Describe examples of perpendicular bisectors in the environment",
+    "10.15": "Draw the perpendicular bisector of a line segment, using more than one method, and verify the construction",
+    "10.5": "Describe examples of angle bisectors in the environment",
+    "10.16": "Draw the bisector of a given angle, using more than one method, and verify that the resulting angles are equal",
+    "10.6": "Label the axes of a four quadrant coordinate plane (or Cartesian plane), and identify the origin",
+    "10.7": "Identify the location of a given point in any quadrant of a Cartesian plane, using an integral ordered pair",
+    "10.9": "Plot the point corresponding to a given integral ordered pair on a Cartesian plane with units of 1, 2, 5 or 10 on its axes",
+    "10.17": "Draw shapes and designs in a Cartesian plane, using integral ordered pairs",
+    "10.18": "Create shapes and designs, and identify the points used to produce the shapes and designs, in any quadrant of a Cartesian plane",
+    "10.8": "Identify the coordinates of the vertices of a given 2-D shape on a Cartesian plane",
+    "10.10": "Describe the horizontal and vertical movement required to move from a given point to another point on a Cartesian plane",
+    "10.19": "Determine the distance between points along horizontal and vertical lines in a Cartesian plane",
+    "10.11": "Describe the positional change of the vertices of a given 2-D shape to the corresponding vertices of its image as a result of a transformation, or successive transformations, on a Cartesian plane",
+    "10.20": "Perform a transformation or consecutive transformations on a given 2-D shape, and identify coordinates of the vertices of the image",
+    "10.12": "Describe the image resulting from the transformation of a given 2-D shape on a Cartesian plane by identifying the coordinates of the vertices of the image"
+},
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 654): 130 placements over the 129
+     codes (the standalone places code 8.12 in both Unit 1
+     and Unit 6); it agrees exactly with the codes the bank
+     entries themselves carry at each placement. */
+  unitInd: {
+    "1": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "8.4",
+        "8.5",
+        "8.6",
+        "7.1",
+        "7.8",
+        "7.7",
+        "7.9",
+        "7.10",
+        "7.11",
+        "7.12",
+        "7.3",
+        "7.4",
+        "7.5",
+        "7.6",
+        "7.2",
+        "8.12"
+    ],
+    "2": [
+        "6.24",
+        "6.29",
+        "6.25",
+        "6.26",
+        "6.27",
+        "6.28"
+    ],
+    "3": [
+        "3.8",
+        "3.9",
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+        "3.3",
+        "3.1",
+        "3.4",
+        "3.2",
+        "3.5",
+        "3.6",
+        "6.5",
+        "6.6",
+        "6.1",
+        "6.7",
+        "6.2",
+        "6.9",
+        "6.8",
+        "6.4",
+        "6.3",
+        "6.10",
+        "3.7",
+        "6.11",
+        "6.12"
+    ],
+    "4": [
+        "9.11",
+        "9.12",
+        "9.7",
+        "9.8",
+        "9.10",
+        "9.1",
+        "9.2",
+        "9.3",
+        "9.4",
+        "9.5",
+        "9.6",
+        "9.9",
+        "11.1",
+        "11.2",
+        "9.13",
+        "11.5",
+        "11.4",
+        "11.3"
+    ],
+    "5": [
+        "6.13",
+        "6.14",
+        "6.15",
+        "6.16",
+        "6.17",
+        "6.18",
+        "6.19",
+        "6.20",
+        "6.21",
+        "6.22",
+        "6.23"
+    ],
+    "6": [
+        "8.14",
+        "8.1",
+        "8.3",
+        "8.12",
+        "8.13",
+        "8.15",
+        "8.16",
+        "8.17",
+        "8.7",
+        "8.8",
+        "8.9",
+        "8.10",
+        "8.11",
+        "8.2"
+    ],
+    "7": [
+        "11.6",
+        "11.7",
+        "11.8",
+        "11.9",
+        "11.10",
+        "11.11",
+        "11.12",
+        "11.13",
+        "12.1",
+        "12.2",
+        "12.3",
+        "12.4",
+        "12.5",
+        "12.6",
+        "12.7"
+    ],
+    "8": [
+        "10.1",
+        "10.2",
+        "10.13",
+        "10.3",
+        "10.14",
+        "10.4",
+        "10.15",
+        "10.5",
+        "10.16",
+        "10.6",
+        "10.7",
+        "10.9",
+        "10.17",
+        "10.18",
+        "10.8",
+        "10.10",
+        "10.19",
+        "10.11",
+        "10.20",
+        "10.12"
+    ]
+},
+
+  /* Presets: the standalone's three buttons (builder markup
+     lines 286 to 288) are "Mid-course review (Units 1 to 4)",
+     "Final review (Units 5 to 8)" and "All units"; their
+     handlers (lines 7573 to 7574) pass the level mix
+     [20, 60, 20] for mid and final and no mix change for All,
+     and the shell's All wiring selects every unit in the
+     course when the config carries no allUnits key, so All
+     needs no entry here. The face card names the final scope
+     "End-of-course review: Units 5 to 8" (refreshFace, line
+     5484), carried here as faceLabel; the mid face line
+     "Mid-course review: Units 1 to 4" (line 5483) is exactly
+     what the shell derives from the mid label, so mid needs
+     no faceLabel. */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8], mix: [20, 60, 20], label: "Final review (Units 5 to 8)", faceLabel: "End-of-course review (Units 5 to 8)" }
+  },
+
+  /* Staged hints: every entry in this bank carries a two-stage
+     hint (the standalone's E stores them as hint1 and hint2,
+     and its showHint reveals strategy, then first step; its
+     face card promises them, line 5491). The flag turns on
+     the shell's hint UI for this course: the Hint button and
+     hint box on practice questions, and the face card's
+     "a hint, " wording. */
+  hints: true,
+
+  /* Timer note (ruling 3 in the junior scoping): the
+     standalone's exam timer bar names the real exam's length
+     (line 6523) and its timer checkbox label carries the same
+     note (line 372). The shell composes the note from this
+     string in both spots. */
+  timerNote: "1 hour 30 minutes",
+
+  /* Sheet header strings (ruling 4 in the junior scoping): the
+     standalone's practice sheet header says "Show all your
+     work ..." where the senior chassis says "workings" (its
+     sheet header, line 6559). */
+  sheetWork: ["Show all your work in the space provided.", "Show all your work on your own paper."],
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (composeExam, lines 6400 to 6446): every
+     multi-unit paper pools the whole selection at 35 marks,
+     18 selected response drawn at level targets [7, 10, 1]
+     (level totals [7, 21, 7] once the constructed-response
+     levels are counted) and 17 constructed response with the
+     Level 3 marks tried at [6, 5, 7] in that order. The
+     fallback's total key (35) is read by the shell composer's
+     expected-total check and by its short-paper check: the
+     standalone's examShortNow (line 6070) judges a multi-unit
+     paper short at SR under 18 or CR under 17, exactly
+     fallback.srCount and fallback.crMarks. No per-scope
+     blueprints: mid and final differ only in which units they
+     select. A unit test is the same composer's single-unit
+     paper: 25 marks, SR 11 (its own exact split is [4, 6, 1];
+     the shell guides unit tests at 20/60/20, as everywhere)
+     and CR 14 with the Level 3 marks tried at [5, 4, 6],
+     which the shell's unit-test window already matches. */
+  exam: {
+    fallback: { srCount: 18, crMarks: 17, levels: [7, 21, 7], crL3: [6, 5, 7], total: 35 }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at line 5466): a panel for every one of the
+     eight units, and no always-on panel. */
+  panels: {
+    "1": "<b>Divisibility tests:</b> 2: last digit even. 3: digit sum divisible by 3. 4: last two digits divisible by 4. 5: ends in 0 or 5. 6: divisible by both 2 and 3. 8: last three digits divisible by 8. 9: digit sum divisible by 9. 10: ends in 0.<br><b>Division by 0:</b> a number cannot be divided by 0, because no number multiplied by 0 gives the dividend.<br><b>Factors:</b> the factors of a number are the whole numbers that divide it exactly; find them in pairs, and a number is always a factor of itself.<br><b>Parts of an expression:</b> a variable is a letter standing for a value that can change; the numerical coefficient is the number multiplying the variable; the constant term is the term with no variable.<br><b>Expression or equation:</b> an expression has no equals sign and is evaluated; an equation sets two expressions equal and can be solved.<br><b>Patterns:</b> for a pattern with step \\(d\\) and first term \\(a\\), the term in position \\(n\\) is \\(a + (n-1)d\\), which simplifies to \\(dn + (a-d)\\).<br><b>Linear relations:</b> a relation such as \\(y = ax + b\\) links two quantities; \\(b\\) is the starting value (at \\(x = 0\\)) and \\(a\\) is the amount \\(y\\) changes for each step of \\(x\\).<br><b>Tables and graphs:</b> build a table by substituting each \\(x\\) value into the relation, then plot the pairs as discrete points (dots only, not joined).",
+    "2": "<b>Opposites:</b> opposite integers are the same distance from 0 in opposite directions, so their sum is 0, for example \\(5 + (-5) = 0\\).<br><b>Adding integers, same signs:</b> add the sizes and keep the sign, for example \\((-4) + (-5) = -9\\).<br><b>Adding integers, different signs:</b> subtract the smaller size from the larger and keep the sign of the larger, for example \\((-7) + 4 = -3\\).<br><b>Subtracting integers:</b> rewrite the subtraction as adding the opposite, for example \\(3 - (-6) = 3 + 6 = 9\\).<br><b>Number line:</b> adding a positive moves right and adding a negative moves left; a subtraction jump moves by the opposite of the number being subtracted.<br><b>Problems:</b> turn rises, gains and deposits into positive changes, and falls, losses and payments into negative changes, then add the signed changes to the starting value.",
+    "3": "<b>Ordering numbers:</b> convert fractions, decimals and percents to the same form (decimals are easiest) and compare; benchmarks \\(0\\), \\(\\frac{1}{2}\\) and \\(1\\) anchor positions on a number line.<br><b>Fraction to decimal:</b> divide the numerator by the denominator, e.g. \\(\\frac{3}{8} = 3 \\div 8\\).<br><b>Decimal to fraction:</b> use the last decimal place as the denominator (\\(0.7 = \\frac{7}{10}\\), \\(0.35 = \\frac{35}{100}\\)), then simplify.<br><b>Percents:</b> \\(p\\% = \\frac{p}{100}\\); to write a percent as a decimal, divide by \\(100\\). To find a percent of a number, multiply the decimal form by the number.<br><b>Repeating decimals:</b> a one-digit repeat sits over \\(9\\) and a two-digit repeat sits over \\(99\\). A fraction in lowest terms terminates when its denominator factors into only \\(2\\)s and \\(5\\)s; any other prime factor means it repeats.<br><b>Adding and subtracting decimals:</b> line up the decimal points and work column by column.<br><b>Multiplying and dividing decimals:</b> the total number of decimal places in the factors gives the decimal places in the product; check every answer with front-end estimation using the leading digits.<br><b>Money and percents:</b> round final money answers to the nearest cent. In Newfoundland and Labrador, HST is \\(15\\%\\): total \\(=\\) price \\(+\\) \\(0.15 \\times\\) price.",
+    "4": "<b>Radius and diameter:</b> \\(d = 2r\\) and \\(r = d \\div 2\\). A compass opening equals the radius of the circle it draws.<br><b>Circumference:</b> \\(C = \\pi d = 2\\pi r\\) with \\(\\pi \\approx 3.14\\); the circumference is approximately \\(3\\) times the diameter, and \\(\\pi\\) is the ratio \\(\\frac{C}{d}\\) for every circle.<br><b>Area of a circle:</b> \\(A = \\pi r^2\\); halve the diameter first when the diameter is given. To estimate without a formula, count full grid squares and add half of the partly covered squares.<br><b>Area of a parallelogram:</b> \\(A = b \\times h\\), where \\(h\\) is the perpendicular height, not the slanted side; a parallelogram rearranges into a rectangle with the same base and height.<br><b>Area of a triangle:</b> \\(A = \\frac{b \\times h}{2}\\), because two identical triangles make a parallelogram with the same base and height.<br><b>Circle graphs:</b> the percents add to \\(100\\%\\) and the central angles add to \\(360^{\\circ}\\).<br><b>Building and reading circle graphs:</b> central angle \\(= \\frac{\\text{percent}}{100} \\times 360^{\\circ}\\); quantity in a sector \\(= \\frac{\\text{percent}}{100} \\times \\text{total surveyed}\\).",
+    "5": "<b>Adding fractions with like denominators:</b> add the numerators and keep the denominator, e.g. \\(\\frac{a}{d} + \\frac{b}{d} = \\frac{a+b}{d}\\).<br><b>Common denominator:</b> use the least common multiple of the denominators; rewrite each fraction by multiplying its numerator and denominator by the same factor.<br><b>Adding or subtracting fractions with unlike denominators:</b> rewrite both fractions over a common denominator first, then add or subtract the numerators.<br><b>Lowest terms:</b> divide the numerator and the denominator by their greatest common factor; a fraction is in lowest terms when the only common factor is 1.<br><b>Mixed numbers:</b> add or subtract the whole numbers and the fraction parts separately; if the fraction parts add past one whole, regroup; if a fraction part is too small to subtract from, regroup one whole into fraction parts.<br><b>Modelling with strips or circles:</b> one whole is split into equal parts; shaded parts show a fraction, and crossed-out shaded parts are taken away.<br><b>Checking reasonableness:</b> compare with benchmarks \\(0\\), \\(\\frac{1}{2}\\) and \\(1\\); a sum of two positive amounts is larger than each amount, and a difference is smaller than the starting amount.<br><b>Improper fractions and mixed numbers:</b> \\(\\frac{7}{4} = 1\\frac{3}{4}\\); to write a mixed number as an improper fraction, multiply the whole by the denominator and add the numerator.",
+    "6": "<b>Preservation of equality:</b> an equation stays balanced when the same operation is done to both sides; the new equation is equivalent and has the same solution.<br><b>Inverse operations:</b> addition is undone by subtraction, subtraction by addition, multiplication by division, and division by multiplication.<br><b>One-step equations \\(x + a = b\\):</b> subtract \\(a\\) from both sides, giving \\(x = b - a\\); for \\(x - a = b\\), add \\(a\\) to both sides.<br><b>Two-step equations \\(ax + b = c\\):</b> undo in reverse order: subtract \\(b\\) from both sides, then divide both sides by \\(a\\); for \\(ax - b = c\\), add \\(b\\) first, then divide by \\(a\\).<br><b>Equations \\(ax = b\\) and \\(\\frac{x}{a} = b\\):</b> divide both sides by \\(a\\) for the first; multiply both sides by \\(a\\) for the second.<br><b>Modelling a problem:</b> name the unknown, then write the fixed amount plus the per-unit amount times the unknown equal to the total.<br><b>Verifying a solution:</b> substitute the value for the variable in the original equation; the value is a solution only if the two sides are equal.<br><b>Solving by inspection and trial:</b> inspection finds the value that makes the equation true; systematic trial tests values in order and uses each result to narrow the search.",
+    "7": "<b>Mean:</b> add all the values and divide by how many values there are.<br><b>Median:</b> the middle value of an ordered list; for an even count, average the two middle values.<br><b>Mode:</b> the value that appears most often; a set may have no mode or more than one mode.<br><b>Range:</b> largest value minus smallest value.<br><b>Choosing a measure:</b> use the mode for the most frequent item or category, the median when an outlier would pull the mean, and the mean when every value should count equally.<br><b>Outliers:</b> values far from the main cluster; they pull the mean strongly and the median only slightly.<br><b>Probability:</b> \\(P = \\frac{\\text{favourable outcomes}}{\\text{total possible outcomes}}\\); probability 0 means impossible and probability 1 (100%) means certain.<br><b>Two independent events:</b> multiply the outcome counts to get the size of the sample space; the result of one event does not change the other.<br><b>Experimental probability:</b> \\(\\frac{\\text{times the outcome occurred}}{\\text{number of trials}}\\); the expected count in an experiment is the theoretical probability times the number of trials.",
+    "8": "<b>Parallel segments:</b> never meet and stay the same distance apart.<br><b>Perpendicular segments:</b> meet at \\(90^\\circ\\).<br><b>Perpendicular bisector:</b> a line that cuts a segment into two equal parts at \\(90^\\circ\\); every point on it is the same distance from the segment's two endpoints.<br><b>Angle bisector:</b> a ray from the vertex that splits an angle into two equal angles.<br><b>Cartesian plane:</b> the horizontal axis is the \\(x\\)-axis, the vertical axis is the \\(y\\)-axis, and they cross at the origin \\((0, 0)\\).<br><b>Ordered pairs:</b> \\((x, y)\\) means \\(x\\) units across from the origin, then \\(y\\) units up (negative values go left or down). Quadrants by signs: I \\((+, +)\\), II \\((-, +)\\), III \\((-, -)\\), IV \\((+, -)\\).<br><b>Distance on grid lines:</b> for points on the same horizontal line, subtract the \\(x\\)-coordinates; on the same vertical line, subtract the \\(y\\)-coordinates.<br><b>Translations:</b> add the horizontal move to \\(x\\) and the vertical move to \\(y\\) (left and down moves are negative).<br><b>Reflections:</b> across the \\(x\\)-axis, \\((x, y)\\) becomes \\((x, -y)\\); across the \\(y\\)-axis, \\((x, y)\\) becomes \\((-x, y)\\)."
+}
   }
 };
