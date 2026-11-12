@@ -756,15 +756,27 @@ var CR_MARKS=window.__BANK_CRMARKS||{};
    preset caps its pool (presets.mid.cap, Math 2201)
    flags the held-out entries postMid in its bank
    module, and the composer engages the cap argument
-   to poolFor for exactly that scope. */
+   to poolFor for exactly that scope. A course can cap
+   its final preset the same way (presets.final.cap,
+   Biology 3201): the entries held out of the final
+   scope carry preFinal instead, poolFor's cap argument
+   is the string "final" for that scope, and scopeCap
+   resolves a unit selection to the cap it carries. */
 function poolFor(units,inds,cap,pred){
   return BANK.filter(function(e){
     if(pred&&!pred(e))return false;
-    if(cap&&e.postMid)return false;
+    if(cap==="final"){if(e.preFinal)return false;}
+    else if(cap&&e.postMid)return false;
     if(units.indexOf(e.unit)<0)return false;
     if(inds&&inds.length){return e.indicators.some(function(c){return inds.indexOf(c)>=0;});}
     return true;
   });
+}
+function scopeCap(units){
+  var C=window.__COURSE||{};var key=(units||[]).slice().sort(function(a,b){return a-b;}).join();
+  if(C.presets&&C.presets.mid&&C.presets.mid.cap&&C.presets.mid.units&&C.presets.mid.units.slice().sort(function(a,b){return a-b;}).join()===key)return true;
+  if(C.presets&&C.presets.final&&C.presets.final.cap&&C.presets.final.units&&C.presets.final.units.slice().sort(function(a,b){return a-b;}).join()===key)return "final";
+  return false;
 }
 function levelTargets(n,mix){
   var tot=mix[0]+mix[1]+mix[2];if(tot<=0)mix=[20,60,20],tot=100;
@@ -927,7 +939,7 @@ function detexClone(node){
   });
   return c;
 }
-var state={units:[],inds:[],midCap:false};
+var state={units:[],inds:[],midCap:false,finalCap:false};
 /* Report-a-problem: one Google Form, "Math Review Apps: Report a Problem", serves
    every review app. The app name, the unit and indicators, and the full report text
    are pre-filled through the entry IDs below, which are the form's pre-filled-link
@@ -939,7 +951,7 @@ function unitCheckboxes(){
     return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> '+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</label>";
   }).join("");
   Array.prototype.forEach.call(document.querySelectorAll(".unitChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;readUnits();renderIndicators();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;readUnits();renderIndicators();updatePoolInfo();});
   });
 }
 function readUnits(){
@@ -951,14 +963,14 @@ function renderIndicators(){
     return '<label><input type="checkbox" class="indChk" value="'+c+'"'+(state.inds.indexOf(c)>=0?" checked":"")+"> <b>"+c+"</b>"+L9(": ",", ")+esc(INDICATORS[c]||"")+"</label>";
   }).join(""):'<span class="hint">'+L9("Pick at least one unit above.","Choisis au moins une unité ci-dessus.")+'</span>';
   Array.prototype.forEach.call(document.querySelectorAll(".indChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;readInds();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;readInds();updatePoolInfo();});
   });
 }
 function readInds(){
   state.inds=Array.prototype.map.call(document.querySelectorAll(".indChk:checked"),function(cb){return cb.value;});
 }
 function updatePoolInfo(){refreshFace();
-  var p=poolFor(state.units,state.inds,state.midCap);
+  var p=poolFor(state.units,state.inds,state.finalCap?"final":state.midCap);
   var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});
   $("poolInfo").textContent=p.length?L9("Question bank for this selection: ","Banque de questions pour cette sélection : ")+p.length+L9(" question templates (Level 1: "," modèles de questions (Niveau 1 : ")+byL[1]+L9(", Level 2: ",", Niveau 2 : ")+byL[2]+L9(", Level 3: ",", Niveau 3 : ")+byL[3]+L9("). Generators make a fresh question every draw.","). Les générateurs créent une nouvelle question à chaque tirage.")+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:"")+(window.__COURSE&&window.__COURSE.midNote&&state.midCap?" "+window.__COURSE.midNote:""):
    L9("No questions match that selection yet, try adding a unit or clearing the indicator filter.","Aucune question ne correspond encore à cette sélection, essaie d'ajouter une unité ou d'effacer le filtre des indicateurs.");
@@ -988,7 +1000,7 @@ function tGateStudentUI(){
 }
 function settings(){
   readUnits();readInds();
-  return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,
+  return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,finalCap:state.finalCap,
     count:Math.max(1,Math.min(60,+$("countIn").value||10)),
     mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),
     ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),
@@ -1220,7 +1232,7 @@ function tAdoptDrawn(q,avoid){
 function tScopePool(){
   if(!T)return [];
   if(T.view==="exam")return poolFor(T.scope.units,T.scope.inds,T.scope.examCap,function(e){return T.scope.includePK||!isPK(e);});
-  return poolFor(T.scope.units,T.scope.inds,T.scope.midCap);
+  return poolFor(T.scope.units,T.scope.inds,T.scope.finalCap?"final":T.scope.midCap);
 }
 function tCrPool(){return tScopePool().filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;});}
 function tAvoidAll(items){var a={};items.forEach(function(q){if(q)a[canonQ(q)]=1;});return a;}
@@ -1493,8 +1505,8 @@ function advTCtx(view,P,s){
   var old=(P.T&&P.T.view===view)?P.T:null;
   var sc;
   if(old&&old.scope)sc=old.scope;
-  else if(view==="exam")sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),includePK:tPkOn(),examCap:((s.units||[]).slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"):""))};
-  else sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),midCap:!!s.midCap};
+  else if(view==="exam")sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),includePK:tPkOn(),examCap:scopeCap(s.units||[])};
+  else sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),midCap:!!s.midCap,finalCap:!!s.finalCap};
   var T2={view:view,salt:old?old.salt:tSalt(),scope:sc,edited:old?!!old.edited:false,picker:null};
   if(view==="online"){T2.state={};T2.endGraded=!!P.endGraded;}
   if(view!=="online")T2.textEdited=false;
@@ -1621,7 +1633,7 @@ function tRebuildFromURL(){
     stopExamTimer();
     current=items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};sessionSeed="";
     lastSettings=s;onlineThin=false;T=null;
-    if(TEACHER)T={view:"online",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap},edited:edited,state:{},endGraded:false,picker:null};
+    if(TEACHER)T={view:"online",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:edited,state:{},endGraded:false,picker:null};
     if(!TEACHER&&SHUFFLE_OPTS)current=current.map(shufQ);
     renderOnline(false);
     $("session").scrollIntoView({behavior:scrollBehavior()});
@@ -1645,7 +1657,7 @@ function tRebuildFromURL(){
     T=null;
     examState={ex:exO,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
     if(TEACHER){var anyPK=srItems.concat(crItems).some(function(it){return isPK(it.q._entry);});
-      T={view:"exam",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:anyPK,examCap:(s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"):""))},edited:edited,textEdited:false,picker:null};}
+      T={view:"exam",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:anyPK,examCap:scopeCap(s.units||[])},edited:edited,textEdited:false,picker:null};}
     if(!TEACHER&&SHUFFLE_OPTS){srItems.forEach(function(it){it.q=shufQ(it.q);});crItems.forEach(function(it){it.q=shufQ(it.q);});}
     renderExam();
     return true;
@@ -1657,7 +1669,7 @@ function tRebuildFromURL(){
     wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
     T=null;
     sheetState={items:items3,s:s,thin:false};
-    if(TEACHER)T={view:"sheet",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap},edited:edited,textEdited:false,picker:null};
+    if(TEACHER)T={view:"sheet",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:edited,textEdited:false,picker:null};
     if(!TEACHER&&SHUFFLE_OPTS)sheetState.items=sheetState.items.map(shufQ);
     renderSheet();
     return true;
@@ -1966,11 +1978,11 @@ var lastSettings=null,onlineThin=false;
 function startOnline(){
   stopExamTimer();
   var s=settings();var _sd=activeSeed(s);sessionSeed=_sd;
-  var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.midCap);});
+  var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
   current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};
   lastSettings=s;onlineThin=res.thin;T=null;
   if(TEACHER&&current.length){
-    T={view:"online",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap},edited:false,state:{},endGraded:false,picker:null};
+    T={view:"online",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,state:{},endGraded:false,picker:null};
     var _av={};
     current=current.map(function(q){return _sd?tAdoptDrawn(q,_av):tFreezeSlot(q._entry,q.type,_av,T.salt);});
   }
@@ -2102,8 +2114,8 @@ function probeType(e){if(_probeCache[e.id])return _probeCache[e.id];var t="mc",s
    no-choices questions (numerical and text answers print identically, so
    they share one count), each part honouring the level mix on its own pool. */
 function drawSheetSet(s){
-  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.midCap,function(e){return probeType(e)==="mc";});
-  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.midCap,function(e){return probeType(e)!=="mc";});
+  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)==="mc";});
+  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)!=="mc";});
   /* A few entries generate more than one answer type, and the probe that
      sorts them into a part catches only one of the types. Enforce each
      part's type on the generated questions themselves: an off-type
@@ -2187,7 +2199,7 @@ function composeExam(units,inds,includePK){
   var key=units.slice().sort(function(a,b){return a-b;}).join();
   var scope=null;
   if(!single&&C.exam){Object.keys(C.exam).forEach(function(nm){var sc=C.exam[nm];if(sc&&sc.units&&sc.units.slice().sort(function(a,b){return a-b;}).join()===key)scope=sc;});}
-  var capX=!!(C.presets&&C.presets.mid&&C.presets.mid.cap&&C.presets.mid.units&&C.presets.mid.units.slice().sort(function(a,b){return a-b;}).join()===key);
+  var capX=scopeCap(units);
   var pool=poolFor(units,inds,capX);
   if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
   if(!pool.length)return null;
@@ -2473,7 +2485,7 @@ function startExam(){
   T=null;
   examState={ex:ex,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
   if(TEACHER){
-    T={view:"exam",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:pkOn,examCap:(s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"):""))},edited:false,textEdited:false,picker:null};
+    T={view:"exam",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:pkOn,examCap:scopeCap(s.units||[])},edited:false,textEdited:false,picker:null};
     var _av={};
     ex.srItems.forEach(function(it){it.q=_sd?tAdoptDrawn(it.q,_av):tFreezeSlot(it.q._entry,"mc",_av,T.salt);});
     ex.crItems.forEach(function(it){it.q=_sd?tAdoptDrawn(it.q,_av):tFreezeSlot(it.q._entry,it.q.type,_av,T.salt);});
@@ -2545,7 +2557,7 @@ function startSheet(){
   T=null;
   sheetState={items:res.items,s:s,thin:res.thin};
   if(TEACHER){
-    T={view:"sheet",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap},edited:false,textEdited:false,picker:null};
+    T={view:"sheet",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,textEdited:false,picker:null};
     var _av={};
     sheetState.items=sheetState.items.map(function(q){return _sd?tAdoptDrawn(q,_av):tFreezeSlot(q._entry,q.type,_av,T.salt);});
   }
@@ -3534,7 +3546,7 @@ function settingsToURL(){
   var s=settings();var p=new URLSearchParams();
   if(window.__COURSE)p.set("course",window.__COURSE.id);
   if(window.__COURSE&&s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none")&&(!(window.__COURSE.presets.mid&&window.__COURSE.presets.mid.cap)||s.midCap))p.set("preset","mid");
-  else if(window.__COURSE&&s.units.slice().sort().join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))p.set("preset","final");
+  else if(window.__COURSE&&s.units.slice().sort().join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")&&(!(window.__COURSE.presets.final&&window.__COURSE.presets.final.cap)||s.finalCap))p.set("preset","final");
   else if(s.units.length)p.set("unit",s.units.join(","));
   if(s.inds.length)p.set("indicator",s.inds.join(","));
   p.set("count",s.count);p.set("order",s.order);
@@ -3551,8 +3563,8 @@ function settingsToURL(){
 }
 function applyURL(){
   var p=new URLSearchParams(location.search);var touched=false;
-  if(p.get("preset")==="mid"){state.units=(window.__COURSE&&window.__COURSE.presets.mid)?window.__COURSE.presets.mid.units.slice():[];touched=true;state.midCap=!!(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.cap);if(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
-  else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
+  if(p.get("preset")==="mid"){state.units=(window.__COURSE&&window.__COURSE.presets.mid)?window.__COURSE.presets.mid.units.slice():[];touched=true;state.finalCap=false;state.midCap=!!(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.cap);if(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
+  else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;state.midCap=false;state.finalCap=!!(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.cap);if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
   if(p.get("count"))$("countIn").value=p.get("count");
@@ -3573,7 +3585,7 @@ function applyURL(){
   if(p.get("shuf")==="1")SHUFFLE_OPTS=true;
   return touched;
 }
-function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
+function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=(__c.appName||(__c.shortName+" Review"));var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.appName||((__c.longName||__c.shortName)+" Review"));var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 /* French static markup (student side): when the active course is
@@ -3653,7 +3665,7 @@ if(window.__COURSE&&window.__COURSE.language==="fr"){
 }
 function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}try{if(typeof advSetCapture==="function")advSetCapture();}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
 (function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
-(function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
+(function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice(),window.__COURSE.presets.final.cap?"final":undefined);if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});

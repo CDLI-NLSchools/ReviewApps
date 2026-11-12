@@ -98,7 +98,7 @@ E("bio-u1-51-q07",1,["5.1"],2,"var",varset([
 E("bio-u1-51-q08",1,["5.1"],1,"var",varset([
   function(){
     return mcq("In metaphase of mitosis, chromosomes would be:",
-      "lined on the metaphase plate (center of the cell)",
+      "lined up on the metaphase plate (center of the cell)",
       ["lined up on opposite poles","formed in tetrads","coiled and ready for duplication of DNA"],
       "In metaphase, the chromosomes line up single file along the equator of the cell, the metaphase plate, so that each daughter cell can receive one copy of each chromosome. Tetrads belong to meiosis, not mitosis.",
       {});
@@ -108,7 +108,7 @@ E("bio-u1-51-q09",1,["5.1"],2,"var",varset([
   function(){
     return mcq("How would the genetic material of daughter cells compare to its parents if interphase did not take place during the cell cycle?",
       "Half",
-      ["Identical","one quarter","Twice"],
+      ["Identical","One quarter","Twice"],
       "Without interphase there is no S phase and no DNA replication. The parent's existing DNA would simply be split between the two daughter cells, so each daughter cell would end up with half the parent's genetic material.",
       {});
   }
@@ -143,8 +143,8 @@ E("bio-u1-51-q12",1,["5.1"],1,"var",varset([
 E("bio-u1-51-q13",1,["5.1"],2,"var",varset([
   function(){
     return mcq("Which description best describes a difference between plant and animal cells after mitosis?",
-      "Animal cell form a cleavage furrow; Plant cells form a cell plate",
-      ["Animals cell form a cell plate; Plant cells form a cleavage furrow","Animals cells for a cell wall; Plant cells for a centrioles","Animals cells form a cleavage furrow; Plant cells form centrioles"],
+      "Animal cells form a cleavage furrow; Plant cells form a cell plate",
+      ["Animal cells form a cell plate; Plant cells form a cleavage furrow","Animal cells form a cell wall; Plant cells form centrioles","Animal cells form a cleavage furrow; Plant cells form centrioles"],
       "Animal cells pinch inward with a cleavage furrow. Plant cells, boxed in by a rigid cell wall, build a cell plate across the middle instead. Only one option pairs the two correctly; the others reverse the pairing or swap in the wrong structure.",
       {});
   }
@@ -2366,6 +2366,15 @@ E("bio-u2-92-q01",2,["9.2"],2,"var",varset([
    serves the full unit. */
 BANK.forEach(function(e){if(e.id==="bio-u2-65-q01"||e.id==="bio-u2-65-q02"||e.id==="bio-u2-65-q03"||e.id==="bio-u2-65-q04"||e.id==="bio-u2-65-q05"||e.id==="bio-u2-65-q06"||e.id==="bio-u2-65-q07"||e.id==="bio-u2-66-q01"||e.id==="bio-u2-66-q02"||e.id==="bio-u2-66-q03"||e.id==="bio-u2-66-q04"||e.id==="bio-u2-66-q05"||e.id==="bio-u2-67-q01"||e.id==="bio-u2-67-q02"||e.id==="bio-u2-67-q03"||e.id==="bio-u2-67-q04"||e.id==="bio-u2-67-q05"||e.id==="bio-u2-67-q06"||e.id==="bio-u2-67-q07"||e.id==="bio-u2-67-q08"||e.id==="bio-u2-67-q09"||e.id==="bio-u2-68-q01"||e.id==="bio-u2-68-q02"||e.id==="bio-u2-68-q03"||e.id==="bio-u2-68-q04"||e.id==="bio-u2-68-q05"||e.id==="bio-u2-68-q06"||e.id==="bio-u2-68-q07"||e.id==="bio-u2-68-q08"||e.id==="bio-u2-68-q09"||e.id==="bio-u2-68-q10"||e.id==="bio-u2-68-q11"||e.id==="bio-u2-68-q12"||e.id==="bio-u2-69-q01"||e.id==="bio-u2-69-q02"||e.id==="bio-u2-69-q03"||e.id==="bio-u2-69-q04")e.postMid=true;});
 
+/* Final-scope cap (Jason's ruling, Nov 12, 2026): the final preset
+   starts Unit 2 at indicator 6.5, so every Unit 2 entry in the
+   classical half (6.1 to 6.4, plus STSE 9.1 and 9.2) is flagged
+   preFinal, and poolFor holds flagged entries out whenever the
+   final scope is composed. bank-gen-pedigree.js, the last bio
+   slice in the assembly order, repeats this flagging so the
+   generator entries for 6.2 to 6.4 are covered too. */
+BANK.forEach(function(e){if(e.unit===2&&e.indicators.some(function(c){return ["6.1","6.2","6.3","6.4","9.1","9.2"].indexOf(c)>=0;}))e.preFinal=true;});
+
 /* ----- bank-u3.js ----- */
 // Biology 3201 Unit 3 bank: Evolutionary Change and Biodiversity
 // No CRMARKS entries in this file (selected response only).
@@ -3240,6 +3249,1622 @@ E("bio-u3-710-q10",3,["7.10"],3,"var",varset([
     return q;
   }
 ]),["On a cladogram, species that share a more RECENT branching node are more closely related. Find the node where each pair of species listed diverged from a common ancestor, which pair branches most recently?"]);
+
+/* ----- bank-gen-crosses.js ----- */
+// Biology 3201 generator bank: Mendelian crosses and Hardy-Weinberg
+// Written for the unified review app, Nov 12, 2026. These are
+// parameterized families (kind "gen"), not conversions from the
+// review books: each draw randomizes the trait context, the parents
+// and the target, then builds the Punnett square by enumeration, so
+// the keyed answer is computed from the actual cross every time.
+// Families: monohybrid probability (6.2), incomplete dominance and
+// codominance probability (6.2), dihybrid probability and phenotypic
+// ratio (6.2/6.3), test cross inference (6.3, Level 3), and
+// Hardy-Weinberg allele frequencies, carrier frequency and expected
+// genotype counts (7.7, Unit 3). Probability answers are fractions
+// in the cross families and decimals in the Hardy-Weinberg families,
+// consistent within each entry. Every entry passes its drawn
+// parameters in the mcq params object (kind, parents, target) so a
+// harness can recompute the key independently.
+
+/* ---------- shared helpers (bxg prefix, this file only) ---------- */
+
+function bxgGcd(a, b) { return b ? bxgGcd(b, a % b) : a; }
+
+function bxgFrac(n, d) {
+  if (n === 0) return "0";
+  var g = bxgGcd(n, d); n = n / g; d = d / g;
+  return d === 1 ? String(n) : n + "/" + d;
+}
+
+/* Gametes a genotype can make: one allele per locus, all combinations. */
+function bxgGametes(g) {
+  var loci = [], i;
+  for (i = 0; i < g.length; i += 2) loci.push([g[i], g[i + 1]]);
+  var out = [""];
+  loci.forEach(function (L) {
+    var next = [];
+    out.forEach(function (s) { next.push(s + L[0]); next.push(s + L[1]); });
+    out = next;
+  });
+  return out;
+}
+
+/* One locus of an offspring genotype: dominant (uppercase) allele
+   first; if both alleles have the same case, alphabetical order. */
+function bxgPair(a, b) {
+  var au = a === a.toUpperCase(), bu = b === b.toUpperCase();
+  if (au !== bu) return au ? a + b : b + a;
+  return a <= b ? a + b : b + a;
+}
+
+function bxgCross(p1, p2) {
+  var counts = {}, total = 0;
+  bxgGametes(p1).forEach(function (a) {
+    bxgGametes(p2).forEach(function (b) {
+      var o = "", i;
+      for (i = 0; i < a.length; i++) o += bxgPair(a[i], b[i]);
+      counts[o] = (counts[o] || 0) + 1; total++;
+    });
+  });
+  return { counts: counts, total: total };
+}
+
+/* Phenotype key under complete dominance: per locus, "D" if any
+   dominant allele is present, else "R". */
+function bxgPhenoKey(geno) {
+  var k = "", i;
+  for (i = 0; i < geno.length; i += 2) {
+    var pair = geno.slice(i, i + 2);
+    k += (pair[0] === pair[0].toUpperCase() || pair[1] === pair[1].toUpperCase()) ? "D" : "R";
+  }
+  return k;
+}
+
+function bxgPhenoCount(cross, key) {
+  var n = 0;
+  Object.keys(cross.counts).forEach(function (g) {
+    if (bxgPhenoKey(g) === key) n += cross.counts[g];
+  });
+  return n;
+}
+
+/* Three distractor strings for a probability key: plausible error
+   fractions first (supplied by the caller as [num, den] pairs),
+   generic fillers after; never a duplicate of the key or each other. */
+function bxgDistr(key, cands) {
+  var out = [], seen = {}; seen[key] = 1;
+  var all = cands.concat([[1, 3], [2, 3], [1, 5], [4, 5], [1, 6], [5, 6], [1, 8], [7, 8], [3, 8], [5, 8]]);
+  for (var i = 0; i < all.length && out.length < 3; i++) {
+    var s = bxgFrac(all[i][0], all[i][1]);
+    if (!seen[s]) { seen[s] = 1; out.push(s); }
+  }
+  return out;
+}
+
+function bxgGenoWord(g) {
+  if (g[0] === g[1]) return g[0] === g[0].toUpperCase() ? "homozygous dominant" : "homozygous recessive";
+  return "heterozygous";
+}
+
+/* Genotype ratio text for a one-locus cross, in AA, Aa, aa order. */
+function bxgRatio1(cross, dom, rec) {
+  var order = [dom + dom, dom + rec, rec + rec], parts = [];
+  order.forEach(function (g) { if (cross.counts[g]) parts.push(cross.counts[g] + " " + g); });
+  return parts.join(" : ");
+}
+
+/* ---------- trait pool: monohybrid contexts (6.2, 6.3) ---------- */
+
+var BXG_MONO = [
+  { intro: "In pea plants, the allele for round seeds (R) is dominant to the allele for wrinkled seeds (r).",
+    dom: "R", rec: "r", domPheno: "round seeds", recPheno: "wrinkled seeds", noun: "plant" },
+  { intro: "In pea plants, the allele for purple flowers (P) is dominant to the allele for white flowers (p).",
+    dom: "P", rec: "p", domPheno: "purple flowers", recPheno: "white flowers", noun: "plant" },
+  { intro: "In pea plants, the allele for green pods (G) is dominant to the allele for yellow pods (g).",
+    dom: "G", rec: "g", domPheno: "green pods", recPheno: "yellow pods", noun: "plant" },
+  { intro: "In humans, the allele for free earlobes (E) is dominant to the allele for attached earlobes (e).",
+    dom: "E", rec: "e", domPheno: "free earlobes", recPheno: "attached earlobes", noun: "individual" },
+  { intro: "In humans, the allele for being able to roll the tongue (T) is dominant to the allele for being unable to roll the tongue (t).",
+    dom: "T", rec: "t", domPheno: "the ability to roll the tongue", recPheno: "the inability to roll the tongue", noun: "individual" },
+  { intro: "In humans, the allele for a widow's peak hairline (W) is dominant to the allele for a straight hairline (w).",
+    dom: "W", rec: "w", domPheno: "a widow's peak hairline", recPheno: "a straight hairline", noun: "individual" },
+  { intro: "In rabbits, the allele for black fur (B) is dominant to the allele for brown fur (b).",
+    dom: "B", rec: "b", domPheno: "black fur", recPheno: "brown fur", noun: "rabbit" }
+];
+
+/* Template genotype ("AA", "Aa", "aa") in a trait's own letters. */
+function bxgTG(t, tpl) {
+  return tpl.split("").map(function (ch) { return ch === "A" ? t.dom : t.rec; }).join("");
+}
+
+function bxgCrossSentence(t, tpl1, tpl2) {
+  var g1 = bxgTG(t, tpl1), g2 = bxgTG(t, tpl2);
+  return "A " + bxgGenoWord(g1) + " " + t.noun + " (" + g1 + ") is crossed with a " +
+    bxgGenoWord(g2) + " " + t.noun + " (" + g2 + ").";
+}
+
+/* ---------- 6.2 monohybrid: dominant phenotype probability ---------- */
+
+E("bio-u2-62-g01", 2, ["6.2"], 2, "gen", function () {
+  var t = pick(BXG_MONO), tpl = pick([["Aa", "Aa"], ["Aa", "aa"]]);
+  var g1 = bxgTG(t, tpl[0]), g2 = bxgTG(t, tpl[1]);
+  var cross = bxgCross(g1, g2), total = cross.total;
+  var nDom = bxgPhenoCount(cross, "D"), nRec = cross.total - nDom;
+  var key = bxgFrac(nDom, total);
+  var cands = [[nRec, total],
+    [cross.counts[bxgTG(t, "Aa")] || 0, total],
+    [cross.counts[bxgTG(t, "AA")] || 0, total],
+    [cross.counts[bxgTG(t, "aa")] || 0, total],
+    [3, 4], [1, 4], [1, 1], [0, 1]];
+  var sol = "Work the cross as a Punnett square. " + g1 + " x " + g2 + " gives the genotypes " +
+    bxgRatio1(cross, t.dom, t.rec) + ", out of " + total + " boxes. Every offspring with at least one " +
+    t.dom + " allele shows " + t.domPheno + ": that is " + nDom + " of the " + total +
+    " boxes. The probability is " + key + ".";
+  return mcq(t.intro + " " + bxgCrossSentence(t, tpl[0], tpl[1]) +
+    " What is the probability that an offspring will show the dominant trait (" + t.domPheno + ")?",
+    key, bxgDistr(key, cands), sol,
+    { kind: "mono", p1: g1, p2: g2, ask: "domPheno" });
+}, ["Set up the Punnett square for the cross. Any offspring with at least one dominant allele shows the dominant trait, so count those boxes."]);
+
+/* ---------- 6.2 monohybrid: recessive phenotype probability ---------- */
+
+E("bio-u2-62-g02", 2, ["6.2"], 2, "gen", function () {
+  var t = pick(BXG_MONO), tpl = pick([["Aa", "Aa"], ["Aa", "aa"]]);
+  var g1 = bxgTG(t, tpl[0]), g2 = bxgTG(t, tpl[1]);
+  var cross = bxgCross(g1, g2), total = cross.total;
+  var nRec = bxgPhenoCount(cross, "R"), nDom = cross.total - nRec;
+  var key = bxgFrac(nRec, total);
+  var cands = [[nDom, total],
+    [cross.counts[bxgTG(t, "Aa")] || 0, total],
+    [cross.counts[bxgTG(t, "AA")] || 0, total],
+    [cross.counts[bxgTG(t, "aa")] || 0, total],
+    [3, 4], [1, 4], [1, 1], [0, 1]];
+  var sol = "Work the cross as a Punnett square. " + g1 + " x " + g2 + " gives the genotypes " +
+    bxgRatio1(cross, t.dom, t.rec) + ", out of " + total + " boxes. Only the " + bxgTG(t, "aa") +
+    " offspring show " + t.recPheno + ", because the recessive trait appears only with two recessive alleles: that is " +
+    nRec + " of the " + total + " boxes. The probability is " + key + ".";
+  return mcq(t.intro + " " + bxgCrossSentence(t, tpl[0], tpl[1]) +
+    " What is the probability that an offspring will show the recessive trait (" + t.recPheno + ")?",
+    key, bxgDistr(key, cands), sol,
+    { kind: "mono", p1: g1, p2: g2, ask: "recPheno" });
+}, ["Only offspring with two recessive alleles show the recessive trait. Find that genotype in the Punnett square and count its boxes."]);
+
+/* ---------- 6.2 monohybrid: specific genotype probability ---------- */
+
+E("bio-u2-62-g03", 2, ["6.2"], 2, "gen", function () {
+  var t = pick(BXG_MONO);
+  var draw = pick([["Aa", "Aa", "AA"], ["Aa", "Aa", "Aa"], ["Aa", "Aa", "aa"],
+    ["AA", "Aa", "AA"], ["AA", "Aa", "Aa"], ["Aa", "aa", "Aa"], ["Aa", "aa", "aa"]]);
+  var g1 = bxgTG(t, draw[0]), g2 = bxgTG(t, draw[1]), target = bxgTG(t, draw[2]);
+  var cross = bxgCross(g1, g2), total = cross.total;
+  var nT = cross.counts[target] || 0, key = bxgFrac(nT, total);
+  var others = ["AA", "Aa", "aa"].filter(function (x) { return x !== draw[2]; });
+  var cands = others.map(function (x) { return [cross.counts[bxgTG(t, x)] || 0, total]; })
+    .concat([[bxgPhenoCount(cross, "D"), total], [bxgPhenoCount(cross, "R"), total],
+      [3, 4], [1, 4], [1, 2], [1, 1], [0, 1]]);
+  var sol = "Work the cross as a Punnett square. " + g1 + " x " + g2 + " gives the genotypes " +
+    bxgRatio1(cross, t.dom, t.rec) + ", out of " + total + " boxes. The genotype " + target +
+    " fills " + nT + " of the " + total + " boxes. The probability is " + key + ".";
+  return mcq(t.intro + " " + bxgCrossSentence(t, draw[0], draw[1]) +
+    " What is the probability that an offspring will have the genotype " + target + "?",
+    key, bxgDistr(key, cands), sol,
+    { kind: "mono", p1: g1, p2: g2, ask: "geno", geno: target });
+}, ["Set up the Punnett square and count the boxes that hold exactly the genotype named in the question, out of all the boxes."]);
+
+/* ---------- 6.2 incomplete dominance and codominance ---------- */
+
+var BXG_BLEND = [
+  { mode: "incomplete dominance",
+    intro: "In snapdragons, flower colour shows incomplete dominance. A plant with two R alleles has red flowers, a plant with two W alleles has white flowers, and a plant with one of each (RW) has pink flowers, a blend of the two.",
+    a1: "R", a2: "W", pheno: { RR: "red flowers", RW: "pink flowers", WW: "white flowers" } },
+  { mode: "incomplete dominance",
+    intro: "In four o'clock plants, flower colour shows incomplete dominance. A plant with two R alleles has red flowers, a plant with two W alleles has white flowers, and a plant with one of each (RW) has pink flowers, a blend of the two.",
+    a1: "R", a2: "W", pheno: { RR: "red flowers", RW: "pink flowers", WW: "white flowers" } },
+  { mode: "codominance",
+    intro: "In cattle, coat colour shows codominance. An animal with two R alleles has a red coat and one with two W alleles has a white coat, while an animal with one of each (RW) has a roan coat, with red and white hairs showing side by side.",
+    a1: "R", a2: "W", pheno: { RR: "a red coat", RW: "a roan coat", WW: "a white coat" } },
+  { mode: "codominance",
+    intro: "The MN blood group in humans shows codominance. A person with genotype MM has type M blood and a person with genotype NN has type N blood, while a person with genotype MN has type MN blood, because both alleles are expressed.",
+    a1: "M", a2: "N", pheno: { MM: "type M blood", MN: "type MN blood", NN: "type N blood" } }
+];
+
+E("bio-u2-62-g04", 2, ["6.2"], 2, "gen", function () {
+  var c = pick(BXG_BLEND);
+  var homo1 = c.a1 + c.a1, homo2 = c.a2 + c.a2, het = bxgPair(c.a1, c.a2);
+  var p1 = het, p2 = pick([het, homo1, homo2]);
+  var cross = bxgCross(p1, p2), total = cross.total;
+  var targets = Object.keys(c.pheno).filter(function (g) { return (cross.counts[g] || 0) > 0; });
+  var target = pick(targets), nT = cross.counts[target], key = bxgFrac(nT, total);
+  var cands = [[3, 4]].concat(
+    Object.keys(c.pheno).filter(function (g) { return g !== target; })
+      .map(function (g) { return [cross.counts[g] || 0, total]; }),
+    [[1, 3], [1, 1], [0, 1], [1, 8]]);
+  var ratioParts = [homo1, het, homo2].filter(function (g) { return cross.counts[g]; })
+    .map(function (g) { return cross.counts[g] + " " + g; });
+  var modeNote = c.mode === "incomplete dominance"
+    ? "neither allele is fully dominant, so the heterozygote shows a blend and each genotype has its own phenotype"
+    : "both alleles are expressed in the heterozygote, so each genotype has its own phenotype";
+  var sol = "The cross " + p1 + " x " + p2 + " gives the genotypes " + ratioParts.join(" : ") +
+    ", out of " + total + " boxes. This is " + c.mode + ": " + modeNote + ". Offspring with " +
+    c.pheno[target] + " have the genotype " + target + ", which fills " + nT + " of the " + total +
+    " boxes. The probability is " + key + ".";
+  return mcq(c.intro + " One parent has genotype " + p1 + " and the other has genotype " + p2 +
+    ". What is the probability that an offspring will have " + c.pheno[target] + "?",
+    key, bxgDistr(key, cands), sol,
+    { kind: "blend", p1: p1, p2: p2, pheno: c.pheno, ask: c.pheno[target] });
+}, ["Do the Punnett square first. Here the heterozygote does not match either homozygote: it has the in-between or combined phenotype described in the introduction."]);
+
+/* ---------- dihybrid contexts (6.2/6.3) ---------- */
+
+var BXG_DI = [
+  { intro: "In pea plants, round seeds (R) are dominant to wrinkled seeds (r), and yellow seeds (Y) are dominant to green seeds (y).",
+    noun: "plant", plural: "plants",
+    loci: [{ dom: "R", rec: "r", domPheno: "round seeds", recPheno: "wrinkled seeds" },
+           { dom: "Y", rec: "y", domPheno: "yellow seeds", recPheno: "green seeds" }] },
+  { intro: "In fruit flies, a grey body (E) is dominant to an ebony body (e), and normal wings (V) are dominant to vestigial wings (v).",
+    noun: "fly", plural: "flies",
+    loci: [{ dom: "E", rec: "e", domPheno: "a grey body", recPheno: "an ebony body" },
+           { dom: "V", rec: "v", domPheno: "normal wings", recPheno: "vestigial wings" }] },
+  { intro: "In rabbits, black fur (B) is dominant to brown fur (b), and short fur (S) is dominant to long fur (s).",
+    noun: "rabbit", plural: "rabbits",
+    loci: [{ dom: "B", rec: "b", domPheno: "black fur", recPheno: "brown fur" },
+           { dom: "S", rec: "s", domPheno: "short fur", recPheno: "long fur" }] }
+];
+
+function bxgDiHetero(c) { return c.loci.map(function (L) { return L.dom + L.rec; }).join(""); }
+function bxgDiRec(c) { return c.loci.map(function (L) { return L.rec + L.rec; }).join(""); }
+
+function bxgDiCrossSentence(c, testCross) {
+  var het = bxgDiHetero(c);
+  if (testCross) return "A " + c.noun + " heterozygous for both genes (" + het + ") is crossed with a " +
+    c.noun + " that shows both recessive traits (" + bxgDiRec(c) + ").";
+  return "Two " + c.plural + " heterozygous for both genes (" + het + ") are crossed.";
+}
+
+function bxgComboPhrase(c, combo) {
+  return c.loci.map(function (L, i) { return combo[i] ? L.domPheno : L.recPheno; }).join(" and ");
+}
+
+/* ---------- 6.2/6.3 dihybrid: phenotype combination probability ---------- */
+
+E("bio-u2-63-g01", 2, ["6.2", "6.3"], 2, "gen", function () {
+  var c = pick(BXG_DI), testCross = pick([false, true]);
+  var p1 = bxgDiHetero(c), p2 = testCross ? bxgDiRec(c) : p1;
+  var cross = bxgCross(p1, p2), total = cross.total;
+  var combo = [pick([true, false]), pick([true, false])];
+  var key0 = combo.map(function (d) { return d ? "D" : "R"; }).join("");
+  var nT = bxgPhenoCount(cross, key0), key = bxgFrac(nT, total);
+  var combos = [["D", "D"], ["D", "R"], ["R", "D"], ["R", "R"]]
+    .filter(function (k) { return k.join("") !== key0; });
+  var cands = combos.map(function (k) { return [bxgPhenoCount(cross, k.join("")), total]; })
+    .concat([[9, 16], [3, 4], [1, 2], [3, 16], [1, 16]]);
+  /* Per-locus probabilities for the worked solution. */
+  var locText = c.loci.map(function (L, i) {
+    var lc = bxgCross(p1.slice(2 * i, 2 * i + 2), p2.slice(2 * i, 2 * i + 2));
+    var dN = bxgPhenoCount(lc, "D"), rN = lc.total - dN;
+    return "for the " + (i === 0 ? "first" : "second") + " gene, " + p1.slice(2 * i, 2 * i + 2) + " x " +
+      p2.slice(2 * i, 2 * i + 2) + " gives " + bxgFrac(dN, lc.total) + " showing " + L.domPheno + " and " +
+      bxgFrac(rN, lc.total) + " showing " + L.recPheno;
+  });
+  var f1 = bxgFrac(combo[0] ? bxgPhenoCount(bxgCross(p1.slice(0, 2), p2.slice(0, 2)), "D") : bxgPhenoCount(bxgCross(p1.slice(0, 2), p2.slice(0, 2)), "R"), 4);
+  var f2 = bxgFrac(combo[1] ? bxgPhenoCount(bxgCross(p1.slice(2, 4), p2.slice(2, 4)), "D") : bxgPhenoCount(bxgCross(p1.slice(2, 4), p2.slice(2, 4)), "R"), 4);
+  var sol = "Treat the two genes one at a time: " + locText.join("; ") + ". The genes assort independently, " +
+    "so the probability of the combination is the product, " + f1 + " x " + f2 + " = " + key +
+    ". Counting boxes in the full Punnett square agrees: " + nT + " of the " + total +
+    " boxes show " + bxgComboPhrase(c, combo) + ".";
+  return mcq(c.intro + " " + bxgDiCrossSentence(c, testCross) +
+    " What is the probability that an offspring will have " + bxgComboPhrase(c, combo) + "?",
+    key, bxgDistr(key, cands), sol,
+    { kind: "di", p1: p1, p2: p2, ask: "phenoCombo", combo: combo });
+}, ["The two genes assort independently. Work out the probability for each gene on its own, then multiply the two probabilities."]);
+
+/* ---------- 6.2/6.3 dihybrid: genotype combination probability ---------- */
+
+E("bio-u2-63-g02", 2, ["6.2", "6.3"], 2, "gen", function () {
+  var c = pick(BXG_DI);
+  var p1 = bxgDiHetero(c), p2 = p1;
+  var cross = bxgCross(p1, p2), total = cross.total;
+  var tpl = pick(["AABB", "AABb", "AAbb", "AaBB", "AaBb", "Aabb", "aaBB", "aaBb", "aabb"]);
+  /* Build the target in the context's own letters, locus by locus:
+     an uppercase template letter takes the locus's dominant allele. */
+  var target = [0, 1].map(function (li) {
+    var pair = tpl.slice(2 * li, 2 * li + 2), L = c.loci[li];
+    return pair.split("").map(function (ch) { return ch === ch.toUpperCase() ? L.dom : L.rec; }).join("");
+  }).join("");
+  var nT = cross.counts[target] || 0, key = bxgFrac(nT, total);
+  var cands = [[9, 16], [1, 4], [1, 8], [1, 2], [3, 16], [1, 16], [3, 4]];
+  var locParts = [0, 1].map(function (li) {
+    var lp1 = p1.slice(2 * li, 2 * li + 2), lp2 = p2.slice(2 * li, 2 * li + 2);
+    var lc = bxgCross(lp1, lp2), lt = target.slice(2 * li, 2 * li + 2);
+    return "P(" + lt + ") from " + lp1 + " x " + lp2 + " is " + bxgFrac(lc.counts[lt] || 0, lc.total);
+  });
+  var sol = "Treat the two genes one at a time: " + locParts.join(" and ") +
+    ". The genes assort independently, so multiply the two probabilities to get " + key +
+    ". The full Punnett square agrees: " + nT + " of the " + total + " boxes hold the genotype " + target + ".";
+  return mcq(c.intro + " " + bxgDiCrossSentence(c, false) +
+    " What is the probability that an offspring will have the genotype " + target + "?",
+    key, bxgDistr(key, cands), sol,
+    { kind: "di", p1: p1, p2: p2, ask: "geno", geno: target });
+}, ["Treat the genes separately: find the probability of the named genotype at the first gene and at the second gene, then multiply."]);
+
+/* ---------- 6.3 dihybrid: expected phenotypic ratio ---------- */
+
+E("bio-u2-63-g03", 2, ["6.3"], 2, "gen", function () {
+  var c = pick(BXG_DI), testCross = pick([false, true]);
+  var p1 = bxgDiHetero(c), p2 = testCross ? bxgDiRec(c) : p1;
+  var cross = bxgCross(p1, p2);
+  var classes = [["D", "D"], ["D", "R"], ["R", "D"], ["R", "R"]].map(function (k) {
+    return { key: k.join(""), n: bxgPhenoCount(cross, k.join("")),
+      phrase: bxgComboPhrase(c, [k[0] === "D", k[1] === "D"]) };
+  }).filter(function (cl) { return cl.n > 0; });
+  var g = classes.reduce(function (acc, cl) { return bxgGcd(acc, cl.n); }, 0);
+  var ordered = classes.slice().sort(function (a, b) {
+    return b.n - a.n || (a.key < b.key ? -1 : 1);
+  });
+  var ratio = ordered.map(function (cl) { return cl.n / g; }).join(":");
+  var others = ["9:3:3:1", "1:1:1:1", "3:1", "1:2:1"].filter(function (r) { return r !== ratio; });
+  var sol = "Group the " + cross.total + " boxes of the Punnett square by phenotype: " +
+    ordered.map(function (cl) { return cl.n + " show " + cl.phrase; }).join(", ") +
+    ". Dividing each count by " + g + " gives the expected phenotypic ratio " + ratio + ".";
+  return mcq(c.intro + " " + bxgDiCrossSentence(c, testCross) +
+    " The offspring fall into four phenotype groups. What is the expected phenotypic ratio of these groups?",
+    ratio, others, sol,
+    { kind: "di", p1: p1, p2: p2, ask: "ratio" });
+}, ["A two-gene Punnett square has 16 boxes when both parents are heterozygous. Group the boxes by phenotype and count how many fall in each of the four groups."]);
+
+/* ---------- 6.3 test cross: infer the unknown genotype (Level 3) ---------- */
+
+E("bio-u2-63-g04", 2, ["6.3"], 3, "gen", function () {
+  var t = pick(BXG_MONO);
+  var hetCase = pick([true, false]);
+  var N = pick([16, 20, 24, 30, 36, 40]);
+  var AA = bxgTG(t, "AA"), Aa = bxgTG(t, "Aa"), aa = bxgTG(t, "aa");
+  var unknown = hetCase ? Aa : AA;
+  var outcome, sol;
+  if (hetCase) {
+    var k = ri(Math.floor(N * 0.4), Math.ceil(N * 0.6));
+    outcome = "Of the " + N + " offspring, " + k + " show " + t.recPheno +
+      " and the rest show " + t.domPheno + ".";
+    sol = "In a test cross, the homozygous recessive partner can pass on only a recessive allele, so each " +
+      "offspring's phenotype reveals which allele the unknown parent contributed. Some offspring show " +
+      t.recPheno + ": those offspring received a recessive allele from both parents, so the unknown parent " +
+      "must carry a recessive allele. Because the unknown parent itself shows " + t.domPheno + ", its other " +
+      "allele is dominant. The unknown parent is " + Aa + " (heterozygous).";
+  } else {
+    outcome = "All " + N + " offspring show " + t.domPheno + "; none show " + t.recPheno + ".";
+    sol = "In a test cross, the homozygous recessive partner can pass on only a recessive allele, so each " +
+      "offspring's phenotype reveals which allele the unknown parent contributed. Every one of the " + N +
+      " offspring shows the dominant trait, so the unknown parent passed on a dominant allele every time and " +
+      "has no recessive allele to give. The unknown parent is " + AA + " (homozygous dominant).";
+  }
+  var opts = {};
+  opts[AA] = AA + " (homozygous dominant)";
+  opts[Aa] = Aa + " (heterozygous)";
+  opts[aa] = aa + " (homozygous recessive)";
+  var key = opts[unknown];
+  var distr = [opts[hetCase ? AA : Aa], opts[aa], "It cannot be determined from a test cross"];
+  var artA = /^[aeiou]/i.test(t.noun) ? "An" : "A";
+  var artLow = /^[aeiou]/i.test(t.noun) ? "an" : "a";
+  return mcq(t.intro + " " + artA + " " + t.noun + " showing " + t.domPheno + " is crossed with " + artLow + " " + t.noun +
+    " showing " + t.recPheno + ", a test cross. " + outcome +
+    " What is the genotype of the parent that shows " + t.domPheno + "?",
+    key, distr, sol,
+    { kind: "testcross", unknown: unknown });
+}, ["The recessive partner can only pass on a recessive allele, so an offspring showing the recessive trait must have received a recessive allele from the unknown parent too."]);
+
+/* ---------- 7.7 Hardy-Weinberg (Unit 3) ---------- */
+
+var BXG_HW = [
+  { tpl: "In a large population of meadow plants, {F} of the plants have white flowers. White is the recessive form of the flower-colour trait; purple flowers are dominant." },
+  { tpl: "In a population of fruit flies, {F} of the flies have vestigial (very short) wings, a recessive trait. Normal wings are dominant." },
+  { tpl: "In a large human population, {F} of people have a recessive genetic condition that appears only in individuals who carry two copies of the recessive allele." },
+  { tpl: "In a population of garden snails, {F} of the snails have an unbanded shell, a recessive trait. A banded shell is dominant." }
+];
+var BXG_Q2 = [0.04, 0.09, 0.16, 0.36, 0.49];
+
+function bxgHwSetup() {
+  var c = pick(BXG_HW), q2 = pick(BXG_Q2);
+  var q = Math.round(Math.sqrt(q2) * 100) / 100, p = Math.round((1 - q) * 100) / 100;
+  var asPct = pick([true, false]);
+  var fStr = asPct ? Math.round(q2 * 100) + "%" : fmt(q2, 2);
+  return { intro: c.tpl.replace("{F}", fStr), q2: q2, q: q, p: p };
+}
+
+E("bio-u3-77-g01", 3, ["7.7"], 2, "gen", function () {
+  var s = bxgHwSetup();
+  var askP = pick([true, false]);
+  var key = fmt(askP ? s.p : s.q, 2);
+  var distr = [fmt(askP ? s.q : s.p, 2), fmt(s.q2, 2), fmt(2 * s.p * s.q, 2)];
+  var sol = askP
+    ? "The recessive phenotype appears only in homozygous recessive (qq) individuals, so q^2 = " + fmt(s.q2, 2) +
+      ". Taking the square root gives the recessive allele frequency, q = " + fmt(s.q, 2) +
+      ". Allele frequencies add to 1 (p + q = 1), so the dominant allele frequency is p = 1 - " + fmt(s.q, 2) +
+      " = " + fmt(s.p, 2) + "."
+    : "The recessive phenotype appears only in homozygous recessive (qq) individuals, so q^2 = " + fmt(s.q2, 2) +
+      ". The recessive allele frequency is the square root of that value: q = " + fmt(s.q, 2) + ".";
+  return mcq(s.intro + " Assuming the population is in Hardy-Weinberg equilibrium, what is the frequency of the " +
+    (askP ? "dominant" : "recessive") + " allele in the population?",
+    key, distr, sol,
+    { kind: "hw", q2: s.q2, ask: askP ? "p" : "q" });
+}, ["The recessive phenotype frequency is q^2. Take its square root to get q, then use p + q = 1 if you need p."]);
+
+E("bio-u3-77-g02", 3, ["7.7"], 3, "gen", function () {
+  var s = bxgHwSetup();
+  var key = fmt(2 * s.p * s.q, 2);
+  var distr = [fmt(s.p * s.p, 2), fmt(s.q2, 2), fmt(s.p, 2)];
+  var sol = "Start from the recessive phenotype: q^2 = " + fmt(s.q2, 2) + ", so q = " + fmt(s.q, 2) +
+    " (the square root). Then p = 1 - q = 1 - " + fmt(s.q, 2) + " = " + fmt(s.p, 2) +
+    ". Carriers are heterozygotes, and their frequency is 2pq = 2 x " + fmt(s.p, 2) + " x " + fmt(s.q, 2) +
+    " = " + key + ".";
+  return mcq(s.intro + " Assuming the population is in Hardy-Weinberg equilibrium, what proportion of the population " +
+    "are carriers of the recessive allele, that is, heterozygotes who show the dominant trait but carry the recessive allele?",
+    key, distr, sol,
+    { kind: "hw", q2: s.q2, ask: "2pq" });
+}, ["Carriers are the heterozygotes, with frequency 2pq. Find q from the recessive phenotype frequency first, then p, then combine them."]);
+
+E("bio-u3-77-g03", 3, ["7.7"], 3, "gen", function () {
+  var s = bxgHwSetup();
+  var N = pick([200, 400, 500, 1000, 2000, 5000, 10000]);
+  var askAa = pick([true, false]);
+  var freq = askAa ? 2 * s.p * s.q : s.p * s.p;
+  var keyN = Math.round(freq * N);
+  var counts = { AA: Math.round(s.p * s.p * N), Aa: Math.round(2 * s.p * s.q * N), aa: Math.round(s.q2 * N) };
+  var cands = [counts.AA, counts.Aa, counts.aa, Math.round(s.q * N), Math.round(s.p * N)]
+    .filter(function (n) { return n !== keyN; });
+  var distr = [], seen = {};
+  cands.forEach(function (n) { if (!seen[n] && distr.length < 3) { seen[n] = 1; distr.push(String(n)); } });
+  var askText = askAa
+    ? "be carriers (heterozygous, showing the dominant trait but carrying the recessive allele)"
+    : "have the homozygous dominant genotype";
+  var sol = "First get the allele frequencies. q^2 = " + fmt(s.q2, 2) + ", so q = " + fmt(s.q, 2) +
+    " and p = 1 - " + fmt(s.q, 2) + " = " + fmt(s.p, 2) + ". The " +
+    (askAa ? "carrier (heterozygote) frequency is 2pq = 2 x " + fmt(s.p, 2) + " x " + fmt(s.q, 2) + " = " + fmt(freq, 2)
+           : "homozygous dominant frequency is p^2 = " + fmt(s.p, 2) + "^2 = " + fmt(freq, 2)) +
+    ". Multiply by the population size: " + fmt(freq, 2) + " x " + N + " = " + keyN + " individuals.";
+  return mcq(s.intro + " The population has " + N + " individuals. Assuming Hardy-Weinberg equilibrium, " +
+    "how many of them are expected to " + askText + "?",
+    String(keyN), distr, sol,
+    { kind: "hw", q2: s.q2, ask: askAa ? "countAa" : "countAA", N: N });
+}, ["Find the genotype frequency first (p^2 for homozygous dominant, 2pq for carriers), starting from q^2, then multiply that frequency by the population size."]);
+
+/* ----- bank-gen-seq.js ----- */
+// Biology 3201 DNA-sequence generator families (indicators 6.6, 6.7,
+// 6.8). Each E entry is one parameterized family in the "gen" idiom:
+// sequences are drawn fresh on every call, so students can practise
+// the same skill with new bases. Conventions follow the corrected
+// book questions (bio3201-fixes.json): the coding strand matches the
+// mRNA except T for U, and a silent mutation changes a codon without
+// changing the amino acid. All eight entries sit after the mid-course
+// table of specifications (which stops at 6.4), so the trailing block
+// flags them postMid, the same mechanism bank-u2.js uses.
+
+/* ---------- shared sequence machinery ---------- */
+
+// Mini codon table: the standard genetic code. SQ_AA_ORDER holds the
+// one-letter amino acid for all 64 mRNA codons in U,C,A,G index order
+// (first base slowest), "*" for stop; SQ_NAMES expands the letters.
+var SQ_AA_ORDER = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+var SQ_BASE_ORDER = "UCAG";
+var SQ_NAMES = { F: "phenylalanine", L: "leucine", S: "serine", Y: "tyrosine",
+  C: "cysteine", W: "tryptophan", P: "proline", H: "histidine", Q: "glutamine",
+  R: "arginine", I: "isoleucine", M: "methionine", T: "threonine",
+  N: "asparagine", K: "lysine", V: "valine", A: "alanine", D: "aspartate",
+  E: "glutamate", G: "glycine", "*": "stop" };
+function sqAAName(mrnaCodon) {
+  var i = SQ_BASE_ORDER.indexOf(mrnaCodon.charAt(0)) * 16 +
+          SQ_BASE_ORDER.indexOf(mrnaCodon.charAt(1)) * 4 +
+          SQ_BASE_ORDER.indexOf(mrnaCodon.charAt(2));
+  return SQ_NAMES[SQ_AA_ORDER.charAt(i)];
+}
+
+// Codon pool: 40 mRNA codons covering all 20 amino acids, no stops.
+// DNA forms come from swapping U for T.
+var SQ_POOL = ["AUG","GCU","GCC","GGU","GGC","CCU","CCC","GUU","GUC","UUU",
+  "UUC","AAA","AAG","AGA","AGG","CGU","CGC","ACU","ACC","UCU","UCC","GAA",
+  "GAG","CAA","CAG","CAU","CAC","AAU","AAC","GAU","GAC","UAU","UAC","CUU",
+  "CUC","AUU","AUC","UGG","UGU","UGC"];
+function sqDNA(codon) { return codon.replace(/U/g, "T"); }
+function sqRNA(codon) { return codon.replace(/T/g, "U"); }
+var SQ_POOL_DNA = SQ_POOL.map(sqDNA);
+
+function sqDraw(pool, n) {
+  var p = pool.slice(), out = [];
+  for (var i = 0; i < n; i++) out.push(p.splice(Math.floor(Math.random() * p.length), 1)[0]);
+  return out;
+}
+var SQ_COMP_DNA = { A: "T", T: "A", C: "G", G: "C" };
+var SQ_COMP_DNA_RNA = { A: "U", T: "A", C: "G", G: "C" };
+var SQ_COMP_RNA = { A: "U", U: "A", C: "G", G: "C" };
+function sqMapCodons(codons, map) {
+  return codons.map(function (cd) {
+    return cd.split("").map(function (b) { return map[b]; }).join("");
+  });
+}
+function sqFmt(codons, left, right) { return left + codons.join(" ") + right; }
+function sqPairs(a, b) {
+  return a.map(function (cd, i) { return cd + " \u2192 " + b[i]; }).join(", ");
+}
+// Three distinct distractor strings for a sequence question: the
+// caller's classic-error candidates first, then structural pads
+// (codon swap, reversed order, one base flipped), all deduped
+// against the correct string.
+function sqD3(correctStr, candStrs, correctCodons, left, right, flipMap) {
+  var seen = {}, out = [];
+  seen[correctStr] = 1;
+  function add(s) { if (!seen[s] && out.length < 3) { seen[s] = 1; out.push(s); } }
+  candStrs.forEach(add);
+  if (correctCodons.length > 1) {
+    var sw = correctCodons.slice(); var t = sw[0]; sw[0] = sw[1]; sw[1] = t;
+    add(sqFmt(sw, left, right));
+    add(sqFmt(correctCodons.slice().reverse(), left, right));
+  }
+  var fl = correctCodons.slice();
+  fl[0] = flipMap[fl[0].charAt(0)] + fl[0].slice(1);
+  add(sqFmt(fl, left, right));
+  return out;
+}
+// Three distinct distractor lists for an amino acid sequence
+// question, padded by swapping one position's amino acid.
+function sqD3AA(correctNames, candLists) {
+  var key = correctNames.join(", "), seen = {}, out = [];
+  seen[key] = 1;
+  function add(list) {
+    var s = list.join(", ");
+    if (!seen[s] && out.length < 3) { seen[s] = 1; out.push(s); }
+  }
+  candLists.forEach(add);
+  var poolNames = ["alanine","arginine","glycine","leucine","lysine","proline","serine","threonine","valine"];
+  for (var pos = correctNames.length - 1; pos >= 0 && out.length < 3; pos--) {
+    for (var k = 0; k < poolNames.length && out.length < 3; k++) {
+      if (poolNames[k] === correctNames[pos]) continue;
+      var v = correctNames.slice(); v[pos] = poolNames[k]; add(v);
+    }
+  }
+  return out;
+}
+var SQ_CODON_TABLE_FIGURE = '<img src="banks/bio-3201/assets/u2-67-q07.jpg" alt="Codon table titled \'Amino Acids coded by RNA Codons\', giving the amino acid for each RNA codon by its first, second and third letters" style="max-width:100%;height:auto">';
+function sqWithTable(q) { q.figure = SQ_CODON_TABLE_FIGURE; return q; }
+
+/* ---------- 6.6 DNA replication ---------- */
+
+E("bio-gen-66-rep", 2, ["6.6"], 2, "gen", function () {
+  var template = sqDraw(SQ_POOL_DNA, ri(3, 4));
+  var newStrand = sqMapCodons(template, SQ_COMP_DNA);
+  var correct = sqFmt(newStrand, "5\u2032-", "-3\u2032");
+  var rnaVersion = newStrand.map(sqRNA);
+  var distractors = sqD3(correct, [
+    sqFmt(template, "5\u2032-", "-3\u2032"),
+    sqFmt(rnaVersion, "5\u2032-", "-3\u2032"),
+    sqFmt(newStrand.slice().reverse(), "5\u2032-", "-3\u2032")
+  ], newStrand, "5\u2032-", "-3\u2032", SQ_COMP_DNA);
+  return mcq("One strand of a DNA molecule has the sequence 3\u2032-" + template.join(" ") +
+    "-5\u2032. During replication, which sequence is built on this template strand?",
+    correct, distractors,
+    "The new strand is built antiparallel to the template, pairing A with T and C with G, and DNA contains T, never U. Pairing base by base: " +
+    sqPairs(template, newStrand) + ". Reading the template 3' to 5' gives the new strand 5'-" +
+    newStrand.join(" ") + "-3'.",
+    { template: template, answer: newStrand });
+}, ["The new strand pairs with the template base by base: A with T, C with G. It runs antiparallel, so a template written 3' to 5' produces a new strand written 5' to 3'."]);
+
+E("bio-gen-66-mrna", 2, ["6.6"], 2, "gen", function () {
+  var template = sqDraw(SQ_POOL_DNA, ri(3, 4));
+  var mrna = sqMapCodons(template, SQ_COMP_DNA_RNA);
+  var dnaVersion = sqMapCodons(template, SQ_COMP_DNA);
+  var correct = sqFmt(mrna, "5\u2032-", "-3\u2032");
+  var distractors = sqD3(correct, [
+    sqFmt(dnaVersion, "5\u2032-", "-3\u2032"),
+    sqFmt(template.map(sqRNA), "5\u2032-", "-3\u2032"),
+    sqFmt(mrna, "3\u2032-", "-5\u2032")
+  ], mrna, "5\u2032-", "-3\u2032", SQ_COMP_RNA);
+  return mcq("A template strand of DNA has the sequence 3\u2032-" + template.join(" ") +
+    "-5\u2032. Which mRNA sequence is transcribed from this template?",
+    correct, distractors,
+    "RNA polymerase reads the template 3' to 5' and builds the mRNA 5' to 3', pairing A with U, T with A, C with G and G with C. Pairing base by base: " +
+    sqPairs(template, mrna) + ". The mRNA is 5'-" + mrna.join(" ") +
+    "-3'. It contains U where DNA would have T, and it is the complement of the template, not a copy of it.",
+    { template: template, answer: mrna });
+}, ["Transcription pairs each template base with an RNA base: A with U, T with A, C with G, G with C. The mRNA is built 5' to 3' and contains U instead of T."]);
+
+/* ---------- 6.7 protein synthesis ---------- */
+
+E("bio-gen-67-mrna", 2, ["6.7"], 2, "gen", function () {
+  var coding = sqDraw(SQ_POOL_DNA, ri(3, 4));
+  var mrna = coding.map(sqRNA);
+  var templateRNA = sqMapCodons(coding, SQ_COMP_DNA_RNA);
+  var correct = sqFmt(mrna, "5\u2032-", "-3\u2032");
+  var distractors = sqD3(correct, [
+    sqFmt(templateRNA, "5\u2032-", "-3\u2032"),
+    sqFmt(coding, "5\u2032-", "-3\u2032"),
+    sqFmt(mrna, "3\u2032-", "-5\u2032")
+  ], mrna, "5\u2032-", "-3\u2032", SQ_COMP_RNA);
+  return mcq("A DNA coding strand contains the sequence 5\u2032-" + coding.join(" ") +
+    "-3\u2032. Which mRNA sequence will be produced?",
+    correct, distractors,
+    "The coding strand has the same sequence as the mRNA, except that DNA uses T where RNA uses U. RNA polymerase reads the template strand, which is the complement of the coding strand (3'-" +
+    sqMapCodons(coding, SQ_COMP_DNA).join(" ") +
+    "-5'), and builds the mRNA to match the coding strand. Replacing each T with U gives the mRNA: 5'-" +
+    mrna.join(" ") + "-3'.",
+    { coding: coding, answer: mrna });
+}, ["The coding strand has the same sequence as the mRNA (but with T instead of U). The template strand is its complement. RNA polymerase reads the template, so what mRNA does that produce?"]);
+
+E("bio-gen-67-aa", 2, ["6.7"], 2, "gen", function () {
+  var mrna = sqDraw(SQ_POOL, ri(3, 4));
+  var names = mrna.map(sqAAName);
+  var antiNames = sqMapCodons(mrna, SQ_COMP_RNA).map(sqAAName);
+  var reversedNames = mrna.map(function (cd) { return cd.split("").reverse().join(""); }).map(sqAAName);
+  var altCodon = mrna[1].split("");
+  altCodon[0] = { U: "C", C: "A", A: "G", G: "U" }[altCodon[0]];
+  var misread = names.slice(); misread[1] = sqAAName(altCodon.join(""));
+  var distractors = sqD3AA(names, [antiNames, reversedNames, misread]);
+  var q = mcq("Using the codon table, what amino acid sequence is produced from the mRNA sequence 5\u2032-" +
+    mrna.join(" ") + "-3\u2032?",
+    names.join(", "), distractors,
+    "Read the mRNA in codons of three bases and look each one up in the codon table: " +
+    mrna.map(function (cd) { return cd + " = " + sqAAName(cd); }).join(", ") +
+    ". The amino acid sequence is " + names.join(", ") + ".",
+    { mrna: mrna, answer: names });
+  return sqWithTable(q);
+}, ["Read the mRNA in codons of three bases, in order, and look each codon up in the codon table."]);
+
+E("bio-gen-67-anti", 2, ["6.7"], 2, "gen", function () {
+  var mrna = sqDraw(SQ_POOL, ri(2, 3));
+  var anti = sqMapCodons(mrna, SQ_COMP_RNA);
+  var correct = sqFmt(anti, "3\u2032-", "-5\u2032");
+  var distractors = sqD3(correct, [
+    sqFmt(anti, "5\u2032-", "-3\u2032"),
+    sqFmt(mrna, "3\u2032-", "-5\u2032"),
+    sqFmt(anti.map(sqDNA), "3\u2032-", "-5\u2032")
+  ], anti, "3\u2032-", "-5\u2032", SQ_COMP_RNA);
+  return mcq("An mRNA molecule contains the codons 5\u2032-" + mrna.join(" ") +
+    "-3\u2032. Which tRNA anticodon sequence pairs with these codons during translation?",
+    correct, distractors,
+    "Anticodons pair antiparallel with codons, base by base, with A pairing U, U pairing A, C pairing G and G pairing C. Pairing base by base: " +
+    sqPairs(mrna, anti) + ". Written beneath the codons, the anticodons run 3'-" +
+    anti.join(" ") + "-5', and because tRNA is RNA they contain U, not T.",
+    { mrna: mrna, answer: anti });
+}, ["Anticodons pair antiparallel with codons: A pairs with U, U with A, C with G, G with C. The anticodon sits beneath the codon, so it is written 3' to 5'."]);
+
+/* ---------- 6.8 mutations ---------- */
+
+// Every single-base substitution of a coding sequence, classified by
+// its effect on the one codon it touches.
+function sqSubstitutions(codingMRNA) {
+  var coding = codingMRNA.map(sqDNA), out = [];
+  var bases = ["A", "C", "G", "T"];
+  coding.forEach(function (cd, ci) {
+    for (var j = 0; j < 3; j++) {
+      bases.forEach(function (b) {
+        if (b === cd.charAt(j)) return;
+        var mut = cd.slice(0, j) + b + cd.slice(j + 1);
+        var before = sqAAName(codingMRNA[ci]), after = sqAAName(sqRNA(mut));
+        var effect = after === "stop" ? "nonsense" : (after === before ? "silent" : "missense");
+        out.push({ codonIndex: ci, baseIndex: j, from: cd.charAt(j), to: b,
+                   origCodon: cd, mutCodon: mut, before: before, after: after, effect: effect });
+      });
+    }
+  });
+  return out;
+}
+var SQ_EFFECT_LABEL = { silent: "Silent mutation", missense: "Missense mutation",
+  nonsense: "Nonsense mutation", frameshift: "Frameshift mutation" };
+
+E("bio-gen-68-sub", 2, ["6.8"], 2, "gen", function () {
+  var effect = pick(["silent", "missense", "nonsense"]);
+  var codingMRNA = null, sub = null, mutated = null;
+  for (var tries = 0; tries < 200 && !sub; tries++) {
+    codingMRNA = sqDraw(SQ_POOL, 4);
+    var matches = sqSubstitutions(codingMRNA).filter(function (s) { return s.effect === effect; });
+    if (matches.length) {
+      sub = pick(matches);
+      mutated = codingMRNA.map(sqDNA);
+      mutated[sub.codonIndex] = sub.mutCodon;
+    }
+  }
+  var coding = codingMRNA.map(sqDNA);
+  var distractors = ["silent", "missense", "nonsense", "frameshift"]
+    .filter(function (e) { return e !== effect; }).map(function (e) { return SQ_EFFECT_LABEL[e]; });
+  var detail;
+  if (effect === "silent") detail = "The amino acid is unchanged, so the protein produced is identical: the mutation is silent. Only one codon is affected, so the reading frame does not shift.";
+  else if (effect === "nonsense") detail = "The mutated codon is a stop signal, so translation ends early and the protein is cut short: the mutation is nonsense. Only one codon is affected, so the reading frame does not shift.";
+  else detail = "One amino acid is swapped for a different one, so the protein changes at a single position: the mutation is missense. Only one codon is affected, so the reading frame does not shift.";
+  var q = mcq("A section of the coding strand of a gene reads 5\u2032-" + coding.join(" ") +
+    "-3\u2032. In a mutated copy, codon " + (sub.codonIndex + 1) + " changes from " + sub.origCodon +
+    " to " + sub.mutCodon + ", giving 5\u2032-" + mutated.join(" ") +
+    "-3\u2032. Which type of mutation is this?",
+    SQ_EFFECT_LABEL[effect], distractors,
+    "Only codon " + (sub.codonIndex + 1) + " changes. The original codon " + sub.origCodon +
+    " gives the mRNA codon " + sqRNA(sub.origCodon) + ", which codes for " + sub.before +
+    ". The mutated codon " + sub.mutCodon + " gives the mRNA codon " + sqRNA(sub.mutCodon) +
+    ", which codes for " + sub.after + ". " + detail,
+    { coding: coding, mutated: mutated, codonIndex: sub.codonIndex, effect: effect });
+  return sqWithTable(q);
+}, ["Translate just the changed codon in both versions, using the codon table. Compare the two amino acids: the same, different, or a stop?"]);
+
+E("bio-gen-68-indel", 2, ["6.8"], 3, "gen", function () {
+  var bases = ["A", "C", "G", "T"];
+  var coding = null, mutatedBases = "", kind = "", pos = 0, base = "";
+  for (var tries = 0; tries < 200 && !coding; tries++) {
+    var draw = sqDraw(SQ_POOL, 5).map(sqDNA);
+    var flat = draw.join("");
+    var p = ri(4, 10);
+    var mut;
+    if (Math.random() < 0.5) { kind = "insertion"; base = pick(bases); mut = flat.slice(0, p + 1) + base + flat.slice(p + 1); pos = p + 1; }
+    else { kind = "deletion"; base = flat.charAt(p); mut = flat.slice(0, p) + flat.slice(p + 1); pos = p; }
+    var regrouped = [];
+    for (var i = 0; i + 3 <= mut.length; i += 3) regrouped.push(mut.slice(i, i + 3));
+    var aas = regrouped.map(function (cd) { return sqAAName(sqRNA(cd)); });
+    var origAAs = draw.map(function (cd) { return sqAAName(sqRNA(cd)); });
+    var changed = aas.some(function (a, i2) { return a !== origAAs[i2]; });
+    if (aas.indexOf("stop") < 0 && changed) { coding = draw; mutatedBases = mut; }
+  }
+  var mutCodons = [];
+  for (var k = 0; k < mutatedBases.length; k += 3) mutCodons.push(mutatedBases.slice(k, k + 3));
+  var changeText = kind === "insertion"
+    ? "a single base, " + base + ", is inserted after base " + pos
+    : "the base at position " + (pos + 1) + ", " + base + ", is deleted";
+  var distractors = ["silent", "missense", "nonsense"].map(function (e) { return SQ_EFFECT_LABEL[e]; });
+  return mcq("A section of the coding strand of a gene reads 5\u2032-" + coding.join(" ") +
+    "-3\u2032. In a mutated copy, " + changeText + ", giving 5\u2032-" + mutCodons.join(" ") +
+    "-3\u2032. Which type of mutation is this?",
+    SQ_EFFECT_LABEL.frameshift, distractors,
+    "The sequence changes by one base, and one is not a multiple of three, so every codon after the change is regrouped. The codons before the change are read as before, but from the change onward the codons become " +
+    mutCodons.slice(Math.floor(pos / 3)).join(", ") +
+    " instead of " + coding.slice(Math.floor(pos / 3)).join(", ") +
+    ", so the amino acid sequence changes from that point on. A shift of the reading frame like this is a frameshift mutation.",
+    { coding: coding, mutated: mutCodons, kind: kind, pos: pos });
+}, ["Count the bases added or removed. If the number is not a multiple of three, every codon after the change point is regrouped and read differently."]);
+
+E("bio-gen-68-aa", 2, ["6.8"], 3, "gen", function () {
+  var codingMRNA = null, sub = null, mutated = null;
+  for (var tries = 0; tries < 200 && !sub; tries++) {
+    codingMRNA = sqDraw(SQ_POOL, 4);
+    var matches = sqSubstitutions(codingMRNA).filter(function (s) { return s.effect === "missense"; });
+    if (matches.length) {
+      sub = pick(matches);
+      mutated = codingMRNA.map(sqDNA);
+      mutated[sub.codonIndex] = sub.mutCodon;
+    }
+  }
+  var coding = codingMRNA.map(sqDNA);
+  var mutNames = mutated.map(function (cd) { return sqAAName(sqRNA(cd)); });
+  var origNames = codingMRNA.map(sqAAName);
+  var templateNames = sqMapCodons(mutated, SQ_COMP_DNA).map(function (cd) { return sqAAName(sqRNA(cd)); });
+  var distractors = sqD3AA(mutNames, [origNames, templateNames]);
+  var q = mcq("A section of the coding strand of a gene reads 5\u2032-" + coding.join(" ") +
+    "-3\u2032. In a mutated copy, codon " + (sub.codonIndex + 1) + " changes from " + sub.origCodon +
+    " to " + sub.mutCodon + ", giving 5\u2032-" + mutated.join(" ") +
+    "-3\u2032. Using the codon table, what amino acid sequence does the mutated gene produce?",
+    mutNames.join(", "), distractors,
+    "Translate the mutated coding strand codon by codon, swapping T for U to get each mRNA codon: " +
+    mutated.map(function (cd) { return cd + " \u2192 " + sqRNA(cd) + " = " + sqAAName(sqRNA(cd)); }).join(", ") +
+    ". Only codon " + (sub.codonIndex + 1) + " differs from the original: " + sub.before +
+    " is replaced by " + sub.after + ". The mutated amino acid sequence is " + mutNames.join(", ") + ".",
+    { coding: coding, mutated: mutated, codonIndex: sub.codonIndex, answer: mutNames });
+  return sqWithTable(q);
+}, ["Translate the original sequence first. Then change only the one codon named in the question and translate again; every other amino acid stays the same."]);
+
+// Held out of the Mid preset: the PEP mid-course scope stops at 6.4.
+BANK.forEach(function (e) {
+  if (["bio-gen-66-rep","bio-gen-66-mrna","bio-gen-67-mrna","bio-gen-67-aa","bio-gen-67-anti","bio-gen-68-sub","bio-gen-68-indel","bio-gen-68-aa"].indexOf(e.id) >= 0) e.postMid = true;
+});
+
+/* ----- bank-gen-pedigree.js ----- */
+/* Biology 3201 Unit 2 bank slice: pedigree generator, indicator 6.4.
+   One entry per question type: identify the mode of inheritance,
+   find a forced genotype, and find a probability for a named couple.
+   Every draw builds a fresh family tree and a fresh pedigree diagram
+   (squares are males, circles are females, filled symbols are
+   affected, labels are Roman-numeral generations numbered left to
+   right).
+
+   Source and validation: adapted from the pedigree prototype in the
+   Biology 3201 working files (pedigree-prototype/pedigree.js),
+   which was validated standalone before being accepted: 2,142
+   generated trees and 750 generated questions (250 per type) checked
+   by an independently written brute-force consistency checker, zero
+   failures. The genetics core below is that prototype, unchanged:
+   choose a mode of inheritance, assign founder genotypes, simulate
+   Mendelian inheritance down the tree, derive the phenotypes from
+   the genotypes, and serve a question only when an exhaustive
+   consistency checker proves the keyed answer is the only one the
+   drawn phenotypes allow.
+
+   X-linked recessive mode questions keep the prototype's documented
+   serving basis. Pure logic cannot separate X-linked recessive from
+   autosomal recessive (every X-linked recessive pedigree is also
+   consistent with autosomal recessive inheritance), so those
+   questions are served only when the tree is consistent with exactly
+   those two modes AND shows the textbook X-linked signature: at
+   least two affected males, a carrier path through an unaffected
+   mother, and no father-to-son transmission. That is the same basis
+   the review book's own X-linked pedigree item is keyed on.
+
+   Changes from the prototype, all in the question text layer (the
+   genetics, the checker, the tree builder and the SVG renderer are
+   untouched):
+   - Solutions are rebuilt from the drawn tree: they name the
+     individuals and state the deduction (which relative forces which
+     allele), instead of shorter generic closers.
+   - A genotype question is served only when a concrete deduction of
+     that kind exists for its target; otherwise the draw is skipped
+     and a new tree is generated. A founder mother whose carrier
+     status is settled by a grandchild gets a two-step deduction
+     through her carrier daughter.
+   - The finished question is passed through the shell's mcq()
+     builder, so option order follows the house rule (numeric
+     ascending, otherwise alphabetical) like every other entry.
+
+   Levels: mode identification is Level 3 (weigh the whole tree, rule
+   patterns in and out). The forced genotype is Level 3: the prompt
+   does not state the mode, so the student must first identify the
+   pattern and then run the deduction through the target's
+   relatives, the same demand as the book's own genotype item
+   (bio-u2-64-q03, tagged Level 3). Probability is Level 3: both
+   parents' genotypes must be forced from the tree before the
+   Punnett square can even be set up.
+
+   Wiring: assemble-bank.py currently lists bank-u1.js, bank-u2.js
+   and bank-u3.js for bio-3201; add "bank-gen-pedigree.js" to that
+   list (after bank-u2.js) to include this slice in the assembled
+   bank. PED64 is the only global this file adds. */
+
+var PED64 = (function () {
+"use strict";
+
+/* ---------------- seeded RNG (mulberry32) ---------------- */
+function RNG(seed) {
+  var a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ---------------- genetics model ----------------
+   Autosomal genotypes are allele pairs over {A, a} stored sorted, so
+   "AA", "Aa", "aa". For X-linked, females are pairs over {A, a} read as
+   X^A X^A, X^A X^a, X^a X^a, and males are single letters read as
+   X^A Y / X^a Y. Phenotype: AD affected iff at least one A (A is the
+   disease allele); AR affected iff aa; XLR affected iff female aa or
+   male a. */
+var MODES = {
+  AD:  { label: "Autosomal dominant",  kind: "auto" },
+  AR:  { label: "Autosomal recessive", kind: "auto" },
+  XLR: { label: "X-linked recessive",  kind: "x" }
+};
+var MODE_KEYS = ["AD", "AR", "XLR"];
+
+function genotypeDomain(mode, sex) {
+  if (MODES[mode].kind === "auto") return ["AA", "Aa", "aa"];
+  return sex === "M" ? ["A", "a"] : ["AA", "Aa", "aa"];
+}
+function phenotypeOf(mode, sex, g) {
+  if (mode === "AD") return g.indexOf("A") >= 0;
+  if (mode === "AR") return g === "aa";
+  /* XLR */
+  if (sex === "M") return g === "a";
+  return g === "aa";
+}
+function genotypeText(mode, sex, g) {
+  if (MODES[mode].kind === "auto") return g;
+  if (sex === "M") return g === "A" ? "X\u1D2C Y" : "X\u1D43 Y";
+  if (g === "AA") return "X\u1D2C X\u1D2C";
+  if (g === "Aa") return "X\u1D2C X\u1D43";
+  return "X\u1D43 X\u1D43";
+}
+function gametes(mode, sex, g) {
+  if (MODES[mode].kind === "x" && sex === "M") return [g]; /* his only X */
+  return [g.charAt(0), g.charAt(1)];
+}
+function childGenotype(mode, father, mother, childSex, rnd) {
+  var fg = gametes(mode, "M", father), mg = gametes(mode, "F", mother);
+  var fa = fg[Math.floor(rnd() * fg.length)];
+  var ma = mg[Math.floor(rnd() * mg.length)];
+  if (MODES[mode].kind === "x") {
+    if (childSex === "M") return ma;            /* son gets mother's X */
+    var pair = [fa, ma].sort().join("");        /* daughter: X from each */
+    return pair === "aA" ? "Aa" : pair;
+  }
+  var p = [fa, ma].sort().join("");
+  return p === "aA" ? "Aa" : p;
+}
+function punnett(mode, father, mother) {
+  /* All equally likely child genotypes: list of {sex, g}. */
+  var out = [], fg = gametes(mode, "M", father), mg = gametes(mode, "F", mother), i, j;
+  for (i = 0; i < fg.length; i++) for (j = 0; j < mg.length; j++) {
+    ["M", "F"].forEach(function (sex) {
+      var fa = fg[i], ma = mg[j], g;
+      if (MODES[mode].kind === "x") {
+        if (sex === "M") g = ma;
+        else { var pr = [fa, ma].sort().join(""); g = pr === "aA" ? "Aa" : pr; }
+      } else { var p2 = [fa, ma].sort().join(""); g = p2 === "aA" ? "Aa" : p2; }
+      out.push({ sex: sex, g: g });
+    });
+  }
+  return out;
+}
+
+/* ---------------- tree generation ----------------
+   One founder couple (generation I), their children (II), some of whom
+   have partners and children (III). Partners marry in as founders. */
+var nextId = 1;
+function person(sex, gen, father, mother) {
+  return { id: nextId++, sex: sex, gen: gen, father: father, mother: mother,
+           partner: null, genotype: null, affected: false, label: "" };
+}
+function founderGenotype(mode, sex, rnd, wantCarrierRich) {
+  var r = rnd();
+  if (mode === "AD")  return r < 0.30 ? "Aa" : "aa";      /* A = disease allele */
+  if (mode === "AR")  return r < (wantCarrierRich ? 0.55 : 0.35) ? "Aa" : (r < 0.62 ? "aa" : "AA");
+  /* XLR */
+  if (sex === "M") return r < 0.25 ? "a" : "A";
+  return r < 0.45 ? "Aa" : (r < 0.52 ? "aa" : "AA");
+}
+function generateTree(mode, rnd) {
+  nextId = 1;
+  var people = [], byId = {};
+  function add(p) { people.push(p); byId[p.id] = p; return p; }
+  var f = add(person("M", 0, null, null)), m = add(person("F", 0, null, null));
+  f.partner = m.id; m.partner = f.id;
+  f.genotype = founderGenotype(mode, "M", rnd, true);
+  m.genotype = founderGenotype(mode, "F", rnd, true);
+  var couples = [{ a: f, b: m }];
+  function kids(couple, n, gen) {
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var sex = rnd() < 0.5 ? "M" : "F";
+      var dad = couple.a.sex === "M" ? couple.a : couple.b;
+      var mom = couple.a.sex === "F" ? couple.a : couple.b;
+      var c = add(person(sex, gen, dad.id, mom.id));
+      c.genotype = childGenotype(mode, dad.genotype, mom.genotype, sex, rnd);
+      out.push(c);
+    }
+    return out;
+  }
+  var genII = kids(couples[0], 2 + Math.floor(rnd() * 3), 1);   /* 2-4 children */
+  var shuffled = genII.slice();
+  for (var i = shuffled.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = t; }
+  var nFam = genII.length === 2 ? 2 : (rnd() < 0.6 ? 2 : 1);
+  for (var k = 0; k < nFam && k < shuffled.length; k++) {
+    var blood = shuffled[k];
+    var partner = add(person(blood.sex === "M" ? "F" : "M", 1, null, null));
+    partner.genotype = founderGenotype(mode, partner.sex, rnd, false);
+    blood.partner = partner.id; partner.partner = blood.id;
+    var couple = { a: blood, b: partner };
+    couples.push(couple);
+    kids(couple, 2 + Math.floor(rnd() * 2), 2);                  /* 2-3 children */
+  }
+  people.forEach(function (p) { p.affected = phenotypeOf(mode, p.sex, p.genotype); });
+  return { people: people, byId: byId, couples: couples };
+}
+function treeQuality(t) {
+  var aff = t.people.filter(function (p) { return p.affected; }).length;
+  if (t.people.length < 9) return false;
+  if (aff < 1 || aff > Math.ceil(t.people.length * 0.45)) return false;
+  return true;
+}
+
+/* ---------------- consistency checker ----------------
+   Enumerates genotype assignments consistent with the observed
+   phenotypes and Mendelian inheritance under a candidate mode, by
+   backtracking in parent-before-child order. Returns, per person, the
+   set of genotypes they take in any consistent assignment, or null if
+   the mode admits no assignment at all. Y-linked is checked by its
+   own rule (affected males only, and every son of an affected male
+   affected; an affected male's father must be affected). */
+function consistentGenotypes(people, byId, mode) {
+  if (mode === "YL") {
+    for (var i = 0; i < people.length; i++) {
+      var p = people[i];
+      if (p.affected && p.sex !== "M") return null;
+      if (p.affected && p.father != null && !byId[p.father].affected) return null;
+      if (!p.affected && p.sex === "M" && p.father != null && byId[p.father].affected) return null;
+    }
+    var any = {}; people.forEach(function (q) { any[q.id] = new Set(["-"]); });
+    return any;
+  }
+  var order = people.slice().sort(function (a, b) { return a.gen - b.gen || a.id - b.id; });
+  var possible = {}, solutions = 0, CAP = 4000;
+  order.forEach(function (p) { possible[p.id] = new Set(); });
+  var assign = {};
+  function childOK(child, g) {
+    var dad = byId[child.father], mom = byId[child.mother];
+    if (!(dad.id in assign) || !(mom.id in assign)) return true; /* checked later */
+    var combos = punnett(mode, assign[dad.id], assign[mom.id]);
+    return combos.some(function (c) { return c.sex === child.sex && c.g === g; });
+  }
+  function parentsOK(p, g) {
+    if (p.father == null) return true;
+    var dad = byId[p.father], mom = byId[p.mother];
+    if (!(dad.id in assign) || !(mom.id in assign)) return true;
+    var combos = punnett(mode, assign[dad.id], assign[mom.id]);
+    return combos.some(function (c) { return c.sex === p.sex && c.g === g; });
+  }
+  function bt(idx) {
+    if (solutions >= CAP) return;
+    if (idx === order.length) {
+      solutions++;
+      order.forEach(function (p) { possible[p.id].add(assign[p.id]); });
+      return;
+    }
+    var p = order[idx];
+    var dom = genotypeDomain(mode, p.sex).filter(function (g) {
+      return phenotypeOf(mode, p.sex, g) === p.affected;
+    });
+    for (var i = 0; i < dom.length; i++) {
+      var g = dom[i];
+      if (!parentsOK(p, g)) continue;
+      assign[p.id] = g;
+      /* children already assigned (none: parents come first), so only
+         this person's own parent constraint matters here. */
+      bt(idx + 1);
+      delete assign[p.id];
+      if (solutions >= CAP) return;
+    }
+  }
+  bt(0);
+  if (solutions === 0) return null;
+  return possible;
+}
+function consistentModes(t) {
+  var out = [];
+  ["AD", "AR", "XLR", "YL"].forEach(function (mode) {
+    if (consistentGenotypes(t.people, t.byId, mode)) out.push(mode);
+  });
+  return out;
+}
+
+/* ---------------- layout and SVG rendering ----------------
+   Tidy layout: a mating unit is as wide as its children's units or
+   two slots, whichever is wider; partners sit side by side centred
+   over their children. Labels are Roman generation numerals, numbered
+   left to right within a generation. */
+var ROMAN = ["I", "II", "III", "IV"];
+function layout(t) {
+  var byId = t.byId;
+  /* children map per couple key */
+  function childrenOf(a, b) {
+    return t.people.filter(function (p) {
+      return (p.father === a.id && p.mother === b.id) || (p.father === b.id && p.mother === a.id);
+    }).sort(function (x, y) { return x.id - y.id; });
+  }
+  var widthMemo = {};
+  function unitWidth(p) {                     /* p is the blood parent */
+    if (widthMemo[p.id] != null) return widthMemo[p.id];
+    var w = 1;
+    if (p.partner != null) {
+      var kids = childrenOf(p, byId[p.partner]);
+      if (kids.length) {
+        var sum = 0;
+        kids.forEach(function (c) { sum += unitWidth(c); });
+        w = Math.max(2, sum);
+      } else w = 2;
+    }
+    widthMemo[p.id] = w; return w;
+  }
+  var pos = {};                               /* id -> slot x */
+  function place(p, left) {                   /* p heads a unit at slot left */
+    var w = unitWidth(p);
+    if (p.partner == null) { pos[p.id] = left; return; }
+    var partner = byId[p.partner], kids = childrenOf(p, partner);
+    if (!kids.length) { pos[p.id] = left; pos[partner.id] = left + 1; return; }
+    var sum = 0; kids.forEach(function (c) { sum += unitWidth(c); });
+    var coupleLeft = left + Math.max(0, (sum - 2) / 2);
+    /* blood parent keeps the side matching birth order position: put
+       the blood parent on the left for fathers, right for mothers is
+       not standard; standard is male left, female right. */
+    var dad = p.sex === "M" ? p : partner, mom = p.sex === "M" ? partner : p;
+    pos[dad.id] = coupleLeft; pos[mom.id] = coupleLeft + 1;
+    var cx = left;
+    kids.forEach(function (c) { place(c, cx); cx += unitWidth(c); });
+  }
+  var founders = t.people.filter(function (p) { return p.gen === 0; });
+  var root = founders[0];
+  place(root, 0);
+  /* labels: sort each generation by x */
+  var gens = {};
+  t.people.forEach(function (p) { (gens[p.gen] = gens[p.gen] || []).push(p); });
+  Object.keys(gens).forEach(function (g) {
+    gens[g].sort(function (a, b) { return pos[a.id] - pos[b.id]; });
+    gens[g].forEach(function (p, i) { p.label = ROMAN[g] + "-" + (i + 1); });
+  });
+  return pos;
+}
+function renderSVG(t, opts) {
+  opts = opts || {};
+  var pos = layout(t), byId = t.byId;
+  var SLOT = 46, SYM = 26, ROWH = 92, TOP = 26, LEFT = 30;
+  var maxSlot = 0;
+  t.people.forEach(function (p) { if (pos[p.id] > maxSlot) maxSlot = pos[p.id]; });
+  var W = LEFT * 2 + (maxSlot + 1) * SLOT, H = TOP * 2 + 3 * ROWH;
+  function cx(p) { return LEFT + pos[p.id] * SLOT + SLOT / 2; }
+  function cy(p) { return TOP + p.gen * ROWH + SYM / 2; }
+  var s = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + " " + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Pedigree chart">'];
+  s.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+  /* mating and descent lines first */
+  var drawnCouples = {};
+  t.people.forEach(function (p) {
+    if (p.partner == null) return;
+    var key = Math.min(p.id, p.partner) + "-" + Math.max(p.id, p.partner);
+    if (drawnCouples[key]) return; drawnCouples[key] = 1;
+    var a = p, b = byId[p.partner], y = cy(a);
+    s.push('<line x1="' + cx(a) + '" y1="' + y + '" x2="' + cx(b) + '" y2="' + y + '" stroke="#222" stroke-width="2"/>');
+    var kids = t.people.filter(function (c) {
+      return (c.father === a.id && c.mother === b.id) || (c.father === b.id && c.mother === a.id);
+    });
+    if (!kids.length) return;
+    var midX = (cx(a) + cx(b)) / 2, kidY = cy(kids[0]);
+    var xs = kids.map(function (c) { return cx(c); });
+    var sibY = y + ROWH / 2;
+    s.push('<line x1="' + midX + '" y1="' + y + '" x2="' + midX + '" y2="' + sibY + '" stroke="#222" stroke-width="2"/>');
+    s.push('<line x1="' + Math.min.apply(null, xs.concat([midX])) + '" y1="' + sibY + '" x2="' + Math.max.apply(null, xs.concat([midX])) + '" y2="' + sibY + '" stroke="#222" stroke-width="2"/>');
+    kids.forEach(function (c) {
+      s.push('<line x1="' + cx(c) + '" y1="' + sibY + '" x2="' + cx(c) + '" y2="' + (kidY - SYM / 2) + '" stroke="#222" stroke-width="2"/>');
+    });
+  });
+  /* symbols */
+  t.people.forEach(function (p) {
+    var x = cx(p), y = cy(p), fill = p.affected ? "#1f4e79" : "#ffffff";
+    if (p.sex === "M") {
+      s.push('<rect x="' + (x - SYM / 2) + '" y="' + (y - SYM / 2) + '" width="' + SYM + '" height="' + SYM + '" fill="' + fill + '" stroke="#222" stroke-width="2"/>');
+    } else {
+      s.push('<circle cx="' + x + '" cy="' + y + '" r="' + (SYM / 2) + '" fill="' + fill + '" stroke="#222" stroke-width="2"/>');
+    }
+    if (opts.carrierDots && p.sex === "F" && !p.affected && p.genotype === "Aa" && MODES[opts.mode].kind === "x") {
+      s.push('<circle cx="' + x + '" cy="' + y + '" r="3.2" fill="#222"/>');
+    }
+    s.push('<text x="' + x + '" y="' + (y + SYM / 2 + 16) + '" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#222">' + p.label + "</text>");
+  });
+  s.push("</svg>");
+  return s.join("");
+}
+
+/* ---------------- question builders ---------------- */
+function orderOptions(opts) {
+  var numeric = opts.every(function (o) { return /^-?[\d.]+%$/.test(o.t); });
+  var arr = opts.slice();
+  arr.sort(function (a, b) {
+    if (numeric) return parseFloat(a.t) - parseFloat(b.t);
+    return a.t < b.t ? -1 : a.t > b.t ? 1 : 0;
+  });
+  return arr;
+}
+function toMCQ(prompt, correct, distractors, solution, figure) {
+  var seen = {}, opts = [{ t: correct, ok: true }];
+  distractors.forEach(function (d) {
+    if (d !== correct && !seen[d]) { seen[d] = 1; opts.push({ t: d, ok: false }); }
+  });
+  var ordered = orderOptions(opts);
+  return { prompt: prompt, type: "mc",
+           options: ordered.map(function (o) { return o.t; }),
+           correct: ordered.findIndex(function (o) { return o.ok; }),
+           solution: solution, figure: figure };
+}
+function pedKids(t, p) {
+  return t.people.filter(function (c) { return c.father === p.id || c.mother === p.id; });
+}
+function joinLbl(labels) {
+  if (labels.length <= 1) return labels.join("");
+  if (labels.length === 2) return labels[0] + " and " + labels[1];
+  return labels.slice(0, -1).join(", ") + " and " + labels[labels.length - 1];
+}
+function xlrExclusion(t) {
+  /* Sound local facts that rule out an X-linked reading of the drawn
+     phenotypes, each checked against the tree before it is stated. */
+  var byId = t.byId, i, c;
+  for (i = 0; i < t.people.length; i++) {
+    c = t.people[i];
+    if (c.affected && c.sex === "F" && c.father != null && !byId[c.father].affected) {
+      return "It is not X-linked either: " + c.label + " is an affected female, and a daughter receives one X chromosome from her father. Her father " + byId[c.father].label + " is unaffected, so the X he passed on carries the normal allele, and she could not be affected under an X-linked pattern.";
+    }
+  }
+  for (i = 0; i < t.people.length; i++) {
+    c = t.people[i];
+    if (!c.affected && c.sex === "M" && c.mother != null && byId[c.mother].affected) {
+      return "It is not X-linked either: " + c.label + " is an unaffected male whose mother " + byId[c.mother].label + " is affected. A son receives his X chromosome from his mother, so under an X-linked pattern he would have received the affected X and shown the trait himself.";
+    }
+  }
+  for (i = 0; i < t.people.length; i++) {
+    c = t.people[i];
+    if (!c.affected && c.father != null && byId[c.father].affected && byId[c.mother].affected) {
+      return "It is not X-linked either: " + byId[c.father].label + " and " + byId[c.mother].label + " are both affected, yet their child " + c.label + " is unaffected. Under an X-linked pattern an affected mother passes the allele to every child and an affected father passes it to every daughter, so no child of theirs could be unaffected.";
+    }
+  }
+  return null;
+}
+function autosomalNote(t) {
+  var f = null, m = null, i;
+  for (i = 0; i < t.people.length; i++) {
+    if (!t.people[i].affected) continue;
+    if (t.people[i].sex === "F" && !f) f = t.people[i];
+    if (t.people[i].sex === "M" && !m) m = t.people[i];
+  }
+  if (f && m) return "Affected individuals include females as well as males (" + f.label + " and " + m.label + " are both affected), which fits a gene carried on an autosome rather than a sex chromosome.";
+  if (f) return "Affected individuals include a female (" + f.label + "), which fits a gene carried on an autosome rather than a sex chromosome.";
+  return "The pattern fits a gene carried on an autosome rather than a sex chromosome.";
+}
+function modeClue(t, mode) {
+  /* Solution text for the mode question, rebuilt for the review app:
+     every fact stated is read off the drawn tree (named individuals
+     and the deduction they force), never generic filler. The caller
+     appends the pattern name. */
+  var byId = t.byId, i, c, p;
+  if (mode === "AR") {
+    for (i = 0; i < t.people.length; i++) {
+      c = t.people[i];
+      if (c.affected && c.father != null && !byId[c.father].affected && !byId[c.mother].affected) {
+        var excl = xlrExclusion(t);
+        return byId[c.father].label + " and " + byId[c.mother].label + " are both unaffected, yet their child " + c.label + " is affected. A dominant trait cannot appear from two unaffected parents, because anyone carrying a dominant allele would show it, so the trait must be recessive, with both parents as carriers who each passed the recessive allele to " + c.label + ". " + (excl || autosomalNote(t));
+      }
+    }
+    return "Two unaffected parents have an affected child, so the trait must be recessive, and affected individuals of both sexes point to an autosome.";
+  }
+  if (mode === "AD") {
+    var txt = null;
+    for (i = 0; i < t.people.length; i++) {
+      c = t.people[i];
+      if (!c.affected && c.father != null && byId[c.father].affected && byId[c.mother].affected) {
+        txt = byId[c.father].label + " and " + byId[c.mother].label + " are both affected, yet their child " + c.label + " is unaffected. If the trait were recessive, two affected parents (aa and aa) could only have affected children, so the trait cannot be recessive: " + c.label + " received the recessive allele from both parents, which means each affected parent carries one copy of it.";
+        break;
+      }
+    }
+    if (!txt) {
+      for (i = 0; i < t.people.length; i++) {
+        c = t.people[i];
+        if (c.affected && c.father != null && (byId[c.father].affected || byId[c.mother].affected)) {
+          p = byId[c.father].affected ? byId[c.father] : byId[c.mother];
+          txt = c.label + " is affected, as is " + (p.sex === "M" ? "his father " : "her mother ") + p.label + ", and throughout the pedigree the trait passes directly from affected parents to their children.";
+          break;
+        }
+      }
+    }
+    if (!txt) txt = "Every affected individual in the pedigree has an affected parent, and affected parents pass the trait to about half of their children.";
+    var f = null;
+    for (i = 0; i < t.people.length; i++) if (t.people[i].affected && t.people[i].sex === "F") { f = t.people[i]; break; }
+    if (f) txt += " Affected females such as " + f.label + " rule out Y-linked inheritance, because females have no Y chromosome.";
+    var everyGen = [0, 1, 2].every(function (g) {
+      return t.people.some(function (q) { return q.gen === g && q.affected; });
+    });
+    if (everyGen) txt += " The trait appears in every generation.";
+    return txt;
+  }
+  /* XLR: served on the textbook signature (see xlrSignature): at
+     least two affected males, a carrier path through an unaffected
+     mother, and no father-to-son transmission. Each fact below is
+     verified against the drawn tree before it is stated. */
+  var affM = t.people.filter(function (q) { return q.affected && q.sex === "M"; });
+  var affF = t.people.filter(function (q) { return q.affected && q.sex === "F"; });
+  if (!affM.length) return "The trait passes through unaffected carrier females to their children and never from a father to a son.";
+  var verb = affM.length === 1 ? " is" : " are";
+  var out;
+  if (!affF.length) {
+    out = "Every affected individual in the pedigree is male: " + joinLbl(affM.map(function (q) { return q.label; })) + verb + " affected.";
+  } else {
+    out = "The affected individuals are almost all male: " + joinLbl(affM.map(function (q) { return q.label; })) + verb + " affected, with a single affected female, " + affF[0].label + ".";
+    if (affF[0].father != null && byId[affF[0].father].affected) {
+      out += " " + affF[0].label + " is the daughter of an affected father, " + byId[affF[0].father].label + ", as this pattern requires: she received his only X chromosome.";
+    }
+  }
+  for (i = 0; i < t.people.length; i++) {
+    p = t.people[i];
+    if (p.affected && p.sex === "M" && p.mother != null && !byId[p.mother].affected) {
+      out += " " + p.label + " is affected even though his mother " + byId[p.mother].label + " is not: a son receives his X chromosome from his mother, so she must be an unaffected carrier who passed the affected X on to him.";
+      break;
+    }
+  }
+  var fts = t.people.some(function (q) {
+    return q.affected && q.sex === "M" && q.father != null && byId[q.father].affected;
+  });
+  if (!fts) out += " No affected father passes the trait to a son, which fits: a father gives his sons a Y chromosome, never an X.";
+  return out;
+}
+function genotypeSolution(t, mode, target, possible) {
+  /* Worked solution for the genotype question: the mode, the range
+     the target's own phenotype allows, then the one relative whose
+     phenotype settles which allele the target must carry. Returns
+     null when no concrete deduction of that kind exists for this
+     target, and the caller then does not serve the question: a
+     generated question never ships with a generic solution. */
+  var byId = t.byId, p = target.person, g = target.genotype;
+  var kids = pedKids(t, p);
+  var dad = p.father != null ? byId[p.father] : null;
+  var mom = p.mother != null ? byId[p.mother] : null;
+  var gText = genotypeText(mode, p.sex, g);
+  var open = "The pedigree shows " + MODES[mode].label.toLowerCase() + " inheritance. ";
+  if (mode === "AR") open += p.label + " is unaffected, so the genotype is either AA or Aa. ";
+  else if (mode === "AD") open += p.label + " is affected, so the genotype is either AA or Aa. ";
+  else open += p.label + " is unaffected, so the genotype is either " + genotypeText(mode, "F", "AA") + " or " + genotypeText(mode, "F", "Aa") + ". ";
+  var step = null, i, c;
+  if (mode === "AR" || mode === "XLR") {
+    for (i = 0; i < kids.length; i++) {
+      c = kids[i];
+      if (!c.affected) continue;
+      if (mode === "AR") step = c.label + " is affected (aa), so " + c.label + " received an a allele from each parent, including one from " + p.label + ". That settles it: " + p.label + " carries an a allele.";
+      else if (c.sex === "M") step = c.label + " is an affected son (" + genotypeText(mode, "M", "a") + "). A son receives his X chromosome from his mother, so " + p.label + " must carry the affected X.";
+      else step = c.label + " is an affected daughter (" + genotypeText(mode, "F", "aa") + "), so she received an affected X from each parent, including one from her mother " + p.label + ".";
+      break;
+    }
+  }
+  if (!step && mode === "AD") {
+    for (i = 0; i < kids.length; i++) {
+      c = kids[i];
+      if (c.affected) continue;
+      step = c.label + " is unaffected, and under a dominant pattern an unaffected individual is aa, so " + c.label + " received an a allele from each parent, including one from " + p.label + ". So " + p.label + " carries an a allele even though the dominant allele is the one that shows.";
+      break;
+    }
+  }
+  if (!step && (mode === "AR" || mode === "XLR")) {
+    if (dad && dad.affected) {
+      if (mode === "AR") step = p.label + "'s father " + dad.label + " is affected (aa), so " + p.label + " received an a allele from him.";
+      else step = p.label + "'s father " + dad.label + " is affected (" + genotypeText(mode, "M", "a") + "). A daughter receives her father's only X chromosome, so " + p.label + " received the affected X from him.";
+    } else if (mom && mom.affected) {
+      if (mode === "AR") step = p.label + "'s mother " + mom.label + " is affected (aa), so " + p.label + " received an a allele from her.";
+      else step = p.label + "'s mother " + mom.label + " is affected (" + genotypeText(mode, "F", "aa") + "), so every X chromosome she passes on carries the allele, and " + p.label + " received one of them.";
+    }
+  }
+  if (!step && mode === "AD") {
+    var up = (dad && !dad.affected) ? dad : (mom && !mom.affected) ? mom : null;
+    var op = up === dad ? mom : dad;
+    if (up) step = p.label + "'s " + (up.sex === "M" ? "father " : "mother ") + up.label + " is unaffected (aa), so the only allele " + up.label + " could pass on is a. " + p.label + " is affected, so the allele from " + (op ? op.label : "the other parent") + " must be A.";
+  }
+  if (!step && mode === "XLR") {
+    for (i = 0; i < kids.length; i++) {
+      var d = kids[i];
+      if (d.sex !== "F") continue;
+      var dset = Array.from(possible[d.id]);
+      if (dset.length !== 1 || dset[0] !== "Aa") continue;
+      var dk = pedKids(t, d), gc = null, j;
+      for (j = 0; j < dk.length; j++) if (dk[j].affected) { gc = dk[j]; break; }
+      var df = d.father != null ? byId[d.father] : null;
+      if (gc && df && !df.affected) {
+        step = "Her daughter " + d.label + " must be a carrier too: " + d.label + "'s " + (gc.sex === "M" ? "son " : "daughter ") + gc.label + " is affected, so " + d.label + " carries the affected X. But " + d.label + "'s father " + df.label + " is an unaffected male (" + genotypeText(mode, "M", "A") + "), so that X cannot have come from him. It came from " + d.label + "'s mother, " + p.label + ".";
+        break;
+      }
+    }
+  }
+  if (!step) return null;
+  return open + step + " So " + p.label + "'s genotype is forced: <b>" + gText + "</b>.";
+}
+function probBreakdown(mode, dadG, momG) {
+  var kids = punnett(mode, dadG, momG), counts = {}, order = [];
+  kids.forEach(function (k) {
+    var key = MODES[mode].kind === "x" ? (k.sex + "|" + k.g) : k.g;
+    if (!(key in counts)) { counts[key] = 0; order.push({ sex: k.sex, g: k.g }); }
+    counts[key]++;
+  });
+  var per4 = kids.length / 4;
+  if (MODES[mode].kind === "x") {
+    var rank = { AA: 0, Aa: 1, aa: 2, A: 0, a: 1 };
+    order.sort(function (a, b) {
+      var sa = a.sex === "M" ? 0 : 1, sb = b.sex === "M" ? 0 : 1;
+      return sa - sb || rank[a.g] - rank[b.g];
+    });
+  }
+  var parts = order.map(function (o) {
+    var n = counts[(MODES[mode].kind === "x" ? (o.sex + "|" + o.g) : o.g)] / per4;
+    var num = String(Math.round(n));
+    if (MODES[mode].kind === "x") {
+      var who = o.sex === "M" ? (n === 1 ? "son" : "sons") : (n === 1 ? "daughter" : "daughters");
+      var tag = phenotypeOf(mode, o.sex, o.g) ? ", affected" : (o.g === "Aa" ? (n === 1 ? ", a carrier" : ", carriers") : "");
+      return num + " " + who + " " + genotypeText(mode, o.sex, o.g) + tag;
+    }
+    var tagA = phenotypeOf(mode, "M", o.g) ? ", affected" : (o.g === "Aa" ? (n === 1 ? ", an unaffected carrier" : ", unaffected carriers") : ", unaffected");
+    return num + " " + o.g + tagA;
+  });
+  return "Out of every 4 children, the Punnett square gives " + joinLbl(parts) + ".";
+}
+function probabilitySolution(t, mode, pa) {
+  var txt = "The pedigree forces both parents' genotypes: " + pa.dad.label + " is " + genotypeText(mode, "M", pa.dadG) + " and " + pa.mom.label + " is " + genotypeText(mode, "F", pa.momG) + ". ";
+  var kids = t.people.filter(function (c) {
+    return (c.father === pa.dad.id && c.mother === pa.mom.id) || (c.father === pa.mom.id && c.mother === pa.dad.id);
+  });
+  var aff = kids.filter(function (c) { return c.affected; });
+  if (aff.length && mode === "AR" && pa.dadG === "Aa" && pa.momG === "Aa") {
+    txt += "Their child " + aff[0].label + " is affected (aa), which is how the pedigree settles it: each parent must carry an a allele to have passed one on. ";
+  } else if (aff.length && mode === "XLR" && pa.momG === "Aa") {
+    var c0 = aff[0];
+    if (c0.sex === "M") txt += "Their son " + c0.label + " is affected, which is how the pedigree settles " + pa.mom.label + "'s genotype: a son's X comes from his mother, so she must carry the affected X. ";
+    else txt += "Their daughter " + c0.label + " is affected (" + genotypeText(mode, "F", "aa") + "), so she received an affected X from each parent. ";
+  }
+  txt += probBreakdown(mode, pa.dadG, pa.momG) + " ";
+  txt += "The outcome asked for (" + pa.ask.text.replace(/^have /, "") + ") covers " + (pa.ask.pct / 25) + " of those 4, so the probability is <b>" + pa.ask.pct + "%</b>.";
+  return txt;
+}
+
+function xlrSignature(t) {
+  /* The textbook signature that separates X-linked recessive from
+     autosomal recessive in practice (the two are not separable by
+     pure logic: every X-linked recessive pedigree is also consistent
+     with autosomal recessive inheritance). Required: at least two
+     affected males, no father-to-son transmission, at least one
+     affected male with an unaffected mother in the tree (the carrier
+     path made visible), and no affected female whose father is in
+     the tree and unaffected. The review book's own X-linked item
+     (its question 49) is keyed on exactly this kind of evidence. */
+  var byId = t.byId, affM = 0, carrierPath = false, i, p;
+  for (i = 0; i < t.people.length; i++) {
+    p = t.people[i];
+    if (!p.affected) continue;
+    if (p.sex === "M") {
+      affM++;
+      if (p.father != null && byId[p.father].affected) return false;
+      if (p.mother != null && !byId[p.mother].affected) carrierPath = true;
+    } else {
+      if (p.father != null && !byId[p.father].affected) return false;
+    }
+  }
+  return affM >= 2 && carrierPath;
+}
+function servable(t, mode) {
+  var possible = consistentGenotypes(t.people, t.byId, mode);
+  if (!possible) return null;
+  var out = { possible: possible, genotypeTargets: [], probabilityCouples: [] };
+  /* Mode servability: logically unique across the four candidate
+     modes, or the X-linked recessive signature case (consistent with
+     AR and XLR only, with the textbook X-linked signature present). */
+  var modes = consistentModes(t);
+  out.modeUnique = modes.length === 1;
+  out.modeServable = out.modeUnique ||
+    (mode === "XLR" && modes.length === 2 && modes.indexOf("AR") >= 0 &&
+     modes.indexOf("XLR") >= 0 && xlrSignature(t));
+  /* genotype targets: forced, and not simply read off the phenotype.
+     Restricted to three-genotype domains (autosomal, or X-linked
+     females) so the option set is AA / Aa / aa plus "cannot tell". */
+  t.people.forEach(function (p) {
+    if (MODES[mode].kind === "x" && p.sex === "M") return;
+    var set = Array.from(possible[p.id]);
+    if (set.length !== 1) return;
+    var g = set[0];
+    var trivial = (mode === "AD" && !p.affected) || (mode === "AR" && p.affected) ||
+                  (mode === "XLR" && p.affected);
+    if (!trivial) out.genotypeTargets.push({ person: p, genotype: g });
+  });
+  /* probability couples: both partners forced */
+  t.couples.forEach(function (c) {
+    var ga = Array.from(possible[c.a.id]), gb = Array.from(possible[c.b.id]);
+    if (ga.length === 1 && gb.length === 1) {
+      out.probabilityCouples.push({ a: c.a, b: c.b, ga: ga[0], gb: gb[0] });
+    }
+  });
+  return out;
+}
+function probabilityAsk(mode, couple, rnd) {
+  var dad = couple.a.sex === "M" ? couple.a : couple.b;
+  var mom = couple.a.sex === "M" ? couple.b : couple.a;
+  var dadG = couple.a.sex === "M" ? couple.ga : couple.gb;
+  var momG = couple.a.sex === "M" ? couple.gb : couple.ga;
+  var kids = punnett(mode, dadG, momG);
+  function frac(pred) {
+    var n = kids.filter(pred).length;
+    return Math.round(100 * n / kids.length);
+  }
+  var asks = [];
+  if (mode === "AR") {
+    asks.push({ text: "have a child who is affected", pct: frac(function (k) { return phenotypeOf(mode, k.sex, k.g); }) });
+    asks.push({ text: "have a child who is a carrier", pct: frac(function (k) { return k.g === "Aa"; }) });
+  } else if (mode === "AD") {
+    asks.push({ text: "have a child who is affected", pct: frac(function (k) { return phenotypeOf(mode, k.sex, k.g); }) });
+  } else {
+    asks.push({ text: "have a son who is affected", pct: frac(function (k) { return k.sex === "M" && phenotypeOf(mode, k.sex, k.g); }) });
+    asks.push({ text: "have a daughter who is a carrier", pct: frac(function (k) { return k.sex === "F" && k.g === "Aa"; }) });
+    asks.push({ text: "have a daughter who is affected", pct: frac(function (k) { return k.sex === "F" && phenotypeOf(mode, k.sex, k.g); }) });
+  }
+  var ask = asks[Math.floor(rnd() * asks.length)];
+  return { dad: dad, mom: mom, dadG: dadG, momG: momG, ask: ask };
+}
+function snap(t) {
+  return t.people.map(function (p) {
+    return { id: p.id, sex: p.sex, gen: p.gen, father: p.father, mother: p.mother,
+             affected: p.affected, genotype: p.genotype, label: p.label };
+  });
+}
+function makePedigreeQuestion(rnd, wantType) {
+  for (var attempt = 0; attempt < 600; attempt++) {
+    var mode = MODE_KEYS[Math.floor(rnd() * MODE_KEYS.length)];
+    var t = generateTree(mode, rnd);
+    if (!treeQuality(t)) continue;
+    var s = servable(t, mode);
+    if (!s) continue;
+    var type = wantType;
+    if (type === "mode" && !s.modeServable) continue;
+    if (type === "genotype" && !s.genotypeTargets.length) continue;
+    if (type === "probability" && !s.probabilityCouples.length) continue;
+    layout(t);
+    if (type === "mode") {
+      var others = ["AD", "AR", "XLR", "YL"].filter(function (m2) { return m2 !== mode; })
+        .map(function (m2) { return m2 === "YL" ? "Y-linked" : MODES[m2].label; });
+      var q = toMCQ("Which inheritance pattern is shown in the pedigree?", MODES[mode].label, others,
+        modeClue(t, mode) + " The pattern is <b>" + MODES[mode].label.toLowerCase() + "</b>.",
+        renderSVG(t, { mode: mode, carrierDots: false }));
+      q.meta = { type: type, mode: mode, people: t.people.length, tree: snap(t) };
+      return q;
+    }
+    if (type === "genotype") {
+      var carriers = s.genotypeTargets.filter(function (x) { return x.genotype === "Aa"; });
+      var pool = carriers.length ? carriers : s.genotypeTargets;
+      var target = pool[Math.floor(rnd() * pool.length)];
+      var gsol = genotypeSolution(t, mode, target, s.possible);
+      if (!gsol) continue;
+      var dom = genotypeDomain(mode, target.person.sex)
+        .map(function (g) { return genotypeText(mode, target.person.sex, g); });
+      var correct = genotypeText(mode, target.person.sex, target.genotype);
+      var ds = dom.filter(function (x) { return x !== correct; });
+      ds.push("Cannot be determined");
+      var q2 = toMCQ("What is the genotype of individual " + target.person.label + "?",
+        correct, ds,
+        gsol,
+        renderSVG(t, { mode: mode, carrierDots: false }));
+      q2.meta = { type: type, mode: mode, people: t.people.length, target: target.person.label, genotype: target.genotype, tree: snap(t) };
+      return q2;
+    }
+    /* probability */
+    var couple = s.probabilityCouples[Math.floor(rnd() * s.probabilityCouples.length)];
+    var pa = probabilityAsk(mode, couple, rnd);
+    var pctSet = ["0%", "25%", "50%", "75%", "100%"];
+    var correctP = pa.ask.pct + "%";
+    var dsP = pctSet.filter(function (x) { return x !== correctP; });
+    while (dsP.length > 3) dsP.splice(Math.floor(rnd() * dsP.length), 1);
+    var dotsNote = mode === "XLR" ? " Females marked with a dot are carriers." : "";
+    var q3 = toMCQ("Individuals " + pa.dad.label + " and " + pa.mom.label + " have children together. What is the probability that they will " + pa.ask.text + "?" + dotsNote,
+      correctP, dsP,
+      probabilitySolution(t, mode, pa),
+      renderSVG(t, { mode: mode, carrierDots: mode === "XLR" }));
+    q3.meta = { type: type, mode: mode, people: t.people.length, pct: pa.ask.pct, tree: snap(t) };
+    return q3;
+  }
+  return null;
+}
+
+function toBank(q) {
+  /* Convert the generator's raw question to the shell's shape: run
+     it through mcq() (which dedupes and orders the options by the
+     house rule) and attach the pedigree SVG as the figure. */
+  var correct = q.options[q.correct];
+  var ds = q.options.filter(function (o, i) { return i !== q.correct; });
+  var out = mcq(q.prompt, correct, ds, q.solution, {});
+  out.figure = q.figure;
+  return out;
+}
+
+  return { make: makePedigreeQuestion, toBank: toBank, RNG: RNG,
+    MODES: MODES, MODE_KEYS: MODE_KEYS,
+    consistentGenotypes: consistentGenotypes, consistentModes: consistentModes,
+    punnett: punnett, phenotypeOf: phenotypeOf,
+    genotypeText: genotypeText, genotypeDomain: genotypeDomain };
+})();
+
+/* ---------- 6.4 Pedigrees and Genetic Disorders: generator ---------- */
+
+E("bio-u2-64-gen-mode", 2, ["6.4"], 3, "gen", function () {
+  var q = null;
+  for (var k = 0; k < 30 && !q; k++) q = PED64.make(Math.random, "mode");
+  return PED64.toBank(q);
+}, ["Start with the parents of an affected child: if two unaffected parents have an affected child, the trait cannot be dominant. Then look at who shows the trait, males only or both sexes, and whether any affected father has an affected son."]);
+
+E("bio-u2-64-gen-genotype", 2, ["6.4"], 3, "gen", function () {
+  var q = null;
+  for (var k = 0; k < 30 && !q; k++) q = PED64.make(Math.random, "genotype");
+  return PED64.toBank(q);
+}, ["First decide the inheritance pattern from the whole tree. Then look at the named individual's closest relatives: an affected child, or an affected parent, can reveal an allele the individual must carry even when their own shading does not show it."]);
+
+E("bio-u2-64-gen-probability", 2, ["6.4"], 3, "gen", function () {
+  var q = null;
+  for (var k = 0; k < 30 && !q; k++) q = PED64.make(Math.random, "probability");
+  return PED64.toBank(q);
+}, ["Work out both parents' genotypes from the pedigree before building the Punnett square: a relative such as an affected child can force a parent to be a carrier. Then count the outcomes that match the question, keeping sons and daughters separate for an X-linked trait."]);
+
+
+/* Final-scope cap flagging (Jason's ruling, Nov 12, 2026): this is
+   the last Biology 3201 slice in the assembly order, so this pass
+   covers every bank entry, including the generator slices. Every
+   Unit 2 entry in the classical half (6.1 to 6.4, plus STSE 9.1
+   and 9.2) is flagged preFinal; poolFor holds flagged entries out
+   whenever the final scope is composed. bank-u2.js carries the
+   same flagging for the fixed entries. */
+BANK.forEach(function(e){if(e.unit===2&&e.indicators.some(function(c){return ["6.1","6.2","6.3","6.4","9.1","9.2"].indexOf(c)>=0;}))e.preFinal=true;});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of

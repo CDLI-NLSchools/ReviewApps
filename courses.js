@@ -291,7 +291,7 @@ window.COURSES = {
   bankFile: "bio-3201.js",
   subject: "Science",
   grade: 12,
-  listed: false,
+  listed: true,
 
   units: {
     1: "Cell Reproduction and the Continuity of Life",
@@ -370,14 +370,16 @@ window.COURSES = {
 
   presets: {
     mid:   { units: [1, 2], cap: true, label: "Mid-course review (Units 1 and 2, Unit 2 to 6.4)", faceLabel: "Mid-course review (Units 1 and 2)" },
-    final: { units: [2, 3], label: "Final review (Units 2 and 3)", faceLabel: "Final review (Units 2 and 3)" }
+    final: { units: [2, 3], cap: true, label: "Final review (Units 2 and 3, Unit 2 from 6.5)", faceLabel: "Final review (Units 2 and 3)" }
   },
 
   /* Shown in the pool line while the mid-course cap is on. The cap
      holds out the Unit 2 entries the bank flags postMid (indicators
      6.5 to 6.10) whenever the mid scope is composed, the Math 2201
-     mechanism; the pilot Unit 1 slice carries no such entries yet,
-     so the Unit 2 slices must flag theirs as they land. */
+     mechanism. The final preset carries the matching cap
+     (presets.final.cap): the bank flags the classical-half Unit 2
+     entries (6.1 to 6.4 and STSE 9.1/9.2) preFinal, and the shell
+     holds them out whenever the final scope is composed. */
   midNote: "Mid-course scope: Unit 2 stops at indicator 6.4, so the molecular genetics questions are held out.",
 
   /* Exam blueprints. The mid-course blueprint is the governing PEP
@@ -385,23 +387,25 @@ window.COURSES = {
      and 12 constructed response, with per-unit level marks as
      tabled (Unit 1: 12/18/6 of 36; Unit 2 classical genetics, to
      indicator 6.4: 7/12/5 of 24). The memo gives no per-unit
-     selected/constructed split; the split below is proportional to
-     the unit totals, the Physics 3204 treatment. The final
+     selected/constructed split; the split below (Unit 1: 28 SR +
+     8 CR; Unit 2: 20 SR + 4 CR) is set to what the review books'
+     CR prompts can actually sum to (Unit 1 prompts worth 4, 4 and
+     3 marks; Unit 2 prompts worth 4 and 4), so a composed
+     mid-course exam lands on the memo's totals exactly. The final
      blueprint is an ADOPTED BEST GUESS on the Physics 3204 pattern:
      no official final table has been published, so the final
      mirrors the mid's 60-mark shape and 30/50/20 band, split Unit 2
      (molecular genetics) 24 and Unit 3 36. If an official PEP final
-     table surfaces, it replaces this guess outright. GAP: the
-     composer's partial-unit cap exists only for the mid preset
-     (presets.mid.cap), so the final preset's Unit 2 pool is the
-     whole unit, classical half included, until a final-side cap
-     exists; the finalNote tells students so. */
+     table surfaces, it replaces this guess outright. The final
+     preset's cap holds the classical half of Unit 2 out of the
+     final scope, so the Unit 2 row below draws on molecular
+     genetics (6.5 onward) only. */
   exam: {
     mid: {
       units: [1, 2], total: 60, srCount: 48, crMarks: 12,
       perUnit: {
-        1: { sr: 29, cr: 7, levels: [12, 18, 6] },
-        2: { sr: 19, cr: 5, levels: [7, 12, 5] }
+        1: { sr: 28, cr: 8, levels: [12, 18, 6] },
+        2: { sr: 20, cr: 4, levels: [7, 12, 5] }
       }
     },
     final: {
@@ -415,7 +419,7 @@ window.COURSES = {
   },
 
   /* Shown with the pool information whenever the final scope is selected. */
-  finalNote: "Note: the final exam covers Unit 2 from indicator 6.5 (molecular genetics) plus Unit 3, but this preset's Unit 2 pool currently includes the whole unit, and no official Table of Specifications has been published for the Biology 3201 final. This preset uses an adopted best guess (60 marks in the mid-course shape, Unit 2 worth 24 and Unit 3 worth 36, at the course's 30/50/20 level split). If an official table is published, it replaces this guess.",
+  finalNote: "Note: the final exam covers Unit 2 from indicator 6.5 (molecular genetics) plus Unit 3, and this preset's pool matches that scope: the classical genetics questions are held out. No official Table of Specifications has been published for the Biology 3201 final, so this preset uses an adopted best guess (60 marks in the mid-course shape, Unit 2 worth 24 and Unit 3 worth 36, at the course's 30/50/20 level split). If an official table is published, it replaces this guess.",
 
   unitTest: { total: 25, sr: 11, cr: 14 }
 },
