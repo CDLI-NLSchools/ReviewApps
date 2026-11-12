@@ -379,20 +379,9 @@
         <button type="button" id="goExam" class="amber">Make a practice exam</button>
       </div>
     </div>
-    <details id="advBox">
-      <summary>Advanced options: question levels <button type="button" class="alt" id="advToolsBtn" style="float:right;" hidden>Advanced tools</button></summary>
-      <p class="hint">Levels follow the course Table of Specifications. The default mix matches the exams:
-      about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method),
-      20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</p>
-      <div class="adv">
-        <label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="20"></label>
-        <label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="60"></label>
-        <label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="20"></label>
-        <label><input type="checkbox" id="timerChk"> Show the exam timer on practice exams (it counts up; it is a guide only and never locks you out)</label>
-      </div>
-    </details>
     <div class="modebar">
       <button type="button" id="copyLink" class="alt">Copy link to these settings</button>
+      <button type="button" class="alt" id="advToolsBtn" hidden>Advanced tools</button>
     </div>
     <p class="hint" id="teacherNote" hidden>Advanced tools are on: question editing controls will appear on practice sets, sheets and tests you make. Any link you copy to share with students leaves advanced tools out; only the clearly labelled teacher link buttons keep them. <a href="#" id="advToolsOff">Turn off advanced tools</a></p>
     <p class="hint" id="poolInfo"></p>
@@ -1439,7 +1428,7 @@ function tctlHtml(i){
 }
 function tBarHtml(){
   if(!TEACHER||!T||T.view!=="online")return "";
-  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div id="tPicker" hidden></div></div>';
+  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; it is a guide only and never locks you out)</label></div></div><div id="tPicker" hidden></div></div>';
 }
 function tOnlineStatus(m){var st=$("tStatus");if(st)st.textContent=m;}
 function tWireOnline(){
@@ -3168,7 +3157,7 @@ function applyURL(){
   if(p.get("tm")==="1"&&$("timerChk"))$("timerChk").checked=true;
   if(p.get("pk")==="1"&&$("pkChk"))$("pkChk").checked=true;
   if(p.get("seed")&&$("seedIn"))$("seedIn").value=p.get("seed");
-  if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];$("advBox").open=true;}}
+  if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
   if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;}
   if(p.get("shuf")==="1")SHUFFLE_OPTS=true;
   return touched;
@@ -3176,7 +3165,7 @@ function applyURL(){
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5)__e5.textContent=__c.presets.final.label;}
-var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}var __box=document.getElementById("advBox");if(__box&&new URLSearchParams(location.search).get("teacher")!=="1"){Array.prototype.forEach.call(__box.children,function(ch){if(ch.tagName!=="SUMMARY")ch.style.display="none";});}
+function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
 $("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);});
 $("presetFinal").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.final.units.slice():[]);});
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
