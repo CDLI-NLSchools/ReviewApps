@@ -42,6 +42,189 @@ function precPair(keyT, ds){
   return ds.map(function(o,i){ var nt=render(ps[i],found[i]); if(nt===o.t) return o; var n2={}; for(var kk in o) n2[kk]=o[kk]; n2.t=nt; return n2; });
 }
 
+/* Geometry figure helpers added for the Math 7 geometry units.
+   Each helper draws only values passed in from the question's own
+   drawn parameters, so the figure always matches the stem. Labels
+   use numbers, units and the symbols base and h, matching the
+   figures already in this bank. */
+function figParaRect(bLabel,hLabel){
+  var out='<svg viewBox="0 0 350 180" width="350" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallélogramme coupé et réorganisé en rectangle">';
+  out+='<polygon points="30,125 130,125 155,50 55,50" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<line x1="55" y1="50" x2="55" y2="125" stroke="'+FIG_ALT+'" stroke-width="1.8" stroke-dasharray="5 4"/>';
+  out+='<path d="M 100 32 Q 175 6 232 30" fill="none" stroke="'+FIG_ACC+'" stroke-width="2"/>';
+  out+='<polygon points="240,31 225,24 227,39" fill="'+FIG_ACC+'"/>';
+  out+='<rect x="195" y="50" width="100" height="75" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<polygon points="270,125 295,125 295,50" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+=_txt(80,145,bLabel,12.5,false);
+  out+=_txt(245,145,bLabel,12.5,false);
+  out+=_txt(74,88,hLabel,12,false);
+  return out+'</svg>';
+}
+function figTriHalf(mode,bLabel,hLabel){
+  var out='<svg viewBox="0 0 300 175" width="300" height="175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forme divisée en deux triangles identiques">';
+  if(mode==="rect"){
+    out+='<rect x="40" y="50" width="190" height="75" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+='<polygon points="40,125 230,125 230,50" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    out+=_txt(135,145,bLabel,12.5,false);
+    out+=_txt(250,88,hLabel,12,false);
+  } else {
+    out+='<polygon points="35,125 155,125 180,50 60,50" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+='<polygon points="35,125 155,125 60,50" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    out+='<line x1="60" y1="50" x2="60" y2="125" stroke="'+FIG_ALT+'" stroke-width="1.8" stroke-dasharray="5 4"/>';
+    out+=_txt(95,145,bLabel,12.5,false);
+    out+=_txt(76,88,hLabel,12,false);
+  }
+  return out+'</svg>';
+}
+function figSign(wLabel,lLabel){
+  var out='<svg viewBox="0 0 260 215" width="260" height="215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle avec un demi-cercle sur le dessus">';
+  out+='<path d="M 55 85 A 75 75 0 0 1 205 85" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<polygon points="55,85 205,85 205,185 55,185" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=_txt(130,202,wLabel,12.5,false);
+  out+=_txt(32,135,lLabel,12.5,false);
+  return out+'</svg>';
+}
+function figRectCircle(L,W,r,unit){
+  var sc=Math.min(230/L,120/W), rw=L*sc, rh=W*sc, x0=(300-rw)/2, y0=(190-rh)/2, cx=150, cy=95, rp=r*sc;
+  var out='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle avec un cercle dedans">';
+  out+='<rect x="'+fmt(x0,1)+'" y="'+fmt(y0,1)+'" width="'+fmt(rw,1)+'" height="'+fmt(rh,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+fmt(rp,1)+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="2.4" fill="'+FIG_INK+'"/>';
+  out+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(cx+rp,1)+'" y2="'+cy+'" stroke="'+FIG_ACC+'" stroke-width="2"/>';
+  out+=_txt(cx+rp/2,cy-11,"r = "+r+" "+unit,12,false);
+  out+=_txt(150,y0+rh+17,L+" "+unit,12.5,false);
+  out+=_txt(x0-10,cy,W+" "+unit,12,false,"end");
+  return out+'</svg>';
+}
+function figMix(b1,h1,b2,h2,unit){
+  var out='<svg viewBox="0 0 300 175" width="300" height="175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parcelle en parallélogramme jointe à une parcelle triangulaire">';
+  out+='<polygon points="15,130 105,130 125,55 35,55" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<line x1="35" y1="55" x2="35" y2="130" stroke="'+FIG_ALT+'" stroke-width="1.8" stroke-dasharray="5 4"/>';
+  out+='<polygon points="165,130 275,130 205,55" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<line x1="205" y1="55" x2="205" y2="130" stroke="'+FIG_ALT+'" stroke-width="1.8" stroke-dasharray="5 4"/>';
+  out+=_txt(60,150,"base = "+b1+" "+unit,12,false);
+  out+=_txt(220,150,"base = "+b2+" "+unit,12,false);
+  out+=_txt(51,92,"h = "+h1+" "+unit,11.5,false);
+  out+=_txt(221,92,"h = "+h2+" "+unit,11.5,false);
+  return out+'</svg>';
+}
+function figGridArea(F,H){
+  var cols=6, cell=24, rows=Math.ceil((F+H)/cols), W=cols*cell+36, Hh=rows*cell+30;
+  var out='<svg viewBox="0 0 '+W+' '+Hh+'" width="'+W+'" height="'+Hh+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forme sur papier quadrillé faite de carrés entiers et de demi-carrés">';
+  for(var i=0;i<F+H;i++){
+    var x=18+(i%cols)*cell, y=14+Math.floor(i/cols)*cell;
+    if(i<F){
+      out+='<rect x="'+x+'" y="'+y+'" width="'+cell+'" height="'+cell+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+    } else {
+      out+='<rect x="'+x+'" y="'+y+'" width="'+cell+'" height="'+cell+'" fill="#ffffff" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+      out+='<polygon points="'+x+','+(y+cell)+' '+(x+cell)+','+(y+cell)+' '+x+','+y+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+    }
+  }
+  return out+'</svg>';
+}
+function figWideGrid(points,polys,segs){
+  var m=6;
+  function scan(x,y){var a=Math.max(Math.abs(x),Math.abs(y));if(a>m)m=a;}
+  if(points)points.forEach(function(p){scan(p.x,p.y);});
+  if(polys)polys.forEach(function(pl){pl.forEach(function(q){scan(q[0],q[1]);});});
+  if(segs)segs.forEach(function(s){scan(s[0],s[1]);scan(s[2],s[3]);});
+  var E=Math.ceil(m), W=280, c=140, st=126/E;
+  function X(x){return c+x*st;} function Y(y){return c-y*st;}
+  var out='<svg viewBox="0 0 '+W+' '+W+'" width="'+W+'" height="'+W+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Plan cartésien quadrillé">';
+  for(var g=-E;g<=E;g++){if(g===0)continue;out+='<line x1="'+fmt(X(g),1)+'" y1="8" x2="'+fmt(X(g),1)+'" y2="272" stroke="'+FIG_SHADE+'" stroke-width="1"/>';out+='<line x1="8" y1="'+fmt(Y(g),1)+'" x2="272" y2="'+fmt(Y(g),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1"/>';}
+  out+='<line x1="8" y1="140" x2="272" y2="140" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  out+='<line x1="140" y1="8" x2="140" y2="272" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  out+=_txt(266,126,"x",13,true)+_txt(152,20,"y",13,true);
+  if(segs)segs.forEach(function(s){out+='<line x1="'+fmt(X(s[0]),1)+'" y1="'+fmt(Y(s[1]),1)+'" x2="'+fmt(X(s[2]),1)+'" y2="'+fmt(Y(s[3]),1)+'" stroke="'+FIG_INK+'" stroke-width="2"'+(s[4]?' stroke-dasharray="5 4"':"")+'/>';});
+  if(polys)polys.forEach(function(p){out+='<polygon points="'+p.map(function(q){return fmt(X(q[0]),1)+","+fmt(Y(q[1]),1);}).join(" ")+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';});
+  if(points)points.forEach(function(p){out+='<circle cx="'+fmt(X(p.x),1)+'" cy="'+fmt(Y(p.y),1)+'" r="3.4" fill="'+FIG_INK+'"/>';if(p.label)out+=_txt(X(p.x)+11,Y(p.y)-10,p.label,13,true);});
+  return out+'</svg>';
+}
+function figAxes(mode){
+  var W=240, c=120, st=17;
+  function X(x){return c+x*st;} function Y(y){return c-y*st;}
+  var out='<svg viewBox="0 0 '+W+' '+W+'" width="'+W+'" height="'+W+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Axes du plan cartésien">';
+  if(mode==="quad2")out+='<rect x="'+fmt(X(-6),1)+'" y="'+fmt(Y(6),1)+'" width="102" height="102" fill="'+FIG_SHADE+'"/>';
+  for(var g=-6;g<=6;g++){if(g===0)continue;out+='<line x1="'+fmt(X(g),1)+'" y1="10" x2="'+fmt(X(g),1)+'" y2="230" stroke="'+FIG_SHADE+'" stroke-width="1"/>';out+='<line x1="10" y1="'+fmt(Y(g),1)+'" x2="230" y2="'+fmt(Y(g),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1"/>';}
+  out+='<line x1="10" y1="120" x2="230" y2="120" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  out+='<line x1="120" y1="10" x2="120" y2="230" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  out+='<polygon points="230,120 222,115 222,125" fill="'+FIG_INK+'"/><polygon points="120,10 115,18 125,18" fill="'+FIG_INK+'"/>';
+  out+=_txt(224,106,"x",13,true)+_txt(134,22,"y",13,true);
+  out+='<circle cx="120" cy="120" r="2.8" fill="'+FIG_INK+'"/>';
+  if(mode==="quad2")out+=_txt(69,69,"II",14,true);
+  if(mode==="onaxis")out+='<circle cx="120" cy="'+fmt(Y(4),1)+'" r="3.6" fill="'+FIG_ALT+'"/>';
+  return out+'</svg>';
+}
+function figBisect(kind){
+  var out='<svg viewBox="0 0 260 180" width="260" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme de bissectrice">';
+  if(kind==="angle"){
+    out+='<line x1="50" y1="95" x2="215" y2="30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+='<line x1="50" y1="95" x2="215" y2="160" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+='<line x1="50" y1="95" x2="220" y2="95" stroke="'+FIG_ACC+'" stroke-width="2" stroke-dasharray="6 4"/>';
+    out+='<path d="M 94.7 77.4 A 48 48 0 0 1 94.7 112.6" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+    out+='<path d="M 81.7 82.5 A 34 34 0 0 1 81.7 107.5" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+    out+='<circle cx="50" cy="95" r="3" fill="'+FIG_INK+'"/>';
+    return out+'</svg>';
+  }
+  if(kind==="construct"){
+    out+='<circle cx="55" cy="115" r="78" fill="none" stroke="'+FIG_ACC+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    out+='<circle cx="205" cy="115" r="78" fill="none" stroke="'+FIG_ACC+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  }
+  out+='<line x1="35" y1="115" x2="225" y2="115" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  out+='<circle cx="35" cy="115" r="3" fill="'+FIG_INK+'"/><circle cx="225" cy="115" r="3" fill="'+FIG_INK+'"/>';
+  out+='<circle cx="130" cy="115" r="3" fill="'+FIG_INK+'"/>';
+  out+='<line x1="130" y1="22" x2="130" y2="162" stroke="'+FIG_ACC+'" stroke-width="2" stroke-dasharray="6 4"/>';
+  out+='<path d="M 130 103 h 12 v 12" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+  return out+'</svg>';
+}
+function figSegMid(totalLabel){
+  var out='<svg viewBox="0 0 260 175" width="260" height="175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Segment traversé en son milieu par sa médiatrice">';
+  out+='<line x1="35" y1="100" x2="225" y2="100" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  out+='<circle cx="35" cy="100" r="3" fill="'+FIG_INK+'"/><circle cx="225" cy="100" r="3" fill="'+FIG_INK+'"/>';
+  out+='<circle cx="130" cy="100" r="3.2" fill="'+FIG_ALT+'"/>';
+  out+='<line x1="130" y1="28" x2="130" y2="140" stroke="'+FIG_ACC+'" stroke-width="2" stroke-dasharray="6 4"/>';
+  out+='<path d="M 130 88 h 12 v 12" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+  out+=_txt(82,124,"?",13,true)+_txt(178,124,"?",13,true);
+  out+=_txt(130,160,totalLabel,12.5,false);
+  return out+'</svg>';
+}
+function figEqui(abLabel,paLabel){
+  var out='<svg viewBox="0 0 260 180" width="260" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Point sur la médiatrice">';
+  out+='<line x1="130" y1="18" x2="130" y2="162" stroke="'+FIG_ACC+'" stroke-width="1.8" stroke-dasharray="6 4"/>';
+  out+='<line x1="40" y1="145" x2="220" y2="145" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  out+='<line x1="130" y1="35" x2="40" y2="145" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<line x1="130" y1="35" x2="220" y2="145" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<circle cx="40" cy="145" r="3" fill="'+FIG_INK+'"/><circle cx="220" cy="145" r="3" fill="'+FIG_INK+'"/>';
+  out+='<circle cx="130" cy="145" r="3" fill="'+FIG_INK+'"/>';
+  out+='<circle cx="130" cy="35" r="3.6" fill="'+FIG_ALT+'"/>';
+  out+=_txt(122,22,"P",13,true)+_txt(32,160,"A",13,true)+_txt(228,160,"B",13,true);
+  out+=_txt(72,84,paLabel,12,false);
+  if(abLabel)out+=_txt(130,168,abLabel,12,false);
+  return out+'</svg>';
+}
+function figAngleBisectTotal(totalLabel){
+  var out='<svg viewBox="0 0 260 180" width="260" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Angle divisé par sa bissectrice">';
+  out+='<line x1="50" y1="95" x2="215" y2="30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<line x1="50" y1="95" x2="215" y2="160" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<line x1="50" y1="95" x2="220" y2="95" stroke="'+FIG_ACC+'" stroke-width="2" stroke-dasharray="6 4"/>';
+  out+='<path d="M 94.7 77.4 A 48 48 0 0 1 94.7 112.6" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  out+='<circle cx="50" cy="95" r="3" fill="'+FIG_INK+'"/>';
+  out+=_txt(126,95,totalLabel,12.5,false);
+  out+=_txt(160,72,"?",12,true)+_txt(160,120,"?",12,true);
+  return out+'</svg>';
+}
+function figBisectSupp(halfLabel){
+  var out='<svg viewBox="0 0 330 180" width="330" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Angles sur une ligne droite">';
+  out+='<line x1="25" y1="125" x2="305" y2="125" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  out+='<line x1="165" y1="125" x2="211" y2="60" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<path d="M 199 125 A 34 34 0 0 0 184.5 97.1" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  out+='<path d="M 193.7 84 A 50 50 0 0 0 115 125" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  out+='<circle cx="165" cy="125" r="3.2" fill="'+FIG_INK+'"/>';
+  out+=_txt(222,104,halfLabel,12.5,false);
+  out+=_txt(100,98,"x",14,true);
+  return out+'</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 7 (French) Unit 1 Patterns and Relations question bank
 // Cut verbatim from the standalone bank source
@@ -1772,6 +1955,8 @@ E("u3-cr-order-ops", 3, ["6.10"], 3, "gen", function(){
 }, ["Les parenthèses d'abord, puis la multiplication, puis la soustraction.", "Commence par additionner à l'intérieur des parenthèses."]);
 
 /* ----- bank-u4.js ----- */
+// Ajouts de figures : les entrées de géométrie assignent q.figure à partir de leurs propres valeurs
+// (cercle, parallélogramme, triangle, figures composées et grille). Les entrées de données et de graphiques restent sans figure.
 // Math 7 (French) Unit 4 Circles and Area question bank
 // Cut verbatim from the standalone bank source
 // (math-7-review-fr/bank-src.js, lines 1729 to 2385).
@@ -1901,36 +2086,36 @@ E("u4-radius-diameter", 4, ["9.11"], 1, "gen", function(){
 }, ["Le diamètre est formé de deux rayons placés bout à bout.", "Commence par imaginer le rayon, du centre jusqu'au bord, puis double-le ou divise-le par deux."]);
 
 E("u4-draw-circle", 4, ["9.12"], 1, "var", varset([
-  function(){ return mcq("Pour tracer un cercle de rayon 6 cm avec un compas, à quelle distance, en centimètres, la pointe et le crayon doivent-ils être quand le compas est ouvert ?",
+  function(){ var q=mcq("Pour tracer un cercle de rayon 6 cm avec un compas, à quelle distance, en centimètres, la pointe et le crayon doivent-ils être quand le compas est ouvert ?",
     {t:"6", fb:"Oui : l'ouverture du compas est le rayon."},
     [{t:"12", fb:"12 cm est le diamètre : l'ouverture du compas correspond au rayon, pas au diamètre."},
      {t:"3", fb:"C'est la moitié du rayon : règle l'ouverture égale au rayon."},
      {t:"36", fb:"Cela multiplie 6 par 6 : l'ouverture est simplement la longueur du rayon."}],
-    "Un compas trace un cercle dont le rayon est égal à l'ouverture entre la pointe et le crayon. Pour un rayon de 6 cm, ouvre-le à <b>6 cm</b>.", {s:1}); },
-  function(){ return mcq("Pour tracer un cercle de diamètre 10 cm avec un compas, à quelle distance, en centimètres, la pointe et le crayon doivent-ils être quand le compas est ouvert ?",
+    "Un compas trace un cercle dont le rayon est égal à l'ouverture entre la pointe et le crayon. Pour un rayon de 6 cm, ouvre-le à <b>6 cm</b>.", {s:1}); q.figure=u4circleFig("r = 6 cm","r"); return q; },
+  function(){ var q=mcq("Pour tracer un cercle de diamètre 10 cm avec un compas, à quelle distance, en centimètres, la pointe et le crayon doivent-ils être quand le compas est ouvert ?",
     {t:"5", fb:"Oui : l'ouverture est le rayon, qui est la moitié de 10 cm."},
     [{t:"10", fb:"C'est le diamètre : l'ouverture doit être le rayon, la moitié de cela."},
      {t:"20", fb:"Cela double le diamètre : divise-le par deux pour obtenir le rayon."},
      {t:"2", fb:"Cela divise par 5 : le rayon est la moitié du diamètre, 5 cm."}],
-    "L'ouverture du compas est le rayon. Rayon = 10 / 2 = 5 cm, donc ouvre-le à <b>5 cm</b>.", {s:2}); },
+    "L'ouverture du compas est le rayon. Rayon = 10 / 2 = 5 cm, donc ouvre-le à <b>5 cm</b>.", {s:2}); q.figure=u4circleFig("d = 10 cm","d"); return q; },
   function(){ return mcq("Quelle méthode peut tracer un cercle quand aucun compas n'est disponible ?",
     {t:"Tracer le contour d'une tasse ronde et marquer son centre", fb:"Oui : un objet rond donne une vraie forme de cercle à tracer."},
     [{t:"Tracer la courbe à main levée et la mesurer ensuite", fb:"Une courbe à main levée n'est pas un cercle fiable et le rayon n'est pas contrôlé."},
      {t:"Utiliser une règle pour tracer quatre côtés droits", fb:"Des côtés droits forment un quadrilatère, pas un cercle."},
      {t:"Rouler une pièce de monnaie une fois le long d'une règle", fb:"Rouler trace un trajet droit, pas un cercle."}],
     "Tracer le contour d'un objet rond donne une courbe fermée à une distance fixe de son centre, ce qui est un cercle. La réponse est <b>tracer le contour d'une tasse ronde</b>.", {s:3}); },
-  function(){ return mcq("Un élève trace un cercle avec un compas ouvert à 4 cm. Quel est le diamètre du cercle tracé, en centimètres ?",
+  function(){ var q=mcq("Un élève trace un cercle avec un compas ouvert à 4 cm. Quel est le diamètre du cercle tracé, en centimètres ?",
     {t:"8", fb:"Oui : l'ouverture est le rayon, 4 cm, donc le diamètre est le double."},
     [{t:"4", fb:"C'est le rayon (l'ouverture du compas) : double-le pour le diamètre."},
      {t:"2", fb:"Cela divise le rayon par deux : le diamètre est le double du rayon."},
      {t:"16", fb:"Cela met le rayon au carré : le diamètre est deux rayons, 8 cm."}],
-    "L'ouverture du compas est le rayon, 4 cm. Diamètre = 2 × 4 = <b>8 cm</b>.", {s:4}); },
-  function(){ return mcq("Pour tracer un cercle de diamètre 14 cm avec un compas, à quelle distance, en centimètres, la pointe et le crayon doivent-ils être quand le compas est ouvert ?",
+    "L'ouverture du compas est le rayon, 4 cm. Diamètre = 2 × 4 = <b>8 cm</b>.", {s:4}); q.figure=u4circleFig("r = 4 cm","r"); return q; },
+  function(){ var q=mcq("Pour tracer un cercle de diamètre 14 cm avec un compas, à quelle distance, en centimètres, la pointe et le crayon doivent-ils être quand le compas est ouvert ?",
     {t:"7", fb:"Oui : l'ouverture est le rayon, la moitié de 14 cm."},
     [{t:"14,0", fb:"C'est le diamètre : l'ouverture doit être le rayon, la moitié de cela."},
      {t:"28", fb:"Cela double le diamètre : divise-le par deux pour obtenir le rayon."},
      {t:"3,5", fb:"C'est le quart du diamètre : le rayon est la moitié, 7 cm."}],
-    "L'ouverture du compas est le rayon. Rayon = 14 / 2 = 7 cm, donc ouvre-le à <b>7 cm</b>.", {s:5}); }
+    "L'ouverture du compas est le rayon. Rayon = 14 / 2 = 7 cm, donc ouvre-le à <b>7 cm</b>.", {s:5}); q.figure=u4circleFig("d = 14 cm","d"); return q; }
 ]), ["L'ouverture du compas est toujours le rayon du cercle qu'il trace.", "Commence par trouver le rayon du cercle que tu veux tracer."]);
 
 E("u4-circ-approx", 4, ["9.7"], 1, "gen", function(){
@@ -1941,32 +2126,32 @@ E("u4-circ-approx", 4, ["9.7"], 1, "gen", function(){
       if(seenA[candA[i]])continue; seenA[candA[i]]=1;
       dsA.push({t:"environ "+candA[i]+" cm", fb:"La circonférence est environ trois fois le diamètre : multiplie "+d+" par 3."});
     }
-    return mcq("Un cercle a un diamètre de "+d+" cm. La circonférence est environ trois fois le diamètre. Quelle est la longueur approximative de la circonférence ?",
+    var q=mcq("Un cercle a un diamètre de "+d+" cm. La circonférence est environ trois fois le diamètre. Quelle est la longueur approximative de la circonférence ?",
       {t:"environ "+c+" cm", fb:"Oui : 3 × "+d+" = "+c+"."},
       dsA,
       "La circonférence est approximativement \\(3 \\times d = 3 \\times "+d+" = "+c+"\\) cm. La réponse est <b>environ "+c+" cm</b>.",
-      {mode:"d", d:d});
+      {mode:"d", d:d}); q.figure=u4circleFig("d = "+d+" cm","d"); return q;
   }
   var r=ri(2,30), c2=6*r;
-  return mcq("Un cercle a un rayon de "+r+" cm, donc son diamètre est de "+(2*r)+" cm. La circonférence est environ trois fois le diamètre. Quelle est la longueur approximative de la circonférence ?",
+  var q=mcq("Un cercle a un rayon de "+r+" cm, donc son diamètre est de "+(2*r)+" cm. La circonférence est environ trois fois le diamètre. Quelle est la longueur approximative de la circonférence ?",
     {t:"environ "+c2+" cm", fb:"Oui : 3 × "+(2*r)+" = "+c2+"."},
     [{t:"environ "+(3*r)+" cm", fb:"C'est trois fois le rayon : la règle utilise le diamètre, qui est de "+(2*r)+" cm."},
      {t:"environ "+(2*r)+" cm", fb:"C'est le diamètre lui-même : multiplie-le par environ 3."},
      {t:"environ "+(12*r)+" cm", fb:"C'est douze fois le rayon : trois fois le diamètre est six fois le rayon."}],
     "Diamètre = \\(2 \\times "+r+" = "+(2*r)+"\\) cm, et la circonférence est approximativement \\(3 \\times "+(2*r)+" = "+c2+"\\) cm. La réponse est <b>environ "+c2+" cm</b>.",
-    {mode:"r", r:r});
+    {mode:"r", r:r}); q.figure=u4circleFig("r = "+r+" cm","r"); return q;
 }, ["La circonférence correspond à environ trois fois le diamètre.", "Commence par trouver le diamètre, puis multiplie par environ 3."]);
 
 E("u4-pi-ratio", 4, ["9.8"], 1, "gen", function(){
   if(ri(0,1)===0){
     var d=ri(3,60), C=3.14*d;
-    return mcq("Un cercle a une circonférence de "+fmtD(C,2)+" cm et un diamètre de "+d+" cm. Quelle est la valeur de la circonférence divisée par le diamètre pour ce cercle ?",
+    var q=mcq("Un cercle a une circonférence de "+fmtD(C,2)+" cm et un diamètre de "+d+" cm. Quelle est la valeur de la circonférence divisée par le diamètre pour ce cercle ?",
       {t:"3,14", fb:"Oui : pour chaque cercle, C/d est la constante pi, environ 3,14."},
       [{t:"0,32", fb:"C'est environ d/C, la division dans l'autre sens."},
        {t:"31,40", fb:"C'est dix fois trop grand : pi est un peu plus que 3."},
        {t:fmtDF(C-d,2), fb:"Cela soustrait au lieu de diviser : pi est un rapport, C divisé par d."}],
       "\\[ \\begin{aligned} \\pi &= "+FR("C","d")+" = "+fmtD(C,2)+" \\div "+d+" \\\\ &= 3,14 \\end{aligned} \\] La réponse est <b>3,14</b>.",
-      {mode:"ratio", d:d});
+      {mode:"ratio", d:d}); q.figure=u4circleFig("d = "+d+" cm","d"); return q;
   }
   var pair=pick([[5,15.6],[5,15.8],[10,31.2],[10,31.6],[20,62.5],[20,63.1],[25,78.2],[25,78.8],[40,125.2],[40,125.9],[50,156.6],[50,157.4]]);
   var dd=pair[0], wrapped=pair[1];
@@ -1979,11 +2164,11 @@ E("u4-pi-ratio", 4, ["9.8"], 1, "gen", function(){
     if(seen[k])continue; seen[k]=1;
     ds.push({t:k, fb:"Divise la longueur enroulée (la circonférence) par le diamètre et compare avec 3,14."});
   }
-  return mcq("De la ficelle enroulée autour d'une boîte de conserve ronde mesure "+wrappedD+" cm. Le diamètre de la boîte est de "+dd+" cm. Quelle valeur estime le mieux pi à partir de cette mesure ?",
+  var q=mcq("De la ficelle enroulée autour d'une boîte de conserve ronde mesure "+wrappedD+" cm. Le diamètre de la boîte est de "+dd+" cm. Quelle valeur estime le mieux pi à partir de cette mesure ?",
     {t:fmtD(est,2), fb:"Oui : "+wrappedD+" / "+dd+" est environ "+fmtD(est,2)+", près de 3,14."},
     ds,
     "\\[ \\begin{aligned} \\pi &\\approx "+wrappedD+" \\div "+dd+" \\\\ &\\approx "+fmtD(est,2)+" \\end{aligned} \\] L'erreur de mesure explique le petit écart par rapport à 3,14. La réponse est <b>"+fmtD(est,2)+"</b>.",
-    {mode:"measure", dd:dd});
+    {mode:"measure", dd:dd}); q.figure=u4circleFig("d = "+dd+" cm","d"); return q;
 }, ["Pi est le rapport de la circonférence au diamètre, le même pour chaque cercle.", "Commence par diviser la circonférence par le diamètre."]);
 
 E("u4-circumference", 4, ["9.10","9.8"], 1, "gen", function(){
@@ -2022,36 +2207,36 @@ E("u4-circumference", 4, ["9.10","9.8"], 1, "gen", function(){
 }, ["La circonférence est pi fois le diamètre, ou deux fois pi fois le rayon.", "Commence par décider si le diagramme te donne le rayon ou le diamètre."]);
 
 E("u4-para-from-rect", 4, ["9.1"], 1, "var", varset([
-  function(){ return mcq("On coupe un parallélogramme le long d'une ligne de hauteur pointillée et on déplace le morceau triangulaire à l'autre bout, ce qui forme un rectangle de même base et de même hauteur. L'aire du parallélogramme est égale à l'aire de ce rectangle, que l'on trouve par :",
+  function(){ var q=mcq("On coupe un parallélogramme le long d'une ligne de hauteur pointillée et on déplace le morceau triangulaire à l'autre bout, ce qui forme un rectangle de même base et de même hauteur. L'aire du parallélogramme est égale à l'aire de ce rectangle, que l'on trouve par :",
     {t:"base × hauteur", fb:"Oui : le rectangle réorganisé a pour aire base × hauteur, et déplacer un morceau ne change pas l'aire."},
     [{t:"base × côté oblique", fb:"Le côté oblique n'est pas un côté du rectangle réorganisé : ses côtés sont la base et la hauteur."},
      {t:"(base × hauteur) / 2", fb:"Diviser par deux est pour un triangle : le parallélogramme entier devient le rectangle entier."},
      {t:"base + hauteur", fb:"Additionner donne une longueur, pas une aire : l'aire d'un rectangle multiplie la longueur par la largeur."}],
-    "Couper et déplacer un morceau garde la même aire totale, et la nouvelle forme est un rectangle dont les côtés sont égaux à la base et à la hauteur. Son aire est <b>base × hauteur</b>.", {s:1}); },
-  function(){ return mcq("Un parallélogramme de base 8 cm et de hauteur 5 cm est réorganisé en rectangle. Quelle est l'aire du parallélogramme ?",
+    "Couper et déplacer un morceau garde la même aire totale, et la nouvelle forme est un rectangle dont les côtés sont égaux à la base et à la hauteur. Son aire est <b>base × hauteur</b>.", {s:1}); q.figure=figParaRect("base","h"); return q; },
+  function(){ var q=mcq("Un parallélogramme de base 8 cm et de hauteur 5 cm est réorganisé en rectangle. Quelle est l'aire du parallélogramme ?",
     {t:"40 cm²", fb:"Oui : le rectangle mesure 8 cm sur 5 cm, donc l'aire est 40 cm²."},
     [{t:"26 cm²", fb:"C'est le périmètre du rectangle : l'aire multiplie la longueur par la largeur."},
      {t:"20 cm²", fb:"Cela divise le produit par deux : le parallélogramme entier garde l'aire entière du rectangle."},
      {t:"13 cm²", fb:"Cela additionne la base et la hauteur : l'aire les multiplie."}],
-    "Le rectangle réorganisé mesure 8 cm sur 5 cm : \\(A = 8 \\times 5 = 40\\) cm². La réponse est <b>40 cm²</b>.", {s:2}); },
-  function(){ return mcq("Pourquoi couper un parallélogramme et réorganiser les morceaux en rectangle ne change-t-il pas l'aire ?",
+    "Le rectangle réorganisé mesure 8 cm sur 5 cm : \\(A = 8 \\times 5 = 40\\) cm². La réponse est <b>40 cm²</b>.", {s:2}); q.figure=figParaRect("base = 8 cm","h = 5 cm"); return q; },
+  function(){ var q=mcq("Pourquoi couper un parallélogramme et réorganiser les morceaux en rectangle ne change-t-il pas l'aire ?",
     {t:"Aucune aire n'est ajoutée ni enlevée ; les mêmes morceaux forment la nouvelle forme", fb:"Oui : réorganiser les morceaux garde la même aire totale."},
     [{t:"Un rectangle a toujours la même aire que n'importe quel parallélogramme", fb:"Seul le rectangle construit avec les mêmes morceaux, avec la même base et la même hauteur, correspond."},
      {t:"La coupe rend la forme plus petite, mais le déplacement la rend plus grande", fb:"Rien n'est gagné ni perdu : les morceaux sont identiques au total."},
      {t:"Le périmètre reste le même quand les morceaux bougent, donc l'aire aussi reste la même", fb:"Le périmètre peut changer quand les morceaux bougent : ce sont les morceaux eux-mêmes qui conservent l'aire."}],
-    "La nouvelle forme est construite avec exactement les mêmes morceaux, donc son aire est égale à l'aire du parallélogramme. La réponse est <b>aucune aire n'est ajoutée ni enlevée</b>.", {s:3}); },
-  function(){ return mcq("Un parallélogramme de base 11 cm et de hauteur 6 cm est réorganisé en rectangle. Quelles sont les longueurs des côtés de ce rectangle ?",
+    "La nouvelle forme est construite avec exactement les mêmes morceaux, donc son aire est égale à l'aire du parallélogramme. La réponse est <b>aucune aire n'est ajoutée ni enlevée</b>.", {s:3}); q.figure=figParaRect("base","h"); return q; },
+  function(){ var q=mcq("Un parallélogramme de base 11 cm et de hauteur 6 cm est réorganisé en rectangle. Quelles sont les longueurs des côtés de ce rectangle ?",
     {t:"11 cm et 6 cm", fb:"Oui : le rectangle prend la base et la hauteur du parallélogramme comme côtés."},
     [{t:"11 cm et 11 cm", fb:"Ce serait un carré : le deuxième côté est la hauteur, 6 cm."},
      {t:"6 cm et 6 cm", fb:"Les deux côtés ne sont pas la hauteur : un côté est la base, 11 cm."},
      {t:"17 cm et 6 cm", fb:"17 cm additionne la base et la hauteur : les côtés du rectangle sont la base et la hauteur elles-mêmes."}],
-    "Le rectangle réorganisé a la base du parallélogramme comme un côté et sa hauteur comme l'autre : <b>11 cm et 6 cm</b>.", {s:4}); },
-  function(){ return mcq("Un parallélogramme de base 9 cm et de hauteur 4 cm est coupé et réorganisé en rectangle. Quelle est l'aire du parallélogramme ?",
+    "Le rectangle réorganisé a la base du parallélogramme comme un côté et sa hauteur comme l'autre : <b>11 cm et 6 cm</b>.", {s:4}); q.figure=figParaRect("base = 11 cm","h = 6 cm"); return q; },
+  function(){ var q=mcq("Un parallélogramme de base 9 cm et de hauteur 4 cm est coupé et réorganisé en rectangle. Quelle est l'aire du parallélogramme ?",
     {t:"36 cm²", fb:"Oui : le rectangle mesure 9 cm sur 4 cm, donc l'aire est 36 cm²."},
     [{t:"26 cm²", fb:"C'est le périmètre du rectangle : l'aire multiplie la longueur par la largeur."},
      {t:"18 cm²", fb:"Cela divise le produit par deux : le parallélogramme entier garde l'aire entière du rectangle."},
      {t:"13 cm²", fb:"Cela additionne la base et la hauteur : l'aire les multiplie."}],
-    "Le rectangle réorganisé mesure 9 cm sur 4 cm : \\(A = 9 \\times 4 = 36\\) cm². La réponse est <b>36 cm²</b>.", {s:5}); }
+    "Le rectangle réorganisé mesure 9 cm sur 4 cm : \\(A = 9 \\times 4 = 36\\) cm². La réponse est <b>36 cm²</b>.", {s:5}); q.figure=figParaRect("base = 9 cm","h = 4 cm"); return q; }
 ]), ["Imagine le parallélogramme coupé et glissé pour former un rectangle.", "Commence par te demander quels sont les côtés du rectangle réorganisé."]);
 
 E("u4-area-parallelogram", 4, ["9.2","9.3"], 2, "gen", function(){
@@ -2081,36 +2266,36 @@ E("u4-area-parallelogram", 4, ["9.2","9.3"], 2, "gen", function(){
 }, ["L'aire d'un parallélogramme est la base fois la hauteur perpendiculaire.", "Commence par trouver la hauteur : la ligne pointillée à angle droit avec la base."]);
 
 E("u4-triangle-from", 4, ["9.4"], 1, "var", varset([
-  function(){ return mcq("On assemble deux triangles identiques pour former un parallélogramme de base 10 cm et de hauteur 6 cm. Le parallélogramme a une aire de 60 cm². Quelle est l'aire d'un triangle ?",
+  function(){ var q=mcq("On assemble deux triangles identiques pour former un parallélogramme de base 10 cm et de hauteur 6 cm. Le parallélogramme a une aire de 60 cm². Quelle est l'aire d'un triangle ?",
     {t:"30 cm²", fb:"Oui : chaque triangle est la moitié du parallélogramme."},
     [{t:"60 cm²", fb:"C'est le parallélogramme entier : un triangle en est la moitié."},
      {t:"120 cm²", fb:"Cela double le parallélogramme : le triangle est plus petit que le tout."},
      {t:"16 cm²", fb:"Cela additionne la base et la hauteur : utilise la moitié de l'aire du parallélogramme."}],
-    "Les deux triangles identiques forment le parallélogramme entier, donc un triangle a une aire de 60 / 2 = <b>30 cm²</b>.", {s:1}); },
-  function(){ return mcq("On coupe un rectangle le long d'une diagonale en deux triangles identiques. Le rectangle mesure 12 cm de long et 7 cm de large. Quelle est l'aire d'un triangle ?",
+    "Les deux triangles identiques forment le parallélogramme entier, donc un triangle a une aire de 60 / 2 = <b>30 cm²</b>.", {s:1}); q.figure=figTriHalf("para","base = 10 cm","h = 6 cm"); return q; },
+  function(){ var q=mcq("On coupe un rectangle le long d'une diagonale en deux triangles identiques. Le rectangle mesure 12 cm de long et 7 cm de large. Quelle est l'aire d'un triangle ?",
     {t:"42 cm²", fb:"Oui : l'aire du rectangle est 84 cm², et chaque triangle en est la moitié."},
     [{t:"84 cm²", fb:"C'est le rectangle entier : un triangle en est la moitié."},
      {t:"38 cm²", fb:"C'est le périmètre du rectangle : trouve d'abord son aire, puis divise-la par deux."},
      {t:"19 cm²", fb:"Cela additionne la longueur et la largeur : l'aire les multiplie, puis on divise par deux."}],
-    "\\[ \\begin{aligned} \\text{aire du rectangle} &= 12 \\times 7 = 84 \\text{ cm}^2 \\\\ \\text{aire du triangle} &= 84 \\div 2 = 42 \\text{ cm}^2 \\end{aligned} \\] La réponse est <b>42 cm²</b>.", {s:2}); },
-  function(){ return mcq("Un triangle et un parallélogramme ont la même base et la même hauteur. Le parallélogramme a une aire de 48 cm². Quelle est l'aire du triangle ?",
+    "\\[ \\begin{aligned} \\text{aire du rectangle} &= 12 \\times 7 = 84 \\text{ cm}^2 \\\\ \\text{aire du triangle} &= 84 \\div 2 = 42 \\text{ cm}^2 \\end{aligned} \\] La réponse est <b>42 cm²</b>.", {s:2}); q.figure=figTriHalf("rect","12 cm","7 cm"); return q; },
+  function(){ var q=mcq("Un triangle et un parallélogramme ont la même base et la même hauteur. Le parallélogramme a une aire de 48 cm². Quelle est l'aire du triangle ?",
     {t:"24 cm²", fb:"Oui : avec la même base et la même hauteur, le triangle est la moitié du parallélogramme."},
     [{t:"48 cm²", fb:"Cela correspond au parallélogramme : le triangle n'en prend que la moitié."},
      {t:"96 cm²", fb:"Cela double le parallélogramme : le triangle est plus petit."},
      {t:"12 cm²", fb:"C'est le quart : deux triangles identiques remplissent le parallélogramme, donc c'est la moitié."}],
-    "Deux copies du triangle remplissent exactement le parallélogramme, donc l'aire du triangle est 48 / 2 = <b>24 cm²</b>.", {s:3}); },
-  function(){ return mcq("Pourquoi l'aire d'un triangle est-elle la moitié de l'aire d'un parallélogramme de même base et de même hauteur ?",
+    "Deux copies du triangle remplissent exactement le parallélogramme, donc l'aire du triangle est 48 / 2 = <b>24 cm²</b>.", {s:3}); q.figure=figTriHalf("para","base","h"); return q; },
+  function(){ var q=mcq("Pourquoi l'aire d'un triangle est-elle la moitié de l'aire d'un parallélogramme de même base et de même hauteur ?",
     {t:"Deux copies identiques du triangle s'assemblent pour former ce parallélogramme", fb:"Oui : le triangle est exactement l'un des deux morceaux égaux."},
     [{t:"Les triangles ont toujours la moitié de l'aire de chaque parallélogramme", fb:"La correspondance demande la même base et la même hauteur, pas n'importe quel parallélogramme."},
      {t:"Le triangle a trois côtés et le parallélogramme en a quatre", fb:"Le nombre de côtés n'est pas la raison : ce sont les deux copies qui remplissent le parallélogramme."},
      {t:"La hauteur d'un triangle est la moitié de la hauteur d'un parallélogramme construit sur la même base", fb:"Ils ont ici la même hauteur : c'est l'aire qui est divisée par deux."}],
-    "En assemblant deux triangles identiques, on construit le parallélogramme, donc un triangle est la moitié de son aire. La réponse est <b>deux copies du triangle forment le parallélogramme</b>.", {s:4}); },
-  function(){ return mcq("Un parallélogramme de base 14 cm et de hauteur 5 cm est divisé en deux triangles identiques par une diagonale. Quelle est l'aire d'un triangle ?",
+    "En assemblant deux triangles identiques, on construit le parallélogramme, donc un triangle est la moitié de son aire. La réponse est <b>deux copies du triangle forment le parallélogramme</b>.", {s:4}); q.figure=figTriHalf("para","base","h"); return q; },
+  function(){ var q=mcq("Un parallélogramme de base 14 cm et de hauteur 5 cm est divisé en deux triangles identiques par une diagonale. Quelle est l'aire d'un triangle ?",
     {t:"35 cm²", fb:"Oui : l'aire du parallélogramme est 70 cm², et chaque triangle en est la moitié."},
     [{t:"70 cm²", fb:"C'est le parallélogramme entier : un triangle en est la moitié."},
      {t:"38 cm²", fb:"C'est le périmètre du parallélogramme : trouve d'abord son aire, puis divise-la par deux."},
      {t:"19 cm²", fb:"Cela additionne la base et la hauteur : l'aire les multiplie, puis on divise par deux."}],
-    "\\[ \\begin{aligned} \\text{aire du parallélogramme} &= 14 \\times 5 = 70 \\text{ cm}^2 \\\\ \\text{aire du triangle} &= 70 \\div 2 = 35 \\text{ cm}^2 \\end{aligned} \\] La réponse est <b>35 cm²</b>.", {s:5}); }
+    "\\[ \\begin{aligned} \\text{aire du parallélogramme} &= 14 \\times 5 = 70 \\text{ cm}^2 \\\\ \\text{aire du triangle} &= 70 \\div 2 = 35 \\text{ cm}^2 \\end{aligned} \\] La réponse est <b>35 cm²</b>.", {s:5}); q.figure=figTriHalf("para","base = 14 cm","h = 5 cm"); return q; }
 ]), ["Pense au triangle comme l'un des deux morceaux identiques d'un parallélogramme ou d'un rectangle.", "Commence par trouver l'aire du parallélogramme ou du rectangle entier, puis divise-la par deux."]);
 
 E("u4-area-triangle", 4, ["9.5","9.3"], 1, "gen", function(){
@@ -2242,11 +2427,11 @@ E("u4-circle-context", 4, ["9.10"], 3, "gen", function(){
       if(seen[k])continue; seen[k]=1;
       ds.push({t:k, fb:i===1?"Cela utilise le rayon dans la circonférence : C = pi × d, puis multiplie par le nombre de tours et convertis en mètres.":"Trouve d'abord une circonférence (pi × d), multiplie par les tours, et change les centimètres en mètres."});
     }
-    return mcq("Une roue de vélo a un diamètre de "+d+" cm. La roue tourne "+n+" fois pendant une sortie. En utilisant 3,14 pour pi, quelle distance le vélo parcourt-il, en mètres ?",
+    var q=mcq("Une roue de vélo a un diamètre de "+d+" cm. La roue tourne "+n+" fois pendant une sortie. En utilisant 3,14 pour pi, quelle distance le vélo parcourt-il, en mètres ?",
       {t:fmtDF(dist,2), fb:"Oui : un tour couvre une circonférence, et le total se convertit en "+fmtDF(dist,2)+" m."},
       ds,
       "\\[ \\begin{aligned} C &= 3,14 \\times "+d+" = "+fmtDF(3.14*d,2)+" \\text{ cm} \\\\ \\text{distance} &= "+fmtDF(3.14*d,2)+" \\times "+n+" = "+fmtDF(3.14*d*n,2)+" \\text{ cm} \\\\ &= "+fmtDF(dist,2)+" \\text{ m} \\end{aligned} \\] La réponse est <b>"+fmtDF(dist,2)+" m</b>.",
-      {mode:"wheel", d:d, n:n});
+      {mode:"wheel", d:d, n:n}); q.figure=u4circleFig("d = "+d+" cm","d"); return q;
   }
   var r=pick([3,5,6,7,8,9]), rope=2*2*3.14*r;
   var pool2=[2*3.14*r,3.14*r*r,rope+6.28,rope*1.5];
@@ -2256,11 +2441,11 @@ E("u4-circle-context", 4, ["9.10"], 3, "gen", function(){
     if(seen2[k2])continue; seen2[k2]=1;
     ds2.push({t:k2, fb:j===1?"C'est l'aire du jardin : la bordure suit la circonférence, et elle fait le tour deux fois.":"La bordure suit la circonférence : trouve C = 2 × pi × r, puis double-la pour deux tours."});
   }
-  return mcq("Un jardin circulaire a un rayon de "+r+" m. Une corde de bordure fait deux fois le tour du jardin. En utilisant 3,14 pour pi, quelle longueur de corde faut-il, en mètres ?",
+  var q=mcq("Un jardin circulaire a un rayon de "+r+" m. Une corde de bordure fait deux fois le tour du jardin. En utilisant 3,14 pour pi, quelle longueur de corde faut-il, en mètres ?",
     {t:fmtDF(rope,2), fb:"Oui : un tour mesure "+fmtDF(2*3.14*r,2)+" m, et deux tours doublent cette longueur."},
     ds2,
     "\\[ \\begin{aligned} C &= 2 \\times 3,14 \\times "+r+" = "+fmtDF(2*3.14*r,2)+" \\text{ m} \\\\ \\text{corde} &= 2 \\times "+fmtDF(2*3.14*r,2)+" = "+fmtDF(rope,2)+" \\text{ m} \\end{aligned} \\] La réponse est <b>"+fmtDF(rope,2)+" m</b>.",
-    {mode:"rope", r:r});
+    {mode:"rope", r:r}); q.figure=u4circleFig("r = "+r+" m","r"); return q;
 }, ["Chaque tour complet d'un cercle couvre une circonférence.", "Commence par trouver la circonférence du cercle dans le problème."]);
 
 E("u4-graph-attributes", 4, ["11.2"], 1, "gen", function(){
@@ -2385,19 +2570,19 @@ E("u4-graph-create", 4, ["11.3","9.13"], 3, "gen", function(){
 E("u4-cr-area-mix", 4, ["9.3"], 2, "gen", function(){
   var b1=ri(6,14), h1=ri(3,9), b2=ri(6,14), h2=pick([4,6,8,10,12]);
   var A1=b1*h1, A2=b2*h2/2, tot=A1+A2;
-  return numq("Un jardin est formé d'une parcelle en parallélogramme de base "+b1+" m et de hauteur "+h1+" m, jointe à une parcelle triangulaire de base "+b2+" m et de hauteur "+h2+" m. Quelle est l'aire totale du jardin ? Donne ta réponse en mètres carrés.",
+  var q=numq("Un jardin est formé d'une parcelle en parallélogramme de base "+b1+" m et de hauteur "+h1+" m, jointe à une parcelle triangulaire de base "+b2+" m et de hauteur "+h2+" m. Quelle est l'aire totale du jardin ? Donne ta réponse en mètres carrés.",
     tot, 0.01,
     "\\[ \\begin{aligned} A_{\\text{parallélogramme}} &= "+b1+" \\times "+h1+" = "+A1+" \\\\ A_{\\text{triangle}} &= "+FR(b2+" \\times "+h2,"2")+" = "+A2+" \\\\ \\text{total} &= "+A1+" + "+A2+" = "+tot+" \\text{ m}^2 \\end{aligned} \\] La réponse est <b>"+tot+" m²</b>.",
-    {b1:b1, h1:h1, b2:b2, h2:h2});
+    {b1:b1, h1:h1, b2:b2, h2:h2}); q.figure=figMix(b1,h1,b2,h2,"m"); return q;
 }, ["Trouve l'aire de chaque parcelle avec sa propre formule, puis additionne.", "Commence par le parallélogramme : base fois hauteur."]);
 
 E("u4-cr-circumference", 4, ["9.10"], 2, "gen", function(){
   var d=pick([8,10,12,15,20,25,30,40]), laps=ri(3,12);
   var tot=3.14*d*laps;
-  return numq("Une piste de course est un cercle de diamètre "+d+" m. Un coureur fait "+laps+" tours de la piste. En utilisant 3,14 pour pi, quelle distance le coureur parcourt-il ? Donne ta réponse en mètres.",
+  var q=numq("Une piste de course est un cercle de diamètre "+d+" m. Un coureur fait "+laps+" tours de la piste. En utilisant 3,14 pour pi, quelle distance le coureur parcourt-il ? Donne ta réponse en mètres.",
     tot, 0.01,
     "\\[ \\begin{aligned} C &= 3,14 \\times "+d+" = "+fmtDF(3.14*d,2)+" \\text{ m} \\\\ \\text{distance} &= "+fmtDF(3.14*d,2)+" \\times "+laps+" = "+fmtDF(tot,2)+" \\text{ m} \\end{aligned} \\] La réponse est <b>"+fmtDF(tot,2)+" m</b>.",
-    {d:d, laps:laps});
+    {d:d, laps:laps}); q.figure=u4circleFig("d = "+d+" m","d"); return q;
 }, ["Un tour est une circonférence ; multiplie par le nombre de tours.", "Commence par C = pi × d en utilisant 3,14 pour pi."]);
 
 E("u4-cr-graph-quantity", 4, ["11.5"], 1, "gen", function(){
@@ -2417,24 +2602,24 @@ E("u4-cr-graph-quantity", 4, ["11.5"], 1, "gen", function(){
 E("u4-cr-area-circle", 4, ["9.9","9.3"], 3, "gen", function(){
   if(ri(0,1)===0){
     var d=2*ri(3,30), r=d/2, A=3.14*r*r;
-    return numq("Une aire de jeux d'eau circulaire a un diamètre de "+d+" m. En utilisant 3,14 pour pi, quelle est l'aire de cette surface ? Donne ta réponse en mètres carrés.",
+    var q=numq("Une aire de jeux d'eau circulaire a un diamètre de "+d+" m. En utilisant 3,14 pour pi, quelle est l'aire de cette surface ? Donne ta réponse en mètres carrés.",
       A, 0.01,
       "\\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\text{ m} \\\\ A &= 3,14 \\times "+r+"^2 \\\\ &= "+fmtDF(A,2)+" \\text{ m}^2 \\end{aligned} \\] La réponse est <b>"+fmtDF(A,2)+" m²</b>.",
-      {mode:"d", d:d});
+      {mode:"d", d:d}); q.figure=u4circleFig("d = "+d+" m","d"); return q;
   }
   var rr=ri(3,30), AA=3.14*rr*rr;
-  return numq("Un tapis circulaire a un rayon de "+rr+" m. En utilisant 3,14 pour pi, quelle est l'aire du tapis ? Donne ta réponse en mètres carrés.",
+  var q=numq("Un tapis circulaire a un rayon de "+rr+" m. En utilisant 3,14 pour pi, quelle est l'aire du tapis ? Donne ta réponse en mètres carrés.",
     AA, 0.01,
     "\\[ \\begin{aligned} A &= 3,14 \\times "+rr+"^2 \\\\ &= "+fmtDF(AA,2)+" \\text{ m}^2 \\end{aligned} \\] La réponse est <b>"+fmtDF(AA,2)+" m²</b>.",
-    {mode:"r", r:rr});
+    {mode:"r", r:rr}); q.figure=u4circleFig("r = "+rr+" m","r"); return q;
 }, ["Assure-toi d'avoir le rayon, puis utilise A = pi × r².", "Commence par trouver le rayon : divise le diamètre par deux si c'est lui qui est donné."]);
 
 E("u4-cr-composite", 4, ["9.3","9.10"], 3, "gen", function(){
   var w=pick([5,6,7,8,9,10,11,12,14,16]), L=ri(4,14), r=w/2, semi=3.14*r*r/2, tot=w*L+semi;
-  return numq("Un panneau est un rectangle de "+w+" m de large et de "+L+" m de haut, avec un demi-cercle (la moitié d'un cercle) de diamètre "+w+" m fixé sur le dessus. En utilisant 3,14 pour pi, quelle est l'aire totale du panneau ? Donne ta réponse en mètres carrés.",
+  var q=numq("Un panneau est un rectangle de "+w+" m de large et de "+L+" m de haut, avec un demi-cercle (la moitié d'un cercle) de diamètre "+w+" m fixé sur le dessus. En utilisant 3,14 pour pi, quelle est l'aire totale du panneau ? Donne ta réponse en mètres carrés.",
     tot, 0.05,
     "\\[ \\begin{aligned} A_{\\text{rectangle}} &= "+w+" \\times "+L+" = "+(w*L)+" \\\\ A_{\\text{demi-cercle}} &= "+FR("3,14 \\times "+fmtD(r)+"^2","2")+" = "+fmtDF(semi,2)+" \\\\ \\text{total} &= "+(w*L)+" + "+fmtDF(semi,2)+" = "+fmtDF(tot,2)+" \\text{ m}^2 \\end{aligned} \\] La réponse est <b>"+fmtDF(tot,2)+" m²</b>.",
-    {w:w, L:L});
+    {w:w, L:L}); q.figure=figSign(w+" m",L+" m"); return q;
 }, ["Divise le panneau en un rectangle et un demi-cercle, trouve chaque aire, puis additionne.", "Commence par le rectangle, puis trouve le demi-cercle : son rayon est la moitié de la largeur du panneau."]);
 
 /* ----- bank-u5.js ----- */
@@ -3995,6 +4180,8 @@ E("u7-zero-one",7,["12.2","12.3"],3,"var",varset([
 ]),["Une probabilité de 0 signifie impossible et une probabilité de 1 signifie certain; des évènements indépendants ne peuvent pas s'influencer.","Commence par te demander si l'évènement peut se produire, se produit toujours, ou dépend de l'autre évènement."]);
 
 /* ----- bank-u8.js ----- */
+// Ajouts de figures : les entrées de géométrie assignent q.figure à partir de leurs propres valeurs
+// (diagrammes de bissectrices, grilles cartésiennes et figures d'angles de triangles).
 // Math 7 (French) Unit 8 Geometry question bank
 // Cut verbatim from the standalone bank source
 // (math-7-review-fr/bank-src.js, lines 3916 to 4454).
@@ -4096,26 +4283,26 @@ E("u8-parallel-perp-id",8,["10.1"],1,"gen",function(){
   return q;
 },["Les segments parallèles ne se rencontrent jamais et restent à la même distance; les segments perpendiculaires se rencontrent à 90 degrés.","Commence par vérifier chaque paire : se rencontrent-ils, et si oui, à quel angle ?"]);
 E("u8-axes-origin",8,["10.6"],1,"var",varset([
-  function(){return mcq("Dans un plan cartésien, comment appelle-t-on l'axe horizontal ?",
+  function(){var q=mcq("Dans un plan cartésien, comment appelle-t-on l'axe horizontal ?",
     {t:"axe des x",fb:"Oui : l'axe des x est horizontal et donne le premier nombre d'une paire ordonnée."},
     [{t:"axe des y",fb:"L'axe des y est vertical, pas horizontal."},{t:"origine",fb:"L'origine est un point, le point (0, 0), pas un axe."},{t:"quadrant",fb:"Un quadrant est une des quatre régions du plan, pas un axe."}],
-    "L'axe horizontal est l'axe des x. La réponse est <b>axe des x</b>.",{mode:"xaxis"});},
-  function(){return mcq("Dans un plan cartésien, comment appelle-t-on l'axe vertical ?",
+    "L'axe horizontal est l'axe des x. La réponse est <b>axe des x</b>.",{mode:"xaxis"}); q.figure=figAxes("plain"); return q;},
+  function(){var q=mcq("Dans un plan cartésien, comment appelle-t-on l'axe vertical ?",
     {t:"axe des y",fb:"Oui : l'axe des y est vertical et donne le deuxième nombre d'une paire ordonnée."},
     [{t:"axe des x",fb:"L'axe des x est horizontal, pas vertical."},{t:"origine",fb:"L'origine est le point (0, 0), pas un axe."},{t:"quadrant",fb:"Un quadrant est une région du plan, pas un axe."}],
-    "L'axe vertical est l'axe des y. La réponse est <b>axe des y</b>.",{mode:"yaxis"});},
-  function(){return mcq("Quelles sont les coordonnées de l'origine dans un plan cartésien ?",
+    "L'axe vertical est l'axe des y. La réponse est <b>axe des y</b>.",{mode:"yaxis"}); q.figure=figAxes("plain"); return q;},
+  function(){var q=mcq("Quelles sont les coordonnées de l'origine dans un plan cartésien ?",
     {t:"(0, 0)",fb:"Oui : l'origine est l'endroit où les deux axes se croisent, à zéro sur les deux."},
     [{t:"(1, 0)",fb:"Ce point se trouve à une unité à droite de l'origine, sur l'axe des x."},{t:"(0, 1)",fb:"Ce point se trouve à une unité au-dessus de l'origine, sur l'axe des y."},{t:"(1, 1)",fb:"Ce point se trouve à une unité à droite et à une unité au-dessus de l'origine."}],
-    "Les axes se croisent à zéro sur les deux axes. L'origine est <b>(0, 0)</b>.",{mode:"origine"});},
-  function(){return mcq("Le point (0, 4) se trouve :",
+    "Les axes se croisent à zéro sur les deux axes. L'origine est <b>(0, 0)</b>.",{mode:"origine"}); q.figure=figAxes("plain"); return q;},
+  function(){var q=mcq("Le point (0, 4) se trouve :",
     {t:"Sur l'axe des y",fb:"Oui : une coordonnée x de 0 place le point sur l'axe des y, à quatre unités vers le haut."},
     [{t:"Sur l'axe des x",fb:"Les points sur l'axe des x ont une coordonnée y de 0; ce point a y égal à 4."},{t:"À l'origine",fb:"L'origine est (0, 0); ce point est à quatre unités au-dessus d'elle."},{t:"Dans le quadrant I",fb:"Les points sur un axe n'appartiennent à aucun quadrant."}],
-    "Une coordonnée x de 0 veut dire que le point se trouve sur l'axe des y. La réponse est <b>Sur l'axe des y</b>.",{mode:"onaxis"});},
-  function(){return mcq("Dans le quadrant II d'un plan cartésien, les coordonnées de chaque point ont :",
+    "Une coordonnée x de 0 veut dire que le point se trouve sur l'axe des y. La réponse est <b>Sur l'axe des y</b>.",{mode:"onaxis"}); q.figure=figAxes("onaxis"); return q;},
+  function(){var q=mcq("Dans le quadrant II d'un plan cartésien, les coordonnées de chaque point ont :",
     {t:"x négatif et y positif",fb:"Oui : le quadrant II est à gauche de l'axe des y et au-dessus de l'axe des x."},
     [{t:"x positif et y positif",fb:"Ce patron de signes décrit le quadrant I, à droite et au-dessus."},{t:"x négatif et y négatif",fb:"Ce patron de signes décrit le quadrant III, à gauche et au-dessous."},{t:"x positif et y négatif",fb:"Ce patron de signes décrit le quadrant IV, à droite et au-dessous."}],
-    "Le quadrant II est à gauche de l'axe des y (x négatif) et au-dessus de l'axe des x (y positif). La réponse est <b>x négatif et y positif</b>.",{mode:"quad2"});}
+    "Le quadrant II est à gauche de l'axe des y (x négatif) et au-dessus de l'axe des x (y positif). La réponse est <b>x négatif et y positif</b>.",{mode:"quad2"}); q.figure=figAxes("quad2"); return q;}
 ]),["L'axe des x est horizontal, l'axe des y est vertical, et ils se croisent à l'origine.","Commence par imaginer les deux axes qui se croisent en (0, 0)."]);
 
 E("u8-read-point",8,["10.7"],1,"gen",function(){
@@ -4168,52 +4355,52 @@ E("u8-plot-point",8,["10.7","10.9"],1,"gen",function(){
 },["Pour placer (x, y), déplace-toi de x unités à l'horizontale à partir de l'origine, puis de y unités vers le haut ou vers le bas.","Pars de l'origine et compte d'abord le déplacement en x."]);
 
 E("u8-bisector-env",8,["10.4","10.5"],1,"var",varset([
-  function(){return mcq("Qu'est-ce que la médiatrice d'un segment de droite ?",
+  function(){var q=mcq("Qu'est-ce que la médiatrice d'un segment de droite ?",
     {t:"Une droite qui coupe le segment en deux parties égales à 90 degrés",fb:"Oui : elle passe par le milieu et rencontre le segment à angle droit."},
     [{t:"Une droite qui coupe le segment en deux parties égales à n'importe quel angle",fb:"Des parties égales donnent seulement un passage au milieu; une médiatrice doit aussi rencontrer le segment à 90 degrés."},{t:"Une droite qui rencontre le segment à 90 degrés à une de ses extrémités",fb:"Une rencontre à une extrémité ne peut pas couper le segment en deux parties égales."},{t:"Une droite qui passe à côté du segment et ne le touche jamais",fb:"Une médiatrice doit croiser le segment qu'elle coupe en deux."}],
-    "Une médiatrice croise le segment au milieu et à 90 degrés. La réponse est <b>Une droite qui coupe le segment en deux parties égales à 90 degrés</b>.",{mode:"defpb"});},
-  function(){return mcq("Un jardinier veut un sentier qui est la médiatrice du bord avant d'un terrain de jardin. Quel sentier convient ?",
+    "Une médiatrice croise le segment au milieu et à 90 degrés. La réponse est <b>Une droite qui coupe le segment en deux parties égales à 90 degrés</b>.",{mode:"defpb"}); q.figure=figBisect("perp"); return q;},
+  function(){var q=mcq("Un jardinier veut un sentier qui est la médiatrice du bord avant d'un terrain de jardin. Quel sentier convient ?",
     {t:"Un sentier qui croise le bord exactement en son milieu, en formant un angle droit avec lui",fb:"Oui : croiser au milieu à 90 degrés, c'est exactement une médiatrice."},
     [{t:"Un sentier qui croise le bord du terrain de jardin près d'un bout, à angle droit avec ce bord",fb:"Un angle droit seul ne suffit pas; le croisement doit être au milieu."},{t:"Un sentier qui croise le bord en son milieu, à un angle incliné au point de croisement",fb:"Le milieu seul ne suffit pas; le croisement doit aussi être à 90 degrés."},{t:"Un sentier qui suit le bord lui-même, d'un bout du terrain à l'autre",fb:"Un sentier sur le bord ne le croise pas et ne le coupe pas en deux."}],
-    "Le sentier doit croiser au milieu et à 90 degrés. La réponse est <b>Un sentier qui croise le bord exactement en son milieu, en formant un angle droit avec lui</b>.",{mode:"garden"});},
-  function(){return mcq("Qu'est-ce que la bissectrice d'un angle ?",
+    "Le sentier doit croiser au milieu et à 90 degrés. La réponse est <b>Un sentier qui croise le bord exactement en son milieu, en formant un angle droit avec lui</b>.",{mode:"garden"}); q.figure=figBisect("perp"); return q;},
+  function(){var q=mcq("Qu'est-ce que la bissectrice d'un angle ?",
     {t:"Une demi-droite qui partage un angle en deux angles égaux",fb:"Oui : les deux angles obtenus ont la même mesure."},
     [{t:"Une demi-droite qui partage un angle en deux angles quelconques",fb:"Une bissectrice doit créer deux angles égaux, pas n'importe quels deux angles."},{t:"Une droite qui coupe les côtés de l'angle en longueurs égales",fb:"Cela décrit le partage d'un segment, pas le partage de la mesure d'un angle."},{t:"Une demi-droite tracée de l'extérieur de l'angle vers son sommet",fb:"Une bissectrice part du sommet et va à l'intérieur de l'angle."}],
-    "La bissectrice d'un angle partage l'angle en deux angles égaux. La réponse est <b>Une demi-droite qui partage un angle en deux angles égaux</b>.",{mode:"defab"});},
-  function(){return mcq("Quelle action crée la bissectrice d'un angle dans une tâche de tous les jours ?",
+    "La bissectrice d'un angle partage l'angle en deux angles égaux. La réponse est <b>Une demi-droite qui partage un angle en deux angles égaux</b>.",{mode:"defab"}); q.figure=figBisect("angle"); return q;},
+  function(){var q=mcq("Quelle action crée la bissectrice d'un angle dans une tâche de tous les jours ?",
     {t:"Plier un coin de papier pour que les deux bords du coin s'alignent exactement",fb:"Oui : le pli partage l'angle du coin en deux angles égaux."},
     [{t:"Couper un coin de papier d'un seul coup droit à travers le coin",fb:"Couper le coin enlève une partie de l'angle au lieu de le partager en deux moitiés égales."},{t:"Tracer n'importe quelle droite du coin jusqu'à l'autre côté de la feuille",fb:"Une droite quelconque ne partage pas nécessairement l'angle en deux parties égales."},{t:"Mesurer l'angle du coin avec un rapporteur d'angle placé sur le coin de la feuille",fb:"Mesurer donne la mesure de l'angle; cela ne le partage pas."}],
-    "Plier pour que les bords correspondent fait que le pli partage l'angle en deux parties égales. La réponse est <b>Plier un coin de papier pour que les deux bords du coin s'alignent exactement</b>.",{mode:"foldab"});},
-  function(){return mcq("Deux lampadaires se trouvent aux extrémités d'un sentier droit. Un banc se trouve sur la médiatrice du segment du sentier. Qu'est-ce qui est vrai pour le banc ?",
+    "Plier pour que les bords correspondent fait que le pli partage l'angle en deux parties égales. La réponse est <b>Plier un coin de papier pour que les deux bords du coin s'alignent exactement</b>.",{mode:"foldab"}); q.figure=figBisect("angle"); return q;},
+  function(){var q=mcq("Deux lampadaires se trouvent aux extrémités d'un sentier droit. Un banc se trouve sur la médiatrice du segment du sentier. Qu'est-ce qui est vrai pour le banc ?",
     {t:"Il est à la même distance de chaque lampadaire",fb:"Oui : chaque point d'une médiatrice est à égale distance des extrémités du segment."},
     [{t:"Il est plus proche d'un lampadaire, de la moitié du sentier",fb:"Les points de la médiatrice ne sont plus proches d'aucun des deux bouts; les distances sont égales."},{t:"Il se trouve exactement au milieu du sentier",fb:"Un seul point de la médiatrice, le point de croisement, est le milieu; le banc peut être n'importe où sur la droite."},{t:"Il est deux fois plus loin d'un lampadaire que de l'autre",fb:"La propriété qui la définit est l'égalité des distances, pas une distance double."}],
-    "Chaque point d'une médiatrice est à la même distance des deux extrémités. La réponse est <b>Il est à la même distance de chaque lampadaire</b>.",{mode:"bench"});},
-  function(){return mcq("Plier une bande de papier pour qu'un bout arrive exactement sur l'autre bout crée un pli. Le pli est :",
+    "Chaque point d'une médiatrice est à la même distance des deux extrémités. La réponse est <b>Il est à la même distance de chaque lampadaire</b>.",{mode:"bench"}); q.figure=figBisect("perp"); return q;},
+  function(){var q=mcq("Plier une bande de papier pour qu'un bout arrive exactement sur l'autre bout crée un pli. Le pli est :",
     {t:"La médiatrice de la longueur de la bande",fb:"Oui : aligner les bouts fait que le pli croise au milieu, et un pli rencontre la longueur à 90 degrés."},
     [{t:"La bissectrice de l'angle du coin de la bande",fb:"Le pli aligne les deux bouts de la longueur, donc il coupe la longueur en deux, pas un angle de coin."},{t:"Une droite parallèle à la longueur de la bande",fb:"Le pli croise la longueur au lieu de passer à côté d'elle."},{t:"Le milieu lui-même, à mi-longueur de la bande",fb:"Le pli est une droite qui passe par le milieu, pas seulement le point."}],
-    "Aligner les bouts place le pli au milieu, à angle droit. La réponse est <b>La médiatrice de la longueur de la bande</b>.",{mode:"foldpb"});}
+    "Aligner les bouts place le pli au milieu, à angle droit. La réponse est <b>La médiatrice de la longueur de la bande</b>.",{mode:"foldpb"}); q.figure=figBisect("perp"); return q;}
 ]),["Une bissectrice ou une médiatrice partage quelque chose en deux parties égales; perpendiculaire ajoute un croisement à 90 degrés.","Commence par vérifier les deux conditions : des parties égales, et l'angle droit pour une médiatrice."]);
 
 E("u8-bisector-reason",8,["10.15","10.16"],1,"gen",function(){
   var mode=pick(["midpoint","anglehalf","equidist","midpoint2"]);
   if(mode==="anglehalf"){var A=ri(10,80)*2;var half=A/2;
     var ds=u8numOpts(half,[A,half+4,Math.max(half-4,2)]).map(function(v){return {t:String(v),fb:"Une bissectrice partage l'angle en deux parties égales, donc divise l'angle par 2."};});
-    return mcq("Un angle de "+A+" degrés est partagé par sa bissectrice. Quelle est la mesure de chaque angle obtenu ?",
+    var q=mcq("Un angle de "+A+" degrés est partagé par sa bissectrice. Quelle est la mesure de chaque angle obtenu ?",
       {t:String(half),fb:"Oui : "+A+" divisé par 2 donne "+half+"."},ds,
-      "La bissectrice donne deux angles égaux. \\[ \\begin{aligned} \\text{chaque angle} &= "+A+" \\div 2 \\\\ &= "+half+"^\\circ \\end{aligned} \\] Chaque angle mesure <b>"+half+" degrés</b>.",{mode:mode});
+      "La bissectrice donne deux angles égaux. \\[ \\begin{aligned} \\text{chaque angle} &= "+A+" \\div 2 \\\\ &= "+half+"^\\circ \\end{aligned} \\] Chaque angle mesure <b>"+half+" degrés</b>.",{mode:mode}); q.figure=figAngleBisectTotal(A+"°"); return q;
   }
   if(mode==="equidist"){var d=ri(3,15);
     var cand=u8numOpts(d,[d+2,2*d,Math.max(d-1,1)]);
     var ds2=cand.map(function(v){return {t:String(v),fb:"Les points d'une médiatrice sont à la même distance des deux extrémités du segment."};});
-    return mcq("Le point P se trouve sur la médiatrice du segment AB. La distance de P à A est de "+d+" cm. Quelle est la distance de P à B ?",
+    var q=mcq("Le point P se trouve sur la médiatrice du segment AB. La distance de P à A est de "+d+" cm. Quelle est la distance de P à B ?",
       {t:String(d),fb:"Oui : chaque point de la médiatrice est à égale distance de A et de B."},ds2,
-      "Un point de la médiatrice est à la même distance des deux extrémités, donc la distance de P à B égale la distance de P à A. La distance est <b>"+d+" cm</b>.",{mode:mode});
+      "Un point de la médiatrice est à la même distance des deux extrémités, donc la distance de P à B égale la distance de P à A. La distance est <b>"+d+" cm</b>.",{mode:mode}); q.figure=figEqui(null,d+" cm"); return q;
   }
   var L=ri(4,15)*2;var halfL=L/2;var obj=mode==="midpoint"?pick(["Un ruban","Une planche","Un tuyau d'arrosage","Une planche d'étagère"]):pick(["Une corde","Un ruban","Un bord de rampe de planche à roulettes"]);
   var ds3=u8numOpts(halfL,[L,halfL+2,Math.max(halfL-2,1)]).map(function(v){return {t:String(v),fb:"La médiatrice croise au milieu, à mi-chemin le long du segment."};});
-  return mcq(""+obj+" mesure "+L+" cm de long. Sa médiatrice passe par le point M, au milieu. À quelle distance M se trouve-t-il de chaque extrémité ?",
+  var q=mcq(""+obj+" mesure "+L+" cm de long. Sa médiatrice passe par le point M, au milieu. À quelle distance M se trouve-t-il de chaque extrémité ?",
     {t:String(halfL),fb:"Oui : le milieu est à mi-chemin, "+L+" divisé par 2."},ds3,
-    "La médiatrice croise au milieu. \\[ \\begin{aligned} \\text{distance} &= "+L+" \\div 2 \\\\ &= "+halfL+" \\text{ cm} \\end{aligned} \\] M se trouve à <b>"+halfL+" cm</b> de chaque extrémité.",{mode:mode});
+    "La médiatrice croise au milieu. \\[ \\begin{aligned} \\text{distance} &= "+L+" \\div 2 \\\\ &= "+halfL+" \\text{ cm} \\end{aligned} \\] M se trouve à <b>"+halfL+" cm</b> de chaque extrémité.",{mode:mode}); q.figure=figSegMid(L+" cm"); return q;
 },["Une bissectrice ou une médiatrice coupe en deux parties égales : un segment en son milieu, un angle en deux angles égaux.","Commence par diviser la longueur ou l'angle donné par 2."]);
 
 E("u8-draw-reason",8,["10.13","10.14"],1,"var",varset([
@@ -4262,16 +4449,16 @@ E("u8-move-describe",8,["10.10","10.19"],1,"gen",function(){
   if(mode==="hdist"){var y0=ri(-5,5);var x1=ri(-5,2);var d=ri(2,7);var x2=x1+d;if(x2>5){x2=x1-d;}
     var dist=Math.abs(x2-x1);
     var ds=u8numOpts(dist,[dist+1,Math.max(dist-1,1),Math.abs(x1)+Math.abs(x2)===dist?dist+2:Math.abs(x1)+Math.abs(x2)]).map(function(v){return {t:String(v),fb:"Les points ont la même coordonnée y, donc soustrais les coordonnées x pour obtenir la distance."};});
-    return mcq("Les points A "+u8pair(x1,y0)+" et B "+u8pair(x2,y0)+" se trouvent sur la même droite horizontale. Quelle est la distance entre eux ?",
+    var q=mcq("Les points A "+u8pair(x1,y0)+" et B "+u8pair(x2,y0)+" se trouvent sur la même droite horizontale. Quelle est la distance entre eux ?",
       {t:String(dist),fb:"Oui : les coordonnées x diffèrent de "+dist+", et les coordonnées y sont égales."},ds,
-      "Même coordonnée y, donc la distance est la différence en x. \\[ \\begin{aligned} \\text{distance} &= |"+x2+" - ("+x1+")| \\\\ &= "+dist+" \\end{aligned} \\] La distance est <b>"+dist+" unités</b>.",{mode:mode});
+      "Même coordonnée y, donc la distance est la différence en x. \\[ \\begin{aligned} \\text{distance} &= |"+x2+" - ("+x1+")| \\\\ &= "+dist+" \\end{aligned} \\] La distance est <b>"+dist+" unités</b>.",{mode:mode}); q.figure=figWideGrid([{x:x1,y:y0,label:"A"},{x:x2,y:y0,label:"B"}],null,null); return q;
   }
   if(mode==="vdist"){var x0=ri(-5,5);var y1=ri(-5,2);var d2=ri(2,7);var y2=y1+d2;if(y2>5){y2=y1-d2;}
     var dist2=Math.abs(y2-y1);
     var ds2=u8numOpts(dist2,[dist2+1,Math.max(dist2-1,1),dist2+3]).map(function(v){return {t:String(v),fb:"Les points ont la même coordonnée x, donc soustrais les coordonnées y pour obtenir la distance."};});
-    return mcq("Les points A "+u8pair(x0,y1)+" et B "+u8pair(x0,y2)+" se trouvent sur la même droite verticale. Quelle est la distance entre eux ?",
+    var q=mcq("Les points A "+u8pair(x0,y1)+" et B "+u8pair(x0,y2)+" se trouvent sur la même droite verticale. Quelle est la distance entre eux ?",
       {t:String(dist2),fb:"Oui : les coordonnées y diffèrent de "+dist2+", et les coordonnées x sont égales."},ds2,
-      "Même coordonnée x, donc la distance est la différence en y. \\[ \\begin{aligned} \\text{distance} &= |"+y2+" - ("+y1+")| \\\\ &= "+dist2+" \\end{aligned} \\] La distance est <b>"+dist2+" unités</b>.",{mode:mode});
+      "Même coordonnée x, donc la distance est la différence en y. \\[ \\begin{aligned} \\text{distance} &= |"+y2+" - ("+y1+")| \\\\ &= "+dist2+" \\end{aligned} \\] La distance est <b>"+dist2+" unités</b>.",{mode:mode}); q.figure=figWideGrid([{x:x0,y:y1,label:"A"},{x:x0,y:y2,label:"B"}],null,null); return q;
   }
   var ax=ri(-4,2),ay=ri(-4,2);var dx=pick([-3,-2,-1,1,2,3]);var dy=pick([-3,-2,-1,1,2,3]);
   var bx=ax+dx,by=ay+dy;if(bx>5||bx<-5){dx=-dx;bx=ax+dx;}if(by>5||by<-5){dy=-dy;by=ay+dy;}
@@ -4281,31 +4468,31 @@ E("u8-move-describe",8,["10.10","10.19"],1,"gen",function(){
   opts.forEach(function(t){if(!seen[t]){seen[t]=1;ds3.push({t:t,fb:"Compare les coordonnées : le changement en x donne le déplacement horizontal, le changement en y donne le déplacement vertical, et les signes donnent les directions."});}});
   var extra=[u8moveText(-dx,-dy),u8moveText(dx+1,dy),u8moveText(dx,dy+1)];var ei=0;
   while(ds3.length<3&&ei<extra.length){if(!seen[extra[ei]]){seen[extra[ei]]=1;ds3.push({t:extra[ei],fb:"Compare les coordonnées : le changement en x est horizontal, le changement en y est vertical, et les signes donnent les directions."});}ei++;}
-  return mcq("Comment te déplaces-tu du point A "+u8pair(ax,ay)+" au point B "+u8pair(bx,by)+" dans un plan cartésien ?",
+  var q=mcq("Comment te déplaces-tu du point A "+u8pair(ax,ay)+" au point B "+u8pair(bx,by)+" dans un plan cartésien ?",
     {t:correct,fb:"Oui : x change de "+dx+" et y change de "+dy+"."},ds3,
-    "Changement en x : \\("+bx+" - ("+ax+") = "+dx+"\\), donc déplace-toi de "+Math.abs(dx)+" "+(dx>0?"vers la droite":"vers la gauche")+". Changement en y : \\("+by+" - ("+ay+") = "+dy+"\\), donc déplace-toi de "+Math.abs(dy)+" "+(dy>0?"vers le haut":"vers le bas")+". Le déplacement est <b>"+correct+"</b>.",{mode:mode});
+    "Changement en x : \\("+bx+" - ("+ax+") = "+dx+"\\), donc déplace-toi de "+Math.abs(dx)+" "+(dx>0?"vers la droite":"vers la gauche")+". Changement en y : \\("+by+" - ("+ay+") = "+dy+"\\), donc déplace-toi de "+Math.abs(dy)+" "+(dy>0?"vers le haut":"vers le bas")+". Le déplacement est <b>"+correct+"</b>.",{mode:mode}); q.figure=figWideGrid([{x:ax,y:ay,label:"A"},{x:bx,y:by,label:"B"}],null,null); return q;
 },["Compare les coordonnées : le changement en x est le déplacement horizontal, le changement en y est le déplacement vertical.","Commence par soustraire les coordonnées x, puis les coordonnées y."]);
 
 E("u8-distance-cr",8,["10.19"],1,"gen",function(){
   var horiz=Math.random()<0.5;
   if(horiz){var y0=ri(-6,6);var x1=ri(-6,3);var x2=x1+ri(2,8);if(x2>6)x2=x1-ri(2,6);var dist=Math.abs(x2-x1);
-    return numq("Trouve la distance entre les points "+u8pair(x1,y0)+" et "+u8pair(x2,y0)+".",
+    var q=numq("Trouve la distance entre les points "+u8pair(x1,y0)+" et "+u8pair(x2,y0)+".",
       dist,0,
-      "Les coordonnées y sont égales, donc les points se trouvent sur une droite horizontale. Soustrais les coordonnées x. \\[ \\begin{aligned} \\text{distance} &= |"+x2+" - ("+x1+")| \\\\ &= "+dist+" \\end{aligned} \\] La distance est <b>"+dist+" unités</b>.",{mode:"h"});
+      "Les coordonnées y sont égales, donc les points se trouvent sur une droite horizontale. Soustrais les coordonnées x. \\[ \\begin{aligned} \\text{distance} &= |"+x2+" - ("+x1+")| \\\\ &= "+dist+" \\end{aligned} \\] La distance est <b>"+dist+" unités</b>.",{mode:"h"}); q.figure=figWideGrid([{x:x1,y:y0},{x:x2,y:y0}],null,null); return q;
   }
   var x0=ri(-6,6);var y1=ri(-6,3);var y2=y1+ri(2,8);if(y2>6)y2=y1-ri(2,6);var dist2=Math.abs(y2-y1);
-  return numq("Trouve la distance entre les points "+u8pair(x0,y1)+" et "+u8pair(x0,y2)+".",
+  var q=numq("Trouve la distance entre les points "+u8pair(x0,y1)+" et "+u8pair(x0,y2)+".",
     dist2,0,
-    "Les coordonnées x sont égales, donc les points se trouvent sur une droite verticale. Soustrais les coordonnées y. \\[ \\begin{aligned} \\text{distance} &= |"+y2+" - ("+y1+")| \\\\ &= "+dist2+" \\end{aligned} \\] La distance est <b>"+dist2+" unités</b>.",{mode:"v"});
+    "Les coordonnées x sont égales, donc les points se trouvent sur une droite verticale. Soustrais les coordonnées y. \\[ \\begin{aligned} \\text{distance} &= |"+y2+" - ("+y1+")| \\\\ &= "+dist2+" \\end{aligned} \\] La distance est <b>"+dist2+" unités</b>.",{mode:"v"}); q.figure=figWideGrid([{x:x0,y:y1},{x:x0,y:y2}],null,null); return q;
 },["Les points qui ont la même coordonnée y se trouvent sur une droite horizontale; les points qui ont la même coordonnée x se trouvent sur une droite verticale.","Commence par vérifier quelle coordonnée reste la même."]);
 
 E("u8-translate-cr",8,["10.20"],1,"gen",function(){
   var x=ri(-6,4),y=ri(-6,4);var dx=pick([-4,-3,-2,-1,1,2,3,4]);var dy=pick([-4,-3,-2,-1,1,2,3,4]);
   var nx=x+dx,ny=y+dy;var askX=Math.random()<0.5;
   var ans=askX?nx:ny;
-  return numq("Le point P "+u8pair(x,y)+" subit une translation de "+u8moveText(dx,dy)+". Quelle est la coordonnée "+(askX?"x":"y")+" du point image ?",
+  var q=numq("Le point P "+u8pair(x,y)+" subit une translation de "+u8moveText(dx,dy)+". Quelle est la coordonnée "+(askX?"x":"y")+" du point image ?",
     ans,0,
-    "Applique la translation à chaque coordonnée. \\[ \\begin{aligned} \\text{image} &= ("+x+" + ("+dx+"), "+y+" + ("+dy+")) \\\\ &= "+u8pair(nx,ny)+" \\end{aligned} \\] La coordonnée "+(askX?"x":"y")+" du point image est <b>"+ans+"</b>.",{mode:askX?"tx":"ty"});
+    "Applique la translation à chaque coordonnée. \\[ \\begin{aligned} \\text{image} &= ("+x+" + ("+dx+"), "+y+" + ("+dy+")) \\\\ &= "+u8pair(nx,ny)+" \\end{aligned} \\] La coordonnée "+(askX?"x":"y")+" du point image est <b>"+ans+"</b>.",{mode:askX?"tx":"ty"}); q.figure=figWideGrid([{x:x,y:y,label:"P"}],null,null); return q;
 },["Une translation s'ajoute à la coordonnée x pour les déplacements vers la gauche ou vers la droite et à la coordonnée y pour les déplacements vers le haut ou vers le bas.","Commence par déterminer comment la coordonnée demandée change."]);
 
 E("u8-reflect-point",8,["10.20","10.12"],1,"gen",function(){
@@ -4359,9 +4546,9 @@ E("u8-transform-describe",8,["10.11"],1,"gen",function(){
   opts.forEach(function(o){if(!seen[o.t]){seen[o.t]=1;ds.push(o);}});
   var filler=type==="translate"?"Réflexion par rapport à l'origine":"Translation : "+u8moveText(1,1);
   while(ds.length<3){if(!seen[filler]){seen[filler]=1;ds.push({t:filler,fb:"Teste la description sur les deux sommets; elle doit mener chacun à son image."});}else filler="Translation : "+u8moveText(2,1);}
-  return mcq("Un motif à deux sommets a pour sommets P "+u8pair(P[0],P[1])+" et Q "+u8pair(Q[0],Q[1])+". Après une transformation, les images sont P' "+u8pair(P2[0],P2[1])+" et Q' "+u8pair(Q2[0],Q2[1])+". Quelle transformation décrit le changement ?",
+  var q=mcq("Un motif à deux sommets a pour sommets P "+u8pair(P[0],P[1])+" et Q "+u8pair(Q[0],Q[1])+". Après une transformation, les images sont P' "+u8pair(P2[0],P2[1])+" et Q' "+u8pair(Q2[0],Q2[1])+". Quelle transformation décrit le changement ?",
     {t:correct,fb:"Oui : l'appliquer à P et à Q donne exactement les sommets images."},ds,
-    "Teste chaque sommet. P "+u8pair(P[0],P[1])+" va à "+u8pair(P2[0],P2[1])+" et Q "+u8pair(Q[0],Q[1])+" va à "+u8pair(Q2[0],Q2[1])+", ce qui correspond : <b>"+correct+"</b>.",{mode:type});
+    "Teste chaque sommet. P "+u8pair(P[0],P[1])+" va à "+u8pair(P2[0],P2[1])+" et Q "+u8pair(Q[0],Q[1])+" va à "+u8pair(Q2[0],Q2[1])+", ce qui correspond : <b>"+correct+"</b>.",{mode:type}); q.figure=figWideGrid([{x:P[0],y:P[1],label:"P"},{x:Q[0],y:Q[1],label:"Q"},{x:P2[0],y:P2[1],label:"P'"},{x:Q2[0],y:Q2[1],label:"Q'"}],[[P,Q],[P2,Q2]],null); return q;
 },["Teste une description sur chaque sommet, pas seulement un : une transformation doit convenir à tous.","Commence par comparer le premier sommet à son image, puis confirme avec le deuxième."]);
 
 E("u8-successive-cr",8,["10.10","10.20","10.11"],1,"gen",function(){
@@ -4369,9 +4556,9 @@ E("u8-successive-cr",8,["10.10","10.20","10.11"],1,"gen",function(){
   var dx1=pick([-3,-2,-1,1,2,3]);var dy1=pick([-3,-2,-1,1,2,3]);
   var dx2=pick([-2,-1,1,2]);var dy2=pick([-2,-1,1,2]);
   var fx=x+dx1+dx2,fy=y+dy1+dy2;var askX=Math.random()<0.5;var ans=askX?fx:fy;
-  return numq("Un point commence en "+u8pair(x,y)+". Il se déplace de "+u8moveText(dx1,dy1)+", puis il se déplace de "+u8moveText(dx2,dy2)+". Quelle est la coordonnée "+(askX?"x":"y")+" de la position finale ?",
+  var q=numq("Un point commence en "+u8pair(x,y)+". Il se déplace de "+u8moveText(dx1,dy1)+", puis il se déplace de "+u8moveText(dx2,dy2)+". Quelle est la coordonnée "+(askX?"x":"y")+" de la position finale ?",
     ans,0,
-    "Suis les coordonnées étape par étape. \\[ \\begin{aligned} \\text{départ} &= "+u8pair(x,y)+" \\\\ \\text{après le déplacement 1} &= "+u8pair(x+dx1,y+dy1)+" \\\\ \\text{après le déplacement 2} &= "+u8pair(fx,fy)+" \\end{aligned} \\] La coordonnée "+(askX?"x":"y")+" de la position finale est <b>"+ans+"</b>.",{mode:askX?"sx":"sy"});
+    "Suis les coordonnées étape par étape. \\[ \\begin{aligned} \\text{départ} &= "+u8pair(x,y)+" \\\\ \\text{après le déplacement 1} &= "+u8pair(x+dx1,y+dy1)+" \\\\ \\text{après le déplacement 2} &= "+u8pair(fx,fy)+" \\end{aligned} \\] La coordonnée "+(askX?"x":"y")+" de la position finale est <b>"+ans+"</b>.",{mode:askX?"sx":"sy"}); q.figure=figWideGrid([{x:x,y:y}],null,null); return q;
 },["Applique les déplacements un à la fois, en mettant à jour les deux coordonnées après chaque déplacement.","Commence par écrire le nouveau point après le premier déplacement."]);
 
 function u8scaleSVG(s,a,b){
@@ -4395,22 +4582,22 @@ E("u8-quadrant-locate",8,["10.7","10.18"],1,"gen",function(){
     var sx=pick([-1,1]),sy=pick([-1,1]);var x=sx*ri(1,6),y=sy*ri(1,6);
     var correct=sx>0?(sy>0?quads[0]:quads[3]):(sy>0?quads[1]:quads[2]);
     var ds=quads.filter(function(q){return q!==correct;}).map(function(q){return {t:q,fb:"Vérifie les signes : x est "+(sx>0?"positif":"négatif")+" et y est "+(sy>0?"positif":"négatif")+" pour ce point."};});
-    return mcq("Dans quel quadrant le point "+u8pair(x,y)+" se trouve-t-il ?",
+    var q=mcq("Dans quel quadrant le point "+u8pair(x,y)+" se trouve-t-il ?",
       {t:correct,fb:"Oui : "+(sx>0?"positif":"négatif")+" pour x et "+(sy>0?"positif":"négatif")+" pour y placent le point dans le "+correct+"."},ds,
-      "x est "+(sx>0?"positif":"négatif")+" et y est "+(sy>0?"positif":"négatif")+". Ce patron de signes appartient au <b>"+correct+"</b>.",{mode:mode});
+      "x est "+(sx>0?"positif":"négatif")+" et y est "+(sy>0?"positif":"négatif")+". Ce patron de signes appartient au <b>"+correct+"</b>.",{mode:mode}); q.figure=figWideGrid([{x:x,y:y}],null,null); return q;
   }
   var targetQuad=ri(0,3);var signs=[[1,1],[-1,1],[-1,-1],[1,-1]];
   var pts=[];for(var i=0;i<4;i++){pts.push([signs[i][0]*ri(1,6),signs[i][1]*ri(1,6)]);}
   var correctP=u8pair(pts[targetQuad][0],pts[targetQuad][1]);
   var ds2=pts.filter(function(p,i){return i!==targetQuad;}).map(function(p){return {t:u8pair(p[0],p[1]),fb:"Ce point a le patron de signes d'un autre quadrant. Le "+quads[targetQuad]+" demande x "+(signs[targetQuad][0]>0?"positif":"négatif")+" et y "+(signs[targetQuad][1]>0?"positif":"négatif")+"."};});
   if(mode==="design"){
-    return mcq("Un point du motif doit se trouver dans le "+quads[targetQuad]+". Quel point convient au motif ?",
+    var q=mcq("Un point du motif doit se trouver dans le "+quads[targetQuad]+". Quel point convient au motif ?",
       {t:correctP,fb:"Oui : ses signes correspondent au "+quads[targetQuad]+"."},ds2,
-      quads[targetQuad]+" contient des points avec x "+(signs[targetQuad][0]>0?"positif":"négatif")+" et y "+(signs[targetQuad][1]>0?"positif":"négatif")+". Seul "+correctP+" convient. La réponse est <b>"+correctP+"</b>.",{mode:mode});
+      quads[targetQuad]+" contient des points avec x "+(signs[targetQuad][0]>0?"positif":"négatif")+" et y "+(signs[targetQuad][1]>0?"positif":"négatif")+". Seul "+correctP+" convient. La réponse est <b>"+correctP+"</b>.",{mode:mode}); q.figure=figWideGrid(pts.map(function(p){return {x:p[0],y:p[1]};}),null,null); return q;
   }
-  return mcq("Quel point se trouve dans le "+quads[targetQuad]+"?",
+  var q=mcq("Quel point se trouve dans le "+quads[targetQuad]+"?",
     {t:correctP,fb:"Oui : ses signes correspondent au "+quads[targetQuad]+"."},ds2,
-    quads[targetQuad]+" contient des points avec x "+(signs[targetQuad][0]>0?"positif":"négatif")+" et y "+(signs[targetQuad][1]>0?"positif":"négatif")+". Le point est <b>"+correctP+"</b>.",{mode:mode});
+    quads[targetQuad]+" contient des points avec x "+(signs[targetQuad][0]>0?"positif":"négatif")+" et y "+(signs[targetQuad][1]>0?"positif":"négatif")+". Le point est <b>"+correctP+"</b>.",{mode:mode}); q.figure=figWideGrid(pts.map(function(p){return {x:p[0],y:p[1]};}),null,null); return q;
 },["Les quadrants sont déterminés par les signes : I (+, +), II (-, +), III (-, -), IV (+, -).","Commence par vérifier le signe de chaque coordonnée."]);
 
 E("u8-grid-scale",8,["10.6","10.9"],1,"gen",function(){
@@ -4440,19 +4627,19 @@ E("u8-grid-scale",8,["10.6","10.9"],1,"gen",function(){
 E("u8-bisector-cr",8,["10.15","10.16"],3,"gen",function(){
   var mode=pick(["perimeter","supp","path"]);
   if(mode==="supp"){var T=ri(15,80)*2;var half=T/2;var ans=180-half;
-    return numq("Un angle de "+T+" degrés est partagé par sa bissectrice. Un des deux angles égaux se trouve sur une droite avec un angle marqué x. Trouve x, en degrés.",
+    var q=numq("Un angle de "+T+" degrés est partagé par sa bissectrice. Un des deux angles égaux se trouve sur une droite avec un angle marqué x. Trouve x, en degrés.",
       ans,0,
-      "La bissectrice coupe l'angle en deux : \\("+T+" \\div 2 = "+half+"^\\circ\\). Les angles sur une droite totalisent 180 degrés. \\[ \\begin{aligned} x &= 180 - "+half+" \\\\ &= "+ans+" \\end{aligned} \\] L'angle x est <b>"+ans+" degrés</b>.",{mode:mode});
+      "La bissectrice coupe l'angle en deux : \\("+T+" \\div 2 = "+half+"^\\circ\\). Les angles sur une droite totalisent 180 degrés. \\[ \\begin{aligned} x &= 180 - "+half+" \\\\ &= "+ans+" \\end{aligned} \\] L'angle x est <b>"+ans+" degrés</b>.",{mode:mode}); q.figure=figBisectSupp(half+"°"); return q;
   }
   var L=ri(4,12)*2;var d=ri(3,14);
   if(mode==="perimeter"){
-    return numq("Le segment AB mesure "+L+" cm de long. Le point P se trouve sur la médiatrice de AB, et la distance de P à A est de "+d+" cm. Quel est le périmètre du triangle PAB, en centimètres ?",
+    var q=numq("Le segment AB mesure "+L+" cm de long. Le point P se trouve sur la médiatrice de AB, et la distance de P à A est de "+d+" cm. Quel est le périmètre du triangle PAB, en centimètres ?",
       2*d+L,0,
-      "Chaque point de la médiatrice est à la même distance de A et de B, donc PB vaut aussi "+d+" cm. \\[ \\begin{aligned} \\text{périmètre} &= "+d+" + "+d+" + "+L+" \\\\ &= "+(2*d+L)+" \\end{aligned} \\] Le périmètre est <b>"+(2*d+L)+" cm</b>.",{mode:mode});
+      "Chaque point de la médiatrice est à la même distance de A et de B, donc PB vaut aussi "+d+" cm. \\[ \\begin{aligned} \\text{périmètre} &= "+d+" + "+d+" + "+L+" \\\\ &= "+(2*d+L)+" \\end{aligned} \\] Le périmètre est <b>"+(2*d+L)+" cm</b>.",{mode:mode}); q.figure=figEqui(L+" cm",d+" cm"); return q;
   }
-  return numq("Un sentier de jardin va de A à un point P sur la médiatrice du bord avant AB, puis à B. La distance de P à A est de "+d+" m. Quelle est la longueur du sentier complet de A à P à B, en mètres ?",
+  var q=numq("Un sentier de jardin va de A à un point P sur la médiatrice du bord avant AB, puis à B. La distance de P à A est de "+d+" m. Quelle est la longueur du sentier complet de A à P à B, en mètres ?",
     2*d,0,
-    "P se trouve sur la médiatrice, donc P est à la même distance de B que de A : PB vaut "+d+" m. \\[ \\begin{aligned} \\text{sentier} &= "+d+" + "+d+" \\\\ &= "+(2*d)+" \\end{aligned} \\] Le sentier est <b>"+(2*d)+" m</b>.",{mode:mode});
+    "P se trouve sur la médiatrice, donc P est à la même distance de B que de A : PB vaut "+d+" m. \\[ \\begin{aligned} \\text{sentier} &= "+d+" + "+d+" \\\\ &= "+(2*d)+" \\end{aligned} \\] Le sentier est <b>"+(2*d)+" m</b>.",{mode:mode}); q.figure=figEqui(null,d+" m"); return q;
 },["Les points d'une médiatrice sont à égale distance des extrémités du segment; une bissectrice coupe un angle en deux.","Commence par écrire ce que la bissectrice ou la médiatrice garantit avant de calculer."]);
 
 E("u8-transform-cr",8,["10.20","10.12"],3,"gen",function(){
@@ -4466,9 +4653,9 @@ E("u8-transform-cr",8,["10.20","10.12"],3,"gen",function(){
   var promptText=order==="reflectFirst"?
     "Le point P "+u8pair(x,y)+" est réfléchi par rapport à l'"+axis+", puis l'image subit une translation de "+u8moveText(dx,dy)+".":
     "Le point P "+u8pair(x,y)+" subit une translation de "+u8moveText(dx,dy)+", puis l'image est réfléchie par rapport à l'"+axis+".";
-  return numq(promptText+" Quelle est la coordonnée "+(askX?"x":"y")+" de l'image finale ?",
+  var q=numq(promptText+" Quelle est la coordonnée "+(askX?"x":"y")+" de l'image finale ?",
     ans,0,
-    "Applique les transformations dans l'ordre. \\[ \\begin{aligned} \\text{départ} &= "+u8pair(x,y)+" \\\\ \\text{après l'étape 1} &= "+u8pair(step1[0],step1[1])+" \\\\ \\text{image finale} &= "+u8pair(step2[0],step2[1])+" \\end{aligned} \\] La coordonnée "+(askX?"x":"y")+" du point image est <b>"+ans+"</b>.",{mode:order});
+    "Applique les transformations dans l'ordre. \\[ \\begin{aligned} \\text{départ} &= "+u8pair(x,y)+" \\\\ \\text{après l'étape 1} &= "+u8pair(step1[0],step1[1])+" \\\\ \\text{image finale} &= "+u8pair(step2[0],step2[1])+" \\end{aligned} \\] La coordonnée "+(askX?"x":"y")+" du point image est <b>"+ans+"</b>.",{mode:order}); q.figure=figWideGrid([{x:x,y:y,label:"P"}],null,null); return q;
 },["Fais les transformations une à la fois, dans l'ordre donné, en mettant à jour le point après chaque étape.","Commence par appliquer la première transformation au point de départ."]);
 
 E("u8-transform-image",8,["10.11","10.12"],3,"gen",function(){
@@ -4495,41 +4682,41 @@ E("u8-transform-image",8,["10.11","10.12"],3,"gen",function(){
 },["Applique la transformation au sommet nommé exactement comme elle est donnée.","Commence par écrire les coordonnées du sommet nommé à partir du diagramme."]);
 
 E("u8-design-shape",8,["10.17","10.18"],3,"var",varset([
-  function(){return mcq("Un motif utilise les points (1, 1), (5, 1) et (5, 4) comme trois coins d'un rectangle, dans l'ordre. Quel point complète le rectangle ?",
+  function(){var q=mcq("Un motif utilise les points (1, 1), (5, 1) et (5, 4) comme trois coins d'un rectangle, dans l'ordre. Quel point complète le rectangle ?",
     {t:"(1, 4)",fb:"Oui : il a le même x que le premier point et le même y que le troisième, ce qui ferme le rectangle."},
     [{t:"(5, 5)",fb:"Ce point prolonge le côté droit au-delà du haut; le quatrième coin doit s'aligner verticalement avec (1, 1)."},{t:"(1, 0)",fb:"Ce point se trouve sous le premier coin; le quatrième coin doit correspondre à la hauteur du haut, 4."},{t:"(4, 4)",fb:"Le quatrième coin doit avoir la même coordonnée x que le premier point, 1, pour fermer le côté gauche."}],
-    "Le quatrième coin associe le x du premier point au y du troisième point : (1, 4). La réponse est <b>(1, 4)</b>.",{mode:"rect"});},
-  function(){return mcq("Un motif symétrique a un point en (3, 2). Le motif est symétrique par rapport à l'axe des y. Quel point doit aussi faire partie du motif ?",
+    "Le quatrième coin associe le x du premier point au y du troisième point : (1, 4). La réponse est <b>(1, 4)</b>.",{mode:"rect"}); q.figure=figWideGrid([{x:1,y:1},{x:5,y:1},{x:5,y:4}],null,[[1,1,5,1],[5,1,5,4]]); return q;},
+  function(){var q=mcq("Un motif symétrique a un point en (3, 2). Le motif est symétrique par rapport à l'axe des y. Quel point doit aussi faire partie du motif ?",
     {t:"(-3, 2)",fb:"Oui : la symétrie par rapport à l'axe des y inverse le signe de x et garde la valeur de y."},
     [{t:"(3, -2)",fb:"Cela inverse le signe de y, ce qui est plutôt une symétrie par rapport à l'axe des x."},{t:"(-3, -2)",fb:"Cela inverse les deux signes, ce qui est un demi-tour autour de l'origine."},{t:"(2, 3)",fb:"Cela échange les coordonnées, ce qui est une symétrie par rapport à une diagonale, pas à l'axe des y."}],
-    "Les points miroirs par rapport à l'axe des y ont des coordonnées x opposées et des coordonnées y égales. La réponse est <b>(-3, 2)</b>.",{mode:"mirror"});},
-  function(){return mcq("Placer les points (0, 0), (4, 0), (4, 3) et (0, 3) dans l'ordre et les relier donne quelle figure ?",
+    "Les points miroirs par rapport à l'axe des y ont des coordonnées x opposées et des coordonnées y égales. La réponse est <b>(-3, 2)</b>.",{mode:"mirror"}); q.figure=figWideGrid([{x:3,y:2}],null,null); return q;},
+  function(){var q=mcq("Placer les points (0, 0), (4, 0), (4, 3) et (0, 3) dans l'ordre et les relier donne quelle figure ?",
     {t:"Rectangle",fb:"Oui : les côtés sont horizontaux et verticaux, de longueurs 4 et 3, et se rencontrent à angle droit."},
     [{t:"Triangle",fb:"Quatre points reliés dans l'ordre donnent une figure à quatre côtés, pas un triangle."},{t:"Pentagone",fb:"Quatre points donnent quatre côtés, pas cinq."},{t:"Carré",fb:"Les côtés mesurent 4 et 3 unités, ce qui est inégal, donc la figure est un rectangle plutôt qu'un carré."}],
-    "Quatre sommets avec des côtés horizontaux et verticaux de 4 et de 3 forment un rectangle. La réponse est <b>Rectangle</b>.",{mode:"shape"});},
+    "Quatre sommets avec des côtés horizontaux et verticaux de 4 et de 3 forment un rectangle. La réponse est <b>Rectangle</b>.",{mode:"shape"}); q.figure=figWideGrid([{x:0,y:0},{x:4,y:0},{x:4,y:3},{x:0,y:3}],[[[0,0],[4,0],[4,3],[0,3]]],null); return q;},
   function(){return mcq("Un motif triangulaire se trouve entièrement dans le quadrant II. Quelle liste de sommets pourrait le former ?",
     {t:"(-1, 2), (-4, 1), (-2, 5)",fb:"Oui : chaque point a x négatif et y positif, ce qui est le quadrant II."},
     [{t:"(1, 2), (4, 1), (2, 5)",fb:"Ces points ont x positif et y positif : quadrant I."},{t:"(-1, -2), (-4, -1), (-2, -5)",fb:"Ces points ont x négatif et y négatif : quadrant III."},{t:"(-1, 2), (3, 4), (-2, 5)",fb:"Un point a x positif, donc le triangle entrerait dans le quadrant I."}],
     "Le quadrant II demande x négatif et y positif pour chaque sommet. La réponse est <b>(-1, 2), (-4, 1), (-2, 5)</b>.",{mode:"quad2design"});},
-  function(){return mcq("Trois coins d'un motif carré sont (2, 1), (5, 1) et (5, 4). Quel point est le quatrième coin ?",
+  function(){var q=mcq("Trois coins d'un motif carré sont (2, 1), (5, 1) et (5, 4). Quel point est le quatrième coin ?",
     {t:"(2, 4)",fb:"Oui : les côtés mesurent 3 unités, et (2, 4) ferme le carré au-dessus de (2, 1)."},
     [{t:"(2, 5)",fb:"Cela donnerait un côté gauche de 4 unités alors que le côté du bas en mesure 3, ce qui briserait le carré."},{t:"(4, 4)",fb:"Le quatrième coin doit s'aligner verticalement avec (2, 1), donc sa coordonnée x est 2."},{t:"(5, 3)",fb:"Ce point se trouve dans la zone du côté droit plutôt que de fermer le coin en haut à gauche."}],
-    "Le côté du bas mesure 3 unités de (2, 1) à (5, 1), donc le quatrième coin se trouve à 3 unités au-dessus de (2, 1). La réponse est <b>(2, 4)</b>.",{mode:"square"});}
+    "Le côté du bas mesure 3 unités de (2, 1) à (5, 1), donc le quatrième coin se trouve à 3 unités au-dessus de (2, 1). La réponse est <b>(2, 4)</b>.",{mode:"square"}); q.figure=figWideGrid([{x:2,y:1},{x:5,y:1},{x:5,y:4}],null,[[2,1,5,1],[5,1,5,4]]); return q;}
 ]),["Utilise les patrons de coordonnées de la figure : des valeurs de x ou de y partagées pour les rectangles, des pas de côté égaux pour les carrés.","Commence par esquisser les points donnés et par chercher le patron du coin manquant."]);
 
 E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
-  function(){return mcq("Un élève construit la médiatrice d'un segment avec des arcs de compas. Quelle vérification confirme la construction ?",
+  function(){var q=mcq("Un élève construit la médiatrice d'un segment avec des arcs de compas. Quelle vérification confirme la construction ?",
     {t:"Mesure du point de croisement à chaque extrémité; les distances sont égales, et l'angle de croisement est de 90 degrés",fb:"Oui : des moitiés égales plus un angle droit sont les deux propriétés qui la définissent."},
     [{t:"Mesure tout le segment; il correspond à l'ouverture du compas utilisée pour les deux arcs tracés à partir des extrémités",fb:"L'ouverture du compas est un outil de construction, pas une propriété de la médiatrice."},{t:"Vérifie que la médiatrice est plus longue que le segment, des deux côtés du segment qu'elle croise dans le diagramme",fb:"La longueur de la droite médiatrice ne fait pas partie de sa définition."},{t:"Vérifie que la médiatrice passe par une extrémité du segment qu'elle partage en deux parties égales",fb:"Une médiatrice passe par le milieu, pas par une extrémité."}],
-    "Une médiatrice doit couper le segment en deux et le croiser à 90 degrés, et mesurer confirme les deux. La réponse est <b>Mesure du point de croisement à chaque extrémité; les distances sont égales, et l'angle de croisement est de 90 degrés</b>.",{mode:"verifybis"});},
-  function(){return mcq("Dans la méthode au compas pour une médiatrice, les arcs sont tracés à partir des deux extrémités avec la même ouverture de compas. Pourquoi l'ouverture doit-elle rester la même ?",
+    "Une médiatrice doit couper le segment en deux et le croiser à 90 degrés, et mesurer confirme les deux. La réponse est <b>Mesure du point de croisement à chaque extrémité; les distances sont égales, et l'angle de croisement est de 90 degrés</b>.",{mode:"verifybis"}); q.figure=figBisect("construct"); return q;},
+  function(){var q=mcq("Dans la méthode au compas pour une médiatrice, les arcs sont tracés à partir des deux extrémités avec la même ouverture de compas. Pourquoi l'ouverture doit-elle rester la même ?",
     {t:"Des rayons égaux placent les croisements des arcs à la même distance des deux extrémités, ce qui les place sur la médiatrice",fb:"Oui : les points à égale distance des deux extrémités se trouvent sur la médiatrice."},
     [{t:"Une ouverture plus grande effacerait le segment si la pointe du compas était placée au milieu du segment que l'on partage en deux parties",fb:"L'ouverture affecte la taille des arcs, pas le segment lui-même; c'est l'égalité des rayons qui compte."},{t:"Le compas ne peut pas être ajusté une fois ouvert, donc l'ouverture choisie au départ doit servir pour chaque arc",fb:"Un compas peut être ajusté; la méthode demande de le garder fixe pour les deux extrémités."},{t:"Des rayons égaux donnent aux arcs la même couleur et la même forme quand ils se croisent sur le dessin de la construction",fb:"La couleur ne joue aucun rôle dans la géométrie de la construction."}],
-    "Des rayons égaux garantissent que les croisements sont à égale distance des extrémités, ce qui définit la médiatrice. La réponse est <b>Des rayons égaux placent les croisements des arcs à la même distance des deux extrémités</b>.",{mode:"arcs"});},
-  function(){return mcq("Une deuxième méthode pour la médiatrice consiste à plier une feuille pour que les deux extrémités d'un segment se rencontrent. Pourquoi le pli fonctionne-t-il comme médiatrice ?",
+    "Des rayons égaux garantissent que les croisements sont à égale distance des extrémités, ce qui définit la médiatrice. La réponse est <b>Des rayons égaux placent les croisements des arcs à la même distance des deux extrémités</b>.",{mode:"arcs"}); q.figure=figBisect("construct"); return q;},
+  function(){var q=mcq("Une deuxième méthode pour la médiatrice consiste à plier une feuille pour que les deux extrémités d'un segment se rencontrent. Pourquoi le pli fonctionne-t-il comme médiatrice ?",
     {t:"Le pli envoie le segment sur lui-même avec les extrémités échangées, donc le pli croise au milieu à 90 degrés",fb:"Oui : aligner les extrémités force le pli à passer par le milieu, et un pli est perpendiculaire au segment."},
     [{t:"Le pli est toujours la droite la plus longue sur la feuille, d'un coin de la feuille au coin opposé",fb:"La longueur du pli n'a pas d'importance; c'est l'alignement des extrémités qui crée la médiatrice."},{t:"Plier double la longueur du segment, parce que les deux moitiés de la feuille se superposent le long de la ligne du pli",fb:"Plier ne change pas le segment; cela l'envoie sur lui-même."},{t:"Le pli passe par les deux extrémités du segment quand la feuille est pliée en deux pour aligner les extrémités",fb:"Le pli croise le segment en son milieu; il ne passe pas par les extrémités."}],
-    "Aligner les extrémités fait du pli la médiatrice. La réponse est <b>Le pli envoie le segment sur lui-même avec les extrémités échangées</b>.",{mode:"fold"});},
+    "Aligner les extrémités fait du pli la médiatrice. La réponse est <b>Le pli envoie le segment sur lui-même avec les extrémités échangées</b>.",{mode:"fold"}); q.figure=figBisect("construct"); return q;},
   function(){return mcq("Un élève trace une droite parallèle à une droite de base en copiant un angle avec un compas. Pourquoi copier l'angle fonctionne-t-il ?",
     {t:"Des angles correspondants égaux, formés avec une transversale, garantissent que les droites sont parallèles",fb:"Oui : quand une transversale forme des angles correspondants égaux, les droites sont parallèles."},
     [{t:"L'angle copié donne à la nouvelle droite la même longueur que la droite de base tracée sur la feuille",fb:"Copier un angle contrôle la direction, pas la longueur."},{t:"Le compas trace les deux droites en même temps, en une seule étape de la construction",fb:"Les droites sont tracées séparément; les angles égaux relient leurs directions."},{t:"N'importe quel angle copié produit une droite perpendiculaire qui passe par le point situé sur la droite de base",fb:"Copier un angle reproduit la direction pour des droites parallèles; perpendiculaire demande précisément un angle de 90 degrés."}],
@@ -4541,6 +4728,7 @@ E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
 ]),["La vérification mesure la propriété qui définit : des moitiés égales et 90 degrés, des angles égaux, ou des distances égales.","Commence par énoncer la propriété que la construction doit satisfaire, puis choisis la vérification qui la mesure."]);
 
 /* ----- bank-fix.js ----- */
+// Ajouts de figures : les entrées de complément des unités 4 et 8 assignent q.figure à partir de leurs propres valeurs.
 // Math 7 (French) pool-gap fill additions question bank
 // Cut verbatim from the standalone bank source
 // (math-7-review-fr/bank-src.js, lines 4455 to 4758).
@@ -4714,25 +4902,25 @@ E("u3-gap-compare-difference-cr", 3, ["3.5","3.3"], 2, "gen", function(){
 /* --- Unit 4 pool-gap fill --- */
 E("u4-gap-area-diameter-cr", 4, ["9.11","9.9"], 2, "gen", function(){
   var r=ri(3,14), d=2*r, area=Math.round(3.14*r*r*100)/100; var item=pick(["Un tapis circulaire","Une horloge ronde","Un moule à pizza rond","Une plate-bande circulaire","Une table ronde"]);
-  return numq(item+" a un diamètre de "+d+" cm. Trouve son aire, en centimètres carrés. Utilise 3,14 pour pi. Montre ton travail.", area, 0.1,
+  var q=numq(item+" a un diamètre de "+d+" cm. Trouve son aire, en centimètres carrés. Utilise 3,14 pour pi. Montre ton travail.", area, 0.1,
     "Le rayon est la moitié du diamètre, et l'aire utilise le rayon. \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ A &= 3,14 \\times "+r+"^2 = "+fmtD(area,2)+" \\end{aligned} \\] La réponse est <b>"+fmtD(area,2)+"</b>.",
-    {r:r,d:d});
+    {r:r,d:d}); q.figure=u4circleFig("d = "+d+" cm","d"); return q;
 }, ["Divise le diamètre en deux pour obtenir le rayon avant d'utiliser la formule de l'aire.", "Commence par diviser le diamètre par 2."]);
 
 E("u4-gap-rect-minus-circle-cr", 4, ["9.1","9.3"], 2, "gen", function(){
   var L=ri(12,20), W=ri(9,15), r=pick([2,3,4]);
   var rect=L*W, circ=Math.round(3.14*r*r*100)/100, ans=Math.round((rect-circ)*100)/100;
-  return numq("Un jardin rectangulaire mesure "+L+" m de long et "+W+" m de large. Un bassin circulaire de rayon "+r+" m se trouve dans le jardin. Trouve l'aire du jardin qui n'est pas couverte par le bassin, en mètres carrés. Utilise 3,14 pour pi. Montre ton travail.", ans, 0.1,
+  var q=numq("Un jardin rectangulaire mesure "+L+" m de long et "+W+" m de large. Un bassin circulaire de rayon "+r+" m se trouve dans le jardin. Trouve l'aire du jardin qui n'est pas couverte par le bassin, en mètres carrés. Utilise 3,14 pour pi. Montre ton travail.", ans, 0.1,
     "Trouve l'aire du rectangle et l'aire du cercle, puis soustrais. \\[ \\begin{aligned} A_{\\text{rectangle}} &= "+L+" \\times "+W+" = "+rect+" \\\\ A_{\\text{cercle}} &= 3,14 \\times "+r+"^2 = "+fmtD(circ,2)+" \\\\ \\text{reste} &= "+rect+" - "+fmtD(circ,2)+" = "+fmtD(ans,2)+" \\end{aligned} \\] La réponse est <b>"+fmtD(ans,2)+"</b>.",
-    {L:L,W:W,r:r});
+    {L:L,W:W,r:r}); q.figure=figRectCircle(L,W,r,"m"); return q;
 }, ["C'est l'aire d'un rectangle moins l'aire d'un cercle, donc calcule chaque aire séparément d'abord.", "Commence par l'aire du rectangle entier."]);
 
 E("u4-gap-revolutions-cr", 4, ["9.7","9.10"], 2, "gen", function(){
   var r=pick([20,25,30,35,40,50]), C=Math.round(2*3.14*r*100)/100, k=ri(8,25);
   var ans=Math.round(C*k/100*100)/100;
-  return numq("Une roue de vélo a un rayon de "+r+" cm. La roue fait "+k+" tours complets. Combien de mètres le vélo parcourt-il ? Utilise 3,14 pour pi. Montre ton travail.", ans, 0.1,
+  var q=numq("Une roue de vélo a un rayon de "+r+" cm. La roue fait "+k+" tours complets. Combien de mètres le vélo parcourt-il ? Utilise 3,14 pour pi. Montre ton travail.", ans, 0.1,
     "Un tour couvre une circonférence, donc trouve d'abord la circonférence, puis multiplie et convertis. \\[ \\begin{aligned} C &= 2 \\times 3,14 \\times "+r+" = "+fmtD(C,2)+" \\text{ cm} \\\\ \\text{distance} &= "+fmtD(C,2)+" \\times "+k+" = "+fmtD(C*k,2)+" \\text{ cm} = "+fmtD(ans,2)+" \\text{ m} \\end{aligned} \\] La réponse est <b>"+fmtD(ans,2)+"</b>.",
-    {r:r,k:k});
+    {r:r,k:k}); q.figure=u4circleFig("r = "+r+" cm","r"); return q;
 }, ["Un tour de roue couvre une circonférence; trouve d'abord cette distance, puis multiplie-la et convertis les unités.", "Commence par utiliser le rayon pour trouver la circonférence."]);
 
 /* --- Unit 5 pool-gap fill --- */
@@ -4840,17 +5028,17 @@ E("u7-gap-expected-pct-cr", 7, ["12.6","12.7"], 2, "gen", function(){
 E("u8-gap-angle-chain-cr", 8, ["10.1"], 2, "gen", function(){
   var B=0,C=0,D=0,third=0,g=0;
   while(g++<200){ B=ri(35,120); C=180-B; D=ri(15,60); third=180-C-D; if(third>=10) break; }
-  return numq("L'angle P se trouve sur une droite avec un angle de "+B+" degrés, donc l'angle P et l'angle de "+B+" degrés sont supplémentaires. L'angle P est un angle d'un triangle dont le deuxième angle mesure "+D+" degrés. Trouve le troisième angle du triangle, en degrés. Montre ton travail.", third, 0,
+  var q=numq("L'angle P se trouve sur une droite avec un angle de "+B+" degrés, donc l'angle P et l'angle de "+B+" degrés sont supplémentaires. L'angle P est un angle d'un triangle dont le deuxième angle mesure "+D+" degrés. Trouve le troisième angle du triangle, en degrés. Montre ton travail.", third, 0,
     "Trouve d'abord l'angle P à l'aide de la droite, puis utilise la somme des angles d'un triangle. \\[ \\begin{aligned} P &= 180 - "+B+" = "+C+" \\\\ \\text{troisième angle} &= 180 - "+C+" - "+D+" = "+third+" \\end{aligned} \\] La réponse est <b>"+third+"</b>.",
-    {B:B,D:D});
+    {B:B,D:D}); q.figure=triAngSVG(C,D,third,{L:["","",""],ang:["P",D+"°","?"]}); return q;
 }, ["Deux faits sur les angles sont enchaînés ici : utilise d'abord le fait de la droite, puis mets son résultat dans le triangle.", "Commence par trouver l'angle supplémentaire sur la droite."]);
 
 E("u8-gap-pythagoras-cr", 8, ["10.19"], 2, "gen", function(){
   var s=ri(1,3), ox=ri(-4,2), oy=ri(-3,3);
   var A=[ox,oy], B=[ox+3*s,oy], Cc=[ox+3*s,oy+4*s], hyp=5*s;
-  return numq("Les points A "+u8pair(A[0],A[1])+", B "+u8pair(B[0],B[1])+" et C "+u8pair(Cc[0],Cc[1])+" forment un triangle rectangle dont l'angle droit est en B. Trouve la longueur de l'hypoténuse AC. Montre ton travail.", hyp, 0,
+  var q=numq("Les points A "+u8pair(A[0],A[1])+", B "+u8pair(B[0],B[1])+" et C "+u8pair(Cc[0],Cc[1])+" forment un triangle rectangle dont l'angle droit est en B. Trouve la longueur de l'hypoténuse AC. Montre ton travail.", hyp, 0,
     "Compte d'abord les cathètes à partir des différences de coordonnées, puis utilise la relation de Pythagore. \\[ \\begin{aligned} AB &= "+(3*s)+", \\quad BC = "+(4*s)+" \\\\ AC^2 &= "+(3*s)+"^2 + "+(4*s)+"^2 = "+(25*s*s)+" \\\\ AC &= "+hyp+" \\end{aligned} \\] La réponse est <b>"+hyp+"</b>.",
-    {s:s});
+    {s:s}); q.figure=figWideGrid([{x:A[0],y:A[1],label:"A"},{x:B[0],y:B[1],label:"B"},{x:Cc[0],y:Cc[1],label:"C"}],[[A,B,Cc]],null); return q;
 }, ["Obtiens d'abord les deux cathètes à partir des coordonnées; l'hypoténuse vient en les combinant.", "Commence par trouver l'écart horizontal et l'écart vertical entre les points."]);
 
 E("u8-gap-rotate-cr", 8, ["10.20","10.12"], 2, "gen", function(){
@@ -4859,25 +5047,25 @@ E("u8-gap-rotate-cr", 8, ["10.20","10.12"], 2, "gen", function(){
   var step1=cw?[y,-x]:[-y,x], step2=[-x,-y];
   var askX=Math.random()<0.5, ans=askX?step2[0]:step2[1];
   var dirTxt=cw?"dans le sens horaire":"dans le sens antihoraire";
-  return numq("Le point P "+u8pair(x,y)+" subit une rotation de 90 degrés "+dirTxt+" autour de l'origine, puis l'image subit une autre rotation de 90 degrés "+dirTxt+" autour de l'origine. Quelle est la coordonnée "+(askX?"en x":"en y")+" de l'image finale ? Montre ton travail.", ans, 0,
+  var q=numq("Le point P "+u8pair(x,y)+" subit une rotation de 90 degrés "+dirTxt+" autour de l'origine, puis l'image subit une autre rotation de 90 degrés "+dirTxt+" autour de l'origine. Quelle est la coordonnée "+(askX?"en x":"en y")+" de l'image finale ? Montre ton travail.", ans, 0,
     "Applique la règle du quart de tour deux fois, en mettant le point à jour après chaque tour. \\[ \\begin{aligned} \\text{départ} &= "+u8pair(x,y)+" \\\\ \\text{après un tour} &= "+u8pair(step1[0],step1[1])+" \\\\ \\text{après deux tours} &= "+u8pair(step2[0],step2[1])+" \\end{aligned} \\] La coordonnée "+(askX?"en x":"en y")+" est <b>"+ans+"</b>.",
-    {x:x,y:y});
+    {x:x,y:y}); q.figure=figWideGrid([{x:x,y:y,label:"P"}],null,null); return q;
 }, ["Applique la rotation un quart de tour à la fois, en mettant les coordonnées à jour après chaque tour.", "Commence par appliquer le premier tour de 90 degrés au point de départ."]);
 
 E("u8-gap-grid-area-cr", 8, ["10.9"], 2, "gen", function(){
   var F=ri(9,20), H=pick([2,4,6,8,10]), s=pick([2,3,4]);
   var units=F+H/2, ans=units*s*s;
-  return numq("Une forme tracée sur du papier quadrillé couvre "+F+" carrés entiers de la grille et "+H+" demi-carrés. Chaque carré de la grille mesure "+s+" cm sur "+s+" cm. Trouve l'aire de la forme, en centimètres carrés. Montre ton travail.", ans, 0,
+  var q=numq("Une forme tracée sur du papier quadrillé couvre "+F+" carrés entiers de la grille et "+H+" demi-carrés. Chaque carré de la grille mesure "+s+" cm sur "+s+" cm. Trouve l'aire de la forme, en centimètres carrés. Montre ton travail.", ans, 0,
     "Combine d'abord les demi-carrés en carrés entiers, puis multiplie par l'aire d'un carré. \\[ \\begin{aligned} \\text{carrés} &= "+F+" + "+H+" \\div 2 = "+units+" \\\\ \\text{aire d'un carré} &= "+s+" \\times "+s+" = "+(s*s)+" \\\\ \\text{aire} &= "+units+" \\times "+(s*s)+" = "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {F:F,H:H,s:s});
+    {F:F,H:H,s:s}); q.figure=figGridArea(F,H); return q;
 }, ["Transforme d'abord les demi-carrés en équivalents de carrés entiers, puis applique l'échelle d'un carré.", "Commence par regrouper les demi-carrés en carrés entiers."]);
 
 E("u8-gap-parallel-angle-cr", 8, ["10.1"], 2, "gen", function(){
   var A=0,B=0,third=0,g=0;
   while(g++<200){ A=ri(40,110); B=ri(20,60); third=180-A-B; if(third>=10) break; }
-  return numq("Deux droites parallèles sont coupées par une transversale. Un des angles formés mesure "+A+" degrés, et un angle intérieur alterné qui lui est égal forme un angle d'un triangle. Un deuxième angle du triangle mesure "+B+" degrés. Trouve le troisième angle du triangle, en degrés. Montre ton travail.", third, 0,
+  var q=numq("Deux droites parallèles sont coupées par une transversale. Un des angles formés mesure "+A+" degrés, et un angle intérieur alterné qui lui est égal forme un angle d'un triangle. Un deuxième angle du triangle mesure "+B+" degrés. Trouve le troisième angle du triangle, en degrés. Montre ton travail.", third, 0,
     "Les angles intérieurs alternés formés par des droites parallèles sont égaux, donc l'angle du triangle mesure "+A+" degrés; utilise ensuite la somme des angles d'un triangle. \\[ \\begin{aligned} \\text{troisième angle} &= 180 - "+A+" - "+B+" = "+third+" \\end{aligned} \\] La réponse est <b>"+third+"</b>.",
-    {A:A,B:B});
+    {A:A,B:B}); q.figure=triAngSVG(A,B,third,{L:["","",""],ang:[A+"°",B+"°","?"]}); return q;
 }, ["Utilise d'abord la relation d'angles avec les droites parallèles pour obtenir l'angle du triangle, puis la somme des angles d'un triangle.", "Commence par énoncer la mesure de l'angle intérieur alterné."]);
 
 /* ============ Constructed-response marks (generated) ============ */
