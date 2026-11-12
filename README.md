@@ -8,6 +8,7 @@ course link with the course already selected.
 Course links:
 
 - Physics 3204: https://cdli-nlschools.github.io/ReviewApps/?course=physics-3204
+- Physics 2204: https://cdli-nlschools.github.io/ReviewApps/?course=physics-2204
 
 The familiar per-course addresses (for example Physics3204Review) forward
 to the matching course link, preserving any settings in the original link.

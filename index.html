@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physics 3204 Review: Practice Question Bank</title>
+<title>Review Apps: Practice Question Bank</title>
 <link rel="icon" type="image/jpeg" href="favicon.jpg">
 <link rel="apple-touch-icon" href="favicon.jpg">
 <style>
@@ -230,7 +230,7 @@
 </script>
 <script>
 /* Accessibility pre-paint bootstrap: copies this device's saved display
-   settings (localStorage key p3204-a11y-v1) onto <html> as data-a11y-*
+   settings (localStorage key: the course storage prefix plus "-a11y-v1") onto <html> as data-a11y-*
    attributes before the page paints, so a returning student never sees a
    flash of the default theme or text size. The full settings code
    (a11yLoad / a11yApply / a11yInit) lives in the UI script; keep the key
@@ -238,7 +238,7 @@
    just leaves the defaults in place. */
 (function(){try{
   var store=window.localStorage||null;if(!store)return;
-  var raw=store.getItem("p3204-a11y-v1");if(!raw)return;
+  var raw=store.getItem((window.__COURSE?window.__COURSE.storagePrefix:"app")+"-a11y-v1");if(!raw)return;
   var p=JSON.parse(raw);if(!p)return;
   var h=document.documentElement;
   if(p.text==="large"||p.text==="xlarge")h.setAttribute("data-a11y-text",p.text);
@@ -255,17 +255,17 @@
   <p class="sub">Choose your course to start practising.</p>
   <div class="card">
     <h2 style="margin-top:0;">Courses</h2>
-    <div class="presetrow" id="courseList"></div>
+    <div id="courseList"></div>
   </div>
 </div>
 <div class="wrap" id="app">
-  <h1>Physics 3204 Review</h1>
-  <p class="sub">Fresh practice questions for Physics 3204, drawn by unit or by curriculum indicator.
+  <h1 id="appTitle">Review Apps</h1>
+  <p class="sub">Fresh practice questions for <span id="appSubName">your course</span>, drawn by unit or by curriculum indicator.
   Most questions are generated new every time, so you can practise the same skill again and get a different question.
   Work online, print a practice sheet, or build a practice exam.</p>
 
   <div class="card" id="faceCard">
-    <h2 style="margin-top:0;">Physics 3204 Review</h2>
+    <h2 style="margin-top:0;" id="faceTitle">Review Apps</h2>
     <p id="faceScope" style="font-size:1.08rem;font-weight:bold;"></p>
     <p id="faceDesc"></p>
     <div class="modebar"><button type="button" id="faceStart" style="font-size:1.15rem;padding:14px 30px;">Start practising</button></div>
@@ -303,8 +303,8 @@
   <div class="card">
     <h2>1. What do you want to practise?</h2>
     <div class="presetrow">
-      <button type="button" id="presetMid" class="alt">Mid-course review (Units 1 and 2)</button>
-      <button type="button" id="presetFinal" class="alt">Final review (Units 3 and 4)</button>
+      <button type="button" id="presetMid" class="alt">Mid-course review</button>
+      <button type="button" id="presetFinal" class="alt">Final review</button>
       <button type="button" id="presetAll" class="alt">All units</button>
     </div>
     <div class="grid" id="unitGrid"></div>
@@ -802,7 +802,7 @@ var $=function(id){return document.getElementById(id);};
    attributes, and a bootstrap in <head> applies them before first paint.
    Deliberately NOT part of settings()/settingsToURL(): shared links carry
    practice settings only, never a student's display settings. */
-var A11Y_KEY="p3204-a11y-v1";
+var A11Y_KEY=(window.__COURSE?window.__COURSE.storagePrefix:"app")+"-a11y-v1";
 var a11y={text:"std",theme:"light",font:false,spacing:false,motion:false};
 function a11yStore(){try{return window.localStorage||null;}catch(e){return null;}}
 function a11yLoad(){
@@ -882,7 +882,7 @@ var state={units:[],inds:[],midCap:false};
    are pre-filled through the entry IDs below, which are the form's pre-filled-link
    IDs. If url is ever emptied, the panel falls back to copying the report text for
    the teacher. */
-var REPORT_FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSetn4AeZSWxcO_3zawHsAPNqZPLsQzu_bCCw6Li-J3PAy9knw/viewform",appEntry:"entry.2102073803",appName:"Physics 3204 Review",unitEntry:"entry.1142563169",detailsEntry:"entry.1416174508"};
+var REPORT_FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSetn4AeZSWxcO_3zawHsAPNqZPLsQzu_bCCw6Li-J3PAy9knw/viewform",appEntry:"entry.2102073803",appName:(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps"),unitEntry:"entry.1142563169",detailsEntry:"entry.1416174508"};
 function unitCheckboxes(){
   $("unitGrid").innerHTML=Object.keys(UNITS).map(function(u){
     return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> Unit '+u+": "+UNITS[u]+"</label>";
@@ -1381,8 +1381,8 @@ function tRebuildFromURL(){
     var single=s.units.length===1;
     var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
     var scope=single?("Unit "+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return "Unit "+u;}).join(", ");
-    var title=single?"Physics 3204: Practice Unit Test":"Physics 3204: Practice Exam";
-    wordName=single?"Physics 3204 Practice Unit Test.docx":"Physics 3204 Practice Exam.docx";
+    var title=single?(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test":(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam";
+    wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx":(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx";
     var exO={srItems:srItems,crItems:crItems,single:single,short:false};
     exO.srMarks=srItems.length;
     exO.crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
@@ -1400,7 +1400,7 @@ function tRebuildFromURL(){
     var avoid3={},items3=[];
     body.split(",").forEach(function(tok){if(tok){var q=tBuildTok(tok,avoid3,salt);if(q)items3.push(q);}});
     if(!items3.length)return false;
-    wordName="Physics 3204 Practice Sheet.docx";
+    wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
     T=null;
     sheetState={items:items3,s:s,thin:false};
     if(TEACHER)T={view:"sheet",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap},edited:edited,textEdited:false,picker:null};
@@ -1775,7 +1775,7 @@ function stepHTML(h){
 function plainText(h){var d=document.createElement("div");d.innerHTML=String(h).replace(/<br\s*\/?>/gi,"\n");return (d.textContent||"").replace(/[ \t]+/g," ").replace(/\s*\n\s*/g,"\n").trim();}
 function reportText(q,reason){
   var e=q._entry,lines=[];
-  lines.push("Physics 3204 Review - problem report");
+  lines.push((window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps")+" - problem report");
   lines.push("Entry: "+e.id+" | Unit "+e.unit+" ("+UNITS[e.unit]+") | Indicators: "+e.indicators.join(", ")+" | Level "+e.level);
   lines.push("Problem type: "+reason);
   lines.push("Question: "+plainText(q.prompt));
@@ -1881,8 +1881,9 @@ function composeExam(units,inds){
          bank's CR denominations allow (a unit whose CR marks cannot
          split at its own level targets borrows level room from the other
          unit in the scope, so the scope totals still land);
-       - any other multi-unit set uses the chassis fallback: a pooled
-         50-mark plan, 27 selected response and 23 constructed response.
+       - any other multi-unit set uses the course's configured pooled
+         fallback (exam.fallback in the course configuration; 27 selected
+         response and 23 constructed response when a course sets none).
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -1899,7 +1900,7 @@ function composeExam(units,inds){
   var parts;
   if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null}];}
   else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null};});}
-  else{parts=[{units:units.slice(),sr:27,cr:23,levels:null}];}
+  else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:null}];}
   var expectedTotal=single?ut.total:(scope?scope.total:50);
   function genFrom(e){var q=e.gen();q._entry=e;return q;}
   function crPoolFor(part){
@@ -2067,8 +2068,8 @@ function startExam(){
   var single=s.units.length===1;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
   var scope=single?("Unit "+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return "Unit "+u;}).join(", ");
-  var title=single?"Physics 3204: Practice Unit Test":"Physics 3204: Practice Exam";
-  wordName=single?"Physics 3204 Practice Unit Test.docx":"Physics 3204 Practice Exam.docx";
+  var title=single?(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test":(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam";
+  wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx":(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx";
   T=null;
   examState={ex:ex,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
   if(TEACHER){
@@ -2140,7 +2141,7 @@ function startSheet(){
   if(s.mcCount+s.ncCount<1){$("session").innerHTML='<div class="card"><p>Set the Multiple choice and Constructed Response counts to at least one question in total, then make the sheet again.</p></div>';return;}
   var res=withSeed(_sd,function(){return drawSheetSet(s);});
   if(!res.items.length){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"No questions match that selection yet.":"Choose at least one unit above ,  or use the Mid-course review or Final review button ,  then start again.")+'</p></div>';return;}
-  wordName="Physics 3204 Practice Sheet.docx";
+  wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
   T=null;
   sheetState={items:res.items,s:s,thin:res.thin};
   if(TEACHER){
@@ -2154,11 +2155,11 @@ function startSheet(){
 function renderSheet(){
   var s=sheetState.s;var res={items:sheetState.items,thin:sheetState.thin};
   var unitNames=s.units.map(function(u){return "Unit "+u;}).join(", ");
-  wordName="Physics 3204 Practice Sheet.docx";
+  wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
   var html='<div class="nameline"><div>Name:<span></span></div><div>Date:<span></span></div></div>';
   var wsMcF=(typeof s.wsMc==="number"&&!isNaN(s.wsMc))?s.wsMc:0;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
-  html+='<h1 style="font-size:1.3rem;">'+"Physics 3204: Practice Sheet"+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 Indicators: "+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?'Show all workings in the space provided.':'Show all workings on your own paper.')+'</p>';
+  html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Sheet"+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 Indicators: "+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?'Show all workings in the space provided.':'Show all workings on your own paper.')+'</p>';
   res.items.forEach(function(q,i){
     var h=Math.round((q._entry.level===3?170:(q.type==="mc"?120:150))*((q.type==="mc")?wsMcF:wsCrF));
     html+='<div class="pq"><p><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">(Unit '+q._entry.unit+' \u00B7 '+q._entry.indicators.join(", ")+' \u00B7 Level '+q._entry.level+')</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
@@ -2689,7 +2690,7 @@ function makeWordDocx(rootEl,st){
     {name:"word/styles.xml",data:enc.encode(DOCX_STYLES)}
   ]);
 }
-var wordName="Physics 3204 Practice Sheet.docx";
+var wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
 function downloadWordFile(statusEl){
   var prev=$("sheetPrev");
   if(!prev)return;
@@ -2863,7 +2864,7 @@ function exportGame(kind,items,statusEl,leftOutOverride){
     if(kind==="kahoot"){
       var k=buildKahootXlsx(items);
       if(!k.count){if(statusEl)statusEl.textContent="This set has no multiple choice questions to export.";return;}
-      downloadBlob("Physics 3204 for Kahoot.xlsx",new Blob([k.bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+      downloadBlob((window.__COURSE?window.__COURSE.shortName:"Course")+" for Kahoot.xlsx",new Blob([k.bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
       var lo=(typeof leftOutOverride==="number")?leftOutOverride:k.leftOut;
       var t="Kahoot file downloaded with "+k.count+" questions.";
       if(lo)t+=" "+lo+" constructed-response question"+(lo===1?" was":"s were")+" left out, because Kahoot only takes multiple choice.";
@@ -2875,7 +2876,7 @@ function exportGame(kind,items,statusEl,leftOutOverride){
     }else{
       var b=buildBlooketCsv(items);
       if(!b.count){if(statusEl)statusEl.textContent="This set has no multiple choice questions to export.";return;}
-      downloadBlob("Physics 3204 for Blooket.csv",new Blob(["\ufeff"+b.text],{type:"text/csv"}));
+      downloadBlob((window.__COURSE?window.__COURSE.shortName:"Course")+" for Blooket.csv",new Blob(["\ufeff"+b.text],{type:"text/csv"}));
       var lo2=(typeof leftOutOverride==="number")?leftOutOverride:b.leftOut;
       var t2="Blooket file downloaded with "+b.count+" questions.";
       if(lo2)t2+=" "+lo2+" constructed-response question"+(lo2===1?" was":"s were")+" left out, because Blooket only takes multiple choice.";
@@ -2890,7 +2891,7 @@ function exportGame(kind,items,statusEl,leftOutOverride){
    the same bank entry, the dealt question itself first. The XML dialect
    is cloned from packages proven on this Brightspace instance: the
    assessment header, pool sections and multiple-choice items follow the
-   authored Physics 3204 Unit 6 checkpoint quizzes (imported into the dev
+   authored Math 2201 Unit 6 checkpoint quizzes (imported into the dev
    shell and exported back out of the sandbox, org unit 171846); the
    written-response items follow the English 3201 v4 question library
    (imported into the same sandbox); the arithmetic items follow a
@@ -2908,7 +2909,7 @@ function exportGame(kind,items,statusEl,leftOutOverride){
    PNG files at the package root and referenced by bare filename, the
    questiondb image convention; if a rasterization fails the SVG markup
    is embedded inline instead and counted in the status line. */
-var BS_QUIZ_FILE="quiz_d2l_P3204BS.xml",BS_QUIZ_TITLE="Physics 3204 Review: Practice Set",BS_APP_NAME="Physics 3204 Review";
+var BS_QUIZ_FILE="quiz_d2l_"+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+"BS.xml",BS_QUIZ_TITLE=(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps")+": Practice Set",BS_APP_NAME=(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps");
 function bsUuid(){
   var b=new Uint8Array(16);
   if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(b);else for(var i=0;i<16;i++)b[i]=Math.floor(Math.random()*256);
@@ -2987,7 +2988,7 @@ function bsItemHead(q,Q,type,pts){
     +'<qti_metadatafield><fieldlabel>qmd_questiontype</fieldlabel><fieldentry>'+type+'</fieldentry></qti_metadatafield>'
     +'<qti_metadatafield><fieldlabel>qmd_weighting</fieldlabel><fieldentry>'+pts.toFixed(9)+'</fieldentry></qti_metadatafield>'
     +'<qti_metadatafield><fieldlabel>qmd_globalid</fieldlabel><fieldentry>'+bsUuid()+'</fieldentry></qti_metadatafield>'
-    +'<qti_metadatafield><fieldlabel>qmd_displayid</fieldlabel><fieldentry>p3204review-'+Q+'</fieldentry></qti_metadatafield>'
+    +'<qti_metadatafield><fieldlabel>qmd_displayid</fieldlabel><fieldentry>'+(window.__COURSE?window.__COURSE.storagePrefix:"app")+'review-'+Q+'</fieldentry></qti_metadatafield>'
     +'<qti_metadatafield><fieldlabel>qmd_aihumanorigin</fieldlabel><fieldentry>HumanGenerated</fieldentry></qti_metadatafield>'
     +'</qtimetadata></itemmetadata><itemproc_extension><d2l_2p0:difficulty>'+(q._entry.level||1)+'</d2l_2p0:difficulty><d2l_2p0:isbonus>no</d2l_2p0:isbonus><d2l_2p0:ismandatory>no</d2l_2p0:ismandatory></itemproc_extension>';
 }
@@ -2998,7 +2999,7 @@ function bsItemXml(q,poolNo,varNo,pts,st,files,rasterFn){
     promptHtmlP=promptHtmlP.then(function(ph){
       return rasterFn(q.figure).then(function(png){
         if(png&&png.bytes){
-          var fname="P3204Fig_"+poolNo+"_"+varNo+".png";
+          var fname=(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+"Fig_"+poolNo+"_"+varNo+".png";
           files.push({name:fname,data:png.bytes});
           st.figures++;
           return ph+'<p><img src="'+fname+'" alt="'+xescA(bsFigureAlt(q.figure))+'" style="max-width: 100%;" /></p>';
@@ -3063,12 +3064,12 @@ function bsQuizXml(poolsXml,nPools,nVars){
   var desc='&lt;p&gt;This quiz mirrors a practice set built in the '+BS_APP_NAME+' app. Each question is drawn at random from a pool of '+nVars+' variants of the same question, so learners can see different numbers for the same task. The worked solution for every question is stored as that question\'s feedback.&lt;/p&gt;';
   return '<?xml version="1.0" encoding="utf-8"?>\n'
     +'<questestinterop xmlns:d2l_2p0="http://desire2learn.com/xsd/d2lcp_v2p0">'
-    +'<assessment d2l_2p0:id="1" title="'+BS_QUIZ_TITLE+'" ident="res_quiz_P3204BS">'
+    +'<assessment d2l_2p0:id="1" title="'+BS_QUIZ_TITLE+'" ident="res_quiz'+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+'BS">'
     +'<rubric><flow_mat><material><mattext d2l_2p0:isdisplayed="yes" texttype="text/html">'+desc+'</mattext></material></flow_mat></rubric>'
     +'<assessmentcontrol hide_question_pointsswitch="no" hintswitch="no" solutionswitch="yes" feedbackswitch="no" />'
     +'<presentation_material><flow_mat><material label="page header"><mattext d2l_2p0:isdisplayed="yes" texttype="text/html" /></material><material label="page footer"><mattext d2l_2p0:isdisplayed="yes" texttype="text/html" /></material></flow_mat></presentation_material>'
     +'<assess_procextension><d2l_2p0:intro_message d2l_2p0:isdisplayed="no" texttype="text/plain" />'
-    +'<category ident="P3204REVCAT" d2l_2p0:sortorder="1">Physics 3204 Review</category>'
+    +'<category ident="'+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+'REVCAT" d2l_2p0:sortorder="1">'+(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps")+'</category>'
     +'<d2l_2p0:disable_right_click>no</d2l_2p0:disable_right_click><d2l_2p0:disable_pager_access>no</d2l_2p0:disable_pager_access><is_active>no</is_active><d2l_2p0:is_single_session>no</d2l_2p0:is_single_session><d2l_2p0:annotation_tools_enabled>yes</d2l_2p0:annotation_tools_enabled><d2l_2p0:date_start /><d2l_2p0:date_end /><d2l_2p0:date_due /><d2l_2p0:has_schedule_event>no</d2l_2p0:has_schedule_event><d2l_2p0:password /><d2l_2p0:is_attempt_Rldb>no</d2l_2p0:is_attempt_Rldb><d2l_2p0:is_subview_Rldb>no</d2l_2p0:is_subview_Rldb><d2l_2p0:time_limit>0</d2l_2p0:time_limit><d2l_2p0:show_clock>no</d2l_2p0:show_clock><d2l_2p0:enforce_time_limit>no</d2l_2p0:enforce_time_limit><d2l_2p0:quiz_start_type>no</d2l_2p0:quiz_start_type><d2l_2p0:grace_period>0</d2l_2p0:grace_period><d2l_2p0:late_limit>2</d2l_2p0:late_limit><d2l_2p0:attempts_allowed>0</d2l_2p0:attempts_allowed><d2l_2p0:attempt_restrictions /><d2l_2p0:mark_calculation_type>1</d2l_2p0:mark_calculation_type><d2l_2p0:is_forward_only>no</d2l_2p0:is_forward_only><d2l_2p0:paging_type_id>0</d2l_2p0:paging_type_id></assess_procextension>'
     +'<assessfeedback title=""><rubric><flow_mat><material><mattext texttype="yes" /></material></flow_mat></rubric><d2l_2p0:duration>0</d2l_2p0:duration><d2l_2p0:response_display_type_id>2</d2l_2p0:response_display_type_id><d2l_2p0:show_correct_answers>yes</d2l_2p0:show_correct_answers><d2l_2p0:submission_restrictip>no</d2l_2p0:submission_restrictip><d2l_2p0:show_class_average>no</d2l_2p0:show_class_average><d2l_2p0:show_score_distribution>no</d2l_2p0:show_score_distribution></assessfeedback>'
     +'<section ident="CONTAINER_SECTION"><section title="Practice set" d2l_2p0:page="1" ident="SECT_BS_MAIN">'
@@ -3080,9 +3081,9 @@ function bsQuizXml(poolsXml,nPools,nVars){
 function bsManifestXml(files){
   var fileEls=files.map(function(f){return '<file href="'+f.name+'"/>';}).join("");
   return '<?xml version="1.0" encoding="UTF-8"?>\n'
-    +'<manifest identifier="P3204_BS_EXPORT" xmlns:d2l_2p0="http://desire2learn.com/xsd/d2lcp_v2p0" xmlns:scorm_1p2="http://www.adlnet.org/xsd/adlcp_rootv1p2" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1" xmlns="http://www.imsglobal.org/xsd/imscp_v1p1">'
-    +'<metadata><imsmd:lom><imsmd:general><imsmd:title><imsmd:langstring xml:lang="en-ca">'+BS_QUIZ_TITLE+'</imsmd:langstring></imsmd:title><imsmd:keyword><imsmd:langstring xml:lang="en-ca">physics_3204_review_brightspace_export</imsmd:langstring></imsmd:keyword><imsmd:language>en-ca</imsmd:language></imsmd:general></imsmd:lom></metadata>'
-    +'<resources><resource identifier="res_quiz_P3204BS" type="webcontent" d2l_2p0:material_type="d2lquiz" d2l_2p0:link_target="" href="'+BS_QUIZ_FILE+'" title="'+BS_QUIZ_TITLE+'">'
+    +'<manifest identifier="'+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+'_BS_EXPORT" xmlns:d2l_2p0="http://desire2learn.com/xsd/d2lcp_v2p0" xmlns:scorm_1p2="http://www.adlnet.org/xsd/adlcp_rootv1p2" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1" xmlns="http://www.imsglobal.org/xsd/imscp_v1p1">'
+    +'<metadata><imsmd:lom><imsmd:general><imsmd:title><imsmd:langstring xml:lang="en-ca">'+BS_QUIZ_TITLE+'</imsmd:langstring></imsmd:title><imsmd:keyword><imsmd:langstring xml:lang="en-ca">'+(window.__COURSE?window.__COURSE.id.replace(/-/g,'_')+'_review_brightspace_export':'review_apps')+'</imsmd:langstring></imsmd:keyword><imsmd:language>en-ca</imsmd:language></imsmd:general></imsmd:lom></metadata>'
+    +'<resources><resource identifier="res_quiz'+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+'BS" type="webcontent" d2l_2p0:material_type="d2lquiz" d2l_2p0:link_target="" href="'+BS_QUIZ_FILE+'" title="'+BS_QUIZ_TITLE+'">'
     +'<file href="'+BS_QUIZ_FILE+'"/>'+fileEls
     +'</resource></resources></manifest>';
 }
@@ -3119,7 +3120,7 @@ function exportBrightspace(items,statusEl){
   var sel=$("bsVarSel"),n=sel?(+sel.value||10):10;
   if(statusEl)statusEl.textContent="Building the Brightspace package...";
   buildBrightspacePackage(items,n,bsRasterizeBrowser).then(function(res){
-    downloadBlob("Physics 3204 for Brightspace.zip",new Blob([res.bytes],{type:"application/zip"}));
+    downloadBlob((window.__COURSE?window.__COURSE.shortName:"Course")+" for Brightspace.zip",new Blob([res.bytes],{type:"application/zip"}));
     var st=res.stats,t="Brightspace package downloaded: one quiz with "+st.pools+" question pools and "+st.variants+" variants. Import it with Course Admin, Import/Export/Copy Components, Import Components.";
     if(st.figures)t+=" "+st.figures+" diagram"+(st.figures===1?"":"s")+" included as image files.";
     if(st.figInline)t+=" "+st.figInline+" diagram"+(st.figInline===1?"":"s")+" could not be converted to an image and were embedded as drawings instead.";
@@ -3174,9 +3175,10 @@ function applyURL(){
 }
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
+if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5)__e5.textContent=__c.presets.final.label;}
 $("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);});
 $("presetFinal").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.final.units.slice():[]);});
-$("presetAll").addEventListener("click",function(){setPreset(Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
+$("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});
 $("seedIn").addEventListener("input",refreshFace);
@@ -3210,17 +3212,28 @@ else if(urlTouched&&(new URLSearchParams(location.search).get("unit")||new URLSe
 <script>
 /* Course picker: shown only when no (or an unknown) course
    was requested. The main script's boot sequence is
-   guarded by window.__NOCOURSE, so the builder stays off. */
+   guarded by window.__NOCOURSE, so the builder stays off.
+   Courses are grouped by subject area (config key: subject),
+   highest grade first inside a group (config key: grade). */
 if(window.__NOCOURSE){(function(){
   var app=document.getElementById("app");if(app)app.style.display="none";
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
+  var groups={};
   Object.keys(window.COURSES||{}).forEach(function(id){
-    var c=window.COURSES[id];
-    var b=document.createElement("button");
-    b.type="button";b.className="alt";b.textContent=c.shortName+" Review";
-    b.addEventListener("click",function(){location.search="?course="+encodeURIComponent(id);});
-    list.appendChild(b);
+    var c=window.COURSES[id];var s=c.subject||"Other";
+    (groups[s]=groups[s]||[]).push([id,c]);
+  });
+  Object.keys(groups).sort().forEach(function(s){
+    var h=document.createElement("h3");h.textContent=s;list.appendChild(h);
+    var row=document.createElement("div");row.className="presetrow";list.appendChild(row);
+    groups[s].sort(function(a,b){return (b[1].grade||0)-(a[1].grade||0);}).forEach(function(pair){
+      var id=pair[0],c=pair[1];
+      var b=document.createElement("button");
+      b.type="button";b.className="alt";b.textContent=c.shortName+" Review";
+      b.addEventListener("click",function(){location.search="?course="+encodeURIComponent(id);});
+      row.appendChild(b);
+    });
   });
 })();}
 </script>
