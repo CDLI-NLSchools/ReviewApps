@@ -435,7 +435,7 @@ window.COURSES = {
   bankFile: "bio-2201.js",
   subject: "Science",
   grade: 11,
-  listed: false,
+  listed: true,
   panels: {},
 
   units: {
