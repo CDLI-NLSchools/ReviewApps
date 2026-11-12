@@ -15,6 +15,349 @@
    must be carried over verbatim at every assembly. */
 function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 
+/* ---- Unit 1 measurement figures (added Nov 2026) ----
+   Inline SVG diagrams for the Unit 1 entries, drawn inside each
+   generator from that question's own values (the same locals the
+   stem and solution use), so a figure always matches its question.
+   Unknown lengths are labelled "?" and never with the answer.
+   Solids of revolution are drawn as labelled profiles or standard
+   outline views; prisms and pyramids use an oblique view so all
+   three dimensions can be labelled. Helper prefix: u1fig. */
+function u1figLine(x1,y1,x2,y2,w,dash){
+  return '<line x1="'+fmt(x1,1)+'" y1="'+fmt(y1,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y2,1)+'" stroke="'+FIG_INK+'" stroke-width="'+(w||2)+'"'+(dash?' stroke-dasharray="5 4"':"")+'/>';
+}
+function u1figSvg(W,H,body,label){
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+label+'">'+body+'</svg>';
+}
+/* Rectangle with width and height labels (the garden perimeter). */
+function u1figRect(w,h,wLab,hLab){
+  var W=330,H=215,T=_fit([[0,0],[w,0],[w,h],[0,h]],W,H,52);
+  var P00=T([0,0]),P10=T([w,0]),P11=T([w,h]),P01=T([0,h]);
+  var out=u1figLine(P00[0],P00[1],P10[0],P10[1],2)+u1figLine(P10[0],P10[1],P11[0],P11[1],2)+u1figLine(P11[0],P11[1],P01[0],P01[1],2)+u1figLine(P01[0],P01[1],P00[0],P00[1],2);
+  out+=_txt((P00[0]+P10[0])/2,P00[1]+16,wLab,12,false);
+  out+=_txt(P00[0]-10,(P00[1]+P01[1])/2,hLab,12,false,"end");
+  return u1figSvg(W,H,out,"Rectangle diagram");
+}
+/* Circle measured with a tape wrap: the dashed outer circle is the
+   tape, cLab is the circumference reading, and the diameter (kind
+   "d") or radius (kind "r") line carries the unknown "?". */
+function u1figCirc(cLab,kind){
+  var W=330,H=215,cx=165,cy=112,R=64,out="";
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(R+11)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.3" stroke-dasharray="5 4"/>';
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=_txt(cx,cy-R-26,cLab,12.5,false);
+  if(kind==="d"){
+    out+=u1figLine(cx-R,cy,cx+R,cy,1.6,true);
+    out+=_txt(cx,cy-11,"?",13,false);
+  }else{
+    out+=u1figLine(cx,cy,cx+R,cy,1.6,true);
+    out+=_txt(cx+R/2,cy-11,"?",13,false);
+  }
+  return u1figSvg(W,H,out,"Circle with tape measure around it");
+}
+/* Closed cylinder, drawn to the proportions of r and h. Either
+   label may be null; an unknown dimension is passed as "?". */
+function u1figCyl(r,h,rLab,hLab){
+  var W=330,H=215,s=Math.min((W-130)/(2*r),(H-76)/h);
+  if(!(s>0))s=10;
+  var rx=r*s,ry=Math.max(4,rx*0.30),bh=h*s,cx=148,topY=(H-bh)/2,botY=topY+bh,out="";
+  out+='<ellipse cx="'+fmt(cx,1)+'" cy="'+fmt(topY,1)+'" rx="'+fmt(rx,1)+'" ry="'+fmt(ry,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=u1figLine(cx-rx,topY,cx-rx,botY,2)+u1figLine(cx+rx,topY,cx+rx,botY,2);
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(botY,1)+' Q '+fmt(cx,1)+' '+fmt(botY+2*ry,1)+' '+fmt(cx+rx,1)+' '+fmt(botY,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(botY,1)+' Q '+fmt(cx,1)+' '+fmt(botY-2*ry,1)+' '+fmt(cx+rx,1)+' '+fmt(botY,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.3" stroke-dasharray="4 3"/>';
+  if(rLab){
+    var ex=cx+rx*0.707,ey=topY+ry*0.707;
+    out+=u1figLine(cx,topY,ex,ey,1.6);
+    out+=_txt((cx+ex)/2+7,(topY+ey)/2-9,rLab,12,false);
+  }
+  if(hLab){
+    var dx=cx+rx+15;
+    out+=u1figLine(dx,topY,dx,botY,1.3)+u1figLine(dx-4,topY,dx+4,topY,1.3)+u1figLine(dx-4,botY,dx+4,botY,1.3);
+    out+=_txt(dx+8,(topY+botY)/2,hLab,12,false,"start");
+  }
+  return u1figSvg(W,H,out,"Cylinder diagram");
+}
+/* Cone, drawn to the proportions of r and its vertical height vh.
+   o carries the labels to show: rLab on the base radius, hLab on
+   the dashed centre height, lLab on the right slant edge. */
+function u1figCone(r,vh,o){
+  o=o||{};
+  var W=330,H=215,s=Math.min((W-140)/(2*r),(H-96)/Math.max(vh,0.001));
+  if(!(s>0))s=10;
+  var rx=r*s,bh=vh*s,cx=148,topY=(H-bh)/2-4,baseY=topY+bh,ry=Math.max(4,rx*0.28),out="";
+  out+=u1figLine(cx,topY,cx-rx,baseY,2)+u1figLine(cx,topY,cx+rx,baseY,2);
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(baseY,1)+' Q '+fmt(cx,1)+' '+fmt(baseY+2*ry,1)+' '+fmt(cx+rx,1)+' '+fmt(baseY,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(baseY,1)+' Q '+fmt(cx,1)+' '+fmt(baseY-2*ry,1)+' '+fmt(cx+rx,1)+' '+fmt(baseY,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.2" stroke-dasharray="4 3"/>';
+  if(o.hLab){
+    out+=u1figLine(cx,topY,cx,baseY,1.4,true);
+    out+=_txt(cx-8,(topY+baseY)/2,o.hLab,12,false,"end");
+  }
+  if(o.rLab){
+    out+=u1figLine(cx,baseY,cx+rx,baseY,1.6);
+    out+=_txt(cx+rx/2,baseY+ry+13,o.rLab,12,false);
+  }
+  if(o.lLab){
+    out+=_txt(cx+rx/2+15,(topY+baseY)/2,o.lLab,12,false);
+  }
+  return u1figSvg(W,H,out,"Cone diagram");
+}
+/* Rectangular prism in oblique view: front face a by c, depth b.
+   Any label may be null; an unknown dimension is passed as "?". */
+function u1figPrism(a,b,c,aLab,bLab,cLab){
+  var W=330,H=215,dxu=0.55,dyu=0.38;
+  var s=Math.min((W-120)/(a+b*dxu),(H-84)/(c+b*dyu));
+  if(!(s>0))s=10;
+  var fw=a*s,fh=c*s,dx=b*s*dxu,dy=-b*s*dyu;
+  var x0=(W-fw-dx)/2-14,yT=(H-fh-dy)/2,yB=yT+fh,out="";
+  var FBL=[x0,yB],FBR=[x0+fw,yB],FTR=[x0+fw,yT],FTL=[x0,yT];
+  var BBL=[x0+dx,yB+dy],BBR=[x0+fw+dx,yB+dy],BTR=[x0+fw+dx,yT+dy],BTL=[x0+dx,yT+dy];
+  out+=u1figLine(BTL[0],BTL[1],BTR[0],BTR[1],1.6)+u1figLine(BTR[0],BTR[1],BBR[0],BBR[1],1.6);
+  out+=u1figLine(BBL[0],BBL[1],BBR[0],BBR[1],1.4,true)+u1figLine(BBL[0],BBL[1],BTL[0],BTL[1],1.4,true);
+  out+=u1figLine(FBL[0],FBL[1],FBR[0],FBR[1],2)+u1figLine(FBR[0],FBR[1],FTR[0],FTR[1],2)+u1figLine(FTR[0],FTR[1],FTL[0],FTL[1],2)+u1figLine(FTL[0],FTL[1],FBL[0],FBL[1],2);
+  out+=u1figLine(FBR[0],FBR[1],BBR[0],BBR[1],1.8)+u1figLine(FTR[0],FTR[1],BTR[0],BTR[1],1.8)+u1figLine(FTL[0],FTL[1],BTL[0],BTL[1],1.8);
+  out+=u1figLine(FBL[0],FBL[1],BBL[0],BBL[1],1.4,true);
+  if(aLab)out+=_txt(x0+fw/2,yB+17,aLab,12,false);
+  if(cLab)out+=_txt(x0-9,(yT+yB)/2,cLab,12,false,"end");
+  if(bLab)out+=_txt((FBR[0]+BBR[0])/2+5,(FBR[1]+BBR[1])/2+14,bLab,12,false);
+  return u1figSvg(W,H,out,"Rectangular prism diagram");
+}
+/* Triangular prism: triangular end with base tb and height th,
+   extruded by the length L in an oblique view. */
+function u1figTriPrism(tb,th,L,tbLab,thLab,LLab){
+  var W=330,H=215,dxu=0.55,dyu=0.38;
+  var s=Math.min((W-120)/(tb+L*dxu),(H-84)/(th+L*dyu));
+  if(!(s>0))s=10;
+  var fw=tb*s,fh=th*s,dx=L*s*dxu,dy=-L*s*dyu;
+  var x0=(W-fw-dx)/2-14,yB=(H-fh-dy)/2+fh,yT=yB-fh,out="";
+  var FBL=[x0,yB],FBR=[x0+fw,yB],FA=[x0+fw/2,yT];
+  var BBL=[x0+dx,yB+dy],BBR=[x0+fw+dx,yB+dy],BA=[x0+fw/2+dx,yT+dy];
+  out+=u1figLine(BBL[0],BBL[1],BBR[0],BBR[1],1.4,true)+u1figLine(BBR[0],BBR[1],BA[0],BA[1],1.6)+u1figLine(BA[0],BA[1],BBL[0],BBL[1],1.4,true);
+  out+=u1figLine(FBL[0],FBL[1],FBR[0],FBR[1],2)+u1figLine(FBR[0],FBR[1],FA[0],FA[1],2)+u1figLine(FA[0],FA[1],FBL[0],FBL[1],2);
+  out+=u1figLine(FBR[0],FBR[1],BBR[0],BBR[1],1.8)+u1figLine(FA[0],FA[1],BA[0],BA[1],1.8);
+  out+=u1figLine(FBL[0],FBL[1],BBL[0],BBL[1],1.4,true);
+  if(thLab){
+    out+=u1figLine(FA[0],FA[1],FA[0],yB,1.4,true);
+    out+=_txt(FA[0]-8,(yT+yB)/2,thLab,12,false,"end");
+  }
+  if(tbLab)out+=_txt(x0+fw/2,yB+17,tbLab,12,false);
+  if(LLab)out+=_txt((FBR[0]+BBR[0])/2+5,(FBR[1]+BBR[1])/2+14,LLab,12,false);
+  return u1figSvg(W,H,out,"Triangular prism diagram");
+}
+/* Square pyramid in oblique view: base side bs, vertical height
+   vh. o.sLab labels the front base edge; o.hLab labels the dashed
+   centre height; o.lLab labels the dashed slant height drawn to
+   the midpoint of the front base edge. */
+function u1figPyr(bs,vh,o){
+  o=o||{};
+  var W=330,H=215,dxu=0.5,dyu=0.34;
+  var sc=Math.min((W-120)/(bs+bs*dxu),(H-88)/(vh+bs*dyu));
+  if(!(sc>0))sc=10;
+  var fw=bs*sc,dx=bs*sc*dxu,dy=-bs*sc*dyu,hh=vh*sc;
+  var totH=hh-dy/2,x0=(W-fw-dx)/2-12,yB=(H+totH)/2,yC=yB+dy/2;
+  var FL=[x0,yB],FR=[x0+fw,yB],BR=[x0+fw+dx,yB+dy],BL=[x0+dx,yB+dy];
+  var AP=[x0+fw/2+dx/2,yC-hh],out="";
+  out+=u1figLine(BL[0],BL[1],BR[0],BR[1],1.4,true)+u1figLine(FL[0],FL[1],BL[0],BL[1],1.4,true);
+  out+=u1figLine(FL[0],FL[1],FR[0],FR[1],2)+u1figLine(FR[0],FR[1],BR[0],BR[1],1.8);
+  out+=u1figLine(AP[0],AP[1],FL[0],FL[1],2)+u1figLine(AP[0],AP[1],FR[0],FR[1],2)+u1figLine(AP[0],AP[1],BR[0],BR[1],1.8);
+  out+=u1figLine(AP[0],AP[1],BL[0],BL[1],1.4,true);
+  if(o.hLab){
+    out+=u1figLine(AP[0],AP[1],AP[0],yC,1.4,true);
+    out+=_txt(AP[0]+9,(AP[1]+yC)/2,o.hLab,12,false,"start");
+  }
+  if(o.lLab){
+    var MF=[x0+fw/2,yB];
+    out+=u1figLine(AP[0],AP[1],MF[0],MF[1],1.4,true);
+    out+=_txt((AP[0]+MF[0])/2+14,(AP[1]+MF[1])/2,o.lLab,12,false);
+  }
+  if(o.sLab)out+=_txt(x0+fw/2,yB+17,o.sLab,12,false);
+  return u1figSvg(W,H,out,"Square pyramid diagram");
+}
+/* Sphere: a diameter line when dLab is given, otherwise a radius
+   line when rLab is given. An unknown is passed as "?". */
+function u1figSphere(rLab,dLab){
+  var W=330,H=215,cx=165,cy=107,R=76,out="";
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(dLab){
+    out+=u1figLine(cx-R,cy,cx+R,cy,1.6);
+    out+=_txt(cx,cy-11,dLab,12,false);
+  }else if(rLab){
+    var ex=cx+R*0.707,ey=cy-R*0.707;
+    out+=u1figLine(cx,cy,ex,ey,1.6);
+    out+=_txt((cx+ex)/2+3,(cy+ey)/2-10,rLab,12,false);
+  }
+  return u1figSvg(W,H,out,"Sphere diagram");
+}
+/* Silo profile: cylinder of radius r and height h with a
+   hemispherical top of the same radius (volume and painted area
+   composites share this outline). */
+function u1figSilo(r,h,rLab,hLab){
+  var W=330,H=215,s=Math.min((W-130)/(2*r),(H-72)/(h+r));
+  if(!(s>0))s=10;
+  var rx=r*s,ch=h*s,cx=148,baseY=(H+ch+rx)/2,topY=baseY-ch,out="";
+  out+=u1figLine(cx-rx,baseY,cx-rx,topY,2)+u1figLine(cx+rx,baseY,cx+rx,topY,2)+u1figLine(cx-rx,baseY,cx+rx,baseY,2);
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(topY,1)+' A '+fmt(rx,1)+' '+fmt(rx,1)+' 0 0 1 '+fmt(cx+rx,1)+' '+fmt(topY,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(rLab){
+    out+=u1figLine(cx,topY,cx+rx,topY,1.6);
+    out+=_txt(cx+rx/2,topY+13,rLab,12,false);
+  }
+  if(hLab){
+    var dx=cx+rx+15;
+    out+=u1figLine(dx,topY,dx,baseY,1.3)+u1figLine(dx-4,topY,dx+4,topY,1.3)+u1figLine(dx-4,baseY,dx+4,baseY,1.3);
+    out+=_txt(dx+8,(topY+baseY)/2,hLab,12,false,"start");
+  }
+  return u1figSvg(W,H,out,"Silo diagram: cylinder with hemispherical top");
+}
+/* Treat profile: cone of radius r and height h with a
+   hemispherical scoop of the same radius on top. */
+function u1figTreat(r,h,rLab,hLab){
+  var W=330,H=215,s=Math.min((W-130)/(2*r),(H-72)/(h+r));
+  if(!(s>0))s=10;
+  var rx=r*s,ch=h*s,cx=148,jy=(H-ch-rx)/2+rx,apexY=jy+ch,out="";
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(jy,1)+' A '+fmt(rx,1)+' '+fmt(rx,1)+' 0 0 1 '+fmt(cx+rx,1)+' '+fmt(jy,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=u1figLine(cx-rx,jy,cx,apexY,2)+u1figLine(cx+rx,jy,cx,apexY,2);
+  if(rLab){
+    out+=u1figLine(cx,jy,cx+rx,jy,1.6);
+    out+=_txt(cx+rx/2,jy+13,rLab,12,false);
+  }
+  if(hLab){
+    var dx=cx+rx+15;
+    out+=u1figLine(dx,jy,dx,apexY,1.3)+u1figLine(dx-4,jy,dx+4,jy,1.3)+u1figLine(dx-4,apexY,dx+4,apexY,1.3);
+    out+=_txt(dx+8,(jy+apexY)/2,hLab,12,false,"start");
+  }
+  return u1figSvg(W,H,out,"Cone with hemispherical scoop diagram");
+}
+/* Tower profile: cylinder of radius r and height h with a cone
+   roof of the same radius and slant height l. */
+function u1figTower(r,h,l,rLab,hLab,lLab){
+  var vh=Math.sqrt(Math.max(l*l-r*r,0.25));
+  var W=330,H=215,s=Math.min((W-140)/(2*r),(H-76)/(h+vh));
+  if(!(s>0))s=10;
+  var rx=r*s,ch=h*s,rh=vh*s,cx=146,baseY=(H+ch+rh)/2,topY=baseY-ch,apexY=topY-rh,out="";
+  out+=u1figLine(cx-rx,baseY,cx-rx,topY,2)+u1figLine(cx+rx,baseY,cx+rx,topY,2)+u1figLine(cx-rx,baseY,cx+rx,baseY,2);
+  out+=u1figLine(cx-rx,topY,cx,apexY,2)+u1figLine(cx,apexY,cx+rx,topY,2);
+  if(rLab){
+    out+=u1figLine(cx,topY,cx+rx,topY,1.6);
+    out+=_txt(cx+rx/2,topY+13,rLab,12,false);
+  }
+  if(hLab){
+    var dx=cx+rx+15;
+    out+=u1figLine(dx,topY,dx,baseY,1.3)+u1figLine(dx-4,topY,dx+4,topY,1.3)+u1figLine(dx-4,baseY,dx+4,baseY,1.3);
+    out+=_txt(dx+8,(topY+baseY)/2,hLab,12,false,"start");
+  }
+  if(lLab)out+=_txt(cx+rx/2+15,(apexY+topY)/2,lLab,12,false);
+  return u1figSvg(W,H,out,"Cylinder with cone roof diagram");
+}
+/* Cylindrical block of radius r and height H with a cone hole of
+   the same radius and height hc removed: the hole is dashed. */
+function u1figBlock(r,H,hc,rLab,HLab,hcLab){
+  var W=330,Hh=215,s=Math.min((W-140)/(2*r),(Hh-76)/H);
+  if(!(s>0))s=10;
+  var rx=r*s,ry=Math.max(4,rx*0.30),bh=H*s,cx=146,topY=(Hh-bh)/2,botY=topY+bh,out="";
+  out+='<ellipse cx="'+fmt(cx,1)+'" cy="'+fmt(topY,1)+'" rx="'+fmt(rx,1)+'" ry="'+fmt(ry,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=u1figLine(cx-rx,topY,cx-rx,botY,2)+u1figLine(cx+rx,topY,cx+rx,botY,2);
+  out+='<path d="M '+fmt(cx-rx,1)+' '+fmt(botY,1)+' Q '+fmt(cx,1)+' '+fmt(botY+2*ry,1)+' '+fmt(cx+rx,1)+' '+fmt(botY,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  var ay=topY+hc*s;
+  out+=u1figLine(cx-rx,topY,cx,ay,1.5,true)+u1figLine(cx+rx,topY,cx,ay,1.5,true)+u1figLine(cx,topY,cx,ay,1.3,true);
+  if(rLab){
+    var ex=cx+rx*0.707,ey=topY+ry*0.707;
+    out+=u1figLine(cx,topY,ex,ey,1.6);
+    out+=_txt((cx+ex)/2+7,(topY+ey)/2-9,rLab,12,false);
+  }
+  if(hcLab)out+=_txt(cx+8,(topY+ay)/2,hcLab,11.5,false,"start");
+  if(HLab){
+    var dx=cx+rx+15;
+    out+=u1figLine(dx,topY,dx,botY,1.3)+u1figLine(dx-4,topY,dx+4,topY,1.3)+u1figLine(dx-4,botY,dx+4,botY,1.3);
+    out+=_txt(dx+8,(topY+botY)/2,HLab,12,false,"start");
+  }
+  return u1figSvg(W,Hh,out,"Cylinder with a cone hole removed");
+}
+/* House form: rectangular prism (front a, depth b, height hp)
+   with a pyramid roof of height hq. o.lLab, when given, labels
+   the dashed slant height to the midpoint of the front top edge
+   instead of the dashed centre height o.hqLab. */
+function u1figHouse(a,b,hp,hq,o){
+  o=o||{};
+  var W=330,H=215,dxu=0.55,dyu=0.38;
+  var s=Math.min((W-120)/(a+b*dxu),(H-88)/(hp+hq+b*dyu));
+  if(!(s>0))s=10;
+  var fw=a*s,fh=hp*s,dx=b*s*dxu,dy=-b*s*dyu,rh=hq*s;
+  var x0=(W-fw-dx)/2-14,yB=(H+fh+rh-dy)/2,yT=yB-fh,out="";
+  var FBL=[x0,yB],FBR=[x0+fw,yB],FTR=[x0+fw,yT],FTL=[x0,yT];
+  var BBL=[x0+dx,yB+dy],BBR=[x0+fw+dx,yB+dy],BTR=[x0+fw+dx,yT+dy],BTL=[x0+dx,yT+dy];
+  var C=[x0+fw/2+dx/2,yT+dy/2],AP=[C[0],C[1]-rh];
+  out+=u1figLine(BTL[0],BTL[1],BTR[0],BTR[1],1.6)+u1figLine(BTR[0],BTR[1],BBR[0],BBR[1],1.6);
+  out+=u1figLine(BBL[0],BBL[1],BBR[0],BBR[1],1.4,true)+u1figLine(BBL[0],BBL[1],BTL[0],BTL[1],1.4,true);
+  out+=u1figLine(FBL[0],FBL[1],FBR[0],FBR[1],2)+u1figLine(FBR[0],FBR[1],FTR[0],FTR[1],2)+u1figLine(FTR[0],FTR[1],FTL[0],FTL[1],2)+u1figLine(FTL[0],FTL[1],FBL[0],FBL[1],2);
+  out+=u1figLine(FBR[0],FBR[1],BBR[0],BBR[1],1.8)+u1figLine(FTR[0],FTR[1],BTR[0],BTR[1],1.8)+u1figLine(FTL[0],FTL[1],BTL[0],BTL[1],1.8);
+  out+=u1figLine(FBL[0],FBL[1],BBL[0],BBL[1],1.4,true);
+  out+=u1figLine(AP[0],AP[1],FTL[0],FTL[1],2)+u1figLine(AP[0],AP[1],FTR[0],FTR[1],2)+u1figLine(AP[0],AP[1],BTR[0],BTR[1],1.8);
+  out+=u1figLine(AP[0],AP[1],BTL[0],BTL[1],1.4,true);
+  if(o.hqLab){
+    out+=u1figLine(AP[0],AP[1],C[0],C[1],1.4,true);
+    out+=_txt(AP[0]+9,(AP[1]+C[1])/2,o.hqLab,12,false,"start");
+  }
+  if(o.lLab){
+    var MF=[x0+fw/2,yT];
+    out+=u1figLine(AP[0],AP[1],MF[0],MF[1],1.4,true);
+    out+=_txt((AP[0]+MF[0])/2+14,(AP[1]+MF[1])/2,o.lLab,12,false);
+  }
+  if(o.aLab)out+=_txt(x0+fw/2,yB+17,o.aLab,12,false);
+  if(o.hpLab)out+=_txt(x0-9,(yT+yB)/2,o.hpLab,12,false,"end");
+  if(o.bLab)out+=_txt((FBR[0]+BBR[0])/2+5,(FBR[1]+BBR[1])/2+14,o.bLab,12,false);
+  return u1figSvg(W,H,out,"Prism with pyramid roof diagram");
+}
+/* Two solids side by side with the same base width and the same
+   height, for the one-third volume relation. Types are "cyl",
+   "cone", "prism" and "pyr"; the labels are the volumes, with
+   "?" on the solid whose volume is asked for. */
+function u1figPair(tL,tR,labL,labR){
+  function shape(t,ox){
+    var cx=ox+60,base=148,w=76,hgt=84,hw=w/2,out="";
+    if(t==="cyl"){
+      var top=base-hgt,ry=10;
+      out+='<ellipse cx="'+cx+'" cy="'+top+'" rx="'+hw+'" ry="'+ry+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+      out+=u1figLine(cx-hw,top,cx-hw,base,2)+u1figLine(cx+hw,top,cx+hw,base,2);
+      out+='<path d="M '+fmt(cx-hw,1)+' '+base+' Q '+cx+' '+fmt(base+2*ry,1)+' '+fmt(cx+hw,1)+' '+base+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    }else if(t==="cone"){
+      var top2=base-hgt,ry2=9;
+      out+=u1figLine(cx,top2,cx-hw,base,2)+u1figLine(cx,top2,cx+hw,base,2);
+      out+='<path d="M '+fmt(cx-hw,1)+' '+base+' Q '+cx+' '+fmt(base+2*ry2,1)+' '+fmt(cx+hw,1)+' '+base+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    }else if(t==="prism"){
+      var dx=14,dy=-10,top3=base-hgt,x0=cx-hw+dx/2;
+      out+=u1figLine(x0+dx,top3+dy,x0+w-dx+dx,top3+dy,1.6);
+      out+=u1figLine(x0,top3,x0+w-dx,top3,2)+u1figLine(x0+w-dx,top3,x0+w-dx,base,2)+u1figLine(x0+w-dx,base,x0,base,2)+u1figLine(x0,base,x0,top3,2);
+      out+=u1figLine(x0+w-dx,top3,x0+w-dx+dx,top3+dy,1.8)+u1figLine(x0,top3,x0+dx,top3+dy,1.8);
+    }else{
+      var dx2=14,dy2=-10,yB=base,xL=cx-hw+dx2/2,apx=cx+dx2/2,apy=base-hgt-dy2;
+      out+=u1figLine(xL,yB,xL+w-dx2,yB,2)+u1figLine(xL+w-dx2,yB,xL+w-dx2+dx2,yB+dy2,1.8)+u1figLine(xL,yB,xL+dx2,yB+dy2,1.6);
+      out+=u1figLine(apx,apy,xL,yB,2)+u1figLine(apx,apy,xL+w-dx2,yB,2)+u1figLine(apx,apy,xL+w-dx2+dx2,yB+dy2,1.8);
+    }
+    return out;
+  }
+  var body=shape(tL,28)+shape(tR,182);
+  body+=_txt(88,178,labL,12,false)+_txt(242,178,labR,12,false);
+  return u1figSvg(330,200,body,"Two solids with the same base and height");
+}
+/* Instrument scale: a ruler band from o.min to o.max with major
+   ticks labelled and o.minorPer minor ticks per major step, and
+   a measured strip drawn from o.from to o.to above the band.
+   Values are the scale positions in o.unit. */
+function u1figRuler(o){
+  var W=330,H=112,pad=28,y0=56,y1=84;
+  function X(v){return pad+(v-o.min)/(o.max-o.min)*(W-2*pad);}
+  var out='<rect x="'+pad+'" y="'+y0+'" width="'+(W-2*pad)+'" height="'+(y1-y0)+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  var step=o.major/o.minorPer,N=Math.round((o.max-o.min)/step);
+  for(var n=0;n<=N;n++){
+    var v=o.min+n*step,maj=(n%o.minorPer===0),x=X(v);
+    out+=u1figLine(x,y0,x,y0+(maj?13:7),maj?1.6:1.1);
+    if(maj)out+=_txt(x,y1+14,fmt(v),11,false);
+  }
+  out+='<rect x="'+fmt(X(o.from),1)+'" y="24" width="'+fmt(X(o.to)-X(o.from),1)+'" height="9" fill="'+FIG_ACC+'"/>';
+  out+=u1figLine(X(o.from),24,X(o.from),y0,1.2,true)+u1figLine(X(o.to),24,X(o.to),y0,1.2,true);
+  out+=_txt(W-pad,13,o.unit,11.5,false,"end");
+  return u1figSvg(W,H,out,"Ruler scale diagram");
+}
+
 /* ----- bank-u1.js ----- */
 // Math 1201 Unit 1 Measurement question bank
 // Cut verbatim from the standalone bank source
@@ -27,6 +370,10 @@ function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 // CRMARKS: u1-sphere=3
 // CRMARKS: u1-composite=3
 // CRMARKS: u1-composite-sa=2
+// Figures (Nov 2026): the shape, solid and instrument entries carry
+// inline SVG diagrams drawn from each generator's own values, with
+// the helpers in bank-helpers.js. Conversion, referent, estimation,
+// justification and strategy entries stay figureless.
 /* Unit 1: Measurement (indicators 5.1 to 5.15, 6.1 to 6.4).
    All scenarios and values are original. Helper prefix: u1. */
 
@@ -354,7 +701,11 @@ E("u1-linear-problem",1,["5.14"],1,"gen",function(){
       sol="Multiply the length of one roll by the number of rolls: \\[ \\begin{aligned} "+v1+" \\times "+v2+" &= "+ans+" \\end{aligned} \\] So the total length is <b>"+ans+" centimetres</b>.";
     }
   }while(!u1setOk([fmt(ans)].concat(ds.map(function(x){return String(x);})))&&tries<80);
-  return mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,v1:v1,v2:v2});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,v1:v1,v2:v2});
+  if(mode===1)q.figure=u1figCirc(fmt(C)+" cm","d");
+  else if(mode===2)q.figure=u1figCirc(fmt(C2)+" cm","r");
+  else if(mode===3)q.figure=u1figRect(v1,v2,v1+" m",v2+" m");
+  return q;
 });
 
 /* 10. Personal strategy for a hard-to-measure length */
@@ -401,25 +752,33 @@ E("u1-sa-basic",1,["5.1","5.2"],2,"gen",function(){
     var prompt=mode===1?
       "A closed cylindrical paint can has radius "+r+" cm and height "+h+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed cylinder is a rectangle joined to two congruent circles. The circles have radius "+r+" cm, and the rectangle has height "+h+" cm and length equal to the circumference of a circle. Sketch the net in words and determine the total surface area of the cylinder. Give your answer to the nearest tenth, in square centimetres.";
-    return numq(prompt,ans,0.11,
+    var q=numq(prompt,ans,0.11,
       "The surface area of a closed cylinder is the two circles plus the curved rectangle: \\[ \\begin{aligned} SA &= 2\\pi r^2 + 2\\pi r h \\\\ &= 2\\pi("+r+")^2 + 2\\pi("+r+")("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h});
+    q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
+    return q;
   }
   if(mode===3){
     var r3=ri(3,9),l3=r3+ri(2,7),ans3=u1r1(Math.PI*r3*(r3+l3));
-    return numq("A solid cone ornament has radius "+r3+" cm and slant height "+l3+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
+    var q=numq("A solid cone ornament has radius "+r3+" cm and slant height "+l3+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
       "The surface area of a cone is the circular base plus the lateral area: \\[ \\begin{aligned} SA &= \\pi r^2 + \\pi r l \\\\ &= \\pi("+r3+")^2 + \\pi("+r3+")("+l3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,l:l3});
+    q.figure=u1figCone(r3,Math.sqrt(Math.max(l3*l3-r3*r3,0.25)),{rLab:fmt(r3)+" cm",lLab:fmt(l3)+" cm"});
+    return q;
   }
   if(mode===4||mode===5){
     var a=ri(3,12),b=ri(3,12),c=ri(3,12),ans4=2*(a*b+a*c+b*c);
     var prompt4=mode===4?
       "A closed rectangular storage box has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed rectangular prism is six rectangles in three congruent pairs, with dimensions "+a+" cm by "+b+" cm, "+a+" cm by "+c+" cm, and "+b+" cm by "+c+" cm. Sketch the net in words and determine the total surface area of the prism. Give your answer to the nearest tenth, in square centimetres.";
-    return numq(prompt4,ans4,0.11,
+    var q=numq(prompt4,ans4,0.11,
       "Add the areas of the three pairs of congruent faces: \\[ \\begin{aligned} SA &= 2(lw + lh + wh) \\\\ &= 2("+a+"\\times"+b+" + "+a+"\\times"+c+" + "+b+"\\times"+c+") \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c});
+    q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm",fmt(c)+" cm");
+    return q;
   }
   var s=ri(4,12),l6=s+ri(2,8),ans6=s*s+2*s*l6;
-  return numq("A square based pyramid paperweight has base side "+s+" cm and slant height "+l6+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans6,0.11,
+  var q=numq("A square based pyramid paperweight has base side "+s+" cm and slant height "+l6+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans6,0.11,
     "The surface area is the square base plus four congruent triangular faces: \\[ \\begin{aligned} SA &= s^2 + 2sl \\\\ &= "+s+"^2 + 2("+s+")("+l6+") \\\\ &= "+ans6+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans6)+" square centimetres</b>.",{mode:mode,s:s,l:l6});
+  q.figure=u1figPyr(s,Math.sqrt(Math.max(l6*l6-(s/2)*(s/2),0.25)),{sLab:fmt(s)+" cm",lLab:fmt(l6)+" cm"});
+  return q;
 });
 
 /* 12. Unknown dimension from a surface area, one clean step */
@@ -427,24 +786,32 @@ E("u1-sa-unknown",1,["5.3"],2,"gen",function(){
   var mode=ri(1,4);
   if(mode===1){
     var r=ri(3,9),h=ri(4,14),SA=u1r1(2*Math.PI*r*(r+h));
-    return numq("A closed cylinder has radius "+r+" cm and total surface area "+fmt(SA)+" square centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h,0.11,
+    var q=numq("A closed cylinder has radius "+r+" cm and total surface area "+fmt(SA)+" square centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h,0.11,
       "Substitute into the surface area formula and solve for the height: \\[ \\begin{aligned} 2\\pi r(r + h) &= "+fmt(SA)+" \\\\ r + h &\\approx \\frac{"+fmt(SA)+"}{2\\pi("+r+")} \\\\ h &\\approx "+h+" \\end{aligned} \\] So the height is <b>"+h+" centimetres</b>.",{mode:mode,r:r});
+    q.figure=u1figCyl(r,h,fmt(r)+" cm","?");
+    return q;
   }
   if(mode===2){
     var w=ri(3,9),h2=ri(3,9),l=ri(4,14),SA2=2*(l*w+l*h2+w*h2);
-    return numq("A closed rectangular box has width "+w+" cm, height "+h2+" cm and total surface area "+SA2+" square centimetres. Determine its length. Give your answer to the nearest tenth, in centimetres.",l,0.11,
+    var q=numq("A closed rectangular box has width "+w+" cm, height "+h2+" cm and total surface area "+SA2+" square centimetres. Determine its length. Give your answer to the nearest tenth, in centimetres.",l,0.11,
       "Substitute into the surface area formula and solve for the length: \\[ \\begin{aligned} 2(lw + lh + wh) &= "+SA2+" \\\\ l("+w+" + "+h2+") &= "+(SA2/2-w*h2)+" \\\\ l &= "+l+" \\end{aligned} \\] So the length is <b>"+l+" centimetres</b>.",{mode:mode,w:w,h:h2});
+    q.figure=u1figPrism(l,w,h2,"?",fmt(w)+" cm",fmt(h2)+" cm");
+    return q;
   }
   if(mode===3){
     var l3=ri(6,14),r3=ri(3,8),LA=u1r1(Math.PI*r3*l3);
     if(r3>=l3){r3=l3-3;}
     LA=u1r1(Math.PI*r3*l3);
-    return numq("The lateral surface area of a cone is "+fmt(LA)+" square centimetres and its slant height is "+l3+" cm. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r3,0.11,
+    var q=numq("The lateral surface area of a cone is "+fmt(LA)+" square centimetres and its slant height is "+l3+" cm. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r3,0.11,
       "The lateral area is pi times radius times slant height, so divide: \\[ \\begin{aligned} r &= \\frac{LA}{\\pi l} \\\\ &\\approx \\frac{"+fmt(LA)+"}{\\pi("+l3+")} \\\\ &\\approx "+r3+" \\end{aligned} \\] So the radius is <b>"+r3+" centimetres</b>.",{mode:mode,l:l3});
+    q.figure=u1figCone(r3,Math.sqrt(Math.max(l3*l3-r3*r3,0.25)),{rLab:"?",lLab:fmt(l3)+" cm"});
+    return q;
   }
   var s=ri(4,12),l4=ri(5,14),SA4=s*s+2*s*l4;
-  return numq("A square based pyramid has base side "+s+" cm and total surface area "+SA4+" square centimetres. Determine its slant height. Give your answer to the nearest tenth, in centimetres.",l4,0.11,
+  var q=numq("A square based pyramid has base side "+s+" cm and total surface area "+SA4+" square centimetres. Determine its slant height. Give your answer to the nearest tenth, in centimetres.",l4,0.11,
     "Subtract the base area, then divide by twice the base side: \\[ \\begin{aligned} 2sl &= "+SA4+" - "+s+"^2 \\\\ l &= \\frac{"+(SA4-s*s)+"}{2("+s+")} \\\\ &= "+l4+" \\end{aligned} \\] So the slant height is <b>"+l4+" centimetres</b>.",{mode:mode,s:s});
+  q.figure=u1figPyr(s,Math.sqrt(Math.max(l4*l4-(s/2)*(s/2),0.25)),{sLab:fmt(s)+" cm",lLab:"?"});
+  return q;
 });
 
 /* 13. Volume of a basic solid */
@@ -452,27 +819,37 @@ E("u1-vol-basic",1,["5.4"],2,"gen",function(){
   var mode=ri(1,5);
   if(mode===1){
     var r=ri(3,10),h=ri(5,16),ans=u1r1(Math.PI*r*r*h);
-    return numq("A cylindrical water tank has radius "+r+" cm and height "+h+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans,0.11,
+    var q=numq("A cylindrical water tank has radius "+r+" cm and height "+h+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans,0.11,
       "The volume of a cylinder is the area of its base times its height, \\(V = A_b \\times h\\). First find the base area: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r+")^2 \\\\ V &= A_b \\times h = \\pi("+r+")^2("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans)+" cubic centimetres</b>.",{mode:mode,r:r,h:h});
+    q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
+    return q;
   }
   if(mode===2){
     var r2=ri(3,9),h2=pick([6,9,12,15]),ans2=u1r1(Math.PI*r2*r2*h2/3);
-    return numq("A cone shaped pile of sand has radius "+r2+" cm and height "+h2+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans2,0.11,
+    var q=numq("A cone shaped pile of sand has radius "+r2+" cm and height "+h2+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans2,0.11,
       "The volume of a cone is one third of the area of its base times its height. First find the base area: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r2+")^2 \\\\ V &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}\\pi("+r2+")^2("+h2+") \\\\ &\\approx "+fmt(ans2)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans2)+" cubic centimetres</b>.",{mode:mode,r:r2,h:h2});
+    q.figure=u1figCone(r2,h2,{rLab:fmt(r2)+" cm",hLab:fmt(h2)+" cm"});
+    return q;
   }
   if(mode===3){
     var a=ri(3,14),b=ri(3,12),c=ri(3,12),ans3=a*b*c;
-    return numq("A rectangular storage crate has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans3,0.11,
+    var q=numq("A rectangular storage crate has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans3,0.11,
       "The volume of a prism is the area of its base times its height, \\(V = A_b \\times h\\). First find the base area: \\[ \\begin{aligned} A_b &= l \\times w = "+a+" \\times "+b+" = "+(a*b)+" \\\\ V &= A_b \\times h = "+(a*b)+" \\times "+c+" \\\\ &= "+ans3+" \\end{aligned} \\] So the volume is <b>"+ans3+" cubic centimetres</b>.",{mode:mode,a:a,b:b,c:c});
+    q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm",fmt(c)+" cm");
+    return q;
   }
   if(mode===4){
     var tb=pick([4,6,8,10,12]),th=pick([3,4,5,6]),L=ri(5,14),ans4=(tb*th/2)*L;
-    return numq("A tent is a triangular prism. Its triangular end has base "+tb+" cm and height "+th+" cm, and the prism is "+L+" cm long. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
+    var q=numq("A tent is a triangular prism. Its triangular end has base "+tb+" cm and height "+th+" cm, and the prism is "+L+" cm long. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
       "The volume of a prism is the area of its base times its length. The base is the triangular end: \\[ \\begin{aligned} A_b &= \\frac{1}{2}bh = \\frac{1}{2}("+tb+")("+th+") = "+(tb*th/2)+" \\\\ V &= A_b \\times L = "+(tb*th/2)+" \\times "+L+" \\\\ &= "+ans4+" \\end{aligned} \\] So the volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,tb:tb,th:th,L:L});
+    q.figure=u1figTriPrism(tb,th,L,fmt(tb)+" cm",fmt(th)+" cm",fmt(L)+" cm");
+    return q;
   }
   var s=ri(4,12),h5=pick([3,6,9,12]),ans5=s*s*h5/3;
-  return numq("A square based pyramid ornament has base side "+s+" cm and height "+h5+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans5,0.11,
+  var q=numq("A square based pyramid ornament has base side "+s+" cm and height "+h5+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans5,0.11,
     "The volume of a pyramid is one third of the area of its base times its height. First find the base area: \\[ \\begin{aligned} A_b &= s^2 = "+s+"^2 = "+(s*s)+" \\\\ V &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}("+s+")^2("+h5+") \\\\ &= "+ans5+" \\end{aligned} \\] So the volume is <b>"+fmt(ans5)+" cubic centimetres</b>.",{mode:mode,s:s,h:h5});
+  q.figure=u1figPyr(s,h5,{sLab:fmt(s)+" cm",hLab:fmt(h5)+" cm"});
+  return q;
 });
 
 /* 14. The one-third volume relation */
@@ -495,7 +872,12 @@ E("u1-vol-relation",1,["5.5"],1,"gen",function(){
     prompt="A right pyramid has volume "+small+" cubic centimetres. A right prism has the same base and the same height as the pyramid. Determine the volume of the prism, in cubic centimetres.";
     sol="A prism holds three times the volume of a pyramid with the same base and height: \\[ \\begin{aligned} V &= 3 \\times "+small+" \\\\ &= "+big+" \\end{aligned} \\] So the prism volume is <b>"+big+" cubic centimetres</b>.";
   }
-  return mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,small:small});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,small:small});
+  if(mode===1)q.figure=u1figPair("cyl","cone",fmt(big)+" cm³","?");
+  else if(mode===2)q.figure=u1figPair("cone","cyl",fmt(small)+" cm³","?");
+  else if(mode===3)q.figure=u1figPair("prism","pyr",fmt(big)+" cm³","?");
+  else q.figure=u1figPair("pyr","prism",fmt(small)+" cm³","?");
+  return q;
 });
 
 /* 15. Unknown dimension from a volume */
@@ -503,28 +885,38 @@ E("u1-vol-unknown",1,["5.6"],2,"gen",function(){
   var mode=ri(1,5);
   if(mode===1){
     var r=ri(3,9),h=ri(4,14),V=u1r1(Math.PI*r*r*h);
-    return numq("A cylinder has radius "+r+" cm and volume "+fmt(V)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h,0.11,
+    var q=numq("A cylinder has radius "+r+" cm and volume "+fmt(V)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h,0.11,
       "Substitute the known values into \\(V = A_b \\times h\\), where the base area is \\(A_b = \\pi r^2\\), and solve for the height: \\[ \\begin{aligned} "+fmt(V)+" &= \\pi("+r+")^2 \\times h \\\\ h &\\approx \\frac{"+fmt(V)+"}{\\pi("+r+")^2} \\\\ &\\approx "+h+" \\end{aligned} \\] So the height is <b>"+h+" centimetres</b>.",{mode:mode,r:r});
+    q.figure=u1figCyl(r,h,fmt(r)+" cm","?");
+    return q;
   }
   if(mode===2){
     var r2=ri(3,10),h2=ri(4,12),V2=u1r1(Math.PI*r2*r2*h2);
-    return numq("A cylinder has height "+h2+" cm and volume "+fmt(V2)+" cubic centimetres. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r2,0.11,
+    var q=numq("A cylinder has height "+h2+" cm and volume "+fmt(V2)+" cubic centimetres. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r2,0.11,
       "Substitute the known values into the volume formula \\(V = \\pi r^2 h\\) and solve for the radius: \\[ \\begin{aligned} "+fmt(V2)+" &= \\pi r^2 \\times "+h2+" \\\\ r^2 &\\approx \\frac{"+fmt(V2)+"}{\\pi \\times "+h2+"} \\\\ r &\\approx "+r2+" \\end{aligned} \\] So the radius is <b>"+r2+" centimetres</b>.",{mode:mode,h:h2});
+    q.figure=u1figCyl(r2,h2,"?",fmt(h2)+" cm");
+    return q;
   }
   if(mode===3){
     var r3=ri(3,9),h3=ri(4,15),V3=u1r1(Math.PI*r3*r3*h3/3);
-    return numq("A cone has radius "+r3+" cm and volume "+fmt(V3)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h3,0.11,
+    var q=numq("A cone has radius "+r3+" cm and volume "+fmt(V3)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h3,0.11,
       "Substitute the known values into \\(V = \\frac{1}{3} A_b \\times h\\), where the base area is \\(A_b = \\pi r^2\\), and solve for the height: \\[ \\begin{aligned} "+fmt(V3)+" &= \\frac{1}{3} \\times \\pi("+r3+")^2 \\times h \\\\ h &\\approx \\frac{3 \\times "+fmt(V3)+"}{\\pi("+r3+")^2} \\\\ &\\approx "+h3+" \\end{aligned} \\] So the height is <b>"+h3+" centimetres</b>.",{mode:mode,r:r3});
+    q.figure=u1figCone(r3,h3,{rLab:fmt(r3)+" cm",hLab:"?"});
+    return q;
   }
   if(mode===4){
     var a=ri(3,10),b=ri(3,10),c=ri(3,12),V4=a*b*c;
-    return numq("A rectangular box has length "+a+" cm, width "+b+" cm and volume "+V4+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",c,0.11,
+    var q=numq("A rectangular box has length "+a+" cm, width "+b+" cm and volume "+V4+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",c,0.11,
       "First find the area of the base, \\(A_b = "+a+" \\times "+b+" = "+(a*b)+"\\). Substitute the known values into \\(V = A_b \\times h\\) and solve for the height: \\[ \\begin{aligned} "+V4+" &= "+(a*b)+" \\times h \\\\ h &= \\frac{"+V4+"}{"+(a*b)+"} = "+c+" \\end{aligned} \\] So the height is <b>"+c+" centimetres</b>.",{mode:mode,a:a,b:b});
+    q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm","?");
+    return q;
   }
   var s=ri(3,9),h5=ri(3,12),V5=s*s*h5/3;
   if(V5!==Math.floor(V5)){h5=h5*3; V5=s*s*h5/3;}
-  return numq("A square based pyramid has base side "+s+" cm and volume "+fmt(V5)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h5,0.11,
+  var q=numq("A square based pyramid has base side "+s+" cm and volume "+fmt(V5)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h5,0.11,
     "First find the area of the base, \\(A_b = "+s+"^2 = "+(s*s)+"\\). Substitute the known values into \\(V = \\frac{1}{3} A_b \\times h\\) and solve for the height: \\[ \\begin{aligned} "+fmt(V5)+" &= \\frac{1}{3} \\times "+(s*s)+" \\times h \\\\ h &= \\frac{3 \\times "+fmt(V5)+"}{"+(s*s)+"} = "+h5+" \\end{aligned} \\] So the height is <b>"+h5+" centimetres</b>.",{mode:mode,s:s});
+  q.figure=u1figPyr(s,h5,{sLab:fmt(s)+" cm",hLab:"?"});
+  return q;
 });
 
 /* 16. Sphere surface area and volume, and radius from surface area */
@@ -540,32 +932,44 @@ E("u1-sphere",1,["5.7","5.8"],2,"gen",function(){
   var r=ri(prof.lo,prof.hi);
   if(mode===1){
     var ans=u1r1(4*Math.PI*r*r);
-    return numq("A "+prof.name+" has radius "+r+" cm. Determine its surface area. Give your answer to the nearest tenth, in square centimetres.",ans,0.11,
+    var q=numq("A "+prof.name+" has radius "+r+" cm. Determine its surface area. Give your answer to the nearest tenth, in square centimetres.",ans,0.11,
       "The surface area of a sphere is four pi times radius squared: \\[ \\begin{aligned} SA &= 4\\pi r^2 \\\\ &= 4\\pi("+r+")^2 \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,prof:prof.name});
+    q.figure=u1figSphere(fmt(r)+" cm",null);
+    return q;
   }
   if(mode===2){
     var ans2=u1r1(4*Math.PI*r*r*r/3);
-    return numq("A "+prof.name+" has radius "+r+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans2,0.11,
+    var q=numq("A "+prof.name+" has radius "+r+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans2,0.11,
       "The volume of a sphere is four thirds pi times radius cubed: \\[ \\begin{aligned} V &= \\frac{4}{3}\\pi r^3 \\\\ &= \\frac{4}{3}\\pi("+r+")^3 \\\\ &\\approx "+fmt(ans2)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans2)+" cubic centimetres</b>.",{mode:mode,r:r,prof:prof.name});
+    q.figure=u1figSphere(fmt(r)+" cm",null);
+    return q;
   }
   if(mode===3){
     var d=r*2,ans3=u1r1(4*Math.PI*r*r);
-    return numq("A "+prof.name+" has diameter "+d+" cm. Determine its surface area. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
+    var q=numq("A "+prof.name+" has diameter "+d+" cm. Determine its surface area. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
       "Halve the diameter to get the radius, then use the sphere formula: \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ SA &= 4\\pi("+r+")^2 \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r,prof:prof.name});
+    q.figure=u1figSphere(null,fmt(d)+" cm");
+    return q;
   }
   if(mode===4){
     var d4=r*2,ans4=u1r1(4*Math.PI*r*r*r/3);
-    return numq("A "+prof.name+" has diameter "+d4+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
+    var q=numq("A "+prof.name+" has diameter "+d4+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
       "Halve the diameter to get the radius, then use the sphere formula: \\[ \\begin{aligned} r &= "+d4+" \\div 2 = "+r+" \\\\ V &= \\frac{4}{3}\\pi("+r+")^3 \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,r:r,prof:prof.name});
+    q.figure=u1figSphere(null,fmt(d4)+" cm");
+    return q;
   }
   if(mode===5){
     var SA5=u1r1(4*Math.PI*r*r);
-    return numq("A sphere has surface area "+fmt(SA5)+" square centimetres. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r,0.11,
+    var q=numq("A sphere has surface area "+fmt(SA5)+" square centimetres. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r,0.11,
       "Substitute the known value into the surface area formula \\(SA = 4\\pi r^2\\) and solve for the radius: \\[ \\begin{aligned} "+fmt(SA5)+" &= 4\\pi r^2 \\\\ r^2 &\\approx \\frac{"+fmt(SA5)+"}{4\\pi} \\\\ r &\\approx "+r+" \\end{aligned} \\] So the radius is <b>"+r+" centimetres</b>.",{mode:mode,r:r,prof:prof.name});
+    q.figure=u1figSphere("?",null);
+    return q;
   }
   var SA6=u1r1(4*Math.PI*r*r);
-  return numq("A sphere has surface area "+fmt(SA6)+" square centimetres. Determine its diameter. Give your answer to the nearest tenth, in centimetres.",r*2,0.11,
+  var q=numq("A sphere has surface area "+fmt(SA6)+" square centimetres. Determine its diameter. Give your answer to the nearest tenth, in centimetres.",r*2,0.11,
     "Substitute the known value into the surface area formula \\(SA = 4\\pi r^2\\) and solve for the radius, then double it: \\[ \\begin{aligned} "+fmt(SA6)+" &= 4\\pi r^2 \\\\ r^2 &\\approx \\frac{"+fmt(SA6)+"}{4\\pi} \\\\ r &\\approx "+r+" \\\\ d &= 2 \\times "+r+" = "+(r*2)+" \\end{aligned} \\] So the diameter is <b>"+(r*2)+" centimetres</b>.",{mode:mode,r:r,prof:prof.name});
+  q.figure=u1figSphere(null,"?");
+  return q;
 });
 
 /* 17. Composite volume, the decomposition is the decision */
@@ -573,57 +977,65 @@ E("u1-composite",1,["5.9"],3,"gen",function(){
   var mode=ri(1,4);
   if(mode===1){
     var r=ri(3,8),h=ri(6,14),ans=u1r1(Math.PI*r*r*h+2*Math.PI*r*r*r/3);
-    return numq("A storage silo is a cylinder with a hemispherical top. The cylinder has radius "+r+" cm and height "+h+" cm, and the hemisphere has the same radius. Determine the total volume of the silo. Give your answer to the nearest tenth, in cubic centimetres.",ans,0.11,
+    var q=numq("A storage silo is a cylinder with a hemispherical top. The cylinder has radius "+r+" cm and height "+h+" cm, and the hemisphere has the same radius. Determine the total volume of the silo. Give your answer to the nearest tenth, in cubic centimetres.",ans,0.11,
       "Split the solid into a cylinder plus a hemisphere. First find the area of the base, then use it for the cylinder. The hemisphere is half a sphere, so its volume is half the volume of a full sphere: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r+")^2 \\\\ V_{\\text{cylinder}} &= A_b \\times h = \\pi("+r+")^2("+h+") \\\\ V_{\\text{hemisphere}} &= \\frac{1}{2} \\times \\frac{4}{3}\\pi("+r+")^3 \\\\ V &= V_{\\text{cylinder}} + V_{\\text{hemisphere}} \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the total volume is <b>"+fmt(ans)+" cubic centimetres</b>.",{mode:mode,r:r,h:h});
+    q.figure=u1figSilo(r,h,fmt(r)+" cm",fmt(h)+" cm");
+    return q;
   }
   if(mode===2){
     var a=ri(4,10),b=ri(3,8),hp=ri(4,10),hq=ri(3,8),ans2=a*b*hp+(a*b*hq)/3;
     if(ans2!==Math.floor(ans2))hq=hq*3,ans2=a*b*hp+(a*b*hq)/3;
-    return numq("A storage building is a rectangular prism with a pyramid roof. The prism has length "+a+" cm, width "+b+" cm and height "+hp+" cm. The pyramid has the same length and width as its base and height "+hq+" cm. Determine the total volume of the building. Give your answer to the nearest tenth, in cubic centimetres.",u1r1(ans2),0.11,
+    var q=numq("A storage building is a rectangular prism with a pyramid roof. The prism has length "+a+" cm, width "+b+" cm and height "+hp+" cm. The pyramid has the same length and width as its base and height "+hq+" cm. Determine the total volume of the building. Give your answer to the nearest tenth, in cubic centimetres.",u1r1(ans2),0.11,
       "Split the solid into a prism plus a pyramid on the same base. First find the shared base area: \\[ \\begin{aligned} A_b &= l \\times w = "+a+" \\times "+b+" = "+(a*b)+" \\\\ V &= A_b \\times "+hp+" + \\frac{1}{3} A_b \\times "+hq+" \\\\ &= "+fmt(u1r1(ans2))+" \\end{aligned} \\] So the total volume is <b>"+fmt(u1r1(ans2))+" cubic centimetres</b>.",{mode:mode,a:a,b:b,hp:hp,hq:hq});
+    q.figure=u1figHouse(a,b,hp,hq,{aLab:fmt(a)+" cm",bLab:fmt(b)+" cm",hpLab:fmt(hp)+" cm",hqLab:fmt(hq)+" cm"});
+    return q;
   }
   if(mode===3){
     var r3=ri(3,8),H=ri(8,15),hc=pick([3,6]),ans3=u1r1(Math.PI*r3*r3*H-Math.PI*r3*r3*hc/3);
-    return numq("A cylindrical block has radius "+r3+" cm and height "+H+" cm. A cone shaped hole with the same radius and height "+hc+" cm is removed from the block. Determine the volume that remains. Give your answer to the nearest tenth, in cubic centimetres.",ans3,0.11,
+    var q=numq("A cylindrical block has radius "+r3+" cm and height "+H+" cm. A cone shaped hole with the same radius and height "+hc+" cm is removed from the block. Determine the volume that remains. Give your answer to the nearest tenth, in cubic centimetres.",ans3,0.11,
       "Subtract the removed cone from the full cylinder. Both parts share the same circular base, so find its area first: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r3+")^2 \\\\ V &= A_b \\times "+H+" - \\frac{1}{3} A_b \\times "+hc+" \\\\ &= \\pi("+r3+")^2("+H+") - \\frac{1}{3}\\pi("+r3+")^2("+hc+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the remaining volume is <b>"+fmt(ans3)+" cubic centimetres</b>.",{mode:mode,r:r3,H:H,hc:hc});
+    q.figure=u1figBlock(r3,H,hc,fmt(r3)+" cm",fmt(H)+" cm",fmt(hc)+" cm");
+    return q;
   }
   var r4=ri(3,7),h4=pick([6,9,12]),ans4=u1r1(Math.PI*r4*r4*h4/3+2*Math.PI*r4*r4*r4/3);
-  return numq("A treat is a cone topped with a hemispherical scoop. The cone has radius "+r4+" cm and height "+h4+" cm, and the hemisphere has the same radius. Determine the total volume of the treat. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
+  var q=numq("A treat is a cone topped with a hemispherical scoop. The cone has radius "+r4+" cm and height "+h4+" cm, and the hemisphere has the same radius. Determine the total volume of the treat. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
     "Split the solid into a cone plus a hemisphere. First find the area of the base, then use it for the cone. The hemisphere is half a sphere, so its volume is half the volume of a full sphere: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r4+")^2 \\\\ V_{\\text{cone}} &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}\\pi("+r4+")^2("+h4+") \\\\ V_{\\text{hemisphere}} &= \\frac{1}{2} \\times \\frac{4}{3}\\pi("+r4+")^3 \\\\ V &= V_{\\text{cone}} + V_{\\text{hemisphere}} \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the total volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,r:r4,h:h4});
+  q.figure=u1figTreat(r4,h4,fmt(r4)+" cm",fmt(h4)+" cm");
+  return q;
 });
 
 /* 18. Read an instrument scale */
 E("u1-read-instrument",1,["5.14"],1,"var",varset([
-  function(){return mcq("On a centimetre ruler, the end of a ribbon lines up with the third millimetre tick after the 7 centimetre mark. Determine the length of the ribbon, in centimetres.",
+  function(){var q=mcq("On a centimetre ruler, the end of a ribbon lines up with the third millimetre tick after the 7 centimetre mark. Determine the length of the ribbon, in centimetres.",
     "7.3",["7.0","7.03","10.00"],
-    "Each millimetre tick is 0.1 cm, so three ticks past 7 cm add 0.3 cm: \\[ 7 + 0.3 = 7.3 \\] The length is <b>7.3 centimetres</b>.",{});},
+    "Each millimetre tick is 0.1 cm, so three ticks past 7 cm add 0.3 cm: \\[ 7 + 0.3 = 7.3 \\] The length is <b>7.3 centimetres</b>.",{}); q.figure=u1figRuler({min:0,max:8,major:1,minorPer:10,from:0,to:7.3,unit:"cm"}); return q;},
   function(){return mcq("A caliper scale reads 24 millimetres for the diameter of a bolt. Which reading, in centimetres, matches the caliper?",
     "2.4",["0.24","24.0","240.00"],
     "Divide millimetres by 10 to get centimetres: \\[ 24 \\div 10 = 2.4 \\] The matching reading is <b>2.4 centimetres</b>.",{});},
   function(){return mcq("On a tape measure, a board ends at the 1 metre mark plus 24 centimetres more. Determine the length of the board, in centimetres.",
     "124",["24","100","125"],
     "Change the metre to centimetres and add: \\[ 100 + 24 = 124 \\] The length is <b>124 centimetres</b>.",{});},
-  function(){return mcq("On an inch ruler divided into quarter inches, the end of a card lines up with the second quarter tick after the 3 inch mark. Determine the length of the card, in inches.",
+  function(){var q=mcq("On an inch ruler divided into quarter inches, the end of a card lines up with the second quarter tick after the 3 inch mark. Determine the length of the card, in inches.",
     "3.5",["3.25","3.75","5.0"],
-    "Two quarter ticks make one half inch past the 3 inch mark: \\[ 3 + 0.5 = 3.5 \\] The length is <b>3.5 inches</b>.",{});},
+    "Two quarter ticks make one half inch past the 3 inch mark: \\[ 3 + 0.5 = 3.5 \\] The length is <b>3.5 inches</b>.",{}); q.figure=u1figRuler({min:0,max:5,major:1,minorPer:4,from:0,to:3.5,unit:"in"}); return q;},
   function(){return mcq("A length is given as 68 millimetres. Which caliper reading, in centimetres, shows the same length?",
     "6.8",["0.68","68.0","680.00"],
     "Divide millimetres by 10 to get centimetres: \\[ 68 \\div 10 = 6.8 \\] The matching reading is <b>6.8 centimetres</b>.",{});},
-  function(){return mcq("On a metre stick, the end of a cord lines up with the 47 centimetre mark. Determine the length of the cord, in metres.",
+  function(){var q=mcq("On a metre stick, the end of a cord lines up with the 47 centimetre mark. Determine the length of the cord, in metres.",
     "0.47",["0.047","4.70","47.000"],
-    "Divide centimetres by 100 to get metres: \\[ 47 \\div 100 = 0.47 \\] The length is <b>0.47 metres</b>.",{});},
+    "Divide centimetres by 100 to get metres: \\[ 47 \\div 100 = 0.47 \\] The length is <b>0.47 metres</b>.",{}); q.figure=u1figRuler({min:0,max:100,major:10,minorPer:10,from:0,to:47,unit:"cm"}); return q;},
   function(){return mcq("A caliper scale reads 12.5 millimetres for the thickness of a washer. Determine the thickness, in millimetres.",
     "12.5",["1.25","12.0","125.00"],
     "The scale already reads in millimetres, so the reading is taken directly. The thickness is <b>12.5 millimetres</b>.",{});},
-  function(){return mcq("A strip of paper starts at the 2 centimetre mark of a ruler and ends at the 9 centimetre mark. Determine the length of the strip, in centimetres.",
+  function(){var q=mcq("A strip of paper starts at the 2 centimetre mark of a ruler and ends at the 9 centimetre mark. Determine the length of the strip, in centimetres.",
     "7",["9","11","18"],
-    "Subtract the starting mark from the ending mark, since the strip does not start at zero: \\[ 9 - 2 = 7 \\] The length is <b>7 centimetres</b>.",{});},
-  function(){return mcq("A ribbon starts at the 1 inch mark of a ruler and ends at the 4.5 inch mark. Determine the length of the ribbon, in inches.",
+    "Subtract the starting mark from the ending mark, since the strip does not start at zero: \\[ 9 - 2 = 7 \\] The length is <b>7 centimetres</b>.",{}); q.figure=u1figRuler({min:0,max:10,major:1,minorPer:10,from:2,to:9,unit:"cm"}); return q;},
+  function(){var q=mcq("A ribbon starts at the 1 inch mark of a ruler and ends at the 4.5 inch mark. Determine the length of the ribbon, in inches.",
     "3.5",["4.5","5.0","5.5"],
-    "Subtract the starting mark from the ending mark, since the ribbon does not start at zero: \\[ 4.5 - 1 = 3.5 \\] The length is <b>3.5 inches</b>.",{});},
-  function(){return mcq("On a centimetre ruler, a screw lines up from the 0 mark to the sixth millimetre tick after the 4 centimetre mark. Determine the length of the screw, in centimetres.",
+    "Subtract the starting mark from the ending mark, since the ribbon does not start at zero: \\[ 4.5 - 1 = 3.5 \\] The length is <b>3.5 inches</b>.",{}); q.figure=u1figRuler({min:0,max:6,major:1,minorPer:4,from:1,to:4.5,unit:"in"}); return q;},
+  function(){var q=mcq("On a centimetre ruler, a screw lines up from the 0 mark to the sixth millimetre tick after the 4 centimetre mark. Determine the length of the screw, in centimetres.",
     "4.6",["4.06","5.0","10.00"],
-    "Each millimetre tick is 0.1 cm, so six ticks past 4 cm add 0.6 cm: \\[ 4 + 0.6 = 4.6 \\] The length is <b>4.6 centimetres</b>.",{});}
+    "Each millimetre tick is 0.1 cm, so six ticks past 4 cm add 0.6 cm: \\[ 4 + 0.6 = 4.6 \\] The length is <b>4.6 centimetres</b>.",{}); q.figure=u1figRuler({min:0,max:6,major:1,minorPer:10,from:0,to:4.6,unit:"cm"}); return q;}
 ]));
 
 /* 19. Composite surface area, deciding which surfaces count */
@@ -631,22 +1043,30 @@ E("u1-composite-sa",1,["5.9"],3,"gen",function(){
   var mode=ri(1,4);
   if(mode===1){
     var r=ri(3,8),h=ri(6,14),ans=u1r1(2*Math.PI*r*h+2*Math.PI*r*r);
-    return numq("A silo is a cylinder with a hemispherical top. The cylinder has radius "+r+" cm and height "+h+" cm, and the hemisphere has the same radius. The silo sits on the ground and is painted on all outside surfaces except the bottom. Determine the area painted. Give your answer to the nearest tenth, in square centimetres.",ans,0.11,
+    var q=numq("A silo is a cylinder with a hemispherical top. The cylinder has radius "+r+" cm and height "+h+" cm, and the hemisphere has the same radius. The silo sits on the ground and is painted on all outside surfaces except the bottom. Determine the area painted. Give your answer to the nearest tenth, in square centimetres.",ans,0.11,
       "Only the curved wall of the cylinder and the curved surface of the hemisphere are painted. The flat circle where they join is inside the silo, and the bottom is not painted: \\[ \\begin{aligned} SA &= 2\\pi r h + 2\\pi r^2 \\\\ &= 2\\pi("+r+")("+h+") + 2\\pi("+r+")^2 \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the area painted is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h});
+    q.figure=u1figSilo(r,h,fmt(r)+" cm",fmt(h)+" cm");
+    return q;
   }
   if(mode===2){
     var s=ri(4,10),hp=ri(3,9),l=ri(5,12),ans2=s*s+4*s*hp+2*s*l;
-    return numq("A solid ornament is a square prism with a square pyramid on top. The prism has base side "+s+" cm and height "+hp+" cm. The pyramid has the same base side and slant height "+l+" cm. Determine the total surface area of the solid. Give your answer to the nearest tenth, in square centimetres.",ans2,0.11,
+    var q=numq("A solid ornament is a square prism with a square pyramid on top. The prism has base side "+s+" cm and height "+hp+" cm. The pyramid has the same base side and slant height "+l+" cm. Determine the total surface area of the solid. Give your answer to the nearest tenth, in square centimetres.",ans2,0.11,
       "Count the bottom and the four walls of the prism plus the four triangular faces of the pyramid. The top face of the prism is covered by the pyramid, and the base of the pyramid is inside the solid, so neither is counted: \\[ \\begin{aligned} SA &= s^2 + 4sh + 2sl \\\\ &= "+s+"^2 + 4("+s+")("+hp+") + 2("+s+")("+l+") \\\\ &= "+ans2+" \\end{aligned} \\] So the total surface area is <b>"+ans2+" square centimetres</b>.",{mode:mode,s:s,hp:hp,l:l});
+    q.figure=u1figHouse(s,s,hp,Math.sqrt(Math.max(l*l-(s/2)*(s/2),0.25)),{aLab:fmt(s)+" cm",hpLab:fmt(hp)+" cm",lLab:fmt(l)+" cm"});
+    return q;
   }
   if(mode===3){
     var r3=ri(3,9),h3=ri(5,13),ans3=u1r1(Math.PI*r3*r3+2*Math.PI*r3*h3);
-    return numq("An open top cylindrical bin has radius "+r3+" cm and height "+h3+" cm. Sheet metal is used for the bottom and the curved side only. Determine the area of sheet metal used. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
+    var q=numq("An open top cylindrical bin has radius "+r3+" cm and height "+h3+" cm. Sheet metal is used for the bottom and the curved side only. Determine the area of sheet metal used. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
       "Count the circular bottom plus the curved side. There is no lid, so no top circle is counted: \\[ \\begin{aligned} SA &= \\pi r^2 + 2\\pi r h \\\\ &= \\pi("+r3+")^2 + 2\\pi("+r3+")("+h3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the area used is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,h:h3});
+    q.figure=u1figCyl(r3,h3,fmt(r3)+" cm",fmt(h3)+" cm");
+    return q;
   }
   var r4=ri(3,8),h4=ri(5,12),l4=r4+ri(3,7),ans4=u1r1(Math.PI*r4*r4+2*Math.PI*r4*h4+Math.PI*r4*l4);
-  return numq("A solid tower ornament is a cylinder with a cone roof on top. The cylinder has radius "+r4+" cm and height "+h4+" cm. The cone has the same radius and slant height "+l4+" cm. Determine the total surface area of the solid. Give your answer to the nearest tenth, in square centimetres.",ans4,0.11,
+  var q=numq("A solid tower ornament is a cylinder with a cone roof on top. The cylinder has radius "+r4+" cm and height "+h4+" cm. The cone has the same radius and slant height "+l4+" cm. Determine the total surface area of the solid. Give your answer to the nearest tenth, in square centimetres.",ans4,0.11,
     "Count the bottom circle and curved wall of the cylinder plus the lateral area of the cone. The top circle of the cylinder is covered by the cone, and the base of the cone is inside the solid, so neither is counted: \\[ \\begin{aligned} SA &= \\pi r^2 + 2\\pi r h + \\pi r l \\\\ &= \\pi("+r4+")^2 + 2\\pi("+r4+")("+h4+") + \\pi("+r4+")("+l4+") \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the total surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,r:r4,h:h4,l:l4});
+  q.figure=u1figTower(r4,h4,l4,fmt(r4)+" cm",fmt(h4)+" cm",fmt(l4)+" cm");
+  return q;
 });
 
 /* ----- bank-u2.js ----- */
@@ -5038,7 +5458,10 @@ E("u1-convert-choice",1,["6.2"],2,"gen",function(){
   return mcq("Convert "+fmt(v)+" "+m.from+" to "+m.to+". Use "+m.note+". Give the measure in "+m.to+".",fmt(ans),balDp(fmt(ans),ds),sol,{mode:m.from+"-"+m.to,v:v});
 });
 
-/* U1b. Surface area from stated dimensions, multiple choice (5.2, L2) */
+/* U1b. Surface area from stated dimensions, multiple choice (5.2, L2).
+   Figures (Nov 2026): this entry and u1-vol-choice below carry inline
+   SVG diagrams drawn from their drawn dimensions (helpers in
+   bank-helpers.js). u1-convert-choice stays figureless. */
 E("u1-sa-choice",1,["5.2"],2,"gen",function(){
   var mode=ri(1,2),ans,tries=0,ds,prompt,sol;
   do{
@@ -5057,7 +5480,10 @@ E("u1-sa-choice",1,["5.2"],2,"gen",function(){
       sol="The surface area is the two circular ends plus the curved side: \\[ 2\\pi r^2 + 2\\pi r h = 2(3.14)("+r+")("+r+" + "+hh+") = "+fmt(ans)+" \\] The surface area is <b>"+fmt(ans)+" square centimetres</b>.";
     }
   }while(!u1setOk([fmt(ans)].concat(ds))&&tries<90);
-  return mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans});
+  if(mode===1)q.figure=u1figPrism(l,w,h,fmt(l)+" cm",fmt(w)+" cm",fmt(h)+" cm");
+  else q.figure=u1figCyl(r,hh,fmt(r)+" cm",fmt(hh)+" cm");
+  return q;
 });
 
 /* U1c. Volume from stated dimensions, multiple choice (5.4, L2) */
@@ -5085,7 +5511,11 @@ E("u1-vol-choice",1,["5.4"],2,"gen",function(){
       sol="A pyramid is a pointed solid, so \\(V = \\frac{1}{3} A_b \\times h\\) with \\(A_b = "+s+"^2\\): \\[ V = \\frac{1}{3} \\times "+(s*s)+" \\times "+h3+" = "+ans+" \\] The volume is <b>"+ans+" cubic centimetres</b>.";
     }
   }while(!u1setOk([fmt(ans)].concat(ds))&&tries<90);
-  return mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans});
+  if(mode===1)q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
+  else if(mode===2)q.figure=u1figCone(r2,h2,{rLab:fmt(r2)+" cm",hLab:fmt(h2)+" cm"});
+  else q.figure=u1figPyr(s,h3,{sLab:fmt(s)+" cm",hLab:fmt(h3)+" cm"});
+  return q;
 });
 
 /* U2a. Squares and cubes in context, path not named (1.9, 1.20, L3, CR 3) */
