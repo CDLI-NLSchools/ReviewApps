@@ -2505,5 +2505,232 @@ window.COURSES = {
     "6": "<b>Financial formulas, from the course formula sheet</b><br>\nSimple interest: \\(I = Prt\\)<br>\nFinal value for simple interest: \\(FV = P + I\\)<br>\nFinal value for compound interest: \\(FV = P(1 + r)^t\\), or \\(FV = P\\left(1 + \\frac{r}{n}\\right)^{nt}\\)",
     "7": "<b>Slope, from the course formula sheet</b><br>\nSlope (rate of change): \\(m = \\frac{y_2 - y_1}{x_2 - x_1}\\)"
   }
+},
+
+"math-1201": {
+  id: "math-1201",
+  title: "Math 1201 Review: Practice Question Bank",
+  shortName: "Math 1201",
+  storagePrefix: "m1201",
+  reportName: "Math 1201",
+  language: "en",
+  bankFile: "math-1201.js",
+  subject: "Mathematics",
+  grade: 10,
+  listed: false,
+
+  units: {
+    "1": "Measurement",
+    "2": "Roots and Powers",
+    "3": "Factors and Products",
+    "4": "Relations and Functions",
+    "5": "Linear Functions",
+    "6": "Systems of Linear Equations",
+    "7": "Trigonometry"
+  },
+
+  /* All 118 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-1201-review/index.html,
+     UNITS at line 646, INDICATORS at line 649, UNIT_IND at line
+     769). The guide's outcome codes do not follow the unit
+     numbers: Unit 1 carries the 5.x and 6.x codes, Unit 2 the
+     1.x codes, Unit 3 the 3.x codes, Units 4 to 6 the 4.x codes
+     and Unit 7 the 7.x codes, exactly as the standalone's map
+     places them (118 placements, one per code). */
+  indicators: {
+    "1.1": "Explain, using examples, the meaning of an index of a radical",
+    "1.2": "Explain, using patterns, why a^(m/n) = (ⁿ√a)^m, a ≠ 0",
+    "1.3": "For integral bases and whole number exponents Express powers with rational exponents as radicals and vice versa",
+    "1.4": "Solve a problem that involves exponent laws or radicals",
+    "1.5": "For integral bases and whole number exponents Explain, using patterns, why a−n = ( a1 ), a ≠ 0 n",
+    "1.6": "Apply the exponent laws in expressions with rational and variable bases and integral and rational exponents, and explain the reasoning",
+    "1.7": "Identify and correct errors in the simplification of an expression that involves powers",
+    "1.8": "Determine, concretely, whether a given whole number is a perfect square, a perfect cube or neither",
+    "1.9": "Determine, using a variety of strategies, the square root of a perfect square, and explain the process",
+    "1.10": "Determine, using a variety of strategies, the cube root of a perfect cube, and explain the process",
+    "1.12": "Determine the prime factors of a whole number",
+    "1.13": "Explain why the numbers 0 and 1 have no prime factors",
+    "1.14": "Determine, using a variety of strategies, the greatest common factor or least common multiple of a set of whole numbers, and explain the process",
+    "1.15": "Solve problems that involve prime factors, greatest common factors, least common multiples, square roots or cube roots",
+    "1.16": "Express a radical as a mixed radical in simplest form (limited to numerical radicands)",
+    "1.17": "Express a mixed radical as an entire radical (limited to numerical radicands)",
+    "1.18": "Sort a set of numbers into rational and irrational numbers",
+    "1.19": "Represent using a graphic organizer, the relationship among the subsets of the real numbers (natural, whole, integer, rational, irrational)",
+    "1.20": "Determine an approximate value of a given irrational number",
+    "1.21": "Approximate the locations of irrational numbers on a number line, using a variety of strategies, and explain the reasoning",
+    "1.22": "Order a set of irrational numbers on a number line",
+    "3.1": "Limited to monomials, binomials and trinomials Explain, using examples, the relationship between the multiplication of binomials and the multiplication of two-digit numbers",
+    "3.2": "Limited to monomials, binomials and trinomials Model the multiplication of two given binomials, concretely or pictorially, and record the process symbolically",
+    "3.3": "Limited to monomials, binomials and trinomials Relate the multiplication of two binomials expressions to an area model",
+    "3.4": "Limited to monomials, binomials and trinomials Multiply two polynomials symbolically, and combine like terms in the product",
+    "3.5": "Limited to monomials, binomials and trinomials Verify a polynomial by substituting numbers for the variables",
+    "3.6": "Limited to monomials, binomials and trinomials Generalize and explain a strategy for multiplication of polynomials",
+    "3.7": "Limited to monomials, binomials and trinomials Identify and explain errors in a solution for a polynomial multiplication",
+    "3.8": "Explain, using examples, the relationship between multiplication and factoring of polynomials",
+    "3.9": "Express a polynomial as a product of its factors",
+    "3.10": "Determine the common factors in the terms of a polynomial, and express the polynomial in factored form, concretely, pictorially and symbolically",
+    "3.11": "Factor a polynomial and verify by multiplying the factors",
+    "3.12": "Model the factoring of a trinomial, concretely or pictorially, and record the process symbolically",
+    "3.13": "Identify and explain the errors in a polynomial factorization",
+    "3.14": "Factor a polynomial that is a difference of squares, and explain why it is a special case of trinomial factoring where b = 0",
+    "4.1": "Describe a possible situation for a given graph.",
+    "4.2": "Sketch a possible graph for a given situation",
+    "4.3": "Explain why data points should or should not be connected on the graph for a given situation",
+    "4.4": "Represent a relation in a variety of ways",
+    "4.5": "Determine if a set of ordered pairs represents a function.",
+    "4.6": "Explain, using examples, why some relations are not functions but all functions are relations",
+    "4.7": "Sort a set of graphs as functions or non-functions",
+    "4.8": "Generalize and explain rules for determining whether graphs and sets of ordered pairs represent functions",
+    "4.9": "Graph, with or without technology, a set of data, and determine the domain and range",
+    "4.10": "Determine, and express in a variety of ways, the domain and range of a graph, a set of ordered pairs or a table of values",
+    "4.11": "Identify independent and dependent variables in a given context",
+    "4.12": "Determine the domain and range of the graph of a linear relation",
+    "4.13": "Determine whether a table of values or a set of ordered pairs represents a linear relation, and explain why or why not",
+    "4.14": "Determine whether a graph represents a linear relation and explain why or why not",
+    "4.15": "Determine whether an equation represents a linear relation, and explain why or why not",
+    "4.16": "Draw a graph given a set of ordered pairs and determine whether the relationship between the variables is linear",
+    "4.17": "Solve a problem, using the equation of a linear relation",
+    "4.18": "Determine the slope of a line segment by measuring and calculating the rise and run",
+    "4.19": "Determine the rate of change of the graph of a linear relation",
+    "4.20": "Explain why the slope of a line can determined by using any two points on that line",
+    "4.21": "Academic Mathematics 1201 Page 229 11/5/26, 2:20 PM Curriculum Print Preview",
+    "4.22": "Classify lines in a given set as having a positive or negative slopes",
+    "4.23": "Explain the meaning of the slope of a horizontal or vertical line",
+    "4.24": "Draw a line, given its slope and a point on the line",
+    "4.25": "Determine another point on a line, given the slope and a point on the line",
+    "4.26": "Generalize and apply a rule for determining whether two lines are parallel or perpendicular",
+    "4.27": "Solve a contextual problem involving slope",
+    "4.28": "Determine the intercepts of the graph of a linear relation, and state the intercepts as values of ordered pairs",
+    "4.29": "Sketch a linear relation that has one intercept, two intercepts or an infinite number of intercepts",
+    "4.30": "Identify the graph that corresponds to a given rate of change and vertical intercept",
+    "4.31": "Identify the rate of change and vertical intercept that correspond to a given graph",
+    "4.32": "Solve a contextual problem that involves intercepts, rate of change, domain or range of a linear relation",
+    "4.33": "Match a set of linear relations to their graphs",
+    "4.34": "Generalize and explain strategies for graphing a linear relation in slope-intercept, general or slope-point form",
+    "4.35": "Graph, with and without technology, a linear relation given in slope-intercept, general or slope-point form, and explain the strategy used to create the graph",
+    "4.36": "Graph linear data generated from a context, and write the equation of the resulting line",
+    "4.37": "Match corresponding representations of linear relations",
+    "4.38": "Express a linear relation in different forms, and compare their graphs",
+    "4.39": "Rewrite a linear relation in either slope-intercept or general form",
+    "4.40": "Identify equivalent linear relations from a set of linear relations",
+    "4.41": "Determine the slope and y-intercept of a given linear relation from its graph, and write the equation in the form y = mx + b",
+    "4.42": "Write the equation of a linear relation, given its slope and the coordinates of a point on the line, and explain the reasoning",
+    "4.43": "Write the equation of a linear relation, given the coordinates of two points on the line, and explain the reasoning",
+    "4.44": "Write the equation of a linear relation, given the coordinates of a point on the line and the equation of a parallel or perpendicular line, and explain the reasoning.",
+    "4.45": "Express the equation of a linear function in two variables, using function notation",
+    "4.46": "Express an equation given in function notation as a linear function in two variables",
+    "4.47": "Determine the related range value, given a domain value for a linear function; e.g., If f (x) = 3x − 2, determine f (−1)",
+    "4.48": "Determine the related domain value, given a range value for a linear function; e.g., If g (t) = 7 + t, determine t so that g (t) = 15",
+    "4.49": "Sketch the graph of a linear function expressed in function notation",
+    "4.50": "Model a situation, using a system of linear equations",
+    "4.51": "Relate a system of linear equations to the context of a problem",
+    "4.52": "Explain the meaning of the point of intersection of a system of linear equations",
+    "4.53": "Determine and verify the solution of a system of linear equation graphically, with and without technology",
+    "4.54": "Solve a problem that involves a system of linear equations",
+    "4.55": "Determine and verify the solution of a system of linear equations algebraically",
+    "4.56": "Explain a strategy to solve a system of linear equations",
+    "4.57": "Explain, using examples, why a system of equations may have no solution, one solution or an infinite number of solutions",
+    "5.1": "Sketch a diagram to represent a problem that involves surface area or volume",
+    "5.2": "Determine the surface area of a right cone, right cylinder, right prism, or a right pyramid, using an object or its labelled diagram",
+    "5.3": "Determine an unknown dimension of a right cone, right cylinder, right prism, or right pyramid, given the object's surface area and the remaining dimensions",
+    "5.4": "Determine the volume of a right cone, right cylinder, right prism, or right pyramid using an object or its labelled diagram",
+    "5.5": "right cones and right cylinders with the same base and height right pyramids and right prism with the same base and height",
+    "5.6": "Determine an unknown dimension of a right cone, right cylinder, right prism, or right pyramid, given the object's volume and the remaining dimensions",
+    "5.7": "Determine the surface area and volume of a sphere, using an object or its labelled diagram",
+    "5.8": "Determine an unknown dimension of a sphere, given the object's surface area",
+    "5.9": "Solve a problem that involved surface area or volume, using an object or its labelled diagram of a composite 3-D object",
+    "5.10": "Provide referents for linear measurements, including millimetre, centimetre, metre, kilometre, inch, foot, yard and mile, and explain the choices",
+    "5.11": "Compare SI and imperial units, using referents",
+    "5.12": "Estimate a linear measure, using a referent, and explain the process used",
+    "5.13": "Justify the choice of units used for determining a measurement in a problem solving context",
+    "5.14": "Solve problems that involve linear measure, using instruments such as rulers, calipers or tape measures",
+    "5.15": "Describe and explain a personal strategy used to determine a linear measurement; e.g., circumference of a bottle, length of a curve, perimeter of the base of an irregular 3-D object",
+    "6.1": "Using proportional reasoning, convert a measurement within or between SI and imperial systems",
+    "6.2": "Solve a problem that involves the conversion of units within or between SI and imperial units",
+    "6.3": "Verify, using unit analysis, a conversion within or between SI and imperial systems, and explain the conversion",
+    "6.4": "Justify, using mental mathematics, the reasonableness of a solution to a conversion problem",
+    "7.1": "Identify the hypotenuse of a right triangle, and the opposite and adjacent sides for a given acute angle in the triangle",
+    "7.2": "Explain the relationships between similar right triangles and the definitions of the primary trigonometric ratios",
+    "7.3": "Use the primary trigonometric ratios to determine the measure of a missing angle in a right triangle",
+    "7.4": "Use the primary trigonometric ratios to determine the length of a missing side in a right triangle",
+    "7.5": "Solve a problem that involves indirect and direct measurements, using the trigonometric ratios, the Pythagorean theorem and measurement instruments such as a clinometer or metre stick",
+    "7.6": "Solve right triangles",
+    "7.7": "Solve a problem that involves one or more right triangles by applying the primary trigonometric ratios or the Pythagorean theorem"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 769); it agrees exactly with the codes
+     the bank entries themselves carry at each placement. */
+  unitInd: {
+    "1": ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "5.10", "5.11", "5.12", "5.13", "5.14", "5.15", "6.1", "6.2", "6.3", "6.4"],
+    "2": ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18", "1.19", "1.20", "1.21", "1.22"],
+    "3": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"],
+    "4": ["4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15", "4.16", "4.19", "4.28", "4.29", "4.30", "4.31", "4.32", "4.37", "4.45", "4.46", "4.47", "4.48", "4.49"],
+    "5": ["4.17", "4.18", "4.20", "4.21", "4.22", "4.23", "4.24", "4.25", "4.26", "4.27", "4.33", "4.34", "4.35", "4.36", "4.38", "4.39", "4.40", "4.41", "4.42", "4.43", "4.44"],
+    "6": ["4.50", "4.51", "4.52", "4.53", "4.54", "4.55", "4.56", "4.57"],
+    "7": ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7"]
+  },
+
+  /* Presets, from the standalone builder markup (the preset
+     buttons, lines 286 to 288) and their handlers (lines 8127
+     to 8129): the mid preset selects Units 1 to 3 and the final
+     preset Units 4 to 7, each resetting the level mix to
+     20/60/20, and the All preset selects every unit (the
+     handler passes Units 1 to 9; Units 8 and 9 do not exist in
+     this course, so the effective selection is Units 1 to 7,
+     the same seven units the shell's All wiring selects). The
+     face card's scope lines for the two presets (updateFace,
+     lines 6048 to 6055) are the preset labels with the
+     parenthetical opened up, exactly what the shell derives
+     from the labels, so no faceLabel is needed. The
+     standalone's dedicated All-units face line, "All units:
+     Units 1 to 7", is not reproduced: the shell lists the
+     units for an All selection, the same accepted difference
+     as the Math 3200 port. The standalone's selection-engine
+     note (index.html, lines 5785 to 5790) records that no unit
+     is sampled partway in this course: no entry carries a
+     postMid flag and neither preset caps the pool, so no cap
+     or midNote is configured; and no entry carries a PK-coded
+     indicator (its isPK is a shim that is always false here),
+     so pkPracticeOnly is not set either. */
+  presets: {
+    mid:   { units: [1, 2, 3], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 3)" },
+    final: { units: [4, 5, 6, 7], mix: [20, 60, 20], label: "Final review (Units 4 to 7)" }
+  },
+
+  /* The builder's level inputs ship at 20/60/20 (markup lines
+     369 to 371), the mix its Advanced options note describes
+     from the published 2026-2027 tables of specifications
+     (lines 365 to 368). */
+  defaultMix: [20, 60, 20],
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (math-1201-review/index.html, composeExam at
+     lines 6954 to 7000). Every multi-unit paper is pooled:
+     50 marks, 27 selected response at levels 10/15/2 (line
+     6956) and 23 constructed-response marks (line 6957) whose
+     Level 3 share is subset-summed to 8, then 9, then 7 (line
+     6975), giving level totals 10/30/10; the pooled fallback
+     below reproduces it, and the mid and final scopes compose
+     through it just as the standalone's do (there are no
+     per-scope blueprints). A single unit composes the unit
+     test: 25 marks, SR 11 (the standalone's single-unit plan
+     is [4, 6, 1], line 6956; the shell guides unit-test levels
+     at 20/60/20, the accepted translation the other pooled
+     ports carry) and CR 14 (line 6957), its Level 3 CR share
+     steered to 5, then 4, then 6 (line 6975), inside the
+     shell composer's standing 4 to 6 window. */
+  exam: {
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panel carried verbatim from the standalone app
+     (REF_HTML at line 6043): a panel for Unit 1 only, and no
+     always-on panel. */
+  panels: {
+    "1": "<b>Imperial:</b> \\(1\\ \\text{ft.} = 12\\ \\text{in.}\\); \\(1\\ \\text{yd.} = 3\\ \\text{ft.}\\); \\(1\\ \\text{mi.} = 1760\\ \\text{yd.}\\)<br><b>Imperial to SI Units:</b> \\(1\\ \\text{in.} = 2.54\\ \\text{cm} \\approx 2.5\\ \\text{cm}\\); \\(1\\ \\text{mi.} \\approx 1.6\\ \\text{km}\\)<br><b>Surface Area: Cylinder:</b> \\(A = 2\\pi r^2 + 2\\pi r h\\)<br><b>Surface Area: Cone:</b> \\(A = \\pi r^2 + \\pi r s\\)<br><b>Surface Area: Sphere:</b> \\(A = 4\\pi r^2\\)<br><b>Volume: Pyramid:</b> \\(V = \\frac{1}{3}[\\,l \\times w \\times h\\,]\\)<br><b>Volume: Cone:</b> \\(V = \\frac{1}{3}[\\pi r^2 h]\\)<br><b>Volume: Sphere:</b> \\(V = \\frac{4}{3}\\pi r^3\\)"
+  }
 }
 };
