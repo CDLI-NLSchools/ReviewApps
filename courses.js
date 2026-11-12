@@ -452,6 +452,171 @@ window.COURSES = {
   }
 },
 
+"chem-2202": {
+  id: "chem-2202",
+  title: "Chemistry 2202 Review: Practice Question Bank",
+  shortName: "Chemistry 2202",
+  storagePrefix: "c2202",
+  reportName: "Chemistry 2202",
+  language: "en",
+  bankFile: "chem-2202.js",
+  subject: "Chemistry",
+  grade: 11,
+  listed: false,
+
+  units: {
+    "1": "Stoichiometry",
+    "2": "From Structures to Properties",
+    "3": "Organic Chemistry",
+    "4": "Science 1206 Review (prior learning)"
+  },
+
+  /* The 31 content indicators plus the three Science 1206 bridging
+     codes (B.1 to B.3), wording carried verbatim from the standalone
+     app's curriculum map (chem-2202-review/snippets/curriculum.js.txt).
+     The Integrated Skills indicators are out of scope, the same ruling
+     the standalone ships with. */
+  indicators: {
+    "5.1": "Write and name the formulas of ionic and molecular compounds, following simple IUPAC rules",
+    "5.2": "Define molar mass and perform mole-mass inter-conversions for pure substances",
+    "5.3": "Explain solubility, using the concept of equilibrium",
+    "5.4": "Define the concept of equilibrium as it pertains to solutions",
+    "5.5": "Explain the variations in the solubility of various pure substances, given the same solvent",
+    "5.6": "Use the solubility generalizations to predict the formation of precipitates",
+    "5.7": "Identify mole ratios of reactants and products from balanced chemical equations",
+    "5.8": "Perform stoichiometric calculations related to chemical equations",
+    "5.9": "Predict how the yield of a particular chemical process can be maximized",
+    "5.10": "Identify various stoichiometric applications",
+    "6.1": "Illustrate and explain the formation of covalent bonds",
+    "6.2": "Explain the structural model of a molecular substance in terms of the various electron pairs that define it",
+    "6.3": "Illustrate and explain hydrogen bonds and van der Waals' forces",
+    "6.4": "Identify and describe the properties of molecular substances",
+    "6.5": "Describe how intermolecular forces account for the properties of molecular compounds",
+    "6.6": "Illustrate and explain the formation of ionic bonds",
+    "6.7": "Explain the structural model of an ionic substance in terms of the various bonds that define it",
+    "6.8": "Identify and describe the properties of ionic substances and relate them to ionic bonding and their structure",
+    "6.9": "Illustrate and explain the formation of metallic bonds and how their structure accounts for the properties of metallic substances",
+    "6.10": "Describe the process of dissolving, using concepts of intramolecular and intermolecular forces",
+    "6.11": "Determine the molar solubility of a pure substance in water",
+    "6.12": "Explain the effect of solutes on the melting point of solid water, using intermolecular forces",
+    "6.13": "Classify ionic, molecular, and metallic substances according to their properties",
+    "7.1": "Explain the large number and diversity of organic compounds with reference to the unique nature of the carbon atom",
+    "7.2": "Classify various organic compounds by determining to which families they belong, based on their names or structures",
+    "7.3": "Write the formula and provide the IUPAC name for a variety of aliphatic compounds",
+    "7.4": "Define isomers and illustrate the structural formulas for a variety of organic isomers",
+    "7.5": "Write the formula and provide the IUPAC name for a variety of aromatic compounds",
+    "7.6": "Write the formula and provide the IUPAC name for a variety of hydrocarbon derivatives",
+    "7.7": "Write and balance chemical equations to predict the reactions of selected organic compounds",
+    "7.8": "Describe processes of polymerization and identify some important natural and synthetic polymers",
+    "B.1": "Science 1206 review: isotopes and subatomic particles",
+    "B.2": "Science 1206 review: average atomic mass",
+    "B.3": "Science 1206 review: naming compounds and writing formulas"
+  },
+
+  unitInd: {
+    "1": [
+      "5.1",
+      "5.2",
+      "5.3",
+      "5.4",
+      "5.5",
+      "5.6",
+      "5.7",
+      "5.8",
+      "5.9",
+      "5.10"
+    ],
+    "2": [
+      "6.1",
+      "6.2",
+      "6.3",
+      "6.4",
+      "6.5",
+      "6.6",
+      "6.7",
+      "6.8",
+      "6.9",
+      "6.10",
+      "6.11",
+      "6.12",
+      "6.13"
+    ],
+    "3": [
+      "7.1",
+      "7.2",
+      "7.3",
+      "7.4",
+      "7.5",
+      "7.6",
+      "7.7",
+      "7.8"
+    ],
+    "4": [
+      "B.1",
+      "B.2",
+      "B.3"
+    ]
+  },
+
+  /* Presets, wired from the standalone app's preset handlers
+     (chem-2202-review/build.py): mid selects Units 1 and 2, final
+     selects Unit 3 alone (an exam built from it is a single-unit
+     paper, the unit test below, exactly as in the standalone, whose
+     own verifier trials the final preset as 11 SR + 14 CR). The face
+     scope wording derives from the labels, matching the standalone's
+     scope strings ("Mid-course review: Units 1 and 2", "Final review:
+     Unit 3"), so no faceLabel is needed. Neither preset carries a
+     level mix, and the builder default stays 20/60/20. */
+  presets: {
+    mid: { units: [1, 2], label: "Mid-course review (Units 1 and 2)" },
+    final: { units: [3], label: "Final review (Unit 3)" }
+  },
+
+  /* The All preset in the standalone app selects the three content
+     units only: the Science 1206 Review unit is practice-only (its
+     bank header says it is kept out of the mid and final presets, and
+     the standalone's All handler selects [1,2,3]). */
+  allUnits: [1, 2, 3],
+
+  /* Exam blueprint, translated from the standalone app's composer
+     (chem-2202-review/snippets/composeexam.js.txt, plan branches at
+     lines 12 to 17). A single unit is a practice unit test (below).
+     The mid-course plan follows the 2026/27 mid-course table of
+     specifications the standalone composer cites: Units 1 and 2, 50
+     marks (30 selected response, 20 constructed response), weighted
+     45 marks to Unit 1 and 5 marks to Unit 2, cognitive levels
+     20/60/20, composed as two unit parts (Unit 1: SR levelTargets
+     (27) = [6,16,5], CR 18 with Level 3 steered to 4 first; Unit 2:
+     SR levelTargets(3) = [1,2,0], CR 2 at Level 2). The per-unit
+     level totals below are each part's own SR level targets plus its
+     CR split at the standalone composer's first Level 3 preference,
+     the same encoding as the Chemistry 3202 scope. Any other
+     multi-unit selection uses the standalone's pooled fallback:
+     30 selected response, 20 constructed response. */
+  exam: {
+    mid: {
+      units: [1, 2], total: 50,
+      perUnit: {
+        1: { sr: 27, cr: 18, levels: [6, 30, 9] },
+        2: { sr: 3, cr: 2, levels: [1, 4, 0] }
+      }
+    },
+    fallback: { srCount: 30, crMarks: 20 }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app (its
+     chemistry data sheet content, one panel per unit, from
+     chem-2202-review/snippets/refhtml.js.txt). */
+  panels: {
+    "1": "<b>Stoichiometry:</b> \\(n = \\frac{m}{M}\\) &nbsp; \\(N = n \\times 6.022 \\times 10^{23}\\) &nbsp; Molar volume at STP: 22.4 L/mol<br>\\(c = \\frac{n}{V}\\) &nbsp; \\(c_1V_1 = c_2V_2\\) &nbsp; Percent yield \\(= \\frac{\\text{actual}}{\\text{theoretical}} \\times 100\\%\\)<br><b>Solubility generalizations:</b> compounds of the alkali metals and ammonium are soluble; nitrates and acetates are soluble; chlorides, bromides and iodides are soluble except with silver, lead and mercury(I); sulfates are soluble except with barium, lead and (slightly) calcium; carbonates, phosphates, sulfides and hydroxides are insoluble except with the alkali metals and ammonium.<br><b>Atomic masses (g/mol):</b> H 1.01, C 12.01, N 14.01, O 16.00, F 19.00, Na 22.99, Mg 24.31, Al 26.98, P 30.97, S 32.07, Cl 35.45, K 39.10, Ca 40.08, Fe 55.85, Cu 63.55, Zn 65.39, Br 79.90, Ag 107.87, I 126.90, Ba 137.33, Pb 207.20",
+    "2": "<b>VSEPR shapes:</b> 2 electron pairs: linear, 180 degrees. 3 pairs: trigonal planar, 120 degrees; with one lone pair, bent. 4 pairs: tetrahedral, 109.5 degrees; with one lone pair, trigonal pyramidal, about 107 degrees; with two lone pairs, bent, about 104.5 degrees.<br><b>Intermolecular forces, weakest to strongest:</b> London dispersion forces, dipole to dipole forces, hydrogen bonding (hydrogen bonded to N, O or F). Stronger intermolecular forces mean higher melting and boiling points.<br><b>Conductivity:</b> ionic compounds conduct when molten or dissolved in water, never as a solid; molecular compounds do not conduct; metals conduct as solids and liquids.<br><b>Atomic masses (g/mol):</b> H 1.01, C 12.01, N 14.01, O 16.00, F 19.00, Na 22.99, Mg 24.31, Al 26.98, P 30.97, S 32.07, Cl 35.45, K 39.10, Ca 40.08, Fe 55.85, Cu 63.55, Zn 65.39, Br 79.90, Ag 107.87, I 126.90, Ba 137.33, Pb 207.20",
+    "3": "<b>General formulas:</b> alkanes CₙH₂ₙ₊₂, alkenes CₙH₂ₙ, alkynes CₙH₂ₙ₋₂, cycloalkanes CₙH₂ₙ.<br><b>Functional groups:</b> alcohol R-OH, carboxylic acid R-COOH, ester R-COO-R, aldehyde R-CHO, ketone R-CO-R, ether R-O-R, amine R-NH₂.<br><b>Reaction types:</b> combustion (a fuel reacts with oxygen to give carbon dioxide and water), addition (a multiple bond opens and atoms add across it), esterification (a carboxylic acid and an alcohol give an ester and water), cracking (a large molecule splits into smaller molecules).",
+    "4": "<b>Science 1206 review:</b> neutrons = mass number - atomic number. In a neutral atom, electrons = protons = atomic number. The average atomic mass on the periodic table is the weighted average of the masses of the element's isotopes."
+  }
+},
+
 "math-3200": {
   id: "math-3200",
   title: "Math 3200 Review: Practice Question Bank",
