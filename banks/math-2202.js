@@ -4411,6 +4411,55 @@ function u8SplitFig(mode, l1, l2) {
   }
   return u8svg(inner, 334, 208, "Diagram made of right triangles");
 }
+/* Diagram coverage additions (November 2026): helpers for the entries that
+   had no figure or only a partial one. Labels come from each draw's own
+   values; a "?" marks the unknown the question asks for. */
+/* Right triangle ABC, right angled at B, with caller supplied vertex letters
+   (pass empty strings where the stem names no vertices). Same layout as
+   u8RTFig: angle text at the first vertex, side texts on AB, BC and AC. */
+function u8RTFigV(L, angTxt, abTxt, bcTxt, acTxt) {
+  var A = [48, 172], B = [256, 172], C = [256, 52];
+  var inner = u8ln(A[0], A[1], B[0], B[1]) + u8ln(B[0], B[1], C[0], C[1]) + u8ln(C[0], C[1], A[0], A[1]);
+  inner += '<path d="M ' + (B[0] - 13) + ' ' + B[1] + ' l 0 -13 l 13 0" fill="none" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+  if (L[0]) inner += _txt(A[0] - 12, A[1] + 6, L[0], 14, true);
+  if (L[1]) inner += _txt(B[0] + 4, B[1] + 16, L[1], 14, true);
+  if (L[2]) inner += _txt(C[0] + 12, C[1] - 4, L[2], 14, true);
+  if (angTxt) inner += _txt(A[0] + 32, A[1] - 12, angTxt, 12, false);
+  if (abTxt) inner += _txt((A[0] + B[0]) / 2, A[1] + 17, abTxt, 12, false);
+  if (bcTxt) inner += _txt(B[0] + 14, (B[1] + C[1]) / 2, bcTxt, 12, false, "start");
+  if (acTxt) inner += _txt((A[0] + C[0]) / 2 - 16, (A[1] + C[1]) / 2 - 8, acTxt, 12, false);
+  return u8svg(inner, 330, 205, "Right triangle diagram");
+}
+/* Two sighting points on the same side of a tree: far angle aF, near angle
+   aN, the points sTxt apart, tree height hTxt. The geometry is solved from
+   the two angles so the sight lines meet at the treetop. */
+function u8TwoElevFig(aF, aN, sTxt, hTxt) {
+  var ground = 180, treeX = 288;
+  var Hpix = Math.min(132, 232 * u8tan(aF));
+  var rF = Hpix / u8tan(aF), rN = Hpix / u8tan(aN);
+  var T = [treeX, ground - Hpix], F = [treeX - rF, ground], N = [treeX - rN, ground];
+  var inner = u8ln(16, ground, 322, ground) + u8ln(treeX, ground, T[0], T[1]) + u8ln(F[0], F[1], T[0], T[1]) + u8ln(N[0], N[1], T[0], T[1]);
+  inner += '<circle cx="' + fmt(F[0], 1) + '" cy="' + F[1] + '" r="3" fill="' + FIG_INK + '"/>';
+  inner += '<circle cx="' + fmt(N[0], 1) + '" cy="' + N[1] + '" r="3" fill="' + FIG_INK + '"/>';
+  inner += _txt(F[0] + 30, ground - 12, aF + "°", 12, false);
+  inner += _txt(N[0] + 30, ground - 12, aN + "°", 12, false);
+  inner += _txt((F[0] + N[0]) / 2, ground + 16, sTxt, 12, false);
+  inner += _txt(treeX + 13, (ground + T[1]) / 2, hTxt, 12, false, "start");
+  return u8svg(inner, 334, 208, "Two angles of elevation to the top of a tree");
+}
+/* Two points on opposite sides of a lighthouse, p1 and p2 metres from its
+   base. The post sits between the points and the spacing follows p1 and p2. */
+function u8OppPointsFig(p1, p2) {
+  var ground = 168, sc = 228 / (p1 + p2);
+  var x0 = (334 - p1 * sc - p2 * sc) / 2, cx = x0 + p1 * sc, x1 = cx + p2 * sc;
+  var inner = u8ln(x0 - 24, ground, x1 + 24, ground) + u8ln(cx, ground, cx, 62);
+  inner += '<circle cx="' + fmt(cx, 1) + '" cy="58" r="4" fill="' + FIG_ACC + '"/>';
+  inner += '<circle cx="' + fmt(x0, 1) + '" cy="' + ground + '" r="3.2" fill="' + FIG_ACC + '"/>';
+  inner += '<circle cx="' + fmt(x1, 1) + '" cy="' + ground + '" r="3.2" fill="' + FIG_ACC + '"/>';
+  inner += _txt((x0 + cx) / 2, ground + 16, p1 + " m", 12, false);
+  inner += _txt((cx + x1) / 2, ground + 16, p2 + " m", 12, false);
+  return u8svg(inner, 334, 200, "Two points on opposite sides of a lighthouse");
+}
 
 E("u8-elev-or-depress", 8, ["5.1"], 1, "gen", function () {
   var up = pick([true, false]);
@@ -4510,7 +4559,11 @@ E("u8-ratio-meaning", 8, ["2.6"], 1, "gen", function () {
             { t: "\\(\\tan(" + (90 - ang) + "^\\circ)\\)", fb: "Tangent pairs opposite with adjacent; it does not match a cosine value in general." }];
     sol = "The acute angles of a right triangle are complementary, so \\(\\cos " + A + " = \\sin(90^\\circ - " + ang + "^\\circ) = \\sin(" + (90 - ang) + "^\\circ)\\). The answer is <b>\\(\\sin(" + (90 - ang) + "^\\circ)\\)</b>.";
   }
-  return mcq(prompt, correct, dist, sol, { mode: mode, tri: tr.join("") });
+  var q = mcq(prompt, correct, dist, sol, { mode: mode, tri: tr.join("") });
+  if (mode <= 2) { q.figure = u8RTFigV(tr, A, adj, opp, hyp); }
+  else if (mode === 3) { q.figure = u8RTFigV([A, "", ""], A, "", "", ""); }
+  else { q.figure = u8RTFigV([A, "", ""], ang + "°", "", "", ""); }
+  return q;
 }, ["Name the sides relative to the marked angle: opposite, adjacent, hypotenuse.", "Sine is opposite over hypotenuse, cosine is adjacent over hypotenuse, tangent is opposite over adjacent."]);
 
 E("u8-elevation-height-mc", 8, ["5.1", "2.1"], 2, "gen", function () {
@@ -4572,13 +4625,22 @@ E("u8-fix-ratio-error", 8, ["2.5", "5.4"], 2, "gen", function () {
   function eq(fn, op) { return "\\(" + target + " = " + g + " " + (op === "*" ? "\\times" : "\\div") + " \\" + fn + "(" + a + "^\\circ)\\)"; }
   var altFn = m.fn === "tan" ? "sin" : "tan";
   var altOp = m.op === "*" ? "/" : "*";
-  return mcq(m.text(a, g) + " Which equation is correct?",
+  var q = mcq(m.text(a, g) + " Which equation is correct?",
     { t: eq(m.fn, m.op), fb: "Yes: the given side is the " + m.givName + " and the wanted side is the " + m.findName + ", so \\(\\" + m.fn + "\\) rearranged gives this." },
     [{ t: eq(m.fn, altOp), fb: "The ratio is right but the operation is flipped. Solve the ratio equation for the wanted side before choosing." },
      { t: eq(altFn, m.op), fb: "That ratio pairs a different two sides. The sides here are the " + m.givName + " and the " + m.findName + "." },
      { t: eq(altFn, altOp), fb: "Both the ratio and the rearrangement are off. Start from the two sides named in the problem." }],
     "The student's slip involves " + m.wrong + ". The sides in play are the " + m.givName + " and the " + m.findName + ", which belong to \\(\\" + m.fn + "\\). Solved for the wanted side, the correct equation is <b>" + eq(m.fn, m.op) + "</b>.",
     { mode: modes.indexOf(m), a: a, g: g });
+  var mi = modes.indexOf(m);
+  if (mi === 3) { q.figure = u8ElevFig(a, g + " m", "?"); }
+  else {
+    var abAr = [g + " m", "", "?", "", g + " m", ""];
+    var bcAr = ["?", "?", "", "", "", g + " m"];
+    var acAr = ["", g + " m", g + " m", "", "?", "?"];
+    q.figure = u8RTFigV(["", "", ""], a + "°", abAr[mi], bcAr[mi], acAr[mi]);
+  }
+  return q;
 }, ["Ignore the student's working at first: name the given and wanted sides yourself.", "Choose the ratio for those two sides, then solve it for the wanted side."]);
 
 E("u8-trig-in-trades", 8, ["2.3"], 2, "gen", function () {
@@ -4593,7 +4655,9 @@ E("u8-trig-in-trades", 8, ["2.3"], 2, "gen", function () {
             { t: "\\(\\theta = \\tan^{-1}\\left(" + FR(run, rise) + "\\right)\\)", fb: "That flips the ratio, which gives the complement of the angle instead." },
             { t: "\\(\\theta = \\cos^{-1}\\left(" + FR(rise, run) + "\\right)\\)", fb: "Cosine pairs the adjacent side with the hypotenuse, and no hypotenuse is given here." }];
     sol = "Rise and run are the opposite and adjacent sides, so their ratio is a tangent. The worker uses the inverse tangent: \\(\\theta = \\tan^{-1}\\left(" + FR(rise, run) + "\\right) \\approx " + fmt(Math.atan(rise / run) / U8R) + "^\\circ\\). The answer is <b>\\(\\theta = \\tan^{-1}\\left(" + FR(rise, run) + "\\right)\\)</b>.";
-    return mcq(prompt, correct, dist, sol, { mode: mode, rise: rise, run: run });
+    var q = mcq(prompt, correct, dist, sol, { mode: mode, rise: rise, run: run });
+    q.figure = u8RTFigV(["", "", ""], "?", run + " m", rise + " m", "");
+    return q;
   }
   if (mode === 1) {
     var a = ri(26, 48), d = ri(15, 60);
@@ -4603,7 +4667,9 @@ E("u8-trig-in-trades", 8, ["2.3"], 2, "gen", function () {
             { t: "\\(h = " + d + " \\div \\tan(" + a + "^\\circ)\\)", fb: "That rearrangement finds a distance from a height, the reverse of this job." },
             { t: "\\(h = " + d + " \\times \\cos(" + a + "^\\circ)\\)", fb: "Cosine pairs the ground distance with a sloped side, not with the vertical height." }];
     sol = "The measured ground distance is adjacent to the angle and the height is opposite, so the surveyor uses tangent: \\(h = " + d + " \\times \\tan(" + a + "^\\circ) = " + fmt(d * u8tan(a)) + "\\) m. The answer is <b>\\(h = " + d + " \\times \\tan(" + a + "^\\circ)\\)</b>.";
-    return mcq(prompt, correct, dist, sol, { mode: mode, a: a, d: d });
+    var q = mcq(prompt, correct, dist, sol, { mode: mode, a: a, d: d });
+    q.figure = u8ElevFig(a, d + " m", "?");
+    return q;
   }
   if (mode === 2) {
     var a2 = ri(24, 44), L = ri(4, 12);
@@ -4613,7 +4679,9 @@ E("u8-trig-in-trades", 8, ["2.3"], 2, "gen", function () {
             { t: "\\(h = " + L + " \\div \\sin(" + a2 + "^\\circ)\\)", fb: "Dividing would make h longer than the panel itself, but a leg cannot exceed the hypotenuse." },
             { t: "\\(h = " + L + " \\times \\tan(" + a2 + "^\\circ)\\)", fb: "Tangent needs the roof distance under the panel, which is not the given length." }];
     sol = "The panel is the hypotenuse and the raised edge is the side opposite the " + a2 + "° angle, so the installer uses sine: \\(h = " + L + " \\times \\sin(" + a2 + "^\\circ) = " + fmt(L * u8sin(a2)) + "\\) m. The answer is <b>\\(h = " + L + " \\times \\sin(" + a2 + "^\\circ)\\)</b>.";
-    return mcq(prompt, correct, dist, sol, { mode: mode, a: a2, L: L });
+    var q = mcq(prompt, correct, dist, sol, { mode: mode, a: a2, L: L });
+    q.figure = u8RTFigV(["", "", ""], a2 + "°", "", "?", L + " m");
+    return q;
   }
   var drop = ri(1, 4), len = ri(10, 40);
   prompt = "A plumber runs a drain pipe that drops " + drop + " m over a horizontal run of " + len + " m. Which calculation gives the pipe's angle \\(\\theta\\) below the horizontal?";
@@ -4622,7 +4690,9 @@ E("u8-trig-in-trades", 8, ["2.3"], 2, "gen", function () {
           { t: "\\(\\theta = \\sin^{-1}\\left(" + FR(drop, len) + "\\right)\\)", fb: "Sine would need the sloped pipe length itself, not the horizontal run." },
           { t: "\\(\\theta = " + FR(drop, len) + " \\times 90^\\circ\\)", fb: "A ratio is not a fraction of a right angle. Angles from ratios come from an inverse trig function." }];
   sol = "Drop and run are opposite and adjacent sides, a tangent ratio. The plumber uses the inverse tangent: \\(\\theta = \\tan^{-1}\\left(" + FR(drop, len) + "\\right) \\approx " + fmt(Math.atan(drop / len) / U8R) + "^\\circ\\). The answer is <b>\\(\\theta = \\tan^{-1}\\left(" + FR(drop, len) + "\\right)\\)</b>.";
-  return mcq(prompt, correct, dist, sol, { mode: mode, drop: drop, len: len });
+  var q = mcq(prompt, correct, dist, sol, { mode: mode, drop: drop, len: len });
+  q.figure = u8RTFigV(["", "", ""], "?", len + " m", drop + " m", "");
+  return q;
 }, ["Decide what the worker knows and what the worker needs, as sides of a right triangle.", "Match those two sides to a ratio; an angle answer needs an inverse ratio."]);
 
 E("u8-reasonable-or-not", 8, ["5.4"], 2, "gen", function () {
@@ -4663,7 +4733,9 @@ E("u8-reasonable-or-not", 8, ["5.4"], 2, "gen", function () {
             { t: "The student forgot to convert the string length to centimetres before reporting the height.", fb: "A unit conversion keeps the same physical length. It cannot make a leg longer than the hypotenuse." }];
     sol = "The string forms the hypotenuse of the right triangle and the height is one leg. A leg is always shorter than the hypotenuse, so the height must be under " + str + " m, not " + claim3 + " m. The result is <b>not reasonable: a leg cannot exceed the hypotenuse</b>.";
   }
-  return mcq(prompt, correct, dist, sol, { mode: mode });
+  var q = mcq(prompt, correct, dist, sol, { mode: mode });
+  if (mode === 2) { q.figure = u8OppPointsFig(p1, p2); }
+  return q;
 }, ["Test the claimed answer against the triangle itself: side lengths and angle sizes have hard limits.", "Ask whether any leg beats the hypotenuse, any acute angle passes 90°, or a whole comes out smaller than a part."]);
 
 E("u8-cr-elevation-height", 8, ["5.1", "2.2"], 2, "gen", function () {
@@ -4682,23 +4754,29 @@ E("u8-cr-find-angle", 8, ["2.2", "5.1"], 2, "gen", function () {
   var mode = ri(0, 2);
   if (mode === 0) {
     var rise = ri(1, 6), run = ri(6, 24), ang = Math.atan(rise / run) / U8R;
-    return numq("A garden ramp rises " + rise + " m over a horizontal run of " + run + " m. Find the angle the ramp makes with the ground, in degrees, to one decimal place.",
+    var q = numq("A garden ramp rises " + rise + " m over a horizontal run of " + run + " m. Find the angle the ramp makes with the ground, in degrees, to one decimal place.",
       ang, 0.4,
       "Rise and run are opposite and adjacent, so the angle comes from the inverse tangent. \\[ \\begin{aligned} \\tan(\\theta) &= " + FR(rise, run) + " \\\\ \\theta &= \\tan^{-1}\\left(" + FR(rise, run) + "\\right) \\\\ &= " + fmt(ang) + "^\\circ \\end{aligned} \\] The answer is <b>" + fmtF(ang, 1) + "°</b>.",
       { mode: mode, rise: rise, run: run });
+    q.figure = u8RTFigV(["", "", ""], "?", run + " m", rise + " m", "");
+    return q;
   }
   if (mode === 1) {
     var str = ri(30, 90), ht = ri(12, str - 8), ang2 = Math.asin(ht / str) / U8R;
-    return numq("A kite is flying " + ht + " m above the ground on a tight string " + str + " m long. Find the angle the string makes with the ground, in degrees, to one decimal place.",
+    var q = numq("A kite is flying " + ht + " m above the ground on a tight string " + str + " m long. Find the angle the string makes with the ground, in degrees, to one decimal place.",
       ang2, 0.4,
       "The height is opposite the angle and the string is the hypotenuse, so the angle comes from the inverse sine. \\[ \\begin{aligned} \\sin(\\theta) &= " + FR(ht, str) + " \\\\ \\theta &= \\sin^{-1}\\left(" + FR(ht, str) + "\\right) \\\\ &= " + fmt(ang2) + "^\\circ \\end{aligned} \\] The answer is <b>" + fmtF(ang2, 1) + "°</b>.",
       { mode: mode, str: str, ht: ht });
+    q.figure = u8RTFigV(["", "", ""], "?", "", ht + " m", str + " m");
+    return q;
   }
   var len = ri(4, 9), foot = ri(1, len - 1), ang3 = Math.acos(foot / len) / U8R;
-  return numq("A ladder " + len + " m long leans against a wall with its foot " + foot + " m from the wall. Find the angle the ladder makes with the ground, in degrees, to one decimal place.",
+  var q = numq("A ladder " + len + " m long leans against a wall with its foot " + foot + " m from the wall. Find the angle the ladder makes with the ground, in degrees, to one decimal place.",
     ang3, 0.4,
     "The ground distance is adjacent to the angle and the ladder is the hypotenuse, so the angle comes from the inverse cosine. \\[ \\begin{aligned} \\cos(\\theta) &= " + FR(foot, len) + " \\\\ \\theta &= \\cos^{-1}\\left(" + FR(foot, len) + "\\right) \\\\ &= " + fmt(ang3) + "^\\circ \\end{aligned} \\] The answer is <b>" + fmtF(ang3, 1) + "°</b>.",
     { mode: mode, len: len, foot: foot });
+  q.figure = u8RTFigV(["", "", ""], "?", foot + " m", "", len + " m");
+  return q;
 }, ["Name the two given sides relative to the angle you want.", "Build the ratio from those sides, then use the matching inverse trig function."]);
 
 E("u8-cr-direct-side", 8, ["2.1"], 2, "gen", function () {
@@ -4713,10 +4791,20 @@ E("u8-cr-direct-side", 8, ["2.1"], 2, "gen", function () {
   var m = pick(modes), a = ri(22, 62), g = ri(8, 60), ans = m.calc(a, g);
   var divMode = (modes.indexOf(m) >= 3);
   var expr = divMode ? (g + " \\div \\" + m.fn + "(" + a + "^\\circ)") : (g + " \\times \\" + m.fn + "(" + a + "^\\circ)");
-  return numq(m.ctx(a, g) + " Give your answer to one decimal place.",
+  var q = numq(m.ctx(a, g) + " Give your answer to one decimal place.",
     ans, 0.3,
     "Here " + m.rel + ", so use \\(\\" + m.fn + "\\) and solve for the unknown side. \\[ \\begin{aligned} \\text{unknown} &= " + expr + " \\\\ &= " + fmt(ans) + " \\text{ m} \\end{aligned} \\] The answer is <b>" + fmtF(ans, 1) + " m</b>.",
     { mode: modes.indexOf(m), a: a, g: g });
+  var mi = modes.indexOf(m);
+  if (mi === 2) { q.figure = u8ElevFig(a, g + " m", "?"); }
+  else if (mi === 5) { q.figure = u8ElevFig(a, "?", g + " m"); }
+  else {
+    var abAr = ["", "?", "", "", g + " m", ""];
+    var bcAr = ["?", "", "", g + " m", "", ""];
+    var acAr = [g + " m", g + " m", "", "?", "?", ""];
+    q.figure = u8RTFigV(["", "", ""], a + "°", abAr[mi], bcAr[mi], acAr[mi]);
+  }
+  return q;
 }, ["Name the given side and the wanted side relative to the angle.", "Use the one ratio that contains exactly those two sides, then solve for the unknown."]);
 
 E("u8-cr-same-side-gap", 8, ["5.2"], 2, "gen", function () {
@@ -4758,10 +4846,12 @@ E("u8-cr-clinometer-two-readings", 8, ["5.1", "2.4"], 2, "gen", function () {
   var s = ri(8, 25), aF = ri(18, 32), aN = aF + ri(10, 22);
   var h = s / (1 / u8tan(aF) - 1 / u8tan(aN));
   var x = h / u8tan(aN), xf = h / u8tan(aF);
-  return numq("For a clinometer activity, a student cannot reach the base of a tall spruce. From a first spot the angle of elevation to the top is " + aF + "°. The student walks " + s + " m straight toward the tree and reads " + aN + "°. Ignoring the small clinometer height, find the height of the tree, in metres, to one decimal place.",
+  var q1 = numq("For a clinometer activity, a student cannot reach the base of a tall spruce. From a first spot the angle of elevation to the top is " + aF + "°. The student walks " + s + " m straight toward the tree and reads " + aN + "°. Ignoring the small clinometer height, find the height of the tree, in metres, to one decimal place.",
     h, 0.5,
     "Let h be the tree height and x the distance from the nearer spot to the tree. Both readings form right triangles sharing h. \\[ \\begin{aligned} x &= " + FR("h", "\\tan(" + aN + "^\\circ)") + ", \\quad x + " + s + " = " + FR("h", "\\tan(" + aF + "^\\circ)") + " \\\\ " + s + " &= h\\left(" + FR(1, "\\tan(" + aF + "^\\circ)") + " - " + FR(1, "\\tan(" + aN + "^\\circ)") + "\\right) \\\\ h &= " + FR(s, "\\left(" + FR(1, "\\tan(" + aF + "^\\circ)") + " - " + FR(1, "\\tan(" + aN + "^\\circ)") + "\\right)") + " = " + fmt(h) + " \\text{ m} \\end{aligned} \\] Check: the nearer distance is " + fmt(x) + " m and the farther is " + fmt(xf) + " m, and they differ by " + s + " m. The answer is <b>" + fmtF(h, 1) + " m</b>.",
     { mode: mode, s: s, aF: aF, aN: aN });
+  q1.figure = u8TwoElevFig(aF, aN, s + " m", "?");
+  return q1;
 }, ["Each reading makes a right triangle with the top of the tree, and the triangles share the tree height.", "Write the ground distance from each spot using the height, then use the gap between the spots."]);
 
 E("u8-two-stage-target-mc", 8, ["5.2", "2.2"], 3, "gen", function () {
@@ -4795,34 +4885,40 @@ E("u8-equivalent-forms-mc", 8, ["2.6", "2.5"], 3, "gen", function () {
   var mode = ri(0, 2);
   if (mode === 0) {
     var a = pick([27, 34, 43, 56, 63, 71]);
-    return mcq("Which statement correctly rewrites \\(\\tan(" + a + "^\\circ)\\) using sine and cosine?",
+    var q = mcq("Which statement correctly rewrites \\(\\tan(" + a + "^\\circ)\\) using sine and cosine?",
       { t: "\\(\\tan(" + a + "^\\circ) = " + FR("\\sin(" + a + "^\\circ)", "\\cos(" + a + "^\\circ)") + "\\)", fb: "Yes: sine over cosine gives opposite over adjacent, since the hypotenuses cancel." },
       [{ t: "\\(\\tan(" + a + "^\\circ) = " + FR("\\cos(" + a + "^\\circ)", "\\sin(" + a + "^\\circ)") + "\\)", fb: "That fraction is the reciprocal of tangent: adjacent over opposite." },
        { t: "\\(\\tan(" + a + "^\\circ) = \\sin(" + a + "^\\circ) \\times \\cos(" + a + "^\\circ)\\)", fb: "Tangent is a quotient of the two ratios, not their product." },
        { t: "\\(\\tan(" + a + "^\\circ) = \\sin(" + (90 - a) + "^\\circ) \\div \\cos(" + a + "^\\circ)\\)", fb: "The numerator was swapped for its complement value, which changes the result. Both parts must use the same angle, " + a + "°." }],
       "\\(\\sin(" + a + "^\\circ)\\) is opposite over hypotenuse and \\(\\cos(" + a + "^\\circ)\\) is adjacent over hypotenuse. Dividing gives \\(" + FR("\\text{opp}", "\\text{adj}") + "\\), which is the tangent. The answer is <b>\\(\\tan(" + a + "^\\circ) = " + FR("\\sin(" + a + "^\\circ)", "\\cos(" + a + "^\\circ)") + "\\)</b>.",
       { mode: mode, a: a });
+    q.figure = u8RTFigV(["", "", ""], a + "°", "adjacent", "opposite", "hypotenuse");
+    return q;
   }
   if (mode === 1) {
     var a2 = ri(24, 64), opp = ri(5, 30);
     function eq(rhs) { return "\\(x = " + rhs + "\\)"; }
-    return mcq("A student writes \\(\\sin(" + a2 + "^\\circ) = " + FR(opp, "x") + "\\) for the hypotenuse x of a right triangle. Which equation is an equivalent form that gives x directly?",
+    var q = mcq("A student writes \\(\\sin(" + a2 + "^\\circ) = " + FR(opp, "x") + "\\) for the hypotenuse x of a right triangle. Which equation is an equivalent form that gives x directly?",
       { t: eq(FR(opp, "\\sin(" + a2 + "^\\circ)")), fb: "Yes: multiplying both sides by x and then dividing by the sine isolates x with the same meaning." },
       [{ t: eq(opp + " \\times \\sin(" + a2 + "^\\circ)"), fb: "That value would be shorter than the opposite side, but x is the hypotenuse, the longest side. The rearrangement is wrong." },
        { t: eq(FR("\\sin(" + a2 + "^\\circ)", opp)), fb: "That inverts the fraction, giving a value under 1, which cannot be this hypotenuse." },
        { t: eq(FR(opp, "\\tan(" + a2 + "^\\circ)")), fb: "Tangent does not involve the hypotenuse at all, so it cannot be equivalent to this sine statement." }],
       "Start from \\(\\sin(" + a2 + "^\\circ) = " + FR(opp, "x") + "\\). Multiply both sides by x, then divide both sides by \\(\\sin(" + a2 + "^\\circ)\\): the equivalent solved form is <b>" + eq(FR(opp, "\\sin(" + a2 + "^\\circ)")) + "</b>.",
       { mode: mode, a: a2, opp: opp });
+    q.figure = u8RTFigV(["", "", ""], a2 + "°", "", String(opp), "x");
+    return q;
   }
   var ang = pick([26, 33, 47, 58, 64]);
   var adjv = ri(8, 40), hypv = adjv + ri(6, 30);
-  return mcq("In a right triangle, \\(\\cos(" + ang + "^\\circ) = " + FR(adjv, hypv) + "\\). Which statement is equivalent to this one?",
+  var q = mcq("In a right triangle, \\(\\cos(" + ang + "^\\circ) = " + FR(adjv, hypv) + "\\). Which statement is equivalent to this one?",
     { t: "\\(\\sin(" + (90 - ang) + "^\\circ) = " + FR(adjv, hypv) + "\\)", fb: "Yes: cosine of an angle equals sine of its complement, with the same side ratio." },
     [{ t: "\\(\\sin(" + ang + "^\\circ) = " + FR(adjv, hypv) + "\\)", fb: "Sine of the same angle uses the opposite side over the hypotenuse, a different ratio (unless the angle is 45°)." },
      { t: "\\(\\cos(" + (90 - ang) + "^\\circ) = " + FR(adjv, hypv) + "\\)", fb: "Cosine of the complement equals sine of the original angle, not cosine of it." },
      { t: "\\(\\tan(" + ang + "^\\circ) = " + FR(adjv, hypv) + "\\)", fb: "Tangent is opposite over adjacent; the hypotenuse does not appear in it." }],
     "The two acute angles of a right triangle add to 90°, and the cosine of one equals the sine of the other. So \\(\\cos(" + ang + "^\\circ) = \\sin(" + (90 - ang) + "^\\circ) = " + FR(adjv, hypv) + "\\). The answer is <b>\\(\\sin(" + (90 - ang) + "^\\circ) = " + FR(adjv, hypv) + "\\)</b>.",
     { mode: mode, ang: ang, adj: adjv, hyp: hypv });
+  q.figure = u8RTFigV(["", "", ""], ang + "°", String(adjv), "", String(hypv));
+  return q;
 }, ["Two forms are equivalent only if they say the same thing about the same sides.", "Check the ratio each form builds, and remember the complement pairing between sine and cosine."]);
 
 E("u8-cr-two-depressions", 8, ["5.2"], 3, "gen", function () {
