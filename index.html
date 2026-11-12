@@ -898,7 +898,7 @@ function readInds(){
 function updatePoolInfo(){refreshFace();
   var p=poolFor(state.units,state.inds,state.midCap);
   var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});
-  $("poolInfo").textContent=p.length?"Question bank for this selection: "+p.length+" question templates (Level 1: "+byL[1]+", Level 2: "+byL[2]+", Level 3: "+byL[3]+"). Generators make a fresh question every draw."+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join()?" "+window.__COURSE.finalNote:""):
+  $("poolInfo").textContent=p.length?"Question bank for this selection: "+p.length+" question templates (Level 1: "+byL[1]+", Level 2: "+byL[2]+", Level 3: "+byL[3]+"). Generators make a fresh question every draw."+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:""):
    "No questions match that selection yet, try adding a unit or clearing the indicator filter.";
 }
 /* Teacher-mode UI split (Nov 10, 2026): the level percentage fields,
@@ -956,7 +956,7 @@ function refreshFace(){
   var scope;
   if(!u.length)scope="No units chosen yet";
   else if(window.__COURSE&&u.join(",")===window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join())scope=window.__COURSE.presets.mid.label.replace(" (",": ").replace(/\)$/,"");
-  else if(window.__COURSE&&u.join(",")===window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join())scope=window.__COURSE.presets.final.label.replace(" (",": ").replace(/\)$/,"");
+  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=window.__COURSE.presets.final.label.replace(" (",": ").replace(/\)$/,"");
   else scope=u.map(function(x){return "Unit "+x+": "+UNITS[x];}).join("; ");
   if(state.inds.length)scope+=" (indicators: "+state.inds.join(", ")+")";
   fs.textContent=scope;
@@ -3123,7 +3123,7 @@ function settingsToURL(){
   var s=settings();var p=new URLSearchParams();
   if(window.__COURSE)p.set("course",window.__COURSE.id);
   if(window.__COURSE&&s.units.slice().sort(function(a,b){return a-b;}).join()===window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join())p.set("preset","mid");
-  else if(window.__COURSE&&s.units.slice().sort().join()===window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join())p.set("preset","final");
+  else if(window.__COURSE&&s.units.slice().sort().join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))p.set("preset","final");
   else if(s.units.length)p.set("unit",s.units.join(","));
   if(s.inds.length)p.set("indicator",s.inds.join(","));
   p.set("count",s.count);p.set("order",s.order);
@@ -3141,7 +3141,7 @@ function settingsToURL(){
 function applyURL(){
   var p=new URLSearchParams(location.search);var touched=false;
   if(p.get("preset")==="mid"){state.units=window.__COURSE?window.__COURSE.presets.mid.units.slice():[];touched=true;}
-  else if(p.get("preset")==="final"){state.units=window.__COURSE?window.__COURSE.presets.final.units.slice():[];touched=true;}
+  else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
   if(p.get("count"))$("countIn").value=p.get("count");
@@ -3164,10 +3164,10 @@ function applyURL(){
 }
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
-if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5)__e5.textContent=__c.presets.final.label;}
+if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
 $("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);});
-$("presetFinal").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.final.units.slice():[]);});
+(function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});

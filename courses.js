@@ -279,5 +279,176 @@ window.COURSES = {
    "4": "<b>Wave basics:</b> \\(v = f \\lambda\\) and \\(T = \\frac{1}{f}\\). In a transverse wave the particles move perpendicular to the energy travel; in a longitudinal wave they move parallel to it. The speed of sound in air is about \\(v = 331 + 0.6 \\, T\\) m/s, with \\(T\\) the air temperature in °C.<br><b>Standing waves and resonance:</b> a fixed end reflects a pulse inverted. In a closed air column the resonant lengths are \\(\\frac{\\lambda}{4}, \\frac{3\\lambda}{4}, \\frac{5\\lambda}{4}, \\dots\\); in an open air column they are \\(\\frac{\\lambda}{2}, \\lambda, \\frac{3\\lambda}{2}, \\dots\\). On a string fixed at both ends the harmonics have wavelengths \\(\\frac{2L}{n}\\) for \\(n = 1, 2, 3, \\dots\\).<br><b>Double slit (maxima only):</b> bright fringes satisfy \\(m \\lambda = \\frac{x d}{L}\\), where \\(x\\) is the distance from the central maximum to the \\(m\\)-th bright fringe, \\(d\\) the slit separation and \\(L\\) the screen distance.<br><b>Doppler effect (sound):</b> \\(f' = f \\frac{v + v_o}{v - v_s}\\), taking the numerator sign as positive when the observer moves toward the source and the denominator sign as positive (subtracting \\(v_s\\)) when the source moves toward the observer; reverse either sign for motion away.<br><b>Refraction:</b> \\(n = \\frac{c}{v}\\); Snell's law \\(n_1 \\sin \\theta_1 = n_2 \\sin \\theta_2\\). Entering a slower medium, light bends toward the normal. Total internal reflection needs light travelling toward a faster medium at an angle above the critical angle, \\(\\sin \\theta_c = \\frac{n_2}{n_1}\\).",
    "5": "<b>Science 1206 review:</b> average speed \\(= \\frac{\\text{total distance}}{\\text{total time}}\\). The slope of a distance-time graph is the speed; a velocity-time graph's area is the displacement. To convert km/h to m/s, divide by 3.6; to convert m/s to km/h, multiply by 3.6. Scalars have size only (distance, speed, mass); vectors have size and direction (displacement, velocity, force)."
   }
+},
+
+"chem-3202": {
+  id: "chem-3202",
+  title: "Chemistry 3202 Review: Practice Question Bank",
+  shortName: "Chemistry 3202",
+  storagePrefix: "c3202",
+  reportName: "Chemistry 3202",
+  language: "en",
+  bankFile: "chem-3202.js",
+  subject: "Chemistry",
+  grade: 12,
+  listed: false,
+
+  units: {
+    "1": "From Kinetics to Equilibrium",
+    "2": "Acids and Bases",
+    "3": "Thermochemistry",
+    "4": "Electrochemistry",
+    "5": "Chemistry 2202 Review (prior learning)"
+  },
+
+  /* The 36 content indicators plus the four Chemistry 2202 bridging
+     codes (B.1 to B.4), wording carried verbatim from the standalone
+     app's curriculum map. The Integrated Skills indicators are out of
+     scope, the same ruling the standalone ships with. */
+  indicators: {
+    "5.1": "Describe collision theory and its connection to factors involved in altering reaction rates",
+    "5.2": "Identify and discuss the properties and factors which affect reaction rate",
+    "5.3": "Sketch and interpret potential energy diagrams for chemical reactions",
+    "5.4": "Describe a reaction mechanism and a catalyst's role in a chemical reaction",
+    "5.5": "Define the concept of dynamic equilibrium as it pertains to reversible chemical reactions",
+    "5.6": "Define the concept of equilibrium constant expression as it pertains to chemical systems",
+    "5.7": "Explain how different factors affect chemical equilibrium",
+    "6.1": "Describe various acid-base definitions up to and including the Brønsted-Lowry definition",
+    "6.2": "Compare strong and weak acids and bases using the concept of equilibrium (theoretical)",
+    "6.3": "Predict products of acid-base reactions",
+    "6.4": "Calculate the pH of an acid or a base given its concentration, and vice versa",
+    "6.5": "Compare strong and weak acids and bases using the concept of equilibrium (mathematical)",
+    "6.6": "Explain how acid-base indicators function",
+    "6.7": "Describe the interactions between H+ ions and OH- ions using Le Châtelier's principle",
+    "6.8": "Determine the concentration of an acid or base solution using stoichiometry",
+    "7.1": "Explain temperature and heat using the concept of kinetic energy and the particle model of matter",
+    "7.2": "Distinguish between a system and surroundings and the relationship of each to the universe",
+    "7.3": "Define specific heat",
+    "7.4": "Calculate and compare the energy involved in changes of temperature",
+    "7.5": "Define endothermic reaction, exothermic reaction, enthalpy, bond energy, heat of reaction, and molar enthalpy",
+    "7.6": "Illustrate changes in energy of various chemical reactions, using potential energy diagrams",
+    "7.7": "Calculate and compare the energy involved in changes of state and temperature",
+    "7.8": "Calculate and compare the energy involved in chemical reactions",
+    "7.9": "Determine experimentally the changes in energy of various chemical reactions",
+    "7.10": "Compare the molar enthalpies of several combustion reactions involving organic compounds",
+    "7.11": "Write and balance thermochemical equations including the combustion reactions of alkanes",
+    "7.12": "Calculate the changes in energy of various chemical reactions using bond energy, heats of formation, and Hess's law",
+    "8.1": "Define oxidation and reduction experimentally and theoretically",
+    "8.2": "Compare oxidation-reduction reactions with other kinds of reactions",
+    "8.3": "Write and balance half-reactions and net reactions for redox equations",
+    "8.4": "Illustrate and label the parts of electrochemical cells and explain how they work",
+    "8.5": "Compare galvanic and electrolytic cells in terms of energy efficiency, electron flow/transfer, and chemical change",
+    "8.6": "Predict whether oxidation-reduction reactions are spontaneous based on their reduction potentials",
+    "8.7": "Predict the voltage of various electrochemical cells",
+    "8.8": "Explain the processes of electrolysis and electroplating",
+    "8.9": "Explain how electrical energy is produced in a hydrogen fuel cell",
+    "B.1": "Chemistry 2202 review: moles and molar mass",
+    "B.2": "Chemistry 2202 review: concentration and dilution",
+    "B.3": "Chemistry 2202 review: stoichiometry and yield",
+    "B.4": "Chemistry 2202 review: solubility and equilibrium basics"
+  },
+
+  unitInd: {
+    "1": [
+      "5.1",
+      "5.2",
+      "5.3",
+      "5.4",
+      "5.5",
+      "5.6",
+      "5.7"
+    ],
+    "2": [
+      "6.1",
+      "6.2",
+      "6.3",
+      "6.4",
+      "6.5",
+      "6.6",
+      "6.7",
+      "6.8"
+    ],
+    "3": [
+      "7.1",
+      "7.2",
+      "7.3",
+      "7.4",
+      "7.5",
+      "7.6",
+      "7.7",
+      "7.8",
+      "7.9",
+      "7.10",
+      "7.11",
+      "7.12"
+    ],
+    "4": [
+      "8.1",
+      "8.2",
+      "8.3",
+      "8.4",
+      "8.5",
+      "8.6",
+      "8.7",
+      "8.8",
+      "8.9"
+    ],
+    "5": [
+      "B.1",
+      "B.2",
+      "B.3",
+      "B.4"
+    ]
+  },
+
+  /* The one preset is the provincial exam review, wired onto the
+     chassis mid button exactly as the standalone wires it. There is
+     no final preset: the course final is the provincial exam, and no
+     mid-course structure for this course could be verified from the
+     sources (the standalone says the same). The shell hides the Final
+     button for a course whose config has no presets.final. */
+  presets: {
+    mid: { units: [1, 2, 3, 4], label: "Provincial exam review (all units)" }
+  },
+
+  /* The All preset in the standalone app selects the four content
+     units only: the Chemistry 2202 Review unit is practice-only. */
+  allUnits: [1, 2, 3, 4],
+
+  /* Exam blueprint, translated from the standalone app's composer
+     (chem-3202-review/snippets/composeexam.js.txt). The provincial
+     paper is 100 marks: Part I is 50 selected response at 20/60/20 by
+     level, Part II is 50 constructed response at Levels 2 and 3 only,
+     composed in per-unit parts of 11/14/13/12 SR and 11/14/13/12 CR.
+     The per-unit level totals below are each part's own SR level
+     targets (levelTargets at 20/60/20) plus its CR split at the
+     standalone composer's first Level 3 preference for that part
+     (5, 6, 6 and 5 marks). Any other multi-unit selection uses the
+     standalone's pooled fallback: 30 selected response, 20
+     constructed response. */
+  exam: {
+    provincial: {
+      units: [1, 2, 3, 4], total: 100, srCount: 50, crMarks: 50,
+      perUnit: {
+        1: { sr: 11, cr: 11, levels: [2, 13, 7] },
+        2: { sr: 14, cr: 14, levels: [3, 16, 9] },
+        3: { sr: 13, cr: 13, levels: [3, 15, 8] },
+        4: { sr: 12, cr: 12, levels: [3, 14, 7] }
+      }
+    },
+    fallback: { srCount: 30, crMarks: 20 }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app (its
+     chemistry data sheet content, one panel per unit). */
+  panels: {
+    "1": "<b>Collision theory:</b> a reaction occurs when particles collide with the correct orientation and with energy at least equal to the activation energy. Raising temperature, concentration or surface area, or adding a catalyst, increases the number of successful collisions per second.<br><b>Potential energy diagrams:</b> activation energy (forward) is the rise from reactants to the peak; \\(\\Delta H\\) is the energy of the products minus the energy of the reactants; activation energy (reverse) equals activation energy (forward) minus \\(\\Delta H\\). A catalyst lowers both activation energies and leaves \\(\\Delta H\\) unchanged.<br><b>Equilibrium constant:</b> for \\(aA + bB \\rightleftharpoons cC + dD\\), \\(K = \\frac{[C]^c[D]^d}{[A]^a[B]^b}\\). Pure solids and pure liquids are left out. \\(K \\gg 1\\): products are favoured. \\(K \\ll 1\\): reactants are favoured. Only temperature changes the value of K.",
+    "2": "<b>Water equilibrium:</b> \\(K_w = [H_3O^+][OH^-] = 1.0 \\times 10^{-14}\\) at 25 °C, and \\(pH + pOH = 14.00\\). \\(pH = -\\log[H_3O^+]\\). Each pH unit is a tenfold change in concentration. The decimal places in a pH value equal the significant figures in the concentration.<br><b>Selected \\(K_a\\) values:</b> HF \\(3.5 \\times 10^{-4}\\); benzoic acid \\(6.3 \\times 10^{-5}\\); acetic acid \\(1.8 \\times 10^{-5}\\); carbonic acid (first proton) \\(4.3 \\times 10^{-7}\\); HCN \\(6.2 \\times 10^{-10}\\); ammonium ion \\(5.6 \\times 10^{-10}\\).<br><b>Selected \\(K_b\\) values:</b> ammonia \\(1.8 \\times 10^{-5}\\); cyanide ion \\(1.6 \\times 10^{-5}\\); acetate ion \\(5.6 \\times 10^{-10}\\); fluoride ion \\(2.9 \\times 10^{-11}\\). For a conjugate pair, \\(K_a \\times K_b = K_w\\).<br><b>Assumption check:</b> if \\(\\frac{[\\text{acid}]_{initial}}{K_a} > 500\\), the amount that reacts is negligible beside the starting concentration and the equilibrium concentration can be taken as the starting concentration.",
+    "3": "<b>Heat:</b> \\(q = mc\\Delta T\\), with \\(c\\) the specific heat capacity. For water, \\(c = 4.18\\) J/(g·°C). Heat lost by one part equals heat gained by the other in an insulated calorimeter. For a reaction, \\(\\Delta H = \\frac{q}{n}\\), and the sign follows the system: exothermic \\(\\Delta H < 0\\).<br><b>Changes of state (water):</b> molar heat of fusion \\(6.01\\) kJ/mol (334 J/g); molar heat of vaporization \\(40.7\\) kJ/mol (\\(2.26 \\times 10^3\\) J/g). During a change of state the temperature stays constant.<br><b>Hess's law:</b> \\(\\Delta H\\) for a reaction is the sum of the \\(\\Delta H\\) values of the steps that add to it. Reversing an equation changes the sign of \\(\\Delta H\\); multiplying an equation by a factor multiplies \\(\\Delta H\\) by the same factor. From formation enthalpies: \\(\\Delta H = \\sum \\Delta H_f(\\text{products}) - \\sum \\Delta H_f(\\text{reactants})\\). From bond energies: \\(\\Delta H = \\sum BE(\\text{bonds broken}) - \\sum BE(\\text{bonds formed})\\).<br><b>Average bond energies (kJ/mol):</b> H-H 436, Cl-Cl 242, H-Cl 431, O=O 498, O-H 463, C-H 413, C-C 348, C=C 614, C\\(\\equiv\\)C 839, N\\(\\equiv\\)N 946, N-H 391, C=O 799.",
+    "4": "<b>Cell voltages:</b> \\(E^\\circ_{cell} = E^\\circ(\\text{cathode}) - E^\\circ(\\text{anode})\\), using reduction potentials. A positive \\(E^\\circ_{cell}\\) means the reaction is spontaneous as written. Reduction potentials are never multiplied when a half-reaction is scaled.<br><b>Standard reduction potentials (V):</b> F&#8322;/F&#8315; +2.87, Cl&#8322;/Cl&#8315; +1.36, Br&#8322;/Br&#8315; +1.07, Ag&#8314;/Ag +0.80, Fe&#179;&#8314;/Fe&#178;&#8314; +0.77, Cu&#178;&#8314;/Cu +0.34, H&#8314;/H&#8322; 0.00, Pb&#178;&#8314;/Pb -0.13, Ni&#178;&#8314;/Ni -0.25, Fe&#178;&#8314;/Fe -0.44, Zn&#178;&#8314;/Zn -0.76, Mn&#178;&#8314;/Mn -1.18, Al&#179;&#8314;/Al -1.66, Mg&#178;&#8314;/Mg -2.37, Na&#8314;/Na -2.71, Ca&#178;&#8314;/Ca -2.87, Li&#8314;/Li -3.04.<br><b>Electrolysis:</b> charge \\(Q = It\\) (coulombs = amperes \\(\\times\\) seconds). One mole of electrons carries \\(9.65 \\times 10^4\\) C (the Faraday constant). In a galvanic cell the anode is negative and oxidation happens there; in an electrolytic cell the anode is positive and oxidation still happens there.",
+    "5": "<b>Chemistry 2202 review:</b> \\(n = \\frac{m}{M}\\) &nbsp; \\(N = n \\times 6.022 \\times 10^{23}\\) &nbsp; \\(c = \\frac{n}{V}\\) &nbsp; \\(c_1V_1 = c_2V_2\\) &nbsp; Percent yield \\(= \\frac{\\text{actual}}{\\text{theoretical}} \\times 100\\%\\).<br><b>Atomic masses (g/mol):</b> H 1.01, C 12.01, N 14.01, O 16.00, F 19.00, Na 22.99, Mg 24.31, Al 26.98, P 30.97, S 32.07, Cl 35.45, K 39.10, Ca 40.08, Fe 55.85, Cu 63.55, Zn 65.39, Br 79.90, Ag 107.87, I 126.90, Ba 137.33, Pb 207.20"
+  }
 }
 };
