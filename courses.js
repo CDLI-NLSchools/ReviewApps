@@ -836,5 +836,314 @@ window.COURSES = {
     "8": "Note: any formula required for logarithmic or exponential functions will be provided per question.",
     "9": "<b>Permutations:</b> \\({}_nP_r=\\dfrac{n!}{(n-r)!}\\).<br><b>Permutations with repeated items:</b> \\(\\dfrac{n!}{a!\\,b!\\,c!\\,\\ldots}\\).<br><b>Combinations:</b> \\({}_nC_r=\\dbinom{n}{r}=\\dfrac{n!}{(n-r)!\\,r!}\\).<br><b>Binomial Theorem:</b> \\((x+y)^n={}_nC_0(x)^n(y)^0+{}_nC_1(x)^{n-1}(y)^1+{}_nC_2(x)^{n-2}(y)^2+\\ldots+{}_nC_{n-1}(x)^1(y)^{n-1}+{}_nC_n(x)^0(y)^n\\)."
   }
+},
+
+"math-3201": {
+  id: "math-3201",
+  title: "Math 3201 Review: Practice Question Bank",
+  shortName: "Math 3201",
+  storagePrefix: "m3201",
+  reportName: "Math 3201",
+  language: "en",
+  bankFile: "math-3201.js",
+  subject: "Mathematics",
+  grade: 12,
+  listed: false,
+
+  units: {
+    "1": "Rational Expressions and Equations",
+    "2": "Polynomial Functions",
+    "3": "Sinusoidal Functions",
+    "4": "Exponential Functions",
+    "5": "Logarithmic Functions",
+    "6": "Financial Mathematics",
+    "7": "Set Theory",
+    "8": "Counting Methods",
+    "9": "Probability"
+  },
+
+  /* All 100 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (its header notes the codes
+     were verified against the Math 3201 Curriculum Guide). */
+  indicators: {
+    "3.1": "For numerators and denominators that are monomials and binomials Explain why a given value is non-permissible...",
+    "3.2": "For numerators and denominators that are monomials and binomials Determine the non-permissible values for a...",
+    "3.3": "For numerators and denominators that are monomials and binomials Compare the strategies for writing...",
+    "3.4": "For numerators and denominators that are monomials and binomials Create new rational expressions by...",
+    "3.5": "For numerators and denominators that are monomials and binomials Simplify a rational expression",
+    "3.6": "For numerators and denominators that are monomials and binomials Explain why the non-permissible values of a...",
+    "3.7": "For numerators and denominators that are monomials and binomials Identify and correct errors in a given...",
+    "3.8": "For numerators and denominators that are monomials and binomials Compare the strategies for performing a...",
+    "3.9": "For numerators and denominators that are monomials and binomials Determine the non-permissible values when...",
+    "3.10": "For numerators and denominators that are monomials and binomials Determine, in simplified form, the sum or...",
+    "3.11": "For numerators and denominators that are monomials and binomials Determine, in simplified form, the sum or...",
+    "3.12": "For numerators and denominators that are monomials and binomials Determine, in simplified form, the product...",
+    "3.13": "For numerators and denominators that are monomials and binomials Determine the non-permissible values for the...",
+    "3.14": "For numerators and denominators that are monomials and binomials Determine the solution to a rational...",
+    "3.15": "For numerators and denominators that are monomials and binomials Explain why a value obtained in solving a...",
+    "3.16": "For numerators and denominators that are monomials and binomials Solve a contextual problem that involves a...",
+    "3.17": "Using polynomial functions (of degree ≤ 3) Describe, orally and in written form, the characteristics of a...",
+    "3.18": "Using polynomial functions (of degree ≤ 3) Describe, orally and in written form, the characteristics of a...",
+    "3.19": "Using polynomial functions (of degree ≤ 3) Match equations in a given set to their corresponding graphs",
+    "3.20": "Using polynomial functions (of degree ≤ 3) Graph data, and determine the polynomial function that best...",
+    "3.21": "Using polynomial functions (of degree ≤ 3) Interpret the graph of a polynomial function that models a...",
+    "3.22": "Using polynomial functions (of degree ≤ 3) Solve, using technology, a contextual problem that involves data...",
+    "7.1": "Demonstrate an understanding of angles expressed in degrees and radians",
+    "7.2": "Describe, orally and in written form, the characteristics of a sinusoidal function by analyzing its graph",
+    "7.3": "Interpret the graph of a sinusoidal function that models a situation, and explain the reasoning",
+    "7.4": "Describe, orally and in written form, the characteristics of a sinusoidal function by analyzing its equation",
+    "7.5": "Match equations in a given set to their corresponding graphs",
+    "7.6": "Graph data, and determine the sinusoidal function that best approximates the data",
+    "7.7": "Solve, using technology, a contextual problem that involves data that is best represented by graphs of...",
+    "4.1": "Graph data, and determine the exponential function that best approximates the data",
+    "4.3": "Interpret the graph of an exponential function that models a situation, and explain the reasoning",
+    "4.5": "Solve, using technology, a contextual problem that involves data that is best represented by graphs of...",
+    "4.7": "Determine the solution of an exponential equation in which the bases are powers of one another; e.g., 2x−1 =...",
+    "4.8": "Determine the solution of an exponential equation in which the bases are not powers of one another; e.g.,...",
+    "4.9": "Solve problems that involve the application of exponential equations",
+    "4.11": "Match equations in a given set to their corresponding graphs (exponentials and logarithms)",
+    "4.12": "Describe, orally and in written form, the characteristics of an exponential function by analyzing its graph",
+    "4.13": "Describe, orally and in written form, the characteristics of an exponential function by analyzing its equation",
+    "1.1": "Express a logarithmic equation as an exponential equation and vice versa",
+    "1.2": "Determine the value of a logarithmic expression, such as log2 8, without technology",
+    "1.3": "Develop the laws of logarithms, using numeric examples and the exponent laws",
+    "1.4": "Determine an equivalent expression for a logarithmic expression by applying the laws of logarithms",
+    "1.5": "Determine the approximate value of a logarithmic expression, such as log2 9, with technology",
+    "4.2": "Graph data, and determine the logarithmic function that best approximates the data",
+    "4.4": "Interpret the graph of a logarithmic function that models a situation, and explain the reasoning",
+    "4.6": "Solve, using technology, a contextual problem that involves data that is best represented by graphs of...",
+    "4.10": "Solve problems that involve logarithmic scales, such as the Richter scale and the pH scale",
+    "4.14": "Describe, orally and in written form, the characteristics of a logarithmic function by analyzing its graph",
+    "4.15": "Describe, orally and in written form, the characteristics of a logarithmic function by analyzing its equation",
+    "1.6": "Explain the advantages and disadvantages of compound interest and simple interest",
+    "1.7": "Identify situations that involve compound interest",
+    "1.8": "Solve a contextual problem that involves compound interest",
+    "1.9": "Compare, in a given situation, the total interest paid or earned for different compounding periods",
+    "1.10": "Determine the total interest of a loan given the principal, interest rate and number of compounding periods",
+    "1.11": "Determine, using technology, the total cost of a loan under a variety of conditions; e.g., different...",
+    "1.12": "Determine, using technology, the unknown variable in compound interest loan situations",
+    "1.13": "Compare and explain, using technology, different credit options that involve compound interest, including...",
+    "1.14": "Identify and describe examples of assets that appreciate or depreciate",
+    "1.15": "Compare, using examples, renting, leasing and buying",
+    "1.16": "Justify, for a specific set of circumstances, if renting, buying or leasing would be advantageous",
+    "1.17": "Solve, using technology, a contextual problem that involves cost-and-benefit analysis",
+    "2.1": "Provide examples of the empty set, disjoint sets, subsets and universal sets in context, and explain the...",
+    "2.2": "Organize information such as collected data and number properties, using graphic organizers, and explain the...",
+    "2.3": "Explain what a specified region in a Venn diagram represents, using connecting words (and, or, not) or set...",
+    "2.4": "Determine the elements in the complement, the intersection and the union of two sets",
+    "2.5": "Solve a contextual problem that involves sets, and record the solution, using set notation",
+    "2.6": "Identify and correct errors in a solution to a problem that involves sets",
+    "2.7": "Explain how set theory is used in applications such as Internet searches, database queries, data analysis,...",
+    "9.16": "Represent and solve counting problems, using a graphic organizer",
+    "9.17": "Generalize, using inductive reasoning, the Fundamental Counting Principle",
+    "9.18": "Identify and explain assumptions made in solving a counting problem",
+    "9.19": "Solve a contextual counting problem, using the Fundamental Counting Principle, and explain the reasoning",
+    "9.20": "Determine, with or without technology, the value of a factorial",
+    "9.21": "Simplify a numeric or an algebraic fraction that contains factorials in both the numerator and denominator",
+    "9.22": "Solve an equation that involves factorials",
+    "9.23": "Represent the number of arrangements of n elements taken n at a time, using factorial notation",
+    "9.24": "Determine the number of permutations of n elements taken r at a time",
+    "9.25": "Generalize strategies for determining the number of permutations of n elements taken r at a time",
+    "9.26": "Determine the number of permutations of n elements taken n at a time where some elements are not distinct",
+    "9.27": "Explain, using examples, the effect on the total number of permutations of n elements when two or more...",
+    "9.29": "Explain, using examples, why order is or is not important when solving problems that involve permutations or...",
+    "9.30": "Determine the number of combinations of n elements, taken r at a time",
+    "9.31": "Generalize strategies for determining the number of combinations of n elements taken r at a time",
+    "9.32": "Solve a contextual problem that involves probability and combinations",
+    "9.1": "Provide examples of statements of probability and odds found in fields such as media, biology, sports,...",
+    "9.2": "Explain, using examples, the relationship between odds (part-part) and probability (part-whole)",
+    "9.3": "Determine the probability of, or the odds for and against, an outcome in a situation",
+    "9.4": "Express odds as a probability and vice versa",
+    "9.5": "Solve a contextual problem that involves odds or probability",
+    "9.6": "Explain, using examples, how decisions may be based on probability or odds and on subjective judgments",
+    "9.7": "Classify events as mutually exclusive or non–mutually exclusive, and explain the reasoning",
+    "9.8": "Determine if two events are complementary, and explain the reasoning",
+    "9.9": "Represent, using set notation or graphic organizers, mutually exclusive (including complementary) and...",
+    "9.10": "Solve a contextual problem that involves the probability of mutually exclusive (including complementary) or...",
+    "9.11": "Create and solve a problem that involves mutually exclusive or non–mutually exclusive events",
+    "9.12": "Compare, using examples, dependent and independent events",
+    "9.13": "Determine the probability of two independent events",
+    "9.14": "Determine the probability of an event, given the occurrence of a previous event",
+    "9.15": "Create and solve a contextual problem that involves determining the probability of dependent or independent...",
+    "9.28": "Solve a contextual problem that involves probability and permutations"
+  },
+
+  unitInd: {
+    "1": [
+      "3.1",
+      "3.2",
+      "3.3",
+      "3.4",
+      "3.5",
+      "3.6",
+      "3.7",
+      "3.8",
+      "3.9",
+      "3.10",
+      "3.11",
+      "3.12",
+      "3.13",
+      "3.14",
+      "3.15",
+      "3.16"
+    ],
+    "2": [
+      "3.17",
+      "3.18",
+      "3.19",
+      "3.20",
+      "3.21",
+      "3.22"
+    ],
+    "3": [
+      "7.1",
+      "7.2",
+      "7.3",
+      "7.4",
+      "7.5",
+      "7.6",
+      "7.7"
+    ],
+    "4": [
+      "4.1",
+      "4.3",
+      "4.5",
+      "4.7",
+      "4.8",
+      "4.9",
+      "4.11",
+      "4.12",
+      "4.13"
+    ],
+    "5": [
+      "1.1",
+      "1.2",
+      "1.3",
+      "1.4",
+      "1.5",
+      "4.2",
+      "4.4",
+      "4.6",
+      "4.8",
+      "4.9",
+      "4.10",
+      "4.11",
+      "4.14",
+      "4.15"
+    ],
+    "6": [
+      "1.6",
+      "1.7",
+      "1.8",
+      "1.9",
+      "1.10",
+      "1.11",
+      "1.12",
+      "1.13",
+      "1.14",
+      "1.15",
+      "1.16",
+      "1.17"
+    ],
+    "7": [
+      "2.1",
+      "2.2",
+      "2.3",
+      "2.4",
+      "2.5",
+      "2.6",
+      "2.7"
+    ],
+    "8": [
+      "9.16",
+      "9.17",
+      "9.18",
+      "9.19",
+      "9.20",
+      "9.21",
+      "9.22",
+      "9.23",
+      "9.24",
+      "9.25",
+      "9.26",
+      "9.27",
+      "9.29",
+      "9.30",
+      "9.31",
+      "9.32"
+    ],
+    "9": [
+      "9.1",
+      "9.2",
+      "9.3",
+      "9.4",
+      "9.5",
+      "9.6",
+      "9.7",
+      "9.8",
+      "9.9",
+      "9.10",
+      "9.11",
+      "9.12",
+      "9.13",
+      "9.14",
+      "9.15",
+      "9.28",
+      "9.32"
+    ]
+  },
+
+  /* The two presets, labels and unit scopes verbatim from the
+     standalone app (builder markup lines 285 to 286; preset
+     handlers at lines 7034 to 7035). Each preset also sets the
+     level mix, as the standalone's preset buttons do: the
+     mid-course preset uses the published PEP mid-course blueprint
+     mix (20/62/18); the final preset uses 20/60/20. */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], mix: [20, 62, 18], label: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8, 9], mix: [20, 60, 20], label: "Final review (Units 5 to 9)", faceLabel: "End-of-course review (Units 5 to 9)" }
+  },
+
+  /* The standalone builder's own default level mix (its level
+     inputs ship at 20/62/18, the mid-course blueprint mix). */
+  defaultMix: [20, 62, 18],
+
+  /* Exam blueprint, translated from the standalone app's composer
+     (math-3201-review/index.html, composeExam, lines 5849 to 5907;
+     the function is byte-identical to the Math 3200 standalone's
+     composer). That composer is pooled: it makes no distinction
+     between the mid scope, the final scope and any other
+     multi-unit selection. Every multi-unit paper is 50 marks:
+     27 selected response at levels 10/15/2, and 23 constructed
+     response from Level 2 and Level 3 entries carrying 2 or more
+     marks, with the Level 3 share of Section B steered to 7,
+     then 8, then 9 marks (level totals 10/31/9). So the course
+     configures no per-scope blueprints at all: the pooled
+     fallback below IS the exam blueprint, for every multi-unit
+     selection. A single unit composes the unit test (see
+     unitTest). The mid-course cap never applies in this course:
+     the mid scope is Units 1 to 4 whole and no entry carries a
+     postMid flag (the standalone notes this at lines 4675 to
+     4679). */
+  exam: {
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 31, 9], crL3: [7, 8, 9] }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* The Quadratic Formula panel the standalone shows regardless
+     of unit selection (Jason, Nov 8, 2026), verbatim. */
+  panelsAlways: "<details class=\"refpanel\"><summary>Quadratic Formula</summary><div class=\"refbody\">\\(x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\\)</div></details>",
+
+  /* Reference panels carried verbatim from the standalone app.
+     The standalone carries panels for Units 4 to 9 only. */
+  panels: {
+    "4": "Note: any formula required for logarithmic or exponential functions will be provided per question.",
+    "5": "Note: any formula required for logarithmic or exponential functions will be provided per question.",
+    "6": "<b>Compound amount:</b> \\(A = P(1+i)^n\\)<br><b>Simple interest amount:</b> \\(A = P(1+rt)\\)",
+    "7": "<b>Three sets:</b> \\(n(A \\cup B \\cup C) = n(A) + n(B) + n(C) - n(A \\cap B) - n(B \\cap C) - n(A \\cap C) + n(A \\cap B \\cap C)\\)<br><b>Two sets:</b> \\(n(A \\cup B) = n(A) + n(B) - n(A \\cap B)\\)",
+    "8": "<b>Combinations:</b> \\({}_nC_r = \\binom{n}{r} = \\frac{n!}{(n-r)!\\,r!}\\)<br><b>Permutations:</b> \\({}_nP_r = \\frac{n!}{(n-r)!}\\)<br><b>Permutations with repeated items:</b> \\(\\frac{n!}{a!\\,b!\\,c!\\,\\ldots}\\)",
+    "9": "<b>Probability of A or B:</b> \\(P(A \\cup B) = P(A) + P(B) - P(A \\cap B)\\)<br><b>Probability of A and B:</b> \\(P(A\\ \\text{and}\\ B) = P(A) \\times P(B)\\)<br><b>Conditional probability:</b> \\(P(A \\cap B) = P(A) \\cdot P(B \\mid A)\\)"
+  }
 }
 };

@@ -956,7 +956,7 @@ function refreshFace(){
   var scope;
   if(!u.length)scope="No units chosen yet";
   else if(window.__COURSE&&u.join(",")===window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join())scope=window.__COURSE.presets.mid.label.replace(" (",": ").replace(/\)$/,"");
-  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=window.__COURSE.presets.final.label.replace(" (",": ").replace(/\)$/,"");
+  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.final.faceLabel||window.__COURSE.presets.final.label).replace(" (",": ").replace(/\)$/,"");
   else scope=u.map(function(x){return "Unit "+x+": "+UNITS[x];}).join("; ");
   if(state.inds.length)scope+=" (indicators: "+state.inds.join(", ")+")";
   fs.textContent=scope;
