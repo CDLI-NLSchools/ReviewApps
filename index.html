@@ -1068,9 +1068,9 @@ function dealExample(i,n,prev){
   var q=current[i];if(!q||!q._entry)return null;
   var e=q._entry;
   var sd=sessionSeed?(sessionSeed+"|example|"+e.id+"|"+n):"";
-  return withSeed(sd,function(){var c=canonQ(q),pc=prev?canonQ(prev):null,t=null;
-    for(var k=0;k<12;k++){var cand=e.gen();cand._entry=e;t=cand;var cc=canonQ(cand);if(cc!==c&&cc!==pc)break;}
-    if(t&&canonQ(t)===c)return null; // no different example exists: offer nothing
+  return withSeed(sd,function(){var c=canonQ(q),pc=prev?canonQ(prev):null,t=null,first=null,broke=false;
+    for(var k=0;k<12;k++){var cand=e.gen();cand._entry=e;if(!first)first=cand;t=cand;var cc=canonQ(cand);if(cc!==c&&cc!==pc){broke=true;break;}}
+    if(!broke)return first; // ran out of different examples: cycle back to the first instance
     return t;});
 }
 function renderExample(i,exq){
@@ -1097,7 +1097,7 @@ function toggleExample(i){
   if(box._exq){box.hidden=false;setExLabel(i,true);return;}
   box.dataset.exn="0";
   var exq=dealExample(i,0,null);
-  if(!exq){var xb=document.querySelector('[data-ex="'+i+'"]');if(xb)xb.style.display="none";return;}
+  if(!exq)return;
   renderExample(i,exq);setExLabel(i,true);
 }
 function anotherExample(i){
