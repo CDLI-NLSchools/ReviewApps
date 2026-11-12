@@ -89,6 +89,266 @@ function fmtPairDsD(keyT, ds) {
   return ds.map(function (d, i) { return { t: fmtDF(d.v, i === pairIdx ? kd : common), fb: d.fb }; });
 }
 
+/* Solid and scale figure helpers (November 2026): parameterized inline SVG
+   drawn from each question's own generated values. Labels arrive as finished
+   strings from the caller, so each bank formats its own numbers (fmt in the
+   English bank, fmtD in the French bank) and words inside figures follow the
+   bank language. Coordinates use the chassis fmt, like the u7 helpers. */
+function solT(x, y, str, size, bold) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 12) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+function solSvg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+function solPts(pts) { return pts.map(function (p) { return fmt(p[0], 1) + "," + fmt(p[1], 1); }).join(" "); }
+function solPoly(pts, fill, dash) {
+  return '<polygon points="' + solPts(pts) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="2"' + (dash ? ' stroke-dasharray="5 4"' : "") + '/>';
+}
+function solLine(p, q, dash, w) {
+  return '<line x1="' + fmt(p[0], 1) + '" y1="' + fmt(p[1], 1) + '" x2="' + fmt(q[0], 1) + '" y2="' + fmt(q[1], 1) + '" stroke="' + FIG_INK + '" stroke-width="' + (w || 2) + '"' + (dash ? ' stroke-dasharray="5 4"' : "") + '/>';
+}
+/* Right rectangular prism: length along the front bottom, width into the
+   page (offset up and right), height vertical. */
+function solRectPrism(l, w, h, labL, labW, labH, aria) {
+  var s = Math.min(150 / Math.max(l, 0.01), 105 / Math.max(h, 0.01));
+  var fw = l * s, fh = h * s, d = Math.min(w * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 192;
+  var F = [[x0, y0 - fh], [x0 + fw, y0 - fh], [x0 + fw, y0], [x0, y0]];
+  var B = F.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(B, "#ffffff") + solPoly(F, FIG_SHADE);
+  out += solLine(F[0], B[0]) + solLine(F[1], B[1]) + solLine(F[2], B[2]);
+  out += solT(x0 + fw / 2, y0 + 15, labL, 12, false);
+  out += solT(x0 - 13, y0 - fh / 2, labH, 12, false);
+  out += solT((F[1][0] + B[1][0]) / 2 + 13, (F[1][1] + B[1][1]) / 2 - 4, labW, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Right triangular prism: right triangle end with legs a (base) and b
+   (vertical) and hypotenuse c, extruded along its length L. */
+function solTriPrism(a, b, c, L, labA, labB, labC, labL, aria) {
+  var s = Math.min(140 / Math.max(a, 0.01), 100 / Math.max(b, 0.01));
+  var tw = a * s, th = b * s, d = Math.min(L * s * 0.5, 44);
+  var x0 = (340 - tw - d) / 2, y0 = 192;
+  var A = [x0, y0], Bp = [x0 + tw, y0], C = [x0, y0 - th];
+  var A2 = [A[0] + d, A[1] - d], B2 = [Bp[0] + d, Bp[1] - d], C2 = [C[0] + d, C[1] - d];
+  var out = solPoly([A2, B2, C2], "#ffffff") + solPoly([A, Bp, C], FIG_SHADE);
+  out += solLine(A, A2) + solLine(Bp, B2) + solLine(C, C2);
+  out += solT(x0 + tw / 2, y0 + 15, labA, 12, false);
+  out += solT(x0 - 13, y0 - th / 2, labB, 12, false);
+  var mx = (Bp[0] + C[0]) / 2, my = (Bp[1] + C[1]) / 2;
+  out += solT(mx + 15, my - 6, labC, 12, false);
+  out += solT((C[0] + C2[0]) / 2, C[1] - d / 2 - 11, labL, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Right cylinder standing on its circular base. */
+function solCylinder(r, h, labR, labH, aria) {
+  var s = Math.min(52 / Math.max(r, 0.01), 105 / Math.max(h, 0.01));
+  var rx = r * s, hh = h * s, ry = Math.max(rx * 0.32, 4), cx = 165, topY = 62, botY = topY + hh;
+  var out = '<path d="M ' + fmt(cx - rx, 1) + ' ' + fmt(botY, 1) + ' A ' + fmt(rx, 1) + ' ' + fmt(ry, 1) + ' 0 0 0 ' + fmt(cx + rx, 1) + ' ' + fmt(botY, 1) + '" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx - rx, topY], [cx - rx, botY]) + solLine([cx + rx, topY], [cx + rx, botY]);
+  out += '<ellipse cx="' + fmt(cx, 1) + '" cy="' + fmt(topY, 1) + '" rx="' + fmt(rx, 1) + '" ry="' + fmt(ry, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx, topY], [cx + rx, topY], false, 1.6);
+  out += solT(cx + rx / 2, topY - ry - 10, labR, 12, false);
+  out += solT(cx + rx + 16, topY + hh / 2, labH, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Square pyramid: base side along the front bottom, vertical height dashed
+   from the apex to the base centre, one slant edge labelled by the caller. */
+function solPyramid(base, height, labBase, labH, labSlant, aria) {
+  var s = Math.min(150 / Math.max(base, 0.01), 100 / Math.max(height, 0.01));
+  var bw = base * s, hh = height * s, d = Math.min(bw * 0.3, 38);
+  var x0 = (340 - bw - d) / 2, y0 = 192;
+  var FL = [x0, y0], FRp = [x0 + bw, y0], BR = [x0 + bw + d, y0 - d], BL = [x0 + d, y0 - d];
+  var C = [x0 + bw / 2 + d / 2, y0 - d / 2], A = [C[0], C[1] - hh];
+  var out = solPoly([A, FRp, BR], "#ffffff") + solPoly([A, FL, FRp], FIG_SHADE);
+  out += solLine(FL, BL, true, 1.4) + solLine(BL, BR, true, 1.4) + solLine(A, BL, true, 1.4);
+  out += solLine(A, C, true, 1.6);
+  out += solT(x0 + bw / 2, y0 + 15, labBase, 12, false);
+  out += solT(C[0] - 14, C[1] - hh / 2, labH, 12, false);
+  out += solT((A[0] + FRp[0]) / 2 + 16, (A[1] + FRp[1]) / 2, labSlant, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Step built from two boxes: bottom box X by W by H1, top box X2 by W by H2
+   flush with the back and the left side. Profile extruded along W. */
+function solStep(X, W, H1, X2, H2, labX, labW, labH1, labX2, labH2, aria) {
+  var s = Math.min(175 / Math.max(X, 0.01), 115 / Math.max(H1 + H2, 0.01));
+  var fw = X * s, fh1 = H1 * s, fh2 = H2 * s, sw = X2 * s, d = Math.min(W * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 192;
+  var P = [[x0, y0], [x0 + fw, y0], [x0 + fw, y0 - fh1], [x0 + sw, y0 - fh1], [x0 + sw, y0 - fh1 - fh2], [x0, y0 - fh1 - fh2]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[4], Q[4]) + solLine(P[5], Q[5]) + solLine(P[3], Q[3]) + solLine(P[2], Q[2]) + solLine(P[1], Q[1]);
+  out += solT(x0 + fw / 2, y0 + 15, labX, 12, false);
+  out += solT(x0 + sw / 2, y0 - fh1 - fh2 - 12, labX2, 12, false);
+  out += solT(x0 - 13, y0 - fh1 - fh2 / 2, labH2, 12, false);
+  out += solT(x0 + fw + 13, y0 - fh1 / 2, labH1, 12, false);
+  out += solT((P[4][0] + Q[4][0]) / 2 + 6, (P[4][1] + Q[4][1]) / 2 - 12, labW, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Cylinder standing on the top face of a rectangular prism. */
+function solCylOnPrism(r, hc, l, w, h, labR, labHc, labL, labW, labH, aria) {
+  var s = Math.min(165 / Math.max(l, 0.01), 62 / Math.max(h, 0.01));
+  var fw = l * s, fh = h * s, d = Math.min(w * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 205;
+  var F = [[x0, y0 - fh], [x0 + fw, y0 - fh], [x0 + fw, y0], [x0, y0]];
+  var B = F.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(B, "#ffffff") + solPoly(F, FIG_SHADE);
+  out += solLine(F[0], B[0]) + solLine(F[1], B[1]) + solLine(F[2], B[2]);
+  var cx = x0 + (fw + d) / 2, topY = y0 - fh - d / 2;
+  var cs = Math.min(s, 92 / Math.max(hc, 0.01));
+  var rx = Math.min(r * cs, fw * 0.42), hh = hc * cs, ry = Math.max(rx * 0.3, 3.5), cTop = topY - hh;
+  out += '<path d="M ' + fmt(cx - rx, 1) + ' ' + fmt(topY, 1) + ' A ' + fmt(rx, 1) + ' ' + fmt(ry, 1) + ' 0 0 0 ' + fmt(cx + rx, 1) + ' ' + fmt(topY, 1) + '" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx - rx, cTop], [cx - rx, topY]) + solLine([cx + rx, cTop], [cx + rx, topY]);
+  out += '<ellipse cx="' + fmt(cx, 1) + '" cy="' + fmt(cTop, 1) + '" rx="' + fmt(rx, 1) + '" ry="' + fmt(ry, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx, cTop], [cx + rx, cTop], false, 1.6);
+  out += solT(cx + rx / 2, cTop - ry - 10, labR, 12, false);
+  out += solT(cx + rx + 16, cTop + hh / 2, labHc, 12, false);
+  out += solT(x0 + fw / 2, y0 + 15, labL, 12, false);
+  out += solT(x0 - 13, y0 - fh / 2, labH, 12, false);
+  out += solT((F[1][0] + B[1][0]) / 2 + 13, (F[1][1] + B[1][1]) / 2 - 4, labW, 12, false);
+  return solSvg(340, 235, out, aria);
+}
+/* Box with a right triangular prism on top, seen as an extruded profile:
+   the box profile is W wide and H high, the triangle has base a on the top
+   of the box, vertical leg b and hypotenuse c, and both solids share the
+   extrusion length L. Pass labW empty when W and a are the same edge. */
+function solBoxTri(a, b, c, L, W, H, labA, labB, labC, labL, labW, labH, aria) {
+  var s = Math.min(150 / Math.max(W, a, 0.01), 52 / Math.max(H, 0.01), 58 / Math.max(b, 0.01));
+  var bw = W * s, bh = H * s, ta = a * s, tb = b * s, d = Math.min(L * s * 0.55, 44);
+  var x0 = (340 - bw - d) / 2, y0 = 192;
+  var P = [[x0, y0], [x0 + bw, y0], [x0 + bw, y0 - bh], [x0 + ta, y0 - bh], [x0, y0 - bh - tb]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[2], Q[2]) + solLine(P[3], Q[3]) + solLine(P[4], Q[4]) + solLine(P[0], Q[0]);
+  out += solLine(P[3], P[4]);
+  if (labW) out += solT(x0 + bw / 2, y0 + 15, labW, 12, false);
+  if (labA) out += solT(x0 + ta / 2, y0 - bh - 10, labA, 12, false);
+  out += solT(x0 - 13, y0 - bh - tb / 2, labB, 12, false);
+  out += solT((P[3][0] + P[4][0]) / 2 + 14, (P[3][1] + P[4][1]) / 2 - 4, labC, 12, false);
+  out += solT(x0 + bw + 13, y0 - bh / 2, labH, 12, false);
+  out += solT((P[4][0] + Q[4][0]) / 2 + 4, (P[4][1] + Q[4][1]) / 2 - 12, labL, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Cylinder standing on the top rectangular face (a by L) of a right
+   triangular prism whose triangle has legs a (top) and b and hypotenuse c. */
+function solCylOnTri(a, b, c, L, r, hc, labA, labB, labC, labL, labR, labHc, aria) {
+  var s = Math.min(150 / Math.max(a, 0.01), 62 / Math.max(b, 0.01));
+  var ta = a * s, tb = b * s, d = Math.min(L * s * 0.55, 44);
+  var x0 = (340 - ta - d) / 2, yTop = 118;
+  var P = [[x0, yTop], [x0 + ta, yTop], [x0, yTop + tb]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[0], Q[0]) + solLine(P[1], Q[1]) + solLine(P[2], Q[2]);
+  var cx = x0 + ta / 2 + d / 2, baseY = yTop - d / 2;
+  var cs = Math.min(s, 62 / Math.max(hc, 0.01));
+  var rx = Math.min(r * cs, ta * 0.4), hh = hc * cs, ry = Math.max(rx * 0.3, 3.5), cTop = baseY - hh;
+  out += solLine([cx - rx, cTop], [cx - rx, baseY]) + solLine([cx + rx, cTop], [cx + rx, baseY]);
+  out += '<ellipse cx="' + fmt(cx, 1) + '" cy="' + fmt(cTop, 1) + '" rx="' + fmt(rx, 1) + '" ry="' + fmt(ry, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx, cTop], [cx + rx, cTop], false, 1.6);
+  out += solT(cx + rx / 2, cTop - ry - 10, labR, 12, false);
+  out += solT(cx + rx + 16, cTop + hh / 2, labHc, 12, false);
+  out += solT(x0 + ta / 2, yTop + tb + 16, labA, 12, false);
+  out += solT(x0 - 13, yTop + tb / 2, labB, 12, false);
+  out += solT((P[1][0] + P[2][0]) / 2 + 15, (P[1][1] + P[2][1]) / 2, labC, 12, false);
+  out += solT((P[0][0] + Q[0][0]) / 2 + 4, (P[0][1] + Q[0][1]) / 2 - 12, labL, 12, false);
+  return solSvg(340, 235, out, aria);
+}
+/* Plan view of a large box top (bl by bw) with the p by q overlap rectangle
+   shaded in one corner. */
+function solOverlapPlan(bl, bw, p, q, labP, labQ, labBL, labBW, aria) {
+  var s = Math.min(225 / Math.max(bl, 0.01), 135 / Math.max(bw, 0.01));
+  var W = bl * s, H = bw * s, x0 = (340 - W) / 2 - 8, y0 = (215 - H) / 2;
+  var out = solPoly([[x0, y0], [x0 + W, y0], [x0 + W, y0 + H], [x0, y0 + H]], "#ffffff");
+  out += solPoly([[x0, y0], [x0 + p * s, y0], [x0 + p * s, y0 + q * s], [x0, y0 + q * s]], FIG_SHADE);
+  out += solT(x0 + W / 2, y0 + H + 15, labBL, 12, false);
+  out += solT(x0 + W + 14, y0 + H / 2, labBW, 12, false);
+  out += solT(x0 + p * s / 2, y0 + q * s + 13, labP, 11, false);
+  out += solT(x0 + p * s + 13, y0 + q * s / 2, labQ, 11, false);
+  return solSvg(340, 215, out, aria);
+}
+/* One or more shadow triangles on a shared ground line. Each item:
+   {name, h (height value), s (shadow value), hLab, sLab}. */
+function solShadowFig(items, aria) {
+  var maxS = 0, maxH = 0, totS = 0;
+  items.forEach(function (it) { maxS = Math.max(maxS, it.s); maxH = Math.max(maxH, it.h); totS += it.s; });
+  var sc = Math.min(290 / Math.max(totS, 0.01), 118 / Math.max(maxH, 0.01));
+  var y0 = 188, x = (340 - totS * sc) / 2, out = "";
+  out += solLine([18, y0], [322, y0], false, 2);
+  items.forEach(function (it) {
+    var w = it.s * sc, hh = it.h * sc;
+    out += solPoly([[x, y0], [x + w, y0], [x, y0 - hh]], FIG_SHADE);
+    if (it.name) out += solT(x + 4, y0 - hh - 11, it.name, 11, true);
+    out += solT(x - 12, y0 - hh / 2, it.hLab, 11, false);
+    out += solT(x + w / 2, y0 + 14, it.sLab, 11, false);
+    x += w + 8;
+  });
+  return solSvg(340, 215, out, aria);
+}
+/* Horizontal length bars, one per row: {name, len, lab}. Bars share one
+   scale so their lengths compare honestly. */
+function solBarsFig(rows, aria) {
+  var maxL = 0;
+  rows.forEach(function (r) { maxL = Math.max(maxL, r.len); });
+  var sc = 195 / Math.max(maxL, 0.01), out = "", y = 34;
+  rows.forEach(function (r) {
+    if (r.name) out += '<text x="86" y="' + fmt(y + 8, 1) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="end" dominant-baseline="central" font-weight="bold">' + r.name + '</text>';
+    out += '<rect x="92" y="' + fmt(y, 1) + '" width="' + fmt(Math.max(r.len * sc, 2), 1) + '" height="15" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+    out += solT(92 + r.len * sc + 16, y + 8, r.lab, 12, false);
+    y += 42;
+  });
+  return solSvg(340, Math.max(y + 6, 80), out, aria);
+}
+/* Two rectangles side by side with width and height labels and captions:
+   {w1,h1,wLab1,hLab1,cap1, w2,h2,wLab2,hLab2,cap2}. */
+function solRectPair(o) {
+  var mx = Math.max(o.w1, o.w2), mh = Math.max(o.h1, o.h2);
+  var sc = Math.min(125 / Math.max(mx, 0.01), 105 / Math.max(mh, 0.01));
+  function rect(x0, yBase, w, h, wLab, hLab, cap) {
+    var fw = w * sc, fh = h * sc, out = "";
+    out += solPoly([[x0, yBase - fh], [x0 + fw, yBase - fh], [x0 + fw, yBase], [x0, yBase]], FIG_SHADE);
+    out += solT(x0 + fw / 2, yBase - fh - 12, wLab, 12, false);
+    out += solT(x0 + fw + 14, yBase - fh / 2, hLab, 12, false);
+    if (cap) out += solT(x0 + fw / 2, yBase + 16, cap, 12, true);
+    return out;
+  }
+  var out = rect(28, 168, o.w1, o.h1, o.wLab1, o.hLab1, o.cap1);
+  out += rect(185, 168, o.w2, o.h2, o.wLab2, o.hLab2, o.cap2);
+  return solSvg(340, 205, out, o.aria);
+}
+/* A quadrilateral built from four side lengths in order, fitted into the
+   box (bx, by, bw, bh) in screen coordinates. Returns null when no
+   quadrilateral with those sides exists. */
+function solQuadPts(sides, bx, by, bw, bh) {
+  var s0 = sides[0], s1 = sides[1], s2 = sides[2], s3 = sides[3];
+  var lo = Math.max(Math.abs(s0 - s1), Math.abs(s2 - s3)) + 0.25, hi = Math.min(s0 + s1, s2 + s3) - 0.25;
+  if (lo >= hi) return null;
+  var d = (lo + hi) / 2;
+  var cx = (s0 * s0 + d * d - s1 * s1) / (2 * s0);
+  var cy = Math.sqrt(Math.max(d * d - cx * cx, 0.0001));
+  var A = [0, 0], B = [s0, 0], C = [cx, cy];
+  var ux = cx / d, uy = cy / d;
+  var px = (s3 * s3 - s2 * s2 + d * d) / (2 * d), py = Math.sqrt(Math.max(s3 * s3 - px * px, 0.0001));
+  var D = [px * ux - py * uy, px * uy + py * ux];
+  var crossB = cx * B[1] - cy * B[0], crossD = cx * D[1] - cy * D[0];
+  if (crossB * crossD > 0) D = [px * ux + py * uy, px * uy - py * ux];
+  var pts = [A, B, C, D];
+  var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+  var w = Math.max.apply(null, xs) - Math.min.apply(null, xs), h = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+  var sc = Math.min(bw / Math.max(w, 0.01), bh / Math.max(h, 0.01));
+  var ccx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2, ccy = (Math.max.apply(null, ys) + Math.min.apply(null, ys)) / 2;
+  return pts.map(function (p) { return [bx + bw / 2 + (p[0] - ccx) * sc, by + bh / 2 - (p[1] - ccy) * sc]; });
+}
+function solSideLabels(P, labs) {
+  var G = [0, 0];
+  P.forEach(function (p) { G[0] += p[0] / P.length; G[1] += p[1] / P.length; });
+  var out = "";
+  for (var i = 0; i < P.length; i++) {
+    var M = [(P[i][0] + P[(i + 1) % P.length][0]) / 2, (P[i][1] + P[(i + 1) % P.length][1]) / 2];
+    var dx = M[0] - G[0], dy = M[1] - G[1], dl = Math.sqrt(dx * dx + dy * dy) || 1;
+    if (labs[i]) out += solT(M[0] + dx / dl * 13, M[1] + dy / dl * 13, labs[i], 11, false);
+  }
+  return out;
+}
+
 /* ----- bank-u1.js ----- */
 // Math 9 (French) Unit 1 Rational Numbers question bank
 // Cut verbatim from the standalone bank source
@@ -595,23 +855,29 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
   if(mode==="rect"){
     var l=ri(2,12), w=ri(2,12), h=ri(2,12);
     var sa=2*(l*w+l*h+w*h);
-    return numq("Trouve l'aire de la surface d'un prisme droit à base rectangulaire de longueur "+l+" cm, de largeur "+w+" cm et de hauteur "+h+" cm. Donne ta réponse en centimètres carrés.", sa, 0.01,
+    var q = numq("Trouve l'aire de la surface d'un prisme droit à base rectangulaire de longueur "+l+" cm, de largeur "+w+" cm et de hauteur "+h+" cm. Donne ta réponse en centimètres carrés.", sa, 0.01,
       "Additionne les aires des trois faces différentes, puis double : \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= 2("+fmtD(l*w+l*h+w*h)+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"rect-prism", l:l, w:w, h:h});
+    q.figure = solRectPrism(l, w, h, fmtD(l) + " cm", fmtD(w) + " cm", fmtD(h) + " cm", "Prisme rectangulaire avec des dimensions étiquetées");
+    return q;
   }
   if(mode==="tri"){
     var tr=pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20]]);
     var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,18);
     var sa2=a*b+(a+b+c)*L;
-    return numq("Trouve l'aire de la surface d'un prisme droit à base triangulaire. L'extrémité triangulaire est un triangle rectangle avec des cathètes de "+a+" cm et "+b+" cm et une hypoténuse de "+c+" cm, et le prisme mesure "+L+" cm de long. Donne ta réponse en centimètres carrés.", sa2, 0.01,
+    var q = numq("Trouve l'aire de la surface d'un prisme droit à base triangulaire. L'extrémité triangulaire est un triangle rectangle avec des cathètes de "+a+" cm et "+b+" cm et une hypoténuse de "+c+" cm, et le prisme mesure "+L+" cm de long. Donne ta réponse en centimètres carrés.", sa2, 0.01,
       "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+fmtD(sa2)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa2)+" cm\\(^{2}\\)</b>.",
       {mode:"tri-prism", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Prisme triangulaire avec des dimensions étiquetées");
+    return q;
   }
   var r=ri(2,10), hh=ri(3,15);
   var sac=u2r1(2*3.14*r*(r+hh));
-  return numq("Trouve l'aire de la surface d'un cylindre droit de rayon "+r+" cm et de hauteur "+hh+" cm. Utilise \\(\\pi = 3,14\\) et donne ta réponse en centimètres carrés, avec une décimale.", sac, 0.6,
+  var q = numq("Trouve l'aire de la surface d'un cylindre droit de rayon "+r+" cm et de hauteur "+hh+" cm. Utilise \\(\\pi = 3,14\\) et donne ta réponse en centimètres carrés, avec une décimale.", sac, 0.6,
     "Deux cercles plus la face courbe, avec \\(\\pi = 3,14\\) : \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3,14)("+r+")("+r+"+"+hh+") \\\\ &= "+fmtD(sac)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sac)+" cm\\(^{2}\\)</b>.",
     {mode:"cylinder", r:r, h:hh});
+    q.figure = solCylinder(r, hh, fmtD(r) + " cm", fmtD(hh) + " cm", "Cylindre avec des dimensions étiquetées");
+    return q;
 }, ["Imagine le développement du solide : chaque face extérieure doit être comptée une fois.", "Calcule l'aire d'une face à la fois, puis additionne les faces qui correspondent."]);
 
 E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
@@ -620,35 +886,45 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   var mode=pick(["ramp","tent","bar"]);
   if(mode==="tent"){
     var sat=a*b+(a+c)*L;
-    return numq("Une tente adossée a la forme d'un prisme droit à base triangulaire. Chaque extrémité triangulaire a un côté vertical de "+a+" cm, une base de "+b+" cm et un côté incliné de "+c+" cm, et la tente mesure "+L+" cm de long. La face rectangulaire au sol, "+b+" cm sur "+L+" cm, n'a pas de matériau. Trouve l'aire de matériau nécessaire, en centimètres carrés.", sat, 0.01,
+    var q = numq("Une tente adossée a la forme d'un prisme droit à base triangulaire. Chaque extrémité triangulaire a un côté vertical de "+a+" cm, une base de "+b+" cm et un côté incliné de "+c+" cm, et la tente mesure "+L+" cm de long. La face rectangulaire au sol, "+b+" cm sur "+L+" cm, n'a pas de matériau. Trouve l'aire de matériau nécessaire, en centimètres carrés.", sat, 0.01,
       "Compte deux extrémités triangulaires et les deux rectangles couverts, sans la face au sol : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+c)*L)+" \\\\ &= "+fmtD(sat)+" \\end{aligned} \\] L'aire de matériau nécessaire est <b>"+fmtD(sat)+" cm\\(^{2}\\)</b>.",
       {mode:"tent-no-floor", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Tente en prisme triangulaire avec des dimensions étiquetées");
+    return q;
   }
   var sa=a*b+(a+b+c)*L;
   if(mode==="ramp"){
-    return numq("Une rampe d'exposition a la forme d'un prisme droit à base triangulaire et est couverte sur toutes ses faces. Chaque extrémité triangulaire a des côtés de "+a+" cm, "+b+" cm et "+c+" cm, qui forment un triangle rectangle, et la rampe mesure "+L+" cm de long. Trouve l'aire de la surface de la rampe, en centimètres carrés.", sa, 0.01,
+    var q = numq("Une rampe d'exposition a la forme d'un prisme droit à base triangulaire et est couverte sur toutes ses faces. Chaque extrémité triangulaire a des côtés de "+a+" cm, "+b+" cm et "+c+" cm, qui forment un triangle rectangle, et la rampe mesure "+L+" cm de long. Trouve l'aire de la surface de la rampe, en centimètres carrés.", sa, 0.01,
       "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"ramp", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Rampe en prisme triangulaire avec des dimensions étiquetées");
+    return q;
   }
-  return numq("Une boîte de barre de chocolat a la forme d'un prisme droit à base triangulaire, fermée sur toutes ses faces. Chaque extrémité triangulaire a des côtés de "+a+" cm, "+b+" cm et "+c+" cm, qui forment un triangle rectangle, et la boîte mesure "+L+" cm de long. Trouve l'aire de la surface de la boîte, en centimètres carrés.", sa, 0.01,
+  var q = numq("Une boîte de barre de chocolat a la forme d'un prisme droit à base triangulaire, fermée sur toutes ses faces. Chaque extrémité triangulaire a des côtés de "+a+" cm, "+b+" cm et "+c+" cm, qui forment un triangle rectangle, et la boîte mesure "+L+" cm de long. Trouve l'aire de la surface de la boîte, en centimètres carrés.", sa, 0.01,
     "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"bar-box", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Boîte en prisme triangulaire avec des dimensions étiquetées");
+    return q;
 }, ["Dessine le prisme et étiquette chaque face avant de calculer.", "Trouve d'abord les deux extrémités triangulaires, puis additionne les rectangles le long de la longueur."]);
 
 E("u2-overlap", 2, ["9.1"], 1, "gen", function(){
   var p=ri(2,11), q=ri(2,10);
   var bl=ri(p+2,p+8), bw=ri(q+2,q+8);
-  return numq("Une petite boîte est posée sur une plus grande boîte qui mesure "+bl+" cm de long et "+bw+" cm de large. Les deux boîtes se touchent sur un rectangle de "+p+" cm sur "+q+" cm. Quelle est l'aire du chevauchement, en centimètres carrés ?", p*q, 0.01,
+  var qq = numq("Une petite boîte est posée sur une plus grande boîte qui mesure "+bl+" cm de long et "+bw+" cm de large. Les deux boîtes se touchent sur un rectangle de "+p+" cm sur "+q+" cm. Quelle est l'aire du chevauchement, en centimètres carrés ?", p*q, 0.01,
     "Le chevauchement est le rectangle où les boîtes se touchent : \\[ \\begin{aligned} A &= "+p+" \\times "+q+" \\\\ &= "+(p*q)+" \\end{aligned} \\] L'aire du chevauchement est <b>"+(p*q)+" cm\\(^{2}\\)</b>.",
     {mode:"overlap", p:p, q:q});
+    qq.figure = solOverlapPlan(bl, bw, p, q, fmtD(p) + " cm", fmtD(q) + " cm", fmtD(bl) + " cm", fmtD(bw) + " cm", "Vue en plan de deux boîtes avec le recouvrement ombré");
+    return qq;
 }, ["Le chevauchement est le rectangle où les deux solides se touchent.", "Trouve d'abord l'aire du rectangle de contact, puis pense au nombre de faces qu'il cache."]);
 
 E("u2-overlap-hidden", 2, ["9.1"], 2, "gen", function(){
   var p=ri(2,11), q=ri(2,10);
   var bl=ri(p+2,p+8), bw=ri(q+2,q+8);
-  return numq("Une petite boîte est posée sur une plus grande boîte qui mesure "+bl+" cm de long et "+bw+" cm de large. Les deux boîtes se touchent sur un rectangle de "+p+" cm sur "+q+" cm. Quelle aire de la surface est cachée là où les deux boîtes se touchent, en centimètres carrés ?", 2*p*q, 0.01,
+  var qq = numq("Une petite boîte est posée sur une plus grande boîte qui mesure "+bl+" cm de long et "+bw+" cm de large. Les deux boîtes se touchent sur un rectangle de "+p+" cm sur "+q+" cm. Quelle aire de la surface est cachée là où les deux boîtes se touchent, en centimètres carrés ?", 2*p*q, 0.01,
     "Le rectangle de contact cache une face sur chaque boîte, donc il est caché deux fois : \\[ \\begin{aligned} \\text{cachée} &= 2\\times("+p+" \\times "+q+") \\\\ &= 2\\times "+(p*q)+" \\\\ &= "+(2*p*q)+" \\end{aligned} \\] L'aire de la surface cachée est <b>"+(2*p*q)+" cm\\(^{2}\\)</b>.",
     {mode:"hidden-total", p:p, q:q});
+    qq.figure = solOverlapPlan(bl, bw, p, q, fmtD(p) + " cm", fmtD(q) + " cm", fmtD(bl) + " cm", fmtD(bw) + " cm", "Vue en plan de deux boîtes avec le recouvrement ombré");
+    return qq;
 }, ["Le chevauchement est le rectangle où les deux solides se touchent.", "Trouve d'abord l'aire du rectangle de contact, puis pense au nombre de faces qu'il cache."]);
 
 E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
@@ -656,9 +932,11 @@ E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
   if(X2>=X){X2=X-3;}
   var sa1=2*(X*W+X*H1+W*H1), sa2=2*(X2*W+X2*H2+W*H2), contact=X2*W;
   var tot=sa1+sa2-2*contact;
-  return numq("Une marche est faite de deux boîtes jointes. La boîte du bas mesure "+X+" cm de long, "+W+" cm de large et "+H1+" cm de haut. La boîte du haut mesure "+X2+" cm de long, "+W+" cm de large et "+H2+" cm de haut, et elle est posée sur la boîte du bas, alignée avec le dos et le côté gauche. Trouve l'aire de la surface de la marche, en centimètres carrés.", tot, 0.01,
+  var q = numq("Une marche est faite de deux boîtes jointes. La boîte du bas mesure "+X+" cm de long, "+W+" cm de large et "+H1+" cm de haut. La boîte du haut mesure "+X2+" cm de long, "+W+" cm de large et "+H2+" cm de haut, et elle est posée sur la boîte du bas, alignée avec le dos et le côté gauche. Trouve l'aire de la surface de la marche, en centimètres carrés.", tot, 0.01,
     "Trouve chaque boîte séparément, puis soustrais la face de contact deux fois car elle est cachée sur les deux boîtes : \\[ \\begin{aligned} SA &= 2("+fmtD(X*W)+"+"+fmtD(X*H1)+"+"+fmtD(W*H1)+") + 2("+fmtD(X2*W)+"+"+fmtD(X2*H2)+"+"+fmtD(W*H2)+") - 2("+contact+") \\\\ &= "+sa1+" + "+sa2+" - "+(2*contact)+" \\\\ &= "+tot+" \\end{aligned} \\] L'aire de la surface est <b>"+tot+" cm\\(^{2}\\)</b>.",
     {mode:"step", X:X, W:W, H1:H1, X2:X2, H2:H2});
+    q.figure = solStep(X, W, H1, X2, H2, fmtD(X) + " cm", fmtD(W) + " cm", fmtD(H1) + " cm", fmtD(X2) + " cm", fmtD(H2) + " cm", "Marche formée de deux boîtes avec des dimensions étiquetées");
+    return q;
 }, ["Traite la marche comme deux boîtes séparées d'abord, puis ajuste pour le joint.", "Additionne les deux aires totales, puis soustrais la face de contact deux fois car elle est cachée sur les deux boîtes."]);
 
 E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
@@ -667,17 +945,21 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
     var sa=2*(l*w+l*h+w*h);
     var cover=pick([8,10,12,15,20]);
     var cans=Math.ceil(sa/cover-0.0000001);
-    return numq("Un réservoir en forme de prisme droit à base rectangulaire mesure "+fmtD(l)+" m de long, "+fmtD(w)+" m de large et "+fmtD(h)+" m de haut. On le peint à l'extérieur, sur toutes ses faces. Un pot de peinture couvre "+cover+" mètres carrés. Combien de pots de peinture faut-il ?", cans, 0.01,
+    var q = numq("Un réservoir en forme de prisme droit à base rectangulaire mesure "+fmtD(l)+" m de long, "+fmtD(w)+" m de large et "+fmtD(h)+" m de haut. On le peint à l'extérieur, sur toutes ses faces. Un pot de peinture couvre "+cover+" mètres carrés. Combien de pots de peinture faut-il ?", cans, 0.01,
       "Trouve d'abord l'aire de la surface, puis divise par la couverture et arrondis vers le haut : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] Alors \\("+fmtD(sa)+" \\div "+cover+" \\approx "+fmtD(u2r2(sa/cover))+"\\), donc un pot partiel ne suffit pas. Le nombre de pots nécessaire est <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
+    q.figure = solRectPrism(l, w, h, fmtD(l) + " m", fmtD(w) + " m", fmtD(h) + " m", "Réservoir en prisme rectangulaire avec des dimensions étiquetées");
+    return q;
   }
   var l2=ri(8,30)/10, w2=ri(6,24)/10, h2=ri(4,18)/10;
   var sa2=2*(l2*w2+l2*h2+w2*h2);
   var price=pick([4,5,6,8,9]);
   var cost=u2r2(sa2*price);
-  return numq("Une boîte-cadeau en forme de prisme droit à base rectangulaire mesure "+fmtD(l2)+" m de long, "+fmtD(w2)+" m de large et "+fmtD(h2)+" m de haut. Elle est couverte sur toutes ses faces d'un tissu qui coûte "+price+" $ par mètre carré. Quel est le coût total du tissu, en dollars, au cent près ?", cost, 0.05,
+  var q = numq("Une boîte-cadeau en forme de prisme droit à base rectangulaire mesure "+fmtD(l2)+" m de long, "+fmtD(w2)+" m de large et "+fmtD(h2)+" m de haut. Elle est couverte sur toutes ses faces d'un tissu qui coûte "+price+" $ par mètre carré. Quel est le coût total du tissu, en dollars, au cent près ?", cost, 0.05,
     "Trouve d'abord l'aire de la surface, puis multiplie par le prix par mètre carré : \\[ \\begin{aligned} SA &= 2("+fmtD(u2r2(l2*w2))+"+"+fmtD(u2r2(l2*h2))+"+"+fmtD(u2r2(w2*h2))+") \\\\ &= "+fmtD(u2r2(sa2))+" \\end{aligned} \\] Alors \\("+fmtD(u2r2(sa2))+" \\times "+price+" = "+fmtDF(cost, 2)+"\\). Le coût total est <b>"+fmtDF(cost, 2)+" $</b>.",
     {mode:"fabric-cost", l:l2, w:w2, h:h2, price:price});
+    q.figure = solRectPrism(l2, w2, h2, fmtD(l2) + " m", fmtD(w2) + " m", fmtD(h2) + " m", "Boîte en prisme rectangulaire avec des dimensions étiquetées");
+    return q;
 }, ["Calcule l'aire de la surface avant d'utiliser la couverture ou le prix.", "Divise l'aire de la surface par la couverture par pot, ou multiplie-la par le prix par mètre carré."]);
 
 E("u2-why-approx", 2, ["6.7"], 1, "var", varset([
@@ -716,9 +998,11 @@ E("u2-sa-cyl-on-prism", 2, ["9.3"], 3, "gen", function(){
   var side=u2r1(2*3.14*r*hc), top=u2r2(3.14*r*r);
   var tot=u2r1(prism+side);
   var ctx=pick(["Un réservoir d'eau cylindrique est posé sur une base rectangulaire en béton","Une grosse bougie ronde est posée sur un support rectangulaire en bois"]);
-  return numq(ctx+". Le cylindre a un rayon de "+r+" cm et une hauteur de "+hc+" cm, et sa base repose entièrement sur la face du haut du prisme. Le prisme mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut. Trouve l'aire de la surface exposée, en centimètres carrés. Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", tot, 0.6,
+  var q = numq(ctx+". Le cylindre a un rayon de "+r+" cm et une hauteur de "+hc+" cm, et sa base repose entièrement sur la face du haut du prisme. Le prisme mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut. Trouve l'aire de la surface exposée, en centimètres carrés. Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", tot, 0.6,
     "Le cercle où le cylindre rencontre le prisme est caché, et le bas du cylindre n'est pas exposé, donc ces deux cercles égaux s'annulent dans le total : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") + 2(3,14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmtD(side)+" \\\\ &= "+fmtD(tot)+" \\end{aligned} \\] L'aire de la surface exposée est <b>"+fmtD(tot)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-prism", r:r, hc:hc, l:l, w:w, h:h});
+    q.figure = solCylOnPrism(r, hc, l, w, h, fmtD(r) + " cm", fmtD(hc) + " cm", fmtD(l) + " cm", fmtD(w) + " cm", fmtD(h) + " cm", "Cylindre sur un prisme rectangulaire avec des dimensions étiquetées");
+    return q;
 }, ["Divise le solide en prisme et en cylindre, puis pense au joint.", "Trouve l'aire de la surface du prisme, puis additionne seulement les parties exposées du cylindre."]);
 
 E("u2-best-estimate-side", 2, ["6.5","6.8"], 3, "gen", function(){
@@ -2012,9 +2296,11 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
     var triSA=a*b+(a+b+c)*l;
     var contact=a*l;
     var tot=boxSA+triSA-2*contact;
-    return numq("Un modèle est bâti en joignant deux solides face à face. Le solide du bas est un prisme rectangulaire droit de "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut. Au-dessus se trouve un prisme triangulaire droit, un prisme avec des bouts en triangle rectangle et des côtés rectangulaires. Ses bouts triangulaires ont des cathètes de "+a+" cm et "+b+" cm et une hypoténuse de "+c+" cm ; le prisme mesure "+l+" cm de long, et sa face du bas, "+a+" cm sur "+l+" cm, couvre exactement la face du haut du prisme du bas. La face où les deux solides se joignent est cachée dans le modèle. Trouve l'aire de la surface du modèle, en centimètres carrés.", tot, 0.01,
+    var q = numq("Un modèle est bâti en joignant deux solides face à face. Le solide du bas est un prisme rectangulaire droit de "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut. Au-dessus se trouve un prisme triangulaire droit, un prisme avec des bouts en triangle rectangle et des côtés rectangulaires. Ses bouts triangulaires ont des cathètes de "+a+" cm et "+b+" cm et une hypoténuse de "+c+" cm ; le prisme mesure "+l+" cm de long, et sa face du bas, "+a+" cm sur "+l+" cm, couvre exactement la face du haut du prisme du bas. La face où les deux solides se joignent est cachée dans le modèle. Trouve l'aire de la surface du modèle, en centimètres carrés.", tot, 0.01,
       "Le chevauchement est le rectangle de "+a+" cm sur "+l+" cm où les deux prismes se joignent. C'est une face de chaque solide, donc elle est cachée deux fois et elle s'enlève des deux aires totales : \\[ \\begin{aligned} \\text{chevauchement} &= "+a+" \\times "+l+" = "+contact+" \\\\ AS &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] L'aire de la surface est <b>"+tot+" cm\\(^{2}\\)</b>.",
       {mode:"tri-on-rect", a:a, b:b, c:c, l:l, h:h});
+    q.figure = solBoxTri(a, b, c, l, a, h, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(l) + " cm", "", fmtD(h) + " cm", "Prisme triangulaire sur une boîte avec des dimensions étiquetées");
+    return q;
   }
   var tr2=pick([[6,8,10],[9,12,15],[12,16,20],[8,15,17]]);
   var a2=tr2[0], b2=tr2[1], c2=tr2[2];
@@ -2025,9 +2311,11 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
   var cylSA=u2r2(2*3.14*r*r+2*3.14*r*hc);
   var circ=u2r2(3.14*r*r);
   var tot2=u2r1(triSA2+cylSA-2*circ);
-  return numq("Un cylindre droit se trouve sur un prisme triangulaire droit, un prisme avec des bouts en triangle rectangle et des côtés rectangulaires. Les bouts triangulaires ont des cathètes de "+a2+" cm et "+b2+" cm et une hypoténuse de "+c2+" cm, et le prisme mesure "+L+" cm de long. Le cylindre a un rayon de "+r+" cm et une hauteur de "+hc+" cm, et il se trouve sur la face rectangulaire du prisme qui mesure "+a2+" cm sur "+L+" cm, avec toute sa base sur cette face. La partie où les deux solides se touchent est cachée dans l'objet fini. Trouve l'aire de la surface, en centimètres carrés. Utilise \\(\\pi = 3,14\\) et donne ta réponse à une décimale.", tot2, 0.6,
+  var q = numq("Un cylindre droit se trouve sur un prisme triangulaire droit, un prisme avec des bouts en triangle rectangle et des côtés rectangulaires. Les bouts triangulaires ont des cathètes de "+a2+" cm et "+b2+" cm et une hypoténuse de "+c2+" cm, et le prisme mesure "+L+" cm de long. Le cylindre a un rayon de "+r+" cm et une hauteur de "+hc+" cm, et il se trouve sur la face rectangulaire du prisme qui mesure "+a2+" cm sur "+L+" cm, avec toute sa base sur cette face. La partie où les deux solides se touchent est cachée dans l'objet fini. Trouve l'aire de la surface, en centimètres carrés. Utilise \\(\\pi = 3,14\\) et donne ta réponse à une décimale.", tot2, 0.6,
     "Le chevauchement est le cercle où le cylindre rencontre le prisme. Il est caché sur la face du prisme et c'est la base du cylindre, donc son aire s'enlève deux fois : \\[ \\begin{aligned} \\text{chevauchement} &= 3,14 \\times "+r+"^{2} = "+fmtD(circ)+" \\\\ AS &= "+triSA2+" + "+fmtD(cylSA)+" - 2("+fmtD(circ)+") \\\\ &= "+fmtD(tot2)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(tot2)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-tri", a:a2, b:b2, c:c2, L:L, r:r, hc:hc});
+    q.figure = solCylOnTri(a2, b2, c2, L, r, hc, fmtD(a2) + " cm", fmtD(b2) + " cm", fmtD(c2) + " cm", fmtD(L) + " cm", fmtD(r) + " cm", fmtD(hc) + " cm", "Cylindre sur un prisme triangulaire avec des dimensions étiquetées");
+    return q;
 }, ["Additionne d'abord les aires totales des deux solides séparés, puis occupe-toi du joint.", "Trouve l'aire de la face où les solides se touchent, et soustrais-la deux fois parce qu'elle est cachée sur les deux solides."]);
 
 /* TRANSLATOR NOTES
@@ -4207,7 +4495,9 @@ E("u7-scale-factor-num", 7, ["10.17"], 1, "gen", function () {
   if (Math.random() < 0.5) { oLen = orig; iLen = img; } else { oLen = orig; iLen = img; }
   prompt = c[0] + fmtD(iLen) + c[1] + fmtD(oLen) + c[2] + " La première longueur est celle de l'image et la deuxième est celle d'origine. Quel est le facteur d'échelle du diagramme ? Donne le facteur d'échelle sous forme de nombre décimal ou de nombre entier.";
   var sol = "Le facteur d'échelle est la longueur de l'image divisée par la longueur d'origine : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(iLen) + " \\div " + fmtD(oLen) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc le facteur d'échelle est <b>" + fmtD(ans) + "</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "scale-factor", orig: oLen, img: iLen });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "scale-factor", orig: oLen, img: iLen });
+    q.figure = solBarsFig([{ name: "Image", len: iLen, lab: fmtD(iLen) + " cm" }, { name: "Figure d'origine", len: oLen, lab: fmtD(oLen) + " cm" }], "Longueurs de l'image et de la figure d'origine en barres");
+    return q;
 }, ["Le facteur d'échelle est la longueur de l'image divisée par la longueur d'origine.", "Mets la longueur de l'image en premier, puis divise par la longueur d'origine."]);
 
 // 4. 10.18 L2 gen MC with figure: is the second rectangle proportional, and with what scale factor?
@@ -4394,8 +4684,19 @@ E("u7-similar-pair", 7, ["10.7"], 3, "gen", function () {
     var sb = base.slice().sort(function (x, y) { return x - y; }), si = simImg.slice().sort(function (x, y) { return x - y; });
     var chain = sb.map(function (s, i) { return fmtD(si[i]) + " \\div " + fmtD(s) + " &= " + fmtD(k); }).join(" \\\\ ");
     var sol = "Pour la paire semblable, trie les côtés de chaque liste, puis divise les côtés correspondants : \\[ \\begin{aligned} " + chain + " \\end{aligned} \\] Tous les rapports sont égaux, donc <b>la paire " + (gi + 1) + " est la paire semblable</b>. Dans chaque autre paire, un rapport ne suit pas les autres.";
-    return mcq("Trois paires de polygones sont données par les longueurs de leurs côtés. Une seule paire est semblable. Quelle paire est-ce ?",
+    var q = mcq("Trois paires de polygones sont données par les longueurs de leurs côtés. Une seule paire est semblable. Quelle paire est-ce ?",
       corr, rest, sol, { mode: "similar-pair", base: base.join(","), k: k, good: gi });
+    var figB = "";
+    pairs.forEach(function (pr, i) {
+      var by = 10 + i * 60;
+      figB += solT(16, by + 25, "Paire " + (i + 1), 11, true);
+      var P1 = pr.a.length === 3 ? u7FitTri(pr.a, 34, by, 105, 50) : solQuadPts(pr.a, 34, by, 105, 50);
+      var P2 = pr.b.length === 3 ? u7FitTri(pr.b, 196, by, 105, 50) : solQuadPts(pr.b, 196, by, 105, 50);
+      if (P1) { figB += u7Poly(P1, FIG_SHADE); figB += pr.a.length === 3 ? solSideLabels(P1, [fmtD(pr.a[2]), fmtD(pr.a[0]), fmtD(pr.a[1])]) : solSideLabels(P1, pr.a.map(function (v) { return fmtD(v); })); }
+      if (P2) { figB += u7Poly(P2, "#ffffff"); figB += pr.b.length === 3 ? solSideLabels(P2, [fmtD(pr.b[2]), fmtD(pr.b[0]), fmtD(pr.b[1])]) : solSideLabels(P2, pr.b.map(function (v) { return fmtD(v); })); }
+    });
+    q.figure = u7Svg(345, 195, figB, "Trois paires de polygones avec des étiquettes de côtés");
+    return q;
   }
   return mcq("Trois paires de polygones sont données par les longueurs de leurs côtés. Une seule paire est semblable. Quelle paire est-ce ?",
     { t: "Paire 1 : 3, 4, 5 cm et 6, 8, 10 cm", fb: "Exact. Tous les rapports valent 2." },
@@ -4420,7 +4721,17 @@ E("u7-draw-similar-num", 7, ["10.14"], 1, "gen", function () {
   var shapeWord = isTri ? "triangle" : "quadrilatère";
   var prompt = "Un " + shapeWord + " a des côtés de " + sides.map(function (s) { return fmtD(s); }).join(", ") + " cm. On trace un " + shapeWord + " semblable avec un facteur d'échelle de " + fmtD(k) + ". Quelle est la longueur, en centimètres, du côté du nouveau " + shapeWord + " qui correspond au côté de " + fmtD(side) + " cm ?";
   var sol = "Les côtés correspondants de polygones semblables suivent le facteur d'échelle : \\[ \\begin{aligned} \\text{nouveau côté} &= " + fmtD(side) + " \\times " + fmtD(k) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc le côté correspondant mesure <b>" + fmtD(ans) + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "draw-similar", sides: sides.join(","), k: k, side: side });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "draw-similar", sides: sides.join(","), k: k, side: side });
+  var figB2 = "";
+  if (isTri) {
+    var PT = u7FitTri(sides, 95, 22, 160, 125);
+    figB2 = u7Poly(PT, FIG_SHADE) + solSideLabels(PT, [fmtD(sides[2]) + " cm", fmtD(sides[0]) + " cm", fmtD(sides[1]) + " cm"]);
+  } else {
+    var PQ = solQuadPts(sides, 95, 22, 160, 125);
+    if (PQ) figB2 = u7Poly(PQ, FIG_SHADE) + solSideLabels(PQ, sides.map(function (v) { return fmtD(v) + " cm"; }));
+  }
+  if (figB2) q.figure = u7Svg(345, 170, figB2, "Polygone avec des côtés étiquetés");
+  return q;
 }, ["Un dessin semblable multiplie chaque côté par le même facteur d'échelle.", "Prends le côté nommé et multiplie-le par le facteur d'échelle."]);
 
 // 8. 10.15 L2 gen num, CR 3: similar figures in context.
@@ -4432,7 +4743,9 @@ E("u7-similar-context-num", 7, ["10.15"], 2, "gen", function () {
     var W = Math.round(w * k * 10) / 10, ans = Math.round(h * k * 100) / 100;
     var prompt = "Une photo mesure " + fmtD(w) + " cm de largeur et " + fmtD(h) + " cm de hauteur. On l'agrandit pour que l'épreuve mesure " + fmtD(W) + " cm de largeur, en gardant la même forme. Quelle est la hauteur de l'épreuve, en centimètres ?";
     var sol = "Le facteur d'échelle de l'agrandissement vient des largeurs : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(W) + " \\div " + fmtD(w) + " = " + fmtD(k) + " \\\\ \\text{hauteur de l'épreuve} &= " + fmtD(h) + " \\times " + fmtD(k) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc l'épreuve mesure <b>" + fmtD(ans) + " cm</b> de hauteur.";
-    return numq(prompt, ans, 0.01, sol, { mode: "photo-enlarge", w: w, h: h, k: k });
+    var q = numq(prompt, ans, 0.01, sol, { mode: "photo-enlarge", w: w, h: h, k: k });
+    q.figure = solRectPair({ w1: w, h1: h, wLab1: fmtD(w) + " cm", hLab1: fmtD(h) + " cm", cap1: "Photo", w2: W, h2: h * k, wLab2: fmtD(W) + " cm", hLab2: "?", cap2: "Épreuve", aria: "Une photo et son agrandissement avec des côtés étiquetés" });
+    return q;
   }
   if (mode === 1) {
     var real = pick([40, 50, 60, 80, 100]), mod = pick([8, 10, 12, 16, 20]);
@@ -4442,14 +4755,27 @@ E("u7-similar-context-num", 7, ["10.15"], 2, "gen", function () {
     if (Math.abs(ans2 - Math.round(ans2 * 10) / 10) > 0.001) { part = 20; ans2 = Math.round(part * k2 * 100) / 100; }
     var prompt2 = "Une remise réelle mesure " + fmtD(real) + " m de longueur, et un modèle réduit de cette remise mesure " + fmtD(mod) + " cm de longueur. Une porte de la remise réelle mesure " + fmtD(part) + " m de largeur, mesurée dans le même sens que les longueurs. Quelle est la largeur de la porte sur le modèle, en centimètres ?";
     var sol2 = "Le facteur d'échelle du modèle est la longueur du modèle divisée par la longueur réelle : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(mod) + " \\div " + fmtD(real) + " = " + fmtD(k2) + " \\\\ \\text{porte du modèle} &= " + fmtD(part) + " \\times " + fmtD(k2) + " \\\\ &= " + fmtD(ans2) + " \\end{aligned} \\] Donc la porte du modèle mesure <b>" + fmtD(ans2) + " cm</b> de largeur.";
-    return numq(prompt2, ans2, 0.01, sol2, { mode: "model-door", real: real, mod: mod, part: part });
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "model-door", real: real, mod: mod, part: part });
+    var figB = "";
+    figB += solPoly([[45, 36], [245, 36], [245, 78], [45, 78]], "#ffffff");
+    figB += solPoly([[45, 36], [45 + 200 * part / real, 36], [45 + 200 * part / real, 78], [45, 78]], FIG_SHADE);
+    figB += solT(145, 92, fmtD(real) + " m", 12, false);
+    figB += solT(45 + 100 * part / real, 26, fmtD(part) + " m", 11, false);
+    figB += solPoly([[85, 116], [205, 116], [205, 146], [85, 146]], "#ffffff");
+    figB += solPoly([[85, 116], [85 + 120 * part / real, 116], [85 + 120 * part / real, 146], [85, 146]], FIG_SHADE);
+    figB += solT(145, 160, fmtD(mod) + " cm", 12, false);
+    figB += solT(85 + 60 * part / real, 108, "?", 12, false);
+    q.figure = solSvg(340, 172, figB, "Un abri et son modèle réduit avec la porte ombrée");
+    return q;
   }
   var hp = pick([1.5, 1.6, 1.8]), mult = pick([2, 3, 4, 5]);
   var sp = pick([1, 1.2, 1.5, 2]);
   var sPole = Math.round(sp * mult * 10) / 10, ans3 = Math.round(hp * mult * 100) / 100;
   var prompt3 = "Une personne de " + fmtD(hp) + " m projette une ombre de " + fmtD(sp) + " m. Au même moment, un mât projette une ombre de " + fmtD(sPole) + " m. Le mât et son ombre forment un triangle semblable au triangle de la personne et de son ombre. Quelle est la hauteur du mât, en mètres ?";
   var sol3 = "L'ombre est " + fmtD(mult) + " fois plus longue, donc le mât est le même nombre de fois plus haut : \\[ \\begin{aligned} " + fmtD(sPole) + " \\div " + fmtD(sp) + " &= " + fmtD(mult) + " \\\\ \\text{hauteur du mât} &= " + fmtD(hp) + " \\times " + fmtD(mult) + " \\\\ &= " + fmtD(ans3) + " \\end{aligned} \\] Donc le mât mesure <b>" + fmtD(ans3) + " m</b> de hauteur.";
-  return numq(prompt3, ans3, 0.01, sol3, { mode: "shadow-pole", hp: hp, sp: sp, mult: mult });
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "shadow-pole", hp: hp, sp: sp, mult: mult });
+    q.figure = solShadowFig([{ name: "Personne", h: hp, s: sp, hLab: fmtD(hp) + " m", sLab: fmtD(sp) + " m" }, { name: "Mât de drapeau", h: ans3, s: sPole, hLab: "?", sLab: fmtD(sPole) + " m" }], "Une personne et un mât de drapeau avec leurs ombres");
+    return q;
 }, ["Trouve le facteur d'échelle à partir de la paire de longueurs que tu connais, puis utilise-le sur la longueur correspondante.", "Divise d'abord la longueur image connue par sa longueur d'origine correspondante."]);
 
 // 9. 10.15 L3 gen num, CR 3: two-step similar-figures problems.
@@ -4462,7 +4788,9 @@ E("u7-similar-two-step-num", 7, ["10.15"], 3, "gen", function () {
     var ans = Math.round(P * k * 100) / 100;
     var prompt = "Deux rectangles sont semblables. Dans le plus petit rectangle, un côté mesure " + fmtD(so) + " cm et le périmètre est de " + fmtD(P) + " cm. Le côté correspondant dans le plus grand rectangle mesure " + fmtD(si) + " cm. Quel est le périmètre du plus grand rectangle, en centimètres ?";
     var sol = "Trouve d'abord le facteur d'échelle à partir des côtés correspondants, puis applique-le au périmètre : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(si) + " \\div " + fmtD(so) + " = " + fmtD(k) + " \\\\ \\text{grand périmètre} &= " + fmtD(P) + " \\times " + fmtD(k) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc le périmètre du plus grand rectangle est <b>" + fmtD(ans) + " cm</b>.";
-    return numq(prompt, ans, 0.01, sol, { mode: "perimeter-scale", so: so, si: si, P: P });
+    var q = numq(prompt, ans, 0.01, sol, { mode: "perimeter-scale", so: so, si: si, P: P });
+    q.figure = solRectPair({ w1: so, h1: P / 2 - so, wLab1: fmtD(so) + " cm", hLab1: fmtD(P / 2 - so) + " cm", cap1: "Plus petit", w2: si, h2: (P / 2 - so) * k, wLab2: fmtD(si) + " cm", hLab2: fmtD((P / 2 - so) * k) + " cm", cap2: "Plus grand", aria: "Deux rectangles semblables avec des côtés étiquetés" });
+    return q;
   }
   if (mode === 1) {
     var w = pick([4, 5, 6, 8]), h = pick([3, 4, 5, 6, 7]);
@@ -4471,13 +4799,17 @@ E("u7-similar-two-step-num", 7, ["10.15"], 3, "gen", function () {
     var ans2 = Math.round(2 * (W + H) * 100) / 100;
     var prompt2 = "Un rectangle mesure " + fmtD(w) + " cm sur " + fmtD(h) + " cm. Un rectangle semblable a une largeur de " + fmtD(W) + " cm. Quel est le périmètre du rectangle semblable, en centimètres ?";
     var sol2 = "Trouve le facteur d'échelle, puis la nouvelle hauteur, puis le périmètre : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(W) + " \\div " + fmtD(w) + " = " + fmtD(k2) + " \\\\ \\text{nouvelle hauteur} &= " + fmtD(h) + " \\times " + fmtD(k2) + " = " + fmtD(H) + " \\\\ \\text{périmètre} &= 2 \\times (" + fmtD(W) + " + " + fmtD(H) + ") \\\\ &= " + fmtD(ans2) + " \\end{aligned} \\] Donc le périmètre est <b>" + fmtD(ans2) + " cm</b>.";
-    return numq(prompt2, ans2, 0.01, sol2, { mode: "rect-perimeter", w: w, h: h, k: k2 });
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "rect-perimeter", w: w, h: h, k: k2 });
+    q.figure = solRectPair({ w1: w, h1: h, wLab1: fmtD(w) + " cm", hLab1: fmtD(h) + " cm", cap1: "Figure d'origine", w2: W, h2: H, wLab2: fmtD(W) + " cm", hLab2: "?", cap2: "Semblable", aria: "Un rectangle et un rectangle semblable avec des côtés étiquetés" });
+    return q;
   }
   var sA = pick([3, 4, 5, 6]), kA = pick([2, 3]), kB = pick([1.5, 2, 2.5]);
   var sB = sA * kA, ans3 = Math.round(sB * kB * 100) / 100;
   var prompt3 = "Les figures A, B et C sont toutes semblables. Un côté de la figure A mesure " + fmtD(sA) + " cm, et le côté correspondant de la figure B mesure " + fmtD(sB) + " cm. La figure C est tracée à partir de la figure B avec un facteur d'échelle de " + fmtD(kB) + ". Quelle est la longueur, en centimètres, du côté de la figure C qui correspond au côté de " + fmtD(sA) + " cm de la figure A ?";
   var sol3 = "Passe d'abord par la figure B, puis applique le deuxième facteur d'échelle : \\[ \\begin{aligned} \\text{côté dans B} &= " + fmtD(sB) + " \\\\ \\text{côté dans C} &= " + fmtD(sB) + " \\times " + fmtD(kB) + " \\\\ &= " + fmtD(ans3) + " \\end{aligned} \\] Donc le côté correspondant de la figure C mesure <b>" + fmtD(ans3) + " cm</b>.";
-  return numq(prompt3, ans3, 0.01, sol3, { mode: "chain-scale", sA: sA, sB: sB, kB: kB });
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "chain-scale", sA: sA, sB: sB, kB: kB });
+    q.figure = solBarsFig([{ name: "Figure A", len: sA, lab: fmtD(sA) + " cm" }, { name: "Figure B", len: sB, lab: fmtD(sB) + " cm" }, { name: "Figure C", len: ans3, lab: "?" }], "Côtés correspondants de trois figures semblables en barres");
+    return q;
 }, ["Divise le problème en étapes : trouve d'abord un facteur d'échelle, puis utilise-le.", "Utilise la paire de longueurs correspondantes qu'on te donne pour obtenir le facteur d'échelle avant de chercher autre chose."]);
 
 // 10. 10.19 L3 gen num, CR 2: indirect measurement with similar triangles.
@@ -4489,7 +4821,9 @@ E("u7-indirect-measure-num", 7, ["10.19"], 3, "gen", function () {
     var sTree = Math.round(ss * mult * 10) / 10, ans = Math.round(hs * mult * 100) / 100;
     var prompt = "Un bâton de " + fmtD(hs) + " m projette une ombre de " + fmtD(ss) + " m. Au même moment, un arbre projette une ombre de " + fmtD(sTree) + " m. Les triangles de l'arbre et du bâton sont semblables. Quelle est la hauteur de l'arbre, en mètres ?";
     var sol = "L'ombre de l'arbre est un multiple de l'ombre du bâton : \\[ \\begin{aligned} " + fmtD(sTree) + " \\div " + fmtD(ss) + " &= " + fmtD(mult) + " \\\\ \\text{hauteur de l'arbre} &= " + fmtD(hs) + " \\times " + fmtD(mult) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc l'arbre mesure <b>" + fmtD(ans) + " m</b> de hauteur.";
-    return numq(prompt, ans, 0.01, sol, { mode: "tree-shadow", hs: hs, ss: ss, mult: mult });
+    var q = numq(prompt, ans, 0.01, sol, { mode: "tree-shadow", hs: hs, ss: ss, mult: mult });
+    q.figure = solShadowFig([{ name: "Bâton", h: hs, s: ss, hLab: fmtD(hs) + " m", sLab: fmtD(ss) + " m" }, { name: "Arbre", h: ans, s: sTree, hLab: "?", sLab: fmtD(sTree) + " m" }], "Un bâton et un arbre avec leurs ombres");
+    return q;
   }
   if (mode === 1) {
     var hp = pick([1.5, 1.6, 1.8]), sp = pick([2, 2.4, 3]);
@@ -4497,13 +4831,20 @@ E("u7-indirect-measure-num", 7, ["10.19"], 3, "gen", function () {
     var sB = Math.round(sp * mult2 * 10) / 10, ans2 = Math.round(hp * mult2 * 100) / 100;
     var prompt2 = "Pour mesurer un bâtiment, une élève de " + fmtD(hp) + " m se place de façon que son ombre mesure " + fmtD(sp) + " m. L'ombre du bâtiment au même moment mesure " + fmtD(sB) + " m. À l'aide de triangles semblables, quelle est la hauteur du bâtiment, en mètres ?";
     var sol2 = "Compare d'abord les ombres, puis multiplie la hauteur par le même facteur : \\[ \\begin{aligned} " + fmtD(sB) + " \\div " + fmtD(sp) + " &= " + fmtD(mult2) + " \\\\ \\text{hauteur du bâtiment} &= " + fmtD(hp) + " \\times " + fmtD(mult2) + " \\\\ &= " + fmtD(ans2) + " \\end{aligned} \\] Donc le bâtiment mesure <b>" + fmtD(ans2) + " m</b> de hauteur.";
-    return numq(prompt2, ans2, 0.01, sol2, { mode: "building-shadow", hp: hp, sp: sp, mult: mult2 });
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "building-shadow", hp: hp, sp: sp, mult: mult2 });
+    q.figure = solShadowFig([{ name: "Élève", h: hp, s: sp, hLab: fmtD(hp) + " m", sLab: fmtD(sp) + " m" }, { name: "Bâtiment", h: ans2, s: sB, hLab: "?", sLab: fmtD(sB) + " m" }], "Un élève et un bâtiment avec leurs ombres");
+    return q;
   }
   var d = pick([3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]), per = pick([6, 8, 10, 12, 15, 20]);
   var ans3 = Math.round(d * per * 100) / 100;
   var prompt3 = "Sur un diagramme à l'échelle d'un étang, la distance à travers l'étang mesure " + fmtD(d) + " cm. L'échelle du diagramme est : 1 cm représente " + fmtD(per) + " m. Quelle est la distance réelle à travers l'étang, en mètres ?";
   var sol3 = "Multiplie la distance du diagramme par la longueur réelle que représente chaque centimètre : \\[ \\begin{aligned} \\text{distance réelle} &= " + fmtD(d) + " \\times " + fmtD(per) + " \\\\ &= " + fmtD(ans3) + " \\end{aligned} \\] Donc la distance réelle à travers l'étang est <b>" + fmtD(ans3) + " m</b>.";
-  return numq(prompt3, ans3, 0.01, sol3, { mode: "pond-scale", d: d, per: per });
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "pond-scale", d: d, per: per });
+    var figB = '<ellipse cx="170" cy="98" rx="118" ry="52" fill="#ffffff" stroke="' + FIG_INK + '" stroke-width="2"/>';
+    figB += solLine([52, 98], [288, 98], true, 1.6);
+    figB += solT(170, 72, fmtD(d) + " cm", 12, false);
+    q.figure = solSvg(340, 175, figB, "Schéma d'un étang avec la distance à travers marquée");
+    return q;
 }, ["Établis le rapport correspondant à partir de l'objet que tu peux mesurer, puis applique-le à l'objet que tu ne peux pas mesurer.", "Divise les deux longueurs d'ombre (ou utilise l'échelle du diagramme) pour obtenir d'abord le facteur."]);
 
 // 11. 10.1 L1 gen MC with figure: lines of symmetry of a drawn shape.
@@ -4583,39 +4924,49 @@ E("u7-complete-half", 7, ["10.9"], 1, "gen", function () {
 // 13. 10.2 L1 var: order and angle of rotation symmetry of familiar shapes.
 E("u7-rotation-symmetry-var", 7, ["10.2"], 1, "var", varset([
   function () {
-    return mcq("On tourne un carré autour de son centre. Il correspond à lui-même 4 fois en un tour complet. Quels sont son ordre et son angle de symétrie de rotation ? L'ordre est le nombre de fois qu'il correspond en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
+    var q = mcq("On tourne un carré autour de son centre. Il correspond à lui-même 4 fois en un tour complet. Quels sont son ordre et son angle de symétrie de rotation ? L'ordre est le nombre de fois qu'il correspond en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
       { t: "Ordre 4, angle 90°", fb: "Exact. 360 divisé par 4 donne 90." },
       [{ t: "Ordre 2, angle 180°", fb: "Un carré correspond plus souvent que deux fois; compte les tours qui mènent à une position correspondante." }, { t: "Ordre 4, angle 45°", fb: "L'angle est 360 divisé par l'ordre, et 360 divisé par 4 donne 90, pas 45." }, { t: "Il n'a aucune symétrie de rotation", fb: "Un carré correspond à lui-même quand on le tourne d'une partie d'un tour complet." }],
       "Divise un tour complet par l'ordre : \\[ \\begin{aligned} 360° \\div 4 &= 90° \\end{aligned} \\] Donc le carré a <b>un ordre de 4 et un angle de 90°</b>.",
       { mode: "rot-square" });
+    q.figure = polySVG(4);
+    return q;
   },
   function () {
-    return mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un triangle équilatéral, tourné autour de son centre ? L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
+    var q = mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un triangle équilatéral, tourné autour de son centre ? L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
       { t: "Ordre 3, angle 120°", fb: "Exact. 360 divisé par 3 donne 120." },
       [{ t: "Ordre 3, angle 90°", fb: "L'angle est 360 divisé par l'ordre, et 360 divisé par 3 donne 120, pas 90." }, { t: "Ordre 6, angle 60°", fb: "Le triangle a 3 tours correspondants, pas 6; compte chaque sommet qui passe au coin suivant." }, { t: "Il n'a aucune symétrie de rotation", fb: "En tournant d'un tiers de tour complet, il correspond à lui-même." }],
       "Divise un tour complet par l'ordre : \\[ \\begin{aligned} 360° \\div 3 &= 120° \\end{aligned} \\] Donc le triangle équilatéral a <b>un ordre de 3 et un angle de 120°</b>.",
       { mode: "rot-equi" });
+    q.figure = polySVG(3);
+    return q;
   },
   function () {
-    return mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un pentagone régulier, tourné autour de son centre ? Un pentagone régulier a 5 côtés égaux. L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
+    var q = mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un pentagone régulier, tourné autour de son centre ? Un pentagone régulier a 5 côtés égaux. L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
       { t: "Ordre 5, angle 72°", fb: "Exact. 360 divisé par 5 donne 72." },
       [{ t: "Ordre 5, angle 60°", fb: "L'angle est 360 divisé par l'ordre, et 360 divisé par 5 donne 72, pas 60." }, { t: "Ordre 10, angle 36°", fb: "Le pentagone correspond 5 fois en un tour complet, une fois pour chaque sommet." }, { t: "Il n'a aucune symétrie de rotation", fb: "En tournant d'un cinquième de tour complet, il correspond à lui-même." }],
       "Divise un tour complet par l'ordre : \\[ \\begin{aligned} 360° \\div 5 &= 72° \\end{aligned} \\] Donc le pentagone régulier a <b>un ordre de 5 et un angle de 72°</b>.",
       { mode: "rot-pent" });
+    q.figure = polySVG(5);
+    return q;
   },
   function () {
-    return mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un hexagone régulier, tourné autour de son centre ? Un hexagone régulier a 6 côtés égaux. L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
+    var q = mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un hexagone régulier, tourné autour de son centre ? Un hexagone régulier a 6 côtés égaux. L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
       { t: "Ordre 6, angle 60°", fb: "Exact. 360 divisé par 6 donne 60." },
       [{ t: "Ordre 6, angle 120°", fb: "L'angle est 360 divisé par l'ordre, et 360 divisé par 6 donne 60, pas 120." }, { t: "Ordre 3, angle 120°", fb: "L'hexagone correspond 6 fois en un tour complet, une fois pour chaque sommet." }, { t: "Il n'a aucune symétrie de rotation", fb: "En tournant d'un sixième de tour complet, il correspond à lui-même." }],
       "Divise un tour complet par l'ordre : \\[ \\begin{aligned} 360° \\div 6 &= 60° \\end{aligned} \\] Donc l'hexagone régulier a <b>un ordre de 6 et un angle de 60°</b>.",
       { mode: "rot-hex" });
+    q.figure = polySVG(6);
+    return q;
   },
   function () {
-    return mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un rectangle qui n'est pas un carré, tourné autour de son centre ? L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
+    var q = mcq("Quels sont l'ordre et l'angle de symétrie de rotation d'un rectangle qui n'est pas un carré, tourné autour de son centre ? L'ordre est le nombre de fois qu'il correspond à lui-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
       { t: "Ordre 2, angle 180°", fb: "Exact. Seul un demi-tour le fait correspondre." },
       [{ t: "Ordre 4, angle 90°", fb: "Un quart de tour mettrait les grands côtés là où étaient les petits côtés, donc il ne correspond pas." }, { t: "Ordre 2, angle 90°", fb: "L'angle est 360 divisé par l'ordre, et 360 divisé par 2 donne 180, pas 90." }, { t: "Il n'a aucune symétrie de rotation", fb: "Un demi-tour le fait correspondre exactement à lui-même." }],
       "Divise un tour complet par l'ordre : \\[ \\begin{aligned} 360° \\div 2 &= 180° \\end{aligned} \\] Donc le rectangle a <b>un ordre de 2 et un angle de 180°</b>.",
       { mode: "rot-rect" });
+    q.figure = u7Svg(230, 190, u7Poly([[45, 60], [185, 60], [185, 130], [45, 130]], FIG_SHADE), "Rectangle");
+    return q;
   },
   function () {
     return mcq("La lettre majuscule H est dessinée avec des traits égaux. On la tourne autour de son centre. Quels sont son ordre et son angle de symétrie de rotation ? L'ordre est le nombre de fois qu'elle correspond à elle-même en un tour complet, et l'angle est 360 degrés divisés par l'ordre.",
@@ -4995,18 +5346,28 @@ E("u7-translation-rule", 7, ["10.13"], 1, "gen", function () {
     var names = ["A", "B", "C"];
     var prompt = "Une forme a pour sommets A" + u7Coord(pts[0]) + ", B" + u7Coord(pts[1]) + " et C" + u7Coord(pts[2]) + ". Elle est translatée selon la règle " + hWord + ", " + vWord + ", ce qui veut dire glisser " + hTxt + " et " + vTxt + ". Quelles sont les coordonnées de l'image du sommet " + names[ask] + " ?";
     var sol = "Applique le glissement au sommet " + names[ask] + u7Coord(P) + " : \\[ \\begin{aligned} x' &= " + fmtD(P[0]) + (dx >= 0 ? " + " + fmtD(dx) : " - " + fmtD(-dx)) + " = " + fmtD(img[0]) + " \\\\ y' &= " + fmtD(P[1]) + (dy >= 0 ? " + " + fmtD(dy) : " - " + fmtD(-dy)) + " = " + fmtD(img[1]) + " \\end{aligned} \\] Donc l'image du sommet " + names[ask] + " est <b>" + u7Coord(img) + "</b>.";
-    return mcq(prompt,
+    var q = mcq(prompt,
       { t: u7Coord(img), fb: "Exact. Le glissement en x et le glissement en y sont tous les deux appliqués au sommet." },
       [
         { t: u7Coord(cand[1]), fb: "Le glissement latéral est allé dans le mauvais sens; vérifie si la règle dit gauche ou droite." },
         { t: u7Coord(cand[2]), fb: "Le glissement vertical est allé dans le mauvais sens; vérifie si la règle dit haut ou bas." },
         { t: u7Coord(cand[3]), fb: "Cela échange les deux glissements; le premier nombre de la règle est le glissement latéral." }
       ], sol, { mode: "translation", dx: dx, dy: dy, P: P.join(","), img: img.join(",") });
+    q.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+      shapes: [{ pts: pts, fill: FIG_SHADE }],
+      marks: pts.map(function (p2, i2) { return { p: p2, label: names[i2], dx: 11, dy: -11 }; }),
+      aria: "Un triangle sur une grille" });
+    return q;
   }
-  return mcq("Une forme a pour sommets A(0, 0), B(3, 1) et C(1, 4). Elle est translatée selon la règle D2, H3, ce qui veut dire glisser de 2 vers la droite et de 3 vers le haut. Quelles sont les coordonnées de l'image du sommet B ?",
+  var q = mcq("Une forme a pour sommets A(0, 0), B(3, 1) et C(1, 4). Elle est translatée selon la règle D2, H3, ce qui veut dire glisser de 2 vers la droite et de 3 vers le haut. Quelles sont les coordonnées de l'image du sommet B ?",
     { t: "(5, 4)", fb: "Exact." },
     [{ t: "(1, 4)", fb: "Le glissement latéral est allé dans le mauvais sens." }, { t: "(5, -2)", fb: "Le glissement vertical est allé dans le mauvais sens." }, { t: "(6, 3)", fb: "Cela échange les deux glissements." }],
     "En ajoutant les glissements à B(3, 1), on obtient (5, 4), donc l'image de B est <b>(5, 4)</b>.", { mode: "translation", dx: 2, dy: 3, P: "3,1", img: "5,4" });
+  q.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+    shapes: [{ pts: [[0, 0], [3, 1], [1, 4]], fill: FIG_SHADE }],
+    marks: [{ p: [0, 0], label: "A", dx: 11, dy: -11 }, { p: [3, 1], label: "B", dx: 11, dy: -11 }, { p: [1, 4], label: "C", dx: 11, dy: -11 }],
+    aria: "Un triangle sur une grille" });
+  return q;
 }, ["Dans la règle, la lettre indique la direction et le nombre indique la distance, d'abord latéralement, puis vers le haut ou le bas.", "Ajoute le glissement latéral à la coordonnée x et le glissement vertical à la coordonnée y (soustrais pour la gauche ou le bas)."]);
 /*
 TRANSLATOR NOTES
@@ -6348,7 +6709,9 @@ E("u2-gap-pyramid-slant-cr", 2, ["9.3"], 2, "gen", function () {
     ? "Une tente a la forme d'une pyramide à base carrée. Sa base a un côté de " + base + " cm et sa hauteur verticale est de " + height + " cm. Trouve l'aire de la surface totale de la tente, en centimètres carrés."
     : "Une " + (thing === "pyramide" ? "pyramide à base carrée" : "pyramide à base carrée en forme de monument") + " a une base dont le côté mesure " + base + " cm et une hauteur verticale de " + height + " cm. Trouve l'aire de la surface totale, en centimètres carrés.";
   var sol = "L'apothème n'est pas donné, alors trouve-le avec le théorème de Pythagore en utilisant la moitié de la base et la hauteur : \\[ \\begin{aligned} \\text{apothème}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{apothème} &= " + slant + " \\\\ SA &= " + base + "^{2} + 4\\left(" + FR(1, 2) + " \\times " + base + " \\times " + slant + "\\right) = " + (base * base) + " + " + (2 * base * slant) + " = " + sa + " \\end{aligned} \\] La réponse est <b>" + sa + " cm\\(^{2}\\)</b>.";
-  return numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
+  var q = numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
+  q.figure = solPyramid(base, height, fmtD(base) + " cm", fmtD(height) + " cm", "?", "Pyramide à base carrée avec le côté de la base et la hauteur étiquetés et la hauteur oblique inconnue");
+  return q;
 }, ["Les faces triangulaires ont besoin de l'apothème, que la pyramide ne donne pas directement.", "Prends la moitié du côté de la base, puis utilise le théorème de Pythagore avec la hauteur pour obtenir l'apothème."]);
 
 // PG. L2, 9.2, SR: surface area of a two-solid composite (box joined to a triangular prism).
@@ -6362,12 +6725,14 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var tot = saBox + saPrism - 2 * contact;
   var prompt = "Un présentoir est fait d'une boîte et d'un prisme droit à base triangulaire joints ensemble. La boîte mesure " + L + " cm de long, " + W + " cm de large et " + H + " cm de haut. Le prisme mesure " + L + " cm de long, et chaque extrémité triangulaire est un triangle rectangle avec des cathètes de " + a + " cm et " + b + " cm et une hypoténuse de " + c + " cm. Le prisme repose sur la boîte, et les deux solides se touchent sur un rectangle de " + a + " cm sur " + L + " cm. Quelle est l'aire de la surface totale du présentoir, en centimètres carrés ?";
   var sol = "Trouve d'abord chaque solide séparément, puis soustrais le rectangle de contact deux fois parce qu'il est caché sur les deux solides : \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] La réponse est <b>" + tot + " cm\\(^{2}\\)</b>.";
-  return mcq(prompt,
+  var q = mcq(prompt,
     { t: fmtD(tot), fb: "Exact : les deux solides sont comptés, et le rectangle de contact caché est enlevé de chacun des deux." },
     [{ t: fmtD(saBox + saPrism), fb: "Cela additionne les deux solides mais laisse les faces de contact cachées comptées sur les deux solides." },
      { t: fmtD(saBox + saPrism - contact), fb: "Cela enlève le rectangle de contact une seule fois, mais il est caché sur les deux solides, alors il doit partir deux fois." },
      { t: fmtD(saBox + saPrism - 3 * contact), fb: "Cela enlève le rectangle de contact trois fois ; il est caché sur exactement deux faces, une sur chaque solide." }],
     sol, { mode: "gap-composite-sa", tot: tot });
+  if (a <= W) q.figure = solBoxTri(a, b, c, L, W, H, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", fmtD(W) + " cm", fmtD(H) + " cm", "Prisme triangulaire sur une boîte avec des dimensions étiquetées");
+  return q;
 }, ["Traite le présentoir comme deux solides séparés d'abord, puis ajuste pour le joint.", "Additionne les deux aires de surface, puis soustrais le rectangle de contact deux fois puisqu'il est caché sur les deux solides."]);
 
 
@@ -6644,7 +7009,9 @@ E("u7-gap-scale-apply-cr", 7, ["10.17", "10.15"], 2, "gen", function () {
     "Une bannière est un agrandissement d'un logo. Un côté du logo mesure " + o1 + " cm et le côté correspondant de la bannière mesure " + fmtD(i1) + " cm. Un autre côté du logo mesure " + o2 + " cm. Quelle est la longueur du côté correspondant de la bannière, en centimètres ?"
   ]);
   var sol = "Trouve d'abord le facteur d'échelle à partir de la paire connue, puis applique-le au deuxième côté : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(i1) + " \\div " + o1 + " = " + fmtD(k) + " \\\\ \\text{nouveau côté} &= " + o2 + " \\times " + fmtD(k) + " = " + fmtD(ans) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans) + " cm</b>.";
-  return numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  var q = numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  q.figure = solBarsFig([{ name: "Figure d'origine", len: o1, lab: fmtD(o1) + " cm" }, { name: "Image", len: i1, lab: fmtD(i1) + " cm" }, { name: "Figure d'origine", len: o2, lab: fmtD(o2) + " cm" }, { name: "Image", len: ans, lab: "?" }], "Côtés correspondants d'une figure d'origine et de son image en barres");
+  return q;
 }, ["Le facteur d'échelle n'est pas donné ; il doit d'abord être retrouvé à partir de la paire de côtés correspondants.", "Divise le côté de l'image par son côté original correspondant comme première étape."]);
 
 // PG. L2, 10.19/10.8, CR 2: map distance to real distance, then travel time at a stated speed.
@@ -6654,7 +7021,13 @@ E("u7-gap-map-time-cr", 7, ["10.19", "10.8"], 2, "gen", function () {
   hours = real / speed;
   var prompt = "Sur une carte, 1 cm représente " + R + " km. Deux villes sont à " + d + " cm l'une de l'autre sur la carte. Un autobus roule entre les villes à " + speed + " km/h. Combien d'heures le trajet prend-il ?";
   var sol = "Utilise d'abord l'échelle pour obtenir la distance réelle, puis divise par la vitesse : \\[ \\begin{aligned} \\text{distance réelle} &= " + d + " \\times " + R + " = " + real + "\\text{ km} \\\\ \\text{temps} &= " + real + " \\div " + speed + " = " + fmtD(hours) + "\\text{ h} \\end{aligned} \\] La réponse est <b>" + fmtD(hours) + "</b>.";
-  return numq(prompt, hours, 0.01, sol, { mode: "gap-map-time", R: R, real: real, speed: speed });
+  var q = numq(prompt, hours, 0.01, sol, { mode: "gap-map-time", R: R, real: real, speed: speed });
+  var figB = solLine([60, 105], [280, 105], false, 2);
+  figB += '<circle cx="60" cy="105" r="4" fill="' + FIG_INK + '"/><circle cx="280" cy="105" r="4" fill="' + FIG_INK + '"/>';
+  figB += solT(170, 80, fmtD(d) + " cm", 13, false);
+  figB += solT(170, 134, "1 cm représente " + fmtD(R) + " km", 12, false);
+  q.figure = solSvg(340, 160, figB, "Distance sur la carte entre deux villes");
+  return q;
 }, ["La mesure sur la carte doit être convertie en distance réelle avant de pouvoir utiliser la vitesse.", "Multiplie la distance sur la carte par la valeur de l'échelle comme première étape."]);
 
 // PG. L2, 10.15/10.17, CR 3: area of the image using the square of the scale factor.
@@ -6665,7 +7038,9 @@ E("u7-gap-area-scale-cr", 7, ["10.15", "10.17"], 2, "gen", function () {
   var area = Math.round(w * h * k * k * 100) / 100;
   var prompt = "Un rectangle mesure " + w + " cm de large et " + h + " cm de haut. On l'agrandit pour que la largeur devienne " + fmtD(iw) + " cm. Quelle est l'aire du rectangle agrandi, en centimètres carrés ?";
   var sol = "Trouve d'abord le facteur d'échelle à partir des largeurs ; les aires grandissent par le carré du facteur d'échelle : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(iw) + " \\div " + w + " = " + fmtD(k) + " \\\\ \\text{aire originale} &= " + w + " \\times " + h + " = " + (w * h) + " \\\\ \\text{aire de l'image} &= " + (w * h) + " \\times " + fmtD(k) + "^{2} = " + fmtD(area) + " \\end{aligned} \\] La réponse est <b>" + fmtD(area) + " cm\\(^{2}\\)</b>.";
-  return numq(prompt, area, 0.01, sol, { mode: "gap-area-scale", k: k });
+  var q = numq(prompt, area, 0.01, sol, { mode: "gap-area-scale", k: k });
+  q.figure = solRectPair({ w1: w, h1: h, wLab1: fmtD(w) + " cm", hLab1: fmtD(h) + " cm", cap1: "Figure d'origine", w2: iw, h2: h * k, wLab2: fmtD(iw) + " cm", hLab2: "?", cap2: "Agrandissement", aria: "Un rectangle et son agrandissement avec des côtés étiquetés" });
+  return q;
 }, ["Les longueurs et les aires ne changent pas de la même façon : le facteur d'aire est le carré du facteur de longueur.", "Divise la nouvelle largeur par la largeur originale pour obtenir le facteur d'échelle comme première étape."]);
 
 // PG. L2, 10.19/10.15, CR 3: two shadow heights by proportion, then their difference.
@@ -6679,7 +7054,9 @@ E("u7-gap-shadow-diff-cr", 7, ["10.19", "10.15"], 2, "gen", function () {
   var ans = Math.round(Math.abs(h2 - h1) * 100) / 100;
   var prompt = "Une personne de " + fmtD(hp) + " m projette une ombre de " + fmtD(sp) + " m de long. Au même moment, une clôture projette une ombre de " + fmtD(s1) + " m de long et un arbre projette une ombre de " + fmtD(s2) + " m de long. Les objets et leurs ombres forment des triangles semblables. Trouve la différence entre la hauteur de l'arbre et la hauteur de la clôture, en mètres.";
   var sol = "Utilise d'abord le rapport d'ombre de la personne sur chaque objet, puis compare les deux hauteurs : \\[ \\begin{aligned} \\text{clôture} &= " + fmtD(hp) + " \\times \\frac{" + fmtD(s1) + "}{" + fmtD(sp) + "} = " + fmtD(h1) + " \\\\ \\text{arbre} &= " + fmtD(hp) + " \\times \\frac{" + fmtD(s2) + "}{" + fmtD(sp) + "} = " + fmtD(h2) + " \\\\ \\text{différence} &= " + fmtD(ans) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans) + " m</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-shadow-diff", h1: h1, h2: h2 });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-shadow-diff", h1: h1, h2: h2 });
+  q.figure = solShadowFig([{ name: "Personne", h: hp, s: sp, hLab: fmtD(hp) + " m", sLab: fmtD(sp) + " m" }, { name: "Clôture", h: h1, s: s1, hLab: "?", sLab: fmtD(s1) + " m" }, { name: "Arbre", h: h2, s: s2, hLab: "?", sLab: fmtD(s2) + " m" }], "Une personne, une clôture et un arbre avec leurs ombres");
+  return q;
 }, ["Chaque hauteur vient de la même proportion d'ombre, et la différence se trouve seulement après que les deux hauteurs sont connues.", "Divise l'ombre de la clôture par l'ombre de la personne pour obtenir la première échelle comme première étape."]);
 
 // PG. L2, 10.17/10.15, CR 3: perimeter of the image after finding the factor from one pair of sides.
@@ -6691,7 +7068,12 @@ E("u7-gap-perimeter-scale-cr", 7, ["10.17", "10.15"], 2, "gen", function () {
   var ans = Math.round(P * k * 100) / 100;
   var prompt = "Un triangle a des côtés de longueurs " + a + " cm, " + b + " cm et " + c + " cm. Un triangle semblable a le côté correspondant au côté de " + a + " cm qui mesure " + fmtD(ai) + " cm. Quel est le périmètre du triangle semblable, en centimètres ?";
   var sol = "Trouve d'abord le facteur d'échelle à partir des côtés correspondants, puis mets tout le périmètre à l'échelle : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(ai) + " \\div " + a + " = " + fmtD(k) + " \\\\ \\text{périmètre} &= (" + a + " + " + b + " + " + c + ") \\times " + fmtD(k) + " = " + fmtD(ans) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans) + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-perimeter-scale", k: k, P: P });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-perimeter-scale", k: k, P: P });
+  if (a + b > c && a + c > b && b + c > a) {
+    var P1 = u7FitTri([a, b, c], 16, 28, 128, 112), P2 = u7FitTri([a * k, b * k, c * k], 192, 28, 128, 112);
+    q.figure = u7Svg(345, 165, u7Poly(P1, FIG_SHADE) + solSideLabels(P1, [fmtD(c) + " cm", fmtD(a) + " cm", fmtD(b) + " cm"]) + u7Poly(P2, "#ffffff") + solSideLabels(P2, ["?", fmtD(ai) + " cm", "?"]), "Un triangle d'origine et un triangle semblable avec des étiquettes de côtés");
+  }
+  return q;
 }, ["Les périmètres changent par le même facteur que les côtés, et ce facteur vient de la seule paire connue.", "Divise le côté de l'image par son côté original correspondant comme première étape."]);
 
 
@@ -6703,7 +7085,10 @@ E("u8-gap-reflex-arc-cr", 8, ["9.7"], 2, "gen", function () {
   var central = 2 * ins, ans = 360 - central;
   var prompt = "Les points A, B et C sont sur un cercle de centre O. L'angle inscrit ACB mesure \\(" + ins + "^{\\circ}\\) et il intercepte l'arc mineur AB. Trouve la mesure de l'arc réflexe AB, en degrés.";
   var sol = "L'angle au centre sur l'arc mineur vaut d'abord le double de l'angle inscrit ; l'arc réflexe est ce qui reste du cercle complet : \\[ \\begin{aligned} \\text{arc mineur AB} &= 2 \\times " + ins + "^{\\circ} = " + central + "^{\\circ} \\\\ \\text{arc réflexe AB} &= 360^{\\circ} - " + central + "^{\\circ} = " + ans + "^{\\circ} \\end{aligned} \\] La réponse est <b>\\(" + ans + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-reflex-arc", ins: ins });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-reflex-arc", ins: ins });
+  var A = u8P(270 - ins), B = u8P(270 + ins), C = u8P(90);
+  q.figure = u8Fig({ pts: { A: A, B: B, C: C }, segs: [["O", "A"], ["O", "B"], ["C", "A"], ["C", "B"]], angles: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B), r: 0.3, lr: 0.55, label: fmtD(ins) + "°" }] });
+  return q;
 }, ["Un angle inscrit et son angle au centre sont liés, et un arc réflexe complète le tour complet.", "Double l'angle inscrit pour obtenir l'arc mineur comme première étape."]);
 
 // PG. L2, 9.5, CR 2: angle in a cyclic quadrilateral after combining the parts split by a diagonal.
@@ -6712,7 +7097,10 @@ E("u8-gap-cyclic-diag-cr", 8, ["9.5"], 2, "gen", function () {
   var ans = 180 - p - q;
   var prompt = "Les points A, B, C et D sont sur un cercle dans cet ordre, alors ABCD est un quadrilatère cyclique. La diagonale AC partage l'angle A en deux parties : l'angle BAC mesure \\(" + p + "^{\\circ}\\) et l'angle CAD mesure \\(" + q + "^{\\circ}\\). Trouve la mesure de l'angle BCD, en degrés.";
   var sol = "Combine d'abord les deux parties de l'angle A ; les angles opposés d'un quadrilatère cyclique totalisent \\(180^{\\circ}\\) : \\[ \\begin{aligned} \\angle A &= " + p + "^{\\circ} + " + q + "^{\\circ} = " + (p + q) + "^{\\circ} \\\\ \\angle BCD &= 180^{\\circ} - " + (p + q) + "^{\\circ} = " + ans + "^{\\circ} \\end{aligned} \\] La réponse est <b>\\(" + ans + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-cyclic-diag", p: p, q: q });
+  var qq = numq(prompt, ans, 0.01, sol, { mode: "gap-cyclic-diag", p: p, q: q });
+  var A = u8P(200), B = u8P(300), C = u8P(300 + 2 * p), D = u8P(300 + 2 * p + 2 * q);
+  qq.figure = u8Fig({ pts: { A: A, B: B, C: C, D: D }, segs: [["A", "B"], ["B", "C"], ["C", "D"], ["D", "A"], ["A", "C"]], angles: [{ v: "A", a1: u8Dir(A, B), a2: u8Dir(A, C), r: 0.26, lr: 0.46, label: fmtD(p) + "°" }, { v: "A", a1: u8Dir(A, C), a2: u8Dir(A, D), r: 0.4, lr: 0.6, label: fmtD(q) + "°" }] });
+  return qq;
 }, ["L'angle A est donné en deux morceaux, et la propriété des quadrilatères cycliques s'applique à l'angle entier.", "Additionne les deux parties de l'angle A ensemble comme première étape."]);
 
 // PG. L2, 9.7/9.5, CR 3: central angle found from a tangent-radius triangle, then halved for the inscribed angle.
@@ -6724,7 +7112,14 @@ E("u8-gap-tangent-central-cr", 8, ["9.7", "9.5"], 2, "gen", function () {
     ? "Une droite passant par T et P est une tangente à un cercle de centre O, et elle touche le cercle en T. La droite de O passant par P recoupe le cercle en D. Dans le triangle OTP, l'angle en P mesure \\(" + g + "^{\\circ}\\). Le point C est sur l'arc majeur TD. Trouve la mesure de l'angle inscrit TCD, en degrés."
     : "D'un point P à l'extérieur d'un cercle de centre O, une tangente touche le cercle en T, et la droite de P passant par O recoupe le cercle en D. Dans le triangle OTP, l'angle en P mesure \\(" + g + "^{\\circ}\\). Le point C est sur l'arc majeur TD. Trouve la mesure de l'angle inscrit TCD, en degrés.";
   var sol = "Le rayon vers un point de tangence est perpendiculaire à la tangente, alors le triangle OTP est rectangle en T. Trouve d'abord l'angle au centre, puis prends sa moitié : \\[ \\begin{aligned} \\angle TOD &= 180^{\\circ} - 90^{\\circ} - " + g + "^{\\circ} = " + central + "^{\\circ} \\\\ \\angle TCD &= " + central + "^{\\circ} \\div 2 = " + fmtD(ans) + "^{\\circ} \\end{aligned} \\] La réponse est <b>\\(" + fmtD(ans) + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-tangent-central", g: g });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-tangent-central", g: g });
+  var tAng = pick([200, 230, 260, 290, 320]);
+  var sgn = Math.random() < 0.5 ? 1 : -1;
+  var T = u8P(tAng), U = u8P(tAng + sgn * central);
+  var sc = 1 / Math.cos(central * Math.PI / 180);
+  var P = [U[0] * sc, U[1] * sc], D = U, C = u8P(tAng + sgn * central / 2 + 180);
+  q.figure = u8Fig({ pts: { T: T, P: P, D: D, C: C }, segs: [["O", "T"], ["O", "P"], ["C", "T"], ["C", "D"]], tangentSeg: { at: "T", to: "P", beyond: 1.05, back: 0.3 }, rightMarks: [{ v: "T", a1: u8Dir(T, [0, 0]), a2: u8Dir(T, P) }], angles: [{ v: "P", a1: u8Dir(P, T), a2: u8Dir(P, [0, 0]), r: 0.3, lr: 0.55, label: fmtD(g) + "°" }, { v: "C", a1: u8Dir(C, T), a2: u8Dir(C, D), r: 0.3, lr: 0.55, label: "?" }] });
+  return q;
 }, ["Deux faits sur les cercles s'enchaînent ici : le fait de la tangente construit le triangle, et l'angle inscrit vaut la moitié de l'angle au centre.", "Utilise l'angle droit en T pour trouver l'angle au centre TOD comme première étape."]);
 
 // PG. L2, 9.6/9.5, CR 3: chord radius where the perpendicular-from-centre bisection comes before Pythagoras.
@@ -6739,7 +7134,10 @@ E("u8-gap-chord-bisect-cr", 8, ["9.6", "9.5"], 2, "gen", function () {
     ? "AB est une corde d'un cercle de centre O. La corde AB mesure " + chord + " cm de long, et la distance perpendiculaire de O à la corde est de " + d + " cm. Trouve le rayon du cercle, en centimètres."
     : "Une fenêtre circulaire a pour centre O, et une barre droite AB qui traverse la fenêtre est une corde du cercle. La barre AB mesure " + chord + " cm de long, et la distance perpendiculaire de O à la barre est de " + d + " cm. Trouve le rayon de la fenêtre, en centimètres.";
   var sol = "La perpendiculaire depuis le centre coupe d'abord la corde en deux ; ensuite le rayon est l'hypoténuse du triangle rectangle : \\[ \\begin{aligned} \\text{moitié de la corde} &= " + chord + " \\div 2 = " + half + " \\\\ r^{2} &= " + d + "^{2} + " + half + "^{2} = " + (d * d + half * half) + " \\\\ r &= " + r + " \\end{aligned} \\] La réponse est <b>" + r + " cm</b>.";
-  return numq(prompt, r, 0.01, sol, { mode: "gap-chord-bisect", half: half, d: d, r: r });
+  var q = numq(prompt, r, 0.01, sol, { mode: "gap-chord-bisect", half: half, d: d, r: r });
+  var A = [-half / r, d / r], B = [half / r, d / r];
+  q.figure = u8Fig({ pts: { A: A, B: B }, segs: [["A", "B"], ["O", "A"]], perp: ["A", "B"], sideLabs: [{ a: "A", b: "B", text: fmtD(chord) + " cm", off: 15 }, { a: "O", b: "M", text: fmtD(d) + " cm", off: 15 }, { a: "O", b: "A", text: "?", off: 15 }] });
+  return q;
 }, ["Le rayon est l'hypoténuse d'un triangle rectangle dont un côté vaut seulement la moitié de la corde donnée.", "Prends la moitié de la longueur de la corde comme première étape."]);
 
 // PG. L2, 9.8/9.5, CR 3: semicircle right angle first, then Pythagoras for the third side.
@@ -6753,7 +7151,11 @@ E("u8-gap-semicircle-pyth-cr", 8, ["9.8", "9.5"], 2, "gen", function () {
     ? "AB est un diamètre d'un cercle, et C est un point sur le cercle. Le diamètre AB mesure " + hyp + " cm de long et le côté AC mesure " + given + " cm de long. Trouve la longueur de BC, en centimètres."
     : "Une arche en demi-cercle a un diamètre AB de " + hyp + " cm. Le point C est sur l'arche, et la distance en ligne droite AC est de " + given + " cm. Trouve la distance en ligne droite BC, en centimètres.";
   var sol = "Un angle inscrit dans un demi-cercle est un angle droit, alors le triangle ABC est rectangle en C et Pythagore s'applique : \\[ \\begin{aligned} BC^{2} &= " + hyp + "^{2} - " + given + "^{2} = " + (hyp * hyp - given * given) + " \\\\ BC &= " + ans + " \\end{aligned} \\] La réponse est <b>" + ans + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-semicircle-pyth", given: given, hyp: hyp });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-semicircle-pyth", given: given, hyp: hyp });
+  var gam = Math.acos(Math.max(-1, Math.min(1, 2 * (given / hyp) * (given / hyp) - 1))) * 180 / Math.PI;
+  var A = [-1, 0], B = [1, 0], C = u8P(gam);
+  q.figure = u8Fig({ pts: { A: A, B: B, C: C }, segs: [["A", "B"], ["A", "C"], ["B", "C"]], rightMarks: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B) }], sideLabs: [{ a: "A", b: "C", text: fmtD(given) + " cm", off: 15 }, { a: "B", b: "C", text: "?", off: 15 }] });
+  return q;
 }, ["Le diamètre te dit que le triangle est rectangle avant de pouvoir trouver un côté.", "Remarque que l'angle C est un angle droit parce qu'il est dans un demi-cercle, comme première étape."]);
 
 // PG. L2, 9.7, SR: an angle requiring two circle theorems in sequence, with single-theorem distractors.
@@ -6765,12 +7167,17 @@ E("u8-gap-two-theorems-mc", 8, ["9.7"], 2, "gen", function () {
   function deg(v) { return "\\(" + v + "^{\\circ}\\)"; }
   var prompt = "Les points " + P1 + ", " + P2 + ", " + P3 + " et " + P4 + " sont sur un cercle de centre O. Le point " + P3 + " est sur l'arc majeur " + P1 + P2 + " et l'angle inscrit " + P1 + P3 + P2 + " mesure " + deg(p) + ". Le point " + P4 + " est sur l'arc mineur " + P1 + P2 + ". Quelle est la mesure de l'angle inscrit " + P1 + P4 + P2 + " ?";
   var sol = "L'arc mineur est d'abord fixé par l'angle au centre, et l'angle sur l'arc mineur utilise l'angle au centre réflexe : \\[ \\begin{aligned} \\text{angle au centre mineur} &= 2 \\times " + p + "^{\\circ} = " + (2 * p) + "^{\\circ} \\\\ \\text{angle au centre réflexe} &= 360^{\\circ} - " + (2 * p) + "^{\\circ} = " + (360 - 2 * p) + "^{\\circ} \\\\ \\angle " + P1 + P4 + P2 + " &= " + (360 - 2 * p) + "^{\\circ} \\div 2 = " + ans + "^{\\circ} \\end{aligned} \\] La réponse est <b>" + deg(ans) + "</b>.";
-  return mcq(prompt,
+  var q = mcq(prompt,
     { t: deg(ans), fb: "Exact : l'angle au centre réflexe est divisé en deux, ce qui demande l'étape du doublement et l'étape de l'angle réflexe." },
     [{ t: deg(2 * p), fb: "C'est l'angle au centre mineur tout seul ; l'angle inscrit doit encore venir de l'angle réflexe sur l'autre arc." },
      { t: deg(p), fb: "Cela répète l'angle donné, mais le point demandé est sur l'arc opposé, alors son angle n'est pas le même." },
      { t: deg(360 - 2 * p), fb: "C'est l'angle au centre réflexe lui-même ; un angle inscrit vaut la moitié de son angle au centre, alors il faut encore diviser en deux." }],
     sol, { mode: "gap-two-theorems", p: p });
+  var pts = {};
+  var A = u8P(270 - p), B = u8P(270 + p), C3 = u8P(90), D4 = u8P(270);
+  pts[P1] = A; pts[P2] = B; pts[P3] = C3; pts[P4] = D4;
+  q.figure = u8Fig({ pts: pts, segs: [[P3, P1], [P3, P2], [P4, P1], [P4, P2]], angles: [{ v: P3, a1: u8Dir(C3, A), a2: u8Dir(C3, B), r: 0.3, lr: 0.55, label: fmtD(p) + "°" }, { v: P4, a1: u8Dir(D4, A), a2: u8Dir(D4, B), r: 0.3, lr: 0.55, label: "?" }] });
+  return q;
 }, ["Le point est sur l'arc opposé, alors l'angle au centre réflexe est celui qui lui appartient.", "Double l'angle inscrit donné pour obtenir l'angle au centre mineur comme première étape."]);
 
 /* Unit 9: Probability and Statistics */

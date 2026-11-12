@@ -161,7 +161,9 @@ E("u2-gap-pyramid-slant-cr", 2, ["9.3"], 2, "gen", function () {
     ? "Une tente a la forme d'une pyramide à base carrée. Sa base a un côté de " + base + " cm et sa hauteur verticale est de " + height + " cm. Trouve l'aire de la surface totale de la tente, en centimètres carrés."
     : "Une " + (thing === "pyramide" ? "pyramide à base carrée" : "pyramide à base carrée en forme de monument") + " a une base dont le côté mesure " + base + " cm et une hauteur verticale de " + height + " cm. Trouve l'aire de la surface totale, en centimètres carrés.";
   var sol = "L'apothème n'est pas donné, alors trouve-le avec le théorème de Pythagore en utilisant la moitié de la base et la hauteur : \\[ \\begin{aligned} \\text{apothème}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{apothème} &= " + slant + " \\\\ SA &= " + base + "^{2} + 4\\left(" + FR(1, 2) + " \\times " + base + " \\times " + slant + "\\right) = " + (base * base) + " + " + (2 * base * slant) + " = " + sa + " \\end{aligned} \\] La réponse est <b>" + sa + " cm\\(^{2}\\)</b>.";
-  return numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
+  var q = numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
+  q.figure = solPyramid(base, height, fmtD(base) + " cm", fmtD(height) + " cm", "?", "Pyramide à base carrée avec le côté de la base et la hauteur étiquetés et la hauteur oblique inconnue");
+  return q;
 }, ["Les faces triangulaires ont besoin de l'apothème, que la pyramide ne donne pas directement.", "Prends la moitié du côté de la base, puis utilise le théorème de Pythagore avec la hauteur pour obtenir l'apothème."]);
 
 // PG. L2, 9.2, SR: surface area of a two-solid composite (box joined to a triangular prism).
@@ -175,12 +177,14 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var tot = saBox + saPrism - 2 * contact;
   var prompt = "Un présentoir est fait d'une boîte et d'un prisme droit à base triangulaire joints ensemble. La boîte mesure " + L + " cm de long, " + W + " cm de large et " + H + " cm de haut. Le prisme mesure " + L + " cm de long, et chaque extrémité triangulaire est un triangle rectangle avec des cathètes de " + a + " cm et " + b + " cm et une hypoténuse de " + c + " cm. Le prisme repose sur la boîte, et les deux solides se touchent sur un rectangle de " + a + " cm sur " + L + " cm. Quelle est l'aire de la surface totale du présentoir, en centimètres carrés ?";
   var sol = "Trouve d'abord chaque solide séparément, puis soustrais le rectangle de contact deux fois parce qu'il est caché sur les deux solides : \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] La réponse est <b>" + tot + " cm\\(^{2}\\)</b>.";
-  return mcq(prompt,
+  var q = mcq(prompt,
     { t: fmtD(tot), fb: "Exact : les deux solides sont comptés, et le rectangle de contact caché est enlevé de chacun des deux." },
     [{ t: fmtD(saBox + saPrism), fb: "Cela additionne les deux solides mais laisse les faces de contact cachées comptées sur les deux solides." },
      { t: fmtD(saBox + saPrism - contact), fb: "Cela enlève le rectangle de contact une seule fois, mais il est caché sur les deux solides, alors il doit partir deux fois." },
      { t: fmtD(saBox + saPrism - 3 * contact), fb: "Cela enlève le rectangle de contact trois fois ; il est caché sur exactement deux faces, une sur chaque solide." }],
     sol, { mode: "gap-composite-sa", tot: tot });
+  if (a <= W) q.figure = solBoxTri(a, b, c, L, W, H, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", fmtD(W) + " cm", fmtD(H) + " cm", "Prisme triangulaire sur une boîte avec des dimensions étiquetées");
+  return q;
 }, ["Traite le présentoir comme deux solides séparés d'abord, puis ajuste pour le joint.", "Additionne les deux aires de surface, puis soustrais le rectangle de contact deux fois puisqu'il est caché sur les deux solides."]);
 
 
@@ -457,7 +461,9 @@ E("u7-gap-scale-apply-cr", 7, ["10.17", "10.15"], 2, "gen", function () {
     "Une bannière est un agrandissement d'un logo. Un côté du logo mesure " + o1 + " cm et le côté correspondant de la bannière mesure " + fmtD(i1) + " cm. Un autre côté du logo mesure " + o2 + " cm. Quelle est la longueur du côté correspondant de la bannière, en centimètres ?"
   ]);
   var sol = "Trouve d'abord le facteur d'échelle à partir de la paire connue, puis applique-le au deuxième côté : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(i1) + " \\div " + o1 + " = " + fmtD(k) + " \\\\ \\text{nouveau côté} &= " + o2 + " \\times " + fmtD(k) + " = " + fmtD(ans) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans) + " cm</b>.";
-  return numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  var q = numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  q.figure = solBarsFig([{ name: "Figure d'origine", len: o1, lab: fmtD(o1) + " cm" }, { name: "Image", len: i1, lab: fmtD(i1) + " cm" }, { name: "Figure d'origine", len: o2, lab: fmtD(o2) + " cm" }, { name: "Image", len: ans, lab: "?" }], "Côtés correspondants d'une figure d'origine et de son image en barres");
+  return q;
 }, ["Le facteur d'échelle n'est pas donné ; il doit d'abord être retrouvé à partir de la paire de côtés correspondants.", "Divise le côté de l'image par son côté original correspondant comme première étape."]);
 
 // PG. L2, 10.19/10.8, CR 2: map distance to real distance, then travel time at a stated speed.
@@ -467,7 +473,13 @@ E("u7-gap-map-time-cr", 7, ["10.19", "10.8"], 2, "gen", function () {
   hours = real / speed;
   var prompt = "Sur une carte, 1 cm représente " + R + " km. Deux villes sont à " + d + " cm l'une de l'autre sur la carte. Un autobus roule entre les villes à " + speed + " km/h. Combien d'heures le trajet prend-il ?";
   var sol = "Utilise d'abord l'échelle pour obtenir la distance réelle, puis divise par la vitesse : \\[ \\begin{aligned} \\text{distance réelle} &= " + d + " \\times " + R + " = " + real + "\\text{ km} \\\\ \\text{temps} &= " + real + " \\div " + speed + " = " + fmtD(hours) + "\\text{ h} \\end{aligned} \\] La réponse est <b>" + fmtD(hours) + "</b>.";
-  return numq(prompt, hours, 0.01, sol, { mode: "gap-map-time", R: R, real: real, speed: speed });
+  var q = numq(prompt, hours, 0.01, sol, { mode: "gap-map-time", R: R, real: real, speed: speed });
+  var figB = solLine([60, 105], [280, 105], false, 2);
+  figB += '<circle cx="60" cy="105" r="4" fill="' + FIG_INK + '"/><circle cx="280" cy="105" r="4" fill="' + FIG_INK + '"/>';
+  figB += solT(170, 80, fmtD(d) + " cm", 13, false);
+  figB += solT(170, 134, "1 cm représente " + fmtD(R) + " km", 12, false);
+  q.figure = solSvg(340, 160, figB, "Distance sur la carte entre deux villes");
+  return q;
 }, ["La mesure sur la carte doit être convertie en distance réelle avant de pouvoir utiliser la vitesse.", "Multiplie la distance sur la carte par la valeur de l'échelle comme première étape."]);
 
 // PG. L2, 10.15/10.17, CR 3: area of the image using the square of the scale factor.
@@ -478,7 +490,9 @@ E("u7-gap-area-scale-cr", 7, ["10.15", "10.17"], 2, "gen", function () {
   var area = Math.round(w * h * k * k * 100) / 100;
   var prompt = "Un rectangle mesure " + w + " cm de large et " + h + " cm de haut. On l'agrandit pour que la largeur devienne " + fmtD(iw) + " cm. Quelle est l'aire du rectangle agrandi, en centimètres carrés ?";
   var sol = "Trouve d'abord le facteur d'échelle à partir des largeurs ; les aires grandissent par le carré du facteur d'échelle : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(iw) + " \\div " + w + " = " + fmtD(k) + " \\\\ \\text{aire originale} &= " + w + " \\times " + h + " = " + (w * h) + " \\\\ \\text{aire de l'image} &= " + (w * h) + " \\times " + fmtD(k) + "^{2} = " + fmtD(area) + " \\end{aligned} \\] La réponse est <b>" + fmtD(area) + " cm\\(^{2}\\)</b>.";
-  return numq(prompt, area, 0.01, sol, { mode: "gap-area-scale", k: k });
+  var q = numq(prompt, area, 0.01, sol, { mode: "gap-area-scale", k: k });
+  q.figure = solRectPair({ w1: w, h1: h, wLab1: fmtD(w) + " cm", hLab1: fmtD(h) + " cm", cap1: "Figure d'origine", w2: iw, h2: h * k, wLab2: fmtD(iw) + " cm", hLab2: "?", cap2: "Agrandissement", aria: "Un rectangle et son agrandissement avec des côtés étiquetés" });
+  return q;
 }, ["Les longueurs et les aires ne changent pas de la même façon : le facteur d'aire est le carré du facteur de longueur.", "Divise la nouvelle largeur par la largeur originale pour obtenir le facteur d'échelle comme première étape."]);
 
 // PG. L2, 10.19/10.15, CR 3: two shadow heights by proportion, then their difference.
@@ -492,7 +506,9 @@ E("u7-gap-shadow-diff-cr", 7, ["10.19", "10.15"], 2, "gen", function () {
   var ans = Math.round(Math.abs(h2 - h1) * 100) / 100;
   var prompt = "Une personne de " + fmtD(hp) + " m projette une ombre de " + fmtD(sp) + " m de long. Au même moment, une clôture projette une ombre de " + fmtD(s1) + " m de long et un arbre projette une ombre de " + fmtD(s2) + " m de long. Les objets et leurs ombres forment des triangles semblables. Trouve la différence entre la hauteur de l'arbre et la hauteur de la clôture, en mètres.";
   var sol = "Utilise d'abord le rapport d'ombre de la personne sur chaque objet, puis compare les deux hauteurs : \\[ \\begin{aligned} \\text{clôture} &= " + fmtD(hp) + " \\times \\frac{" + fmtD(s1) + "}{" + fmtD(sp) + "} = " + fmtD(h1) + " \\\\ \\text{arbre} &= " + fmtD(hp) + " \\times \\frac{" + fmtD(s2) + "}{" + fmtD(sp) + "} = " + fmtD(h2) + " \\\\ \\text{différence} &= " + fmtD(ans) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans) + " m</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-shadow-diff", h1: h1, h2: h2 });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-shadow-diff", h1: h1, h2: h2 });
+  q.figure = solShadowFig([{ name: "Personne", h: hp, s: sp, hLab: fmtD(hp) + " m", sLab: fmtD(sp) + " m" }, { name: "Clôture", h: h1, s: s1, hLab: "?", sLab: fmtD(s1) + " m" }, { name: "Arbre", h: h2, s: s2, hLab: "?", sLab: fmtD(s2) + " m" }], "Une personne, une clôture et un arbre avec leurs ombres");
+  return q;
 }, ["Chaque hauteur vient de la même proportion d'ombre, et la différence se trouve seulement après que les deux hauteurs sont connues.", "Divise l'ombre de la clôture par l'ombre de la personne pour obtenir la première échelle comme première étape."]);
 
 // PG. L2, 10.17/10.15, CR 3: perimeter of the image after finding the factor from one pair of sides.
@@ -504,7 +520,12 @@ E("u7-gap-perimeter-scale-cr", 7, ["10.17", "10.15"], 2, "gen", function () {
   var ans = Math.round(P * k * 100) / 100;
   var prompt = "Un triangle a des côtés de longueurs " + a + " cm, " + b + " cm et " + c + " cm. Un triangle semblable a le côté correspondant au côté de " + a + " cm qui mesure " + fmtD(ai) + " cm. Quel est le périmètre du triangle semblable, en centimètres ?";
   var sol = "Trouve d'abord le facteur d'échelle à partir des côtés correspondants, puis mets tout le périmètre à l'échelle : \\[ \\begin{aligned} \\text{facteur d'échelle} &= " + fmtD(ai) + " \\div " + a + " = " + fmtD(k) + " \\\\ \\text{périmètre} &= (" + a + " + " + b + " + " + c + ") \\times " + fmtD(k) + " = " + fmtD(ans) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans) + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-perimeter-scale", k: k, P: P });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-perimeter-scale", k: k, P: P });
+  if (a + b > c && a + c > b && b + c > a) {
+    var P1 = u7FitTri([a, b, c], 16, 28, 128, 112), P2 = u7FitTri([a * k, b * k, c * k], 192, 28, 128, 112);
+    q.figure = u7Svg(345, 165, u7Poly(P1, FIG_SHADE) + solSideLabels(P1, [fmtD(c) + " cm", fmtD(a) + " cm", fmtD(b) + " cm"]) + u7Poly(P2, "#ffffff") + solSideLabels(P2, ["?", fmtD(ai) + " cm", "?"]), "Un triangle d'origine et un triangle semblable avec des étiquettes de côtés");
+  }
+  return q;
 }, ["Les périmètres changent par le même facteur que les côtés, et ce facteur vient de la seule paire connue.", "Divise le côté de l'image par son côté original correspondant comme première étape."]);
 
 
@@ -516,7 +537,10 @@ E("u8-gap-reflex-arc-cr", 8, ["9.7"], 2, "gen", function () {
   var central = 2 * ins, ans = 360 - central;
   var prompt = "Les points A, B et C sont sur un cercle de centre O. L'angle inscrit ACB mesure \\(" + ins + "^{\\circ}\\) et il intercepte l'arc mineur AB. Trouve la mesure de l'arc réflexe AB, en degrés.";
   var sol = "L'angle au centre sur l'arc mineur vaut d'abord le double de l'angle inscrit ; l'arc réflexe est ce qui reste du cercle complet : \\[ \\begin{aligned} \\text{arc mineur AB} &= 2 \\times " + ins + "^{\\circ} = " + central + "^{\\circ} \\\\ \\text{arc réflexe AB} &= 360^{\\circ} - " + central + "^{\\circ} = " + ans + "^{\\circ} \\end{aligned} \\] La réponse est <b>\\(" + ans + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-reflex-arc", ins: ins });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-reflex-arc", ins: ins });
+  var A = u8P(270 - ins), B = u8P(270 + ins), C = u8P(90);
+  q.figure = u8Fig({ pts: { A: A, B: B, C: C }, segs: [["O", "A"], ["O", "B"], ["C", "A"], ["C", "B"]], angles: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B), r: 0.3, lr: 0.55, label: fmtD(ins) + "°" }] });
+  return q;
 }, ["Un angle inscrit et son angle au centre sont liés, et un arc réflexe complète le tour complet.", "Double l'angle inscrit pour obtenir l'arc mineur comme première étape."]);
 
 // PG. L2, 9.5, CR 2: angle in a cyclic quadrilateral after combining the parts split by a diagonal.
@@ -525,7 +549,10 @@ E("u8-gap-cyclic-diag-cr", 8, ["9.5"], 2, "gen", function () {
   var ans = 180 - p - q;
   var prompt = "Les points A, B, C et D sont sur un cercle dans cet ordre, alors ABCD est un quadrilatère cyclique. La diagonale AC partage l'angle A en deux parties : l'angle BAC mesure \\(" + p + "^{\\circ}\\) et l'angle CAD mesure \\(" + q + "^{\\circ}\\). Trouve la mesure de l'angle BCD, en degrés.";
   var sol = "Combine d'abord les deux parties de l'angle A ; les angles opposés d'un quadrilatère cyclique totalisent \\(180^{\\circ}\\) : \\[ \\begin{aligned} \\angle A &= " + p + "^{\\circ} + " + q + "^{\\circ} = " + (p + q) + "^{\\circ} \\\\ \\angle BCD &= 180^{\\circ} - " + (p + q) + "^{\\circ} = " + ans + "^{\\circ} \\end{aligned} \\] La réponse est <b>\\(" + ans + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-cyclic-diag", p: p, q: q });
+  var qq = numq(prompt, ans, 0.01, sol, { mode: "gap-cyclic-diag", p: p, q: q });
+  var A = u8P(200), B = u8P(300), C = u8P(300 + 2 * p), D = u8P(300 + 2 * p + 2 * q);
+  qq.figure = u8Fig({ pts: { A: A, B: B, C: C, D: D }, segs: [["A", "B"], ["B", "C"], ["C", "D"], ["D", "A"], ["A", "C"]], angles: [{ v: "A", a1: u8Dir(A, B), a2: u8Dir(A, C), r: 0.26, lr: 0.46, label: fmtD(p) + "°" }, { v: "A", a1: u8Dir(A, C), a2: u8Dir(A, D), r: 0.4, lr: 0.6, label: fmtD(q) + "°" }] });
+  return qq;
 }, ["L'angle A est donné en deux morceaux, et la propriété des quadrilatères cycliques s'applique à l'angle entier.", "Additionne les deux parties de l'angle A ensemble comme première étape."]);
 
 // PG. L2, 9.7/9.5, CR 3: central angle found from a tangent-radius triangle, then halved for the inscribed angle.
@@ -537,7 +564,14 @@ E("u8-gap-tangent-central-cr", 8, ["9.7", "9.5"], 2, "gen", function () {
     ? "Une droite passant par T et P est une tangente à un cercle de centre O, et elle touche le cercle en T. La droite de O passant par P recoupe le cercle en D. Dans le triangle OTP, l'angle en P mesure \\(" + g + "^{\\circ}\\). Le point C est sur l'arc majeur TD. Trouve la mesure de l'angle inscrit TCD, en degrés."
     : "D'un point P à l'extérieur d'un cercle de centre O, une tangente touche le cercle en T, et la droite de P passant par O recoupe le cercle en D. Dans le triangle OTP, l'angle en P mesure \\(" + g + "^{\\circ}\\). Le point C est sur l'arc majeur TD. Trouve la mesure de l'angle inscrit TCD, en degrés.";
   var sol = "Le rayon vers un point de tangence est perpendiculaire à la tangente, alors le triangle OTP est rectangle en T. Trouve d'abord l'angle au centre, puis prends sa moitié : \\[ \\begin{aligned} \\angle TOD &= 180^{\\circ} - 90^{\\circ} - " + g + "^{\\circ} = " + central + "^{\\circ} \\\\ \\angle TCD &= " + central + "^{\\circ} \\div 2 = " + fmtD(ans) + "^{\\circ} \\end{aligned} \\] La réponse est <b>\\(" + fmtD(ans) + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-tangent-central", g: g });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-tangent-central", g: g });
+  var tAng = pick([200, 230, 260, 290, 320]);
+  var sgn = Math.random() < 0.5 ? 1 : -1;
+  var T = u8P(tAng), U = u8P(tAng + sgn * central);
+  var sc = 1 / Math.cos(central * Math.PI / 180);
+  var P = [U[0] * sc, U[1] * sc], D = U, C = u8P(tAng + sgn * central / 2 + 180);
+  q.figure = u8Fig({ pts: { T: T, P: P, D: D, C: C }, segs: [["O", "T"], ["O", "P"], ["C", "T"], ["C", "D"]], tangentSeg: { at: "T", to: "P", beyond: 1.05, back: 0.3 }, rightMarks: [{ v: "T", a1: u8Dir(T, [0, 0]), a2: u8Dir(T, P) }], angles: [{ v: "P", a1: u8Dir(P, T), a2: u8Dir(P, [0, 0]), r: 0.3, lr: 0.55, label: fmtD(g) + "°" }, { v: "C", a1: u8Dir(C, T), a2: u8Dir(C, D), r: 0.3, lr: 0.55, label: "?" }] });
+  return q;
 }, ["Deux faits sur les cercles s'enchaînent ici : le fait de la tangente construit le triangle, et l'angle inscrit vaut la moitié de l'angle au centre.", "Utilise l'angle droit en T pour trouver l'angle au centre TOD comme première étape."]);
 
 // PG. L2, 9.6/9.5, CR 3: chord radius where the perpendicular-from-centre bisection comes before Pythagoras.
@@ -552,7 +586,10 @@ E("u8-gap-chord-bisect-cr", 8, ["9.6", "9.5"], 2, "gen", function () {
     ? "AB est une corde d'un cercle de centre O. La corde AB mesure " + chord + " cm de long, et la distance perpendiculaire de O à la corde est de " + d + " cm. Trouve le rayon du cercle, en centimètres."
     : "Une fenêtre circulaire a pour centre O, et une barre droite AB qui traverse la fenêtre est une corde du cercle. La barre AB mesure " + chord + " cm de long, et la distance perpendiculaire de O à la barre est de " + d + " cm. Trouve le rayon de la fenêtre, en centimètres.";
   var sol = "La perpendiculaire depuis le centre coupe d'abord la corde en deux ; ensuite le rayon est l'hypoténuse du triangle rectangle : \\[ \\begin{aligned} \\text{moitié de la corde} &= " + chord + " \\div 2 = " + half + " \\\\ r^{2} &= " + d + "^{2} + " + half + "^{2} = " + (d * d + half * half) + " \\\\ r &= " + r + " \\end{aligned} \\] La réponse est <b>" + r + " cm</b>.";
-  return numq(prompt, r, 0.01, sol, { mode: "gap-chord-bisect", half: half, d: d, r: r });
+  var q = numq(prompt, r, 0.01, sol, { mode: "gap-chord-bisect", half: half, d: d, r: r });
+  var A = [-half / r, d / r], B = [half / r, d / r];
+  q.figure = u8Fig({ pts: { A: A, B: B }, segs: [["A", "B"], ["O", "A"]], perp: ["A", "B"], sideLabs: [{ a: "A", b: "B", text: fmtD(chord) + " cm", off: 15 }, { a: "O", b: "M", text: fmtD(d) + " cm", off: 15 }, { a: "O", b: "A", text: "?", off: 15 }] });
+  return q;
 }, ["Le rayon est l'hypoténuse d'un triangle rectangle dont un côté vaut seulement la moitié de la corde donnée.", "Prends la moitié de la longueur de la corde comme première étape."]);
 
 // PG. L2, 9.8/9.5, CR 3: semicircle right angle first, then Pythagoras for the third side.
@@ -566,7 +603,11 @@ E("u8-gap-semicircle-pyth-cr", 8, ["9.8", "9.5"], 2, "gen", function () {
     ? "AB est un diamètre d'un cercle, et C est un point sur le cercle. Le diamètre AB mesure " + hyp + " cm de long et le côté AC mesure " + given + " cm de long. Trouve la longueur de BC, en centimètres."
     : "Une arche en demi-cercle a un diamètre AB de " + hyp + " cm. Le point C est sur l'arche, et la distance en ligne droite AC est de " + given + " cm. Trouve la distance en ligne droite BC, en centimètres.";
   var sol = "Un angle inscrit dans un demi-cercle est un angle droit, alors le triangle ABC est rectangle en C et Pythagore s'applique : \\[ \\begin{aligned} BC^{2} &= " + hyp + "^{2} - " + given + "^{2} = " + (hyp * hyp - given * given) + " \\\\ BC &= " + ans + " \\end{aligned} \\] La réponse est <b>" + ans + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-semicircle-pyth", given: given, hyp: hyp });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-semicircle-pyth", given: given, hyp: hyp });
+  var gam = Math.acos(Math.max(-1, Math.min(1, 2 * (given / hyp) * (given / hyp) - 1))) * 180 / Math.PI;
+  var A = [-1, 0], B = [1, 0], C = u8P(gam);
+  q.figure = u8Fig({ pts: { A: A, B: B, C: C }, segs: [["A", "B"], ["A", "C"], ["B", "C"]], rightMarks: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B) }], sideLabs: [{ a: "A", b: "C", text: fmtD(given) + " cm", off: 15 }, { a: "B", b: "C", text: "?", off: 15 }] });
+  return q;
 }, ["Le diamètre te dit que le triangle est rectangle avant de pouvoir trouver un côté.", "Remarque que l'angle C est un angle droit parce qu'il est dans un demi-cercle, comme première étape."]);
 
 // PG. L2, 9.7, SR: an angle requiring two circle theorems in sequence, with single-theorem distractors.
@@ -578,12 +619,17 @@ E("u8-gap-two-theorems-mc", 8, ["9.7"], 2, "gen", function () {
   function deg(v) { return "\\(" + v + "^{\\circ}\\)"; }
   var prompt = "Les points " + P1 + ", " + P2 + ", " + P3 + " et " + P4 + " sont sur un cercle de centre O. Le point " + P3 + " est sur l'arc majeur " + P1 + P2 + " et l'angle inscrit " + P1 + P3 + P2 + " mesure " + deg(p) + ". Le point " + P4 + " est sur l'arc mineur " + P1 + P2 + ". Quelle est la mesure de l'angle inscrit " + P1 + P4 + P2 + " ?";
   var sol = "L'arc mineur est d'abord fixé par l'angle au centre, et l'angle sur l'arc mineur utilise l'angle au centre réflexe : \\[ \\begin{aligned} \\text{angle au centre mineur} &= 2 \\times " + p + "^{\\circ} = " + (2 * p) + "^{\\circ} \\\\ \\text{angle au centre réflexe} &= 360^{\\circ} - " + (2 * p) + "^{\\circ} = " + (360 - 2 * p) + "^{\\circ} \\\\ \\angle " + P1 + P4 + P2 + " &= " + (360 - 2 * p) + "^{\\circ} \\div 2 = " + ans + "^{\\circ} \\end{aligned} \\] La réponse est <b>" + deg(ans) + "</b>.";
-  return mcq(prompt,
+  var q = mcq(prompt,
     { t: deg(ans), fb: "Exact : l'angle au centre réflexe est divisé en deux, ce qui demande l'étape du doublement et l'étape de l'angle réflexe." },
     [{ t: deg(2 * p), fb: "C'est l'angle au centre mineur tout seul ; l'angle inscrit doit encore venir de l'angle réflexe sur l'autre arc." },
      { t: deg(p), fb: "Cela répète l'angle donné, mais le point demandé est sur l'arc opposé, alors son angle n'est pas le même." },
      { t: deg(360 - 2 * p), fb: "C'est l'angle au centre réflexe lui-même ; un angle inscrit vaut la moitié de son angle au centre, alors il faut encore diviser en deux." }],
     sol, { mode: "gap-two-theorems", p: p });
+  var pts = {};
+  var A = u8P(270 - p), B = u8P(270 + p), C3 = u8P(90), D4 = u8P(270);
+  pts[P1] = A; pts[P2] = B; pts[P3] = C3; pts[P4] = D4;
+  q.figure = u8Fig({ pts: pts, segs: [[P3, P1], [P3, P2], [P4, P1], [P4, P2]], angles: [{ v: P3, a1: u8Dir(C3, A), a2: u8Dir(C3, B), r: 0.3, lr: 0.55, label: fmtD(p) + "°" }, { v: P4, a1: u8Dir(D4, A), a2: u8Dir(D4, B), r: 0.3, lr: 0.55, label: "?" }] });
+  return q;
 }, ["Le point est sur l'arc opposé, alors l'angle au centre réflexe est celui qui lui appartient.", "Double l'angle inscrit donné pour obtenir l'angle au centre mineur comme première étape."]);
 
 /* Unit 9: Probability and Statistics */
