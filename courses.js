@@ -1881,5 +1881,240 @@ window.COURSES = {
     "6": "<b>Pythagorean Identities:</b> \\(\\sin^{2}\\theta+\\cos^{2}\\theta=1\\); \\(\\cot^{2}\\theta+1=\\csc^{2}\\theta\\); \\(1+\\tan^{2}\\theta=\\sec^{2}\\theta\\).",
     "8": "<b>Summation Formulae:</b> \\(\\sum_{i=1}^{n}i=\\dfrac{n(n+1)}{2}\\); \\(\\sum_{i=1}^{n}i^{2}=\\dfrac{n(n+1)(2n+1)}{6}\\); \\(\\sum_{i=1}^{n}i^{3}=\\left[\\dfrac{n(n+1)}{2}\\right]^{2}\\)."
   }
+},
+
+"math-2200": {
+  id: "math-2200",
+  title: "Math 2200 Review: Practice Question Bank",
+  shortName: "Math 2200",
+  storagePrefix: "m2200",
+  reportName: "Math 2200",
+  language: "en",
+  bankFile: "math-2200.js",
+  subject: "Mathematics",
+  grade: 11,
+  listed: false,
+
+  units: {
+    "1": "Trigonometry",
+    "2": "Quadratic Functions",
+    "3": "Quadratic Equations",
+    "4": "Radical Expressions and Equations",
+    "5": "Rational Expressions and Equations",
+    "6": "Absolute Value and Reciprocal Functions",
+    "7": "Systems of Equations",
+    "8": "Linear and Quadratic Inequalities",
+    "9": "Sequences and Series"
+  },
+
+  /* All 134 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-2200-review/index.html,
+     UNITS at lines 647 to 649, INDICATORS at lines 650 to 785). */
+  indicators: {
+    "1.1": "Express an entire radical with a numerical radicand as a mixed radical",
+    "1.2": "Express a mixed radical with a numerical radicand as an entire radical",
+    "1.3": "Express an entire radical with a variable radicand as a mixed radical",
+    "1.4": "Express a mixed radical with a variable radicand as an entire radical",
+    "1.5": "Determine the distance of two real numbers of the form ±a, a a real number, from 0 on a number line, and relate that distance to the absolute value of a (|a|)",
+    "1.6": "Determine the absolute value of a positive or negative real number",
+    "1.7": "Explain, using examples, how distance between two points on a number line can be expressed in terms of absolute value",
+    "1.8": "Compare and order the absolute values of real numbers in a given set",
+    "1.9": "Compare and order radical expressions with numerical radicands in a given set",
+    "1.10": "Determine the absolute value of a numerical expression",
+    "1.11": "Explain, using examples, that (−x)2 = x2, √x2 = |x|, and √x2 ≠ ±x e.g., √9 ≠ ±3",
+    "1.12": "Identify the values of the variable for which a given radical expression is defined",
+    "1.13": "Perform one or more operations to simplify radical expressions with numerical or variable radicands",
+    "1.14": "Rationalize the denominator of a rational expression with monomial or binomial denominators",
+    "1.15": "Describe the relationship between rationalizing a binomial denominator of a rational expression and the product of the factors of a difference of squares expression",
+    "1.16": "Determine any restrictions on values for the variable in a radical equation",
+    "1.17": "Determine the roots of a radical equation algebraically, and explain the process used to solve the equation",
+    "1.18": "Verify, by substitution, that the values determined in solving a radical equation algebraically are roots of the equation",
+    "1.19": "Explain why some roots determined in solving a radical equation algebraically are extraneous",
+    "1.20": "Solve problems by modeling a situation using a radical equation",
+    "3.1": "Explain why a given value is non-permissible for a given rational expression",
+    "3.2": "Determine the non-permissible values for a rational expression",
+    "3.3": "Compare the strategies for writing equivalent forms of rational expressions to the strategies for writing equivalent forms of rational numbers",
+    "3.4": "Multiply the numerator and denominator of a rational expression by the same factor (limited to a monomial or a binomial) to write an equivalent rational expression, and state the non-permissible values of the equivalent rational expression",
+    "3.5": "Simplify a rational expression (numerators and denominators are monomials, binomials or trinomials)",
+    "3.6": "Explain why the non-permissible values of a given rational expression and its simplified form are the same",
+    "3.7": "Identify and correct errors in a given simplification of a rational expression, and explain the reasoning",
+    "3.8": "Compare the strategies for performing a given operation on rational expressions to the strategies for performing the same operation on rational numbers",
+    "3.9": "Determine the non-permissible values when performing operations on rational expressions",
+    "3.10": "Determine, in simplified form, the sum or difference of rational expressions with the same denominator",
+    "3.11": "Determine, in simplified form, the sum or difference of rational expressions in which the denominators are not the same and which may or may not contain common factors",
+    "3.12": "Determine, in simplified form, the product or quotient of rational expressions",
+    "3.13": "Simplify an expression that involves two or more operations on rational expressions",
+    "3.14": "Factor a given polynomial expression that requires the identification of common factors",
+    "3.15": "Factor a given polynomial expression of the form ax^2 + bx + c (a not 0) or a^2x^2 - b^2y^2 (a, b not 0), where a, b and c are rational numbers",
+    "3.16": "Determine whether a given binomial is a factor for a given polynomial expression, and explain why or why not",
+    "3.17": "Factor a given polynomial expression of the form a^2(f(x))^2 - b^2(g(y))^2, a not 0, b not 0",
+    "3.18": "Determine the non-permissible values for the variable in a rational equation",
+    "3.19": "Determine the solution to a rational equation algebraically, and explain the strategy used to solve the equation",
+    "3.20": "Explain why a value obtained in solving a rational equation may not be a solution of the equation",
+    "3.21": "Solve problems by modeling a situation using a rational equation",
+    "4.1": "Sketch the graph of y = |f (x)|; state the intercepts, domain and range; and explain the strategy used",
+    "4.2": "Create a table of values for y = |f (x)|, given a table of values for y = f (x)",
+    "4.3": "Generalize a rule for writing absolute value functions in piecewise notation",
+    "4.4": "Solve an absolute value equation graphically, with or without technology",
+    "4.5": "Solve a problem that involves an absolute value function",
+    "4.6": "Solve, algebraically, an equation with a single absolute value, and verify the solution",
+    "4.7": "Determine and correct errors in a solution to an absolute value equation",
+    "4.8": "Explain why the absolute value equation |f (x)| < 0 has no solution",
+    "4.9": "Explain, using examples, the relationship among the roots of a quadratic equation, the zeros of the corresponding quadratic function and the x-intercepts of the graph of the quadratic function",
+    "4.10": "Solve a quadratic equation of the form ax^2 + bx + c = 0 by using strategies such as determining square roots, factoring, completing the square, applying the quadratic formula, or graphing its corresponding function",
+    "4.11": "Derive the quadratic formula, using deductive reasoning",
+    "4.12": "Identify and correct errors in a solution to a quadratic equation",
+    "4.13": "Select a method for solving a quadratic equation, justify the choice, and verify the solution",
+    "4.14": "Explain, using examples, how the discriminant may be used to determine whether a quadratic equation has two, one, or no real roots, and relate the number of zeros to the graph of the corresponding quadratic function",
+    "4.15": "Solve a problem by analyzing a quadratic equation, or by determining and analyzing a quadratic equation",
+    "4.16": "Explain, using examples, how test points can be used to determine the solution region that satisfies a linear inequality",
+    "4.17": "Explain, using examples, when a solid or broken line should be used in the solution for a linear inequality",
+    "4.18": "Sketch, with or without technology, the graph of a linear inequality",
+    "4.19": "Solve a problem that involves a linear inequality",
+    "4.20": "Explain, using examples, how test points can be used to determine the solution region that satisfies a quadratic inequality",
+    "4.21": "Explain, using examples, when a solid or broken line should be used in the solution for a quadratic inequality",
+    "4.22": "Sketch, with or without technology, the graph of a quadratic inequality",
+    "4.23": "Solve a problem that involves a quadratic inequality",
+    "4.24": "Determine the solution of a quadratic inequality in one variable, using strategies such as case analysis, graphing, roots and test points, or sign analysis; and explain the strategy used",
+    "4.25": "Represent and solve a problem that involves a quadratic inequality in one variable",
+    "4.26": "Interpret the solution to a problem that involves a quadratic inequality in one variable",
+    "4.27": "Explain, using examples, how the values of a and q may be used to determine whether a quadratic function has zero, one or two x-intercepts",
+    "4.28": "Sketch the graph of y = a(x − p)2 + q, using transformations, and identify the vertex, domain and range, direction of opening, axis of symmetry and x- and y-intercepts",
+    "4.29": "Compare the graphs of a set of functions of the form y = ax2 to the graph of y = x2, and generalize, using inductive reasoning, a rule about the effect of a",
+    "4.30": "Compare the graphs of a set of functions of the form y = (x − p)2 to the graph of y = x2, and generalize, using inductive reasoning, a rule about the effect of p",
+    "4.31": "Compare the graphs of a set of functions of the form y = x2 + q to the graph of y = x2, and generalize, using inductive reasoning, a rule about the effect of q",
+    "4.32": "Sketch the graph of a quadratic function given in the form y = ax2 + bx + c",
+    "4.33": "Compare the graph of y = 1/f(x) to the graph of y = f(x)",
+    "4.34": "will have vertical asymptotes; and describe their relationship to the non-permissible values of the related rational expression",
+    "4.35": "given y = f (x) as a function or a graph, and explain the strategies used",
+    "4.36": "as a function or a graph, and explain the strategies used",
+    "4.37": "Explain why a function given in the form y = a(x - p)^2 + q is a quadratic function",
+    "4.38": "Determine the coordinates of the vertex for a quadratic function of the form y = a(x - p)^2 + q, and verify using technology",
+    "4.39": "Generalize, using inductive reasoning, a rule for determining the coordinates of the vertex for quadratic functions of the form y = a(x - p)^2 + q",
+    "4.40": "Write a quadratic function in the form y = a(x - p)^2 + q for a given graph or a set of characteristics of a graph",
+    "4.41": "Determine the characteristics of a quadratic function given in the form y = ax2 + bx + c, and explain the strategy used",
+    "4.42": "Explain the reasoning for the process of completing the square as shown in a given example",
+    "4.43": "Write a quadratic function given in the form y = ax2 + bx + c as a quadratic function in the form y = a(x − p)2 + q by completing the square",
+    "4.44": "Identify, explain and correct errors in an example of completing the square",
+    "4.45": "Verify, with or without technology, that a quadratic function in the form y = ax^2 + bx + c represents the same function as a quadratic function in the form y = a(x - p)^2 + q",
+    "4.46": "Write a quadratic function that models a given situation, and explain any assumptions made",
+    "4.47": "Solve a problem, with or without technology, by analyzing a quadratic function",
+    "4.48": "Explain the meaning of the points of intersection of a system of linear-quadratic or quadratic-quadratic equations",
+    "4.49": "Explain, using examples, why a system of linear-quadratic or quadratic-quadratic equations may have zero, one, two or an infinite number of solutions",
+    "4.50": "Determine and verify the solution(s) of a system of linear-quadratic or quadratic-quadratic equations graphically, using technology",
+    "4.51": "Determine and verify the real solution(s) of a system of linear-quadratic or quadratic-quadratic equations algebraically",
+    "4.52": "Model a situation, using a system of linear-quadratic or quadratic-quadratic equations",
+    "4.53": "Relate a system of linear-quadratic or quadratic-quadratic equations to the context of a given problem",
+    "4.54": "Solve a problem that involves a system of linear-quadratic or quadratic-quadratic equations, and explain the strategy used",
+    "4.55": "Identify the assumption(s) made when defining an arithmetic sequence or series",
+    "4.56": "Provide and justify an example of an arithmetic sequence",
+    "4.57": "Determine a rule for finding the general term of an arithmetic sequence",
+    "4.58": "Determine t1, d, n, or tn in a problem that involves an arithmetic sequence",
+    "4.59": "Solve a problem that involves an arithmetic sequence or series",
+    "4.60": "Describe the relationship between arithmetic sequences and linear functions",
+    "4.61": "Determine a rule for finding the sum of n terms of an arithmetic series",
+    "4.62": "Determine t1, d, n, or Sn in a problem that involves an arithmetic series",
+    "4.63": "Identify assumptions made when identifying a geometric sequence or series",
+    "4.64": "Provide and justify an example of a geometric sequence",
+    "4.65": "Determine a rule for finding the general term of a geometric sequence",
+    "4.66": "Determine t1, r, n, or tn in a problem that involves a geometric sequence",
+    "4.67": "Determine a rule for finding the sum of n terms of a geometric series",
+    "4.68": "Determine t1, r, n, or Sn in a problem that involves a geometric series",
+    "4.69": "Solve a problem that involves a geometric sequence or series",
+    "4.70": "Determine if a given a geometric series is convergent or divergent",
+    "4.71": "Generalize, using inductive reasoning, a rule for determining the sum of an infinite geometric series",
+    "7.1": "Sketch a diagram to represent a problem that involves a triangle without a right angle",
+    "7.2": "Solve, using primary trigonometric ratios, a triangle that is not a right triangle",
+    "7.3": "Explain the steps in a given proof of the sine law and cosine law",
+    "7.4": "Sketch a diagram and solve a problem, using the sine law",
+    "7.5": "Describe and explain situations in which a problem may have no solution, one solution or two solutions",
+    "7.6": "Sketch a diagram and solve a problem, using the cosine law",
+    "7.7": "Sketch an angle in standard position, given the measure of the angle",
+    "7.8": "Determine the quadrant in which a given angle in standard position terminates",
+    "7.9": "Determine the reference angle for an angle in standard position",
+    "7.10": "Explain, using examples, how to determine the angles from 0° to 360° that have the same reference angle as a given angle",
+    "7.11": "Illustrate, using examples, that any angle from 90° to 360° is the reflection in the x-axis and/or the y-axis of its reference angle",
+    "7.12": "Draw an angle in standard position given any point P (x, y) on the terminal arm of the angle",
+    "7.13": "Illustrate, using examples, that the points P (x, y), P (-x, y), P (-x, -y) and P (x, -y) are points on the terminal arms of angles in standard position that have the same reference angle",
+    "7.14": "Determine, using the Pythagorean theorem, the distance from the origin to a point P (x, y) on the terminal arm of an angle",
+    "7.15": "Determine the value of sin θ, cos θ, or tan θ given any point P (x, y) on the terminal arm of angle θ",
+    "7.16": "Determine the sign of a given trigonometric ratio for a given angle, without the use of technology, and explain",
+    "7.17": "Sketch a diagram to represent a problem",
+    "7.18": "Determine, without the use of technology, the value of sin θ, cos θ, or tan θ given any point P (x, y) on the terminal arm of angle θ, where θ = 0°, 90°, 180°, 270° or 360°",
+    "7.19": "Solve, for all values of θ, an equation of the form sin θ = a or cos θ = a, where −1 ≤ a ≤ 1, and an equation of the form tan θ = a, where a is a real number",
+    "7.20": "Determine the exact value of the sine, cosine or tangent of a given angle with a reference angle of 30°, 45°or 60°",
+    "7.21": "Describe patterns in and among the values of the sine, cosine and tangent ratios for angles from 0° to 360°",
+    "7.22": "Solve a contextual problem, using trigonometric ratios"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at lines 786 to 796); it agrees exactly with the
+     codes the bank entries themselves carry. */
+  unitInd: {
+    "1": ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14", "7.15", "7.16", "7.17", "7.18", "7.19", "7.20", "7.21", "7.22"],
+    "2": ["4.27", "4.28", "4.29", "4.30", "4.31", "4.32", "4.37", "4.38", "4.39", "4.40", "4.41", "4.42", "4.43", "4.44", "4.45", "4.46", "4.47"],
+    "3": ["3.14", "3.15", "3.16", "3.17", "4.9", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15"],
+    "4": ["1.1", "1.2", "1.3", "1.4", "1.9", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18", "1.19", "1.20"],
+    "5": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.18", "3.19", "3.20", "3.21"],
+    "6": ["1.5", "1.6", "1.7", "1.8", "1.10", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.33", "4.34", "4.35", "4.36"],
+    "7": ["4.48", "4.49", "4.50", "4.51", "4.52", "4.53", "4.54"],
+    "8": ["4.16", "4.17", "4.18", "4.19", "4.20", "4.21", "4.22", "4.23", "4.24", "4.25", "4.26"],
+    "9": ["4.55", "4.56", "4.57", "4.58", "4.59", "4.60", "4.61", "4.62", "4.63", "4.64", "4.65", "4.66", "4.67", "4.68", "4.69", "4.70", "4.71"]
+  },
+
+  /* The two presets, labels and unit scopes verbatim from the
+     standalone app (builder markup lines 286 to 288; handlers at
+     lines 8597 to 8599). Each preset also sets the level mix, as
+     the standalone's preset buttons do: both use 20/60/20. The
+     face scope for the final preset reads "End-of-course review:
+     Units 5 to 9" in the standalone (refreshFace, lines 6518 to
+     6525), carried here as its faceLabel. The standalone also
+     ships an "All units" preset button over the same nine units
+     the shell's All wiring selects when the config carries no
+     allUnits key, so the All preset needs no entry here. */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8, 9], mix: [20, 60, 20], label: "Final review (Units 5 to 9)", faceLabel: "End-of-course review (Units 5 to 9)" }
+  },
+
+  /* The standalone builder's own default level mix (its level
+     inputs ship at 20/60/20, lines 369 to 371). */
+  defaultMix: [20, 60, 20],
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (math-2200-review/index.html, composeExam, lines
+     7424 to 7470). That composer is the pooled composer Math
+     3200, 3201 and 3208 use, byte-identical to Math 3208's: every
+     multi-unit paper is 50 marks,
+     27 selected response at levels 10/15/2, and 23 constructed
+     response from Level 2 and Level 3 entries carrying 2 or more
+     marks, with the Level 3 share steered to 8 marks first, then
+     9, then 7 (level totals 10/30/10). Like 3208's, it never
+     backfills a short selected-response level from other levels
+     and has no greedy constructed-response rescue (the two
+     differences from the 3200 and 3201 composers); on this bank
+     the pools fill every slot on the scopes tried (see the
+     compose gate), so the pooled fallback below reproduces it. A single unit composes the
+     unit test (see unitTest). The mid-course scope never caps
+     the pool in this course (the standalone's note at line 6256:
+     Units 1 to 4 whole, no entry carries a post-mid flag), and
+     the bank carries no prior-knowledge indicators (the
+     standalone's isPK is a shim that is always false here, line
+     6624), so neither needs a config key. */
+  exam: {
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at lines 6511 to 6515). The standalone carries
+     panels for Units 1, 3 and 9 only, and has no always-on
+     panel. */
+  panels: {
+    "1": "\\(\\frac{\\sin A}{a}=\\frac{\\sin B}{b}=\\frac{\\sin C}{c}\\)<br>\\(a^{2}=b^{2}+c^{2}-2bc\\cos A\\)<br>\\(\\cos A=\\frac{b^{2}+c^{2}-a^{2}}{2cb}\\)",
+    "3": "\\(x=\\frac{-b\\pm\\sqrt{b^{2}-4ac}}{2a}\\)",
+    "9": "\\(t_{n}=t_{1}+(n-1)d,\\ n\\in N\\)<br>\\(S_{n}=\\frac{n}{2}(t_{1}+t_{n})\\)<br>\\(t_{n}=t_{1}\\left(r^{n-1}\\right),\\ n\\in N\\)<br>\\(S_{n}=\\frac{t_{1}\\left(r^{n}-1\\right)}{r-1}\\)<br>\\(S_{n}=\\frac{t_{1}}{1-r}\\)"
+  }
 }
 };
