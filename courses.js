@@ -1145,5 +1145,262 @@ window.COURSES = {
     "8": "<b>Combinations:</b> \\({}_nC_r = \\binom{n}{r} = \\frac{n!}{(n-r)!\\,r!}\\)<br><b>Permutations:</b> \\({}_nP_r = \\frac{n!}{(n-r)!}\\)<br><b>Permutations with repeated items:</b> \\(\\frac{n!}{a!\\,b!\\,c!\\,\\ldots}\\)",
     "9": "<b>Probability of A or B:</b> \\(P(A \\cup B) = P(A) + P(B) - P(A \\cap B)\\)<br><b>Probability of A and B:</b> \\(P(A\\ \\text{and}\\ B) = P(A) \\times P(B)\\)<br><b>Conditional probability:</b> \\(P(A \\cap B) = P(A) \\cdot P(B \\mid A)\\)"
   }
+},
+
+"math-3202": {
+  id: "math-3202",
+  title: "Math 3202 Review: Practice Question Bank",
+  shortName: "Math 3202",
+  storagePrefix: "m3202",
+  reportName: "Math 3202",
+  language: "en",
+  bankFile: "math-3202.js",
+  subject: "Mathematics",
+  grade: 12,
+  listed: false,
+
+  units: {
+    "1": "Measurement",
+    "2": "Linear Relationships",
+    "3": "Graphing Data",
+    "4": "Working with Data",
+    "5": "Major Financial Purchases",
+    "6": "Businesses and Taxes",
+    "7": "Properties of Figures",
+    "8": "Transformations",
+    "9": "Trigonometry",
+    "10": "Probability"
+  },
+
+  /* All 74 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-3202-review/index.html,
+     INDICATORS at line 652; UNITS at line 651). */
+  indicators: {
+    "1.1": "Describe and explain various options for buying, leasing and leasing to buy a vehicle",
+    "1.2": "Justify a decision related to buying, leasing or leasing to buy a vehicle, based on factors such as personal finances, intended use, maintenance, warranties, mileage and insurance",
+    "1.3": "Solve, with or without technology, problems that involve the purchase, lease or lease to purchase a vehicle",
+    "1.4": "Determine costs of operating a vehicle, including fixed costs, such as extended warranty, insurance and licensing, and ongoing costs, such as gas and maintenance",
+    "1.5": "Identify expenses in operating a small business",
+    "1.6": "Identify feasible small business options for a given community",
+    "1.7": "Generate options that might improve the profitability of a small business",
+    "1.8": "Determine the profit, loss and break-even point for a small business",
+    "1.9": "Explain factors, such as seasonal variations and hours of operation, that might impact the profitability of a small business",
+    "1.10": "Compare rental accommodation options, and explain any differences that might exist",
+    "1.11": "Identify the costs associated with purchasing and maintaining a home",
+    "1.12": "Compare the cost of renting and owning accommodations: within the province; within other provinces and territories",
+    "1.13": "Explain why most Canadians are expected to submit an annual income tax return",
+    "1.14": "Identify and explain: forms and documents required when filing an income tax return; common tax credits; common tax deductions",
+    "1.15": "Examine simple income tax returns completed with or without the use of technology",
+    "2.1": "Identify and describe the characteristics of a linear relation represented in a graph, table of values or number pattern",
+    "2.2": "Sort a set of graphs, tables of values and/or number patterns into linear and nonlinear relations",
+    "2.3": "Explain why the points should or should not be connected on the graph for a context",
+    "2.4": "Relate slope and rate of change to linear relations",
+    "2.5": "Identify a linear equation as having a direct or partial variation relationship",
+    "2.6": "Create a table of values for a given equation of a linear relation",
+    "2.7": "Solve contextual problems that involve the application of a formula for a linear relation",
+    "2.8": "Write an equation for a given context, including direct or partial variation",
+    "3.1": "Explain why, in a given context, a certain degree of precision is required",
+    "3.2": "Explain why, in a certain context, a certain degree of accuracy is required",
+    "3.3": "Explain, using examples, the difference between precision and accuracy",
+    "3.4": "Analyze precision and accuracy in a contextual problem",
+    "3.5": "Compare the degree of accuracy of two given instruments used to measure the same attribute",
+    "3.6": "Describe, using examples, the limitations of measuring instruments used in a specific trade or industry",
+    "3.7": "Relate the degree of precision to the uncertainty of a given measure",
+    "3.8": "Calculate maximum and minimum values, using a given degree of tolerance in context",
+    "3.9": "Solve problems that involve precision, accuracy or tolerance",
+    "3.10": "Describe and illustrate angle properties of triangles",
+    "3.11": "Describe and illustrate angle properties of quadrilaterals",
+    "3.12": "Describe and illustrate angle properties of regular polygons",
+    "3.13": "Explain, using examples, why a given property does or does not apply to certain polygons",
+    "3.14": "Describe and illustrate side length properties of triangles",
+    "3.15": "Describe and illustrate line symmetry in triangles, quadrilaterals and regular polygons",
+    "3.16": "Identify and explain an application of the properties of polygons in construction, industrial, commercial, domestic and artistic contexts",
+    "3.17": "Determine and explain whether a given image is a dilation of another given shape, using the concept of similarity",
+    "3.18": "Draw, with or without technology, a dilation image for a given 2-D shape or 3-D object, and explain how the original 2-D shape or 3-D object and its image are proportional",
+    "3.19": "Identify and describe the applications of transformations in construction, industrial, commercial, domestic and artistic contexts",
+    "3.20": "Solve contextual problems that involve transformations",
+    "3.21": "Draw the image of a 2-D shape that results from a given single transformation",
+    "3.22": "Identify a single transformation that was performed, given the original 2-D shape or 3-D object and its image",
+    "3.23": "Draw the image of a 2-D shape that results from a given combination of successive transformations",
+    "3.24": "Explain the relationship between reflections and lines or planes of symmetry",
+    "3.25": "Create, analyze and describe designs, using translations, rotations and reflections in all four quadrants of the coordinate grid",
+    "5.1": "Solve problems using the sine law, when a diagram is given",
+    "5.2": "Solve problems, using the cosine law, when a diagram is given",
+    "5.3": "Solve problems, using the sine law or cosine law, when a diagram is given",
+    "5.4": "Describe the use of the sine law and cosine law in construction, industrial, commercial and artistic applications",
+    "6.1": "Determine the mean, median and mode for a set of data",
+    "6.2": "Solve contextual problems that involve measures of central tendency",
+    "6.3": "Identify and correct errors in a calculation of a measure of central tendency",
+    "6.4": "Explain, using examples, the advantages and disadvantages of each measure of central tendency",
+    "6.5": "Explain, using examples such as course marks, why some data in a set would be given a greater weighting in determining the mean",
+    "6.6": "Calculate the mean of a set of numbers after allowing the data to have different weightings (weighted mean)",
+    "6.7": "Identify the outlier(s) in a set of data",
+    "6.8": "Explain the effect of outliers on mean, median and mode",
+    "6.9": "Calculate the trimmed mean for a set of data, and justify the removal of the outliers",
+    "6.10": "Explain, using examples from print and other media, how measures of central tendency and outliers are used to provide different interpretations of data",
+    "6.11": "Describe the trends in the graph of a data set, including scatter plots",
+    "6.12": "Solve contextual problems that require interpolation or extrapolation of information",
+    "6.13": "Match given contexts with their corresponding graphs, and explain the reasoning",
+    "6.14": "Create, with or without technology, a graph to represent a given or collected data set",
+    "6.15": "Sort a set of scatter plots according to the trends represented (linear, nonlinear or no trend)",
+    "7.1": "Calculate the probability of an event based on a data set",
+    "7.2": "Express a given probability as a fraction, decimal and percent and in a statement",
+    "7.3": "Explain the difference between odds and probability",
+    "7.4": "Determine the probability of an event, given the odds for or against",
+    "7.5": "Explain, using examples, how decisions may be based on a combination of theoretical probability calculations, experimental results and subjective judgements",
+    "7.6": "Describe and explain the application of probability",
+    "7.7": "Solve contextual problems that involve odds or probability"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 653); it agrees exactly with the codes
+     the bank entries themselves carry. */
+  unitInd: {
+    "1": [
+      "3.1",
+      "3.2",
+      "3.3",
+      "3.4",
+      "3.5",
+      "3.6",
+      "3.7",
+      "3.8",
+      "3.9"
+    ],
+    "2": [
+      "2.1",
+      "2.2",
+      "2.3",
+      "2.4",
+      "2.5",
+      "2.6",
+      "2.7",
+      "2.8"
+    ],
+    "3": [
+      "6.11",
+      "6.12",
+      "6.13",
+      "6.14",
+      "6.15"
+    ],
+    "4": [
+      "6.1",
+      "6.2",
+      "6.3",
+      "6.4",
+      "6.5",
+      "6.6",
+      "6.7",
+      "6.8",
+      "6.9",
+      "6.10"
+    ],
+    "5": [
+      "1.1",
+      "1.2",
+      "1.3",
+      "1.4",
+      "1.10",
+      "1.11",
+      "1.12"
+    ],
+    "6": [
+      "1.5",
+      "1.6",
+      "1.7",
+      "1.8",
+      "1.9",
+      "1.13",
+      "1.14",
+      "1.15"
+    ],
+    "7": [
+      "3.10",
+      "3.11",
+      "3.12",
+      "3.13",
+      "3.14",
+      "3.15",
+      "3.16"
+    ],
+    "8": [
+      "3.17",
+      "3.18",
+      "3.19",
+      "3.20",
+      "3.21",
+      "3.22",
+      "3.23",
+      "3.24",
+      "3.25"
+    ],
+    "9": [
+      "5.1",
+      "5.2",
+      "5.3",
+      "5.4"
+    ],
+    "10": [
+      "7.1",
+      "7.2",
+      "7.3",
+      "7.4",
+      "7.5",
+      "7.6",
+      "7.7"
+    ]
+  },
+
+  /* Presets: the standalone ships exactly one, "All units", on its
+     presetAll button (builder markup line 287; handler line 7905,
+     selecting Units 1 to 10 with no level mix change; the builder
+     level inputs ship at the 20/60/20 default, lines 368 to 370).
+     The shell's All wiring selects every unit in the course when
+     the config carries no allUnits key, which is the same ten
+     units, so the All preset needs no entry here. There is no
+     mid-course or final preset in this course: the shell hides
+     both buttons for a course whose config names neither. */
+  presets: {},
+
+  /* Exam blueprint, translated from the standalone app's composer
+     (math-3202-review/index.html, composeExam, lines 6733 to 6775;
+     UNIT_CR_TARGET at line 6724; the blueprint note at line 6391).
+     This composer is not the pooled composer Math 3200 and 3201
+     share: it builds single-unit tests only and returns null for
+     a multi-unit selection (the standalone's startExam, line 6789,
+     tells the student tests are built one unit at a time and
+     points them to a practice sheet instead; the shell gives the
+     same message under exam.singleOnly). A unit test is 8
+     selected-response questions at 1 mark each, drawn at the exact
+     level split 2/5/1 with an any-level top-up when a level runs
+     short, plus exactly two constructed-response questions, both
+     Level 2 or 3 carrying 2 or more marks, whose marks sum to the
+     unit's target (7 to 10 marks by unit, so test totals run 15
+     to 18); a pair carrying a Level 3 question is preferred. No
+     table of specifications is published for this course. The
+     pairCr branch of the shell's composer reproduces that
+     algorithm; courses without pairCr never enter it. */
+  exam: {
+    singleOnly: true
+  },
+
+  unitTest: { total: 15, sr: 8, cr: 7, srLevels: [2, 5, 1], pairCr: true,
+              perUnitCr: { 1: 7, 2: 9, 3: 7, 4: 8, 5: 9, 6: 8, 7: 9, 8: 10, 9: 7, 10: 8 } },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at line 5787, one panel per unit, all ten units). */
+  panels: {
+    "1": "<b>Precision:</b> how finely a quantity is measured, and how closely repeated readings agree with each other.<br>\n<b>Accuracy:</b> how close a reading is to the true value. Error \\(= |\\text{reading} - \\text{true value}|\\); the smaller the error, the more accurate the reading.<br>\n<b>Judging a set of readings:</b> the spread of the readings judges precision; where the readings centre, compared with the true value, judges accuracy.<br>\n<b>Uncertainty:</b> a measurement is uncertain by plus or minus half of the smallest unit on the instrument: \\(\\text{uncertainty} = \\pm \\frac{\\text{smallest unit}}{2}\\).<br>\n<b>Interval for the true value:</b> from \\((\\text{reading} - \\text{uncertainty})\\) to \\((\\text{reading} + \\text{uncertainty})\\).<br>\n<b>Tolerance:</b> for a nominal value \\(N\\) with tolerance \\(\\pm T\\), the maximum is \\(N + T\\) and the minimum is \\(N - T\\). The width of the acceptable range is \\(2T\\).<br>\n<b>Percent tolerance:</b> first change the percent to an amount, \\(\\text{tolerance amount} = \\frac{p}{100} \\times N\\), then add or subtract it from the nominal value.<br>\n<b>Instrument limits:</b> an instrument cannot measure reliably below its smallest division, and conditions such as sag, vibration, heat expansion and poor light can limit a measurement.",
+    "2": "<b>Linear relation:</b> graphs as a straight line; in a table or pattern the first differences (the change from one value to the next) are constant.<br>\n<b>Nonlinear relation:</b> the graph curves, or the first differences change from step to step.<br>\n<b>Connecting points:</b> connect the points when the quantities can take every value in between (time, volume, distance). Leave points separate when the quantities are counted in whole units (people, tickets, buses).<br>\n<b>Slope and rate of change:</b> \\(\\text{slope} = \\frac{\\text{rise}}{\\text{run}} = \\frac{\\text{change in } y}{\\text{change in } x}\\). In context it carries units, such as dollars per hour or kilometres per litre.<br>\n<b>Direct variation:</b> \\(y = mx\\). There is no fixed starting value, and the graph passes through the origin \\((0, 0)\\).<br>\n<b>Partial variation:</b> \\(y = mx + b\\) with \\(b \\neq 0\\). The value \\(b\\) is a fixed starting value, and the graph meets the \\(y\\) axis at \\((0, b)\\).<br>\n<b>Table of values:</b> substitute each \\(x\\) value into the equation and calculate \\(y\\), multiplying before adding.<br>\n<b>Solving for the input:</b> set the output equal to the formula, subtract the starting value, then divide by the rate: \\(x = \\frac{\\text{output} - b}{m}\\).",
+    "3": "<b>Trends in scatter plots:</b> read the cloud of points from left to right. Rising means a positive trend, falling means a negative trend, and a scattered cloud with no pattern means no trend.<br>\n<b>Strength of a trend:</b> points close to the pattern show a strong trend; points spread widely around the pattern show a weak trend.<br>\n<b>Sorting scatter plots:</b> a straight band is a linear trend, a bending pattern is a nonlinear trend, and points with no pattern show no trend.<br>\n<b>Interpolation:</b> estimating a value between plotted or listed points, using the pattern of the nearby points.<br>\n<b>Extrapolation:</b> predicting a value beyond the plotted or listed points by extending the pattern. Predictions beyond the data are less certain, because the pattern may change.<br>\n<b>Matching a context to a graph:</b> describe the shape in sections (rising, level, falling) and match each section to what is happening in the context.<br>\n<b>Creating a graph:</b> give the graph a title, label both axes, start the value axis at 0, and use equal intervals on each axis.<br>\n<b>Choosing a scale:</b> scale step \\(\\times\\) number of intervals must reach at least the largest value. Pick the smallest tidy step (1, 2, 5, 10, 20, 25, 50, ...) that does this.<br>\n<b>Choosing a graph type:</b> bar graph for comparing categories, line graph for change over time, scatter plot for paired number data, circle graph for parts of a whole.",
+    "4": "<b>Mean:</b> \\(\\text{mean} = \\frac{\\text{sum of the values}}{\\text{number of values}}\\). It uses every value and is pulled toward extreme values.<br>\n<b>Median:</b> the middle value when the data are written in order. For an even count, average the two middle values. It resists outliers.<br>\n<b>Mode:</b> the value that occurs most often. A data set can have no mode or more than one mode.<br>\n<b>Finding a missing value from a mean:</b> total \\(=\\) mean \\(\\times\\) number of values, then subtract the known values.<br>\n<b>Weighted mean:</b> \\(\\text{weighted mean} = \\frac{\\sum (\\text{value} \\times \\text{weight})}{\\sum \\text{weights}}\\). With percent weights, divide by 100. Weights state how much each part counts.<br>\n<b>Outlier:</b> a value that lies far away from the cluster of the other values.<br>\n<b>Effect of outliers:</b> an outlier pulls the mean toward it, moves the median little or not at all, and usually leaves the mode unchanged.<br>\n<b>Trimmed mean:</b> drop the stated number of highest and lowest values, then find the mean of what remains. Trimming stops single extreme scores from dragging the result.<br>\n<b>Reading media claims:</b> when the mean and median differ a lot, extreme values are pulling the mean. Ask which measure better matches a typical case.",
+    "5": "<b>Buying a vehicle:</b> buying outright means paying the full price at once; buying with a loan means owning the vehicle while repaying borrowed money plus interest; leasing means monthly payments for a set term, often with a kilometre limit, and the vehicle is returned; leasing to buy means payments during the term lead to ownership at the end.<br>\n<b>Purchase total:</b> price plus tax plus interest. In Newfoundland and Labrador, HST is 15 percent, so a taxed price is the price times \\(1.15\\).<br>\n<b>Lease total:</b> monthly payment times the number of months, plus upfront fees and a down payment, plus the buyout if the vehicle is kept at the end.<br>\n<b>Vehicle operating costs:</b> fixed costs are set amounts such as insurance, licensing and an extended warranty; ongoing costs change with use, such as fuel, maintenance and tires.<br>\n<b>Fuel cost:</b> litres used \\(=\\) distance in km \\(\\div 100 \\times\\) consumption in L per 100 km; fuel cost \\(=\\) litres used \\(\\times\\) price per litre.<br>\n<b>Rental total:</b> add the costs that repeat each month (rent, utilities, parking, tenant insurance). One-time costs, such as a deposit, are counted once, not every month.<br>\n<b>Buying a home:</b> cash needed at purchase \\(=\\) down payment (a percent of the price) plus closing costs such as legal fees, a home inspection and an appraisal.<br>\n<b>Costs of owning a home:</b> mortgage payments, plus yearly property tax, home insurance, heating, repairs and upkeep.<br>\n<b>Renting versus owning:</b> total both options over the same time period, with every cost included, before deciding which is lower.",
+    "6": "<b>Business expenses:</b> fixed expenses stay the same regardless of sales (rent, insurance, licence fees); variable expenses rise and fall with business activity (supplies, ingredients, fuel, extra wages).<br>\n<b>Profit:</b> profit \\(=\\) revenue \\(-\\) total expenses. If expenses are greater than revenue, the result is a loss.<br>\n<b>Contribution per item:</b> selling price \\(-\\) variable cost per item. This is the amount each sale puts toward fixed costs and then profit.<br>\n<b>Break-even point:</b> break-even units \\(=\\) fixed costs \\(\\div\\) contribution per item. Break-even sales dollars \\(=\\) break-even units \\(\\times\\) selling price.<br>\n<b>Profitability factors:</b> seasonal variation, hours of operation, weather, location and supplier prices can all raise or lower profit across the year.<br>\n<b>Why file a return:</b> the annual return reports income, deductions and credits, claims any refund of tax withheld from pay, and keeps benefits such as the Canada child benefit and the GST/HST credit going.<br>\n<b>Forms and documents:</b> the T1 is the main personal income tax return; a T4 slip from an employer reports employment income and the tax, CPP and EI deducted from it.<br>\n<b>Deductions and credits:</b> a deduction, such as an RRSP contribution, reduces taxable income; a credit, such as the tuition credit, reduces tax payable.<br>\n<b>Reading a return:</b> total income \\(-\\) deductions \\(=\\) taxable income; then tax on taxable income \\(-\\) credits \\(=\\) net tax; tax withheld during the year is compared with net tax to give a refund or a balance owing.",
+    "7": "<b>Triangles:</b> the interior angles add to \\(180^\\circ\\); an exterior angle equals the sum of the two non-adjacent interior angles<br>\n<b>Isosceles triangles:</b> the angles opposite equal sides are equal; equal sides sit opposite equal angles<br>\n<b>Quadrilaterals:</b> the interior angles add to \\(360^\\circ\\)<br>\n<b>Parallelograms:</b> opposite angles are equal, and neighbouring angles add to \\(180^\\circ\\)<br>\n<b>Regular polygons:</b> sum of the interior angles, \\(S = 180(n-2)\\), where \\(n\\) is the number of sides<br>\n<b>Regular polygons:</b> measure of each interior angle, \\(M = \\frac{180(n-2)}{n}\\)<br>\n<b>Exterior angles:</b> the exterior angles of any polygon add to \\(360^\\circ\\); in a regular polygon each one is \\(\\frac{360}{n}\\), and interior + exterior \\(= 180^\\circ\\) at each vertex<br>\n<b>Triangle inequality:</b> the sum of any two side lengths of a triangle is greater than the third side; the longest side sits opposite the largest angle<br>\n<b>Line symmetry:</b> a regular polygon has as many lines of symmetry as it has sides; an isosceles triangle has 1, a rectangle has 2, a square has 4",
+    "8": "<b>Translation:</b> slides a shape; \\((x, y) \\to (x + a, y + b)\\) moves it \\(a\\) units horizontally and \\(b\\) units vertically<br>\n<b>Reflection:</b> flips a shape over a mirror line; in the x-axis, \\((x, y) \\to (x, -y)\\); in the y-axis, \\((x, y) \\to (-x, y)\\); the mirror line is the perpendicular bisector of the segment joining a point to its image<br>\n<b>Rotation about the origin:</b> \\(90^\\circ\\) counterclockwise, \\((x, y) \\to (-y, x)\\); \\(180^\\circ\\), \\((x, y) \\to (-x, -y)\\)<br>\n<b>Dilation:</b> with centre the origin and scale factor \\(k\\), \\((x, y) \\to (kx, ky)\\); the image is similar to the original, with every length multiplied by \\(k\\) and every angle unchanged<br>\n<b>Scale factor:</b> image length \\(\\div\\) original length; greater than 1 is an enlargement, between 0 and 1 is a reduction; an image is a dilation of the original exactly when all matching side ratios are equal<br>\n<b>Combined transformations:</b> apply the transformations one at a time, in the order given; the result can depend on the order<br>\n<b>Lines of symmetry:</b> a reflection in a line of symmetry maps a shape onto itself; a shape and its mirror image are congruent, with reversed orientation",
+    "9": "<b>Sine law:</b> \\(\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}\\)<br>\n<b>Sine law, flipped form:</b> \\(\\frac{\\sin A}{a} = \\frac{\\sin B}{b} = \\frac{\\sin C}{c}\\)<br>\n<b>Cosine law, side form:</b> \\(a^2 = b^2 + c^2 - 2bc \\cos A\\) (the same pattern holds for sides b and c)<br>\n<b>Cosine law, angle form:</b> \\(\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}\\) (the same pattern holds for angles B and C)<br>\n<b>Choosing a law:</b> a side with its opposite angle known points to the sine law; two sides with the angle between them, or all three sides, point to the cosine law<br>\n<b>Primary ratios (review):</b> \\(\\sin = \\frac{\\text{opp}}{\\text{hyp}}\\), \\(\\cos = \\frac{\\text{adj}}{\\text{hyp}}\\), \\(\\tan = \\frac{\\text{opp}}{\\text{adj}}\\) in a right triangle<br>\n<b>Angle sum:</b> the three angles of any triangle add to \\(180^\\circ\\)<br>\n<b>Rounding:</b> angles to the nearest degree, side lengths to one decimal place, unless a question says otherwise",
+    "10": "<b>Probability:</b> \\(P = \\frac{\\text{favourable outcomes}}{\\text{total outcomes}}\\)<br>\n<b>Probability from data:</b> use the counts in the data set as the favourable count and the total count<br>\n<b>Range:</b> a probability sits between 0 (cannot happen) and 1 (certain), or between 0% and 100%<br>\n<b>Changing form:</b> fraction to decimal by dividing; decimal to percent by multiplying by 100; a statement reads \"There is a ...% chance\"<br>\n<b>Odds in favour:</b> favourable outcomes : unfavourable outcomes; <b>odds against:</b> unfavourable outcomes : favourable outcomes<br>\n<b>Probability from odds in favour \\(a : b\\):</b> \\(P = \\frac{a}{a+b}\\); from odds against \\(a : b\\): \\(P = \\frac{b}{a+b}\\)<br>\n<b>Expected count:</b> probability \\(\\times\\) number of trials<br>\n<b>Decisions:</b> real decisions may combine a calculated probability, results from past trials, and judgement about the situation"
+  }
 }
 };

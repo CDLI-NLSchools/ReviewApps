@@ -473,10 +473,14 @@ function orderOpts(opts){
   return dec.map(function(d){return d.o;});
 }
 function mcq(prompt,correct,distractors,solution,params){
-  var seen={},opts=[{t:String(correct),ok:true}];
-  distractors.forEach(function(d){d=String(d);if(d!==String(correct)&&!seen[d]){seen[d]=1;opts.push({t:d,ok:false});}});
-  opts=orderOpts(opts);var ci=opts.findIndex(function(o){return o.ok;});
-  return {prompt:prompt,type:"mc",options:opts.map(function(o){return o.t;}),correct:ci,solution:solution,_p:params||{}};
+  function norm(o){return (o&&typeof o==="object")?{t:String(o.t),fb:o.fb||""}:{t:String(o),fb:""};}
+  var c=norm(correct);
+  var seen={},opts=[{t:c.t,ok:true,fb:c.fb}];
+  distractors.forEach(function(d){var n=norm(d);if(n.t!==c.t&&!seen[n.t]){seen[n.t]=1;opts.push({t:n.t,ok:false,fb:n.fb});}});
+  var fbMap={};opts.forEach(function(o){fbMap[o.t]=o.fb;});
+  var ordered=orderOpts(opts.map(function(o){return {t:o.t,ok:o.ok};}));
+  var ci=ordered.findIndex(function(o){return o.ok;});
+  return {prompt:prompt,type:"mc",options:ordered.map(function(o){return o.t;}),correct:ci,solution:solution,_p:params||{},fb:ordered.map(function(o){return fbMap[o.t]||"";})};
 }
 function numq(prompt,answer,tol,solution,params){return {prompt:prompt,type:"num",answer:answer,tol:tol,solution:solution,_p:params||{}};}
 function textq(prompt,answers,solution,params){return {prompt:prompt,type:"text",answers:answers.map(function(a){return a.toLowerCase();}),solution:solution,_p:params||{}};}
@@ -955,7 +959,7 @@ function refreshFace(){
   var u=state.units.slice().sort(function(a,b){return a-b;});
   var scope;
   if(!u.length)scope="No units chosen yet";
-  else if(window.__COURSE&&u.join(",")===window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join())scope=window.__COURSE.presets.mid.label.replace(" (",": ").replace(/\)$/,"");
+  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=window.__COURSE.presets.mid.label.replace(" (",": ").replace(/\)$/,"");
   else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.final.faceLabel||window.__COURSE.presets.final.label).replace(" (",": ").replace(/\)$/,"");
   else scope=u.map(function(x){return "Unit "+x+": "+UNITS[x];}).join("; ");
   if(state.inds.length)scope+=" (indicators: "+state.inds.join(", ")+")";
@@ -1380,7 +1384,7 @@ function tRebuildFromURL(){
     T=null;
     examState={ex:exO,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
     if(TEACHER){var anyPK=srItems.concat(crItems).some(function(it){return isPK(it.q._entry);});
-      T={view:"exam",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:anyPK,examCap:(s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():""))},edited:edited,textEdited:false,picker:null};}
+      T={view:"exam",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:anyPK,examCap:(s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"):""))},edited:edited,textEdited:false,picker:null};}
     if(!TEACHER&&SHUFFLE_OPTS){srItems.forEach(function(it){it.q=shufQ(it.q);});crItems.forEach(function(it){it.q=shufQ(it.q);});}
     renderExam();
     return true;
@@ -1528,7 +1532,7 @@ function examLive(ex){
   ex.crItems.forEach(function(it){cr+=it.marks;if(it.q._entry.level===3)l3+=it.marks;});
   return {sr:sr,cr:cr,l3:l3,total:sr+cr};
 }
-function examShortNow(ex){var t=examLive(ex);if(ex.single)return (t.sr<11||t.cr<14);var u=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units.slice().sort(function(a,b){return a-b;}).join():"";return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}
+function examShortNow(ex){var t=examLive(ex);if(ex.single){var ut2=window.__COURSE&&window.__COURSE.unitTest;if(ut2&&ut2.pairCr){var it2=ex.srItems[0]||ex.crItems[0];var ct2=(it2&&ut2.perUnitCr&&ut2.perUnitCr[it2.q._entry.unit])||ut2.cr||7;return (t.sr<(ut2.sr||8)||t.cr<ct2);}return (t.sr<11||t.cr<14);}var u=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units.slice().sort(function(a,b){return a-b;}).join():"";return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}
 function tExamPanelHtml(){
   if(!TEACHER||!T||T.view!=="exam"||!examState)return "";
   var ex=examState.ex;
@@ -1877,7 +1881,15 @@ function composeExam(units,inds){
          level marks) and crL3 (the preferred Level 3 constructed
          response mark totals, in order); both are set only by a course
          whose standalone composer pools every multi-unit paper,
-         Math 3200 being the case in point.
+         Math 3200 being the case in point;
+       - a course whose papers are single-unit tests only
+         (exam.singleOnly, unitTest.pairCr: Math 3202) composes nothing
+         for a multi-unit selection, and its unit test follows the
+         pairCr branch below: a fixed selected-response level split
+         (unitTest.srLevels) with the standalone's any-level top-up,
+         plus exactly two constructed-response entries whose marks sum
+         to the unit's own target (unitTest.perUnitCr), preferring a
+         pair that carries a Level 3 entry.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -1891,6 +1903,53 @@ function composeExam(units,inds){
   var pool=poolFor(units,inds,false);
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
+  if(C.exam&&C.exam.singleOnly&&!single)return null;
+  if(single&&ut.pairCr){
+    /* The Math 3202 unit test, reproduced from its standalone
+       composer: Section A at the exact srLevels split with an
+       any-level top-up, Section B as one pair of constructed-response
+       entries summing to the unit's target, Level 3 pairs preferred.
+       Only a course setting pairCr enters this branch. */
+    var unitP=units[0];
+    var targetP=(ut.perUnitCr&&ut.perUnitCr[unitP])||ut.cr;
+    var seenA={};
+    function genFromA(e){var q=e.gen();q._entry=e;return q;}
+    var srA=[];
+    function takeSRA(level,count){
+      var cands=pool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
+      var guard=0;
+      while(count>0&&guard++<600&&cands.length){
+        var q=genFromA(pick(cands));var c=canonQ(q);
+        if(q.type!=="mc"||seenA[c])continue;seenA[c]=1;srA.push({q:q,marks:1});count--;
+      }
+      return count;
+    }
+    var srTP=ut.srLevels||[2,5,1];
+    var missA=0;for(var LA=1;LA<=3;LA++){missA+=takeSRA(LA,srTP[LA-1]);}
+    if(missA>0){
+      var extraA=pool.filter(function(e){return probeType(e)==="mc";});var g2A=0;
+      while(missA>0&&g2A++<600&&extraA.length){var qA=genFromA(pick(extraA));var cA=canonQ(qA);if(qA.type!=="mc"||seenA[cA])continue;seenA[cA]=1;srA.push({q:qA,marks:1});missA--;}
+    }
+    var crPoolA=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+    var pairsA=[];
+    for(var iA=0;iA<crPoolA.length;iA++)for(var jA=iA+1;jA<crPoolA.length;jA++){if(crPoolA[iA].marks+crPoolA[jA].marks===targetP)pairsA.push([crPoolA[iA],crPoolA[jA]]);}
+    pairsA=shuffle(pairsA);
+    var withL3A=pairsA.filter(function(p){return p[0].e.level===3||p[1].e.level===3;});
+    var chosenA=withL3A.length?withL3A[0]:(pairsA.length?pairsA[0]:null);
+    var crA=[],crMarksA=0,l3A=0,shortA=missA>0;
+    if(chosenA){
+      var seenCA={};srA.forEach(function(it){seenCA[canonQ(it.q)]=1;});
+      chosenA.forEach(function(x){
+        var q=null,c=null,tries=0;
+        do{q=genFromA(x.e);c=canonQ(q);tries++;}while(seenCA[c]&&tries<25);
+        if(seenCA[c]){shortA=true;return;}
+        seenCA[c]=1;crA.push({q:q,marks:x.marks});crMarksA+=x.marks;if(x.e.level===3)l3A+=x.marks;
+      });
+      if(crA.length!==2)shortA=true;
+    } else shortA=true;
+    crA.sort(function(a,b){return a.q._entry.level-b.q._entry.level;});
+    return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};
+  }
   var parts;
   if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null}];}
   else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null};});}
@@ -2058,6 +2117,7 @@ function startExam(){
   stopExamTimer();
   var s=settings();var _sd=activeSeed(s);sessionSeed=_sd;
   var pkOn=tPkOn();
+  if(window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.singleOnly&&s.units.length!==1){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"Practice tests are built one unit at a time, like the unit tests in the course. Choose exactly one unit above, then make the practice test again. To practise across several units, make a practice sheet instead.":"Choose one unit above, then make the practice test.")+'</p></div>';return;}
   var ex=withSeed(_sd,function(){return composeExam(s.units,s.inds,pkOn);});
   if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"No questions match that selection yet.":"Choose at least one unit above, or use the Mid-course review or Final review button, then start again.")+'</p></div>';return;}
   var single=s.units.length===1;
@@ -2068,7 +2128,7 @@ function startExam(){
   T=null;
   examState={ex:ex,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
   if(TEACHER){
-    T={view:"exam",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:pkOn,examCap:(s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():""))},edited:false,textEdited:false,picker:null};
+    T={view:"exam",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:pkOn,examCap:(s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"):""))},edited:false,textEdited:false,picker:null};
     var _av={};
     ex.srItems.forEach(function(it){it.q=_sd?tAdoptDrawn(it.q,_av):tFreezeSlot(it.q._entry,"mc",_av,T.salt);});
     ex.crItems.forEach(function(it){it.q=_sd?tAdoptDrawn(it.q,_av):tFreezeSlot(it.q._entry,it.q.type,_av,T.salt);});
@@ -3128,7 +3188,7 @@ function exportBrightspace(items,statusEl){
 function settingsToURL(){
   var s=settings();var p=new URLSearchParams();
   if(window.__COURSE)p.set("course",window.__COURSE.id);
-  if(window.__COURSE&&s.units.slice().sort(function(a,b){return a-b;}).join()===window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join())p.set("preset","mid");
+  if(window.__COURSE&&s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))p.set("preset","mid");
   else if(window.__COURSE&&s.units.slice().sort().join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))p.set("preset","final");
   else if(s.units.length)p.set("unit",s.units.join(","));
   if(s.inds.length)p.set("indicator",s.inds.join(","));
@@ -3146,7 +3206,7 @@ function settingsToURL(){
 }
 function applyURL(){
   var p=new URLSearchParams(location.search);var touched=false;
-  if(p.get("preset")==="mid"){state.units=window.__COURSE?window.__COURSE.presets.mid.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
+  if(p.get("preset")==="mid"){state.units=(window.__COURSE&&window.__COURSE.presets.mid)?window.__COURSE.presets.mid.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
   else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
@@ -3170,9 +3230,9 @@ function applyURL(){
 }
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
-if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
+if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
-$("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);if(window.__COURSE&&window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});
+(function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice());if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
 (function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
