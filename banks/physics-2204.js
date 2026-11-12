@@ -19,8 +19,394 @@ function sfF(x,sf){var r=sfR(x,sf);if(r===0)return "0."+"000".slice(0,Math.max(0
 function F3(x){return sfF(x,3);}
 function iF(x){return sfF(x,4);}
 function gF(x){for(var sf=3;sf<=5;sf++){if(Math.abs(sfR(x,sf)-x)<=Math.abs(x)*1e-9+1e-12)return sfF(x,sf);}return fmt(x);}
+// Physics 2204 diagram figures (Phase C, Nov 2026): original code generated
+// SVG drawings, each built inside a generator from that question's own
+// drawn values, so labels always match the stem. Unknowns are marked "?"
+// and no asked value is printed. Helpers carry the p22 prefix.
+var P22_INK="#17352a",P22_ACC="#2e7d4f",P22_ALT="#b3541e",P22_SHADE="#dcebe2";
+function p22n(x){return Math.round(x*10)/10;}
+function p22Txt(x,y,s,size,bold,anchor){return '<text x="'+p22n(x)+'" y="'+p22n(y)+'" font-size="'+(size||12)+'" fill="'+P22_INK+'" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="'+(anchor||"middle")+'" dominant-baseline="central"'+(bold?' font-weight="bold"':"")+'>'+s+'</text>';}
+function p22Line(x1,y1,x2,y2,w,dash,col){return '<line x1="'+p22n(x1)+'" y1="'+p22n(y1)+'" x2="'+p22n(x2)+'" y2="'+p22n(y2)+'" stroke="'+(col||P22_INK)+'" stroke-width="'+(w||2)+'"'+(dash?' stroke-dasharray="5 4"':"")+'/>';}
+function p22Arrow(x1,y1,x2,y2,w,col){var a=Math.atan2(y2-y1,x2-x1),s=8,h="";col=col||P22_INK;
+  h+='<line x1="'+p22n(x1)+'" y1="'+p22n(y1)+'" x2="'+p22n(x2)+'" y2="'+p22n(y2)+'" stroke="'+col+'" stroke-width="'+(w||2.2)+'"/>';
+  var p1=[x2-s*Math.cos(a-0.42),y2-s*Math.sin(a-0.42)],p2=[x2-s*Math.cos(a+0.42),y2-s*Math.sin(a+0.42)];
+  return h+'<polygon points="'+p22n(x2)+','+p22n(y2)+' '+p22n(p1[0])+','+p22n(p1[1])+' '+p22n(p2[0])+','+p22n(p2[1])+'" fill="'+col+'"/>';}
+function p22Svg(w,h,body,label){return '<svg viewBox="0 0 '+w+' '+h+'" width="'+Math.min(w,360)+'" height="'+p22n(Math.min(w,360)*h/w)+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+label+'">'+body+'</svg>';}
+function p22Rect(x,y,w,h,fill){return '<rect x="'+p22n(x)+'" y="'+p22n(y)+'" width="'+p22n(w)+'" height="'+p22n(h)+'" fill="'+(fill||"none")+'" stroke="'+P22_INK+'" stroke-width="2"/>';}
+/* Generic x-y plot. cfg: series [{pts, shade}], xt [[x,label]], yt [[y,label]],
+   xmax, ymax, xl, yl, dots, labels [{x,y,t}] */
+function p22Plot(cfg){
+  var W=340,H=232,L=58,R=16,T=14,B=38,PW=W-L-R,PH=H-T-B;
+  function X(x){return L+PW*x/cfg.xmax;} function Y(y){return T+PH-PH*y/cfg.ymax;}
+  var o="";
+  (cfg.xt||[]).forEach(function(tk){o+='<line x1="'+p22n(X(tk[0]))+'" y1="'+p22n(T)+'" x2="'+p22n(X(tk[0]))+'" y2="'+p22n(T+PH)+'" stroke="#b9cdc2" stroke-width="1" stroke-dasharray="3 4"/>';
+    o+=p22Txt(X(tk[0]),T+PH+14,tk[1],11,false);});
+  (cfg.yt||[]).forEach(function(tk){o+='<line x1="'+p22n(L)+'" y1="'+p22n(Y(tk[0]))+'" x2="'+p22n(L+PW)+'" y2="'+p22n(Y(tk[0]))+'" stroke="#b9cdc2" stroke-width="1" stroke-dasharray="3 4"/>';
+    o+=p22Txt(L-6,Y(tk[0]),tk[1],11,false,"end");});
+  o+=p22Arrow(L,T+PH,L+PW,T+PH,1.8)+p22Arrow(L,T+PH,L,T,1.8);
+  o+=p22Txt(L+PW/2,H-4,cfg.xl||"",12,true)+p22Txt(14,T+PH/2,cfg.yl||"",12,true);
+  var series=cfg.series||(cfg.pts?[{pts:cfg.pts,shade:cfg.shade}]:[]);
+  series.forEach(function(s){
+    var path=s.pts.map(function(p,i){return (i?"L":"M")+p22n(X(p[0]))+" "+p22n(Y(p[1]));}).join(" ");
+    if(s.shade){var fp=s.pts.map(function(p){return p22n(X(p[0]))+","+p22n(Y(p[1]));}).join(" ");
+      o+='<polygon points="'+p22n(X(s.pts[0][0]))+','+p22n(Y(0))+' '+fp+' '+p22n(X(s.pts[s.pts.length-1][0]))+','+p22n(Y(0))+'" fill="'+P22_SHADE+'"/>';}
+    o+='<path d="'+path+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.4"/>';
+    if(cfg.dots)s.pts.forEach(function(p){o+='<circle cx="'+p22n(X(p[0]))+'" cy="'+p22n(Y(p[1]))+'" r="3.4" fill="'+P22_INK+'"/>';});
+  });
+  (cfg.markPts||[]).forEach(function(p){o+='<circle cx="'+p22n(X(p[0]))+'" cy="'+p22n(Y(p[1]))+'" r="3.4" fill="'+P22_INK+'"/>';});
+  (cfg.labels||[]).forEach(function(lb){o+=p22Txt(X(lb.x),Y(lb.y),lb.t,11,false,lb.anchor||"middle");});
+  return p22Svg(W,H,o,"Graph diagram");
+}
+/* Signed number line for collinear legs. legs: [{v (signed), t (label)}].
+   pos and neg name the two directions (positive direction first). */
+function p22Collinear(legs,pos,neg,start,note){
+  var cums=[start||0]; legs.forEach(function(l){cums.push(cums[cums.length-1]+l.v);});
+  var lo=Math.min.apply(null,cums.concat([0])),hi=Math.max.apply(null,cums.concat([0]));
+  if(hi-lo<1){hi+=1;lo-=1;}
+  var pad=(hi-lo)*0.14; lo-=pad; hi+=pad;
+  var W=340,H=64+legs.length*34+(note?16:0),L=26,R=26,AX=H-30-(note?16:0);
+  function X(v){return L+(W-L-R)*(v-lo)/(hi-lo);}
+  var o="";
+  if(note)o+=p22Txt(W/2,H-8,note,11,false);
+  o+=p22Arrow(L,AX,W-8,AX,1.8);
+  o+=p22Txt(W-10,AX-12,pos,11,true,"end")+p22Txt(10,AX-12,neg,11,true,"start");
+  var seen={};
+  cums.forEach(function(c){var k=Math.round(c*1000); if(seen[k])return; seen[k]=1;
+    o+=p22Line(X(c),AX-5,X(c),AX+5,2)+p22Txt(X(c),AX+16,gF(c),11,false);});
+  legs.forEach(function(l,i){var y=26+i*34,x1=X(cums[i]),x2=X(cums[i+1]);
+    o+=p22Arrow(x1,y,x2,y,2.4,i%2?P22_ALT:P22_ACC);
+    o+=p22Txt((x1+x2)/2,y-13,l.t,11,false);});
+  return p22Svg(W,H,o,"Number line diagram");
+}
+/* Position line with an origin: a start west of the origin and an end east. */
+function p22PosLine(west,east){
+  var legs=[{v:west+east,t:"start "+gF(-west)+" m to end "+gF(east)+" m"}];
+  return p22Collinear(legs,"east","west",-west,null);
+}
+/* Horizontal vector lanes, one arrow per lane, from a shared origin. */
+function p22VecLanes(lanes){
+  var mx=1; lanes.forEach(function(l){mx=Math.max(mx,Math.abs(l.v));});
+  var W=340,H=lanes.length*46+10,OX=178;
+  var o="";
+  lanes.forEach(function(l,i){var y=26+i*46,len=104*Math.abs(l.v)/mx,dir=l.east?1:-1;
+    o+=p22Txt(10,y-12,l.t,11,false,"start");
+    o+=p22Line(20,y+8,W-20,y+8,1,"",  "#b9cdc2");
+    o+=p22Arrow(OX,y+8,OX+dir*len,y+8,2.6,P22_ACC);});
+  return p22Svg(W,H,o,"Vector diagram");
+}
+/* Free body style diagram. forces: [{dx,dy,len,t,oy,alt}] directions in
+   screen units; lengths scale to the largest force when values are given. */
+function p22FBD(forces,objLabel){
+  var W=340,H=210,CX=170,CY=102,mx=1;
+  forces.forEach(function(f){if(f.len)mx=Math.max(mx,f.len);});
+  var o=p22Rect(CX-32,CY-21,64,42,"#ffffff");
+  if(objLabel)o+=p22Txt(CX,CY,objLabel,11,true);
+  forces.forEach(function(f){var len=f.len?30+52*f.len/mx:56;
+    var ux=f.dx,uy=f.dy,n=Math.sqrt(ux*ux+uy*uy)||1; ux/=n; uy/=n;
+    var oy=f.oy||0,x1=CX+ux*34,y1=CY+uy*23+oy,x2=CX+ux*(34+len),y2=CY+uy*(23+len)+oy;
+    if(ux!==0){y1=CY+oy;y2=CY+oy;x1=CX+ux*32;}
+    if(uy!==0){x1=CX;x2=CX;}
+    o+=p22Arrow(x1,y1,x2,y2,2.4,f.alt?P22_ALT:P22_ACC);
+    o+=p22Txt(x2+ux*8,y2+uy*14+(ux!==0?-10:0),f.t,11,false,ux>0?"start":(ux<0?"end":"middle"));});
+  return p22Svg(W,H,o,"Force diagram");
+}
+/* Single angled vector with dashed component guides. */
+function p22VecAng(flabel,ang){
+  var W=340,H=210,OX=70,OY=168,LEN=190,rad=ang*Math.PI/180;
+  var ex=OX+LEN*Math.cos(rad),ey=OY-LEN*Math.sin(rad);
+  var o=p22Line(OX,OY,ex,OY,1.4,true)+p22Line(ex,OY,ex,ey,1.4,true);
+  o+=p22Line(OX,OY,OX+LEN+34,OY,1.4,true);
+  o+=p22Arrow(OX,OY,ex,ey,2.6);
+  o+=p22Txt((OX+ex)/2+16,(OY+ey)/2-10,flabel,12,true);
+  o+='<path d="M '+p22n(OX+44)+' '+p22n(OY)+' A 44 44 0 0 0 '+p22n(OX+44*Math.cos(rad))+' '+p22n(OY-44*Math.sin(rad))+'" fill="none" stroke="'+P22_INK+'" stroke-width="1.6"/>';
+  o+=p22Txt(OX+62,OY-14,ang+"\u00B0",12,false);
+  return p22Svg(W,H,o,"Angled force diagram");
+}
+/* Two angled pulls, one north of east and one south of east. */
+function p22VecPair(f1,a1,f2,a2){
+  var W=340,H=230,OX=60,OY=115,LEN=150;
+  var r1=a1*Math.PI/180,r2=a2*Math.PI/180;
+  var e1=[OX+LEN*Math.cos(r1),OY-LEN*Math.sin(r1)],e2=[OX+LEN*Math.cos(r2),OY+LEN*Math.sin(r2)];
+  var o=p22Line(OX,OY,OX+LEN+52,OY,1.4,true)+p22Txt(OX+LEN+58,OY,"east",11,true,"start");
+  o+=p22Arrow(OX,OY,e1[0],e1[1],2.6)+p22Arrow(OX,OY,e2[0],e2[1],2.6,P22_ALT);
+  o+=p22Txt(e1[0],e1[1]-14,f1+" at "+a1+"\u00B0 north of east",11,false);
+  o+=p22Txt(e2[0],e2[1]+16,f2+" at "+a2+"\u00B0 south of east",11,false);
+  return p22Svg(W,H,o,"Two angled forces diagram");
+}
+/* Box on a floor with an angled rope pull (mode pull) or an angled push
+   (mode push). fricLabel, when given, adds an unvalued friction arrow. */
+function p22AngScene(flabel,ang,mode,fricLabel){
+  var W=340,H=205,BX=140,BY=118,BW=74,BH=44,rad=ang*Math.PI/180;
+  var o=p22Line(24,BY+BH,316,BY+BH,2.4);
+  for(var gx=34;gx<316;gx+=18)o+=p22Line(gx,BY+BH,gx-8,BY+BH+8,1);
+  o+=p22Rect(BX,BY,BW,BH,"#ffffff");
+  if(mode==="push"){
+    var sx=BX-96*Math.cos(rad),sy=BY-96*Math.sin(rad);
+    o+=p22Arrow(sx,sy,BX+6,BY+10,2.6);
+    o+=p22Txt(sx-4,sy-14,flabel+" at "+ang+"\u00B0 below horizontal",11,false,"end");
+  }else{
+    var ex=BX+BW+96*Math.cos(rad),ey=BY+6-96*Math.sin(rad);
+    o+=p22Line(BX+BW,BY+10,ex,ey,2)+p22Arrow(BX+BW,BY+10,ex,ey,2.6);
+    o+=p22Txt(ex-6,ey-14,flabel+" at "+ang+"\u00B0",11,false,"end");
+  }
+  if(fricLabel)o+=p22Arrow(BX+8,BY+BH-6,BX-52,BY+BH-6,2.2,P22_ALT)+p22Txt(BX-56,BY+BH-18,fricLabel,11,false,"end");
+  return p22Svg(W,H,o,"Angled force scene diagram");
+}
+/* Simple scenes for the free body diagram choice entry: the setting only,
+   with no force arrows, because the force list is what the question asks. */
+function p22Scene(kind){
+  var W=340,H=190,o="";
+  if(kind==="book"){
+    o+=p22Line(30,140,310,140,2.4)+p22Rect(128,108,84,32,"#ffffff")+p22Txt(170,124,"book",12,true);
+  }else if(kind==="puck"){
+    o+=p22Line(30,140,310,140,2.4)+'<ellipse cx="170" cy="132" rx="34" ry="10" fill="none" stroke="'+P22_INK+'" stroke-width="2"/>';
+    o+=p22Arrow(120,96,220,96,2.2,P22_ALT)+p22Txt(170,80,"slides east",11,false);
+  }else if(kind==="crate"){
+    o+=p22Line(30,140,310,140,2.4)+p22Rect(128,100,84,40,"#ffffff")+p22Txt(170,120,"crate",12,true);
+    o+=p22Line(212,112,282,112,2)+p22Txt(268,98,"rope",11,false);
+  }else if(kind==="ball"){
+    o+='<circle cx="170" cy="70" r="18" fill="none" stroke="'+P22_INK+'" stroke-width="2"/>';
+    o+=p22Line(170,96,170,140,1.6,true)+p22Arrow(170,140,170,158,2,P22_ALT)+p22Txt(196,140,"falling",11,false,"start");
+    o+=p22Line(60,168,280,168,2.4);
+  }else if(kind==="bucket"){
+    o+=p22Line(90,26,250,26,2.4)+p22Line(170,26,170,84,2);
+    o+=p22Rect(144,84,52,40,"#ffffff")+p22Txt(170,104,"bucket",11,true);
+  }
+  return p22Svg(W,H,o,"Scene diagram");
+}
+function p22Connected(m1,m2,flabel){
+  var W=340,H=170,o=p22Line(20,132,320,132,2.4);
+  o+=p22Rect(52,88,72,44,"#ffffff")+p22Txt(88,110,m1,12,true);
+  o+=p22Line(124,110,168,110,2);
+  o+=p22Rect(168,88,72,44,"#ffffff")+p22Txt(204,110,m2,12,true);
+  o+=p22Arrow(240,110,308,110,2.6)+p22Txt(292,92,flabel,12,true,"end");
+  return p22Svg(W,H,o,"Connected crates diagram");
+}
+function p22Atwood(mh,ml){
+  var W=340,H=215,o="";
+  o+='<circle cx="170" cy="42" r="17" fill="none" stroke="'+P22_INK+'" stroke-width="2"/>';
+  o+=p22Line(170,25,170,8,2.4)+p22Line(120,8,220,8,2.4);
+  o+='<path d="M 153 42 L 153 108 M 187 42 L 187 84" stroke="'+P22_INK+'" stroke-width="2" fill="none"/>';
+  o+=p22Rect(122,108,62,46,"#ffffff")+p22Txt(153,131,mh,12,true);
+  o+=p22Rect(156,84,62,46,"#ffffff");
+  o+=p22Txt(187,107,ml,12,true);
+  o+=p22Txt(88,131,"heavier",11,false)+p22Txt(252,107,"lighter",11,false);
+  return p22Svg(W,H,o,"Atwood machine diagram");
+}
+function p22Elevator(mlabel,alabel,up){
+  var W=340,H=215,o="";
+  o+=p22Rect(112,18,116,178,"none");
+  o+='<circle cx="170" cy="86" r="13" fill="none" stroke="'+P22_INK+'" stroke-width="2"/>';
+  o+=p22Line(170,99,170,140,2)+p22Line(170,112,146,126,2)+p22Line(170,112,194,126,2);
+  o+=p22Line(170,140,152,168,2)+p22Line(170,140,188,168,2);
+  o+=p22Rect(140,168,60,10,P22_SHADE)+p22Txt(170,206,mlabel,11,true);
+  var ay=up?70:150;
+  o+=up?p22Arrow(262,150,262,70,2.6):p22Arrow(262,70,262,150,2.6);
+  o+=p22Txt(262,ay-22,"a = "+alabel,11,true);
+  o+=p22Txt(262,196,"elevator",11,false);
+  return p22Svg(W,H,o,"Elevator diagram");
+}
+function p22Pendulum(dhlabel,mlabel){
+  var W=340,H=215,o="";
+  o+=p22Line(120,18,220,18,2.6);
+  var px=170,py=18,L=118,a=0.72;
+  var rx=px+L*Math.sin(a),ry=py+L*Math.cos(a);
+  o+=p22Line(px,py,px,py+L,1.4,true);
+  o+='<circle cx="'+p22n(px)+'" cy="'+p22n(py+L)+'" r="15" fill="none" stroke="'+P22_INK+'" stroke-width="1.6" stroke-dasharray="4 3"/>';
+  o+=p22Line(px,py,rx,ry,2);
+  o+='<circle cx="'+p22n(rx)+'" cy="'+p22n(ry)+'" r="16" fill="#ffffff" stroke="'+P22_INK+'" stroke-width="2"/>';
+  o+=p22Txt(rx,ry,mlabel,10,true);
+  o+=p22Line(rx,ry,296,ry,1.2,true)+p22Line(px,py+L,296,py+L,1.2,true);
+  o+=p22Arrow(296,ry,296,py+L,1.8)+p22Txt(302,(ry+py+L)/2,dhlabel,11,false,"start");
+  o+=p22Txt(px-8,py+L+22,"lowest position",10,false,"end");
+  return p22Svg(W,H,o,"Pendulum diagram");
+}
+function p22Incline(hlabel){
+  var W=340,H=200,o="";
+  o+=p22Line(50,168,300,168,2.4)+p22Line(50,168,50,52,2)+p22Line(50,52,300,168,2.4);
+  o+=p22Arrow(56,52,56,168,1.8)+p22Txt(38,110,hlabel,12,true,"end");
+  o+=p22Rect(66,30,40,24,"#ffffff")+p22Txt(86,20,"sled",11,false);
+  o+=p22Txt(210,186,"bottom (reference level)",11,false);
+  return p22Svg(W,H,o,"Slope diagram");
+}
+/* Horizontal spring scene. xlabel labels the stretch or displacement
+   bracket, flabel labels the force arrow (or "?" when it is asked). */
+function p22Spring(xlabel,flabel){
+  var W=340,H=170,o="";
+  o+=p22Rect(28,44,10,86,P22_SHADE)+p22Line(20,150,320,150,2.4);
+  var path="M 38 92 ",x=38;
+  for(var i=0;i<7;i++){x+=13;path+="L "+x+" "+(i%2?74:110)+" ";}
+  path+="L 150 92";
+  o+='<path d="'+path+'" fill="none" stroke="'+P22_INK+'" stroke-width="2"/>';
+  o+=p22Rect(150,66,58,52,"#ffffff");
+  o+=p22Line(122,44,122,132,1.4,true)+p22Txt(122,32,"equilibrium",10,false);
+  o+=p22Line(122,140,208,140,1.6)+p22Line(122,134,122,146,1.6)+p22Line(208,134,208,146,1.6);
+  o+=p22Txt(165,158,xlabel,11,true);
+  if(flabel)o+=p22Arrow(208,92,272,92,2.4)+p22Txt(262,74,flabel,12,true,"end");
+  return p22Svg(W,H,o,"Spring diagram");
+}
+/* Transverse wave train. totalCycles cycles are drawn; a bracket spans the
+   first bracketCycles cycles (or the whole train when bracketCycles is 0). */
+function p22WaveTrain(totalCycles,bracketCycles,bracketLabel,opts){
+  opts=opts||{};
+  var W=340,H=185,amp=opts.asym?36:30,tamp=opts.asym?9:30;
+  var x0=22,x1=318,y0=92,pts=[];
+  for(var i=0;i<=160;i++){var u=i/160,ph=u*totalCycles*2*Math.PI,s=Math.sin(ph);
+    pts.push([x0+(x1-x0)*u,y0-(s>=0?amp*s:tamp*s)]);}
+  var o=p22Line(x0,y0,x1,y0,1.2,true);
+  o+='<path d="'+pts.map(function(p,i){return (i?"L":"M")+p22n(p[0])+" "+p22n(p[1]);}).join(" ")+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.4"/>';
+  if(opts.rest)o+=p22Txt(x1-2,y0+16,"rest position",10,false,"end");
+  var bc=bracketCycles||totalCycles;
+  if(bracketLabel){var bx1=x0+(x1-x0)*bc/totalCycles,by=30;
+    o+=p22Line(x0,by,x0,by+10,1.6)+p22Line(bx1,by,bx1,by+10,1.6)+p22Line(x0,by+5,bx1,by+5,1.6);
+    o+=p22Txt((x0+bx1)/2,by-8,bracketLabel,12,true);}
+  return p22Svg(W,H,o,"Wave diagram");
+}
+/* Longitudinal wave: vertical coil lines, clustered at compressions. */
+function p22Longit(bracket){
+  var W=340,H=160,o="",xs=[];
+  var centres=[70,170,270];
+  centres.forEach(function(c){[-14,-7,0,7,14].forEach(function(d){xs.push(c+d);});});
+  [118,218,314].forEach(function(c){xs.push(c);});
+  xs.sort(function(a,b){return a-b;});
+  xs.forEach(function(x){o+=p22Line(x,52,x,118,1.8);});
+  o+=p22Txt(70,138,"compression",10,false)+p22Txt(170,138,"compression",10,false);
+  if(bracket){o+=p22Line(70,26,70,36,1.6)+p22Line(170,26,170,36,1.6)+p22Line(70,31,170,31,1.6);
+    o+=p22Txt(120,18,"?",13,true);}
+  return p22Svg(W,H,o,"Longitudinal wave diagram");
+}
+/* Two pulses on a rope moving toward each other. pulses: [{h,t,dir}] with
+   h in cm as stated in the stem (sign gives crest or trough). */
+function p22Pulses(pulses){
+  var W=340,H=185,y0=104,o=p22Line(18,y0,322,y0,1.8);
+  var spots=[105,235];
+  pulses.forEach(function(p,i){var cx=spots[i],hh=p.h*7;
+    o+='<path d="M '+p22n(cx-34)+' '+y0+' L '+p22n(cx)+' '+p22n(y0-hh)+' L '+p22n(cx+34)+' '+y0+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.4"/>';
+    o+=p22Arrow(cx-22*p.dir,y0-52,cx+22*p.dir,y0-52,2,P22_ALT);
+    o+=p22Txt(cx,y0-hh+(p.h>=0?-14:20),p.t,11,false);});
+  return p22Svg(W,H,o,"Pulses on a rope diagram");
+}
+function p22PulseEnd(kind){
+  var W=340,H=185,y0=104,o=p22Line(18,y0,268,y0,1.8);
+  o+='<path d="M 102 '+y0+' L 140 '+p22n(y0-38)+' L 178 '+y0+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.4"/>';
+  o+=p22Arrow(96,58,150,58,2,P22_ALT)+p22Txt(120,44,"pulse",11,false);
+  if(kind==="fixed"){
+    o+=p22Rect(268,44,10,120,P22_SHADE)+p22Txt(290,170,"fixed end (wall)",10,false);
+  }else{
+    o+=p22Line(278,36,278,164,2.6)+'<circle cx="268" cy="'+y0+'" r="9" fill="none" stroke="'+P22_INK+'" stroke-width="2"/>';
+    o+=p22Txt(292,170,"free end (ring on a post)",10,false);
+  }
+  return p22Svg(W,H,o,"Pulse at the end of a rope diagram");
+}
+function p22StandString(n,llabel){
+  var W=340,H=180,x0=34,x1=306,y0=92,pts=[],env=[];
+  for(var i=0;i<=160;i++){var u=i/160;pts.push([x0+(x1-x0)*u,y0-34*Math.sin(u*n*Math.PI)]);
+    env.push([x0+(x1-x0)*u,y0+34*Math.sin(u*n*Math.PI)]);}
+  var o=p22Rect(24,58,10,68,P22_SHADE)+p22Rect(306,58,10,68,P22_SHADE);
+  o+='<path d="'+pts.map(function(p,i){return (i?"L":"M")+p22n(p[0])+" "+p22n(p[1]);}).join(" ")+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.2"/>';
+  o+='<path d="'+env.map(function(p,i){return (i?"L":"M")+p22n(p[0])+" "+p22n(p[1]);}).join(" ")+'" fill="none" stroke="'+P22_INK+'" stroke-width="1.2" stroke-dasharray="4 3"/>';
+  o+=p22Line(x0,146,x1,146,1.6)+p22Line(x0,140,x0,152,1.6)+p22Line(x1,140,x1,152,1.6);
+  o+=p22Txt((x0+x1)/2,162,llabel,12,true);
+  o+=p22Txt((x0+x1)/2,26,"harmonic "+n,11,false);
+  return p22Svg(W,H,o,"Standing wave on a string diagram");
+}
+/* Air column. kind "open": mode is the resonance number (antinodes at both
+   ends). kind "closed": mode is the odd quarter wave count (node at the
+   closed end, antinode at the open end). */
+function p22Column(kind,mode,llabel,modelabel){
+  var W=340,H=180,x0=52,x1=296,y0=88,pts=[];
+  for(var i=0;i<=140;i++){var u=i/140;
+    var v=kind==="open"?Math.cos(u*mode*Math.PI):Math.sin(u*mode*Math.PI/2);
+    pts.push([x0+(x1-x0)*u,y0-26*v]);}
+  var o="";
+  if(kind==="closed")o+=p22Rect(x0-10,58,10,60,P22_SHADE);
+  o+=p22Line(x0,58,x1,58,2.2)+p22Line(x0,118,x1,118,2.2);
+  if(kind==="open")o+=p22Line(x1,58,x1,118,1.2,true);
+  o+='<path d="'+pts.map(function(p,i){return (i?"L":"M")+p22n(p[0])+" "+p22n(p[1]);}).join(" ")+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.2"/>';
+  o+=p22Line(x0,142,x1,142,1.6)+p22Line(x0,136,x0,148,1.6)+p22Line(x1,136,x1,148,1.6);
+  o+=p22Txt((x0+x1)/2,160,llabel,12,true);
+  o+=p22Txt((x0+x1)/2,32,modelabel,11,false);
+  o+=p22Txt(kind==="closed"?x0-16:x0-30,44,kind==="closed"?"closed":"open",10,false);
+  o+=p22Txt(x1+22,44,"open",10,false);
+  return p22Svg(W,H,o,"Air column diagram");
+}
+function p22TwoColumns(l1,l2){
+  var W=340,H=190,o="";
+  o+=p22Rect(70,58,44,84,"none")+p22Rect(70,58,44,10,P22_SHADE);
+  o+=p22Rect(220,34,44,108,"none")+p22Rect(220,34,44,10,P22_SHADE);
+  o+=p22Txt(92,162,"first resonance",10,false)+p22Txt(92,178,l1,11,true);
+  o+=p22Txt(242,162,"next resonance",10,false)+p22Txt(242,178,l2,11,true);
+  o+=p22Txt(170,20,"closed air column",11,false);
+  return p22Svg(W,H,o,"Resonance column diagram");
+}
+/* Double slit schematic (not to scale): slit separation d, screen
+   distance L, fringe offset x on the screen for bright fringe m. */
+function p22Slit(dlabel,llabel,xlabel,m){
+  var W=340,H=200,o="";
+  o+=p22Arrow(18,100,104,100,2)+p22Txt(56,84,"light",11,false);
+  o+=p22Line(120,34,120,166,3);
+  o+='<rect x="114" y="82" width="12" height="10" fill="#ffffff"/>'+'<rect x="114" y="108" width="12" height="10" fill="#ffffff"/>';
+  o+=p22Line(140,87,140,113,1.4)+p22Arrow(140,87,140,96,1.4)+p22Arrow(140,113,140,104,1.4);
+  o+=p22Txt(160,100,"d = "+dlabel,11,false,"start");
+  o+=p22Line(120,182,300,182,1.6)+p22Line(120,176,120,188,1.6)+p22Line(300,176,300,188,1.6);
+  o+=p22Txt(210,196,"L = "+llabel,11,true);
+  o+=p22Line(300,34,300,166,3);
+  o+=p22Line(120,100,300,100,1.2,true);
+  o+='<circle cx="300" cy="100" r="3.4" fill="'+P22_INK+'"/>';
+  o+=p22Txt(292,92,"central maximum",10,false,"end");
+  var fy=100-34;
+  o+='<circle cx="300" cy="'+fy+'" r="3.4" fill="'+P22_ALT+'"/>';
+  o+=p22Txt(292,fy-12,"bright fringe "+m,10,false,"end");
+  o+=p22Line(316,100,316,fy,1.6)+p22Txt(322,83,"x = "+xlabel,11,false,"start");
+  o+=p22Txt(210,20,"not to scale",10,false);
+  return p22Svg(W,H,o,"Double slit diagram");
+}
+/* Refraction at a flat boundary. Angles are degrees from the normal.
+   The refracted label is supplied by the caller ("?" when it is asked). */
+function p22Refract(med1,med2,th1label,th1,th2label,th2){
+  var W=340,H=215,CX=170,CY=104,o="";
+  o+=p22Rect(24,24,292,180,"none");
+  o+=p22Line(24,CY,316,CY,2.4);
+  o+=p22Line(CX,32,CX,196,1.4,true)+p22Txt(CX+8,40,"normal",10,false,"start");
+  o+=p22Txt(36,44,med1,12,true,"start")+p22Txt(36,196-24,med2,12,true,"start");
+  var r1=th1*Math.PI/180,L1=86;
+  var ix=CX-L1*Math.sin(r1),iy=CY-L1*Math.cos(r1);
+  o+=p22Arrow(ix,iy,CX,CY,2.6);
+  o+=p22Txt((ix+CX)/2-8,(iy+CY)/2-8,th1label,12,true,"end");
+  var r2=th2*Math.PI/180,L2=80;
+  var ex=CX+L2*Math.sin(r2),ey=CY+L2*Math.cos(r2);
+  o+=p22Arrow(CX,CY,ex,ey,2.6,P22_ALT);
+  o+=p22Txt((CX+ex)/2+10,(CY+ey)/2+6,th2label,12,true,"start");
+  return p22Svg(W,H,o,"Refraction diagram");
+}
+/* Motion graph shapes for the bridging description entry. */
+function p22Shape(kind,note){
+  var W=340,H=200,L=52,B=158,T=26,R=312;
+  var o=p22Arrow(L,B,R,B,1.8)+p22Arrow(L,B,L,T,1.8);
+  o+=p22Txt((L+R)/2,186,"time",11,true)+p22Txt(20,(T+B)/2,"distance",11,true);
+  var path="";
+  if(kind==="line")path="M "+L+" 132 L "+R+" 44";
+  else if(kind==="flat")path="M "+L+" 84 L "+R+" 84";
+  else if(kind==="riseflat")path="M "+L+" 132 L 150 74 L 208 74 L "+R+" 34";
+  else if(kind==="fall")path="M "+L+" 44 L "+R+" 132";
+  else path="M "+L+" 140 C 190 132, 250 104, "+R+" 36";
+  o+='<path d="'+path+'" fill="none" stroke="'+P22_ACC+'" stroke-width="2.4"/>';
+  if(note)o+=p22Txt((L+R)/2,20,note,11,false);
+  return p22Svg(W,H,o,"Distance time graph diagram");
+}
+/* Half life decay curve through the three points the stem states. */
+function p22Decay(M0,T,unit){
+  var pts=[];
+  for(var i=0;i<=60;i++){var t=2*T*i/60;pts.push([t,M0*Math.pow(0.5,t/T)]);}
+  return p22Plot({series:[{pts:pts}],dots:false,
+    xt:[[0,"0"],[T,String(T)],[2*T,String(2*T)]],
+    yt:[[M0/4,String(M0/4)],[M0/2,String(M0/2)],[M0,String(M0)]],
+    xmax:2*T*1.12,ymax:M0*1.15,xl:"time ("+unit+")",yl:"mass (g)",
+    markPts:[[0,M0],[T,M0/2],[2*T,M0/4]]});
+}
 
 /* ----- bank-u1.js ----- */
+// Diagram figures (Phase C, Nov 2026): signed number lines, motion graphs and relative motion vector lanes added where the source types carried diagrams; see bank-helpers.js p22 helpers.
 // Physics 2204 Unit 1 Kinematics question bank
 // CRMARKS: u1-52-stopping-cr=5
 // CRMARKS: u1-52-freefall-cr=4
@@ -38,37 +424,41 @@ E("u1-51-signed-add",1,["PH11.5.1"],2,"gen",function(){
   var sol="Take east as positive, so the east leg is positive and the west leg counts against it. The total distance walked is found from "+iF(a)+" + "+iF(b)+" = "+iF(dist)+" m. ";
   if(disp>=0){sol+="The displacement is the signed sum of the legs: "+iF(a)+" - "+iF(b)+" = "+iF(disp)+" m. The displacement is <b>"+F3(ans)+" m</b>, east of the starting point.";}
   else{var mag=-disp;sol+="The west leg is larger. Its size is "+iF(b)+" - "+iF(a)+" = "+iF(mag)+" m, and because it points west the signed displacement is negative. The displacement is <b>"+F3(ans)+" m</b>, and the negative sign means west.";}
-  return numq("Take east as positive. A hiker in Gros Morne walks "+gF(a)+" m east along a trail, then turns around and walks "+gF(b)+" m west. Calculate the hiker's displacement. Give your answer in m.",
+  var q=numq("Take east as positive. A hiker in Gros Morne walks "+gF(a)+" m east along a trail, then turns around and walks "+gF(b)+" m west. Calculate the hiker's displacement. Give your answer in m.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{a:a,b:b});
+    q.figure=p22Collinear([{v:a,t:gF(a)+" m east"},{v:-b,t:gF(b)+" m west"}],"east","west");return q;
 });
 
 E("u1-51-vectors-cr",1,["PH11.5.1"],2,"gen",function(){
   var a=ri(20,60),b=ri(10,30),c=ri(15,50);
   var eastTotal=a+c,disp=eastTotal-b,dist=eastTotal+b,ans=sfR(disp,3);
   var sol="Take east as positive. First combine the two east legs: "+iF(a)+" + "+iF(c)+" = "+iF(eastTotal)+" m east. The west leg points the other way, so subtract it: "+iF(eastTotal)+" - "+iF(b)+" = "+iF(disp)+" m. As a check, the total distance walked is "+iF(eastTotal)+" + "+iF(b)+" = "+iF(dist)+" m, which is larger than the displacement because part of the walk was backtracked. The positive sign means the net change of position is toward the east. The displacement is <b>"+F3(ans)+" m</b> east.";
-  return numq("Take east as positive. A delivery cyclist in St. John's rides "+gF(a)+" m east, then "+gF(b)+" m west, then "+gF(c)+" m east again. Calculate the cyclist's displacement. Give your answer in m.",
+  var q=numq("Take east as positive. A delivery cyclist in St. John's rides "+gF(a)+" m east, then "+gF(b)+" m west, then "+gF(c)+" m east again. Calculate the cyclist's displacement. Give your answer in m.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{a:a,b:b,c:c});
+    q.figure=p22Collinear([{v:a,t:gF(a)+" m east"},{v:-b,t:gF(b)+" m west"},{v:c,t:gF(c)+" m east"}],"east","west");return q;
 });
 
 E("u1-51-distance-vs-disp",1,["PH11.5.1"],1,"gen",function(){
   var a=ri(25,70),b=ri(5,20); if(b>=a)b=a-7;
   var dist=a+b,disp=a-b;
-  return mcq("Take east as positive. A student walks "+gF(a)+" m east across the school yard, then walks "+gF(b)+" m west. Which pair gives the distance walked and the displacement?",
+  var q=mcq("Take east as positive. A student walks "+gF(a)+" m east across the school yard, then walks "+gF(b)+" m west. Which pair gives the distance walked and the displacement?",
     "Distance "+F3(dist)+" m, displacement "+F3(disp)+" m east",
     ["Distance "+F3(disp)+" m, displacement "+F3(dist)+" m east",
      "Distance "+F3(dist)+" m, displacement "+F3(dist)+" m east",
      "Distance "+F3(disp)+" m, displacement "+F3(disp)+" m east"],
     "Distance is the full length of the path: "+iF(a)+" + "+iF(b)+" = "+iF(dist)+" m. Displacement is the signed change of position, with west counting against east: "+iF(a)+" - "+iF(b)+" = "+iF(disp)+" m, toward the east. Distance is a scalar and displacement is a vector, so the two are only equal when there is no backtracking.",{a:a,b:b});
+    q.figure=p22Collinear([{v:a,t:gF(a)+" m east"},{v:-b,t:gF(b)+" m west"}],"east","west");return q;
 });
 
 E("u1-51-avg-velocity",1,["PH11.5.1"],2,"gen",function(){
   var d=pick([48,60,72,84,96,108,120]),t=pick([6,8,10,12]);
   var subj=pick(["A snowmobile","A delivery van","A ferry in a narrow channel","A cyclist","A tour boat","A school bus"]);
   var v=sfR(d/t,4);
-  return mcq("Take east as positive. "+subj+" travels in a straight line and its displacement is "+gF(d)+" m east in "+gF(t)+" s. What is its average velocity?",
+  var q=mcq("Take east as positive. "+subj+" travels in a straight line and its displacement is "+gF(d)+" m east in "+gF(t)+" s. What is its average velocity?",
     F3(v)+" m/s east",
     [F3(d*t)+" m/s east",F3(v)+" m/s west",F3(sfR(v/2,4))+" m/s east"],
     "Average velocity is displacement divided by time, and it keeps the direction of the displacement: "+iF(d)+" / "+iF(t)+" = "+iF(v)+" m/s. The average velocity is <b>"+F3(v)+" m/s east</b>. Multiplying instead of dividing, halving the value, or pointing it west are the errors in the other options.",{d:d,t:t});
+    q.figure=p22Collinear([{v:d,t:gF(d)+" m east"}],"east","west");return q;
 });
 
 E("u1-51-convert-speed",1,["PH11.5.1"],1,"gen",function(){
@@ -115,37 +505,41 @@ E("u1-51-accel-direction",1,["PH11.5.1"],1,"var",varset([
 
 E("u1-51-signed-sum-choice",1,["PH11.5.1"],2,"gen",function(){
   var a=ri(40,80),b=ri(10,35),mag=a-b,disp=-mag;
-  return mcq("Take north as positive. A kayaker paddles "+gF(a)+" m south from a dock, then paddles "+gF(b)+" m north. Which value is the kayaker's displacement?",
+  var q=mcq("Take north as positive. A kayaker paddles "+gF(a)+" m south from a dock, then paddles "+gF(b)+" m north. Which value is the kayaker's displacement?",
     F3(disp)+" m",
     [F3(mag)+" m",F3(-(a+b))+" m",F3(a+b)+" m"],
     "South is the negative direction here. The north leg only partly cancels the south leg: "+iF(a)+" - "+iF(b)+" = "+iF(mag)+" m of net southward travel. Keeping the sign for the southward direction gives a displacement of <b>"+F3(disp)+" m</b>. The negative sign means south. Adding the two legs gives the distance, not the displacement.",{a:a,b:b});
+    q.figure=p22Collinear([{v:-a,t:gF(a)+" m south"},{v:b,t:gF(b)+" m north"}],"north","south");return q;
 });
 
 E("u1-51-position-change",1,["PH11.5.1"],2,"gen",function(){
   var west=ri(10,40),east=ri(10,60);
   var xi=-west,xf=east,disp=east+west,ans=sfR(disp,3);
-  return numq("Take east as positive and the wharf as the origin. A boat starts at position "+gF(xi)+" m (west of the wharf) and ends at position "+gF(xf)+" m (east of the wharf). Calculate the boat's displacement. Give your answer in m.",
+  var q=numq("Take east as positive and the wharf as the origin. A boat starts at position "+gF(xi)+" m (west of the wharf) and ends at position "+gF(xf)+" m (east of the wharf). Calculate the boat's displacement. Give your answer in m.",
     ans,Math.max(0.02*Math.abs(ans),0.05),
     "Displacement is the change of position, final position minus initial position. The boat begins "+iF(west)+" m west of the origin and ends "+iF(east)+" m east of it, so it covers the whole span between the two positions: "+iF(west)+" + "+iF(east)+" = "+iF(disp)+" m. The displacement is <b>"+F3(ans)+" m</b>, toward the east.",{west:west,east:east});
+    q.figure=p22PosLine(west,east);return q;
 });
 
 E("u1-51-collinear-combo",1,["PH11.5.1"],3,"gen",function(){
   var a=ri(30,60),b=ri(10,30),c=ri(20,50),t=pick([12,15,18,20,24,25,30]);
   var eastTotal=a+c,net=eastTotal-b,dist=eastTotal+b;
   var avgv=sfR(net/t,4),avgs=sfR(dist/t,4);
-  return mcq("Take east as positive. A student walks "+gF(a)+" m east, then "+gF(b)+" m west, then "+gF(c)+" m east, and the whole walk takes "+gF(t)+" s. What is the student's average velocity?",
+  var q=mcq("Take east as positive. A student walks "+gF(a)+" m east, then "+gF(b)+" m west, then "+gF(c)+" m east, and the whole walk takes "+gF(t)+" s. What is the student's average velocity?",
     F3(avgv)+" m/s east",
     [F3(avgs)+" m/s east",F3(net)+" m/s east",F3(avgv)+" m/s west"],
     "Average velocity needs the displacement first, not the distance. The east legs combine: "+iF(a)+" + "+iF(c)+" = "+iF(eastTotal)+" m. Subtracting the west leg: "+iF(eastTotal)+" - "+iF(b)+" = "+iF(net)+" m. Then divide by the time: "+iF(net)+" / "+iF(t)+" = "+iF(avgv)+" m/s. The average velocity is <b>"+F3(avgv)+" m/s east</b>. Using the total distance would give the average speed instead.",{a:a,b:b,c:c,t:t});
+    q.figure=p22Collinear([{v:a,t:gF(a)+" m east"},{v:-b,t:gF(b)+" m west"},{v:c,t:gF(c)+" m east"}],"east","west");return q;
 });
 
 E("u1-51-graphical-add",1,["PH11.5.1"],3,"gen",function(){
   var a=ri(55,90),b=ri(20,44);
   var mag=a-b,len=sfR(mag/10,4),bothLen=sfR((a+b)/10,4);
-  return mcq("On a scale diagram, 1 cm represents 10 m. A vector of "+gF(a)+" m east and a vector of "+gF(b)+" m west are drawn tip to tail. Which statement describes the resultant vector on the diagram?",
+  var q=mcq("On a scale diagram, 1 cm represents 10 m. A vector of "+gF(a)+" m east and a vector of "+gF(b)+" m west are drawn tip to tail. Which statement describes the resultant vector on the diagram?",
     "It is "+F3(len)+" cm long and points east",
     ["It is "+F3(bothLen)+" cm long and points east","It is "+F3(mag)+" cm long and points east","It is "+F3(len)+" cm long and points west"],
     "Graphical addition with opposite directions means the shorter arrow cancels part of the longer one: "+iF(a)+" - "+iF(b)+" = "+iF(mag)+" m, and the east arrow is longer, so the resultant points east. At the stated scale, each 10 m is drawn as 1 cm: "+iF(mag)+" / "+iF(10)+" = "+iF(len)+" cm. The resultant is <b>"+F3(len)+" cm long and points east</b>.",{a:a,b:b});
+    q.figure=p22Collinear([{v:a,t:gF(a)+" m east"},{v:-b,t:gF(b)+" m west"}],"east","west",0,"Scale: 1 cm represents 10 m");return q;
 });
 
 /* ---------- PH11.5.2 Quantitative one-dimensional motion ---------- */
@@ -215,27 +609,30 @@ E("u1-52-vt-graph-area",1,["PH11.5.2"],2,"gen",function(){
   var pair=pick([[2,10],[4,14],[6,16],[3,11],[5,17],[4,10]]),t=pick([4,5,6,8]);
   var subj=pick(["the harbour ferry","a delivery cart","a cyclist","a tour boat","a snowmobile"]);
   var v1=pair[0],v2=pair[1],sum=v1+v2,avg=sfR(sum/2,4),disp=sfR(avg*t,4);
-  return mcq("A velocity-time graph for "+subj+" is a straight line rising steadily from "+gF(v1)+" m/s at time zero to "+gF(v2)+" m/s at "+gF(t)+" s. What displacement does the graph give for this interval?",
+  var q=mcq("A velocity-time graph for "+subj+" is a straight line rising steadily from "+gF(v1)+" m/s at time zero to "+gF(v2)+" m/s at "+gF(t)+" s. What displacement does the graph give for this interval?",
     F3(disp)+" m",
     [F3(v2*t)+" m",F3(v1*t)+" m",F3((v2-v1)*t)+" m"],
     "On a velocity-time graph, the displacement is the area under the line. For a steadily rising line, that area is the average velocity times the time. The two velocities add: "+iF(v1)+" + "+iF(v2)+" = "+iF(sum)+" m/s. Half of that is the average: "+iF(sum)+" / "+iF(2)+" = "+iF(avg)+" m/s. The area is "+iF(avg)+" × "+iF(t)+" = "+iF(disp)+" m. The displacement is <b>"+F3(disp)+" m</b>.",{v1:v1,v2:v2,t:t});
+    q.figure=p22Plot({series:[{pts:[[0,v1],[t,v2]],shade:true}],xt:[[0,"0"],[t,gF(t)]],yt:[[v1,gF(v1)],[v2,gF(v2)]],xmax:t*1.08,ymax:v2*1.18,xl:"time (s)",yl:"velocity (m/s)"});return q;
 });
 
 E("u1-52-vt-graph-slope",1,["PH11.5.2"],2,"gen",function(){
   var acc=pick([1.5,2,2.5,3]),t=ri(4,9),v1=ri(2,12);
   var delta=sfR(acc*t,4),v2=sfR(v1+delta,4),ans=sfR(acc,3);
-  return numq("A velocity-time graph for a cart is a straight line passing through velocity "+gF(v1)+" m/s at time zero and velocity "+gF(v2)+" m/s at "+gF(t)+" s. Calculate the acceleration shown by the graph. Give your answer in m/s^2.",
+  var q=numq("A velocity-time graph for a cart is a straight line passing through velocity "+gF(v1)+" m/s at time zero and velocity "+gF(v2)+" m/s at "+gF(t)+" s. Calculate the acceleration shown by the graph. Give your answer in m/s^2.",
     ans,Math.max(0.02*Math.abs(ans),0.05),
     "On a velocity-time graph, the acceleration is the slope, the rise in velocity divided by the time interval. The rise in velocity: "+iF(v2)+" - "+iF(v1)+" = "+iF(delta)+" m/s. Divide by the time: "+iF(delta)+" / "+iF(t)+" = "+iF(acc)+" m/s^2. The acceleration is <b>"+F3(ans)+" m/s^2</b>.",{acc:acc,t:t,v1:v1});
+    q.figure=p22Plot({series:[{pts:[[0,v1],[t,v2]]}],xt:[[0,"0"],[t,gF(t)]],yt:[[v1,gF(v1)],[v2,gF(v2)]],xmax:t*1.08,ymax:v2*1.18,xl:"time (s)",yl:"velocity (m/s)",dots:true});return q;
 });
 
 E("u1-52-pt-graph",1,["PH11.5.2"],1,"gen",function(){
   var v=pick([2,3,4,5,6]),t=pick([4,5,6,8,10]),x1=ri(5,20);
   var disp=v*t,x2=x1+disp;
-  return mcq("A position-time graph for a walker is a straight line from position "+gF(x1)+" m at time zero to position "+gF(x2)+" m at "+gF(t)+" s. What is the walker's velocity?",
+  var q=mcq("A position-time graph for a walker is a straight line from position "+gF(x1)+" m at time zero to position "+gF(x2)+" m at "+gF(t)+" s. What is the walker's velocity?",
     F3(v)+" m/s",
     [F3(sfR(x2/t,4))+" m/s",F3(disp)+" m/s",F3(sfR(1/v,4))+" m/s"],
     "On a position-time graph, the velocity is the slope, the change in position divided by the time. The change in position: "+iF(x2)+" - "+iF(x1)+" = "+iF(disp)+" m. Divide by the time: "+iF(disp)+" / "+iF(t)+" = "+iF(v)+" m/s. The velocity is <b>"+F3(v)+" m/s</b>. Using the final position alone, instead of the change in position, is the error in one of the other options.",{v:v,t:t,x1:x1});
+    q.figure=p22Plot({series:[{pts:[[0,x1],[t,x2]]}],xt:[[0,"0"],[t,gF(t)]],yt:[[x1,gF(x1)],[x2,gF(x2)]],xmax:t*1.08,ymax:x2*1.15,xl:"time (s)",yl:"position (m)",dots:true});return q;
 });
 
 E("u1-52-stopping-cr",1,["PH11.5.2"],3,"gen",function(){
@@ -262,8 +659,9 @@ E("u1-52-graph-cr",1,["PH11.5.2"],2,"gen",function(){
   var A1=v1*t1,sum=v1+v2,avg=sfR(sum/2,4),A2=sfR(avg*t2,4),A3=v2*t3,delta=v2-v1,accP=sfR(delta/t2,4);
   var sub=sfR(A1+A2,4),tot=sfR(sub+A3,4),ans=sfR(tot,3);
   var sol="On a velocity-time graph, displacement is the total area under the graph, so find the area of each segment. Segment one is a rectangle: "+iF(v1)+" × "+iF(t1)+" = "+iF(A1)+" m. Segment two rises steadily, so its area uses the average velocity on that segment. The velocities add: "+iF(v1)+" + "+iF(v2)+" = "+iF(sum)+" m/s, and half of that is "+iF(sum)+" / "+iF(2)+" = "+iF(avg)+" m/s. The area of segment two: "+iF(avg)+" × "+iF(t2)+" = "+iF(A2)+" m. The slope of segment two also gives its acceleration: the velocity change is "+iF(v2)+" - "+iF(v1)+" = "+iF(delta)+" m/s, and "+iF(delta)+" / "+iF(t2)+" = "+iF(accP)+" m/s^2. Segment three is a rectangle: "+iF(v2)+" × "+iF(t3)+" = "+iF(A3)+" m. Add the areas in stages: "+iF(A1)+" + "+iF(A2)+" = "+iF(sub)+" m, then "+iF(sub)+" + "+iF(A3)+" = "+iF(tot)+" m. The displacement is <b>"+F3(ans)+" m</b>.";
-  return numq("A velocity-time graph for a ferry leaving the dock has three segments. Segment one: the ferry holds a steady velocity of "+gF(v1)+" m/s for "+gF(t1)+" s. Segment two: the velocity rises steadily from "+gF(v1)+" m/s to "+gF(v2)+" m/s over "+gF(t2)+" s. Segment three: the ferry holds a steady velocity of "+gF(v2)+" m/s for "+gF(t3)+" s. Calculate the ferry's displacement over the whole graph. Give your answer in m.",
+  var q=numq("A velocity-time graph for a ferry leaving the dock has three segments. Segment one: the ferry holds a steady velocity of "+gF(v1)+" m/s for "+gF(t1)+" s. Segment two: the velocity rises steadily from "+gF(v1)+" m/s to "+gF(v2)+" m/s over "+gF(t2)+" s. Segment three: the ferry holds a steady velocity of "+gF(v2)+" m/s for "+gF(t3)+" s. Calculate the ferry's displacement over the whole graph. Give your answer in m.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{v1:v1,v2:v2,t1:t1,t2:t2,t3:t3});
+    q.figure=p22Plot({series:[{pts:[[0,v1],[t1,v1],[t1+t2,v2],[t1+t2+t3,v2]],shade:true}],xt:[[0,"0"],[t1,gF(t1)],[t1+t2,gF(t1+t2)],[t1+t2+t3,gF(t1+t2+t3)]],yt:[[v1,gF(v1)],[v2,gF(v2)]],xmax:(t1+t2+t3)*1.05,ymax:v2*1.18,xl:"time (s)",yl:"velocity (m/s)"});return q;
 });
 
 E("u1-52-stopping-simple",1,["PH11.5.2"],3,"gen",function(){
@@ -342,18 +740,20 @@ E("u1-53-relative-concept",1,["PH11.5.3"],1,"gen",function(){
 E("u1-53-same-direction",1,["PH11.5.3"],2,"gen",function(){
   var closing=pick([2,3,4,5]),t=ri(8,25),vs=ri(6,14);
   var vf=vs+closing,gap=closing*t,ans=sfR(t,3);
-  return numq("Two delivery vans travel east on the same straight highway. The van behind is moving at "+gF(vf)+" m/s and the van ahead is moving at "+gF(vs)+" m/s, and the gap between them is "+gF(gap)+" m. Calculate how long it takes the van behind to catch up to the van ahead, assuming both hold their speeds. Give your answer in s.",
+  var q=numq("Two delivery vans travel east on the same straight highway. The van behind is moving at "+gF(vf)+" m/s and the van ahead is moving at "+gF(vs)+" m/s, and the gap between them is "+gF(gap)+" m. Calculate how long it takes the van behind to catch up to the van ahead, assuming both hold their speeds. Give your answer in s.",
     ans,Math.max(0.02*Math.abs(ans),0.05),
     "Because the vans move in the same direction, the gap closes at the difference of their speeds: "+iF(vf)+" - "+iF(vs)+" = "+iF(closing)+" m/s. The time to close the gap is the gap divided by the closing speed: "+iF(gap)+" / "+iF(closing)+" = "+iF(t)+" s. The time to catch up is <b>"+F3(ans)+" s</b>.",{vf:vf,vs:vs,gap:gap});
+    q.figure=p22VecLanes([{v:vf,east:true,t:"van behind: "+gF(vf)+" m/s east, gap "+gF(gap)+" m"},{v:vs,east:true,t:"van ahead: "+gF(vs)+" m/s east"}]);return q;
 });
 
 E("u1-53-opposite",1,["PH11.5.3"],2,"gen",function(){
   var v1=ri(3,8),v2=ri(3,8); if(v2===v1)v2=v1+1;
   var tMeet=ri(6,20),closing=v1+v2,sep=closing*tMeet,mx=Math.max(v1,v2),diff=Math.abs(v1-v2);
-  return mcq("Two hikers start "+gF(sep)+" m apart on a straight trail and walk directly toward each other, one at "+gF(v1)+" m/s and the other at "+gF(v2)+" m/s. How long before they meet?",
+  var q=mcq("Two hikers start "+gF(sep)+" m apart on a straight trail and walk directly toward each other, one at "+gF(v1)+" m/s and the other at "+gF(v2)+" m/s. How long before they meet?",
     F3(tMeet)+" s",
     [F3(sfR(sep/mx,4))+" s",F3(sfR(sep/diff,4))+" s",F3(tMeet)+" min"],
     "Because the hikers move toward each other, the gap closes at the sum of their speeds: "+iF(v1)+" + "+iF(v2)+" = "+iF(closing)+" m/s. The time to meet is the separation divided by the closing speed: "+iF(sep)+" / "+iF(closing)+" = "+iF(tMeet)+" s. They meet after <b>"+F3(tMeet)+" s</b>. Using only one speed, or the difference of the speeds, would be the right method for other setups, not for motion toward each other.",{v1:v1,v2:v2,sep:sep});
+    q.figure=p22VecLanes([{v:v1,east:true,t:"hiker 1: "+gF(v1)+" m/s, separation "+gF(sep)+" m"},{v:v2,east:false,t:"hiker 2: "+gF(v2)+" m/s, toward hiker 1"}]);return q;
 });
 
 E("u1-53-boat-speed",1,["PH11.5.3"],2,"gen",function(){
@@ -363,10 +763,11 @@ E("u1-53-boat-speed",1,["PH11.5.3"],2,"gen",function(){
   var dirWord=down?"downstream, with the current helping it":"upstream, against the current";
   var ansWord=down?"downstream":"upstream";
   var sol=down?("The current and the boat point the same way, so their speeds add for an observer on the shore: "+iF(vb)+" + "+iF(vc)+" = "+iF(g)+" m/s. The ground speed is <b>"+F3(g)+" m/s downstream</b>."):("The current works against the boat, so the shore observer sees the boat's speed reduced by the current: "+iF(vb)+" - "+iF(vc)+" = "+iF(g)+" m/s. The ground speed is <b>"+F3(g)+" m/s upstream</b>, still upstream because the boat is faster than the current.");
-  return mcq(vessel+" moves at "+gF(vb)+" m/s relative to the water of a river. The river current flows at "+gF(vc)+" m/s. The boat heads "+dirWord+". What is the boat's speed relative to the shore?",
+  var q=mcq(vessel+" moves at "+gF(vb)+" m/s relative to the water of a river. The river current flows at "+gF(vc)+" m/s. The boat heads "+dirWord+". What is the boat's speed relative to the shore?",
     F3(g)+" m/s "+ansWord,
     [F3(other)+" m/s "+ansWord,F3(vb)+" m/s "+ansWord,F3(g)+" m/s in the opposite direction"],
     sol,{vb:vb,vc:vc,down:down});
+    q.figure=p22VecLanes([{v:vb,east:down,t:"boat relative to water: "+gF(vb)+" m/s"},{v:vc,east:true,t:"river current: "+gF(vc)+" m/s"}]);return q;
 });
 
 E("u1-53-plane-wind",1,["PH11.5.3"],2,"gen",function(){
@@ -374,45 +775,51 @@ E("u1-53-plane-wind",1,["PH11.5.3"],2,"gen",function(){
   var va=head?ground+w:ground-w,dist=ground*t,ans=sfR(t,3);
   var windWord=head?"a headwind, blowing against the plane":"a tailwind, blowing from behind the plane";
   var sol=head?("A headwind reduces the ground speed: "+iF(va)+" - "+iF(w)+" = "+iF(ground)+" km/h. The flight time is the distance divided by the ground speed: "+iF(dist)+" / "+iF(ground)+" = "+iF(t)+" h. The flight time is <b>"+F3(ans)+" hours</b>."):("A tailwind adds to the ground speed: "+iF(va)+" + "+iF(w)+" = "+iF(ground)+" km/h. The flight time is the distance divided by the ground speed: "+iF(dist)+" / "+iF(ground)+" = "+iF(t)+" h. The flight time is <b>"+F3(ans)+" hours</b>.");
-  return numq("A plane flies at "+gF(va)+" km/h relative to the air on a route of "+gF(dist)+" km. There is "+windWord+" of "+gF(w)+" km/h. Calculate the flight time for the trip. Give your answer in hours.",
+  var q=numq("A plane flies at "+gF(va)+" km/h relative to the air on a route of "+gF(dist)+" km. There is "+windWord+" of "+gF(w)+" km/h. Calculate the flight time for the trip. Give your answer in hours.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{va:va,w:w,dist:dist,head:head});
+    q.figure=p22VecLanes([{v:va,east:true,t:"plane relative to air: "+gF(va)+" km/h"},{v:w,east:!head,t:"wind: "+gF(w)+" km/h"}]);return q;
 });
 
 E("u1-53-meet-cr",1,["PH11.5.3"],2,"gen",function(){
   var v1=pick([4.5,5,5.5,6]),v2=pick([3.5,4,4.5]),t=ri(10,30);
   var closing=sfR(v1+v2,4),sep=sfR(closing*t,4),d1=sfR(v1*t,4),ans=sfR(t,3);
   var sol="The two cyclists move toward each other, so the separation shrinks at the sum of their speeds: "+iF(v1)+" + "+iF(v2)+" = "+iF(closing)+" m/s. The time to meet is the separation divided by this closing speed: "+iF(sep)+" / "+iF(closing)+" = "+iF(t)+" s. As a check, in that time the first cyclist covers "+iF(v1)+" × "+iF(t)+" = "+iF(d1)+" m, and the second cyclist covers the rest of the separation. The time to meet is <b>"+F3(ans)+" s</b>.";
-  return numq("Two cyclists start "+gF(sep)+" m apart on a straight section of the T'Railway and ride directly toward each other. One rides at "+gF(v1)+" m/s and the other at "+gF(v2)+" m/s, and both hold their speeds. Calculate the time until they meet. Give your answer in s.",
+  var q=numq("Two cyclists start "+gF(sep)+" m apart on a straight section of the T'Railway and ride directly toward each other. One rides at "+gF(v1)+" m/s and the other at "+gF(v2)+" m/s, and both hold their speeds. Calculate the time until they meet. Give your answer in s.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{v1:v1,v2:v2,sep:sep});
+    q.figure=p22VecLanes([{v:v1,east:true,t:"cyclist 1: "+gF(v1)+" m/s, separation "+gF(sep)+" m"},{v:v2,east:false,t:"cyclist 2: "+gF(v2)+" m/s, toward cyclist 1"}]);return q;
 });
 
 E("u1-53-relative-cr",1,["PH11.5.3"],2,"gen",function(){
   var vb=pick([18,20,24,30]),vc=pick([4,5,6]),L=pick([48,60,72,84,96,120]);
   var gd=vb+vc,gu=vb-vc,tdP=sfR(L/gd,4),tuP=sfR(L/gu,4),totP=sfR(tdP+tuP,4),ans=sfR(totP,3);
   var sol="Work each leg with the ground speed for that leg, measured from the shore. Downstream the current helps, so the ground speed is "+iF(vb)+" + "+iF(vc)+" = "+iF(gd)+" km/h, and the downstream time is "+iF(L)+" / "+iF(gd)+" = "+iF(tdP)+" h. Upstream the current opposes the boat, so the ground speed is "+iF(vb)+" - "+iF(vc)+" = "+iF(gu)+" km/h, and the upstream time is "+iF(L)+" / "+iF(gu)+" = "+iF(tuP)+" h. Add the two leg times: "+iF(tdP)+" + "+iF(tuP)+" = "+iF(totP)+" h. The total time for the round trip is <b>"+F3(ans)+" hours</b>. The upstream leg takes longer, which is why the current does not cancel out over the round trip.";
-  return numq("A tour boat moves at "+gF(vb)+" km/h relative to the water of a river whose current flows at "+gF(vc)+" km/h. The boat travels "+gF(L)+" km downstream from a wharf and then returns the same "+gF(L)+" km upstream to the wharf. Calculate the total time for the round trip. Give your answer in hours.",
+  var q=numq("A tour boat moves at "+gF(vb)+" km/h relative to the water of a river whose current flows at "+gF(vc)+" km/h. The boat travels "+gF(L)+" km downstream from a wharf and then returns the same "+gF(L)+" km upstream to the wharf. Calculate the total time for the round trip. Give your answer in hours.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{vb:vb,vc:vc,L:L});
+    q.figure=p22VecLanes([{v:vb,east:true,t:"downstream leg, boat: "+gF(vb)+" km/h"},{v:vc,east:true,t:"downstream leg, current: "+gF(vc)+" km/h"},{v:vb,east:false,t:"upstream leg, boat: "+gF(vb)+" km/h"},{v:vc,east:true,t:"upstream leg, current: "+gF(vc)+" km/h"}]);return q;
 });
 
 E("u1-53-pass-separation",1,["PH11.5.3"],3,"gen",function(){
   var v1=ri(8,14),v2=ri(8,14),tMeet=ri(5,12),extra=ri(3,10);
   var closing=v1+v2,sep0=closing*tMeet,total=tMeet+extra,sep=closing*extra,ans=sfR(sep,3);
   var sol="First find when the cars meet. Moving toward each other, they close the gap at "+iF(v1)+" + "+iF(v2)+" = "+iF(closing)+" m/s, so the meeting time is "+iF(sep0)+" / "+iF(closing)+" = "+iF(tMeet)+" s. The clock time asked about is later than that: "+iF(total)+" - "+iF(tMeet)+" = "+iF(extra)+" s after they pass each other. After passing, the same closing speed becomes a separating speed, so the separation then is "+iF(closing)+" × "+iF(extra)+" = "+iF(sep)+" m. The separation is <b>"+F3(ans)+" m</b>.";
-  return numq("Two cars start "+gF(sep0)+" m apart on a straight highway and drive directly toward each other, one at "+gF(v1)+" m/s and the other at "+gF(v2)+" m/s. Both hold their speeds, pass each other, and keep going. Calculate the separation between the cars "+gF(total)+" s after they start. Give your answer in m.",
+  var q=numq("Two cars start "+gF(sep0)+" m apart on a straight highway and drive directly toward each other, one at "+gF(v1)+" m/s and the other at "+gF(v2)+" m/s. Both hold their speeds, pass each other, and keep going. Calculate the separation between the cars "+gF(total)+" s after they start. Give your answer in m.",
     ans,Math.max(0.02*Math.abs(ans),0.05),sol,{v1:v1,v2:v2,sep0:sep0,total:total});
+    q.figure=p22VecLanes([{v:v1,east:true,t:"car 1: "+gF(v1)+" m/s, starting separation "+gF(sep0)+" m"},{v:v2,east:false,t:"car 2: "+gF(v2)+" m/s, toward car 1"}]);return q;
 });
 
 E("u1-53-wind-roundtrip",1,["PH11.5.3"],3,"gen",function(){
   var va=ri(52,68),w=ri(6,14),D=ri(220,380);
   var go=va+w,gb=va-w,toP=sfR(D/go,4),tbP=sfR(D/gb,4),totP=sfR(toP+tbP,4),ans=sfR(totP,3);
   var bothTail=sfR(2*toP,4),oneWay=sfR(toP+sfR(D/va,4),4),bothHead=sfR(2*tbP,4);
-  return mcq("A plane whose speed relative to the air is "+gF(va)+" km/h makes a round trip between two airports "+gF(D)+" km apart. A steady wind of "+gF(w)+" km/h blows along the route, acting as a tailwind on the way out and a headwind on the way back. What is the total flight time for the round trip?",
+  var q=mcq("A plane whose speed relative to the air is "+gF(va)+" km/h makes a round trip between two airports "+gF(D)+" km apart. A steady wind of "+gF(w)+" km/h blows along the route, acting as a tailwind on the way out and a headwind on the way back. What is the total flight time for the round trip?",
     F3(ans)+" hours",
     [F3(bothTail)+" hours",F3(oneWay)+" hours",F3(bothHead)+" hours"],
     "The wind changes the ground speed on each leg, so the legs must be timed separately. Outbound, with the tailwind: "+iF(va)+" + "+iF(w)+" = "+iF(go)+" km/h, and the time is "+iF(D)+" / "+iF(go)+" = "+iF(toP)+" h. Returning, against the headwind: "+iF(va)+" - "+iF(w)+" = "+iF(gb)+" km/h, and the time is "+iF(D)+" / "+iF(gb)+" = "+iF(tbP)+" h. Add the leg times: "+iF(toP)+" + "+iF(tbP)+" = "+iF(totP)+" h. The total flight time is <b>"+F3(ans)+" hours</b>. The wind does not cancel out, because the plane spends longer in the headwind leg than in the tailwind leg.",{va:va,w:w,D:D});
+    q.figure=p22VecLanes([{v:va,east:true,t:"way out, plane: "+gF(va)+" km/h"},{v:w,east:true,t:"way out, wind (tailwind): "+gF(w)+" km/h"},{v:va,east:false,t:"way back, plane: "+gF(va)+" km/h"},{v:w,east:true,t:"way back, wind (headwind): "+gF(w)+" km/h"}]);return q;
 });
 
 /* ----- bank-u2.js ----- */
+// Diagram figures (Phase C, Nov 2026): force diagrams, angled force scenes, Atwood, connected crates, elevator and force time graphs added where the source types carried diagrams; see bank-helpers.js p22 helpers.
 // Physics 2204 Unit 2 Dynamics question bank
 // CRMARKS: u2-62-multistep-cr=5
 // CRMARKS: u2-65-collision-cr=4
@@ -425,45 +832,50 @@ E("u1-53-wind-roundtrip",1,["PH11.5.3"],3,"gen",function(){
 
 E("u2-61-fbd-select",2,["PH11.6.1"],1,"var",varset([
   function(){
-    return mcq("A book rests on a horizontal table. Which list gives all the forces acting on the book?",
+    var q=mcq("A book rests on a horizontal table. Which list gives all the forces acting on the book?",
       "Gravity pulling down and the normal force from the table pushing up",
       ["Gravity pulling down, the normal force pushing up, and a forward force keeping it on the table",
        "Gravity pulling down only, because the book is not moving",
        "The normal force pushing up only, because gravity is cancelled before it acts"],
       "A resting book has two forces: its weight, gravity pulling down toward Earth, and the normal force from the table surface pushing up. There is no horizontal force, and no force is needed to keep a stationary object in place. Gravity pulling down and the normal force pushing up is the complete list.",{});
+    q.figure=p22Scene("book");return q;
   },
   function(){
-    return mcq("A hockey puck slides east across rough ice and slows down. Which list gives all the forces acting on the puck while it slides?",
+    var q=mcq("A hockey puck slides east across rough ice and slows down. Which list gives all the forces acting on the puck while it slides?",
       "Gravity down, the normal force up, and friction pointing west",
       ["Gravity down, the normal force up, friction pointing west, and a sliding force pointing east",
        "Gravity down and friction pointing west only",
        "Gravity down, the normal force up, and friction pointing east"],
       "The puck is supported by the ice, so gravity down and the normal force up both act. Kinetic friction opposes the sliding, so it points west while the puck moves east. Motion itself is not a force, so there is no extra sliding force. Gravity down, the normal force up, and friction pointing west is the complete list.",{});
+    q.figure=p22Scene("puck");return q;
   },
   function(){
-    return mcq("A crate is pulled east across a horizontal floor by a rope, and friction acts on the crate. Which list gives all the forces acting on the crate?",
+    var q=mcq("A crate is pulled east across a horizontal floor by a rope, and friction acts on the crate. Which list gives all the forces acting on the crate?",
       "Gravity down, the normal force up, the rope pull east, and friction west",
       ["Gravity down, the rope pull east, and friction west",
        "The rope pull east and friction west only, because vertical forces do not count",
        "Gravity down, the normal force up, the rope pull east, and friction east"],
       "Four forces act: weight down, the floor pushing up with the normal force, the applied rope pull east, and friction west opposing the motion. Leaving out the vertical pair would make the diagram incomplete, even though those two forces balance. Gravity down, the normal force up, the rope pull east, and friction west is the complete list.",{});
+    q.figure=p22Scene("crate");return q;
   },
   function(){
-    return mcq("A dropped ball is falling toward the ground, and air resistance is ignored. Which list gives all the forces acting on the ball while it falls?",
+    var q=mcq("A dropped ball is falling toward the ground, and air resistance is ignored. Which list gives all the forces acting on the ball while it falls?",
       "Gravity pulling down only",
       ["Gravity pulling down and a falling force pulling down",
        "Gravity pulling down and the normal force pushing up",
        "No forces, because the ball is not touching anything"],
       "With air resistance ignored, the only force on a falling ball is gravity. There is no surface, so there is no normal force, and falling is the motion that gravity causes, not a second force. Gravity pulling down only is the complete list.",{});
+    q.figure=p22Scene("ball");return q;
   },
   function(){
     var m=ri(2,9);
-    return mcq("A "+m+" kg bucket hangs at rest from a rope. Which list gives all the forces acting on the bucket?",
+    var q=mcq("A "+m+" kg bucket hangs at rest from a rope. Which list gives all the forces acting on the bucket?",
       "Gravity pulling down and tension in the rope pulling up",
       ["Gravity pulling down only, because the bucket is hanging in the air",
        "Tension pulling up only, because the rope holds the bucket",
        "Gravity pulling down, tension pulling up, and the normal force pushing up"],
       "The bucket is pulled down by gravity and pulled up by tension in the rope. Those two balanced forces keep it at rest. There is no surface under the bucket, so there is no normal force. Gravity pulling down and tension pulling up is the complete list.",{m:m});
+    q.figure=p22Scene("bucket");return q;
   }
 ]));
 
@@ -471,10 +883,11 @@ E("u2-61-netforce-collinear",2,["PH11.6.1"],2,"gen",function(){
   var A=ri(24,92),B=ri(10,58),C=ri(6,42);
   var net=A-B+C; if(net===0){A+=11; net=A-B+C;}
   var s1=sfR(A+C,4), net4=sfR(s1-B,4), ans=sfR(net,3);
-  return numq("Take east as positive. A sled is pulled east with a force of "+gF(A)+" N, pushed east with a force of "+gF(C)+" N, and friction pulls west with a force of "+gF(B)+" N. What is the net force on the sled? Give your answer in N.",
+  var q=numq("Take east as positive. A sled is pulled east with a force of "+gF(A)+" N, pushed east with a force of "+gF(C)+" N, and friction pulls west with a force of "+gF(B)+" N. What is the net force on the sled? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Add the forces with signs, east positive. First add the two eastward forces: "+gF(A)+" + "+gF(C)+" = "+iF(s1)+" N. Then include the westward friction: "+iF(s1)+" - "+gF(B)+" = "+iF(net4)+" N. The net force is "+F3(ans)+" N, and a positive sign means the net force points east.",
     {A:A,B:B,C:C});
+    q.figure=p22FBD([{dx:1,dy:0,len:A,t:"pull "+gF(A)+" N",oy:-14},{dx:1,dy:0,len:C,t:"push "+gF(C)+" N",oy:14},{dx:-1,dy:0,len:B,t:"friction "+gF(B)+" N",oy:0}],"sled");return q;
 });
 
 E("u2-61-resolve-component",2,["PH11.6.1"],2,"gen",function(){
@@ -483,10 +896,11 @@ E("u2-61-resolve-component",2,["PH11.6.1"],2,"gen",function(){
   var trigR=horiz?sfR(Math.cos(rad),3):sfR(Math.sin(rad),3);
   var comp=sfR(F*trigR,4), ans=sfR(comp,3);
   var compName=horiz?"horizontal":"vertical", trigName=horiz?"cosine":"sine";
-  return numq("A rope pulls a toboggan with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal. What is the "+compName+" component of the pull? Give your answer in N.",
+  var q=numq("A rope pulls a toboggan with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal. What is the "+compName+" component of the pull? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Resolve the angled pull into components. The "+compName+" component uses the "+trigName+" of the angle: "+gF(F)+" × "+fmt(trigR,3)+" = "+iF(comp)+" N. The "+compName+" component of the pull is "+F3(ans)+" N.",
     {F:F,ang:ang,horiz:horiz});
+    q.figure=p22VecAng(gF(F)+" N",ang);return q;
 });
 
 E("u2-61-netforce-components-mc",2,["PH11.6.1"],2,"gen",function(){
@@ -496,13 +910,14 @@ E("u2-61-netforce-components-mc",2,["PH11.6.1"],2,"gen",function(){
   var x1=sfR(F1*c1,4), x2=sfR(F2*c2,4), ysum=sfR(sfR(F1*s1,4)+sfR(F2*s2,4),4);
   var netx=sfR(x1+x2,4), ans=sfR(netx,3);
   var full=sfR(F1+F2,3);
-  return mcq("Two workers pull a fishing stage trolley eastward. One pulls with "+gF(F1)+" N at "+a1+" degrees north of east, and the other pulls with "+gF(F2)+" N at "+a2+" degrees south of east. What is the net force in the eastward direction?",
+  var q=mcq("Two workers pull a fishing stage trolley eastward. One pulls with "+gF(F1)+" N at "+a1+" degrees north of east, and the other pulls with "+gF(F2)+" N at "+a2+" degrees south of east. What is the net force in the eastward direction?",
     F3(ans)+" N east",
     [F3(full)+" N east",
      F3(sfR(ans*2,3))+" N east",
      F3(x1)+" N east"],
     "Only the eastward components add to the eastward net force. The first eastward component is "+gF(F1)+" × "+fmt(c1,3)+" = "+iF(x1)+" N. The second eastward component is "+gF(F2)+" × "+fmt(c2,3)+" = "+iF(x2)+" N. Adding the eastward components: "+iF(x1)+" + "+iF(x2)+" = "+iF(netx)+" N. The net force in the eastward direction is "+F3(ans)+" N east. The northward and southward components are not part of this total.",
     {F1:F1,F2:F2,a1:a1,a2:a2});
+    q.figure=p22VecPair(gF(F1)+" N",a1,gF(F2)+" N",a2);return q;
 });
 
 E("u2-61-netforce-cr",2,["PH11.6.1"],2,"gen",function(){
@@ -514,22 +929,24 @@ E("u2-61-netforce-cr",2,["PH11.6.1"],2,"gen",function(){
     wt=sfR(m*9.8,4); FN=sfR(wt-Fy,4); fr=sfR(mu*FN,4); Fnet=sfR(Fx-fr,4);
   } while (Fnet<6);
   var ans=sfR(Fnet/m,3);
-  return numq("A crate of mass "+gF(m)+" kg sits on a horizontal floor. A rope pulls the crate with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal, and the coefficient of kinetic friction between the crate and the floor is "+gF(mu)+". Take the direction of the pull as positive. What is the acceleration of the crate? Give your answer in m/s^2.",
+  var q=numq("A crate of mass "+gF(m)+" kg sits on a horizontal floor. A rope pulls the crate with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal, and the coefficient of kinetic friction between the crate and the floor is "+gF(mu)+". Take the direction of the pull as positive. What is the acceleration of the crate? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Resolve the pull first. The horizontal component is "+gF(F)+" × "+fmt(cosR,3)+" = "+iF(Fx)+" N. The vertical component is "+gF(F)+" × "+fmt(sinR,3)+" = "+iF(Fy)+" N. The weight is "+gF(m)+" × 9.8 = "+iF(wt)+" N. The upward component reduces the normal force: "+iF(wt)+" - "+iF(Fy)+" = "+iF(FN)+" N. Kinetic friction is "+gF(mu)+" × "+iF(FN)+" = "+iF(fr)+" N. The net horizontal force is "+iF(Fx)+" - "+iF(fr)+" = "+iF(Fnet)+" N. Newton's second law gives the acceleration: "+iF(Fnet)+" / "+gF(m)+" = "+F3(ans)+" m/s^2. The acceleration is "+F3(ans)+" m/s^2 in the direction of the pull.",
     {m:m,F:F,ang:ang,mu:mu});
+    q.figure=p22AngScene(gF(F)+" N",ang,"pull","friction");return q;
 });
 
 E("u2-61-accel-diagram",2,["PH11.6.1"],2,"gen",function(){
   var m=sfR(rf(3.0,20.0),3), A=ri(52,112), B=ri(10,44);
   var Fnet=sfR(A-B,4), ans=sfR(Fnet/m,3), asum=sfR((A+B)/m,3), aonly=sfR(A/m,3);
-  return mcq("A free-body diagram for a cart of mass "+gF(m)+" kg shows one force of "+gF(A)+" N pointing east and friction of "+gF(B)+" N pointing west. Take east as positive. What is the acceleration of the cart?",
+  var q=mcq("A free-body diagram for a cart of mass "+gF(m)+" kg shows one force of "+gF(A)+" N pointing east and friction of "+gF(B)+" N pointing west. Take east as positive. What is the acceleration of the cart?",
     F3(ans)+" m/s^2 east",
     [F3(asum)+" m/s^2 east",
      F3(ans)+" m/s^2 west",
      F3(aonly)+" m/s^2 east"],
     "The net force is found from the diagram by subtracting the westward friction: "+gF(A)+" - "+gF(B)+" = "+iF(Fnet)+" N. Newton's second law then gives the acceleration: "+iF(Fnet)+" / "+gF(m)+" = "+F3(ans)+" m/s^2. The acceleration is "+F3(ans)+" m/s^2 east, in the same direction as the net force.",
     {m:m,A:A,B:B});
+    q.figure=p22FBD([{dx:1,dy:0,len:A,t:"force "+gF(A)+" N"},{dx:-1,dy:0,len:B,t:"friction "+gF(B)+" N"}],"cart "+gF(m)+" kg");return q;
 });
 
 E("u2-61-vector-direction",2,["PH11.6.1"],1,"var",varset([
@@ -577,45 +994,50 @@ E("u2-61-vector-direction",2,["PH11.6.1"],1,"var",varset([
 
 E("u2-61-evaluate-fbd",2,["PH11.6.1"],3,"var",varset([
   function(){
-    return mcq("A student draws a free-body diagram for a wagon rolling east and adds an arrow labelled 'motion force' pointing east, in addition to the pull, friction, gravity, and the normal force. Which judgement of the diagram is correct?",
+    var q=mcq("A student draws a free-body diagram for a wagon rolling east and adds an arrow labelled 'motion force' pointing east, in addition to the pull, friction, gravity, and the normal force. Which judgement of the diagram is correct?",
       "The motion force arrow should be removed, because motion is not a force and only interactions belong on the diagram",
       ["The diagram is correct, because a moving object must have a force in its direction of motion",
        "The friction arrow should also be removed, because rolling objects have no friction",
        "The normal force should be removed, because the wagon is moving"],
       "A free-body diagram shows only forces, which come from interactions such as pulls, surfaces, and gravity. Motion is what forces explain, not an extra force itself. A wagon can even move with zero net force. The motion force arrow should be removed.",{});
+    q.figure=p22FBD([{dx:1,dy:0,t:"pull",oy:-16},{dx:-1,dy:0,t:"friction",oy:16},{dx:0,dy:1,t:"gravity"},{dx:0,dy:-1,t:"normal force"},{dx:1,dy:0,t:"motion force",oy:-34,alt:1}],"wagon");return q;
   },
   function(){
     var F=64,ang=30;
-    return mcq("A student analyses a crate pulled by a "+F+" N force at "+ang+" degrees above a horizontal floor. The student writes that the normal force equals the full weight of the crate. Which judgement is correct?",
+    var q=mcq("A student analyses a crate pulled by a "+F+" N force at "+ang+" degrees above a horizontal floor. The student writes that the normal force equals the full weight of the crate. Which judgement is correct?",
       "The student is wrong, because the upward component of the pull lifts part of the weight off the floor, so the normal force is less than the weight",
       ["The student is right, because the normal force always equals the weight on any surface",
        "The student is wrong, because the normal force is greater than the weight when a pull is angled",
        "The student is right, because angled forces do not affect vertical forces at all"],
       "The pull has an upward vertical component, and vertical forces must balance for a crate that stays on the floor. The floor only needs to supply the part of the weight that the pull does not support, so the normal force is less than the weight. The student's claim is wrong.",{});
+    q.figure=p22AngScene(gF(F)+" N",ang,"pull",null);return q;
   },
   function(){
-    return mcq("A student says a sliding crate must be accelerating because friction is the only horizontal force drawn and friction points backward. A second look shows the crate is also being pushed forward with a force exactly equal to friction. Which judgement is correct?",
+    var q=mcq("A student says a sliding crate must be accelerating because friction is the only horizontal force drawn and friction points backward. A second look shows the crate is also being pushed forward with a force exactly equal to friction. Which judgement is correct?",
       "The crate is not accelerating, because the two horizontal forces cancel and the net force is zero",
       ["The crate is accelerating backward, because friction always causes acceleration",
        "The crate is accelerating forward, because a push always causes acceleration",
        "The crate must be at rest, because only resting objects have balanced forces"],
       "Acceleration depends on the net force, not on any single force. A push equal in size to friction gives a net force of zero, so the acceleration is zero. The crate could be sliding at constant velocity. The crate is not accelerating.",{});
+    q.figure=p22FBD([{dx:1,dy:0,t:"push"},{dx:-1,dy:0,t:"friction"}],"crate");return q;
   },
   function(){
-    return mcq("For a book sliding west across a table, a student draws friction pointing west because 'friction goes with the motion on the diagram'. Which judgement is correct?",
+    var q=mcq("For a book sliding west across a table, a student draws friction pointing west because 'friction goes with the motion on the diagram'. Which judgement is correct?",
       "The friction arrow is wrong, because kinetic friction opposes the sliding and must point east for a book sliding west",
       ["The friction arrow is right, because friction always points in the direction of motion",
        "The friction arrow is wrong, because friction on a sliding book points down",
        "The diagram needs no friction arrow, because the book is already moving"],
       "Kinetic friction opposes relative sliding at the surface. A book sliding west experiences friction east, working against the slide. The friction arrow is wrong and must point east.",{});
+    q.figure=p22FBD([{dx:-1,dy:0,t:"friction (as drawn)",oy:0}],"book, sliding west");return q;
   },
   function(){
-    return mcq("A student resolves a 90.0 N force directed at 60 degrees above the horizontal and reports the vertical component as larger than 90.0 N. Which judgement is correct?",
+    var q=mcq("A student resolves a 90.0 N force directed at 60 degrees above the horizontal and reports the vertical component as larger than 90.0 N. Which judgement is correct?",
       "The report must be wrong, because a component of a vector can never be larger than the vector itself",
       ["The report could be right, because components grow when an angle is large",
        "The report must be wrong, because the vertical component always equals the full force",
        "The report could be right, because the two components add up to more than the force"],
       "Each component is the full force multiplied by a sine or cosine, and those factors are never greater than one. So no component can exceed 90.0 N, even though the two components together describe the whole force. The report must be wrong.",{});
+    q.figure=p22VecAng("90.0 N",60);return q;
   }
 ]));
 
@@ -801,30 +1223,33 @@ E("u2-62-normal-angled",2,["PH11.6.2"],2,"gen",function(){
   var verb=pull?"pulls upward on":"pushes downward on";
   var dirWord=pull?"above":"below";
   var line=pull?iF(wt)+" - "+iF(Fy)+" = "+iF(FN)+" N":iF(wt)+" + "+iF(Fy)+" = "+iF(FN)+" N";
-  return numq("A box of mass "+gF(m)+" kg sits on a horizontal floor. A person "+verb+" the box with a force of "+gF(F)+" N directed at an angle of "+ang+" degrees "+dirWord+" the horizontal. What is the normal force on the box? Give your answer in N.",
+  var q=numq("A box of mass "+gF(m)+" kg sits on a horizontal floor. A person "+verb+" the box with a force of "+gF(F)+" N directed at an angle of "+ang+" degrees "+dirWord+" the horizontal. What is the normal force on the box? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The weight is "+gF(m)+" × 9.8 = "+iF(wt)+" N. The vertical component of the applied force is "+gF(F)+" × "+fmt(sinR,3)+" = "+iF(Fy)+" N. " + (pull?"The upward component supports part of the weight, so it reduces the normal force: ":"The downward component adds to the weight, so it increases the normal force: ") + line + " The normal force on the box is "+F3(ans)+" N.",
     {m:m,F:F,ang:ang,pull:pull});
+    q.figure=p22AngScene(gF(F)+" N",ang,pull?"pull":"push",null);return q;
 });
 
 E("u2-62-connected-blocks-mc",2,["PH11.6.2"],2,"gen",function(){
   var m1=sfR(rf(2.0,15.0),3), m2=sfR(rf(2.0,15.0),3); if(Math.abs(m1-m2)<1.0){m2=sfR(m2+2.5,3);}
   var F=sfR(rf(20.0,120),3), total=sfR(m1+m2,4), a=sfR(F/total,4), ans=sfR(a,3);
-  return mcq("Two crates of masses "+gF(m1)+" kg and "+gF(m2)+" kg are connected by a light rope on a frictionless horizontal surface. A horizontal pull of "+gF(F)+" N is applied to the second crate. What is the acceleration of the connected crates?",
+  var q=mcq("Two crates of masses "+gF(m1)+" kg and "+gF(m2)+" kg are connected by a light rope on a frictionless horizontal surface. A horizontal pull of "+gF(F)+" N is applied to the second crate. What is the acceleration of the connected crates?",
     F3(ans)+" m/s^2",
     [F3(sfR(F/m1,3))+" m/s^2", F3(sfR(F/m2,3))+" m/s^2", F3(sfR(F*total,3))+" m/s^2"],
     "Treat the two crates as one system. The total mass is "+gF(m1)+" + "+gF(m2)+" = "+iF(total)+" kg. Newton's second law gives the acceleration: "+gF(F)+" / "+iF(total)+" = "+iF(a)+" m/s^2. The acceleration of the connected crates is "+F3(ans)+" m/s^2.",
     {m1:m1,m2:m2,F:F});
+    q.figure=p22Connected(gF(m1)+" kg",gF(m2)+" kg",gF(F)+" N");return q;
 });
 
 E("u2-62-atwood",2,["PH11.6.2"],2,"gen",function(){
   var mh=sfR(rf(6.0,20.0),3), ml=sfR(rf(1.5,mh-2.0),3);
   var wh=sfR(mh*9.8,4), wl=sfR(ml*9.8,4), diff=sfR(wh-wl,4), tot=sfR(mh+ml,4);
   var ans=sfR(diff/tot,3);
-  return numq("Two masses of "+gF(mh)+" kg and "+gF(ml)+" kg are connected by a light rope over a frictionless pulley. Take the direction of the heavier mass as positive. What is the magnitude of the acceleration of the system? Give your answer in m/s^2.",
+  var q=numq("Two masses of "+gF(mh)+" kg and "+gF(ml)+" kg are connected by a light rope over a frictionless pulley. Take the direction of the heavier mass as positive. What is the magnitude of the acceleration of the system? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The weights are "+gF(mh)+" × 9.8 = "+iF(wh)+" N and "+gF(ml)+" × 9.8 = "+iF(wl)+" N. Their difference, which drives the system, is "+iF(wh)+" - "+iF(wl)+" = "+iF(diff)+" N. The total mass is "+gF(mh)+" + "+gF(ml)+" = "+iF(tot)+" kg. The acceleration is the driving force divided by the total mass: "+iF(diff)+" / "+iF(tot)+" = "+F3(ans)+" m/s^2. The magnitude of the acceleration is "+F3(ans)+" m/s^2, with the heavier mass going down.",
     {mh:mh,ml:ml});
+    q.figure=p22Atwood(gF(mh)+" kg",gF(ml)+" kg");return q;
 });
 
 E("u2-62-elevator-mc",2,["PH11.6.2"],2,"gen",function(){
@@ -833,11 +1258,12 @@ E("u2-62-elevator-mc",2,["PH11.6.2"],2,"gen",function(){
   var desc=up?"accelerates upward with an acceleration of "+gF(a)+" m/s^2":"accelerates downward with an acceleration of "+gF(a)+" m/s^2";
   var line=up?iF(wt)+" + "+iF(ma)+" = "+iF(FN)+" N":iF(wt)+" - "+iF(ma)+" = "+iF(FN)+" N";
   var feel=up?"greater than the weight, so the person feels heavier":"less than the weight, so the person feels lighter";
-  return mcq("A person of mass "+gF(m)+" kg stands on a scale in an elevator that "+desc+". What does the scale read, as the apparent weight of the person?",
+  var q=mcq("A person of mass "+gF(m)+" kg stands on a scale in an elevator that "+desc+". What does the scale read, as the apparent weight of the person?",
     F3(ans)+" N",
     [F3(wt)+" N", F3(up?sfR(wt-ma,3):sfR(wt+ma,3))+" N", F3(ma)+" N"],
     "The apparent weight is the normal force from the floor. The weight is "+gF(m)+" × 9.8 = "+iF(wt)+" N, and the mass times the acceleration is "+gF(m)+" × "+gF(a)+" = "+iF(ma)+" N. " + (up?"For an upward acceleration the floor must push harder than the weight: ":"For a downward acceleration the floor pushes less than the weight: ") + line + " The scale reads "+F3(ans)+" N, which is "+feel+".",
     {m:m,a:a,up:up});
+    q.figure=p22Elevator(gF(m)+" kg",gF(a)+" m/s^2",up);return q;
 });
 
 E("u2-62-friction-cr",2,["PH11.6.2"],2,"gen",function(){
@@ -909,10 +1335,11 @@ E("u2-62-angled-pull-friction",2,["PH11.6.2"],3,"gen",function(){
     Fx=sfR(F*cosR,4); Fy=sfR(F*sinR,4); wt=sfR(m*9.8,4); FN=sfR(wt-Fy,4); fr=sfR(mu*FN,4); Fnet=sfR(Fx-fr,4);
   } while (Fnet<6);
   var ans=sfR(Fnet/m,3);
-  return numq("A sled of mass "+gF(m)+" kg is pulled across a level snowfield by a rope at "+ang+" degrees above the horizontal. The rope pulls with "+gF(F)+" N, and the coefficient of kinetic friction between the sled and the snow is "+gF(mu)+". What is the acceleration of the sled? Give your answer in m/s^2.",
+  var q=numq("A sled of mass "+gF(m)+" kg is pulled across a level snowfield by a rope at "+ang+" degrees above the horizontal. The rope pulls with "+gF(F)+" N, and the coefficient of kinetic friction between the sled and the snow is "+gF(mu)+". What is the acceleration of the sled? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Work out the forces in turn. The horizontal component of the pull is "+gF(F)+" × "+fmt(cosR,3)+" = "+iF(Fx)+" N, and the vertical component is "+gF(F)+" × "+fmt(sinR,3)+" = "+iF(Fy)+" N. The weight is "+gF(m)+" × 9.8 = "+iF(wt)+" N, so the normal force is "+iF(wt)+" - "+iF(Fy)+" = "+iF(FN)+" N. Kinetic friction is "+gF(mu)+" × "+iF(FN)+" = "+iF(fr)+" N, and the net horizontal force is "+iF(Fx)+" - "+iF(fr)+" = "+iF(Fnet)+" N. The acceleration is "+iF(Fnet)+" / "+gF(m)+" = "+F3(ans)+" m/s^2 in the direction of the pull.",
     {m:m,F:F,ang:ang,mu:mu});
+    q.figure=p22AngScene(gF(F)+" N",ang,"pull","friction");return q;
 });
 
 E("u2-62-multistep-cr",2,["PH11.6.2"],3,"gen",function(){
@@ -1010,18 +1437,20 @@ E("u2-63-ft-graph-mc",2,["PH11.6.3"],2,"gen",function(){
   var F=sfR(rf(20.0,90.0),3), t=pick([0.400,0.600,0.800,1.40,1.80]), rect=sfR(F*t,4);
   if(tri){
     var J=sfR(rect/2,4), ans=sfR(J,3);
-    return mcq("A force-time graph for a bat striking a ball is a triangle. The force rises from zero to a peak of "+gF(F)+" N and returns to zero over "+gF(t)+" s. What is the impulse delivered to the ball?",
+    var q=mcq("A force-time graph for a bat striking a ball is a triangle. The force rises from zero to a peak of "+gF(F)+" N and returns to zero over "+gF(t)+" s. What is the impulse delivered to the ball?",
       F3(ans)+" N·s",
       [F3(sfR(rect,3))+" N·s", F3(sfR(F/(2*t),3))+" N·s", F3(sfR(F*t*2,3))+" N·s"],
       "Impulse is the area under a force-time graph. First find the area of the surrounding rectangle: "+gF(F)+" × "+gF(t)+" = "+iF(rect)+" N·s. A triangle covers half of that rectangle: "+iF(rect)+" / 2 = "+F3(ans)+" N·s. The impulse delivered is "+F3(ans)+" N·s.",
       {tri:tri,F:F,t:t});
+    q.figure=p22Plot({series:[{pts:[[0,0],[t*0.5,F],[t,0]],shade:true}],xt:[[0,"0"],[t,gF(t)]],yt:[[F,gF(F)]],xmax:t*1.1,ymax:F*1.2,xl:"time (s)",yl:"force (N)"});return q;
   }
   var ans2=sfR(rect,3);
-  return mcq("A force-time graph for a tow rope pull is a rectangle: a steady force of "+gF(F)+" N lasting "+gF(t)+" s. What is the impulse delivered by the rope?",
+  var q=mcq("A force-time graph for a tow rope pull is a rectangle: a steady force of "+gF(F)+" N lasting "+gF(t)+" s. What is the impulse delivered by the rope?",
     F3(ans2)+" N·s",
     [F3(sfR(rect/2,3))+" N·s", F3(sfR(F/t,3))+" N·s", F3(sfR(F+t,3))+" N·s"],
     "Impulse is the area under a force-time graph, and the area of this rectangle is force times time: "+gF(F)+" × "+gF(t)+" = "+iF(rect)+" N·s. The impulse delivered is "+F3(ans2)+" N·s. There is no halving, because the graph is a rectangle, not a triangle.",
     {tri:tri,F:F,t:t});
+    q.figure=p22Plot({series:[{pts:[[0,F],[t,F]],shade:true}],xt:[[0,"0"],[t,gF(t)]],yt:[[F,gF(F)]],xmax:t*1.1,ymax:F*1.25,xl:"time (s)",yl:"force (N)"});return q;
 });
 
 E("u2-63-impulse-cr",2,["PH11.6.3"],2,"gen",function(){
@@ -1356,6 +1785,7 @@ E("u2-65-result-judgement",2,["PH11.6.5"],3,"gen",function(){
 });
 
 /* ----- bank-u3.js ----- */
+// Diagram figures (Phase C, Nov 2026): spring graphs and scenes, half life decay curve, pendulum and slope scenes added where the source types carried diagrams; see bank-helpers.js p22 helpers.
 // CRMARKS: u3-75-energy-cr=5
 // CRMARKS: u3-711-shm-energy-cr=4
 // CRMARKS: u3-76-friction-cr=4
@@ -1628,16 +2058,18 @@ E("u3-75-height-for-speed",3,["PH11.7.5"],2,"gen",function(){
 
 E("u3-75-slide-speed",3,["PH11.7.5"],3,"gen",function(){
   var m=sfR(rf(5,40),3),h=sfR(rf(2,8),3),v2=sfR(19.6*h,4),v=sfR(Math.sqrt(v2),3);
-  return mcq("A "+gF(m)+" kg sled starts from rest at the top of a frictionless slope "+gF(h)+" m above the bottom, taken as the reference level. What is the speed of the sled at the bottom?",
+  var q=mcq("A "+gF(m)+" kg sled starts from rest at the top of a frictionless slope "+gF(h)+" m above the bottom, taken as the reference level. What is the speed of the sled at the bottom?",
     F3(v)+" m/s",
     [F3(Math.sqrt(9.8*h))+" m/s",F3(2*9.8*h)+" m/s",F3(2*v)+" m/s"],
     "Gravitational potential energy lost becomes kinetic energy gained, and the mass cancels. The speed squared is 19.6 m/s^2 × "+gF(h)+" m = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,h:h});
+    q.figure=p22Incline(gF(h)+" m");return q;
 });
 
 E("u3-75-pendulum",3,["PH11.7.5"],3,"gen",function(){
   var m=sfR(rf(1,5),3),dh=sfR(rf(1,5),3),v2=sfR(19.6*dh,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A pendulum bob of mass "+gF(m)+" kg is released from rest at a point "+gF(dh)+" m above its lowest position. The lowest position is taken as the reference level. What is the speed of the bob as it passes the lowest position? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A pendulum bob of mass "+gF(m)+" kg is released from rest at a point "+gF(dh)+" m above its lowest position. The lowest position is taken as the reference level. What is the speed of the bob as it passes the lowest position? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "As the bob swings down, gravitational potential energy becomes kinetic energy and the mass cancels. The speed squared is 19.6 m/s^2 × "+gF(dh)+" m = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,dh:dh});
+    q.figure=p22Pendulum(gF(dh)+" m",gF(m)+" kg");return q;
 });
 
 /* ---------- 7.6 Conservation of energy with heat ---------- */
@@ -1784,37 +2216,42 @@ E("u3-78-time-work",3,["PH11.7.8"],2,"gen",function(){
 E("u3-79-hooke-force",3,["PH11.7.9"],2,"gen",function(){
   var k=sfR(rf(20,200),3),xcm=ri(5,30),x=sfR(xcm/100,3),F=sfR(k*x,3);
   var ctx=pick(["A spring with a spring constant of","A bungee cord with a spring constant of","A spring scale spring with a spring constant of"]);
-  return numq(ctx+" "+gF(k)+" N/m is stretched by "+xcm+" cm. How large is the spring force? Give your answer in N.",F,Math.max(0.02*Math.abs(F),1e-9),
+  var q=numq(ctx+" "+gF(k)+" N/m is stretched by "+xcm+" cm. How large is the spring force? Give your answer in N.",F,Math.max(0.02*Math.abs(F),1e-9),
   "Hooke's law needs the stretch in metres: "+xcm+" / 100 = "+iF(x)+" m. Then F = k x gives "+gF(k)+" N/m × "+gF(x)+" m = "+F3(F)+" N. The spring force is "+F3(F)+" N, directed back toward the unstretched position.",{k:k,xcm:xcm});
+    q.figure=p22Spring(gF(xcm)+" cm","force = ?");return q;
 });
 
 E("u3-79-spring-constant",3,["PH11.7.9"],2,"gen",function(){
   var F=sfR(rf(10,90),3),x=sfR(rf(0.10,0.45),3),k=sfR(F/x,3);
-  return numq("A force of "+gF(F)+" N stretches a spring by "+gF(x)+" m from its unstretched length. What is the spring constant of the spring? Give your answer in N/m.",k,Math.max(0.02*Math.abs(k),1e-9),
+  var q=numq("A force of "+gF(F)+" N stretches a spring by "+gF(x)+" m from its unstretched length. What is the spring constant of the spring? Give your answer in N/m.",k,Math.max(0.02*Math.abs(k),1e-9),
   "From Hooke's law, k = F / x. "+gF(F)+" N / "+gF(x)+" m = "+F3(k)+" N/m. The spring constant is "+F3(k)+" N/m.",{F:F,x:x});
+    q.figure=p22Spring(gF(x)+" m",gF(F)+" N");return q;
 });
 
 E("u3-79-stretch",3,["PH11.7.9"],2,"gen",function(){
   var k=sfR(rf(30,150),3),F=sfR(rf(5,45),3),x=sfR(F/k,3);
-  return numq("A spring with a spring constant of "+gF(k)+" N/m has a force of "+gF(F)+" N applied to it. How far does it stretch from its unstretched length? Give your answer in m.",x,Math.max(0.02*Math.abs(x),1e-9),
+  var q=numq("A spring with a spring constant of "+gF(k)+" N/m has a force of "+gF(F)+" N applied to it. How far does it stretch from its unstretched length? Give your answer in m.",x,Math.max(0.02*Math.abs(x),1e-9),
   "From Hooke's law, x = F / k. "+gF(F)+" N / "+gF(k)+" N/m = "+F3(x)+" m. The spring stretches "+F3(x)+" m.",{k:k,F:F});
+    q.figure=p22Spring("stretch = ?",gF(F)+" N");return q;
 });
 
 E("u3-79-graph-k",3,["PH11.7.9"],2,"gen",function(){
   var k0=sfR(rf(40,180),3),x1=sfR(rf(0.05,0.15),3),x2=sfR(x1+rf(0.10,0.25),3);
   var F1=sfR(k0*x1,3),F2=sfR(k0*x2,3),dF=sfR(F2-F1,3),dx=sfR(x2-x1,3),k=sfR(dF/dx,3);
-  return mcq("A force-stretch graph for a spring is a straight line through the points ("+gF(x1)+" m, "+gF(F1)+" N) and ("+gF(x2)+" m, "+gF(F2)+" N). What is the spring constant of the spring?",
+  var q=mcq("A force-stretch graph for a spring is a straight line through the points ("+gF(x1)+" m, "+gF(F1)+" N) and ("+gF(x2)+" m, "+gF(F2)+" N). What is the spring constant of the spring?",
     F3(k)+" N/m",
     [F3(k/2)+" N/m",F3(2*k)+" N/m",F3(1/k)+" N/m"],
     "The spring constant is the slope of a force-stretch graph: the change in force divided by the change in stretch. The force change is "+gF(F2)+" N - "+gF(F1)+" N = "+F3(dF)+" N and the stretch change is "+gF(x2)+" m - "+gF(x1)+" m = "+F3(dx)+" m. Then "+F3(dF)+" N / "+F3(dx)+" m = "+F3(k)+" N/m. The spring constant is "+F3(k)+" N/m.",{k:k,x1:x1,x2:x2});
+    q.figure=p22Plot({series:[{pts:[[x1,F1],[x2,F2]]}],xt:[[x1,gF(x1)],[x2,gF(x2)]],yt:[[F1,gF(F1)],[F2,gF(F2)]],xmax:x2*1.25,ymax:F2*1.25,xl:"stretch (m)",yl:"force (N)",dots:true});return q;
 });
 
 E("u3-79-spring-mcq",3,["PH11.7.9"],2,"gen",function(){
   var k=sfR(rf(20,100),3),x=sfR(rf(0.10,0.30),3),F=sfR(k*x,3);
-  return mcq("A spring with a spring constant of "+gF(k)+" N/m is stretched by "+gF(x)+" m. How large is the spring force?",
+  var q=mcq("A spring with a spring constant of "+gF(k)+" N/m is stretched by "+gF(x)+" m. How large is the spring force?",
     F3(F)+" N",
     [F3(k/x)+" N",F3(k+x)+" N",F3(x/k)+" N"],
     "Hooke's law gives the size of the spring force as F = k x. "+gF(k)+" N/m × "+gF(x)+" m = "+F3(F)+" N. The spring force is "+F3(F)+" N.",{k:k,x:x});
+    q.figure=p22Spring(gF(x)+" m","force = ?");return q;
 });
 
 /* ---------- 7.10 Simple harmonic motion, horizontal spring ---------- */
@@ -1822,8 +2259,9 @@ E("u3-79-spring-mcq",3,["PH11.7.9"],2,"gen",function(){
 E("u3-710-accel-magnitude",3,["PH11.7.10"],2,"gen",function(){
   var k=sfR(rf(10,60),3),m=sfR(rf(1,4),3),x=sfR(rf(0.05,0.20),3);
   var km=sfR(k/m,4),a=sfR(km*x,3);
-  return numq("A mass of "+gF(m)+" kg on a horizontal spring with spring constant "+gF(k)+" N/m is displaced "+gF(x)+" m from equilibrium. Use a = (k/m) x to find the size of its acceleration. Give your answer in m/s^2.",a,Math.max(0.02*Math.abs(a),1e-9),
+  var q=numq("A mass of "+gF(m)+" kg on a horizontal spring with spring constant "+gF(k)+" N/m is displaced "+gF(x)+" m from equilibrium. Use a = (k/m) x to find the size of its acceleration. Give your answer in m/s^2.",a,Math.max(0.02*Math.abs(a),1e-9),
   "For a horizontal spring the size of the acceleration is a = (k/m) x. First "+gF(k)+" N/m / "+gF(m)+" kg = "+iF(km)+" 1/s^2. Then "+iF(km)+" 1/s^2 × "+gF(x)+" m = "+F3(a)+" m/s^2. The acceleration is "+F3(a)+" m/s^2, directed back toward equilibrium.",{k:k,m:m,x:x});
+    q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
 E("u3-710-direction",3,["PH11.7.10"],1,"var",varset([
@@ -1900,10 +2338,11 @@ E("u3-710-greatest-accel",3,["PH11.7.10"],1,"var",varset([
 E("u3-710-accel-judgement",3,["PH11.7.10"],3,"gen",function(){
   var k=sfR(rf(15,60),3),m=sfR(rf(1.5,4),3),x=sfR(rf(0.06,0.22),3);
   var km=sfR(k/m,4),a=sfR(km*x,3);
-  return mcq("A "+gF(m)+" kg mass on a horizontal spring with spring constant "+gF(k)+" N/m is held "+gF(x)+" m to the right of equilibrium. What is its acceleration when it is released from rest there?",
+  var q=mcq("A "+gF(m)+" kg mass on a horizontal spring with spring constant "+gF(k)+" N/m is held "+gF(x)+" m to the right of equilibrium. What is its acceleration when it is released from rest there?",
     F3(a)+" m/s^2 to the left",
     [F3(a)+" m/s^2 to the right",F3(k*x)+" m/s^2 to the left",F3(a/2)+" m/s^2 to the left"],
     "The size of the acceleration is a = (k/m) x. First "+gF(k)+" N/m / "+gF(m)+" kg = "+iF(km)+" 1/s^2. Then "+iF(km)+" 1/s^2 × "+gF(x)+" m = "+F3(a)+" m/s^2. The spring pulls the mass back toward equilibrium, so the acceleration is to the left: "+F3(a)+" m/s^2 to the left.",{k:k,m:m,x:x});
+    q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
 /* ---------- 7.11 Energies in simple harmonic motion ---------- */
@@ -2232,10 +2671,11 @@ E("u3-714-half-life-remaining",3,["PH11.7.14"],2,"gen",function(){
 
 E("u3-714-half-life-graph",3,["PH11.7.14"],2,"gen",function(){
   var T=pick([2,3,4,5,6,8,10]),unit=pick(["days","years","hours"]),M0=pick([40,80,100,160,200]);
-  return mcq("A decay graph for a radioactive sample starts at "+M0+" g. Reading the graph, the mass has fallen to "+(M0/2)+" g after "+T+" "+unit+", and to "+(M0/4)+" g after "+(2*T)+" "+unit+". What is the half-life of the sample?",
+  var q=mcq("A decay graph for a radioactive sample starts at "+M0+" g. Reading the graph, the mass has fallen to "+(M0/2)+" g after "+T+" "+unit+", and to "+(M0/4)+" g after "+(2*T)+" "+unit+". What is the half-life of the sample?",
     T+" "+unit,
     [(T/2)+" "+unit,(2*T)+" "+unit,(4*T)+" "+unit],
     "The half-life is the time for the mass to fall to half its value. The graph shows the mass falling from "+M0+" g to "+(M0/2)+" g in "+T+" "+unit+", and halving again over the next "+T+" "+unit+". The half-life is "+T+" "+unit+".",{T:T,unit:unit,M0:M0});
+    q.figure=p22Decay(M0,T,unit);return q;
 });
 
 E("u3-714-number-half-lives",3,["PH11.7.14"],1,"gen",function(){
@@ -2416,6 +2856,7 @@ E("u3-716-energy-compare",3,["PH11.7.16"],3,"gen",function(){
 });
 
 /* ----- bank-u4.js ----- */
+// Diagram figures (Phase C, Nov 2026): wave anatomy, standing wave and air column patterns, double slit geometry and refraction diagrams added where the source types carried diagrams; see bank-helpers.js p22 helpers.
 // Physics 2204 Unit 4 Waves question bank
 // CRMARKS: u4-84-resonance-cr=5
 // CRMARKS: u4-89-snell-cr=4
@@ -2471,44 +2912,49 @@ E("u4-81-type-motion",4,["PH11.8.1"],1,"var",varset([
 
 E("u4-81-anatomy",4,["PH11.8.1"],1,"var",varset([
   function(){
-    return mcq("On a diagram of a transverse wave, the wavelength is the distance between",
+    var q=mcq("On a diagram of a transverse wave, the wavelength is the distance between",
       "Two neighbouring crests, or two neighbouring troughs",
       ["A crest and the nearest trough",
        "The rest position and a crest",
        "The first crest and the last trough of the whole wave"],
       "Wavelength is the length of one complete cycle, measured between the same point on two neighbouring cycles, such as crest to crest or trough to trough.",{});
+    q.figure=p22WaveTrain(3,1,"?",{});return q;
   },
   function(){
-    return mcq("In a longitudinal wave travelling through a spring, a rarefaction is a region where",
+    var q=mcq("In a longitudinal wave travelling through a spring, a rarefaction is a region where",
       "The coils are spread farther apart than normal",
       ["The coils are squeezed closer together than normal",
        "The coils move fastest",
        "The wave changes direction"],
       "A rarefaction is the stretched out region of a longitudinal wave, where the particles are farther apart than normal. The squeezed region is a compression.",{});
+    q.figure=p22Longit(false);return q;
   },
   function(){
-    return mcq("The amplitude of a transverse wave on a rope is measured from",
+    var q=mcq("The amplitude of a transverse wave on a rope is measured from",
       "The rest position to a crest (or to a trough)",
       ["One crest to the next crest",
        "A crest down to a trough",
        "One end of the rope to the other"],
       "Amplitude is the greatest displacement from the rest position, so it is measured from the rest line to a crest or a trough. Crest to crest measures the wavelength instead.",{});
+    q.figure=p22WaveTrain(3,0,null,{rest:true});return q;
   },
   function(){
-    return mcq("In a longitudinal sound wave, the distance from the middle of one compression to the middle of the next compression is",
+    var q=mcq("In a longitudinal sound wave, the distance from the middle of one compression to the middle of the next compression is",
       "One wavelength",
       ["One amplitude",
        "Half a wavelength",
        "One period"],
       "Wavelength is always one complete cycle of the wave. Compression to the next compression is one full cycle, so that distance is one wavelength. The period is a time, not a distance.",{});
+    q.figure=p22Longit(true);return q;
   },
   function(){
-    return mcq("A transverse wave is drawn with crests well above the rest line and troughs just barely below it. Which statement about this drawing is correct?",
+    var q=mcq("A transverse wave is drawn with crests well above the rest line and troughs just barely below it. Which statement about this drawing is correct?",
       "It cannot be a single ordinary wave, because the crest height and trough depth from the rest line should match as the amplitude",
       ["Its wavelength is the height of a crest",
        "Its amplitude is measured from a crest to a trough",
        "It has two different amplitudes, one for crests and one for troughs"],
       "For one wave, the amplitude is the displacement from the rest position, the same at a crest as at a trough. A drawing with very tall crests and very shallow troughs does not show one ordinary wave.",{});
+    q.figure=p22WaveTrain(3,0,null,{asym:true});return q;
   }
 ]));
 
@@ -2538,8 +2984,9 @@ E("u4-81-wavelength-reading",4,["PH11.8.1"],2,"gen",function(){
   var D=sfR(rf(2.0,18.0),3);
   var l4=sfR(D/k,4), ans=sfR(l4,3);
   var sol="From the first crest to the crest "+k+" cycles later there are exactly "+k+" wavelengths in "+gF(D)+" m. "+iF(D)+" m ÷ "+k+" = "+iF(l4)+" m, so the wavelength is "+F3(ans)+" m.";
-  return numq("On a rope wave, the distance from the first crest to the crest "+k+" cycles later is "+gF(D)+" m. Find the wavelength of the wave. Give your answer in m.",
+  var q=numq("On a rope wave, the distance from the first crest to the crest "+k+" cycles later is "+gF(D)+" m. Find the wavelength of the wave. Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {k:k,D:D});
+    q.figure=p22WaveTrain(k,k,gF(D)+" m",{});return q;
 });
 
 /* ---------- 8.2 The wave equation ---------- */
@@ -2694,36 +3141,40 @@ E("u4-83-echo",4,["PH11.8.3"],2,"gen",function(){
 
 E("u4-84-fixed-free",4,["PH11.8.4"],1,"var",varset([
   function(){
-    return mcq("A single pulse travels along a rope toward a wall where the rope is tied tightly. When the pulse hits the wall, the reflected pulse",
+    var q=mcq("A single pulse travels along a rope toward a wall where the rope is tied tightly. When the pulse hits the wall, the reflected pulse",
       "Comes back inverted, crest becoming trough",
       ["Comes back with the same shape it had",
        "Stops at the wall and does not return",
        "Comes back with twice the amplitude"],
       "A fixed end cannot move, so it pulls the rope back and the reflected pulse is inverted: a crest returns as a trough. That is the rule for reflection at a fixed end.",{});
+    q.figure=p22PulseEnd("fixed");return q;
   },
   function(){
-    return mcq("A single pulse travels along a rope toward a free end, where the rope is tied to a ring that slides freely on a post. When the pulse reaches the end, the reflected pulse",
+    var q=mcq("A single pulse travels along a rope toward a free end, where the rope is tied to a ring that slides freely on a post. When the pulse reaches the end, the reflected pulse",
       "Comes back with the same shape it had, crest staying a crest",
       ["Comes back inverted, crest becoming trough",
        "Disappears at the end",
        "Comes back upside down and twice as wide"],
       "A free end is free to move, so the pulse is reflected without inversion: a crest returns as a crest. Inversion happens only at a fixed end.",{});
+    q.figure=p22PulseEnd("free");return q;
   },
   function(){
-    return mcq("Two identical pulses travel toward each other on a stretched rope and meet. At the moment they overlap exactly, the displacement of the rope is",
+    var q=mcq("Two identical pulses travel toward each other on a stretched rope and meet. At the moment they overlap exactly, the displacement of the rope is",
       "The sum of the two displacements, so a crest on a crest gives twice the height",
       ["Zero everywhere, because the pulses cancel each other out",
        "Only the displacement of the faster pulse",
        "Unchanged, because pulses pass through each other without adding"],
       "Superposition adds the displacements of the two pulses at each point. Two crests meeting give twice the displacement; the pulses then pass through each other and continue on their way.",{});
+    q.figure=p22Pulses([{h:3,t:"crest",dir:1},{h:3,t:"crest",dir:-1}]);return q;
   },
   function(){
-    return mcq("A crest and a trough of the same size meet on a stretched rope. At the moment they overlap exactly, the rope is",
+    var q=mcq("A crest and a trough of the same size meet on a stretched rope. At the moment they overlap exactly, the rope is",
       "Flat at the overlap, because the two displacements add to zero",
       ["Twice as high as the crest alone",
        "Twice as low as the trough alone",
        "Flat everywhere along the rope"],
       "Superposition adds displacements, so a crest plus an equal trough gives zero displacement where they overlap. This is destructive interference, and the pulses continue past each other afterwards.",{});
+    q.figure=p22Pulses([{h:3,t:"crest",dir:1},{h:-3,t:"trough",dir:-1}]);return q;
   },
   function(){
     return mcq("Two pulses meet and briefly cancel each other out where they overlap. After they have passed through each other, the pulses",
@@ -2737,20 +3188,22 @@ E("u4-84-fixed-free",4,["PH11.8.4"],1,"var",varset([
 
 E("u4-84-superposition",4,["PH11.8.4"],2,"var",varset([
   function(){
-    return mcq("Two identical crest pulses of height 3.0 cm travel toward each other on a rope. At the instant they overlap exactly, the highest point of the rope is",
+    var q=mcq("Two identical crest pulses of height 3.0 cm travel toward each other on a rope. At the instant they overlap exactly, the highest point of the rope is",
       "6.0 cm above the rest position",
       ["3.0 cm above the rest position",
        "0 cm, because the two crests cancel",
        "9.0 cm above the rest position"],
       "Superposition adds displacements: a crest on a crest gives 3.0 cm + 3.0 cm = 6.0 cm above the rest position. The pulses then continue past each other unchanged.",{});
+    q.figure=p22Pulses([{h:3,t:"crest 3.0 cm",dir:1},{h:3,t:"crest 3.0 cm",dir:-1}]);return q;
   },
   function(){
-    return mcq("A crest pulse 4.0 cm high meets a trough pulse 2.0 cm deep on a rope. At the instant the two overlap exactly, the rope at the overlap is",
+    var q=mcq("A crest pulse 4.0 cm high meets a trough pulse 2.0 cm deep on a rope. At the instant the two overlap exactly, the rope at the overlap is",
       "2.0 cm above the rest position",
       ["2.0 cm below the rest position",
        "6.0 cm above the rest position",
        "Flat, at the rest position"],
       "Add the displacements with their signs: +4.0 cm from the crest and -2.0 cm from the trough gives +2.0 cm, so the rope is 2.0 cm above the rest position where the two overlap.",{});
+    q.figure=p22Pulses([{h:4,t:"crest 4.0 cm",dir:1},{h:-2,t:"trough 2.0 cm",dir:-1}]);return q;
   },
   function(){
     return mcq("Two sound waves reach a listener at the same time, one in compression and one in rarefaction at the same point. The listener hears",
@@ -2787,8 +3240,9 @@ E("u4-84-standing-cr",4,["PH11.8.4"],2,"gen",function(){
   var l4=sfR(twoL/n,4);
   var f4=sfR(v/l4,4), ans=sfR(f4,3);
   var sol="On a string fixed at both ends the n-th harmonic has wavelength 2L ÷ n. First, 2 × "+iF(L)+" m = "+iF(twoL)+" m. Then "+iF(twoL)+" m ÷ "+n+" = "+iF(l4)+" m, so the wavelength is "+iF(l4)+" m. Then use v = f λ: f = v ÷ λ = "+iF(v)+" m/s ÷ "+iF(l4)+" m = "+iF(f4)+" Hz. The frequency of harmonic number "+n+" is "+F3(ans)+" Hz.";
-  return numq(ctx+" of length "+gF(L)+" m is fixed at both ends. Waves travel along it at "+gF(v)+" m/s. Find the frequency of harmonic number "+n+" (counting the fundamental as number 1). Give your answer in Hz.",
+  var q=numq(ctx+" of length "+gF(L)+" m is fixed at both ends. Waves travel along it at "+gF(v)+" m/s. Find the frequency of harmonic number "+n+" (counting the fundamental as number 1). Give your answer in Hz.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {L:L,n:n,v:v});
+    q.figure=p22StandString(n,gF(L)+" m");return q;
 });
 
 E("u4-84-open-column",4,["PH11.8.4"],2,"gen",function(){
@@ -2800,8 +3254,9 @@ E("u4-84-open-column",4,["PH11.8.4"],2,"gen",function(){
   var f4=sfR(340/lam2,4), ans=sfR(f4,3);
   var word=["first","second","third"][idx-1];
   var sol="In an open air column the resonant lengths are λ/2, λ, 3λ/2, and so on. The "+word+" resonance has length "+idx+"λ/2, so λ = 2L ÷ "+idx+". 2 × "+iF(L)+" m = "+iF(sfR(2*L,4))+" m, then "+iF(sfR(2*L,4))+" m ÷ "+idx+" = "+iF(lam2)+" m. With the speed of sound in air taken as 340 m/s, f = v ÷ λ = 340 m/s ÷ "+iF(lam2)+" m = "+iF(f4)+" Hz. The frequency is "+F3(ans)+" Hz.";
-  return numq(ctx+" has a length of "+gF(L)+" m and is sounding at its "+word+" resonance. Take the speed of sound in air as 340 m/s. Find the frequency of the sound. Give your answer in Hz.",
+  var q=numq(ctx+" has a length of "+gF(L)+" m and is sounding at its "+word+" resonance. Take the speed of sound in air as 340 m/s. Find the frequency of the sound. Give your answer in Hz.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {idx:idx,L:L});
+    q.figure=p22Column("open",idx,gF(L)+" m",word+" resonance");return q;
 });
 
 E("u4-84-string-mc",4,["PH11.8.4"],2,"gen",function(){
@@ -2810,10 +3265,11 @@ E("u4-84-string-mc",4,["PH11.8.4"],2,"gen",function(){
   var v=sfR(rf(100,400),3);
   var f=n*v/(2*L), ans=sfR(f,3);
   var sol="For a string fixed at both ends, the n-th harmonic has wavelength 2L ÷ n, and f = v ÷ λ = n v ÷ (2L). Substituting n = "+n+", v = "+gF(v)+" m/s and L = "+gF(L)+" m gives f = "+F3(ans)+" Hz. Leaving out the harmonic number would give the fundamental, and using n v ÷ L would double the answer.";
-  return mcq("A string "+gF(L)+" m long is fixed at both ends. Waves travel along it at "+gF(v)+" m/s. What is the frequency of harmonic number "+n+" (counting the fundamental as number 1)?",
+  var q=mcq("A string "+gF(L)+" m long is fixed at both ends. Waves travel along it at "+gF(v)+" m/s. What is the frequency of harmonic number "+n+" (counting the fundamental as number 1)?",
     F3(ans)+" Hz",
     [F3(sfR(f/n,3))+" Hz", F3(sfR(2*f,3))+" Hz", F3(sfR(f/(n*n),3))+" Hz"],
     sol,{L:L,n:n,v:v});
+    q.figure=p22StandString(n,gF(L)+" m");return q;
 });
 
 E("u4-84-closed-fundamental",4,["PH11.8.4"],2,"gen",function(){
@@ -2822,8 +3278,9 @@ E("u4-84-closed-fundamental",4,["PH11.8.4"],2,"gen",function(){
   var fourL=sfR(4*L,4);
   var f4=sfR(340/fourL,4), ans=sfR(f4,3);
   var sol="The fundamental of a closed air column fits a quarter of a wavelength into the tube, so λ = 4L. 4 × "+iF(L)+" m = "+iF(fourL)+" m. Then f = v ÷ λ = 340 m/s ÷ "+iF(fourL)+" m = "+iF(f4)+" Hz. The fundamental frequency is "+F3(ans)+" Hz.";
-  return numq(ctx+" has a length of "+gF(L)+" m. Take the speed of sound in air as 340 m/s. Find its fundamental frequency. Give your answer in Hz.",
+  var q=numq(ctx+" has a length of "+gF(L)+" m. Take the speed of sound in air as 340 m/s. Find its fundamental frequency. Give your answer in Hz.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {L:L});
+    q.figure=p22Column("closed",1,gF(L)+" m","fundamental");return q;
 });
 
 E("u4-84-resonance-cr",4,["PH11.8.4"],3,"gen",function(){
@@ -2839,8 +3296,9 @@ E("u4-84-resonance-cr",4,["PH11.8.4"],3,"gen",function(){
   var v4=sfR(f*lam4,4), ans=sfR(v4,3);
   var word=["first","second","third"][r-1];
   var sol="In a closed air column the resonant lengths are λ/4, 3λ/4, 5λ/4, and so on. The "+word+" resonance is the length "+odd+"λ/4, so λ = 4L ÷ "+odd+". 4 × "+iF(L)+" m = "+iF(fourL)+" m, then "+iF(fourL)+" m ÷ "+odd+" = "+iF(lam4)+" m, so the wavelength is "+iF(lam4)+" m. The speed is v = f λ = "+iF(f)+" Hz × "+iF(lam4)+" m = "+iF(v4)+" m/s. The speed of sound is "+F3(ans)+" m/s.";
-  return numq(ctx+" of length "+gF(L)+" m resonates at its "+word+" resonance with a tuning fork of frequency "+gF(f)+" Hz. Find the speed of sound in the air. Give your answer in m/s.",
+  var q=numq(ctx+" of length "+gF(L)+" m resonates at its "+word+" resonance with a tuning fork of frequency "+gF(f)+" Hz. Find the speed of sound in the air. Give your answer in m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {r:r,L:L,f:f});
+    q.figure=p22Column("closed",odd,gF(L)+" m",word+" resonance");return q;
 });
 
 E("u4-84-speed-by-resonance",4,["PH11.8.4"],3,"gen",function(){
@@ -2853,8 +3311,9 @@ E("u4-84-speed-by-resonance",4,["PH11.8.4"],3,"gen",function(){
   var lam4=sfR(2*d4,4);
   var v4=sfR(f*lam4,4), ans=sfR(v4,3);
   var sol="Successive resonances of a closed column are half a wavelength apart, so the gap between the first and second resonance lengths is λ/2. "+iF(L2)+" m - "+iF(L1)+" m = "+iF(d4)+" m, so λ = 2 × "+iF(d4)+" m = "+iF(lam4)+" m. Then v = f λ = "+iF(f)+" Hz × "+iF(lam4)+" m = "+iF(v4)+" m/s. The speed of sound is "+F3(ans)+" m/s.";
-  return numq("In a closed-end resonance experiment, the first resonance for a "+gF(f)+" Hz tuning fork is found with the air column "+gF(L1)+" m long, and the next resonance is found at "+gF(L2)+" m. Find the speed of sound in the air. Give your answer in m/s.",
+  var q=numq("In a closed-end resonance experiment, the first resonance for a "+gF(f)+" Hz tuning fork is found with the air column "+gF(L1)+" m long, and the next resonance is found at "+gF(L2)+" m. Find the speed of sound in the air. Give your answer in m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {f:f,L1:L1,L2:L2});
+    q.figure=p22TwoColumns(gF(L1)+" m",gF(L2)+" m");return q;
 });
 
 /* ---------- 8.5 Electromagnetic radiation compared with sound ---------- */
@@ -3048,8 +3507,9 @@ E("u4-86-doubleslit-cr",4,["PH11.8.6"],2,"gen",function(){
   var lamM4=sfR(prod4/den4,4);
   var ans=sfR(lamM4*1000000000,3);
   var sol="Bright fringes satisfy m λ = x d ÷ L, so λ = x d ÷ (m L). Convert the fringe distance and the slit separation to metres in words: x is "+iF(xM)+" m and d is "+iF(dM)+" m. First the numerator: "+iF(xM)+" m × "+iF(dM)+" m = "+iF(prod4)+" m². The denominator: "+m+" × "+iF(Lm)+" m = "+iF(den4)+" m. Then λ = "+iF(prod4)+" m² ÷ "+iF(den4)+" m = "+iF(lamM4)+" m. Converting metres to nanometres in words gives the wavelength "+F3(ans)+" nm.";
-  return numq( "In a double slit experiment, the "+(m===2?"2nd":m===3?"3rd":m+"th")+" bright fringe is "+gF(xMm)+" mm from the central maximum. The slits are "+gF(dMm)+" mm apart and the screen is "+gF(Lm)+" m from the slits. Find the wavelength of the light. Give your answer in nm.",
+  var q=numq( "In a double slit experiment, the "+(m===2?"2nd":m===3?"3rd":m+"th")+" bright fringe is "+gF(xMm)+" mm from the central maximum. The slits are "+gF(dMm)+" mm apart and the screen is "+gF(Lm)+" m from the slits. Find the wavelength of the light. Give your answer in nm.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {m:m,dMm:dMm,Lm:Lm,xMm:xMm});
+    q.figure=p22Slit(gF(dMm)+" mm",gF(Lm)+" m",gF(xMm)+" mm",m);return q;
 });
 
 E("u4-86-fringe-position",4,["PH11.8.6"],2,"gen",function(){
@@ -3062,8 +3522,9 @@ E("u4-86-fringe-position",4,["PH11.8.6"],2,"gen",function(){
   var p5=sfR(p4*m,4);
   var xM4=sfR(p5/dM,4), ans=sfR(xM4*1000,3);
   var sol="Bright fringes satisfy m λ = x d ÷ L, so x = m λ L ÷ d. Convert the wavelength and the slit separation to metres in words: λ is "+iF(lamM)+" m and d is "+iF(dM)+" m. First, "+iF(lamM)+" m × "+iF(Lm)+" m = "+iF(p4)+" m². Then "+iF(p4)+" m² × "+m+" = "+iF(p5)+" m². Then "+iF(p5)+" m² ÷ "+iF(dM)+" m = "+iF(xM4)+" m. Converting metres to millimetres in words, the fringe is "+F3(ans)+" mm from the central maximum.";
-  return numq("Light of wavelength "+lamNm+" nm shines on two slits "+gF(dMm)+" mm apart. The screen is "+gF(Lm)+" m away. Find the distance from the central maximum to the "+m+(m===1?"st":m===2?"nd":"rd")+" bright fringe. Give your answer in mm.",
+  var q=numq("Light of wavelength "+lamNm+" nm shines on two slits "+gF(dMm)+" mm apart. The screen is "+gF(Lm)+" m away. Find the distance from the central maximum to the "+m+(m===1?"st":m===2?"nd":"rd")+" bright fringe. Give your answer in mm.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {lamNm:lamNm,m:m,dMm:dMm,Lm:Lm});
+    q.figure=p22Slit(gF(dMm)+" mm",gF(Lm)+" m","?",m);return q;
 });
 
 E("u4-86-slit-separation",4,["PH11.8.6"],2,"gen",function(){
@@ -3077,8 +3538,9 @@ E("u4-86-slit-separation",4,["PH11.8.6"],2,"gen",function(){
   var p5=sfR(p4*m,4);
   var dM4=sfR(p5/xM,4), ans=sfR(dM4*1000,3);
   var sol="Bright fringes satisfy m λ = x d ÷ L, so d = m λ L ÷ x. Convert the wavelength and the fringe distance to metres in words: λ is "+iF(lamM)+" m and x is "+iF(xM)+" m. First, "+iF(lamM)+" m × "+iF(Lm)+" m = "+iF(p4)+" m². Then "+iF(p4)+" m² × "+m+" = "+iF(p5)+" m². Then "+iF(p5)+" m² ÷ "+iF(xM)+" m = "+iF(dM4)+" m. Converting metres to millimetres in words, the slit separation is "+F3(ans)+" mm.";
-  return numq("Light of wavelength "+lamNm+" nm produces a double slit pattern on a screen "+gF(Lm)+" m from the slits. The "+(m===2?"2nd":m===3?"3rd":m+"th")+" bright fringe is "+gF(xMm)+" mm from the central maximum. Find the slit separation. Give your answer in mm.",
+  var q=numq("Light of wavelength "+lamNm+" nm produces a double slit pattern on a screen "+gF(Lm)+" m from the slits. The "+(m===2?"2nd":m===3?"3rd":m+"th")+" bright fringe is "+gF(xMm)+" mm from the central maximum. Find the slit separation. Give your answer in mm.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {lamNm:lamNm,m:m,Lm:Lm,xMm:xMm});
+    q.figure=p22Slit("?",gF(Lm)+" m",gF(xMm)+" mm",m);return q;
 });
 
 E("u4-86-diffraction-design",4,["PH11.8.6"],3,"var",varset([
@@ -3339,8 +3801,9 @@ E("u4-89-snell-angle",4,["PH11.8.9"],2,"gen",function(){
   var s2=Math.sin(th1*Math.PI/180)*pair[1]/pair[3];
   var th2=Math.asin(s2)*180/Math.PI, ans=sfR(th2,3);
   var sol="Snell's law: n_1 sin θ_1 = n_2 sin θ_2, with angles measured from the normal. Substituting n_1 = "+gF(pair[1])+", θ_1 = "+gF(th1)+"° and n_2 = "+gF(pair[3])+" gives sin θ_2 = "+iF(sfR(s2,4))+". Taking the inverse sine gives θ_2 = "+F3(ans)+"°. The ray bends toward the normal, as it should entering the slower medium.";
-  return numq("A light ray travelling in "+pair[0]+" (n = "+gF(pair[1])+") strikes the boundary with "+pair[2]+" (n = "+gF(pair[3])+") at "+gF(th1)+"° from the normal. Find the angle of refraction in "+pair[2]+". Give your answer in degrees.",
+  var q=numq("A light ray travelling in "+pair[0]+" (n = "+gF(pair[1])+") strikes the boundary with "+pair[2]+" (n = "+gF(pair[3])+") at "+gF(th1)+"° from the normal. Find the angle of refraction in "+pair[2]+". Give your answer in degrees.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {th1:th1});
+    q.figure=p22Refract(pair[0],pair[2],gF(th1)+"\u00B0",th1,"?",th2);return q;
 });
 
 E("u4-89-critical",4,["PH11.8.9"],2,"gen",function(){
@@ -3363,8 +3826,9 @@ E("u4-89-snell-cr",4,["PH11.8.9"],3,"gen",function(){
   var prod4=sfR(lam1*n1,4);
   var lam2_4=sfR(prod4/n2_4,4), ans=sfR(lam2_4,3);
   var sol="First use Snell's law to get the unknown index: n_2 = n_1 sin θ_1 ÷ sin θ_2, with the angles measured from the normal. Substituting n_1 = 1.33, θ_1 = "+th1+"° and θ_2 = "+th2+"° gives n_2 = "+iF(n2_4)+". The frequency is unchanged across the boundary, so the wavelength scales with the speed, which scales as 1 ÷ n: λ_2 = λ_1 n_1 ÷ n_2. First, "+iF(lam1)+" nm × "+iF(n1)+" = "+iF(prod4)+" nm. Then "+iF(prod4)+" nm ÷ "+iF(n2_4)+" = "+iF(lam2_4)+" nm. The wavelength in the solid is "+F3(ans)+" nm.";
-  return numq("Light of wavelength "+lam1+" nm in water (n = 1.33) strikes the boundary with a transparent solid at "+th1+"° from the normal and refracts at "+th2+"° from the normal. Find the wavelength of the light in the solid. Give your answer in nm.",
+  var q=numq("Light of wavelength "+lam1+" nm in water (n = 1.33) strikes the boundary with a transparent solid at "+th1+"° from the normal and refracts at "+th2+"° from the normal. Find the wavelength of the light in the solid. Give your answer in nm.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {lam1:lam1,th1:th1,th2:th2});
+    q.figure=p22Refract("water","transparent solid",th1+"\u00B0",th1,th2+"\u00B0",th2);return q;
 });
 
 E("u4-89-tir",4,["PH11.8.9"],3,"var",varset([
@@ -3420,8 +3884,9 @@ E("u4-89-claim-index",4,["PH11.8.9"],3,"gen",function(){
   var n2=Math.sin(th1*Math.PI/180)/Math.sin(th2*Math.PI/180), ans=sfR(n2,3);
   var claim=sfR(Math.sin(th2*Math.PI/180)/Math.sin(th1*Math.PI/180),3);
   var sol="The claim used the sine ratio upside down. Snell's law gives n_2 = n_1 sin θ_1 ÷ sin θ_2, with the angles measured from the normal. With n_1 = 1.00, θ_1 = "+gF(th1)+"° and θ_2 = "+gF(th2)+"°, the sines give sin θ_1 = "+iF(sfR(Math.sin(th1*Math.PI/180),4))+" and sin θ_2 = "+iF(sfR(Math.sin(th2*Math.PI/180),4))+", so n_2 = "+F3(ans)+". Because the ray bent toward the normal, the second medium must have the higher index, which the claimed value "+gF(claim)+" gets backwards.";
-  return numq("A student measures a ray going from air (n = 1.00) into an unknown solid: the angle of incidence is "+gF(th1)+"° from the normal and the angle of refraction is "+gF(th2)+"° from the normal. The student claims the refractive index of the solid is "+gF(claim)+". Find the correct refractive index of the solid. Give your answer as a decimal.",
+  var q=numq("A student measures a ray going from air (n = 1.00) into an unknown solid: the angle of incidence is "+gF(th1)+"° from the normal and the angle of refraction is "+gF(th2)+"° from the normal. The student claims the refractive index of the solid is "+gF(claim)+". Find the correct refractive index of the solid. Give your answer as a decimal.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {th1:th1,th2:th2});
+    q.figure=p22Refract("air","unknown solid",gF(th1)+"\u00B0",th1,gF(th2)+"\u00B0",th2);return q;
 });
 
 E("u4-89-angle-to-speed",4,["PH11.8.9"],3,"gen",function(){
@@ -3431,11 +3896,13 @@ E("u4-89-angle-to-speed",4,["PH11.8.9"],3,"gen",function(){
   var ratio4=sfR(Math.sin(th2*Math.PI/180)/Math.sin(th1*Math.PI/180),4);
   var v2_4=sfR(v1*ratio4,4), ans=sfR(v2_4,3);
   var sol="Snell's law can be written with speeds: when a ray bends toward the normal it has slowed down, and v_2 ÷ v_1 = sin θ_2 ÷ sin θ_1. The sines give sin θ_2 = "+iF(sfR(Math.sin(th2*Math.PI/180),4))+" and sin θ_1 = "+iF(sfR(Math.sin(th1*Math.PI/180),4))+", so the speed ratio is "+iF(ratio4)+". Then, working in units of 10^8 m/s, v_2 = "+iF(v1)+" × "+iF(ratio4)+" = "+iF(v2_4)+". The speed in the second medium is "+F3(ans)+" × 10^8 m/s.";
-  return numq("A light ray travels at "+gF(v1)+" × 10^8 m/s in a first medium. It strikes a boundary at "+gF(th1)+"° from the normal and refracts at "+gF(th2)+"° from the normal in a second medium. Find the speed of the light in the second medium. Give your answer in 10^8 m/s.",
+  var q=numq("A light ray travels at "+gF(v1)+" × 10^8 m/s in a first medium. It strikes a boundary at "+gF(th1)+"° from the normal and refracts at "+gF(th2)+"° from the normal in a second medium. Find the speed of the light in the second medium. Give your answer in 10^8 m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9), sol, {v1:v1,th1:th1,th2:th2});
+    q.figure=p22Refract("first medium","second medium",gF(th1)+"\u00B0",th1,gF(th2)+"\u00B0",th2);return q;
 });
 
 /* ----- bank-br.js ----- */
+// Diagram figures (Phase C, Nov 2026): distance time graphs added for the B.2 motion graph entries; see bank-helpers.js p22 helpers.
 // Physics 2204 Bridging bank: Science 1206 review (speed, motion graphs, scalars and vectors)
 // No CRMARKS entries in this file.
 
@@ -3480,54 +3947,61 @@ E("br-b1-speed-compare",5,["B.1"],1,"gen",function(){
 
 E("br-b2-slope-meaning",5,["B.2"],1,"gen",function(){
   var p=ri(6,12),q=ri(1,5),ctx=pick(["a cyclist","a hiker","a school bus","a delivery van","a runner","a ferry"]);
-  return mcq("Two trips by "+ctx+" are drawn on the same distance-time graph. One line has slope "+gF(p)+" m/s and rises steeply, and the other has slope "+gF(q)+" m/s and rises gently. What does the steeper slope on a distance-time graph tell you?",
+  var q=mcq("Two trips by "+ctx+" are drawn on the same distance-time graph. One line has slope "+gF(p)+" m/s and rises steeply, and the other has slope "+gF(q)+" m/s and rises gently. What does the steeper slope on a distance-time graph tell you?",
     "The object was moving faster",
     ["The object travelled a shorter distance","The object started earlier","The object was slowing down"],
     "On a distance-time graph, the slope is the distance covered per second, which is the speed. A steeper slope means more distance is covered each second, so <b>the object was moving faster</b>. The gently rising line, with the smaller slope, is the slower trip.",{p:p,q:q});
+    q.figure=p22Plot({series:[{pts:[[0,0],[1,q._p.p]]},{pts:[[0,0],[1,q._p.q]]}],xt:[],yt:[],xmax:1.2,ymax:q._p.p*1.3,xl:"time",yl:"distance",labels:[{x:1.02,y:q._p.p,t:"slope "+gF(q._p.p)+" m/s",anchor:"start"},{x:1.02,y:q._p.q,t:"slope "+gF(q._p.q)+" m/s",anchor:"start"}]});return q;
 });
 
 E("br-b2-graph-velocity",5,["B.2"],2,"gen",function(){
   var v=pick([1.5,2,2.5,3,4,5]),t=pick([4,6,8,10,12]),x1=ri(2,15);
   var disp=sfR(v*t,4),x2=sfR(x1+disp,4),ans=sfR(v,3);
   var ctx=pick(["a walker on the East Coast Trail","a cyclist on a straight road","a boat crossing a pond","a student walking to school"]);
-  return numq("A distance-time graph for "+ctx+" is a straight line from a distance of "+gF(x1)+" m at time zero to a distance of "+gF(x2)+" m at "+gF(t)+" s. Calculate the speed shown by the graph. Give your answer in m/s.",
+  var q=numq("A distance-time graph for "+ctx+" is a straight line from a distance of "+gF(x1)+" m at time zero to a distance of "+gF(x2)+" m at "+gF(t)+" s. Calculate the speed shown by the graph. Give your answer in m/s.",
     ans,Math.max(0.02*Math.abs(ans),0.05),
     "On a distance-time graph, the speed is the slope, the change in distance divided by the time. The change in distance: "+iF(x2)+" - "+iF(x1)+" = "+iF(disp)+" m. Divide by the time: "+iF(disp)+" / "+iF(t)+" = "+iF(v)+" m/s. The speed is <b>"+F3(ans)+" m/s</b>.",{v:v,t:t,x1:x1});
+    q.figure=p22Plot({series:[{pts:[[0,x1],[t,x2]]}],xt:[[0,"0"],[t,gF(t)]],yt:[[x1,gF(x1)],[x2,gF(x2)]],xmax:t*1.08,ymax:x2*1.15,xl:"time (s)",yl:"distance (m)",dots:true});return q;
 });
 
 E("br-b2-motion-description",5,["B.2"],1,"var",varset([
   function(){
     var v=ri(3,7);
-    return mcq("A distance-time graph for a cyclist is a straight line rising steadily, gaining "+v+" m of distance every second. Which motion does this line show?",
+    var q=mcq("A distance-time graph for a cyclist is a straight line rising steadily, gaining "+v+" m of distance every second. Which motion does this line show?",
       "Moving away at a steady speed",
       ["Speeding up the whole time","Sitting still","Moving back toward the start"],
       "A straight, steadily rising distance-time line means the distance grows by the same amount each second. That is <b>moving away at a steady speed</b>. A curve would show a changing speed, and a flat line would show rest.",{});
+    q.figure=p22Shape("line","gains "+v+" m every second");return q;
   },
   function(){
     var t=ri(4,10);
-    return mcq("A distance-time graph for a parked snowmobile is a flat horizontal line lasting "+t+" s. Which motion does this line show?",
+    var q=mcq("A distance-time graph for a parked snowmobile is a flat horizontal line lasting "+t+" s. Which motion does this line show?",
       "At rest, not moving",
       ["Moving at a steady speed","Speeding up slowly","Returning to the start"],
       "A flat line on a distance-time graph means the distance from the start never changes during those seconds. The snowmobile is <b>at rest, not moving</b>.",{});
+    q.figure=p22Shape("flat","lasts "+t+" s");return q;
   },
   function(){
-    return mcq("A distance-time graph for a hiker rises steadily, then goes flat for a while, then rises steadily again at the same steepness. Which description matches the hike?",
+    var q=mcq("A distance-time graph for a hiker rises steadily, then goes flat for a while, then rises steadily again at the same steepness. Which description matches the hike?",
       "The hiker walked at a steady speed, rested for a while, then walked on at the same speed",
       ["The hiker sped up, then slowed down, then sped up again","The hiker walked out, walked back, then walked out again","The hiker climbed a hill, crossed a flat lookout, then climbed again at the same height"],
       "Each rising section shows distance growing steadily, which is a steady walking speed, and the two rises have the same steepness, so the speed is the same. The flat section shows the distance not changing, which is a rest. <b>The hiker walked at a steady speed, rested, then walked on at the same speed</b>.",{});
+    q.figure=p22Shape("riseflat",null);return q;
   },
   function(){
     var v=ri(2,6);
-    return mcq("A distance-time graph for a boat is a straight line falling steadily, losing "+v+" m of distance from the dock every second. Which motion does this line show?",
+    var q=mcq("A distance-time graph for a boat is a straight line falling steadily, losing "+v+" m of distance from the dock every second. Which motion does this line show?",
       "Moving back toward the dock at a steady speed",
       ["Moving away from the dock at a steady speed","At rest near the dock","Speeding up away from the dock"],
       "The distance from the dock shrinks by the same amount each second, so the boat is approaching the dock steadily. The line shows <b>moving back toward the dock at a steady speed</b>.",{});
+    q.figure=p22Shape("fall","loses "+v+" m every second");return q;
   },
   function(){
-    return mcq("A distance-time graph for a runner is a curve that gets steeper and steeper as time goes on. Which motion does this curve show?",
+    var q=mcq("A distance-time graph for a runner is a curve that gets steeper and steeper as time goes on. Which motion does this curve show?",
       "Speeding up",
       ["Moving at a steady speed","Slowing down","At rest"],
       "The slope of a distance-time graph is the speed. When the curve gets steeper, the slope grows, so more distance is covered each second. The runner is <b>speeding up</b>.",{});
+    q.figure=p22Shape("curve",null);return q;
   }
 ]));
 
