@@ -1545,7 +1545,7 @@ function examLive(ex){
   ex.crItems.forEach(function(it){cr+=it.marks;if(it.q._entry.level===3)l3+=it.marks;});
   return {sr:sr,cr:cr,l3:l3,total:sr+cr};
 }
-function examShortNow(ex){var t=examLive(ex);if(ex.single){var ut2=window.__COURSE&&window.__COURSE.unitTest;if(ut2&&(ut2.pairCr||ut2.trioCr)){var it2=ex.srItems[0]||ex.crItems[0];var ct2=(it2&&ut2.perUnitCr&&ut2.perUnitCr[it2.q._entry.unit])||ut2.cr||7;return (t.sr<(ut2.sr||8)||t.cr<ct2);}return (t.sr<11||t.cr<14);}var u=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units.slice().sort(function(a,b){return a-b;}).join():"";return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}
+function examShortNow(ex){var t=examLive(ex);if(ex.single){var ut2=window.__COURSE&&window.__COURSE.unitTest;if(ut2&&(ut2.pairCr||ut2.trioCr||ut2.sextetCr)){var it2=ex.srItems[0]||ex.crItems[0];var ct2=(it2&&ut2.perUnitCr&&ut2.perUnitCr[it2.q._entry.unit])||ut2.cr||7;return (t.sr<(ut2.sr||8)||t.cr<ct2);}return (t.sr<11||t.cr<14);}var u=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units.slice().sort(function(a,b){return a-b;}).join():"";return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}
 function tExamPanelHtml(){
   if(!TEACHER||!T||T.view!=="exam"||!examState)return "";
   var ex=examState.ex;
@@ -1910,6 +1910,11 @@ function composeExam(units,inds,includePK){
          entries, one at 2 marks and two at 3 (its standalone
          composer's TEST_CR constants), at least one of them at
          Level 3, summing to unitTest.cr;
+       - a third sibling (unitTest.sextetCr: Math 1202) shares the
+         same machinery and differs only in Section B: exactly six
+         constructed-response entries, three at 2 marks and three
+         at 3 (its standalone composer's TEST_CR constants), at
+         least one of them at Level 3, summing to unitTest.cr;
        - two scope rules a course may carry in its configuration,
          both read from the standalone composers that had them (Math
          2201): presets.mid.cap engages the poolFor cap for exactly
@@ -1936,14 +1941,15 @@ function composeExam(units,inds,includePK){
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
   if(C.exam&&C.exam.singleOnly&&!single)return null;
-  if(single&&(ut.pairCr||ut.trioCr)){
+  if(single&&(ut.pairCr||ut.trioCr||ut.sextetCr)){
     /* The Math 3202 unit test, reproduced from its standalone
        composer: Section A at the exact srLevels split with an
        any-level top-up, Section B as one pair of constructed-response
        entries summing to the unit's target, Level 3 pairs preferred.
        Only a course setting pairCr enters this branch. Math 2202
        (trioCr) shares the Section A machinery; its Section B is
-       the trio selected below. */
+       the trio selected below. Math 1202 (sextetCr) shares it too;
+       its Section B is the sextet selected below. */
     var unitP=units[0];
     var targetP=(ut.perUnitCr&&ut.perUnitCr[unitP])||ut.cr;
     var seenA={};
@@ -1972,6 +1978,24 @@ function composeExam(units,inds,includePK){
     pairsA=shuffle(pairsA);
     var withL3A=pairsA.filter(function(p){return p[0].e.level===3||p[1].e.level===3;});
     chosenA=withL3A.length?withL3A[0]:(pairsA.length?pairsA[0]:null);
+    } else if(ut.sextetCr){
+      /* Math 1202's Section B, from its standalone composer
+         (TEST_CR_COUNT 6, TEST_CR_TARGET 15): three 2-mark and
+         three 3-mark entries, Level 2 or 3, at least one of the
+         six at Level 3. The standalone retries shuffled sextets
+         up to 500 times for one carrying a Level 3 entry, then
+         settles for any sextet; both behaviours are carried here. */
+      var crPoolS=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&(CR_MARKS[e.id]===2||CR_MARKS[e.id]===3)&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+      var twosS=crPoolS.filter(function(x){return x.marks===2;});
+      var threesS=crPoolS.filter(function(x){return x.marks===3;});
+      crWantA=6;crTargetA=ut.cr;
+      if(twosS.length>=3&&threesS.length>=3){
+        for(var atS=0;atS<500&&!chosenA;atS++){
+          var selS=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
+          if(selS.some(function(x){return x.e.level===3;}))chosenA=selS;
+        }
+        if(!chosenA)chosenA=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
+      }
     } else {
       /* Math 2202's Section B, from its standalone composer
          (TEST_CR_COUNT 3, TEST_CR_TARGET 8): one 2-mark and two
@@ -2000,7 +2024,7 @@ function composeExam(units,inds,includePK){
         if(seenCA[c]){shortA=true;return;}
         seenCA[c]=1;crA.push({q:q,marks:x.marks});crMarksA+=x.marks;if(x.e.level===3)l3A+=x.marks;
       });
-      if(crA.length!==crWantA||(ut.trioCr&&crMarksA!==crTargetA))shortA=true;
+      if(crA.length!==crWantA||((ut.trioCr||ut.sextetCr)&&crMarksA!==crTargetA))shortA=true;
     } else shortA=true;
     crA.sort(function(a,b){return a.q._entry.level-b.q._entry.level;});
     return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};

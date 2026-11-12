@@ -2732,5 +2732,218 @@ window.COURSES = {
   panels: {
     "1": "<b>Imperial:</b> \\(1\\ \\text{ft.} = 12\\ \\text{in.}\\); \\(1\\ \\text{yd.} = 3\\ \\text{ft.}\\); \\(1\\ \\text{mi.} = 1760\\ \\text{yd.}\\)<br><b>Imperial to SI Units:</b> \\(1\\ \\text{in.} = 2.54\\ \\text{cm} \\approx 2.5\\ \\text{cm}\\); \\(1\\ \\text{mi.} \\approx 1.6\\ \\text{km}\\)<br><b>Surface Area: Cylinder:</b> \\(A = 2\\pi r^2 + 2\\pi r h\\)<br><b>Surface Area: Cone:</b> \\(A = \\pi r^2 + \\pi r s\\)<br><b>Surface Area: Sphere:</b> \\(A = 4\\pi r^2\\)<br><b>Volume: Pyramid:</b> \\(V = \\frac{1}{3}[\\,l \\times w \\times h\\,]\\)<br><b>Volume: Cone:</b> \\(V = \\frac{1}{3}[\\pi r^2 h]\\)<br><b>Volume: Sphere:</b> \\(V = \\frac{4}{3}\\pi r^3\\)"
   }
+},
+
+"math-1202": {
+  id: "math-1202",
+  title: "Math 1202 Review: Practice Question Bank",
+  shortName: "Math 1202",
+  storagePrefix: "m1202",
+  reportName: "Math 1202",
+  language: "en",
+  bankFile: "math-1202.js",
+  subject: "Mathematics",
+  grade: 10,
+  listed: false,
+
+  units: {
+    "1": "Consumerism and Travel",
+    "2": "Measuring Length",
+    "3": "Measuring Area",
+    "4": "Getting Paid for Your Work",
+    "5": "All About Angles",
+    "6": "Pythagorean Relation",
+    "7": "Trigonometry"
+  },
+
+  /* All 96 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-1202-review/index.html,
+     UNITS at line 650, INDICATORS at line 651, UNIT_IND at line
+     652). */
+  indicators: {
+    "1.1": "Compare the unit price of two or more given items",
+    "1.2": "Compare, using examples, different sales promotion techniques; e.g., deli meat at $2 per 100 g seems less expensive than $20 per kilogram",
+    "1.3": "Solve problems that involve determining the best buy, and explain the choice in terms of the cost as well as other factors, such as quality and quantity",
+    "1.4": "Determine the percent increase or decrease for a given original and new price",
+    "1.5": "Explain the difference between the selling rate and purchasing rate for currency exchange",
+    "1.6": "Convert between Canadian currency and foreign currency using formulas, charts and tables",
+    "1.7": "Solve, using proportional reasoning, a contextual problem that involves currency exchange",
+    "1.8": "Explain how to estimate the cost of items in Canadian currency while in a foreign country, and explain why this might be important",
+    "3.1": "Explain how the SI system was developed, and explain its relationship to base ten",
+    "3.8": "Explain how the imperial system was developed",
+    "3.9": "Compare the American and British imperial measurement systems; e.g., gallons, bushels, tons",
+    "3.2": "Identify contexts that involve the SI system",
+    "3.10": "Identify contexts that involve the imperial system",
+    "3.3": "Match the prefixes used for SI units of measurement with the powers of ten",
+    "3.4": "Explain, using examples, how and why decimals are used in the SI system",
+    "3.11": "Explain, using examples, how and why fractions are used in the imperial system",
+    "3.5": "Provide an approximate measurement in SI units for a measurement given in imperial units; e.g., 1 inch is approximately 2.5 cm",
+    "3.12": "Provide an approximate measure in imperial units for a measurement in SI units; e.g., 1 litre is approximately US gallon",
+    "3.6": "Convert a given measurement from SI to imperial units by using proportional reasoning (including formulas); e.g., Celsius to Fahrenheit, centimetres to inches",
+    "3.13": "Convert a given measurement from imperial to SI units using proportional reasoning (including formulas); e.g., Fahrenheit to Celsius, inches to centimetres",
+    "3.14": "Write a given linear measure expressed in one imperial unit in another imperial unit",
+    "3.15": "Provide an example of a situation in which a fractional linear measurement would be divided by a fraction",
+    "3.16": "Measure inside diameters, outside diameters, lengths, widths of various given objects, and distances, using various measuring instruments",
+    "3.17": "Identify a referent for a given common SI or imperial unit of linear measurement",
+    "3.18": "Estimate a linear measurement, using a referent",
+    "3.19": "Estimate the dimensions of a given regular 3-D object or 2-D shape, using a referent; e.g., the height of the desk is about three rulers long, so the desk is approximately three feet height",
+    "3.7": "Write a given linear measurement expressed in one SI unit in another SI unit",
+    "3.20": "Solve a linear measurement problem including perimeter, circumference, and length + width + height (used in shipping and air travel)",
+    "3.21": "Determine the operation that should be used to solve a linear measurement problem",
+    "2.1": "Create and solve a contextual problem that involves a formula",
+    "2.2": "Describe, using examples, how a given formula is used in a trade or occupation",
+    "2.3": "Solve a contextual problem that involves the application of a formula that does not require manipulation",
+    "2.4": "Solve a contextual problem that involves the application of a formula that requires manipulation",
+    "3.22": "Determine, using a variety of strategies, the midpoint of a linear measurement such as length, width, height, depth, diagonal and diameter of a 3-D object, and explain the strategies",
+    "3.23": "Determine if a solution to a problem that involves linear measure is reasonable",
+    "2.5": "Identify and correct errors in a solution to a problem that involves a formula",
+    "3.24": "Identify and compare referents for area measurements in SI and imperial units",
+    "3.25": "Estimate an area measurement, using a referent",
+    "3.26": "Estimate the area of a given regular, composite or irregular 2-D shape, using an SI square grid and an imperial square grid",
+    "3.27": "Determine if a solution to a problem that involves an area measurement is reasonable",
+    "3.28": "Identify a situation where a given SI or imperial area unit would be used",
+    "3.29": "Write a given area measurement expressed in one SI unit squared in another SI unit squared",
+    "3.30": "Write a given area measurement expressed in one imperial unit squared in another imperial unit squared",
+    "3.31": "Solve a contextual problem that involves the area of a regular, a composite or an irregular 2-D shape",
+    "3.32": "Solve a problem, using formulas for determining the areas of regular, composite and irregular 2-D shapes, including circles",
+    "3.33": "Explain, using examples, the effect of changing the measurement of one or more dimensions on area and perimeter of rectangles",
+    "3.34": "Solve a problem that involves determining the surface area of 3-D objects, including right cylinders and cones",
+    "1.9": "Describe, using examples, various methods of earning income",
+    "1.10": "Identify and list jobs that commonly use different methods of earning income; e.g., hourly wage, wage and tips, salary, commission, contract, bonus, shift premiums",
+    "1.11": "Determine in decimal form, from a time schedule, the total time worked in hours and minutes, including time and a half and/or double time",
+    "1.12": "Determine gross pay from given or calculated hours worked when given: • the base hourly wage, with and without tips. • the base hourly wage, plus overtime (time and a half, double time)",
+    "1.13": "Investigate, with technology, &quot;what if...&quot; questions related to changes in income; e.g., \"What if there is a change in the rate of pay?\"",
+    "1.14": "Identify and correct errors in a solution to a problem that involves gross or net pay",
+    "1.15": "Explain why gross pay and net pay are not the same",
+    "1.16": "Determine the Canadian Pension Plan (CPP), Employment Insurance (EI) and income tax deductions for a given gross pay",
+    "1.17": "Determine net pay when given deductions; e.g., health plans, uniforms, union dues, charitable donations, payroll tax",
+    "1.18": "Determine gross pay for earnings acquired by: • base wage, plus commission • single commission rate",
+    "1.19": "Describe the advantages and disadvantages for a given method of earning income; e.g., hourly wage, tips, piecework, salary, commission, contract work",
+    "3.44": "Measure, using a protractor, angles in various orientations",
+    "3.45": "Draw and describe angles with various measures, including acute, right, straight, obtuse and reflex angles",
+    "3.46": "Identify referents for angles",
+    "3.47": "Sketch a given angle",
+    "3.48": "Estimate the measure of a given angle, using 22.5°, 30°, 45°, 60°, 90° and 180° as referent angles",
+    "3.49": "Solve a contextual problem that involves angles",
+    "3.50": "Explain and illustrate how angles can be replicated in a variety of ways; e.g., Mira, protractor, compass and straightedge, carpenter's square, dynamic geometry software",
+    "3.51": "Replicate angles in a variety of ways, with and without technology",
+    "3.52": "Bisect an angle, using a variety of methods",
+    "3.35": "Sort a set of lines as perpendicular, parallel or neither, and justify this sorting",
+    "3.36": "Illustrate and describe complementary and supplementary angles",
+    "3.37": "Identify, in a set of angles, adjacent angles that are not complementary or supplementary",
+    "3.38": "Identify and name pairs of angles formed by parallel lines and a transversal, including corresponding angles, vertically opposite angles, alternate interior angles, alternate exterior angles, interior angles on the same side of transversal, and exterior a",
+    "3.39": "Explain and illustrate the relationships of angles formed by parallel lines and a transversal",
+    "3.40": "Determine the measures of angles involving parallel lines and a transversal, using angle relationships",
+    "3.41": "Explain, using examples, why the angle relationships do not apply when the lines are not parallel",
+    "3.42": "Determine if lines or planes are perpendicular or parallel, e.g., wall perpendicular to the floor, and describe the strategy used",
+    "3.43": "Solve a contextual problem that involves angles formed by parallel lines and a transversal (including perpendicular transversals)",
+    "3.53": "Describe historical and contemporary applications of the Pythagorean theorem",
+    "3.54": "Explain, using illustrations, why the Pythagorean theorem only applies to right triangles",
+    "3.55": "Verify the Pythagorean theorem, using examples and counterexamples, including drawings, concrete materials and technology",
+    "3.56": "Determine if a given triangle is a right triangle, using the Pythagorean theorem",
+    "3.57": "Explain why a triangle with the side length ratio of 3:4:5 is a right triangle",
+    "3.58": "Explain how the ratio of 3:4:5 can be used to determine if a corner of a given 3-D object is square (90 degrees) or if a given parallelogram is a rectangle",
+    "3.59": "Solve a problem, using the Pythagorean theorem",
+    "2.6": "Explain and verify why different forms of the same formula are equivalent",
+    "3.60": "Determine if two or more regular or irregular polygons are similar",
+    "3.61": "Explain why two or more right triangles with a shared acute angle are similar",
+    "3.62": "Explain the relationships between the corresponding sides of two polygons that have corresponding angles of equal measure",
+    "3.63": "Explain why two given polygons are not similar",
+    "3.64": "Solve a contextual problem that involves the similarity of polygons",
+    "3.65": "Draw a polygon that is similar to a given polygon",
+    "5.1": "Show, for a specified acute angle in a set of right triangles, that the ratios of length of the side opposite to the length of the side adjacent are equal, and generalize a formula for the tangent ratio",
+    "5.2": "Show, for a specified acute angle in a set of right triangles, that the ratios of length of the side opposite to the length of the hypotenuse are equal, and generalize a formula for the sine ratio",
+    "5.3": "Show, for a specified acute angle in a set of right triangles, that the ratios of length of the side adjacent to the length of the hypotenuse are equal, and generalize a formula for the cosine ratio",
+    "5.4": "Identify situations where the trigonometric ratios are used for indirect measurement of angles and lengths",
+    "5.5": "Solve a contextual problem that involves right angles, using the primary trigonometric ratios",
+    "5.6": "Determine if a solution to a problem that involves primary trigonometric ratios is reasonable"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 652): 116 placements over the 96 codes;
+     it agrees exactly with the codes the bank entries themselves
+     carry at each placement. */
+  unitInd: {
+    "1": ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "3.1", "3.8", "3.9", "3.2", "3.10", "3.3", "3.4", "3.11", "3.5", "3.12", "3.6", "3.13"],
+    "2": ["3.14", "3.11", "3.15", "3.16", "3.17", "3.18", "3.19", "3.7", "3.5", "3.12", "3.6", "3.13", "3.20", "3.21", "2.1", "2.2", "2.3", "2.4", "3.22", "3.23", "2.5"],
+    "3": ["3.24", "3.25", "3.26", "3.27", "3.28", "3.29", "3.30", "3.31", "3.32", "2.3", "2.4", "2.1", "2.5", "3.33", "3.34"],
+    "4": ["1.9", "1.10", "1.11", "1.12", "2.3", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18", "1.19"],
+    "5": ["3.44", "3.45", "3.46", "3.47", "3.48", "3.49", "3.50", "3.51", "3.52", "3.35", "3.36", "3.37", "3.38", "3.39", "3.40", "3.41", "3.42", "3.43"],
+    "6": ["3.53", "3.54", "3.55", "3.56", "3.57", "3.58", "2.2", "3.59", "2.3", "2.4", "2.1", "2.6"],
+    "7": ["3.60", "3.61", "3.62", "3.63", "3.64", "3.65", "2.4", "5.1", "5.2", "5.3", "5.4", "5.5", "2.3", "2.6", "2.2", "2.1", "2.5", "5.6"]
+  },
+
+  /* Presets: the standalone ships exactly one, "All units", on
+     its presetAll button (builder markup line 286; handler line
+     7382, selecting Units 1 to 7 with no level mix change; the
+     builder level inputs ship at the 20/60/20 default, lines
+     367 to 369). The shell's All wiring selects every unit in
+     the course when the config carries no allUnits key, which
+     is the same seven units, so the All preset needs no entry
+     here. There is no mid-course or final preset in this
+     course: the standalone's selection-engine note (lines 5003
+     to 5009) records the course's mid-course scope as Units 1
+     to 3 whole and its end-of-course scope as Units 4 to 7
+     whole for its tables of specifications, but ships no
+     preset buttons and no per-scope blueprints for them, and
+     no entry carries a postMid flag, so none are configured
+     here; its tests are single-unit practice tests, below.
+     The shell hides both preset buttons for a course whose
+     config names neither. */
+  presets: {},
+
+  /* Staged hints: every entry in this bank carries a two-stage
+     hint (the standalone's E stores them as hint1 and hint2,
+     line 654, and its showHint reveals strategy, then first
+     step, lines 5287 to 5297; its face card promises them,
+     line 5283). The flag turns on the shell's restored hint
+     UI for this course: the Hint button and hint box on
+     practice questions, and the face card's "a hint, "
+     wording. */
+  hints: true,
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (math-1202-review/index.html: the practice-test
+     note at lines 6186 to 6195, the TEST_ constants at lines
+     6196 to 6199, composeExam at lines 6208 to 6257, and
+     examShortNow at line 5862). This composer builds
+     single-unit practice tests only and returns null for a
+     multi-unit selection (the standalone's startExam, line
+     6270, refuses
+     a multi-unit selection up front with the one-unit-at-a-
+     time message the shell gives under exam.singleOnly). A
+     unit test is 15 selected-response questions at 1 mark
+     each, drawn at the exact level split 3/9/3 with an
+     any-level top-up when a level runs short, plus exactly
+     six constructed-response questions: three carrying 2
+     marks and three carrying 3, all at Level 2 or 3, at
+     least one of the six at Level 3, summing to 15 marks,
+     for 30 marks in total. The sextetCr branch of the
+     shell's composer reproduces that algorithm; courses
+     without sextetCr never enter it. The standalone also
+     models the sitting at TEST_MINUTES 60 (a one-hour soft
+     timer); the shell's timer text is its own generic
+     wording for every course. The bank's per-unit
+     constructed-response pattern (six Level 2 entries at
+     2/2/2/3/3/3 marks and two Level 3 at 2/3 in every unit)
+     is what guarantees a valid sextet always exists. */
+  exam: {
+    singleOnly: true
+  },
+
+  unitTest: { total: 30, sr: 15, cr: 15, srLevels: [3, 9, 3], sextetCr: true },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at line 5261): a panel for every one of the
+     seven units, and no always-on panel. */
+  panels: {
+    "1": "<b>Unit price:</b> \\(\\text{unit price} = \\frac{\\text{total cost}}{\\text{quantity}}\\). Compare items by the cost for the same amount, such as per 100 g, per litre or per item. A price per 100 g times 10 gives the price per kilogram.<br>\n<b>Best buy:</b> the lowest unit price is one factor. Also weigh quality, how long the item lasts, how much is actually needed, storage space, and whether extra amounts will spoil or go unused.<br>\n<b>Percent change:</b> \\(\\text{percent change} = \\frac{\\text{new} - \\text{original}}{\\text{original}} \\times 100\\), using the absolute change. Always divide by the original amount.<br>\n<b>Currency exchange:</b> rates are named from the bank's point of view. The selling rate is used when the bank sells foreign currency to you; the purchasing rate is used when the bank purchases foreign currency from you, and it is the lower rate. With a rate of \\(1\\) foreign unit \\(= r\\) CAD: foreign amount \\(=\\) CAD \\(\\div r\\), and CAD amount \\(=\\) foreign amount \\(\\times r\\).<br>\n<b>Estimating abroad:</b> round the rate to a friendly number first (for example 1.47 to 1.50), then multiply the foreign price by the rounded rate for a quick Canadian cost estimate.<br>\n<b>SI prefixes and powers of ten:</b> kilo- \\(= 10^{3}\\), hecto- \\(= 10^{2}\\), deca- \\(= 10^{1}\\), deci- \\(= 10^{-1}\\), centi- \\(= 10^{-2}\\), milli- \\(= 10^{-3}\\). SI units step by powers of ten, so conversions move the decimal place and SI measures are written with decimals.<br>\n<b>Imperial measures:</b> units divide into halves, quarters, eighths and sixteenths, so imperial measures are often written as fractions. American and British versions differ: 1 US gallon \\(\\approx 3.79\\) L and 1 imperial gallon \\(\\approx 4.55\\) L; a US (short) ton is 2000 lb and a British (long) ton is 2240 lb.<br>\n<b>Approximate equivalents:</b> 1 inch \\(\\approx 2.5\\) cm; 1 litre \\(\\approx \\frac{1}{4}\\) US gallon (so 1 US gallon \\(\\approx 4\\) litres).<br>\n<b>Temperature formulas:</b> \\(F = \\frac{9}{5}C + 32\\) converts Celsius to Fahrenheit; \\(C = \\frac{5}{9}(F - 32)\\) converts Fahrenheit to Celsius.",
+    "2": "<b>Imperial length:</b> \\(12\\text{ in} = 1\\text{ ft}\\), \\(3\\text{ ft} = 1\\text{ yd}\\), \\(1760\\text{ yd} = 1\\text{ mi}\\). Tape measures mark fractions of an inch (halves, quarters, eighths, sixteenths).<br>\n<b>SI length ladder:</b> \\(10\\text{ mm} = 1\\text{ cm}\\), \\(100\\text{ cm} = 1\\text{ m}\\), \\(1000\\text{ m} = 1\\text{ km}\\). Each step is a power of ten, so conversions move the decimal point.<br>\n<b>Between systems:</b> \\(1\\text{ in} = 2.54\\text{ cm}\\) exactly. Approximates: \\(1\\text{ in} \\approx 2.5\\text{ cm}\\), \\(1\\text{ ft} \\approx 30\\text{ cm}\\), \\(1\\text{ yd} \\approx 0.9\\text{ m}\\), \\(1\\text{ mi} \\approx 1.6\\text{ km}\\), \\(1\\text{ m} \\approx 1.1\\text{ yd}\\).<br>\n<b>Perimeter:</b> distance around a shape. Rectangle: \\(P = 2L + 2W\\).<br>\n<b>Circumference:</b> distance around a circle. \\(C = 2\\pi r = \\pi d\\), where \\(r\\) is the radius and \\(d\\) is the diameter, and \\(d = 2r\\).<br>\n<b>Inside diameter:</b> inside diameter \\(=\\) outside diameter \\(- 2 \\times\\) wall thickness (the wall is crossed twice).<br>\n<b>Midpoint:</b> half the total length, or the average of two end readings: \\(\\text{midpoint} = \\frac{\\text{first reading} + \\text{second reading}}{2}\\).<br>\n<b>Shipping and air travel size:</b> \\(\\text{size} = L + W + H\\) (a sum, not a volume).<br>\n<b>Referents:</b> \\(1\\text{ mm}\\) about a dime thickness, \\(1\\text{ cm}\\) about a fingernail width, \\(1\\text{ m}\\) about counter height, \\(1\\text{ in}\\) about a thumb width, \\(1\\text{ ft}\\) a standard ruler, \\(1\\text{ yd}\\) about door knob height.",
+    "3": "<b>Rectangle:</b> \\(A = lw\\). <b>Square:</b> \\(A = s^2\\).<br>\n<b>Triangle:</b> \\(A = \\tfrac{1}{2}bh\\). <b>Parallelogram:</b> \\(A = bh\\), using the vertical height.<br>\n<b>Circle:</b> \\(A = \\pi r^2\\), where \\(r\\) is the radius, half of the diameter.<br>\n<b>Composite shapes:</b> split the shape into rectangles and triangles and add the parts, or complete the shape and subtract the missing part.<br>\n<b>Estimating on a grid:</b> count full squares, count partial squares as about half squares, then add.<br>\n<b>Surface area of a prism:</b> add the areas of all the faces. A closed rectangular prism: \\(S = 2(lw + lh + wh)\\).<br>\n<b>Surface area of a right cylinder (closed):</b> \\(S = 2\\pi r h + 2\\pi r^2\\) (curved side plus two ends).<br>\n<b>Surface area of a right cone:</b> \\(S = \\pi r s + \\pi r^2\\), where \\(s\\) is the slant height (curved side plus base).<br>\n<b>Squared conversions:</b> \\(1\\ \\text{m}^2 = 10\\,000\\ \\text{cm}^2\\), \\(1\\ \\text{cm}^2 = 100\\ \\text{mm}^2\\), \\(1\\ \\text{ft}^2 = 144\\ \\text{in}^2\\), \\(1\\ \\text{yd}^2 = 9\\ \\text{ft}^2\\). Square the linear factor: area factors are \\(100^2\\), \\(10^2\\), \\(12^2\\) and \\(3^2\\).",
+    "4": "<b>Gross pay (hourly):</b> \\(\\text{gross pay} = \\text{hours} \\times \\text{hourly wage}\\), plus any tips earned<br>\n<b>Overtime:</b> time and a half pays \\(1.5 \\times\\) the wage for each overtime hour; double time pays \\(2 \\times\\) the wage<br>\n<b>Salary per pay period:</b> \\(\\text{pay per period} = \\text{annual salary} \\div \\text{number of pay periods in the year}\\)<br>\n<b>Commission:</b> \\(\\text{commission} = \\text{rate} \\times \\text{sales}\\); gross pay with a base is \\(\\text{base} + \\text{commission}\\)<br>\n<b>Decimal hours:</b> change minutes to hours with \\(\\text{hours} = \\text{minutes} \\div 60\\); unpaid breaks do not count as time worked<br>\n<b>Net pay:</b> \\(\\text{net pay} = \\text{gross pay} - \\text{total deductions}\\)<br>\n<b>Deductions:</b> CPP, EI and income tax come off gross pay, along with items such as health plans, union dues, uniforms and donations; the rate or amount for each deduction is given in the question<br>\n<b>Vacation pay:</b> when it applies, vacation pay is a percent of gross earnings, with the percent given in the question, and it is added to earnings",
+    "5": "<b>Angle types:</b> acute is greater than \\(0^\\circ\\) and less than \\(90^\\circ\\); right is exactly \\(90^\\circ\\); obtuse is greater than \\(90^\\circ\\) and less than \\(180^\\circ\\); straight is exactly \\(180^\\circ\\); reflex is greater than \\(180^\\circ\\) and less than \\(360^\\circ\\)<br>\n<b>Complementary and supplementary:</b> complementary angles add to \\(90^\\circ\\); supplementary angles add to \\(180^\\circ\\)<br>\n<b>Straight lines and points:</b> angles on a straight line add to \\(180^\\circ\\); angles around a point add to \\(360^\\circ\\); vertically opposite angles are equal<br>\n<b>Parallel lines and a transversal:</b> corresponding angles are equal; alternate interior angles are equal; alternate exterior angles are equal; interior angles on the same side of the transversal add to \\(180^\\circ\\); exterior angles on the same side add to \\(180^\\circ\\). These relationships hold only when the two lines are parallel<br>\n<b>Parallel and perpendicular:</b> parallel lines never meet and stay the same distance apart; perpendicular lines meet at \\(90^\\circ\\)<br>\n<b>Referent angles:</b> \\(22.5^\\circ\\) is half of \\(45^\\circ\\); \\(30^\\circ\\) is the gap between neighbouring hour marks on a clock; \\(45^\\circ\\) is half of a square corner; \\(60^\\circ\\) is twice \\(30^\\circ\\); \\(90^\\circ\\) is a square corner; \\(180^\\circ\\) is a straight line<br>\n<b>Measuring with a protractor:</b> centre the protractor on the vertex, line one ray up with \\(0^\\circ\\), and read the scale where the second ray crosses<br>\n<b>Replication and bisection:</b> a replicated angle has the same measure as the original; bisecting an angle splits it into two equal angles, each half the original measure",
+    "6": "<b>Pythagorean theorem:</b> in a right triangle with legs \\(a\\) and \\(b\\) and hypotenuse \\(c\\), \\(a^2 + b^2 = c^2\\). The hypotenuse is the side opposite the right angle and is the longest side.<br>\n<b>Finding the hypotenuse:</b> \\(c = \\sqrt{a^2 + b^2}\\). Square both legs, add, then take the square root.<br>\n<b>Finding a leg:</b> \\(a = \\sqrt{c^2 - b^2}\\) and \\(b = \\sqrt{c^2 - a^2}\\). Square the hypotenuse, subtract the square of the known leg, then take the square root.<br>\n<b>Equivalent forms:</b> \\(a^2 + b^2 = c^2\\), \\(b^2 = c^2 - a^2\\) and \\(a^2 = c^2 - b^2\\) all say the same thing. Moving a squared term across the equals sign changes its sign.<br>\n<b>Right angle test (the converse):</b> a triangle is a right triangle exactly when the squares of the two shorter sides add to the square of the longest side. If the totals differ, there is no right angle.<br>\n<b>Why right triangles only:</b> the squares balance only when the angle between the two shorter sides is 90 degrees. At a wider angle the longest side is longer than the theorem predicts, and at a narrower angle it is shorter.<br>\n<b>The 3:4:5 check:</b> a triangle with sides in the ratio 3:4:5 is a right triangle, since \\(3^2 + 4^2 = 5^2\\). Any multiple, such as 6:8:10 or 30:40:50, is also a right triangle.<br>\n<b>Checking a corner:</b> mark 3 parts along one side and 4 parts along the other from the corner. The corner is square exactly when the distance between the marks is 5 parts, using the same part size throughout.<br>\n<b>Rectangles and diagonals:</b> the diagonal of a rectangle is the hypotenuse of a right triangle with the length and width as legs. A parallelogram is a rectangle when its diagonal matches the length the theorem predicts.",
+    "7": "<b>Similar polygons:</b> corresponding angles are equal and corresponding sides are in the same ratio (one scale factor for every pair).<br>\n<b>Right triangles with a shared acute angle</b> are similar: both have a \\(90^\\circ\\) angle and the shared angle, so the third angles match too.<br>\n<b>Scale factor:</b> image side \\(\\div\\) original side. Perimeters scale by the same factor; areas scale by the factor squared.<br>\n<b>Tangent ratio:</b> \\(\\tan A = \\frac{\\text{opposite}}{\\text{adjacent}}\\)<br>\n<b>Sine ratio:</b> \\(\\sin A = \\frac{\\text{opposite}}{\\text{hypotenuse}}\\)<br>\n<b>Cosine ratio:</b> \\(\\cos A = \\frac{\\text{adjacent}}{\\text{hypotenuse}}\\)<br>\n<b>Choosing a ratio:</b> pick the ratio built from the known side and the wanted side, relative to the marked angle. Also, \\(\\tan A = \\frac{\\sin A}{\\cos A}\\).<br>\n<b>Finding an angle:</b> form the ratio from the two known sides, then use the inverse ratio: \\(\\tan^{-1}\\), \\(\\sin^{-1}\\) or \\(\\cos^{-1}\\).<br>\n<b>Angles of elevation and depression</b> are measured from the horizontal. The angle of depression from a height equals the angle of elevation from below.<br>\n<b>Reasonableness checks:</b> the hypotenuse is the longest side; sine and cosine values are at most \\(1\\); each acute angle of a right triangle is between \\(0^\\circ\\) and \\(90^\\circ\\)."
+  }
 }
 };
