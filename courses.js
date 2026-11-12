@@ -292,6 +292,7 @@ window.COURSES = {
   subject: "Science",
   grade: 12,
   listed: true,
+  panels: {},
 
   units: {
     1: "Cell Reproduction and the Continuity of Life",

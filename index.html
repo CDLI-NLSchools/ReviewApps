@@ -1021,7 +1021,7 @@ var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
 /* Reference panels come from the active course configuration (the
    course's data-sheet material, config key: panels). */
-var REF_HTML=window.__COURSE?window.__COURSE.panels:{};
+var REF_HTML=(window.__COURSE&&window.__COURSE.panels)||{};
 function refPanelsHtml(units){var h=(window.__COURSE&&window.__COURSE.panelsAlways)||"";units.forEach(function(u){if(REF_HTML[u])h+='<details class="refpanel"><summary>'+L9("Formulas and facts for Unit ","Formules et notions pour l'unité ")+u+L9(": "," : ")+UNITS[u]+'</summary><div class="refbody">'+REF_HTML[u]+"</div></details>";});return h;}
 function stopExamTimer(){try{if(window._examTimerInt){clearInterval(window._examTimerInt);window._examTimerInt=null;}}catch(e){}}
 function refreshFace(){
