@@ -1402,5 +1402,319 @@ window.COURSES = {
     "9": "<b>Sine law:</b> \\(\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}\\)<br>\n<b>Sine law, flipped form:</b> \\(\\frac{\\sin A}{a} = \\frac{\\sin B}{b} = \\frac{\\sin C}{c}\\)<br>\n<b>Cosine law, side form:</b> \\(a^2 = b^2 + c^2 - 2bc \\cos A\\) (the same pattern holds for sides b and c)<br>\n<b>Cosine law, angle form:</b> \\(\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}\\) (the same pattern holds for angles B and C)<br>\n<b>Choosing a law:</b> a side with its opposite angle known points to the sine law; two sides with the angle between them, or all three sides, point to the cosine law<br>\n<b>Primary ratios (review):</b> \\(\\sin = \\frac{\\text{opp}}{\\text{hyp}}\\), \\(\\cos = \\frac{\\text{adj}}{\\text{hyp}}\\), \\(\\tan = \\frac{\\text{opp}}{\\text{adj}}\\) in a right triangle<br>\n<b>Angle sum:</b> the three angles of any triangle add to \\(180^\\circ\\)<br>\n<b>Rounding:</b> angles to the nearest degree, side lengths to one decimal place, unless a question says otherwise",
     "10": "<b>Probability:</b> \\(P = \\frac{\\text{favourable outcomes}}{\\text{total outcomes}}\\)<br>\n<b>Probability from data:</b> use the counts in the data set as the favourable count and the total count<br>\n<b>Range:</b> a probability sits between 0 (cannot happen) and 1 (certain), or between 0% and 100%<br>\n<b>Changing form:</b> fraction to decimal by dividing; decimal to percent by multiplying by 100; a statement reads \"There is a ...% chance\"<br>\n<b>Odds in favour:</b> favourable outcomes : unfavourable outcomes; <b>odds against:</b> unfavourable outcomes : favourable outcomes<br>\n<b>Probability from odds in favour \\(a : b\\):</b> \\(P = \\frac{a}{a+b}\\); from odds against \\(a : b\\): \\(P = \\frac{b}{a+b}\\)<br>\n<b>Expected count:</b> probability \\(\\times\\) number of trials<br>\n<b>Decisions:</b> real decisions may combine a calculated probability, results from past trials, and judgement about the situation"
   }
+},
+
+"math-3208": {
+  id: "math-3208",
+  title: "Math 3208 Review: Practice Question Bank",
+  shortName: "Math 3208",
+  storagePrefix: "m3208",
+  reportName: "Math 3208",
+  language: "en",
+  bankFile: "math-3208.js",
+  subject: "Mathematics",
+  grade: 12,
+  listed: false,
+
+  units: {
+    "1": "Pre-Calculus",
+    "2": "Limits and Continuity",
+    "3": "Rational Functions",
+    "4": "Derivatives",
+    "5": "Applications of Derivatives",
+    "6": "Calculus of Trigonometry",
+    "7": "Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions",
+    "8": "Antidifferentiation and Integration"
+  },
+
+  /* All 96 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-3208-review/index.html,
+     INDICATORS at lines 646 to 743; UNITS at lines 643 to 645). */
+  indicators: {
+    "1.1": "Write a function h (x) as the sum, difference, product or quotient of two or more functions",
+    "1.2": "Sketch the graph of a function that is the sum, difference, product or quotient of two functions, given their graphs",
+    "1.3": "Determine the domain and range of a function that is the sum, difference, product or quotient of two functions",
+    "1.4": "Determine the value of the composition of functions when evaluated at a point, including: f (f (a)), f (g (a)), g (f (a))",
+    "1.5": "Determine the equation of the composite function given the equations of two functions f (x) and g (x): f (f (x)), f (g (x)), g (f (x))",
+    "1.6": "Sketch the graph of the composite function given the equations of two functions f (x) and g (x) and determine the domain and range",
+    "1.7": "Determine the original functions from a composition",
+    "1.8": "Explain the behaviour of the graph of a rational function for values of the variable near a non-permissible value",
+    "1.9": "Determine if the graph of a rational function will have an asymptote or a hole for a non-permissible value",
+    "1.10": "Sketch the graph of a rational function",
+    "1.11": "Graph and analyze exponential and logarithmic functions y = e x and y = ln x",
+    "1.12": "Explain the relationship between the trigonometric functions and their inverses",
+    "1.13": "Explain why trigonometric functions must have their domains restricted to create inverse trigonometric functions",
+    "1.14": "Sketch the graph of an inverse trigonometric function",
+    "1.15": "Determine the exact value of an expression involving an inverse trigonometric function",
+    "2.1": "Using informal methods, explore the concept of a limit including one-sided limits",
+    "2.2": "Using informal methods, establish that the limit of x1 as x approaches infinity is zero",
+    "2.3": "Explore the concept of limit and the notation used in expressing the limit of a function (one-sided limits from the left and right, and the two-sided limit)",
+    "2.4": "Determine the value of the limit of a function as the variable approaches a real number by using a provided graph, including piecewise functions, and by using a table of values",
+    "2.5": "Evaluate one-sided limits using a graph",
+    "2.6": "Apply the properties of limits, including the Sum, Difference, Product, Constant Multiple, Quotient, and Power Rules, to solve problems",
+    "2.7": "Determine the value of the limit of a function as the variable approaches a real number by substitution and by algebraic manipulation",
+    "2.8": "Determine limits that result in infinity (infinite limits)",
+    "2.9": "Investigate the behaviour of the function at a vertical asymptote using limits",
+    "2.10": "Evaluate limits of functions as x approaches infinity (limits at infinity)",
+    "2.11": "Investigate the end behaviour of the function using limits to identify possible horizontal asymptotes",
+    "2.12": "Investigate the end behaviour of the function using limits to identify possible oblique asymptotes",
+    "2.13": "Distinguish between the concepts of continuity and discontinuity of a function informally",
+    "2.14": "Identify examples of discontinuous functions and the types of discontinuities they illustrate, such as removable, infinite, jump, and oscillating discontinuities",
+    "2.15": "Determine whether a function is continuous at a point from its graph",
+    "2.16": "Determine whether a function is continuous at a point using the definition of continuity",
+    "2.17": "Determine whether a function is continuous on a closed interval",
+    "2.18": "Rewrite removable discontinuities by extending or modifying a function",
+    "2.19": "Establish the trigonometric limits as x approaches 0 (sin x, cos x, sin x / x, and (cos x - 1) / x) using informal methods",
+    "2.20": "Evaluate limits involving trigonometric expressions",
+    "2.21": "Establish the exponential limit (e^h - 1) / h as h approaches 0 using informal methods",
+    "3.1": "Describe geometrically a secant line and a tangent line for the graph of a function at x = a",
+    "3.2": "Determine the average rate of change of a function over an interval",
+    "3.3": "Identify the instantaneous rate of change of a function at a point as the limiting value of a sequence of average rates of change",
+    "3.4": "Define and evaluate the derivative at x = a using the limit definitions (the h form and the x form)",
+    "3.5": "Determine the equation of the tangent line and normal line to a graph of a relation at a given point",
+    "3.6": "Define and determine the derivative of a function using the limit definition (limited to polynomials and functions with linear terms)",
+    "3.7": "Use alternate notation interchangeably to express derivatives (i.e., f ′ (x),   dx , y′,   etc.)",
+    "3.8": "Determine whether a function is differentiable at a given point",
+    "3.9": "Explain why a function is not differentiable at a given point, and distinguish between corners, cusps, discontinuities, and vertical tangents",
+    "3.10": "Determine all values for which a function is differentiable, given the graph",
+    "3.11": "Sketch a graph of the derivative of a function, given the graph of a function",
+    "3.12": "Sketch a graph of the function, given the graph of the derivative of a function",
+    "3.13": "Derive the Constant, Constant Multiple, Sum, Difference, Product, and Quotient Rules for determining derivatives",
+    "3.14": "Determine derivatives of functions, using the Constant, Constant Multiple, Power, Sum, Difference, Product and Quotient Rules",
+    "3.15": "Determine second and higher-order derivatives of functions",
+    "3.16": "Determine derivatives of functions using the Chain Rule",
+    "3.17": "Solve problems involving derivatives drawn from a variety of applications, limited to tangent and normal lines, straight line motion and rates of change",
+    "3.18": "Determine the derivative of an implicit relation",
+    "3.19": "Determine the equation of the tangent and normal line to the graph of a relation at a given point",
+    "3.20": "Determine the second derivative of a relation, using implicit differentiation",
+    "3.21": "For a polynomial function, use f ′ (x) to identify the critical numbers, relative and absolute extrema, and intervals of increase and decrease",
+    "3.22": "For a polynomial function, use f ′′ (x) to identify the hypercritical numbers, points of inflection and intervals of concavity",
+    "3.23": "For a polynomial function, sketch the graph of f (x) using information obtained from the function and its derivatives",
+    "3.24": "For a polynomial function, use the given function f (x) to determine its features such as intercepts and the domain",
+    "3.25": "For a rational function, use f ′ (x) to identify the critical numbers, relative and absolute extrema, and intervals of increase and decrease",
+    "3.26": "For a rational function, use f ′′ (x) to identify the hypercritical numbers, points of inflection and intervals of concavity",
+    "3.27": "For a rational function, sketch the graph of f (x) using information obtained from the function and its derivatives",
+    "3.28": "For a rational function, use the given function f (x) to determine its features such as intercepts, asymptotes, points of discontinuity and the domain",
+    "3.29": "Solve a problem involving related rates drawn from a variety of applications",
+    "3.30": "Interpret the solution to a related rates problem",
+    "3.31": "Determine the equation of the function to be optimized in an optimization problem",
+    "3.32": "Determine the equations of any parameters necessary in an optimization problem",
+    "3.33": "Solve an optimization problem drawn from a variety of applications, using calculus techniques",
+    "3.34": "Interpret the solution(s) to an optimization problem",
+    "3.35": "Derive the derivatives of sine, cosine, tangent, cotangent, secant and cosecant",
+    "3.36": "Determine the derivative of expressions involving trigonometric functions",
+    "3.37": "Solve problems involving the derivative of a trigonometric function",
+    "3.38": "Derive the inverse trigonometric derivatives",
+    "3.39": "Determine the derivative of an inverse trigonometric function",
+    "3.40": "Solve problems involving the derivative of an inverse trigonometric function",
+    "3.41": "Derive the derivatives of the exponential functions e x and a x , and the logarithmic functions ln x and log a x",
+    "3.42": "Determine the derivative of an exponential function",
+    "3.43": "Solve problems involving the derivative of an exponential or a logarithmic function",
+    "3.44": "Determine the derivative of a logarithmic function",
+    "3.45": "Determine the derivative of a function using logarithmic differentiation",
+    "3.46": "Define and characterize the hyperbolic trigonometric functions sinh x and cosh x in terms of the exponential function",
+    "3.47": "Define tanh x, csch x, coth x, and sech x in terms of sinh x and cosh x",
+    "3.48": "Determine the derivative of a hyperbolic trigonometric function",
+    "4.1": "Explain the meaning of the phrase “F (x) is an antiderivative of f (x)”",
+    "4.2": "Determine the general antiderivative of functions",
+    "4.3": "Use antiderivative notation appropriately (i.e., ∫ f (x) dx for the antiderivative of f (x))",
+    "4.4": "Identify the properties of antidifferentiation",
+    "4.5": "Determine the indefinite integral of a function given extra conditions",
+    "4.6": "Use antidifferentiation to solve problems about motion of a particle along a line: computing displacement given initial position and velocity as a function of time, and computing velocity and/or displacement given initial conditions and acceleration as a function of time",
+    "4.7": "Estimate an area using a finite sum",
+    "4.8": "Determine the area using the infinite Riemann sum",
+    "4.9": "Convert a Riemann sum to a definite integral",
+    "4.10": "Using definite integrals, determine the area under a polynomial function from x = a to x = b",
+    "4.11": "Calculate the definite integral of a function over an interval [a, b]",
+    "4.12": "Determine the area between two polynomial functions"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at lines 744 to 752); it agrees exactly with the
+     codes the bank entries themselves carry. */
+  unitInd: {
+    "1": [
+      "1.1",
+      "1.2",
+      "1.3",
+      "1.4",
+      "1.5",
+      "1.6",
+      "1.7"
+    ],
+    "2": [
+      "2.1",
+      "2.2",
+      "2.3",
+      "2.4",
+      "2.5",
+      "2.6",
+      "2.7",
+      "2.8",
+      "2.9",
+      "2.10",
+      "2.11",
+      "2.12",
+      "2.13",
+      "2.14",
+      "2.15",
+      "2.16",
+      "2.17",
+      "2.18"
+    ],
+    "3": [
+      "1.8",
+      "1.9",
+      "1.10"
+    ],
+    "4": [
+      "3.1",
+      "3.2",
+      "3.3",
+      "3.4",
+      "3.5",
+      "3.6",
+      "3.7",
+      "3.8",
+      "3.9",
+      "3.10",
+      "3.11",
+      "3.12",
+      "3.13",
+      "3.14",
+      "3.15",
+      "3.16",
+      "3.17",
+      "3.18",
+      "3.19",
+      "3.20"
+    ],
+    "5": [
+      "3.21",
+      "3.22",
+      "3.23",
+      "3.24",
+      "3.25",
+      "3.26",
+      "3.27",
+      "3.28",
+      "3.29",
+      "3.30",
+      "3.31",
+      "3.32",
+      "3.33",
+      "3.34"
+    ],
+    "6": [
+      "1.12",
+      "1.13",
+      "1.14",
+      "1.15",
+      "2.19",
+      "2.20",
+      "3.35",
+      "3.36",
+      "3.37",
+      "3.38",
+      "3.39",
+      "3.40"
+    ],
+    "7": [
+      "1.11",
+      "2.21",
+      "3.41",
+      "3.42",
+      "3.43",
+      "3.44",
+      "3.45",
+      "3.46",
+      "3.47",
+      "3.48"
+    ],
+    "8": [
+      "4.1",
+      "4.2",
+      "4.3",
+      "4.4",
+      "4.5",
+      "4.6",
+      "4.7",
+      "4.8",
+      "4.9",
+      "4.10",
+      "4.11",
+      "4.12"
+    ]
+  },
+
+  /* The two presets, labels and unit scopes verbatim from the
+     standalone app (builder markup lines 283 to 285; handlers at
+     lines 7151 to 7153). Each preset also sets the level mix, as
+     the standalone's preset buttons do: both use 20/60/20, the
+     combined mix of the published 2026-2027 tables of
+     specifications for both scopes (the standalone's design
+     note at line 769). The face scope for the final preset reads
+     "End-of-course review: Units 5 to 8" in the standalone
+     (refreshFace, lines 5073 to 5085), carried here as its
+     faceLabel. The standalone also ships an "All units" preset
+     button; the shell's All wiring selects every unit in the
+     course when the config carries no allUnits key, which is
+     the same eight units, so the All preset needs no entry
+     here. (The standalone's own All handler passes a ninth,
+     nonexistent unit number that its checkbox rendering
+     silently ignores; the effect is identical.) */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8], mix: [20, 60, 20], label: "Final review (Units 5 to 8)", faceLabel: "End-of-course review (Units 5 to 8)" }
+  },
+
+  /* The standalone builder's own default level mix (its level
+     inputs ship at 20/60/20, lines 366 to 368). */
+  defaultMix: [20, 60, 20],
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (math-3208-review/index.html, composeExam, lines
+     5979 to 6025). That composer is the pooled composer Math
+     3200 and 3201 use, with three small differences: it never
+     backfills a short selected-response level from other
+     levels, it has no greedy constructed-response rescue when
+     the subset sums fail, and its Level 3 subset-sum targets
+     run 8, then 9, then 7 marks (theirs run 7, 8, 9). Every
+     multi-unit paper is 50 marks: 27 selected response at
+     levels 10/15/2, and 23 constructed response from Level 2
+     and Level 3 entries carrying 2 or more marks, with the
+     Level 3 share steered to 8 marks first (level totals
+     10/30/10, matching the standalone's blueprint note at
+     line 769: selected response 10/15/2 and constructed
+     response 0/15/8 by level). On this bank the pools fill
+     every slot: the standalone composer lands exact, totals
+     10/30/10 with Level 3 at 8, in 200 of 200 trials on every
+     scope tried, so the two latent differences never fire and
+     the pooled fallback below reproduces it (the shell's
+     composer prefers the same Level 3 totals in the crL3
+     order given). A single unit composes the unit test (see
+     unitTest). The mid-course scope never caps the pool in
+     this course (the standalone's note at lines 4807 to
+     4810: no entry carries a post-mid flag). */
+  exam: {
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* The always-on reference panels the standalone shows
+     regardless of unit selection (REF_ALWAYS at lines 5068 to
+     5070: the Quadratic Formula, Trigonometry and Double Angle
+     Formulae panels), verbatim. */
+  panelsAlways: "<details class=\"refpanel\"><summary>Quadratic Formula</summary><div class=\"refbody\">\\(x=\\dfrac{-b\\pm\\sqrt{b^{2}-4ac}}{2a}\\)</div></details><details class=\"refpanel\"><summary>Trigonometry</summary><div class=\"refbody\"><b>Sine law:</b> \\(\\dfrac{\\sin A}{a}=\\dfrac{\\sin B}{b}=\\dfrac{\\sin C}{c}\\); <b>Cosine law:</b> \\(a^{2}=b^{2}+c^{2}-2bc\\cos A\\).</div></details><details class=\"refpanel\"><summary>Double Angle Formulae</summary><div class=\"refbody\">\\(\\sin 2x=2\\sin x\\cos x\\); \\(\\cos 2x=\\cos^{2}x-\\sin^{2}x\\); \\(\\cos 2x=2\\cos^{2}x-1\\); \\(\\cos 2x=1-2\\sin^{2}x\\); \\(\\tan 2x=\\dfrac{2\\tan x}{1-\\tan^{2}x}\\).</div></details>",
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at lines 5062 to 5066). The standalone carries
+     panels for Units 5, 6 and 8 only. */
+  panels: {
+    "5": "<b>Volume and Area:</b> \\(V_{\\text{sphere}}=\\dfrac{4}{3}\\pi r^{3}\\), \\(V_{\\text{Cone}}=\\dfrac{1}{3}\\pi r^{2}h\\), \\(A_{\\text{sphere}}=4\\pi r^{2}\\).",
+    "6": "<b>Pythagorean Identities:</b> \\(\\sin^{2}\\theta+\\cos^{2}\\theta=1\\); \\(\\cot^{2}\\theta+1=\\csc^{2}\\theta\\); \\(1+\\tan^{2}\\theta=\\sec^{2}\\theta\\).",
+    "8": "<b>Summation Formulae:</b> \\(\\sum_{i=1}^{n}i=\\dfrac{n(n+1)}{2}\\); \\(\\sum_{i=1}^{n}i^{2}=\\dfrac{n(n+1)(2n+1)}{6}\\); \\(\\sum_{i=1}^{n}i^{3}=\\left[\\dfrac{n(n+1)}{2}\\right]^{2}\\)."
+  }
 }
 };

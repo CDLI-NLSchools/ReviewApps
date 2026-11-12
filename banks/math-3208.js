@@ -1,0 +1,4049 @@
+/* Math 3208 bank module for the unified review app shell.
+   Assembled by assemble-bank.py from banks/math-3208/; edit the
+   per-unit sources there, not this file. Entries register through
+   the shell's E(id, unit, indicators, level, kind, gen). */
+
+/* ----- bank-helpers.js ----- */
+// Math 3208 shared bank helpers, carried verbatim from the standalone
+// app's bank source (bank-src.js): the FR helper defined at the head
+// of that file, which the unit entries rely on.
+/* Math 3208 Review bank source. Tranche 1 (Units 1 to 4) assembled November 6,
+   2026 from tranche1/unit1.js to unit4.js; tranche 2 (Units 5 to 8) assembled
+   the same day from tranche2/unit5.js to unit8.js. FR returns the raw \frac fragment
+   for use INSIDE math delimiters (the Math 3201 chassis convention); the 2200
+   chassis dropped the helper, so it is defined here for the entries that use
+   it. CR_MARKS stays at the end of this file and must be carried over
+   verbatim at every assembly. */
+function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
+
+/* ----- bank-u1.js ----- */
+// Math 3208 Unit 1 Pre-Calculus question bank
+// CRMARKS: u1-write-operation=2
+// CRMARKS: u1-evaluate-operation=1
+// CRMARKS: u1-compose-value=2
+// CRMARKS: u1-quotient-restrictions=2
+// CRMARKS: u1-range-product=2
+// CRMARKS: u1-compose-equation=2
+// CRMARKS: u1-decompose=2
+// CRMARKS: u1-graph-operation=2
+/* ================= Unit 1: Pre-Calculus ================= */
+/* Indicators: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7. Types follow the Mauger
+   Chapter 1 harvest (operations on functions, compositions in both
+   directions, domains of quotients and composites, graph-based values),
+   rewritten with original functions and values. Fractions are written
+   directly as \frac inside the delimiters. */
+
+function u1poly(terms){var out="";for(var i=0;i<terms.length;i++){var c=terms[i][0],v=terms[i][1];if(c===0)continue;var mag=(v!==""&&Math.abs(c)===1)?v:""+Math.abs(c)+v;if(out==="")out=(c<0?"-":"")+mag;else out+=(c<0?" - ":" + ")+mag;}return out===""?"0":out;}
+function u1lin(a,b){return u1poly([[a,"x"],[b,""]]);}
+function u1quad(a,b,c){return u1poly([[a,"x^2"],[b,"x"],[c,""]]);}
+function u1nz(a,b){var v=0;do{v=ri(a,b);}while(v===0);return v;}
+function u1sgnT(n){return n>0?" + "+n:(n<0?" - "+(-n):"");}
+function u1par(n){return n<0?"("+n+")":""+n;}
+function u1frac(n,d){return "\\(\\frac{"+n+"}{"+d+"}\\)";}
+function u1mult(a,p){return a===1?"("+p+")":(a===-1?"-("+p+")":""+a+"("+p+")");}
+
+E("u1-write-operation",1,["1.1"],1,"gen",function(){
+  var a1=0,a2=0,b1=0,b2=0,op=1,f="",g="",correct="",ds=[],res="",tries=0;
+  do{
+    a1=u1nz(-5,5);a2=u1nz(-5,5);b1=ri(-8,8);b2=u1nz(-7,7);op=ri(1,4);
+    f=u1lin(a1,b1);g=u1lin(a2,b2);
+    if(op===1){res=u1lin(a1+a2,b1+b2);correct="\\("+res+"\\)";ds=["\\("+u1lin(a1+a2,b1-b2)+"\\)","\\("+u1lin(a1-a2,b1+b2)+"\\)","\\("+u1lin(a1*a2,b1+b2)+"\\)"];}
+    else if(op===2){res=u1lin(a1-a2,b1-b2);correct="\\("+res+"\\)";ds=["\\("+u1lin(a1-a2,b1+b2)+"\\)","\\("+u1lin(a2-a1,b2-b1)+"\\)","\\("+u1lin(a1+a2,b1-b2)+"\\)"];}
+    else if(op===3){var A=a1*a2,M=a1*b2+a2*b1,C=b1*b2;res=u1quad(A,M,C);correct="\\("+res+"\\)";ds=["\\("+u1quad(A,a1*b2,C)+"\\)","\\("+u1quad(A,M,b1+b2)+"\\)","\\("+u1quad(a1+a2,M,C)+"\\)"];}
+    else{correct=u1frac(f,g);ds=[u1frac(g,f),u1frac(f,u1lin(a2,-b2)),u1frac(u1lin(a1,-b1),g)];}
+    tries++;
+  }while((new Set([correct].concat(ds)).size<4||(op===4&&a2===-a1&&b2===-b1))&&tries<100);
+  var opName=["","(f + g)(x)","(f - g)(x)","(fg)(x)","(f/g)(x)"][op],sol;
+  if(op===1)sol="Add the two functions term by term: \\[ \\begin{aligned} (f + g)(x) &= ("+f+") + ("+g+") \\\\ &= "+res+" \\end{aligned} \\] So \\((f + g)(x) = \\) <b>"+correct+"</b>.";
+  else if(op===2)sol="Subtract the second function, changing the sign of each of its terms: \\[ \\begin{aligned} (f - g)(x) &= ("+f+") - ("+g+") \\\\ &= "+res+" \\end{aligned} \\] So \\((f - g)(x) = \\) <b>"+correct+"</b>.";
+  else if(op===3)sol="Multiply term by term, each term of the first function times each term of the second: \\[ \\begin{aligned} (fg)(x) &= ("+f+")("+g+") \\\\ &= "+res+" \\end{aligned} \\] So \\((fg)(x) = \\) <b>"+correct+"</b>.";
+  else sol="By definition, the quotient function divides the first function by the second: \\((f/g)(x) = \\) <b>"+correct+"</b>, wherever \\(g(x) \\ne 0\\).";
+  return mcq("Let \\(f(x) = "+f+"\\) and \\(g(x) = "+g+"\\). Write \\("+opName+"\\) as a single simplified expression.",correct,ds,sol,{a1:a1,b1:b1,a2:a2,b2:b2,op:op});
+});
+E("u1-evaluate-operation",1,["1.1"],1,"gen",function(){
+  var shape=ri(1,3),p=ri(-4,4);
+  if(shape===3){
+    var a1=0,a2=0,b1=0,b2=0,fv=0,gv=0,tries=0;
+    do{a1=u1nz(-5,5);a2=u1nz(-5,5);b1=ri(-8,8);b2=ri(-8,8);p=ri(-4,4);fv=a1*p+b1;gv=a2*p+b2;tries++;}
+    while((gv===0||(fv*100)%gv!==0)&&tries<200);
+    if(gv===0||(fv*100)%gv!==0){a1=2;a2=1;b1=1;b2=3;p=2;fv=5;gv=5;}
+    var ans=fv/gv;
+    return numq("Let \\(f(x) = "+u1lin(a1,b1)+"\\) and \\(g(x) = "+u1lin(a2,b2)+"\\). Evaluate \\((f/g)("+p+")\\).",ans,0.011,
+      "Evaluate each function at \\(x = "+p+"\\), then divide: \\[ \\begin{aligned} f("+p+") &= "+u1mult(a1,p)+u1sgnT(b1)+" = "+fv+" \\\\ g("+p+") &= "+u1mult(a2,p)+u1sgnT(b2)+" = "+gv+" \\\\ (f/g)("+p+") &= \\frac{"+fv+"}{"+gv+"} = "+fmt(ans)+" \\end{aligned} \\] So \\((f/g)("+p+") = \\) <b>"+fmt(ans)+"</b>.",
+      {a1:a1,b1:b1,a2:a2,b2:b2,p:p,shape:shape});
+  }
+  var op=pick(["+","-","*"]),opName=op==="+"?"(f + g)":(op==="-"?"(f - g)":"(fg)"),fv2,gv2,ans2,fStr,gStr,fLine,comb;
+  var c1=u1nz(-5,5),d1=ri(-8,8),c2=u1nz(-5,5),d2=ri(-8,8);
+  gStr=u1lin(c2,d2);gv2=c2*p+d2;
+  if(shape===1){fStr=u1lin(c1,d1);fv2=c1*p+d1;fLine="f("+p+") &= "+u1mult(c1,p)+u1sgnT(d1)+" = "+fv2;}
+  else{var qb=ri(-6,6),qc=ri(-8,8);fStr=u1quad(1,qb,qc);fv2=p*p+qb*p+qc;fLine="f("+p+") &= ("+p+")^2"+u1sgnT(qb*p)+u1sgnT(qc)+" = "+fv2;}
+  if(op==="+"){ans2=fv2+gv2;comb=fv2+" + "+u1par(gv2);}
+  else if(op==="-"){ans2=fv2-gv2;comb=fv2+" - "+u1par(gv2);}
+  else{ans2=fv2*gv2;comb=fv2+" \\cdot "+u1par(gv2);}
+  return numq("Let \\(f(x) = "+fStr+"\\) and \\(g(x) = "+gStr+"\\). Evaluate \\("+opName+"("+p+")\\).",ans2,0.011,
+    "Evaluate each function at \\(x = "+p+"\\), then combine the two values: \\[ \\begin{aligned} "+fLine+" \\\\ g("+p+") &= "+u1mult(c2,p)+u1sgnT(d2)+" = "+gv2+" \\\\ "+opName+"("+p+") &= "+comb+" = "+ans2+" \\end{aligned} \\] So \\("+opName+"("+p+") = \\) <b>"+ans2+"</b>.",
+    {shape:shape,p:p,op:op,c1:c1,d1:d1,c2:c2,d2:d2,qb:(shape===2?qb:0),qc:(shape===2?qc:0)});
+});
+E("u1-compose-value",1,["1.4"],1,"gen",function(){
+  var shape=ri(1,4);
+  if(shape===1){
+    var a1=u1nz(-4,4),b1=ri(-6,6),a2=u1nz(-4,4),b2=ri(-6,6),a=ri(-4,4),dir=ri(1,3);
+    var F=function(x){return a1*x+b1;},G=function(x){return a2*x+b2;};
+    var inF="f("+a+") &= "+u1mult(a1,a)+u1sgnT(b1)+" = "+F(a),inG="g("+a+") &= "+u1mult(a2,a)+u1sgnT(b2)+" = "+G(a),comp,inner,ans,line1,line2;
+    if(dir===1){comp="(f \\circ g)";inner=G(a);ans=F(inner);line1=inG;line2="f("+inner+") &= "+u1mult(a1,inner)+u1sgnT(b1)+" = "+ans;}
+    else if(dir===2){comp="(g \\circ f)";inner=F(a);ans=G(inner);line1=inF;line2="g("+inner+") &= "+u1mult(a2,inner)+u1sgnT(b2)+" = "+ans;}
+    else{comp="(f \\circ f)";inner=F(a);ans=F(inner);line1=inF;line2="f("+inner+") &= "+u1mult(a1,inner)+u1sgnT(b1)+" = "+ans;}
+    return numq("Let \\(f(x) = "+u1lin(a1,b1)+"\\) and \\(g(x) = "+u1lin(a2,b2)+"\\). Evaluate \\("+comp+"("+a+")\\).",ans,0.011,
+      "Work from the inside out: \\[ \\begin{aligned} "+line1+" \\\\ "+line2+" \\end{aligned} \\] So \\("+comp+"("+a+") = \\) <b>"+ans+"</b>.",
+      {a1:a1,b1:b1,a2:a2,b2:b2,a:a,dir:dir,shape:shape});
+  }
+  if(shape===2){
+    var c=ri(-6,6),a3=u1nz(-4,4),b3=ri(-6,6),a4=0,gv3=0,tries=0,dir2=pick([1,2]);
+    do{a4=ri(-3,3);gv3=a3*a4+b3;tries++;}while(Math.abs(gv3)>7&&tries<100);
+    var fa=a4*a4+c,ans3,lineA,lineB,comp3;
+    if(dir2===1){comp3="(f \\circ g)";ans3=gv3*gv3+c;lineA="g("+a4+") &= "+u1mult(a3,a4)+u1sgnT(b3)+" = "+gv3;lineB="f("+gv3+") &= ("+gv3+")^2"+u1sgnT(c)+" = "+ans3;}
+    else{comp3="(g \\circ f)";ans3=a3*fa+b3;lineA="f("+a4+") &= ("+a4+")^2"+u1sgnT(c)+" = "+fa;lineB="g("+fa+") &= "+u1mult(a3,fa)+u1sgnT(b3)+" = "+ans3;}
+    return numq("Let \\(f(x) = "+u1quad(1,0,c)+"\\) and \\(g(x) = "+u1lin(a3,b3)+"\\). Evaluate \\("+comp3+"("+a4+")\\).",ans3,0.011,
+      "Work from the inside out: \\[ \\begin{aligned} "+lineA+" \\\\ "+lineB+" \\end{aligned} \\] So \\("+comp3+"("+a4+") = \\) <b>"+ans3+"</b>.",
+      {c:c,a3:a3,b3:b3,a4:a4,dir:dir2,shape:shape});
+  }
+  if(shape===3){
+    var k=ri(0,6),sub=pick([1,2]);
+    if(sub===1){
+      var t=ri(1,6),m=pick([-2,-1,1,2]),a5=ri(-4,4),b5=t*t-k-m*a5,inner5=m*a5+b5;
+      return numq("Let \\(f(x) = \\sqrt{"+u1lin(1,k)+"}\\) and \\(g(x) = "+u1lin(m,b5)+"\\). Evaluate \\((f \\circ g)("+a5+")\\).",t,0.011,
+        "Work from the inside out: \\[ \\begin{aligned} g("+a5+") &= "+u1mult(m,a5)+u1sgnT(b5)+" = "+inner5+" \\\\ f("+inner5+") &= \\sqrt{"+inner5+u1sgnT(k)+"} = \\sqrt{"+(t*t)+"} = "+t+" \\end{aligned} \\] So \\((f \\circ g)("+a5+") = \\) <b>"+t+"</b>.",
+        {k:k,t:t,m:m,a5:a5,b5:b5,shape:shape,sub:sub});
+    }
+    var t2=ri(2,5),k2=ri(0,9),a6=t2*t2-k2;
+    if(a6<-4||a6>16){t2=3;k2=1;a6=8;}
+    var m2=u1nz(-3,3),b6=ri(-6,6),ans6=m2*t2+b6;
+    return numq("Let \\(f(x) = \\sqrt{"+u1lin(1,k2)+"}\\) and \\(g(x) = "+u1lin(m2,b6)+"\\). Evaluate \\((g \\circ f)("+a6+")\\).",ans6,0.011,
+      "Work from the inside out: \\[ \\begin{aligned} f("+a6+") &= \\sqrt{"+a6+u1sgnT(k2)+"} = \\sqrt{"+(t2*t2)+"} = "+t2+" \\\\ g("+t2+") &= "+u1mult(m2,t2)+u1sgnT(b6)+" = "+ans6+" \\end{aligned} \\] So \\((g \\circ f)("+a6+") = \\) <b>"+ans6+"</b>.",
+      {k:k2,t:t2,m:m2,a6:a6,b6:b6,shape:shape,sub:sub});
+  }
+  var mm=u1nz(-3,3),bb=ri(-6,6),aa=ri(-4,4),gvv=mm*aa+bb,h=ri(-6,6);
+  if(h===gvv)h=gvv+3;
+  var dd=gvv-h,mlt=u1nz(-6,6),cc=mlt*dd;
+  return numq("Let \\(f(x) = \\)"+u1frac(""+cc,u1lin(1,-h))+"\\) and \\(g(x) = "+u1lin(mm,bb)+"\\). Evaluate \\((f \\circ g)("+aa+")\\).",mlt,0.011,
+    "Work from the inside out: \\[ \\begin{aligned} g("+aa+") &= "+u1mult(mm,aa)+u1sgnT(bb)+" = "+gvv+" \\\\ f("+gvv+") &= \\frac{"+cc+"}{"+gvv+u1sgnT(-h)+"} = \\frac{"+cc+"}{"+dd+"} = "+mlt+" \\end{aligned} \\] So \\((f \\circ g)("+aa+") = \\) <b>"+mlt+"</b>.",
+    {mm:mm,bb:bb,aa:aa,h:h,cc:cc,shape:shape});
+});
+E("u1-quotient-restrictions",1,["1.1","1.3"],2,"gen",function(){
+  var shape=ri(1,3);
+  if(shape===1){
+    var r=u1nz(-9,9),aN=pick([-2,-1,1,2]),s0=0,tries=0;
+    do{s0=ri(-8,8);tries++;}while((s0===r||s0===-r)&&tries<100);
+    var num=u1lin(aN,-aN*s0),den=u1lin(1,-r);
+    return mcq("Determine the restrictions on \\(x\\) for the function \\(h(x) = \\)"+u1frac(num,den)+".",
+      "\\(x \\ne "+r+"\\)",
+      ["\\(x \\ne "+(-r)+"\\)","\\(x \\ne "+s0+"\\)","There are no restrictions"],
+      "A quotient is defined only where its denominator is not zero. Setting the denominator to zero, \\("+den+" = 0\\), gives \\(x = "+r+"\\). The numerator does not restrict \\(x\\), so the restriction is <b>\\(x \\ne "+r+"\\)</b>.",
+      {r:r,s0:s0,shape:shape});
+  }
+  if(shape===2){
+    var r1=0,r2=0,tries2=0;
+    do{r1=ri(-8,7);r2=r1+ri(1,8);tries2++;}while((r2>8||r1+r2===0)&&tries2<100);
+    if(r2>8||r1+r2===0){r1=-5;r2=2;}
+    var den2="("+u1lin(1,-r1)+")("+u1lin(1,-r2)+")",num2=u1lin(u1nz(-3,3),ri(-6,6));
+    return mcq("Determine the restrictions on \\(x\\) for the function \\(h(x) = \\)"+u1frac(num2,den2)+".",
+      "\\(x \\ne "+r1+"\\) and \\(x \\ne "+r2+"\\)",
+      ["\\(x \\ne "+r1+"\\)","\\(x \\ne "+r2+"\\)","\\(x \\ne "+(-r1)+"\\) and \\(x \\ne "+(-r2)+"\\)"],
+      "A quotient is defined only where its denominator is not zero. The denominator \\("+den2+"\\) is zero at \\(x = "+r1+"\\) and at \\(x = "+r2+"\\), and both values must be excluded: <b>\\(x \\ne "+r1+"\\) and \\(x \\ne "+r2+"\\)</b>.",
+      {r1:r1,r2:r2,shape:shape});
+  }
+  var t=ri(2,9),d=t*t,den3=u1quad(1,0,-d),num3=u1lin(u1nz(-4,4),ri(-6,6));
+  return mcq("Determine the restrictions on \\(x\\) for the function \\(h(x) = \\)"+u1frac(num3,den3)+".",
+    "\\(x \\ne "+(-t)+"\\) and \\(x \\ne "+t+"\\)",
+    ["\\(x \\ne "+t+"\\)","\\(x \\ne "+(-t)+"\\)","\\(x \\ne "+d+"\\)"],
+    "A quotient is defined only where its denominator is not zero. Solving \\("+den3+" = 0\\) gives \\(x^2 = "+d+"\\), so \\(x = "+t+"\\) or \\(x = "+(-t)+"\\). Both values must be excluded: <b>\\(x \\ne "+(-t)+"\\) and \\(x \\ne "+t+"\\)</b>.",
+    {t:t,shape:shape});
+});
+E("u1-domain-combined",1,["1.3"],2,"gen",function(){
+  var shape=ri(1,3);
+  if(shape===1){
+    var s=ri(-6,4),r=s+ri(2,7);
+    return mcq("Determine the domain of the function \\(h(x) = \\sqrt{"+u1lin(1,-s)+"} + \\)"+u1frac("1",u1lin(1,-r))+".",
+      "All real numbers \\(x\\) with \\(x \\ge "+s+"\\) and \\(x \\ne "+r+"\\)",
+      ["All real numbers \\(x\\) with \\(x \\ge "+s+"\\) and no other restriction",
+       "All real numbers \\(x\\) with \\(x \\ne "+r+"\\) and no lower bound",
+       "All real numbers \\(x\\) with \\(x > "+s+"\\) and \\(x \\ne "+r+"\\)"],
+      "Both parts of the sum must be defined at the same time. The square root needs \\(x - "+u1par(s)+" \\ge 0\\), that is \\(x \\ge "+s+"\\) (equality is allowed, since \\(\\sqrt{0} = 0\\)). The fraction needs a nonzero denominator, so \\(x \\ne "+r+"\\). The domain is <b>all real numbers \\(x\\) with \\(x \\ge "+s+"\\) and \\(x \\ne "+r+"\\)</b>.",
+      {s:s,r:r,shape:shape});
+  }
+  if(shape===2){
+    var s2=ri(-6,3),t2=s2+ri(3,9);
+    return mcq("Determine the domain of the function \\(h(x) = \\sqrt{"+u1lin(1,-s2)+"} + \\sqrt{"+u1lin(-1,t2)+"}\\).",
+      "All real numbers \\(x\\) with \\("+s2+" \\le x \\le "+t2+"\\)",
+      ["All real numbers \\(x\\) with \\(x \\ge "+s2+"\\) and no upper bound",
+       "All real numbers \\(x\\) with \\(x \\le "+t2+"\\) and no lower bound",
+       "All real numbers \\(x\\) with \\("+s2+" < x < "+t2+"\\)"],
+      "Each square root needs a non-negative inside. The first gives \\(x \\ge "+s2+"\\) and the second gives \\(x \\le "+t2+"\\); both endpoints are included because \\(\\sqrt{0} = 0\\) is defined. The domain is <b>all real numbers \\(x\\) with \\("+s2+" \\le x \\le "+t2+"\\)</b>.",
+      {s:s2,t:t2,shape:shape});
+  }
+  var rB=ri(-3,6),q=rB-ri(2,7);
+  return mcq("Determine the domain of the function \\(h(x) = \\)"+u1frac("\\sqrt{"+u1lin(-1,rB)+"}",u1lin(1,-q))+".",
+    "All real numbers \\(x\\) with \\(x \\le "+rB+"\\) and \\(x \\ne "+q+"\\)",
+    ["All real numbers \\(x\\) with \\(x \\le "+rB+"\\) and no other restriction",
+     "All real numbers \\(x\\) with \\(x \\ne "+q+"\\) and no upper bound",
+     "All real numbers \\(x\\) with \\(x < "+rB+"\\) and \\(x \\ne "+q+"\\)"],
+    "Both the root and the fraction must be defined. The square root needs \\("+rB+" - x \\ge 0\\), that is \\(x \\le "+rB+"\\) (equality is allowed). The fraction needs a nonzero denominator, so \\(x \\ne "+q+"\\), and \\("+q+"\\) lies inside the range set by the root, so it must still be excluded. The domain is <b>all real numbers \\(x\\) with \\(x \\le "+rB+"\\) and \\(x \\ne "+q+"\\)</b>.",
+    {rB:rB,q:q,shape:shape});
+});
+E("u1-range-product",1,["1.3"],2,"gen",function(){
+  var shape=ri(1,2);
+  if(shape===1){
+    var r1=ri(-6,5),gap=ri(1,7),r2=r1+gap,xv=(r1+r2)/2,hv=(xv-r1)*(xv-r2);
+    var f=u1lin(1,-r1),g=u1lin(1,-r2);
+    return mcq("Let \\(f(x) = "+f+"\\) and \\(g(x) = "+g+"\\), and let \\(h(x) = (fg)(x)\\). Determine the range of \\(h\\).",
+      "\\(y \\ge "+fmt(hv)+"\\)",
+      ["\\(y \\le "+fmt(hv)+"\\)","\\(y \\ge "+fmt(-hv)+"\\)","\\(y \\ge "+fmt(2*hv)+"\\)"],
+      "Expanding, \\[ \\begin{aligned} h(x) &= ("+f+")("+g+") \\\\ &= "+u1quad(1,-(r1+r2),r1*r2)+" \\end{aligned} \\] The zeros of \\(h\\) are \\("+r1+"\\) and \\("+r2+"\\), so the vertex is midway between them, at \\(x = "+fmt(xv)+"\\). There, \\(h("+fmt(xv)+") = ("+fmt(xv-r1)+")("+fmt(xv-r2)+") = "+fmt(hv)+"\\). The parabola opens upward, so \\("+fmt(hv)+"\\) is its lowest value and the range is <b>\\(y \\ge "+fmt(hv)+"\\)</b>.",
+      {r1:r1,r2:r2,shape:shape});
+  }
+  var a=ri(1,9),b=ri(1,9);
+  if((a+b)%2!==0)b+=1;
+  var M=(a+b)*(a+b)/4,xv2=(a-b)/2,f2=u1lin(-1,a),g2=u1lin(1,b);
+  return mcq("Let \\(f(x) = "+f2+"\\) and \\(g(x) = "+g2+"\\), and let \\(h(x) = (fg)(x)\\). Determine the range of \\(h\\).",
+    "\\(y \\le "+M+"\\)",
+    ["\\(y \\ge "+M+"\\)","\\(y \\le "+(4*M)+"\\)","\\(y \\le "+(-M)+"\\)"],
+    "Expanding, \\[ \\begin{aligned} h(x) &= ("+f2+")("+g2+") \\\\ &= "+u1quad(-1,a-b,a*b)+" \\end{aligned} \\] The zeros of \\(h\\) are \\("+a+"\\) and \\("+(0-b)+"\\), so the vertex is midway between them, at \\(x = "+fmt(xv2)+"\\). There, \\(h("+fmt(xv2)+") = ("+fmt((a+b)/2)+")("+fmt((a+b)/2)+") = "+M+"\\). The parabola opens downward, so \\("+M+"\\) is its highest value and the range is <b>\\(y \\le "+M+"\\)</b>.",
+    {a:a,b:b,shape:shape});
+});
+E("u1-compose-equation",1,["1.5"],2,"gen",function(){
+  var shape=ri(1,4);
+  if(shape<=2){
+    var c=u1nz(-9,9),a=u1nz(-4,4),b=u1nz(-7,7);
+    var P=u1quad(1,0,c),L=u1lin(a,b);
+    var PoL=u1quad(a*a,2*a*b,b*b+c),LoP=u1quad(a,0,a*c+b);
+    if(shape===1){
+      return mcq("Let \\(f(x) = "+P+"\\) and \\(g(x) = "+L+"\\). Determine \\((f \\circ g)(x)\\), in simplified form.",
+        "\\("+PoL+"\\)",
+        ["\\("+LoP+"\\)","\\("+u1quad(a*a,-2*a*b,b*b+c)+"\\)","\\("+u1quad(a*a,2*a*b,c)+"\\)"],
+        "Substitute \\(g(x)\\) into \\(f\\), then expand: \\[ \\begin{aligned} (f \\circ g)(x) &= f(g(x)) \\\\ &= ("+L+")^2"+u1sgnT(c)+" \\\\ &= "+PoL+" \\end{aligned} \\] So \\((f \\circ g)(x) = \\) <b>\\("+PoL+"\\)</b>.",
+        {c:c,a:a,b:b,shape:shape});
+    }
+    return mcq("Let \\(f(x) = "+L+"\\) and \\(g(x) = "+P+"\\). Determine \\((f \\circ g)(x)\\), in simplified form.",
+      "\\("+LoP+"\\)",
+      ["\\("+PoL+"\\)","\\("+u1quad(a,0,a*c-b)+"\\)","\\("+u1quad(-a,0,a*c+b)+"\\)"],
+      "Substitute \\(g(x)\\) into \\(f\\): \\[ \\begin{aligned} (f \\circ g)(x) &= f(g(x)) \\\\ &= "+a+"("+P+")"+u1sgnT(b)+" \\\\ &= "+LoP+" \\end{aligned} \\] So \\((f \\circ g)(x) = \\) <b>\\("+LoP+"\\)</b>.",
+      {c:c,a:a,b:b,shape:shape});
+  }
+  if(shape===3){
+    var c3=u1nz(-5,9),a3=ri(1,4),b3=(a3===1)?u1nz(-7,7):ri(-7,7);
+    var f3="\\sqrt{"+u1lin(1,c3)+"}",g3=u1lin(a3,b3);
+    var corr3="\\(\\sqrt{"+u1lin(a3,b3+c3)+"}\\)";
+    var gof3="\\("+(a3===1?"":a3)+"\\sqrt{"+u1lin(1,c3)+"}"+u1sgnT(b3)+"\\)";
+    var out3="\\(\\sqrt{"+u1lin(a3,b3)+"}"+u1sgnT((a3===1&&b3===c3)?-c3:c3)+"\\)";
+    var slip3="\\(\\sqrt{"+u1lin(a3,b3-c3)+"}\\)";
+    return mcq("Let \\(f(x) = "+f3+"\\) and \\(g(x) = "+g3+"\\). Determine \\((f \\circ g)(x)\\), in simplified form.",
+      corr3,[gof3,out3,slip3],
+      "Substitute \\(g(x)\\) into \\(f\\): the whole of \\(g(x)\\) goes inside the square root: \\[ \\begin{aligned} (f \\circ g)(x) &= f(g(x)) \\\\ &= \\sqrt{("+g3+") + ("+c3+")} \\\\ &= \\sqrt{"+u1lin(a3,b3+c3)+"} \\end{aligned} \\] So \\((f \\circ g)(x) = \\) <b>"+corr3+"</b>.",
+      {c:c3,a:a3,b:b3,shape:shape});
+  }
+  var h=u1nz(-6,6),a4=u1nz(-4,4),b4=(a4===1)?u1nz(-7,7):ri(-7,7);
+  var g4=u1lin(a4,b4);
+  var corr4=u1frac("1",u1lin(a4,b4-h));
+  var gof4=u1frac(u1lin(b4,a4-b4*h),u1lin(1,-h));
+  var slip4=u1frac("1",u1lin(a4,b4+h));
+  var third4=(b4===0||b4===h)?u1frac("1",u1lin(-a4,b4-h)):u1frac("1",u1lin(a4,h-b4));
+  return mcq("Let \\(f(x) = \\)"+u1frac("1",u1lin(1,-h))+" and \\(g(x) = "+g4+"\\). Determine \\((f \\circ g)(x)\\), in simplified form.",
+    corr4,[gof4,slip4,third4],
+    "Substitute \\(g(x)\\) into \\(f\\): the whole of \\(g(x)\\) replaces \\(x\\) in the denominator: \\[ \\begin{aligned} (f \\circ g)(x) &= f(g(x)) \\\\ &= \\frac{1}{("+g4+") - "+u1par(h)+"} \\\\ &= \\frac{1}{"+u1lin(a4,b4-h)+"} \\end{aligned} \\] So \\((f \\circ g)(x) = \\) <b>"+corr4+"</b>.",
+    {h:h,a:a4,b:b4,shape:shape});
+});
+E("u1-compose-domain-range",1,["1.6"],2,"gen",function(){
+  var shape=ri(1,4);
+  if(shape===1){
+    var r1=ri(-7,6),r2=r1+ri(1,8);
+    if(r2>8)r2=8;
+    var gq=u1quad(1,-(r1+r2),r1*r2);
+    return mcq("Let \\(f(x) = \\sqrt{x}\\) and \\(g(x) = "+gq+"\\). Determine the domain of \\((f \\circ g)(x)\\).",
+      "All real numbers \\(x\\) with \\(x \\le "+r1+"\\) or \\(x \\ge "+r2+"\\)",
+      ["All real numbers \\(x\\) with \\("+r1+" \\le x \\le "+r2+"\\)",
+       "All real numbers \\(x\\) with \\(x \\ge "+r1+"\\)",
+       "All real numbers \\(x\\), with no restriction of any kind"],
+      "The composite is \\((f \\circ g)(x) = \\sqrt{"+gq+"}\\), so the inside of the root must be non-negative. The quadratic \\("+gq+"\\) is an upward parabola with zeros \\("+r1+"\\) and \\("+r2+"\\); it is non-negative outside those zeros, not between them. The domain is <b>all real numbers \\(x\\) with \\(x \\le "+r1+"\\) or \\(x \\ge "+r2+"\\)</b>.",
+      {r1:r1,r2:r2,shape:shape});
+  }
+  if(shape===2){
+    var s=ri(-5,5),h=ri(1,4),q=s+h*h;
+    return mcq("Let \\(f(x) = \\)"+u1frac("1",u1lin(1,-h))+" and \\(g(x) = \\sqrt{"+u1lin(1,-s)+"}\\). Determine the domain of \\((f \\circ g)(x)\\).",
+      "All real numbers \\(x\\) with \\(x \\ge "+s+"\\) and \\(x \\ne "+q+"\\)",
+      ["All real numbers \\(x\\) with \\(x \\ge "+s+"\\) and no other restriction",
+       "All real numbers \\(x\\) with \\(x \\ne "+q+"\\) and no lower bound",
+       "All real numbers \\(x\\) with \\(x > "+s+"\\) and \\(x \\ne "+q+"\\)"],
+      "The composite is \\((f \\circ g)(x) = \\frac{1}{\\sqrt{"+u1lin(1,-s)+"} - "+h+"}\\). The root needs \\(x \\ge "+s+"\\). The denominator also cannot be zero: \\(\\sqrt{"+u1lin(1,-s)+"} = "+h+"\\) when \\(x - "+u1par(s)+" = "+(h*h)+"\\), that is at \\(x = "+q+"\\), so that value is excluded as well. The domain is <b>all real numbers \\(x\\) with \\(x \\ge "+s+"\\) and \\(x \\ne "+q+"\\)</b>.",
+      {s:s,h:h,shape:shape});
+  }
+  if(shape===3){
+    var a=ri(1,5),b=ri(-9,9);
+    return mcq("Let \\(f(x) = \\sqrt{x}\\) and \\(g(x) = "+u1lin(a,b)+"\\). Determine the range of \\((f \\circ g)(x)\\).",
+      "All real numbers \\(y\\) with \\(y \\ge 0\\)",
+      ["All real numbers \\(y\\) with \\(y > 0\\)",
+       "All real numbers \\(y\\), with no restriction",
+       "All real numbers \\(y\\) with \\(y \\le 0\\)"],
+      "The composite is \\((f \\circ g)(x) = \\sqrt{"+u1lin(a,b)+"}\\). A square root is never negative, and \\(0\\) does occur (where the inside is zero), while every positive value occurs as well. The range is <b>all real numbers \\(y\\) with \\(y \\ge 0\\)</b>.",
+      {a:a,b:b,shape:shape});
+  }
+  var c=ri(-9,9),a2=u1nz(-4,4),b2=ri(-7,7);
+  return mcq("Let \\(f(x) = "+u1quad(1,0,c)+"\\) and \\(g(x) = "+u1lin(a2,b2)+"\\). Determine the range of \\((f \\circ g)(x)\\).",
+    "All real numbers \\(y\\) with \\(y \\ge "+c+"\\)",
+    ["All real numbers \\(y\\) with \\(y > "+c+"\\)",
+     "All real numbers \\(y\\) with \\(y \\le "+c+"\\)",
+     "All real numbers \\(y\\), with no restriction"],
+    "The composite is \\((f \\circ g)(x) = ("+u1lin(a2,b2)+")^2"+u1sgnT(c)+"\\). A square is never negative and reaches \\(0\\), and as \\(x\\) varies the inside takes every real value, so the smallest output is \\("+c+"\\) and every larger value occurs. The range is <b>all real numbers \\(y\\) with \\(y \\ge "+c+"\\)</b>.",
+    {c:c,a2:a2,b2:b2,shape:shape});
+});
+E("u1-decompose",1,["1.7"],1,"var",varset([
+  function(){return mcq("The function \\(h(x) = \\sqrt{7 - 3x}\\) can be written as \\(h(x) = f(g(x))\\), where \\(f(x) = \\sqrt{x}\\). What is \\(g(x)\\)?",
+    "\\(7 - 3x\\)",
+    ["\\(3x - 7\\)","\\(7 + 3x\\)","\\((7 - 3x)^2\\)"],
+    "In \\(f(g(x))\\), the inner function is whatever sits inside the outer function's operation. Here the outer function takes a square root, and inside the root is \\(7 - 3x\\). Check: \\(f(g(x)) = \\sqrt{7 - 3x} = h(x)\\). So \\(g(x) = \\) <b>\\(7 - 3x\\)</b>.",
+    {v:1});},
+  function(){return mcq("The function \\(h(x) = (2x + 5)^3\\) can be written as \\(h(x) = f(g(x))\\), where \\(g(x) = 2x + 5\\). What is \\(f(x)\\)?",
+    "\\(x^3\\)",
+    ["\\((x + 5)^3\\)","\\(x^3 + 5\\)","\\((2x)^3\\)"],
+    "The inner function \\(g(x) = 2x + 5\\) is the quantity being cubed, so the outer function just cubes its input. Check: \\(f(g(x)) = (2x + 5)^3 = h(x)\\). So \\(f(x) = \\) <b>\\(x^3\\)</b>.",
+    {v:2});},
+  function(){return mcq("The function \\(h(x) = \\)"+u1frac("1","3x - 4")+" can be written as \\(h(x) = f(g(x))\\), where \\(f(x) = \\)"+u1frac("1","x")+". What is \\(g(x)\\)?",
+    "\\(3x - 4\\)",
+    ["\\(4 - 3x\\)","\\(3x + 4\\)","\\(\\frac{1}{3x - 4}\\)"],
+    "The outer function takes a reciprocal, so the inner function is the quantity in the denominator. Check: \\(f(g(x)) = \\)"+u1frac("1","3x - 4")+"\\(= h(x)\\). So \\(g(x) = \\) <b>\\(3x - 4\\)</b>.",
+    {v:3});},
+  function(){return mcq("The function \\(h(x) = (x^2 - 6)^5\\) can be written as \\(h(x) = f(g(x))\\), where \\(g(x) = x^2 - 6\\). What is \\(f(x)\\)?",
+    "\\(x^5\\)",
+    ["\\((x - 6)^5\\)","\\(x^5 - 6\\)","\\((x^2)^5\\)"],
+    "The inner function \\(g(x) = x^2 - 6\\) is the quantity being raised to the fifth power, so the outer function just raises its input to the fifth power. Check: \\(f(g(x)) = (x^2 - 6)^5 = h(x)\\). So \\(f(x) = \\) <b>\\(x^5\\)</b>.",
+    {v:4});}
+]));
+E("u1-graph-operation",1,["1.2"],1,"gen",function(){
+  var xs=[-2,-1,0,1,2],fv={},gv={},i;
+  for(i=0;i<xs.length;i++){fv[xs[i]]=pick(xs);gv[xs[i]]=pick(xs);}
+  function pts(map){return xs.map(function(xx){return "("+xx+", "+map[xx]+")";}).join(", ");}
+  var p=pick(xs),ask=ri(1,5),ans,comp,sol;
+  if(ask===1){ans=fv[p]+gv[p];comp="(f + g)("+p+")";sol="From the listed points, \\(f("+p+") = "+fv[p]+"\\) and \\(g("+p+") = "+gv[p]+"\\). So \\((f + g)("+p+") = "+fv[p]+" + "+u1par(gv[p])+" = \\) <b>"+ans+"</b>.";}
+  else if(ask===2){ans=fv[p]-gv[p];comp="(f - g)("+p+")";sol="From the listed points, \\(f("+p+") = "+fv[p]+"\\) and \\(g("+p+") = "+gv[p]+"\\). So \\((f - g)("+p+") = "+fv[p]+" - "+u1par(gv[p])+" = \\) <b>"+ans+"</b>.";}
+  else if(ask===3){ans=fv[p]*gv[p];comp="(fg)("+p+")";sol="From the listed points, \\(f("+p+") = "+fv[p]+"\\) and \\(g("+p+") = "+gv[p]+"\\). So \\((fg)("+p+") = "+fv[p]+" \\cdot "+u1par(gv[p])+" = \\) <b>"+ans+"</b>.";}
+  else if(ask===4){ans=fv[gv[p]];comp="(f \\circ g)("+p+")";sol="From the listed points, \\(g("+p+") = "+gv[p]+"\\). Then read off \\(f("+gv[p]+") = "+ans+"\\). So \\((f \\circ g)("+p+") = \\) <b>"+ans+"</b>.";}
+  else{ans=gv[fv[p]];comp="(g \\circ f)("+p+")";sol="From the listed points, \\(f("+p+") = "+fv[p]+"\\). Then read off \\(g("+fv[p]+") = "+ans+"\\). So \\((g \\circ f)("+p+") = \\) <b>"+ans+"</b>.";}
+  return numq("The graphs of two functions \\(f\\) and \\(g\\) pass through the points listed. For \\(f\\): "+pts(fv)+". For \\(g\\): "+pts(gv)+". Determine \\("+comp+"\\).",ans,0.011,sol,{p:p,ask:ask,fv:fv,gv:gv});
+});
+
+/* ----- bank-u2.js ----- */
+// Math 3208 Unit 2 Limits and Continuity question bank
+// CRMARKS: u2-limit-table=1
+// CRMARKS: u2-limit-substitution=1
+// CRMARKS: u2-limit-properties=1
+// CRMARKS: u2-limit-existence=1
+// CRMARKS: u2-limit-graph=3
+// CRMARKS: u2-reciprocal-limit=1
+// CRMARKS: u2-limit-factor-cancel=2
+// CRMARKS: u2-limit-conjugate=2
+// CRMARKS: u2-limit-complex-fraction=2
+// CRMARKS: u2-limit-infinite=2
+// CRMARKS: u2-limit-at-infinity=2
+// CRMARKS: u2-horizontal-asymptote=1
+// CRMARKS: u2-oblique-asymptote=2
+// CRMARKS: u2-continuity-definition=3
+// CRMARKS: u2-removable-redefine=3
+// CRMARKS: u2-limit-absvalue=2
+/* Math 3208 Review, Unit 2 (Limits and Continuity) entries. Helpers carry the
+   u2q prefix so they cannot collide with other units when files are assembled. */
+function u2qGcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function u2qFracRaw(n,d){if(d<0){n=-n;d=-d;}if(n===0)return "0";var g=u2qGcd(n,d);n/=g;d/=g;if(d===1)return ""+n;return (n<0?"-":"")+"\\frac{"+Math.abs(n)+"}{"+d+"}";}
+function u2qFrac(n,d){return "\\("+u2qFracRaw(n,d)+"\\)";}
+function u2qFracS(n,dStr){return (n<0?"-":"")+"\\frac{"+Math.abs(n)+"}{"+dStr+"}";}
+function u2qLin(m,b){var s=(m===1?"x":m===-1?"-x":m+"x");if(b>0)s+=" + "+b;else if(b<0)s+=" - "+(-b);return s;}
+function u2qDen(r){return r>0?"x - "+r:(r<0?"x + "+(-r):"x");}
+function u2qPoly(cf){var n=cf.length-1,parts=[];for(var i=0;i<cf.length;i++){var c=cf[i],p=n-i;if(c===0)continue;var mag=Math.abs(c),term;if(p===0)term=""+mag;else{var cs=mag===1?"":(""+mag);term=cs+(p===1?"x":"x^"+p);}parts.push({neg:c<0,term:term});}if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+function u2qJoin(nums){var s=""+nums[0];for(var i=1;i<nums.length;i++)s+=nums[i]<0?" - "+(-nums[i]):" + "+nums[i];return s;}
+function u2qF3(v){var r=Math.round(v*1000)/1000;if(r===Math.round(r))return ""+Math.round(r);var s=r.toFixed(3);while(s.charAt(s.length-1)==="0")s=s.slice(0,-1);return s;}
+
+E("u2-limit-table",2,["2.4"],1,"gen",function(){
+  var mode=pick(["cancel","cubic","quad"]);
+  var offs=pick([[0.5,0.1,0.01],[0.2,0.05,0.005],[0.1,0.01,0.001],[0.25,0.05,0.01]]);
+  var a,key,ds,f,note;
+  if(mode==="cancel"){
+    a=ri(-6,6);while(a===0)a=ri(-6,6);
+    f=function(x){return x+a;};key=2*a;
+    var slip=pick([2*a+1,2*a-1,-2*a].filter(function(v){return v!==a;}));
+    ds=["\\("+a+"\\)","\\("+slip+"\\)","\\(\\text{does not exist}\\)"];
+    note="The values close in on the same number from both sides, even though the underlying expression is undefined at the point itself. A limit describes the approach, not the value at the point.";
+  }else if(mode==="cubic"){
+    a=pick([-3,-2,-1,1,2,3]);
+    f=function(x){return x*x+a*x+a*a;};key=3*a*a;
+    ds=["\\("+(a*a)+"\\)","\\("+(2*a*a)+"\\)","\\(\\text{does not exist}\\)"];
+    note="The values close in on the same number from the left and from the right, so the two-sided limit is that number.";
+  }else{
+    a=ri(-5,5);var c=ri(-6,6);while(c===0)c=ri(-6,6);
+    f=function(x){return x*x+c;};key=a*a+c;
+    ds=["\\("+(a*a-c)+"\\)","\\("+((a+1)*(a+1)+c)+"\\)","\\(\\text{does not exist}\\)"];
+    note="The values close in on the same number from both sides of the point, so the limit is that number.";
+  }
+  var xs=[a-offs[0],a-offs[1],a-offs[2],a+offs[2],a+offs[1],a+offs[0]];
+  var row1=xs.map(function(x){return u2qF3(x);}).join(", ");
+  var row2=xs.map(function(x){return u2qF3(f(x));}).join(", ");
+  return mcq("The table shows values of \\(f(x)\\) for \\(x\\) close to \\("+a+"\\).<br>\\(x\\): "+row1+"<br>\\(f(x)\\): "+row2+"<br>What value does \\(f(x)\\) approach as \\(x\\) approaches \\("+a+"\\)?",
+    "\\("+key+"\\)",ds,
+    "Reading across the table, as the \\(x\\)-values close in on \\("+a+"\\) from both sides, the \\(f(x)\\)-values close in on \\("+key+"\\). "+note+" The limit is <b>\\("+key+"\\)</b>.",
+    {mode:mode,a:a,offs:offs.join("/")});
+});
+E("u2-limit-substitution",2,["2.7"],1,"gen",function(){
+  var mode=pick(["poly","rational","sqrt"]);
+  for(var tries=0;tries<90;tries++){
+    if(mode==="poly"){
+      var A=pick([1,2,3,-1,-2]),B=ri(-6,6),C=ri(-8,8),a=ri(-4,4);
+      var key=A*a*a+B*a+C;
+      var o=["\\("+key+"\\)","\\("+(A*a*a+B*a-C)+"\\)","\\("+(A*a*a-B*a+C)+"\\)","\\("+(A*a+B*a+C)+"\\)"];
+      if(new Set(o).size===4){
+        return mcq("Evaluate \\(\\lim_{x \\to "+a+"} \\left("+u2qPoly([A,B,C])+"\\right)\\).",
+          o[0],[o[1],o[2],o[3]],
+          "The function is a polynomial, so the limit is found by direct substitution.\\[ \\begin{aligned} \\lim_{x \\to "+a+"} \\left("+u2qPoly([A,B,C])+"\\right) &= "+u2qJoin([A*a*a,B*a,C])+" \\\\ &= "+key+" \\end{aligned} \\] The limit is <b>\\("+key+"\\)</b>.",
+          {mode:mode,A:A,B:B,C:C,a:a});
+      }
+    }else if(mode==="rational"){
+      var p=ri(-5,5),q=ri(-5,5),a2=ri(-4,4);
+      if(p===0||q===0||a2+q===0||a2+p===0||a2-q===0)continue;
+      var o2=[u2qFrac(a2+p,a2+q),u2qFrac(a2-p,a2+q),u2qFrac(a2+p,a2-q),u2qFrac(a2+q,a2+p)];
+      if(new Set(o2).size===4){
+        return mcq("Evaluate \\(\\lim_{x \\to "+a2+"} \\frac{"+u2qLin(1,p)+"}{"+u2qLin(1,q)+"}\\).",
+          o2[0],[o2[1],o2[2],o2[3]],
+          "The denominator is not zero at \\(x = "+a2+"\\), so substitute directly.\\[ \\begin{aligned} \\lim_{x \\to "+a2+"} \\frac{"+u2qLin(1,p)+"}{"+u2qLin(1,q)+"} &= \\frac{"+(a2+p)+"}{"+(a2+q)+"} \\\\ &= "+u2qFracRaw(a2+p,a2+q)+" \\end{aligned} \\] The limit is <b>"+o2[0]+"</b>.",
+          {mode:mode,p:p,q:q,a:a2});
+      }
+    }else{
+      var r=pick([2,3,4,5]),a3=ri(-4,6),k=r*r-a3;
+      return mcq("Evaluate \\(\\lim_{x \\to "+a3+"} \\sqrt{"+u2qLin(1,k)+"}\\).",
+        "\\("+r+"\\)",["\\("+(r+1)+"\\)","\\("+(r*r)+"\\)","\\("+(r-1)+"\\)"],
+        "The expression under the root is positive at \\(x = "+a3+"\\), so substitute directly.\\[ \\begin{aligned} \\lim_{x \\to "+a3+"} \\sqrt{"+u2qLin(1,k)+"} &= \\sqrt{"+(a3+k)+"} \\\\ &= "+r+" \\end{aligned} \\] The limit is <b>\\("+r+"\\)</b>.",
+        {mode:mode,r:r,a:a3});
+    }
+  }
+});
+E("u2-limit-properties",2,["2.6"],1,"gen",function(){
+  var mode=pick(["sum","diff","prod","quot","pow","root","combo"]);
+  var a=ri(-4,4),Lf,Lg,expr,key,ds,rule;
+  if(mode==="quot"){
+    Lg=pick([-4,-3,-2,-1,1,2,3,4]);var kk=ri(-4,4);while(kk===0)kk=ri(-4,4);Lf=kk*Lg;
+    expr="\\frac{f(x)}{g(x)}";key=kk;rule="Quotient Rule";
+    var qall=[key,Lf+Lg,Lf-Lg,-kk];
+    for(var qi=1;qi<4;qi++){var qguard=0;while(qall.indexOf(qall[qi])!==qi&&qguard<40){qall[qi]+=7;qguard++;}}
+    var qo=qall.map(function(v){return "\\("+v+"\\)";});
+    return mcq("Suppose \\(\\lim_{x \\to "+a+"} f(x) = "+Lf+"\\) and \\(\\lim_{x \\to "+a+"} g(x) = "+Lg+"\\). Evaluate \\(\\lim_{x \\to "+a+"} "+expr+"\\).",
+      qo[0],[qo[1],qo[2],qo[3]],
+      "By the "+rule+", divide the two limits: \\(\\frac{"+Lf+"}{"+Lg+"} = "+key+"\\). The limit is <b>\\("+key+"\\)</b>.",
+      {mode:mode,a:a,Lf:Lf,Lg:Lg});
+  }
+  Lf=ri(-6,8);while(Lf===0)Lf=ri(-6,8);Lg=ri(-6,8);while(Lg===0)Lg=ri(-6,8);
+  if(mode==="sum"){expr="\\left[f(x) + g(x)\\right]";key=Lf+Lg;ds=[Lf-Lg,Lf*Lg,-(Lf+Lg)];rule="Sum Rule";}
+  else if(mode==="diff"){expr="\\left[f(x) - g(x)\\right]";key=Lf-Lg;ds=[Lg-Lf,Lf+Lg,Lf*Lg];rule="Difference Rule";}
+  else if(mode==="prod"){expr="\\left[f(x) \\cdot g(x)\\right]";key=Lf*Lg;ds=[Lf+Lg,Lf-Lg,-(Lf*Lg)];rule="Product Rule";}
+  else if(mode==="pow"){while(Lf===0||Lf===1||Lf===2)Lf=ri(-6,8);expr="\\left[f(x)\\right]^2";key=Lf*Lf;ds=[2*Lf,Lf,-(Lf*Lf)];rule="Power Rule";}
+  else if(mode==="root"){Lf=pick([4,9,16,25,36]);expr="\\sqrt{f(x)}";key=Math.sqrt(Lf);ds=[Lf,key+1,2*key];rule="Power Rule (root form)";}
+  else{var cf=pick([2,3]),cg=pick([2,3]);expr="\\left["+cf+"f(x) - "+cg+"g(x)\\right]";key=cf*Lf-cg*Lg;ds=[cf*Lf+cg*Lg,cf*Lg-cg*Lf,Lf-Lg];rule="Constant Multiple and Difference Rules";}
+  var all=[key].concat(ds);
+  for(var i=1;i<4;i++){var guard=0;while(all.indexOf(all[i])!==i&&guard<40){all[i]+=7;guard++;}}
+  var opts=all.map(function(v){return "\\("+v+"\\)";});
+  var arith=(mode==="combo")?(""+cf+"("+Lf+") - "+cg+"("+Lg+") = "+key):(mode==="pow"||mode==="root")?("applied to the limit of \\(f\\) alone gives "+key):("combining "+Lf+" and "+Lg+" gives "+key);
+  return mcq("Suppose \\(\\lim_{x \\to "+a+"} f(x) = "+Lf+"\\) and \\(\\lim_{x \\to "+a+"} g(x) = "+Lg+"\\). Evaluate \\(\\lim_{x \\to "+a+"} "+expr+"\\).",
+    opts[0],[opts[1],opts[2],opts[3]],
+    "By the "+rule+", "+arith+". The limit is <b>\\("+key+"\\)</b>.",
+    {mode:mode,a:a,Lf:Lf,Lg:Lg});
+});
+E("u2-limit-existence",2,["2.3"],1,"var",varset([
+  function(){return mcq("For a function \\(f\\), the values of \\(f(x)\\) approach \\(3\\) as \\(x\\) approaches \\(2\\) from the left, and approach \\(3\\) as \\(x\\) approaches \\(2\\) from the right. The value of the function at the point is \\(f(2) = 5\\). What is \\(\\lim_{x \\to 2} f(x)\\)?",
+    "\\(3\\)",["\\(5\\)","\\(2\\)","\\(\\text{does not exist}\\)"],
+    "A two-sided limit depends only on the values approached from each side. Both sides approach \\(3\\), so the limit exists and equals \\(3\\); the function value \\(f(2) = 5\\) does not affect it. The limit is <b>\\(3\\)</b>.",
+    {v:1});},
+  function(){return mcq("For a function \\(f\\), the values of \\(f(x)\\) approach \\(-2\\) as \\(x\\) approaches \\(-1\\) from the left, and approach \\(4\\) as \\(x\\) approaches \\(-1\\) from the right. The value of the function at the point is \\(f(-1) = 0\\). What is \\(\\lim_{x \\to -1} f(x)\\)?",
+    "\\(\\text{does not exist}\\)",["\\(-2\\)","\\(4\\)","\\(1\\)"],
+    "The left-hand limit is \\(-2\\) and the right-hand limit is \\(4\\). A two-sided limit exists only when the two one-sided limits agree, and here they do not. The limit <b>does not exist</b>.",
+    {v:2});},
+  function(){return mcq("Let \\(f(x) = \\begin{cases} x + 3, & x < 1 \\\\ 5 - x, & x \\ge 1 \\end{cases}\\). What is \\(\\lim_{x \\to 1} f(x)\\)?",
+    "\\(4\\)",["\\(1\\)","\\(5\\)","\\(\\text{does not exist}\\)"],
+    "From the left, the first branch gives \\(1 + 3 = 4\\). From the right, the second branch gives \\(5 - 1 = 4\\). The one-sided limits agree, so the two-sided limit is <b>\\(4\\)</b>.",
+    {v:3});},
+  function(){return mcq("For a function \\(f\\), the values of \\(f(x)\\) approach \\(0\\) as \\(x\\) approaches \\(0\\) from both sides, but \\(f(0)\\) is undefined. What is \\(\\lim_{x \\to 0} f(x)\\)?",
+    "\\(0\\)",["\\(1\\)","\\(\\text{does not exist}\\)","\\(\\text{undefined}\\)"],
+    "Both one-sided approaches head to \\(0\\), so the limit is \\(0\\). A function does not need to be defined at the point for its limit there to exist. The limit is <b>\\(0\\)</b>.",
+    {v:4});}
+]));
+E("u2-limit-graph",2,["2.1","2.4","2.5"],2,"gen",function(){
+  var a=ri(-3,3);
+  var m1=pick([1,2,-1,-2,3]),m2=pick([1,2,-1,-2]);
+  var Lv=ri(-5,5);
+  var match=ri(0,1)===0;
+  var Rv=match?Lv:ri(-5,5);while(!match&&Rv===Lv)Rv=ri(-5,5);
+  var b1=Lv-m1*a,b2=Rv-m2*a;
+  var favMode=pick(["third","left","right","none"]);
+  var fav=null;
+  if(favMode==="third"){fav=ri(-6,6);while(fav===Lv||fav===Rv)fav=ri(-6,6);}
+  else if(favMode==="left")fav=Lv;
+  else if(favMode==="right")fav=Rv;
+  var L=u2qLin(m1,b1),R=u2qLin(m2,b2),piece;
+  if(favMode==="third")piece="\\(f(x) = \\begin{cases} "+L+", & x < "+a+" \\\\ "+fav+", & x = "+a+" \\\\ "+R+", & x > "+a+" \\end{cases}\\)";
+  else if(favMode==="left")piece="\\(f(x) = \\begin{cases} "+L+", & x \\le "+a+" \\\\ "+R+", & x > "+a+" \\end{cases}\\)";
+  else if(favMode==="right")piece="\\(f(x) = \\begin{cases} "+L+", & x < "+a+" \\\\ "+R+", & x \\ge "+a+" \\end{cases}\\)";
+  else piece="\\(f(x) = \\begin{cases} "+L+", & x < "+a+" \\\\ "+R+", & x > "+a+" \\end{cases}\\), with \\(f("+a+")\\) undefined";
+  var DNE="\\(\\text{does not exist}\\)",UND="\\(\\text{undefined}\\)";
+  var favDisp=(fav===null)?null:"\\("+fav+"\\)";
+  function takeDs(cands,keyStr){var out=[];for(var i=0;i<cands.length;i++){var c=cands[i];if(c!==null&&c!==keyStr&&out.indexOf(c)<0)out.push(c);}return out.slice(0,3);}
+  var q=pick(["left","right","two","value"]),key,ds,sol;
+  if(q==="left"){
+    key="\\("+Lv+"\\)";
+    ds=takeDs(["\\("+Rv+"\\)",favDisp,DNE,"\\("+(Lv+2)+"\\)","\\("+(Lv-2)+"\\)"],key);
+    sol="For \\(x\\) just below \\("+a+"\\), the first branch applies.\\[ \\begin{aligned} \\lim_{x \\to "+a+"^-} f(x) &= "+u2qJoin([m1*a,b1])+" \\\\ &= "+Lv+" \\end{aligned} \\] The left-hand limit is <b>\\("+Lv+"\\)</b>.";
+  }else if(q==="right"){
+    key="\\("+Rv+"\\)";
+    ds=takeDs(["\\("+Lv+"\\)",favDisp,DNE,"\\("+(Rv+2)+"\\)","\\("+(Rv-2)+"\\)"],key);
+    sol="For \\(x\\) just above \\("+a+"\\), the second branch applies.\\[ \\begin{aligned} \\lim_{x \\to "+a+"^+} f(x) &= "+u2qJoin([m2*a,b2])+" \\\\ &= "+Rv+" \\end{aligned} \\] The right-hand limit is <b>\\("+Rv+"\\)</b>.";
+  }else if(q==="two"){
+    if(match){
+      key="\\("+Lv+"\\)";
+      ds=takeDs([favDisp,"\\("+(Lv+2)+"\\)","\\("+(Lv-3)+"\\)",DNE],key);
+      sol="The left-hand limit is \\("+Lv+"\\) and the right-hand limit is \\("+Rv+"\\). They agree, so the two-sided limit exists and equals that common value, whatever the function value at the join happens to be. The limit is <b>\\("+Lv+"\\)</b>.";
+    }else{
+      key=DNE;
+      ds=takeDs(["\\("+Lv+"\\)","\\("+Rv+"\\)",favDisp,"\\(0\\)","\\("+(Lv+4)+"\\)","\\("+(Lv-4)+"\\)","\\("+(Rv+4)+"\\)","\\("+(Rv-4)+"\\)"],key);
+      sol="The left-hand limit is \\("+Lv+"\\) and the right-hand limit is \\("+Rv+"\\). They are different numbers, so no single value is approached from both sides. The limit <b>does not exist</b>.";
+    }
+  }else{
+    if(fav===null){
+      key=UND;
+      ds=takeDs(["\\("+Lv+"\\)","\\("+Rv+"\\)",DNE,"\\("+(Lv+3)+"\\)","\\("+(Rv-3)+"\\)"],key);
+      sol="Neither branch includes \\(x = "+a+"\\), and the problem states the value there is undefined. So \\(f("+a+")\\) is <b>undefined</b>, even though the one-sided limits are \\("+Lv+"\\) and \\("+Rv+"\\)";
+    }else{
+      key="\\("+fav+"\\)";
+      ds=takeDs(["\\("+Lv+"\\)","\\("+Rv+"\\)",DNE,"\\("+(fav+2)+"\\)","\\("+(fav-3)+"\\)"],key);
+      sol="The function value at the join is the value assigned to \\(x = "+a+"\\) by the definition, which is \\("+fav+"\\). It need not equal either one-sided limit. So \\(f("+a+") = \\)<b>\\("+fav+"\\)</b>.";
+    }
+  }
+  var qtext=(q==="left")?("Find \\(\\lim_{x \\to "+a+"^-} f(x)\\)."):(q==="right")?("Find \\(\\lim_{x \\to "+a+"^+} f(x)\\)."):(q==="two")?("Find \\(\\lim_{x \\to "+a+"} f(x)\\)."):("Find \\(f("+a+")\\).");
+  return mcq("Let "+piece+". "+qtext,key,ds,sol,{a:a,m1:m1,b1:b1,m2:m2,b2:b2,Lv:Lv,Rv:Rv,favMode:favMode,q:q});
+});
+
+E("u2-reciprocal-limit",2,["2.2"],1,"gen",function(){
+  var mode=pick(["pos","neg","shiftpos","shiftneg"]);
+  var DNE="\\(\\text{does not exist}\\)";
+  if(mode==="pos"||mode==="neg"){
+    var k=pick([2,3,4,5,6,7,8,9,-2,-3,-4,-5]);
+    var dir=(mode==="pos")?"\\infty":"-\\infty";
+    var opp=(mode==="pos")?"\\(-\\infty\\)":"\\(\\infty\\)";
+    return mcq("Evaluate \\(\\lim_{x \\to "+dir+"} "+u2qFracS(k,"x")+"\\).",
+      "\\(0\\)",["\\("+k+"\\)",opp,DNE],
+      "As \\(x\\) grows without bound, the numerator stays fixed while the denominator grows, so the fraction shrinks toward zero. This is the basic reciprocal fact: \\(\\frac{1}{x}\\) (and any constant multiple of it) tends to \\(0\\) at infinity. The limit is <b>\\(0\\)</b>.",
+      {mode:mode,k:k});
+  }
+  var c=ri(-8,8);while(c===0)c=ri(-8,8);
+  var k2=pick([2,3,4,5,6,7,8,9]),p=pick([1,2]);
+  var dShift=[c+k2,c-k2,2*c].filter(function(v){return v!==0&&v!==c;})[0];
+  var dir2=(mode==="shiftpos")?"\\infty":"-\\infty";
+  var opp2=(mode==="shiftpos")?"\\(\\infty\\)":"\\(-\\infty\\)";
+  return mcq("Evaluate \\(\\lim_{x \\to "+dir2+"} \\left("+c+" + "+u2qFracS(k2,p===1?"x":"x^2")+"\\right)\\).",
+    "\\("+c+"\\)",["\\(0\\)","\\("+dShift+"\\)",opp2],
+    "The reciprocal term tends to \\(0\\) as \\(x\\) grows without bound, since its denominator grows while its numerator stays fixed. That leaves only the constant term. The limit is <b>\\("+c+"\\)</b>.",
+    {mode:mode,c:c,k:k2,p:p});
+});
+E("u2-limit-factor-cancel",2,["2.7"],2,"gen",function(){
+  var mode=pick(["sq","quad","cube","both"]);
+  if(mode==="sq"){
+    var r=ri(-6,6);while(r===0)r=ri(-6,6);
+    return mcq("Evaluate \\(\\lim_{x \\to "+r+"} \\frac{x^2 - "+(r*r)+"}{"+u2qDen(r)+"}\\).",
+      "\\("+(2*r)+"\\)",["\\("+r+"\\)","\\(0\\)","\\("+(-2*r)+"\\)"],
+      "Substitution gives \\(\\frac{0}{0}\\), so factor first.\\[ \\begin{aligned} \\lim_{x \\to "+r+"} \\frac{x^2 - "+(r*r)+"}{"+u2qDen(r)+"} &= \\lim_{x \\to "+r+"} \\frac{\\left("+u2qDen(r)+"\\right)\\left("+u2qDen(-r)+"\\right)}{"+u2qDen(r)+"} \\\\ &= \\lim_{x \\to "+r+"} \\left("+u2qDen(-r)+"\\right) \\\\ &= "+(2*r)+" \\end{aligned} \\] The limit is <b>\\("+(2*r)+"\\)</b>.",
+      {mode:mode,r:r,key:2*r});
+  }
+  if(mode==="quad"){
+    var r2=ri(-6,6),s=ri(-6,6);while(s===r2)s=ri(-6,6);
+    var num=u2qPoly([1,-(r2+s),r2*s]),key=r2-s;
+    var candQ=[r2+s,s-r2,0,key+4,key-4],dsQ=[];
+    for(var ci=0;ci<candQ.length;ci++){var cv="\\("+candQ[ci]+"\\)";if(candQ[ci]!==key&&dsQ.indexOf(cv)<0)dsQ.push(cv);}
+    return mcq("Evaluate \\(\\lim_{x \\to "+r2+"} \\frac{"+num+"}{"+u2qDen(r2)+"}\\).",
+      "\\("+key+"\\)",dsQ.slice(0,3),
+      "Substitution gives \\(\\frac{0}{0}\\), so factor the numerator and cancel the common factor.\\[ \\begin{aligned} \\lim_{x \\to "+r2+"} \\frac{"+num+"}{"+u2qDen(r2)+"} &= \\lim_{x \\to "+r2+"} \\frac{\\left("+u2qDen(r2)+"\\right)\\left("+u2qDen(s)+"\\right)}{"+u2qDen(r2)+"} \\\\ &= \\lim_{x \\to "+r2+"} \\left("+u2qDen(s)+"\\right) \\\\ &= "+key+" \\end{aligned} \\] The limit is <b>\\("+key+"\\)</b>.",
+      {mode:mode,r:r2,s:s,key:key});
+  }
+  if(mode==="cube"){
+    var r3=pick([2,3,4,5]),sgn=pick(["minus","plus"]),key3=3*r3*r3;
+    var top=(sgn==="minus")?("x^3 - "+(r3*r3*r3)):("x^3 + "+(r3*r3*r3));
+    var bot=(sgn==="minus")?u2qDen(r3):u2qDen(-r3);
+    var pt=(sgn==="minus")?r3:(-r3);
+    var fac=(sgn==="minus")?("\\left("+u2qDen(r3)+"\\right)\\left("+u2qPoly([1,r3,r3*r3])+"\\right)"):("\\left("+u2qDen(-r3)+"\\right)\\left("+u2qPoly([1,-r3,r3*r3])+"\\right)");
+    var rem=(sgn==="minus")?u2qPoly([1,r3,r3*r3]):u2qPoly([1,-r3,r3*r3]);
+    return mcq("Evaluate \\(\\lim_{x \\to "+pt+"} \\frac{"+top+"}{"+bot+"}\\).",
+      "\\("+key3+"\\)",["\\("+(r3*r3)+"\\)","\\("+(2*r3*r3)+"\\)","\\(0\\)"],
+      "Substitution gives \\(\\frac{0}{0}\\). Factor the numerator as a difference (or sum) of cubes and cancel.\\[ \\begin{aligned} \\lim_{x \\to "+pt+"} \\frac{"+top+"}{"+bot+"} &= \\lim_{x \\to "+pt+"} "+rem+" \\\\ &= "+key3+" \\end{aligned} \\] The limit is <b>\\("+key3+"\\)</b>.",
+      {mode:mode,r:r3,sgn:sgn,key:key3});
+  }
+  var r4=ri(-5,5),s4=ri(-5,5),t4=ri(-5,5);
+  while(s4===r4||t4===r4||s4===t4||2*r4===s4+t4){r4=ri(-5,5);s4=ri(-5,5);t4=ri(-5,5);}
+  var numB=u2qPoly([1,-(r4+s4),r4*s4]),denB=u2qPoly([1,-(r4+t4),r4*t4]);
+  var keyB=u2qFrac(r4-s4,r4-t4);
+  return mcq("Evaluate \\(\\lim_{x \\to "+r4+"} \\frac{"+numB+"}{"+denB+"}\\).",
+    keyB,[u2qFrac(r4-t4,r4-s4),"\\(1\\)",u2qFrac(s4-r4,r4-t4)],
+    "Both parts factor, and the factor \\(\\left("+u2qDen(r4)+"\\right)\\) is common.\\[ \\begin{aligned} \\lim_{x \\to "+r4+"} \\frac{"+numB+"}{"+denB+"} &= \\lim_{x \\to "+r4+"} \\frac{\\left("+u2qDen(s4)+"\\right)}{\\left("+u2qDen(t4)+"\\right)} \\\\ &= "+u2qFracRaw(r4-s4,r4-t4)+" \\end{aligned} \\] The limit is <b>"+keyB+"</b>.",
+    {mode:mode,r:r4,s:s4,t:t4});
+});
+E("u2-limit-conjugate",2,["2.7"],2,"gen",function(){
+  var mode=pick(["atzero","atpoint","flipped"]);
+  if(mode==="atzero"){
+    var k=pick([2,3,4,5,6]);
+    return mcq("Evaluate \\(\\lim_{x \\to 0} \\frac{\\sqrt{x + "+(k*k)+"} - "+k+"}{x}\\).",
+      u2qFrac(1,2*k),[u2qFrac(1,k),"\\("+(2*k)+"\\)","\\(0\\)"],
+      "Substitution gives \\(\\frac{0}{0}\\). Multiply by the conjugate of the numerator.\\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{\\sqrt{x + "+(k*k)+"} - "+k+"}{x} &= \\lim_{x \\to 0} \\frac{x}{x\\left(\\sqrt{x + "+(k*k)+"} + "+k+"\\right)} \\\\ &= \\lim_{x \\to 0} \\frac{1}{\\sqrt{x + "+(k*k)+"} + "+k+"} \\\\ &= \\frac{1}{"+(2*k)+"} \\end{aligned} \\] The limit is <b>"+u2qFrac(1,2*k)+"</b>.",
+      {mode:mode,k:k});
+  }
+  var s=pick([2,3,4,5]),r=ri(1,9),c=s*s-r;
+  var rootArg=u2qLin(1,c);
+  if(mode==="atpoint"){
+    return mcq("Evaluate \\(\\lim_{x \\to "+r+"} \\frac{\\sqrt{"+rootArg+"} - "+s+"}{"+u2qDen(r)+"}\\).",
+      u2qFrac(1,2*s),[u2qFrac(1,s),"\\("+(2*s)+"\\)","\\(0\\)"],
+      "Substitution gives \\(\\frac{0}{0}\\), since the root equals \\("+s+"\\) at \\(x = "+r+"\\). Multiply by the conjugate.\\[ \\begin{aligned} \\lim_{x \\to "+r+"} \\frac{\\sqrt{"+rootArg+"} - "+s+"}{"+u2qDen(r)+"} &= \\lim_{x \\to "+r+"} \\frac{"+u2qDen(r)+"}{\\left("+u2qDen(r)+"\\right)\\left(\\sqrt{"+rootArg+"} + "+s+"\\right)} \\\\ &= \\frac{1}{"+s+" + "+s+"} \\\\ &= "+u2qFracRaw(1,2*s)+" \\end{aligned} \\] The limit is <b>"+u2qFrac(1,2*s)+"</b>.",
+      {mode:mode,s:s,r:r});
+  }
+  return mcq("Evaluate \\(\\lim_{x \\to "+r+"} \\frac{"+u2qDen(r)+"}{\\sqrt{"+rootArg+"} - "+s+"}\\).",
+    "\\("+(2*s)+"\\)",["\\("+s+"\\)",u2qFrac(1,2*s),"\\(0\\)"],
+    "Substitution gives \\(\\frac{0}{0}\\). Multiply top and bottom by the conjugate of the denominator; the root terms then produce a factor of \\("+u2qDen(r)+"\\) that cancels.\\[ \\begin{aligned} \\lim_{x \\to "+r+"} \\frac{"+u2qDen(r)+"}{\\sqrt{"+rootArg+"} - "+s+"} &= \\lim_{x \\to "+r+"} \\frac{\\left("+u2qDen(r)+"\\right)\\left(\\sqrt{"+rootArg+"} + "+s+"\\right)}{"+u2qDen(r)+"} \\\\ &= "+s+" + "+s+" \\\\ &= "+(2*s)+" \\end{aligned} \\] The limit is <b>\\("+(2*s)+"\\)</b>.",
+    {mode:mode,s:s,r:r});
+});
+
+E("u2-limit-complex-fraction",2,["2.6","2.7"],2,"gen",function(){
+  var mode=pick(["shift","point","scaled","recip"]);
+  if(mode==="shift"){
+    var a=pick([-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]);
+    var inner="\\frac{1}{"+u2qDen(-a)+"} "+(a>0?("- \\frac{1}{"+a+"}"):("+ \\frac{1}{"+(-a)+"}"));
+    var aDisp=(a>0)?(""+a):("\\left("+a+"\\right)");
+    var denProd=aDisp+"\\left("+u2qDen(-a)+"\\right)";
+    return mcq("Evaluate \\(\\lim_{x \\to 0} \\frac{"+inner+"}{x}\\).",
+      u2qFrac(-1,a*a),[u2qFrac(1,a*a),u2qFrac(-1,a),"\\(0\\)"],
+      "Combine the fractions in the numerator over a common denominator, then cancel the factor of \\(x\\).\\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{"+inner+"}{x} &= \\lim_{x \\to 0} \\frac{\\frac{-x}{"+denProd+"}}{x} \\\\ &= \\lim_{x \\to 0} \\frac{-1}{"+denProd+"} \\\\ &= \\frac{-1}{\\left("+a+"\\right)^2} \\\\ &= "+u2qFracRaw(-1,a*a)+" \\end{aligned} \\] The limit is <b>"+u2qFrac(-1,a*a)+"</b>.",
+      {mode:mode,a:a,key:u2qFracRaw(-1,a*a)});
+  }
+  if(mode==="point"){
+    var r=pick([-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]);
+    var inner2="\\frac{1}{x} "+(r>0?("- \\frac{1}{"+r+"}"):("+ \\frac{1}{"+(-r)+"}"));
+    return mcq("Evaluate \\(\\lim_{x \\to "+r+"} \\frac{"+inner2+"}{"+u2qDen(r)+"}\\).",
+      u2qFrac(-1,r*r),[u2qFrac(1,r*r),u2qFrac(-1,r),"\\(0\\)"],
+      "Combine the fractions in the numerator, then cancel the common factor.\\[ \\begin{aligned} \\lim_{x \\to "+r+"} \\frac{"+inner2+"}{"+u2qDen(r)+"} &= \\lim_{x \\to "+r+"} \\frac{\\frac{"+r+" - x}{"+r+"x}}{"+u2qDen(r)+"} \\\\ &= \\lim_{x \\to "+r+"} \\frac{-1}{"+r+"x} \\\\ &= \\frac{-1}{\\left("+r+"\\right)^2} \\\\ &= "+u2qFracRaw(-1,r*r)+" \\end{aligned} \\] The limit is <b>"+u2qFrac(-1,r*r)+"</b>.",
+      {mode:mode,r:r,key:u2qFracRaw(-1,r*r)});
+  }
+  if(mode==="scaled"){
+    var a3=pick([-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]);
+    var inner3="\\frac{"+a3+"}{"+u2qDen(-a3)+"} - 1";
+    return mcq("Evaluate \\(\\lim_{x \\to 0} \\frac{"+inner3+"}{x}\\).",
+      u2qFrac(-1,a3),[u2qFrac(1,a3),(a3>0?"\\(-1\\)":"\\(1\\)"),"\\(0\\)"],
+      "Write the numerator over a common denominator; the constants cancel and a factor of \\(x\\) remains.\\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{"+inner3+"}{x} &= \\lim_{x \\to 0} \\frac{\\frac{-x}{"+u2qDen(-a3)+"}}{x} \\\\ &= \\lim_{x \\to 0} \\frac{-1}{"+u2qDen(-a3)+"} \\\\ &= "+u2qFracRaw(-1,a3)+" \\end{aligned} \\] The limit is <b>"+u2qFrac(-1,a3)+"</b>.",
+      {mode:mode,a:a3,key:u2qFracRaw(-1,a3)});
+  }
+  var a4=pick([2,3,4,5,6,7,8,9]);
+  var inner4="\\frac{1}{"+a4+" - x} - \\frac{1}{"+a4+"}";
+  return mcq("Evaluate \\(\\lim_{x \\to 0} \\frac{"+inner4+"}{x}\\).",
+    u2qFrac(1,a4*a4),[u2qFrac(-1,a4*a4),u2qFrac(1,a4),"\\(0\\)"],
+    "Combine the fractions in the numerator over a common denominator, then cancel the factor of \\(x\\).\\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{"+inner4+"}{x} &= \\lim_{x \\to 0} \\frac{\\frac{x}{"+a4+"\\left("+a4+" - x\\right)}}{x} \\\\ &= \\lim_{x \\to 0} \\frac{1}{"+a4+"\\left("+a4+" - x\\right)} \\\\ &= "+u2qFracRaw(1,a4*a4)+" \\end{aligned} \\] The limit is <b>"+u2qFrac(1,a4*a4)+"</b>.",
+    {mode:mode,a:a4,key:u2qFracRaw(1,a4*a4)});
+});
+E("u2-limit-infinite",2,["2.8"],1,"gen",function(){
+  var form=pick(["pow","lin"]);
+  var a=ri(-5,5),side=pick(["+","-"]);
+  var DNE="\\(\\text{does not exist}\\)";
+  var key,opp,ds,sol;
+  if(form==="pow"){
+    var p=pick([1,2]),c=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+    var denSign=(side==="+")?1:(p===1?-1:1);
+    var vs=(c>0?1:-1)*denSign;
+    key=(vs>0)?"\\(\\infty\\)":"\\(-\\infty\\)";
+    opp=(vs>0)?"\\(-\\infty\\)":"\\(\\infty\\)";
+    ds=[opp,"\\(0\\)",DNE];
+    sol="As \\(x\\) approaches \\("+a+"\\) from the "+(side==="+"?"right":"left")+", the denominator shrinks toward \\(0\\) while the numerator stays at \\("+c+"\\), so the values grow without bound. The denominator is "+((p===2)?"positive on both sides, since it is a square":(side==="+"?"positive just right of the point":"negative just left of the point"))+", and the numerator is "+(c>0?"positive":"negative")+", which fixes the sign. The limit is <b>"+key+"</b>.";
+    return mcq("Find \\(\\lim_{x \\to "+a+"^"+side+"} f(x)\\) for \\(f(x) = "+FR(""+c,"("+u2qDen(a)+")"+(p===2?"^2":""))+"\\).",
+      key,ds,sol,{form:form,a:a,side:side,p:p,c:c});
+  }
+  var b=ri(-7,7);while(a+b===0)b=ri(-7,7);
+  var nv=a+b;
+  var denSign2=(side==="+")?1:-1;
+  var vs2=(nv>0?1:-1)*denSign2;
+  key=(vs2>0)?"\\(\\infty\\)":"\\(-\\infty\\)";
+  opp=(vs2>0)?"\\(-\\infty\\)":"\\(\\infty\\)";
+  ds=[opp,"\\("+nv+"\\)",DNE];
+  sol="As \\(x\\) approaches \\("+a+"\\) from the "+(side==="+"?"right":"left")+", the numerator approaches \\("+nv+"\\) while the denominator shrinks to \\(0\\), "+(side==="+"?"staying positive":"staying negative")+" on that side. A fixed nonzero numerator over a shrinking denominator grows without bound, with the sign set by the two signs. The limit is <b>"+key+"</b>.";
+  return mcq("Find \\(\\lim_{x \\to "+a+"^"+side+"} f(x)\\) for \\(f(x) = "+FR(u2qLin(1,b),u2qDen(a))+"\\).",
+    key,ds,sol,{form:form,a:a,side:side,b:b});
+});
+
+E("u2-asymptote-behaviour",2,["2.9"],2,"gen",function(){
+  var form=pick(["simple","linear"]);
+  var a=ri(-5,5),s,fr;
+  if(form==="simple"){
+    var c=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+    s=(c>0)?1:-1;fr=FR(""+c,u2qDen(a));
+  }else{
+    var b=ri(-7,7);while(a+b===0)b=ri(-7,7);
+    s=(a+b>0)?1:-1;fr=FR(u2qLin(1,b),u2qDen(a));
+  }
+  function inf(v){return v>0?"\\infty":"-\\infty";}
+  function stmt(L,R){return "As \\(x \\to "+a+"^-\\), \\(f(x) \\to "+inf(L)+"\\), and as \\(x \\to "+a+"^+\\), \\(f(x) \\to "+inf(R)+"\\)";}
+  var key=stmt(-s,s);
+  var ds=[stmt(s,-s),stmt(s,s),stmt(-s,-s)];
+  return mcq("Let \\(f(x) = "+fr+"\\). Which statement describes the behaviour of \\(f\\) near \\(x = "+a+"\\)?",
+    key,ds,
+    "The denominator is zero at \\(x = "+a+"\\) while the numerator is not, so there is a vertical asymptote there. Just right of the point the denominator is a small positive number and the numerator keeps the sign it has at the point, giving "+(s>0?"positive":"negative")+" infinity; just left of the point the denominator is a small negative number, which flips the sign. So the two sides head to opposite infinities: <b>down on the "+(s>0?"left":"right")+" side and up on the other</b>, matching the key statement.",
+    {form:form,a:a,formSign:s});
+});
+E("u2-limit-at-infinity",2,["2.10"],2,"gen",function(){
+  var mode=pick(["less","equal","greater1","greater2"]);
+  var dir=pick(["\\infty","-\\infty"]);
+  var dirNeg=(dir.charAt(0)==="-");
+  var key,ds,num,den,degN,degD,sol;
+  function infStr(v){return v>0?"\\(\\infty\\)":"\\(-\\infty\\)";}
+  if(mode==="less"){
+    var A=pick([1,2,3,4,-1,-2,-3]),B=ri(-8,8),C=pick([1,2,3,-1,-2]),D=ri(-6,6),E2=ri(-6,6);
+    num=u2qPoly([A,B]);den=u2qPoly([C,D,E2]);degN=1;degD=2;
+    key="\\(0\\)";
+    var d1=u2qFrac(A,C),d2=u2qFrac(C,A);
+    ds=[d1,"\\(\\infty\\)",(d1===d2)?"\\(-\\infty\\)":d2];
+    sol="The denominator has the higher degree, so it outgrows the numerator and the fraction shrinks to zero. (Dividing top and bottom by \\(x^2\\) sends every term to \\(0\\).) The limit is <b>\\(0\\)</b>.";
+  }else if(mode==="equal"){
+    var A2=pick([1,2,3,4,5,-1,-2,-3]),B2=ri(-8,8),C2=ri(-8,8),D2=pick([1,2,3,4,-1,-2,-3]),E3=ri(-6,6),F=ri(-6,6);
+    while(Math.abs(A2)===Math.abs(D2))D2=pick([1,2,3,4,-1,-2,-3]);
+    num=u2qPoly([A2,B2,C2]);den=u2qPoly([D2,E3,F]);degN=2;degD=2;
+    key=u2qFrac(A2,D2);
+    ds=[u2qFrac(D2,A2),"\\(0\\)","\\(\\infty\\)"];
+    sol="The degrees are equal, so the limit is the ratio of the leading coefficients.\\[ \\begin{aligned} \\lim_{x \\to "+dir+"} \\frac{"+num+"}{"+den+"} &= \\frac{"+A2+"}{"+D2+"} \\\\ &= "+u2qFracRaw(A2,D2)+" \\end{aligned} \\] The limit is <b>"+key+"</b>.";
+  }else{
+    var odd=(mode==="greater1");
+    var A3=pick([1,2,3,-1,-2]),B3=ri(-6,6),C3=ri(-6,6),D3=pick([1,2,-1,-2]),E4=ri(-6,6);
+    if(odd){num=u2qPoly([A3,B3,C3]);degN=2;}
+    else{num=u2qPoly([A3,B3,C3,ri(-6,6)]);degN=3;}
+    den=u2qPoly([D3,E4]);degD=1;
+    var lead=(A3*D3>0)?1:-1;
+    var sgn=odd?(lead*(dirNeg?-1:1)):lead;
+    key=infStr(sgn);ds=[infStr(-sgn),"\\(0\\)",u2qFrac(A3,D3)];
+    sol="The numerator has the higher degree, so the fraction grows without bound. Its end behaviour matches the ratio of the leading terms, \\("+u2qFracRaw(A3,D3)+"x^{"+(degN-degD)+"}\\), whose sign "+(dirNeg?"as \\(x \\to -\\infty\\)":"as \\(x \\to \\infty\\)")+" is "+(sgn>0?"positive":"negative")+". The limit is <b>"+key+"</b>.";
+  }
+  return mcq("Evaluate \\(\\lim_{x \\to "+dir+"} \\frac{"+num+"}{"+den+"}\\).",
+    key,ds,sol,{mode:mode,dir:dir});
+});
+E("u2-horizontal-asymptote",2,["2.11"],1,"gen",function(){
+  var mode=pick(["less","equal","greater"]);
+  var NONE="\\(\\text{no horizontal asymptote}\\)";
+  var key,ds,num,den,sol;
+  if(mode==="less"){
+    var A=pick([1,2,3,4,-1,-2,-3]),B=ri(-8,8),C=pick([1,2,3,-1,-2]),D=ri(-6,6),E2=ri(-6,6);
+    num=u2qPoly([A,B]);den=u2qPoly([C,D,E2]);
+    key="\\(y = 0\\)";
+    var o1="\\(y = "+u2qFracRaw(A,C)+"\\)",o2="\\(y = "+u2qFracRaw(C,A)+"\\)";
+    ds=[o1,(o1===o2)?("\\(y = "+u2qFracRaw(2*A,C)+"\\)"):o2,NONE];
+    sol="The degree of the denominator is larger, so the limit at both infinities is \\(0\\), and the graph flattens toward the line \\(y = 0\\). The horizontal asymptote is <b>\\(y = 0\\)</b>.";
+  }else if(mode==="equal"){
+    var A2=pick([1,2,3,4,5,-1,-2,-3]),B2=ri(-8,8),C2=ri(-8,8),D2=pick([1,2,3,4,-1,-2,-3]),E3=ri(-6,6),F=ri(-6,6);
+    while(Math.abs(A2)===Math.abs(D2))D2=pick([1,2,3,4,-1,-2,-3]);
+    num=u2qPoly([A2,B2,C2]);den=u2qPoly([D2,E3,F]);
+    key="\\(y = "+u2qFracRaw(A2,D2)+"\\)";
+    ds=["\\(y = 0\\)","\\(y = "+u2qFracRaw(D2,A2)+"\\)",NONE];
+    sol="The degrees are equal, so both end limits equal the ratio of the leading coefficients, \\("+u2qFracRaw(A2,D2)+"\\). The horizontal asymptote is <b>\\(y = "+u2qFracRaw(A2,D2)+"\\)</b>.";
+  }else{
+    var A3=pick([1,2,3,-1,-2]),B3=ri(-6,6),C3=ri(-6,6),D3=pick([1,2,-1,-2]),E4=ri(-6,6);
+    while(Math.abs(A3)===Math.abs(D3))D3=pick([1,2,-1,-2]);
+    num=u2qPoly([A3,B3,C3]);den=u2qPoly([D3,E4]);
+    key=NONE;
+    ds=["\\(y = 0\\)","\\(y = "+u2qFracRaw(A3,D3)+"\\)","\\(y = "+u2qFracRaw(D3,A3)+"\\)"];
+    sol="The degree of the numerator is larger, so the values grow without bound at both ends instead of settling to a constant. There is <b>no horizontal asymptote</b> (the end behaviour is described by an oblique asymptote instead).";
+  }
+  return mcq("What is the horizontal asymptote of the graph of \\(f(x) = \\frac{"+num+"}{"+den+"}\\)?",
+    key,ds,sol,{mode:mode});
+});
+E("u2-oblique-asymptote",2,["2.12"],2,"gen",function(){
+  var A=pick([1,2,3,-1,-2]),r=ri(-5,5);while(r===0)r=ri(-5,5);
+  var B=ri(-6,6),C=ri(-9,9);
+  var key,ds;
+  for(var tries=0;tries<60;tries++){
+    var q=B+A*r;
+    key="\\(y = "+u2qLin(A,q)+"\\)";
+    ds=["\\(y = "+u2qLin(A,B)+"\\)","\\(y = "+u2qLin(A,B-A*r)+"\\)","\\(y = "+u2qLin(q,A)+"\\)"];
+    if(new Set([key].concat(ds)).size===4)break;
+    B++;
+  }
+  var q2=B+A*r,rem=C+q2*r;
+  var numP=u2qPoly([A,B,C]);
+  return mcq("Find the oblique (slant) asymptote of the graph of \\(f(x) = "+FR(numP,u2qDen(r))+"\\).",
+    key,ds,
+    "Divide the numerator by the denominator.\\[ \\begin{aligned} "+numP+" &= \\left("+u2qDen(r)+"\\right)\\left("+u2qLin(A,q2)+"\\right) + "+rem+" \\end{aligned} \\] So \\(f(x) = "+u2qLin(A,q2)+" + "+FR(""+rem,u2qDen(r))+"\\), and the fraction term tends to \\(0\\) as \\(x\\) grows. The graph approaches the line given by the quotient. The oblique asymptote is <b>\\(y = "+u2qLin(A,q2)+"\\)</b>.",
+    {A:A,B:B,C:C,r:r});
+});
+E("u2-discontinuity-type",2,["2.13","2.14"],1,"var",varset([
+  function(){return mcq("The graph of \\(f(x) = \\frac{x^2 - 16}{x - 4}\\) is a straight line with a single break at \\(x = 4\\), where the function is undefined; the graph approaches the same height from both sides of the break. What type of discontinuity occurs at \\(x = 4\\)?",
+    "A removable discontinuity",["A jump discontinuity","An infinite discontinuity","An oscillating discontinuity"],
+    "The two-sided limit at \\(x = 4\\) exists (it is \\(8\\)), but the function is not defined there. A missing point that could be filled by defining the value is a removable discontinuity. The type is <b>a removable discontinuity</b>.",
+    {v:1});},
+  function(){return mcq("Let \\(f(x) = \\begin{cases} x + 2, & x < 1 \\\\ 5 - x, & x \\ge 1 \\end{cases}\\). The graph approaches \\(3\\) from the left at \\(x = 1\\) and \\(4\\) from the right. What type of discontinuity occurs at \\(x = 1\\)?",
+    "A jump discontinuity",["A removable discontinuity","An infinite discontinuity","An oscillating discontinuity"],
+    "Both one-sided limits exist as finite numbers, but they differ (\\(3\\) from the left, \\(4\\) from the right), so the graph leaps from one height to another. The type is <b>a jump discontinuity</b>.",
+    {v:2});},
+  function(){return mcq("For \\(f(x) = \\frac{3}{(x + 2)^2}\\), the values of \\(f(x)\\) grow without bound as \\(x\\) approaches \\(-2\\) from either side. What type of discontinuity occurs at \\(x = -2\\)?",
+    "An infinite discontinuity",["A removable discontinuity","A jump discontinuity","An oscillating discontinuity"],
+    "The function values blow up to positive infinity on both sides of \\(x = -2\\), where the graph has a vertical asymptote. The type is <b>an infinite discontinuity</b>.",
+    {v:3});},
+  function(){return mcq("The graph of \\(f(x) = \\sin\\left(\\frac{1}{x}\\right)\\) swings between \\(-1\\) and \\(1\\) faster and faster as \\(x\\) approaches \\(0\\), never settling toward any value. What type of discontinuity occurs at \\(x = 0\\)?",
+    "An oscillating discontinuity",["A removable discontinuity","A jump discontinuity","An infinite discontinuity"],
+    "The function keeps oscillating between fixed bounds as the point is approached, so no limit exists, yet the values stay bounded (ruling out an infinite discontinuity). The type is <b>an oscillating discontinuity</b>.",
+    {v:4});},
+  function(){return mcq("For \\(f(x) = \\frac{|x - 2|}{x - 2}\\), the values equal \\(-1\\) for every \\(x\\) just left of \\(2\\) and \\(1\\) for every \\(x\\) just right of \\(2\\). What type of discontinuity occurs at \\(x = 2\\)?",
+    "A jump discontinuity",["A removable discontinuity","An infinite discontinuity","An oscillating discontinuity"],
+    "The left-hand limit is \\(-1\\) and the right-hand limit is \\(1\\): both exist and are finite, but they are unequal, so the graph jumps. The type is <b>a jump discontinuity</b>.",
+    {v:5});}
+]));
+
+E("u2-continuity-definition",2,["2.15","2.16"],3,"gen",function(){
+  var form=pick(["linleft","quadleft","quadk"]);
+  if(form==="linleft"){
+    var k0=ri(-4,4),a=ri(-3,3);while(a===0)a=ri(-3,3);
+    var b=ri(-6,6),m=pick([1,2,-1,-2,3]);
+    var Rv=k0*a+b,n=Rv-m*a;
+    var left="kx"+(b>0?" + "+b:(b<0?" - "+(-b):""));
+    var piece="\\(f(x) = \\begin{cases} "+left+", & x \\le "+a+" \\\\ "+u2qLin(m,n)+", & x > "+a+" \\end{cases}\\)";
+    return numq("Let "+piece+". Find the value of \\(k\\) that makes \\(f\\) continuous at \\(x = "+a+"\\).",
+      k0,0.011,
+      "Continuity at \\(x = "+a+"\\) requires the two one-sided limits to agree with the function value there, which comes from the first branch.\\[ \\begin{aligned} \\lim_{x \\to "+a+"^-} f(x) &= "+a+"k"+(b>0?" + "+b:(b<0?" - "+(-b):""))+" \\\\ \\lim_{x \\to "+a+"^+} f(x) &= "+Rv+" \\end{aligned} \\] Setting them equal: \\("+a+"k"+(b>0?" + "+b:(b<0?" - "+(-b):""))+" = "+Rv+"\\), so \\(k = "+k0+"\\). The value is <b>\\("+k0+"\\)</b>.",
+      {form:form,a:a,k:k0});
+  }
+  if(form==="quadleft"){
+    var a2=ri(-3,3),m2=pick([1,2,-1,-2,3]),n2=ri(-6,6);
+    var k2=m2*a2+n2-a2*a2;
+    var piece2="\\(f(x) = \\begin{cases} x^2 + k, & x < "+a2+" \\\\ "+u2qLin(m2,n2)+", & x \\ge "+a2+" \\end{cases}\\)";
+    return numq("Let "+piece2+". Find the value of \\(k\\) that makes \\(f\\) continuous at \\(x = "+a2+"\\).",
+      k2,0.011,
+      "Continuity at \\(x = "+a2+"\\) requires the left-hand limit to equal the function value, which comes from the second branch.\\[ \\begin{aligned} \\lim_{x \\to "+a2+"^-} f(x) &= "+(a2*a2)+" + k \\\\ f\\left("+a2+"\\right) &= "+(m2*a2+n2)+" \\end{aligned} \\] Setting them equal: \\("+(a2*a2)+" + k = "+(m2*a2+n2)+"\\), so \\(k = "+k2+"\\). The value is <b>\\("+k2+"\\)</b>.",
+      {form:form,a:a2,k:k2});
+  }
+  var k3=ri(-3,3);while(k3===0)k3=ri(-3,3);
+  var a3=ri(-3,3);while(a3===0)a3=ri(-3,3);
+  var b3=ri(-6,6),Rv3=k3*a3*a3+b3;
+  var left3="kx^2"+(b3>0?" + "+b3:(b3<0?" - "+(-b3):""));
+  var piece3="\\(f(x) = \\begin{cases} "+left3+", & x \\le "+a3+" \\\\ "+Rv3+", & x > "+a3+" \\end{cases}\\)";
+  return numq("Let "+piece3+". Find the value of \\(k\\) that makes \\(f\\) continuous at \\(x = "+a3+"\\).",
+    k3,0.011,
+    "Continuity at \\(x = "+a3+"\\) requires the two one-sided limits to agree with the function value there, which comes from the first branch.\\[ \\begin{aligned} \\lim_{x \\to "+a3+"^-} f(x) &= "+(a3*a3)+"k"+(b3>0?" + "+b3:(b3<0?" - "+(-b3):""))+" \\\\ \\lim_{x \\to "+a3+"^+} f(x) &= "+Rv3+" \\end{aligned} \\] Setting them equal: \\("+(a3*a3)+"k"+(b3>0?" + "+b3:(b3<0?" - "+(-b3):""))+" = "+Rv3+"\\), so \\(k = "+k3+"\\). The value is <b>\\("+k3+"\\)</b>.",
+    {form:form,a:a3,k:k3});
+});
+E("u2-continuity-interval",2,["2.17"],3,"gen",function(){
+  var a=pick([-3,-2,-1]),b=pick([3,4,5]),c=pick([0,1,2]);
+  while(!(a<c&&c<b)){c=pick([0,1,2]);a=pick([-3,-2,-1]);b=pick([3,4,5]);}
+  var p=ri(-4,4);while(a*a+p===0)p=ri(-4,4);
+  var V=a*a+p,q=V*(a-c);
+  var Lb=q/(b-c);
+  var W=Number.isInteger(Lb)?(Lb+2):(Math.round(Lb)+1);
+  var m=pick([1,2,-1]),n=W-m*b;
+  var piece="\\(f(x) = \\begin{cases} "+u2qPoly([1,0,p])+", & x \\le "+a+" \\\\ \\frac{"+q+"}{"+u2qDen(c)+"}, & "+a+" < x < "+b+" \\\\ "+u2qLin(m,n)+", & x \\ge "+b+" \\end{cases}\\)";
+  var key="\\(f\\) is continuous at \\(x = "+a+"\\), has an infinite discontinuity at \\(x = "+c+"\\), and a jump discontinuity at \\(x = "+b+"\\)";
+  var ds=[
+    "\\(f\\) is continuous at \\(x = "+a+"\\) and at \\(x = "+b+"\\), and has an infinite discontinuity at \\(x = "+c+"\\) as its only break",
+    "\\(f\\) has a discontinuity at each of the three points \\(x = "+a+"\\), \\(x = "+c+"\\), and \\(x = "+b+"\\) on the interval",
+    "\\(f\\) is continuous at \\(x = "+a+"\\) and at \\(x = "+b+"\\), and has a removable discontinuity at \\(x = "+c+"\\) as its only break"];
+  return mcq("Let "+piece+". Which statement about the continuity of \\(f\\) is correct?",
+    key,ds,
+    "Check each special point with the definition of continuity. At \\(x = "+a+"\\): the value is \\(f("+a+") = "+V+"\\), and the limit from the right is \\(\\frac{"+q+"}{"+a+" - "+c+"} = "+V+"\\), matching the value from the left branch, so \\(f\\) is continuous there. At \\(x = "+c+"\\): the middle branch has denominator \\(0\\) with numerator \\("+q+"\\), so the values blow up: an infinite discontinuity. At \\(x = "+b+"\\): the limit from the left is \\("+u2qFracRaw(q,b-c)+"\\) but \\(f("+b+") = "+W+"\\), so the graph jumps. Away from these points each branch is continuous on its own interval. The correct statement is the one naming <b>continuity at \\("+a+"\\), an infinite discontinuity at \\("+c+"\\), and a jump at \\("+b+"\\)</b>.",
+    {a:a,b:b,c:c,p:p,q:q});
+});
+E("u2-removable-redefine",2,["2.18"],3,"gen",function(){
+  var mode=pick(["quad","sq","both"]);
+  if(mode==="quad"){
+    var r=ri(-6,6),s=ri(-6,6);while(s===r)s=ri(-6,6);
+    var num=u2qPoly([1,-(r+s),r*s]),ans=r-s;
+    return numq("The function \\(f(x) = \\frac{"+num+"}{"+u2qDen(r)+"}\\) is undefined at \\(x = "+r+"\\), and the discontinuity there is removable. The function is redefined by setting \\(f("+r+") = m\\), which makes the redefined function continuous at \\(x = "+r+"\\). Find \\(m\\).",
+      ans,0.011,
+      "To remove the discontinuity, the new value must equal the limit at the point. Factor and cancel first.\\[ \\begin{aligned} \\lim_{x \\to "+r+"} \\frac{"+num+"}{"+u2qDen(r)+"} &= \\lim_{x \\to "+r+"} \\left("+u2qDen(s)+"\\right) \\\\ &= "+ans+" \\end{aligned} \\] So the redefined value must be <b>\\("+ans+"\\)</b>.",
+      {mode:mode,r:r,s:s,ans:ans});
+  }
+  if(mode==="sq"){
+    var r2=ri(-6,6);while(r2===0)r2=ri(-6,6);
+    var ans2=2*r2;
+    return numq("The function \\(f(x) = \\frac{x^2 - "+(r2*r2)+"}{"+u2qDen(r2)+"}\\) is undefined at \\(x = "+r2+"\\), and the discontinuity there is removable. The function is redefined by setting \\(f("+r2+") = m\\), which makes the redefined function continuous at \\(x = "+r2+"\\). Find \\(m\\).",
+      ans2,0.011,
+      "To remove the discontinuity, the new value must equal the limit at the point. Factor as a difference of squares and cancel.\\[ \\begin{aligned} \\lim_{x \\to "+r2+"} \\frac{x^2 - "+(r2*r2)+"}{"+u2qDen(r2)+"} &= \\lim_{x \\to "+r2+"} \\left("+u2qDen(-r2)+"\\right) \\\\ &= "+ans2+" \\end{aligned} \\] So the redefined value must be <b>\\("+ans2+"\\)</b>.",
+      {mode:mode,r:r2,ans:ans2});
+  }
+  var r3=ri(-4,4),d1=pick([1,2,4,-1,-2,-4]),kk=ri(-4,4);while(kk===0)kk=ri(-4,4);
+  var t=r3-d1,s3=r3-kk*d1;
+  var numB=u2qPoly([1,-(r3+s3),r3*s3]),denB=u2qPoly([1,-(r3+t),r3*t]);
+  return numq("The function \\(f(x) = \\frac{"+numB+"}{"+denB+"}\\) is undefined at \\(x = "+r3+"\\), and the discontinuity there is removable. The function is redefined by setting \\(f("+r3+") = m\\), which makes the redefined function continuous at \\(x = "+r3+"\\). Find \\(m\\).",
+    kk,0.011,
+    "To remove the discontinuity, the new value must equal the limit at the point. Both parts share the factor \\(\\left("+u2qDen(r3)+"\\right)\\); cancel it and substitute.\\[ \\begin{aligned} \\lim_{x \\to "+r3+"} \\frac{"+numB+"}{"+denB+"} &= \\lim_{x \\to "+r3+"} \\frac{"+u2qDen(s3)+"}{"+u2qDen(t)+"} \\\\ &= "+u2qFracRaw(r3-s3,r3-t)+" \\\\ &= "+kk+" \\end{aligned} \\] So the redefined value must be <b>\\("+kk+"\\)</b>.",
+    {mode:mode,r:r3,t:t,ans:kk});
+});
+E("u2-limit-absvalue",2,["2.7","2.8"],3,"gen",function(){
+  var mode=pick(["sign","oneside","square"]);
+  var DNE="\\(\\text{does not exist}\\)";
+  if(mode==="sign"){
+    var a=ri(-6,6);while(a===0)a=ri(-6,6);
+    return mcq("Evaluate \\(\\lim_{x \\to "+a+"} \\frac{|"+u2qDen(a)+"|}{"+u2qDen(a)+"}\\).",
+      DNE,["\\(1\\)","\\(-1\\)","\\(0\\)"],
+      "The quotient is a sign ratio: for \\(x\\) just right of \\("+a+"\\) the expression inside the absolute value is positive, so the quotient equals \\(1\\); for \\(x\\) just left of \\("+a+"\\) it is negative, so the quotient equals \\(-1\\). The one-sided limits disagree, so the two-sided limit <b>does not exist</b>.",
+      {mode:mode,a:a});
+  }
+  if(mode==="oneside"){
+    var a2=ri(-6,6);while(a2===0)a2=ri(-6,6);
+    var side=pick(["+","-"]),kv=(side==="+")?1:-1;
+    return mcq("Evaluate \\(\\lim_{x \\to "+a2+"^"+side+"} \\frac{|"+u2qDen(a2)+"|}{"+u2qDen(a2)+"}\\).",
+      "\\("+kv+"\\)",["\\("+(-kv)+"\\)","\\(0\\)",DNE],
+      "On the "+(side==="+"?"right":"left")+" side of \\("+a2+"\\), the expression inside the absolute value is "+(side==="+"?"positive":"negative")+" throughout, so the absolute value can be removed with a "+(side==="+"?"plus":"minus")+" sign and the quotient is constantly \\("+kv+"\\) there. The limit is <b>\\("+kv+"\\)</b>.",
+      {mode:mode,a:a2,side:side});
+  }
+  var a3=pick([-5,-4,-3,-2,2,3,4,5]);
+  var ask=pick(["right","left","two"]);
+  var key3,ds3,sol3;
+  var disp="\\frac{\\left|x^2 - "+(a3*a3)+"\\right|}{"+u2qDen(a3)+"}";
+  if(ask==="two"){
+    key3=DNE;ds3=["\\("+(2*a3)+"\\)","\\("+(-2*a3)+"\\)","\\(0\\)"];
+    sol3="Split by cases. Just right of \\("+a3+"\\), \\(x^2 - "+(a3*a3)+"\\) is "+(a3>0?"positive":"negative")+", and just left of \\("+a3+"\\) it has the opposite sign, so removing the absolute value gives two different simplified forms: the one-sided limits are \\("+(2*Math.abs(a3))+"\\) and \\("+(-2*Math.abs(a3))+"\\) . Since they disagree, the two-sided limit <b>does not exist</b>.";
+  }else{
+    var kv3=(ask==="right")?(2*Math.abs(a3)):(-2*Math.abs(a3));
+    key3="\\("+kv3+"\\)";
+    var candA=["\\("+(-kv3)+"\\)","\\("+(2*a3)+"\\)",DNE,"\\(0\\)","\\("+a3+"\\)"];
+    ds3=candA.filter(function(v,ix){return v!==key3&&candA.indexOf(v)===ix;}).slice(0,3);
+    var posSide=((ask==="right")&&(a3>0))||((ask==="left")&&(a3<0));
+    var formStr=posSide?("\\("+u2qLin(1,a3)+"\\)"):("\\(-\\left("+u2qLin(1,a3)+"\\right)\\)");
+    sol3="Work by cases on the side requested. Just "+ask+" of \\("+a3+"\\), \\(x^2 - "+(a3*a3)+"\\) is "+(posSide?"positive, so the absolute value comes off unchanged":"negative, so the absolute value negates it")+", and the quotient simplifies to "+formStr+". Substituting \\(x = "+a3+"\\) then gives the value. The limit is <b>\\("+kv3+"\\)</b>.";
+  }
+    return mcq("Evaluate \\(\\lim_{x \\to "+a3+((ask==="right")?"^+":(ask==="left")?"^-":"")+"} "+disp+"\\).",
+    key3,ds3,sol3,{mode:mode,a:a3,ask:ask});
+});
+E("u2-limit-error-analysis",2,["2.7","2.16"],3,"var",varset([
+  function(){return mcq("A student is asked for \\(\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2}\\). The student substitutes \\(x = 2\\), gets \\(\\frac{0}{0}\\), and writes: the limit does not exist, because the expression is undefined at \\(x = 2\\) and \\(\\frac{0}{0}\\) has no value. Which statement best describes the student's work?",
+    "The conclusion is wrong: \\(\\frac{0}{0}\\) is an indeterminate form, and factoring the numerator first shows the limit is 4",
+    ["The work is correct: a limit cannot exist at a point where the function itself is undefined, just as it is here",
+     "The only error is arithmetic: substituting \\(x = 2\\) actually gives \\(\\frac{0}{4}\\), which equals 0, so the limit is 0",
+     "The method is the problem: limits must be read from a graph or a table, never found algebraically in this way"],
+    "Getting \\(\\frac{0}{0}\\) means the method has stalled, not that the limit fails to exist. Factoring, \\(x^2 - 4 = (x - 2)(x + 2)\\), and cancelling gives \\(x + 2\\), whose limit is \\(4\\). The first statement is the accurate one: <b>the conclusion is wrong, and the limit is 4</b>.",
+    {v:1});},
+  function(){return mcq("A student checks whether \\(f(x) = \\frac{x^2 - 1}{x - 1}\\) is continuous at \\(x = 1\\). The student factors, cancels, computes the limit \\(2\\), and writes: the limit exists, so the function is continuous at \\(x = 1\\). Which statement best describes the student's work?",
+    "Finding the limit is not enough: \\(f(1)\\) does not exist, so \\(f\\) cannot be continuous at \\(x = 1\\) (the discontinuity is removable)",
+    ["The work is correct: the limit exists and equals 2, and that is all continuity at a point requires, so nothing more needs checking",
+     "The only error is the limit value: factoring gives \\(x - 1\\) after cancelling, so the limit is 0, not 2",
+     "The error is in the factoring step: \\(x^2 - 1\\) cannot be factored as the student did, so the limit does not exist"],
+    "Continuity at a point needs three things: the limit exists, the function value exists, and the two agree. Here \\(f(1)\\) is undefined because the denominator vanishes, so continuity fails no matter what the limit is. The first statement is the accurate one: <b>the limit alone is not enough, and \\(f(1)\\) does not exist</b>.",
+    {v:2});},
+  function(){return mcq("A student is asked for \\(\\lim_{x \\to \\infty} \\frac{3x^2 + 1}{x^2 - 5}\\). The student keeps only the constant terms and writes: the limit is \\(-\\frac{1}{5}\\). Which statement best describes the student's work?",
+    "The wrong terms were kept: as \\(x \\to \\infty\\) the lower terms become negligible, and the leading terms give a limit of 3",
+    ["The work is correct: in a limit at infinity only the constant terms survive, so \\(-\\frac{1}{5}\\) is right in the end",
+     "The only error is the sign: keeping the constant terms gives \\(\\frac{1}{5}\\), not \\(-\\frac{1}{5}\\), and nothing else is wrong",
+     "The method is the problem: a limit at infinity must be found by substituting larger and larger numbers"],
+    "In a limit at infinity the highest-degree terms dominate; the constants are the terms that matter least, not the ones that survive. The leading terms give \\(\\frac{3x^2}{x^2} = 3\\). The first statement is the accurate one: <b>the wrong terms were kept, and the limit is 3</b>.",
+    {v:3});},
+  function(){return mcq("A student writes: since \\(\\frac{1}{0.001} = 1000\\) is large and positive, \\(\\lim_{x \\to 0} \\frac{1}{x} = \\infty\\). Which statement best describes the student's work?",
+    "Only the right side was considered: from the left the values are large and negative, so the two-sided limit does not exist",
+    ["The work is correct: the values grow without bound near 0, so the limit is \\(\\infty\\) from both sides of 0, exactly as the student found",
+     "The only error is arithmetic: \\(\\frac{1}{0.001}\\) equals 100, not 1000, so the reasoning collapses completely",
+     "The error is using a decimal: limits at a point must be checked with fractions, never with a decimal value like this one"],
+    "The number \\(0.001\\) tests only the right side of \\(0\\). From the left, values such as \\(\\frac{1}{-0.001} = -1000\\) are large and negative, so the two sides disagree completely. The first statement is the accurate one: <b>only the right side was considered, and the two-sided limit does not exist</b>.",
+    {v:4});}
+]));
+
+/* ----- bank-u3.js ----- */
+// Math 3208 Unit 3 Rational Functions question bank
+// CRMARKS: u3-end-behaviour=2
+// CRMARKS: u3-hole-or-asymptote=1
+// CRMARKS: u3-near-npv=2
+// CRMARKS: u3-hole-coordinates=3
+// CRMARKS: u3-features-basic=2
+// CRMARKS: u3-asymptote-set=3
+// CRMARKS: u3-sketch-features=3
+// CRMARKS: u3-behaviour-analysis=2
+/* ================= Unit 3: Rational Functions (MA3208.1.8 to 1.10) =================
+   Tranche 1, mid scope. All functions, values and statements are original.
+   Helpers are prefixed u3; entries register through E(...). */
+
+/* ---------- u3 helpers ---------- */
+function u3Gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=a%b; a=b; b=t; } return a||1; }
+function u3FracS(num,den){ /* reduced fraction as LaTeX content (no delimiters); den != 0 */
+  if(den<0){ num=-num; den=-den; }
+  var g=u3Gcd(num,den); num/=g; den/=g;
+  if(den===1) return ""+num;
+  return (num<0?"-":"")+"\\frac{"+Math.abs(num)+"}{"+den+"}";
+}
+function u3FacS(r){ /* factor (x - r) as a string, for a root r */
+  if(r===0) return "x";
+  return r>0?"(x - "+r+")":"(x + "+(-r)+")";
+}
+function u3BinS(r){ /* binomial content for a root r: x - r, x + |r|, or x */
+  if(r===0) return "x";
+  return r>0?"x - "+r:"x + "+(-r);
+}
+function u3PS(cf){ /* coefficients, highest degree first, to a polynomial string in x */
+  var out="", first=true, n=cf.length-1, i, c, p, term, base;
+  for(i=0;i<cf.length;i++){ c=cf[i]; p=n-i; if(c===0) continue;
+    base=(p===0?"":(p===1?"x":"x^"+p));
+    term=(p===0?""+Math.abs(c):(Math.abs(c)===1?base:Math.abs(c)+base));
+    if(first){ out=(c<0?"-":"")+term; first=false; }
+    else out+=(c<0?" - ":" + ")+term;
+  }
+  return out===""?"0":out;
+}
+function u3Cands(key,cands){ /* first 3 candidate strings distinct from the key and each other */
+  var out=[], seen={}; seen[key]=1;
+  for(var i=0;i<cands.length;i++){ var s=String(cands[i]);
+    if(!seen[s]){ seen[s]=1; out.push(s); if(out.length===3) break; } }
+  return out;
+}
+function u3Distinct(n,lo,hi,noZero){ /* n distinct integers in [lo,hi] */
+  var out=[], guard=0;
+  while(out.length<n && guard++<500){ var v=ri(lo,hi);
+    if(noZero && v===0) continue;
+    if(out.indexOf(v)<0) out.push(v); }
+  return out;
+}
+function u3SideSt(a,L,R){ /* one-sided behaviour statement at a; L, R are +1 or -1 */
+  return "As \\(x \\to "+a+"^-\\), \\(f(x) \\to "+(L>0?"+\\infty":"-\\infty")+"\\); as \\(x \\to "+a+"^+\\), \\(f(x) \\to "+(R>0?"+\\infty":"-\\infty")+"\\)"; 
+}
+function u3SideDis(a,key){ /* the other three sign-combination statements */
+  var combos=[[1,1],[1,-1],[-1,1],[-1,-1]], out=[];
+  for(var i=0;i<combos.length;i++){ var s=u3SideSt(a,combos[i][0],combos[i][1]);
+    if(s!==key) out.push(s); }
+  return out;
+}
+
+/* ---------- u3-end-behaviour (1.8, Level 1) ---------- */
+E("u3-end-behaviour",3,["1.8"],1,"gen",function(){
+  var mode=ri(0,2), a=ri(2,6), d=ri(2,5);
+  if(a===d) d=(d===5?4:d+1);
+  var b=ri(-6,6), c=ri(-6,6), e=ri(-6,6), g=ri(-6,6);
+  var ratio=u3FracS(a,d), inv=u3FracS(d,a);
+  var obl="As \\(x \\to \\infty\\), \\(f(x)\\) grows without bound along an oblique asymptote";
+  function fin(V){ return "As \\(x \\to \\infty\\), \\(f(x) \\to "+V+"\\), so the graph approaches the line \\(y = "+V+"\\)"; }
+  var num, den, key, dis, sol;
+  if(mode===0){
+    num=u3PS([a,b]); den=u3PS([d,e,g]);
+    key=fin("0"); dis=[fin(ratio), fin(inv), obl];
+    sol="The numerator has degree \\(1\\) and the denominator has degree \\(2\\). The denominator grows faster, so the values of \\(f(x)\\) shrink toward \\(0\\) as \\(x \\to \\infty\\). The graph approaches the line <b>\\(y = 0\\)</b>.";
+  } else if(mode===1){
+    num=u3PS([a,b,c]); den=u3PS([d,e,g]);
+    key=fin(ratio); dis=[fin("0"), fin(inv), obl];
+    sol="The numerator and denominator have the same degree, \\(2\\), so the end behaviour is set by the ratio of the leading coefficients: \\[ \\frac{"+a+"}{"+d+"} = "+ratio+" \\] The graph approaches the line <b>\\(y = "+ratio+"\\)</b>.";
+  } else {
+    num=u3PS([a,b,c]); den=u3PS([d,e]);
+    key=obl; dis=[fin("0"), fin(ratio), fin(inv)];
+    sol="The numerator has degree \\(2\\) and the denominator has degree \\(1\\). Since the numerator's degree is exactly one more, there is no horizontal asymptote: the graph follows an <b>oblique asymptote</b> and \\(f(x)\\) grows without bound.";
+  }
+  return mcq("Which statement describes the end behaviour of the graph of \\(f(x) = \\frac{"+num+"}{"+den+"}\\)?",
+    key, dis, sol, {mode:mode});
+});
+
+/* ---------- u3-hole-or-asymptote (1.9, Level 1) ---------- */
+E("u3-hole-or-asymptote",3,["1.9"],1,"gen",function(){
+  var vs=u3Distinct(4,-6,6,false), a=vs[0], b=vs[1], c=vs[2], w=vs[3];
+  var hole=Math.random()<0.5, k=pick([1,1,2,3]);
+  var denS=u3FacS(a)+u3FacS(c);
+  var numS=(k>1?""+k:"")+(hole?u3FacS(a)+u3FacS(b):u3FacS(b)+u3FacS(w));
+  var holeOpt="A hole: the factor "+u3FacS(a)+" cancels, so the discontinuity is removable there";
+  var asymOpt="A vertical asymptote: the denominator is \\(0\\) at that value while the numerator is not";
+  var noneOpt="No break at all: the function is defined and continuous at that value";
+  var intOpt="An \\(x\\)-intercept: the graph crosses the horizontal axis at that value, as at every intercept";
+  var key, dis, sol;
+  if(hole){
+    key=holeOpt; dis=[asymOpt, noneOpt, intOpt];
+    sol="At \\(x = "+a+"\\), both the numerator and the denominator contain the factor "+u3FacS(a)+". Cancelling that common factor leaves a function that is defined at \\(x = "+a+"\\), so the original graph has a <b>hole</b> there rather than an asymptote.";
+  } else {
+    var nv=k*(a-b)*(a-w);
+    key=asymOpt; dis=[holeOpt, noneOpt, intOpt];
+    sol="At \\(x = "+a+"\\), the denominator is \\(0\\), but the numerator is \\("+nv+"\\), which is not zero, and no factor cancels. The function values grow without bound near \\(x = "+a+"\\), so the graph has a <b>vertical asymptote</b> there.";
+  }
+  return mcq("Consider \\(f(x) = "+FR(numS,denS)+"\\) What does the graph of \\(f\\) have at \\(x = "+a+"\\)?",
+    key, dis, sol, {a:a, hole:hole});
+});
+
+/* ---------- u3-near-npv (1.8, Level 2) ---------- */
+E("u3-near-npv",3,["1.8"],2,"gen",function(){
+  var a=ri(-6,6), b;
+  do{ b=ri(-6,6); }while(b===a);
+  var m=pick([-5,-4,-3,-2,-1,1,2,3,4,5]), p=pick([1,2]);
+  var numS=(m===1?"":m===-1?"-":""+m)+u3FacS(b);
+  var denS=u3FacS(a)+(p===2?"^2":"");
+  var rs=(m>0?1:-1)*((a-b)>0?1:-1);
+  var ls=(p===1)?-rs:rs;
+  var key=u3SideSt(a,ls,rs), dis=u3SideDis(a,key);
+  var sol="Close to \\(x = "+a+"\\), the factor "+u3FacS(b)+" keeps one sign, since \\(x\\) is nowhere near \\("+b+"\\); at \\(x = "+a+"\\) it equals \\("+(a-b)+"\\). "
+    +"The denominator factor "+u3FacS(a)+(p===2?" is squared, so it stays positive on both sides":" changes sign at \\(x = "+a+"\\)")+". "
+    +"Combining the signs, \\(f(x) \\to "+(ls>0?"+\\infty":"-\\infty")+"\\) from the left and \\(f(x) \\to "+(rs>0?"+\\infty":"-\\infty")+"\\) from the right. "
+    +"The behaviour near \\(x = "+a+"\\) is <b>"+"\\(f(x) \\to "+(ls>0?"+\\infty":"-\\infty")+"\\) on the left and \\(f(x) \\to "+(rs>0?"+\\infty":"-\\infty")+"\\) on the right</b>.";
+  return mcq("Consider \\(f(x) = "+FR(numS,denS)+"\\) Which statement describes the behaviour of \\(f(x)\\) for values of \\(x\\) near \\(x = "+a+"\\)?",
+    key, dis, sol, {a:a, b:b, m:m, p:p});
+});
+
+/* ---------- u3-hole-coordinates (1.9, Level 2) ---------- */
+E("u3-hole-coordinates",3,["1.9"],2,"gen",function(){
+  var vs=u3Distinct(3,-6,6,false), h=vs[0], b=vs[1], c=vs[2];
+  var k=pick([1,2,3]);
+  var numS=(k>1?""+k:"")+u3FacS(h)+u3FacS(b), denS=u3FacS(h)+u3FacS(c);
+  var Ln=k*(h-b), Ld=h-c, L=u3FracS(Ln,Ld);
+  function coord(x,y){ return "\\(\\left("+x+", "+y+"\\right)\\)"; }
+  var candY=[u3FracS(Ld,Ln), u3FracS(-Ln,Ld), "0", u3FracS(Ln+Ld,Ld), u3FracS(Ln-Ld,Ld), u3FracS(2*Ln,Ld)];
+  var dis=u3Cands(L,candY).map(function(y){ return coord(h,y); });
+  function subS(x,y){ return y>=0?x+" - "+y:x+" + "+(-y); }
+  var sol="The factor "+u3FacS(h)+" is common to the numerator and the denominator, so \\(x = "+h+"\\) is the location of the hole. "
+    +"Cancelling it gives \\(f(x) = "+FR((k>1?""+k:"")+u3FacS(b), u3FacS(c))+"\\) for \\(x \\ne "+h+"\\). "
+    +"The \\(y\\)-value of the hole is the value of the reduced function at \\(x = "+h+"\\): "
+    +"\\[ \\frac{"+(k>1?k+"("+subS(h,b)+")":"("+subS(h,b)+")")+"}{"+subS(h,c)+"} = "+L+" \\] "
+    +"The hole is at <b>\\(\\left("+h+", "+L+"\\right)\\)</b>.";
+  return mcq("The graph of \\(f(x) = "+FR(numS,denS)+"\\) has a hole at exactly one point. What are the coordinates of the hole?",
+    coord(h,L), dis, sol, {h:h, b:b, c:c, k:k});
+});
+
+/* ---------- u3-features-basic (1.10, Level 2) ---------- */
+E("u3-features-basic",3,["1.10"],2,"gen",function(){
+  var mode=ri(0,1);
+  var vs=u3Distinct(2,-6,6,true), a=vs[0], b=vs[1];
+  var k=pick([1,2,3]);
+  var denS=u3FacS(a)+u3FacS(b);
+  var numS, key, dis, sol;
+  if(mode===0){
+    var r;
+    do{ r=ri(-6,6); }while(r===0||r===a||r===b);
+    numS=(k>1?""+k:"")+u3FacS(r);
+    var yS=u3FracS(-k*r, a*b), yFlip=u3FracS(k*r, a*b);
+    function st(xi,yi,v1,v2){ return "\\(x\\)-intercept \\("+xi+"\\); \\(y\\)-intercept \\("+yi+"\\); vertical asymptotes \\(x = "+v1+"\\) and \\(x = "+v2+"\\)"; }
+    key=st(r,yS,a,b);
+    dis=[st(-r,yS,a,b), st(r,yFlip,a,b), st(r,yS,r,b)];
+    sol="The \\(x\\)-intercept comes from the numerator: "+u3FacS(r)+" is zero at \\(x = "+r+"\\). "
+      +"The \\(y\\)-intercept is \\(f(0)\\): \\[ f(0) = \\frac{"+(k>1?k+"(0 - "+r+")":"(0 - "+r+")")+"}{(0 - "+a+")(0 - "+b+")} = "+yS+" \\] "
+      +"The denominator is zero at \\(x = "+a+"\\) and \\(x = "+b+"\\), and neither value makes the numerator zero, so both give vertical asymptotes. "
+      +"The features are <b>\\(x\\)-intercept \\("+r+"\\), \\(y\\)-intercept \\("+yS+"\\), asymptotes \\(x = "+a+"\\) and \\(x = "+b+"\\)</b>.";
+  } else {
+    numS=""+k;
+    var yS2=u3FracS(k, a*b), yFlip2=u3FracS(-k, a*b);
+    function st0(pre,yi,v1,v2){ return pre+" \\(y\\)-intercept \\("+yi+"\\); vertical asymptotes \\(x = "+v1+"\\) and \\(x = "+v2+"\\)"; }
+    key=st0("No \\(x\\)-intercept;", yS2, a, b);
+    dis=[st0("\\(x\\)-intercept \\("+a+"\\);", yS2, a, b),
+         st0("No \\(x\\)-intercept;", yFlip2, a, b),
+         st0("No \\(x\\)-intercept;", yS2, -a, b)];
+    sol="The numerator is the constant \\("+k+"\\), which is never zero, so there is <b>no \\(x\\)-intercept</b>. "
+      +"The \\(y\\)-intercept is \\(f(0) = \\frac{"+k+"}{"+(a*b)+"}\\), which is \\("+yS2+"\\). "
+      +"The denominator is zero at \\(x = "+a+"\\) and \\(x = "+b+"\\), and neither value makes the numerator zero, so both give vertical asymptotes.";
+  }
+  return mcq("Which list gives the intercepts and vertical asymptotes of \\(f(x) = "+FR(numS,denS)+"\\)?",
+    key, dis, sol, {mode:mode, a:a, b:b});
+});
+
+/* ---------- u3-asymptote-set (1.10, Level 2) ---------- */
+E("u3-asymptote-set",3,["1.10"],2,"gen",function(){
+  var mode=ri(0,2), key, dis, sol, fS;
+  if(mode===0){
+    var vs=u3Distinct(2,-6,6,false), p=vs[0], q=vs[1];
+    var A=pick([1,2,3]), B;
+    do{ B=ri(-6,6); }while(A*p+B===0||A*q+B===0);
+    fS=FR(u3PS([A,B]), u3PS([1,-(p+q),p*q]));
+    var va="Vertical asymptotes \\(x = "+p+"\\) and \\(x = "+q+"\\)";
+    key=va+"; horizontal asymptote \\(y = 0\\)";
+    dis=[va+"; horizontal asymptote \\(y = "+A+"\\)",
+         "Vertical asymptote \\(x = "+p+"\\) only; horizontal asymptote \\(y = 0\\)",
+         va+"; an oblique asymptote and no horizontal asymptote"];
+    sol="The denominator factors as "+u3FacS(p)+u3FacS(q)+", and neither root makes the numerator zero, so both \\(x = "+p+"\\) and \\(x = "+q+"\\) are vertical asymptotes. "
+      +"The numerator has degree \\(1\\) and the denominator degree \\(2\\), so \\(f(x) \\to 0\\) at both ends: the horizontal asymptote is <b>\\(y = 0\\)</b>.";
+  } else if(mode===1){
+    var a2=ri(-6,6), m=pick([-3,-2,-1,1,2,3]), n, r;
+    do{ n=ri(-5,5); }while(n===0);
+    do{ r=ri(-6,6); }while(r===0);
+    var numS2=u3PS([m, n-m*a2, r-n*a2]), denS2=u3BinS(a2), line=u3PS([m,n]);
+    fS=FR(numS2, denS2);
+    key="Vertical asymptote \\(x = "+a2+"\\); oblique asymptote \\(y = "+line+"\\); no horizontal asymptote";
+    dis=["Vertical asymptote \\(x = "+a2+"\\); horizontal asymptote \\(y = "+m+"\\)",
+         "Vertical asymptote \\(x = "+a2+"\\); oblique asymptote \\(y = "+u3PS([m,-n])+"\\); no horizontal asymptote",
+         "Oblique asymptote \\(y = "+line+"\\); no vertical asymptote"];
+    sol="Dividing the numerator by the denominator: \\[ \\frac{"+numS2+"}{"+denS2+"} = "+line+" + \\frac{"+r+"}{"+denS2+"} \\] "
+      +"The fraction term shrinks to \\(0\\) as \\(x\\) grows, so the graph follows the oblique asymptote \\(y = "+line+"\\). "
+      +"The denominator is zero at \\(x = "+a2+"\\) while the numerator there is \\("+r+"\\), not zero, giving a vertical asymptote. The asymptote set is <b>\\(x = "+a2+"\\) and \\(y = "+line+"\\)</b>.";
+  } else {
+    var vs2=u3Distinct(2,-6,6,false), p2=vs2[0], q2=vs2[1];
+    var A2=pick([2,3,4,5]), B2=ri(-6,6), C2=ri(-6,6), guard=0;
+    while((A2*p2*p2+B2*p2+C2===0||A2*q2*q2+B2*q2+C2===0)&&guard++<50) C2+=1;
+    fS=FR(u3PS([A2,B2,C2]), u3PS([1,-(p2+q2),p2*q2]));
+    var va2="Vertical asymptotes \\(x = "+p2+"\\) and \\(x = "+q2+"\\)";
+    key=va2+"; horizontal asymptote \\(y = "+A2+"\\)";
+    dis=[va2+"; horizontal asymptote \\(y = 0\\)",
+         va2+"; horizontal asymptote \\(y = "+u3FracS(1,A2)+"\\)",
+         "Vertical asymptote \\(x = "+p2+"\\) only; horizontal asymptote \\(y = "+A2+"\\)"];
+    sol="The denominator factors as "+u3FacS(p2)+u3FacS(q2)+", and neither root makes the numerator zero, so both are vertical asymptotes. "
+      +"Numerator and denominator both have degree \\(2\\), so the horizontal asymptote comes from the leading coefficients: \\(y = \\frac{"+A2+"}{1} = "+A2+"\\). "
+      +"The asymptote set is <b>\\(x = "+p2+"\\), \\(x = "+q2+"\\) and \\(y = "+A2+"\\)</b>.";
+  }
+  return mcq("Which statement gives all the asymptotes of \\(f(x) = "+fS+"\\)?",
+    key, dis, sol, {mode:mode});
+});
+
+/* ---------- u3-sketch-features (1.10, Level 2) ---------- */
+E("u3-sketch-features",3,["1.10"],2,"gen",function(){
+  var h, a, r, vs, guard=0;
+  do{ vs=u3Distinct(3,-6,6,true); h=vs[0]; a=vs[1]; r=vs[2]; }
+  while(Math.abs(h-r)===Math.abs(h-a) && guard++<200);
+  var fS=FR(u3FacS(h)+u3FacS(r), u3FacS(h)+u3FacS(a));
+  var L=u3FracS(h-r, h-a), yS=u3FracS(r, a);
+  function full(hx, hy, va, xi, yi){
+    return "Domain: all real numbers except \\(x = "+h+"\\) and \\(x = "+a+"\\); hole at \\(\\left("+hx+", "+hy+"\\right)\\); vertical asymptote \\(x = "+va+"\\); \\(x\\)-intercept \\("+xi+"\\); \\(y\\)-intercept \\("+yi+"\\)";
+  }
+  var key=full(h, L, a, r, yS);
+  var dis=[full(a, u3FracS(a-r, a-h), h, r, yS),
+           full(h, u3FracS(h-a, h-r), a, r, yS),
+           full(h, L, a, r, u3FracS(-r, a))];
+  var sol="The non-permissible values are \\(x = "+h+"\\) and \\(x = "+a+"\\), so the domain excludes both. "
+    +"The factor "+u3FacS(h)+" cancels, so \\(x = "+h+"\\) is a hole; its height is the reduced function at \\(x = "+h+"\\): \\[ \\frac{("+h+") - ("+r+")}{("+h+") - ("+a+")} = "+L+" \\] "
+    +"The factor "+u3FacS(a)+" does not cancel, so \\(x = "+a+"\\) is a vertical asymptote. "
+    +"The numerator's other factor gives the \\(x\\)-intercept \\("+r+"\\), and \\(f(0) = "+yS+"\\) is the \\(y\\)-intercept. "
+    +"The sketch features are <b>the domain above, a hole at \\(\\left("+h+", "+L+"\\right)\\), asymptote \\(x = "+a+"\\), intercepts \\("+r+"\\) and \\("+yS+"\\)</b>.";
+  return mcq("Which feature list would you use to sketch the graph of \\(f(x) = "+fS+"\\)?",
+    key, dis, sol, {h:h, a:a, r:r});
+});
+
+/* ---------- u3-behaviour-analysis (1.8, 1.9, Level 2) ---------- */
+E("u3-behaviour-analysis",3,["1.8","1.9"],2,"gen",function(){
+  var vs=u3Distinct(3,-6,6,false), h=vs[0], s=vs[1], a=vs[2];
+  var fS=FR(u3FacS(h)+u3FacS(s), u3FacS(h)+u3FacS(a));
+  var mode=ri(0,2), key, dis, sol, prompt;
+  if(mode===0){
+    prompt="Consider \\(f(x) = "+fS+"\\) Which statement correctly describes what happens at each non-permissible value?";
+    key="\\(x = "+h+"\\) gives a hole, because its factor cancels; \\(x = "+a+"\\) gives a vertical asymptote, because its factor does not cancel";
+    dis=["\\(x = "+a+"\\) gives a hole, because its factor cancels; \\(x = "+h+"\\) gives a vertical asymptote, because its factor does not cancel",
+         "Both values give holes, because every value that makes the denominator zero is a removable discontinuity",
+         "Both values give vertical asymptotes, because every value that makes the denominator zero is an asymptote"];
+    sol="The denominator is zero at \\(x = "+h+"\\) and at \\(x = "+a+"\\). The factor "+u3FacS(h)+" also appears in the numerator and cancels, so \\(x = "+h+"\\) is a <b>hole</b>. "
+      +"The factor "+u3FacS(a)+" has no matching factor in the numerator, so \\(x = "+a+"\\) is a <b>vertical asymptote</b>.";
+  } else if(mode===1){
+    prompt="Consider \\(f(x) = "+fS+"\\) What is \\(\\lim_{x \\to "+h+"} f(x)\\)?";
+    var Ln=h-s, Ld=h-a, L=u3FracS(Ln,Ld);
+    key="\\("+L+"\\)";
+    var candO=["\\("+u3FracS(Ld,Ln)+"\\)", "\\("+u3FracS(-Ln,Ld)+"\\)", "\\(\\text{the limit does not exist}\\)", "\\("+u3FracS(Ln+Ld,Ld)+"\\)"];
+    dis=u3Cands(key,candO);
+    sol="As \\(x \\to "+h+"\\), the common factor "+u3FacS(h)+" can be cancelled, since the limit looks at values near \\("+h+"\\) rather than at \\("+h+"\\) itself. "
+      +"The reduced function at \\(x = "+h+"\\) is \\[ \\frac{("+h+") - ("+s+")}{("+h+") - ("+a+")} = "+L+" \\] "
+      +"So the limit exists and equals <b>\\("+L+"\\)</b>, even though \\(f("+h+")\\) is undefined.";
+  } else {
+    prompt="Consider \\(f(x) = "+fS+"\\) Which statement describes the behaviour of \\(f(x)\\) for values of \\(x\\) near \\(x = "+a+"\\)?";
+    var rs=(a-s)>0?1:-1, ls=-rs;
+    key=u3SideSt(a,ls,rs);
+    dis=u3SideDis(a,key);
+    sol="Near \\(x = "+a+"\\), the numerator is close to \\(("+a+" - "+h+")("+a+" - "+s+")\\) and the factor "+u3FacS(h)+" in the denominator is close to \\("+(a-h)+"\\); these combine so that \\(f(x)\\) behaves like \\(\\frac{"+(a-s)+"}{"+u3BinS(a)+"}\\) near \\(x = "+a+"\\). "
+      +"So \\(f(x) \\to "+(ls>0?"+\\infty":"-\\infty")+"\\) from the left and \\(f(x) \\to "+(rs>0?"+\\infty":"-\\infty")+"\\) from the right. "
+      +"The behaviour near \\(x = "+a+"\\) is <b>"+"\\(f(x) \\to "+(ls>0?"+\\infty":"-\\infty")+"\\) on the left and \\(f(x) \\to "+(rs>0?"+\\infty":"-\\infty")+"\\) on the right</b>.";
+  }
+  return mcq(prompt, key, dis, sol, {mode:mode, h:h, s:s, a:a});
+});
+
+/* ----- bank-u4.js ----- */
+// Math 3208 Unit 4 Derivatives question bank
+// CRMARKS: u4-average-rate=1
+// CRMARKS: u4-instantaneous-concept=1
+// CRMARKS: u4-definition-point=2
+// CRMARKS: u4-first-principles=2
+// CRMARKS: u4-basic-derivatives=2
+// CRMARKS: u4-product-quotient=3
+// CRMARKS: u4-higher-derivatives=2
+// CRMARKS: u4-chain-rule=2
+// CRMARKS: u4-tangent-normal=2
+// CRMARKS: u4-motion=2
+// CRMARKS: u4-implicit=3
+// CRMARKS: u4-implicit-second=3
+// CRMARKS: u4-tangent-parameter=3
+// CRMARKS: u4-chain-values=2
+/* Math 3208 Review, Unit 4 (Derivatives), tranche 1 entries.
+   Format per brief-common.md. Fractions are written as literal \frac strings
+   (this chassis does not define an FR helper). */
+
+E("u4-secant-tangent",4,["3.1"],1,"var",varset([
+  function(){return mcq("Which statement best describes a secant line to the graph of \\( y = f(x) \\)?",
+    "It is a line through two points on the graph, and its slope is the average rate of change between them",
+    ["It is a line through one point on the graph, and its slope is the instantaneous rate of change there",
+     "It is a line through one point on the graph, perpendicular to the curve's tangent line at that point",
+     "It is a line through two points on the graph, and its slope is the instantaneous rate of change there"],
+    "A secant line joins two points on the graph of the function. Its slope is the change in the function values divided by the change in \\( x \\), which is the average rate of change between the two points. A line through a single point carrying the curve's own slope there is a tangent line. The secant line is <b>the line through two points on the graph, whose slope is the average rate of change between them</b>.",{});},
+  function(){return mcq("Which statement best describes the tangent line to the graph of \\( y = f(x) \\) at \\( x = a \\)?",
+    "It touches the graph at \\( (a, f(a)) \\) and has slope equal to the derivative of \\( f \\) at \\( a \\)",
+    ["It joins \\( (a, f(a)) \\) to a second point on the graph and has slope equal to an average rate of change",
+     "It touches the graph at \\( (a, f(a)) \\) and runs perpendicular to the secant line through that point",
+     "It crosses the graph at two points and has slope equal to the derivative of \\( f \\) at \\( a \\)"],
+    "The tangent line touches the graph at the single point \\( (a, f(a)) \\) and points in the direction of the curve there, so its slope is the instantaneous rate of change \\( f'(a) \\). A line joining two points of the graph is a secant line. The tangent line is <b>the line touching the graph at \\( (a, f(a)) \\) with slope \\( f'(a) \\)</b>.",{});},
+  function(){return mcq("The slope of the secant line through \\( (a, f(a)) \\) and \\( (a + h, f(a + h)) \\) is",
+    "\\( \\frac{f(a + h) - f(a)}{h} \\)",
+    ["\\( \\frac{f(a + h) - f(a)}{a} \\)",
+     "\\( \\frac{f(h) - f(a)}{h} \\)",
+     "\\( \\frac{f(a) - f(a + h)}{h} \\)"],
+    "Slope is rise over run. The rise is the change in function values, \\( f(a + h) - f(a) \\), and the run is the change in \\( x \\), from \\( a \\) to \\( a + h \\), which is \\( h \\). The slope of the secant line is <b>\\( \\frac{f(a + h) - f(a)}{h} \\)</b>.",{});},
+  function(){return mcq("As \\( h \\) shrinks toward 0, the secant lines through \\( (a, f(a)) \\) and \\( (a + h, f(a + h)) \\) approach",
+    "the tangent line at \\( x = a \\), whose slope is \\( f'(a) \\)",
+    ["the normal line at \\( x = a \\), whose slope is \\( -\\frac{1}{f'(a)} \\)",
+     "a vertical line, whose slope is undefined",
+     "a horizontal line through \\( (a, f(a)) \\), whose slope is 0"],
+    "As \\( h \\) shrinks, the second point slides along the graph toward \\( (a, f(a)) \\) and the secant lines settle onto the line that just touches the curve there. That limiting line is the tangent line, and its slope is the derivative. The secants approach <b>the tangent line at \\( x = a \\), whose slope is \\( f'(a) \\)</b>.",{});}
+]));
+
+E("u4-average-rate",4,["3.2"],1,"gen",function(){
+  function P(cs,vn){if(vn===undefined)vn="x";var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?vn:vn+"^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  function par(v){return v<0?"("+v+")":""+v;}
+  var mode=ri(0,3), p=ri(0,3), span=ri(1,4), q=p+span, a, b, c0, F, fp, fq, avg, prompt, unit;
+  if(mode===0){ a=pick([-3,-2,-1,1,2,3,4]); b=ri(-6,9); c0=ri(-8,8); F="f";
+    fp=a*p*p+b*p+c0; fq=a*q*q+b*q+c0; avg=a*(p+q)+b; unit="";
+    prompt="For \\( f(x) = "+P([a,b,c0])+" \\), find the average rate of change of \\( f \\) over the interval \\( ["+p+", "+q+"] \\).";
+  } else if(mode===1){ a=pick([1,2,3]); b=ri(0,8); c0=0; F="s";
+    fp=a*p*p+b*p; fq=a*q*q+b*q; avg=a*(p+q)+b; unit=" metres per second";
+    prompt="A particle moves along a line with position \\( s(t) = "+P([a,b,0],"t")+" \\) metres after \\( t \\) seconds. Find its average velocity, in metres per second, over the time interval \\( ["+p+", "+q+"] \\).";
+  } else if(mode===2){ a=pick([1,2]); b=ri(7,13); c0=ri(2,10); F="T"; p=ri(0,2); span=ri(1,3); q=p+span;
+    fp=-a*p*p+b*p+c0; fq=-a*q*q+b*q+c0; avg=-a*(p+q)+b; unit=" degrees Celsius per hour";
+    prompt="The temperature on a spring day is modelled by \\( T(t) = "+P([-a,b,c0],"t")+" \\) degrees Celsius, where \\( t \\) is the number of hours after 8:00 AM. Find the average rate of change of the temperature, in degrees Celsius per hour, from \\( t = "+p+" \\) to \\( t = "+q+" \\).";
+  } else { a=pick([1,2,3]); b=ri(2,9); c0=ri(25,80); F="P";
+    fp=a*p*p+b*p+c0; fq=a*q*q+b*q+c0; avg=a*(p+q)+b; unit=" thousand people per year";
+    prompt="A town's population is modelled by \\( P(t) = "+P([a,b,c0],"t")+" \\), where \\( P \\) is in thousands of people and \\( t \\) is the number of years since 2020. Find the average rate of change of the population, in thousands of people per year, between \\( t = "+p+" \\) and \\( t = "+q+" \\).";
+  }
+  var sol="The average rate of change is the total change in the function divided by the change in the input. \\[ \\begin{aligned} \\frac{"+F+"("+q+") - "+F+"("+p+")}{"+q+" - "+p+"} &= \\frac{"+par(fq)+" - "+par(fp)+"}{"+span+"} \\\\ &= "+avg+" \\end{aligned} \\] The average rate of change is <b>"+avg+unit+"</b>.";
+  return numq(prompt, avg, 0.011, sol, {mode:mode});
+});
+
+function balDp(keyStr,ds){
+  function dpOf(s){var m=/^-?\d+(?:\.(\d+))?$/.exec(s);if(!m)return null;return m[1]?m[1].length:0;}
+  function padTo(s,dp){var cur=dpOf(s);if(cur===null||dp<=cur)return s;if(s.indexOf(".")<0)return s+"."+Array(dp+1).join("0");return s+Array(dp-cur+1).join("0");}
+  var all=[keyStr].concat(ds),dps=all.map(dpOf);
+  if(dps.some(function(d){return d===null;}))return ds;
+  function ok(list){var c={};list.forEach(function(d){c[d]=(c[d]||0)+1;});return Object.keys(c).every(function(k){return c[k]!==1;});}
+  if(ok(dps))return ds;
+  var cap=Math.max.apply(null,dps)+2,best=null,bestCost=1e9;
+  for(var a=dps[1];a<=cap;a++)for(var b=dps[2];b<=cap;b++)for(var c2=dps[3];c2<=cap;c2++){
+    var cand=[dps[0],a,b,c2];
+    if(!ok(cand))continue;
+    var cost=(a-dps[1])+(b-dps[2])+(c2-dps[3]);
+    if(cost<bestCost){bestCost=cost;best=[a,b,c2];}
+  }
+  if(!best)return ds;
+  return ds.map(function(s,i){return padTo(s,best[i]);});
+}
+
+
+E("u4-instantaneous-concept",4,["3.3"],1,"gen",function(){
+  var hs=pick([[1,0.1,0.01],[1,0.5,0.25],[2,1,0.5],[0.5,0.25,0.05]]);
+  var a=ri(1,6), c=pick([-3,-2,-1,0,1,2,3,4]), L=2*a+c, formula=Math.random()<0.5;
+  var vals=hs.map(function(h){return fmt(L+h);});
+  var fstr = c===0 ? "x^2" : (c>0 ? "x^2 + "+c+"x" : "x^2 - "+(-c)+"x");
+  var prompt;
+  if(formula){
+    prompt="For \\( f(x) = "+fstr+" \\), the average rates of change over \\( ["+a+", "+a+" + h] \\) when \\( h = "+hs[0]+" \\), \\( h = "+hs[1]+" \\), and \\( h = "+hs[2]+" \\) are "+vals[0]+", "+vals[1]+", and "+vals[2]+", respectively. What is the instantaneous rate of change of \\( f \\) at \\( x = "+a+" \\)?";
+  } else {
+    prompt="Average rates of change of a function \\( g \\) over intervals that start at \\( x = "+a+" \\) are computed for shrinking widths \\( h \\). When \\( h = "+hs[0]+" \\) the average rate is "+vals[0]+"; when \\( h = "+hs[1]+" \\) it is "+vals[1]+"; when \\( h = "+hs[2]+" \\) it is "+vals[2]+". What is the instantaneous rate of change of \\( g \\) at \\( x = "+a+" \\)?";
+  }
+  var sol="As the interval shrinks, the average rates of change settle closer and closer to one value: "+vals[0]+", then "+vals[1]+", then "+vals[2]+", closing in on "+L+". The instantaneous rate of change is that limiting value of the average rates. The instantaneous rate of change is <b>"+L+"</b>.";
+  return mcq(prompt, ""+L, balDp(""+L,[""+fmt(L+hs[2]), ""+fmt(L+hs[0]), ""+(L-1)]), sol, {});
+});
+
+E("u4-notation",4,["3.7"],1,"var",varset([
+  function(){return mcq("Which expression represents the derivative of \\( y \\) with respect to \\( x \\)?",
+    "\\( \\frac{dy}{dx} \\)",
+    ["\\( \\frac{\\Delta y}{\\Delta x} \\)","\\( \\frac{dx}{dy} \\)","\\( \\frac{y}{x} \\)"],
+    "The symbol \\( \\frac{dy}{dx} \\) is Leibniz notation for the derivative of \\( y \\) with respect to \\( x \\). The expression \\( \\frac{\\Delta y}{\\Delta x} \\) is an average rate of change, a difference quotient before any limit is taken, and \\( \\frac{dx}{dy} \\) reverses the roles of the variables. The derivative is <b>\\( \\frac{dy}{dx} \\)</b>.",{});},
+  function(){return mcq("For \\( f(x) = x^3 - 2x \\), the symbol \\( f'(2) \\) represents",
+    "the value of the derivative of \\( f \\) when \\( x = 2 \\)",
+    ["the value of the function \\( f \\) when \\( x = 2 \\), which is 4",
+     "the second derivative of \\( f \\) when \\( x = 2 \\)",
+     "the value of the derivative of \\( f \\) when \\( x = 2 \\), which is 4"],
+    "The prime marks the derivative function, and the 2 is the input at which that derivative is evaluated: \\( f'(x) = 3x^2 - 2 \\), so \\( f'(2) = 10 \\). The value 4 is \\( f(2) \\), the function's own value, not its derivative. The symbol represents <b>the value of the derivative of \\( f \\) when \\( x = 2 \\)</b>.",{});},
+  function(){return mcq("Which notation means the same as \\( \\frac{d}{dx}\\left[ g(x) \\right] \\)?",
+    "\\( g'(x) \\)",
+    ["\\( \\frac{dx}{dg} \\)","\\( g^{-1}(x) \\)","\\( \\frac{\\Delta g}{\\Delta x} \\)"],
+    "The operator \\( \\frac{d}{dx} \\) says: take the derivative with respect to \\( x \\). Applied to \\( g(x) \\), the result is written in prime notation as \\( g'(x) \\). The symbol \\( g^{-1}(x) \\) is the inverse function, and \\( \\frac{\\Delta g}{\\Delta x} \\) is an average rate of change. The equivalent notation is <b>\\( g'(x) \\)</b>.",{});},
+  function(){return mcq("A position function is given by \\( s(t) \\). Which expression gives the velocity at time \\( t \\)?",
+    "\\( s'(t) \\)",
+    ["\\( \\frac{s(t)}{t} \\)","\\( s(t + 1) - s(t) \\)","\\( \\frac{\\Delta s}{\\Delta t} \\)"],
+    "Velocity is the instantaneous rate of change of position, which is the derivative \\( s'(t) \\). The expressions \\( \\frac{s(t)}{t} \\) and \\( \\frac{\\Delta s}{\\Delta t} \\) are average rates of change, and \\( s(t + 1) - s(t) \\) is a change in position over one unit of time. The velocity is <b>\\( s'(t) \\)</b>.",{});}
+]));
+
+E("u4-definition-point",4,["3.4"],2,"gen",function(){
+  function sgt(v){return v>=0 ? "+ "+v : "- "+(-v);}
+  if(Math.random()<0.55){
+    var a=pick([-3,-2,2,3,4]), b=ri(-7,7), c0=ri(-6,6), p=ri(-3,4), ans=2*a*p+b;
+    var xs = p>=0 ? "x - "+p : "x + "+(-p);
+    var xp = p>=0 ? "x + "+p : "x - "+(-p);
+    function P2(cs){var n=cs.length-1,parts=[],i,c,pp,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;pp=n-i;if(pp===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(pp===1?"x":"x^{"+pp+"}");parts.push({neg:c<0,term:t});}
+      if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+    var prompt="Use the limit definition to find \\( f'("+p+") \\) for \\( f(x) = "+P2([a,b,c0])+" \\).";
+    var sol="Apply the definition of the derivative at a point and simplify before taking the limit. \\[ \\begin{aligned} f'("+p+") &= \\lim_{x \\to "+p+"} \\frac{f(x) - f("+p+")}{"+xs+"} \\\\ &= \\lim_{x \\to "+p+"} \\frac{"+a+"\\left(x^2 - "+(p*p)+"\\right) "+sgt(b)+" \\left("+xs+"\\right)}{"+xs+"} \\\\ &= \\lim_{x \\to "+p+"} \\left( "+a+"\\left("+xp+"\\right) "+sgt(b)+" \\right) \\\\ &= "+a+"\\left("+(2*p)+"\\right) "+sgt(b)+" = "+ans+" \\end{aligned} \\] The derivative at the point is <b>"+ans+"</b>.";
+    return numq(prompt, ans, 0.011, sol, {mode:"quad"});
+  }
+  var s=pick([2,3,4,5,6,10]), c=ri(-4,9), a0=s*s-c, guard=0;
+  while((a0<1||a0>45)&&guard<40){ c=ri(-4,9); a0=s*s-c; guard++; }
+  var rad = c===0 ? "x" : (c>0 ? "x + "+c : "x - "+(-c));
+  var ansR=1/(2*s);
+  var promptR="Use the limit definition to find \\( f'("+a0+") \\) for \\( f(x) = \\sqrt{"+rad+"} \\).";
+  var solR="Apply the \\( h \\) form of the definition and multiply by the conjugate to remove the square roots from the numerator. \\[ \\begin{aligned} f'("+a0+") &= \\lim_{h \\to 0} \\frac{\\sqrt{"+(s*s)+" + h} - "+s+"}{h} \\\\ &= \\lim_{h \\to 0} \\frac{h}{h\\left( \\sqrt{"+(s*s)+" + h} + "+s+" \\right)} \\\\ &= \\frac{1}{"+s+" + "+s+"} = "+fmt(ansR)+" \\end{aligned} \\] The derivative at the point is <b>"+fmt(ansR)+"</b>.";
+  return numq(promptR, ansR, 0.011, solR, {mode:"root"});
+});
+
+E("u4-first-principles",4,["3.6"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  function T(v,base){var av=Math.abs(v);if(base==="")return ""+av;return av===1?base:av+base;}
+  function J(v,base,first){if(v===0)return "";var cf=T(v,base);if(first)return (v<0?"-":"")+cf;return (v<0?" - ":" + ")+cf;}
+  if(Math.random()<0.6){
+    var a=pick([-3,-2,2,3,4]), b=pick([-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]), c0=ri(-9,9);
+    var prompt="Using the limit definition, find \\( f'(x) \\) for \\( f(x) = "+P([a,b,c0])+" \\).";
+    var num = J(a,"(x + h)^2",true)+J(b,"(x + h)",false)+J(c0,"",false);
+    var num0 = J(a,"x^2",true)+J(b,"x",false)+J(c0,"",false);
+    var exp1 = J(2*a,"xh",true)+J(a,"h^2",false)+J(b,"h",false);
+    var exp2 = J(2*a,"x",true)+J(a,"h",false)+J(b,"",false);
+    var sol="Substitute into the limit definition, expand, and cancel the factor \\( h \\) before letting \\( h \\to 0 \\). \\[ \\begin{aligned} f'(x) &= \\lim_{h \\to 0} \\frac{"+num+" - \\left( "+num0+" \\right)}{h} \\\\ &= \\lim_{h \\to 0} \\frac{"+exp1+"}{h} \\\\ &= \\lim_{h \\to 0} \\left( "+exp2+" \\right) \\\\ &= "+P([2*a,b])+" \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+P([2*a,b])+" \\)</b>.";
+    return mcq(prompt, "\\( "+P([2*a,b])+" \\)", ["\\( "+P([a,b])+" \\)","\\( "+P([2*a,-b])+" \\)","\\( "+P([2*a,0])+" \\)"], sol, {mode:"quad"});
+  }
+  var b2=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c2=ri(-9,9);
+  var prompt2="Using the limit definition, find \\( f'(x) \\) for \\( f(x) = "+P([1,0,b2,c2])+" \\).";
+  var expn = "3x^2h + 3xh^2 + h^3"+J(b2,"h",false);
+  var exps = "3x^2 + 3xh + h^2"+J(b2,"",false);
+  var sol2="Substitute into the limit definition. The cube expands as \\( (x + h)^3 = x^3 + 3x^2h + 3xh^2 + h^3 \\); cancel \\( h \\) and let \\( h \\to 0 \\). \\[ \\begin{aligned} f'(x) &= \\lim_{h \\to 0} \\frac{"+expn+"}{h} \\\\ &= \\lim_{h \\to 0} \\left( "+exps+" \\right) \\\\ &= "+P([3,0,b2])+" \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+P([3,0,b2])+" \\)</b>.";
+  return mcq(prompt2, "\\( "+P([3,0,b2])+" \\)", ["\\( "+P([3,0,-b2])+" \\)","\\( "+P([1,0,b2])+" \\)","\\( "+P([3,b2,0])+" \\)"], sol2, {mode:"cubic"});
+});
+
+E("u4-first-principles-pick",4,["3.6"],2,"var",varset([
+  function(){return mcq("A student starts a first-principles calculation for \\( f(x) = x^2 + 3x \\): \\[ f'(x) = \\lim_{h \\to 0} \\frac{(x + h)^2 + 3(x + h) - (x^2 + 3x)}{h} \\] Which continuation and result are correct?",
+    "Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + h^2 + 3h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 2x + 3 \\)",
+    ["Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + h^2 + 3xh}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 5x \\)",
+     "Setting \\( h = 0 \\) at the start makes the numerator and denominator both 0, so the derivative does not exist",
+     "Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + h^2}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 2x \\)"],
+    "Expanding, \\( (x + h)^2 + 3(x + h) - (x^2 + 3x) = 2xh + h^2 + 3h \\). Every term carries a factor of \\( h \\); cancelling it and letting \\( h \\to 0 \\) leaves \\( 2x + 3 \\). The correct continuation gives <b>\\( f'(x) = 2x + 3 \\)</b>.",{});},
+  function(){return mcq("A student starts a first-principles calculation for \\( f(x) = 2x^2 - x \\): \\[ f'(x) = \\lim_{h \\to 0} \\frac{2(x + h)^2 - (x + h) - (2x^2 - x)}{h} \\] Which continuation and result are correct?",
+    "Expanding gives \\( \\lim_{h \\to 0} \\frac{4xh + 2h^2 - h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 4x - 1 \\)",
+    ["Expanding gives \\( \\lim_{h \\to 0} \\frac{4xh + 2h^2 + h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 4x + 1 \\)",
+     "Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + 2h^2 - h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 2x - 1 \\)",
+     "Setting \\( h = 0 \\) at the start makes the numerator and denominator both 0, so the derivative does not exist"],
+    "Expanding, \\( 2(x + h)^2 - (x + h) - (2x^2 - x) = 4xh + 2h^2 - h \\). Cancelling the common factor \\( h \\) and letting \\( h \\to 0 \\) leaves \\( 4x - 1 \\). The correct continuation gives <b>\\( f'(x) = 4x - 1 \\)</b>.",{});},
+  function(){return mcq("A student starts a first-principles calculation for \\( f(x) = x^2 - 5x + 2 \\): \\[ f'(x) = \\lim_{h \\to 0} \\frac{(x + h)^2 - 5(x + h) + 2 - (x^2 - 5x + 2)}{h} \\] Which continuation and result are correct?",
+    "Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + h^2 - 5h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 2x - 5 \\)",
+    ["Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + h^2 + 5h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 2x + 5 \\)",
+     "Expanding gives \\( \\lim_{h \\to 0} \\frac{2xh + h^2}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 2x \\)",
+     "Setting \\( h = 0 \\) at the start makes the numerator and denominator both 0, so the derivative does not exist"],
+    "Expanding, \\( (x + h)^2 - 5(x + h) + 2 - (x^2 - 5x + 2) = 2xh + h^2 - 5h \\); the constant 2 cancels and every remaining term has a factor of \\( h \\). Cancelling and letting \\( h \\to 0 \\) leaves \\( 2x - 5 \\). The correct continuation gives <b>\\( f'(x) = 2x - 5 \\)</b>.",{});},
+  function(){return mcq("A student starts a first-principles calculation for \\( f(x) = 3x^2 + 2x \\): \\[ f'(x) = \\lim_{h \\to 0} \\frac{3(x + h)^2 + 2(x + h) - (3x^2 + 2x)}{h} \\] Which continuation and result are correct?",
+    "Expanding gives \\( \\lim_{h \\to 0} \\frac{6xh + 3h^2 + 2h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 6x + 2 \\)",
+    ["Expanding gives \\( \\lim_{h \\to 0} \\frac{6xh + 3h^2 - 2h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 6x - 2 \\)",
+     "Expanding gives \\( \\lim_{h \\to 0} \\frac{3xh + 3h^2 + 2h}{h} \\); cancelling \\( h \\) and letting \\( h \\to 0 \\) gives \\( f'(x) = 3x + 2 \\)",
+     "Setting \\( h = 0 \\) at the start makes the numerator and denominator both 0, so the derivative does not exist"],
+    "Expanding, \\( 3(x + h)^2 + 2(x + h) - (3x^2 + 2x) = 6xh + 3h^2 + 2h \\). Cancelling the common factor \\( h \\) and letting \\( h \\to 0 \\) leaves \\( 6x + 2 \\). The correct continuation gives <b>\\( f'(x) = 6x + 2 \\)</b>.",{});}
+]));
+
+E("u4-basic-derivatives",4,["3.14"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var mode=ri(0,2);
+  if(mode===0){
+    var a=pick([-3,-2,2,3,4,5]), b=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]), c=ri(-9,9), d=ri(-9,9);
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = "+P([a,b,c,d])+" \\).";
+    var sol="Differentiate term by term with the power rule: bring the exponent down as a multiplier and reduce the exponent by 1. The constant term differentiates to 0. \\[ \\begin{aligned} f'(x) &= "+P([3*a,2*b,c])+" \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+P([3*a,2*b,c])+" \\)</b>.";
+    return mcq(prompt, "\\( "+P([3*a,2*b,c])+" \\)", ["\\( "+P([3*a,-2*b,c])+" \\)","\\( "+P([a,b,c])+" \\)","\\( "+P([6*a,2*b,c])+" \\)"], sol, {mode:"poly"});
+  }
+  if(mode===1){
+    var combos=[[6,2,3],[9,2,3],[12,2,3],[4,3,2],[8,3,4],[10,1,2],[5,4,5],[6,5,3],[15,2,5],[7,3,7],[14,3,7],[9,4,3]];
+    var cb=pick(combos), A=cb[0], pp=cb[1], qq=cb[2], k=A*pp/qq;
+    function ex(num,den){ if(den===1) return "^{"+num+"}"; return num<0 ? "^{-"+(-num)+"/"+den+"}" : "^{"+num+"/"+den+"}"; }
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = "+A+"x^{"+pp+"/"+qq+"} \\).";
+    var sol="Apply the power rule with the fractional exponent: multiply by the exponent and reduce the exponent by 1. \\[ \\begin{aligned} f'(x) &= "+A+" \\cdot \\frac{"+pp+"}{"+qq+"} x^{"+pp+"/"+qq+" - 1} \\\\ &= "+k+"x"+ex(pp-qq,qq)+" \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+k+"x"+ex(pp-qq,qq)+" \\)</b>.";
+    return mcq(prompt, "\\( "+k+"x"+ex(pp-qq,qq)+" \\)", ["\\( "+A+"x"+ex(pp-qq,qq)+" \\)","\\( "+k+"x"+ex(pp,qq)+" \\)","\\( "+(-k)+"x"+ex(pp-qq,qq)+" \\)"], sol, {mode:"power"});
+  }
+  var A2=ri(2,9), n=pick([2,3,4,5]);
+  var prompt="Find \\( f'(x) \\) for \\( f(x) = \\frac{"+A2+"}{x^{"+n+"}} \\).";
+  var sol="Rewrite the function as a negative power, \\( f(x) = "+A2+"x^{-"+n+"} \\), then apply the power rule: multiply by the exponent and reduce the exponent by 1. \\[ \\begin{aligned} f'(x) &= "+(-A2*n)+"x^{-"+(n+1)+"} \\\\ &= \\frac{"+(-A2*n)+"}{x^{"+(n+1)+"}} \\end{aligned} \\] The derivative is <b>\\( f'(x) = \\frac{"+(-A2*n)+"}{x^{"+(n+1)+"}} \\)</b>.";
+  return mcq(prompt, "\\( \\frac{"+(-A2*n)+"}{x^{"+(n+1)+"}} \\)", ["\\( \\frac{"+(A2*n)+"}{x^{"+(n+1)+"}} \\)","\\( \\frac{"+(-A2)+"}{x^{"+(n+1)+"}} \\)","\\( \\frac{"+(-A2*n)+"}{x^{"+n+"}} \\)"], sol, {mode:"negpower"});
+});
+
+E("u4-product-quotient",4,["3.13","3.14"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  function L(p,q){var s="";if(p!==0)s+=(p===1?"x":p===-1?"-x":p+"x");if(q!==0){if(s)s+=(q>0?" + ":" - ")+Math.abs(q);else s=""+q;}if(!s)s="0";return s;}
+  var mode=pick([0,0,1,1,2,3]);
+  if(mode===0){
+    var a=ri(1,4), b=ri(-6,6), c=ri(1,4), d=ri(-6,6);
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = \\left( "+L(a,b)+" \\right) \\left( "+P([c,0,d])+" \\right) \\).";
+    var sol="Use the product rule: \\( (uv)' = u'v + uv' \\). Here the derivative of the first factor is \\( "+a+" \\) and the derivative of the second is \\( "+(2*c)+"x \\). \\[ \\begin{aligned} f'(x) &= "+a+" \\left( "+P([c,0,d])+" \\right) + \\left( "+L(a,b)+" \\right) \\left( "+(2*c)+"x \\right) \\\\ &= "+P([3*a*c,2*b*c,a*d])+" \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+P([3*a*c,2*b*c,a*d])+" \\)</b>.";
+    return mcq(prompt, "\\( "+P([3*a*c,2*b*c,a*d])+" \\)", ["\\( "+P([2*a*c,0])+" \\)","\\( "+P([2*a*c,2*b*c,0])+" \\)","\\( "+P([a*c,0,a*d])+" \\)"], sol, {mode:"prodA"});
+  }
+  if(mode===1){
+    var a=ri(1,4), b=ri(-6,6), c=ri(1,4), d=ri(-6,6);
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = \\left( "+P([a,0,b])+" \\right) \\left( "+L(c,d)+" \\right) \\).";
+    var sol="Use the product rule: \\( (uv)' = u'v + uv' \\). Here the derivative of the first factor is \\( "+(2*a)+"x \\) and the derivative of the second is \\( "+c+" \\). \\[ \\begin{aligned} f'(x) &= "+(2*a)+"x \\left( "+L(c,d)+" \\right) + \\left( "+P([a,0,b])+" \\right) \\left( "+c+" \\right) \\\\ &= "+P([3*a*c,2*a*d,b*c])+" \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+P([3*a*c,2*a*d,b*c])+" \\)</b>.";
+    return mcq(prompt, "\\( "+P([3*a*c,2*a*d,b*c])+" \\)", ["\\( "+P([2*a*c,0])+" \\)","\\( "+P([a*c,0,b*c])+" \\)","\\( "+P([2*a*c,2*a*d,0])+" \\)"], sol, {mode:"prodB"});
+  }
+  if(mode===2){
+    var a=ri(1,5), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=ri(1,5), d=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), guard=0;
+    while(a*d-b*c===0&&guard<40){ b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]); d=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]); guard++; }
+    var num=a*d-b*c, den="("+L(c,d)+")^2";
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = \\frac{"+L(a,b)+"}{"+L(c,d)+"} \\).";
+    var sol="Use the quotient rule: the derivative of the top times the bottom, minus the top times the derivative of the bottom, over the bottom squared. \\[ \\begin{aligned} f'(x) &= \\frac{"+a+" \\left( "+L(c,d)+" \\right) - "+c+" \\left( "+L(a,b)+" \\right)}{"+den+"} \\\\ &= \\frac{"+num+"}{"+den+"} \\end{aligned} \\] The derivative is <b>\\( f'(x) = \\frac{"+num+"}{"+den+"} \\)</b>.";
+    return mcq(prompt, "\\( \\frac{"+num+"}{"+den+"} \\)", ["\\( \\frac{"+(-num)+"}{"+den+"} \\)","\\( \\frac{"+(a*d+b*c)+"}{"+den+"} \\)","\\( \\frac{"+a+"}{"+c+"} \\)"], sol, {mode:"quot"});
+  }
+  var prompt="The product rule is derived from the definition \\( (fg)'(x) = \\lim_{h \\to 0} \\frac{f(x + h)g(x + h) - f(x)g(x)}{h} \\). Which step makes the derivation work?";
+  var sol="The numerator involves both functions at once. Adding and subtracting the mixed term \\( f(x + h)g(x) \\) splits it into two pieces: \\( g(x) \\) times the difference quotient of \\( f \\), plus \\( f(x + h) \\) times the difference quotient of \\( g \\). Taking the limit then gives \\( (fg)' = f'g + fg' \\). The key step is <b>adding and subtracting \\( f(x + h)g(x) \\) in the numerator and regrouping into two difference quotients</b>.";
+  return mcq(prompt,
+    "Add and subtract \\( f(x + h)g(x) \\) in the numerator, then regroup into two difference quotients",
+    ["Replace \\( g(x + h) \\) by \\( g(x) \\) in the numerator, since \\( h \\) is close to 0 anyway",
+     "Factor \\( h \\) out of the numerator, then cancel it with the \\( h \\) in the denominator",
+     "Set \\( h = 0 \\) in the numerator first, then divide the result by the remaining denominator"],
+    sol, {mode:"proof"});
+});
+
+E("u4-higher-derivatives",4,["3.15"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var a4=pick([1,2,3]), b3=ri(-5,5), c2=ri(-6,6), d1=ri(-8,8), e0=ri(-9,9), t=ri(-3,3), order=pick([2,3]);
+  var f1=P([4*a4,3*b3,2*c2,d1]), f2=P([12*a4,6*b3,2*c2]), f3=P([24*a4,6*b3]);
+  var ans = order===2 ? 12*a4*t*t+6*b3*t+2*c2 : 24*a4*t+6*b3;
+  var sym = order===2 ? "f''" : "f'''";
+  var prompt="For \\( f(x) = "+P([a4,b3,c2,d1,e0])+" \\), find \\( "+sym+"("+t+") \\).";
+  var steps="\\[ \\begin{aligned} f'(x) &= "+f1+" \\\\ f''(x) &= "+f2+" \\end{aligned} \\]";
+  if(order===3) steps="\\[ \\begin{aligned} f'(x) &= "+f1+" \\\\ f''(x) &= "+f2+" \\\\ f'''(x) &= "+f3+" \\end{aligned} \\]";
+  var sol="Differentiate repeatedly with the power rule, then substitute \\( x = "+t+" \\). "+steps+" Evaluating at \\( x = "+t+" \\) gives <b>\\( "+sym+"("+t+") = "+ans+" \\)</b>.";
+  return numq(prompt, ans, 0.011, sol, {order:order});
+});
+
+E("u4-chain-rule",4,["3.16"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  function L(p,q){var s="";if(p!==0)s+=(p===1?"x":p===-1?"-x":p+"x");if(q!==0){if(s)s+=(q>0?" + ":" - ")+Math.abs(q);else s=""+q;}if(!s)s="0";return s;}
+  var mode=ri(0,2);
+  if(mode===0){
+    var a=ri(2,5), b=ri(-8,8), n=pick([3,4,5,6]);
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = \\left( "+L(a,b)+" \\right)^{"+n+"} \\).";
+    var sol="Use the chain rule: apply the power rule to the outer function, then multiply by the derivative of the inside, \\( "+L(a,b)+" \\), which is \\( "+a+" \\). \\[ \\begin{aligned} f'(x) &= "+n+" \\left( "+L(a,b)+" \\right)^{"+(n-1)+"} \\cdot "+a+" \\\\ &= "+(n*a)+" \\left( "+L(a,b)+" \\right)^{"+(n-1)+"} \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+(n*a)+" \\left( "+L(a,b)+" \\right)^{"+(n-1)+"} \\)</b>.";
+    return mcq(prompt, "\\( "+(n*a)+" \\left( "+L(a,b)+" \\right)^{"+(n-1)+"} \\)",
+      ["\\( "+n+" \\left( "+L(a,b)+" \\right)^{"+(n-1)+"} \\)","\\( "+(n*a)+" \\left( "+L(a,b)+" \\right)^{"+n+"} \\)","\\( \\left( "+L(a,b)+" \\right)^{"+(n-1)+"} \\)"], sol, {mode:"powerlin"});
+  }
+  if(mode===1){
+    var a=pick([1,2,3]), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=ri(1,9);
+    var prompt="Find \\( f'(x) \\) for \\( f(x) = \\sqrt{"+P([a,b,c])+"} \\).";
+    var sol="Write the root as a power, \\( f(x) = \\left( "+P([a,b,c])+" \\right)^{1/2} \\), and use the chain rule with the derivative of the inside, \\( "+L(2*a,b)+" \\). \\[ \\begin{aligned} f'(x) &= \\frac{1}{2\\sqrt{"+P([a,b,c])+"}} \\cdot \\left( "+L(2*a,b)+" \\right) \\\\ &= \\frac{"+L(2*a,b)+"}{2\\sqrt{"+P([a,b,c])+"}} \\end{aligned} \\] The derivative is <b>\\( f'(x) = \\frac{"+L(2*a,b)+"}{2\\sqrt{"+P([a,b,c])+"}} \\)</b>.";
+    return mcq(prompt, "\\( \\frac{"+L(2*a,b)+"}{2\\sqrt{"+P([a,b,c])+"}} \\)",
+      ["\\( \\frac{"+L(2*a,b)+"}{\\sqrt{"+P([a,b,c])+"}} \\)","\\( \\frac{1}{2\\sqrt{"+P([a,b,c])+"}} \\)","\\( \\frac{"+L(2*a,-b)+"}{2\\sqrt{"+P([a,b,c])+"}} \\)"], sol, {mode:"root"});
+  }
+  var b=pick([-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7]), c=ri(-8,8), n=pick([3,4,5]);
+  var prompt="Find \\( f'(x) \\) for \\( f(x) = \\left( "+P([1,b,c])+" \\right)^{"+n+"} \\).";
+  var sol="Use the chain rule: apply the power rule to the outer function, then multiply by the derivative of the inside, \\( "+P([1,b,c])+" \\), which is \\( "+L(2,b)+" \\). \\[ \\begin{aligned} f'(x) &= "+n+" \\left( "+P([1,b,c])+" \\right)^{"+(n-1)+"} \\left( "+L(2,b)+" \\right) \\end{aligned} \\] The derivative is <b>\\( f'(x) = "+n+" \\left( "+P([1,b,c])+" \\right)^{"+(n-1)+"} \\left( "+L(2,b)+" \\right) \\)</b>.";
+  return mcq(prompt, "\\( "+n+" \\left( "+P([1,b,c])+" \\right)^{"+(n-1)+"} \\left( "+L(2,b)+" \\right) \\)",
+    ["\\( "+n+" \\left( "+P([1,b,c])+" \\right)^{"+(n-1)+"} \\)","\\( "+n+" \\left( "+P([1,b,c])+" \\right)^{"+(n-1)+"} \\left( "+L(2,-b)+" \\right) \\)","\\( "+n+" \\left( "+P([1,b,c])+" \\right)^{"+n+"} \\left( "+L(2,b)+" \\right) \\)"], sol, {mode:"powerquad"});
+});
+
+E("u4-tangent-normal",4,["3.5","3.19"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  function lineStr(num,den,icpt){ var s="y = ";
+    if(num!==0){ var an=Math.abs(num); var xt = den===1 ? (an===1?"x":an+"x") : "\\frac{"+an+"}{"+den+"}x"; s += (num<0?"-":"")+xt; }
+    if(icpt!==0){ s += (num!==0 ? (icpt>0?" + ":" - ") : (icpt>0?"":"-")) + Math.abs(icpt); }
+    else if(num===0){ s += "0"; }
+    return "\\( "+s+" \\)"; }
+  if(Math.random()<0.35){
+    var triples=[[3,4,5],[4,3,5],[6,8,10],[8,6,10],[5,12,13],[12,5,13],[8,15,17],[15,8,17],[7,24,25],[24,7,25],[9,12,15],[20,21,29],[21,20,29]];
+    var tr=pick(triples), sx=pick([-1,1]), sy=pick([-1,1]);
+    var x0=sx*tr[0], y0=sy*tr[1], r=tr[2];
+    function tv(cx,cy,rhs){ var s=""; var ax=Math.abs(cx), ay=Math.abs(cy);
+      s += (cx<0?"-":"") + (ax===1?"x":ax+"x");
+      s += (cy<0?" - ":" + ") + (ay===1?"y":ay+"y");
+      return s+" = "+rhs; }
+    var prompt="Find the equation of the tangent line to the circle \\( x^2 + y^2 = "+(r*r)+" \\) at the point \\( ("+x0+", "+y0+") \\).";
+    var sol="Differentiate the relation implicitly: \\( 2x + 2y \\frac{dy}{dx} = 0 \\), so \\( \\frac{dy}{dx} = -\\frac{x}{y} \\). At \\( ("+x0+", "+y0+") \\) the slope is \\( -\\frac{"+x0+"}{"+y0+"} \\). Using this slope with the point gives \\[ \\begin{aligned} y - ("+y0+") &= -\\frac{"+x0+"}{"+y0+"} \\left( x - ("+x0+") \\right) \\\\ "+tv(x0,y0,r*r)+" \\end{aligned} \\] The tangent line is <b>\\( "+tv(x0,y0,r*r)+" \\)</b>.";
+    return mcq(prompt, "\\( "+tv(x0,y0,r*r)+" \\)", ["\\( "+tv(y0,x0,r*r)+" \\)","\\( "+tv(x0,-y0,r*r)+" \\)","\\( "+tv(x0,y0,r)+" \\)"], sol, {mode:"implicit"});
+  }
+  var askNormal = Math.random()<0.45, ok=false, tries=0, m, x0, a, b, c, y0, ti, ni, nnum, nden, correct, cands;
+  while(!ok&&tries<80){ tries++;
+    m=pick([-5,-4,-3,-2,-1,1,2,3,4,5]); x0=ri(-3,3); a=pick([1,2,3]); b=m-2*a*x0; c=ri(-6,6);
+    y0=a*x0*x0+b*x0+c; ti=y0-m*x0;
+    nnum = m>0 ? -1 : 1; nden = Math.abs(m);
+    if(x0 % m === 0) ni = y0 + x0/m; else ni = null;
+    if(askNormal){ if(ni===null||ni===0) continue; correct=lineStr(nnum,nden,ni);
+      cands=[lineStr(m,1,ti), lineStr(nnum,nden,-ni), lineStr(nnum,nden,0), lineStr(nnum,nden,ti)];
+    } else { if(ti===0) continue; correct=lineStr(m,1,ti);
+      cands=[lineStr(m,1,-ti), lineStr(m,1,0), lineStr(m,1,y0+m*x0)];
+      if(ni!==null) cands.push(lineStr(nnum,nden,ni));
+    }
+    var seen={}, dists=[];
+    cands.forEach(function(s){ if(s!==correct&&!seen[s]){ seen[s]=1; dists.push(s); } });
+    if(dists.length>=3) ok=true;
+  }
+  var prompt="Find the equation of the "+(askNormal?"normal":"tangent")+" line to the graph of \\( f(x) = "+P([a,b,c])+" \\) at \\( x = "+x0+" \\).";
+  var sol;
+  if(askNormal){
+    sol="The point on the graph is \\( ("+x0+", "+y0+") \\) and \\( f'(x) = "+P([2*a,b])+" \\) gives the tangent slope \\( f'("+x0+") = "+m+" \\). The normal line is perpendicular to the tangent, so its slope is the negative reciprocal, and it passes through \\( ("+x0+", "+y0+") \\). The normal line is <b>"+correct+"</b>.";
+  } else {
+    sol="The point on the graph is \\( ("+x0+", "+y0+") \\) and \\( f'(x) = "+P([2*a,b])+" \\) gives the slope \\( f'("+x0+") = "+m+" \\). A line with this slope through \\( ("+x0+", "+y0+") \\) has equation \\( y = "+m+"x + "+ti+" \\) after rearranging. The tangent line is <b>"+correct+"</b>.";
+  }
+  return mcq(prompt, correct, dists.slice(0,3), sol, {mode:askNormal?"normal":"tangent"});
+});
+
+E("u4-motion",4,["3.17"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"t":"t^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var mode=pick([0,0,1,2]);
+  if(mode===2){
+    var pairs=[[1,3],[1,5],[1,7],[1,9],[2,4],[2,6],[2,8],[3,5],[3,7],[3,9],[4,6],[4,8],[5,7],[5,9],[6,8]];
+    var pr=pick(pairs), r1=pr[0], r2=pr[1], S=r1+r2, Pp=r1*r2;
+    var prompt="A particle moves along a straight line with position \\( s(t) = "+P([1,-3*S/2,3*Pp,0])+" \\) metres after \\( t \\) seconds. The particle is momentarily at rest at two times with \\( t > 0 \\). Find the later of these two times, in seconds.";
+    var sol="Velocity is the derivative of position. \\[ \\begin{aligned} v(t) = s'(t) &= "+P([3,-3*S,3*Pp])+" \\\\ &= 3 \\left( t - "+r1+" \\right) \\left( t - "+r2+" \\right) \\end{aligned} \\] The particle is at rest when \\( v(t) = 0 \\), at \\( t = "+r1+" \\) and \\( t = "+r2+" \\). The later time is <b>"+r2+" seconds</b>.";
+    return numq(prompt, r2, 0.011, sol, {mode:"rest"});
+  }
+  var a3=pick([-2,-1,1,2,3]), b2=ri(-6,6), c1=ri(-9,9), d0=ri(0,20), t0=ri(1,5);
+  var v=P([3*a3,2*b2,c1]), acc=P([6*a3,2*b2]);
+  if(mode===0){
+    var ansV=3*a3*t0*t0+2*b2*t0+c1;
+    var prompt="A particle moves along a straight line with position \\( s(t) = "+P([a3,b2,c1,d0])+" \\) metres after \\( t \\) seconds. Find its velocity, in metres per second, at \\( t = "+t0+" \\).";
+    var sol="Velocity is the derivative of position. \\[ \\begin{aligned} v(t) = s'(t) &= "+v+" \\\\ v("+t0+") &= "+ansV+" \\end{aligned} \\] The velocity is <b>"+ansV+" metres per second</b>.";
+    return numq(prompt, ansV, 0.011, sol, {mode:"vel"});
+  }
+  var ansA=6*a3*t0+2*b2;
+  var prompt="A particle moves along a straight line with position \\( s(t) = "+P([a3,b2,c1,d0])+" \\) metres after \\( t \\) seconds. Find its acceleration, in metres per second squared, at \\( t = "+t0+" \\).";
+  var sol="Acceleration is the derivative of velocity, the second derivative of position. \\[ \\begin{aligned} v(t) &= "+v+" \\\\ a(t) &= "+acc+" \\\\ a("+t0+") &= "+ansA+" \\end{aligned} \\] The acceleration is <b>"+ansA+" metres per second squared</b>.";
+  return numq(prompt, ansA, 0.011, sol, {mode:"acc"});
+});
+
+E("u4-differentiability-why",4,["3.8","3.9"],1,"var",varset([
+  function(){return mcq("Consider \\( f(x) = |x - 2| \\). Why is \\( f \\) not differentiable at \\( x = 2 \\)?",
+    "The graph has a corner there: the slope from the left is \\( -1 \\) and the slope from the right is \\( 1 \\), so no single tangent slope exists",
+    ["The graph has a cusp there: the slopes from the two sides grow without bound in opposite directions at that point",
+     "The function is not continuous there, and a function must be continuous at a point to be differentiable there, so this alone rules out a derivative",
+     "The tangent line there is vertical: the slope grows without bound, so the derivative is not a finite number at that point"],
+    "The graph of \\( |x - 2| \\) is a V with its vertex at \\( x = 2 \\). The function is continuous there, but the left-hand slope is \\( -1 \\) while the right-hand slope is \\( 1 \\); the two one-sided derivatives disagree, which is a corner. The function is not differentiable at \\( x = 2 \\) because <b>the graph has a corner there, with different slopes from the left and from the right</b>.",{});},
+  function(){return mcq("Consider \\( f(x) = x^{2/3} \\). Why is \\( f \\) not differentiable at \\( x = 0 \\)?",
+    "The graph has a cusp there: the slopes from the two sides grow without bound in opposite directions",
+    ["The graph has a corner there: the slope from the left and the slope from the right are two different finite numbers",
+     "The function is not continuous there, and a function must be continuous to be differentiable there",
+     "The tangent line there is vertical: the slope grows without bound in the same direction from both sides"],
+    "The derivative \\( f'(x) = \\frac{2}{3}x^{-1/3} \\) blows up as \\( x \\to 0 \\): it tends to \\( -\\infty \\) from the left and \\( +\\infty \\) from the right. The two branches of the graph meet in a sharp point with oppositely directed tangents, which is a cusp. The function is not differentiable at \\( x = 0 \\) because <b>the graph has a cusp there</b>.",{});},
+  function(){return mcq("Consider \\( f(x) = \\begin{cases} x + 1, & x < 1 \\\\ x + 3, & x \\ge 1 \\end{cases} \\). Why is \\( f \\) not differentiable at \\( x = 1 \\)?",
+    "The function is not continuous there, and a function must be continuous at a point to be differentiable there",
+    ["The graph has a corner there: the slope from the left and the slope from the right are two different finite numbers",
+     "The graph has a cusp there: the slopes from the two sides grow without bound in opposite directions",
+     "The tangent line there is vertical: the slope grows without bound, so the derivative is not a finite number"],
+    "From the left, the function values approach \\( 1 + 1 = 2 \\), but \\( f(1) = 1 + 3 = 4 \\): there is a jump, so \\( f \\) is not continuous at \\( x = 1 \\). Differentiability requires continuity, so the derivative cannot exist there. The function is not differentiable at \\( x = 1 \\) because <b>it is not continuous there</b>.",{});},
+  function(){return mcq("Consider \\( f(x) = \\sqrt[3]{x} \\). Why is \\( f \\) not differentiable at \\( x = 0 \\)?",
+    "The tangent line there is vertical: the slope grows without bound, so the derivative is not a finite number",
+    ["The graph has a corner there: the slope from the left and the slope from the right are two different finite numbers",
+     "The graph has a cusp there: the slopes from the two sides grow without bound in opposite directions",
+     "The function is not continuous there, and a function must be continuous at a point to be differentiable there"],
+    "The derivative \\( f'(x) = \\frac{1}{3}x^{-2/3} \\) tends to \\( +\\infty \\) as \\( x \\to 0 \\) from both sides. The graph is continuous and smooth through the point, but its tangent line is the vertical line \\( x = 0 \\), which has no finite slope. The function is not differentiable at \\( x = 0 \\) because <b>the tangent line there is vertical</b>.",{});},
+  function(){return mcq("Consider \\( f(x) = \\begin{cases} 2x, & x \\le 1 \\\\ x + 1, & x > 1 \\end{cases} \\). Why is \\( f \\) not differentiable at \\( x = 1 \\)?",
+    "The graph has a corner there: the slope from the left is \\( 2 \\) and the slope from the right is \\( 1 \\), so no single tangent slope exists",
+    ["The function is not continuous there, and a function must be continuous at a point to be differentiable there, so this alone rules out a derivative",
+     "The graph has a cusp there: the slopes from the two sides grow without bound in opposite directions at that point",
+     "The tangent line there is vertical: the slope grows without bound, so the derivative is not a finite number at that point"],
+    "Both pieces give the value 2 at \\( x = 1 \\), so the function is continuous there. But the left piece has slope 2 and the right piece has slope 1, so the graph changes direction abruptly: a corner. The function is not differentiable at \\( x = 1 \\) because <b>the graph has a corner there, with different slopes from the left and from the right</b>.",{});}
+]));
+
+E("u4-derivative-graph-features",4,["3.10","3.11"],2,"gen",function(){
+  if(Math.random()<0.5){
+    var p=ri(-4,4), c=ri(-9,9);
+    function P(cs){var n=cs.length-1,parts=[],i,cc,pp,t;for(i=0;i<cs.length;i++){cc=cs[i];if(cc===0)continue;pp=n-i;if(pp===0)t=""+Math.abs(cc);else t=(Math.abs(cc)===1?"":Math.abs(cc))+(pp===1?"x":"x^{"+pp+"}");parts.push({neg:cc<0,term:t});}
+      if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+    var prompt="For \\( f(x) = "+P([1,-2*p,c])+" \\), which statement describes \\( f'(x) \\) correctly?";
+    var correct="\\( f'(x) < 0 \\) for \\( x < "+p+" \\), \\( f'(x) = 0 \\) at \\( x = "+p+" \\), and \\( f'(x) > 0 \\) for \\( x > "+p+" \\)";
+    var d1="\\( f'(x) > 0 \\) for \\( x < "+p+" \\), \\( f'(x) = 0 \\) at \\( x = "+p+" \\), and \\( f'(x) < 0 \\) for \\( x > "+p+" \\)";
+    var d2="\\( f'(x) < 0 \\) for \\( x < "+p+" \\), \\( f'(x) \\) does not exist at \\( x = "+p+" \\), and \\( f'(x) > 0 \\) for \\( x > "+p+" \\)";
+    var d3="\\( f'(x) > 0 \\) for every \\( x \\ne "+p+" \\), and \\( f'(x) = 0 \\) at \\( x = "+p+" \\)";
+    var sol="Here \\( f'(x) = "+(2*p>=0 ? "2x - "+(2*p) : "2x + "+(-2*p))+" = 2 \\left( x - ("+p+") \\right) \\), a linear function with a zero at \\( x = "+p+" \\). It is negative to the left of its zero and positive to the right, and it exists everywhere since the parabola is smooth. The correct description is <b>"+correct+"</b>.";
+    return mcq(prompt, correct, [d1,d2,d3], sol, {mode:"parabola"});
+  }
+  var p=ri(-5,5);
+  var absStr = p>=0 ? "|x - "+p+"|" : "|x + "+(-p)+"|";
+  var prompt="For \\( f(x) = "+absStr+" \\), which statement describes \\( f'(x) \\) correctly?";
+  var correct="\\( f'(x) = -1 \\) for \\( x < "+p+" \\), \\( f'(x) = 1 \\) for \\( x > "+p+" \\), and \\( f'(x) \\) does not exist at \\( x = "+p+" \\)";
+  var d1="\\( f'(x) = 1 \\) for \\( x < "+p+" \\), \\( f'(x) = -1 \\) for \\( x > "+p+" \\), and \\( f'(x) \\) does not exist at \\( x = "+p+" \\)";
+  var d2="\\( f'(x) = -1 \\) for \\( x < "+p+" \\), \\( f'(x) = 1 \\) for \\( x > "+p+" \\), and \\( f'(x) = 0 \\) at \\( x = "+p+" \\)";
+  var d3="\\( f'(x) = 1 \\) for \\( x < "+p+" \\) and for \\( x > "+p+" \\), and \\( f'(x) \\) does not exist at \\( x = "+p+" \\)";
+  var sol="The graph is a V with its vertex at \\( x = "+p+" \\). To the left of the vertex the graph falls with slope \\( -1 \\); to the right it rises with slope \\( 1 \\). At the vertex the two slopes disagree, so the derivative does not exist there. The correct description is <b>"+correct+"</b>.";
+  return mcq(prompt, correct, [d1,d2,d3], sol, {mode:"abs"});
+});
+
+E("u4-sketch-from-derivative",4,["3.12"],3,"gen",function(){
+  var p=ri(-6,3), q=p+ri(2,6), pattern=pick([0,1]);
+  var prompt, correct, d1, d2, d3, sol;
+  if(pattern===0){
+    prompt="The derivative of a function \\( f \\) satisfies: \\( f'(x) > 0 \\) on \\( (-\\infty, "+p+") \\), \\( f'(x) < 0 \\) on \\( ("+p+", "+q+") \\), \\( f'(x) > 0 \\) on \\( ("+q+", \\infty) \\), and \\( f'("+p+") = f'("+q+") = 0 \\). Which statement describes \\( f \\)?";
+    correct="\\( f \\) is increasing on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\), decreasing on \\( ("+p+", "+q+") \\), with a local maximum at \\( x = "+p+" \\) and a local minimum at \\( x = "+q+" \\)";
+    d1="\\( f \\) is increasing on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\), decreasing on \\( ("+p+", "+q+") \\), with a local minimum at \\( x = "+p+" \\) and a local maximum at \\( x = "+q+" \\)";
+    d2="The graph of \\( f \\) lies above the \\( x \\)-axis on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\) and below it on \\( ("+p+", "+q+") \\), crossing the axis at \\( x = "+p+" \\) and \\( x = "+q+" \\)";
+    d3="\\( f \\) is decreasing on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\), increasing on \\( ("+p+", "+q+") \\), with a local minimum at \\( x = "+p+" \\) and a local maximum at \\( x = "+q+" \\)";
+    sol="A positive derivative means the function is increasing, and a negative derivative means it is decreasing. The derivative changes from positive to negative at \\( x = "+p+" \\), so \\( f \\) has a local maximum there; it changes from negative to positive at \\( x = "+q+" \\), so \\( f \\) has a local minimum there. Nothing in the sign of \\( f' \\) says where the graph of \\( f \\) itself sits relative to the axis. The correct description is <b>"+correct+"</b>.";
+  } else {
+    prompt="The derivative of a function \\( f \\) satisfies: \\( f'(x) < 0 \\) on \\( (-\\infty, "+p+") \\), \\( f'(x) > 0 \\) on \\( ("+p+", "+q+") \\), \\( f'(x) < 0 \\) on \\( ("+q+", \\infty) \\), and \\( f'("+p+") = f'("+q+") = 0 \\). Which statement describes \\( f \\)?";
+    correct="\\( f \\) is decreasing on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\), increasing on \\( ("+p+", "+q+") \\), with a local minimum at \\( x = "+p+" \\) and a local maximum at \\( x = "+q+" \\)";
+    d1="\\( f \\) is decreasing on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\), increasing on \\( ("+p+", "+q+") \\), with a local maximum at \\( x = "+p+" \\) and a local minimum at \\( x = "+q+" \\)";
+    d2="The graph of \\( f \\) lies below the \\( x \\)-axis on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\) and above it on \\( ("+p+", "+q+") \\), crossing the axis at \\( x = "+p+" \\) and \\( x = "+q+" \\)";
+    d3="\\( f \\) is increasing on \\( (-\\infty, "+p+") \\) and \\( ("+q+", \\infty) \\), decreasing on \\( ("+p+", "+q+") \\), with a local maximum at \\( x = "+p+" \\) and a local minimum at \\( x = "+q+" \\)";
+    sol="A negative derivative means the function is decreasing, and a positive derivative means it is increasing. The derivative changes from negative to positive at \\( x = "+p+" \\), so \\( f \\) has a local minimum there; it changes from positive to negative at \\( x = "+q+" \\), so \\( f \\) has a local maximum there. Nothing in the sign of \\( f' \\) says where the graph of \\( f \\) itself sits relative to the axis. The correct description is <b>"+correct+"</b>.";
+  }
+  return mcq(prompt, correct, [d1,d2,d3], sol, {pattern:pattern});
+});
+
+E("u4-implicit",4,["3.18"],3,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var triples=[[3,4,5],[4,3,5],[6,8,10],[8,6,10],[5,12,13],[12,5,13],[8,15,17],[15,8,17],[7,24,25],[24,7,25],[9,12,15],[20,21,29]];
+    var tr=pick(triples), x0=pick([-1,1])*tr[0], y0=pick([-1,1])*tr[1], r=tr[2], ans=-x0/y0;
+    var prompt="For the circle \\( x^2 + y^2 = "+(r*r)+" \\), find \\( \\frac{dy}{dx} \\) at the point \\( ("+x0+", "+y0+") \\).";
+    var sol="Differentiate both sides with respect to \\( x \\), treating \\( y \\) as a function of \\( x \\). \\[ \\begin{aligned} 2x + 2y \\frac{dy}{dx} &= 0 \\\\ \\frac{dy}{dx} &= -\\frac{x}{y} \\\\ &= \\frac{"+(-x0)+"}{"+y0+"} = "+fmt(ans)+" \\end{aligned} \\] At the point, <b>\\( \\frac{dy}{dx} = "+fmt(ans)+" \\)</b>.";
+    return numq(prompt, ans, 0.011, sol, {mode:"circle"});
+  }
+  if(mode===1){
+    var x0=ri(-4,4), y0=ri(-4,4), guard=0;
+    while((x0+2*y0===0||(x0===0&&y0===0))&&guard<60){ x0=ri(-4,4); y0=ri(-4,4); guard++; }
+    var K=x0*x0+x0*y0+y0*y0, ans=-(2*x0+y0)/(x0+2*y0);
+    var prompt="For the curve \\( x^2 + xy + y^2 = "+K+" \\), find \\( \\frac{dy}{dx} \\) at the point \\( ("+x0+", "+y0+") \\).";
+    var sol="Differentiate term by term, using the product rule on the \\( xy \\) term and the chain rule on terms in \\( y \\). \\[ \\begin{aligned} 2x + y + x \\frac{dy}{dx} + 2y \\frac{dy}{dx} &= 0 \\\\ \\frac{dy}{dx} \\left( x + 2y \\right) &= - \\left( 2x + y \\right) \\\\ \\frac{dy}{dx} &= -\\frac{2x + y}{x + 2y} \\\\ &= -\\frac{"+(2*x0+y0)+"}{"+(x0+2*y0)+"} = "+fmt(ans)+" \\end{aligned} \\] At the point, <b>\\( \\frac{dy}{dx} = "+fmt(ans)+" \\)</b>.";
+    return numq(prompt, ans, 0.011, sol, {mode:"curve"});
+  }
+  var a=pick([2,3,4,5,9]), K=ri(10,60);
+  var prompt="Find \\( \\frac{dy}{dx} \\) for the relation \\( x^2 + "+a+"y^2 = "+K+" \\).";
+  var sol="Differentiate both sides with respect to \\( x \\), applying the chain rule to the term in \\( y \\), then solve for \\( \\frac{dy}{dx} \\). \\[ \\begin{aligned} 2x + "+(2*a)+"y \\frac{dy}{dx} &= 0 \\\\ \\frac{dy}{dx} &= \\frac{-2x}{"+(2*a)+"y} = \\frac{-x}{"+a+"y} \\end{aligned} \\] The derivative is <b>\\( \\frac{dy}{dx} = \\frac{-x}{"+a+"y} \\)</b>.";
+  return mcq(prompt, "\\( \\frac{-x}{"+a+"y} \\)", ["\\( \\frac{x}{"+a+"y} \\)","\\( \\frac{-"+a+"y}{x} \\)","\\( \\frac{-x}{y} \\)"], sol, {mode:"expr"});
+});
+
+E("u4-implicit-second",4,["3.20"],3,"gen",function(){
+  if(Math.random()<0.5){
+    var pairs=[[5,3],[5,4],[10,6],[10,8],[13,5],[13,12],[17,8],[17,15],[25,7],[25,24],[26,10],[26,24],[29,20],[29,21],[15,9],[15,12],[20,12],[20,16]];
+    var pr=pick(pairs), r=pr[0], ya=pr[1], xa=Math.sqrt(r*r-ya*ya);
+    var x0=pick([-1,1])*xa, y0=pick([-1,1])*ya, ans=-(r*r)/(y0*y0*y0);
+    var prompt="For the circle \\( x^2 + y^2 = "+(r*r)+" \\), find \\( \\frac{d^2y}{dx^2} \\) at the point \\( ("+x0+", "+y0+") \\).";
+    var sol="First, implicit differentiation gives \\( \\frac{dy}{dx} = -\\frac{x}{y} \\). Differentiate again, using the quotient rule and then substituting \\( \\frac{dy}{dx} \\) back in. \\[ \\begin{aligned} \\frac{d^2y}{dx^2} &= -\\frac{y - x \\frac{dy}{dx}}{y^2} \\\\ &= -\\frac{y + \\frac{x^2}{y}}{y^2} \\\\ &= -\\frac{x^2 + y^2}{y^3} \\\\ &= \\frac{"+(-(r*r))+"}{"+(y0*y0*y0)+"} = "+fmt(ans)+" \\end{aligned} \\] At the point, <b>\\( \\frac{d^2y}{dx^2} = "+fmt(ans)+" \\)</b>.";
+    return numq(prompt, ans, 0.011, sol, {mode:"circle"});
+  }
+  var x0=pick([-5,-4,-3,-2,-1,1,2,3,4,5]), y0=pick([-4,-3,-2,-1,1,2,3,4]), k=x0*y0, ans=2*y0/(x0*x0);
+  var prompt="For the curve \\( xy = "+k+" \\), find \\( \\frac{d^2y}{dx^2} \\) at the point \\( ("+x0+", "+y0+") \\).";
+  var sol="Differentiate implicitly, using the product rule on the left side. \\[ \\begin{aligned} y + x \\frac{dy}{dx} &= 0 \\\\ \\frac{dy}{dx} &= -\\frac{y}{x} \\end{aligned} \\] Differentiate the first equation again and substitute \\( \\frac{dy}{dx} = -\\frac{y}{x} \\). \\[ \\begin{aligned} 2 \\frac{dy}{dx} + x \\frac{d^2y}{dx^2} &= 0 \\\\ \\frac{d^2y}{dx^2} &= -\\frac{2}{x} \\cdot \\frac{dy}{dx} = \\frac{2y}{x^2} \\\\ &= \\frac{"+(2*y0)+"}{"+(x0*x0)+"} = "+fmt(ans)+" \\end{aligned} \\] At the point, <b>\\( \\frac{d^2y}{dx^2} = "+fmt(ans)+" \\)</b>.";
+  return numq(prompt, ans, 0.011, sol, {mode:"hyperbola"});
+});
+
+E("u4-tangent-parameter",4,["3.17"],3,"gen",function(){
+  function L(p,q){var s="";if(p!==0)s+=(p===1?"x":p===-1?"-x":p+"x");if(q!==0){if(s)s+=(q>0?" + ":" - ")+Math.abs(q);else s=""+q;}if(!s)s="0";return s;}
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  function sg(v){return v>0 ? " + "+v : (v<0 ? " - "+(-v) : "");}
+  if(Math.random()<0.6){
+    var m=ri(-4,6), dE=pick([-8,-6,-4,-2,0,2,4,6,8]), b=m+dE, c=ri(-6,6), k=c+dE*dE/4;
+    var prompt="Find the value of \\( k \\) for which the line \\( y = "+L(m,c)+" \\) is tangent to the parabola \\( y = "+P([1,b,0])+" + k \\).";
+    var sol="At a point of tangency the line and the parabola meet in exactly one point, so setting them equal must give a repeated root. \\[ \\begin{aligned} x^2 + \\left( "+(b-m)+" \\right) x + \\left( k - ("+c+") \\right) &= 0 \\\\ \\left( "+(b-m)+" \\right)^2 - 4 \\left( k - ("+c+") \\right) &= 0 \\\\ k &= "+c+" + \\frac{"+((b-m)*(b-m))+"}{4} = "+k+" \\end{aligned} \\] The discriminant of the combined equation must be zero, which forces <b>\\( k = "+k+" \\)</b>.";
+    return numq(prompt, k, 0.011, sol, {mode:"line"});
+  }
+  var s=pick([2,3,4,5,6]), b=ri(-6,6), c=b+s*s, a=2*s;
+  var prompt="Find the positive value of \\( a \\) for which the line \\( y = ax"+sg(b)+" \\) is tangent to the parabola \\( y = x^2"+sg(c)+" \\).";
+  var sol="Let the point of tangency be \\( x_0 \\). Matching slopes there gives \\( a = 2x_0 \\), and the point lies on both graphs. \\[ \\begin{aligned} x_0^2 + ("+c+") &= a x_0 + ("+b+") \\\\ \\frac{a^2}{4} + ("+c+") &= \\frac{a^2}{2} + ("+b+") \\\\ \\frac{a^2}{4} &= "+(c-b)+" \\\\ a &= "+a+" \\end{aligned} \\] The positive value is <b>\\( a = "+a+" \\)</b>.";
+  return numq(prompt, a, 0.011, sol, {mode:"slope"});
+});
+
+E("u4-chain-values",4,["3.16"],3,"gen",function(){
+  function nz(){ return pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]); }
+  var a0=pick([1,2,3]), v=pick([1,2,3,4]), w=pick([2,3,4,5]);
+  while(v===a0) v=pick([1,2,3,4]);
+  while(w===a0) w=pick([2,3,4,5]);
+  var gpA=nz(), fpV=nz(), fpA=nz(), gpW=nz();
+  var values="\\( f("+a0+") = "+w+" \\), \\( g("+a0+") = "+v+" \\), \\( f'("+a0+") = "+fpA+" \\), \\( g'("+a0+") = "+gpA+" \\), \\( f'("+v+") = "+fpV+" \\), and \\( g'("+w+") = "+gpW+" \\)";
+  if(Math.random()<0.5){
+    var ans=fpV*gpA;
+    var prompt="Values of two differentiable functions and their derivatives are given: "+values+". If \\( h(x) = f(g(x)) \\), find \\( h'("+a0+") \\).";
+    var sol="By the chain rule, \\( h'(x) = f'(g(x)) \\cdot g'(x) \\). Read off the needed values: \\( g("+a0+") = "+v+" \\), so \\( f'(g("+a0+")) = f'("+v+") = "+fpV+" \\), and \\( g'("+a0+") = "+gpA+" \\). \\[ \\begin{aligned} h'("+a0+") &= "+fpV+" \\cdot "+gpA+" \\\\ &= "+ans+" \\end{aligned} \\] The value is <b>\\( h'("+a0+") = "+ans+" \\)</b>.";
+    return numq(prompt, ans, 0.011, sol, {mode:"fog"});
+  }
+  var ans=gpW*fpA;
+  var prompt="Values of two differentiable functions and their derivatives are given: "+values+". If \\( h(x) = g(f(x)) \\), find \\( h'("+a0+") \\).";
+  var sol="By the chain rule, \\( h'(x) = g'(f(x)) \\cdot f'(x) \\). Read off the needed values: \\( f("+a0+") = "+w+" \\), so \\( g'(f("+a0+")) = g'("+w+") = "+gpW+" \\), and \\( f'("+a0+") = "+fpA+" \\). \\[ \\begin{aligned} h'("+a0+") &= "+gpW+" \\cdot "+fpA+" \\\\ &= "+ans+" \\end{aligned} \\] The value is <b>\\( h'("+a0+") = "+ans+" \\)</b>.";
+  return numq(prompt, ans, 0.011, sol, {mode:"gof"});
+});
+
+/* ----- bank-u5.js ----- */
+// Math 3208 Unit 5 Applications of Derivatives question bank
+// CRMARKS: u5-poly-critical=2
+// CRMARKS: u5-poly-intervals=2
+// CRMARKS: u5-poly-second=2
+// CRMARKS: u5-given-deriv=3
+// CRMARKS: u5-rat-critical=2
+// CRMARKS: u5-rat-second=2
+// CRMARKS: u5-rat-arc=4
+// CRMARKS: u5-rr-ladder=3
+// CRMARKS: u5-rr-cone=3
+// CRMARKS: u5-rr-separation=2
+// CRMARKS: u5-rr-tracking=3
+// CRMARKS: u5-opt-setup=2
+// CRMARKS: u5-opt-solve-a=3
+// CRMARKS: u5-opt-solve-b=2
+// CRMARKS: u5-opt-endpoint=4
+/* ================= Unit 5: Applications of Derivatives (MA3208.3.21 to 3.34) =================
+   Tranche 2, final scope. */
+
+/* Math 3208 Review, Unit 5 (Applications of Derivatives), tranche 2 entries.
+   Format per brief-common.md. Fractions are written as literal \frac strings
+   inside math delimiters. All scenarios and values are original. */
+
+E("u5-crit-quadratic",5,["3.21"],1,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var a=pick([-4,-3,-2,-1,1,2,3,4]), x0=ri(-5,5), b=-2*a*x0, c=ri(-12,12);
+  var prompt="Find the critical number of the function \\( f(x) = "+P([a,b,c])+" \\).";
+  var sol="The critical number is where the derivative equals zero. \\[ \\begin{aligned} f'(x) &= "+P([2*a,b])+" \\\\ 0 &= "+(2*a)+"x "+(b>=0?"+ ":"- ")+Math.abs(b)+" \\\\ x &= "+x0+" \\end{aligned} \\] The critical number is <b>"+x0+"</b>.";
+  return numq(prompt, x0, 0.011, sol, {a:a});
+});
+
+E("u5-poly-features",5,["3.24"],1,"gen",function(){
+  function fac(r){ if(r===0) return "x"; return r>0 ? "(x - "+r+")" : "(x + "+(-r)+")"; }
+  var mode=ri(0,2);
+  if(mode===0){
+    var roots=[]; while(roots.length<3){ var r=ri(-6,6); if(roots.indexOf(r)<0) roots.push(r); }
+    roots.sort(function(u,v){return u-v;});
+    while(roots[1]===0 && roots[0]===-roots[2]){ roots=[]; while(roots.length<3){ var r2=ri(-6,6); if(roots.indexOf(r2)<0) roots.push(r2); } roots.sort(function(u,v){return u-v;}); }
+    var p=roots[0], q=roots[1], w=roots[2];
+    var prompt="What are the \\( x \\)-intercepts of the graph of \\( f(x) = "+fac(p)+fac(q)+fac(w)+" \\)?";
+    var key="\\( x = "+p+" \\), \\( x = "+q+" \\), and \\( x = "+w+" \\)";
+    var flips=[[p,q,-w],[p,-q,w],[-p,q,w],[-p,-q,w],[-p,q,-w],[p,-q,-w],[-p,-q,-w]];
+    var chosen=[];
+    for(var i=0;i<flips.length && chosen.length<2;i++){
+      var t=flips[i];
+      if(t[0]===p && t[1]===q && t[2]===w) continue;
+      var dup=false;
+      for(var j=0;j<chosen.length;j++){ if(chosen[j][0]===t[0] && chosen[j][1]===t[1] && chosen[j][2]===t[2]) dup=true; }
+      if(!dup) chosen.push(t);
+    }
+    var d1="\\( x = "+chosen[0][0]+" \\), \\( x = "+chosen[0][1]+" \\), and \\( x = "+chosen[0][2]+" \\)";
+    var d2="\\( x = "+p+" \\) and \\( x = "+q+" \\) only";
+    var d3="\\( x = "+chosen[1][0]+" \\), \\( x = "+chosen[1][1]+" \\), and \\( x = "+chosen[1][2]+" \\)";
+    var sol="A factor \\( (x - r) \\) makes the function zero at \\( x = r \\), and a factor \\( (x + r) \\) makes it zero at \\( x = -r \\). Reading the three factors gives zeros at \\( "+p+" \\), \\( "+q+" \\), and \\( "+w+" \\). The \\( x \\)-intercepts are <b>"+key+"</b>.";
+    return mcq(prompt, key, [d1,d2,d3], sol, {mode:"zeros"});
+  }
+  if(mode===1){
+    var roots=[]; while(roots.length<3){ var r=ri(-6,6); if(roots.indexOf(r)<0) roots.push(r); }
+    var p=roots[0], q=roots[1], w=roots[2], ans=-p*q*w;
+    var prompt="What is the \\( y \\)-intercept of the graph of \\( f(x) = "+fac(p)+fac(q)+fac(w)+" \\)?";
+    var sol="The \\( y \\)-intercept is the value at \\( x = 0 \\): each factor contributes its constant term. \\[ \\begin{aligned} f(0) &= ("+(-p)+")("+(-q)+")("+(-w)+") \\\\ &= "+ans+" \\end{aligned} \\] The \\( y \\)-intercept is <b>"+ans+"</b>.";
+    return numq(prompt, ans, 0.011, sol, {mode:"yint3"});
+  }
+  var a=pick([1,2,3]), p2=pick([-5,-4,-3,-2,-1,1,2,3,4,5]), q2=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  while(q2===p2) q2=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var lead = a===1 ? "" : ""+a;
+  var prompt="What is the \\( y \\)-intercept of the graph of \\( f(x) = "+lead+fac(p2)+fac(q2)+" \\)?";
+  var ans=a*p2*q2;
+  var sol="The \\( y \\)-intercept is the value at \\( x = 0 \\): each factor contributes its constant term. \\[ \\begin{aligned} f(0) &= "+a+"("+(-p2)+")("+(-q2)+") \\\\ &= "+ans+" \\end{aligned} \\] The \\( y \\)-intercept is <b>"+ans+"</b>.";
+  return numq(prompt, ans, 0.011, sol, {mode:"yint2"});
+});
+
+E("u5-concavity-meaning",5,["3.22"],1,"var",varset([
+  function(){return mcq("On an interval where \\( f''(x) > 0 \\) for every \\( x \\), the graph of \\( f \\) is",
+    "concave up on the interval",
+    ["concave down on the interval","increasing on the interval","decreasing on the interval"],
+    "A positive second derivative means the slopes of the tangent lines are increasing, so the graph bends upward: it is concave up. Concavity describes the bending of the graph, not whether the function values rise or fall. The graph is <b>concave up on the interval</b>.",{});},
+  function(){return mcq("A point of inflection of the graph of \\( f \\) is a point where",
+    "the concavity changes and the graph has a tangent line",
+    ["the derivative is zero and the function has an extremum",
+     "the function crosses the \\( x \\)-axis and changes sign there",
+     "the second derivative is undefined for every nearby value"],
+    "A point of inflection is a point on the graph where the bending switches, from concave up to concave down or the reverse, with a tangent line present. A zero of the second derivative alone is not enough: the concavity must actually change. A point of inflection is a point where <b>the concavity changes and the graph has a tangent line</b>.",{});},
+  function(){return mcq("The hypercritical numbers of a function \\( f \\) are the \\( x \\)-values where",
+    "\\( f''(x) \\) equals zero or \\( f''(x) \\) does not exist",
+    ["\\( f'(x) \\) equals zero or \\( f'(x) \\) does not exist",
+     "\\( f(x) \\) equals zero or \\( f(x) \\) does not exist",
+     "\\( f'(x) \\) changes sign from positive to negative"],
+    "Just as critical numbers come from the first derivative, hypercritical numbers come from the second: they are the values where \\( f''(x) = 0 \\) or where \\( f''(x) \\) does not exist. They are the candidates for points of inflection. The hypercritical numbers are where <b>\\( f''(x) \\) equals zero or \\( f''(x) \\) does not exist</b>.",{});},
+  function(){return mcq("If \\( f''(c) = 0 \\) and \\( f'' \\) changes sign at \\( x = c \\), then at \\( x = c \\) the graph of \\( f \\) has",
+    "a point of inflection",
+    ["a local maximum value","a local minimum value","a vertical tangent line"],
+    "The second derivative test for inflection asks for a sign change of \\( f'' \\), and a sign change means the concavity reverses at \\( c \\). Extrema are decided by the first derivative, not by \\( f'' \\) alone. At \\( x = c \\) the graph has <b>a point of inflection</b>.",{});},
+  function(){return mcq("If \\( f''(x) < 0 \\) on an interval, then on that interval \\( f'(x) \\) is",
+    "decreasing",
+    ["increasing","negative","positive"],
+    "The second derivative is the derivative of the first derivative. Where \\( f''(x) < 0 \\), the quantity \\( f'(x) \\) is falling, whatever its sign happens to be. On that interval \\( f'(x) \\) is <b>decreasing</b>.",{});}
+]));
+
+E("u5-rat-features",5,["3.28"],1,"gen",function(){
+  var a=pick([1,2,3]), h=ri(-5,5), x0=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  while(x0===h) x0=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  var b=-a*x0;
+  var numStr=(a===1?"x":a+"x")+(b===0?"":(b>0?" + "+b:" - "+(-b)));
+  var denStr= h===0 ? "x" : (h>0 ? "x - "+h : "x + "+(-h));
+  var fstr="\\frac{"+numStr+"}{"+denStr+"}";
+  var mode=ri(0,2);
+  if(mode===0){
+    var prompt="The vertical asymptote of the graph of \\( f(x) = "+fstr+" \\) is the line \\( x = k \\). What is \\( k \\)?";
+    var sol="The function is undefined where its denominator is zero, at \\( x = "+h+" \\), and the numerator is not zero there, so the graph shoots off to infinity on at least one side. The vertical asymptote is <b>\\( x = "+h+" \\)</b>.";
+    return numq(prompt, h, 0.011, sol, {mode:"va"});
+  }
+  if(mode===1){
+    var prompt="The horizontal asymptote of the graph of \\( f(x) = "+fstr+" \\) is the line \\( y = k \\). What is \\( k \\)?";
+    var sol="The numerator and denominator have the same degree, so the horizontal asymptote is the ratio of the leading coefficients, \\( y = \\frac{"+a+"}{1} = "+a+" \\). The horizontal asymptote is <b>\\( y = "+a+" \\)</b>.";
+    return numq(prompt, a, 0.011, sol, {mode:"ha"});
+  }
+  var prompt="What is the \\( x \\)-intercept of the graph of \\( f(x) = "+fstr+" \\)?";
+  var sol="The \\( x \\)-intercept is where the numerator is zero: \\( "+numStr+" = 0 \\) gives \\( x = "+x0+" \\), and this value does not make the denominator zero. The \\( x \\)-intercept is <b>"+x0+"</b>.";
+  return numq(prompt, x0, 0.011, sol, {mode:"xint"});
+});
+
+E("u5-poly-critical",5,["3.21"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var r1, r2, tries=0;
+  do { r1=ri(-6,1); r2=ri(-1,6); tries++; } while((r1>=r2 || (r1+r2)%2!==0 || r1+r2===0) && tries<80);
+  var s=r1+r2, d=r1*r2, c=ri(-9,9);
+  var fstr=P([1,-3*s/2,3*d,c]);
+  var mode=ri(0,2);
+  if(mode===0){
+    var key="\\( x = "+r1+" \\) and \\( x = "+r2+" \\)";
+    var prompt="Find the critical numbers of \\( f(x) = "+fstr+" \\).";
+    var sol="Differentiate and factor. \\[ \\begin{aligned} f'(x) &= 3x^2 "+( -3*s>=0?"+ ":"- ")+Math.abs(3*s)+"x "+(3*d>=0?"+ ":"- ")+Math.abs(3*d)+" \\\\ &= 3(x - ("+r1+"))(x - ("+r2+")) \\end{aligned} \\] The derivative is zero at \\( x = "+r1+" \\) and at \\( x = "+r2+" \\), and it exists everywhere. The critical numbers are <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( x = "+r1+" \\) only","\\( x = "+r2+" \\) only","\\( x = "+(-r1)+" \\) and \\( x = "+(-r2)+" \\)"], sol, {mode:"crit"});
+  }
+  if(mode===1){
+    var prompt="For \\( f(x) = "+fstr+" \\), at what value of \\( x \\) does \\( f \\) have a local maximum?";
+    var sol="The derivative factors as \\( f'(x) = 3(x - ("+r1+"))(x - ("+r2+")) \\). Its sign is positive before \\( "+r1+" \\), negative between \\( "+r1+" \\) and \\( "+r2+" \\), and positive after \\( "+r2+" \\). So \\( f \\) rises, then falls, then rises: the change from increasing to decreasing happens at \\( x = "+r1+" \\). The local maximum occurs at <b>\\( x = "+r1+" \\)</b>.";
+    return numq(prompt, r1, 0.011, sol, {mode:"max"});
+  }
+  var prompt="For \\( f(x) = "+fstr+" \\), at what value of \\( x \\) does \\( f \\) have a local minimum?";
+  var sol="The derivative factors as \\( f'(x) = 3(x - ("+r1+"))(x - ("+r2+")) \\). Its sign is positive before \\( "+r1+" \\), negative between \\( "+r1+" \\) and \\( "+r2+" \\), and positive after \\( "+r2+" \\). So \\( f \\) falls, then rises, starting at \\( x = "+r2+" \\): the change from decreasing to increasing happens there. The local minimum occurs at <b>\\( x = "+r2+" \\)</b>.";
+  return numq(prompt, r2, 0.011, sol, {mode:"min"});
+});
+
+E("u5-poly-intervals",5,["3.21"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var r1, r2, tries=0;
+  do { r1=ri(-6,1); r2=ri(-1,6); tries++; } while((r1>=r2 || (r1+r2)%2!==0) && tries<80);
+  var s=r1+r2, d=r1*r2, c=ri(-9,9);
+  var fstr=P([1,-3*s/2,3*d,c]);
+  var signSol="The derivative factors as \\( f'(x) = 3(x - ("+r1+"))(x - ("+r2+")) \\). It is positive outside the roots and negative between them, since the parabola \\( f' \\) opens upward.";
+  if(Math.random()<0.5){
+    var key="\\( ("+r1+", "+r2+") \\)";
+    var prompt="On which interval is \\( f(x) = "+fstr+" \\) decreasing?";
+    var sol=signSol+" A function decreases where its derivative is negative, which here is between the two critical numbers. The function is decreasing on <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( (-\\infty, "+r1+") \\)","\\( ("+r2+", \\infty) \\)","\\( (-\\infty, "+r2+") \\)"], sol, {mode:"dec"});
+  }
+  var key="\\( (-\\infty, "+r1+") \\cup ("+r2+", \\infty) \\)";
+  var prompt="On which intervals is \\( f(x) = "+fstr+" \\) increasing?";
+  var sol=signSol+" A function increases where its derivative is positive, which here is outside the two critical numbers. The function is increasing on <b>"+key+"</b>.";
+  return mcq(prompt, key, ["\\( ("+r1+", "+r2+") \\)","\\( ("+r1+", \\infty) \\)","\\( (-\\infty, "+r2+") \\)"], sol, {mode:"inc"});
+});
+
+E("u5-poly-second",5,["3.22"],2,"gen",function(){
+  function P(cs){var n=cs.length-1,parts=[],i,c,p,t;for(i=0;i<cs.length;i++){c=cs[i];if(c===0)continue;p=n-i;if(p===0)t=""+Math.abs(c);else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?"x":"x^{"+p+"}");parts.push({neg:c<0,term:t});}
+    if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+  var m=ri(-5,5), b=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9]), c=ri(-9,9);
+  var fstr=P([1,3*m,b,c]), infl=-m;
+  var mode=ri(0,2);
+  if(mode===0){
+    var prompt="Find the \\( x \\)-coordinate of the point of inflection of \\( f(x) = "+fstr+" \\).";
+    var sol="Differentiate twice. \\[ \\begin{aligned} f'(x) &= "+P([3,6*m,b])+" \\\\ f''(x) &= 6x "+(6*m>=0?"+ ":"- ")+Math.abs(6*m)+" \\end{aligned} \\] Setting \\( f''(x) = 0 \\) gives \\( x = "+infl+" \\), and \\( f'' \\) changes sign there, so the concavity reverses. The point of inflection has \\( x \\)-coordinate <b>"+infl+"</b>.";
+    return numq(prompt, infl, 0.011, sol, {mode:"inflx"});
+  }
+  if(mode===1){
+    var key="\\( ("+infl+", \\infty) \\)";
+    var prompt="On which interval is \\( f(x) = "+fstr+" \\) concave up?";
+    var sol="The second derivative is \\( f''(x) = 6x "+(6*m>=0?"+ ":"- ")+Math.abs(6*m)+" = 6(x - ("+infl+")) \\), which is positive when \\( x > "+infl+" \\). The graph is concave up where the second derivative is positive. The function is concave up on <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( (-\\infty, "+infl+") \\)","\\( (-\\infty, \\infty) \\)","\\( ("+(infl-2)+", "+(infl+2)+") \\)"], sol, {mode:"up"});
+  }
+  var yv=2*m*m*m-b*m+c;
+  var prompt="Find the \\( y \\)-coordinate of the point of inflection of \\( f(x) = "+fstr+" \\).";
+  var sol="The second derivative \\( f''(x) = 6x "+(6*m>=0?"+ ":"- ")+Math.abs(6*m)+" \\) is zero at \\( x = "+infl+" \\), and it changes sign there, so the inflection point sits above \\( x = "+infl+" \\). \\[ \\begin{aligned} f("+infl+") &= "+yv+" \\end{aligned} \\] The point of inflection has \\( y \\)-coordinate <b>"+yv+"</b>.";
+  return numq(prompt, yv, 0.011, sol, {mode:"infly"});
+});
+
+E("u5-given-deriv",5,["3.21","3.22","3.23"],3,"gen",function(){
+  var p=ri(-6,3), gap=pick([2,4,6,8]), q=p+gap, m=(p+q)/2, sgn=Math.random()<0.5?1:-1;
+  var fp = sgn===1 ? "(x - ("+p+"))(x - ("+q+"))" : "- (x - ("+p+"))(x - ("+q+"))";
+  var cst = p+q;
+  var fs;
+  if(sgn===1){ fs = cst===0 ? "2x" : (cst>0 ? "2x - "+cst : "2x + "+(-cst)); }
+  else { fs = cst===0 ? "- 2x" : ""+cst+" - 2x"; }
+  var mx = sgn===1 ? p : q, mn = sgn===1 ? q : p;
+  var key="\\( f \\) has a local maximum at \\( x = "+mx+" \\), a local minimum at \\( x = "+mn+" \\), and a point of inflection at \\( x = "+m+" \\)";
+  var d1="\\( f \\) has a local maximum at \\( x = "+mn+" \\), a local minimum at \\( x = "+mx+" \\), and a point of inflection at \\( x = "+m+" \\)";
+  var d2="\\( f \\) has a local maximum at \\( x = "+mx+" \\), a local minimum at \\( x = "+mn+" \\), and a point of inflection at \\( x = "+p+" \\)";
+  var d3="\\( f \\) has a local maximum at \\( x = "+mx+" \\), a local minimum at \\( x = "+mn+" \\), and a point of inflection at \\( x = "+q+" \\)";
+  var prompt="A function \\( f \\) has derivatives \\( f'(x) = "+fp+" \\) and \\( f''(x) = "+fs+" \\). Which statement describes the graph of \\( f \\)?";
+  var sol="Read the features off the signs of the derivatives. The first derivative is zero at \\( x = "+p+" \\) and \\( x = "+q+" \\); its sign pattern makes \\( f \\) switch from increasing to decreasing at \\( x = "+mx+" \\) and from decreasing to increasing at \\( x = "+mn+" \\). The second derivative is zero at \\( x = "+m+" \\) and changes sign there, so the concavity reverses at that point, which is neither of the critical numbers. The correct description is <b>"+key+"</b>.";
+  return mcq(prompt, key, [d1,d2,d3], sol, {sgn:sgn});
+});
+
+E("u5-rat-critical",5,["3.25"],2,"gen",function(){
+  var fam=Math.random();
+  if(fam<0.4){
+    var h=ri(-8,8);
+    var numS = h===0 ? "x^2" : (h>0 ? "(x - "+h+")^2" : "(x + "+(-h)+")^2");
+    var denS = (h+1)===0 ? "x" : (h+1>0 ? "x - "+(h+1) : "x + "+(-(h+1)));
+    var fstr="\\frac{"+numS+"}{"+denS+"}";
+    if(Math.random()<0.5){
+      var key="\\( x = "+h+" \\) and \\( x = "+(h+2)+" \\)";
+      var prompt="Find the critical numbers of \\( f(x) = "+fstr+" \\).";
+      var sol="Substitute \\( u = x - ("+h+") \\) to see the shape, or differentiate directly: \\( f'(x) = \\frac{(x - ("+h+"))(x - ("+(h+2)+"))}{("+denS+")^2} \\). The numerator is zero at \\( x = "+h+" \\) and \\( x = "+(h+2)+" \\), and the derivative exists at both points since the denominator only fails at \\( x = "+(h+1)+" \\). The critical numbers are <b>"+key+"</b>.";
+      return mcq(prompt, key, ["\\( x = "+h+" \\) only","\\( x = "+(h+2)+" \\) only","\\( x = "+(h+1)+" \\) and \\( x = "+(h+2)+" \\)"], sol, {mode:"critA"});
+    }
+    var key2="a local maximum at \\( x = "+h+" \\) and a local minimum at \\( x = "+(h+2)+" \\)";
+    var prompt="For \\( f(x) = "+fstr+" \\), which statement about its extrema is correct?";
+    var sol="The derivative \\( f'(x) = \\frac{(x - ("+h+"))(x - ("+(h+2)+"))}{("+denS+")^2} \\) has the sign of its numerator away from the asymptote \\( x = "+(h+1)+" \\): positive before \\( "+h+" \\), negative from \\( "+h+" \\) to \\( "+(h+2)+" \\) on both sides of the asymptote, and positive after \\( "+(h+2)+" \\). So \\( f \\) switches from increasing to decreasing at \\( x = "+h+" \\) and back at \\( x = "+(h+2)+" \\). The function has <b>"+key2+"</b>.";
+    return mcq(prompt, key2, ["a local minimum at \\( x = "+h+" \\) and a local maximum at \\( x = "+(h+2)+" \\)","a local maximum at \\( x = "+(h+1)+" \\) and a local minimum at \\( x = "+(h+2)+" \\)","a local maximum at \\( x = "+h+" \\) and a local minimum at \\( x = "+(h+1)+" \\)"], sol, {mode:"classA"});
+  }
+  if(fam<0.7){
+  var k=pick([4,9,16,25,36]), r=Math.sqrt(k);
+  var fstr="\\frac{x^2 + "+k+"}{x}";
+  var bmode=ri(0,2);
+  if(bmode===0){
+    var key="\\( x = "+(-r)+" \\) and \\( x = "+r+" \\)";
+    var prompt="Find the critical numbers of \\( f(x) = "+fstr+" \\).";
+    var sol="Write \\( f(x) = x + \\frac{"+k+"}{x} \\), so \\( f'(x) = 1 - \\frac{"+k+"}{x^2} = \\frac{x^2 - "+k+"}{x^2} \\). The numerator is zero at \\( x = \\pm "+r+" \\), and the derivative exists at both points since the denominator only fails at \\( x = 0 \\). The critical numbers are <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( x = "+r+" \\) only","\\( x = "+(-r)+" \\) only","\\( x = "+(-k)+" \\) and \\( x = "+k+" \\)"], sol, {mode:"critB"});
+  }
+  if(bmode===1){
+    var prompt="For \\( f(x) = "+fstr+" \\), find the local minimum value of \\( f \\).";
+    var sol="Write \\( f(x) = x + \\frac{"+k+"}{x} \\), so \\( f'(x) = 1 - \\frac{"+k+"}{x^2} = \\frac{x^2 - "+k+"}{x^2} \\). The critical numbers are \\( x = \\pm "+r+" \\); on the right branch the derivative changes from negative to positive at \\( x = "+r+" \\), giving the local minimum. \\[ \\begin{aligned} f("+r+") &= \\frac{"+(r*r)+" + "+k+"}{"+r+"} = "+(2*r)+" \\end{aligned} \\] The local minimum value is <b>"+(2*r)+"</b>.";
+    return numq(prompt, 2*r, 0.011, sol, {mode:"minB"});
+  }
+  var prompt="For \\( f(x) = "+fstr+" \\), find the local maximum value of \\( f \\).";
+  var sol="Write \\( f(x) = x + \\frac{"+k+"}{x} \\), so \\( f'(x) = 1 - \\frac{"+k+"}{x^2} = \\frac{x^2 - "+k+"}{x^2} \\). The critical numbers are \\( x = \\pm "+r+" \\); on the left branch the derivative changes from positive to negative at \\( x = "+(-r)+" \\), giving the local maximum. \\[ \\begin{aligned} f("+(-r)+") &= \\frac{"+(r*r)+" + "+k+"}{"+(-r)+"} = "+(-2*r)+" \\end{aligned} \\] The local maximum value is <b>"+(-2*r)+"</b>.";
+  return numq(prompt, -2*r, 0.011, sol, {mode:"maxB"});
+  }
+  var h=ri(-4,4), m=ri(Math.abs(h)+1,6), a=m*m-h*h;
+  var denC = h===0 ? "x" : (h>0 ? "x - "+h : "x + "+(-h));
+  var fstr="\\frac{x^2 + "+a+"}{"+denC+"}";
+  var cmode=ri(0,2);
+  if(cmode===0){
+    var key="\\( x = "+(h-m)+" \\) and \\( x = "+(h+m)+" \\)";
+    var prompt="Find the critical numbers of \\( f(x) = "+fstr+" \\).";
+    var sol="The quotient rule gives \\( f'(x) = \\frac{(x - ("+(h-m)+"))(x - ("+(h+m)+"))}{("+denC+")^2} \\). The numerator is zero at \\( x = "+(h-m)+" \\) and \\( x = "+(h+m)+" \\), and the derivative exists at both points since the denominator only fails at \\( x = "+h+" \\). The critical numbers are <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( x = "+(h-m)+" \\) only","\\( x = "+(h+m)+" \\) only","\\( x = "+h+" \\) and \\( x = "+(h+m)+" \\)"], sol, {mode:"critC"});
+  }
+  if(cmode===1){
+    var prompt="For \\( f(x) = "+fstr+" \\), find the local maximum value of \\( f \\).";
+    var sol="The derivative \\( f'(x) = \\frac{(x - ("+(h-m)+"))(x - ("+(h+m)+"))}{("+denC+")^2} \\) has the sign of its numerator: positive, then negative, then positive, so the local maximum is at \\( x = "+(h-m)+" \\). \\[ \\begin{aligned} f("+(h-m)+") &= "+(2*h-2*m)+" \\end{aligned} \\] The local maximum value is <b>"+(2*h-2*m)+"</b>.";
+    return numq(prompt, 2*h-2*m, 0.011, sol, {mode:"maxCv"});
+  }
+  var prompt="For \\( f(x) = "+fstr+" \\), find the local minimum value of \\( f \\).";
+  var sol="The derivative \\( f'(x) = \\frac{(x - ("+(h-m)+"))(x - ("+(h+m)+"))}{("+denC+")^2} \\) has the sign of its numerator: positive, then negative, then positive, so the local minimum is at \\( x = "+(h+m)+" \\). \\[ \\begin{aligned} f("+(h+m)+") &= "+(2*h+2*m)+" \\end{aligned} \\] The local minimum value is <b>"+(2*h+2*m)+"</b>.";
+  return numq(prompt, 2*h+2*m, 0.011, sol, {mode:"minCv"});
+});
+
+E("u5-rat-second",5,["3.26"],2,"gen",function(){
+  if(Math.random()<0.55){
+    var h=ri(-9,9), a1=h+1;
+    var numS = h===0 ? "x^2" : (h>0 ? "(x - "+h+")^2" : "(x + "+(-h)+")^2");
+    var denS = (h+1)===0 ? "x" : (h+1>0 ? "x - "+(h+1) : "x + "+(-(h+1)));
+    var fstr="\\frac{"+numS+"}{"+denS+"}";
+    var mode=ri(0,2);
+    if(mode===0){
+      var key="\\( ("+a1+", \\infty) \\)";
+      var prompt="On which interval is \\( f(x) = "+fstr+" \\) concave up?";
+      var sol="The second derivative is \\( f''(x) = \\frac{2}{("+denS+")^3} \\). Its sign is the sign of \\( "+denS+" \\): negative before \\( x = "+a1+" \\) and positive after it. The graph is concave up where the second derivative is positive. The function is concave up on <b>"+key+"</b>.";
+      return mcq(prompt, key, ["\\( (-\\infty, "+a1+") \\)","\\( ("+h+", "+(h+2)+") \\)","\\( (-\\infty, \\infty) \\)"], sol, {mode:"up"});
+    }
+    if(mode===1){
+      var key="\\( (-\\infty, "+a1+") \\)";
+      var prompt="On which interval is \\( f(x) = "+fstr+" \\) concave down?";
+      var sol="The second derivative is \\( f''(x) = \\frac{2}{("+denS+")^3} \\). Its sign is the sign of \\( "+denS+" \\): negative before \\( x = "+a1+" \\) and positive after it. The graph is concave down where the second derivative is negative. The function is concave down on <b>"+key+"</b>.";
+      return mcq(prompt, key, ["\\( ("+a1+", \\infty) \\)","\\( ("+h+", "+(h+2)+") \\)","\\( (-\\infty, \\infty) \\)"], sol, {mode:"down"});
+    }
+    var key="There is no point of inflection: the concavity changes across the asymptote \\( x = "+a1+" \\), where \\( f \\) is undefined";
+    var prompt="Which statement about points of inflection of \\( f(x) = "+fstr+" \\) is correct?";
+    var sol="The second derivative \\( f''(x) = \\frac{2}{("+denS+")^3} \\) is never zero; it only fails to exist at \\( x = "+a1+" \\), where the function itself is undefined and the graph has its vertical asymptote. Concavity does reverse there, from down to up, but a point of inflection must be a point on the graph. The correct statement is: <b>"+key+"</b>.";
+    return mcq(prompt, key, ["There is a point of inflection at \\( x = "+a1+" \\), where the concavity changes from down to up across the vertical asymptote","There is a point of inflection at \\( x = "+h+" \\), the location of the local maximum of \\( f \\) on its graph","There is a point of inflection at \\( x = "+(h+2)+" \\), the location of the local minimum of \\( f \\) on its graph"], sol, {mode:"infl"});
+  }
+  var k=pick([4,9,16,25,36]), r=Math.sqrt(k);
+  var fstr="\\frac{x^2 + "+k+"}{x}";
+  var mode=ri(0,2);
+  if(mode===0){
+    var key="\\( (0, \\infty) \\)";
+    var prompt="On which interval is \\( f(x) = "+fstr+" \\) concave up?";
+    var sol="Write \\( f(x) = x + \\frac{"+k+"}{x} \\); then \\( f'(x) = 1 - \\frac{"+k+"}{x^2} \\) and \\( f''(x) = \\frac{"+(2*k)+"}{x^3} \\). The sign of \\( f'' \\) is the sign of \\( x \\): positive for \\( x > 0 \\). The function is concave up on <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( (-\\infty, 0) \\)","\\( (-"+r+", "+r+") \\)","\\( (-\\infty, \\infty) \\)"], sol, {mode:"up"});
+  }
+  if(mode===1){
+    var key="\\( (-\\infty, 0) \\)";
+    var prompt="On which interval is \\( f(x) = "+fstr+" \\) concave down?";
+    var sol="Write \\( f(x) = x + \\frac{"+k+"}{x} \\); then \\( f'(x) = 1 - \\frac{"+k+"}{x^2} \\) and \\( f''(x) = \\frac{"+(2*k)+"}{x^3} \\). The sign of \\( f'' \\) is the sign of \\( x \\): negative for \\( x < 0 \\). The function is concave down on <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( (0, \\infty) \\)","\\( (-"+r+", "+r+") \\)","\\( (-\\infty, \\infty) \\)"], sol, {mode:"down"});
+  }
+  var key="There is no point of inflection: the concavity changes across the asymptote \\( x = 0 \\), where \\( f \\) is undefined";
+  var prompt="Which statement about points of inflection of \\( f(x) = "+fstr+" \\) is correct?";
+  var sol="The second derivative \\( f''(x) = \\frac{"+(2*k)+"}{x^3} \\) is never zero; it only fails to exist at \\( x = 0 \\), where the function itself is undefined and the graph has its vertical asymptote. Concavity does reverse there, from down to up, but a point of inflection must be a point on the graph. The correct statement is: <b>"+key+"</b>.";
+  return mcq(prompt, key, ["There is a point of inflection at \\( x = 0 \\), where the concavity changes from down to up across the vertical asymptote","There is a point of inflection at \\( x = "+r+" \\), the location of the local minimum of \\( f \\) on its graph","There is a point of inflection at \\( x = "+(-r)+" \\), the location of the local maximum of \\( f \\) on its graph"], sol, {mode:"infl"});
+});
+
+E("u5-rat-arc",5,["3.25","3.26","3.27","3.28"],3,"gen",function(){
+  function lin(v){ return v===0 ? "x" : (v>0 ? "x - "+v : "x + "+(-v)); }
+  if(Math.random()<0.5){
+    var h=ri(-5,5), m=ri(Math.abs(h)+1,7), a=m*m-h*h;
+    var fstr="\\frac{x^2 + "+a+"}{"+lin(h)+"}";
+    var fpstr="\\frac{(x - ("+(h-m)+"))(x - ("+(h+m)+"))}{("+lin(h)+")^2}";
+    var fsstr="\\frac{"+(2*m*m)+"}{("+lin(h)+")^3}";
+    var mx=h-m, mn=h+m, mxv=2*h-2*m, mnv=2*h+2*m;
+    var oblA = h===0 ? "x" : (h>0 ? "x + "+h : "x - "+(-h));
+    var extClause="local maximum value "+mxv+" at \\( x = "+mx+" \\) and local minimum value "+mnv+" at \\( x = "+mn+" \\)";
+    var extSwap="local maximum value "+mnv+" at \\( x = "+mx+" \\) and local minimum value "+mxv+" at \\( x = "+mn+" \\)";
+    var concClause="concave down for \\( x < "+h+" \\) and up for \\( x > "+h+" \\)";
+    var key="Vertical asymptote \\( x = "+h+" \\), oblique asymptote \\( y = "+oblA+" \\); "+extClause+"; "+concClause+", with no point of inflection";
+    var d1="Vertical asymptote \\( x = "+h+" \\), oblique asymptote \\( y = "+oblA+" \\); "+extSwap+"; "+concClause+", with no point of inflection";
+    var d2="Vertical asymptote \\( x = "+h+" \\), oblique asymptote \\( y = "+oblA+" \\); "+extClause+"; "+concClause+", with a point of inflection at \\( x = "+h+" \\)";
+    var d3="Vertical asymptote \\( x = "+h+" \\), horizontal asymptote \\( y = 1 \\); "+extClause+"; "+concClause+", with no point of inflection";
+    var prompt="Let \\( f(x) = "+fstr+" \\), with \\( f'(x) = "+fpstr+" \\) and \\( f''(x) = "+fsstr+" \\). Which statement gives a complete and correct description of the graph of \\( f \\)?";
+    var sol="Work through the features one at a time. The denominator vanishes at \\( x = "+h+" \\), a vertical asymptote, and division gives \\( f(x) = "+oblA+" + \\frac{"+(m*m)+"}{"+lin(h)+"} \\), which shows the oblique asymptote \\( y = "+oblA+" \\) (there is no horizontal asymptote, since the numerator has the higher degree). The zeros of \\( f' \\) are \\( x = "+mx+" \\) and \\( x = "+mn+" \\); the sign of \\( f' \\) makes the first a local maximum, with value \\( f("+mx+") = "+mxv+" \\), and the second a local minimum, with value \\( f("+mn+") = "+mnv+" \\). The sign of \\( f'' \\) is the sign of \\( "+lin(h)+" \\), so the graph is concave down before the asymptote and up after it; since \\( f \\) is undefined at \\( x = "+h+" \\), there is no point of inflection. The complete description is <b>"+key+"</b>.";
+    return mcq(prompt, key, [d1,d2,d3], sol, {mode:"arcA"});
+  }
+  var h=ri(-8,8), a1=h+1;
+  var numS = h===0 ? "x^2" : (h>0 ? "(x - "+h+")^2" : "(x + "+(-h)+")^2");
+  var denS = (h+1)===0 ? "x" : (h+1>0 ? "x - "+(h+1) : "x + "+(-(h+1)));
+  var fstr="\\frac{"+numS+"}{"+denS+"}";
+  var fpstr="\\frac{(x - ("+h+"))(x - ("+(h+2)+"))}{("+denS+")^2}";
+  var fsstr="\\frac{2}{("+denS+")^3}";
+  var obl = (1-h)===0 ? "x" : ((1-h)>0 ? "x + "+(1-h) : "x - "+(h-1));
+  var key="Vertical asymptote \\( x = "+a1+" \\), oblique asymptote \\( y = "+obl+" \\); local maximum value \\( 0 \\) at \\( x = "+h+" \\) and local minimum value \\( 4 \\) at \\( x = "+(h+2)+" \\); concave down for \\( x < "+a1+" \\) and up for \\( x > "+a1+" \\), with no point of inflection";
+  var d1="Vertical asymptote \\( x = "+a1+" \\), oblique asymptote \\( y = "+obl+" \\); local maximum value \\( 4 \\) at \\( x = "+h+" \\) and local minimum value \\( 0 \\) at \\( x = "+(h+2)+" \\); concave down for \\( x < "+a1+" \\) and up for \\( x > "+a1+" \\), with no point of inflection";
+  var d2="Vertical asymptote \\( x = "+a1+" \\), oblique asymptote \\( y = "+obl+" \\); local maximum value \\( 0 \\) at \\( x = "+h+" \\) and local minimum value \\( 4 \\) at \\( x = "+(h+2)+" \\); concave up for \\( x < "+a1+" \\) and down for \\( x > "+a1+" \\), with no point of inflection";
+  var d3="Vertical asymptote \\( x = "+a1+" \\), oblique asymptote \\( y = "+obl+" \\); local maximum value \\( 0 \\) at \\( x = "+h+" \\) and local minimum value \\( 4 \\) at \\( x = "+(h+2)+" \\); concave down for \\( x < "+a1+" \\) and up for \\( x > "+a1+" \\), with a point of inflection at \\( x = "+a1+" \\)";
+  var prompt="Let \\( f(x) = "+fstr+" \\), with \\( f'(x) = "+fpstr+" \\) and \\( f''(x) = "+fsstr+" \\). Which statement gives a complete and correct description of the graph of \\( f \\)?";
+  var sol="Work through the features one at a time. The denominator vanishes at \\( x = "+a1+" \\), a vertical asymptote, and division shows the oblique asymptote \\( y = "+obl+" \\). The zeros of \\( f' \\) are \\( x = "+h+" \\) and \\( x = "+(h+2)+" \\); the sign of \\( f' \\) makes the first a local maximum, with value \\( f("+h+") = 0 \\), and the second a local minimum, with value \\( f("+(h+2)+") = 4 \\). The sign of \\( f'' \\) is the sign of \\( "+denS+" \\), so the graph is concave down before the asymptote and up after it; since \\( f \\) is undefined at \\( x = "+a1+" \\), there is no point of inflection. The complete description is <b>"+key+"</b>.";
+  return mcq(prompt, key, [d1,d2,d3], sol, {mode:"arcB"});
+});
+
+E("u5-rr-ladder",5,["3.29"],2,"gen",function(){
+  var triples=[[3,4,5],[4,3,5],[6,8,10],[8,6,10],[5,12,13],[12,5,13],[8,15,17],[15,8,17],[9,12,15],[12,9,15],[12,16,20],[16,12,20],[7,24,25],[24,7,25],[20,21,29],[21,20,29]];
+  var tr=pick(triples), x=tr[0], y=tr[1], L=tr[2];
+  var v=pick([0.5,1,1.5,2,2.5,3]);
+  if(Math.random()<0.5){
+    var ans=-(x*v)/y;
+    var prompt="A ladder \\( "+L+" \\) m long leans against a vertical wall. The foot of the ladder is \\( "+x+" \\) m from the wall and is being pulled away from the wall at \\( "+fmt(v)+" \\) m/s. At this instant, how fast is the top of the ladder sliding down the wall, in metres per second? (Give a negative value for a downward rate.)";
+    var sol="The foot distance \\( x \\), the height \\( y \\) of the top, and the ladder length satisfy \\( x^2 + y^2 = "+(L*L)+" \\). Differentiating with respect to time and solving for the unknown rate: \\[ \\begin{aligned} 2x \\frac{dx}{dt} + 2y \\frac{dy}{dt} &= 0 \\\\ \\frac{dy}{dt} &= -\\frac{x}{y} \\frac{dx}{dt} = -\\frac{"+x+"}{"+y+"} \\left( "+fmt(v)+" \\right) = "+fmt(ans)+" \\end{aligned} \\] The top of the ladder is sliding at <b>"+fmt(ans)+" metres per second</b>, the negative sign showing the height is decreasing.";
+    return numq(prompt, ans, 0.011, sol, {mode:"top"});
+  }
+  var w=pick([0.5,1,1.5,2,2.5,3]);
+  var ans=(y*w)/x;
+  var prompt="A ladder \\( "+L+" \\) m long leans against a vertical wall. The foot of the ladder is \\( "+x+" \\) m from the wall, and the top is sliding down the wall at \\( "+fmt(w)+" \\) m/s. At this instant, how fast is the foot moving away from the wall, in metres per second?";
+  var sol="The foot distance \\( x \\), the height \\( y \\) of the top, and the ladder length satisfy \\( x^2 + y^2 = "+(L*L)+" \\), with \\( y = "+y+" \\) at this instant. Differentiating with respect to time, with \\( \\frac{dy}{dt} = "+(-w)+" \\): \\[ \\begin{aligned} 2x \\frac{dx}{dt} + 2y \\frac{dy}{dt} &= 0 \\\\ \\frac{dx}{dt} &= -\\frac{y}{x} \\frac{dy}{dt} = -\\frac{"+y+"}{"+x+"} \\left( "+(-w)+" \\right) = "+fmt(ans)+" \\end{aligned} \\] The foot is moving away from the wall at <b>"+fmt(ans)+" metres per second</b>.";
+  return numq(prompt, ans, 0.011, sol, {mode:"foot"});
+});
+
+E("u5-rr-cone",5,["3.29"],2,"gen",function(){
+  var dims=pick([[3,9],[2,6],[4,8],[3,6],[5,10],[6,9],[4,12],[2,8],[6,12],[5,15]]);
+  var R=dims[0], H=dims[1], h0=ri(2,H-1), Q=ri(2,12), mode=ri(0,2);
+  var dh=Q*H*H/(Math.PI*R*R*h0*h0);
+  var ratio=R/H;
+  var tank="A conical tank with radius \\( "+R+" \\) m and height \\( "+H+" \\) m is oriented with its vertex down.";
+  if(mode===0){
+    var prompt=tank+" Water is being pumped into the tank at \\( "+Q+" \\) cubic metres per minute. How fast is the water depth increasing, in metres per minute, when the depth is \\( "+h0+" \\) m? (Use \\( \\pi \\approx 3.14159 \\).)";
+    var sol="By similar triangles the surface radius is \\( r = \\frac{"+R+"}{"+H+"} h \\), so the volume in terms of the depth alone is \\( V = \\frac{\\pi "+(R*R)+"}{"+(3*H*H)+"} h^3 \\). Differentiating and solving for the depth rate at \\( h = "+h0+" \\): \\[ \\begin{aligned} \\frac{dV}{dt} &= \\frac{\\pi "+(R*R)+"}{"+(H*H)+"} h^2 \\frac{dh}{dt} \\\\ \\frac{dh}{dt} &= \\frac{"+Q+" \\times "+(H*H)+"}{\\pi \\times "+(R*R)+" \\times "+(h0*h0)+"} \\approx "+fmt(dh)+" \\end{aligned} \\] The depth is increasing at about <b>"+fmt(dh)+" metres per minute</b>.";
+    return numq(prompt, dh, 0.011, sol, {mode:"fill"});
+  }
+  if(mode===1){
+    var prompt=tank+" Water is draining from the tank at \\( "+Q+" \\) cubic metres per minute. How fast is the water depth changing, in metres per minute, when the depth is \\( "+h0+" \\) m? (Use \\( \\pi \\approx 3.14159 \\). Give a negative value for a decreasing depth.)";
+    var sol="By similar triangles the surface radius is \\( r = \\frac{"+R+"}{"+H+"} h \\), so \\( V = \\frac{\\pi "+(R*R)+"}{"+(3*H*H)+"} h^3 \\). The volume is decreasing, so \\( \\frac{dV}{dt} = -"+Q+" \\). Differentiating and solving at \\( h = "+h0+" \\): \\[ \\begin{aligned} \\frac{dh}{dt} &= \\frac{-"+Q+" \\times "+(H*H)+"}{\\pi \\times "+(R*R)+" \\times "+(h0*h0)+"} \\approx "+fmt(-dh)+" \\end{aligned} \\] The depth is changing at about <b>"+fmt(-dh)+" metres per minute</b>.";
+    return numq(prompt, -dh, 0.011, sol, {mode:"drain"});
+  }
+  var dr=ratio*dh;
+  var prompt=tank+" Water is being pumped into the tank at \\( "+Q+" \\) cubic metres per minute. How fast is the radius of the water surface increasing, in metres per minute, when the depth is \\( "+h0+" \\) m? (Use \\( \\pi \\approx 3.14159 \\).)";
+  var sol="Similar triangles give \\( r = \\frac{"+R+"}{"+H+"} h \\) at every instant, and the depth rate at \\( h = "+h0+" \\) comes from the volume relation \\( V = \\frac{\\pi "+(R*R)+"}{"+(3*H*H)+"} h^3 \\): it is \\( \\frac{dh}{dt} \\approx "+fmt(dh)+" \\) metres per minute. Differentiating the similarity relation: \\[ \\begin{aligned} \\frac{dr}{dt} &= \\frac{"+R+"}{"+H+"} \\frac{dh}{dt} \\approx "+fmt(dr)+" \\end{aligned} \\] The surface radius is increasing at about <b>"+fmt(dr)+" metres per minute</b>.";
+  return numq(prompt, dr, 0.011, sol, {mode:"radius"});
+});
+
+E("u5-rr-separation",5,["3.29"],2,"gen",function(){
+  var bases=[[3,4,5],[6,8,10],[5,12,13],[9,12,15],[8,15,17],[12,16,20],[15,20,25],[7,24,25]];
+  var speeds=[20,30,40,50,60,70,80,90];
+  var tr, vx, vy, ok=false, tries=0;
+  while(!ok && tries<200){ tries++;
+    tr=pick(bases); vx=pick(speeds); vy=pick(speeds);
+    if((tr[0]*vx+tr[1]*vy)%tr[2]===0) ok=true;
+  }
+  var x=tr[0]*10, y=tr[1]*10, z=tr[2]*10;
+  var dz=(tr[0]*vx+tr[1]*vy)/tr[2];
+  var pair=pick([["car","north","east"],["boat","east","north"],["cyclist","north","east"],["hiker","east","north"]]);
+  if(Math.random()<0.5){
+    var prompt="Two vehicles leave the same intersection at the same time, one travelling "+pair[1]+" and the other travelling "+pair[2]+" along straight roads. At a certain instant the first is \\( "+x+" \\) km from the intersection and moving at \\( "+vx+" \\) km/h, and the second is \\( "+y+" \\) km from the intersection and moving at \\( "+vy+" \\) km/h. At that instant, how fast is the distance between them increasing, in kilometres per hour?";
+    var sol="Their distances \\( x \\) and \\( y \\) from the intersection and the separation \\( z \\) form a right triangle: \\( z^2 = x^2 + y^2 \\), with \\( z = "+z+" \\) km at this instant. Differentiating and solving: \\[ \\begin{aligned} 2z \\frac{dz}{dt} &= 2x \\frac{dx}{dt} + 2y \\frac{dy}{dt} \\\\ \\frac{dz}{dt} &= \\frac{"+x+" \\times "+vx+" + "+y+" \\times "+vy+"}{"+z+"} = "+dz+" \\end{aligned} \\] The distance between them is increasing at <b>"+dz+" kilometres per hour</b>.";
+    return numq(prompt, dz, 0.011, sol, {mode:"sep"});
+  }
+  var prompt="Two vehicles leave the same intersection at the same time, one travelling "+pair[1]+" and the other travelling "+pair[2]+" along straight roads. At a certain instant the first is \\( "+x+" \\) km from the intersection and the second is \\( "+y+" \\) km from the intersection, the second moving at \\( "+vy+" \\) km/h, and the distance between them is increasing at \\( "+dz+" \\) km/h. How fast is the first vehicle moving, in kilometres per hour?";
+  var sol="With separation \\( z = "+z+" \\) km at this instant, the relation \\( z^2 = x^2 + y^2 \\) differentiates to \\( z \\frac{dz}{dt} = x \\frac{dx}{dt} + y \\frac{dy}{dt} \\). Solving for the unknown speed: \\[ \\begin{aligned} \\frac{dx}{dt} &= \\frac{"+z+" \\times "+dz+" - "+y+" \\times "+vy+"}{"+x+"} = "+vx+" \\end{aligned} \\] The first vehicle is moving at <b>"+vx+" kilometres per hour</b>.";
+  return numq(prompt, vx, 0.011, sol, {mode:"one"});
+});
+
+E("u5-rr-tracking",5,["3.29"],3,"gen",function(){
+  var skins=[
+    {obj:"A rocket is launched vertically from a launch pad", cam:"A tracking camera is mounted at ground level", unit:"km", tunit:"km per minute"},
+    {obj:"A weather balloon rises vertically from a release site", cam:"A tracking camera is mounted at ground level", unit:"km", tunit:"km per minute"}
+  ];
+  var sk=pick(skins);
+  var pr=pick([[3,4],[4,3],[6,8],[8,6]]);
+  var d=pr[0], hh=pr[1], vh=pick([0.5,0.75,1,1.25,1.5,1.75,2,2.5,3]);
+  while(((d*vh*100)%(d*d+hh*hh))!==0) vh=pick([0.5,0.75,1,1.25,1.5,1.75,2,2.5,3]);
+  var dth=d*vh/(d*d+hh*hh);
+  if(Math.random()<0.5){
+    var prompt=sk.obj+". "+sk.cam+" \\( "+d+" \\) "+sk.unit+" from the launch point and tracks the object as it rises. When the object is \\( "+hh+" \\) "+sk.unit+" above the ground, it is climbing at \\( "+fmt(vh)+" \\) "+sk.tunit+". At that instant, how fast is the camera's angle of elevation changing, in radians per minute?";
+    var sol="Let \\( \\theta \\) be the angle of elevation and \\( h \\) the height. The geometry gives \\( \\tan \\theta = \\frac{h}{"+d+"} \\), but the height itself is not the given rate's variable until it is substituted: the current height \\( h = "+hh+" \\) fixes both \\( \\sec^2 \\theta = 1 + \\frac{"+(hh*hh)+"}{"+(d*d)+"} \\) and the derivative. Differentiating the relation: \\[ \\begin{aligned} \\sec^2 \\theta \\, \\frac{d\\theta}{dt} &= \\frac{1}{"+d+"} \\frac{dh}{dt} \\\\ \\frac{d\\theta}{dt} &= \\frac{"+d+" \\times "+fmt(vh)+"}{"+(d*d)+" + "+(hh*hh)+"} = "+fmt(dth,3)+" \\end{aligned} \\] The angle of elevation is changing at <b>"+fmt(dth,3)+" radians per minute</b>.";
+    return numq(prompt, dth, 0.005, sol, {mode:"angle"});
+  }
+  var prompt=sk.obj+". "+sk.cam+" \\( "+d+" \\) "+sk.unit+" from the launch point and tracks the object as it rises. When the object is \\( "+hh+" \\) "+sk.unit+" above the ground, the camera's angle of elevation is increasing at \\( "+fmt(dth,3)+" \\) radians per minute. At that instant, how fast is the object climbing, in "+sk.tunit+"?";
+  var sol="Let \\( \\theta \\) be the angle of elevation and \\( h \\) the height, so \\( \\tan \\theta = \\frac{h}{"+d+"} \\). Differentiating and using the current height \\( h = "+hh+" \\): \\[ \\begin{aligned} \\sec^2 \\theta \\, \\frac{d\\theta}{dt} &= \\frac{1}{"+d+"} \\frac{dh}{dt} \\\\ \\frac{dh}{dt} &= \\frac{"+(d*d+hh*hh)+"}{"+d+"} \\times "+fmt(dth,3)+" = "+fmt(vh)+" \\end{aligned} \\] The object is climbing at <b>"+fmt(vh)+" "+sk.tunit+"</b>.";
+  return numq(prompt, vh, 0.011, sol, {mode:"climb"});
+});
+
+E("u5-rr-interpret",5,["3.30"],1,"var",varset([
+  function(){return mcq("A ladder slides down a wall, with \\( x \\) the distance from the wall to the foot and \\( y \\) the height of the top. A student finds \\( \\frac{dy}{dt} = -2.4 \\) m/s at an instant when \\( \\frac{dx}{dt} = 1.8 \\) m/s. The negative sign means",
+    "the top of the ladder is moving down the wall at \\( 2.4 \\) m/s",
+    ["the top of the ladder is moving down the wall at \\( 1.8 \\) m/s",
+     "the height of the top of the ladder is \\( -2.4 \\) m at that instant",
+     "the top of the ladder is moving up the wall at \\( 2.4 \\) m/s"],
+    "A rate of change carries a direction in its sign: \\( y \\) measures height, so a negative value of \\( \\frac{dy}{dt} \\) means the height is shrinking, at \\( 2.4 \\) m/s. The value \\( 1.8 \\) m/s belongs to the foot, and a height itself cannot be negative here. The negative sign means <b>the top of the ladder is moving down the wall at \\( 2.4 \\) m/s</b>.",{});},
+  function(){return mcq("For the same ladder, the foot is pulled away from the wall at a constant rate. As the ladder slides, the value of \\( \\frac{dy}{dt} \\)",
+    "changes as the ladder slides, because the ratio \\( x/y \\) in the rate relation changes",
+    ["stays constant, because \\( \\frac{dx}{dt} \\) is constant throughout the motion from start to finish",
+     "becomes zero when the ladder reaches the ground, then turns positive as it keeps sliding",
+     "depends only on the length of the ladder and not on its position"],
+    "The rate relation is \\( \\frac{dy}{dt} = -\\frac{x}{y} \\frac{dx}{dt} \\). Even with \\( \\frac{dx}{dt} \\) fixed, the factor \\( x/y \\) grows as the ladder flattens, so the top falls faster and faster. The value of \\( \\frac{dy}{dt} \\) <b>changes as the ladder slides, because the ratio \\( x/y \\) in the rate relation changes</b>.",{});},
+  function(){return mcq("Water drains from a conical tank. A calculation gives \\( \\frac{dh}{dt} = -0.35 \\), with \\( h \\) in metres and \\( t \\) in minutes. The correct conclusion is",
+    "the water depth is decreasing at \\( 0.35 \\) metres per minute",
+    ["the water depth is increasing at \\( 0.35 \\) metres per minute",
+     "the water volume is decreasing at \\( 0.35 \\) cubic metres per minute",
+     "the water depth is decreasing at \\( 0.35 \\) metres per second"],
+    "The differentiated variable is \\( h \\), the depth, so the rate describes the depth, not the volume; the negative sign says the depth is falling, and the time unit is minutes. The correct conclusion is <b>the water depth is decreasing at \\( 0.35 \\) metres per minute</b>.",{});},
+  function(){return mcq("A person walks away from a streetlight at \\( 1.5 \\) m/s, and a calculation shows the tip of the person's shadow moving at \\( 2.5 \\) m/s. This result is",
+    "reasonable: the tip of a shadow can move faster than the person casting it",
+    ["impossible: a rate produced by the motion cannot exceed \\( 1.5 \\) m/s",
+     "reasonable: the tip of a shadow always moves at exactly twice the speed",
+     "impossible: the tip of a shadow cannot move at a constant speed at all"],
+    "Similar triangles amplify the motion: the shadow lengthens as the person walks, and the lengthening adds to the walking speed, so the tip can outpace the person. There is no rule capping a derived rate at the given rate. The result is <b>reasonable: the tip of a shadow can move faster than the person casting it</b>.",{});},
+  function(){return mcq("Air is pumped into a spherical balloon, and both \\( \\frac{dV}{dt} \\) and \\( \\frac{dr}{dt} \\) are positive. A classmate claims \\( \\frac{dS}{dt} \\), the rate for the surface area, must be negative because the same air spreads over a larger surface. The claim is",
+    "incorrect: \\( S = 4\\pi r^2 \\) grows as \\( r \\) grows, so \\( \\frac{dS}{dt} \\) is positive as well",
+    ["correct: a growing radius makes the surface area decrease",
+     "incorrect: \\( \\frac{dS}{dt} \\) is zero because the surface area stays constant while the balloon inflates",
+     "correct: \\( \\frac{dS}{dt} \\) has the opposite sign of \\( \\frac{dV}{dt} \\) for a sphere, as the two rates trade off"],
+    "Surface area is an increasing function of the radius, \\( S = 4\\pi r^2 \\), so \\( \\frac{dS}{dt} = 8\\pi r \\frac{dr}{dt} > 0 \\) whenever the radius grows. Spreading thinner describes thickness, not area. The claim is <b>incorrect: \\( S = 4\\pi r^2 \\) grows as \\( r \\) grows, so \\( \\frac{dS}{dt} \\) is positive as well</b>.",{});}
+]));
+
+E("u5-opt-setup",5,["3.31","3.32"],2,"gen",function(){
+  var mode=ri(0,4);
+  if(mode===0){
+    var A=pick([12,16,20,24,30,36,40]), B=pick([10,14,18,22,26,34,38]);
+    var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a \\( "+A+" \\) cm by \\( "+B+" \\) cm sheet of cardboard and folding up the sides. Which function gives the volume of the box in terms of \\( x \\)?";
+    var key="\\( V(x) = x("+A+" - 2x)("+B+" - 2x) \\)";
+    var sol="Each cut removes \\( x \\) from both ends of each side, so the base measures \\( "+A+" - 2x \\) by \\( "+B+" - 2x \\), and the height is \\( x \\). Volume is height times base area. The volume function is <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( V(x) = x("+A+" - x)("+B+" - x) \\)","\\( V(x) = ("+A+" - 2x)("+B+" - 2x) \\)","\\( V(x) = x("+A+" - 2x)("+B+" - x) \\)"], sol, {mode:"box"});
+  }
+  if(mode===1){
+    var F=pick([40,48,60,80,96,100,120]);
+    var prompt="A farmer uses \\( "+F+" \\) m of fencing to enclose a rectangular pen against an existing straight wall, so the fence covers three sides. With \\( x \\) the length of each side perpendicular to the wall, which function gives the area of the pen in terms of \\( x \\)?";
+    var key="\\( A(x) = x("+F+" - 2x) \\)";
+    var sol="The two sides of length \\( x \\) use \\( 2x \\) of the fence, leaving \\( "+F+" - 2x \\) for the side parallel to the wall. Area is the product of the two side lengths. The area function is <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( A(x) = x("+F+" - x) \\)","\\( A(x) = x("+F+" - 4x) \\)","\\( A(x) = (x + 2)("+F+" - 2x) \\)"], sol, {mode:"fence"});
+  }
+  if(mode===2){
+    var V0=pick([250,400,500,640,750,1000]);
+    var prompt="A closed cylindrical can must hold \\( "+V0+" \\) cubic centimetres. Which equation expresses the height \\( h \\) of the can in terms of its radius \\( r \\)?";
+    var key="\\( h = \\frac{"+V0+"}{\\pi r^2} \\)";
+    var sol="The volume constraint is \\( \\pi r^2 h = "+V0+" \\). Solving the constraint for \\( h \\) gives the parameter equation. The height is <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( h = \\frac{"+V0+"}{2\\pi r} \\)","\\( h = "+V0+"\\pi r^2 \\)","\\( h = \\frac{\\pi r^2}{"+V0+"} \\)"], sol, {mode:"canparam"});
+  }
+  if(mode===3){
+    var V0=pick([250,400,500,640,750,1000]);
+    var prompt="A closed cylindrical can must hold \\( "+V0+" \\) cubic centimetres. Which function gives the surface area of the can in terms of its radius \\( r \\) alone?";
+    var key="\\( S(r) = 2\\pi r^2 + \\frac{"+(2*V0)+"}{r} \\)";
+    var sol="The constraint gives \\( h = \\frac{"+V0+"}{\\pi r^2} \\). The surface area is two caps plus the lateral area: \\( S = 2\\pi r^2 + 2\\pi r h \\), and substituting the constraint turns the second term into \\( \\frac{"+(2*V0)+"}{r} \\). The surface area function is <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( S(r) = 2\\pi r^2 + \\frac{"+V0+"}{r} \\)","\\( S(r) = \\pi r^2 + \\frac{"+(2*V0)+"}{r} \\)","\\( S(r) = 2\\pi r^2 + "+(2*V0)+"r \\)"], sol, {mode:"canobj"});
+  }
+  var P=pick([24,32,40,48,60,80,100]), half=P/2;
+  var prompt="A rectangular garden plot is to be enclosed with \\( "+P+" \\) m of fencing on all four sides. With \\( x \\) one side length, which function gives the area in terms of \\( x \\)?";
+  var key="\\( A(x) = x("+half+" - x) \\)";
+  var sol="The perimeter constraint \\( 2x + 2y = "+P+" \\) gives the other side as \\( y = "+half+" - x \\). Area is the product of the sides. The area function is <b>"+key+"</b>.";
+  return mcq(prompt, key, ["\\( A(x) = x("+P+" - x) \\)","\\( A(x) = x("+half+" - 2x) \\)","\\( A(x) = (x + 1)("+half+" - x) \\)"], sol, {mode:"perim"});
+});
+
+E("u5-opt-solve-a",5,["3.33"],2,"gen",function(){
+  var mode=ri(0,3);
+  if(mode===0){
+    var a=pick([12,15,18,21,24,27,30,33,36,42,48]), x=a/6, V=2*a*a*a/27, base=2*a/3;
+    var ask=ri(0,2);
+    if(ask===0){
+      var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a square sheet of cardboard \\( "+a+" \\) cm by \\( "+a+" \\) cm and folding up the sides. Find the value of \\( x \\), in centimetres, that maximizes the volume.";
+      var sol="The volume is \\( V(x) = x("+a+" - 2x)^2 \\) for \\( 0 < x < "+(a/2)+" \\). Differentiating: \\[ \\begin{aligned} V'(x) &= ("+a+" - 2x)("+a+" - 6x) \\end{aligned} \\] The interior critical value is \\( x = \\frac{"+a+"}{6} = "+fmt(x)+" \\) (the other zero, \\( x = "+(a/2)+" \\), is the endpoint where the volume is zero), and \\( V' \\) changes from positive to negative there, so it gives the maximum. The maximizing cut is <b>"+fmt(x)+" centimetres</b>.";
+      return numq(prompt, x, 0.011, sol, {mode:"boxsqx"});
+    }
+    if(ask===1){
+      var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a square sheet of cardboard \\( "+a+" \\) cm by \\( "+a+" \\) cm and folding up the sides. Find the maximum volume of the box, in cubic centimetres.";
+      var sol="The volume is \\( V(x) = x("+a+" - 2x)^2 \\), with \\( V'(x) = ("+a+" - 2x)("+a+" - 6x) \\). The maximum occurs at \\( x = "+fmt(x)+" \\), where the base side is \\( "+a+" - 2x = "+fmt(base)+" \\) cm. \\[ \\begin{aligned} V("+fmt(x)+") &= "+fmt(x)+" \\times "+fmt(base)+"^2 = "+V+" \\end{aligned} \\] The maximum volume is <b>"+V+" cubic centimetres</b>.";
+      return numq(prompt, V, 0.011, sol, {mode:"boxsqV"});
+    }
+    var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a square sheet of cardboard \\( "+a+" \\) cm by \\( "+a+" \\) cm and folding up the sides. When the volume is maximized, what is the side length of the square base, in centimetres?";
+    var sol="The volume is \\( V(x) = x("+a+" - 2x)^2 \\), maximized at \\( x = "+fmt(x)+" \\) from \\( V'(x) = ("+a+" - 2x)("+a+" - 6x) = 0 \\). The base side is \\( "+a+" - 2x \\). \\[ \\begin{aligned} "+a+" - 2 \\times "+fmt(x)+" &= "+fmt(base)+" \\end{aligned} \\] The base side at the maximum is <b>"+fmt(base)+" centimetres</b>.";
+    return numq(prompt, base, 0.011, sol, {mode:"boxsqbase"});
+  }
+  if(mode===1){
+    var rects=[[10,16,2,144],[15,24,3,486],[25,40,5,2250],[30,48,6,3888]];
+    var rc=pick(rects), A=rc[0], B=rc[1], xx=rc[2], VV=rc[3];
+    if(Math.random()<0.5){
+      var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a \\( "+A+" \\) cm by \\( "+B+" \\) cm sheet of cardboard and folding up the sides. Find the value of \\( x \\), in centimetres, that maximizes the volume.";
+      var sol="The volume is \\( V(x) = x("+A+" - 2x)("+B+" - 2x) \\). Its derivative \\( V'(x) = "+(A*B)+" - "+(4*(A+B))+"x + 12x^2 \\) factors with zeros at \\( x = "+xx+" \\) and at a value beyond the feasible range \\( 0 < x < "+(A/2)+" \\); the sign change of \\( V' \\) at \\( x = "+xx+" \\) is from positive to negative. The maximizing cut is <b>"+xx+" centimetres</b>.";
+      return numq(prompt, xx, 0.011, sol, {mode:"boxrect"});
+    }
+    var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a \\( "+A+" \\) cm by \\( "+B+" \\) cm sheet of cardboard and folding up the sides. Find the maximum volume of the box, in cubic centimetres.";
+    var sol="The volume is \\( V(x) = x("+A+" - 2x)("+B+" - 2x) \\), and \\( V'(x) = "+(A*B)+" - "+(4*(A+B))+"x + 12x^2 \\) is zero in the feasible range at \\( x = "+xx+" \\), where the base measures \\( "+(A-2*xx)+" \\) cm by \\( "+(B-2*xx)+" \\) cm. \\[ \\begin{aligned} V("+xx+") &= "+xx+" \\times "+(A-2*xx)+" \\times "+(B-2*xx)+" = "+VV+" \\end{aligned} \\] The maximum volume is <b>"+VV+" cubic centimetres</b>.";
+    return numq(prompt, VV, 0.011, sol, {mode:"boxrectV"});
+  }
+  if(mode===2){
+    var F=pick([24,32,40,48,60,80,100,120,160,200]), ask=ri(0,2);
+    var xs=F/4, par=F/2, Amax=F*F/8;
+    if(ask===0){
+      var prompt="A farmer uses \\( "+F+" \\) m of fencing to enclose a rectangular pen against an existing straight wall, the fence covering three sides. Find the length, in metres, of each side perpendicular to the wall that maximizes the area.";
+      var sol="With \\( x \\) the perpendicular side, the area is \\( A(x) = x("+F+" - 2x) \\). \\[ \\begin{aligned} A'(x) &= "+F+" - 4x \\\\ x &= \\frac{"+F+"}{4} = "+xs+" \\end{aligned} \\] The derivative changes from positive to negative there, so this is the maximum. The perpendicular sides should be <b>"+xs+" metres</b>.";
+      return numq(prompt, xs, 0.011, sol, {mode:"fencex"});
+    }
+    if(ask===1){
+      var prompt="A farmer uses \\( "+F+" \\) m of fencing to enclose a rectangular pen against an existing straight wall, the fence covering three sides. Find the maximum area of the pen, in square metres.";
+      var sol="With \\( x \\) the perpendicular side, \\( A(x) = x("+F+" - 2x) \\) and \\( A'(x) = "+F+" - 4x \\), so the maximum is at \\( x = "+xs+" \\), where the parallel side is \\( "+F+" - 2 \\times "+xs+" = "+par+" \\) m. \\[ \\begin{aligned} A("+xs+") &= "+xs+" \\times "+par+" = "+Amax+" \\end{aligned} \\] The maximum area is <b>"+Amax+" square metres</b>.";
+      return numq(prompt, Amax, 0.011, sol, {mode:"fenceA"});
+    }
+    var prompt="A farmer uses \\( "+F+" \\) m of fencing to enclose a rectangular pen against an existing straight wall, the fence covering three sides. When the area is maximized, how long is the side parallel to the wall, in metres?";
+    var sol="With \\( x \\) the perpendicular side, \\( A(x) = x("+F+" - 2x) \\) is maximized at \\( x = "+xs+" \\) (where \\( A'(x) = "+F+" - 4x = 0 \\)). The parallel side is what remains of the fence: \\[ \\begin{aligned} "+F+" - 2 \\times "+xs+" &= "+par+" \\end{aligned} \\] The parallel side is <b>"+par+" metres</b>.";
+    return numq(prompt, par, 0.011, sol, {mode:"fencepar"});
+  }
+  var P=pick([16,20,24,28,32,36,40,48,56,60,80,100]);
+  if(Math.random()<0.5){
+    var prompt="A rectangular plot is enclosed with \\( "+P+" \\) m of fencing on all four sides. Find the side length, in metres, of the plot of maximum area.";
+    var sol="With side \\( x \\), the other side is \\( "+(P/2)+" - x \\) and \\( A(x) = x("+ (P/2) +" - x) \\). Then \\( A'(x) = "+(P/2)+" - 2x = 0 \\) gives \\( x = "+(P/4)+" \\), a maximum by the sign change of \\( A' \\). The maximum-area plot is a square with side <b>"+(P/4)+" metres</b>.";
+    return numq(prompt, P/4, 0.011, sol, {mode:"perimx"});
+  }
+  var prompt="A rectangular plot is enclosed with \\( "+P+" \\) m of fencing on all four sides. Find the maximum area, in square metres.";
+  var sol="With side \\( x \\), \\( A(x) = x("+(P/2)+" - x) \\), maximized at \\( x = "+(P/4)+" \\) where \\( A'(x) = "+(P/2)+" - 2x = 0 \\). Both sides are then \\( "+(P/4)+" \\) m. \\[ \\begin{aligned} A &= "+(P/4)+" \\times "+(P/4)+" = "+(P*P/16)+" \\end{aligned} \\] The maximum area is <b>"+(P*P/16)+" square metres</b>.";
+  return numq(prompt, P*P/16, 0.011, sol, {mode:"perimA"});
+});
+
+E("u5-opt-solve-b",5,["3.33"],2,"gen",function(){
+  var mode=ri(0,4);
+  if(mode===0){
+    var m=pick([1,2,3,4,5,6]), V0=2*m*m*m;
+    if(Math.random()<0.5){
+      var prompt="A closed cylindrical can must hold \\( "+V0+"\\pi \\) cubic centimetres and use the least possible material. Find the radius of the can, in centimetres.";
+      var sol="With \\( h = \\frac{"+V0+"}{r^2} \\) from the volume constraint (the \\( \\pi \\) cancels), the surface area is \\( S(r) = 2\\pi r^2 + \\frac{"+(2*V0)+"\\pi}{r} \\). \\[ \\begin{aligned} S'(r) &= 4\\pi r - \\frac{"+(2*V0)+"\\pi}{r^2} = 0 \\\\ r^3 &= \\frac{"+V0+"}{2} = "+(m*m*m)+" \\\\ r &= "+m+" \\end{aligned} \\] The derivative changes from negative to positive there, so the material is minimized. The radius is <b>"+m+" centimetres</b>.";
+      return numq(prompt, m, 0.011, sol, {mode:"canr"});
+    }
+    var prompt="A closed cylindrical can must hold \\( "+V0+"\\pi \\) cubic centimetres and use the least possible material. Find the height of the can, in centimetres.";
+    var sol="Minimizing \\( S(r) = 2\\pi r^2 + \\frac{"+(2*V0)+"\\pi}{r} \\) gives \\( r^3 = "+(m*m*m)+" \\), so \\( r = "+m+" \\) cm. The constraint \\( \\pi r^2 h = "+V0+"\\pi \\) then gives the height. \\[ \\begin{aligned} h &= \\frac{"+V0+"}{"+(m*m)+"} = "+(2*m)+" \\end{aligned} \\] The height is <b>"+(2*m)+" centimetres</b>, twice the radius.";
+    return numq(prompt, 2*m, 0.011, sol, {mode:"canh"});
+  }
+  if(mode===1){
+    var m=pick([1,2,3,4,5,6]), V0=m*m*m;
+    if(Math.random()<0.5){
+      var prompt="An open-top cylindrical can must hold \\( "+V0+"\\pi \\) cubic centimetres and use the least possible material. Find the radius of the can, in centimetres.";
+      var sol="With \\( h = \\frac{"+V0+"}{r^2} \\) from the volume constraint, the material is one base plus the lateral area: \\( S(r) = \\pi r^2 + \\frac{"+(2*V0)+"\\pi}{r} \\). \\[ \\begin{aligned} S'(r) &= 2\\pi r - \\frac{"+(2*V0)+"\\pi}{r^2} = 0 \\\\ r^3 &= "+V0+" \\\\ r &= "+m+" \\end{aligned} \\] The derivative changes from negative to positive there, so the material is minimized. The radius is <b>"+m+" centimetres</b>.";
+      return numq(prompt, m, 0.011, sol, {mode:"ocanr"});
+    }
+    var prompt="An open-top cylindrical can must hold \\( "+V0+"\\pi \\) cubic centimetres and use the least possible material. Find the height of the can, in centimetres.";
+    var sol="Minimizing \\( S(r) = \\pi r^2 + \\frac{"+(2*V0)+"\\pi}{r} \\) gives \\( r^3 = "+V0+" \\), so \\( r = "+m+" \\) cm. The constraint \\( \\pi r^2 h = "+V0+"\\pi \\) then gives \\[ \\begin{aligned} h &= \\frac{"+V0+"}{"+(m*m)+"} = "+m+" \\end{aligned} \\] The height is <b>"+m+" centimetres</b>, equal to the radius.";
+    return numq(prompt, m, 0.011, sol, {mode:"ocanh"});
+  }
+  if(mode===2){
+    var m=pick([2,3,4,5,6]), V0=m*m*m/2;
+    var ask=ri(0,2), Smin=3*m*m, hh=m/2;
+    if(ask===0){
+      var prompt="An open-top box with a square base must hold \\( "+fmt(V0)+" \\) cubic metres and use the least possible material. Find the side length of the base, in metres.";
+      var sol="With base side \\( x \\), the height is \\( h = \\frac{"+fmt(V0)+"}{x^2} \\) and the material is \\( S(x) = x^2 + \\frac{"+(4*V0)+"}{x} \\). \\[ \\begin{aligned} S'(x) &= 2x - \\frac{"+(4*V0)+"}{x^2} = 0 \\\\ x^3 &= "+(2*V0)+" \\\\ x &= "+m+" \\end{aligned} \\] The derivative changes from negative to positive there. The base side is <b>"+m+" metres</b>.";
+      return numq(prompt, m, 0.011, sol, {mode:"boxx"});
+    }
+    if(ask===1){
+      var prompt="An open-top box with a square base must hold \\( "+fmt(V0)+" \\) cubic metres and use the least possible material. Find the height of the box, in metres.";
+      var sol="Minimizing \\( S(x) = x^2 + \\frac{"+(4*V0)+"}{x} \\) gives \\( x^3 = "+(2*V0)+" \\), so the base side is \\( x = "+m+" \\) m. The height follows from the volume: \\[ \\begin{aligned} h &= \\frac{"+fmt(V0)+"}{"+(m*m)+"} = "+fmt(hh)+" \\end{aligned} \\] The height is <b>"+fmt(hh)+" metres</b>.";
+      return numq(prompt, hh, 0.011, sol, {mode:"boxh"});
+    }
+    var prompt="An open-top box with a square base must hold \\( "+fmt(V0)+" \\) cubic metres. Find the least possible amount of material, in square metres.";
+    var sol="Minimizing \\( S(x) = x^2 + \\frac{"+(4*V0)+"}{x} \\) gives the base side \\( x = "+m+" \\) m and height \\( h = "+fmt(hh)+" \\) m. The material is the base plus four sides: \\[ \\begin{aligned} S &= "+(m*m)+" + 4 \\times "+m+" \\times "+fmt(hh)+" = "+Smin+" \\end{aligned} \\] The least possible material is <b>"+Smin+" square metres</b>.";
+    return numq(prompt, Smin, 0.011, sol, {mode:"boxS"});
+  }
+  if(mode===3){
+    var mg=pick([[3,2,96,12,8,24],[1,2,72,6,12,32],[2,1,50,10,5,18],[5,2,90,15,6,10],[2,3,96,8,12,24],[4,2,72,12,6,8]]);
+    var sm=mg[0], tm=mg[1], A0=mg[2], w=mg[3], hg=mg[4], pr=mg[5], ask=ri(0,2);
+    var setup="A poster has area \\( "+A0+" \\) square centimetres, with margins of \\( "+tm+" \\) cm at the top and bottom and \\( "+sm+" \\) cm at the sides. The printed area is maximized.";
+    if(ask===0){
+      var prompt=setup+" Find the width of the poster, in centimetres.";
+      var sol="With width \\( w \\), the height is \\( \\frac{"+A0+"}{w} \\) and the printed area is \\( P(w) = (w - "+(2*sm)+") \\left( \\frac{"+A0+"}{w} - "+(2*tm)+" \\right) = "+A0+" - "+(2*tm)+"w - \\frac{"+(2*sm*A0)+"}{w} + "+(4*sm*tm)+" \\). \\[ \\begin{aligned} P'(w) &= -"+(2*tm)+" + \\frac{"+(2*sm*A0)+"}{w^2} = 0 \\\\ w^2 &= "+(w*w)+" \\\\ w &= "+w+" \\end{aligned} \\] The poster width is <b>"+w+" centimetres</b>.";
+      return numq(prompt, w, 0.011, sol, {mode:"postw"});
+    }
+    if(ask===1){
+      var prompt=setup+" Find the height of the poster, in centimetres.";
+      var sol="Maximizing the printed area \\( P(w) = "+A0+" - "+(2*tm)+"w - \\frac{"+(2*sm*A0)+"}{w} + "+(4*sm*tm)+" \\) gives the width \\( w = "+w+" \\) cm (from \\( P'(w) = 0 \\)). The height is \\( \\frac{"+A0+"}{"+w+"} = "+hg+" \\) cm. The poster height is <b>"+hg+" centimetres</b>.";
+      return numq(prompt, hg, 0.011, sol, {mode:"posth"});
+    }
+    var prompt=setup+" Find the maximum printed area, in square centimetres.";
+    var sol="The printed area is maximized at poster width \\( w = "+w+" \\) cm and height \\( "+hg+" \\) cm. Removing the margins leaves a printed region of \\( "+w+" - "+(2*sm)+" = "+(w-2*sm)+" \\) cm by \\( "+hg+" - "+(2*tm)+" = "+(hg-2*tm)+" \\) cm. \\[ \\begin{aligned} P &= "+(w-2*sm)+" \\times "+(hg-2*tm)+" = "+pr+" \\end{aligned} \\] The maximum printed area is <b>"+pr+" square centimetres</b>.";
+    return numq(prompt, pr, 0.011, sol, {mode:"postP"});
+  }
+  var A0=pick([36,64,100,144,225,400,900]), sd=Math.sqrt(A0);
+  if(Math.random()<0.5){
+    var prompt="A rectangular enclosure must have area \\( "+A0+" \\) square metres and use the least possible fencing on all four sides. Find the side length, in metres, of the enclosure.";
+    var sol="With sides \\( x \\) and \\( \\frac{"+A0+"}{x} \\), the fencing is \\( P(x) = 2x + \\frac{"+(2*A0)+"}{x} \\). \\[ \\begin{aligned} P'(x) &= 2 - \\frac{"+(2*A0)+"}{x^2} = 0 \\\\ x^2 &= "+A0+" \\\\ x &= "+sd+" \\end{aligned} \\] The derivative changes from negative to positive there. The enclosure is a square with side <b>"+sd+" metres</b>.";
+    return numq(prompt, sd, 0.011, sol, {mode:"minside"});
+  }
+  var prompt="A rectangular enclosure must have area \\( "+A0+" \\) square metres. Find the least possible amount of fencing, in metres, needed on all four sides.";
+  var sol="Minimizing \\( P(x) = 2x + \\frac{"+(2*A0)+"}{x} \\) gives \\( x = "+sd+" \\) m, and the other side is also \\( \\frac{"+A0+"}{"+sd+"} = "+sd+" \\) m. \\[ \\begin{aligned} P &= 4 \\times "+sd+" = "+(4*sd)+" \\end{aligned} \\] The least possible fencing is <b>"+(4*sd)+" metres</b>.";
+  return numq(prompt, 4*sd, 0.011, sol, {mode:"minper"});
+});
+
+E("u5-opt-endpoint",5,["3.33","3.34"],3,"gen",function(){
+  var F, W, tries=0;
+  do { F=ri(60,160); W=ri(16,60); tries++; } while((F%2!==0 || W%2!==0 || W>=F/2) && tries<120);
+  var x=(F-W)/2, Amax=W*(F-W)/2, xstar=F/4, parstar=F-2*xstar;
+  var skin=pick(["wall","hedge"]);
+  var bound = skin==="wall" ? "an existing wall that is only \\( "+W+" \\) m long" : "an existing hedge that is only \\( "+W+" \\) m long";
+  if(Math.random()<0.5){
+    var prompt="A rectangular pen is built against "+bound+", using \\( "+F+" \\) m of fencing for the other three sides. Because the side parallel to the boundary cannot exceed \\( "+W+" \\) m, find the maximum area of the pen, in square metres.";
+    var sol="With \\( x \\) the side perpendicular to the boundary, the parallel side is \\( "+F+" - 2x \\) and the area is \\( A(x) = x("+F+" - 2x) \\). The constraint \\( "+F+" - 2x \\le "+W+" \\) forces \\( x \\ge "+x+" \\). The unconstrained critical point \\( x = "+xstar+" \\) (from \\( A'(x) = "+F+" - 4x = 0 \\)) would need a parallel side of \\( "+parstar+" \\) m, longer than the boundary allows, so it is not available. On the feasible interval \\( A'(x) = "+F+" - 4x \\) stays negative, so the area is largest at the left endpoint \\( x = "+x+" \\), where the parallel side uses the full \\( "+W+" \\) m. \\[ \\begin{aligned} A("+x+") &= "+x+" \\times "+W+" = "+Amax+" \\end{aligned} \\] The maximum area is <b>"+Amax+" square metres</b>, attained at the boundary of the feasible region, not at the critical point.";
+    return numq(prompt, Amax, 0.011, sol, {mode:"area"});
+  }
+  var prompt="A rectangular pen is built against "+bound+", using \\( "+F+" \\) m of fencing for the other three sides. Find the length, in metres, of each side perpendicular to the boundary in the pen of maximum area.";
+  var sol="With \\( x \\) the perpendicular side, \\( A(x) = x("+F+" - 2x) \\) and \\( A'(x) = "+F+" - 4x \\). The critical point \\( x = "+xstar+" \\) would force the parallel side to be \\( "+parstar+" \\) m, exceeding the \\( "+W+" \\) m boundary, so it is infeasible. The constraint \\( "+F+" - 2x \\le "+W+" \\) gives \\( x \\ge "+x+" \\), and \\( A \\) is decreasing throughout that feasible interval, so the maximum sits at its left endpoint. The perpendicular sides are <b>"+x+" metres</b> each.";
+  return numq(prompt, x, 0.011, sol, {mode:"side"});
+});
+
+/* ----- bank-u6.js ----- */
+// Math 3208 Unit 6 Calculus of Trigonometry question bank
+// CRMARKS: u6-inv-exact=1
+// CRMARKS: u6-inv-compose=2
+// CRMARKS: u6-trig-limit=2
+// CRMARKS: u6-trig-deriv=3
+// CRMARKS: u6-tangent-trig=2
+// CRMARKS: u6-invderiv=2
+// CRMARKS: u6-extrema-trig=3
+// CRMARKS: u6-angle-rate=2
+// CRMARKS: u6-limit-param=2
+/* ================= Unit 6: Calculus of Trigonometry (MA3208.1.12 to 1.15, 2.19 to 2.20, 3.35 to 3.40) =================
+   Tranche 2, final scope. */
+
+/* Math 3208 Review, Unit 6 (Calculus of Trigonometry), tranche 2 entries.
+   Format per brief-common.md. Fractions are written as literal \frac strings
+   inside math delimiters. All trigonometry is in radians. All scenarios and
+   values are original. */
+
+function u6gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function u6fr(p,q){var g=u6gcd(p,q);p/=g;q/=g;if(q===1)return ""+p;if(p<0)return "-\\frac{"+(-p)+"}{"+q+"}";return "\\frac{"+p+"}{"+q+"}";}
+function u6powS(e){return e===1?"x":"x^"+e;}
+function u6pick3(pool,key){var c=pool.filter(function(s){return s!==key;}),out=[];while(out.length<3){var s=pick(c);if(out.indexOf(s)<0)out.push(s);}return out;}
+
+var U6ANG=[["-\\frac{\\pi}{2}",-Math.PI/2],["-\\frac{\\pi}{3}",-Math.PI/3],["-\\frac{\\pi}{4}",-Math.PI/4],["-\\frac{\\pi}{6}",-Math.PI/6],["0",0],["\\frac{\\pi}{6}",Math.PI/6],["\\frac{\\pi}{4}",Math.PI/4],["\\frac{\\pi}{3}",Math.PI/3],["\\frac{\\pi}{2}",Math.PI/2],["\\frac{2\\pi}{3}",2*Math.PI/3],["\\frac{3\\pi}{4}",3*Math.PI/4],["\\frac{5\\pi}{6}",5*Math.PI/6],["\\pi",Math.PI]];
+var U6PAIRS=[[6,3],[6,2],[8,2],[8,4],[9,3],[4,2],[10,5],[3,6],[2,8],[4,8],[5,10],[10,2],[12,4],[12,3]];
+
+E("u6-inv-exact",6,["1.15"],1,"gen",function(){
+  var RS="\\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right]", RC="[0, \\pi]", RT="\\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right)";
+  var ROWS=[
+    {f:"\\arcsin",w:"sine",rng:RS,a:"0",av:0,ai:4},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"\\frac{1}{2}",av:0.5,ai:5},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"\\frac{\\sqrt{2}}{2}",av:Math.SQRT1_2,ai:6},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"\\frac{\\sqrt{3}}{2}",av:Math.sqrt(3)/2,ai:7},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"1",av:1,ai:8},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"-\\frac{1}{2}",av:-0.5,ai:3},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"-\\frac{\\sqrt{2}}{2}",av:-Math.SQRT1_2,ai:2},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"-\\frac{\\sqrt{3}}{2}",av:-Math.sqrt(3)/2,ai:1},
+    {f:"\\arcsin",w:"sine",rng:RS,a:"-1",av:-1,ai:0},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"1",av:1,ai:4},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"\\frac{\\sqrt{3}}{2}",av:Math.sqrt(3)/2,ai:5},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"\\frac{\\sqrt{2}}{2}",av:Math.SQRT1_2,ai:6},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"\\frac{1}{2}",av:0.5,ai:7},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"0",av:0,ai:8},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"-\\frac{1}{2}",av:-0.5,ai:9},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"-\\frac{\\sqrt{2}}{2}",av:-Math.SQRT1_2,ai:10},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"-\\frac{\\sqrt{3}}{2}",av:-Math.sqrt(3)/2,ai:11},
+    {f:"\\arccos",w:"cosine",rng:RC,a:"-1",av:-1,ai:12},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"0",av:0,ai:4},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"\\frac{\\sqrt{3}}{3}",av:1/Math.sqrt(3),ai:5},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"1",av:1,ai:6},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"\\sqrt{3}",av:Math.sqrt(3),ai:7},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"-1",av:-1,ai:2},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"-\\sqrt{3}",av:-Math.sqrt(3),ai:1},
+    {f:"\\arctan",w:"tangent",rng:RT,a:"-\\frac{\\sqrt{3}}{3}",av:-1/Math.sqrt(3),ai:3}
+  ];
+  var r=pick(ROWS), pool=[], ds=[];
+  for(var i=0;i<U6ANG.length;i++){ if(i!==r.ai) pool.push(i); }
+  while(ds.length<3){ var j=pick(pool); if(ds.indexOf(j)<0) ds.push(j); }
+  var key="\\( "+U6ANG[r.ai][0]+" \\)";
+  var distract=ds.map(function(j){return "\\( "+U6ANG[j][0]+" \\)";});
+  var prompt=pick(["What is the exact value of ","Evaluate ","Determine the exact value of "])+"\\( "+r.f+" \\left( "+r.a+" \\right) \\)?";
+  var sol="The value \\( "+r.f+" v \\) is the angle in the interval \\( "+r.rng+" \\) whose "+r.w+" equals \\( v \\). The angle in that interval whose "+r.w+" is \\( "+r.a+" \\) is \\( "+U6ANG[r.ai][0]+" \\). The exact value is <b>"+key+"</b>.";
+  return mcq(prompt, key, distract, sol, {f:r.f, av:r.av, ai:r.ai});
+});
+
+E("u6-inv-relate",6,["1.12"],1,"var",varset([
+  function(){return mcq("If \\( y = \\arcsin x \\), which statement is true?",
+    "\\( \\sin y = x \\) and \\( -\\frac{\\pi}{2} \\leq y \\leq \\frac{\\pi}{2} \\)",
+    ["\\( \\sin y = x \\) and \\( 0 \\leq y \\leq \\pi \\)",
+     "\\( \\cos y = x \\) and \\( -\\frac{\\pi}{2} \\leq y \\leq \\frac{\\pi}{2} \\)",
+     "\\( \\sin y = x \\) and \\( -\\pi \\leq y \\leq \\pi \\)"],
+    "An inverse function undoes the original: \\( y = \\arcsin x \\) means \\( \\sin y = x \\). The outputs of \\( \\arcsin \\) are exactly the restricted domain of sine, the interval \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\). The true statement is <b>\\( \\sin y = x \\) and \\( -\\frac{\\pi}{2} \\leq y \\leq \\frac{\\pi}{2} \\)</b>.",{});},
+  function(){return mcq("The graph of \\( y = \\arccos x \\) is obtained from the graph of \\( y = \\cos x \\) on \\( [0, \\pi] \\) by reflecting across",
+    "the line \\( y = x \\)",
+    ["the \\( x \\)-axis","the \\( y \\)-axis","the line \\( y = -x \\)"],
+    "Inverse functions swap the roles of input and output, which interchanges the coordinates of every point. Interchanging coordinates is reflection across the line \\( y = x \\). The reflection is across <b>the line \\( y = x \\)</b>.",{});},
+  function(){return mcq("What is the domain of the function \\( y = \\arctan x \\)?",
+    "all real numbers",
+    ["\\( [-1, 1] \\)","\\( [0, \\pi] \\)","\\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\)"],
+    "On the interval \\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\) the tangent function takes every real value, so its inverse accepts every real number as an input. The interval listed among the choices is the range of \\( \\arctan \\), not its domain. The domain is <b>all real numbers</b>.",{});},
+  function(){return mcq("The equation \\( \\arcsin(\\sin x) = x \\) holds exactly when",
+    "\\( x \\) lies in \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\)",
+    ["\\( x \\) lies in \\( [0, \\pi] \\)","\\( x \\) lies in \\( [-\\pi, \\pi] \\)","\\( x \\) is any real number"],
+    "The outer function \\( \\arcsin \\) can only return values in its range, the interval \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\). Outside that interval the composition returns the equivalent angle inside the range instead. The equation holds exactly when <b>\\( x \\) lies in \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\)</b>.",{});},
+  function(){return mcq("For \\( -1 \\leq x \\leq 1 \\), the value of \\( \\arcsin x + \\arccos x \\) is",
+    "\\( \\frac{\\pi}{2} \\)",
+    ["\\( 0 \\)","\\( \\pi \\)","\\( \\frac{3\\pi}{2} \\)"],
+    "Let \\( \\theta = \\arcsin x \\). Then \\( \\arccos x \\) is the complementary angle \\( \\frac{\\pi}{2} - \\theta \\), since sine and cosine swap roles on complementary angles. The two terms therefore always add to the same constant. The value is <b>\\( \\frac{\\pi}{2} \\)</b>.",{});}
+]));
+
+E("u6-std-limits",6,["2.19"],1,"var",varset([
+  function(){return mcq("What is \\( \\lim_{x \\to 0} \\frac{\\sin x}{x} \\)?",
+    "\\( 1 \\)",
+    ["\\( 0 \\)","\\( -1 \\)","the limit does not exist"],
+    "This is one of the standard trigonometric limits. Squeezing \\( \\frac{\\sin x}{x} \\) between \\( \\cos x \\) and \\( 1 \\), both of which approach \\( 1 \\) as \\( x \\to 0 \\), forces the quotient to the same value. The limit is <b>\\( 1 \\)</b>.",{});},
+  function(){return mcq("What is \\( \\lim_{x \\to 0} \\frac{\\cos x - 1}{x} \\)?",
+    "\\( 0 \\)",
+    ["\\( 1 \\)","\\( -1 \\)","the limit does not exist"],
+    "Multiply the numerator and denominator by \\( \\cos x + 1 \\): the quotient becomes \\( -\\frac{\\sin x}{x} \\cdot \\frac{\\sin x}{\\cos x + 1} \\), which approaches \\( -1 \\times \\frac{0}{2} = 0 \\). The limit is <b>\\( 0 \\)</b>.",{});},
+  function(){return mcq("A table of values of \\( \\frac{\\sin x}{x} \\) at \\( x = \\pm 0.1 \\), \\( \\pm 0.01 \\) and \\( \\pm 0.001 \\) gives values approaching \\( 1 \\) from below on both sides. This table is informal evidence that",
+    "\\( \\lim_{x \\to 0} \\frac{\\sin x}{x} = 1 \\), with the expression undefined at \\( 0 \\) itself",
+    ["\\( \\lim_{x \\to 0} \\frac{\\sin x}{x} = 0 \\), with the expression undefined at \\( 0 \\) itself",
+     "the expression has the value \\( 1 \\) at \\( x = 0 \\), so no limit statement is needed",
+     "the values approach \\( 1 \\) from the right only, so the two-sided limit does not exist"],
+    "Values taken at points closing in on \\( 0 \\) from both sides settle toward \\( 1 \\), which is exactly the informal meaning of the limit statement. The expression itself is still undefined at \\( x = 0 \\), since it divides by \\( x \\). The table is evidence that <b>\\( \\lim_{x \\to 0} \\frac{\\sin x}{x} = 1 \\), with the expression undefined at \\( 0 \\) itself</b>.",{});},
+  function(){return mcq("For small positive \\( x \\), the inequalities \\( \\cos x < \\frac{\\sin x}{x} < 1 \\) hold. Since \\( \\cos x \\to 1 \\) as \\( x \\to 0 \\), the squeeze theorem gives",
+    "\\( \\frac{\\sin x}{x} \\to 1 \\) as \\( x \\to 0 \\)",
+    ["\\( \\frac{\\sin x}{x} \\to 0 \\) as \\( x \\to 0 \\)",
+     "\\( \\frac{\\sin x}{x} \\to \\cos x \\) as \\( x \\to 0 \\)",
+     "\\( \\frac{\\sin x}{x} \\) has no limit as \\( x \\to 0 \\)"],
+    "The quotient is trapped between two quantities that both approach \\( 1 \\), so the squeeze theorem forces the quotient to approach \\( 1 \\) as well. The conclusion is <b>\\( \\frac{\\sin x}{x} \\to 1 \\) as \\( x \\to 0 \\)</b>.",{});},
+  function(){return mcq("What is \\( \\lim_{x \\to 0} \\frac{\\sin 5x}{5x} \\)?",
+    "\\( 1 \\)",
+    ["\\( 5 \\)","\\( \\frac{1}{5} \\)","\\( 0 \\)"],
+    "Substitute \\( u = 5x \\). As \\( x \\to 0 \\), also \\( u \\to 0 \\), and the expression becomes the standard limit \\( \\lim_{u \\to 0} \\frac{\\sin u}{u} = 1 \\). The limit is <b>\\( 1 \\)</b>.",{});}
+]));
+
+E("u6-inv-restrict",6,["1.13"],1,"var",varset([
+  function(){return mcq("A trigonometric function must have its domain restricted before an inverse can be defined because, on its full domain, the function",
+    "is not one-to-one, and only one-to-one functions have inverses",
+    ["is not bounded, and only bounded functions have inverses",
+     "is not continuous, and only continuous functions have inverses",
+     "is not one-to-one, and only one-to-one functions have derivatives"],
+    "An inverse must assign exactly one output to each input, which is possible only when the original function never repeats an output value. Sine, cosine and tangent all repeat their values across their full domains, so a restriction that keeps just one copy of each value is needed first. The reason is that the function <b>is not one-to-one, and only one-to-one functions have inverses</b>.",{});},
+  function(){return mcq("The interval \\( [0, \\pi] \\) is the standard restriction for defining \\( \\arccos \\). On this interval, cosine",
+    "is one-to-one and takes every value from \\( -1 \\) to \\( 1 \\)",
+    ["is one-to-one and takes every value from \\( 0 \\) to \\( 1 \\)",
+     "is increasing and takes every value from \\( -1 \\) to \\( 1 \\)",
+     "is periodic and takes every value from \\( -1 \\) to \\( 1 \\)"],
+    "Cosine falls steadily from \\( 1 \\) to \\( -1 \\) across \\( [0, \\pi] \\), hitting each value in between exactly once. That makes it one-to-one with the full range of cosine, which is what an inverse needs. On this interval, cosine <b>is one-to-one and takes every value from \\( -1 \\) to \\( 1 \\)</b>.",{});},
+  function(){return mcq("Suppose \\( \\arcsin \\) were instead defined using the restriction of sine to \\( \\left[ \\frac{\\pi}{2}, \\frac{3\\pi}{2} \\right] \\). The resulting inverse would",
+    "still be a function, with range \\( \\left[ \\frac{\\pi}{2}, \\frac{3\\pi}{2} \\right] \\)",
+    ["still be a function, with range \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\)",
+     "fail to be a function, because sine is undefined on that interval",
+     "fail to be a function, because sine is increasing on that interval"],
+    "Sine decreases from \\( 1 \\) to \\( -1 \\) across \\( \\left[ \\frac{\\pi}{2}, \\frac{3\\pi}{2} \\right] \\), so it is one-to-one there and an inverse exists. The range of any inverse is the restricted domain it was built from. The inverse would <b>still be a function, with range \\( \\left[ \\frac{\\pi}{2}, \\frac{3\\pi}{2} \\right] \\)</b>.",{});},
+  function(){return mcq("The interval \\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\) works as the restriction for defining \\( \\arctan \\) because, on this interval, tangent",
+    "is one-to-one and takes every real value",
+    ["is one-to-one and takes every value from \\( -1 \\) to \\( 1 \\)",
+     "is decreasing and takes every real value",
+     "is one-to-one and takes every positive value"],
+    "Tangent climbs from \\( -\\infty \\) to \\( \\infty \\) across \\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\) without repeating a value, so it is one-to-one and its range is all real numbers. On this interval, tangent <b>is one-to-one and takes every real value</b>.",{});},
+  function(){return mcq("A student claims that \\( \\arcsin \\frac{1}{2} \\) equals both \\( \\frac{\\pi}{6} \\) and \\( \\frac{5\\pi}{6} \\), since sine takes the value \\( \\frac{1}{2} \\) at both angles. The claim is incorrect because",
+    "\\( \\frac{5\\pi}{6} \\) lies outside the range of \\( \\arcsin \\), so it cannot be one of its outputs",
+    ["\\( \\frac{5\\pi}{6} \\) lies outside the domain of \\( \\arcsin \\), so it cannot be one of its outputs",
+     "sine does not take the value \\( \\frac{1}{2} \\) at the angle \\( \\frac{5\\pi}{6} \\)",
+     "\\( \\arcsin \\) returns the larger of the possible angles, which is \\( \\frac{5\\pi}{6} \\)"],
+    "Sine does equal \\( \\frac{1}{2} \\) at both angles, but \\( \\arcsin \\) is a function: it returns the single angle inside its range \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\). The angle \\( \\frac{5\\pi}{6} \\) is outside that range, so it can never be an output. The claim fails because <b>\\( \\frac{5\\pi}{6} \\) lies outside the range of \\( \\arcsin \\), so it cannot be one of its outputs</b>.",{});}
+]));
+
+var U6FEATS=["\\( [-1, 1] \\)","\\( [0, \\pi] \\)","\\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\)","\\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\)","\\( [0, 2\\pi] \\)","\\( [-\\pi, \\pi] \\)","all real numbers"];
+var U6FNS=[
+  {n:"\\arcsin",dom:"\\( [-1, 1] \\)",rng:"\\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\)",mono:"increasing",pt:"\\( \\left( 1, \\frac{\\pi}{2} \\right) \\)",pd:["\\( \\left( -1, \\frac{\\pi}{2} \\right) \\)","\\( \\left( 0, \\frac{\\pi}{2} \\right) \\)","\\( (1, 0) \\)"]},
+  {n:"\\arccos",dom:"\\( [-1, 1] \\)",rng:"\\( [0, \\pi] \\)",mono:"decreasing",pt:"\\( (1, 0) \\)",pd:["\\( (-1, 0) \\)","\\( (0, 0) \\)","\\( (1, \\pi) \\)"]},
+  {n:"\\arctan",dom:"all real numbers",rng:"\\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\)",mono:"increasing",pt:"\\( (0, 0) \\)",pd:["\\( (1, 0) \\)","\\( \\left( 0, \\frac{\\pi}{4} \\right) \\)","\\( \\left( -1, \\frac{\\pi}{4} \\right) \\)"]}
+];
+
+E("u6-inv-graph",6,["1.14"],1,"gen",function(){
+  var fn=pick(U6FNS), mode=ri(0,9), F="\\( y = "+fn.n+" x \\)";
+  var PTS={
+    "\\arcsin":{t:["\\( \\left( -1, -\\frac{\\pi}{2} \\right) \\)","\\( (0, 0) \\)","\\( \\left( 1, \\frac{\\pi}{2} \\right) \\)"],f:["\\( \\left( -1, \\frac{\\pi}{2} \\right) \\)","\\( \\left( 0, \\frac{\\pi}{2} \\right) \\)","\\( (1, 0) \\)","\\( \\left( 1, -\\frac{\\pi}{2} \\right) \\)","\\( (-1, \\pi) \\)"],sym:"It is symmetric about the origin",pair:"\\( [-1, 1] \\) and \\( \\left[ -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right] \\)",yint:"\\( 0 \\)",xint:"\\( 0 \\)",hi:"\\( \\left( 1, \\frac{\\pi}{2} \\right) \\)",lo:"\\( \\left( -1, -\\frac{\\pi}{2} \\right) \\)"},
+    "\\arccos":{t:["\\( (-1, \\pi) \\)","\\( \\left( 0, \\frac{\\pi}{2} \\right) \\)","\\( (1, 0) \\)"],f:["\\( (-1, 0) \\)","\\( (0, 0) \\)","\\( (1, \\pi) \\)","\\( \\left( 1, \\frac{\\pi}{2} \\right) \\)","\\( \\left( -1, \\frac{\\pi}{2} \\right) \\)"],sym:"It is symmetric about the point \\( \\left( 0, \\frac{\\pi}{2} \\right) \\)",pair:"\\( [-1, 1] \\) and \\( [0, \\pi] \\)",yint:"\\( \\frac{\\pi}{2} \\)",xint:"\\( 1 \\)",hi:"\\( (-1, \\pi) \\)",lo:"\\( (1, 0) \\)"},
+    "\\arctan":{t:["\\( \\left( -1, -\\frac{\\pi}{4} \\right) \\)","\\( (0, 0) \\)","\\( \\left( 1, \\frac{\\pi}{4} \\right) \\)"],f:["\\( (1, 0) \\)","\\( \\left( 0, \\frac{\\pi}{4} \\right) \\)","\\( \\left( -1, \\frac{\\pi}{4} \\right) \\)","\\( \\left( 1, \\frac{\\pi}{2} \\right) \\)","\\( (0, 1) \\)"],sym:"It is symmetric about the origin",pair:"all real numbers and \\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\)",yint:"\\( 0 \\)",xint:"\\( 0 \\)",hi:null,lo:null}
+  };
+  var D=PTS[fn.n], VP=["\\( 0 \\)","\\( 1 \\)","\\( -1 \\)","\\( \\frac{\\pi}{2} \\)","\\( \\pi \\)","\\( -\\frac{\\pi}{2} \\)"];
+  function sample3(pool,key){var c=pool.filter(function(s){return s!==key;}),out=[];while(out.length<3){var s=pick(c);if(out.indexOf(s)<0)out.push(s);}return out;}
+  if(mode===0){
+    var key=fn.rng, ph=pick(["What is the range of the function ","The range of ","Which interval gives all output values of "]);
+    var prompt=ph+F+(ph.charAt(0)==="W"?"?":" is");
+    if(ph.indexOf("Which")===0) prompt=ph+F+"?";
+    var sol="The range of an inverse function is the restricted domain of the original function. For "+F+" that interval is "+key+". The range is <b>"+key+"</b>.";
+    return mcq(prompt, key, u6pick3(U6FEATS, key), sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===1){
+    var key=fn.dom, ph=pick(["What is the domain of the function ","The domain of ","The function ","defined for "]);
+    var prompt, sol;
+    if(ph==="defined for "){ prompt="The function "+F+" is defined for \\( x \\) in which set?"; }
+    else if(ph==="The function "){ prompt="The domain of "+F+" is"; }
+    else prompt=ph+F+(ph.charAt(0)==="W"?"?":" is");
+    sol="The domain of an inverse function is the range of the original function. For "+F+" the accepted inputs are "+key+". The domain is <b>"+key+"</b>.";
+    return mcq(prompt, key, u6pick3(U6FEATS, key), sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===2){
+    var others=U6FNS.filter(function(g){return g.n!==fn.n;}).map(function(g){return PTS[g.n].pair;});
+    var swap=fn.n==="\\arctan" ? "\\( \\left( -\\frac{\\pi}{2}, \\frac{\\pi}{2} \\right) \\) and all real numbers" : fn.rng+" and "+fn.dom;
+    var key=D.pair;
+    var prompt=Math.random()<0.5 ? "Which pair gives, in order, the domain and range of "+F+"?" : "The domain and range of "+F+" are, in order,";
+    var sol="Swap the roles of input and output: the domain of "+F+" is "+fn.dom+" and its range is "+fn.rng+". The pair, in order, is <b>"+key+"</b>.";
+    return mcq(prompt, key, others.concat([swap]), sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===3){
+    var key="It is "+fn.mono+" on its whole domain";
+    var prompt="Which statement about the graph of "+F+" is true?";
+    var sol="The inverse keeps the direction of the restricted original function, so across its whole domain the graph of "+F+" moves in one direction only. The true statement is: <b>"+key+"</b>.";
+    return mcq(prompt, key, ["It is "+(fn.mono==="increasing"?"decreasing":"increasing")+" on its whole domain","It is periodic with period \\( 2\\pi \\)","It has a vertical asymptote at a point of its domain"], sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===4){
+    var prompt="On its whole domain, the function "+F+" is";
+    var sol="Reading the direction of the graph from left to right across its whole domain, "+F+" is "+fn.mono+" throughout. The function is <b>"+fn.mono+"</b>.";
+    return mcq(prompt, fn.mono, [fn.mono==="increasing"?"decreasing":"increasing","periodic","constant"], sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===5 || mode===9){
+    var key=pick(D.t);
+    var prompt=mode===5 ? "Which point lies on the graph of "+F+"?" : "The graph of "+F+" passes through which point?";
+    var sol="The point comes straight off the graph of the inverse function: "+F+" passes through "+key+". The point is <b>"+key+"</b>.";
+    return mcq(prompt, key, sample3(D.f, null), sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===6){
+    var isY=Math.random()<0.5, key=isY?D.yint:D.xint;
+    var prompt="What is the \\( "+(isY?"y":"x")+" \\)-intercept of the graph of "+F+"?";
+    var sol="The \\( "+(isY?"y":"x")+" \\)-intercept is read off the graph where it crosses the \\( "+(isY?"y":"x")+" \\)-axis, at the value "+key+". The intercept is <b>"+key+"</b>.";
+    return mcq(prompt, key, u6pick3(VP, key), sol, {fn:fn.n, mode:mode});
+  }
+  if(mode===7){
+    var key=D.sym;
+    var prompt="Which symmetry does the graph of "+F+" have?";
+    var sol="Like the restricted original it came from, the graph of "+F+" has the symmetry stated in the correct choice. <b>"+key+"</b>.";
+    return mcq(prompt, key, ["It is symmetric about the \\( y \\)-axis","It is symmetric about the \\( x \\)-axis", fn.n==="\\arccos" ? "It is symmetric about the origin" : "It is symmetric about the point \\( \\left( 0, \\frac{\\pi}{2} \\right) \\)"], sol, {fn:fn.n, mode:mode});
+  }
+  if(fn.n==="\\arctan"){
+    var sub=ri(0,2);
+    if(sub===0){
+      var key="\\( y = \\frac{\\pi}{2} \\) and \\( y = -\\frac{\\pi}{2} \\)";
+      var prompt="What are the horizontal asymptotes of the graph of \\( y = \\arctan x \\)?";
+      var sol="As \\( x \\) grows without bound, \\( \\arctan x \\) closes in on \\( \\frac{\\pi}{2} \\), and as \\( x \\) falls without bound it closes in on \\( -\\frac{\\pi}{2} \\); the graph approaches both lines but never reaches them. The horizontal asymptotes are <b>"+key+"</b>.";
+      return mcq(prompt, key, ["\\( y = \\frac{\\pi}{2} \\) only","\\( x = \\frac{\\pi}{2} \\) and \\( x = -\\frac{\\pi}{2} \\)","It has no horizontal asymptotes"], sol, {fn:fn.n, mode:mode});
+    }
+    var pos=sub===1, key=pos?"\\( \\frac{\\pi}{2} \\)":"\\( -\\frac{\\pi}{2} \\)";
+    var prompt="As \\( x \\to "+(pos?"\\infty":"-\\infty")+" \\), the values of \\( \\arctan x \\) approach";
+    var sol="The graph of \\( \\arctan x \\) levels off toward its horizontal asymptote on that side, the line \\( y = "+(pos?"\\frac{\\pi}{2}":"-\\frac{\\pi}{2}")+" \\). The values approach <b>"+key+"</b>.";
+    return mcq(prompt, key, u6pick3(VP, key), sol, {fn:fn.n, mode:mode});
+  }
+  var hiQ=Math.random()<0.5, key=hiQ?D.hi:D.lo;
+  var prompt="The graph of "+F+" reaches its "+(hiQ?"highest":"lowest")+" point at which point?";
+  var sol="The extreme point of the graph of "+F+" sits at an endpoint of its domain, at "+key+". The point is <b>"+key+"</b>.";
+  return mcq(prompt, key, sample3(D.f, null), sol, {fn:fn.n, mode:mode});
+});
+var U6TRIPLES=[[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29]];
+var U6CF=[
+  {o:"\\sin",i:"\\arccos",ifn:"\\cos",arg:function(a,b,c){return [a,c];},res:function(a,b,c){return [b,c];}},
+  {o:"\\cos",i:"\\arcsin",ifn:"\\sin",arg:function(a,b,c){return [a,c];},res:function(a,b,c){return [b,c];}},
+  {o:"\\tan",i:"\\arcsin",ifn:"\\sin",arg:function(a,b,c){return [a,c];},res:function(a,b,c){return [a,b];}},
+  {o:"\\sin",i:"\\arctan",ifn:"\\tan",arg:function(a,b,c){return [a,b];},res:function(a,b,c){return [a,c];}},
+  {o:"\\cos",i:"\\arctan",ifn:"\\tan",arg:function(a,b,c){return [a,b];},res:function(a,b,c){return [b,c];}},
+  {o:"\\tan",i:"\\arccos",ifn:"\\cos",arg:function(a,b,c){return [b,c];},res:function(a,b,c){return [a,b];}},
+  {o:"\\sin",i:"\\arccos",ifn:"\\cos",arg:function(a,b,c){return [b,c];},res:function(a,b,c){return [a,c];}},
+  {o:"\\cos",i:"\\arcsin",ifn:"\\sin",arg:function(a,b,c){return [b,c];},res:function(a,b,c){return [a,c];}},
+  {o:"\\tan",i:"\\arcsin",ifn:"\\sin",arg:function(a,b,c){return [b,c];},res:function(a,b,c){return [b,a];}},
+  {o:"\\tan",i:"\\arcsin",ifn:"\\sin",neg:true,arg:function(a,b,c){return [-a,c];},res:function(a,b,c){return [-a,b];}},
+  {o:"\\cos",i:"\\arcsin",ifn:"\\sin",neg:true,arg:function(a,b,c){return [-a,c];},res:function(a,b,c){return [b,c];}},
+  {o:"\\sin",i:"\\arctan",ifn:"\\tan",neg:true,arg:function(a,b,c){return [-a,b];},res:function(a,b,c){return [-a,c];}}
+];
+var U6CE=[
+  {p:"\\sin \\left( \\arccos x \\right)",key:"\\sqrt{1 - x^2}",d:["\\sqrt{1 + x^2}","1 - x^2","\\frac{1}{\\sqrt{1 - x^2}}"],sol:"Let \\( \\theta = \\arccos x \\), so \\( \\cos \\theta = x \\). In a right triangle with hypotenuse \\( 1 \\) and adjacent side \\( x \\), the opposite side is \\( \\sqrt{1 - x^2} \\), and \\( \\sin \\theta \\) is that side divided by the hypotenuse."},
+  {p:"\\cos \\left( \\arcsin x \\right)",key:"\\sqrt{1 - x^2}",d:["\\sqrt{1 + x^2}","\\frac{x}{\\sqrt{1 - x^2}}","1 - x^2"],sol:"Let \\( \\theta = \\arcsin x \\), so \\( \\sin \\theta = x \\). In a right triangle with hypotenuse \\( 1 \\) and opposite side \\( x \\), the adjacent side is \\( \\sqrt{1 - x^2} \\), and \\( \\cos \\theta \\) is that side divided by the hypotenuse."},
+  {p:"\\tan \\left( \\arcsin x \\right)",key:"\\frac{x}{\\sqrt{1 - x^2}}",d:["\\sqrt{1 - x^2}","\\frac{\\sqrt{1 - x^2}}{x}","\\frac{x}{\\sqrt{1 + x^2}}"],sol:"Let \\( \\theta = \\arcsin x \\), so \\( \\sin \\theta = x \\). The right triangle with hypotenuse \\( 1 \\) and opposite side \\( x \\) has adjacent side \\( \\sqrt{1 - x^2} \\), and \\( \\tan \\theta \\) is the opposite side divided by the adjacent side."},
+  {p:"\\sin \\left( \\arctan x \\right)",key:"\\frac{x}{\\sqrt{1 + x^2}}",d:["\\frac{1}{\\sqrt{1 + x^2}}","\\frac{x}{\\sqrt{1 - x^2}}","\\sqrt{1 + x^2}"],sol:"Let \\( \\theta = \\arctan x \\), so \\( \\tan \\theta = x \\). The right triangle with opposite side \\( x \\) and adjacent side \\( 1 \\) has hypotenuse \\( \\sqrt{1 + x^2} \\), and \\( \\sin \\theta \\) is the opposite side divided by the hypotenuse."},
+  {p:"\\cos \\left( \\arctan x \\right)",key:"\\frac{1}{\\sqrt{1 + x^2}}",d:["\\frac{x}{\\sqrt{1 + x^2}}","\\frac{1}{\\sqrt{1 - x^2}}","\\sqrt{1 + x^2}"],sol:"Let \\( \\theta = \\arctan x \\), so \\( \\tan \\theta = x \\). The right triangle with opposite side \\( x \\) and adjacent side \\( 1 \\) has hypotenuse \\( \\sqrt{1 + x^2} \\), and \\( \\cos \\theta \\) is the adjacent side divided by the hypotenuse."},
+  {p:"\\tan \\left( \\arccos x \\right)",key:"\\frac{\\sqrt{1 - x^2}}{x}",d:["\\frac{x}{\\sqrt{1 - x^2}}","\\sqrt{1 - x^2}","\\frac{\\sqrt{1 + x^2}}{x}"],sol:"Let \\( \\theta = \\arccos x \\), so \\( \\cos \\theta = x \\). The right triangle with hypotenuse \\( 1 \\) and adjacent side \\( x \\) has opposite side \\( \\sqrt{1 - x^2} \\), and \\( \\tan \\theta \\) is the opposite side divided by the adjacent side."}
+];
+
+E("u6-inv-compose",6,["1.15"],2,"gen",function(){
+  if(Math.random()<0.35){
+    var ei=ri(0,U6CE.length-1), ce=U6CE[ei];
+    var key="\\( "+ce.key+" \\)";
+    var prompt="Which expression equals \\( "+ce.p+" \\) for \\( x \\) in the appropriate domain?";
+    var sol=ce.sol+" The expression equals <b>"+key+"</b>.";
+    return mcq(prompt, key, ce.d.map(function(s){return "\\( "+s+" \\)";}), sol, {mode:"expr", form:ei});
+  }
+  var tr=pick(U6TRIPLES), a=tr[0], b=tr[1], c=tr[2], fi=ri(0,U6CF.length-1), f=U6CF[fi];
+  var argPQ=f.arg(a,b,c), resPQ=f.res(a,b,c), argS=u6fr(argPQ[0],argPQ[1]), resS=u6fr(resPQ[0],resPQ[1]);
+  var pool=[[a,b],[a,c],[b,a],[b,c],[c,a],[c,b]];
+  if(f.neg) pool=[[-b,c],[a,b],[-a,c],[b,a],[a,c],[c,a],[c,b],[-a,b]];
+  var seen={}, ds=[];
+  for(var i=0;i<pool.length && ds.length<3;i++){
+    var s=u6fr(pool[i][0],pool[i][1]);
+    if(s!==resS && !seen[s]){ seen[s]=1; ds.push("\\( "+s+" \\)"); }
+  }
+  var key="\\( "+resS+" \\)";
+  var prompt="What is the exact value of \\( "+f.o+" \\left( "+f.i+" "+argS+" \\right) \\)?";
+  var sol="Let \\( \\theta = "+f.i+" "+argS+" \\), so \\( "+f.ifn+" \\theta = "+argS+" \\). Build the right triangle for \\( \\theta \\): its sides are "+a+", "+b+" and "+c+", a Pythagorean triple, with hypotenuse "+c+"."+(f.neg?" The angle lies in the fourth quadrant, so the adjacent side stays positive while the opposite side is negative.":"")+" Reading the requested ratio off the triangle gives \\( "+f.o+" \\theta = "+resS+" \\). The exact value is <b>"+key+"</b>.";
+  return mcq(prompt, key, ds, sol, {mode:"val", form:fi, a:a, b:b, c:c, kv:resPQ[0]/resPQ[1]});
+});
+
+E("u6-trig-limit",6,["2.20"],2,"gen",function(){
+  var mode=ri(0,9), prompt, sol, ans, prm={mode:mode};
+  if(mode===0){
+    var k=ri(2,9); ans=k; prm.k=k;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{x} \\).";
+    sol="Rescale so the standard limit applies: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{x} &= "+k+" \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{"+k+"x} \\\\ &= "+k+" \\times 1 = "+k+" \\end{aligned} \\] The limit is <b>"+k+"</b>.";
+  } else if(mode===1){
+    var k=ri(2,9); ans=k; prm.k=k;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{\\tan "+k+"x}{x} \\).";
+    sol="Write the tangent as a quotient and use the standard limit: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{\\tan "+k+"x}{x} &= \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{x \\cos "+k+"x} \\\\ &= "+k+" \\times \\frac{1}{1} = "+k+" \\end{aligned} \\] The limit is <b>"+k+"</b>.";
+  } else if(mode===2){
+    var pr=pick(U6PAIRS), k=pr[0], m=pr[1]; ans=k/m; prm.k=k; prm.m=m;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{"+m+"x} \\).";
+    sol="Factor out the ratio of the coefficients and apply the standard limit: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{"+m+"x} &= "+u6fr(k,m)+" \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{"+k+"x} \\\\ &= "+u6fr(k,m)+" \\times 1 = "+fmt(ans,3)+" \\end{aligned} \\] The limit is <b>"+fmt(ans,3)+"</b>.";
+  } else if(mode===3){
+    var k=pick([1,2,3]), ks=k===1?"":""+k; ans=k*k/2; prm.k=k;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{1 - \\cos "+ks+"x}{x^2} \\).";
+    sol="Multiply the numerator and denominator by \\( 1 + \\cos "+ks+"x \\) to reach a sine square: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{1 - \\cos "+ks+"x}{x^2} &= \\lim_{x \\to 0} \\frac{\\sin^2 "+ks+"x}{x^2 \\left( 1 + \\cos "+ks+"x \\right)} \\\\ &= "+(k*k)+" \\times \\frac{1}{2} = "+fmt(ans,3)+" \\end{aligned} \\] The limit is <b>"+fmt(ans,3)+"</b>.";
+  } else if(mode===4){
+    var pr=pick(U6PAIRS), k=pr[0], m=pr[1]; ans=k/m; prm.k=k; prm.m=m;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{\\sin "+m+"x} \\).";
+    sol="Divide the numerator and denominator by \\( x \\) and use the standard limit twice: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{\\sin "+m+"x} &= \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{x} \\cdot \\frac{x}{\\sin "+m+"x} \\\\ &= \\frac{"+k+"}{"+m+"} = "+fmt(ans,3)+" \\end{aligned} \\] The limit is <b>"+fmt(ans,3)+"</b>.";
+  } else if(mode===5){
+    var av=pick([1,2,3,-1,4]), k=ri(2,6), sh=av>=0?"x - "+av:"x + "+(-av); ans=k; prm.k=k; prm.a=av;
+    prompt="Evaluate \\( \\lim_{x \\to "+av+"} \\frac{\\sin \\left( "+k+"("+sh+") \\right)}{"+sh+"} \\).";
+    sol="Substitute \\( u = "+sh+" \\); as \\( x \\to "+av+" \\), also \\( u \\to 0 \\), and the expression becomes a rescaled standard limit: \\[ \\begin{aligned} \\lim_{x \\to "+av+"} \\frac{\\sin \\left( "+k+"("+sh+") \\right)}{"+sh+"} &= "+k+" \\lim_{u \\to 0} \\frac{\\sin "+k+"u}{"+k+"u} \\\\ &= "+k+" \\times 1 = "+k+" \\end{aligned} \\] The limit is <b>"+k+"</b>.";
+  } else if(mode===6){
+    var pr=pick(U6PAIRS), k=pr[0], m=pr[1]; ans=k/m; prm.k=k; prm.m=m;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{\\tan "+k+"x}{\\sin "+m+"x} \\).";
+    sol="Write the tangent as a quotient, divide through by \\( x \\), and use the standard limit: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{\\tan "+k+"x}{\\sin "+m+"x} &= \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{x} \\cdot \\frac{x}{\\sin "+m+"x} \\cdot \\frac{1}{\\cos "+k+"x} \\\\ &= \\frac{"+k+"}{"+m+"} \\times 1 = "+fmt(ans,3)+" \\end{aligned} \\] The limit is <b>"+fmt(ans,3)+"</b>.";
+  } else if(mode===7){
+    var k=pick([2,4,5,10]); ans=1/k; prm.k=k;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{x}{\\sin "+k+"x} \\).";
+    sol="This is the reciprocal of a rescaled standard limit: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{x}{\\sin "+k+"x} &= \\frac{1}{"+k+"} \\lim_{x \\to 0} \\frac{"+k+"x}{\\sin "+k+"x} \\\\ &= \\frac{1}{"+k+"} \\times 1 = "+fmt(ans,3)+" \\end{aligned} \\] The limit is <b>"+fmt(ans,3)+"</b>.";
+  } else if(mode===8){
+    var sub=ri(0,1); ans=-1; prm.sub=sub;
+    if(sub===0){
+      prompt="Evaluate \\( \\lim_{x \\to \\pi} \\frac{\\sin x}{x - \\pi} \\).";
+      sol="Substitute \\( u = x - \\pi \\). Since \\( \\sin x = \\sin(u + \\pi) = -\\sin u \\), the limit becomes \\[ \\begin{aligned} \\lim_{x \\to \\pi} \\frac{\\sin x}{x - \\pi} &= \\lim_{u \\to 0} \\frac{-\\sin u}{u} \\\\ &= -1 \\end{aligned} \\] The limit is <b>-1</b>.";
+    } else {
+      prompt="Evaluate \\( \\lim_{x \\to \\frac{\\pi}{2}} \\frac{\\cos x}{x - \\frac{\\pi}{2}} \\).";
+      sol="Substitute \\( u = x - \\frac{\\pi}{2} \\). Since \\( \\cos x = \\cos \\left( u + \\frac{\\pi}{2} \\right) = -\\sin u \\), the limit becomes \\[ \\begin{aligned} \\lim_{x \\to \\frac{\\pi}{2}} \\frac{\\cos x}{x - \\frac{\\pi}{2}} &= \\lim_{u \\to 0} \\frac{-\\sin u}{u} \\\\ &= -1 \\end{aligned} \\] The limit is <b>-1</b>.";
+    }
+  } else {
+    var k=ri(2,6); ans=0; prm.k=k;
+    prompt="Evaluate \\( \\lim_{x \\to 0} \\frac{1 - \\cos "+k+"x}{x} \\).";
+    sol="Multiply the numerator and denominator by \\( 1 + \\cos "+k+"x \\) and split the result into two standard pieces: \\[ \\begin{aligned} \\lim_{x \\to 0} \\frac{1 - \\cos "+k+"x}{x} &= \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{x} \\cdot \\frac{\\sin "+k+"x}{1 + \\cos "+k+"x} \\\\ &= "+k+" \\times \\frac{0}{2} = 0 \\end{aligned} \\] The limit is <b>0</b>.";
+  }
+  return numq(prompt, ans, 0.011, sol, prm);
+});
+
+E("u6-deriv-proof",6,["3.35"],2,"var",varset([
+  function(){return mcq("The derivative of \\( \\sin x \\) is derived from the definition \\( \\lim_{h \\to 0} \\frac{\\sin(x + h) - \\sin x}{h} \\). Applying the sum identity for sine rewrites the numerator as",
+    "\\( \\sin x \\cos h + \\cos x \\sin h - \\sin x \\)",
+    ["\\( \\sin x \\cos h - \\cos x \\sin h - \\sin x \\)",
+     "\\( \\sin x \\sin h + \\cos x \\cos h - \\sin x \\)",
+     "\\( \\sin x \\cos h + \\cos x \\sin h + \\sin x \\)"],
+    "The sum identity gives \\( \\sin(x + h) = \\sin x \\cos h + \\cos x \\sin h \\), and the numerator subtracts the final \\( \\sin x \\) from the definition. The numerator becomes <b>\\( \\sin x \\cos h + \\cos x \\sin h - \\sin x \\)</b>.",{});},
+  function(){return mcq("Continuing the derivation, the difference quotient for \\( \\sin x \\) regroups as \\( \\sin x \\cdot \\frac{\\cos h - 1}{h} + \\cos x \\cdot \\frac{\\sin h}{h} \\). Using the standard limits as \\( h \\to 0 \\), the derivative of \\( \\sin x \\) is",
+    "\\( \\cos x \\)",
+    ["\\( -\\cos x \\)","\\( \\sin x \\)","\\( -\\sin x \\)"],
+    "As \\( h \\to 0 \\), the factor \\( \\frac{\\cos h - 1}{h} \\) approaches \\( 0 \\), which wipes out the first term, while \\( \\frac{\\sin h}{h} \\) approaches \\( 1 \\), leaving \\( \\cos x \\) untouched. The derivative of \\( \\sin x \\) is <b>\\( \\cos x \\)</b>.",{});},
+  function(){return mcq("To derive the derivative of \\( \\cos x \\) from the definition, the sum identity gives \\( \\cos(x + h) = \\cos x \\cos h - \\sin x \\sin h \\). Regrouping the difference quotient and using the standard limits, the derivative of \\( \\cos x \\) is",
+    "\\( -\\sin x \\)",
+    ["\\( \\sin x \\)","\\( \\cos x \\)","\\( -\\cos x \\)"],
+    "The regrouped quotient is \\( \\cos x \\cdot \\frac{\\cos h - 1}{h} - \\sin x \\cdot \\frac{\\sin h}{h} \\). The first term vanishes and the second gives \\( -\\sin x \\times 1 \\). The derivative of \\( \\cos x \\) is <b>\\( -\\sin x \\)</b>.",{});},
+  function(){return mcq("Writing \\( \\tan x = \\frac{\\sin x}{\\cos x} \\) and applying the quotient rule, the numerator of the derivative is \\( \\cos x \\cos x - \\sin x (-\\sin x) = \\cos^2 x + \\sin^2 x = 1 \\). The derivative of \\( \\tan x \\) is therefore",
+    "\\( \\sec^2 x \\)",
+    ["\\( \\csc^2 x \\)","\\( -\\sec^2 x \\)","\\( \\sec x \\tan x \\)"],
+    "With numerator \\( 1 \\) over the squared denominator \\( \\cos^2 x \\), the derivative is \\( \\frac{1}{\\cos^2 x} \\), which is the definition of \\( \\sec^2 x \\). The derivative of \\( \\tan x \\) is <b>\\( \\sec^2 x \\)</b>.",{});},
+  function(){return mcq("Since \\( \\sec x = \\frac{1}{\\cos x} \\), applying the chain rule to \\( (\\cos x)^{-1} \\) gives the derivative of \\( \\sec x \\) as",
+    "\\( \\sec x \\tan x \\)",
+    ["\\( -\\sec x \\tan x \\)","\\( \\sec^2 x \\)","\\( -\\csc x \\cot x \\)"],
+    "The chain rule gives \\( -(\\cos x)^{-2}(-\\sin x) = \\frac{\\sin x}{\\cos^2 x} \\), which splits as \\( \\frac{1}{\\cos x} \\cdot \\frac{\\sin x}{\\cos x} = \\sec x \\tan x \\). The derivative of \\( \\sec x \\) is <b>\\( \\sec x \\tan x \\)</b>.",{});}
+]));
+
+E("u6-trig-deriv",6,["3.36"],2,"gen",function(){
+  var mode=ri(0,6), chkX=0.9, chkVal, prompt, key, ds, sol, prm={mode:mode, chkX:chkX};
+  if(mode===0){
+    var a=ri(2,5), b=ri(2,6); prm.a=a; prm.b=b;
+    chkVal=a*b*Math.cos(b*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = "+a+" \\sin "+b+"x \\).";
+    key="\\( "+(a*b)+" \\cos "+b+"x \\)";
+    ds=["\\( "+a+" \\cos "+b+"x \\)","\\( -"+(a*b)+" \\cos "+b+"x \\)","\\( "+(a*b)+" \\sin "+b+"x \\)"];
+    sol="The derivative of \\( \\sin "+b+"x \\) brings out the chain-rule factor \\( "+b+" \\): \\[ \\begin{aligned} f'(x) &= "+a+" \\times "+b+" \\cos "+b+"x \\\\ &= "+(a*b)+" \\cos "+b+"x \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===1){
+    var a=ri(2,5), b=ri(2,6), c=ri(2,5), n=pick([2,3]); prm.a=a; prm.b=b; prm.c=c; prm.n=n;
+    chkVal=-a*b*Math.sin(b*chkX)+c*n*Math.pow(chkX,n-1);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = "+a+" \\cos "+b+"x + "+c+"x^"+n+" \\).";
+    key="\\( -"+(a*b)+" \\sin "+b+"x + "+(c*n)+u6powS(n-1)+" \\)";
+    ds=["\\( "+(a*b)+" \\sin "+b+"x + "+(c*n)+u6powS(n-1)+" \\)","\\( -"+a+" \\sin "+b+"x + "+(c*n)+u6powS(n-1)+" \\)","\\( -"+(a*b)+" \\sin "+b+"x + "+c+"x^"+n+" \\)"];
+    sol="Differentiate term by term, with the chain rule on the cosine term: \\[ \\begin{aligned} f'(x) &= -"+a+" \\times "+b+" \\sin "+b+"x + "+(c*n)+u6powS(n-1)+" \\\\ &= -"+(a*b)+" \\sin "+b+"x + "+(c*n)+u6powS(n-1)+" \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===2){
+    var n=pick([2,3,4]); prm.n=n;
+    chkVal=n*Math.pow(chkX,n-1)*Math.sin(chkX)+Math.pow(chkX,n)*Math.cos(chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = x^"+n+" \\sin x \\).";
+    key="\\( "+n+u6powS(n-1)+" \\sin x + x^"+n+" \\cos x \\)";
+    ds=["\\( "+n+u6powS(n-1)+" \\cos x \\)","\\( x^"+n+" \\cos x \\)","\\( "+n+u6powS(n-1)+" \\sin x - x^"+n+" \\cos x \\)"];
+    sol="Use the product rule, differentiating each factor in turn: \\[ \\begin{aligned} f'(x) &= "+n+u6powS(n-1)+" \\sin x + x^"+n+" \\cos x \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===3){
+    var b=ri(2,6), c=ri(2,6); while(c===b) c=ri(2,6); prm.b=b; prm.c=c;
+    chkVal=b*Math.cos(b*chkX)-c*Math.sin(c*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\sin "+b+"x + \\cos "+c+"x \\).";
+    key="\\( "+b+" \\cos "+b+"x - "+c+" \\sin "+c+"x \\)";
+    ds=["\\( "+b+" \\cos "+b+"x + "+c+" \\sin "+c+"x \\)","\\( \\cos "+b+"x - \\sin "+c+"x \\)","\\( "+c+" \\cos "+b+"x - "+b+" \\sin "+c+"x \\)"];
+    sol="Each term takes its own chain-rule factor: the sine term contributes \\( "+b+" \\cos "+b+"x \\) and the cosine term contributes \\( -"+c+" \\sin "+c+"x \\). So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===4){
+    var b=ri(2,6); prm.b=b;
+    chkVal=b/Math.pow(Math.cos(b*chkX),2);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\tan "+b+"x \\).";
+    key="\\( "+b+" \\sec^2 "+b+"x \\)";
+    ds=["\\( \\sec^2 "+b+"x \\)","\\( "+b+" \\sec "+b+"x \\tan "+b+"x \\)","\\( -"+b+" \\csc^2 "+b+"x \\)"];
+    sol="The derivative of \\( \\tan u \\) is \\( \\sec^2 u \\) times the derivative of the inside, here \\( "+b+" \\): \\[ \\begin{aligned} f'(x) &= "+b+" \\sec^2 "+b+"x \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===5){
+    prm.mode=5;
+    chkVal=(chkX*Math.cos(chkX)-Math.sin(chkX))/(chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\frac{\\sin x}{x} \\).";
+    key="\\( \\frac{x \\cos x - \\sin x}{x^2} \\)";
+    ds=["\\( \\frac{x \\cos x + \\sin x}{x^2} \\)","\\( \\frac{\\cos x - \\sin x}{x^2} \\)","\\( \\frac{\\sin x - x \\cos x}{x^2} \\)"];
+    sol="Use the quotient rule, keeping the order of the numerator terms as top derivative times bottom, minus top times bottom derivative: \\[ \\begin{aligned} f'(x) &= \\frac{\\cos x \\cdot x - \\sin x \\cdot 1}{x^2} \\\\ &= \\frac{x \\cos x - \\sin x}{x^2} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else {
+    var n=pick([2,3]); prm.n=n;
+    chkVal=n*Math.pow(chkX,n-1)*Math.cos(Math.pow(chkX,n));
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\sin \\left( x^"+n+" \\right) \\).";
+    key="\\( "+n+u6powS(n-1)+" \\cos \\left( x^"+n+" \\right) \\)";
+    ds=["\\( \\cos \\left( x^"+n+" \\right) \\)","\\( "+n+u6powS(n-1)+" \\sin \\left( x^"+n+" \\right) \\)","\\( -"+n+u6powS(n-1)+" \\cos \\left( x^"+n+" \\right) \\)"];
+    sol="The chain rule multiplies by the derivative of the inside function \\( x^"+n+" \\), which is \\( "+n+u6powS(n-1)+" \\): \\[ \\begin{aligned} f'(x) &= "+n+u6powS(n-1)+" \\cos \\left( x^"+n+" \\right) \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  }
+  prm.chkVal=chkVal;
+  return mcq(prompt, key, ds, sol, prm);
+});
+
+var U6SA=[
+  {x:"0",xv:0,sv:0,cv:1,sS:"0",cS:"1",secS:"1"},
+  {x:"\\frac{\\pi}{6}",xv:Math.PI/6,sv:0.5,cv:Math.sqrt(3)/2,sS:"\\frac{1}{2}",cS:"\\frac{\\sqrt{3}}{2}",secS:"\\frac{4}{3}"},
+  {x:"\\frac{\\pi}{4}",xv:Math.PI/4,sv:Math.SQRT1_2,cv:Math.SQRT1_2,sS:"\\frac{\\sqrt{2}}{2}",cS:"\\frac{\\sqrt{2}}{2}",secS:"2"},
+  {x:"\\frac{\\pi}{3}",xv:Math.PI/3,sv:Math.sqrt(3)/2,cv:0.5,sS:"\\frac{\\sqrt{3}}{2}",cS:"\\frac{1}{2}",secS:"4"},
+  {x:"\\frac{\\pi}{2}",xv:Math.PI/2,sv:1,cv:0,sS:"1",cS:"0",secS:""},
+  {x:"\\frac{2\\pi}{3}",xv:2*Math.PI/3,sv:Math.sqrt(3)/2,cv:-0.5,sS:"\\frac{\\sqrt{3}}{2}",cS:"-\\frac{1}{2}",secS:"4"},
+  {x:"\\frac{3\\pi}{4}",xv:3*Math.PI/4,sv:Math.SQRT1_2,cv:-Math.SQRT1_2,sS:"\\frac{\\sqrt{2}}{2}",cS:"-\\frac{\\sqrt{2}}{2}",secS:"2"},
+  {x:"\\frac{5\\pi}{6}",xv:5*Math.PI/6,sv:0.5,cv:-Math.sqrt(3)/2,sS:"\\frac{1}{2}",cS:"-\\frac{\\sqrt{3}}{2}",secS:"\\frac{4}{3}"}
+];
+var U6TL=[
+  {f:"\\cos x",fn:"cos",px:"\\frac{\\pi}{2}",pxv:Math.PI/2,py:0,slope:-1,key:"\\( y = -x + \\frac{\\pi}{2} \\)",d:["\\( y = x - \\frac{\\pi}{2} \\)","\\( y = -x - \\frac{\\pi}{2} \\)","\\( y = x + \\frac{\\pi}{2} \\)"],dp:"f'(x) = -\\sin x",dv:"-\\sin \\frac{\\pi}{2} = -1"},
+  {f:"\\sin x",fn:"sin",px:"0",pxv:0,py:0,slope:1,key:"\\( y = x \\)",d:["\\( y = -x \\)","\\( y = x + 1 \\)","\\( y = 1 \\)"],dp:"f'(x) = \\cos x",dv:"\\cos 0 = 1"},
+  {f:"\\sin x",fn:"sin",px:"\\pi",pxv:Math.PI,py:0,slope:-1,key:"\\( y = -x + \\pi \\)",d:["\\( y = x - \\pi \\)","\\( y = -x - \\pi \\)","\\( y = -x + 2\\pi \\)"],dp:"f'(x) = \\cos x",dv:"\\cos \\pi = -1"},
+  {f:"\\tan x",fn:"tan",px:"\\frac{\\pi}{4}",pxv:Math.PI/4,py:1,slope:2,key:"\\( y = 2x + 1 - \\frac{\\pi}{2} \\)",d:["\\( y = 2x + 1 + \\frac{\\pi}{2} \\)","\\( y = 2x - 1 - \\frac{\\pi}{2} \\)","\\( y = x + 1 - \\frac{\\pi}{4} \\)"],dp:"f'(x) = \\sec^2 x",dv:"\\sec^2 \\frac{\\pi}{4} = 2"}
+];
+
+E("u6-tangent-trig",6,["3.37"],2,"gen",function(){
+  if(Math.random()<0.35){
+    var r=pick(U6TL);
+    var prompt="Which line is tangent to the graph of \\( f(x) = "+r.f+" \\) at \\( x = "+r.px+" \\)?";
+    var sol="The point of tangency is \\( \\left( "+r.px+", "+r.py+" \\right) \\) and \\( "+r.dp+" \\) gives the slope \\( "+r.dv+" \\). Point-slope form: \\[ \\begin{aligned} y - "+r.py+" &= "+r.slope+" \\left( x - "+r.px+" \\right) \\end{aligned} \\] which simplifies to the line <b>"+r.key+"</b>.";
+    return mcq(prompt, r.key, r.d.slice(), sol, {mode:1, fn:r.fn, a:1, x0:r.pxv, slope:r.slope});
+  }
+  var fn=pick(["sin","cos","tan"]), a, ang, slope, fstr, sol;
+  if(fn==="tan"){
+    a=pick([1,2]); ang=U6SA[ri(0,3)]; slope=a/(ang.cv*ang.cv);
+    fstr=(a===1?"":a)+"\\tan x";
+    sol="Differentiate: \\( f'(x) = "+(a===1?"":a)+"\\sec^2 x \\). At \\( x = "+ang.x+" \\), \\( \\sec^2 \\left( "+ang.x+" \\right) = "+ang.secS+" \\), so the slope is \\( "+(a===1?"":a+" \\times "+ang.secS+" = ")+fmt(slope,3)+" \\). The slope of the tangent line is <b>"+fmt(slope,3)+"</b>.";
+  } else {
+    a=ri(1,4); ang=pick(U6SA); slope=fn==="sin"?a*ang.cv:-a*ang.sv;
+    fstr=(a===1?"":a)+"\\"+fn+" x";
+    var base=fn==="sin"?ang.cS:(ang.sv===0?"0":"-"+ang.sS);
+    sol="Differentiate: \\( f'(x) = "+(a===1?"":a)+(fn==="sin"?"\\cos x":"-\\sin x")+" \\). At \\( x = "+ang.x+" \\) this is \\( "+(a===1?"":""+a+" \\times ")+"\\left( "+base+" \\right) = "+fmt(slope,3)+" \\). The slope of the tangent line is <b>"+fmt(slope,3)+"</b>.";
+  }
+  var prompt="What is the slope of the tangent line to the graph of \\( f(x) = "+fstr+" \\) at \\( x = "+ang.x+" \\)?";
+  return numq(prompt, slope, 0.011, sol, {mode:0, fn:fn, a:a, x0:ang.xv});
+});
+
+E("u6-invderiv-derive",6,["3.38"],2,"var",varset([
+  function(){return mcq("To derive the derivative of \\( \\arcsin x \\), set \\( y = \\arcsin x \\), so that \\( \\sin y = x \\). Differentiating both sides with respect to \\( x \\) gives",
+    "\\( \\cos y \\, \\frac{dy}{dx} = 1 \\)",
+    ["\\( \\sin y \\, \\frac{dy}{dx} = 1 \\)","\\( \\cos y \\, \\frac{dy}{dx} = 0 \\)","\\( -\\sin y \\, \\frac{dy}{dx} = 1 \\)"],
+    "Implicit differentiation treats \\( y \\) as a function of \\( x \\): the derivative of \\( \\sin y \\) is \\( \\cos y \\) times \\( \\frac{dy}{dx} \\) by the chain rule, and the derivative of \\( x \\) is \\( 1 \\). Differentiating gives <b>\\( \\cos y \\, \\frac{dy}{dx} = 1 \\)</b>.",{});},
+  function(){return mcq("Continuing the derivation, \\( \\cos y = \\sqrt{1 - \\sin^2 y} = \\sqrt{1 - x^2} \\), with the positive root because \\( y \\) lies in the range of \\( \\arcsin \\). The derivative of \\( \\arcsin x \\) is",
+    "\\( \\frac{1}{\\sqrt{1 - x^2}} \\)",
+    ["\\( -\\frac{1}{\\sqrt{1 - x^2}} \\)","\\( \\frac{1}{\\sqrt{1 + x^2}} \\)","\\( \\sqrt{1 - x^2} \\)"],
+    "From \\( \\cos y \\, \\frac{dy}{dx} = 1 \\), divide by \\( \\cos y = \\sqrt{1 - x^2} \\). The positive root is the right one on the range of \\( \\arcsin \\), where cosine is nonnegative. The derivative is <b>\\( \\frac{1}{\\sqrt{1 - x^2}} \\)</b>.",{});},
+  function(){return mcq("To derive the derivative of \\( \\arctan x \\), set \\( y = \\arctan x \\), so \\( \\tan y = x \\). Implicit differentiation gives \\( \\sec^2 y \\, \\frac{dy}{dx} = 1 \\), and \\( \\sec^2 y \\) can be rewritten, using \\( \\tan y = x \\), as",
+    "\\( 1 + x^2 \\)",
+    ["\\( 1 - x^2 \\)","\\( \\sqrt{1 + x^2} \\)","\\( \\frac{1}{1 + x^2} \\)"],
+    "The identity \\( \\sec^2 y = 1 + \\tan^2 y \\) with \\( \\tan y = x \\) gives \\( \\sec^2 y = 1 + x^2 \\), which is what produces the denominator of the final derivative. The rewrite is <b>\\( 1 + x^2 \\)</b>.",{});},
+  function(){return mcq("The derivative of \\( \\arccos x \\) is the negative of the derivative of \\( \\arcsin x \\). The reason is that",
+    "\\( \\arccos x = \\frac{\\pi}{2} - \\arcsin x \\), and the derivative of the constant \\( \\frac{\\pi}{2} \\) is \\( 0 \\)",
+    ["\\( \\arccos x = \\frac{\\pi}{2} + \\arcsin x \\), and the derivative of the constant \\( \\frac{\\pi}{2} \\) is \\( 0 \\)",
+     "\\( \\arccos x = \\pi - \\arcsin x \\), and the derivative of the constant \\( \\pi \\) is \\( 0 \\)",
+     "\\( \\arccos x = -\\arcsin x \\), and differentiating a negative gives the negative"],
+    "The two inverse functions are complementary: \\( \\arcsin x + \\arccos x = \\frac{\\pi}{2} \\) for every \\( x \\) in the domain. Differentiating \\( \\arccos x = \\frac{\\pi}{2} - \\arcsin x \\) then gives the negative of the arcsine derivative. The reason is that <b>\\( \\arccos x = \\frac{\\pi}{2} - \\arcsin x \\), and the derivative of the constant \\( \\frac{\\pi}{2} \\) is \\( 0 \\)</b>.",{});},
+  function(){return mcq("By the inverse function rule, the derivative of an inverse function at a point is the reciprocal of the derivative of the original function at the corresponding point. Applied to \\( \\arcsin \\), this rule says \\( \\frac{d}{dx} \\arcsin x \\) equals",
+    "\\( \\frac{1}{\\cos(\\arcsin x)} \\)",
+    ["\\( \\frac{1}{\\sin(\\arcsin x)} \\)","\\( \\cos(\\arcsin x) \\)","\\( \\frac{1}{\\arccos x} \\)"],
+    "The original function behind \\( \\arcsin \\) is sine, whose derivative is cosine. The rule evaluates that derivative at the corresponding point, which is \\( \\arcsin x \\) itself, and takes the reciprocal. The derivative equals <b>\\( \\frac{1}{\\cos(\\arcsin x)} \\)</b>.",{});}
+]));
+
+E("u6-invderiv",6,["3.39"],2,"gen",function(){
+  var mode=ri(0,9), chkX=0.9, chkVal, prompt, key, ds, sol, prm={mode:mode};
+  if(mode===0){
+    var b=ri(2,7); chkX=0.1; prm.b=b;
+    chkVal=b/Math.sqrt(1-b*b*chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arcsin("+b+"x) \\).";
+    key="\\( \\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)";
+    ds=["\\( \\frac{1}{\\sqrt{1 - "+(b*b)+"x^2}} \\)","\\( \\frac{"+b+"}{\\sqrt{1 + "+(b*b)+"x^2}} \\)","\\( -\\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)"];
+    sol="The derivative of \\( \\arcsin u \\) is \\( \\frac{1}{\\sqrt{1 - u^2}} \\), and the chain rule multiplies by the derivative of \\( "+b+"x \\): \\[ \\begin{aligned} f'(x) &= \\frac{"+b+"}{\\sqrt{1 - ("+b+"x)^2}} = \\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===1){
+    var b=ri(2,7); chkX=0.1; prm.b=b;
+    chkVal=-b/Math.sqrt(1-b*b*chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arccos("+b+"x) \\).";
+    key="\\( -\\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)";
+    ds=["\\( \\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)","\\( -\\frac{1}{\\sqrt{1 - "+(b*b)+"x^2}} \\)","\\( -\\frac{"+b+"}{\\sqrt{1 + "+(b*b)+"x^2}} \\)"];
+    sol="The derivative of \\( \\arccos u \\) is \\( -\\frac{1}{\\sqrt{1 - u^2}} \\), and the chain rule multiplies by the derivative of \\( "+b+"x \\): \\[ \\begin{aligned} f'(x) &= -\\frac{"+b+"}{\\sqrt{1 - ("+b+"x)^2}} = -\\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===2){
+    var b=ri(2,7); prm.b=b;
+    chkVal=b/(1+b*b*chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arctan("+b+"x) \\).";
+    key="\\( \\frac{"+b+"}{1 + "+(b*b)+"x^2} \\)";
+    ds=["\\( \\frac{1}{1 + "+(b*b)+"x^2} \\)","\\( \\frac{"+b+"}{\\sqrt{1 + "+(b*b)+"x^2}} \\)","\\( \\frac{"+b+"}{1 - "+(b*b)+"x^2} \\)"];
+    sol="The derivative of \\( \\arctan u \\) is \\( \\frac{1}{1 + u^2} \\), and the chain rule multiplies by the derivative of \\( "+b+"x \\): \\[ \\begin{aligned} f'(x) &= \\frac{"+b+"}{1 + ("+b+"x)^2} = \\frac{"+b+"}{1 + "+(b*b)+"x^2} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===3){
+    var b=ri(2,7); prm.b=b;
+    chkVal=b/(chkX*chkX+b*b);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arctan \\left( \\frac{x}{"+b+"} \\right) \\).";
+    key="\\( \\frac{"+b+"}{x^2 + "+(b*b)+"} \\)";
+    ds=["\\( \\frac{1}{x^2 + "+(b*b)+"} \\)","\\( \\frac{"+b+"}{\\sqrt{x^2 + "+(b*b)+"}} \\)","\\( \\frac{"+b+"}{x^2 - "+(b*b)+"} \\)"];
+    sol="With \\( u = \\frac{x}{"+b+"} \\), the chain rule gives \\[ \\begin{aligned} f'(x) &= \\frac{1}{1 + \\left( \\frac{x}{"+b+"} \\right)^2} \\cdot \\frac{1}{"+b+"} = \\frac{"+b+"}{x^2 + "+(b*b)+"} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===4){
+    var b=ri(2,7); prm.b=b;
+    chkVal=1/Math.sqrt(b*b-chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arcsin \\left( \\frac{x}{"+b+"} \\right) \\).";
+    key="\\( \\frac{1}{\\sqrt{"+(b*b)+" - x^2}} \\)";
+    ds=["\\( \\frac{1}{\\sqrt{"+(b*b)+" + x^2}} \\)","\\( \\frac{"+b+"}{\\sqrt{"+(b*b)+" - x^2}} \\)","\\( -\\frac{1}{\\sqrt{"+(b*b)+" - x^2}} \\)"];
+    sol="With \\( u = \\frac{x}{"+b+"} \\), the chain rule gives \\[ \\begin{aligned} f'(x) &= \\frac{1}{\\sqrt{1 - \\left( \\frac{x}{"+b+"} \\right)^2}} \\cdot \\frac{1}{"+b+"} = \\frac{1}{\\sqrt{"+(b*b)+" - x^2}} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===5){
+    var b=ri(2,7); prm.b=b;
+    chkVal=-1/Math.sqrt(b*b-chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arccos \\left( \\frac{x}{"+b+"} \\right) \\).";
+    key="\\( -\\frac{1}{\\sqrt{"+(b*b)+" - x^2}} \\)";
+    ds=["\\( \\frac{1}{\\sqrt{"+(b*b)+" - x^2}} \\)","\\( -\\frac{1}{\\sqrt{"+(b*b)+" + x^2}} \\)","\\( -\\frac{"+b+"}{\\sqrt{"+(b*b)+" - x^2}} \\)"];
+    sol="With \\( u = \\frac{x}{"+b+"} \\), the chain rule gives \\[ \\begin{aligned} f'(x) &= -\\frac{1}{\\sqrt{1 - \\left( \\frac{x}{"+b+"} \\right)^2}} \\cdot \\frac{1}{"+b+"} = -\\frac{1}{\\sqrt{"+(b*b)+" - x^2}} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===6){
+    var n=pick([2,3]); prm.n=n;
+    chkVal=n*Math.pow(chkX,n-1)/(1+Math.pow(chkX,2*n));
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arctan \\left( x^"+n+" \\right) \\).";
+    key="\\( \\frac{"+n+u6powS(n-1)+"}{1 + x^"+(2*n)+"} \\)";
+    ds=["\\( \\frac{1}{1 + x^"+(2*n)+"} \\)","\\( \\frac{"+n+u6powS(n-1)+"}{\\sqrt{1 + x^"+(2*n)+"}} \\)","\\( \\frac{"+n+u6powS(n-1)+"}{1 - x^"+(2*n)+"} \\)"];
+    sol="The derivative of \\( \\arctan u \\) is \\( \\frac{1}{1 + u^2} \\), and the chain rule multiplies by the derivative of \\( x^"+n+" \\): \\[ \\begin{aligned} f'(x) &= \\frac{"+n+u6powS(n-1)+"}{1 + \\left( x^"+n+" \\right)^2} = \\frac{"+n+u6powS(n-1)+"}{1 + x^"+(2*n)+"} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===7){
+    var n=pick([2,3]); chkX=0.6; prm.n=n;
+    chkVal=n*Math.pow(chkX,n-1)/Math.sqrt(1-Math.pow(chkX,2*n));
+    prompt="Find \\( f'(x) \\) for \\( f(x) = \\arcsin \\left( x^"+n+" \\right) \\).";
+    key="\\( \\frac{"+n+u6powS(n-1)+"}{\\sqrt{1 - x^"+(2*n)+"}} \\)";
+    ds=["\\( \\frac{1}{\\sqrt{1 - x^"+(2*n)+"}} \\)","\\( \\frac{"+n+u6powS(n-1)+"}{\\sqrt{1 + x^"+(2*n)+"}} \\)","\\( -\\frac{"+n+u6powS(n-1)+"}{\\sqrt{1 - x^"+(2*n)+"}} \\)"];
+    sol="The derivative of \\( \\arcsin u \\) is \\( \\frac{1}{\\sqrt{1 - u^2}} \\), and the chain rule multiplies by the derivative of \\( x^"+n+" \\): \\[ \\begin{aligned} f'(x) &= \\frac{"+n+u6powS(n-1)+"}{\\sqrt{1 - \\left( x^"+n+" \\right)^2}} = \\frac{"+n+u6powS(n-1)+"}{\\sqrt{1 - x^"+(2*n)+"}} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else if(mode===8){
+    var a=ri(2,4), b=ri(2,5); prm.a=a; prm.b=b;
+    chkVal=a*b/(1+b*b*chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = "+a+" \\arctan("+b+"x) \\).";
+    key="\\( \\frac{"+(a*b)+"}{1 + "+(b*b)+"x^2} \\)";
+    ds=["\\( \\frac{"+b+"}{1 + "+(b*b)+"x^2} \\)","\\( \\frac{"+(a*b)+"}{\\sqrt{1 + "+(b*b)+"x^2}} \\)","\\( \\frac{"+(a*b)+"}{1 - "+(b*b)+"x^2} \\)"];
+    sol="The constant multiple \\( "+a+" \\) stays in front, and the chain rule supplies the factor \\( "+b+" \\) from the inside: \\[ \\begin{aligned} f'(x) &= "+a+" \\times \\frac{"+b+"}{1 + ("+b+"x)^2} = \\frac{"+(a*b)+"}{1 + "+(b*b)+"x^2} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  } else {
+    var a=ri(2,4), b=ri(2,5); chkX=0.1; prm.a=a; prm.b=b;
+    chkVal=a*b/Math.sqrt(1-b*b*chkX*chkX);
+    prompt="Find \\( f'(x) \\) for \\( f(x) = "+a+" \\arcsin("+b+"x) \\).";
+    key="\\( \\frac{"+(a*b)+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)";
+    ds=["\\( \\frac{"+b+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)","\\( \\frac{"+(a*b)+"}{\\sqrt{1 + "+(b*b)+"x^2}} \\)","\\( -\\frac{"+(a*b)+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\)"];
+    sol="The constant multiple \\( "+a+" \\) stays in front, and the chain rule supplies the factor \\( "+b+" \\) from the inside: \\[ \\begin{aligned} f'(x) &= "+a+" \\times \\frac{"+b+"}{\\sqrt{1 - ("+b+"x)^2}} = \\frac{"+(a*b)+"}{\\sqrt{1 - "+(b*b)+"x^2}} \\end{aligned} \\] So \\( f'(x) = \\) <b>"+key+"</b>.";
+  }
+  prm.chkX=chkX; prm.chkVal=chkVal;
+  return mcq(prompt, key, ds, sol, prm);
+});
+
+var U6AB=[[3,4],[4,3],[6,8],[8,6],[5,12],[12,5],[9,12],[12,9],[8,15],[15,8],[7,24],[24,7],[20,21],[21,20],[12,16],[16,12]];
+
+E("u6-extrema-trig",6,["3.37"],3,"gen",function(){
+  var pr=pick(U6AB), a=pr[0], b=pr[1], R=Math.sqrt(a*a+b*b), sgn=Math.random()<0.5?1:-1, mode=ri(0,3);
+  var fstr=a+" \\sin x "+(sgn>0?"+ ":"- ")+b+" \\cos x";
+  var dstr=sgn>0 ? a+" \\cos x - "+b+" \\sin x" : a+" \\cos x + "+b+" \\sin x";
+  var prm={a:a, b:b, sgn:sgn, mode:mode, R:R};
+  if(mode===3){
+    var key="The maximum value is \\( "+R+" \\), attained at a critical point inside the interval";
+    var prompt="Let \\( f(x) = "+fstr+" \\) on the interval \\( [0, 2\\pi] \\). Which statement about its maximum is correct?";
+    var sol="The derivative \\( f'(x) = "+dstr+" \\) vanishes at points where the function reaches \\( \\sqrt{"+a+"^2 + "+b+"^2} = "+R+" \\); the endpoint values are \\( f(0) = "+(sgn>0?b:-b)+" \\) and \\( f(2\\pi) = "+(sgn>0?b:-b)+" \\), both smaller. A sum of a sine and a cosine reaches its peak once per period, at a critical point strictly inside the interval. The correct statement is: <b>"+key+"</b>.";
+    return mcq(prompt, key, ["The maximum value is \\( "+R+" \\), attained at an endpoint of the interval","The maximum value is \\( "+(a+b)+" \\), attained at a critical point inside the interval","The maximum value is \\( "+R+" \\), attained at two critical points in the interval"], sol, prm);
+  }
+  var wantMax=mode!==1, ivl=mode===2?"[0, \\pi]":"[0, 2\\pi]", ans=wantMax?R:-R;
+  var prompt="Find the "+(wantMax?"maximum":"minimum")+" value of \\( f(x) = "+fstr+" \\) on the interval \\( "+ivl+" \\).";
+  var pt=sgn>0
+    ? (wantMax?"the first-quadrant critical point, where \\( \\sin x = "+u6fr(a,R)+" \\) and \\( \\cos x = "+u6fr(b,R)+" \\)":"the third-quadrant critical point, where \\( \\sin x = -"+u6fr(a,R)+" \\) and \\( \\cos x = -"+u6fr(b,R)+" \\)")
+    : (wantMax?"the second-quadrant critical point, where \\( \\sin x = "+u6fr(a,R)+" \\) and \\( \\cos x = -"+u6fr(b,R)+" \\)":"the fourth-quadrant critical point, where \\( \\sin x = -"+u6fr(a,R)+" \\) and \\( \\cos x = "+u6fr(b,R)+" \\)");
+  var sol="Differentiate and locate the critical points: \\[ \\begin{aligned} f'(x) &= "+dstr+" \\end{aligned} \\] The extreme value on the interval occurs at "+pt+". Substituting those sine and cosine values gives \\( f = "+(wantMax?R:-R)+" \\), and the endpoint values, \\( "+(sgn>0?b:-b)+" \\) and \\( "+(mode===2?(sgn>0?-b:b):(sgn>0?b:-b))+" \\), do not beat it. The "+(wantMax?"maximum":"minimum")+" value is <b>"+ans+"</b>.";
+  return numq(prompt, ans, 0.011, sol, prm);
+});
+
+var U6SK=[
+  {pre:"A camera is mounted at ground level ", mid:" from a straight road and tracks a car travelling along the road. Let \\( \\theta \\) be the angle between the camera's line of sight and the perpendicular from the camera to the road, and let \\( x \\) be the distance from the car to the point of the road closest to the camera.", thing:"car", pairs:[[30,40],[40,30],[60,80],[80,60]]},
+  {pre:"A searchlight is placed ", mid:" from a straight running track and shines on a runner moving along the track. Let \\( \\theta \\) be the angle between the beam and the perpendicular from the searchlight to the track, and let \\( x \\) be the distance from the runner to the point of the track closest to the searchlight.", thing:"runner", pairs:[[15,20],[20,15],[9,12],[12,9]]},
+  {pre:"An observer on a dock is ", mid:" from the straight path of a boat travelling parallel to the shore and watches the boat through binoculars. Let \\( \\theta \\) be the angle between the observer's line of sight and the perpendicular from the dock to the boat's path, and let \\( x \\) be the distance from the boat to the point of its path closest to the dock.", thing:"boat", pairs:[[30,40],[45,60],[60,45],[36,48]]}
+];
+
+E("u6-angle-rate",6,["3.40"],3,"gen",function(){
+  var sk=pick(U6SK), pr=pick(sk.pairs), d=pr[0], x=pr[1], den=d*d+x*x, v=0, tries=0;
+  do { v=ri(2,12); tries++; } while(((d*v*1000)%den)!==0 && tries<200);
+  var rate=d*v/den, mode=ri(0,1);
+  var head=sk.pre+"\\( "+d+" \\) m"+sk.mid;
+  var block="\\[ \\begin{aligned} \\tan \\theta &= \\frac{x}{"+d+"} \\\\ \\sec^2 \\theta \\, \\frac{d\\theta}{dt} &= \\frac{1}{"+d+"} \\frac{dx}{dt} \\\\ \\frac{d\\theta}{dt} &= \\frac{"+d+"}{"+den+"} \\frac{dx}{dt} \\end{aligned} \\]";
+  if(mode===0){
+    var prompt=head+" At the instant when \\( x = "+x+" \\) m, the "+sk.thing+" is moving at \\( "+v+" \\) m/s. At what rate is \\( \\theta \\) changing at that instant, in radians per second?";
+    var sol="The angle is tied to the position by an inverse trigonometric relation, \\( \\theta = \\arctan \\frac{x}{"+d+"} \\). Differentiating with respect to time: "+block+" Substituting \\( \\frac{dx}{dt} = "+v+" \\) gives \\( \\frac{d\\theta}{dt} = \\frac{"+d+" \\times "+v+"}{"+den+"} = "+fmt(rate,3)+" \\). The angle is changing at <b>"+fmt(rate,3)+" radians per second</b>.";
+    return numq(prompt, rate, 0.011, sol, {d:d, x:x, v:v, mode:mode});
+  }
+  var prompt=head+" At the instant when \\( x = "+x+" \\) m, the angle \\( \\theta \\) is changing at \\( "+fmt(rate,3)+" \\) radians per second. How fast is the "+sk.thing+" moving at that instant, in metres per second?";
+  var sol="The angle is tied to the position by \\( \\theta = \\arctan \\frac{x}{"+d+"} \\). Differentiating with respect to time: "+block+" Solving for the speed with \\( \\frac{d\\theta}{dt} = "+fmt(rate,3)+" \\): \\( \\frac{dx}{dt} = \\frac{"+den+"}{"+d+"} \\times "+fmt(rate,3)+" = "+v+" \\). The "+sk.thing+" is moving at <b>"+v+" metres per second</b>.";
+  return numq(prompt, v, 0.011, sol, {d:d, x:x, v:v, mode:mode});
+});
+
+E("u6-limit-param",6,["2.20"],3,"gen",function(){
+  var mode=ri(0,3), prompt, sol, key, ds, prm={mode:mode};
+  function opts(ansV, cands){
+    var seen={}, out=[];
+    function push(v, str){ if(Math.abs(v-ansV)<1e-9 || seen[str]) return; seen[str]=1; out.push("\\( "+str+" \\)"); }
+    for(var i=0;i<cands.length && out.length<3;i++) push(cands[i][0], cands[i][1]);
+    return out;
+  }
+  if(mode===0){
+    var pr=pick(U6PAIRS), k=pr[0], m=pr[1]; prm.k=k; prm.m=m; prm.ans=k/m;
+    prompt="The function \\( f(x) = \\frac{\\sin "+k+"x}{"+m+"x} \\) for \\( x \\neq 0 \\) is made continuous at \\( x = 0 \\) by defining \\( f(0) = L \\). What is \\( L \\)?";
+    sol="Continuity at \\( x = 0 \\) requires the defined value to equal the limit: \\[ \\begin{aligned} L &= \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{"+m+"x} = "+u6fr(k,m)+" \\lim_{x \\to 0} \\frac{\\sin "+k+"x}{"+k+"x} \\\\ &= "+u6fr(k,m)+" = "+fmt(k/m,3)+" \\end{aligned} \\] So \\( L = \\) <b>"+fmt(k/m,3)+"</b>.";
+    key="\\( "+u6fr(k,m)+" \\)";
+    ds=opts(k/m, [[m/k, u6fr(m,k)], [(k+m)/m, u6fr(k+m,m)], [k/(2*m), u6fr(k,2*m)]]);
+  } else if(mode===1){
+    var b=ri(2,5), L=ri(2,4), a=b*L; prm.b=b; prm.a=a; prm.L=L; prm.ans=a;
+    prompt="Find the value of \\( a \\) such that \\( \\lim_{x \\to 0} \\frac{\\sin(ax)}{"+b+"x} = "+L+" \\).";
+    sol="The standard limit gives \\( \\lim_{x \\to 0} \\frac{\\sin(ax)}{"+b+"x} = \\frac{a}{"+b+"} \\). Setting this equal to \\( "+L+" \\) gives \\( a = "+b+" \\times "+L+" = "+a+" \\). The value is <b>"+a+"</b>.";
+    key="\\( "+a+" \\)";
+    ds=opts(a, [[L,""+L],[b,""+b],[a-b,""+(a-b)],[a+L,""+(a+L)],[a+1,""+(a+1)],[a-1,""+(a-1)],[a+2,""+(a+2)]]);
+  } else if(mode===2){
+    var rows=[[1,"0.5"],[2,"2"],[3,"4.5"],[4,"8"],[5,"12.5"]], rw=pick(rows), k=rw[0]; prm.k=k; prm.c=k*k/2; prm.ans=k;
+    prompt="Find the positive value of \\( k \\) such that \\( \\lim_{x \\to 0} \\frac{1 - \\cos(kx)}{x^2} = "+rw[1]+" \\).";
+    sol="The standard limits give \\( \\lim_{x \\to 0} \\frac{1 - \\cos(kx)}{x^2} = \\frac{k^2}{2} \\). Setting \\( \\frac{k^2}{2} = "+rw[1]+" \\) gives \\( k^2 = "+(k*k)+" \\), and the positive value is \\( k = "+k+" \\). The value is <b>"+k+"</b>.";
+    key="\\( "+k+" \\)";
+    ds=opts(k, [[k*k/2, rw[1]],[2*k, rw[1].indexOf(".")>=0 ? (2*k).toFixed(1) : ""+(2*k)],[k+1,""+(k+1)],[k+2,""+(k+2)],[k-1,""+(k-1)]]);
+  } else {
+    var b=ri(1,6), c=ri(b+2,b+8), a=c-b; prm.b=b; prm.a=a; prm.c=c; prm.ans=a;
+    prompt="Find the value of \\( a \\) such that \\( \\lim_{x \\to 0} \\frac{\\sin(ax) + "+b+"x}{x} = "+c+" \\).";
+    sol="Split the quotient and use the standard limit: \\( \\lim_{x \\to 0} \\frac{\\sin(ax) + "+b+"x}{x} = a + "+b+" \\). Setting this equal to \\( "+c+" \\) gives \\( a = "+c+" - "+b+" = "+a+" \\). The value is <b>"+a+"</b>.";
+    key="\\( "+a+" \\)";
+    ds=opts(a, [[c,""+c],[b,""+b],[a+1,""+(a+1)],[a-1,""+(a-1)],[a+2,""+(a+2)]]);
+  }
+  return mcq(prompt, key, ds, sol, prm);
+});
+
+/* ----- bank-u7.js ----- */
+// Math 3208 Unit 7 Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions question bank
+// CRMARKS: u7-exponential-limit=1
+// CRMARKS: u7-deriv-exponential=2
+// CRMARKS: u7-deriv-log=2
+// CRMARKS: u7-tangent-extremum=2
+// CRMARKS: u7-growth-decay=2
+// CRMARKS: u7-log-diff-compute=3
+// CRMARKS: u7-hyperbolic-values=2
+// CRMARKS: u7-interpret-derivative=2
+// CRMARKS: u7-hyperbolic-solve=3
+/* ================= Unit 7: Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions (MA3208.1.11, 2.21, 3.41 to 3.48) =================
+   Tranche 2, final scope. */
+
+/* Math 3208 Review, Unit 7 (Calculus of Exponential, Logarithmic, and
+   Hyperbolic Trigonometric Functions), tranche 2 entries.
+   Format per brief-common.md. FR(n, d) from the bank source returns the raw
+   \frac fragment and is used only inside math delimiters. */
+
+function u7gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function u7fracR(n,d){if(d<0){n=-n;d=-d;}var g=u7gcd(n,d);n/=g;d/=g;if(d===1)return ""+n;return (n<0?"-":"")+"\\frac{"+Math.abs(n)+"}{"+d+"}";}
+function u7lin(a,b){var s=(a===1?"x":a===-1?"-x":a+"x");if(b>0)s+=" + "+b;else if(b<0)s+=" - "+(-b);return s;}
+function u7poly(terms){var out="";for(var i=0;i<terms.length;i++){var c=terms[i][0],p=terms[i][1];if(c===0)continue;var mag;if(p===0)mag=""+Math.abs(c);else mag=(Math.abs(c)===1?"":Math.abs(c))+"x"+(p>1?"^"+p:"");if(out==="")out=(c<0?"-":"")+mag;else out+=(c<0?" - ":" + ")+mag;}return out===""?"0":out;}
+
+E("u7-exp-log-features",7,["1.11"],1,"var",varset([
+  function(){return mcq("Which statement describes the graph of \\( y = e^x \\)?",
+    "It increases on its whole domain, passes through \\( (0, 1) \\), and approaches the \\( x \\)-axis as a horizontal asymptote",
+    ["It increases on its whole domain, passes through \\( (1, 0) \\), and approaches the \\( x \\)-axis as a horizontal asymptote",
+     "It decreases on its whole domain, passes through \\( (0, 1) \\), and approaches the \\( x \\)-axis as a horizontal asymptote",
+     "It increases on its whole domain, passes through \\( (0, 1) \\), and approaches the \\( y \\)-axis as a vertical asymptote"],
+    "The graph of \\( y = e^x \\) is defined for every real \\( x \\). Its values are always positive, it passes through \\( (0, 1) \\) because \\( e^0 = 1 \\), it rises throughout its domain, and on the left it settles toward the \\( x \\)-axis without ever reaching it. The correct description is the one naming <b>an increasing graph through \\( (0, 1) \\) with the \\( x \\)-axis as a horizontal asymptote</b>.",{});},
+  function(){return mcq("Which statement describes the graph of \\( y = \\ln x \\)?",
+    "It is defined only for \\( x > 0 \\), passes through \\( (1, 0) \\), and approaches the \\( y \\)-axis as a vertical asymptote",
+    ["It is defined for every real \\( x \\), passes through \\( (1, 0) \\), and approaches the \\( y \\)-axis as a vertical asymptote",
+     "It is defined only for \\( x > 0 \\), passes through \\( (0, 1) \\), and approaches the \\( y \\)-axis as a vertical asymptote",
+     "It is defined only for \\( x > 0 \\), passes through \\( (1, 0) \\), and approaches the \\( x \\)-axis as a horizontal asymptote"],
+    "The logarithm accepts only positive inputs, so the domain of \\( y = \\ln x \\) is \\( x > 0 \\). Since \\( \\ln 1 = 0 \\), the graph passes through \\( (1, 0) \\), and as \\( x \\) shrinks toward 0 the values fall without bound, making the \\( y \\)-axis a vertical asymptote. The correct description is the one naming <b>a domain of \\( x > 0 \\), the point \\( (1, 0) \\), and the \\( y \\)-axis as a vertical asymptote</b>.",{});},
+  function(){return mcq("The graph of \\( y = \\ln x \\) is the reflection of the graph of \\( y = e^x \\) in the line \\( y = x \\). Which statement follows from this?",
+    "A point \\( (a, b) \\) is on the graph of \\( y = e^x \\) exactly when the point \\( (b, a) \\) is on the graph of \\( y = \\ln x \\)",
+    ["A point \\( (a, b) \\) is on the graph of \\( y = e^x \\) exactly when the point \\( (a, b) \\) is on the graph of \\( y = \\ln x \\)",
+     "A point \\( (a, b) \\) is on the graph of \\( y = e^x \\) exactly when the point \\( (-a, -b) \\) is on the graph of \\( y = \\ln x \\)",
+     "A point \\( (a, b) \\) is on the graph of \\( y = e^x \\) exactly when the point \\( (b, a) \\) is on the graph of \\( y = e^x \\)"],
+    "Reflecting in the line \\( y = x \\) swaps the two coordinates of every point. So each point \\( (a, b) \\) on the exponential graph corresponds to the point \\( (b, a) \\) on the logarithmic graph, which is exactly the statement that the two functions are inverses of each other. The statement that follows is <b>the one where the coordinates swap between the two graphs</b>.",{});},
+  function(){return mcq("Which statement about the functions \\( y = e^x \\) and \\( y = \\ln x \\) is true?",
+    "The range of \\( y = e^x \\) is \\( y > 0 \\), and that is exactly the domain of \\( y = \\ln x \\)",
+    ["The range of \\( y = e^x \\) is all real numbers, and that is exactly the domain of \\( y = \\ln x \\)",
+     "The range of \\( y = \\ln x \\) is \\( y > 0 \\), and that is exactly the domain of \\( y = e^x \\)",
+     "The domain of \\( y = \\ln x \\) is all real numbers, and its range is \\( y > 0 \\) as well"],
+    "Inverse functions swap domain and range. The exponential \\( y = e^x \\) has domain all real numbers and range \\( y > 0 \\), so its inverse \\( y = \\ln x \\) has domain \\( y > 0 \\) (that is, \\( x > 0 \\) as an input) and range all real numbers. The true statement is <b>the one giving the range of \\( e^x \\) as \\( y > 0 \\) and matching it to the domain of \\( \\ln x \\)</b>.",{});}
+]));
+
+E("u7-exponential-limit",7,["2.21"],1,"gen",function(){
+  var k=pick([-3,-2,-1,1,2,3,4]);
+  var form=pick(["A","B"]);
+  var side=pick([1,-1]);
+  var hs=pick([[0.1,0.01,0.001],[0.2,0.02,0.002],[0.5,0.05,0.005],[0.25,0.025,0.0025]]);
+  var expStr=(k===1?"h":(k===-1?"-h":k+"h"));
+  var vals=hs.map(function(h){var hh=side*h;var v=(Math.exp(k*hh)-1)/(form==="A"?hh:k*hh);return fmt(v,3);});
+  var expr="\\frac{e^{"+expStr+"} - 1}{"+(form==="A"?"h":expStr)+"}";
+  var lim=(form==="A"?k:1);
+  var pool=[0,1,-1,k,-k,k+1,k-1,2*k], ds=[];
+  for(var i=0;i<pool.length&&ds.length<3;i++){if(pool[i]!==lim&&ds.indexOf(pool[i])<0)ds.push(pool[i]);}
+  var prompt="The values of \\( "+expr+" \\) when \\( h = "+fmt(side*hs[0],4)+" \\), \\( h = "+fmt(side*hs[1],4)+" \\), and \\( h = "+fmt(side*hs[2],4)+" \\) are "+vals[0]+", "+vals[1]+", and "+vals[2]+". As \\( h \\) approaches 0, the values approach";
+  var sol="As \\( h \\) shrinks toward 0, the values "+vals[0]+", "+vals[1]+", "+vals[2]+" settle closer and closer to one number. This is the informal way the exponential limit is established: the quotient tends to a definite value rather than growing or oscillating. The values approach <b>"+lim+"</b>.";
+  return mcq(prompt,""+lim,ds.map(function(v){return ""+v;}),sol,{k:k,form:form,side:side,hs:hs});
+});
+
+E("u7-derivation-next-step",7,["3.41"],2,"var",varset([
+  function(){return mcq("To derive the derivative of \\( y = a^x \\), the first step rewrites it as \\( y = e^{x \\ln a} \\). Applying the chain rule to that form gives",
+    "\\( a^x \\ln a \\)",
+    ["\\( x a^{x - 1} \\)","\\( e^{x \\ln a} \\)","\\( \\frac{a^x}{\\ln a} \\)"],
+    "In the form \\( y = e^{x \\ln a} \\), the exponent is \\( x \\ln a \\) and \\( \\ln a \\) is a constant. The chain rule gives the exponential itself times the derivative of its exponent, which is \\( \\ln a \\). Since \\( e^{x \\ln a} = a^x \\), the derivative is <b>\\( a^x \\ln a \\)</b>.",{});},
+  function(){return mcq("Starting from the limit definition, the derivative of \\( y = \\ln x \\) comes from \\( \\lim_{h \\to 0} \\frac{\\ln(x + h) - \\ln x}{h} \\). Working that limit through gives the derivative",
+    "\\( \\frac{1}{x} \\)",
+    ["\\( \\ln x \\)","\\( \\frac{\\ln x}{x} \\)","\\( \\frac{1}{\\ln x} \\)"],
+    "Combining the logarithms turns the numerator into \\( \\ln \\left( 1 + \\frac{h}{x} \\right) \\), and the standard exponential limit then reduces the whole expression to \\( \\frac{1}{x} \\). The derivative of \\( \\ln x \\) is <b>\\( \\frac{1}{x} \\)</b>.",{});},
+  function(){return mcq("The function \\( y = \\log_a x \\) is rewritten with natural logarithms as \\( y = \\frac{\\ln x}{\\ln a} \\). Its derivative is",
+    "\\( \\frac{1}{x \\ln a} \\)",
+    ["\\( \\frac{1}{x} \\)","\\( \\frac{\\ln a}{x} \\)","\\( \\frac{1}{a \\ln x} \\)"],
+    "Because \\( \\ln a \\) is a constant, \\( y = \\frac{\\ln x}{\\ln a} \\) is just \\( \\frac{1}{\\ln a} \\) times \\( \\ln x \\). Differentiating \\( \\ln x \\) gives \\( \\frac{1}{x} \\), and the constant factor stays. The derivative is <b>\\( \\frac{1}{x \\ln a} \\)</b>.",{});},
+  function(){return mcq("The derivative of \\( y = e^x \\) turns out to equal the function itself because, in the limit definition of the derivative, the factor that remains is",
+    "the limit \\( \\lim_{h \\to 0} \\frac{e^h - 1}{h} \\), whose value is exactly 1",
+    ["the limit \\( \\lim_{h \\to 0} \\frac{e^h - 1}{h} \\), whose value is exactly \\( e \\)",
+     "the factor \\( e^{xh} \\), whose limiting value is \\( x \\)",
+     "the factor \\( e^h \\), whose limiting value is 0"],
+    "Factoring \\( e^x \\) out of the difference quotient leaves \\( e^x \\) times the quotient \\( \\frac{e^h - 1}{h} \\). The number \\( e \\) is exactly the base for which that quotient approaches 1, so the derivative comes out as \\( e^x \\) itself. The remaining factor is <b>the limit of \\( \\frac{e^h - 1}{h} \\), whose value is exactly 1</b>.",{});}
+]));
+
+E("u7-deriv-exponential",7,["3.42"],2,"gen",function(){
+  var mode=ri(1,4), X0=0.7;
+  if(mode===1){
+    var a=pick([-4,-3,-2,2,3,4,5]), b=ri(-5,5), u=u7lin(a,b);
+    var key={t:"\\( "+a+"e^{"+u+"} \\)",f:function(x){return a*Math.exp(a*x+b);}};
+    var ds=[
+      {t:"\\( e^{"+u+"} \\)",f:function(x){return Math.exp(a*x+b);}},
+      {t:"\\( "+(-a)+"e^{"+u+"} \\)",f:function(x){return -a*Math.exp(a*x+b);}},
+      {t:"\\( \\left( "+u+" \\right) e^{"+u+"} \\)",f:function(x){return (a*x+b)*Math.exp(a*x+b);}}];
+    var sol="The derivative of \\( e^{u} \\) is \\( e^{u} \\) times the derivative of the exponent. Here the exponent is \\( "+u+" \\), whose derivative is \\( "+a+" \\). \\[ \\begin{aligned} f(x) &= e^{"+u+"} \\\\ f'(x) &= "+a+"e^{"+u+"} \\end{aligned} \\] The derivative is <b>\\( "+a+"e^{"+u+"} \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = e^{"+u+"} \\).",key.t,ds.map(function(d){return d.t;}),sol,{mode:1,a:a,b:b,x0:X0});
+  }
+  if(mode===2){
+    var A=pick([2,3,4,5,10]), b2=pick([-3,-2,-1,2,3]);
+    var exp=(b2===1?"x":b2===-1?"-x":b2+"x"), expM1=(b2===1?"x - 1":b2===-1?"-x - 1":b2+"x - 1");
+    var key2={t:"\\( "+b2+" \\ln "+A+" \\cdot "+A+"^{"+exp+"} \\)",f:function(x){return b2*Math.log(A)*Math.pow(A,b2*x);}};
+    var ds2=[
+      {t:"\\( \\ln "+A+" \\cdot "+A+"^{"+exp+"} \\)",f:function(x){return Math.log(A)*Math.pow(A,b2*x);}},
+      {t:"\\( "+b2+" \\cdot "+A+"^{"+exp+"} \\)",f:function(x){return b2*Math.pow(A,b2*x);}},
+      {t:"\\( "+b2+"x \\cdot "+A+"^{"+expM1+"} \\)",f:function(x){return b2*x*Math.pow(A,b2*x-1);}}];
+    var sol2="Write \\( "+A+"^{"+exp+"} \\) as \\( e^{"+exp+" \\ln "+A+"} \\) and use the chain rule: the result is the function itself times \\( \\ln "+A+" \\) times the derivative of the exponent, which is \\( "+b2+" \\). \\[ \\begin{aligned} f(x) &= "+A+"^{"+exp+"} \\\\ f'(x) &= "+b2+" \\ln "+A+" \\cdot "+A+"^{"+exp+"} \\end{aligned} \\] The derivative is <b>\\( "+b2+" \\ln "+A+" \\cdot "+A+"^{"+exp+"} \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = "+A+"^{"+exp+"} \\).",key2.t,ds2.map(function(d){return d.t;}),sol2,{mode:2,A:A,b:b2,x0:X0});
+  }
+  if(mode===3){
+    var n=pick([2,3]), a3=pick([-3,-2,-1,1,2,3]);
+    var ax=(a3===1?"x":a3===-1?"-x":a3+"x");
+    function P3(terms){return u7poly(terms);}
+    var keyP=P3([[a3,n],[n,n-1]]), d1P=P3([[n,n-1]]), d2P=P3([[a3,n]]), d3P=P3([[a3,n],[-n,n-1]]);
+    var key3={t:"\\( e^{"+ax+"} \\left( "+keyP+" \\right) \\)",f:function(x){return Math.exp(a3*x)*(a3*Math.pow(x,n)+n*Math.pow(x,n-1));}};
+    var ds3=[
+      {t:"\\( e^{"+ax+"} \\left( "+d1P+" \\right) \\)",f:function(x){return Math.exp(a3*x)*n*Math.pow(x,n-1);}},
+      {t:"\\( e^{"+ax+"} \\left( "+d2P+" \\right) \\)",f:function(x){return Math.exp(a3*x)*a3*Math.pow(x,n);}},
+      {t:"\\( e^{"+ax+"} \\left( "+d3P+" \\right) \\)",f:function(x){return Math.exp(a3*x)*(a3*Math.pow(x,n)-n*Math.pow(x,n-1));}}];
+    var sol3="Use the product rule: differentiate each factor in turn and add. The derivative of \\( x^{"+n+"} \\) is \\( "+n+"x^{"+(n-1)+"} \\), and the derivative of \\( e^{"+ax+"} \\) is \\( "+a3+"e^{"+ax+"} \\). \\[ \\begin{aligned} f'(x) &= "+n+"x^{"+(n-1)+"} e^{"+ax+"} + x^{"+n+"} \\cdot "+a3+"e^{"+ax+"} \\\\ &= e^{"+ax+"} \\left( "+keyP+" \\right) \\end{aligned} \\] The derivative is <b>\\( e^{"+ax+"} \\left( "+keyP+" \\right) \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = x^{"+n+"} e^{"+ax+"} \\).",key3.t,ds3.map(function(d){return d.t;}),sol3,{mode:3,n:n,a:a3,x0:X0});
+  }
+  var b4=pick([-4,-3,-2,-1,1,2,3,4]);
+  var quad=u7poly([[1,2],[b4,1]]), du=u7lin(2,b4);
+  var key4={t:"\\( \\left( "+du+" \\right) e^{"+quad+"} \\)",f:function(x){return (2*x+b4)*Math.exp(x*x+b4*x);}};
+  var ds4=[
+    {t:"\\( e^{"+quad+"} \\)",f:function(x){return Math.exp(x*x+b4*x);}},
+    {t:"\\( 2x e^{"+quad+"} \\)",f:function(x){return 2*x*Math.exp(x*x+b4*x);}},
+    {t:"\\( \\left( "+du+" \\right) e^{"+du+"} \\)",f:function(x){return (2*x+b4)*Math.exp(2*x+b4);}}];
+  var sol4="The exponent is the quadratic \\( "+quad+" \\), whose derivative is \\( "+du+" \\). The chain rule multiplies the exponential by that derivative. \\[ \\begin{aligned} f(x) &= e^{"+quad+"} \\\\ f'(x) &= \\left( "+du+" \\right) e^{"+quad+"} \\end{aligned} \\] The derivative is <b>\\( \\left( "+du+" \\right) e^{"+quad+"} \\)</b>.";
+  return mcq("Find the derivative of \\( f(x) = e^{"+quad+"} \\).",key4.t,ds4.map(function(d){return d.t;}),sol4,{mode:4,b:b4,x0:X0});
+});
+
+E("u7-deriv-log",7,["3.44"],2,"gen",function(){
+  var mode=ri(1,4);
+  if(mode===1){
+    var a=pick([-4,-3,-2,-1,2,3,4]), b=ri(-6,6), u=u7lin(a,b);
+    var x0=null, cand=[2,-2,3,-3,5,-5,8,-8];
+    for(var i=0;i<cand.length;i++){if(a*cand[i]+b>0.4){x0=cand[i];break;}}
+    var key="\\( "+FR(a,u)+" \\)";
+    var ds=["\\( "+FR(1,u)+" \\)","\\( "+FR(u,""+a)+" \\)","\\( "+a+" \\left( "+u+" \\right) \\)"];
+    var sol="For \\( \\ln(u) \\), the derivative is \\( \\frac{u'}{u} \\). Here \\( u = "+u+" \\) with \\( u' = "+a+" \\). \\[ \\begin{aligned} f(x) &= \\ln \\left( "+u+" \\right) \\\\ f'(x) &= "+FR(a,u)+" \\end{aligned} \\] The derivative is <b>\\( "+FR(a,u)+" \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = \\ln \\left( "+u+" \\right) \\).",key,ds,sol,{mode:1,a:a,b:b,x0:x0});
+  }
+  if(mode===2){
+    var b2=pick([-3,-2,-1,0,1,2,3]), c2=pick([3,5,6]);
+    var quad=u7poly([[1,2],[b2,1],[c2,0]]), du=u7lin(2,b2), X0=1.5;
+    var key2="\\( "+FR(du,quad)+" \\)";
+    var ds2=["\\( "+FR("1",quad)+" \\)","\\( "+du+" \\)","\\( "+FR(quad,du)+" \\)"];
+    var sol2="For \\( \\ln(u) \\), the derivative is \\( \\frac{u'}{u} \\). Here \\( u = "+quad+" \\) with \\( u' = "+du+" \\). \\[ \\begin{aligned} f(x) &= \\ln \\left( "+quad+" \\right) \\\\ f'(x) &= "+FR(du,quad)+" \\end{aligned} \\] The derivative is <b>\\( "+FR(du,quad)+" \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = \\ln \\left( "+quad+" \\right) \\).",key2,ds2,sol2,{mode:2,b:b2,c:c2,x0:X0});
+  }
+  if(mode===3){
+    var A=pick([2,3,5,10]);
+    var key3="\\( "+FR("1","x \\ln "+A)+" \\)";
+    var ds3=["\\( "+FR("1","x")+" \\)","\\( "+FR("\\ln "+A,"x")+" \\)","\\( "+FR("1",A+"x")+" \\)"];
+    var sol3="Rewrite with the change of base formula: \\( \\log_{"+A+"} x = \\frac{\\ln x}{\\ln "+A+"} \\). The factor \\( \\frac{1}{\\ln "+A+"} \\) is a constant, and the derivative of \\( \\ln x \\) is \\( \\frac{1}{x} \\). \\[ \\begin{aligned} f(x) &= \\log_{"+A+"} x \\\\ f'(x) &= "+FR("1","x \\ln "+A)+" \\end{aligned} \\] The derivative is <b>\\( "+FR("1","x \\ln "+A)+" \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = \\log_{"+A+"} x \\).",key3,ds3,sol3,{mode:3,A:A,x0:2});
+  }
+  var sub=pick(["xlnx","lnsq"]);
+  if(sub==="xlnx"){
+    var key4="\\( \\ln x + 1 \\)";
+    var ds4=["\\( \\ln x \\)","\\( "+FR("1","x")+" \\)","\\( \\ln x + x \\)"];
+    var sol4="Use the product rule on \\( x \\cdot \\ln x \\): the first factor contributes \\( \\ln x \\) and the second contributes \\( x \\cdot \\frac{1}{x} = 1 \\). \\[ \\begin{aligned} f(x) &= x \\ln x \\\\ f'(x) &= \\ln x + 1 \\end{aligned} \\] The derivative is <b>\\( \\ln x + 1 \\)</b>.";
+    return mcq("Find the derivative of \\( f(x) = x \\ln x \\).",key4,ds4,sol4,{mode:4,sub:sub,x0:2});
+  }
+  var key5="\\( "+FR("2 \\ln x","x")+" \\)";
+  var ds5=["\\( "+FR("2","x")+" \\)","\\( 2 \\ln x \\)","\\( "+FR("\\ln x","x")+" \\)"];
+  var sol5="Treat \\( (\\ln x)^2 \\) as a square and use the chain rule: the derivative is 2 times \\( \\ln x \\) times the derivative of \\( \\ln x \\), which is \\( \\frac{1}{x} \\). \\[ \\begin{aligned} f(x) &= (\\ln x)^2 \\\\ f'(x) &= "+FR("2 \\ln x","x")+" \\end{aligned} \\] The derivative is <b>\\( "+FR("2 \\ln x","x")+" \\)</b>.";
+  return mcq("Find the derivative of \\( f(x) = (\\ln x)^2 \\).",key5,ds5,sol5,{mode:4,sub:sub,x0:2});
+});
+
+E("u7-tangent-extremum",7,["3.43"],2,"gen",function(){
+  var mode=ri(1,3);
+  if(mode===1){
+    var c=pick([2,3,4]), a=pick([-3,-2,2,3,4]);
+    var ex=(a===-1?"-x":a===1?"x":a+"x");
+    var key="\\( y = "+u7lin(a*c,c)+" \\)";
+    var ds=["\\( y = "+u7lin(a,c)+" \\)","\\( y = "+u7lin(a*c,-c)+" \\)","\\( y = "+u7lin(c,a*c)+" \\)"];
+    var sol="At \\( x = 0 \\) the point on the curve is \\( (0, "+c+") \\) because \\( e^0 = 1 \\). The derivative is \\( y' = "+(a*c)+"e^{"+ex+"} \\), so the slope there is \\( "+(a*c)+" \\). \\[ \\begin{aligned} y &= "+u7lin(a*c,c)+" \\end{aligned} \\] The tangent line is <b>\\( y = "+u7lin(a*c,c)+" \\)</b>.";
+    return mcq("Find the equation of the tangent line to \\( y = "+c+"e^{"+ex+"} \\) at \\( x = 0 \\).",key,ds,sol,{mode:1,c:c,a:a});
+  }
+  if(mode===2){
+    var a2=pick([2,3,4,5]), d=pick([-2,-1,1,2]);
+    var dstr=(d>0?" + "+d:" - "+(-d));
+    var key2="\\( y = "+u7lin(a2,d-a2)+" \\)";
+    var ds2=["\\( y = "+u7lin(1,d-1)+" \\)","\\( y = "+u7lin(a2,d)+" \\)","\\( y = "+u7lin(a2+1,d-a2)+" \\)"];
+    var sol2="At \\( x = 1 \\) the point on the curve is \\( (1, "+d+") \\) because \\( \\ln 1 = 0 \\). The derivative is \\( y' = \\frac{"+a2+"}{x} \\), so the slope at \\( x = 1 \\) is \\( "+a2+" \\). \\[ \\begin{aligned} y - "+d+" &= "+a2+"(x - 1) \\\\ y &= "+u7lin(a2,d-a2)+" \\end{aligned} \\] The tangent line is <b>\\( y = "+u7lin(a2,d-a2)+" \\)</b>.";
+    return mcq("Find the equation of the tangent line to \\( y = "+a2+" \\ln x"+dstr+" \\) at \\( x = 1 \\).",key2,ds2,sol2,{mode:2,a:a2,d:d});
+  }
+  var b=ri(-4,4), c3=pick([1,2,-1]);
+  var ex3=(c3===1?"x":c3===-1?"-x":c3+"x");
+  var xs=-b-1/c3, kind=(c3>0?"minimum":"maximum");
+  var fs="\\left( "+u7lin(1,b)+" \\right) e^{"+ex3+"}";
+  var dInner=u7poly([[c3,1],[c3*b+1,0]]);
+  var sol3="Differentiate with the product rule. \\[ \\begin{aligned} f'(x) &= e^{"+ex3+"} + "+c3+" \\left( "+u7lin(1,b)+" \\right) e^{"+ex3+"} \\\\ &= e^{"+ex3+"} \\left( "+dInner+" \\right) \\end{aligned} \\] The exponential factor is always positive, so \\( f'(x) = 0 \\) where \\( "+dInner+" = 0 \\), giving \\( x = "+fmt(xs)+" \\). The sign of \\( f' \\) changes from "+(c3>0?"negative to positive":"positive to negative")+" there, so this is the "+kind+" point. The \\( x \\)-coordinate is <b>"+fmt(xs)+"</b>.";
+  return numq("Find the \\( x \\)-coordinate of the "+kind+" point on the graph of \\( f(x) = "+fs+" \\).",xs,0.011,sol3,{mode:3,b:b,c:c3});
+});
+
+E("u7-growth-decay",7,["3.43"],2,"gen",function(){
+  var mode=pick([1,2]);
+  if(mode===1){
+    var pair=pick([[200,4],[300,5],[500,5],[250,5],[400,4],[150,3],[600,4],[450,3]]);
+    var N0=pair[0], T=pair[1], tt=pick([1,2]), t=tt*T, Nt=N0*Math.pow(2,tt), coef=Nt/T;
+    var key="\\( "+coef+" \\ln 2 \\)";
+    var ds=["\\( "+coef+" \\)","\\( "+(N0/T)+" \\ln 2 \\)","\\( "+coef+" \\ln "+T+" \\)"];
+    var sol="Since \\( 2^{t/"+T+"} = e^{(\\ln 2) t / "+T+"} \\), the derivative is \\( N'(t) = N(t) \\cdot \\frac{\\ln 2}{"+T+"} \\). At \\( t = "+t+" \\), the culture has \\( N("+t+") = "+N0+" \\cdot 2^{"+tt+"} = "+Nt+" \\) bacteria. \\[ \\begin{aligned} N'("+t+") &= "+Nt+" \\cdot \\frac{\\ln 2}{"+T+"} \\\\ &= "+coef+" \\ln 2 \\end{aligned} \\] The exact rate of growth is <b>\\( "+coef+" \\ln 2 \\) bacteria per hour</b>.";
+    return mcq("A bacteria culture is modelled by \\( N(t) = "+N0+" \\cdot 2^{t/"+T+"} \\), where \\( N \\) is the number of bacteria and \\( t \\) is in hours. The exact rate of growth, in bacteria per hour, at \\( t = "+t+" \\) is",key,ds,sol,{mode:1,N0:N0,T:T,tt:tt});
+  }
+  var trip=pick([[192,3],[192,4],[192,6],[192,8],[384,3],[384,4],[384,6],[384,8],[256,4],[256,8],[512,4],[512,8],[240,5],[240,3],[480,5],[480,6]]);
+  var A0=trip[0], T2=trip[1], hl=pick([1,2,3]), t2=hl*T2, At=A0/Math.pow(2,hl), coef2=At/T2;
+  var key2="\\( "+coef2+" \\ln 2 \\)";
+  var ds2=["\\( "+coef2+" \\)","\\( "+(A0/T2)+" \\ln 2 \\)","\\( "+coef2+" \\ln "+T2+" \\)"];
+  var sol2="Since \\( \\left( \\frac{1}{2} \\right)^{t/"+T2+"} = e^{-(\\ln 2) t / "+T2+"} \\), the derivative is \\( A'(t) = -A(t) \\cdot \\frac{\\ln 2}{"+T2+"} \\). At \\( t = "+t2+" \\), the sample has \\( A("+t2+") = "+A0+" \\cdot \\left( \\frac{1}{2} \\right)^{"+hl+"} = "+At+" \\) grams. \\[ \\begin{aligned} A'("+t2+") &= -"+At+" \\cdot \\frac{\\ln 2}{"+T2+"} \\\\ &= -"+coef2+" \\ln 2 \\end{aligned} \\] The negative sign shows the mass is dropping, and the exact rate at which it is decreasing is <b>\\( "+coef2+" \\ln 2 \\) grams per hour</b>.";
+  return mcq("A radioactive sample has mass \\( A(t) = "+A0+" \\left( \\frac{1}{2} \\right)^{t/"+T2+"} \\) grams after \\( t \\) hours. The exact rate at which the mass is decreasing, in grams per hour, at \\( t = "+t2+" \\) is",key2,ds2,sol2,{mode:2,A0:A0,T:T2,hl:hl});
+});
+
+E("u7-log-diff-compute",7,["3.45"],2,"gen",function(){
+  var mode=pick([1,2]);
+  if(mode===1){
+    var m=pick([1,2,3,4]), n=pick([1,2,3]);
+    var base=(m===1?"x":m+"x"), expn=(n===1?"x":n+"x");
+    var fstr=(m===1?"x^{"+expn+"}":"\\left( "+base+" \\right)^{"+expn+"}");
+    var baseIn=(m===1?"x":"\\left( "+base+" \\right)");
+    var lead=(n>1?n+" \\cdot ":"");
+    var key, ds, solBody;
+    if(m===1&&n===1){
+      key="\\( x^x \\left( \\ln x + 1 \\right) \\)";
+      ds=["\\( x^x \\ln x \\)","\\( x \\cdot x^{x - 1} \\)","\\( \\ln x + 1 \\)"];
+      solBody="\\( \\ln y = x \\ln x \\), and differentiating gives \\( \\frac{y'}{y} = \\ln x + 1 \\) by the product rule.";
+    } else {
+      key="\\( "+lead+fstr.replace("^{","^{")+" \\left( \\ln "+baseIn+" + 1 \\right) \\)";
+      var d1="\\( "+lead+fstr+" \\left( \\ln "+baseIn+" \\right) \\)";
+      var d2=(n>1)?("\\( "+fstr+" \\left( \\ln "+baseIn+" + 1 \\right) \\)"):("\\( "+fstr+" \\cdot \\frac{1}{x} \\)");
+      var d3="\\( "+lead+fstr+" \\left( \\ln "+baseIn+" - 1 \\right) \\)";
+      ds=[d1,d2,d3];
+      solBody="\\( \\ln y = "+(n>1?n+"x \\ln "+baseIn:"x \\ln "+baseIn)+" \\), and differentiating gives \\( \\frac{y'}{y} = "+(n>1?n+" \\ln "+baseIn+" + "+n:"\\ln "+baseIn+" + 1")+" \\) by the product rule.";
+    }
+    var sol="Take the natural logarithm of both sides and differentiate. "+solBody+" Multiplying both sides by \\( y \\) gives the derivative. The derivative is <b>"+key+"</b>.";
+    return mcq("Use logarithmic differentiation to find the derivative of \\( y = "+fstr+" \\).",key,ds,sol,{mode:1,m:m,n:n,x0:2});
+  }
+  var a=pick([2,3,4]), c=pick([1,2,3]), d=pick([1,2,3]), pt=pick([1,2]);
+  var ans=(function(){var y=Math.pow(pt,a-1)*Math.pow(pt+c,d-1)*(a*(pt+c)+d*pt);return y;})();
+  var yv=Math.pow(pt,a)*Math.pow(pt+c,d);
+  var ratio=FR(a*(pt+c)+d*pt,""+(pt*(pt+c)));
+  var fac=(d===1?"\\left( x + "+c+" \\right)":"\\left( x + "+c+" \\right)^{"+d+"}");
+  var sol2="Take the natural logarithm of both sides, then differentiate. \\[ \\begin{aligned} \\ln y &= "+a+" \\ln x + "+d+" \\ln(x + "+c+") \\\\ \\frac{y'}{y} &= \\frac{"+a+"}{x} + \\frac{"+d+"}{x + "+c+"} \\end{aligned} \\] At \\( x = "+pt+" \\), \\( \\frac{y'}{y} = "+ratio+" \\) and \\( y = "+yv+" \\), so \\( y' = "+yv+" \\cdot "+ratio+" = "+ans+" \\). The value is <b>"+ans+"</b>.";
+  return numq("Let \\( y = x^{"+a+"} "+fac+" \\). Use logarithmic differentiation to find \\( y'("+pt+") \\).",ans,0.011,sol2,{mode:2,a:a,c:c,d:d,pt:pt});
+});
+
+E("u7-hyperbolic-values",7,["3.46","3.47","3.48"],2,"gen",function(){
+  if(Math.random()<0.65){
+    var fn=pick(["sinh","cosh","tanh","sech","csch","coth"]);
+    var n=pick([2,3,4,5,6,7,8]);
+    function fracFor(f){switch(f){
+      case "sinh": return [n*n-1,2*n];
+      case "cosh": return [n*n+1,2*n];
+      case "tanh": return [n*n-1,n*n+1];
+      case "sech": return [2*n,n*n+1];
+      case "csch": return [2*n,n*n-1];
+      default: return [n*n+1,n*n-1];}}
+    function fnTex(f){return (f==="sinh"||f==="cosh"||f==="tanh")?"\\"+f:"\\operatorname{"+f+"}";}
+    var kf=fracFor(fn), key="\\( "+u7fracR(kf[0],kf[1])+" \\)";
+    var sibs=shuffle(["sinh","cosh","tanh","sech","csch","coth"].filter(function(f){return f!==fn;}));
+    var ds=[], usedV={}; usedV[kf[0]/kf[1]]=1;
+    for(var i=0;i<sibs.length&&ds.length<3;i++){var sf=fracFor(sibs[i]);var v=sf[0]/sf[1];if(usedV[v])continue;usedV[v]=1;ds.push("\\( "+u7fracR(sf[0],sf[1])+" \\)");}
+    var sol="Use the exponential definitions with \\( e^{\\ln "+n+"} = "+n+" \\) and \\( e^{-\\ln "+n+"} = \\frac{1}{"+n+"} \\). For \\( "+fnTex(fn)+"(\\ln "+n+") \\), substituting those values and simplifying the fraction gives \\( "+u7fracR(kf[0],kf[1])+" \\). The exact value is <b>\\( "+u7fracR(kf[0],kf[1])+" \\)</b>.";
+    return mcq("What is the exact value of \\( "+fnTex(fn)+"(\\ln "+n+") \\)?",key,ds,sol,{mode:"val",fn:fn,n:n});
+  }
+  var fn2=pick(["sinh","cosh","tanh"]), a=pick([2,3,4,5]), arg=a+"x";
+  var key2, ds2;
+  if(fn2==="sinh"){
+    key2="\\( "+a+" \\cosh("+arg+") \\)";
+    ds2=["\\( \\cosh("+arg+") \\)","\\( "+a+" \\sinh("+arg+") \\)","\\( "+a+" \\cosh(x) \\)"];
+  } else if(fn2==="cosh"){
+    key2="\\( "+a+" \\sinh("+arg+") \\)";
+    ds2=["\\( \\sinh("+arg+") \\)","\\( "+a+" \\cosh("+arg+") \\)","\\( "+a+" \\sinh(x) \\)"];
+  } else {
+    key2="\\( "+a+" \\operatorname{sech}^2("+arg+") \\)";
+    ds2=["\\( \\operatorname{sech}^2("+arg+") \\)","\\( -"+a+" \\operatorname{sech}^2("+arg+") \\)","\\( "+a+" \\operatorname{sech}^2(x) \\)"];
+  }
+  var sol2="The derivatives of the hyperbolic functions mirror the circular ones, with \\( \\sinh \\) and \\( \\cosh \\) trading places and \\( \\tanh \\) giving \\( \\operatorname{sech}^2 \\). The chain rule then multiplies by the derivative of the inside, which is \\( "+a+" \\). The derivative is <b>"+key2+"</b>.";
+  return mcq("Find the derivative of \\( y = \\"+fn2+"("+arg+") \\).",key2,ds2,sol2,{mode:"der",fn:fn2,a:a,x0:0.7});
+});
+
+E("u7-log-diff-error",7,["3.45"],3,"var",varset([
+  function(){return mcq("A student differentiates \\( y = x^x \\) by logarithmic differentiation: \\[ \\ln y = x \\ln x \\] \\[ \\frac{y'}{y} = \\ln x \\] \\[ y' = x^x \\ln x \\] Which statement identifies the error in the student's work?",
+    "The derivative of \\( x \\ln x \\) is \\( \\ln x + 1 \\) by the product rule, so the second line drops a term and the final answer is too small",
+    ["The first line is wrong, because \\( \\ln(x^x) \\) cannot be simplified with the power law for logarithms at all",
+     "The third line is wrong, because getting \\( y' \\) from \\( y'/y \\) requires dividing by \\( x^x \\), not multiplying by it, as the student did",
+     "The method itself is wrong, because logarithmic differentiation only works when the base is a constant throughout"],
+    "Taking logarithms is legitimate here, and so is the last step. The slip is in the middle line: \\( x \\ln x \\) is a product, and the product rule gives \\( \\ln x + x \\cdot \\frac{1}{x} = \\ln x + 1 \\). The correct derivative is \\( x^x (\\ln x + 1) \\). The error is <b>the dropped term in the derivative of \\( x \\ln x \\)</b>.",{});},
+  function(){return mcq("A student differentiates \\( y = \\left( x^2 + 1 \\right)^x \\) by writing \\[ y' = x \\left( x^2 + 1 \\right)^{x - 1} \\cdot 2x \\] Which statement identifies the error in the student's work?",
+    "The power rule applies only when the exponent is constant; here the exponent \\( x \\) varies, so logarithmic differentiation is needed",
+    ["The chain rule factor is wrong, because the derivative of \\( x^2 + 1 \\) is \\( 2 \\), not \\( 2x \\), so the answer comes out too large",
+     "The exponent in the answer should be \\( x + 1 \\) rather than \\( x - 1 \\) when the power rule is applied this way to the base",
+     "The work is correct as written, because the base \\( x^2 + 1 \\) is a polynomial and polynomials follow the power rule in every such case"],
+    "The formula \\( n u^{n - 1} u' \\) treats the exponent as a fixed number \\( n \\). In \\( \\left( x^2 + 1 \\right)^x \\) both the base and the exponent change with \\( x \\), so no single power rule or exponential rule applies; taking \\( \\ln y = x \\ln(x^2 + 1) \\) and differentiating is the correct route. The error is <b>using the power rule on a varying exponent</b>.",{});},
+  function(){return mcq("A student differentiates \\( y = (2x)^{3x} \\) by logarithmic differentiation: \\[ \\ln y = 3x \\ln(2x) \\] \\[ \\frac{y'}{y} = 3 \\ln(2x) + 3x \\cdot \\frac{1}{2x} = 3 \\ln(2x) + \\frac{3}{2} \\] Which statement identifies the error in the student's work?",
+    "The derivative of \\( \\ln(2x) \\) is \\( \\frac{1}{x} \\), not \\( \\frac{1}{2x} \\), so the last term should be \\( 3 \\), not \\( \\frac{3}{2} \\)",
+    ["The first line is wrong, because \\( \\ln \\left( (2x)^{3x} \\right) \\) simplifies to \\( 3x \\ln 2 + \\ln x \\) instead",
+     "The product rule was skipped: the derivative of \\( 3x \\ln(2x) \\) is just \\( 3 \\ln(2x) \\) with nothing added at all",
+     "The arithmetic at the end is wrong, because \\( 3x \\cdot \\frac{1}{2x} \\) equals \\( \\frac{3}{4} \\), not \\( \\frac{3}{2} \\)"],
+    "By the chain rule, \\( \\frac{d}{dx} \\ln(2x) = \\frac{2}{2x} = \\frac{1}{x} \\). So the product rule on \\( 3x \\ln(2x) \\) gives \\( 3 \\ln(2x) + 3x \\cdot \\frac{1}{x} = 3 \\ln(2x) + 3 \\). The error is <b>the derivative used for \\( \\ln(2x) \\)</b>.",{});},
+  function(){return mcq("A student differentiates \\( y = x^2 (x + 1)^3 \\) by logarithmic differentiation: \\[ \\ln y = 2 \\ln x + 3 \\ln(x + 1) \\] \\[ \\frac{y'}{y} = \\frac{2}{x} + \\frac{3}{x + 1} \\] \\[ y' = \\frac{2}{x} + \\frac{3}{x + 1} \\] Which statement identifies the error in the student's work?",
+    "The work is right until the last line: \\( y' \\) equals \\( y \\) times \\( y'/y \\), so the answer must be multiplied by \\( x^2 (x + 1)^3 \\)",
+    ["The first line is wrong, because the logarithm of a product must be written as a product of logarithms, not kept as one logarithm of the whole product",
+     "The second line is wrong, because the derivative of \\( 3 \\ln(x + 1) \\) is \\( \\frac{3}{x} \\), not \\( \\frac{3}{x + 1} \\) as written",
+     "The last line is right, because \\( y \\) cancels when both sides of the equation are divided through by it in the end"],
+    "Logarithmic differentiation produces \\( \\frac{y'}{y} \\), and the final step is always to multiply by \\( y \\) itself. Here that multiplication never happens, so the stated \\( y' \\) is really only \\( \\frac{y'}{y} \\). The error is <b>the missing multiplication by \\( y \\) in the last line</b>.",{});}
+]));
+
+E("u7-interpret-derivative",7,["3.43"],3,"var",varset([
+  function(){return mcq("A town's population \\( t \\) years from now is modelled by \\( P(t) \\). Given that \\( P'(5) = 240 \\), interpret what this value says about the town's population.",
+    "At \\( t = 5 \\), the population is increasing at a rate of 240 people per year",
+    ["Over the first 5 years, the population increased by a total of 240 people altogether",
+     "The average rate of growth over the first 5 years is 240 people per year",
+     "At \\( t = 5 \\), the population of the town is exactly 240 people in total"],
+    "A derivative is an instantaneous rate of change, measured at one moment, in units of people per year. It says nothing directly about the total change over the five years, the average rate, or the population size itself. The correct interpretation is <b>that at \\( t = 5 \\) the population is increasing at 240 people per year</b>.",{});},
+  function(){return mcq("A drink cools so that its temperature \\( T(t) \\) after \\( t \\) minutes, in degrees Celsius, satisfies \\( T'(12) = -1.8 \\). Interpret what this value says about the drink's temperature.",
+    "At the 12-minute mark, the temperature is dropping at a rate of 1.8 degrees Celsius per minute",
+    ["At the 12-minute mark, the temperature of the drink is exactly \\( -1.8 \\) degrees Celsius at that moment",
+     "During the first 12 minutes, the temperature dropped by a total of 1.8 degrees Celsius in all",
+     "The average rate of cooling over the first 12 minutes is 1.8 degrees Celsius per minute"],
+    "The negative sign shows the temperature is decreasing, and the size of the derivative gives the speed of that decrease at the single instant \\( t = 12 \\), in degrees per minute. It is not the temperature itself, nor a total or average over the interval. The correct interpretation is <b>that at 12 minutes the temperature is dropping at 1.8 degrees Celsius per minute</b>.",{});},
+  function(){return mcq("The concentration of a medication in the blood is \\( C(t) \\) milligrams per litre, \\( t \\) hours after a dose. Given that \\( C'(3) = -0.4 \\), interpret what this value says about the concentration.",
+    "Three hours after the dose, the concentration is decreasing at a rate of 0.4 milligrams per litre per hour",
+    ["Three hours after the dose, the concentration has fallen by a total of 0.4 milligrams per litre",
+     "The average rate of change of the concentration over the first 3 hours is 0.4 milligrams per litre per hour",
+     "Three hours after the dose, the concentration in the blood is 0.4 milligrams per litre"],
+    "As with any derivative, \\( C'(3) \\) is the instantaneous rate at \\( t = 3 \\): its sign says the concentration is falling, and its size gives the speed, with units of milligrams per litre per hour. The correct interpretation is <b>that at 3 hours the concentration is decreasing at 0.4 milligrams per litre per hour</b>.",{});},
+  function(){return mcq("A bacteria colony is modelled by \\( N(t) = 500 e^{0.3t} \\), with \\( t \\) in hours, and \\( N'(0) = 150 \\). Interpret what this value says about the colony.",
+    "At the start, the colony is growing at a rate of 150 bacteria per hour",
+    ["At the start, the colony contains exactly 150 bacteria in total",
+     "During the first hour, the colony grows by exactly 150 bacteria",
+     "The average rate of growth during the first hour is 150 bacteria per hour"],
+    "The value \\( N'(0) \\) is a rate at the single instant \\( t = 0 \\), in bacteria per hour. The size of the colony at the start is \\( N(0) = 500 \\), and the growth over the first hour is a total change, which the derivative alone does not give. The correct interpretation is <b>that the colony is initially growing at 150 bacteria per hour</b>.",{});}
+]));
+
+E("u7-hyperbolic-solve",7,["3.46"],3,"gen",function(){
+  var tl=[[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[3,2],[4,3],[5,2],[5,3],[7,2],[7,3],[5,4],[7,4],[8,3],[9,2]];
+  var pr=pick(tl), p=pr[0], q=pr[1], mode=ri(1,3);
+  var F=[p*p-q*q,2*p*q], C=[p*p+q*q,2*p*q], Tv=[p*p-q*q,p*p+q*q];
+  var lnArg=(q===1?""+p:"\\frac{"+p+"}{"+q+"}");
+  if(mode===1){
+    var key="\\( \\ln "+lnArg+" \\)";
+    var d1arg=(q===1?"\\frac{1}{"+p+"}":"\\frac{"+q+"}{"+p+"}");
+    var ds=["\\( \\ln "+d1arg+" \\)","\\( \\ln "+(p*p)+" \\)","\\( \\ln "+(p+q)+" \\)"];
+    var twoF=u7fracR(p*p-q*q,p*q);
+    var sol="Write \\( \\sinh x \\) with exponentials and multiply through by \\( 2e^x \\) to clear the negative power. \\[ \\begin{aligned} \\frac{e^x - e^{-x}}{2} &= "+u7fracR(F[0],F[1])+" \\\\ e^{2x} - "+twoF+" e^x - 1 &= 0 \\\\ e^x &= "+u7fracR(F[0],F[1])+" + \\sqrt{\\left( "+u7fracR(F[0],F[1])+" \\right)^2 + 1} = "+u7fracR(F[0],F[1])+" + "+u7fracR(C[0],C[1])+" = "+lnArg+" \\end{aligned} \\] The other root is negative and \\( e^x \\) is always positive, so it is rejected. Taking logarithms gives \\( x = \\ln "+lnArg+" \\). The solution is <b>\\( \\ln "+lnArg+" \\)</b>.";
+    return mcq("Solve the equation \\( \\sinh x = "+u7fracR(F[0],F[1])+" \\) for \\( x \\).",key,ds,sol,{mode:1,p:p,q:q});
+  }
+  if(mode===2){
+    var pos=Math.random()<0.5, sgn=pos?1:-1;
+    var key2="\\( "+u7fracR(sgn*F[0],F[1])+" \\)";
+    var ds2=["\\( "+u7fracR(-sgn*F[0],F[1])+" \\)","\\( "+u7fracR(Tv[0],Tv[1])+" \\)","\\( "+u7fracR(C[0],C[1])+" \\)"];
+    var sol2="Use the identity \\( \\cosh^2 x - \\sinh^2 x = 1 \\). Then \\( \\sinh^2 x = \\cosh^2 x - 1 = \\left( "+u7fracR(C[0],C[1])+" \\right)^2 - 1 = \\left( "+u7fracR(F[0],F[1])+" \\right)^2 \\), so \\( \\sinh x = \\pm "+u7fracR(F[0],F[1])+" \\). Since \\( x "+(pos?">":"<")+" 0 \\) and \\( \\sinh \\) has the same sign as its input, the "+(pos?"positive":"negative")+" value is the one that fits. The value is <b>\\( "+u7fracR(sgn*F[0],F[1])+" \\)</b>.";
+    return mcq("If \\( \\cosh x = "+u7fracR(C[0],C[1])+" \\) and \\( x "+(pos?">":"<")+" 0 \\), what is the exact value of \\( \\sinh x \\)?",key2,ds2,sol2,{mode:2,p:p,q:q,sgn:sgn});
+  }
+  var key3="\\( "+u7fracR(C[0],C[1])+" \\)";
+  var ds3=["\\( "+u7fracR(F[0],F[1])+" \\)","\\( "+u7fracR(C[0],F[0])+" \\)","\\( "+u7fracR(2*p*q,C[0])+" \\)"];
+  var sol3="Use \\( \\operatorname{sech}^2 x = 1 - \\tanh^2 x \\), the reciprocal form of the main identity. Then \\( \\cosh^2 x = \\frac{1}{1 - \\tanh^2 x} = \\frac{1}{1 - \\left( "+u7fracR(Tv[0],Tv[1])+" \\right)^2} = \\left( "+u7fracR(C[0],C[1])+" \\right)^2 \\). Since \\( \\cosh x \\) is always positive, the positive root is taken. The value is <b>\\( "+u7fracR(C[0],C[1])+" \\)</b>.";
+  return mcq("If \\( \\tanh x = "+u7fracR(Tv[0],Tv[1])+" \\), what is the exact value of \\( \\cosh x \\)?",key3,ds3,sol3,{mode:3,p:p,q:q});
+});
+
+/* ----- bank-u8.js ----- */
+// Math 3208 Unit 8 Antidifferentiation and Integration question bank
+// CRMARKS: u8-general-antiderivative=3
+// CRMARKS: u8-particular-solution=2
+// CRMARKS: u8-motion-velocity=2
+// CRMARKS: u8-motion-acceleration=3
+// CRMARKS: u8-area-estimate=1
+// CRMARKS: u8-riemann-convert=2
+// CRMARKS: u8-definite-eval=2
+// CRMARKS: u8-area-under=2
+// CRMARKS: u8-area-between=3
+/* ================= Unit 8: Antidifferentiation and Integration (MA3208.4.1 to 4.12) =================
+   Tranche 2, final scope. */
+
+/* Math 3208 Review, Unit 8 (Antidifferentiation and Integration), tranche 2 entries.
+   Format per brief-common.md. FR(n,d) is defined in the bank source and returns
+   the raw \frac fragment; it is used only inside math segments.
+   Term objects used by the antiderivative generator and carried in params so
+   keys can be verified by differentiating them:
+     {k:'p', c, n} = c*x^n    {k:'r', c} = c/x      {k:'q', c} = c/x (output form)
+     {k:'e', c, b} = c*e^(bx) {k:'s', c, b} = c*sin(bx)   {k:'c', c, b} = c*cos(bx)
+     {k:'l', c} = c*ln|x|                                                          */
+
+/* ---------- shared helpers (u8-prefixed, top level) ---------- */
+function u8P(cs, vn){ // polynomial from coefficients, highest degree first
+  if(vn===undefined)vn="x";
+  var n=cs.length-1, parts=[], i, c, p, t;
+  for(i=0;i<cs.length;i++){ c=cs[i]; if(c===0)continue; p=n-i;
+    if(p===0) t=""+Math.abs(c);
+    else t=(Math.abs(c)===1?"":Math.abs(c))+(p===1?vn:vn+"^{"+p+"}");
+    parts.push({neg:c<0, term:t});
+  }
+  if(!parts.length) return "0";
+  var s=parts[0].neg?"-"+parts[0].term:parts[0].term;
+  for(var j=1;j<parts.length;j++) s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;
+  return s;
+}
+function u8FracMag(v){ // magnitude of a coefficient as integer or \frac string
+  var a=Math.abs(v);
+  if(Math.abs(a-Math.round(a))<1e-9) return ""+Math.round(a);
+  var dens=[2,3,4,6,8], d, num;
+  for(var i=0;i<dens.length;i++){ d=dens[i]; num=a*d; if(Math.abs(num-Math.round(num))<1e-9) return FR(""+Math.round(num), ""+d); }
+  return fmt(a);
+}
+function u8PFr(cs, vn){ // polynomial whose coefficients may be simple fractions
+  if(vn===undefined)vn="x";
+  var n=cs.length-1, parts=[], i, c, p, mag, t;
+  for(i=0;i<cs.length;i++){ c=cs[i]; if(Math.abs(c)<1e-12)continue; p=n-i; mag=u8FracMag(c);
+    if(p===0) t=mag;
+    else { var base=(p===1?vn:vn+"^{"+p+"}"); t=(mag==="1"?"":mag)+base; if(mag==="1") t=base; }
+    parts.push({neg:c<0, term:t});
+  }
+  if(!parts.length) return "0";
+  var s=parts[0].neg?"-"+parts[0].term:parts[0].term;
+  for(var j=1;j<parts.length;j++) s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;
+  return s;
+}
+function u8TermParts(t, vn){
+  var a=Math.abs(t.c), body;
+  if(t.k==='p'){
+    if(t.n===0) body=""+a;
+    else { var base=(t.n===1?vn:vn+"^{"+t.n+"}"); body=(a===1?"":a)+base; }
+  } else if(t.k==='r' || t.k==='q'){
+    body=(a===1?FR("1",vn):FR(""+a,vn));
+  } else if(t.k==='l'){
+    body=(a===1?"":a)+"\\ln|"+vn+"|";
+  } else if(t.k==='e'){
+    body=(a===1?"":a)+"e^{"+(t.b===1?vn:t.b+vn)+"}";
+  } else if(t.k==='s'){
+    body=(a===1?"":a)+"\\sin"+(t.b===1?" "+vn:"("+t.b+vn+")");
+  } else if(t.k==='c'){
+    body=(a===1?"":a)+"\\cos"+(t.b===1?" "+vn:"("+t.b+vn+")");
+  }
+  return {neg:t.c<0, body:body};
+}
+function u8JoinTerms(terms, vn){
+  var parts=terms.map(function(t){return u8TermParts(t, vn);});
+  if(!parts.length) return "0";
+  var s=parts[0].neg?"-"+parts[0].body:parts[0].body;
+  for(var j=1;j<parts.length;j++) s+=parts[j].neg?" - "+parts[j].body:" + "+parts[j].body;
+  return s;
+}
+function u8Anti(t){ // antiderivative of one term (coefficients integral by construction)
+  if(t.k==='p') return (t.n===-2) ? {k:'q', c:-t.c} : {k:'p', c:t.c/(t.n+1), n:t.n+1};
+  if(t.k==='r') return {k:'l', c:t.c};
+  if(t.k==='e') return {k:'e', c:t.c/t.b, b:t.b};
+  if(t.k==='s') return {k:'c', c:-t.c/t.b, b:t.b};
+  if(t.k==='c') return {k:'s', c:t.c/t.b, b:t.b};
+  return t;
+}
+function u8Deriv(t){ // derivative of one term, or null if it vanishes
+  if(t.k==='p'){ if(t.n===0) return null; return {k:'p', c:t.c*t.n, n:t.n-1}; }
+  if(t.k==='r') return {k:'p', c:-t.c, n:-2};
+  if(t.k==='e') return {k:'e', c:t.c*t.b, b:t.b};
+  if(t.k==='s') return {k:'c', c:t.c*t.b, b:t.b};
+  if(t.k==='c') return {k:'s', c:-t.c*t.b, b:t.b};
+  return t;
+}
+function u8ErrAnti(t){ // the designated-term error: antiderivative with the division skipped
+  if(t.k==='p') return {k:'p', c:t.c*(t.n+1), n:t.n+1};
+  if(t.k==='e') return {k:'e', c:t.c, b:t.b};
+  if(t.k==='s') return {k:'c', c:-t.c, b:t.b};
+  if(t.k==='c') return {k:'s', c:t.c, b:t.b};
+  return u8Anti(t);
+}
+
+/* ---------- 4.1: meaning of antiderivative (L1, var) ---------- */
+E("u8-antiderivative-meaning",8,["4.1"],1,"var",varset([
+  function(){return mcq("Which statement explains what it means to say that \\( F(x) = x^3 - 4x \\) is an antiderivative of \\( f(x) = 3x^2 - 4 \\)?",
+    "Differentiating \\( F \\) gives \\( f \\), because the derivative of \\( x^3 - 4x \\) is \\( 3x^2 - 4 \\)",
+    ["Differentiating \\( f \\) gives \\( F \\), because the derivative of \\( 3x^2 - 4 \\) is \\( x^3 - 4x \\)",
+     "Multiplying \\( F \\) by \\( f \\) gives a constant, because the two functions undo each other",
+     "Substituting \\( F \\) into \\( f \\) gives zero, because the two functions cancel each other"],
+    "An antiderivative is found by reversing differentiation: \\( F \\) is an antiderivative of \\( f \\) exactly when \\( F'(x) = f(x) \\). Differentiating \\( x^3 - 4x \\) gives \\( 3x^2 - 4 \\), which is \\( f \\). The relationship is that <b>differentiating \\( F \\) gives \\( f \\)</b>.",{});},
+  function(){return mcq("If \\( F \\) and \\( G \\) are both antiderivatives of the same continuous function \\( f \\) on an interval, how are \\( F \\) and \\( G \\) related?",
+    "They differ by a constant: \\( G(x) = F(x) + C \\) for some constant \\( C \\)",
+    ["They are equal at every point: \\( G(x) = F(x) \\) for every value of \\( x \\)",
+     "One is the derivative of the other: \\( G(x) = F'(x) \\) at every point",
+     "Their product is a constant: \\( F(x) \\cdot G(x) = C \\) for some constant \\( C \\)"],
+    "Two functions with the same derivative everywhere on an interval can only differ by a constant, since the derivative of their difference is zero. So <b>\\( F \\) and \\( G \\) differ by a constant</b>, which is why the general antiderivative is written with a \\( + C \\).",{});},
+  function(){return mcq("To check that \\( F(x) = \\left( x^2 + 1 \\right)^3 \\) is an antiderivative of \\( f(x) = 6x \\left( x^2 + 1 \\right)^2 \\), what should you do?",
+    "Differentiate \\( F(x) \\) and confirm that the result is \\( f(x) \\)",
+    ["Differentiate \\( f(x) \\) and confirm that the result is \\( F(x) \\)",
+     "Evaluate \\( F(x) \\) and \\( f(x) \\) at \\( x = 0 \\) and confirm they agree",
+     "Evaluate \\( F(x) \\) and \\( f(x) \\) at \\( x = 1 \\) and confirm they agree"],
+    "The defining property of an antiderivative is \\( F'(x) = f(x) \\), and the chain rule gives \\( \\frac{d}{dx} \\left( x^2 + 1 \\right)^3 = 3 \\left( x^2 + 1 \\right)^2 (2x) = 6x \\left( x^2 + 1 \\right)^2 \\). Checking an antiderivative always means <b>differentiating it and confirming the result is the original function</b>.",{});},
+  function(){return mcq("Every antiderivative of \\( f(x) = 2x \\) has the form",
+    "\\( x^2 + C \\), where \\( C \\) is any constant",
+    ["\\( x^2 \\), with the constant already fixed at 0",
+     "\\( 2x^2 + C \\), where \\( C \\) is any constant",
+     "\\( 2 + C \\), where \\( C \\) is any constant"],
+    "An antiderivative of \\( 2x \\) is \\( x^2 \\), since the derivative of \\( x^2 \\) is \\( 2x \\). Because adding a constant never changes a derivative, every constant gives another antiderivative, so the full family is <b>\\( x^2 + C \\)</b>.",{});},
+  function(){return mcq("Saying that \\( F \\) is an antiderivative of \\( f \\) on an interval means that",
+    "\\( F'(x) = f(x) \\) at every point of the interval",
+    ["\\( F(x) = f'(x) \\) at every point of the interval",
+     "\\( F(x) = f(x) + C \\) at every point of the interval",
+     "\\( F'(x) = f'(x) \\) at every point of the interval"],
+    "The phrase is a statement about derivatives: \\( F \\) earns the name antiderivative of \\( f \\) because differentiating \\( F \\) returns \\( f \\) everywhere on the interval. The meaning is <b>\\( F'(x) = f(x) \\) at every point of the interval</b>.",{});}
+]));
+
+/* ---------- 4.3: notation (L1, var) ---------- */
+E("u8-notation",8,["4.3"],1,"var",varset([
+  function(){return mcq("In the statement \\( \\int 4x^3 \\, dx = x^4 + C \\), the symbol \\( dx \\) indicates",
+    "the variable with respect to which the antidifferentiation is performed",
+    ["a constant whose value is determined later from extra conditions",
+     "a factor that is multiplied by the integrand before antidifferentiating",
+     "the value at which the antiderivative is to be evaluated afterwards"],
+    "The differential \\( dx \\) names the variable of integration: it says the antidifferentiation is with respect to \\( x \\). It is not a factor to multiply and not a value to substitute. The symbol indicates <b>the variable with respect to which the antidifferentiation is performed</b>.",{});},
+  function(){return mcq("The notation \\( \\int \\cos x \\, dx \\) stands for",
+    "the family of all possible antiderivatives of \\( \\cos x \\)",
+    ["the derivative of \\( \\cos x \\) with respect to \\( x \\)",
+     "the single function \\( \\sin x \\), with no other possibilities",
+     "the area under \\( \\cos x \\) between two stated limits"],
+    "An indefinite integral, written with the integral sign and no limits, names the whole family of antiderivatives; for \\( \\cos x \\) that family is \\( \\sin x + C \\). The notation stands for <b>the family of all antiderivatives of \\( \\cos x \\)</b>. Areas use a definite integral, which carries limits.",{});},
+  function(){return mcq("A student writes \\( \\int x^2 \\, dx = \\frac{x^3}{3} \\). What is missing from the result?",
+    "The constant of integration: the result should end with \\( + C \\)",
+    ["The differential: the result should end with the symbol \\( dx \\)",
+     "The limits of integration: the result should carry limits on the sign",
+     "The denominator: the result should divide by 2 instead of by 3"],
+    "The antiderivative \\( \\frac{x^3}{3} \\) is only one member of the family; every constant added to it has the same derivative, so the indefinite integral is incomplete until the constant of integration appears. What is missing is <b>the \\( + C \\)</b>. The denominator 3 is correct, and limits belong to definite integrals.",{});},
+  function(){return mcq("The \\( + C \\) in \\( \\int f(x) \\, dx = F(x) + C \\) is needed because",
+    "differentiation removes constants, so every constant gives an antiderivative",
+    ["antidifferentiation adds a constant, so the constant appears once in each term",
+     "integration is done in stages, so one constant is added at the end of each stage",
+     "the integral sign represents a sum, so a constant is added as the final term"],
+    "A constant term differentiates to zero, so \\( F(x) + C \\) has derivative \\( f(x) \\) for every value of \\( C \\). The indefinite integral must allow all of them at once. The \\( + C \\) is needed because <b>differentiation removes constants, so every constant gives an antiderivative</b>.",{});},
+  function(){return mcq("Which statement uses antiderivative notation correctly?",
+    "\\( \\int 6x \\, dx = 3x^2 + C \\), since \\( 3x^2 \\) differentiates back to \\( 6x \\)",
+    ["\\( \\int 6x \\, dx = 6 + C \\), since \\( 6x \\) differentiates to the constant \\( 6 \\)",
+     "\\( \\int 6x \\, dx = 3x^2 \\), since one antiderivative is enough for the notation",
+     "\\( \\int 6x \\, dx = \\frac{6x^2}{2x} \\), since the \\( dx \\) cancels with the \\( x \\)"],
+    "Notation for an indefinite integral must give the family of functions whose derivative is the integrand, constant included. Since \\( \\frac{d}{dx} \\left( 3x^2 + C \\right) = 6x \\), the correct statement is <b>\\( \\int 6x \\, dx = 3x^2 + C \\)</b>.",{});}
+]));
+
+/* ---------- 4.4: properties (L1, var) ---------- */
+E("u8-properties",8,["4.4"],1,"var",varset([
+  function(){return mcq("If \\( \\int g(x) \\, dx = G(x) + C \\), then \\( \\int 5g(x) \\, dx \\) equals",
+    "\\( 5G(x) + C \\)",
+    ["\\( G(5x) + C \\)",
+     "\\( 5G(5x) + C \\)",
+     "\\( \\frac{G(x)}{5} + C \\)"],
+    "A constant factor passes through antidifferentiation unchanged: differentiating \\( 5G(x) \\) gives \\( 5g(x) \\). So \\( \\int 5g(x) \\, dx \\) equals <b>\\( 5G(x) + C \\)</b>.",{});},
+  function(){return mcq("If \\( F \\) is an antiderivative of \\( f \\) and \\( G \\) is an antiderivative of \\( g \\), then an antiderivative of \\( f(x) + g(x) \\) is",
+    "\\( F(x) + G(x) \\)",
+    ["\\( F(x) \\cdot G(x) \\)",
+     "\\( F(x) - G(x) \\)",
+     "\\( F \\left( G(x) \\right) \\)"],
+    "The derivative of a sum is the sum of the derivatives, so antidifferentiation also works term by term: differentiating \\( F(x) + G(x) \\) gives \\( f(x) + g(x) \\). An antiderivative of the sum is <b>\\( F(x) + G(x) \\)</b>.",{});},
+  function(){return mcq("Which statement about antidifferentiation is correct?",
+    "The antiderivative of a sum is the sum of the antiderivatives of each term",
+    ["The antiderivative of a product is the product of the antiderivatives",
+     "The power rule for antidifferentiation also works for the exponent \\( -1 \\)",
+     "Antidifferentiating a constant multiple means dividing by that constant"],
+    "Antidifferentiation distributes over sums and differences, and constant multiples factor out. There is no product rule for antiderivatives, and the power rule cannot be used at exponent \\( -1 \\) (that case gives a logarithm). The correct statement is that <b>the antiderivative of a sum is the sum of the antiderivatives</b>.",{});},
+  function(){return mcq("There is no product rule for antidifferentiation. To antidifferentiate \\( (x + 1)(x + 2) \\), you should first",
+    "expand the product into a polynomial, then antidifferentiate term by term",
+    ["antidifferentiate each factor separately, then multiply the two results",
+     "antidifferentiate each factor separately, then add the two results together",
+     "divide the antiderivative of the first factor by the second factor"],
+    "Since products cannot be antidifferentiated factor by factor, the product must be turned into a sum first: \\( (x + 1)(x + 2) = x^2 + 3x + 2 \\), and polynomials antidifferentiate term by term. You should first <b>expand the product into a polynomial</b>.",{});}
+]));
+
+/* ---------- 4.2: general antiderivative (L2, gen) ---------- */
+E("u8-general-antiderivative",8,["4.2"],2,"gen",function(){
+  function nz(a,b){ var v=0; while(v===0) v=ri(a,b); return v; }
+  function attempt(){
+    var mode=ri(0,3), terms=[], desig=0, i;
+    if(mode===0){ // polynomial
+      var n1=pick([2,3]), c1=(n1+1)*nz(-3,3);
+      terms.push({k:'p', c:c1, n:n1}); desig=0;
+      terms.push({k:'p', c:2*nz(-4,4), n:1});
+      if(Math.random()<0.6) terms.push({k:'p', c:nz(-9,9), n:0});
+      if(Math.random()<0.4) terms.push({k:'p', c:nz(-6,6), n:-2});
+    } else if(mode===1){ // trig pair
+      terms.push({k:'s', c:2*nz(-4,4), b:2}); desig=0;
+      var b2=pick([1,2]); terms.push({k:'c', c:(b2===2?2*nz(-4,4):nz(-6,6)), b:b2});
+      if(Math.random()<0.5) terms.push({k:'p', c:nz(-6,6), n:0});
+    } else if(mode===2){ // exponential plus polynomial term
+      var b1=pick([2,3]); terms.push({k:'e', c:b1*nz(-3,3), b:b1}); desig=0;
+      var n2=pick([1,2]); terms.push({k:'p', c:(n2+1)*nz(-3,3), n:n2});
+      if(Math.random()<0.5) terms.push({k:'p', c:nz(-9,9), n:0});
+    } else { // reciprocal plus polynomial term
+      terms.push({k:'r', c:nz(-6,6)});
+      var n3=pick([1,2]); terms.push({k:'p', c:(n3+1)*nz(-3,3), n:n3}); desig=1;
+      if(Math.random()<0.5) terms.push({k:'p', c:nz(-9,9), n:0});
+    }
+    var keyT=terms.map(u8Anti);
+    var derT=terms.map(u8Deriv).filter(function(t){return t!==null;});
+    var flipT=keyT.map(function(t,i){ return i===0 ? {k:t.k, c:-t.c, b:t.b, n:t.n} : t; });
+    var errT=keyT.map(function(t,i){ return i===desig ? u8ErrAnti(terms[desig]) : t; });
+    var ks=u8JoinTerms(keyT,"x"), d1=u8JoinTerms(derT,"x"), d2=u8JoinTerms(flipT,"x"), d3=u8JoinTerms(errT,"x");
+    var all=[ks,d1,d2,d3];
+    if(new Set(all).size!==4) return null;
+    return {terms:terms, keyT:keyT, derT:derT, flipT:flipT, errT:errT, ks:ks, d1:d1, d2:d2, d3:d3, mode:mode};
+  }
+  var A=null, guard=0;
+  while(!A && guard<60){ A=attempt(); guard++; }
+  var fStr=u8JoinTerms(A.terms,"x");
+  var useInt=Math.random()<0.5;
+  var prompt=useInt
+    ? "Evaluate \\( \\int \\left( "+fStr+" \\right) \\, dx \\)."
+    : "Find the general antiderivative of \\( f(x) = "+fStr+" \\).";
+  var sol="Antidifferentiate term by term: raise each power by 1 and divide by the new power, divide by the coefficient of \\( x \\) inside each sine, cosine, or exponential, and give \\( \\frac{1}{x} \\) a logarithm. \\[ \\begin{aligned} \\int \\left( "+fStr+" \\right) \\, dx &= "+A.ks+" + C \\end{aligned} \\] Differentiating the result term by term returns the integrand, which confirms it. The general antiderivative is <b>\\( "+A.ks+" + C \\)</b>.";
+  return mcq(prompt, "\\( "+A.ks+" + C \\)",
+    ["\\( "+A.d1+" + C \\)", "\\( "+A.d2+" + C \\)", "\\( "+A.d3+" + C \\)"],
+    sol, {mode:A.mode, terms:A.terms, keyT:A.keyT, d1T:A.derT, d2T:A.flipT, d3T:A.errT});
+});
+
+/* ---------- 4.5: particular solution (L2, gen, numq) ---------- */
+E("u8-particular-solution",8,["4.5"],2,"gen",function(){
+  var a=3*pick([-2,-1,1,2]), b=2*ri(-4,4), c=ri(-6,6);
+  var x0=pick([-1,0,1,2]), x1=x0+pick([-3,-2,2,3]);
+  function F(x, C){ return a/3*x*x*x + b/2*x*x + c*x + C; }
+  var Cval=ri(-8,8), B=F(x0, Cval), ans=F(x1, Cval);
+  var fCs=[a,b,c], FCs=[a/3, b/2, c];
+  var given=Math.random()<0.5;
+  var prompt, solHead;
+  if(given){
+    prompt="The general antiderivative of \\( f(x) = "+u8P(fCs)+" \\) is \\( F(x) = "+u8P(FCs.concat([0])).replace(/ \+ 0$/,"")+" + C \\). Given that \\( F("+x0+") = "+B+" \\), find \\( F("+x1+") \\).";
+    solHead="Use the condition to pin down the constant, then evaluate.";
+  } else {
+    prompt="A function \\( f \\) satisfies \\( f'(x) = "+u8P(fCs)+" \\) and \\( f("+x0+") = "+B+" \\). Find \\( f("+x1+") \\).";
+    solHead="Antidifferentiate to get the family, use the condition to pin down the constant, then evaluate.";
+  }
+  var sol=solHead+" \\[ \\begin{aligned} F(x) &= "+u8PFr(FCs.concat([0]))+" + C \\\\ F("+x0+") &= "+F(x0,0)+" + C = "+B+" \\\\ C &= "+Cval+" \\\\ F("+x1+") &= "+ans+" \\end{aligned} \\] The value is <b>"+ans+"</b>.";
+  return numq(prompt, ans, 0.011, sol, {coeffs:fCs, x0:x0, B:B, x1:x1});
+});
+
+/* ---------- 4.6: motion from velocity (L2, gen, numq) ---------- */
+E("u8-motion-velocity",8,["4.6"],2,"gen",function(){
+  var a=3*pick([-2,-1,1,2]), b=2*ri(-4,4), c=ri(-5,5);
+  var T=pick([2,3,4]), s0=ri(-6,9);
+  function v(t){ return a*t*t + b*t + c; }
+  function S(t){ return a/3*t*t*t + b/2*t*t + c*t + s0; }
+  var disp=S(T)-s0, pos=S(T), askPos=Math.random()<0.5;
+  var vStr=u8P([a,b,c],"t");
+  var prompt, ans, sol;
+  if(askPos){
+    prompt="A particle moves along a line with velocity \\( v(t) = "+vStr+" \\) metres per second, where \\( t \\) is in seconds. Its position at \\( t = 0 \\) is \\( s(0) = "+s0+" \\) metres. Find its position, in metres, at \\( t = "+T+" \\).";
+    ans=pos;
+    sol="Position is the antiderivative of velocity, fixed by the initial position. \\[ \\begin{aligned} s(t) &= "+u8PFr([a/3,b/2,c,s0],"t")+" \\\\ s("+T+") &= "+pos+" \\end{aligned} \\] The position at \\( t = "+T+" \\) is <b>"+pos+" metres</b>.";
+  } else {
+    prompt="A particle moves along a line with velocity \\( v(t) = "+vStr+" \\) metres per second, where \\( t \\) is in seconds. Find its displacement, in metres, over the interval \\( [0, "+T+"] \\).";
+    ans=disp;
+    sol="Displacement is the definite integral of velocity over the interval. \\[ \\begin{aligned} \\int_{0}^{"+T+"} \\left( "+vStr+" \\right) \\, dt &= \\left[ "+u8PFr([a/3,b/2,c,0],"t")+" \\right]_{0}^{"+T+"} \\\\ &= "+disp+" \\end{aligned} \\] The displacement is <b>"+disp+" metres</b>.";
+  }
+  return numq(prompt, ans, 0.011, sol, {coeffs:[a,b,c], s0:s0, T:T, askPos:askPos});
+});
+
+/* ---------- 4.6: motion from acceleration (L2, gen, numq) ---------- */
+E("u8-motion-acceleration",8,["4.6"],2,"gen",function(){
+  var p=6*pick([-2,-1,1,2]), q=2*ri(-4,4);
+  var v0=ri(-5,8), s0=ri(-4,10), T=pick([2,3]);
+  function acc(t){ return p*t + q; }
+  function vel(t){ return p/2*t*t + q*t + v0; }
+  function pos(t){ return p/6*t*t*t + q/2*t*t + v0*t + s0; }
+  var askV=Math.random()<0.5, ans=askV?vel(T):pos(T);
+  var aStr=u8P([p,q],"t");
+  var prompt="A particle moves along a line with acceleration \\( a(t) = "+aStr+" \\) metres per second squared, where \\( t \\) is in seconds. Its initial velocity is \\( v(0) = "+v0+" \\) metres per second and its initial position is \\( s(0) = "+s0+" \\) metres. Find its "+(askV?"velocity, in metres per second,":"position, in metres,")+" at \\( t = "+T+" \\).";
+  var sol="Antidifferentiate twice, using the initial velocity after the first step and the initial position after the second. \\[ \\begin{aligned} v(t) &= "+u8PFr([p/2,q,v0],"t")+" \\\\ s(t) &= "+u8PFr([p/6,q/2,v0,s0],"t")+" \\\\ "+(askV?"v("+T+")":"s("+T+")")+" &= "+ans+" \\end{aligned} \\] The "+(askV?"velocity":"position")+" at \\( t = "+T+" \\) is <b>"+ans+(askV?" metres per second":" metres")+"</b>.";
+  return numq(prompt, ans, 0.011, sol, {pq:[p,q], v0:v0, s0:s0, T:T, askV:askV});
+});
+
+/* ---------- 4.7: finite-sum area estimate (L2, gen, numq) ---------- */
+E("u8-area-estimate",8,["4.7"],1,"gen",function(){
+  var quad, h, f, xs=[], vs=[], al, be, ga, okVals=false, guardV=0;
+  while(!okVals && guardV<80){
+    guardV++;
+    quad=Math.random()<0.6;
+    if(quad){ al=pick([-1,1,2]); be=ri(-2,3); ga=ri(2,6); h=pick([1,2]); f=function(x){return al*x*x+be*x+ga;}; }
+    else { al=0; be=pick([-2,-1,1,2,3]); ga=ri(3,9); h=pick([0.5,1]); f=function(x){return be*x+ga;}; }
+    xs=[]; vs=[];
+    for(var i=0;i<=4;i++){ xs.push(i*h); vs.push(f(i*h)); }
+    okVals=vs.every(function(v){ return v>=1; }); // the stem says "area under the graph": table values stay positive
+  }
+  var method=pick(["left","right","trap"]);
+  var ans;
+  if(method==="left") ans=h*(vs[0]+vs[1]+vs[2]+vs[3]);
+  else if(method==="right") ans=h*(vs[1]+vs[2]+vs[3]+vs[4]);
+  else ans=h*((vs[0]+vs[4])/2 + vs[1]+vs[2]+vs[3]);
+  var table=xs.map(function(x,i){ return "\\( f("+fmt(x)+") = "+fmt(vs[i])+" \\)"; }).join(", ");
+  var mName=(method==="left"?"left-endpoint":(method==="right"?"right-endpoint":"trapezoidal"));
+  var prompt="Values of a continuous function \\( f \\) are given by "+table+". Use the "+mName+" sum with four subintervals to estimate the area under the graph of \\( f \\) from \\( x = 0 \\) to \\( x = "+fmt(4*h)+" \\), in square units.";
+  var sumStr;
+  if(method==="left") sumStr=fmt(h)+" \\left( "+vs.slice(0,4).map(fmt).join(" + ")+" \\right)";
+  else if(method==="right") sumStr=fmt(h)+" \\left( "+vs.slice(1,5).map(fmt).join(" + ")+" \\right)";
+  else sumStr=fmt(h)+" \\left( "+fmt((vs[0]+vs[4])/2)+" + "+vs.slice(1,4).map(fmt).join(" + ")+" \\right)";
+  var sol="Each subinterval has width \\( \\Delta x = "+fmt(h)+" \\). The "+mName+" sum multiplies the width by the chosen function values and adds. \\[ \\begin{aligned} A &\\approx "+sumStr+" \\\\ &= "+fmt(ans)+" \\end{aligned} \\] The estimated area is <b>"+fmt(ans)+" square units</b>.";
+  return numq(prompt, ans, 0.011, sol, {vals:vs, h:h, method:method, coeffs:[al,be,ga]});
+});
+
+/* ---------- 4.8, 4.9: Riemann sum to definite integral (L3, gen) ---------- */
+E("u8-riemann-convert",8,["4.8","4.9"],3,"gen",function(){
+  var forms=[
+    {id:"sq",   g:function(u){return "\\left( "+u+" \\right)^2";},      gx:"x^2"},
+    {id:"cube", g:function(u){return "\\left( "+u+" \\right)^3";},      gx:"x^3"},
+    {id:"quart", g:function(u){return "\\left( "+u+" \\right)^4";},     gx:"x^4"},
+    {id:"sin",  g:function(u){return "\\sin\\left( "+u+" \\right)";},   gx:"\\sin x"},
+    {id:"cos",  g:function(u){return "\\cos\\left( "+u+" \\right)";},   gx:"\\cos x"},
+    {id:"exp",  g:function(u){return "e^{"+u+"}";},                     gx:"e^{x}"},
+    {id:"sqrt", g:function(u){return "\\sqrt{"+u+"}";},                 gx:"\\sqrt{x}"},
+    {id:"rec",  g:function(u){return FR("1",u);},                       gx:FR("1","x")}
+  ];
+  var fo=pick(forms);
+  var a=(fo.id==="rec") ? pick([1,2,3]) : pick([0,1,2,3]);
+  var w=pick([1,2,3,4,5]), b=a+w;
+  var iw=(w===1 ? "i" : w+"i");
+  var u=(a===0) ? FR(iw,"n") : a+" + "+FR(iw,"n");
+  var sumStr="\\lim_{n \\to \\infty} \\sum_{i=1}^{n} "+fo.g(u)+" \\cdot "+FR(""+w,"n");
+  var prompt="The area under a graph is computed as the limit of a sum: \\[ "+sumStr+" \\] Which definite integral gives this area?";
+  function integ(lo, hi, gxx){ return "\\( \\int_{"+lo+"}^{"+hi+"} "+gxx+" \\, dx \\)"; }
+  var key=integ(a, b, fo.gx);
+  var d1=integ(a, b+w, fo.gx);
+  var d2=integ(a+w, b+w, fo.gx);
+  var d3=integ(b, a, fo.gx);
+  var sol="The sum uses \\( n \\) subintervals of width \\( \\Delta x = \\frac{"+w+"}{n} \\), so the total width covered is \\( "+w+" \\). The sample points start at \\( x = "+a+" \\) and step by \\( \\Delta x \\), so the interval is \\( ["+a+", "+b+"] \\) and the integrand is the same expression with \\( x \\) in place of the sample point. The definite integral is <b>"+key+"</b>.";
+  return mcq(prompt, key, [d1, d2, d3], sol, {a:a, b:b, w:w, fid:fo.id});
+});
+
+/* ---------- 4.11: definite integral evaluation (L2, gen, numq) ---------- */
+E("u8-definite-eval",8,["4.11"],2,"gen",function(){
+  var roll=Math.random();
+  if(roll<0.5){ // polynomial FTC
+    var deg=pick([2,3]);
+    var cs=[]; for(var i=0;i<=deg;i++) cs.push(ri(-5,5));
+    if(cs[0]===0) cs[0]=pick([-3,-2,2,3]);
+    var a=pick([-2,-1,0,1]), b=a+pick([1,2,3]);
+    function F(x){ var s=0; for(var i=0;i<cs.length;i++) s+=cs[i]/(cs.length-i)*Math.pow(x, cs.length-i); return s; }
+    var ans=F(b)-F(a);
+    var FCs=cs.map(function(c,i){ return c/(cs.length-i); });
+    var prompt="Evaluate \\( \\int_{"+a+"}^{"+b+"} \\left( "+u8P(cs)+" \\right) \\, dx \\). Give your answer to two decimal places.";
+    var sol="Apply the Fundamental Theorem of Calculus: antidifferentiate, then subtract the values at the limits. \\[ \\begin{aligned} \\int_{"+a+"}^{"+b+"} \\left( "+u8P(cs)+" \\right) \\, dx &= \\left[ "+u8PFr(FCs)+" \\right]_{"+a+"}^{"+b+"} \\\\ &= "+fmt(F(b))+" - \\left( "+fmt(F(a))+" \\right) \\\\ &= "+fmt(ans)+" \\end{aligned} \\] The value of the integral is <b>"+fmt(ans)+"</b>.";
+    return numq(prompt, ans, 0.011, sol, {kind:"poly", coeffs:cs, a:a, b:b});
+  }
+  if(roll<0.78){ // property mode on a quadratic with clean values
+    var A=3*pick([-2,-1,1,2]), B=2*ri(-3,3);
+    var lo=0, mid=pick([1,2]), hi=mid+pick([1,2]);
+    function Fp(x){ return A/3*x*x*x + B/2*x*x; }
+    var V=Fp(hi)-Fp(lo), W=Fp(mid)-Fp(lo), part=V-W;
+    var fStr=u8P([A,B,0]);
+    var which=Math.random()<0.5;
+    var promptP, ansP, solP;
+    if(which){
+      promptP="For \\( f(x) = "+fStr+" \\), it is given that \\( \\int_{"+lo+"}^{"+hi+"} f(x) \\, dx = "+V+" \\) and \\( \\int_{"+lo+"}^{"+mid+"} f(x) \\, dx = "+W+" \\). Find \\( \\int_{"+mid+"}^{"+hi+"} f(x) \\, dx \\).";
+      ansP=part;
+      solP="A definite integral splits at any interior point: the integral over the whole interval is the sum of the integrals over the parts. \\[ \\begin{aligned} \\int_{"+mid+"}^{"+hi+"} f(x) \\, dx &= \\int_{"+lo+"}^{"+hi+"} f(x) \\, dx - \\int_{"+lo+"}^{"+mid+"} f(x) \\, dx \\\\ &= "+V+" - "+(W<0?"\\left( "+W+" \\right)":""+W)+" \\\\ &= "+part+" \\end{aligned} \\] The value is <b>"+part+"</b>.";
+    } else {
+      promptP="For \\( f(x) = "+fStr+" \\), it is given that \\( \\int_{"+lo+"}^{"+hi+"} f(x) \\, dx = "+V+" \\). Find \\( \\int_{"+hi+"}^{"+lo+"} f(x) \\, dx \\).";
+      ansP=-V;
+      solP="Reversing the limits of a definite integral negates its value, since the antiderivative is then subtracted in the opposite order. \\[ \\begin{aligned} \\int_{"+hi+"}^{"+lo+"} f(x) \\, dx &= -\\int_{"+lo+"}^{"+hi+"} f(x) \\, dx \\\\ &= -\\left( "+V+" \\right) = "+(-V)+" \\end{aligned} \\] The value is <b>"+(-V)+"</b>.";
+    }
+    return numq(promptP, ansP, 0.011, solP, {kind:"prop", coeffs:[A,B,0], lo:lo, mid:mid, hi:hi, which:which});
+  }
+  // curated trig / exponential / reciprocal cases
+  var cases=[
+    {fid:"sin", s:"\\sin x",        a:0, b:Math.PI,   as:"0", bs:"\\pi",               val:2},
+    {fid:"cos", s:"\\cos x",        a:0, b:Math.PI/2, as:"0", bs:FR("\\pi","2"),       val:1},
+    {fid:"sin", s:"\\sin x",        a:0, b:Math.PI/2, as:"0", bs:FR("\\pi","2"),       val:1},
+    {fid:"cos", s:"\\cos x",        a:0, b:Math.PI,   as:"0", bs:"\\pi",               val:0},
+    {fid:"sec2", s:"\\sec^2 x",     a:0, b:Math.PI/4, as:"0", bs:FR("\\pi","4"),       val:1},
+    {fid:"sin", s:"\\sin x",        a:Math.PI/6, b:Math.PI/2, as:FR("\\pi","6"), bs:FR("\\pi","2"), val:Math.cos(Math.PI/6)},
+    {fid:"exp", s:"e^{x}",          a:0, b:Math.log(2), as:"0", bs:"\\ln 2",           val:1},
+    {fid:"rec", s:FR("1","x"),      a:1, b:Math.E,    as:"1", bs:"e",                  val:1},
+    {fid:"rec", s:FR("1","x"),      a:1, b:Math.E*Math.E, as:"1", bs:"e^2",            val:2}
+  ];
+  var C=pick(cases);
+  var antiStr={sin:"-\\cos x", cos:"\\sin x", sec2:"\\tan x", exp:"e^{x}", rec:"\\ln|x|"}[C.fid];
+  var prompt2="Evaluate \\( \\int_{"+C.as+"}^{"+C.bs+"} "+C.s+" \\, dx \\). Give your answer to two decimal places.";
+  var sol2="Antidifferentiate and apply the Fundamental Theorem of Calculus. \\[ \\begin{aligned} \\int_{"+C.as+"}^{"+C.bs+"} "+C.s+" \\, dx &= \\left[ "+antiStr+" \\right]_{"+C.as+"}^{"+C.bs+"} \\\\ &= "+fmt(C.val)+" \\end{aligned} \\] The value of the integral is <b>"+fmt(C.val)+"</b>.";
+  return numq(prompt2, C.val, 0.011, sol2, {kind:"cur", fid:C.fid, a:C.a, b:C.b});
+});
+
+/* ---------- 4.10, 4.11: area under a polynomial (L2, gen, numq) ---------- */
+E("u8-area-under",8,["4.10","4.11"],2,"gen",function(){
+  var mode=ri(0,2), cs, a, b;
+  if(mode===0){ var c0=pick([1,2,3,4,5,8]); cs=[1,0,c0]; a=pick([-2,-1,0]); b=a+pick([2,3,4]); }
+  else if(mode===1){ var hh=pick([-1,0,1]), kk=pick([1,2,3]); cs=[1,-2*hh,hh*hh+kk]; a=hh-1; b=hh+pick([2,3,4]); }
+  else { var m=pick([1,2]), c1=pick([1,2,3]); cs=[m,c1]; a=pick([0,1,2]); b=a+pick([2,3]); }
+  function f(x){ var s=0; for(var i=0;i<cs.length;i++) s+=cs[i]*Math.pow(x, cs.length-1-i); return s; }
+  function F(x){ var s=0; for(var i=0;i<cs.length;i++) s+=cs[i]/(cs.length-i)*Math.pow(x, cs.length-i); return s; }
+  var ans=F(b)-F(a);
+  var FCs=cs.map(function(c,i){ return c/(cs.length-i); });
+  var prompt="Find the area, in square units, under the graph of \\( f(x) = "+u8P(cs)+" \\) from \\( x = "+a+" \\) to \\( x = "+b+" \\). Give your answer to two decimal places.";
+  var sol="The function is positive on the whole interval, so the area is the definite integral of \\( f \\). \\[ \\begin{aligned} A &= \\int_{"+a+"}^{"+b+"} \\left( "+u8P(cs)+" \\right) \\, dx \\\\ &= \\left[ "+u8PFr(FCs)+" \\right]_{"+a+"}^{"+b+"} \\\\ &= "+fmt(ans)+" \\end{aligned} \\] The area is <b>"+fmt(ans)+" square units</b>.";
+  return numq(prompt, ans, 0.011, sol, {coeffs:cs, a:a, b:b});
+});
+
+/* ---------- 4.12: area between two polynomials (L3, gen, numq) ---------- */
+E("u8-area-between",8,["4.12"],3,"gen",function(){
+  var combos=[[2,3],[3,1],[3,2],[4,3],[3,4]];
+  var combo=pick(combos), wdt=combo[0], k=combo[1];
+  var r1=pick([-3,-2,-1,0]), r2=r1+wdt;
+  var gMode=ri(0,2), gCs;
+  if(gMode===0) gCs=[pick([-2,-1,1,2]), pick([-4,-2,0,2,4])];           // linear bottom
+  else if(gMode===1) gCs=[pick([2,3,4,5])];                              // positive constant bottom
+  else gCs=[1, pick([-2,0,2]), pick([-3,0,3])];                          // quadratic bottom
+  // difference d(x) = k*(x - r1)*(r2 - x) = -k x^2 + k(r1+r2) x - k r1 r2
+  var dCs=[-k, k*(r1+r2), -k*r1*r2];
+  function pad(cs){ while(cs.length<3) cs=[0].concat(cs); return cs; }
+  var gp=pad(gCs.slice());
+  var fCs=[gp[0]+dCs[0], gp[1]+dCs[1], gp[2]+dCs[2]];
+  var area=k*Math.pow(wdt,3)/6;
+  var prompt="Find the area, in square units, of the region enclosed by the graphs of \\( f(x) = "+u8P(fCs)+" \\) and \\( g(x) = "+u8P(gCs)+" \\). Give your answer to two decimal places.";
+  var sol="The curves meet where \\( f(x) = g(x) \\), that is, where \\( "+u8P(dCs)+" = 0 \\), giving \\( x = "+r1+" \\) and \\( x = "+r2+" \\). Between those points \\( f \\) lies above \\( g \\), so the area is the integral of the difference. \\[ \\begin{aligned} A &= \\int_{"+r1+"}^{"+r2+"} \\left( "+u8P(dCs)+" \\right) \\, dx \\\\ &= "+fmt(area)+" \\end{aligned} \\] The enclosed area is <b>"+fmt(area)+" square units</b>.";
+  return numq(prompt, area, 0.011, sol, {fCs:fCs, gCs:gCs, r1:r1, r2:r2});
+});
+
+/* ----- bank-fix.js ----- */
+// Math 3208 Unit 1 and 3 pool fix additions, carried verbatim from the
+// standalone app's bank source (bank-src.js), where they follow Unit 8.
+// CRMARKS: u1-compose-solve-cr=3
+// CRMARKS: u1-domain-count-cr=2
+// CRMARKS: u1-decompose-cr=2
+// CRMARKS: u1-compose-value-cr=3
+// CRMARKS: u1-operation-value-cr=3
+// CRMARKS: u1-compose-equation-cr=2
+// CRMARKS: u3-hole-value-cr=3
+// CRMARKS: u3-asymptote-value-cr=2
+// CRMARKS: u3-rational-equation-cr=2
+/* Unit test pool fix additions, November 9, 2026 (additions only).
+   Units 1 and 3 had no Level 3 layer at all.
+   Unit 1: one Level 3 MC generator; Level 3 CR at 3, 2 and 2 marks;
+   Level 2 CR at 3, 3 and 2 marks.
+   Unit 3: one Level 3 MC generator; Level 3 CR at 3, 2 and 2 marks. */
+
+/* U1 MC. Build the composite and judge its domain (1.5, 1.6, L3) */
+E("u1-compose-justify",1,["1.5","1.6"],3,"gen",function(){
+  var mode=ri(1,2);
+  if(mode===1){
+    var c=ri(-3,4),d=ri(-4,4); if(d===0)d=3;
+    var ex=c-d;
+    var key="\\((f \\circ g)(x) = "+FR(1,"x "+u1sgnT(-ex))+"\\), and \\(x = "+ex+"\\) is excluded from its domain";
+    var ds=["\\((f \\circ g)(x) = "+FR(1,"x "+u1sgnT(-c))+"\\), and \\(x = "+c+"\\) is excluded from its domain",
+      "\\((g \\circ f)(x) = "+FR(1,"x "+u1sgnT(-ex))+"\\), and \\(x = "+ex+"\\) is excluded from its domain",
+      "\\((f \\circ g)(x) = "+FR("x "+u1sgnT(d),"x "+u1sgnT(-c))+"\\), and no value is excluded from its domain"];
+    return mcq("Let \\(f(x) = "+FR(1,"x "+u1sgnT(-c))+"\\) and \\(g(x) = x "+u1sgnT(d)+"\\). Which statement about the composite function is correct?",
+      key,ds,
+      "Compose in the stated order: \\((f \\circ g)(x) = f(g(x)) = "+FR(1,"\\left(x "+u1sgnT(d)+"\\right) "+u1sgnT(-c))+" = "+FR(1,"x "+u1sgnT(-ex))+"\\). The denominator is zero when \\(x = "+ex+"\\), so that value is excluded. The correct statement is <b>"+key+"</b>.",
+      {mode:mode,c:c,d:d,ex:ex});
+  }
+  var p=ri(2,9),dd=u1nz(-5,5);
+  var key2="\\(x^2 "+u1sgnT(-p)+" "+u1sgnT(dd)+"\\)";
+  var ds2=["\\(x^2 + "+(2*dd)+"x + "+(dd*dd-p)+" \\)",
+    "\\(x^2 "+u1sgnT(-p)+" "+u1sgnT(-dd)+"\\)",
+    "\\(\\left(x "+u1sgnT(dd)+"\\right)^2 "+u1sgnT(-p)+"\\)"];
+  return mcq("Let \\(f(x) = x^2 "+u1sgnT(-p)+"\\) and \\(g(x) = x "+u1sgnT(dd)+"\\). What is \\((g \\circ f)(x)\\)?",
+    key2,ds2,
+    "In \\((g \\circ f)(x)\\) the outer function is \\(g\\), which adds "+dd+" to its input: \\((g \\circ f)(x) = f(x) "+u1sgnT(dd)+" = x^2 "+u1sgnT(-p)+" "+u1sgnT(dd)+"\\). The squared expansion belongs to \\((f \\circ g)(x)\\), the other order. The composite is <b>"+key2+"</b>.",
+    {mode:mode,p:p,dd:dd});
+});
+
+/* U1 CR3. Solve for the input of a composite (1.5, L3, CR 3) */
+E("u1-compose-solve-cr",1,["1.5"],3,"gen",function(){
+  var p=ri(-3,4),q=pick([2,3]),r=ri(-4,4),x0=pick([2,3,4,5,6]);
+  var V=q*x0*x0+q*p+r;
+  return numq("Let \\(f(x) = "+u1quad(1,0,p)+"\\) and \\(g(x) = "+u1lin(q,r)+"\\). Given that \\((g \\circ f)(x) = "+V+"\\), what is the positive value of \\(x\\)?",
+    x0,0.01,
+    "Build the composite first: \\((g \\circ f)(x) = "+q+"\\left(x^2 "+u1sgnT(p)+"\\right) "+u1sgnT(r)+" = "+q+"x^2 "+u1sgnT(q*p+r)+"\\). Set it equal to "+V+": \\[ "+q+"x^2 = "+(q*x0*x0)+" \\quad\\Rightarrow\\quad x^2 = "+(x0*x0)+" \\quad\\Rightarrow\\quad x = \\pm "+x0+" \\] The positive value is <b>"+x0+"</b>.",
+    {p:p,q:q,r:r,ans:x0});
+});
+
+/* U1 CR2a. Domain of a composite, counted or bounded (1.3, 1.6, L3, CR 2) */
+E("u1-domain-count-cr",1,["1.3","1.6"],3,"gen",function(){
+  var mode=ri(1,2);
+  if(mode===1){
+    var s=pick([2,3,4,5]);
+    return numq("Let \\(f(t) = "+FR(1,"t - "+(s*s))+"\\) and \\(g(x) = x^2\\). How many real numbers are excluded from the domain of \\((f \\circ g)(x)\\)?",
+      2,0.01,
+      "The composite is \\((f \\circ g)(x) = "+FR(1,"x^2 - "+(s*s))+"\\). It fails where the denominator is zero: \\(x^2 = "+(s*s)+"\\), which happens at \\(x = "+s+"\\) and \\(x = "+(-s)+"\\). That is <b>2</b> excluded numbers.",
+      {mode:mode,s:s,ans:2});
+  }
+  var c=ri(3,9),d=ri(-3,5),ans=c-d;
+  return numq("Let \\(f(t) = \\sqrt{t "+u1sgnT(-c)+"}\\) and \\(g(x) = x "+u1sgnT(d)+"\\). What is the smallest integer in the domain of \\((f \\circ g)(x)\\)?",
+    ans,0.01,
+    "The composite is \\((f \\circ g)(x) = \\sqrt{x "+u1sgnT(d)+" "+u1sgnT(-c)+"}\\). A square root needs its radicand to be at least zero: \\(x "+u1sgnT(d-c)+" \\geq 0\\), so \\(x \\geq "+ans+"\\). The smallest integer in the domain is <b>"+ans+"</b>.",
+    {mode:mode,c:c,d:d,ans:ans});
+});
+
+/* U1 CR2b. Recover the outer function of a decomposition (1.7, L3, CR 2) */
+E("u1-decompose-cr",1,["1.7"],3,"gen",function(){
+  var a=u1nz(-4,4),b=ri(-5,5),c0=ri(-6,6),mode=ri(1,2);
+  var gs=u1lin(a,b);
+  if(mode===1){
+    var v=pick([2,3,4,5,6]),ans=v*v+c0;
+    return numq("The function \\(h(x) = \\left("+gs+"\\right)^2 "+u1sgnT(c0)+"\\) can be written as \\(h(x) = f(g(x))\\) with \\(g(x) = "+gs+"\\). What is the value of \\(f("+v+")\\)?",
+      ans,0.01,
+      "The inner function is \\(g(x) = "+gs+"\\), so the outer function squares its input and then adds "+c0+": \\(f(t) = t^2 "+u1sgnT(c0)+"\\). Then \\(f("+v+") = "+v+"^2 "+u1sgnT(c0)+" = "+ans+"\\). The value is <b>"+ans+"</b>.",
+      {mode:mode,v:v,ans:ans});
+  }
+  var v2=pick([2,3,4]),ans2=v2*v2*v2-c0;
+  return numq("The function \\(h(x) = \\left("+gs+"\\right)^3 "+u1sgnT(-c0)+"\\) can be written as \\(h(x) = f(g(x))\\) with \\(g(x) = "+gs+"\\). What is the value of \\(f("+v2+")\\)?",
+    ans2,0.01,
+    "The inner function is \\(g(x) = "+gs+"\\), so the outer function cubes its input and then subtracts "+c0+": \\(f(t) = t^3 "+u1sgnT(-c0)+"\\). Then \\(f("+v2+") = "+v2+"^3 "+u1sgnT(-c0)+" = "+ans2+"\\). The value is <b>"+ans2+"</b>.",
+    {mode:mode,v:v2,ans:ans2});
+});
+
+/* U1 CR3b. Composition value with a rational outer function (1.4, L2, CR 3) */
+E("u1-compose-value-cr",1,["1.4"],2,"gen",function(){
+  var a=pick([2,3,4,5]),b=ri(1,6),w=a*a-b,m=pick([2,3,4]),k=1,tries=0;
+  do{k=ri(1,9);tries++;}while((w+k)%m!==0&&tries<90);
+  var ans=(w+k)/m;
+  return numq("Let \\(f(x) = "+u1quad(1,0,-b)+"\\) and \\(g(x) = "+FR("x + "+k,""+m)+"\\). Evaluate \\((g \\circ f)("+a+")\\).",
+    ans,0.01,
+    "Work from the inside out: \\[ f("+a+") = "+a+"^2 - "+b+" = "+w+" \\] \\[ g("+w+") = \\frac{"+w+" + "+k+"}{"+m+"} = \\frac{"+(w+k)+"}{"+m+"} = "+ans+" \\] So \\((g \\circ f)("+a+") = \\) <b>"+ans+"</b>.",
+    {a:a,b:b,k:k,m:m,ans:ans});
+});
+
+/* U1 CR3c. Value of a combined operation at a point (1.1, L2, CR 3) */
+E("u1-operation-value-cr",1,["1.1"],2,"gen",function(){
+  var mode=ri(1,2);
+  if(mode===1){
+    var a1=u1nz(-4,4),b1=ri(-6,6),a2=u1nz(-4,4),b2=ri(-6,6),x0=ri(-3,4);
+    var fv=a1*x0+b1,gv=a2*x0+b2,ans=fv*gv;
+    return numq("Let \\(f(x) = "+u1lin(a1,b1)+"\\) and \\(g(x) = "+u1lin(a2,b2)+"\\). Evaluate \\((fg)("+x0+")\\).",
+      ans,0.01,
+      "The product function multiplies the two values at the point: \\[ f("+x0+") = "+fv+" \\qquad g("+x0+") = "+gv+" \\] \\[ (fg)("+x0+") = "+fv+" \\times "+u1par(gv)+" = "+ans+" \\] So \\((fg)("+x0+") = \\) <b>"+ans+"</b>.",
+      {mode:mode,x0:x0,ans:ans});
+  }
+  var x1=ri(-3,4),a3=u1nz(-4,4),b3=ri(-6,6),gv2=a3*x1+b3,tries2=0;
+  if(gv2===0){b3+=1;gv2=a3*x1+b3;}
+  var t=pick([2,3,-2,-3,4]),p2=u1nz(-4,4),q2=gv2*t-p2*x1;
+  var fv2=p2*x1+q2,ans2=t;
+  return numq("Let \\(f(x) = "+u1lin(p2,q2)+"\\) and \\(g(x) = "+u1lin(a3,b3)+"\\). Evaluate \\(\\left(\\frac{f}{g}\\right)("+x1+")\\).",
+    ans2,0.01,
+    "The quotient function divides the two values at the point: \\[ f("+x1+") = "+fv2+" \\qquad g("+x1+") = "+gv2+" \\] \\[ \\left(\\frac{f}{g}\\right)("+x1+") = \\frac{"+fv2+"}{"+u1par(gv2)+"} = "+ans2+" \\] So the value is <b>"+ans2+"</b>.",
+    {mode:mode,x0:x1,ans:ans2});
+});
+
+/* U1 CR2c. The composite equation in a stated form (1.5, L2, CR 2) */
+E("u1-compose-equation-cr",1,["1.5"],2,"gen",function(){
+  var a=u1nz(-5,5),b=ri(-7,7),mode=ri(1,2);
+  if(mode===1){
+    var ans=a+b;
+    return numq("Let \\(f(x) = "+u1lin(a,b)+"\\) and \\(g(x) = x^2\\). The composite \\((f \\circ g)(x)\\) can be written in the form \\(px^2 + q\\). What is the value of \\(p + q\\)?",
+      ans,0.01,
+      "Substitute \\(g(x)\\) into \\(f\\): \\((f \\circ g)(x) = "+a+"\\left(x^2\\right) "+u1sgnT(b)+" = "+a+"x^2 "+u1sgnT(b)+"\\). So \\(p = "+a+"\\) and \\(q = "+b+"\\), giving \\(p + q = "+a+" + "+u1par(b)+" = "+ans+"\\). The value is <b>"+ans+"</b>.",
+      {mode:mode,ans:ans});
+  }
+  var c=ri(-5,5),ans2=a+a*c+b;
+  return numq("Let \\(f(x) = "+u1lin(a,b)+"\\) and \\(g(x) = "+u1quad(1,0,c)+"\\). The composite \\((f \\circ g)(x)\\) can be written in the form \\(px^2 + q\\). What is the value of \\(p + q\\)?",
+    ans2,0.01,
+    "Substitute \\(g(x)\\) into \\(f\\): \\((f \\circ g)(x) = "+a+"\\left(x^2 "+u1sgnT(c)+"\\right) "+u1sgnT(b)+" = "+a+"x^2 "+u1sgnT(a*c+b)+"\\). So \\(p = "+a+"\\) and \\(q = "+(a*c+b)+"\\), giving \\(p + q = "+ans2+"\\). The value is <b>"+ans2+"</b>.",
+    {mode:mode,ans:ans2});
+});
+
+/* U3 MC. Judge the hole and the asymptote of one rational function (1.8, 1.9, L3) */
+E("u3-rational-justify",3,["1.8","1.9"],3,"gen",function(){
+  var vs=u3Distinct(3,-5,5,false),h=vs[0],bb=vs[1],cc=vs[2];
+  var k=pick([1,2,3]),tries=0,Ln,Ld;
+  do{vs=u3Distinct(3,-5,5,false);h=vs[0];bb=vs[1];cc=vs[2];Ln=k*(h-bb);Ld=h-cc;tries++;}while((Ld===0||Ln===0||Math.abs(Ln)===Math.abs(Ld))&&tries<90);
+  var L=u3FracS(Ln,Ld),Lbad=u3FracS(Ld,Ln);
+  var numS=(k>1?""+k:"")+u3FacS(h)+u3FacS(bb),denS=u3FacS(h)+u3FacS(cc);
+  var key="A hole at \\(x = "+h+"\\) with \\(y = "+L+"\\), and a vertical asymptote at \\(x = "+cc+"\\)";
+  var ds=["A vertical asymptote at \\(x = "+h+"\\), and a hole at \\(x = "+cc+"\\) with \\(y = "+L+"\\)",
+    "A hole at \\(x = "+h+"\\) with \\(y = "+Lbad+"\\), and a vertical asymptote at \\(x = "+cc+"\\)",
+    "No hole: both \\(x = "+h+"\\) and \\(x = "+cc+"\\) are vertical asymptotes"];
+  return mcq("For the graph of \\(f(x) = "+FR(numS,denS)+"\\), which statement is correct?",
+    key,ds,
+    "The factor "+u3FacS(h)+" appears in both the numerator and the denominator, so \\(x = "+h+"\\) gives a hole, not an asymptote. Cancelling it, the reduced function at \\(x = "+h+"\\) is \\(\\frac{"+k+"("+h+" "+(bb<0?"+ "+(-bb):"- "+bb)+")}{"+h+" "+(cc<0?"+ "+(-cc):"- "+cc)+"} = "+L+"\\). The remaining denominator factor "+u3FacS(cc)+" gives the vertical asymptote at \\(x = "+cc+"\\). The correct statement is <b>"+key+"</b>.",
+    {h:h,bb:bb,cc:cc,k:k});
+});
+
+/* U3 CR3. The y-value of a hole (1.9, L3, CR 3) */
+E("u3-hole-value-cr",3,["1.9"],3,"gen",function(){
+  var vs=u3Distinct(3,-6,6,false),h=vs[0],bb=vs[1],cc=vs[2],k=pick([1,2,3]),tries=0,val;
+  do{vs=u3Distinct(3,-6,6,false);h=vs[0];bb=vs[1];cc=vs[2];val=k*(h-bb)/(h-cc);tries++;}while((!isFinite(val)||Math.abs(val*2-Math.round(val*2))>1e-9||val===0)&&tries<120);
+  var numS=(k>1?""+k:"")+u3FacS(h)+u3FacS(bb),denS=u3FacS(h)+u3FacS(cc);
+  return numq("The graph of \\(f(x) = "+FR(numS,denS)+"\\) has a hole at \\(x = "+h+"\\). What is the y-coordinate of the hole?",
+    val,0.01,
+    "The factor "+u3FacS(h)+" is common to the numerator and the denominator, which is why the hole sits at \\(x = "+h+"\\). Cancel it and evaluate the reduced function there: \\[ y = \\frac{"+k+"("+h+" "+(bb<0?"+ "+(-bb):"- "+bb)+")}{"+h+" "+(cc<0?"+ "+(-cc):"- "+cc)+"} = "+u3FracS(k*(h-bb),h-cc)+" \\] The y-coordinate of the hole is <b>"+u3FracS(k*(h-bb),h-cc)+"</b>.",
+    {h:h,bb:bb,cc:cc,k:k,ans:val});
+});
+
+/* U3 CR2a. A horizontal or oblique asymptote value (1.10, L3, CR 2) */
+E("u3-asymptote-value-cr",3,["1.10"],3,"gen",function(){
+  var mode=ri(1,2);
+  if(mode===1){
+    var q=pick([1,2]),mult=pick([1,2,3,-1,-2]),p=q*mult;
+    var b=ri(-6,6),c=ri(-6,6),d=ri(-5,5),e=ri(-6,6);
+    return numq("The graph of \\(f(x) = "+FR(u1quad(p,b,c),u1quad(q,d,e))+"\\) has a horizontal asymptote \\(y = k\\). What is the value of \\(k\\)?",
+      mult,0.01,
+      "The numerator and denominator have the same degree, so the horizontal asymptote comes from the ratio of the leading coefficients: \\[ k = \\frac{"+p+"}{"+q+"} = "+mult+" \\] The value is <b>"+mult+"</b>.",
+      {mode:mode,ans:mult});
+  }
+  var p2=pick([2,3,-2]),b2=ri(-6,6),c2=ri(-6,6),d2=ri(-5,5),e2=ri(-6,6);
+  var numS2=""+p2+"x^3"+(b2!==0?u1sgnT(b2)+"x^2":"")+(c2!==0?u1sgnT(c2)+"x":"");
+  return numq("The graph of \\(f(x) = "+FR(numS2,u1quad(1,d2,e2))+"\\) has an oblique asymptote with slope \\(m\\). What is the value of \\(m\\)?",
+    p2,0.01,
+    "The numerator has degree one more than the denominator, so the oblique asymptote comes from the ratio of the leading terms: \\[ m = \\frac{"+p2+"x^3}{x^2} \\text{ gives slope } "+p2+" \\] More precisely, dividing the leading coefficients, \\(m = "+p2+"\\). The slope is <b>"+p2+"</b>.",
+    {mode:mode,ans:p2});
+});
+
+/* U3 CR2b. Solve a rational equation, checking the non-permissible value (1.8, 1.9, L3, CR 2) */
+E("u3-rational-equation-cr",3,["1.8","1.9"],3,"gen",function(){
+  var mode=ri(1,2);
+  if(mode===1){
+    var a=ri(-5,5),p=ri(-6,6),kk=pick([2,3,4]),x,tries=0;
+    do{x=(kk*a+p)/(kk-1);tries++;}while((!Number.isInteger(x)||x===a)&&tries<90);
+    if(!Number.isInteger(x)){x=2*a+p;kk=2;}
+    return numq("Solve the equation \\("+FR("x + "+p,"x "+u1sgnT(-a))+" = "+kk+"\\). What is the solution?",
+      x,0.01,
+      "The non-permissible value is \\(x = "+a+"\\). Multiply both sides by the denominator: \\(x + "+p+" = "+kk+"\\left(x "+u1sgnT(-a)+"\\right)\\), so \\(x + "+p+" = "+kk+"x "+u1sgnT(-kk*a)+"\\). Collecting terms: \\("+(p+kk*a)+" = "+(kk-1)+"x\\), giving \\(x = "+x+"\\), which is not the non-permissible value, so it stands. The solution is <b>"+x+"</b>.",
+      {mode:mode,a:a,p:p,kk:kk,ans:x});
+  }
+  var vs=u3Distinct(2,-5,5,false),aa=vs[0],bb2=vs[1];
+  var extra=pick([true,false]);
+  var v=extra?aa-bb2:aa-bb2+pick([1,2,3]);
+  var cnt=extra?0:1;
+  return numq("How many solutions does the equation \\("+FR(u3FacS(aa)+u3FacS(bb2),u3FacS(aa))+" = "+v+"\\) have?",
+    cnt,0.01,
+    "The non-permissible value is \\(x = "+aa+"\\). Cancelling the common factor "+u3FacS(aa)+", the equation reduces to \\(x "+(bb2<0?"+ "+(-bb2):"- "+bb2)+" = "+v+"\\), giving \\(x = "+(v+bb2)+"\\). "+(extra?"That value is exactly the non-permissible value, so it must be rejected, and no solution remains. The equation has <b>0</b> solutions.":"That value is permitted, so the equation has <b>1</b> solution."),
+    {mode:mode,aa:aa,bb2:bb2,ans:cnt});
+});
+
+/* ============ Constructed-response marks (generated) ============ */
+/* Built by assemble-bank.py from the CRMARKS manifests at the top of
+   each unit file. Exam Section B draws only from these entries. */
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
