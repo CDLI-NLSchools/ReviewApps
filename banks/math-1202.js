@@ -85,6 +85,161 @@ function balOpts(key, ds){
   return [withT(key, out[0]), ds.map(function(d,i){ return withT(d, out[i+1]); })];
 }
 
+/* Figure helpers for the Math 1202 diagram pass (added Nov 2026).
+   Elevation, depression and shadow scenes, plus circle, rectangle,
+   triangle, parallelogram and box figures. Every helper takes the
+   question's own drawn values for its geometry and the exact label
+   strings to print; unknowns are passed in as "?" by the caller.
+   Prefix m12 so nothing collides with the per-unit helpers. */
+function m12Line(x1,y1,x2,y2,w,dash){
+  return '<line x1="'+fmt(x1,1)+'" y1="'+fmt(y1,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y2,1)+'" stroke="'+FIG_INK+'" stroke-width="'+(w||2)+'"'+(dash?' stroke-dasharray="5 4"':"")+'/>';
+}
+function m12Arc(E,r,u,hx){
+  var sweep=(hx*u[1]>0)?1:0;
+  return '<path d="M '+fmt(E[0]+r*hx,1)+' '+fmt(E[1],1)+' A '+r+' '+r+' 0 0 '+sweep+' '+fmt(E[0]+r*u[0],1)+' '+fmt(E[1]+r*u[1],1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+}
+function m12AngLab(E,r,u,hx,str){
+  var bx=hx+u[0], by=u[1], bl=Math.sqrt(bx*bx+by*by)||1;
+  return _txt(E[0]+(r+14)*bx/bl, E[1]+(r+14)*by/bl, str, 12, false);
+}
+/* Elevation scene: vertical object at distance o.dist, top o.rise above
+   eye level; observer eye o.eye above the ground (0 for a ground level
+   sight line). Labels: o.distLab under the ground segment, o.heightLab
+   beside the object, o.angLab at the angle arc, o.eyeLab beside the
+   eye segment when there is one. */
+function m12ElevSVG(o){
+  var total=o.rise+o.eye, W=340, H=250;
+  var T=_fit([[-o.dist*0.18,0],[o.dist*1.18,0],[o.dist,total],[0,o.eye]], W, H, 42);
+  var G0=T([-o.dist*0.18,0]), G1=T([o.dist*1.18,0]);
+  var OB=T([o.dist,0]), OT=T([o.dist,total]), E=T([0,o.eye]), PB=T([0,0]);
+  var out=m12Line(G0[0],G0[1],G1[0],G1[1],2);
+  out+=m12Line(OB[0],OB[1],OT[0],OT[1],2.4);
+  out+='<path d="M '+fmt(OB[0]-13,1)+' '+fmt(OB[1],1)+' L '+fmt(OB[0]-13,1)+' '+fmt(OB[1]-13,1)+' L '+fmt(OB[0],1)+' '+fmt(OB[1]-13,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  if(o.heightLab) out+=_txt(OB[0]-10,(OB[1]+OT[1])/2,o.heightLab,12.5,false,"end");
+  if(o.eye>0){
+    out+=m12Line(PB[0],PB[1],E[0],E[1],1.6);
+    if(o.eyeLab) out+=_txt(E[0]-8,(PB[1]+E[1])/2,o.eyeLab,11.5,false,"end");
+  }
+  out+='<circle cx="'+fmt(E[0],1)+'" cy="'+fmt(E[1],1)+'" r="2.6" fill="'+FIG_INK+'"/>';
+  out+=m12Line(E[0],E[1],OT[0],E[1],1.4,true);
+  out+=m12Line(E[0],E[1],OT[0],OT[1],2);
+  var u=_vnorm(_vsub(OT,E));
+  out+=m12Arc(E,21,u,1);
+  if(o.angLab) out+=m12AngLab(E,21,u,1,o.angLab);
+  var A=T([0,0]), B=T([o.dist,0]);
+  out+=m12Line(A[0],A[1]-4,A[0],A[1]+4,1.4)+m12Line(B[0],B[1]-4,B[0],B[1]+4,1.4);
+  if(o.distLab) out+=_txt((A[0]+B[0])/2,A[1]+16,o.distLab,12,false);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Angle of elevation diagram">'+out+'</svg>';
+}
+/* Depression scene: observer at the top of a cliff of height o.height,
+   boat at horizontal distance o.dist from the base. Labels as in the
+   elevation scene; the angle is drawn at the observer between the
+   dashed horizontal and the sight line down to the boat. */
+function m12DepressSVG(o){
+  var W=340, H=250;
+  var T=_fit([[-o.dist*0.18,0],[o.dist*1.18,0],[0,o.height],[o.dist,o.height]], W, H, 42);
+  var CT=T([0,o.height]), CB=T([0,0]), B=T([o.dist,0]);
+  var W0=T([-o.dist*0.18,0]), W1=T([o.dist*1.18,0]);
+  var out=m12Line(W0[0],W0[1],W1[0],W1[1],2);
+  out+=m12Line(CT[0]-26,CT[1],CT[0],CT[1],2.4);
+  out+=m12Line(CT[0],CT[1],CB[0],CB[1],2.4);
+  if(o.heightLab) out+=_txt(CT[0]-10,(CT[1]+CB[1])/2,o.heightLab,12.5,false,"end");
+  out+='<circle cx="'+fmt(CT[0],1)+'" cy="'+fmt(CT[1],1)+'" r="2.6" fill="'+FIG_INK+'"/>';
+  var HE=T([o.dist,o.height]);
+  out+=m12Line(CT[0],CT[1],HE[0],HE[1],1.4,true);
+  out+=m12Line(CT[0],CT[1],B[0],B[1],2);
+  out+=m12Line(B[0]-11,B[1],B[0]+11,B[1],2.4);
+  var u=_vnorm(_vsub(B,CT));
+  out+=m12Arc(CT,21,u,1);
+  if(o.angLab) out+=m12AngLab(CT,21,u,1,o.angLab);
+  if(o.distLab) out+=_txt((CB[0]+B[0])/2,CB[1]+16,o.distLab,12,false);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Angle of depression diagram">'+out+'</svg>';
+}
+/* Shadow similarity scene: a person of height ph casting a shadow psh,
+   and a pole casting a shadow tsh. The pole height used for the
+   geometry is the drawn answer ans; its label is "?" so the figure
+   shows the setup without stating the result. */
+function m12ShadowSVG(ph,psh,tsh,ans,phLab,pshLab,tshLab){
+  var gap=Math.max(psh,tsh)*0.4, x2=psh+gap, W=340, H=230;
+  var T=_fit([[-Math.max(ph,ans)*0.3,0],[x2+tsh+Math.max(ph,ans)*0.3,0],[0,ph],[x2,ans]], W, H, 40);
+  var P0=T([0,0]), P1=T([0,ph]), P2=T([psh,0]);
+  var Q0=T([x2,0]), Q1=T([x2,ans]), Q2=T([x2+tsh,0]);
+  var G0=T([-Math.max(ph,ans)*0.3,0]), G1=T([x2+tsh+Math.max(ph,ans)*0.3,0]);
+  var out=m12Line(G0[0],G0[1],G1[0],G1[1],2);
+  out+='<polygon points="'+fmt(P0[0],1)+','+fmt(P0[1],1)+' '+fmt(P2[0],1)+','+fmt(P2[1],1)+' '+fmt(P1[0],1)+','+fmt(P1[1],1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<polygon points="'+fmt(Q0[0],1)+','+fmt(Q0[1],1)+' '+fmt(Q2[0],1)+','+fmt(Q2[1],1)+' '+fmt(Q1[0],1)+','+fmt(Q1[1],1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=_txt(P0[0]-9,(P0[1]+P1[1])/2,phLab,12,false,"end");
+  out+=_txt((P0[0]+P2[0])/2,P0[1]+16,pshLab,12,false);
+  out+=_txt(Q0[0]+9,(Q0[1]+Q1[1])/2,"?",12.5,false,"start");
+  out+=_txt((Q0[0]+Q2[0])/2,Q0[1]+16,tshLab,12,false);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Person and flagpole with their shadows forming similar triangles">'+out+'</svg>';
+}
+/* Circle with a labelled radius. */
+function m12CircleSVG(rLab){
+  var s='<svg viewBox="0 0 310 210" width="310" height="210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circle with labelled radius">';
+  s+='<circle cx="155" cy="105" r="72" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="155" y1="105" x2="227" y2="105" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<circle cx="155" cy="105" r="3" fill="'+FIG_INK+'"/>';
+  s+=_txt(191,90,rLab,12.5,false);
+  return s+'</svg>';
+}
+/* Rectangle from side values w and h, with its diagonal drawn and
+   labelled diagLab. */
+function m12RectDiagSVG(w,h,wLab,hLab,diagLab){
+  var W=320,H=225,T=_fit([[0,0],[w,0],[w,h],[0,h]],W,H,46);
+  var P00=T([0,0]),P10=T([w,0]),P11=T([w,h]),P01=T([0,h]);
+  var out=m12Line(P00[0],P00[1],P10[0],P10[1],2)+m12Line(P10[0],P10[1],P11[0],P11[1],2)+m12Line(P11[0],P11[1],P01[0],P01[1],2)+m12Line(P01[0],P01[1],P00[0],P00[1],2);
+  out+=m12Line(P00[0],P00[1],P11[0],P11[1],1.8);
+  if(wLab) out+=_txt((P00[0]+P10[0])/2,P00[1]+16,wLab,12,false);
+  if(hLab) out+=_txt(P00[0]-10,(P00[1]+P01[1])/2,hLab,12,false,"end");
+  if(diagLab){ var M=[(P00[0]+P11[0])/2,(P00[1]+P11[1])/2], off=_sideOff(P00,P11,P10,15); out+=_txt(M[0]+off[0],M[1]+off[1],diagLab,12.5,false); }
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle with diagonal">'+out+'</svg>';
+}
+/* Rectangle from side values l and w, with an optional area label
+   printed inside. */
+function m12RectAreaSVG(l,w,lLab,wLab,areaLab){
+  var W=320,H=225,T=_fit([[0,0],[l,0],[l,w],[0,w]],W,H,46);
+  var P00=T([0,0]),P10=T([l,0]),P11=T([l,w]),P01=T([0,w]);
+  var out='<polygon points="'+fmt(P00[0],1)+','+fmt(P00[1],1)+' '+fmt(P10[0],1)+','+fmt(P10[1],1)+' '+fmt(P11[0],1)+','+fmt(P11[1],1)+' '+fmt(P01[0],1)+','+fmt(P01[1],1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(lLab) out+=_txt((P00[0]+P10[0])/2,P00[1]+16,lLab,12,false);
+  if(wLab) out+=_txt(P00[0]-10,(P00[1]+P01[1])/2,wLab,12,false,"end");
+  if(areaLab) out+=_txt((P00[0]+P11[0])/2,(P00[1]+P11[1])/2,areaLab,12.5,false);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle diagram">'+out+'</svg>';
+}
+/* Triangle from base b and height h, with a dashed altitude. */
+function m12TriAreaSVG(b,h,bLab,hLab){
+  var W=320,H=225,T=_fit([[0,0],[b,0],[b*0.38,h]],W,H,48);
+  var P0=T([0,0]),P1=T([b,0]),P2=T([b*0.38,h]),PF=T([b*0.38,0]);
+  var out='<polygon points="'+fmt(P0[0],1)+','+fmt(P0[1],1)+' '+fmt(P1[0],1)+','+fmt(P1[1],1)+' '+fmt(P2[0],1)+','+fmt(P2[1],1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=m12Line(P2[0],P2[1],PF[0],PF[1],1.6,true);
+  if(bLab) out+=_txt((P0[0]+P1[0])/2,P0[1]+16,bLab,12,false);
+  if(hLab) out+=_txt(PF[0]-9,(P2[1]+PF[1])/2,hLab,12,false,"end");
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Triangle with base and height">'+out+'</svg>';
+}
+/* Parallelogram from base b and vertical height h, with a dashed
+   altitude and an optional area label inside. */
+function m12ParaAreaSVG(b,h,bLab,hLab,areaLab){
+  var sh=b*0.3, W=320,H=225,T=_fit([[0,0],[b,0],[b+sh,h],[sh,h]],W,H,48);
+  var P0=T([0,0]),P1=T([b,0]),P2=T([b+sh,h]),P3=T([sh,h]),PF=T([sh,0]);
+  var out='<polygon points="'+fmt(P0[0],1)+','+fmt(P0[1],1)+' '+fmt(P1[0],1)+','+fmt(P1[1],1)+' '+fmt(P2[0],1)+','+fmt(P2[1],1)+' '+fmt(P3[0],1)+','+fmt(P3[1],1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+=m12Line(P3[0],P3[1],PF[0],PF[1],1.6,true);
+  if(bLab) out+=_txt((P0[0]+P1[0])/2,P0[1]+16,bLab,12,false);
+  if(hLab) out+=_txt(PF[0]-9,(P3[1]+PF[1])/2,hLab,12,false,"end");
+  if(areaLab) out+=_txt((P0[0]+P2[0])/2,(P0[1]+P2[1])/2+14,areaLab,12,false);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallelogram with base and height">'+out+'</svg>';
+}
+/* Closed box with length, width and height labels. */
+function m12BoxSVG(l,w,h,unit){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Closed rectangular box">';
+  s+='<polygon points="70,80 210,80 210,160 70,160" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="70,80 110,40 250,40 210,80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="210,80 250,40 250,120 210,160" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(140,178,"length "+l+" "+unit,13,false);
+  s+=_txt(262,105,"width "+w+" "+unit,13,false);
+  s+=_txt(52,122,"height "+h+" "+unit,13,false,"end");
+  return s+'</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 1202 Unit 1 Consumerism and Travel question bank
 // Cut verbatim from the standalone bank source
@@ -1023,6 +1178,11 @@ E("u1-cr-best-buy-total", 1, ["1.3","1.1"], 3, "gen", function(){
 
 /* ----- bank-u2.js ----- */
 // Math 1202 Unit 2 Measuring Length question bank
+// Figures (added Nov 2026): the perimeter, circumference and
+// shipping size constructed response entries draw labelled figures
+// from each question's own values. Conversions, referents,
+// estimates, reasonableness and error spotting entries stay
+// figureless: they name no single measured shape.
 // Cut verbatim from the standalone bank source
 // (math-1202-review/bank-src.js, lines 1004 to 1485).
 // CRMARKS: u2-cr-perim=2
@@ -1396,17 +1556,17 @@ E("u2-reasonable", 2, ["3.23"], 2, "gen", function(){
 E("u2-cr-perim", 2, ["3.20"], 2, "gen", function(){
   var L=ri(4,18), W=ri(3,12); var P=2*(L+W);
   var ctx=pick(["rectangular garden","rectangular parking pad","rectangular rug","rectangular bulletin board"]);
-  return numq("Find the perimeter of a "+ctx+" that is \\("+L+"\\ \\text{m}\\) long and \\("+W+"\\ \\text{m}\\) wide. Give the answer in metres.", P, 0.01,
+  var q=numq("Find the perimeter of a "+ctx+" that is \\("+L+"\\ \\text{m}\\) long and \\("+W+"\\ \\text{m}\\) wide. Give the answer in metres.", P, 0.01,
     "Add both lengths and both widths. \\[ \\begin{aligned} P &= 2L + 2W \\\\ &= 2("+L+") + 2("+W+") \\\\ &= "+P+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+P+" m</b>.",
-    {L:L, W:W});
+    {L:L, W:W}); q.figure=u2RectFig(L,W); return q;
 }, ["Perimeter is the distance all the way around.", "Use P = 2L + 2W with the given length and width."]);
 
 E("u2-cr-circ", 2, ["2.3","3.20"], 2, "gen", function(){
   var r=ri(2,30); var C=Math.round(2*Math.PI*r*10)/10;
   var ctx=pick(["round rug","circular garden","round table top","circular fire pit"]);
-  return numq("A "+ctx+" has a radius of \\("+r+"\\ \\text{m}\\). Find its circumference. Use \\(C = 2\\pi r\\). Round the answer to one decimal place, in metres.", C, 0.15,
+  var q=numq("A "+ctx+" has a radius of \\("+r+"\\ \\text{m}\\). Find its circumference. Use \\(C = 2\\pi r\\). Round the answer to one decimal place, in metres.", C, 0.15,
     "Apply the circumference formula directly. \\[ \\begin{aligned} C &= 2\\pi r \\\\ &= 2\\pi("+r+") \\\\ &\\approx "+fmt(C,1)+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+fmt(C,1)+" m</b>.",
-    {r:r});
+    {r:r}); q.figure=m12CircleSVG("r = "+r+" m"); return q;
 }, ["Circumference is the distance around a circle.", "Substitute the radius into C = 2 pi r."]);
 
 E("u2-cr-mid", 2, ["3.22"], 2, "gen", function(){
@@ -1419,9 +1579,9 @@ E("u2-cr-mid", 2, ["3.22"], 2, "gen", function(){
 E("u2-cr-ship", 2, ["3.20","2.1"], 2, "gen", function(){
   var L=ri(25,60), W=ri(15,45), H=ri(10,35); var S=L+W+H;
   var ctx=pick(["A courier parcel","A boxed tool kit","A boxed plant order","A suitcase for air travel"]);
-  return numq(ctx+" measures \\("+L+"\\ \\text{cm}\\) long, \\("+W+"\\ \\text{cm}\\) wide and \\("+H+"\\ \\text{cm}\\) high. Couriers and airlines use the size \\(L + W + H\\). Create the calculation for this parcel and find its size, in centimetres.", S, 0.01,
+  var q=numq(ctx+" measures \\("+L+"\\ \\text{cm}\\) long, \\("+W+"\\ \\text{cm}\\) wide and \\("+H+"\\ \\text{cm}\\) high. Couriers and airlines use the size \\(L + W + H\\). Create the calculation for this parcel and find its size, in centimetres.", S, 0.01,
     "The shipping size formula adds the three measures. \\[ \\begin{aligned} L + W + H &= "+L+" + "+W+" + "+H+" \\\\ &= "+S+"\\ \\text{cm} \\end{aligned} \\] The answer is <b>"+S+" cm</b>.",
-    {L:L, W:W, H:H});
+    {L:L, W:W, H:H}); q.figure=m12BoxSVG(L,W,H,"cm"); return q;
 }, ["The shipping size is a sum, not a product.", "Add length, width and height."]);
 
 E("u2-cr-formula-manip", 2, ["2.4"], 2, "gen", function(){
@@ -1516,6 +1676,11 @@ E("u2-cr-error", 2, ["2.5","2.4"], 3, "gen", function(){
 
 /* ----- bank-u3.js ----- */
 // Math 1202 Unit 3 Measuring Area question bank
+// Figures (added Nov 2026): circle, triangle, tiled floor, painted
+// wall, missing dimension and dimension change entries draw
+// labelled figures from each question's own values. Referent,
+// unit choice, conversion, error spotting and problem creation
+// entries stay figureless: they name no single measured shape.
 // Cut verbatim from the standalone bank source
 // (math-1202-review/bank-src.js, lines 1486 to 2051).
 // CRMARKS: u3-cr-triangle=2
@@ -1594,6 +1759,38 @@ function u3HouseFig(w,h,th,unit){
   s+='<text x="'+(ox+w*sc/2)+'" y="'+(base+18)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">width '+w+' '+unit+'</text>';
   s+='<text x="'+(ox+w*sc+6)+'" y="'+(yRoof+h*sc/2)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="start">wall '+h+' '+unit+'</text>';
   s+='<text x="'+(ox-6)+'" y="'+(16+th*sc/2)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">roof '+th+'</text>';
+  return s+'</svg>';
+}
+
+function u3TileFig(L,W){
+  var cell=Math.min(215/L,118/W), ox=42, oy=24, s='<svg viewBox="0 0 320 185" width="320" height="185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangular floor tiled with square tiles">';
+  s+='<rect x="'+ox+'" y="'+oy+'" width="'+fmt(L*cell,1)+'" height="'+fmt(W*cell,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.35" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  for(var i=1;i<L/2;i++){ var x=ox+i*2*cell; s+='<line x1="'+fmt(x,1)+'" y1="'+oy+'" x2="'+fmt(x,1)+'" y2="'+fmt(oy+W*cell,1)+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>'; }
+  for(var j=1;j<W/2;j++){ var y=oy+j*2*cell; s+='<line x1="'+ox+'" y1="'+fmt(y,1)+'" x2="'+fmt(ox+L*cell,1)+'" y2="'+fmt(y,1)+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>'; }
+  s+=_txt(ox+L*cell/2,oy+W*cell+17,L+" ft",12.5,false);
+  s+=_txt(ox+L*cell+20,oy+W*cell/2,W+" ft",12.5,false);
+  return s+'</svg>';
+}
+function u3PaintFig(W,H,ww,wh){
+  var sc=Math.min(215/W,115/H), ox=42, oy=26, wx=ox+(W-ww)*sc/2, wy=oy+(H-wh)*sc/2;
+  var s='<svg viewBox="0 0 320 190" width="320" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wall with one window that will not be painted">';
+  s+='<rect x="'+ox+'" y="'+oy+'" width="'+fmt(W*sc,1)+'" height="'+fmt(H*sc,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.35" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="'+fmt(wx,1)+'" y="'+fmt(wy,1)+'" width="'+fmt(ww*sc,1)+'" height="'+fmt(wh*sc,1)+'" fill="#ffffff" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+=_txt(wx+ww*sc/2,wy+wh*sc/2,ww+" m by "+wh+" m",11.5,false);
+  s+=_txt(ox+W*sc/2,oy+H*sc+17,W+" m",12.5,false);
+  s+=_txt(ox+W*sc+18,oy+H*sc/2,H+" m",12.5,false);
+  return s+'</svg>';
+}
+function u3RectPairFig(l,w,nl,nw){
+  function rect(x0,l2,w2,lab){
+    var sc=Math.min(118/Math.max(l2,1),92/Math.max(w2,1)), rw=l2*sc, rh=w2*sc, y0=148-rh;
+    var out='<rect x="'+x0+'" y="'+fmt(y0,1)+'" width="'+fmt(rw,1)+'" height="'+fmt(rh,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+=_txt(x0+rw/2,164,lab,12,false);
+    return out;
+  }
+  var s='<svg viewBox="0 0 320 185" width="320" height="185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Original rectangle and changed rectangle">';
+  s+=rect(28,l,w,l+" m by "+w+" m");
+  s+=rect(178,nl,nw,nl+" m by "+nw+" m");
   return s+'</svg>';
 }
 
@@ -1821,13 +2018,13 @@ E("u3-circle-area", 3, ["3.32","2.3"], 2, "gen", function(){
   var ctxs=["a round rug","a round pizza","a circular garden","a round trampoline mat","a circular clock face"];
   var ctx=pick(ctxs), r=ri(3,14), area=Math.PI*r*r, aTxt=fmtF(area,1);
   var circ=fmtF(2*Math.PI*r,1), diam=fmtF(Math.PI*(2*r)*(2*r),1), nosq=fmtF(Math.PI*r,1);
-  return mcq("Find the area of "+ctx+" with radius "+r+" cm. Give the answer to the nearest tenth.",
+  var q=mcq("Find the area of "+ctx+" with radius "+r+" cm. Give the answer to the nearest tenth.",
     {t:aTxt+" \\(\\text{cm}^2\\)", fb:"Yes: area of a circle is pi times the radius squared."},
     [{t:circ+" \\(\\text{cm}^2\\)", fb:"That is the circumference, the distance around the circle, not the area it covers."},
      {t:diam+" \\(\\text{cm}^2\\)", fb:"That uses the diameter in place of the radius before squaring."},
      {t:nosq+" \\(\\text{cm}^2\\)", fb:"That multiplies pi by the radius once. The radius must be squared."}],
     "Use \\(A = \\pi r^2\\) with the radius given. \\[ \\begin{aligned} A &= \\pi ("+r+")^2 \\\\ &= "+fmtF(area,4)+"\\ldots \\\\ &\\approx "+aTxt+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+aTxt+" square centimetres</b>.",
-    {r:r});
+    {r:r}); q.figure=m12CircleSVG("r = "+r+" cm"); return q;
 }, ["For a circle, use pi times radius squared.", "Square the radius first, then multiply by pi."]);
 
 E("u3-error-analysis", 3, ["2.5","3.32"], 2, "var", varset([
@@ -1880,13 +2077,13 @@ E("u3-dimension-effect", 3, ["3.33"], 2, "gen", function(){
     if(mode==="doubleW"){ nw=w*2; change="the width is doubled"; }
     oldA=l*w; newA=nl*nw; oldP=2*(l+w); dSq=newA*(newA/oldA); dOld=oldA; dPer=(nl+nw)*2; g4++; }
   while(g4<80 && !u3UniqText([fmt(newA),fmt(dOld),fmt(dSq),fmt(dPer)]));
-  return mcq("A rectangle for "+ctx+" is "+l+" m by "+w+" m. It is changed so "+change+", and the other dimension stays the same. What is the new area?",
+  var q=mcq("A rectangle for "+ctx+" is "+l+" m by "+w+" m. It is changed so "+change+", and the other dimension stays the same. What is the new area?",
     {t:fmt(newA)+" \\(\\text{m}^2\\)", fb:"Yes: one dimension scaled, so the area scales by the same factor."},
     [{t:fmt(dOld)+" \\(\\text{m}^2\\)", fb:"That is the original area. The change to one dimension does change the area."},
      {t:fmt(dSq)+" \\(\\text{m}^2\\)", fb:"That applies the same scale change twice over. Only one dimension changed here, so the change applies once."},
      {t:fmt(dPer)+" \\(\\text{m}^2\\)", fb:"That value is built from adding side lengths, which gives a perimeter style total, not an area."}],
     "Work out the new dimensions, then multiply. \\[ \\begin{aligned} A_{\\text{new}} &= "+nl+" \\times "+nw+" \\\\ &= "+fmt(newA)+"\\ \\text{m}^2 \\end{aligned} \\] The answer is <b>"+fmt(newA)+" square metres</b>.",
-    {l:l,w:w,mode:mode});
+    {l:l,w:w,mode:mode}); q.figure=u3RectPairFig(l,w,nl,nw); return q;
 }, ["Changing one dimension of a rectangle scales the area by that same change.", "Write the new length and width first, then multiply them."]);
 
 E("u3-surface-prism", 3, ["3.34","2.3"], 2, "gen", function(){
@@ -1941,28 +2138,28 @@ E("u3-convert-advanced", 3, ["3.29","3.30"], 2, "gen", function(){
 E("u3-cr-triangle", 3, ["3.31"], 2, "gen", function(){
   var ctxs=["a triangular garden plot","a triangular sail on a small boat","a triangular road sign face","a triangular flower bed"];
   var ctx=pick(ctxs), b=2*ri(2,9), h=ri(3,12), ans=b*h/2;
-  return numq("Find the area, in square metres, of "+ctx+" with base "+b+" m and height "+h+" m. Show your work on paper, then enter the area.",
+  var q=numq("Find the area, in square metres, of "+ctx+" with base "+b+" m and height "+h+" m. Show your work on paper, then enter the area.",
     ans, 0.1,
     "Use the triangle area formula. \\[ \\begin{aligned} A &= \\tfrac{1}{2}bh \\\\ &= \\tfrac{1}{2}("+b+")("+h+") \\\\ &= "+fmt(ans)+"\\ \\text{m}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans)+" square metres</b>.",
-    {b:b,h:h});
+    {b:b,h:h}); q.figure=m12TriAreaSVG(b,h,b+" m",h+" m"); return q;
 }, ["Use half of base times height for a triangle.", "Multiply the base and height first, then take half."]);
 
 E("u3-cr-circle", 3, ["3.32"], 2, "gen", function(){
   var ctxs=["a circular garden","a round rug","a circular patio","a round pizza stone top","a circular table top","a round dartboard face"];
   var ctx=pick(ctxs), r=ri(2,18), area=Math.PI*r*r, ans=Math.round(area*10)/10;
-  return numq("Find the area, in square centimetres, of "+ctx+" with radius "+r+" cm. Give your answer to the nearest tenth. Show your work on paper, then enter the area.",
+  var q=numq("Find the area, in square centimetres, of "+ctx+" with radius "+r+" cm. Give your answer to the nearest tenth. Show your work on paper, then enter the area.",
     ans, 0.3,
     "Use \\(A = \\pi r^2\\). \\[ \\begin{aligned} A &= \\pi ("+r+")^2 \\\\ &\\approx "+fmtF(area,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
-    {r:r});
+    {r:r}); q.figure=m12CircleSVG("r = "+r+" cm"); return q;
 }, ["Use pi times radius squared for a circle.", "Square the radius first, then multiply by pi."]);
 
 E("u3-cr-tiles", 3, ["3.31"], 2, "gen", function(){
   var L=2*ri(3,7), W=2*ri(3,6), tile=4, ans=(L*W)/tile;
   var ctx=pick(["a kitchen floor","a bathroom floor","a laundry room floor","a porch floor"]);
-  return numq(ctx.charAt(0).toUpperCase()+ctx.slice(1)+" is "+L+" ft by "+W+" ft. Each floor tile covers 2 ft by 2 ft. How many tiles are needed to cover the floor, with no cutting and no gaps? Show your work on paper, then enter the number of tiles.",
+  var q=numq(ctx.charAt(0).toUpperCase()+ctx.slice(1)+" is "+L+" ft by "+W+" ft. Each floor tile covers 2 ft by 2 ft. How many tiles are needed to cover the floor, with no cutting and no gaps? Show your work on paper, then enter the number of tiles.",
     ans, 0.1,
     "Find the floor area, then divide by the area of one tile. \\[ \\begin{aligned} A_{\\text{floor}} &= "+L+" \\times "+W+" = "+fmt(L*W)+"\\ \\text{ft}^2 \\\\ A_{\\text{tile}} &= 2 \\times 2 = 4\\ \\text{ft}^2 \\\\ \\text{tiles} &= "+fmt(L*W)+" \\div 4 = "+fmt(ans)+" \\end{aligned} \\] The answer is <b>"+fmt(ans)+" tiles</b>.",
-    {L:L,W:W});
+    {L:L,W:W}); q.figure=u3TileFig(L,W); return q;
 }, ["Divide the total area by the area covered by one tile.", "Find the floor area first, then the area of one tile."]);
 
 E("u3-cr-cylinder-sa", 3, ["3.34"], 2, "gen", function(){
@@ -1990,10 +2187,10 @@ E("u3-cr-cone-sa", 3, ["3.34"], 2, "gen", function(){
 E("u3-cr-paint", 3, ["3.31"], 2, "gen", function(){
   var W=ri(7,12), H=ri(3,4), ww=ri(1,2), wh=ri(1,2), rate=pick([4,5,6]);
   var wall=W*H, win=ww*wh, area=wall-win, ans=area*rate;
-  return numq("A painter charges $"+rate+" per square metre. A wall is "+W+" m by "+H+" m and has one window "+ww+" m by "+wh+" m that will not be painted. What is the total charge, in dollars, to paint the wall? Show your work on paper, then enter the charge.",
+  var q=numq("A painter charges $"+rate+" per square metre. A wall is "+W+" m by "+H+" m and has one window "+ww+" m by "+wh+" m that will not be painted. What is the total charge, in dollars, to paint the wall? Show your work on paper, then enter the charge.",
     ans, 1,
     "Subtract the window, then multiply by the rate. \\[ \\begin{aligned} A &= ("+W+" \\times "+H+") - ("+ww+" \\times "+wh+") \\\\ &= "+fmt(wall)+" - "+fmt(win)+" = "+fmt(area)+"\\ \\text{m}^2 \\\\ \\text{charge} &= "+fmt(area)+" \\times "+rate+" = "+fmt(ans)+" \\end{aligned} \\] The answer is <b>$"+fmt(ans)+"</b>.",
-    {W:W,H:H,rate:rate});
+    {W:W,H:H,rate:rate}); q.figure=u3PaintFig(W,H,ww,wh); return q;
 }, ["Find the area that actually gets painted before you apply the rate.", "Find the whole wall area first, then subtract the window."]);
 
 /* ---------- Level 3 ---------- */
@@ -2006,13 +2203,13 @@ E("u3-dimension-scale", 3, ["3.33"], 3, "gen", function(){
   var opt1="Area "+fmt(wrongA1)+" m2 and perimeter "+fmt(wrongP1)+" m";
   var opt2="Area "+fmt(newA)+" m2 and perimeter "+fmt(oldP)+" m";
   var opt3="Area "+fmt(oldA)+" m2 and perimeter "+fmt(newP)+" m";
-  return mcq("A rectangle is "+l+" m by "+w+" m. A larger copy is made by multiplying the length by "+a+" and the width by "+b+". Which pair gives the new area and the new perimeter?",
+  var q=mcq("A rectangle is "+l+" m by "+w+" m. A larger copy is made by multiplying the length by "+a+" and the width by "+b+". Which pair gives the new area and the new perimeter?",
     {t:optC, fb:"Yes: multiply each dimension by its factor, then work out area and perimeter from the new size."},
     [{t:opt1, fb:"That scales both measures by the length factor only. The width has its own factor."},
      {t:opt2, fb:"The area is right, but the perimeter also grows when the sides grow. It cannot stay the same."},
      {t:opt3, fb:"The perimeter is right, but the area grows by both factors multiplied together, so it cannot stay the same."}],
     "Find the new dimensions first. \\[ \\begin{aligned} \\text{new size} &= "+nl+"\\ \\text{m by } "+nw+"\\ \\text{m} \\\\ A &= "+nl+" \\times "+nw+" = "+fmt(newA)+"\\ \\text{m}^2 \\\\ P &= 2("+nl+" + "+nw+") = "+fmt(newP)+"\\ \\text{m} \\end{aligned} \\] The answer is <b>area "+fmt(newA)+" square metres and perimeter "+fmt(newP)+" metres</b>.",
-    {l:l,w:w,a:a,b:b});
+    {l:l,w:w,a:a,b:b}); q.figure=u3RectPairFig(l,w,nl,nw); return q;
 }, ["Scale each dimension first, then compute area and perimeter from the new size.", "Write the new length and the new width before you calculate anything else."]);
 
 E("u3-create-solve", 3, ["2.1"], 3, "var", varset([
@@ -2054,30 +2251,30 @@ E("u3-missing-dimension", 3, ["2.4","3.32"], 3, "gen", function(){
     do { wv=ri(3,12); lv=ri(3,12); A=wv*lv; g5++; } while(g5<80 && !u3UniqText([fmt(wv),fmt(A-lv),fmt(A+lv),fmt(wv*2)]));
     var _bo0=balOpts({t:fmt(wv), fb:"Yes: rearrange the area formula and divide the area by the length."}, [{t:fmt(A-lv), fb:"That subtracts the length from the area. Rearranging area means dividing."},
        {t:fmt(A+lv), fb:"That adds the length to the area. Rearranging area means dividing."},
-       {t:fmt(A/lv*2), fb:"That doubles the correct division. Area divided by length gives the width directly."}]); return mcq("A rectangular mat has area "+fmt(A)+" \\(\\text{m}^2\\) and length "+lv+" m. What is its width, in metres?", _bo0[0], _bo0[1],
-      "Rearrange \\(A = lw\\) to solve for the width. \\[ \\begin{aligned} w &= A \\div l \\\\ &= "+fmt(A)+" \\div "+lv+" \\\\ &= "+fmt(wv)+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+fmt(wv)+" metres</b>.", {mode:mode}); }
+       {t:fmt(A/lv*2), fb:"That doubles the correct division. Area divided by length gives the width directly."}]); var q=mcq("A rectangular mat has area "+fmt(A)+" \\(\\text{m}^2\\) and length "+lv+" m. What is its width, in metres?", _bo0[0], _bo0[1],
+      "Rearrange \\(A = lw\\) to solve for the width. \\[ \\begin{aligned} w &= A \\div l \\\\ &= "+fmt(A)+" \\div "+lv+" \\\\ &= "+fmt(wv)+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+fmt(wv)+" metres</b>.", {mode:mode}); q.figure=m12RectAreaSVG(lv,wv,lv+" m","?","A = "+fmt(A)+" m\u00B2"); return q; }
   if(mode==="tri"){ var bv=0, hv=0, A2=0, g6=0;
     do { bv=2*ri(2,8); hv=ri(3,11); A2=bv*hv/2; g6++; } while(g6<80 && !u3UniqText([fmt(hv),fmt(A2/bv),fmt(A2-bv),fmt(hv*2)]));
     var _bo1=balOpts({t:fmt(hv), fb:"Yes: double the area, then divide by the base."}, [{t:fmt(A2/bv), fb:"That forgets the half in the triangle formula. The area must be doubled first."},
        {t:fmt(A2-bv), fb:"That subtracts the base from the area. The formula is rearranged with division."},
-       {t:fmt(A2*2/bv*2), fb:"That doubles one step too many. Double the area once, then divide by the base."}]); return mcq("A triangular banner has area "+fmt(A2)+" \\(\\text{cm}^2\\) and base "+bv+" cm. What is its height, in centimetres?", _bo1[0], _bo1[1],
-      "Rearrange \\(A = \\tfrac{1}{2}bh\\) to solve for the height. \\[ \\begin{aligned} h &= 2A \\div b \\\\ &= "+fmt(2*A2)+" \\div "+bv+" \\\\ &= "+fmt(hv)+"\\ \\text{cm} \\end{aligned} \\] The answer is <b>"+fmt(hv)+" centimetres</b>.", {mode:mode}); }
+       {t:fmt(A2*2/bv*2), fb:"That doubles one step too many. Double the area once, then divide by the base."}]); var q=mcq("A triangular banner has area "+fmt(A2)+" \\(\\text{cm}^2\\) and base "+bv+" cm. What is its height, in centimetres?", _bo1[0], _bo1[1],
+      "Rearrange \\(A = \\tfrac{1}{2}bh\\) to solve for the height. \\[ \\begin{aligned} h &= 2A \\div b \\\\ &= "+fmt(2*A2)+" \\div "+bv+" \\\\ &= "+fmt(hv)+"\\ \\text{cm} \\end{aligned} \\] The answer is <b>"+fmt(hv)+" centimetres</b>.", {mode:mode}); q.figure=m12TriAreaSVG(bv,hv,bv+" cm","?"); return q; }
   var bp=0, hp=0, A3=0, g7=0;
   do { bp=ri(3,12); hp=ri(3,11); A3=bp*hp; g7++; } while(g7<80 && !u3UniqText([fmt(hp),fmt(A3-bp),fmt(A3/bp/2),fmt(A3+bp)]));
   var _bo2=balOpts({t:fmt(hp), fb:"Yes: rearrange the area formula and divide the area by the base."}, [{t:fmt(A3-bp), fb:"That subtracts the base from the area. Rearranging area means dividing."},
      {t:fmt(A3/bp/2), fb:"That halves the correct division. A parallelogram has no half in its formula; that belongs to triangles."},
-     {t:fmt(A3+bp), fb:"That adds the base to the area. Rearranging area means dividing."}]); return mcq("A parallelogram shaped tile pattern has area "+fmt(A3)+" \\(\\text{cm}^2\\) and base "+bp+" cm. What is its vertical height, in centimetres?", _bo2[0], _bo2[1],
-    "Rearrange \\(A = bh\\) to solve for the height. \\[ \\begin{aligned} h &= A \\div b \\\\ &= "+fmt(A3)+" \\div "+bp+" \\\\ &= "+fmt(hp)+"\\ \\text{cm} \\end{aligned} \\] The answer is <b>"+fmt(hp)+" centimetres</b>.", {mode:mode});
+     {t:fmt(A3+bp), fb:"That adds the base to the area. Rearranging area means dividing."}]); var q=mcq("A parallelogram shaped tile pattern has area "+fmt(A3)+" \\(\\text{cm}^2\\) and base "+bp+" cm. What is its vertical height, in centimetres?", _bo2[0], _bo2[1],
+    "Rearrange \\(A = bh\\) to solve for the height. \\[ \\begin{aligned} h &= A \\div b \\\\ &= "+fmt(A3)+" \\div "+bp+" \\\\ &= "+fmt(hp)+"\\ \\text{cm} \\end{aligned} \\] The answer is <b>"+fmt(hp)+" centimetres</b>.", {mode:mode}); q.figure=m12ParaAreaSVG(bp,hp,bp+" cm","?",null); return q;
 }, ["Work the area formula backwards from the area you are given.", "Write the formula, put in the known values, then solve for the missing one."]);
 
 E("u3-cr-design-width", 3, ["2.1","2.4","3.31"], 3, "gen", function(){
   var W=ri(3,11), L=ri(4,12), A=W*L;
   var ctxs=["a rectangular garden plot","a rectangular storage pad","a rectangular patio","a rectangular dog run"];
   var ctx=pick(ctxs);
-  return numq("Design "+ctx+" with a total area of "+fmt(A)+" square metres. One side, along an existing fence, is fixed at "+L+" m. What must the other side be, in metres? Show your work on paper, then enter the length of the other side.",
+  var q=numq("Design "+ctx+" with a total area of "+fmt(A)+" square metres. One side, along an existing fence, is fixed at "+L+" m. What must the other side be, in metres? Show your work on paper, then enter the length of the other side.",
     W, 0.1,
     "Set up the area formula with the target area and solve for the unknown side. \\[ \\begin{aligned} A &= l \\times w \\\\ "+fmt(A)+" &= "+L+" \\times w \\\\ w &= "+fmt(A)+" \\div "+L+" = "+fmt(W)+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+fmt(W)+" metres</b>.",
-    {W:W,L:L});
+    {W:W,L:L}); q.figure=m12RectAreaSVG(L,W,L+" m","?","A = "+fmt(A)+" m\u00B2"); return q;
 }, ["Set the area formula equal to the target area, then solve for the unknown side.", "Divide the target area by the side that is already fixed."]);
 
 E("u3-cr-house-composite", 3, ["3.26","3.31"], 3, "gen", function(){
@@ -2635,6 +2832,13 @@ E("u4-gross-mixed-cr",4,["1.18","1.12"],3,"gen",function(){
 
 /* ----- bank-u5.js ----- */
 // Math 1202 Unit 5 All About Angles question bank
+// Figures (added Nov 2026): complementary and supplementary pairs,
+// angles around a point, pizza and clock divisions, vertically
+// opposite angles, a perpendicular transversal setup and split
+// supplementary angles draw labelled figures from each question's
+// own values. Verbal definition, method, referent and strategy
+// entries stay figureless, as do the pair naming entry (a diagram
+// would name the pair) and the non-parallel reasoning entry.
 // Cut verbatim from the standalone bank source
 // (math-1202-review/bank-src.js, lines 2583 to 3179).
 // CRMARKS: u5-cr-comp-supp=2
@@ -2697,6 +2901,102 @@ function u5DegOpts(ans,pool){
   return out.slice(0,3).map(function(v){return {t:v+"°", fb:v+"° does not follow from the angle relationship used here: check the sum or equality the diagram gives."};});
 }
 
+function u5ArcPath(cx,cy,r,a0,a1){
+  var p0=u5Pt(cx,cy,r,a0), p1=u5Pt(cx,cy,r,a1), large=(a1-a0)>180?1:0;
+  return '<path d="M '+fmt(p0[0],1)+' '+fmt(p0[1],1)+' A '+r+' '+r+' 0 '+large+' 0 '+fmt(p1[0],1)+' '+fmt(p1[1],1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+}
+function u5PairSVG(a, comp){
+  var cx=110, cy=150, end=comp?90:180, s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two adjacent angles forming a pair">';
+  var p0=u5Pt(cx,cy,92,0), pm=u5Pt(cx,cy,92,a), pe=u5Pt(cx,cy,92,end);
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(p0[0],1)+'" y2="'+fmt(p0[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pm[0],1)+'" y2="'+fmt(pm[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pe[0],1)+'" y2="'+fmt(pe[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(comp) s+='<path d="M '+(cx+20)+' '+cy+' L '+(cx+20)+' '+(cy-20)+' L '+cx+' '+(cy-20)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  s+=u5ArcPath(cx,cy,32,0,a)+u5ArcPath(cx,cy,32,a,end);
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  var m1=u5Pt(cx,cy,60,a/2), m2=u5Pt(cx,cy,60,(a+end)/2);
+  s+=_txt(m1[0],m1[1],a+"\u00B0",12.5,false);
+  s+=_txt(m2[0],m2[1],"?",12.5,false);
+  return s+'</svg>';
+}
+function u5AroundSVG(sweeps, labels){
+  var cx=150, cy=102, s='<svg viewBox="0 0 300 205" width="300" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Angles around a point">', ang=0, i;
+  var bounds=[0];
+  for(i=0;i<sweeps.length;i++){ ang+=sweeps[i]; bounds.push(ang); }
+  for(i=0;i<bounds.length;i++){ var pp=u5Pt(cx,cy,80,bounds[i]%360); s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pp[0],1)+'" y2="'+fmt(pp[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>'; }
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  for(i=0;i<sweeps.length;i++){ var mid=bounds[i]+sweeps[i]/2, lp=u5Pt(cx,cy,54,mid); s+=_txt(lp[0],lp[1],labels[i],12,false); }
+  return s+'</svg>';
+}
+function u5PizzaSVG(n){
+  var cx=150, cy=102, r=76, step=360/n, s='<svg viewBox="0 0 300 205" width="300" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Round pizza cut into equal slices">';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  var a0=u5Pt(cx,cy,r,90), a1=u5Pt(cx,cy,r,90+step);
+  s+='<polygon points="'+cx+','+cy+' '+fmt(a0[0],1)+','+fmt(a0[1],1)+' '+fmt(a1[0],1)+','+fmt(a1[1],1)+'" fill="'+FIG_SHADE+'"/>';
+  for(var i=0;i<n;i++){ var pp=u5Pt(cx,cy,r,90+i*step); s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pp[0],1)+'" y2="'+fmt(pp[1],1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>'; }
+  var mid=u5Pt(cx,cy,42,90+step/2);
+  s+=_txt(mid[0],mid[1],"?",13,false);
+  return s+'</svg>';
+}
+function u5ClockSVG(k){
+  var cx=150, cy=102, r=76, s='<svg viewBox="0 0 300 205" width="300" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Clock face showing the angle from 12 to a later hour mark">';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  for(var i=0;i<12;i++){ var p1=u5Pt(cx,cy,r-9,90-i*30), p2=u5Pt(cx,cy,r,90-i*30); s+='<line x1="'+fmt(p1[0],1)+'" y1="'+fmt(p1[1],1)+'" x2="'+fmt(p2[0],1)+'" y2="'+fmt(p2[1],1)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>'; }
+  var t12=u5Pt(cx,cy,58,90), tk=u5Pt(cx,cy,58,90-30*k);
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(t12[0],1)+'" y2="'+fmt(t12[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(tk[0],1)+'" y2="'+fmt(tk[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  var l12=u5Pt(cx,cy,r+13,90), lk=u5Pt(cx,cy,r+13,90-30*k), lm=u5Pt(cx,cy,36,90-15*k);
+  s+=_txt(l12[0],l12[1],"12",11,false);
+  s+=_txt(lk[0],lk[1],""+k,11,false);
+  s+=_txt(lm[0],lm[1],"?",13,false);
+  return s+'</svg>';
+}
+function u5VertSVG(a){
+  var cx=150, cy=102, s='<svg viewBox="0 0 300 205" width="300" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two crossing lines with vertically opposite angles">';
+  var d1=10, d2=10+a;
+  [d1,d2].forEach(function(d){ var p1=u5Pt(cx,cy,88,d), p2=u5Pt(cx,cy,88,d+180); s+='<line x1="'+fmt(p1[0],1)+'" y1="'+fmt(p1[1],1)+'" x2="'+fmt(p2[0],1)+'" y2="'+fmt(p2[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>'; });
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  var m1=u5Pt(cx,cy,50,(d1+d2)/2), m2=u5Pt(cx,cy,50,(d1+d2)/2+180);
+  s+=_txt(m1[0],m1[1],a+"\u00B0",12.5,false);
+  s+=_txt(m2[0],m2[1],"?",12.5,false);
+  return s+'</svg>';
+}
+function u5PerpTransSVG(a){
+  var tanA=Math.tan(a*Math.PI/180), base=Math.min(200,120/Math.max(tanA,0.2)), hgt=base*tanA;
+  var Ax=70, Ay=185, Bx=Ax+base, Cy=Ay-hgt, s='<svg viewBox="0 0 320 230" width="320" height="230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallel lines with a perpendicular transversal and a diagonal">';
+  s+='<line x1="25" y1="'+Ay+'" x2="308" y2="'+Ay+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="25" y1="'+fmt(Cy,1)+'" x2="308" y2="'+fmt(Cy,1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 248 '+(Ay-6)+' l 8 6 l -8 6" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<path d="M 248 '+fmt(Cy-6,1)+' l 8 6 l -8 6" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<line x1="'+Ax+'" y1="208" x2="'+Ax+'" y2="28" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+fmt(Bx,1)+'" y1="'+Ay+'" x2="'+Ax+'" y2="'+fmt(Cy,1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M '+(Ax+14)+' '+Ay+' L '+(Ax+14)+' '+(Ay-14)+' L '+Ax+' '+(Ay-14)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  s+=_txt(Bx-27,Ay-11,a+"\u00B0",12.5,false);
+  s+=_txt(Ax+19,Cy+21,"?",12.5,false);
+  return s+'</svg>';
+}
+function u5SuppBisectSVG(a){
+  var cx=150, cy=135, mid=90+a/2, s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A supplementary angle split into two equal parts">';
+  [0,a,mid,180].forEach(function(d){ var pp=u5Pt(cx,cy,86,d); s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pp[0],1)+'" y2="'+fmt(pp[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>'; });
+  s+=u5ArcPath(cx,cy,30,0,a)+u5ArcPath(cx,cy,30,a,mid)+u5ArcPath(cx,cy,30,mid,180);
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  var l1=u5Pt(cx,cy,58,a/2), l2=u5Pt(cx,cy,58,(a+mid)/2), l3=u5Pt(cx,cy,58,(mid+180)/2);
+  s+=_txt(l1[0],l1[1],a+"\u00B0",12,false);
+  s+=_txt(l2[0],l2[1],"?",12.5,false);
+  s+=_txt(l3[0],l3[1],"?",12.5,false);
+  return s+'</svg>';
+}
+function u5SplitAngleSVG(A, parts){
+  var cx=80, cy=155, s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An angle split into equal parts">';
+  for(var i=0;i<=parts;i++){ var pp=u5Pt(cx,cy,92,i*A/parts); s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pp[0],1)+'" y2="'+fmt(pp[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>'; }
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  for(var j=0;j<parts;j++){ var lp=u5Pt(cx,cy,58,(j+0.5)*A/parts); s+=_txt(lp[0],lp[1],"?",12.5,false); }
+  var tp=u5Pt(cx,cy,112,A/2);
+  s+=_txt(tp[0],tp[1],A+"\u00B0",12.5,false);
+  return s+'</svg>';
+}
+
 /* ---------- Level 1 MC ---------- */
 E("u5-sort-lines", 5, ["3.35","3.42"], 1, "gen", function(){
   var mode=pick(["parallel","perpendicular","neither"]);
@@ -2729,6 +3029,7 @@ E("u5-comp-supp-basic", 5, ["3.36"], 1, "gen", function(){
     {t:ans+"°", fb:"Yes: "+(comp?"complementary angles add to 90°, and 90 - "+a+" = "+ans:"supplementary angles add to 180°, and 180 - "+a+" = "+ans)+"."},
     u5DegOpts(ans,pool),
     (comp?"Complementary angles add to \\(90^\\circ\\).":"Supplementary angles add to \\(180^\\circ\\).")+"\\[ \\begin{aligned} \\text{second angle} &= "+(comp?90:180)+"^\\circ - "+a+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a,comp:comp});
+  q.figure=u5PairSVG(a, comp);
   return q;
 }, ["Recall the total that this kind of angle pair must add to.", "Subtract the given angle from that total."]);
 
@@ -2880,7 +3181,11 @@ E("u5-trans-relationships", 5, ["3.39","3.41"], 2, "gen", function(){
     dis=u5DegOpts(numAns,[180-numAns, a===numAns? a+18:a, 90, numAns+22]);
     if(mode==="same") dis=u5DegOpts(numAns,[a, 90, numAns+20]);
   }
-  return mcq(prompt, {t:ans, fb:corrFb}, dis, sol, {mode:mode,a:a});
+  var q=mcq(prompt, {t:ans, fb:corrFb}, dis, sol, {mode:mode,a:a});
+  if(mode==="alt") q.figure=transversalSVG("TR", a+"\u00B0", "BL", "?");
+  else if(mode==="vert") q.figure=u5VertSVG(a);
+  else if(mode==="same") q.figure=transversalSVG("TR", a+"\u00B0", "BR", "?");
+  return q;
 }, ["Name the angle pair first: its position decides whether the measures are equal or add to 180.", "Check that the two lines are parallel before using any equal angle relationship."]);
 
 E("u5-trans-find", 5, ["3.40"], 2, "gen", function(){
@@ -3087,18 +3392,18 @@ E("u5-context-angles", 5, ["3.49"], 2, "gen", function(){
   var ctx=pick(["at a community supper","in a school cafeteria","at a family gathering","during a cooking class"]);
   if(mode==="pizza"){
     var n=pick([4,5,6,8,9,10,12]); var ans=360/n;
-    var _bo0=balOpts({t:ans+"°", fb:"Yes: the full turn of 360° is shared equally, and 360 divided by "+n+" is "+ans+"."}, u5DegOpts(ans,[180/n, 360/(n+1), 90])); return mcq("A round pizza "+ctx+" is cut into "+n+" equal slices from the centre. What is the angle at the centre of each slice?", _bo0[0], _bo0[1],
-      "\\[ \\begin{aligned} \\text{slice angle} &= \\frac{360^\\circ}{"+n+"} \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {mode:mode,n:n});
+    var _bo0=balOpts({t:ans+"°", fb:"Yes: the full turn of 360° is shared equally, and 360 divided by "+n+" is "+ans+"."}, u5DegOpts(ans,[180/n, 360/(n+1), 90])); var q=mcq("A round pizza "+ctx+" is cut into "+n+" equal slices from the centre. What is the angle at the centre of each slice?", _bo0[0], _bo0[1],
+      "\\[ \\begin{aligned} \\text{slice angle} &= \\frac{360^\\circ}{"+n+"} \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {mode:mode,n:n}); q.figure=u5PizzaSVG(n); return q;
   }
   if(mode==="clock"){
     var k=pick([2,3,4,5]); var ans=30*k;
-    var _bo1=balOpts({t:ans+"°", fb:"Yes: each hour gap is 30°, and "+k+" gaps give "+k+" times 30, which is "+ans+"."}, u5DegOpts(ans,[30*(k+1), 30*(k-1), 360/k])); return mcq("On a clock, neighbouring hour marks are equally spaced around the centre. What is the angle at the centre between the mark for 12 and the mark for "+k+"?", _bo1[0], _bo1[1],
-      "One hour gap is \\(360^\\circ \\div 12 = 30^\\circ\\). \\[ "+k+" \\times 30^\\circ = "+ans+"^\\circ \\] The answer is <b>"+ans+"°</b>.", {mode:mode,k:k});
+    var _bo1=balOpts({t:ans+"°", fb:"Yes: each hour gap is 30°, and "+k+" gaps give "+k+" times 30, which is "+ans+"."}, u5DegOpts(ans,[30*(k+1), 30*(k-1), 360/k])); var q=mcq("On a clock, neighbouring hour marks are equally spaced around the centre. What is the angle at the centre between the mark for 12 and the mark for "+k+"?", _bo1[0], _bo1[1],
+      "One hour gap is \\(360^\\circ \\div 12 = 30^\\circ\\). \\[ "+k+" \\times 30^\\circ = "+ans+"^\\circ \\] The answer is <b>"+ans+"°</b>.", {mode:mode,k:k}); q.figure=u5ClockSVG(k); return q;
   }
   var a=pick([70,85,95,110,125]), b=pick([60,75,90,105]);
   var ans=360-a-b;
-  var _bo2=balOpts({t:ans+"°", fb:"Yes: angles around a point add to 360°, and 360 - "+a+" - "+b+" = "+ans+"."}, u5DegOpts(ans,[180-a, 360-a, a+b])); return mcq("A rotating garden sprinkler "+ctx+" sweeps a full turn. Two marked stops split the turn into angles of \\("+a+"^\\circ\\) and \\("+b+"^\\circ\\) plus one unmarked sweep. What is the angle of the unmarked sweep?", _bo2[0], _bo2[1],
-    "Angles around a point add to \\(360^\\circ\\). \\[ \\begin{aligned} \\text{unmarked} &= 360^\\circ - "+a+"^\\circ - "+b+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {mode:mode,a:a,b:b});
+  var _bo2=balOpts({t:ans+"°", fb:"Yes: angles around a point add to 360°, and 360 - "+a+" - "+b+" = "+ans+"."}, u5DegOpts(ans,[180-a, 360-a, a+b])); var q=mcq("A rotating garden sprinkler "+ctx+" sweeps a full turn. Two marked stops split the turn into angles of \\("+a+"^\\circ\\) and \\("+b+"^\\circ\\) plus one unmarked sweep. What is the angle of the unmarked sweep?", _bo2[0], _bo2[1],
+    "Angles around a point add to \\(360^\\circ\\). \\[ \\begin{aligned} \\text{unmarked} &= 360^\\circ - "+a+"^\\circ - "+b+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {mode:mode,a:a,b:b}); q.figure=u5AroundSVG([a,b,ans],[a+"\u00B0",b+"\u00B0","?"]); return q;
 }, ["Decide which total the angles share: a full turn, or a count of equal gaps.", "Use the total and share or subtract as the situation describes."]);
 
 E("u5-adjacent-describe", 5, ["3.37","3.36"], 2, "gen", function(){
@@ -3146,18 +3451,22 @@ E("u5-replicate-bisect-apply", 5, ["3.50","3.51","3.52"], 3, "gen", function(){
   else if(mode==="bisect-copy") prompt="A woodworker replicates a \\("+A+"^\\circ\\) angle from a template onto a board using "+method+", then bisects the copy to mark a centre line. What is the measure of each part of the bisected copy?";
   else prompt="A woodworker replicates a \\("+A+"^\\circ\\) angle from a template onto a board using "+method+", bisects the copy, and then bisects one of the parts again. What is the measure of the smallest angle formed?";
   var pool=[A, A/2, A/4, 180-A];
-  return mcq(prompt, {t:ans+"°", fb:"Yes: replication keeps the measure at "+A+"°, and each bisection halves the angle."},
+  var q=mcq(prompt, {t:ans+"°", fb:"Yes: replication keeps the measure at "+A+"°, and each bisection halves the angle."},
     u5DegOpts(ans,pool), sol, {A:A,mode:mode,method:method});
+  if(mode==="copy-only") q.figure=u5AngleSVG(A, A+"°", 0);
+  else if(mode==="bisect-copy") q.figure=u5SplitAngleSVG(A, 2);
+  else q.figure=u5SplitAngleSVG(A, 4);
+  return q;
 }, ["Track the measure in stages: a copy keeps the measure, a bisection halves it.", "Apply one stage at a time and write the measure after each stage."]);
 
 E("u5-multi-step-context", 5, ["3.49","3.43"], 3, "gen", function(){
   var a=pick([34,42,46,52,58,64,70,76,82,88,94,100,106,112,118,124,128,132,136,142]);
   var ans=(180-a)/2;
   var ctx=pick(["A cross street crosses two parallel roads. A triangular traffic island is painted in one corner: its base angle is the supplement of the \\("+a+"^\\circ\\) street angle, and a centre stripe splits that base angle into two equal parts.","Two parallel hiking trails are crossed by one straight path. A wedge shaped sign sits in the angle supplementary to the \\("+a+"^\\circ\\) path angle, and a post splits that wedge angle into two equal parts.","Two parallel dock edges are crossed by a straight ramp. A triangular brace fills the angle supplementary to the \\("+a+"^\\circ\\) ramp angle, and a bolt line splits that brace angle into two equal parts."]);
-  return mcq(ctx+" What is the measure of each part after the split?",
+  var q=mcq(ctx+" What is the measure of each part after the split?",
     {t:ans+"°", fb:"Yes: the supplementary angle is 180 - "+a+" = "+(180-a)+", and halving it gives "+ans+"."},
     u5DegOpts(ans,[180-a, a/2, 180-a/2]),
-    "\\[ \\begin{aligned} \\text{supplementary angle} &= 180^\\circ - "+a+"^\\circ = "+(180-a)+"^\\circ \\\\ \\text{each part} &= \\frac{"+(180-a)+"^\\circ}{2} = "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a});
+    "\\[ \\begin{aligned} \\text{supplementary angle} &= 180^\\circ - "+a+"^\\circ = "+(180-a)+"^\\circ \\\\ \\text{each part} &= \\frac{"+(180-a)+"^\\circ}{2} = "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a}); q.figure=u5SuppBisectSVG(a); return q;
 }, ["Work in stages: first find the supplementary angle, then split it.", "A split into two equal parts means dividing by 2 after the supplement is found."]);
 
 /* ---------- Constructed response (numq) ---------- */
@@ -3165,9 +3474,9 @@ E("u5-cr-comp-supp", 5, ["3.36"], 2, "gen", function(){
   var comp=ri(0,1)===0; var a=comp?ri(18,72):ri(35,145);
   var ans=comp?90-a:180-a;
   var ctx=pick(["A triangular garden marker sits in the corner of a square plot, filling one part of the corner angle","A brace crosses a straight fence rail, forming two angles along the rail","A paper flag is folded so two angles fill a square corner","A ramp meets a straight walkway, forming two angles along the walkway"]);
-  return numq(ctx+". One angle measures "+a+"°. The two angles form a "+(comp?"complementary pair (they fill a right angle)":"supplementary pair (they fill a straight line)")+". Find the measure of the other angle, in degrees.",
+  var q=numq(ctx+". One angle measures "+a+"°. The two angles form a "+(comp?"complementary pair (they fill a right angle)":"supplementary pair (they fill a straight line)")+". Find the measure of the other angle, in degrees.",
     ans, 0.5,
-    (comp?"Complementary angles add to \\(90^\\circ\\).":"Supplementary angles add to \\(180^\\circ\\).")+" \\[ \\begin{aligned} \\text{other angle} &= "+(comp?90:180)+"^\\circ - "+a+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a,comp:comp});
+    (comp?"Complementary angles add to \\(90^\\circ\\).":"Supplementary angles add to \\(180^\\circ\\).")+" \\[ \\begin{aligned} \\text{other angle} &= "+(comp?90:180)+"^\\circ - "+a+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a,comp:comp}); q.figure=u5PairSVG(a, comp); return q;
 }, ["Recall the total for this kind of angle pair.", "Subtract the given angle from that total."]);
 
 E("u5-cr-trans-find", 5, ["3.40"], 2, "gen", function(){
@@ -3188,26 +3497,26 @@ E("u5-cr-around-point", 5, ["3.49"], 2, "gen", function(){
   var a=ri(55,120), b=ri(45,110), c=ri(40,95);
   var ans=360-a-b-c;
   var ctx=pick(["A ceiling fan hub has three marked angles between its blades and one unmarked gap","A roundabout sign post carries three marked direction angles and one unmarked gap","A sprinkler head turns through three marked sweeps and one unmarked sweep"]);
-  return numq(ctx+". The marked angles around the point are "+a+"°, "+b+"° and "+c+"°. Find the measure of the unmarked angle, in degrees.",
+  var q=numq(ctx+". The marked angles around the point are "+a+"°, "+b+"° and "+c+"°. Find the measure of the unmarked angle, in degrees.",
     ans, 0.5,
-    "Angles around a point add to \\(360^\\circ\\). \\[ \\begin{aligned} \\text{unmarked angle} &= 360^\\circ - "+a+"^\\circ - "+b+"^\\circ - "+c+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a,b:b,c:c});
+    "Angles around a point add to \\(360^\\circ\\). \\[ \\begin{aligned} \\text{unmarked angle} &= 360^\\circ - "+a+"^\\circ - "+b+"^\\circ - "+c+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a,b:b,c:c}); q.figure=u5AroundSVG([a,b,c,ans],[a+"°",b+"°",c+"°","?"]); return q;
 }, ["Angles around a point share one total: recall what it is.", "Subtract all the marked angles from that total."]);
 
 E("u5-cr-replicate-bisect", 5, ["3.51","3.52"], 2, "gen", function(){
   var A=pick([44,52,58,64,70,78,84,86,92,94,102,108,114,122,128,136,142,148,154,156]);
   var ans=A/2;
   var ctx=pick(["A cabinet maker copies the angle of a corner template onto a trim piece, then bisects the copied angle to find its centre line","A quilter replicates the angle of a pattern piece onto fabric, then bisects the copy to mark a fold line","A metal worker copies the angle of a bracket onto a new piece, then bisects the copy before drilling","A sign maker copies the angle of a sample board onto a new board, then bisects the copy to centre a painted stripe","A boat builder copies the angle of a hull template onto a plank, then bisects the copy to mark the centre of a joint"]);
-  return numq(ctx+". The template angle measures "+A+"°. Find the measure of each angle formed when the copy is bisected, in degrees.",
+  var q=numq(ctx+". The template angle measures "+A+"°. Find the measure of each angle formed when the copy is bisected, in degrees.",
     ans, 0.5,
-    "Replication keeps the measure, so the copy also measures \\("+A+"^\\circ\\). Bisection splits an angle into two equal parts. \\[ \\begin{aligned} \\text{each part} &= \\frac{"+A+"^\\circ}{2} \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {A:A});
+    "Replication keeps the measure, so the copy also measures \\("+A+"^\\circ\\). Bisection splits an angle into two equal parts. \\[ \\begin{aligned} \\text{each part} &= \\frac{"+A+"^\\circ}{2} \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {A:A}); q.figure=u5SplitAngleSVG(A, 2); return q;
 }, ["A copy has the same measure as the original angle.", "Bisecting divides that measure into two equal parts."]);
 
 E("u5-cr-perp-transversal", 5, ["3.43"], 2, "gen", function(){
   var a=ri(24,66); var ans=90-a;
   var ctx=pick(["Two parallel garden edging lines are crossed by a straight path that is perpendicular to both of them. A diagonal stepping stone edge crosses the path and makes an angle with one edging line","Two parallel dock boards are crossed by a straight beam that is perpendicular to both of them. A diagonal brace crosses the beam and makes an angle with one board","Two parallel yard lines on a field are crossed by a straight line that is perpendicular to both of them. A diagonal rope crosses that line and makes an angle with one yard line"]);
-  return numq(ctx+" of "+a+"°, measured inside the strip between the parallel lines. The diagonal and the perpendicular line form a right angle together with that angle. Find the angle between the diagonal and the perpendicular line, in degrees.",
+  var q=numq(ctx+" of "+a+"°, measured inside the strip between the parallel lines. The diagonal and the perpendicular line form a right angle together with that angle. Find the angle between the diagonal and the perpendicular line, in degrees.",
     ans, 0.5,
-    "The perpendicular line meets the parallel line at \\(90^\\circ\\), and the diagonal splits that right angle into two parts. \\[ \\begin{aligned} \\text{angle with the perpendicular} &= 90^\\circ - "+a+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a});
+    "The perpendicular line meets the parallel line at \\(90^\\circ\\), and the diagonal splits that right angle into two parts. \\[ \\begin{aligned} \\text{angle with the perpendicular} &= 90^\\circ - "+a+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a}); q.figure=u5PerpTransSVG(a); return q;
 }, ["Perpendicular lines form a right angle: that total is the key.", "The diagonal splits the right angle, so subtract the given part."]);
 
 E("u5-cr-protractor", 5, ["3.44"], 2, "gen", function(){
@@ -3243,6 +3552,13 @@ E("u5-cr-trans-algebra", 5, ["3.40","3.39"], 3, "gen", function(){
 
 /* ----- bank-u6.js ----- */
 // Math 1202 Unit 6 Pythagorean Relation question bank
+// Figures (added Nov 2026): right triangle, rectangle diagonal and
+// corner check setups draw labelled figures from each question's
+// own values. The history, trades formula and why entries, the
+// 3:4:5 recognition entry (its answer sets are the options), and
+// the create a problem and equivalent forms entries stay
+// figureless: they are verbal or algebraic, with no single
+// drawable setup in the stem.
 // Cut verbatim from the standalone bank source
 // (math-1202-review/bank-src.js, lines 3180 to 3766).
 // CRMARKS: u6-cr-hypotenuse=2
@@ -3502,10 +3818,13 @@ E("u6-is-right", 6, ["3.56"], 2, "gen", function(){
     {t:(sum===cs?"No, it is not a right triangle":"Yes, it is a right triangle")+", because \\("+a+"^2 + "+b+"^2 = "+sum+"\\) and \\("+c+"^2 = "+cs+"\\)", fb:"The totals are computed correctly but the conclusion is backwards: the triangle is a right triangle only when the totals match exactly."},
     {t:verdict+", because \\("+a+" + "+b+" = "+c+"\\) with the sides added directly", fb:"The theorem compares squares, not the sides added directly: "+a+" + "+b+" is "+(a+b)+", not "+c+"."},
     {t:verdict+", because \\("+a+"^2 + "+c+"^2 = "+(a*a+c*c)+"\\) and \\("+b+"^2 = "+(b*b)+"\\)", fb:"That check squares the longest side as a leg. The longest side must stand alone on one side of the equation."}];
-  return mcq(ctx+" of "+a+" "+unit+", "+b+" "+unit+" and "+c+" "+unit+". Is the triangle a right triangle?",
+  var q=mcq(ctx+" of "+a+" "+unit+", "+b+" "+unit+" and "+c+" "+unit+". Is the triangle a right triangle?",
     correct, distractors,
     "Square the two shorter sides and compare with the square of the longest side. \\[ \\begin{aligned} "+a+"^2 + "+b+"^2 &= "+(a*a)+" + "+(b*b)+" = "+sum+" \\\\ "+c+"^2 &= "+cs+" \\end{aligned} \\] The first total "+relation+" the second. The answer is <b>"+verdict.toLowerCase()+"</b>.",
     {a:a,b:b,c:c,mode:mode});
+  var cGeo=Math.min(c, a+b-0.6); if(cGeo<=Math.abs(a-b)+0.6) cGeo=Math.abs(a-b)+1.2;
+  q.figure=u6GenTriSVG(a,b,cGeo,fmt(a)+" "+unit,fmt(b)+" "+unit,fmt(c)+" "+unit);
+  return q;
 }, ["Use the converse: a triangle is right exactly when the squares of the shorter sides add to the square of the longest side.", "Start by identifying the longest side, since its square is the one the other two must match."]);
 
 E("u6-hypotenuse-direct", 6, ["3.59","2.3"], 2, "gen", function(){
@@ -3630,10 +3949,12 @@ E("u6-apps-contemporary", 6, ["3.53","2.2"], 2, "gen", function(){
      [u6R1(a*a+b*b),"That is the squared distance. Take the square root to get the distance itself."],
      [u6R1(dist+ri(2,5)),"That overshoots the hypotenuse. Recheck the square root of "+(a*a+b*b)+"."]],
     unit,1);
-  return mcq(ctx[0]+", in "+({km:"kilometres",m:"metres"})[unit]+"?",
+  var q=mcq(ctx[0]+", in "+({km:"kilometres",m:"metres"})[unit]+"?",
     pair[0], pair[1],
     "The direct distance is the hypotenuse of a right triangle. \\[ \\begin{aligned} d^2 &= "+a+"^2 + "+b+"^2 = "+(a*a)+" + "+(b*b)+" = "+(a*a+b*b)+" \\\\ d &= \\sqrt{"+(a*a+b*b)+"} \\approx "+fmtF(ans,1)+" \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" "+unit+"</b>.",
     {a:a,b:b});
+  q.figure=u6TriSVG(a,b,fmt(a)+" "+unit,fmt(b)+" "+unit,"?");
+  return q;
 }, ["Direct or straight line distance across a right angle is a hypotenuse problem.", "Start by squaring the two ground distances and adding the squares."]);
 
 E("u6-cr-hypotenuse", 6, ["3.59","2.3"], 2, "gen", function(){
@@ -3645,10 +3966,12 @@ E("u6-cr-hypotenuse", 6, ["3.59","2.3"], 2, "gen", function(){
     "A loading ramp rises "+fmt(b)+" "+unit+" over a horizontal run of "+fmt(a)+" "+unit+".",
     "A support cable reaches from a ground anchor "+fmt(a)+" "+unit+" from a wall to a point "+fmt(b)+" "+unit+" up the wall.",
     "A garden trellis leans so its foot is "+fmt(a)+" "+unit+" from a fence and its top touches "+fmt(b)+" "+unit+" up the fence."]);
-  return numq(ctx+" What is the length, in "+unit+", of the sloped side? Give your answer to the nearest tenth.",
+  var q=numq(ctx+" What is the length, in "+unit+", of the sloped side? Give your answer to the nearest tenth.",
     ans, 0.15,
     "The sloped side is the hypotenuse. \\[ \\begin{aligned} c^2 &= "+fmt(a)+"^2 + "+fmt(b)+"^2 \\\\ &= "+fmt(a*a)+" + "+fmt(b*b)+" = "+fmt(a*a+b*b)+" \\\\ c &= \\sqrt{"+fmt(a*a+b*b)+"} \\approx "+fmtF(ans,1)+" \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" "+unit+"</b>.",
     {a:a,b:b});
+  q.figure=u6TriSVG(a,b,fmt(a)+" "+unit,fmt(b)+" "+unit,"?");
+  return q;
 }, ["The sloped side is the hypotenuse: square both legs, add, then take the square root.", "Start by squaring the horizontal distance and the height separately."]);
 
 E("u6-cr-leg", 6, ["3.59","2.4"], 2, "gen", function(){
@@ -3662,10 +3985,12 @@ E("u6-cr-leg", 6, ["3.59","2.4"], 2, "gen", function(){
     "A brace board is "+hyp+" "+unit+" long and it reaches "+given+" "+unit+" up a post.",
     "A zipline cable is "+hyp+" "+unit+" long and the finish platform is "+given+" "+unit+" lower than the start platform."]);
   var wantedName=giveFirst?"the other leg of the right triangle":"the other leg of the right triangle";
-  return numq(ctx+" The string, board or cable forms the hypotenuse of a right triangle. How long, in "+unit+", is "+wantedName+"?",
+  var q=numq(ctx+" The string, board or cable forms the hypotenuse of a right triangle. How long, in "+unit+", is "+wantedName+"?",
     wanted, 0.1,
     "The formula must be rearranged to isolate the unknown leg. \\[ \\begin{aligned} b^2 &= c^2 - a^2 \\\\ &= "+hyp+"^2 - "+given+"^2 = "+(hyp*hyp)+" - "+(given*given)+" = "+(wanted*wanted)+" \\\\ b &= "+wanted+" \\end{aligned} \\] The answer is <b>"+wanted+" "+unit+"</b>.",
     {hyp:hyp,given:given});
+  q.figure=giveFirst?u6TriSVG(given,wanted,fmt(given)+" "+unit,"?",fmt(hyp)+" "+unit):u6TriSVG(wanted,given,"?",fmt(given)+" "+unit,fmt(hyp)+" "+unit);
+  return q;
 }, ["For a missing leg, rearrange the theorem: the leg squared equals the hypotenuse squared minus the known leg squared.", "Start by squaring the hypotenuse and the known leg separately."]);
 
 E("u6-cr-diagonal-rect", 6, ["3.59","2.3"], 2, "gen", function(){
@@ -3677,10 +4002,12 @@ E("u6-cr-diagonal-rect", 6, ["3.59","2.3"], 2, "gen", function(){
     "A rectangular screen measures "+fmt(l)+" "+unit+" across and "+fmt(w)+" "+unit+" high.",
     "A rectangular gate frame measures "+fmt(l)+" "+unit+" by "+fmt(w)+" "+unit+". A diagonal brace is fitted from corner to corner.",
     "A rectangular garden bed measures "+fmt(l)+" "+unit+" by "+fmt(w)+" "+unit+". A hose is stretched from one corner to the opposite corner."]);
-  return numq(ctx+" What is the diagonal length, in "+unit+"? Give your answer to the nearest tenth.",
+  var q=numq(ctx+" What is the diagonal length, in "+unit+"? Give your answer to the nearest tenth.",
     ans, 0.15,
     "The diagonal is the hypotenuse of a right triangle with the side lengths as legs. \\[ \\begin{aligned} d^2 &= "+fmt(l)+"^2 + "+fmt(w)+"^2 \\\\ &= "+fmt(l*l)+" + "+fmt(w*w)+" = "+fmt(l*l+w*w)+" \\\\ d &= \\sqrt{"+fmt(l*l+w*w)+"} \\approx "+fmtF(ans,1)+" \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" "+unit+"</b>.",
     {w:w,l:l});
+  q.figure=m12RectDiagSVG(l,w,fmt(l)+" "+unit,fmt(w)+" "+unit,"?");
+  return q;
 }, ["A rectangle diagonal splits the rectangle into two right triangles.", "Start by squaring the length and the width and adding the squares."]);
 
 E("u6-cr-corner-diag", 6, ["3.58"], 2, "gen", function(){
@@ -3691,10 +4018,12 @@ E("u6-cr-corner-diag", 6, ["3.58"], 2, "gen", function(){
     "A tile setter marks "+m1+" cm along one wall and "+m2+" cm along the adjoining wall from the corner.",
     "A gardener building a raised bed marks "+m1+" cm along one board and "+m2+" cm along the next board from the corner.",
     "A framer marks "+m1+" cm along the bottom plate and "+m2+" cm along the end plate from the corner of a wall section."]);
-  return numq(ctx+" The builder uses the 3:4:5 check. What distance, in cm, between the two marks will confirm the corner is square?",
+  var q=numq(ctx+" The builder uses the 3:4:5 check. What distance, in cm, between the two marks will confirm the corner is square?",
     diag, 0.1,
     "Each part of the 3:4:5 pattern is "+u+" cm, since \\(3 \\times "+u+" = "+m1+"\\) and \\(4 \\times "+u+" = "+m2+"\\). \\[ \\begin{aligned} \\text{mark distance} &= 5 \\times "+u+" = "+diag+" \\end{aligned} \\] The answer is <b>"+diag+" cm</b>.",
     {m1:m1,m2:m2,u:u});
+  q.figure=u6CornerSVG(m1,m2,"?",fmt(m1)+" cm",fmt(m2)+" cm");
+  return q;
 }, ["The 3:4:5 check scales: the distance between the marks is the 5 part of the pattern.", "Start by finding one part: divide either mark by its pattern number, 3 or 4."]);
 
 E("u6-cr-ladder", 6, ["3.59","2.4"], 2, "gen", function(){
@@ -3706,10 +4035,12 @@ E("u6-cr-ladder", 6, ["3.59","2.4"], 2, "gen", function(){
     ["A ramp board "+hyp+" "+unit+" long rests with its foot "+legA+" "+unit+" out from a step. How high, in "+unit+", is the step it reaches", legB, legA],
     ["A support strut "+hyp+" "+unit+" long runs from a wall point to a shelf bracket "+legB+" "+unit+" out from the wall. How far, in "+unit+", up the wall is the strut attached", legA, legB]];
   var ctx=pick(ctxs);
-  return numq(ctx[0]+"?",
+  var q=numq(ctx[0]+"?",
     ctx[1], 0.1,
     "The long object is the hypotenuse, so the theorem is rearranged for a leg. \\[ \\begin{aligned} b^2 &= "+hyp+"^2 - "+ctx[2]+"^2 \\\\ &= "+(hyp*hyp)+" - "+(ctx[2]*ctx[2])+" = "+(ctx[1]*ctx[1])+" \\\\ b &= "+ctx[1]+" \\end{aligned} \\] The answer is <b>"+ctx[1]+" "+unit+"</b>.",
     {hyp:hyp,known:ctx[2]});
+  q.figure=u6TriSVG(ctx[2],ctx[1],fmt(ctx[2])+" "+unit,"?",fmt(hyp)+" "+unit);
+  return q;
 }, ["The ladder or wire is the hypotenuse, so subtract the square of the known leg from the square of the hypotenuse.", "Start by squaring the full length and the known distance."]);
 
 E("u6-cr-guywire-form", 6, ["3.59","2.6"], 2, "gen", function(){
@@ -3720,10 +4051,12 @@ E("u6-cr-guywire-form", 6, ["3.59","2.6"], 2, "gen", function(){
     "An antenna mast is held by a wire "+wire+" "+unit+" long, anchored "+ground+" "+unit+" from the base of the mast.",
     "A flagpole is steadied by a cable "+wire+" "+unit+" long, anchored "+ground+" "+unit+" from the base of the pole.",
     "A young tree is supported by a rope "+wire+" "+unit+" long, staked "+ground+" "+unit+" from the trunk."]);
-  return numq(ctx+" A technician uses the form \\(h = \\sqrt{c^2 - g^2}\\), where \\(c\\) is the wire length and \\(g\\) is the ground distance. What is the height, in "+unit+", where the wire meets the mast, pole or tree?",
+  var q=numq(ctx+" A technician uses the form \\(h = \\sqrt{c^2 - g^2}\\), where \\(c\\) is the wire length and \\(g\\) is the ground distance. What is the height, in "+unit+", where the wire meets the mast, pole or tree?",
     h, 0.1,
     "This form is the theorem rearranged, and it gives the same result as the standard form. \\[ \\begin{aligned} h &= \\sqrt{"+wire+"^2 - "+ground+"^2} \\\\ &= \\sqrt{"+(wire*wire)+" - "+(ground*ground)+"} = \\sqrt{"+(h*h)+"} = "+h+" \\end{aligned} \\] The answer is <b>"+h+" "+unit+"</b>.",
     {wire:wire,ground:ground});
+  q.figure=u6TriSVG(ground,h,fmt(ground)+" "+unit,"?",fmt(wire)+" "+unit);
+  return q;
 }, ["The given form already isolates the height: substitute the wire length and ground distance into it.", "Start by squaring the wire length, then subtract the square of the ground distance."]);
 
 E("u6-leg-solve-mc", 6, ["3.59","2.4"], 3, "gen", function(){
@@ -3817,10 +4150,12 @@ E("u6-cr-shortcut-saving", 6, ["2.1","3.59"], 3, "gen", function(){
     "A rectangular park measures "+l+" "+unit+" by "+w+" "+unit+". A path follows two edges from one corner to the opposite corner, but a straight trail crosses the park diagonally.",
     "A rectangular field measures "+l+" "+unit+" by "+w+" "+unit+". A worker walks two edges from one corner to the opposite corner, or can cut straight across.",
     "A rectangular lot measures "+l+" "+unit+" by "+w+" "+unit+". A cable can run along two edges from one corner to the opposite corner, or straight across the lot."]);
-  return numq(ctx+" How much distance, in "+unit+", does the straight diagonal route save compared with following the two edges? Give your answer to the nearest tenth.",
+  var q=numq(ctx+" How much distance, in "+unit+", does the straight diagonal route save compared with following the two edges? Give your answer to the nearest tenth.",
     ans, 0.2,
     "First find the diagonal, then compare the two routes. \\[ \\begin{aligned} d &= \\sqrt{"+l+"^2 + "+w+"^2} = \\sqrt{"+(l*l+w*w)+"} \\approx "+fmtF(u6R1(diag),1)+" \\\\ \\text{saving} &= ("+l+" + "+w+") - "+fmtF(u6R1(diag),1)+" \\approx "+fmtF(ans,1)+" \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" "+unit+"</b>.",
     {w:w,l:l});
+  q.figure=m12RectDiagSVG(l,w,fmt(l)+" "+unit,fmt(w)+" "+unit,"diagonal");
+  return q;
 }, ["This is a two step problem: find the diagonal first, then compare it with the route along the edges.", "Start by treating the diagonal as the hypotenuse of the rectangle triangle."]);
 
 E("u6-cr-frame-diff", 6, ["3.58","3.56"], 3, "gen", function(){
@@ -3833,14 +4168,23 @@ E("u6-cr-frame-diff", 6, ["3.58","3.56"], 3, "gen", function(){
     "A rectangular door frame has sides of "+p+" cm and "+q+" cm. A carpenter measures one diagonal as "+measured+" cm while checking whether the frame is a true rectangle.",
     "A rectangular window frame has sides of "+p+" cm and "+q+" cm. A glazier measures one diagonal as "+measured+" cm while checking whether the frame is a true rectangle.",
     "A rectangular picture frame has sides of "+p+" cm and "+q+" cm. A framer measures one diagonal as "+measured+" cm while checking whether the frame is a true rectangle."]);
-  return numq(ctx+" By how many centimetres does the measured diagonal differ from the diagonal a true rectangle with these sides would have? Give your answer to the nearest tenth.",
+  var qq=numq(ctx+" By how many centimetres does the measured diagonal differ from the diagonal a true rectangle with these sides would have? Give your answer to the nearest tenth.",
     ans, 0.25,
     "A true rectangle would have the diagonal given by the theorem. \\[ \\begin{aligned} d &= \\sqrt{"+p+"^2 + "+q+"^2} = \\sqrt{"+(p*p+q*q)+"} \\approx "+fmtF(rounded,1)+" \\\\ \\text{difference} &= |"+measured+" - "+fmtF(rounded,1)+"| \\approx "+fmtF(ans,1)+" \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" cm</b>.",
     {p:p,q:q,measured:measured});
+  qq.figure=m12RectDiagSVG(p,q,fmt(p)+" cm",fmt(q)+" cm",fmt(measured)+" cm");
+  return qq;
 }, ["Work out the diagonal the frame should have, then compare the measurement with it.", "Start by squaring the two frame sides and adding the squares."]);
 
 /* ----- bank-u7.js ----- */
 // Math 1202 Unit 7 Trigonometry question bank
+// Figures (added Nov 2026): similar triangle pairs, shadow and
+// elevation or depression scenes and plain right triangles draw
+// labelled figures from each question's own values. The situation
+// identification entry (u7-indirect-measurement) and the
+// reasonableness entry (u7-reasonable-or-not) stay figureless:
+// one asks which situation fits and the other judges reported
+// values, and several of its modes give no drawable setup.
 // Cut verbatim from the standalone bank source
 // (math-1202-review/bank-src.js, lines 3767 to 4284).
 // CRMARKS: u7-cr-similar-side=2
@@ -3875,6 +4219,24 @@ function u7FigPair(w1,h1,t1,w2,h2,t2){
   return s+'</svg>';
 }
 
+function u7FigTriPair(t1,t2){
+  function draw(t,x0){
+    var s=Math.min(112/Math.max(t.a,1),118/Math.max(t.o,1));
+    var bx=x0, by=172, tx=x0, ty=by-t.o*s, rx=x0+t.a*s;
+    var out='<polygon points="'+fmt(tx,1)+','+fmt(ty,1)+' '+fmt(bx,1)+','+by+' '+fmt(rx,1)+','+by+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+='<path d="M '+(bx+13)+' '+by+' L '+(bx+13)+' '+(by-13)+' L '+bx+' '+(by-13)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+    if(t.oL) out+=u7Txt(bx-15,(by+ty)/2,t.oL,12);
+    if(t.aL) out+=u7Txt((bx+rx)/2,by+16,t.aL,12);
+    if(t.hL) out+=u7Txt((tx+rx)/2+17,(ty+by)/2-4,t.hL,12);
+    if(t.angL) out+=u7Txt(rx-24,by-12,t.angL,12);
+    if(t.tL) out+=u7Txt(tx+17,ty+11,t.tL,12);
+    return out;
+  }
+  var s='<svg viewBox="0 0 320 205" width="320" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two right triangles">';
+  s+=draw(t1,36); s+=draw(t2,186);
+  return s+'</svg>';
+}
+
 /* ---------------- Level 1 ---------------- */
 
 E("u7-similar-check", 7, ["3.60","3.63"], 1, "gen", function(){
@@ -3901,36 +4263,36 @@ E("u7-similar-check", 7, ["3.60","3.63"], 1, "gen", function(){
 }, ["Similar shapes need equal corresponding angles and corresponding sides in the same ratio.", "Divide the width of B by the width of A, then do the same for the heights, and compare."]);
 
 E("u7-shared-angle-similar", 7, ["3.61"], 1, "var", varset([
-  function(){ return mcq("Two right triangles both have an acute angle of \\(35^\\circ\\). Why must the two triangles be similar?",
+  function(){ var q=mcq("Two right triangles both have an acute angle of \\(35^\\circ\\). Why must the two triangles be similar?",
     {t:"Each has angles of 90, 35 and 55 degrees, so their angles match and the angle-angle rule applies.", fb:"Correct: the third angle is 180 - 90 - 35 = 55 degrees in both."},
     [ {t:"Their hypotenuses must be exactly the same length in both triangles, or they cannot match.", fb:"Similar triangles can be different sizes: the hypotenuse does not need to match."},
       {t:"All right triangles are automatically similar to each other, no matter what their acute angles measure.", fb:"Two right triangles with different acute angles, such as 20 degrees and 50 degrees, are not similar."},
       {t:"Their corresponding sides must all be equal in length, side for side, top to bottom.", fb:"Equal sides would make them congruent, not just similar. Similarity needs equal angles and proportional sides."} ],
-    "Each triangle has a \\(90^\\circ\\) angle and the shared \\(35^\\circ\\) angle, so the third angle is \\(180 - 90 - 35 = 55^\\circ\\) in both. Matching angles mean the triangles are <b>similar</b>.", {v:1}); },
-  function(){ return mcq("Triangle P has angles \\(90^\\circ\\) and \\(40^\\circ\\). Triangle Q is a right triangle with an acute angle of \\(40^\\circ\\). Why are P and Q similar?",
+    "Each triangle has a \\(90^\\circ\\) angle and the shared \\(35^\\circ\\) angle, so the third angle is \\(180 - 90 - 35 = 55^\\circ\\) in both. Matching angles mean the triangles are <b>similar</b>.", {v:1}); q.figure=u7FigTriPair({o:35,a:50,oL:"",aL:"",hL:"",angL:"35\u00B0",tL:"?"},{o:52,a:75,oL:"",aL:"",hL:"",angL:"35\u00B0",tL:"?"}); return q; },
+  function(){ var q=mcq("Triangle P has angles \\(90^\\circ\\) and \\(40^\\circ\\). Triangle Q is a right triangle with an acute angle of \\(40^\\circ\\). Why are P and Q similar?",
     {t:"They share a right angle and a 40 degree angle, so all their angles match.", fb:"Correct: two matching angles are enough to show similarity."},
     [ {t:"They are similar because both are right triangles, and that is the only condition.", fb:"Being right triangles is not enough on its own: the shared 40 degree angle is also needed."},
       {t:"They are similar because their areas must be equal in both triangles.", fb:"Similar triangles can have very different areas when one is an enlargement of the other."},
       {t:"They are similar because each of them has exactly three sides and three angles.", fb:"Every triangle has three sides: similarity is about matching angles and proportional sides."} ],
-    "Both triangles have a \\(90^\\circ\\) angle and a \\(40^\\circ\\) angle, so the third angles also match. The triangles are <b>similar</b> by the angle-angle rule.", {v:2}); },
-  function(){ return mcq("A small triangular ramp and a large triangular ramp are both right triangles, and each rises at an angle of \\(28^\\circ\\) to the ground. Which statement is true?",
+    "Both triangles have a \\(90^\\circ\\) angle and a \\(40^\\circ\\) angle, so the third angles also match. The triangles are <b>similar</b> by the angle-angle rule.", {v:2}); q.figure=u7FigTriPair({o:42,a:50,oL:"",aL:"",hL:"",angL:"40\u00B0",tL:"?"},{o:63,a:75,oL:"",aL:"",hL:"",angL:"40\u00B0",tL:"?"}); return q; },
+  function(){ var q=mcq("A small triangular ramp and a large triangular ramp are both right triangles, and each rises at an angle of \\(28^\\circ\\) to the ground. Which statement is true?",
     {t:"The ramps are similar because they share a right angle and the 28 degree angle.", fb:"Correct: shared right angle plus shared acute angle means all angles match."},
     [ {t:"The ramps cannot be similar because one ramp is much bigger than the other one.", fb:"An enlargement is similar to the original: size alone never rules out similarity."},
       {t:"The ramps are similar only if their hypotenuses are exactly equal.", fb:"Equal hypotenuses would be congruence. Similarity allows different sizes."},
       {t:"Nothing at all can be concluded, because only one angle is shared between them.", fb:"Two angles are shared: the right angle and the 28 degree angle. That is enough."} ],
-    "Both ramps have angles of \\(90^\\circ\\) and \\(28^\\circ\\), so their third angles are both \\(62^\\circ\\). The ramps are <b>similar</b>.", {v:3}); },
+    "Both ramps have angles of \\(90^\\circ\\) and \\(28^\\circ\\), so their third angles are both \\(62^\\circ\\). The ramps are <b>similar</b>.", {v:3}); q.figure=u7FigTriPair({o:27,a:50,oL:"",aL:"",hL:"",angL:"28\u00B0",tL:"?"},{o:40,a:75,oL:"",aL:"",hL:"",angL:"28\u00B0",tL:"?"}); return q; },
   function(){ return mcq("Which pair of triangles must be similar?",
     {t:"Two right triangles that share an acute angle of 52 degrees.", fb:"Correct: right angle plus shared acute angle gives matching angles in both."},
     [ {t:"Two right triangles, one at 30 degrees and one at 45 degrees.", fb:"Their acute angles differ, so their angle sets do not match."},
       {t:"A right triangle and an isosceles triangle with no right angle.", fb:"One has a right angle and the other does not, so the angles cannot all match."},
       {t:"Two triangles that happen to have exactly the same perimeter.", fb:"Equal perimeters say nothing about angles: the shapes can be very different."} ],
     "The first pair shares a \\(90^\\circ\\) angle and a \\(52^\\circ\\) angle, so all angles match and the pair <b>must be similar</b>. The other pairs have mismatched angles or no angle information.", {v:4}); },
-  function(){ return mcq("In a right triangle, one acute angle is \\(63^\\circ\\). A second right triangle has an acute angle of \\(63^\\circ\\) as well. What is the third angle in each triangle, and what does that show?",
+  function(){ var q=mcq("In a right triangle, one acute angle is \\(63^\\circ\\). A second right triangle has an acute angle of \\(63^\\circ\\) as well. What is the third angle in each triangle, and what does that show?",
     {t:"27 degrees in each, so the triangles have the same three angles and are similar.", fb:"Correct: 180 - 90 - 63 = 27 degrees, and matching angles mean similar."},
     [ {t:"63 degrees in each, so the two triangles are congruent to each other in every way.", fb:"The third angle is 180 - 90 - 63 = 27 degrees, not 63, and similarity does not need equal size."},
       {t:"117 degrees in each, so the two triangles are similar to each other.", fb:"Angles in a triangle sum to 180 degrees: 90 + 63 + 117 would be far too much."},
       {t:"It cannot be found from the angles without knowing the side lengths as well.", fb:"Side lengths are not needed: the angle sum of a triangle gives the third angle directly."} ],
-    "\\[ 180 - 90 - 63 = 27 \\] The third angle is \\(27^\\circ\\) in each triangle, so the angle sets match and the triangles are <b>similar</b>.", {v:5}); }
+    "\\[ 180 - 90 - 63 = 27 \\] The third angle is \\(27^\\circ\\) in each triangle, so the angle sets match and the triangles are <b>similar</b>.", {v:5}); q.figure=u7FigTriPair({o:98,a:50,oL:"",aL:"",hL:"",angL:"63\u00B0",tL:"?"},{o:118,a:60,oL:"",aL:"",hL:"",angL:"63\u00B0",tL:"?"}); return q; }
 ]), ["Matching angles are the key to similarity.", "List the angles of each triangle: both have a right angle and the shared acute angle."]);
 
 E("u7-tangent-ratio-constant", 7, ["5.1","3.61"], 1, "gen", function(){
@@ -3952,20 +4314,24 @@ E("u7-sine-ratio-constant", 7, ["5.2"], 1, "gen", function(){
   var tr=u7Triple(), o=tr[0], a=tr[1], h=tr[2], k=pick([2,3]), o2=o*k, h2=h*k, r=o/h;
   var prompt="Two right triangles share the acute angle A. The smaller triangle has opposite side "+o+" cm and hypotenuse "+h+" cm. The larger triangle has opposite side "+o2+" cm and hypotenuse "+h2+" cm. What is the ratio opposite / hypotenuse for angle A?";
   var sol="Smaller triangle: \\("+o+" \\div "+h+" = "+fmtF(r,2)+ "\\). Larger triangle: \\("+o2+" \\div "+h2+" = "+fmtF(r,2)+ "\\). The ratio is the same in both triangles, and this ratio is the sine ratio: \\(\\sin A = "+FR("opposite","hypotenuse")+"\\). The answer is <b>"+fmtF(r,2)+"</b>.";
-  return mcq(prompt, {t:fmtF(r,2), fb:"Correct: "+o+" / "+h+" and "+o2+" / "+h2+" both give this value."},
+  var q=mcq(prompt, {t:fmtF(r,2), fb:"Correct: "+o+" / "+h+" and "+o2+" / "+h2+" both give this value."},
     [ {t:fmtF(h/o,2), fb:"That is hypotenuse / opposite, the ratio turned upside down. A sine value cannot be greater than 1."},
       {t:fmtF(a/h,2), fb:"That is adjacent / hypotenuse, which is the cosine ratio, not opposite / hypotenuse."},
       {t:fmtF(o/a,2), fb:"That is opposite / adjacent, which is the tangent ratio, not opposite / hypotenuse."} ], sol, {o:o,h:h,k:k});
+  q.figure=u7FigTriPair({o:o,a:a,oL:o+" cm",aL:"",hL:h+" cm",angL:"A"},{o:o2,a:a*k,oL:o2+" cm",aL:"",hL:h2+" cm",angL:"A"});
+  return q;
 }, ["The sine ratio compares the opposite side to the hypotenuse for the marked angle.", "Work out opposite divided by hypotenuse for the smaller triangle first."]);
 
 E("u7-cosine-ratio-constant", 7, ["5.3"], 1, "gen", function(){
   var tr=u7Triple(), o=tr[0], a=tr[1], h=tr[2], k=pick([2,3]), a2=a*k, h2=h*k, r=a/h;
   var prompt="Two right triangles share the acute angle A. The smaller triangle has adjacent side "+a+" cm and hypotenuse "+h+" cm. The larger triangle has adjacent side "+a2+" cm and hypotenuse "+h2+" cm. What is the ratio adjacent / hypotenuse for angle A?";
   var sol="Smaller triangle: \\("+a+" \\div "+h+" = "+fmtF(r,2)+ "\\). Larger triangle: \\("+a2+" \\div "+h2+" = "+fmtF(r,2)+ "\\). The ratio is the same in both triangles, and this ratio is the cosine ratio: \\(\\cos A = "+FR("adjacent","hypotenuse")+"\\). The answer is <b>"+fmtF(r,2)+"</b>.";
-  return mcq(prompt, {t:fmtF(r,2), fb:"Correct: "+a+" / "+h+" and "+a2+" / "+h2+" both give this value."},
+  var q=mcq(prompt, {t:fmtF(r,2), fb:"Correct: "+a+" / "+h+" and "+a2+" / "+h2+" both give this value."},
     [ {t:fmtF(h/a,2), fb:"That is hypotenuse / adjacent, the ratio turned upside down. A cosine value cannot be greater than 1."},
       {t:fmtF(o/h,2), fb:"That is opposite / hypotenuse, which is the sine ratio, not adjacent / hypotenuse."},
       {t:fmtF(a/o,2), fb:"That is adjacent / opposite, which is not one of the three primary ratios for this pairing."} ], sol, {a:a,h:h,k:k});
+  q.figure=u7FigTriPair({o:o,a:a,oL:"",aL:a+" cm",hL:h+" cm",angL:"A"},{o:o*k,a:a2,oL:"",aL:a2+" cm",hL:h2+" cm",angL:"A"});
+  return q;
 }, ["The cosine ratio compares the adjacent side to the hypotenuse for the marked angle.", "Work out adjacent divided by hypotenuse for the smaller triangle first."]);
 
 E("u7-choose-ratio", 7, ["5.5","2.3"], 1, "gen", function(){
@@ -4014,7 +4380,7 @@ E("u7-corresponding-sides", 7, ["3.62"], 2, "gen", function(){
   var opts=[ {t:fmtF(fromB?k:1/k,2), fb:"That is the scale factor in the opposite direction."},
              {t:String(b1-a1), fb:"That is the difference between the sides. A scale factor is a ratio, found by dividing, not subtracting."},
              {t:fmtF(k+0.5,2), fb:"Check the division: "+b1+" divided by "+a1+" is "+k+", not "+fmtF(k+0.5,2)+"."} ];
-  var _bo0=balOpts({t:fmtF(ans,2), fb:"Correct: corresponding sides of similar polygons are all in the one ratio."}, opts); return mcq(prompt, _bo0[0], _bo0[1], sol, {k:k, fromB:fromB});
+  var _bo0=balOpts({t:fmtF(ans,2), fb:"Correct: corresponding sides of similar polygons are all in the one ratio."}, opts); var q=mcq(prompt, _bo0[0], _bo0[1], sol, {k:k, fromB:fromB}); q.figure=u7FigPair(a1,a2,"A: "+a1+" and "+a2, b1,b2,"B: "+b1+" and "+b2); return q;
 }, ["Corresponding sides of similar polygons are all in the same ratio.", "Divide a B side by its matching A side, then check the direction the question asks for."]);
 
 E("u7-similar-missing-side-mc", 7, ["3.64"], 2, "gen", function(){
@@ -4125,10 +4491,12 @@ E("u7-trig-error-spot", 7, ["2.5","5.5"], 2, "gen", function(){
   var correct=adj*Math.tan(u7Rad(ang)), wrong=adj*Math.sin(u7Rad(ang));
   var prompt="A guy wire meets the ground at \\("+ang+"^\\circ\\). The anchor is "+adj+" m from the base of the pole, and a student wants the height where the wire meets the pole. The student writes: height = "+adj+" x sin("+ang+") = "+fmtF(wrong,2)+" m. What is the correct height, in metres, to two decimal places?";
   var sol="The known side is adjacent to the angle and the wanted side is opposite, so the tangent ratio applies, not sine: \\[ \\text{height} = "+adj+" \\times \\tan("+ang+"^\\circ) = "+fmtF(correct,2)+" \\] The correct height is <b>"+fmtF(correct,2)+" m</b>. The student's error was choosing the sine ratio.";
-  return mcq(prompt, {t:fmtF(correct,2), fb:"Correct: opposite over adjacent is tangent, so height = adjacent x tan(angle)."},
+  var q=mcq(prompt, {t:fmtF(correct,2), fb:"Correct: opposite over adjacent is tangent, so height = adjacent x tan(angle)."},
     [ {t:fmtF(wrong,2), fb:"That is the student's value: it uses sine, which pairs the opposite side with the hypotenuse, not with the adjacent side."},
       {t:fmtF(adj/Math.tan(u7Rad(ang)),2), fb:"That divides by the tangent. The height is adjacent multiplied by tan(angle)."},
       {t:fmtF(adj*Math.cos(u7Rad(ang)),2), fb:"That uses cosine, which pairs the adjacent side with the hypotenuse. The wanted side is the opposite side."} ], sol, {ang:ang, adj:adj});
+  q.figure=u7FigTri("?", adj+" m", "wire", ang+"\u00B0");
+  return q;
 }, ["Name the known and wanted sides relative to the angle before choosing a ratio.", "Adjacent and opposite are the tangent pair: height = adjacent x tan(angle)."]);
 
 E("u7-equivalent-forms", 7, ["2.6","5.1"], 2, "gen", function(){
@@ -4145,59 +4513,59 @@ E("u7-equivalent-forms", 7, ["2.6","5.1"], 2, "gen", function(){
     var ang=u7Ang(), H=ri(10,40), sv=Math.sin(u7Rad(ang)), opp=H*sv;
     var prompt1="The formula for the side opposite an angle is \\(\\text{opp} = \\text{hyp} \\times \\sin A\\). A ladder (the hypotenuse) is "+H+" m long and reaches up at \\("+ang+"^\\circ\\) to the ground. What height does it reach, in metres, to two decimal places?";
     var sol1="Apply the formula directly: \\[ \\text{height} = "+H+" \\times \\sin("+ang+"^\\circ) = "+fmtF(opp,2)+" \\] The ladder reaches <b>"+fmtF(opp,2)+" m</b>.";
-    return mcq(prompt1, {t:fmtF(opp,2), fb:"Correct: height = hypotenuse x sin(angle)."},
+    var q=mcq(prompt1, {t:fmtF(opp,2), fb:"Correct: height = hypotenuse x sin(angle)."},
       [ {t:fmtF(H/sv,2), fb:"That divides by sine, which would give a height longer than the ladder itself."},
         {t:fmtF(H*Math.cos(u7Rad(ang)),2), fb:"That is the distance along the ground (adjacent side), found with cosine, not the height."},
-        {t:fmtF(H*Math.tan(u7Rad(ang)),2), fb:"That uses tangent with the hypotenuse. Tangent pairs the two legs, not the hypotenuse."} ], sol1, {mode:mode});
+        {t:fmtF(H*Math.tan(u7Rad(ang)),2), fb:"That uses tangent with the hypotenuse. Tangent pairs the two legs, not the hypotenuse."} ], sol1, {mode:mode}); q.figure=u7FigTri("?", "", H+" m", ang+"\u00B0"); return q;
   } else if(mode===2){
     var ang2=u7Ang(), O=ri(5,30), sv2=Math.sin(u7Rad(ang2)), H2=O/sv2;
     var prompt2="Rearranging \\(\\sin A = "+FR("opposite","hypotenuse")+"\\) gives \\(\\text{hyp} = \\text{opp} \\div \\sin A\\). A roof slope rises "+O+" m vertically and the slope angle is \\("+ang2+"^\\circ\\). What is the slope length, in metres, to two decimal places?";
     var sol2="Use the rearranged form: \\[ \\text{slope} = "+O+" \\div \\sin("+ang2+"^\\circ) = "+fmtF(H2,2)+" \\] The slope length is <b>"+fmtF(H2,2)+" m</b>, which is longer than the vertical rise, as a hypotenuse must be.";
-    return mcq(prompt2, {t:fmtF(H2,2), fb:"Correct: hypotenuse = opposite / sin(angle)."},
+    var q=mcq(prompt2, {t:fmtF(H2,2), fb:"Correct: hypotenuse = opposite / sin(angle)."},
       [ {t:fmtF(O*sv2,2), fb:"That multiplies instead of dividing, and gives a slope shorter than its own vertical rise, which is impossible."},
         {t:fmtF(O/Math.cos(u7Rad(ang2)),2), fb:"That divides by cosine. The rearranged sine form divides by sin(angle)."},
-        {t:fmtF(O*Math.tan(u7Rad(ang2)),2), fb:"That is the horizontal run found with tangent, not the slope length."} ], sol2, {mode:mode});
+        {t:fmtF(O*Math.tan(u7Rad(ang2)),2), fb:"That is the horizontal run found with tangent, not the slope length."} ], sol2, {mode:mode}); q.figure=u7FigTri(O+" m", "", "?", ang2+"\u00B0"); return q;
   }
   var ang3=u7Ang(), H3=ri(10,40), cv=Math.cos(u7Rad(ang3)), adj3=H3*cv;
   var prompt3="The formula \\(\\text{adj} = \\text{hyp} \\times \\cos A\\) is another form of \\(\\cos A = "+FR("adjacent","hypotenuse")+"\\). A ramp is "+H3+" m long at \\("+ang3+"^\\circ\\) to the ground. How far, in metres, does it reach horizontally, to two decimal places?";
   var sol3="Apply the formula: \\[ \\text{reach} = "+H3+" \\times \\cos("+ang3+"^\\circ) = "+fmtF(adj3,2)+" \\] The ramp reaches <b>"+fmtF(adj3,2)+" m</b> horizontally.";
-  return mcq(prompt3, {t:fmtF(adj3,2), fb:"Correct: adjacent = hypotenuse x cos(angle)."},
+  var q=mcq(prompt3, {t:fmtF(adj3,2), fb:"Correct: adjacent = hypotenuse x cos(angle)."},
     [ {t:fmtF(H3/cv,2), fb:"That divides by cosine, giving a reach longer than the ramp itself."},
       {t:fmtF(H3*Math.sin(u7Rad(ang3)),2), fb:"That is the height of the ramp (opposite side), found with sine, not the horizontal reach."},
-      {t:fmtF(H3*Math.tan(u7Rad(ang3)),2), fb:"That uses tangent with the hypotenuse. Tangent pairs the two legs."} ], sol3, {mode:mode});
+      {t:fmtF(H3*Math.tan(u7Rad(ang3)),2), fb:"That uses tangent with the hypotenuse. Tangent pairs the two legs."} ], sol3, {mode:mode}); q.figure=u7FigTri("", "?", H3+" m", ang3+"\u00B0"); return q;
 }, ["Equivalent forms come from rearranging the same ratio: check which side is being isolated.", "Start from the ratio definition and follow the algebra: multiply or divide both sides to isolate the wanted side."]);
 
 E("u7-trig-in-trades", 7, ["2.2","5.4"], 2, "var", varset([
-  function(){ return mcq("A roofer checks the pitch of a roof. The roof rises 1.8 m over a horizontal run of 6 m. Which ratio describes the pitch angle, and how is it used?",
+  function(){ var q=mcq("A roofer checks the pitch of a roof. The roof rises 1.8 m over a horizontal run of 6 m. Which ratio describes the pitch angle, and how is it used?",
     {t:"Tangent: the roofer divides rise by run to get the pitch angle of the slope.", fb:"Correct: rise is opposite and run is adjacent, so tangent links them to the angle."},
     [ {t:"Sine: the roofer divides the rise by the run to get the pitch angle of the slope.", fb:"Sine pairs the rise with the slope length (hypotenuse), not with the run."},
       {t:"Cosine: the roofer adds the rise and the run to get the pitch angle of the slope.", fb:"Cosine is a ratio, not a sum, and it pairs the run with the slope length."},
       {t:"Pythagoras: the roofer squares the rise to get the pitch angle of the roof slope.", fb:"Squaring the rise gives a side length calculation, not an angle from rise and run."} ],
-    "Pitch is rise over run, the opposite over the adjacent side, so the roofer uses the <b>tangent ratio</b> to find or check the slope angle.", {v:1}); },
-  function(){ return mcq("A ramp builder needs a ramp at \\(8^\\circ\\) that rises 0.9 m. Which calculation gives the length of the ramp surface?",
+    "Pitch is rise over run, the opposite over the adjacent side, so the roofer uses the <b>tangent ratio</b> to find or check the slope angle.", {v:1}); q.figure=u7FigTri("1.8 m", "6 m", "", "?"); return q; },
+  function(){ var q=mcq("A ramp builder needs a ramp at \\(8^\\circ\\) that rises 0.9 m. Which calculation gives the length of the ramp surface?",
     {t:"Ramp length = 0.9 / sin(8 degrees), using the sine ratio with the rise as the opposite side.", fb:"Correct: the ramp surface is the hypotenuse, and hypotenuse = opposite / sin(angle)."},
     [ {t:"Ramp length = 0.9 x sin(8 degrees), using the sine ratio with the rise as the opposite side, as drawn.", fb:"That would make the ramp shorter than its own rise, which is impossible for a hypotenuse."},
       {t:"Ramp length = 0.9 / tan(8 degrees), using the tangent ratio with the rise as the opposite side.", fb:"That gives the horizontal run of the ramp, not the surface length."},
       {t:"Ramp length = 0.9 + 8, adding the rise in metres and the angle in degrees together.", fb:"Adding a length and an angle mixes units and uses no ratio at all."} ],
-    "The rise is opposite the \\(8^\\circ\\) angle and the ramp surface is the hypotenuse, so \\(\\text{length} = 0.9 \\div \\sin(8^\\circ)\\), from the <b>sine ratio</b>.", {v:2}); },
-  function(){ return mcq("A surveyor stands 40 m from a marker on the far side of a river and measures an angle along the bank. Which ratio lets the surveyor calculate the river's width without crossing it?",
+    "The rise is opposite the \\(8^\\circ\\) angle and the ramp surface is the hypotenuse, so \\(\\text{length} = 0.9 \\div \\sin(8^\\circ)\\), from the <b>sine ratio</b>.", {v:2}); q.figure=u7FigTri("0.9 m", "", "?", "8\u00B0"); return q; },
+  function(){ var q=mcq("A surveyor stands 40 m from a marker on the far side of a river and measures an angle along the bank. Which ratio lets the surveyor calculate the river's width without crossing it?",
     {t:"Tangent, because the width and the bank distance are the two legs of a right triangle.", fb:"Correct: opposite and adjacent are the tangent pair, so the width comes from the angle and the bank distance."},
     [ {t:"Sine, because the width is opposite the hypotenuse of the right triangle formed by the banks.", fb:"The width is a leg here, not opposite a hypotenuse pairing: sine needs the hypotenuse as one side."},
       {t:"Cosine, because the width is adjacent to the hypotenuse of the triangle.", fb:"Cosine needs the hypotenuse, which is the slanted sight line, not one of the two legs in this setup."},
       {t:"No ratio works here: the surveyor has to go out and measure the width directly.", fb:"This is exactly indirect measurement: the tangent ratio gives the width from the near bank."} ],
-    "The river width and the distance along the bank are the two legs, so the <b>tangent ratio</b> gives the width indirectly.", {v:3}); },
-  function(){ return mcq("A carpenter cuts a stair stringer (the slanted board) for stairs that run 3.6 m horizontally with a stringer angle of \\(33^\\circ\\). Which calculation gives the stringer length?",
+    "The river width and the distance along the bank are the two legs, so the <b>tangent ratio</b> gives the width indirectly.", {v:3}); q.figure=u7FigTri("?", "40 m", "sight line", ""); return q; },
+  function(){ var q=mcq("A carpenter cuts a stair stringer (the slanted board) for stairs that run 3.6 m horizontally with a stringer angle of \\(33^\\circ\\). Which calculation gives the stringer length?",
     {t:"Stringer = 3.6 / cos(33 degrees), using the cosine ratio with the run as the adjacent side.", fb:"Correct: hypotenuse = adjacent / cos(angle)."},
     [ {t:"Stringer = 3.6 x cos(33 degrees), using the cosine ratio with the run as the adjacent side itself.", fb:"That would give a stringer shorter than the horizontal run, impossible for the slanted side."},
       {t:"Stringer = 3.6 / sin(33 degrees), using the sine ratio with the run as the adjacent side.", fb:"Sine would need the vertical rise as the known side, not the horizontal run."},
       {t:"Stringer = 3.6 x tan(33 degrees), using the tangent ratio with the run as one side.", fb:"That gives the total rise of the stairs, not the stringer length."} ],
-    "The run is adjacent to the angle and the stringer is the hypotenuse, so \\(\\text{stringer} = 3.6 \\div \\cos(33^\\circ)\\) from the <b>cosine ratio</b>.", {v:4}); },
-  function(){ return mcq("An electrician leans a ladder against a building. Safety rules set the angle between the ladder and the ground. Which ratio connects the ladder length, the distance of the foot from the wall, and that angle?",
+    "The run is adjacent to the angle and the stringer is the hypotenuse, so \\(\\text{stringer} = 3.6 \\div \\cos(33^\\circ)\\) from the <b>cosine ratio</b>.", {v:4}); q.figure=u7FigTri("", "3.6 m", "?", "33\u00B0"); return q; },
+  function(){ var q=mcq("An electrician leans a ladder against a building. Safety rules set the angle between the ladder and the ground. Which ratio connects the ladder length, the distance of the foot from the wall, and that angle?",
     {t:"Cosine: foot distance = ladder length x cos(angle).", fb:"Correct: the foot distance is the adjacent side and the ladder is the hypotenuse."},
     [ {t:"Sine: foot distance = ladder length x sin(angle).", fb:"That gives the height up the wall (opposite side), not the foot distance."},
       {t:"Tangent: foot distance = ladder length x tan(angle).", fb:"Tangent pairs the two legs; the ladder is the hypotenuse, so tangent does not apply directly here."},
       {t:"Cosine: foot distance = ladder length / cos(angle).", fb:"Dividing would put the foot farther from the wall than the ladder is long, which cannot happen."} ],
-    "Foot distance is the adjacent side and ladder length is the hypotenuse, so the <b>cosine ratio</b> connects them: adj = hyp x cos(angle).", {v:5}); }
+    "Foot distance is the adjacent side and ladder length is the hypotenuse, so the <b>cosine ratio</b> connects them: adj = hyp x cos(angle).", {v:5}); q.figure=u7FigTri("", "?", "ladder", "angle"); return q; }
 ]), ["Match the trade's known and wanted sides to a ratio.", "Decide which side of the triangle each measurement is: opposite, adjacent or hypotenuse."]);
 
 E("u7-tangent-context", 7, ["5.5"], 2, "gen", function(){
@@ -4218,10 +4586,12 @@ E("u7-sine-cosine-derive", 7, ["5.2","5.3"], 2, "gen", function(){
   var sv=o/h, cv=a/h;
   var prompt="Two right triangles share the acute angle A. The smaller has sides opposite "+o+", adjacent "+a+" and hypotenuse "+h+". The larger has opposite "+o2+", adjacent "+a2+" and hypotenuse "+h2+". Which pair gives \\(\\sin A\\) and \\(\\cos A\\)?";
   var sol="For the smaller triangle, \\(\\sin A = "+o+"/"+h+" = "+fmtF(sv,2)+"\\) and \\(\\cos A = "+a+"/"+h+" = "+fmtF(cv,2)+"\\). For the larger triangle, \\("+o2+"/"+h2+" = "+fmtF(sv,2)+"\\) and \\("+a2+"/"+h2+" = "+fmtF(cv,2)+"\\). Both ratios stay the same when the triangle is scaled, so \\(\\sin A = "+fmtF(sv,2)+"\\) and \\(\\cos A = "+fmtF(cv,2)+"\\). The pair is <b>sin A = "+fmtF(sv,2)+", cos A = "+fmtF(cv,2)+"</b>.";
-  return mcq(prompt, {t:"sin A = "+fmtF(sv,2)+", cos A = "+fmtF(cv,2), fb:"Correct: sine uses opposite/hypotenuse and cosine uses adjacent/hypotenuse, and both hold in either triangle."},
+  var q=mcq(prompt, {t:"sin A = "+fmtF(sv,2)+", cos A = "+fmtF(cv,2), fb:"Correct: sine uses opposite/hypotenuse and cosine uses adjacent/hypotenuse, and both hold in either triangle."},
     [ {t:"sin A = "+fmtF(cv,2)+", cos A = "+fmtF(sv,2), fb:"The two values are swapped: sine is opposite over hypotenuse, cosine is adjacent over hypotenuse."},
       {t:"sin A = "+fmtF(h/o,2)+", cos A = "+fmtF(h/a,2), fb:"Both ratios are upside down there, and a sine or cosine value cannot be greater than 1."},
       {t:"sin A = "+fmtF(o/a,2)+", cos A = "+fmtF(cv,2), fb:"The sine value there is opposite over adjacent, which is the tangent ratio, not sine."} ], sol, {o:o,a:a,h:h,k:k});
+  q.figure=u7FigTriPair({o:o,a:a,oL:""+o,aL:""+a,hL:""+h,angL:"A"},{o:o2,a:a2,oL:""+o2,aL:""+a2,hL:""+h2,angL:"A"});
+  return q;
 }, ["Sine uses the opposite side and cosine uses the adjacent side, each over the hypotenuse.", "Compute opposite / hypotenuse and adjacent / hypotenuse on the smaller triangle, then check the larger one matches."]);
 
 E("u7-unknown-angle-mc", 7, ["5.5"], 2, "gen", function(){
@@ -4251,10 +4621,12 @@ E("u7-elevation-observer", 7, ["5.5","2.4"], 3, "gen", function(){
   var d=ri(15,60), ang=u7Ang(), eye=pick([1.5,1.6,1.7,1.8]), rise=d*Math.tan(u7Rad(ang)), ans=rise+eye;
   var prompt="An observer with eye level "+fmt(eye)+" m above the ground stands "+d+" m from a building. The angle of elevation from eye level to the top of the building is \\("+ang+"^\\circ\\). What is the height of the building, to the nearest tenth of a metre?";
   var sol="First find the rise above eye level with tangent, which requires rearranging the ratio so the opposite side is the subject: \\[ \\text{rise} = "+d+" \\times \\tan("+ang+"^\\circ) = "+fmtF(rise,1)+" \\] Then add the eye level height: \\[ "+fmtF(rise,1)+" + "+fmt(eye)+" = "+fmtF(ans,1)+" \\] The building is <b>"+fmtF(ans,1)+" m</b> high.";
-  return mcq(prompt, {t:fmtF(ans,1), fb:"Correct: tangent gives the rise above eye level, then the eye level height is added."},
+  var q=mcq(prompt, {t:fmtF(ans,1), fb:"Correct: tangent gives the rise above eye level, then the eye level height is added."},
     [ {t:fmtF(rise,1), fb:"That is only the rise above eye level. The observer's eye level of "+fmt(eye)+" m still has to be added."},
       {t:fmtF(rise-eye,1), fb:"That subtracts the eye level. The top of the building is above eye level, so the eye level is added."},
       {t:fmtF(d/Math.tan(u7Rad(ang))+eye,1), fb:"That divides by the tangent in the first step. The rise is distance multiplied by tan(angle)."} ], sol, {d:d, ang:ang, eye:eye});
+  q.figure=m12ElevSVG({dist:d, rise:rise, eye:eye, distLab:d+" m", heightLab:"?", angLab:ang+"\u00B0", eyeLab:fmt(eye)+" m"});
+  return q;
 }, ["Split the height into two parts: the rise above eye level and the eye level itself.", "Use tangent to find the rise, then add the eye level height."]);
 
 E("u7-similar-perimeter", 7, ["3.64"], 3, "gen", function(){
@@ -4263,7 +4635,7 @@ E("u7-similar-perimeter", 7, ["3.64"], 3, "gen", function(){
   var sol="The scale factor is \\("+b+" \\div "+a+" = "+k+"\\). Every length in B, including the whole perimeter, is scaled by the same factor: \\[ "+P+" \\times "+k+" = "+ans+" \\] The perimeter of B is <b>"+ans+" cm</b>.";
   var _bo0=balOpts({t:fmt(ans), fb:"Correct: perimeters scale by the same factor as the sides."}, [ {t:fmtF(P/k,1), fb:"That scales the perimeter down. B is the larger polygon, so its perimeter is larger than A's."},
       {t:fmt(P*k*k), fb:"That multiplies by the scale factor twice. Squaring the factor is for areas, not perimeters."},
-      {t:fmt(P+(b-a)), fb:"That adds the difference of one pair of sides. Every side scales by multiplication, so the perimeter does too."} ]); return mcq(prompt, _bo0[0], _bo0[1], sol, {k:k, P:P});
+      {t:fmt(P+(b-a)), fb:"That adds the difference of one pair of sides. Every side scales by multiplication, so the perimeter does too."} ]); var q=mcq(prompt, _bo0[0], _bo0[1], sol, {k:k, P:P}); q.figure=u7FigPair(a,a*0.7,"A: side "+a+" cm", b,b*0.7,"B: side "+b+" cm"); return q;
 }, ["A perimeter is a length, so it scales the same way the sides do.", "Find the scale factor from the known pair of sides, then multiply the whole perimeter by it."]);
 
 E("u7-reasonable-advanced", 7, ["5.6","2.5"], 3, "gen", function(){
@@ -4273,20 +4645,20 @@ E("u7-reasonable-advanced", 7, ["5.6","2.5"], 3, "gen", function(){
     var correct=H*sv, wrong=H/sv;
     var prompt="A student needs the side opposite a \\("+ang+"^\\circ\\) angle in a right triangle with hypotenuse "+H+" m. The student writes: opposite = "+H+" / sin("+ang+") = "+fmtF(wrong,2)+" m. Which response is correct?";
     var sol="The student's answer, "+fmtF(wrong,2)+" m, is longer than the hypotenuse of "+H+" m, so it cannot be a leg. The error is the operation: rearranging \\(\\sin A = "+FR("opposite","hypotenuse")+"\\) gives opposite = hypotenuse x sin A: \\[ "+H+" \\times \\sin("+ang+"^\\circ) = "+fmtF(correct,2)+" \\] The correct length is <b>"+fmtF(correct,2)+" m</b>.";
-    return mcq(prompt, {t:"The answer is impossible: it is longer than the hypotenuse. The correct value is "+fmtF(correct,2)+" m.", fb:"Correct: a leg cannot exceed the hypotenuse, and the fix is to multiply by sine instead of dividing."},
+    var q=mcq(prompt, {t:"The answer is impossible: it is longer than the hypotenuse. The correct value is "+fmtF(correct,2)+" m.", fb:"Correct: a leg cannot exceed the hypotenuse, and the fix is to multiply by sine instead of dividing."},
       [ {t:"The answer is fine: dividing by a sine value less than 1 is the right rearrangement here.", fb:"Dividing by a number less than 1 grows the value past the hypotenuse, which a leg can never do."},
         {t:"The answer is impossible, and the correct value, worked properly, is "+fmtF(H*Math.cos(u7Rad(ang)),2)+" m.", fb:"The verdict is right, but that value uses cosine: it is the adjacent side, not the opposite side."},
-        {t:"The answer is fine, because sine answers are often larger than the hypotenuse.", fb:"Never: sine is a leg over the hypotenuse, so working it back must give a value smaller than the hypotenuse."} ], sol, {mode:1});
+        {t:"The answer is fine, because sine answers are often larger than the hypotenuse.", fb:"Never: sine is a leg over the hypotenuse, so working it back must give a value smaller than the hypotenuse."} ], sol, {mode:1}); q.figure=u7FigTri("?", "", H+" m", ang+"\u00B0"); return q;
   }
   var o=ri(4,18), a=ri(4,18), tries=0;
   while(o===a && tries<20){ a=ri(4,18); tries++; } if(o===a) a=o+2;
   var trueAng=Math.atan2(o,a)*180/Math.PI, correct=Math.round(trueAng), comp=90-correct;
   var prompt2="A student finds an angle in a right triangle where the opposite side is "+o+" m and the adjacent side is "+a+" m. The student uses the sine ratio with these two sides and reports the angle as \\("+comp+"^\\circ\\). Which response is correct?";
   var sol2="Sine pairs the opposite side with the hypotenuse, and no hypotenuse is given here. The two given sides are the legs, so the tangent ratio applies: the angle is \\(\\tan^{-1}("+o+"/"+a+") \\approx "+fmtF(trueAng,1)+"^\\circ\\), about <b>"+correct+" degrees</b>. The reported \\("+comp+"^\\circ\\) is the size of the other acute angle, a sign the wrong sides were used.";
-  return mcq(prompt2, {t:"The student used the wrong ratio: with the two legs, tangent gives about "+correct+" degrees.", fb:"Correct: opposite and adjacent are the tangent pair; sine needs the hypotenuse."},
+  var q=mcq(prompt2, {t:"The student used the wrong ratio: with the two legs, tangent gives about "+correct+" degrees.", fb:"Correct: opposite and adjacent are the tangent pair; sine needs the hypotenuse."},
     [ {t:"The student is right: sine works with any two sides of a right triangle.", fb:"Each ratio is tied to specific sides: sine only pairs the opposite side with the hypotenuse."},
       {t:"The student used the wrong ratio: cosine gives about "+correct+" degrees.", fb:"Cosine also needs the hypotenuse. With the two legs given, the ratio is tangent."},
-      {t:"The angle cannot be found from two sides of a triangle alone, without more given at all.", fb:"Two sides are enough: they fix the ratio, and the inverse ratio gives the angle."} ], sol2, {mode:0});
+      {t:"The angle cannot be found from two sides of a triangle alone, without more given at all.", fb:"Two sides are enough: they fix the ratio, and the inverse ratio gives the angle."} ], sol2, {mode:0}); q.figure=u7FigTri(o+" m", a+" m", "", "?"); return q;
 }, ["Judge the answer first, then name the exact error that produced it.", "Check the size against the hypotenuse for sides, and check which sides the chosen ratio actually pairs."]);
 
 /* ---------------- Constructed response ---------------- */
@@ -4316,28 +4688,28 @@ E("u7-cr-find-angle", 7, ["5.5"], 2, "gen", function(){
   var c=pick(ctxs), rise=ri(1,6), run=ri(4,12), ang=Math.atan2(rise,run)*180/Math.PI, ans=Math.round(ang);
   var prompt="A "+c.n.split(" ").slice(1).join(" ")+" has a "+c.s+" of "+rise+" m over a horizontal run of "+run+" m. Find the angle the surface makes with the ground, to the nearest degree. Show your work.";
   var sol="The rise is opposite the angle and the run is adjacent, so use the inverse tangent: \\[ \\begin{aligned} \\tan A &= "+FR(rise, run) +" \\\\ A &= \\tan^{-1}\\left("+fmtF(rise/run,3)+"\\right) \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The angle is <b>"+ans+" degrees</b>.";
-  return numq(prompt, ans, 0.6, sol, {rise:rise, run:run});
+  var q=numq(prompt, ans, 0.6, sol, {rise:rise, run:run}); q.figure=u7FigTri(rise+" m", run+" m", "ramp", "?"); return q;
 }, ["Rise and run are the two legs, so the tangent ratio connects them to the angle.", "Divide the rise by the run, then use the inverse tangent."]);
 
 E("u7-cr-similar-perimeter-draw", 7, ["3.65"], 2, "gen", function(){
   var w=ri(3,10), h=ri(2,9), k=pick([2,3]), iw=w*k, ih=h*k, ans=2*(iw+ih);
   var prompt="A rectangle is "+w+" cm wide and "+h+" cm high. A student draws a similar rectangle. In the drawing, the side that was "+w+" cm is now "+iw+" cm. Find the perimeter of the drawing, in cm. Show your work.";
   var sol="First find the scale factor from the given pair of sides, then scale the other side, then find the perimeter: \\[ \\begin{aligned} \\text{scale factor} &= "+iw+" \\div "+w+" = "+k+" \\\\ \\text{new height} &= "+h+" \\times "+k+" = "+ih+" \\\\ \\text{perimeter} &= 2 \\times ("+iw+" + "+ih+") = "+ans+" \\end{aligned} \\] The perimeter of the drawing is <b>"+ans+" cm</b>.";
-  return numq(prompt, ans, 0.1, sol, {w:w, h:h, k:k});
+  var q=numq(prompt, ans, 0.1, sol, {w:w, h:h, k:k}); q.figure=u7FigPair(w,h,"original: "+w+" by "+h, iw,ih,"drawing: "+iw+" by ?"); return q;
 }, ["The drawing scales every side by one factor: find that factor before doing anything else.", "Divide the new width by the old width to get the scale factor, then scale the height."]);
 
 E("u7-cr-hypotenuse-rearrange", 7, ["5.5","2.4"], 2, "gen", function(){
   var ang=u7Ang(), opp=ri(4,20), hyp=opp/Math.sin(u7Rad(ang));
   var prompt="A ladder leans against a wall. The ladder makes an angle of \\("+ang+"^\\circ\\) with the ground and reaches "+opp+" m up the wall. Find the length of the ladder, to the nearest tenth of a metre. Show your work.";
   var sol="The height up the wall is opposite the angle and the ladder is the hypotenuse, so start with sine and rearrange to make the hypotenuse the subject: \\[ \\begin{aligned} \\sin("+ang+"^\\circ) &= "+FR(opp, "ladder") +" \\\\ \\text{ladder} &= "+opp+" \\div \\sin("+ang+"^\\circ) \\\\ &= "+fmtF(hyp,1)+" \\end{aligned} \\] The ladder is <b>"+fmtF(hyp,1)+" m</b> long, which is longer than the height it reaches, as it should be.";
-  return numq(prompt, Math.round(hyp*10)/10, 0.15, sol, {ang:ang, opp:opp});
+  var q=numq(prompt, Math.round(hyp*10)/10, 0.15, sol, {ang:ang, opp:opp}); q.figure=u7FigTri(opp+" m", "", "?", ang+"\u00B0"); return q;
 }, ["Sine links the opposite side to the hypotenuse.", "Write sin(angle) = opposite / hypotenuse, then rearrange so the ladder length is on its own."]);
 
 E("u7-cr-shadow-problem", 7, ["2.1","3.64"], 2, "gen", function(){
   var ph=pick([1.5,1.6,1.7,1.8]), psh=pick([1.2,1.5,2.0,2.5,3.0]), tsh=ri(6,18), ans=ph*tsh/psh;
   var prompt="At the same time of day, a person "+fmt(ph)+" m tall casts a shadow "+fmt(psh)+" m long, and a flagpole casts a shadow "+tsh+" m long. Set up a similarity proportion for this situation and solve it to find the height of the flagpole, to the nearest tenth of a metre. Show your work.";
   var sol="The person and the flagpole form similar right triangles with their shadows, so the ratios of height to shadow match: \\[ \\begin{aligned} "+FR("height of pole", tsh) + " &= " + FR(fmt(ph), fmt(psh)) + " \\\\ \\text{height of pole} &= " + fmt(ph) + " \\times " + tsh + " \\div " + fmt(psh) + " \\\\ &= " + fmtF(ans,1) + " \\end{aligned} \\] The flagpole is <b>"+fmtF(ans,1)+" m</b> high.";
-  return numq(prompt, Math.round(ans*10)/10, 0.15, sol, {ph:ph, psh:psh, tsh:tsh});
+  var q=numq(prompt, Math.round(ans*10)/10, 0.15, sol, {ph:ph, psh:psh, tsh:tsh}); q.figure=m12ShadowSVG(ph,psh,tsh,ans, fmt(ph)+" m", fmt(psh)+" m", tsh+" m"); return q;
 }, ["Objects and their shadows at the same time of day form similar triangles.", "Match height to shadow for the person, then set the same ratio for the flagpole."]);
 
 E("u7-cr-building-eye-level", 7, ["5.5"], 3, "gen", function(){
@@ -4353,7 +4725,7 @@ E("u7-cr-depression-distance", 7, ["2.1","5.5"], 3, "gen", function(){
   var H=ri(20,70), ang=pick([20,24,28,32,36,40,44]), dist=H/Math.tan(u7Rad(ang));
   var prompt="From the top of a cliff "+H+" m above the water, the angle of depression to a boat is \\("+ang+"^\\circ\\). Create a right triangle model for this situation and solve it to find how far the boat is from the base of the cliff, to the nearest tenth of a metre. Show your work.";
   var sol="The angle of depression from the top equals the angle of elevation from the boat, and the cliff height is opposite that angle while the distance is adjacent. Rearranging the tangent ratio: \\[ \\begin{aligned} \\tan("+ang+"^\\circ) &= "+FR(H, "distance") +" \\\\ \\text{distance} &= "+H+" \\div \\tan("+ang+"^\\circ) \\\\ &= "+fmtF(dist,1)+" \\end{aligned} \\] The boat is <b>"+fmtF(dist,1)+" m</b> from the base of the cliff.";
-  return numq(prompt, Math.round(dist*10)/10, 0.2, sol, {H:H, ang:ang});
+  var q=numq(prompt, Math.round(dist*10)/10, 0.2, sol, {H:H, ang:ang}); q.figure=m12DepressSVG({height:H, dist:dist, heightLab:H+" m", distLab:"?", angLab:ang+"\u00B0"}); return q;
 }, ["Angle of depression is measured down from the horizontal, and it equals the angle of elevation from the boat.", "Put the cliff height as the opposite side and the unknown distance as the adjacent side in the tangent ratio, then rearrange."]);
 
 // Distinctness guard: a few numeric generators can, on rare draws, round two
