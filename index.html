@@ -299,7 +299,7 @@
   </details>
 
   <details id="builderBox">
-  <summary>Build your own practice</summary>
+  <summary>Build your own practice <button type="button" class="alt" id="advToolsBtn" style="float:right;" hidden>Advanced tools</button></summary>
   <div class="card">
     <h2>1. What do you want to practise?</h2>
     <div class="presetrow">
@@ -394,7 +394,7 @@
     <div class="modebar">
       <button type="button" id="copyLink" class="alt">Copy link to these settings</button>
     </div>
-    <p class="hint" id="teacherNote" hidden>Teacher mode is on: question editing controls will appear on practice sets, sheets and tests you make. Any link you copy to share with students leaves teacher mode out; only the clearly labelled teacher link buttons keep it.</p>
+    <p class="hint" id="teacherNote" hidden>Advanced tools are on: question editing controls will appear on practice sets, sheets and tests you make. Any link you copy to share with students leaves advanced tools out; only the clearly labelled teacher link buttons keep them. <a href="#" id="advToolsOff">Turn off advanced tools</a></p>
     <p class="hint" id="poolInfo"></p>
   </div>
   </details>
@@ -3176,6 +3176,7 @@ function applyURL(){
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5)__e5.textContent=__c.presets.final.label;}
+var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();location.href=settingsToURL();});}
 $("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);});
 $("presetFinal").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.final.units.slice():[]);});
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
