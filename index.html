@@ -539,7 +539,7 @@ function mcq(prompt,correct,distractors,solution,params){
 }
 function numq(prompt,answer,tol,solution,params){return {prompt:prompt,type:"num",answer:answer,tol:tol,solution:solution,_p:params||{}};}
 function textq(prompt,answers,solution,params){return {prompt:prompt,type:"text",answers:answers.map(function(a){return a.toLowerCase();}),solution:solution,_p:params||{}};}
-function varset(list){return function(){var f=pick(list);return f();};}
+function varset(list){var g=function(){var f=pick(list);return f();};g.variantCount=list.length;return g;}
 /* ============ diagram figures (parameterized inline SVG, generated with the question) ============
    A question object may carry q.figure: an SVG string drawn from the SAME values as the
    question text, so the diagram always matches the numbers. Renderers insert it under the
@@ -1052,12 +1052,25 @@ function showHint(i){
   else if(stage===0){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first;box.hidden=false;box.dataset.stage="1";}
   else if(stage===1){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first+(h2?("<br><b>"+L9("First step:","Premier pas :")+"</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";}
 }
+function exampleCapable(e){
+  // A worked example only helps when the entry can deal a question that
+  // differs from the one on screen. Generator entries always can; a var
+  // entry can only when its variant set holds more than one variant;
+  // anything else (single-variant sets, CR prompts) would hand the
+  // student their own question back as its own "example", answer and
+  // all, so no example is offered for those.
+  if(!e)return false;
+  if(e.kind==="gen")return true;
+  if(e.kind==="var")return ((e.gen&&e.gen.variantCount)||1)>1;
+  return false;
+}
 function dealExample(i,n,prev){
   var q=current[i];if(!q||!q._entry)return null;
   var e=q._entry;
   var sd=sessionSeed?(sessionSeed+"|example|"+e.id+"|"+n):"";
   return withSeed(sd,function(){var c=canonQ(q),pc=prev?canonQ(prev):null,t=null;
     for(var k=0;k<12;k++){var cand=e.gen();cand._entry=e;t=cand;var cc=canonQ(cand);if(cc!==c&&cc!==pc)break;}
+    if(t&&canonQ(t)===c)return null; // no different example exists: offer nothing
     return t;});
 }
 function renderExample(i,exq){
@@ -1084,7 +1097,7 @@ function toggleExample(i){
   if(box._exq){box.hidden=false;setExLabel(i,true);return;}
   box.dataset.exn="0";
   var exq=dealExample(i,0,null);
-  if(!exq)return;
+  if(!exq){var xb=document.querySelector('[data-ex="'+i+'"]');if(xb)xb.style.display="none";return;}
   renderExample(i,exq);setExLabel(i,true);
 }
 function anotherExample(i){
@@ -2003,7 +2016,7 @@ function renderOnline(scroll){
       html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
       if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
-    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> <button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
+    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exampleCapable(q._entry)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
       +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">'+L9("Report a problem","Signaler un problème")+'</button></p>'
       +'<div class="rep" id="rep'+i+'"><label>'+L9("What is the problem?","Quel est le problème ?")+'<select id="reptype'+i+'"><option>'+L9("The question looks wrong or unclear","La question semble fausse ou peu claire")+'</option><option>'+L9("The worked solution doesn't work out","La solution détaillée ne fonctionne pas")+'</option><option>'+L9("My answer was marked wrong but should be right","Ma réponse a été marquée fausse, mais elle devrait être bonne")+'</option><option>'+L9("Something else is out of place","Quelque chose d'autre ne va pas")+'</option></select></label>'
       +'<label>'+L9("Anything you noticed (optional)","Ce que tu as remarqué (facultatif)")+'<textarea id="repnote'+i+'" rows="3"></textarea></label>'
