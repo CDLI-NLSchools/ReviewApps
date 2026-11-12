@@ -2544,7 +2544,7 @@ E("u3-error-two-laws", 3, ["3.15"], 3, "gen", function () {
   var step2ok = a + "^{" + e1ok + "}" + opSym + a + "^{" + p + "} &= " + a + "^{" + ec + "}";
   return mcq(prompt,
     { t: "\\(" + a + "^{" + ec + "}\\)", fb: "Exact. Tu as refait les deux étapes de lois et corrigé la loi mal appliquée." }, ds,
-    errNote + " Le calcul correct est \\[ \\begin{aligned} ((" + a + "^{" + m + "})^{" + n + "} &= " + a + "^{" + e1ok + "} \\\\ " + step2ok + " \\end{aligned} \\] Donc le résultat simplifié correct est <b>\\(" + a + "^{" + ec + "}\\)</b>.",
+    errNote + " Le calcul correct est \\[ \\begin{aligned} ((" + a + "^{" + m + "})^{" + n + "}) &= " + a + "^{" + e1ok + "} \\\\ " + step2ok + " \\end{aligned} \\] Donc le résultat simplifié correct est <b>\\(" + a + "^{" + ec + "}\\)</b>.",
     { mode: "topup-error-" + fam + "-" + err, a: a, m: m, n: n, p: p });
 }, ["Refais la simplification toi-même, une loi à la fois, avant de regarder les choix.", "Commence par la puissance d'une puissance, puis applique la deuxième loi à ton propre résultat."]);
 
@@ -6314,7 +6314,7 @@ E("u1-gap-brackets-cr", 1, ["6.2"], 2, "gen", function () {
   var e = ri(1, f - 1);
   var inner = Math.round((d1 - d2) * 10) / 10;
   var ans = Math.round((inner * mult + e / f) * 1000) / 1000;
-  var prompt = "Évalue \\((" + fmtD(d1) + ") - (" + fmtD(d2) + ")) \\times " + mult + " + " + FR(e, f) + "\\). Donne ta réponse sous forme décimale.";
+  var prompt = "Évalue \\(((" + fmtD(d1) + ") - (" + fmtD(d2) + ")) \\times " + mult + " + " + FR(e, f) + "\\). Donne ta réponse sous forme décimale.";
   var sol = "Calcule d'abord les parenthèses, puis multiplie, puis additionne : \\[ \\begin{aligned} (" + fmtD(d1) + ") - (" + fmtD(d2) + ") &= " + fmtD(inner) + " \\\\ " + fmtD(inner) + " \\times " + mult + " &= " + fmtD(inner * mult) + " \\\\ " + fmtD(inner * mult) + " + " + fmtD(e / f, 3) + " &= " + fmtD(ans, 3) + " \\end{aligned} \\] La réponse est <b>" + fmtD(ans, 3) + "</b>.";
   return numq(prompt, ans, 0.01, sol, { mode: "gap-brackets", inner: inner, mult: mult });
 }, ["Les parenthèses se calculent avant toute multiplication ou addition à l'extérieur.", "Soustrais les deux nombres décimaux dans les parenthèses comme première étape."]);

@@ -2387,7 +2387,7 @@ E("u3-error-two-laws", 3, ["3.15"], 3, "gen", function () {
   var step2ok = a + "^{" + e1ok + "}" + opSym + a + "^{" + p + "} &= " + a + "^{" + ec + "}";
   return mcq(prompt,
     { t: "\\(" + a + "^{" + ec + "}\\)", fb: "Correct. You redid both law steps and fixed the misapplied law." }, ds,
-    errNote + " The correct working is \\[ \\begin{aligned} ((" + a + "^{" + m + "})^{" + n + "} &= " + a + "^{" + e1ok + "} \\\\ " + step2ok + " \\end{aligned} \\] So the correct simplified result is <b>\\(" + a + "^{" + ec + "}\\)</b>.",
+    errNote + " The correct working is \\[ \\begin{aligned} ((" + a + "^{" + m + "})^{" + n + "}) &= " + a + "^{" + e1ok + "} \\\\ " + step2ok + " \\end{aligned} \\] So the correct simplified result is <b>\\(" + a + "^{" + ec + "}\\)</b>.",
     { mode: "topup-error-" + fam + "-" + err, a: a, m: m, n: n, p: p });
 }, ["Redo the simplification yourself, one law at a time, before you look at the choices.", "Start with the power of a power, then apply the second law to your own result."]);
 
@@ -6023,7 +6023,7 @@ E("u1-gap-brackets-cr", 1, ["6.2"], 2, "gen", function () {
   var e = ri(1, f - 1);
   var inner = Math.round((d1 - d2) * 10) / 10;
   var ans = Math.round((inner * mult + e / f) * 1000) / 1000;
-  var prompt = "Evaluate \\((" + fmt(d1) + ") - (" + fmt(d2) + ")) \\times " + mult + " + " + FR(e, f) + "\\). Give your answer as a decimal.";
+  var prompt = "Evaluate \\(((" + fmt(d1) + ") - (" + fmt(d2) + ")) \\times " + mult + " + " + FR(e, f) + "\\). Give your answer as a decimal.";
   var sol = "Work out the brackets first, then multiply, then add: \\[ \\begin{aligned} (" + fmt(d1) + ") - (" + fmt(d2) + ") &= " + fmt(inner) + " \\\\ " + fmt(inner) + " \\times " + mult + " &= " + fmt(inner * mult) + " \\\\ " + fmt(inner * mult) + " + " + fmt(e / f, 3) + " &= " + fmt(ans, 3) + " \\end{aligned} \\] The answer is <b>" + fmt(ans, 3) + "</b>.";
   return numq(prompt, ans, 0.01, sol, { mode: "gap-brackets", inner: inner, mult: mult });
 }, ["Brackets are evaluated before any multiplication or addition outside them.", "Subtract the two decimals inside the brackets as the first step."]);
