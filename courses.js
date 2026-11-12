@@ -3238,7 +3238,7 @@ window.COURSES = {
   title: "Mathématiques 9 : banque de questions d'entraînement",
   subject: "Mathématiques",
   grade: 9,
-  listed: false,
+  listed: true,
   language: "fr",
   storagePrefix: "m9fr",
   bankFile: "math-9-fr.js",
