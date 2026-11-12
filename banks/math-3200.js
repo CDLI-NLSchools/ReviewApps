@@ -1,0 +1,6119 @@
+/* Math 3200 bank module for the unified review app shell.
+   Assembled by assemble-bank.py from banks/math-3200/; edit the
+   per-unit sources there, not this file. Entries register through
+   the shell's E(id, unit, indicators, level, kind, gen). */
+
+/* ----- bank-u1.js ----- */
+// Math 3200 Unit 1 Polynomial Functions question bank
+// CRMARKS: u1-divide-quotient=2
+// CRMARKS: u1-divide-result=2
+// CRMARKS: u1-end-behaviour=1
+// CRMARKS: u1-equation-from-graph=3
+// CRMARKS: u1-error-synthetic=2
+// CRMARKS: u1-find-coefficient=2
+// CRMARKS: u1-largest-zero-cr=3
+// CRMARKS: u1-modelling=3
+// CRMARKS: u1-multiplicity-graph=1
+// CRMARKS: u1-remainder-point=1
+// CRMARKS: u1-remainder-value=1
+// CRMARKS: u1-tableau-step-cr=2
+// CRMARKS: u1-which-factor=2
+// CRMARKS: u1-zeros-from-factors=1
+/* ================= Unit 1: Polynomial Functions ================= */
+/* ================= Unit 1: Polynomial Functions (MA3200.3.1 to 3.13) =================
+   Tranche 1, mid scope. All stems, contexts and values are original.
+   Helpers are prefixed u1; entries register through E(...). */
+
+/* ---------- u1 helpers ---------- */
+function u1PolyS(cf){ /* coefficients, highest degree first, to a polynomial string */
+  var out="", first=true, n=cf.length-1, i, c, p, term;
+  for(i=0;i<cf.length;i++){ c=cf[i]; p=n-i; if(c===0) continue;
+    if(p===0) term=""+Math.abs(c);
+    else { var base=(p===1?"x":"x^"+p); term=(Math.abs(c)===1?base:Math.abs(c)+base); }
+    if(first){ out=(c<0?"-":"")+term; first=false; }
+    else out+=(c<0?" - ":" + ")+term;
+  }
+  return out===""?"0":out;
+}
+function u1EvalC(cf,x){ var s=0,i; for(i=0;i<cf.length;i++) s=s*x+cf[i]; return s; }
+function u1Synth(cf,a){ var b=[cf[0]], i; for(i=1;i<cf.length;i++) b.push(cf[i]+a*b[i-1]); var r=b.pop(); return {q:b, r:r}; }
+function u1MulLin(cf,r){ var out=[], i; for(i=0;i<cf.length;i++){ out[i]=(out[i]||0)+cf[i]; out[i+1]=(out[i+1]||0)-r*cf[i]; } return out; }
+function u1FromRoots(a,roots){ var cf=[a]; roots.forEach(function(rm){ for(var k=0;k<rm[1];k++) cf=u1MulLin(cf, rm[0]); }); return cf; }
+function u1FacS(r){ if(r===0) return "x"; return r>0?"(x - "+r+")":"(x + "+(-r)+")"; }
+function u1FactoredS(a,roots){ var s=(a===1?"":a===-1?"-":""+a); roots.forEach(function(rm){ s+=u1FacS(rm[0])+(rm[1]>1?"^"+rm[1]:""); }); return s; }
+function u1JoinSigned(nums){ var out=""; nums.forEach(function(v,i){ if(i===0) out=""+v; else out+=(v<0?" - "+(-v):" + "+v); }); return out; }
+function u1SubstS(cf,x){ /* polynomial string with the variable replaced by (x) */
+  var out="", first=true, n=cf.length-1, i, c, p, term;
+  for(i=0;i<cf.length;i++){ c=cf[i]; p=n-i; if(c===0) continue;
+    if(p===0) term=""+Math.abs(c);
+    else { var base="("+x+")"+(p>1?"^"+p:""); term=(Math.abs(c)===1?base:Math.abs(c)+base); }
+    if(first){ out=(c<0?"-":"")+term; first=false; }
+    else out+=(c<0?" - ":" + ")+term;
+  }
+  return out===""?"0":out;
+}
+function u1EvalBlock(cf,x,label){ /* centred aligned evaluation of a polynomial at x */
+  var vals=[], n=cf.length-1, i, c, p;
+  for(i=0;i<cf.length;i++){ c=cf[i]; p=n-i; if(c===0) continue; vals.push(c*Math.pow(x,p)); }
+  return "\\[ \\begin{aligned} "+label+"("+x+") &= "+u1SubstS(cf,x)+" \\\\ &= "+u1JoinSigned(vals)+" \\\\ &= "+u1EvalC(cf,x)+" \\end{aligned} \\]";
+}
+function u1Tableau(cf,a){ /* synthetic division tableau as a KaTeX array */
+  var sy=u1Synth(cf,a), q=sy.q, n=cf.length, cols="r|", i;
+  for(i=0;i<n;i++) cols+="r";
+  var prods=q.map(function(v){ return a*v; });
+  return "\\[ \\begin{array}{"+cols+"} "+a+" & "+cf.join(" & ")+" \\\\ & & "+prods.join(" & ")+" \\\\ \\hline & "+q.join(" & ")+" & "+sy.r+" \\end{array} \\]";
+}
+function u1DivResultS(q,R,a){ /* quotient-plus-remainder form as a string */
+  var s=u1PolyS(q); if(R===0) return s;
+  var den="x"+(a>0?" - "+a:" + "+(-a));
+  return s+(R>0?" + ":" - ")+"\\frac{"+Math.abs(R)+"}{"+den+"}";
+}
+function u1EndClause(deg,a){
+  if(deg%2===1) return a>0?"the left end falls and the right end rises":"the left end rises and the right end falls";
+  return a>0?"both ends rise":"both ends fall";
+}
+function u1Plot(fn,x0,x1,o){ /* axes-and-curve SVG, y-range fitted from samples and capped */
+  o=o||{}; var W=440,H=250,pad=26,i,x,y,mn=1e18,mx=-1e18;
+  for(i=0;i<=200;i++){ x=x0+(x1-x0)*i/200; y=fn(x); if(isFinite(y)){ if(y<mn)mn=y; if(y>mx)mx=y; } }
+  var y1=(o.y1!==undefined)?o.y1:Math.min(90,Math.max(12,Math.ceil(mx*1.2)));
+  var y0=(o.y0!==undefined)?o.y0:Math.max(-90,Math.min(-12,Math.floor(mn*1.2)));
+  var X=function(v){ return pad+(v-x0)/(x1-x0)*(W-2*pad); };
+  var Y=function(v){ return H-pad-(v-y0)/(y1-y0)*(H-2*pad); };
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  var gy=(y1-y0>90)?20:((y1-y0>45)?10:((y1-y0>22)?5:2)), gx, gyv;
+  for(gx=Math.ceil(x0);gx<=x1;gx+=1){ out+='<line x1="'+fmt(X(gx),1)+'" y1="'+pad+'" x2="'+fmt(X(gx),1)+'" y2="'+(H-pad)+'" stroke="#eae5d6" stroke-width="1"/>';
+    out+='<text x="'+fmt(X(gx),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+gx+'</text>'; }
+  for(gyv=Math.ceil(y0/gy)*gy;gyv<=y1;gyv+=gy){ out+='<line x1="'+pad+'" y1="'+fmt(Y(gyv),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(gyv),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+    if(gyv!==0) out+='<text x="'+(pad-4)+'" y="'+fmt(Y(gyv)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+gyv+'</text>'; }
+  if(y0<0&&y1>0) out+='<line x1="'+pad+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(0),1)+'" stroke="#17352a" stroke-width="1.3"/>';
+  if(x0<0&&x1>0) out+='<line x1="'+fmt(X(0),1)+'" y1="'+pad+'" x2="'+fmt(X(0),1)+'" y2="'+(H-pad)+'" stroke="#17352a" stroke-width="1.3"/>';
+  out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">x</text>';
+  out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">y</text>';
+  var pts=[], N=160;
+  for(i=0;i<=N;i++){ x=x0+(x1-x0)*i/N; y=fn(x); if(y<y0)y=y0; if(y>y1)y=y1; pts.push(fmt(X(x),1)+","+fmt(Y(y),1)); }
+  out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+  (o.points||[]).forEach(function(p){ out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>'; });
+  return out+'</svg>';
+}
+
+/* ---------- 3.2: quotient by synthetic division (L1) ---------- */
+function balDp(keyStr,ds){
+  function dpOf(s){var m=/^-?\d+(?:\.(\d+))?$/.exec(s);if(!m)return null;return m[1]?m[1].length:0;}
+  function padTo(s,dp){var cur=dpOf(s);if(cur===null||dp<=cur)return s;if(s.indexOf(".")<0)return s+"."+Array(dp+1).join("0");return s+Array(dp-cur+1).join("0");}
+  var all=[keyStr].concat(ds),dps=all.map(dpOf);
+  if(dps.some(function(d){return d===null;}))return ds;
+  function ok(list){var c={};list.forEach(function(d){c[d]=(c[d]||0)+1;});return Object.keys(c).every(function(k){return c[k]!==1;});}
+  if(ok(dps))return ds;
+  var cap=Math.max.apply(null,dps)+2,best=null,bestCost=1e9;
+  for(var a=dps[1];a<=cap;a++)for(var b=dps[2];b<=cap;b++)for(var c2=dps[3];c2<=cap;c2++){
+    var cand=[dps[0],a,b,c2];
+    if(!ok(cand))continue;
+    var cost=(a-dps[1])+(b-dps[2])+(c2-dps[3]);
+    if(cost<bestCost){bestCost=cost;best=[a,b,c2];}
+  }
+  if(!best)return ds;
+  return ds.map(function(s,i){return padTo(s,best[i]);});
+}
+
+E("u1-divide-quotient",1,["3.2"],1,"gen",function(){
+  var att=0, cf, a, sy;
+  while(att<200){
+    att++;
+    cf=[pick([1,2,3,-1,-2]), ri(-9,9), ri(-9,9), ri(-9,9)];
+    a=pick([-4,-3,-2,-1,1,2,3,4]);
+    sy=u1Synth(cf,a);
+    if(sy.r!==0) break;
+  }
+  if(sy.r===0){ cf=[1,0,-7,0]; a=2; sy=u1Synth(cf,a); }
+  var q=sy.q, R=sy.r, key=u1PolyS(q);
+  var pool=[ u1PolyS(u1Synth(cf,-a).q), u1PolyS([q[0],q[1],q[2]+R]), u1PolyS([q[0],q[1],q[2]+2]), u1PolyS([q[0]+1,q[1],q[2]]), u1PolyS([q[0],-q[1],q[2]]) ];
+  var dis=[], seen={};
+  pool.forEach(function(s){ if(s!==key && !seen[s]){ seen[s]=1; dis.push(s); } });
+  dis=dis.slice(0,3).map(function(s){ return "\\("+s+"\\)"; });
+  return mcq("Using synthetic division to divide \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) gives which <b>quotient</b>?",
+    "\\("+key+"\\)", dis,
+    "Synthetic division by \\("+u1FacS(a)+"\\) uses \\("+a+"\\) in the tableau:"+
+    u1Tableau(cf,a)+
+    "The bottom row, before the remainder, gives the quotient coefficients \\("+q.join(", ")+"\\), one degree lower than \\(P(x)\\). So the quotient is \\("+key+"\\) and the remainder is \\("+R+"\\).",
+    {a:a, R:R});
+});
+
+/* ---------- 3.3: remainder from the remainder theorem (L1) ---------- */
+E("u1-remainder-value",1,["3.3"],1,"gen",function(){
+  var deg=pick([3,3,4]), cf=[], i;
+  cf.push(pick([1,2,3,4,-2,-3]));
+  for(i=1;i<=deg;i++) cf.push(ri(-9,9));
+  var a=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var R=u1EvalC(cf,a);
+  return numq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\), what is the <b>remainder</b>?",
+    R, 0.001,
+    "By the remainder theorem, the remainder when \\(P(x)\\) is divided by \\("+u1FacS(a)+"\\) is \\(P("+a+")\\)."+
+    u1EvalBlock(cf,a,"P")+
+    "So the remainder is <b>"+R+"</b>.",
+    {a:a, R:R});
+});
+
+/* ---------- 3.6: identify a polynomial function (L1) ---------- */
+E("u1-identify-polynomial",1,["3.6"],1,"gen",function(){
+  var form=ri(1,4), correct, why;
+  if(form===1){ var cf=[pick([1,2,3,-2]), ri(-8,8), ri(-8,8), ri(-9,9)]; if(ri(0,1)) cf.push(ri(-9,9));
+    correct="\\(f(x) = "+u1PolyS(cf)+"\\)"; why="it is a sum of terms with whole-number exponents"; }
+  else if(form===2){ var r1=ri(-4,4), r2=ri(-4,4); while(r2===r1) r2=ri(-4,4);
+    correct="\\(f(x) = "+u1FactoredS(pick([1,2,-1]),[[r1,1],[r2,1]])+"\\)"; why="it expands to a sum of terms with whole-number exponents"; }
+  else if(form===3){ var la=ri(2,7), lb=ri(-12,12); while(lb===0) lb=ri(-12,12);
+    correct="\\(f(x) = "+la+"x "+(lb>0?"+ ":"- ")+Math.abs(lb)+"\\)"; why="it is a sum of terms with whole-number exponents"; }
+  else { correct="\\(f(x) = "+ri(3,20)+"\\)"; why="a constant is a polynomial of degree 0"; }
+  var pool=[
+    function(){ var k=ri(2,6), b=ri(1,8); return {s:"\\(f(x) = "+k+"\\sqrt{x} - "+b+"\\)", r:"a square root of the variable"}; },
+    function(){ var k=ri(2,9), b=ri(1,9); return {s:"\\(f(x) = \\frac{"+k+"}{x} + "+b+"\\)", r:"the variable in a denominator"}; },
+    function(){ var b=ri(2,6); return {s:"\\(f(x) = "+b+"^x\\)", r:"the variable in the exponent"}; },
+    function(){ var b=ri(1,6); return {s:"\\(f(x) = x^{-2} + "+b+"x\\)", r:"a negative exponent on the variable"}; },
+    function(){ var b=ri(1,6); return {s:"\\(f(x) = \\left|x - "+b+"\\right|\\)", r:"an absolute value, which no polynomial can reproduce"}; },
+    function(){ var b=ri(1,5); return {s:"\\(f(x) = \\sin x + "+b+"\\)", r:"a trigonometric function of the variable"}; },
+    function(){ var b=ri(1,6), c=ri(1,6); return {s:"\\(f(x) = \\frac{x + "+b+"}{x - "+c+"}\\)", r:"a ratio of polynomials, not a single polynomial"}; }
+  ];
+  var idx=shuffle([0,1,2,3,4,5,6]).slice(0,3), dis=[], reasons=[];
+  idx.forEach(function(i){ var d=pool[i](); dis.push(d.s); reasons.push(d.r); });
+  return mcq("Which function is a <b>polynomial function</b>?",
+    correct, dis,
+    "A polynomial function is built from terms where the variable appears only with whole-number exponents: no roots of the variable, no variable in a denominator, and no variable in an exponent. The correct choice qualifies because "+why+". The others involve "+reasons.join("; ")+".",
+    {form:form});
+});
+
+/* ---------- 3.8: end behaviour from an equation (L1) ---------- */
+E("u1-end-behaviour",1,["3.8"],1,"gen",function(){
+  var deg=ri(1,6), cf=[pick([-5,-4,-3,-2,-1,1,2,3,4,5])], i;
+  for(i=1;i<=deg;i++) cf.push(ri(-9,9));
+  var a=cf[0], odd=(deg%2===1);
+  var S={
+    "odd+":"As \\(x \\to -\\infty\\), \\(f(x) \\to -\\infty\\), and as \\(x \\to \\infty\\), \\(f(x) \\to \\infty\\)",
+    "odd-":"As \\(x \\to -\\infty\\), \\(f(x) \\to \\infty\\), and as \\(x \\to \\infty\\), \\(f(x) \\to -\\infty\\)",
+    "even+":"As \\(x \\to -\\infty\\), \\(f(x) \\to \\infty\\), and as \\(x \\to \\infty\\), \\(f(x) \\to \\infty\\)",
+    "even-":"As \\(x \\to -\\infty\\), \\(f(x) \\to -\\infty\\), and as \\(x \\to \\infty\\), \\(f(x) \\to -\\infty\\)"
+  };
+  var key=(odd?(a>0?"odd+":"odd-"):(a>0?"even+":"even-"));
+  var dis=Object.keys(S).filter(function(k){ return k!==key; }).map(function(k){ return S[k]; });
+  return mcq("What is the <b>end behaviour</b> of \\(f(x) = "+u1PolyS(cf)+"\\)?",
+    S[key], dis,
+    "The degree is \\("+deg+"\\), which is "+(odd?"odd":"even")+", and the leading coefficient is \\("+a+"\\), which is "+(a>0?"positive":"negative")+". "+
+    (odd?"An odd degree sends the two ends in opposite directions, and the sign of the leading coefficient decides which end rises.":
+         "An even degree sends both ends the same way, and the sign of the leading coefficient decides whether both rise or both fall.")+
+    " Here: "+S[key]+".",
+    {deg:deg, a:a});
+});
+
+/* ---------- 3.1: how synthetic division relates to long division (L2, var) ---------- */
+E("u1-synthetic-relation",1,["3.1"],2,"var",varset([
+  function(){
+    var a=pick([-3,-2,2,3]);
+    var cf=[pick([1,2,3]), ri(-8,8), ri(-8,8), ri(-8,8)];
+    return mcq("A student uses synthetic division to divide \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\). Which statement about the process is <b>correct</b>?",
+      "The other numbers in the bottom row are the coefficients of the quotient, and the last number is the remainder.",
+      ["The numbers in the bottom row are the zeros of the polynomial function being divided by the given divisor.",
+       "Synthetic division gives the same result as long division for any divisor, including divisors that are quadratic.",
+       "The value placed at the left of the tableau is always the value of \\("+(-a)+"\\) itself, not \\(" + a + "\\)."],
+      "Synthetic division is a shortcut for long division by a divisor of the form \\((x - a)\\): the value used is \\("+a+"\\) itself. Each bottom-row entry, except the last, is a coefficient of the quotient, and the last entry is the remainder, exactly as long division would give.",
+      {a:a});
+  },
+  function(){
+    var b=ri(2,5);
+    return mcq("To divide a polynomial by \\((x + "+b+")\\) using synthetic division, what value is placed at the <b>left of the tableau</b>?",
+      ""+(-b), [""+b, "\\(\\frac{1}{"+b+"}\\)", "0"],
+      "The divisor \\((x + "+b+")\\) has the form \\((x - a)\\) with \\(a = "+(-b)+"\\), and it is that value, \\("+(-b)+"\\), that goes at the left of the tableau.",
+      {b:b});
+  },
+  function(){
+    return mcq("Long division and synthetic division of a polynomial by \\((x - a)\\) produce the same quotient and remainder. Why can synthetic division be written so much more briefly?",
+      "It works only with the coefficients, so the variables are omitted and each step is just a multiplication and an addition.",
+      ["It skips the remainder entirely, which long division calculates separately at the end of the process.",
+       "It is only an approximation, used when an exact answer is not needed, so it is quicker but less reliable in its results overall.",
+       "It first rewrites the divisor as \\((x + a)\\) before starting the division itself, which shortens the calculation."],
+      "In long division, the variables line up in the same pattern every step, so they carry no new information. Synthetic division drops them, records only the coefficients, and replaces each divide-and-subtract step with a multiply-and-add step. Nothing is skipped or approximated: the quotient and remainder are identical.",
+      {});
+  },
+  function(){
+    var att=0, cf, a, sy;
+    while(att<100){
+      att++;
+      cf=[pick([1,2]), ri(-7,7), ri(-7,7), ri(-7,7)];
+      a=pick([2,3,-2]);
+      sy=u1Synth(cf,a);
+      if(sy.q[2]!==sy.r) break;
+    }
+    if(sy.q[2]===sy.r){ cf=[1,-2,-5,6]; a=2; sy=u1Synth(cf,a); }
+    return mcq("The completed synthetic division of \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) is shown."+
+      u1Tableau(cf,a)+
+      "Which statement is <b>true</b>?",
+      "The remainder is \\("+sy.r+"\\), so \\(P("+a+") = "+sy.r+"\\).",
+      ["The remainder is \\("+sy.q[2]+"\\), the last coefficient of the quotient.",
+       "\\(P("+(-a)+") = "+sy.r+"\\).",
+       "The quotient is \\("+u1PolyS(u1Synth(cf,-a).q)+"\\)."],
+      "The bottom row of the tableau reads off the quotient coefficients \\("+sy.q.join(", ")+"\\) followed by the remainder \\("+sy.r+"\\). By the remainder theorem, that remainder is the value of the function at the value used in the tableau: \\(P("+a+") = "+sy.r+"\\).",
+      {a:a, R:sy.r});
+  }
+]));
+
+/* ---------- 3.2: full division result for a quartic (L2) ---------- */
+E("u1-divide-result",1,["3.2"],2,"gen",function(){
+  var att=0, cf, a, sy;
+  while(att<200){
+    att++;
+    cf=[pick([1,2,3,-1,-2]), ri(-9,9), ri(-9,9), ri(-9,9), ri(-9,9)];
+    a=pick([-4,-3,-2,-1,1,2,3,4]);
+    sy=u1Synth(cf,a);
+    if(sy.r!==0) break;
+  }
+  if(sy.r===0){ cf=[1,0,-3,0,4]; a=1; sy=u1Synth(cf,a); }
+  var q=sy.q, R=sy.r;
+  var key=u1DivResultS(q,R,a);
+  var alt=u1Synth(cf,-a);
+  var dis=[ u1DivResultS(alt.q, alt.r, a),
+            u1DivResultS(q, -R, a),
+            u1PolyS([q[0],q[1],q[2],q[3]+R]) ];
+  return mcq("Dividing \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) gives which <b>result</b>?",
+    "\\("+key+"\\)", dis.map(function(s){ return "\\("+s+"\\)"; }),
+    "Synthetic division by \\("+u1FacS(a)+"\\) uses \\("+a+"\\) in the tableau:"+
+    u1Tableau(cf,a)+
+    "The quotient is \\("+u1PolyS(q)+"\\) with remainder \\("+R+"\\), so the result is written as quotient plus remainder over divisor: \\("+key+"\\).",
+    {a:a, R:R});
+});
+
+/* ---------- 3.3: remainder theorem gives a point on the graph (L2) ---------- */
+E("u1-remainder-point",1,["3.3"],1,"gen",function(){
+  var att=0, cf, a, R;
+  while(att<200){
+    att++;
+    cf=[pick([1,2,3,-2]), ri(-8,8), ri(-8,8), ri(-8,8)];
+    a=pick([-4,-3,-2,-1,1,2,3,4]);
+    R=u1EvalC(cf,a);
+    if(R!==0 && R!==a && u1EvalC(cf,-a)!==R && u1EvalC(cf,R)!==a) break;
+  }
+  if(!(R!==0 && R!==a && u1EvalC(cf,-a)!==R && u1EvalC(cf,R)!==a)){ cf=[1,-2,-5,6]; a=2; R=u1EvalC(cf,a); }
+  function pt(x,y){ return "\\(("+x+", "+y+")\\)"; }
+  return mcq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\), the remainder is \\("+R+"\\). Which point lies on the graph of \\(y = P(x)\\)?",
+    pt(a,R), [pt(-a,R), pt(R,a), pt(a,0)],
+    "By the remainder theorem, the remainder on division by \\("+u1FacS(a)+"\\) is the function value \\(P("+a+")\\). So \\(P("+a+") = "+R+"\\), which means the point \\(("+a+", "+R+")\\) lies on the graph.",
+    {a:a, R:R});
+});
+
+/* ---------- 3.4: which binomial is a factor (L2) ---------- */
+E("u1-which-factor",1,["3.4"],2,"gen",function(){
+  var att=0, roots, rk, s, t, lead;
+  while(att<200){
+    att++;
+    var vals=[-5,-4,-3,-2,-1,1,2,3,4,5];
+    roots=shuffle(vals).slice(0,3);
+    var cand=roots.filter(function(r){ return roots.indexOf(-r)<0; });
+    if(!cand.length) continue;
+    rk=cand[0];
+    var rest=vals.filter(function(v){ return roots.indexOf(v)<0 && v!==-rk; });
+    s=rest[ri(0,rest.length-1)];
+    t=rest[ri(0,rest.length-1)];
+    if(t===s) continue;
+    lead=pick([1,1,2]);
+    break;
+  }
+  if(att>=200){ roots=[1,2,-3]; rk=2; s=4; t=-1; lead=1; }
+  var cf=u1FromRoots(lead, roots.map(function(r){ return [r,1]; }));
+  var others=[[-rk,"P("+(-rk)+")"],[s,"P("+s+")"],[t,"P("+t+")"]];
+  var lines=others.map(function(o){ return o[1]+" &= "+u1EvalC(cf,o[0]); }).join(" \\\\ ");
+  return mcq("Which binomial is a <b>factor</b> of \\(P(x) = "+u1PolyS(cf)+"\\)?",
+    "\\("+u1FacS(rk)+"\\)",
+    ["\\("+u1FacS(-rk)+"\\)", "\\("+u1FacS(s)+"\\)", "\\("+u1FacS(t)+"\\)"],
+    "By the factor theorem, \\((x - k)\\) is a factor of \\(P(x)\\) exactly when \\(P(k) = 0\\). Evaluating:"+
+    "\\[ \\begin{aligned} P("+rk+") &= 0 \\\\ "+lines+" \\end{aligned} \\]"+
+    "Only \\(P("+rk+")\\) is zero, so only \\("+u1FacS(rk)+"\\) is a factor.",
+    {rk:rk});
+});
+
+/* ---------- 3.4: find a coefficient from a known factor (L2) ---------- */
+E("u1-find-coefficient",1,["3.4"],2,"gen",function(){
+  var vals=[-5,-4,-3,-2,-1,1,2,3,4,5];
+  var trip=shuffle(vals).slice(0,3), a=trip[0], s=trip[1], t=trip[2];
+  var cf=u1FromRoots(1,[[a,1],[s,1],[t,1]]);
+  var k=cf[1], M=cf[2], N=cf[3];
+  var disp="x^3 + kx^2";
+  if(M!==0) disp+=" "+(M>0?"+ ":"- ")+Math.abs(M)+"x";
+  disp+=" "+(N>0?"+ ":"- ")+Math.abs(N);
+  var sub=""+Math.pow(a,3)+" + k("+Math.pow(a,2)+")"+(M!==0?" "+(M>0?"+ ":"- ")+Math.abs(M)+"("+a+")":"")+" "+(N>0?"+ ":"- ")+Math.abs(N);
+  var rhs=-(Math.pow(a,3)+M*a+N);
+  return numq("\\(P(x) = "+disp+"\\) has a factor \\("+u1FacS(a)+"\\). What is the value of \\(k\\)?",
+    k, 0.001,
+    "By the factor theorem, \\("+u1FacS(a)+"\\) is a factor exactly when \\(P("+a+") = 0\\). Substituting:"+
+    "\\[ \\begin{aligned} P("+a+") &= "+sub+" = 0 \\\\ "+Math.pow(a,2)+"k &= "+rhs+" \\\\ k &= "+k+" \\end{aligned} \\]"+
+    "So \\(k = "+k+"\\) (and indeed \\(P(x) = "+u1PolyS(cf)+"\\)).",
+    {a:a, k:k});
+});
+
+/* ---------- 3.5: zeros from factored form (L2) ---------- */
+E("u1-zeros-from-factors",1,["3.5"],1,"gen",function(){
+  var att=0, roots, lead, S0, S1, S2, S3;
+  function setS(arr){ var c=arr.slice().sort(function(x,y){ return x-y; }); return "\\(\\{"+c.join(", ")+"\\}\\)"; }
+  while(att<200){
+    att++;
+    roots=shuffle([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]).slice(0,3);
+    lead=pick([1,2,3,-1,-2]);
+    S0=setS(roots);
+    S1=setS([-roots[0], roots[1], roots[2]]);
+    S2=setS(roots.map(function(r){ return -r; }));
+    var deltas=[1,-1,2,-2], done=false;
+    for(var di=0; di<deltas.length && !done; di++){
+      var cand=roots.slice(); cand[2]+=deltas[di];
+      if(cand[0]===cand[2] || cand[1]===cand[2]) continue;
+      var cs=setS(cand);
+      if(cs!==S0 && cs!==S1 && cs!==S2){ S3=cs; done=true; }
+    }
+    if(!done) continue;
+    if(S0!==S1 && S0!==S2 && S1!==S2) break;
+  }
+  if(att>=200){ roots=[1,-2,3]; lead=1; S0=setS(roots); S1=setS([-1,-2,3]); S2=setS([-1,2,-3]); S3=setS([1,-2,4]); }
+  var rs=roots.slice().sort(function(x,y){ return x-y; });
+  return mcq("What are the <b>zeros</b> of the function \\(f(x) = "+u1FactoredS(lead, roots.map(function(r){ return [r,1]; }))+"\\)?",
+    S0, [S1, S2, S3],
+    "Setting each linear factor equal to zero: \\("+u1FacS(roots[0])+" = 0\\) gives \\(x = "+roots[0]+"\\), \\("+u1FacS(roots[1])+" = 0\\) gives \\(x = "+roots[1]+"\\), and \\("+u1FacS(roots[2])+" = 0\\) gives \\(x = "+roots[2]+"\\). Watch the signs: the factor \\((x - r)\\) produces the zero \\(r\\). So the zeros are \\("+rs.join(", ")+"\\) .",
+    {roots:rs});
+});
+
+/* ---------- 3.9: zeros, roots and intercepts are the same values (L2) ---------- */
+E("u1-zeros-roots-intercepts",1,["3.9"],1,"gen",function(){
+  var roots=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3).sort(function(x,y){ return x-y; });
+  var list=roots.join(", "), nlist=roots.map(function(r){ return -r; }).join(", ");
+  var key="The roots of the corresponding polynomial equation are "+list+", and the x-intercepts of the graph are "+list+".";
+  var d1="The roots of the corresponding polynomial equation are "+nlist+", and the x-intercepts of the graph are "+nlist+".";
+  var d2="The roots of the corresponding polynomial equation are "+list+", and the graph crosses the y-axis at the points (0, "+roots[0]+"), (0, "+roots[1]+") and (0, "+roots[2]+").";
+  var d3="The zeros of the function are the y-values of the points where the graph crosses the y-axis.";
+  return mcq("A polynomial function has zeros "+list+". Which statement is <b>correct</b>?",
+    key, [d1, d2, d3],
+    "The zeros of a function, the roots of the corresponding equation \\(P(x) = 0\\), and the x-intercepts of the graph are three names for the same values: here, "+list+". They sit on the x-axis as the points ("+roots[0]+", 0), ("+roots[1]+", 0) and ("+roots[2]+", 0).",
+    {roots:roots});
+});
+
+/* ---------- 3.7: roles of the constant term and leading coefficient (L2) ---------- */
+E("u1-constant-leading",1,["3.7"],1,"gen",function(){
+  var att=0, deg, cf, a, d0, m;
+  while(att<200){
+    att++;
+    deg=pick([3,4]);
+    cf=[pick([2,3,4,-2,-3,-4])];
+    for(var i=1;i<=deg;i++) cf.push(ri(-9,9));
+    a=cf[0]; d0=cf[deg]; m=cf[deg-1];
+    if(d0!==0 && d0!==a && m!==d0 && m!==0) break;
+  }
+  if(att>=200){ deg=3; cf=[2,-3,5,-7]; a=2; d0=-7; m=5; }
+  var clause=u1EndClause(deg,a), wclause=u1EndClause(deg,-a);
+  function stmt(ct, lc, cl){ return "The constant term is \\("+ct+"\\), so the graph crosses the y-axis at \\((0, "+ct+")\\). The leading coefficient is \\("+lc+"\\), so "+cl+"."; }
+  return mcq("For the polynomial function \\(f(x) = "+u1PolyS(cf)+"\\), which statement is <b>correct</b>?",
+    stmt(d0, a, clause),
+    [stmt(m, a, clause), stmt(d0, a, wclause), stmt(a, d0, clause)],
+    "The constant term is the term with no variable: \\("+d0+"\\). Setting \\(x = 0\\) leaves only this term, so the graph crosses the y-axis at \\((0, "+d0+")\\). The leading coefficient is the coefficient of the highest power: \\("+a+"\\). With degree \\("+deg+"\\), "+clause+".",
+    {deg:deg, a:a, d0:d0});
+});
+
+/* ---------- 3.10: multiplicity behaviour read from a graph (L2) ---------- */
+E("u1-multiplicity-graph",1,["3.10"],1,"gen",function(){
+  var pair=shuffle([-4,-3,-2,-1,1,2,3,4]).slice(0,2), rd=pair[0], rs=pair[1];
+  var a=pick([1,-1]);
+  var cf=u1FromRoots(a,[[rd,2],[rs,1]]);
+  var fn=function(x){ return u1EvalC(cf,x); };
+  var x0=Math.min(rd,rs)-3, x1=Math.max(rd,rs)+3;
+  var targetRd=ri(0,1)===0, t=targetRd?rd:rs;
+  var BEH={ cross:"It crosses the x-axis.", touch:"It touches the x-axis and turns around.", flat:"It flattens out and crosses the x-axis.", asym:"It approaches the x-axis but never reaches it." };
+  var correct=targetRd?BEH.touch:BEH.cross;
+  var dis=targetRd?[BEH.cross, BEH.flat, BEH.asym]:[BEH.touch, BEH.flat, BEH.asym];
+  var q=mcq("The graph of \\(f(x) = "+u1FactoredS(a,[[rd,2],[rs,1]])+"\\) is shown. At \\(x = "+t+"\\), what does the graph do?",
+    correct, dis,
+    "The factor \\("+u1FacS(rd)+"\\) appears with multiplicity 2 (an even multiplicity), so at \\(x = "+rd+"\\) the graph touches the x-axis and turns around. The factor \\("+u1FacS(rs)+"\\) has multiplicity 1 (odd), so at \\(x = "+rs+"\\) the graph crosses the x-axis. At \\(x = "+t+"\\) the graph "+(targetRd?"touches the axis and turns around.":"crosses the axis."),
+    {rd:rd, rs:rs, t:t});
+  q.figure=u1Plot(fn, x0, x1, {points:[[rd,0],[rs,0]]});
+  return q;
+});
+
+/* ---------- 3.11: match a feature list to a graph (L2) ---------- */
+E("u1-sketch-features",1,["3.11"],2,"gen",function(){
+  var roots=shuffle([-4,-3,-2,-1,1,2,3,4]).slice(0,3).sort(function(x,y){ return x-y; });
+  var a=pick([1,2,-1,-2]);
+  var cf=u1FromRoots(a, roots.map(function(r){ return [r,1]; }));
+  var fn=function(x){ return u1EvalC(cf,x); };
+  var y0=u1EvalC(cf,0);
+  var clause=u1EndClause(3,a), wclause=u1EndClause(3,-a);
+  function feat(rs, yv, cl){ return "x-intercepts: "+rs.join(", ")+"; y-intercept: "+yv+"; end behaviour: "+cl; }
+  var flipIdx=roots.findIndex(function(r){ return roots.indexOf(-r)<0; });
+  var flipped=roots.slice(); flipped[flipIdx]=-flipped[flipIdx];
+  flipped.sort(function(x,y){ return x-y; });
+  var q=mcq("The graph of a polynomial function is shown. Which list of features matches the graph?",
+    feat(roots, y0, clause),
+    [feat(roots, -y0, clause), feat(roots, y0, wclause), feat(flipped, y0, clause)],
+    "Reading the graph: it crosses the x-axis at "+roots.join(", ")+", so those are the x-intercepts. It crosses the y-axis at \\("+y0+"\\) (the value of the function at \\(x = 0\\)). The function is a cubic with a "+(a>0?"positive":"negative")+" leading coefficient, so "+clause+".",
+    {roots:roots, y0:y0});
+  q.figure=u1Plot(fn, roots[0]-3, roots[2]+3, {points:[[0,y0]]});
+  return q;
+});
+
+/* ---------- 3.10: multiplicity statements from factored form (L3) ---------- */
+E("u1-multiplicity-statements",1,["3.10"],3,"gen",function(){
+  var pair=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,2), p=pair[0], qq=pair[1];
+  var a=pick([1,-1]);
+  var TOUCH="touches the x-axis and turns around", FLAT="flattens out and then crosses the x-axis", CROSS="crosses the x-axis";
+  function stmt(bp, bq){ return "At \\(x = "+p+"\\), the graph "+bp+", and at \\(x = "+qq+"\\), the graph "+bq+"."; }
+  return mcq("Which statement describes the graph of \\(f(x) = "+u1FactoredS(a,[[p,2],[qq,3]])+"\\) at its x-intercepts?",
+    stmt(TOUCH, FLAT),
+    [stmt(FLAT, TOUCH), stmt(TOUCH, CROSS), stmt(CROSS, FLAT)],
+    "Multiplicity decides the behaviour at an intercept. The zero \\("+p+"\\) has multiplicity 2, an even multiplicity, so the graph touches the x-axis there and turns around. The zero \\("+qq+"\\) has multiplicity 3, an odd multiplicity greater than 1, so the graph flattens out at the intercept and then crosses. A plain crossing with no flattening happens only for multiplicity 1.",
+    {p:p, q:qq});
+});
+
+/* ---------- 3.2 and 3.3: diagnose a synthetic division sign error (L3) ---------- */
+E("u1-error-synthetic",1,["3.2","3.3"],3,"gen",function(){
+  var att=0, cf, a, R, SR, c0;
+  while(att<200){
+    att++;
+    cf=[pick([1,2,3,-2]), ri(-8,8), ri(-8,8), ri(-8,8)];
+    a=pick([-4,-3,-2,-1,1,2,3,4]);
+    R=u1EvalC(cf,a); SR=u1EvalC(cf,-a); c0=cf[3];
+    var vals=[R, SR, -R, c0];
+    var uniq=vals.filter(function(v,i){ return vals.indexOf(v)===i; });
+    if(R!==0 && uniq.length===4) break;
+  }
+  if(!(R!==0 && [R,SR,-R,c0].filter(function(v,i,arr){ return arr.indexOf(v)===i; }).length===4)){ cf=[1,-2,-5,6]; a=2; R=u1EvalC(cf,a); SR=u1EvalC(cf,-a); c0=cf[3]; }
+  return mcq("A student divided \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) using synthetic division, but placed \\("+(-a)+"\\) at the left of the tableau instead of \\("+a+"\\). The student reported a remainder of \\("+SR+"\\). What is the <b>correct remainder</b>?",
+    ""+R, [""+SR, ""+(-R), ""+c0],
+    "Placing \\("+(-a)+"\\) in the tableau divides by \\((x - ("+(-a)+")) = (x + "+Math.abs(a)+")\\) instead, so the student's remainder is \\(P("+(-a)+") = "+SR+"\\), the remainder for the wrong divisor. The correct remainder is \\(P("+a+")\\), by the remainder theorem:"+
+    u1EvalBlock(cf,a,"P")+
+    "So the correct remainder is <b>"+R+"</b>.",
+    {a:a, R:R, SR:SR});
+});
+
+/* ---------- 3.12: modelling with polynomial functions (L3, var) ---------- */
+E("u1-modelling",1,["3.12"],3,"var",varset([
+  function(){
+    return mcq("An open-top box is made from a rectangular sheet of cardboard that is 36 cm long and 24 cm wide. A square of side \\(x\\) cm is cut from each corner and the sides are folded up. Which expression gives the <b>volume</b>, in cubic centimetres, of the box?",
+      "\\(x(36 - 2x)(24 - 2x)\\)",
+      ["\\(x(36 - x)(24 - x)\\)", "\\((36 - 2x)(24 - 2x)\\)", "\\(x(36 - 2x)(24 + 2x)\\)"],
+      "Cutting a square of side \\(x\\) from each corner shortens every side of the base twice: the base is \\((36 - 2x)\\) cm by \\((24 - 2x)\\) cm, and the height of the folded box is \\(x\\) cm. Volume is height times length times width: \\(x(36 - 2x)(24 - 2x)\\).",
+      {});
+  },
+  function(){
+    return mcq("A farmer uses 48 m of fencing to enclose a rectangular pen on three sides, with an existing barn wall forming the fourth side. The two sides perpendicular to the wall each have length \\(x\\) metres. Which function gives the <b>area</b> of the pen, in square metres?",
+      "\\(A(x) = x(48 - 2x)\\)",
+      ["\\(A(x) = x(48 - x)\\)", "\\(A(x) = 2x(48 - 2x)\\)", "\\(A(x) = x(24 - x)\\)"],
+      "The fencing covers two sides of length \\(x\\) and one side parallel to the wall, so the parallel side has length \\(48 - 2x\\) metres. Area is length times width: \\(A(x) = x(48 - 2x)\\).",
+      {});
+  },
+  function(){
+    var cf=[-2,30,-72,500];
+    var p5=u1EvalC(cf,5), p2=u1EvalC(cf,2);
+    return numq("A bakery chain models its monthly profit, in thousands of dollars, \\(t\\) months after opening a new location, by \\(P(t) = "+u1PolyS(cf)+"\\). How many thousands of dollars <b>greater</b> is the profit in month 5 than in month 2?",
+      p5-p2, 0.001,
+      "Evaluate the model at each time:"+
+      u1EvalBlock(cf,5,"P")+
+      u1EvalBlock(cf,2,"P")+
+      "The difference is \\("+p5+" - "+p2+" = "+(p5-p2)+"\\), so the profit in month 5 is <b>"+(p5-p2)+" thousand dollars</b> greater.",
+      {p5:p5, p2:p2});
+  }
+]));
+
+/* ---------- 3.13: equation of a cubic from its graph (L3) ---------- */
+E("u1-equation-from-graph",1,["3.13"],3,"gen",function(){
+  var att=0, roots, a, cf, y0, flipRoot;
+  while(att<200){
+    att++;
+    roots=shuffle([-4,-3,-2,-1,1,2,3,4]).slice(0,3).sort(function(x,y){ return x-y; });
+    a=pick([2,3,-2,-3]);
+    var cand=roots.filter(function(r){ return roots.indexOf(-r)<0; });
+    if(!cand.length) continue;
+    flipRoot=cand[0];
+    break;
+  }
+  if(att>=200){ roots=[-3,1,2]; a=2; flipRoot=-3; }
+  cf=u1FromRoots(a, roots.map(function(r){ return [r,1]; }));
+  y0=u1EvalC(cf,0);
+  var fn=function(x){ return u1EvalC(cf,x); };
+  var flipped=roots.map(function(r){ return r===flipRoot?-r:r; });
+  var key=u1FactoredS(a, roots.map(function(r){ return [r,1]; }));
+  var q=mcq("The graph of a cubic function is shown. It crosses the x-axis at the marked intercepts and passes through the marked point \\((0, "+y0+")\\). Which <b>equation</b> defines the function?",
+    "\\("+key+"\\)",
+    ["\\("+u1FactoredS(-a, roots.map(function(r){ return [r,1]; }))+"\\)",
+     "\\("+u1FactoredS(a, flipped.map(function(r){ return [r,1]; }))+"\\)",
+     "\\("+u1FactoredS(1, roots.map(function(r){ return [r,1]; }))+"\\)"],
+    "The x-intercepts are "+roots.join(", ")+", so the equation has the form \\(f(x) = a"+roots.map(function(r){ return u1FacS(r); }).join("")+"\\). Use the marked point \\((0, "+y0+")\\) to find \\(a\\):"+
+    "\\[ \\begin{aligned} "+y0+" &= a("+roots.map(function(r){ return -r; }).join(")(")+") \\\\ &= "+((-roots[0])*(-roots[1])*(-roots[2]))+"a \\\\ a &= "+a+" \\end{aligned} \\]"+
+    "So the equation is \\(f(x) = "+key+"\\).",
+    {roots:roots, a:a, y0:y0});
+  q.figure=u1Plot(fn, roots[0]-3, roots[2]+3, {points:[[0,y0],[roots[0],0],[roots[1],0],[roots[2],0]]});
+  return q;
+});
+
+/* ---------- Unit-test pool fix, Nov 9, 2026: two Level 2 CR entries (3 and 2 marks). The Unit 1 Level 2 CR pool held only 2-mark entries, so the 9-mark and 8-mark remainders behind the 5 and 6 Level 3 picks could not form. ---------- */
+E("u1-largest-zero-cr",1,["3.4","3.9"],2,"gen",function(){
+  var roots=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3);
+  var given=roots[0], cf=u1FromRoots(1,roots.map(function(r){return [r,1];}));
+  var q=u1Synth(cf,given).q, ans=Math.max(roots[0],roots[1],roots[2]);
+  var sorted=roots.slice().sort(function(x,y){return x-y;});
+  return numq("The polynomial \\(P(x) = "+u1PolyS(cf)+"\\) has \\("+u1FacS(given)+"\\) as a factor. What is the <b>greatest zero</b> of \\(P\\)?",
+    ans,0.001,
+    "Divide \\(P\\) by \\("+u1FacS(given)+"\\) using synthetic division with \\("+given+"\\):"+u1Tableau(cf,given)+
+    "The quotient is \\("+u1PolyS(q)+"\\), which factors as \\("+u1FacS(roots[1])+u1FacS(roots[2])+"\\). So the zeros of \\(P\\) are "+sorted[0]+", "+sorted[1]+" and "+sorted[2]+", and the greatest zero is <b>"+ans+"</b>.",
+    {roots:roots});
+});
+E("u1-tableau-step-cr",1,["3.1"],2,"gen",function(){
+  var cf=[1,ri(-6,6),ri(-9,9),ri(-9,9)], a=pick([-4,-3,-2,-1,1,2,3,4]);
+  var b1=cf[1]+a*cf[0], b2=cf[2]+a*b1;
+  return numq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\) using synthetic division, the bottom row of the tableau starts \\("+cf[0]+", "+b1+", \\ldots\\) What is the <b>next entry</b> in the bottom row?",
+    b2,0.001,
+    "In synthetic division, each bottom-row entry is multiplied by \\("+a+"\\) and added to the next coefficient. The full tableau is:"+u1Tableau(cf,a)+
+    "The second entry is \\("+cf[1]+" + ("+a+")("+cf[0]+") = "+b1+"\\). Multiplying it by \\("+a+"\\) and adding the next coefficient gives \\("+cf[2]+" + ("+a+")("+b1+") = <b>"+b2+"</b>\\).",
+    {cf:cf,a:a});
+});
+
+/* ----- bank-u2.js ----- */
+// Math 3200 Unit 2 Function Transformations question bank
+// CRMARKS: u2-find-stretch-cr=3
+// CRMARKS: u2-full-equation=2
+// CRMARKS: u2-inv-domran=1
+// CRMARKS: u2-inv-equation=2
+// CRMARKS: u2-inv-figure=1
+// CRMARKS: u2-inv-restrict=2
+// CRMARKS: u2-inverse-points-cr=3
+// CRMARKS: u2-refl-equation=1
+// CRMARKS: u2-refl-point=1
+// CRMARKS: u2-reflection-equation-cr=2
+// CRMARKS: u2-stretch-equation=2
+// CRMARKS: u2-stretch-identify=1
+// CRMARKS: u2-stretch-point=2
+// CRMARKS: u2-trans-describe=1
+// CRMARKS: u2-trans-equation=2
+// CRMARKS: u2-trans-point=1
+// CRMARKS: u2-trans-zeros=3
+/* ================= Unit 2: Function Transformations ================= */
+/* ================= Unit 2: Function Transformations =================
+   Bank source chunk for the Math 3200 Review app. Helpers are prefixed u2.
+   Sources are type-level only (Mauger Chapter 1 sets, MHR Pre-Calculus 12
+   Chapter 1): every stem, context and value here is original. */
+
+/* ---------- u2 helpers ---------- */
+function u2pm(v){return (v>=0?" + ":" - ")+Math.abs(v);}                 /* " + 3" or " - 3", appended after a term */
+function u2pm0(v){return v===0?"":u2pm(v);}                             /* u2pm, but blank when zero */
+function u2gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function u2pmFrac(num,den){ /* the signed value num/den as a trailing term: " + 3", " - \\frac{2}{3}", or "" */
+  if(num===0)return "";
+  var g=u2gcd(num,den),a=Math.abs(num)/g,d2=den/g;
+  var body=d2===1?""+a:"\\frac{"+a+"}{"+d2+"}";
+  return (num>0?" + ":" - ")+body;
+}
+function u2xarg(s){if(s===0)return "x";return s>0?"x - "+s:"x + "+(-s);} /* renders "x - s" for the signed value s */
+function u2pt(x,y){return "("+x+", "+y+")";}
+function u2lin(a,b){var s=a===1?"x":a===-1?"-x":a+"x";return s+u2pm0(b);}
+function u2scaleExpr(n,d,v){ /* the factor n/d applied to variable v, as a string */
+  if(n===d)return v;
+  if(d===1)return n+v;
+  if(n===1)return "\\frac{"+v+"}{"+d+"}";
+  return "\\frac{"+n+v+"}{"+d+"}";
+}
+function u2coefStr(n,d){ /* a standalone coefficient n/d as a string */
+  if(d===1)return ""+n;
+  if(n===1)return "\\frac{1}{"+d+"}";
+  return "\\frac{"+n+"}{"+d+"}";
+}
+function u2argStr(n,d){ /* the expression (n/d)x rendered as an argument: "2x" or "\\frac{x}{2}" */
+  if(d===1)return n===1?"x":n+"x";
+  if(n===1)return "\\frac{x}{"+d+"}";
+  return "\\frac{"+n+"x}{"+d+"}";
+}
+function u2shifted(base,sx,sy){ /* base function with argument x - sx, plus sy */
+  var xa=u2xarg(sx),tail=u2pm0(sy);
+  if(base==="sq")return "("+xa+")^2"+tail;
+  if(base==="cu")return "("+xa+")^3"+tail;
+  if(base==="abs")return "|"+xa+"|"+tail;
+  if(base==="sqrt")return "\\sqrt{"+xa+"}"+tail;
+  return "\\frac{1}{"+xa+"}"+tail; /* rec */
+}
+function u2baseDisplay(base){
+  if(base==="sq")return "x^2";
+  if(base==="cu")return "x^3";
+  if(base==="abs")return "|x|";
+  if(base==="sqrt")return "\\sqrt{x}";
+  return "\\frac{1}{x}";
+}
+function u2coefBase(n,d,base){ /* coefficient n/d times a base function, as a string */
+  var b=u2baseDisplay(base);
+  if(n===d)return b;
+  if(d===1)return n+b;
+  if(n===1)return "\\frac{"+b+"}{"+d+"}";
+  return "\\frac{"+n+"}{"+d+"}"+b;
+}
+function u2pointsSVG(pts){ /* scatter plot of labelled points on a -6..6 grid */
+  var W=252,H=252,lo=-6,span=12;
+  function X(v){return (v-lo)/span*W;}
+  function Y(v){return H-(v-lo)/span*H;}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Plotted points">';
+  for(var g=-6;g<=6;g+=2){
+    out+='<line x1="'+fmt(X(g),1)+'" y1="0" x2="'+fmt(X(g),1)+'" y2="'+H+'" stroke="#dddddd" stroke-width="1"/>';
+    out+='<line x1="0" y1="'+fmt(Y(g),1)+'" x2="'+W+'" y2="'+fmt(Y(g),1)+'" stroke="#dddddd" stroke-width="1"/>';
+  }
+  out+='<line x1="'+fmt(X(0),1)+'" y1="0" x2="'+fmt(X(0),1)+'" y2="'+H+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+='<line x1="0" y1="'+fmt(Y(0),1)+'" x2="'+W+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+='<line x1="'+fmt(X(-6),1)+'" y1="'+fmt(Y(0)-6,1)+'" x2="'+fmt(X(-6),1)+'" y2="'+fmt(Y(0)+6,1)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  pts.forEach(function(p){
+    out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="4.2" fill="'+FIG_ACC+'"/>';
+    out+=_txt(X(p[0])+16,Y(p[1])-10,"("+p[0]+", "+p[1]+")",12,false);
+  });
+  return out+'</svg>';
+}
+function u2setStr(pts){ /* a set of points as a math string, sorted by x then y */
+  var s=pts.slice().sort(function(a,b){return a[0]-b[0]||a[1]-b[1];});
+  return "\\{ "+s.map(function(p){return u2pt(p[0],p[1]);}).join(", ")+" \\}";
+}
+
+/* ---------- inverses: 4.1 to 4.8 ---------- */
+E("u2-inv-which",2,["4.1"],1,"gen",function(){
+  var form=pick(["lin","sqrt"]),correct,why;
+  if(form==="lin"){
+    var m=pick([1,2,3,4,-2,-3,-4]),b=ri(-6,6);
+    while(b===0)b=ri(-6,6);
+    correct="\\(y = "+u2lin(m,b)+"\\)";
+    why="a non-horizontal straight line passes the horizontal line test, because it increases or decreases steadily across its whole domain";
+  }else{
+    var h=ri(-5,5),k=ri(-5,5);
+    correct="\\(y = \\sqrt{"+u2xarg(h)+"}"+u2pm0(k)+"\\)";
+    why="a square root graph increases steadily across its whole domain, so it passes the horizontal line test";
+  }
+  var pool=[
+    function(){var bb=ri(-6,6),cc=ri(-6,6);while(bb===0)bb=ri(-6,6);return "\\(y = x^2"+u2pm(bb)+"x"+u2pm(cc)+"\\)";},
+    function(){var hh=ri(-5,5),kk=ri(-5,5);return "\\(y = |"+u2xarg(hh)+"|"+u2pm0(kk)+"\\)";},
+    function(){var hh=ri(-5,5),kk=ri(-5,5);return "\\(y = ("+u2xarg(hh)+")^2"+u2pm0(kk)+"\\)";},
+    function(){var cc=pick([2,3,4,5,6,7,8,9]);return "\\(y = x^2 - "+cc+"\\)";},
+    function(){var bb=ri(-6,6);while(bb===0)bb=ri(-6,6);return "\\(y = -x^2"+u2pm(bb)+"x\\)";}
+  ];
+  var idx=shuffle([0,1,2,3,4]).slice(0,3);
+  var dis=idx.map(function(i){return pool[i]();});
+  return mcq("Which function has an inverse that is also a function?",
+    correct,dis,
+    "A function has an inverse that is also a function exactly when it passes the <b>horizontal line test</b>: every horizontal line meets the graph at most once. The correct choice qualifies because "+why+". Each of the other graphs is met twice by some horizontal line, so its inverse would pair one input with two different outputs.",
+    {form:form});
+});
+E("u2-inv-figure",2,["4.2","4.3","4.4"],2,"gen",function(){
+  var pts,opts,tries=0;
+  do{
+    tries++;
+    var xs=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3);
+    var ys=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3);
+    pts=[[xs[0],ys[0]],[xs[1],ys[1]],[xs[2],ys[2]]];
+    var swapped=pts.map(function(p){return [p[1],p[0]];});
+    var negX=pts.map(function(p){return [-p[0],p[1]];});
+    var negY=pts.map(function(p){return [p[0],-p[1]];});
+    opts=[u2setStr(swapped),u2setStr(pts),u2setStr(negX),u2setStr(negY)];
+  }while((new Set(opts)).size<4&&tries<60);
+  var q=mcq("The diagram shows the plotted points of a relation. Which set of points lies on the graph of the <b>inverse relation</b>?",
+    opts[0],[opts[1],opts[2],opts[3]],
+    "Reflecting a graph in the line \\(y = x\\) swaps the coordinates of every point, and that reflection is the graph of the inverse relation. Here "+pts.map(function(p){return "\\("+u2pt(p[0],p[1])+"\\) maps to \\("+u2pt(p[1],p[0])+"\\)";}).join(", ")+".",
+    {pts:pts});
+  q.figure=u2pointsSVG(pts);
+  return q;
+});
+E("u2-inv-equation",2,["4.5","4.6"],2,"gen",function(){
+  if(ri(0,1)===0){
+    var m=pick([2,3,4,-2,-3,-4]),b=ri(-9,9);
+    while(b===0)b=ri(-9,9);
+    var correct="\\(f^{-1}(x) = \\frac{x"+u2pm(-b)+"}{"+m+"}\\)";
+    var dis=[
+      "\\(f^{-1}(x) = \\frac{x"+u2pm(b)+"}{"+m+"}\\)",
+      "\\(f^{-1}(x) = \\frac{1}{"+u2lin(m,b)+"}\\)",
+      "\\(f^{-1}(x) = "+u2lin(m,-b)+"\\)"
+    ];
+    return mcq("What is the inverse of the function \\(f(x) = "+u2lin(m,b)+"\\)?",
+      correct,dis,
+      "Swap \\(x\\) and \\(y\\), then solve for \\(y\\): \\[ \\begin{aligned} x &= "+m+"y"+u2pm(b)+" \\\\ x"+u2pm(-b)+" &= "+m+"y \\\\ y &= \\frac{x"+u2pm(-b)+"}{"+m+"} \\end{aligned} \\] So \\(f^{-1}(x) = \\frac{x"+u2pm(-b)+"}{"+m+"}\\). The reciprocal \\(\\frac{1}{f(x)}\\) is a different idea from the inverse function.",
+      {shape:"lin",m:m,b:b});
+  }
+  var h=ri(-5,5),k=ri(-6,6);
+  while(h===0&&k===0){h=ri(-5,5);k=ri(-6,6);}
+  var sq="\\sqrt{"+u2xarg(k)+"}";
+  var correct2="\\(f^{-1}(x) = "+(h===0?sq:h+" + "+sq)+"\\)";
+  var dis2=[
+    "\\(f^{-1}(x) = "+(h===0?"-"+sq:h+" - "+sq)+"\\)",
+    "\\(f^{-1}(x) = \\sqrt{"+u2xarg(h)+"}"+u2pm0(k)+"\\)",
+    "\\(f^{-1}(x) = ("+u2xarg(k)+")^2"+u2pm0(h)+"\\)"
+  ];
+  return mcq("The function \\(f(x) = ("+u2xarg(h)+")^2"+u2pm0(k)+"\\) has domain \\(x \\geq "+h+"\\). What is its inverse?",
+    correct2,dis2,
+    "Swap \\(x\\) and \\(y\\), then solve: \\[ \\begin{aligned} x &= ("+u2xarg(h).replace("x","y")+")^2"+u2pm0(k)+" \\\\ x"+u2pm0(-k)+" &= ("+u2xarg(h).replace("x","y")+")^2 \\\\ \\sqrt{x"+u2pm0(-k)+"} &= "+u2xarg(h).replace("x","y")+" \\\\ y &= "+h+" + \\sqrt{x"+u2pm0(-k)+"} \\end{aligned} \\] The positive root is used because the restricted domain of \\(f\\) keeps the inverse on the branch \\(y \\geq "+h+"\\).",
+    {shape:"quad",h:h,k:k});
+});
+E("u2-inv-domran",2,["4.7"],1,"gen",function(){
+  var a,b,c,d,opts,tries=0;
+  do{
+    tries++;
+    a=ri(-8,3);b=a+ri(2,7);
+    c=ri(-8,3);d=c+ri(2,7);
+    function iv(D1,D2,R1,R2){return "Domain: \\("+D1+" \\leq x \\leq "+D2+"\\); range: \\("+R1+" \\leq y \\leq "+R2+"\\)";}
+    opts=[iv(c,d,a,b),iv(a,b,c,d),iv(-d,-c,-b,-a),iv(c,d,c,d)];
+  }while((new Set(opts)).size<4&&tries<60);
+  return mcq("A relation has domain \\("+a+" \\leq x \\leq "+b+"\\) and range \\("+c+" \\leq y \\leq "+d+"\\). What are the domain and range of its inverse relation?",
+    opts[0],[opts[1],opts[2],opts[3]],
+    "Forming the inverse swaps \\(x\\) and \\(y\\) in every point, so the domain and range trade places: the inverse has domain \\("+c+" \\leq x \\leq "+d+"\\) (the old range) and range \\("+a+" \\leq y \\leq "+b+"\\) (the old domain). The endpoints themselves do not change.",
+    {a:a,b:b,c:c,d:d});
+});
+E("u2-inv-restrict",2,["4.8","4.1"],3,"var",varset([
+  function(){return mcq("The function \\(f(x) = (x - 3)^2 + 2\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    "\\(x \\geq 3\\)",
+    ["\\(x \\geq 2\\)","\\(x \\leq 4\\)","No restriction is needed"],
+    "The graph of \\(f\\) is a parabola with vertex \\((3, 2)\\). It fails the horizontal line test because points on the left and right of \\(x = 3\\) share the same \\(y\\)-value. Restricting the domain to one side of the vertex, such as \\(x \\geq 3\\), makes \\(f\\) one-to-one, so its inverse is a function. The restrictions \\(x \\geq 2\\) and \\(x \\leq 4\\) both keep points from both sides of the vertex, so they do not work.",
+    {v:1});},
+  function(){return mcq("The function \\(f(x) = x^2 - 4x + 1\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    "\\(x \\leq 2\\)",
+    ["\\(x \\geq -3\\)","\\(x \\leq 3\\)","No restriction is needed"],
+    "Complete the square to locate the vertex: \\[ \\begin{aligned} f(x) &= x^2 - 4x + 1 \\\\ &= (x - 2)^2 - 3 \\end{aligned} \\] The vertex is \\((2, -3)\\), so \\(f\\) is one-to-one on either side of \\(x = 2\\). Restricting the domain to \\(x \\leq 2\\) keeps only the left branch, and the inverse is then a function. The value \\(-3\\) is the minimum value of \\(f\\), not the \\(x\\)-coordinate of the vertex.",
+    {v:2});},
+  function(){return mcq("The function \\(f(x) = |x + 1| - 4\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    "\\(x \\geq -1\\)",
+    ["\\(x \\geq -4\\)","\\(x \\leq 0\\)","No restriction is needed"],
+    "The graph of \\(f\\) is a V with its vertex at \\((-1, -4)\\). Inputs on opposite sides of \\(x = -1\\) can give the same output, so the inverse is not a function. Keeping only one side of the V, such as \\(x \\geq -1\\), makes \\(f\\) one-to-one. The restrictions \\(x \\geq -4\\) and \\(x \\leq 0\\) both include inputs from both sides of the vertex.",
+    {v:3});},
+  function(){return mcq("The function \\(f(x) = (x + 2)^2 - 5\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    "\\(x \\leq -2\\)",
+    ["\\(x \\geq -5\\)","\\(x \\leq -1\\)","No restriction is needed"],
+    "The graph of \\(f\\) is a parabola with vertex \\((-2, -5)\\). On the domain \\(x \\leq -2\\) the function decreases steadily, so it is one-to-one and its inverse is a function. The restrictions \\(x \\geq -5\\) and \\(x \\leq -1\\) both keep inputs from both sides of the vertex, and \\(-5\\) is the minimum value of \\(f\\), not the vertex \\(x\\)-coordinate.",
+    {v:4});}
+]));
+
+/* ---------- translations: 4.13 to 4.17 ---------- */
+E("u2-trans-describe",2,["4.13","4.14"],1,"gen",function(){
+  var amt=ri(2,12),form=ri(1,3),eq,dir;
+  if(form===1){
+    var k=pick([amt,-amt]);
+    eq="\\(y = f(x)"+u2pm(k)+"\\)";
+    dir=k>0?"up":"down";
+  }else if(form===2){
+    var h=pick([amt,-amt]);
+    eq="\\(y = f("+u2xarg(h)+")\\)";
+    dir=h>0?"right":"left";
+  }else{
+    var k2=pick([amt,-amt]);
+    eq="\\(y"+(k2>0?" - "+k2:" + "+(-k2))+" = f(x)\\)";
+    dir=k2>0?"up":"down";
+  }
+  var correct="The graph is translated "+amt+" units "+dir;
+  var dis=["up","down","left","right"].filter(function(d){return d!==dir;}).map(function(d){return "The graph is translated "+amt+" units "+d;});
+  return mcq("How is the graph of \\(y = f(x)\\) changed to give the graph of "+eq+"?",
+    correct,dis,
+    "In \\(y = f(x) + k\\) and \\(y - k = f(x)\\), a positive \\(k\\) moves the graph up; in \\(y = f(x - h)\\), a positive \\(h\\) moves the graph right, because each input must be \\(h\\) larger to produce the same output. For "+eq+", the change is a translation of "+amt+" units "+dir+".",
+    {form:form,amt:amt,dir:dir});
+});
+E("u2-trans-point",2,["4.15","4.16"],1,"gen",function(){
+  var h=pick([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]);
+  var k=pick([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]);
+  var x0=ri(-8,8),y0=ri(-8,8);
+  var eq="\\(y"+(k>0?" - "+k:" + "+(-k))+" = f("+u2xarg(h)+")\\)";
+  var correct="\\("+u2pt(x0+h,y0+k)+"\\)";
+  var dis=[
+    "\\("+u2pt(x0-h,y0+k)+"\\)",
+    "\\("+u2pt(x0+h,y0-k)+"\\)",
+    "\\("+u2pt(x0-h,y0-k)+"\\)"
+  ];
+  return mcq("The point \\("+u2pt(x0,y0)+"\\) lies on the graph of \\(y = f(x)\\). The graph of \\(f\\) is transformed to give the graph of "+eq+". What is the image of the point?",
+    correct,dis,
+    "The equation "+eq+" applies the mapping \\((x, y)\\) to \\((x"+u2pm(h)+", y"+u2pm(k)+")\\). So \\("+u2pt(x0,y0)+"\\) maps to \\("+u2pt(x0+h,y0+k)+"\\) . Watch the horizontal sign: in the form \\(y - k = f(x - h)\\) the graph shifts by \\(+h\\) horizontally, even though the equation shows a subtraction inside \\(f\\).",
+    {h:h,k:k,x0:x0,y0:y0});
+});
+E("u2-trans-equation",2,["4.17","4.15"],1,"gen",function(){
+  var base=pick(["sq","cu","abs","sqrt","rec"]);
+  var sx=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  var sy=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  var hdesc=Math.abs(sx)+" units "+(sx>0?"right":"left");
+  var vdesc=Math.abs(sy)+" units "+(sy>0?"up":"down");
+  var desc=ri(0,1)===0?hdesc+" and "+vdesc:vdesc+" and "+hdesc;
+  var correct="\\(g(x) = "+u2shifted(base,sx,sy)+"\\)";
+  var dis=[
+    "\\(g(x) = "+u2shifted(base,-sx,sy)+"\\)",
+    "\\(g(x) = "+u2shifted(base,sx,-sy)+"\\)",
+    "\\(g(x) = "+u2shifted(base,-sx,-sy)+"\\)"
+  ];
+  return mcq("The graph of \\(y = "+u2baseDisplay(base)+"\\) is translated "+desc+". What is the equation of the image graph?",
+    correct,dis,
+    "A translation of "+Math.abs(sx)+" units "+(sx>0?"right":"left")+" replaces \\(x\\) by \\("+u2xarg(sx)+"\\), and a translation of "+Math.abs(sy)+" units "+(sy>0?"up":"down")+" adds "+sy+" to the whole function. The image is \\(g(x) = "+u2shifted(base,sx,sy)+"\\) . The horizontal change uses the opposite sign from the direction of travel, which is the most common error in this type of question.",
+    {base:base,sx:sx,sy:sy});
+});
+
+/* ---------- stretches and the full transformation: 4.18 to 4.24 ---------- */
+E("u2-stretch-identify",2,["4.18","4.19"],1,"gen",function(){
+  var base=pick(["sq","cu","abs","sqrt"]);
+  var c=pick([-4,-3,-2,-1,1,2,3,4]);
+  var fac=pick([[2,1],[3,1],[1,2],[1,3]]);
+  var n=fac[0],d=fac[1],dir=ri(0,1);
+  var orig="\\(y = "+u2baseDisplay(base)+u2pm(c)+"\\)",trans,correct,dis;
+  if(dir===0){ /* vertical: y-coords multiplied by n/d, constant term included */
+    trans="\\(y = "+u2coefBase(n,d,base)+u2pmFrac(n*c,d)+"\\)";
+    correct="\\((x, "+u2scaleExpr(n,d,"y")+")\\)";
+    dis=[
+      "\\(("+u2scaleExpr(n,d,"x")+", y)\\)",
+      "\\((x, "+u2scaleExpr(d,n,"y")+")\\)",
+      "\\(("+u2scaleExpr(n,d,"x")+", "+u2scaleExpr(n,d,"y")+")\\)"
+    ];
+  }else{ /* horizontal: x-coords multiplied by n/d, so the equation divides x by n/d */
+    var argB;
+    if(base==="sq")argB="("+u2argStr(d,n)+")^2";
+    else if(base==="cu")argB="("+u2argStr(d,n)+")^3";
+    else if(base==="abs")argB="|"+u2argStr(d,n)+"|";
+    else argB="\\sqrt{"+u2argStr(d,n)+"}";
+    trans="\\(y = "+argB+u2pm(c)+"\\)";
+    correct="\\(("+u2scaleExpr(n,d,"x")+", y)\\)";
+    dis=[
+      "\\((x, "+u2scaleExpr(n,d,"y")+")\\)",
+      "\\(("+u2scaleExpr(d,n,"x")+", y)\\)",
+      "\\(("+u2scaleExpr(n,d,"x")+", "+u2scaleExpr(n,d,"y")+")\\)"
+    ];
+  }
+  return mcq("The graph of "+orig+" is transformed to give the graph of "+trans+". Under this transformation, each point \\((x, y)\\) on the original graph maps to which point?",
+    correct,dis,
+    dir===0
+      ?"A coefficient in front of the function multiplies every \\(y\\)-coordinate (the constant term is part of the function, so it is multiplied too): each point \\((x, y)\\) maps to \\((x, "+u2scaleExpr(n,d,"y")+"))\\). The \\(x\\)-coordinates do not change."
+      :"Changing the input of a function stretches the graph horizontally: to land on the same output, each \\(x\\)-coordinate is multiplied by \\("+u2coefStr(n,d)+"\\), so each point \\((x, y)\\) maps to \\(("+u2scaleExpr(n,d,"x")+", y)\\) . Notice the equation divides \\(x\\) by that factor, which is why the direction surprises many students.",
+    {base:base,c:c,n:n,d:d,dir:dir});
+});
+E("u2-stretch-point",2,["4.20","4.21"],2,"gen",function(){
+  var A=pick([[2,1],[3,1],[1,2],[1,3]]);
+  var B=pick([[2,1],[3,1],[1,2],[1,3]]);
+  var X=pick([-3,-2,-1,1,2,3]),Y=pick([-3,-2,-1,1,2,3]);
+  var x0=6*X,y0=6*Y;
+  function img(sx,sy){return "\\("+u2pt(sx,sy)+"\\)";}
+  var correct=img(x0*B[1]/B[0],y0*A[0]/A[1]);
+  var dis=[
+    img(x0*B[0]/B[1],y0*A[0]/A[1]),
+    img(x0*B[1]/B[0],y0*A[1]/A[0]),
+    img(x0*B[0]/B[1],y0*A[1]/A[0])
+  ];
+  var eq="\\(y = "+(A[0]===A[1]?"":u2coefStr(A[0],A[1]))+"f("+u2argStr(B[0],B[1])+")\\)";
+  return mcq("The point \\("+u2pt(x0,y0)+"\\) lies on the graph of \\(y = f(x)\\). What is the image of the point on the graph of "+eq+"?",
+    correct,dis,
+    "The mapping for "+eq+" sends \\((x, y)\\) to \\((x \\div "+u2coefStr(B[0],B[1])+", "+u2coefStr(A[0],A[1])+"y)\\): the input factor divides the \\(x\\)-coordinate, and the outside coefficient multiplies the \\(y\\)-coordinate. So \\("+u2pt(x0,y0)+"\\) maps to "+correct+" .",
+    {A:A,B:B,x0:x0,y0:y0});
+});
+E("u2-stretch-equation",2,["4.22"],1,"gen",function(){
+  var base=pick(["sq","cu","sqrt"]);
+  var c=pick([-4,-3,-2,-1,1,2,3,4]);
+  var shape=ri(0,1);
+  var origD=u2baseDisplay(base)+u2pm(c);
+  function argForm(nn,dd){ /* the base with (nn/dd)x as its argument */
+    if(base==="sq")return "("+u2argStr(nn,dd)+")^2";
+    if(base==="cu")return "("+u2argStr(nn,dd)+")^3";
+    return "\\sqrt{"+u2argStr(nn,dd)+"}";
+  }
+  if(shape===0){ /* given a vertical stretch factor */
+    var fac=pick([[2,1],[3,1],[4,1],[1,2],[1,3]]);
+    var n=fac[0],d=fac[1];
+    var correct="\\(g(x) = "+u2coefBase(n,d,base)+u2pmFrac(n*c,d)+"\\)";
+    var dis=[
+      "\\(g(x) = "+argForm(n,d)+u2pm(c)+"\\)",
+      "\\(g(x) = "+u2coefBase(d,n,base)+u2pmFrac(d*c,n)+"\\)",
+      "\\(g(x) = "+origD+u2pmFrac(n,d)+"\\)"
+    ];
+    return mcq("The graph of \\(y = "+origD+"\\) is stretched vertically by a factor of \\("+u2coefStr(n,d)+"\\). What is the equation of the image graph?",
+      correct,dis,
+      "A vertical stretch by a factor of \\("+u2coefStr(n,d)+"\\) multiplies the whole function, including its constant term, by that factor, giving \\(g(x) = "+u2coefBase(n,d,base)+u2pmFrac(n*c,d)+"\\) . Putting the factor inside with the \\(x\\) would stretch the graph horizontally instead.",
+      {shape:"v",base:base,c:c,n:n,d:d});
+  }
+  var fac2=pick([[2,1],[3,1],[1,2],[1,3]]);
+  var sn=fac2[0],sd=fac2[1];
+  var correct2="\\(g(x) = "+argForm(sd,sn)+u2pm(c)+"\\)";
+  var dis2=[
+    "\\(g(x) = "+argForm(sn,sd)+u2pm(c)+"\\)",
+    "\\(g(x) = "+u2coefBase(sn,sd,base)+u2pmFrac(sn*c,sd)+"\\)",
+    "\\(g(x) = "+u2coefBase(sd,sn,base)+u2pmFrac(sd*c,sn)+"\\)"
+  ];
+  return mcq("The graph of \\(y = "+origD+"\\) is stretched horizontally by a factor of \\("+u2coefStr(sn,sd)+"\\). What is the equation of the image graph?",
+    correct2,dis2,
+    "A horizontal stretch by a factor of \\("+u2coefStr(sn,sd)+"\\) multiplies every \\(x\\)-coordinate by that factor, so the equation must divide \\(x\\) by it, while the constant term stays as it is: \\(g(x) = "+argForm(sd,sn)+u2pm(c)+"\\) . The factor appears with the \\(x\\), not as a coefficient in front of the function.",
+    {shape:"h",base:base,c:c,sn:sn,sd:sd});
+});
+E("u2-full-equation",2,["4.23","4.24"],2,"gen",function(){
+  var pattern=ri(0,3);
+  var refl=pattern!==1;
+  var hasA=pattern!==3, hasB=pattern!==2;
+  var A=pick([[2,1],[3,1],[1,2]]);
+  var S=pick([[2,1],[3,1],[1,2]]);
+  var h=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var k=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  /* the argument is (x - h) divided by the horizontal stretch factor S, so the
+     factor that multiplies (x - h) inside f is 1/S */
+  function build2(reflF,aF,sF,hh,kk,sOverride){
+    var s=sOverride||S;
+    var coef=(reflF?"-":"")+(aF?u2coefStr(A[0],A[1]):"");
+    var arg;
+    if(!sF){
+      arg=u2xarg(hh);
+    }else{
+      var iv0=s[1],iv1=s[0]; /* 1/S = iv0/iv1 */
+      if(iv1===1)arg=iv0===1?u2xarg(hh):iv0+"("+u2xarg(hh)+")";
+      else if(iv0===1)arg="\\frac{"+u2xarg(hh)+"}{"+iv1+"}";
+      else arg="\\frac{"+iv0+"}{"+iv1+"}("+u2xarg(hh)+")";
+    }
+    return "\\(g(x) = "+coef+"f\\left("+arg+"\\right)"+u2pm0(kk)+"\\)";
+  }
+  var correct=build2(refl,hasA,hasB,h,k);
+  var errs=[
+    build2(refl,hasA,hasB,h,-k),
+    build2(refl,hasA,hasB,-h,k),
+    build2(!refl,hasA,hasB,h,k)
+  ];
+  if(hasB)errs.push(build2(refl,hasA,hasB,h,k,[S[1],S[0]]));
+  var dis=shuffle(errs).slice(0,3);
+  var phrases=[];
+  if(refl)phrases.push("reflected in the \\(x\\)-axis");
+  if(hasA)phrases.push("stretched vertically by a factor of \\("+u2coefStr(A[0],A[1])+"\\)");
+  if(hasB)phrases.push("stretched horizontally by a factor of \\("+u2coefStr(S[0],S[1])+"\\)");
+  phrases.push("translated "+Math.abs(h)+" units "+(h>0?"right":"left")+" and "+Math.abs(k)+" units "+(k>0?"up":"down"));
+  var desc=phrases.join(", ");
+  var solText="Build the equation in the form \\(g(x) = a f(b(x - h)) + k\\). "
+    +(refl
+      ?(hasA
+        ?"The reflection in the \\(x\\)-axis and the vertical stretch give the outside coefficient \\(-"+u2coefStr(A[0],A[1])+"\\). "
+        :"The reflection in the \\(x\\)-axis gives the outside coefficient \\(-1\\). ")
+      :"The vertical stretch gives the outside coefficient \\("+u2coefStr(A[0],A[1])+"\\). ")
+    +(hasB
+      ?"The horizontal stretch by a factor of \\("+u2coefStr(S[0],S[1])+"\\) divides the input of \\(f\\) by that factor. "
+      :"There is no horizontal stretch in this transformation, so the input of \\(f\\) is used as it stands. ")
+    +"The translation replaces \\(x\\) by \\("+u2xarg(h)+"\\) and adds \\("+k+"\\) to the whole function. The result is "+correct+" .";
+  return mcq("The graph of \\(y = f(x)\\) is "+desc+". What is the equation of the image graph?",
+    correct,dis,solText,
+    {pattern:pattern,refl:refl,A:A,S:S,h:h,k:k});
+});
+E("u2-trans-zeros",2,["4.21","4.23"],3,"gen",function(){
+  var B=pick([[2,1],[3,1],[1,2],[1,3]]);
+  var p=B[0],q=B[1];
+  var u1=pick([-3,-2,-1,1,2,3]),u2=pick([-3,-2,-1,1,2,3]);
+  while(u2===u1)u2=pick([-3,-2,-1,1,2,3]);
+  var h=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var a=pick([2,3,-2]);
+  var z1=p*q*u1,z2=p*q*u2;
+  function pair(t1,t2){
+    var lo=Math.min(t1,t2),hi=Math.max(t1,t2);
+    return "\\(\\{"+lo+", "+hi+"\\}\\)";
+  }
+  var correct=pair(q*q*u1+h,q*q*u2+h);
+  var dis=[
+    pair(p*p*u1+h,p*p*u2+h),
+    pair(q*q*u1-h,q*q*u2-h),
+    pair(p*p*u1-h,p*p*u2-h)
+  ];
+  var bArg=B[0]===1?"\\frac{"+u2xarg(h)+"}{"+B[1]+"}":B[0]+"("+u2xarg(h)+")";
+  var geq="\\(g(x) = "+a+"f\\left("+bArg+"\\right)\\)";
+  var lo=Math.min(z1,z2),hi=Math.max(z1,z2);
+  return mcq("The graph of \\(y = f(x)\\) has \\(x\\)-intercepts "+lo+" and "+hi+". The graph of \\(f\\) is transformed to give "+geq+". What are the \\(x\\)-intercepts of the graph of \\(g\\)?",
+    correct,dis,
+    "Intercepts move only under the horizontal parts of the transformation; the outside coefficient "+a+" does not move them. Each intercept \\(z\\) of \\(f\\) becomes an intercept of \\(g\\) where the input of \\(f\\) again equals \\(z\\): solving gives \\(x = z \\div "+u2coefStr(p,q)+" + "+h+"\\) . Applying this to "+lo+" and "+hi+" gives the intercepts "+correct+" .",
+    {B:B,h:h,a:a,u1:u1,u2:u2});
+});
+
+/* ---------- reflections: 4.40 to 4.47 ---------- */
+E("u2-refl-point",2,["4.40","4.45"],1,"gen",function(){
+  var x=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]);
+  var y=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]);
+  while(Math.abs(x)===Math.abs(y))y=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]);
+  var axis=pick(["x","y","yx"]);
+  var imgX={x:[x,-y],y:[-x,y],yx:[y,x]};
+  var correct="\\("+u2pt(imgX[axis][0],imgX[axis][1])+"\\)";
+  var others={x:[x,-y],y:[-x,y],yx:[y,x]};
+  var dis=Object.keys(others).filter(function(key){return key!==axis;}).map(function(key){return "\\("+u2pt(others[key][0],others[key][1])+"\\)";});
+  dis.push("\\("+u2pt(-x,-y)+"\\)");
+  var axisName=axis==="x"?"the \\(x\\)-axis":axis==="y"?"the \\(y\\)-axis":"the line \\(y = x\\)";
+  var rule=axis==="x"?"a reflection in the \\(x\\)-axis keeps the \\(x\\)-coordinate and negates the \\(y\\)-coordinate"
+    :axis==="y"?"a reflection in the \\(y\\)-axis negates the \\(x\\)-coordinate and keeps the \\(y\\)-coordinate"
+    :"a reflection in the line \\(y = x\\) swaps the two coordinates";
+  return mcq("The point \\(P"+u2pt(x,y)+"\\) is reflected in "+axisName+". What is the image of \\(P\\)?",
+    correct,dis,
+    "Use the coordinate rule: "+rule+". Applying it to \\("+u2pt(x,y)+"\\) gives "+correct+" .",
+    {x:x,y:y,axis:axis});
+});
+E("u2-refl-equation",2,["4.41","4.42","4.43","4.44"],1,"gen",function(){
+  var t=ri(1,3),axis=pick(["x","y"]);
+  var f,negF,fNeg,negFNeg;
+  if(t===1){
+    var c=ri(-9,9);while(c===0)c=ri(-9,9);
+    f="x^3"+u2pm(c);
+    negF="-x^3"+u2pm(-c);
+    fNeg="-x^3"+u2pm(c);
+    negFNeg="x^3"+u2pm(-c);
+  }else if(t===2){
+    var b=pick([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]);
+    f="x^2"+u2pm(b)+"x";
+    negF="-x^2"+u2pm(-b)+"x";
+    fNeg="x^2"+u2pm(-b)+"x";
+    negFNeg="-x^2"+u2pm(b)+"x";
+  }else{
+    var h=pick([-5,-4,-3,-2,-1,1,2,3,4,5]),k=ri(-6,6);
+    f="|"+u2xarg(h)+"|"+u2pm0(k);
+    negF="-|"+u2xarg(h)+"|"+u2pm0(-k);
+    fNeg="|"+u2xarg(-h)+"|"+u2pm0(k);
+    negFNeg="-|"+u2xarg(-h)+"|"+u2pm0(-k);
+  }
+  var correct="\\(g(x) = "+(axis==="x"?negF:fNeg)+"\\)";
+  var all=[negF,fNeg,negFNeg,f];
+  var dis=all.filter(function(s){return "\\(g(x) = "+s+"\\)"!==correct;}).map(function(s){return "\\(g(x) = "+s+"\\)";});
+  var axisName=axis==="x"?"the \\(x\\)-axis":"the \\(y\\)-axis";
+  return mcq("The graph of \\(f(x) = "+f+"\\) is reflected in "+axisName+". What is the equation of the image graph?",
+    correct,dis,
+    axis==="x"
+      ?"A reflection in the \\(x\\)-axis negates the whole function: \\(g(x) = -f(x)\\). Negating every term of \\(f(x) = "+f+"\\) gives "+correct+" . Replacing \\(x\\) by \\(-x\\) instead would reflect in the \\(y\\)-axis."
+      :"A reflection in the \\(y\\)-axis replaces \\(x\\) by \\(-x\\) throughout: \\(g(x) = f(-x)\\). Applying that to \\(f(x) = "+f+"\\) gives "+correct+" . Negating the whole function instead would reflect in the \\(x\\)-axis.",
+    {t:t,axis:axis});
+});
+E("u2-refl-yx",2,["4.46","4.47"],3,"var",varset([
+  function(){return mcq("The graph of a function \\(f\\) is reflected in the line \\(y = x\\). The image graph does <b>not</b> pass the vertical line test. What must be true of \\(f\\)?",
+    "\\(f\\) is not one-to-one",
+    ["\\(f\\) is not a function","The inverse of \\(f\\) is a function","\\(f\\) does not pass the vertical line test"],
+    "Reflecting in the line \\(y = x\\) produces the inverse relation. The image fails the vertical line test exactly when two points of \\(f\\) share the same \\(y\\)-value, because those points swap into two image points with the same \\(x\\)-coordinate. That means \\(f\\) is not one-to-one, which is also why its inverse is not a function. The function \\(f\\) itself still passes the vertical line test, since it is given to be a function.",
+    {v:1});},
+  function(){return mcq("The graph of a function \\(f\\) is reflected in the line \\(y = x\\). The image graph passes the vertical line test. What must be true?",
+    "The inverse of \\(f\\) is a function",
+    ["\\(f\\) is not one-to-one at all","\\(f\\) fails the horizontal line test","The image is the graph of the reciprocal of \\(f\\)"],
+    "The reflection in the line \\(y = x\\) is the inverse relation of \\(f\\), and it passes the vertical line test, so the inverse is a function. That happens exactly when \\(f\\) is one-to-one, equivalently when \\(f\\) passes the horizontal line test. A reflection in \\(y = x\\) has nothing to do with the reciprocal \\(\\frac{1}{f(x)}\\).",
+    {v:2});},
+  function(){return mcq("A function \\(f\\) is one-to-one. Its graph is reflected in the line \\(y = x\\). Which statement about the image graph is true?",
+    "The image is the graph of the inverse of \\(f\\)",
+    ["The image is not a function at all","The image is the reflection of \\(f\\) in the \\(x\\)-axis","The image is the graph of the reciprocal of \\(f\\)"],
+    "Reflecting any graph in the line \\(y = x\\) swaps the coordinates of every point, which produces the inverse relation. Because \\(f\\) is one-to-one, no two of its points share a \\(y\\)-value, so the swapped points never share an \\(x\\)-coordinate: the image passes the vertical line test and is the graph of the inverse function.",
+    {v:3});},
+  function(){return mcq("A relation \\(R\\) contains the points \\((1, 4)\\) and \\((3, 4)\\). The graph of \\(R\\) is reflected in the line \\(y = x\\). Why is the image not a function?",
+    "The image contains \\((4, 1)\\) and \\((4, 3)\\), two points with the same \\(x\\)-coordinate",
+    ["The image contains \\((1, 4)\\) and \\((3, 4)\\), unchanged from \\(R\\) after the reflection","Every reflection in the line \\(y = x\\) produces an image that fails the vertical line test","The relation \\(R\\) is not a function to begin with, before any reflection"],
+    "Reflection in the line \\(y = x\\) swaps coordinates, so \\((1, 4)\\) maps to \\((4, 1)\\) and \\((3, 4)\\) maps to \\((4, 3)\\). The image pairs the input \\(4\\) with two different outputs, so it fails the vertical line test. Note that \\(R\\) itself is a function: its two points have different \\(x\\)-coordinates.",
+    {v:4});}
+]));
+
+/* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and two Level 2 CR entries (3 and 2 marks). ---------- */
+E("u2-find-stretch-cr",2,["4.17","4.24"],3,"gen",function(){
+  var h=pick([-3,-2,-1,1,2,3]), u=ri(-4,4), v=pick([-6,-5,-4,-3,-2,2,3,4,5,6]), a=pick([-3,-2,2,3]), k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var X=u+h, Y=a*v+k;
+  var hs=h>0?"x - "+h:"x + "+(-h), ks=k>0?" + "+k:" - "+(-k);
+  return numq("The point \\(("+X+", "+Y+")\\) lies on the graph of \\(y = a f("+hs+")"+ks+"\\), and \\(f("+u+") = "+v+"\\). Determine the value of \\(a\\).",
+    a,0.001,
+    "At this point the input to \\(f\\) is \\(("+X+") - ("+h+") = "+u+"\\), and \\(f("+u+") = "+v+"\\). On the transformed graph, that output is multiplied by \\(a\\) and then shifted by \\(("+k+")\\): \\[ a("+v+") + ("+k+") = "+Y+" \\] So \\(a("+v+") = "+(Y-k)+"\\), and \\(a = "+(Y-k)+" \\div "+v+" = <b>"+a+"</b>\\).",
+    {h:h,u:u,v:v,k:k});
+});
+E("u2-inverse-points-cr",2,["4.2","4.4"],2,"gen",function(){
+  var xs=shuffle([-4,-3,-2,-1,0,1,2,3,4]).slice(0,5);
+  var ys=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,5);
+  var pts=xs.map(function(x,i){return [x,ys[i]];});
+  var tg=pick(pts);
+  var list=pts.map(function(p){return u2pt(p[0],p[1]);}).join(", ");
+  return numq("A relation contains the points \\("+list+"\\). The inverse relation is formed by swapping the coordinates of each point. In the inverse relation, what is the <b>y-coordinate</b> of the point whose x-coordinate is "+tg[1]+"?",
+    tg[0],0.001,
+    "Swapping the coordinates of \\("+u2pt(tg[0],tg[1])+"\\) gives the inverse point \\("+u2pt(tg[1],tg[0])+"\\), and no other listed point produces that x-coordinate. Its y-coordinate is <b>"+tg[0]+"</b>.",
+    {tg:tg});
+});
+function u2reflPoly(A,B,C){ var s=(A===1?"x^2":A===-1?"-x^2":A+"x^2"); s+=(B>0?" + ":" - ")+(Math.abs(B)===1?"x":Math.abs(B)+"x"); s+=(C>0?" + "+C:" - "+(-C)); return s; }
+E("u2-reflection-equation-cr",2,["4.43","4.44"],2,"var",varset([
+  function(){
+    var a=pick([1,2,3]), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=pick([-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]);
+    return mcq("The graph of \\(f(x) = "+u2reflPoly(a,b,c)+"\\) is reflected in the <b>y-axis</b>. What is the equation of the image?",
+      "\\(y = "+u2reflPoly(a,-b,c)+"\\)",
+      ["\\(y = "+u2reflPoly(a,b,c)+"\\)",
+       "\\(y = "+u2reflPoly(-a,-b,-c)+"\\)",
+       "\\(y = "+u2reflPoly(a,-b,-c)+"\\)"],
+      "A reflection in the y-axis replaces \\(x\\) with \\(-x\\). The \\(x^2\\) term is unchanged, the \\(x\\) term changes sign, and the constant is unchanged, giving <b>\\(y = "+u2reflPoly(a,-b,c)+"\\)</b>.",
+      {a:a,b:b,c:c,axis:"y"});
+  },
+  function(){
+    var a=pick([1,2,3]), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=pick([-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]);
+    return mcq("The graph of \\(f(x) = "+u2reflPoly(a,b,c)+"\\) is reflected in the <b>x-axis</b>. What is the equation of the image?",
+      "\\(y = "+u2reflPoly(-a,-b,-c)+"\\)",
+      ["\\(y = "+u2reflPoly(a,-b,c)+"\\)",
+       "\\(y = "+u2reflPoly(a,b,c)+"\\)",
+       "\\(y = "+u2reflPoly(-a,-b,c)+"\\)"],
+      "A reflection in the x-axis negates the whole function: every term of \\(f(x)\\) changes sign, giving <b>\\(y = "+u2reflPoly(-a,-b,-c)+"\\)</b>.",
+      {a:a,b:b,c:c,axis:"x"});
+  }
+]));
+
+/* ----- bank-u3.js ----- */
+// Math 3200 Unit 3 Radical Functions question bank
+// CRMARKS: u3-domain-from-quadratic-cr=2
+// CRMARKS: u3-evaluate-transformed-cr=3
+// CRMARKS: u3-graphical-solve=1
+// CRMARKS: u3-intercept-solution=2
+// CRMARKS: u3-recover-coefficient-cr=3
+// CRMARKS: u3-recover-f-value=3
+// CRMARKS: u3-shift-from-intercept-cr=2
+// CRMARKS: u3-sqrtf-evaluate=2
+// CRMARKS: u3-sqrtx-table=1
+// CRMARKS: u3-start-point=1
+// CRMARKS: u3-transform-domain-range=2
+/* ================= Unit 3: Radical Functions ================= */
+/* ================= Unit 3: Radical Functions ================= */
+/* Indicators: 4.9, 4.10, 4.11, 4.12, 4.25, 4.26. Types follow the Mauger
+   Radical Functions set and the MHR Pre-Calculus 12 radical chapter
+   (domain and range of a square-root function, transformations of
+   y = sqrt(x), the square root of a function, graphical solutions of
+   radical equations), rewritten with original stems and values.
+   Algebraic solving of radical equations is Math 2200 content, so the
+   4.26 entries here are graphical, as the guide states. */
+
+function u3sgn(n){return n>0?" + "+n:(n<0?" - "+(-n):"");}
+function u3inside(c){return c>0?"x + "+c:(c<0?"x - "+(-c):"x");}
+function u3coef(a){return a===1?"":(a===-1?"-":""+a);}
+function u3eqnT(a,b,h,k){
+  var inner=(b===1)?u3inside(-h):b+"("+u3inside(-h)+")";
+  return "y = "+u3coef(a)+"\\sqrt{"+inner+"}"+u3sgn(k);
+}
+function u3svgSolve(form,a,c,sol){
+  var xMin=-2,xMax=Math.max(16,sol+5),yMin=-1.5,yMax=c+1.5;
+  var W=320,H=228,L=30,R=10,T=10,B=24;
+  function X(x){return L+(x-xMin)*(W-L-R)/(xMax-xMin);}
+  function Y(y){return (H-B)-(y-yMin)*(H-T-B)/(yMax-yMin);}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Graphs of a square root function and a horizontal line meeting at one point">';
+  var gx,gy;
+  for(gx=Math.ceil(xMin);gx<=xMax;gx++){out+='<line x1="'+fmt(X(gx),1)+'" y1="'+fmt(Y(yMin),1)+'" x2="'+fmt(X(gx),1)+'" y2="'+fmt(Y(yMax),1)+'" stroke="#e5e7eb" stroke-width="1"/>';}
+  for(gy=0;gy<=Math.floor(yMax);gy++){out+='<line x1="'+fmt(X(xMin),1)+'" y1="'+fmt(Y(gy),1)+'" x2="'+fmt(X(xMax),1)+'" y2="'+fmt(Y(gy),1)+'" stroke="#e5e7eb" stroke-width="1"/>';}
+  out+='<line x1="'+fmt(X(xMin),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(xMax),1)+'" y2="'+fmt(Y(0),1)+'" stroke="#374151" stroke-width="1.4"/>';
+  out+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(yMin),1)+'" x2="'+fmt(X(0),1)+'" y2="'+fmt(Y(yMax),1)+'" stroke="#374151" stroke-width="1.4"/>';
+  var startX=(form===1)?-a:a,d="",i,x,y;
+  for(i=0;i<=64;i++){x=startX+(xMax-startX)*i/64;y=Math.sqrt((form===1)?x+a:x-a);if(y>yMax)y=yMax;d+=((i===0)?"M ":"L ")+fmt(X(x),1)+" "+fmt(Y(y),1)+" ";}
+  out+='<path d="'+d+'" fill="none" stroke="#1d4ed8" stroke-width="2"/>';
+  out+='<line x1="'+fmt(X(xMin),1)+'" y1="'+fmt(Y(c),1)+'" x2="'+fmt(X(xMax),1)+'" y2="'+fmt(Y(c),1)+'" stroke="#dc2626" stroke-width="2"/>';
+  out+='<line x1="'+fmt(X(sol),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(sol),1)+'" y2="'+fmt(Y(c),1)+'" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="4 3"/>';
+  out+='<circle cx="'+fmt(X(sol),1)+'" cy="'+fmt(Y(c),1)+'" r="3.6" fill="#dc2626"/>';
+  for(gx=0;gx<=xMax;gx+=5){out+='<text x="'+fmt(X(gx),1)+'" y="'+(H-6)+'" font-size="10" fill="#111827" text-anchor="middle" font-family="sans-serif">'+gx+'</text>';}
+  out+='<text x="'+(L-6)+'" y="'+fmt(Y(c)+3,1)+'" font-size="11" fill="#111827" text-anchor="end" font-family="sans-serif">'+c+'</text>';
+  out+='<text x="'+(W-12)+'" y="'+fmt(Y(0)-5,1)+'" font-size="11" fill="#111827" font-family="sans-serif">x</text>';
+  out+='<text x="'+fmt(X(0)+5,1)+'" y="'+(T+8)+'" font-size="11" fill="#111827" font-family="sans-serif">y</text>';
+  return out+'</svg>';
+}
+
+E("u3-sqrtx-table",3,["4.10"],1,"gen",function(){
+  var shape=ri(1,3);
+  if(shape===3){
+    var m=ri(3,9);
+    return mcq("Which point lies on the graph of \\(y = \\sqrt{x}\\)?",
+      "("+(m*m)+", "+m+")",
+      ["("+m+", "+(m*m)+")","("+(m*m)+", "+(2*m)+")","("+((m+1)*(m+1))+", "+m+")"],
+      "On the graph of \\(y = \\sqrt{x}\\), each y-value is the non-negative square root of its x-value: \\(\\sqrt{"+(m*m)+"} = "+m+"\\). So the point is <b>("+(m*m)+", "+m+")</b>. Swapping the coordinates, doubling the root, or pairing the next square with the same root all break that relationship.",
+      {m:m,shape:shape});
+  }
+  var s=0,R=4,j=1,v=3,tries=0;
+  do{s=ri(0,4);R=pick([4,5]);j=ri(1,R-1);v=s+j;tries++;}while(v<3&&tries<60);
+  var pairs=[],i,x;
+  for(i=0;i<R;i++){
+    if(shape===1)pairs.push("("+(s+i)*(s+i)+", "+((i===j)?"?":(s+i))+")");
+    else pairs.push("("+((i===j)?"?":(s+i)*(s+i))+", "+(s+i)+")");
+  }
+  var table="A table of values for \\(y = \\sqrt{x}\\) gives the points "+pairs.join(", ")+".";
+  if(shape===1){
+    return mcq(table+" What is the missing y-value?",
+      ""+v,[""+(2*v),""+(v*v),""+(v-1)],
+      "In the table, each y-value is the non-negative square root of its x-value. The incomplete pair has \\(x = "+(v*v)+"\\), and \\(\\sqrt{"+(v*v)+"} = "+v+"\\), so the missing y-value is <b>"+v+"</b>.",
+      {v:v,shape:shape});
+  }
+  var w=v*v;
+  return mcq(table+" What is the missing x-value?",
+    ""+w,[""+((v-1)*(v-1)),""+((v+1)*(v+1)),""+(2*v)],
+    "In the table, each x-value is the square of its y-value. The incomplete pair has \\(y = "+v+"\\), and \\("+v+"^2 = "+w+"\\), so the missing x-value is <b>"+w+"</b>.",
+    {v:v,shape:shape});
+});
+
+E("u3-start-point",3,["4.11"],2,"gen",function(){
+  var a=pick([-3,-2,-1,1,2,3]),b=pick([1,2,4]),h=0,k=0,t=0;
+  while((h===0||k===0)&&t<60){h=ri(-6,6);k=ri(-6,6);t++;}
+  var eq=u3eqnT(a,b,h,k);
+  return mcq("The graph of \\("+eq+"\\) is a transformation of the graph of \\(y = \\sqrt{x}\\). At which point does the graph begin?",
+    "("+h+", "+k+")",
+    ["("+(-h)+", "+k+")","("+h+", "+(-k)+")","("+(-h)+", "+(-k)+")"],
+    "The graph of \\(y = \\sqrt{x}\\) begins at \\((0, 0)\\), where the radicand first reaches zero. Here the radicand is zero when \\(x = "+h+"\\), and at that point the value of the function is the vertical shift, \\(y = "+k+"\\). So the graph begins at <b>("+h+", "+k+")</b>. The factors \\(a = "+a+"\\) and \\(b = "+b+"\\) stretch, compress or reflect the graph, but they do not move its starting point.",
+    {a:a,b:b,h:h,k:k});
+});
+
+E("u3-transform-domain-range",3,["4.11"],2,"gen",function(){
+  var a=1,b=1,h=2,k=3,t=0;
+  do{a=pick([-3,-2,-1,1,2,3]);b=pick([1,2,4]);h=ri(-6,6);k=ri(-6,6);t++;}
+  while((h===0||k===0||Math.abs(h)===Math.abs(k))&&t<80);
+  var eq=u3eqnT(a,b,h,k),shape=pick(["domain","range"]);
+  if(shape==="domain"){
+    var inn=u3inside(-h),rad=(b===1)?inn:b+"("+inn+")",steps;
+    if(b===1)steps=rad+" &\\geq 0 \\\\ x &\\geq "+h;
+    else steps=rad+" &\\geq 0 \\\\ "+inn+" &\\geq 0 \\\\ x &\\geq "+h;
+    return mcq("What is the <b>domain</b> of the function \\("+eq+"\\)?",
+      "\\(x \\geq "+h+"\\)",
+      ["\\(x \\geq "+(-h)+"\\)","\\(x \\leq "+h+"\\)","\\(x \\geq "+k+"\\)"],
+      "The radicand of a square root must be non-negative. Because \\(b = "+b+"\\) is positive, dividing by it keeps the direction of the inequality: \\[ \\begin{aligned} "+steps+" \\end{aligned} \\] So the domain is <b>\\(x \\geq "+h+"\\)</b>.",
+      {a:a,b:b,h:h,k:k,shape:shape});
+  }
+  var up=(a>0),cor,dis;
+  if(up){cor="\\(y \\geq "+k+"\\)";dis=["\\(y \\leq "+k+"\\)","\\(y \\geq "+(-k)+"\\)","\\(y \\geq "+h+"\\)"];}
+  else{cor="\\(y \\leq "+k+"\\)";dis=["\\(y \\geq "+k+"\\)","\\(y \\leq "+(-k)+"\\)","\\(y \\leq "+h+"\\)"];}
+  return mcq("What is the <b>range</b> of the function \\("+eq+"\\)?",
+    cor,dis,
+    "A square root is never negative, so \\(\\sqrt{"+((b===1)?u3inside(-h):b+"("+u3inside(-h)+")")+"}\\) takes every value from \\(0\\) upward. Multiplying by \\(a = "+a+"\\) makes the term "+(up?"non-negative":"non-positive")+", and the vertical shift then moves its smallest or largest value to \\("+k+"\\). So the range is <b>"+cor+"</b>.",
+    {a:a,b:b,h:h,k:k,shape:shape});
+});
+
+E("u3-sqrtf-evaluate",3,["4.12"],2,"gen",function(){
+  var c=0,t=0;
+  while(c===0&&t<40){c=ri(-9,9);t++;}
+  var fstr="f(x) = "+u3inside(c),shape=pick([1,2]),m=ri(2,9);
+  if(shape===1){
+    var tv=m*m-c;
+    return numq("Let \\("+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). What is \\(g("+tv+")\\)?",
+      m,0.01,
+      "\\[ \\begin{aligned} g("+tv+") &= \\sqrt{f("+tv+")} \\\\ &= \\sqrt{"+tv+u3sgn(c)+"} \\\\ &= \\sqrt{"+(m*m)+"} \\\\ &= "+m+" \\end{aligned} \\] So \\(g("+tv+") = <b>"+m+"</b>\\).",
+      {c:c,m:m,shape:shape});
+  }
+  var vals=[],tries=0;
+  do{c=ri(-9,9);m=ri(3,9);vals=[m*m-c,m*m+c,m-c,2*(m-c)];tries++;}
+  while((c===0||new Set(vals).size<4)&&tries<80);
+  fstr="f(x) = "+u3inside(c);
+  var xv=m*m-c;
+  return mcq("Let \\("+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). For what value of \\(x\\) is \\(g(x) = "+m+"\\)?",
+    ""+xv,vals.slice(1).map(function(z){return ""+z;}),
+    "Set the output of \\(g\\) equal to \\("+m+"\\) and square both sides: \\[ \\begin{aligned} \\sqrt{"+u3inside(c)+"} &= "+m+" \\\\ "+u3inside(c)+" &= "+(m*m)+" \\\\ x &= "+xv+" \\end{aligned} \\] So \\(g(x) = "+m+"\\) when <b>\\(x = "+xv+"\\)</b>.",
+    {c:c,m:m,shape:shape});
+});
+
+E("u3-compare-domains",3,["4.9"],2,"gen",function(){
+  var r=pick([2,3,4,5,6,7]),n=r*r,shifted=pick([false,true]),h=shifted?pick([-3,-2,-1,1,2,3]):0;
+  var base=shifted?"("+u3inside(-h)+")^2":"x^2",fstr=base+" - "+n;
+  var lo=h-r,hi=h+r,shape=pick(["domain","range"]);
+  if(shape==="domain"){
+    return mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>domains</b> of the two functions?",
+      "The domain of f is all real numbers, but the domain of g is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
+      ["The domain of f is all real numbers, but the domain of g is \\(x \\geq "+hi+"\\)",
+       "The domain of g is all real numbers, but the domain of f is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
+       "The domains are the same, because taking a square root does not restrict where a function is defined"],
+      "A polynomial such as \\(f\\) is defined for every real value of \\(x\\). For \\(g\\), the radicand must be non-negative: \\("+fstr+" \\geq 0\\) holds exactly where the parabola is on or above the x-axis, which is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\). So building \\(g\\) from the square root of \\(f\\) restricts the domain to where \\(f(x) \\geq 0\\).",
+      {r:r,h:h,shape:shape});
+  }
+  return mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>ranges</b> of the two functions?",
+    "The range of f is \\(y \\geq "+(-n)+"\\), but the range of g is \\(y \\geq 0\\)",
+    ["The range of f is \\(y \\geq 0\\), but the range of g is \\(y \\geq "+(-n)+"\\)",
+     "The range of f is \\(y \\geq "+(-n)+"\\), and the range of g is \\(y \\geq "+(-n)+"\\) as well",
+     "The range of f is \\(y \\geq "+n+"\\), but the range of g is \\(y \\geq 0\\)"],
+    "The parabola \\(f\\) opens upward with minimum value \\(-"+n+"\\) at its vertex, so the range of \\(f\\) is \\(y \\geq "+(-n)+"\\). A square root never gives a negative output, and as \\(f(x)\\) grows, \\(\\sqrt{f(x)}\\) takes every value from \\(0\\) upward, so the range of \\(g\\) is \\(y \\geq 0\\). The square root discards the negative part of the range of \\(f\\).",
+    {r:r,h:h,shape:shape});
+});
+
+E("u3-intercept-solution",3,["4.25"],2,"gen",function(){
+  var form=pick([1,2]),b=ri(2,6),a,sol,inn;
+  if(form===1){a=ri(1,b*b-1);sol=b*b-a;inn=a;}
+  else{a=ri(1,9);sol=b*b+a;inn=-a;}
+  var rad="\\sqrt{"+u3inside(inn)+"}";
+  return numq("The graph of \\(y = "+rad+" - "+b+"\\) has exactly one x-intercept. What is the solution of the equation \\("+rad+" = "+b+"\\)?",
+    sol,0.01,
+    "At an x-intercept, \\(y = 0\\), so the intercept is the value of \\(x\\) that makes \\("+rad+" - "+b+" = 0\\): \\[ \\begin{aligned} "+rad+" &= "+b+" \\\\ "+u3inside(inn)+" &= "+(b*b)+" \\\\ x &= "+sol+" \\end{aligned} \\] The solution is <b>\\(x = "+sol+"\\)</b>. In general, the roots of a radical equation are exactly the x-intercepts of the corresponding radical function.",
+    {a:a,b:b,form:form});
+});
+
+E("u3-graphical-solve",3,["4.26"],2,"gen",function(){
+  var form=pick([1,2]),c=pick([2,3,4,5]),a=0,sol=0,t=0;
+  if(form===1){do{a=ri(0,12);t++;}while(a>=c*c&&t<60);sol=c*c-a;}
+  else{a=ri(1,10);sol=c*c+a;}
+  var rad="\\sqrt{"+u3inside((form===1)?a:-a)+"}";
+  var chk=(form===1)?((a===0)?""+sol:sol+" + "+a):sol+" - "+a;
+  var q=numq("The graphs of \\(y = "+rad+"\\) and \\(y = "+c+"\\) are shown in the diagram. Use the graph to solve the equation \\("+rad+" = "+c+"\\).",
+    sol,0.01,
+    "On the graph, the solution is the x-coordinate of the point where the curve meets the line \\(y = "+c+"\\). The dashed line drops from that intersection point to the x-axis at <b>\\(x = "+sol+"\\)</b>. Check: \\(\\sqrt{"+chk+"} = \\sqrt{"+(c*c)+"} = "+c+"\\).",
+    {a:a,c:c,form:form});
+  q.figure=u3svgSolve(form,a,c,sol);
+  return q;
+});
+
+E("u3-two-methods",3,["4.26"],3,"gen",function(){
+  var a=ri(2,12),c=pick([2,3,4,5,6]),t=0;
+  while(c*c<=a&&t<60){c=pick([2,3,4,5,6]);t++;}
+  var s=c*c-a,pair=pick([["Ava","Liam"],["Noah","Emma"],["Lucas","Mia"],["Ella","Owen"]]);
+  var rad="\\sqrt{"+u3inside(a)+"}";
+  return mcq(pair[0]+" and "+pair[1]+" each solve \\("+rad+" = "+c+"\\) graphically. "+pair[0]+" graphs \\(y = "+rad+"\\) and \\(y = "+c+"\\) and reads the x-coordinate of their intersection point. "+pair[1]+" graphs \\(y = "+rad+" - "+c+"\\) and reads its x-intercept. Which statement is correct?",
+    "Both methods give \\(x = "+s+"\\), because the intersection x-coordinate and the x-intercept both occur where \\("+rad+" = "+c+"\\)",
+    ["Only "+pair[0]+"'s method works, because the solution of an equation is the x-coordinate where two graphs intersect",
+     "Only "+pair[1]+"'s method works, because the solution of an equation has to be read from the x-intercept of a single graph",
+     "Neither method works, because a solution read from a graph is only an estimate and cannot be checked against the equation"],
+    pair[1]+"'s graph crosses the x-axis where \\("+rad+" - "+c+" = 0\\), which is the very same condition as \\("+rad+" = "+c+"\\). That x-value is also where "+pair[0]+"'s two graphs meet, since both graphs then have the same y-value. So both methods find \\(x = "+(c*c)+" - "+a+" = "+s+"\\), and substituting back confirms it exactly.",
+    {a:a,c:c});
+});
+
+E("u3-recover-f-value",3,["4.12"],3,"gen",function(){
+  var p=ri(-6,2),q=ri(p+2,8),side=pick([0,1]),off=ri(1,6),m=pick([3,4,5,6,7,8]);
+  var tv=(side===0)?p-off:q+off;
+  return mcq("For a certain function \\(f\\), the graph of \\(g(x) = \\sqrt{f(x)}\\) is defined for \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\), and \\(g("+tv+") = "+m+"\\). What is the value of \\(f("+tv+")\\)?",
+    ""+(m*m),
+    [""+m,""+(2*m),""+(m*m+m)],
+    "Because \\(g(x) = \\sqrt{f(x)}\\), the statement \\(g("+tv+") = "+m+"\\) means \\(\\sqrt{f("+tv+")} = "+m+"\\). Squaring both sides undoes the square root: \\[ \\begin{aligned} \\sqrt{f("+tv+")} &= "+m+" \\\\ f("+tv+") &= "+m+"^2 \\\\ &= "+(m*m)+" \\end{aligned} \\] So \\(f("+tv+") = <b>"+(m*m)+"</b>\\). The domain information confirms that \\(g\\) is defined at \\(x = "+tv+"\\); the value itself comes from squaring.",
+    {p:p,q:q,tv:tv,m:m});
+});
+
+E("u3-intercept-statement",3,["4.25"],1,"gen",function(){
+  var form=pick([1,2]),b=ri(2,6),a,tv,inn;
+  if(form===1){a=ri(1,b*b-1);tv=b*b-a;inn=a;}
+  else{a=ri(1,9);tv=b*b+a;inn=-a;}
+  var rad="\\sqrt{"+u3inside(inn)+"}",radOpp="\\sqrt{"+u3inside(-inn)+"}";
+  return mcq("The graph of \\(y = "+rad+" - "+b+"\\) has x-intercept \\(x = "+tv+"\\). Which statement must be true?",
+    "\\("+rad+" = "+b+"\\)",
+    ["\\("+rad+" = 0\\)","\\("+rad+" = "+(-b)+"\\)","\\("+radOpp+" = "+b+"\\)"],
+    "At an x-intercept, the y-value is \\(0\\): \\[ \\begin{aligned} 0 &= "+rad+" - "+b+" \\\\ "+rad+" &= "+b+" \\end{aligned} \\] So the intercept \\(x = "+tv+"\\) is a root of the equation \\("+rad+" = "+b+"\\). This is the general relationship: the roots of a radical equation are the x-intercepts of the corresponding radical function.",
+    {a:a,b:b,form:form});
+});
+
+/* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (2 and 3 marks) and two Level 2 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry and an all-2-mark Level 2 pool. ---------- */
+function u3facS(r){ return r===0?"x":(r>0?"(x - "+r+")":"(x + "+(-r)+")"); }
+E("u3-domain-from-quadratic-cr",3,["4.9"],3,"gen",function(){
+  var p=ri(-6,2), q=p+ri(2,6), B=-(p+q), C=p*q;
+  var fs="x^2";
+  if(B!==0) fs+=(B>0?" + ":" - ")+(Math.abs(B)===1?"x":Math.abs(B)+"x");
+  if(C!==0) fs+=(C>0?" + "+C:" - "+(-C));
+  return mcq("What is the domain of the function \\(g(x) = \\sqrt{"+fs+"}\\)?",
+    "\\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\)",
+    ["\\("+p+" \\leq x \\leq "+q+"\\)",
+     "\\(x \\geq "+q+"\\) only",
+     "All real numbers"],
+    "The radicand must be non-negative. Since \\("+fs+" = "+u3facS(p)+u3facS(q)+"\\), the radicand is zero at \\(x = "+p+"\\) and \\(x = "+q+"\\). The parabola opens upward, so the radicand is positive outside the interval between the roots. The domain is \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\).",
+    {p:p,q:q});
+});
+E("u3-recover-coefficient-cr",3,["4.12"],3,"gen",function(){
+  var p=ri(-5,1), q=p+ri(3,7);
+  var side=pick([0,1]), t=side===0? q+ri(1,5) : p-ri(1,5);
+  var fv=(t-p)*(t-q);
+  return numq("The function \\(g(x) = \\sqrt{f(x)}\\), where \\(f\\) is a quadratic function with leading coefficient 1, has domain \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\). Determine the value of \\(f("+t+")\\).",
+    fv,0.001,
+    "The endpoints of the domain are the zeros of \\(f\\), so \\(f(x) = "+u3facS(p)+u3facS(q)+"\\). Evaluating at \\(x = "+t+"\\): \\(f("+t+") = ("+t+" "+(p>=0?"- "+p:"+ "+(-p))+")("+t+" "+(q>=0?"- "+q:"+ "+(-q))+") = "+(t-p)+" \\times "+(t-q)+" = <b>"+fv+"</b>\\).",
+    {p:p,q:q,t:t});
+});
+E("u3-evaluate-transformed-cr",3,["4.11"],2,"gen",function(){
+  var b=pick([1,4]), s=b===1? ri(2,6) : pick([2,4,6]);
+  var a=pick([2,3,-2,-3]), h=ri(-4,4), k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var t=h+s*s/b, ans=a*s+k;
+  var inside=b===1? u3inside(-h) : b+"(x"+(h===0?"":(h>0?" - "+h:" + "+(-h)))+")";
+  var ks=k>0?"+ "+k:"- "+(-k);
+  return numq("Given \\(g(x) = "+a+"\\sqrt{"+inside+"} "+(k>0?"+":"-")+" "+Math.abs(k)+"\\), determine the value of \\(g("+t+")\\).",
+    ans,0.001,
+    "At \\(x = "+t+"\\), the radicand is \\("+b+" \\times "+(t-h)+" = "+(s*s)+"\\), and \\(\\sqrt{"+(s*s)+"} = "+s+"\\). \\[ \\begin{aligned} g("+t+") &= "+a+"("+s+") "+ks+" \\\\ &= "+(a*s)+" "+ks+" \\\\ &= <b>"+ans+"</b> \\end{aligned} \\]",
+    {b:b,s:s,a:a,h:h,k:k});
+});
+E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
+  var b=ri(2,6), i=ri(-4,10); if(b*b-i===0) i=i-3;
+  var c=b*b-i;
+  return numq("The graph of \\(y = \\sqrt{x + c} - "+b+"\\) has x-intercept "+i+". Determine the value of \\(c\\).",
+    c,0.001,
+    "At the x-intercept, \\(y = 0\\): \\[ \\begin{aligned} 0 &= \\sqrt{"+i+" + c} - "+b+" \\\\ \\sqrt{"+i+" + c} &= "+b+" \\\\ "+i+" + c &= "+(b*b)+" \\\\ c &= <b>"+c+"</b> \\end{aligned} \\]",
+    {b:b,i:i});
+});
+
+/* ----- bank-u4.js ----- */
+// Math 3200 Unit 4 Trigonometry and the Unit Circle question bank
+// CRMARKS: u4-angle-from-ratio=2
+// CRMARKS: u4-angle-measures-cr=3
+// CRMARKS: u4-approx-ratio=1
+// CRMARKS: u4-arc-compare=2
+// CRMARKS: u4-arc-length=2
+// CRMARKS: u4-circle-equation=1
+// CRMARKS: u4-circle-point-reasoning=3
+// CRMARKS: u4-coterminal=1
+// CRMARKS: u4-deg-to-rad=1
+// CRMARKS: u4-exact-special=1
+// CRMARKS: u4-one-radian=1
+// CRMARKS: u4-other-ratios=2
+// CRMARKS: u4-point-ratios-angle=2
+// CRMARKS: u4-rad-to-deg=1
+// CRMARKS: u4-ratio-problem=2
+// CRMARKS: u4-repair-solution-cr=3
+// CRMARKS: u4-sketch-standard-position=1
+// CRMARKS: u4-solve-equation-approx=2
+// CRMARKS: u4-solve-equation-exact=2
+/* ================= Unit 4: Trigonometry and the Unit Circle ================= */
+/* ================= Unit 4: Trigonometry and the Unit Circle =================
+   Helpers are prefixed u4; the only other top-level statements are E(...) calls.
+   18 entries: L1 4, L2 11, L3 3. Codes: MA3200.7.1 to 7.19, 7.34 to 7.37. */
+
+function u4gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+
+function u4fr(n, d) { /* signed reduced fraction as a KaTeX body (no delimiters) */
+  if (d < 0) { n = -n; d = -d; }
+  if (n === 0) return "0";
+  var g = u4gcd(n, d); n /= g; d /= g;
+  var s = n < 0 ? "-" : ""; n = Math.abs(n);
+  if (d === 1) return s + n;
+  return s + "\\frac{" + n + "}{" + d + "}";
+}
+
+function u4mag(kind, av) { /* exact magnitude string for a special-angle ratio value */
+  var table;
+  if (kind === "sin" || kind === "cos") table = [[0, "0"], [0.5, "\\frac{1}{2}"], [0.7071, "\\frac{\\sqrt{2}}{2}"], [0.866, "\\frac{\\sqrt{3}}{2}"], [1, "1"]];
+  else if (kind === "tan" || kind === "cot") table = [[0, "0"], [0.5774, "\\frac{\\sqrt{3}}{3}"], [1, "1"], [1.7321, "\\sqrt{3}"]];
+  else table = [[1, "1"], [1.1547, "\\frac{2\\sqrt{3}}{3}"], [1.4142, "\\sqrt{2}"], [2, "2"]];
+  for (var i = 0; i < table.length; i++) if (Math.abs(av - table[i][0]) < 0.01) return table[i][1];
+  return null;
+}
+
+function u4ratioVal(kind, deg) { /* numeric value of a ratio at a degree measure */
+  var th = deg * Math.PI / 180, sv = Math.sin(th), cv = Math.cos(th);
+  if (kind === "sin") return sv;
+  if (kind === "cos") return cv;
+  if (kind === "tan") return sv / cv;
+  if (kind === "csc") return 1 / sv;
+  if (kind === "sec") return 1 / cv;
+  return cv / sv;
+}
+
+function u4exact(kind, deg) { /* {s, v}: exact string and value of a ratio at a special degree, or null if undefined */
+  var th = deg * Math.PI / 180, sv = Math.sin(th), cv = Math.cos(th), v;
+  if (kind === "sin") v = sv;
+  else if (kind === "cos") v = cv;
+  else if (kind === "tan") { if (Math.abs(cv) < 1e-9) return null; v = sv / cv; }
+  else if (kind === "csc") { if (Math.abs(sv) < 1e-9) return null; v = 1 / sv; }
+  else if (kind === "sec") { if (Math.abs(cv) < 1e-9) return null; v = 1 / cv; }
+  else { if (Math.abs(sv) < 1e-9) return null; v = cv / sv; }
+  var fam = (kind === "csc" || kind === "sec") ? "sec" : kind;
+  var mag = u4mag(fam, Math.abs(v));
+  if (mag === null) return null;
+  return { s: (v < 0 && mag !== "0" ? "-" : "") + mag, v: v };
+}
+
+var u4DEGS = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330];
+var u4KINDS = ["sin", "cos", "tan", "csc", "sec", "cot"];
+
+function u4radS(deg) { /* radian string body for a special degree, principal value in [0, 360) */
+  deg = ((deg % 360) + 360) % 360;
+  if (deg === 0) return "0";
+  var g = u4gcd(deg, 180), n = deg / g, d = 180 / g;
+  if (d === 1) return n === 1 ? "\\pi" : n + "\\pi";
+  if (n === 1) return "\\frac{\\pi}{" + d + "}";
+  return "\\frac{" + n + "\\pi}{" + d + "}";
+}
+function u4radSgn(deg) { return deg < 0 ? "-" + u4radS(-deg) : u4radS(deg); }
+function u4radBig(deg) { /* radian string body for any integer degree total, no reduction mod 360 */
+  if (deg === 0) return "0";
+  var s = deg < 0 ? "-" : "", a = Math.abs(deg), g = u4gcd(a, 180), n = a / g, d = 180 / g;
+  if (d === 1) return s + (n === 1 ? "\\pi" : n + "\\pi");
+  if (n === 1) return s + "\\frac{\\pi}{" + d + "}";
+  return s + "\\frac{" + n + "\\pi}{" + d + "}";
+}
+function u4dist3(correct, cands) { /* first three candidate strings that differ from the key and each other */
+  var out = [];
+  for (var i = 0; i < cands.length; i++) {
+    var c = cands[i];
+    if (c !== null && c !== undefined && c !== correct && out.indexOf(c) < 0) out.push(c);
+    if (out.length === 3) break;
+  }
+  return out;
+}
+function u4quadOf(deg) { var p = ((deg % 360) + 360) % 360; return p < 90 ? 1 : p < 180 ? 2 : p < 270 ? 3 : 4; }
+function u4refOf(deg) { var p = ((deg % 360) + 360) % 360; return p <= 90 ? p : p <= 180 ? 180 - p : p <= 270 ? p - 180 : 360 - p; }
+function u4wrap(x) { var t = 2 * Math.PI; return ((x % t) + t) % t; }
+
+function u4armSVG(deg) { /* unit circle, axes, rotation arc and terminal arm for a standard-position angle */
+  var th = deg * Math.PI / 180, cx = 88, cy = 88, R = 64;
+  var ex = cx + R * Math.cos(th), ey = cy - R * Math.sin(th);
+  var large = Math.abs(deg) > 180 ? 1 : 0, sweep = deg >= 0 ? 0 : 1;
+  var ax = cx + 38 * Math.cos(th), ay = cy - 38 * Math.sin(th);
+  var out = '<svg viewBox="0 0 176 176" width="176" height="176" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unit circle with an angle in standard position">';
+  out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="none" stroke="' + FIG_INK + '" stroke-width="1.3"/>';
+  out += '<line x1="' + (cx - R - 12) + '" y1="' + cy + '" x2="' + (cx + R + 12) + '" y2="' + cy + '" stroke="' + FIG_INK + '" stroke-width="1"/>';
+  out += '<line x1="' + cx + '" y1="' + (cy - R - 12) + '" x2="' + cx + '" y2="' + (cy + R + 12) + '" stroke="' + FIG_INK + '" stroke-width="1"/>';
+  out += '<path d="M ' + (cx + 38) + ' ' + cy + ' A 38 38 0 ' + large + ' ' + sweep + ' ' + fmt(ax, 1) + ' ' + fmt(ay, 1) + '" fill="none" stroke="' + FIG_ACC + '" stroke-width="2"/>';
+  out += '<line x1="' + cx + '" y1="' + cy + '" x2="' + fmt(ex, 1) + '" y2="' + fmt(ey, 1) + '" stroke="' + FIG_INK + '" stroke-width="2.2"/>';
+  out += '<circle cx="' + fmt(ex, 1) + '" cy="' + fmt(ey, 1) + '" r="3.2" fill="' + FIG_ALT + '"/>';
+  return out + '</svg>';
+}
+
+function u4ptSVG(x, y) { /* axes with the terminal arm to the point P(x, y) and dashed coordinate drops */
+  var r = Math.sqrt(x * x + y * y), cx = 88, cy = 88, R = 64;
+  var px = cx + R * x / r, py = cy - R * y / r;
+  var out = '<svg viewBox="0 0 176 176" width="176" height="176" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Point on a terminal arm">';
+  out += '<line x1="8" y1="' + cy + '" x2="168" y2="' + cy + '" stroke="' + FIG_INK + '" stroke-width="1"/>';
+  out += '<line x1="' + cx + '" y1="8" x2="' + cx + '" y2="168" stroke="' + FIG_INK + '" stroke-width="1"/>';
+  out += '<line x1="' + fmt(px, 1) + '" y1="' + fmt(py, 1) + '" x2="' + fmt(px, 1) + '" y2="' + cy + '" stroke="' + FIG_INK + '" stroke-width="0.8" stroke-dasharray="3 3"/>';
+  out += '<line x1="' + fmt(px, 1) + '" y1="' + fmt(py, 1) + '" x2="' + cx + '" y2="' + fmt(py, 1) + '" stroke="' + FIG_INK + '" stroke-width="0.8" stroke-dasharray="3 3"/>';
+  out += '<line x1="' + cx + '" y1="' + cy + '" x2="' + fmt(px, 1) + '" y2="' + fmt(py, 1) + '" stroke="' + FIG_INK + '" stroke-width="2.2"/>';
+  out += '<circle cx="' + fmt(px, 1) + '" cy="' + fmt(py, 1) + '" r="3.2" fill="' + FIG_ALT + '"/>';
+  out += _txt(px + (x >= 0 ? 8 : -8), py - 10, "P(" + x + ", " + y + ")", 12, true, x >= 0 ? "start" : "end");
+  return out + '</svg>';
+}
+
+function u4triSVG(o) { /* right triangle: vertical side on the right, angle at bottom left, or at the top when o.dep */
+  var out = '<svg viewBox="0 0 196 172" width="196" height="172" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Right triangle diagram">';
+  out += '<polygon points="28,146 158,146 158,44" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += '<path d="M 146 146 L 146 134 L 158 134" fill="none" stroke="' + FIG_INK + '" stroke-width="1.2"/>';
+  if (o.vlab) out += _txt(166, 95, o.vlab, 12.5, true, "start");
+  if (o.hlab) out += _txt(93, 162, o.hlab, 12.5, true);
+  if (o.hypLab) out += _txt(78, 84, o.hypLab, 12.5, true);
+  if (o.dep) {
+    out += '<line x1="158" y1="44" x2="92" y2="44" stroke="' + FIG_INK + '" stroke-width="1" stroke-dasharray="4 3"/>';
+    out += '<path d="M 136 44 A 22 22 0 0 0 140.7 57.6" fill="none" stroke="' + FIG_ACC + '" stroke-width="1.8"/>';
+    if (o.angLab) out += _txt(122, 32, o.angLab, 12, true);
+  } else {
+    out += '<path d="M 50 146 A 22 22 0 0 0 45.3 132.4" fill="none" stroke="' + FIG_ACC + '" stroke-width="1.8"/>';
+    if (o.angLab) out += _txt(64, 134, o.angLab, 12, true);
+  }
+  return out + '</svg>';
+}
+
+function u4pairStr(pr, rad) { /* display a pair of special degrees as an option string, ascending */
+  var a = Math.min(pr[0], pr[1]), b = Math.max(pr[0], pr[1]);
+  if (rad) return "\\(" + u4radS(a) + "\\) and \\(" + u4radS(b) + "\\)";
+  return a + "° and " + b + "°";
+}
+
+function u4twoStr(kind, v) { /* exact string for twice a special ratio value */
+  var av = Math.abs(2 * v), t;
+  if (kind === "tan" || kind === "cot") t = [[0, "0"], [1.1547, "\\frac{2\\sqrt{3}}{3}"], [2, "2"], [3.4641, "2\\sqrt{3}"]];
+  else t = [[0, "0"], [1, "1"], [1.4142, "\\sqrt{2}"], [1.7321, "\\sqrt{3}"]];
+  for (var i = 0; i < t.length; i++) if (Math.abs(av - t[i][0]) < 0.01) return (v < 0 && t[i][1] !== "0" ? "-" : "") + t[i][1];
+  return null;
+}
+
+/* ---- 7.1, 7.4: read a standard-position sketch (degrees, then radians as k pi) ---- */
+E("u4-sketch-standard-position", 4, ["7.1", "7.4"], 1, "gen", function () {
+  var fig, q;
+  if (Math.random() < 0.5) {
+    var pool = [20, 30, 40, 50, 60, 70, 80, 100, 110, 120, 130, 140, 150, 160, 170, 190, 200, 210, 220, 230, 240, 250, 260, 280, 290, 300, 310, 320, 330, 340, 350];
+    var deg = pick(pool) * pick([1, -1]);
+    fig = u4armSVG(deg);
+    var dis = ["" + (-deg) + "°", "" + (deg - (deg > 0 ? 360 : -360)) + "°", "" + ((deg > 0 ? 1 : -1) * (180 - Math.abs(deg))) + "°"];
+    q = mcq("The diagram shows an angle in standard position. What is the measure of the angle?",
+      "" + deg + "°", dis,
+      "The initial arm lies on the positive x-axis and the rotation is " + (deg > 0 ? "counterclockwise" : "clockwise") + ". The terminal arm is in Quadrant " + ["I", "II", "III", "IV"][u4quadOf(deg) - 1] + " with reference angle " + u4refOf(deg) + "°, which gives the signed measure <b>" + deg + "°</b>.",
+      { mode: "deg", deg: deg });
+  } else {
+    var d = pick([30, 45, 60, 120, 135, 150, 210, 225, 240, 300, 315, 330]) * pick([1, -1]);
+    fig = u4armSVG(d);
+    q = mcq("The diagram shows an angle in standard position. What is the measure of the angle, in radians?",
+      "\\(" + u4radSgn(d) + "\\)",
+      ["\\(" + u4radSgn(-d) + "\\)", "\\(" + u4radSgn(d - (d > 0 ? 360 : -360)) + "\\)", "\\(" + u4radSgn((d > 0 ? 1 : -1) * (180 - Math.abs(d))) + "\\)"],
+      "The terminal arm is the one for " + d + "°, and " + d + "° expressed in radians is \\(" + u4radSgn(d) + "\\). The signed measure is <b>\\(" + u4radSgn(d) + "\\)</b>.",
+      { mode: "rad", deg: d });
+  }
+  q.figure = fig;
+  return q;
+});
+
+/* ---- 7.2, 7.3: one radian and the degree-radian relationship ---- */
+E("u4-one-radian", 4, ["7.2", "7.3"], 1, "var", varset([
+  function () {
+    return mcq("An angle measures exactly 1 radian. To the nearest tenth of a degree, its measure is",
+      "57.3°", ["60.0°", "45.0°", "90.0°"],
+      "A full rotation is \\(360^\\circ = 2\\pi\\) rad, so \\(1\\) rad \\(= \\frac{180}{\\pi} \\approx 57.3^\\circ\\). The measure is <b>57.3°</b>.",
+      { v: 1 });
+  },
+  function () {
+    return mcq("Which statement correctly describes an angle of 1 radian?",
+      "It cuts an arc equal in length to the radius",
+      ["It is exactly one quarter of a full rotation", "It measures exactly 60 degrees", "It cuts an arc twice the length of the radius"],
+      "By definition, an angle of 1 radian is the central angle that cuts an arc whose length equals the radius of the circle. A quarter rotation is \\(\\frac{\\pi}{2}\\) rad, and an arc of twice the radius belongs to 2 radians.",
+      { v: 2 });
+  },
+  function () {
+    return mcq("\\(\\pi\\) radians is equal to",
+      "180°", ["360°", "90.0°", "57.3°"],
+      "Half a rotation is \\(\\pi\\) rad and also \\(180^\\circ\\), so \\(\\pi\\) rad \\(= 180^\\circ\\). The value 57.3° is the size of 1 radian, not of \\(\\pi\\) radians.",
+      { v: 3 });
+  },
+  function () {
+    return mcq("A full rotation measures \\(2\\pi\\) radians. One radian is what fraction of a full rotation?",
+      "\\(\\frac{1}{2\\pi}\\)", ["\\(\\frac{1}{\\pi}\\)", "\\(\\frac{\\pi}{2}\\)", "\\(\\frac{1}{2}\\)"],
+      "One radian out of a full rotation of \\(2\\pi\\) radians is the fraction \\(\\frac{1}{2\\pi}\\).",
+      { v: 4 });
+  }
+]));
+
+/* ---- 7.5: degrees to radians (exact for special angles, decimal otherwise) ---- */
+E("u4-deg-to-rad", 4, ["7.5"], 1, "gen", function () {
+  if (Math.random() < 0.55) {
+    var d = pick([15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345]);
+    var corr = "\\(" + u4radS(d) + "\\)";
+    var cands = [(d + 45) % 360, (d + 90) % 360, (d + 135) % 360, (d + 180) % 360, (360 - d) % 360, (d + 270) % 360].map(function (x) { return "\\(" + u4radS(x) + "\\)"; });
+    return mcq("Convert " + d + "° to radians, in exact form.",
+      corr, u4dist3(corr, cands),
+      "Multiply by \\(\\frac{\\pi}{180}\\): \\[ \\begin{aligned} " + d + "^\\circ &= " + d + " \\times \\frac{\\pi}{180} \\\\ &= " + u4radS(d) + " \\end{aligned} \\] The exact measure is <b>\\(" + u4radS(d) + "\\)</b>.",
+      { mode: "exact", d: d });
+  }
+  var dd = ri(10, 350);
+  while (dd % 15 === 0) dd = ri(10, 350);
+  var ans = Math.round(dd * Math.PI / 180 * 100) / 100;
+  return numq("Convert " + dd + "° to radians, to the nearest hundredth.",
+    ans, 0.006,
+    "Multiply by \\(\\frac{\\pi}{180}\\): \\[ \\begin{aligned} " + dd + "^\\circ &= " + dd + " \\times \\frac{\\pi}{180} \\\\ &\\approx " + fmt(dd * Math.PI / 180) + " \\end{aligned} \\] To the nearest hundredth, the measure is <b>" + fmt(ans) + " rad</b>.",
+    { mode: "dec", d: dd });
+});
+
+/* ---- 7.6: radians to degrees (exact for special angles, decimal otherwise) ---- */
+E("u4-rad-to-deg", 4, ["7.6"], 1, "gen", function () {
+  if (Math.random() < 0.55) {
+    var d = pick([15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345]);
+    var corr = d + "°";
+    var cands = [(d + 45) % 360, (d + 90) % 360, (d + 135) % 360, (d + 180) % 360, (360 - d) % 360, (d + 270) % 360].map(function (x) { return x + "°"; });
+    return mcq("Convert \\(" + u4radS(d) + "\\) radians to degrees.",
+      corr, u4dist3(corr, cands),
+      "Multiply by \\(\\frac{180}{\\pi}\\): \\[ \\begin{aligned} " + u4radS(d) + " \\text{ rad} &= " + u4radS(d) + " \\times \\frac{180}{\\pi} \\\\ &= " + d + "^\\circ \\end{aligned} \\] The measure is <b>" + d + "°</b>.",
+      { mode: "exact", d: d });
+  }
+  var r = ri(21, 620) / 100;
+  var ansD = Math.round(r * 180 / Math.PI);
+  return numq("Convert " + fmt(r) + " radians to degrees, to the nearest degree.",
+    ansD, 0.5,
+    "Multiply by \\(\\frac{180}{\\pi}\\): \\[ \\begin{aligned} " + fmt(r) + " \\text{ rad} &= " + fmt(r) + " \\times \\frac{180}{\\pi} \\\\ &\\approx " + fmt(r * 180 / Math.PI, 1) + "^\\circ \\end{aligned} \\] To the nearest degree, the measure is <b>" + ansD + "°</b>.",
+    { mode: "dec", r: r });
+});
+
+/* ---- 7.7, 7.8: coterminal angles and their general form ---- */
+E("u4-coterminal", 4, ["7.7", "7.8"], 1, "gen", function () {
+  var mode = pick(["find", "find", "form"]);
+  if (mode === "find") {
+    if (Math.random() < 0.5) {
+      var b = ri(1, 35) * 10, k = pick([1, 1, 2, -1, -2]);
+      var th = b + 360 * k;
+      var corr = b + "°";
+      var cands = [(b + 180) % 360, (360 - b) % 360, (b + 90) % 360, (b + 270) % 360, (180 - b + 360) % 360, (b + 45) % 360].map(function (x) { return x + "°"; });
+      return mcq("Which angle is coterminal with " + th + "°?",
+        corr, u4dist3(corr, cands),
+        "Coterminal angles differ by a multiple of \\(360^\\circ\\). Since \\(" + th + "^\\circ " + (k >= 0 ? "- " + (360 * k) : "+ " + (360 * -k)) + "^\\circ = " + b + "^\\circ\\), the angle coterminal with " + th + "° in the interval from 0° to 360° is <b>" + b + "°</b>.",
+        { mode: "findDeg", b: b, k: k });
+    }
+    var d = pick(u4DEGS), kk = pick([1, 1, 2, -1]);
+    var given = d + 360 * kk;
+    var corrR = "\\(" + u4radS(d) + "\\)";
+    var candsR = [(d + 90) % 360, (d + 180) % 360, (360 - d) % 360, (d + 270) % 360, (d + 45) % 360].map(function (x) { return "\\(" + u4radS(x) + "\\)"; });
+    return mcq("Which angle is coterminal with \\(" + u4radBig(given) + "\\)?",
+      corrR, u4dist3(corrR, candsR),
+      "Coterminal angles differ by a multiple of \\(2\\pi\\). Since \\(" + u4radBig(given) + " " + (kk >= 0 ? "- " + (2 * kk) : "+ " + (2 * -kk)) + "\\pi = " + u4radS(d) + "\\), the angle coterminal with \\(" + u4radBig(given) + "\\) in the interval from 0 to \\(2\\pi\\) is <b>\\(" + u4radS(d) + "\\)</b>.",
+      { mode: "findRad", d: d, k: kk });
+  }
+  if (Math.random() < 0.6) {
+    var bb = pick([10, 20, 30, 40, 50, 60, 70, 80, 100, 110, 120, 130, 140, 150, 160, 170, 190, 200, 210, 220, 230, 240, 250, 260, 280, 290, 300, 310, 320, 330, 340, 350, -10, -20, -30, -40, -50, -60, -70, -80, -100, -110, -120, -130, -140, -150, -160, -170]);
+    var corrF = bb + "° + 360°n, n ∈ I";
+    var disF = shuffle([bb + "° + 180°n, n ∈ I", bb + "° + 90°n, n ∈ I", (bb + 360) + "° + 360°n, n ∈ I", (-bb) + "° + 360°n, n ∈ I"]).slice(0, 3);
+    return mcq("The general form of the measures of all angles coterminal with " + bb + "° is",
+      corrF, disF,
+      "Angles coterminal with " + bb + "° are found by adding or subtracting full rotations of \\(360^\\circ\\), so the general form is <b>" + corrF + "</b>.",
+      { mode: "formDeg", b: bb });
+  }
+  var dd2 = pick([30, 45, 60, 120, 135, 150, 210, 225, 240, 300, 315, 330]);
+  var corrG = "\\(" + u4radS(dd2) + " + 2\\pi n\\), \\(n \\in I\\)";
+  var disG = ["\\(" + u4radS(dd2) + " + \\pi n\\), \\(n \\in I\\)",
+    "\\(" + u4radBig(dd2 + 360) + " + 2\\pi n\\), \\(n \\in I\\)",
+    "\\(" + u4radSgn(-dd2) + " + 2\\pi n\\), \\(n \\in I\\)"];
+  return mcq("The general form of the measures of all angles coterminal with \\(" + u4radS(dd2) + "\\) is",
+    corrG, disG,
+    "Angles coterminal with \\(" + u4radS(dd2) + "\\) are found by adding or subtracting full rotations of \\(2\\pi\\), so the general form is <b>" + corrG + "</b>.",
+    { mode: "formRad", d: dd2 });
+});
+
+/* ---- 7.9: arc length a = r(theta), solved for each of the three quantities ---- */
+E("u4-arc-length", 4, ["7.9"], 1, "gen", function () {
+  var mode = pick(["a", "a", "r", "t", "deg"]);
+  if (mode === "a") {
+    var r = ri(3, 30), th = ri(4, 31) / 10, a = r * th;
+    return numq("An arc is cut on a circle of radius " + r + " cm by a central angle of " + fmt(th, 1) + " rad. What is the length of the arc, to the nearest tenth of a centimetre?",
+      Math.round(a * 10) / 10, 0.06,
+      "Arc length is \\(a = r\\theta\\), with the angle in radians: \\[ \\begin{aligned} a &= r\\theta \\\\ &= " + r + " \\times " + fmt(th, 1) + " \\\\ &= " + fmt(a, 1) + " \\text{ cm} \\end{aligned} \\] The arc length is <b>" + fmt(a, 1) + " cm</b>.",
+      { mode: "a", r: r, th: th });
+  }
+  if (mode === "r") {
+    var r2 = ri(3, 30), th2 = ri(4, 31) / 10, a2 = r2 * th2;
+    return numq("An arc of length " + fmt(a2, 1) + " cm is cut on a circle by a central angle of " + fmt(th2, 1) + " rad. What is the radius of the circle, in centimetres?",
+      r2, 0.01,
+      "Solve \\(a = r\\theta\\) for \\(r\\): \\[ \\begin{aligned} r &= \\frac{a}{\\theta} \\\\ &= \\frac{" + fmt(a2, 1) + "}{" + fmt(th2, 1) + "} \\\\ &= " + r2 + " \\text{ cm} \\end{aligned} \\] The radius is <b>" + r2 + " cm</b>.",
+      { mode: "r", r: r2, th: th2 });
+  }
+  if (mode === "t") {
+    var r3 = pick([4, 5, 8, 10, 20, 25, 40, 50]), th3 = ri(3, 30) / 10, a3 = r3 * th3;
+    return numq("An arc of length " + fmt(a3, 1) + " cm is cut on a circle of radius " + r3 + " cm. What is the measure of the central angle, to the nearest tenth of a radian?",
+      Math.round(th3 * 10) / 10, 0.06,
+      "Solve \\(a = r\\theta\\) for \\(\\theta\\): \\[ \\begin{aligned} \\theta &= \\frac{a}{r} \\\\ &= \\frac{" + fmt(a3, 1) + "}{" + r3 + "} \\\\ &= " + fmt(th3, 1) + " \\text{ rad} \\end{aligned} \\] The angle is <b>" + fmt(th3, 1) + " rad</b>.",
+      { mode: "t", r: r3, th: th3 });
+  }
+  var thD = pick([30, 45, 60, 90, 120, 135, 150, 180, 210, 240, 270, 300, 315, 330]), rD = ri(2, 20);
+  var aD = rD * thD * Math.PI / 180;
+  return numq("An arc is cut on a circle of radius " + rD + " cm by a central angle of " + thD + "°. What is the length of the arc, to the nearest tenth of a centimetre?",
+    Math.round(aD * 10) / 10, 0.06,
+    "The formula \\(a = r\\theta\\) needs the angle in radians: \\(" + thD + "^\\circ = " + u4radS(thD) + "\\) rad. Then \\[ \\begin{aligned} a &= r\\theta \\\\ &= " + rD + " \\times " + u4radS(thD) + " \\\\ &\\approx " + fmt(aD, 1) + " \\text{ cm} \\end{aligned} \\] The arc length is <b>" + fmt(aD, 1) + " cm</b>.",
+    { mode: "deg", r: rD, thD: thD });
+});
+
+/* ---- 7.10, 7.11: the equation of a circle centred at the origin ---- */
+E("u4-circle-equation", 4, ["7.10", "7.11"], 1, "gen", function () {
+  var mode = pick(["r", "diam", "fromEq", "point", "sqrt"]);
+  if (mode === "r") {
+    var r = ri(2, 15), corr = "\\(x^2 + y^2 = " + (r * r) + "\\)";
+    return mcq("What is the equation of the circle with centre (0, 0) and radius " + r + "?",
+      corr, ["\\(x^2 + y^2 = " + r + "\\)", "\\(x^2 + y^2 = " + (2 * r * r) + "\\)", "\\(x^2 - y^2 = " + (r * r) + "\\)"],
+      "A circle centred at the origin with radius \\(r\\) has equation \\(x^2 + y^2 = r^2\\). With \\(r = " + r + "\\): \\[ \\begin{aligned} x^2 + y^2 &= " + r + "^2 \\\\ &= " + (r * r) + " \\end{aligned} \\] The equation is <b>" + corr + "</b>.",
+      { mode: "r", r: r });
+  }
+  if (mode === "diam") {
+    var d = pick([6, 8, 10, 12, 14, 16, 18, 20, 22, 24]), rr = d / 2, corr2 = "\\(x^2 + y^2 = " + (rr * rr) + "\\)";
+    return mcq("What is the equation of the circle with centre (0, 0) and diameter " + d + "?",
+      corr2, ["\\(x^2 + y^2 = " + (d * d) + "\\)", "\\(x^2 + y^2 = " + rr + "\\)", "\\(x^2 - y^2 = " + (rr * rr) + "\\)"],
+      "The radius is half the diameter: \\(r = " + d + " \\div 2 = " + rr + "\\). Then \\[ \\begin{aligned} x^2 + y^2 &= r^2 \\\\ &= " + rr + "^2 \\\\ &= " + (rr * rr) + " \\end{aligned} \\] The equation is <b>" + corr2 + "</b>.",
+      { mode: "diam", d: d });
+  }
+  if (mode === "fromEq") {
+    var k = pick([9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196]), rk = Math.sqrt(k);
+    return mcq("What is the radius of the circle \\(x^2 + y^2 = " + k + "\\)?",
+      "" + rk, u4dist3("" + rk, ["" + k, (k % 2 === 1 ? "\\(\\frac{" + k + "}{2}\\)" : "" + (k / 2)), "" + (2 * rk), "" + (rk + 1), "" + (3 * rk)]),
+      "Comparing with \\(x^2 + y^2 = r^2\\) gives \\(r^2 = " + k + "\\), so \\(r = \\sqrt{" + k + "} = " + rk + "\\). The radius is <b>" + rk + "</b>.",
+      { mode: "fromEq", k: k });
+  }
+  if (mode === "point") {
+    var pt = pick([[3, 4], [4, 3], [6, 8], [8, 6], [5, 12], [12, 5], [9, 12], [12, 9], [8, 15], [15, 8], [7, 24], [24, 7]]);
+    var r2v = pt[0] * pt[0] + pt[1] * pt[1], corr3 = "\\(x^2 + y^2 = " + r2v + "\\)";
+    return mcq("A circle with centre (0, 0) passes through the point (" + pt[0] + ", " + pt[1] + "). What is its equation?",
+      corr3, u4dist3(corr3, ["\\(x^2 + y^2 = " + (pt[0] + pt[1]) + "\\)", "\\(x^2 + y^2 = " + Math.abs(pt[0] * pt[0] - pt[1] * pt[1]) + "\\)", "\\(x^2 + y^2 = " + (2 * r2v) + "\\)", "\\((x - " + pt[0] + ")^2 + (y - " + pt[1] + ")^2 = " + r2v + "\\)"]),
+      "The radius squared is the squared distance from the origin to the point: \\[ \\begin{aligned} r^2 &= " + pt[0] + "^2 + " + pt[1] + "^2 \\\\ &= " + (pt[0] * pt[0]) + " + " + (pt[1] * pt[1]) + " \\\\ &= " + r2v + " \\end{aligned} \\] The equation is <b>" + corr3 + "</b>.",
+      { mode: "point", pt: pt });
+  }
+  var m = pick([2, 3, 5, 6, 7, 10, 11, 13, 14, 15]), corr4 = "\\(x^2 + y^2 = " + m + "\\)";
+  return mcq("What is the equation of the circle with centre (0, 0) and radius \\(\\sqrt{" + m + "}\\)?",
+    corr4, u4dist3(corr4, ["\\(x^2 + y^2 = \\sqrt{" + m + "}\\)", "\\(x^2 + y^2 = " + (2 * m) + "\\)", "\\(x^2 + y^2 = " + (m * m) + "\\)", "\\(x^2 + y^2 = " + (3 * m) + "\\)"]),
+    "Squaring the radius: \\(r^2 = \\left(\\sqrt{" + m + "}\\right)^2 = " + m + "\\), so the equation is <b>" + corr4 + "</b>.",
+    { mode: "sqrt", m: m });
+});
+
+/* ---- 7.12, 7.17: a point on the terminal arm (find a ratio, or find the angle) ---- */
+E("u4-point-ratios-angle", 4, ["7.12", "7.17"], 2, "gen", function () {
+  var trip = pick([[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [7, 24, 25], [24, 7, 25], [20, 21, 29], [9, 40, 41]]);
+  var sc = pick([1, 1, 2]), quad = ri(1, 4);
+  var sx = (quad === 2 || quad === 3) ? -1 : 1, sy = (quad === 3 || quad === 4) ? -1 : 1;
+  var X = sx * trip[0] * sc, Y = sy * trip[1] * sc, R = trip[2] * sc;
+  var fig = u4ptSVG(X, Y);
+  var q;
+  if (Math.random() < 0.55) {
+    var kind = pick(u4KINDS);
+    var vals = { sin: [Y, R], cos: [X, R], tan: [Y, X], csc: [R, Y], sec: [R, X], cot: [X, Y] };
+    var corr = "\\(" + u4fr(vals[kind][0], vals[kind][1]) + "\\)";
+    var cands = u4KINDS.map(function (k2) { return "\\(" + u4fr(vals[k2][0], vals[k2][1]) + "\\)"; });
+    cands.push("\\(" + u4fr(-vals[kind][0], vals[kind][1]) + "\\)");
+    q = mcq("The point P(" + X + ", " + Y + ") lies on the terminal arm of an angle \\(\\theta\\) in standard position. What is the value of \\(\\" + kind + "\\theta\\)?",
+      corr, u4dist3(corr, cands),
+      "First find \\(r\\): \\[ \\begin{aligned} r &= \\sqrt{x^2 + y^2} \\\\ &= \\sqrt{" + (X * X) + " + " + (Y * Y) + "} \\\\ &= " + R + " \\end{aligned} \\] With \\(x = " + X + "\\), \\(y = " + Y + "\\) and \\(r = " + R + "\\), the ratio \\(\\" + kind + "\\theta\\) is <b>" + corr + "</b>.",
+      { mode: "ratio", kind: kind, X: X, Y: Y });
+  } else {
+    var phi = Math.round(Math.atan2(Math.abs(Y), Math.abs(X)) * 180 / Math.PI);
+    var angs = [phi, 180 - phi, 180 + phi, 360 - phi];
+    var target = angs[quad - 1];
+    q = mcq("The point P(" + X + ", " + Y + ") lies on the terminal arm of an angle \\(\\theta\\) in standard position, with \\(0^\\circ \\le \\theta < 360^\\circ\\). What is the measure of \\(\\theta\\), to the nearest degree?",
+      target + "°", angs.filter(function (a) { return a !== target; }).map(function (a) { return a + "°"; }),
+      "The reference angle is \\(\\tan^{-1}\\left(\\frac{|y|}{|x|}\\right) = \\tan^{-1}\\left(\\frac{" + Math.abs(Y) + "}{" + Math.abs(X) + "}\\right) \\approx " + phi + "^\\circ\\). The point is in Quadrant " + ["I", "II", "III", "IV"][quad - 1] + ", so \\(\\theta = " + target + "^\\circ\\) to the nearest degree.",
+      { mode: "angle", X: X, Y: Y, quad: quad });
+  }
+  q.figure = fig;
+  return q;
+});
+
+/* ---- 7.13: approximate value of a ratio (calculator work, 3 decimal places) ---- */
+E("u4-approx-ratio", 4, ["7.13"], 1, "gen", function () {
+  var kind = pick(["sin", "cos", "tan"]);
+  if (Math.random() < 0.5) {
+    var deg = ri(12, 168);
+    while (deg % 15 === 0 || (kind === "tan" && deg > 78 && deg < 102)) deg = ri(12, 168);
+    var val = u4ratioVal(kind, deg), ans = Math.round(val * 1000) / 1000;
+    return numq("Determine the value of \\(\\" + kind + "(" + deg + "^\\circ)\\), to the nearest thousandth.",
+      ans, 0.0021,
+      "A calculator in degree mode gives \\(\\" + kind + "(" + deg + "^\\circ) \\approx " + fmt(val, 4) + "\\), which rounds to <b>" + fmt(ans, 3) + "</b>.",
+      { mode: "deg", kind: kind, deg: deg });
+  }
+  var t = ri(25, 290) / 100;
+  while (kind === "tan" && t > 1.4 && t < 1.75) t = ri(25, 290) / 100;
+  var val2 = kind === "sin" ? Math.sin(t) : kind === "cos" ? Math.cos(t) : Math.tan(t);
+  var ans2 = Math.round(val2 * 1000) / 1000;
+  return numq("Determine the value of \\(\\" + kind + "(" + fmt(t) + ")\\), where the angle is in radians, to the nearest thousandth.",
+    ans2, 0.0021,
+    "A calculator in radian mode gives \\(\\" + kind + "(" + fmt(t) + ") \\approx " + fmt(val2, 4) + "\\), which rounds to <b>" + fmt(ans2, 3) + "</b>.",
+    { mode: "rad", kind: kind, t: t });
+});
+
+/* ---- 7.14: exact value of a ratio at a special angle ---- */
+E("u4-exact-special", 4, ["7.14"], 1, "gen", function () {
+  var kind = pick(u4KINDS), d = pick(u4DEGS), ex = u4exact(kind, d);
+  while (!ex) { d = pick(u4DEGS); ex = u4exact(kind, d); }
+  var co = { sin: "cos", cos: "sin", tan: "cot", cot: "tan", csc: "sec", sec: "csc" }[kind];
+  var rec = { sin: "csc", csc: "sin", cos: "sec", sec: "cos", tan: "cot", cot: "tan" }[kind];
+  var coEx = u4exact(co, d), recEx = u4exact(rec, d);
+  var supp = d <= 180 ? 180 - d : 540 - d, suppEx = u4exact(kind, supp);
+  var plusEx = u4exact(kind, (d + 90) % 360);
+  var neg = ex.s === "0" ? null : (ex.s.charAt(0) === "-" ? ex.s.slice(1) : "-" + ex.s);
+  var cands = [neg, coEx ? coEx.s : null, recEx ? recEx.s : null, suppEx ? suppEx.s : null, plusEx ? plusEx.s : null,
+    "1", "-1", "\\frac{1}{2}", "-\\frac{1}{2}", "\\frac{\\sqrt{2}}{2}", "\\frac{\\sqrt{3}}{2}", "-\\frac{\\sqrt{3}}{2}", "0"];
+  var corr = "\\(" + ex.s + "\\)";
+  var dis = u4dist3(ex.s, cands).map(function (s) { return "\\(" + s + "\\)"; });
+  var rad = Math.random() < 0.5;
+  var angDisp = rad ? "\\(" + u4radS(d) + "\\)" : d + "°";
+  return mcq("What is the exact value of \\(\\" + kind + "(" + (rad ? u4radS(d) : d + "^\\circ") + ")\\)?",
+    corr, dis,
+    "The angle " + angDisp + " is in Quadrant " + ["I", "II", "III", "IV"][u4quadOf(d) - 1] + " with reference angle " + u4refOf(d) + "°. There, \\(\\" + kind + "\\theta\\) has the sign and size of the ratio at the reference angle, giving <b>" + corr + "</b>.",
+    { kind: kind, d: d, rad: rad });
+});
+
+/* ---- 7.16: angles in a domain from a given ratio value, quadrant specified ---- */
+E("u4-angle-from-ratio", 4, ["7.16"], 1, "gen", function () {
+  var kind = pick(["sin", "cos", "tan"]);
+  var signs = { sin: [1, 1, -1, -1], cos: [1, -1, -1, 1], tan: [1, -1, 1, -1] };
+  if (Math.random() < 0.55) {
+    var phi = ri(15, 75);
+    while (phi === 45) phi = ri(15, 75);
+    var sgn = pick([1, -1]), val = sgn * Math.abs(u4ratioVal(kind, phi));
+    var qs = [1, 2, 3, 4].filter(function (qq) { return signs[kind][qq - 1] === sgn; });
+    var q = pick(qs), angs = [phi, 180 - phi, 180 + phi, 360 - phi], target = angs[q - 1];
+    return mcq("If \\(\\" + kind + "\\theta = " + fmt(val, 3) + "\\) and \\(\\theta\\) is in Quadrant " + ["I", "II", "III", "IV"][q - 1] + ", what is the measure of \\(\\theta\\), to the nearest degree?",
+      target + "°", angs.filter(function (a) { return a !== target; }).map(function (a) { return a + "°"; }),
+      "The reference angle is \\(\\" + kind + "^{-1}(" + fmt(Math.abs(val), 3) + ") \\approx " + phi + "^\\circ\\). Placing that reference angle in Quadrant " + ["I", "II", "III", "IV"][q - 1] + " gives \\(\\theta = " + target + "^\\circ\\).",
+      { mode: "deg", kind: kind, phi: phi, q: q });
+  }
+  var phiD = pick([30, 45, 60]), sgn2 = pick([1, -1]);
+  var qs2 = [1, 2, 3, 4].filter(function (qq) { return signs[kind][qq - 1] === sgn2; });
+  var q2 = pick(qs2), angsD = [phiD, 180 - phiD, 180 + phiD, 360 - phiD], solD = angsD[q2 - 1];
+  var valStr = u4exact(kind, solD).s;
+  var corr = "\\(" + u4radS(solD) + "\\)";
+  var dis = angsD.filter(function (a) { return a !== solD; }).map(function (a) { return "\\(" + u4radS(a) + "\\)"; });
+  return mcq("If \\(\\" + kind + "\\theta = " + valStr + "\\) and \\(\\theta\\) is in Quadrant " + ["I", "II", "III", "IV"][q2 - 1] + ", with \\(0 \\le \\theta < 2\\pi\\), what is the value of \\(\\theta\\)?",
+    corr, dis,
+    "The reference angle for \\(\\" + kind + "\\theta = " + valStr + "\\) is " + phiD + "°, which is \\(" + u4radS(phiD) + "\\) rad. Placing it in Quadrant " + ["I", "II", "III", "IV"][q2 - 1] + " gives <b>" + corr + "</b>.",
+    { mode: "rad", kind: kind, phiD: phiD, q: q2 });
+});
+
+/* ---- 7.18: the other ratios from one given ratio in a specified domain ---- */
+E("u4-other-ratios", 4, ["7.18"], 2, "gen", function () {
+  var trip = pick([[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41]]);
+  var quad = ri(1, 4);
+  var sx = (quad === 2 || quad === 3) ? -1 : 1, sy = (quad === 3 || quad === 4) ? -1 : 1;
+  var X = sx * trip[0], Y = sy * trip[1], R = trip[2];
+  var vals = { sin: [Y, R], cos: [X, R], tan: [Y, X], csc: [R, Y], sec: [R, X], cot: [X, Y] };
+  var defs = { sin: "y/r", cos: "x/r", tan: "y/x", csc: "r/y", sec: "r/x", cot: "x/y" };
+  var gi = ri(0, 5), ai = ri(0, 5);
+  while (ai === gi) ai = ri(0, 5);
+  var gk = u4KINDS[gi], ak = u4KINDS[ai];
+  var gStr = u4fr(vals[gk][0], vals[gk][1]), aStr = u4fr(vals[ak][0], vals[ak][1]);
+  var corr = "\\(" + aStr + "\\)";
+  var cands = u4KINDS.map(function (k2) { return "\\(" + u4fr(vals[k2][0], vals[k2][1]) + "\\)"; });
+  cands.push("\\(" + u4fr(-vals[ak][0], vals[ak][1]) + "\\)", "\\(" + u4fr(vals[ak][1], vals[ak][0]) + "\\)");
+  var dom = pick(["\\(\\theta\\) is in Quadrant " + ["I", "II", "III", "IV"][quad - 1],
+    "\\(" + [(0), 90, 180, 270][quad - 1] + "^\\circ < \\theta < " + [90, 180, 270, 360][quad - 1] + "^\\circ\\)"]);
+  return mcq("If \\(\\" + gk + "\\theta = " + gStr + "\\) and " + dom + ", what is the value of \\(\\" + ak + "\\theta\\)?",
+    corr, u4dist3(corr, cands),
+    "From \\(\\" + gk + "\\theta = " + gStr + "\\), take \\(|x| = " + trip[0] + "\\), \\(|y| = " + trip[1] + "\\) and \\(r = " + R + "\\), a Pythagorean triple since \\(" + trip[0] + "^2 + " + trip[1] + "^2 = " + R + "^2\\). Quadrant " + ["I", "II", "III", "IV"][quad - 1] + " fixes the signs: \\(x = " + X + "\\), \\(y = " + Y + "\\). Then \\(\\" + ak + "\\theta = " + defs[ak] + " = \\) <b>" + corr + "</b>.",
+    { gk: gk, ak: ak, quad: quad });
+});
+
+/* ---- 7.19, 7.15: problems in the standard-position and unit-circle setting, each with its diagram ---- */
+E("u4-ratio-problem", 4, ["7.19", "7.15"], 2, "gen", function () {
+  var QN = ["I", "II", "III", "IV"];
+  var DEFS = { sin: "\\frac{y}{r}", cos: "\\frac{x}{r}", tan: "\\frac{y}{x}", csc: "\\frac{r}{y}", sec: "\\frac{r}{x}", cot: "\\frac{x}{y}" };
+  function figP(x, y, lab) { /* terminal arm to P with a custom label and dashed coordinate drops */
+    var r = Math.sqrt(x * x + y * y), cx = 88, cy = 88, R = 64;
+    var px = cx + R * x / r, py = cy - R * y / r;
+    var out = '<svg viewBox="0 0 176 176" width="176" height="176" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Terminal arm with point P">';
+    out += '<line x1="8" y1="' + cy + '" x2="168" y2="' + cy + '" stroke="' + FIG_INK + '" stroke-width="1"/>';
+    out += '<line x1="' + cx + '" y1="8" x2="' + cx + '" y2="168" stroke="' + FIG_INK + '" stroke-width="1"/>';
+    out += '<line x1="' + fmt(px, 1) + '" y1="' + fmt(py, 1) + '" x2="' + fmt(px, 1) + '" y2="' + cy + '" stroke="' + FIG_INK + '" stroke-width="0.8" stroke-dasharray="3 3"/>';
+    out += '<line x1="' + fmt(px, 1) + '" y1="' + fmt(py, 1) + '" x2="' + cx + '" y2="' + fmt(py, 1) + '" stroke="' + FIG_INK + '" stroke-width="0.8" stroke-dasharray="3 3"/>';
+    out += '<line x1="' + cx + '" y1="' + cy + '" x2="' + fmt(px, 1) + '" y2="' + fmt(py, 1) + '" stroke="' + FIG_INK + '" stroke-width="2.2"/>';
+    out += '<circle cx="' + fmt(px, 1) + '" cy="' + fmt(py, 1) + '" r="3.2" fill="' + FIG_ALT + '"/>';
+    out += _txt(px + (x >= 0 ? 8 : -8), py - 10, lab, 12, true, x >= 0 ? "start" : "end");
+    return out + '</svg>';
+  }
+  var mode = pick(["A", "A", "B", "C", "D"]);
+  var q;
+  if (mode === "A") {
+    var trA = pick([[3, 4, 5], [6, 8, 10], [9, 12, 15], [12, 16, 20], [5, 12, 13], [10, 24, 26], [15, 20, 25], [8, 15, 17], [16, 30, 34], [7, 24, 25], [14, 48, 50]]);
+    var swapA = Math.random() < 0.5;
+    var axA = swapA ? trA[1] : trA[0], ayA = swapA ? trA[0] : trA[1], RA = trA[2];
+    var qA = ri(1, 4), sxA = (qA === 2 || qA === 3) ? -1 : 1, syA = (qA === 3 || qA === 4) ? -1 : 1;
+    var XA = sxA * axA, YA = syA * ayA;
+    var knownX = Math.random() < 0.5;
+    var kVal = knownX ? XA : YA, uVal = knownX ? YA : XA;
+    var kName = knownX ? "x" : "y", uName = knownX ? "y" : "x";
+    var setupA = "The terminal arm of an angle \\(\\theta\\) in standard position meets the circle \\(x^2 + y^2 = " + (RA * RA) + "\\) at the point \\(P\\), as shown in the diagram. \\(P\\) is in Quadrant " + QN[qA - 1] + ", and the " + kName + "-coordinate of \\(P\\) is " + kVal + ".";
+    var findU = "First find the " + uName + "-coordinate. Since \\(P\\) lies on the circle: \\[ \\begin{aligned} " + uName + "^2 &= " + (RA * RA) + " - " + (kVal * kVal) + " \\\\ &= " + (RA * RA - kVal * kVal) + " \\end{aligned} \\] so \\(" + uName + " = \\pm " + Math.abs(uVal) + "\\), and Quadrant " + QN[qA - 1] + " gives \\(" + uName + " = " + uVal + "\\).";
+    var vA = pick(["ratio", "ratio", "coord", "dec"]);
+    if (vA === "coord") {
+      q = numq(setupA + " What is the " + uName + "-coordinate of \\(P\\)?",
+        uVal, 0.01,
+        findU + " The " + uName + "-coordinate of \\(P\\) is <b>" + uVal + "</b>.",
+        { mode: "A-coord", tr: trA, quad: qA });
+    } else if (vA === "dec") {
+      var kindN = pick(["sin", "cos", "tan"]);
+      var numN = kindN === "cos" ? XA : YA, denN = kindN === "tan" ? XA : RA;
+      var valN = Math.round(numN / denN * 1000) / 1000;
+      q = numq(setupA + " What is \\(\\" + kindN + "\\theta\\), to the nearest thousandth?",
+        valN, 0.0011,
+        findU + " Then \\(\\" + kindN + "\\theta = " + DEFS[kindN] + " = " + u4fr(numN, denN) + " \\approx " + fmt(valN, 3) + "\\). The value is <b>" + fmt(valN, 3) + "</b>.",
+        { mode: "A-dec", kind: kindN, tr: trA, quad: qA });
+    } else {
+      var kindA = pick(u4KINDS);
+      var valsA = { sin: [YA, RA], cos: [XA, RA], tan: [YA, XA], csc: [RA, YA], sec: [RA, XA], cot: [XA, YA] };
+      var aStrA = u4fr(valsA[kindA][0], valsA[kindA][1]);
+      var corrA = "\\(" + aStrA + "\\)";
+      var candsA = u4KINDS.map(function (k2) { return "\\(" + u4fr(valsA[k2][0], valsA[k2][1]) + "\\)"; });
+      candsA.push("\\(" + u4fr(-valsA[kindA][0], valsA[kindA][1]) + "\\)", "\\(" + u4fr(valsA[kindA][1], valsA[kindA][0]) + "\\)");
+      q = mcq(setupA + " What is the exact value of \\(\\" + kindA + "\\theta\\)?",
+        corrA, u4dist3(corrA, candsA),
+        findU + " So \\(P = (" + XA + ", " + YA + ")\\) with \\(r = " + RA + "\\): \\[ \\begin{aligned} \\" + kindA + "\\theta &= " + DEFS[kindA] + " \\\\ &= " + aStrA + " \\end{aligned} \\] The exact value is <b>" + corrA + "</b>.",
+        { mode: "A-ratio", kind: kindA, tr: trA, quad: qA });
+    }
+    q.figure = figP(XA, YA, knownX ? "P(" + XA + ", ?)" : "P(?, " + YA + ")");
+    return q;
+  }
+  if (mode === "B") {
+    var degB = pick(u4DEGS);
+    var askXB = Math.random() < 0.5, radB = Math.random() < 0.4;
+    var exXB = u4exact("cos", degB), exYB = u4exact("sin", degB);
+    var keyB = askXB ? exXB.s : exYB.s, othB = askXB ? exYB.s : exXB.s;
+    var corrB = "\\(" + keyB + "\\)";
+    var negB = keyB === "0" ? null : "\\(" + (keyB.charAt(0) === "-" ? keyB.slice(1) : "-" + keyB) + "\\)";
+    var candsB = ["\\(" + othB + "\\)", negB, "\\(1\\)", "\\(-1\\)", "\\(0\\)", "\\(\\frac{1}{2}\\)", "\\(-\\frac{1}{2}\\)", "\\(\\frac{\\sqrt{2}}{2}\\)", "\\(-\\frac{\\sqrt{2}}{2}\\)", "\\(\\frac{\\sqrt{3}}{2}\\)", "\\(-\\frac{\\sqrt{3}}{2}\\)"];
+    var angB = radB ? u4radS(degB) : degB + "^\\circ";
+    q = mcq("The terminal arm of \\(\\theta = " + angB + "\\) meets the unit circle at the point \\(P\\), as shown in the diagram. What is the " + (askXB ? "x" : "y") + "-coordinate of \\(P\\)?",
+      corrB, u4dist3(corrB, candsB),
+      "On the unit circle, \\(P = (\\cos\\theta, \\sin\\theta)\\). For \\(\\theta = " + angB + "\\), \\(\\cos\\theta = " + exXB.s + "\\) and \\(\\sin\\theta = " + exYB.s + "\\), so \\(P = \\left(" + exXB.s + ", " + exYB.s + "\\right)\\). The " + (askXB ? "x" : "y") + "-coordinate is <b>" + corrB + "</b>.",
+      { mode: "B", deg: degB, askX: askXB, rad: radB });
+    q.figure = u4armSVG(degB);
+    return q;
+  }
+  if (mode === "C") {
+    var ctxC = pick([
+      ["A point \\(P\\) is marked on the rim of a Ferris wheel", [6, 8, 10, 12, 14, 15, 16, 20]],
+      ["A point \\(P\\) is marked at the tip of a wind turbine blade", [18, 20, 24, 25, 30, 32, 36, 40]],
+      ["A point \\(P\\) is marked on the rim of a water wheel", [2, 3, 4, 5, 6, 8]],
+      ["A point \\(P\\) is marked at the end of a rotating arm on a carnival ride", [4, 5, 6, 7, 8, 9, 10, 12]]
+    ]);
+    var rC = pick(ctxC[1]);
+    var vertC = Math.random() < 0.5;
+    var degC = vertC ? pick([30, 90, 150, 210, 270, 330]) : pick([0, 60, 120, 180, 240, 300]);
+    var kindC = vertC ? "sin" : "cos";
+    var exC = u4exact(kindC, degC);
+    var ansC = Math.round(rC * exC.v * 100) / 100;
+    var stemC = ctxC[0] + " of radius " + rC + " m. At one instant, the radius from the centre to \\(P\\) makes an angle of \\(\\theta = " + degC + "^\\circ\\) in standard position, as shown in the diagram. ";
+    if (vertC) {
+      q = numq(stemC + "What is the height of \\(P\\) above the level of the centre, in metres? (Give a negative answer if \\(P\\) is below the centre.)",
+        ansC, 0.011,
+        "The height of \\(P\\) is the vertical component of the radius: \\[ \\begin{aligned} h &= r\\sin\\theta \\\\ &= " + rC + "\\sin(" + degC + "^\\circ) \\\\ &= " + rC + "\\left(" + exC.s + "\\right) \\\\ &= " + fmt(ansC, 1) + " \\text{ m} \\end{aligned} \\] The height is <b>" + fmt(ansC, 1) + " m</b>" + (ansC < 0 ? ", so \\(P\\) is below the centre" : "") + ".",
+        { mode: "C-height", deg: degC, r: rC });
+    } else {
+      q = numq(stemC + "How far is \\(P\\) to the right of the vertical line through the centre, in metres? (Give a negative answer if \\(P\\) is to the left of that line.)",
+        ansC, 0.011,
+        "The displacement of \\(P\\) from the centre line is the horizontal component of the radius: \\[ \\begin{aligned} d &= r\\cos\\theta \\\\ &= " + rC + "\\cos(" + degC + "^\\circ) \\\\ &= " + rC + "\\left(" + exC.s + "\\right) \\\\ &= " + fmt(ansC, 1) + " \\text{ m} \\end{aligned} \\] The displacement is <b>" + fmt(ansC, 1) + " m</b>" + (ansC < 0 ? ", so \\(P\\) is to the left of the centre line" : "") + ".",
+        { mode: "C-disp", deg: degC, r: rC });
+    }
+    q.figure = u4armSVG(degC);
+    return q;
+  }
+  var trD = pick([[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25]]);
+  var kD = ri(1, 3);
+  var legXD = pick([trD[0], trD[1]]), legYD = legXD === trD[0] ? trD[1] : trD[0];
+  var qD = ri(1, 4), sxD = (qD === 2 || qD === 3) ? -1 : 1, syD = (qD === 3 || qD === 4) ? -1 : 1;
+  var XD = sxD * legXD * kD, YD = syD * legYD * kD, RD = trD[2] * kD;
+  var gkD = pick(["sin", "cos"]);
+  var givD = gkD === "sin" ? u4fr(YD, RD) : u4fr(XD, RD);
+  var corrD = "\\((" + XD + ", " + YD + ")\\)";
+  var disD = ["\\((" + (-XD) + ", " + YD + ")\\)", "\\((" + XD + ", " + (-YD) + ")\\)", "\\((" + YD + ", " + XD + ")\\)"];
+  var solD;
+  if (gkD === "sin") {
+    solD = "Since \\(\\sin\\theta = \\frac{y}{r}\\) with \\(r = " + RD + "\\): \\[ \\begin{aligned} y &= " + RD + "\\left(" + givD + "\\right) \\\\ &= " + YD + " \\end{aligned} \\] Then \\[ \\begin{aligned} x^2 &= " + (RD * RD) + " - " + (YD * YD) + " \\\\ &= " + (RD * RD - YD * YD) + " \\end{aligned} \\] so \\(x = \\pm " + Math.abs(XD) + "\\), and Quadrant " + QN[qD - 1] + " gives \\(x = " + XD + "\\). The coordinates of \\(P\\) are <b>" + corrD + "</b>.";
+  } else {
+    solD = "Since \\(\\cos\\theta = \\frac{x}{r}\\) with \\(r = " + RD + "\\): \\[ \\begin{aligned} x &= " + RD + "\\left(" + givD + "\\right) \\\\ &= " + XD + " \\end{aligned} \\] Then \\[ \\begin{aligned} y^2 &= " + (RD * RD) + " - " + (XD * XD) + " \\\\ &= " + (RD * RD - XD * XD) + " \\end{aligned} \\] so \\(y = \\pm " + Math.abs(YD) + "\\), and Quadrant " + QN[qD - 1] + " gives \\(y = " + YD + "\\). The coordinates of \\(P\\) are <b>" + corrD + "</b>.";
+  }
+  q = mcq("The terminal arm of an angle \\(\\theta\\) in standard position meets the circle \\(x^2 + y^2 = " + (RD * RD) + "\\) at the point \\(P\\), as shown in the diagram. If \\(\\" + gkD + "\\theta = " + givD + "\\) and \\(\\theta\\) is in Quadrant " + QN[qD - 1] + ", what are the coordinates of \\(P\\)?",
+    corrD, disD, solD,
+    { mode: "D", gk: gkD, quad: qD, k: kD });
+  q.figure = figP(XD, YD, "P");
+  return q;
+});
+
+/* ---- 7.34, 7.36: solve a trigonometric equation exactly; verify a solution ---- */
+E("u4-solve-equation-exact", 4, ["7.34", "7.36"], 2, "gen", function () {
+  var kind = pick(["sin", "cos", "tan"]);
+  var refPool = kind === "cos" ? [30, 45, 60, 90] : [0, 30, 45, 60];
+  var refDeg = pick(refPool), sgn = pick([1, -1]);
+  var v = sgn * Math.abs(u4ratioVal(kind, refDeg));
+  var sols = u4DEGS.filter(function (d) { return Math.abs(u4ratioVal(kind, d) - v) < 1e-9; });
+  var valStr = u4exact(kind, sols[0]).s;
+  var form2 = Math.random() < 0.4;
+  var eqn = form2 ? "2\\" + kind + "\\theta = " + u4twoStr(kind, v) : "\\" + kind + "\\theta = " + valStr;
+  var rad = Math.random() < 0.6;
+  var domTxt = rad ? "\\(0 \\le \\theta < 2\\pi\\)" : "\\(0^\\circ \\le \\theta < 360^\\circ\\)";
+  if (Math.random() < 0.55) {
+    var s1 = sols[0], s2 = sols[1];
+    var corr = u4pairStr([s1, s2], rad);
+    var candPairs = [[s1, (360 - s1) % 360], [s2, (360 - s2) % 360], [(180 - s1 + 360) % 360, (180 + s1) % 360],
+      [s2, (360 - s1) % 360], [s1, (180 + s1) % 360], [(s1 + 180) % 360, (s2 + 180) % 360],
+      [0, 180], [45, 315], [135, 225], [60, 300], [30, 210], [150, 330], [120, 240]];
+    var candStrs = [];
+    candPairs.forEach(function (pr) { if (pr[0] !== pr[1]) candStrs.push(u4pairStr(pr, rad)); });
+    return mcq("Solve the equation \\(" + eqn + "\\) for " + domTxt + ".",
+      corr, u4dist3(corr, candStrs),
+      "Isolate the ratio: \\(\\" + kind + "\\theta = " + valStr + "\\). The reference angle is " + refDeg + "°, and the sign of the value places the solutions in the two quadrants where \\(\\" + kind + "\\theta\\) takes that sign. The solutions are <b>" + corr + "</b>.",
+      { mode: "pair", kind: kind, v: valStr, form2: form2, rad: rad });
+  }
+  var good = pick(sols);
+  var bads = shuffle(u4DEGS.filter(function (d) { return sols.indexOf(d) < 0; })).slice(0, 3);
+  var corrV = rad ? "\\(" + u4radS(good) + "\\)" : good + "°";
+  var disV = bads.map(function (d) { return rad ? "\\(" + u4radS(d) + "\\)" : d + "°"; });
+  return mcq("Which value of \\(\\theta\\) is a solution of the equation \\(" + eqn + "\\) for " + domTxt + "?",
+    corrV, disV,
+    "Substitute \\(\\theta = " + (rad ? u4radS(good) : good + "°") + "\\): the left side becomes \\(\\" + kind + "(" + (rad ? u4radS(good) : good + "^\\circ") + ") = " + valStr + "\\)" + (form2 ? ", and doubling gives \\(" + u4twoStr(kind, v) + "\\)" : "") + ", which matches the equation. The value <b>" + corrV + "</b> is a solution.",
+    { mode: "verify", kind: kind, v: valStr, form2: form2, rad: rad });
+});
+
+/* ---- 7.35: approximate solutions of a trigonometric equation ---- */
+E("u4-solve-equation-approx", 4, ["7.35"], 2, "gen", function () {
+  var kind = pick(["sin", "cos", "tan"]);
+  var v = ri(12, 96) / 100 * pick([1, -1]);
+  var a = kind === "sin" ? Math.asin(v) : kind === "cos" ? Math.acos(v) : Math.atan(v);
+  var sols = kind === "sin" ? [u4wrap(a), u4wrap(Math.PI - a)] : kind === "cos" ? [u4wrap(a), u4wrap(-a)] : [u4wrap(a), u4wrap(a + Math.PI)];
+  sols.sort(function (x, y) { return x - y; });
+  var which = pick([0, 1]), target = sols[which];
+  var wName = which === 0 ? "smaller" : "larger";
+  var invTxt = "\\" + kind + "^{-1}(" + fmt(v) + ")";
+  if (Math.random() < 0.5) {
+    return numq("Solve the equation \\(\\" + kind + "\\theta = " + fmt(v) + "\\) for \\(0 \\le \\theta < 2\\pi\\). Give the " + wName + " solution, to the nearest hundredth.",
+      Math.round(target * 100) / 100, 0.006,
+      "Using the inverse ratio, one solution is \\(\\theta = " + invTxt + "\\); placing it and its symmetric partner in the interval gives \\(\\theta \\approx " + fmt(sols[0]) + "\\) and \\(\\theta \\approx " + fmt(sols[1]) + "\\). The " + wName + " solution is <b>" + fmt(target) + "</b>.",
+      { mode: "rad", kind: kind, v: v, which: which });
+  }
+  var tDeg = target * 180 / Math.PI;
+  return numq("Solve the equation \\(\\" + kind + "\\theta = " + fmt(v) + "\\) for \\(0^\\circ \\le \\theta < 360^\\circ\\). Give the " + wName + " solution, to the nearest tenth of a degree.",
+    Math.round(tDeg * 10) / 10, 0.06,
+    "Using the inverse ratio, one solution is \\(\\theta = " + invTxt + "\\); placing it and its symmetric partner in the interval gives \\(\\theta \\approx " + fmt(sols[0] * 180 / Math.PI, 1) + "^\\circ\\) and \\(\\theta \\approx " + fmt(sols[1] * 180 / Math.PI, 1) + "^\\circ\\). The " + wName + " solution is <b>" + fmt(tDeg, 1) + "°</b>.",
+    { mode: "deg", kind: kind, v: v, which: which });
+});
+
+/* ---- 7.37: identify and correct errors in a worked solution ---- */
+E("u4-error-analysis", 4, ["7.37"], 3, "var", varset([
+  function () {
+    return mcq("A student solves the equation \\(\\sin\\theta = \\frac{1}{2}\\) for \\(0 \\le \\theta < 2\\pi\\) and writes only \\(\\theta = \\frac{\\pi}{6}\\). What is the error in this solution?",
+      "The solution \\(\\theta = \\frac{5\\pi}{6}\\) in Quadrant II was missed",
+      ["The reference angle for \\(\\sin\\theta = \\frac{1}{2}\\) is \\(\\frac{\\pi}{3}\\), not \\(\\frac{\\pi}{6}\\)",
+        "\\(\\theta = \\frac{\\pi}{6}\\) does not satisfy the equation",
+        "The solutions should have been given in degrees rather than radians"],
+      "Sine is positive in Quadrants I and II, so there are two solutions in the interval: \\(\\theta = \\frac{\\pi}{6}\\) and \\(\\theta = \\pi - \\frac{\\pi}{6} = \\frac{5\\pi}{6}\\). The error is the missed Quadrant II solution.",
+      { v: 1 });
+  },
+  function () {
+    return mcq("A student converts 150° to radians as shown: \\(150 \\times \\frac{180}{\\pi} \\approx 8594\\) rad. What is the error in this conversion?",
+      "The conversion factor was inverted; degrees must be multiplied by \\(\\frac{\\pi}{180}\\)",
+      ["The student should have divided 150 by 360 before converting to radians",
+        "A radian measure can never exceed \\(2\\pi\\), so a full rotation should be subtracted first",
+        "The value 150 should have been replaced by its reference angle, 30"],
+      "To convert degrees to radians, multiply by \\(\\frac{\\pi}{180}\\), not by its reciprocal: \\[ \\begin{aligned} 150^\\circ &= 150 \\times \\frac{\\pi}{180} \\\\ &= \\frac{5\\pi}{6} \\\\ &\\approx 2.62 \\text{ rad} \\end{aligned} \\] The error is the inverted conversion factor.",
+      { v: 2 });
+  },
+  function () {
+    return mcq("A student solves \\(\\cos\\theta = -\\frac{\\sqrt{3}}{2}\\) for \\(0^\\circ \\le \\theta < 360^\\circ\\) and gives \\(\\theta = 150^\\circ\\) and \\(\\theta = 330^\\circ\\). Which statement about this solution is <b>NOT</b> correct?",
+      "\\(330^\\circ\\) is a solution, because cosine is negative in Quadrant IV",
+      ["The value \\(\\theta = 150^\\circ\\) is a correct solution of the equation",
+        "The reference angle for the equation is \\(30^\\circ\\), as the student used",
+        "\\(210^\\circ\\) is also a solution, because cosine is negative in Quadrant III"],
+      "Cosine is negative in Quadrants II and III only, so the solutions are \\(150^\\circ\\) and \\(210^\\circ\\). At \\(330^\\circ\\), in Quadrant IV, cosine is positive: \\(\\cos 330^\\circ = \\frac{\\sqrt{3}}{2}\\). The statement claiming \\(330^\\circ\\) is a solution with a negative cosine in Quadrant IV is the one that is NOT correct.",
+      { v: 3 });
+  },
+  function () {
+    return mcq("The point P(-3, 4) lies on the terminal arm of an angle \\(\\theta\\) in standard position. A student writes \\(\\sin\\theta = \\frac{4}{3}\\). What is the error in this value?",
+      "The student divided by the x-coordinate instead of by r; since \\(r = 5\\), \\(\\sin\\theta = \\frac{4}{5}\\)",
+      ["The sine value must be negative because the point is in Quadrant II, so the value should not be positive",
+        "The student should have found \\(\\tan\\theta\\) first and worked from it to get the sine value",
+        "There is no error in the work shown; \\(\\sin\\theta = \\frac{4}{3}\\) is the correct value for this point"],
+      "The distance from the origin is \\[ \\begin{aligned} r &= \\sqrt{(-3)^2 + 4^2} \\\\ &= \\sqrt{25} \\\\ &= 5 \\end{aligned} \\] so \\(\\sin\\theta = \\frac{y}{r} = \\frac{4}{5}\\). The student divided by 3, the size of the x-coordinate, in place of r. A sine value greater than 1 is also impossible.",
+      { v: 4 });
+  }
+]));
+
+/* ---- 7.10, 7.12: combine a circle equation with a quadrant and one coordinate ---- */
+E("u4-circle-point-reasoning", 4, ["7.10", "7.12"], 3, "gen", function () {
+  var trip = pick([[5, 3, 4], [13, 5, 12], [17, 8, 15], [25, 7, 24], [29, 20, 21], [41, 9, 40], [15, 9, 12], [10, 6, 8], [20, 12, 16]]);
+  var R = trip[0], a = trip[1], b = trip[2];
+  var quad = ri(1, 4);
+  var sx = (quad === 2 || quad === 3) ? -1 : 1, sy = (quad === 3 || quad === 4) ? -1 : 1;
+  var X = sx * a, Y = sy * b;
+  var giveX = Math.random() < 0.5;
+  var kind = pick(u4KINDS);
+  var vals = { sin: [Y, R], cos: [X, R], tan: [Y, X], csc: [R, Y], sec: [R, X], cot: [X, Y] };
+  var corr = "\\(" + u4fr(vals[kind][0], vals[kind][1]) + "\\)";
+  var cands = u4KINDS.map(function (k2) { return "\\(" + u4fr(vals[k2][0], vals[k2][1]) + "\\)"; });
+  cands.push("\\(" + u4fr(-vals[kind][0], vals[kind][1]) + "\\)");
+  var givenCoord = giveX ? "x" : "y", givenVal = giveX ? X : Y;
+  var otherName = giveX ? "y" : "x", otherVal = giveX ? Y : X, otherMag = giveX ? b : a;
+  return mcq("A point P lies on the terminal arm of an angle \\(\\theta\\) in standard position. P also lies on the circle \\(x^2 + y^2 = " + (R * R) + "\\) and in Quadrant " + ["I", "II", "III", "IV"][quad - 1] + ". The " + givenCoord + "-coordinate of P is " + givenVal + ". What is the value of \\(\\" + kind + "\\theta\\)?",
+    corr, u4dist3(corr, cands),
+    "The circle \\(x^2 + y^2 = " + (R * R) + "\\) has radius \\(r = " + R + "\\), so the " + otherName + "-coordinate has size \\(\\sqrt{" + R + "^2 - " + Math.abs(givenVal) + "^2} = " + otherMag + "\\); Quadrant " + ["I", "II", "III", "IV"][quad - 1] + " makes it " + otherVal + ". With \\(x = " + X + "\\), \\(y = " + Y + "\\) and \\(r = " + R + "\\), the ratio \\(\\" + kind + "\\theta\\) is <b>" + corr + "</b>.",
+    { kind: kind, quad: quad, giveX: giveX });
+});
+
+/* ---- 7.9, 7.3: compare arcs, transferring between degrees and radians ---- */
+E("u4-arc-compare", 4, ["7.9", "7.3"], 3, "gen", function () {
+  if (Math.random() < 0.5) {
+    var thA = ri(7, 26) / 10, degB = ri(35, 160), radB = degB * Math.PI / 180;
+    while (Math.abs(thA - radB) < 0.12) { degB = ri(35, 160); radB = degB * Math.PI / 180; }
+    var winA = thA > radB;
+    var corr = winA ? "Angle A cuts the longer arc on the circle" : "Angle B cuts the longer arc on the circle";
+    return mcq("Two angles in standard position cut arcs on the same circle. Angle A measures " + fmt(thA, 1) + " rad and angle B measures " + degB + "°. Which angle cuts the longer arc?",
+      corr, ["Angle A cuts the longer arc on the circle", "Angle B cuts the longer arc on the circle", "The two arcs are exactly the same length", "The lengths cannot be compared without knowing the radius"].filter(function (s) { return s !== corr; }),
+      "On the same circle the radius is shared, so the larger angle cuts the longer arc. Convert B to radians: \\[ \\begin{aligned} " + degB + "^\\circ &= " + degB + " \\times \\frac{\\pi}{180} \\\\ &\\approx " + fmt(radB) + " \\text{ rad} \\end{aligned} \\] Angle A measures " + fmt(thA, 1) + " rad, so <b>" + corr.toLowerCase() + "</b>.",
+      { mode: "same", thA: thA, degB: degB });
+  }
+  var r1 = ri(5, 15), t1 = ri(7, 26) / 10, r2 = ri(5, 15), t2 = ri(7, 26) / 10;
+  while (Math.abs(r1 * t1 - r2 * t2) < 0.8) { t2 = ri(7, 26) / 10; r2 = ri(5, 15); }
+  var a1 = r1 * t1, a2 = r2 * t2, win1 = a1 > a2;
+  var corr2 = win1 ? "The arc cut on circle 1 is the longer one" : "The arc cut on circle 2 is the longer one";
+  return mcq("On circle 1, with radius " + r1 + " cm, a central angle of " + fmt(t1, 1) + " rad cuts an arc. On circle 2, with radius " + r2 + " cm, a central angle of " + fmt(t2, 1) + " rad cuts an arc. Which arc is longer?",
+    corr2, ["The arc cut on circle 1 is the longer one", "The arc cut on circle 2 is the longer one", "The two arcs are exactly the same length", "The lengths cannot be compared because the radii are different"].filter(function (s) { return s !== corr2; }),
+    "Compute both arcs with \\(a = r\\theta\\): \\[ \\begin{aligned} a_1 &= " + r1 + " \\times " + fmt(t1, 1) + " = " + fmt(a1, 1) + " \\text{ cm} \\\\ a_2 &= " + r2 + " \\times " + fmt(t2, 1) + " = " + fmt(a2, 1) + " \\text{ cm} \\end{aligned} \\] <b>" + corr2 + "</b>.",
+    { mode: "diff", r1: r1, t1: t1, r2: r2, t2: t2 });
+});
+
+/* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and one Level 2 CR entry (3 marks, makes the 9-mark remainder reachable). ---------- */
+E("u4-repair-solution-cr",4,["7.37"],3,"var",varset([
+  function(){
+    return mcq("A student solves \\(\\sin x = \\frac{1}{2}\\) for \\(0 \\leq x < 2\\pi\\) and stops after writing \\(x = \\frac{\\pi}{6}\\), the value returned by the inverse sine key. What is the <b>complete</b> solution?",
+      "\\(\\{\\frac{\\pi}{6}, \\frac{5\\pi}{6}\\}\\)",
+      ["\\(\\{\\frac{\\pi}{6}\\}\\)",
+       "\\(\\{\\frac{\\pi}{6}, \\frac{7\\pi}{6}\\}\\)",
+       "\\(\\{\\frac{\\pi}{3}, \\frac{2\\pi}{3}\\}\\)"],
+      "Sine is positive in quadrants I and II. The reference angle is \\(\\frac{\\pi}{6}\\), so there is a second solution, \\(\\pi - \\frac{\\pi}{6} = \\frac{5\\pi}{6}\\). The complete solution is \\(\\{\\frac{\\pi}{6}, \\frac{5\\pi}{6}\\}\\). The inverse key alone returns only the quadrant I value.",
+      {sc:"sin-half"});
+  },
+  function(){
+    return mcq("A student solves \\(\\cos x = -\\frac{1}{2}\\) for \\(0 \\leq x < 2\\pi\\) and stops after writing \\(x = \\frac{2\\pi}{3}\\), the value returned by the inverse cosine key. What is the <b>complete</b> solution?",
+      "\\(\\{\\frac{2\\pi}{3}, \\frac{4\\pi}{3}\\}\\)",
+      ["\\(\\{\\frac{2\\pi}{3}\\}\\)",
+       "\\(\\{\\frac{\\pi}{3}, \\frac{5\\pi}{3}\\}\\)",
+       "\\(\\{\\frac{\\pi}{3}, \\frac{2\\pi}{3}\\}\\)"],
+      "Cosine is negative in quadrants II and III. The reference angle is \\(\\frac{\\pi}{3}\\), giving \\(\\pi - \\frac{\\pi}{3} = \\frac{2\\pi}{3}\\) and \\(\\pi + \\frac{\\pi}{3} = \\frac{4\\pi}{3}\\). The complete solution is \\(\\{\\frac{2\\pi}{3}, \\frac{4\\pi}{3}\\}\\). The inverse key alone returns only the quadrant II value.",
+      {sc:"cos-neg-half"});
+  },
+  function(){
+    return mcq("A student solves \\(\\sin x = -\\frac{\\sqrt{3}}{2}\\) for \\(0 \\leq x < 2\\pi\\) and stops after writing \\(x = \\frac{4\\pi}{3}\\), the first solution found on the unit circle. What is the <b>complete</b> solution?",
+      "\\(\\{\\frac{4\\pi}{3}, \\frac{5\\pi}{3}\\}\\)",
+      ["\\(\\{\\frac{4\\pi}{3}\\}\\)",
+       "\\(\\{\\frac{\\pi}{3}, \\frac{2\\pi}{3}\\}\\)",
+       "\\(\\{\\frac{4\\pi}{3}, \\frac{7\\pi}{3}\\}\\)"],
+      "Sine is negative in quadrants III and IV. The reference angle is \\(\\frac{\\pi}{3}\\), giving \\(\\pi + \\frac{\\pi}{3} = \\frac{4\\pi}{3}\\) and \\(2\\pi - \\frac{\\pi}{3} = \\frac{5\\pi}{3}\\). The complete solution is \\(\\{\\frac{4\\pi}{3}, \\frac{5\\pi}{3}\\}\\). The value \\(\\frac{7\\pi}{3}\\) lies outside the stated interval.",
+      {sc:"sin-neg-root3"});
+  },
+  function(){
+    return mcq("A student solves \\(\\tan x = 1\\) for \\(0 \\leq x < 2\\pi\\) and stops after writing \\(x = \\frac{\\pi}{4}\\), the value returned by the inverse tangent key. What is the <b>complete</b> solution?",
+      "\\(\\{\\frac{\\pi}{4}, \\frac{5\\pi}{4}\\}\\)",
+      ["\\(\\{\\frac{\\pi}{4}\\}\\)",
+       "\\(\\{\\frac{\\pi}{4}, \\frac{3\\pi}{4}\\}\\)",
+       "\\(\\{\\frac{3\\pi}{4}, \\frac{7\\pi}{4}\\}\\)"],
+      "Tangent is positive in quadrants I and III, and its period is \\(\\pi\\), so the solutions repeat every \\(\\pi\\): \\(\\frac{\\pi}{4}\\) and \\(\\frac{\\pi}{4} + \\pi = \\frac{5\\pi}{4}\\). The complete solution is \\(\\{\\frac{\\pi}{4}, \\frac{5\\pi}{4}\\}\\).",
+      {sc:"tan-one"});
+  }
+]));
+E("u4-angle-measures-cr",4,["7.16"],2,"var",varset([
+  function(){
+    var ref=Math.asin(3/5), ans=Math.PI+ref;
+    return numq("The angle \\(\\theta\\) satisfies \\(\\sin\\theta = -\\frac{3}{5}\\) and \\(\\pi \\leq \\theta \\leq \\frac{3\\pi}{2}\\). Determine \\(\\theta\\), in radians, to two decimal places.",
+      Math.round(ans*100)/100,0.01,
+      "The reference angle is \\(\\alpha = \\sin^{-1}\\left(\\frac{3}{5}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      {sc:"sin35-q3"});
+  },
+  function(){
+    var ref=Math.asin(5/13), ans=2*Math.PI-ref;
+    return numq("The angle \\(\\theta\\) satisfies \\(\\sin\\theta = -\\frac{5}{13}\\) and \\(\\frac{3\\pi}{2} \\leq \\theta \\leq 2\\pi\\). Determine \\(\\theta\\), in radians, to two decimal places.",
+      Math.round(ans*100)/100,0.01,
+      "The reference angle is \\(\\alpha = \\sin^{-1}\\left(\\frac{5}{13}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant IV, \\(\\theta = 2\\pi - \\alpha \\approx 6.2832 - "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      {sc:"sin513-q4"});
+  },
+  function(){
+    var ref=Math.acos(7/25), ans=Math.PI-ref;
+    return numq("The angle \\(\\theta\\) satisfies \\(\\cos\\theta = -\\frac{7}{25}\\) and \\(\\frac{\\pi}{2} \\leq \\theta \\leq \\pi\\). Determine \\(\\theta\\), in radians, to two decimal places.",
+      Math.round(ans*100)/100,0.01,
+      "The reference angle is \\(\\alpha = \\cos^{-1}\\left(\\frac{7}{25}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant II, \\(\\theta = \\pi - \\alpha \\approx 3.1416 - "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      {sc:"cos725-q2"});
+  },
+  function(){
+    var ref=Math.acos(8/17), ans=Math.PI+ref;
+    return numq("The angle \\(\\theta\\) satisfies \\(\\cos\\theta = -\\frac{8}{17}\\) and \\(\\pi \\leq \\theta \\leq \\frac{3\\pi}{2}\\). Determine \\(\\theta\\), in radians, to two decimal places.",
+      Math.round(ans*100)/100,0.01,
+      "The reference angle is \\(\\alpha = \\cos^{-1}\\left(\\frac{8}{17}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      {sc:"cos817-q3"});
+  },
+  function(){
+    var ref=Math.atan(3/4), ans=Math.PI+ref;
+    return numq("The angle \\(\\theta\\) satisfies \\(\\tan\\theta = \\frac{3}{4}\\) and \\(\\pi \\leq \\theta \\leq \\frac{3\\pi}{2}\\). Determine \\(\\theta\\), in radians, to two decimal places.",
+      Math.round(ans*100)/100,0.01,
+      "The reference angle is \\(\\alpha = \\tan^{-1}\\left(\\frac{3}{4}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      {sc:"tan34-q3"});
+  },
+  function(){
+    var ref=Math.atan(5/12), ans=2*Math.PI-ref;
+    return numq("The angle \\(\\theta\\) satisfies \\(\\tan\\theta = -\\frac{5}{12}\\) and \\(\\frac{3\\pi}{2} \\leq \\theta \\leq 2\\pi\\). Determine \\(\\theta\\), in radians, to two decimal places.",
+      Math.round(ans*100)/100,0.01,
+      "The reference angle is \\(\\alpha = \\tan^{-1}\\left(\\frac{5}{12}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant IV, \\(\\theta = 2\\pi - \\alpha \\approx 6.2832 - "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      {sc:"tan512-q4"});
+  }
+]));
+
+/* ----- bank-u5.js ----- */
+// Math 3200 Unit 5 Trigonometric Functions and Graphs question bank
+// CRMARKS: u5-amplitude-a=1
+// CRMARKS: u5-base-graph=1
+// CRMARKS: u5-characteristics=1
+// CRMARKS: u5-equation-evaluate-cr=3
+// CRMARKS: u5-first-maximum-cr=2
+// CRMARKS: u5-general-solution=2
+// CRMARKS: u5-graph-problem=2
+// CRMARKS: u5-key-points=2
+// CRMARKS: u5-model-build=3
+// CRMARKS: u5-model-conditions=3
+// CRMARKS: u5-period-b=1
+// CRMARKS: u5-phase-h=1
+// CRMARKS: u5-shift-k=1
+// CRMARKS: u5-solve-set=2
+// CRMARKS: u5-tan-asymptote-cr=2
+// CRMARKS: u5-tan-features=1
+// CRMARKS: u5-which-solution=1
+/* ================= Unit 5: Trigonometric Functions and Graphs ================= */
+/* ================= Unit 5: Trigonometric Functions and Graphs ================= */
+/* Helpers are prefixed u5. Angles are in degrees unless a question says radians. */
+
+function u5Eq(a,trig,bLab,h,k){
+  var aLab=(a===1?"":(a===-1?"-":(""+a)));
+  var arg;
+  if(h===0){arg=(bLab===""?"x":bLab+"x");}
+  else{arg=(bLab===""?"":bLab)+"(x "+(h>0?"- ":"+ ")+Math.abs(h)+"^\\circ)";}
+  var s="y = "+aLab+"\\"+trig+" "+arg;
+  if(k!==0)s+=(k>0?" + ":" - ")+Math.abs(k);
+  return s;
+}
+function u5Fn(a,trig,b,h,k){
+  return function(x){var ang=b*(x-h)*Math.PI/180;
+    return a*(trig==="sin"?Math.sin(ang):(trig==="cos"?Math.cos(ang):Math.tan(ang)))+k;};
+}
+function u5Plot(fn,x0,x1,y0,y1,o){
+  o=o||{};var W=440,H=250,pad=26;
+  var X=function(x){return pad+(x-x0)/(x1-x0)*(W-2*pad);};
+  var Y=function(y){return H-pad-(y-y0)/(y1-y0)*(H-2*pad);};
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  var gsx=o.gx||1,gsy=o.gy||1,gx,gy;
+  for(gx=Math.ceil(x0/gsx)*gsx;gx<=x1;gx+=gsx){out+='<line x1="'+fmt(X(gx),1)+'" y1="'+pad+'" x2="'+fmt(X(gx),1)+'" y2="'+(H-pad)+'" stroke="#eae5d6" stroke-width="1"/>';
+    if(o.labelX)out+='<text x="'+fmt(X(gx),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+fmt(gx)+'</text>';}
+  for(gy=Math.ceil(y0/gsy)*gsy;gy<=y1;gy+=gsy){out+='<line x1="'+pad+'" y1="'+fmt(Y(gy),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(gy),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+    if(o.labelY&&gy!==0)out+='<text x="'+(pad-4)+'" y="'+fmt(Y(gy)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+fmt(gy)+'</text>';}
+  if(y0<0&&y1>0)out+='<line x1="'+pad+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(0),1)+'" stroke="#17352a" stroke-width="1.3"/>';
+  if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="'+pad+'" x2="'+fmt(X(0),1)+'" y2="'+(H-pad)+'" stroke="#17352a" stroke-width="1.3"/>';
+  out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">'+(o.xLab||"x")+'</text>';
+  out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">'+(o.yLab||"y")+'</text>';
+  if(fn){
+    var pts=[],N=160,i,x,y;
+    for(i=0;i<=N;i++){x=x0+(x1-x0)*i/N;y=fn(x);if(y<y0)y=y0;if(y>y1)y=y1;pts.push(fmt(X(x),1)+","+fmt(Y(y),1));}
+    out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+  }
+  (o.points||[]).forEach(function(p){out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>';});
+  return out+'</svg>';
+}
+function u5Dis3(correct,pool){
+  var seen={},out=[];seen[String(correct)]=1;
+  for(var i=0;i<pool.length&&out.length<3;i++){var v=String(pool[i]);
+    if(!seen[v]){seen[v]=1;out.push(pool[i]);}}
+  return out.length===3?out:null;
+}
+function u5Solve(trig,b,c,D){
+  var out=[];
+  for(var th=0;th<b*D;th+=15){
+    var v=(trig==="sin"?Math.sin(th*Math.PI/180):Math.cos(th*Math.PI/180));
+    if(Math.abs(v-c)<1e-9){var x=th/b;if(x<D)out.push(Math.round(x*100)/100);}
+  }
+  return out;
+}
+function u5SetStr(xs){
+  return "\\(\\{"+xs.map(function(x){return fmt(x)+"^\\circ";}).join(", ")+"\\}\\)";
+}
+
+E("u5-base-graph",5,["7.20","7.21"],1,"var",varset([
+  function(){
+    var q=mcq("What is the <b>period</b> of the function shown?",
+      "360°",["180°","720°","90°"],
+      "One complete cycle of the sine wave spans from \\(0^\\circ\\) to \\(360^\\circ\\) before the pattern repeats, so the period is <b>360°</b>.",{});
+    q.figure=u5Plot(u5Fn(1,"sin",1,0,0),0,720,-1.6,1.6,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;},
+  function(){
+    var q=mcq("What is the <b>amplitude</b> of the function shown?",
+      "1",["0","2","360"],
+      "The cosine graph peaks at \\(y = 1\\) and bottoms out at \\(y = -1\\), oscillating about the midline \\(y = 0\\). The amplitude is the distance from the midline to a peak, which is <b>1</b>.",{});
+    q.figure=u5Plot(u5Fn(1,"cos",1,0,0),0,720,-1.6,1.6,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;},
+  function(){
+    var q=mcq("What is the <b>range</b> of the function shown?",
+      "\\(\\{y \\mid -1 \\le y \\le 1, \\ y \\in \\mathbb{R}\\}\\)",
+      ["\\(\\{y \\mid 0 \\le y \\le 1, \\ y \\in \\mathbb{R}\\}\\)",
+       "\\(\\{y \\mid -1 \\le y \\le 0, \\ y \\in \\mathbb{R}\\}\\)",
+       "\\(\\{y \\mid y \\ge -1, \\ y \\in \\mathbb{R}\\}\\)"],
+      "The sine graph reaches a lowest value of \\(y = -1\\) and a highest value of \\(y = 1\\), and takes every value in between. The range is <b>\\(-1 \\le y \\le 1\\)</b>.",{});
+    q.figure=u5Plot(u5Fn(1,"sin",1,0,0),0,720,-1.6,1.6,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;},
+  function(){
+    var q=mcq("How many <b>zeros</b> does the function shown have on \\(0^\\circ \\le x < 720^\\circ\\)?",
+      "4",["2","3","6"],
+      "The cosine graph crosses the x-axis at \\(x = 90^\\circ, 270^\\circ, 450^\\circ\\) and \\(630^\\circ\\), which is <b>4</b> zeros on the interval.",{});
+    q.figure=u5Plot(u5Fn(1,"cos",1,0,0),0,720,-1.6,1.6,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;},
+  function(){
+    var q=mcq("At which value of \\(x\\) in \\([0^\\circ, 360^\\circ)\\) does the function shown first reach its <b>minimum</b> value?",
+      "180°",["90°","270°","360°"],
+      "The cosine graph starts at its maximum when \\(x = 0^\\circ\\) and falls to its minimum halfway through the cycle, at \\(x = 180^\\circ\\).",{});
+    q.figure=u5Plot(u5Fn(1,"cos",1,0,0),0,720,-1.6,1.6,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;}
+]));
+E("u5-amplitude-a",5,["7.22"],1,"gen",function(){
+  var trig=pick(["sin","cos"]),aS=pick([-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]),b=pick([1,2,3]);
+  var A=Math.abs(aS),bLab=(b===1?"":""+b);
+  var dis=u5Dis3(""+A,[""+(A+1),""+(A-1),""+(2*A)]);
+  return mcq("What is the <b>amplitude</b> of \\("+u5Eq(aS,trig,bLab,0,0)+"\\)?",
+    ""+A,dis,
+    "The amplitude is the absolute value of the coefficient of the trigonometric function: \\(|"+aS+"| = "+A+"\\). The sign only reflects the graph, and the "+b+" inside the argument affects the period, not the amplitude. The amplitude is <b>"+A+"</b>.",
+    {trig:trig,aS:aS,b:b});
+});
+E("u5-shift-k",5,["7.24"],1,"gen",function(){
+  var trig=pick(["sin","cos"]),k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]),ask=pick(["midline","max","min","range"]);
+  var eq=u5Eq(1,trig,"",0,k);
+  if(ask==="midline"){
+    var dis=u5Dis3("y = "+k,["y = "+(-k),"y = "+(k+1),"y = "+(k-1)]);
+    return mcq("What is the equation of the <b>midline</b> of \\("+eq+"\\)?",
+      "y = "+k,dis,
+      "Adding "+k+" shifts every point of the base graph "+(k>0?"up":"down")+" by "+Math.abs(k)+", so the graph oscillates about the line \\(y = "+k+"\\) instead of \\(y = 0\\). The midline is <b>\\(y = "+k+"\\)</b>.",
+      {trig:trig,k:k,ask:ask});
+  }
+  if(ask==="max"){
+    var dis2=u5Dis3(""+(k+1),[""+(k-1),"1",""+(k+2),"-1","2",""+(k+3)]);
+    return mcq("What is the <b>maximum value</b> of \\("+eq+"\\)?",
+      ""+(k+1),dis2,
+      "The base function \\(\\"+trig+" x\\) has maximum value 1. The + "+k+" shifts the graph "+(k>0?"up":"down")+", so the maximum value becomes \\(1 + ("+k+") = "+(k+1)+"\\). The maximum value is <b>"+(k+1)+"</b>.",
+      {trig:trig,k:k,ask:ask});
+  }
+  if(ask==="min"){
+    var dis3=u5Dis3(""+(k-1),["-1",""+(k+1),""+(k-2),"1",""+(k-3),"0"]);
+    return mcq("What is the <b>minimum value</b> of \\("+eq+"\\)?",
+      ""+(k-1),dis3,
+      "The base function \\(\\"+trig+" x\\) has minimum value -1. The + "+k+" shifts the graph "+(k>0?"up":"down")+", so the minimum value becomes \\(-1 + ("+k+") = "+(k-1)+"\\). The minimum value is <b>"+(k-1)+"</b>.",
+      {trig:trig,k:k,ask:ask});
+  }
+  var corr="\\(["+(k-1)+", "+(k+1)+"]\\)";
+  var pool=["\\([-1, 1]\\)","\\(["+k+", "+(k+2)+"]\\)","\\(["+(k-2)+", "+k+"]\\)","\\(["+(k-1)+", "+(k+2)+"]\\)","\\([0, "+(2*k)+"]\\)","\\(["+(k-2)+", "+(k+2)+"]\\)"];
+  var dis4=u5Dis3(corr,pool);
+  return mcq("What is the <b>range</b> of \\("+eq+"\\)?",
+    corr,dis4,
+    "The base function takes values from -1 to 1. Shifting "+(k>0?"up":"down")+" by "+Math.abs(k)+" moves the whole band: the lowest value is \\(-1 + ("+k+") = "+(k-1)+"\\) and the highest is \\(1 + ("+k+") = "+(k+1)+"\\). The range is <b>\\(["+(k-1)+", "+(k+1)+"]\\)</b>.",
+    {trig:trig,k:k,ask:ask});
+});
+E("u5-period-b",5,["7.23"],1,"gen",function(){
+  var trig=pick(["sin","cos"]);
+  if(Math.random()<0.25){
+    var bR=pick([2,3,4,0.5]),per,corr,dis;
+    if(bR===2){corr="\\(\\pi\\)";dis=["\\(2\\pi\\)","\\(\\frac{\\pi}{2}\\)","\\(4\\pi\\)"];}
+    else if(bR===3){corr="\\(\\frac{2\\pi}{3}\\)";dis=["\\(2\\pi\\)","\\(\\frac{\\pi}{3}\\)","\\(6\\pi\\)"];}
+    else if(bR===4){corr="\\(\\frac{\\pi}{2}\\)";dis=["\\(2\\pi\\)","\\(\\frac{\\pi}{4}\\)","\\(\\pi\\)"];}
+    else{corr="\\(4\\pi\\)";dis=["\\(2\\pi\\)","\\(\\pi\\)","\\(\\frac{\\pi}{2}\\)"];}
+    per=corr;
+    var perIn=per.substring(2,per.length-2);
+    return mcq("What is the <b>period</b>, in radians, of \\("+u5Eq(1,trig,(bR===0.5?"\\frac{1}{2}":""+bR),0,0)+"\\) (with \\(x\\) in radians)?",
+      corr,dis,
+      "The base function has period \\(2\\pi\\). The coefficient \\(b = "+(bR===0.5?"\\frac{1}{2}":bR)+"\\) compresses or stretches the graph horizontally, giving period \\(\\frac{2\\pi}{b} = "+perIn+"\\). The period is <b>"+per+"</b>.",
+      {trig:trig,bR:bR,mode:"rad"});
+  }
+  var b=pick([2,3,4,0.5,1/3]),bLab=(b===0.5?"\\frac{1}{2}":(b===1/3?"\\frac{1}{3}":""+b));
+  var a=pick([1,2,3]),k=pick([-2,0,2]),P=Math.round(360/b);
+  var pool=["360",""+Math.round(360*b),""+Math.round(180/b),""+Math.round(720/b),""+Math.round(720*b),"90","270","120"];
+  var dis=u5Dis3(""+P,pool);
+  return mcq("What is the <b>period</b>, in degrees, of \\("+u5Eq(a,trig,bLab,0,k)+"\\)?",
+    ""+P,dis,
+    "The period is set by the coefficient of \\(x\\): \\[ \\begin{aligned} \\text{period} &= \\frac{360^\\circ}{b} \\\\ &= \\frac{360^\\circ}{"+(b===0.5?"\\frac{1}{2}":(b===1/3?"\\frac{1}{3}":b))+"} \\\\ &= "+P+"^\\circ \\end{aligned} \\] The amplitude and the vertical shift do not change the period. The period is <b>"+P+"°</b>.",
+    {trig:trig,b:b,a:a,k:k,mode:"deg"});
+});
+E("u5-phase-h",5,["7.25"],1,"gen",function(){
+  var trig=pick(["sin","cos"]),h=pick([15,30,45,60,90,-15,-30,-45,-60,-90]),b=pick([1,2,3]);
+  var bLab=(b===1?"":""+b),A=Math.abs(h);
+  var dir=(h>0?"right":"left"),odir=(h>0?"left":"right");
+  var corr="Shifted "+A+"° to the "+dir;
+  var dis=[("Shifted "+A+"° to the "+odir),("Shifted "+(2*A)+"° to the "+dir),("Shifted "+A+" units "+(h>0?"up":"down"))];
+  return mcq("How is the graph of \\("+u5Eq(1,trig,bLab,h,0)+"\\) obtained from the graph of \\("+u5Eq(1,trig,bLab,0,0)+"\\)?",
+    corr,dis,
+    "In the form \\(\\"+trig+" "+(b===1?"":b)+"(x - h)\\), the value \\(h = "+h+"^\\circ\\) is the phase shift. A positive \\(h\\) moves the graph to the right, and a negative \\(h\\) moves it to the left. Here the graph is <b>shifted "+A+"° to the "+dir+"</b>.",
+    {trig:trig,h:h,b:b});
+});
+E("u5-characteristics",5,["7.27"],1,"gen",function(){
+  var trig=pick(["sin","cos"]),a=pick([2,3,4]),b=pick([1,2]),h=pick([-60,-30,0,30,60]),k=pick([-2,-1,0,1,2,3]);
+  var ask=pick(["amplitude","period","midline","range","phase"]);
+  var eq=u5Eq(a,trig,(b===1?"":""+b),h,k),fn=u5Fn(a,trig,b,h,k);
+  var prompt,corr,dis,sol;
+  if(ask==="amplitude"){
+    corr=""+a;dis=u5Dis3(corr,[""+(a-1),""+(a+1),""+(2*a),"1"]);
+    prompt="For the function \\("+eq+"\\), graphed below, what is its <b>amplitude</b>?";
+    sol="The graph peaks "+a+" units above its midline \\(y = "+k+"\\), so the amplitude is <b>"+a+"</b>.";
+  }else if(ask==="period"){
+    var P=360/b;corr=""+P;dis=u5Dis3(corr,["180","360","720","90","120"]);
+    prompt="For the function \\("+eq+"\\), graphed below, what is its <b>period</b>, in degrees?";
+    sol="Peaks repeat every \\("+P+"^\\circ\\) on the graph, matching \\(\\frac{360^\\circ}{"+b+"} = "+P+"^\\circ\\). The period is <b>"+P+"°</b>.";
+  }else if(ask==="midline"){
+    corr="y = "+k;dis=u5Dis3(corr,["y = "+(-k),"y = "+a,"y = "+(k+a),"y = 1","y = -1","y = "+(k-a),"y = 0","y = "+(k+2)]);
+    prompt="For the function \\("+eq+"\\), graphed below, what is the equation of its <b>midline</b>?";
+    sol="The graph oscillates evenly between \\(y = "+(k+a)+"\\) and \\(y = "+(k-a)+"\\); the midline sits halfway between, at <b>\\(y = "+k+"\\)</b>.";
+  }else if(ask==="range"){
+    corr="\\(["+(k-a)+", "+(k+a)+"]\\)";
+    dis=u5Dis3(corr,["\\(["+(-a)+", "+a+"]\\)","\\(["+k+", "+(k+a)+"]\\)","\\(["+(k-a)+", "+k+"]\\)","\\(["+(k-1)+", "+(k+1)+"]\\)"]);
+    prompt="For the function \\("+eq+"\\), graphed below, what is its <b>range</b>?";
+    sol="The lowest point on the graph is \\(y = "+(k-a)+"\\) and the highest is \\(y = "+(k+a)+"\\), with every value in between attained. The range is <b>\\(["+(k-a)+", "+(k+a)+"]\\)</b>.";
+  }else{
+    if(h===0){corr="None (no horizontal shift)";dis=["45° to the right","90° to the left","180° to the right"];}
+    else{
+      var dir=(h>0?"right":"left"),odir=(h>0?"left":"right"),A=Math.abs(h);
+      corr=A+"° to the "+dir;
+      dis=[A+"° to the "+odir,(2*A)+"° to the "+dir,"A vertical shift of "+Math.abs(k)+" units"];
+    }
+    prompt="For the function \\("+eq+"\\), graphed below, what is its <b>phase shift</b>?";
+    sol=(h===0?"The argument is \\(" + "\\" + trig + " " + (b===1?"":b) + "x\\) with nothing subtracted from \\(x\\), so there is <b>no horizontal shift</b>.":"The shift is read from \\((x - ("+h+"^\\circ))\\): the graph is shifted <b>"+Math.abs(h)+"° to the "+(h>0?"right":"left")+"</b> from the base graph.");
+  }
+  var q=mcq(prompt,corr,dis,sol,{trig:trig,a:a,b:b,h:h,k:k,ask:ask});
+  q.figure=u5Plot(fn,0,540,Math.min(k-a-1,-2),Math.max(k+a+1,2),{gx:90,gy:1,labelX:true,labelY:true});
+  return q;
+});
+E("u5-eq-from-graph",5,["7.28"],2,"gen",function(){
+  var trig=pick(["sin","cos"]),a=pick([2,3,4]),b=pick([1,2]);
+  var k=pick([-3,-2,-1,1,2,3]);var tries=0;
+  while(k===a&&tries<40){k=pick([-3,-2,-1,1,2,3]);tries++;}
+  var bLab=(b===1?"":""+b),bOther=(b===1?"2":"");
+  var corr="\\("+u5Eq(a,trig,bLab,0,k)+"\\)";
+  var dis=["\\("+u5Eq(a,trig,bLab,0,-k)+"\\)",
+           "\\("+u5Eq(k,trig,bLab,0,a)+"\\)",
+           "\\("+u5Eq(a,trig,bOther,0,k)+"\\)"];
+  var q=mcq("Which function is shown in the graph?",
+    corr,dis,
+    "The graph oscillates between \\(y = "+(k+a)+"\\) and \\(y = "+(k-a)+"\\), so the midline is \\(y = "+k+"\\) and the amplitude is "+a+". It completes a cycle every "+(360/b)+"°, so \\(b = "+b+"\\), and its shape at \\(x = 0\\) is the "+(trig==="sin"?"sine":"cosine")+" shape. The function is <b>"+corr+"</b>.",
+    {trig:trig,a:a,b:b,k:k});
+  q.figure=u5Plot(u5Fn(a,trig,b,0,k),0,720,Math.min(k-a-1,-2),Math.max(k+a+1,2),{gx:90,gy:1,labelX:true,labelY:true});
+  return q;
+});
+E("u5-key-points",5,["7.26"],1,"gen",function(){
+  var trig=pick(["sin","cos"]),a=pick([2,3,4,5]),b=pick([1,2,3]),h=pick([-30,0,30,60]),k=pick([-3,-2,-1,0,1,2,3]);
+  var eq=u5Eq(a,trig,(b===1?"":""+b),h,k),ask=pick(["max","min","firstmax"]);
+  if(ask==="max"){
+    return numq("What is the <b>maximum value</b> of \\("+eq+"\\)?",
+      a+k,0.001,
+      "The trigonometric part tops out at 1, so the maximum value is \\("+a+"(1) + ("+k+") = "+(a+k)+"\\). The maximum value is <b>"+(a+k)+"</b>.",
+      {trig:trig,a:a,b:b,h:h,k:k,ask:ask});
+  }
+  if(ask==="min"){
+    return numq("What is the <b>minimum value</b> of \\("+eq+"\\)?",
+      k-a,0.001,
+      "The trigonometric part bottoms out at -1, so the minimum value is \\("+a+"(-1) + ("+k+") = "+(k-a)+"\\). The minimum value is <b>"+(k-a)+"</b>.",
+      {trig:trig,a:a,b:b,h:h,k:k,ask:ask});
+  }
+  var x;
+  if(trig==="sin"){x=h+90/b;}
+  else{x=(h>=0)?h:h+360/b;}
+  return numq("For \\("+eq+"\\), find the smallest value of \\(x \\ge 0^\\circ\\) at which the function reaches its <b>maximum</b> value.",
+    x,0.001,
+    "The maximum occurs where the argument of the "+(trig==="sin"?"sine":"cosine")+" equals "+(trig==="sin"?"\\(90^\\circ\\)":"\\(0^\\circ\\)")+" (or a full cycle later): \\[ \\begin{aligned} "+b+"(x "+(h>=0?"- "+h:"+ "+(-h))+") &= "+(trig==="sin"?"90":"0")+"^\\circ \\\\ x &= "+x+"^\\circ \\end{aligned} \\] The smallest such value with \\(x \\ge 0^\\circ\\) is <b>"+x+"°</b>.",
+    {trig:trig,a:a,b:b,h:h,k:k,ask:ask});
+});
+E("u5-tan-features",5,["7.32","7.33"],2,"gen",function(){
+  var b=pick([1,2]),s=pick([1,-1]),h=pick([0,30]),L=pick([360,540,720,900]);
+  var ask=pick(["period","asymcount","zerocount","range","domain"]);
+  var eq=u5Eq(s,"tan",(b===1?"":""+b),h,0);
+  var zeros=[],asym=[],n,x;
+  for(n=-2;n<50;n++){x=h+180*n/b;if(x>=0&&x<L)zeros.push(x);x=h+(90+180*n)/b;if(x>0&&x<L)asym.push(x);}
+  if(ask==="period"){
+    var P=180/b,dis=u5Dis3(""+P,["90","180","270","360","45"]);
+    return mcq("What is the <b>period</b>, in degrees, of \\("+eq+"\\)?",
+      ""+P,dis,
+      "The tangent function repeats every \\(180^\\circ\\); with the coefficient \\(b = "+b+"\\), the period is \\(\\frac{180^\\circ}{"+b+"} = "+P+"^\\circ\\). The period is <b>"+P+"°</b>.",
+      {b:b,s:s,h:h,ask:ask});
+  }
+  if(ask==="asymcount"){
+    var c1=asym.length,dis2=u5Dis3(""+c1,[""+(c1-1),""+(c1+1),""+(c1+2),""+(2*c1),""+(b*L/180)]);
+    return mcq("How many <b>vertical asymptotes</b> does the graph of \\("+eq+"\\) have on the interval \\(0^\\circ < x < "+L+"^\\circ\\)?",
+      ""+c1,dis2,
+      "The asymptotes of the tangent graph occur where its argument equals \\(90^\\circ + 180^\\circ n\\), here at \\(x = "+asym.map(function(v){return fmt(v)+"^\\circ";}).join(", ")+"\\). That is <b>"+c1+"</b> asymptotes on the interval.",
+      {b:b,s:s,h:h,L:L,ask:ask});
+  }
+  if(ask==="zerocount"){
+    var c2=zeros.length,dis3=u5Dis3(""+c2,[""+(c2-1),""+(c2+1),""+(c2+2),""+(2*c2),""+(b*L/180)]);
+    return mcq("How many <b>zeros</b> does the graph of \\("+eq+"\\) have on the interval \\(0^\\circ \\le x < "+L+"^\\circ\\)?",
+      ""+c2,dis3,
+      "The tangent graph crosses the x-axis where its argument equals \\(180^\\circ n\\), here at \\(x = "+zeros.map(function(v){return fmt(v)+"^\\circ";}).join(", ")+"\\). That is <b>"+c2+"</b> zeros on the interval.",
+      {b:b,s:s,h:h,L:L,ask:ask});
+  }
+  if(ask==="range"){
+    return mcq("What is the <b>range</b> of \\("+eq+"\\)?",
+      "\\(\\{y \\mid y \\in \\mathbb{R}\\}\\)",
+      ["\\(\\{y \\mid -1 \\le y \\le 1, \\ y \\in \\mathbb{R}\\}\\)",
+       "\\(\\{y \\mid y \\ge 0, \\ y \\in \\mathbb{R}\\}\\)",
+       "\\(\\{y \\mid y \\ne 0, \\ y \\in \\mathbb{R}\\}\\)"],
+      "Between consecutive asymptotes, the tangent graph climbs from the bottom of the graph to the top without skipping any value, so it takes <b>every real value</b>. Unlike sine and cosine, tangent is not trapped between -1 and 1.",
+      {b:b,s:s,h:h,ask:ask});
+  }
+  var st=h+90/b,step=180/b;
+  var corr="\\(x \\ne "+fmt(st)+"^\\circ + "+fmt(step)+"^\\circ n\\)";
+  var dis4=["\\(x \\ne "+fmt(h)+"^\\circ + "+fmt(step)+"^\\circ n\\)",
+            "\\(x \\ne "+fmt(st)+"^\\circ + "+fmt(2*step)+"^\\circ n\\)",
+            "\\(x \\in \\mathbb{R}\\)"];
+  return mcq("What is the <b>domain</b> of \\("+eq+"\\)?",
+    corr,dis4,
+    "Tangent is undefined where its argument equals \\(90^\\circ + 180^\\circ n\\). Solving \\("+b+"(x - "+h+"^\\circ) = 90^\\circ + 180^\\circ n\\) gives \\(x = "+fmt(st)+"^\\circ + "+fmt(step)+"^\\circ n\\), and these values are excluded from the domain: <b>"+corr+"</b>.",
+    {b:b,s:s,h:h,ask:ask});
+});
+E("u5-which-solution",5,["7.36","7.35"],1,"gen",function(){
+  var trig=pick(["sin","cos"]);
+  if(Math.random()<0.55){
+    var b=pick([1,2]);
+    var cs=[{v:0.5,lab:"\\frac{1}{2}"},{v:Math.sqrt(3)/2,lab:"\\frac{\\sqrt{3}}{2}"},{v:-0.5,lab:"-\\frac{1}{2}"},{v:-Math.sqrt(3)/2,lab:"-\\frac{\\sqrt{3}}{2}"},{v:0,lab:"0"},{v:1,lab:"1"}];
+    if(b===1)cs.push({v:Math.sqrt(2)/2,lab:"\\frac{\\sqrt{2}}{2}"},{v:-Math.sqrt(2)/2,lab:"-\\frac{\\sqrt{2}}{2}"});
+    var c=pick(cs),sols=u5Solve(trig,b,c.v,361),chosen=pick(sols);
+    var pool=[],xv;
+    for(xv=0;xv<=360;xv+=15){
+      var val=(trig==="sin"?Math.sin(b*xv*Math.PI/180):Math.cos(b*xv*Math.PI/180));
+      if(Math.abs(val-c.v)>0.05&&Math.abs(xv-chosen)>0.5)pool.push(xv);
+    }
+    pool=shuffle(pool);
+    var dis=pool.slice(0,3).map(function(v){return v+"°";});
+    return mcq("Which value of \\(x\\) is a <b>solution</b> of \\(\\"+trig+" "+(b===1?"":b)+"x = "+c.lab+"\\) for \\(0^\\circ \\le x \\le 360^\\circ\\)?",
+      chosen+"°",dis,
+      "Substitute the value: \\(\\"+trig+" "+(b===1?"":b)+"("+chosen+"^\\circ) = "+c.lab+"\\), so \\(x = "+chosen+"^\\circ\\) satisfies the equation. Each other listed value gives a different result when substituted. The solution shown is <b>"+chosen+"°</b>.",
+      {trig:trig,b:b,c:c.lab,fam:"special"});
+  }
+  var c2=pick([0.3,0.4,0.6,0.7,-0.3,-0.5,-0.7]),sols2,chosen2;
+  if(trig==="sin"){var bs=Math.asin(c2)*180/Math.PI;sols2=[((bs%360)+360)%360,((180-bs)%360+360)%360];}
+  else{var bc=Math.acos(c2)*180/Math.PI;sols2=[bc,360-bc];}
+  chosen2=pick(sols2);
+  var corr2=""+Math.round(chosen2);
+  var cand=[];
+  if(trig==="sin"){var ac=Math.acos(c2)*180/Math.PI;cand.push(Math.round(ac),Math.round(180-ac),Math.round(360-ac));}
+  else{var as=Math.asin(c2)*180/Math.PI;as=((as%360)+360)%360;cand.push(Math.round(as),Math.round(180-as),Math.round(360-as));}
+  cand.push(((Math.round(chosen2)+180)%360),Math.round(((360-chosen2)%360+360)%360),Math.round(chosen2)+45,Math.round(chosen2)-35,Math.round(chosen2)+100);
+  var disB=[],ci2;
+  for(ci2=0;ci2<cand.length&&disB.length<3;ci2++){
+    var cv=((cand[ci2]%360)+360)%360;
+    var nearSol=sols2.some(function(sv){return Math.abs(sv-cv)<2.5||Math.abs(sv-cv)>357.5;});
+    if(!nearSol&&(""+cv)!==corr2&&disB.indexOf(cv+"°")===-1)disB.push(cv+"°");
+  }
+  return mcq("Which value of \\(x\\) is an <b>approximate</b> solution of \\(\\"+trig+" x = "+c2+"\\) for \\(0^\\circ \\le x < 360^\\circ\\)?",
+    corr2+"°",disB,
+    "Using the inverse function, one solution is \\(x = \\"+trig+"^{-1}("+c2+") \\approx "+fmt(chosen2,1)+"^\\circ\\), which rounds to <b>"+corr2+"°</b>. (A calculator or a graph gives this approximate value; the equation has no exact special-angle solution.)",
+    {trig:trig,c:c2,fam:"approx"});
+});
+E("u5-solve-set",5,["7.34"],2,"gen",function(){
+  var trig,b,sgn,c,D,S,candSets,tries=0;
+  function sStr(arr){return u5SetStr(arr);}
+  do{
+    trig=pick(["sin","cos"]);b=pick([1,2,3]);sgn=pick([1,-1]);D=pick([180,360]);
+    var cands=[{v:0.5,lab:"\\frac{1}{2}"},{v:-0.5,lab:"-\\frac{1}{2}"},{v:Math.sqrt(3)/2,lab:"\\frac{\\sqrt{3}}{2}"},{v:0,lab:"0"}];
+    if(b===1)cands.push({v:Math.sqrt(2)/2,lab:"\\frac{\\sqrt{2}}{2}"},{v:-Math.sqrt(2)/2,lab:"-\\frac{\\sqrt{2}}{2}"},{v:1,lab:"1"},{v:-1,lab:"-1"});
+    c=pick(cands);
+    var ceff=sgn*c.v,other=(trig==="sin"?"cos":"sin");
+    S=u5Solve(trig,b,ceff,D);
+    var raw=[u5Solve(trig,b,-ceff,D),
+             u5Solve(other,b,ceff,D),
+             u5Solve(trig,2*b,ceff,D),
+             u5Solve(trig,b,ceff,D===180?360:180),
+             S.map(function(v){return 180-v;}).filter(function(v){return v>=0&&v<D;}).sort(function(p,q){return p-q;}),
+             S.map(function(v){return (v+180)%360;}).filter(function(v){return v<D;}).sort(function(p,q){return p-q;}),
+             S.concat([D])];
+    candSets=[];
+    raw.forEach(function(arr){
+      var st=sStr(arr);
+      if(arr.length&&st!==sStr(S)&&candSets.indexOf(st)===-1)candSets.push(st);
+    });
+    tries++;
+  }while((S.length===0||candSets.length<3)&&tries<80);
+  if(S.length===0||candSets.length<3){
+    trig="sin";b=1;sgn=1;D=360;c={v:0.5,lab:"\\frac{1}{2}"};
+    S=u5Solve(trig,b,0.5,360);
+    candSets=[sStr(u5Solve(trig,b,-0.5,360)),sStr(u5Solve("cos",b,0.5,360)),sStr(u5Solve(trig,2,0.5,360))];
+  }
+  var dis=candSets.slice(0,3);
+  var eqStr=(sgn===1?"":"-")+"\\"+trig+" "+(b===1?"":b)+"x = "+c.lab;
+  var negLab=(c.lab.charAt(0)==="-")?c.lab.slice(1):("-"+c.lab);
+  return mcq("Solve \\("+eqStr+"\\) for \\(0^\\circ \\le x < "+D+"^\\circ\\). Which list gives <b>all</b> of the solutions?",
+    sStr(S),dis,
+    "First solve on one cycle, then account for the coefficient of \\(x\\): \\[ \\begin{aligned} \\"+trig+" "+(b===1?"":b)+"x &= "+(sgn===1?c.lab:negLab)+" \\\\ x &= "+S.map(function(v){return fmt(v)+"^\\circ";}).join(", ")+" \\end{aligned} \\] Checking each listed value in the original equation confirms the solution set <b>"+sStr(S)+"</b>.",
+    {trig:trig,b:b,sgn:sgn,c:c.lab,D:D});
+});
+E("u5-general-solution",5,["7.38"],2,"gen",function(){
+  var trig=pick(["sin","cos"]),b=pick([1,2,3]),a=pick([2,3]),ask=pick(["general","zeroslist","zeroscount"]);
+  var eq=u5Eq(a,trig,(b===1?"":""+b),0,0);
+  function gs(s,p){return s===0?("\\(x = "+fmt(p)+"^\\circ n\\)"):("\\(x = "+fmt(s)+"^\\circ + "+fmt(p)+"^\\circ n\\)");}
+  if(ask==="general"){
+    var s0=(trig==="sin"?0:90/b),p0=180/b,sO=(trig==="sin"?90/b:0);
+    var corr=gs(s0,p0);
+    var pool=[gs(sO,p0),gs(s0,2*p0),gs(s0,360/b),gs(sO,2*p0),gs(s0,p0/2)];
+    var dis=u5Dis3(corr,pool);
+    return mcq("The zeros of \\("+eq+"\\) are exactly the solutions of \\(\\"+trig+" "+(b===1?"":b)+"x = 0\\). What is the <b>general solution</b> of \\(\\"+trig+" "+(b===1?"":b)+"x = 0\\), in degrees?",
+      corr,dis,
+      "The zeros repeat every \\("+fmt(p0)+"^\\circ\\), starting from "+(s0===0?"\\(0^\\circ\\)":"\\("+fmt(s0)+"^\\circ\\)")+". Listing the zeros of the function in order gives the pattern <b>"+corr+"</b>, where \\(n\\) is any integer.",
+      {trig:trig,b:b,a:a,ask:ask});
+  }
+  if(ask==="zeroslist"){
+    var S=u5Solve(trig,b,0,360),other=(trig==="sin"?"cos":"sin");
+    var pool2=[u5SetStr(u5Solve(other,b,0,360)),
+               u5SetStr(u5Solve(trig,b===1?2:1,0,360)),
+               u5SetStr(u5Solve(trig,b,0,180)),
+               u5SetStr(S.map(function(v){return (v+180/b)%360;}).sort(function(p,q){return p-q;}))];
+    var dis2=u5Dis3(u5SetStr(S),pool2);
+    return mcq("Which list gives all of the <b>zeros</b> of \\("+eq+"\\) on \\([0^\\circ, 360^\\circ)\\)?",
+      u5SetStr(S),dis2,
+      "Zeros occur where \\(\\"+trig+" "+(b===1?"":b)+"x = 0\\). On \\([0^\\circ, 360^\\circ)\\) these are <b>"+u5SetStr(S)+"</b>; extending the pattern by the period gives the general solution.",
+      {trig:trig,b:b,a:a,ask:ask});
+  }
+  var L=pick([360,720,1080]),cnt=u5Solve(trig,b,0,L).length;
+  var dis3=u5Dis3(""+cnt,[""+(cnt-1),""+(cnt+1),""+(cnt/2),""+(2*cnt),""+(b*L/360)]);
+  return mcq("How many <b>zeros</b> does \\("+eq+"\\) have on \\([0^\\circ, "+L+"^\\circ)\\)?",
+    ""+cnt,dis3,
+    "In each \\(360^\\circ\\) the graph crosses the x-axis "+(2*b)+" times (the zeros of \\(\\"+trig+" "+(b===1?"":b)+"x\\)), and the interval holds "+(L/360)+" such blocks, giving \\("+(2*b)+" \\times "+(L/360)+" = "+cnt+"\\) zeros. These are the first "+cnt+" values listed by the general solution. The count is <b>"+cnt+"</b>.",
+    {trig:trig,b:b,a:a,L:L,ask:ask});
+});
+function u5ModEq(fnName,D,A,trig,bDeg,sign){
+  return "\\("+fnName+"(t) = "+D+(sign<0?" - ":" + ")+(A===1?"":A)+"\\"+trig+"("+bDeg+"^\\circ t)\\)";
+}
+E("u5-model-build",5,["7.31"],3,"gen",function(){
+  var ctx=pick(["tide","wheel","buoy","temp"]),ask=pick(["equation","value"]);
+  var A,D,P,b,fnName,unit,thing,startMax,stemEq,stemVal,tVal,tLab;
+  if(ctx==="tide"){
+    A=pick([2,3,4]);D=pick([7,8,9,10]);P=pick([6,8,12]);b=360/P;fnName="d";unit="m";startMax=false;
+    stemEq="The depth of water at a harbour dock varies sinusoidally with time. At low tide, when \\(t = 0\\), the depth is "+(D-A)+" m, and at high tide the depth is "+(D+A)+" m. High tides occur every "+P+" hours.";
+    stemVal=stemEq;tLab="depth";
+  }else if(ctx==="wheel"){
+    A=pick([6,8,10]);var c0=pick([1,2,3]);D=A+c0;P=pick([6,8,12]);b=360/P;fnName="h";unit="m";startMax=false;
+    stemEq="A Ferris wheel has diameter "+(2*A)+" m, and its lowest point is "+c0+" m above the ground. A rider boards at the lowest point when \\(t = 0\\), and the wheel completes one revolution every "+P+" minutes.";
+    stemVal=stemEq;tLab="height";
+  }else if(ctx==="buoy"){
+    A=pick([1,2,3]);D=pick([8,10,12]);P=pick([6,8,10]);b=360/P;fnName="h";unit="m";startMax=true;
+    stemEq="A navigation buoy bobs up and down as waves pass. At \\(t = 0\\) the buoy is at the top of its motion, "+(D+A)+" m above the seabed, and it returns to the top every "+P+" seconds. Its lowest point is "+(D-A)+" m above the seabed.";
+    stemVal=stemEq;tLab="height";
+  }else{
+    A=pick([4,5,6]);D=pick([14,16,18]);P=24;b=15;fnName="T";unit="°C";startMax=false;
+    stemEq="The temperature inside a greenhouse varies sinusoidally over a day. The daily minimum of "+(D-A)+" °C is reached at \\(t = 0\\) (taken as 4:00 AM), and the daily maximum of "+(D+A)+" °C is reached 12 hours later. The pattern repeats every 24 hours.";
+    stemVal=stemEq;tLab="temperature";
+  }
+  var sign=startMax?1:-1;
+  if(ask==="equation"){
+    var corr=u5ModEq(fnName,D,A,"cos",b,sign);
+    var dis=[u5ModEq(fnName,D,A,"cos",b,-sign),
+             u5ModEq(fnName,D,A,"sin",b,sign),
+             u5ModEq(fnName,D,A,"cos",360/(2*P),sign)];
+    return mcq(stemEq+" Which function models the "+tLab+" "+(unit==="°C"?"\\(T\\)":"")+" after \\(t\\) "+(ctx==="buoy"?"seconds":(ctx==="wheel"?"minutes":"hours"))+"?",
+      corr,dis,
+      "The midline is the average of the extremes: \\(\\frac{"+(D-A)+" + "+(D+A)+"}{2} = "+D+"\\), and the amplitude is \\(\\frac{"+(D+A)+" - "+(D-A)+"}{2} = "+A+"\\). One cycle takes "+P+" "+(ctx==="buoy"?"seconds":(ctx==="wheel"?"minutes":"hours"))+", so the coefficient is \\(\\frac{360^\\circ}{"+P+"} = "+b+"^\\circ\\) per unit of \\(t\\). The motion starts at a "+(startMax?"maximum":"minimum")+", which calls for a "+(startMax?"positive":"negative")+" cosine. The model is <b>"+corr+"</b>.",
+      {ctx:ctx,A:A,D:D,P:P,ask:ask});
+  }
+  var tFrac=pick([1/4,1/2,1/6,1/3]),tv=P*tFrac,cosv=Math.cos(360*tFrac*Math.PI/180);
+  var val=D+sign*A*cosv;
+  return numq(stemVal+" What is the "+tLab+" at \\(t = "+fmt(tv)+"\\) "+(ctx==="buoy"?"seconds":(ctx==="wheel"?"minutes":"hours"))+"? Give the value in "+(unit==="°C"?"degrees Celsius":"metres")+".",
+    Math.round(val*100)/100,0.02,
+    "Build the model first: midline "+D+", amplitude "+A+", starting at a "+(startMax?"maximum":"minimum")+", so \\("+fnName+"(t) = "+D+" "+(sign<0?"-":"+")+" "+A+"\\cos("+b+"^\\circ t)\\). Then \\[ \\begin{aligned} "+fnName+"("+fmt(tv)+") &= "+D+" "+(sign<0?"-":"+")+" "+A+"\\cos("+(360*tFrac)+"^\\circ) \\\\ &= "+D+" "+(sign<0?"-":"+")+" "+A+"("+fmt(cosv)+") \\\\ &= "+fmt(val)+" \\end{aligned} \\] The "+tLab+" is <b>"+fmt(val)+" "+unit+"</b>.",
+    {ctx:ctx,A:A,D:D,P:P,ask:ask,tv:tv});
+});
+E("u5-model-conditions",5,["7.29","7.30"],3,"gen",function(){
+  var frame=pick([
+    {what:"the height, in centimetres, of a piston in an engine as it pumps",per:"seconds"},
+    {what:"the depth of water, in metres, at a dock as the tide comes and goes",per:"hours"},
+    {what:"the height, in metres, of a seat on a slowly rotating observation wheel",per:"minutes"}]);
+  var P=pick([6,8,12]),A=pick([3,4,5]),lo=pick([1,2]),trig=pick(["sin","cos"]);
+  var D=lo+A,hi=lo+2*A,b=360/P;
+  function eqS(aa,bb,dd){return "\\(y = "+(aa===1?"":aa)+"\\"+trig+" "+(bb===1?"":bb)+"x + "+dd+"\\)";}
+  var corr=eqS(A,b,D);
+  var dis=[eqS(A+1,b,D+1),eqS(A,2*b,D),eqS(A-1,2*b,D)];
+  return mcq("A sinusoidal function models "+frame.what+". The model must complete one full cycle every "+P+" "+frame.per+", and its values must run from "+lo+" to "+hi+". Which function satisfies <b>both</b> conditions?",
+    corr,dis,
+    "A period of "+P+" forces \\(b = \\frac{360}{"+P+"} = "+b+"\\), which rules out the options with \\("+(2*b)+"x\\). A range of "+lo+" to "+hi+" forces amplitude \\(\\frac{"+hi+" - "+lo+"}{2} = "+A+"\\) and midline \\(\\frac{"+hi+" + "+lo+"}{2} = "+D+"\\), which rules out the option with amplitude "+(A+1)+". The function that satisfies both conditions is <b>"+corr+"</b>.",
+    {P:P,A:A,lo:lo,trig:trig});
+});
+E("u5-graph-problem",5,["7.29"],3,"gen",function(){
+  var scen=pick(["tide","wheel","temp"]);
+  var A=pick([2,3,4]),D=pick([6,8,10]),form=pick([1,-1,0]);
+  var P,unit,thing,fn,xLab;
+  if(scen==="tide"){P=pick([6,12,24]);unit="m";thing="depth of water at a dock";xLab="t (h)";}
+  else if(scen==="wheel"){P=pick([6,12]);unit="m";thing="height of a gondola on a Ferris wheel";xLab="t (min)";}
+  else{P=24;unit="°C";thing="temperature in a greenhouse";xLab="t (h)";}
+  var b=360/P;
+  if(form===1)fn=function(x){return D+A*Math.cos(b*x*Math.PI/180);};
+  else if(form===-1)fn=function(x){return D-A*Math.cos(b*x*Math.PI/180);};
+  else fn=function(x){return D+A*Math.sin(b*x*Math.PI/180);};
+  var ask=pick(["aboveMid","aboveHalf","firstHalf"]);
+  if(ask==="aboveHalf"||ask==="firstHalf"){
+    if([6,12,24].indexOf(P)===-1)P=12;
+    b=360/P;
+    if(form===1)fn=function(x){return D+A*Math.cos(b*x*Math.PI/180);};
+    else if(form===-1)fn=function(x){return D-A*Math.cos(b*x*Math.PI/180);};
+    else fn=function(x){return D+A*Math.sin(b*x*Math.PI/180);};
+  }
+  var fig=u5Plot(fn,0,24,0,D+A+2,{gx:2,gy:1,labelX:true,labelY:true,xLab:xLab,yLab:""});
+  var stem="The graph shows the "+thing+" over 24 "+(scen==="wheel"?"minutes":"hours")+". ";
+  var q;
+  if(ask==="aboveMid"){
+    q=numq(stem+"For how long, in each complete cycle, is the value <b>above</b> "+D+" "+unit+"?",
+      P/2,0.01,
+      "The value "+D+" "+unit+" is the midline of the graph (halfway between "+(D-A)+" and "+(D+A)+"). A sinusoid spends exactly half of each cycle above its midline. The cycle length (peak to peak) is "+P+", so the value is above "+D+" "+unit+" for \\(\\frac{"+P+"}{2} = "+(P/2)+"\\) "+(scen==="wheel"?"minutes":"hours")+" per cycle. The answer is <b>"+(P/2)+"</b>.",
+      {scen:scen,A:A,D:D,P:P,form:form,ask:ask});
+  }else if(ask==="aboveHalf"){
+    var thr=D+A/2;
+    q=numq(stem+"For how long, in each complete cycle, is the value <b>at least</b> "+fmt(thr)+" "+unit+"?",
+      Math.round(P/3*100)/100,0.02,
+      "The level "+fmt(thr)+" "+unit+" sits halfway between the midline ("+D+") and the maximum ("+(D+A)+"), so it corresponds to a trigonometric value of \\(\\frac{1}{2}\\). The graph is at or above that level while the angle runs through a "+(form===0?"120":"120")+"° stretch of each 360° cycle (for example, from 30° to 150° for a sine arch, or within 60° of a peak for a cosine arch), which is \\(\\frac{1}{3}\\) of the "+P+" cycle: \\(\\frac{"+P+"}{3} = "+fmt(P/3)+"\\) "+(scen==="wheel"?"minutes":"hours")+". The answer is <b>"+fmt(P/3)+"</b>.",
+      {scen:scen,A:A,D:D,P:P,form:form,ask:ask});
+  }else{
+    var thr2=D+A/2,tFirst;
+    if(form===1)tFirst=P/6;else if(form===-1)tFirst=P/3;else tFirst=P/12;
+    q=numq(stem+"At what time does the value <b>first</b> reach "+fmt(thr2)+" "+unit+"?",
+      Math.round(tFirst*100)/100,0.02,
+      "The level "+fmt(thr2)+" "+unit+" is halfway between the midline and the maximum, a trigonometric value of \\(\\frac{1}{2}\\). Reading across from that level to the rising part of the graph and down to the time axis gives \\(t = "+fmt(tFirst)+"\\) "+(scen==="wheel"?"minutes":"hours")+" (equivalently, the angle "+(form===1?"60":(form===-1?"120":"30"))+"° is reached "+fmt(tFirst)+" into the "+P+" cycle). The answer is <b>"+fmt(tFirst)+"</b>.",
+      {scen:scen,A:A,D:D,P:P,form:form,ask:ask});
+  }
+  q.figure=fig;
+  return q;
+});
+E("u5-tan-graph",5,["7.32"],2,"var",varset([
+  function(){
+    var q=mcq("Which function is shown in the graph?",
+      "\\(y = \\tan x\\)",
+      ["\\(y = \\sin x\\)","\\(y = \\cos x\\)","\\(y = -\\tan x\\)"],
+      "The graph has vertical asymptotes and climbs steeply through the origin, repeating every \\(180^\\circ\\): that is the tangent graph, not a wave trapped between -1 and 1. The branches rise left to right, so the sign is positive. The function is <b>\\(y = \\tan x\\)</b>.",{});
+    q.figure=u5Plot(u5Fn(1,"tan",1,0,0),-360,360,-4,4,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;},
+  function(){
+    var q=mcq("Which function is shown in the graph?",
+      "\\(y = -\\tan x\\)",
+      ["\\(y = \\tan x\\)","\\(y = \\sin x\\)","\\(y = \\cos x\\)"],
+      "The graph has the tangent shape (vertical asymptotes, period \\(180^\\circ\\)), but each branch <b>falls</b> left to right, passing downward through the origin. That reflection in the x-axis gives <b>\\(y = -\\tan x\\)</b>.",{});
+    q.figure=u5Plot(u5Fn(-1,"tan",1,0,0),-360,360,-4,4,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;},
+  function(){
+    return mcq("Which statement about the graph of \\(y = \\tan x\\) is <b>true</b>?",
+      "It has period \\(180^\\circ\\), and its range is all real numbers",
+      ["It has period \\(360^\\circ\\), and its range is all real numbers",
+       "It has period \\(180^\\circ\\), and its range is \\([-1, 1]\\)",
+       "It has period \\(90^\\circ\\), and its zeros are at \\(90^\\circ + 180^\\circ n\\)"],
+      "Tangent repeats every \\(180^\\circ\\) and, between its asymptotes, takes every real value, so its range is all real numbers. The values \\(90^\\circ + 180^\\circ n\\) are where its asymptotes sit, not its zeros. The true statement is the period and range given in <b>the correct option</b>.",{});},
+  function(){
+    var q=mcq("The graph of \\(y = \\tan x\\) is shown. How many <b>vertical asymptotes</b> appear on the interval shown?",
+      "3",["2","4","5"],
+      "On \\([0^\\circ, 540^\\circ)\\) the tangent graph breaks at \\(x = 90^\\circ, 270^\\circ\\) and \\(450^\\circ\\), where the function is undefined. That is <b>3</b> vertical asymptotes.",{});
+    q.figure=u5Plot(u5Fn(1,"tan",1,0,0),0,540,-4,4,{gx:90,gy:1,labelX:true,labelY:true});
+    return q;}
+]));
+
+/* ---------- Unit-test pool fix, Nov 9, 2026: three Level 2 CR entries (3, 2 and 2 marks). The Level 2 CR pool held only two 2-mark entries, so no remainder behind any Level 3 pick could form. ---------- */
+E("u5-equation-evaluate-cr",5,["7.28","7.26"],2,"gen",function(){
+  var P=pick([12,24,8]), A=pick([2,3,4,5]), h=pick([0,1,2,3]), k=pick([-3,-2,-1,1,2,3]);
+  var phis;
+  if(P===8) phis=[[Math.PI/2,"\\frac{\\pi}{2}",1],[Math.PI,"\\pi",0],[3*Math.PI/2,"\\frac{3\\pi}{2}",-1]];
+  else phis=[[Math.PI/6,"\\frac{\\pi}{6}",0.5],[Math.PI/2,"\\frac{\\pi}{2}",1],[Math.PI,"\\pi",0],[3*Math.PI/2,"\\frac{3\\pi}{2}",-1]];
+  var ph=pick(phis), t=h+Math.round(ph[0]*P/(2*Math.PI)), ans=A*ph[2]+k;
+  var bstr={8:"\\frac{\\pi}{4}",12:"\\frac{\\pi}{6}",24:"\\frac{\\pi}{12}"}[P];
+  var arg=h===0?"x":"(x - "+h+")", ks=k>0?"+ "+k:"- "+(-k);
+  var shift=h===0?"no phase shift":"a phase shift of "+h+" units to the right";
+  return numq("A sinusoidal function has amplitude "+A+", period "+P+", "+shift+", and midline \\(y = "+k+"\\). It is a sine function whose cycle starts at the midline and rises from there. Determine the value of the function at \\(x = "+t+"\\).",
+    ans,0.01,
+    "The equation is \\(y = "+A+"\\sin "+bstr+arg+" "+ks+"\\), since \\(b = \\frac{2\\pi}{"+P+"} = "+bstr+"\\). At \\(x = "+t+"\\), the argument is \\("+bstr+" \\times "+(t-h)+" = "+ph[1]+"\\), and \\(\\sin "+ph[1]+" = "+ph[2]+"\\). So the value is \\("+A+" \\times "+ph[2]+" "+ks+" = <b>"+fmt(ans,2)+"</b>\\).",
+    {P:P,A:A,h:h,k:k,t:t});
+});
+E("u5-first-maximum-cr",5,["7.29"],2,"gen",function(){
+  var o=pick([[12,"\\frac{\\pi}{6}"],[24,"\\frac{\\pi}{12}"],[8,"\\frac{\\pi}{4}"],[6,"\\frac{\\pi}{3}"],[16,"\\frac{\\pi}{8}"]]);
+  var P=o[0], bstr=o[1], A=pick([2,3,4,5,6]), h=pick([0,1,2,3]), k=pick([5,8,10,12]);
+  var t=h+P/4;
+  var arg=h===0?"t":"(t - "+h+")";
+  return numq("The height, in metres, of a rider on a Ferris wheel is modelled by \\(H(t) = "+A+"\\sin "+bstr+arg+" + "+k+"\\), where \\(t\\) is the time in minutes since the ride started. Determine the <b>first</b> time, in minutes, at which the rider reaches the maximum height.",
+    t,0.01,
+    "The height is greatest when the sine factor equals 1, which first happens when its argument equals \\(\\frac{\\pi}{2}\\). The argument "+bstr+arg+" increases from 0, and it reaches \\(\\frac{\\pi}{2}\\) after one quarter of the period. The period is "+P+" minutes, so the first maximum occurs at \\(t = "+h+" + \\frac{"+P+"}{4} = <b>"+fmt(t,2)+"</b>\\) minutes.",
+    {P:P,h:h});
+});
+E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
+  var o=pick([[2,"2x",Math.PI/4],[3,"3x",Math.PI/6],[4,"4x",Math.PI/8],[0.5,"\\frac{x}{2}",Math.PI]]);
+  var b=o[0], bx=o[1], ans=o[2];
+  return numq("What is the smallest positive value of \\(x\\) at which the graph of \\(y = \\tan "+bx+"\\) has a vertical asymptote? Give your answer in radians, to three decimal places.",
+    Math.round(ans*1000)/1000,0.002,
+    "The tangent function has a vertical asymptote where its argument equals \\(\\frac{\\pi}{2}\\). Setting \\("+bx+" = \\frac{\\pi}{2}\\) and solving gives \\(x = "+fmt(ans,3)+"\\).",
+    {b:b});
+});
+
+/* ----- bank-u6.js ----- */
+// Math 3200 Unit 6 Trigonometric Identities question bank
+// CRMARKS: u6-approx-solutions=2
+// CRMARKS: u6-coincidence-check-cr=2
+// CRMARKS: u6-exact-values=2
+// CRMARKS: u6-lost-solutions-cr=3
+// CRMARKS: u6-nonpermissible-basic=2
+// CRMARKS: u6-nonpermissible-identity=2
+// CRMARKS: u6-numeric-verify=1
+// CRMARKS: u6-proof-invalid-step=3
+// CRMARKS: u6-simplify-expression=2
+// CRMARKS: u6-solve-double-angle=2
+// CRMARKS: u6-solve-identity-sub=3
+// CRMARKS: u6-solve-quadratic=2
+// CRMARKS: u6-verify-solution=1
+/* ================= Unit 6: Trigonometric Identities ================= */
+/* ================= Unit 6: Trigonometric Identities =================
+   Helpers are prefixed u6; the only other top-level statements are E(...) calls.
+   16 entries: L1 3, L2 10, L3 3. Codes: MA3200.7.34 to 7.37, 7.39 to 7.46. */
+
+function u6gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+
+function u6fr(n, d) { /* signed reduced fraction as a KaTeX body (no delimiters) */
+  if (d < 0) { n = -n; d = -d; }
+  if (n === 0) return "0";
+  var g = u6gcd(n, d); n /= g; d /= g;
+  var s = n < 0 ? "-" : ""; n = Math.abs(n);
+  if (d === 1) return s + n;
+  return s + "\\frac{" + n + "}{" + d + "}";
+}
+
+function u6val(kind, deg) { /* numeric value of a ratio at a degree measure */
+  var th = deg * Math.PI / 180, sv = Math.sin(th), cv = Math.cos(th);
+  if (kind === "sin") return sv;
+  if (kind === "cos") return cv;
+  if (kind === "tan") return sv / cv;
+  if (kind === "csc") return 1 / sv;
+  if (kind === "sec") return 1 / cv;
+  return cv / sv;
+}
+
+var u6DEGS = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330];
+var u6KINDS = ["sin", "cos", "tan", "csc", "sec", "cot"];
+
+function u6radS(deg) { /* radian string body for a special degree, principal value in [0, 360) */
+  deg = ((deg % 360) + 360) % 360;
+  if (deg === 0) return "0";
+  var g = u6gcd(deg, 180), n = deg / g, d = 180 / g;
+  if (d === 1) return n === 1 ? "\\pi" : n + "\\pi";
+  if (n === 1) return "\\frac{\\pi}{" + d + "}";
+  return "\\frac{" + n + "\\pi}{" + d + "}";
+}
+
+function u6angM(d, rad) { return rad ? u6radS(d) : d + "^\\circ"; } /* angle body for inside math */
+function u6ang(d, rad) { return rad ? "\\(" + u6radS(d) + "\\)" : d + "°"; } /* standalone angle */
+
+function u6setStr(set, rad) { /* solution-set option string, ascending */
+  var s = set.slice().sort(function (a, b) { return a - b; });
+  if (rad) return "\\(" + s.map(function (d) { return u6radS(d); }).join(", ") + "\\)";
+  return s.map(function (d) { return d + "°"; }).join(", ");
+}
+
+function u6dom(v, rad) { return rad ? "\\(0 \\le " + v + " < 2\\pi\\)" : "\\(0^\\circ \\le " + v + " < 360^\\circ\\)"; }
+
+function u6sols(kind, val) { /* all special degrees in [0, 360) where the ratio equals val */
+  return u6DEGS.filter(function (d) {
+    var x = u6val(kind, d);
+    return isFinite(x) && Math.abs(x - val) < 1e-6;
+  });
+}
+
+function u6scan(fn) { /* all multiples of 15 degrees in [0, 360) where fn(deg) is (near) zero */
+  var out = [];
+  for (var d = 0; d < 360; d += 15) { if (Math.abs(fn(d)) < 1e-6) out.push(d); }
+  return out;
+}
+
+function u6dist3(correct, cands) { /* first three candidate strings that differ from the key and each other */
+  var out = [];
+  for (var i = 0; i < cands.length; i++) {
+    var c = cands[i];
+    if (c !== null && c !== undefined && c !== correct && out.indexOf(c) < 0) out.push(c);
+    if (out.length === 3) break;
+  }
+  return out;
+}
+
+function u6setDist(set) { /* candidate wrong solution sets (arrays of degrees) built by perturbing the key set */
+  var sorted = function (s) { return s.slice().sort(function (a, b) { return a - b; }); };
+  var key = function (s) { return sorted(s).join(","); };
+  var ck = key(set), seen = {}, out = [];
+  function push(s) {
+    var ss = sorted(s), u = {};
+    for (var i = 0; i < ss.length; i++) { if (u[ss[i]]) return; u[ss[i]] = 1; }
+    var k = key(ss);
+    if (ss.length === 0 || k === ck || seen[k]) return;
+    seen[k] = 1; out.push(ss);
+  }
+  var S = sorted(set);
+  if (S.length >= 3) { push(S.slice(0, S.length - 1)); push(S.slice(1)); push([S[0], S[S.length - 1]]); }
+  push(S.map(function (x) { return (x + 180) % 360; }));
+  S.forEach(function (x, i) {
+    var t;
+    t = S.slice(); t[i] = (180 - x + 360) % 360; push(t);
+    t = S.slice(); t[i] = (360 - x) % 360; push(t);
+    t = S.slice(); t[i] = (x + 180) % 360; push(t);
+    t = S.slice(); t[i] = (x + 90) % 360; push(t);
+    t = S.slice(); t[i] = (x + 270) % 360; push(t);
+  });
+  if (S.length <= 2) S.forEach(function (x) { push(S.concat([(x + 180) % 360])); push(S.concat([(x + 90) % 360])); });
+  return out;
+}
+
+function u6poly(terms) { /* polynomial body from terms [{c:[n,d], s:suffix}] */
+  var parts = [];
+  terms.forEach(function (t) {
+    var n = t.c[0], d = t.c[1];
+    if (n === 0) return;
+    var neg = n < 0, an = Math.abs(n), body;
+    if (t.s === "") body = u6fr(an, d);
+    else if (an === d) body = t.s;
+    else body = u6fr(an, d) + t.s;
+    parts.push({ neg: neg, body: body });
+  });
+  if (!parts.length) return "0";
+  var out = parts[0].neg ? "-" + parts[0].body : parts[0].body;
+  for (var i = 1; i < parts.length; i++) out += parts[i].neg ? " - " + parts[i].body : " + " + parts[i].body;
+  return out;
+}
+
+function u6facStr(a, b, f) { /* display of the factor (a f - b), integers a > 0, b any sign */
+  if (a === 1 && b === 0) return f;
+  var core = (a === 1 ? "" : a) + f;
+  if (b === 0) return "(" + core + ")";
+  return "(" + core + (b > 0 ? " - " + b : " + " + (-b)) + ")";
+}
+
+function u6mag(kind, av) { /* exact magnitude string for a special-angle ratio value */
+  var table;
+  if (kind === "sin" || kind === "cos") table = [[0, "0"], [0.5, "\\frac{1}{2}"], [0.7071, "\\frac{\\sqrt{2}}{2}"], [0.866, "\\frac{\\sqrt{3}}{2}"], [1, "1"]];
+  else if (kind === "tan" || kind === "cot") table = [[0, "0"], [0.5774, "\\frac{\\sqrt{3}}{3}"], [1, "1"], [1.7321, "\\sqrt{3}"]];
+  else table = [[1, "1"], [1.1547, "\\frac{2\\sqrt{3}}{3}"], [1.4142, "\\sqrt{2}"], [2, "2"]];
+  for (var i = 0; i < table.length; i++) if (Math.abs(av - table[i][0]) < 0.01) return table[i][1];
+  return null;
+}
+
+function u6exact(kind, deg) { /* exact string for a ratio at a special degree, or null if undefined */
+  var v = u6val(kind, deg);
+  if (!isFinite(v)) return null;
+  var fam = (kind === "csc" || kind === "sec") ? "sec" : kind;
+  var mag = u6mag(fam, Math.abs(v));
+  if (mag === null) return null;
+  return (v < 0 && mag !== "0" ? "-" : "") + mag;
+}
+
+/* ---- 7.39: identity versus equation ---- */
+E("u6-identity-or-equation", 6, ["7.39"], 1, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var cat = pick(["id", "id", "id", "eq", "eq", "eq", "eq", "never", "never"]);
+  var rel;
+  if (cat === "id") {
+    var a = pick([2, 3, 4, 5]);
+    rel = pick([
+      a + "\\sin^2 " + v + " + " + a + "\\cos^2 " + v + " = " + a,
+      "\\tan " + v + " \\cos " + v + " = \\sin " + v,
+      "\\sec " + v + " \\cos " + v + " = 1",
+      "1 + \\tan^2 " + v + " = \\sec^2 " + v,
+      "\\sin 2" + v + " = 2\\sin " + v + " \\cos " + v,
+      "\\cos^2 " + v + " - \\sin^2 " + v + " = \\cos 2" + v,
+      "\\frac{\\sin " + v + "}{\\cos " + v + "} = \\tan " + v,
+      "(\\sin " + v + " + \\cos " + v + ")^2 = 1 + \\sin 2" + v,
+      "\\cot " + v + " \\sin " + v + " = \\cos " + v,
+      "\\frac{1 - \\sin^2 " + v + "}{\\cos " + v + "} = \\cos " + v,
+      "\\csc " + v + " \\sin " + v + " = 1",
+      "\\frac{\\cos " + v + "}{\\cot " + v + "} = \\sin " + v
+    ]);
+  } else if (cat === "eq") {
+    rel = pick([
+      "\\sin " + v + " = " + pick(["\\frac{1}{2}", "\\frac{\\sqrt{2}}{2}", "\\frac{\\sqrt{3}}{2}", "-\\frac{1}{2}"]),
+      "2\\cos " + v + " = 1",
+      "\\sin " + v + " + \\cos " + v + " = 1",
+      "\\sin " + v + " - \\cos " + v + " = 1",
+      "\\sin 2" + v + " = \\sin " + v,
+      "\\tan " + v + " = \\sin " + v,
+      "\\cos^2 " + v + " = \\frac{1}{2}",
+      "\\sec " + v + " = 2",
+      "\\sin " + v + " = \\cos " + v
+    ]);
+  } else {
+    rel = pick([
+      "\\sin " + v + " = 2",
+      "\\cos " + v + " = -\\frac{3}{2}",
+      "2\\sin " + v + " = 5",
+      "\\cos " + v + " = -2"
+    ]);
+  }
+  var stId = "It is an identity: it holds for every permissible value of \\(" + v + "\\) at all";
+  var stEq = "It is an equation: it holds only for particular values of \\(" + v + "\\) alone";
+  var stNever = "It is an equation with no solution: no value of \\(" + v + "\\) can make it true.";
+  var stQuad = "Its truth depends only on which quadrant \\(" + v + "\\) happens to be in";
+  var key = cat === "id" ? stId : cat === "eq" ? stEq : stNever;
+  var dis = [stId, stEq, stNever, stQuad].filter(function (s) { return s !== key; });
+  var expl = cat === "id"
+    ? "Both sides are equivalent expressions: the relation is true for every permissible value of \\(" + v + "\\), so it is an identity."
+    : cat === "eq"
+      ? "The two sides agree only for specific values of \\(" + v + "\\) in any interval, so the relation is an equation, not an identity."
+      : "The left side stays within its ratio's range while the right side lies outside it, so no value of \\(" + v + "\\) satisfies the relation.";
+  return mcq("Consider the relation \\(" + rel + "\\). Which statement about it is correct?",
+    key, dis, expl + " The statement that fits is: <b>" + key + "</b>.",
+    { cat: cat, rel: rel });
+});
+
+/* ---- 7.41: non-permissible values of a single expression ---- */
+E("u6-nonpermissible-basic", 6, ["7.41"], 1, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var scaled = Math.random() < 0.45;
+  var A = scaled ? "2" + v : v;
+  var base = pick([
+    ["\\tan A", [90, 270]],
+    ["\\cot A", [0, 180]],
+    ["\\sec A", [90, 270]],
+    ["\\csc A", [0, 180]],
+    ["\\frac{1}{\\sin A}", [0, 180]],
+    ["\\frac{\\cos A}{\\sin A}", [0, 180]],
+    ["\\frac{\\sin A}{\\cos A}", [90, 270]],
+    ["\\frac{1}{1 - \\cos A}", [0]],
+    ["\\frac{1}{1 + \\sin A}", [270]],
+    ["\\frac{1}{1 - \\sin A}", [90]],
+    ["\\frac{1}{1 + \\cos A}", [180]],
+    ["\\frac{\\sec A}{\\tan A}", [90, 270]],
+    ["\\frac{1}{\\tan A}", [0, 90, 180, 270]]
+  ]);
+  var expr = base[0].replace(/A/g, A);
+  var npv = base[1].slice();
+  if (scaled) {
+    var ext = {};
+    npv.forEach(function (s) { ext[s / 2] = 1; ext[(s + 360) / 2] = 1; });
+    npv = Object.keys(ext).map(Number).sort(function (a, b) { return a - b; });
+  }
+  var rad = Math.random() < 0.5;
+  var corr = u6setStr(npv, rad);
+  var dis = u6dist3(corr, u6setDist(npv).map(function (s) { return u6setStr(s, rad); }));
+  var why = base[1].length === 4
+    ? "The expression is undefined wherever \\(\\tan " + A + "\\) is undefined or equal to zero, since it appears in a denominator."
+    : "The expression is undefined exactly where a denominator is zero or a ratio in it is undefined; on the stated domain those values of \\(" + v + "\\) are the ones listed.";
+  return mcq("What are the non-permissible values of \\(" + expr + "\\) for " + u6dom(v, rad) + "?",
+    corr, dis,
+    why + " The non-permissible values are <b>" + corr + "</b>.",
+    { npv: npv, scaled: scaled, rad: rad });
+});
+
+/* ---- 7.36: verify a value is a solution (reciprocal and squared forms) ---- */
+E("u6-verify-solution", 6, ["7.36"], 1, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var fam = pick(["sec2", "cscm2", "cot1", "tan2e3", "sin2e34", "cos2e12", "2sin", "sin2", "cos2"]);
+  var eqn, fn, solTxt;
+  if (fam === "sec2") {
+    eqn = "\\sec " + v + " = 2";
+    fn = function (d) { return u6val("sec", d) - 2; };
+    solTxt = function (d, rad) { return "\\sec " + u6angM(d, rad) + " = " + u6exact("sec", d) + " = 2"; };
+  } else if (fam === "cscm2") {
+    eqn = "\\csc " + v + " = -2";
+    fn = function (d) { return u6val("csc", d) + 2; };
+    solTxt = function (d, rad) { return "\\csc " + u6angM(d, rad) + " = " + u6exact("csc", d) + " = -2"; };
+  } else if (fam === "cot1") {
+    eqn = "\\cot " + v + " = 1";
+    fn = function (d) { return u6val("cot", d) - 1; };
+    solTxt = function (d, rad) { return "\\cot " + u6angM(d, rad) + " = " + u6exact("cot", d) + " = 1"; };
+  } else if (fam === "tan2e3") {
+    eqn = "\\tan^2 " + v + " = 3";
+    fn = function (d) { var t = u6val("tan", d); return t * t - 3; };
+    solTxt = function (d, rad) { return "\\tan^2 " + u6angM(d, rad) + " = (" + u6exact("tan", d) + ")^2 = 3"; };
+  } else if (fam === "sin2e34") {
+    eqn = "\\sin^2 " + v + " = \\frac{3}{4}";
+    fn = function (d) { var s = u6val("sin", d); return s * s - 0.75; };
+    solTxt = function (d, rad) { return "\\sin^2 " + u6angM(d, rad) + " = \\left(" + u6exact("sin", d) + "\\right)^2 = \\frac{3}{4}"; };
+  } else if (fam === "cos2e12") {
+    eqn = "\\cos^2 " + v + " = \\frac{1}{2}";
+    fn = function (d) { var c = u6val("cos", d); return c * c - 0.5; };
+    solTxt = function (d, rad) { return "\\cos^2 " + u6angM(d, rad) + " = \\left(" + u6exact("cos", d) + "\\right)^2 = \\frac{1}{2}"; };
+  } else if (fam === "2sin") {
+    eqn = "2\\sin " + v + " = \\sqrt{3}";
+    fn = function (d) { return 2 * u6val("sin", d) - Math.sqrt(3); };
+    solTxt = function (d, rad) { return "2\\sin " + u6angM(d, rad) + " = 2 \\cdot " + u6exact("sin", d) + " = \\sqrt{3}"; };
+  } else if (fam === "sin2") {
+    eqn = "\\sin 2" + v + " = \\frac{\\sqrt{3}}{2}";
+    fn = function (d) { return u6val("sin", 2 * d) - Math.sqrt(3) / 2; };
+    solTxt = function (d, rad) { return "\\sin " + u6angM(2 * d, rad) + " = " + u6exact("sin", 2 * d) + " = \\frac{\\sqrt{3}}{2}"; };
+  } else {
+    eqn = "\\cos 2" + v + " = \\frac{1}{2}";
+    fn = function (d) { return u6val("cos", 2 * d) - 0.5; };
+    solTxt = function (d, rad) { return "\\cos " + u6angM(2 * d, rad) + " = " + u6exact("cos", 2 * d) + " = \\frac{1}{2}"; };
+  }
+  var sols = u6scan(fn);
+  var good = pick(sols);
+  var bads = shuffle(u6DEGS.filter(function (d) { return sols.indexOf(d) < 0; })).slice(0, 3);
+  var rad = Math.random() < 0.5;
+  var corr = "\\(" + u6angM(good, rad) + "\\)";
+  var dis = bads.map(function (d) { return "\\(" + u6angM(d, rad) + "\\)"; });
+  return mcq("Which value of \\(" + v + "\\) is a solution of the equation \\(" + eqn + "\\) for " + u6dom(v, rad) + "?",
+    corr, dis,
+    "Substitute \\(" + v + " = " + u6angM(good, rad) + "\\): \\(" + solTxt(good, rad) + "\\), so the equation is satisfied. The other three values do not satisfy it. The solution shown is <b>" + corr + "</b>.",
+    { fam: fam, good: good, rad: rad });
+});
+
+function u6radBig(deg) { /* radian string body for any integer degree total, no reduction mod 360 */
+  if (deg === 0) return "0";
+  var s = deg < 0 ? "-" : "", a = Math.abs(deg), g = u6gcd(a, 180), n = a / g, d = 180 / g;
+  if (d === 1) return s + (n === 1 ? "\\pi" : n + "\\pi");
+  if (n === 1) return s + "\\frac{\\pi}{" + d + "}";
+  return s + "\\frac{" + n + "\\pi}{" + d + "}";
+}
+
+var u6FACTORS = [[1, 0], [1, 1], [1, -1], [2, 1], [2, -1], [1, 2], [1, -2]]; /* (a f - b), root b/a */
+
+/* ---- 7.34: solve a quadratic trigonometric equation ---- */
+E("u6-solve-quadratic", 6, ["7.34"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var rad = Math.random() < 0.5;
+  if (Math.random() < 0.6) {
+    var kind = pick(["sin", "cos"]);
+    var f = "\\" + kind, f1 = f + " " + v, f2 = f + "^2 " + v;
+    var facs = null, sols = null, tries = 0;
+    while (tries++ < 80) {
+      var ij = shuffle([0, 1, 2, 3, 4, 5, 6]).slice(0, 2);
+      facs = [u6FACTORS[ij[0]], u6FACTORS[ij[1]]];
+      var set = {};
+      facs.forEach(function (fc) {
+        var r = fc[1] / fc[0];
+        if (Math.abs(r) <= 1) u6sols(kind, r).forEach(function (d) { set[d] = 1; });
+      });
+      sols = Object.keys(set).map(Number).sort(function (a, b) { return a - b; });
+      if (sols.length >= 2) break;
+    }
+    var A = facs[0][0] * facs[1][0], B = -(facs[0][0] * facs[1][1] + facs[1][0] * facs[0][1]), C = facs[0][1] * facs[1][1];
+    var poly = u6poly([{ c: [A, 1], s: f2 }, { c: [B, 1], s: f1 }, { c: [C, 1], s: "" }]);
+    var facProd = u6facStr(facs[0][0], facs[0][1], f1) + u6facStr(facs[1][0], facs[1][1], f1);
+    var corr = u6setStr(sols, rad);
+    var dis = u6dist3(corr, u6setDist(sols).map(function (s) { return u6setStr(s, rad); }));
+    var rej = facs.filter(function (fc) { return Math.abs(fc[1] / fc[0]) > 1; });
+    var rejTxt = rej.length ? " The root \\(" + f1 + " = " + u6fr(rej[0][1], rej[0][0]) + "\\) has no solution, since \\(|" + f1 + "| \\le 1\\)." : "";
+    return mcq("Solve the equation \\(" + poly + " = 0\\) for " + u6dom(v, rad) + ".",
+      corr, dis,
+      "Factor and set each factor to zero: \\[ \\begin{aligned} " + poly + " &= 0 \\\\ " + facProd + " &= 0 \\\\ " + f1 + " = " + u6fr(facs[0][1], facs[0][0]) + " \\text{ or } " + f1 + " &= " + u6fr(facs[1][1], facs[1][0]) + " \\end{aligned} \\] Solving each part on the domain" + rejTxt + " The solutions are <b>" + corr + "</b>.",
+      { mode: "factor", kind: kind, sols: sols, rad: rad });
+  }
+  var kind2 = pick(["sin", "cos", "tan"]);
+  var AB = kind2 === "tan" ? pick([[1, 1], [2, 2], [1, 3], [3, 1]]) : pick([[4, 1], [2, 1], [4, 2], [4, 3], [1, 1], [2, 2]]);
+  var g = u6gcd(AB[0], AB[1]), val = Math.sqrt(AB[1] / AB[0]);
+  var set2 = {};
+  u6sols(kind2, val).forEach(function (d) { set2[d] = 1; });
+  u6sols(kind2, -val).forEach(function (d) { set2[d] = 1; });
+  var sols2 = Object.keys(set2).map(Number).sort(function (a, b) { return a - b; });
+  var fB = "\\" + kind2, eqL = u6poly([{ c: [AB[0], 1], s: fB + "^2 " + v }]);
+  var corr2 = u6setStr(sols2, rad);
+  var dis2 = u6dist3(corr2, u6setDist(sols2).map(function (s) { return u6setStr(s, rad); }));
+  return mcq("Solve the equation \\(" + eqL + " = " + AB[1] + "\\) for " + u6dom(v, rad) + ".",
+    corr2, dis2,
+    "Isolate the squared ratio and take square roots: \\[ \\begin{aligned} " + eqL + " &= " + AB[1] + " \\\\ " + fB + "^2 " + v + " &= " + u6fr(AB[1], AB[0]) + " \\\\ " + fB + " " + v + " &= \\pm " + u6mag(kind2 === "tan" ? "tan" : "sin", val) + " \\end{aligned} \\] Both signs give solutions on the domain. The solutions are <b>" + corr2 + "</b>.",
+    { mode: "square", kind: kind2, sols: sols2, rad: rad });
+});
+
+/* ---- 7.34: solve an equation with a double angle ---- */
+E("u6-solve-double-angle", 6, ["7.34"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var rad = Math.random() < 0.5;
+  var fam = pick(["A", "B", "C", "D", "E", "F", "G", "H", "H"]);
+  var eqn, fn, sol;
+  if (fam === "H") {
+    var kind = pick(["sin", "cos"]);
+    var cvals = [[0.5, "\\frac{1}{2}"], [-0.5, "-\\frac{1}{2}"], [Math.sqrt(3) / 2, "\\frac{\\sqrt{3}}{2}"], [-Math.sqrt(3) / 2, "-\\frac{\\sqrt{3}}{2}"], [1, "1"], [-1, "-1"], [0, "0"]];
+    var cv = pick(cvals);
+    eqn = "\\" + kind + " 2" + v + " = " + cv[1];
+    fn = function (d) { return u6val(kind, 2 * d) - cv[0]; };
+    var solsH = u6scan(fn);
+    var phis = [];
+    for (var ph = 0; ph < 720; ph += 15) { if (Math.abs(u6val(kind, ph) - cv[0]) < 1e-6) phis.push(ph); }
+    var phiStr = rad ? phis.map(function (p) { return u6radBig(p); }).join(", ") : phis.map(function (p) { return p + "^\\circ"; }).join(", ");
+    var corrH = u6setStr(solsH, rad);
+    var candH = u6setDist(solsH);
+    var first = solsH.filter(function (d) { return d < 180; });
+    if (first.length >= 2 && first.length < solsH.length) candH.unshift(first);
+    var disH = u6dist3(corrH, candH.map(function (s) { return u6setStr(s, rad); }));
+    return mcq("Solve the equation \\(" + eqn + "\\) for " + u6dom(v, rad) + ".",
+      corrH, disH,
+      "Since \\(2" + v + "\\) runs over twice the domain, solve on \\(" + (rad ? "0 \\le 2" + v + " < 4\\pi" : "0^\\circ \\le 2" + v + " < 720^\\circ") + "\\): \\(" + "2" + v + " = " + phiStr + "\\). Halving each value gives the solutions <b>" + corrH + "</b>. Stopping at \\(2" + v + " < " + (rad ? "2\\pi" : "360^\\circ") + "\\) would miss half of them.",
+      { mode: "halved", kind: kind, sols: solsH, rad: rad });
+  }
+  var F = {
+    A: { e: "\\sin 2V = \\sin V", fn: function (d) { return u6val("sin", 2 * d) - u6val("sin", d); },
+         pre: "Replace \\(\\sin 2V\\) with \\(2\\sin V \\cos V\\), then factor:",
+         steps: "2\\sin V\\cos V - \\sin V &= 0 \\\\ \\sin V(2\\cos V - 1) &= 0",
+         branch: "\\sin V = 0\\) or \\(\\cos V = \\frac{1}{2}" },
+    B: { e: "\\sin 2V = -\\sin V", fn: function (d) { return u6val("sin", 2 * d) + u6val("sin", d); },
+         pre: "Replace \\(\\sin 2V\\) with \\(2\\sin V \\cos V\\), then factor:",
+         steps: "2\\sin V\\cos V + \\sin V &= 0 \\\\ \\sin V(2\\cos V + 1) &= 0",
+         branch: "\\sin V = 0\\) or \\(\\cos V = -\\frac{1}{2}" },
+    C: { e: "\\sin 2V = \\cos V", fn: function (d) { return u6val("sin", 2 * d) - u6val("cos", d); },
+         pre: "Replace \\(\\sin 2V\\) with \\(2\\sin V \\cos V\\), then factor:",
+         steps: "2\\sin V\\cos V - \\cos V &= 0 \\\\ \\cos V(2\\sin V - 1) &= 0",
+         branch: "\\cos V = 0\\) or \\(\\sin V = \\frac{1}{2}" },
+    D: { e: "\\sin 2V = -\\cos V", fn: function (d) { return u6val("sin", 2 * d) + u6val("cos", d); },
+         pre: "Replace \\(\\sin 2V\\) with \\(2\\sin V \\cos V\\), then factor:",
+         steps: "2\\sin V\\cos V + \\cos V &= 0 \\\\ \\cos V(2\\sin V + 1) &= 0",
+         branch: "\\cos V = 0\\) or \\(\\sin V = -\\frac{1}{2}" },
+    E: { e: "\\cos 2V = \\cos V", fn: function (d) { return u6val("cos", 2 * d) - u6val("cos", d); },
+         pre: "Replace \\(\\cos 2V\\) with \\(2\\cos^2 V - 1\\), then factor:",
+         steps: "2\\cos^2 V - \\cos V - 1 &= 0 \\\\ (2\\cos V + 1)(\\cos V - 1) &= 0",
+         branch: "\\cos V = 1\\) or \\(\\cos V = -\\frac{1}{2}" },
+    F: { e: "\\cos 2V = -\\sin V", fn: function (d) { return u6val("cos", 2 * d) + u6val("sin", d); },
+         pre: "Replace \\(\\cos 2V\\) with \\(1 - 2\\sin^2 V\\), then factor:",
+         steps: "2\\sin^2 V - \\sin V - 1 &= 0 \\\\ (2\\sin V + 1)(\\sin V - 1) &= 0",
+         branch: "\\sin V = 1\\) or \\(\\sin V = -\\frac{1}{2}" },
+    G: { e: "\\cos 2V = \\sin V", fn: function (d) { return u6val("cos", 2 * d) - u6val("sin", d); },
+         pre: "Replace \\(\\cos 2V\\) with \\(1 - 2\\sin^2 V\\), then factor:",
+         steps: "2\\sin^2 V + \\sin V - 1 &= 0 \\\\ (2\\sin V - 1)(\\sin V + 1) &= 0",
+         branch: "\\sin V = \\frac{1}{2}\\) or \\(\\sin V = -1" }
+  }[fam];
+  eqn = F.e.replace(/V/g, v);
+  var sols = u6scan(F.fn);
+  var corr = u6setStr(sols, rad);
+  var cand = u6setDist(sols);
+  var firstC = sols.filter(function (d) { return d < 180; });
+  if (firstC.length >= 2 && firstC.length < sols.length) cand.unshift(firstC);
+  var dis = u6dist3(corr, cand.map(function (s) { return u6setStr(s, rad); }));
+  var steps = F.steps.replace(/V/g, v);
+  var branch = F.branch.replace(/V/g, v);
+  return mcq("Solve the equation \\(" + eqn + "\\) for " + u6dom(v, rad) + ".",
+    corr, dis,
+    F.pre.replace(/V/g, v) + " \\[ \\begin{aligned} " + steps + " \\end{aligned} \\] So \\(" + branch + "\\). Solving each part on the domain gives the solutions <b>" + corr + "</b>.",
+    { mode: "factor", fam: fam, sols: sols, rad: rad });
+});
+
+/* ---- 7.34: solve using a reciprocal ratio or a Pythagorean substitution ---- */
+E("u6-solve-identity-sub", 6, ["7.34"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var rad = Math.random() < 0.5;
+  if (Math.random() < 0.5) {
+    var kind = pick(["sec", "csc", "cot"]);
+    var prim = { sec: "cos", csc: "sin", cot: "tan" }[kind];
+    var f = "\\" + kind, f1 = f + " " + v, f2 = f + "^2 " + v;
+    var valid = [[1, 1], [1, -1], [1, 2], [1, -2]];
+    var facs = null, sols = null, tries = 0;
+    while (tries++ < 80) {
+      var f1c = pick(valid);
+      var f2c = pick(u6FACTORS);
+      if (f2c[0] === f1c[0] && f2c[1] === f1c[1]) continue;
+      facs = [f1c, f2c];
+      var set = {};
+      facs.forEach(function (fc) {
+        var r = fc[1] / fc[0];
+        if (Math.abs(r) >= 1) u6sols(prim, 1 / r).forEach(function (d) { set[d] = 1; });
+      });
+      sols = Object.keys(set).map(Number).sort(function (a, b) { return a - b; });
+      if (sols.length >= 2) break;
+    }
+    var A = facs[0][0] * facs[1][0], B = -(facs[0][0] * facs[1][1] + facs[1][0] * facs[0][1]), C = facs[0][1] * facs[1][1];
+    var poly = u6poly([{ c: [A, 1], s: f2 }, { c: [B, 1], s: f1 }, { c: [C, 1], s: "" }]);
+    var facProd = u6facStr(facs[0][0], facs[0][1], f1) + u6facStr(facs[1][0], facs[1][1], f1);
+    var corr = u6setStr(sols, rad);
+    var dis = u6dist3(corr, u6setDist(sols).map(function (s) { return u6setStr(s, rad); }));
+    var rej = facs.filter(function (fc) { return Math.abs(fc[1] / fc[0]) < 1; });
+    var rejTxt = rej.length ? " The root \\(" + f1 + " = " + u6fr(rej[0][1], rej[0][0]) + "\\) is impossible, since \\(|" + f1 + "| \\ge 1\\) for every angle." : "";
+    var br = facs.filter(function (fc) { return Math.abs(fc[1] / fc[0]) >= 1; }).map(function (fc) {
+      var r = fc[1] / fc[0];
+      return "\\(" + f1 + " = " + u6fr(fc[1], fc[0]) + "\\) gives \\(\\" + prim + " " + v + " = " + u6fr(fc[0], fc[1]) + "\\)";
+    }).join("; ");
+    return mcq("Solve the equation \\(" + poly + " = 0\\) for " + u6dom(v, rad) + ".",
+      corr, dis,
+      "Factor: \\[ \\begin{aligned} " + poly + " &= 0 \\\\ " + facProd + " &= 0 \\end{aligned} \\] " + br + "." + rejTxt + " The solutions are <b>" + corr + "</b>.",
+      { mode: "recip", kind: kind, sols: sols, rad: rad });
+  }
+  var base = pick(["sin", "cos"]);
+  var other = base === "sin" ? "cos" : "sin";
+  var ns = shuffle([-2, -1, 0, 1, 2]).slice(0, 2);
+  var n1 = ns[0], n2 = ns[1];
+  var setB = {};
+  u6sols(base, n1 / 2).forEach(function (d) { setB[d] = 1; });
+  u6sols(base, n2 / 2).forEach(function (d) { setB[d] = 1; });
+  var solsB = Object.keys(setB).map(Number).sort(function (a, b) { return a - b; });
+  var oF = "\\" + other, bF = "\\" + base;
+  var orig = u6poly([{ c: [1, 1], s: oF + "^2 " + v }, { c: [n1 + n2, 2], s: bF + " " + v }, { c: [-(4 + n1 * n2), 4], s: "" }]);
+  var sub = u6poly([{ c: [-1, 1], s: bF + "^2 " + v }, { c: [n1 + n2, 2], s: bF + " " + v }, { c: [-n1 * n2, 4], s: "" }]);
+  var facProdB = u6facStr(2, n1, bF + " " + v) + u6facStr(2, n2, bF + " " + v);
+  var corrB = u6setStr(solsB, rad);
+  var disB = u6dist3(corrB, u6setDist(solsB).map(function (s) { return u6setStr(s, rad); }));
+  return mcq("Solve the equation \\(" + orig + " = 0\\) for " + u6dom(v, rad) + ".",
+    corrB, disB,
+    "Replace \\(" + oF + "^2 " + v + "\\) with \\(1 - " + bF + "^2 " + v + "\\) and simplify: \\[ \\begin{aligned} " + sub + " &= 0 \\\\ " + facProdB + " &= 0 \\end{aligned} \\] So \\(" + bF + " " + v + " = " + u6fr(n1, 2) + "\\) or \\(" + bF + " " + v + " = " + u6fr(n2, 2) + "\\). Solving each part on the domain gives the solutions <b>" + corrB + "</b>.",
+    { mode: "pyth", base: base, sols: solsB, rad: rad });
+});
+
+/* ---- 7.35: approximate solutions from a graphed intersection ---- */
+E("u6-approx-solutions", 6, ["7.35"], 1, "gen", function () {
+  var rad = Math.random() < 0.45;
+  var fam = pick(["sinP", "sinN", "cos", "tanP", "tanN", "sin2"]);
+  function r1(x) { return Math.round(x * 10) / 10; }
+  function r2(x) { return Math.round(x * 100) / 100; }
+  var fnName, c, x1, partner, solWhy, askTail;
+  if (!rad) {
+    if (fam === "sinP") { x1 = r1(rf(8, 82)); fnName = "\\sin\\theta"; c = Math.sin(x1 * Math.PI / 180); partner = 180 - x1;
+      solWhy = "The sine graph reaches the same height again in the second quadrant, at the supplement of the first angle: \\(180^\\circ - " + fmt(x1, 1) + "^\\circ = " + fmt(partner, 1) + "^\\circ\\)."; }
+    else if (fam === "sinN") { x1 = r1(rf(190, 262)); fnName = "\\sin\\theta"; c = Math.sin(x1 * Math.PI / 180); partner = 540 - x1;
+      solWhy = "For a negative height, the two crossings of the sine graph are symmetric about \\(270^\\circ\\), so they add to \\(540^\\circ\\): \\(540^\\circ - " + fmt(x1, 1) + "^\\circ = " + fmt(partner, 1) + "^\\circ\\)."; }
+    else if (fam === "cos") { x1 = Math.random() < 0.5 ? r1(rf(8, 80)) : r1(rf(100, 172)); fnName = "\\cos\\theta"; c = Math.cos(x1 * Math.PI / 180); partner = 360 - x1;
+      solWhy = "The cosine graph is symmetric about \\(180^\\circ\\), so its two crossings of a horizontal line add to \\(360^\\circ\\): \\(360^\\circ - " + fmt(x1, 1) + "^\\circ = " + fmt(partner, 1) + "^\\circ\\)."; }
+    else if (fam === "tanP") { x1 = r1(rf(8, 80)); fnName = "\\tan\\theta"; c = Math.tan(x1 * Math.PI / 180); partner = x1 + 180;
+      solWhy = "Tangent repeats every \\(180^\\circ\\), so the other crossing is \\(180^\\circ\\) later: \\(" + fmt(x1, 1) + "^\\circ + 180^\\circ = " + fmt(partner, 1) + "^\\circ\\)."; }
+    else if (fam === "tanN") { x1 = r1(rf(100, 172)); fnName = "\\tan\\theta"; c = Math.tan(x1 * Math.PI / 180); partner = x1 + 180;
+      solWhy = "Tangent repeats every \\(180^\\circ\\), so the other crossing is \\(180^\\circ\\) later: \\(" + fmt(x1, 1) + "^\\circ + 180^\\circ = " + fmt(partner, 1) + "^\\circ\\)."; }
+    else { x1 = r1(rf(4, 44)); fnName = "\\sin 2\\theta"; c = Math.sin(2 * x1 * Math.PI / 180); partner = 90 - x1;
+      solWhy = "For \\(\\sin 2\\theta\\), the first two crossings come from \\(2\\theta\\) values that are supplementary, so the \\(\\theta\\) values add to \\(90^\\circ\\): \\(90^\\circ - " + fmt(x1, 1) + "^\\circ = " + fmt(partner, 1) + "^\\circ\\)."; }
+    askTail = fam === "sin2" ? "the next larger intersection point" : "the other intersection point";
+    return numq("A graphing utility shows that the graphs of \\(y = " + fnName + "\\) and \\(y = " + fmt(c, 2) + "\\) intersect at \\(\\theta \\approx " + fmt(x1, 1) + "^\\circ\\). What is " + askTail + " in \\([0^\\circ, 360^\\circ)\\), in degrees?",
+      Math.round(partner * 10) / 10, 0.15,
+      solWhy + " The value is <b>" + fmt(partner, 1) + "°</b>.",
+      { fam: fam, x1: x1, rad: false });
+  }
+  if (fam === "sin2") { x1 = r2(rf(0.08, 0.7)); fnName = "\\sin 2\\theta"; c = Math.sin(2 * x1); partner = Math.PI / 2 - x1;
+    solWhy = "For \\(\\sin 2\\theta\\), the first two crossings come from \\(2\\theta\\) values that are supplementary, so the \\(\\theta\\) values add to \\(\\frac{\\pi}{2}\\): \\(\\frac{\\pi}{2} - " + fmt(x1, 2) + " \\approx " + fmt(partner, 2) + "\\)."; }
+  else if (fam === "sinP") { x1 = r2(rf(0.15, 1.35)); fnName = "\\sin\\theta"; c = Math.sin(x1); partner = Math.PI - x1;
+    solWhy = "The sine graph reaches the same height again in the second quadrant, at the supplement of the first angle: \\(\\pi - " + fmt(x1, 2) + " \\approx " + fmt(partner, 2) + "\\)."; }
+  else if (fam === "sinN") { x1 = r2(rf(3.35, 4.55)); fnName = "\\sin\\theta"; c = Math.sin(x1); partner = 3 * Math.PI - x1;
+    solWhy = "For a negative height, the two crossings of the sine graph are symmetric about \\(\\frac{3\\pi}{2}\\), so they add to \\(3\\pi\\): \\(3\\pi - " + fmt(x1, 2) + " \\approx " + fmt(partner, 2) + "\\)."; }
+  else if (fam === "cos") { x1 = Math.random() < 0.5 ? r2(rf(0.15, 1.35)) : r2(rf(1.8, 2.95)); fnName = "\\cos\\theta"; c = Math.cos(x1); partner = 2 * Math.PI - x1;
+    solWhy = "The cosine graph is symmetric about \\(\\pi\\), so its two crossings of a horizontal line add to \\(2\\pi\\): \\(2\\pi - " + fmt(x1, 2) + " \\approx " + fmt(partner, 2) + "\\)."; }
+  else { x1 = Math.random() < 0.5 ? r2(rf(0.15, 1.35)) : r2(rf(1.8, 2.95)); fnName = "\\tan\\theta"; c = Math.tan(x1); partner = x1 + Math.PI;
+    solWhy = "Tangent repeats every \\(\\pi\\), so the other crossing is \\(\\pi\\) later: \\(" + fmt(x1, 2) + " + \\pi \\approx " + fmt(partner, 2) + "\\)."; }
+  return numq("A graphing utility shows that the graphs of \\(y = " + fnName + "\\) and \\(y = " + fmt(c, 2) + "\\) intersect at \\(\\theta \\approx " + fmt(x1, 2) + "\\). What is " + (fam === "sin2" ? "the next larger intersection point" : "the other intersection point") + " in \\([0, 2\\pi)\\), in radians?",
+    Math.round(partner * 100) / 100, 0.02,
+    solWhy + " The value is <b>" + fmt(partner, 2) + "</b>.",
+    { fam: fam, x1: x1, rad: true });
+});
+
+/* ---- 7.42: verify an identity numerically for a given value ---- */
+E("u6-numeric-verify", 6, ["7.42"], 1, "gen", function () {
+  var rad = Math.random() < 0.45;
+  var degs = [25, 40, 55, 70, 115, 140, 160, 200, 215, 290, 325];
+  var rads = [0.5, 0.9, 1.2, 2.0, 2.6, 3.6, 4.4, 5.5];
+  var th = rad ? pick(rads) : pick(degs) * Math.PI / 180;
+  var A = rad ? fmt(th, 2) : Math.round(th * 180 / Math.PI) + "^\\circ";
+  var A2 = rad ? fmt(2 * th, 2) : Math.round(2 * th * 180 / Math.PI) + "^\\circ";
+  var S = Math.sin(th), C = Math.cos(th);
+  var FAMS = [
+    { lhs: C * C - S * S, ld: "\\cos^2 " + A + " - \\sin^2 " + A, rd: "\\cos " + A2, ok: true },
+    { lhs: 1 + (S / C) * (S / C), ld: "1 + \\tan^2 " + A, rd: "\\sec^2 " + A, ok: Math.abs(C) > 0.3 },
+    { lhs: S / (1 + C), ld: "\\frac{\\sin " + A + "}{1 + \\cos " + A + "}", rd: "\\frac{1 - \\cos " + A + "}{\\sin " + A + "}", ok: Math.abs(S) > 0.3 && Math.abs(1 + C) > 0.35 },
+    { lhs: S + C * (S / C), ld: "\\sin " + A + " + \\cos " + A + " \\tan " + A, rd: "2\\sin " + A, ok: Math.abs(C) > 0.3 },
+    { lhs: (1 - Math.cos(2 * th)) / 2, ld: "\\frac{1 - \\cos " + A2 + "}{2}", rd: "\\sin^2 " + A, ok: true },
+    { lhs: (C / S) * S, ld: "\\cot " + A + " \\sin " + A, rd: "\\cos " + A, ok: Math.abs(S) > 0.3 }
+  ];
+  var fam = pick(FAMS.filter(function (f) { return f.ok && Math.abs(f.lhs) <= 25; }));
+  var val = Math.round(fam.lhs * 100) / 100;
+  var lhsId = ["\\cos^2 \\theta - \\sin^2 \\theta", "1 + \\tan^2 \\theta", "\\frac{\\sin \\theta}{1 + \\cos \\theta}", "\\sin \\theta + \\cos \\theta \\tan \\theta", "\\frac{1 - \\cos 2\\theta}{2}", "\\cot \\theta \\sin \\theta"][FAMS.indexOf(fam)];
+  var rhsId = ["\\cos 2\\theta", "\\sec^2 \\theta", "\\frac{1 - \\cos \\theta}{\\sin \\theta}", "2\\sin \\theta", "\\sin^2 \\theta", "\\cos \\theta"][FAMS.indexOf(fam)];
+  return numq("Verify the identity \\(" + lhsId + " = " + rhsId + "\\) numerically for \\(\\theta = " + A + "\\). What is the value of the left side, to two decimal places?",
+    val, 0.02,
+    "Substituting \\(\\theta = " + A + "\\): \\[ \\begin{aligned} \\text{LHS} &= " + fam.ld + " \\\\ &\\approx " + fmt(val, 2) + " \\end{aligned} \\] The right side gives the same value, \\(\\text{RHS} \\approx " + fmt(val, 2) + "\\), so the two sides agree for this value. The common value is <b>" + fmt(val, 2) + "</b>.",
+    { famIdx: FAMS.indexOf(fam), th: th, rad: rad });
+});
+
+/* ---- 7.40: judge an identity from a graph comparison ---- */
+E("u6-graphical-validity", 6, ["7.40"], 1, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var rad = Math.random() < 0.5;
+  var T = pick([
+    { rel: "\\sin V = \\tan V \\cos V", cat: "holes", pts: [90, 270] },
+    { rel: (pick([2, 3])) + "\\sin V = " + "C\\tan V \\cos V", cat: "holes", pts: [90, 270], coef: true },
+    { rel: "\\cos V = \\cot V \\sin V", cat: "holes", pts: [0, 180] },
+    { rel: "\\sin^2 V + \\cos^2 V = 1", cat: "full", pts: [] },
+    { rel: "\\cos 2V = \\cos^2 V - \\sin^2 V", cat: "full", pts: [] },
+    { rel: "\\sin V = \\cos V", cat: "cross", pts: [45, 225] },
+    { rel: "\\sin V + \\cos V = 1", cat: "cross", pts: [0, 90] },
+    { rel: "\\sin 2V = 2\\sin V", cat: "cross", pts: [0, 180] },
+    { rel: "\\sec^2 V = 1 + \\tan^2 V", cat: "holes", pts: [90, 270] },
+    { rel: "\\tan V = \\frac{\\sin V}{\\cos V}", cat: "holes", pts: [90, 270] },
+    { rel: "\\sin V = 2 - \\cos V", cat: "never", pts: [] },
+    { rel: "\\cos V = \\sin V", cat: "cross", pts: [45, 225] },
+    { rel: "1 - 2\\sin^2 V = \\cos 2V", cat: "full", pts: [] },
+    { rel: "\\csc V \\sin V = 1", cat: "holes", pts: [0, 180] },
+    { rel: "\\tan V \\cos V = \\sin V", cat: "holes", pts: [90, 270] }
+  ]);
+  var rel = T.rel.replace(/V/g, v);
+  if (T.coef) rel = rel.replace(/C/, rel.charAt(0));
+  var ptsStr = T.pts.map(function (d) { return rad ? "\\(" + u6radS(d) + "\\)" : d + "°"; }).join(" and ");
+  var desc;
+  if (T.cat === "holes") desc = "The two graphs coincide on the whole interval except at \\(" + v + "\\) = " + ptsStr + ", where one side is undefined.";
+  else if (T.cat === "full") desc = "The two graphs coincide at every point of the interval.";
+  else if (T.cat === "cross") desc = "The two graphs cross at \\(" + v + "\\) = " + ptsStr + " and are different between crossings.";
+  else desc = "The graph of the right side stays strictly above the graph of the left side on the whole interval; the graphs never meet.";
+  var kId = "The relation is an identity: the graphs agree at every permissible value";
+  var kNot = "The relation is not an identity: the sides agree only at isolated points";
+  var kNever = "The relation is not an identity: the sides never agree";
+  var key, dis;
+  if (T.cat === "holes") { key = kId; dis = ["The relation is not an identity, because the gaps mean the two sides are not equivalent", "The relation is an equation: it holds only at the points where the graphs have gaps", "Graphs can never give evidence about whether a relation is an identity"]; }
+  else if (T.cat === "full") { key = kId; dis = ["The relation is not an identity: the graphs agree only at isolated points", "The relation is an equation with exactly two solutions on the interval", "Graphs can never give evidence about whether a relation is an identity"]; }
+  else if (T.cat === "cross") { key = kNot; dis = ["The relation is an identity: the graphs cross, so the two sides are equal", kId, "Graphs can never give evidence about whether a relation is an identity"]; }
+  else { key = kNever; dis = [kId, "The relation is an equation with one solution on the interval", "Graphs can never give evidence about an identity"]; }
+  return mcq("A student graphs \\(y = " + rel.split(" = ")[0] + "\\) and \\(y = " + rel.split(" = ")[1] + "\\) on " + (rad ? "\\([0, 2\\pi)\\)" : "\\([0^\\circ, 360^\\circ)\\)") + ". " + desc + " What is the correct conclusion?",
+    key, dis,
+    (T.cat === "holes" || T.cat === "full")
+      ? "Matching graphs at every permissible value is exactly what an identity requires; points where a side is undefined are excluded from consideration, not counterexamples. The conclusion is: <b>" + key + "</b>."
+      : "An identity needs agreement at every permissible value. Agreement at isolated points (or nowhere) makes the relation an equation at best. The conclusion is: <b>" + key + "</b>.",
+    { cat: T.cat, rel: rel, rad: rad });
+});
+
+/* ---- 7.41: non-permissible values of a full identity ---- */
+E("u6-nonpermissible-identity", 6, ["7.41"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var T = pick([
+    { d: "\\frac{\\sec A}{\\csc A} = \\tan A", base: [0, 90, 180, 270], traps: [[90, 270], [0, 180]],
+      why: "secant and tangent are undefined where the cosine is zero, and cosecant is undefined where the sine is zero; both kinds of values occur" },
+    { d: "\\cot A \\sec A = \\csc A", base: [0, 90, 180, 270], traps: [[0, 180], [90, 270]],
+      why: "cotangent and cosecant are undefined where the sine is zero, and secant is undefined where the cosine is zero; both kinds of values occur" },
+    { d: "\\frac{\\sin A}{1 - \\cos A} = \\csc A + \\cot A", base: [0, 180], traps: [[0], [180]],
+      why: "the left denominator vanishes where the cosine is 1, and cosecant and cotangent on the right are undefined where the sine is zero" },
+    { d: "\\frac{\\cos A}{1 + \\sin A} = \\sec A - \\tan A", base: [90, 270], traps: [[270], [90]],
+      why: "the left denominator vanishes where the sine is -1, and secant and tangent on the right are undefined where the cosine is zero" },
+    { d: "\\tan A + \\cot A = \\sec A \\csc A", base: [0, 90, 180, 270], traps: [[0, 180], [90, 270]],
+      why: "tangent and secant are undefined where the cosine is zero, and cotangent and cosecant are undefined where the sine is zero" },
+    { d: "\\frac{1 - \\cos A}{\\sin A} = \\frac{\\sin A}{1 + \\cos A}", base: [0, 180], traps: [[180], [0]],
+      why: "the left denominator vanishes where the sine is zero, and the right denominator vanishes where the cosine is -1" }
+  ]);
+  var mode = pick(["plain", "plain", "scaled", "big"]);
+  var scaled = mode === "scaled", big = mode === "big";
+  var A = scaled ? "2" + v : v;
+  var id = T.d.replace(/A/g, A);
+  function tf(set) {
+    var out = {};
+    if (scaled) set.forEach(function (s) { out[s / 2] = 1; out[(s + 360) / 2] = 1; });
+    else if (big) set.forEach(function (s) { out[s] = 1; out[s + 360] = 1; });
+    else set.forEach(function (s) { out[s] = 1; });
+    return Object.keys(out).map(Number).sort(function (a, b) { return a - b; });
+  }
+  var npv = tf(T.base);
+  var rad = Math.random() < 0.5;
+  function setOut(set) {
+    if (rad && big) return "\\(" + set.map(function (d) { return u6radBig(d); }).join(", ") + "\\)";
+    return u6setStr(set, rad);
+  }
+  var corr = setOut(npv);
+  var candStrs = T.traps.map(function (t) { return setOut(tf(t)); }).concat(u6setDist(npv).map(setOut));
+  var dis = u6dist3(corr, candStrs);
+  var dom = big
+    ? (rad ? "\\(0 \\le " + v + " < 4\\pi\\)" : "\\(0^\\circ \\le " + v + " < 720^\\circ\\)")
+    : u6dom(v, rad);
+  return mcq("Determine the non-permissible values of the identity \\(" + id + "\\) for " + dom + ".",
+    corr, dis,
+    "Every part of both sides must be defined: " + T.why + ". Collecting all of these restrictions gives the non-permissible values <b>" + corr + "</b>.",
+    { npv: npv, mode: mode, rad: rad });
+});
+
+/* ---- 7.43: choose a valid first step in a proof ---- */
+E("u6-proof-next-step", 6, ["7.43"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var fam = pick(["conj", "conj", "combine", "dblfrac", "expand", "factor", "tanconv", "pythnum"]);
+  var id, key, dis, sol;
+  if (fam === "conj") {
+    var fn1 = pick(["sin", "cos"]), fn2 = fn1 === "sin" ? "cos" : "sin";
+    var s = pick([1, -1]), flip = Math.random() < 0.5;
+    var f1 = "\\" + fn1 + " " + v, f2 = "\\" + fn2 + " " + v;
+    var denA = "1 " + (s > 0 ? "+" : "-") + " " + f2, numB = "1 " + (s > 0 ? "-" : "+") + " " + f2;
+    var lhs = "\\frac{" + f1 + "}{" + denA + "}", rhs = "\\frac{" + numB + "}{" + f1 + "}";
+    id = flip ? rhs + " = " + lhs : lhs + " = " + rhs;
+    var conj = flip ? denA : numB;
+    key = "Multiply the numerator and denominator of the left side by \\(" + conj + "\\)";
+    dis = ["Square both sides of the identity as the first step",
+      "Replace \\(" + f2 + "^2\\) with \\(1 + " + f1 + "^2\\) on the left side of the identity",
+      "Cancel the \\(" + f1 + "\\) terms from the two sides of the identity at the start"];
+    sol = "Multiplying by the conjugate produces the factor \\(1 - " + f2 + "^2 = " + f1 + "^2\\), and a factor of \\(" + f1 + "\\) cancels, leaving the other side. The valid first step is: <b>" + key + "</b>.";
+  } else if (fam === "combine") {
+    var cscMode = Math.random() < 0.5, A = Math.random() < 0.5 ? v : "2" + v;
+    var big = cscMode ? "\\csc " + A : "\\sec " + A, small = cscMode ? "\\sin " + A : "\\cos " + A;
+    var third = cscMode ? "\\cos " + A + " \\cot " + A : "\\sin " + A + " \\tan " + A;
+    id = big + " - " + small + " = " + third;
+    key = "Rewrite the left side over a common denominator as \\(\\frac{1 - " + small + "^2}{" + small + "}\\)";
+    dis = ["Replace \\(" + small + "^2\\) with \\(1 + " + (cscMode ? "\\cos " + A : "\\sin " + A) + "^2\\) in the first term",
+      "Square both sides of the identity as the first step",
+      "Cancel the \\(" + small + "\\) inside \\(" + big + "\\) with the \\(" + small + "\\) term beside it at the start"];
+    sol = "Writing the reciprocal ratio in terms of \\(" + small + "\\) and combining over a common denominator gives \\(\\frac{1 - " + small + "^2}{" + small + "}\\), where the Pythagorean identity can now be applied. The valid first step is: <b>" + key + "</b>.";
+  } else if (fam === "dblfrac") {
+    var form = pick(["a", "b", "c", "d"]);
+    var s2 = "\\sin 2" + v, c2 = "\\cos 2" + v;
+    if (form === "a") { id = "\\frac{" + s2 + "}{1 + " + c2 + "} = \\tan " + v; key = "Replace \\(" + s2 + "\\) with \\(2\\sin " + v + " \\cos " + v + "\\) and \\(" + c2 + "\\) with \\(2\\cos^2 " + v + " - 1\\)"; }
+    else if (form === "b") { id = "\\frac{1 - " + c2 + "}{" + s2 + "} = \\tan " + v; key = "Replace \\(1 - " + c2 + "\\) with \\(2\\sin^2 " + v + "\\) and \\(" + s2 + "\\) with \\(2\\sin " + v + " \\cos " + v + "\\)"; }
+    else if (form === "c") { id = "\\frac{" + s2 + "}{1 - " + c2 + "} = \\cot " + v; key = "Replace \\(" + s2 + "\\) with \\(2\\sin " + v + " \\cos " + v + "\\) and \\(" + c2 + "\\) with \\(1 - 2\\sin^2 " + v + "\\)"; }
+    else { id = "\\frac{1 + " + c2 + "}{" + s2 + "} = \\cot " + v; key = "Replace \\(1 + " + c2 + "\\) with \\(2\\cos^2 " + v + "\\) and \\(" + s2 + "\\) with \\(2\\sin " + v + " \\cos " + v + "\\)"; }
+    dis = ["Replace \\(\\sin 2" + v + "\\) with \\(2\\sin " + v + "\\) in the numerator",
+      "Replace \\(\\cos 2" + v + "\\) with \\(\\cos^2 " + v + " + \\sin^2 " + v + "\\) in the denominator of the left side",
+      "Square both sides of the identity as the first step"];
+    sol = "The double-angle identities rewrite the numerator and denominator with matching factors of \\(\\sin " + v + "\\) and \\(\\cos " + v + "\\), which then cancel toward the right side. The valid first step is: <b>" + key + "</b>.";
+  } else if (fam === "expand") {
+    var minus = Math.random() < 0.5;
+    id = "(\\sin " + v + (minus ? " - " : " + ") + "\\cos " + v + ")^2 = 1 " + (minus ? "-" : "+") + " \\sin 2" + v;
+    key = "Expand the left side to \\(\\sin^2 " + v + (minus ? " - " : " + ") + "2\\sin " + v + " \\cos " + v + " + \\cos^2 " + v + "\\)";
+    dis = ["Expand the left side to \\(\\sin^2 " + v + " + \\cos^2 " + v + "\\) as the first step",
+      "Replace \\(\\sin 2" + v + "\\) with \\(2\\sin " + v + "\\)",
+      "Replace \\(\\sin^2 " + v + "\\) with \\(1 + \\cos^2 " + v + "\\)"];
+    sol = "Expanding the square produces the cross term \\(2\\sin " + v + " \\cos " + v + "\\), which pairs with \\(\\sin^2 " + v + " + \\cos^2 " + v + " = 1\\) to give the right side. The valid first step is: <b>" + key + "</b>.";
+  } else if (fam === "factor") {
+    var swap = Math.random() < 0.5;
+    var hi = swap ? "\\cos^4 " + v + " - \\sin^4 " + v : "\\sin^4 " + v + " - \\cos^4 " + v;
+    var lo = swap ? "\\cos^2 " + v + " - \\sin^2 " + v : "\\sin^2 " + v + " - \\cos^2 " + v;
+    var sumF = swap ? "\\cos^2 " + v + " + \\sin^2 " + v : "\\sin^2 " + v + " + \\cos^2 " + v;
+    id = "\\frac{" + hi + "}{" + lo + "} = 1";
+    key = "Factor the numerator as a difference of squares: \\((" + lo + ")(" + sumF + ")\\)";
+    dis = ["Replace the numerator with \\((" + lo + ")^2\\) and leave the denominator of the fraction",
+      "Square both sides of the identity as the first step",
+      "Replace \\(" + sumF + "\\) with \\(\\sin " + v + " + \\cos " + v + "\\) in the numerator of the given fraction"];
+    sol = "The numerator is a difference of squares, \\((" + lo + ")(" + sumF + ")\\); cancelling the first factor and using \\(" + sumF + " = 1\\) completes the proof. The valid first step is: <b>" + key + "</b>.";
+  } else if (fam === "tanconv") {
+    var sinMode = Math.random() < 0.5;
+    id = sinMode ? "\\frac{2\\tan " + v + "}{1 + \\tan^2 " + v + "} = \\sin 2" + v : "\\frac{1 - \\tan^2 " + v + "}{1 + \\tan^2 " + v + "} = \\cos 2" + v;
+    key = "Multiply the numerator and denominator by \\(\\cos^2 " + v + "\\)";
+    dis = ["Replace \\(\\tan^2 " + v + "\\) with \\(\\frac{\\cos^2 " + v + "}{\\sin^2 " + v + "}\\) in both places",
+      "Replace \\(1 + \\tan^2 " + v + "\\) with \\(\\sec " + v + "\\) in the denominator",
+      "Square both sides of the identity as the first step"];
+    sol = "Multiplying through by \\(\\cos^2 " + v + "\\) clears the fractions inside the numerator and denominator, producing a double-angle form. The valid first step is: <b>" + key + "</b>.";
+  } else {
+    var fnA = pick(["sin", "cos"]), fnB = fnA === "sin" ? "cos" : "sin";
+    var sg = pick([1, -1]);
+    var fa = "\\" + fnA + " " + v, fb = "\\" + fnB + " " + v;
+    id = "\\frac{" + fa + "^2}{1 " + (sg > 0 ? "+" : "-") + " " + fb + "} = 1 " + (sg > 0 ? "-" : "+") + " " + fb;
+    key = "Replace \\(" + fa + "^2\\) with \\(1 - " + fb + "^2\\) and factor the numerator";
+    dis = ["Replace \\(" + fa + "^2\\) with \\(1 + " + fb + "^2\\) and factor the numerator",
+      "Replace \\(1 - " + fb + "^2\\) with \\(" + fa + "\\) after substituting for the numerator",
+      "Square both sides of the identity as the first step"];
+    sol = "The Pythagorean identity turns the numerator into \\((1 - " + fb + ")(1 + " + fb + ")\\), and the matching factor cancels with the denominator. The valid first step is: <b>" + key + "</b>.";
+  }
+  return mcq("Which is a valid first step in proving the identity \\(" + id + "\\)?",
+    key, dis, sol, { fam: fam });
+});
+
+/* ---- 7.44: simplify a trigonometric expression ---- */
+function u6powStr(fn, p, v) { return "\\" + fn + (p > 1 ? "^" + p : "") + " " + v; }
+function u6simpStr(a, b, v) { /* nicest single-form rendering of sin^a cos^b */
+  var names = { "1,0": "\\sin " + v, "0,1": "\\cos " + v, "1,-1": "\\tan " + v, "-1,1": "\\cot " + v, "0,-1": "\\sec " + v, "-1,0": "\\csc " + v,
+    "2,0": "\\sin^2 " + v, "0,2": "\\cos^2 " + v, "-2,0": "\\csc^2 " + v, "0,-2": "\\sec^2 " + v, "2,-2": "\\tan^2 " + v, "-2,2": "\\cot^2 " + v, "0,0": "1" };
+  var k = a + "," + b;
+  if (names[k]) return names[k];
+  var num = "", den = "";
+  if (a > 0) num += u6powStr("sin", a, v);
+  if (b > 0) num += (num ? " " : "") + u6powStr("cos", b, v);
+  if (a < 0) den += u6powStr("sin", -a, v);
+  if (b < 0) den += (den ? " " : "") + u6powStr("cos", -b, v);
+  if (!den) return num || "1";
+  if (!num) return "\\frac{1}{" + den + "}";
+  return "\\frac{" + num + "}{" + den + "}";
+}
+E("u6-simplify-expression", 6, ["7.44"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  function neigh(a, b) {
+    return u6dist3(u6simpStr(a, b, v), [[a + 1, b], [a - 1, b], [a, b + 1], [a, b - 1], [-a, -b], [b, a]].map(function (p) { return u6simpStr(p[0], p[1], v); }));
+  }
+  if (Math.random() < 0.35) {
+    var B = pick([
+      { e: "\\frac{1 - \\sin^2 V}{\\cos V}", ab: [0, 1], why: "Since \\(1 - \\sin^2 V = \\cos^2 V\\), the fraction becomes \\(\\frac{\\cos^2 V}{\\cos V}\\)" },
+      { e: "\\frac{1 - \\cos^2 V}{\\sin V}", ab: [1, 0], why: "Since \\(1 - \\cos^2 V = \\sin^2 V\\), the fraction becomes \\(\\frac{\\sin^2 V}{\\sin V}\\)" },
+      { e: "\\frac{\\sec^2 V - 1}{\\tan V}", ab: [1, -1], why: "Since \\(\\sec^2 V - 1 = \\tan^2 V\\), the fraction becomes \\(\\frac{\\tan^2 V}{\\tan V}\\)" },
+      { e: "\\frac{\\csc^2 V - 1}{\\cot V}", ab: [-1, 1], why: "Since \\(\\csc^2 V - 1 = \\cot^2 V\\), the fraction becomes \\(\\frac{\\cot^2 V}{\\cot V}\\)" },
+      { e: "\\frac{\\cot^2 V}{1 + \\cot^2 V}", ab: [0, 2], why: "Since \\(1 + \\cot^2 V = \\csc^2 V\\), the fraction is \\(\\frac{\\cos^2 V / \\sin^2 V}{1 / \\sin^2 V}\\)" },
+      { e: "\\frac{\\tan^2 V}{1 + \\tan^2 V}", ab: [2, 0], why: "Since \\(1 + \\tan^2 V = \\sec^2 V\\), the fraction is \\(\\frac{\\sin^2 V / \\cos^2 V}{1 / \\cos^2 V}\\)" },
+      { e: "\\frac{1 - \\cos^2 V}{1 - \\sin^2 V}", ab: [2, -2], why: "The numerator is \\(\\sin^2 V\\) and the denominator is \\(\\cos^2 V\\)" },
+      { e: "\\frac{\\sin^4 V - \\cos^4 V}{\\sin^2 V - \\cos^2 V}", ab: [0, 0], why: "Factoring the numerator as a difference of squares gives \\((\\sin^2 V - \\cos^2 V)(\\sin^2 V + \\cos^2 V)\\), and \\(\\sin^2 V + \\cos^2 V = 1\\)" },
+      { e: "\\frac{\\sec V - \\cos V}{\\sin V}", ab: [1, -1], why: "The numerator combines to \\(\\frac{\\sin^2 V}{\\cos V}\\), so the whole expression is \\(\\frac{\\sin^2 V}{\\sin V \\cos V}\\)" },
+      { e: "(1 - \\sin V)(1 + \\sin V)", ab: [0, 2], why: "Expanding gives \\(1 - \\sin^2 V\\)" }
+    ]);
+    var expr = B.e.replace(/V/g, v);
+    var key = "\\(" + u6simpStr(B.ab[0], B.ab[1], v) + "\\)";
+    var dis = neigh(B.ab[0], B.ab[1]).map(function (s) { return "\\(" + s + "\\)"; });
+    return mcq("Simplify \\(" + expr + "\\) to a single trigonometric form.",
+      key, dis,
+      B.why.replace(/V/g, v) + ", which simplifies to <b>" + key + "</b>.",
+      { mode: "pyth", ab: B.ab });
+  }
+  var K = [["sin", 1, 0], ["cos", 0, 1], ["tan", 1, -1], ["cot", -1, 1], ["sec", 0, -1], ["csc", -1, 0], ["sin2", 2, 0], ["cos2", 0, 2]];
+  var a = 0, b = 0, expr = null, keyS = null, guard = 0;
+  while (guard++ < 60) {
+    var nF = pick([2, 2, 3]);
+    var numParts = [], denParts = [];
+    a = 0; b = 0;
+    for (var i = 0; i < nF; i++) {
+      var fk = pick(K);
+      var base = fk[0] === "sin2" ? "\\sin^2 " + v : fk[0] === "cos2" ? "\\cos^2 " + v : "\\" + fk[0] + " " + v;
+      if (i === 0 || Math.random() < 0.5) { numParts.push(base); a += fk[1]; b += fk[2]; }
+      else { denParts.push(base); a -= fk[1]; b -= fk[2]; }
+    }
+    if (Math.abs(a) > 3 || Math.abs(b) > 3) continue;
+    expr = denParts.length ? "\\frac{" + numParts.join(" \\cdot ") + "}{" + denParts.join(" \\cdot ") + "}" : numParts.join(" \\cdot ");
+    keyS = u6simpStr(a, b, v);
+    if (expr === keyS) continue;
+    break;
+  }
+  var key = "\\(" + keyS + "\\)";
+  var dis = neigh(a, b).map(function (s) { return "\\(" + s + "\\)"; });
+  return mcq("Simplify \\(" + expr + "\\) to a single trigonometric form.",
+    key, dis,
+    "Write every ratio in terms of sine and cosine and combine the powers: the sine power is \\(" + a + "\\) and the cosine power is \\(" + b + "\\) after cancellation, giving <b>" + key + "</b>.",
+    { mode: "walk", ab: [a, b] });
+});
+
+/* ---- 7.45: exact values from sum, difference and double-angle identities ---- */
+function u6radMul(r1, r2) { var p = r1 * r2; for (var g = 6; g >= 2; g--) { if (p % (g * g) === 0) return [g, p / (g * g)]; } return [1, p]; }
+function u6sp(n, r, d) { var t = {}; if (n !== 0) t[r] = n; return { t: t, d: n === 0 ? 1 : d }; }
+function u6spNorm(sp) {
+  var keys = Object.keys(sp.t).map(Number).filter(function (r) { return sp.t[r] !== 0; });
+  if (!keys.length) return { t: {}, d: 1 };
+  var g = sp.d;
+  keys.forEach(function (r) { g = u6gcd(g, sp.t[r]); });
+  var t = {};
+  keys.forEach(function (r) { t[r] = sp.t[r] / g; });
+  return { t: t, d: sp.d / g };
+}
+function u6spMul(s1, s2) {
+  var t = {};
+  Object.keys(s1.t).forEach(function (r1) {
+    Object.keys(s2.t).forEach(function (r2) {
+      var gm = u6radMul(Number(r1), Number(r2));
+      var rr = gm[1], cc = s1.t[r1] * s2.t[r2] * gm[0];
+      t[rr] = (t[rr] || 0) + cc;
+    });
+  });
+  return u6spNorm({ t: t, d: s1.d * s2.d });
+}
+function u6spAdd(s1, s2, sgn) {
+  var d = s1.d * s2.d / u6gcd(s1.d, s2.d), t = {};
+  Object.keys(s1.t).forEach(function (r) { t[r] = (t[r] || 0) + s1.t[r] * (d / s1.d); });
+  Object.keys(s2.t).forEach(function (r) { t[r] = (t[r] || 0) + sgn * s2.t[r] * (d / s2.d); });
+  return u6spNorm({ t: t, d: d });
+}
+function u6spNeg(s) { var t = {}; Object.keys(s.t).forEach(function (r) { t[r] = -s.t[r]; }); return { t: t, d: s.d }; }
+function u6spVal(s) { var x = 0; Object.keys(s.t).forEach(function (r) { x += s.t[r] * Math.sqrt(Number(r)); }); return x / s.d; }
+function u6spRender(s) {
+  var rs = Object.keys(s.t).map(Number).filter(function (r) { return s.t[r] !== 0; }).sort(function (a, b) { return b - a; });
+  if (!rs.length) return "0";
+  var parts = rs.map(function (r, i) {
+    var c = s.t[r], mag = Math.abs(c);
+    var body = r === 1 ? "" + mag : (mag === 1 ? "\\sqrt{" + r + "}" : mag + "\\sqrt{" + r + "}");
+    return { neg: c < 0, body: body };
+  });
+  var joined = (parts[0].neg ? "-" : "") + parts[0].body;
+  for (var i = 1; i < parts.length; i++) joined += parts[i].neg ? " - " + parts[i].body : " + " + parts[i].body;
+  if (s.d === 1) return joined;
+  if (parts.length === 1) return (parts[0].neg ? "-" : "") + "\\frac{" + parts[0].body + "}{" + s.d + "}";
+  return "\\frac{" + joined + "}{" + s.d + "}";
+}
+var u6SC = { /* exact [n, r, d] for sin and cos at decomposition angles */
+  30: { s: [1, 1, 2], c: [1, 3, 2] }, 45: { s: [1, 2, 2], c: [1, 2, 2] }, 60: { s: [1, 3, 2], c: [1, 1, 2] },
+  120: { s: [1, 3, 2], c: [-1, 1, 2] }, 135: { s: [1, 2, 2], c: [-1, 2, 2] }, 150: { s: [1, 1, 2], c: [-1, 3, 2] }
+};
+var u6TANSC = { 30: "\\frac{\\sqrt{3}}{3}", 45: "1", 60: "\\sqrt{3}", 120: "-\\sqrt{3}", 135: "-1", 150: "-\\frac{\\sqrt{3}}{3}" };
+E("u6-exact-values", 6, ["7.45"], 2, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  if (Math.random() < 0.55) {
+    var DECOMP = { 15: [[45, -1, 30], [60, -1, 45]], 75: [[45, 1, 30], [120, -1, 45], [135, -1, 60]], 105: [[60, 1, 45], [135, -1, 30], [150, -1, 45]], 165: [[135, 1, 30], [120, 1, 45]] };
+    var T = pick([15, 75, 105, 165]);
+    var dc = pick(DECOMP[T]), A = dc[0], sgn = dc[1], B = dc[2];
+    var kind = pick(["sin", "cos", "tan"]);
+    var rad = Math.random() < 0.5;
+    var aD = rad ? u6radS(A) : A + "^\\circ", bD = rad ? u6radS(B) : B + "^\\circ";
+    var op = sgn > 0 ? " + " : " - ";
+    var expr = "\\" + kind + "\\left(" + aD + op + bD + "\\right)";
+    if (kind === "tan") {
+      var KEYT = { 15: "2 - \\sqrt{3}", 75: "2 + \\sqrt{3}", 105: "-2 - \\sqrt{3}", 165: "-2 + \\sqrt{3}" };
+      var key = "\\(" + KEYT[T] + "\\)";
+      var dis = [15, 75, 105, 165].filter(function (t) { return t !== T; }).map(function (t) { return "\\(" + KEYT[t] + "\\)"; });
+      var tanF = "\\tan\\left(" + aD + op + bD + "\\right) = \\frac{\\tan " + aD + (sgn > 0 ? " + " : " - ") + "\\tan " + bD + "}{1 " + (sgn > 0 ? "-" : "+") + " \\tan " + aD + " \\tan " + bD + "}";
+      return mcq("Determine the exact value of \\(" + expr + "\\).",
+        key, dis,
+        "Use the " + (sgn > 0 ? "sum" : "difference") + " identity for tangent: \\[ \\begin{aligned} " + tanF + " \\\\ &= \\frac{" + u6TANSC[A] + (sgn > 0 ? " + " : " - ") + "(" + u6TANSC[B] + ")}{1 " + (sgn > 0 ? "-" : "+") + " \\left(" + u6TANSC[A] + "\\right)\\left(" + u6TANSC[B] + "\\right)} \\end{aligned} \\] Rationalizing the denominator gives <b>" + key + "</b>.",
+        { mode: "sum", T: T, kind: kind, keyVal: Math.tan(T * Math.PI / 180) });
+    }
+    var SA = u6sp.apply(null, u6SC[A].s), CA = u6sp.apply(null, u6SC[A].c);
+    var SB = u6sp.apply(null, u6SC[B].s), CB = u6sp.apply(null, u6SC[B].c);
+    var p1, p2, p1o, p2o, formF;
+    if (kind === "sin") {
+      p1 = u6spMul(SA, CB); p2 = u6spMul(CA, SB);
+      p1o = u6spMul(CA, SB); p2o = u6spMul(SA, CB);
+      formF = "\\sin\\left(" + aD + op + bD + "\\right) &= \\sin " + aD + " \\cos " + bD + (sgn > 0 ? " + " : " - ") + "\\cos " + aD + " \\sin " + bD;
+    } else {
+      p1 = u6spMul(CA, CB); p2 = u6spMul(SA, SB);
+      p1o = u6spMul(SA, CB); p2o = u6spMul(CA, SB);
+      formF = "\\cos\\left(" + aD + op + bD + "\\right) &= \\cos " + aD + " \\cos " + bD + (sgn > 0 ? " - " : " + ") + "\\sin " + aD + " \\sin " + bD;
+    }
+    var res = kind === "sin" ? u6spAdd(p1, p2, sgn) : u6spAdd(p1, p2, -sgn);
+    var resO = kind === "sin" ? u6spAdd(p1o, p2o, -sgn) : u6spAdd(p1o, p2o, sgn);
+    var keyS = u6spRender(res);
+    var key = "\\(" + keyS + "\\)";
+    var p2eff = kind === "sin" ? u6spAdd(u6sp(0, 1, 1), p2, sgn) : u6spAdd(u6sp(0, 1, 1), p2, -sgn);
+    var p2abs = u6spVal(p2eff) < 0 ? u6spNeg(p2eff) : p2eff;
+    var midStr = u6spRender(p1) + (u6spVal(p2eff) < 0 ? " - " : " + ") + u6spRender(p2abs);
+    var resW = kind === "sin" ? u6spAdd(p1, p2, -sgn) : u6spAdd(p1, p2, sgn);
+    var dis = u6dist3(key, [u6spRender(u6spNeg(res)), u6spRender(resO), u6spRender(u6spNeg(resO)), u6spRender(resW)].map(function (s) { return "\\(" + s + "\\)"; }));
+    var keyVal = kind === "sin" ? Math.sin(T * Math.PI / 180) : Math.cos(T * Math.PI / 180);
+    return mcq("Determine the exact value of \\(" + expr + "\\).",
+      key, dis,
+      "Use the " + (sgn > 0 ? "sum" : "difference") + " identity: \\[ \\begin{aligned} " + formF + " \\\\ &= " + midStr + " \\\\ &= " + keyS + " \\end{aligned} \\] The exact value is <b>" + key + "</b>.",
+      { mode: "sum", T: T, kind: kind, keyVal: keyVal });
+  }
+  var TR = pick([[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25]]);
+  var p = TR[0], q = TR[1], r = TR[2];
+  var givenKind = pick(["sin", "cos"]);
+  var Q = pick(["II", "III", "IV", "II", "III", "IV", "I"]);
+  var signS = (Q === "I" || Q === "II") ? 1 : -1, signC = (Q === "I" || Q === "IV") ? 1 : -1;
+  var givenLeg = givenKind === "sin" ? p : q, otherLeg = givenKind === "sin" ? q : p;
+  var sN = givenKind === "sin" ? signS * givenLeg : signS * otherLeg;
+  var cN = givenKind === "cos" ? signC * givenLeg : signC * otherLeg;
+  var ask = pick(["sin2", "cos2", "tan2"]);
+  var sin2 = [2 * sN * cN, r * r], cos2 = [cN * cN - sN * sN, r * r];
+  var valPair = ask === "sin2" ? sin2 : ask === "cos2" ? cos2 : [sin2[0], cos2[0]];
+  var keyBody = u6fr(valPair[0], valPair[1]);
+  var key = "\\(" + keyBody + "\\)";
+  var third = ask === "sin2" ? [sN * cN, r * r] : ask === "cos2" ? [cN * cN, r * r] : sin2;
+  var otherD = ask === "sin2" ? cos2 : ask === "cos2" ? sin2 : [cos2[0], sin2[0]];
+  var dis = u6dist3(key, [u6fr(-valPair[0], valPair[1]), u6fr(otherD[0], otherD[1]), u6fr(third[0], third[1])].map(function (s) { return "\\(" + s + "\\)"; }));
+  var sFr = u6fr(sN, r), cFr = u6fr(cN, r);
+  var givenStr = "\\" + givenKind + " " + v + " = " + u6fr(givenKind === "sin" ? sN : cN, r);
+  var otherStr = "\\" + (givenKind === "sin" ? "cos" : "sin") + " " + v + " = " + u6fr(givenKind === "sin" ? cN : sN, r);
+  var askStr = ask === "sin2" ? "\\sin 2" + v : ask === "cos2" ? "\\cos 2" + v : "\\tan 2" + v;
+  var step;
+  if (ask === "sin2") step = "\\sin 2" + v + " &= 2\\sin " + v + " \\cos " + v + " \\\\ &= 2\\left(" + sFr + "\\right)\\left(" + cFr + "\\right) \\\\ &= " + keyBody;
+  else if (ask === "cos2") step = "\\cos 2" + v + " &= \\cos^2 " + v + " - \\sin^2 " + v + " \\\\ &= \\left(" + cFr + "\\right)^2 - \\left(" + sFr + "\\right)^2 \\\\ &= " + keyBody;
+  else step = "\\tan 2" + v + " &= \\frac{\\sin 2" + v + "}{\\cos 2" + v + "} \\\\ &= \\frac{" + u6fr(sin2[0], sin2[1]) + "}{" + u6fr(cos2[0], cos2[1]) + "} \\\\ &= " + keyBody;
+  var keyVal = ask === "sin2" ? sin2[0] / sin2[1] : ask === "cos2" ? cos2[0] / cos2[1] : sin2[0] / cos2[0];
+  return mcq("Given \\(" + givenStr + "\\), where \\(" + v + "\\) is in Quadrant " + Q + ", determine the exact value of \\(" + askStr + "\\).",
+    key, dis,
+    "Quadrant " + Q + " fixes the sign of the other ratio: \\(" + otherStr + "\\) (a " + p + "-" + q + "-" + r + " triangle). Then \\[ \\begin{aligned} " + step + " \\end{aligned} \\] The exact value is <b>" + key + "</b>.",
+    { mode: "dbl", sN: sN, cN: cN, r: r, ask: ask, keyVal: keyVal });
+});
+
+/* ---- 7.37: identify the error in a worked solution ---- */
+E("u6-error-analysis", 6, ["7.37"], 3, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var rad = Math.random() < 0.5;
+  var fam = pick(["divide", "divide", "cancelTan", "recip", "dblCancel", "tanPeriod"]);
+  var dom = u6dom(v, rad);
+  if (fam === "divide") {
+    var base = pick(["sin", "cos"]), other = base === "sin" ? "cos" : "sin";
+    var ab = pick([[2, 1], [2, -1], [4, 2], [4, -2]]);
+    var a = ab[0], b = ab[1];
+    var eqn = "\\" + base + " " + v + "(" + a + "\\" + other + " " + v + (b > 0 ? " - " + b : " + " + (-b)) + ") = 0";
+    var fn = function (d) { return u6val(base, d) * (a * u6val(other, d) - b); };
+    var full = u6scan(fn);
+    var student = u6sols(other, b / a);
+    var missing = full.filter(function (d) { return student.indexOf(d) < 0; });
+    var key = "Dividing by \\(\\" + base + " " + v + "\\) discards the solutions of \\(\\" + base + " " + v + " = 0\\): " + u6setStr(missing, rad) + " are also solutions";
+    return mcq("A student solves \\(" + eqn + "\\) for " + dom + ". The student divides both sides by \\(\\" + base + " " + v + "\\) and reports the solutions " + u6setStr(student, rad) + ". What is the error in this solution?",
+      key,
+      ["The reported values do not satisfy the equation when they are substituted back into it",
+        "The student should have divided both sides by \\(\\" + other + " " + v + "\\) instead of by \\(\\" + base + " " + v + "\\)",
+        "There is no error in the solution, and the reported values are the complete solution set"],
+      "A product equals zero when either factor is zero, so \\(\\" + base + " " + v + " = 0\\) contributes its own solutions. Dividing by that factor throws them away. The complete solution set is " + u6setStr(full, rad) + ". The error is: <b>" + key + "</b>.",
+      { fam: fam, full: full });
+  }
+  if (fam === "cancelTan") {
+    var kv = pick([[1, "1"], [-1, "-1"], [1.7320508, "\\sqrt{3}"], [-1.7320508, "-\\sqrt{3}"], [0.5773503, "\\frac{\\sqrt{3}}{3}"], [-0.5773503, "-\\frac{\\sqrt{3}}{3}"]]);
+    var coef = kv[0] === 1 ? "" : kv[0] === -1 ? "-" : kv[1] + " ";
+    var eqn2 = "\\tan^2 " + v + " = " + coef + "\\tan " + v;
+    var fn2 = function (d) { var t = u6val("tan", d); return t * t - kv[0] * t; };
+    var full2 = u6scan(fn2);
+    var student2 = u6sols("tan", kv[0]);
+    var missing2 = full2.filter(function (d) { return student2.indexOf(d) < 0; });
+    var key2 = "Cancelling \\(\\tan " + v + "\\) discards the solutions of \\(\\tan " + v + " = 0\\): " + u6setStr(missing2, rad) + " are also solutions";
+    return mcq("A student solves \\(" + eqn2 + "\\) for " + dom + ". The student cancels \\(\\tan " + v + "\\) from both sides and reports the solutions " + u6setStr(student2, rad) + ". What is the error in this solution?",
+      key2,
+      ["The reported values do not satisfy the equation when substituted back into it",
+        "The student should have squared both sides first and then solved for the angle",
+        "There is no error in the solution, and the reported values are complete"],
+      "The equation factors as \\(\\tan " + v + "(\\tan " + v + (kv[0] < 0 ? " + " + kv[1].slice(1) : " - " + kv[1]) + ") = 0\\), so \\(\\tan " + v + " = 0\\) contributes solutions as well. The complete solution set is " + u6setStr(full2, rad) + ". The error is: <b>" + key2 + "</b>.",
+      { fam: fam, full: full2 });
+  }
+  if (fam === "recip") {
+    var kind = pick(["csc", "sec"]), prim = kind === "csc" ? "sin" : "cos";
+    var val = pick([2, -2]);
+    var eqn3 = "\\" + kind + " " + v + " = " + val;
+    var full3 = u6scan(function (d) { return u6val(kind, d) - val; });
+    var key3 = "The reciprocal step is wrong: \\(" + eqn3 + "\\) gives \\(\\" + prim + " " + v + " = " + u6fr(1, val) + "\\), which does have solutions: " + u6setStr(full3, rad);
+    return mcq("A student solves \\(" + eqn3 + "\\) for " + dom + " by rewriting it as \\(\\" + prim + " " + v + " = " + val + "\\) and concluding that there is no solution. What is the error?",
+      key3,
+      ["The student is right: the equation has no solution anywhere in the domain",
+        "The error is that \\(\\" + kind + " " + v + "\\) should have been replaced with its co-function before anything else was done",
+        "The student should have squared both sides before taking the reciprocal of the ratio"],
+      "A reciprocal ratio flips the value as well as the ratio: \\(\\" + kind + " " + v + " = " + val + "\\) means \\(\\" + prim + " " + v + " = " + u6fr(1, val) + "\\). The error is: <b>" + key3 + "</b>.",
+      { fam: fam, full: full3 });
+  }
+  if (fam === "dblCancel") {
+    var kind2 = pick(["cos", "sin"]);
+    var eqn4 = "\\" + kind2 + " 2" + v + " = \\" + kind2 + " " + v;
+    var full4 = u6scan(function (d) { return u6val(kind2, 2 * d) - u6val(kind2, d); });
+    var missing4 = full4.filter(function (d) { return d !== 0; });
+    var key4 = "The ratio name cannot be cancelled like a common factor: \\(\\" + kind2 + " 2" + v + "\\) must be expanded with a double-angle identity, and doing so gives the additional solutions " + u6setStr(missing4, rad);
+    return mcq("A student solves \\(" + eqn4 + "\\) for " + dom + " by cancelling the ratio name from both sides, leaving \\(2" + v + " = " + v + "\\), and reports only " + u6setStr([0], rad) + ". What is the error in this solution?",
+      key4,
+      ["The reported value does not satisfy the equation when it is substituted back into it, and neither do the values found from it",
+        "The student should have cancelled the 2 instead of the ratio name, since the 2 is a factor and the name is not, and then solved \\(2" + v + " = " + v + "\\) directly for the angle in the domain",
+        "There is no error in the solution, and the reported values are the complete solution set, exactly as reported"],
+      "The symbol \\(\\" + kind2 + "\\) is a function name, not a factor: \\(\\" + kind2 + " 2" + v + "\\) is a single quantity. Expanding it with the double-angle identity and factoring gives the complete solution set " + u6setStr(full4, rad) + ". The error is: <b>" + key4 + "</b>.",
+      { fam: fam, full: full4 });
+  }
+  var tv = pick([[1, "1"], [-1, "-1"], [1.7320508, "\\sqrt{3}"], [-1.7320508, "-\\sqrt{3}"], [0.5773503, "\\frac{\\sqrt{3}}{3}"], [-0.5773503, "-\\frac{\\sqrt{3}}{3}"]]);
+  var eqn5 = "\\tan " + v + " = " + tv[1];
+  var full5 = u6sols("tan", tv[0]);
+  var student5 = [full5[0]], missing5 = [full5[1]];
+  var key5 = "Tangent repeats every " + (rad ? "\\(\\pi\\)" : "180°") + ", so there is a second solution in the domain: " + u6setStr(missing5, rad) + " was missed";
+  return mcq("A student solves \\(" + eqn5 + "\\) for " + dom + " and reports only " + u6setStr(student5, rad) + ". What is the error in this solution?",
+    key5,
+    ["The reported value does not satisfy the equation when it is substituted back into it",
+      "The reference angle was computed incorrectly, so every solution built from it is wrong",
+      "There is no error in the solution, and the reported values are the complete solution set"],
+    "Within " + (rad ? "\\([0, 2\\pi)\\)" : "\\([0^\\circ, 360^\\circ)\\)") + " the tangent function takes each value twice, once per half-turn. The complete solution set is " + u6setStr(full5, rad) + ". The error is: <b>" + key5 + "</b>.",
+    { fam: fam, full: full5 });
+});
+
+/* ---- 7.43: find the first invalid step in a proof attempt ---- */
+function u6proofChain(idStr, forms, bad, expl) {
+  var chain = "\\[ \\begin{aligned} " + forms[0] + " &= " + forms[1] + " \\\\ &= " + forms[2] + " \\\\ &= " + forms[3] + " \\\\ &= " + forms[4] + " \\end{aligned} \\]";
+  return mcq("A student attempts to prove the identity \\(" + idStr + "\\) and writes:" + chain + "One of the steps is the first step that is not valid. Which step is it?",
+    "Step " + bad, ["Step 1", "Step 2", "Step 3", "Step 4"].filter(function (s) { return s !== "Step " + bad; }),
+    expl + " The first invalid step is <b>Step " + bad + "</b>.",
+    { bad: bad });
+}
+E("u6-proof-invalid-step", 6, ["7.43"], 3, "var", varset([
+  function () { return u6proofChain("\\frac{1 - \\cos 2\\theta}{\\sin 2\\theta} = \\tan\\theta",
+    ["\\frac{1 - \\cos 2\\theta}{\\sin 2\\theta}", "\\frac{2\\sin^2\\theta}{2\\sin\\theta\\cos\\theta}", "\\frac{2\\sin^2\\theta}{\\sin\\theta\\cos\\theta}", "\\frac{2\\sin\\theta}{\\cos\\theta}", "\\tan\\theta"], 2,
+    "Step 2 removes the factor 2 from the denominator only; a factor must be cancelled from the numerator and the denominator at the same time."); },
+  function () { return u6proofChain("\\sec\\theta - \\cos\\theta = \\sin\\theta\\tan\\theta",
+    ["\\sec\\theta - \\cos\\theta", "\\frac{1}{\\cos\\theta} - \\cos\\theta", "\\frac{1 - \\cos^2\\theta}{\\cos\\theta}", "\\frac{1 - \\cos\\theta}{\\cos\\theta}", "\\sin\\theta\\tan\\theta"], 3,
+    "Step 3 replaces \\(1 - \\cos^2\\theta\\) with \\(1 - \\cos\\theta\\); the Pythagorean identity gives \\(\\sin^2\\theta\\), with the square kept."); },
+  function () { return u6proofChain("(\\sin\\theta - \\cos\\theta)^2 = 1 - \\sin 2\\theta",
+    ["(\\sin\\theta - \\cos\\theta)^2", "\\sin^2\\theta + \\cos^2\\theta - 2\\sin\\theta\\cos\\theta", "1 - 2\\sin\\theta\\cos\\theta", "1 - \\sin\\theta\\cos\\theta", "1 - \\sin 2\\theta"], 3,
+    "Step 3 drops the factor 2 from \\(2\\sin\\theta\\cos\\theta\\) without changing anything else; that factor is exactly what turns the term into \\(\\sin 2\\theta\\)."); },
+  function () { return u6proofChain("\\frac{\\sin\\theta}{1 + \\cos\\theta} = \\frac{1 - \\cos\\theta}{\\sin\\theta}",
+    ["\\frac{\\sin\\theta}{1 + \\cos\\theta}", "\\frac{\\sin\\theta(1 - \\cos\\theta)}{1 - \\cos^2\\theta}", "\\frac{\\sin\\theta(1 - \\cos\\theta)}{1 - \\cos\\theta}", "\\sin\\theta", "\\frac{1 - \\cos\\theta}{\\sin\\theta}"], 2,
+    "Step 2 replaces \\(1 - \\cos^2\\theta\\) with \\(1 - \\cos\\theta\\); the denominator should become \\(\\sin^2\\theta\\)."); },
+  function () { return u6proofChain("\\tan\\theta + \\cot\\theta = \\sec\\theta\\csc\\theta",
+    ["\\tan\\theta + \\cot\\theta", "\\frac{\\sin\\theta}{\\cos\\theta} + \\frac{\\cos\\theta}{\\sin\\theta}", "\\frac{\\sin^2\\theta + \\cos^2\\theta}{\\sin\\theta\\cos\\theta}", "\\frac{\\sin\\theta + \\cos\\theta}{\\sin\\theta\\cos\\theta}", "\\sec\\theta\\csc\\theta"], 3,
+    "Step 3 changes \\(\\sin^2\\theta + \\cos^2\\theta\\) into \\(\\sin\\theta + \\cos\\theta\\); the terms of a sum cannot be square-rooted individually, and the sum equals 1."); },
+  function () { return u6proofChain("\\sec^2\\theta - \\tan^2\\theta = 1",
+    ["\\sec^2\\theta - \\tan^2\\theta", "\\frac{1}{\\cos^2\\theta} - \\tan^2\\theta", "\\frac{1}{\\cos^2\\theta} - \\frac{\\sin^2\\theta}{\\cos\\theta}", "\\frac{1 - \\sin^2\\theta}{\\cos\\theta}", "1"], 2,
+    "Step 2 writes \\(\\tan^2\\theta\\) as \\(\\frac{\\sin^2\\theta}{\\cos\\theta}\\); the denominator must be \\(\\cos^2\\theta\\)."); },
+  function () { return u6proofChain("\\sin 2\\theta = \\frac{2\\tan\\theta}{1 + \\tan^2\\theta}",
+    ["\\frac{2\\tan\\theta}{1 + \\tan^2\\theta}", "\\frac{2\\frac{\\sin\\theta}{\\cos\\theta}}{1 + \\frac{\\sin^2\\theta}{\\cos^2\\theta}}", "\\frac{2\\sin\\theta\\cos\\theta}{1 + \\sin^2\\theta}", "\\frac{2\\sin\\theta\\cos\\theta}{1}", "\\sin 2\\theta"], 2,
+    "Step 2 multiplies the numerator and denominator by \\(\\cos^2\\theta\\); the denominator becomes \\(\\cos^2\\theta + \\sin^2\\theta\\), not \\(1 + \\sin^2\\theta\\)."); },
+  function () { return u6proofChain("\\frac{1 + \\cos 2\\theta}{\\sin 2\\theta} = \\cot\\theta",
+    ["\\frac{1 + \\cos 2\\theta}{\\sin 2\\theta}", "\\frac{2\\cos^2\\theta}{2\\sin\\theta\\cos\\theta}", "\\frac{\\cos^2\\theta}{2\\sin\\theta\\cos\\theta}", "\\frac{\\cos\\theta}{2\\sin\\theta}", "\\cot\\theta"], 2,
+    "Step 2 cancels the factor 2 in the numerator only; the factor must be cancelled from the numerator and the denominator at the same time."); },
+  function () { return u6proofChain("\\csc\\theta - \\sin\\theta = \\cos\\theta\\cot\\theta",
+    ["\\csc\\theta - \\sin\\theta", "\\frac{1}{\\sin\\theta} - \\sin\\theta", "\\frac{1 - \\sin^2\\theta}{\\sin\\theta}", "\\frac{1 - \\sin\\theta}{\\sin\\theta}", "\\cos\\theta\\cot\\theta"], 3,
+    "Step 3 replaces \\(1 - \\sin^2\\theta\\) with \\(1 - \\sin\\theta\\); the Pythagorean identity gives \\(\\cos^2\\theta\\), keeping the square."); },
+  function () { return u6proofChain("\\frac{\\cos\\theta}{1 + \\sin\\theta} = \\frac{1 - \\sin\\theta}{\\cos\\theta}",
+    ["\\frac{\\cos\\theta}{1 + \\sin\\theta}", "\\frac{\\cos\\theta(1 - \\sin\\theta)}{1 - \\sin^2\\theta}", "\\frac{\\cos\\theta(1 - \\sin\\theta)}{\\cos\\theta}", "1 - \\sin\\theta", "\\frac{1 - \\sin\\theta}{\\cos\\theta}"], 2,
+    "Step 2 replaces \\(1 - \\sin^2\\theta\\) with \\(\\cos\\theta\\); the correct replacement is \\(\\cos^2\\theta\\)."); },
+  function () { return u6proofChain("\\cos 2\\theta = \\frac{1 - \\tan^2\\theta}{1 + \\tan^2\\theta}",
+    ["\\frac{1 - \\tan^2\\theta}{1 + \\tan^2\\theta}", "\\frac{1 - \\frac{\\sin^2\\theta}{\\cos^2\\theta}}{1 + \\frac{\\sin^2\\theta}{\\cos^2\\theta}}", "\\frac{\\cos^2\\theta - \\sin^2\\theta}{\\cos^2\\theta + \\sin^2\\theta}", "\\frac{\\cos^2\\theta - \\sin^2\\theta}{2\\cos^2\\theta}", "\\cos 2\\theta"], 3,
+    "Step 3 replaces \\(\\cos^2\\theta + \\sin^2\\theta\\) with \\(2\\cos^2\\theta\\); the Pythagorean sum equals 1, which is what makes the proof work."); },
+  function () { return u6proofChain("(\\sin\\theta + \\cos\\theta)^2 = 1 + \\sin 2\\theta",
+    ["(\\sin\\theta + \\cos\\theta)^2", "\\sin^2\\theta + \\cos^2\\theta", "1", "1 + 2\\sin\\theta\\cos\\theta", "1 + \\sin 2\\theta"], 1,
+    "Step 1 expands the square incorrectly: the expansion of \\((\\sin\\theta + \\cos\\theta)^2\\) includes the cross term \\(2\\sin\\theta\\cos\\theta\\), which was omitted."); }
+]));
+
+/* ---- 7.46: why a numerical check cannot prove an identity ---- */
+E("u6-why-insufficient", 6, ["7.46"], 3, "gen", function () {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var rad = Math.random() < 0.5;
+  var REL = pick([
+    { d: "\\sin V + \\cos V = 1", lhs: function (d) { return u6val("sin", d) + u6val("cos", d); }, rhs: function () { return 1; } },
+    { d: "\\sin 2V = 2\\sin V", lhs: function (d) { return u6val("sin", 2 * d); }, rhs: function (d) { return 2 * u6val("sin", d); } },
+    { d: "\\tan V = \\sin V", lhs: function (d) { return u6val("tan", d); }, rhs: function (d) { return u6val("sin", d); } },
+    { d: "\\cos^2 V = \\cos V", lhs: function (d) { var c = u6val("cos", d); return c * c; }, rhs: function (d) { return u6val("cos", d); } },
+    { d: "\\sin V = \\cos V", lhs: function (d) { return u6val("sin", d); }, rhs: function (d) { return u6val("cos", d); } },
+    { d: "\\sin^2 V + \\cos V = 1", lhs: function (d) { var s = u6val("sin", d); return s * s + u6val("cos", d); }, rhs: function () { return 1; } },
+    { d: "\\tan^2 V + 1 = \\sec V", lhs: function (d) { var t = u6val("tan", d); return t * t + 1; }, rhs: function (d) { return u6val("sec", d); } }
+  ]);
+  var rel = REL.d.replace(/V/g, v);
+  function eqAt(d) { var l = REL.lhs(d), r = REL.rhs(d); return isFinite(l) && isFinite(r) && Math.abs(l - r) < 1e-6; }
+  function diffAt(d) { var l = REL.lhs(d), r = REL.rhs(d); return isFinite(l) && isFinite(r) && Math.abs(l - r) > 0.05; }
+  var tested = pick(u6DEGS.filter(eqAt));
+  var counter = u6DEGS.filter(diffAt)[0];
+  var atT = "\\(" + v + " = " + u6angM(tested, rad) + "\\)";
+  var atC = "\\(" + v + " = " + u6angM(counter, rad) + "\\)";
+  var key = "Agreement at one value shows only that the value satisfies the relation; an identity must hold for every permissible value, and the two sides differ at " + atC;
+  return mcq("A student substitutes " + atT + " into both sides of the relation \\(" + rel + "\\) and finds the two sides equal. The student concludes that the relation is an identity. Which statement best explains why the conclusion is not justified?",
+    key,
+    ["The argument fails because " + atT + " is a non-permissible value for the relation, so the check says nothing about the relation or any of its values at all",
+      "Numerical checks can never provide any useful evidence about whether a relation is an identity, no matter how many values are tested, or how the values are chosen",
+      "The substitution must be wrong: at " + atT + " the two sides are not actually equal, so the student's arithmetic should be checked again from the start"],
+    "A numerical check can support a claim or refute it, but equality at one value, or even at several values, never proves equality at every permissible value; that requires a proof. Here the sides differ at " + atC + ", so the relation is not an identity at all. The statement that fits is: <b>" + key + "</b>.",
+    { tested: tested, counter: counter });
+});
+
+/* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry, so only one Level 3 pick path existed. ---------- */
+E("u6-lost-solutions-cr",6,["7.37"],3,"var",varset([
+  function(){
+    return mcq("A student solves \\(\\sin x \\cos x = \\cos x\\) for \\(0 \\leq x < 2\\pi\\) by dividing both sides by \\(\\cos x\\), obtaining \\(\\sin x = 1\\) and the single solution \\(x = \\frac{\\pi}{2}\\). Dividing by an expression that can equal zero loses solutions. What is the <b>complete</b> solution?",
+      "\\(\\{\\frac{\\pi}{2}, \\frac{3\\pi}{2}\\}\\)",
+      ["\\(\\{\\frac{\\pi}{2}\\}\\)",
+       "\\(\\{\\frac{3\\pi}{2}\\}\\)",
+       "\\(\\{\\frac{\\pi}{2}, \\pi, \\frac{3\\pi}{2}\\}\\)"],
+      "Move every term to one side and factor instead of dividing: \\(\\cos x (\\sin x - 1) = 0\\). Then \\(\\cos x = 0\\) gives \\(x = \\frac{\\pi}{2}\\) or \\(\\frac{3\\pi}{2}\\), and \\(\\sin x = 1\\) gives \\(x = \\frac{\\pi}{2}\\). The complete solution is \\(\\{\\frac{\\pi}{2}, \\frac{3\\pi}{2}\\}\\). The solution \\(\\frac{3\\pi}{2}\\), where \\(\\cos x = 0\\), is the one the division discarded.",
+      {sc:"sincos"});
+  },
+  function(){
+    return mcq("A student solves \\(\\sin^2 x = \\sin x\\) for \\(0 \\leq x < 2\\pi\\) by dividing both sides by \\(\\sin x\\), obtaining \\(\\sin x = 1\\) and the single solution \\(x = \\frac{\\pi}{2}\\). Dividing by an expression that can equal zero loses solutions. What is the <b>complete</b> solution?",
+      "\\(\\{0, \\frac{\\pi}{2}, \\pi\\}\\)",
+      ["\\(\\{\\frac{\\pi}{2}\\}\\)",
+       "\\(\\{\\frac{\\pi}{2}, \\pi\\}\\)",
+       "\\(\\{0, \\frac{\\pi}{2}\\}\\)"],
+      "Move every term to one side and factor instead of dividing: \\(\\sin x (\\sin x - 1) = 0\\). Then \\(\\sin x = 0\\) gives \\(x = 0\\) or \\(\\pi\\), and \\(\\sin x = 1\\) gives \\(x = \\frac{\\pi}{2}\\). The complete solution is \\(\\{0, \\frac{\\pi}{2}, \\pi\\}\\). The solutions where \\(\\sin x = 0\\) are the ones the division discarded.",
+      {sc:"sinsq"});
+  },
+  function(){
+    return mcq("A student solves \\(\\tan^2 x = \\tan x\\) for \\(0 \\leq x < 2\\pi\\) by dividing both sides by \\(\\tan x\\), obtaining \\(\\tan x = 1\\) and the solutions \\(x = \\frac{\\pi}{4}\\) and \\(x = \\frac{5\\pi}{4}\\). Dividing by an expression that can equal zero loses solutions. What is the <b>complete</b> solution?",
+      "\\(\\{0, \\frac{\\pi}{4}, \\pi, \\frac{5\\pi}{4}\\}\\)",
+      ["\\(\\{\\frac{\\pi}{4}, \\frac{5\\pi}{4}\\}\\)",
+       "\\(\\{0, \\frac{\\pi}{4}, \\pi\\}\\)",
+       "\\(\\{\\frac{\\pi}{4}, \\pi, \\frac{5\\pi}{4}\\}\\)"],
+      "Move every term to one side and factor instead of dividing: \\(\\tan x (\\tan x - 1) = 0\\). Then \\(\\tan x = 0\\) gives \\(x = 0\\) or \\(\\pi\\), and \\(\\tan x = 1\\) gives \\(x = \\frac{\\pi}{4}\\) or \\(\\frac{5\\pi}{4}\\). The complete solution is \\(\\{0, \\frac{\\pi}{4}, \\pi, \\frac{5\\pi}{4}\\}\\). The solutions where \\(\\tan x = 0\\) are the ones the division discarded.",
+      {sc:"tansq"});
+  }
+]));
+E("u6-coincidence-check-cr",6,["7.42","7.46"],3,"var",varset([
+  function(){
+    return mcq("To check the claim \\(\\sin 2x = 2\\sin x\\), a student substitutes \\(x = 0\\) and finds that both sides equal 0. What is the correct conclusion?",
+      "The claim is false: at \\(x = \\frac{\\pi}{2}\\) the left side is 0 and the right side is 2",
+      ["The claim is proven, because the two sides are equal at \\(x = 0\\)",
+       "The claim is true for every \\(x\\), because it holds at \\(x = 0\\)",
+       "The claim fails at \\(x = 0\\), where the two sides are different"],
+      "One value where the sides agree never proves an identity; the claim must hold for every value. A single value where the sides differ disproves it: at \\(x = \\frac{\\pi}{2}\\), \\(\\sin 2x = \\sin \\pi = 0\\) while \\(2\\sin x = 2\\). So the claim is false, and the matching value at \\(x = 0\\) was a coincidence.",
+      {sc:"sin2x"});
+  },
+  function(){
+    return mcq("To check the claim \\(\\tan 2x = 2\\tan x\\), a student substitutes \\(x = 0\\) and finds that both sides equal 0. What is the correct conclusion?",
+      "The claim is false: at \\(x = \\frac{\\pi}{6}\\) the left side is \\(\\sqrt{3}\\) and the right side is \\(\\frac{2\\sqrt{3}}{3}\\)",
+      ["The claim is proven, because the two sides are equal at \\(x = 0\\)",
+       "The claim is true for every \\(x\\), because it holds at \\(x = 0\\)",
+       "The claim fails at \\(x = 0\\), where the two sides are different"],
+      "One value where the sides agree never proves an identity; the claim must hold for every value. A single value where the sides differ disproves it: at \\(x = \\frac{\\pi}{6}\\), \\(\\tan 2x = \\tan \\frac{\\pi}{3} = \\sqrt{3}\\) while \\(2\\tan x = 2\\tan \\frac{\\pi}{6} = \\frac{2\\sqrt{3}}{3}\\). So the claim is false, and the matching value at \\(x = 0\\) was a coincidence.",
+      {sc:"tan2x"});
+  },
+  function(){
+    return mcq("To check the claim \\(\\sqrt{\\sin^2 x} = \\sin x\\), a student substitutes \\(x = \\frac{\\pi}{4}\\) and finds that both sides equal \\(\\frac{\\sqrt{2}}{2}\\). What is the correct conclusion?",
+      "The claim is false: at \\(x = \\frac{5\\pi}{4}\\) the left side is \\(\\frac{\\sqrt{2}}{2}\\) and the right side is \\(-\\frac{\\sqrt{2}}{2}\\)",
+      ["The claim is proven, because the two sides are equal at \\(x = \\frac{\\pi}{4}\\)",
+       "The claim is true for every \\(x\\), because it holds at \\(x = \\frac{\\pi}{4}\\)",
+       "The claim fails at \\(x = \\frac{\\pi}{4}\\), where the two sides are different"],
+      "One value where the sides agree never proves an identity; the claim must hold for every value. A single value where the sides differ disproves it: at \\(x = \\frac{5\\pi}{4}\\), \\(\\sqrt{\\sin^2 x} = \\frac{\\sqrt{2}}{2}\\) (a square root is never negative) while \\(\\sin x = -\\frac{\\sqrt{2}}{2}\\). So the claim is false, and the matching value at \\(x = \\frac{\\pi}{4}\\) was a coincidence.",
+      {sc:"sqrt-sin"});
+  }
+]));
+
+/* ----- bank-u7.js ----- */
+// Math 3200 Unit 7 Exponential Functions question bank
+// CRMARKS: u7-common-base-linear=2
+// CRMARKS: u7-common-base-radical=2
+// CRMARKS: u7-compare-models=3
+// CRMARKS: u7-compound-amount=2
+// CRMARKS: u7-compound-setup=1
+// CRMARKS: u7-graph-point-value-cr=3
+// CRMARKS: u7-growth-decay-amount=1
+// CRMARKS: u7-growth-decay-time=2
+// CRMARKS: u7-model-equation=2
+// CRMARKS: u7-model-from-data=4
+// CRMARKS: u7-sketch-key-points=1
+// CRMARKS: u7-solve-nocommon-base=2
+// CRMARKS: u7-traits-match-cr=2
+// CRMARKS: u7-transformed-graph=2
+/* ================= Unit 7: Exponential Functions ================= */
+/* ================= Unit 7: Exponential Functions ================= */
+/* Helpers are prefixed u7. Every LaTeX fragment built by a helper is only
+   ever placed inside \(...\) or \[...\] delimiters (leak rule). */
+
+function u7gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function u7red(p,q){if(q<0){p=-p;q=-q;}var g=u7gcd(p,q);return [p/g,q/g];}
+function u7rat(p,q){var r=u7red(p,q);if(r[1]===1)return ""+r[0];
+  return (r[0]<0?"-":"")+"\\frac{"+Math.abs(r[0])+"}{"+r[1]+"}";}
+function u7dec(x){return fmt(x,4);} /* decimal string, up to 4 dp, zeros trimmed */
+function u7sgn(n){return (n>=0?" + ":" - ")+Math.abs(n);} /* signed term for display inside math */
+function u7expLin(a,b){ /* "2x - 3", "x + 4", "3x", "-x + 1" for a*x + b */
+  var s=(a===1?"":(a===-1?"-":""+a))+"x";
+  if(b>0)s+=" + "+b;else if(b<0)s+=" - "+Math.abs(b);
+  return s;}
+function u7baseStr(c){ /* c is a [p,q] base pair */
+  if(c[1]===1)return ""+c[0];
+  return "\\left(\\frac{"+c[0]+"}{"+c[1]+"}\\right)";}
+function u7money(n){var s=fmtF(n,2),parts=s.split("."),ip=parts[0],out="";
+  var neg=ip.charAt(0)==="-";if(neg)ip=ip.slice(1);
+  while(ip.length>3){out=","+ip.slice(-3)+out;ip=ip.slice(0,-3);}
+  return (neg?"-":"")+"$"+ip+out+"."+parts[1];}
+function u7pick3(correct,cands){ /* 3 distractor strings, all distinct from correct and each other */
+  var seen={},out=[];seen[correct]=1;
+  for(var i=0;i<cands.length&&out.length<3;i++){var v=String(cands[i]);
+    if(!seen[v]){seen[v]=1;out.push(v);}}
+  return out.length===3?out:null;}
+function u7ratOpts(p,q,candPairs){ /* distractor builder for a rational correct answer p/q; returns options wrapped in \(...\) */
+  var corr=u7rat(p,q),cands=candPairs.map(function(pr){return u7rat(pr[0],pr[1]);});
+  var d=u7pick3(corr,cands);
+  if(!d){var r=u7red(p,q),fb=[[r[0]+r[1],r[1]],[r[0]-r[1],r[1]],[r[0]+2*r[1],r[1]],[r[0]-2*r[1],r[1]],[-r[0],r[1]],[r[0]+3*r[1],r[1]]];
+    d=u7pick3(corr,fb.map(function(pr){return u7rat(pr[0],pr[1]);}));}
+  return d.map(function(s){return "\\("+s+"\\)";});}
+function u7plot(fn,x0,x1,y0,y1,o){
+  o=o||{};var W=440,H=250,pad=26;
+  var X=function(x){return pad+(x-x0)/(x1-x0)*(W-2*pad);};
+  var Y=function(y){return H-pad-(y-y0)/(y1-y0)*(H-2*pad);};
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  var gsx=o.gx||1,gsy=o.gy||1,gx,gy;
+  for(gx=Math.ceil(x0/gsx)*gsx;gx<=x1;gx+=gsx){out+='<line x1="'+fmt(X(gx),1)+'" y1="'+pad+'" x2="'+fmt(X(gx),1)+'" y2="'+(H-pad)+'" stroke="#eae5d6" stroke-width="1"/>';
+    if(o.labelX)out+='<text x="'+fmt(X(gx),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+fmt(gx)+'</text>';}
+  for(gy=Math.ceil(y0/gsy)*gsy;gy<=y1;gy+=gsy){out+='<line x1="'+pad+'" y1="'+fmt(Y(gy),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(gy),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+    if(o.labelY&&gy!==0)out+='<text x="'+(pad-4)+'" y="'+fmt(Y(gy)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+fmt(gy)+'</text>';}
+  if(y0<0&&y1>0)out+='<line x1="'+pad+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(0),1)+'" stroke="#17352a" stroke-width="1.3"/>';
+  if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="'+pad+'" x2="'+fmt(X(0),1)+'" y2="'+(H-pad)+'" stroke="#17352a" stroke-width="1.3"/>';
+  out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">x</text>';
+  out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">y</text>';
+  if(o.asymY!==undefined&&o.asymY>y0&&o.asymY<y1){
+    out+='<line x1="'+pad+'" y1="'+fmt(Y(o.asymY),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(o.asymY),1)+'" stroke="#b3541e" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+(W-pad-4)+'" y="'+fmt(Y(o.asymY)-5,1)+'" font-size="10" fill="#b3541e" text-anchor="end">y = '+fmt(o.asymY)+'</text>';}
+  if(fn){
+    var pts=[],N=160,i,x,y;
+    for(i=0;i<=N;i++){x=x0+(x1-x0)*i/N;y=fn(x);if(y<y0)y=y0;if(y>y1)y=y1;pts.push(fmt(X(x),1)+","+fmt(Y(y),1));}
+    out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+  }
+  (o.points||[]).forEach(function(p){out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>';});
+  return out+'</svg>';
+}
+function u7expStr(a,base,exp,k){ /* content of y = a * base^{exp} + k, no delimiters */
+  var s=(a===1?"":(a===-1?"-":""+a))+u7baseStr(base)+"^{"+exp+"}";
+  if(k>0)s+=" + "+k;else if(k<0)s+=" - "+Math.abs(k);
+  return s;}
+
+E("u7-common-base-linear",7,["4.27"],2,"gen",function(){
+  var fam=pick(["num","num","pow","pow","frac","coef"]);
+  if(fam==="num"){
+    var B,a,x0,b,m,tries=0;
+    do{B=pick([2,3,5,7]);a=pick([1,2,3]);x0=ri(-3,4);b=ri(-4,4);m=a*x0+b;tries++;}
+    while(tries<300&&(m>8||m<-3||(B===7&&m>4)||(B===5&&m>5)||(B===3&&m>6)));
+    var rhs=m>=0?(""+Math.pow(B,m)):("\\frac{1}{"+Math.pow(B,-m)+"}");
+    var eq="\\("+B+"^{"+u7expLin(a,b)+"} = "+rhs+"\\)";
+    var dis=u7ratOpts(x0,1,[[m+b,a],[b-m,a],[-x0,1],[m-b,1]]);
+    return mcq("Solve the equation "+eq+".",
+      "\\("+u7rat(x0,1)+"\\)",dis,
+      "Write the right side as a power of \\("+B+"\\): \\("+rhs+" = "+B+"^{"+m+"}\\). Since the bases are equal, the exponents are equal:"+
+      "\\[ \\begin{aligned} "+u7expLin(a,b)+" &= "+m+" \\\\ "+u7expLin(a,0)+" &= "+(m-b)+" \\\\ x &= "+u7rat(x0,1)+" \\end{aligned} \\]",
+      {fam:fam,B:B,a:a,b:b,m:m});
+  }
+  if(fam==="pow"){
+    var pairs=[[2,2,4],[2,3,8],[2,4,16],[3,2,9],[5,2,25],[2,5,32],[3,3,27],[10,2,100],[5,3,125],[3,4,81]];
+    var pr,a2,d,e,x02,b2,tries2=0;
+    do{pr=pick(pairs);d=pick([1,2]);a2=pick([1,2,3,4]);e=ri(-3,3);x02=ri(-3,3);
+      b2=pr[1]*(d*x02+e)-a2*x02;tries2++;}
+    while(tries2<300&&(a2===pr[1]*d||Math.abs(b2)>20));
+    var Bc=pr[2],c=pr[1],B2=pr[0],cd=c*d,ce=c*e;
+    var eq2="\\("+Bc+"^{"+u7expLin(d,e)+"} = "+B2+"^{"+u7expLin(a2,b2)+"}\\)";
+    var dis2=u7ratOpts(x02,1,[[e-b2,a2-d],[-x02,1],[b2-ce,cd+a2]]);
+    return mcq("Solve the equation "+eq2+".",
+      "\\("+u7rat(x02,1)+"\\)",dis2,
+      "Write \\("+Bc+"\\) as a power of \\("+B2+"\\): \\("+Bc+" = "+B2+"^{"+c+"}\\), so the left side becomes \\(\\left("+B2+"^{"+c+"}\\right)^{"+u7expLin(d,e)+"} = "+B2+"^{"+u7expLin(cd,ce)+"}\\). Equate the exponents:"+
+      "\\[ \\begin{aligned} "+u7expLin(cd,ce)+" &= "+u7expLin(a2,b2)+" \\\\ "+u7expLin(cd-a2,0)+" &= "+(b2-ce)+" \\\\ x &= "+u7rat(x02,1)+" \\end{aligned} \\]",
+      {fam:fam,B:B2,c:c,d:d,e:e,a:a2,b:b2});
+  }
+  if(fam==="frac"){
+    var B3=pick([2,3,5]),a3=pick([1,2]),c3=pick([1,2]),x03=ri(-2,3),b3=ri(-3,3);
+    var d3=-(a3*x03+b3)-c3*x03;
+    var eq3="\\(\\left(\\frac{1}{"+B3+"}\\right)^{"+u7expLin(a3,b3)+"} = "+B3+"^{"+u7expLin(c3,d3)+"}\\)";
+    var dis3=u7ratOpts(x03,1,[[d3-b3,a3-c3],[-x03,1],[b3-d3,a3+c3]]);
+    return mcq("Solve the equation "+eq3+".",
+      "\\("+u7rat(x03,1)+"\\)",dis3,
+      "Write the fraction as a power of \\("+B3+"\\): \\(\\frac{1}{"+B3+"} = "+B3+"^{-1}\\), so the left side is \\("+B3+"^{-("+u7expLin(a3,b3)+")}\\). Equate the exponents:"+
+      "\\[ \\begin{aligned} -("+u7expLin(a3,b3)+") &= "+u7expLin(c3,d3)+" \\\\ "+u7expLin(-a3,-b3)+" &= "+u7expLin(c3,d3)+" \\\\ x &= "+u7rat(x03,1)+" \\end{aligned} \\]",
+      {fam:fam,B:B3,a:a3,b:b3,c:c3,d:d3});
+  }
+  var B4=pick([2,3,5]),a4=pick([1,2]),x04=pick([1,2,3]),k4=ri(2,9);
+  var m4=a4*x04,M4=k4*Math.pow(B4,m4);
+  var eq4="\\("+k4+" \\cdot "+B4+"^{"+(a4===1?"x":a4+"x")+"} = "+M4+"\\)";
+  var dis4=u7ratOpts(x04,1,[[m4,1],[-x04,1],[m4+k4,a4]]);
+  return mcq("Solve the equation "+eq4+".",
+    "\\("+u7rat(x04,1)+"\\)",dis4,
+    "First isolate the power by dividing both sides by \\("+k4+"\\):"+
+    "\\[ \\begin{aligned} "+k4+" \\cdot "+B4+"^{"+(a4===1?"x":a4+"x")+"} &= "+M4+" \\\\ "+B4+"^{"+(a4===1?"x":a4+"x")+"} &= "+Math.pow(B4,m4)+" = "+B4+"^{"+m4+"} \\\\ "+(a4===1?"x":a4+"x")+" &= "+m4+" \\\\ x &= "+u7rat(x04,1)+" \\end{aligned} \\]",
+    {fam:fam,B:B4,a:a4,k:k4,m:m4});
+});
+
+E("u7-common-base-radical",7,["4.27"],2,"gen",function(){
+  var fam=pick(["sqrt","sqrt","rootfrac","cbrt"]);
+  if(fam==="sqrt"||fam==="rootfrac"){
+    var B=pick([2,3,5,7]),a,c,d,x0p,x0q,b,tries=0;
+    do{a=pick([1,2,3]);c=pick([0,1,2]);d=ri(-2,3);
+      var cand=[[ri(-2,4),1],[pick([-3,-1,1,3,5]),2]];
+      var cc=pick(cand);x0p=cc[0];x0q=cc[1];
+      b=2*(c*(x0p/x0q)+d)-a*(x0p/x0q);tries++;}
+    while(tries<300&&(Math.abs(b-Math.round(b))>1e-9||Math.abs(b)>16||a===2*c));
+    b=Math.round(b);
+    var xs=u7rat(x0p,x0q);
+    var dis=u7ratOpts(x0p,x0q,[[d-b,a-c],[2*x0p,x0q],[x0p,2*x0q],[-x0p,x0q]]);
+    if(fam==="sqrt"){
+      var eq="\\(\\left(\\sqrt{"+B+"}\\right)^{"+u7expLin(a,b)+"} = "+B+"^{"+u7expLin(c,d)+"}\\)";
+      return mcq("Solve the equation "+eq+".",
+        "\\("+xs+"\\)",dis,
+        "Write the radical as a rational exponent: \\(\\sqrt{"+B+"} = "+B+"^{\\frac{1}{2}}\\), so the left side is \\("+B+"^{\\frac{"+u7expLin(a,b)+"}{2}}\\). Equate the exponents and solve:"+
+        "\\[ \\begin{aligned} \\frac{"+u7expLin(a,b)+"}{2} &= "+u7expLin(c,d)+" \\\\ "+u7expLin(a,b)+" &= "+u7expLin(2*c,2*d)+" \\\\ x &= "+xs+" \\end{aligned} \\]",
+        {fam:fam,B:B,a:a,b:b,c:c,d:d});
+    }
+    var eq2="\\(\\sqrt{"+B+"^{"+u7expLin(a,b)+"}} = "+B+"^{"+u7expLin(c,d)+"}\\)";
+    return mcq("Solve the equation "+eq2+".",
+      "\\("+xs+"\\)",dis,
+      "The square root divides the exponent by \\(2\\): \\(\\sqrt{"+B+"^{"+u7expLin(a,b)+"}} = "+B+"^{\\frac{"+u7expLin(a,b)+"}{2}}\\). Equate the exponents and solve:"+
+      "\\[ \\begin{aligned} \\frac{"+u7expLin(a,b)+"}{2} &= "+u7expLin(c,d)+" \\\\ "+u7expLin(a,b)+" &= "+u7expLin(2*c,2*d)+" \\\\ x &= "+xs+" \\end{aligned} \\]",
+      {fam:fam,B:B,a:a,b:b,c:c,d:d});
+  }
+  var B3=pick([2,3,5]),a3,c3,d3,xp,xq,b3,tries3=0;
+  do{a3=pick([1,2,3,6]);c3=pick([0,1,2]);d3=ri(-2,2);
+    var cand3=[[ri(-2,3),1],[pick([-2,-1,1,2,4,5]),3],[pick([-3,-1,1,3]),2]];
+    var cc3=pick(cand3);xp=cc3[0];xq=cc3[1];
+    b3=3*(c3*(xp/xq)+d3)-a3*(xp/xq);tries3++;}
+  while(tries3<300&&(Math.abs(b3-Math.round(b3))>1e-9||Math.abs(b3)>18||a3===3*c3));
+  b3=Math.round(b3);
+  var xs3=u7rat(xp,xq);
+  var dis3=u7ratOpts(xp,xq,[[d3-b3,a3-c3],[3*xp,xq],[xp,3*xq],[-xp,xq]]);
+  var eq3="\\(\\left(\\sqrt[3]{"+B3+"}\\right)^{"+u7expLin(a3,b3)+"} = "+B3+"^{"+u7expLin(c3,d3)+"}\\)";
+  return mcq("Solve the equation "+eq3+".",
+    "\\("+xs3+"\\)",dis3,
+    "Write the cube root as a rational exponent: \\(\\sqrt[3]{"+B3+"} = "+B3+"^{\\frac{1}{3}}\\), so the left side is \\("+B3+"^{\\frac{"+u7expLin(a3,b3)+"}{3}}\\). Equate the exponents and solve:"+
+    "\\[ \\begin{aligned} \\frac{"+u7expLin(a3,b3)+"}{3} &= "+u7expLin(c3,d3)+" \\\\ "+u7expLin(a3,b3)+" &= "+u7expLin(3*c3,3*d3)+" \\\\ x &= "+xs3+" \\end{aligned} \\]",
+    {fam:fam,B:B3,a:a3,b:b3,c:c3,d:d3});
+});
+
+E("u7-solve-nocommon-base",7,["4.28"],2,"gen",function(){
+  var fam=pick(["logs","logs","logs","logsAsm","bracket"]);
+  if(fam==="logs"){
+    var a,b,x,tries=0,la,lb,xr;
+    do{a=pick([2,3,4,5,6,7,8,9,11,12,15]);
+      b=pick([5,6,7,10,11,13,15,20,25,30,40,50,60,70,90,110,150,200]);
+      la=Math.round(Math.log10(a)*10000)/10000;lb=Math.round(Math.log10(b)*10000)/10000;
+      x=lb/la;xr=Math.round(x*100)/100;tries++;}
+    while(tries<300&&(b===a||Math.abs(x-Math.round(x))<0.06||Math.abs(x*2-Math.round(x*2))<0.04||Math.abs(x*3-Math.round(x*3))<0.04||Math.abs(x*100-Math.round(x*100))<0.12));
+    var inv=fmtF(Math.round((la/lb)*100)/100,2);
+    var dis=u7pick3(fmtF(xr,2),[inv,fmtF(xr+1,2),fmtF(xr-1,2),fmtF(xr+0.5,2),fmtF(xr-0.5,2),fmtF(xr+2,2)]);
+    return mcq("Given \\(\\log "+a+" \\approx "+fmtF(la,4)+"\\) and \\(\\log "+b+" \\approx "+fmtF(lb,4)+"\\), determine the solution of the equation \\("+a+"^{x} = "+b+"\\), correct to two decimal places.",
+      fmtF(xr,2),dis,
+      "Take the logarithm of both sides and use the power law:"+
+      "\\[ \\begin{aligned} "+a+"^{x} &= "+b+" \\\\ x \\log "+a+" &= \\log "+b+" \\\\ x &= \\frac{\\log "+b+"}{\\log "+a+"} \\\\ x &\\approx \\frac{"+fmtF(lb,4)+"}{"+fmtF(la,4)+"} \\\\ x &\\approx "+fmtF(xr,2)+" \\end{aligned} \\]"+
+      "The bases \\("+a+"\\) and \\("+b+"\\) are not powers of one another, so logarithms are needed here rather than a common base.",
+      {fam:fam,a:a,b:b});
+  }
+  if(fam==="logsAsm"){
+    var table={6:[1,1,0],12:[2,1,0],18:[1,2,0],24:[3,1,0],30:[1,1,1],36:[2,2,0],60:[2,1,1],90:[1,2,1],120:[3,1,1],300:[0,1,2]};
+    var keys=Object.keys(table);
+    var b2=Number(pick(keys)),ij=table[b2],a2=pick([2,3,5,7]);
+    var la2=Math.log10(a2),lbAsm=ij[0]*0.3010+ij[1]*0.4771+ij[2];
+    var x2=lbAsm/la2,xr2=Math.round(x2*100)/100;
+    var parts=[];if(ij[0])parts.push(ij[0]===1?"\\log 2":ij[0]+" \\log 2");if(ij[1])parts.push(ij[1]===1?"\\log 3":ij[1]+" \\log 3");if(ij[2])parts.push(""+ij[2]);
+    var inv2=fmtF(Math.round((la2/lbAsm)*100)/100,2);
+    var dis2=u7pick3(fmtF(xr2,2),[inv2,fmtF(xr2+1,2),fmtF(xr2-1,2),fmtF(xr2+0.5,2),fmtF(xr2-0.5,2),fmtF(xr2+2,2)]);
+    return mcq("Given \\(\\log 2 \\approx 0.3010\\) and \\(\\log 3 \\approx 0.4771\\), determine the solution of the equation \\("+a2+"^{x} = "+b2+"\\), correct to two decimal places.",
+      fmtF(xr2,2),dis2,
+      "First build \\(\\log "+b2+"\\) from the given values: \\(\\log "+b2+" = "+parts.join(" + ")+" \\approx "+fmt(x2*la2,4)+"\\). Then take logarithms of both sides:"+
+      "\\[ \\begin{aligned} "+a2+"^{x} &= "+b2+" \\\\ x &= \\frac{\\log "+b2+"}{\\log "+a2+"} \\\\ x &\\approx \\frac{"+fmt(lbAsm,4)+"}{"+fmt(la2,4)+"} \\\\ x &\\approx "+fmtF(xr2,2)+" \\end{aligned} \\]",
+      {fam:fam,a:a2,b:b2});
+  }
+  var a3=pick([2,3,5,7]),m3=ri(1,5),lo=Math.pow(a3,m3),hi=Math.pow(a3,m3+1);
+  var T=ri(lo+1,hi-1);
+  var corr="between "+m3+" and "+(m3+1);
+  var dis3=u7pick3(corr,["between "+(m3+1)+" and "+(m3+2),"between "+Math.max(0,m3-1)+" and "+m3,"between "+m3+" and "+(m3+2),"between "+(m3+2)+" and "+(m3+3)]);
+  return mcq("The solution of the equation \\("+a3+"^{x} = "+T+"\\) lies in which interval?",
+    corr,dis3,
+    "Compare \\("+T+"\\) with consecutive powers of \\("+a3+"\\): \\("+a3+"^{"+m3+"} = "+lo+"\\) and \\("+a3+"^{"+(m3+1)+"} = "+hi+"\\). Since \\("+lo+" < "+T+" < "+hi+"\\), the exponent satisfies \\("+m3+" < x < "+(m3+1)+"\\), so the solution is <b>"+corr+"</b>.",
+    {fam:fam,a:a3,m:m3,T:T});
+});
+
+E("u7-growth-decay-amount",7,["4.29"],1,"gen",function(){
+  var fam=pick(["half","half","double","pct"]);
+  if(fam==="half"){
+    var ctx=pick([
+      {n:"A sample of a radioactive isotope",u:"mg",tu:"years",hs:[2,3,4,5,6,8,10,12,15,20]},
+      {n:"A dose of medication in a patient's bloodstream",u:"mg",tu:"hours",hs:[2,3,4,5,6,8,10,12]},
+      {n:"A sample of carbon-14 in an old wooden artifact",u:"g",tu:"years",hs:[5730]},
+      {n:"A quantity of a short-lived tracer dye",u:"mL",tu:"hours",hs:[1,2,3,4,5,6]}]);
+    var base=pick([6,9,12,15,20,24,30,40,60,80,120]),j=ri(1,5),h=pick(ctx.hs);
+    var A0=base*Math.pow(2,j),t=j*h;
+    var tu=ctx.tu;
+    return numq(ctx.n+" has a half-life of "+h+" "+tu+". A sample starts with "+A0+" "+ctx.u+". How much remains after "+t+" "+tu+"? Give the answer in "+ctx.u+".",
+      base,0.1,
+      "Use the half-life model with \\(t = "+t+"\\) and \\(h = "+h+"\\), so the sample passes through \\("+j+"\\) half-lives:"+
+      "\\[ \\begin{aligned} A(t) &= A_0 \\left(\\frac{1}{2}\\right)^{t/h} \\\\ A("+t+") &= "+A0+" \\left(\\frac{1}{2}\\right)^{"+t+"/"+h+"} \\\\ &= "+A0+" \\left(\\frac{1}{2}\\right)^{"+j+"} \\\\ &= "+base+" \\text{ "+ctx.u+"} \\end{aligned} \\]",
+      {fam:fam,A0:A0,h:h,j:j});
+  }
+  if(fam==="double"){
+    var ctx2=pick([
+      {n:"A bacteria culture",u:"bacteria",v:"has"},
+      {n:"A yeast culture",u:"cells",v:"has"},
+      {n:"An algae population in a tank",u:"organisms",v:"has"}]);
+    var N0=pick([30,40,50,60,80,120,150,200,250,300]),j2=ri(2,5),p=pick([1,2,3,4,6]);
+    var ans=N0*Math.pow(2,j2),t2=j2*p;
+    return numq(ctx2.n+" starts with "+N0+" "+ctx2.u+" and doubles every "+p+" hours. How many "+ctx2.u+" are there after "+t2+" hours?",
+      ans,Math.max(1,ans*0.005),
+      "The population doubles \\("+j2+"\\) times in \\("+t2+"\\) hours:"+
+      "\\[ \\begin{aligned} N(t) &= N_0 (2)^{t/"+p+"} \\\\ N("+t2+") &= "+N0+" (2)^{"+j2+"} \\\\ &= "+ans+" \\end{aligned} \\]",
+      {fam:fam,N0:N0,p:p,j:j2});
+  }
+  var grow=pick([true,false]);
+  var ctx3=grow?pick([
+      {fs:[[1.01,2],[1.01,3],[1.02,2],[1.02,3],[1.03,2],[1.03,3],[1.04,2],[1.04,3]],a0s:[800,1000,1200,2000,2500,3000,4000,5000],
+       s:function(pct){return "A town's population grows by "+pct+"% each year. The town starts with ";},u:"people",ask:"What is the population after "},
+      {fs:[[1.05,2],[1.05,3],[1.06,2],[1.08,2],[1.08,3],[1.1,2],[1.1,3],[1.12,2],[1.12,3]],a0s:[400,500,600,800,1000,1200,1500,2000,2500],
+       s:function(pct){return "The value of a vintage guitar increases by "+pct+"% each year. It is first valued at $";},u:"",ask:"What is it worth after ",money:true},
+      {fs:[[1.1,2],[1.1,3],[1.15,2],[1.2,2],[1.2,3],[1.25,2],[1.3,2],[1.3,3],[1.4,2],[1.4,3]],a0s:[800,1000,1200,1500,2000,2500,3000,4000],
+       s:function(pct){return "A colony of honeybees grows by "+pct+"% each year. The colony starts with ";},u:"bees",ask:"How many bees are there after "}])
+    :pick([
+      {fs:[[0.9,2],[0.9,3],[0.85,2],[0.85,3],[0.8,2],[0.8,3],[0.75,2],[0.75,3]],a0s:[400,500,600,800,1000,1200,1500,2000],
+       s:function(pct){return "The resale value of a laptop decreases by "+pct+"% each year. It is bought for $";},u:"",ask:"What is it worth after ",money:true},
+      {fs:[[0.85,2],[0.85,3],[0.8,2],[0.8,3],[0.75,2],[0.7,2],[0.7,3]],a0s:[2000,2500,3000,4000,5000,6000,8000,10000,12000],
+       s:function(pct){return "The value of a used car decreases by "+pct+"% each year. It is first valued at $";},u:"",ask:"What is it worth after ",money:true},
+      {fs:[[0.95,2],[0.95,3],[0.9,2],[0.9,3],[0.85,2],[0.85,3]],a0s:[200,400,500,800,1000,1200,2000,2500],
+       s:function(pct){return "A stand of elm trees is shrinking by "+pct+"% each year. It starts with ";},u:"trees",ask:"How many trees remain after "}]);
+  var pr=pick(ctx3.fs),f=pr[0],n=pr[1],pct=Math.round(Math.abs(f-1)*100);
+  var A03=pick(ctx3.a0s);
+  var Aans=Math.round(A03*Math.pow(f,n)*100)/100;
+  return numq(ctx3.s(pct)+A03+(ctx3.u?" "+ctx3.u:"")+". "+ctx3.ask+n+" years?"+(ctx3.money?" Give the answer in dollars.":""),
+    Aans,0.75,
+    "Each year the quantity is multiplied by \\("+fmt(f,3)+"\\), so after \\("+n+"\\) years:"+
+    "\\[ \\begin{aligned} A(t) &= "+A03+" ("+fmt(f,3)+")^{t} \\\\ A("+n+") &= "+A03+" ("+fmt(f,3)+")^{"+n+"} \\\\ &= "+A03+" \\times "+fmt(Math.pow(f,n),6)+" \\\\ &\\approx "+fmt(Aans,2)+" \\end{aligned} \\]",
+    {fam:fam,f:f,n:n,A0:A03});
+});
+
+E("u7-growth-decay-time",7,["4.29"],2,"gen",function(){
+  var fam=pick(["half","half","double","triple","pct"]);
+  if(fam==="half"){
+    var ctx=pick([
+      {n:"A sample of a radioactive isotope",u:"mg",tu:"years",hs:[2,3,4,5,6,8,10,12,15,20]},
+      {n:"A dose of medication in a patient's bloodstream",u:"mg",tu:"hours",hs:[2,3,4,5,6,8,10,12]},
+      {n:"A sample of a radioactive tracer",u:"g",tu:"hours",hs:[1,2,3,4,5,6]}]);
+    var base=pick([5,8,10,15,20,25,40,50,60,100]),j=ri(2,6),h=pick(ctx.hs);
+    var A0=base*Math.pow(2,j),tu=ctx.tu,ans=j*h;
+    return numq(ctx.n+" has a half-life of "+h+" "+tu+". A sample starts with "+A0+" "+ctx.u+". How long does it take for only "+base+" "+ctx.u+" to remain? Give the answer in "+tu+".",
+      ans,0.1,
+      "The amount falls from \\("+A0+"\\) to \\("+base+"\\), a factor of \\(\\frac{"+base+"}{"+A0+"} = \\left(\\frac{1}{2}\\right)^{"+j+"}\\), so \\("+j+"\\) half-lives pass:"+
+      "\\[ \\begin{aligned} \\frac{t}{"+h+"} &= "+j+" \\\\ t &= "+j+" \\times "+h+" \\\\ &= "+ans+" \\text{ "+tu+"} \\end{aligned} \\]",
+      {fam:fam,A0:A0,h:h,j:j});
+  }
+  if(fam==="double"||fam==="triple"){
+    var f=fam==="double"?2:3,word=fam==="double"?"doubles":"triples";
+    var N0=pick([40,50,60,80,100,120,200,250]),j2=fam==="double"?ri(2,5):ri(2,3),p=pick([1,2,3,4]);
+    var target=N0*Math.pow(f,j2),ans2=j2*p;
+    return numq("A bacteria culture starts with "+N0+" bacteria and "+word+" every "+p+" hours. How long does it take for the culture to reach "+target+" bacteria? Give the answer in hours.",
+      ans2,0.1,
+      "The count grows from \\("+N0+"\\) to \\("+target+"\\), a factor of \\("+Math.pow(f,j2)+" = "+f+"^{"+j2+"}\\), so the culture "+word+" \\("+j2+"\\) times:"+
+      "\\[ \\begin{aligned} t &= "+j2+" \\times "+p+" \\\\ &= "+ans2+" \\text{ hours} \\end{aligned} \\]",
+      {fam:fam,N0:N0,p:p,j:j2});
+  }
+  var tab2=[[0.8,3,51.2],[0.8,2,64],[1.2,3,172.8],[1.5,2,225],[1.25,2,156.25],[0.9,2,81],[1.1,3,133.1],[0.75,2,56.25]];
+  var pr2=pick(tab2),f2=pr2[0],j3=pr2[1],tpct=pr2[2],pct2=Math.round(Math.abs(f2-1)*100);
+  var up=f2>1;
+  return numq("An asset "+(up?"increases":"decreases")+" in value by "+pct2+"% each year. After how many years is it worth "+fmt(tpct)+" percent of its original value?",
+    j3,0.1,
+    "Each year the value is multiplied by \\("+fmt(f2,3)+"\\). Check the powers: \\("+fmt(f2,3)+"^{"+j3+"} = "+fmt(Math.pow(f2,j3),4)+"\\), and \\("+fmt(tpct)+"\\) percent as a decimal is \\("+fmt(tpct/100,4)+"\\). So the value reaches that point after <b>"+j3+" years</b>.",
+    {fam:fam,f:f2,j:j3});
+});
+
+E("u7-model-equation",7,["4.30"],1,"gen",function(){
+  var fam=pick(["period","period","pct"]);
+  if(fam==="period"){
+    var mode=pick(["double","triple","halve"]);
+    var A0=pick([3,5,8,12,20,30]),p=pick([2,3,4,5,7]);
+    var fS=mode==="double"?"2":(mode==="triple"?"3":"\\frac{1}{2}");
+    var fInv=mode==="halve"?"2":"\\frac{1}{2}";
+    var ctxS=mode==="halve"
+      ?"A patch of ice on a lake starts with an area of "+A0+" m² and melts so that its area is cut in half every "+p+" days."
+      :"A patch of duckweed on a pond starts with an area of "+A0+" m² and "+(mode==="double"?"doubles":"triples")+" every "+p+" days.";
+    var corr="\\(A(t) = "+A0+" \\left("+fS+"\\right)^{\\frac{t}{"+p+"}}\\)";
+    var dis=["\\(A(t) = "+A0+" \\left("+fS+"\\right)^{"+p+"t}\\)",
+             "\\(A(t) = "+A0+" \\left("+fInv+"\\right)^{\\frac{t}{"+p+"}}\\)",
+             "\\(A(t) = "+A0+" + \\left("+fS+"\\right)^{\\frac{t}{"+p+"}}\\)"];
+    return mcq(ctxS+" Let \\(t\\) be the number of days. Which function models the area \\(A(t)\\)?",
+      corr,dis,
+      "The area is multiplied by \\("+fS+"\\) once every \\("+p+"\\) days, so in \\(t\\) days the multiplication happens \\(\\frac{t}{"+p+"}\\) times. Starting from \\("+A0+"\\), the model is <b>"+corr+"</b>.",
+      {fam:fam,mode:mode,A0:A0,p:p});
+  }
+  var MC=pick([
+    {grow:true,rs:[1,2,3,4],a0s:[800,1200,1500,2000,2500,3000,5000]},
+    {grow:false,rs:[10,15,20,25,30],a0s:[800,1200,1500,2000,2500,3000,5000]}]);
+  var grow2=MC.grow;
+  var r=pick(MC.rs),f2=grow2?1+r/100:1-r/100;
+  var A02=pick(MC.a0s);
+  var vname=grow2?"P":"V";
+  var ctx2=grow2
+    ?"A town has a population of "+A02+" and its population grows by "+r+"% each year."
+    :"A machine is worth $"+A02+" when new and its value decreases by "+r+"% each year.";
+  var corr2="\\("+vname+"(t) = "+A02+" ("+fmt(f2,3)+")^{t}\\)";
+  var w1f=(!grow2&&r===50)?0.05:r/100;
+  var wrong1="\\("+vname+"(t) = "+A02+" ("+fmt(w1f,3)+")^{t}\\)";
+  var wrong2=(grow2&&r===50)
+    ?"\\("+vname+"(t) = "+A02+" + ("+fmt(f2,3)+")^{t}\\)"
+    :"\\("+vname+"(t) = "+A02+" ("+fmt(grow2?(100-r)/100:(100+r)/100,3)+")^{t}\\)";
+  var wrong3="\\("+vname+"(t) = "+A02+" ("+r+")^{t}\\)";
+  return mcq(ctx2+" Let \\(t\\) be the number of years. Which function models the "+(grow2?"population":"value")+"?",
+    corr2,[wrong1,wrong2,wrong3],
+    "A change of \\("+r+"\\%\\) each year means the amount is multiplied by \\(1 "+(grow2?"+":"-")+" "+fmt(r/100,3)+" = "+fmt(f2,3)+"\\) every year. Starting from \\("+A02+"\\), the model is <b>"+corr2+"</b>.",
+    {fam:fam,r:r,A0:A02});
+});
+
+E("u7-compound-amount",7,["4.31"],1,"gen",function(){
+  var spec=pick([
+    {lab:"compounded annually",per:1,rates:[3,4,5,6,7,8,9,10],years:[2,3,4]},
+    {lab:"compounded annually",per:1,rates:[3,4,5,6,7,8,9,10],years:[2,3,4]},
+    {lab:"compounded semi-annually",per:2,rates:[4,6,8,10],years:[2,3]},
+    {lab:"compounded quarterly",per:4,rates:[4,8,12],years:[1,2]}]);
+  var r=pick(spec.rates),Y=pick(spec.years),per=spec.per;
+  var i=r/100/per,n=per*Y;
+  var P=pick([400,500,600,800,1000,1200,1500,2000,2500,3000,5000]);
+  var A=Math.round(P*Math.pow(1+i,n)*100)/100;
+  var loan=pick([true,false]),interest=pick([true,false,false]);
+  var ans=interest?A-P:A;
+  var intro=loan
+    ?"A loan of "+u7money(P)+" is taken at "+r+"% per year, "+spec.lab+", with no payments made."
+    :"An investment of "+u7money(P)+" earns "+r+"% per year, "+spec.lab+".";
+  var ask=interest
+    ?" How much interest has accumulated after "+Y+" years? Give the answer in dollars."
+    :" What is the value after "+Y+" years? Give the answer in dollars.";
+  return numq(intro+ask,
+    Math.round(ans*100)/100,1,
+    "The rate per compounding period is \\(i = \\frac{"+fmt(r,2)+"\\%}{"+per+"} = "+u7dec(i*100)+"\\%\\) and the number of periods is \\(n = "+per+" \\times "+Y+" = "+n+"\\). Apply the compound interest formula:"+
+    "\\[ \\begin{aligned} A &= P(1 + i)^{n} \\\\ &= "+P+" (1 + "+u7dec(i)+")^{"+n+"} \\\\ &= "+P+" ("+fmt(Math.pow(1+i,n),6)+") \\\\ &\\approx "+fmt(A,2)+" \\end{aligned} \\]"+
+    (interest?"The future value is about "+u7money(A)+", so the interest accumulated is "+u7money(A)+" minus "+u7money(P)+", which is <b>"+u7money(Math.round(ans*100)/100)+"</b>."
+             :"The value after "+Y+" years is about <b>"+u7money(A)+"</b>."),
+    {r:r,Y:Y,per:per,P:P});
+});
+
+E("u7-compound-setup",7,["4.31"],1,"gen",function(){
+  var spec=pick([
+    {lab:"semi-annually",per:2,rates:[4,6,8,10,12]},
+    {lab:"quarterly",per:4,rates:[4,8,12]},
+    {lab:"monthly",per:12,rates:[6,12]}]);
+  var j=pick(spec.rates),Y=ri(2,8),per=spec.per;
+  var i=j/100/per,n=per*Y;
+  var corr="\\(i = "+u7dec(i)+"\\), \\(n = "+n+"\\)";
+  var dis=["\\(i = "+u7dec(j/100)+"\\), \\(n = "+n+"\\)",
+           "\\(i = "+u7dec(i)+"\\), \\(n = "+Y+"\\)",
+           "\\(i = "+j+"\\), \\(n = "+n+"\\)"];
+  return mcq("An amount is invested at "+j+"% per year, compounded "+spec.lab+", for "+Y+" years. In the formula \\(A = P(1 + i)^{n}\\), what are the values of \\(i\\) and \\(n\\)?",
+    corr,dis,
+    "Interest is compounded "+per+" times a year, so the rate for each period is \\(i = \\frac{"+j+"\\%}{"+per+"} = "+u7dec(i*100)+"\\% = "+u7dec(i)+"\\) as a decimal, and the number of periods in "+Y+" years is \\(n = "+per+" \\times "+Y+" = "+n+"\\).",
+    {j:j,Y:Y,per:per});
+});
+
+E("u7-identify-growth-decay",7,["4.48"],1,"gen",function(){
+  var ask=pick(["decay","growth","yint","domain","range"]);
+  if(ask==="decay"||ask==="growth"){
+    var A=pick([2,3,4,5,6]),fr=pick([[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5]]),B=pick([2,3,4,5]);
+    var dec="\\(y = "+A+" \\left(\\frac{"+fr[0]+"}{"+fr[1]+"}\\right)^{x}\\)";
+    var gro="\\(y = "+pick([2,3,4,5])+" ("+B+")^{x}\\)";
+    var negD="\\(y = -"+A+" \\left(\\frac{"+fr[0]+"}{"+fr[1]+"}\\right)^{x}\\)";
+    var negG="\\(y = -"+pick([2,3,4])+" ("+B+")^{x}\\)";
+    var lin="\\(y = "+(ask==="decay"?"-":"")+pick([2,3,4])+"x + "+pick([3,5,7,9])+"\\)";
+    if(ask==="decay")
+      return mcq("Which function represents <b>exponential decay</b>?",dec,[gro,negD,lin],
+        "Exponential decay needs a positive coefficient and a base between \\(0\\) and \\(1\\). Only <b>"+dec+"</b> has both: the base \\(\\frac{"+fr[0]+"}{"+fr[1]+"}\\) is less than \\(1\\), so the values shrink as \\(x\\) grows. A negative coefficient flips the graph, and the last option is linear, not exponential.",{ask:ask});
+    return mcq("Which function represents <b>exponential growth</b>?",gro,[dec,negG,lin],
+      "Exponential growth needs a positive coefficient and a base greater than \\(1\\). Only <b>"+gro+"</b> has both, so its values increase faster and faster as \\(x\\) grows. A base between \\(0\\) and \\(1\\) gives decay, a negative coefficient flips the graph, and the last option is linear, not exponential.",{ask:ask});
+  }
+  if(ask==="yint"){
+    var a2=pick([2,3,4,5,6,7,8,9]),b2=pick([2,3,4,5,10,0.5,0.25,1.5]);
+    if(b2===a2)b2=3;
+    var dis2=u7pick3(""+a2,[""+b2,"1",fmt(a2*b2,3),""+(a2+1)]);
+    return mcq("What is the <b>y-intercept</b> of the graph of \\(y = "+a2+" ("+fmt(b2,3)+")^{x}\\)?",
+      ""+a2,balDp(""+a2,dis2),
+      "The y-intercept occurs at \\(x = 0\\). Since \\(("+fmt(b2,3)+")^{0} = 1\\), the value is \\("+a2+" \\times 1 = "+a2+"\\). The y-intercept is <b>"+a2+"</b>.",{ask:ask});
+  }
+  if(ask==="domain"){
+    var b3=pick([2,3,10,"\\frac{1}{2}"]);
+    var b3s=typeof b3==="string"?"\\left("+b3+"\\right)":""+b3;
+    return mcq("What is the <b>domain</b> of the function \\(y = "+b3s+"^{x}\\)?",
+      "the set of all real numbers",
+      ["\\(\\{x \\mid x > 0\\}\\)","\\(\\{x \\mid x \\ge 0\\}\\)","every real number except zero itself"],
+      "An exponential function is defined for every real exponent: positive, negative and zero inputs all give a value. The domain is <b>the set of all real numbers</b>. It is the range, not the domain, that is restricted.",{ask:ask});
+  }
+  var a4=pick([2,3,4,5]),b4=pick([2,3,5,"\\frac{1}{3}"]);
+  var b4s=typeof b4==="string"?"\\left("+b4+"\\right)":""+b4;
+  return mcq("What is the <b>range</b> of the function \\(y = "+a4+" "+b4s+"^{x}\\)?",
+    "\\(\\{y \\mid y > 0\\}\\)",
+    ["\\(\\{y \\mid y \\ge 0\\}\\)","\\(\\{y \\mid y < 0\\}\\)","the set of all real numbers"],
+    "The power "+(typeof b4==="string"?"\\(\\left(\\frac{1}{3}\\right)^{x}\\)":"\\("+b4+"^{x}\\)")+" is always positive, and multiplying by \\("+a4+"\\) keeps it positive. The graph approaches \\(y = 0\\) but never reaches it, so the range is <b>\\(\\{y \\mid y > 0\\}\\)</b>.",{ask:ask});
+});
+
+E("u7-sketch-key-points",7,["4.35"],1,"gen",function(){
+  var c=pick([[2,1],[3,1],[4,1],[5,1],[10,1],[1,2],[1,3],[1,4],[2,3],[3,2],[5,2],[3,4]]);
+  var cv=c[0]/c[1],a=pick([1,1,1,2,3]);
+  var span=Math.min(3,Math.max(1.5,Math.log(28/a)/Math.log(Math.max(cv,1/cv))));
+  var fn=function(x){return a*Math.pow(cv,x);};
+  var y1=Math.ceil(Math.max(fn(-span),fn(span)))+1;
+  var fig=u7plot(fn,-span,span,-2,y1,{gx:1,gy:5,labelX:true,labelY:true,points:[[0,a],[1,a*cv]]});
+  var eqStr="\\(y = "+(a===1?"":a)+" "+u7baseStr(c)+"^{x}\\)";
+  var ask=pick(["yint","pt1","ptm1","asym"]);
+  var q;
+  if(ask==="yint"){
+    var dis=u7pick3(""+a,["0",fmt(cv,3),"1","-1",fmt(a*cv,3)]);
+    q=mcq("The graph of "+eqStr+" is shown. What is its <b>y-intercept</b>?",""+a,balDp(""+a,dis),
+      "The graph crosses the y-axis at the marked point \\((0, "+a+")\\), and substituting \\(x = 0\\) gives \\(y = "+(a===1?"":a)+" \\times 1 = "+a+"\\). The y-intercept is <b>"+a+"</b>.",{ask:ask,a:a,c:c});
+  }else if(ask==="pt1"){
+    var v1=u7rat(a*c[0],c[1]),v1i=u7rat(a*c[1],c[0]);
+    var dis2=u7pick3("\\((1, "+v1+")\\)",["\\((1, "+v1i+")\\)","\\(("+u7rat(c[0],c[1])+", "+a+")\\)","\\((0, "+v1+")\\)"]);
+    q=mcq("The graph of "+eqStr+" is shown. Which point lies on the graph?","\\((1, "+v1+")\\)",dis2,
+      "At \\(x = 1\\) the function value is \\("+(a===1?"":a)+" \\times "+u7rat(c[0],c[1])+" = "+v1+"\\), and the marked point \\((1, "+v1+")\\) sits on the curve. The point <b>\\((1, "+v1+")\\)</b> lies on the graph.",{ask:ask,a:a,c:c});
+  }else if(ask==="ptm1"){
+    var vm=u7rat(a*c[1],c[0]),vp=u7rat(a*c[0],c[1]);
+    var dis3=u7pick3("\\((-1, "+vm+")\\)",["\\((-1, "+vp+")\\)","\\((1, "+vm+")\\)","\\((-1, -"+vm+")\\)"]);
+    q=mcq("The graph of "+eqStr+" is shown. Which point lies on the graph?","\\((-1, "+vm+")\\)",dis3,
+      "At \\(x = -1\\) the function value is \\("+(a===1?"":a)+" \\times "+u7baseStr(c)+"^{-1} = "+vm+"\\), since a negative exponent gives the reciprocal of the base. The point <b>\\((-1, "+vm+")\\)</b> lies on the graph.",{ask:ask,a:a,c:c});
+  }else{
+    q=mcq("The graph of "+eqStr+" is shown. What is the <b>horizontal asymptote</b> of the graph?",
+      "\\(y = 0\\)",["\\(x = 0\\)","\\(y = 1\\)","\\(y = -1\\)"],
+      "As \\(x\\) moves far in the direction where the base raised to \\(x\\) shrinks, the values approach \\(0\\) without ever reaching it, and the curve flattens along the x-axis. The horizontal asymptote is <b>\\(y = 0\\)</b>.",{ask:ask,a:a,c:c});
+  }
+  q.figure=fig;
+  return q;
+});
+
+E("u7-transformed-graph",7,["4.36"],2,"gen",function(){
+  var c=pick([[2,1],[3,1],[5,1],[1,2],[1,3]]),cv=c[0]/c[1];
+  var form=pick(["A","A","B","C"]);
+  var a=form==="B"?1:pick([-3,-2,-1,1,1,2,3]);
+  var h=form==="A"?pick([-4,-3,-2,-1,1,2,3,4]):0;
+  var k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var bE=form==="B"?pick([2,3]):1;
+  var exp=form==="B"?(bE===1?"x":bE+"x"):(h===0?"x":("x"+u7sgn(-h)));
+  if(form==="A"&&h!==0)exp="x"+u7sgn(-h);
+  var eq="\\(y = "+u7expStr(a,c,exp,k)+"\\)";
+  var fn=function(x){return a*Math.pow(cv,bE*(x-h))+k;};
+  var ask=pick(form==="A"?["asym","range","trans","map"]:["asym","range","desc"]);
+  if(ask==="desc"){
+    var refl=pick([true,false]),hh=pick([-4,-3,-2,-1,1,2,3,4]),kk=pick([-4,-3,-2,-1,1,2,3,4]);
+    var aa=refl?-1:1;
+    var corrEq="\\(y = "+u7expStr(aa,c,"x"+u7sgn(-hh),kk)+"\\)";
+    var disEq=["\\(y = "+u7expStr(-aa,c,"x"+u7sgn(-hh),kk)+"\\)",
+               "\\(y = "+u7expStr(aa,c,"x"+u7sgn(hh),kk)+"\\)",
+               "\\(y = "+u7expStr(aa,c,"x"+u7sgn(-hh),-kk)+"\\)"];
+    var dirH=hh>0?"right":"left",dirK=kk>0?"up":"down";
+    return mcq("The graph of \\(y = "+u7baseStr(c)+"^{x}\\) is "+(refl?"reflected in the \\(x\\)-axis and ":"")+"translated "+Math.abs(hh)+" units "+dirH+" and "+Math.abs(kk)+" units "+dirK+". What is the equation of the image graph?",
+      corrEq,disEq,
+      "A translation of "+Math.abs(hh)+" units "+dirH+" replaces \\(x\\) with \\(x"+u7sgn(-hh)+"\\), "+(refl?"the reflection changes the sign of the coefficient, and ":"")+"a translation of "+Math.abs(kk)+" units "+dirK+" adds \\("+kk+"\\) to the whole function. The image is <b>"+corrEq+"</b>.",
+      {ask:ask,form:form});
+  }
+  if(ask==="trans"){
+    var dH=h>0?"right":"left",dK=k>0?"up":"down";
+    var dHf=h>0?"left":"right",dKf=k>0?"down":"up";
+    var corrT=Math.abs(h)+" units "+dH+" and "+Math.abs(k)+" units "+dK;
+    var disT=[Math.abs(h)+" units "+dHf+" and "+Math.abs(k)+" units "+dK,
+              Math.abs(h)+" units "+dH+" and "+Math.abs(k)+" units "+dKf,
+              Math.abs(h)+" units "+dHf+" and "+Math.abs(k)+" units "+dKf];
+    return mcq("The graph of \\(y = "+u7baseStr(c)+"^{x}\\) is transformed into the graph of "+eq+". Which translation is involved?",
+      corrT,disT,
+      "In "+eq+", the exponent \\(x"+u7sgn(-h)+"\\) means the graph shifts "+Math.abs(h)+" units "+dH+" (the sign inside the exponent works in the opposite direction), and the term \\("+u7sgn(k)+"\\) at the end shifts it "+Math.abs(k)+" units "+dK+". The translation is <b>"+corrT+"</b>.",
+      {ask:ask,form:form,h:h,k:k});
+  }
+  if(ask==="map"){
+    var aStr=a===1?"":(a===-1?"-":""+a);
+    var corrM="\\((x"+u7sgn(h)+", "+aStr+"y"+u7sgn(k)+")\\)";
+    var disM=["\\((x"+u7sgn(-h)+", "+aStr+"y"+u7sgn(k)+")\\)",
+              "\\((x"+u7sgn(h)+", "+aStr+"y"+u7sgn(-k)+")\\)",
+              "\\(("+aStr+"y"+u7sgn(k)+", x"+u7sgn(h)+")\\)"];
+    return mcq("Each point \\((x, y)\\) on the graph of \\(y = "+u7baseStr(c)+"^{x}\\) is mapped to a point on the graph of "+eq+". What is the mapping rule?",
+      corrM,disM,
+      "The exponent \\(x"+u7sgn(-h)+"\\) shifts every point "+Math.abs(h)+" units "+(h>0?"right":"left")+", so \\(x\\) becomes \\(x"+u7sgn(h)+"\\) in the image. The coefficient "+(a===1?"leaves the \\(y\\)-values unchanged":(a===-1?"negates the \\(y\\)-values":"multiplies the \\(y\\)-values by \\("+a+"\\)"))+", and the final term shifts them by \\("+k+"\\) . The mapping rule is <b>"+corrM+"</b>.",
+      {ask:ask,form:form,a:a,h:h,k:k});
+  }
+  var span=Math.min(4,Math.max(1.5,Math.log(30/Math.abs(a))/Math.log(Math.max(cv,1/cv))));
+  var ylo=k-6,yhi=k+Math.max(8,Math.ceil(Math.max(fn(-span),fn(span)))-k+2);
+  var fig=u7plot(fn,-span,span,ylo,yhi,{gx:1,gy:2,labelX:true,asymY:k,points:[[0,a+k]]});
+  if(ask==="asym"){
+    var q1=mcq("The graph of "+eq+" is shown. What is the <b>horizontal asymptote</b> of the graph?",
+      "\\(y = "+k+"\\)",["\\(y = "+(-k)+"\\)","\\(y = 0\\)","\\(x = "+k+"\\)"],
+      "The power part of "+eq+" stays positive and can get as close to \\(0\\) as we like, so the values of the function approach \\(0 "+u7sgn(k)+" = "+k+"\\) without reaching it. The dashed line on the graph is the horizontal asymptote, <b>\\(y = "+k+"\\)</b>.",{ask:ask,form:form,k:k});
+    q1.figure=fig;return q1;
+  }
+  var corrR=a>0?"\\(\\{y \\mid y > "+k+"\\}\\)":"\\(\\{y \\mid y < "+k+"\\}\\)";
+  var disR=a>0?["\\(\\{y \\mid y \\ge "+k+"\\}\\)","\\(\\{y \\mid y < "+k+"\\}\\)","\\(\\{x \\mid x > "+k+"\\}\\)"]
+              :["\\(\\{y \\mid y \\le "+k+"\\}\\)","\\(\\{y \\mid y > "+k+"\\}\\)","\\(\\{x \\mid x < "+k+"\\}\\)"];
+  var q2=mcq("The graph of "+eq+" is shown. What is the <b>range</b> of the function?",
+    corrR,disR,
+    "The power part is always positive. "+(a>0?"Multiplying by \\("+a+"\\) keeps the values positive, and adding \\("+k+"\\) moves them above \\("+k+"\\), never reaching it.":"Multiplying by \\("+a+"\\) makes the values negative, and adding \\("+k+"\\) moves them below \\("+k+"\\), never reaching it.")+" The range is <b>"+corrR+"</b>.",{ask:ask,form:form,a:a,k:k});
+  q2.figure=fig;return q2;
+});
+
+E("u7-characteristics",7,["4.48"],1,"gen",function(){
+  var ask=pick(["true","asym","xint","range"]);
+  if(ask==="true"){
+    var a=pick([2,3,4,5]),c=pick([[2,1],[3,1],[1,2],[1,3],[2,3],[3,2]]),cv=c[0]/c[1];
+    var dir=cv>1?"increasing":"decreasing",dirF=cv>1?"decreasing":"increasing";
+    var eq="\\(y = "+a+" "+u7baseStr(c)+"^{x}\\)";
+    var corr="The graph is "+dir+" and its y-intercept is "+a+".";
+    var dis=["The graph is "+dirF+" and its y-intercept is "+a+".",
+             "The graph is "+dir+" and its y-intercept is \\("+u7rat(c[0],c[1])+"\\).",
+             "The graph is "+dirF+" and its y-intercept is \\("+u7rat(c[0],c[1])+"\\)."];
+    return mcq("Which statement is <b>true</b> for the graph of "+eq+"?",
+      corr,dis,
+      "The base \\("+u7rat(c[0],c[1])+"\\) is "+(cv>1?"greater than \\(1\\), so the values grow as \\(x\\) increases: the graph is "+dir+".":"less than \\(1\\), so the values shrink as \\(x\\) increases: the graph is "+dir+".")+" At \\(x = 0\\) the value is \\("+a+" \\times 1 = "+a+"\\), so the y-intercept is \\("+a+"\\). The true statement is: <b>"+corr+"</b>",{ask:ask});
+  }
+  if(ask==="asym"){
+    var k2=pick([0,0,2,3,-2,-4]),c2=pick([[2,1],[3,1],[1,2],[2,3]]);
+    var eq2="\\(y = "+u7expStr(1,c2,"x",k2)+"\\)";
+    var asy=k2===0?"y = 0":"y = "+k2;
+    var corr2="The graph gets closer and closer to the line \\("+asy+"\\) but never touches or crosses it.";
+    var dis2=["The graph crosses the line \\("+asy+"\\) at some point when \\(x\\) is very large.",
+              "The graph stops at the line \\("+asy+"\\) and does not continue past it in either direction from there.",
+              "The line \\(x = "+k2+"\\) is the horizontal asymptote of the graph shown."];
+    return mcq("Which statement best describes the <b>horizontal asymptote</b> of the graph of "+eq2+"?",
+      corr2,dis2,
+      "The power in "+eq2+" is always positive and can become as small as we like, so the function values approach \\("+k2+"\\) (the asymptote \\("+asy+"\\)) without ever equalling it. That is the significance of the asymptote: it is a boundary the graph approaches but never reaches, and the value \\("+k2+"\\) is excluded from the range.",{ask:ask,k:k2});
+  }
+  if(ask==="xint"){
+    var k3=pick([-5,-4,-3,-2,2,3,4,5]),c3=pick([[2,1],[3,1],[5,1]]);
+    var eq3="\\(y = "+u7expStr(1,c3,"x",k3)+"\\)";
+    var has=k3<0;
+    var corr3=has
+      ?"It has an x-intercept, because the range \\(\\{y \\mid y > "+k3+"\\}\\) includes \\(0\\)."
+      :"It has no x-intercept, because the values are always greater than \\("+k3+"\\), so the graph never reaches \\(y = 0\\).";
+    var dis3=has
+      ?["It has no x-intercept, because exponential graphs never cross the x-axis at any point.",
+        "Its x-intercept is the point \\((0, "+(1+k3)+")\\), on the y-axis.",
+        "It has an x-intercept at the point where the graph meets its horizontal asymptote, far out to the right."]
+      :["It has an x-intercept, because the range \\(\\{y \\mid y > "+k3+"\\}\\) includes \\(0\\).",
+        "Its x-intercept is the point \\((0, "+(1+k3)+")\\), on the y-axis.",
+        "It has an x-intercept at the point where the graph meets its horizontal asymptote, far out to the right of the graph."];
+    return mcq("Which statement about the <b>x-intercept</b> of the graph of "+eq3+" is correct?",
+      corr3,dis3,
+      "The range of "+eq3+" is \\(\\{y \\mid y > "+k3+"\\}\\) because the power is positive and the graph is shifted by \\("+k3+"\\) . "+(has?"Since \\(0\\) is greater than \\("+k3+"\\), the value \\(0\\) is in the range, so the graph crosses the x-axis: it has an x-intercept. The point \\((0, "+(1+k3)+")\\) is the y-intercept, not the x-intercept.":"Since every value stays above \\("+k3+" > 0\\), the graph never reaches \\(y = 0\\), so there is no x-intercept.")+" The correct statement is: <b>"+corr3+"</b>",{ask:ask,k:k3});
+  }
+  var a4=pick([1,2,3]),k4=pick([-4,-3,-2,-1,1,2,3,4]),c4=pick([[2,1],[3,1],[1,2]]);
+  var dom=pick([true,false]);
+  if(dom){
+    return mcq("What is the <b>domain</b> of the function \\(y = "+u7expStr(a4,c4,"x",k4)+"\\)?",
+      "\\(\\mathbb{R}\\)",
+      ["\\(\\{x \\mid x > 0\\}\\)","\\(\\{x \\mid x \\ge 0\\}\\)","\\(\\{x \\mid x \\ne 0\\}\\)"],
+      "The exponent \\(x\\) can be any real number: the power is defined for positive, negative and zero inputs alike, and the shifts do not restrict the inputs. The domain is <b>all real numbers</b>.",{ask:ask});
+  }
+  return mcq("What is the <b>range</b> of the function \\(y = "+u7expStr(a4,c4,"x",k4)+"\\)?",
+    "\\(\\{y \\mid y > "+k4+"\\}\\)",
+    ["\\(\\{y \\mid y \\ge "+k4+"\\}\\)","\\(\\{y \\mid y > 0\\}\\)","the set of all real numbers"],
+    "The power is always positive, and multiplying by \\("+a4+"\\) keeps it positive, so the function values are all greater than the shift \\("+k4+"\\) and can approach it as closely as we like without reaching it. The range is <b>\\(\\{y \\mid y > "+k4+"\\}\\)</b>.",{ask:ask,k:k4});
+});
+
+E("u7-compare-models",7,["4.30"],3,"gen",function(){
+  var fam=pick(["growth","growth","decay","after"]);
+  if(fam==="growth"||fam==="after"){
+    var pr=pick([[2,4],[2,6],[3,6],[3,9],[2,8],[4,8]]);
+    var fB=pr[0],fA=pr[1],ratio=fA/fB,k=pick([2,3,4]);
+    var P=pick([40,50,60,80,100,120,150,200]),Q=P*Math.pow(ratio,k);
+    var ctx=pick(["bacteria cultures growing in two dishes","yeast samples fermenting in two flasks","algae populations growing in two tanks"]);
+    var stem="Two "+ctx+" start at the same time. Culture A starts with "+P+" organisms and multiplies by "+fA+" every hour. Culture B starts with "+Q+" organisms and multiplies by "+fB+" every hour.";
+    if(fam==="growth"){
+      var dis=u7pick3(""+k,[""+(k-1),""+(k+1),"They will never be equal",""+(k+2)]);
+      return mcq(stem+" After how many hours will the two cultures have the same number of organisms?",
+        ""+k,dis,
+        "Set the two models equal and compare the ratio of the amounts:"+
+        "\\[ \\begin{aligned} "+P+" ("+fA+")^{t} &= "+Q+" ("+fB+")^{t} \\\\ \\left(\\frac{"+fA+"}{"+fB+"}\\right)^{t} &= \\frac{"+Q+"}{"+P+"} \\\\ "+ratio+"^{t} &= "+Math.pow(ratio,k)+" = "+ratio+"^{"+k+"} \\\\ t &= "+k+" \\end{aligned} \\]"+
+        "Culture B starts ahead, but culture A grows by the larger factor each hour and catches up after <b>"+k+" hours</b>.",
+        {fam:fam,P:P,Q:Q,fA:fA,fB:fB,k:k});
+    }
+    var t2=k+pick([1,2]);
+    var dis2=["Culture B","They are equal at that time","It cannot be determined from the information given"];
+    return mcq(stem+" Which culture has more organisms after "+t2+" hours?",
+      "Culture A",dis2,
+      "The two cultures are equal after "+k+" hours (their ratio equation gives "+ratio+"^{t} = "+ratio+"^{"+k+"}). After that time, culture A, which multiplies by the larger factor each hour, pulls ahead and stays ahead. After "+t2+" hours, <b>culture A</b> has more organisms.",{fam:fam,t:t2,k:k});
+  }
+  var QB=pick([50,80,100,160,200]),k3=pick([2,3,4]),QA=QB*Math.pow(2,k3);
+  var dis3=u7pick3(""+k3,[""+(k3-1),""+(k3+1),"They will never be equal",""+(k3+2)]);
+  return mcq("Two radioactive samples are stored side by side. Sample A starts with "+QA+" mg and its amount is multiplied by \\(\\frac{1}{4}\\) every hour. Sample B starts with "+QB+" mg and its amount is multiplied by \\(\\frac{1}{2}\\) every hour. After how many hours will the two samples contain the same amount?",
+    ""+k3,dis3,
+    "Set the two models equal and compare the ratio of the amounts:"+
+    "\\[ \\begin{aligned} "+QA+" \\left(\\frac{1}{4}\\right)^{t} &= "+QB+" \\left(\\frac{1}{2}\\right)^{t} \\\\ \\frac{"+QA+"}{"+QB+"} &= \\left(\\frac{1/2}{1/4}\\right)^{t} \\\\ "+Math.pow(2,k3)+" &= 2^{t} \\\\ t &= "+k3+" \\end{aligned} \\]"+
+    "Sample A starts with more, but it decays by the larger factor each hour, so sample B catches up after <b>"+k3+" hours</b>.",
+    {fam:fam,QA:QA,QB:QB,k:k3});
+});
+
+E("u7-model-from-data",7,["4.30"],3,"gen",function(){
+  var spec=pick([
+    {f:[2,1],A0s:[15,25,40,60,90,120,200],ctx:"A researcher counts the bacteria in a dish.",unit:"bacteria",tu:"hours"},
+    {f:[3,1],A0s:[4,6,9,12,20,30,50],ctx:"A scientist records the number of fruit flies in a jar.",unit:"fruit flies",tu:"days"},
+    {f:[4,1],A0s:[3,5,8,12,20],ctx:"A volunteer records the number of yeast cells under a microscope.",unit:"cells",tu:"hours"},
+    {f:[1,2],A0s:[96,160,240,320,480,640,960],ctx:"A pharmacist measures the amount of a drug remaining in a test solution.",unit:"mg",tu:"hours"},
+    {f:[3,2],A0s:[32,64,96,128],ctx:"A gardener measures the area covered by a ground-cover plant.",unit:"cm²",tu:"weeks"}]);
+  var f=spec.f[0]/spec.f[1],A0=pick(spec.A0s);
+  var vals=[0,1,2,3].map(function(t){return Math.round(A0*Math.pow(f,t)*100)/100;});
+  var table="At 0 "+spec.tu+": "+fmt(vals[0],2)+"; at 1: "+fmt(vals[1],2)+"; at 2: "+fmt(vals[2],2)+"; at 3: "+fmt(vals[3],2)+".";
+  var fStr=u7rat(spec.f[0],spec.f[1]);
+  var ask=pick(["predict","predict","time","model"]);
+  if(ask==="predict"){
+    var t5=pick([4,5,6]),ans5=Math.round(A0*Math.pow(f,t5)*100)/100;
+    return numq(spec.ctx+" The counts are: "+table+" Assuming the pattern continues, how many "+spec.unit+" will there be after "+t5+" "+spec.tu+"?",
+      ans5,Math.max(0.6,ans5*0.01),
+      "Compare consecutive values: each count is the previous one multiplied by \\("+fStr+"\\), so the model is \\(N(t) = "+A0+" \\left("+fStr+"\\right)^{t}\\). Then:"+
+      "\\[ \\begin{aligned} N("+t5+") &= "+A0+" \\left("+fStr+"\\right)^{"+t5+"} \\\\ &= "+A0+" \\times "+fmt(Math.pow(f,t5),4)+" \\\\ &= "+fmt(ans5,2)+" \\end{aligned} \\]",
+      {ask:ask,f:f,A0:A0,t:t5});
+  }
+  if(ask==="time"){
+    var kk=pick([4,5,6]),target=Math.round(A0*Math.pow(f,kk)*100)/100;
+    return numq(spec.ctx+" The counts are: "+table+" Assuming the pattern continues, after how many "+spec.tu+" will the amount reach "+fmt(target,2)+" "+spec.unit+"?",
+      kk,0.1,
+      "Each value is the previous one multiplied by \\("+fStr+"\\), so the model is \\(N(t) = "+A0+" \\left("+fStr+"\\right)^{t}\\). The target satisfies \\("+fmt(target,2)+" = "+A0+" \\times \\left("+fStr+"\\right)^{"+kk+"}\\), since \\(\\left("+fStr+"\\right)^{"+kk+"} = "+fmt(Math.pow(f,kk),4)+"\\) and \\("+A0+" \\times "+fmt(Math.pow(f,kk),4)+" = "+fmt(target,2)+"\\). The amount reaches the target after <b>"+kk+" "+spec.tu+"</b>.",{ask:ask,f:f,A0:A0,k:kk});
+  }
+  var corrM="\\(N(t) = "+A0+" \\left("+fStr+"\\right)^{t}\\)";
+  var disM=["\\(N(t) = "+A0+" \\left("+u7rat(spec.f[1],spec.f[0])+"\\right)^{t}\\)",
+            "\\(N(t) = "+A0+((vals[1]-vals[0])>=0?" + ":" - ")+fmt(Math.abs(vals[1]-vals[0]),2)+"t\\)",
+            "\\(N(t) = "+fmt(vals[1],2)+" \\left("+fStr+"\\right)^{t}\\)"];
+  return mcq(spec.ctx+" The counts are: "+table+" Which function models the amount \\(N(t)\\) after \\(t\\) "+spec.tu+"?",
+    corrM,disM,
+    "The starting value is \\("+A0+"\\) (at \\(t = 0\\)), and each value is the previous one multiplied by \\("+fStr+"\\): the ratios are all \\("+fStr+"\\). A constant ratio means an exponential model, <b>"+corrM+"</b>. The option with a \\(t\\) added on is linear and fits only the first step.",{ask:ask,f:f,A0:A0});
+});
+
+E("u7-traits-match-cr",7,["4.48"],3,"gen",function(){
+  var fam=pick(["decay","growth"]);
+  var a=pick([2,3,4,5,6,8]);
+  var bp=fam==="decay"?pick([[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5]]):pick([[2,1],[3,1],[4,1],[3,2],[4,3],[5,2],[5,3]]);
+  var t=pick([2,3]);
+  var pt=Math.pow(bp[0],t), qt=Math.pow(bp[1],t);
+  var pVal=u7rat(a*pt,qt);
+  var key="\\(y = "+u7expStr(a,bp,"x",0)+"\\)";
+  var flip="\\(y = "+u7expStr(a,[bp[1],bp[0]],"x",0)+"\\)";
+  var shift="\\(y = "+u7expStr(a-1,bp,"x",1)+"\\)";
+  var b2=a+pick([1,2,3]);
+  var big="\\(y = "+u7expStr(b2,bp,"x",0)+"\\)";
+  return mcq("A function is "+(fam==="decay"?"decreasing":"increasing")+", has y-intercept "+a+", and passes through the point \\("+t+", "+pVal+"\\). Which function could it be?",
+    key,[flip,shift,big],
+    "Check the key against all three traits. At \\(x = 0\\) the power is \\(1\\), so its y-intercept is \\("+a+"\\). Its base is \\("+u7rat(bp[0],bp[1])+"\\), which is "+(fam==="decay"?"less than \\(1\\)":"greater than \\(1\\)")+", so the graph is "+(fam==="decay"?"decreasing":"increasing")+". At \\(x = "+t+"\\): \\("+a+" \\times "+u7rat(pt,qt)+" = "+pVal+"\\), the given point. Each other option breaks a trait: the flipped base runs in the wrong direction, the option ending in \\(+ 1\\) keeps the intercept but misses the point, and the larger coefficient moves the intercept. The function is <b>"+key+"</b>.",
+    {fam:fam,a:a,bp:bp,t:t});
+});
+
+E("u7-graph-point-value-cr",7,["4.35"],2,"gen",function(){
+  var bp=pick([[2,1],[3,1],[4,1],[5,1],[1,2],[1,3],[2,3],[3,2]]);
+  var cv=bp[0]/bp[1];
+  var t=pick([2,3]);
+  var s=pick([-2,-1,2,3,4].filter(function(v){return v!==t;}));
+  var V=Math.pow(cv,t);
+  var vStr=u7rat(Math.pow(bp[0],t),Math.pow(bp[1],t));
+  var ans=Math.pow(cv,s);
+  var ansStr=s>=0?u7rat(Math.pow(bp[0],s),Math.pow(bp[1],s)):u7rat(Math.pow(bp[1],-s),Math.pow(bp[0],-s));
+  var cStr=u7rat(bp[0],bp[1]);
+  var span=Math.max(2.5,t+0.6);
+  var y1=Math.ceil(Math.max(V,Math.pow(cv,span))*1.2)+1;
+  var fig=u7plot(function(x){return Math.pow(cv,x);},-2.5,span,-2,y1,{gx:1,gy:(y1>60?25:5),labelX:true,labelY:true,points:[[t,V]]});
+  var q=numq("The graph of \\(y = c^{x}\\) is shown, and it passes through the marked point \\("+t+", "+vStr+"\\). Determine the value of the function when \\(x = "+s+"\\).",
+    ans,Math.max(0.01,Math.abs(ans)*0.002),
+    "The marked point lies on the graph, so \\("+vStr+" = c^{"+t+"}\\), and taking the "+(t===2?"square":"cube")+" root gives \\(c = "+cStr+"\\). Then at \\(x = "+s+"\\): \\[ y = \\left("+cStr+"\\right)^{"+s+"} = "+ansStr+(Number.isInteger(ans)?"":" \\approx "+fmt(ans,4))+" \\] The value of the function is <b>\\("+ansStr+"\\)</b>.",
+    {bp:bp,t:t,s:s});
+  q.figure=fig;
+  return q;
+});
+
+/* ----- bank-u8.js ----- */
+// Math 3200 Unit 8 Logarithmic Functions question bank
+// CRMARKS: u8-convert-form=1
+// CRMARKS: u8-estimate-approx=1
+// CRMARKS: u8-exact-value=1
+// CRMARKS: u8-extraneous=3
+// CRMARKS: u8-finance-periods=2
+// CRMARKS: u8-growth-time=2
+// CRMARKS: u8-inverse-graph=1
+// CRMARKS: u8-laws-equivalent=2
+// CRMARKS: u8-log-scales=2
+// CRMARKS: u8-model-log=3
+// CRMARKS: u8-sketch-log=1
+// CRMARKS: u8-solve-exp-logs=2
+// CRMARKS: u8-solve-log-eq=2
+// CRMARKS: u8-transformed-log=1
+/* ================= Unit 8: Logarithmic Functions ================= */
+/* Unit 8: Logarithmic Functions. All helpers are u8-prefixed. */
+function u8L(b, arg){ return "\\log_{" + b + "} " + arg; }
+function u8pow(b, e){ return (b < 0 ? "(" + b + ")" : "" + b) + "^{" + e + "}"; }
+function u8frac(n, d){ return "\\frac{" + n + "}{" + d + "}"; }
+function u8sgn(v){ return v >= 0 ? " + " + v : " - " + (-v); }
+function u8argPM(a, s){ return s > 0 ? "(x + " + a + ")" : "(x - " + a + ")"; }
+var u8LOG10S = {"2":"0.301","3":"0.477","4":"0.602","5":"0.699","7":"0.845","8":"0.903","9":"0.954"};
+var u8RES = {"6":"0.778","11":"1.041","12":"1.079","13":"1.114","14":"1.146","15":"1.176","17":"1.230","18":"1.255","19":"1.279","20":"1.301","21":"1.322","22":"1.342","25":"1.398","26":"1.415","30":"1.477","33":"1.519","35":"1.544","40":"1.602","45":"1.653","50":"1.699","55":"1.740","60":"1.778","70":"1.845","80":"1.903","90":"1.954","100":"2.000"};
+var u8LOG2S = {"3":"1.585","5":"2.322","7":"2.807","9":"3.170","11":"3.459","13":"3.700","15":"3.907","17":"4.087","19":"4.248","21":"4.392","25":"4.644","27":"4.755"};
+function u8tuples(){
+  var out = [], seen = {};
+  [2,3,5].forEach(function(b){
+    for (var k = 1; k <= 7; k++){
+      var v = Math.pow(b, k); if (v > 256) continue;
+      var r, d, s, t, a;
+      for (r = 2; r <= 40; r++){
+        if (v % r) continue;
+        d = v / r; if (d < 1 || d >= r) continue;
+        a = r - d; if (a < 1 || a > 12) continue;
+        var key = b + "," + k + ",-" + a; if (seen[key]) continue; seen[key] = 1;
+        out.push({fam:"minus", b:b, k:k, a:a, r:r, r2:-d, v:v});
+      }
+      for (s = 1; s * s < v; s++){
+        if (v % s) continue;
+        t = v / s; a = t - s; if (a < 1 || a > 12) continue;
+        var key2 = b + "," + k + ",+" + a; if (seen[key2]) continue; seen[key2] = 1;
+        out.push({fam:"plus", b:b, k:k, a:a, r:s, r2:-t, v:v});
+      }
+    }
+  });
+  return out;
+}
+function u8invSVG(c){
+  var ox = 70, oy = 135, u = 20, tmax = c === 2 ? 2.3 : 1.6;
+  function PX(x){ return (ox + x * u).toFixed(1); }
+  function PY(y){ return (oy - y * u).toFixed(1); }
+  var exp = [], log = [], t;
+  for (t = -2; t <= tmax + 0.001; t += 0.2){ exp.push(PX(t) + "," + PY(Math.pow(c, t))); log.push(PX(Math.pow(c, t)) + "," + PY(t)); }
+  var s = "<svg width=\"240\" height=\"195\" viewBox=\"0 0 240 195\" xmlns=\"http://www.w3.org/2000/svg\">";
+  s += "<line x1=\"8\" y1=\"" + oy + "\" x2=\"232\" y2=\"" + oy + "\" stroke=\"#666\" stroke-width=\"1\"/>";
+  s += "<line x1=\"" + ox + "\" y1=\"8\" x2=\"" + ox + "\" y2=\"186\" stroke=\"#666\" stroke-width=\"1\"/>";
+  s += "<line x1=\"" + PX(-2.6) + "\" y1=\"" + PY(-2.6) + "\" x2=\"" + PX(2.6) + "\" y2=\"" + PY(2.6) + "\" stroke=\"#888\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/>";
+  s += "<polyline points=\"" + exp.join(" ") + "\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\"/>";
+  s += "<polyline points=\"" + log.join(" ") + "\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2\"/>";
+  s += "<text x=\"" + PX(tmax) + "\" y=\"" + (PY(Math.pow(c, tmax)) - 4) + "\" font-size=\"11\" fill=\"#2563eb\">y = " + c + "^x</text>";
+  s += "<text x=\"" + (PX(Math.pow(c, tmax)) - 62) + "\" y=\"" + (PY(tmax) + 14) + "\" font-size=\"11\" fill=\"#dc2626\">y = log x</text>";
+  s += "<text x=\"" + (PX(2.6) - 26) + "\" y=\"" + (PY(2.6) - 4) + "\" font-size=\"11\" fill=\"#555\">y = x</text>";
+  s += "</svg>";
+  return s;
+}
+
+E("u8-convert-form",8,["1.1","1.2"],1,"gen",function(){
+  var neg = Math.random() < 0.3;
+  var mode = neg ? pick(["toExp","toLog"]) : pick(["toExp","toLog","meaning"]);
+  var b, e, A, Astr;
+  if (neg){ b = ri(2,7); var m = ri(1,3); e = -m; A = Math.pow(b, m); Astr = u8frac(1, A); }
+  else { b = ri(2,7); e = pick([2,3,4]); var guard = 0; while (e === b && guard++ < 10) e = pick([2,3,4]); A = Math.pow(b, e); Astr = "" + A; }
+  var logEq = u8L(b, Astr) + " = " + e;
+  var expEq = u8pow(b, e) + " = " + Astr;
+  var sol = "A logarithm is an exponent: \\(" + logEq + "\\) exactly when \\(" + expEq + "\\). The base stays the base, the logarithm itself is the exponent, and the argument is the resulting power.";
+  if (mode === "meaning"){
+    var corr = "\\(" + b + "\\) raised to the power \\(" + e + "\\) gives \\(" + A + "\\)";
+    return mcq("The statement \\(" + logEq + "\\) means that",
+      corr,
+      ["\\(" + e + "\\) raised to the power \\(" + b + "\\) gives \\(" + A + "\\)",
+       "\\(" + b + "\\) raised to the power \\(" + A + "\\) gives \\(" + e + "\\)",
+       "\\(" + A + "\\) raised to the power \\(" + b + "\\) gives \\(" + e + "\\)"],
+      sol, {mode:mode, b:b, e:e});
+  }
+  if (mode === "toExp"){
+    var dis = neg
+      ? ["\\(" + u8pow(b, -e) + " = " + Astr + "\\)",
+         "\\(" + u8pow(b, e) + " = " + A + "\\)",
+         "\\(" + u8pow(-e, b) + " = " + A + "\\)"]
+      : ["\\(" + u8pow(e, b) + " = " + Astr + "\\)",
+         "\\(" + u8pow(b, A) + " = " + e + "\\)",
+         "\\(" + u8pow(A, b) + " = " + e + "\\)"];
+    return mcq("Write \\(" + logEq + "\\) in exponential form.", "\\(" + expEq + "\\)", dis, sol, {mode:mode, b:b, e:e});
+  }
+  var dis2 = neg
+    ? ["\\(" + u8L(b, Astr) + " = " + (-e) + "\\)",
+       "\\(" + u8L(b, "" + A) + " = " + e + "\\)",
+       "\\(" + u8L(b, "" + A) + " = " + b + "\\)"]
+    : ["\\(" + u8L(e, Astr) + " = " + b + "\\)",
+       "\\(" + u8L(b, "" + e) + " = " + A + "\\)",
+       "\\(" + u8L(A, "" + b) + " = " + e + "\\)"];
+  return mcq("Write \\(" + expEq + "\\) in logarithmic form.", "\\(" + logEq + "\\)", dis2, sol, {mode:mode, b:b, e:e});
+});
+
+E("u8-exact-value",8,["1.3"],1,"gen",function(){
+  var b, Astr, ans, steps;
+  if (Math.random() < 0.4){
+    var r = pick([2,3,4,5]); b = r * r;
+    var k = pick([-5,-3,-1,1,3,5]);
+    Astr = k > 0 ? "" + Math.pow(r, k) : u8frac(1, Math.pow(r, -k));
+    ans = k / 2;
+    steps = "\\(" + b + "^{" + u8frac(k, 2) + "} = \\left(" + r + "^2\\right)^{" + u8frac(k, 2) + "} = " + r + "^{" + k + "} = " + Astr + "\\), so the logarithm is \\(" + u8frac(k, 2) + "\\).";
+  } else {
+    b = ri(2,10);
+    var e = pick([-3,-2,-1,2,3,4]);
+    Astr = e > 0 ? "" + Math.pow(b, e) : u8frac(1, Math.pow(b, -e));
+    ans = e;
+    steps = "\\(" + u8pow(b, e) + " = " + Astr + "\\), so the logarithm, which is the exponent, is \\(" + e + "\\).";
+  }
+  return numq("Determine the exact value of \\(" + u8L(b, Astr) + "\\).", ans, 0.01,
+    "Look for the exponent that produces the argument from the base. " + steps, {b:b, ans:ans});
+});
+
+E("u8-sketch-log",8,["4.38"],1,"gen",function(){
+  var bases = [{v:2,s:"2"},{v:3,s:"3"},{v:4,s:"4"},{v:5,s:"5"},{v:6,s:"6"},{v:7,s:"7"},{v:10,s:"10"},
+               {v:0.5,s:u8frac(1,2)},{v:1/3,s:u8frac(1,3)},{v:0.2,s:u8frac(1,5)}];
+  var C = pick(bases), cs = C.s;
+  var fn = "y = " + u8L(cs, "x");
+  var ask = pick(["xint","asym","valc","val1","domain","range","dir"]);
+  if (ask === "xint") return mcq("What is the \\(x\\)-intercept of the graph of \\(" + fn + "\\)?",
+    "\\(1\\)", ["\\(0\\)", "\\(" + cs + "\\)", "\\(-1\\)"],
+    "The graph crosses the \\(x\\)-axis where \\(" + u8L(cs, "x") + " = 0\\). Since \\(" + cs + "^0 = 1\\), this happens at \\(x = 1\\).", {ask:ask, c:cs});
+  if (ask === "asym") return mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
+    "\\(x = 0\\)", ["\\(y = 0\\)", "\\(x = 1\\)", "\\(x = " + cs + "\\)"],
+    "The argument \\(x\\) must stay positive, and as \\(x\\) approaches \\(0\\) the values drop without bound, so the graph approaches the line \\(x = 0\\) but never touches it.", {ask:ask, c:cs});
+  if (ask === "valc") return mcq("What is the value of \\(" + fn + "\\) at \\(x = " + cs + "\\)?",
+    "\\(1\\)", ["\\(0\\)", "\\(" + cs + "\\)", "\\(-1\\)"],
+    "A logarithm gives the exponent on its base: \\(" + u8L(cs, cs) + " = 1\\) because \\(" + cs + "^1 = " + cs + "\\).", {ask:ask, c:cs});
+  if (ask === "val1") return mcq("What is the value of \\(" + fn + "\\) at \\(x = 1\\)?",
+    "\\(0\\)", ["\\(1\\)", "\\(" + cs + "\\)", "undefined"],
+    "Since \\(" + cs + "^0 = 1\\), the exponent is \\(0\\): \\(" + u8L(cs, "1") + " = 0\\).", {ask:ask, c:cs});
+  if (ask === "domain") return mcq("What is the domain of \\(" + fn + "\\)?",
+    "\\(x > 0\\)", ["\\(x \\ge 0\\)", "\\(x < 0\\)", "all real numbers"],
+    "A logarithm is defined only for positive arguments, so \\(x > 0\\).", {ask:ask, c:cs});
+  if (ask === "range") return mcq("What is the range of \\(" + fn + "\\)?",
+    "all real numbers", ["\\(y > 0\\)", "\\(y \\ge 0\\)", "\\(y < 0\\)"],
+    "As \\(x\\) grows, the logarithm grows without bound, and as \\(x\\) approaches \\(0\\) it falls without bound, so every real value occurs.", {ask:ask, c:cs});
+  var inc = C.v > 1;
+  return mcq("As \\(x\\) increases, the values of \\(" + fn + "\\)",
+    inc ? "increase" : "decrease",
+    [inc ? "decrease" : "increase", "stay the same", "increase, then decrease"],
+    (inc ? "The base \\(" + cs + "\\) is greater than \\(1\\), so larger inputs need larger exponents: the graph rises." : "The base \\(" + cs + "\\) is between \\(0\\) and \\(1\\), so larger inputs need smaller exponents: the graph falls."), {ask:ask, c:cs});
+});
+
+E("u8-estimate-approx",8,["1.4","1.8"],1,"gen",function(){
+  if (Math.random() < 0.5){
+    var b = pick([2,3,5,10]);
+    var k = b === 10 ? ri(1,2) : ri(1,3);
+    var lo = Math.pow(b, k), hi = Math.pow(b, k + 1);
+    var A = ri(lo + 1, hi - 1);
+    var expr = u8L(b, "" + A);
+    function seg(txt){ return "\\(" + txt + "\\)"; }
+    var corr = seg(k + " < " + expr + " < " + (k + 1));
+    return mcq("Between which two consecutive integers does \\(" + expr + "\\) lie?",
+      corr,
+      [seg((k - 1) + " < " + expr + " < " + k),
+       seg((k + 1) + " < " + expr + " < " + (k + 2)),
+       seg(expr + " = " + k)],
+      "Use benchmark powers of the base: \\(" + b + "^{" + k + "} = " + lo + "\\) and \\(" + b + "^{" + (k + 1) + "} = " + hi + "\\). Since \\(" + lo + " < " + A + " < " + hi + "\\), the logarithm lies between \\(" + k + "\\) and \\(" + (k + 1) + "\\).",
+      {mode:"bracket", b:b, A:A});
+  }
+  var bb = pick([2,10]);
+  var tab = bb === 2 ? u8LOG2S : u8LOG10S;
+  var keys = Object.keys(tab);
+  var m = pick(keys), vStr = tab[m], v = parseFloat(vStr), mn = Number(m);
+  var form = pick(["mul","sq","div","root"]);
+  var target, ans, why;
+  if (form === "mul"){ var j = ri(1,3); target = "" + (mn * Math.pow(bb, j)); ans = v + j;
+    why = "\\(" + target + " = " + m + " \\times " + bb + "^{" + j + "}\\), so by the product law the value is \\(" + vStr + " + " + j + " = " + fmt(ans, 3) + "\\)."; }
+  else if (form === "sq"){ target = "" + (mn * mn); ans = 2 * v;
+    why = "\\(" + target + " = " + m + "^2\\), so by the power law the value is \\(2 \\times " + vStr + " = " + fmt(ans, 3) + "\\)."; }
+  else if (form === "div"){ target = u8frac(m, "" + bb); ans = v - 1;
+    why = "The argument is the quotient of \\(" + m + "\\) and \\(" + bb + "\\), and since \\(" + u8L(bb, "" + bb) + " = 1\\), the quotient law gives \\(" + vStr + " - 1 = " + fmt(ans, 3) + "\\)."; }
+  else { target = "\\sqrt{" + m + "}"; ans = v / 2;
+    why = "A square root is the power \\(\\tfrac{1}{2}\\), so by the power law the value is \\(\\tfrac{1}{2} \\times " + vStr + " = " + fmt(ans, 3) + "\\)."; }
+  return numq("Given that \\(" + u8L(bb, m) + " \\approx " + vStr + "\\), determine the approximate value of \\(" + u8L(bb, target) + "\\).",
+    ans, 0.02, "Rewrite the argument using the given value. " + why, {mode:"given", bb:bb, m:m, form:form});
+});
+
+E("u8-laws-illustrate",8,["1.5","1.6"],1,"gen",function(){
+  var b = pick([2,3,5,10]);
+  var law = pick(["product","quotient","power"]);
+  var eq, m, n, p;
+  if (law === "product"){ m = ri(2,9); n = ri(2,9); if (m === 2 && n === 2) n = 3; if (m === n && m === b * b) n = n - 1; eq = u8L(b, "" + (m * n)) + " = " + u8L(b, "" + m) + " + " + u8L(b, "" + n); }
+  else if (law === "quotient"){ n = ri(2,6); var q = ri(2,6); if (q === 2 && n === 2) n = 3; m = q * n; eq = u8L(b, "" + q) + " = " + u8L(b, "" + m) + " - " + u8L(b, "" + n); }
+  else { m = ri(2,6); p = pick([2,3]); eq = u8L(b, "" + Math.pow(m, p)) + " = " + p + u8L(b, "" + m); }
+  var lawName = {"product":"the product law","quotient":"the quotient law","power":"the power law"}[law];
+  var general = {"product":"\\(\\log_b(mn) = \\log_b m + \\log_b n\\)",
+                 "quotient":"\\(\\log_b\\left(\\frac{m}{n}\\right) = \\log_b m - \\log_b n\\)",
+                 "power":"\\(\\log_b(m^p) = p \\log_b m\\)"}[law];
+  var sol = "The equation is an instance of " + lawName + " of logarithms, " + general + ". Numeric examples like this one are how the laws are first spotted: the same pattern holds for every base and every pair of values.";
+  if (Math.random() < 0.5){
+    return mcq("The equation \\(" + eq + "\\) illustrates which law of logarithms?",
+      lawName, ["the product law","the quotient law","the power law","the change of base law"].filter(function(x){ return x !== lawName; }),
+      sol, {mode:"identify", law:law, b:b});
+  }
+  var corr = "\\(" + eq + "\\)";
+  var dis;
+  if (law === "product"){
+    dis = ["\\(" + u8L(b, "(" + m + " + " + n + ")") + " = " + u8L(b, "" + m) + " + " + u8L(b, "" + n) + "\\)",
+           "\\(" + u8L(b, "" + (m * n)) + " = " + u8L(b, "" + m) + " \\cdot " + u8L(b, "" + n) + "\\)",
+           "\\(" + u8L(b, u8frac(m, n)) + " = " + u8L(b, "" + m) + " + " + u8L(b, "" + n) + "\\)"];
+  } else if (law === "quotient"){
+    var qq = m / n;
+    dis = ["\\(" + u8L(b, u8frac(m, n)) + " = " + u8L(b, "" + m) + " + " + u8L(b, "" + n) + "\\)",
+           "\\(" + u8L(b, "(" + m + " - " + n + ")") + " = " + u8L(b, "" + m) + " - " + u8L(b, "" + n) + "\\)",
+           "\\(" + u8L(b, u8frac(m, n)) + " = " + u8L(b, "" + n) + " - " + u8L(b, "" + m) + "\\)"];
+  } else {
+    var pp = ((m === 4 || m === 2) && p === 2) ? 3 : p;
+    if (pp === m) pp = pp === 2 ? 3 : 2;
+    dis = ["\\(" + u8L(b, "" + Math.pow(m, pp)) + " = \\left(" + u8L(b, "" + m) + "\\right)^{" + pp + "}\\)",
+           "\\(" + u8L(b, "" + Math.pow(m, pp)) + " = " + u8L(b, "" + m) + " + " + u8L(b, "" + pp) + "\\)",
+           "\\(" + u8L(b, "" + Math.pow(pp, m)) + " = " + pp + u8L(b, "" + m) + "\\)"];
+    if (pp !== p){ eq = u8L(b, "" + Math.pow(m, pp)) + " = " + pp + u8L(b, "" + m); corr = "\\(" + eq + "\\)"; }
+  }
+  return mcq("Which equation illustrates " + lawName + " of logarithms?", corr, dis, sol, {mode:"pick", law:law, b:b});
+});
+
+E("u8-laws-equivalent",8,["1.7"],2,"gen",function(){
+  var b = pick([2,3,5,10]);
+  var VS = pick([["x","y","z"],["m","n","p"],["a","b","c"],["p","q","r"]]);
+  var X = VS[0], Y = VS[1], Z = VS[2];
+  var E1 = ri(2,4), E2 = ri(2,4), E3 = ri(2,4);
+  var single = "\\(" + u8L(b, "\\left(" + u8frac(X + "^{" + E1 + "} " + Y + "^{" + E2 + "}", Z + "^{" + E3 + "}") + "\\right)") + "\\)";
+  var expanded = "\\(" + E1 + u8L(b, X) + " + " + E2 + u8L(b, Y) + " - " + E3 + u8L(b, Z) + "\\)";
+  var steps = "\\[ \\begin{aligned} " + u8L(b, "\\left(" + u8frac(X + "^{" + E1 + "} " + Y + "^{" + E2 + "}", Z + "^{" + E3 + "}") + "\\right)") + " &= " + u8L(b, "\\left(" + X + "^{" + E1 + "} " + Y + "^{" + E2 + "}\\right)") + " - " + u8L(b, "\\left(" + Z + "^{" + E3 + "}\\right)") + " \\\\ &= " + E1 + u8L(b, X) + " + " + E2 + u8L(b, Y) + " - " + E3 + u8L(b, Z) + " \\end{aligned} \\]";
+  if (Math.random() < 0.5){
+    return mcq("Which expression is equivalent to " + single + "?",
+      expanded,
+      ["\\(" + E1 + u8L(b, X) + " + " + E2 + u8L(b, Y) + " + " + E3 + u8L(b, Z) + "\\)",
+       "\\(" + u8L(b, X) + " + " + u8L(b, Y) + " - " + u8L(b, Z) + "\\)",
+       "\\(" + E1 + u8L(b, X) + " - " + E2 + u8L(b, Y) + " - " + E3 + u8L(b, Z) + "\\)"],
+      "Apply the quotient law, then the product law, then the power law: " + steps + " The quotient contributes the subtraction, and each exponent becomes a coefficient.",
+      {mode:"expand", b:b});
+  }
+  return mcq("Which single logarithm is equivalent to " + expanded + "?",
+    single,
+    ["\\(" + u8L(b, "\\left(" + X + "^{" + E1 + "} " + Y + "^{" + E2 + "} " + Z + "^{" + E3 + "}\\right)") + "\\)",
+     "\\(" + u8L(b, "\\left(" + u8frac(Z + "^{" + E3 + "}", X + "^{" + E1 + "} " + Y + "^{" + E2 + "}") + "\\right)") + "\\)",
+     "\\(" + u8L(b, "\\left(" + u8frac("(" + E1 + X + ")(" + E2 + Y + ")", "(" + E3 + Z + ")") + "\\right)") + "\\)"],
+    "Reverse the laws: each coefficient becomes an exponent (power law), the sum becomes a product (product law), and the subtracted term goes to the denominator (quotient law): " + steps,
+    {mode:"condense", b:b});
+});
+
+E("u8-solve-exp-logs",8,["4.28"],2,"gen",function(){
+  var b = pick([2,3,4,5,7,8,9]);
+  var blogS = u8LOG10S["" + b], blog = parseFloat(blogS);
+  var keys = Object.keys(u8RES).filter(function(c){ return Number(c) !== b && Number(c) !== b * b; });
+  var c = pick(keys), clogS = u8RES[c], clog = parseFloat(clogS);
+  var ans = clog / blog;
+  var steps, prompt;
+  if (Math.random() < 0.5){
+    var A = pick([2,3,4,5,6]), C = A * Number(c);
+    prompt = "Solve \\(" + A + " \\cdot " + u8pow(b, "x") + " = " + C + "\\). Use \\(\\log " + b + " \\approx " + blogS + "\\) and \\(\\log " + c + " \\approx " + clogS + "\\). Give your answer to two decimal places.";
+    steps = "\\[ \\begin{aligned} " + A + " \\cdot " + u8pow(b, "x") + " &= " + C + " \\\\ " + u8pow(b, "x") + " &= " + c + " \\\\ x \\log " + b + " &= \\log " + c + " \\\\ x &= \\frac{\\log " + c + "}{\\log " + b + "} \\approx \\frac{" + clogS + "}{" + blogS + "} \\approx " + fmt(ans, 2) + " \\end{aligned} \\]";
+  } else {
+    prompt = "Solve \\(" + u8pow(b, "x") + " = " + c + "\\). Use \\(\\log " + b + " \\approx " + blogS + "\\) and \\(\\log " + c + " \\approx " + clogS + "\\). Give your answer to two decimal places.";
+    steps = "\\[ \\begin{aligned} " + u8pow(b, "x") + " &= " + c + " \\\\ x \\log " + b + " &= \\log " + c + " \\\\ x &= \\frac{\\log " + c + "}{\\log " + b + "} \\approx \\frac{" + clogS + "}{" + blogS + "} \\approx " + fmt(ans, 2) + " \\end{aligned} \\]";
+  }
+  return numq(prompt, ans, 0.02,
+    "The bases cannot be made the same, so take the common logarithm of both sides and use the power law to bring the exponent down: " + steps, {b:b, c:c});
+});
+
+E("u8-growth-time",8,["4.29"],2,"gen",function(){
+  if (Math.random() < 0.55){
+    var g = pick([2,3,4]), k = ri(2,6), L = pick([5,10,15,20,30]);
+    var unit = pick(["minutes","hours"]);
+    var N0 = ri(4,60) * 10, target = N0 * Math.pow(g, k);
+    var ans = k * L;
+    var ctx = pick([
+      "A bacteria culture starts with \\(" + N0 + "\\) cells. The population multiplies by \\(" + g + "\\) every \\(" + L + "\\) " + unit + ". After how many " + unit + " will the population reach \\(" + target + "\\) cells?",
+      "A colony of algae starts with \\(" + N0 + "\\) organisms and multiplies by \\(" + g + "\\) every \\(" + L + "\\) " + unit + ". How many " + unit + " does it take for the colony to reach \\(" + target + "\\) organisms?"
+    ]);
+    return numq(ctx, ans, 0.01,
+      "The population must be multiplied by \\(" + g + "\\) a total of \\(" + k + "\\) times, since \\(" + N0 + " \\times " + g + "^{" + k + "} = " + target + "\\). Using logarithms, the number of periods is \\(\\frac{\\log(" + (target / N0) + ")}{\\log " + g + "} = " + k + "\\). At \\(" + L + "\\) " + unit + " per period, the time is \\(" + k + " \\times " + L + " = " + ans + "\\) " + unit + ".",
+      {mode:"grow", g:g, k:k});
+  }
+  var H = pick([4,6,8,12,20]), kk = ri(2,6), hu = pick(["hours","days","years"]);
+  var ansD = kk * H;
+  return numq("A radioactive sample has a half-life of \\(" + H + "\\) " + hu + ". How many " + hu + " will it take for only \\(" + u8frac(1, Math.pow(2, kk)) + "\\) of the original sample to remain?",
+    ansD, 0.01,
+    "Each half-life multiplies the amount by \\(\\tfrac{1}{2}\\), and \\(\\left(\\tfrac{1}{2}\\right)^{" + kk + "} = " + u8frac(1, Math.pow(2, kk)) + "\\), so \\(" + kk + "\\) half-lives are needed. Using logarithms, the number of half-lives is \\(\\frac{\\log\\left(" + u8frac(1, Math.pow(2, kk)) + "\\right)}{\\log\\left(\\tfrac{1}{2}\\right)} = " + kk + "\\). The time is \\(" + kk + " \\times " + H + " = " + ansD + "\\) " + hu + ".",
+    {mode:"decay", H:H, kk:kk});
+});
+
+E("u8-finance-periods",8,["4.31"],2,"gen",function(){
+  var RATES = [{i:5, lg:"0.0212", f:"1.05"},{i:6, lg:"0.0253", f:"1.06"},{i:8, lg:"0.0334", f:"1.08"},{i:10, lg:"0.0414", f:"1.10"},{i:12, lg:"0.0492", f:"1.12"}];
+  var MULT = [{m:2, lg:"0.3010"},{m:3, lg:"0.4771"},{m:4, lg:"0.6021"},{m:5, lg:"0.6990"}];
+  var R = pick(RATES), M = pick(MULT);
+  var ans = parseFloat(M.lg) / parseFloat(R.lg);
+  var steps = "\\[ \\begin{aligned} \\left(" + R.f + "\\right)^n &= " + M.m + " \\\\ n \\log " + R.f + " &= \\log " + M.m + " \\\\ n &= \\frac{\\log " + M.m + "}{\\log " + R.f + "} \\approx \\frac{" + M.lg + "}{" + R.lg + "} \\approx " + fmt(ans, 1) + " \\end{aligned} \\]";
+  var prompt;
+  if (Math.random() < 0.5){
+    prompt = "An investment earns \\(" + R.i + "\\%\\) per year, compounded annually. How many years will it take for the investment to grow to \\(" + M.m + "\\) times its original value? Use \\(\\log " + R.f + " \\approx " + R.lg + "\\) and \\(\\log " + M.m + " \\approx " + M.lg + "\\). Give your answer to one decimal place.";
+  } else {
+    var P = pick([400,500,800,1000,1200,2000,2500]), T = P * M.m;
+    var name = pick(["Priya","Tom","Aisha","Ben","Sofia","Liam"]);
+    prompt = name + " invests $\\(" + P + "\\) at \\(" + R.i + "\\%\\) per year, compounded annually. How many years will it take for the investment to reach $\\(" + T + "\\)? Use \\(\\log " + R.f + " \\approx " + R.lg + "\\) and \\(\\log " + M.m + " \\approx " + M.lg + "\\). Give your answer to one decimal place.";
+  }
+  return numq(prompt, ans, 0.1,
+    "With annual compounding the value is multiplied by \\(" + R.f + "\\) each year, so solve for the number of periods with logarithms: " + steps, {rate:R.i, mult:M.m});
+});
+
+E("u8-solve-log-eq",8,["4.32"],2,"gen",function(){
+  if (Math.random() < 0.5){
+    var b = pick([2,3,4,5]), k = ri(1,3), a = ri(1,9), s = pick([1,-1]), x;
+    var guard = 0;
+    while (guard++ < 40){ x = s > 0 ? Math.pow(b, k) - a : Math.pow(b, k) + a; if (x > 0) break; a = ri(1,9); }
+    var argS = s > 0 ? "(x + " + a + ")" : "(x - " + a + ")";
+    return numq("Solve \\(" + u8L(b, argS) + " = " + k + "\\).", x, 0.01,
+      "Rewrite the equation in exponential form and solve: \\[ \\begin{aligned} " + argS + " &= " + b + "^{" + k + "} = " + Math.pow(b, k) + " \\\\ x &= " + x + " \\end{aligned} \\] Check: the argument is \\(" + Math.pow(b, k) + " > 0\\), and \\(" + u8L(b, "" + Math.pow(b, k)) + " = " + k + "\\), so the solution checks.",
+      {mode:"single", b:b, k:k});
+  }
+  var T = pick(u8tuples());
+  var arg2 = T.fam === "minus" ? "(x - " + T.a + ")" : "(x + " + T.a + ")";
+  var eqStr = u8L(T.b, "x") + " + " + u8L(T.b, arg2) + " = " + T.k;
+  var mid = T.fam === "minus" ? "x(x - " + T.a + ")" : "x(x + " + T.a + ")";
+  var quad = T.fam === "minus" ? "x^2 - " + T.a + "x - " + T.v : "x^2 + " + T.a + "x - " + T.v;
+  var fact = "(x - " + T.r + ")(x + " + (-T.r2) + ")";
+  return numq("Solve \\(" + eqStr + "\\).", T.r, 0.01,
+    "Combine the logarithms with the product law, rewrite in exponential form, and solve the quadratic: \\[ \\begin{aligned} " + u8L(T.b, mid) + " &= " + T.k + " \\\\ " + mid + " &= " + T.b + "^{" + T.k + "} = " + T.v + " \\\\ " + quad + " &= 0 \\\\ " + fact + " &= 0 \\end{aligned} \\] The roots are \\(x = " + T.r + "\\) and \\(x = " + T.r2 + "\\). The negative root makes an argument negative, so it is rejected. Check: both arguments are positive at \\(x = " + T.r + "\\), and the equation holds.",
+    {mode:"sum", b:T.b, k:T.k, a:T.a});
+});
+
+E("u8-log-scales",8,["4.34"],1,"gen",function(){
+  var mode = pick(["rdiff","rinv","pdiff","pinv"]);
+  if (mode === "rdiff"){
+    var M2 = ri(4,7), d = ri(1,4), M1 = M2 + d;
+    var place = pick(["Ridge Bay","Port Henry","Cedar Falls","Mill Harbour","Stonebridge"]);
+    return numq("An earthquake near " + place + " measured \\(" + M1 + "\\) on the Richter scale. An earlier earthquake in the same region measured \\(" + M2 + "\\). How many times as intense was the stronger earthquake?",
+      Math.pow(10, d), 0.01,
+      "On the Richter scale, each increase of \\(1\\) means \\(10\\) times the intensity. The magnitudes differ by \\(" + d + "\\), so the intensity ratio is \\(10^{" + d + "} = " + Math.pow(10, d) + "\\).",
+      {mode:mode, d:d});
+  }
+  if (mode === "rinv"){
+    var dd = ri(1,5), times = Math.pow(10, dd);
+    return numq("One earthquake is \\(" + times + "\\) times as intense as a second earthquake. How much greater is the Richter magnitude of the stronger earthquake?",
+      dd, 0.01,
+      "Intensity multiplies by \\(10\\) for each step of \\(1\\) on the scale. Since \\(" + times + " = 10^{" + dd + "}\\), the magnitudes differ by \\(" + dd + "\\).",
+      {mode:mode, d:dd});
+  }
+  if (mode === "pdiff"){
+    var p1 = ri(2,6), dp = ri(1,4), p2 = p1 + dp; if (p2 > 9) p2 = 9;
+    var dpp = p2 - p1;
+    return numq("Solution A has a pH of \\(" + p1 + "\\) and solution B has a pH of \\(" + p2 + "\\). How many times as acidic is solution A as solution B?",
+      Math.pow(10, dpp), 0.01,
+      "On the pH scale, a decrease of \\(1\\) means \\(10\\) times the acidity. The pH values differ by \\(" + dpp + "\\), so solution A is \\(10^{" + dpp + "} = " + Math.pow(10, dpp) + "\\) times as acidic.",
+      {mode:mode, d:dpp});
+  }
+  var pA = pick([1.5,2,2.5,3,3.5,4]), dpn = ri(1,4);
+  return numq("Solution A is \\(" + Math.pow(10, dpn) + "\\) times as acidic as solution B. If solution A has a pH of \\(" + pA + "\\), what is the pH of solution B?",
+    pA + dpn, 0.01,
+    "Being \\(" + Math.pow(10, dpn) + "\\) times as acidic means the pH is \\(" + dpn + "\\) steps lower on the scale, since each step is a factor of \\(10\\). Solution B is less acidic, so its pH is higher: \\(" + pA + " + " + dpn + " = " + (pA + dpn) + "\\).",
+    {mode:mode, d:dpn});
+});
+
+E("u8-transformed-log",8,["4.39","4.49"],2,"gen",function(){
+  var b = pick([2,3,5,10]);
+  var a = pick([-3,-2,-1,1,2,3]);
+  var h = pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var k = pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  while (k === h || k === -h) k = pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var ask = pick(["asym","domain","range","xint","dir"]);
+  function fnStr(aa, hh, kk){
+    var s = "y = ";
+    if (aa === -1) s += "-";
+    else if (aa !== 1) s += aa;
+    s += "\\log_{" + b + "} ";
+    s += hh === 0 ? "x" : (hh > 0 ? "(x - " + hh + ")" : "(x + " + (-hh) + ")");
+    if (kk > 0) s += " + " + kk; else if (kk < 0) s += " - " + (-kk);
+    return s;
+  }
+  var fn = fnStr(a, h, k);
+  var argS = h > 0 ? "(x - " + h + ")" : (h < 0 ? "(x + " + (-h) + ")" : "x");
+  if (ask === "xint"){
+    var j = pick([-2,-1,1,2]);
+    var kk2 = -a * j;
+    var fn2 = fnStr(a, h, kk2);
+    var ans = h + Math.pow(b, j);
+    return numq("What is the \\(x\\)-intercept of the graph of \\(" + fn2 + "\\)?", ans, 0.01,
+      "Set \\(y = 0\\): \\[ \\begin{aligned} " + (a === -1 ? "-" : "" + a) + u8L(b, argS) + u8sgn(kk2) + " &= 0 \\\\ " + u8L(b, argS) + " &= " + j + " \\\\ " + argS + " &= " + b + "^{" + j + "} = " + fmt(Math.pow(b, j), 3) + " \\\\ x &= " + fmt(ans, 3) + " \\end{aligned} \\] The intercept is \\(x = " + fmt(ans, 3) + "\\).",
+      {ask:ask, b:b});
+  }
+  if (ask === "asym") return mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
+    "\\(x = " + h + "\\)",
+    ["\\(x = " + (-h) + "\\)", "\\(x = " + k + "\\)", "\\(y = " + k + "\\)"],
+    "The logarithm is defined only when its argument is positive: \\(" + argS + " > 0\\), so \\(x > " + h + "\\). The graph approaches the line \\(x = " + h + "\\) without ever touching it.",
+    {ask:ask, b:b, h:h});
+  if (ask === "domain") return mcq("What is the domain of \\(" + fn + "\\)?",
+    "\\(x > " + h + "\\)",
+    ["\\(x < " + h + "\\)", "\\(x > " + k + "\\)", "all real numbers"],
+    "The argument of the logarithm must be positive: \\(" + argS + " > 0\\) gives \\(x > " + h + "\\).",
+    {ask:ask, b:b, h:h});
+  if (ask === "range") return mcq("What is the range of \\(" + fn + "\\)?",
+    "all real numbers",
+    ["\\(y > " + k + "\\)", "\\(y < " + k + "\\)", "positive real numbers only"],
+    "As \\(" + argS + "\\) approaches \\(0\\), the logarithm falls without bound, and as \\(" + argS + "\\) grows, it rises without bound. The vertical shift and stretch do not bound the values, so every real number occurs.",
+    {ask:ask, b:b});
+  return mcq("The graph of \\(" + fn + "\\) is",
+    a > 0 ? "increasing" : "decreasing",
+    [a > 0 ? "decreasing" : "increasing", "constant", "first increasing, then decreasing"],
+    (a > 0 ? "The coefficient \\(" + a + "\\) is positive and the base \\(" + b + "\\) is greater than \\(1\\), so larger inputs give larger values." : "The coefficient \\(" + a + "\\) is negative, so the base graph is reflected: larger inputs give smaller values."),
+    {ask:ask, b:b});
+});
+
+E("u8-model-log",8,["4.30"],3,"var",varset([
+  function(){
+    return mcq("A bacteria culture starts with \\(300\\) cells and the population doubles every \\(4\\) hours. Which function gives the time \\(t\\), in hours, needed for the culture to reach \\(N\\) cells?",
+      "\\(t = 4\\log_{2}\\left(\\frac{N}{300}\\right)\\)",
+      ["\\(t = \\log_{2}\\left(\\frac{N}{300}\\right)\\)",
+       "\\(t = 4\\log_{2}(300N)\\)",
+       "\\(N = 300 \\cdot 2^{t/4}\\)"],
+      "The population after \\(t\\) hours is \\(N = 300 \\cdot 2^{t/4}\\). Solving for \\(t\\): \\[ \\begin{aligned} 2^{t/4} &= \\frac{N}{300} \\\\ \\frac{t}{4} &= \\log_{2}\\left(\\frac{N}{300}\\right) \\\\ t &= 4\\log_{2}\\left(\\frac{N}{300}\\right) \\end{aligned} \\] The first distractor forgets the \\(4\\) hours per doubling; the last option is the population function, not the time function.",
+      {});
+  },
+  function(){
+    return mcq("The pH of a solution is given by \\(\\text{pH} = -\\log[H^+]\\), where \\([H^+]\\) is the hydrogen-ion concentration. Which expression gives \\([H^+]\\) for a solution with pH \\(p\\)?",
+      "\\([H^+] = 10^{-p}\\)",
+      ["\\([H^+] = 10^{p}\\)", "\\([H^+] = -10^{p}\\)", "\\([H^+] = \\frac{1}{p}\\)"],
+      "Solve the model for \\([H^+]\\) by writing it in exponential form: \\[ \\begin{aligned} p &= -\\log[H^+] \\\\ \\log[H^+] &= -p \\\\ [H^+] &= 10^{-p} \\end{aligned} \\] A higher pH means a smaller concentration, so the exponent must be negative.",
+      {});
+  },
+  function(){
+    return mcq("An amount \\(P\\) invested at \\(5\\%\\) per year, compounded annually, grows to \\(A\\) after \\(t\\) years. Which equation gives \\(t\\) in terms of \\(A\\) and \\(P\\)?",
+      "\\(t = \\frac{\\log(A/P)}{\\log 1.05}\\)",
+      ["\\(t = \\log\\left(\\frac{A}{P}\\right) \\cdot \\log 1.05\\)",
+       "\\(t = \\frac{A}{P \\log 1.05}\\)",
+       "\\(t = \\frac{\\log(A - P)}{\\log 1.05}\\)"],
+      "The growth model is \\(A = P(1.05)^t\\). Solving with logarithms: \\[ \\begin{aligned} (1.05)^t &= \\frac{A}{P} \\\\ t \\log 1.05 &= \\log\\left(\\frac{A}{P}\\right) \\\\ t &= \\frac{\\log(A/P)}{\\log 1.05} \\end{aligned} \\]",
+      {});
+  },
+  function(){
+    return mcq("The intensity \\(I\\) of an earthquake with Richter magnitude \\(M\\) satisfies \\(M = \\log\\left(\\frac{I}{I_0}\\right)\\), where \\(I_0\\) is a reference intensity. Which expression gives \\(I\\) in terms of \\(M\\)?",
+      "\\(I = I_0 \\cdot 10^{M}\\)",
+      ["\\(I = \\frac{10^{M}}{I_0}\\)", "\\(I = I_0 \\cdot M^{10}\\)", "\\(I = 10 I_0^{M}\\)"],
+      "Write the logarithmic model in exponential form: \\[ \\begin{aligned} \\log\\left(\\frac{I}{I_0}\\right) &= M \\\\ \\frac{I}{I_0} &= 10^{M} \\\\ I &= I_0 \\cdot 10^{M} \\end{aligned} \\]",
+      {});
+  }
+]));
+
+E("u8-extraneous",8,["4.33"],3,"gen",function(){
+  var T = pick(u8tuples());
+  var arg2 = T.fam === "minus" ? "(x - " + T.a + ")" : "(x + " + T.a + ")";
+  var eqStr = u8L(T.b, "x") + " + " + u8L(T.b, arg2) + " = " + T.k;
+  var mid = T.fam === "minus" ? "x(x - " + T.a + ")" : "x(x + " + T.a + ")";
+  var quad = T.fam === "minus" ? "x^2 - " + T.a + "x - " + T.v : "x^2 + " + T.a + "x - " + T.v;
+  var fact = "(x - " + T.r + ")(x + " + (-T.r2) + ")";
+  var work = "\\[ \\begin{aligned} " + u8L(T.b, mid) + " &= " + T.k + " \\\\ " + mid + " &= " + T.b + "^{" + T.k + "} = " + T.v + " \\\\ " + quad + " &= 0 \\\\ " + fact + " &= 0 \\\\ x &= " + T.r + " \\text{ or } x = " + T.r2 + " \\end{aligned} \\]";
+  var sol = "The algebra is correct, but every root must be checked against the domain of the ORIGINAL equation: both arguments, \\(x\\) and \\(" + arg2 + "\\), must be positive. At \\(x = " + T.r + "\\), both arguments are positive and the equation holds. At \\(x = " + T.r2 + "\\), the argument \\(x\\) is negative, so \\(" + u8L(T.b, "x") + "\\) is undefined there. The value \\(x = " + T.r2 + "\\) is an extraneous root. The solution set is \\(x = " + T.r + "\\).";
+  var mode = pick(["judge","solset","error","why"]);
+  if (mode === "judge"){
+    return mcq("A student solves \\(" + eqStr + "\\) and obtains \\(x = " + T.r + "\\) and \\(x = " + T.r2 + "\\). Which values are actually solutions of the equation?",
+      "Only \\(x = " + T.r + "\\)",
+      ["Only \\(x = " + T.r2 + "\\)", "Both values", "Neither value"],
+      sol, {mode:mode, b:T.b});
+  }
+  if (mode === "solset"){
+    return mcq("Solve \\(" + eqStr + "\\). State the solution.",
+      "\\(x = " + T.r + "\\)",
+      ["\\(x = " + T.r2 + "\\)", "\\(x = " + T.r + " \\text{ or } x = " + T.r2 + "\\)", "no solution"],
+      sol, {mode:mode, b:T.b});
+  }
+  if (mode === "error"){
+    return mcq("A student solves the equation as shown. " + work + " The student concludes that both values are solutions. What is the error?",
+      "The student did not check the domain of the original equation; \\(x = " + T.r2 + "\\) makes an argument negative",
+      ["The student combined the logarithms incorrectly when writing them as one logarithm at the first step of the solution",
+       "The student factored the resulting quadratic incorrectly",
+       "There is no error in the work shown; both values are solutions of the equation"],
+      sol, {mode:mode, b:T.b});
+  }
+  return mcq("When solving \\(" + eqStr + "\\), the value \\(x = " + T.r2 + "\\) is rejected. Why?",
+    "It makes an argument of one of the logarithms negative, so that logarithm is undefined",
+    ["Logarithm values cannot be negative, and this value is negative, so it cannot be kept as a solution",
+     "It does not satisfy the quadratic equation that came from the first step",
+     "An equation with two logarithms can have only one solution, never two"],
+    sol, {mode:mode, b:T.b});
+});
+
+E("u8-inverse-graph",8,["4.37"],3,"gen",function(){
+  var mode = pick(["exp2log","log2exp","reflect","swap","intercepts"]);
+  if (mode === "reflect"){
+    var c = pick([2,3]);
+    var q = mcq("The graphs of \\(y = " + c + "^{x}\\) and \\(y = " + u8L(c, "x") + "\\) are shown. The two graphs are reflections of each other in which line?",
+      "\\(y = x\\)",
+      ["\\(y = -x\\)", "the \\(x\\)-axis", "the \\(y\\)-axis"],
+      "The two functions are inverses, so each point \\((a, b)\\) on one graph corresponds to the point \\((b, a)\\) on the other. Swapping the coordinates of every point is a reflection in the line \\(y = x\\).",
+      {mode:mode, c:c});
+    q.figure = u8invSVG(c); return q;
+  }
+  if (mode === "swap"){
+    var c2 = pick([2,3,5,10]);
+    if (Math.random() < 0.5){
+      return mcq("The domain of \\(y = " + u8L(c2, "x") + "\\) is the same as which feature of \\(y = " + c2 + "^{x}\\)?",
+        "its range",
+        ["its domain", "its \\(x\\)-intercept", "its asymptote"],
+        "Inverse functions swap domain and range: \\(y = " + u8L(c2, "x") + "\\) has domain \\(x > 0\\), and \\(y = " + c2 + "^{x}\\) has range \\(y > 0\\). The domains are different: the exponential function is defined for every real \\(x\\).",
+        {mode:mode, c:c2});
+    }
+    return mcq("The range of \\(y = " + c2 + "^{x}\\) is the same as which feature of \\(y = " + u8L(c2, "x") + "\\)?",
+      "its domain",
+      ["its range", "its \\(y\\)-intercept", "its asymptote"],
+      "Inverse functions swap domain and range: \\(y = " + c2 + "^{x}\\) has range \\(y > 0\\), and \\(y = " + u8L(c2, "x") + "\\) has domain \\(x > 0\\).",
+      {mode:mode, c:c2});
+  }
+  if (mode === "intercepts"){
+    var c3 = pick([2,3,5,10]);
+    return mcq("Which statement is true for the functions \\(y = " + c3 + "^{x}\\) and \\(y = " + u8L(c3, "x") + "\\)?",
+      "The point \\((1, 0)\\) is on the graph of \\(y = " + u8L(c3, "x") + "\\) and the point \\((0, 1)\\) is on the graph of \\(y = " + c3 + "^{x}\\)",
+      ["The point \\((0, 1)\\) is on the graph of \\(y = " + u8L(c3, "x") + "\\) and the point \\((1, 0)\\) is on the graph of \\(y = " + c3 + "^{x}\\)",
+       "Both graphs pass through the point \\((0, 0)\\)",
+       "Both graphs pass through the point \\((1, 1)\\)"],
+      "The logarithm is \\(0\\) when its argument is \\(1\\), so \\((1, 0)\\) is on the logarithmic graph. The exponential function has value \\(1\\) at \\(x = 0\\), so \\((0, 1)\\) is on its graph. The two points are the image of each other under the swap \\((a, b) \\to (b, a)\\).",
+      {mode:mode, c:c3});
+  }
+  var c4, p;
+  if (mode === "exp2log"){
+    c4 = pick([2,3,5,10]);
+    var ps = c4 === 2 ? [-3,-2,-1,1,2,3] : (c4 === 3 ? [-2,-1,1,2,3] : (c4 === 5 ? [-1,1,2] : [-2,-1,1,2,3]));
+    p = pick(ps);
+    var val = Math.pow(c4, p);
+    var vs = p < 0 ? u8frac(1, Math.pow(c4, -p)) : "" + val;
+    return mcq("The point \\(\\left(" + p + ", " + vs + "\\right)\\) lies on the graph of \\(y = " + c4 + "^{x}\\). Which point lies on the graph of \\(y = " + u8L(c4, "x") + "\\)?",
+      "\\(\\left(" + vs + ", " + p + "\\right)\\)",
+      ["\\(\\left(" + p + ", " + vs + "\\right)\\)",
+       "\\(\\left(" + vs + ", " + (-p) + "\\right)\\)",
+       "\\(\\left(" + (-p) + ", " + vs + "\\right)\\)"],
+      "Inverse functions swap coordinates: the point \\(\\left(" + p + ", " + vs + "\\right)\\) on \\(y = " + c4 + "^{x}\\) corresponds to \\(\\left(" + vs + ", " + p + "\\right)\\) on \\(y = " + u8L(c4, "x") + "\\), since \\(" + u8L(c4, vs) + " = " + p + "\\).",
+      {mode:mode, c:c4, p:p});
+  }
+  c4 = pick([2,3,5,10]);
+  var ps2 = c4 === 2 ? [-3,-2,-1,1,2,3] : (c4 === 3 ? [-2,-1,1,2,3] : (c4 === 5 ? [-1,1,2] : [-2,-1,1,2,3]));
+  p = pick(ps2);
+  var val2 = Math.pow(c4, p);
+  var vs2 = p < 0 ? u8frac(1, Math.pow(c4, -p)) : "" + val2;
+  return mcq("The point \\(\\left(" + vs2 + ", " + p + "\\right)\\) lies on the graph of \\(y = " + u8L(c4, "x") + "\\). Which point lies on the graph of \\(y = " + c4 + "^{x}\\)?",
+    "\\(\\left(" + p + ", " + vs2 + "\\right)\\)",
+    ["\\(\\left(" + vs2 + ", " + p + "\\right)\\)",
+     "\\(\\left(" + (-p) + ", " + vs2 + "\\right)\\)",
+     "\\(\\left(" + vs2 + ", " + (-p) + "\\right)\\)"],
+    "Inverse functions swap coordinates: the point \\(\\left(" + vs2 + ", " + p + "\\right)\\) on \\(y = " + u8L(c4, "x") + "\\) corresponds to \\(\\left(" + p + ", " + vs2 + "\\right)\\) on \\(y = " + c4 + "^{x}\\), since \\(" + c4 + "^{" + p + "} = " + vs2 + "\\).",
+    {mode:mode, c:c4, p:p});
+});
+
+E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
+  if (Math.random() < 0.6){
+    var b = pick([2,3,5,10]);
+    var VS = pick([["x","y"],["a","b"],["m","n"],["p","q"]]);
+    var X = VS[0], Y = VS[1];
+    var r = pick([2,3]);
+    var T1 = u8L(b, "(" + X + Y + ")") + " = " + u8L(b, X) + " + " + u8L(b, Y);
+    var T2 = u8L(b, u8frac(X, Y)) + " = " + u8L(b, X) + " - " + u8L(b, Y);
+    var T3 = u8L(b, X + "^{" + r + "}") + " = " + r + u8L(b, X);
+    var F = pick([1,2,3,4,5]);
+    var Fstr;
+    if (F === 1) Fstr = u8L(b, "(" + X + " + " + Y + ")") + " = " + u8L(b, X) + " + " + u8L(b, Y);
+    else if (F === 2) Fstr = u8L(b, "(" + X + Y + ")") + " = " + u8L(b, X) + " \\cdot " + u8L(b, Y);
+    else if (F === 3) Fstr = u8L(b, u8frac(X, Y)) + " = " + u8L(b, Y) + " - " + u8L(b, X);
+    else if (F === 4) Fstr = u8L(b, X + "^{" + r + "}") + " = \\left(" + u8L(b, X) + "\\right)^{" + r + "}";
+    else Fstr = u8L(b, "(" + X + " - " + Y + ")") + " = " + u8L(b, X) + " - " + u8L(b, Y);
+    var sol = "The three laws of logarithms are: \\(" + T1 + "\\), \\(" + T2 + "\\), and \\(" + T3 + "\\). The chosen equality breaks one of them: the laws apply to a product, a quotient, or a power of the argument, never to a sum or a difference of arguments, and the result is a sum or difference of logarithms, never a product or a power of logarithms.";
+    return mcq("For positive values of \\(" + X + "\\) and \\(" + Y + "\\), which equality is **NOT** true?",
+      "\\(" + Fstr + "\\)",
+      ["\\(" + T1 + "\\)", "\\(" + T2 + "\\)", "\\(" + T3 + "\\)"],
+      sol, {mode:"false", F:F, b:b});
+  }
+  var b2 = 2, k = ri(2,6);
+  var S = Math.pow(b2, k);
+  return mcq("A student writes \\(" + u8L(b2, "(" + S + " + " + S + ")") + " = " + u8L(b2, "" + S) + " + " + u8L(b2, "" + S) + " = " + (2 * k) + "\\). What is the correct value of \\(" + u8L(b2, "(" + S + " + " + S + ")") + "\\)?",
+    "\\(" + (k + 1) + "\\)",
+    ["\\(" + (2 * k) + "\\)", "\\(" + (2 * k + 1) + "\\)", "\\(" + k + "\\)"],
+    "The student applied the product law to a sum. Add first: \\(" + S + " + " + S + " = " + (2 * S) + " = 2 \\times " + b2 + "^{" + k + "}\\), so \\(" + u8L(b2, "(" + (2 * S) + ")") + " = \\log_{" + b2 + "} 2 + " + u8L(b2, "" + S) + " = 1 + " + k + " = " + (k + 1) + "\\).",
+    {mode:"numeric", b:b2, k:k});
+});
+
+/* ----- bank-u9.js ----- */
+// Math 3200 Unit 9 Permutations, Combinations, and the Binomial Theorem question bank
+// CRMARKS: u9-binomial-expand=2
+// CRMARKS: u9-binomial-term=2
+// CRMARKS: u9-comb-basic=2
+// CRMARKS: u9-comb-symmetry-solve=2
+// CRMARKS: u9-counting-organizers=1
+// CRMARKS: u9-factorial-notation=1
+// CRMARKS: u9-fcp-apply=1
+// CRMARKS: u9-fcp-meal-mc=1
+// CRMARKS: u9-identical-elements=2
+// CRMARKS: u9-not-adjacent-cr=3
+// CRMARKS: u9-pascal-next-row=1
+// CRMARKS: u9-patterns-coefficients=2
+// CRMARKS: u9-perm-basic=2
+// CRMARKS: u9-perm-constraints=3
+// CRMARKS: u9-perm-or-comb=2
+// CRMARKS: u9-perm-solve=2
+// CRMARKS: u9-two-group-cr=3
+// CRMARKS: u9-word-arrange-mc=1
+/* ================= Unit 9: Permutations, Combinations, and the Binomial Theorem ================= */
+/* ================= Unit 9: Permutations, Combinations, and the Binomial Theorem =================
+   Tranche 2, final scope. Indicators MA3200.3.14 to 3.19 and MA3200.9.1 to 9.15.
+   All stems, contexts, names and values are original. Helpers are prefixed u9;
+   entries register through E(...). Every LaTeX fragment produced by a helper is
+   only ever interpolated inside \(...\) or \[...\] delimiters. */
+
+/* ---------- u9 helpers ---------- */
+function u9fact(n){ var f=1,i; for(i=2;i<=n;i++) f*=i; return f; }
+function u9perm(n,r){ var p=1,i; for(i=0;i<r;i++) p*=(n-i); return p; }
+function u9comb(n,r){ if(r<0||r>n) return 0; if(r>n-r) r=n-r; var c=1,i; for(i=0;i<r;i++) c=c*(n-i)/(i+1); return c; }
+function u9row(n){ var r=[1],i,j,nr; for(i=1;i<=n;i++){ nr=[1]; for(j=1;j<i;j++) nr.push(r[j-1]+r[j]); nr.push(1); r=nr; } return r; }
+function u9big(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,","); }
+function u9binS(n,r){ return "\\binom{"+n+"}{"+r+"}"; }   /* raw fragment: delimiters at the call site */
+function u9permS(n,r){ return "_"+n+"P_"+r; }            /* raw fragment: delimiters at the call site */
+function u9opts(key,cands){ /* 3 distractors distinct from key and each other, or null */
+  var out=[], seen={}, i, s; seen[String(key)]=1;
+  for(i=0;i<cands.length;i++){ s=String(cands[i]); if(!seen[s]){ seen[s]=1; out.push(s); if(out.length===3) return out; } }
+  return null;
+}
+function u9termBody(c,xe,yname,ye){ /* one expansion term, sign excluded, coefficient folded in */
+  var a=Math.abs(c), s="";
+  if(xe===0&&ye===0) return ""+a;
+  if(a!==1) s+=""+a;
+  if(xe>0) s+="x"+(xe>1?"^"+xe:"");
+  if(ye>0) s+=yname+(ye>1?"^"+ye:"");
+  return s;
+}
+function u9joinTerms(terms){ /* terms: [{c,xe,yname,ye}] joined with signs */
+  var s="",i,t;
+  for(i=0;i<terms.length;i++){ t=terms[i];
+    if(i===0) s=(t.c<0?"-":"")+u9termBody(t.c,t.xe,t.yname,t.ye);
+    else s+=(t.c<0?" - ":" + ")+u9termBody(t.c,t.xe,t.yname,t.ye);
+  }
+  return s;
+}
+function u9specTerms(sp){ /* sp: {A,B,yname,s,n}; term k uses y (or the constant) k times */
+  var terms=[],k,c;
+  for(k=0;k<=sp.n;k++){
+    c=u9comb(sp.n,k)*Math.pow(sp.A,sp.n-k)*Math.pow(sp.B,k)*Math.pow(sp.s,k);
+    terms.push({c:c, xe:sp.n-k, yname:sp.yname, ye:(sp.yname?k:0)});
+  }
+  return terms;
+}
+function u9specStr(sp){
+  var xs=(sp.A===1?"x":sp.A+"x"), ys;
+  if(sp.yname) ys=(sp.B===1?"y":sp.B+"y"); else ys=""+sp.B;
+  return "("+xs+(sp.s<0?" - ":" + ")+ys+")^"+sp.n;
+}
+function u9pickSpec(allowMinus){
+  var forms=[
+    {A:1,B:1,yname:"y"}, {A:1,B:2,yname:"y"}, {A:1,B:3,yname:"y"},
+    {A:2,B:1,yname:"y"}, {A:3,B:1,yname:"y"}, {A:2,B:2,yname:"y"},
+    {A:1,B:1,yname:null}, {A:1,B:2,yname:null}, {A:1,B:3,yname:null},
+    {A:2,B:1,yname:null}, {A:2,B:2,yname:null}, {A:3,B:2,yname:null}
+  ];
+  var sp=pick(forms), n=pick([2,3,3,4]);
+  if(n===4&&(sp.A>2||sp.B>2)) n=3;
+  sp={A:sp.A,B:sp.B,yname:sp.yname,s:(allowMinus&&Math.random()<0.4?-1:1),n:n};
+  return sp;
+}
+
+/* ---------- 3.15: the next row of Pascal's triangle (L1) ---------- */
+E("u9-pascal-next-row",9,["3.15"],1,"gen",function(){
+  var mode=pick(["miss","full","kth","miss","kth"]);
+  var n=ri(3,8), row=u9row(n), next=u9row(n+1);
+  var rowS=row.join(", "), nextS=next.join(", ");
+  var rule="Each entry of a new row is the sum of the two entries above it in the current row, and every row begins and ends with 1.";
+  if(mode==="miss"){
+    var j=ri(1,n), shown=next.slice(); shown[j]="?";
+    return numq("One row of Pascal's triangle is "+rowS+". The row that follows it begins "+shown.join(", ")+". What is the missing entry?",
+      next[j],0.001,
+      rule+" The missing entry sits above "+row[j-1]+" and "+row[j]+", so it is \\("+row[j-1]+" + "+row[j]+" = "+next[j]+"\\).",
+      {n:n,j:j,mode:mode});
+  }
+  if(mode==="kth"){
+    var j2=ri(2,n), pos=["second","third","fourth","fifth","sixth","seventh","eighth","ninth"][j2-1];
+    return numq("One row of Pascal's triangle is "+rowS+". What is the "+pos+" entry of the row that follows it?",
+      next[j2],0.001,
+      rule+" The next row is "+nextS+", and its "+pos+" entry is <b>"+next[j2]+"</b>.",
+      {n:n,j:j2,mode:mode});
+  }
+  var bad1=next.slice(); var jj=ri(1,n); bad1[jj]=bad1[jj]+pick([1,2]);
+  var bad2=u9row(n+2);
+  var bad3=next.map(function(v,i){ return (i===0||i===next.length-1)?1:v*2; });
+  var dis=u9opts(nextS,[bad1.join(", "),bad2.join(", "),bad3.join(", ")]);
+  return mcq("One row of Pascal's triangle is "+rowS+". Which row comes next?",
+    nextS,dis,
+    rule+" Building the new row from "+rowS+" gives <b>"+nextS+"</b>.",
+    {n:n,mode:mode});
+});
+
+/* ---------- 3.14, 3.16, 3.17: patterns in (x + y)^n, coefficients as combinations (L2) ---------- */
+E("u9-patterns-coefficients",9,["3.14","3.16","3.17"],2,"gen",function(){
+  var mode=pick(["coef","coef","pos","count","expsum","xpat","why"]);
+  if(mode==="coef"){
+    var n=ri(4,8), b=ri(1,n-1), a=n-b, v=u9comb(n,b);
+    return numq("What is the coefficient of \\(x^{"+a+"} y^{"+b+"}\\) in the expansion of \\((x + y)^{"+n+"}\\)?",
+      v,0.001,
+      "The coefficients in the expansion of \\((x + y)^{"+n+"}\\) are the entries of row "+n+" of Pascal's triangle, the "+(n+1)+(n===3?"rd":n===1?"st":n===2?"nd":"th")+" row when the single 1 at the top is counted as the first row. The term \\(x^{"+a+"} y^{"+b+"}\\) has coefficient \\("+u9binS(n,b)+" = "+v+"\\).",
+      {n:n,b:b,mode:mode});
+  }
+  if(mode==="pos"){
+    var n2=ri(4,7), k=ri(2,n2), v2=u9comb(n2,k-1);
+    return numq("What is the coefficient of the "+["second","third","fourth","fifth","sixth","seventh"][k-2]+" term in the expansion of \\((x + y)^{"+n2+"}\\)?",
+      v2,0.001,
+      "Term number "+k+" uses \\(y\\) exactly "+(k-1)+" time"+(k===2?"":"s")+", so its coefficient is \\("+u9binS(n2,k-1)+" = "+v2+"\\), read from row "+n2+" of Pascal's triangle.",
+      {n:n2,k:k,mode:mode});
+  }
+  if(mode==="count"){
+    var n3=ri(3,11);
+    return numq("How many terms are in the expansion of \\((x + y)^{"+n3+"}\\)?",
+      n3+1,0.001,
+      "The exponent of \\(x\\) runs from "+n3+" down to 0, giving one term for each value: \\("+(n3+1)+"\\) terms in all, one more than the power.",
+      {n:n3,mode:mode});
+  }
+  if(mode==="expsum"){
+    var n4=ri(3,9);
+    var dis=u9opts(""+n4,[""+(n4+1),""+(n4-1),""+(2*n4)]);
+    return mcq("In the expansion of \\((x + y)^{"+n4+"}\\), the exponents of \\(x\\) and \\(y\\) in each term add to",
+      ""+n4,dis,
+      "Every term comes from multiplying "+n4+" factors of \\((x + y)\\), and each factor contributes either one \\(x\\) or one \\(y\\). So the exponents in every term add to <b>"+n4+"</b>, the power on the binomial.",
+      {n:n4,mode:mode});
+  }
+  if(mode==="xpat"){
+    var n5=ri(4,8);
+    var dis2=u9opts("It decreases by 1 at each step",["It increases by 1 at each step","It stays the same at each step","It alternates between high and low values"]);
+    return mcq("In the expansion of \\((x + y)^{"+n5+"}\\), what happens to the exponent of \\(x\\) as the terms are read from left to right?",
+      "It decreases by 1 at each step",dis2,
+      "The first term is \\(x^{"+n5+"}\\) and the last is \\(y^{"+n5+"}\\). Moving right, each term gives up one factor of \\(x\\) and gains one factor of \\(y\\), so the exponent of \\(x\\) drops by 1 at each step while the exponent of \\(y\\) rises by 1.",
+      {n:n5,mode:mode});
+  }
+  var n6=pick([5,6,7]), b6=pick([2,3]), a6=n6-b6, v6=u9comb(n6,b6);
+  var key="Each product that gives \\(x^{"+a6+"} y^{"+b6+"}\\) is formed by choosing which "+b6+" of the "+n6+" factors supply a \\(y\\), and there are \\("+u9binS(n6,b6)+"\\) such choices";
+  var dis3=u9opts(key,[
+    "The exponents "+a6+" and "+b6+" add to "+n6+", and adding exponents is how coefficients are counted, since each term is built by adding the exponents from the factors one at a time",
+    "The coefficient is the "+(b6===2?"2nd":"3rd")+" entry of row "+n6+" of Pascal's triangle, counted from the left edge of the row",
+    "Because "+n6+" - "+a6+" = "+b6+", the second exponent is the one used in the combination, and no other count is involved"
+  ]);
+  return mcq("The coefficient of \\(x^{"+a6+"} y^{"+b6+"}\\) in the expansion of \\((x + y)^{"+n6+"}\\) is \\("+u9binS(n6,b6)+" = "+v6+"\\). Why is the coefficient given by a combination?",
+    key,dis3,
+    "Expanding means choosing one term from each of the "+n6+" factors. A product equal to \\(x^{"+a6+"} y^{"+b6+"}\\) needs \\(y\\) from exactly "+b6+" factors and \\(x\\) from the rest, and the number of ways to choose those "+b6+" factors is \\("+u9binS(n6,b6)+" = "+v6+"\\).",
+    {n:n6,b:b6,mode:mode});
+});
+
+/* ---------- 3.18: full binomial expansions (L2) ---------- */
+E("u9-binomial-expand",9,["3.18"],2,"gen",function(){
+  var att=0;
+  while(att<80){
+    att++;
+    var sp=u9pickSpec(true), terms=u9specTerms(sp), key=u9joinTerms(terms);
+    var cands=[], i, t2;
+    for(i=1;i<sp.n;i++){ t2=terms.map(function(t){ return {c:t.c,xe:t.xe,yname:t.yname,ye:t.ye}; }); t2[i].c=terms[i-1].c; cands.push(u9joinTerms(t2)); }
+    t2=terms.map(function(t){ var k=t.ye|| (sp.n-t.xe); return {c:u9comb(sp.n,sp.n-t.xe)*Math.pow(sp.A,Math.min(sp.n-t.xe,1))*Math.pow(sp.B,Math.min(k,1))*Math.pow(sp.s,k), xe:t.xe, yname:t.yname, ye:t.ye}; });
+    cands.push(u9joinTerms(t2));
+    for(i=1;i<=sp.n;i++){ t2=terms.map(function(t){ return {c:t.c,xe:t.xe,yname:t.yname,ye:t.ye}; }); t2[i].c=-terms[i].c; cands.push(u9joinTerms(t2)); }
+    t2=terms.map(function(t){ return {c:t.c,xe:t.xe,yname:t.yname,ye:t.ye}; });
+    var mid=ri(1,sp.n-1); t2[mid].xe=terms[mid].xe+1; if(t2[mid].ye>0) t2[mid].ye=terms[mid].ye-1;
+    cands.push(u9joinTerms(t2));
+    var dis=u9opts(key,cands);
+    if(!dis) continue;
+    var rowN=u9row(sp.n).join(", ");
+    return mcq("Expand \\("+u9specStr(sp)+"\\).",
+      "\\("+key+"\\)",dis.map(function(d){ return "\\("+d+"\\)"; }),
+      "The coefficients come from row "+sp.n+" of Pascal's triangle: "+rowN+". Each term takes its coefficient from that row, the exponent of \\(x\\) falls from "+sp.n+" to 0, and the second part of the binomial is used one more time in each successive term.\\[ \\begin{aligned} "+u9specStr(sp)+" &= "+key+" \\end{aligned} \\]",
+      {A:sp.A,B:sp.B,s:sp.s,n:sp.n});
+  }
+  return numq("How many terms are in the expansion of \\((x + y)^5\\)?",6,0.001,"The exponent of \\(x\\) runs from 5 down to 0, giving 6 terms.",{fallback:1});
+});
+
+/* ---------- 3.19: a specific term of a binomial expansion (L2) ---------- */
+E("u9-binomial-term",9,["3.19"],2,"gen",function(){
+  var att=0;
+  while(att<80){
+    att++;
+    var sp=u9pickSpec(true); sp.n=pick([3,4,4,5]);
+    if(sp.n===5&&(sp.A>2||sp.B>2)) continue;
+    var terms=u9specTerms(sp);
+    var mode=pick(["kth","kth","contains","coefnum"]);
+    if(mode==="coefnum"&&sp.s<0) mode="kth";
+    if(mode==="contains"){
+      var m=ri(1,sp.n-1), j=sp.n-m;
+      var xPow=(m===1?"x":"x^{"+m+"}");
+      var tj=terms[j];
+      var candsT=[terms[j-1],terms[j+1],
+        {c:u9comb(sp.n,j+1)*Math.pow(sp.A,sp.n-j)*Math.pow(sp.B,j)*Math.pow(sp.s,j), xe:tj.xe, yname:tj.yname, ye:tj.ye},
+        {c:u9comb(sp.n,j)*Math.pow(sp.A,Math.min(sp.n-j,1))*Math.pow(sp.B,Math.min(j,1))*Math.pow(sp.s,j), xe:tj.xe, yname:tj.yname, ye:tj.ye}];
+      var keyT=(tj.c<0?"-":"")+u9termBody(tj.c,tj.xe,tj.yname,tj.ye);
+      var disT=u9opts(keyT,candsT.map(function(t){ return (t.c<0?"-":"")+u9termBody(t.c,t.xe,t.yname,t.ye); }));
+      if(!disT) continue;
+      return mcq("What is the term containing \\("+xPow+"\\) in the expansion of \\("+u9specStr(sp)+"\\)?",
+        "\\("+keyT+"\\)",disT.map(function(d){ return "\\("+d+"\\)"; }),
+        "The term with \\("+xPow+"\\) uses the second part of the binomial "+j+" time"+(j===1?"":"s")+", so its coefficient is \\("+u9binS(sp.n,j)+"\\) together with the powers of the coefficients inside the binomial, giving \\("+keyT+"\\)\\.",
+        {n:sp.n,j:j,mode:mode});
+    }
+    var k=ri(2,sp.n), jj=k-1, tk=terms[jj];
+    if(mode==="coefnum"){
+      return numq("What is the coefficient of the "+["second","third","fourth","fifth"][k-2]+" term in the expansion of \\("+u9specStr(sp)+"\\)?",
+        tk.c,0.001,
+        "Term "+k+" uses the second part of the binomial "+jj+" time"+(jj===1?"":"s")+". Its coefficient is \\("+u9binS(sp.n,jj)+"\\) multiplied by the powers of the coefficients inside the binomial: \\("+tk.c+"\\).",
+        {n:sp.n,k:k,mode:mode});
+    }
+    var keyK=(tk.c<0?"-":"")+u9termBody(tk.c,tk.xe,tk.yname,tk.ye);
+    var candsK=[terms[jj-1],terms[jj+1],
+      {c:u9comb(sp.n,jj+1)*Math.pow(sp.A,sp.n-jj)*Math.pow(sp.B,jj)*Math.pow(sp.s,jj), xe:tk.xe, yname:tk.yname, ye:tk.ye},
+      {c:u9comb(sp.n,jj)*Math.pow(sp.A,Math.min(sp.n-jj,1))*Math.pow(sp.B,Math.min(jj,1))*Math.pow(sp.s,jj), xe:tk.xe, yname:tk.yname, ye:tk.ye}];
+    var disK=u9opts(keyK,candsK.map(function(t){ return (t.c<0?"-":"")+u9termBody(t.c,t.xe,t.yname,t.ye); }));
+    if(!disK) continue;
+    return mcq("What is the "+["second","third","fourth","fifth"][k-2]+" term in the expansion of \\("+u9specStr(sp)+"\\)?",
+      "\\("+keyK+"\\)",disK.map(function(d){ return "\\("+d+"\\)"; }),
+      "Counting from the left, term "+k+" uses the second part of the binomial "+jj+" time"+(jj===1?"":"s")+" and \\(x\\) the remaining "+(sp.n-jj)+" times. Its coefficient is \\("+u9binS(sp.n,jj)+"\\) together with the powers of the coefficients inside the binomial, giving \\("+keyK+"\\)\\.",
+      {n:sp.n,k:k,mode:mode});
+  }
+  return numq("What is the coefficient of the third term in the expansion of \\((x + y)^4\\)?",6,0.001,"The coefficients are row 4 of Pascal's triangle: 1, 4, 6, 4, 1.",{fallback:1});
+});
+
+/* ---------- 9.1, 9.4: counting with lists and tree diagrams (L1) ---------- */
+E("u9-counting-organizers",9,["9.1","9.4"],1,"gen",function(){
+  var mode=pick(["two","two","three","row","back"]);
+  if(mode==="two"){
+    var ctx=pick([
+      {a:"juices",b:"cereals",w:"breakfasts"},
+      {a:"shirts",b:"pairs of shorts",w:"outfits"},
+      {a:"crusts",b:"sauces",w:"pizzas"},
+      {a:"hats",b:"scarves",w:"winter outfits"},
+      {a:" sandwich fillings",b:"breads",w:"sandwiches"},
+      {a:"notebook colours",b:"pen colours",w:"notebook and pen pairs"}
+    ]);
+    var x=ri(2,5), y=ri(2,5);
+    return numq("A list is used to count "+ctx.w+" made from "+x+" "+ctx.a.trim()+" and "+y+" "+ctx.b+". How many "+ctx.w+" are on the list?",
+      x*y,0.001,
+      "Each of the "+x+" "+ctx.a.trim()+" can be paired with each of the "+y+" "+ctx.b+", so the list has \\("+x+" \\times "+y+" = "+(x*y)+"\\) entries.",
+      {x:x,y:y,mode:mode});
+  }
+  if(mode==="three"){
+    var c3=pick([
+      {parts:"2 kinds of bread, 3 fillings and 2 spreads",v:[2,3,2],w:"sandwiches"},
+      {parts:"3 shirts, 2 pairs of pants and 2 pairs of shoes",v:[3,2,2],w:"outfits"},
+      {parts:"2 soups, 4 mains and 2 desserts",v:[2,4,2],w:"meals"},
+      {parts:"3 juices, 2 cereals and 3 fruits",v:[3,2,3],w:"breakfasts"}
+    ]);
+    var tot=c3.v[0]*c3.v[1]*c3.v[2];
+    return numq("A tree diagram is used to count the "+c3.w+" that can be made from "+c3.parts+". How many endpoints does the tree diagram have?",
+      tot,0.001,
+      "Each stage of the tree splits every branch again: \\("+c3.v[0]+" \\times "+c3.v[1]+" \\times "+c3.v[2]+" = "+tot+"\\) endpoints.",
+      {mode:mode,tot:tot});
+  }
+  if(mode==="row"){
+    var c4=pick([
+      {what:"different posters",n:3},{what:"different flags",n:3},{what:"different photographs",n:4},
+      {what:"different books",n:4},{what:"runners",n:4},{what:"different cards",n:3}
+    ]);
+    var parts4=[]; for(var i4=c4.n;i4>=1;i4--) parts4.push(i4);
+    return numq("A tree diagram is used to count the orders in which "+c4.n+" "+c4.what+" can be placed in a row. How many orders does the tree diagram show?",
+      u9fact(c4.n),0.001,
+      "At each stage of the tree, one fewer item remains: \\("+parts4.join(" \\times ")+" = "+u9fact(c4.n)+"\\) orders.",
+      {n:c4.n,mode:mode});
+  }
+  var pair=pick([[12,3],[12,4],[18,3],[20,4],[24,4],[24,6],[16,4],[15,3],[15,5],[20,5],[18,6],[14,2]]);
+  return numq("A tree diagram for a two-stage choice has "+pair[0]+" endpoints. The first stage has "+pair[1]+" options. How many options are there at the second stage?",
+    pair[0]/pair[1],0.001,
+    "The endpoints are the first-stage options repeated for each second-stage option, so the second stage has \\("+pair[0]+" \\div "+pair[1]+" = "+(pair[0]/pair[1])+"\\) options.",
+    {mode:mode,tot:pair[0],first:pair[1]});
+});
+
+/* ---------- 9.3: the Fundamental Counting Principle (L2) ---------- */
+E("u9-fcp-apply",9,["9.3"],1,"gen",function(){
+  var mode=pick(["meal","code","plate","stages","mealMC"]);
+  if(mode==="mealMC"){
+    var f=[ri(2,4),ri(3,5),ri(2,4)], key=f[0]*f[1]*f[2];
+    var dis=u9opts(u9big(key),[u9big(f[0]+f[1]+f[2]),u9big((f[0]+1)*f[1]*f[2]),u9big((f[0]-1)*(f[1]-1)*(f[2]-1)),u9big(f[0]*f[1]+f[2])]);
+    return mcq("A cafeteria offers "+f[0]+" soups, "+f[1]+" main dishes and "+f[2]+" drinks. How many different meals consist of one soup, one main dish and one drink?",
+      u9big(key),dis,
+      "The choices are independent stages, so the Fundamental Counting Principle multiplies them:\\[ \\begin{aligned} "+f[0]+" \\times "+f[1]+" \\times "+f[2]+" &= "+u9big(key)+" \\end{aligned} \\]",
+      {f:f,mode:mode});
+  }
+  if(mode==="meal"){
+    var c=pick([
+      {t:"A food truck sells {a} wraps, {b} salads and {c} smoothies. How many different orders consist of one wrap, one salad and one smoothie?",lo:[2,3,2],hi:[4,5,4]},
+      {t:"A bakery case holds {a} kinds of muffins, {b} kinds of tarts and {c} kinds of cookies. How many different treats consist of one muffin, one tart and one cookie?",lo:[2,3,2],hi:[5,4,4]}
+    ]);
+    var a=ri(c.lo[0],c.hi[0]), b=ri(c.lo[1],c.hi[1]), d=ri(c.lo[2],c.hi[2]);
+    var stem=c.t.replace("{a}",a).replace("{b}",b).replace("{c}",d);
+    return numq(stem,a*b*d,0.001,
+      "Multiply the number of choices at each stage:\\[ \\begin{aligned} "+a+" \\times "+b+" \\times "+d+" &= "+u9big(a*b*d)+" \\end{aligned} \\]",
+      {a:a,b:b,d:d,mode:mode});
+  }
+  if(mode==="code"){
+    var sub=pick(["rep","norep","first"]);
+    if(sub==="rep"){
+      var L=pick([3,4]);
+      return numq("A bike lock uses a code of "+L+" digits, and digits may be repeated. How many codes are possible?",
+        Math.pow(10,L),0.001,
+        "Each of the "+L+" positions can be filled in 10 ways, and repetition is allowed:\\[ \\begin{aligned} 10^{"+L+"} &= "+u9big(Math.pow(10,L))+" \\end{aligned} \\]",
+        {sub:sub,L:L});
+    }
+    if(sub==="norep"){
+      var v=u9perm(10,3);
+      return numq("A door keypad code has 3 digits, and no digit may be used more than once. How many codes are possible?",
+        v,0.001,
+        "The first digit has 10 choices, the next has 9, and the last has 8:\\[ \\begin{aligned} 10 \\times 9 \\times 8 &= "+v+" \\end{aligned} \\]",
+        {sub:sub});
+    }
+    var v2=9*10*10;
+    return numq("A locker code has 3 digits. The first digit cannot be 0, and digits may be repeated. How many codes are possible?",
+      v2,0.001,
+      "The first digit has 9 choices (1 to 9), and each of the other two digits has 10:\\[ \\begin{aligned} 9 \\times 10 \\times 10 &= "+u9big(v2)+" \\end{aligned} \\]",
+      {sub:sub});
+  }
+  if(mode==="plate"){
+    var Lp=pick([2,3]), Dp=pick([2,3]), val=Math.pow(26,Lp)*Math.pow(10,Dp);
+    return numq("A licence plate pattern uses "+Lp+" letters followed by "+Dp+" digits. Letters and digits may be repeated. How many plates fit the pattern?",
+      val,0.001,
+      "Each letter can be chosen in 26 ways and each digit in 10 ways:\\[ \\begin{aligned} 26^{"+Lp+"} \\times 10^{"+Dp+"} &= "+u9big(val)+" \\end{aligned} \\]",
+      {Lp:Lp,Dp:Dp,mode:mode});
+  }
+  var c4b=pick([
+    {t:"A hiker packs 1 of {a} tents, 1 of {b} sleeping bags, 1 of {c} stoves and 1 of {d} backpacks. How many different gear sets are possible?",lo:[2,2,2,2],hi:[3,4,3,3]},
+    {t:"A trip is planned with {a} choices of town, {b} choices of inn, {c} choices of trail and {d} choices of ferry sailing. How many different trips are possible?",lo:[2,2,2,2],hi:[4,3,3,2]}
+  ]);
+  var w=ri(c4b.lo[0],c4b.hi[0]), x=ri(c4b.lo[1],c4b.hi[1]), y=ri(c4b.lo[2],c4b.hi[2]), z=ri(c4b.lo[3],c4b.hi[3]);
+  var stem4=c4b.t.replace("{a}",w).replace("{b}",x).replace("{c}",y).replace("{d}",z);
+  return numq(stem4,w*x*y*z,0.001,
+    "Multiply the choices at the four stages:\\[ \\begin{aligned} "+w+" \\times "+x+" \\times "+y+" \\times "+z+" &= "+u9big(w*x*y*z)+" \\end{aligned} \\]",
+    {mode:mode});
+});
+
+/* ---------- 9.2: why choices multiply rather than add (L3, var) ---------- */
+E("u9-why-multiply",9,["9.2"],3,"var",varset([
+  function(){
+    return mcq("A diner offers 4 soups and 3 main dishes. Why is the number of soup-and-main pairs found by multiplying, \\(4 \\times 3\\), rather than by adding, \\(4 + 3\\)?",
+      "Each of the 4 soups can be paired with each of the 3 mains, forming 4 equal groups of 3 pairs",
+      ["Adding is only used for counting single items, and pairs are never single items",
+       "The Fundamental Counting Principle says to multiply any two numbers that appear in a counting problem",
+       "A tree diagram for the pairs would have only 7 endpoints, so addition must be wrong"],
+      "Pairing is a two-stage choice. Fixing one soup still leaves 3 mains, and this happens for all 4 soups, so the pairs form 4 groups of 3. Counting equal groups is multiplication: \\(4 \\times 3 = 12\\) pairs. Adding counts the 7 dishes themselves, not the pairs.",
+      {v:1});
+  },
+  function(){
+    return mcq("A student claims that a meal made from 4 starters and 5 desserts can be chosen in \\(4 + 5 = 9\\) ways. What is the error?",
+      "The 9 counts individual dishes; each starter pairs with all 5 desserts, giving 4 groups of 5 meals",
+      ["The student should have divided 5 by 4, because the courses are different sizes",
+       "The 9 is correct for meals, and multiplication is only needed when there are three courses",
+       "The student used the wrong operation because meals are always counted with factorials, not with sums"],
+      "A meal is a pair, one starter together with one dessert. For each of the 4 starters there are 5 desserts, so there are \\(4 \\times 5 = 20\\) meals. The sum \\(4 + 5\\) counts dishes, not pairs.",
+      {v:2});
+  },
+  function(){
+    return mcq("A tree diagram is drawn for choosing a size (3 options) and then a flavour (4 options). Why does the tree have 12 endpoints?",
+      "Each of the 3 size branches splits into 4 flavour branches, making 3 equal groups of 4 endpoints",
+      ["The tree has one endpoint for each option, and 3 and 4 make 12 when combined in any tree",
+       "Endpoints are counted by adding the options at each stage, and the stages here are equal in size",
+       "Each flavour appears on 4 branches, so the endpoints are counted 4 at a time until the total of 12 is reached"],
+      "The first stage creates 3 branches. Every one of those branches is then split by the 4 flavours, so the endpoints come in 3 identical groups of 4: \\(3 \\times 4 = 12\\).",
+      {v:3});
+  },
+  function(){
+    return mcq("Which statement correctly explains when to multiply and when to add in a counting problem?",
+      "Multiply when every outcome of one choice can be combined with every outcome of another; add when the outcomes come from separate cases that do not combine",
+      ["Multiply when the problem mentions two or more objects being combined; add when it mentions only one object",
+       "Multiply when order matters in the final arrangement being counted; add when order does not matter",
+       "Multiply when the numbers are large enough that listing every possible outcome is slow and impractical; add when a list is short enough to write out in full on the page"],
+      "Multiplication counts combinations of choices that happen together, because each outcome of one stage is repeated for every outcome of the next. Addition counts disjoint cases, where an outcome belongs to one case or the other but never both.",
+      {v:4});
+  }
+]));
+
+/* ---------- 9.5: factorial notation and direct evaluation (L1) ---------- */
+E("u9-factorial-notation",9,["9.5"],1,"gen",function(){
+  var mode=pick(["fact","quot","perm","which","whichexpr","quot","perm"]);
+  if(mode==="fact"){
+    var n=ri(3,10);
+    return numq("Evaluate \\("+n+"!\\).",
+      u9fact(n),0.001,
+      "\\[ \\begin{aligned} "+n+"! &= "+(function(){ var p=[]; for(var i=n;i>=1;i--) p.push(i); return p.join(" \\times "); })()+" \\\\ &= "+u9big(u9fact(n))+" \\end{aligned} \\]",
+      {n:n,mode:mode});
+  }
+  if(mode==="quot"){
+    var n2=ri(5,11), k=pick([2,3,4]); if(k>=n2) k=2;
+    var v=u9perm(n2,k), parts=[];
+    for(var i=0;i<k;i++) parts.push(n2-i);
+    return numq("Evaluate \\(\\frac{"+n2+"!}{"+(n2-k)+"!}\\).",
+      v,0.001,
+      "The factors from "+(n2-k)+" down to 1 cancel:\\[ \\begin{aligned} \\frac{"+n2+"!}{"+(n2-k)+"!} &= "+parts.join(" \\times ")+" \\\\ &= "+u9big(v)+" \\end{aligned} \\]",
+      {n:n2,k:k,mode:mode});
+  }
+  if(mode==="perm"){
+    var n3=ri(4,10), r3=pick([2,3,4]); if(r3>n3) r3=n3;
+    var v3=u9perm(n3,r3), parts3=[];
+    for(var i2=0;i2<r3;i2++) parts3.push(n3-i2);
+    return numq("Evaluate \\("+u9permS(n3,r3)+"\\).",
+      v3,0.001,
+      "\\("+u9permS(n3,r3)+"\\) is a product of "+r3+" factors starting at "+n3+":\\[ \\begin{aligned} "+u9permS(n3,r3)+" &= "+parts3.join(" \\times ")+" \\\\ &= "+u9big(v3)+" \\end{aligned} \\]",
+      {n:n3,r:r3,mode:mode});
+  }
+  if(mode==="whichexpr"){
+    var n5=pick([4,5,6]), chain=[], rep=[], sum=[], i5;
+    for(i5=n5;i5>=1;i5--){ chain.push(i5); rep.push(n5); sum.push(i5); }
+    var disE=u9opts("\\("+chain.join(" \\times ")+"\\)",[
+      "\\("+rep.join(" \\times ")+"\\)",
+      "\\("+sum.join(" + ")+"\\)",
+      "\\("+chain.join(" \\times ")+" \\times 0\\)"]);
+    return mcq("Which expression is equal to \\("+n5+"!\\)?",
+      "\\("+chain.join(" \\times ")+"\\)",disE,
+      "The symbol \\("+n5+"!\\) is shorthand for the product of the integers from "+n5+" down to 1.",
+      {n:n5,mode:mode});
+  }
+  var n4=pick([5,6,7]), v4=u9fact(n4);
+  var dis=u9opts(u9big(v4),[u9big(u9fact(n4-1)),u9big(n4*n4),u9big(v4+100),u9big(u9perm(n4,2))]);
+  return mcq("Which value is equal to \\("+n4+"!\\)?",
+    u9big(v4),dis,
+    "\\("+n4+"!\\) means the product of the integers from "+n4+" down to 1, which is \\("+u9big(v4)+"\\).",
+    {n:n4,mode:mode});
+});
+
+/* ---------- 9.5, 9.6: permutations in context (L2) ---------- */
+E("u9-perm-basic",9,["9.5","9.6"],1,"gen",function(){
+  var mode=pick(["all","all","taken","taken","takenMC"]);
+  if(mode==="all"){
+    var c=pick([
+      {t:"{n} different books are arranged in a row on a shelf. How many arrangements are possible?",w:"arrangements"},
+      {t:"{n} students line up for a class photo. How many different lineups are possible?",w:"lineups"},
+      {t:"{n} runners finish a race with no ties. How many different finishing orders are possible?",w:"orders"},
+      {t:"{n} different flags are flown in a row on a line. How many different displays are possible?",w:"displays"}
+    ]);
+    var n=ri(5,8), stem=c.t.replace("{n}",n);
+    var parts=[]; for(var i=n;i>=1;i--) parts.push(i);
+    return numq(stem,u9fact(n),0.001,
+      "Every position is filled, so the count is \\("+n+"!\\):\\[ \\begin{aligned} "+n+"! &= "+parts.join(" \\times ")+" \\\\ &= "+u9big(u9fact(n))+" \\end{aligned} \\]",
+      {n:n,mode:mode});
+  }
+  if(mode==="takenMC"){
+    var c2=pick([
+      {t:"{r} of the {n} paintings in a show are hung in a row on one wall. How many different rows are possible?"},
+      {t:"A DJ builds a set list by choosing {r} of {n} songs and playing them in order. How many different set lists are possible?"}
+    ]);
+    var n2=ri(6,9), r2=pick([2,3]);
+    var key=u9perm(n2,r2);
+    var dis=u9opts(u9big(key),[u9big(u9comb(n2,r2)),u9big(u9fact(n2)),u9big(u9perm(n2,r2-1)),u9big(Math.pow(n2,r2))]);
+    if(!dis) return numq(c2.t.replace("{n}",n2).replace("{r}",r2),key,0.001,"The order on the wall matters, so this is a permutation.",{n:n2,r:r2,mode:mode});
+    return mcq(c2.t.replace("{n}",n2).replace("{r}",r2),
+      u9big(key),dis,
+      "The positions in the row are distinct, so the count is a permutation: \\("+u9permS(n2,r2)+" = "+u9big(key)+"\\)\\.",
+      {n:n2,r:r2,mode:mode});
+  }
+  var c3=pick([
+    {t:"Gold, silver and bronze medals are awarded in a swim meet with {n} swimmers and no ties. How many different medal results are possible?",r:3},
+    {t:"A club with {n} members elects a president and a treasurer. How many different outcomes are possible?",r:2},
+    {t:"A baking contest with {n} entries awards a first prize and a second prize. How many different outcomes are possible?",r:2},
+    {t:"From a class of {n} students, a captain and an assistant captain are chosen. How many different outcomes are possible?",r:2},
+    {t:"A race has {n} runners. How many different results are possible for the first three finishers?",r:3}
+  ]);
+  var n3=ri(6,10), r3=c3.r, v3=u9perm(n3,r3), parts3=[];
+  for(var i3=0;i3<r3;i3++) parts3.push(n3-i3);
+  return numq(c3.t.replace("{n}",n3),v3,0.001,
+    "The positions are distinct, so this is a permutation of "+n3+" taken "+r3+" at a time:\\[ \\begin{aligned} "+u9permS(n3,r3)+" &= "+parts3.join(" \\times ")+" \\\\ &= "+u9big(v3)+" \\end{aligned} \\]",
+    {n:n3,r:r3,mode:mode});
+});
+
+/* ---------- 9.8: solving nP_r = k (L2) ---------- */
+E("u9-perm-solve",9,["9.8"],2,"gen",function(){
+  var mode=pick(["r2","r2","r3","r4","findr","npn"]);
+  if(mode==="r2"||mode==="r3"||mode==="r4"){
+    var r=(mode==="r2"?2:mode==="r3"?3:4);
+    var n=ri(r+2,r+8), k=u9perm(n,r), parts=[];
+    for(var i=0;i<r;i++) parts.push("n"+(i===0?"":" - "+i));
+    var ctx=Math.random()<0.5;
+    var stem=ctx
+      ? "The number of ways to fill the first "+r+" places in a contest with \\(n\\) entrants is \\("+u9big(k)+"\\). What is \\(n\\)?"
+      : "Solve for \\(n\\): \\("+u9permS("n",r)+" = "+u9big(k)+"\\).";
+    var dis=u9opts(""+n,[""+(n-1),""+(n+1),""+(n+2),""+(n-2)]);
+    var prodParts=[]; for(var i2=0;i2<r;i2++) prodParts.push(n-i2);
+    return mcq(stem,""+n,dis,
+      "\\("+u9permS("n",r)+"\\) is a product of "+r+" factors counting down from \\(n\\):\\[ \\begin{aligned} "+parts.join(" \\times ")+" &= "+u9big(k)+" \\\\ "+prodParts.join(" \\times ")+" &= "+u9big(k)+" \\end{aligned} \\] The first factor is \\(n = "+n+"\\)\\.",
+      {n:n,r:r,mode:mode});
+  }
+  if(mode==="findr"){
+    var n2=pick([5,6,7,8]), r2=pick([2,3,4]); if(r2>n2) r2=3;
+    var k2=u9perm(n2,r2);
+    var dis2=u9opts(""+r2,[""+(r2-1),""+(r2+1),""+(r2+2)]);
+    return mcq("Solve for \\(r\\): \\("+u9permS(n2,"r")+" = "+u9big(k2)+"\\).",
+      ""+r2,dis2,
+      "Build the product down from "+n2+" until it reaches "+u9big(k2)+": \\("+n2+" \\times "+(n2-1)+(r2>=3?" \\times "+(n2-2):"")+(r2>=4?" \\times "+(n2-3):"")+" = "+u9big(k2)+"\\)\\. There are "+r2+" factors, so \\(r = "+r2+"\\)\\.",
+      {n:n2,r:r2,mode:mode});
+  }
+  var n3=ri(4,7), k3=u9fact(n3);
+  var dis3=u9opts(""+n3,[""+(n3-1),""+(n3+1),""+(n3+2)]);
+  return mcq("Solve for \\(n\\): \\("+u9permS("n","n")+" = "+u9big(k3)+"\\).",
+    ""+n3,dis3,
+    "\\("+u9permS("n","n")+" = n!\\), and \\("+n3+"! = "+u9big(k3)+"\\)\\, so \\(n = "+n3+"\\)\\.",
+    {n:n3,mode:mode});
+});
+
+/* ---------- 9.9: permutations with identical elements (L2) ---------- */
+E("u9-identical-elements",9,["9.9"],1,"gen",function(){
+  var mode=pick(["tiles","tiles","compare","beads"]);
+  if(mode==="compare"){
+    var tot=pick([5,6,7]), rc=pick([2,3]);
+    var key=u9fact(tot)/u9fact(rc);
+    var dis=u9opts(u9big(key),[u9big(u9fact(tot)),u9big(u9fact(tot)/rc),u9big(u9fact(tot)-u9fact(rc)),u9big(key*rc)]);
+    if(dis){
+      return mcq("A shelf holds "+tot+" books, all different, giving \\("+u9big(u9fact(tot))+"\\) arrangements. If "+rc+" of the books are replaced by identical copies of one book, how many different arrangements are there?",
+        u9big(key),dis,
+        "Swapping the "+rc+" identical copies among themselves no longer creates a new arrangement. Each distinct arrangement was counted \\("+rc+"! = "+u9fact(rc)+"\\) times, so divide:\\[ \\begin{aligned} \\frac{"+tot+"!}{"+rc+"!} &= "+u9big(key)+" \\end{aligned} \\]",
+        {tot:tot,rc:rc,mode:mode});
+    }
+  }
+  var att=0;
+  while(att<60){
+    att++;
+    var pattern=pick([[2,1,1],[2,2,1],[3,1,1],[3,2,1],[2,2,2],[4,1,1],[3,3],[4,2],[2,1,1,1],[3,2],[5,1,1],[3,2,2]]);
+    var total=pattern.reduce(function(s,v){ return s+v; },0);
+    if(total>8) continue;
+    var letters=shuffle(["A","B","C","D","E","F","G","H","J","K"]).slice(0,pattern.length);
+    var tiles=[], denom=[], i, j;
+    for(i=0;i<pattern.length;i++){ for(j=0;j<pattern[i];j++) tiles.push(letters[i]); if(pattern[i]>1) denom.push(pattern[i]); }
+    var key2=u9fact(total); denom.forEach(function(d){ key2=key2/u9fact(d); });
+    var maxC=Math.max.apply(null,pattern);
+    var cands=[u9fact(total), u9fact(total)/u9fact(maxC), key2*2, u9fact(total-1)];
+    if(key2%2===0) cands.push(key2/2);
+    var ctxS;
+    if(mode==="beads"){
+      var colours=shuffle(["red","blue","green","yellow","white","black"]).slice(0,pattern.length);
+      var desc=pattern.map(function(cnt,i2){ return cnt+" "+colours[i2]; }).join(", ");
+      ctxS="A bracelet is strung with "+desc+" beads. How many different sequences of beads are possible?";
+    } else {
+      ctxS="A set of letter tiles contains the letters "+tiles.join(", ")+". How many different sequences can be formed using all the tiles?";
+    }
+    var denomS=denom.map(function(d){ return d+"!"; }).join(" \\times ");
+    var sol="If all "+total+" items were different there would be \\("+total+"! = "+u9big(u9fact(total))+"\\) sequences. Identical items can be swapped without changing the sequence, so divide by the internal arrangements of each repeated group:\\[ \\begin{aligned} \\frac{"+total+"!}{"+denomS+"} &= "+u9big(key2)+" \\end{aligned} \\]";
+    if(Math.random()<0.5){
+      return numq(ctxS,key2,0.001,sol,{pattern:pattern,mode:mode});
+    }
+    var dis2=u9opts(u9big(key2),cands.map(u9big));
+    if(!dis2) continue;
+    return mcq(ctxS,u9big(key2),dis2,sol,{pattern:pattern,mode:mode});
+  }
+  return numq("A set of letter tiles contains the letters A, A, B, C. How many different sequences can be formed using all the tiles?",
+    12,0.001,"Divide by the arrangements of the two identical A tiles: \\(\\frac{4!}{2!} = 12\\)\\.",{fallback:1});
+});
+
+/* ---------- 9.10: permutations with constraints (L3) ---------- */
+E("u9-perm-constraints",9,["9.10"],3,"gen",function(){
+  var names=shuffle(["Maya","Liam","Noah","Ava","Ethan","Zoe","Owen","Ruby","Eli","Nora","Sam","Ivy"]);
+  var A=names[0], B=names[1], C=names[2];
+  var mode=pick(["together","apart","first","ends","together3"]);
+  var n=ri(5,8);
+  var scene=pick([
+    n+" friends sit in a row of "+n+" seats at a theatre",
+    n+" students stand in a row for a photograph",
+    n+" runners pose in a row after a race"
+  ]);
+  var key, cands, sol;
+  if(mode==="together"){
+    key=2*u9fact(n-1);
+    cands=[u9fact(n),u9fact(n-1),2*u9fact(n-2),key+u9fact(n-1)];
+    sol="Treat "+A+" and "+B+" as one block. The block and the other "+(n-2)+" people make "+(n-1)+" objects, arranged in \\("+(n-1)+"!\\) ways, and the block itself has 2 internal orders:\\[ \\begin{aligned} 2 \\times "+(n-1)+"! &= "+u9big(key)+" \\end{aligned} \\]";
+  } else if(mode==="apart"){
+    key=u9fact(n)-2*u9fact(n-1);
+    cands=[u9fact(n),2*u9fact(n-1),u9fact(n)-u9fact(n-1),u9fact(n-1)];
+    sol="Count all arrangements and subtract the ones where "+A+" and "+B+" are together (the block method gives \\(2 \\times "+(n-1)+"!\\)):\\[ \\begin{aligned} "+n+"! - 2 \\times "+(n-1)+"! &= "+u9big(u9fact(n))+" - "+u9big(2*u9fact(n-1))+" \\\\ &= "+u9big(key)+" \\end{aligned} \\]";
+  } else if(mode==="first"){
+    key=u9fact(n-1);
+    cands=[u9fact(n),2*u9fact(n-1),u9fact(n-2),key*n-2*u9fact(n-2)];
+    sol="With "+A+" fixed at the front, the remaining "+(n-1)+" positions can be filled by the other "+(n-1)+" people in \\("+(n-1)+"! = "+u9big(key)+"\\) ways.";
+  } else if(mode==="ends"){
+    key=2*u9fact(n-2);
+    cands=[u9fact(n-2),u9fact(n-1),2*u9fact(n-1),u9fact(n)];
+    sol=A+" and "+B+" take the two end positions in 2 orders. The middle "+(n-2)+" positions are filled by the remaining people in \\("+(n-2)+"!\\) ways:\\[ \\begin{aligned} 2 \\times "+(n-2)+"! &= "+u9big(key)+" \\end{aligned} \\]";
+  } else {
+    key=u9fact(3)*u9fact(n-2);
+    cands=[u9fact(n-2),u9fact(n),u9fact(n-1),u9fact(3)*u9fact(n-1)];
+    sol="Treat "+A+", "+B+" and "+C+" as one block: the block and the other "+(n-3)+" people make "+(n-2)+" objects, and the block has \\(3! = 6\\) internal orders:\\[ \\begin{aligned} 3! \\times "+(n-2)+"! &= "+u9big(key)+" \\end{aligned} \\]";
+  }
+  var stems={
+    together: scene+", and "+A+" and "+B+" insist on being next to each other. How many arrangements are possible?",
+    apart: scene+", and "+A+" and "+B+" refuse to be next to each other. How many arrangements are possible?",
+    first: scene+", and "+A+" must be at the front of the row. How many arrangements are possible?",
+    ends: scene+", and "+A+" and "+B+" must take the two end positions. How many arrangements are possible?",
+    together3: scene+", and "+A+", "+B+" and "+C+" must all be together. How many arrangements are possible?"
+  };
+  var stem=stems[mode].charAt(0).toUpperCase()+stems[mode].slice(1);
+  if(Math.random()<0.45){
+    var dis=u9opts(u9big(key),cands.map(u9big));
+    if(dis) return mcq(stem,u9big(key),dis,sol,{n:n,mode:mode});
+  }
+  return numq(stem,key,0.001,sol,{n:n,mode:mode});
+});
+
+/* ---------- 9.11: permutation or combination (L3) ---------- */
+E("u9-perm-or-comb",9,["9.11"],3,"gen",function(){
+  var mode=pick(["values","values","expr","pair"]);
+  var pScen=[
+    {t:"Gold and silver medals are awarded to the top 2 finishers in a field of {n} skiers",r:2},
+    {t:"A president and a secretary are elected from a council of {n} members",r:2},
+    {t:"First, second and third prizes are awarded among {n} entries in a science fair",r:3},
+    {t:"A captain and an assistant captain are picked from a team of {n} players",r:2},
+    {t:"{r} books are chosen from {n} books and arranged in order on a display stand",r:3}
+  ];
+  var cScen=[
+    {t:"A committee of {r} is chosen from {n} volunteers",r:3},
+    {t:"{r} toppings are chosen from a menu of {n} pizza toppings",r:3},
+    {t:"A student picks {r} of {n} novels to pack for a trip",r:2},
+    {t:"{r} members are selected from a class of {n} to attend a workshop",r:3},
+    {t:"A hand of {r} cards is dealt from a set of {n} distinct cards",r:4}
+  ];
+  if(mode==="pair"){
+    var p=pick(pScen), c=pick(cScen);
+    var keyP="The first is a permutation and the second is a combination";
+    var dis=u9opts(keyP,["The first is a combination and the second is a permutation","Both are permutations, because both involve choosing","Both are combinations, because both involve choosing"]);
+    return mcq("Situation A: "+p.t.replace("{n}","9").replace("{r}","3")+". Situation B: "+c.t.replace("{n}","9").replace("{r}","3")+". Which classification is correct?",
+      keyP,dis,
+      "In Situation A the chosen items take distinct positions or roles, so switching the order gives a different outcome: a permutation. In Situation B only the group matters, so switching the order changes nothing: a combination.",
+      {mode:mode});
+  }
+  var isP=Math.random()<0.5;
+  var sc=isP?pick(pScen):pick(cScen);
+  var n=ri(7,11), r=sc.r;
+  var stem=sc.t.replace("{n}",n).replace("{r}",r)+". How many different outcomes are possible?";
+  var key=isP?u9perm(n,r):u9comb(n,r);
+  if(mode==="expr"){
+    var dis2=u9opts(isP?"\\("+u9permS(n,r)+"\\)":"\\("+u9binS(n,r)+"\\)",[
+      isP?"\\("+u9binS(n,r)+"\\)":"\\("+u9permS(n,r)+"\\)",
+      "\\("+n+"!\\)","\\("+n+"^{"+r+"}\\)"]);
+    return mcq(sc.t.replace("{n}",n).replace("{r}",r)+". Which expression gives the number of different outcomes?",
+      isP?"\\("+u9permS(n,r)+"\\)":"\\("+u9binS(n,r)+"\\)",dis2,
+      (isP
+        ?"The chosen items fill distinct positions, so the order in which they are picked matters. That makes the count a permutation, \\("+u9permS(n,r)+" = "+u9big(key)+"\\)\\."
+        :"Only the set of chosen items matters, so the order in which they are picked does not create a new outcome. That makes the count a combination, \\("+u9binS(n,r)+" = "+u9big(key)+"\\)\\."),
+      {n:n,r:r,isP:isP,mode:mode});
+  }
+  var other=isP?u9comb(n,r):u9perm(n,r);
+  var dis3=u9opts(u9big(key),[u9big(other),u9big(u9fact(n)),u9big(u9perm(n,r-1)),u9big(u9comb(n,r+1))]);
+  if(!dis3) return numq(stem,key,0.001,isP?"Order matters, so the count is a permutation.":"Order does not matter, so the count is a combination.",{n:n,r:r,isP:isP,mode:mode});
+  return mcq(stem,u9big(key),dis3,
+    (isP
+      ?"The outcomes differ when the order changes, so this is a permutation:\\[ \\begin{aligned} "+u9permS(n,r)+" &= "+u9big(key)+" \\end{aligned} \\]"
+      :"The outcomes are groups only, so this is a combination:\\[ \\begin{aligned} "+u9binS(n,r)+" &= "+u9big(key)+" \\end{aligned} \\]"),
+    {n:n,r:r,isP:isP,mode:mode});
+});
+
+/* ---------- 9.12: combinations in context (L2) ---------- */
+E("u9-comb-basic",9,["9.12"],2,"gen",function(){
+  var mode=pick(["single","single","two","include","mc"]);
+  if(mode==="two"){
+    var c=pick([
+      {t:"A trail crew is formed with {x} of {a} guides and {y} of {b} drivers. How many different crews are possible?",x:2,y:2},
+      {t:"A display case is filled with {x} of {a} fossils and {y} of {b} minerals. How many different displays are possible?",x:3,y:2},
+      {t:"A delegation is made up of {x} of {a} teachers and {y} of {b} students. How many different delegations are possible?",x:2,y:3}
+    ]);
+    var a=ri(6,8), b=ri(5,7), key=u9comb(a,c.x)*u9comb(b,c.y);
+    return numq(c.t.replace("{a}",a).replace("{b}",b).replace("{x}",c.x).replace("{y}",c.y),key,0.001,
+      "Choose from each group separately, then multiply, since every choice from the first group can be paired with every choice from the second:\\[ \\begin{aligned} "+u9binS(a,c.x)+" \\times "+u9binS(b,c.y)+" &= "+u9comb(a,c.x)+" \\times "+u9comb(b,c.y)+" \\\\ &= "+u9big(key)+" \\end{aligned} \\]",
+      {a:a,b:b,mode:mode});
+  }
+  if(mode==="include"){
+    var ex=Math.random()<0.5;
+    var n=ri(8,12), r=pick([3,4]);
+    var key2=ex?u9comb(n-1,r):u9comb(n-1,r-1);
+    return numq("A committee of "+r+" is chosen from "+n+" volunteers. How many committees "+(ex?"do not include":"include")+" one particular volunteer, Ms. Adey?",
+      key2,0.001,
+      (ex
+        ?"If Ms. Adey is not on the committee, all "+r+" members come from the other "+(n-1)+" volunteers: \\("+u9binS(n-1,r)+" = "+u9big(key2)+"\\)\\."
+        :"Fix Ms. Adey on the committee, then choose the remaining "+(r-1)+" members from the other "+(n-1)+" volunteers: \\("+u9binS(n-1,r-1)+" = "+u9big(key2)+"\\)\\."),
+      {n:n,r:r,ex:ex,mode:mode});
+  }
+  var c2=pick([
+    {t:"A committee of {r} is chosen from {n} volunteers. How many different committees are possible?"},
+    {t:"A student chooses {r} books from a shelf of {n} to take home. How many different choices are possible?"},
+    {t:"A bowl is filled with {r} pieces of fruit chosen from {n} different pieces. How many different bowls are possible?"},
+    {t:"A playlist is made by choosing {r} songs from a list of {n}. How many different playlists are possible?"}
+  ]);
+  var n2=ri(7,12), r2=pick([2,3,4]);
+  var key3=u9comb(n2,r2);
+  if(mode==="mc"){
+    var dis=u9opts(u9big(key3),[u9big(u9perm(n2,r2)),u9big(u9comb(n2,r2+1)),u9big(u9comb(n2-1,r2)),u9big(u9comb(n2,r2-1))]);
+    if(dis) return mcq(c2.t.replace("{n}",n2).replace("{r}",r2),u9big(key3),dis,
+      "Only the group chosen matters, not the order, so the count is a combination: \\("+u9binS(n2,r2)+" = "+u9big(key3)+"\\)\\.",
+      {n:n2,r:r2,mode:mode});
+  }
+  return numq(c2.t.replace("{n}",n2).replace("{r}",r2),key3,0.001,
+    "Only the group chosen matters, not the order, so the count is a combination:\\[ \\begin{aligned} "+u9binS(n2,r2)+" &= "+u9big(key3)+" \\end{aligned} \\]",
+    {n:n2,r:r2,mode:mode});
+});
+
+/* ---------- 9.14, 9.15: symmetry and solving combination equations (L2) ---------- */
+E("u9-comb-symmetry-solve",9,["9.14","9.15"],2,"gen",function(){
+  var mode=pick(["sym","sym","missing","why","solven2","solven3","smallerr"]);
+  if(mode==="sym"){
+    var n=ri(9,14), r=pick([2,3,4]), v=u9comb(n,r);
+    if(Math.random()<0.5){
+      return numq("Given that \\("+u9binS(n,r)+" = "+u9big(v)+"\\), what is \\("+u9binS(n,n-r)+"\\)?",
+        v,0.001,
+        "Choosing "+r+" items to include automatically chooses the "+(n-r)+" items to leave out, so the two counts are the same: \\("+u9binS(n,n-r)+" = "+u9big(v)+"\\)\\.",
+        {n:n,r:r,mode:mode});
+    }
+    return numq("Given that \\("+u9binS(n,n-r)+" = "+u9big(v)+"\\), what is \\("+u9binS(n,r)+"\\)?",
+      v,0.001,
+      "Choosing the "+(n-r)+" items to leave out automatically chooses the "+r+" items to include, so the two counts are the same: \\("+u9binS(n,r)+" = "+u9big(v)+"\\)\\.",
+      {n:n,r:r,mode:mode});
+  }
+  if(mode==="missing"){
+    var n2=ri(8,13), r2=pick([2,3,4]);
+    return numq("If \\("+u9binS(n2,r2)+" = "+u9binS(n2,"k")+"\\), what is the value of \\(k\\)?",
+      n2-r2,0.001,
+      "Equal combinations with the same top number have lower numbers that add to the top number: \\(k = "+n2+" - "+r2+" = "+(n2-r2)+"\\)\\. (The value \\(k = "+r2+"\\) gives the same combination itself, so the other value is "+(n2-r2)+".)",
+      {n:n2,r:r2,mode:mode});
+  }
+  if(mode==="why"){
+    var n3=pick([9,10,11,12]), r3=pick([3,4]);
+    var key="Choosing which "+r3+" of the "+n3+" items to include also decides which "+(n3-r3)+" items are left out, so the two choices are counted by the same number";
+    var dis=u9opts(key,[
+      "The factorials in the two expressions are the same because "+n3+" is even and the two lower numbers are close in size to each other",
+      "Both expressions simplify to the same product of factors because the larger lower number always cancels more factors from the top number",
+      "Pascal's triangle is symmetric left to right, and the equality is true because the triangle says so, as it does in every row"]);
+    return mcq("Why is \\("+u9binS(n3,r3)+" = "+u9binS(n3,n3-r3)+"\\)?",
+      key,dis,
+      "A combination counts selections. Selecting the "+r3+" items to take is the very same act as selecting the "+(n3-r3)+" items to leave behind: each selection of one kind corresponds to exactly one selection of the other kind, so the counts agree.",
+      {n:n3,r:r3,mode:mode});
+  }
+  if(mode==="solven2"||mode==="solven3"){
+    var r4=(mode==="solven2"?2:3);
+    var n4=ri(r4+3,r4+9), k4=u9comb(n4,r4);
+    var ctx=Math.random()<0.5;
+    var stem=ctx
+      ? "A selection count for choosing "+r4+" items at a time from \\(n\\) items is "+u9big(k4)+". What is \\(n\\)?"
+      : "Solve for \\(n\\): \\("+u9binS("n",r4)+" = "+u9big(k4)+"\\).";
+    var dis4=u9opts(""+n4,[""+(n4-1),""+(n4+1),""+(n4+2),""+(n4-2)]);
+    var body=(r4===2
+      ? "\\frac{n(n - 1)}{2} &= "+u9big(k4)+" \\\\ n(n - 1) &= "+u9big(2*k4)+" \\\\ "+n4+" \\times "+(n4-1)+" &= "+u9big(2*k4)
+      : "\\frac{n(n - 1)(n - 2)}{6} &= "+u9big(k4)+" \\\\ n(n - 1)(n - 2) &= "+u9big(6*k4)+" \\\\ "+n4+" \\times "+(n4-1)+" \\times "+(n4-2)+" &= "+u9big(6*k4));
+    return mcq(stem,""+n4,dis4,
+      "Expand the combination as a product of "+r4+" counting-down factors over \\("+r4+"!\\):\\[ \\begin{aligned} "+body+" \\end{aligned} \\] So \\(n = "+n4+"\\)\\.",
+      {n:n4,r:r4,mode:mode});
+  }
+  var n5=pick([6,7,8,9,10,11,12]), r5=pick([2,3]), k5=u9comb(n5,r5);
+  var dis5=u9opts(""+r5,[""+(r5===2?3:2),""+(n5-r5),"1",""+(r5+2),""+(n5-1)]);
+  var sol5="Trying small values: \\("+u9binS(n5,r5)+" = "+u9big(k5)+"\\)\\. By the symmetry of combinations, the other solution is \\(r = "+n5+" - "+r5+" = "+(n5-r5)+"\\), so the smaller value is \\("+r5+"\\)\\.";
+  if(!dis5) return numq("Find the smaller value of \\(r\\) for which \\("+u9binS(n5,"r")+" = "+u9big(k5)+"\\).",
+    r5,0.001,sol5,{n:n5,r:r5,mode:mode});
+  return mcq("Find the smaller value of \\(r\\) for which \\("+u9binS(n5,"r")+" = "+u9big(k5)+"\\).",
+    ""+r5,dis5,sol5,
+    {n:n5,r:r5,mode:mode});
+});
+
+/* ---------- 9.7, 9.13: why n must be at least r (L3, var) ---------- */
+E("u9-why-n-ge-r",9,["9.7","9.13"],3,"var",varset([
+  function(){
+    return mcq("Why must \\(n \\ge r\\) in the notation \\("+u9permS("n","r")+"\\)?",
+      "A permutation arranges \\(r\\) distinct elements drawn from a set of \\(n\\), and a set cannot supply more distinct elements than it has",
+      ["Because \\("+u9permS("n","r")+"\\) must always be smaller than \\(n!\\), whatever the values of \\(n\\) and \\(r\\) are in the arrangement",
+       "Because the formula divides by \\(r!\\), and dividing by a larger factorial is not allowed in the formula as written",
+       "Because \\(r\\) counts positions, and a row of positions is never longer than the number written first in the notation, by definition"],
+      "The notation \\("+u9permS("n","r")+"\\) counts arrangements of \\(r\\) different elements chosen from \\(n\\) elements. If \\(r > n\\), there are not enough distinct elements to fill the arrangement, and the formula \\(\\frac{n!}{(n - r)!}\\) would also call for the factorial of a negative number.",
+      {v:1});
+  },
+  function(){
+    return mcq("Why must \\(n \\ge r\\) in the notation \\("+u9binS("n","r")+"\\)?",
+      "A combination selects \\(r\\) distinct elements from \\(n\\) elements, and no subset of an \\(n\\)-element set has more than \\(n\\) elements",
+      ["Because the two lower numbers in a combination must always add to the top number in every case, by the symmetry rule",
+       "Because combinations are only defined when the answer is a whole number greater than 1, and that needs enough elements",
+       "Because Pascal's triangle has no entries beyond the edges of a row, and a combination must name an entry of the triangle to be read off"],
+      "The notation \\("+u9binS("n","r")+"\\) counts the subsets of size \\(r\\) in a set of \\(n\\) elements. A subset cannot contain more elements than the set itself, so \\(r\\) can be at most \\(n\\); equality is allowed, since the whole set is one valid selection.",
+      {v:2});
+  },
+  function(){
+    return mcq("A student tries to evaluate \\("+u9permS(4,6)+"\\) by writing \\(4 \\times 3 \\times 2 \\times 1 \\times 0 \\times (-1)\\). What is wrong with this?",
+      "The product for \\("+u9permS("n","r")+"\\) has \\(r\\) factors counting down from \\(n\\), but the elements run out after 4 factors, so \\("+u9permS(4,6)+"\\) is not defined",
+      ["Nothing is wrong with the working; the result is 0 because one of the factors in the product is 0, as the student says",
+       "The student should have stopped at 1 and reported the value 24, since extra factors are ignored in a product like this, as a matter of convention",
+       "The error is that the factors should count down from 6, not from 4, since 6 is the larger number of the two"],
+      "A permutation of 6 distinct elements taken from only 4 elements cannot be formed: after 4 factors there are no elements left to place. The notation requires \\(n \\ge r\\), so \\("+u9permS(4,6)+"\\) has no value.",
+      {v:3});
+  },
+  function(){
+    return mcq("Which statement about the boundary case \\(r = n\\) is true?",
+      "\\("+u9permS("n","n")+" = n!\\) and \\("+u9binS("n","n")+" = 1\\), so equality is allowed in both notations",
+      ["\\("+u9permS("n","n")+"\\) is not allowed, because a permutation must leave some elements unused",
+       "\\("+u9binS("n","n")+"\\) is not defined, because choosing everything is not a choice",
+       "Both notations require \\(n > r\\), so \\(r = n\\) must be handled by a separate rule"],
+      "Taking all \\(n\\) elements is a legitimate choice in both systems: they can be arranged in \\(n!\\) orders, and there is exactly 1 way to select all of them. This is why the condition is \\(n \\ge r\\) and not \\(n > r\\).",
+      {v:4});
+  }
+]));
+
+/* ============ Constructed-response fit (tagging pass, November 2026) ============ */
+/* Exam Section B draws only from these entries (marks per question); every other
+   entry is selected-response only in exam mode. Worksheet mode uses these plus
+   all numeric-answer entries. */
+/* ---------- Unit-test pool fix, Nov 9, 2026: two Level 1 MC generators (the unit's two mixed-mode generators could not reliably field four distinct Level 1 MC questions), one Level 2 CR entry (3 marks) and one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry). ---------- */
+E("u9-fcp-meal-mc",9,["9.3"],1,"gen",function(){
+  var CTX=[
+    "A cafeteria offers %a soups, %b main dishes and %c drinks. How many different meals, each consisting of one soup, one main dish and one drink, are possible?",
+    "A clothing rack holds %a shirts, %b pairs of pants and %c hats. How many different outfits, each consisting of one shirt, one pair of pants and one hat, are possible?",
+    "A travel site lists %a flights, %b hotels and %c tours for a trip. How many different packages, each consisting of one flight, one hotel and one tour, are possible?"
+  ];
+  var a=2,b=2,c=2,key=0,d1=0,d2=0,d3=0,tries=0;
+  do { a=ri(2,6); b=ri(2,6); c=ri(2,5); key=a*b*c; d1=a+b+c; d2=(a+1)*b*c; d3=a*b+c; tries++; }
+  while(new Set([key,d1,d2,d3]).size<4 && tries<60);
+  var stem=pick(CTX).replace("%a",a).replace("%b",b).replace("%c",c);
+  return mcq(stem,
+    ""+key,
+    [""+d1,""+d2,""+d3],
+    "Each stage is an independent choice, so the Fundamental Counting Principle says to multiply: \\("+a+" \\times "+b+" \\times "+c+" = <b>"+key+"</b>\\).",
+    {a:a,b:b,c:c});
+});
+E("u9-word-arrange-mc",9,["9.5"],1,"gen",function(){
+  var w=pick(["MAPLE","TIGER","BRISK","PLANT","WOLF","FROG","BEAR","CAMP","JUMP","QUIZ"]);
+  var n=w.length, key=u9fact(n);
+  return mcq("In how many different ways can the letters of the word "+w+" be arranged?",
+    ""+u9big(key),
+    [""+u9big(u9fact(n-1)),""+u9big(u9fact(n+1)),""+u9big(n*n)],
+    "The word "+w+" has "+n+" letters, all different, so the arrangements are the permutations of "+n+" objects: \\("+n+"! = <b>"+u9big(key)+"</b>\\).",
+    {w:w});
+});
+E("u9-two-group-cr",9,["9.12"],2,"gen",function(){
+  var CTX=[
+    function(n1,a,n2,b){ return "A library display will feature "+a+" novels chosen from "+n1+" available novels and "+b+" poetry collections chosen from "+n2+" available collections. How many different displays are possible?"; },
+    function(n1,a,n2,b){ return "A hockey coach must choose "+a+" forwards from "+n1+" forwards and "+b+" defence players from "+n2+" defence players. How many different selections are possible?"; },
+    function(n1,a,n2,b){ return "A committee is formed by choosing "+a+" junior students from "+n1+" juniors and "+b+" senior students from "+n2+" seniors. How many different committees are possible?"; }
+  ];
+  var n1=ri(6,10), a=ri(2,4), n2=ri(5,9), b=ri(2,3);
+  var c1=u9comb(n1,a), c2=u9comb(n2,b), ans=c1*c2;
+  return numq(pick(CTX)(n1,a,n2,b),
+    ans,0.001,
+    "The two choices are independent, so multiply the two combination counts: \\[ \\binom{"+n1+"}{"+a+"} \\times \\binom{"+n2+"}{"+b+"} = "+c1+" \\times "+c2+" = <b>"+u9big(ans)+"</b> \\]",
+    {n1:n1,a:a,n2:n2,b:b});
+});
+E("u9-not-adjacent-cr",9,["9.10"],3,"gen",function(){
+  var CTX=[
+    function(n){ return n+" friends line up for a photo. In how many arrangements do two particular friends, Ava and Ben, <b>not</b> stand next to each other?"; },
+    function(n){ return n+" different books are arranged in a row on a shelf. In how many arrangements are two particular books <b>not</b> placed side by side?"; },
+    function(n){ return "All finishing orders of "+n+" horses in a race are counted. In how many orders do two particular horses <b>not</b> finish in consecutive positions?"; }
+  ];
+  var n=pick([5,6,7]), total=u9fact(n), together=2*u9fact(n-1), ans=total-together;
+  return numq(pick(CTX)(n),
+    ans,0.001,
+    "Count every arrangement, then subtract the arrangements where the two are together. There are \\("+n+"! = "+u9big(total)+"\\) arrangements in total. Treating the pair as a single block gives "+(n-1)+" objects, which can be arranged in \\("+(n-1)+"! = "+u9big(u9fact(n-1))+"\\) ways, and the pair itself can be ordered in 2 ways, so the number with the two together is \\(2 \\times "+(n-1)+"! = "+u9big(together)+"\\). The number with the two apart is \\("+u9big(total)+" - "+u9big(together)+" = <b>"+u9big(ans)+"</b>\\).",
+    {n:n});
+});
+
+/* ============ Constructed-response marks (generated) ============ */
+/* Built by assemble-bank.py from the CRMARKS manifests at the top of
+   each unit file. Exam Section B draws only from these entries. */
+window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-modelling":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-evaluate":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-ratio-problem":2,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-build":3,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-invalid-step":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-model-from-data":4,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u9-binomial-expand":2,"u9-binomial-term":2,"u9-comb-basic":2,"u9-comb-symmetry-solve":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-patterns-coefficients":2,"u9-perm-basic":2,"u9-perm-constraints":3,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};

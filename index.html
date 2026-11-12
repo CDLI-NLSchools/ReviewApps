@@ -908,7 +908,7 @@ function updatePoolInfo(){refreshFace();
    resolve when the controls are absent from the DOM: hiding a control
    never disables the setting behind it, and a link a teacher built
    composes the identical set for a student. */
-var hidCtl={mc:10,nc:5,mix:[20,60,20],pk:false};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false};
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
@@ -948,7 +948,7 @@ var setResults={};
 /* Reference panels come from the active course configuration (the
    course's data-sheet material, config key: panels). */
 var REF_HTML=window.__COURSE?window.__COURSE.panels:{};
-function refPanelsHtml(units){var h="";units.forEach(function(u){if(REF_HTML[u])h+='<details class="refpanel"><summary>Formulas and facts for Unit '+u+": "+UNITS[u]+'</summary><div class="refbody">'+REF_HTML[u]+"</div></details>";});return h;}
+function refPanelsHtml(units){var h=(window.__COURSE&&window.__COURSE.panelsAlways)||"";units.forEach(function(u){if(REF_HTML[u])h+='<details class="refpanel"><summary>Formulas and facts for Unit '+u+": "+UNITS[u]+'</summary><div class="refbody">'+REF_HTML[u]+"</div></details>";});return h;}
 function stopExamTimer(){try{if(window._examTimerInt){clearInterval(window._examTimerInt);window._examTimerInt=null;}}catch(e){}}
 function refreshFace(){
   var fs=$("faceScope");if(!fs)return;
@@ -1873,6 +1873,11 @@ function composeExam(units,inds){
        - any other multi-unit set uses the course's configured pooled
          fallback (exam.fallback in the course configuration; 27 selected
          response and 23 constructed response when a course sets none).
+         A fallback may also carry levels (the pooled paper's total
+         level marks) and crL3 (the preferred Level 3 constructed
+         response mark totals, in order); both are set only by a course
+         whose standalone composer pools every multi-unit paper,
+         Math 3200 being the case in point.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -1889,7 +1894,7 @@ function composeExam(units,inds){
   var parts;
   if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null}];}
   else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null};});}
-  else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:null}];}
+  else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:fb.levels?fb.levels.slice():null,crL3:fb.crL3?fb.crL3.slice():null}];}
   var expectedTotal=single?ut.total:(scope?scope.total:50);
   function genFrom(e){var q=e.gen();q._entry=e;return q;}
   function crPoolFor(part){
@@ -1955,6 +1960,7 @@ function composeExam(units,inds){
     }else{
       opts.forEach(function(o){dev+=(o.l3>=4&&o.l3<=6)?Math.abs(o.l3-5):10+Math.abs(o.l3-5);if(!o.exact)dev+=100;});
     }
+    parts.forEach(function(p,i){if(p.crL3&&opts[i]){var ix=p.crL3.indexOf(opts[i].l3);dev+=ix<0?40:2*ix;}});
     return {plans:plans,dev:dev,scopeDev:scopeDev};
   }
   function chooseCombo(){
@@ -3135,13 +3141,13 @@ function settingsToURL(){
   if(s.chk==="end")p.set("chk","end");
   if(s.timer)p.set("tm","1");
   if(s.seed)p.set("seed",s.seed);
-  if(s.mix.join()!=="20,60,20")p.set("levels",s.mix.join(","));
+  if(s.mix.join()!==((window.__COURSE&&window.__COURSE.defaultMix)?window.__COURSE.defaultMix.join(","):"20,60,20"))p.set("levels",s.mix.join(","));
   return location.pathname+"?"+p.toString();
 }
 function applyURL(){
   var p=new URLSearchParams(location.search);var touched=false;
-  if(p.get("preset")==="mid"){state.units=window.__COURSE?window.__COURSE.presets.mid.units.slice():[];touched=true;}
-  else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;}
+  if(p.get("preset")==="mid"){state.units=window.__COURSE?window.__COURSE.presets.mid.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
+  else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
   if(p.get("count"))$("countIn").value=p.get("count");
@@ -3166,8 +3172,8 @@ function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
-$("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);});
-(function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());});}else{__pf.style.display="none";}})();
+$("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);if(window.__COURSE&&window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});
+(function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});
