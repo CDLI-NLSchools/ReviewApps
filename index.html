@@ -225,7 +225,7 @@
   var id=new URLSearchParams(location.search).get("course");
   var c=(window.COURSES&&id)?window.COURSES[id]:null;
   if(c){window.__COURSE=c;document.title=c.title;}
-  else{window.__COURSE=null;window.__NOCOURSE=true;}
+  else{window.__COURSE=null;window.__NOCOURSE=true;document.title="Review Apps: Practice Question Bank";}
 }catch(e){window.__COURSE=null;window.__NOCOURSE=true;}})();
 </script>
 <script>

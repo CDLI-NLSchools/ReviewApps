@@ -132,11 +132,13 @@ E("u1-51-claims",1,["PH12.5.1"],3,"gen",function(){
 /* ---------- PH12.5.2 Frame of reference ---------- */
 
 E("u1-52-largest-speed",1,["PH12.5.2"],1,"gen",function(){
-  var veh=pick([["ferry","the shore"],["bus","the road"],["train","the ground"],["moving walkway","the terminal floor"]]);
-  var V=ri(8,18), w=ri(1,3);
+  var veh=pick([["ferry","the shore",[8,14]],["bus","the road",[11,18]],["train","the ground",[14,28]],["moving walkway","the terminal floor",[0.4,0.5,0.6,0.75,0.9]]]);
+  var V=veh[2][0]<1?pick(veh[2]):ri(veh[2][0],veh[2][1]);
+  var w=ri(1,3), guard=0;
+  while(guard++<20){var opts=[V+w,Math.abs(V-w),w,V].map(function(x){return F3(x);});if(new Set(opts).size===4)break;w=ri(1,3);}
   return mcq("A "+veh[0]+" moves at "+gF(V)+" m/s relative to "+veh[1]+". A passenger walks toward the front of the "+veh[0]+" at "+gF(w)+" m/s relative to the "+veh[0]+". What is the passenger's speed relative to "+veh[1]+"?",
     F3(V+w)+" m/s",
-    [F3(V-w)+" m/s", F3(w)+" m/s", F3(V)+" m/s"],
+    [F3(Math.abs(V-w))+" m/s", F3(w)+" m/s", F3(V)+" m/s"],
     "Both motions are in the same direction, so the speeds add when the frame changes. Relative to "+veh[1]+", the passenger has the speed of the "+veh[0]+" plus the walking speed: "+gF(V)+" + "+gF(w)+" = "+F3(V+w)+" m/s.",
     {V:V,w:w});
 });
