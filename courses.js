@@ -2945,5 +2945,262 @@ window.COURSES = {
     "6": "<b>Pythagorean theorem:</b> in a right triangle with legs \\(a\\) and \\(b\\) and hypotenuse \\(c\\), \\(a^2 + b^2 = c^2\\). The hypotenuse is the side opposite the right angle and is the longest side.<br>\n<b>Finding the hypotenuse:</b> \\(c = \\sqrt{a^2 + b^2}\\). Square both legs, add, then take the square root.<br>\n<b>Finding a leg:</b> \\(a = \\sqrt{c^2 - b^2}\\) and \\(b = \\sqrt{c^2 - a^2}\\). Square the hypotenuse, subtract the square of the known leg, then take the square root.<br>\n<b>Equivalent forms:</b> \\(a^2 + b^2 = c^2\\), \\(b^2 = c^2 - a^2\\) and \\(a^2 = c^2 - b^2\\) all say the same thing. Moving a squared term across the equals sign changes its sign.<br>\n<b>Right angle test (the converse):</b> a triangle is a right triangle exactly when the squares of the two shorter sides add to the square of the longest side. If the totals differ, there is no right angle.<br>\n<b>Why right triangles only:</b> the squares balance only when the angle between the two shorter sides is 90 degrees. At a wider angle the longest side is longer than the theorem predicts, and at a narrower angle it is shorter.<br>\n<b>The 3:4:5 check:</b> a triangle with sides in the ratio 3:4:5 is a right triangle, since \\(3^2 + 4^2 = 5^2\\). Any multiple, such as 6:8:10 or 30:40:50, is also a right triangle.<br>\n<b>Checking a corner:</b> mark 3 parts along one side and 4 parts along the other from the corner. The corner is square exactly when the distance between the marks is 5 parts, using the same part size throughout.<br>\n<b>Rectangles and diagonals:</b> the diagonal of a rectangle is the hypotenuse of a right triangle with the length and width as legs. A parallelogram is a rectangle when its diagonal matches the length the theorem predicts.",
     "7": "<b>Similar polygons:</b> corresponding angles are equal and corresponding sides are in the same ratio (one scale factor for every pair).<br>\n<b>Right triangles with a shared acute angle</b> are similar: both have a \\(90^\\circ\\) angle and the shared angle, so the third angles match too.<br>\n<b>Scale factor:</b> image side \\(\\div\\) original side. Perimeters scale by the same factor; areas scale by the factor squared.<br>\n<b>Tangent ratio:</b> \\(\\tan A = \\frac{\\text{opposite}}{\\text{adjacent}}\\)<br>\n<b>Sine ratio:</b> \\(\\sin A = \\frac{\\text{opposite}}{\\text{hypotenuse}}\\)<br>\n<b>Cosine ratio:</b> \\(\\cos A = \\frac{\\text{adjacent}}{\\text{hypotenuse}}\\)<br>\n<b>Choosing a ratio:</b> pick the ratio built from the known side and the wanted side, relative to the marked angle. Also, \\(\\tan A = \\frac{\\sin A}{\\cos A}\\).<br>\n<b>Finding an angle:</b> form the ratio from the two known sides, then use the inverse ratio: \\(\\tan^{-1}\\), \\(\\sin^{-1}\\) or \\(\\cos^{-1}\\).<br>\n<b>Angles of elevation and depression</b> are measured from the horizontal. The angle of depression from a height equals the angle of elevation from below.<br>\n<b>Reasonableness checks:</b> the hypotenuse is the longest side; sine and cosine values are at most \\(1\\); each acute angle of a right triangle is between \\(0^\\circ\\) and \\(90^\\circ\\)."
   }
-}
+  },
+
+  /* Mathematics 9 (Math 9), ported from the standalone app at
+     math-9-review/ (served from the Math9Review repo). The
+     standalone's bank is bank-src.js (byte-identical to the
+     splice served inside its index.html, between the
+     BANK-SRC-BEGIN and BANK-SRC-END markers); the port's bank
+     sources are banks/math-9/, cut verbatim from bank-src.js in
+     its own order (helpers, Units 1 to 4, the November 7, 2026
+     top-up tranche for Units 1 to 4, the final-scope tranche
+     with Units 5 to 9, then the November 9, 2026 pool-gap fill
+     additions), with the source's CR_MARKS literal (bank-src.js
+     line 6409) carried as the per-file CRMARKS manifests: 221
+     entries (per-unit 18/25/33/29/32/19/26/16/23) and 109
+     constructed-response keys. Kept out of the picker
+     (listed:false) until Jason passes it. */
+  "math-9": {
+  id: "math-9",
+  shortName: "Math 9",
+
+  /* Long name (ruling 5 in the junior scoping): the standalone
+     heads its face card "Mathematics 9 Review" (line 249) and
+     subtitles itself "Fresh practice questions for Mathematics
+     9, drawn by unit or by curriculum indicator." (line 244).
+     The header and document title keep the short name: its
+     <title> (line 6) is "Math 9 Review: Practice Question
+     Bank", carried as title below. */
+  longName: "Mathematics 9",
+  title: "Math 9 Review: Practice Question Bank",
+  subject: "Mathematics",
+  grade: 9,
+  listed: false,
+  storagePrefix: "m9",
+  bankFile: "math-9.js",
+  defaultCheckMode: "each",
+
+  /* Unit names verbatim from the standalone app (UNITS at
+     line 652). */
+  units: {
+    "1": "Rational Numbers",
+    "2": "Square Roots and Surface Area",
+    "3": "Powers and Exponent Laws",
+    "4": "Polynomials",
+    "5": "Linear Equations and Inequalities",
+    "6": "Linear Relations",
+    "7": "Similarity and Transformations",
+    "8": "Circle Geometry",
+    "9": "Probability and Statistics"
+  },
+
+  /* Indicator texts verbatim from the standalone app
+     (INDICATORS at line 653): 108 codes. */
+  indicators: {
+    "3.1": "Order a given set of rational numbers, in fraction and decimal form, by placing them on a number line, e.g., 3/5, -0.666..., 0.5, -5/8",
+    "3.2": "Identify a rational number that is between two given rational numbers",
+    "6.1": "Solve a given problem involving operations on rational numbers in fraction form and decimal form",
+    "6.2": "Solve a given problem by applying the order of operations without the use of technology",
+    "6.3": "Solve a given problem by applying the order of operations with the use of technology",
+    "6.4": "Identify the error in applying the order of operations in a given incorrect solution",
+    "3.3": "Determine whether a given rational number is a square number and explain the reasoning",
+    "6.9": "Determine the square root of a given positive rational number that is a perfect square",
+    "6.10": "Identify the error made in a given calculation of a square root, e.g., Is 3.2 the square root of 6.4?",
+    "6.11": "Determine a positive rational number given the square root of that positive rational number",
+    "6.5": "Estimate the square root of a given rational number that is not a perfect square using the roots of perfect squares as benchmarks",
+    "6.6": "Determine an approximate square root of a given rational number that is not a perfect square using technology, e.g., calculator, computer",
+    "6.7": "Explain why the square root of a given rational number as shown on a calculator may be an approximation",
+    "6.8": "Identify a number with a square root that is between two given numbers",
+    "9.1": "Determine the overlap in a given concrete composite 3-D object, and explain its effect on determining the surface area (limited to right cylinders, right rectangular prisms and right triangular prisms)",
+    "9.2": "Determine the surface area of a given concrete composite 3-D object (limited to right cylinders, right rectangular prisms and right triangular prisms)",
+    "9.3": "Solve a given problem involving surface area",
+    "3.4": "Demonstrate the difference between the exponent and the base by building models of a given power, such as 2³ and 3²",
+    "3.5": "Explain, using repeated multiplication, the difference between two given powers in which the exponent and base are interchanged, e.g., 10³ and 3¹⁰",
+    "3.6": "Express a given power as a repeated multiplication",
+    "3.7": "Express a given repeated multiplication as a power",
+    "3.8": "Explain the role of parentheses in powers by evaluating a given set of powers, e.g., (-2)⁴, (-2⁴) and -2⁴",
+    "3.9": "Demonstrate, using patterns, that a0 is equal to 1 for a given value of a (a ≠ 0)",
+    "3.10": "Evaluate powers with integral bases (excluding base 0) and whole number exponents",
+    "3.11": "Explain, using examples, the exponent laws of powers with integral bases (excluding base 0) and whole number exponents: • (aᵐ)(aⁿ) = aᵐ + ⁿ •",
+    "3.12": "Evaluate a given expression by applying the exponent laws",
+    "3.13": "Determine the sum of two given powers, e.g., 5² + 5³, and record the process",
+    "3.14": "Determine the difference of two given powers, e.g., 4³ - 4², and record the process",
+    "3.15": "Identify the error(s) in a given simplification of an expression involving powers",
+    "8.14": "Identify the variables, degree, number of terms and coefficients, including the constant term, of a given simplified polynomial expression",
+    "8.15": "Create a concrete model or a pictorial representation for a given polynomial expression",
+    "8.16": "Write the expression for a given model of a polynomial",
+    "8.4": "Match equivalent polynomial expressions given in simplified form",
+    "8.5": "Identify equivalent polynomial expressions from a given set of polynomial expressions, including pictorial and symbolic representations",
+    "8.6": "Model addition of two given polynomial expressions concretely or pictorially and record the process symbolically",
+    "8.7": "Model subtraction of two given polynomial expressions concretely or pictorially and record the process symbolically",
+    "8.11": "Apply a personal strategy for addition and subtraction of given polynomial expressions, and record the process symbolically",
+    "8.13": "Identify the error(s) in a given simplification of a given polynomial expression",
+    "8.8": "Model multiplication of a given polynomial expression by a given monomial concretely or pictorially and record the process symbolically",
+    "8.9": "Model division of a given polynomial expression by a given monomial concretely or pictorially and record the process symbolically",
+    "8.12": "Apply a personal strategy for multiplication and division of a given polynomial expression by a given monomial",
+    "8.10": "Provide examples of equivalent polynomial expressions",
+    "8.17": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) = d(ex + f) • a/x = b",
+    "8.18": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) = d(ex + f) • a/x = b",
+    "8.19": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) = d(ex + f) • a/x =",
+    "8.20": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) =",
+    "8.21": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx",
+    "8.22": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) = d(ex + f) • a/",
+    "8.1": "Translate a given problem into a single variable linear inequality using the symbols ≥, &gt;, &lt; or ≤",
+    "8.2": "Determine if a given rational number is a possible solution of a given linear inequality",
+    "8.24": "Graph the solution of a given linear inequality on a number line",
+    "8.25": "Generalize and apply a rule for adding and subtracting a positive or negative number to determine the solution of a given inequality",
+    "8.26": "Generalize and apply a rule for multiplying or dividing by a positive or negative number to determine the solution of a given inequality",
+    "8.27": "Solve a given linear inequality algebraically and explain the process orally or in written form",
+    "8.28": "Compare and explain the process for solving a given linear equation to the process for solving a given linear inequality",
+    "8.29": "Compare and explain the solution of a given linear equation to the solution of a given linear inequality",
+    "8.3": "Verify the solution of a given linear inequality using substitution for multiple elements in the solution",
+    "8.30": "Solve a given problem involving a single variable linear inequality and graph the solution",
+    "7.1": "Write an expression representing a given pictorial, oral or written pattern",
+    "7.2": "Write a linear equation to represent a given context",
+    "7.4": "Write a linear equation representing the pattern in a given table of values and verify the equation by substituting values from the table",
+    "8.23": "For problems that can be represented by linear equations of the form: • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) = d(ex + f) • a",
+    "7.3": "Describe a context for a given linear equation",
+    "7.5": "Describe the pattern found in a given graph",
+    "7.7": "Graph a given linear relation, including horizontal and vertical lines",
+    "7.6": "Match given equations of linear relations with their corresponding graphs",
+    "7.8": "Interpolate the approximate value of one variable on a given graph given the value of the other variable",
+    "7.9": "Extrapolate the approximate value of one variable from a given graph given the value of the other variable",
+    "7.10": "Solve a given problem by graphing a linear relation and analyzing the graph",
+    "10.8": "Identify an example in print and electronic media, e.g., newspapers, the Internet, of a scale diagram and interpret the scale factor",
+    "10.16": "Draw a diagram to scale that represents an enlargement or reduction of a given 2-D shape",
+    "10.17": "Determine the scale factor for a given diagram drawn to scale",
+    "10.18": "Determine if a given diagram is proportional to the original 2-D shape and, if it is, state the scale factor",
+    "10.7": "Determine if the polygons in a given set are similar and explain the reasoning",
+    "10.14": "Draw a polygon similar to a given polygon and explain why the two are similar",
+    "10.15": "Solve a given problem using the properties of similar polygons",
+    "10.19": "Solve a given problem that involves a scale diagram by applying the properties of similar triangles",
+    "10.1": "Classify a given set of 2-D shapes or designs according to the number of lines of symmetry",
+    "10.9": "Complete a 2-D shape or design given one half of the shape or design and a line of symmetry",
+    "10.2": "Determine if a given 2-D shape or design has rotation symmetry about the point at the centre of the shape or design and, if it does, state the order and angle of rotation",
+    "10.10": "Rotate a given 2-D shape about a vertex and draw the resulting image",
+    "10.3": "Identify a line of symmetry or the order and angle of rotation symmetry in a given tessellation",
+    "10.4": "Identify and describe the types of symmetry created in a given piece of artwork",
+    "10.11": "Create or provide a piece of artwork that demonstrates line and rotation symmetry, and identify the line(s) of symmetry and the order and angle of rotation",
+    "10.5": "Determine whether two given 2-D shapes on the Cartesian plane are related by either rotation or line symmetry",
+    "10.6": "Identify the type of symmetry that arises from a given transformation on the Cartesian plane",
+    "10.12": "Complete, concretely or pictorially, a given transformation of a 2-D shape on a Cartesian plane and describe the type of symmetry that results",
+    "10.13": "Draw, on a Cartesian plane, the translation image of a given shape using a given translation rule, such as R2, U3 or →→, ↑↑↑, label each vertex and its corresponding ordered pair and determine why the translation may or may not result in li",
+    "9.4": "Explain the relationship between the tangent of a circle and the radius at the point of tangency",
+    "9.6": "Explain the relationship between the perpendicular from the centre of the circle and a chord",
+    "9.7": "Explain the relationship between the measure of the central angle and the inscribed angle subtended by the same arc",
+    "9.8": "Determine the measure of a given angle inscribed in a semicircle using the circle properties",
+    "9.9": "Explain the relationship between inscribed angles subtended by the same arc",
+    "9.5": "Solve a given problem involving application of one or more of the circle properties",
+    "12.1": "Provide an example from print and electronic media, e.g., newspapers, the Internet, where probability is used",
+    "12.2": "Identify the assumptions associated with a given probability and explain the limitations of each assumption",
+    "12.3": "Explain how a single probability can be used to support opposing positions",
+    "12.4": "Explain, using examples, how decisions based on probability may be a combination of theoretical probability, experimental probability and subjective judgement",
+    "11.1": "Analyze a given case study of data collection, and identify potential problems related to bias, use of language, ethics, cost, time and timing, privacy or cultural sensitivity",
+    "11.2": "Provide examples to illustrate how bias, use of language, ethics, cost, time and timing, privacy or cultural sensitivity may influence the data",
+    "11.3": "Identify whether a given situation represents the use of a sample or a population",
+    "11.4": "Provide an example of a situation in which a population may be used to answer a question and justify the choice",
+    "11.5": "Provide an example of a question where a limitation precludes the use of a population and describe the limitation, e.g., too costly, not enough time, limited resources",
+    "11.6": "Identify and critique a given example in which a generalization from a sample of a population may or may not be valid for the population",
+    "11.7": "Create a rubric to assess a project that includes the assessment of: • a question for investigation • the choice of a data collection method that includes social considerations • the selection of a population or a sample and justifying the cho",
+    "11.8": "Develop a project plan that describes: • a question for investigation • the method of data collection that includes social considerations • the method for selecting a population or a sample • the method to be used for collection of the data",
+    "11.9": "Complete the project according to the plan, draw conclusions and communicate findings to an audience",
+    "11.10": "Self-assess the completed project by applying the rubric"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 654): 108 placements over the
+     108 codes; it agrees exactly with the codes the bank
+     entries themselves carry at each placement. */
+  unitInd: {
+    "1": ["3.1", "3.2", "6.1", "6.2", "6.3", "6.4"],
+    "2": ["3.3", "6.9", "6.10", "6.11", "6.5", "6.6", "6.7", "6.8", "9.1", "9.2", "9.3"],
+    "3": ["3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"],
+    "4": ["8.14", "8.15", "8.16", "8.4", "8.5", "8.6", "8.7", "8.11", "8.13", "8.8", "8.9", "8.12", "8.10"],
+    "5": ["8.17", "8.18", "8.19", "8.20", "8.21", "8.22", "8.1", "8.2", "8.24", "8.25", "8.26", "8.27", "8.28", "8.29", "8.3", "8.30"],
+    "6": ["7.1", "7.2", "7.4", "8.23", "7.3", "7.5", "7.7", "7.6", "7.8", "7.9", "7.10"],
+    "7": ["10.8", "10.16", "10.17", "10.18", "10.7", "10.14", "10.15", "10.19", "10.1", "10.9", "10.2", "10.10", "10.3", "10.4", "10.11", "10.5", "10.6", "10.12", "10.13"],
+    "8": ["9.4", "9.6", "9.7", "9.8", "9.9", "9.5"],
+    "9": ["12.1", "12.2", "12.3", "12.4", "11.1", "11.2", "11.3", "11.4", "11.5", "11.6", "11.7", "11.8", "11.9", "11.10"]
+  },
+
+  /* Presets: the standalone's three buttons (builder markup
+     lines 286 to 288) are "Mid-course review (Units 1 to 4)",
+     "Final review (Units 5 to 9)" and "All units"; their
+     handlers (lines 9548 to 9550) pass the level mix
+     [20, 60, 20] for mid and final and no mix change for All,
+     and the shell's All wiring selects every unit in the
+     course when the config carries no allUnits key, so All
+     needs no entry here. The face card names the final scope
+     "End-of-course review: Units 5 to 9" (refreshFace, line
+     7459), carried here as faceLabel; the mid face line
+     "Mid-course review: Units 1 to 4" (line 7458) is exactly
+     what the shell derives from the mid label, so mid needs
+     no faceLabel. */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8, 9], mix: [20, 60, 20], label: "Final review (Units 5 to 9)", faceLabel: "End-of-course review (Units 5 to 9)" }
+  },
+
+  /* Staged hints: every entry in this bank carries a two-stage
+     hint (the standalone's E stores them as hint1 and hint2,
+     line 656, and its showHint reveals strategy, then first
+     step; its face card promises them, line 7466). The flag
+     turns on the shell's hint UI for this course: the Hint
+     button and hint box on practice questions, and the face
+     card's "a hint, " wording. */
+  hints: true,
+
+  /* Timer note (ruling 3 in the junior scoping): the
+     standalone's exam timer bar names the real exam's length
+     (line 8498) and its timer checkbox label carries the same
+     note (line 372). The shell composes the note from this
+     string in both spots. */
+  timerNote: "1 hour 30 minutes",
+
+  /* Sheet header strings (ruling 4 in the junior scoping): the
+     standalone's practice sheet header says "Show all your
+     work ..." where the senior chassis says "workings" (its
+     sheet header, line 8534). */
+  sheetWork: ["Show all your work in the space provided.", "Show all your work on your own paper."],
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (composeExam, lines 8375 to 8424): every
+     multi-unit paper pools the whole selection at 35 marks,
+     18 selected response drawn at level targets [7, 10, 1]
+     (level totals [7, 21, 7] once the constructed-response
+     levels are counted) and 17 constructed response with the
+     Level 3 marks tried at [6, 5, 7] in that order. The
+     fallback's total key (35) is read by the shell composer's
+     expected-total check and by its short-paper check: the
+     standalone's examShortNow (line 8045) judges a multi-unit
+     paper short at SR under 18 or CR under 17, exactly
+     fallback.srCount and fallback.crMarks. No per-scope
+     blueprints: mid and final differ only in which units they
+     select. A unit test is the same composer's single-unit
+     paper: 25 marks, SR 11 (its own exact split is [4, 6, 1];
+     the shell guides unit tests at 20/60/20, as everywhere)
+     and CR 14 with the Level 3 marks tried at [5, 4, 6],
+     which the shell's unit-test window already matches. */
+  exam: {
+    fallback: { srCount: 18, crMarks: 17, levels: [7, 21, 7], crL3: [6, 5, 7], total: 35 }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at line 7440): a panel for every one of the nine
+     units, and no always-on panel. */
+  panels: {
+    "1": "<b>Rational numbers</b> can be written as a fraction \\(\\frac{a}{b}\\) where \\(b\\ne 0\\). Integers, terminating decimals and repeating decimals are all rational.<br><b>Order of operations:</b> brackets first, then exponents, then divide and multiply in order from left to right, then add and subtract in order from left to right.<br><b>Fractions:</b> to add or subtract, use a common denominator. To multiply, multiply the tops and multiply the bottoms. To divide, multiply by the reciprocal (flip the second fraction).<br><b>Signs:</b> multiplying or dividing two numbers with the same sign gives a positive result; different signs give a negative result.",
+    "2": "<b>Square roots:</b> \\(\\sqrt{a}\\) is the positive number that multiplies by itself to give \\(a\\). Perfect squares to know: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400. A fraction is a perfect square when its top and bottom are both perfect squares.<br><b>Estimating:</b> find the two perfect squares the number sits between, then decide which one it is closer to.<br><b>Surface area</b> is the sum of the areas of all the faces. Rectangular prism: \\(2(lw+lh+wh)\\). Cylinder: \\(2\\pi r^{2}+2\\pi r h\\). Triangular prism: two triangle faces plus three rectangle faces.<br><b>Composite objects:</b> where two objects touch, the touching faces are hidden on both objects, so subtract twice the overlap area.",
+    "3": "<b>Powers:</b> in \\(a^{n}\\), \\(a\\) is the base and \\(n\\) is the exponent; the power means \\(a\\) multiplied by itself \\(n\\) times. \\(a^{0}=1\\) for any \\(a\\ne 0\\).<br><b>Exponent laws:</b> \\(a^{m}\\cdot a^{n}=a^{m+n}\\); \\(a^{m}\\div a^{n}=a^{m-n}\\); \\((a^{m})^{n}=a^{mn}\\); \\((ab)^{n}=a^{n}b^{n}\\); \\(\\left(\\frac{a}{b}\\right)^{n}=\\frac{a^{n}}{b^{n}}\\).<br><b>Parentheses matter:</b> \\((-2)^{4}=16\\), but \\(-2^{4}=-16\\).<br><b>Sums of powers:</b> \\(5^{2}+5^{3}\\) is not a single power. Work out each power first, then add or subtract.",
+    "4": "<b>Terms</b> are separated by + and - signs. The <b>coefficient</b> is the number part of a term; the <b>constant term</b> has no variable. The <b>degree</b> of a term is the sum of the exponents of its variables, and the degree of a polynomial is the degree of its highest term.<br><b>Like terms</b> have exactly the same variables with the same exponents. Only like terms can be combined.<br><b>Adding:</b> combine like terms. <b>Subtracting:</b> change every sign in the polynomial being subtracted, then add.<br><b>Multiplying by a monomial:</b> multiply every term. <b>Dividing by a monomial:</b> divide every term.<br>Two expressions are <b>equivalent</b> when they simplify to the same polynomial.",
+    "5": "<b>Solving an equation</b> means isolating the variable: do the same operation to both sides to undo what was done to the variable, in reverse order. For \\(3x+5=20\\), subtract 5, then divide by 3.<br><b>Check by substitution:</b> put your answer back into the original equation; both sides must give the same value.<br><b>Inequalities</b> have a range of solutions, graphed on a number line: an open circle means the endpoint is not included, a closed circle means it is included.<br><b>Sign rule:</b> when you multiply or divide both sides of an inequality by a negative number, reverse the inequality sign: \\(-2x>6\\) becomes \\(x<-3\\).",
+    "6": "<b>Linear relations:</b> a linear relation has a start value and a steady step, so its values change by the same amount each time.<br><b>From a table:</b> the step is the change in \\(y\\) for each increase of 1 in \\(x\\), and the equation is \\(y = \\text{start} + \\text{step} \\times x\\).<br><b>From a graph:</b> to read a value, go across from the given \\(x\\) to the line, then down to the \\(y\\) value. Reading inside the drawn range is <b>interpolation</b>; predicting beyond the drawn range, by extending the pattern, is <b>extrapolation</b>.<br><b>Special lines:</b> a horizontal line is \\(y = \\text{constant}\\), and a vertical line is \\(x = \\text{constant}\\).",
+    "7": "<b>Scale factor</b> is image length \\(\\div\\) original length: \\(k=\\frac{\\text{image}}{\\text{original}}\\). Above 1 enlarges and below 1 reduces; every length is multiplied by \\(k\\).<br><b>Similar figures</b> have equal matching angles and proportional matching sides: each image side \\(\\div\\) its matching original side gives the same \\(k\\).<br><b>Line symmetry</b> means the shape folds onto itself along a fold line. <b>Rotation symmetry</b> means it matches itself under a part turn about its centre: order = matches in a full turn, angle \\(=360°\\div\\) order.<br><b>Translations</b> slide every point the same way: R2, U3 means right 2, up 3, so add 2 to each \\(x\\) and 3 to each \\(y\\).",
+    "8": "<b>Vocabulary:</b> a <b>radius</b> joins the centre to the circle; a <b>chord</b> joins two points on the circle; a <b>tangent</b> touches the circle at one point. A <b>central angle</b> sits at the centre; an <b>inscribed angle</b> sits on the circle.<br><b>Tangent:</b> the radius to a point of tangency is perpendicular to the tangent, so the angle is \\(90^{\\circ}\\).<br><b>Chords:</b> the perpendicular from the centre to a chord bisects the chord.<br><b>Central and inscribed:</b> a central angle is twice the inscribed angle on the same arc.<br><b>Semicircle:</b> an angle inscribed in a semicircle is \\(90^{\\circ}\\).<br><b>Same arc:</b> inscribed angles on the same arc are equal.",
+    "9": "<b>Probability:</b> theoretical probability comes from counting equally likely outcomes, experimental probability comes from results of trials or data, and subjective judgement is a personal estimate.<br><b>Sample and population:</b> a population is everyone in the group being studied, and a sample is part of the population; random selection helps a sample represent the population.<br><b>Data collection</b> can be spoiled by bias, leading use of language, ethics problems, cost, time and timing, privacy concerns and cultural insensitivity.<br><b>Claims:</b> a claim about a whole population is only as strong as the size and representativeness of the sample behind it."
+  }
+  }
 };
