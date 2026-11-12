@@ -13,6 +13,237 @@
    stays at the end of this file. */
 function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 
+/* Figure helpers added November 12, 2026 for the Math 8 geometry
+   diagram pass (Units 1, 4 and 8, plus the pool-gap entries in
+   bank-fix.js). Every helper takes its labels from the caller, built
+   from the same drawn values as the question text, so a label can
+   never disagree with the stem. A "?" label marks the unknown. */
+function m8RectDiagSVG(w,h,labW,labH,labD){
+  var sc=Math.min(225/Math.max(w,1),140/Math.max(h,1));
+  var Wd=w*sc,Hd=h*sc,x0=(330-Wd)/2,y0=(215-Hd)/2;
+  var mx=x0+Wd/2,my=y0+Hd/2,pl=Math.sqrt(Hd*Hd+Wd*Wd)||1;
+  var ox=Hd/pl*17,oy=Wd/pl*17;
+  var s='<svg viewBox="0 0 330 215" width="330" height="215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: rectangle with its diagonal">';
+  s+='<rect x="'+fmt(x0,1)+'" y="'+fmt(y0,1)+'" width="'+fmt(Wd,1)+'" height="'+fmt(Hd,1)+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+fmt(x0,1)+'" y1="'+fmt(y0+Hd,1)+'" x2="'+fmt(x0+Wd,1)+'" y2="'+fmt(y0,1)+'" stroke="'+FIG_ACC+'" stroke-width="2.4"/>';
+  s+=_txt(mx,y0+Hd+18,labW,13,false);
+  s+=_txt(x0-18,my,labH,13,false);
+  s+=_txt(mx-ox,my-oy,labD,14,true);
+  return s+'</svg>';
+}
+function m8SquareAreaSVG(labArea){
+  var s='<svg viewBox="0 0 330 195" width="330" height="195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: square with its area marked">';
+  s+='<rect x="100" y="25" width="130" height="130" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(165,90,labArea,15,true);
+  s+=_txt(165,173,"?",14,true);
+  return s+'</svg>';
+}
+function m8GridDistSVG(x1,y1,x2,y2){
+  var xm=x2+1,ym=y2+1,cell=Math.min(230/Math.max(xm,1),165/Math.max(ym,1));
+  var ox=45,oy=195;
+  function X(v){return ox+v*cell;} function Y(v){return oy-v*cell;}
+  var s='<svg viewBox="0 0 320 225" width="320" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: two points on a grid joined by a straight line">';
+  for(var i=0;i<=xm;i++){s+='<line x1="'+fmt(X(i),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(i),1)+'" y2="'+fmt(Y(ym),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1.2"/>';}
+  for(var j=0;j<=ym;j++){s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(j),1)+'" x2="'+fmt(X(xm),1)+'" y2="'+fmt(Y(j),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1.2"/>';}
+  s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(xm),1)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(0),1)+'" y2="'+fmt(Y(ym),1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<line x1="'+fmt(X(x1),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y1),1)+'" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="'+fmt(X(x2),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y2),1)+'" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="'+fmt(X(x1),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y2),1)+'" stroke="'+FIG_ACC+'" stroke-width="2.4"/>';
+  s+='<circle cx="'+fmt(X(x1),1)+'" cy="'+fmt(Y(y1),1)+'" r="3.6" fill="'+FIG_INK+'"/>';
+  s+='<circle cx="'+fmt(X(x2),1)+'" cy="'+fmt(Y(y2),1)+'" r="3.6" fill="'+FIG_INK+'"/>';
+  s+=_txt(X(x1)-4,Y(y1)+18,"("+x1+", "+y1+")",11.5,true);
+  s+=_txt(X(x2)+6,Y(y2)-14,"("+x2+", "+y2+")",11.5,true);
+  s+=_txt((X(x1)+X(x2))/2-13,(Y(y1)+Y(y2))/2-10,"?",14,true);
+  return s+'</svg>';
+}
+function m8TwoLaddersSVG(foot,h1,h2,lab1,lab2,labFoot){
+  var sc=Math.min(118/Math.max(h2,1),185/Math.max(foot,1));
+  var ox=92,oy=172,fx=ox+foot*sc,t1=oy-h1*sc,t2=oy-h2*sc;
+  var s='<svg viewBox="0 0 330 200" width="330" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: two ladders leaning against a wall from the same distance">';
+  s+='<line x1="'+ox+'" y1="'+fmt(t2-16,1)+'" x2="'+ox+'" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="3"/>';
+  s+='<line x1="66" y1="'+oy+'" x2="'+fmt(fx+22,1)+'" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polyline points="'+(ox+11)+','+oy+' '+(ox+11)+','+(oy-11)+' '+ox+','+(oy-11)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  s+='<line x1="'+ox+'" y1="'+fmt(t1,1)+'" x2="'+fmt(fx,1)+'" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  s+='<line x1="'+ox+'" y1="'+fmt(t2,1)+'" x2="'+fmt(fx,1)+'" y2="'+oy+'" stroke="'+FIG_ALT+'" stroke-width="2.2"/>';
+  s+=_txt((ox+fx)/2+16,(t1+oy)/2+7,lab1,12.5,false);
+  s+=_txt((ox+fx)/2+16,(t2+oy)/2-9,lab2,12.5,false);
+  s+=_txt((ox+fx)/2,oy+17,labFoot,12.5,false);
+  return s+'</svg>';
+}
+function m8BoxLabSVG(labL,labW,labH,open){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right rectangular prism">';
+  s+='<polygon points="70,75 120,37 230,37 180,75" fill="'+(open?"none":FIG_SHADE)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="180,75 230,37 230,117 180,155" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="70" y="75" width="110" height="80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(!open){s+='<line x1="120" y1="37" x2="120" y2="117" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';}
+  if(labL){s+=_txt(125,172,labL,13,false);}
+  if(labH){s+=_txt(56,115,labH,13,false);}
+  if(labW){s+=_txt(212,26,labW,13,false);}
+  return s+'</svg>';
+}
+function m8CylLabSVG(labTop,labH,useD,open){
+  var s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right cylinder">';
+  s+='<ellipse cx="150" cy="52" rx="56" ry="16" fill="'+(open?"none":FIG_SHADE)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 94 52 L 94 148 A 56 16 0 0 0 206 148 L 206 52" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labTop){
+    if(useD){s+='<line x1="94" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';s+=_txt(150,30,labTop,13,false);}
+    else{s+='<line x1="150" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';s+=_txt(178,40,labTop,13,false);}
+  }
+  if(labH){s+=_txt(224,104,labH,13,false);}
+  return s+'</svg>';
+}
+function m8CylBaseSVG(labBase,labH){
+  var s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right cylinder with the area of its base marked">';
+  s+='<ellipse cx="150" cy="52" rx="56" ry="16" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 94 52 L 94 148 A 56 16 0 0 0 206 148 L 206 52" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labBase){s+=_txt(150,52,labBase,11,true);}
+  if(labH){s+=_txt(224,104,labH,13,false);}
+  return s+'</svg>';
+}
+function m8TriPrismLabSVG(labA,labB,labL){
+  var s='<svg viewBox="0 0 310 190" width="310" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right triangular prism">';
+  s+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  if(labB){s+=_txt(105,166,labB,13,false);}
+  if(labA){s+=_txt(44,110,labA,13,false);}
+  if(labL){s+=_txt(198,32,labL,13,false);}
+  return s+'</svg>';
+}
+function m8PrismBaseSVG(kind,labBase,labH){
+  if(kind==="cyl"){return m8CylBaseSVG(labBase,labH);}
+  if(kind==="rect"){
+    var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right prism with the area of its base marked">';
+    s+='<polygon points="70,75 120,37 230,37 180,75" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="180,75 230,37 230,117 180,155" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="70" y="75" width="110" height="80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<line x1="120" y1="37" x2="120" y2="117" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    if(labBase){s+=_txt(150,56,labBase,11,true);}
+    if(labH){s+=_txt(56,115,labH,13,false);}
+    return s+'</svg>';
+  }
+  if(kind==="tri"){
+    var t='<svg viewBox="0 0 310 190" width="310" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right triangular prism with the area of its base marked">';
+    t+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    t+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    if(labBase){t+=_txt(182,94,labBase,11,true);}
+    if(labH){t+=_txt(198,32,labH,13,false);}
+    return t+'</svg>';
+  }
+  var g='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right prism with the area of its base marked">';
+  g+='<polygon points="115,72 195,57 210,137 130,157" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<polygon points="70,44 150,29 165,109 85,129" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="115" y1="72" x2="70" y2="44" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="195" y1="57" x2="150" y2="29" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="210" y1="137" x2="165" y2="109" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labBase){g+=_txt(163,108,labBase,11,true);}
+  if(labH){g+=_txt(84,44,labH,13,false);}
+  return g+'</svg>';
+}
+function m8NetAreaSVG(top,front,side){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: the net of a right rectangular prism with the area of each face marked">';
+  s+='<rect x="110" y="60" width="70" height="46" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="40" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="180" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="110" y="14" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="110" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="180" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(145,83,top+" cm²",11,true);
+  s+=_txt(145,37,front+" cm²",11,false);
+  s+=_txt(145,129,front+" cm²",11,false);
+  s+=_txt(75,83,side+" cm²",11,false);
+  s+=_txt(215,83,side+" cm²",11,false);
+  s+=_txt(215,129,top+" cm²",11,false);
+  return s+'</svg>';
+}
+function m8NetPlainSVG(kind,labR){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a net laid flat">';
+  if(kind==="rect"){
+    s+='<rect x="110" y="60" width="70" height="46" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="40" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="180" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="110" y="14" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="110" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="180" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else if(kind==="tri"){
+    s+='<rect x="30" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="96" y="70" width="66" height="44" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="162" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="96,70 162,70 129,30" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="96,114 162,114 129,154" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else if(kind==="cyl"){
+    s+='<rect x="80" y="62" width="140" height="56" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<circle cx="150" cy="34" r="26" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<circle cx="150" cy="146" r="26" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else if(kind==="inctri"){
+    s+='<rect x="30" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="96" y="70" width="66" height="44" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="162" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else {
+    s+='<rect x="80" y="62" width="140" height="56" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<circle cx="150" cy="34" r="26" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    if(labR){s+='<line x1="150" y1="34" x2="176" y2="34" stroke="'+FIG_INK+'" stroke-width="1.4"/>';s+=_txt(198,30,labR,12,false);}
+  }
+  return s+'</svg>';
+}
+function m8LayersSVG(labBase,labH,n){
+  var s='<svg viewBox="0 0 320 195" width="320" height="195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a prism built from stacked layers">';
+  s+='<polygon points="105,66 121,49 231,49 215,66" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  for(var i=0;i<n;i++){var y=66+i*17;s+='<rect x="105" y="'+y+'" width="110" height="17" fill="'+(i%2?FIG_SHADE:"none")+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';}
+  if(labBase){s+=_txt(160,66+n*17+18,labBase,12,true);}
+  if(labH){s+=_txt(252,66+n*17/2,labH,12.5,false);}
+  return s+'</svg>';
+}
+function m8TwoBaseSVG(labP,labQ){
+  var s='<svg viewBox="0 0 330 195" width="330" height="195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: two prisms with the same height and different bases">';
+  s+='<polygon points="34,78 48,61 102,61 88,78" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="34" y="78" width="54" height="72" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="88,78 102,61 102,133 88,150" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="168,78 182,61 290,61 276,78" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="168" y="78" width="108" height="72" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="276,78 290,61 290,133 276,150" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(68,40,"P",14,true);
+  s+=_txt(229,40,"Q",14,true);
+  if(labP){s+=_txt(68,168,labP,11.5,true);}
+  if(labQ){s+=_txt(229,168,labQ,11.5,true);}
+  return s+'</svg>';
+}
+function m8TanksSVG(sets,names){
+  var s='<svg viewBox="0 0 330 180" width="330" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: four storage tanks with their dimensions">';
+  for(var i=0;i<4;i++){
+    var ox=i*82+6;
+    s+='<polygon points="'+(ox+8)+',70 '+(ox+20)+',54 '+(ox+72)+',54 '+(ox+60)+',70" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+='<rect x="'+(ox+8)+'" y="70" width="52" height="54" fill="none" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+='<polygon points="'+(ox+60)+',70 '+(ox+72)+',54 '+(ox+72)+',108 '+(ox+60)+',124" fill="none" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+=_txt(ox+40,36,names[i],10.5,true);
+    s+=_txt(ox+40,142,sets[i][0]+" × "+sets[i][1]+" × "+sets[i][2],9,false);
+    s+=_txt(ox+40,158,"cm",9,false);
+  }
+  return s+'</svg>';
+}
+function m8PolyRowSVG(items){
+  var cw=320/items.length;
+  var s='<svg viewBox="0 0 320 125" width="320" height="125" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: regular polygons">';
+  for(var i=0;i<items.length;i++){
+    var n=items[i][0],cx=cw*i+cw/2,cy=55,R=Math.min(30,cw/2-9),pts=[];
+    for(var k=0;k<n;k++){var t=-Math.PI/2+k*2*Math.PI/n;pts.push(fmt(cx+R*Math.cos(t),1)+","+fmt(cy+R*Math.sin(t),1));}
+    s+='<polygon points="'+pts.join(" ")+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    if(items[i][1]){s+=_txt(cx,106,items[i][1],12,false);}
+  }
+  return s+'</svg>';
+}
+function m8NotchSquareSVG(){
+  var s='<svg viewBox="0 0 280 170" width="280" height="170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a square tile with a triangular notch cut from one side and the same triangle added to the opposite side">';
+  s+='<polygon points="75,25 195,25 195,65 222,85 195,105 195,145 75,145 75,105 102,85 75,65" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  return s+'</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 8 Unit 1 Square Roots and the Pythagorean Theorem question bank
 // Cut verbatim from the standalone bank source
@@ -69,7 +300,7 @@ E("u1-sqrt-perfect", 1, ["5.2"], 1, "gen", function(){
   var q=mcq(prompt, {t:String(r), fb:"Yes: "+r+" times "+r+" equals "+n+"."}, opts,
     "Find the number that multiplies by itself to give "+n+": \\[ \\begin{aligned} "+r+" \\times "+r+" &= "+n+" \\\\ \\sqrt{"+n+"} &= "+r+" \\end{aligned} \\] The square root is <b>"+r+"</b>.",
     {r:r, n:n, mode:mode});
-  if(r<=8){ q.figure=u1gridSVG(r); }
+  q.figure=u1gridSVG(r);
   return q;
 }, ["Think of the number that multiplies by itself to give the value under the root sign.", "Test small squares in order until one equals the number shown."]);
 
@@ -253,13 +484,13 @@ E("u1-is-right", 1, ["9.13"], 1, "gen", function(){
 
 E("u1-only-right", 1, ["9.2"], 1, "var", varset([
   function(){
-    return mcq("A triangle has sides of 4 cm, 6 cm and 8 cm. A student uses \\(4^{2} + 6^{2} = 8^{2}\\) to find a side and gets a wrong answer. Why did the method fail?",
+    var q=mcq("A triangle has sides of 4 cm, 6 cm and 8 cm. A student uses \\(4^{2} + 6^{2} = 8^{2}\\) to find a side and gets a wrong answer. Why did the method fail?",
       {t:"The theorem only works for right triangles, and this triangle is not right", fb:"Right: 16 + 36 is 52, not 64, so the triangle has no right angle."},
       [{t:"The student added the sides in the wrong order when using the theorem", fb:"Order of adding does not matter here: the triangle itself is the problem."},
        {t:"The theorem needs the sides to be measured in metres, not centimetres", fb:"Units do not limit the theorem: the shape of the triangle does."},
        {t:"The student should have used the two longest sides as the legs of the triangle", fb:"Swapping sides still cannot fix it: the triangle is not right."}],
       "\\(4^{2} + 6^{2} = 52\\), while \\(8^{2} = 64\\). The values differ, so the triangle has no right angle, and the theorem does not apply. The method failed because <b>the theorem only works for right triangles</b>.",
-      {mode:"not-right"});
+      {mode:"not-right"}); q.figure=triSVG(8,6,4,{L:["A","B","C"],side:["8 cm","6 cm","4 cm"]}); return q;
   },
   function(){
     return mcq("Which statement about the Pythagorean theorem is correct?",
@@ -271,13 +502,13 @@ E("u1-only-right", 1, ["9.2"], 1, "var", varset([
       {mode:"statement"});
   },
   function(){
-    return mcq("A triangle has sides of 5 cm, 5 cm and 9 cm. A student applies the square test to it. What does the test show?",
+    var q=mcq("A triangle has sides of 5 cm, 5 cm and 9 cm. A student applies the square test to it. What does the test show?",
       {t:"The test shows it is not right, since 25 + 25 does not equal 81", fb:"Right: the test itself shows the triangle has no right angle."},
       [{t:"The theorem cannot be used because two sides are equal in length", fb:"Equal legs are fine in a right triangle: the squares are the test."},
        {t:"The theorem cannot be used because the sides are odd numbers", fb:"Odd sides are fine: 9, 12, 15 uses odd sides and is right."},
        {t:"The theorem cannot be used because the triangle is too large", fb:"Size does not matter: only the square relationship matters."}],
       "\\(5^{2} + 5^{2} = 50\\), while \\(9^{2} = 81\\). Since the values differ, the triangle is not right, so <b>the theorem does not apply to it as a right triangle</b>.",
-      {mode:"isosceles"});
+      {mode:"isosceles"}); q.figure=triSVG(9,5,5,{L:["A","B","C"],side:["9 cm","5 cm","5 cm"]}); return q;
   }
 ]), ["Test the square relationship first before trusting the theorem.", "Square the two shorter sides and compare with the square of the longest side."]);
 
@@ -286,9 +517,9 @@ E("u1-triple-find", 1, ["9.14"], 1, "gen", function(){
   var k=ri(2,5); var a=base[0]*k, b=base[1]*k, c=base[2]*k;
   var miss=pick(["a","b","c"]); var ans=(miss==="a")?a:(miss==="b")?b:c;
   var givenTxt=(miss==="a")?("one leg of "+b+" cm and a hypotenuse of "+c+" cm"):((miss==="b")?("one leg of "+a+" cm and a hypotenuse of "+c+" cm"):("legs of "+a+" cm and "+b+" cm"));
-  return numq("A right triangle is a scaled copy of the "+base[0]+", "+base[1]+", "+base[2]+" triple, scaled by a factor of "+k+". It has "+givenTxt+". Find the missing side length, in centimetres.", ans, 0.01,
+  var q=numq("A right triangle is a scaled copy of the "+base[0]+", "+base[1]+", "+base[2]+" triple, scaled by a factor of "+k+". It has "+givenTxt+". Find the missing side length, in centimetres.", ans, 0.01,
     "Scale every side of the triple by "+k+": \\[ \\begin{aligned} "+base[0]+" \\times "+k+" &= "+a+" \\\\ "+base[1]+" \\times "+k+" &= "+b+" \\\\ "+base[2]+" \\times "+k+" &= "+c+" \\end{aligned} \\] The missing side is <b>"+ans+" cm</b>.",
-    {base:base, k:k, miss:miss});
+    {base:base, k:k, miss:miss}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:[(miss==="c"?"?":c+" cm"),(miss==="b"?"?":b+" cm"),(miss==="a"?"?":a+" cm")]}); return q;
 }, ["Scaling a triple by the same factor keeps it a triple.", "Multiply each side of the base triple by the scale factor."]);
 
 E("u1-ladder-context", 1, ["9.12"], 1, "gen", function(){
@@ -331,9 +562,9 @@ E("u1-right-test-decide", 1, ["9.13"], 3, "gen", function(){
                {t:"No, all sides must differ", fb:"Legs may be equal in some right triangles, and here the square test passes."},
                {t:"No, since a triple must be unscaled", fb:"Scaling a triple by "+ks+" keeps the square relationship true."}];
     var sunit=pick(["cm","m"]);
-    return mcq("A triangle has sides of "+sa+" "+sunit+", "+sb+" "+sunit+" and "+sc2+" "+sunit+". A student tests it by computing \\("+sb+"^{2} + "+sa+"^{2}\\) and comparing with \\("+sc2+"^{2}\\). Is the triangle a right triangle?", {t:"Yes, it is a right triangle", fb:"Right: "+(sa*sa)+" + "+(sb*sb)+" equals "+(sc2*sc2)+"."}, optsS,
+    var q=mcq("A triangle has sides of "+sa+" "+sunit+", "+sb+" "+sunit+" and "+sc2+" "+sunit+". A student tests it by computing \\("+sb+"^{2} + "+sa+"^{2}\\) and comparing with \\("+sc2+"^{2}\\). Is the triangle a right triangle?", {t:"Yes, it is a right triangle", fb:"Right: "+(sa*sa)+" + "+(sb*sb)+" equals "+(sc2*sc2)+"."}, optsS,
       "Add the squares of the two shorter sides: \\[ \\begin{aligned} "+sa+"^{2} + "+sb+"^{2} &= "+(sa*sa+sb*sb)+" \\\\ "+sc2+"^{2} &= "+(sc2*sc2)+" \\end{aligned} \\] The values match, so the triangle <b>is a right triangle</b>.",
-      {mode:"swap", a:sa, b:sb, c:sc2});
+      {mode:"swap", a:sa, b:sb, c:sc2}); q.figure=triSVG(sc2,sb,sa,{L:["A","B","C"],side:[sc2+" "+sunit,sb+" "+sunit,sa+" "+sunit]}); return q;
   }
   if(mode==="close-call"){
     var tr=pick([[6,8,10],[9,12,15],[12,16,20],[5,12,13],[8,15,17],[20,21,29]]);
@@ -346,19 +577,19 @@ E("u1-right-test-decide", 1, ["9.13"], 3, "gen", function(){
               {t:"Right only if it is marked", fb:"The lengths alone decide: the square test needs no drawing mark."},
               {t:"Not decidable", fb:"Nearly is decidable: the squares either match exactly or they do not."}];
     var cunit=pick(["m","cm"]);
-    return mcq("A triangle has sides of "+a+" "+cunit+", "+b+" "+cunit+" and "+c+" "+cunit+". A classmate says it must be a right triangle because its sides are close to a familiar triple. Decide whether it is a right triangle.", {t:ansTxt, fb:"Right: "+(a*a)+" + "+(b*b)+" is "+(a*a+b*b)+", and "+c+" squared is "+(c*c)+"."}, opts,
+    var q=mcq("A triangle has sides of "+a+" "+cunit+", "+b+" "+cunit+" and "+c+" "+cunit+". A classmate says it must be a right triangle because its sides are close to a familiar triple. Decide whether it is a right triangle.", {t:ansTxt, fb:"Right: "+(a*a)+" + "+(b*b)+" is "+(a*a+b*b)+", and "+c+" squared is "+(c*c)+"."}, opts,
       "Apply the test exactly: \\[ \\begin{aligned} "+a+"^{2} + "+b+"^{2} &= "+(a*a+b*b)+" \\\\ "+c+"^{2} &= "+(c*c)+" \\end{aligned} \\] "+(isR?"The values match, so it <b>is a right triangle</b>.":"The values do not match, so it is <b>not a right triangle</b>, even though it is close to a triple."),
-      {mode:"close-call", a:a, b:b, c:c});
+      {mode:"close-call", a:a, b:b, c:c}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:[c+" "+cunit,b+" "+cunit,a+" "+cunit]}); return q;
   }
   var t2=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25]]);
   var kk2=ri(1,4); var a2=t2[0]*kk2, b2=t2[1]*kk2, c2=t2[2]*kk2;
   var opts2=[{t:"The claim is wrong: the longest side must be squared on its own first", fb:"Squaring a shorter side alone proves nothing about the triangle."},
              {t:"The claim is wrong: the sides must be added together before squaring", fb:"Adding first gives a different value, not the theorem test."},
              {t:"The claim is right: any matching square by itself proves a right angle", fb:"One square matching by itself is not the test: the sum must match."}];
-  return mcq("To test whether a triangle with sides "+a2+", "+b2+" and "+c2+" is right, a student checks only that \\("+b2+"^{2} = "+(b2*b2)+"\\) and claims this proves a right angle. Judge the claim.",
+  var q=mcq("To test whether a triangle with sides "+a2+", "+b2+" and "+c2+" is right, a student checks only that \\("+b2+"^{2} = "+(b2*b2)+"\\) and claims this proves a right angle. Judge the claim.",
     {t:"The claim is wrong: the two shorter squares must add to the longest square", fb:"Right: "+(a2*a2)+" + "+(b2*b2)+" equals "+(c2*c2)+", and that full test is what proves it."}, opts2,
     "The full test compares a sum with the longest square: \\[ \\begin{aligned} "+a2+"^{2} + "+b2+"^{2} &= "+(a2*a2)+" + "+(b2*b2)+" \\\\ &= "+(c2*c2)+" = "+c2+"^{2} \\end{aligned} \\] One square on its own proves nothing. The claim is <b>wrong: the two shorter squares must add to the longest square</b>.",
-    {mode:"claim", a:a2, b:b2, c:c2});
+    {mode:"claim", a:a2, b:b2, c:c2}); q.figure=triSVG(c2,b2,a2,{L:["A","B","C"],side:[c2+"",b2+"",a2+""]}); return q;
 }, ["Closeness to a triple is not proof: the squares must match exactly.", "Compute the sum of the two shorter squares and the longest square, then compare."]);
 
 E("u1-best-estimate", 1, ["6.30"], 3, "gen", function(){
@@ -380,18 +611,18 @@ E("u1-diagonal-square", 1, ["9.12"], 3, "gen", function(){
   var s=ri(4,20);
   var diag=u1r1(s*Math.sqrt(2));
   var ctx=pick(["A square garden plot in Corner Brook","A square field near Bay Roberts","A square skating rink in Mount Pearl","A square classroom rug in a St. John's school"]);
-  return numq(ctx+" has sides of "+s+" m. A line runs straight across it from one corner to the opposite corner. Find the length of that line, to one decimal place, in metres.", diag, 0.06,
+  var q=numq(ctx+" has sides of "+s+" m. A line runs straight across it from one corner to the opposite corner. Find the length of that line, to one decimal place, in metres.", diag, 0.06,
     "The path is the hypotenuse of a right triangle with both legs equal to "+s+": \\[ \\begin{aligned} d^{2} &= "+s+"^{2} + "+s+"^{2} \\\\ &= "+(s*s)+" + "+(s*s)+" \\\\ &= "+(2*s*s)+" \\\\ d &= \\sqrt{"+(2*s*s)+"} \\approx "+fmt(diag)+" \\end{aligned} \\] The path is <b>"+fmt(diag)+" m</b> long.",
-    {s:s});
+    {s:s}); q.figure=m8RectDiagSVG(s,s,s+" m",s+" m","?"); return q;
 }, ["Split the square along the path: it becomes a right triangle with two equal legs.", "Square the side, double it, then take the square root and round."]);
 
 E("u1-square-plot-perimeter", 1, ["5.2"], 3, "gen", function(){
   var r=ri(5,20); var area=r*r; var per=4*r;
   var ctx=pick(["A square vegetable plot","A square quilt top","A square sandbox","A square photo print"]);
   var edge=pick(["Fencing is placed around all four sides of it. How many metres of fencing are needed?","A border is sewn around all four sides of it. How many metres of border are needed?","Edging is placed around all four sides of it. How many metres of edging are needed?","A frame runs around all four sides of it. How many metres of framing are needed?"]);
-  return numq(ctx+" has an area of "+area+" square metres. "+edge, per, 0.01,
+  var q=numq(ctx+" has an area of "+area+" square metres. "+edge, per, 0.01,
     "Find the side length from the area first, then the perimeter: \\[ \\begin{aligned} \\text{side} &= \\sqrt{"+area+"} = "+r+" \\\\ \\text{fencing} &= 4 \\times "+r+" \\\\ &= "+per+" \\end{aligned} \\] The fencing needed is <b>"+per+" m</b>.",
-    {r:r, area:area});
+    {r:r, area:area}); q.figure=m8SquareAreaSVG(area+" m\u00B2"); return q;
 }, ["The side of a square is the square root of its area.", "Find the side length first, then multiply by 4 for the four sides."]);
 
 /* ----- bank-u2.js ----- */
@@ -1478,9 +1709,9 @@ E("u4-faces-identify", 4, ["10.3"], 1, "gen", function(){
 E("u4-vol-base-times-height", 4, ["9.7"], 1, "gen", function(){
   var B=ri(8,60), h=ri(3,15);
   var obj=pick(["right prism","right triangular prism","right rectangular prism"]);
-  return numq("A "+obj+" has a base with area "+B+" cm\\(^{2}\\) and a height of "+h+" cm. Find its volume, in cubic centimetres.", B*h, 0.01,
+  var q=numq("A "+obj+" has a base with area "+B+" cm\\(^{2}\\) and a height of "+h+" cm. Find its volume, in cubic centimetres.", B*h, 0.01,
     "The volume of a right prism is the base area multiplied by the height: \\[ \\begin{aligned} V &= B \\times h \\\\ &= "+B+" \\times "+h+" \\\\ &= "+(B*h)+" \\end{aligned} \\] The volume is <b>"+(B*h)+" cm\\(^{3}\\)</b>.",
-    {mode:"base-height", B:B, h:h});
+    {mode:"base-height", B:B, h:h}); q.figure=m8PrismBaseSVG(obj==="right triangular prism"?"tri":(obj==="right rectangular prism"?"rect":"generic"), B+" cm\u00B2", h+" cm"); return q;
 }, ["For any right prism, volume is base area multiplied by height.", "Multiply the given base area by the given height."]);
 
 E("u4-sa-from-net", 4, ["9.3"], 1, "gen", function(){
@@ -1493,10 +1724,10 @@ E("u4-sa-from-net", 4, ["9.3"], 1, "gen", function(){
     var fb=(d===once)?"That adds each different face only once: every face on a prism has a matching partner opposite it.":"That total double-counts or misses a face: each of the three face areas must appear exactly twice.";
     return {t:String(d), fb:fb};
   });
-  return mcq("A net of a right rectangular prism has three different face areas: "+top+" cm\\(^{2}\\) for the top, "+front+" cm\\(^{2}\\) for the front and "+side+" cm\\(^{2}\\) for the side. What is the surface area of the prism, in square centimetres?",
+  var q=mcq("A net of a right rectangular prism has three different face areas: "+top+" cm\\(^{2}\\) for the top, "+front+" cm\\(^{2}\\) for the front and "+side+" cm\\(^{2}\\) for the side. What is the surface area of the prism, in square centimetres?",
     {t:String(sa), fb:"Yes: each face area appears twice, once for each side of the prism."}, opts,
     "Surface area is the total area of the 2-D faces in the net. Each different face has an identical partner opposite it: \\[ \\begin{aligned} SA &= 2("+top+"+"+front+"+"+side+") \\\\ &= 2("+once+") \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
-    {mode:"net-areas", l:l, w:w, h:h});
+    {mode:"net-areas", l:l, w:w, h:h}); q.figure=m8NetAreaSVG(top,front,side); return q;
 }, ["Surface area is the sum of the areas of all the flat faces in the net.", "Add the three different face areas, then double the total because each face has a partner."]);
 
 E("u4-net-choose", 4, ["10.11"], 2, "gen", function(){
@@ -1521,31 +1752,31 @@ E("u4-net-choose", 4, ["10.11"], 2, "gen", function(){
 
 E("u4-net-predict", 4, ["10.2","10.1"], 1, "var", varset([
   function(){
-    return mcq("A flat net is made of 2 triangles and 3 rectangles joined edge to edge. Which object can be made by folding this net?",
+    var q=mcq("A flat net is made of 2 triangles and 3 rectangles joined edge to edge. Which object can be made by folding this net?",
       {t:"Right triangular prism", fb:"Yes: the triangles become the ends and the rectangles wrap around as the sides."},
       [{t:"Right cylinder", fb:"A cylinder net needs circles for its ends: this net has none."},
        {t:"Right rectangular prism", fb:"A rectangular prism has only rectangular faces: the 2 triangles rule it out."},
        {t:"Square-based pyramid", fb:"A pyramid has one base and triangular sides meeting at a point: these rectangles form sides instead."}],
       "The 2 triangles become the two ends, and the 3 rectangles fold around to join them. The object is a <b>right triangular prism</b>.",
-      {mode:"static-tri-net"});
+      {mode:"static-tri-net"}); q.figure=m8NetPlainSVG("tri",null); return q;
   },
   function(){
-    return mcq("A flat net is made of 1 long rectangle with a circle joined to one long edge and a matching circle joined to the other long edge. Which object can be made by folding and rolling this net?",
+    var q=mcq("A flat net is made of 1 long rectangle with a circle joined to one long edge and a matching circle joined to the other long edge. Which object can be made by folding and rolling this net?",
       {t:"Right cylinder", fb:"Yes: the rectangle rolls into the curved side and the circles close the ends."},
       [{t:"Right triangular prism", fb:"A triangular prism needs triangular ends: this net has circles instead."},
        {t:"Right rectangular prism", fb:"A rectangular prism is built only from rectangles: the circles rule it out."},
        {t:"Square-based pyramid", fb:"A pyramid has triangular sides meeting at a point: nothing here folds to a point."}],
       "The long rectangle rolls into a curved side, and the two circles become the top and bottom. The object is a <b>right cylinder</b>.",
-      {mode:"static-cyl-net"});
+      {mode:"static-cyl-net"}); q.figure=m8NetPlainSVG("cyl",null); return q;
   },
   function(){
-    return mcq("A flat net is made of 6 rectangles arranged in a cross shape, forming 3 matching pairs. Which object can be made by folding this net?",
+    var q=mcq("A flat net is made of 6 rectangles arranged in a cross shape, forming 3 matching pairs. Which object can be made by folding this net?",
       {t:"Right rectangular prism", fb:"Yes: the 3 pairs become the front and back, the sides, and the top and bottom."},
       [{t:"Right cylinder", fb:"A cylinder net needs circles for its ends: this net has none."},
        {t:"Right triangular prism", fb:"A triangular prism needs 2 triangular faces: every piece here is a rectangle."},
        {t:"Square-based pyramid", fb:"A pyramid needs triangular faces meeting at a point: these rectangles fold into a box shape."}],
       "Six rectangles in 3 matching pairs fold into opposite faces of a box shape. The object is a <b>right rectangular prism</b>.",
-      {mode:"static-rect-net"});
+      {mode:"static-rect-net"}); q.figure=m8NetPlainSVG("rect",null); return q;
   }
 ]), ["Sort the flat shapes first: triangles, rectangles and circles each point to a different solid.", "Match the end shapes in the net to the ends of the object it will make."]);
 
@@ -1553,52 +1784,52 @@ E("u4-net-build-parts", 4, ["10.12"], 1, "gen", function(){
   var mode=pick(["tri","cyl","rect","incomplete-tri","incomplete-cyl"]);
   if(mode==="tri"){
     var Lt=ri(5,18), at=ri(3,12), bt=ri(3,12);
-    return mcq("Ren cuts out flat pieces to build a right triangular prism from a net. The prism is "+Lt+" cm long and its triangular ends have legs of "+at+" cm and "+bt+" cm. Which set of pieces does the net need?",
+    var q=mcq("Ren cuts out flat pieces to build a right triangular prism from a net. The prism is "+Lt+" cm long and its triangular ends have legs of "+at+" cm and "+bt+" cm. Which set of pieces does the net need?",
       {t:"2 triangles and 3 rectangles", fb:"Yes: triangles for the two ends and rectangles for the three sides."},
       [{t:"2 triangles and 4 rectangles", fb:"That is one rectangle too many: a triangular prism has only 3 rectangular sides."},
        {t:"3 triangles and 2 rectangles", fb:"The counts are swapped: there are 2 ends and 3 sides on this prism."},
        {t:"2 circles and 3 rectangles", fb:"Circles belong to a cylinder net: this prism has triangular ends."}],
       "A right triangular prism has 2 triangular ends and 3 rectangular sides, so its net needs <b>2 triangles and 3 rectangles</b>.",
-      {mode:"tri-parts"});
+      {mode:"tri-parts"}); q.figure=m8TriPrismLabSVG(at+" cm",bt+" cm",Lt+" cm"); return q;
   }
   if(mode==="cyl"){
     var rc=ri(2,10), hc=ri(4,16);
-    return mcq("Sofia cuts out flat pieces to build a right cylinder from a net. The cylinder has radius "+rc+" cm and height "+hc+" cm. Which set of pieces does the net need?",
+    var q=mcq("Sofia cuts out flat pieces to build a right cylinder from a net. The cylinder has radius "+rc+" cm and height "+hc+" cm. Which set of pieces does the net need?",
       {t:"2 circles and 1 rectangle", fb:"Yes: the rectangle rolls into the curved side and the circles close the ends."},
       [{t:"2 circles and 2 rectangles", fb:"One rectangle is enough for the curved side: a second one has nowhere to fold."},
        {t:"1 circle and 1 rectangle", fb:"A cylinder has two round ends, top and bottom: one circle leaves an end open."},
        {t:"2 triangles and 1 rectangle", fb:"Triangles belong to a prism net: a cylinder has round ends instead."}],
       "A right cylinder has 2 circular ends and 1 curved side that unrolls into a rectangle, so its net needs <b>2 circles and 1 rectangle</b>.",
-      {mode:"cyl-parts"});
+      {mode:"cyl-parts"}); q.figure=u4cylSVG(rc,hc,false); return q;
   }
   if(mode==="rect"){
     var lr=ri(4,15), wr=ri(3,12), hr=ri(2,10);
-    return mcq("Marcus cuts out flat pieces to build a right rectangular prism from a net. The prism is "+lr+" cm long, "+wr+" cm wide and "+hr+" cm high. Which set of pieces does the net need?",
+    var q=mcq("Marcus cuts out flat pieces to build a right rectangular prism from a net. The prism is "+lr+" cm long, "+wr+" cm wide and "+hr+" cm high. Which set of pieces does the net need?",
       {t:"6 rectangles in 3 matching pairs", fb:"Yes: each pair forms two opposite faces of the prism."},
       [{t:"6 rectangles all the same size", fb:"Six equal rectangles would make a cube: a general rectangular prism has 3 different pairs."},
        {t:"4 rectangles and 2 squares", fb:"That set only works for one special prism: the full net is 6 rectangles in pairs."},
        {t:"5 rectangles and 1 triangle", fb:"A rectangular prism has no triangular faces at all."}],
       "A right rectangular prism has 6 faces, and opposite faces match, so its net needs <b>6 rectangles in 3 matching pairs</b>.",
-      {mode:"rect-parts"});
+      {mode:"rect-parts"}); q.figure=u4boxSVG(lr,wr,hr); return q;
   }
   if(mode==="incomplete-tri"){
     var L=ri(5,14);
-    return mcq("An unfinished net for a right triangular prism, "+L+" cm long, shows the 3 rectangles in a row but nothing else. Which pieces must be added to complete the net?",
+    var q=mcq("An unfinished net for a right triangular prism, "+L+" cm long, shows the 3 rectangles in a row but nothing else. Which pieces must be added to complete the net?",
       {t:"2 matching triangles, one on each side of the row", fb:"Yes: the two triangular ends are the only faces still missing."},
       [{t:"2 matching rectangles, one on each side of the row", fb:"Rectangles would add extra sides: the missing faces are the two ends."},
        {t:"1 triangle in the middle of the row", fb:"One triangle makes only one end: the prism needs an end at each side."},
        {t:"2 matching circles, one on each side of the row", fb:"Circles are the ends of a cylinder: this prism has triangular ends."}],
       "The 3 rectangles form the sides, so only the 2 ends are missing. The pieces to add are <b>2 matching triangles, one on each side of the row</b>.",
-      {mode:"incomplete-tri", L:L});
+      {mode:"incomplete-tri", L:L}); q.figure=m8NetPlainSVG("inctri",null); return q;
   }
   var r=ri(3,9);
-  return mcq("An unfinished net for a right cylinder shows the long rectangle and one circle of radius "+r+" cm. Which piece must be added to complete the net?",
+  var q=mcq("An unfinished net for a right cylinder shows the long rectangle and one circle of radius "+r+" cm. Which piece must be added to complete the net?",
     {t:"A second circle with radius "+r+" cm", fb:"Yes: the second end must match the first circle exactly."},
     [{t:"A second circle with radius "+(2*r)+" cm", fb:"That circle is too big: both ends of a cylinder are the same size."},
      {t:"A square with side "+r+" cm", fb:"A square cannot close a round end: the missing face is a circle."},
      {t:"A second rectangle the same size as the first", fb:"The curved side is already complete: the missing piece is the other end."}],
     "A cylinder has two matching circular ends, and one is still missing. The piece to add is <b>a second circle with radius "+r+" cm</b>.",
-    {mode:"incomplete-cyl", r:r});
+    {mode:"incomplete-cyl", r:r}); q.figure=m8NetPlainSVG("inccyl",r+" cm"); return q;
 }, ["Count the faces of the finished object, then match the flat pieces to those faces.", "Name the ends of the object first, then count the sides that join them."]);
 
 E("u4-sa-rect-prism", 4, ["9.4"], 2, "gen", function(){
@@ -1638,15 +1869,15 @@ E("u4-sa-problem-wrap", 4, ["9.5"], 2, "gen", function(){
     var sa=2*(l*w+l*h+w*h);
     var cover=pick([20,25,30,40,50]);
     var cans=Math.ceil(sa/cover-0.0000001);
-    return numq("A storage box shaped like a right rectangular prism measures "+l+" m long, "+w+" m wide and "+h+" m high. It is painted on all outside faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
+    var q=numq("A storage box shaped like a right rectangular prism measures "+l+" m long, "+w+" m wide and "+h+" m high. It is painted on all outside faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
       "Find the surface area first, then divide by the coverage and round up: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] Then \\("+sa+" \\div "+cover+" \\approx "+fmt(u4r2(sa/cover))+"\\), and a part can cannot be bought. The number of cans needed is <b>"+cans+"</b>.",
-      {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
+      {mode:"paint-cans", l:l, w:w, h:h, cover:cover}); q.figure=m8BoxLabSVG(l+" m",w+" m",h+" m",false); return q;
   }
   var l2=ri(20,60)/2, w2=ri(16,44)/2, h2=ri(12,36)/2;
   var sa2=2*(l2*w2+l2*h2+w2*h2);
-  return numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" cm long, "+fmt(w2)+" cm wide and "+fmt(h2)+" cm high. Wrapping paper covers all faces with no overlap. How many square centimetres of paper are needed?", sa2, 0.01,
+  var q=numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" cm long, "+fmt(w2)+" cm wide and "+fmt(h2)+" cm high. Wrapping paper covers all faces with no overlap. How many square centimetres of paper are needed?", sa2, 0.01,
     "The paper must cover the whole surface of the box: \\[ \\begin{aligned} SA &= 2("+fmt(l2*w2)+"+"+fmt(l2*h2)+"+"+fmt(w2*h2)+") \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The paper needed is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
-    {mode:"wrap-paper", l:l2, w:w2, h:h2});
+    {mode:"wrap-paper", l:l2, w:w2, h:h2}); q.figure=m8BoxLabSVG(fmt(l2)+" cm",fmt(w2)+" cm",fmt(h2)+" cm",false); return q;
 }, ["Work out the total surface area before using the coverage or finishing the problem.", "Divide the surface area by the coverage per can and round up, since part cans cannot be bought."]);
 
 E("u4-vol-rect-prism", 4, ["9.11"], 1, "gen", function(){
@@ -1694,39 +1925,39 @@ E("u4-vol-missing-height", 4, ["9.7"], 1, "gen", function(){
   var label={prism:"right prism", tri:"right triangular prism", cylinder:"right cylinder"}[kind];
   var ds=u4d3(h,[h+1,h-1,h+2,2*h,V-B]);
   var opts=ds.map(function(d){return {t:String(d), fb:"Try again: the height is the volume divided by the base area, and "+B+" times "+d+" is not "+V+"."};});
-  return mcq("The volume of a "+label+" is "+V+" cm\\(^{3}\\), and the area of its base is "+B+" cm\\(^{2}\\). What is its height, in centimetres?",
+  var q=mcq("The volume of a "+label+" is "+V+" cm\\(^{3}\\), and the area of its base is "+B+" cm\\(^{2}\\). What is its height, in centimetres?",
     {t:String(h), fb:"Yes: "+B+" times "+h+" gives the volume "+V+"."}, opts,
     "Volume is base area times height, so divide the volume by the base area: \\[ \\begin{aligned} h &= V \\div B \\\\ &= "+V+" \\div "+B+" \\\\ &= "+h+" \\end{aligned} \\] The height is <b>"+h+" cm</b>.",
-    {mode:kind, B:B, h:h});
+    {mode:kind, B:B, h:h}); q.figure=m8PrismBaseSVG(kind==="tri"?"tri":(kind==="cylinder"?"cyl":"generic"), B+" cm\u00B2", "?"); return q;
 }, ["Volume equals base area times height, so one of those values is missing here.", "Divide the volume by the base area to undo the multiplication."]);
 
 E("u4-base-volume-link", 4, ["9.8"], 1, "var", varset([
   function(){
-    return mcq("A right prism has a base area of 24 cm\\(^{2}\\). Layers of the base shape, each 1 cm thick, are stacked to a height of 5 cm. Which statement explains the volume?",
+    var q=mcq("A right prism has a base area of 24 cm\\(^{2}\\). Layers of the base shape, each 1 cm thick, are stacked to a height of 5 cm. Which statement explains the volume?",
       {t:"Each layer holds 24 cm\\(^{3}\\), so 5 layers hold 120 cm\\(^{3}\\) in total", fb:"Right: the base area gives the volume of one layer, and the height counts the layers."},
       [{t:"Each layer holds 5 cm\\(^{3}\\), so 5 layers hold 25 cm\\(^{3}\\) in total", fb:"The layer volume comes from the base area, not the height: swap the two numbers."},
        {t:"The volume is 24 plus 5, which is 29 cm\\(^{3}\\), found by adding base and height", fb:"Stacking layers multiplies rather than adds: think of repeated layers, not a sum."},
        {t:"The volume depends only on the shape of the base, so it stays 24 cm\\(^{3}\\)", fb:"A taller stack holds more: the height must enter the calculation."}],
       "One layer, 1 cm thick, has volume equal to the base area: 24 cm\\(^{3}\\). Stacking 5 layers gives \\(24 \\times 5 = 120\\) cm\\(^{3}\\). The volume is <b>120 cm\\(^{3}\\), found as base area times height</b>.",
-      {mode:"static-layers"});
+      {mode:"static-layers"}); q.figure=m8LayersSVG("24 cm\u00B2","5 cm",5); return q;
   },
   function(){
-    return mcq("Two right prisms have the same height. Prism P has a base area of 18 cm\\(^{2}\\) and Prism Q has a base area of 36 cm\\(^{2}\\). How do their volumes compare?",
+    var q=mcq("Two right prisms have the same height. Prism P has a base area of 18 cm\\(^{2}\\) and Prism Q has a base area of 36 cm\\(^{2}\\). How do their volumes compare?",
       {t:"Prism Q has twice the volume of Prism P", fb:"Right: with equal heights, doubling the base area doubles the volume."},
       [{t:"The two prisms have equal volumes because their heights match", fb:"Equal heights alone do not equalize volume: the base areas differ."},
        {t:"Prism Q has four times the volume of Prism P", fb:"The base area doubled, it did not grow by a factor of four."},
        {t:"Prism P has twice the volume of Prism Q", fb:"The prism with the larger base area holds more, not less."}],
       "Volume is base area times height. The heights are equal, and \\(36 = 2 \\times 18\\), so <b>Prism Q has twice the volume of Prism P</b>.",
-      {mode:"static-double-base"});
+      {mode:"static-double-base"}); q.figure=m8TwoBaseSVG("18 cm\u00B2","36 cm\u00B2"); return q;
   },
   function(){
-    return mcq("The base of a right cylinder is a circle with area 50.24 cm\\(^{2}\\). The cylinder is 6 cm high. Which calculation gives its volume?",
+    var q=mcq("The base of a right cylinder is a circle with area 50.24 cm\\(^{2}\\). The cylinder is 6 cm high. Which calculation gives its volume?",
       {t:"50.24 times 6, which is 301.44 cm\\(^{3}\\)", fb:"Right: a cylinder follows the same base area times height rule as a prism."},
       [{t:"50.24 times 2, which is 100.48 cm\\(^{3}\\)", fb:"The multiplier is the height of the cylinder, which is 6, not 2."},
        {t:"50.24 plus 6, which is 56.24 cm\\(^{3}\\)", fb:"Volume stacks the base through the height: multiply rather than add."},
        {t:"50.24 times 6 times 6, which is 1808.64 cm\\(^{3}\\)", fb:"The height is used once: the base area already accounts for the round shape."}],
       "A cylinder is a prism with a circular base, so the prism rule applies: \\[ \\begin{aligned} V &= B \\times h \\\\ &= 50.24 \\times 6 \\\\ &= 301.44 \\end{aligned} \\] The volume is <b>301.44 cm\\(^{3}\\)</b>.",
-      {mode:"static-cyl-base"});
+      {mode:"static-cyl-base"}); q.figure=m8CylBaseSVG("50.24 cm\u00B2","6 cm"); return q;
   }
 ]), ["Think of the solid as a stack of identical layers, each shaped like the base.", "One layer has volume equal to the base area, so multiply by the number of layers (the height)."]);
 
@@ -1747,10 +1978,10 @@ E("u4-holds-most", 4, ["9.11"], 2, "gen", function(){
     return {t:n, fb:n+" holds "+vols[i]+" cm\\(^{3}\\), which is less than the largest volume."};
   });
   var desc=sets.map(function(s,i){return names[i]+": "+s[0]+" cm by "+s[1]+" cm by "+s[2]+" cm";}).join("; ");
-  return mcq("Four storage tanks are shaped like right rectangular prisms. "+desc+". Which tank holds the most water?",
+  var q=mcq("Four storage tanks are shaped like right rectangular prisms. "+desc+". Which tank holds the most water?",
     {t:names[best], fb:"Yes: its volume, "+vols[best]+" cm\\(^{3}\\), is the largest of the four."}, opts,
     "Find each volume by multiplying the three dimensions: "+vols.map(function(v,i){return names[i]+" holds "+v+" cm\\(^{3}\\)";}).join(", ")+". The largest volume belongs to <b>"+names[best]+"</b>.",
-    {mode:"holds-most", best:best});
+    {mode:"holds-most", best:best}); q.figure=m8TanksSVG(sets,names); return q;
 }, ["Holding the most water means having the greatest volume.", "Multiply the three dimensions of each tank, then compare the four volumes."]);
 
 E("u4-position-volume", 4, ["9.10"], 3, "gen", function(){
@@ -1758,26 +1989,26 @@ E("u4-position-volume", 4, ["9.10"], 3, "gen", function(){
   var V=l*w*h;
   var ds=u4d3(V,[l*w*(h+1),l*(w+1)*h,(l+1)*w*h,2*V,l*w+w*h]);
   var opts=ds.map(function(d){return {t:String(d), fb:"Tipping changes which face is down, not the dimensions themselves: multiply the same three numbers."};});
-  return mcq("A fish tank shaped like a right rectangular prism is "+l+" cm long, "+w+" cm wide and "+h+" cm high, and it is full of water. The tank is tipped carefully onto a different face without spilling. What is the volume of water, in cubic centimetres?",
+  var q=mcq("A fish tank shaped like a right rectangular prism is "+l+" cm long, "+w+" cm wide and "+h+" cm high, and it is full of water. The tank is tipped carefully onto a different face without spilling. What is the volume of water, in cubic centimetres?",
     {t:String(V), fb:"Yes: turning the tank over does not change the amount of water inside."}, opts,
     "Position does not affect volume. The same three dimensions multiply in any position: \\[ \\begin{aligned} V &= "+l+" \\times "+w+" \\times "+h+" \\\\ &= "+V+" \\end{aligned} \\] The volume of water is <b>"+V+" cm\\(^{3}\\)</b>.",
-    {mode:"tipped", l:l, w:w, h:h});
+    {mode:"tipped", l:l, w:w, h:h}); q.figure=u4boxSVG(l,w,h); return q;
 }, ["Ask whether turning the tank changes any of its three dimensions.", "Multiply the same length, width and height: tipping only changes which face is on the bottom."]);
 
 E("u4-sa-open-tank", 4, ["9.5","9.6"], 3, "gen", function(){
   var r=ri(2,8), h=ri(4,14);
   var sa=u4r1(3.14*r*r+2*3.14*r*h);
-  return numq("A garden water barrel is shaped like a right cylinder with radius "+r+" m and height "+h+" m. It is open at the top. Metal sheet is used for the bottom and the curved side only. How many square metres of metal are needed? Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", sa, 0.6,
+  var q=numq("A garden water barrel is shaped like a right cylinder with radius "+r+" m and height "+h+" m. It is open at the top. Metal sheet is used for the bottom and the curved side only. How many square metres of metal are needed? Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", sa, 0.6,
     "An open top means only one circle is needed, for the bottom, plus the curved side: \\[ \\begin{aligned} SA &= \\pi r^{2}+2\\pi r h \\\\ &= 3.14("+r+")^{2}+2(3.14)("+r+")("+h+") \\\\ &= "+fmt(u4r2(3.14*r*r))+"+"+fmt(u4r1(2*3.14*r*h))+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The metal needed is <b>"+fmt(sa)+" m\\(^{2}\\)</b>.",
-    {mode:"open-barrel", r:r, h:h});
+    {mode:"open-barrel", r:r, h:h}); q.figure=m8CylLabSVG(r+" m",h+" m",false,true); return q;
 }, ["An open top changes the count of circles: read the problem for which parts are covered.", "Add one circle for the bottom to the curved side area."]);
 
 E("u4-vol-cylinder-diam", 4, ["9.9","9.11"], 3, "gen", function(){
   var r=ri(2,9); var d=2*r; var h=ri(4,16);
   var V=u4r1(3.14*r*r*h);
-  return numq("A water tank is shaped like a right cylinder with diameter "+d+" cm and height "+h+" cm. How many cubic centimetres of water does it hold when full? Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", V, 0.6,
+  var q=numq("A water tank is shaped like a right cylinder with diameter "+d+" cm and height "+h+" cm. How many cubic centimetres of water does it hold when full? Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", V, 0.6,
     "Halve the diameter to get the radius, then use base area times height: \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ V &= \\pi r^{2} h \\\\ &= 3.14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmt(V)+" \\end{aligned} \\] The tank holds <b>"+fmt(V)+" cm\\(^{3}\\)</b>.",
-    {mode:"diam-vol", r:r, h:h});
+    {mode:"diam-vol", r:r, h:h}); q.figure=u4cylSVG(r,h,true); return q;
 }, ["The formula needs the radius, but the problem gives the diameter.", "Halve the diameter first, then square the radius and multiply by pi and the height."]);
 
 E("u4-sa-missing-edge", 4, ["9.5"], 3, "gen", function(){
@@ -1788,10 +2019,10 @@ E("u4-sa-missing-edge", 4, ["9.5"], 3, "gen", function(){
     var test=2*(l*w+l*d+w*d);
     return {t:String(d), fb:"With height "+d+" the surface area would be "+test+" cm\\(^{2}\\), not "+sa+"."};
   });
-  return mcq("A right rectangular prism is "+l+" cm long and "+w+" cm wide, and its total surface area is "+sa+" cm\\(^{2}\\). What is its height, in centimetres?",
+  var q=mcq("A right rectangular prism is "+l+" cm long and "+w+" cm wide, and its total surface area is "+sa+" cm\\(^{2}\\). What is its height, in centimetres?",
     {t:String(h), fb:"Yes: height "+h+" gives exactly the stated surface area."}, opts,
     "Try the height in the surface area formula and solve. With height \\(h\\): \\[ \\begin{aligned} 2("+fmt(l*w)+") + 2("+l+"+"+w+")h &= "+sa+" \\\\ "+(2*l*w)+" + "+(2*(l+w))+"h &= "+sa+" \\\\ h &= "+h+" \\end{aligned} \\] The height is <b>"+h+" cm</b>.",
-    {mode:"missing-edge", l:l, w:w, h:h});
+    {mode:"missing-edge", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm","?",false); return q;
 }, ["Put the unknown height into the surface area formula as a letter.", "Work out the known face areas first, then see what is left for the faces that use the height."]);
 
 /* ----- bank-u5.js ----- */
@@ -3715,18 +3946,18 @@ E("u8-top-view-choice", 8, ["10.15"], 1, "gen", function () {
 // 2. 10.18 L1 var: views of objects in the environment.
 E("u8-env-views-var", 8, ["10.18"], 1, "var", varset([
   function () {
-    return mcq("Sofia sketches a cereal box standing on a kitchen table. From directly above, what shape does she draw for the top view?",
+    var q=mcq("Sofia sketches a cereal box standing on a kitchen table. From directly above, what shape does she draw for the top view?",
       { t: "A rectangle, the size of the top face of the box.", fb: "Correct. Looking straight down shows the top face in its true shape." },
       [{ t: "A tall rectangle showing the front face of the cereal box.", fb: "That is the front view; the top view shows only the top face." }, { t: "A square the size of the end panel of the box.", fb: "That is close to a side view; the top face is the long rectangle on top." }, { t: "A circle showing the whole box at once from above.", fb: "One view shows one direction only; from above you see the top face." }],
       "A view shows the face you are looking straight at. From above, that is the top face, so the top view is <b>a rectangle, the size of the top face of the box</b>.",
-      { mode: "env-cereal" });
+      { mode: "env-cereal" }); q.figure=m8BoxLabSVG("","","",false); return q;
   },
   function () {
-    return mcq("A lighthouse is roughly a tall cylinder that gets a little narrower toward the top. Which description fits its top view?",
+    var q=mcq("A lighthouse is roughly a tall cylinder that gets a little narrower toward the top. Which description fits its top view?",
       { t: "A circle.", fb: "Correct. Looking straight down a cylinder shows a circle." },
       [{ t: "A rectangle.", fb: "That fits the front or side view of the tower, not the view from above." }, { t: "A triangle.", fb: "A triangle would fit a cone or pyramid shape seen from the side, not this tower from above." }, { t: "A long oval.", fb: "A view of the object shows the object only; from above the tower is a circle." }],
       "From directly above, a cylinder shows its round top face. So the top view is <b>a circle</b>.",
-      { mode: "env-lighthouse" });
+      { mode: "env-lighthouse" }); q.figure=m8CylLabSVG("","",false,false); return q;
   },
   function () {
     return mcq("Marcus draws the front view of a school bus parked facing him. What should his front view show?",
@@ -3754,32 +3985,32 @@ E("u8-env-views-var", 8, ["10.18"], 1, "var", varset([
 // 3. 10.4 L1 var: which regular polygon tessellates on its own.
 E("u8-regular-tessellates-var", 8, ["10.4"], 1, "var", varset([
   function () {
-    return mcq("Which regular polygon tessellates on its own, covering a floor with no gaps and no overlaps?",
+    var q=mcq("Which regular polygon tessellates on its own, covering a floor with no gaps and no overlaps?",
       { t: "Regular hexagon, interior angle 120°.", fb: "Correct. 360 divided by 120 is 3, so three hexagons meet exactly at each point." },
       [{ t: "Regular pentagon, interior angle 108°.", fb: "360 divided by 108 is not a whole number, so pentagons leave gaps at each point." }, { t: "Regular octagon, interior angle 135°.", fb: "360 divided by 135 is not a whole number, so octagons alone leave gaps." }, { t: "Regular dodecagon, interior angle 150°.", fb: "360 divided by 150 is not a whole number, so dodecagons alone leave gaps." }],
       "Copies meet at a point, so the interior angle must divide 360 exactly: \\[ \\begin{aligned} 360° \\div 120° &= 3 \\end{aligned} \\] So the <b>regular hexagon, interior angle 120°</b>, tessellates on its own.",
-      { mode: "reg-hex" });
+      { mode: "reg-hex" }); q.figure=m8PolyRowSVG([[6,"120\u00B0"],[5,"108\u00B0"],[8,"135\u00B0"],[12,"150\u00B0"]]); return q;
   },
   function () {
-    return mcq("Which regular polygon tessellates on its own, covering a floor with no gaps and no overlaps?",
+    var q=mcq("Which regular polygon tessellates on its own, covering a floor with no gaps and no overlaps?",
       { t: "Square, interior angle 90°.", fb: "Correct. 360 divided by 90 is 4, so four squares meet exactly at each point." },
       [{ t: "Regular pentagon, interior angle 108°.", fb: "360 divided by 108 is not a whole number, so pentagons leave gaps at each point." }, { t: "Regular heptagon, interior angle about 129°.", fb: "360 divided by about 129 is not a whole number, so heptagons leave gaps." }, { t: "Regular octagon, interior angle 135°.", fb: "360 divided by 135 is not a whole number, so octagons alone leave gaps." }],
       "Copies meet at a point, so the interior angle must divide 360 exactly: \\[ \\begin{aligned} 360° \\div 90° &= 4 \\end{aligned} \\] So the <b>square, interior angle 90°</b>, tessellates on its own.",
-      { mode: "reg-square" });
+      { mode: "reg-square" }); q.figure=m8PolyRowSVG([[4,"90\u00B0"],[5,"108\u00B0"],[7,"\u2248129\u00B0"],[8,"135\u00B0"]]); return q;
   },
   function () {
-    return mcq("Which regular polygon tessellates on its own, covering a floor with no gaps and no overlaps?",
+    var q=mcq("Which regular polygon tessellates on its own, covering a floor with no gaps and no overlaps?",
       { t: "Equilateral triangle, interior angle 60°.", fb: "Correct. 360 divided by 60 is 6, so six triangles meet exactly at each point." },
       [{ t: "Regular pentagon, interior angle 108°.", fb: "360 divided by 108 is not a whole number, so pentagons leave gaps at each point." }, { t: "Regular decagon, interior angle 144°.", fb: "360 divided by 144 is not a whole number, so decagons leave gaps." }, { t: "Regular dodecagon, interior angle 150°.", fb: "360 divided by 150 is not a whole number, so dodecagons alone leave gaps." }],
       "Copies meet at a point, so the interior angle must divide 360 exactly: \\[ \\begin{aligned} 360° \\div 60° &= 6 \\end{aligned} \\] So the <b>equilateral triangle, interior angle 60°</b>, tessellates on its own.",
-      { mode: "reg-tri" });
+      { mode: "reg-tri" }); q.figure=m8PolyRowSVG([[3,"60\u00B0"],[5,"108\u00B0"],[10,"144\u00B0"],[12,"150\u00B0"]]); return q;
   },
   function () {
-    return mcq("Three regular polygons are tried as patio tiles: a regular pentagon (108°), a regular hexagon (120°) and a regular octagon (135°). Which one covers the patio with no gaps?",
+    var q=mcq("Three regular polygons are tried as patio tiles: a regular pentagon (108°), a regular hexagon (120°) and a regular octagon (135°). Which one covers the patio with no gaps?",
       { t: "The regular hexagon only.", fb: "Correct. Only 120 divides 360 exactly, giving 3 tiles at each point." },
       [{ t: "The regular pentagon only.", fb: "108 does not divide 360, so pentagons cannot meet exactly around a point." }, { t: "The regular octagon only.", fb: "135 does not divide 360, so octagons alone leave square-shaped gaps." }, { t: "All three cover the patio on their own.", fb: "Only one interior angle here divides 360 exactly; check each one." }],
       "Test each angle against 360: \\[ \\begin{aligned} 360° \\div 120° &= 3 \\\\ 360° \\div 108° &\\text{ is not whole} \\\\ 360° \\div 135° &\\text{ is not whole} \\end{aligned} \\] So <b>the regular hexagon only</b> covers the patio.",
-      { mode: "reg-patio" });
+      { mode: "reg-patio" }); q.figure=m8PolyRowSVG([[5,"108\u00B0"],[6,"120\u00B0"],[8,"135\u00B0"]]); return q;
   }
 ]), ["At each meeting point the angles must add to exactly 360 degrees.", "Divide 360 by the interior angle; the shape tessellates alone only when the answer is a whole number."]);
 
@@ -4168,11 +4399,11 @@ E("u8-combo-transform", 8, ["10.8"], 3, "gen", function () {
 // 17. 10.14 L3 var: creating a new tessellating shape from a tessellating polygon.
 E("u8-new-shape-var", 8, ["10.14"], 3, "var", varset([
   function () {
-    return mcq("A square tessellates. A student cuts a small triangle from the middle of the square's left side and tapes the same triangle onto the middle of the right side. What is true of the new shape?",
+    var q=mcq("A square tessellates. A student cuts a small triangle from the middle of the square's left side and tapes the same triangle onto the middle of the right side. What is true of the new shape?",
       { t: "It still tessellates by sliding, and its area is the same as the square's.", fb: "Correct. The bump on one side fits the notch on the opposite side, and moving a piece keeps the total area unchanged." },
       [{ t: "It still tessellates, but its area is larger than the square's.", fb: "The triangle was moved, not added; no new material was created, so the area is unchanged." }, { t: "It no longer tessellates, because only the original square can tile the plane.", fb: "Shapes made this way do tessellate; the matching bump and notch are exactly what makes copies fit." }, { t: "It tessellates only if the cut triangle is thrown away.", fb: "Throwing the piece away leaves a notch with nothing to fill it and reduces the area." }],
       "The piece cut from one side is added to the opposite side, so copies fit bump into notch under a slide, and the area is conserved. So <b>it still tessellates by sliding, and its area is the same as the square's</b>.",
-      { mode: "new-square-slide" });
+      { mode: "new-square-slide" }); q.figure=m8NotchSquareSVG(); return q;
   },
   function () {
     return mcq("An equilateral triangle tessellates. A student cuts a small piece from one side and tapes it onto the next side of the same triangle, turning the piece as she moves it. Copies of the new shape are fitted together by turning each copy one third of a full turn about a corner. Which statement describes the result?",
@@ -4305,35 +4536,35 @@ E("u1-garden-diagonal-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,40,41],[12,35,37],[20,21,29]]);
   var kk=ri(1,3); var a=base[0]*kk, b=base[1]*kk, c=base[2]*kk;
   var place=pick(["vegetable garden","school garden","community garden plot","rectangular lawn"]);
-  return numq("A "+place+" is "+a+" m long and "+b+" m wide. A straight path runs from one corner of the rectangle to the opposite corner. How long is the path, in metres?", c, 0.01,
+  var q=numq("A "+place+" is "+a+" m long and "+b+" m wide. A straight path runs from one corner of the rectangle to the opposite corner. How long is the path, in metres?", c, 0.01,
     "The path is the hypotenuse of a right triangle whose legs are the length and the width: \\[ \\begin{aligned} c^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(a*a)+" + "+(b*b)+" \\\\ &= "+(c*c)+" \\\\ c &= "+c+" \\end{aligned} \\] The answer is <b>"+c+" m</b>.",
-    {mode:"garden-diagonal", a:a, b:b});
+    {mode:"garden-diagonal", a:a, b:b}); q.figure=m8RectDiagSVG(a,b,a+" m",b+" m","?"); return q;
 }, ["The straight path is the slanted side of a right triangle hidden in the rectangle.", "Square the length and the width, add the squares, then take the square root of the sum."]);
 
 E("u1-grid-distance-gap", 1, ["9.12"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[6,8,10],[9,12,15]]);
   var kk=ri(1,2); var dx=base[0]*kk, dy=base[1]*kk, c=base[2]*kk;
   var x1=ri(0,4), y1=ri(0,4), x2=x1+dx, y2=y1+dy;
-  return numq("On a grid map, a library stands at ("+x1+", "+y1+") and a skating rink stands at ("+x2+", "+y2+"). Each grid square represents 1 km. What is the straight-line distance between the library and the rink, in kilometres?", c, 0.01,
+  var q=numq("On a grid map, a library stands at ("+x1+", "+y1+") and a skating rink stands at ("+x2+", "+y2+"). Each grid square represents 1 km. What is the straight-line distance between the library and the rink, in kilometres?", c, 0.01,
     "The two points give the legs of a right triangle: the horizontal change is "+x2+" - "+x1+" = "+dx+" and the vertical change is "+y2+" - "+y1+" = "+dy+". Then: \\[ \\begin{aligned} d^{2} &= "+dx+"^{2} + "+dy+"^{2} \\\\ &= "+(dx*dx)+" + "+(dy*dy)+" \\\\ &= "+(c*c)+" \\\\ d &= "+c+" \\end{aligned} \\] The answer is <b>"+c+" km</b>.",
-    {mode:"grid-distance", x1:x1, y1:y1, x2:x2, y2:y2});
+    {mode:"grid-distance", x1:x1, y1:y1, x2:x2, y2:y2}); q.figure=m8GridDistSVG(x1,y1,x2,y2); return q;
 }, ["Subtract the coordinates to find the two legs before using the theorem.", "Find the horizontal change and the vertical change first, then square and add them."]);
 
 E("u1-fence-perimeter-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29]]);
   var kk=ri(1,3); var a=base[0]*kk, b=base[1]*kk, c=base[2]*kk;
   var bed=pick(["flower bed","herb plot","vegetable patch","rose garden","shrub bed"]);
-  return numq("A triangular "+bed+" has two sides of "+a+" m and "+b+" m that meet at a right angle. The third side joins the ends of these two sides. Fencing is placed along all three sides of the bed. How many metres of fencing are needed?", a+b+c, 0.01,
+  var q=numq("A triangular "+bed+" has two sides of "+a+" m and "+b+" m that meet at a right angle. The third side joins the ends of these two sides. Fencing is placed along all three sides of the bed. How many metres of fencing are needed?", a+b+c, 0.01,
     "First find the third side with the Pythagorean theorem: \\[ \\begin{aligned} c^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(c*c)+" \\\\ c &= "+c+" \\end{aligned} \\] Then add all three sides for the perimeter: \\("+a+" + "+b+" + "+c+" = "+(a+b+c)+"\\). The answer is <b>"+(a+b+c)+" m</b>.",
-    {mode:"fence-perimeter", a:a, b:b});
+    {mode:"fence-perimeter", a:a, b:b}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:["?",b+" m",a+" m"]}); return q;
 }, ["The fencing follows all three sides, and one side length is not given directly.", "Find the third side with the Pythagorean theorem first, then add the three sides."]);
 
 E("u1-square-side-perimeter-gap", 1, ["3.19", "5.2"], 2, "gen", function(){
   var s=ri(5,30); var area=s*s;
   var place2=pick(["patio","garden","mosaic floor","sandbox","dance floor"]);
-  return numq("A square "+place2+" has an area of "+area+" square metres. A border is placed around all four sides of the patio. How many metres of border are needed?", 4*s, 0.01,
+  var q=numq("A square "+place2+" has an area of "+area+" square metres. A border is placed around all four sides of the patio. How many metres of border are needed?", 4*s, 0.01,
     "The side length is the square root of the area: \\[ \\begin{aligned} \\text{side} &= \\sqrt{"+area+"} \\\\ &= "+s+" \\end{aligned} \\] The border goes around four equal sides: \\(4 \\times "+s+" = "+(4*s)+"\\). The answer is <b>"+(4*s)+" m</b>.",
-    {mode:"square-side-perimeter", s:s});
+    {mode:"square-side-perimeter", s:s}); q.figure=m8SquareAreaSVG(area+" m\u00B2"); return q;
 }, ["The area of a square is its side length multiplied by itself.", "Take the square root of the area to get one side, then multiply by four."]);
 
 E("u1-two-ladders-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
@@ -4347,18 +4578,18 @@ E("u1-two-ladders-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
   if(!t1){ t1=[12,5,13]; t2=[12,9,15]; }
   var foot=t1[0], h1=t1[1], lad1=t1[2], h2=t2[1], lad2=t2[2];
   var wall=pick(["house","barn","lighthouse","school","silo"]);
-  return numq("Two ladders lean against the wall of a "+wall+", and the foot of each ladder stands "+foot+" m from the wall. The first ladder is "+lad1+" m long and the second ladder is "+lad2+" m long. How much higher up the wall does the second ladder reach than the first ladder, in metres?", h2-h1, 0.01,
+  var q=numq("Two ladders lean against the wall of a "+wall+", and the foot of each ladder stands "+foot+" m from the wall. The first ladder is "+lad1+" m long and the second ladder is "+lad2+" m long. How much higher up the wall does the second ladder reach than the first ladder, in metres?", h2-h1, 0.01,
     "Apply the Pythagorean theorem to each ladder. For the first ladder: \\[ \\begin{aligned} h^{2} &= "+lad1+"^{2} - "+foot+"^{2} \\\\ &= "+(h1*h1)+" \\\\ h &= "+h1+" \\end{aligned} \\] For the second ladder: \\[ \\begin{aligned} h^{2} &= "+lad2+"^{2} - "+foot+"^{2} \\\\ &= "+(h2*h2)+" \\\\ h &= "+h2+" \\end{aligned} \\] The difference is \\("+h2+" - "+h1+" = "+(h2-h1)+"\\). The answer is <b>"+(h2-h1)+" m</b>.",
-    {mode:"two-ladders", foot:foot, lad1:lad1, lad2:lad2});
+    {mode:"two-ladders", foot:foot, lad1:lad1, lad2:lad2}); q.figure=m8TwoLaddersSVG(foot,h1,h2,lad1+" m",lad2+" m",foot+" m"); return q;
 }, ["Each ladder forms its own right triangle with the same wall and ground.", "Find the height reached by the first ladder, then the height reached by the second ladder."]);
 
 E("u1-shortcut-saving-gap", 1, ["9.12"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,40,41]]);
   var kk=ri(1,3); var a=base[0]*kk, b=base[1]*kk, c=base[2]*kk;
   var trav=pick(["student","hiker","cyclist","jogger","camper"]);
-  return numq("A "+trav+" travels "+a+" m east along one trail and then "+b+" m north along a second trail. A straight trail leads directly from the end of the trip back to the start. How many metres shorter is the straight trail back than the route travelled, in metres?", (a+b)-c, 0.01,
+  var q=numq("A "+trav+" travels "+a+" m east along one trail and then "+b+" m north along a second trail. A straight trail leads directly from the end of the trip back to the start. How many metres shorter is the straight trail back than the route travelled, in metres?", (a+b)-c, 0.01,
     "The straight trail is the hypotenuse of a right triangle with legs "+a+" and "+b+": \\[ \\begin{aligned} d^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(c*c)+" \\\\ d &= "+c+" \\end{aligned} \\] The walked route is \\("+a+" + "+b+" = "+(a+b)+" \\) m, so the saving is \\("+(a+b)+" - "+c+" = "+((a+b)-c)+" \\) m. The answer is <b>"+((a+b)-c)+" m</b>.",
-    {mode:"shortcut-saving", a:a, b:b});
+    {mode:"shortcut-saving", a:a, b:b}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:["?",b+" m",a+" m"]}); return q;
 }, ["Compare the straight-line distance with the total of the two walked legs.", "Find the straight-line distance with the Pythagorean theorem first, then subtract it from the walked total."]);
 
 E("u1-diagonal-mc-gap", 1, ["9.12", "6.32"], 2, "gen", function(){
@@ -4371,13 +4602,13 @@ E("u1-diagonal-mc-gap", 1, ["9.12", "6.32"], 2, "gen", function(){
     if(new Set(strs).size===4) ok=true;
   }
   if(!ok){ a=7; b=9; correct=Math.sqrt(130); dWrong=Math.sqrt(32); }
-  return mcq("A rectangular hall is "+a+" m long and "+b+" m wide. What is the distance from one corner of the hall to the opposite corner, in metres? Give your answer to one decimal place.",
+  var q=mcq("A rectangular hall is "+a+" m long and "+b+" m wide. What is the distance from one corner of the hall to the opposite corner, in metres? Give your answer to one decimal place.",
     {t:fmtF(correct,1), fb:"Yes: the corner-to-corner distance is the hypotenuse of a right triangle with legs "+a+" and "+b+"."},
     [{t:fmtF(a*a+b*b,1), fb:"That adds the squares of the sides but stops before taking the square root."},
      {t:fmtF(a+b,1), fb:"That adds the length and the width, which is the path along two walls, not the straight distance."},
      {t:fmtF(dWrong,1), fb:"That subtracts the squares of the sides, which treats one side as the hypotenuse; the diagonal is longer than either side."}],
     "The diagonal is the hypotenuse of a right triangle with legs "+a+" and "+b+": \\[ \\begin{aligned} d^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(a*a+b*b)+" \\\\ d &= \\sqrt{"+(a*a+b*b)+"} \\\\ &\\approx "+fmtF(correct,1)+" \\end{aligned} \\] The answer is <b>"+fmtF(correct,1)+" m</b>.",
-    {mode:"diagonal-mc", a:a, b:b});
+    {mode:"diagonal-mc", a:a, b:b}); q.figure=m8RectDiagSVG(a,b,a+" m",b+" m","?"); return q;
 }, ["The corner-to-corner distance is the slanted side of a right triangle hidden in the rectangle.", "Square the length and the width, add, then take the square root and round to one decimal place."]);
 
 /* Unit 2: Integers */
@@ -4525,17 +4756,17 @@ E("u4-tank-litres-gap", 4, ["9.9", "9.11"], 2, "gen", function(){
   var vol=3.14*r*r*h;
   var litres=Math.round(vol/10)/100;
   var ctx=pick(["storage tank","water barrel","feed silo","rain barrel"]);
-  return numq("A cylindrical "+ctx+" has a diameter of "+d+" cm and a height of "+h+" cm. How many litres of water does it hold when full? Use \\(\\pi = 3.14\\), and use 1000 cm\\(^{3}\\) = 1 L. Give your answer to two decimal places.", litres, 0.02,
+  var q=numq("A cylindrical "+ctx+" has a diameter of "+d+" cm and a height of "+h+" cm. How many litres of water does it hold when full? Use \\(\\pi = 3.14\\), and use 1000 cm\\(^{3}\\) = 1 L. Give your answer to two decimal places.", litres, 0.02,
     "Halve the diameter to get the radius, then find the volume: \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ V &= \\pi r^{2} h \\\\ &= 3.14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmt(vol)+" \\text{ cm}^{3} \\end{aligned} \\] Convert to litres: \\("+fmt(vol)+" \\div 1000 = "+fmt(litres)+"\\). The answer is <b>"+fmt(litres)+" L</b>.",
-    {mode:"tank-litres", r:r, h:h});
+    {mode:"tank-litres", r:r, h:h}); q.figure=u4cylSVG(r,h,true); return q;
 }, ["The formula needs the radius, and the question asks for litres rather than cubic centimetres.", "Halve the diameter first, find the volume, then divide by 1000 to change the unit."]);
 
 E("u4-open-box-sa-gap", 4, ["9.3", "10.3"], 2, "gen", function(){
   var l=ri(4,14), w=ri(3,11), h=ri(2,9);
   var sa=l*w+2*l*h+2*w*h;
-  return numq("An open-top storage box is shaped like a right rectangular prism. It is "+l+" cm long, "+w+" cm wide and "+h+" cm high, and it has no lid. Cardboard is used for the bottom and the four sides only. How many square centimetres of cardboard are needed?", sa, 0.01,
+  var q=numq("An open-top storage box is shaped like a right rectangular prism. It is "+l+" cm long, "+w+" cm wide and "+h+" cm high, and it has no lid. Cardboard is used for the bottom and the four sides only. How many square centimetres of cardboard are needed?", sa, 0.01,
     "An open top means the top face is missing, so count the bottom and the four side faces: \\[ \\begin{aligned} SA &= lw + 2lh + 2wh \\\\ &= "+(l*w)+" + "+(2*l*h)+" + "+(2*w*h)+" \\\\ &= "+sa+" \\end{aligned} \\] The answer is <b>"+sa+" cm\\(^{2}\\)</b>.",
-    {mode:"open-box-sa", l:l, w:w, h:h});
+    {mode:"open-box-sa", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm",h+" cm",true); return q;
 }, ["An open top changes which faces exist, so list the faces before calculating.", "Find the area of the bottom first, then add the two pairs of side faces."]);
 
 /* Unit 5: Percent, Ratio and Rate */
@@ -4759,9 +4990,9 @@ E("u8-tiles-at-point-gap", 8, ["10.4"], 2, "gen", function(){
   var nA=sc[0], nB=sc[1], kB=sc[2], ans=sc[3];
   var angA=u8Interior(nA), angB=u8Interior(nB);
   var ctx=pick(["floor tiles","patio stones","quilt blocks","mosaic tiles","bathroom tiles","garden pavers","classroom art tiles","pool deck tiles"]);
-  return numq("A design made of "+ctx+" uses regular polygon tiles around one point, with no gaps or overlaps. "+kB+" tile"+(kB===1?"":"s")+" shaped as a "+U8_POLY_NAMES[nB]+" "+(kB===1?"is":"are")+" placed at the point, and each "+U8_POLY_NAMES[nB]+" tile has an interior angle of "+fmt(angB)+" degrees. The rest of the point is filled with tiles shaped as a "+U8_POLY_NAMES[nA]+". How many "+U8_POLY_NAMES[nA]+" tiles meet at the point?", ans, 0,
+  var q=numq("A design made of "+ctx+" uses regular polygon tiles around one point, with no gaps or overlaps. "+kB+" tile"+(kB===1?"":"s")+" shaped as a "+U8_POLY_NAMES[nB]+" "+(kB===1?"is":"are")+" placed at the point, and each "+U8_POLY_NAMES[nB]+" tile has an interior angle of "+fmt(angB)+" degrees. The rest of the point is filled with tiles shaped as a "+U8_POLY_NAMES[nA]+". How many "+U8_POLY_NAMES[nA]+" tiles meet at the point?", ans, 0,
     "First find the interior angle of a "+U8_POLY_NAMES[nA]+": \\[ \\begin{aligned} \\text{interior angle} &= \\frac{("+nA+" - 2) \\times 180°}{"+nA+"} \\\\ &= "+fmt(angA)+"° \\end{aligned} \\] The placed tiles cover \\("+kB+" \\times "+fmt(angB)+"° = "+fmt(kB*angB)+"°\\), leaving \\(360° - "+fmt(kB*angB)+"° = "+fmt(360-kB*angB)+"°\\). Then \\("+fmt(360-kB*angB)+"° \\div "+fmt(angA)+"° = "+ans+"\\). The answer is <b>"+ans+"</b>.",
-    {mode:"tiles-at-point", nA:nA, nB:nB, kB:kB});
+    {mode:"tiles-at-point", nA:nA, nB:nB, kB:kB}); q.figure=m8PolyRowSVG([[nB,null],[nA,null]]); return q;
 }, ["The angles around a point add to 360 degrees, and the second shape's angle is given while the first shape's angle is not.", "Find the interior angle of the first shape from its number of sides, then subtract the placed tiles' angles from 360 and divide."]);
 
 E("u8-cube-volume-gap", 8, ["10.17"], 2, "gen", function(){
