@@ -425,6 +425,109 @@ window.COURSES = {
   unitTest: { total: 25, sr: 11, cr: 14 }
 },
 
+"bio-2201": {
+  id: "bio-2201",
+  title: "Biology 2201 Review: Practice Question Bank",
+  shortName: "Biology 2201",
+  storagePrefix: "bio2201",
+  reportName: "Biology 2201",
+  language: "en",
+  bankFile: "bio-2201.js",
+  subject: "Science",
+  grade: 11,
+  listed: false,
+  panels: {},
+
+  units: {
+    1: "Ecosystem Interactions and Population Dynamics",
+    2: "Processes that Sustain Life",
+    3: "Maintaining Dynamic Equilibrium"
+  },
+
+  /* The 35 tested indicators: every Knowledge outcome (5.x, 6.x and
+     7.x) plus the STSE outcomes that carry questions in the review
+     books (8.1 to 8.3 in Unit 1, 9.1 to 9.5 in Unit 2), grouped
+     inside their units. Names are the review books' chapter titles
+     (the STSE chapters carry their STSE prefix); joint chapters
+     share one name across their code pair (7.5/7.6, 7.8/7.9,
+     7.12/7.13). The remaining STSE outcomes (8.4 to 8.6, 9.6 and
+     Unit 3's 10.1 to 10.8) carry no book questions and are not
+     registered. */
+  indicators: {
+    "5.1": "Energy in Ecosystems",
+    "8.1": "STSE: Levels of Ecological Organization",
+    "5.2": "Energy Pyramids and Trophic Levels",
+    "8.2": "STSE: Energy Entering the Biosphere",
+    "5.3": "Canadian Biomes",
+    "5.4": "Population Growth and Sampling Techniques",
+    "8.3": "STSE: Competition, Symbiosis and Non-native Species",
+    "5.5": "Human Population, Carrying Capacity and Ecological Footprint",
+    "6.1": "Cell Theory and Abiogenesis",
+    "9.1": "STSE: Evidence, Theories and Paradigms",
+    "9.2": "STSE: Communicating Scientific Results",
+    "9.3": "STSE: Microscopy and the Development of Cell Theory",
+    "6.2": "Prokaryotic/Eukaryotic and Plant/Animal Cells",
+    "6.3": "Cell Structures Under the Microscope",
+    "9.4": "STSE: Development of Microscope Technology",
+    "9.5": "STSE: Magnification, Resolution and Microscope Skills",
+    "6.4": "Chemical Elements and Compounds in Living Systems",
+    "6.5": "Water, Glucose and ATP",
+    "6.6": "Carbohydrates, Lipids and Proteins",
+    "6.7": "Membrane Transport: Diffusion and Osmosis",
+    "6.8": "Aerobic Respiration and Photosynthesis",
+    "7.1": "Homeostasis and Feedback Mechanisms",
+    "7.2": "Plant Systems and Homeostasis",
+    "7.3": "Tropisms and Homeostasis",
+    "7.4": "The Human Nervous System",
+    "7.5": "External Factors and Nervous System Disorders",
+    "7.6": "External Factors and Nervous System Disorders",
+    "7.7": "The Human Endocrine System",
+    "7.8": "Circulatory System and Cardiovascular Fitness",
+    "7.9": "Circulatory System and Cardiovascular Fitness",
+    "7.10": "Immunity, Vaccines and Antibiotics",
+    "7.11": "The Human Respiratory System",
+    "7.12": "Digestive System and Nutrition",
+    "7.13": "Digestive System and Nutrition",
+    "7.14": "The Excretory System"
+  },
+
+  unitInd: {
+    1: ["5.1", "5.2", "5.3", "5.4", "5.5", "8.1", "8.2", "8.3"],
+    2: ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "9.1", "9.2", "9.3", "9.4", "9.5"],
+    3: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14"]
+  },
+
+  /* Staged hints: every converted entry carries its review book's
+     Hint panel as the first hint stage. */
+  hints: true,
+
+  /* The syllabus places the mid-course exam at the end of Unit 2
+     and the final exam on Unit 3 (course assessment: Tests and
+     Quizzes 35%, Other 35%, Mid-Course Exam 15%, Final Exam 15%;
+     gradebook unit weights 14/21/35). Biology 2201 has no
+     published Table of Specifications, so the presets are plain
+     unit scopes with no caps and no imposed level blueprint:
+     practice and composed papers draw proportionally from the
+     selected units. The review books contain no constructed
+     response, so the course launches selected-response only and
+     the exam fallback below composes a 40-question
+     selected-response paper with no CR marks demanded; a single
+     unit composes a 25-question selected-response unit test. */
+  presets: {
+    mid:   { units: [1, 2], label: "Mid-course review (Units 1 and 2)" },
+    final: { units: [3], label: "Final review (Unit 3)" }
+  },
+
+  exam: {
+    fallback: { total: 40, srCount: 40, crMarks: 0 }
+  },
+
+  /* Shown with the pool information whenever the final scope is selected. */
+  finalNote: "Note: the final exam covers Unit 3, and this preset's pool matches that scope. Biology 2201 has no published Table of Specifications, so this preset draws proportionally from Unit 3 with no imposed level blueprint.",
+
+  unitTest: { total: 25, sr: 25, cr: 0 }
+},
+
 "chem-3202": {
   id: "chem-3202",
   title: "Chemistry 3202 Review: Practice Question Bank",
