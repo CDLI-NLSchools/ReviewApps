@@ -5,6 +5,11 @@
 
 /* ----- bank-u1.js ----- */
 // Chemistry 3202 Unit 1 From Kinetics to Equilibrium question bank
+// Phase C diagram figures (Nov 2026): original SVG figures generated from
+// each question's own values were added to the 5.3 potential energy diagram
+// entries. Shared figure helpers live below the sig-fig helpers in this
+// slice because the assembler order for chem-3202 is u1, u2, u3, u4, br
+// and this course has no bank-helpers.js slice; Units 2 to 4 reuse them.
 // CRMARKS: u1-51-rate-explain=3
 // CRMARKS: u1-52-rate-scenario=2
 // CRMARKS: u1-53-ea-reverse=3
@@ -30,6 +35,143 @@ function F3(x){return sfF(x,3);}
 function iF(x){return sfF(x,4);}
 function gF(x){for(var sf=3;sf<=5;sf++){if(Math.abs(sfR(x,sf)-x)<=Math.abs(x)*1e-9+1e-12)return sfF(x,sf);}return fmt(x);}
 function phF(x,dec){return (Math.round(x*Math.pow(10,dec))/Math.pow(10,dec)).toFixed(dec);}
+
+/* ============ Diagram figures (Phase C, Nov 2026) ============
+   Original code-generated SVG drawings, built from each question's own
+   drawn values at generation time. c32peSVG(R, peak, Pr, o) draws a
+   potential energy curve through reactant level R, barrier peak and
+   product level Pr (all in kJ, or relative kJ when the stem gives only
+   differences). o.r, o.k and o.p are the level labels; omit one to leave
+   that level unlabelled. o.ea and o.dh add annotation arrows for values
+   the stem itself gives; the value an entry asks for is never annotated.
+   c32catSVG draws the catalyst comparison (solid peak and lowered
+   dashed peak sharing the same reactant and product levels). */
+function c32txt(x,y,str,size,bold,anchor,color){
+  return '<text x="'+fmt(x,1)+'" y="'+fmt(y,1)+'" font-size="'+(size||12)+'" fill="'+(color||"#17352a")+'" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="'+(anchor||"middle")+'" dominant-baseline="central"'+(bold?' font-weight="bold"':"")+'>'+str+'</text>';
+}
+function c32peSVG(R,Pk,Pr,o){
+  o=o||{};
+  var W=340,H=238,yb=192,yt=34;
+  var lo=Math.min(0,R,Pr),hi=Math.max(Pk,R,Pr),pad=(hi-lo)*0.22+8; lo-=pad; hi+=pad;
+  function Y(v){return yb-(v-lo)/(hi-lo)*(yb-yt);}
+  var yR=Y(R),yK=Y(Pk),yP=Y(Pr);
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Potential energy diagram">';
+  out+='<line x1="46" y1="20" x2="46" y2="200" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="46" y1="200" x2="318" y2="200" stroke="#17352a" stroke-width="1.4"/>';
+  out+=c32txt(170,12,"Potential energy (kJ)",11.5,false);
+  out+=c32txt(182,220,"Reaction progress",11.5,false);
+  out+='<path d="M66 '+fmt(yR,1)+' L118 '+fmt(yR,1)+' C150 '+fmt(yR,1)+' 164 '+fmt(yK,1)+' 188 '+fmt(yK,1)+' C212 '+fmt(yK,1)+' 226 '+fmt(yP,1)+' 248 '+fmt(yP,1)+' L302 '+fmt(yP,1)+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  if(o.r)out+=c32txt(92,yR-13,o.r,12,true);
+  if(o.k)out+=c32txt(188,yK-13,o.k,11.5,false);
+  if(o.p)out+=c32txt(275,yP-13,o.p,12,true);
+  if(o.ea){
+    out+='<line x1="150" y1="'+fmt(yR,1)+'" x2="150" y2="'+fmt(yK,1)+'" stroke="#b3541e" stroke-width="1.8"/>';
+    out+='<path d="M150 '+fmt(yK,1)+' l-4 7 l8 0 Z" fill="#b3541e"/>';
+    out+='<path d="M150 '+fmt(yR,1)+' l-4 -7 l8 0 Z" fill="#b3541e"/>';
+    out+=c32txt(158,(yR+yK)/2,o.ea,11,false,"start","#b3541e");
+  }
+  if(o.dh){
+    out+='<line x1="252" y1="'+fmt(yR,1)+'" x2="310" y2="'+fmt(yR,1)+'" stroke="#2e7d4f" stroke-width="1.2" stroke-dasharray="4 3"/>';
+    out+='<line x1="306" y1="'+fmt(yR,1)+'" x2="306" y2="'+fmt(yP,1)+'" stroke="#2e7d4f" stroke-width="1.8"/>';
+    out+='<path d="M306 '+fmt(yP,1)+' l-4 '+(yP>yR?"-7":"7")+' l8 0 Z" fill="#2e7d4f"/>';
+    out+=c32txt(300,(yR+yP)/2,o.dh,11,false,"end","#2e7d4f");
+  }
+  return out+'</svg>';
+}
+function c32catSVG(peak,drop){
+  var cat=peak-drop;
+  var W=340,H=238,yR=158,yP=182,yK=46;
+  var yC=yR-(yR-yK)*(cat/peak); if(yC<yK+18)yC=yK+18;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Potential energy diagram with and without a catalyst">';
+  out+='<line x1="46" y1="20" x2="46" y2="200" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="46" y1="200" x2="318" y2="200" stroke="#17352a" stroke-width="1.4"/>';
+  out+=c32txt(170,12,"Potential energy (kJ)",11.5,false);
+  out+=c32txt(182,220,"Reaction progress",11.5,false);
+  out+='<path d="M66 '+yR+' L118 '+yR+' C150 '+yR+' 164 '+yK+' 188 '+yK+' C212 '+yK+' 226 '+yP+' 248 '+yP+' L302 '+yP+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  out+='<path d="M66 '+yR+' L118 '+yR+' C150 '+yR+' 164 '+fmt(yC,1)+' 188 '+fmt(yC,1)+' C212 '+fmt(yC,1)+' 226 '+yP+' 248 '+yP+' L302 '+yP+'" fill="none" stroke="#b3541e" stroke-width="2" stroke-dasharray="6 4"/>';
+  out+=c32txt(92,yR-13,"Reactants",12,true);
+  out+=c32txt(275,yP-13,"Products",12,true);
+  out+=c32txt(188,yK-13,"Peak without catalyst: "+peak+" kJ",11.5,false);
+  out+=c32txt(238,yC-12,"Peak with catalyst: "+cat+" kJ",11.5,false,"middle","#b3541e");
+  return out+'</svg>';
+}
+function c32smooth(pts){
+  var d="M"+fmt(pts[0][0],1)+" "+fmt(pts[0][1],1);
+  for(var i=0;i<pts.length-1;i++){
+    var p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+    var c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6];
+    var c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    d+="C"+fmt(c1[0],1)+" "+fmt(c1[1],1)+" "+fmt(c2[0],1)+" "+fmt(c2[1],1)+" "+fmt(p2[0],1)+" "+fmt(p2[1],1);
+  }
+  return d;
+}
+function c32titrSVG(dir,xlab){
+  var W=340,H=248;
+  function X(v){return 52+v/100*262;}
+  function Y(ph){return 212-(ph/14)*178;}
+  var keys=(dir==="rising")?
+    [[0,3.0],[18,4.0],[38,4.8],[50,5.8],[54,6.8],[58,9.0],[63,10.8],[82,11.9],[100,12.4]]:
+    [[0,11.6],[18,10.6],[38,9.6],[50,8.4],[56,6.2],[59,5.0],[64,3.8],[82,2.8],[100,2.3]];
+  var pts=keys.map(function(k){return [X(k[0]),Y(k[1])];});
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Titration curve">';
+  [0,7,14].forEach(function(ph){
+    out+='<line x1="52" y1="'+fmt(Y(ph),1)+'" x2="314" y2="'+fmt(Y(ph),1)+'" stroke="#cfe4d6" stroke-width="1"/>';
+    out+=c32txt(42,Y(ph),String(ph),10.5,false,"end");
+  });
+  out+='<line x1="52" y1="24" x2="52" y2="212" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="52" y1="212" x2="314" y2="212" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<path d="'+c32smooth(pts)+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  out+=c32txt(30,26,"pH",12,true);
+  out+=c32txt(183,234,xlab,11.5,false);
+  return out+'</svg>';
+}
+function c32heatSVG(){
+  var W=340,H=238;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Heating curve">';
+  out+='<line x1="46" y1="20" x2="46" y2="200" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="46" y1="200" x2="318" y2="200" stroke="#17352a" stroke-width="1.4"/>';
+  out+=c32txt(170,12,"Temperature",11.5,false);
+  out+=c32txt(182,220,"Heat added",11.5,false);
+  out+='<polyline points="58,188 100,152 158,152 208,96 266,96 310,58" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  return out+'</svg>';
+}
+function c32cellSVG(lLab,lIon,rLab,rIon,saltLab){
+  var W=360,H=254;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Galvanic cell diagram">';
+  out+='<rect x="37" y="140" width="116" height="73" fill="#dceef7"/>';
+  out+='<rect x="207" y="140" width="116" height="73" fill="#dceef7"/>';
+  out+='<path d="M128 152 L128 96 L232 96 L232 152" fill="none" stroke="#c98a2d" stroke-width="9" stroke-linecap="round" opacity="0.65"/>';
+  out+='<path d="M35 108 L35 215 L155 215 L155 108" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<path d="M205 108 L205 215 L325 215 L325 108" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<rect x="86" y="52" width="13" height="104" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+='<rect x="261" y="52" width="13" height="104" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+='<path d="M92 52 L92 38 L267 38 L267 52" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<circle cx="180" cy="38" r="13" fill="#ffffff" stroke="#17352a" stroke-width="1.8"/>';
+  out+=c32txt(180,38,"V",12,true);
+  out+=c32txt(180,82,saltLab,11.5,true);
+  out+=c32txt(95,178,lIon,11,false);
+  out+=c32txt(265,178,rIon,11,false);
+  out+=c32txt(95,234,lLab,12,true);
+  out+=c32txt(265,234,rLab,12,true);
+  return out+'</svg>';
+}
+function c32electroSVG(name){
+  var short=name.split(" (")[0];
+  var W=340,H=254;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Electrolytic cell diagram">';
+  out+='<rect x="72" y="146" width="196" height="67" fill="#f3d9b0"/>';
+  out+='<path d="M70 118 L70 215 L270 215 L270 118" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<rect x="118" y="58" width="12" height="104" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+='<rect x="208" y="58" width="12" height="104" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+='<path d="M124 58 L124 40 L172 40" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<path d="M188 40 L214 40 L214 58" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<line x1="172" y1="25" x2="172" y2="55" stroke="#17352a" stroke-width="3"/>';
+  out+='<line x1="188" y1="33" x2="188" y2="47" stroke="#17352a" stroke-width="6"/>';
+  out+=c32txt(170,184,"Molten "+short,12,true);
+  out+=c32txt(124,234,"Electrode",12,true);
+  out+=c32txt(214,234,"Electrode",12,true);
+  return out+'</svg>';
+}
 
 /* ---------- 5.1 Collision theory ---------- */
 
@@ -350,13 +492,16 @@ E("u1-53-diagram-read",1,["5.3"],1,"gen",function(){
   var Pr=exo?R-pick([20,30,45,70]):R+pick([15,25,40,55]);
   var ask=pick(["ea","earev","dh","type"]);
   var ea=P-R,earev=P-Pr,dh=Pr-R;
+  var q;
   var desc="On a potential energy diagram, the reactants sit at "+R+" kJ, the top of the energy barrier is at "+P+" kJ, and the products sit at "+Pr+" kJ. ";
-  if(ask==="ea")return mcq(desc+"What is the activation energy of the forward reaction?",ea+" kJ",[earev+" kJ",Math.abs(dh)+" kJ",(P)+" kJ"],"The activation energy is the rise from the reactants to the top of the barrier: "+P+" kJ - "+R+" kJ = <b>"+ea+" kJ</b>.",{ask:ask});
-  if(ask==="earev")return mcq(desc+"What is the activation energy of the reverse reaction?",earev+" kJ",[ea+" kJ",Math.abs(dh)+" kJ",(P)+" kJ"],"The reverse activation energy is the rise from the products back to the top of the barrier: "+P+" kJ - "+Pr+" kJ = <b>"+earev+" kJ</b>.",{ask:ask});
-  if(ask==="dh")return mcq(desc+"What is the value of \u0394H for the forward reaction?",(dh>0?"+":"")+dh+" kJ",[(dh>0?"-":"+")+Math.abs(dh)+" kJ",ea+" kJ",earev+" kJ"],"\u0394H is the energy of the products minus the energy of the reactants: "+Pr+" kJ - "+R+" kJ = <b>"+(dh>0?"+":"")+dh+" kJ</b>. The sign is part of the answer.",{ask:ask});
+  if(ask==="ea")q=mcq(desc+"What is the activation energy of the forward reaction?",ea+" kJ",[earev+" kJ",Math.abs(dh)+" kJ",(P)+" kJ"],"The activation energy is the rise from the reactants to the top of the barrier: "+P+" kJ - "+R+" kJ = <b>"+ea+" kJ</b>.",{ask:ask});
+  if(ask==="earev")q=mcq(desc+"What is the activation energy of the reverse reaction?",earev+" kJ",[ea+" kJ",Math.abs(dh)+" kJ",(P)+" kJ"],"The reverse activation energy is the rise from the products back to the top of the barrier: "+P+" kJ - "+Pr+" kJ = <b>"+earev+" kJ</b>.",{ask:ask});
+  if(ask==="dh")q=mcq(desc+"What is the value of \u0394H for the forward reaction?",(dh>0?"+":"")+dh+" kJ",[(dh>0?"-":"+")+Math.abs(dh)+" kJ",ea+" kJ",earev+" kJ"],"\u0394H is the energy of the products minus the energy of the reactants: "+Pr+" kJ - "+R+" kJ = <b>"+(dh>0?"+":"")+dh+" kJ</b>. The sign is part of the answer.",{ask:ask});
   var correct=exo?"Exothermic, because the products are lower in energy than the reactants":"Endothermic, because the products are higher in energy than the reactants";
   var wrong=exo?"Endothermic, because the products are higher in energy than the reactants":"Exothermic, because the products are lower in energy than the reactants";
-  return mcq(desc+"How should the forward reaction be classified?",correct,[wrong,"Exothermic, because the barrier is high","Endothermic, because the barrier is low"],"Classification follows the relative energies of reactants and products, not the height of the barrier. <b>"+correct+"</b>.",{ask:ask});
+  if(ask==="type")q=mcq(desc+"How should the forward reaction be classified?",correct,[wrong,"Exothermic, because the barrier is high","Endothermic, because the barrier is low"],"Classification follows the relative energies of reactants and products, not the height of the barrier. <b>"+correct+"</b>.",{ask:ask});
+  q.figure=c32peSVG(R,P,Pr,{r:"Reactants: "+R+" kJ",k:"Barrier top: "+P+" kJ",p:"Products: "+Pr+" kJ"});
+  return q;
 });
 
 E("u1-53-ea-reverse",1,["5.3"],2,"gen",function(){
@@ -365,9 +510,11 @@ E("u1-53-ea-reverse",1,["5.3"],2,"gen",function(){
   if(dh>0&&dh>=ea)dh=ea-25;
   var earev=sfR(ea-dh,4);
   var ans=sfR(earev,3);
-  return numq("A reaction has an activation energy of "+ea+" kJ for the forward reaction and \u0394H = "+(dh>0?"+":"")+dh+" kJ. Calculate the activation energy of the reverse reaction. Give your answer in kJ.",
+  var q=numq("A reaction has an activation energy of "+ea+" kJ for the forward reaction and \u0394H = "+(dh>0?"+":"")+dh+" kJ. Calculate the activation energy of the reverse reaction. Give your answer in kJ.",
     ans,Math.max(1,Math.abs(ans)*0.02),
     "The reverse barrier is measured from the products. On the diagram, Ea(reverse) = Ea(forward) - \u0394H = "+ea+" kJ - ("+(dh>0?"+":"")+dh+" kJ) = "+iF(earev)+" kJ. The activation energy of the reverse reaction is <b>"+F3(ans)+" kJ</b>.",{ea:ea,dh:dh});
+  q.figure=c32peSVG(0,ea,dh,{r:"Reactants",p:"Products",ea:"Ea (forward) = "+ea+" kJ",dh:"\u0394H = "+(dh>0?"+":"")+dh+" kJ"});
+  return q;
 });
 
 E("u1-53-delta-h",1,["5.3"],2,"gen",function(){
@@ -375,25 +522,27 @@ E("u1-53-delta-h",1,["5.3"],2,"gen",function(){
   var d=pick([-95,-70,-55,-40,-28,35,50,65,90]);
   var Pr=R+d;
   var ans=sfR(d,3);
-  return numq("On a potential energy diagram the reactants of a reaction sit at "+R+" kJ and the products sit at "+Pr+" kJ. Calculate \u0394H for the reaction. Give your answer in kJ.",
+  var q=numq("On a potential energy diagram the reactants of a reaction sit at "+R+" kJ and the products sit at "+Pr+" kJ. Calculate \u0394H for the reaction. Give your answer in kJ.",
     ans,1,
     "\u0394H = energy of products - energy of reactants = "+Pr+" kJ - "+R+" kJ = "+(d>0?"+":"")+iF(d)+" kJ. So \u0394H = <b>"+(d>0?"+":"")+F3(d)+" kJ</b>"+(d<0?", and the reaction is exothermic.":", and the reaction is endothermic."),{R:R,Pr:Pr});
+  q.figure=c32peSVG(R,Math.max(R,Pr)+60,Pr,{r:"Reactants: "+R+" kJ",p:"Products: "+Pr+" kJ"});
+  return q;
 });
 
 E("u1-53-exo-endo",1,["5.3"],1,"var",varset([
   function(){
     var dh=pick([-184,-112,-57,-286,-890]);
-    return mcq("A reaction has \u0394H = "+dh+" kJ. Which statement is correct?",
+    var q=mcq("A reaction has \u0394H = "+dh+" kJ. Which statement is correct?",
       "The reaction is exothermic and the surroundings warm up",
       ["The reaction is endothermic and the surroundings warm up","The reaction is exothermic and the surroundings cool down","The reaction is endothermic and the surroundings cool down"],
-      "A negative \u0394H means the products hold less energy than the reactants; the difference is released to the surroundings, which warm up. The reaction is exothermic.",{dh:dh});
+      "A negative \u0394H means the products hold less energy than the reactants; the difference is released to the surroundings, which warm up. The reaction is exothermic.",{dh:dh}); q.figure=c32peSVG(0,Math.max(0,dh)+60,dh,{r:"Reactants",p:"Products",dh:"\u0394H = "+dh+" kJ"}); return q;
   },
   function(){
     var dh=pick([44,57,92,131,178]);
-    return mcq("A reaction has \u0394H = +"+dh+" kJ. Which statement is correct?",
+    var q=mcq("A reaction has \u0394H = +"+dh+" kJ. Which statement is correct?",
       "The reaction is endothermic and the surroundings cool down",
       ["The reaction is exothermic and the surroundings cool down","The reaction is endothermic and the surroundings warm up","The reaction is exothermic and the surroundings warm up"],
-      "A positive \u0394H means the products hold more energy than the reactants; the extra energy is taken in from the surroundings, which cool down. The reaction is endothermic.",{dh:dh});
+      "A positive \u0394H means the products hold more energy than the reactants; the extra energy is taken in from the surroundings, which cool down. The reaction is endothermic.",{dh:dh}); q.figure=c32peSVG(0,Math.max(0,dh)+60,dh,{r:"Reactants",p:"Products",dh:"\u0394H = +"+dh+" kJ"}); return q;
   },
   function(){
     return mcq("In an experiment, a reacting mixture makes the beaker feel cold. Which statement is correct?",
@@ -414,38 +563,40 @@ E("u1-53-catalyst-diagram",1,["5.3"],2,"gen",function(){
   var drop=pick([20,30,40,55,70]);
   var peak=pick([90,120,150,180,210,240,280,320]);
   var t=ri(15,35);
-  return mcq("At "+t+" \u00B0C, a catalyst is added to a reaction whose potential energy diagram has its barrier peak at "+peak+" kJ. With the catalyst, the top of the barrier drops by "+drop+" kJ. What happens to \u0394H and to the activation energy of the reverse reaction?",
+  var q=mcq("At "+t+" \u00B0C, a catalyst is added to a reaction whose potential energy diagram has its barrier peak at "+peak+" kJ. With the catalyst, the top of the barrier drops by "+drop+" kJ. What happens to \u0394H and to the activation energy of the reverse reaction?",
     "\u0394H is unchanged, and the reverse activation energy also drops by "+drop+" kJ",
     ["\u0394H drops by "+drop+" kJ, and the reverse activation energy is unchanged",
      "\u0394H is unchanged, and the reverse activation energy rises by "+drop+" kJ",
      "Both \u0394H and the reverse activation energy rise by "+drop+" kJ"],
     "A catalyst lowers the peak of the diagram but moves neither the reactant level nor the product level, so \u0394H, the gap between those levels, is unchanged. Both the forward and reverse barriers are measured to the same peak, so both drop by "+drop+" kJ. \u0394H is unchanged, and the reverse activation energy also drops by "+drop+" kJ.",{drop:drop});
+  q.figure=c32catSVG(peak,drop);
+  return q;
 });
 
 E("u1-53-activated-complex",1,["5.3"],1,"var",varset([
   function(){
-    return mcq("The activated complex in a reaction is best described as",
+    var q=mcq("The activated complex in a reaction is best described as",
       "The unstable, high-energy arrangement of atoms at the top of the energy barrier",
       ["The final product of the reaction before it cools down",
        "The catalyst while it is attached to a reactant",
        "The mixture of reactants before any collisions happen"],
-      "As a successful collision proceeds, the particles pass through a short-lived, high-energy arrangement called the activated complex, at the peak of the potential energy diagram. From there the arrangement falls apart into products, or back into reactants.",{});
+      "As a successful collision proceeds, the particles pass through a short-lived, high-energy arrangement called the activated complex, at the peak of the potential energy diagram. From there the arrangement falls apart into products, or back into reactants.",{}); q.figure=c32peSVG(0,80,-35,{r:"Reactants",p:"Products"}); return q;
   },
   function(){
-    return mcq("On a potential energy diagram, the activated complex is located",
+    var q=mcq("On a potential energy diagram, the activated complex is located",
       "At the highest point of the curve, between reactants and products",
       ["At the starting level of the reactants",
        "At the final level of the products",
        "Below the axis, where the energy is negative"],
-      "The curve climbs from the reactants as bonds stretch, reaches its maximum at the activated complex, then falls toward the products. The activated complex sits at the highest point of the curve.",{});
+      "The curve climbs from the reactants as bonds stretch, reaches its maximum at the activated complex, then falls toward the products. The activated complex sits at the highest point of the curve.",{}); q.figure=c32peSVG(0,80,-35,{r:"Reactants",p:"Products"}); return q;
   },
   function(){
-    return mcq("Which statement about the activated complex is correct?",
+    var q=mcq("Which statement about the activated complex is correct?",
       "It can fall apart into either the products or back into the reactants",
       ["It always goes on to form products",
        "It is a stable substance that can be bottled and stored",
        "It only forms when a catalyst is present"],
-      "The activated complex is a transition state, not a stable substance. It exists for an instant at the top of the barrier and then breaks apart, forward into products or backward into reactants.",{});
+      "The activated complex is a transition state, not a stable substance. It exists for an instant at the top of the barrier and then breaks apart, forward into products or backward into reactants.",{}); q.figure=c32peSVG(0,80,-35,{r:"Reactants",p:"Products"}); return q;
   }
 ]));
 
@@ -861,6 +1012,9 @@ E("u1-57-pressure-nuance",1,["5.7"],3,"gen",function(){
 
 /* ----- bank-u2.js ----- */
 // Chemistry 3202 Unit 2 Acids and Bases question bank
+// Phase C diagram figures (Nov 2026): u2-68-curve-equivalence now draws the
+// titration curve for the titration type its stem names, with the
+// equivalence region unmarked. Figure helpers are in bank-u1.js.
 // CRMARKS: u2-63-net-equation=3
 // CRMARKS: u2-63-write-net=4
 // CRMARKS: u2-64-dilution-ph=3
@@ -1784,20 +1938,24 @@ E("u2-68-curve-equivalence",2,["6.8"],2,"gen",function(){
   var vol=pick([15.0,20.0,25.0,40.0,50.0]),conc=pick([0.0500,0.100,0.200,0.250]);
   if(weak){
     var acid=pick(["acetic acid","benzoic acid","hydrofluoric acid"]);
-    return mcq("A titration curve for "+gF(vol)+" mL of "+gF(conc)+" mol/L "+acid+" titrated with sodium hydroxide shows a pH of about 9 at the equivalence point, not 7. The reason is",
+    var q=mcq("A titration curve for "+gF(vol)+" mL of "+gF(conc)+" mol/L "+acid+" titrated with sodium hydroxide shows a pH of about 9 at the equivalence point, not 7. The reason is",
       "At the equivalence point the solution contains the conjugate base of the weak acid, which hydrolyzes to produce OH\u207B",
       ["Sodium hydroxide is stronger than the acid is weak, so some remains unreacted",
        "The pH meter always reads high at the equivalence point",
        "The indicator shifted the pH of the solution"],
       "At equivalence, all the weak acid has become its conjugate base. That ion hydrolyzes in water, accepting protons and leaving OH\u207B behind, so the solution is basic. <b>The conjugate base hydrolyzes to produce OH\u207B</b>.",{});
+    q.figure=c32titrSVG("rising","Volume of sodium hydroxide added (mL)");
+    return q;
   }
   var base=pick(["ammonia","methylamine"]);
-  return mcq("A titration curve for "+gF(vol)+" mL of "+gF(conc)+" mol/L "+base+" solution titrated with hydrochloric acid shows a pH of about 5 at the equivalence point, not 7. The reason is",
+  var q=mcq("A titration curve for "+gF(vol)+" mL of "+gF(conc)+" mol/L "+base+" solution titrated with hydrochloric acid shows a pH of about 5 at the equivalence point, not 7. The reason is",
     "At the equivalence point the solution contains the conjugate acid of the weak base, which hydrolyzes to produce H\u2083O\u207A",
     ["Hydrochloric acid is stronger than the base is weak, so some remains unreacted",
      "The chloride ion hydrolyzes to produce H\u2083O\u207A",
      "The pH meter always reads low at the equivalence point"],
     "At equivalence, all the weak base has become its conjugate acid. That ion donates a proton to water, producing H\u2083O\u207A, so the solution is acidic. <b>The conjugate acid hydrolyzes to produce H\u2083O\u207A</b>.",{});
+  q.figure=c32titrSVG("falling","Volume of hydrochloric acid added (mL)");
+  return q;
 });
 
 E("u2-68-standard-solution",2,["6.8"],1,"var",varset([
@@ -1829,6 +1987,10 @@ E("u2-68-standard-solution",2,["6.8"],1,"var",varset([
 
 /* ----- bank-u3.js ----- */
 // Chemistry 3202 Unit 3 Thermochemistry question bank
+// Phase C diagram figures (Nov 2026): u3-72-diagram-language now draws the
+// enthalpy diagram from its own values, and u3-77-curve-read draws the
+// standard heating curve (no plateau temperatures are given by that entry,
+// so none are labelled). Figure helpers are in bank-u1.js.
 // CRMARKS: u3-74-calorimetry-error=4
 // CRMARKS: u3-74-calorimetry-molar=4
 // CRMARKS: u3-74-find-delta-t=2
@@ -1968,28 +2130,34 @@ E("u3-72-diagram-language",3,["7.2"],2,"gen",function(){
   var P=R+shift;
   var aspect=pick(["stored","barrier","classify"]);
   if(aspect==="stored"){
-    return mcq("On an enthalpy diagram, the products of a reaction sit "+Math.abs(shift)+" kJ "+(exo?"below":"above")+" the reactants. Which statement about chemical potential energy is correct?",
+    var q=mcq("On an enthalpy diagram, the products of a reaction sit "+Math.abs(shift)+" kJ "+(exo?"below":"above")+" the reactants. Which statement about chemical potential energy is correct?",
       exo?"The products store less chemical potential energy than the reactants; the difference was released as heat and other forms":"The products store more chemical potential energy than the reactants; the difference was absorbed from the surroundings",
       [exo?"The products store more chemical potential energy than the reactants":"The products store less chemical potential energy than the reactants; the difference was absorbed from the surroundings",
        "Both store the same energy, because energy cannot be stored in bonds",
        "The diagram shows kinetic energy, not potential energy"],
       "The vertical gap between reactants and products is the energy stored difference. "+(exo?"Products lower means less energy stored in the products, and the difference left the system.":"Products higher means more energy stored in the products, taken in from the surroundings."),{aspect:aspect});
+    q.figure=c32peSVG(0,Math.max(0,shift)+55,shift,{r:"Reactants",p:"Products"});
+    return q;
   }
   if(aspect==="barrier"){
     var peak=P+pick([50,75,100,140]);
-    return mcq("On an enthalpy diagram, the reactants sit at "+R+" kJ, the products at "+P+" kJ, and the top of the barrier at "+peak+" kJ. The height of the barrier above the reactants represents",
+    var q=mcq("On an enthalpy diagram, the reactants sit at "+R+" kJ, the products at "+P+" kJ, and the top of the barrier at "+peak+" kJ. The height of the barrier above the reactants represents",
       "The activation energy: the minimum extra energy reactant particles need to react",
       ["The enthalpy change of the reaction",
        "The heat released to the surroundings",
        "The energy stored in the products"],
       "The barrier is measured from the reactant level to the peak: "+peak+" kJ - "+R+" kJ. It represents the activation energy. The enthalpy change is the separate gap between reactants and products.",{aspect:aspect});
+    q.figure=c32peSVG(R,peak,P,{r:"Reactants: "+R+" kJ",k:"Barrier top: "+peak+" kJ",p:"Products: "+P+" kJ"});
+    return q;
   }
-  return mcq("On an enthalpy diagram, the reactants sit at "+R+" kJ and the products at "+P+" kJ. The reaction is",
+  var q=mcq("On an enthalpy diagram, the reactants sit at "+R+" kJ and the products at "+P+" kJ. The reaction is",
     exo?"Exothermic, with \u0394H = -"+Math.abs(shift)+" kJ":"Endothermic, with \u0394H = +"+Math.abs(shift)+" kJ",
     [exo?"Endothermic, with \u0394H = +"+Math.abs(shift)+" kJ":"Exothermic, with \u0394H = -"+Math.abs(shift)+" kJ",
      exo?"Exothermic, with \u0394H = +"+Math.abs(shift)+" kJ":"Endothermic, with \u0394H = -"+Math.abs(shift)+" kJ",
      "Thermoneutral, with \u0394H = 0"],
     "\u0394H = H(products) - H(reactants) = "+P+" kJ - "+R+" kJ = "+(shift>0?"+":"")+shift+" kJ. The sign decides the classification: <b>"+(exo?"Exothermic":"Endothermic")+"</b>.",{aspect:aspect});
+  q.figure=c32peSVG(R,Math.max(R,P)+55,P,{r:"Reactants: "+R+" kJ",p:"Products: "+P+" kJ"});
+  return q;
 });
 
 /* ---------- 7.3 Forms of energy ---------- */
@@ -2355,9 +2523,11 @@ E("u3-77-curve-read",3,["7.7"],2,"gen",function(){
   ]);
   var m=pick([10.0,20.0,25.0,40.0,50.0,75.0,100,200]);
   var rate=pick(["a 50 W heater","a 100 W heater","a 200 W heater"]);
-  return mcq("A "+gF(m)+" g sample of a pure substance is heated with "+rate+" and its temperature is recorded. On the heating curve, "+v.d+". Which explanation is correct?",
+  var q=mcq("A "+gF(m)+" g sample of a pure substance is heated with "+rate+" and its temperature is recorded. On the heating curve, "+v.d+". Which explanation is correct?",
     v.a,v.w,
     "On a heating curve, sloping parts are single-phase warming and flat parts are phase changes at constant temperature. Here, <b>"+v.a+"</b>.",{});
+  q.figure=c32heatSVG();
+  return q;
 });
 
 E("u3-77-phase-concept",3,["7.7"],1,"var",varset([
@@ -2712,6 +2882,11 @@ E("u3-712-bond-average",3,["7.12"],1,"var",varset([
 
 /* ----- bank-u4.js ----- */
 // Chemistry 3202 Unit 4 Electrochemistry question bank
+// Phase C diagram figures (Nov 2026): the 8.4 cell entries and the molten
+// electrolysis entry now draw standard cell diagrams. Where an entry asks
+// which part is which, electrodes are labelled only with the metals and
+// ions the stem itself names (or generic labels), never with anode or
+// cathode, and no electron flow arrows are shown. Helpers in bank-u1.js.
 // CRMARKS: u4-83-balance-acidic=5
 // CRMARKS: u4-83-half-reaction-write=3
 // CRMARKS: u4-83-net-reaction=4
@@ -3060,36 +3235,36 @@ E("u4-83-basic-solution",4,["8.3"],3,"var",varset(BASICCASES.map(function(c){
 
 E("u4-84-label-parts",4,["8.4"],1,"var",varset([
   function(){
-    return mcq("In a galvanic (voltaic) cell, oxidation takes place at the",
+    var q=mcq("In a galvanic (voltaic) cell, oxidation takes place at the",
       "Anode, which is the negative electrode",
       ["Cathode, which is the positive electrode",
        "Salt bridge, which connects the solutions",
        "Anode, which is the positive electrode"],
-      "An Ox and Red Cat: oxidation happens at the anode, reduction at the cathode. In a galvanic cell the anode is the negative terminal because it supplies the electrons.",{});
+      "An Ox and Red Cat: oxidation happens at the anode, reduction at the cathode. In a galvanic cell the anode is the negative terminal because it supplies the electrons.",{}); q.figure=c32cellSVG("Electrode","Ion solution","Electrode","Ion solution","Salt bridge"); return q;
   },
   function(){
-    return mcq("In a galvanic cell, the cathode is where",
+    var q=mcq("In a galvanic cell, the cathode is where",
       "Reduction takes place: ions from the solution gain electrons and are deposited or converted",
       ["Oxidation takes place: the metal dissolves as ions",
        "The salt bridge releases its ions",
        "Electrons are produced and stored"],
-      "Red Cat: reduction at the cathode. In a galvanic cell the cathode is the positive electrode, and positive ions move toward it through the solution.",{});
+      "Red Cat: reduction at the cathode. In a galvanic cell the cathode is the positive electrode, and positive ions move toward it through the solution.",{}); q.figure=c32cellSVG("Electrode","Ion solution","Electrode","Ion solution","Salt bridge"); return q;
   },
   function(){
-    return mcq("In a galvanic cell, electrons travel through the external wire",
+    var q=mcq("In a galvanic cell, electrons travel through the external wire",
       "From the anode to the cathode",
       ["From the cathode to the anode",
        "In both directions equally, so there is no net current",
        "From the salt bridge into both electrodes"],
-      "Oxidation at the anode releases electrons, which flow through the wire to the cathode, where reduction consumes them. Anode to cathode, always, in the external circuit.",{});
+      "Oxidation at the anode releases electrons, which flow through the wire to the cathode, where reduction consumes them. Anode to cathode, always, in the external circuit.",{}); q.figure=c32cellSVG("Electrode","Ion solution","Electrode","Ion solution","Salt bridge"); return q;
   },
   function(){
-    return mcq("The half-cells of a galvanic cell are connected by a salt bridge in order to",
+    var q=mcq("The half-cells of a galvanic cell are connected by a salt bridge in order to",
       "Complete the electrical circuit by letting ions move, keeping both solutions electrically neutral",
       ["Let electrons flow between the two solutions",
        "Mix the two solutions slowly so they can react",
        "Hold the electrodes at a fixed distance apart"],
-      "Electrons travel through the wire; ions travel through the salt bridge. Without it, charge would build up in each half-cell and the cell would stop almost immediately.",{});
+      "Electrons travel through the wire; ions travel through the salt bridge. Without it, charge would build up in each half-cell and the cell would stop almost immediately.",{}); q.figure=c32cellSVG("Electrode","Ion solution","Electrode","Ion solution","Salt bridge"); return q;
   }
 ]));
 
@@ -3101,12 +3276,14 @@ E("u4-84-label-scenario",4,["8.4"],2,"gen",function(){
   var anode=A.e<B.e?A:B, cathode=A.e<B.e?B:A;
   var salt=pick(["potassium nitrate","sodium chloride","potassium chloride"]);
   var conc=pick([0.100,0.500,1.00]);
-  return mcq("A galvanic cell is built with a "+A.metal+" electrode in a "+gF(conc)+" mol/L solution of its ions and a "+B.metal+" electrode in a "+gF(conc)+" mol/L solution of its ions, joined by a salt bridge containing "+salt+". Using the reduction potentials in the Reference Information, which statement is correct?",
+  var q=mcq("A galvanic cell is built with a "+A.metal+" electrode in a "+gF(conc)+" mol/L solution of its ions and a "+B.metal+" electrode in a "+gF(conc)+" mol/L solution of its ions, joined by a salt bridge containing "+salt+". Using the reduction potentials in the Reference Information, which statement is correct?",
     "The "+anode.metal+" electrode is the anode: it is oxidized, loses mass, and electrons flow from it to the "+cathode.metal+" electrode",
     ["The "+cathode.metal+" electrode is the anode: it is oxidized, loses mass, and electrons flow from it to the "+anode.metal+" electrode",
      "The "+anode.metal+" electrode is the cathode: it gains mass as its ions are deposited on it",
      "Electrons flow through the salt bridge from the "+anode.metal+" electrode to the "+cathode.metal+" electrode"],
     "The metal with the lower (more negative) E\u00B0 is oxidized: that is "+anode.metal+" ("+eF(anode.e)+" V) versus "+cathode.metal+" ("+eF(cathode.e)+" V). Oxidation happens at the anode, which loses mass as it dissolves, and electrons flow from anode to cathode through the wire, never through the salt bridge. <b>The "+anode.metal+" electrode is the anode</b>.",{});
+    q.figure=c32cellSVG(A.metal+" electrode",A.ion+"(aq) solution",B.metal+" electrode",B.ion+"(aq) solution","Salt bridge ("+salt+")");
+    return q;
 });
 
 E("u4-84-electron-flow",4,["8.4"],1,"gen",function(){
@@ -3117,9 +3294,10 @@ E("u4-84-electron-flow",4,["8.4"],1,"gen",function(){
     {q:"If the salt bridge is removed from a working galvanic cell, the cell",a:"Stops working almost at once, because charge builds up in the half-cells and breaks the circuit",w:["Works better, because the solutions stay purer","Keeps working, because the wire alone completes the circuit","Reverses direction and becomes a battery charger"]}
   ]);
   var t=ri(15,35);
-  return mcq("A galvanic cell operates at "+t+" \u00B0C. "+v.q+":",
+  var q=mcq("A galvanic cell operates at "+t+" \u00B0C. "+v.q+":",
     v.a,v.w,
     "<b>"+v.a+"</b>.",{t:t});
+  q.figure=c32cellSVG("Electrode","Ion solution","Electrode","Ion solution","Salt bridge"); return q;
 });
 
 var SBCASES=[
@@ -3129,9 +3307,9 @@ var SBCASES=[
 ];
 E("u4-84-salt-bridge",4,["8.4"],2,"var",varset(SBCASES.map(function(v){
   return function(){
-    return mcq(v.q+":",
+    var q=mcq(v.q+":",
       v.a,v.w,
-      "<b>"+v.a+"</b>.",{});
+      "<b>"+v.a+"</b>.",{}); q.figure=c32cellSVG("Electrode","Ion solution","Electrode","Ion solution","Salt bridge"); return q;
   };
 })));
 
@@ -3145,19 +3323,23 @@ E("u4-84-build-cell",4,["8.4"],3,"gen",function(){
   var notation=anode.metal+"(s) | "+anode.ion+"(aq) || "+cathode.ion+"(aq) | "+cathode.metal+"(s)";
   var mode=pick(["parts","notation"]);
   if(mode==="parts"){
-    return mcq("Using "+gF(conc)+" mol/L solutions and the reduction potentials in the Reference Information, a galvanic cell is built from "+A.metal+" and "+B.metal+" half-cells. Which description of the finished cell is correct?",
+    var q=mcq("Using "+gF(conc)+" mol/L solutions and the reduction potentials in the Reference Information, a galvanic cell is built from "+A.metal+" and "+B.metal+" half-cells. Which description of the finished cell is correct?",
       "Anode: "+anode.metal+" (oxidation); cathode: "+cathode.metal+" (reduction); electrons flow from "+anode.metal+" to "+cathode.metal+" through the wire; the "+anode.metal+" electrode loses mass",
       ["Anode: "+cathode.metal+" (oxidation); cathode: "+anode.metal+" (reduction); electrons flow from "+cathode.metal+" to "+anode.metal+" through the wire; the "+cathode.metal+" electrode loses mass",
        "Anode: "+anode.metal+" (reduction); cathode: "+cathode.metal+" (oxidation); electrons flow through the salt bridge",
        "Anode: "+anode.metal+" (oxidation); cathode: "+cathode.metal+" (reduction); the "+cathode.metal+" electrode loses mass as it dissolves"],
       "The couple with the lower E\u00B0 supplies the anode: "+anode.metal+" ("+eF(anode.e)+" V) is oxidized and dissolves, while "+cathode.ion+" is reduced at the "+cathode.metal+" cathode ("+eF(cathode.e)+" V), which gains mass. Electrons flow anode to cathode through the wire. <b>Anode: "+anode.metal+"; cathode: "+cathode.metal+"</b>.",{mode:mode});
+      q.figure=c32cellSVG(A.metal+" electrode",A.ion+"(aq) solution",B.metal+" electrode",B.ion+"(aq) solution","Salt bridge");
+      return q;
   }
-  return mcq("Using "+gF(conc)+" mol/L solutions and the reduction potentials in the Reference Information, a galvanic cell is built from "+A.metal+" and "+B.metal+" half-cells. Which cell notation is correct?",
+  var q=mcq("Using "+gF(conc)+" mol/L solutions and the reduction potentials in the Reference Information, a galvanic cell is built from "+A.metal+" and "+B.metal+" half-cells. Which cell notation is correct?",
     notation,
     [cathode.metal+"(s) | "+cathode.ion+"(aq) || "+anode.ion+"(aq) | "+anode.metal+"(s)",
      anode.metal+"(s) | "+cathode.ion+"(aq) || "+anode.ion+"(aq) | "+cathode.metal+"(s)",
      anode.ion+"(aq) | "+anode.metal+"(s) || "+cathode.metal+"(s) | "+cathode.ion+"(aq)"],
     "Cell notation lists the anode (oxidation) on the left and the cathode (reduction) on the right, with a single line for a phase boundary and a double line for the salt bridge. The anode is "+anode.metal+" (lower E\u00B0). <b>"+notation+"</b>.",{mode:mode});
+    q.figure=c32cellSVG(A.metal+" electrode",A.ion+"(aq) solution",B.metal+" electrode",B.ion+"(aq) solution","Salt bridge");
+    return q;
 });
 
 /* ---------- 8.5 Electrolytic cells ---------- */
@@ -3237,13 +3419,17 @@ E("u4-85-molten-products",4,["8.5"],2,"gen",function(){
   var mins=pick([30,60,120,240]);
   var askAnode=Math.random()<0.5;
   if(askAnode){
-    return mcq("Molten "+s.name+" is electrolyzed with a current of "+gF(cur)+" A for "+mins+" minutes. What forms at the anode?",
+    var q=mcq("Molten "+s.name+" is electrolyzed with a current of "+gF(cur)+" A for "+mins+" minutes. What forms at the anode?",
       s.an,[s.cat,s.wc[0],s.wc[2]],
       "At the anode, oxidation: the negative ions give up electrons. For molten "+s.name+", <b>"+s.an.toLowerCase()+"</b>.",{cur:cur,mins:mins});
+    q.figure=c32electroSVG(s.name);
+    return q;
   }
-  return mcq("Molten "+s.name+" is electrolyzed with a current of "+gF(cur)+" A for "+mins+" minutes. What forms at the cathode?",
+  var q=mcq("Molten "+s.name+" is electrolyzed with a current of "+gF(cur)+" A for "+mins+" minutes. What forms at the cathode?",
     s.cat,[s.an,s.wc[0],s.wc[1]],
     "At the cathode, reduction: the positive metal ions gain electrons. For molten "+s.name+", <b>"+s.cat.toLowerCase()+"</b>.",{cur:cur,mins:mins});
+  q.figure=c32electroSVG(s.name);
+  return q;
 });
 
 E("u4-85-scenario-judgement",4,["8.5"],3,"var",varset([
