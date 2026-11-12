@@ -3486,7 +3486,7 @@ window.COURSES = {
   title: "Math 7 Review: Practice Question Bank",
   subject: "Mathematics",
   grade: 7,
-  listed: false,
+  listed: true,
   storagePrefix: "m7",
   bankFile: "math-7.js",
   defaultCheckMode: "each",
