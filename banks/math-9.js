@@ -27,6 +27,266 @@ function fmtPairDs(keyT, ds) {
   return ds.map(function (d, i) { return { t: fmtF(d.v, i === pairIdx ? kd : common), fb: d.fb }; });
 }
 
+/* Solid and scale figure helpers (November 2026): parameterized inline SVG
+   drawn from each question's own generated values. Labels arrive as finished
+   strings from the caller, so each bank formats its own numbers (fmt in the
+   English bank, fmtD in the French bank) and words inside figures follow the
+   bank language. Coordinates use the chassis fmt, like the u7 helpers. */
+function solT(x, y, str, size, bold) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 12) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+function solSvg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+function solPts(pts) { return pts.map(function (p) { return fmt(p[0], 1) + "," + fmt(p[1], 1); }).join(" "); }
+function solPoly(pts, fill, dash) {
+  return '<polygon points="' + solPts(pts) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="2"' + (dash ? ' stroke-dasharray="5 4"' : "") + '/>';
+}
+function solLine(p, q, dash, w) {
+  return '<line x1="' + fmt(p[0], 1) + '" y1="' + fmt(p[1], 1) + '" x2="' + fmt(q[0], 1) + '" y2="' + fmt(q[1], 1) + '" stroke="' + FIG_INK + '" stroke-width="' + (w || 2) + '"' + (dash ? ' stroke-dasharray="5 4"' : "") + '/>';
+}
+/* Right rectangular prism: length along the front bottom, width into the
+   page (offset up and right), height vertical. */
+function solRectPrism(l, w, h, labL, labW, labH, aria) {
+  var s = Math.min(150 / Math.max(l, 0.01), 105 / Math.max(h, 0.01));
+  var fw = l * s, fh = h * s, d = Math.min(w * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 192;
+  var F = [[x0, y0 - fh], [x0 + fw, y0 - fh], [x0 + fw, y0], [x0, y0]];
+  var B = F.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(B, "#ffffff") + solPoly(F, FIG_SHADE);
+  out += solLine(F[0], B[0]) + solLine(F[1], B[1]) + solLine(F[2], B[2]);
+  out += solT(x0 + fw / 2, y0 + 15, labL, 12, false);
+  out += solT(x0 - 13, y0 - fh / 2, labH, 12, false);
+  out += solT((F[1][0] + B[1][0]) / 2 + 13, (F[1][1] + B[1][1]) / 2 - 4, labW, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Right triangular prism: right triangle end with legs a (base) and b
+   (vertical) and hypotenuse c, extruded along its length L. */
+function solTriPrism(a, b, c, L, labA, labB, labC, labL, aria) {
+  var s = Math.min(140 / Math.max(a, 0.01), 100 / Math.max(b, 0.01));
+  var tw = a * s, th = b * s, d = Math.min(L * s * 0.5, 44);
+  var x0 = (340 - tw - d) / 2, y0 = 192;
+  var A = [x0, y0], Bp = [x0 + tw, y0], C = [x0, y0 - th];
+  var A2 = [A[0] + d, A[1] - d], B2 = [Bp[0] + d, Bp[1] - d], C2 = [C[0] + d, C[1] - d];
+  var out = solPoly([A2, B2, C2], "#ffffff") + solPoly([A, Bp, C], FIG_SHADE);
+  out += solLine(A, A2) + solLine(Bp, B2) + solLine(C, C2);
+  out += solT(x0 + tw / 2, y0 + 15, labA, 12, false);
+  out += solT(x0 - 13, y0 - th / 2, labB, 12, false);
+  var mx = (Bp[0] + C[0]) / 2, my = (Bp[1] + C[1]) / 2;
+  out += solT(mx + 15, my - 6, labC, 12, false);
+  out += solT((C[0] + C2[0]) / 2, C[1] - d / 2 - 11, labL, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Right cylinder standing on its circular base. */
+function solCylinder(r, h, labR, labH, aria) {
+  var s = Math.min(52 / Math.max(r, 0.01), 105 / Math.max(h, 0.01));
+  var rx = r * s, hh = h * s, ry = Math.max(rx * 0.32, 4), cx = 165, topY = 62, botY = topY + hh;
+  var out = '<path d="M ' + fmt(cx - rx, 1) + ' ' + fmt(botY, 1) + ' A ' + fmt(rx, 1) + ' ' + fmt(ry, 1) + ' 0 0 0 ' + fmt(cx + rx, 1) + ' ' + fmt(botY, 1) + '" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx - rx, topY], [cx - rx, botY]) + solLine([cx + rx, topY], [cx + rx, botY]);
+  out += '<ellipse cx="' + fmt(cx, 1) + '" cy="' + fmt(topY, 1) + '" rx="' + fmt(rx, 1) + '" ry="' + fmt(ry, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx, topY], [cx + rx, topY], false, 1.6);
+  out += solT(cx + rx / 2, topY - ry - 10, labR, 12, false);
+  out += solT(cx + rx + 16, topY + hh / 2, labH, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Square pyramid: base side along the front bottom, vertical height dashed
+   from the apex to the base centre, one slant edge labelled by the caller. */
+function solPyramid(base, height, labBase, labH, labSlant, aria) {
+  var s = Math.min(150 / Math.max(base, 0.01), 100 / Math.max(height, 0.01));
+  var bw = base * s, hh = height * s, d = Math.min(bw * 0.3, 38);
+  var x0 = (340 - bw - d) / 2, y0 = 192;
+  var FL = [x0, y0], FRp = [x0 + bw, y0], BR = [x0 + bw + d, y0 - d], BL = [x0 + d, y0 - d];
+  var C = [x0 + bw / 2 + d / 2, y0 - d / 2], A = [C[0], C[1] - hh];
+  var out = solPoly([A, FRp, BR], "#ffffff") + solPoly([A, FL, FRp], FIG_SHADE);
+  out += solLine(FL, BL, true, 1.4) + solLine(BL, BR, true, 1.4) + solLine(A, BL, true, 1.4);
+  out += solLine(A, C, true, 1.6);
+  out += solT(x0 + bw / 2, y0 + 15, labBase, 12, false);
+  out += solT(C[0] - 14, C[1] - hh / 2, labH, 12, false);
+  out += solT((A[0] + FRp[0]) / 2 + 16, (A[1] + FRp[1]) / 2, labSlant, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Step built from two boxes: bottom box X by W by H1, top box X2 by W by H2
+   flush with the back and the left side. Profile extruded along W. */
+function solStep(X, W, H1, X2, H2, labX, labW, labH1, labX2, labH2, aria) {
+  var s = Math.min(175 / Math.max(X, 0.01), 115 / Math.max(H1 + H2, 0.01));
+  var fw = X * s, fh1 = H1 * s, fh2 = H2 * s, sw = X2 * s, d = Math.min(W * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 192;
+  var P = [[x0, y0], [x0 + fw, y0], [x0 + fw, y0 - fh1], [x0 + sw, y0 - fh1], [x0 + sw, y0 - fh1 - fh2], [x0, y0 - fh1 - fh2]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[4], Q[4]) + solLine(P[5], Q[5]) + solLine(P[3], Q[3]) + solLine(P[2], Q[2]) + solLine(P[1], Q[1]);
+  out += solT(x0 + fw / 2, y0 + 15, labX, 12, false);
+  out += solT(x0 + sw / 2, y0 - fh1 - fh2 - 12, labX2, 12, false);
+  out += solT(x0 - 13, y0 - fh1 - fh2 / 2, labH2, 12, false);
+  out += solT(x0 + fw + 13, y0 - fh1 / 2, labH1, 12, false);
+  out += solT((P[4][0] + Q[4][0]) / 2 + 6, (P[4][1] + Q[4][1]) / 2 - 12, labW, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Cylinder standing on the top face of a rectangular prism. */
+function solCylOnPrism(r, hc, l, w, h, labR, labHc, labL, labW, labH, aria) {
+  var s = Math.min(165 / Math.max(l, 0.01), 62 / Math.max(h, 0.01));
+  var fw = l * s, fh = h * s, d = Math.min(w * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 205;
+  var F = [[x0, y0 - fh], [x0 + fw, y0 - fh], [x0 + fw, y0], [x0, y0]];
+  var B = F.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(B, "#ffffff") + solPoly(F, FIG_SHADE);
+  out += solLine(F[0], B[0]) + solLine(F[1], B[1]) + solLine(F[2], B[2]);
+  var cx = x0 + (fw + d) / 2, topY = y0 - fh - d / 2;
+  var cs = Math.min(s, 92 / Math.max(hc, 0.01));
+  var rx = Math.min(r * cs, fw * 0.42), hh = hc * cs, ry = Math.max(rx * 0.3, 3.5), cTop = topY - hh;
+  out += '<path d="M ' + fmt(cx - rx, 1) + ' ' + fmt(topY, 1) + ' A ' + fmt(rx, 1) + ' ' + fmt(ry, 1) + ' 0 0 0 ' + fmt(cx + rx, 1) + ' ' + fmt(topY, 1) + '" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx - rx, cTop], [cx - rx, topY]) + solLine([cx + rx, cTop], [cx + rx, topY]);
+  out += '<ellipse cx="' + fmt(cx, 1) + '" cy="' + fmt(cTop, 1) + '" rx="' + fmt(rx, 1) + '" ry="' + fmt(ry, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx, cTop], [cx + rx, cTop], false, 1.6);
+  out += solT(cx + rx / 2, cTop - ry - 10, labR, 12, false);
+  out += solT(cx + rx + 16, cTop + hh / 2, labHc, 12, false);
+  out += solT(x0 + fw / 2, y0 + 15, labL, 12, false);
+  out += solT(x0 - 13, y0 - fh / 2, labH, 12, false);
+  out += solT((F[1][0] + B[1][0]) / 2 + 13, (F[1][1] + B[1][1]) / 2 - 4, labW, 12, false);
+  return solSvg(340, 235, out, aria);
+}
+/* Box with a right triangular prism on top, seen as an extruded profile:
+   the box profile is W wide and H high, the triangle has base a on the top
+   of the box, vertical leg b and hypotenuse c, and both solids share the
+   extrusion length L. Pass labW empty when W and a are the same edge. */
+function solBoxTri(a, b, c, L, W, H, labA, labB, labC, labL, labW, labH, aria) {
+  var s = Math.min(150 / Math.max(W, a, 0.01), 52 / Math.max(H, 0.01), 58 / Math.max(b, 0.01));
+  var bw = W * s, bh = H * s, ta = a * s, tb = b * s, d = Math.min(L * s * 0.55, 44);
+  var x0 = (340 - bw - d) / 2, y0 = 192;
+  var P = [[x0, y0], [x0 + bw, y0], [x0 + bw, y0 - bh], [x0 + ta, y0 - bh], [x0, y0 - bh - tb]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[2], Q[2]) + solLine(P[3], Q[3]) + solLine(P[4], Q[4]) + solLine(P[0], Q[0]);
+  out += solLine(P[3], P[4]);
+  if (labW) out += solT(x0 + bw / 2, y0 + 15, labW, 12, false);
+  if (labA) out += solT(x0 + ta / 2, y0 - bh - 10, labA, 12, false);
+  out += solT(x0 - 13, y0 - bh - tb / 2, labB, 12, false);
+  out += solT((P[3][0] + P[4][0]) / 2 + 14, (P[3][1] + P[4][1]) / 2 - 4, labC, 12, false);
+  out += solT(x0 + bw + 13, y0 - bh / 2, labH, 12, false);
+  out += solT((P[4][0] + Q[4][0]) / 2 + 4, (P[4][1] + Q[4][1]) / 2 - 12, labL, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+/* Cylinder standing on the top rectangular face (a by L) of a right
+   triangular prism whose triangle has legs a (top) and b and hypotenuse c. */
+function solCylOnTri(a, b, c, L, r, hc, labA, labB, labC, labL, labR, labHc, aria) {
+  var s = Math.min(150 / Math.max(a, 0.01), 62 / Math.max(b, 0.01));
+  var ta = a * s, tb = b * s, d = Math.min(L * s * 0.55, 44);
+  var x0 = (340 - ta - d) / 2, yTop = 118;
+  var P = [[x0, yTop], [x0 + ta, yTop], [x0, yTop + tb]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[0], Q[0]) + solLine(P[1], Q[1]) + solLine(P[2], Q[2]);
+  var cx = x0 + ta / 2 + d / 2, baseY = yTop - d / 2;
+  var cs = Math.min(s, 62 / Math.max(hc, 0.01));
+  var rx = Math.min(r * cs, ta * 0.4), hh = hc * cs, ry = Math.max(rx * 0.3, 3.5), cTop = baseY - hh;
+  out += solLine([cx - rx, cTop], [cx - rx, baseY]) + solLine([cx + rx, cTop], [cx + rx, baseY]);
+  out += '<ellipse cx="' + fmt(cx, 1) + '" cy="' + fmt(cTop, 1) + '" rx="' + fmt(rx, 1) + '" ry="' + fmt(ry, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += solLine([cx, cTop], [cx + rx, cTop], false, 1.6);
+  out += solT(cx + rx / 2, cTop - ry - 10, labR, 12, false);
+  out += solT(cx + rx + 16, cTop + hh / 2, labHc, 12, false);
+  out += solT(x0 + ta / 2, yTop + tb + 16, labA, 12, false);
+  out += solT(x0 - 13, yTop + tb / 2, labB, 12, false);
+  out += solT((P[1][0] + P[2][0]) / 2 + 15, (P[1][1] + P[2][1]) / 2, labC, 12, false);
+  out += solT((P[0][0] + Q[0][0]) / 2 + 4, (P[0][1] + Q[0][1]) / 2 - 12, labL, 12, false);
+  return solSvg(340, 235, out, aria);
+}
+/* Plan view of a large box top (bl by bw) with the p by q overlap rectangle
+   shaded in one corner. */
+function solOverlapPlan(bl, bw, p, q, labP, labQ, labBL, labBW, aria) {
+  var s = Math.min(225 / Math.max(bl, 0.01), 135 / Math.max(bw, 0.01));
+  var W = bl * s, H = bw * s, x0 = (340 - W) / 2 - 8, y0 = (215 - H) / 2;
+  var out = solPoly([[x0, y0], [x0 + W, y0], [x0 + W, y0 + H], [x0, y0 + H]], "#ffffff");
+  out += solPoly([[x0, y0], [x0 + p * s, y0], [x0 + p * s, y0 + q * s], [x0, y0 + q * s]], FIG_SHADE);
+  out += solT(x0 + W / 2, y0 + H + 15, labBL, 12, false);
+  out += solT(x0 + W + 14, y0 + H / 2, labBW, 12, false);
+  out += solT(x0 + p * s / 2, y0 + q * s + 13, labP, 11, false);
+  out += solT(x0 + p * s + 13, y0 + q * s / 2, labQ, 11, false);
+  return solSvg(340, 215, out, aria);
+}
+/* One or more shadow triangles on a shared ground line. Each item:
+   {name, h (height value), s (shadow value), hLab, sLab}. */
+function solShadowFig(items, aria) {
+  var maxS = 0, maxH = 0, totS = 0;
+  items.forEach(function (it) { maxS = Math.max(maxS, it.s); maxH = Math.max(maxH, it.h); totS += it.s; });
+  var sc = Math.min(290 / Math.max(totS, 0.01), 118 / Math.max(maxH, 0.01));
+  var y0 = 188, x = (340 - totS * sc) / 2, out = "";
+  out += solLine([18, y0], [322, y0], false, 2);
+  items.forEach(function (it) {
+    var w = it.s * sc, hh = it.h * sc;
+    out += solPoly([[x, y0], [x + w, y0], [x, y0 - hh]], FIG_SHADE);
+    if (it.name) out += solT(x + 4, y0 - hh - 11, it.name, 11, true);
+    out += solT(x - 12, y0 - hh / 2, it.hLab, 11, false);
+    out += solT(x + w / 2, y0 + 14, it.sLab, 11, false);
+    x += w + 8;
+  });
+  return solSvg(340, 215, out, aria);
+}
+/* Horizontal length bars, one per row: {name, len, lab}. Bars share one
+   scale so their lengths compare honestly. */
+function solBarsFig(rows, aria) {
+  var maxL = 0;
+  rows.forEach(function (r) { maxL = Math.max(maxL, r.len); });
+  var sc = 195 / Math.max(maxL, 0.01), out = "", y = 34;
+  rows.forEach(function (r) {
+    if (r.name) out += '<text x="86" y="' + fmt(y + 8, 1) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="end" dominant-baseline="central" font-weight="bold">' + r.name + '</text>';
+    out += '<rect x="92" y="' + fmt(y, 1) + '" width="' + fmt(Math.max(r.len * sc, 2), 1) + '" height="15" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+    out += solT(92 + r.len * sc + 16, y + 8, r.lab, 12, false);
+    y += 42;
+  });
+  return solSvg(340, Math.max(y + 6, 80), out, aria);
+}
+/* Two rectangles side by side with width and height labels and captions:
+   {w1,h1,wLab1,hLab1,cap1, w2,h2,wLab2,hLab2,cap2}. */
+function solRectPair(o) {
+  var mx = Math.max(o.w1, o.w2), mh = Math.max(o.h1, o.h2);
+  var sc = Math.min(125 / Math.max(mx, 0.01), 105 / Math.max(mh, 0.01));
+  function rect(x0, yBase, w, h, wLab, hLab, cap) {
+    var fw = w * sc, fh = h * sc, out = "";
+    out += solPoly([[x0, yBase - fh], [x0 + fw, yBase - fh], [x0 + fw, yBase], [x0, yBase]], FIG_SHADE);
+    out += solT(x0 + fw / 2, yBase - fh - 12, wLab, 12, false);
+    out += solT(x0 + fw + 14, yBase - fh / 2, hLab, 12, false);
+    if (cap) out += solT(x0 + fw / 2, yBase + 16, cap, 12, true);
+    return out;
+  }
+  var out = rect(28, 168, o.w1, o.h1, o.wLab1, o.hLab1, o.cap1);
+  out += rect(185, 168, o.w2, o.h2, o.wLab2, o.hLab2, o.cap2);
+  return solSvg(340, 205, out, o.aria);
+}
+/* A quadrilateral built from four side lengths in order, fitted into the
+   box (bx, by, bw, bh) in screen coordinates. Returns null when no
+   quadrilateral with those sides exists. */
+function solQuadPts(sides, bx, by, bw, bh) {
+  var s0 = sides[0], s1 = sides[1], s2 = sides[2], s3 = sides[3];
+  var lo = Math.max(Math.abs(s0 - s1), Math.abs(s2 - s3)) + 0.25, hi = Math.min(s0 + s1, s2 + s3) - 0.25;
+  if (lo >= hi) return null;
+  var d = (lo + hi) / 2;
+  var cx = (s0 * s0 + d * d - s1 * s1) / (2 * s0);
+  var cy = Math.sqrt(Math.max(d * d - cx * cx, 0.0001));
+  var A = [0, 0], B = [s0, 0], C = [cx, cy];
+  var ux = cx / d, uy = cy / d;
+  var px = (s3 * s3 - s2 * s2 + d * d) / (2 * d), py = Math.sqrt(Math.max(s3 * s3 - px * px, 0.0001));
+  var D = [px * ux - py * uy, px * uy + py * ux];
+  var crossB = cx * B[1] - cy * B[0], crossD = cx * D[1] - cy * D[0];
+  if (crossB * crossD > 0) D = [px * ux + py * uy, px * uy - py * ux];
+  var pts = [A, B, C, D];
+  var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+  var w = Math.max.apply(null, xs) - Math.min.apply(null, xs), h = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+  var sc = Math.min(bw / Math.max(w, 0.01), bh / Math.max(h, 0.01));
+  var ccx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2, ccy = (Math.max.apply(null, ys) + Math.min.apply(null, ys)) / 2;
+  return pts.map(function (p) { return [bx + bw / 2 + (p[0] - ccx) * sc, by + bh / 2 - (p[1] - ccy) * sc]; });
+}
+function solSideLabels(P, labs) {
+  var G = [0, 0];
+  P.forEach(function (p) { G[0] += p[0] / P.length; G[1] += p[1] / P.length; });
+  var out = "";
+  for (var i = 0; i < P.length; i++) {
+    var M = [(P[i][0] + P[(i + 1) % P.length][0]) / 2, (P[i][1] + P[(i + 1) % P.length][1]) / 2];
+    var dx = M[0] - G[0], dy = M[1] - G[1], dl = Math.sqrt(dx * dx + dy * dy) || 1;
+    if (labs[i]) out += solT(M[0] + dx / dl * 13, M[1] + dy / dl * 13, labs[i], 11, false);
+  }
+  return out;
+}
+
 /* ----- bank-u1.js ----- */
 // Math 9 Unit 1 Rational Numbers question bank
 // Cut verbatim from the standalone bank source
@@ -533,23 +793,29 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
   if(mode==="rect"){
     var l=ri(2,12), w=ri(2,12), h=ri(2,12);
     var sa=2*(l*w+l*h+w*h);
-    return numq("Find the surface area of a right rectangular prism with length "+l+" cm, width "+w+" cm and height "+h+" cm. Give your answer in square centimetres.", sa, 0.01,
+    var q = numq("Find the surface area of a right rectangular prism with length "+l+" cm, width "+w+" cm and height "+h+" cm. Give your answer in square centimetres.", sa, 0.01,
       "Add the areas of the three different faces, then double: \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= 2("+fmt(l*w+l*h+w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"rect-prism", l:l, w:w, h:h});
+    q.figure = solRectPrism(l, w, h, fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Rectangular prism with labelled dimensions");
+    return q;
   }
   if(mode==="tri"){
     var tr=pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20]]);
     var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,18);
     var sa2=a*b+(a+b+c)*L;
-    return numq("Find the surface area of a right triangular prism. The triangular end is a right triangle with legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, and the prism is "+L+" cm long. Give your answer in square centimetres.", sa2, 0.01,
+    var q = numq("Find the surface area of a right triangular prism. The triangular end is a right triangle with legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, and the prism is "+L+" cm long. Give your answer in square centimetres.", sa2, 0.01,
       "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
       {mode:"tri-prism", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism with labelled dimensions");
+    return q;
   }
   var r=ri(2,10), hh=ri(3,15);
   var sac=u2r1(2*3.14*r*(r+hh));
-  return numq("Find the surface area of a right cylinder with radius "+r+" cm and height "+hh+" cm. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.", sac, 0.6,
+  var q = numq("Find the surface area of a right cylinder with radius "+r+" cm and height "+hh+" cm. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.", sac, 0.6,
     "Two circles plus the curved side, using \\(\\pi = 3.14\\): \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3.14)("+r+")("+r+"+"+hh+") \\\\ &= "+fmt(sac)+" \\end{aligned} \\] The surface area is <b>"+fmt(sac)+" cm\\(^{2}\\)</b>.",
     {mode:"cylinder", r:r, h:hh});
+    q.figure = solCylinder(r, hh, fmt(r) + " cm", fmt(hh) + " cm", "Cylinder with labelled dimensions");
+    return q;
 }, ["Picture the net of the solid: every outside face must be counted once.", "Work out one face area at a time, then add the matching faces together."]);
 
 E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
@@ -558,35 +824,45 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   var mode=pick(["ramp","tent","bar"]);
   if(mode==="tent"){
     var sat=a*b+(a+c)*L;
-    return numq("A lean-to tent is shaped like a right triangular prism. Each triangular end has a vertical side of "+a+" cm, a base of "+b+" cm and a sloped side of "+c+" cm, and the tent is "+L+" cm long. The rectangular face on the ground, "+b+" cm by "+L+" cm, has no material. Find the area of material needed, in square centimetres.", sat, 0.01,
+    var q = numq("A lean-to tent is shaped like a right triangular prism. Each triangular end has a vertical side of "+a+" cm, a base of "+b+" cm and a sloped side of "+c+" cm, and the tent is "+L+" cm long. The rectangular face on the ground, "+b+" cm by "+L+" cm, has no material. Find the area of material needed, in square centimetres.", sat, 0.01,
       "Count two triangular ends and the two covered rectangles, leaving out the ground face: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+c)*L)+" \\\\ &= "+fmt(sat)+" \\end{aligned} \\] The area of material needed is <b>"+fmt(sat)+" cm\\(^{2}\\)</b>.",
       {mode:"tent-no-floor", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism tent with labelled dimensions");
+    return q;
   }
   var sa=a*b+(a+b+c)*L;
   if(mode==="ramp"){
-    return numq("A display ramp is shaped like a right triangular prism and is covered on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the ramp is "+L+" cm long. Find the total surface area of the ramp, in square centimetres.", sa, 0.01,
+    var q = numq("A display ramp is shaped like a right triangular prism and is covered on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the ramp is "+L+" cm long. Find the total surface area of the ramp, in square centimetres.", sa, 0.01,
       "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"ramp", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism ramp with labelled dimensions");
+    return q;
   }
-  return numq("A chocolate bar box is shaped like a right triangular prism, closed on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the box is "+L+" cm long. Find the total surface area of the box, in square centimetres.", sa, 0.01,
+  var q = numq("A chocolate bar box is shaped like a right triangular prism, closed on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the box is "+L+" cm long. Find the total surface area of the box, in square centimetres.", sa, 0.01,
     "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"bar-box", a:a, b:b, c:c, L:L});
+    q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism box with labelled dimensions");
+    return q;
 }, ["Sketch the prism and label every face before you calculate.", "Find the two triangular ends first, then add the rectangles that run along the length."]);
 
 E("u2-overlap", 2, ["9.1"], 1, "gen", function(){
   var p=ri(2,11), q=ri(2,10);
   var bl=ri(p+2,p+8), bw=ri(q+2,q+8);
-  return numq("A small box sits on top of a larger box that is "+bl+" cm long and "+bw+" cm wide. The two boxes touch over a rectangle that measures "+p+" cm by "+q+" cm. What is the area of the overlap, in square centimetres?", p*q, 0.01,
+  var qq = numq("A small box sits on top of a larger box that is "+bl+" cm long and "+bw+" cm wide. The two boxes touch over a rectangle that measures "+p+" cm by "+q+" cm. What is the area of the overlap, in square centimetres?", p*q, 0.01,
     "The overlap is the rectangle where the boxes touch: \\[ \\begin{aligned} A &= "+p+" \\times "+q+" \\\\ &= "+(p*q)+" \\end{aligned} \\] The area of the overlap is <b>"+(p*q)+" cm\\(^{2}\\)</b>.",
     {mode:"overlap", p:p, q:q});
+    qq.figure = solOverlapPlan(bl, bw, p, q, fmt(p) + " cm", fmt(q) + " cm", fmt(bl) + " cm", fmt(bw) + " cm", "Plan view of two boxes with the overlap shaded");
+    return qq;
 }, ["The overlap is the rectangle where the two solids touch each other.", "Find the area of the touching rectangle first, then think about how many faces it hides."]);
 
 E("u2-overlap-hidden", 2, ["9.1"], 2, "gen", function(){
   var p=ri(2,11), q=ri(2,10);
   var bl=ri(p+2,p+8), bw=ri(q+2,q+8);
-  return numq("A small box sits on top of a larger box that is "+bl+" cm long and "+bw+" cm wide. The two boxes touch over a rectangle that measures "+p+" cm by "+q+" cm. How much surface area is hidden in total where the two boxes touch, in square centimetres?", 2*p*q, 0.01,
+  var qq = numq("A small box sits on top of a larger box that is "+bl+" cm long and "+bw+" cm wide. The two boxes touch over a rectangle that measures "+p+" cm by "+q+" cm. How much surface area is hidden in total where the two boxes touch, in square centimetres?", 2*p*q, 0.01,
     "The touching rectangle hides one face on each box, so it is hidden twice: \\[ \\begin{aligned} \\text{hidden} &= 2\\times("+p+" \\times "+q+") \\\\ &= 2\\times "+(p*q)+" \\\\ &= "+(2*p*q)+" \\end{aligned} \\] The total hidden surface area is <b>"+(2*p*q)+" cm\\(^{2}\\)</b>.",
     {mode:"hidden-total", p:p, q:q});
+    qq.figure = solOverlapPlan(bl, bw, p, q, fmt(p) + " cm", fmt(q) + " cm", fmt(bl) + " cm", fmt(bw) + " cm", "Plan view of two boxes with the overlap shaded");
+    return qq;
 }, ["The overlap is the rectangle where the two solids touch each other.", "Find the area of the touching rectangle first, then think about how many faces it hides."]);
 
 E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
@@ -594,9 +870,11 @@ E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
   if(X2>=X){X2=X-3;}
   var sa1=2*(X*W+X*H1+W*H1), sa2=2*(X2*W+X2*H2+W*H2), contact=X2*W;
   var tot=sa1+sa2-2*contact;
-  return numq("A step is built from two boxes joined together. The bottom box measures "+X+" cm long, "+W+" cm wide and "+H1+" cm high. The top box measures "+X2+" cm long, "+W+" cm wide and "+H2+" cm high, and it sits on top of the bottom box, flush with the back and the left side. Find the total surface area of the step, in square centimetres.", tot, 0.01,
+  var q = numq("A step is built from two boxes joined together. The bottom box measures "+X+" cm long, "+W+" cm wide and "+H1+" cm high. The top box measures "+X2+" cm long, "+W+" cm wide and "+H2+" cm high, and it sits on top of the bottom box, flush with the back and the left side. Find the total surface area of the step, in square centimetres.", tot, 0.01,
     "Find each box on its own, then subtract the touching face twice because it is hidden on both boxes: \\[ \\begin{aligned} SA &= 2("+fmt(X*W)+"+"+fmt(X*H1)+"+"+fmt(W*H1)+") + 2("+fmt(X2*W)+"+"+fmt(X2*H2)+"+"+fmt(W*H2)+") - 2("+contact+") \\\\ &= "+sa1+" + "+sa2+" - "+(2*contact)+" \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
     {mode:"step", X:X, W:W, H1:H1, X2:X2, H2:H2});
+    q.figure = solStep(X, W, H1, X2, H2, fmt(X) + " cm", fmt(W) + " cm", fmt(H1) + " cm", fmt(X2) + " cm", fmt(H2) + " cm", "Step built from two boxes with labelled dimensions");
+    return q;
 }, ["Treat the step as two separate boxes first, then adjust for the join.", "Add both surface areas, then subtract the touching face twice since it is hidden on both boxes."]);
 
 E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
@@ -605,17 +883,21 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
     var sa=2*(l*w+l*h+w*h);
     var cover=pick([8,10,12,15,20]);
     var cans=Math.ceil(sa/cover-0.0000001);
-    return numq("A storage tank shaped like a right rectangular prism measures "+fmt(l)+" m long, "+fmt(w)+" m wide and "+fmt(h)+" m high. It will be painted on the outside, on all faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
+    var q = numq("A storage tank shaped like a right rectangular prism measures "+fmt(l)+" m long, "+fmt(w)+" m wide and "+fmt(h)+" m high. It will be painted on the outside, on all faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
       "Find the surface area first, then divide by the coverage and round up: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] Then \\("+fmt(sa)+" \\div "+cover+" \\approx "+fmt(u2r2(sa/cover))+"\\), so a part can is not enough. The number of cans needed is <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
+    q.figure = solRectPrism(l, w, h, fmt(l) + " m", fmt(w) + " m", fmt(h) + " m", "Rectangular prism tank with labelled dimensions");
+    return q;
   }
   var l2=ri(8,30)/10, w2=ri(6,24)/10, h2=ri(4,18)/10;
   var sa2=2*(l2*w2+l2*h2+w2*h2);
   var price=pick([4,5,6,8,9]);
   var cost=u2r2(sa2*price);
-  return numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" m long, "+fmt(w2)+" m wide and "+fmt(h2)+" m high. It is covered on all faces with fabric that costs $"+price+" per square metre. What is the total cost of the fabric, in dollars, to the nearest cent?", cost, 0.05,
+  var q = numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" m long, "+fmt(w2)+" m wide and "+fmt(h2)+" m high. It is covered on all faces with fabric that costs $"+price+" per square metre. What is the total cost of the fabric, in dollars, to the nearest cent?", cost, 0.05,
     "Find the surface area first, then multiply by the price per square metre: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(l2*w2))+"+"+fmt(u2r2(l2*h2))+"+"+fmt(u2r2(w2*h2))+") \\\\ &= "+fmt(u2r2(sa2))+" \\end{aligned} \\] Then \\("+fmt(u2r2(sa2))+" \\times "+price+" = "+fmt(cost)+"\\). The total cost is <b>$"+fmt(cost)+"</b>.",
     {mode:"fabric-cost", l:l2, w:w2, h:h2, price:price});
+    q.figure = solRectPrism(l2, w2, h2, fmt(l2) + " m", fmt(w2) + " m", fmt(h2) + " m", "Rectangular prism box with labelled dimensions");
+    return q;
 }, ["Work out the total surface area before you use the coverage or the price.", "Divide the surface area by the coverage per can, or multiply it by the price per square metre."]);
 
 E("u2-why-approx", 2, ["6.7"], 1, "var", varset([
@@ -654,9 +936,11 @@ E("u2-sa-cyl-on-prism", 2, ["9.3"], 3, "gen", function(){
   var side=u2r1(2*3.14*r*hc), top=u2r2(3.14*r*r);
   var tot=u2r1(prism+side);
   var ctx=pick(["A cylindrical water tank stands on top of a rectangular concrete base","A thick round candle stands on top of a rectangular wooden stand"]);
-  return numq(ctx+". The cylinder has radius "+r+" cm and height "+hc+" cm, and its base sits fully on the top face of the prism. The prism measures "+l+" cm long, "+w+" cm wide and "+h+" cm high. Find the total exposed surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot, 0.6,
+  var q = numq(ctx+". The cylinder has radius "+r+" cm and height "+hc+" cm, and its base sits fully on the top face of the prism. The prism measures "+l+" cm long, "+w+" cm wide and "+h+" cm high. Find the total exposed surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot, 0.6,
     "The circle where the cylinder meets the prism is hidden, and the cylinder bottom is not exposed, so those two equal circles cancel out of the total: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") + 2(3.14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmt(side)+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-prism", r:r, hc:hc, l:l, w:w, h:h});
+    q.figure = solCylOnPrism(r, hc, l, w, h, fmt(r) + " cm", fmt(hc) + " cm", fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Cylinder on a rectangular prism with labelled dimensions");
+    return q;
 }, ["Split the solid into the prism and the cylinder, then think about the join.", "Find the prism surface area, then add only the exposed parts of the cylinder."]);
 
 E("u2-best-estimate-side", 2, ["6.5","6.8"], 3, "gen", function(){
@@ -1888,9 +2172,11 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
     var triSA=a*b+(a+b+c)*l;
     var contact=a*l;
     var tot=boxSA+triSA-2*contact;
-    return numq("A model is built by joining two solids face to face. The bottom solid is a right rectangular prism "+l+" cm long, "+w+" cm wide and "+h+" cm high. On top of it sits a right triangular prism, a prism with right triangle ends and rectangular sides. Its triangular ends have legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, the prism is "+l+" cm long, and its bottom face, "+a+" cm by "+l+" cm, exactly covers the top face of the bottom prism. The face where the two solids join is hidden inside the model. Find the total surface area of the model, in square centimetres.", tot, 0.01,
+    var q = numq("A model is built by joining two solids face to face. The bottom solid is a right rectangular prism "+l+" cm long, "+w+" cm wide and "+h+" cm high. On top of it sits a right triangular prism, a prism with right triangle ends and rectangular sides. Its triangular ends have legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, the prism is "+l+" cm long, and its bottom face, "+a+" cm by "+l+" cm, exactly covers the top face of the bottom prism. The face where the two solids join is hidden inside the model. Find the total surface area of the model, in square centimetres.", tot, 0.01,
       "The overlap is the "+a+" cm by "+l+" cm rectangle where the two prisms join. It is a face of each solid, so it is hidden twice and comes off both surface areas: \\[ \\begin{aligned} \\text{overlap} &= "+a+" \\times "+l+" = "+contact+" \\\\ SA &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
       {mode:"tri-on-rect", a:a, b:b, c:c, l:l, h:h});
+    q.figure = solBoxTri(a, b, c, l, a, h, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(l) + " cm", "", fmt(h) + " cm", "Triangular prism on a box with labelled dimensions");
+    return q;
   }
   var tr2=pick([[6,8,10],[9,12,15],[12,16,20],[8,15,17]]);
   var a2=tr2[0], b2=tr2[1], c2=tr2[2];
@@ -1901,9 +2187,11 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
   var cylSA=u2r2(2*3.14*r*r+2*3.14*r*hc);
   var circ=u2r2(3.14*r*r);
   var tot2=u2r1(triSA2+cylSA-2*circ);
-  return numq("A right cylinder stands on a right triangular prism, a prism with right triangle ends and rectangular sides. The triangular ends have legs "+a2+" cm and "+b2+" cm and hypotenuse "+c2+" cm, and the prism is "+L+" cm long. The cylinder has radius "+r+" cm and height "+hc+" cm, and it stands on the rectangular face of the prism that measures "+a2+" cm by "+L+" cm, with its whole base on that face. The part where the two solids touch is hidden inside the finished object. Find the total surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot2, 0.6,
+  var q = numq("A right cylinder stands on a right triangular prism, a prism with right triangle ends and rectangular sides. The triangular ends have legs "+a2+" cm and "+b2+" cm and hypotenuse "+c2+" cm, and the prism is "+L+" cm long. The cylinder has radius "+r+" cm and height "+hc+" cm, and it stands on the rectangular face of the prism that measures "+a2+" cm by "+L+" cm, with its whole base on that face. The part where the two solids touch is hidden inside the finished object. Find the total surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot2, 0.6,
     "The overlap is the circle where the cylinder meets the prism. It is hidden on the prism face and it is the base of the cylinder, so its area comes off twice: \\[ \\begin{aligned} \\text{overlap} &= 3.14 \\times "+r+"^{2} = "+fmt(circ)+" \\\\ SA &= "+triSA2+" + "+fmt(cylSA)+" - 2("+fmt(circ)+") \\\\ &= "+fmt(tot2)+" \\end{aligned} \\] The total surface area is <b>"+fmt(tot2)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-tri", a:a2, b:b2, c:c2, L:L, r:r, hc:hc});
+    q.figure = solCylOnTri(a2, b2, c2, L, r, hc, fmt(a2) + " cm", fmt(b2) + " cm", fmt(c2) + " cm", fmt(L) + " cm", fmt(r) + " cm", fmt(hc) + " cm", "Cylinder on a triangular prism with labelled dimensions");
+    return q;
 }, ["Add the surface areas of the two separate solids first, then deal with the join.", "Find the area of the face where the solids touch, and subtract it twice because it is hidden on both solids."]);
 
 /* ----- bank-u3-topup.js ----- */
@@ -3970,7 +4258,9 @@ E("u7-scale-factor-num", 7, ["10.17"], 1, "gen", function () {
   if (Math.random() < 0.5) { oLen = orig; iLen = img; } else { oLen = orig; iLen = img; }
   prompt = c[0] + fmt(iLen) + c[1] + fmt(oLen) + c[2] + " The first length is the image and the second is the original. What is the scale factor for the diagram? Give the scale factor as a decimal or whole number.";
   var sol = "The scale factor is the image length divided by the original length: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(iLen) + " \\div " + fmt(oLen) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the scale factor is <b>" + fmt(ans) + "</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "scale-factor", orig: oLen, img: iLen });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "scale-factor", orig: oLen, img: iLen });
+    q.figure = solBarsFig([{ name: "Image", len: iLen, lab: fmt(iLen) + " cm" }, { name: "Original", len: oLen, lab: fmt(oLen) + " cm" }], "Image and original lengths as bars");
+    return q;
 }, ["Scale factor is image length divided by original length.", "Put the image length first, then divide by the original length."]);
 
 // 4. 10.18 L2 gen MC with figure: is the second rectangle proportional, and with what scale factor?
@@ -4123,8 +4413,19 @@ E("u7-similar-pair", 7, ["10.7"], 3, "gen", function () {
     var sb = base.slice().sort(function (x, y) { return x - y; }), si = simImg.slice().sort(function (x, y) { return x - y; });
     var chain = sb.map(function (s, i) { return fmt(si[i]) + " \\div " + fmt(s) + " &= " + fmt(k); }).join(" \\\\ ");
     var sol = "For the similar pair, sort the sides in each list, then divide matching sides: \\[ \\begin{aligned} " + chain + " \\end{aligned} \\] Every ratio is the same, so <b>Pair " + (gi + 1) + " is the similar pair</b>. In each other pair, one ratio breaks the pattern.";
-    return mcq("Three pairs of polygons are listed by their side lengths. Exactly one pair is similar. Which pair is it?",
+    var q = mcq("Three pairs of polygons are listed by their side lengths. Exactly one pair is similar. Which pair is it?",
       corr, rest, sol, { mode: "similar-pair", base: base.join(","), k: k, good: gi });
+    var figB = "";
+    pairs.forEach(function (pr, i) {
+      var by = 10 + i * 60;
+      figB += solT(16, by + 25, "Pair " + (i + 1), 11, true);
+      var P1 = pr.a.length === 3 ? u7FitTri(pr.a, 34, by, 105, 50) : solQuadPts(pr.a, 34, by, 105, 50);
+      var P2 = pr.b.length === 3 ? u7FitTri(pr.b, 196, by, 105, 50) : solQuadPts(pr.b, 196, by, 105, 50);
+      if (P1) { figB += u7Poly(P1, FIG_SHADE); figB += pr.a.length === 3 ? solSideLabels(P1, [fmt(pr.a[2]), fmt(pr.a[0]), fmt(pr.a[1])]) : solSideLabels(P1, pr.a.map(function (v) { return fmt(v); })); }
+      if (P2) { figB += u7Poly(P2, "#ffffff"); figB += pr.b.length === 3 ? solSideLabels(P2, [fmt(pr.b[2]), fmt(pr.b[0]), fmt(pr.b[1])]) : solSideLabels(P2, pr.b.map(function (v) { return fmt(v); })); }
+    });
+    q.figure = u7Svg(345, 195, figB, "Three pairs of polygons with side labels");
+    return q;
   }
   return mcq("Three pairs of polygons are listed by their side lengths. Exactly one pair is similar. Which pair is it?",
     { t: "Pair 1: 3, 4, 5 cm and 6, 8, 10 cm", fb: "Correct. Every ratio is 2." },
@@ -4149,7 +4450,17 @@ E("u7-draw-similar-num", 7, ["10.14"], 1, "gen", function () {
   var shapeWord = isTri ? "triangle" : "quadrilateral";
   var prompt = "A " + shapeWord + " has sides " + sides.map(function (s) { return fmt(s); }).join(", ") + " cm. A similar " + shapeWord + " is drawn with scale factor " + fmt(k) + ". How long is the side of the new " + shapeWord + " that matches the " + fmt(side) + " cm side, in centimetres?";
   var sol = "Matching sides of similar polygons follow the scale factor: \\[ \\begin{aligned} \\text{new side} &= " + fmt(side) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the matching side is <b>" + fmt(ans) + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "draw-similar", sides: sides.join(","), k: k, side: side });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "draw-similar", sides: sides.join(","), k: k, side: side });
+  var figB2 = "";
+  if (isTri) {
+    var PT = u7FitTri(sides, 95, 22, 160, 125);
+    figB2 = u7Poly(PT, FIG_SHADE) + solSideLabels(PT, [fmt(sides[2]) + " cm", fmt(sides[0]) + " cm", fmt(sides[1]) + " cm"]);
+  } else {
+    var PQ = solQuadPts(sides, 95, 22, 160, 125);
+    if (PQ) figB2 = u7Poly(PQ, FIG_SHADE) + solSideLabels(PQ, sides.map(function (v) { return fmt(v) + " cm"; }));
+  }
+  if (figB2) q.figure = u7Svg(345, 170, figB2, "Polygon with labelled sides");
+  return q;
 }, ["A similar drawing multiplies every side by the same scale factor.", "Take the named side and multiply it by the scale factor."]);
 
 // 8. 10.15 L2 gen num, CR 3: similar figures in context.
@@ -4161,7 +4472,9 @@ E("u7-similar-context-num", 7, ["10.15"], 2, "gen", function () {
     var W = Math.round(w * k * 10) / 10, ans = Math.round(h * k * 100) / 100;
     var prompt = "A photo is " + fmt(w) + " cm wide and " + fmt(h) + " cm tall. It is enlarged so the print is " + fmt(W) + " cm wide, keeping the same shape. How tall is the print, in centimetres?";
     var sol = "The enlargement scale factor comes from the widths: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(W) + " \\div " + fmt(w) + " = " + fmt(k) + " \\\\ \\text{print height} &= " + fmt(h) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the print is <b>" + fmt(ans) + " cm</b> tall.";
-    return numq(prompt, ans, 0.01, sol, { mode: "photo-enlarge", w: w, h: h, k: k });
+    var q = numq(prompt, ans, 0.01, sol, { mode: "photo-enlarge", w: w, h: h, k: k });
+    q.figure = solRectPair({ w1: w, h1: h, wLab1: fmt(w) + " cm", hLab1: fmt(h) + " cm", cap1: "Photo", w2: W, h2: h * k, wLab2: fmt(W) + " cm", hLab2: "?", cap2: "Print", aria: "A photo and its enlargement with labelled sides" });
+    return q;
   }
   if (mode === 1) {
     var real = pick([40, 50, 60, 80, 100]), mod = pick([8, 10, 12, 16, 20]);
@@ -4171,14 +4484,27 @@ E("u7-similar-context-num", 7, ["10.15"], 2, "gen", function () {
     if (Math.abs(ans2 - Math.round(ans2 * 10) / 10) > 0.001) { part = 20; ans2 = Math.round(part * k2 * 100) / 100; }
     var prompt2 = "A real shed is " + fmt(real) + " m long, and a scale model of it is " + fmt(mod) + " cm long. A door on the real shed is " + fmt(part) + " m wide, measured along the same direction as the lengths. How wide is the door on the model, in centimetres?";
     var sol2 = "The model scale factor is model length divided by real length: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(mod) + " \\div " + fmt(real) + " = " + fmt(k2) + " \\\\ \\text{model door} &= " + fmt(part) + " \\times " + fmt(k2) + " \\\\ &= " + fmt(ans2) + " \\end{aligned} \\] So the door on the model is <b>" + fmt(ans2) + " cm</b> wide.";
-    return numq(prompt2, ans2, 0.01, sol2, { mode: "model-door", real: real, mod: mod, part: part });
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "model-door", real: real, mod: mod, part: part });
+    var figB = "";
+    figB += solPoly([[45, 36], [245, 36], [245, 78], [45, 78]], "#ffffff");
+    figB += solPoly([[45, 36], [45 + 200 * part / real, 36], [45 + 200 * part / real, 78], [45, 78]], FIG_SHADE);
+    figB += solT(145, 92, fmt(real) + " m", 12, false);
+    figB += solT(45 + 100 * part / real, 26, fmt(part) + " m", 11, false);
+    figB += solPoly([[85, 116], [205, 116], [205, 146], [85, 146]], "#ffffff");
+    figB += solPoly([[85, 116], [85 + 120 * part / real, 116], [85 + 120 * part / real, 146], [85, 146]], FIG_SHADE);
+    figB += solT(145, 160, fmt(mod) + " cm", 12, false);
+    figB += solT(85 + 60 * part / real, 108, "?", 12, false);
+    q.figure = solSvg(340, 172, figB, "A shed and its scale model with the door shaded");
+    return q;
   }
   var hp = pick([1.5, 1.6, 1.8]), mult = pick([2, 3, 4, 5]);
   var sp = pick([1, 1.2, 1.5, 2]);
   var sPole = Math.round(sp * mult * 10) / 10, ans3 = Math.round(hp * mult * 100) / 100;
   var prompt3 = "A person " + fmt(hp) + " m tall casts a shadow " + fmt(sp) + " m long. At the same time, a flagpole casts a shadow " + fmt(sPole) + " m long. The pole and its shadow form a triangle similar to the person and shadow triangle. How tall is the flagpole, in metres?";
   var sol3 = "The shadow is " + fmt(mult) + " times as long, so the pole is the same number of times as tall: \\[ \\begin{aligned} " + fmt(sPole) + " \\div " + fmt(sp) + " &= " + fmt(mult) + " \\\\ \\text{pole height} &= " + fmt(hp) + " \\times " + fmt(mult) + " \\\\ &= " + fmt(ans3) + " \\end{aligned} \\] So the flagpole is <b>" + fmt(ans3) + " m</b> tall.";
-  return numq(prompt3, ans3, 0.01, sol3, { mode: "shadow-pole", hp: hp, sp: sp, mult: mult });
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "shadow-pole", hp: hp, sp: sp, mult: mult });
+    q.figure = solShadowFig([{ name: "Person", h: hp, s: sp, hLab: fmt(hp) + " m", sLab: fmt(sp) + " m" }, { name: "Flagpole", h: ans3, s: sPole, hLab: "?", sLab: fmt(sPole) + " m" }], "A person and a flagpole with their shadows");
+    return q;
 }, ["Find the scale factor from the pair of lengths you know, then use it on the matching length.", "Divide the known image length by its matching original length first."]);
 
 // 9. 10.15 L3 gen num, CR 3: two-step similar-figures problems.
@@ -4191,7 +4517,9 @@ E("u7-similar-two-step-num", 7, ["10.15"], 3, "gen", function () {
     var ans = Math.round(P * k * 100) / 100;
     var prompt = "Two rectangles are similar. In the smaller rectangle, one side is " + fmt(so) + " cm and the perimeter is " + fmt(P) + " cm. The matching side in the larger rectangle is " + fmt(si) + " cm. What is the perimeter of the larger rectangle, in centimetres?";
     var sol = "First get the scale factor from the matching sides, then apply it to the perimeter: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(si) + " \\div " + fmt(so) + " = " + fmt(k) + " \\\\ \\text{larger perimeter} &= " + fmt(P) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the perimeter of the larger rectangle is <b>" + fmt(ans) + " cm</b>.";
-    return numq(prompt, ans, 0.01, sol, { mode: "perimeter-scale", so: so, si: si, P: P });
+    var q = numq(prompt, ans, 0.01, sol, { mode: "perimeter-scale", so: so, si: si, P: P });
+    q.figure = solRectPair({ w1: so, h1: P / 2 - so, wLab1: fmt(so) + " cm", hLab1: fmt(P / 2 - so) + " cm", cap1: "Smaller", w2: si, h2: (P / 2 - so) * k, wLab2: fmt(si) + " cm", hLab2: fmt((P / 2 - so) * k) + " cm", cap2: "Larger", aria: "Two similar rectangles with labelled sides" });
+    return q;
   }
   if (mode === 1) {
     var w = pick([4, 5, 6, 8]), h = pick([3, 4, 5, 6, 7]);
@@ -4200,13 +4528,17 @@ E("u7-similar-two-step-num", 7, ["10.15"], 3, "gen", function () {
     var ans2 = Math.round(2 * (W + H) * 100) / 100;
     var prompt2 = "A rectangle is " + fmt(w) + " cm by " + fmt(h) + " cm. A similar rectangle has width " + fmt(W) + " cm. What is the perimeter of the similar rectangle, in centimetres?";
     var sol2 = "Find the scale factor, then the new height, then the perimeter: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(W) + " \\div " + fmt(w) + " = " + fmt(k2) + " \\\\ \\text{new height} &= " + fmt(h) + " \\times " + fmt(k2) + " = " + fmt(H) + " \\\\ \\text{perimeter} &= 2 \\times (" + fmt(W) + " + " + fmt(H) + ") \\\\ &= " + fmt(ans2) + " \\end{aligned} \\] So the perimeter is <b>" + fmt(ans2) + " cm</b>.";
-    return numq(prompt2, ans2, 0.01, sol2, { mode: "rect-perimeter", w: w, h: h, k: k2 });
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "rect-perimeter", w: w, h: h, k: k2 });
+    q.figure = solRectPair({ w1: w, h1: h, wLab1: fmt(w) + " cm", hLab1: fmt(h) + " cm", cap1: "Original", w2: W, h2: H, wLab2: fmt(W) + " cm", hLab2: "?", cap2: "Similar", aria: "A rectangle and a similar rectangle with labelled sides" });
+    return q;
   }
   var sA = pick([3, 4, 5, 6]), kA = pick([2, 3]), kB = pick([1.5, 2, 2.5]);
   var sB = sA * kA, ans3 = Math.round(sB * kB * 100) / 100;
   var prompt3 = "Figure A, figure B and figure C are all similar. A side of figure A is " + fmt(sA) + " cm, and the matching side of figure B is " + fmt(sB) + " cm. Figure C is drawn from figure B with scale factor " + fmt(kB) + ". How long is the side of figure C that matches the " + fmt(sA) + " cm side of figure A, in centimetres?";
   var sol3 = "Work through figure B first, then apply the second scale factor: \\[ \\begin{aligned} \\text{side in B} &= " + fmt(sB) + " \\\\ \\text{side in C} &= " + fmt(sB) + " \\times " + fmt(kB) + " \\\\ &= " + fmt(ans3) + " \\end{aligned} \\] So the matching side of figure C is <b>" + fmt(ans3) + " cm</b>.";
-  return numq(prompt3, ans3, 0.01, sol3, { mode: "chain-scale", sA: sA, sB: sB, kB: kB });
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "chain-scale", sA: sA, sB: sB, kB: kB });
+    q.figure = solBarsFig([{ name: "Figure A", len: sA, lab: fmt(sA) + " cm" }, { name: "Figure B", len: sB, lab: fmt(sB) + " cm" }, { name: "Figure C", len: ans3, lab: "?" }], "Matching side lengths of three similar figures as bars");
+    return q;
 }, ["Split the problem into steps: find a scale factor first, then use it.", "Use the pair of matching lengths you are given to get the scale factor before finding anything else."]);
 
 // 10. 10.19 L3 gen num, CR 2: indirect measurement with similar triangles.
@@ -4218,7 +4550,9 @@ E("u7-indirect-measure-num", 7, ["10.19"], 3, "gen", function () {
     var sTree = Math.round(ss * mult * 10) / 10, ans = Math.round(hs * mult * 100) / 100;
     var prompt = "A stick " + fmt(hs) + " m tall casts a shadow " + fmt(ss) + " m long. At the same time, a tree casts a shadow " + fmt(sTree) + " m long. The tree and stick triangles are similar. How tall is the tree, in metres?";
     var sol = "The tree shadow is a multiple of the stick shadow: \\[ \\begin{aligned} " + fmt(sTree) + " \\div " + fmt(ss) + " &= " + fmt(mult) + " \\\\ \\text{tree height} &= " + fmt(hs) + " \\times " + fmt(mult) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the tree is <b>" + fmt(ans) + " m</b> tall.";
-    return numq(prompt, ans, 0.01, sol, { mode: "tree-shadow", hs: hs, ss: ss, mult: mult });
+    var q = numq(prompt, ans, 0.01, sol, { mode: "tree-shadow", hs: hs, ss: ss, mult: mult });
+    q.figure = solShadowFig([{ name: "Stick", h: hs, s: ss, hLab: fmt(hs) + " m", sLab: fmt(ss) + " m" }, { name: "Tree", h: ans, s: sTree, hLab: "?", sLab: fmt(sTree) + " m" }], "A stick and a tree with their shadows");
+    return q;
   }
   if (mode === 1) {
     var hp = pick([1.5, 1.6, 1.8]), sp = pick([2, 2.4, 3]);
@@ -4226,13 +4560,20 @@ E("u7-indirect-measure-num", 7, ["10.19"], 3, "gen", function () {
     var sB = Math.round(sp * mult2 * 10) / 10, ans2 = Math.round(hp * mult2 * 100) / 100;
     var prompt2 = "To measure a building, a student " + fmt(hp) + " m tall stands so her shadow is " + fmt(sp) + " m long. The building shadow at the same time is " + fmt(sB) + " m long. Using similar triangles, how tall is the building, in metres?";
     var sol2 = "Compare the shadows first, then scale the height by the same factor: \\[ \\begin{aligned} " + fmt(sB) + " \\div " + fmt(sp) + " &= " + fmt(mult2) + " \\\\ \\text{building height} &= " + fmt(hp) + " \\times " + fmt(mult2) + " \\\\ &= " + fmt(ans2) + " \\end{aligned} \\] So the building is <b>" + fmt(ans2) + " m</b> tall.";
-    return numq(prompt2, ans2, 0.01, sol2, { mode: "building-shadow", hp: hp, sp: sp, mult: mult2 });
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "building-shadow", hp: hp, sp: sp, mult: mult2 });
+    q.figure = solShadowFig([{ name: "Student", h: hp, s: sp, hLab: fmt(hp) + " m", sLab: fmt(sp) + " m" }, { name: "Building", h: ans2, s: sB, hLab: "?", sLab: fmt(sB) + " m" }], "A student and a building with their shadows");
+    return q;
   }
   var d = pick([3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8]), per = pick([6, 8, 10, 12, 15, 20]);
   var ans3 = Math.round(d * per * 100) / 100;
   var prompt3 = "On a scale diagram of a pond, the distance across the pond measures " + fmt(d) + " cm. The diagram scale is 1 cm represents " + fmt(per) + " m. What is the real distance across the pond, in metres?";
   var sol3 = "Multiply the diagram distance by the real length each centimetre stands for: \\[ \\begin{aligned} \\text{real distance} &= " + fmt(d) + " \\times " + fmt(per) + " \\\\ &= " + fmt(ans3) + " \\end{aligned} \\] So the real distance across the pond is <b>" + fmt(ans3) + " m</b>.";
-  return numq(prompt3, ans3, 0.01, sol3, { mode: "pond-scale", d: d, per: per });
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "pond-scale", d: d, per: per });
+    var figB = '<ellipse cx="170" cy="98" rx="118" ry="52" fill="#ffffff" stroke="' + FIG_INK + '" stroke-width="2"/>';
+    figB += solLine([52, 98], [288, 98], true, 1.6);
+    figB += solT(170, 72, fmt(d) + " cm", 12, false);
+    q.figure = solSvg(340, 175, figB, "Diagram of a pond with the distance across marked");
+    return q;
 }, ["Set up the matching ratio from the object you can measure, then apply it to the object you cannot.", "Divide the two shadow lengths (or use the diagram scale) to get the factor first."]);
 
 // 11. 10.1 L1 gen MC with figure: lines of symmetry of a drawn shape.
@@ -4312,39 +4653,49 @@ E("u7-complete-half", 7, ["10.9"], 1, "gen", function () {
 // 13. 10.2 L1 var: order and angle of rotation symmetry of familiar shapes.
 E("u7-rotation-symmetry-var", 7, ["10.2"], 1, "var", varset([
   function () {
-    return mcq("A square is turned about its centre. It matches itself 4 times in one full turn. What are its order and angle of rotation symmetry? The order is how many times it matches in a full turn, and the angle is 360 degrees divided by the order.",
+    var q = mcq("A square is turned about its centre. It matches itself 4 times in one full turn. What are its order and angle of rotation symmetry? The order is how many times it matches in a full turn, and the angle is 360 degrees divided by the order.",
       { t: "Order 4, angle 90°", fb: "Correct. 360 divided by 4 is 90." },
       [{ t: "Order 2, angle 180°", fb: "A square matches more often than twice; count the turns that land on a matching position." }, { t: "Order 4, angle 45°", fb: "The angle is 360 divided by the order, and 360 divided by 4 is 90, not 45." }, { t: "It has no rotation symmetry", fb: "A square does match itself when turned by part of a full turn." }],
       "Divide a full turn by the order: \\[ \\begin{aligned} 360° \\div 4 &= 90° \\end{aligned} \\] So the square has <b>order 4, angle 90°</b>.",
       { mode: "rot-square" });
+    q.figure = polySVG(4);
+    return q;
   },
   function () {
-    return mcq("What are the order and angle of rotation symmetry of an equilateral triangle, turned about its centre? The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
+    var q = mcq("What are the order and angle of rotation symmetry of an equilateral triangle, turned about its centre? The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
       { t: "Order 3, angle 120°", fb: "Correct. 360 divided by 3 is 120." },
       [{ t: "Order 3, angle 90°", fb: "The angle is 360 divided by the order, and 360 divided by 3 is 120, not 90." }, { t: "Order 6, angle 60°", fb: "The triangle has 3 matching turns, not 6; count each vertex moving to the next corner." }, { t: "It has no rotation symmetry", fb: "Turning by one third of a full turn makes it match itself." }],
       "Divide a full turn by the order: \\[ \\begin{aligned} 360° \\div 3 &= 120° \\end{aligned} \\] So the equilateral triangle has <b>order 3, angle 120°</b>.",
       { mode: "rot-equi" });
+    q.figure = polySVG(3);
+    return q;
   },
   function () {
-    return mcq("What are the order and angle of rotation symmetry of a regular pentagon, turned about its centre? A regular pentagon has 5 equal sides. The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
+    var q = mcq("What are the order and angle of rotation symmetry of a regular pentagon, turned about its centre? A regular pentagon has 5 equal sides. The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
       { t: "Order 5, angle 72°", fb: "Correct. 360 divided by 5 is 72." },
       [{ t: "Order 5, angle 60°", fb: "The angle is 360 divided by the order, and 360 divided by 5 is 72, not 60." }, { t: "Order 10, angle 36°", fb: "The pentagon matches 5 times in a full turn, once for each vertex." }, { t: "It has no rotation symmetry", fb: "Turning by one fifth of a full turn makes it match itself." }],
       "Divide a full turn by the order: \\[ \\begin{aligned} 360° \\div 5 &= 72° \\end{aligned} \\] So the regular pentagon has <b>order 5, angle 72°</b>.",
       { mode: "rot-pent" });
+    q.figure = polySVG(5);
+    return q;
   },
   function () {
-    return mcq("What are the order and angle of rotation symmetry of a regular hexagon, turned about its centre? A regular hexagon has 6 equal sides. The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
+    var q = mcq("What are the order and angle of rotation symmetry of a regular hexagon, turned about its centre? A regular hexagon has 6 equal sides. The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
       { t: "Order 6, angle 60°", fb: "Correct. 360 divided by 6 is 60." },
       [{ t: "Order 6, angle 120°", fb: "The angle is 360 divided by the order, and 360 divided by 6 is 60, not 120." }, { t: "Order 3, angle 120°", fb: "The hexagon matches 6 times in a full turn, once for each vertex." }, { t: "It has no rotation symmetry", fb: "Turning by one sixth of a full turn makes it match itself." }],
       "Divide a full turn by the order: \\[ \\begin{aligned} 360° \\div 6 &= 60° \\end{aligned} \\] So the regular hexagon has <b>order 6, angle 60°</b>.",
       { mode: "rot-hex" });
+    q.figure = polySVG(6);
+    return q;
   },
   function () {
-    return mcq("What are the order and angle of rotation symmetry of a rectangle that is not a square, turned about its centre? The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
+    var q = mcq("What are the order and angle of rotation symmetry of a rectangle that is not a square, turned about its centre? The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
       { t: "Order 2, angle 180°", fb: "Correct. Only a half turn makes it match." },
       [{ t: "Order 4, angle 90°", fb: "A quarter turn would put the long sides where the short sides were, so it does not match." }, { t: "Order 2, angle 90°", fb: "The angle is 360 divided by the order, and 360 divided by 2 is 180, not 90." }, { t: "It has no rotation symmetry", fb: "A half turn makes it match itself exactly." }],
       "Divide a full turn by the order: \\[ \\begin{aligned} 360° \\div 2 &= 180° \\end{aligned} \\] So the rectangle has <b>order 2, angle 180°</b>.",
       { mode: "rot-rect" });
+    q.figure = u7Svg(230, 190, u7Poly([[45, 60], [185, 60], [185, 130], [45, 130]], FIG_SHADE), "Rectangle");
+    return q;
   },
   function () {
     return mcq("The capital letter H is drawn with equal strokes. It is turned about its centre. What are its order and angle of rotation symmetry? The order is how many times it matches itself in a full turn, and the angle is 360 degrees divided by the order.",
@@ -4724,18 +5075,28 @@ E("u7-translation-rule", 7, ["10.13"], 1, "gen", function () {
     var names = ["A", "B", "C"];
     var prompt = "A shape has vertices A" + u7Coord(pts[0]) + ", B" + u7Coord(pts[1]) + " and C" + u7Coord(pts[2]) + ". It is translated by the rule " + hWord + ", " + vWord + ", which means slide " + hTxt + " and " + vTxt + ". What are the coordinates of the image of vertex " + names[ask] + "?";
     var sol = "Apply the slide to vertex " + names[ask] + u7Coord(P) + ": \\[ \\begin{aligned} x' &= " + fmt(P[0]) + (dx >= 0 ? " + " + fmt(dx) : " - " + fmt(-dx)) + " = " + fmt(img[0]) + " \\\\ y' &= " + fmt(P[1]) + (dy >= 0 ? " + " + fmt(dy) : " - " + fmt(-dy)) + " = " + fmt(img[1]) + " \\end{aligned} \\] So the image of vertex " + names[ask] + " is <b>" + u7Coord(img) + "</b>.";
-    return mcq(prompt,
+    var q = mcq(prompt,
       { t: u7Coord(img), fb: "Correct. The x slide and the y slide are both applied to the vertex." },
       [
         { t: u7Coord(cand[1]), fb: "The sideways slide went the wrong way; check whether the rule says left or right." },
         { t: u7Coord(cand[2]), fb: "The vertical slide went the wrong way; check whether the rule says up or down." },
         { t: u7Coord(cand[3]), fb: "That swaps the two slides; the first number in the rule is the sideways slide." }
       ], sol, { mode: "translation", dx: dx, dy: dy, P: P.join(","), img: img.join(",") });
+    q.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+      shapes: [{ pts: pts, fill: FIG_SHADE }],
+      marks: pts.map(function (p2, i2) { return { p: p2, label: names[i2], dx: 11, dy: -11 }; }),
+      aria: "A triangle on a grid" });
+    return q;
   }
-  return mcq("A shape has vertices A(0, 0), B(3, 1) and C(1, 4). It is translated by the rule R2, U3, which means slide right 2 and up 3. What are the coordinates of the image of vertex B?",
+  var q = mcq("A shape has vertices A(0, 0), B(3, 1) and C(1, 4). It is translated by the rule R2, U3, which means slide right 2 and up 3. What are the coordinates of the image of vertex B?",
     { t: "(5, 4)", fb: "Correct." },
     [{ t: "(1, 4)", fb: "The sideways slide went the wrong way." }, { t: "(5, -2)", fb: "The vertical slide went the wrong way." }, { t: "(6, 3)", fb: "That swaps the two slides." }],
     "Adding the slides to B(3, 1) gives (5, 4), so the image of B is <b>(5, 4)</b>.", { mode: "translation", dx: 2, dy: 3, P: "3,1", img: "5,4" });
+  q.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+    shapes: [{ pts: [[0, 0], [3, 1], [1, 4]], fill: FIG_SHADE }],
+    marks: [{ p: [0, 0], label: "A", dx: 11, dy: -11 }, { p: [3, 1], label: "B", dx: 11, dy: -11 }, { p: [1, 4], label: "C", dx: 11, dy: -11 }],
+    aria: "A triangle on a grid" });
+  return q;
 }, ["In the rule, the letter tells the direction and the number tells how far, first sideways then up or down.", "Add the sideways slide to the x coordinate and the vertical slide to the y coordinate (subtracting for left or down)."]);
 
 // Unit 8: Circle Geometry (Math 9, NL). Entries only; helpers prefixed u8.
@@ -6057,7 +6418,9 @@ E("u2-gap-pyramid-slant-cr", 2, ["9.3"], 2, "gen", function () {
     ? "A tent is shaped like a square pyramid. Its base has side length " + base + " cm and its vertical height is " + height + " cm. Find the total surface area of the tent, in square centimetres."
     : "A square " + thing + " has a base with side length " + base + " cm and a vertical height of " + height + " cm. Find the total surface area of the " + thing + ", in square centimetres.";
   var sol = "The slant height is not given, so find it with the Pythagorean theorem using half the base and the height: \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{slant} &= " + slant + " \\\\ SA &= " + base + "^{2} + 4\\left(" + FR(1, 2) + " \\times " + base + " \\times " + slant + "\\right) = " + (base * base) + " + " + (2 * base * slant) + " = " + sa + " \\end{aligned} \\] The answer is <b>" + sa + " cm\\(^{2}\\)</b>.";
-  return numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
+  var q = numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
+  q.figure = solPyramid(base, height, fmt(base) + " cm", fmt(height) + " cm", "?", "Square pyramid with base side and height labelled and slant height unknown");
+  return q;
 }, ["The triangular faces need the slant height, which the pyramid does not state directly.", "Halve the base side, then use the Pythagorean theorem with the height to get the slant height."]);
 
 // PG. L2, 9.2, SR: surface area of a two-solid composite (box joined to a triangular prism).
@@ -6071,12 +6434,14 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var tot = saBox + saPrism - 2 * contact;
   var prompt = "A display stand is made from a box and a right triangular prism joined together. The box measures " + L + " cm long, " + W + " cm wide and " + H + " cm high. The prism is " + L + " cm long, and each triangular end is a right triangle with legs " + a + " cm and " + b + " cm and hypotenuse " + c + " cm. The prism sits on top of the box, and the two solids touch over a rectangle " + a + " cm by " + L + " cm. What is the total surface area of the stand, in square centimetres?";
   var sol = "Find each solid on its own, then subtract the touching rectangle twice because it is hidden on both solids: \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] The answer is <b>" + tot + " cm\\(^{2}\\)</b>.";
-  return mcq(prompt,
+  var q = mcq(prompt,
     { t: fmt(tot), fb: "Correct: both solids are counted, and the hidden touching rectangle is removed from each one." },
     [{ t: fmt(saBox + saPrism), fb: "That adds the two solids but leaves the hidden touching faces counted on both solids." },
      { t: fmt(saBox + saPrism - contact), fb: "That removes the touching rectangle only once, but it is hidden on both solids, so it must come off twice." },
      { t: fmt(saBox + saPrism - 3 * contact), fb: "That removes the touching rectangle three times; it is hidden on exactly two faces, one on each solid." }],
     sol, { mode: "gap-composite-sa", tot: tot });
+  if (a <= W) q.figure = solBoxTri(a, b, c, L, W, H, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", fmt(W) + " cm", fmt(H) + " cm", "Triangular prism on a box with labelled dimensions");
+  return q;
 }, ["Treat the stand as two separate solids first, then adjust for the join.", "Add the two surface areas, then subtract the touching rectangle twice since it is hidden on both solids."]);
 
 
@@ -6353,7 +6718,9 @@ E("u7-gap-scale-apply-cr", 7, ["10.17", "10.15"], 2, "gen", function () {
     "A banner is an enlargement of a logo. One side of the logo is " + o1 + " cm and the matching side of the banner is " + fmt(i1) + " cm. Another side of the logo is " + o2 + " cm. How long is the matching side of the banner, in centimetres?"
   ]);
   var sol = "Find the scale factor from the known pair first, then apply it to the second side: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(i1) + " \\div " + o1 + " = " + fmt(k) + " \\\\ \\text{new side} &= " + o2 + " \\times " + fmt(k) + " = " + fmt(ans) + " \\end{aligned} \\] The answer is <b>" + fmt(ans) + " cm</b>.";
-  return numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  var q = numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  q.figure = solBarsFig([{ name: "Original", len: o1, lab: fmt(o1) + " cm" }, { name: "Image", len: i1, lab: fmt(i1) + " cm" }, { name: "Original", len: o2, lab: fmt(o2) + " cm" }, { name: "Image", len: ans, lab: "?" }], "Matching sides of an original and its image as bars");
+  return q;
 }, ["The scale factor is not stated; it must be recovered from the pair of matching sides first.", "Divide the image side by its matching original side as the first step."]);
 
 // PG. L2, 10.19/10.8, CR 2: map distance to real distance, then travel time at a stated speed.
@@ -6363,7 +6730,13 @@ E("u7-gap-map-time-cr", 7, ["10.19", "10.8"], 2, "gen", function () {
   hours = real / speed;
   var prompt = "On a map, 1 cm represents " + R + " km. Two towns are " + d + " cm apart on the map. A bus drives between the towns at " + speed + " km/h. How many hours does the drive take?";
   var sol = "Use the scale to get the real distance first, then divide by the speed: \\[ \\begin{aligned} \\text{real distance} &= " + d + " \\times " + R + " = " + real + "\\text{ km} \\\\ \\text{time} &= " + real + " \\div " + speed + " = " + hours + "\\text{ h} \\end{aligned} \\] The answer is <b>" + hours + "</b>.";
-  return numq(prompt, hours, 0.01, sol, { mode: "gap-map-time", R: R, real: real, speed: speed });
+  var q = numq(prompt, hours, 0.01, sol, { mode: "gap-map-time", R: R, real: real, speed: speed });
+  var figB = solLine([60, 105], [280, 105], false, 2);
+  figB += '<circle cx="60" cy="105" r="4" fill="' + FIG_INK + '"/><circle cx="280" cy="105" r="4" fill="' + FIG_INK + '"/>';
+  figB += solT(170, 80, fmt(d) + " cm", 13, false);
+  figB += solT(170, 134, "1 cm represents " + fmt(R) + " km", 12, false);
+  q.figure = solSvg(340, 160, figB, "Map distance between two towns");
+  return q;
 }, ["The map measurement must be converted to a real distance before the speed can be used.", "Multiply the map distance by the scale value as the first step."]);
 
 // PG. L2, 10.15/10.17, CR 3: area of the image using the square of the scale factor.
@@ -6374,7 +6747,9 @@ E("u7-gap-area-scale-cr", 7, ["10.15", "10.17"], 2, "gen", function () {
   var area = Math.round(w * h * k * k * 100) / 100;
   var prompt = "A rectangle is " + w + " cm wide and " + h + " cm tall. It is enlarged so that the width becomes " + fmt(iw) + " cm. What is the area of the enlarged rectangle, in square centimetres?";
   var sol = "Find the scale factor from the widths first; areas grow by the square of the scale factor: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(iw) + " \\div " + w + " = " + fmt(k) + " \\\\ \\text{original area} &= " + w + " \\times " + h + " = " + (w * h) + " \\\\ \\text{image area} &= " + (w * h) + " \\times " + fmt(k) + "^{2} = " + fmt(area) + " \\end{aligned} \\] The answer is <b>" + fmt(area) + " cm\\(^{2}\\)</b>.";
-  return numq(prompt, area, 0.01, sol, { mode: "gap-area-scale", k: k });
+  var q = numq(prompt, area, 0.01, sol, { mode: "gap-area-scale", k: k });
+  q.figure = solRectPair({ w1: w, h1: h, wLab1: fmt(w) + " cm", hLab1: fmt(h) + " cm", cap1: "Original", w2: iw, h2: h * k, wLab2: fmt(iw) + " cm", hLab2: "?", cap2: "Enlarged", aria: "A rectangle and its enlargement with labelled sides" });
+  return q;
 }, ["Lengths and areas scale differently: the area factor is the square of the length factor.", "Divide the new width by the original width to get the scale factor as the first step."]);
 
 // PG. L2, 10.19/10.15, CR 3: two shadow heights by proportion, then their difference.
@@ -6388,7 +6763,9 @@ E("u7-gap-shadow-diff-cr", 7, ["10.19", "10.15"], 2, "gen", function () {
   var ans = Math.round(Math.abs(h2 - h1) * 100) / 100;
   var prompt = "A person " + fmt(hp) + " m tall casts a shadow " + fmt(sp) + " m long. At the same time, a fence casts a shadow " + fmt(s1) + " m long and a tree casts a shadow " + fmt(s2) + " m long. The objects and their shadows form similar triangles. Find the difference between the height of the tree and the height of the fence, in metres.";
   var sol = "Use the person's shadow ratio on each object first, then compare the two heights: \\[ \\begin{aligned} \\text{fence} &= " + fmt(hp) + " \\times \\frac{" + fmt(s1) + "}{" + fmt(sp) + "} = " + fmt(h1) + " \\\\ \\text{tree} &= " + fmt(hp) + " \\times \\frac{" + fmt(s2) + "}{" + fmt(sp) + "} = " + fmt(h2) + " \\\\ \\text{difference} &= " + fmt(ans) + " \\end{aligned} \\] The answer is <b>" + fmt(ans) + " m</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-shadow-diff", h1: h1, h2: h2 });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-shadow-diff", h1: h1, h2: h2 });
+  q.figure = solShadowFig([{ name: "Person", h: hp, s: sp, hLab: fmt(hp) + " m", sLab: fmt(sp) + " m" }, { name: "Fence", h: h1, s: s1, hLab: "?", sLab: fmt(s1) + " m" }, { name: "Tree", h: h2, s: s2, hLab: "?", sLab: fmt(s2) + " m" }], "A person, a fence and a tree with their shadows");
+  return q;
 }, ["Each height comes from the same shadow proportion, and the difference is found only after both heights are known.", "Divide the fence shadow by the person's shadow to get the first scale as the first step."]);
 
 // PG. L2, 10.17/10.15, CR 3: perimeter of the image after finding the factor from one pair of sides.
@@ -6400,7 +6777,12 @@ E("u7-gap-perimeter-scale-cr", 7, ["10.17", "10.15"], 2, "gen", function () {
   var ans = Math.round(P * k * 100) / 100;
   var prompt = "A triangle has side lengths " + a + " cm, " + b + " cm and " + c + " cm. A similar triangle has the side matching the " + a + " cm side measuring " + fmt(ai) + " cm. What is the perimeter of the similar triangle, in centimetres?";
   var sol = "Find the scale factor from the matching sides first, then scale the whole perimeter: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(ai) + " \\div " + a + " = " + fmt(k) + " \\\\ \\text{perimeter} &= (" + a + " + " + b + " + " + c + ") \\times " + fmt(k) + " = " + fmt(ans) + " \\end{aligned} \\] The answer is <b>" + fmt(ans) + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-perimeter-scale", k: k, P: P });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-perimeter-scale", k: k, P: P });
+  if (a + b > c && a + c > b && b + c > a) {
+    var P1 = u7FitTri([a, b, c], 16, 28, 128, 112), P2 = u7FitTri([a * k, b * k, c * k], 192, 28, 128, 112);
+    q.figure = u7Svg(345, 165, u7Poly(P1, FIG_SHADE) + solSideLabels(P1, [fmt(c) + " cm", fmt(a) + " cm", fmt(b) + " cm"]) + u7Poly(P2, "#ffffff") + solSideLabels(P2, ["?", fmt(ai) + " cm", "?"]), "An original triangle and a similar triangle with side labels");
+  }
+  return q;
 }, ["Perimeters scale by the same factor as the sides, and that factor comes from the one known pair.", "Divide the image side by its matching original side as the first step."]);
 
 
@@ -6412,7 +6794,10 @@ E("u8-gap-reflex-arc-cr", 8, ["9.7"], 2, "gen", function () {
   var central = 2 * ins, ans = 360 - central;
   var prompt = "Points A, B and C lie on a circle with centre O. The inscribed angle ACB measures \\(" + ins + "^{\\circ}\\) and it subtends the minor arc AB. Find the measure of the reflex arc AB, in degrees.";
   var sol = "The central angle on the minor arc is double the inscribed angle first; the reflex arc is what remains of the full circle: \\[ \\begin{aligned} \\text{minor arc AB} &= 2 \\times " + ins + "^{\\circ} = " + central + "^{\\circ} \\\\ \\text{reflex arc AB} &= 360^{\\circ} - " + central + "^{\\circ} = " + ans + "^{\\circ} \\end{aligned} \\] The answer is <b>\\(" + ans + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-reflex-arc", ins: ins });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-reflex-arc", ins: ins });
+  var A = u8P(270 - ins), B = u8P(270 + ins), C = u8P(90);
+  q.figure = u8Fig({ pts: { A: A, B: B, C: C }, segs: [["O", "A"], ["O", "B"], ["C", "A"], ["C", "B"]], angles: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B), r: 0.3, lr: 0.55, label: fmt(ins) + "°" }] });
+  return q;
 }, ["An inscribed angle and its central angle are linked, and a reflex arc completes the full turn.", "Double the inscribed angle to get the minor arc as the first step."]);
 
 // PG. L2, 9.5, CR 2: angle in a cyclic quadrilateral after combining the parts split by a diagonal.
@@ -6421,7 +6806,10 @@ E("u8-gap-cyclic-diag-cr", 8, ["9.5"], 2, "gen", function () {
   var ans = 180 - p - q;
   var prompt = "Points A, B, C and D lie on a circle in that order, so ABCD is a cyclic quadrilateral. The diagonal AC splits angle A into two parts: angle BAC measures \\(" + p + "^{\\circ}\\) and angle CAD measures \\(" + q + "^{\\circ}\\). Find the measure of angle BCD, in degrees.";
   var sol = "Combine the two parts of angle A first; opposite angles of a cyclic quadrilateral add to \\(180^{\\circ}\\): \\[ \\begin{aligned} \\angle A &= " + p + "^{\\circ} + " + q + "^{\\circ} = " + (p + q) + "^{\\circ} \\\\ \\angle BCD &= 180^{\\circ} - " + (p + q) + "^{\\circ} = " + ans + "^{\\circ} \\end{aligned} \\] The answer is <b>\\(" + ans + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-cyclic-diag", p: p, q: q });
+  var qq = numq(prompt, ans, 0.01, sol, { mode: "gap-cyclic-diag", p: p, q: q });
+  var A = u8P(200), B = u8P(300), C = u8P(300 + 2 * p), D = u8P(300 + 2 * p + 2 * q);
+  qq.figure = u8Fig({ pts: { A: A, B: B, C: C, D: D }, segs: [["A", "B"], ["B", "C"], ["C", "D"], ["D", "A"], ["A", "C"]], angles: [{ v: "A", a1: u8Dir(A, B), a2: u8Dir(A, C), r: 0.26, lr: 0.46, label: fmt(p) + "°" }, { v: "A", a1: u8Dir(A, C), a2: u8Dir(A, D), r: 0.4, lr: 0.6, label: fmt(q) + "°" }] });
+  return qq;
 }, ["Angle A is given in two pieces, and the cyclic property applies to the whole angle.", "Add the two parts of angle A together as the first step."]);
 
 // PG. L2, 9.7/9.5, CR 3: central angle found from a tangent-radius triangle, then halved for the inscribed angle.
@@ -6433,7 +6821,14 @@ E("u8-gap-tangent-central-cr", 8, ["9.7", "9.5"], 2, "gen", function () {
     ? "A line through T and P is a tangent to a circle with centre O, touching the circle at T. The line from O through P meets the circle again at D. In triangle OTP, the angle at P measures \\(" + g + "^{\\circ}\\). Point C is on the major arc TD. Find the measure of the inscribed angle TCD, in degrees."
     : "From a point P outside a circle with centre O, a tangent touches the circle at T, and the line from P through O meets the circle again at D. In triangle OTP, the angle at P measures \\(" + g + "^{\\circ}\\). Point C is on the major arc TD. Find the measure of the inscribed angle TCD, in degrees.";
   var sol = "The radius to a point of tangency is perpendicular to the tangent, so triangle OTP is right-angled at T. Find the central angle first, then halve it: \\[ \\begin{aligned} \\angle TOD &= 180^{\\circ} - 90^{\\circ} - " + g + "^{\\circ} = " + central + "^{\\circ} \\\\ \\angle TCD &= " + central + "^{\\circ} \\div 2 = " + fmt(ans) + "^{\\circ} \\end{aligned} \\] The answer is <b>\\(" + fmt(ans) + "^{\\circ}\\)</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-tangent-central", g: g });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-tangent-central", g: g });
+  var tAng = pick([200, 230, 260, 290, 320]);
+  var sgn = Math.random() < 0.5 ? 1 : -1;
+  var T = u8P(tAng), U = u8P(tAng + sgn * central);
+  var sc = 1 / Math.cos(central * Math.PI / 180);
+  var P = [U[0] * sc, U[1] * sc], D = U, C = u8P(tAng + sgn * central / 2 + 180);
+  q.figure = u8Fig({ pts: { T: T, P: P, D: D, C: C }, segs: [["O", "T"], ["O", "P"], ["C", "T"], ["C", "D"]], tangentSeg: { at: "T", to: "P", beyond: 1.05, back: 0.3 }, rightMarks: [{ v: "T", a1: u8Dir(T, [0, 0]), a2: u8Dir(T, P) }], angles: [{ v: "P", a1: u8Dir(P, T), a2: u8Dir(P, [0, 0]), r: 0.3, lr: 0.55, label: fmt(g) + "°" }, { v: "C", a1: u8Dir(C, T), a2: u8Dir(C, D), r: 0.3, lr: 0.55, label: "?" }] });
+  return q;
 }, ["Two circle facts chain together here: the tangent fact builds the triangle, and the inscribed angle is half the central angle.", "Use the right angle at T to find the central angle TOD as the first step."]);
 
 // PG. L2, 9.6/9.5, CR 3: chord radius where the perpendicular-from-centre bisection comes before Pythagoras.
@@ -6448,7 +6843,10 @@ E("u8-gap-chord-bisect-cr", 8, ["9.6", "9.5"], 2, "gen", function () {
     ? "AB is a chord of a circle with centre O. The chord AB is " + chord + " cm long, and the perpendicular distance from O to the chord is " + d + " cm. Find the radius of the circle, in centimetres."
     : "A circular window has centre O, and a straight bar AB across the window is a chord of the circle. The bar AB is " + chord + " cm long, and the perpendicular distance from O to the bar is " + d + " cm. Find the radius of the window, in centimetres.";
   var sol = "The perpendicular from the centre bisects the chord first; then the radius is the hypotenuse of the right triangle: \\[ \\begin{aligned} \\text{half the chord} &= " + chord + " \\div 2 = " + half + " \\\\ r^{2} &= " + d + "^{2} + " + half + "^{2} = " + (d * d + half * half) + " \\\\ r &= " + r + " \\end{aligned} \\] The answer is <b>" + r + " cm</b>.";
-  return numq(prompt, r, 0.01, sol, { mode: "gap-chord-bisect", half: half, d: d, r: r });
+  var q = numq(prompt, r, 0.01, sol, { mode: "gap-chord-bisect", half: half, d: d, r: r });
+  var A = [-half / r, d / r], B = [half / r, d / r];
+  q.figure = u8Fig({ pts: { A: A, B: B }, segs: [["A", "B"], ["O", "A"]], perp: ["A", "B"], sideLabs: [{ a: "A", b: "B", text: fmt(chord) + " cm", off: 15 }, { a: "O", b: "M", text: fmt(d) + " cm", off: 15 }, { a: "O", b: "A", text: "?", off: 15 }] });
+  return q;
 }, ["The radius is the hypotenuse of a right triangle whose one side is only half of the given chord.", "Halve the chord length as the first step."]);
 
 // PG. L2, 9.8/9.5, CR 3: semicircle right angle first, then Pythagoras for the third side.
@@ -6462,7 +6860,11 @@ E("u8-gap-semicircle-pyth-cr", 8, ["9.8", "9.5"], 2, "gen", function () {
     ? "AB is a diameter of a circle, and C is a point on the circle. The diameter AB is " + hyp + " cm long and the side AC is " + given + " cm long. Find the length of BC, in centimetres."
     : "A semicircular arch has diameter AB of " + hyp + " cm. The point C is on the arch, and the straight distance AC is " + given + " cm. Find the straight distance BC, in centimetres.";
   var sol = "An angle inscribed in a semicircle is a right angle, so triangle ABC is right-angled at C and Pythagoras applies: \\[ \\begin{aligned} BC^{2} &= " + hyp + "^{2} - " + given + "^{2} = " + (hyp * hyp - given * given) + " \\\\ BC &= " + ans + " \\end{aligned} \\] The answer is <b>" + ans + " cm</b>.";
-  return numq(prompt, ans, 0.01, sol, { mode: "gap-semicircle-pyth", given: given, hyp: hyp });
+  var q = numq(prompt, ans, 0.01, sol, { mode: "gap-semicircle-pyth", given: given, hyp: hyp });
+  var gam = Math.acos(Math.max(-1, Math.min(1, 2 * (given / hyp) * (given / hyp) - 1))) * 180 / Math.PI;
+  var A = [-1, 0], B = [1, 0], C = u8P(gam);
+  q.figure = u8Fig({ pts: { A: A, B: B, C: C }, segs: [["A", "B"], ["A", "C"], ["B", "C"]], rightMarks: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B) }], sideLabs: [{ a: "A", b: "C", text: fmt(given) + " cm", off: 15 }, { a: "B", b: "C", text: "?", off: 15 }] });
+  return q;
 }, ["The diameter tells you the triangle is right-angled before any side can be found.", "Note that angle C is a right angle because it sits in a semicircle, as the first step."]);
 
 // PG. L2, 9.7, SR: an angle requiring two circle theorems in sequence, with single-theorem distractors.
@@ -6474,12 +6876,17 @@ E("u8-gap-two-theorems-mc", 8, ["9.7"], 2, "gen", function () {
   function deg(v) { return "\\(" + v + "^{\\circ}\\)"; }
   var prompt = "Points " + P1 + ", " + P2 + ", " + P3 + " and " + P4 + " lie on a circle with centre O. Point " + P3 + " is on the major arc " + P1 + P2 + " and the inscribed angle " + P1 + P3 + P2 + " measures " + deg(p) + ". Point " + P4 + " is on the minor arc " + P1 + P2 + ". What is the measure of the inscribed angle " + P1 + P4 + P2 + "?";
   var sol = "The minor arc is fixed by the central angle first, and the angle on the minor arc uses the reflex central angle: \\[ \\begin{aligned} \\text{minor central angle} &= 2 \\times " + p + "^{\\circ} = " + (2 * p) + "^{\\circ} \\\\ \\text{reflex central angle} &= 360^{\\circ} - " + (2 * p) + "^{\\circ} = " + (360 - 2 * p) + "^{\\circ} \\\\ \\angle " + P1 + P4 + P2 + " &= " + (360 - 2 * p) + "^{\\circ} \\div 2 = " + ans + "^{\\circ} \\end{aligned} \\] The answer is <b>" + deg(ans) + "</b>.";
-  return mcq(prompt,
+  var q = mcq(prompt,
     { t: deg(ans), fb: "Correct: the reflex central angle is halved, which takes both the doubling step and the reflex step." },
     [{ t: deg(2 * p), fb: "That is the minor central angle on its own; the inscribed angle still has to be taken from the reflex angle on the other arc." },
      { t: deg(p), fb: "That repeats the given angle, but the asked point sits on the opposite arc, so its angle is not the same." },
      { t: deg(360 - 2 * p), fb: "That is the reflex central angle itself; an inscribed angle is half of its central angle, so one more halving is needed." }],
     sol, { mode: "gap-two-theorems", p: p });
+  var pts = {};
+  var A = u8P(270 - p), B = u8P(270 + p), C3 = u8P(90), D4 = u8P(270);
+  pts[P1] = A; pts[P2] = B; pts[P3] = C3; pts[P4] = D4;
+  q.figure = u8Fig({ pts: pts, segs: [[P3, P1], [P3, P2], [P4, P1], [P4, P2]], angles: [{ v: P3, a1: u8Dir(C3, A), a2: u8Dir(C3, B), r: 0.3, lr: 0.55, label: fmt(p) + "°" }, { v: P4, a1: u8Dir(D4, A), a2: u8Dir(D4, B), r: 0.3, lr: 0.55, label: "?" }] });
+  return q;
 }, ["The point sits on the opposite arc, so the reflex central angle is the one that belongs to it.", "Double the given inscribed angle to get the minor central angle as the first step."]);
 
 /* Unit 9: Probability and Statistics */
