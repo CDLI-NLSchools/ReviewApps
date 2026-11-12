@@ -299,7 +299,7 @@
   </details>
 
   <details id="builderBox">
-  <summary>Build your own practice <button type="button" class="alt" id="advToolsBtn" style="float:right;" hidden>Advanced tools</button></summary>
+  <summary>Build your own practice</summary>
   <div class="card">
     <h2>1. What do you want to practise?</h2>
     <div class="presetrow">
@@ -380,7 +380,7 @@
       </div>
     </div>
     <details id="advBox">
-      <summary>Advanced options: question levels</summary>
+      <summary>Advanced options: question levels <button type="button" class="alt" id="advToolsBtn" style="float:right;" hidden>Advanced tools</button></summary>
       <p class="hint">Levels follow the course Table of Specifications. The default mix matches the exams:
       about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method),
       20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</p>
@@ -3176,7 +3176,7 @@ function applyURL(){
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5)__e5.textContent=__c.presets.final.label;}
-var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();location.href=settingsToURL();});}
+var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}var __box=document.getElementById("advBox");if(__box&&new URLSearchParams(location.search).get("teacher")!=="1"){Array.prototype.forEach.call(__box.children,function(ch){if(ch.tagName!=="SUMMARY")ch.style.display="none";});}
 $("presetMid").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.mid.units.slice():[]);});
 $("presetFinal").addEventListener("click",function(){setPreset(window.__COURSE?window.__COURSE.presets.final.units.slice():[]);});
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
@@ -3205,7 +3205,7 @@ unitCheckboxes();renderIndicators();updatePoolInfo();
 if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
   /* A set link was opened: the exact set it encodes is on screen. */
 }
-else if(urlTouched&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
+else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
   var _m=(new URLSearchParams(location.search).get("mode"));if(_m==="sheet"||_m==="worksheet"){startSheet();}else if(_m==="exam"){startExam();}else{startOnline();}
 }
 }
