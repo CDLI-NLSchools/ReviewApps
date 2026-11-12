@@ -696,9 +696,12 @@ if(window.__COURSE){document.write('<script src="banks/'+window.__COURSE.bankFil
 var CR_MARKS=window.__BANK_CRMARKS||{};
 /* ============ selection engine ============ */
 /* Exam scopes in the unified shell are the preset unit
-   selections in the course configuration. No entry is held
-   out of any scope, so the cap argument to poolFor is never
-   engaged. */
+   selections in the course configuration. One course
+   holds entries out of a scope: a course whose mid
+   preset caps its pool (presets.mid.cap, Math 2201)
+   flags the held-out entries postMid in its bank
+   module, and the composer engages the cap argument
+   to poolFor for exactly that scope. */
 function poolFor(units,inds,cap,pred){
   return BANK.filter(function(e){
     if(pred&&!pred(e))return false;
@@ -902,7 +905,7 @@ function readInds(){
 function updatePoolInfo(){refreshFace();
   var p=poolFor(state.units,state.inds,state.midCap);
   var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});
-  $("poolInfo").textContent=p.length?"Question bank for this selection: "+p.length+" question templates (Level 1: "+byL[1]+", Level 2: "+byL[2]+", Level 3: "+byL[3]+"). Generators make a fresh question every draw."+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:""):
+  $("poolInfo").textContent=p.length?"Question bank for this selection: "+p.length+" question templates (Level 1: "+byL[1]+", Level 2: "+byL[2]+", Level 3: "+byL[3]+"). Generators make a fresh question every draw."+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:"")+(window.__COURSE&&window.__COURSE.midNote&&state.midCap?" "+window.__COURSE.midNote:""):
    "No questions match that selection yet, try adding a unit or clearing the indicator filter.";
 }
 /* Teacher-mode UI split (Nov 10, 2026): the level percentage fields,
@@ -959,7 +962,7 @@ function refreshFace(){
   var u=state.units.slice().sort(function(a,b){return a-b;});
   var scope;
   if(!u.length)scope="No units chosen yet";
-  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=window.__COURSE.presets.mid.label.replace(" (",": ").replace(/\)$/,"");
+  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.mid.faceLabel||window.__COURSE.presets.mid.label).replace(" (",": ").replace(/\)$/,"");
   else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.final.faceLabel||window.__COURSE.presets.final.label).replace(" (",": ").replace(/\)$/,"");
   else scope=u.map(function(x){return "Unit "+x+": "+UNITS[x];}).join("; ");
   if(state.inds.length)scope+=" (indicators: "+state.inds.join(", ")+")";
@@ -1861,7 +1864,7 @@ function subsetSumMarks(entries,target){
     for(var k=0;k<keys.length;k++){var s2=keys[k]+m;if(s2<=target&&!dp[s2]){dp[s2]=dp[keys[k]].concat([arr[i]]);if(s2===target)return dp[s2];}}}
   return dp[target]||null;
 }
-function composeExam(units,inds){
+function composeExam(units,inds,includePK){
   /* Blueprint-driven exam composer for the unified shell. The plan comes
      from the active course configuration:
        - a single unit composes the unit test (config unitTest: SR count
@@ -1889,7 +1892,17 @@ function composeExam(units,inds){
          (unitTest.srLevels) with the standalone's any-level top-up,
          plus exactly two constructed-response entries whose marks sum
          to the unit's own target (unitTest.perUnitCr), preferring a
-         pair that carries a Level 3 entry.
+         pair that carries a Level 3 entry;
+       - two scope rules a course may carry in its configuration,
+         both read from the standalone composers that had them (Math
+         2201): presets.mid.cap engages the poolFor cap for exactly
+         the mid scope, holding out the bank entries the course's
+         bank module flags postMid; and pkPracticeOnly leaves the
+         course's prior-knowledge entries (indicators coded PK) out
+         of every composed paper unless the caller passes includePK
+         (the teacher override startExam reads from the builder).
+         Neither key is set by any other course, and both branches
+         are inert without them.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -1900,7 +1913,9 @@ function composeExam(units,inds){
   var key=units.slice().sort(function(a,b){return a-b;}).join();
   var scope=null;
   if(!single&&C.exam){Object.keys(C.exam).forEach(function(nm){var sc=C.exam[nm];if(sc&&sc.units&&sc.units.slice().sort(function(a,b){return a-b;}).join()===key)scope=sc;});}
-  var pool=poolFor(units,inds,false);
+  var capX=!!(C.presets&&C.presets.mid&&C.presets.mid.cap&&C.presets.mid.units&&C.presets.mid.units.slice().sort(function(a,b){return a-b;}).join()===key);
+  var pool=poolFor(units,inds,capX);
+  if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
   if(C.exam&&C.exam.singleOnly&&!single)return null;
@@ -2090,14 +2105,28 @@ function composeExam(units,inds){
     if(scopedPlan&&combo.scopeDev>0)short=true; // marks filled but the scope level totals are off blueprint: flag it honestly
     return {srItems:srItems,crItems:crItems,srMarks:srItems.length,crMarks:crMarks,l3Marks:l3Marks,total:srItems.length+crMarks,single:single,short:short,dev:combo.dev,scopeDev:combo.scopeDev||0};
   }
-  var best=null;
+  var best=null,bestExact=null;
   for(var attempt=0;attempt<30;attempt++){
     var combo=chooseCombo();
     if(!combo)break;
     var res=drawAll(combo);
-    if(!res.short&&res.total===expectedTotal)return res;
+    if(!res.short&&res.total===expectedTotal){
+      /* An exact paper whose Section B Level 3 share misses the
+         course's own preference list (a pooled fallback's crL3) is
+         kept as the fallback, not returned: the standalone pooled
+         composers force one of their listed targets (8, then 9,
+         then 7) whenever the pool can sum to it, so the shell
+         retries for an on-preference paper and settles for the
+         off-preference exact only when none surfaces. Only a
+         single pooled part carries crL3, so blueprint scopes and
+         unit tests are untouched. */
+      if(!(parts.length===1&&parts[0].crL3&&parts[0].crL3.indexOf(res.l3Marks)<0))return res;
+      if(!bestExact||res.dev<bestExact.dev)bestExact=res;
+      continue;
+    }
     if(!best||res.total>best.total||(res.total===best.total&&res.dev<best.dev))best=res;
   }
+  if(bestExact)return bestExact;
   if(best)return best;
   return {srItems:[],crItems:[],srMarks:0,crMarks:0,l3Marks:0,total:0,single:single,short:true,dev:0};
 }
@@ -3188,7 +3217,7 @@ function exportBrightspace(items,statusEl){
 function settingsToURL(){
   var s=settings();var p=new URLSearchParams();
   if(window.__COURSE)p.set("course",window.__COURSE.id);
-  if(window.__COURSE&&s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))p.set("preset","mid");
+  if(window.__COURSE&&s.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none")&&(!(window.__COURSE.presets.mid&&window.__COURSE.presets.mid.cap)||s.midCap))p.set("preset","mid");
   else if(window.__COURSE&&s.units.slice().sort().join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))p.set("preset","final");
   else if(s.units.length)p.set("unit",s.units.join(","));
   if(s.inds.length)p.set("indicator",s.inds.join(","));
@@ -3206,7 +3235,7 @@ function settingsToURL(){
 }
 function applyURL(){
   var p=new URLSearchParams(location.search);var touched=false;
-  if(p.get("preset")==="mid"){state.units=(window.__COURSE&&window.__COURSE.presets.mid)?window.__COURSE.presets.mid.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
+  if(p.get("preset")==="mid"){state.units=(window.__COURSE&&window.__COURSE.presets.mid)?window.__COURSE.presets.mid.units.slice():[];touched=true;state.midCap=!!(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.cap);if(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
   else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
@@ -3232,7 +3261,7 @@ function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=__c.shortName;var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=__c.shortName+" Review";var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
-(function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice());if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
+(function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
 (function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});

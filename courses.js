@@ -2116,5 +2116,203 @@ window.COURSES = {
     "3": "\\(x=\\frac{-b\\pm\\sqrt{b^{2}-4ac}}{2a}\\)",
     "9": "\\(t_{n}=t_{1}+(n-1)d,\\ n\\in N\\)<br>\\(S_{n}=\\frac{n}{2}(t_{1}+t_{n})\\)<br>\\(t_{n}=t_{1}\\left(r^{n-1}\\right),\\ n\\in N\\)<br>\\(S_{n}=\\frac{t_{1}\\left(r^{n}-1\\right)}{r-1}\\)<br>\\(S_{n}=\\frac{t_{1}}{1-r}\\)"
   }
+},
+"math-2201": {
+  id: "math-2201",
+  title: "Math 2201 Review: Practice Question Bank",
+  shortName: "Math 2201",
+  storagePrefix: "m2201",
+  reportName: "Math 2201",
+  language: "en",
+  bankFile: "math-2201.js",
+  subject: "Mathematics",
+  grade: 11,
+  listed: false,
+
+  units: {
+    "1": "Acute Triangle Trigonometry",
+    "2": "Quadratic Functions",
+    "3": "Quadratic Equations",
+    "4": "Radicals",
+    "5": "Statistical Reasoning",
+    "6": "Proportional Reasoning",
+    "7": "Inductive and Deductive Reasoning",
+    "8": "Properties of Angles and Triangles"
+  },
+
+  /* All 68 indicator codes, wording carried verbatim from the
+     standalone app's curriculum map (math-2201-review/
+     Math2201Review.html, UNITS at lines 644 to 647, INDICATORS at
+     lines 648 to 717, UNIT_IND at lines 718 to 723; the map is
+     headed "codes verified against the Math 2201 Curriculum
+     Guide"). The two PK codes are the course's prior-knowledge
+     codes: PK.1 (Unit 5, Section 1) and PK.2 (Unit 3). */
+  indicators: {
+    "7.1": "Draw a diagram to represent a problem that involves the sine law or the cosine law",
+    "7.2": "Solve a contextual problem using the sine law or the cosine law",
+    "7.3": "Solve a contextual problem that involves more than one triangle",
+    "4.1": "Determine the domain and range of a quadratic function",
+    "4.2": "Solve a contextual problem involving the characteristics of a quadratic function",
+    "4.4": "Determine the intercepts of the graph of a quadratic function",
+    "4.5": "Express a quadratic equation in factored form, given the zeros",
+    "4.10": "Determine the characteristics of y = ax² + bx + c through the parameters a, b, c",
+    "4.11": "Determine the coordinates of the vertex of a quadratic function",
+    "4.12": "Determine the vertex given the equation and the axis of symmetry",
+    "4.13": "Determine the equation of the axis of symmetry using the x-intercepts",
+    "4.14": "Sketch the graph of a quadratic function",
+    "4.15": "Determine the characteristics of y = a(x − h)² + k through the parameters h and k",
+    "4.16": "Determine the quadratic function given the characteristics of its graph",
+    "4.3": "Solve a contextual problem by modelling with a quadratic equation",
+    "4.6": "Explain the relationships among roots, zeros and x-intercepts",
+    "4.7": "Explain why a quadratic graph may have zero, one or two x-intercepts",
+    "4.8": "Determine, by factoring, the roots of a quadratic equation",
+    "4.9": "Determine, using the quadratic formula, the roots of a quadratic equation",
+    "1.1": "Express a mixed radical as an entire radical",
+    "1.2": "Express an entire radical as a mixed radical",
+    "1.4": "Compare and order radical expressions",
+    "1.5": "Identify values for which a radical expression is defined",
+    "1.6": "Simplify radical expressions using operations",
+    "1.7": "Rationalize the monomial denominator of a radical expression",
+    "1.9": "Determine the roots of a radical equation algebraically",
+    "1.11": "Explain why some roots of a radical equation are extraneous",
+    "PK.1": "Prior knowledge: measures of central tendency (Unit 5, Section 1 — uncoded in the guide)",
+    "PK.2": "Prior knowledge: factoring quadratic expressions (Unit 3 — a 1201 skill supporting 4.8)",
+    "8.6": "Use dispersion to describe the differences between two sets of data",
+    "8.7": "Create frequency tables and graphs from a set of data",
+    "8.8": "Explain, using examples, the meaning of standard deviation",
+    "8.9": "Calculate, using technology, the population standard deviation of a data set",
+    "8.10": "Solve a contextual problem that involves the interpretation of standard deviation",
+    "8.11": "Explain the properties of a normal curve",
+    "8.12": "Determine if a data set approximates a normal distribution",
+    "8.13": "Compare the properties of two or more normally distributed data sets",
+    "8.14": "Solve a contextual problem that involves normal distribution",
+    "8.15": "Determine and explain the z-score for a value in a normally distributed data set",
+    "8.16": "Apply standard deviation to decisions (warranties, insurance, opinion polls)",
+    "8.17": "Explain the significance of a confidence interval, margin of error or confidence level",
+    "8.18": "Explain how sample size affects confidence intervals and margin of error",
+    "8.19": "Make inferences about a population from sample data, using confidence intervals",
+    "8.20": "Give media examples where confidence intervals support a position",
+    "8.21": "Interpret confidence intervals and margin of error in media examples",
+    "8.22": "Support a position by analyzing statistical data presented in the media",
+    "6.2": "Determine an unknown dimension of a 2-D shape using proportional reasoning",
+    "6.5": "Explain the effect of a change in scale factor on the area of a 2-D shape",
+    "6.9": "Determine an unknown dimension of a 3-D object, given a scale diagram or model",
+    "6.10": "Explain the effect of a change in scale factor on surface area and volume",
+    "6.14": "Solve a problem involving relationships among scale factors, areas and volumes",
+    "6.16": "Determine and compare rates and unit rates",
+    "6.17": "Make and justify a decision, using rates",
+    "6.19": "Explain the relationship between the slope of a graph and a rate",
+    "6.23": "Solve a rate problem that requires isolating a variable",
+    "2.1": "Make conjectures by observing patterns and identifying properties",
+    "2.2": "Explain why inductive reasoning may lead to a false conjecture",
+    "2.3": "Determine if a given argument is valid",
+    "2.4": "Provide a counterexample to disprove a conjecture",
+    "2.7": "Compare inductive and deductive reasoning",
+    "2.8": "Identify errors in a given proof",
+    "5.1": "Generalize relationships between angle pairs formed by transversals and parallel lines",
+    "5.3": "Prove angle properties, including the sum of the angles in a triangle",
+    "5.5": "Generalize a rule for the sum of the interior angles of a polygon",
+    "5.6": "Prove, using deductive reasoning, that two triangles are congruent",
+    "5.8": "Determine measures of angles in a diagram with parallel lines, angles and triangles",
+    "5.9": "Determine if lines are parallel given angle measures at a transversal",
+    "5.11": "Solve a contextual problem that involves angles or triangles"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at lines 718 to 723); it agrees exactly with the
+     codes the bank entries themselves carry. */
+  unitInd: {
+    "1": ["7.1", "7.2", "7.3"],
+    "2": ["4.1", "4.2", "4.4", "4.5", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15", "4.16"],
+    "3": ["PK.2", "4.3", "4.6", "4.7", "4.8", "4.9"],
+    "4": ["1.1", "1.2", "1.4", "1.5", "1.6", "1.7", "1.9", "1.11"],
+    "5": ["PK.1", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12", "8.13", "8.14", "8.15", "8.16", "8.17", "8.18", "8.19", "8.20", "8.21", "8.22"],
+    "6": ["6.2", "6.5", "6.9", "6.10", "6.14", "6.16", "6.17", "6.19", "6.23"],
+    "7": ["2.1", "2.2", "2.3", "2.4", "2.7", "2.8"],
+    "8": ["5.1", "5.3", "5.5", "5.6", "5.8", "5.9", "5.11"]
+  },
+
+  /* The two presets, labels and unit scopes verbatim from the
+     standalone app (builder markup lines 284 to 286; handlers at
+     lines 6213 to 6216). Neither preset sets a level mix, as in
+     the standalone (its builder defaults are the chassis 20/60/20,
+     so this entry needs no defaultMix either). The standalone
+     also ships an "All units" preset button over the same eight
+     units the shell's All wiring selects when the config carries
+     no allUnits key, so the All preset needs no entry here.
+     The mid preset carries cap: true. In the standalone, the Mid
+     button is the one place the mid-course cap is switched on
+     (setPreset([1,2,3,4], true), line 6214; a preset=mid link
+     does the same, line 6191): the mid-course exam samples Unit 4
+     only to Section 4.3, so the five Radical Equations entries
+     flagged postMid in the bank module are held out of the pool
+     while the cap is on (the standalone's selection-engine note,
+     lines 3860 to 3865). Picking the units by hand clears the
+     cap, exactly as the standalone's checkbox handlers clear it.
+     Both faceLabels carry the standalone's face scope wording
+     (refreshFace, lines 4129 to 4130), which is plainer than the
+     button labels: the mid button spells out the Section 4.3
+     scope note, the final button uses an en dash range. */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], cap: true, label: "Mid-course review (Units 1\u20134, Radicals to 4.3)", faceLabel: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8], label: "Final review (Units 5\u20138)", faceLabel: "Final review (Units 5 to 8)" }
+  },
+
+  /* Shown in the pool line while the mid-course cap is on, the
+     standalone's own wording (updatePoolInfo, line 4070). */
+  midNote: "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical Equations questions are held out.",
+
+  /* Prior-knowledge entries are practice-only (Jason, Nov 9,
+     2026, recorded in the standalone at line 3866): the composer
+     leaves the seven PK-coded entries (four PK.1 in Unit 5,
+     three PK.2 in Unit 3) out of practice tests and exams unless
+     the teacher ticks the include-prior-knowledge override (the
+     builder's pkChk, read by startExam and passed to the
+     standalone's composeExam, lines 5029 to 5033). Ordinary
+     practice sets keep them, as the standalone's drawSet does.
+     The shell's composer honours this flag; no other course
+     sets it. */
+  pkPracticeOnly: true,
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (math-2201-review/Math2201Review.html, composeExam,
+     lines 5029 to 5087). That composer pools every multi-unit
+     paper, like the Math 3200 and 3201 composers (it backfills a
+     short selected-response level from other levels and carries
+     the same greedy constructed-response rescue): every
+     multi-unit paper is 50 marks, 27 selected response at levels
+     10/15/2, and 23 constructed response from Level 2 and Level
+     3 entries carrying 2 or more marks, with the Level 3 share
+     steered to 8 marks first, then 9, then 7 (level totals
+     10/30/10). It also applies the two scope rules the generic
+     composer reads from this configuration: the mid-course cap
+     above whenever the paper's units are exactly the mid scope
+     (the standalone passes that same unit-set test to poolFor),
+     and the prior-knowledge exclusion above. A single unit
+     composes the unit test (see unitTest); the standalone's
+     single-unit Level 3 subset-sum targets are 5, then 4, then
+     6, inside the generic composer's 4 to 6 window. */
+  exam: {
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+  },
+
+  /* The unit test, from the same composer (its single-unit
+     branch plans selected response [4, 6, 1] and 14 constructed
+     response, lines 5031 to 5032). The generic composer guides
+     unit-test selected-response levels at 20/60/20 rather than
+     [4, 6, 1], the same accepted translation as the Math 3200,
+     3201, 3208 and 2200 ports; totals, splits and marks are
+     exact. */
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at lines 4117 to 4120). The standalone carries
+     panels for Units 1, 3 and 5 only, and has no always-on
+     panel. */
+  panels: {
+    "1": "<b>Acute Triangle Trigonometry:</b> \\(\\frac{\\sin A}{a} = \\frac{\\sin B}{b} = \\frac{\\sin C}{c}\\)<br>\\(a^{2} = b^{2} + c^{2} - 2bc\\cos A\\)<br>\\(\\cos A = \\frac{b^{2} + c^{2} - a^{2}}{2bc}\\)",
+    "3": "<b>Quadratic Equations:</b> \\(x = \\frac{-b \\pm \\sqrt{b^{2} - 4ac}}{2a}\\)",
+    "5": "<b>Statistical Reasoning:</b> \\(\\sigma = \\sqrt{\\frac{\\sum (x - \\bar{x})^{2}}{n}}\\)<br>\\(z = \\frac{x - \\mu}{\\sigma}\\)"
+  }
 }
 };
