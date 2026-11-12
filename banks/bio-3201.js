@@ -2400,7 +2400,8 @@ BANK.forEach(function(e){if(e.unit===2&&e.indicators.some(function(c){return ["6
    consistency ruling those recaps are stripped (Units 1
    and 2 do not carry them), except the cytochrome c
    question, whose recap gloss is kept as a closing
-   sentence. */
+   sentence. One keyed option's spelling is corrected
+   (Archea to Archaea) per bio3201-fixes.json. */
 
 /* ---------- 7.1 Natural Selection & Biodiversity ---------- */
 
@@ -3089,7 +3090,7 @@ E("bio-u3-79-q05",3,["7.9"],1,"var",varset([
 E("bio-u3-79-q06",3,["7.9"],2,"var",varset([
   function(){
     return mcq("An organism is found living in a Hot deep-sea vent which is single-celled, lacks a nucleus and does not contain a cell wall. Into which domain should this organism be classified?",
-      "Archea",
+      "Archaea",
       ["Bacteria","Eukarya","Protista"],
       "Single-celled extremophiles in extreme environments (hot vents, high pressure) that are not bacteria belong to Domain Archaea. Archaea resemble bacteria in size but are genetically and biochemically distinct.",
       {});
