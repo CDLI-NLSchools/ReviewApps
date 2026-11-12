@@ -3202,5 +3202,259 @@ window.COURSES = {
     "8": "<b>Vocabulary:</b> a <b>radius</b> joins the centre to the circle; a <b>chord</b> joins two points on the circle; a <b>tangent</b> touches the circle at one point. A <b>central angle</b> sits at the centre; an <b>inscribed angle</b> sits on the circle.<br><b>Tangent:</b> the radius to a point of tangency is perpendicular to the tangent, so the angle is \\(90^{\\circ}\\).<br><b>Chords:</b> the perpendicular from the centre to a chord bisects the chord.<br><b>Central and inscribed:</b> a central angle is twice the inscribed angle on the same arc.<br><b>Semicircle:</b> an angle inscribed in a semicircle is \\(90^{\\circ}\\).<br><b>Same arc:</b> inscribed angles on the same arc are equal.",
     "9": "<b>Probability:</b> theoretical probability comes from counting equally likely outcomes, experimental probability comes from results of trials or data, and subjective judgement is a personal estimate.<br><b>Sample and population:</b> a population is everyone in the group being studied, and a sample is part of the population; random selection helps a sample represent the population.<br><b>Data collection</b> can be spoiled by bias, leading use of language, ethics problems, cost, time and timing, privacy concerns and cultural insensitivity.<br><b>Claims:</b> a claim about a whole population is only as strong as the size and representativeness of the sample behind it."
   }
+  },
+  /* Mathematics 8 (Math 8), ported from the standalone app at
+     math-8-review/ (served from the Math8Review repo). The
+     standalone's bank is bank-src.js (byte-identical to the
+     splice served inside its index.html, between the
+     BANK-SRC-BEGIN and BANK-SRC-END markers, apart from one
+     trailing blank line at the end of bank-src.js); the port's
+     bank sources are banks/math-8/, cut verbatim from
+     bank-src.js in its own order (helpers, Units 1 to 8, then
+     the November 9, 2026 pool-gap fill additions), with the
+     source's CR_MARKS literal (bank-src.js line 4668) carried
+     as the per-file CRMARKS manifests: 193 entries (per-unit
+     27/21/23/23/34/19/22/24) and 89 constructed-response keys.
+     Kept out of the picker (listed:false) until Jason passes
+     it. */
+  "math-8": {
+  id: "math-8",
+  shortName: "Math 8",
+
+  /* Long name (ruling 5 in the junior scoping): the standalone
+     heads its face card "Mathematics 8 Review" (line 249) and
+     subtitles itself "Fresh practice questions for Mathematics
+     8, drawn by unit or by curriculum indicator." (line 244).
+     The header and document title keep the short name: its
+     <title> (line 6) is "Math 8 Review: Practice Question
+     Bank", carried as title below. */
+  longName: "Mathematics 8",
+  title: "Math 8 Review: Practice Question Bank",
+  subject: "Mathematics",
+  grade: 8,
+  listed: false,
+  storagePrefix: "m8",
+  bankFile: "math-8.js",
+  defaultCheckMode: "each",
+
+  /* Unit names verbatim from the standalone app (UNITS at
+     line 652). */
+  units: {
+    "1": "Square Roots and the Pythagorean Theorem",
+    "2": "Integers",
+    "3": "Operations with Fractions",
+    "4": "Measuring Prisms and Cylinders",
+    "5": "Percent, Ratio and Rate",
+    "6": "Linear Equations and Graphing",
+    "7": "Data Analysis and Probability",
+    "8": "Geometry"
+  },
+
+  /* Indicator texts verbatim from the standalone app
+     (INDICATORS at line 653): 109 codes. */
+  indicators: {
+    "3.19": "Represent a perfect square as a square region using materials, such as grid paper or square shapes",
+    "3.20": "Determine whether a given number is a perfect square using materials and strategies, such as square shapes, grid paper or prime factorization, and explain the reasoning",
+    "5.2": "For whole numbers that are perfect squares Determine the square root of a given perfect square and record it symbolically",
+    "5.1": "For whole numbers that are perfect squares Determine the factors of a given perfect square, and explain why one of the factors is a square root and the others are not",
+    "5.3": "For whole numbers Determine the square of a given number",
+    "6.30": "Estimate, or approximate, a square root of a given number that is not a perfect square using the roots of perfect squares as benchmarks",
+    "6.31": "Identify a whole number whose square root lies between two given numbers",
+    "6.32": "Approximate a square root of a given number that is not a perfect square using technology, e.g., calculator, computer",
+    "6.33": "Explain why a square root of a number shown on a calculator may be an approximation",
+    "9.1": "Model and explain the Pythagorean theorem concretely, pictorially or using technology",
+    "9.12": "Determine the measure of the third side of a right triangle, given the measures of the other two sides, to solve a given problem",
+    "9.2": "Explain, using examples, that the Pythagorean theorem applies only to right triangles",
+    "9.13": "Determine whether or not a given triangle is a right triangle by applying the Pythagorean theorem",
+    "9.14": "Solve a given problem that involves Pythagorean triples, e.g. 3, 4, 5 or 5, 12, 13",
+    "6.17": "Model the process of multiplying two integers using concrete materials or pictorial representations and record the process",
+    "6.18": "Generalize and apply a rule for determining the sign of the product of integers",
+    "6.19": "Provide a context that requires multiplying two integers",
+    "6.20": "Solve a given problem involving the multiplication of integers",
+    "6.21": "Model the process of dividing an integer by an integer using concrete materials or pictorial representations and record the process",
+    "6.22": "Generalize and apply a rule for determining the sign of the quotient of integers",
+    "6.23": "Provide a context that requires dividing two integers",
+    "6.24": "Solve a given problem involving the division of integers (2-digit by 1-digit) without the use of technology",
+    "6.25": "Solve a given problem involving the division of integers (2-digit by 2-digit) with the use of technology",
+    "6.26": "Identify the operation required to solve a given problem involving integers",
+    "6.27": "Solve a given problem involving integers taking into consideration order of operations",
+    "6.4": "For positive fractions and mixed numbers Model multiplication of a positive fraction by a whole number concretely or pictorially and record the process",
+    "6.5": "For positive fractions and mixed numbers Model multiplication of a positive fraction by a positive fraction concretely or pictorially using an area model and record the process",
+    "6.6": "For positive fractions and mixed numbers Provide a context that requires the multiplication of two given positive fractions",
+    "6.7": "For positive fractions and mixed numbers Estimate the product of two given positive proper fractions to determine if the product will be closer to 0, , or 1",
+    "6.8": "For positive fractions and mixed numbers Generalize and apply rules for multiplying positive proper fractions, including mixed numbers",
+    "6.9": "For positive fractions and mixed numbers Model division of a whole number and a positive proper fraction, concretely or pictorially and record the process",
+    "6.10": "For positive fractions and mixed numbers Model division of a positive proper fraction by a positive proper fraction pictorially and record the process",
+    "6.11": "For positive fractions and mixed numbers Estimate the quotient of two given positive fractions and compare the estimate to whole number benchmarks",
+    "6.12": "For positive fractions and mixed numbers Generalize and apply rules for dividing positive proper fractions",
+    "6.13": "For positive fractions and mixed numbers Model, generalize and apply rules for dividing fractions with mixed numbers",
+    "6.14": "For positive fractions and mixed numbers Provide a context that requires the dividing of two given positive fractions",
+    "6.15": "For positive fractions and mixed numbers Identify the operation required to solve a given problem involving positive fractions",
+    "6.16": "For positive fractions and mixed numbers Solve a given problem involving positive fractions taking into consideration order of operations (limited to problems with positive solutions)",
+    "10.1": "Match a given net to the 3-D object it represents",
+    "10.11": "Draw nets for a given right circular cylinder, right rectangular prism, and verify by constructing the 3-D objects from the nets",
+    "10.2": "Predict 3-D objects that can be created from a given net and verify the prediction",
+    "10.12": "Construct a 3-D object from a given net",
+    "10.3": "For right rectangular prisms, right triangular prisms, and right cylinders  Identify all the faces of a given prism, including right rectangular and right triangular prisms",
+    "9.3": "For right rectangular prisms, right triangular prisms, and right cylinders Explain, using examples, the relationship between the area of a 2-D shape and the surface area of a given 3-D object",
+    "9.4": "For right rectangular prisms, right triangular prisms, and right cylinders  Describe and apply strategies for determining the surface area of a given right rectangular or right triangular prism",
+    "9.5": "For right rectangular prisms, right triangular prisms, and right cylinders  Solve a given problem involving surface area",
+    "9.6": "For right rectangular prisms, right triangular prisms, and right cylinders  Describe and apply strategies for determining the surface area of a given right cylinder",
+    "9.7": "Determine the volume of a given right prism, given the area of the base",
+    "9.8": "Explain the connection between the area of the base of a given right 3-D objects and the formula for the volume of the object",
+    "9.9": "Generalize and apply a rule for determining the volume of right cylinders",
+    "9.10": "Demonstrate that the position of a given 3-D object does not affect its volume",
+    "9.11": "Apply a formula to solve a given problem involving the volume of a right cylinder or a right prism",
+    "3.1": "For problems involving percents greater than or equal to 0% Provide a context where a percent may be more than 100% or between 0% and 1%",
+    "3.2": "For problems involving percents greater than or equal to 0% Represent a given fractional percent using grid paper",
+    "3.3": "For problems involving percents greater than or equal to 0% Represent a given percent greater than 100 using grid paper",
+    "3.4": "For problems involving percents greater than or equal to 0% Determine the percent represented by a given shaded region on a grid and record it in decimal, fractional and percent form",
+    "3.5": "For problems involving percents greater than or equal to 0% Express a given percent in decimal or fractional form",
+    "3.6": "For problems involving percents greater than or equal to 0% Express a given decimal in percent or fractional form",
+    "3.7": "For problems involving percents greater than or equal to 0% Express a given fraction in decimal or percent form",
+    "6.1": "For problems involving percents greater than or equal to 0% Solve a given problem involving percents",
+    "6.2": "For problems involving percents greater than or equal to 0% Solve a given problem involving combined percents",
+    "6.3": "For problems involving percents greater than or equal to 0% Solve a given problem that involves finding the percent of a percent",
+    "3.8": "Express a two-term ratio from a given context in the forms 3:5 or 3 to 5",
+    "3.9": "Express a three-term ratio from a given context in the forms 4:7:3 or 4 to 7 to 3",
+    "3.10": "Express a part-to-part ratio as a part-to whole fraction",
+    "3.11": "Express a given ratio as a percent",
+    "3.13": "Explain the meaning of   within a given context",
+    "3.15": "Provide a context in which a/b represents a ratio",
+    "3.12": "Identify and describe ratios from real-life examples, and record them symbolically",
+    "6.28": "Solve a given problem involving ratio",
+    "3.16": "Express a given rate using words or symbols, e.g., 20L per 100 km or 20 L/100 km",
+    "3.17": "Identify and describe rates from real-life examples, and record them symbolically",
+    "3.14": "Provide a context in which  represents a rate",
+    "3.18": "Explain why a rate cannot be represented as a percent",
+    "6.29": "Solve a given problem involving rates",
+    "8.1": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers.  Model a given problem with a linear equation and solve the equa",
+    "8.2": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers   Draw a visual representation of the steps used to",
+    "8.3": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers.  Verify the solution to a given linear equation using a variety",
+    "8.4": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers.  Solve a given linear equation symbolically.",
+    "8.5": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers.  Apply the distributive property to solve a given linear equatio",
+    "8.6": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers.                 Identify and correct an error in a given incorre",
+    "8.7": "For problems that can be represented by linear equations of the form:  • ax = b  •  = b, a ≠ 0  • ax + b = c  •  + b = c, a ≠ 0  • a(x + b) = c  where a, b and c are integers.  Solve a given problem using a linear equation and record the pr",
+    "7.2": "Create a table of values by substituting values for a variable in the equation of a given linear relation",
+    "7.3": "Determine the missing value in an ordered pair for a given equation",
+    "7.4": "Construct a graph from the equation of a given linear relation (limited to discrete data)",
+    "7.1": "Describe the relationship between the variables in a given graph",
+    "11.1": "Compare the information that is provided for the same data set by a given set of graphs, including circle graphs, line graphs, bar graphs, double bar graphs and pictographs, to determine the strengths and limitations of each graph",
+    "11.2": "Identify the advantages and disadvantages of different graphs, including circle graphs, line graphs, bar graphs, double bar graphs and pictographs, in representing a specific given set of data",
+    "11.3": "Justify the choice of a graphical representation for a given situation and its corresponding data set",
+    "11.4": "Explain how the format of a given graph, such as the size of the intervals, the width of bars and the visual representation, may lead to misinterpretation of the data",
+    "11.5": "Explain how a given formatting choice could misrepresent the data",
+    "11.6": "Identify conclusions that are inconsistent with a given data set or graph and explain the misinterpretation",
+    "12.1": "Determine the probability of two given independent events and verify the probability using a different strategy",
+    "12.2": "Provide a context in which  represents a probability",
+    "12.3": "Generalize and apply a rule for determining the probability of independent events",
+    "12.4": "Solve a given problem that involves determining the probability of independent events",
+    "10.15": "Draw and label the top, front and side views for a given 3-D object on isometric dot paper",
+    "10.9": "Compare different views of a given 3-D object to the object",
+    "10.10": "Predict the top, front and side views that will result from a described rotation (limited to multiples of 90) and verify predictions",
+    "10.16": "Draw and label the top, front and side views that result from a described rotation (limited to multiples of 90 degrees)",
+    "10.17": "Build a 3-D block object, given the top, front and side views, with or without the use of technology",
+    "10.18": "Sketch and label the top, front and side views of a 3-D object in the environment with or without the use of technology",
+    "10.4": "Identify, in a given set of regular polygons, those shapes and combinations of shapes that will tessellate, and use angle measurements to justify choices",
+    "10.5": "Identify, in a given set of irregular polygons, those shapes and combinations of shapes that will tessellate, and use angle measurements to justify choices",
+    "10.6": "Identify and describe tessellations in the environment.",
+    "10.7": "Identify a translation, reflection or rotation in a given tessellation",
+    "10.8": "Identify a combination of transformations in a given tessellation",
+    "10.13": "Create a tessellation using one or more 2-D shapes, and describe the tessellation in terms of transformations and conservation of area",
+    "10.14": "Create a new tessellating shape (polygon or non-polygon) by transforming a portion of a given tessellating polygon and describe the resulting tessellation in terms of transformations and conservation of area"
+  },
+
+  /* Unit to indicator map verbatim from the standalone app
+     (UNIT_IND at line 654): 109 placements over the
+     109 codes; it agrees exactly with the codes the bank
+     entries themselves carry at each placement. */
+  unitInd: {
+    "1": ["3.19", "3.20", "5.2", "5.1", "5.3", "6.30", "6.31", "6.32", "6.33", "9.1", "9.12", "9.2", "9.13", "9.14"],
+    "2": ["6.17", "6.18", "6.19", "6.20", "6.21", "6.22", "6.23", "6.24", "6.25", "6.26", "6.27"],
+    "3": ["6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13", "6.14", "6.15", "6.16"],
+    "4": ["10.1", "10.11", "10.2", "10.12", "10.3", "9.3", "9.4", "9.5", "9.6", "9.7", "9.8", "9.9", "9.10", "9.11"],
+    "5": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "6.1", "6.2", "6.3", "3.8", "3.9", "3.10", "3.11", "3.13", "3.15", "3.12", "6.28", "3.16", "3.17", "3.14", "3.18", "6.29"],
+    "6": ["8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "7.2", "7.3", "7.4", "7.1"],
+    "7": ["11.1", "11.2", "11.3", "11.4", "11.5", "11.6", "12.1", "12.2", "12.3", "12.4"],
+    "8": ["10.15", "10.9", "10.10", "10.16", "10.17", "10.18", "10.4", "10.5", "10.6", "10.7", "10.8", "10.13", "10.14"]
+  },
+
+  /* Presets: the standalone's three buttons (builder markup
+     lines 286 to 288) are "Mid-course review (Units 1 to 4)",
+     "Final review (Units 5 to 8)" and "All units"; their
+     handlers (lines 7788 to 7789) pass the level mix
+     [20, 60, 20] for mid and final and no mix change for All,
+     and the shell's All wiring selects every unit in the
+     course when the config carries no allUnits key, so All
+     needs no entry here. The face card names the final scope
+     "End-of-course review: Units 5 to 8" (refreshFace, line
+     5699), carried here as faceLabel; the mid face line
+     "Mid-course review: Units 1 to 4" (line 5698) is exactly
+     what the shell derives from the mid label, so mid needs
+     no faceLabel. */
+  presets: {
+    mid:   { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 4)" },
+    final: { units: [5, 6, 7, 8], mix: [20, 60, 20], label: "Final review (Units 5 to 8)", faceLabel: "End-of-course review (Units 5 to 8)" }
+  },
+
+  /* Staged hints: every entry in this bank carries a two-stage
+     hint (the standalone's E stores them as hint1 and hint2,
+     and its showHint reveals strategy, then first step; its
+     face card promises them, line 5706). The flag turns on
+     the shell's hint UI for this course: the Hint button and
+     hint box on practice questions, and the face card's
+     "a hint, " wording. */
+  hints: true,
+
+  /* Timer note (ruling 3 in the junior scoping): the
+     standalone's exam timer bar names the real exam's length
+     (line 6738) and its timer checkbox label carries the same
+     note (line 372). The shell composes the note from this
+     string in both spots. */
+  timerNote: "1 hour 30 minutes",
+
+  /* Sheet header strings (ruling 4 in the junior scoping): the
+     standalone's practice sheet header says "Show all your
+     work ..." where the senior chassis says "workings" (its
+     sheet header, line 6774). */
+  sheetWork: ["Show all your work in the space provided.", "Show all your work on your own paper."],
+
+  /* Exam blueprint, translated from the standalone app's
+     composer (composeExam, lines 6615 to 6661): every
+     multi-unit paper pools the whole selection at 35 marks,
+     18 selected response drawn at level targets [7, 10, 1]
+     (level totals [7, 21, 7] once the constructed-response
+     levels are counted) and 17 constructed response with the
+     Level 3 marks tried at [6, 5, 7] in that order. The
+     fallback's total key (35) is read by the shell composer's
+     expected-total check and by its short-paper check: the
+     standalone's examShortNow (line 6285) judges a multi-unit
+     paper short at SR under 18 or CR under 17, exactly
+     fallback.srCount and fallback.crMarks. No per-scope
+     blueprints: mid and final differ only in which units they
+     select. A unit test is the same composer's single-unit
+     paper: 25 marks, SR 11 (its own exact split is [4, 6, 1];
+     the shell guides unit tests at 20/60/20, as everywhere)
+     and CR 14 with the Level 3 marks tried at [5, 4, 6],
+     which the shell's unit-test window already matches. */
+  exam: {
+    fallback: { srCount: 18, crMarks: 17, levels: [7, 21, 7], crL3: [6, 5, 7], total: 35 }
+  },
+
+  unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Reference panels carried verbatim from the standalone app
+     (REF_HTML at line 5680): a panel for every one of the
+     eight units, and no always-on panel. */
+  panels: {
+    "1": "<b>Perfect squares:</b> a perfect square is a whole number times itself, like \\(6^{2} = 36\\); on grid paper it fills a square region with equal rows and columns.<br><b>Square roots:</b> \\(\\sqrt{n}\\) is the value that multiplies by itself to give \\(n\\), so \\(\\sqrt{36} = 6\\) because \\(6 \\times 6 = 36\\); only the factor that pairs with itself is the square root.<br><b>Estimating roots:</b> bracket the number between neighbouring perfect squares: if \\(49 < 60 < 64\\), then \\(7 < \\sqrt{60} < 8\\), and the closer square gives the better estimate.<br><b>Calculator values:</b> a root shown on a screen is rounded, since its decimal digits continue past the display, so its square is close to the starting number rather than exactly equal.<br><b>Pythagorean theorem:</b> in a right triangle, \\(a^{2} + b^{2} = c^{2}\\), where \\(a\\) and \\(b\\) are the legs and \\(c\\) is the hypotenuse; it applies to right triangles only.<br><b>Finding a side:</b> for the hypotenuse, add the squares of the legs and take the root; for a leg, subtract the known squares and take the root.<br><b>Testing and triples:</b> a triangle is right exactly when the two shorter squares add to the longest square; triples like 3, 4, 5 and 5, 12, 13, and their scaled copies, pass this test.",
+    "2": "<b>Sign rules for multiplying:</b> same signs give a positive product, different signs give a negative product: \\( (+)\\times(+)=+ \\), \\( (-)\\times(-)=+ \\), \\( (+)\\times(-)=- \\)<br>\n<b>Sign rules for dividing:</b> the same sign rules hold for quotients: \\( (-)\\div(-)=+ \\) and \\( (+)\\div(-)=- \\)<br>\n<b>Models:</b> red chips stand for negatives; removing groups is a negative action, so removing groups of red chips shows a negative times a negative<br>\n<b>Repeated change:</b> a change that repeats the same number of times is a product, such as a fall of \\(3\\) degrees each hour for \\(5\\) hours, \\((-3)\\times 5\\)<br>\n<b>Equal sharing:</b> a total split into equal parts is a quotient, such as \\((-36)\\div 6\\) for a total shared \\(6\\) ways<br>\n<b>Order of operations:</b> brackets first, then multiplication and division from left to right, then addition and subtraction from left to right<br>",
+    "3": "<b>Multiply fractions:</b> multiply the numerators and multiply the denominators, then reduce; cancel a numerator with a denominator first to keep numbers small.<br><b>Mixed numbers:</b> change to an improper fraction before multiplying or dividing, e.g. \\(2\\frac{1}{3} = \\frac{7}{3}\\).<br><b>Fraction of a fraction:</b> \"of\" means multiply, and an area model shows the overlap of the two shaded parts.<br><b>Divide fractions:</b> multiply by the reciprocal of the divisor (flip only the second fraction): \\(\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\times \\frac{d}{c}\\).<br><b>Estimating:</b> compare each fraction with 0, \\(\\frac{1}{2}\\) and 1; a product of two proper fractions is smaller than both, and dividing by a proper fraction gives a quotient larger than the dividend.<br><b>Order of operations:</b> brackets first, then multiplication and division, then addition and subtraction.<br>",
+    "4": "<b>Nets:</b> a net is a flat pattern of faces that folds into a 3-D object; a triangular prism net has 2 triangles and 3 rectangles, a cylinder net has 2 circles and 1 rectangle, and a rectangular prism net has 6 rectangles in 3 matching pairs.<br><b>Faces:</b> a right rectangular prism has 6 faces, a right triangular prism has 5 faces, and a right cylinder has 2 flat circular faces and 1 curved surface.<br><b>Surface area:</b> the total area of all faces, found by adding the face areas in the net; for a rectangular prism, \\(SA = 2(lw + lh + wh)\\).<br><b>Prisms:</b> for a triangular prism, add 2 triangular ends to the side rectangles: \\(SA = 2B + Ph\\), where \\(P\\) is the perimeter of one end.<br><b>Cylinders:</b> \\(SA = 2\\pi r^{2} + 2\\pi r h\\), where the curved side unrolls into a rectangle; use \\(\\pi = 3.14\\) for a decimal answer.<br><b>Volume:</b> for any right prism or cylinder, \\(V = \\text{base area} \\times \\text{height}\\); for a cylinder, \\(V = \\pi r^{2} h\\). Turning an object to a new position does not change its volume.<br>",
+    "5": "<b>Percent:</b> a comparison out of 100; percents can be under 1% or over 100% when a new amount is compared with an earlier whole.<br><b>Conversions:</b> percent to decimal, divide by 100; decimal to percent, multiply by 100; a fraction converts by dividing numerator by denominator, for example \\( \\frac{3}{4}=0.75=75\\% \\).<br><b>Percent problems:</b> part \\(=\\text{percent}\\times\\text{whole}\\); combined percents act in steps on the amount left, and a percent of a percent multiplies the two decimals.<br><b>Ratio:</b> a comparison of two amounts of the same kind, written \\(a:b\\); part-to-whole for the first term is \\( \\frac{a}{a+b} \\).<br><b>Rate:</b> a comparison of two different units, such as km/h; a unit rate has 1 as its second amount, and rates are compared by their unit rates.<br>",
+    "6": "<b>Solving equations:</b> use inverse operations on both sides to isolate the variable: undo additions by subtracting, and undo multiplications by dividing.<br><b>Forms:</b> \\(ax = b\\), \\(\\frac{x}{a} = b\\), \\(ax + b = c\\), \\(\\frac{x}{a} + b = c\\) and \\(a(x + b) = c\\), solved by undoing the steps in reverse order.<br><b>Distributive property:</b> \\(a(x + b) = ax + ab\\); the number outside the brackets multiplies every term inside.<br><b>Checking a solution:</b> substitute the value into the original equation; it is a solution only if the left side equals the right side.<br><b>Tables and graphs:</b> substitute \\(x\\) values into the equation to get \\(y\\) values, then plot the ordered pairs \\((x, y)\\) as separate points for discrete data.<br><b>Missing values:</b> an ordered pair on a relation satisfies its equation, so substitute the known coordinate and solve for the other.",
+    "7": "<b>Graph choice:</b> a line graph shows change over time, a circle graph shows shares of one whole, a bar graph compares categories, a double bar graph compares two groups inside each category, and a pictograph compares amounts with symbols.<br><b>Misleading formats:</b> an axis that does not start at zero, uneven axis intervals, 3-D effects, symbols of different sizes, and showing only a chosen part of the data can all misrepresent values.<br><b>Judging a graph:</b> compare bar heights, slice sizes and claims against the actual numbers; a majority means more than half.<br><b>Independent events:</b> events that do not affect each other; the probability that both happen is the product of their separate probabilities, \\(P(A \\text{ and } B) = P(A) \\times P(B)\\).<br><b>Drawing with replacement:</b> the item is put back, so the probabilities stay the same on the second draw.",
+    "8": "<b>Views:</b> top view shows which squares hold cubes; front view column heights are the tallest stack in each column; side view columns run front to back<br><b>Height maps:</b> each number is the stack height on that square; total cubes is the sum of all numbers; for a rotated object, turn the map first, then read the views<br><b>Tessellations:</b> shapes cover with no gaps and no overlaps; angles at every point add to exactly \\( 360° \\)<br><b>Interior angle</b> of a regular \\( n \\)-gon: \\( \\dfrac{(n-2) \\times 180°}{n} \\): triangle \\( 60° \\), square \\( 90° \\), pentagon \\( 108° \\), hexagon \\( 120° \\), octagon \\( 135° \\)<br><b>Single regular tessellators:</b> only shapes whose interior angle divides \\( 360° \\): triangles, squares, hexagons<br><b>Transformations:</b> translation is a slide, reflection a flip, rotation a turn; a glide reflection is a flip combined with a slide; moving a piece between paired sides keeps the fit and keeps area the same"
+  }
   }
 };
