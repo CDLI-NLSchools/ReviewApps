@@ -528,6 +528,136 @@ window.COURSES = {
   unitTest: { total: 25, sr: 25, cr: 0 }
 },
 
+"sci-1206": {
+  id: "sci-1206",
+  title: "Science 1206 Review: Practice Question Bank",
+  shortName: "Science 1206",
+  storagePrefix: "sci1206",
+  reportName: "Science 1206",
+  language: "en",
+  bankFile: "sci-1206.js",
+  subject: "Science",
+  grade: 10,
+  listed: true,
+
+  units: {
+    1: "Weather Dynamics",
+    2: "Chemical Reactions",
+    3: "Motion",
+    4: "Sustainability of Ecosystems"
+  },
+
+  /* The 25 Knowledge indicators from the supplied indicator list
+     (Science_1206_Units_Indicators.xlsx), tagged with their full
+     SC10 codes. The 27 STSE indicators in the same list are a named
+     later tranche and are not registered at launch (Jason's ruling,
+     Nov 12, 2026). Tagging follows the spreadsheet's unit
+     assignment, not the number series: the 8.x Knowledge series is
+     shared, 8.1 to 8.6 in Unit 2 (Chemical Reactions) and 8.7 to
+     8.12 in Unit 3 (Motion). One gap is on record: the guide's
+     numbering contains an SC10.9.2 (cross-referenced once inside
+     SC10.9.1's elaboration) with no stated wording in the guide or
+     the spreadsheet; it is an STSE code, so it falls in the later
+     tranche, and no wording has been invented for it. */
+  indicators: {
+    "SC10.6.1": "Heat Sinks: the Hydrosphere and Atmosphere",
+    "SC10.6.2": "Heat Transfer in the Water Cycle",
+    "SC10.6.3": "Heat Transfer and Currents",
+    "SC10.6.4": "Weather Systems: Development, Severity and Movement",
+    "SC10.6.5": "Analyzing Meteorological Data and Predicting Weather",
+    "SC10.8.1": "Naming and Writing Formulas for Compounds",
+    "SC10.8.2": "Balanced Equations and Conservation of Mass",
+    "SC10.8.3": "Classifying Chemical Reactions",
+    "SC10.8.4": "Acids, Bases and Salts",
+    "SC10.8.5": "Neutralization",
+    "SC10.8.6": "Factors Affecting Reaction Rate",
+    "SC10.8.7": "Motion Variables, Quantitatively",
+    "SC10.8.8": "Displacement, Velocity and Time: Mathematics",
+    "SC10.8.9": "Graphing Uniform Motion",
+    "SC10.8.10": "Instantaneous and Average Velocity",
+    "SC10.8.11": "Graphing Non-Uniform Motion",
+    "SC10.8.12": "Velocity, Time and Acceleration",
+    "SC10.10.1": "Similar Ecosystems in Different Locations",
+    "SC10.10.2": "Population Equilibrium and Resource Limits",
+    "SC10.10.3": "Cycling of Matter: Carbon, Nitrogen and Oxygen",
+    "SC10.10.4": "Soil Composition and Fertility",
+    "SC10.10.5": "Bioaccumulation and Trophic Levels",
+    "SC10.10.6": "Impact of External Factors on Ecosystems",
+    "SC10.10.7": "Biodiversity and Sustainability",
+    "SC10.10.8": "Ecosystem Responses to Stress and Change"
+  },
+
+  unitInd: {
+    1: ["SC10.6.1", "SC10.6.2", "SC10.6.3", "SC10.6.4", "SC10.6.5"],
+    2: ["SC10.8.1", "SC10.8.2", "SC10.8.3", "SC10.8.4", "SC10.8.5", "SC10.8.6"],
+    3: ["SC10.8.7", "SC10.8.8", "SC10.8.9", "SC10.8.10", "SC10.8.11", "SC10.8.12"],
+    4: ["SC10.10.1", "SC10.10.2", "SC10.10.3", "SC10.10.4", "SC10.10.5", "SC10.10.6", "SC10.10.7", "SC10.10.8"]
+  },
+
+  /* Staged hints: bank entries carry one hint stage each. */
+  hints: true,
+
+  /* Exam design (Jason's rulings, Nov 12, 2026, with the same-day
+     correction to the final scope). Science 1206 has no published
+     Table of Specifications and no provincial exam framework, so no
+     official level blueprint exists: levels are assigned by
+     judgement against the Levels of Questioning definitions and the
+     distribution is reported in the build record. The composition
+     pattern is taken from the school final examinations (Holy Heart
+     comprehensive finals): each unit contributes 10 selected
+     response items and 10 constructed response marks on a paper.
+     The mid preset covers Units 1 and 2 (the mid-course exam's
+     place in the syllabus sequence) and the final preset covers
+     Units 3 and 4, the second half of the course, following the
+     house pattern of the other review apps; the comprehensive
+     finals remain background evidence only. Per-unit level totals
+     are the build's judgement-based targets: 3 marks at Level 1,
+     9 at Level 2 and 8 at Level 3 in each unit of a paper (the
+     unit's constructed response carries 4 of its Level 2 marks and
+     6 of its Level 3 marks). Any other multi-unit selection uses
+     the pooled fallback (30 selected response, 20 constructed
+     response marks). A single unit composes a 25-mark unit test,
+     15 selected response and 10 constructed response, matching the
+     two-part shape of the school unit tests. */
+  presets: {
+    mid:   { units: [1, 2], label: "Mid-course review (Units 1 and 2)" },
+    final: { units: [3, 4], label: "Final review (Units 3 and 4)" }
+  },
+
+  exam: {
+    mid: {
+      units: [1, 2], total: 40, srCount: 20, crMarks: 20,
+      perUnit: {
+        1: { sr: 10, cr: 10, levels: [3, 9, 8] },
+        2: { sr: 10, cr: 10, levels: [3, 9, 8] }
+      }
+    },
+    final: {
+      units: [3, 4], total: 40, srCount: 20, crMarks: 20,
+      perUnit: {
+        3: { sr: 10, cr: 10, levels: [3, 9, 8] },
+        4: { sr: 10, cr: 10, levels: [3, 9, 8] }
+      }
+    },
+    fallback: { total: 50, srCount: 30, crMarks: 20 }
+  },
+
+  /* Shown with the pool information whenever the final scope is selected. */
+  finalNote: "Note: the final exam covers the second half of the course, Units 3 and 4, and this preset's pool matches that scope. Science 1206 has no published Table of Specifications, so this preset composes each unit with 10 selected-response items and 10 constructed-response marks, the per-unit pattern of the school final examinations, with levels assigned by judgement.",
+
+  unitTest: { total: 25, sr: 15, cr: 10 },
+
+  /* Reference panels matching what the real papers put in students'
+     hands: the Chemistry unit writes with the periodic table and a
+     list of ions (the Science 1206 Data Tables), and the Motion unit
+     writes with a formula list (the Physics Formula List ships with
+     the school finals). */
+  panels: {
+    "2": "<b>Periodic table (elements used in this unit):</b> H 1.01, He 4.00, Li 6.94, Be 9.01, B 10.81, C 12.01, N 14.01, O 16.00, F 19.00, Ne 20.18, Na 22.99, Mg 24.31, Al 26.98, Si 28.09, P 30.97, S 32.07, Cl 35.45, K 39.10, Ca 40.08, Mn 54.94, Fe 55.85, Cu 63.55, Zn 65.39, Br 79.90, Ag 107.87, Sn 118.71, I 126.90, Ba 137.33, Pb 207.20.<br><b>Common positive ions:</b> H<sup>+</sup>, Li<sup>+</sup>, Na<sup>+</sup>, K<sup>+</sup>, Ag<sup>+</sup>, NH<sub>4</sub><sup>+</sup>; Mg<sup>2+</sup>, Ca<sup>2+</sup>, Ba<sup>2+</sup>, Zn<sup>2+</sup>, Fe<sup>2+</sup>, Cu<sup>2+</sup>, Pb<sup>2+</sup>, Sn<sup>2+</sup>, Mn<sup>2+</sup>; Al<sup>3+</sup>, Fe<sup>3+</sup>; Cu<sup>+</sup>, Pb<sup>4+</sup>, Sn<sup>4+</sup> (the last four are the second charges of multivalent metals: use the charge the name states, as in iron(II) or iron(III)).<br><b>Common negative ions:</b> F<sup>-</sup>, Cl<sup>-</sup>, Br<sup>-</sup>, I<sup>-</sup>, OH<sup>-</sup>, NO<sub>3</sub><sup>-</sup>, HCO<sub>3</sub><sup>-</sup>, CH<sub>3</sub>COO<sup>-</sup>; O<sup>2-</sup>, S<sup>2-</sup>, CO<sub>3</sub><sup>2-</sup>, SO<sub>4</sub><sup>2-</sup>; N<sup>3-</sup>, PO<sub>4</sub><sup>3-</sup>.<br><b>Formulas:</b> balance the total positive and negative charges to zero; write the cation first; use brackets around a polyatomic ion only when more than one of it is needed, as in Ca(OH)<sub>2</sub>. Molecular compounds use prefixes (mono, di, tri, tetra, penta) and the first element keeps its name while the second ends in -ide.",
+    "3": "<b>Motion formulas:</b> average speed \\(= \\frac{\\text{total distance}}{\\text{total time}}\\); average velocity \\(\\bar{v} = \\frac{\\Delta d}{\\Delta t}\\) (displacement divided by time, with direction); for uniform motion \\(\\Delta d = \\bar{v}\\,\\Delta t\\); acceleration \\(a = \\frac{\\Delta v}{\\Delta t} = \\frac{v_f - v_i}{\\Delta t}\\), and rearranged, \\(v_f = v_i + a\\,\\Delta t\\).<br><b>Graphs:</b> the slope of a position-time (or distance-time) graph is the velocity; the slope of a velocity-time graph is the acceleration; the area under a velocity-time graph is the displacement.<br><b>Conversions:</b> km/h to m/s, divide by 3.6; m/s to km/h, multiply by 3.6. Scalars have size only (distance, speed, time); vectors have size and direction (displacement, velocity, acceleration).<br><b>Significant figures:</b> a calculated answer carries the same number of significant figures as the measurement with the fewest significant figures (for multiplication and division); round only at the last step."
+  }
+},
+
 "chem-3202": {
   id: "chem-3202",
   title: "Chemistry 3202 Review: Practice Question Bank",
