@@ -62,6 +62,238 @@ function fmtDF(n,d){return frNum(fmtF(n,d));}
    stays at the end of this file. */
 function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 
+/* Fonctions d'aide aux figures ajoutées le 12 novembre 2026 pour les
+   diagrammes de géométrie de Mathématiques 8 (unités 1, 4 et 8, plus
+   les entrées de comblement dans bank-fix.js). Chaque fonction reçoit
+   ses étiquettes de l'appelant, construites à partir des mêmes valeurs
+   tirées que le texte de la question, donc une étiquette ne peut jamais
+   contredire l'énoncé. Une étiquette « ? » marque l'inconnue. */
+function m8RectDiagSVG(w,h,labW,labH,labD){
+  var sc=Math.min(225/Math.max(w,1),140/Math.max(h,1));
+  var Wd=w*sc,Hd=h*sc,x0=(330-Wd)/2,y0=(215-Hd)/2;
+  var mx=x0+Wd/2,my=y0+Hd/2,pl=Math.sqrt(Hd*Hd+Wd*Wd)||1;
+  var ox=Hd/pl*17,oy=Wd/pl*17;
+  var s='<svg viewBox="0 0 330 215" width="330" height="215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : rectangle avec sa diagonale">';
+  s+='<rect x="'+fmt(x0,1)+'" y="'+fmt(y0,1)+'" width="'+fmt(Wd,1)+'" height="'+fmt(Hd,1)+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+fmt(x0,1)+'" y1="'+fmt(y0+Hd,1)+'" x2="'+fmt(x0+Wd,1)+'" y2="'+fmt(y0,1)+'" stroke="'+FIG_ACC+'" stroke-width="2.4"/>';
+  s+=_txt(mx,y0+Hd+18,labW,13,false);
+  s+=_txt(x0-18,my,labH,13,false);
+  s+=_txt(mx-ox,my-oy,labD,14,true);
+  return s+'</svg>';
+}
+function m8SquareAreaSVG(labArea){
+  var s='<svg viewBox="0 0 330 195" width="330" height="195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : carré avec son aire indiquée">';
+  s+='<rect x="100" y="25" width="130" height="130" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(165,90,labArea,15,true);
+  s+=_txt(165,173,"?",14,true);
+  return s+'</svg>';
+}
+function m8GridDistSVG(x1,y1,x2,y2){
+  var xm=x2+1,ym=y2+1,cell=Math.min(230/Math.max(xm,1),165/Math.max(ym,1));
+  var ox=45,oy=195;
+  function X(v){return ox+v*cell;} function Y(v){return oy-v*cell;}
+  var s='<svg viewBox="0 0 320 225" width="320" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : deux points sur un quadrillage joints par une ligne droite">';
+  for(var i=0;i<=xm;i++){s+='<line x1="'+fmt(X(i),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(i),1)+'" y2="'+fmt(Y(ym),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1.2"/>';}
+  for(var j=0;j<=ym;j++){s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(j),1)+'" x2="'+fmt(X(xm),1)+'" y2="'+fmt(Y(j),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1.2"/>';}
+  s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(xm),1)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(0),1)+'" y2="'+fmt(Y(ym),1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<line x1="'+fmt(X(x1),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y1),1)+'" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="'+fmt(X(x2),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y2),1)+'" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="'+fmt(X(x1),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y2),1)+'" stroke="'+FIG_ACC+'" stroke-width="2.4"/>';
+  s+='<circle cx="'+fmt(X(x1),1)+'" cy="'+fmt(Y(y1),1)+'" r="3.6" fill="'+FIG_INK+'"/>';
+  s+='<circle cx="'+fmt(X(x2),1)+'" cy="'+fmt(Y(y2),1)+'" r="3.6" fill="'+FIG_INK+'"/>';
+  s+=_txt(X(x1)-4,Y(y1)+18,"("+x1+", "+y1+")",11.5,true);
+  s+=_txt(X(x2)+6,Y(y2)-14,"("+x2+", "+y2+")",11.5,true);
+  s+=_txt((X(x1)+X(x2))/2-13,(Y(y1)+Y(y2))/2-10,"?",14,true);
+  return s+'</svg>';
+}
+function m8TwoLaddersSVG(foot,h1,h2,lab1,lab2,labFoot){
+  var sc=Math.min(118/Math.max(h2,1),185/Math.max(foot,1));
+  var ox=92,oy=172,fx=ox+foot*sc,t1=oy-h1*sc,t2=oy-h2*sc;
+  var s='<svg viewBox="0 0 330 200" width="330" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : deux échelles appuyées contre un mur à partir de la même distance">';
+  s+='<line x1="'+ox+'" y1="'+fmt(t2-16,1)+'" x2="'+ox+'" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="3"/>';
+  s+='<line x1="66" y1="'+oy+'" x2="'+fmt(fx+22,1)+'" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polyline points="'+(ox+11)+','+oy+' '+(ox+11)+','+(oy-11)+' '+ox+','+(oy-11)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  s+='<line x1="'+ox+'" y1="'+fmt(t1,1)+'" x2="'+fmt(fx,1)+'" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  s+='<line x1="'+ox+'" y1="'+fmt(t2,1)+'" x2="'+fmt(fx,1)+'" y2="'+oy+'" stroke="'+FIG_ALT+'" stroke-width="2.2"/>';
+  s+=_txt((ox+fx)/2+16,(t1+oy)/2+7,lab1,12.5,false);
+  s+=_txt((ox+fx)/2+16,(t2+oy)/2-9,lab2,12.5,false);
+  s+=_txt((ox+fx)/2,oy+17,labFoot,12.5,false);
+  return s+'</svg>';
+}
+function m8BoxLabSVG(labL,labW,labH,open){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : prisme droit à base rectangulaire">';
+  s+='<polygon points="70,75 120,37 230,37 180,75" fill="'+(open?"none":FIG_SHADE)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="180,75 230,37 230,117 180,155" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="70" y="75" width="110" height="80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(!open){s+='<line x1="120" y1="37" x2="120" y2="117" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';}
+  if(labL){s+=_txt(125,172,labL,13,false);}
+  if(labH){s+=_txt(56,115,labH,13,false);}
+  if(labW){s+=_txt(212,26,labW,13,false);}
+  return s+'</svg>';
+}
+function m8CylLabSVG(labTop,labH,useD,open){
+  var s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : cylindre droit">';
+  s+='<ellipse cx="150" cy="52" rx="56" ry="16" fill="'+(open?"none":FIG_SHADE)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 94 52 L 94 148 A 56 16 0 0 0 206 148 L 206 52" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labTop){
+    if(useD){s+='<line x1="94" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';s+=_txt(150,30,labTop,13,false);}
+    else{s+='<line x1="150" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';s+=_txt(178,40,labTop,13,false);}
+  }
+  if(labH){s+=_txt(224,104,labH,13,false);}
+  return s+'</svg>';
+}
+function m8CylBaseSVG(labBase,labH){
+  var s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : cylindre droit avec l’aire de sa base indiquée">';
+  s+='<ellipse cx="150" cy="52" rx="56" ry="16" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 94 52 L 94 148 A 56 16 0 0 0 206 148 L 206 52" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labBase){s+=_txt(150,52,labBase,11,true);}
+  if(labH){s+=_txt(224,104,labH,13,false);}
+  return s+'</svg>';
+}
+function m8TriPrismLabSVG(labA,labB,labL){
+  var s='<svg viewBox="0 0 310 190" width="310" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : prisme droit à base triangulaire">';
+  s+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  if(labB){s+=_txt(105,166,labB,13,false);}
+  if(labA){s+=_txt(44,110,labA,13,false);}
+  if(labL){s+=_txt(198,32,labL,13,false);}
+  return s+'</svg>';
+}
+function m8PrismBaseSVG(kind,labBase,labH){
+  if(kind==="cyl"){return m8CylBaseSVG(labBase,labH);}
+  if(kind==="rect"){
+    var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : prisme droit avec l’aire de sa base indiquée">';
+    s+='<polygon points="70,75 120,37 230,37 180,75" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="180,75 230,37 230,117 180,155" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="70" y="75" width="110" height="80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<line x1="120" y1="37" x2="120" y2="117" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    if(labBase){s+=_txt(150,56,labBase,11,true);}
+    if(labH){s+=_txt(56,115,labH,13,false);}
+    return s+'</svg>';
+  }
+  if(kind==="tri"){
+    var t='<svg viewBox="0 0 310 190" width="310" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : prisme droit à base triangulaire avec l’aire de sa base indiquée">';
+    t+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    t+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    if(labBase){t+=_txt(182,94,labBase,11,true);}
+    if(labH){t+=_txt(198,32,labH,13,false);}
+    return t+'</svg>';
+  }
+  var g='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : prisme droit avec l’aire de sa base indiquée">';
+  g+='<polygon points="115,72 195,57 210,137 130,157" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<polygon points="70,44 150,29 165,109 85,129" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="115" y1="72" x2="70" y2="44" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="195" y1="57" x2="150" y2="29" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="210" y1="137" x2="165" y2="109" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labBase){g+=_txt(163,108,labBase,11,true);}
+  if(labH){g+=_txt(84,44,labH,13,false);}
+  return g+'</svg>';
+}
+function m8NetAreaSVG(top,front,side){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : développement d’un prisme droit à base rectangulaire avec l’aire de chaque face indiquée">';
+  s+='<rect x="110" y="60" width="70" height="46" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="40" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="180" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="110" y="14" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="110" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="180" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(145,83,top+" cm²",11,true);
+  s+=_txt(145,37,front+" cm²",11,false);
+  s+=_txt(145,129,front+" cm²",11,false);
+  s+=_txt(75,83,side+" cm²",11,false);
+  s+=_txt(215,83,side+" cm²",11,false);
+  s+=_txt(215,129,top+" cm²",11,false);
+  return s+'</svg>';
+}
+function m8NetPlainSVG(kind,labR){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : développement à plat">';
+  if(kind==="rect"){
+    s+='<rect x="110" y="60" width="70" height="46" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="40" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="180" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="110" y="14" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="110" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="180" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else if(kind==="tri"){
+    s+='<rect x="30" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="96" y="70" width="66" height="44" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="162" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="96,70 162,70 129,30" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="96,114 162,114 129,154" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else if(kind==="cyl"){
+    s+='<rect x="80" y="62" width="140" height="56" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<circle cx="150" cy="34" r="26" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<circle cx="150" cy="146" r="26" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else if(kind==="inctri"){
+    s+='<rect x="30" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="96" y="70" width="66" height="44" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="162" y="70" width="66" height="44" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  } else {
+    s+='<rect x="80" y="62" width="140" height="56" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<circle cx="150" cy="34" r="26" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    if(labR){s+='<line x1="150" y1="34" x2="176" y2="34" stroke="'+FIG_INK+'" stroke-width="1.4"/>';s+=_txt(198,30,labR,12,false);}
+  }
+  return s+'</svg>';
+}
+function m8LayersSVG(labBase,labH,n){
+  var s='<svg viewBox="0 0 320 195" width="320" height="195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : prisme formé de couches empilées">';
+  s+='<polygon points="105,66 121,49 231,49 215,66" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  for(var i=0;i<n;i++){var y=66+i*17;s+='<rect x="105" y="'+y+'" width="110" height="17" fill="'+(i%2?FIG_SHADE:"none")+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';}
+  if(labBase){s+=_txt(160,66+n*17+18,labBase,12,true);}
+  if(labH){s+=_txt(252,66+n*17/2,labH,12.5,false);}
+  return s+'</svg>';
+}
+function m8TwoBaseSVG(labP,labQ){
+  var s='<svg viewBox="0 0 330 195" width="330" height="195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : deux prismes de même hauteur et de bases différentes">';
+  s+='<polygon points="34,78 48,61 102,61 88,78" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="34" y="78" width="54" height="72" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="88,78 102,61 102,133 88,150" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="168,78 182,61 290,61 276,78" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="168" y="78" width="108" height="72" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="276,78 290,61 290,133 276,150" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(68,40,"P",14,true);
+  s+=_txt(229,40,"Q",14,true);
+  if(labP){s+=_txt(68,168,labP,11.5,true);}
+  if(labQ){s+=_txt(229,168,labQ,11.5,true);}
+  return s+'</svg>';
+}
+function m8TanksSVG(sets,names){
+  var s='<svg viewBox="0 0 330 180" width="330" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : quatre réservoirs avec leurs dimensions">';
+  for(var i=0;i<4;i++){
+    var ox=i*82+6;
+    s+='<polygon points="'+(ox+8)+',70 '+(ox+20)+',54 '+(ox+72)+',54 '+(ox+60)+',70" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+='<rect x="'+(ox+8)+'" y="70" width="52" height="54" fill="none" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+='<polygon points="'+(ox+60)+',70 '+(ox+72)+',54 '+(ox+72)+',108 '+(ox+60)+',124" fill="none" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+=_txt(ox+40,36,names[i],10.5,true);
+    s+=_txt(ox+40,142,sets[i][0]+" × "+sets[i][1]+" × "+sets[i][2],9,false);
+    s+=_txt(ox+40,158,"cm",9,false);
+  }
+  return s+'</svg>';
+}
+function m8PolyRowSVG(items){
+  var cw=320/items.length;
+  var s='<svg viewBox="0 0 320 125" width="320" height="125" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : polygones réguliers">';
+  for(var i=0;i<items.length;i++){
+    var n=items[i][0],cx=cw*i+cw/2,cy=55,R=Math.min(30,cw/2-9),pts=[];
+    for(var k=0;k<n;k++){var t=-Math.PI/2+k*2*Math.PI/n;pts.push(fmt(cx+R*Math.cos(t),1)+","+fmt(cy+R*Math.sin(t),1));}
+    s+='<polygon points="'+pts.join(" ")+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    if(items[i][1]){s+=_txt(cx,106,items[i][1],12,false);}
+  }
+  return s+'</svg>';
+}
+function m8NotchSquareSVG(){
+  var s='<svg viewBox="0 0 280 170" width="280" height="170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme : tuile carrée avec une encoche triangulaire coupée d’un côté et le même triangle ajouté au côté opposé">';
+  s+='<polygon points="75,25 195,25 195,65 222,85 195,105 195,145 75,145 75,105 102,85 75,65" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  return s+'</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 8 (French) Unit 1 Square Roots and the Pythagorean Theorem question bank
 // Cut verbatim from the standalone bank source
@@ -118,7 +350,7 @@ E("u1-sqrt-perfect", 1, ["5.2"], 1, "gen", function(){
   var q=mcq(prompt, {t:String(r), fb:"Oui : "+r+" fois "+r+" égale "+n+"."}, opts,
     "Trouve le nombre qui, multiplié par lui-même, donne "+n+" : \\[ \\begin{aligned} "+r+" \\times "+r+" &= "+n+" \\\\ \\sqrt{"+n+"} &= "+r+" \\end{aligned} \\] La racine carrée est <b>"+r+"</b>.",
     {r:r, n:n, mode:mode});
-  if(r<=8){ q.figure=u1gridSVG(r); }
+  q.figure=u1gridSVG(r);
   return q;
 }, ["Pense au nombre qui, multiplié par lui-même, donne la valeur sous le signe de racine.", "Essaie les petits carrés dans l'ordre jusqu'à ce qu'un d'eux égale le nombre montré."]);
 
@@ -302,13 +534,13 @@ E("u1-is-right", 1, ["9.13"], 1, "gen", function(){
 
 E("u1-only-right", 1, ["9.2"], 1, "var", varset([
   function(){
-    return mcq("Un triangle a des côtés de 4 cm, 6 cm et 8 cm. Un élève utilise \\(4^{2} + 6^{2} = 8^{2}\\) pour trouver un côté et obtient une mauvaise réponse. Pourquoi la méthode a-t-elle échoué ?",
+    var q=mcq("Un triangle a des côtés de 4 cm, 6 cm et 8 cm. Un élève utilise \\(4^{2} + 6^{2} = 8^{2}\\) pour trouver un côté et obtient une mauvaise réponse. Pourquoi la méthode a-t-elle échoué ?",
       {t:"Le théorème fonctionne seulement pour les triangles rectangles, et ce triangle n'est pas rectangle", fb:"Exact : 16 + 36 donne 52, pas 64, donc le triangle n'a pas d'angle droit."},
       [{t:"L'élève a additionné les côtés dans le mauvais ordre pour appliquer le théorème de Pythagore à ce triangle", fb:"L'ordre de l'addition ne compte pas ici : le triangle lui-même est le problème."},
        {t:"Le théorème exige des côtés mesurés en mètres, pas en centimètres, pour fonctionner dans ce cas", fb:"Les unités ne limitent pas le théorème : la forme du triangle le fait."},
        {t:"L'élève aurait dû utiliser les deux côtés les plus longs comme cathètes", fb:"Échanger les côtés ne peut pas le corriger : le triangle n'est pas rectangle."}],
       "\\(4^{2} + 6^{2} = 52\\), alors que \\(8^{2} = 64\\). Les valeurs sont différentes, donc le triangle n'a pas d'angle droit, et le théorème ne s'applique pas. La méthode a échoué parce que <b>le théorème fonctionne seulement pour les triangles rectangles</b>.",
-      {mode:"not-right"});
+      {mode:"not-right"}); q.figure=triSVG(8,6,4,{L:["A","B","C"],side:["8 cm","6 cm","4 cm"]}); return q;
   },
   function(){
     return mcq("Quelle affirmation sur le théorème de Pythagore est correcte ?",
@@ -320,13 +552,13 @@ E("u1-only-right", 1, ["9.2"], 1, "var", varset([
       {mode:"statement"});
   },
   function(){
-    return mcq("Un triangle a des côtés de 5 cm, 5 cm et 9 cm. Un élève lui applique le test des carrés. Que montre le test ?",
+    var q=mcq("Un triangle a des côtés de 5 cm, 5 cm et 9 cm. Un élève lui applique le test des carrés. Que montre le test ?",
       {t:"Le test montre qu'il n'est pas rectangle, car 25 + 25 n'égale pas 81", fb:"Exact : le test lui-même montre que le triangle n'a pas d'angle droit."},
       [{t:"Le théorème ne peut pas servir, car deux côtés ont la même longueur", fb:"Des cathètes égales sont possibles dans un triangle rectangle : les carrés sont le test."},
        {t:"Le théorème ne peut pas servir, car les côtés sont des nombres impairs", fb:"Les côtés impairs sont possibles : 9, 12, 15 utilise des côtés impairs et est rectangle."},
        {t:"Le théorème ne peut pas servir, car le triangle est trop grand", fb:"La taille ne compte pas : seule la relation des carrés compte."}],
       "\\(5^{2} + 5^{2} = 50\\), alors que \\(9^{2} = 81\\). Comme les valeurs sont différentes, le triangle n'est pas rectangle, donc <b>le théorème ne s'applique pas à lui comme triangle rectangle</b>.",
-      {mode:"isosceles"});
+      {mode:"isosceles"}); q.figure=triSVG(9,5,5,{L:["A","B","C"],side:["9 cm","5 cm","5 cm"]}); return q;
   }
 ]), ["Teste d'abord la relation des carrés avant de faire confiance au théorème.", "Mets les deux côtés les plus courts au carré et compare avec le carré du côté le plus long."]);
 
@@ -335,9 +567,9 @@ E("u1-triple-find", 1, ["9.14"], 1, "gen", function(){
   var k=ri(2,5); var a=base[0]*k, b=base[1]*k, c=base[2]*k;
   var miss=pick(["a","b","c"]); var ans=(miss==="a")?a:(miss==="b")?b:c;
   var givenTxt=(miss==="a")?("une cathète de "+b+" cm et une hypoténuse de "+c+" cm"):((miss==="b")?("une cathète de "+a+" cm et une hypoténuse de "+c+" cm"):("des cathètes de "+a+" cm et "+b+" cm"));
-  return numq("Un triangle rectangle est une copie à l'échelle du triplet "+base[0]+", "+base[1]+", "+base[2]+", avec un facteur d'échelle de "+k+". Il a "+givenTxt+". Trouve la longueur du côté manquant, en centimètres.", ans, 0.01,
+  var q=numq("Un triangle rectangle est une copie à l'échelle du triplet "+base[0]+", "+base[1]+", "+base[2]+", avec un facteur d'échelle de "+k+". Il a "+givenTxt+". Trouve la longueur du côté manquant, en centimètres.", ans, 0.01,
     "Mets chaque côté du triplet à l'échelle par "+k+" : \\[ \\begin{aligned} "+base[0]+" \\times "+k+" &= "+a+" \\\\ "+base[1]+" \\times "+k+" &= "+b+" \\\\ "+base[2]+" \\times "+k+" &= "+c+" \\end{aligned} \\] Le côté manquant est <b>"+ans+" cm</b>.",
-    {base:base, k:k, miss:miss});
+    {base:base, k:k, miss:miss}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:[(miss==="c"?"?":c+" cm"),(miss==="b"?"?":b+" cm"),(miss==="a"?"?":a+" cm")]}); return q;
 }, ["Mettre un triplet à l'échelle par le même facteur garde un triplet.", "Multiplie chaque côté du triplet de base par le facteur d'échelle."]);
 
 E("u1-ladder-context", 1, ["9.12"], 1, "gen", function(){
@@ -380,9 +612,9 @@ E("u1-right-test-decide", 1, ["9.13"], 3, "gen", function(){
                {t:"Non, les côtés doivent différer", fb:"Les cathètes peuvent être égales dans certains triangles rectangles, et ici le test des carrés réussit."},
                {t:"Non, car un triplet mis à l'échelle ne compte pas", fb:"Mettre un triplet à l'échelle par "+ks+" garde la relation des carrés vraie."}];
     var sunit=pick(["cm","m"]);
-    return mcq("Un triangle a des côtés de "+sa+" "+sunit+", "+sb+" "+sunit+" et "+sc2+" "+sunit+". Un élève le teste en calculant \\("+sb+"^{2} + "+sa+"^{2}\\) et en le comparant avec \\("+sc2+"^{2}\\). Le triangle est-il rectangle ?", {t:"Oui, c'est un triangle rectangle", fb:"Exact : "+(sa*sa)+" + "+(sb*sb)+" égale "+(sc2*sc2)+"."}, optsS,
+    var q=mcq("Un triangle a des côtés de "+sa+" "+sunit+", "+sb+" "+sunit+" et "+sc2+" "+sunit+". Un élève le teste en calculant \\("+sb+"^{2} + "+sa+"^{2}\\) et en le comparant avec \\("+sc2+"^{2}\\). Le triangle est-il rectangle ?", {t:"Oui, c'est un triangle rectangle", fb:"Exact : "+(sa*sa)+" + "+(sb*sb)+" égale "+(sc2*sc2)+"."}, optsS,
       "Additionne les carrés des deux côtés les plus courts : \\[ \\begin{aligned} "+sa+"^{2} + "+sb+"^{2} &= "+(sa*sa+sb*sb)+" \\\\ "+sc2+"^{2} &= "+(sc2*sc2)+" \\end{aligned} \\] Les valeurs correspondent, donc le triangle <b>est un triangle rectangle</b>.",
-      {mode:"swap", a:sa, b:sb, c:sc2});
+      {mode:"swap", a:sa, b:sb, c:sc2}); q.figure=triSVG(sc2,sb,sa,{L:["A","B","C"],side:[sc2+" "+sunit,sb+" "+sunit,sa+" "+sunit]}); return q;
   }
   if(mode==="close-call"){
     var tr=pick([[6,8,10],[9,12,15],[12,16,20],[5,12,13],[8,15,17],[20,21,29]]);
@@ -395,19 +627,19 @@ E("u1-right-test-decide", 1, ["9.13"], 3, "gen", function(){
               {t:"Seulement avec une marque d'angle droit", fb:"Les longueurs seules décident : le test des carrés n'a pas besoin d'une marque de dessin."},
               {t:"On ne peut pas décider, presque un triplet", fb:"Presque peut se décider : les carrés correspondent exactement ou non."}];
     var cunit=pick(["m","cm"]);
-    return mcq("Un triangle a des côtés de "+a+" "+cunit+", "+b+" "+cunit+" et "+c+" "+cunit+". Un camarade dit qu'il doit être rectangle parce que ses côtés sont proches d'un triplet connu. Décide si c'est un triangle rectangle.", {t:ansTxt, fb:"Exact : "+(a*a)+" + "+(b*b)+" donne "+(a*a+b*b)+", et "+c+" au carré donne "+(c*c)+"."}, opts,
+    var q=mcq("Un triangle a des côtés de "+a+" "+cunit+", "+b+" "+cunit+" et "+c+" "+cunit+". Un camarade dit qu'il doit être rectangle parce que ses côtés sont proches d'un triplet connu. Décide si c'est un triangle rectangle.", {t:ansTxt, fb:"Exact : "+(a*a)+" + "+(b*b)+" donne "+(a*a+b*b)+", et "+c+" au carré donne "+(c*c)+"."}, opts,
       "Applique le test exactement : \\[ \\begin{aligned} "+a+"^{2} + "+b+"^{2} &= "+(a*a+b*b)+" \\\\ "+c+"^{2} &= "+(c*c)+" \\end{aligned} \\] "+(isR?"Les valeurs correspondent, donc c'est <b>un triangle rectangle</b>.":"Les valeurs ne correspondent pas, donc ce n'est <b>pas un triangle rectangle</b>, même s'il est proche d'un triplet."),
-      {mode:"close-call", a:a, b:b, c:c});
+      {mode:"close-call", a:a, b:b, c:c}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:[c+" "+cunit,b+" "+cunit,a+" "+cunit]}); return q;
   }
   var t2=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25]]);
   var kk2=ri(1,4); var a2=t2[0]*kk2, b2=t2[1]*kk2, c2=t2[2]*kk2;
   var opts2=[{t:"L'affirmation est fausse : le côté le plus long doit être mis au carré tout seul dans le test complet du théorème", fb:"Mettre un côté plus court au carré seul ne prouve rien sur le triangle."},
              {t:"L'affirmation est fausse : les côtés doivent être additionnés avant d'être mis au carré dans le test du théorème", fb:"Additionner d'abord donne une valeur différente, pas le test du théorème."},
              {t:"L'affirmation est juste : tout carré qui correspond prouve que le triangle a un angle droit dans ce test du théorème", fb:"Un seul carré qui correspond n'est pas le test : la somme doit correspondre."}];
-  return mcq("Pour tester si un triangle de côtés "+a2+", "+b2+" et "+c2+" est rectangle, un élève vérifie seulement que \\("+b2+"^{2} = "+(b2*b2)+"\\) et affirme que cela prouve un angle droit. Juge l'affirmation.",
+  var q=mcq("Pour tester si un triangle de côtés "+a2+", "+b2+" et "+c2+" est rectangle, un élève vérifie seulement que \\("+b2+"^{2} = "+(b2*b2)+"\\) et affirme que cela prouve un angle droit. Juge l'affirmation.",
     {t:"L'affirmation est fausse : les deux carrés les plus courts doivent s'additionner pour donner le carré le plus long", fb:"Exact : "+(a2*a2)+" + "+(b2*b2)+" égale "+(c2*c2)+", et c'est ce test complet qui le prouve."}, opts2,
     "Le test complet compare une somme avec le carré le plus long : \\[ \\begin{aligned} "+a2+"^{2} + "+b2+"^{2} &= "+(a2*a2)+" + "+(b2*b2)+" \\\\ &= "+(c2*c2)+" = "+c2+"^{2} \\end{aligned} \\] Un seul carré ne prouve rien. L'affirmation est <b>fausse : les deux carrés les plus courts doivent s'additionner pour donner le carré le plus long</b>.",
-    {mode:"claim", a:a2, b:b2, c:c2});
+    {mode:"claim", a:a2, b:b2, c:c2}); q.figure=triSVG(c2,b2,a2,{L:["A","B","C"],side:[c2+"",b2+"",a2+""]}); return q;
 }, ["Être proche d'un triplet n'est pas une preuve : les carrés doivent correspondre exactement.", "Calcule la somme des deux carrés les plus courts et le carré le plus long, puis compare."]);
 
 E("u1-best-estimate", 1, ["6.30"], 3, "gen", function(){
@@ -429,18 +661,18 @@ E("u1-diagonal-square", 1, ["9.12"], 3, "gen", function(){
   var s=ri(4,20);
   var diag=u1r1(s*Math.sqrt(2));
   var ctx=pick(["Un terrain de jardin carré à Corner Brook","Un champ carré près de Bay Roberts","Une patinoire carrée à Mount Pearl","Un tapis de classe carré dans une école de St. John's"]);
-  return numq(ctx+" a des côtés de "+s+" m. Une ligne va tout droit d'un coin au coin opposé. Trouve la longueur de cette ligne, avec une décimale, en mètres.", diag, 0.06,
+  var q=numq(ctx+" a des côtés de "+s+" m. Une ligne va tout droit d'un coin au coin opposé. Trouve la longueur de cette ligne, avec une décimale, en mètres.", diag, 0.06,
     "Le trajet est l'hypoténuse d'un triangle rectangle dont les deux cathètes égalent "+s+" : \\[ \\begin{aligned} d^{2} &= "+s+"^{2} + "+s+"^{2} \\\\ &= "+(s*s)+" + "+(s*s)+" \\\\ &= "+(2*s*s)+" \\\\ d &= \\sqrt{"+(2*s*s)+"} \\approx "+fmtD(diag)+" \\end{aligned} \\] Le trajet mesure <b>"+fmtD(diag)+" m</b>.",
-    {s:s});
+    {s:s}); q.figure=m8RectDiagSVG(s,s,s+" m",s+" m","?"); return q;
 }, ["Divise le carré le long du trajet : il devient un triangle rectangle avec deux cathètes égales.", "Mets le côté au carré, double-le, puis prends la racine carrée et arrondis."]);
 
 E("u1-square-plot-perimeter", 1, ["5.2"], 3, "gen", function(){
   var r=ri(5,20); var area=r*r; var per=4*r;
   var ctx=pick(["Un potager carré","Un dessus de courtepointe carré","Un bac à sable carré","Une photo imprimée carrée"]);
   var edge=pick(["Une clôture est placée autour de ses quatre côtés. Combien de mètres de clôture faut-il ?","Une bordure est cousue autour de ses quatre côtés. Combien de mètres de bordure faut-il ?","Une bordure est placée autour de ses quatre côtés. Combien de mètres de bordure faut-il ?","Un cadre fait le tour de ses quatre côtés. Combien de mètres de cadre faut-il ?"]);
-  return numq(ctx+" a une aire de "+area+" mètres carrés. "+edge, per, 0.01,
+  var q=numq(ctx+" a une aire de "+area+" mètres carrés. "+edge, per, 0.01,
     "Trouve d'abord la longueur du côté à partir de l'aire, puis le périmètre : \\[ \\begin{aligned} \\text{côté} &= \\sqrt{"+area+"} = "+r+" \\\\ \\text{périmètre} &= 4 \\times "+r+" \\\\ &= "+per+" \\end{aligned} \\] La longueur nécessaire est <b>"+per+" m</b>.",
-    {r:r, area:area});
+    {r:r, area:area}); q.figure=m8SquareAreaSVG(area+" m\u00B2"); return q;
 }, ["Le côté d'un carré est la racine carrée de son aire.", "Trouve d'abord la longueur du côté, puis multiplie par 4 pour les quatre côtés."]);
 
 /* ----- bank-u2.js ----- */
@@ -1632,9 +1864,9 @@ E("u4-faces-identify", 4, ["10.3"], 1, "gen", function(){
 E("u4-vol-base-times-height", 4, ["9.7"], 1, "gen", function(){
   var B=ri(8,60), h=ri(3,15);
   var obj=pick(["prisme droit","prisme droit à base triangulaire","prisme droit à base rectangulaire"]);
-  return numq("Un "+obj+" a une base d'aire "+B+" cm\\(^{2}\\) et une hauteur de "+h+" cm. Trouve son volume, en centimètres cubes.", B*h, 0.01,
+  var q=numq("Un "+obj+" a une base d'aire "+B+" cm\\(^{2}\\) et une hauteur de "+h+" cm. Trouve son volume, en centimètres cubes.", B*h, 0.01,
     "Le volume d'un prisme droit est l'aire de la base multipliée par la hauteur : \\[ \\begin{aligned} V &= B \\times h \\\\ &= "+B+" \\times "+h+" \\\\ &= "+(B*h)+" \\end{aligned} \\] Le volume est <b>"+(B*h)+" cm\\(^{3}\\)</b>.",
-    {mode:"base-height", B:B, h:h});
+    {mode:"base-height", B:B, h:h}); q.figure=m8PrismBaseSVG(obj==="prisme droit \u00E0 base triangulaire"?"tri":(obj==="prisme droit \u00E0 base rectangulaire"?"rect":"generic"), B+" cm\u00B2", h+" cm"); return q;
 }, ["Pour tout prisme droit, le volume est l'aire de la base multipliée par la hauteur.", "Multiplie l'aire de la base donnée par la hauteur donnée."]);
 
 E("u4-sa-from-net", 4, ["9.3"], 1, "gen", function(){
@@ -1647,10 +1879,10 @@ E("u4-sa-from-net", 4, ["9.3"], 1, "gen", function(){
     var fb=(d===once)?"Cela additionne chaque face différente une seule fois : chaque face d'un prisme a une face correspondante en face d'elle.":"Ce total compte une face deux fois de trop ou en oublie une : chacune des trois aires de faces doit apparaître exactement deux fois.";
     return {t:String(d), fb:fb};
   });
-  return mcq("Un développement d'un prisme droit à base rectangulaire a trois aires de faces différentes : "+top+" cm\\(^{2}\\) pour le dessus, "+front+" cm\\(^{2}\\) pour le devant et "+side+" cm\\(^{2}\\) pour le côté. Quelle est l'aire totale du prisme, en centimètres carrés ?",
+  var q=mcq("Un développement d'un prisme droit à base rectangulaire a trois aires de faces différentes : "+top+" cm\\(^{2}\\) pour le dessus, "+front+" cm\\(^{2}\\) pour le devant et "+side+" cm\\(^{2}\\) pour le côté. Quelle est l'aire totale du prisme, en centimètres carrés ?",
     {t:String(sa), fb:"Oui : chaque aire de face apparaît deux fois, une fois pour chaque côté du prisme."}, opts,
     "L'aire totale est l'aire totale des faces à deux dimensions du développement. Chaque face différente a une face identique en face d'elle : \\[ \\begin{aligned} AT &= 2("+top+"+"+front+"+"+side+") \\\\ &= 2("+once+") \\\\ &= "+sa+" \\end{aligned} \\] L'aire totale est <b>"+sa+" cm\\(^{2}\\)</b>.",
-    {mode:"net-areas", l:l, w:w, h:h});
+    {mode:"net-areas", l:l, w:w, h:h}); q.figure=m8NetAreaSVG(top,front,side); return q;
 }, ["L'aire totale est la somme des aires de toutes les faces planes du développement.", "Additionne les trois aires de faces différentes, puis double le total parce que chaque face a une face correspondante."]);
 
 E("u4-net-choose", 4, ["10.11"], 2, "gen", function(){
@@ -1675,31 +1907,31 @@ E("u4-net-choose", 4, ["10.11"], 2, "gen", function(){
 
 E("u4-net-predict", 4, ["10.2","10.1"], 1, "var", varset([
   function(){
-    return mcq("Un développement plat est formé de 2 triangles et de 3 rectangles joints bord à bord. Quel objet peut-on former en pliant ce développement ?",
+    var q=mcq("Un développement plat est formé de 2 triangles et de 3 rectangles joints bord à bord. Quel objet peut-on former en pliant ce développement ?",
       {t:"Prisme droit à base triangulaire", fb:"Oui : les triangles deviennent les extrémités et les rectangles s'enroulent autour pour former les côtés."},
       [{t:"Cylindre droit", fb:"Un développement de cylindre a besoin de cercles pour ses extrémités : ce développement n'en a aucun."},
        {t:"Prisme droit à base rectangulaire", fb:"Un prisme rectangulaire a seulement des faces rectangulaires : les 2 triangles l'excluent."},
        {t:"Pyramide à base carrée", fb:"Une pyramide a une base et des côtés triangulaires qui se rejoignent en un point : ces rectangles forment des côtés à la place."}],
       "Les 2 triangles deviennent les deux extrémités, et les 3 rectangles se plient autour pour les joindre. L'objet est un <b>prisme droit à base triangulaire</b>.",
-      {mode:"static-tri-net"});
+      {mode:"static-tri-net"}); q.figure=m8NetPlainSVG("tri",null); return q;
   },
   function(){
-    return mcq("Un développement plat est formé d'un long rectangle avec un cercle joint à un long bord et un cercle correspondant joint à l'autre long bord. Quel objet peut-on former en pliant et en roulant ce développement ?",
+    var q=mcq("Un développement plat est formé d'un long rectangle avec un cercle joint à un long bord et un cercle correspondant joint à l'autre long bord. Quel objet peut-on former en pliant et en roulant ce développement ?",
       {t:"Cylindre droit", fb:"Oui : le rectangle s'enroule pour former le côté courbé et les cercles ferment les extrémités."},
       [{t:"Prisme droit à base triangulaire", fb:"Un prisme triangulaire a besoin d'extrémités triangulaires : ce développement a des cercles à la place."},
        {t:"Prisme droit à base rectangulaire", fb:"Un prisme rectangulaire est formé seulement de rectangles : les cercles l'excluent."},
        {t:"Pyramide à base carrée", fb:"Une pyramide a des côtés triangulaires qui se rejoignent en un point : rien ici ne se plie en un point."}],
       "Le long rectangle s'enroule pour former un côté courbé, et les deux cercles deviennent le dessus et le dessous. L'objet est un <b>cylindre droit</b>.",
-      {mode:"static-cyl-net"});
+      {mode:"static-cyl-net"}); q.figure=m8NetPlainSVG("cyl",null); return q;
   },
   function(){
-    return mcq("Un développement plat est formé de 6 rectangles disposés en forme de croix, qui forment 3 paires correspondantes. Quel objet peut-on former en pliant ce développement ?",
+    var q=mcq("Un développement plat est formé de 6 rectangles disposés en forme de croix, qui forment 3 paires correspondantes. Quel objet peut-on former en pliant ce développement ?",
       {t:"Prisme droit à base rectangulaire", fb:"Oui : les 3 paires deviennent le devant et le dos, les côtés, et le dessus et le dessous."},
       [{t:"Cylindre droit", fb:"Un développement de cylindre a besoin de cercles pour ses extrémités : ce développement n'en a aucun."},
        {t:"Prisme droit à base triangulaire", fb:"Un prisme triangulaire a besoin de 2 faces triangulaires : chaque pièce ici est un rectangle."},
        {t:"Pyramide à base carrée", fb:"Une pyramide a besoin de faces triangulaires qui se rejoignent en un point : ces rectangles se plient en forme de boîte."}],
       "Six rectangles en 3 paires correspondantes se plient pour former les faces opposées d'une forme de boîte. L'objet est un <b>prisme droit à base rectangulaire</b>.",
-      {mode:"static-rect-net"});
+      {mode:"static-rect-net"}); q.figure=m8NetPlainSVG("rect",null); return q;
   }
 ]), ["Trie d'abord les formes plates : les triangles, les rectangles et les cercles pointent chacun vers un solide différent.", "Fais correspondre les formes des extrémités du développement aux extrémités de l'objet qu'il formera."]);
 
@@ -1707,52 +1939,52 @@ E("u4-net-build-parts", 4, ["10.12"], 1, "gen", function(){
   var mode=pick(["tri","cyl","rect","incomplete-tri","incomplete-cyl"]);
   if(mode==="tri"){
     var Lt=ri(5,18), at=ri(3,12), bt=ri(3,12);
-    return mcq("Ren découpe des pièces plates pour construire un prisme droit à base triangulaire à partir d'un développement. Le prisme mesure "+Lt+" cm de long et ses extrémités triangulaires ont des cathètes de "+at+" cm et de "+bt+" cm. De quel ensemble de pièces le développement a-t-il besoin ?",
+    var q=mcq("Ren découpe des pièces plates pour construire un prisme droit à base triangulaire à partir d'un développement. Le prisme mesure "+Lt+" cm de long et ses extrémités triangulaires ont des cathètes de "+at+" cm et de "+bt+" cm. De quel ensemble de pièces le développement a-t-il besoin ?",
       {t:"2 triangles et 3 rectangles", fb:"Oui : des triangles pour les deux extrémités et des rectangles pour les trois côtés."},
       [{t:"2 triangles et 4 rectangles", fb:"C'est un rectangle de trop : un prisme triangulaire a seulement 3 côtés rectangulaires."},
        {t:"3 triangles et 2 rectangles", fb:"Les comptes sont inversés : ce prisme a 2 extrémités et 3 côtés."},
        {t:"2 cercles et 3 rectangles", fb:"Les cercles appartiennent au développement d'un cylindre : ce prisme a des extrémités triangulaires."}],
       "Un prisme droit à base triangulaire a 2 extrémités triangulaires et 3 côtés rectangulaires, donc son développement a besoin de <b>2 triangles et 3 rectangles</b>.",
-      {mode:"tri-parts"});
+      {mode:"tri-parts"}); q.figure=m8TriPrismLabSVG(at+" cm",bt+" cm",Lt+" cm"); return q;
   }
   if(mode==="cyl"){
     var rc=ri(2,10), hc=ri(4,16);
-    return mcq("Sofia découpe des pièces plates pour construire un cylindre droit à partir d'un développement. Le cylindre a un rayon de "+rc+" cm et une hauteur de "+hc+" cm. De quel ensemble de pièces le développement a-t-il besoin ?",
+    var q=mcq("Sofia découpe des pièces plates pour construire un cylindre droit à partir d'un développement. Le cylindre a un rayon de "+rc+" cm et une hauteur de "+hc+" cm. De quel ensemble de pièces le développement a-t-il besoin ?",
       {t:"2 cercles et 1 rectangle", fb:"Oui : le rectangle s'enroule pour former le côté courbé et les cercles ferment les extrémités."},
       [{t:"2 cercles et 2 rectangles", fb:"Un seul rectangle suffit pour le côté courbé : un deuxième n'a nulle part où se plier."},
        {t:"1 cercle et 1 rectangle", fb:"Un cylindre a deux extrémités rondes, le dessus et le dessous : un seul cercle laisse une extrémité ouverte."},
        {t:"2 triangles et 1 rectangle", fb:"Les triangles appartiennent au développement d'un prisme : un cylindre a des extrémités rondes à la place."}],
       "Un cylindre droit a 2 extrémités circulaires et 1 côté courbé qui se déroule en un rectangle, donc son développement a besoin de <b>2 cercles et 1 rectangle</b>.",
-      {mode:"cyl-parts"});
+      {mode:"cyl-parts"}); q.figure=u4cylSVG(rc,hc,false); return q;
   }
   if(mode==="rect"){
     var lr=ri(4,15), wr=ri(3,12), hr=ri(2,10);
-    return mcq("Marcus découpe des pièces plates pour construire un prisme droit à base rectangulaire à partir d'un développement. Le prisme mesure "+lr+" cm de long, "+wr+" cm de large et "+hr+" cm de haut. De quel ensemble de pièces le développement a-t-il besoin ?",
+    var q=mcq("Marcus découpe des pièces plates pour construire un prisme droit à base rectangulaire à partir d'un développement. Le prisme mesure "+lr+" cm de long, "+wr+" cm de large et "+hr+" cm de haut. De quel ensemble de pièces le développement a-t-il besoin ?",
       {t:"6 rectangles en 3 paires correspondantes", fb:"Oui : chaque paire forme deux faces opposées du prisme."},
       [{t:"6 rectangles tous de la même taille", fb:"Six rectangles égaux formeraient un cube : un prisme rectangulaire général a 3 paires différentes."},
        {t:"4 rectangles et 2 carrés de la même taille", fb:"Cet ensemble fonctionne seulement pour un prisme spécial : le développement complet est 6 rectangles en paires."},
        {t:"5 rectangles et 1 triangle", fb:"Un prisme rectangulaire n'a aucune face triangulaire."}],
       "Un prisme droit à base rectangulaire a 6 faces, et les faces opposées correspondent, donc son développement a besoin de <b>6 rectangles en 3 paires correspondantes</b>.",
-      {mode:"rect-parts"});
+      {mode:"rect-parts"}); q.figure=u4boxSVG(lr,wr,hr); return q;
   }
   if(mode==="incomplete-tri"){
     var L=ri(5,14);
-    return mcq("Un développement inachevé pour un prisme droit à base triangulaire, de "+L+" cm de long, montre les 3 rectangles en rangée mais rien d'autre. Quelles pièces doit-on ajouter pour compléter le développement ?",
+    var q=mcq("Un développement inachevé pour un prisme droit à base triangulaire, de "+L+" cm de long, montre les 3 rectangles en rangée mais rien d'autre. Quelles pièces doit-on ajouter pour compléter le développement ?",
       {t:"2 triangles correspondants, un de chaque côté de la rangée", fb:"Oui : les deux extrémités triangulaires sont les seules faces qui manquent encore."},
       [{t:"2 rectangles correspondants, un de chaque côté de la rangée", fb:"Des rectangles ajouteraient des côtés supplémentaires : les faces manquantes sont les deux extrémités."},
        {t:"1 triangle au milieu de la rangée", fb:"Un seul triangle forme une seule extrémité : le prisme a besoin d'une extrémité de chaque côté."},
        {t:"2 cercles correspondants, un de chaque côté de la rangée", fb:"Les cercles sont les extrémités d'un cylindre : ce prisme a des extrémités triangulaires."}],
       "Les 3 rectangles forment les côtés, donc il manque seulement les 2 extrémités. Les pièces à ajouter sont <b>2 triangles correspondants, un de chaque côté de la rangée</b>.",
-      {mode:"incomplete-tri", L:L});
+      {mode:"incomplete-tri", L:L}); q.figure=m8NetPlainSVG("inctri",null); return q;
   }
   var r=ri(3,9);
-  return mcq("Un développement inachevé pour un cylindre droit montre le long rectangle et un cercle de rayon "+r+" cm. Quelle pièce doit-on ajouter pour compléter le développement ?",
+  var q=mcq("Un développement inachevé pour un cylindre droit montre le long rectangle et un cercle de rayon "+r+" cm. Quelle pièce doit-on ajouter pour compléter le développement ?",
     {t:"Un deuxième cercle de rayon "+r+" cm", fb:"Oui : la deuxième extrémité doit correspondre exactement au premier cercle."},
     [{t:"Un deuxième cercle de rayon "+(2*r)+" cm", fb:"Ce cercle est trop grand : les deux extrémités d'un cylindre ont la même taille."},
      {t:"Un carré de côté "+r+" cm", fb:"Un carré ne peut pas fermer une extrémité ronde : la face manquante est un cercle."},
      {t:"Un deuxième rectangle de la même taille que le premier", fb:"Le côté courbé est déjà complet : la pièce manquante est l'autre extrémité."}],
     "Un cylindre a deux extrémités circulaires correspondantes, et il en manque encore une. La pièce à ajouter est <b>un deuxième cercle de rayon "+r+" cm</b>.",
-    {mode:"incomplete-cyl", r:r});
+    {mode:"incomplete-cyl", r:r}); q.figure=m8NetPlainSVG("inccyl",r+" cm"); return q;
 }, ["Compte les faces de l'objet fini, puis fais correspondre les pièces plates à ces faces.", "Nomme d'abord les extrémités de l'objet, puis compte les côtés qui les joignent."]);
 
 E("u4-sa-rect-prism", 4, ["9.4"], 2, "gen", function(){
@@ -1792,15 +2024,15 @@ E("u4-sa-problem-wrap", 4, ["9.5"], 2, "gen", function(){
     var sa=2*(l*w+l*h+w*h);
     var cover=pick([20,25,30,40,50]);
     var cans=Math.ceil(sa/cover-0.0000001);
-    return numq("Une boîte de rangement en forme de prisme droit à base rectangulaire mesure "+l+" m de long, "+w+" m de large et "+h+" m de haut. Elle est peinte sur toutes ses faces extérieures. Un pot de peinture couvre "+cover+" mètres carrés. Combien de pots de peinture sont nécessaires ?", cans, 0.01,
+    var q=numq("Une boîte de rangement en forme de prisme droit à base rectangulaire mesure "+l+" m de long, "+w+" m de large et "+h+" m de haut. Elle est peinte sur toutes ses faces extérieures. Un pot de peinture couvre "+cover+" mètres carrés. Combien de pots de peinture sont nécessaires ?", cans, 0.01,
       "Trouve d'abord l'aire totale, puis divise par la surface couverte et arrondis vers le haut : \\[ \\begin{aligned} AT &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] Puis \\("+sa+" \\div "+cover+" \\approx "+fmtD(u4r2(sa/cover))+"\\), et on ne peut pas acheter un pot partiel. Le nombre de pots nécessaires est <b>"+cans+"</b>.",
-      {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
+      {mode:"paint-cans", l:l, w:w, h:h, cover:cover}); q.figure=m8BoxLabSVG(l+" m",w+" m",h+" m",false); return q;
   }
   var l2=ri(20,60)/2, w2=ri(16,44)/2, h2=ri(12,36)/2;
   var sa2=2*(l2*w2+l2*h2+w2*h2);
-  return numq("Une boîte-cadeau en forme de prisme droit à base rectangulaire mesure "+fmtD(l2)+" cm de long, "+fmtD(w2)+" cm de large et "+fmtD(h2)+" cm de haut. Le papier d'emballage couvre toutes les faces sans chevauchement. Combien de centimètres carrés de papier sont nécessaires ?", sa2, 0.01,
+  var q=numq("Une boîte-cadeau en forme de prisme droit à base rectangulaire mesure "+fmtD(l2)+" cm de long, "+fmtD(w2)+" cm de large et "+fmtD(h2)+" cm de haut. Le papier d'emballage couvre toutes les faces sans chevauchement. Combien de centimètres carrés de papier sont nécessaires ?", sa2, 0.01,
     "Le papier doit couvrir toute la surface de la boîte : \\[ \\begin{aligned} AT &= 2("+fmtD(l2*w2)+"+"+fmtD(l2*h2)+"+"+fmtD(w2*h2)+") \\\\ &= "+fmtD(sa2)+" \\end{aligned} \\] Le papier nécessaire est <b>"+fmtD(sa2)+" cm\\(^{2}\\)</b>.",
-    {mode:"wrap-paper", l:l2, w:w2, h:h2});
+    {mode:"wrap-paper", l:l2, w:w2, h:h2}); q.figure=m8BoxLabSVG(fmtD(l2)+" cm",fmtD(w2)+" cm",fmtD(h2)+" cm",false); return q;
 }, ["Calcule l'aire totale avant d'utiliser la surface couverte ou de finir le problème.", "Divise l'aire totale par la surface couverte par pot et arrondis vers le haut, car on ne peut pas acheter un pot partiel."]);
 
 E("u4-vol-rect-prism", 4, ["9.11"], 1, "gen", function(){
@@ -1848,39 +2080,39 @@ E("u4-vol-missing-height", 4, ["9.7"], 1, "gen", function(){
   var label={prism:"prisme droit", tri:"prisme droit à base triangulaire", cylinder:"cylindre droit"}[kind];
   var ds=u4d3(h,[h+1,h-1,h+2,2*h,V-B]);
   var opts=ds.map(function(d){return {t:String(d), fb:"Réessaie : la hauteur est le volume divisé par l'aire de la base, et "+B+" fois "+d+" ne donne pas "+V+"."};});
-  return mcq("Le volume d'un "+label+" est "+V+" cm\\(^{3}\\), et l'aire de sa base est "+B+" cm\\(^{2}\\). Quelle est sa hauteur, en centimètres ?",
+  var q=mcq("Le volume d'un "+label+" est "+V+" cm\\(^{3}\\), et l'aire de sa base est "+B+" cm\\(^{2}\\). Quelle est sa hauteur, en centimètres ?",
     {t:String(h), fb:"Oui : "+B+" fois "+h+" donne le volume "+V+"."}, opts,
     "Le volume est l'aire de la base multipliée par la hauteur, donc divise le volume par l'aire de la base : \\[ \\begin{aligned} h &= V \\div B \\\\ &= "+V+" \\div "+B+" \\\\ &= "+h+" \\end{aligned} \\] La hauteur est <b>"+h+" cm</b>.",
-    {mode:kind, B:B, h:h});
+    {mode:kind, B:B, h:h}); q.figure=m8PrismBaseSVG(kind==="tri"?"tri":(kind==="cylinder"?"cyl":"generic"), B+" cm\u00B2", "?"); return q;
 }, ["Le volume égale l'aire de la base multipliée par la hauteur, donc une de ces valeurs manque ici.", "Divise le volume par l'aire de la base pour défaire la multiplication."]);
 
 E("u4-base-volume-link", 4, ["9.8"], 1, "var", varset([
   function(){
-    return mcq("Un prisme droit a une aire de base de 24 cm\\(^{2}\\). Des couches de la forme de la base, chacune de 1 cm d'épaisseur, sont empilées jusqu'à une hauteur de 5 cm. Quelle phrase explique le volume ?",
+    var q=mcq("Un prisme droit a une aire de base de 24 cm\\(^{2}\\). Des couches de la forme de la base, chacune de 1 cm d'épaisseur, sont empilées jusqu'à une hauteur de 5 cm. Quelle phrase explique le volume ?",
       {t:"Chaque couche contient 24 cm\\(^{3}\\), donc 5 couches contiennent 120 cm\\(^{3}\\) en tout", fb:"Exact : l'aire de la base donne le volume d'une couche, et la hauteur compte les couches."},
       [{t:"Chaque couche contient 5 cm\\(^{3}\\), donc 5 couches contiennent 25 cm\\(^{3}\\) en tout", fb:"Le volume d'une couche vient de l'aire de la base, pas de la hauteur : inverse les deux nombres."},
        {t:"Le volume est 24 plus 5, ce qui donne 29 cm\\(^{3}\\), trouvé en additionnant la base et la hauteur", fb:"Empiler des couches multiplie plutôt qu'additionner : pense à des couches répétées, pas à une somme."},
        {t:"Le volume dépend seulement de la forme de la base, donc il reste 24 cm\\(^{3}\\)", fb:"Une pile plus haute contient plus : la hauteur doit entrer dans le calcul."}],
       "Une couche, de 1 cm d'épaisseur, a un volume égal à l'aire de la base : 24 cm\\(^{3}\\). Empiler 5 couches donne \\(24 \\times 5 = 120\\) cm\\(^{3}\\). Le volume est <b>120 cm\\(^{3}\\), trouvé comme l'aire de la base multipliée par la hauteur</b>.",
-      {mode:"static-layers"});
+      {mode:"static-layers"}); q.figure=m8LayersSVG("24 cm\u00B2","5 cm",5); return q;
   },
   function(){
-    return mcq("Deux prismes droits ont la même hauteur. Le prisme P a une aire de base de 18 cm\\(^{2}\\) et le prisme Q a une aire de base de 36 cm\\(^{2}\\). Comment leurs volumes se comparent-ils ?",
+    var q=mcq("Deux prismes droits ont la même hauteur. Le prisme P a une aire de base de 18 cm\\(^{2}\\) et le prisme Q a une aire de base de 36 cm\\(^{2}\\). Comment leurs volumes se comparent-ils ?",
       {t:"Le prisme Q a deux fois le volume du prisme P", fb:"Exact : avec des hauteurs égales, doubler l'aire de la base double le volume."},
       [{t:"Les deux prismes ont des volumes égaux parce que leurs hauteurs correspondent", fb:"Des hauteurs égales seules n'égalisent pas le volume : les aires de base diffèrent."},
        {t:"Le prisme Q a quatre fois le volume du prisme P", fb:"L'aire de la base a doublé, elle n'a pas été multipliée par quatre."},
        {t:"Le prisme P a deux fois le volume du prisme Q", fb:"Le prisme avec la plus grande aire de base contient plus, pas moins."}],
       "Le volume est l'aire de la base multipliée par la hauteur. Les hauteurs sont égales, et \\(36 = 2 \\times 18\\), donc <b>le prisme Q a deux fois le volume du prisme P</b>.",
-      {mode:"static-double-base"});
+      {mode:"static-double-base"}); q.figure=m8TwoBaseSVG("18 cm\u00B2","36 cm\u00B2"); return q;
   },
   function(){
-    return mcq("La base d'un cylindre droit est un cercle d'aire 50,24 cm\\(^{2}\\). Le cylindre mesure 6 cm de haut. Quel calcul donne son volume ?",
+    var q=mcq("La base d'un cylindre droit est un cercle d'aire 50,24 cm\\(^{2}\\). Le cylindre mesure 6 cm de haut. Quel calcul donne son volume ?",
       {t:"50,24 fois 6, ce qui donne 301,44 cm\\(^{3}\\)", fb:"Exact : un cylindre suit la même règle, aire de la base fois hauteur, qu'un prisme."},
       [{t:"50,24 fois 2, ce qui donne 100,48 cm\\(^{3}\\)", fb:"Le multiplicateur est la hauteur du cylindre, qui est 6, pas 2."},
        {t:"50,24 plus 6, ce qui donne 56,24 cm\\(^{3}\\)", fb:"Le volume empile la base sur la hauteur : multiplie plutôt qu'additionner."},
        {t:"50,24 fois 6 fois 6, ce qui donne 1 808,64 cm\\(^{3}\\)", fb:"La hauteur est utilisée une fois : l'aire de la base tient déjà compte de la forme ronde."}],
       "Un cylindre est un prisme avec une base circulaire, donc la règle du prisme s'applique : \\[ \\begin{aligned} V &= B \\times h \\\\ &= 50,24 \\times 6 \\\\ &= 301,44 \\end{aligned} \\] Le volume est <b>301,44 cm\\(^{3}\\)</b>.",
-      {mode:"static-cyl-base"});
+      {mode:"static-cyl-base"}); q.figure=m8CylBaseSVG("50,24 cm\u00B2","6 cm"); return q;
   }
 ]), ["Pense au solide comme une pile de couches identiques, chacune en forme de base.", "Une couche a un volume égal à l'aire de la base, donc multiplie par le nombre de couches (la hauteur)."]);
 
@@ -1901,10 +2133,10 @@ E("u4-holds-most", 4, ["9.11"], 2, "gen", function(){
     return {t:n, fb:n+" contient "+vols[i]+" cm\\(^{3}\\), ce qui est moins que le plus grand volume."};
   });
   var desc=sets.map(function(s,i){return names[i]+": "+s[0]+" cm sur "+s[1]+" cm sur "+s[2]+" cm";}).join("; ");
-  return mcq("Quatre réservoirs de rangement ont la forme de prismes droits à base rectangulaire. "+desc+". Quel réservoir contient le plus d'eau ?",
+  var q=mcq("Quatre réservoirs de rangement ont la forme de prismes droits à base rectangulaire. "+desc+". Quel réservoir contient le plus d'eau ?",
     {t:names[best], fb:"Oui : son volume, "+vols[best]+" cm\\(^{3}\\), est le plus grand des quatre."}, opts,
     "Trouve chaque volume en multipliant les trois dimensions : "+vols.map(function(v,i){return names[i]+" contient "+v+" cm\\(^{3}\\)";}).join(", ")+". Le plus grand volume appartient au <b>"+names[best]+"</b>.",
-    {mode:"holds-most", best:best});
+    {mode:"holds-most", best:best}); q.figure=m8TanksSVG(sets,names); return q;
 }, ["Contenir le plus d'eau signifie avoir le plus grand volume.", "Multiplie les trois dimensions de chaque réservoir, puis compare les quatre volumes."]);
 
 E("u4-position-volume", 4, ["9.10"], 3, "gen", function(){
@@ -1912,26 +2144,26 @@ E("u4-position-volume", 4, ["9.10"], 3, "gen", function(){
   var V=l*w*h;
   var ds=u4d3(V,[l*w*(h+1),l*(w+1)*h,(l+1)*w*h,2*V,l*w+w*h]);
   var opts=ds.map(function(d){return {t:String(d), fb:"Basculer change la face qui est en bas, pas les dimensions elles-mêmes : multiplie les mêmes trois nombres."};});
-  return mcq("Un aquarium en forme de prisme droit à base rectangulaire mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut, et il est plein d'eau. On bascule l'aquarium avec soin sur une autre face sans renverser d'eau. Quel est le volume d'eau, en centimètres cubes ?",
+  var q=mcq("Un aquarium en forme de prisme droit à base rectangulaire mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut, et il est plein d'eau. On bascule l'aquarium avec soin sur une autre face sans renverser d'eau. Quel est le volume d'eau, en centimètres cubes ?",
     {t:String(V), fb:"Oui : retourner l'aquarium ne change pas la quantité d'eau à l'intérieur."}, opts,
     "La position n'affecte pas le volume. Les mêmes trois dimensions se multiplient dans toute position : \\[ \\begin{aligned} V &= "+l+" \\times "+w+" \\times "+h+" \\\\ &= "+V+" \\end{aligned} \\] Le volume d'eau est <b>"+V+" cm\\(^{3}\\)</b>.",
-    {mode:"tipped", l:l, w:w, h:h});
+    {mode:"tipped", l:l, w:w, h:h}); q.figure=u4boxSVG(l,w,h); return q;
 }, ["Demande-toi si retourner l'aquarium change une de ses trois dimensions.", "Multiplie la même longueur, largeur et hauteur : basculer change seulement la face qui est en bas."]);
 
 E("u4-sa-open-tank", 4, ["9.5","9.6"], 3, "gen", function(){
   var r=ri(2,8), h=ri(4,14);
   var sa=u4r1(3.14*r*r+2*3.14*r*h);
-  return numq("Un baril d'eau de jardin a la forme d'un cylindre droit de rayon "+r+" m et de hauteur "+h+" m. Il est ouvert en haut. Une feuille de métal est utilisée pour le fond et le côté courbé seulement. Combien de mètres carrés de métal sont nécessaires ? Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", sa, 0.6,
+  var q=numq("Un baril d'eau de jardin a la forme d'un cylindre droit de rayon "+r+" m et de hauteur "+h+" m. Il est ouvert en haut. Une feuille de métal est utilisée pour le fond et le côté courbé seulement. Combien de mètres carrés de métal sont nécessaires ? Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", sa, 0.6,
     "Un dessus ouvert signifie qu'un seul cercle est nécessaire, pour le fond, plus le côté courbé : \\[ \\begin{aligned} AT &= \\pi r^{2}+2\\pi r h \\\\ &= 3,14("+r+")^{2}+2(3,14)("+r+")("+h+") \\\\ &= "+fmtD(u4r2(3.14*r*r))+"+"+fmtD(u4r1(2*3.14*r*h))+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] Le métal nécessaire est <b>"+fmtD(sa)+" m\\(^{2}\\)</b>.",
-    {mode:"open-barrel", r:r, h:h});
+    {mode:"open-barrel", r:r, h:h}); q.figure=m8CylLabSVG(r+" m",h+" m",false,true); return q;
 }, ["Un dessus ouvert change le nombre de cercles : lis le problème pour voir quelles parties sont couvertes.", "Additionne un cercle pour le fond à l'aire du côté courbé."]);
 
 E("u4-vol-cylinder-diam", 4, ["9.9","9.11"], 3, "gen", function(){
   var r=ri(2,9); var d=2*r; var h=ri(4,16);
   var V=u4r1(3.14*r*r*h);
-  return numq("Un réservoir d'eau a la forme d'un cylindre droit de diamètre "+d+" cm et de hauteur "+h+" cm. Combien de centimètres cubes d'eau contient-il quand il est plein ? Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", V, 0.6,
+  var q=numq("Un réservoir d'eau a la forme d'un cylindre droit de diamètre "+d+" cm et de hauteur "+h+" cm. Combien de centimètres cubes d'eau contient-il quand il est plein ? Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", V, 0.6,
     "Divise le diamètre par deux pour obtenir le rayon, puis utilise l'aire de la base fois la hauteur : \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ V &= \\pi r^{2} h \\\\ &= 3,14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmtD(V)+" \\end{aligned} \\] Le réservoir contient <b>"+fmtD(V)+" cm\\(^{3}\\)</b>.",
-    {mode:"diam-vol", r:r, h:h});
+    {mode:"diam-vol", r:r, h:h}); q.figure=u4cylSVG(r,h,true); return q;
 }, ["La formule a besoin du rayon, mais le problème donne le diamètre.", "Divise d'abord le diamètre par deux, puis mets le rayon au carré et multiplie par pi et par la hauteur."]);
 
 E("u4-sa-missing-edge", 4, ["9.5"], 3, "gen", function(){
@@ -1942,10 +2174,10 @@ E("u4-sa-missing-edge", 4, ["9.5"], 3, "gen", function(){
     var test=2*(l*w+l*d+w*d);
     return {t:String(d), fb:"Avec une hauteur de "+d+" l'aire totale serait "+test+" cm\\(^{2}\\), pas "+sa+"."};
   });
-  return mcq("Un prisme droit à base rectangulaire mesure "+l+" cm de long et "+w+" cm de large, et son aire totale est "+sa+" cm\\(^{2}\\). Quelle est sa hauteur, en centimètres ?",
+  var q=mcq("Un prisme droit à base rectangulaire mesure "+l+" cm de long et "+w+" cm de large, et son aire totale est "+sa+" cm\\(^{2}\\). Quelle est sa hauteur, en centimètres ?",
     {t:String(h), fb:"Oui : une hauteur de "+h+" donne exactement l'aire totale donnée."}, opts,
     "Essaie la hauteur dans la formule de l'aire totale et résous. Avec une hauteur \\(h\\) : \\[ \\begin{aligned} 2("+fmtD(l*w)+") + 2("+l+"+"+w+")h &= "+sa+" \\\\ "+(2*l*w)+" + "+(2*(l+w))+"h &= "+sa+" \\\\ h &= "+h+" \\end{aligned} \\] La hauteur est <b>"+h+" cm</b>.",
-    {mode:"missing-edge", l:l, w:w, h:h});
+    {mode:"missing-edge", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm","?",false); return q;
 }, ["Mets la hauteur inconnue dans la formule de l'aire totale sous forme de lettre.", "Calcule d'abord les aires des faces connues, puis vois ce qui reste pour les faces qui utilisent la hauteur."]);
 
 /* ----- bank-u5.js ----- */
@@ -4053,18 +4285,18 @@ E("u8-top-view-choice", 8, ["10.15"], 1, "gen", function () {
 // 2. 10.18 L1 var: views of objects in the environment.
 E("u8-env-views-var", 8, ["10.18"], 1, "var", varset([
   function () {
-    return mcq("Sofia dessine une boîte de céréales posée sur une table de cuisine. Directement du dessus, quelle forme dessine-t-elle pour la vue de dessus ?",
+    var q=mcq("Sofia dessine une boîte de céréales posée sur une table de cuisine. Directement du dessus, quelle forme dessine-t-elle pour la vue de dessus ?",
       { t: "Un rectangle, de la taille de la face supérieure de la boîte.", fb: "Exact. En regardant directement vers le bas, on voit la face supérieure dans sa vraie forme." },
       [{ t: "Un grand rectangle qui montre le devant de la boîte au complet.", fb: "C'est la vue de face; la vue de dessus montre seulement la face supérieure." }, { t: "Un carré de la taille du bout étroit de la boîte de céréales.", fb: "Cela ressemble à une vue de côté; la face supérieure est le long rectangle du dessus." }, { t: "Un cercle qui montre toute la boîte à la fois sur la table.", fb: "Une vue montre une seule direction; du dessus, on voit la face supérieure." }],
       "Une vue montre la face que tu regardes directement. Du dessus, c'est la face supérieure, donc la vue de dessus est <b>un rectangle, de la taille de la face supérieure de la boîte</b>.",
-      { mode: "env-cereal" });
+      { mode: "env-cereal" }); q.figure=m8BoxLabSVG("","","",false); return q;
   },
   function () {
-    return mcq("Un phare est à peu près un grand cylindre qui devient un peu plus étroit vers le haut. Quelle description convient à sa vue de dessus ?",
+    var q=mcq("Un phare est à peu près un grand cylindre qui devient un peu plus étroit vers le haut. Quelle description convient à sa vue de dessus ?",
       { t: "Un cercle.", fb: "Exact. En regardant directement vers le bas d'un cylindre, on voit un cercle." },
       [{ t: "Un rectangle.", fb: "Cela convient à la vue de face ou de côté de la tour, pas à la vue du dessus." }, { t: "Un triangle.", fb: "Un triangle conviendrait à un cône ou à une pyramide vu de côté, pas à cette tour vue du dessus." }, { t: "Un long ovale.", fb: "Une vue de l'objet montre l'objet seulement; du dessus, la tour est un cercle." }],
       "Directement du dessus, un cylindre montre sa face supérieure ronde. Donc la vue de dessus est <b>un cercle</b>.",
-      { mode: "env-lighthouse" });
+      { mode: "env-lighthouse" }); q.figure=m8CylLabSVG("","",false,false); return q;
   },
   function () {
     return mcq("Marcus dessine la vue de face d'un autobus scolaire stationné face à lui. Que doit montrer sa vue de face ?",
@@ -4092,32 +4324,32 @@ E("u8-env-views-var", 8, ["10.18"], 1, "var", varset([
 // 3. 10.4 L1 var: which regular polygon tessellates on its own.
 E("u8-regular-tessellates-var", 8, ["10.4"], 1, "var", varset([
   function () {
-    return mcq("Quel polygone régulier forme un dallage à lui seul, en couvrant un plancher sans espaces et sans chevauchements ?",
+    var q=mcq("Quel polygone régulier forme un dallage à lui seul, en couvrant un plancher sans espaces et sans chevauchements ?",
       { t: "Hexagone régulier, angle intérieur 120°.", fb: "Exact. 360 divisé par 120 donne 3, donc trois hexagones se rencontrent exactement à chaque point." },
       [{ t: "Pentagone régulier, angle intérieur 108°.", fb: "360 divisé par 108 ne donne pas un nombre entier, donc les pentagones laissent des espaces à chaque point." }, { t: "Octogone régulier, angle intérieur 135°.", fb: "360 divisé par 135 ne donne pas un nombre entier, donc les octogones seuls laissent des espaces." }, { t: "Dodécagone régulier, angle intérieur 150°.", fb: "360 divisé par 150 ne donne pas un nombre entier, donc les dodécagones seuls laissent des espaces." }],
       "Les copies se rencontrent en un point, donc l'angle intérieur doit diviser 360 exactement : \\[ \\begin{aligned} 360° \\div 120° &= 3 \\end{aligned} \\] Donc <b>l'hexagone régulier, angle intérieur 120°</b>, forme un dallage à lui seul.",
-      { mode: "reg-hex" });
+      { mode: "reg-hex" }); q.figure=m8PolyRowSVG([[6,"120\u00B0"],[5,"108\u00B0"],[8,"135\u00B0"],[12,"150\u00B0"]]); return q;
   },
   function () {
-    return mcq("Quel polygone régulier forme un dallage à lui seul, en couvrant un plancher sans espaces et sans chevauchements ?",
+    var q=mcq("Quel polygone régulier forme un dallage à lui seul, en couvrant un plancher sans espaces et sans chevauchements ?",
       { t: "Carré, angle intérieur 90°.", fb: "Exact. 360 divisé par 90 donne 4, donc quatre carrés se rencontrent exactement à chaque point." },
       [{ t: "Pentagone régulier, angle intérieur 108°.", fb: "360 divisé par 108 ne donne pas un nombre entier, donc les pentagones laissent des espaces à chaque point." }, { t: "Heptagone régulier, angle intérieur d'environ 129°.", fb: "360 divisé par environ 129 ne donne pas un nombre entier, donc les heptagones laissent des espaces." }, { t: "Octogone régulier, angle intérieur 135°.", fb: "360 divisé par 135 ne donne pas un nombre entier, donc les octogones seuls laissent des espaces." }],
       "Les copies se rencontrent en un point, donc l'angle intérieur doit diviser 360 exactement : \\[ \\begin{aligned} 360° \\div 90° &= 4 \\end{aligned} \\] Donc le <b>carré, angle intérieur 90°</b>, forme un dallage à lui seul.",
-      { mode: "reg-square" });
+      { mode: "reg-square" }); q.figure=m8PolyRowSVG([[4,"90\u00B0"],[5,"108\u00B0"],[7,"\u2248129\u00B0"],[8,"135\u00B0"]]); return q;
   },
   function () {
-    return mcq("Quel polygone régulier forme un dallage à lui seul, en couvrant un plancher sans espaces et sans chevauchements ?",
+    var q=mcq("Quel polygone régulier forme un dallage à lui seul, en couvrant un plancher sans espaces et sans chevauchements ?",
       { t: "Triangle équilatéral, angle intérieur 60°.", fb: "Exact. 360 divisé par 60 donne 6, donc six triangles se rencontrent exactement à chaque point." },
       [{ t: "Pentagone régulier, angle intérieur 108°.", fb: "360 divisé par 108 ne donne pas un nombre entier, donc les pentagones laissent des espaces à chaque point." }, { t: "Décagone régulier, angle intérieur 144°.", fb: "360 divisé par 144 ne donne pas un nombre entier, donc les décagones laissent des espaces." }, { t: "Dodécagone régulier, angle intérieur 150°.", fb: "360 divisé par 150 ne donne pas un nombre entier, donc les dodécagones seuls laissent des espaces." }],
       "Les copies se rencontrent en un point, donc l'angle intérieur doit diviser 360 exactement : \\[ \\begin{aligned} 360° \\div 60° &= 6 \\end{aligned} \\] Donc le <b>triangle équilatéral, angle intérieur 60°</b>, forme un dallage à lui seul.",
-      { mode: "reg-tri" });
+      { mode: "reg-tri" }); q.figure=m8PolyRowSVG([[3,"60\u00B0"],[5,"108\u00B0"],[10,"144\u00B0"],[12,"150\u00B0"]]); return q;
   },
   function () {
-    return mcq("On essaie trois polygones réguliers comme tuiles de patio : un pentagone régulier (108°), un hexagone régulier (120°) et un octogone régulier (135°). Lequel couvre le patio sans espaces ?",
+    var q=mcq("On essaie trois polygones réguliers comme tuiles de patio : un pentagone régulier (108°), un hexagone régulier (120°) et un octogone régulier (135°). Lequel couvre le patio sans espaces ?",
       { t: "L'hexagone régulier seulement.", fb: "Exact. Seul 120 divise 360 exactement, ce qui donne 3 tuiles à chaque point." },
       [{ t: "Le pentagone régulier seulement.", fb: "108 ne divise pas 360, donc les pentagones ne peuvent pas se rencontrer exactement autour d'un point." }, { t: "L'octogone régulier seulement.", fb: "135 ne divise pas 360, donc les octogones seuls laissent des espaces en forme de carrés." }, { t: "Les trois couvrent le patio à eux seuls.", fb: "Un seul angle intérieur ici divise 360 exactement; vérifie chacun." }],
       "Teste chaque angle contre 360 : \\[ \\begin{aligned} 360° \\div 120° &= 3 \\\\ 360° \\div 108° &\\text{ n'est pas entier} \\\\ 360° \\div 135° &\\text{ n'est pas entier} \\end{aligned} \\] Donc <b>l'hexagone régulier seulement</b> couvre le patio.",
-      { mode: "reg-patio" });
+      { mode: "reg-patio" }); q.figure=m8PolyRowSVG([[5,"108\u00B0"],[6,"120\u00B0"],[8,"135\u00B0"]]); return q;
   }
 ]), ["À chaque point de rencontre, les angles doivent totaliser exactement 360 degrés.", "Divise 360 par l'angle intérieur; la forme forme un dallage à elle seule seulement quand la réponse est un nombre entier."]);
 
@@ -4506,11 +4738,11 @@ E("u8-combo-transform", 8, ["10.8"], 3, "gen", function () {
 // 17. 10.14 L3 var: creating a new tessellating shape from a tessellating polygon.
 E("u8-new-shape-var", 8, ["10.14"], 3, "var", varset([
   function () {
-    return mcq("Un carré forme un dallage. Un élève coupe un petit triangle au milieu du côté gauche du carré et colle le même triangle au milieu du côté droit. Qu'est-ce qui est vrai de la nouvelle forme ?",
+    var q=mcq("Un carré forme un dallage. Un élève coupe un petit triangle au milieu du côté gauche du carré et colle le même triangle au milieu du côté droit. Qu'est-ce qui est vrai de la nouvelle forme ?",
       { t: "Elle forme encore un dallage par glissement, et son aire est la même que celle du carré.", fb: "Exact. La bosse d'un côté s'ajuste à l'entaille du côté opposé, et déplacer un morceau garde l'aire totale inchangée." },
       [{ t: "Elle forme encore un dallage, mais son aire est plus grande que celle du carré d'origine.", fb: "Le triangle a été déplacé, pas ajouté; aucun nouveau matériau n'a été créé, donc l'aire est inchangée." }, { t: "Elle ne forme plus un dallage, parce que seul le carré d'origine peut couvrir le plan.", fb: "Les formes faites ainsi forment un dallage; la bosse et l'entaille correspondantes sont exactement ce qui fait que les copies s'ajustent." }, { t: "Elle forme un dallage seulement si le triangle coupé est jeté du carré d'origine.", fb: "Jeter le morceau laisse une entaille sans rien pour la remplir et réduit l'aire." }],
       "Le morceau coupé d'un côté est ajouté au côté opposé, donc les copies s'ajustent, bosse dans entaille, par un glissement, et l'aire est conservée. Donc <b>elle forme encore un dallage par glissement, et son aire est la même que celle du carré</b>.",
-      { mode: "new-square-slide" });
+      { mode: "new-square-slide" }); q.figure=m8NotchSquareSVG(); return q;
   },
   function () {
     return mcq("Un triangle équilatéral forme un dallage. Une élève coupe un petit morceau d'un côté et le colle sur le côté suivant du même triangle, en tournant le morceau pendant qu'elle le déplace. Les copies de la nouvelle forme sont ajustées ensemble en tournant chaque copie d'un tiers de tour complet autour d'un coin. Quel énoncé décrit le résultat ?",
@@ -4643,35 +4875,35 @@ E("u1-garden-diagonal-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,40,41],[12,35,37],[20,21,29]]);
   var kk=ri(1,3); var a=base[0]*kk, b=base[1]*kk, c=base[2]*kk;
   var place=pick(["potager","jardin d'école","jardin communautaire","pelouse rectangulaire"]);
-  return numq("Un "+place+" mesure "+a+" m de long et "+b+" m de large. Un sentier droit va d'un coin du rectangle au coin opposé. Quelle est la longueur du sentier, en mètres ?", c, 0.01,
+  var q=numq("Un "+place+" mesure "+a+" m de long et "+b+" m de large. Un sentier droit va d'un coin du rectangle au coin opposé. Quelle est la longueur du sentier, en mètres ?", c, 0.01,
     "Le sentier est l'hypoténuse d'un triangle rectangle dont les cathètes sont la longueur et la largeur : \\[ \\begin{aligned} c^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(a*a)+" + "+(b*b)+" \\\\ &= "+(c*c)+" \\\\ c &= "+c+" \\end{aligned} \\] La réponse est <b>"+c+" m</b>.",
-    {mode:"garden-diagonal", a:a, b:b});
+    {mode:"garden-diagonal", a:a, b:b}); q.figure=m8RectDiagSVG(a,b,a+" m",b+" m","?"); return q;
 }, ["Le sentier droit est le côté incliné d'un triangle rectangle caché dans le rectangle.", "Mets la longueur et la largeur au carré, additionne les carrés, puis prends la racine carrée de la somme."]);
 
 E("u1-grid-distance-gap", 1, ["9.12"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[6,8,10],[9,12,15]]);
   var kk=ri(1,2); var dx=base[0]*kk, dy=base[1]*kk, c=base[2]*kk;
   var x1=ri(0,4), y1=ri(0,4), x2=x1+dx, y2=y1+dy;
-  return numq("Sur une carte quadrillée, une bibliothèque se trouve à ("+x1+", "+y1+") et une patinoire se trouve à ("+x2+", "+y2+"). Chaque case du quadrillage représente 1 km. Quelle est la distance en ligne droite entre la bibliothèque et la patinoire, en kilomètres ?", c, 0.01,
+  var q=numq("Sur une carte quadrillée, une bibliothèque se trouve à ("+x1+", "+y1+") et une patinoire se trouve à ("+x2+", "+y2+"). Chaque case du quadrillage représente 1 km. Quelle est la distance en ligne droite entre la bibliothèque et la patinoire, en kilomètres ?", c, 0.01,
     "Les deux points donnent les cathètes d'un triangle rectangle : le changement horizontal est "+x2+" - "+x1+" = "+dx+" et le changement vertical est "+y2+" - "+y1+" = "+dy+". Ensuite : \\[ \\begin{aligned} d^{2} &= "+dx+"^{2} + "+dy+"^{2} \\\\ &= "+(dx*dx)+" + "+(dy*dy)+" \\\\ &= "+(c*c)+" \\\\ d &= "+c+" \\end{aligned} \\] La réponse est <b>"+c+" km</b>.",
-    {mode:"grid-distance", x1:x1, y1:y1, x2:x2, y2:y2});
+    {mode:"grid-distance", x1:x1, y1:y1, x2:x2, y2:y2}); q.figure=m8GridDistSVG(x1,y1,x2,y2); return q;
 }, ["Soustrais les coordonnées pour trouver les deux cathètes avant d'utiliser le théorème.", "Trouve d'abord le changement horizontal et le changement vertical, puis mets-les au carré et additionne-les."]);
 
 E("u1-fence-perimeter-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29]]);
   var kk=ri(1,3); var a=base[0]*kk, b=base[1]*kk, c=base[2]*kk;
   var bed=pick(["parterre de fleurs triangulaire","jardin d'herbes triangulaire","potager triangulaire","parterre de roses triangulaire","massif d'arbustes triangulaire"]);
-  return numq("Un "+bed+" a deux côtés de "+a+" m et "+b+" m qui se rencontrent à angle droit. Le troisième côté joint les extrémités de ces deux côtés. Une clôture est placée le long des trois côtés du parterre. Combien de mètres de clôture faut-il ?", a+b+c, 0.01,
+  var q=numq("Un "+bed+" a deux côtés de "+a+" m et "+b+" m qui se rencontrent à angle droit. Le troisième côté joint les extrémités de ces deux côtés. Une clôture est placée le long des trois côtés du parterre. Combien de mètres de clôture faut-il ?", a+b+c, 0.01,
     "Trouve d'abord le troisième côté avec le théorème de Pythagore : \\[ \\begin{aligned} c^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(c*c)+" \\\\ c &= "+c+" \\end{aligned} \\] Additionne ensuite les trois côtés pour le périmètre : \\("+a+" + "+b+" + "+c+" = "+(a+b+c)+"\\). La réponse est <b>"+(a+b+c)+" m</b>.",
-    {mode:"fence-perimeter", a:a, b:b});
+    {mode:"fence-perimeter", a:a, b:b}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:["?",b+" m",a+" m"]}); return q;
 }, ["La clôture suit les trois côtés, et la longueur d'un côté n'est pas donnée directement.", "Trouve d'abord le troisième côté avec le théorème de Pythagore, puis additionne les trois côtés."]);
 
 E("u1-square-side-perimeter-gap", 1, ["3.19", "5.2"], 2, "gen", function(){
   var s=ri(5,30); var area=s*s;
   var place2=pick(["patio","jardin","plancher de mosaïque","bac à sable","plancher de danse"]);
-  return numq("Un "+place2+" carré a une aire de "+area+" mètres carrés. Une bordure est placée le long des quatre côtés du patio. Combien de mètres de bordure faut-il ?", 4*s, 0.01,
+  var q=numq("Un "+place2+" carré a une aire de "+area+" mètres carrés. Une bordure est placée le long des quatre côtés du patio. Combien de mètres de bordure faut-il ?", 4*s, 0.01,
     "La longueur d'un côté est la racine carrée de l'aire : \\[ \\begin{aligned} \\text{côté} &= \\sqrt{"+area+"} \\\\ &= "+s+" \\end{aligned} \\] La bordure fait le tour de quatre côtés égaux : \\(4 \\times "+s+" = "+(4*s)+"\\). La réponse est <b>"+(4*s)+" m</b>.",
-    {mode:"square-side-perimeter", s:s});
+    {mode:"square-side-perimeter", s:s}); q.figure=m8SquareAreaSVG(area+" m\u00B2"); return q;
 }, ["L'aire d'un carré est sa longueur de côté multipliée par elle-même.", "Prends la racine carrée de l'aire pour obtenir un côté, puis multiplie par quatre."]);
 
 E("u1-two-ladders-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
@@ -4685,18 +4917,18 @@ E("u1-two-ladders-gap", 1, ["9.12", "9.14"], 2, "gen", function(){
   if(!t1){ t1=[12,5,13]; t2=[12,9,15]; }
   var foot=t1[0], h1=t1[1], lad1=t1[2], h2=t2[1], lad2=t2[2];
   var mur=pick(["le mur d'une maison","le mur d'une grange","le mur d'un phare","le mur d'une école","le mur d'un silo"]);
-  return numq("Deux échelles sont appuyées contre "+mur+", et le pied de chaque échelle se trouve à "+foot+" m du mur. La première échelle mesure "+lad1+" m de long et la deuxième échelle mesure "+lad2+" m de long. À quelle hauteur de plus la deuxième échelle atteint-elle le mur, comparée à la première, en mètres ?", h2-h1, 0.01,
+  var q=numq("Deux échelles sont appuyées contre "+mur+", et le pied de chaque échelle se trouve à "+foot+" m du mur. La première échelle mesure "+lad1+" m de long et la deuxième échelle mesure "+lad2+" m de long. À quelle hauteur de plus la deuxième échelle atteint-elle le mur, comparée à la première, en mètres ?", h2-h1, 0.01,
     "Applique le théorème de Pythagore à chaque échelle. Pour la première échelle : \\[ \\begin{aligned} h^{2} &= "+lad1+"^{2} - "+foot+"^{2} \\\\ &= "+(h1*h1)+" \\\\ h &= "+h1+" \\end{aligned} \\] Pour la deuxième échelle : \\[ \\begin{aligned} h^{2} &= "+lad2+"^{2} - "+foot+"^{2} \\\\ &= "+(h2*h2)+" \\\\ h &= "+h2+" \\end{aligned} \\] La différence est \\("+h2+" - "+h1+" = "+(h2-h1)+"\\). La réponse est <b>"+(h2-h1)+" m</b>.",
-    {mode:"two-ladders", foot:foot, lad1:lad1, lad2:lad2});
+    {mode:"two-ladders", foot:foot, lad1:lad1, lad2:lad2}); q.figure=m8TwoLaddersSVG(foot,h1,h2,lad1+" m",lad2+" m",foot+" m"); return q;
 }, ["Chaque échelle forme son propre triangle rectangle avec le même mur et le même sol.", "Trouve la hauteur atteinte par la première échelle, puis la hauteur atteinte par la deuxième échelle."]);
 
 E("u1-shortcut-saving-gap", 1, ["9.12"], 2, "gen", function(){
   var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,40,41]]);
   var kk=ri(1,3); var a=base[0]*kk, b=base[1]*kk, c=base[2]*kk;
   var trav=pick(["élève","randonneur","cycliste","joggeur","campeur"]);
-  return numq("Un "+trav+" parcourt "+a+" m vers l'est le long d'un sentier, puis "+b+" m vers le nord le long d'un deuxième sentier. Un sentier droit mène directement de la fin du trajet au point de départ. De combien de mètres le sentier droit du retour est-il plus court que le trajet parcouru, en mètres ?", (a+b)-c, 0.01,
+  var q=numq("Un "+trav+" parcourt "+a+" m vers l'est le long d'un sentier, puis "+b+" m vers le nord le long d'un deuxième sentier. Un sentier droit mène directement de la fin du trajet au point de départ. De combien de mètres le sentier droit du retour est-il plus court que le trajet parcouru, en mètres ?", (a+b)-c, 0.01,
     "Le sentier droit est l'hypoténuse d'un triangle rectangle de cathètes "+a+" et "+b+" : \\[ \\begin{aligned} d^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(c*c)+" \\\\ d &= "+c+" \\end{aligned} \\] Le trajet parcouru mesure \\("+a+" + "+b+" = "+(a+b)+" \\) m, donc l'économie est \\("+(a+b)+" - "+c+" = "+((a+b)-c)+" \\) m. La réponse est <b>"+((a+b)-c)+" m</b>.",
-    {mode:"shortcut-saving", a:a, b:b});
+    {mode:"shortcut-saving", a:a, b:b}); q.figure=triSVG(c,b,a,{L:["A","B","C"],side:["?",b+" m",a+" m"]}); return q;
 }, ["Compare la distance en ligne droite avec le total des deux segments marchées.", "Trouve d'abord la distance en ligne droite avec le théorème de Pythagore, puis soustrais-la du total marché."]);
 
 E("u1-diagonal-mc-gap", 1, ["9.12", "6.32"], 2, "gen", function(){
@@ -4709,13 +4941,13 @@ E("u1-diagonal-mc-gap", 1, ["9.12", "6.32"], 2, "gen", function(){
     if(new Set(strs).size===4) ok=true;
   }
   if(!ok){ a=7; b=9; correct=Math.sqrt(130); dWrong=Math.sqrt(32); }
-  return mcq("Une salle rectangulaire mesure "+a+" m de long et "+b+" m de large. Quelle est la distance d'un coin de la salle au coin opposé, en mètres ? Donne ta réponse avec une décimale.",
+  var q=mcq("Une salle rectangulaire mesure "+a+" m de long et "+b+" m de large. Quelle est la distance d'un coin de la salle au coin opposé, en mètres ? Donne ta réponse avec une décimale.",
     {t:fmtDF(correct,1), fb:"Oui : la distance de coin à coin est l'hypoténuse d'un triangle rectangle de cathètes "+a+" et "+b+"."},
     [{t:fmtDF(a*a+b*b,1), fb:"Cela additionne les carrés des côtés mais arrête avant de prendre la racine carrée."},
      {t:fmtDF(a+b,1), fb:"Cela additionne la longueur et la largeur, ce qui est le trajet le long de deux murs, pas la distance droite."},
      {t:fmtDF(dWrong,1), fb:"Cela soustrait les carrés des côtés, ce qui traite un côté comme l'hypoténuse; la diagonale est plus longue que chaque côté."}],
     "La diagonale est l'hypoténuse d'un triangle rectangle de cathètes "+a+" et "+b+" : \\[ \\begin{aligned} d^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(a*a+b*b)+" \\\\ d &= \\sqrt{"+(a*a+b*b)+"} \\\\ &\\approx "+fmtDF(correct,1)+" \\end{aligned} \\] La réponse est <b>"+fmtDF(correct,1)+" m</b>.",
-    {mode:"diagonal-mc", a:a, b:b});
+    {mode:"diagonal-mc", a:a, b:b}); q.figure=m8RectDiagSVG(a,b,a+" m",b+" m","?"); return q;
 }, ["La distance de coin à coin est le côté incliné d'un triangle rectangle caché dans le rectangle.", "Mets la longueur et la largeur au carré, additionne, puis prends la racine carrée et arrondis à une décimale."]);
 
 /* Unit 2: Integers */
@@ -4863,17 +5095,17 @@ E("u4-tank-litres-gap", 4, ["9.9", "9.11"], 2, "gen", function(){
   var vol=3.14*r*r*h;
   var litres=Math.round(vol/10)/100;
   var ctx=pick(["réservoir de rangement","baril d'eau","silo à grains","baril de pluie"]);
-  return numq("Un "+ctx+" cylindrique a un diamètre de "+d+" cm et une hauteur de "+h+" cm. Combien de litres d'eau contient-il quand il est plein ? Utilise \\(\\pi = 3,14\\), et utilise 1000 cm\\(^{3}\\) = 1 L. Donne ta réponse avec deux décimales.", litres, 0.02,
+  var q=numq("Un "+ctx+" cylindrique a un diamètre de "+d+" cm et une hauteur de "+h+" cm. Combien de litres d'eau contient-il quand il est plein ? Utilise \\(\\pi = 3,14\\), et utilise 1000 cm\\(^{3}\\) = 1 L. Donne ta réponse avec deux décimales.", litres, 0.02,
     "Divise le diamètre par deux pour obtenir le rayon, puis trouve le volume : \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ V &= \\pi r^{2} h \\\\ &= 3,14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmtD(vol)+" \\text{ cm}^{3} \\end{aligned} \\] Transforme en litres : \\("+fmtD(vol)+" \\div 1000 = "+fmtD(litres)+"\\). La réponse est <b>"+fmtD(litres)+" L</b>.",
-    {mode:"tank-litres", r:r, h:h});
+    {mode:"tank-litres", r:r, h:h}); q.figure=u4cylSVG(r,h,true); return q;
 }, ["La formule a besoin du rayon, et la question demande des litres plutôt que des centimètres cubes.", "Divise d'abord le diamètre par deux, trouve le volume, puis divise par 1000 pour changer d'unité."]);
 
 E("u4-open-box-sa-gap", 4, ["9.3", "10.3"], 2, "gen", function(){
   var l=ri(4,14), w=ri(3,11), h=ri(2,9);
   var sa=l*w+2*l*h+2*w*h;
-  return numq("Une boîte de rangement ouverte sur le dessus a la forme d'un prisme droit à base rectangulaire. Elle mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut, et elle n'a pas de couvercle. Le carton est utilisé pour le fond et les quatre côtés seulement. Combien de centimètres carrés de carton faut-il ?", sa, 0.01,
+  var q=numq("Une boîte de rangement ouverte sur le dessus a la forme d'un prisme droit à base rectangulaire. Elle mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut, et elle n'a pas de couvercle. Le carton est utilisé pour le fond et les quatre côtés seulement. Combien de centimètres carrés de carton faut-il ?", sa, 0.01,
     "Un dessus ouvert signifie que la face du dessus est absente, alors compte le fond et les quatre faces de côté : \\[ \\begin{aligned} AT &= lw + 2lh + 2wh \\\\ &= "+(l*w)+" + "+(2*l*h)+" + "+(2*w*h)+" \\\\ &= "+sa+" \\end{aligned} \\] La réponse est <b>"+sa+" cm\\(^{2}\\)</b>.",
-    {mode:"open-box-sa", l:l, w:w, h:h});
+    {mode:"open-box-sa", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm",h+" cm",true); return q;
 }, ["Un dessus ouvert change quelles faces existent, alors liste les faces avant de calculer.", "Trouve d'abord l'aire du fond, puis additionne les deux paires de faces de côté."]);
 
 /* Unit 5: Percent, Ratio and Rate */
@@ -5098,9 +5330,9 @@ E("u8-tiles-at-point-gap", 8, ["10.4"], 2, "gen", function(){
   var nA=sc[0], nB=sc[1], kB=sc[2], ans=sc[3];
   var angA=u8Interior(nA), angB=u8Interior(nB);
   var ctx=pick(["tuiles de plancher","pierres de patio","blocs de courtepointe","tuiles de mosaïque","tuiles de salle de bain","pavés de jardin","tuiles d'art de classe","tuiles de terrasse de piscine"]);
-  return numq("Un motif fait de "+ctx+" utilise des tuiles en polygones réguliers autour d'un seul point, sans espaces ni chevauchements. "+kB+" tuile"+(kB===1?"":"s")+" en forme de "+U8_POLY_NAMES[nB]+" "+(kB===1?"est placée":"sont placées")+" au point, et chaque tuile en forme de "+U8_POLY_NAMES[nB]+" a un angle intérieur de "+fmtD(angB)+" degrés. Le reste du point est rempli de tuiles en forme de "+U8_POLY_NAMES[nA]+". Combien de tuiles en forme de "+U8_POLY_NAMES[nA]+" se rencontrent au point ?", ans, 0,
+  var q=numq("Un motif fait de "+ctx+" utilise des tuiles en polygones réguliers autour d'un seul point, sans espaces ni chevauchements. "+kB+" tuile"+(kB===1?"":"s")+" en forme de "+U8_POLY_NAMES[nB]+" "+(kB===1?"est placée":"sont placées")+" au point, et chaque tuile en forme de "+U8_POLY_NAMES[nB]+" a un angle intérieur de "+fmtD(angB)+" degrés. Le reste du point est rempli de tuiles en forme de "+U8_POLY_NAMES[nA]+". Combien de tuiles en forme de "+U8_POLY_NAMES[nA]+" se rencontrent au point ?", ans, 0,
     "Trouve d'abord l'angle intérieur d'un "+U8_POLY_NAMES[nA]+" : \\[ \\begin{aligned} \\text{angle intérieur} &= \\frac{("+nA+" - 2) \\times 180°}{"+nA+"} \\\\ &= "+fmtD(angA)+"° \\end{aligned} \\] Les tuiles placées couvrent \\("+kB+" \\times "+fmtD(angB)+"° = "+fmtD(kB*angB)+"°\\), ce qui laisse \\(360° - "+fmtD(kB*angB)+"° = "+fmtD(360-kB*angB)+"°\\). Ensuite \\("+fmtD(360-kB*angB)+"° \\div "+fmtD(angA)+"° = "+ans+"\\). La réponse est <b>"+ans+"</b>.",
-    {mode:"tiles-at-point", nA:nA, nB:nB, kB:kB});
+    {mode:"tiles-at-point", nA:nA, nB:nB, kB:kB}); q.figure=m8PolyRowSVG([[nB,null],[nA,null]]); return q;
 }, ["Les angles autour d'un point totalisent 360 degrés, et l'angle de la deuxième forme est donné tandis que celui de la première ne l'est pas.", "Trouve l'angle intérieur de la première forme à partir de son nombre de côtés, puis soustrais les angles des tuiles placées de 360 et divise."]);
 
 E("u8-cube-volume-gap", 8, ["10.17"], 2, "gen", function(){
