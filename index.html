@@ -982,7 +982,9 @@ function showHint(i){
   var stage=+(box.dataset.stage||0);
   var h1=q._entry.hint1||"",h2=q._entry.hint2||"";
   var first=h1?stepHTML(h1):"Look at the worked example for this kind of question, then try the same first move here.";
-  if(stage===0){box.innerHTML="<b>Hint:</b> "+first;box.hidden=false;box.dataset.stage="1";}
+  var last=h2?2:1;
+  if(stage>=last){box.hidden=true;box.innerHTML="";box.dataset.stage="0";}
+  else if(stage===0){box.innerHTML="<b>Hint:</b> "+first;box.hidden=false;box.dataset.stage="1";}
   else if(stage===1){box.innerHTML="<b>Hint:</b> "+first+(h2?("<br><b>First step:</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";}
 }
 function dealExample(i,n,prev){
@@ -1008,7 +1010,8 @@ function renderExample(i,exq){
 }
 function setExLabel(i,open){var b=document.querySelector('[data-ex="'+i+'"]');if(b)b.textContent=open?"Hide worked example":"See a worked example";}
 function setSolLabel(i,open){var b=document.querySelector('[data-sol="'+i+'"]');if(b)b.textContent=open?"Hide worked solution":"Show worked solution";}
-function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);}
+function closeScaffolding(i){var hb=$("hint"+i);if(hb){hb.hidden=true;hb.innerHTML="";hb.dataset.stage="0";}var xb=$("ex"+i);if(xb&&!xb.hidden){xb.hidden=true;setExLabel(i,false);}}
+function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open)closeScaffolding(i);}
 function toggleExample(i){
   var q=current[i];if(!q||!q._entry)return;
   var box=$("ex"+i);if(!box)return;
