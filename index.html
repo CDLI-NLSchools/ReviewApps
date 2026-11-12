@@ -1363,6 +1363,195 @@ function tBuildTok(tok,avoid,salt){
   q._tuid="u"+(++_tUid);q._ts={n:n,i:idx,t:q.type,raw:raw};
   return q;
 }
+/* ============ Advanced tools switch: carry the live set across ============
+   Toggling Advanced tools reloads the page (teacher=1 on or off), and
+   a reload used to destroy whatever set was on screen: the switch
+   carried the builder settings (settingsToURL) and the scroll spot
+   (advReturn) but not the set, so the questions vanished and Start
+   built a new set from the same settings (Jason's report, Nov 12,
+   2026, from Math 1201). The fix rides on the app's own exact-set
+   machinery, the raw freeze a WYSIWYG bank pick and a seeded set
+   adoption already use: at switch time advSetCapture (called from
+   __saveSpot, beside the advReturn write) serializes the questions
+   on screen verbatim, every serializable field of each question
+   object with its bank entry id and its frozen-slot coordinates
+   when it has them, plus the per-question answer state, into
+   sessionStorage under "advSet". At boot, before the set-link and
+   settings dispatch, advSetRestore rebuilds the set from that
+   payload in the same view and puts the answer state back. With no
+   set on screen nothing is stored, and the switch behaves exactly
+   as before (nostart, nothing appears). A payload older than
+   fifteen minutes is ignored, so a switch navigation that never
+   completed cannot resurrect a stale set on a later visit.
+   Restored verbatim: the questions (entries, order, generated
+   values and text, figures, options and their order, per-answer
+   feedback arrays), answers selected or typed, checked status and
+   its feedback (including the per-answer feedback line), the score
+   counters and set results, revealed hint stages, open worked
+   examples (the example question itself rides along), open worked
+   solutions and their button labels, an open report box with its
+   draft text, the practice sheet and the exam paper (questions and
+   marks), and the exam timer's elapsed time. Not restored: free
+   text edits made with the Edit the exam or Edit the sheet editor.
+   Those edits live only in the preview DOM and diverge from the
+   question set by design, so the restored paper is the question
+   set's own rendering and its editing controls are live again. */
+function advQSer(q){
+  if(!q)return null;
+  var o={};
+  Object.keys(q).forEach(function(k){
+    if(k==="_entry"||k==="_tuid"||k==="_ts")return;
+    o[k]=q[k];
+  });
+  var d={e:q._entry?q._entry.id:null,q:o,ts:null,uid:q._tuid||null};
+  if(q._ts)d.ts={n:q._ts.n||0,i:q._ts.i||0,t:q._ts.t||q.type,raw:q._ts.raw||null};
+  try{JSON.stringify(d);}catch(err){
+    var m={prompt:q.prompt,type:q.type,solution:q.solution};
+    if(q.type==="mc"){m.options=q.options;m.correct=q.correct;}
+    else if(q.type==="num"){m.answer=q.answer;m.tol=q.tol;}
+    else if(q.answers)m.answers=q.answers;
+    if(q.figure)m.figure=q.figure;
+    if(q.fb)m.fb=q.fb;
+    d.q=m;
+  }
+  return d;
+}
+function advQDes(d){
+  if(!d||!d.e)return null;
+  var e=tEntryById(d.e);if(!e)return null;
+  var q=d.q||{};q._entry=e;
+  if(d.ts)q._ts={n:d.ts.n||0,i:d.ts.i||0,t:d.ts.t||q.type,raw:d.ts.raw||null};
+  if(d.uid){q._tuid=d.uid;var n=parseInt(String(d.uid).slice(1),10);if(!isNaN(n)&&n>_tUid)_tUid=n;}
+  return q;
+}
+function advAdopt(q){
+  /* A set restored into Advanced tools from the student side has no
+     frozen slots: adopt each question raw, exactly as a seeded set
+     is adopted (tAdoptDrawn), so the teacher controls and the set
+     links work on it. Slots that already carry coordinates (a set
+     restored back out of Advanced tools, then in again) keep them. */
+  if(q._ts){if(!q._tuid)q._tuid="u"+(++_tUid);return;}
+  q._tuid="u"+(++_tUid);q._ts={n:0,i:0,t:q.type,raw:tRawQ(q)};
+}
+function advTCtx(view,P,s){
+  var old=(P.T&&P.T.view===view)?P.T:null;
+  var sc;
+  if(old&&old.scope)sc=old.scope;
+  else if(view==="exam")sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),includePK:tPkOn(),examCap:((s.units||[]).slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE?(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"):""))};
+  else sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),midCap:!!s.midCap};
+  var T2={view:view,salt:old?old.salt:tSalt(),scope:sc,edited:old?!!old.edited:false,picker:null};
+  if(view==="online"){T2.state={};T2.endGraded=!!P.endGraded;}
+  if(view!=="online")T2.textEdited=false;
+  return T2;
+}
+function advSetCapture(){
+  try{
+    var view=null;
+    if(current&&current.length&&document.getElementById("againBtn"))view="online";
+    else if(examState&&document.getElementById("printPaperBtn"))view="exam";
+    else if(sheetState&&document.getElementById("printBtn"))view="sheet";
+    if(!view){sessionStorage.removeItem("advSet");return;}
+    var P={v:view,ts:Date.now(),seed:sessionSeed||"",T:null};
+    if(T)P.T={view:T.view,salt:T.salt,edited:!!T.edited,scope:T.scope||null};
+    if(view==="online"){
+      P.items=current.map(advQSer);
+      P.s=lastSettings;P.thin=!!onlineThin;
+      P.checkMode=checkMode;P.endGraded=!!endGraded;
+      P.checked=checkedCount;P.correct=correctCount;P.results=setResults;
+      P.state=current.map(function(q,i){
+        var o={given:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:""};
+        if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel)o.given=+sel.value;}
+        else{var inp=$("ans"+i);if(inp)o.given=inp.value;}
+        var fb=$("fb"+i);if(fb){o.done=!!fb.dataset.done;o.fbShown=fb.classList.contains("show");o.fb=fb.innerHTML;}
+        var fbt=$("fbt"+i);if(fbt)o.fbt=fbt.innerHTML;
+        var sl=$("sol"+i);if(sl)o.sol=sl.classList.contains("show");
+        var hb=$("hint"+i);if(hb){o.hintStage=+(hb.dataset.stage||0);o.hintShown=!hb.hidden;o.hintHtml=hb.innerHTML;}
+        var xb=$("ex"+i);if(xb){o.exOpen=!xb.hidden;o.exn=+(xb.dataset.exn||0);if(xb._exq)o.exq=advQSer(xb._exq);}
+        var rp=$("rep"+i);if(rp){o.repOpen=rp.classList.contains("show");var rt=$("reptype"+i);if(rt)o.repType=rt.value;var rn=$("repnote"+i);if(rn)o.repNote=rn.value;}
+        return o;
+      });
+    }
+    else if(view==="sheet"){
+      P.items=sheetState.items.map(advQSer);P.s=sheetState.s;P.thin=!!sheetState.thin;
+    }
+    else{
+      var ex=examState.ex;
+      P.sr=ex.srItems.map(function(it){return {q:advQSer(it.q),marks:it.marks};});
+      P.cr=ex.crItems.map(function(it){return {q:advQSer(it.q),marks:it.marks};});
+      P.single=!!examState.single;P.wsCrF=examState.wsCrF;P.scope=examState.scope;P.title=examState.title;
+      P.s=examState.s;P.short=!!ex.short;P.elapsed=Date.now()-(examState.t0||Date.now());
+    }
+    sessionStorage.setItem("advSet",JSON.stringify(P));
+  }catch(err){try{sessionStorage.removeItem("advSet");}catch(e2){}}
+}
+function advRestoreOnlineState(P){
+  (P.state||[]).forEach(function(o,i){
+    if(!o||!current[i])return;var q=current[i];
+    if(q.type==="mc"){if(o.given!==null&&o.given!==""){var r=document.querySelector('input[name="opt'+i+'"][value="'+o.given+'"]');if(r)r.checked=true;}}
+    else if(o.given!==null&&o.given!==undefined){var inp=$("ans"+i);if(inp)inp.value=o.given;}
+    var fb=$("fb"+i);if(fb){if(o.fbShown)fb.classList.add("show");if(o.done)fb.dataset.done="1";if(o.fb)fb.innerHTML=o.fb;}
+    var fbt=$("fbt"+i);if(fbt&&o.fbt)fbt.innerHTML=o.fbt;
+    if(o.sol){var sl=$("sol"+i);if(sl){sl.classList.add("show");setSolLabel(i,true);}}
+    var hb=$("hint"+i);if(hb&&o.hintStage){hb.dataset.stage=String(o.hintStage);if(o.hintShown){hb.innerHTML=o.hintHtml;hb.hidden=false;}}
+    if(o.exOpen&&o.exq){var xb=$("ex"+i);var exq=advQDes(o.exq);if(xb&&exq){xb.dataset.exn=String(o.exn||0);renderExample(i,exq);setExLabel(i,true);}}
+    if(o.repOpen){var rp=$("rep"+i);if(rp)rp.classList.add("show");var rt=$("reptype"+i);if(rt&&o.repType)rt.value=o.repType;var rn=$("repnote"+i);if(rn)rn.value=o.repNote||"";}
+  });
+  if(endGraded){for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2){s2.classList.add("show");setSolLabel(j,true);}}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent="Answers checked";}}
+  updateScore();maybeSummary();
+}
+function advSetRestore(){
+  var raw=null;
+  try{raw=sessionStorage.getItem("advSet");}catch(e){}
+  if(!raw)return false;
+  if(typeof BANK==="undefined"||!BANK.length)return false;
+  var P=null;
+  try{P=JSON.parse(raw);}catch(e){try{sessionStorage.removeItem("advSet");}catch(e2){}return false;}
+  if(!P||!P.v)return false;
+  if(P.ts&&Date.now()-P.ts>15*60*1000){try{sessionStorage.removeItem("advSet");}catch(e){}return false;}
+  var s=null;try{s=settings();}catch(e){}
+  if(P.v==="online"){
+    var items=(P.items||[]).map(advQDes).filter(function(q){return !!q;});
+    if(!items.length)return false;
+    try{sessionStorage.removeItem("advSet");}catch(e){}
+    stopExamTimer();
+    current=items;sessionSeed=P.seed||"";
+    lastSettings=P.s||s;onlineThin=!!P.thin;
+    checkMode=P.checkMode||((s&&s.chk==="end")?"end":"each");endGraded=!!P.endGraded;
+    checkedCount=P.checked||0;correctCount=P.correct||0;setResults=P.results||{};
+    T=null;
+    if(TEACHER){T=advTCtx("online",P,lastSettings);current.forEach(advAdopt);}
+    renderOnline(false);
+    advRestoreOnlineState(P);
+    return true;
+  }
+  if(P.v==="sheet"){
+    var items3=(P.items||[]).map(advQDes).filter(function(q){return !!q;});
+    if(!items3.length)return false;
+    try{sessionStorage.removeItem("advSet");}catch(e){}
+    stopExamTimer();
+    sheetState={items:items3,s:P.s||s,thin:!!P.thin};
+    T=null;
+    if(TEACHER){T=advTCtx("sheet",P,sheetState.s);sheetState.items.forEach(advAdopt);}
+    renderSheet();
+    return true;
+  }
+  if(P.v==="exam"){
+    var sr=(P.sr||[]).map(function(it){var q=advQDes(it.q);return q?{q:q,marks:it.marks}:null;}).filter(Boolean);
+    var cr=(P.cr||[]).map(function(it){var q=advQDes(it.q);return q?{q:q,marks:it.marks}:null;}).filter(Boolean);
+    if(!sr.length&&!cr.length)return false;
+    try{sessionStorage.removeItem("advSet");}catch(e){}
+    stopExamTimer();
+    var exO={srItems:sr,crItems:cr,single:!!P.single,short:!!P.short};
+    var lv=examLive(exO);exO.srMarks=lv.sr;exO.crMarks=lv.cr;exO.l3Marks=lv.l3;exO.total=lv.total;
+    examState={ex:exO,s:P.s||s,single:!!P.single,wsCrF:(typeof P.wsCrF==="number")?P.wsCrF:2.3,scope:P.scope||"",title:P.title||"",t0:Date.now()-(P.elapsed||0)};
+    wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
+    T=null;
+    if(TEACHER){T=advTCtx("exam",P,examState.s);sr.concat(cr).forEach(function(it){advAdopt(it.q);});}
+    renderExam();
+    return true;
+  }
+  return false;
+}
 function tRebuildFromURL(){
   var set=new URLSearchParams(location.search).get("set");if(!set)return false;
   var parts=set.split(":");if(parts.length<3)return false;
@@ -3331,7 +3520,7 @@ function applyURL(){
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.longName||__c.shortName)+" Review";var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
-function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
+function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}try{if(typeof advSetCapture==="function")advSetCapture();}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
 (function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
 (function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
@@ -3357,7 +3546,12 @@ a11yInit();
 var urlTouched=applyURL();
 tGateStudentUI();
 unitCheckboxes();renderIndicators();updatePoolInfo();
-if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
+if(advSetRestore()){
+  /* A set carried across an Advanced tools switch was restored
+     verbatim, with its answer state: the switch changed nothing
+     but the mode. */
+}
+else if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
   /* A set link was opened: the exact set it encodes is on screen. */
 }
 else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
