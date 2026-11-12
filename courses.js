@@ -3561,6 +3561,721 @@ window.COURSES = {
     "9": "<b>Probabilité :</b> la probabilité théorique vient du comptage des résultats également possibles, la probabilité expérimentale vient des résultats d'essais ou de données, et le jugement subjectif est une estimation personnelle.<br><b>Échantillon et population :</b> une population est l'ensemble des personnes du groupe étudié, et un échantillon est une partie de la population ; un choix au hasard aide l'échantillon à représenter la population.<br><b>La collecte de données</b> peut être faussée par le biais, un langage suggestif, des problèmes d'éthique, le coût, le temps et le moment choisi, des préoccupations de confidentialité et un manque de sensibilité culturelle.<br><b>Affirmations :</b> une affirmation sur toute une population n'est aussi solide que la taille et la représentativité de l'échantillon qui l'appuie."
   }
   },
+  "math-8-fr": {
+  id: "math-8-fr",
+  shortName: "Mathématiques 8",
+
+  /* Long name and app name as the fork carries them: the fork
+     heads its page and face card "Révision de mathématiques 8e
+     année" (its <h1> and face heading), which is the report
+     form's app name there too, so it is carried as appName; the
+     subtitle names the course "Mathématiques 8e année", carried
+     as longName; the picker and the export names shorten it to
+     "Mathématiques 8", carried as shortName. The document title
+     is the fork's own <title>: "Mathématiques 8e année : banque
+     de questions d'entraînement". */
+  longName: "Mathématiques 8e année",
+  appName: "Révision de mathématiques 8e année",
+  title: "Mathématiques 8e année : banque de questions d'entraînement",
+  subject: "Mathématiques",
+  grade: 8,
+  listed: false,
+  language: "fr",
+  storagePrefix: "m8fr",
+  bankFile: "math-8-fr.js",
+  defaultCheckMode: "each",
+
+  /* Unit names verbatim from the standalone app (UNITS at
+     line 658). */
+  units: {
+    "1": "Les racines carrées et le théorème de Pythagore",
+    "2": "Les nombres entiers",
+    "3": "Les opérations sur les fractions",
+    "4": "Les prismes et les cylindres",
+    "5": "Les pourcentages, les rapports et les taux",
+    "6": "Les équations linéaires et leur représentation graphique",
+    "7": "L'analyse de données et la probabilité",
+    "8": "La géométrie"
+  },
+
+  /* Indicator texts verbatim from the standalone app
+     (INDICATORS at line 659); the code set and the per-unit
+     placement are the English course's, the codes being
+     language-independent. */
+  indicators: {
+    "3.19": "Représenter un carré parfait donné de manière illustrée à l’aide de papier quadrillé ou de blocs-formes.",
+    "3.20": "Déterminer si un nombre donné est un carré parfait en utilisant du matériel et des stratégies comme les blocs-formes, le papier quadrillé ou les facteurs premiers, et en expliquant son raisonnement.",
+    "5.2": "Déterminer la racine carrée d’un carré parfait et l’illustrer de manière symbolique",
+    "5.1": "Déterminer les facteurs d’un carré parfait donné et expliquer pourquoi l’un des facteurs en est la racine carrée et pourquoi les autres ne le sont pas.",
+    "5.3": "Déterminer le carré d’un nombre donné",
+    "6.30": "Estimer la racine carrée d’un nombre donné qui n’est pas un carré parfait à l’aide des racines carrées de carrés parfaits comme points de repère.",
+    "6.31": "Identifier un nombre entier dont la racine carrée se situe entre deux nombres donnés.",
+    "6.32": "Estimer la racine carrée d’un nombre donné qui n’est pas un carré parfait à l’aide de la technologie, p. ex. une calculatrice ou un ordinateur",
+    "6.33": "Expliquer pourquoi la racine carrée déterminée par la calculatrice pourrait être une estimation.",
+    "9.1": "Représenter et expliquer le théorème de Pythagore de manière concrète, illustrée ou en utilisant la technologie.",
+    "9.12": "Déterminer la mesure du troisième côté d’un triangle rectangle à l’aide des mesures des deux autres côtés pour résoudre un problème donné.",
+    "9.2": "Expliquer, à l’aide d’exemples, que le théorème de Pythagore ne s’applique qu’aux triangles rectangles.",
+    "9.13": "Déterminer si un triangle donné est un triangle rectangle en appliquant le théorème de Pythagore.",
+    "9.14": "Résoudre un problème donné contenant des triplets pythagoréens. p. ex. 3, 4, 5 ou 5, 12, 13.",
+    "6.17": "Représenter le processus de multiplication de deux entiers à l’aide de matériel de manipulation ou d’illustrations et noter le processus.",
+    "6.18": "Généraliser et appliquer une règle pour déterminer le signe du produit de nombres entiers.",
+    "6.19": "Fournir un contexte qui nécessite la multiplication de deux nombres entiers.",
+    "6.20": "Résoudre un problème donné qui nécessite la multiplication de nombres entiers.",
+    "6.21": "Représenter le processus de division d’un entier par un autre à l’aide de matériel de manipulation ou d’illustrations et noter le processus.",
+    "6.22": "Généraliser et appliquer une règle pour déterminer le signe du quotient de nombres entiers.",
+    "6.23": "Fournir un contexte nécessitant la division de deux nombres entiers.",
+    "6.24": "Résoudre un problème donné nécessitant la division de nombres entiers (deux chiffres par un chiffre) sans utiliser la technologie.",
+    "6.25": "Résoudre un problème donné nécessitant la division de nombres entiers (deux chiffres par deux chiffres) en utilisant la technologie.",
+    "6.26": "Identifier l’opération requise pour résoudre un problème de nombres entiers.",
+    "6.27": "Résoudre un problème de nombres entiers donné en tenant compte des priorités des opérations.",
+    "6.4": "Modéliser la multiplication d’une fraction positive par un nombre entier de manière concrète ou illustrée et noter le processus.",
+    "6.5": "Modéliser la multiplication d’une fraction positive par une autre fraction positive de manière concrète ou illustrée en employant un modèle de l’aire et noter le processus.",
+    "6.6": "Fournir un contexte requérant la multiplication de deux fractions positives données.",
+    "6.7": "Estimer le produit de deux fractions positives pour déterminer si le produit est plus près de 0, 1/2, ou 1.",
+    "6.8": "Généraliser et appliquer les règles de multiplication de fractions positives, incluant les nombres fractionnaires.",
+    "6.9": "Modéliser la division d’un nombre entier par une fraction propre positive de manière concrète ou illustrée et noter le processus.",
+    "6.10": "Modéliser la division d’une fraction propre positive de manière illustrée et noter le processus.",
+    "6.11": "Estimer le quotient de deux fractions propres positives données et comparer l’estimation aux points de repère des nombres entiers.",
+    "6.12": "Généraliser et appliquer les règles de division des fractions propres positives.",
+    "6.13": "Modéliser, généraliser et appliquer des règles relatives à la division des fractions avec des nombres fractionnaires.",
+    "6.14": "Fournir un contexte nécessitant la division de deux fractions positives données.",
+    "6.15": "Identifier l’opération requise pour résoudre un problème de fractions positives.",
+    "6.16": "Résoudre un problème donné comprenant des fractions positives en tenant compte de la priorité des opérations (en se limitant aux solutions positives).",
+    "10.1": "Associer un développement donné à l’objet à trois dimensions le représentant.",
+    "10.11": "Dessiner des développements pour un cylindre ou un prisme rectangulaire donné et vérifier en construisant les patrons pour ces objets à trois dimensions donnés.",
+    "10.2": "Prédire les objets pouvant être formés à l’aide d’un développement donné et vérifier ses prédictions.",
+    "10.12": "Construire un objet à trois dimensions à partir d’un développement donné.",
+    "10.3": "Identifier toutes les faces d’un prisme donné, incluant les prismes droits rectangulaires et triangulaires.",
+    "9.3": "Expliquer, à l’aide d’exemples, le lien entre l’aire d’une figure à deux dimensions et l’aire de la surface d’un objet à trois dimensions donné.",
+    "9.4": "Décrire et appliquer les stratégies servant à déterminer l’aire totale d’un prisme droit rectangulaire ou triangulaire donné.",
+    "9.5": "Résoudre un problème donné concernant l’aire totale d’un objet.",
+    "9.6": "Décrire et appliquer des stratégies servant à déterminer l’aire totale d’un cylindre droit donné.",
+    "9.7": "Déterminer le volume d’un prisme droit donné à l’aide de l’aire de sa base.",
+    "9.8": "Expliquer le lien entre l’aire de la base et le volume d’objets à trois dimensions donné et la formule de son volume.",
+    "9.9": "Généraliser et appliquer une règle servant à déterminer le volume de cylindres droits.",
+    "9.10": "Démontrer que l’orientation d’un objet à trois dimensions donné n’affecte pas son volume.",
+    "9.11": "Appliquer une formule pour résoudre un problème concernant le volume d’un cylindre ou d’un prisme droit.",
+    "3.1": "Fournir un contexte dans lequel un pourcentage pourrait être de plus de 100 % ou entre 0 % et 1 %.",
+    "3.2": "Représenter un pourcentage fractionnaire donné à l’aide de papier quadrillé.",
+    "3.3": "Représenter un pourcentage donné supérieur à 100 à l’aide de papier quadrillé.",
+    "3.4": "Déterminer le pourcentage représenté par la zone ombrée d’une grille et le noter sous forme de décimale, de fraction et de pourcentage.",
+    "3.5": "Exprimer un pourcentage donné sous forme de décimale ou de fraction.",
+    "3.6": "Exprimer une décimale donnée sous forme de pourcentage ou de fraction.",
+    "3.7": "Exprimer une fraction donnée sous forme de décimale ou de pourcentage.",
+    "6.1": "Résoudre un problème donné comportant des pourcentages.",
+    "6.2": "Résoudre un problème donné comportant des combinaisons de pourcentages.",
+    "6.3": "Résoudre un problème donné dans lequel il doit calculer le pourcentage d’un pourcentage.",
+    "3.8": "Exprimer un rapport à deux valeurs dans un contexte donné sous les formes 3:5 ou 3 sur 5.",
+    "3.9": "Exprimer un rapport à trois valeurs dans un contexte donné sous les formes 4:7:3 ou 4 sur 7 sur 3.",
+    "3.10": "Exprimer un rapport partie à partie sous forme de fraction partie à tout.",
+    "3.11": "Exprimer un rapport donné sous forme de pourcentage.",
+    "3.13": "Expliquer la signification de a/b selon un contexte donné.",
+    "3.15": "Fournir un contexte selon lequel a/b représente : • une fraction; • un taux; • un rapport; • un quotient; • une probabilité.",
+    "3.12": "Identifier et décrire des rapports dans la vie quotidienne et les noter de manière symbolique.",
+    "6.28": "Résoudre un problème donné faisant intervenir des rapports.",
+    "3.16": "Exprimer un taux donné à l’aide de mots ou de symboles.",
+    "3.17": "Identifier et décrire des taux dans la vie quotidienne et les noter de manière symbolique.",
+    "3.14": "Fournir un contexte selon lequel a/b représente : • une fraction; • un taux; • un rapport; • un quotient; • une probabilité.",
+    "3.18": "Expliquer pourquoi un taux ne peut pas être représenté sous forme de pourcentage.",
+    "6.29": "Résoudre un problème donné comportant des taux.",
+    "8.1": "Modéliser un problème donné à l’aide d’une équation linéaire et résoudre cette dernière à l’aide de modèles concrets.",
+    "8.2": "Dessiner une représentation visuelle des étapes entreprises pour résoudre une équation linéaire donnée et noter chaque étape de manière symbolique.",
+    "8.3": "Vérifier la solution d’une équation linéaire donnée à l’aide de diverses méthodes en utilisant du matériel concret, des diagrammes et des substitutions.",
+    "8.4": "Résoudre une équation linéaire donnée de manière symbolique.",
+    "8.5": "Appliquer la propriété de distributivité pour résoudre une équation linéaire donnée de la forme a(x + b) = c.",
+    "8.6": "Repérer et corriger une erreur dans la solution erronée d’une équation linéaire donnée.",
+    "8.7": "Résoudre un problème donné au moyen d’une équation linéaire et noter le processus.",
+    "7.2": "Créer une table des valeurs en remplaçant les valeurs d’une variable dans l’équation d’une relation linéaire donnée.",
+    "7.3": "Déterminer la valeur manquante dans une paire ordonnée au sein d’une équation donnée.",
+    "7.4": "Tracer un graphique à partir de l’équation d’une relation linéaire donnée (en se limitant aux données discrètes).",
+    "7.1": "Décrire le lien entre les variables d’un graphique donné.",
+    "11.1": "Comparer des renseignements fournis pour un ensemble de données à l’aide d’un ensemble de graphiques, incluant des graphiques circulaires, linéaires, à barres et à doubles barres, ainsi que des pictogrammes, pour déterminer les forces et les faiblesses de chacun des graphiques.",
+    "11.2": "Déterminer les avantages et les désavantages de divers graphiques, incluant les graphiques circulaires, linéaires, à barres et à doubles barres, ainsi que les pictogrammes pour représenter un ensemble de données en particulier.",
+    "11.3": "Justifier le choix d’une représentation graphique pour une situation donnée et son ensemble de données correspondant.",
+    "11.4": "Expliquer comment le format de divers graphiques – grandeur des intervalles, largeur des barres et présentation visuelle – pourrait mener à une mauvaise interprétation des données.",
+    "11.5": "Expliquer comment le choix du format peut mal représenter les données.",
+    "11.6": "Identifier des conclusions qui ne sont pas cohérentes avec un ensemble de données ou un graphique, et expliquer en quoi les données ont été mal interprétées.",
+    "12.1": "Déterminer la probabilité de deux événements indépendants et la vérifier à l’aide d’une stratégie différente.",
+    "12.2": "Fournir un contexte selon lequel a/b représente : • une fraction; • un taux; • un rapport; • un quotient; • une probabilité.",
+    "12.3": "Généraliser et appliquer une règle pour déterminer la probabilité que des événements indépendants se produisent.",
+    "12.4": "Résoudre un problème donné requérant de déterminer des probabilités d’événements indépendants.",
+    "10.15": "Dessiner et identifier le dessus, le devant et le côté d’un objet tridimensionnel donné sur du papier à points isométrique.",
+    "10.9": "Comparer divers points de vue d’un objet tridimensionnel avec l’objet en question.",
+    "10.10": "Prédire de quoi auront l’air les vues du dessus, du devant et de côté à la suite d’une rotation donnée (se limitant à des multiples de 90 degrés) et vérifier ces prédictions.",
+    "10.16": "Dessiner et identifier les vues du dessus, du devant et de côté à la suite d’une rotation donnée (en se limitant à des multiples de 90 degrés).",
+    "10.17": "Construire un objet tridimensionnel à l’aide des vues du dessus, du devant et de côté avec ou sans l’utilisation de la technologie.",
+    "10.18": "Dessiner et identifier le dessus, le devant et le côté d’un objet tridimensionnel dans son environnement avec ou sans l’aide de la technologie.",
+    "10.4": "Identifier, dans un ensemble de polygones réguliers, les formes et les combinaisons de formes avec lesquelles on peut créer des dallages et utiliser les mesures d’angles pour justifier ces choix.",
+    "10.5": "Identifier, dans un ensemble de polygones irréguliers, les formes et les combinaisons de formes avec lesquelles on peut créer des dallages et utiliser les mesures d’angles pour justifier ces choix.",
+    "10.6": "Identifier et décrire des dallages dans son environnement.",
+    "10.7": "Identifier une translation, une réflexion ou une rotation dans un dallage donné.",
+    "10.8": "Identifier une combinaison de transformations dans un dallage donné.",
+    "10.13": "Créer un dallage à l’aide d’une forme bidimensionnelle ou plus et le décrire en mentionnant les transformations et la conservation de l’aire.",
+    "10.14": "Créer une nouvelle forme de dallage (polygonale ou non) en transformant une partie d’un polygone d’un dallage donné et décrire le dallage résultant en mentionnant les transformations et la conservation de l’aire."
+  },
+  unitInd: {
+    "1": [
+      "3.19",
+      "3.20",
+      "5.2",
+      "5.1",
+      "5.3",
+      "6.30",
+      "6.31",
+      "6.32",
+      "6.33",
+      "9.1",
+      "9.12",
+      "9.2",
+      "9.13",
+      "9.14"
+    ],
+    "2": [
+      "6.17",
+      "6.18",
+      "6.19",
+      "6.20",
+      "6.21",
+      "6.22",
+      "6.23",
+      "6.24",
+      "6.25",
+      "6.26",
+      "6.27"
+    ],
+    "3": [
+      "6.4",
+      "6.5",
+      "6.6",
+      "6.7",
+      "6.8",
+      "6.9",
+      "6.10",
+      "6.11",
+      "6.12",
+      "6.13",
+      "6.14",
+      "6.15",
+      "6.16"
+    ],
+    "4": [
+      "10.1",
+      "10.11",
+      "10.2",
+      "10.12",
+      "10.3",
+      "9.3",
+      "9.4",
+      "9.5",
+      "9.6",
+      "9.7",
+      "9.8",
+      "9.9",
+      "9.10",
+      "9.11"
+    ],
+    "5": [
+      "3.1",
+      "3.2",
+      "3.3",
+      "3.4",
+      "3.5",
+      "3.6",
+      "3.7",
+      "6.1",
+      "6.2",
+      "6.3",
+      "3.8",
+      "3.9",
+      "3.10",
+      "3.11",
+      "3.13",
+      "3.15",
+      "3.12",
+      "6.28",
+      "3.16",
+      "3.17",
+      "3.14",
+      "3.18",
+      "6.29"
+    ],
+    "6": [
+      "8.1",
+      "8.2",
+      "8.3",
+      "8.4",
+      "8.5",
+      "8.6",
+      "8.7",
+      "7.2",
+      "7.3",
+      "7.4",
+      "7.1"
+    ],
+    "7": [
+      "11.1",
+      "11.2",
+      "11.3",
+      "11.4",
+      "11.5",
+      "11.6",
+      "12.1",
+      "12.2",
+      "12.3",
+      "12.4"
+    ],
+    "8": [
+      "10.15",
+      "10.9",
+      "10.10",
+      "10.16",
+      "10.17",
+      "10.18",
+      "10.4",
+      "10.5",
+      "10.6",
+      "10.7",
+      "10.8",
+      "10.13",
+      "10.14"
+    ]
+  },
+
+  /* Preset labels in the French junior pattern the Math 9 FR
+     course carries; the final preset's face label is the face
+     scope wording for the same selection. Mixes are the junior
+     family's [20, 60, 20], as the English course carries. */
+  presets: {
+    mid: { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Révision de mi-parcours (unités 1 à 4)" },
+    final: { units: [5, 6, 7, 8], mix: [20, 60, 20], label: "Révision finale (unités 5 à 8)", faceLabel: "Révision de fin de cours (unités 5 à 8)" }
+  },
+  hints: true,
+
+  /* Timer note as the fork's timer strings carry it: the real
+     exam allows 1 heure 30 minutes. */
+  timerNote: "1 heure 30 minutes",
+
+  /* Sheet header work strings verbatim from the fork's sheet
+     header: [in the space provided, on your own paper]. */
+  sheetWork: ["Montre tout ton travail dans l'espace fourni.", "Montre tout ton travail sur ta propre feuille."],
+
+  /* Exam composer configuration: the junior pooled composer,
+     identical to the English Math 8 course's. */
+  exam: {
+    "fallback": {
+      "srCount": 18,
+      "crMarks": 17,
+      "levels": [
+        7,
+        21,
+        7
+      ],
+      "crL3": [
+        6,
+        5,
+        7
+      ],
+      "total": 35
+    }
+  },
+  unitTest: {
+    "total": 25,
+    "sr": 11,
+    "cr": 14
+  },
+
+  /* Reference panels verbatim from the standalone app
+     (REF_HTML at line 6042): one per unit. */
+  panels: {
+    "1": "<b>Carrés parfaits :</b> un carré parfait est un nombre entier multiplié par lui-même, comme \\(6^{2} = 36\\) ; sur du papier quadrillé, il remplit une région carrée avec des rangées et des colonnes égales.<br><b>Racines carrées :</b> \\(\\sqrt{n}\\) est la valeur qui, multipliée par elle-même, donne \\(n\\), donc \\(\\sqrt{36} = 6\\) parce que \\(6 \\times 6 = 36\\) ; seul le facteur qui se répète avec lui-même est la racine carrée.<br><b>Estimation des racines :</b> encadre le nombre entre deux carrés parfaits voisins : si \\(49 < 60 < 64\\), alors \\(7 < \\sqrt{60} < 8\\), et le carré le plus proche donne la meilleure estimation.<br><b>Valeurs à la calculatrice :</b> une racine affichée à l'écran est arrondie, car ses chiffres décimaux continuent au-delà de l'affichage, donc son carré est proche du nombre de départ plutôt qu'exactement égal.<br><b>Théorème de Pythagore :</b> dans un triangle rectangle, \\(a^{2} + b^{2} = c^{2}\\), où \\(a\\) et \\(b\\) sont les cathètes et \\(c\\) est l'hypoténuse ; il s'applique seulement aux triangles rectangles.<br><b>Trouver un côté :</b> pour l'hypoténuse, additionne les carrés des cathètes et prends la racine carrée ; pour une cathète, soustrais les carrés connus et prends la racine carrée.<br><b>Vérification et triplets :</b> un triangle est rectangle exactement quand la somme des carrés des deux côtés les plus courts égale le carré du côté le plus long ; des triplets comme 3, 4, 5 et 5, 12, 13, et leurs copies à l'échelle, réussissent ce test.",
+    "2": "<b>Règles des signes pour la multiplication :</b> des signes identiques donnent un produit positif, des signes différents donnent un produit négatif : \\( (+)\\times(+)=+ \\), \\( (-)\\times(-)=+ \\), \\( (+)\\times(-)=- \\)<br>\n<b>Règles des signes pour la division :</b> les mêmes règles des signes valent pour les quotients : \\( (-)\\div(-)=+ \\) et \\( (+)\\div(-)=- \\)<br>\n<b>Modèles :</b> les jetons rouges représentent les nombres négatifs ; enlever des groupes est une action négative, donc enlever des groupes de jetons rouges montre un nombre négatif fois un nombre négatif<br>\n<b>Changement répété :</b> un changement qui se répète le même nombre de fois est un produit, comme une chute de \\(3\\) degrés chaque heure pendant \\(5\\) heures, \\((-3)\\times 5\\)<br>\n<b>Partage égal :</b> un total partagé en parties égales est un quotient, comme \\((-36)\\div 6\\) pour un total partagé en \\(6\\) parts<br>\n<b>Priorité des opérations :</b> les parenthèses d'abord, puis la multiplication et la division de gauche à droite, puis l'addition et la soustraction de gauche à droite<br>",
+    "3": "<b>Multiplier des fractions :</b> multiplie les numérateurs et multiplie les dénominateurs, puis réduis ; simplifie d'abord un numérateur avec un dénominateur pour garder de petits nombres.<br><b>Nombres fractionnaires :</b> change en fraction impropre avant de multiplier ou de diviser, p. ex. \\(2\\frac{1}{3} = \\frac{7}{3}\\).<br><b>Fraction d'une fraction :</b> « de » signifie multiplier, et un modèle d'aire montre le chevauchement des deux parties ombrées.<br><b>Diviser des fractions :</b> multiplie par l'inverse du diviseur (retourne seulement la deuxième fraction) : \\(\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\times \\frac{d}{c}\\).<br><b>Estimation :</b> compare chaque fraction à 0, \\(\\frac{1}{2}\\) et 1 ; un produit de deux fractions propres est plus petit que les deux fractions, et diviser par une fraction propre donne un quotient plus grand que le dividende.<br><b>Priorité des opérations :</b> les parenthèses d'abord, puis la multiplication et la division, puis l'addition et la soustraction.<br>",
+    "4": "<b>Développements :</b> un développement est un modèle plat de faces qui se plie pour former un objet à trois dimensions ; le développement d'un prisme triangulaire a 2 triangles et 3 rectangles, celui d'un cylindre a 2 cercles et 1 rectangle, et celui d'un prisme rectangulaire a 6 rectangles en 3 paires assorties.<br><b>Faces :</b> un prisme rectangulaire droit a 6 faces, un prisme triangulaire droit a 5 faces, et un cylindre droit a 2 faces circulaires planes et 1 surface courbe.<br><b>Aire totale :</b> l'aire totale de toutes les faces, trouvée en additionnant les aires des faces dans le développement ; pour un prisme rectangulaire, \\(AT = 2(lw + lh + wh)\\).<br><b>Prismes :</b> pour un prisme triangulaire, additionne 2 extrémités triangulaires aux rectangles latéraux : \\(AT = 2B + Ph\\), où \\(P\\) est le périmètre d'une extrémité.<br><b>Cylindres :</b> \\(AT = 2\\pi r^{2} + 2\\pi r h\\), où le côté courbe se déroule pour former un rectangle ; utilise \\(\\pi = 3,14\\) pour une réponse décimale.<br><b>Volume :</b> pour tout prisme droit ou cylindre, \\(V = \\text{aire de la base} \\times \\text{hauteur}\\) ; pour un cylindre, \\(V = \\pi r^{2} h\\). Tourner un objet dans une nouvelle position ne change pas son volume.<br>",
+    "5": "<b>Pourcentage :</b> une comparaison sur 100 ; les pourcentages peuvent être inférieurs à 1 % ou supérieurs à 100 % quand un nouveau montant est comparé à un tout antérieur.<br><b>Conversions :</b> d'un pourcentage à un nombre décimal, divise par 100 ; d'un nombre décimal à un pourcentage, multiplie par 100 ; une fraction se convertit en divisant le numérateur par le dénominateur, par exemple \\( \\frac{3}{4}=0,75=75 \\% \\).<br><b>Problèmes de pourcentage :</b> partie \\(=\\text{pourcentage}\\times\\text{tout}\\) ; des pourcentages combinés agissent par étapes sur le montant restant, et un pourcentage d'un pourcentage multiplie les deux nombres décimaux.<br><b>Rapport :</b> une comparaison de deux quantités de même type, écrite \\(a:b\\) ; pour le premier terme, le rapport de la partie au tout est \\( \\frac{a}{a+b} \\).<br><b>Taux :</b> une comparaison de deux unités différentes, comme km/h ; un taux unitaire a 1 comme deuxième quantité, et on compare les taux par leurs taux unitaires.<br>",
+    "6": "<b>Résoudre des équations :</b> utilise les opérations inverses des deux côtés pour isoler la variable : défais les additions en soustrayant, et défais les multiplications en divisant.<br><b>Formes :</b> \\(ax = b\\), \\(\\frac{x}{a} = b\\), \\(ax + b = c\\), \\(\\frac{x}{a} + b = c\\) et \\(a(x + b) = c\\), résolues en défaisant les étapes dans l'ordre inverse.<br><b>Distributivité :</b> \\(a(x + b) = ax + ab\\) ; le nombre à l'extérieur des parenthèses multiplie chaque terme à l'intérieur.<br><b>Vérification d'une solution :</b> substitue la valeur dans l'équation de départ ; c'est une solution seulement si le côté gauche égale le côté droit.<br><b>Tables de valeurs et graphiques :</b> substitue des valeurs de \\(x\\) dans l'équation pour obtenir des valeurs de \\(y\\), puis place les couples ordonnés \\((x, y)\\) comme points distincts pour des données discrètes.<br><b>Valeurs manquantes :</b> un couple ordonné d'une relation satisfait son équation, donc substitue la coordonnée connue et résous pour trouver l'autre.",
+    "7": "<b>Choix du graphique :</b> un diagramme à ligne brisée montre un changement dans le temps, un diagramme circulaire montre les parts d'un seul tout, un diagramme à bandes compare des catégories, un diagramme à bandes doubles compare deux groupes dans chaque catégorie, et un pictogramme compare des quantités avec des symboles.<br><b>Formats trompeurs :</b> un axe qui ne commence pas à zéro, des intervalles inégaux sur un axe, des effets en trois dimensions, des symboles de tailles différentes et le fait de montrer seulement une partie choisie des données peuvent tous mal représenter les valeurs.<br><b>Juger un graphique :</b> compare les hauteurs des bandes, les tailles des parts et les affirmations aux nombres réels ; une majorité signifie plus de la moitié.<br><b>Événements indépendants :</b> des événements qui ne s'influencent pas l'un l'autre ; la probabilité que les deux se produisent est le produit de leurs probabilités séparées, \\(P(A \\text{ et } B) = P(A) \\times P(B)\\).<br><b>Tirage avec remise :</b> l'objet est remis en place, donc les probabilités restent les mêmes au deuxième tirage.",
+    "8": "<b>Vues :</b> la vue de dessus montre quelles cases contiennent des cubes ; dans la vue de face, les hauteurs des colonnes sont la pile la plus haute de chaque colonne ; les colonnes de la vue de côté vont de l'avant vers l'arrière<br><b>Cartes de hauteurs :</b> chaque nombre est la hauteur de la pile sur cette case ; le nombre total de cubes est la somme de tous les nombres ; pour un objet tourné, tourne d'abord la carte, puis lis les vues<br><b>Dallages :</b> les formes couvrent sans espaces vides et sans chevauchements ; les angles à chaque point totalisent exactement \\( 360° \\)<br><b>Angle intérieur</b> d'un polygone régulier à \\( n \\) côtés : \\( \\dfrac{(n-2) \\times 180°}{n} \\) : triangle \\( 60° \\), carré \\( 90° \\), pentagone \\( 108° \\), hexagone \\( 120° \\), octagone \\( 135° \\)<br><b>Polygones réguliers qui dallent seuls :</b> seulement les formes dont l'angle intérieur divise \\( 360° \\) : les triangles, les carrés et les hexagones<br><b>Transformations :</b> une translation est un glissement, une réflexion est un retournement, une rotation est un tour ; une réflexion glissée est un retournement combiné à un glissement ; déplacer une pièce entre des côtés appariés garde l'ajustement et garde la même aire"
+  }
+  },
+
+  "math-7-fr": {
+  id: "math-7-fr",
+  shortName: "Mathématiques 7",
+
+  /* Long name and app name as the fork carries them: the fork
+     heads its page and face card "Révision de mathématiques 7e
+     année" (its <h1> and face heading), which is the report
+     form's app name there too, so it is carried as appName; the
+     subtitle names the course "Mathématiques 7e année", carried
+     as longName; the picker and the export names shorten it to
+     "Mathématiques 7", carried as shortName. The document title
+     is the fork's own <title>: "Mathématiques 7e année : banque
+     de questions d'entraînement". */
+  longName: "Mathématiques 7e année",
+  appName: "Révision de mathématiques 7e année",
+  title: "Mathématiques 7e année : banque de questions d'entraînement",
+  subject: "Mathématiques",
+  grade: 7,
+  listed: false,
+  language: "fr",
+  storagePrefix: "m7fr",
+  bankFile: "math-7-fr.js",
+  defaultCheckMode: "each",
+
+  /* Unit names verbatim from the standalone app (UNITS at
+     line 668). */
+  units: {
+    "1": "Les régularités et les relations",
+    "2": "Les nombres entiers",
+    "3": "Les fractions, les nombres décimaux et les pourcentages",
+    "4": "Le cercle et l’aire",
+    "5": "Les opérations sur les fractions",
+    "6": "Les équations",
+    "7": "L’analyse des données",
+    "8": "La géométrie"
+  },
+
+  /* Indicator texts verbatim from the standalone app
+     (INDICATORS at line 669); the code set and the per-unit
+     placement are the English course's, the codes being
+     language-independent. */
+  indicators: {
+    "5.1": "Déterminer si un nombre donné est divisible par 2, 3, 4, 5, 6, 8, 9 ou 10 et expliquer pourquoi.",
+    "5.2": "Trier un ensemble de nombres donné selon leur divisibilité en utilisant des organisateurs graphiques comme des diagrammes de Venn ou des diagrammes de Carroll.",
+    "5.3": "Expliquer, à l’aide d’un exemple, pourquoi les nombres ne peuvent pas être divisés par zéro.",
+    "5.4": "Déterminer les facteurs d’un nombre donné en se basant sur les règles de divisibilité.",
+    "8.4": "Expliquer ce qu’est une variable et l’usage dont on en fait dans une expression donnée.",
+    "8.5": "Identifier et fournir un exemple d’un terme constant, d’un coefficient numérique et d’une variable dans une expression et dans une équation.",
+    "8.6": "Fournir un exemple d’une expression et d’une équation, et expliquer en quoi elles se ressemblent et en quoi elles diffèrent.",
+    "7.1": "Représenter une régularité donnée oralement ou par écrit, sous forme d’expression algébrique.",
+    "7.8": "Substituer une valeur à l’inconnue dans une expression donnée, et évaluer cette expression.",
+    "7.7": "Formuler une relation linéaire pour représenter la relation qui se dégage d’une régularité décrite oralement ou par écrit.",
+    "7.9": "Créer une table de valeurs à partir d’une relation linéaire donnée en substituant des valeurs à la variable.",
+    "7.10": "Créer une table de valeurs en utilisant une relation linéaire et l’utiliser pour en tracer le graphique (se limitant à des éléments discrets).",
+    "7.11": "Tracer un graphique à partir d’une table de valeurs générée à partir d’une relation linéaire donnée et décrire les régularités découvertes en analysant ce graphique pour en tirer des conclusions (p. ex. : tracer le graphique de la relation entre n et 2n + 3).",
+    "7.12": "Décrire, dans son propre langage, oralement ou par écrit, la relation représentée par un diagramme pour résoudre des problèmes.",
+    "7.3": "Fournir un contexte dans lequel une relation linéaire donnée est la représentation d’une régularité.",
+    "7.4": "Représenter une régularité observée dans l’environnement en utilisant une relation linéaire.",
+    "7.5": "Apparier un ensemble de relations linéaires donné à un ensemble de graphiques donné.",
+    "7.6": "Apparier un ensemble de graphiques donné à un ensemble de relations linéaires donné.",
+    "7.2": "Représenter une régularité donnée oralement ou par écrit, sous forme d’équation.",
+    "8.12": "Pour des problèmes qui peuvent être représentés par des équations linéaires des formes suivantes : ax + b = c; ax - b = c; ax = b; x/a = b, a ≠ 0 (où a, b et c sont des nombres entiers positifs). Modéliser un problème donné à l’aide d’une équation linéaire et le résoudre à l’aide de matériel concret, p. ex. : des jetons, des carreaux algébriques.",
+    "6.24": "Expliquer à l’aide de matériel concret, tel que des carreaux algébriques et des diagrammes, que la somme de nombres entiers opposés est égale à zéro.",
+    "6.29": "Résoudre un problème donné comportant l’addition et la soustraction de nombres entiers.",
+    "6.25": "Additionner deux nombres entiers donnés à l’aide de matériel concret ou de représentations imagées, et noter le processus de façon symbolique.",
+    "6.26": "Illustrer les résultats d’additions de nombres entiers négatifs et de nombres entiers positifs en utilisant une droite numérique.",
+    "6.27": "Soustraire deux nombres entiers donnés à l’aide de matériel concret ou de représentations imagées, et noter le processus de façon symbolique.",
+    "6.28": "Illustrer les résultats de soustractions de nombres entiers négatifs et de nombres entiers positifs en utilisant une droite numérique.",
+    "3.8": "Prédire le nombre décimal équivalent à une fraction donnée en ayant recours aux régularités, p. ex. : 1/11 = 0,0909..., 2/11 = 0,1818..., 3/11 = ? (On s’attend à ce que les nombres décimaux périodiques soient limités à un ou deux chiffres périodiques.)",
+    "3.9": "Apparier les fractions d’un ensemble à leur représentation décimale.",
+    "3.10": "Trier un ensemble de fractions donné en nombres décimaux périodiques et nombres décimaux finis.",
+    "3.11": "Exprimer une fraction donnée sous la forme d’un nombre décimal fini ou périodique.",
+    "3.12": "Exprimer un nombre décimal fini donné sous la forme d’une fraction.",
+    "3.13": "Exprimer un nombre décimal périodique donné sous la forme d’une fraction.",
+    "3.14": "Fournir un exemple d’un nombre décimal qui est une représentation approximative de la valeur exacte d’une fraction donnée.",
+    "3.3": "Ordonner en ordre croissant ou décroissant les nombres d’un ensemble donné comprenant des fractions positives, des nombres décimaux positifs et des nombres entiers, et vérifier le résultat en utilisant une variété de stratégies.",
+    "3.1": "Placer les fractions ayant des dénominateurs communs ou non d’un ensemble donné sur une droite numérique et expliquer la stratégie utilisée pour les ordonner.",
+    "3.4": "Ordonner les nombres d’un ensemble donné en les plaçant sur une droite numérique comprenant des points de repère tels que 0 et 1, ou 0 et 5.",
+    "3.2": "Placer les fractions positives d’un ensemble donné comprenant des nombres composés et des fractions impropres sur une droite numérique et expliquer la stratégie utilisée pour les ordonner.",
+    "3.5": "Identifier le nombre situé entre deux nombres donnés dans une suite ordonnée ou sur une droite numérique.",
+    "3.6": "Identifier les nombres qui ne sont pas bien placés dans une suite ordonnée ou sur une droite numérique.",
+    "6.5": "Résoudre un problème donné qui comprend l’addition d’au moins deux nombres décimaux.",
+    "6.6": "Résoudre un problème donné qui comprend la soustraction de nombres décimaux.",
+    "6.1": "Placer la virgule décimale dans une somme ou une différence en appliquant la stratégie des premiers chiffres, p. ex. : pour 4,5 + 0,73 + 256,458; penser à 4 + 256, et conclure que la somme est supérieure à 260.",
+    "6.7": "Résoudre un problème donné qui comprend la multiplication par des multiplicateurs de deux chiffres (nombres entiers ou décimaux) sans l’aide de la technologie.",
+    "6.2": "Placer la virgule décimale dans un produit en appliquant la stratégie des premiers chiffres, p. ex. : pour 12,33 $ × 2,4; penser à 12 $ × 2, et en conclure que le produit est supérieur à 24 $.",
+    "6.9": "Résoudre un problème donné qui comprend la multiplication par des multiplicateurs de plus de deux chiffres ou la division de nombres décimaux où les diviseurs ont plus qu’un chiffre (nombres entiers ou décimaux) à l’aide de la technologie.",
+    "6.8": "Résoudre un problème donné qui comprend la division de nombres décimaux où les diviseurs n’ont qu’un chiffre (nombres entiers ou décimaux) sans l’aide de la technologie.",
+    "6.4": "Vérifier la vraisemblance de solutions à l’aide de l’estimation.",
+    "6.3": "Placer la virgule décimale dans un quotient en appliquant la stratégie des premiers chiffres, p. ex. : pour 51,50 ÷ 2,1; penser à 50 ÷ 2, et en conclure que le quotient est approximativement 25.",
+    "6.10": "Résoudre un problème donné comportant des opérations sur des nombres décimaux, limités aux millièmes, en tenant compte de la priorité des opérations.",
+    "3.7": "Exprimer un pourcentage donné sous forme décimale ou fractionnaire.",
+    "6.11": "Résoudre un problème donné où un pourcentage doit être déterminé.",
+    "6.12": "Déterminer la solution à un problème donné comportant des pourcentages, dont la solution exige l’arrondissement, et expliquer pourquoi une réponse approximative est nécessaire, p. ex. : le coût total d’un objet, y compris les taxes.",
+    "9.11": "Illustrer et expliquer que le diamètre d’un cercle donné est égal au double de son rayon.",
+    "9.12": "Tracer un cercle dont le rayon ou le diamètre est donné, avec ou sans l’aide d’un compas.",
+    "9.7": "Illustrer et expliquer que la circonférence d’un cercle donné est approximativement le triple de son diamètre.",
+    "9.8": "Expliquer que pour tout cercle, pi est le rapport de la circonférence au diamètre (C/d) dont la valeur est approximativement égale à 3,14.",
+    "9.10": "Résoudre un problème contextualisé donné comportant des cercles.",
+    "9.1": "Illustrer et expliquer comment on peut déterminer l’aire d’un parallélogramme à partir de l’aire d’un rectangle.",
+    "9.2": "Généraliser une règle pour créer une formule permettant de déterminer l’aire de parallélogrammes.",
+    "9.3": "Résoudre un problème donné comportant l’aire de triangles, de parallélogrammes et/ou de cercles.",
+    "9.4": "Illustrer et expliquer comment on peut déterminer l’aire d’un triangle à partir de l’aire d’un rectangle ou d’un parallélogramme.",
+    "9.5": "Généraliser une règle pour créer une formule permettant de déterminer l’aire de triangles.",
+    "9.6": "Illustrer et expliquer comment on peut estimer l’aire d’un cercle sans avoir recours à une formule.",
+    "9.9": "Appliquer une formule pour déterminer l’aire d’un cercle donné.",
+    "11.1": "Trouver et comparer des diagrammes circulaires dans divers médias imprimés et électroniques, tels que les quotidiens, les magazines et Internet.",
+    "11.2": "Identifier les caractéristiques communes de diagrammes circulaires, telles que : les titres, les étiquettes ou les légendes; la somme des angles au centre d’un cercle est égale à 360°; les données sont présentées sous la forme de pourcentages d’un tout, et la somme de ces pourcentages est égale à 100 %.",
+    "9.13": "Expliquer, à l’aide d’une illustration, que la somme des angles au centre de tout cercle est égale à 360°.",
+    "11.5": "Exprimer les pourcentages présentés dans un diagramme circulaire sous forme de quantités afin de résoudre un problème donné.",
+    "11.4": "Interpréter un diagramme circulaire donné afin de répondre à des questions.",
+    "11.3": "Créer et étiqueter un diagramme circulaire pour présenter un ensemble de données avec ou sans l’aide de la technologie.",
+    "6.13": "Modéliser l’addition de fractions positives, de façon concrète, et les noter de façon symbolique.",
+    "6.14": "Déterminer la somme de deux fractions positives ayant des dénominateurs communs.",
+    "6.15": "Simplifier une fraction positive donnée en déterminant le facteur commun au numérateur et au dénominateur.",
+    "6.16": "Déterminer un dénominateur commun pour les fractions positives d’un ensemble donné.",
+    "6.17": "Déterminer la somme de deux fractions positives ayant des dénominateurs différents.",
+    "6.18": "Modéliser la soustraction de fractions positives, de façon concrète, et les noter de façon symbolique.",
+    "6.19": "Déterminer la différence de deux fractions positives données.",
+    "6.20": "Modéliser l’addition et la soustraction de nombres fractionnaires, de façon concrète, et les noter de façon symbolique.",
+    "6.21": "Déterminer la somme ou la différence de deux nombres fractionnaires.",
+    "6.22": "Simplifier la solution d’un problème donné qui comprend la somme ou la différence de deux fractions positives ou de nombres fractionnaires.",
+    "6.23": "Résoudre un problème donné comportant l’addition ou la soustraction de fractions positives ou de nombres fractionnaires, et vérifier la vraisemblance de la solution.",
+    "8.14": "Pour des problèmes qui peuvent être représentés par des équations linéaires des formes suivantes : ax + b = c; ax - b = c; ax = b; x/a = b, a ≠ 0 (où a, b et c sont des nombres entiers positifs). Résoudre une équation linéaire par inspection et par essai systématique.",
+    "8.1": "Modéliser la préservation de l’égalité pour chacune des quatre opérations mathématiques à l’aide de matériel concret ou d’une représentation imagée, et expliquer le processus oralement, et puis le noter de façon symbolique.",
+    "8.3": "Écrire la forme équivalente d’une équation donnée en appliquant la préservation de l’égalité et la vérifier à l’aide de matériel concret : p. ex. : 3b = 12 est semblable à 3b + 5 = 12 + 5 ou 2r = 7 est semblable à 3(2r) = 3(7).",
+    "8.13": "Pour des problèmes qui peuvent être représentés par des équations linéaires des formes suivantes : ax + b = c; ax - b = c; ax = b; x/a = b, a ≠ 0 (où a, b et c sont des nombres entiers positifs). Tracer une représentation visuelle des étapes utilisées pour résoudre une équation linéaire.",
+    "8.15": "Pour des problèmes qui peuvent être représentés par des équations linéaires des formes suivantes : ax + b = c; ax - b = c; ax = b; x/a = b, a ≠ 0 (où a, b et c sont des nombres entiers positifs). Résoudre un problème donné à l’aide d’équations linéaires et noter le processus.",
+    "8.16": "Pour des problèmes qui peuvent être représentés par des équations linéaires des formes suivantes : ax + b = c; ax - b = c; ax = b; x/a = b, a ≠ 0 (où a, b et c sont des nombres entiers positifs). Vérifier la solution d’une équation linéaire à l’aide de matériel concret et de diagrammes.",
+    "8.17": "Pour des problèmes qui peuvent être représentés par des équations linéaires des formes suivantes : ax + b = c; ax - b = c; ax = b; x/a = b, a ≠ 0 (où a, b et c sont des nombres entiers positifs). Substituer la solution d’une équation à la variable dans l’équation linéaire originale pour en vérifier l’égalité.",
+    "8.7": "Pour des problèmes qui peuvent être représentés par des équations linéaires à une étape de la forme x + a = b, où a et b sont des nombres entiers. Représenter un problème donné sous forme d’une équation linéaire et le résoudre à l’aide de matériel concret tel que des jetons ou des carreaux algébriques.",
+    "8.8": "Pour des problèmes qui peuvent être représentés par des équations linéaires à une étape de la forme x + a = b, où a et b sont des nombres entiers. Tracer une représentation visuelle des étapes requises pour résoudre une équation linéaire.",
+    "8.9": "Pour des problèmes qui peuvent être représentés par des équations linéaires à une étape de la forme x + a = b, où a et b sont des nombres entiers. Résoudre un problème donné à l’aide d’équations linéaires.",
+    "8.10": "Pour des problèmes qui peuvent être représentés par des équations linéaires à une étape de la forme x + a = b, où a et b sont des nombres entiers. Vérifier la solution d’une équation linéaire donnée à l’aide de matériel concret et de diagrammes.",
+    "8.11": "Pour des problèmes qui peuvent être représentés par des équations linéaires à une étape de la forme x + a = b, où a et b sont des nombres entiers. Substituer, dans l’équation linéaire originale, la solution possible à la variable dans une équation linéaire donnée pour en vérifier l’égalité.",
+    "8.2": "Résoudre un problème donné en appliquant la préservation de l’égalité.",
+    "11.6": "Déterminer la moyenne, la médiane et le mode d’un ensemble de données fourni et expliquer pourquoi ces mesures peuvent être identiques ou différentes.",
+    "11.7": "Déterminer l’étendue de différents ensembles de données fournis.",
+    "11.8": "Fournir un contexte dans lequel soit la moyenne, la médiane ou le mode d’un ensemble de données est la mesure de la tendance centrale la plus appropriée pour le décrire.",
+    "11.9": "Résoudre un problème donné qui comprend des mesures de tendance centrale.",
+    "11.10": "Analyser un ensemble de données fourni afin d’en identifier toute valeur aberrante.",
+    "11.11": "Expliquer les effets des valeurs aberrantes sur les mesures de tendance centrale d’un ensemble spécifique de données.",
+    "11.12": "Identifier les valeurs aberrantes d’un ensemble fourni de données et expliquer pourquoi il est approprié ou non d’en tenir compte lors de la détermination de mesures de tendance centrale.",
+    "11.13": "Fournir des exemples de situations dans lesquelles des valeurs aberrantes devraient ou ne devraient pas être incluses lors de la détermination de mesures de tendance centrale.",
+    "12.1": "Déterminer la probabilité de l’un des résultats d’une expérience de probabilité et exprimer cette probabilité sous la forme d’un rapport, d’une fraction et d’un pourcentage.",
+    "12.2": "Fournir un exemple d’un évènement dont la probabilité est 0 ou 0 % (impossible) et d’un évènement dont la probabilité d’un évènement est 1 ou 100 % (certain).",
+    "12.3": "Fournir un exemple de paires d’évènements indépendants tels que : faire tourner une roulette ayant quatre secteurs et lancer un dé à huit faces; lancer une pièce de monnaie et lancer un dé à douze faces; lancer deux pièces de monnaie; lancer deux dés; et expliquer pourquoi ces évènements sont des évènements indépendants.",
+    "12.4": "Identifier l’espace échantillonnal (l’ensemble des résultats possibles) de chacun des deux évènements indépendants d’une expérience donnée en utilisant un diagramme en arbre, un tableau ou un autre outil de classement graphique.",
+    "12.5": "Déterminer la probabilité théorique d’un résultat donné, comportant deux évènements indépendants.",
+    "12.6": "Mener une expérience de probabilité à la suite de deux évènements indépendants, avec ou sans l’aide de la technologie, afin de comparer la probabilité expérimentale et la probabilité théorique.",
+    "12.7": "Résoudre un problème de probabilité donné comportant deux évènements indépendants.",
+    "10.1": "Identifier les segments de droites parallèles ou perpendiculaires qui apparaissent dans un diagramme donné.",
+    "10.2": "Décrire des exemples de segments de droites parallèles dans l’environnement.",
+    "10.13": "Tracer un segment de droite parallèle à un autre segment de droite, et expliquer comment on sait qu’ils sont parallèles.",
+    "10.3": "Décrire des exemples de segments de droites perpendiculaires dans l’environnement.",
+    "10.14": "Tracer un segment de droite perpendiculaire à un autre segment de droite, et expliquer comment on sait qu’ils sont perpendiculaires.",
+    "10.4": "Décrire des exemples de médiatrices dans l’environnement.",
+    "10.15": "Tracer la médiatrice d’un segment de droite de plus d’une façon, et vérifier leur construction.",
+    "10.5": "Décrire des exemples de bissectrices dans l’environnement.",
+    "10.16": "Tracer la bissectrice d’un angle donné de plus d’une façon, et vérifier la congruence des angles obtenus.",
+    "10.6": "Étiqueter les axes d’un plan à quatre quadrants (ou plan cartésien) et en identifier l’origine.",
+    "10.7": "Identifier l’emplacement d’un point donné dans n’importe lequel des quadrants d’un plan cartésien, d’après sa paire ordonnée (se limitant aux nombres entiers).",
+    "10.9": "Tracer un point donné d’après ses coordonnées, dont la paire ordonnée est composée de nombres entiers, dans un plan cartésien dont les axes ont des intervalles de 1, 2, 5 ou 10 unités.",
+    "10.17": "Tracer des motifs ou des figures dans un plan cartésien à partir de paires ordonnées.",
+    "10.18": "Créer des motifs et des figures dans n’importe lequel des quatre quadrants d’un plan cartésien et identifier les points utilisés pour le produire.",
+    "10.8": "Identifier les coordonnées des sommets d’une figure à deux dimensions donnée dans un plan cartésien.",
+    "10.10": "Décrire le déplacement horizontal et le déplacement vertical nécessaires pour aller d’un point à un autre dans un plan cartésien.",
+    "10.19": "Déterminer la distance horizontale et la distance verticale entre deux points situés dans n’importe lequel des quatre quadrants d’un plan cartésien.",
+    "10.11": "Décrire le déplacement des sommets d’une forme à deux dimensions par rapport aux sommets de l’image comme un résultat de la transformation ou d’une combinaison des transformations successives.",
+    "10.20": "Effectuer une transformation ou des transformations consécutives sur une forme à deux dimensions et identifier les coordonnées des sommets de l’image.",
+    "10.12": "Décrire l’image obtenue après la transformation d’une figure à deux dimensions donnée dans un plan cartésien en identifiant les coordonnées de ses sommets."
+  },
+  unitInd: {
+    "1": [
+      "5.1",
+      "5.2",
+      "5.3",
+      "5.4",
+      "8.4",
+      "8.5",
+      "8.6",
+      "7.1",
+      "7.8",
+      "7.7",
+      "7.9",
+      "7.10",
+      "7.11",
+      "7.12",
+      "7.3",
+      "7.4",
+      "7.5",
+      "7.6",
+      "7.2",
+      "8.12"
+    ],
+    "2": [
+      "6.24",
+      "6.29",
+      "6.25",
+      "6.26",
+      "6.27",
+      "6.28"
+    ],
+    "3": [
+      "3.8",
+      "3.9",
+      "3.10",
+      "3.11",
+      "3.12",
+      "3.13",
+      "3.14",
+      "3.3",
+      "3.1",
+      "3.4",
+      "3.2",
+      "3.5",
+      "3.6",
+      "6.5",
+      "6.6",
+      "6.1",
+      "6.7",
+      "6.2",
+      "6.9",
+      "6.8",
+      "6.4",
+      "6.3",
+      "6.10",
+      "3.7",
+      "6.11",
+      "6.12"
+    ],
+    "4": [
+      "9.11",
+      "9.12",
+      "9.7",
+      "9.8",
+      "9.10",
+      "9.1",
+      "9.2",
+      "9.3",
+      "9.4",
+      "9.5",
+      "9.6",
+      "9.9",
+      "11.1",
+      "11.2",
+      "9.13",
+      "11.5",
+      "11.4",
+      "11.3"
+    ],
+    "5": [
+      "6.13",
+      "6.14",
+      "6.15",
+      "6.16",
+      "6.17",
+      "6.18",
+      "6.19",
+      "6.20",
+      "6.21",
+      "6.22",
+      "6.23"
+    ],
+    "6": [
+      "8.14",
+      "8.1",
+      "8.3",
+      "8.12",
+      "8.13",
+      "8.15",
+      "8.16",
+      "8.17",
+      "8.7",
+      "8.8",
+      "8.9",
+      "8.10",
+      "8.11",
+      "8.2"
+    ],
+    "7": [
+      "11.6",
+      "11.7",
+      "11.8",
+      "11.9",
+      "11.10",
+      "11.11",
+      "11.12",
+      "11.13",
+      "12.1",
+      "12.2",
+      "12.3",
+      "12.4",
+      "12.5",
+      "12.6",
+      "12.7"
+    ],
+    "8": [
+      "10.1",
+      "10.2",
+      "10.13",
+      "10.3",
+      "10.14",
+      "10.4",
+      "10.15",
+      "10.5",
+      "10.16",
+      "10.6",
+      "10.7",
+      "10.9",
+      "10.17",
+      "10.18",
+      "10.8",
+      "10.10",
+      "10.19",
+      "10.11",
+      "10.20",
+      "10.12"
+    ]
+  },
+
+  /* Preset labels in the French junior pattern the Math 9 FR
+     course carries; the final preset's face label is the face
+     scope wording for the same selection. Mixes are the junior
+     family's [20, 60, 20], as the English course carries. */
+  presets: {
+    mid: { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Révision de mi-parcours (unités 1 à 4)" },
+    final: { units: [5, 6, 7, 8], mix: [20, 60, 20], label: "Révision finale (unités 5 à 8)", faceLabel: "Révision de fin de cours (unités 5 à 8)" }
+  },
+  hints: true,
+
+  /* Timer note as the fork's timer strings carry it: the real
+     exam allows 1 heure 30 minutes. */
+  timerNote: "1 heure 30 minutes",
+
+  /* Sheet header work strings verbatim from the fork's sheet
+     header: [in the space provided, on your own paper]. */
+  sheetWork: ["Montre tout ton travail dans l'espace fourni.", "Montre tout ton travail sur ta propre feuille."],
+
+  /* Exam composer configuration: the junior pooled composer,
+     identical to the English Math 7 course's. */
+  exam: {
+    "fallback": {
+      "srCount": 18,
+      "crMarks": 17,
+      "levels": [
+        7,
+        21,
+        7
+      ],
+      "crL3": [
+        6,
+        5,
+        7
+      ],
+      "total": 35
+    }
+  },
+  unitTest: {
+    "total": 25,
+    "sr": 11,
+    "cr": 14
+  },
+
+  /* Reference panels verbatim from the standalone app
+     (REF_HTML at line 5800): one per unit. */
+  panels: {
+    "1": "<b>Tests de divisibilité :</b> 2 : le dernier chiffre est pair. 3 : la somme des chiffres est divisible par 3. 4 : les deux derniers chiffres sont divisibles par 4. 5 : se termine par 0 ou 5. 6 : divisible par 2 et par 3. 8 : les trois derniers chiffres sont divisibles par 8. 9 : la somme des chiffres est divisible par 9. 10 : se termine par 0.<br><b>Division par 0 :</b> un nombre ne peut pas être divisé par 0, car aucun nombre multiplié par 0 ne donne le dividende.<br><b>Facteurs :</b> les facteurs d'un nombre sont les nombres entiers qui le divisent exactement ; trouve-les par paires, et un nombre est toujours un facteur de lui-même.<br><b>Parties d'une expression :</b> une variable est une lettre qui représente une valeur qui peut changer ; le coefficient numérique est le nombre qui multiplie la variable ; le terme constant est le terme sans variable.<br><b>Expression ou équation :</b> une expression n'a pas de signe égal et on l'évalue ; une équation pose deux expressions égales et on peut la résoudre.<br><b>Régularités :</b> pour une régularité de pas \\(d\\) et de premier terme \\(a\\), le terme en position \\(n\\) est \\(a + (n-1)d\\), qui se simplifie en \\(dn + (a-d)\\).<br><b>Relations linéaires :</b> une relation comme \\(y = ax + b\\) relie deux quantités ; \\(b\\) est la valeur de départ (à \\(x = 0\\)) et \\(a\\) est la quantité dont \\(y\\) change à chaque pas de \\(x\\).<br><b>Tables de valeurs et graphiques :</b> construis une table de valeurs en substituant chaque valeur de \\(x\\) dans la relation, puis place les paires comme des points discrets (des points seulement, non reliés).",
+    "2": "<b>Nombres opposés :</b> les nombres entiers opposés sont à la même distance de 0 dans des directions opposées, donc leur somme est 0, par exemple \\(5 + (-5) = 0\\).<br><b>Addition de nombres entiers, mêmes signes :</b> additionne les valeurs absolues et garde le signe, par exemple \\((-4) + (-5) = -9\\).<br><b>Addition de nombres entiers, signes différents :</b> soustrais la plus petite valeur absolue de la plus grande et garde le signe de la plus grande, par exemple \\((-7) + 4 = -3\\).<br><b>Soustraction de nombres entiers :</b> réécris la soustraction comme l'addition de l'opposé, par exemple \\(3 - (-6) = 3 + 6 = 9\\).<br><b>Droite numérique :</b> ajouter un nombre positif déplace vers la droite et ajouter un nombre négatif déplace vers la gauche ; un saut de soustraction se déplace de l'opposé du nombre soustrait.<br><b>Problèmes :</b> transforme les montées, les gains et les dépôts en changements positifs, et les chutes, les pertes et les paiements en changements négatifs, puis additionne les changements signés à la valeur de départ.",
+    "3": "<b>Ordonner des nombres :</b> convertis les fractions, les nombres décimaux et les pourcentages sous la même forme (les nombres décimaux sont les plus faciles) et compare ; les points de repère \\(0\\), \\(\\frac{1}{2}\\) et \\(1\\) ancrent les positions sur une droite numérique.<br><b>Fraction en nombre décimal :</b> divise le numérateur par le dénominateur, p. ex. \\(\\frac{3}{8} = 3 \\div 8\\).<br><b>Nombre décimal en fraction :</b> utilise la dernière position décimale comme dénominateur (\\(0,7 = \\frac{7}{10}\\), \\(0,35 = \\frac{35}{100}\\)), puis simplifie.<br><b>Pourcentages :</b> \\(p\\% = \\frac{p}{100}\\) ; pour écrire un pourcentage sous forme décimale, divise par \\(100\\). Pour trouver le pourcentage d'un nombre, multiplie la forme décimale par le nombre.<br><b>Nombres décimaux périodiques :</b> un seul chiffre qui se répète va sur \\(9\\) et deux chiffres qui se répètent vont sur \\(99\\). Une fraction sous sa forme réduite se termine quand son dénominateur se décompose seulement en facteurs \\(2\\) et \\(5\\) ; tout autre facteur premier signifie qu'elle se répète.<br><b>Addition et soustraction de nombres décimaux :</b> aligne les virgules décimales et travaille colonne par colonne.<br><b>Multiplication et division de nombres décimaux :</b> le nombre total de positions décimales dans les facteurs donne le nombre de positions décimales dans le produit ; vérifie chaque réponse par une estimation des premiers chiffres.<br><b>Argent et pourcentages :</b> arrondis les réponses finales en argent au cent le plus près. À Terre-Neuve-et-Labrador, la TVH est de \\(15 \\%\\) : total \\(=\\) prix \\(+\\) \\(0,15 \\times\\) prix.",
+    "4": "<b>Rayon et diamètre :</b> \\(d = 2r\\) et \\(r = d \\div 2\\). L'écartement d'un compas égale le rayon du cercle qu'il trace.<br><b>Circonférence :</b> \\(C = \\pi d = 2\\pi r\\) avec \\(\\pi \\approx 3,14\\) ; la circonférence est environ \\(3\\) fois le diamètre, et \\(\\pi\\) est le rapport \\(\\frac{C}{d}\\) pour tout cercle.<br><b>Aire d'un cercle :</b> \\(A = \\pi r^2\\) ; divise d'abord le diamètre par deux quand le diamètre est donné. Pour estimer sans formule, compte les carrés entiers du quadrillage et ajoute la moitié des carrés partiellement couverts.<br><b>Aire d'un parallélogramme :</b> \\(A = b \\times h\\), où \\(h\\) est la hauteur perpendiculaire, et non le côté oblique ; un parallélogramme se réarrange en un rectangle de même base et de même hauteur.<br><b>Aire d'un triangle :</b> \\(A = \\frac{b \\times h}{2}\\), car deux triangles identiques forment un parallélogramme de même base et de même hauteur.<br><b>Diagrammes circulaires :</b> la somme des pourcentages est \\(100 \\%\\) et la somme des angles au centre est \\(360^{\\circ}\\).<br><b>Construire et lire des diagrammes circulaires :</b> angle au centre \\(= \\frac{\\text{pourcentage}}{100} \\times 360^{\\circ}\\) ; quantité dans un secteur \\(= \\frac{\\text{pourcentage}}{100} \\times \\text{total sondé}\\).",
+    "5": "<b>Addition de fractions de même dénominateur :</b> additionne les numérateurs et garde le dénominateur, p. ex. \\(\\frac{a}{d} + \\frac{b}{d} = \\frac{a+b}{d}\\).<br><b>Dénominateur commun :</b> utilise le plus petit commun multiple des dénominateurs ; réécris chaque fraction en multipliant son numérateur et son dénominateur par le même facteur.<br><b>Addition ou soustraction de fractions de dénominateurs différents :</b> réécris d'abord les deux fractions sur un dénominateur commun, puis additionne ou soustrais les numérateurs.<br><b>Forme réduite :</b> divise le numérateur et le dénominateur par leur plus grand facteur commun ; une fraction est sous sa forme réduite quand le seul facteur commun est 1.<br><b>Nombres fractionnaires :</b> additionne ou soustrais séparément les nombres entiers et les parties fractionnaires ; si les parties fractionnaires dépassent un entier, regroupe ; si une partie fractionnaire est trop petite pour en soustraire une autre, regroupe un entier en parties fractionnaires.<br><b>Modélisation avec des bandes ou des cercles :</b> un tout est divisé en parties égales ; les parties ombrées montrent une fraction, et les parties ombrées barrées sont enlevées.<br><b>Vérification de la vraisemblance :</b> compare aux points de repère \\(0\\), \\(\\frac{1}{2}\\) et \\(1\\) ; une somme de deux quantités positives est plus grande que chacune d'elles, et une différence est plus petite que la quantité de départ.<br><b>Fractions impropres et nombres fractionnaires :</b> \\(\\frac{7}{4} = 1\\frac{3}{4}\\) ; pour écrire un nombre fractionnaire sous forme de fraction impropre, multiplie le nombre entier par le dénominateur et ajoute le numérateur.",
+    "6": "<b>Préservation de l'égalité :</b> une équation reste équilibrée quand on fait la même opération des deux côtés ; la nouvelle équation est équivalente et a la même solution.<br><b>Opérations inverses :</b> l'addition est défaite par la soustraction, la soustraction par l'addition, la multiplication par la division, et la division par la multiplication.<br><b>Équations à une étape \\(x + a = b\\) :</b> soustrais \\(a\\) des deux côtés, ce qui donne \\(x = b - a\\) ; pour \\(x - a = b\\), ajoute \\(a\\) des deux côtés.<br><b>Équations à deux étapes \\(ax + b = c\\) :</b> défais dans l'ordre inverse : soustrais \\(b\\) des deux côtés, puis divise les deux côtés par \\(a\\) ; pour \\(ax - b = c\\), ajoute d'abord \\(b\\), puis divise par \\(a\\).<br><b>Équations \\(ax = b\\) et \\(\\frac{x}{a} = b\\) :</b> divise les deux côtés par \\(a\\) pour la première ; multiplie les deux côtés par \\(a\\) pour la deuxième.<br><b>Modéliser un problème :</b> nomme l'inconnue, puis écris le montant fixe plus le montant par unité fois l'inconnue égal au total.<br><b>Vérification d'une solution :</b> substitue la valeur à la variable dans l'équation de départ ; la valeur est une solution seulement si les deux côtés sont égaux.<br><b>Résolution par inspection et par essai systématique :</b> l'inspection trouve la valeur qui rend l'équation vraie ; l'essai systématique teste des valeurs dans l'ordre et utilise chaque résultat pour réduire la recherche.",
+    "7": "<b>Moyenne :</b> additionne toutes les valeurs et divise par le nombre de valeurs.<br><b>Médiane :</b> la valeur du milieu d'une liste ordonnée ; pour un nombre pair de valeurs, fais la moyenne des deux valeurs du milieu.<br><b>Mode :</b> la valeur qui apparaît le plus souvent ; un ensemble peut n'avoir aucun mode ou en avoir plus d'un.<br><b>Étendue :</b> la plus grande valeur moins la plus petite valeur.<br><b>Choisir une mesure :</b> utilise le mode pour l'élément ou la catégorie la plus fréquente, la médiane quand une valeur aberrante tirerait la moyenne, et la moyenne quand chaque valeur doit compter également.<br><b>Valeurs aberrantes :</b> des valeurs loin du groupe principal ; elles tirent fortement la moyenne et seulement légèrement la médiane.<br><b>Probabilité :</b> \\(P = \\frac{\\text{résultats favorables}}{\\text{résultats possibles au total}}\\) ; une probabilité de 0 signifie impossible et une probabilité de 1 (100 %) signifie certain.<br><b>Deux évènements indépendants :</b> multiplie les nombres de résultats pour obtenir la taille de l'espace échantillonnal ; le résultat d'un évènement ne change pas l'autre.<br><b>Probabilité expérimentale :</b> \\(\\frac{\\text{nombre de fois où le résultat s'est produit}}{\\text{nombre d'essais}}\\) ; le nombre attendu dans une expérience est la probabilité théorique fois le nombre d'essais.",
+    "8": "<b>Segments parallèles :</b> ils ne se rencontrent jamais et restent à la même distance l'un de l'autre.<br><b>Segments perpendiculaires :</b> ils se rencontrent à \\(90^\\circ\\).<br><b>Médiatrice :</b> une droite qui coupe un segment en deux parties égales à \\(90^\\circ\\) ; chaque point sur cette droite est à la même distance des deux extrémités du segment.<br><b>Bissectrice :</b> une demi-droite partant du sommet qui partage un angle en deux angles égaux.<br><b>Plan cartésien :</b> l'axe horizontal est l'axe des \\(x\\), l'axe vertical est l'axe des \\(y\\), et ils se croisent à l'origine \\((0, 0)\\).<br><b>Paires ordonnées :</b> \\((x, y)\\) signifie \\(x\\) unités à l'horizontale à partir de l'origine, puis \\(y\\) unités vers le haut (les valeurs négatives vont à gauche ou vers le bas). Les quadrants selon les signes : I \\((+, +)\\), II \\((-, +)\\), III \\((-, -)\\), IV \\((+, -)\\).<br><b>Distance sur les lignes du quadrillage :</b> pour des points sur la même ligne horizontale, soustrais les valeurs de \\(x\\) ; sur la même ligne verticale, soustrais les valeurs de \\(y\\).<br><b>Translations :</b> ajoute le déplacement horizontal à \\(x\\) et le déplacement vertical à \\(y\\) (les déplacements vers la gauche et vers le bas sont négatifs).<br><b>Réflexions :</b> par rapport à l'axe des \\(x\\), \\((x, y)\\) devient \\((x, -y)\\) ; par rapport à l'axe des \\(y\\), \\((x, y)\\) devient \\((-x, y)\\)."
+  }
+  },
+
   /* Mathematics 8 (Math 8), ported from the standalone app at
      math-8-review/ (served from the Math8Review repo). The
      standalone's bank is bank-src.js (byte-identical to the
