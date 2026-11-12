@@ -13,7 +13,7 @@ window.COURSES = {
   reportName: "Physics 3204",
   language: "en",
   bankFile: "physics-3204.js",
-  subject: "Physics",
+  subject: "Science",
   grade: 12,
 
   units: {
@@ -125,7 +125,7 @@ window.COURSES = {
   reportName: "Physics 2204",
   language: "en",
   bankFile: "physics-2204.js",
-  subject: "Physics",
+  subject: "Science",
   grade: 11,
 
   units: {
@@ -289,7 +289,7 @@ window.COURSES = {
   reportName: "Chemistry 3202",
   language: "en",
   bankFile: "chem-3202.js",
-  subject: "Chemistry",
+  subject: "Science",
   grade: 12,
   listed: true,
 
@@ -460,7 +460,7 @@ window.COURSES = {
   reportName: "Chemistry 2202",
   language: "en",
   bankFile: "chem-2202.js",
-  subject: "Chemistry",
+  subject: "Science",
   grade: 11,
   listed: true,
 
@@ -3201,6 +3201,364 @@ window.COURSES = {
     "7": "<b>Scale factor</b> is image length \\(\\div\\) original length: \\(k=\\frac{\\text{image}}{\\text{original}}\\). Above 1 enlarges and below 1 reduces; every length is multiplied by \\(k\\).<br><b>Similar figures</b> have equal matching angles and proportional matching sides: each image side \\(\\div\\) its matching original side gives the same \\(k\\).<br><b>Line symmetry</b> means the shape folds onto itself along a fold line. <b>Rotation symmetry</b> means it matches itself under a part turn about its centre: order = matches in a full turn, angle \\(=360°\\div\\) order.<br><b>Translations</b> slide every point the same way: R2, U3 means right 2, up 3, so add 2 to each \\(x\\) and 3 to each \\(y\\).",
     "8": "<b>Vocabulary:</b> a <b>radius</b> joins the centre to the circle; a <b>chord</b> joins two points on the circle; a <b>tangent</b> touches the circle at one point. A <b>central angle</b> sits at the centre; an <b>inscribed angle</b> sits on the circle.<br><b>Tangent:</b> the radius to a point of tangency is perpendicular to the tangent, so the angle is \\(90^{\\circ}\\).<br><b>Chords:</b> the perpendicular from the centre to a chord bisects the chord.<br><b>Central and inscribed:</b> a central angle is twice the inscribed angle on the same arc.<br><b>Semicircle:</b> an angle inscribed in a semicircle is \\(90^{\\circ}\\).<br><b>Same arc:</b> inscribed angles on the same arc are equal.",
     "9": "<b>Probability:</b> theoretical probability comes from counting equally likely outcomes, experimental probability comes from results of trials or data, and subjective judgement is a personal estimate.<br><b>Sample and population:</b> a population is everyone in the group being studied, and a sample is part of the population; random selection helps a sample represent the population.<br><b>Data collection</b> can be spoiled by bias, leading use of language, ethics problems, cost, time and timing, privacy concerns and cultural insensitivity.<br><b>Claims:</b> a claim about a whole population is only as strong as the size and representativeness of the sample behind it."
+  }
+  },
+  /* Mathématiques 9 (Math 9, French), ported from the standalone
+     French app at math-9-review-fr/ (served from the
+     Math9ReviewFrench repo). The standalone's bank is bank-src.js
+     (byte-identical to the splice served inside its index.html);
+     the port's bank sources are banks/math-9-fr/, cut verbatim
+     from bank-src.js in the English port's order (helpers, Units
+     1 to 4, the November 7, 2026 top-up tranche for Units 1 to
+     4, Units 5 to 9, then the November 9, 2026 pool-gap fill
+     additions), with the source's CR_MARKS literal (bank-src.js
+     line 6685) carried as the per-file CRMARKS manifests: 221
+     entries (per-unit 18/25/33/29/32/19/26/16/23) and 109
+     constructed-response keys, signature-identical to the
+     English Math 9 bank entry for entry. The student side
+     renders in French through the shell's run-time French
+     string layer (build-shell.py), keyed on the language field
+     below; teacher-facing strings stay English, as the French
+     standalone's own teacher chrome does. Kept out of the
+     picker (listed:false) for now. */
+  "math-9-fr": {
+  id: "math-9-fr",
+  shortName: "Mathématiques 9",
+
+  /* Long name and app name as the fork carries them: the fork
+     heads its page and face card "Révision de mathématiques 9"
+     (its <h1> and face heading), which is the report form's app
+     name there too, so it is carried as appName; the subtitle
+     and picker name the course "Mathématiques 9", carried as
+     longName and shortName. The document title is the fork's
+     own <title>: "Mathématiques 9 : banque de questions
+     d'entraînement". */
+  longName: "Mathématiques 9",
+  appName: "Révision de mathématiques 9",
+  title: "Mathématiques 9 : banque de questions d'entraînement",
+  subject: "Mathématiques",
+  grade: 9,
+  listed: false,
+  language: "fr",
+  storagePrefix: "m9fr",
+  bankFile: "math-9-fr.js",
+  defaultCheckMode: "each",
+
+  /* Unit names verbatim from the standalone app (UNITS at
+     line 658). */
+  units: {
+    "1": "Les nombres rationnels",
+    "2": "Les racines carrées et l'aire de la surface",
+    "3": "Les lois des puissances et des exposants",
+    "4": "Les polynômes",
+    "5": "Les équations et les inéquations linéaires",
+    "6": "Les relations linéaires",
+    "7": "La similarité et les transformations",
+    "8": "La géométrie du cercle",
+    "9": "La statistique et la probabilité"
+  },
+
+  /* Indicator texts verbatim from the standalone app
+     (INDICATORS at line 659): 108 codes. */
+  indicators: {
+    "3.1": "Ordonner un ensemble donné de nombres rationnels, sous forme de fraction et de nombre décimal, en les plaçant sur une droite numérique, ex. : 3/5, -0,666..., 0,5, -5/8",
+    "3.2": "Identifier un nombre rationnel situé entre deux nombres rationnels donnés",
+    "6.1": "Résoudre un problème donné comportant des opérations sur les nombres rationnels, sous forme de fraction ou de nombre décimal",
+    "6.2": "Résoudre un problème donné à l’aide de la priorité des opérations sans l’aide de la technologie",
+    "6.3": "Résoudre un problème donné à l’aide de la priorité des opérations et de la technologie",
+    "6.4": "Identifier, dans une solution incorrecte donnée, l’erreur faite en appliquant la priorité des opérations",
+    "3.3": "Déterminer si un nombre rationnel donné est ou n’est pas un nombre carré et expliquer le raisonnement",
+    "6.9": "Déterminer la racine carrée d’un nombre rationnel positif donné, qui est un carré parfait",
+    "6.10": "Identifier l’erreur faite dans un calcul d’une racine carrée donné, ex. : un élève pense que 3,2 est la racine carrée de 6,4",
+    "6.11": "Déterminer un nombre rationnel positif à partir de la racine carrée de ce nombre rationnel positif donnée",
+    "6.5": "Estimer la racine carrée d’un nombre rationnel qui n’est pas un carré parfait donné en ayant recours à des racines carrées de carrés parfaits comme points de repère",
+    "6.6": "Déterminer une racine carrée approximative d’un nombre rationnel donné qui n’est pas un carré parfait à l’aide de la technologie, ex. : une calculatrice ou un ordinateur",
+    "6.7": "Expliquer pourquoi la racine carrée d’un nombre rationnel donné, calculé à l’aide d’une calculatrice, peut être une approximation",
+    "6.8": "Identifier un nombre dont la racine carrée se situe entre deux nombres donnés",
+    "9.1": "Déterminer l’aire de la surface du chevauchement dans un objet à trois dimensions donné et expliquer l’effet sur le calcul de l’aire de la surface (se limitant aux cylindres droits et aux prismes droits à base rectangulaire et triangulaire)",
+    "9.2": "Déterminer l’aire de la surface d’un objet à trois dimensions donné (se limitant aux cylindres droits et aux prismes droits à base rectangulaire et triangulaire)",
+    "9.3": "Résoudre un problème donné comportant l’aire de la surface",
+    "3.4": "Démontrer la différence entre l’exposant et la base en concevant des modèles de puissances donnés tels que 2³ et 3²",
+    "3.5": "Expliquer, à l’aide de la multiplication répétée, la différence entre deux puissances données dans lesquelles la base et l’exposant sont intervertis, ex. : 10³ et 3¹⁰",
+    "3.6": "Exprimer une puissance donnée sous forme d’une multiplication répétée",
+    "3.7": "Exprimer une multiplication répétée donnée sous forme d’une puissance",
+    "3.8": "Expliquer le rôle des parenthèses dans l’évaluation d’un ensemble donné de puissances, ex. : (-2)⁴, (-2⁴) et -2⁴",
+    "3.9": "Démontrer, à l’aide des régularités, que a⁰ est égal à 1, pour une valeur donnée de a où a ≠ 0",
+    "3.10": "Évaluer des puissances données ayant des bases qui sont des nombres entiers (excluant 0) et des exposants qui sont des nombres entiers positifs",
+    "3.11": "Expliquer, en utilisant des exemples, les lois des exposants ayant des bases qui sont des nombres entiers (excluant 0) et des exposants qui sont des nombres entiers positifs. • (aᵐ)(aⁿ) = aᵐ⁺ⁿ • aᵐ ÷ aⁿ = aᵐ⁻ⁿ, m > n • (aᵐ)ⁿ = aᵐⁿ • (ab)ᵐ = aᵐbᵐ • (a/b)ⁿ = aⁿ/bⁿ, b ≠ 0",
+    "3.12": "Évaluer une expression donnée en appliquant les lois des exposants",
+    "3.13": "Déterminer la somme de deux puissances, ex. : 5² + 5³, et noter le processus",
+    "3.14": "Déterminer la différence de deux puissances, ex. : 4³ - 4², et noter le processus",
+    "3.15": "Identifier les erreurs dans une simplification d’une expression donnée comportant des puissances",
+    "8.14": "Identifier dans une expression polynomiale donnée sous forme simplifiée, les variables, le degré, le nombre de termes, et les coefficients y compris le terme constant",
+    "8.15": "Créer un modèle concret ou une représentation imagée pour représenter une expression polynomiale donnée",
+    "8.16": "Écrire l’expression qui correspond à un modèle donné de polynôme",
+    "8.4": "Apparier des expressions polynomiales équivalentes données sous forme simplifiée",
+    "8.5": "Identifier des expressions polynomiales équivalentes à partir d’un ensemble donné d’expressions polynomiales, y compris les représentations imagées et symboliques",
+    "8.6": "Modéliser l’addition de deux expressions polynomiales données, de façon concrète ou imagée, et noter le processus de façon symbolique",
+    "8.7": "Modéliser la soustraction de deux expressions polynomiales données, de façon concrète ou imagée, et noter le processus de façon symbolique",
+    "8.11": "Appliquer sa stratégie personnelle pour l’addition ou la soustraction de deux expressions polynomiales données, et noter le processus de façon symbolique",
+    "8.13": "Identifier une ou plusieurs erreurs dans une expression polynomiale donnée sous forme simplifiée",
+    "8.8": "Modéliser la multiplication d’une expression polynomiale donnée par un monôme donné, de façon concrète ou imagée, et noter le processus de façon symbolique",
+    "8.9": "Modéliser la division d’une expression polynomiale donnée par un monôme donné, de façon concrète ou imagée, et noter le processus de façon symbolique",
+    "8.12": "Appliquer ses stratégies personnelles de multiplication et de division d’une expression polynomiale donnée par des monômes donnés",
+    "8.10": "Fournir des exemples d’expressions polynomiales équivalentes",
+    "8.17": "Modéliser à l’aide de représentations concrètes ou imagées la solution à une équation linéaire donnée, et noter le processus",
+    "8.18": "Résoudre une équation linéaire donnée de façon symbolique",
+    "8.19": "Pour les problèmes qui peuvent être représentés par des équations linéaires de la forme : • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx + c) = d(ex + f) • a/x =",
+    "8.20": "Vérifier, à l’aide de la substitution, si un nombre rationnel donné est une solution pour une équation linéaire donnée",
+    "8.21": "Pour les problèmes qui peuvent être représentés par des équations linéaires de la forme : • ax = b • x/a = b, a ≠ 0 • ax + b = c • x/a + b = c, a ≠ 0 • ax = b + cx • a(x + b) = c • ax + b = cx + d • a(bx",
+    "8.22": "Résoudre un problème donné à l’aide d’une équation linéaire, et noter le processus",
+    "8.1": "Représenter un problème donné par une inéquation linéaire à une variable en utilisant les symboles ≥, >, < ou ≤",
+    "8.2": "Déterminer si un nombre rationnel donné est une des solutions possibles d’une inéquation linéaire donnée",
+    "8.24": "Tracer la solution d’une inéquation linéaire donnée sur une droite numérique",
+    "8.25": "Énoncer et appliquer une règle générale pour l’addition ou la soustraction d’un nombre positif ou d’un nombre négatif pour déterminer la solution d’une inéquation donnée",
+    "8.26": "Énoncer et appliquer une règle générale pour la multiplication et la division par un nombre positif ou un nombre négatif pour déterminer la solution d’une inéquation donnée",
+    "8.27": "Résoudre une inéquation linéaire donnée algébriquement, et expliquer le processus oralement et par écrit",
+    "8.28": "Comparer et expliquer le processus pour résoudre une équation linéaire donnée au processus pour résoudre une inéquation linéaire donnée",
+    "8.29": "Comparer et expliquer la solution d’une équation linéaire donnée à la solution d’une inéquation linéaire donnée",
+    "8.3": "Vérifier la solution d’une inéquation linéaire donnée en substituant à la variable, différents éléments de l’ensemble-solution",
+    "8.30": "Résoudre un problème donné comportant une inéquation linéaire à une variable, et tracer le graphique de la solution",
+    "7.1": "Écrire une expression représentant une régularité imagée, orale ou écrite donnée",
+    "7.2": "Écrire une équation linéaire pour représenter un contexte donné",
+    "7.4": "Décrire une équation linéaire représentant la régularité qui se dégage d’une table de valeurs donnée et vérifier cette équation en y substituant des valeurs tirées de cette table",
+    "8.23": "Résoudre, en utilisant une équation linéaire, un problème donné comportant des régularités linéaires imagées, orales et écrites",
+    "7.3": "Décrire un contexte pour une équation linéaire donnée",
+    "7.5": "Décrire la régularité dans un graphique donné",
+    "7.7": "Tracer le graphique d’une relation linéaire donnée, y compris les droites verticales et horizontales",
+    "7.6": "Apparier des relations linéaires aux graphiques correspondants",
+    "7.8": "Interpoler la valeur approximative d’une variable sur un graphique donné à partir d’une valeur donnée à l’autre variable",
+    "7.9": "Extrapoler la valeur approximative d’une variable sur un graphique donné à partir d’une valeur donnée à l’autre variable",
+    "7.10": "Résoudre un problème donné en traçant le graphique d’une relation linéaire et l’analyser",
+    "10.8": "Identifier un exemple d’un diagramme à l’échelle, dans les médias sous forme électronique ou papier, telle que les journaux et Internet et interpréter le facteur d’échelle",
+    "10.16": "Dessiner un diagramme à l’échelle qui représente un agrandissement ou une réduction d’une figure à deux dimensions donnée",
+    "10.17": "Déterminer le facteur d’échelle pour un diagramme donné dessiné à l’échelle",
+    "10.18": "Déterminer si un diagramme donné est proportionnel à la figure à deux dimensions originale donnée, et si c’est le cas, indiquer le facteur d’échelle",
+    "10.7": "Déterminer si les polygones dans un ensemble donné sont semblables et expliquer le raisonnement",
+    "10.14": "Dessiner un polygone semblable à un polygone donné et expliquer pourquoi ils sont semblables",
+    "10.15": "Résoudre un problème donné en utilisant les propriétés de polygones semblables",
+    "10.19": "Résoudre un problème donné comportant un diagramme à l’échelle en appliquant les propriétés de triangles similaires",
+    "10.1": "Classifier un ensemble donné de figures à deux dimensions ou de motifs selon le nombre d’axes de symétrie",
+    "10.9": "Dessiner la deuxième moitié d’une figure à deux dimensions ou d’un motif étant donné une moitié de la figure ou du motif et un axe de symétrie",
+    "10.2": "Déterminer si une figure à deux dimensions, ou un motif, a une symétrie de rotation par rapport à un point au centre de la figure ou du motif, et si oui, identifier l’ordre et l’angle de rotation",
+    "10.10": "Effectuer la rotation d’une figure à deux dimensions autour d’un sommet et dessiner l’image résultante",
+    "10.3": "Identifier un axe de symétrie ou l’ordre et l’angle de la symétrie de rotation pour un dallage donné",
+    "10.4": "Identifier et décrire les types de symétrie créés dans un objet d’art",
+    "10.11": "Créer ou fournir un objet d’art qui démontre une symétrie linéaire et une symétrie de rotation, identifier l’axe (ou les axes) de symétrie, ainsi que l’ordre et l’angle de rotation",
+    "10.5": "Déterminer si deux figures à deux dimensions données sur un plan cartésien sont reliées par la symétrie de rotation ou linéaire",
+    "10.6": "Identifier le type de symétrie qui résulte d’une transformation donnée sur un plan cartésien",
+    "10.12": "Compléter, à l’aide d’une présentation concrète ou imagée, une transformation donnée d’une figure à deux dimensions sur un plan cartésien, noter les coordonnées, et décrire le type de symétrie qui en résulte",
+    "10.13": "Dessiner, sur un plan cartésien, l’image de translation d’une figure à deux dimensions en utilisant une règle de translation donnée telle que D2, H3 ou →→, ↑↑↑, identifier les sommets et les coordonnées correspondants, et expliquer la raison pour laquelle la translation ne résulte pas en une symétrie de rotation ou linéaire",
+    "9.4": "Expliquer la relation entre la tangente à un cercle et au rayon au point de tangence",
+    "9.6": "Expliquer la relation entre la perpendiculaire passant par le centre d’un cercle et une corde",
+    "9.7": "Expliquer la relation entre la mesure de l’angle au centre et l’angle sous-tendu par le même axe",
+    "9.8": "Déterminer la mesure d’un angle inscrit donné dans un demi-cercle en utilisant les propriétés de cercles",
+    "9.9": "Expliquer la relation entre les angles inscrits qui interceptent le même arc",
+    "9.5": "Résoudre un problème donné comportant l’application d’une ou plus d’une des propriétés du cercle",
+    "12.1": "Fournir un exemple, dans divers médias imprimés et électroniques tels que les journaux et Internet, dans lequel la probabilité est utilisée",
+    "12.2": "Identifier les hypothèses associées à une probabilité donnée et expliquer les limites de chaque hypothèse",
+    "12.3": "Expliquer comment une même probabilité peut être utilisée pour appuyer des positions contradictoires",
+    "12.4": "Expliquer, en utilisant des exemples, comment les décisions basées sur la probabilité peuvent être une combinaison de la probabilité théorique, de la probabilité expérimentale et du jugement subjectif",
+    "11.1": "Faire une étude de cas d’une collecte de données fournies et identifier les problèmes potentiels liés au niveau de langue, à l’éthique, au coût, à la confidentialité ou à des différences culturelles",
+    "11.2": "Fournir des exemples pour illustrer comment les enjeux liés au langage utilisé, à l’éthique, au coût, à la confidentialité ou à des différences culturelles peuvent varier selon les types d’échantillons choisis",
+    "11.3": "Identifier si une situation donnée représente le choix d’un échantillon ou d’une population",
+    "11.4": "Fournir un exemple de situation dans lequel la population peut être utilisée pour répondre à une question et justifier ce choix",
+    "11.5": "Fournir un exemple de question dans lequel une limitation empêche le choix d’une population, et décrire la limitation, ex. : trop cher, pas assez de temps, ressources limitées",
+    "11.6": "Identifier et critiquer un exemple donné dans lesquels une généralisation à partir d’un échantillon peut ou ne peut pas être valide pour cette population",
+    "11.7": "Créer une grille pour évaluer un projet qui inclut l’évaluation : • d’une question d’enquête; • le choix d’une méthode de collecte de données qui inclut des considérations sociales; • la sélection d’une population ou d’un échantillon et justifier le choix de cette sélection; • la présentation des données recueillies; • les conclusions pour répondre à la question",
+    "11.8": "Développer un plan de projet qui décrit : • une question d’enquête; • la méthode de collecte de données qui inclut des considérations sociales; • la méthode de sélection d’une population ou d’un échantillon; • la méthode utilisée pour la collecte de données; • les méthodes pour la présentation et l’analyse des données",
+    "11.9": "Compléter le projet selon le plan, tirer des conclusions et les communiquer à un auditoire",
+    "11.10": "Autoévaluer le projet complété en appliquant la grille"
+  },
+
+  /* Indicator placements verbatim from the standalone app
+     (UNIT_IND at line 660): 108 placements. */
+  unitInd: {
+    "1": [
+      "3.1",
+      "3.2",
+      "6.1",
+      "6.2",
+      "6.3",
+      "6.4"
+    ],
+    "2": [
+      "3.3",
+      "6.9",
+      "6.10",
+      "6.11",
+      "6.5",
+      "6.6",
+      "6.7",
+      "6.8",
+      "9.1",
+      "9.2",
+      "9.3"
+    ],
+    "3": [
+      "3.4",
+      "3.5",
+      "3.6",
+      "3.7",
+      "3.8",
+      "3.9",
+      "3.10",
+      "3.11",
+      "3.12",
+      "3.13",
+      "3.14",
+      "3.15"
+    ],
+    "4": [
+      "8.14",
+      "8.15",
+      "8.16",
+      "8.4",
+      "8.5",
+      "8.6",
+      "8.7",
+      "8.11",
+      "8.13",
+      "8.8",
+      "8.9",
+      "8.12",
+      "8.10"
+    ],
+    "5": [
+      "8.17",
+      "8.18",
+      "8.19",
+      "8.20",
+      "8.21",
+      "8.22",
+      "8.1",
+      "8.2",
+      "8.24",
+      "8.25",
+      "8.26",
+      "8.27",
+      "8.28",
+      "8.29",
+      "8.3",
+      "8.30"
+    ],
+    "6": [
+      "7.1",
+      "7.2",
+      "7.4",
+      "8.23",
+      "7.3",
+      "7.5",
+      "7.7",
+      "7.6",
+      "7.8",
+      "7.9",
+      "7.10"
+    ],
+    "7": [
+      "10.8",
+      "10.16",
+      "10.17",
+      "10.18",
+      "10.7",
+      "10.14",
+      "10.15",
+      "10.19",
+      "10.1",
+      "10.9",
+      "10.2",
+      "10.10",
+      "10.3",
+      "10.4",
+      "10.11",
+      "10.5",
+      "10.6",
+      "10.12",
+      "10.13"
+    ],
+    "8": [
+      "9.4",
+      "9.6",
+      "9.7",
+      "9.8",
+      "9.9",
+      "9.5"
+    ],
+    "9": [
+      "12.1",
+      "12.2",
+      "12.3",
+      "12.4",
+      "11.1",
+      "11.2",
+      "11.3",
+      "11.4",
+      "11.5",
+      "11.6",
+      "11.7",
+      "11.8",
+      "11.9",
+      "11.10"
+    ]
+  },
+
+  /* Preset labels verbatim from the standalone app's builder
+     buttons; the final preset's face label is the fork's face
+     scope wording for the same selection. Mixes are the junior
+     family's [20, 60, 20], as the English course carries. */
+  presets: {
+    mid: { units: [1, 2, 3, 4], mix: [20, 60, 20], label: "Révision de mi-parcours (unités 1 à 4)" },
+    final: { units: [5, 6, 7, 8, 9], mix: [20, 60, 20], label: "Révision finale (unités 5 à 9)", faceLabel: "Révision de fin de cours (unités 5 à 9)" }
+  },
+  hints: true,
+
+  /* Timer note as the fork's timer strings carry it: the real
+     exam allows 1 heure 30 minutes (the fork's timer bar and
+     its timer checkbox wording). */
+  timerNote: "1 heure 30 minutes",
+
+  /* Sheet header work strings verbatim from the fork's sheet
+     header (its renderSheet): [in the space provided, on your
+     own paper]. */
+  sheetWork: ["Montre tout ton travail dans l'espace fourni.", "Montre tout ton travail sur ta propre feuille."],
+
+  /* Exam composer configuration: the junior pooled composer,
+     identical to the English Math 9 course's. */
+  exam: {
+    "fallback": {
+      "srCount": 18,
+      "crMarks": 17,
+      "levels": [
+        7,
+        21,
+        7
+      ],
+      "crL3": [
+        6,
+        5,
+        7
+      ],
+      "total": 35
+    }
+  },
+  unitTest: {
+    "total": 25,
+    "sr": 11,
+    "cr": 14
+  },
+
+  /* Reference panels verbatim from the standalone app
+     (REF_HTML at line 7748): one per unit. */
+  panels: {
+    "1": "<b>Les nombres rationnels</b> peuvent s'écrire sous forme de fraction \\(\\frac{a}{b}\\) où \\(b\\ne 0\\). Les nombres entiers, les nombres décimaux finis et les nombres décimaux périodiques sont tous rationnels.<br><b>Priorité des opérations :</b> les parenthèses d'abord, puis les exposants, puis diviser et multiplier dans l'ordre de gauche à droite, puis additionner et soustraire dans l'ordre de gauche à droite.<br><b>Fractions :</b> pour additionner ou soustraire, utilise un dénominateur commun. Pour multiplier, multiplie les numérateurs et multiplie les dénominateurs. Pour diviser, multiplie par l'inverse (retourne la deuxième fraction).<br><b>Signes :</b> multiplier ou diviser deux nombres de même signe donne un résultat positif ; des signes différents donnent un résultat négatif.",
+    "2": "<b>Racines carrées :</b> \\(\\sqrt{a}\\) est le nombre positif qui, multiplié par lui-même, donne \\(a\\). Carrés parfaits à connaître : 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400. Une fraction est un carré parfait quand son numérateur et son dénominateur sont tous les deux des carrés parfaits.<br><b>Estimation :</b> trouve les deux carrés parfaits entre lesquels le nombre se situe, puis décide duquel il est le plus proche.<br><b>L'aire de la surface</b> est la somme des aires de toutes les faces. Prisme rectangulaire : \\(2(lw+lh+wh)\\). Cylindre : \\(2\\pi r^{2}+2\\pi r h\\). Prisme triangulaire : deux faces triangulaires plus trois faces rectangulaires.<br><b>Objets composés :</b> là où deux objets se touchent, les faces qui se touchent sont cachées sur les deux objets, donc soustrais deux fois l'aire du chevauchement.",
+    "3": "<b>Puissances :</b> dans \\(a^{n}\\), \\(a\\) est la base et \\(n\\) est l'exposant ; la puissance signifie \\(a\\) multiplié par lui-même \\(n\\) fois. \\(a^{0}=1\\) pour tout \\(a\\ne 0\\).<br><b>Lois des exposants :</b> \\(a^{m}\\cdot a^{n}=a^{m+n}\\); \\(a^{m}\\div a^{n}=a^{m-n}\\); \\((a^{m})^{n}=a^{mn}\\); \\((ab)^{n}=a^{n}b^{n}\\); \\(\\left(\\frac{a}{b}\\right)^{n}=\\frac{a^{n}}{b^{n}}\\).<br><b>Les parenthèses comptent :</b> \\((-2)^{4}=16\\), mais \\(-2^{4}=-16\\).<br><b>Sommes de puissances :</b> \\(5^{2}+5^{3}\\) n'est pas une seule puissance. Calcule d'abord chaque puissance, puis additionne ou soustrais.",
+    "4": "<b>Les termes</b> sont séparés par les signes + et -. Le <b>coefficient</b> est la partie numérique d'un terme ; le <b>terme constant</b> n'a pas de variable. Le <b>degré</b> d'un terme est la somme des exposants de ses variables, et le degré d'un polynôme est le degré de son terme le plus élevé.<br><b>Les termes semblables</b> ont exactement les mêmes variables avec les mêmes exposants. Seuls les termes semblables peuvent être combinés.<br><b>Addition :</b> combine les termes semblables. <b>Soustraction :</b> change chaque signe dans le polynôme soustrait, puis additionne.<br><b>Multiplication par un monôme :</b> multiplie chaque terme. <b>Division par un monôme :</b> divise chaque terme.<br>Deux expressions sont <b>équivalentes</b> quand elles se simplifient au même polynôme.",
+    "5": "<b>Résoudre une équation</b> signifie isoler la variable : fais la même opération des deux côtés pour défaire ce qui a été fait à la variable, dans l'ordre inverse. Pour \\(3x+5=20\\), soustrais 5, puis divise par 3.<br><b>Vérification par substitution :</b> remets ta réponse dans l'équation de départ ; les deux côtés doivent donner la même valeur.<br><b>Les inéquations</b> ont un ensemble de solutions, représenté sur une droite numérique : un cercle ouvert signifie que l'extrémité n'est pas incluse, un cercle fermé signifie qu'elle est incluse.<br><b>Règle des signes :</b> quand tu multiplies ou divises les deux côtés d'une inéquation par un nombre négatif, inverse le signe d'inégalité : \\(-2x>6\\) devient \\(x<-3\\).",
+    "6": "<b>Relations linéaires :</b> une relation linéaire a une valeur de départ et un pas constant, donc ses valeurs changent du même montant chaque fois.<br><b>À partir d'une table de valeurs :</b> le pas est le changement de \\(y\\) pour chaque augmentation de 1 de \\(x\\), et l'équation est \\(y = \\text{départ} + \\text{pas} \\times x\\).<br><b>À partir d'un graphique :</b> pour lire une valeur, va horizontalement du \\(x\\) donné jusqu'à la droite, puis descends jusqu'à la valeur de \\(y\\). Lire à l'intérieur de l'intervalle tracé, c'est l'<b>interpolation</b> ; prédire au-delà de l'intervalle tracé, en prolongeant la régularité, c'est l'<b>extrapolation</b>.<br><b>Droites particulières :</b> une droite horizontale est \\(y = \\text{constante}\\), et une droite verticale est \\(x = \\text{constante}\\).",
+    "7": "<b>Le facteur d'échelle</b> est la longueur de l'image \\(\\div\\) la longueur d'origine : \\(k=\\frac{\\text{image}}{\\text{original}}\\). Au-dessus de 1, il agrandit, et au-dessous de 1, il réduit ; chaque longueur est multipliée par \\(k\\).<br><b>Les figures semblables</b> ont des angles correspondants égaux et des côtés correspondants proportionnels : chaque côté de l'image \\(\\div\\) son côté d'origine correspondant donne le même \\(k\\).<br><b>Axe de symétrie :</b> la figure se plie sur elle-même le long de l'axe. <b>Symétrie de rotation :</b> la figure coïncide avec elle-même après une rotation partielle autour de son centre : ordre = nombre de fois où la figure coïncide dans un tour complet, angle \\(=360°\\div\\) l'ordre.<br><b>Translations :</b> elles glissent chaque point de la même façon : D2, H3 signifie 2 vers la droite et 3 vers le haut, donc additionne 2 à chaque \\(x\\) et 3 à chaque \\(y\\).",
+    "8": "<b>Vocabulaire :</b> un <b>rayon</b> relie le centre au cercle ; une <b>corde</b> relie deux points du cercle ; une <b>tangente</b> touche le cercle en un seul point. Un <b>angle au centre</b> a son sommet au centre ; un <b>angle inscrit</b> a son sommet sur le cercle.<br><b>Tangente :</b> le rayon jusqu'au point de tangence est perpendiculaire à la tangente, donc l'angle est \\(90^{\\circ}\\).<br><b>Cordes :</b> la perpendiculaire du centre à une corde coupe la corde en deux parties égales.<br><b>Angle au centre et angle inscrit :</b> un angle au centre est le double de l'angle inscrit sur le même arc.<br><b>Demi-cercle :</b> un angle inscrit dans un demi-cercle mesure \\(90^{\\circ}\\).<br><b>Même arc :</b> les angles inscrits sur le même arc sont égaux.",
+    "9": "<b>Probabilité :</b> la probabilité théorique vient du comptage des résultats également possibles, la probabilité expérimentale vient des résultats d'essais ou de données, et le jugement subjectif est une estimation personnelle.<br><b>Échantillon et population :</b> une population est l'ensemble des personnes du groupe étudié, et un échantillon est une partie de la population ; un choix au hasard aide l'échantillon à représenter la population.<br><b>La collecte de données</b> peut être faussée par le biais, un langage suggestif, des problèmes d'éthique, le coût, le temps et le moment choisi, des préoccupations de confidentialité et un manque de sensibilité culturelle.<br><b>Affirmations :</b> une affirmation sur toute une population n'est aussi solide que la taille et la représentativité de l'échantillon qui l'appuie."
   }
   },
   /* Mathematics 8 (Math 8), ported from the standalone app at

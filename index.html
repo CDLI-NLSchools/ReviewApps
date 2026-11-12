@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Review Apps: Practice Question Bank</title>
+<title>Review Apps</title>
 <link rel="icon" type="image/jpeg" href="favicon.jpg">
 <link rel="apple-touch-icon" href="favicon.jpg">
 <style>
@@ -226,8 +226,8 @@
 (function(){try{
   var id=new URLSearchParams(location.search).get("course");
   var c=(window.COURSES&&id)?window.COURSES[id]:null;
-  if(c){window.__COURSE=c;document.title=c.title;}
-  else{window.__COURSE=null;window.__NOCOURSE=true;document.title="Review Apps: Practice Question Bank";}
+  if(c){window.__COURSE=c;document.title=c.title;if(c.language)document.documentElement.lang=c.language;}
+  else{window.__COURSE=null;window.__NOCOURSE=true;document.title="Review Apps";}
 }catch(e){window.__COURSE=null;window.__NOCOURSE=true;}})();
 </script>
 <script>
@@ -253,25 +253,56 @@
 </head>
 <body>
 <div class="wrap" id="coursePicker" hidden>
-  <h1>Practice Question Bank</h1>
-  <p class="sub">Choose your course to start practising.</p>
+  <img class="pklogo" src="cdli-logo.jpg" alt="CDLI">
+  <h1>Review Apps</h1>
+  <p class="sub pktag">Online or Printable Practice Exercises</p>
   <div class="card">
-    <h2 style="margin-top:0;">Courses</h2>
+    <h2 style="margin-top:0;">Choose your course</h2>
     <div id="courseList"></div>
+  </div>
+  <div class="card pkfaq">
+    <h2 style="margin-top:0;">About the Review Apps</h2>
+    <details>
+      <summary>What are the Review Apps?</summary>
+      <p>Practice question banks for the courses above. Pick your course, then practise by unit or by curriculum indicator. Most questions are generated new every time, so you can practise the same skill again and get a different question. You can work online, print a practice sheet, or build a practice exam.</p>
+    </details>
+    <details>
+      <summary>Who are they for?</summary>
+      <p>Students in any of the courses above: whether you are keeping up with class, catching up on a topic, or getting ready for a test or exam. Teachers can also build practice sets and printable sheets for their classes.</p>
+    </details>
+    <details>
+      <summary>When should I use them?</summary>
+      <p>A little at a time, often. Try a short set after a lesson, a few questions as part of homework, and some mixed review in the days before a test. Short sessions spread over several days work better than one long session the night before.</p>
+    </details>
+    <details>
+      <summary>Where can I use them?</summary>
+      <p>Anywhere you have a browser: at school, at home, or on the go. The apps work on Chromebooks, laptops, tablets and desktops, and practice sheets print on paper if you would rather work offline.</p>
+    </details>
+    <details>
+      <summary>Why does practice work?</summary>
+      <p>Trying to remember an answer, instead of looking it up, is one of the strongest ways to learn. Every time you pull an answer out of your own memory, that memory gets stronger and lasts longer. Checking your work right away, with a worked solution to compare against, also catches mistakes before they turn into habits.</p>
+    </details>
+    <details>
+      <summary>How should I practise?</summary>
+      <ol>
+        <li>Pick one unit or indicator and start a set.</li>
+        <li>Try each question on your own first, and write your work out. It feels harder than peeking at the example, but that effort is what builds the memory.</li>
+        <li>Stuck? Use the hint first, then the worked example, then try the question again.</li>
+        <li>Check each answer as you go and read the full solution, even when you are right. Notice the one step you would do differently next time.</li>
+        <li>Come back in a day or two and practise the same skill again. Spacing your practice out is what moves it into long-term memory.</li>
+      </ol>
+    </details>
   </div>
 </div>
 <div class="wrap" id="app">
   <h1 id="appTitle">Review Apps</h1>
-  <p class="sub">Fresh practice questions for <span id="appSubName">your course</span>, drawn by unit or by curriculum indicator.
-  Most questions are generated new every time, so you can practise the same skill again and get a different question.
-  Work online, print a practice sheet, or build a practice exam.</p>
+  <p class="sub">Fresh practice questions for <span id="appSubName">your course</span>, drawn by unit or by curriculum indicator.</p>
 
   <div class="card" id="faceCard">
     <h2 style="margin-top:0;" id="faceTitle">Review Apps</h2>
     <p id="faceScope" style="font-size:1.08rem;font-weight:bold;"></p>
     <p id="faceDesc"></p>
     <div class="modebar"><button type="button" id="faceStart" style="font-size:1.15rem;padding:14px 30px;">Start</button></div>
-    <p class="hint">Want different units, a printed sheet or a practice exam? Open "Build your own practice" below.</p>
   </div>
 
   <details id="a11yBox">
@@ -426,6 +457,28 @@ function fmtF(n,d){return (Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toFixed(
 function normCdf(z){var t=1/(1+0.2316419*Math.abs(z));var d=0.3989422804014327*Math.exp(-z*z/2);var p=d*t*(0.31938153+t*(-0.35656378+t*(1.78147794+t*(-1.82125598+t*1.33027443))));return z>=0?1-p:p;}
 function zTab(z){z=Math.round(z*100)/100;return Math.round(normCdf(z)*10000)/10000;}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+/* ============ French string layer (student side) ============ */
+/* FR9 is true when the active course's language field is "fr".
+   L9(en, fr) returns the French string then and the existing
+   English literal otherwise, so English courses render exactly
+   as before; every French string in the layer is lifted from
+   the French standalone (math-9-review-fr/index.html), not
+   newly translated. Teacher-facing surfaces (the picker, the
+   teacher bar, the advanced tools) are never routed through
+   L9: they stay English, as the French standalone's own
+   teacher chrome does. frParseNum is the French app's
+   parseStudentNum (its chassis lines 421-422), with its
+   normNumStr carried under a prefixed name so no existing
+   global is redefined: it accepts the decimal comma and
+   spaced thousands, and strips spaces, $, % and degree signs.
+   fmtAns formats a numeric answer for display in the answer
+   keys and worked examples: the French bank module's fmtD in
+   French courses, the chassis fmt otherwise. */
+var FR9=(window.__COURSE&&window.__COURSE.language==="fr");
+function L9(en,fr){return FR9?fr:en;}
+function frNormNumStr(raw){var s=String(raw==null?"":raw).replace(/[\s\u00A0\u202F$%°]/g,"");if(!s)return "";var hd=s.indexOf(".")>=0,hc=s.indexOf(",")>=0;if(hd&&hc){if(s.lastIndexOf(",")>s.lastIndexOf(".")){s=s.replace(/\./g,"");var i=s.indexOf(",");s=s.slice(0,i)+"."+s.slice(i+1).replace(/,/g,"");}else{s=s.replace(/,/g,"");}}else if(hc){var parts=s.split(",");if(parts.length>2){s=s.replace(/,/g,"");}else{s=parts[0]+"."+parts[1];}}return s;}
+function frParseNum(raw){var s=frNormNumStr(raw);if(s===""||s==="."||s==="-")return NaN;return parseFloat(s);}
+function fmtAns(n){return FR9?fmtD(n):fmt(n);}
 /* Option order follows the item-writing guide (Sean O'Neill deck, adopted Nov 2026):
    numeric options ascending, other options alphabetical (natural sort, so numbers
    inside text still order by value), instead of shuffled. */
@@ -880,10 +933,10 @@ var state={units:[],inds:[],midCap:false};
    are pre-filled through the entry IDs below, which are the form's pre-filled-link
    IDs. If url is ever emptied, the panel falls back to copying the report text for
    the teacher. */
-var REPORT_FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSetn4AeZSWxcO_3zawHsAPNqZPLsQzu_bCCw6Li-J3PAy9knw/viewform",appEntry:"entry.2102073803",appName:(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps"),unitEntry:"entry.1142563169",detailsEntry:"entry.1416174508"};
+var REPORT_FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSetn4AeZSWxcO_3zawHsAPNqZPLsQzu_bCCw6Li-J3PAy9knw/viewform",appEntry:"entry.2102073803",appName:(window.__COURSE?((window.__COURSE.appName)||(window.__COURSE.shortName+" Review")):"Review Apps"),unitEntry:"entry.1142563169",detailsEntry:"entry.1416174508"};
 function unitCheckboxes(){
   $("unitGrid").innerHTML=Object.keys(UNITS).map(function(u){
-    return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> Unit '+u+": "+UNITS[u]+"</label>";
+    return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> '+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</label>";
   }).join("");
   Array.prototype.forEach.call(document.querySelectorAll(".unitChk"),function(cb){
     cb.addEventListener("change",function(){state.midCap=false;readUnits();renderIndicators();updatePoolInfo();});
@@ -895,8 +948,8 @@ function readUnits(){
 function renderIndicators(){
   var codes=[];state.units.forEach(function(u){(UNIT_IND[u]||[]).forEach(function(c){if(codes.indexOf(c)<0)codes.push(c);});});
   $("indBox").innerHTML=codes.length?codes.map(function(c){
-    return '<label><input type="checkbox" class="indChk" value="'+c+'"'+(state.inds.indexOf(c)>=0?" checked":"")+"> <b>"+c+"</b>: "+esc(INDICATORS[c]||"")+"</label>";
-  }).join(""):'<span class="hint">Pick at least one unit above.</span>';
+    return '<label><input type="checkbox" class="indChk" value="'+c+'"'+(state.inds.indexOf(c)>=0?" checked":"")+"> <b>"+c+"</b>"+L9(": ",", ")+esc(INDICATORS[c]||"")+"</label>";
+  }).join(""):'<span class="hint">'+L9("Pick at least one unit above.","Choisis au moins une unité ci-dessus.")+'</span>';
   Array.prototype.forEach.call(document.querySelectorAll(".indChk"),function(cb){
     cb.addEventListener("change",function(){state.midCap=false;readInds();updatePoolInfo();});
   });
@@ -907,8 +960,8 @@ function readInds(){
 function updatePoolInfo(){refreshFace();
   var p=poolFor(state.units,state.inds,state.midCap);
   var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});
-  $("poolInfo").textContent=p.length?"Question bank for this selection: "+p.length+" question templates (Level 1: "+byL[1]+", Level 2: "+byL[2]+", Level 3: "+byL[3]+"). Generators make a fresh question every draw."+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:"")+(window.__COURSE&&window.__COURSE.midNote&&state.midCap?" "+window.__COURSE.midNote:""):
-   "No questions match that selection yet, try adding a unit or clearing the indicator filter.";
+  $("poolInfo").textContent=p.length?L9("Question bank for this selection: ","Banque de questions pour cette sélection : ")+p.length+L9(" question templates (Level 1: "," modèles de questions (Niveau 1 : ")+byL[1]+L9(", Level 2: ",", Niveau 2 : ")+byL[2]+L9(", Level 3: ",", Niveau 3 : ")+byL[3]+L9("). Generators make a fresh question every draw.","). Les générateurs créent une nouvelle question à chaque tirage.")+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:"")+(window.__COURSE&&window.__COURSE.midNote&&state.midCap?" "+window.__COURSE.midNote:""):
+   L9("No questions match that selection yet, try adding a unit or clearing the indicator filter.","Aucune question ne correspond encore à cette sélection, essaie d'ajouter une unité ou d'effacer le filtre des indicateurs.");
 }
 /* Teacher-mode UI split (Nov 10, 2026): the level percentage fields,
    the paper count fields and the prior knowledge checkbox render only
@@ -950,30 +1003,30 @@ function settings(){
 }
 function tags(q){
   var e=q._entry;
-  return '<span class="tag">Unit '+e.unit+'</span> <span class="tag ind">'+e.indicators.join(", ")+'</span> <span class="tag lvl">Level '+e.level+'</span>';
+  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> <span class="tag ind">'+e.indicators.join(", ")+'</span> <span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>';
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
 /* Reference panels come from the active course configuration (the
    course's data-sheet material, config key: panels). */
 var REF_HTML=window.__COURSE?window.__COURSE.panels:{};
-function refPanelsHtml(units){var h=(window.__COURSE&&window.__COURSE.panelsAlways)||"";units.forEach(function(u){if(REF_HTML[u])h+='<details class="refpanel"><summary>Formulas and facts for Unit '+u+": "+UNITS[u]+'</summary><div class="refbody">'+REF_HTML[u]+"</div></details>";});return h;}
+function refPanelsHtml(units){var h=(window.__COURSE&&window.__COURSE.panelsAlways)||"";units.forEach(function(u){if(REF_HTML[u])h+='<details class="refpanel"><summary>'+L9("Formulas and facts for Unit ","Formules et notions pour l'unité ")+u+L9(": "," : ")+UNITS[u]+'</summary><div class="refbody">'+REF_HTML[u]+"</div></details>";});return h;}
 function stopExamTimer(){try{if(window._examTimerInt){clearInterval(window._examTimerInt);window._examTimerInt=null;}}catch(e){}}
 function refreshFace(){
   var fs=$("faceScope");if(!fs)return;
   var u=state.units.slice().sort(function(a,b){return a-b;});
   var scope;
-  if(!u.length)scope="No units chosen yet";
-  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.mid.faceLabel||window.__COURSE.presets.mid.label).replace(" (",": ").replace(/\)$/,"");
-  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.final.faceLabel||window.__COURSE.presets.final.label).replace(" (",": ").replace(/\)$/,"");
-  else scope=u.map(function(x){return "Unit "+x+": "+UNITS[x];}).join("; ");
-  if(state.inds.length)scope+=" (indicators: "+state.inds.join(", ")+")";
+  if(!u.length)scope=L9("No units chosen yet","Aucune unité choisie pour le moment");
+  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.mid.faceLabel||window.__COURSE.presets.mid.label).replace(" (",L9(": "," : ")).replace(/\)$/,"");
+  else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.final.faceLabel||window.__COURSE.presets.final.label).replace(" (",L9(": "," : ")).replace(/\)$/,"");
+  else scope=u.map(function(x){return L9("Unit ","Unité ")+x+L9(": "," : ")+UNITS[x];}).join("; ");
+  if(state.inds.length)scope+=L9(" (indicators: "," (notions : ")+state.inds.join(", ")+")";
   fs.textContent=scope;
   var d;
   var n=parseInt($("countIn").value,10)||10;
-  var chk=$("chkIn").value==="each"?"checked as you go":"checked all at the end";
-  d="You will get "+n+" practice questions, "+chk+", with "+(window.__COURSE&&window.__COURSE.hints?"a hint, ":"")+"a worked example and a full worked solution on every question.";
-  if($("seedIn")&&$("seedIn").value.trim())d+=" Your teacher picked these problems, so everyone gets the same set.";
+  var chk=$("chkIn").value==="each"?L9("checked as you go","vérifiées au fur et à mesure"):L9("checked all at the end","vérifiées toutes à la fin");
+  d=FR9?(n+" questions de pratique, "+chk+", avec un indice, un exemple travaillé et une solution détaillée complète pour chaque question."):(n+" practice questions, "+chk+". Every question has "+(window.__COURSE&&window.__COURSE.hints?"a hint, ":"")+"a worked example and a full worked solution.");
+  if($("seedIn")&&$("seedIn").value.trim())d+=L9(" Your teacher picked these problems, so everyone gets the same set."," Ton enseignant a choisi ces problèmes, alors tout le monde a la même série.");
   $("faceDesc").textContent=d;
 }
 function showHint(i){
@@ -981,11 +1034,11 @@ function showHint(i){
   var box=$("hint"+i);if(!box)return;
   var stage=+(box.dataset.stage||0);
   var h1=q._entry.hint1||"",h2=q._entry.hint2||"";
-  var first=h1?stepHTML(h1):"Look at the worked example for this kind of question, then try the same first move here.";
+  var first=h1?stepHTML(h1):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l'exemple travaillé pour ce type de question, puis essaie le même premier pas ici.");
   var last=h2?2:1;
   if(stage>=last){box.hidden=true;box.innerHTML="";box.dataset.stage="0";}
-  else if(stage===0){box.innerHTML="<b>Hint:</b> "+first;box.hidden=false;box.dataset.stage="1";}
-  else if(stage===1){box.innerHTML="<b>Hint:</b> "+first+(h2?("<br><b>First step:</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";}
+  else if(stage===0){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first;box.hidden=false;box.dataset.stage="1";}
+  else if(stage===1){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first+(h2?("<br><b>"+L9("First step:","Premier pas :")+"</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";}
 }
 function dealExample(i,n,prev){
   var q=current[i];if(!q||!q._entry)return null;
@@ -998,18 +1051,18 @@ function dealExample(i,n,prev){
 function renderExample(i,exq){
   var box=$("ex"+i);if(!box)return;
   box._exq=exq;
-  var h='<b>Worked example</b> (same skill, different numbers; not scored)<div class="prompt">'+stepHTML(exq.prompt)+"</div>";
+  var h='<b>'+L9("Worked example","Exemple travaillé")+'</b> '+L9("(same skill, different numbers; not scored)","(même habileté, nombres différents; non noté)")+'<div class="prompt">'+stepHTML(exq.prompt)+"</div>";
   if(exq.figure)h+='<div class="fig">'+exq.figure+"</div>";
-  if(exq.type==="mc"){h+='<div class="opts">'+exq.options.map(function(o,j){return "<label>\u25CB "+o+(j===exq.correct?" <b>\u2713 correct</b>":"")+"</label>";}).join("")+"</div>";}
-  else if(exq.type==="num"){h+="<p>Answer: <b>"+fmt(exq.answer)+"</b></p>";}
-  else{h+="<p>Answer: <b>"+esc(exq.answers[0])+"</b></p>";}
-  h+='<div class="sol show"><b>Worked Example Solution:</b> '+stepHTML(exq.solution)+"</div>";
-  h+='<p><button type="button" class="alt" data-exanother="'+i+'">Show another example</button></p>';
+  if(exq.type==="mc"){h+='<div class="opts">'+exq.options.map(function(o,j){return "<label>\u25CB "+o+(j===exq.correct?" <b>\u2713 "+L9("correct","bonne réponse")+"</b>":"")+"</label>";}).join("")+"</div>";}
+  else if(exq.type==="num"){h+="<p>"+L9("Answer: ","Réponse : ")+"<b>"+fmtAns(exq.answer)+"</b></p>";}
+  else{h+="<p>"+L9("Answer: ","Réponse : ")+"<b>"+esc(exq.answers[0])+"</b></p>";}
+  h+='<div class="sol show"><b>'+L9("Worked Example Solution:","Solution de l'exemple travaillé :")+'</b> '+stepHTML(exq.solution)+"</div>";
+  h+='<p><button type="button" class="alt" data-exanother="'+i+'">'+L9("Show another example","Voir un autre exemple")+'</button></p>';
   box.innerHTML=h;box.hidden=false;typesetMath(box);
   Array.prototype.forEach.call(box.querySelectorAll("[data-exanother]"),function(b){b.addEventListener("click",function(){anotherExample(i);});});
 }
-function setExLabel(i,open){var b=document.querySelector('[data-ex="'+i+'"]');if(b)b.textContent=open?"Hide worked example":"See a worked example";}
-function setSolLabel(i,open){var b=document.querySelector('[data-sol="'+i+'"]');if(b)b.textContent=open?"Hide worked solution":"Show worked solution";}
+function setExLabel(i,open){var b=document.querySelector('[data-ex="'+i+'"]');if(b)b.textContent=open?L9("Hide worked example","Masquer l'exemple travaillé"):L9("See a worked example","Voir un exemple travaillé");}
+function setSolLabel(i,open){var b=document.querySelector('[data-sol="'+i+'"]');if(b)b.textContent=open?L9("Hide worked solution","Masquer la solution détaillée"):L9("Show worked solution","Voir la solution détaillée");}
 function closeScaffolding(i){var hb=$("hint"+i);if(hb){hb.hidden=true;hb.innerHTML="";hb.dataset.stage="0";}var xb=$("ex"+i);if(xb&&!xb.hidden){xb.hidden=true;setExLabel(i,false);}}
 function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open)closeScaffolding(i);}
 function toggleExample(i){
@@ -1034,11 +1087,11 @@ function maybeSummary(){
   if(Object.keys(setResults).length<current.length)return;
   var missed=[];
   Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});
-  var h='<div class="summarybox"><h3>Set complete</h3><p>You scored '+correctCount+" of "+current.length+" on first checks.</p>";
+  var h='<div class="summarybox"><h3>'+L9("Set complete","Série terminée")+'</h3><p>'+(FR9?("Tu as obtenu "+correctCount+" sur "+current.length+" aux premières vérifications."):("You scored "+correctCount+" of "+current.length+" on first checks."))+"</p>";
   if(missed.length){
-    h+="<p><b>Indicators to practise more:</b></p><ul>"+missed.map(function(c){return "<li>"+c+": "+(INDICATORS[c]||"")+"</li>";}).join("")+'</ul><p><button type="button" id="retryMissedBtn">Practice what I missed</button></p>';
+    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+missed.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+'</ul><p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
   }else{
-    h+="<p>Every indicator in this set was answered correctly on its first check. Nice work.</p>";
+    h+="<p>"+L9("Every indicator in this set was answered correctly on its first check. Nice work.","Chaque notion de cette série a été réussie à la première vérification. Beau travail.")+"</p>";
   }
   h+="</div>";box.innerHTML=h;
   var b=$("retryMissedBtn");if(b)b.addEventListener("click",retryMissed);
@@ -1499,7 +1552,7 @@ function advRestoreOnlineState(P){
     if(o.exOpen&&o.exq){var xb=$("ex"+i);var exq=advQDes(o.exq);if(xb&&exq){xb.dataset.exn=String(o.exn||0);renderExample(i,exq);setExLabel(i,true);}}
     if(o.repOpen){var rp=$("rep"+i);if(rp)rp.classList.add("show");var rt=$("reptype"+i);if(rt&&o.repType)rt.value=o.repType;var rn=$("repnote"+i);if(rn)rn.value=o.repNote||"";}
   });
-  if(endGraded){for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2){s2.classList.add("show");setSolLabel(j,true);}}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent="Answers checked";}}
+  if(endGraded){for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2){s2.classList.add("show");setSolLabel(j,true);}}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}}
   updateScore();maybeSummary();
 }
 function advSetRestore(){
@@ -1581,9 +1634,9 @@ function tRebuildFromURL(){
     if(!srItems.length&&!crItems.length)return false;
     var single=s.units.length===1;
     var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
-    var scope=single?("Unit "+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return "Unit "+u;}).join(", ");
-    var title=single?(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test":(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam";
-    wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx":(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx";
+    var scope=single?(L9("Unit ","Unité ")+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
+    var title=single?(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Test de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test")):(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Examen de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam"));
+    wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Unit Test.docx"," - Test de pratique.docx"):(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Exam.docx"," - Examen de pratique.docx");
     var exO={srItems:srItems,crItems:crItems,single:single,short:false};
     exO.srMarks=srItems.length;
     exO.crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
@@ -1601,7 +1654,7 @@ function tRebuildFromURL(){
     var avoid3={},items3=[];
     body.split(",").forEach(function(tok){if(tok){var q=tBuildTok(tok,avoid3,salt);if(q)items3.push(q);}});
     if(!items3.length)return false;
-    wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
+    wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
     T=null;
     sheetState={items:items3,s:s,thin:false};
     if(TEACHER)T={view:"sheet",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap},edited:edited,textEdited:false,picker:null};
@@ -1688,7 +1741,7 @@ function tRestoreOnline(){
     if(o.sol){var sl=$("sol"+i);if(sl)sl.classList.add("show");}
     if(o.exOpen&&o.exq){var exb=$("ex"+i);if(exb){exb.dataset.exn=String(o.exn);renderExample(i,o.exq);setExLabel(i,true);}}
   });
-  if(T.endGraded){endGraded=true;for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2)s2.classList.add("show");}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent="Answers checked";}}
+  if(T.endGraded){endGraded=true;for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2)s2.classList.add("show");}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}}
   updateScore();maybeSummary();
 }
 function tAfterOnlineEdit(){renderOnline(false);tRestoreOnline();}
@@ -1927,25 +1980,25 @@ function startOnline(){
 function renderOnline(scroll){
   var s=lastSettings;var res={thin:onlineThin};
   var box=$("session");
-  if(!current.length){box.innerHTML='<div class="card"><p>'+(s.units.length?"No questions match that selection yet.":"Choose at least one unit above, or use the Mid-course review or Final review button, then start again.")+'</p></div>';return;}
-  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>Online practice</h2>'+refPanelsHtml(s.units)+(res.thin?'<p class="thinNote">Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.</p>':"")+'<p class="scoreline" id="score"></p>';
+  if(!current.length){box.innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
+  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+refPanelsHtml(s.units)+(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':"")+'<p class="scoreline" id="score"></p>';
   current.forEach(function(q,i){
     html+='<div class="q" id="q'+i+'"><div class="qhead"><b>Question '+(i+1)+'</b> '+tags(q)+'</div><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc"){
       html+='<div class="opts">'+q.options.map(function(o,j){return '<label><input type="radio" name="opt'+i+'" value="'+j+'"> <span>'+o+'</span></label>';}).join("")+'</div>';
     }else{
-      html+='<p>Your answer: <input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
-      if(q.type==="num")html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
+      html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
+      if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
-    html+='<p><button type="button" data-check="'+i+'">Check</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">Hint</button> ':'')+'<button type="button" class="alt" data-ex="'+i+'">See a worked example</button> <button type="button" class="alt" data-sol="'+i+'">Show worked solution</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>Worked solution:</b> '+stepHTML(q.solution)+'</div>'
-      +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">Report a problem</button></p>'
-      +'<div class="rep" id="rep'+i+'"><label>What is the problem?<select id="reptype'+i+'"><option>The question looks wrong or unclear</option><option>The worked solution doesn\'t work out</option><option>My answer was marked wrong but should be right</option><option>Something else is out of place</option></select></label>'
-      +'<label>Anything you noticed (optional)<textarea id="repnote'+i+'" rows="3"></textarea></label>'
-      +(REPORT_FORM.url?'<p><button type="button" data-repsend="'+i+'">Send report</button> <button type="button" class="alt" data-repcopy="'+i+'">Copy report text instead</button></p>':'<p><button type="button" data-repcopy="'+i+'">Copy report text</button></p>')
+    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> <button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
+      +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">'+L9("Report a problem","Signaler un problème")+'</button></p>'
+      +'<div class="rep" id="rep'+i+'"><label>'+L9("What is the problem?","Quel est le problème ?")+'<select id="reptype'+i+'"><option>'+L9("The question looks wrong or unclear","La question semble fausse ou peu claire")+'</option><option>'+L9("The worked solution doesn't work out","La solution détaillée ne fonctionne pas")+'</option><option>'+L9("My answer was marked wrong but should be right","Ma réponse a été marquée fausse, mais elle devrait être bonne")+'</option><option>'+L9("Something else is out of place","Quelque chose d'autre ne va pas")+'</option></select></label>'
+      +'<label>'+L9("Anything you noticed (optional)","Ce que tu as remarqué (facultatif)")+'<textarea id="repnote'+i+'" rows="3"></textarea></label>'
+      +(REPORT_FORM.url?'<p><button type="button" data-repsend="'+i+'">'+L9("Send report","Envoyer le rapport")+'</button> <button type="button" class="alt" data-repcopy="'+i+'">'+L9("Copy report text instead","Copier le texte du rapport plutôt")+'</button></p>':'<p><button type="button" data-repcopy="'+i+'">'+L9("Copy report text","Copier le texte du rapport")+'</button></p>')
       +'<div class="repstat" id="repstat'+i+'"></div></div>'+tctlHtml(i)+'</div>';
   });
-  html+='<p>'+(checkMode==="end"?'<button type="button" id="gradeBtn">Check all my answers</button> ':"")+'<button type="button" id="againBtn">New set of questions</button></p>'+tBarHtml()+'<div id="setSummary"></div></div>';
+  html+='<p>'+(checkMode==="end"?'<button type="button" id="gradeBtn">'+L9("Check all my answers","Vérifier toutes mes réponses")+'</button> ':"")+'<button type="button" id="againBtn">'+L9("New set of questions","Nouvelle série de questions")+'</button></p>'+tBarHtml()+'<div id="setSummary"></div></div>';
   box.innerHTML=html;updateScore();typesetMath(box);
   Array.prototype.forEach.call(box.querySelectorAll("[data-check]"),function(b){b.addEventListener("click",function(){checkQ(+b.getAttribute("data-check"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-sol]"),function(b){b.addEventListener("click",function(){toggleSolution(+b.getAttribute("data-sol"));});});
@@ -1977,48 +2030,48 @@ function stepHTML(h){
 function plainText(h){var d=document.createElement("div");d.innerHTML=String(h).replace(/<br\s*\/?>/gi,"\n");return (d.textContent||"").replace(/[ \t]+/g," ").replace(/\s*\n\s*/g,"\n").trim();}
 function reportText(q,reason){
   var e=q._entry,lines=[];
-  lines.push((window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps")+" - problem report");
-  lines.push("Entry: "+e.id+" | Unit "+e.unit+" ("+UNITS[e.unit]+") | Indicators: "+e.indicators.join(", ")+" | Level "+e.level);
-  lines.push("Problem type: "+reason);
-  lines.push("Question: "+plainText(q.prompt));
-  if(q.figure)lines.push("Diagram: this question is shown with a diagram in the app; its labels match the values in the question.");
-  if(q.type==="mc"){lines.push("Options:");q.options.forEach(function(o,j){lines.push("  - "+plainText(o)+(j===q.correct?"  [marked as the correct answer]":""));});}
-  else if(q.type==="num"){lines.push("Stated answer: "+q.answer);}
-  else{lines.push("Accepted answer(s): "+q.answers.join(" / "));}
-  lines.push("Worked solution: "+plainText(q.solution));
+  lines.push((window.__COURSE?((window.__COURSE.appName)||(window.__COURSE.shortName+" Review")):"Review Apps")+L9(" - problem report"," - rapport de problème"));
+  lines.push(L9("Entry: ","Entrée : ")+e.id+L9(" | Unit "," | Unité ")+e.unit+" ("+UNITS[e.unit]+")"+L9(" | Indicators: "," | Notions : ")+e.indicators.join(", ")+L9(" | Level "," | Niveau ")+e.level);
+  lines.push(L9("Problem type: ","Type de problème : ")+reason);
+  lines.push(L9("Question: ","Question : ")+plainText(q.prompt));
+  if(q.figure)lines.push(L9("Diagram: this question is shown with a diagram in the app; its labels match the values in the question.","Figure : cette question est présentée avec une figure dans l'application; les étiquettes correspondent aux valeurs de la question."));
+  if(q.type==="mc"){lines.push(L9("Options:","Choix :"));q.options.forEach(function(o,j){lines.push("  - "+plainText(o)+(j===q.correct?L9("  [marked as the correct answer]","  [indiquée comme la bonne réponse]"):""));});}
+  else if(q.type==="num"){lines.push(L9("Stated answer: ","Réponse attendue : ")+q.answer);}
+  else{lines.push(L9("Accepted answer(s): ","Réponse(s) acceptée(s) : ")+q.answers.join(" / "));}
+  lines.push(L9("Worked solution: ","Solution détaillée : ")+plainText(q.solution));
   return lines.join("\n");
 }
 function openReport(i){
   var q=current[i],e=q._entry,reason=$("reptype"+i).value,note=$("repnote"+i).value.trim();
-  var details=reportText(q,reason)+(note?("\nReporter note: "+note):"");
-  var unit="Unit "+e.unit+" ("+UNITS[e.unit]+") | Indicators: "+e.indicators.join(", ");
+  var details=reportText(q,reason)+(note?("\n"+L9("Reporter note: ","Note ajoutée : ")+note):"");
+  var unit=L9("Unit ","Unité ")+e.unit+" ("+UNITS[e.unit]+")"+L9(" | Indicators: "," | Notions : ")+e.indicators.join(", ");
   var u=REPORT_FORM.url+"?usp=pp_url&"+REPORT_FORM.appEntry+"="+encodeURIComponent(REPORT_FORM.appName)+"&"+REPORT_FORM.unitEntry+"="+encodeURIComponent(unit)+"&"+REPORT_FORM.detailsEntry+"="+encodeURIComponent(details);
   window.open(u,"_blank");
-  $("repstat"+i).textContent="The report form opened in a new tab with everything filled in - just press Submit there. Thank you for flagging it.";
+  $("repstat"+i).textContent=L9("The report form opened in a new tab with everything filled in - just press Submit there. Thank you for flagging it.","Le formulaire de rapport s'est ouvert dans un nouvel onglet avec tout déjà rempli : appuie simplement sur Envoyer là-bas. Merci de l'avoir signalé.");
 }
 function copyReport(i){
   var q=current[i],note=$("repnote"+i).value.trim();
-  var txt=reportText(q,$("reptype"+i).value)+(note?("\nReporter note: "+note):"");
-  function done(){$("repstat"+i).textContent="Report copied - paste it to your teacher. Thank you for flagging it.";}
+  var txt=reportText(q,$("reptype"+i).value)+(note?("\n"+L9("Reporter note: ","Note ajoutée : ")+note):"");
+  function done(){$("repstat"+i).textContent=L9("Report copied - paste it to your teacher. Thank you for flagging it.","Rapport copié : colle-le et envoie-le à ton enseignant. Merci de l'avoir signalé.");}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,done);}
   else{var ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(err){}document.body.removeChild(ta);done();}
 }
 function updateScore(){
   if(checkMode==="end"){
-    $("score").textContent=endGraded?("You scored "+correctCount+" of "+current.length+", "+Math.round(100*correctCount/current.length)+"%. The worked solutions are open below so you can review each question."):"Answer all the questions, then check them all at the end.";
+    $("score").textContent=endGraded?(FR9?("Tu as obtenu "+correctCount+" sur "+current.length+", soit "+Math.round(100*correctCount/current.length)+" %. Les solutions détaillées sont ouvertes ci-dessous pour que tu puisses revoir chaque question."):("You scored "+correctCount+" of "+current.length+", "+Math.round(100*correctCount/current.length)+"%. The worked solutions are open below so you can review each question.")):L9("Answer all the questions, then check them all at the end.","Réponds à toutes les questions, puis vérifie-les toutes à la fin.");
     return;
   }
-  $("score").textContent=checkedCount?("Score so far: "+correctCount+" of "+checkedCount+" checked."):"Check each question as you go, the worked solution is there when you want it.";
+  $("score").textContent=checkedCount?(FR9?("Pointage jusqu'à présent : "+correctCount+" sur "+checkedCount+" vérifiées."):("Score so far: "+correctCount+" of "+checkedCount+" checked.")):L9("Check each question as you go, the worked solution is there when you want it.","Vérifie chaque question au fur et à mesure, la solution détaillée est là quand tu en as besoin.");
 }
 function checkQ(i){
   var q=current[i],ok=false,given=null;
-  if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(!sel){$("fb"+i).innerHTML='<span class="notyet">Pick an option first.</span>';$("fb"+i).classList.add("show");return;}given=+sel.value;ok=(given===q.correct);}
-  else if(q.type==="num"){var v=parseFloat(($("ans"+i).value||"").replace(/[$,%\u00B0]/g,""));if(isNaN(v)){$("fb"+i).innerHTML='<span class="notyet">Type a number first.</span>';$("fb"+i).classList.add("show");return;}ok=Math.abs(v-q.answer)<=q.tol;}
+  if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(!sel){$("fb"+i).innerHTML='<span class="notyet">'+L9("Pick an option first.","Choisis d'abord une option.")+'</span>';$("fb"+i).classList.add("show");return;}given=+sel.value;ok=(given===q.correct);}
+  else if(q.type==="num"){var v=FR9?frParseNum(($("ans"+i).value||"")):parseFloat(($("ans"+i).value||"").replace(/[$,%\u00B0]/g,""));if(isNaN(v)){$("fb"+i).innerHTML='<span class="notyet">'+L9("Type a number first.","Entre d'abord un nombre.")+'</span>';$("fb"+i).classList.add("show");return;}ok=Math.abs(v-q.answer)<=q.tol;}
   else{var t=($("ans"+i).value||"").trim().toLowerCase().replace(/\s+/g," ");ok=q.answers.some(function(a){return t===a.replace(/\s+/g," ");});}
   var fb=$("fb"+i);fb.classList.add("show");
   if(!fb.dataset.done){checkedCount++;if(ok)correctCount++;fb.dataset.done="1";setResults[i]={ok:ok,inds:(q._entry?q._entry.indicators.slice():[])};updateScore();maybeSummary();}
-  fb.innerHTML=ok?'<span class="ok">Correct.</span> Nice work.':(checkMode==="end"?'<span class="notyet">Not quite.</span> The worked solution is open below.':'<span class="notyet">Not quite.</span> Try again, or open the worked solution.');
-  var fbt=$("fbt"+i);if(fbt)fbt.innerHTML=(q.type==="mc"&&q.fb&&given!==null&&q.fb[given])?("<b>About your answer:</b> "+stepHTML(q.fb[given])):"";
+  fb.innerHTML=ok?('<span class="ok">'+L9("Correct.","Exact.")+'</span> '+L9("Nice work.","Beau travail.")):(checkMode==="end"?('<span class="notyet">'+L9("Not quite.","Pas tout à fait.")+'</span> '+L9("The worked solution is open below.","La solution détaillée est ouverte ci-dessous.")):('<span class="notyet">'+L9("Not quite.","Pas tout à fait.")+'</span> '+L9("Try again, or open the worked solution.","Essaie encore, ou ouvre la solution détaillée.")));
+  var fbt=$("fbt"+i);if(fbt)fbt.innerHTML=(q.type==="mc"&&q.fb&&given!==null&&q.fb[given])?("<b>"+L9("About your answer:","À propos de ta réponse :")+"</b> "+stepHTML(q.fb[given])):"";
   if(ok)$("sol"+i).classList.remove("show");
 }
 function gradeAll(){
@@ -2029,17 +2082,17 @@ function gradeAll(){
     if(fb.dataset.done)continue;
     var answered=false;
     if(q.type==="mc")answered=!!document.querySelector('input[name="opt'+i+'"]:checked');
-    else if(q.type==="num")answered=!isNaN(parseFloat(($("ans"+i).value||"").replace(/[$,%\u00B0]/g,"")));
+    else if(q.type==="num")answered=!isNaN(FR9?frParseNum(($("ans"+i).value||"")):parseFloat(($("ans"+i).value||"").replace(/[$,%\u00B0]/g,"")));
     else answered=(($("ans"+i).value||"").trim()!=="");
     if(!answered){
       fb.classList.add("show");fb.dataset.done="1";checkedCount++;setResults[i]={ok:false,inds:(q._entry?q._entry.indicators.slice():[])};
-      fb.innerHTML='<span class="notyet">No answer given.</span> The worked solution is open below.';
+      fb.innerHTML='<span class="notyet">'+L9("No answer given.","Aucune réponse donnée.")+'</span> '+L9("The worked solution is open below.","La solution détaillée est ouverte ci-dessous.");
     }else checkQ(i);
   }
   for(var j=0;j<current.length;j++)$("sol"+j).classList.add("show");
   maybeSummary();
   updateScore();
-  var b=$("gradeBtn");if(b){b.disabled=true;b.textContent="Answers checked";}
+  var b=$("gradeBtn");if(b){b.disabled=true;b.textContent=L9("Answers checked","Réponses vérifiées");}
   $("score").scrollIntoView({behavior:scrollBehavior(),block:"center"});
 }
 var _probeCache={};
@@ -2411,12 +2464,12 @@ function startExam(){
   var pkOn=tPkOn();
   if(window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.singleOnly&&s.units.length!==1){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"Practice tests are built one unit at a time, like the unit tests in the course. Choose exactly one unit above, then make the practice test again. To practise across several units, make a practice sheet instead.":"Choose one unit above, then make the practice test.")+'</p></div>';return;}
   var ex=withSeed(_sd,function(){return composeExam(s.units,s.inds,pkOn);});
-  if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"No questions match that selection yet.":"Choose at least one unit above, or use the Mid-course review or Final review button, then start again.")+'</p></div>';return;}
+  if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
   var single=s.units.length===1;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
-  var scope=single?("Unit "+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return "Unit "+u;}).join(", ");
-  var title=single?(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test":(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam";
-  wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx":(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx";
+  var scope=single?(L9("Unit ","Unité ")+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
+  var title=single?(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Test de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test")):(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Examen de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam"));
+  wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Unit Test.docx"," - Test de pratique.docx"):(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Exam.docx"," - Examen de pratique.docx");
   T=null;
   examState={ex:ex,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
   if(TEACHER){
@@ -2432,45 +2485,45 @@ function renderExam(){
   stopExamTimer();
   var ex=examState.ex,s=examState.s,single=examState.single,wsCrF=examState.wsCrF,scope=examState.scope,title=examState.title;
   var lv=examLive(ex);
-  var paper='<div class="nameline"><div>Name:<span></span></div><div>Date:<span></span></div></div>';
-  paper+='<h1 style="font-size:1.3rem;">'+title+'</h1><p>'+scope+' \u00B7 Total marks: '+lv.total+'</p>';
-  paper+='<p style="font-size:.92rem;">Answer all questions. In Section A, choose the best answer for each question and record it on the answer record at the end of Section A. In Section B, show all workings in the space provided; marks are shown beside each question.</p>';
+  var paper='<div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
+  paper+='<h1 style="font-size:1.3rem;">'+title+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
+  paper+='<p style="font-size:.92rem;">'+L9("Answer all questions. In Section A, choose the best answer for each question and record it on the answer record at the end of Section A. In Section B, show all workings in the space provided; marks are shown beside each question.","Réponds à toutes les questions. Dans la section A, choisis la meilleure réponse pour chaque question et inscris-la dans le relevé de réponses à la fin de la section A. Dans la section B, montre tout ton travail dans l'espace fourni; les points sont indiqués à côté de chaque question.")+'</p>';
   var n=0;
-  paper+='<h2 style="font-size:1.05rem;">Section A: Selected Response ('+lv.sr+' marks)</h2>';
+  paper+='<h2 style="font-size:1.05rem;">'+L9("Section A: Selected Response (","Section A : Réponses choisies (")+lv.sr+L9(" marks)"," points)")+'</h2>';
   ex.srItems.forEach(function(it){n++;var q=it.q;
     paper+='<div class="pq"><p><b>'+n+'.</b></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)paper+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc")paper+='<div class="opts">'+q.options.map(function(o,oi){return '<label style="display:block;margin:4px 0;"><b>'+"ABCD"[oi]+'.</b> '+o+'</label>';}).join("")+'</div>';
     paper+='</div>';});
-  paper+='<h2 style="font-size:1.05rem;">Answer record</h2><p style="font-size:.92rem;">Circle one letter for each Section A question.</p>'+recGrid(ex.srItems,false);
-  paper+='<h2 style="font-size:1.05rem;">Section B: Constructed Response ('+lv.cr+' marks)</h2>';
-  if(!ex.crItems.length)paper+='<p>No constructed-response questions are available for this selection yet.</p>';
+  paper+='<h2 style="font-size:1.05rem;">'+L9("Answer record","Relevé de réponses")+'</h2><p style="font-size:.92rem;">'+L9("Circle one letter for each Section A question.","Encercle une lettre pour chaque question de la section A.")+'</p>'+recGrid(ex.srItems,false);
+  paper+='<h2 style="font-size:1.05rem;">'+L9("Section B: Constructed Response (","Section B : Réponses construites (")+lv.cr+L9(" marks)"," points)")+'</h2>';
+  if(!ex.crItems.length)paper+='<p>'+L9("No constructed-response questions are available for this selection yet.","Aucune question à réponse construite n'est disponible pour cette sélection pour le moment.")+'</p>';
   ex.crItems.forEach(function(it){n++;var q=it.q;
-    paper+='<div class="pq"><p><b>'+n+'.</b> <span style="font-size:.85rem;color:#555;">('+it.marks+' marks)</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
+    paper+='<div class="pq"><p><b>'+n+'.</b> <span style="font-size:.85rem;color:#555;">('+it.marks+L9(" marks"," points")+'</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)paper+='<div class="fig">'+q.figure+'</div>';
     var h=Math.max(80,Math.round(it.marks*62*wsCrF));if(wsCrF>0)paper+=wsBox(h);
     paper+='</div>';});
-  paper+='<p style="font-size:.85rem;color:#555;">'+((T&&T.edited)?("This paper was edited from the blueprint: selected response "+lv.sr+" marks, constructed response "+lv.cr+" marks, of which Level 3 carries "+lv.l3+" marks."):("Built to the 2026-2027 tables of specifications as closely as the question bank allows: selected response "+lv.sr+" marks, constructed response "+lv.cr+" marks, of which Level 3 carries "+lv.l3+" marks."))+'</p>';
-  var key='<h1 style="font-size:1.3rem;">'+title+': Answer Key</h1><p>'+scope+' \u00B7 Total marks: '+lv.total+'</p>';
-  key+='<h2 style="font-size:1.05rem;">Section A answers</h2><p style="font-size:.92rem;">The correct letter for each question, in the same layout as the answer record on the student paper.</p>';
+  paper+='<p style="font-size:.85rem;color:#555;">'+((T&&T.edited)?("This paper was edited from the blueprint: selected response "+lv.sr+" marks, constructed response "+lv.cr+" marks, of which Level 3 carries "+lv.l3+" marks."):(FR9?("Construit selon les tableaux de spécifications 2026-2027, aussi fidèlement que la banque de questions le permet : réponses choisies "+lv.sr+" points, réponses construites "+lv.cr+" points, dont le niveau 3 vaut "+lv.l3+" points."):("Built to the 2026-2027 tables of specifications as closely as the question bank allows: selected response "+lv.sr+" marks, constructed response "+lv.cr+" marks, of which Level 3 carries "+lv.l3+" marks.")))+'</p>';
+  var key='<h1 style="font-size:1.3rem;">'+title+L9(": Answer Key"," : Corrigé")+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
+  key+='<h2 style="font-size:1.05rem;">'+L9("Section A answers","Réponses de la section A")+'</h2><p style="font-size:.92rem;">'+L9("The correct letter for each question, in the same layout as the answer record on the student paper.","La bonne lettre pour chaque question, dans la même disposition que le relevé de réponses sur la copie de l'élève.")+'</p>';
   key+=recGrid(ex.srItems,true);
-  key+='<h2 style="font-size:1.05rem;">Section B: worked solutions</h2>';
+  key+='<h2 style="font-size:1.05rem;">'+L9("Section B: worked solutions","Section B : solutions détaillées")+'</h2>';
   var m=ex.srItems.length;
-  ex.crItems.forEach(function(it){m++;var q=it.q;var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmt(q.answer):esc(q.answers[0]));
-    key+='<div class="solp"><p><b>'+m+'.</b> Answer: <b>'+ans+'</b> ('+it.marks+' marks)</p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';});
-  key+='<h2 style="font-size:1.05rem;">Appendix: Section A worked solutions</h2><div class="solAppendix">';
+  ex.crItems.forEach(function(it){m++;var q=it.q;var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0]));
+    key+='<div class="solp"><p><b>'+m+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+ans+'</b> ('+it.marks+L9(" marks"," points")+'</p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';});
+  key+='<h2 style="font-size:1.05rem;">'+L9("Appendix: Section A worked solutions","Annexe : solutions détaillées de la section A")+'</h2><div class="solAppendix">';
   ex.srItems.forEach(function(it,ix){var q=it.q;key+='<div class="solp"><p><b>'+(ix+1)+'.</b> <b>('+"ABCD"[q.correct]+')</b></p><div>'+stepHTML(q.solution)+'</div></div>';});
   key+='</div>';
   $("printArea").innerHTML=paper;
-  $("session").innerHTML='<div class="card"><p>Your '+(single?"practice unit test":"practice exam")+' is ready: '+ex.srItems.length+' selected-response questions and '+ex.crItems.length+' constructed-response questions, '+lv.total+' marks in total. The exam paper and the answer key print separately.</p>'
-    +((T&&T.edited)?'<p class="thinNote">You edited this paper: it now has '+lv.sr+' selected-response marks and '+lv.cr+' constructed-response marks, '+lv.total+' marks in total. The paper, the answer key and the totals all follow the edited set.</p>':((ex.short||examShortNow(ex))?'<p class="thinNote">Heads up: the bank could not fill every exam slot for this selection yet, so this paper runs short of the full blueprint.</p>':""))
+  $("session").innerHTML='<div class="card"><p>'+(FR9?("Ton "+(single?"test de pratique":"examen de pratique")+" est prêt : "+ex.srItems.length+" questions à réponses choisies et "+ex.crItems.length+" questions à réponses construites, "+lv.total+" points au total. La copie d'examen et le corrigé s'impriment séparément."):("Your "+(single?"practice unit test":"practice exam")+" is ready: "+ex.srItems.length+" selected-response questions and "+ex.crItems.length+" constructed-response questions, "+lv.total+" marks in total. The exam paper and the answer key print separately."))+'</p>'
+    +((T&&T.edited)?'<p class="thinNote">You edited this paper: it now has '+lv.sr+' selected-response marks and '+lv.cr+' constructed-response marks, '+lv.total+' marks in total. The paper, the answer key and the totals all follow the edited set.</p>':((ex.short||examShortNow(ex))?'<p class="thinNote">'+L9("Heads up: the bank could not fill every exam slot for this selection yet, so this paper runs short of the full blueprint.","Attention : la banque n'a pas encore pu remplir toutes les places de l'examen pour cette sélection, alors cette copie est plus courte que le plan complet.")+'</p>':""))
     +tExamPanelHtml()
-    +'<div class="row">'+(TEACHER?'<button type="button" id="editExamBtn">Edit the exam</button>':"")+'<button type="button" id="printPaperBtn">Print the exam paper</button><button type="button" id="printKeyBtn" class="sec">Print the answer key</button><button type="button" id="wordBtn" class="sec">Download Word file</button><button type="button" id="copyDocsBtn" class="sec">Copy for Google Docs</button></div>'
+    +'<div class="row">'+(TEACHER?'<button type="button" id="editExamBtn">Edit the exam</button>':"")+'<button type="button" id="printPaperBtn">'+L9("Print the exam paper","Imprimer la copie d'examen")+'</button><button type="button" id="printKeyBtn" class="sec">'+L9("Print the answer key","Imprimer le corrigé")+'</button><button type="button" id="wordBtn" class="sec">'+L9("Download Word file","Télécharger le fichier Word")+'</button><button type="button" id="copyDocsBtn" class="sec">'+L9("Copy for Google Docs","Copier pour Google Docs")+'</button></div>'
     +'<p class="hint" id="editHint" hidden>Editing is on: click any text in the exam below and type to change it, or delete a question you do not want. Drag the bar at the bottom of a Section B answer box to make that box taller or shorter. What you see is what prints and what copies.</p>'
     +'<p class="hint" id="copyStatus" role="status"></p>'
     +'<div class="sheetPrev" id="sheetPrev">'+paper+'<div class="keybreak">'+key+'</div></div></div>';
   typesetMath($("sheetPrev"));typesetMath($("printArea"));if($("tExamPanel"))typesetMath($("tExamPanel"));
-  if(s.timer){var tc=document.createElement("div");tc.className="timerbar";tc.id="examTimer";var _card=$("session").querySelector(".card");if(_card)_card.insertBefore(tc,_card.firstChild);var _t0=examState.t0;var _tick=function(){var sec=Math.floor((Date.now()-_t0)/1000);var mm=Math.floor(sec/60),ss=sec%60;tc.textContent="Time so far: "+mm+":"+(ss<10?"0":"")+ss+" \u00B7 "+((window.__COURSE&&window.__COURSE.timerNote)?("The real exam allows "+window.__COURSE.timerNote+". This timer is just a guide."):"This timer is just a guide.")+"";};_tick();window._examTimerInt=setInterval(_tick,1000);}
+  if(s.timer){var tc=document.createElement("div");tc.className="timerbar";tc.id="examTimer";var _card=$("session").querySelector(".card");if(_card)_card.insertBefore(tc,_card.firstChild);var _t0=examState.t0;var _tick=function(){var sec=Math.floor((Date.now()-_t0)/1000);var mm=Math.floor(sec/60),ss=sec%60;tc.textContent=FR9?("Temps écoulé : "+mm+":"+(ss<10?"0":"")+ss+"  \u00B7  "+((window.__COURSE&&window.__COURSE.timerNote)?("L'examen réel accorde "+window.__COURSE.timerNote+". Ce minuteur est seulement un guide."):"Ce minuteur est seulement un guide.")):("Time so far: "+mm+":"+(ss<10?"0":"")+ss+" \u00B7 "+((window.__COURSE&&window.__COURSE.timerNote)?("The real exam allows "+window.__COURSE.timerNote+". This timer is just a guide."):"This timer is just a guide.")+"");};_tick();window._examTimerInt=setInterval(_tick,1000);}
   if($("editExamBtn"))$("editExamBtn").addEventListener("click",function(){
     var prev=$("sheetPrev"),on=prev.getAttribute("contenteditable")==="true";
     if(on){prev.removeAttribute("contenteditable");prev.classList.remove("editing");$("editExamBtn").textContent="Edit the exam";$("editHint").hidden=true;}
@@ -2485,10 +2538,10 @@ function renderExam(){
 function startSheet(){
   stopExamTimer();
   var s=settings();var _sd=activeSeed(s);sessionSeed=_sd;
-  if(s.mcCount+s.ncCount<1){$("session").innerHTML='<div class="card"><p>Set the Multiple choice and Constructed Response counts to at least one question in total, then make the sheet again.</p></div>';return;}
+  if(s.mcCount+s.ncCount<1){$("session").innerHTML='<div class="card"><p>'+L9("Set the Multiple choice and Constructed Response counts to at least one question in total, then make the sheet again.","Règle les nombres de questions à choix multiple et à réponse construite à au moins une question au total, puis refais la feuille.")+'</p></div>';return;}
   var res=withSeed(_sd,function(){return drawSheetSet(s);});
-  if(!res.items.length){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"No questions match that selection yet.":"Choose at least one unit above ,  or use the Mid-course review or Final review button ,  then start again.")+'</p></div>';return;}
-  wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
+  if(!res.items.length){$("session").innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above ,  or use the Mid-course review or Final review button ,  then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
+  wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
   T=null;
   sheetState={items:res.items,s:s,thin:res.thin};
   if(TEACHER){
@@ -2501,34 +2554,34 @@ function startSheet(){
 }
 function renderSheet(){
   var s=sheetState.s;var res={items:sheetState.items,thin:sheetState.thin};
-  var unitNames=s.units.map(function(u){return "Unit "+u;}).join(", ");
-  wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
-  var html='<div class="nameline"><div>Name:<span></span></div><div>Date:<span></span></div></div>';
+  var unitNames=s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
+  wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
+  var html='<div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
   var wsMcF=(typeof s.wsMc==="number"&&!isNaN(s.wsMc))?s.wsMc:0;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
-  html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Sheet"+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 Indicators: "+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[0])||'Show all workings in the space provided.'):((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[1])||'Show all workings on your own paper.'))+'</p>';
+  html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+L9(": Practice Sheet"," : Feuille de pratique")+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 "+L9("Indicators: ","Notions : ")+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[0])||'Show all workings in the space provided.'):((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[1])||'Show all workings on your own paper.'))+'</p>';
   res.items.forEach(function(q,i){
     var h=Math.round((q._entry.level===3?170:(q.type==="mc"?120:150))*((q.type==="mc")?wsMcF:wsCrF));
-    html+='<div class="pq"><p><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">(Unit '+q._entry.unit+' \u00B7 '+q._entry.indicators.join(", ")+' \u00B7 Level '+q._entry.level+')</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
+    html+='<div class="pq"><p><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">('+L9("Unit ","Unité ")+q._entry.unit+' \u00B7 '+q._entry.indicators.join(", ")+' \u00B7 '+L9("Level ","Niveau ")+q._entry.level+')</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc"){html+='<div class="opts">'+q.options.map(function(o){return '<label style="display:block;margin:4px 0;">\u25CB '+o+'</label>';}).join("")+'</div>';}
     html+=wsBox(h);
     html+='</div>';
   });
-  html+='<p style="font-size:.85rem;color:#555;">Spotted a problem with a question on this sheet? Write down its unit and question number and let your teacher know.</p>';
+  html+='<p style="font-size:.85rem;color:#555;">'+L9("Spotted a problem with a question on this sheet? Write down its unit and question number and let your teacher know.","Tu as repéré un problème dans une question de cette feuille ? Note son unité et son numéro de question et dis-le à ton enseignant.")+'</p>';
   if(s.wantKey){
-  html+='<div class="keybreak"><h1 style="font-size:1.3rem;">Answer Key, with worked solutions</h1>';
+  html+='<div class="keybreak"><h1 style="font-size:1.3rem;">'+L9("Answer Key, with worked solutions","Corrigé, avec solutions détaillées")+'</h1>';
   res.items.forEach(function(q,i){
-    var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmt(q.answer):esc(q.answers[0]));
-    html+='<div class="solp"><p><b>'+(i+1)+'.</b> Answer: <b>'+ans+'</b></p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';
+    var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0]));
+    html+='<div class="solp"><p><b>'+(i+1)+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+ans+'</b></p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';
   });
   html+='</div>';
   }
   $("printArea").innerHTML=html;
-  $("session").innerHTML='<div class="card"><p>Your practice sheet is ready ('+res.items.length+' questions'+(s.wantKey?', with the answer key on its own pages at the end':'')+'). It is shown below, exactly as it will print.</p>'
-    +(res.thin?'<p class="thinNote">Heads up: the question bank is still thin for this selection, so this sheet repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.</p>':"")
+  $("session").innerHTML='<div class="card"><p>'+(FR9?("Ta feuille de pratique est prête ("+res.items.length+" questions"+(s.wantKey?", avec le corrigé sur ses propres pages à la fin":"")+"). Elle est montrée ci-dessous, exactement comme elle s'imprimera."):("Your practice sheet is ready ("+res.items.length+" questions"+(s.wantKey?", with the answer key on its own pages at the end":"")+"). It is shown below, exactly as it will print."))+'</p>'
+    +(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this sheet repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette feuille répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':"")
     +tSheetPanelHtml()
-    +'<div class="row">'+(TEACHER?'<button type="button" id="editBtn">Edit the sheet</button>':"")+'<button type="button" id="wordBtn" class="sec">Download Word file</button><button type="button" id="copyDocsBtn" class="sec">Copy for Google Docs</button><button type="button" id="printBtn" class="sec">Print / save the sheet</button></div>'
+    +'<div class="row">'+(TEACHER?'<button type="button" id="editBtn">Edit the sheet</button>':"")+'<button type="button" id="wordBtn" class="sec">'+L9("Download Word file","Télécharger le fichier Word")+'</button><button type="button" id="copyDocsBtn" class="sec">'+L9("Copy for Google Docs","Copier pour Google Docs")+'</button><button type="button" id="printBtn" class="sec">'+L9("Print / save the sheet","Imprimer / enregistrer la feuille")+'</button></div>'
     +'<p class="hint" id="editHint" hidden>Editing is on: click any text in the sheet below and type to change it, or delete a question you do not want. Drag the bar at the bottom of an answer box to make that box taller or shorter. What you see is what prints and what copies. Most math is regular text and can be changed directly; typeset expressions are rendered, so if you need different numbers in one of those, regenerate the sheet instead.</p>'
     +'<p class="hint" id="copyStatus" role="status"></p>'
     +'<div class="sheetPrev" id="sheetPrev">'+html+'</div></div>';
@@ -2578,7 +2631,7 @@ function previewParts(){
    instead, built by the Word (.docx) download section below. */
 function copyFrom(node,mode,status){
   if(!node)return;
-  function done(ok){if(status)status.textContent=ok?"Copied. Open a Google Doc or a Word document and paste (Ctrl+V): the whole sheet lands there as editable text. Edit it there, then print from there.":"Copy did not work in this browser. You can still edit right here and print.";}
+  function done(ok){if(status)status.textContent=ok?L9("Copied. Open a Google Doc or a Word document and paste (Ctrl+V): the whole sheet lands there as editable text. Edit it there, then print from there.","Copié. Ouvre un document Google Docs ou Word et colle (Ctrl+V) : toute la feuille y arrive comme texte modifiable. Modifie-la là, puis imprime à partir de là."):L9("Copy did not work in this browser. You can still edit right here and print.","La copie n'a pas fonctionné dans ce navigateur. Tu peux quand même modifier ici et imprimer.");}
   function fallback(){try{var r=document.createRange();r.selectNodeContents(node);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);var ok=document.execCommand("copy");sel.removeAllRanges();done(ok);}catch(e){done(false);}}
   if(navigator.clipboard&&window.ClipboardItem){
     try{
@@ -2944,7 +2997,7 @@ function makeWalker(st){
       return;
     }
     if(inKey&&tag==="P"){
-      var km=/^(\d+)\.\s*Answer:/.exec(normT(dText(n)));
+      var km=(FR9?/^(\d+)\.\s*Réponse\s*:/:/^(\d+)\.\s*Answer:/).exec(normT(dText(n)));
       if(km){
         var qnOpts=qOpts[+km[1]-1]||[];
         var bolds=nKids(n).filter(function(c){var bt=dTag(c);return bt==="B"||bt==="STRONG";});
@@ -3037,7 +3090,7 @@ function makeWordDocx(rootEl,st){
     {name:"word/styles.xml",data:enc.encode(DOCX_STYLES)}
   ]);
 }
-var wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Sheet.docx";
+var wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
 function downloadWordFile(statusEl){
   var prev=$("sheetPrev");
   if(!prev)return;
@@ -3049,9 +3102,9 @@ function downloadWordFile(statusEl){
     a.href=url;a.download=wordName;
     document.body.appendChild(a);a.click();
     setTimeout(function(){if(a.parentNode)a.parentNode.removeChild(a);URL.revokeObjectURL(url);},400);
-    if(statusEl)statusEl.textContent="Word file downloaded ("+wordName+"). Open it in Word: every equation in it is a native Word equation, ready to edit or print.";
+    if(statusEl)statusEl.textContent=L9("Word file downloaded (","Fichier Word téléchargé (")+wordName+L9("). Open it in Word: every equation in it is a native Word equation, ready to edit or print.","). Ouvre-le dans Word : chaque équation est une équation Word native, prête à modifier ou à imprimer.");
   }catch(e){
-    if(statusEl)statusEl.textContent="The Word file could not be built in this browser. You can still edit the sheet here and print it.";
+    if(statusEl)statusEl.textContent=L9("The Word file could not be built in this browser. You can still edit the sheet here and print it.","Le fichier Word n'a pas pu être créé dans ce navigateur. Tu peux quand même modifier la feuille ici et l'imprimer.");
   }
 }
 /* ===== Kahoot and Blooket exports =====
@@ -3256,7 +3309,7 @@ function exportGame(kind,items,statusEl,leftOutOverride){
    PNG files at the package root and referenced by bare filename, the
    questiondb image convention; if a rasterization fails the SVG markup
    is embedded inline instead and counted in the status line. */
-var BS_QUIZ_FILE="quiz_d2l_"+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+"BS.xml",BS_QUIZ_TITLE=(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps")+": Practice Set",BS_APP_NAME=(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps");
+var BS_QUIZ_FILE="quiz_d2l_"+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+"BS.xml",BS_QUIZ_TITLE=(window.__COURSE?((window.__COURSE.appName)||(window.__COURSE.shortName+" Review")):"Review Apps")+": Practice Set",BS_APP_NAME=(window.__COURSE?((window.__COURSE.appName)||(window.__COURSE.shortName+" Review")):"Review Apps");
 function bsUuid(){
   var b=new Uint8Array(16);
   if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(b);else for(var i=0;i<16;i++)b[i]=Math.floor(Math.random()*256);
@@ -3416,7 +3469,7 @@ function bsQuizXml(poolsXml,nPools,nVars){
     +'<assessmentcontrol hide_question_pointsswitch="no" hintswitch="no" solutionswitch="yes" feedbackswitch="no" />'
     +'<presentation_material><flow_mat><material label="page header"><mattext d2l_2p0:isdisplayed="yes" texttype="text/html" /></material><material label="page footer"><mattext d2l_2p0:isdisplayed="yes" texttype="text/html" /></material></flow_mat></presentation_material>'
     +'<assess_procextension><d2l_2p0:intro_message d2l_2p0:isdisplayed="no" texttype="text/plain" />'
-    +'<category ident="'+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+'REVCAT" d2l_2p0:sortorder="1">'+(window.__COURSE?(window.__COURSE.shortName+" Review"):"Review Apps")+'</category>'
+    +'<category ident="'+(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+'REVCAT" d2l_2p0:sortorder="1">'+(window.__COURSE?((window.__COURSE.appName)||(window.__COURSE.shortName+" Review")):"Review Apps")+'</category>'
     +'<d2l_2p0:disable_right_click>no</d2l_2p0:disable_right_click><d2l_2p0:disable_pager_access>no</d2l_2p0:disable_pager_access><is_active>no</is_active><d2l_2p0:is_single_session>no</d2l_2p0:is_single_session><d2l_2p0:annotation_tools_enabled>yes</d2l_2p0:annotation_tools_enabled><d2l_2p0:date_start /><d2l_2p0:date_end /><d2l_2p0:date_due /><d2l_2p0:has_schedule_event>no</d2l_2p0:has_schedule_event><d2l_2p0:password /><d2l_2p0:is_attempt_Rldb>no</d2l_2p0:is_attempt_Rldb><d2l_2p0:is_subview_Rldb>no</d2l_2p0:is_subview_Rldb><d2l_2p0:time_limit>0</d2l_2p0:time_limit><d2l_2p0:show_clock>no</d2l_2p0:show_clock><d2l_2p0:enforce_time_limit>no</d2l_2p0:enforce_time_limit><d2l_2p0:quiz_start_type>no</d2l_2p0:quiz_start_type><d2l_2p0:grace_period>0</d2l_2p0:grace_period><d2l_2p0:late_limit>2</d2l_2p0:late_limit><d2l_2p0:attempts_allowed>0</d2l_2p0:attempts_allowed><d2l_2p0:attempt_restrictions /><d2l_2p0:mark_calculation_type>1</d2l_2p0:mark_calculation_type><d2l_2p0:is_forward_only>no</d2l_2p0:is_forward_only><d2l_2p0:paging_type_id>0</d2l_2p0:paging_type_id></assess_procextension>'
     +'<assessfeedback title=""><rubric><flow_mat><material><mattext texttype="yes" /></material></flow_mat></rubric><d2l_2p0:duration>0</d2l_2p0:duration><d2l_2p0:response_display_type_id>2</d2l_2p0:response_display_type_id><d2l_2p0:show_correct_answers>yes</d2l_2p0:show_correct_answers><d2l_2p0:submission_restrictip>no</d2l_2p0:submission_restrictip><d2l_2p0:show_class_average>no</d2l_2p0:show_class_average><d2l_2p0:show_score_distribution>no</d2l_2p0:show_score_distribution></assessfeedback>'
     +'<section ident="CONTAINER_SECTION"><section title="Practice set" d2l_2p0:page="1" ident="SECT_BS_MAIN">'
@@ -3522,7 +3575,82 @@ function applyURL(){
 }
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=!!cap;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
-if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=__c.shortName+" Review";var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.longName||__c.shortName)+" Review";var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
+if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=(__c.appName||(__c.shortName+" Review"));var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.appName||((__c.longName||__c.shortName)+" Review"));var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
+/* French static markup (student side): when the active course is
+   French, the face card, builder and accessibility statics are
+   swapped for the French standalone's own wording (lifted from
+   math-9-review-fr/index.html), matched on each text node's
+   normalized text so layout whitespace survives. Dynamic strings
+   are handled at run time by L9 in the main script; this pass
+   covers only the static markup the shell ships. Teacher-facing
+   statics (the Advanced tools door and its note) are not in the
+   table and stay English, as the French standalone's own teacher
+   chrome does. Course-name spots (the header, the face heading,
+   the preset buttons) are set from the course configuration by
+   the relabel above and are not touched here; the subtitle is
+   the fork's own sentence, composed with the course long name. */
+if(window.__COURSE&&window.__COURSE.language==="fr"){
+  var FRSTATIC={
+    "Build your own practice":"Crée ta propre pratique",
+    "1. What do you want to practise?":"1. Que veux-tu pratiquer ?",
+    "All units":"Toutes les unités",
+    "By indicator (optional, leave all unchecked to use every indicator in the units you picked):":"Par indicateur (facultatif : laisse tout décoché pour utiliser tous les indicateurs des unités choisies) :",
+    "Order":"Ordre",
+    "Unit order":"Ordre des unités",
+    "Random order":"Ordre aléatoire",
+    "Same problems for everyone":"Les mêmes problèmes pour tout le monde",
+    "Seed word or phrase (optional)":"Mot ou phrase de code (facultatif)",
+    "Make one up":"En inventer un",
+    "Set a seed, then use Copy link below: every student who opens the link gets the exact same questions in the same order. Leave it blank and each student gets a fresh set.":"Entre un code, puis utilise Copier le lien ci-dessous : chaque élève qui ouvre le lien reçoit exactement les mêmes questions dans le même ordre. Laisse-le vide et chaque élève reçoit un nouvel ensemble.",
+    "Practice online":"Pratique en ligne",
+    "Number of questions (online practice)":"Nombre de questions (pratique en ligne)",
+    "Checking (online practice)":"Correction (pratique en ligne)",
+    "Check each question as I go":"Corrige chaque question au fur et à mesure",
+    "Check everything at the end":"Corrige tout à la fin",
+    "Print a sheet or exam":"Imprimer une feuille ou un examen",
+    "Multiple choice":"Choix multiple",
+    "Constructed Response":"Réponse construite",
+    "Include answer key":"Inclure le corrigé",
+    "Working space for multiple choice":"Espace de travail pour le choix multiple",
+    "Working space for constructed response":"Espace de travail pour la réponse construite",
+    "Extra space":"Espace supplémentaire",
+    "Full space":"Espace complet",
+    "Half space":"Demi-espace",
+    "A little space":"Un peu d'espace",
+    "None: use your own paper":"Aucun : utilise ton propre papier",
+    "Make a practice sheet":"Créer une feuille d'entraînement",
+    "Make a practice exam":"Créer un examen d'entraînement",
+    "Copy link to these settings":"Copier le lien vers ces réglages",
+    "Accessibility settings":"Paramètres d'accessibilité",
+    "Text size":"Taille du texte",
+    "Large":"Grand",
+    "Extra large":"Très grand",
+    "Colour theme":"Thème de couleur",
+    "Light":"Clair",
+    "Dark (high contrast)":"Foncé (contraste élevé)",
+    "Reading font (letter shapes that are easier to tell apart)":"Police de lecture (des formes de lettres plus faciles à distinguer)",
+    "Extra spacing between lines":"Espacement supplémentaire entre les lignes",
+    "Reduce motion":"Réduire les animations",
+    "Reset display settings":"Réinitialiser les paramètres d'affichage",
+    "These settings are saved on this device only. They are never part of a shared link, and they never change printed sheets or exams.":"Ces paramètres sont enregistrés sur cet appareil seulement. Ils ne font jamais partie d'un lien partagé et ne changent jamais les feuilles ni les examens imprimés."
+  };
+  var __app=document.getElementById("app");
+  if(__app){
+    var __tw=document.createTreeWalker(__app,NodeFilter.SHOW_TEXT);
+    var __nodes=[];var __n;while(__n=__tw.nextNode())__nodes.push(__n);
+    __nodes.forEach(function(node){
+      var t=node.nodeValue.replace(/\s+/g," ").trim();
+      if(Object.prototype.hasOwnProperty.call(FRSTATIC,t)){
+        node.nodeValue=node.nodeValue.replace(/\S[\s\S]*\S|\S/,FRSTATIC[t]);
+      }
+    });
+    var __sub=__app.querySelector("p.sub");
+    if(__sub)__sub.textContent="Des questions d'entraînement nouvelles pour "+(window.__COURSE.longName||window.__COURSE.shortName)+", choisies par unité ou par indicateur du programme.";
+    var __fs=document.getElementById("faceStart");if(__fs)__fs.textContent="Commencer la pratique";
+    var __go=document.getElementById("goOnline");if(__go)__go.textContent="Pratiquer en ligne";
+    var __si=document.getElementById("seedIn");if(__si)__si.setAttribute("placeholder","p. ex. Période 3 mardi");
+  }
+}
 function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}try{if(typeof advSetCapture==="function")advSetCapture();}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
 (function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
 (function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice());if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
@@ -3542,7 +3670,7 @@ $("copyLink").addEventListener("click",function(){
      settings link, which settingsToURL builds without the flag anyway. */
   var url=(T&&T.view)?tShareURL(false):(location.origin+tStripTeacher(settingsToURL()));
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
-  $("poolInfo").textContent="Link copied (or copy it from the address bar): "+url;
+  $("poolInfo").textContent=L9("Link copied (or copy it from the address bar): ","Lien copié (ou copie-le depuis la barre d'adresse) : ")+url;
   history.replaceState(null,"",url.slice(location.origin.length));
 });
 a11yInit();
@@ -3566,33 +3694,72 @@ else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(
 /* Course picker: shown only when no (or an unknown) course
    was requested. The main script's boot sequence is
    guarded by window.__NOCOURSE, so the builder stays off.
-   Courses are grouped by subject area (config key: subject),
-   highest grade first inside a group (config key: grade).
-   An entry with listed:false is fully ported and testable
-   by its direct ?course= link but stays out of the picker
-   until it passes (Jason, Nov 12, 2026). */
+   Courses are grouped by subject area (config key: subject)
+   in a fixed order: Mathematics first, then Science (the
+   chemistry and physics courses carry subject "Science"),
+   then Mathématiques; any other subject follows in
+   alphabetical order. Inside a group: highest grade first
+   (config key: grade), then by course number. Two filter
+   rows (Subject, Grade) narrow the list live; the plain
+   grouped list is the default view. An entry with
+   listed:false is fully ported and testable by its direct
+   ?course= link but stays out of the picker until it
+   passes (Jason, Nov 12, 2026). */
 if(window.__NOCOURSE){(function(){
   var app=document.getElementById("app");if(app)app.style.display="none";
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
+  var style=document.createElement("style");
+  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}";
+  pk.appendChild(style);
   var groups={};
   Object.keys(window.COURSES||{}).forEach(function(id){
     var c=window.COURSES[id];if(c.listed===false)return;
     var s=c.subject||"Other";
     (groups[s]=groups[s]||[]).push([id,c]);
   });
-  Object.keys(groups).sort().forEach(function(s){
+  var ORDER=["Mathematics","Science","Mathématiques"];
+  var subjects=Object.keys(groups).sort(function(a,b){var ia=ORDER.indexOf(a),ib=ORDER.indexOf(b);if(ia<0)ia=ORDER.length;if(ib<0)ib=ORDER.length;return (ia-ib)||(a<b?-1:(a>b?1:0));});
+  function cnum(c){var m=String(c.shortName||"").match(/\d+/);return m?parseInt(m[0],10):0;}
+  var grades=[];
+  subjects.forEach(function(s){groups[s].forEach(function(p){var g=p[1].grade||0;if(grades.indexOf(g)<0)grades.push(g);});});
+  grades.sort(function(a,b){return b-a;});
+  var fSubj="All",fGrade="All",chipBtns=[];
+  function mkRow(label){var r=document.createElement("div");r.className="pkrow";var l=document.createElement("span");l.className="pkLab";l.textContent=label;r.appendChild(l);return r;}
+  function syncChips(){chipBtns.forEach(function(x){x.b.setAttribute("aria-pressed",((x.kind==="s"?fSubj:fGrade)===x.val)?"true":"false");});}
+  function mkChip(row,text,val,kind){var b=document.createElement("button");b.type="button";b.className="alt pkchip";b.textContent=text;b.setAttribute("aria-pressed",((kind==="s"?fSubj:fGrade)===val)?"true":"false");b.addEventListener("click",function(){if(kind==="s")fSubj=val;else fGrade=val;syncChips();applyFilter();});row.appendChild(b);chipBtns.push({b:b,kind:kind,val:val});}
+  var chips=document.createElement("div");chips.id="pkChips";
+  var rowS=mkRow("Subject:"),rowG=mkRow("Grade:");
+  mkChip(rowS,"All","All","s");subjects.forEach(function(s){mkChip(rowS,s,s,"s");});
+  mkChip(rowG,"All","All","g");grades.forEach(function(g){mkChip(rowG,"Grade "+g,String(g),"g");});
+  chips.appendChild(rowS);chips.appendChild(rowG);list.parentNode.insertBefore(chips,list);
+  var rendered=[];
+  subjects.forEach(function(s){
     var h=document.createElement("h3");h.textContent=s;list.appendChild(h);
     var row=document.createElement("div");row.className="presetrow";list.appendChild(row);
-    groups[s].sort(function(a,b){return (b[1].grade||0)-(a[1].grade||0);}).forEach(function(pair){
+    var btns=[];
+    groups[s].sort(function(a,b){return (b[1].grade||0)-(a[1].grade||0)||(cnum(a[1])-cnum(b[1]))||(a[1].shortName<b[1].shortName?-1:1);}).forEach(function(pair){
       var id=pair[0],c=pair[1];
       var b=document.createElement("button");
       b.type="button";b.className="alt";b.textContent=c.shortName+" Review";
       b.addEventListener("click",function(){location.search="?course="+encodeURIComponent(id);});
-      row.appendChild(b);
+      row.appendChild(b);btns.push({b:b,grade:c.grade||0});
     });
+    rendered.push({s:s,h:h,row:row,btns:btns});
   });
-})();}
+  var none=document.createElement("p");none.textContent="No courses match that combination.";none.hidden=true;list.appendChild(none);
+  function applyFilter(){
+    var any=false;
+    rendered.forEach(function(g){
+      var vis=0;
+      g.btns.forEach(function(x){var show=(fSubj==="All"||g.s===fSubj)&&(fGrade==="All"||String(x.grade)===fGrade);x.b.style.display=show?"":"none";if(show)vis++;});
+      g.h.style.display=vis?"":"none";g.row.style.display=vis?"":"none";if(vis)any=true;
+    });
+    none.hidden=any;
+  }
+  applyFilter();
+})();
+}
 </script>
 </body>
 </html>
