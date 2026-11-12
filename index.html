@@ -3204,14 +3204,18 @@ else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(
    was requested. The main script's boot sequence is
    guarded by window.__NOCOURSE, so the builder stays off.
    Courses are grouped by subject area (config key: subject),
-   highest grade first inside a group (config key: grade). */
+   highest grade first inside a group (config key: grade).
+   An entry with listed:false is fully ported and testable
+   by its direct ?course= link but stays out of the picker
+   until it passes (Jason, Nov 12, 2026). */
 if(window.__NOCOURSE){(function(){
   var app=document.getElementById("app");if(app)app.style.display="none";
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
   var groups={};
   Object.keys(window.COURSES||{}).forEach(function(id){
-    var c=window.COURSES[id];var s=c.subject||"Other";
+    var c=window.COURSES[id];if(c.listed===false)return;
+    var s=c.subject||"Other";
     (groups[s]=groups[s]||[]).push([id,c]);
   });
   Object.keys(groups).sort().forEach(function(s){
