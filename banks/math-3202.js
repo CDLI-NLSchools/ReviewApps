@@ -3883,6 +3883,36 @@ function u9sssAngles(a,b,c){
   function ang(op,s1,s2){var v=(s1*s1+s2*s2-op*op)/(2*s1*s2); v=Math.max(-1,Math.min(1,v)); return u9deg(Math.acos(v));}
   return [ang(a,b,c), ang(b,a,c), ang(c,a,b)];
 }
+/* Diagram coverage addition (November 2026): the ambiguous case setup for
+   u9-mixed-wide. Angle A at the left, side b along the ray to the far
+   vertex C, the dashed height h from C to the base line, and a dashed arc
+   of radius a centred at C showing where side a can land on the base line.
+   The arc is drawn from the draw's own A, b and a, so it crosses the base
+   line twice, once or not at all exactly as the draw's numbers dictate. */
+function u9AmbFig(A,b,a,h){
+  var Ar=u9rad(A);
+  var C=[b*Math.cos(Ar), b*Math.sin(Ar)], F=[C[0],0];
+  var xR=Math.max(C[0]+a, b, C[0]+2);
+  var arc=[], t;
+  for(t=180; t<=360; t+=9){ var tr=u9rad(t); arc.push([C[0]+a*Math.cos(tr), C[1]+a*Math.sin(tr)]); }
+  var fitPts=[[0,0], C, F, [xR,0], [C[0]-a,C[1]], [C[0]+a,C[1]], [C[0],C[1]-a]];
+  var T=_fit(fitPts,330,215,44);
+  var PA=T([0,0]), PC=T(C), PF=T(F), PR=T([xR,0]);
+  function ln(p,q,dash,w){ return '<line x1="'+fmt(p[0],1)+'" y1="'+fmt(p[1],1)+'" x2="'+fmt(q[0],1)+'" y2="'+fmt(q[1],1)+'" stroke="'+FIG_INK+'" stroke-width="'+(w||2)+'"'+(dash?' stroke-dasharray="5 4"':"")+'/>'; }
+  var out=ln(PA,PR,false,2)+ln(PA,PC,false,2)+ln(PC,PF,true,1.4);
+  var d="M"+arc.map(function(p){ var q=T(p); return fmt(q[0],1)+" "+fmt(q[1],1); }).join(" L");
+  out+='<path d="'+d+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6" stroke-dasharray="5 4"/>';
+  var dirC=_vnorm(_vsub(PC,PA)), bis=_vnorm([dirC[0]+1, dirC[1]]);
+  out+=_txt(PA[0]+bis[0]*27, PA[1]+bis[1]*27, A+"°", 12, false);
+  out+=_txt(PA[0]-14, PA[1]+4, "A", 14, true);
+  out+=_txt(PC[0]-2, PC[1]-16, "C", 14, true);
+  var M=[(PA[0]+PC[0])/2,(PA[1]+PC[1])/2], off=_sideOff(PA,PC,PF,16);
+  out+=_txt(M[0]+off[0], M[1]+off[1], String(b), 12, false);
+  out+=_txt((PC[0]+PF[0])/2+13, (PC[1]+PF[1])/2, fmtF(h,1), 12, false, "start");
+  var PB=T([C[0], C[1]-a]);
+  out+=_txt(PB[0], PB[1]+13, fmtF(a,1), 12, false);
+  return '<svg viewBox="0 0 330 215" width="330" height="215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ambiguous case diagram: side a swinging from the far vertex toward the base line">'+out+'</svg>';
+}
 
 /* ================= The 14 spreadsheet-governed law entries ================= */
 
@@ -4059,24 +4089,24 @@ E("u9-cosine-context", 9, ["5.2","5.3"], 2, "gen", function(){
 }, ["Check whether the known angle sits between the two known distances.", "Start with the cosine law for the side opposite the known angle."]);
 
 E("u9-applications", 9, ["5.4"], 2, "var", varset([
-  function(){ return mcq("A carpenter builds a roof truss that is not a right triangle. Two members meeting at the peak are 4.2 m and 5.0 m, with a 78 degree angle between them, and the span across the bottom is needed. Which statement best describes the method?",
+  function(){ var q=mcq("A carpenter builds a roof truss that is not a right triangle. Two members meeting at the peak are 4.2 m and 5.0 m, with a 78 degree angle between them, and the span across the bottom is needed. Which statement best describes the method?",
     {t:"Use the cosine law: two sides and the angle between them give the span", fb:"Yes: that pattern of givens is exactly the cosine law side form."},
     [{t:"Use the sine law: any two sides give a working ratio right away at once", fb:"The sine law needs a side paired with its opposite angle. That pair is not given here."},
      {t:"Use the tangent ratio: the span is one leg of a right triangle here", fb:"The truss is stated to not be a right triangle, so a primary ratio does not apply directly."},
      {t:"Add the two members: the span equals their total length exactly", fb:"Adding the members ignores the angle at the peak, which sets how far apart their ends sit."}],
-    "The two members and the angle between them match the cosine law pattern for finding the side opposite that angle. The answer is <b>Use the cosine law: two sides and the angle between them give the span</b>.", {mode:"app-truss"}); },
-  function(){ return mcq("A surveyor needs the width of a pond. From one shore point she measures angles of 63 degrees and 48 degrees to a tree on the far shore, using a 30 m baseline on her shore. Which statement best describes the method?",
+    "The two members and the angle between them match the cosine law pattern for finding the side opposite that angle. The answer is <b>Use the cosine law: two sides and the angle between them give the span</b>.", {mode:"app-truss"}); q.figure=(function(){var span=Math.sqrt(4.2*4.2+5.0*5.0-2*4.2*5.0*u9cos(78)); return u9fig(span,4.2,5.0,["?","4.2","5.0"],["78°","",""]);})(); return q; },
+  function(){ var q=mcq("A surveyor needs the width of a pond. From one shore point she measures angles of 63 degrees and 48 degrees to a tree on the far shore, using a 30 m baseline on her shore. Which statement best describes the method?",
     {t:"Use the sine law: a known baseline with angles gives the distance across", fb:"Yes: the baseline and the angles form a side and angle pattern the sine law handles."},
     [{t:"Use the cosine law: three sides are needed before any work can start on it", fb:"No side across the pond is known. The baseline and angles are enough for the sine law."},
      {t:"Walk the baseline twice: the width equals twice the baseline length", fb:"The width depends on the measured angles, not just on the baseline length."},
      {t:"Use the sine law only if the pond edge forms a right triangle shape", fb:"The sine law works in any triangle, right or not, when a side and opposite angle pair is available."}],
-    "A known side with measured angles at its ends gives a complete side and opposite angle pair after the third angle is found, so the sine law gives the distance across. The answer is <b>Use the sine law: a known baseline with angles gives the distance across</b>.", {mode:"app-pond"}); },
-  function(){ return mcq("In a machine shop, a triangular mounting plate has sides of 18 cm, 24 cm and 30 cm. A fitter needs the angle opposite the 30 cm side so a bracket can be set. Which statement best describes the method?",
+    "A known side with measured angles at its ends gives a complete side and opposite angle pair after the third angle is found, so the sine law gives the distance across. The answer is <b>Use the sine law: a known baseline with angles gives the distance across</b>.", {mode:"app-pond"}); q.figure=(function(){var aSide=30*u9sin(63)/u9sin(69), bSide=30*u9sin(48)/u9sin(69); return u9fig(aSide,bSide,30,["","?","30"],["63°","48°",""]);})(); return q; },
+  function(){ var q=mcq("In a machine shop, a triangular mounting plate has sides of 18 cm, 24 cm and 30 cm. A fitter needs the angle opposite the 30 cm side so a bracket can be set. Which statement best describes the method?",
     {t:"Use the cosine law in angle form: three sides give the angle", fb:"Yes: the angle form of the cosine law starts from the three side lengths."},
     [{t:"Use the sine law: the longest side gives the angle directly", fb:"The sine law needs a known angle to pair with a side. No angle is known yet."},
      {t:"Use the cosine law in angle form only for angles over 90 degrees", fb:"The angle form works for acute and obtuse angles alike."},
      {t:"Estimate the angle from a photo of the plate taken earlier", fb:"A photo estimate is not a calculation. The three sides determine the angle exactly."}],
-    "With all three sides known and no angle known, the cosine law in angle form is the starting method. The answer is <b>Use the cosine law in angle form: three sides give the angle</b>.", {mode:"app-plate"}); },
+    "With all three sides known and no angle known, the cosine law in angle form is the starting method. The answer is <b>Use the cosine law in angle form: three sides give the angle</b>.", {mode:"app-plate"}); q.figure=u9fig(30,24,18,["30","24","18"],["?","",""]); return q; },
   function(){ return mcq("A real estate agent describes a triangular lot to a buyer. Two boundary lines and the angle where they meet at the road are surveyed, and the back boundary length is still needed for a fence quote. Which statement best describes the method?",
     {t:"Use the cosine law: the two boundaries and their contained angle give the back line", fb:"Yes: that is the standard lot measurement use of the cosine law."},
     [{t:"Use the sine law: the back line pairs with the road angle automatically at once here", fb:"The sine law needs a known side paired with its opposite angle. The road angle sits between the two known boundaries."},
@@ -4200,10 +4230,12 @@ E("u9-mixed-wide", 9, ["5.1","5.2","5.3"], 3, "gen", function(){
              "2":"Side a is longer than the height but shorter than side b, so it lands in two positions.",
              "3":"Three different triangles cannot come from one fixed angle and two fixed sides like this."};
   var dists5=counts.filter(function(x){return x!==correctCount;}).map(function(x){return {t:x, fb:fbMap[x]};});
-  return mcq("A triangle is to be built with angle A equal to \\("+A5+"^\\circ\\), side \\(b\\) equal to "+b5+" m, and side \\(a\\), opposite angle A, equal to "+fmtF(a5,1)+" m. The height from the far vertex to the base line works out to "+fmtF(hD,1)+" m. How many different triangles fit these givens?",
+  var q5=mcq("A triangle is to be built with angle A equal to \\("+A5+"^\\circ\\), side \\(b\\) equal to "+b5+" m, and side \\(a\\), opposite angle A, equal to "+fmtF(a5,1)+" m. The height from the far vertex to the base line works out to "+fmtF(hD,1)+" m. How many different triangles fit these givens?",
     {t:correctCount, fb:fbMap[correctCount]}, dists5,
     "Compare side a with the height and with side b. The height is \\("+fmtF(hD,1)+"\\) m and side b is "+b5+" m, while side a is "+fmtF(a5,1)+" m. "+fbMap[correctCount]+" The answer is <b>"+correctCount+"</b>.",
     {mode:"wide-ambiguous", A:A5, b:b5, a:a5, kase:kase});
+  q5.figure=u9AmbFig(A5, b5, a5, b5*u9sin(A5));
+  return q5;
 }, ["Sort the givens first, then pick the law that matches the pattern.", "Look for a known side and opposite angle pair, two sides with the contained angle, or all three sides."]);
 
 E("u9-two-step-cr", 9, ["5.3","5.2","5.1"], 3, "gen", function(){
