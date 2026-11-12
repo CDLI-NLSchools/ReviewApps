@@ -1507,7 +1507,7 @@ E("bio-u2-62-q05",2,["6.2"],2,"var",varset([
       "From the Punnett square for Tt × Tt: TT, Tt, and Tt are all tall (T is dominant), and only tt is short. That is 3 tall : 1 short, a phenotypic ratio of 3:1. (1:2:1 is the genotypic ratio, the trap in this question.)",
       {});
   }
-]),["Use the same square as the previous question, but this time group the offspring by what they look like, not by genotype. How many boxes show the dominant trait?"]);
+]),["Build the Punnett square for Tt × Tt, but this time group the offspring by what they look like, not by genotype. How many boxes show the dominant trait?"]);
 
 E("bio-u2-62-q06",2,["6.2"],2,"var",varset([
   function(){
@@ -1864,7 +1864,7 @@ E("bio-u2-64-q03",2,["6.4"],3,"var",varset([
     var q=mcq("What would be the genotype of individual 20?",
       "Aa",
       ["AA","aa","unknown"],
-      "Step 1: The pattern is autosomal recessive (from the previous question), and individual 20 is unaffected, so she must be AA or Aa. Step 2: Her son, individual 21, is affected, so his genotype is aa. Step 3: He inherited one a allele from his father and one from his mother. Step 4: Since individual 20 supplied an a allele, she must carry one: her genotype is Aa. (The answer is not \"unknown\", the child's genotype settles it.)",
+      "Step 1: The pattern is autosomal recessive, and individual 20 is unaffected, so she must be AA or Aa. Step 2: Her son, individual 21, is affected, so his genotype is aa. Step 3: He inherited one a allele from his father and one from his mother. Step 4: Since individual 20 supplied an a allele, she must carry one: her genotype is Aa. (The answer is not \"unknown\", the child's genotype settles it.)",
       {});
     q.figure='<img src="banks/bio-3201/assets/u2-64-q01.png" alt="Pedigree chart of a family across three generations, with 21 numbered individuals; individuals 7, 12, 19 and 21 are shaded (affected)" style="max-width:100%;height:auto">';
     return q;
@@ -2396,7 +2396,11 @@ BANK.forEach(function(e){if(e.unit===2&&e.indicators.some(function(c){return ["6
    figure, per bio3201-fixes.json, because the table sits in the
    book as an H5P.Table element rather than as question media.
    The book solutions end with a check mark and a short
-   restatement of the answer; that recap is carried verbatim. */
+   restatement of the answer; per Jason's Nov 12, 2026
+   consistency ruling those recaps are stripped (Units 1
+   and 2 do not carry them), except the cytochrome c
+   question, whose recap gloss is kept as a closing
+   sentence. */
 
 /* ---------- 7.1 Natural Selection & Biodiversity ---------- */
 
@@ -2405,7 +2409,7 @@ E("bio-u3-71-q01",3,["7.1"],2,"var",varset([
     return mcq("Charles Darwin was heavily influenced by Charles Lyell’s principles of geology. Which of the following best describes their relationship?",
       "It demonstrates that new scientific theories often build upon ideas in other disciplines.",
       ["It shows that scientific disciplines operate completely independently of one another.","It proves that biological observations are inherently less reliable than geological data.","It illustrates that Darwin had to disprove geology in order to establish biology."],
-      "Lyell's uniformitarianism showed Earth was far older than previously thought, old enough for gradual evolution. Darwin's new theory built on this existing geological knowledge from another field. ✓ It demonstrates that new scientific theories often build upon ideas from other fields.",
+      "Lyell's uniformitarianism showed Earth was far older than previously thought, old enough for gradual evolution. Darwin's new theory built on this existing geological knowledge from another field.",
       {});
   }
 ]),["Lyell showed that Earth was very old (uniformitarianism). How did knowing Earth was old help Darwin develop his theory of natural selection?"]);
@@ -2415,7 +2419,7 @@ E("bio-u3-71-q02",3,["7.1"],1,"var",varset([
     return mcq("Which of the following statements provides the most accurate definition of evolution?",
       "The relative change in genetic traits of populations that occurs over successive generations.",
       ["The guaranteed, progressive drive of a species to become more complex, perfect, and powerful over time.","The process by which an individual organism alters its physical traits to better suit its environment during its own lifespan.","The sudden, massive mutation in a single organism's DNA that instantly creates a brand-new species."],
-      "Evolution is a population-level phenomenon, it is the change in allele frequencies within a population over generations. Individual organisms do not evolve; populations do. ✓ The relative change in genetic traits of populations that occurs over successive generations.",
+      "Evolution is a population-level phenomenon, it is the change in allele frequencies within a population over generations. Individual organisms do not evolve; populations do.",
       {});
   }
 ]),["Evolution happens to populations, not to individual organisms. Which answer describes change in a population's genetic makeup over generations?"]);
@@ -2425,7 +2429,7 @@ E("bio-u3-71-q03",3,["7.1"],1,"var",varset([
     return mcq("What is microevolution?",
       "Change in genetic traits in a population over generations",
       ["Change in species over geologic time","Extinction of species","Sudden creation of new species"],
-      "Microevolution is small-scale change in allele frequencies within a population over generations, within a species. Example: antibiotic resistance increasing in a bacterial population. ✓ Change in genetic traits in a population over generations.",
+      "Microevolution is small-scale change in allele frequencies within a population over generations, within a species. Example: antibiotic resistance increasing in a bacterial population.",
       {});
   }
 ]),["Micro = small scale. Microevolution is change within a species. Which answer describes change in allele frequencies within a population over time?"]);
@@ -2435,7 +2439,7 @@ E("bio-u3-71-q04",3,["7.1"],1,"var",varset([
     return mcq("Which condition increases genetic variation in populations?",
       "Mutation",
       ["Asexual reproduction","Inbreeding","Stabilizing selection"],
-      "Mutation is the only source of genuinely new alleles. Sexual reproduction shuffles existing alleles; selection and drift reduce diversity; mutation creates new variation. ✓ Mutation.",
+      "Mutation is the only source of genuinely new alleles. Sexual reproduction shuffles existing alleles; selection and drift reduce diversity; mutation creates new variation.",
       {});
   }
 ]),["Genetic variation can come from reshuffling existing alleles OR from creating brand new alleles. Which answer creates truly NEW alleles that didn't exist before?"]);
@@ -2445,7 +2449,7 @@ E("bio-u3-71-q05",3,["7.1"],2,"var",varset([
     return mcq("Why is crossing over during meiosis critical to the evolution of a population?",
       "It increases genetic diversity by creating new combinations of alleles on a single chromosome.",
       ["It doubles the total number of chromosomes in the gametes to make offspring more robust.","It ensures that every gamete produced contains an identical set of genetic information.","It fixes harmful mutations that occur during DNA replication so that organisms remain healthy."],
-      "Crossing over shuffles alleles between homologous chromosomes, creating new combinations in gametes, increasing genetic diversity available for natural selection to act on. ✓ It increases genetic diversity by creating new combinations of alleles.",
+      "Crossing over shuffles alleles between homologous chromosomes, creating new combinations in gametes, increasing genetic diversity available for natural selection to act on.",
       {});
   }
 ]),["Crossing over shuffles gene combinations on chromosomes. How does producing new combinations of alleles benefit a population that faces changing environments?"]);
@@ -2455,7 +2459,7 @@ E("bio-u3-71-q06",3,["7.1"],1,"var",varset([
     return mcq("Which situation best illustrates artificial selection?",
       "Farmers breeding cattle with higher milk production",
       ["Bacteria becoming resistant to antibiotics","Finches evolving different beak shapes on islands","Predators removing weaker individuals from a population"],
-      "Artificial selection = humans deliberately choosing which organisms breed. Farmers selecting cattle for milk production is the classic example, humans are the selecting agent. ✓ Farmers breeding cattle with higher milk production.",
+      "Artificial selection = humans deliberately choosing which organisms breed. Farmers selecting cattle for milk production is the classic example, humans are the selecting agent.",
       {});
   }
 ]),["Artificial selection = humans choosing which organisms breed. Which example shows a human deliberately selecting for a specific trait over many generations?"]);
@@ -2465,7 +2469,7 @@ E("bio-u3-71-q07",3,["7.1"],2,"var",varset([
     return mcq("Why can artificial selection reduce genetic diversity within a population?",
       "Desired traits are often selected from a limited number of individuals",
       ["Artificial selection prevents mutations from occurring","Organisms lose chromosomes during selective breeding","Recessive alleles are eliminated from all future generations"],
-      "Only individuals with desired traits are bred, excluding most of the gene pool. Over generations, the genetic diversity narrows to alleles associated with the desired trait. ✓ Desired traits are often selected from a limited number of individuals, reducing allelic diversity.",
+      "Only individuals with desired traits are bred, excluding most of the gene pool. Over generations, the genetic diversity narrows to alleles associated with the desired trait.",
       {});
   }
 ]),["If only individuals with one specific trait are bred, what happens to all the other genetic variants in the population over many generations?"]);
@@ -2475,7 +2479,7 @@ E("bio-u3-71-q08",3,["7.1"],2,"var",varset([
     return mcq("A physician notices that an antibiotic is becoming less effective against a bacterial infection. Which explanation best accounts for this observation?",
       "Resistant bacteria survived and reproduced.",
       ["Bacteria intentionally adapted to survive.","Humans became resistant to the antibiotic.","The antibiotic increased bacterial reproduction."],
-      "Before antibiotic use, a few bacteria already had resistance mutations. The antibiotic killed sensitive bacteria; resistant ones survived and reproduced, passing on resistance, classic natural selection. ✓ Resistant bacteria survived and reproduced.",
+      "Before antibiotic use, a few bacteria already had resistance mutations. The antibiotic killed sensitive bacteria; resistant ones survived and reproduced, passing on resistance, classic natural selection.",
       {});
   }
 ]),["Before the antibiotic was used, a few bacteria already had resistance genes. What happens to those resistant bacteria when the antibiotic kills all the sensitive ones?"]);
@@ -2485,7 +2489,7 @@ E("bio-u3-71-q09",3,["7.1"],2,"var",varset([
     var q=mcq("This data was collected for a population of peppered moths between 1848 and 1858. Which of the following best describes the data?",
       "Environmental changes caused dark colored moths to have a selective advantage",
       ["Environmental changes caused light colored moths to have a selective advantage","Environmental changes caused spontaneous mutations in light colored moths","Environmental changes caused spontaneous mutations in dark colored moths"],
-      "Between 1848–1858, industrial pollution darkened tree bark in England. Light-colored moths became more visible to predators on dark bark, while dark moths were camouflaged. Dark moths had a selective advantage, their frequency increased. This is industrial melanism, a classic example of directional natural selection driven by environmental change. ✓ Environmental changes caused dark colored moths to have a selective advantage.",
+      "Between 1848–1858, industrial pollution darkened tree bark in England. Light-colored moths became more visible to predators on dark bark, while dark moths were camouflaged. Dark moths had a selective advantage, their frequency increased. This is industrial melanism, a classic example of directional natural selection driven by environmental change.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-71-q09.png" alt="Data table of peppered moths captured over 10 years: light moths captured fall from 565 to 56 while dark moths captured rise from 64 to 637" style="max-width:100%;height:auto">';
     return q;
@@ -2497,7 +2501,7 @@ E("bio-u3-71-q10",3,["7.1"],1,"var",varset([
     return mcq("A small island bird population is unable to adapt quickly enough to a rapidly changing environment and disappears from the island. This outcome is best described as:",
       "Extirpation",
       ["Adaptive radiation","Gene flow","Speciation"],
-      "Extirpation = local extinction (species disappears from a specific area but survives elsewhere). Extinction = global disappearance. If only the island population dies out, that's extirpation. ✓ Extirpation.",
+      "Extirpation = local extinction (species disappears from a specific area but survives elsewhere). Extinction = global disappearance. If only the island population dies out, that's extirpation.",
       {});
   }
 ]),["If a population disappears from one specific location but still exists elsewhere, that's different from full extinction. What word describes local disappearance of a species?"]);
@@ -2509,7 +2513,7 @@ E("bio-u3-72-q01",3,["7.2"],1,"var",varset([
     return mcq("Prior to the sixteenth century, what was the dominant western paradigm regarding species?",
       "Species were created simultaneously and remained unchanged",
       ["Species changed through acquired characteristics","Species evolved through natural selection","Species originated from common ancestors"],
-      "Before the scientific revolution, the dominant western view was that species were created simultaneously by God and remained fixed and unchanging, this is called the doctrine of special creation or fixity of species. It wasn't until the 1800s that naturalists like Lamarck and Darwin proposed that species could change over time. ✓ Species were created simultaneously and remained unchanged.",
+      "Before the scientific revolution, the dominant western view was that species were created simultaneously by God and remained fixed and unchanging, this is called the doctrine of special creation or fixity of species. It wasn't until the 1800s that naturalists like Lamarck and Darwin proposed that species could change over time.",
       {});
   }
 ]),["Think about what people believed about life on Earth BEFORE Darwin, Lamarck, or the scientific revolution changed those ideas. What was the traditional religious and philosophical view about whether species could change?"]);
@@ -2519,7 +2523,7 @@ E("bio-u3-72-q02",3,["7.2"],1,"var",varset([
     return mcq("Which scientist proposed catastrophism to explain patterns observed in the fossil record?",
       "Georges Cuvier",
       ["Charles Darwin","Charles Lyell","Jean Baptiste Lamarck"],
-      "Georges Cuvier proposed catastrophism, periodic sudden catastrophic events caused mass extinctions, after which new species appeared. He studied French fossil records and noticed abrupt species changes between rock layers. ✓ Georges Cuvier.",
+      "Georges Cuvier proposed catastrophism, periodic sudden catastrophic events caused mass extinctions, after which new species appeared. He studied French fossil records and noticed abrupt species changes between rock layers.",
       {});
   }
 ]),["Catastrophism explains why different species appear in different rock layers. Which scientist proposed that sudden disasters (like floods) wiped out species, leaving gaps in the fossil record?"]);
@@ -2529,7 +2533,7 @@ E("bio-u3-72-q03",3,["7.2"],1,"var",varset([
     return mcq("Mary Anning's discoveries contributed most directly to:",
       "Evidence from fossils supporting extinction and change over time",
       ["Development of genetic engineering","Hardy-Weinberg calculations","Understanding DNA structure"],
-      "Anning discovered key marine reptile fossils in 19th-century England. Her finds showed past organisms looked radically different from modern ones, supporting extinction and biological change over time. ✓ Evidence from fossils supporting extinction and change over time.",
+      "Anning discovered key marine reptile fossils in 19th-century England. Her finds showed past organisms looked radically different from modern ones, supporting extinction and biological change over time.",
       {});
   }
 ]),["Anning found fossils of creatures that no longer existed. What do fossils of extinct organisms tell us about life on Earth over time?"]);
@@ -2549,7 +2553,7 @@ E("bio-u3-72-q05",3,["7.2"],1,"var",varset([
     return mcq("Which principle proposed by Charles Lyell influenced Darwin's thinking?",
       "Uniformitarianism",
       ["Acquired characteristics","Competition among populations","Use and disuse"],
-      "Uniformitarianism: geological processes operate slowly and uniformly, the same processes today operated in the past. This implied Earth was vastly old, giving sufficient time for gradual evolution. ✓ Uniformitarianism.",
+      "Uniformitarianism: geological processes operate slowly and uniformly, the same processes today operated in the past. This implied Earth was vastly old, giving sufficient time for gradual evolution.",
       {});
   }
 ]),["Darwin read Lyell's geology book on his voyage. Lyell argued that slow, consistent processes shape Earth. What principle is this, and how did it affect Darwin's thinking about the timescale of evolution?"]);
@@ -2569,7 +2573,7 @@ E("bio-u3-72-q07",3,["7.2"],1,"var",varset([
     return mcq("Which observation most influenced Darwin's development of natural selection?",
       "Individuals within populations show variation in traits",
       ["Mutations occur at predictable rates","Organisms inherit acquired characteristics","Species remain unchanged over time"],
-      "Darwin observed heritable variation within populations. Combined with Malthus's insight about competition for limited resources, he realized advantageous variants would survive and reproduce more, natural selection. ✓ Individuals within populations show variation in traits.",
+      "Darwin observed heritable variation within populations. Combined with Malthus's insight about competition for limited resources, he realized advantageous variants would survive and reproduce more, natural selection.",
       {});
   }
 ]),["Darwin noticed that individuals within the same species aren't identical. What did he observe that was the starting point for his theory?"]);
@@ -2579,7 +2583,7 @@ E("bio-u3-72-q08",3,["7.2"],1,"var",varset([
     return mcq("Which scientist proposed the theory of acquired characteristics?",
       "Lamarck",
       ["Darwin","Lyell","Wallace"],
-      "Jean-Baptiste Lamarck proposed the theory of acquired characteristics (use and disuse) in the early 1800s. While his mechanism was wrong, he was among the first to formally propose that species change over time. ✓ Lamarck.",
+      "Jean-Baptiste Lamarck proposed the theory of acquired characteristics (use and disuse) in the early 1800s. While his mechanism was wrong, he was among the first to formally propose that species change over time.",
       {});
   }
 ]),["This scientist believed organisms developed new traits by using or not using body parts, and passed those changes to offspring. Who was this early evolutionary thinker?"]);
@@ -2589,7 +2593,7 @@ E("bio-u3-72-q09",3,["7.2"],2,"var",varset([
     return mcq("A population of insects contains both pesticide-resistant and pesticide-sensitive individuals. After several generations of pesticide use, resistant insects make up most of the population. Which statement best explains this change?",
       "Natural selection increased the frequency of resistant alleles.",
       ["Individual insects developed resistance because they needed it.","The pesticide caused all insects to mutate.","Resistant insects reproduced less successfully."],
-      "Before pesticide use, resistance mutations existed in a few individuals. The pesticide killed sensitive insects; resistant ones survived and reproduced. The resistance allele became more common, directional natural selection. ✓ Natural selection increased the frequency of resistant alleles in the population.",
+      "Before pesticide use, resistance mutations existed in a few individuals. The pesticide killed sensitive insects; resistant ones survived and reproduced. The resistance allele became more common, directional natural selection.",
       {});
   }
 ]),["Before the pesticide, resistance mutations already existed in a few insects. When the pesticide was applied, what happened to the sensitive insects vs. the resistant ones?"]);
@@ -2599,7 +2603,7 @@ E("bio-u3-72-q10",3,["7.2"],1,"var",varset([
     return mcq("What is the primary purpose of peer review?",
       "To ensure scientific work is evaluated by experts before publication",
       ["To eliminate competing theories","To guarantee that scientific conclusions are correct","To prevent scientific theories from changing"],
-      "Peer review is evaluation of scientific work by independent experts before publication. It ensures methods are sound, conclusions are supported by evidence, and results are valid, the key quality-control mechanism in science. ✓ To ensure scientific work is evaluated by experts before publication.",
+      "Peer review is evaluation of scientific work by independent experts before publication. It ensures methods are sound, conclusions are supported by evidence, and results are valid, the key quality-control mechanism in science.",
       {});
   }
 ]),["Peer review is a quality check in science. Who reviews the work, and what does this process ensure before results are published?"]);
@@ -2609,7 +2613,7 @@ E("bio-u3-72-q11",3,["7.2"],2,"var",varset([
     return mcq("Which statement best contrasts Lamarck's and Darwin's theories of evolution?",
       "Lamarck believed individuals adapt during their lifetime, while Darwin believed nature selects pre-existing variations.",
       ["Lamarck argued that evolution happens across populations, while Darwin argued that individuals change their own DNA.","Lamarck stated that traits are inherited by pure chance, while Darwin stated that organisms choose their traits.","Lamarck noted that only the strongest organisms pass on genes, while Darwin noted all organisms have equal fitness."],
-      "Lamarck: individuals adapt via use/disuse then pass changes to offspring. Darwin: heritable variation already exists; natural selection acts on that existing variation over generations, populations change, not individuals. ✓ Lamarck believed individuals adapt during their lifetime, while Darwin believed populations change due to natural selection acting on existing variation.",
+      "Lamarck: individuals adapt via use/disuse then pass changes to offspring. Darwin: heritable variation already exists; natural selection acts on that existing variation over generations, populations change, not individuals.",
       {});
   }
 ]),["Lamarck: giraffes stretched their necks during their lifetime and offspring inherited longer necks. Darwin: giraffes with naturally longer necks survived better and had more offspring. What's the key difference?"]);
@@ -2619,7 +2623,7 @@ E("bio-u3-72-q12",3,["7.2"],2,"var",varset([
     return mcq("A population of birds gradually develops stronger beaks because birds with naturally stronger beaks survive drought conditions more successfully. What theory does this best support?",
       "Darwin's theory",
       ["Lamarck's theory","Spontaneous generation","Use and disuse"],
-      "Slow, continuous generational change where stronger-beaked birds survive better matches Darwin's theory of evolution by natural selection operating gradually over many generations. ✓ Darwin's theory.",
+      "Slow, continuous generational change where stronger-beaked birds survive better matches Darwin's theory of evolution by natural selection operating gradually over many generations.",
       {});
   }
 ]),["This describes slow, steady evolutionary change across many generations. Which evolutionary model, gradualism or punctuated equilibrium, fits this pattern?"]);
@@ -2631,7 +2635,7 @@ E("bio-u3-73-q01",3,["7.3","7.4"],1,"var",varset([
     return mcq("Scientists discover a fossil with both reptilian and avian characteristics. Why is this fossil important evidence for evolution?",
       "It represents a transitional form between major groups.",
       ["It demonstrates artificial selection.","It proves evolution occurs rapidly.","It shows that species never become extinct."],
-      "A fossil showing features of two different groups (like Archaeopteryx) is a transitional fossil, direct evidence of common ancestry and evolutionary change between major groups. ✓ It represents a transitional form between major groups.",
+      "A fossil showing features of two different groups (like Archaeopteryx) is a transitional fossil, direct evidence of common ancestry and evolutionary change between major groups.",
       {});
   }
 ]),["A fossil showing features of TWO major animal groups is evidence of a link between them. What is the term for this type of in-between fossil?"]);
@@ -2641,7 +2645,7 @@ E("bio-u3-73-q02",3,["7.3","7.4"],1,"var",varset([
     return mcq("Which type of fossil is most useful for correlating the relative ages of rock layers?",
       "Index fossil",
       ["Cast fossil","Petrified fossil","Trace fossil"],
-      "Index fossils: (1) short geological time period, (2) geographically widespread, (3) easily identified. These properties make them ideal for dating and correlating rock layers at different locations worldwide. ✓ Index fossil.",
+      "Index fossils: (1) short geological time period, (2) geographically widespread, (3) easily identified. These properties make them ideal for dating and correlating rock layers at different locations worldwide.",
       {});
   }
 ]),["An index fossil must have three qualities: existed for a short time, was widespread, and is easily recognized. Which type of fossil fits all three?"]);
@@ -2651,7 +2655,7 @@ E("bio-u3-73-q03",3,["7.3","7.4"],1,"var",varset([
     return mcq("Two species living on different continents share many structural similarities despite geographic separation. Which evidence for evolution does this primarily represent?",
       "Biogeography",
       ["Comparative embryology","Fossil succession","Radiometric dating"],
-      "Biogeography studies species distribution. Species on separated continents sharing structural similarities reflects shared ancestry when those continents were joined (Pangaea), supporting common descent. ✓ Biogeography.",
+      "Biogeography studies species distribution. Species on separated continents sharing structural similarities reflects shared ancestry when those continents were joined (Pangaea), supporting common descent.",
       {});
   }
 ]),["These species are now separated by an ocean, but they share structural features. What study of species distribution explains this by looking at ancient continental positions?"]);
@@ -2661,7 +2665,7 @@ E("bio-u3-73-q04",3,["7.3","7.4"],1,"var",varset([
     return mcq("Which pair of structures is most likely homologous?",
       "Human arm and whale flipper",
       ["Bird wing and insect wing","Octopus eye and human eye","Shark fin and dolphin fin"],
-      "Homologous structures share the same bone arrangement due to common ancestry. Human arm and whale flipper both have humerus-radius-ulna-carpals-phalanges, same origin, different function. Butterfly and bird wings look similar but evolved independently (analogous). ✓ Human arm and whale flipper.",
+      "Homologous structures share the same bone arrangement due to common ancestry. Human arm and whale flipper both have humerus-radius-ulna-carpals-phalanges, same origin, different function. Butterfly and bird wings look similar but evolved independently (analogous).",
       {});
   }
 ]),["Homologous structures have the same basic bone arrangement from a common ancestor, even if they're used differently. Which pair comes from the same ancestral limb structure?"]);
@@ -2671,7 +2675,7 @@ E("bio-u3-73-q05",3,["7.3","7.4"],1,"var",varset([
     return mcq("While examining embryos, scientists notice that fish, birds, and mammals all possess pharyngeal slits during development. What does this observation suggest?",
       "These organisms share a common ancestor.",
       ["All vertebrates are identical species.","Embryological structures never change.","Evolution occurs through artificial selection."],
-      "The remarkable similarity between early embryos of fish, birds, and mammals (including gill slits and tails) reflects their shared evolutionary heritage, all descended from a common ancestor. ✓ These organisms share a common ancestor.",
+      "The remarkable similarity between early embryos of fish, birds, and mammals (including gill slits and tails) reflects their shared evolutionary heritage, all descended from a common ancestor.",
       {});
   }
 ]),["Early embryos of very different animals look remarkably similar. What does this similarity suggest about their evolutionary history?"]);
@@ -2681,7 +2685,7 @@ E("bio-u3-73-q06",3,["7.3","7.4"],1,"var",varset([
     return mcq("Which of the following illustrates the relationship between bird, butterfly and bat wings?",
       "Analogous structures",
       ["Homologous structures","Relative structures","Vestigial structures"],
-      "Bird wings and butterfly wings both enable flight but evolved completely independently in unrelated lineages. Same function, different origin = analogous structures (convergent evolution). ✓ Analogous structures.",
+      "Bird wings and butterfly wings both enable flight but evolved completely independently in unrelated lineages. Same function, different origin = analogous structures (convergent evolution).",
       {});
   }
 ]),["These wings look similar and all allow flight, but evolved completely independently. What term describes structures that have the same function but different evolutionary origins?"]);
@@ -2691,7 +2695,7 @@ E("bio-u3-73-q07",3,["7.3","7.4"],2,"var",varset([
     var q=mcq("Cytochrome C is a protein that is present in many living organisms. Based on the information below, which two species are least closely related?",
       "Species A and D",
       ["Species A and B","Species B and C","Species B and D"],
-      "The number of amino acid differences in cytochrome c indicates evolutionary distance, fewer differences = more closely related. From the table, Species A and D have the most differences (12), making them the most distantly related (least closely related) pair among the options. ✓ Species A and D (most differences = least closely related).",
+      "The number of amino acid differences in cytochrome c indicates evolutionary distance, fewer differences = more closely related. From the table, Species A and D have the most differences (12), making them the most distantly related (least closely related) pair among the options. Most differences = least closely related.",
       {});
     q.figure='<table><caption>Number of Amino Acid Differences in Cytochrome c</caption><tr><th>Species</th><th>Species A</th><th>Species B</th><th>Species C</th><th>Species D</th></tr><tr><th>Species A</th><td>-</td><td>1</td><td>5</td><td>12</td></tr><tr><th>Species B</th><td>1</td><td>-</td><td>4</td><td>11</td></tr><tr><th>Species C</th><td>5</td><td>4</td><td>-</td><td>10</td></tr><tr><th>Species D</th><td>12</td><td>11</td><td>10</td><td>-</td></tr></table>';
     return q;
@@ -2703,7 +2707,7 @@ E("bio-u3-73-q08",3,["7.3","7.4"],2,"var",varset([
     return mcq("A fossil record shows that the earliest animals lacked specialized tissues, while later groups possessed nervous and digestive systems. Which conclusion is best supported?",
       "Animal evolution shows increasing structural complexity over time.",
       ["All animal groups evolved simultaneously.","Early animals were more complex than modern animals.","Specialized tissues decreased evolutionary fitness."],
-      "The fossil record shows a general trend from simple, undifferentiated organisms to increasingly complex, specialized ones. This is one of the major patterns documented in the fossil record supporting evolutionary theory. ✓ Animal evolution shows increasing structural complexity over time.",
+      "The fossil record shows a general trend from simple, undifferentiated organisms to increasingly complex, specialized ones. This is one of the major patterns documented in the fossil record supporting evolutionary theory.",
       {});
   }
 ]),["Look at the progression in the fossil record from simple to complex animals. What trend does this show about how animal body plans have changed over time?"]);
@@ -2715,7 +2719,7 @@ E("bio-u3-75-q01",3,["7.5"],2,"var",varset([
     return mcq("A conservation program uses cloning to increase the population size of an endangered species. What is a potential evolutionary concern associated with this strategy?",
       "Cloning will reduce genetic diversity within the population, leaving it highly vulnerable to disease.",
       ["Cloning increases adaptive mutation rates, disrupting local food webs.","It will trigger the reproductive isolation and speciation of competing species.","The cloned individuals will undergo rapid gene transfer with local bacteria."],
-      "Clones are genetically identical. A population of clones has near-zero genetic diversity, all individuals are equally vulnerable to pathogens or environmental changes, making the population highly susceptible to disease or extinction. ✓ Cloning will reduce genetic diversity within the population, leaving it highly vulnerable to disease.",
+      "Clones are genetically identical. A population of clones has near-zero genetic diversity, all individuals are equally vulnerable to pathogens or environmental changes, making the population highly susceptible to disease or extinction.",
       {});
   }
 ]),["If all individuals in a population are genetically identical clones, what happens when they encounter a new disease or environmental change?"]);
@@ -2725,7 +2729,7 @@ E("bio-u3-75-q02",3,["7.5"],1,"var",varset([
     return mcq("A crop has been genetically engineered to resist insect pests. Which benefit is most likely?",
       "Reduced crop losses due to insect damage",
       ["Increased pesticide use","Increased species extinction","Reduced genetic variation within all wild plants"],
-      "The most direct benefit of pest resistance: fewer insects destroy the crop → reduced crop losses → higher yields. This is the primary agricultural benefit of the technology. ✓ Reduced crop losses due to insect damage.",
+      "The most direct benefit of pest resistance: fewer insects destroy the crop → reduced crop losses → higher yields. This is the primary agricultural benefit of the technology.",
       {});
   }
 ]),["A crop that kills its own pests means farmers use fewer pesticides and lose fewer plants. What is the most direct agricultural benefit of this modification?"]);
@@ -2735,7 +2739,7 @@ E("bio-u3-75-q03",3,["7.5"],2,"var",varset([
     return mcq("A genetically modified salmon grows faster than wild salmon and escapes into natural waterways. Which evolutionary consequence is most likely to concern scientists?",
       "Increased gene flow into wild populations",
       ["Increased index fossil formation","Reduced mutation rates","Stabilizing selection in all fish species"],
-      "GM salmon breeding with wild salmon introduces GM genes into the wild gene pool, this is gene flow. The concern is that faster-growing GM genes spread through wild populations, altering their genetic makeup. ✓ Increased gene flow into wild populations.",
+      "GM salmon breeding with wild salmon introduces GM genes into the wild gene pool, this is gene flow. The concern is that faster-growing GM genes spread through wild populations, altering their genetic makeup.",
       {});
   }
 ]),["If GM salmon breed with wild salmon in rivers, their genes enter the wild population. What is it called when genes move from one population into another?"]);
@@ -2745,7 +2749,7 @@ E("bio-u3-75-q04",3,["7.5"],1,"var",varset([
     return mcq("Two frog species breed in the same pond but at different times of the year. What is this an example of?",
       "temporal isolation",
       ["behavioural isolation","gametic isolation","mechanical isolation"],
-      "When species in the same habitat breed at different times, they can't mate, temporal isolation. This is a prezygotic barrier preventing interbreeding despite sharing the same habitat. ✓ Temporal isolation.",
+      "When species in the same habitat breed at different times, they can't mate, temporal isolation. This is a prezygotic barrier preventing interbreeding despite sharing the same habitat.",
       {});
   }
 ]),["These species share the same habitat (pond) but breed at different times of year. What type of reproductive barrier prevents them from interbreeding?"]);
@@ -2755,7 +2759,7 @@ E("bio-u3-75-q05",3,["7.5"],1,"var",varset([
     return mcq("What is represented when male birds of two closely related species perform different courtship displays, preventing mating?",
       "behavioural isolation",
       ["hybrid sterility","mechanical isolation","temporal isolation"],
-      "Different courtship displays mean individuals don't recognize each other as potential mates, behavioural isolation. This is a prezygotic barrier where different mating behaviors prevent interbreeding. ✓ Behavioural isolation.",
+      "Different courtship displays mean individuals don't recognize each other as potential mates, behavioural isolation. This is a prezygotic barrier where different mating behaviors prevent interbreeding.",
       {});
   }
 ]),["When two species have different courtship songs or dances, individuals don't recognize each other as potential mates. What type of reproductive barrier is this?"]);
@@ -2765,7 +2769,7 @@ E("bio-u3-75-q06",3,["7.5"],2,"var",varset([
     return mcq("Which best illustrates geographic isolation?",
       "Pine martin in Labrador and pine martin on the island of Newfoundland",
       ["Fall-mating leopard frogs and spring-mating leopard frogs","Pine martin in southern Labrador and pine martin in northern Labrador","Winter-mating red squirrels and summer-mating red squirrels"],
-      "Pine martins in Labrador vs. Newfoundland are separated by the Strait of Belle Isle, a physical barrier preventing gene flow between populations. This is allopatric speciation in progress. ✓ Pine martin in Labrador and pine martin on the island of Newfoundland.",
+      "Pine martins in Labrador vs. Newfoundland are separated by the Strait of Belle Isle, a physical barrier preventing gene flow between populations. This is allopatric speciation in progress.",
       {});
   }
 ]),["Geographic isolation requires a physical barrier that separates two populations of the same species. Which answer involves a physical separation between two groups?"]);
@@ -2775,7 +2779,7 @@ E("bio-u3-75-q07",3,["7.5"],1,"var",varset([
     return mcq("What type of reproductive barrier occurs when two species successfully mate and produce offspring, but the offspring cannot reproduce?",
       "hybrid sterility",
       ["gametic isolation","hybrid breakdown","hybrid inviability"],
-      "Postzygotic barriers act after fertilization. Hybrid sterility = the hybrid offspring is viable but infertile (like mules from horse × donkey), preventing gene flow between species. ✓ Hybrid sterility.",
+      "Postzygotic barriers act after fertilization. Hybrid sterility = the hybrid offspring is viable but infertile (like mules from horse × donkey), preventing gene flow between species.",
       {});
   }
 ]),["This barrier occurs AFTER mating, the offspring are born but can't reproduce. What is the term for hybrid offspring that are sterile?"]);
@@ -2785,7 +2789,7 @@ E("bio-u3-75-q08",3,["7.5"],2,"var",varset([
     return mcq("Two populations of the same species become separated by a newly formed canyon. Thousands of years later they can no longer interbreed. What was the initial mechanism that led to speciation?",
       "Geographic isolation",
       ["Behavioural isolation","Gametic isolation","Temporal isolation"],
-      "A physical barrier forms → populations can't interbreed → they evolve independently → potential speciation. Starting point of allopatric speciation is geographic isolation. ✓ Geographic isolation.",
+      "A physical barrier forms → populations can't interbreed → they evolve independently → potential speciation. Starting point of allopatric speciation is geographic isolation.",
       {});
   }
 ]),["When a physical barrier divides one population into two, they can no longer share genes. What is the first step in this process called?"]);
@@ -2795,7 +2799,7 @@ E("bio-u3-75-q09",3,["7.5"],1,"var",varset([
     return mcq("Which is an example of postzygotic isolation?",
       "Hybrid offspring are sterile",
       ["Courtship behaviors don’t match","Gametes can’t fuse","Mating seasons differ"],
-      "Postzygotic barriers activate after fertilization. Sterile hybrid offspring (like mules) prevent gene flow, a zygote formed and developed, but the offspring can't reproduce. ✓ Hybrid offspring are sterile.",
+      "Postzygotic barriers activate after fertilization. Sterile hybrid offspring (like mules) prevent gene flow, a zygote formed and developed, but the offspring can't reproduce.",
       {});
   }
 ]),["Postzygotic barriers act AFTER fertilization. Which answer describes something that happens to the offspring (not before mating)?"]);
@@ -2805,7 +2809,7 @@ E("bio-u3-75-q10",3,["7.5"],1,"var",varset([
     return mcq("Sharks are cartilaginous fish while dolphins are mammals, yet both have similar shaped bodies. What best describes this?",
       "Convergence",
       ["Coevolution","Divergence","transformation"],
-      "Sharks and dolphins look similar (streamlined bodies, fins) but are unrelated. They independently evolved similar body plans as adaptations to the same aquatic environment, convergent evolution. ✓ Convergence (convergent evolution).",
+      "Sharks and dolphins look similar (streamlined bodies, fins) but are unrelated. They independently evolved similar body plans as adaptations to the same aquatic environment, convergent evolution.",
       {});
   }
 ]),["Sharks and dolphins look similar and both swim, but they evolved from very different ancestors. What term describes when unrelated species independently evolve similar traits?"]);
@@ -2817,7 +2821,7 @@ E("bio-u3-76-q01",3,["7.6","7.7"],1,"var",varset([
     return mcq("Which example best illustrates coevolution?",
       "Flower shape changing alongside pollinator feeding structures",
       ["Antibiotic resistance in bacteria","Camouflage in moth populations","Mutation rates increasing in isolated populations"],
-      "Coevolution = two or more species reciprocally shape each other's evolution. Flower shape and pollinator feeding structures changing together is the classic example, each species drives the other's evolutionary change. ✓ Flower shape changing alongside pollinator feeding structures.",
+      "Coevolution = two or more species reciprocally shape each other's evolution. Flower shape and pollinator feeding structures changing together is the classic example, each species drives the other's evolutionary change.",
       {});
   }
 ]),["Coevolution means two species are shaping each other's evolution over time. Which example shows two different species influencing each other's traits across generations?"]);
@@ -2827,7 +2831,7 @@ E("bio-u3-76-q02",3,["7.6","7.7"],1,"var",varset([
     return mcq("Why have biological classification systems changed over time?",
       "New evidence and technologies reveal relationships that were previously unknown.",
       ["Classification systems are based solely on habitat.","Organisms frequently change kingdoms during their lifetimes.","Scientists periodically rename organisms to simplify learning."],
-      "As molecular biology and new fossils emerge, scientists discover that organisms previously grouped together aren't as closely related as thought. Classification is revised to better reflect actual evolutionary (phylogenetic) relationships. ✓ New evidence and technologies reveal evolutionary relationships that were previously unknown.",
+      "As molecular biology and new fossils emerge, scientists discover that organisms previously grouped together aren't as closely related as thought. Classification is revised to better reflect actual evolutionary (phylogenetic) relationships.",
       {});
   }
 ]),["Classification systems are based on evolutionary relationships. When new DNA evidence shows species are more or less related than thought, what happens to the classification?"]);
@@ -2837,7 +2841,7 @@ E("bio-u3-76-q03",3,["7.6","7.7"],1,"var",varset([
     return mcq("Which statement best describes gradualism?",
       "Evolution occurs through slow, continuous change over long periods.",
       ["Evolution occurs through long periods of stability interrupted by rapid change.","Evolution only occurs following mass extinctions.","Species appear suddenly without ancestors."],
-      "Gradualism (Darwin's original model): evolution proceeds through slow, continuous, incremental changes over vast time periods. Small generational changes accumulate over millions of years to produce significant differences. ✓ Evolution occurs through slow, continuous change over long periods of time.",
+      "Gradualism (Darwin's original model): evolution proceeds through slow, continuous, incremental changes over vast time periods. Small generational changes accumulate over millions of years to produce significant differences.",
       {});
   }
 ]),["Gradualism is Darwin's original model. Does it describe evolution happening slowly and steadily, or in sudden bursts with long stable periods in between?"]);
@@ -2847,7 +2851,7 @@ E("bio-u3-76-q04",3,["7.6","7.7"],2,"var",varset([
     return mcq("The fossil record shows a species remaining relatively unchanged for millions of years before undergoing rapid evolutionary change. What does this pattern support?",
       "Punctuated equilibrium",
       ["Adaptive radiation","Gradualism","Uniformitarianism"],
-      "Punctuated equilibrium (Eldredge & Gould): long periods of stasis punctuated by rapid evolutionary bursts. This matches fossil records showing species appearing suddenly, remaining stable, then changing again. ✓ Punctuated equilibrium.",
+      "Punctuated equilibrium (Eldredge & Gould): long periods of stasis punctuated by rapid evolutionary bursts. This matches fossil records showing species appearing suddenly, remaining stable, then changing again.",
       {});
   }
 ]),["This evolutionary model shows long stable periods (stasis) interrupted by rapid change. What model is this, gradualism or punctuated equilibrium?"]);
@@ -2857,7 +2861,7 @@ E("bio-u3-76-q05",3,["7.6","7.7"],1,"var",varset([
     return mcq("Which of the following best defines population genetics?",
       "The study of allele frequencies and how they change within a group over time.",
       ["The study of how individual organisms clone their somatic cells.","The study of how traits are passed exclusively from two parents to their offspring.","The study of the physical structure and chemical bonding of DNA molecules."],
-      "Population genetics studies how allele frequencies change within populations over time, bridging Mendelian genetics with evolutionary biology, including Hardy-Weinberg, genetic drift, and gene flow. ✓ The study of allele frequencies and how they change within a population over time.",
+      "Population genetics studies how allele frequencies change within populations over time, bridging Mendelian genetics with evolutionary biology, including Hardy-Weinberg, genetic drift, and gene flow.",
       {});
   }
 ]),["Population genetics is the study of how evolution works at the level of genes in a group. Which answer focuses on allele frequencies changing over time?"]);
@@ -2867,7 +2871,7 @@ E("bio-u3-76-q06",3,["7.6","7.7"],1,"var",varset([
     return mcq("In Hardy-Weinberg equilibrium, what must be true?",
       "No natural selection occurs",
       ["Mutation rates must increase","Populations must grow","There must be gene flow"],
-      "H-W equilibrium requires ALL five: large population, random mating, no mutation, no gene flow, no natural selection. No natural selection is one of the five required conditions. ✓ No natural selection occurs.",
+      "H-W equilibrium requires ALL five: large population, random mating, no mutation, no gene flow, no natural selection. No natural selection is one of the five required conditions.",
       {});
   }
 ]),["Hardy-Weinberg equilibrium has FIVE required conditions. The population must be large, mating must be random, and there must be no mutation, no gene flow, and no ___?"]);
@@ -2877,7 +2881,7 @@ E("bio-u3-76-q07",3,["7.6","7.7"],2,"var",varset([
     return mcq("In a population, 16% of individuals are homozygous dominant for tongue rolling. What percentage of individuals are heterozygous for tongue rolling?",
       "48%",
       ["40%","60%","84%"],
-      "p² = 0.16 → p = 0.4. q = 1 − 0.4 = 0.6. Heterozygous = 2pq = 2(0.4)(0.6) = 0.48 = 48% . ✓ 48%",
+      "p² = 0.16 → p = 0.4. q = 1 − 0.4 = 0.6. Heterozygous = 2pq = 2(0.4)(0.6) = 0.48 = 48% .",
       {});
   }
 ]),["If p² = 0.16, find p by taking the square root. Then q = 1 − p. The heterozygous frequency = 2pq. Try it step by step."]);
@@ -2887,7 +2891,7 @@ E("bio-u3-76-q08",3,["7.6","7.7"],2,"var",varset([
     return mcq("If 49% of the individuals in a population are homozygous dominant for a trait, what percentage of individuals in the population will be homozygous recessive for the same trait?",
       "9%",
       ["30%","42%","51%"],
-      "p² = 0.49 → p = 0.7. q = 0.3. Homozygous recessive = q² = (0.3)² = 0.09 = 9% . ✓ 9%",
+      "p² = 0.49 → p = 0.7. q = 0.3. Homozygous recessive = q² = (0.3)² = 0.09 = 9% .",
       {});
   }
 ]),["If p² = 0.49, find p (square root). Then q = 1 − p. The question asks for q² (homozygous recessive). Try it step by step."]);
@@ -2897,7 +2901,7 @@ E("bio-u3-76-q09",3,["7.6","7.7"],2,"var",varset([
     return mcq("A population is in Hardy Weinberg equilibrium. If a gene pool contains 20 alleles where 6 of the alleles are recessive, what proportion of the population shows the dominant phenotype?",
       "91%",
       ["9%","30%","70%"],
-      "q = 6/20 = 0.3; p = 0.7. Dominant phenotype = p² + 2pq = 0.49 + 0.42 = 0.91 = 91% . ✓ 91%",
+      "q = 6/20 = 0.3; p = 0.7. Dominant phenotype = p² + 2pq = 0.49 + 0.42 = 0.91 = 91% .",
       {});
   }
 ]),["6 out of 20 alleles are recessive: q = 6/20 = 0.3. Then p = 1 − q. The dominant phenotype frequency = p² + 2pq. Try it step by step."]);
@@ -2909,7 +2913,7 @@ E("bio-u3-78-q01",3,["7.8"],2,"var",varset([
     return mcq("Researchers observe that allele frequencies in a population have remained unchanged for many generations. What is the most reasonable conclusion?",
       "The population is likely in Hardy-Weinberg equilibrium.",
       ["Gene flow is increasing.","Speciation is occurring.","The population is experiencing directional selection."],
-      "Constant allele frequencies over generations = population is NOT evolving = Hardy-Weinberg equilibrium. All five conditions are being met. ✓ The population is likely in Hardy-Weinberg equilibrium.",
+      "Constant allele frequencies over generations = population is NOT evolving = Hardy-Weinberg equilibrium. All five conditions are being met.",
       {});
   }
 ]),["If allele frequencies stay the same over many generations, is the population evolving? What term describes a population where allele frequencies are stable?"]);
@@ -2919,7 +2923,7 @@ E("bio-u3-78-q02",3,["7.8"],1,"var",varset([
     return mcq("A population develops a genetic trait that has never been seen before. Which process most likely produced this new allele?",
       "Mutation",
       ["Genetic drift","Gene flow","Stabilizing selection"],
-      "Only mutation creates genuinely new alleles. Gene flow brings existing alleles from elsewhere. Selection and drift change frequencies; mutation creates new variation. ✓ Mutation.",
+      "Only mutation creates genuinely new alleles. Gene flow brings existing alleles from elsewhere. Selection and drift change frequencies; mutation creates new variation.",
       {});
   }
 ]),["Gene flow, selection, and drift change the frequency of EXISTING alleles. Which agent of change creates brand new alleles that didn't exist in the population before?"]);
@@ -2929,7 +2933,7 @@ E("bio-u3-78-q03",3,["7.8"],2,"var",varset([
     return mcq("A population experiences a sudden reduction in size after a hurricane. The surviving individuals represent only a small portion of the original gene pool. Which evolutionary mechanism is illustrated?",
       "Genetic drift",
       ["Gene flow","Mutation","Natural selection"],
-      "A random event dramatically reduces the population. Survivors' allele frequencies may differ from the original by chance, genetic drift (specifically the bottleneck effect). ✓ Genetic drift.",
+      "A random event dramatically reduces the population. Survivors' allele frequencies may differ from the original by chance, genetic drift (specifically the bottleneck effect).",
       {});
   }
 ]),["A random event (not natural selection) dramatically reduces population size. The survivors happen to carry a non-representative sample of alleles. What is this type of random change called?"]);
@@ -2939,7 +2943,7 @@ E("bio-u3-78-q04",3,["7.8"],2,"var",varset([
     return mcq("Humans hunted the northern elephant seal population to fewer than 100 individuals. The population has since rebounded to over 100,000 but the genetic diversity of the population is low. Which of the following best describes this?",
       "The bottleneck effect",
       ["Disruptive selection","Gene flow","The founder effect"],
-      "Bottleneck effect: population reduced to few survivors → small sample of alleles survives → recovered population has much less genetic diversity. Northern elephant seals are the textbook example. ✓ The bottleneck effect.",
+      "Bottleneck effect: population reduced to few survivors → small sample of alleles survives → recovered population has much less genetic diversity. Northern elephant seals are the textbook example.",
       {});
   }
 ]),["The seal population was reduced to ~100 survivors, then recovered. What happens to genetic diversity when a population crashes and rebuilds from a tiny group?"]);
@@ -2949,7 +2953,7 @@ E("bio-u3-78-q05",3,["7.8"],1,"var",varset([
     return mcq("Which situation is an example of non-random mating?",
       "Individuals choose mates with elaborate displays.",
       ["Individuals mate completely by chance.","Migrants enter a population.","Natural disasters alter population size."],
-      "Choosing mates based on elaborate displays (peacock tails, bird dances) is sexual selection, a type of non-random mating where phenotype influences mate choice. ✓ Individuals choose mates with elaborate displays.",
+      "Choosing mates based on elaborate displays (peacock tails, bird dances) is sexual selection, a type of non-random mating where phenotype influences mate choice.",
       {});
   }
 ]),["Random mating means any individual can mate with any other. Which answer shows individuals choosing mates based on a specific trait (making mating non-random)?"]);
@@ -2959,7 +2963,7 @@ E("bio-u3-78-q06",3,["7.8"],2,"var",varset([
     return mcq("A hurricane leaves only a small number of individuals alive in a population. Which process best explains the resulting change in allele frequencies?",
       "bottleneck effect",
       ["directional selection","founder effect","stabilizing selection"],
-      "Disaster reduces large population to few survivors who rebuild the population, the resulting population has reduced genetic diversity. This is the bottleneck effect (a form of genetic drift). ✓ Bottleneck effect.",
+      "Disaster reduces large population to few survivors who rebuild the population, the resulting population has reduced genetic diversity. This is the bottleneck effect (a form of genetic drift).",
       {});
   }
 ]),["When a natural disaster reduces a large population to just a few survivors who then rebuild the population, which genetic drift effect is this?"]);
@@ -2969,7 +2973,7 @@ E("bio-u3-78-q07",3,["7.8"],1,"var",varset([
     return mcq("Which statement best describes the founder effect?",
       "A new population is established by a small number of individuals.",
       ["A large population experiences a sudden reduction in size.","Individuals preferentially select mates with similar traits.","Mutations rapidly accumulate within a population."],
-      "Founder effect: a small group leaves the main population to start a new colony. They carry only a subset of the original gene pool, reducing genetic diversity in the new population. ✓ A new population is established by a small number of individuals, reducing genetic diversity.",
+      "Founder effect: a small group leaves the main population to start a new colony. They carry only a subset of the original gene pool, reducing genetic diversity in the new population.",
       {});
   }
 ]),["The founder effect occurs when a SMALL group leaves to start a NEW population elsewhere. What happens to the genetic diversity of that new population?"]);
@@ -2979,7 +2983,7 @@ E("bio-u3-78-q08",3,["7.8"],1,"var",varset([
     return mcq("What type of selection is shown when individuals with intermediate traits are favored?",
       "Stabilizing",
       ["Disruptive","Directional","Sexual"],
-      "Stabilizing selection favours the intermediate phenotype and selects against both extremes. Example: human birth weight, very small and very large babies have higher mortality. ✓ Stabilizing selection.",
+      "Stabilizing selection favours the intermediate phenotype and selects against both extremes. Example: human birth weight, very small and very large babies have higher mortality.",
       {});
   }
 ]),["Look at which individuals survive best: those at the extremes, the middle, or both extremes. If the middle (average) individuals survive best, what type of selection is this?"]);
@@ -2989,7 +2993,7 @@ E("bio-u3-78-q09",3,["7.8"],2,"var",varset([
     var q=mcq("A population of mice in a field was captured and counted annually for three years to track changes in coat color. Based on the data, what form of selection is occurring in the population?",
       "Disruptive selection",
       ["Artificial selection","Directional selection","Stabilizing selection"],
-      "The data shows the intermediate coat colour (brown) decreased from 50 to 15, while both extremes (light brown and dark brown) increased significantly. When both extreme phenotypes are favoured and the intermediate is selected against, this is disruptive selection . The two extreme colours may be advantageous in different microhabitats within the same field. ✓ Disruptive selection.",
+      "The data shows the intermediate coat colour (brown) decreased from 50 to 15, while both extremes (light brown and dark brown) increased significantly. When both extreme phenotypes are favoured and the intermediate is selected against, this is disruptive selection . The two extreme colours may be advantageous in different microhabitats within the same field.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-78-q09.png" alt="Table titled Mouse Population Coat Color, with counts over three years: light brown rises from 2 to 36, brown falls from 50 to 15, and dark brown rises from 5 to 40" style="max-width:100%;height:auto">';
     return q;
@@ -3001,7 +3005,7 @@ E("bio-u3-78-q10",3,["7.8"],2,"var",varset([
     var q=mcq("This graph shows the change in a finch population after a drought. What type of selection has occurred?",
       "Directional",
       ["Disruptive","Stabilizing","Sexual"],
-      "After drought leaving only large hard seeds, large-beaked birds survived; small-beaked didn't. The population shifted toward one extreme (large beaks) = directional selection. ✓ Directional selection.",
+      "After drought leaving only large hard seeds, large-beaked birds survived; small-beaked didn't. The population shifted toward one extreme (large beaks) = directional selection.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-78-q10.png" alt="Graph of finch beak length distributions before and after a drought: the original population peaks near 8.5 mm and the surviving population peaks near 11 mm" style="max-width:100%;height:auto">';
     return q;
@@ -3013,7 +3017,7 @@ E("bio-u3-78-q11",3,["7.8"],2,"var",varset([
     return mcq("In some fisheries, larger fish are consistently caught and removed from the population. Over time, the average size of the fish decreases. Which concept best explains this change?",
       "Artificial selection pressure affecting evolution",
       ["Convergent evolution","Genetic equilibrium","Punctuated equilibrium"],
-      "Consistently removing the largest fish = selection pressure against large body size. Smaller fish survive and reproduce more; average fish size decreases over generations, artificial selection pressure driving evolution. ✓ Artificial selection pressure affecting evolution.",
+      "Consistently removing the largest fish = selection pressure against large body size. Smaller fish survive and reproduce more; average fish size decreases over generations, artificial selection pressure driving evolution.",
       {});
   }
 ]),["Humans are consistently removing one extreme (large fish) from the population. Over generations, what happens to average fish size? Is this natural or artificial selection?"]);
@@ -3023,7 +3027,7 @@ E("bio-u3-78-q12",3,["7.8"],1,"var",varset([
     return mcq("Which human activity is most likely to reduce genetic diversity by fragmenting populations?",
       "Constructing roads through habitats",
       ["Building wildlife corridors","Protecting endangered species","Restoring wetlands"],
-      "Roads through habitats divide populations into isolated fragments. Small isolated populations experience inbreeding and genetic drift, reducing genetic diversity within each fragment. ✓ Constructing roads through habitats.",
+      "Roads through habitats divide populations into isolated fragments. Small isolated populations experience inbreeding and genetic drift, reducing genetic diversity within each fragment.",
       {});
   }
 ]),["When a habitat is divided into smaller patches, populations become isolated in each patch. What happens to genetic diversity in small, isolated populations?"]);
@@ -3035,7 +3039,7 @@ E("bio-u3-79-q01",3,["7.9"],2,"var",varset([
     var q=mcq("Using the table, which is the correct binomial nomenclature for a blue mussel?",
       "Mytillus edulis",
       ["Animalia edulis","edulis Animalia","edulis Mytillus"],
-      "Binomial nomenclature = Genus + species. From the table: Genus = Mytillus , Species = edulis . Therefore the correct scientific name is Mytillus edulis . Always capitalize the genus, lowercase the species, and italicize both. ✓ Mytillus edulis",
+      "Binomial nomenclature = Genus + species. From the table: Genus = Mytillus , Species = edulis . Therefore the correct scientific name is Mytillus edulis . Always capitalize the genus, lowercase the species, and italicize both.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-79-q01.png" alt="Classification table: Kingdom Animalia, Phylum Mollusca, Class Bivalvia, Order Mytilida, Family Mytilidae, Genus Mytilus, Species edulis" style="max-width:100%;height:auto">';
     return q;
@@ -3047,7 +3051,7 @@ E("bio-u3-79-q02",3,["7.9"],1,"var",varset([
     return mcq("If two organisms are in the same order, which of the following do they also share?",
       "Class",
       ["Family","Genus","Species"],
-      "Taxonomy broad→specific: Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species. Sharing Order means they also share Class and all broader ranks. ✓ Class.",
+      "Taxonomy broad→specific: Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species. Sharing Order means they also share Class and all broader ranks.",
       {});
   }
 ]),["Remember the order of taxonomy levels from broadest to most specific: Domain, Kingdom, Phylum, Class, Order, Family, Genus, Species. If they share Order, which broader levels must they also share?"]);
@@ -3057,7 +3061,7 @@ E("bio-u3-79-q03",3,["7.9"],1,"var",varset([
     return mcq("Which is the correct order of taxonomic ranks from most general to most specific?",
       "Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species",
       ["Species → Genus → Family → Order → Class → Phylum → Kingdom → Domain","Kingdom → Domain → Phylum → Class → Order → Family → Species → Genus","Domain → Phylum → Kingdom → Class → Order → Family → Genus → Species"],
-      "Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species. Memory: Dear King Philip Came Over For Good Soup. ✓ Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species.",
+      "Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species. Memory: Dear King Philip Came Over For Good Soup.",
       {});
   }
 ]),["Use the memory device: Dear King Philip Came Over For Good Soup. What does each first letter stand for?"]);
@@ -3067,7 +3071,7 @@ E("bio-u3-79-q04",3,["7.9"],1,"var",varset([
     return mcq("Which characteristic best distinguishes organisms in Domain Bacteria from those in Domain Eukarya?",
       "Lack of a nucleus",
       ["Ability to reproduce","Presence of DNA","Presence of ribosomes"],
-      "Bacteria lack a membrane-bound nucleus, DNA floats freely in cytoplasm. Eukaryotes have a true nucleus. This is the most fundamental distinction between these domains. ✓ Lack of a nucleus.",
+      "Bacteria lack a membrane-bound nucleus, DNA floats freely in cytoplasm. Eukaryotes have a true nucleus. This is the most fundamental distinction between these domains.",
       {});
   }
 ]),["Think about the most fundamental difference between a bacterium and a human cell. Bacteria are prokaryotes, what is the key structural feature that eukaryotic cells have that prokaryotic cells completely lack?"]);
@@ -3077,7 +3081,7 @@ E("bio-u3-79-q05",3,["7.9"],1,"var",varset([
     return mcq("A scientist from Canada and a scientist from Japan are studying the same species. Why is binomial nomenclature a good system for these researchers?",
       "It provides a single, universally accepted scientific name of the organism.",
       ["It describes the exact geographic origin and native habitat of the organism.","It describes the lifespan and reproductive rate of the organism.","It translates regional common names into a standardized format."],
-      "Binomial nomenclature gives every species one universal scientific name in Latin, recognized by scientists worldwide regardless of language. A species called 'sea otter' in English and by a different name in Japanese is Enhydra lutris everywhere. This eliminates confusion caused by regional common names and allows international scientific communication. ✓ It provides a single, universally accepted scientific name of the organism.",
+      "Binomial nomenclature gives every species one universal scientific name in Latin, recognized by scientists worldwide regardless of language. A species called 'sea otter' in English and by a different name in Japanese is Enhydra lutris everywhere. This eliminates confusion caused by regional common names and allows international scientific communication.",
       {});
   }
 ]),["The two scientists speak different languages and would use different common names for the same organism. What does binomial nomenclature give every species that common names cannot?"]);
@@ -3087,7 +3091,7 @@ E("bio-u3-79-q06",3,["7.9"],2,"var",varset([
     return mcq("An organism is found living in a Hot deep-sea vent which is single-celled, lacks a nucleus and does not contain a cell wall. Into which domain should this organism be classified?",
       "Archea",
       ["Bacteria","Eukarya","Protista"],
-      "Single-celled extremophiles in extreme environments (hot vents, high pressure) that are not bacteria belong to Domain Archaea. Archaea resemble bacteria in size but are genetically and biochemically distinct. ✓ Archaea.",
+      "Single-celled extremophiles in extreme environments (hot vents, high pressure) that are not bacteria belong to Domain Archaea. Archaea resemble bacteria in size but are genetically and biochemically distinct.",
       {});
   }
 ]),["Organisms that thrive in extreme environments (very hot, acidic, or salty) are extremophiles. Single-celled extremophiles that are NOT bacteria belong to which domain?"]);
@@ -3097,7 +3101,7 @@ E("bio-u3-79-q07",3,["7.9"],1,"var",varset([
     return mcq("Which kingdom includes organisms that are multicellular, heterotrophic, and have cell walls made of chitin?",
       "Fungi",
       ["Animalia","Plantae","Protista"],
-      "Kingdom Fungi: multicellular (usually), heterotrophic (absorptive feeders), cell walls of chitin, reproduce by spores. Examples: mushrooms, molds, yeasts. ✓ Fungi.",
+      "Kingdom Fungi: multicellular (usually), heterotrophic (absorptive feeders), cell walls of chitin, reproduce by spores. Examples: mushrooms, molds, yeasts.",
       {});
   }
 ]),["This kingdom includes mushrooms, molds, and yeasts. They absorb nutrients from their surroundings and have cell walls made of chitin. Which kingdom is this?"]);
@@ -3107,7 +3111,7 @@ E("bio-u3-79-q08",3,["7.9"],1,"var",varset([
     return mcq("What feature is shared by all prokaryotes?",
       "Lack of membrane-bound organelles",
       ["Membrane-bound nucleus","Linear chromosomes","Multicellularity"],
-      "Prokaryotes (Bacteria and Archaea) lack membrane-bound organelles, no nucleus, no mitochondria, no ER. This is their defining feature and fundamental distinction from eukaryotes. ✓ Lack of membrane-bound organelles.",
+      "Prokaryotes (Bacteria and Archaea) lack membrane-bound organelles, no nucleus, no mitochondria, no ER. This is their defining feature and fundamental distinction from eukaryotes.",
       {});
   }
 ]),["Both bacteria and archaea are prokaryotes. What do they all lack that eukaryotic cells have, specifically in terms of cell organization?"]);
@@ -3117,7 +3121,7 @@ E("bio-u3-79-q09",3,["7.9"],1,"var",varset([
     return mcq("Which statement best explains why viruses are difficult to classify?",
       "They can only exist inside host cells and lack characteristics of life",
       ["They are too small to be seen","They contain both plant and animal features","They reproduce sexually and asexually"],
-      "Viruses lack cells, cannot carry out metabolism independently, and can only reproduce inside a host cell using the host's ribosomes and enzymes. This puts them in a grey zone between living and non-living, making them impossible to fit neatly into the classification system designed for cellular organisms. ✓ They can only exist inside host cells and lack characteristics of life.",
+      "Viruses lack cells, cannot carry out metabolism independently, and can only reproduce inside a host cell using the host's ribosomes and enzymes. This puts them in a grey zone between living and non-living, making them impossible to fit neatly into the classification system designed for cellular organisms.",
       {});
   }
 ]),["Think about the characteristics of life: cells, metabolism, growth, reproduction. Viruses can reproduce, but only by hijacking another cell. What do viruses lack that ALL living things are supposed to have?"]);
@@ -3127,7 +3131,7 @@ E("bio-u3-79-q10",3,["7.9"],2,"var",varset([
     var q=mcq("A student collects a small organism from a local pond and observes it under a magnifying glass. The organism has segmented legs, two pairs of wings, and noticeably long antennae. Using the dichotomous key provided, identify the correct taxonomic order of this organism.",
       "Order Odonata",
       ["Order Ephemeroptera","Order Coleoptera","Class Crustacea"],
-      "Follow the key: The organism has segmented legs (→ step 2), it has wings (→ step 3), and it has long antennae (→ Order Odonata). Odonata includes dragonflies and damselflies. ✓ Order Odonata",
+      "Follow the key: The organism has segmented legs (→ step 2), it has wings (→ step 3), and it has long antennae (→ Order Odonata). Odonata includes dragonflies and damselflies.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-79-q10.png" alt="Dichotomous key for common pond invertebrates, with paired steps on segmented legs, wings, antennae length, leg number and body type, leading to orders, a class and phyla" style="max-width:100%;height:auto">';
     return q;
@@ -3139,7 +3143,7 @@ E("bio-u3-79-q11",3,["7.9"],1,"var",varset([
     return mcq("Which tool is most useful for identifying an unknown organism?",
       "Dichotomous key",
       ["DNA polymerase","Electron microscope","Gel electrophoresis"],
-      "A dichotomous key presents paired choices at each step based on observable characteristics. Following the correct path leads to the organism's identity, the standard biological identification tool. ✓ Dichotomous key.",
+      "A dichotomous key presents paired choices at each step based on observable characteristics. Following the correct path leads to the organism's identity, the standard biological identification tool.",
       {});
   }
 ]),["Scientists use a tool that works through a series of paired questions (two choices at each step) to identify organisms. What is this identification tool called?"]);
@@ -3151,7 +3155,7 @@ E("bio-u3-710-q01",3,["7.10"],1,"var",varset([
     return mcq("Which of the following illustrates the evolutionary trend in symmetry across the animal kingdom?",
       "Asymmetry to radial to bilateral",
       ["Asymmetry to bilateral to radial","Radial to asymmetry to bilateral","Radial to bilateral to asymmetry"],
-      "The evolutionary trend in animal symmetry: asymmetry (sponges/Porifera, simplest, no symmetry) → radial symmetry (cnidarians like jellyfish and sea anemones) → bilateral symmetry (most complex animals including worms, insects, fish, and all vertebrates). Bilateral symmetry is associated with cephalization and more complex directional movement. ✓ Asymmetry to radial to bilateral.",
+      "The evolutionary trend in animal symmetry: asymmetry (sponges/Porifera, simplest, no symmetry) → radial symmetry (cnidarians like jellyfish and sea anemones) → bilateral symmetry (most complex animals including worms, insects, fish, and all vertebrates). Bilateral symmetry is associated with cephalization and more complex directional movement.",
       {});
   }
 ]),["The simplest animals (sponges) have no symmetry, they are asymmetrical. Slightly more complex animals (jellyfish) have radial symmetry. The most complex animals (insects, fish, humans) have bilateral symmetry. What order does this progression suggest?"]);
@@ -3161,7 +3165,7 @@ E("bio-u3-710-q02",3,["7.10"],1,"var",varset([
     return mcq("Which is a feature of bilateral symmetry?",
       "Identical left and right sides",
       ["Body parts arranged in a circle","No symmetry","Uneven distribution of parts"],
-      "Bilateral symmetry: body divisible into matching left and right halves, like humans, fish, and insects. Contrast with radial symmetry (sea stars, jellyfish). ✓ Identical left and right sides.",
+      "Bilateral symmetry: body divisible into matching left and right halves, like humans, fish, and insects. Contrast with radial symmetry (sea stars, jellyfish).",
       {});
   }
 ]),["Bilateral symmetry means the body can be divided into two matching halves. Along which axis is the body divided, and what are the two matching sides?"]);
@@ -3171,7 +3175,7 @@ E("bio-u3-710-q03",3,["7.10"],1,"var",varset([
     return mcq("Which animal group lacks true tissues?",
       "Porifera",
       ["Annelida","Arthropoda","Cnidaria"],
-      "Porifera (sponges) are the simplest animals, no true tissues (no organized muscle, nerve, or epithelial tissue). All other animal phyla have at least two tissue layers. ✓ Porifera.",
+      "Porifera (sponges) are the simplest animals, no true tissues (no organized muscle, nerve, or epithelial tissue). All other animal phyla have at least two tissue layers.",
       {});
   }
 ]),["The simplest animals have no true tissues, their cells are loosely organized but not arranged into muscle, nerve, or skin layers. Which animal phylum is this?"]);
@@ -3181,7 +3185,7 @@ E("bio-u3-710-q04",3,["7.10"],1,"var",varset([
     return mcq("Which group contains organisms that have bilateral symmetry, but do not have a true body cavity?",
       "Platyhelminthes",
       ["Arthropoda","Cnidaria","Porifora"],
-      "Platyhelminthes (flatworms) are bilaterally symmetrical and acoelomate, no body cavity at all. Include tapeworms and planarians. ✓ Platyhelminthes.",
+      "Platyhelminthes (flatworms) are bilaterally symmetrical and acoelomate, no body cavity at all. Include tapeworms and planarians.",
       {});
   }
 ]),["Flatworms (platyhelminthes) are bilaterally symmetrical but have no body cavity at all. What term describes an animal with no coelom?"]);
@@ -3191,7 +3195,7 @@ E("bio-u3-710-q05",3,["7.10"],2,"var",varset([
     return mcq("Which of the following body plan characteristics distinguishes the phylum Platyhelminthes from the phylum Nematoda?",
       "Platyhelminthes are acoelomate, while Nematoda are pseudocoelomate.",
       ["Platyhelminthes are triploblastic, while Nematoda are diploblastic.","Platyhelminthes show bilateral symmetry, while Nematoda show radial symmetry.","Platyhelminthes undergo molting, while Nematoda do not."],
-      "Platyhelminthes = acoelomate (no body cavity). Nematoda = pseudocoelomate (partial body cavity). True coelom (fully lined by mesoderm) appears in annelids, mollusks, vertebrates. ✓ Platyhelminthes are acoelomate, while Nematoda are pseudocoelomate.",
+      "Platyhelminthes = acoelomate (no body cavity). Nematoda = pseudocoelomate (partial body cavity). True coelom (fully lined by mesoderm) appears in annelids, mollusks, vertebrates.",
       {});
   }
 ]),["Platyhelminthes have no body cavity (acoelomate). Nematoda have a partial body cavity (pseudocoelomate). What is the key structural difference between these two?"]);
@@ -3201,7 +3205,7 @@ E("bio-u3-710-q06",3,["7.10"],1,"var",varset([
     return mcq("Which trait is found in all chordates?",
       "Notochord",
       ["Compound eyes","Exoskeleton","Radial symmetry"],
-      "All chordates at some developmental stage have: notochord, hollow dorsal nerve cord, pharyngeal slits, post-anal tail. The notochord is the defining feature of Phylum Chordata. ✓ Notochord.",
+      "All chordates at some developmental stage have: notochord, hollow dorsal nerve cord, pharyngeal slits, post-anal tail. The notochord is the defining feature of Phylum Chordata.",
       {});
   }
 ]),["All animals in phylum Chordata share four features at some point in their development. One is a flexible rod-like structure. What is it called, and where is it located?"]);
@@ -3211,7 +3215,7 @@ E("bio-u3-710-q07",3,["7.10"],1,"var",varset([
     return mcq("Which adaptation allowed vertebrates to reproduce away from water?",
       "Amniotic egg",
       ["Cartilage skeleton","External fertilization","Gills"],
-      "The amniotic egg (with protective membranes and shell) prevents desiccation, allowing eggs to be laid on land. This freed reptiles and birds from needing water for reproduction. ✓ Amniotic egg.",
+      "The amniotic egg (with protective membranes and shell) prevents desiccation, allowing eggs to be laid on land. This freed reptiles and birds from needing water for reproduction.",
       {});
   }
 ]),["Amphibians must return to water to lay eggs. What feature of reptile (and bird) eggs allows them to be laid on dry land without the embryo drying out?"]);
@@ -3221,7 +3225,7 @@ E("bio-u3-710-q08",3,["7.10"],2,"var",varset([
     var q=mcq("Which of the following options correctly describes the skeleton, circulatory system, and chordate group of the organism?",
       "Cartilage and bone skeleton | 2-chambered heart | Osteichthyes",
       ["Cartilage skeleton | 3-chambered heart | Amphibia","Cartilage skeleton | 2-chambered heart | Chondrichthyes","Cartilage and bone skeleton | 3-chambered heart | Mammalia"],
-      "Looking at the image, the presence of a bony gill cover (operculum) tells you this is a bony fish (Osteichthyes). Because it is a bony fish, its skeleton is made of cartilage and bone, and like all true fish, it relies on a 2-chambered heart to pump blood. This rules out the two cartilage-skeleton options, the one pairing a 3-chambered heart with Amphibia and the one pairing a 2-chambered heart with Chondrichthyes, and the cartilage and bone skeleton paired with a 3-chambered heart and Mammalia, leaving the cartilage and bone skeleton with a 2-chambered heart as the correct choice. ✓ Cartilage and bone skeleton | 2-chambered heart | Osteichthyes",
+      "Looking at the image, the presence of a bony gill cover (operculum) tells you this is a bony fish (Osteichthyes). Because it is a bony fish, its skeleton is made of cartilage and bone, and like all true fish, it relies on a 2-chambered heart to pump blood. This rules out the two cartilage-skeleton options, the one pairing a 3-chambered heart with Amphibia and the one pairing a 2-chambered heart with Chondrichthyes, and the cartilage and bone skeleton paired with a 3-chambered heart and Mammalia, leaving the cartilage and bone skeleton with a 2-chambered heart as the correct choice.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-710-q08.png" alt="Underwater photograph of a cod, a bony fish with a mottled body, a small chin barbel and a bony gill cover, swimming over a rocky, kelp-covered seabed" style="max-width:100%;height:auto">';
     return q;
@@ -3233,7 +3237,7 @@ E("bio-u3-710-q09",3,["7.10"],1,"var",varset([
     return mcq("Which adaptation was most important for vertebrate transition from water to land?",
       "Development of lungs and limbs for terrestrial movement",
       ["Gills replacing lungs","Loss of skeletal structures","Reduction in nervous system complexity"],
-      "If the organism shown has four limbs and lungs, it likely represents an early tetrapod. Development of lungs (air breathing) and limbs (terrestrial movement) were the key adaptations enabling the transition from water to land. ✓ Development of lungs and limbs for terrestrial movement.",
+      "If the organism shown has four limbs and lungs, it likely represents an early tetrapod. Development of lungs (air breathing) and limbs (terrestrial movement) were the key adaptations enabling the transition from water to land.",
       {});
   }
 ]),["The amniotic egg was key for reproduction on land. But for movement and breathing on land, what two anatomical features were also necessary?"]);
@@ -3243,7 +3247,7 @@ E("bio-u3-710-q10",3,["7.10"],3,"var",varset([
     var q=mcq("Which of the following statements is true?",
       "Species F and G share a more recent common ancestry than E and F",
       ["Species A and I are very closely related","Species B and C are more closely related to A than they are to each other","Species D and I are more closely related than G and H"],
-      "On a cladogram, species F and G share a branching node that is more recent (closer to the tips of the tree) than the node shared by species E and F. This means F and G diverged from their common ancestor more recently, so F and G are more closely related to each other than either is to E. ✓ Species F and G share a more recent common ancestry than E and F.",
+      "On a cladogram, species F and G share a branching node that is more recent (closer to the tips of the tree) than the node shared by species E and F. This means F and G diverged from their common ancestor more recently, so F and G are more closely related to each other than either is to E.",
       {});
     q.figure='<img src="banks/bio-3201/assets/u3-710-q10.png" alt="Cladogram of species A to I plotted against time in millions of years before the present day, with branching nodes; species G and H share the most recent node" style="max-width:100%;height:auto">';
     return q;
