@@ -30,7 +30,735 @@ var PHYS_MP = 1.67e-27;     // kg, proton mass
 var PHYS_C = 3.00e8;        // m/s
 var PHYS_G = 9.8;           // m/s^2
 
+// ============================================================================
+// Physics 3204 diagram figures (Phase C pass, Nov 2026)
+// Original code-generated SVG drawings. Every figure is built inside the
+// entry's own generator from that draw's values (the values recorded in
+// _p, or the generator locals that feed _p), never from hardcoded numbers.
+// The unknown a question asks for is labelled "?" and is never drawn to
+// scale where its size or direction would give the answer away.
+// No em dashes are used in any figure text.
+// ============================================================================
+function p32svg(W,H,body,aria){return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+aria+'">'+body+'</svg>';}
+function p32t(x,y,s,size,bold,anchor){return _txt(x,y,s,size||12,bold||false,anchor);}
+function p32line(x1,y1,x2,y2,col,w,dash){return '<line x1="'+fmt(x1,1)+'" y1="'+fmt(y1,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y2,1)+'" stroke="'+(col||FIG_INK)+'" stroke-width="'+(w||2)+'"'+(dash?' stroke-dasharray="5 4"':"")+'/>';}
+function p32arrow(x1,y1,x2,y2,col,w){
+  col=col||FIG_ACC; w=w||2.4;
+  var dx=x2-x1, dy=y2-y1, L=Math.sqrt(dx*dx+dy*dy)||1, ux=dx/L, uy=dy/L, px=-uy, py=ux, hs=Math.min(10,L*0.35);
+  var bx=x2-ux*hs, by=y2-uy*hs;
+  return '<line x1="'+fmt(x1,1)+'" y1="'+fmt(y1,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y2,1)+'" stroke="'+col+'" stroke-width="'+w+'"/>'
+    +'<polygon points="'+fmt(x2,1)+','+fmt(y2,1)+' '+fmt(bx+px*hs*0.42,1)+','+fmt(by+py*hs*0.42,1)+' '+fmt(bx-px*hs*0.42,1)+','+fmt(by-py*hs*0.42,1)+'" fill="'+col+'"/>';
+}
+function p32dot(x,y,r,fill){return '<circle cx="'+fmt(x,1)+'" cy="'+fmt(y,1)+'" r="'+(r||4)+'" fill="'+(fill||FIG_INK)+'"/>';}
+function p32circ(cx,cy,r,fill,stroke,w){return '<circle cx="'+fmt(cx,1)+'" cy="'+fmt(cy,1)+'" r="'+fmt(r,1)+'" fill="'+(fill||"none")+'" stroke="'+(stroke||FIG_INK)+'" stroke-width="'+(w||2)+'"/>';}
+function p32rect(x,y,w,h,fill,stroke){return '<rect x="'+fmt(x,1)+'" y="'+fmt(y,1)+'" width="'+fmt(w,1)+'" height="'+fmt(h,1)+'" fill="'+(fill||"none")+'" stroke="'+(stroke||FIG_INK)+'" stroke-width="2"/>';}
+function p32bracketX(x1,x2,y,label){ // horizontal dimension bracket with end ticks
+  var s=p32line(x1,y,x2,y,FIG_INK,1.4)+p32line(x1,y-5,x1,y+5,FIG_INK,1.4)+p32line(x2,y-5,x2,y+5,FIG_INK,1.4);
+  if(label)s+=p32t((x1+x2)/2,y+13,label,11,false);
+  return s;
+}
+function p32bracketY(x,y1,y2,label){ // vertical dimension bracket
+  var s=p32line(x,y1,x,y2,FIG_INK,1.4)+p32line(x-5,y1,x+5,y1,FIG_INK,1.4)+p32line(x-5,y2,x+5,y2,FIG_INK,1.4);
+  if(label)s+=p32t(x-6,(y1+y2)/2,label,11,false,"end");
+  return s;
+}
+function p32arc(cx,cy,r,a1,a2,col){ // svg arc path from angle a1 to a2 (degrees, math convention, y up)
+  var p1=[cx+r*Math.cos(a1*Math.PI/180), cy-r*Math.sin(a1*Math.PI/180)], p2=[cx+r*Math.cos(a2*Math.PI/180), cy-r*Math.sin(a2*Math.PI/180)];
+  var large=((a2-a1+360)%360)>180?1:0;
+  return '<path d="M '+fmt(p1[0],1)+' '+fmt(p1[1],1)+' A '+fmt(r,1)+' '+fmt(r,1)+' 0 '+large+' 0 '+fmt(p2[0],1)+' '+fmt(p2[1],1)+'" fill="none" stroke="'+(col||FIG_INK)+'" stroke-width="1.4"/>';
+}
+function p32cross(cx,cy,s){s=s||5;return p32line(cx-s,cy-s,cx+s,cy+s,FIG_INK,1.3)+p32line(cx-s,cy+s,cx+s,cy-s,FIG_INK,1.3);}
+
+// --- Unit 1: vectors ---
+function p32figVecTri(v,th){
+  var O=[64,158], L=132, rad=th*Math.PI/180, E=[O[0]+L*Math.cos(rad), O[1]-L*Math.sin(rad)];
+  var s=p32line(O[0],O[1],E[0],O[1],FIG_INK,1.6,true)+p32line(E[0],O[1],E[0],E[1],FIG_INK,1.6,true);
+  s+=p32arrow(O[0],O[1],E[0],E[1],FIG_ACC,2.6);
+  s+=p32arc(O[0],O[1],34,0,th);
+  s+=p32t(O[0]+52,O[1]-8,th+"\u00B0",12,true);
+  s+=p32t((O[0]+E[0])/2+6,(O[1]+E[1])/2-12,gF(v)+" m/s",12,true);
+  s+=p32t((O[0]+E[0])/2,O[1]+16,"?",13,true);
+  s+=p32t(O[0]-14,O[1]+4,"O",11,true);
+  return p32svg(330,195,s,"Right triangle diagram: a velocity arrow at the drawn angle, with dashed east and north components");
+}
+function p32figVecFromComp(a,b){
+  var O=[216,164], sc=9.5, Wp=[O[0]-a*sc,O[1]], T=[O[0]-a*sc,O[1]-b*sc];
+  var s=p32line(O[0],O[1],Wp[0],O[1],FIG_INK,1.6,true)+p32line(Wp[0],O[1],T[0],T[1],FIG_INK,1.6,true);
+  s+=p32arrow(O[0],O[1],T[0],T[1],FIG_ACC,2.6);
+  s+=p32arc(O[0],O[1],30,90,Math.atan2(b,a)*180/Math.PI+90);
+  s+=p32t(O[0]-44,O[1]-16,"?",13,true);
+  s+=p32t((O[0]+Wp[0])/2,O[1]+16,gF(a)+" m west",11,false);
+  s+=p32t(Wp[0]-8,(O[1]+T[1])/2,gF(b)+" m",11,false,"end");
+  s+=p32t(T[0]-6,T[1]-12,"?",12,true);
+  return p32svg(330,195,s,"Diagram: a displacement with a west component and a north component, and the resultant drawn dashed in direction only");
+}
+function p32figCollinear(a,b){
+  var sc=190/Math.max(a,1), S=45, E1=S+a*sc, E2=E1-b*sc;
+  var s=p32line(30,118,305,118,FIG_INK,1.2);
+  s+=p32arrow(S,96,E1,96,FIG_ACC,2.4)+p32t((S+E1)/2,82,gF(a)+" km east",11,true);
+  s+=p32arrow(E1,66,E2,66,FIG_ALT,2.4)+p32t((E1+E2)/2,52,gF(b)+" km west",11,true);
+  s+=p32dot(S,118,4)+p32dot(E2,118,4);
+  s+=p32bracketX(S,E2,140,"?");
+  s+=p32t(S,134,"start",10,false);
+  return p32svg(330,165,s,"Line diagram: a boat sails east, then back west, with the net distance from the start marked as unknown");
+}
+function p32figResultant2(a,b,unit){
+  var sc=175/Math.max(a,b,1), O=[52,168], Ex=O[0]+a*sc, Ny=O[1]-b*sc;
+  var s=p32arrow(O[0],O[1],Ex,O[1],FIG_ACC,2.2)+p32arrow(Ex,O[1],Ex,Ny,FIG_ACC,2.2);
+  s+='<line x1="'+fmt(O[0],1)+'" y1="'+fmt(O[1],1)+'" x2="'+fmt(Ex,1)+'" y2="'+fmt(Ny,1)+'" stroke="'+FIG_ALT+'" stroke-width="2.4" stroke-dasharray="6 4"/>';
+  s+=p32t((O[0]+Ex)/2,O[1]+16,gF(a)+" "+unit+" east",11,false);
+  s+=p32t(Ex+8,(O[1]+Ny)/2,gF(b)+" "+unit+" north",11,false,"start");
+  s+=p32t((O[0]+Ex)/2-14,(O[1]+Ny)/2-8,"?",13,true);
+  return p32svg(330,200,s,"Diagram: two perpendicular legs and the dashed resultant, whose magnitude is unknown");
+}
+function p32figResultant3(a,b,c){
+  var tot=a+c, sc=185/Math.max(tot,b,1), O=[46,168], x1=O[0]+a*sc, y1=O[1]-b*sc, x2=O[0]+tot*sc;
+  var s=p32arrow(O[0],O[1],x1,O[1],FIG_ACC,2.1)+p32arrow(x1,O[1],x1,y1,FIG_ACC,2.1)+p32arrow(x1,y1,x2,y1,FIG_ACC,2.1);
+  s+='<line x1="'+fmt(O[0],1)+'" y1="'+fmt(O[1],1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y1,1)+'" stroke="'+FIG_ALT+'" stroke-width="2.4" stroke-dasharray="6 4"/>';
+  s+=p32t((O[0]+x1)/2,O[1]+16,gF(a)+" m",11,false)+p32t(x1+8,(O[1]+y1)/2,gF(b)+" m",11,false,"start");
+  s+=p32t((x1+x2)/2,y1-12,gF(c)+" m",11,false)+p32t((O[0]+x2)/2-12,(O[1]+y1)/2+16,"?",13,true);
+  return p32svg(330,200,s,"Diagram: three legs, east then north then east, with the dashed resultant marked as unknown");
+}
+// --- Unit 1: river and aircraft ---
+function p32riverBase(){
+  var s=p32rect(28,58,284,96,"#dcecf5",FIG_INK);
+  s+=p32t(40,48,"far bank",10,false,"start")+p32t(40,168,"near bank",10,false,"start");
+  return s;
+}
+function p32figRiver(vb,vc,w,mode){
+  var s=p32riverBase(), bx=110, by=154, top=58;
+  if(mode==="heading"){
+    s+=p32arrow(bx,by,bx-42,by-78,FIG_ACC,2.4);
+    s+=p32t(bx-58,by-52,gF(vb)+" m/s",11,true);
+    s+=p32arrow(bx,by-88,bx+62,by-88,FIG_ALT,2.2)+p32t(bx+34,by-100,gF(vc)+" m/s",11,false);
+    s+='<line x1="'+bx+'" y1="'+by+'" x2="'+bx+'" y2="'+top+'" stroke="'+FIG_INK+'" stroke-width="2.2" stroke-dasharray="6 4"/>';
+    s+=p32arc(bx,by,30,90,122)+p32t(bx-16,by-38,"?",12,true);
+    s+=p32dot(bx,top,4)+p32t(bx+10,top-4,"dock",10,false,"start");
+  } else {
+    s+=p32arrow(bx,by,bx,top,FIG_ACC,2.4)+p32t(bx-8,(by+top)/2,gF(vb)+" m/s",11,true,"end");
+    s+=p32arrow(bx,by,bx+66,by-46,FIG_INK,2.0);
+    s+=p32arrow(bx,top,bx+66,top,FIG_ALT,2.2)+p32t(bx+36,top-12,gF(vc)+" m/s",11,false);
+    if(mode==="resultant"){
+      s+='<line x1="'+bx+'" y1="'+by+'" x2="'+fmt(bx+66,1)+'" y2="'+top+'" stroke="'+FIG_ALT+'" stroke-width="2.2" stroke-dasharray="6 4"/>';
+      s+=p32t(bx+52,by-58,"?",13,true);
+    }
+    if(mode==="time"||mode==="drift"){
+      s+=p32bracketY(52,top,by,gF(w)+" m");
+    }
+    if(mode==="drift"){
+      s+='<line x1="'+bx+'" y1="'+top+'" x2="'+fmt(bx+66,1)+'" y2="'+top+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+      s+=p32dot(bx+66,top,4)+p32bracketX(bx,bx+66,34,"?");
+      s+=p32t(bx,top-10,"opposite point",9,false);
+    }
+  }
+  s+=p32dot(bx,by,4.5);
+  return p32svg(340,190,s,"River diagram: a boat velocity across the river, a current along the river, and the shore reference points named in the question");
+}
+function p32figAircraft(va,vw,mode){
+  var O=[86,168], s="";
+  s+=p32line(30,168,310,168,FIG_INK,1.1)+p32line(86,182,86,22,FIG_INK,1.1);
+  s+=p32t(300,158,"E",11,true)+p32t(96,30,"N",11,true);
+  if(mode==="heading"){
+    s+=p32arrow(O[0],O[1],O[0]-44,O[1]-96,FIG_ACC,2.4)+p32t(O[0]-64,O[1]-58,gF(va)+" km/h",11,true);
+    s+=p32arrow(O[0]-44,O[1]-96,O[0]+34,O[1]-96,FIG_ALT,2.2)+p32t(O[0]+2,O[1]-108,gF(vw)+" km/h",11,false);
+    s+='<line x1="'+O[0]+'" y1="'+O[1]+'" x2="'+O[0]+'" y2="34" stroke="'+FIG_INK+'" stroke-width="2.2" stroke-dasharray="6 4"/>';
+    s+=p32arc(O[0],O[1],32,90,114)+p32t(O[0]-18,O[1]-40,"?",12,true);
+  } else {
+    s+=p32arrow(O[0],O[1],O[0],O[1]-104,FIG_ACC,2.4)+p32t(O[0]-10,O[1]-56,gF(va)+" km/h",11,true,"end");
+    s+=p32arrow(O[0],O[1]-104,O[0]+78,O[1]-104,FIG_ALT,2.2)+p32t(O[0]+42,O[1]-116,gF(vw)+" km/h",11,false);
+    s+='<line x1="'+O[0]+'" y1="'+O[1]+'" x2="'+fmt(O[0]+78,1)+'" y2="'+fmt(O[1]-104,1)+'" stroke="'+FIG_ALT+'" stroke-width="2.2" stroke-dasharray="6 4"/>';
+    s+=p32t(O[0]+46,O[1]-44,"?",13,true);
+  }
+  return p32svg(340,200,s,"Velocity triangle diagram for an aircraft in a crosswind, with the ground velocity dashed and unknown");
+}
+function p32figRoundTrip(d,vb,vc){
+  var s=p32rect(28,52,284,86,"#dcecf5",FIG_INK);
+  s+=p32arrow(60,76,282,76,FIG_ACC,2.4)+p32t(171,62,gF(d)+" m downstream",11,true);
+  s+=p32arrow(282,118,60,118,FIG_ALT,2.4)+p32t(171,134,gF(d)+" m upstream",11,true);
+  s+=p32t(171,160,"boat "+gF(vb)+" m/s in still water, current "+gF(vc)+" m/s",11,false);
+  return p32svg(340,175,s,"River diagram: a downstream leg and an equal upstream leg, with the boat speed and current speed labelled");
+}
+// --- Unit 1: projectiles ---
+function p32traj(x0,y0,x1,y1,sag){
+  var mx=(x0+x1)/2, my=Math.min(y0,y1)-sag;
+  return '<path d="M '+fmt(x0,1)+' '+fmt(y0,1)+' Q '+fmt(mx,1)+' '+fmt(my,1)+' '+fmt(x1,1)+' '+fmt(y1,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2" stroke-dasharray="6 4"/>';
+}
+function p32figCliff(hLabel,vLabel,rLabel,showTraj){
+  var s=p32rect(28,42,44,138,FIG_SHADE,FIG_INK);
+  s+=p32line(28,180,318,180,FIG_INK,2)+p32t(300,194,"water",10,false);
+  if(vLabel!==null&&vLabel!=="")s+=p32arrow(72,42,128,42,FIG_ACC,2.4)+p32t(104,28,vLabel,11,true);
+  else if(vLabel===null)s+=p32arrow(72,42,112,42,FIG_ACC,2.4);
+  if(showTraj)s+=p32traj(72,42,268,180,26);
+  s+=p32dot(268,180,4);
+  s+=p32bracketY(16,42,180,hLabel);
+  if(rLabel!==null&&rLabel!=="")s+=p32bracketX(72,268,196,rLabel);
+  return p32svg(330,212,s,"Cliff diagram: a horizontal launch from the top of a cliff, with the height and landing distance labelled as in the question");
+}
+function p32figLaunch(v,th,mode){
+  var s=p32line(24,182,316,182,FIG_INK,2), O=[58,182], rad=th*Math.PI/180, E=[O[0]+64*Math.cos(rad),O[1]-64*Math.sin(rad)];
+  s+=p32arrow(O[0],O[1],E[0],E[1],FIG_ACC,2.6)+p32t(E[0]+16,E[1]-8,gF(v)+" m/s",11,true);
+  s+=p32arc(O[0],O[1],36,0,th)+p32t(O[0]+50,O[1]-10,th+"\u00B0",11,true);
+  if(mode==="components"){
+    s+=p32line(O[0],O[1],E[0],O[1],FIG_INK,1.6,true)+p32line(E[0],O[1],E[0],E[1],FIG_INK,1.6,true);
+    s+=p32t(E[0]+10,(O[1]+E[1])/2,"?",13,true,"start");
+  }
+  if(mode==="maxheight"){
+    s+=p32traj(O[0],O[1],282,O[1],86);
+    s+=p32bracketY(288,182-86,182,"?")+p32line(58,96,282,96,FIG_INK,1.1,true);
+  }
+  if(mode==="range"){
+    s+=p32traj(O[0],O[1],282,O[1],86);
+    s+=p32bracketX(O[0],282,200,"?");
+  }
+  return p32svg(330,216,s,"Launch diagram: a projectile launched at the drawn speed and angle, with the asked quantity marked as unknown");
+}
+function p32figFence(v,th,d,hf){
+  var s=p32line(24,182,316,182,FIG_INK,2), O=[58,182], rad=th*Math.PI/180, E=[O[0]+56*Math.cos(rad),O[1]-56*Math.sin(rad)];
+  s+=p32arrow(O[0],O[1],E[0],E[1],FIG_ACC,2.6)+p32t(E[0]+14,E[1]-6,gF(v)+" m/s",11,true);
+  s+=p32arc(O[0],O[1],32,0,th)+p32t(O[0]+46,O[1]-8,th+"\u00B0",11,true);
+  s+=p32rect(238,112,7,70,FIG_ALT,FIG_INK)+p32bracketY(262,112,182,gF(hf)+" m");
+  s+=p32bracketX(O[0],242,200,gF(d)+" m");
+  s+=p32t(242,100,"fence",10,true);
+  return p32svg(330,216,s,"Diagram: a ball launched toward a fence at the drawn distance and height. No flight path is drawn, so the diagram does not show whether the ball clears the fence");
+}
+function p32figMom2D(lab1,lab2,third){
+  var s="";
+  if(third){
+    var C=[158,108];
+    s+=p32dot(C[0],C[1],5.5,FIG_ALT)+p32t(C[0]+12,C[1]-14,"explosion",10,false,"start");
+    s+=p32arrow(C[0],C[1],C[0]+104,C[1],FIG_ACC,2.4)+p32t(C[0]+54,C[1]+18,lab1,11,true);
+    s+=p32arrow(C[0],C[1],C[0],C[1]-84,FIG_ACC,2.4)+p32t(C[0]-8,C[1]-44,lab2,11,true,"end");
+    s+=p32arrow(C[0],C[1],C[0]-74,C[1]+60,FIG_ALT,2.4)+p32t(C[0]-84,C[1]+78,third,11,true);
+    return p32svg(330,196,s,"Explosion diagram: two pieces fly east and north as stated, and the third piece flies in the opposite combined direction with its speed unknown");
+  }
+  var O=[70,164];
+  s+=p32arrow(O[0],O[1],O[0]+118,O[1],FIG_ACC,2.4)+p32t(O[0]+60,O[1]+18,lab1,11,true);
+  s+=p32arrow(O[0],O[1],O[0],O[1]-108,FIG_ACC,2.4)+p32t(O[0]-8,O[1]-58,lab2,11,true,"end");
+  s+='<line x1="'+O[0]+'" y1="'+O[1]+'" x2="'+fmt(O[0]+118,1)+'" y2="'+fmt(O[1]-108,1)+'" stroke="'+FIG_ALT+'" stroke-width="2.4" stroke-dasharray="6 4"/>';
+  s+=p32t(O[0]+86,O[1]-62,"?",13,true);
+  return p32svg(330,196,s,"Momentum diagram: perpendicular east and north momenta, with the combined direction shown dashed and its value unknown");
+}
+// --- Unit 2: circular motion, inclines, torques ---
+function p32figCircleTop(rLabel,vLabel,mLabel,withString){
+  var s=p32circ(158,102,72,"none",FIG_INK,2.2);
+  s+=p32dot(158,102,3.5);
+  if(withString)s+=p32line(158,102,230,102,FIG_INK,2);
+  else s+=p32line(158,102,230,102,FIG_INK,1.5,true);
+  s+=p32t(194,90,rLabel,11,true);
+  s+=p32dot(230,102,6,FIG_ACC);
+  if(vLabel)s+=p32arrow(230,102,230,44,FIG_ACC,2.3)+p32t(246,66,vLabel,11,true,"start");
+  if(mLabel)s+=p32t(230,124,mLabel,11,true);
+  return p32svg(330,195,s,"Diagram of circular motion, with the radius and the values named in the question labelled");
+}
+function p32figLoop(r,v,m,pos){
+  var top=(pos==="top"), bx=164, by=top?32:176;
+  var s=p32circ(164,104,72,"none",FIG_INK,2.4);
+  s+=p32line(164,104,bx,by,FIG_INK,1.5,true)+p32t(176,top?66:142,gF(r)+" m",11,true,"start");
+  s+=p32dot(bx,by,7,FIG_ACC);
+  if(v)s+=p32arrow(bx,by,bx+52,by,FIG_ACC,2.3)+p32t(bx+30,by+(top?-14:20),gF(v)+" m/s",11,true);
+  if(m)s+=p32t(bx-12,by+(top?-14:20),gF(m)+" kg",11,true,"end");
+  s+=p32line(60,188,268,188,FIG_INK,1.4);
+  return p32svg(330,200,s,"Side view diagram of a ball at the "+pos+" of a vertical loop, with radius and speed labelled");
+}
+function p32figDip(r,v,m){
+  var s='<path d="M 52 62 A 118 118 0 0 0 276 62" fill="none" stroke="'+FIG_INK+'" stroke-width="2.6"/>';
+  s+=p32line(164,52,164,170,FIG_INK,1.4,true)+p32t(176,112,gF(r)+" m",11,true,"start");
+  s+=p32dot(164,52,3);
+  s+=p32dot(164,170,7,FIG_ACC);
+  s+=p32arrow(164,170,222,170,FIG_ACC,2.3)+p32t(198,156,gF(v)+" m/s",11,true);
+  if(m)s+=p32t(164,192,gF(m)+" kg",11,true);
+  return p32svg(330,204,s,"Side view diagram of the bottom of a bowl shaped dip, with radius, speed and mass labelled");
+}
+function p32figCrestDip(kind){
+  var s="";
+  if(kind==="loop"){
+    s+=p32circ(165,98,62,"none",FIG_INK,2.6)+p32dot(165,36,7,FIG_ACC)+p32arrow(165,36,215,36,FIG_ACC,2.2);
+    s+=p32t(165,182,"top of the loop, at the minimum speed",10,false);
+    return p32svg(330,195,s,"Diagram: a car at the top of a vertical loop at the minimum speed named in the question");
+  }
+  if(kind==="crest")s+='<path d="M 40 150 A 150 150 0 0 1 290 150" fill="none" stroke="'+FIG_INK+'" stroke-width="2.6"/>';
+  else if(kind==="dip")s+='<path d="M 40 60 A 150 150 0 0 0 290 60" fill="none" stroke="'+FIG_INK+'" stroke-width="2.6"/>';
+  else s+=p32line(40,130,290,130,FIG_INK,2.6);
+  var cy=(kind==="crest")?58:(kind==="dip")?168:118;
+  s+=p32dot(165,cy,7,FIG_ACC)+p32arrow(165,cy,215,cy,FIG_ACC,2.2);
+  return p32svg(330,195,s,"Road profile diagram named in the question, with a vehicle at the named point");
+}
+function p32figBanked(v,r){
+  var s=p32line(46,168,286,168,FIG_INK,1.4);
+  s+=p32line(66,150,272,74,FIG_INK,2.8);
+  s+=p32line(240,168,272,168,FIG_INK,1.3,true)+p32line(240,168,272,74,FIG_INK,1.1,true);
+  s+=p32arc(240,168,34,0,20)+p32t(212,158,"?",13,true);
+  s+=p32circ(178,104,9,FIG_SHADE,FIG_INK);
+  s+=p32t(90,44,"speed "+gF(v)+" m/s",11,true,"start")+p32t(90,62,"curve radius "+gF(r)+" m",11,false,"start");
+  return p32svg(330,185,s,"Cross section diagram of a banked curve. The banking angle is the unknown and the slope is drawn schematically, not to scale");
+}
+function p32figIncline(ang,mLabel,extra){
+  var rad=ang*Math.PI/180, x2=292, y2=178-218*Math.tan(rad); if(y2<52)y2=52;
+  var s=p32line(36,178,x2,178,FIG_INK,1.6)+p32line(36,178,x2,y2,FIG_INK,2.6)+p32line(x2,178,x2,y2,FIG_INK,1.2);
+  s+=p32arc(36,178,40,0,ang)+p32t(84,166,ang+"\u00B0",11,true);
+  var bx=36+(x2-36)*0.52, by=178-(178-y2)*0.52;
+  s+='<g transform="rotate('+(-ang)+' '+fmt(bx,1)+' '+fmt(by,1)+')">'+p32rect(bx-17,by-30,34,20,FIG_SHADE,FIG_INK)+'</g>';
+  if(mLabel)s+=p32t(bx+2,by-44,mLabel,11,true);
+  if(extra==="components"){
+    s+=p32arrow(bx,by-10,bx,by+42,FIG_ALT,2.2);
+    s+='<line x1="'+fmt(bx,1)+'" y1="'+fmt(by-10,1)+'" x2="'+fmt(bx+52*Math.cos(rad),1)+'" y2="'+fmt(by-10+52*Math.sin(rad),1)+'" stroke="'+FIG_INK+'" stroke-width="2" stroke-dasharray="5 4"/>';
+    s+=p32t(bx+62,by+22,"?",13,true);
+  }
+  if(extra==="friction"){
+    var ux=Math.cos(rad), uy=-Math.sin(rad);
+    s+=p32arrow(bx-ux*36,by-uy*36-12,bx-ux*6,by-uy*6-12,FIG_ALT,2.2)+p32t(bx-ux*44,by-uy*44-20,"friction",10,false);
+    s+=p32arrow(bx,by-10,bx,by+38,FIG_INK,2.0);
+  }
+  if(extra==="push"){
+    var ux2=Math.cos(rad), uy2=-Math.sin(rad);
+    s+=p32arrow(bx-ux2*58,by-uy2*58-12,bx-ux2*22,by-uy2*22-12,FIG_ACC,2.4)+p32t(bx-ux2*66,by-uy2*66-20,"push",10,false);
+    s+=p32arrow(bx+ux2*22,by+uy2*22-12,bx+ux2*54,by+uy2*54-12,FIG_ALT,2.2)+p32t(bx+ux2*62,by+uy2*62+2,"friction",10,false,"start");
+  }
+  return p32svg(330,196,s,"Incline diagram at the drawn angle, with the block and the forces named in the question");
+}
+function p32figPulleyH(mt,mh){
+  var s=p32line(30,96,238,96,FIG_INK,2.6)+p32line(30,96,30,150,FIG_INK,1.4)+p32line(238,96,238,150,FIG_INK,1.4);
+  s+=p32rect(96,74,44,22,FIG_SHADE,FIG_INK)+p32t(118,62,gF(mt)+" kg",11,true);
+  s+=p32circ(244,102,10,"none",FIG_INK,2);
+  s+=p32line(140,82,244,94,FIG_INK,1.6)+p32line(254,102,254,140,FIG_INK,1.6);
+  s+=p32rect(236,140,36,24,FIG_SHADE,FIG_INK)+p32t(254,178,gF(mh)+" kg",11,true);
+  s+=p32t(150,40,"frictionless table",10,false);
+  return p32svg(330,192,s,"Diagram: a block on a horizontal table connected over a pulley to a hanging mass, with both masses labelled");
+}
+function p32figPulleyIncline(mi,mh,ang,mu){
+  var rad=ang*Math.PI/180, x2=268, y2=178-190*Math.tan(rad); if(y2<46)y2=46;
+  var s=p32line(30,178,296,178,FIG_INK,1.6)+p32line(30,178,x2,y2,FIG_INK,2.6);
+  s+=p32arc(30,178,38,0,ang)+p32t(76,166,ang+"\u00B0",11,true);
+  var bx=30+(x2-30)*0.42, by=178-(178-y2)*0.42;
+  s+='<g transform="rotate('+(-ang)+' '+fmt(bx,1)+' '+fmt(by,1)+')">'+p32rect(bx-16,by-28,32,19,FIG_SHADE,FIG_INK)+'</g>';
+  s+=p32t(bx,by-42,gF(mi)+" kg",11,true);
+  s+=p32line(bx,by-24,x2,y2+4,FIG_INK,1.6)+p32circ(x2+4,y2+2,9,"none",FIG_INK,2);
+  s+=p32line(x2+13,y2+2,x2+13,y2+52,FIG_INK,1.6)+p32rect(x2-4,y2+52,34,23,FIG_SHADE,FIG_INK);
+  s+=p32t(x2+13,y2+90,gF(mh)+" kg",11,true);
+  s+=p32t(150,196,"mu_k = "+gF(mu),10,false);
+  return p32svg(330,206,s,"Diagram: a block on an incline connected up the slope over a pulley to a hanging mass, with masses, angle and friction coefficient labelled");
+}
+function p32figWrench(F,d,phi){
+  var dx=70+d*300, s=p32circ(66,118,13,"none",FIG_INK,2.4)+p32dot(66,118,3);
+  s+=p32line(66,118,dx,118,FIG_INK,3);
+  s+=p32bracketX(66,dx,148,gF(d)+" m");
+  if(phi===null){
+    s+=p32arrow(dx,74,dx,112,FIG_ALT,2.5)+p32t(dx+10,66,gF(F)+" N",11,true,"start");
+  } else {
+    var rad=phi*Math.PI/180, sx=dx+58*Math.cos(rad), sy=118-58*Math.sin(rad);
+    s+=p32arrow(sx,sy,dx,118,FIG_ALT,2.5)+p32t(sx+8,sy-8,gF(F)+" N",11,true,"start");
+    s+=p32line(dx,118,dx+52,118,FIG_INK,1.2,true)+p32arc(dx,118,38,0,phi)+p32t(dx+50,96,phi+"\u00B0",11,true,"start");
+  }
+  return p32svg(340,168,s,"Wrench diagram: a force applied at the end of a handle at the drawn distance, and at the drawn angle where the question gives one");
+}
+function p32figSign(L,m,d){
+  var x1=64,x2=272, cmx=x1+(d/L)*(x2-x1);
+  var s=p32line(40,30,296,30,FIG_INK,2.4);
+  s+=p32line(x1,30,x1,74,FIG_INK,1.8)+p32line(x2,30,x2,74,FIG_INK,1.8);
+  s+=p32rect(x1,74,x2-x1,52,FIG_SHADE,FIG_INK)+p32t((x1+x2)/2,104,gF(m)+" kg sign",12,true);
+  s+=p32dot(cmx,100,4.5,FIG_ALT)+p32line(cmx,74,cmx,126,FIG_ALT,1.4,true);
+  s+=p32bracketX(x1,x2,20,"span "+gF(L)+" m");
+  s+=p32bracketX(x1,cmx,142,"centre of mass "+gF(d)+" m from left wire");
+  return p32svg(340,158,s,"Diagram: a sign hanging from two vertical wires, with the span and the centre of mass position labelled");
+}
+function p32figSeesaw(m1,d1,m2){
+  var s=p32line(38,86,302,86,FIG_INK,3);
+  s+='<polygon points="170,88 154,118 186,118" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=p32line(30,118,310,118,FIG_INK,1.4);
+  var lx=170-d1*52;
+  s+=p32circ(lx,66,9,FIG_SHADE,FIG_INK)+p32t(lx,48,gF(m1)+" kg",11,true);
+  s+=p32circ(238,66,9,FIG_SHADE,FIG_INK)+p32t(238,48,gF(m2)+" kg",11,true);
+  s+=p32bracketX(lx,170,132,gF(d1)+" m")+p32bracketX(170,238,132,"?");
+  s+=p32t(170,140,"pivot",9,false);
+  return p32svg(330,150,s,"Seesaw diagram: one child at the drawn distance, the balancing distance of the second child marked as unknown");
+}
+function p32figMetreStick(p,ms){
+  var x0=42,x1=302, px=x0+p*260;
+  var s=p32rect(x0,82,x1-x0,16,FIG_SHADE,FIG_INK);
+  [0,0.25,0.5,0.75,1].forEach(function(f){var x=x0+f*260;s+=p32line(x,82,x,92,FIG_INK,1.2)+p32t(x,72,Math.round(f*100)+" cm",9,false);});
+  s+='<polygon points="'+fmt(px,1)+',100 '+fmt(px-11,1)+',124 '+fmt(px+11,1)+',124" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=p32line(x0,98,x0,122,FIG_INK,1.6)+p32rect(x0-13,122,26,18,FIG_ALT,FIG_INK)+p32t(x0,154,"?",12,true);
+  s+=p32dot(x0+130,90,4,FIG_ALT)+p32t(x0+130,112,"centre, 50 cm",9,false);
+  s+=p32t(220,140,"stick "+gF(ms)+" kg, pivot at "+fmt(p*100,0)+" cm",10,false);
+  return p32svg(330,162,s,"Metre stick diagram: a uniform stick pivoted at the drawn mark, with a balancing mass hung at the zero end");
+}
+function p32figBeam(L,mb,ml,x){
+  var x0=52,x1=52+L*62, cx=x0+(x/L)*(x1-x0);
+  var s=p32line(x0,96,x1,96,FIG_INK,4);
+  s+='<polygon points="'+x0+',100 '+(x0-12)+',124 '+(x0+12)+',124" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="'+x1+',100 '+(x1-12)+',124 '+(x1+12)+',124" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=p32rect(cx-16,68,32,26,FIG_SHADE,FIG_INK)+p32t(cx,56,gF(ml)+" kg crate",11,true);
+  s+=p32bracketX(x0,cx,140,gF(x)+" m")+p32bracketX(x0,x1,158,gF(L)+" m");
+  s+=p32t((x0+x1)/2,84,"plank "+gF(mb)+" kg",10,false);
+  return p32svg(340,172,s,"Beam diagram: a uniform plank on two end supports, with a crate at the drawn position");
+}
+function p32figBridge(mb,mw){
+  var s=p32line(52,100,288,100,FIG_INK,4);
+  s+='<polygon points="52,104 40,128 64,128" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="288,104 276,128 300,128" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=p32circ(170,66,8,FIG_SHADE,FIG_INK)+p32line(170,74,170,98,FIG_INK,2)+p32t(170,48,gF(mw)+" kg worker",11,true);
+  s+=p32t(170,146,"plank "+gF(mb)+" kg",11,false);
+  return p32svg(330,158,s,"Bridge diagram: a uniform plank on two supports with a worker standing at its centre");
+}
+function p32figLadder(m,ang,L){
+  var rad=ang*Math.PI/180, fx=92, fy=178, tx=fx+150*Math.cos(rad), ty=fy-150*Math.sin(rad);
+  var s=p32line(30,178,306,178,FIG_INK,2)+p32line(tx+22,178,tx+22,26,FIG_INK,2.4);
+  s+=p32line(fx,fy,tx,ty,FIG_INK,3.2);
+  for(var i=1;i<=4;i++){var t=i/5;s+=p32line(fx+(tx-fx)*t,fy+(ty-fy)*t,fx+(tx-fx)*t+10,fy+(ty-fy)*t-4,FIG_INK,1.2);}
+  s+=p32arc(fx,fy,36,0,ang)+p32t(fx+48,fy-10,ang+"\u00B0",11,true);
+  s+=p32t((fx+tx)/2-16,(fy+ty)/2,gF(L)+" m, "+gF(m)+" kg",11,true,"end");
+  s+=p32t(tx+30,60,"smooth wall",10,false,"start");
+  return p32svg(330,192,s,"Ladder diagram: a uniform ladder leaning against a smooth wall at the drawn angle, with length and mass labelled");
+}
+
+// --- Unit 3: circuits ---
+function p32resistorH(x,y,len,label){ // horizontal zigzag resistor centred at x,y
+  var s='<polyline points="'+fmt(x-len/2,1)+','+y+' '+fmt(x-len/2+6,1)+','+y+' '+fmt(x-len/2+11,1)+','+(y-8)+' '+fmt(x-len/2+19,1)+','+(y+8)+' '+fmt(x-len/2+27,1)+','+(y-8)+' '+fmt(x-len/2+35,1)+','+(y+8)+' '+fmt(x-len/2+41,1)+','+y+' '+fmt(x+len/2,1)+','+y+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(label)s+=p32t(x,y-16,label,11,true);
+  return s;
+}
+function p32resistorV(x,y,len,label){ // vertical zigzag resistor
+  var s='<polyline points="'+x+','+fmt(y-len/2,1)+' '+x+','+fmt(y-len/2+6,1)+' '+(x-8)+','+fmt(y-len/2+11,1)+' '+(x+8)+','+fmt(y-len/2+19,1)+' '+(x-8)+','+fmt(y-len/2+27,1)+' '+(x+8)+','+fmt(y-len/2+35,1)+' '+x+','+fmt(y-len/2+41,1)+' '+x+','+fmt(y+len/2,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(label)s+=p32t(x+14,y,label,11,true,"start");
+  return s;
+}
+function p32rawV(V){return (typeof V==="number"&&Math.round(V)===V)?String(V):gF(V);} // stem-exact label: integers print raw, other values at house precision
+function p32batteryV(x,y,V){ // battery on a vertical wire segment
+  var s=p32line(x,y-26,x,y-4,FIG_INK,2)+p32line(x,y+4,x,y+26,FIG_INK,2);
+  s+=p32line(x-14,y-4,x+14,y-4,FIG_INK,2.6)+p32line(x-6,y+4,x+6,y+4,FIG_INK,2.6);
+  s+=p32t(x-10,y,(V!==null&&V!=="")?p32rawV(V)+" V":"",11,true,"end");
+  return s;
+}
+function p32figCircuitSeries(V,labels){
+  var top=52, bot=152, x0=64, x1=276, s="";
+  s+=p32line(x0,top,x1,top,FIG_INK,2)+p32line(x1,top,x1,bot,FIG_INK,2)+p32line(x1,bot,x0,bot,FIG_INK,2);
+  var n=labels.length;
+  for(var i=0;i<n;i++){var cx=x0+(x1-x0)*(i+0.5)/n; s+=p32resistorH(cx,top,52,labels[i]);}
+  s+=p32line(x0,bot,x0,top,FIG_INK,2);
+  s+=p32batteryV(x0,(top+bot)/2,V);
+  return p32svg(340,178,s,"Circuit diagram: a source in series with the resistors named in the question, values labelled");
+}
+function p32figCircuitParallel(V,r1,r2){
+  var s=p32line(64,48,276,48,FIG_INK,2)+p32line(64,156,276,156,FIG_INK,2);
+  s+=p32line(64,48,64,156,FIG_INK,2)+p32batteryV(64,102,V);
+  s+=p32line(150,48,150,156,FIG_INK,2)+p32resistorV(150,102,52,p32rawV(r1)+" \u03A9");
+  s+=p32line(240,48,240,156,FIG_INK,2)+p32resistorV(240,102,52,p32rawV(r2)+" \u03A9");
+  s+=p32dot(150,48,3.5)+p32dot(240,48,3.5)+p32dot(150,156,3.5)+p32dot(240,156,3.5);
+  return p32svg(340,180,s,"Circuit diagram: a source across two parallel branches, with each branch resistance labelled");
+}
+function p32figCircuitCombo(V,r1,r2,r3){
+  var s=p32line(56,48,286,48,FIG_INK,2)+p32line(56,156,286,156,FIG_INK,2);
+  s+=p32line(56,48,56,156,FIG_INK,2)+p32batteryV(56,102,V);
+  s+=p32resistorH(112,48,52,p32rawV(r1)+" \u03A9");
+  s+=p32line(196,48,196,84,FIG_INK,2)+p32line(196,120,196,156,FIG_INK,2)+p32resistorV(196,102,36,p32rawV(r2)+" \u03A9");
+  s+=p32line(262,48,262,84,FIG_INK,2)+p32line(262,120,262,156,FIG_INK,2)+p32resistorV(262,102,36,p32rawV(r3)+" \u03A9");
+  s+=p32line(196,48,262,48,FIG_INK,2)+p32line(196,156,262,156,FIG_INK,2);
+  s+=p32line(286,48,286,156,FIG_INK,2);
+  return p32svg(340,180,s,"Circuit diagram: one resistor in series with a parallel pair, all values labelled as in the question");
+}
+function p32figJunction(a,b,c){
+  var cx=168, cy=102, s="";
+  s+=p32arrow(52,64,cx-14,cy-6,FIG_ACC,2.3)+p32t(76,48,fmt(a,2)+" A in",11,true);
+  s+=p32arrow(52,142,cx-14,cy+6,FIG_ACC,2.3)+p32t(76,162,fmt(b,2)+" A in",11,true);
+  s+=p32arrow(cx+14,cy-6,284,64,FIG_ALT,2.3)+p32t(258,48,fmt(c,2)+" A out",11,true);
+  s+=p32arrow(cx+14,cy+6,284,142,FIG_ALT,2.3)+p32t(258,162,"? A out",11,true);
+  s+=p32dot(cx,cy,6,FIG_INK)+p32t(cx,cy-18,"junction",10,true);
+  return p32svg(340,180,s,"Junction diagram: two currents flow in, one known current and one unknown current flow out");
+}
+function p32figLoopDrops(emf,v1,v2){
+  var s=p32line(64,52,276,52,FIG_INK,2)+p32line(276,52,276,152,FIG_INK,2)+p32line(276,152,64,152,FIG_INK,2)+p32line(64,152,64,52,FIG_INK,2);
+  s+=p32batteryV(64,102,emf);
+  s+=p32resistorH(128,52,52,"drop "+fmt(v1,2)+" V")+p32resistorH(216,52,52,"drop "+fmt(v2,2)+" V");
+  s+=p32resistorH(170,152,52,"drop ? V");
+  return p32svg(340,178,s,"Loop diagram: a battery and three resistors in series, with two potential drops given and the third unknown");
+}
+// --- Unit 3: charges and fields ---
+function p32figPointCharge(Q,r){
+  var s=p32circ(140,102,15,FIG_SHADE,FIG_INK)+p32t(140,102,"+"+gF(Q),11,true);
+  for(var i=0;i<8;i++){var a=i*Math.PI/4;s+=p32line(140+20*Math.cos(a),102+20*Math.sin(a),140+52*Math.cos(a),102+52*Math.sin(a),FIG_INK,1.3);}
+  s+=p32t(140,66,"+"+gF(Q)+" \u03BCC",11,true);
+  s+=p32dot(252,102,4.5,FIG_ALT)+p32t(252,84,"P",12,true);
+  s+=p32bracketX(140,252,140,gF(r)+" m");
+  return p32svg(330,158,s,"Diagram: a single positive point charge with radial field lines and a point P at the drawn distance");
+}
+function p32figMidway(q1,q2,d,opp){
+  var s=p32circ(74,96,15,FIG_SHADE,FIG_INK)+p32t(74,96,"+",12,true)+p32t(74,66,"A: +"+gF(q1)+" \u03BCC",11,true);
+  s+=p32circ(266,96,15,FIG_SHADE,FIG_INK)+p32t(266,96,opp?"\u2212":"+",12,true)+p32t(266,66,"B: "+(opp?"\u2212":"+")+gF(q2)+" \u03BCC",11,true);
+  s+=p32line(89,96,251,96,FIG_INK,1.3)+p32dot(170,96,4.5,FIG_ALT)+p32t(170,80,"midway P",11,true);
+  s+=p32bracketX(74,266,128,gF(d)+" m");
+  return p32svg(340,148,s,"Diagram: two charges separated by the drawn distance, with the midway point marked");
+}
+function p32figTwoChargesPoint(q1,q2,d1,d2){
+  var nx=52, px=52+Math.round((d2-d1)/d2*150), Px=278;
+  var s=p32circ(nx,92,14,FIG_SHADE,FIG_INK)+p32t(nx,92,"\u2212",12,true)+p32t(nx,62,"\u2212"+gF(q2)+" \u03BCC",11,true);
+  s+=p32circ(px,92,14,FIG_SHADE,FIG_INK)+p32t(px,92,"+",12,true)+p32t(px,62,"+"+gF(q1)+" \u03BCC",11,true);
+  s+=p32line(nx+14,92,Px,92,FIG_INK,1.2)+p32dot(Px,92,4.5,FIG_ALT)+p32t(Px,74,"P",12,true);
+  s+=p32bracketX(px,Px,124,gF(d1)+" m")+p32bracketX(nx,Px,148,gF(d2)+" m");
+  return p32svg(340,168,s,"Diagram: a negative and a positive charge on a line, with point P beyond the positive charge at the drawn distances");
+}
+function p32figZeroPoint(q1,q2,d){
+  var s=p32circ(70,92,14,FIG_SHADE,FIG_INK)+p32t(70,92,"+",12,true)+p32t(70,62,"+"+gF(q1)+" \u03BCC (smaller)",10,true);
+  s+=p32circ(270,92,16,FIG_SHADE,FIG_INK)+p32t(270,92,"+",12,true)+p32t(270,62,"+"+gF(q2)+" \u03BCC",11,true);
+  s+=p32line(84,92,254,92,FIG_INK,1.2);
+  s+=p32dot(158,92,4.5,FIG_ALT)+p32t(158,74,"zero field point",10,true);
+  s+=p32bracketX(70,270,124,gF(d)+" m")+p32bracketX(70,158,148,"?");
+  s+=p32t(170,166,"point drawn schematically, not to scale",9,false);
+  return p32svg(340,176,s,"Diagram: two positive charges with a zero field point between them. The point is drawn schematically and its distance is unknown");
+}
+function p32figTwoSpheres(lab1,lab2,distLabel){
+  var s=p32circ(96,92,17,FIG_SHADE,FIG_INK)+p32t(96,92,lab1.indexOf("-")===0||lab1.indexOf("\u2212")===0?"\u2212":"+",12,true)+p32t(96,58,lab1,11,true);
+  s+=p32circ(244,92,17,FIG_SHADE,FIG_INK)+p32t(244,92,lab2.indexOf("-")===0||lab2.indexOf("\u2212")===0?"\u2212":"+",12,true)+p32t(244,58,lab2,11,true);
+  s+=p32line(113,92,227,92,FIG_INK,1.2)+p32bracketX(96,244,128,distLabel);
+  return p32svg(340,146,s,"Diagram: two charged spheres with the separation labelled as in the question");
+}
+function p32figCollinear3(qA,qB,qC,dAB,dBC){
+  var tot=dAB+dBC, ax=48, bx=ax+Math.round(dAB/tot*200), cx=ax+244;
+  var s="";
+  [[ax,qA,"A"],[bx,qB,"B"],[cx,qC,"C"]].forEach(function(c){
+    s+=p32circ(c[0],90,14,FIG_SHADE,FIG_INK)+p32t(c[0],90,"+",11,true)+p32t(c[0],60,c[2]+": +"+gF(c[1])+" \u03BCC",10,true);
+  });
+  s+=p32line(ax+14,90,cx-14,90,FIG_INK,1.2);
+  s+=p32bracketX(ax,bx,122,gF(dAB)+" m")+p32bracketX(bx,cx,122,gF(dBC)+" m");
+  s+=p32t(bx,140,"net force on B: ?",11,true);
+  return p32svg(340,152,s,"Diagram: three positive charges on a line in the order A, B, C, with both separations labelled");
+}
+function p32figChargeTriangle(cornerLabel,sideLabA,sideLabB,a,b){
+  var Px=84, Py=140, Ax=84, Ay=56, Bx=238, By=140;
+  var s=p32line(Px,Py,Ax,Ay,FIG_INK,1.6)+p32line(Px,Py,Bx,By,FIG_INK,1.6)+p32line(Ax,Ay,Bx,By,FIG_INK,1.1,true);
+  s+=p32line(Px,Py,Px+16,Py,FIG_INK,1.2)+p32line(Px+16,Py,Px+16,Py-16,FIG_INK,1.2)+p32line(Px,Py-16,Px+16,Py-16,FIG_INK,1.2);
+  s+=p32circ(Px,Py,13,FIG_SHADE,FIG_INK)+p32t(Px,Py,"+",10,true)+p32t(Px-6,Py+26,cornerLabel,11,true,"end");
+  s+=p32circ(Ax,Ay,13,FIG_SHADE,FIG_INK)+p32t(Ax,Ay,"+",10,true)+p32t(Ax,Ay-24,sideLabB,11,true);
+  s+=p32circ(Bx,By,13,FIG_SHADE,FIG_INK)+p32t(Bx,By,"+",10,true)+p32t(Bx,By-24,sideLabA,11,true);
+  s+=p32t((Px+Bx)/2,Py+18,gF(a)+" m",11,true)+p32t(Px-10,(Py+Ay)/2,gF(b)+" m",11,true,"end");
+  return p32svg(330,178,s,"Right triangle diagram: charges at the corners, with the two side distances from the corner charge labelled");
+}
+function p32figFieldLinesVar(kind){
+  var s="";
+  if(kind==="posneg"){
+    s+=p32circ(92,100,15,FIG_SHADE,FIG_INK)+p32t(92,100,"+",12,true)+p32t(92,72,"positive",10,true);
+    s+=p32circ(248,100,15,FIG_SHADE,FIG_INK)+p32t(248,100,"\u2212",12,true)+p32t(248,72,"negative",10,true);
+    [-36,-18,0,18,36].forEach(function(dy){s+='<path d="M 110 '+fmt(100+dy,1)+' Q 170 '+fmt(100+dy*1.25,1)+' 230 '+fmt(100+dy,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';});
+  } else if(kind==="density"){
+    s+=p32circ(170,100,14,FIG_SHADE,FIG_INK)+p32t(170,100,"+",12,true);
+    for(var i=0;i<12;i++){var a=i*Math.PI/6;s+=p32line(170+19*Math.cos(a),100+19*Math.sin(a),170+58*Math.cos(a),100+58*Math.sin(a),FIG_INK,1.3);}
+    s+=p32t(170,178,"lines crowd near the charge, spread far away",10,false);
+  } else if(kind==="uniform"){
+    [64,88,112,136].forEach(function(y){s+=p32line(70,y,270,y,FIG_INK,1.5);});
+    s+=p32rect(52,52,10,96,FIG_SHADE,FIG_INK)+p32rect(278,52,10,96,FIG_SHADE,FIG_INK);
+    s+=p32t(57,40,"+",12,true)+p32t(283,40,"\u2212",12,true);
+    s+=p32dot(170,100,5,FIG_ALT)+p32t(170,82,"+ test charge",10,true);
+  } else {
+    s+=p32circ(170,100,58,"none",FIG_INK,2.6)+p32circ(170,100,57,"none",FIG_INK,1);
+    s+=p32t(170,100,"hollow inside",11,true)+p32t(170,178,"closed hollow conductor",10,false);
+  }
+  return p32svg(340,188,s,"Electric field line diagram of the kind named in the question");
+}
+function p32figBarMagnet(withCore){
+  var s=p32rect(104,88,132,34,FIG_SHADE,FIG_INK)+p32line(170,88,170,122,FIG_INK,1.6);
+  s+=p32t(137,105,"S",13,true)+p32t(203,105,"N",13,true);
+  [-1,1].forEach(function(sg){
+    [26,48].forEach(function(off){
+      s+='<path d="M 236 '+fmt(105+sg*6,1)+' C 268 '+fmt(105+sg*off,1)+', 72 '+fmt(105+sg*off,1)+', 104 '+fmt(105+sg*6,1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+    });
+  });
+  s+=p32line(122,88,122,64,FIG_INK,1.2)+p32line(218,88,218,64,FIG_INK,1.2);
+  if(withCore)s+=p32t(170,150,"field lines drawn without arrowheads",9,false);
+  return p32svg(340,162,s,"Bar magnet diagram: field lines loop outside the magnet from one pole around to the other, closest together near the poles");
+}
+function p32figWireCircles(){
+  var s=p32circ(170,100,7,FIG_SHADE,FIG_INK)+p32t(170,100,"",10,true);
+  [30,52,74].forEach(function(r){s+=p32circ(170,100,r,"none",FIG_INK,1.4);});
+  s+=p32t(170,190,"wire cross section at centre",10,false);
+  return p32svg(340,198,s,"Diagram: concentric circular field lines around a long straight wire, drawn without arrowheads");
+}
+function p32figCompassWire(horizontal){
+  var s="";
+  if(horizontal){
+    s+=p32line(40,64,300,64,FIG_INK,2.6)+p32arrow(150,64,196,64,FIG_INK,2.2)+p32t(170,46,"wire, current north (along the wire)",10,true);
+    s+=p32circ(170,138,22,"none",FIG_INK,2)+p32dot(170,138,3)+p32t(170,176,"compass below the wire",10,true);
+  } else {
+    s+=p32line(110,26,110,176,FIG_INK,2.6)+p32arrow(110,110,110,66,FIG_INK,2.2)+p32t(110,196,"vertical wire, current upward",10,true);
+    s+=p32circ(216,102,22,"none",FIG_INK,2)+p32dot(216,102,3)+p32t(216,140,"compass",10,true);
+  }
+  return p32svg(340,206,s,"Diagram: a compass placed beside a current carrying wire, as described in the question");
+}
+function p32figSolenoid(N,L,I){
+  var s=p32rect(74,78,192,52,"none",FIG_INK,2);
+  for(var i=0;i<9;i++){var x=84+i*22;s+='<ellipse cx="'+x+'" cy="104" rx="7" ry="30" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';}
+  s+=p32line(50,104,290,104,FIG_INK,1.1,true);
+  s+=p32t(170,52,N+" turns over "+gF(L)+" m",11,true)+p32t(170,152,"current "+gF(I)+" A",11,true);
+  s+=p32t(60,104,"A",11,true,"end")+p32t(280,104,"B",11,true,"start");
+  return p32svg(340,166,s,"Solenoid diagram: a coil of the drawn number of turns and length, carrying the drawn current");
+}
+function p32figSolenoidEnd(ccw,turns){
+  var s=p32circ(160,98,54,"none",FIG_INK,2.4);
+  s+= ccw? p32arc(160,98,66,20,300) : p32arc(160,98,66,160,-120);
+  s+= ccw? p32arrow(160+66*Math.cos(300*Math.PI/180),98-66*Math.sin(300*Math.PI/180),160+66*Math.cos(332*Math.PI/180),98-66*Math.sin(332*Math.PI/180),FIG_ACC,2.2)
+         : p32arrow(160+66*Math.cos(-120*Math.PI/180),98-66*Math.sin(-120*Math.PI/180),160+66*Math.cos(-152*Math.PI/180),98-66*Math.sin(-152*Math.PI/180),FIG_ACC,2.2);
+  s+=p32dot(160,98,3.5)+p32t(160,98-70,"looking at end A",11,true);
+  s+=p32t(160,182,"current circulates "+(ccw?"counterclockwise":"clockwise")+", "+turns+" turns",11,false);
+  return p32svg(330,192,s,"End view diagram of a solenoid: the current circulates in the direction stated in the question around end A");
+}
+function p32figSolenoidCompass(kind){
+  var s=p32rect(64,80,150,48,"none",FIG_INK,2);
+  for(var i=0;i<6;i++){var x=76+i*22;s+='<ellipse cx="'+x+'" cy="104" rx="6" ry="28" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';}
+  if(kind==="inside"){
+    s+=p32circ(139,104,13,"none",FIG_ALT,2)+p32dot(139,104,2.5,FIG_ALT)+p32t(139,140,"compass inside",10,true);
+  } else if(kind==="core"){
+    s+=p32rect(64,94,150,20,"#9db8a6",FIG_INK)+p32t(139,146,"this one has an iron core",10,true);
+    s+=p32circ(252,104,16,"none",FIG_INK,2)+p32dot(252,104,2.5);
+  } else {
+    s+=p32t(76,66,"end A",11,true,"start");
+    s+=p32circ(252,104,16,"none",FIG_INK,2)+p32dot(252,104,2.5)+p32t(252,140,"compass on the axis",10,true);
+  }
+  return p32svg(330,160,s,"Diagram: a solenoid and a compass in the positions described in the question");
+}
+function p32figHandRule(variant){
+  var s="";
+  if(variant===3){
+    s+=p32line(36,84,304,84,FIG_INK,2.6)+p32arrow(150,84,198,84,FIG_INK,2.3)+p32t(170,62,"current toward the east",11,true);
+    s+=p32dot(170,140,5,FIG_ALT)+p32t(170,162,"P: on the table below the wire",11,true);
+  } else {
+    s+=p32line(150,22,150,168,FIG_INK,2.6);
+    if(variant===2)s+=p32arrow(150,80,150,124,FIG_INK,2.3)+p32t(150,186,"current downward",11,true);
+    else s+=p32arrow(150,124,150,80,FIG_INK,2.3)+p32t(150,186,"current upward",11,true);
+    var px=(variant===1)?92:208;
+    s+=p32dot(px,96,5,FIG_ALT)+p32t(px,74,"P",12,true)+p32t(px,186,variant===1?"west of the wire":"east of the wire",10,true);
+  }
+  return p32svg(330,198,s,"Diagram: a straight wire with the current direction stated in the question, and the point P at the stated position. The field direction at P is not drawn");
+}
+function p32figParallelWires(i1,i2,same){
+  var s=p32line(118,26,118,164,FIG_INK,2.6)+p32line(222,26,222,164,FIG_INK,2.6);
+  s+=p32arrow(118,120,118,78,FIG_ACC,2.3)+p32arrow(222,same?120:78,222,same?78:120,FIG_ACC,2.3);
+  s+=p32t(118,182,i1+" A",11,true)+p32t(222,182,i2+" A",11,true);
+  s+=p32t(170,16,"currents "+(same?"in the same direction":"in opposite directions"),11,true);
+  return p32svg(330,194,s,"Diagram: two long parallel wires carrying the drawn currents in the directions stated in the question");
+}
+function p32figForceDir(variant){
+  var s="", cx=160, cy=104;
+  if(variant===3){
+    s+=p32line(cx,168,cx,40,FIG_INK,2.4)+p32arrow(cx,120,cx,76,FIG_ACC,2.4)+p32t(cx-10,60,"current north",11,true,"end");
+    s+=p32arrow(216,cy,262,cy,FIG_ALT,2.3)+p32t(240,cy-14,"B east",11,true);
+    s+=p32dot(cx,cy,4.5);
+  } else {
+    var who=(variant===1)?"electron":"ion / proton";
+    s+=p32arrow(cx-62,cy,cx+30,cy,variant===2?FIG_INK:FIG_ACC,2.2);
+    if(variant===2){
+      s+=p32arrow(cx,140,cx,168,FIG_ALT,2.2)+p32t(cx+52,160,"B down",11,true);
+      s+=p32t(cx-16,cy-14,"moves north",11,true,"end");
+    } else {
+      s+=p32arrow(cx,cy+52,cx,cy-52,FIG_ALT,2.0);
+      s+=p32t(cx+14,cy-58,"B north",11,true,"start")+p32t(cx-16,cy+22,"moves east",11,false,"end");
+    }
+    s+=p32t(cx,cy+72,who+": force direction not drawn",10,false);
+    s+=p32dot(cx,cy,4.5);
+  }
+  if(variant===3)s+=p32t(cx,196,"wire: force direction not drawn",10,false);
+  return p32svg(330,206,s,"Diagram: the velocity or current and the magnetic field directions stated in the question. The force direction is not drawn");
+}
+function p32figChargeCircle(vLabel,bLabel,rLabel,particle){
+  var s=p32rect(36,22,268,158,"none",FIG_INK,1.4);
+  for(var gx=70;gx<=280;gx+=42)for(var gy=48;gy<=160;gy+=36)s+=p32cross(gx,gy,4);
+  s+=p32t(170,14,"uniform field B into the page: "+bLabel,10,true);
+  s+=p32circ(170,101,54,"none",FIG_ACC,2.2);
+  s+=p32line(170,101,224,101,FIG_INK,1.5,true)+p32t(198,90,rLabel,11,true);
+  s+=p32dot(224,101,5.5,FIG_ALT)+p32arrow(224,101,224,64,FIG_ACC,2.2)+p32t(240,76,vLabel,10,true,"start");
+  s+=p32t(170,194,particle,10,false);
+  return p32svg(340,202,s,"Diagram: a charged particle moving in a circle in a uniform magnetic field directed into the page");
+}
+function p32figTransformer(Np,Ns,Vp){
+  var s=p32rect(150,52,40,104,FIG_SHADE,FIG_INK);
+  s+=p32line(70,52,70,156,FIG_INK,2)+p32line(70,52,150,52,FIG_INK,1.4)+p32line(70,156,150,156,FIG_INK,1.4);
+  for(var i=0;i<4;i++){var y=66+i*22;s+='<path d="M 70 '+y+' q -18 11 0 22" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';}
+  s+=p32line(270,52,270,156,FIG_INK,2)+p32line(190,52,270,52,FIG_INK,1.4)+p32line(190,156,270,156,FIG_INK,1.4);
+  for(var j=0;j<4;j++){var y2=66+j*22;s+='<path d="M 270 '+y2+' q 18 11 0 22" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';}
+  s+=p32t(66,176,"primary: "+Np+" turns, "+p32rawV(Vp)+" V",11,true);
+  s+=p32t(274,176,"secondary: "+Ns+" turns, ? V",11,true);
+  s+=p32t(170,36,"iron core",10,true);
+  return p32svg(340,190,s,"Transformer diagram: primary and secondary coils on a shared iron core, with turns and primary voltage labelled and the secondary voltage unknown");
+}
+function p32figMotional(B,l,v){
+  var s=p32rect(52,58,236,104,"none",FIG_INK,1.1);
+  for(var gx=84;gx<=272;gx+=38)for(var gy=76;gy<=148;gy+=32)s+=p32cross(gx,gy,4);
+  s+=p32line(52,84,288,84,FIG_INK,2.4)+p32line(52,138,288,138,FIG_INK,2.4);
+  s+=p32line(206,84,206,138,FIG_INK,3.4)+p32bracketY(192,84,138,gF(l)+" m");
+  s+=p32arrow(206,66,254,66,FIG_ACC,2.4)+p32t(232,50,gF(v)+" m/s",11,true);
+  s+=p32t(170,180,"field "+gF(B)+" T into the page, rod slides on rails",11,false);
+  return p32svg(340,192,s,"Diagram: a metal rod sliding on rails through a magnetic field directed into the page, with rod length, speed and field labelled");
+}
+function p32figOrbit(label,centreLabel){
+  var s=p32circ(160,104,42,FIG_SHADE,FIG_INK)+p32t(160,104,centreLabel,10,true);
+  s+=p32circ(160,104,80,"none",FIG_INK,1.6)+p32dot(160,24,6,FIG_ACC);
+  s+=p32line(160,104,160,24,FIG_INK,1.4,true)+p32t(172,64,label,11,true,"start");
+  s+=p32arrow(160,24,192,24,FIG_ACC,2.2);
+  return p32svg(330,196,s,"Orbit diagram: a satellite or moon in a circular orbit, with the orbit size labelled as in the question");
+}
+// --- Unit 4: Bohr, Compton, photoelectric ---
+function p32figBohr(nmax,ni,nf,dir){
+  // bohrE is defined in the Unit 4 slice; levels drawn for n = 1..nmax
+  var s="", x0=104, x1=238;
+  function yOf(n){return 176-(1-1/(n*n))*128;}
+  for(var n=1;n<=nmax;n++){
+    var y=yOf(n);
+    s+=p32line(x0,y,x1,y,FIG_INK,2);
+    s+=p32t(x0-8,y,"n = "+n,11,true,"end");
+    s+=p32t(x1+8,y,gF(bohrE(n))+" eV",11,false,"start");
+  }
+  if(dir==="down"&&ni&&nf)s+=p32arrow(258,yOf(ni),258,yOf(nf),FIG_ALT,2.4)+p32t(272,(yOf(ni)+yOf(nf))/2,"photon",10,false,"start");
+  if(dir==="up"&&ni&&nf)s+=p32arrow(258,yOf(ni),258,yOf(nf),FIG_ACC,2.4)+p32t(272,(yOf(ni)+yOf(nf))/2,"photon",10,false,"start");
+  return p32svg(340,192,s,"Bohr energy level diagram for hydrogen: level energies from the level formula, with the drawn transition shown by an arrow and the photon energy not labelled");
+}
+function p32figCompton(lamLabel,th){
+  var ex=158, ey=104, s="";
+  s+=p32arrow(36,ey,ex-14,ey,FIG_ACC,2.6)+p32t(88,ey-16,lamLabel,11,true);
+  s+=p32circ(ex,ey,9,FIG_SHADE,FIG_INK)+p32t(ex,ey+24,"electron",9,true);
+  var rad=th*Math.PI/180, sx=ex+104*Math.cos(rad), sy=ey-104*Math.sin(rad);
+  if(th===180){sy=ey-22; sx=ex-104;}
+  s+=p32arrow(ex+8,ey-4,sx,sy,FIG_ALT,2.5)+p32t(sx,sy-14,"?",12,true);
+  s+=p32line(ex,ey,ex+58,ey,FIG_INK,1.2,true);
+  if(th!==180&&th!==0)s+=p32arc(ex,ey,36,0,th)+p32t(ex+52,ey-20,th+"\u00B0",11,true,"start");
+  if(th===180)s+=p32t(ex+66,ey+16,"180\u00B0",11,true,"start");
+  s+=p32arrow(ex+6,ey+6,ex+52,ey+40,FIG_INK,2.0)+p32t(ex+58,ey+48,"recoil electron",9,false,"start");
+  return p32svg(340,178,s,"Compton scattering diagram: an incoming photon strikes a stationary electron and is scattered at the drawn angle, with the scattered wavelength unknown");
+}
+function p32figPhoto(lamLabel,subLabel,showElectron){
+  var s=p32rect(70,148,220,30,FIG_SHADE,FIG_INK)+p32t(180,168,"metal surface",11,true);
+  s+=p32line(52,60,96,104,FIG_ACC,2.2)+p32line(88,48,128,92,FIG_ACC,2.2)+p32line(124,60,164,104,FIG_ACC,2.2);
+  s+=p32t(88,34,lamLabel,11,true);
+  if(showElectron){s+=p32dot(206,128,5,FIG_ALT)+p32arrow(206,128,232,92,FIG_ALT,2.2)+p32t(240,84,"electron, ?",10,false,"start");}
+  if(subLabel)s+=p32t(180,196,subLabel,10,false);
+  return p32svg(340,206,s,"Photoelectric diagram: light of the drawn wavelength falls on a metal surface and electrons are emitted");
+}
+function p32figStandingWave(n,label){
+  var cx=168, cy=102, R=62, pts=[];
+  for(var i=0;i<=72;i++){var a=i/72*2*Math.PI, rr=R+7*Math.sin(n*a);pts.push(fmt(cx+rr*Math.cos(a),1)+","+fmt(cy+rr*Math.sin(a),1));}
+  var s=p32dot(cx,cy,5,FIG_INK)+p32t(cx,cy+18,"nucleus",9,true);
+  s+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+FIG_ACC+'" stroke-width="2.2"/>';
+  s+=p32circ(cx,cy,R,"none",FIG_INK,1.1);
+  if(label)s+=p32t(cx,184,label,11,false);
+  return p32svg(340,196,s,"Standing wave diagram: an electron wave fitted around a circular orbit, joining up with itself");
+}
+
+function p32figTwoWires(I1,I2,d,midway,x){
+  // Cross sections of two parallel wires, currents toward the viewer.
+  var w1x=104, w2x=236, cy=100, s="";
+  [w1x,w2x].forEach(function(wx){[20,36].forEach(function(r){s+=p32circ(wx,cy,r,"none",FIG_INK,1.3);});s+=p32circ(wx,cy,8,FIG_SHADE,FIG_INK)+p32dot(wx,cy,2.5);});
+  s+=p32t(w1x,cy-52,gF(I1)+" A",11,true)+p32t(w2x,cy-52,gF(I2)+" A",11,true);
+  s+=p32bracketX(w1x,w2x,cy+58,gF(d)+" m apart");
+  if(midway){
+    s+=p32dot((w1x+w2x)/2,cy,4.5,FIG_ALT)+p32t((w1x+w2x)/2,cy-16,"midway point",11,true);
+  } else {
+    s+=p32dot(w2x+44,cy,4.5,FIG_ALT)+p32t(w2x+44,cy-16,"point",11,true);
+    if(x!==undefined&&x!==null)s+=p32bracketX(w2x,w2x+44,cy+34,gF(x)+" m beyond wire 2");
+  }
+  s+=p32t(170,188,"wire cross sections, currents in the same direction",10,false);
+  return p32svg(340,196,s,"Diagram: cross sections of two parallel wires at the drawn separation, with the field point in the position stated in the question");
+}
+
 /* ----- bank-u1.js ----- */
+// Diagram figures (Phase C, Nov 2026): entries whose source question type
+// carried a diagram now set qq3204.figure from the draw's own values via the
+// p32fig* helpers in bank-helpers.js. Asked unknowns are labelled "?".
 // Physics 3204 Unit 1 Motion question bank
 // CRMARKS: u1-51-resultant-cr=3
 // CRMARKS: u1-53-drift-cr=3
@@ -53,40 +781,40 @@ E("u1-51-components",1,["PH12.5.1"],1,"gen",function(){
   var v=ri(8,30), th=pick([24,28,32,38,42,48,52,58,64,68]);
   var rad=th*Math.PI/180, c4=sfR(Math.cos(rad),4), s4=sfR(Math.sin(rad),4);
   var vx4=sfR(v*c4,4), vy4=sfR(v*s4,4);
-  return mcq("A velocity of "+gF(v)+" m/s is directed "+th+"° north of east. What is the east component of the velocity?",
+  var qq3204 = mcq("A velocity of "+gF(v)+" m/s is directed "+th+"° north of east. What is the east component of the velocity?",
     F3(vx4)+" m/s",
     [F3(vy4)+" m/s", F3(v)+" m/s", F3(sfR(vx4+vy4,4))+" m/s"],
     "The east component is the side adjacent to the angle, so it is v cos θ. vx = "+gF(v)+" × "+iF(c4)+" = "+iF(vx4)+" m/s. The east component is "+F3(vx4)+" m/s. (The north component, v sin θ, is "+F3(vy4)+" m/s.)",
-    {v:v,th:th});
+    {v:v,th:th}); qq3204.figure = p32figVecTri(v,th); return qq3204;
 });
 
 E("u1-51-direction-from-components",1,["PH12.5.1"],1,"gen",function(){
   var a=ri(3,12), b=ri(3,12), tr=0;
   while(a===b&&tr<50){b=ri(3,12);tr++;}
   var th=sfR(Math.atan2(b,a)*180/Math.PI,4), comp=sfR(90-th,4);
-  return mcq("A displacement has components of "+gF(-a)+" m east and "+gF(b)+" m north, using the convention that east and north are positive. In which direction is the displacement?",
+  var qq3204 = mcq("A displacement has components of "+gF(-a)+" m east and "+gF(b)+" m north, using the convention that east and north are positive. In which direction is the displacement?",
     F3(th)+"° north of west",
     [F3(comp)+"° north of west", F3(th)+"° north of east", F3(comp)+"° south of west"],
     "The east component is negative, so the displacement points partly west, while the north component is positive. The angle from the west direction is arctan("+gF(b)+" / "+gF(a)+"), which gives "+F3(th)+"°. The displacement points "+F3(th)+"° north of west.",
-    {a:a,b:b});
+    {a:a,b:b}); qq3204.figure = p32figVecFromComp(a,b); return qq3204;
 });
 
 E("u1-51-collinear-net",1,["PH12.5.1"],1,"gen",function(){
   var a=ri(15,60), b=ri(4,a-4);
   var ans=sfR(a-b,3);
-  return numq("A fishing boat sails "+gF(a)+" km east from port, then turns around and sails "+gF(b)+" km west. How far is the boat from its starting point? Give your answer in km.",
+  var qq3204 = numq("A fishing boat sails "+gF(a)+" km east from port, then turns around and sails "+gF(b)+" km west. How far is the boat from its starting point? Give your answer in km.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The two legs are along the same line in opposite directions, so the displacement is the difference of the two distances. "+gF(a)+" - "+gF(b)+" = "+F3(a-b)+" km. The boat is "+F3(ans)+" km from its starting point, east of it.",
-    {a:a,b:b});
+    {a:a,b:b}); qq3204.figure = p32figCollinear(a,b); return qq3204;
 });
 
 E("u1-51-resultant-magnitude",1,["PH12.5.1"],2,"gen",function(){
   var a=ri(20,120), b=ri(20,120);
   var sum=a*a+b*b, R=Math.sqrt(sum), ans=sfR(R,3);
-  return numq("A hiker walks "+gF(a)+" m east and then "+gF(b)+" m north. What is the magnitude of the hiker's total displacement? Give your answer in m.",
+  var qq3204 = numq("A hiker walks "+gF(a)+" m east and then "+gF(b)+" m north. What is the magnitude of the hiker's total displacement? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The two legs are perpendicular, so the displacement is the hypotenuse of a right triangle. Squaring the legs: "+(a*a)+" + "+(b*b)+" = "+sum+". Taking the square root of "+sum+" gives "+F3(R)+" m. The magnitude of the displacement is "+F3(ans)+" m.",
-    {a:a,b:b});
+    {a:a,b:b}); qq3204.figure = p32figResultant2(a,b,"m"); return qq3204;
 });
 
 E("u1-51-avg-vel-vs-speed",1,["PH12.5.1"],2,"gen",function(){
@@ -108,10 +836,10 @@ E("u1-51-resultant-cr",1,["PH12.5.1"],2,"gen",function(){
   var a=ri(15,90), b=ri(15,90), c=ri(15,90);
   var e=a+c, sum=e*e+b*b, R=Math.sqrt(sum), ans=sfR(R,3);
   var ang=sfR(Math.atan2(b,e)*180/Math.PI,3);
-  return numq("A kayaker paddles "+gF(a)+" m east, then "+gF(b)+" m north, then "+gF(c)+" m east again. What is the magnitude of the kayaker's total displacement from the start? Give your answer in m.",
+  var qq3204 = numq("A kayaker paddles "+gF(a)+" m east, then "+gF(b)+" m north, then "+gF(c)+" m east again. What is the magnitude of the kayaker's total displacement from the start? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Combine the two east legs first: "+gF(a)+" + "+gF(c)+" = "+F3(e)+" m east. The north leg of "+gF(b)+" m is perpendicular to that total. Squaring and adding: "+(e*e)+" + "+(b*b)+" = "+sum+". Taking the square root of "+sum+" gives "+F3(R)+" m, at an angle of "+F3(ang)+"° north of east. The magnitude of the displacement is "+F3(ans)+" m.",
-    {a:a,b:b,c:c});
+    {a:a,b:b,c:c}); qq3204.figure = p32figResultant3(a,b,c); return qq3204;
 });
 
 E("u1-51-claims",1,["PH12.5.1"],3,"gen",function(){
@@ -120,13 +848,13 @@ E("u1-51-claims",1,["PH12.5.1"],3,"gen",function(){
   var R=Math.sqrt(a*a+b*b);
   var half=R/2, tr2=0;
   while(Math.abs(half-Math.abs(a-b))<0.02*R&&tr2<50){half=half*1.13;tr2++;}
-  return mcq("A student is asked for the resultant of a displacement of "+gF(a)+" m east followed by "+gF(b)+" m north. The student answers "+gF(a+b)+" m. Which statement correctly evaluates the student's answer?",
+  var qq3204 = mcq("A student is asked for the resultant of a displacement of "+gF(a)+" m east followed by "+gF(b)+" m north. The student answers "+gF(a+b)+" m. Which statement correctly evaluates the student's answer?",
     "The student added the legs as if they were in a straight line. The legs are perpendicular, so Pythagoras gives a resultant of "+F3(R)+" m.",
     ["The student should have subtracted the legs, giving a resultant of "+F3(Math.abs(a-b))+" m.",
      "The answer "+gF(a+b)+" m is correct in size, and only the direction is missing.",
      "Each leg contributes only half, so the resultant is "+F3(half)+" m."],
     "East and north legs are perpendicular, so they cannot be added as straight-line distances. The resultant is the hypotenuse: squaring and adding, "+(a*a)+" + "+(b*b)+" = "+(a*a+b*b)+", and the square root of "+(a*a+b*b)+" is "+F3(R)+" m. The student's "+gF(a+b)+" m is the total distance walked, not the displacement.",
-    {a:a,b:b});
+    {a:a,b:b}); qq3204.figure = p32figResultant2(a,b,"m"); return qq3204;
 });
 
 /* ---------- PH12.5.2 Frame of reference ---------- */
@@ -192,69 +920,69 @@ E("u1-53-river-resultant",1,["PH12.5.3"],2,"gen",function(){
   var vb=ri(6,16)/2, vc=ri(2,9)/2, tr=0;
   while(vc===vb&&tr<50){vc=ri(2,9)/2;tr++;}
   var sq1=sfR(vb*vb,4), sq2=sfR(vc*vc,4), sum=sfR(sq1+sq2,4), R=Math.sqrt(sum);
-  return mcq("A boat that travels at "+gF(vb)+" m/s in still water is pointed straight across a river whose current flows at "+gF(vc)+" m/s. What is the boat's speed relative to the shore?",
+  var qq3204 = mcq("A boat that travels at "+gF(vb)+" m/s in still water is pointed straight across a river whose current flows at "+gF(vc)+" m/s. What is the boat's speed relative to the shore?",
     F3(R)+" m/s",
     [F3(vb+vc)+" m/s", F3(Math.abs(vb-vc))+" m/s", F3(Math.sqrt(Math.abs(sq1-sq2)))+" m/s"],
     "The boat's velocity across the river and the current's velocity along the river are perpendicular, so the resultant speed is found with Pythagoras. Squaring and adding: "+iF(sq1)+" + "+iF(sq2)+" = "+iF(sum)+", and the square root of "+iF(sum)+" is "+F3(R)+" m/s. The boat's speed relative to the shore is "+F3(R)+" m/s.",
-    {vb:vb,vc:vc});
+    {vb:vb,vc:vc}); qq3204.figure = p32figRiver(vb,vc,0,"resultant"); return qq3204;
 });
 
 E("u1-53-crossing-time",1,["PH12.5.3"],2,"gen",function(){
   var w=ri(60,240), vb=ri(6,15)/2, vc=ri(2,8)/2;
   var t4=sfR(w/vb,4), ans=sfR(t4,3);
-  return numq("A river is "+gF(w)+" m wide and flows at "+gF(vc)+" m/s. A boat that travels at "+gF(vb)+" m/s in still water is pointed straight across the river. How long does the boat take to cross? Give your answer in s.",
+  var qq3204 = numq("A river is "+gF(w)+" m wide and flows at "+gF(vc)+" m/s. A boat that travels at "+gF(vb)+" m/s in still water is pointed straight across the river. How long does the boat take to cross? Give your answer in s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Only the across-river component of the velocity shortens the crossing, and that component is the boat's full still-water speed of "+gF(vb)+" m/s. The current pushes the boat downstream but does not change the crossing time. t = "+gF(w)+" / "+gF(vb)+" = "+iF(t4)+" s. The crossing time is "+F3(ans)+" s.",
-    {w:w,vb:vb,vc:vc});
+    {w:w,vb:vb,vc:vc}); qq3204.figure = p32figRiver(vb,vc,w,"time"); return qq3204;
 });
 
 E("u1-53-drift-cr",1,["PH12.5.3"],2,"gen",function(){
   var w=ri(70,260), vb=ri(6,15)/2, vc=ri(2,8)/2;
   var t4=sfR(w/vb,4), drift4=sfR(vc*t4,4), ans=sfR(drift4,3);
-  return numq("A boat that travels at "+gF(vb)+" m/s in still water is pointed straight across a river "+gF(w)+" m wide. The current flows at "+gF(vc)+" m/s. How far downstream from the point directly opposite the launch does the boat land? Give your answer in m.",
+  var qq3204 = numq("A boat that travels at "+gF(vb)+" m/s in still water is pointed straight across a river "+gF(w)+" m wide. The current flows at "+gF(vc)+" m/s. How far downstream from the point directly opposite the launch does the boat land? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "First find the crossing time from the across-river motion: t = "+gF(w)+" / "+gF(vb)+" = "+iF(t4)+" s. During that whole time the current carries the boat downstream at "+gF(vc)+" m/s. Drift = "+gF(vc)+" × "+iF(t4)+" = "+iF(drift4)+" m. The boat lands "+F3(ans)+" m downstream.",
-    {w:w,vb:vb,vc:vc});
+    {w:w,vb:vb,vc:vc}); qq3204.figure = p32figRiver(vb,vc,w,"drift"); return qq3204;
 });
 
 E("u1-53-heading-cr",1,["PH12.5.3"],3,"gen",function(){
   var vb=pick([5.0,5.5,6.0,6.5,7.0,7.5,8.0]), vc=ri(2,9)/2;
   var ratio4=sfR(vc/vb,4), th=Math.asin(vc/vb)*180/Math.PI, ans=sfR(th,3);
   var cos4=sfR(Math.cos(th*Math.PI/180),4), cross4=sfR(vb*cos4,4);
-  return numq("A boat that travels at "+gF(vb)+" m/s in still water must land at a dock directly across a river from its launch point. The current flows at "+gF(vc)+" m/s. At what angle upstream from the straight-across direction must the boat be pointed? Give your answer in degrees.",
+  var qq3204 = numq("A boat that travels at "+gF(vb)+" m/s in still water must land at a dock directly across a river from its launch point. The current flows at "+gF(vc)+" m/s. At what angle upstream from the straight-across direction must the boat be pointed? Give your answer in degrees.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "To travel straight across, the upstream component of the boat's velocity must exactly cancel the current. That component is vb sin θ, so sin θ = "+gF(vc)+" / "+gF(vb)+" = "+iF(ratio4)+". Taking the inverse sine gives θ = "+F3(th)+"°. The across-river component is then "+gF(vb)+" × "+iF(cos4)+" = "+iF(cross4)+" m/s. The boat must be pointed "+F3(ans)+"° upstream from the straight-across direction.",
-    {vb:vb,vc:vc});
+    {vb:vb,vc:vc}); qq3204.figure = p32figRiver(vb,vc,0,"heading"); return qq3204;
 });
 
 E("u1-53-aircraft-ground",1,["PH12.5.3"],2,"gen",function(){
   var va=ri(150,260), vw=ri(20,70);
   var sum=va*va+vw*vw, R=Math.sqrt(sum);
-  return mcq("A plane flies with an airspeed of "+gF(va)+" km/h pointed due north. A wind blows toward the east at "+gF(vw)+" km/h. What is the plane's ground speed?",
+  var qq3204 = mcq("A plane flies with an airspeed of "+gF(va)+" km/h pointed due north. A wind blows toward the east at "+gF(vw)+" km/h. What is the plane's ground speed?",
     F3(R)+" km/h",
     [F3(va+vw)+" km/h", F3(va-vw)+" km/h", F3(Math.sqrt(va*va-vw*vw))+" km/h"],
     "The plane's velocity through the air and the wind's velocity are perpendicular, so the ground velocity is the hypotenuse of the velocity triangle. Squaring and adding: "+(va*va)+" + "+(vw*vw)+" = "+sum+", and the square root of "+sum+" is "+F3(R)+" km/h. The ground speed is "+F3(R)+" km/h.",
-    {va:va,vw:vw});
+    {va:va,vw:vw}); qq3204.figure = p32figAircraft(va,vw,"ground"); return qq3204;
 });
 
 E("u1-53-aircraft-heading-cr",1,["PH12.5.3"],3,"gen",function(){
   var va=ri(160,280), vw=ri(25,85);
   var ratio4=sfR(vw/va,4), th=Math.asin(vw/va)*180/Math.PI, ans=sfR(th,3);
   var diff=va*va-vw*vw, vg=Math.sqrt(diff);
-  return numq("A pilot must fly due north over the ground. The plane's airspeed is "+gF(va)+" km/h and a wind blows toward the east at "+gF(vw)+" km/h. At what angle west of north must the plane be pointed? Give your answer in degrees.",
+  var qq3204 = numq("A pilot must fly due north over the ground. The plane's airspeed is "+gF(va)+" km/h and a wind blows toward the east at "+gF(vw)+" km/h. At what angle west of north must the plane be pointed? Give your answer in degrees.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The plane must be pointed partly into the wind so that the westward component of its velocity through the air cancels the eastward wind. That component is va sin θ, so sin θ = "+vw+" / "+va+" = "+iF(ratio4)+". Taking the inverse sine gives θ = "+F3(th)+"°. The ground speed follows from Pythagoras: "+(va*va)+" - "+(vw*vw)+" = "+diff+", and the square root of "+diff+" is "+F3(vg)+" km/h. The plane must be pointed "+F3(ans)+"° west of north.",
-    {va:va,vw:vw});
+    {va:va,vw:vw}); qq3204.figure = p32figAircraft(va,vw,"heading"); return qq3204;
 });
 
 E("u1-53-round-trip",1,["PH12.5.3"],2,"gen",function(){
   var d=ri(300,950), vb=ri(10,18)/2, vc=ri(2,6)/2;
   var down=sfR(vb+vc,4), up=sfR(vb-vc,4);
   var td=sfR(d/down,4), tu=sfR(d/up,4), tot=sfR(td+tu,4), ans=sfR(tot,3);
-  return numq("A patrol boat travels "+gF(d)+" m downstream and then returns "+gF(d)+" m upstream to its start. The boat's speed in still water is "+gF(vb)+" m/s and the current flows at "+gF(vc)+" m/s. What is the total time for the round trip? Give your answer in s.",
+  var qq3204 = numq("A patrol boat travels "+gF(d)+" m downstream and then returns "+gF(d)+" m upstream to its start. The boat's speed in still water is "+gF(vb)+" m/s and the current flows at "+gF(vc)+" m/s. What is the total time for the round trip? Give your answer in s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Downstream the current helps: "+gF(vb)+" + "+gF(vc)+" = "+gF(down)+" m/s, so the downstream leg takes "+fmt(d,0)+" / "+gF(down)+" = "+iF(td)+" s. Upstream the current opposes: "+gF(vb)+" - "+gF(vc)+" = "+gF(up)+" m/s, so the return leg takes "+fmt(d,0)+" / "+gF(up)+" = "+iF(tu)+" s. Total time: "+iF(td)+" + "+iF(tu)+" = "+iF(tot)+" s. The round trip takes "+F3(ans)+" s.",
-    {d:d,vb:vb,vc:vc});
+    {d:d,vb:vb,vc:vc}); qq3204.figure = p32figRoundTrip(d,vb,vc); return qq3204;
 });
 
 /* ---------- PH12.5.4 Projectile motion ---------- */
@@ -262,39 +990,39 @@ E("u1-53-round-trip",1,["PH12.5.3"],2,"gen",function(){
 E("u1-54-fall-time",1,["PH12.5.4"],1,"gen",function(){
   var h=ri(12,85);
   var q4=sfR(2*h/PHYS_G,4), t=sfR(Math.sqrt(q4),4), ans=sfR(t,3);
-  return numq("A stone is projected horizontally from the top of a cliff "+gF(h)+" m above the water. How long does the stone take to reach the water? Give your answer in s.",
+  var qq3204 = numq("A stone is projected horizontally from the top of a cliff "+gF(h)+" m above the water. How long does the stone take to reach the water? Give your answer in s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The vertical motion is free fall from rest, so h = (1/2) g t² and t² = 2h / g. Twice the height is "+(2*h)+" m, and "+(2*h)+" / 9.8 = "+iF(q4)+" s². The square root of "+iF(q4)+" is "+F3(t)+" s. The stone takes "+F3(ans)+" s to reach the water, whatever its horizontal speed.",
-    {h:h});
+    {h:h}); qq3204.figure = p32figCliff(gF(h)+" m",null,null,true); return qq3204;
 });
 
 E("u1-54-angled-components",1,["PH12.5.4"],1,"gen",function(){
   var v=ri(14,38), th=pick([25,30,35,40,50,55,60,65]);
   var rad=th*Math.PI/180, s4=sfR(Math.sin(rad),4), c4=sfR(Math.cos(rad),4);
   var vy4=sfR(v*s4,4), vx4=sfR(v*c4,4);
-  return mcq("A ball is launched at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal. What is the initial vertical component of its velocity?",
+  var qq3204 = mcq("A ball is launched at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal. What is the initial vertical component of its velocity?",
     F3(vy4)+" m/s",
     [F3(vx4)+" m/s", F3(v)+" m/s", F3(sfR(vx4+vy4,4))+" m/s"],
     "The vertical component is the side opposite the launch angle, so it is v sin θ. vy = "+gF(v)+" × "+iF(s4)+" = "+iF(vy4)+" m/s. The initial vertical component is "+F3(vy4)+" m/s.",
-    {v:v,th:th});
+    {v:v,th:th}); qq3204.figure = p32figLaunch(v,th,"components"); return qq3204;
 });
 
 E("u1-54-horiz-range",1,["PH12.5.4"],2,"gen",function(){
   var v=ri(12,50)/2, h=ri(10,70);
   var q4=sfR(2*h/PHYS_G,4), t4=sfR(Math.sqrt(q4),4), r4=sfR(v*t4,4), ans=sfR(r4,3);
-  return numq("A ball is projected horizontally at "+gF(v)+" m/s from the top of a cliff "+gF(h)+" m high. How far from the base of the cliff does the ball land? Give your answer in m.",
+  var qq3204 = numq("A ball is projected horizontally at "+gF(v)+" m/s from the top of a cliff "+gF(h)+" m high. How far from the base of the cliff does the ball land? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The fall time comes from the vertical motion: t² = 2h / g = "+(2*h)+" / 9.8 = "+iF(q4)+" s², so t = "+iF(t4)+" s. Horizontally the ball keeps its launch speed for the whole fall: range = "+gF(v)+" × "+iF(t4)+" = "+iF(r4)+" m. The ball lands "+F3(ans)+" m from the base of the cliff.",
-    {v:v,h:h});
+    {v:v,h:h}); qq3204.figure = p32figCliff(gF(h)+" m",gF(v)+" m/s","?",true); return qq3204;
 });
 
 E("u1-54-cliff-height-cr",1,["PH12.5.4"],2,"gen",function(){
   var v=ri(8,30), R=ri(15,90);
   var t4=sfR(R/v,4), tsq=sfR(t4*t4,4), h4=sfR(4.9*tsq,4), ans=sfR(h4,3);
-  return numq("A stone is projected horizontally at "+gF(v)+" m/s from the top of a sea cliff and lands in the water "+gF(R)+" m from the base of the cliff. How high is the cliff? Give your answer in m.",
+  var qq3204 = numq("A stone is projected horizontally at "+gF(v)+" m/s from the top of a sea cliff and lands in the water "+gF(R)+" m from the base of the cliff. How high is the cliff? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The horizontal motion gives the fall time: t = "+gF(R)+" / "+gF(v)+" = "+iF(t4)+" s. Vertically the stone falls from rest under gravity, so first square the time: "+iF(t4)+" × "+iF(t4)+" = "+iF(tsq)+" s². Then h = (1/2) g t² = 4.90 × "+iF(tsq)+" = "+iF(h4)+" m. The cliff is "+F3(ans)+" m high.",
-    {v:v,R:R});
+    {v:v,R:R}); qq3204.figure = p32figCliff("?",gF(v)+" m/s",gF(R)+" m",true); return qq3204;
 });
 
 E("u1-54-launch-speed",1,["PH12.5.4"],2,"gen",function(){
@@ -304,20 +1032,20 @@ E("u1-54-launch-speed",1,["PH12.5.4"],2,"gen",function(){
   var key=F3(v4)+" m/s", seen={}; seen[key]=1;
   var raw=[vy4, sfR(v4/2,4), imp4];
   var opts=raw.map(function(d){var s=F3(d)+" m/s",k=0;while(seen[s]&&k<50){d=d*1.21+0.3;s=F3(d)+" m/s";k++;}seen[s]=1;return s;});
-  return mcq("A ball is projected horizontally from a cliff "+gF(h)+" m high and lands "+gF(R)+" m from the base of the cliff. What was the launch speed of the ball?",
+  var qq3204 = mcq("A ball is projected horizontally from a cliff "+gF(h)+" m high and lands "+gF(R)+" m from the base of the cliff. What was the launch speed of the ball?",
     key, opts,
     "The fall time comes from the height: t² = 2h / g = "+(2*h)+" / 9.8 = "+iF(q4)+" s², so t = "+iF(t4)+" s. The launch speed is the horizontal distance covered in that time: "+gF(R)+" / "+iF(t4)+" = "+iF(v4)+" m/s. The launch speed was "+F3(v4)+" m/s.",
-    {h:h,R:R});
+    {h:h,R:R}); qq3204.figure = p32figCliff(gF(h)+" m","?",gF(R)+" m",true); return qq3204;
 });
 
 E("u1-54-max-height",1,["PH12.5.4"],2,"gen",function(){
   var v=ri(15,40), th=pick([25,30,35,40,45,50,55,60,65]);
   var rad=th*Math.PI/180, s4=sfR(Math.sin(rad),4);
   var vy4=sfR(v*s4,4), sq4=sfR(vy4*vy4,4), H4=sfR(sq4/(2*PHYS_G),4), ans=sfR(H4,3);
-  return numq("A golf ball is driven at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal. What is the maximum height the ball reaches? Give your answer in m.",
+  var qq3204 = numq("A golf ball is driven at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal. What is the maximum height the ball reaches? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Only the vertical component matters for the height. vy = "+gF(v)+" × "+iF(s4)+" = "+iF(vy4)+" m/s. At the top of the flight the vertical velocity is zero, so H = vy² / (2g). Squaring: "+iF(vy4)+" × "+iF(vy4)+" = "+iF(sq4)+". Then H = "+iF(sq4)+" / 19.6 = "+iF(H4)+" m. The maximum height is "+F3(ans)+" m.",
-    {v:v,th:th});
+    {v:v,th:th}); qq3204.figure = p32figLaunch(v,th,"maxheight"); return qq3204;
 });
 
 E("u1-54-angled-range",1,["PH12.5.4"],2,"gen",function(){
@@ -325,10 +1053,10 @@ E("u1-54-angled-range",1,["PH12.5.4"],2,"gen",function(){
   var rad=th*Math.PI/180, s4=sfR(Math.sin(rad),4), c4=sfR(Math.cos(rad),4);
   var vy4=sfR(v*s4,4), vx4=sfR(v*c4,4);
   var num4=sfR(2*vy4,4), T4=sfR(num4/PHYS_G,4), R4=sfR(vx4*T4,4), ans=sfR(R4,3);
-  return numq("A soccer ball is kicked at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal and lands on level ground. How far from the kick does the ball land? Give your answer in m.",
+  var qq3204 = numq("A soccer ball is kicked at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal and lands on level ground. How far from the kick does the ball land? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Split the launch velocity into components: vx = "+gF(v)+" × "+iF(c4)+" = "+iF(vx4)+" m/s and vy = "+gF(v)+" × "+iF(s4)+" = "+iF(vy4)+" m/s. The flight time is the time for the vertical motion to go up and come back down: 2 × "+iF(vy4)+" = "+iF(num4)+" m/s, and "+iF(num4)+" / 9.8 = "+iF(T4)+" s. Range = "+iF(vx4)+" × "+iF(T4)+" = "+iF(R4)+" m. The ball lands "+F3(ans)+" m from the kick.",
-    {v:v,th:th});
+    {v:v,th:th}); qq3204.figure = p32figLaunch(v,th,"range"); return qq3204;
 });
 
 E("u1-54-hit-or-miss-cr",1,["PH12.5.4"],3,"gen",function(){
@@ -340,10 +1068,10 @@ E("u1-54-hit-or-miss-cr",1,["PH12.5.4"],3,"gen",function(){
   var t4=sfR(d/vx4,4), rise4=sfR(vy4*t4,4), tsq=sfR(t4*t4,4), drop4=sfR(4.9*tsq,4), y4=sfR(rise4-drop4,4);
   var clears=pick([true,false]);
   var hf=sfR(y4*(clears?0.78:1.28),3);
-  return textq("A ball is kicked at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal toward a fence "+gF(d)+" m away. The fence is "+gF(hf)+" m high. Does the ball clear the fence? Give your answer as yes or no.",
+  var qq3204 = textq("A ball is kicked at "+gF(v)+" m/s at an angle of "+th+"° above the horizontal toward a fence "+gF(d)+" m away. The fence is "+gF(hf)+" m high. Does the ball clear the fence? Give your answer as yes or no.",
     [clears?"yes":"no"],
     "Find the height of the ball when it reaches the fence. The components are vx = "+gF(v)+" × "+iF(c4)+" = "+iF(vx4)+" m/s and vy = "+gF(v)+" × "+iF(s4)+" = "+iF(vy4)+" m/s. Time to reach the fence: "+gF(d)+" / "+iF(vx4)+" = "+iF(t4)+" s. In that time the ball rises "+iF(vy4)+" × "+iF(t4)+" = "+iF(rise4)+" m. Squaring the time, "+iF(t4)+" × "+iF(t4)+" = "+iF(tsq)+" s², so gravity pulls it down 4.90 × "+iF(tsq)+" = "+iF(drop4)+" m. Height at the fence: "+iF(rise4)+" - "+iF(drop4)+" = "+iF(y4)+" m. The fence is "+gF(hf)+" m, so the ball "+(clears?"clears the fence.":"does not clear the fence.")+" The answer is "+(clears?"yes.":"no."),
-    {v:v,th:th,d:d,hf:hf});
+    {v:v,th:th,d:d,hf:hf}); qq3204.figure = p32figFence(v,th,d,hf); return qq3204;
 });
 
 /* ---------- PH12.5.5 Momentum, 2D collisions and explosions ---------- */
@@ -371,11 +1099,11 @@ E("u1-55-perp-direction",1,["PH12.5.5"],2,"gen",function(){
   var p1=m1*v1, p2=m2*v2;
   while(Math.abs(p1-p2)<0.08*Math.max(p1,p2)&&tr<80){m2=ri(2,14)/2; v2=ri(3,9); p2=m2*v2; tr++;}
   var th=sfR(Math.atan2(p2,p1)*180/Math.PI,4), comp=sfR(90-th,4);
-  return mcq("A puck of mass "+gF(m1)+" kg sliding east at "+gF(v1)+" m/s collides with a puck of mass "+gF(m2)+" kg sliding north at "+gF(v2)+" m/s, and the two pucks stick together. In which direction does the combined mass move?",
+  var qq3204 = mcq("A puck of mass "+gF(m1)+" kg sliding east at "+gF(v1)+" m/s collides with a puck of mass "+gF(m2)+" kg sliding north at "+gF(v2)+" m/s, and the two pucks stick together. In which direction does the combined mass move?",
     F3(th)+"° north of east",
     [F3(comp)+"° north of east", F3(th)+"° south of east", F3(comp)+"° north of west"],
     "The momenta are perpendicular: east momentum "+gF(m1)+" × "+gF(v1)+" = "+iF(sfR(p1,4))+" kg·m/s and north momentum "+gF(m2)+" × "+gF(v2)+" = "+iF(sfR(p2,4))+" kg·m/s. The combined mass moves along the total momentum, at an angle of arctan("+iF(sfR(p2,4))+" / "+iF(sfR(p1,4))+") north of east, which is "+F3(th)+"°. The combined mass moves "+F3(th)+"° north of east.",
-    {m1:m1,v1:v1,m2:m2,v2:v2});
+    {m1:m1,v1:v1,m2:m2,v2:v2}); qq3204.figure = p32figMom2D(gF(m1)+" kg at "+gF(v1)+" m/s east",gF(m2)+" kg at "+gF(v2)+" m/s north",null); return qq3204;
 });
 
 E("u1-55-recoil",1,["PH12.5.5"],2,"gen",function(){
@@ -418,10 +1146,10 @@ E("u1-55-stick-2d-cr",1,["PH12.5.5"],3,"gen",function(){
   var sq1=sfR(p1*p1,4), sq2=sfR(p2*p2,4), sum=sfR(sq1+sq2,4), P4=sfR(Math.sqrt(sum),4);
   var mtot=sfR(m1+m2,4), v4=sfR(P4/mtot,4), ans=sfR(v4,3);
   var th=sfR(Math.atan2(p2,p1)*180/Math.PI,3);
-  return numq("A cart of mass "+gF(m1)+" kg moving east at "+gF(v1)+" m/s collides with a cart of mass "+gF(m2)+" kg moving north at "+gF(v2)+" m/s on a frictionless surface, and the carts stick together. What is the speed of the combined carts after the collision? Give your answer in m/s.",
+  var qq3204 = numq("A cart of mass "+gF(m1)+" kg moving east at "+gF(v1)+" m/s collides with a cart of mass "+gF(m2)+" kg moving north at "+gF(v2)+" m/s on a frictionless surface, and the carts stick together. What is the speed of the combined carts after the collision? Give your answer in m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Momentum is conserved separately in each direction. East momentum: "+gF(m1)+" × "+gF(v1)+" = "+iF(p1)+" kg·m/s. North momentum: "+gF(m2)+" × "+gF(v2)+" = "+iF(p2)+" kg·m/s. Combine the perpendicular momenta: "+iF(p1)+" × "+iF(p1)+" = "+iF(sq1)+" and "+iF(p2)+" × "+iF(p2)+" = "+iF(sq2)+", and "+iF(sq1)+" + "+iF(sq2)+" = "+iF(sum)+". The square root of "+iF(sum)+" is "+iF(P4)+" kg·m/s, the magnitude of the total momentum. The combined mass is "+gF(m1)+" + "+gF(m2)+" = "+gF(mtot)+" kg, so the speed is "+iF(P4)+" / "+gF(mtot)+" = "+iF(v4)+" m/s, directed "+F3(th)+"° north of east. The speed of the combined carts is "+F3(ans)+" m/s.",
-    {m1:m1,v1:v1,m2:m2,v2:v2});
+    {m1:m1,v1:v1,m2:m2,v2:v2}); qq3204.figure = p32figMom2D(gF(m1)+" kg at "+gF(v1)+" m/s east",gF(m2)+" kg at "+gF(v2)+" m/s north",null); return qq3204;
 });
 
 E("u1-55-third-piece-cr",1,["PH12.5.5"],3,"gen",function(){
@@ -430,13 +1158,16 @@ E("u1-55-third-piece-cr",1,["PH12.5.5"],3,"gen",function(){
   var sq1=sfR(p1*p1,4), sq2=sfR(p2*p2,4), sum=sfR(sq1+sq2,4), P4=sfR(Math.sqrt(sum),4);
   var v4=sfR(P4/c,4), ans=sfR(v4,3);
   var th=sfR(Math.atan2(p2,p1)*180/Math.PI,3);
-  return numq("A stationary firework shell explodes into three pieces. One piece of mass "+gF(a)+" kg flies east at "+gF(v1)+" m/s, and a second piece of mass "+gF(b)+" kg flies north at "+gF(v2)+" m/s. The third piece has mass "+gF(c)+" kg. What is the speed of the third piece? Give your answer in m/s.",
+  var qq3204 = numq("A stationary firework shell explodes into three pieces. One piece of mass "+gF(a)+" kg flies east at "+gF(v1)+" m/s, and a second piece of mass "+gF(b)+" kg flies north at "+gF(v2)+" m/s. The third piece has mass "+gF(c)+" kg. What is the speed of the third piece? Give your answer in m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The shell starts at rest, so the total momentum after the explosion must still be zero: the third piece must carry momentum equal in size to the combined momentum of the other two pieces, in the opposite direction. East momentum: "+gF(a)+" × "+gF(v1)+" = "+iF(p1)+" kg·m/s. North momentum: "+gF(b)+" × "+gF(v2)+" = "+iF(p2)+" kg·m/s. Combining: "+iF(p1)+" × "+iF(p1)+" = "+iF(sq1)+" and "+iF(p2)+" × "+iF(p2)+" = "+iF(sq2)+", and "+iF(sq1)+" + "+iF(sq2)+" = "+iF(sum)+". The square root of "+iF(sum)+" is "+iF(P4)+" kg·m/s. The third piece's speed is "+iF(P4)+" / "+gF(c)+" = "+iF(v4)+" m/s, directed "+F3(th)+"° south of west, opposite to the combined momentum of the first two pieces. The speed of the third piece is "+F3(ans)+" m/s.",
-    {a:a,v1:v1,b:b,v2:v2,c:c});
+    {a:a,v1:v1,b:b,v2:v2,c:c}); qq3204.figure = p32figMom2D(gF(a)+" kg at "+gF(v1)+" m/s east",gF(b)+" kg at "+gF(v2)+" m/s north",gF(c)+" kg, ?"); return qq3204;
 });
 
 /* ----- bank-u2.js ----- */
+// Diagram figures (Phase C, Nov 2026): entries whose source question type
+// carried a diagram now set qq3204.figure from the draw's own values via the
+// p32fig* helpers in bank-helpers.js. Asked unknowns are labelled "?".
 // Physics 3204 Unit 2 Forces question bank (circular motion, 2D dynamics,
 // static equilibrium and torques)
 // CRMARKS: u2-61-scaling-cr=2
@@ -477,36 +1208,36 @@ E("u2-61-period-frequency",2,["PH12.6.1"],1,"gen",function(){
 
 E("u2-61-direction",2,["PH12.6.1"],1,"var",varset([
   function(){
-    return mcq("A ball on a string moves in a horizontal circle at a steady speed. At any instant, the direction of the ball's velocity is",
+    var qq3204 = mcq("A ball on a string moves in a horizontal circle at a steady speed. At any instant, the direction of the ball's velocity is",
       "Tangent to the circle, in the direction of motion",
       ["Toward the centre of the circle",
        "Away from the centre of the circle",
        "Along the string, toward the hand holding it"],
-      "Velocity is always along the path of motion. For circular motion the path is the circle itself, so the velocity points along the tangent to the circle at the ball's position. It is the acceleration, not the velocity, that points toward the centre.",{});
+      "Velocity is always along the path of motion. For circular motion the path is the circle itself, so the velocity points along the tangent to the circle at the ball's position. It is the acceleration, not the velocity, that points toward the centre.",{}); qq3204.figure = p32figCircleTop("string",null,null,true); return qq3204;
   },
   function(){
-    return mcq("A ball on a string moves in a horizontal circle at a steady speed. The direction of the ball's acceleration is",
+    var qq3204 = mcq("A ball on a string moves in a horizontal circle at a steady speed. The direction of the ball's acceleration is",
       "Toward the centre of the circle",
       ["Tangent to the circle, in the direction of motion",
        "Away from the centre of the circle",
        "Zero, because the speed is steady"],
-      "Even at a steady speed, the direction of motion changes continuously, so the velocity changes and there is an acceleration. For uniform circular motion that acceleration points toward the centre of the circle, which is why it is called centripetal, meaning centre-seeking.",{});
+      "Even at a steady speed, the direction of motion changes continuously, so the velocity changes and there is an acceleration. For uniform circular motion that acceleration points toward the centre of the circle, which is why it is called centripetal, meaning centre-seeking.",{}); qq3204.figure = p32figCircleTop("string",null,null,true); return qq3204;
   },
   function(){
-    return mcq("A car rounds a flat curve at a steady speed. The direction of the net force on the car is",
+    var qq3204 = mcq("A car rounds a flat curve at a steady speed. The direction of the net force on the car is",
       "Toward the centre of the curve",
       ["Forward, in the direction the car is travelling",
        "Zero, because the speed is steady",
        "Backward, opposite to the direction of travel"],
-      "Newton's second law says the net force points the same way as the acceleration. In uniform circular motion the acceleration is centripetal, toward the centre of the curve, so the net force points toward the centre of the curve as well. A steady speed does not mean zero net force when the direction is changing.",{});
+      "Newton's second law says the net force points the same way as the acceleration. In uniform circular motion the acceleration is centripetal, toward the centre of the curve, so the net force points toward the centre of the curve as well. A steady speed does not mean zero net force when the direction is changing.",{}); qq3204.figure = p32figCircleTop("string",null,null,true); return qq3204;
   },
   function(){
-    return mcq("A ball whirled in a horizontal circle on a string is suddenly released when the string breaks. Ignoring gravity, the ball then moves",
+    var qq3204 = mcq("A ball whirled in a horizontal circle on a string is suddenly released when the string breaks. Ignoring gravity, the ball then moves",
       "In a straight line tangent to the circle at the point of release",
       ["Straight outward, away from the centre of the circle",
        "In a smaller and smaller circle until it stops",
        "Toward the centre of the circle, then stops"],
-      "While the string holds, its tension supplies the centripetal force that keeps changing the ball's direction. Once the string breaks there is no inward force, so by Newton's first law the ball keeps the velocity it had at release, which is tangent to the circle. It flies off along the tangent, not radially outward.",{});
+      "While the string holds, its tension supplies the centripetal force that keeps changing the ball's direction. Once the string breaks there is no inward force, so by Newton's first law the ball keeps the velocity it had at release, which is tangent to the circle. It flies off along the tangent, not radially outward.",{}); qq3204.figure = p32figCircleTop("string",null,null,true); return qq3204;
   }
 ]));
 
@@ -548,10 +1279,10 @@ E("u2-61-scaling-concept",2,["PH12.6.1"],1,"var",varset([
 E("u2-61-speed-numq",2,["PH12.6.1"],2,"gen",function(){
   var r=sfR(rf(0.40,3.20),3), T=sfR(rf(2.5,9.0),3);
   var C4=sfR(2*Math.PI*r,4), v4=sfR(C4/T,4), ans=sfR(v4,3);
-  return numq("A child sits at the edge of a merry-go-round of radius "+gF(r)+" m. The merry-go-round completes one revolution every "+gF(T)+" s. What is the child's speed? Give your answer in m/s.",
+  var qq3204 = numq("A child sits at the edge of a merry-go-round of radius "+gF(r)+" m. The merry-go-round completes one revolution every "+gF(T)+" s. What is the child's speed? Give your answer in m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "In one revolution the child travels the circumference of the circle, which is "+iF(C4)+" m. Speed is distance divided by time: "+iF(C4)+" / "+gF(T)+" = "+iF(v4)+" m/s. The child's speed is "+F3(ans)+" m/s.",
-    {r:r,T:T});
+    {r:r,T:T}); qq3204.figure = p32figCircleTop(gF(r)+" m",null,null,false); return qq3204;
 });
 
 E("u2-61-centripetal-accel-mc",2,["PH12.6.1"],2,"gen",function(){
@@ -561,20 +1292,20 @@ E("u2-61-centripetal-accel-mc",2,["PH12.6.1"],2,"gen",function(){
     v24=sfR(v*v,4); a4=sfR(v24/r,4); ans=sfR(a4,3);
     opts=[ans,sfR(v/r,3),sfR(2*a4,3),sfR(a4/2,3)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4);
-  return mcq("A ball is whirled in a horizontal circle of radius "+gF(r)+" m at a steady speed of "+gF(v)+" m/s. What is the centripetal acceleration of the ball?",
+  var qq3204 = mcq("A ball is whirled in a horizontal circle of radius "+gF(r)+" m at a steady speed of "+gF(v)+" m/s. What is the centripetal acceleration of the ball?",
     F3(ans)+" m/s^2",
     [F3(sfR(v/r,3))+" m/s^2", F3(sfR(2*a4,3))+" m/s^2", F3(sfR(a4/2,3))+" m/s^2"],
     "Centripetal acceleration is a = v^2 / r. First square the speed: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2. Then divide by the radius: "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2. The centripetal acceleration is "+F3(ans)+" m/s^2, directed toward the centre of the circle.",
-    {v:v,r:r});
+    {v:v,r:r}); qq3204.figure = p32figCircleTop(gF(r)+" m",gF(v)+" m/s",null,false); return qq3204;
 });
 
 E("u2-61-speed-accel-cr",2,["PH12.6.1"],2,"gen",function(){
   var r=sfR(rf(6.0,14.0),3), T=sfR(rf(18.0,40.0),3);
   var C4=sfR(2*Math.PI*r,4), v4=sfR(C4/T,4), v24=sfR(v4*v4,4), a4=sfR(v24/r,4), ans=sfR(a4,3);
-  return numq("A Ferris wheel of radius "+gF(r)+" m carries a rider at a steady speed, completing one revolution in "+gF(T)+" s. What is the centripetal acceleration of the rider? Give your answer in m/s^2.",
+  var qq3204 = numq("A Ferris wheel of radius "+gF(r)+" m carries a rider at a steady speed, completing one revolution in "+gF(T)+" s. What is the centripetal acceleration of the rider? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "First find the rider's speed. One revolution covers the circumference of the wheel, which is "+iF(C4)+" m, so the speed is "+iF(C4)+" / "+gF(T)+" = "+iF(v4)+" m/s. Centripetal acceleration is a = v^2 / r. Square the speed: "+iF(v4)+" × "+iF(v4)+" = "+iF(v24)+" m^2/s^2. Then divide by the radius: "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2. The centripetal acceleration of the rider is "+F3(ans)+" m/s^2, toward the centre of the wheel.",
-    {r:r,T:T});
+    {r:r,T:T}); qq3204.figure = p32figCircleTop(gF(r)+" m",null,null,false); return qq3204;
 });
 
 E("u2-61-scaling-cr",2,["PH12.6.1"],2,"gen",function(){
@@ -650,11 +1381,11 @@ E("u2-62-tension-horizontal",2,["PH12.6.2"],2,"gen",function(){
     v24=sfR(v*v,4); a4=sfR(v24/r,4); T4=sfR(m*a4,4); T=sfR(T4,3);
     opts=[T,sfR(m*v/r,3),sfR(m*9.8,3),sfR(T4/2,3)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4);
-  return mcq("A puck of mass "+gF(m)+" kg slides in a horizontal circle on a frictionless table, held by a string that passes through a hole in the table. The puck moves at "+gF(v)+" m/s in a circle of radius "+gF(r)+" m. What is the tension in the string?",
+  var qq3204 = mcq("A puck of mass "+gF(m)+" kg slides in a horizontal circle on a frictionless table, held by a string that passes through a hole in the table. The puck moves at "+gF(v)+" m/s in a circle of radius "+gF(r)+" m. What is the tension in the string?",
     F3(T)+" N",
     [F3(sfR(m*v/r,3))+" N", F3(sfR(m*9.8,3))+" N", F3(sfR(T4/2,3))+" N"],
     "The table is frictionless and horizontal, so the tension is the only horizontal force and it alone supplies the centripetal force. First find the centripetal acceleration: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2, then "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2. Newton's second law gives the tension: "+gF(m)+" × "+iF(a4)+" = "+iF(T4)+" N. The tension in the string is "+F3(T)+" N.",
-    {m:m,v:v,r:r});
+    {m:m,v:v,r:r}); qq3204.figure = p32figCircleTop(gF(r)+" m",gF(v)+" m/s",gF(m)+" kg",true); return qq3204;
 });
 
 E("u2-62-loop-top",2,["PH12.6.2"],2,"gen",function(){
@@ -664,10 +1395,10 @@ E("u2-62-loop-top",2,["PH12.6.2"],2,"gen",function(){
     v24=sfR(v*v,4); a4=sfR(v24/r,4); Fc4=sfR(m*a4,4); W4=sfR(m*9.8,4); N4=sfR(Fc4-W4,4);
   } while (N4<1.5);
   ans=sfR(N4,3);
-  return numq("A ball of mass "+gF(m)+" kg rolls around the inside of a vertical loop of radius "+gF(r)+" m. At the top of the loop the ball is moving at "+gF(v)+" m/s. What is the force exerted on the ball by the track at the top of the loop? Give your answer in N.",
+  var qq3204 = numq("A ball of mass "+gF(m)+" kg rolls around the inside of a vertical loop of radius "+gF(r)+" m. At the top of the loop the ball is moving at "+gF(v)+" m/s. What is the force exerted on the ball by the track at the top of the loop? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Take toward the centre of the loop as positive. At the top, the centre is below the ball, so both gravity and the track's normal force point toward the centre and together supply the centripetal force. First find the centripetal force: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2, then "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2, then "+gF(m)+" × "+iF(a4)+" = "+iF(Fc4)+" N. The ball's weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. So the normal force is "+iF(Fc4)+" - "+iF(W4)+" = "+iF(N4)+" N. The track exerts "+F3(ans)+" N on the ball at the top of the loop.",
-    {m:m,v:v,r:r});
+    {m:m,v:v,r:r}); qq3204.figure = p32figLoop(r,v,m,"top"); return qq3204;
 });
 
 E("u2-62-loop-bottom",2,["PH12.6.2"],2,"gen",function(){
@@ -677,20 +1408,20 @@ E("u2-62-loop-bottom",2,["PH12.6.2"],2,"gen",function(){
     v24=sfR(v*v,4); a4=sfR(v24/r,4); Fc4=sfR(m*a4,4); W4=sfR(m*9.8,4); N4=sfR(Fc4+W4,4); ans=sfR(N4,3);
     opts=[ans,sfR(Fc4,3),sfR(W4,3),sfR(Fc4-W4,4)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4 || Fc4-W4<0.5);
-  return mcq("A ball of mass "+gF(m)+" kg rolls around the inside of a vertical loop of radius "+gF(r)+" m. At the bottom of the loop the ball is moving at "+gF(v)+" m/s. What is the force exerted on the ball by the track at the bottom of the loop?",
+  var qq3204 = mcq("A ball of mass "+gF(m)+" kg rolls around the inside of a vertical loop of radius "+gF(r)+" m. At the bottom of the loop the ball is moving at "+gF(v)+" m/s. What is the force exerted on the ball by the track at the bottom of the loop?",
     F3(ans)+" N",
     [F3(sfR(Fc4,3))+" N", F3(sfR(W4,3))+" N", F3(sfR(Fc4-W4,4))+" N"],
     "Take toward the centre of the loop as positive. At the bottom, the centre is above the ball, so the normal force points toward the centre and gravity points away from it: N - W = F_c. First find the centripetal force: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2, then "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2, then "+gF(m)+" × "+iF(a4)+" = "+iF(Fc4)+" N. The weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. So the normal force is "+iF(Fc4)+" + "+iF(W4)+" = "+iF(N4)+" N. The track exerts "+F3(ans)+" N on the ball at the bottom, more than at the top, because there the normal force must both support the weight and supply the centripetal force.",
-    {m:m,v:v,r:r});
+    {m:m,v:v,r:r}); qq3204.figure = p32figLoop(r,v,m,"bottom"); return qq3204;
 });
 
 E("u2-62-minspeed-cr",2,["PH12.6.2"],3,"gen",function(){
   var r=sfR(rf(4.0,14.0),3);
   var v2_4=sfR(9.8*r,4), ans=sfR(Math.sqrt(v2_4),3);
-  return numq("A roller coaster car goes around a vertical loop of radius "+gF(r)+" m. What is the minimum speed the car can have at the top of the loop and still stay on the track? Give your answer in m/s.",
+  var qq3204 = numq("A roller coaster car goes around a vertical loop of radius "+gF(r)+" m. What is the minimum speed the car can have at the top of the loop and still stay on the track? Give your answer in m/s.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "At the minimum speed, the car is just barely in contact with the track at the top, so the track exerts no normal force there. Gravity alone supplies the centripetal force: m g = m v^2 / r. The mass cancels, leaving v^2 = g r: 9.8 × "+gF(r)+" = "+iF(v2_4)+" m^2/s^2. Taking the square root gives the minimum speed, "+F3(ans)+" m/s. Any slower at the top and gravity would pull the car off the track before it completed the loop.",
-    {r:r});
+    {r:r}); qq3204.figure = p32figLoop(r,0,0,"top"); return qq3204;
 });
 
 E("u2-62-dip-cr",2,["PH12.6.2"],2,"gen",function(){
@@ -700,10 +1431,10 @@ E("u2-62-dip-cr",2,["PH12.6.2"],2,"gen",function(){
     v24=sfR(v*v,4); a4=sfR(v24/r,4); Fc4=sfR(m*a4,4); W4=sfR(m*9.8,4); N4=sfR(Fc4+W4,4);
   } while (N4>=950 || Fc4<40);
   ans=sfR(N4,3);
-  return numq("A skateboarder with a total mass of "+gF(m)+" kg (rider and board) passes through the bottom of a bowl-shaped dip of radius "+gF(r)+" m at a speed of "+gF(v)+" m/s. What force does the surface of the bowl exert on the skateboarder at the bottom of the dip? Give your answer in N.",
+  var qq3204 = numq("A skateboarder with a total mass of "+gF(m)+" kg (rider and board) passes through the bottom of a bowl-shaped dip of radius "+gF(r)+" m at a speed of "+gF(v)+" m/s. What force does the surface of the bowl exert on the skateboarder at the bottom of the dip? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Take toward the centre of the bowl's curve as positive. At the bottom of the dip the centre is directly above, so the normal force points toward the centre and gravity points away: N - W = F_c. First find the centripetal force: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2, then "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2, then "+gF(m)+" × "+iF(a4)+" = "+iF(Fc4)+" N. The weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. So the normal force is "+iF(Fc4)+" + "+iF(W4)+" = "+iF(N4)+" N. The surface exerts "+F3(ans)+" N, noticeably more than the skateboarder's weight, which is why the rider feels pressed into the board at the bottom of a dip.",
-    {m:m,v:v,r:r});
+    {m:m,v:v,r:r}); qq3204.figure = p32figDip(r,v,m); return qq3204;
 });
 
 E("u2-62-banked-cr",2,["PH12.6.2"],3,"gen",function(){
@@ -713,44 +1444,44 @@ E("u2-62-banked-cr",2,["PH12.6.2"],3,"gen",function(){
     v24=sfR(v*v,4); rg4=sfR(r*9.8,4); ratio4=sfR(v24/rg4,4);
   } while (ratio4<0.15 || ratio4>0.85);
   ans=sfR(Math.atan(ratio4)*180/Math.PI,3);
-  return numq("A highway curve of radius "+gF(r)+" m is to be banked so that a car travelling at "+gF(v)+" m/s can round the curve with no friction at all between the tires and the road. At what angle should the curve be banked? Give your answer in degrees.",
+  var qq3204 = numq("A highway curve of radius "+gF(r)+" m is to be banked so that a car travelling at "+gF(v)+" m/s can round the curve with no friction at all between the tires and the road. At what angle should the curve be banked? Give your answer in degrees.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "With no friction, the horizontal component of the normal force supplies the centripetal force, and the condition works out to tan of the banking angle equals v^2 / (r g). First square the speed: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2. Then find r g: "+gF(r)+" × 9.8 = "+iF(rg4)+" m^2/s^2. The ratio is "+iF(v24)+" / "+iF(rg4)+" = "+iF(ratio4)+". The angle whose tangent is "+iF(ratio4)+" is "+F3(ans)+" degrees. The curve should be banked at "+F3(ans)+" degrees, and note that the mass of the car does not enter the result.",
-    {v:v,r:r});
+    {v:v,r:r}); qq3204.figure = p32figBanked(v,r); return qq3204;
 });
 
 E("u2-62-effective-weight",2,["PH12.6.2"],1,"var",varset([
   function(){
-    return mcq("A car drives at a steady speed over the crest of a rounded hill. Compared with its weight on flat ground, the normal force on the car at the crest is",
+    var qq3204 = mcq("A car drives at a steady speed over the crest of a rounded hill. Compared with its weight on flat ground, the normal force on the car at the crest is",
       "Less than the car's weight, so the driver feels lighter",
       ["Greater than the car's weight, so the driver feels heavier",
        "Equal to the car's weight, because the speed is steady",
        "Zero, because the car leaves the road at any crest"],
-      "At the crest the centre of the curve is below the car, so gravity supplies part of the centripetal force and the road needs to push up with less than the full weight: N = m g - m v^2 / r. The normal force is less than the weight, and the driver feels lighter.",{});
+      "At the crest the centre of the curve is below the car, so gravity supplies part of the centripetal force and the road needs to push up with less than the full weight: N = m g - m v^2 / r. The normal force is less than the weight, and the driver feels lighter.",{}); qq3204.figure = p32figCrestDip("crest"); return qq3204;
   },
   function(){
-    return mcq("A cyclist coasts through the bottom of a dip in the road at a steady speed. Compared with the cyclist's weight on flat ground, the normal force at the bottom of the dip is",
+    var qq3204 = mcq("A cyclist coasts through the bottom of a dip in the road at a steady speed. Compared with the cyclist's weight on flat ground, the normal force at the bottom of the dip is",
       "Greater than the cyclist's weight, so the cyclist feels heavier",
       ["Less than the cyclist's weight, so the cyclist feels lighter",
        "Equal to the cyclist's weight, because the speed is steady",
        "Zero, because the road cannot push at the bottom of a dip"],
-      "At the bottom of the dip the centre of the curve is above, so the normal force must both support the weight and supply the centripetal force: N = m g + m v^2 / r. The normal force is greater than the weight, and the cyclist feels heavier.",{});
+      "At the bottom of the dip the centre of the curve is above, so the normal force must both support the weight and supply the centripetal force: N = m g + m v^2 / r. The normal force is greater than the weight, and the cyclist feels heavier.",{}); qq3204.figure = p32figCrestDip("dip"); return qq3204;
   },
   function(){
-    return mcq("A roller coaster car passes the top of a loop at exactly the minimum speed needed to stay on the track. The normal force exerted by the track on the car at that moment is",
+    var qq3204 = mcq("A roller coaster car passes the top of a loop at exactly the minimum speed needed to stay on the track. The normal force exerted by the track on the car at that moment is",
       "Zero, because gravity alone supplies the centripetal force",
       ["Equal to the car's weight",
        "Twice the car's weight",
        "Equal to the centripetal force plus the car's weight"],
-      "At the minimum speed the car is just in contact with the track, so the track pushes with no normal force at all. Gravity alone provides the centripetal force, m g = m v^2 / r, and the riders feel momentarily weightless.",{});
+      "At the minimum speed the car is just in contact with the track, so the track pushes with no normal force at all. Gravity alone provides the centripetal force, m g = m v^2 / r, and the riders feel momentarily weightless.",{}); qq3204.figure = p32figCrestDip("loop"); return qq3204;
   },
   function(){
-    return mcq("A car travels at a steady speed along a straight, flat stretch of highway. The normal force exerted by the road on the car is",
+    var qq3204 = mcq("A car travels at a steady speed along a straight, flat stretch of highway. The normal force exerted by the road on the car is",
       "Equal to the car's weight, because there is no vertical acceleration and no curve",
       ["Less than the car's weight, because the car is moving",
        "Greater than the car's weight, because of the car's speed",
        "Zero, because the road is flat"],
-      "On a straight, flat road there is no vertical acceleration and no centre of a curve to accelerate toward, so the vertical forces balance: the normal force equals the car's weight. Speed along a straight, flat road does not change the normal force.",{});
+      "On a straight, flat road there is no vertical acceleration and no centre of a curve to accelerate toward, so the vertical forces balance: the normal force equals the car's weight. Speed along a straight, flat road does not change the normal force.",{}); qq3204.figure = p32figCrestDip("flat"); return qq3204;
   }
 ]));
 
@@ -798,10 +1529,10 @@ E("u2-62-claim-judge",2,["PH12.6.2"],3,"var",varset([
 E("u2-62-string-vertical",2,["PH12.6.2"],2,"gen",function(){
   var m=sfR(rf(0.25,0.80),3), v=sfR(rf(3.5,7.5),3), r=sfR(rf(0.50,1.20),3);
   var v24=sfR(v*v,4), a4=sfR(v24/r,4), Fc4=sfR(m*a4,4), W4=sfR(m*9.8,4), T4=sfR(Fc4+W4,4), ans=sfR(T4,3);
-  return numq("A ball of mass "+gF(m)+" kg is whirled in a vertical circle of radius "+gF(r)+" m on a string. At the bottom of the circle the ball is moving at "+gF(v)+" m/s. What is the tension in the string at the bottom of the circle? Give your answer in N.",
+  var qq3204 = numq("A ball of mass "+gF(m)+" kg is whirled in a vertical circle of radius "+gF(r)+" m on a string. At the bottom of the circle the ball is moving at "+gF(v)+" m/s. What is the tension in the string at the bottom of the circle? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Take toward the centre of the circle as positive. At the bottom, the centre is above the ball, so the tension points toward the centre and gravity points away: T - W = F_c. First find the centripetal force: "+gF(v)+" × "+gF(v)+" = "+iF(v24)+" m^2/s^2, then "+iF(v24)+" / "+gF(r)+" = "+iF(a4)+" m/s^2, then "+gF(m)+" × "+iF(a4)+" = "+iF(Fc4)+" N. The weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. So the tension is "+iF(Fc4)+" + "+iF(W4)+" = "+iF(T4)+" N. The tension at the bottom is "+F3(ans)+" N, greater than the weight, because the string must also supply the centripetal force.",
-    {m:m,v:v,r:r});
+    {m:m,v:v,r:r}); qq3204.figure = p32figLoop(r,v,m,"bottom"); return qq3204;
 });
 
 /* ---------- PH12.6.3 Two-dimensional dynamics: inclines ---------- */
@@ -814,21 +1545,21 @@ E("u2-63-components-mc",2,["PH12.6.3"],1,"gen",function(){
     par4=sfR(W4*sinR,4); ans=sfR(par4,3);
     opts=[ans,sfR(W4*cosR,3),sfR(W4,3),sfR(W4*tanR,3)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4);
-  return mcq("A block of mass "+gF(m)+" kg rests on a slope inclined at "+ang+" degrees above the horizontal. What is the component of the block's weight acting down the slope?",
+  var qq3204 = mcq("A block of mass "+gF(m)+" kg rests on a slope inclined at "+ang+" degrees above the horizontal. What is the component of the block's weight acting down the slope?",
     F3(ans)+" N",
     [F3(sfR(W4*cosR,3))+" N", F3(sfR(W4,3))+" N", F3(sfR(W4*tanR,3))+" N"],
     "First find the weight: "+gF(m)+" × 9.8 = "+iF(W4)+" N. The component of weight parallel to the slope uses the sine of the slope angle: "+iF(W4)+" × "+fmt(sinR,3)+" = "+iF(par4)+" N. The component of the weight acting down the slope is "+F3(ans)+" N. The cosine factor would give the component perpendicular to the slope instead.",
-    {m:m,ang:ang});
+    {m:m,ang:ang}); qq3204.figure = p32figIncline(ang,gF(m)+" kg","components"); return qq3204;
 });
 
 E("u2-63-incline-frictionless",2,["PH12.6.3"],2,"gen",function(){
   var m=sfR(rf(2.0,24.0),3), ang=pick([15,20,25,30,35,40]), rad=ang*Math.PI/180;
   var W4=sfR(m*9.8,4), sinR=sfR(Math.sin(rad),3);
   var par4=sfR(W4*sinR,4), a4=sfR(par4/m,4), ans=sfR(a4,3);
-  return numq("A sled of mass "+gF(m)+" kg slides down a frictionless slope inclined at "+ang+" degrees above the horizontal. What is the acceleration of the sled down the slope? Give your answer in m/s^2.",
+  var qq3204 = numq("A sled of mass "+gF(m)+" kg slides down a frictionless slope inclined at "+ang+" degrees above the horizontal. What is the acceleration of the sled down the slope? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "On a frictionless slope, the component of the weight parallel to the slope is the net force. The weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. Its component down the slope is "+iF(W4)+" × "+fmt(sinR,3)+" = "+iF(par4)+" N. Newton's second law gives the acceleration: "+iF(par4)+" / "+gF(m)+" = "+iF(a4)+" m/s^2. The acceleration of the sled is "+F3(ans)+" m/s^2 down the slope. Notice the mass cancels in this calculation: any sled would accelerate the same on a frictionless slope of this angle.",
-    {m:m,ang:ang});
+    {m:m,ang:ang}); qq3204.figure = p32figIncline(ang,gF(m)+" kg",""); return qq3204;
 });
 
 E("u2-63-incline-friction-cr",2,["PH12.6.3"],2,"gen",function(){
@@ -839,10 +1570,10 @@ E("u2-63-incline-friction-cr",2,["PH12.6.3"],2,"gen",function(){
     par4=sfR(W4*sinR,4); nor4=sfR(W4*cosR,4); fr4=sfR(mu*nor4,4); net4=sfR(par4-fr4,4); a4=sfR(net4/m,4);
   } while (a4<1.2);
   ans=sfR(a4,3);
-  return numq("A crate of mass "+gF(m)+" kg slides down a slope inclined at "+ang+" degrees above the horizontal. The coefficient of kinetic friction between the crate and the slope is "+gF(mu)+". What is the acceleration of the crate down the slope? Give your answer in m/s^2.",
+  var qq3204 = numq("A crate of mass "+gF(m)+" kg slides down a slope inclined at "+ang+" degrees above the horizontal. The coefficient of kinetic friction between the crate and the slope is "+gF(mu)+". What is the acceleration of the crate down the slope? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Take down the slope as positive. The weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. Its component down the slope is "+iF(W4)+" × "+fmt(sinR,3)+" = "+iF(par4)+" N. Its component perpendicular to the slope, which sets the normal force, is "+iF(W4)+" × "+fmt(cosR,3)+" = "+iF(nor4)+" N. Kinetic friction acts up the slope with magnitude "+gF(mu)+" × "+iF(nor4)+" = "+iF(fr4)+" N. The net force down the slope is "+iF(par4)+" - "+iF(fr4)+" = "+iF(net4)+" N. Newton's second law gives the acceleration: "+iF(net4)+" / "+gF(m)+" = "+iF(a4)+" m/s^2. The acceleration of the crate is "+F3(ans)+" m/s^2 down the slope.",
-    {m:m,ang:ang,mu:mu});
+    {m:m,ang:ang,mu:mu}); qq3204.figure = p32figIncline(ang,gF(m)+" kg","friction"); return qq3204;
 });
 
 E("u2-63-slip-angle",2,["PH12.6.3"],2,"gen",function(){
@@ -850,30 +1581,30 @@ E("u2-63-slip-angle",2,["PH12.6.3"],2,"gen",function(){
   var ctx=pick(["a wooden crate rests on a plywood board","a textbook rests on a wooden board","a rubber-soled shoe rests on a painted board","a hockey puck rests on a varnished board","a brick rests on a rough pine board","a storage bin rests on a melamine board"]);
   var tan4=sfR(Math.tan(rad),4), s4=sfR(Math.sin(rad),4), c4=sfR(Math.cos(rad),4);
   var mu=sfR(tan4,3), opts=[mu,sfR(s4,3),sfR(c4,3),sfR(1/tan4,3)].map(function(x){return F3(x);});
-  return mcq("In a friction test, "+ctx+" and one end of the board is slowly raised. The object begins to slip when the board makes an angle of "+ang+" degrees with the horizontal. What is the coefficient of static friction for this pair of surfaces?",
+  var qq3204 = mcq("In a friction test, "+ctx+" and one end of the board is slowly raised. The object begins to slip when the board makes an angle of "+ang+" degrees with the horizontal. What is the coefficient of static friction for this pair of surfaces?",
     F3(mu),
     [F3(sfR(s4,3)), F3(sfR(c4,3)), F3(sfR(1/tan4,3))],
     "At the angle where slipping just begins, the component of weight down the slope has grown to equal the maximum static friction: m g sin of the angle equals mu_s times m g cos of the angle. The mass and g cancel, leaving mu_s equal to the tangent of the slip angle. For an angle of "+ang+" degrees, the tangent is "+iF(tan4)+". The coefficient of static friction is "+F3(mu)+".",
-    {ang:ang});
+    {ang:ang}); qq3204.figure = p32figIncline(ang,"",""); return qq3204;
 });
 
 E("u2-63-push-up",2,["PH12.6.3"],2,"gen",function(){
   var m=sfR(rf(6.0,22.0),3), ang=pick([15,20,25,30]), mu=pick([0.150,0.220,0.280,0.340]), rad=ang*Math.PI/180;
   var W4=sfR(m*9.8,4), sinR=sfR(Math.sin(rad),3), cosR=sfR(Math.cos(rad),3);
   var par4=sfR(W4*sinR,4), nor4=sfR(W4*cosR,4), fr4=sfR(mu*nor4,4), F4=sfR(par4+fr4,4), ans=sfR(F4,3);
-  return numq("A worker pushes a crate of mass "+gF(m)+" kg up a loading ramp inclined at "+ang+" degrees above the horizontal, pushing parallel to the ramp. The crate moves up the ramp at a constant speed. The coefficient of kinetic friction between the crate and the ramp is "+gF(mu)+". What force must the worker exert? Give your answer in N.",
+  var qq3204 = numq("A worker pushes a crate of mass "+gF(m)+" kg up a loading ramp inclined at "+ang+" degrees above the horizontal, pushing parallel to the ramp. The crate moves up the ramp at a constant speed. The coefficient of kinetic friction between the crate and the ramp is "+gF(mu)+". What force must the worker exert? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Because the crate moves at a constant speed, its acceleration is zero, so the forces along the ramp balance. Take up the ramp as positive. The weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N. Its component down the ramp is "+iF(W4)+" × "+fmt(sinR,3)+" = "+iF(par4)+" N. The normal force is the perpendicular component, "+iF(W4)+" × "+fmt(cosR,3)+" = "+iF(nor4)+" N, so kinetic friction is "+gF(mu)+" × "+iF(nor4)+" = "+iF(fr4)+" N, pointing down the ramp because it opposes the motion up. The push must balance both: "+iF(par4)+" + "+iF(fr4)+" = "+iF(F4)+" N. The worker must exert "+F3(ans)+" N.",
-    {m:m,ang:ang,mu:mu});
+    {m:m,ang:ang,mu:mu}); qq3204.figure = p32figIncline(ang,gF(m)+" kg","push"); return qq3204;
 });
 
 E("u2-63-pulley-horizontal",2,["PH12.6.3"],2,"gen",function(){
   var mt=sfR(rf(2.0,9.0),3), mh=sfR(rf(1.0,8.0),3);
   var Wh4=sfR(mh*9.8,4), tot4=sfR(mt+mh,4), a4=sfR(Wh4/tot4,4), ans=sfR(a4,3);
-  return numq("A block of mass "+gF(mt)+" kg on a frictionless horizontal table is connected by a string over a pulley at the edge of the table to a hanging mass of "+gF(mh)+" kg. What is the acceleration of the system? Give your answer in m/s^2.",
+  var qq3204 = numq("A block of mass "+gF(mt)+" kg on a frictionless horizontal table is connected by a string over a pulley at the edge of the table to a hanging mass of "+gF(mh)+" kg. What is the acceleration of the system? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The only external force driving the system is the weight of the hanging mass: "+gF(mh)+" × 9.8 = "+iF(Wh4)+" N. Both masses accelerate together, so the total mass being accelerated is "+gF(mt)+" + "+gF(mh)+" = "+iF(tot4)+" kg. Newton's second law for the whole system gives the acceleration: "+iF(Wh4)+" / "+iF(tot4)+" = "+iF(a4)+" m/s^2. The acceleration of the system is "+F3(ans)+" m/s^2, with the table block moving toward the pulley and the hanging mass moving down.",
-    {mt:mt,mh:mh});
+    {mt:mt,mh:mh}); qq3204.figure = p32figPulleyH(mt,mh); return qq3204;
 });
 
 E("u2-63-pulley-tension-mc",2,["PH12.6.3"],2,"gen",function(){
@@ -883,11 +1614,11 @@ E("u2-63-pulley-tension-mc",2,["PH12.6.3"],2,"gen",function(){
     Wh4=sfR(mh*9.8,4); tot4=sfR(mt+mh,4); a4=sfR(Wh4/tot4,4); T4=sfR(mt*a4,4); T=sfR(T4,3);
     opts=[T,sfR(Wh4,3),sfR(mh*a4,3),sfR(mt*9.8,3)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4);
-  return mcq("A block of mass "+gF(mt)+" kg on a frictionless horizontal table is connected by a string over a pulley at the edge of the table to a hanging mass of "+gF(mh)+" kg. What is the tension in the string?",
+  var qq3204 = mcq("A block of mass "+gF(mt)+" kg on a frictionless horizontal table is connected by a string over a pulley at the edge of the table to a hanging mass of "+gF(mh)+" kg. What is the tension in the string?",
     F3(T)+" N",
     [F3(sfR(Wh4,3))+" N", F3(sfR(mh*a4,3))+" N", F3(sfR(mt*9.8,3))+" N"],
     "First find the acceleration of the system. The hanging weight is "+gF(mh)+" × 9.8 = "+iF(Wh4)+" N, and the total mass is "+gF(mt)+" + "+gF(mh)+" = "+iF(tot4)+" kg, so the acceleration is "+iF(Wh4)+" / "+iF(tot4)+" = "+iF(a4)+" m/s^2. The tension is the only horizontal force on the table block, so for that block alone, T = m a: "+gF(mt)+" × "+iF(a4)+" = "+iF(T4)+" N. The tension in the string is "+F3(T)+" N, less than the hanging weight, because the hanging mass is accelerating downward.",
-    {mt:mt,mh:mh});
+    {mt:mt,mh:mh}); qq3204.figure = p32figPulleyH(mt,mh); return qq3204;
 });
 
 E("u2-63-pulley-cr",2,["PH12.6.3"],3,"gen",function(){
@@ -900,10 +1631,10 @@ E("u2-63-pulley-cr",2,["PH12.6.3"],3,"gen",function(){
   } while (net4<8 || net1<fr4+4);
   ans=sfR(a4,3);
   var gma4=sfR(9.8-a4,4), T4=sfR(mh*gma4,4), T=sfR(T4,3);
-  return numq("A block of mass "+gF(mi)+" kg sits on a slope inclined at "+ang+" degrees above the horizontal. A string attached to the block runs up the slope and over a pulley at the top, and a mass of "+gF(mh)+" kg hangs from the other end. The hanging mass falls, pulling the block up the slope. The coefficient of kinetic friction between the block and the slope is "+gF(mu)+". What is the acceleration of the system? Give your answer in m/s^2.",
+  var qq3204 = numq("A block of mass "+gF(mi)+" kg sits on a slope inclined at "+ang+" degrees above the horizontal. A string attached to the block runs up the slope and over a pulley at the top, and a mass of "+gF(mh)+" kg hangs from the other end. The hanging mass falls, pulling the block up the slope. The coefficient of kinetic friction between the block and the slope is "+gF(mu)+". What is the acceleration of the system? Give your answer in m/s^2.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Treat the two masses as one system and take the direction of motion as positive. The driving force is the hanging weight: "+gF(mh)+" × 9.8 = "+iF(Wh4)+" N. The block's weight is "+gF(mi)+" × 9.8 = "+iF(Wi4)+" N. Its component down the slope, opposing the motion, is "+iF(Wi4)+" × "+fmt(sinR,3)+" = "+iF(par4)+" N. The normal force on the block is "+iF(Wi4)+" × "+fmt(cosR,3)+" = "+iF(nor4)+" N, so kinetic friction, also opposing the motion, is "+gF(mu)+" × "+iF(nor4)+" = "+iF(fr4)+" N. The net force is "+iF(Wh4)+" - "+iF(par4)+" = "+iF(net1)+" N, then "+iF(net1)+" - "+iF(fr4)+" = "+iF(net4)+" N. The total mass is "+gF(mi)+" + "+gF(mh)+" = "+iF(tot4)+" kg, so the acceleration is "+iF(net4)+" / "+iF(tot4)+" = "+iF(a4)+" m/s^2. The acceleration of the system is "+F3(ans)+" m/s^2. (As a check, the tension follows from the hanging mass alone: 9.8 - "+iF(a4)+" = "+iF(gma4)+" m/s^2, and "+gF(mh)+" × "+iF(gma4)+" = "+iF(T4)+" N, so the tension is "+F3(T)+" N.)",
-    {mi:mi,mh:mh,ang:ang,mu:mu});
+    {mi:mi,mh:mh,ang:ang,mu:mu}); qq3204.figure = p32figPulleyIncline(mi,mh,ang,mu); return qq3204;
 });
 
 E("u2-63-judge",2,["PH12.6.3"],3,"var",varset([
@@ -956,10 +1687,10 @@ E("u2-63-judge",2,["PH12.6.3"],3,"var",varset([
 E("u2-64-torque-basic",2,["PH12.6.4"],1,"gen",function(){
   var F=sfR(rf(25.0,180.0),3), d=sfR(rf(0.15,0.55),3);
   var tau4=sfR(F*d,4), ans=sfR(tau4,3);
-  return numq("A mechanic pulls perpendicular to a wrench handle at a point "+gF(d)+" m from the centre of a bolt, with a force of "+gF(F)+" N. What torque does the mechanic apply to the bolt? Give your answer in N·m.",
+  var qq3204 = numq("A mechanic pulls perpendicular to a wrench handle at a point "+gF(d)+" m from the centre of a bolt, with a force of "+gF(F)+" N. What torque does the mechanic apply to the bolt? Give your answer in N·m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Torque is the force multiplied by the lever arm when the force is applied perpendicular to the handle: "+gF(F)+" × "+gF(d)+" = "+iF(tau4)+" N·m. The torque applied to the bolt is "+F3(ans)+" N·m.",
-    {F:F,d:d});
+    {F:F,d:d}); qq3204.figure = p32figWrench(F,d,null); return qq3204;
 });
 
 E("u2-64-equilibrium-concept",2,["PH12.6.4"],1,"var",varset([
@@ -1000,10 +1731,10 @@ E("u2-64-equilibrium-concept",2,["PH12.6.4"],1,"var",varset([
 E("u2-64-wires-cr",2,["PH12.6.4"],2,"gen",function(){
   var L=sfR(rf(1.6,2.4),3), m=sfR(rf(18.0,42.0),3), d=sfR(L*rf(0.58,0.75),3);
   var W4=sfR(m*9.8,4), prod4=sfR(W4*d,4), TR4=sfR(prod4/L,4), TL4=sfR(W4-TR4,4), ans=sfR(TR4,3);
-  return numq("A shop sign of mass "+gF(m)+" kg hangs from two vertical wires attached at its top corners, "+gF(L)+" m apart. The sign's centre of mass is "+gF(d)+" m from the left-hand wire. What is the tension in the right-hand wire? Give your answer in N.",
+  var qq3204 = numq("A shop sign of mass "+gF(m)+" kg hangs from two vertical wires attached at its top corners, "+gF(L)+" m apart. The sign's centre of mass is "+gF(d)+" m from the left-hand wire. What is the tension in the right-hand wire? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "The sign is in equilibrium, so the torques about any point balance. Take torques about the left-hand wire, so the left tension contributes no torque. The sign's weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N, acting at the centre of mass. Torque balance gives T_right × "+gF(L)+" = "+iF(W4)+" × "+gF(d)+", and the right side is "+iF(W4)+" × "+gF(d)+" = "+iF(prod4)+" N·m. So the tension in the right-hand wire is "+iF(prod4)+" / "+gF(L)+" = "+iF(TR4)+" N. The tension in the right-hand wire is "+F3(ans)+" N (and the left wire carries the rest, "+iF(W4)+" - "+iF(TR4)+" = "+iF(TL4)+" N, since the centre of mass is closer to the right wire, that wire carries more).",
-    {L:L,m:m,d:d});
+    {L:L,m:m,d:d}); qq3204.figure = p32figSign(L,m,d); return qq3204;
 });
 
 E("u2-64-seesaw",2,["PH12.6.4"],2,"gen",function(){
@@ -1013,10 +1744,10 @@ E("u2-64-seesaw",2,["PH12.6.4"],2,"gen",function(){
     prod4=sfR(m1*d1,4); d2_4=sfR(prod4/m2,4);
   } while (d2_4>2.3 || d2_4<0.8);
   ans=sfR(d2_4,3);
-  return numq("A child of mass "+gF(m1)+" kg sits "+gF(d1)+" m from the pivot of a seesaw. A second child of mass "+gF(m2)+" kg sits on the other side. How far from the pivot must the second child sit for the seesaw to balance? Give your answer in m.",
+  var qq3204 = numq("A child of mass "+gF(m1)+" kg sits "+gF(d1)+" m from the pivot of a seesaw. A second child of mass "+gF(m2)+" kg sits on the other side. How far from the pivot must the second child sit for the seesaw to balance? Give your answer in m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "For the seesaw to balance, the torques about the pivot must be equal and opposite. Each torque is the child's weight times their distance, and since both weights carry the same factor of g, the balance condition reduces to m1 d1 = m2 d2. The first child's product is "+gF(m1)+" × "+gF(d1)+" = "+iF(prod4)+" kg·m. So the second child's distance is "+iF(prod4)+" / "+gF(m2)+" = "+iF(d2_4)+" m. The second child must sit "+F3(ans)+" m from the pivot.",
-    {m1:m1,d1:d1,m2:m2});
+    {m1:m1,d1:d1,m2:m2}); qq3204.figure = p32figSeesaw(m1,d1,m2); return qq3204;
 });
 
 E("u2-64-metre-stick",2,["PH12.6.4"],2,"gen",function(){
@@ -1026,11 +1757,11 @@ E("u2-64-metre-stick",2,["PH12.6.4"],2,"gen",function(){
     prod4=sfR(ms*dR,4); mh4=sfR(prod4/p,4); ans=sfR(mh4,3);
     opts=[ans,sfR(ms*p/dR,3),sfR(prod4,3),sfR(ms/2,3)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4);
-  return mcq("A uniform metre stick of mass "+gF(ms)+" kg is pivoted at the "+fmt(p*100,0)+" cm mark. A mass hung at the 0 cm end balances the stick. What mass is needed?",
+  var qq3204 = mcq("A uniform metre stick of mass "+gF(ms)+" kg is pivoted at the "+fmt(p*100,0)+" cm mark. A mass hung at the 0 cm end balances the stick. What mass is needed?",
     F3(ans)+" kg",
     [F3(sfR(ms*p/dR,3))+" kg", F3(sfR(prod4,3))+" kg", F3(sfR(ms/2,3))+" kg"],
     "The stick is uniform, so its weight acts at its centre, the 50 cm mark, which is "+gF(dR)+" m to the right of the pivot. The hanging mass acts at the 0 cm end, "+gF(p)+" m to the left of the pivot. Torque balance gives m_hang × "+gF(p)+" = "+gF(ms)+" × "+gF(dR)+". The right side is "+gF(ms)+" × "+gF(dR)+" = "+iF(prod4)+" kg·m, so the hanging mass is "+iF(prod4)+" / "+gF(p)+" = "+iF(mh4)+" kg. The mass needed is "+F3(ans)+" kg.",
-    {p:p,ms:ms});
+    {p:p,ms:ms}); qq3204.figure = p32figMetreStick(p,ms); return qq3204;
 });
 
 E("u2-64-beam-cr",2,["PH12.6.4"],2,"gen",function(){
@@ -1038,20 +1769,20 @@ E("u2-64-beam-cr",2,["PH12.6.4"],2,"gen",function(){
   var Wb4=sfR(mb*9.8,4), Wl4=sfR(ml*9.8,4);
   var t1=sfR(Wb4*(L/2),4), t2=sfR(Wl4*x,4), sum4=sfR(t1+t2,4), RR4=sfR(sum4/L,4);
   var tot4=sfR(Wb4+Wl4,4), RL4=sfR(tot4-RR4,4), ans=sfR(RR4,3);
-  return numq("A uniform scaffold plank of length "+gF(L)+" m and mass "+gF(mb)+" kg rests on supports at its two ends. A crate of mass "+gF(ml)+" kg sits on the plank "+gF(x)+" m from the left-hand support. What is the upward force exerted by the right-hand support? Give your answer in N.",
+  var qq3204 = numq("A uniform scaffold plank of length "+gF(L)+" m and mass "+gF(mb)+" kg rests on supports at its two ends. A crate of mass "+gF(ml)+" kg sits on the plank "+gF(x)+" m from the left-hand support. What is the upward force exerted by the right-hand support? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Take torques about the left-hand support, so the left support force contributes no torque. The plank's weight is "+gF(mb)+" × 9.8 = "+iF(Wb4)+" N, acting at the plank's centre, "+gF(L/2)+" m from the left support, giving a torque of "+iF(Wb4)+" × "+gF(L/2)+" = "+iF(t1)+" N·m. The crate's weight is "+gF(ml)+" × 9.8 = "+iF(Wl4)+" N, giving a torque of "+iF(Wl4)+" × "+gF(x)+" = "+iF(t2)+" N·m. The total clockwise torque is "+iF(t1)+" + "+iF(t2)+" = "+iF(sum4)+" N·m. The right support force balances this over the full length: "+iF(sum4)+" / "+gF(L)+" = "+iF(RR4)+" N. The right-hand support exerts "+F3(ans)+" N (and the left support carries the remainder, "+iF(tot4)+" - "+iF(RR4)+" = "+iF(RL4)+" N, out of a total weight of "+iF(Wb4)+" + "+iF(Wl4)+" = "+iF(tot4)+" N).",
-    {L:L,mb:mb,ml:ml,x:x});
+    {L:L,mb:mb,ml:ml,x:x}); qq3204.figure = p32figBeam(L,mb,ml,x); return qq3204;
 });
 
 E("u2-64-angled-torque",2,["PH12.6.4"],2,"gen",function(){
   var F=sfR(rf(30.0,110.0),3), d=sfR(rf(0.25,0.60),3), phi=pick([35,40,50,55,65]), rad=phi*Math.PI/180;
   var sinR=sfR(Math.sin(rad),3);
   var prod4=sfR(F*d,4), tau4=sfR(prod4*sinR,4), ans=sfR(tau4,3);
-  return numq("A gardener pulls on a wrench handle of length "+gF(d)+" m with a force of "+gF(F)+" N. The force is applied at the end of the handle, at an angle of "+phi+" degrees to the handle. What is the torque about the bolt? Give your answer in N·m.",
+  var qq3204 = numq("A gardener pulls on a wrench handle of length "+gF(d)+" m with a force of "+gF(F)+" N. The force is applied at the end of the handle, at an angle of "+phi+" degrees to the handle. What is the torque about the bolt? Give your answer in N·m.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Only the component of the force perpendicular to the handle produces torque; the component along the handle just pulls along the wrench. The perpendicular component carries the sine of the angle to the handle. First, force times lever arm: "+gF(F)+" × "+gF(d)+" = "+iF(prod4)+" N·m. Then apply the sine factor: "+iF(prod4)+" × "+fmt(sinR,3)+" = "+iF(tau4)+" N·m. The torque about the bolt is "+F3(ans)+" N·m, less than it would be for a perpendicular pull at the same force.",
-    {F:F,d:d,phi:phi});
+    {F:F,d:d,phi:phi}); qq3204.figure = p32figWrench(F,d,phi); return qq3204;
 });
 
 E("u2-64-bridge-mc",2,["PH12.6.4"],2,"gen",function(){
@@ -1061,24 +1792,27 @@ E("u2-64-bridge-mc",2,["PH12.6.4"],2,"gen",function(){
     Wb4=sfR(mb*9.8,4); Ww4=sfR(mw*9.8,4); tot4=sfR(Wb4+Ww4,4); R4=sfR(tot4/2,4); ans=sfR(R4,3);
     opts=[ans,sfR(tot4,3),sfR(sfR(Ww4/2,4)+Wb4,3),sfR(Wb4/2,3)].map(function(x){return F3(x);});
   } while (new Set(opts).size<4);
-  return mcq("A uniform plank of mass "+gF(mb)+" kg rests on supports at both ends, forming a small bridge. A worker of mass "+gF(mw)+" kg stands at the centre of the plank. What is the upward force at each support?",
+  var qq3204 = mcq("A uniform plank of mass "+gF(mb)+" kg rests on supports at both ends, forming a small bridge. A worker of mass "+gF(mw)+" kg stands at the centre of the plank. What is the upward force at each support?",
     F3(ans)+" N",
     [F3(sfR(tot4,3))+" N", F3(sfR(sfR(Ww4/2,4)+Wb4,3))+" N", F3(sfR(Wb4/2,3))+" N"],
     "The worker stands at the centre and the plank is uniform, so by symmetry the two supports share the total weight equally. The plank's weight is "+gF(mb)+" × 9.8 = "+iF(Wb4)+" N and the worker's weight is "+gF(mw)+" × 9.8 = "+iF(Ww4)+" N. The total weight is "+iF(Wb4)+" + "+iF(Ww4)+" = "+iF(tot4)+" N. Each support carries half: "+iF(tot4)+" / 2 = "+iF(R4)+" N. The upward force at each support is "+F3(ans)+" N.",
-    {mb:mb,mw:mw});
+    {mb:mb,mw:mw}); qq3204.figure = p32figBridge(mb,mw); return qq3204;
 });
 
 E("u2-64-ladder-cr",2,["PH12.6.4"],3,"gen",function(){
   var m=sfR(rf(11.0,17.0),3), ang=pick([55,60,65,70]), L=pick([4.0,5.0,6.0]), rad=ang*Math.PI/180;
   var tanR=sfR(Math.tan(rad),3);
   var W4=sfR(m*9.8,4), half4=sfR(W4/2,4), Nw4=sfR(half4/tanR,4), ans=sfR(Nw4,3);
-  return numq("A uniform ladder of mass "+gF(m)+" kg and length "+gF(L)+" m leans against a smooth vertical wall, making an angle of "+ang+" degrees with the ground. The wall is smooth, so it can exert only a horizontal force on the ladder. What friction force must the ground exert at the foot of the ladder to keep it in equilibrium? Give your answer in N.",
+  var qq3204 = numq("A uniform ladder of mass "+gF(m)+" kg and length "+gF(L)+" m leans against a smooth vertical wall, making an angle of "+ang+" degrees with the ground. The wall is smooth, so it can exert only a horizontal force on the ladder. What friction force must the ground exert at the foot of the ladder to keep it in equilibrium? Give your answer in N.",
     ans, Math.max(0.02*Math.abs(ans),1e-9),
     "Because the wall is smooth, it pushes horizontally on the top of the ladder; call that force N_w. Horizontally, the only other force is friction at the foot, so the friction force must equal N_w. Find N_w from the torques about the foot of the ladder, where friction and the ground's normal force contribute no torque. The ladder's weight is "+gF(m)+" × 9.8 = "+iF(W4)+" N, acting at the ladder's midpoint. Torque balance gives N_w = W / (2 tan of the angle): half the weight is "+iF(W4)+" / 2 = "+iF(half4)+" N, and dividing by the tangent factor, "+iF(half4)+" / "+fmt(tanR,3)+" = "+iF(Nw4)+" N. So the wall pushes with "+iF(Nw4)+" N, and the ground must exert a friction force of "+F3(ans)+" N at the foot, directed toward the wall.",
-    {m:m,ang:ang,L:L});
+    {m:m,ang:ang,L:L}); qq3204.figure = p32figLadder(m,ang,L); return qq3204;
 });
 
 /* ----- bank-u3.js ----- */
+// Diagram figures (Phase C, Nov 2026): entries whose source question type
+// carried a diagram now set qq3204.figure from the draw's own values via the
+// p32fig* helpers in bank-helpers.js. Asked unknowns are labelled "?".
 // Physics 3204 Unit 3 Fields question bank
 // CRMARKS: u3-71-field-radii=3
 // CRMARKS: u3-72-separation-from-force=3
@@ -1159,10 +1893,10 @@ E("u3-71-field-altitude", 3, ["PH12.7.1"], 2, "gen", function(){
   var gSurf = F3(PHYS_GRAV * Me / (Re * Re)) + " N/kg";
   var gHalf = F3(g / 2) + " N/kg";
   var gNoSq = F3(PHYS_GRAV * Me / r) + " N/kg";
-  return mcq("Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. A satellite orbits " + hKm + " km above the surface. What is the gravitational field strength at the satellite?",
+  var qq3204 = mcq("Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. A satellite orbits " + hKm + " km above the surface. What is the gravitational field strength at the satellite?",
     key, [gSurf, gHalf, gNoSq],
     "Field strength is measured from the centre of Earth, so the distance is the radius plus the altitude: r = " + gF(Re) + " m + " + gF(h) + " m = " + iF(r) + " m. Then g = GM/r\u00B2 gives " + key + ". Using the surface radius alone would give the surface value " + gSurf + ", which ignores the altitude. The field strength at the satellite is " + key + ".",
-    {hKm: hKm});
+    {hKm: hKm}); qq3204.figure = p32figOrbit("altitude "+hKm+" km","Earth"); return qq3204;
 });
 
 E("u3-71-field-radii", 3, ["PH12.7.1"], 3, "gen", function(){
@@ -1171,10 +1905,10 @@ E("u3-71-field-radii", 3, ["PH12.7.1"], 3, "gen", function(){
   var r = Math.sqrt(PHYS_GRAV * Me / g);
   var radii = r / Re;
   var ans = sfR(radii, 3);
-  return numq("Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. At what distance from Earth's centre, measured in Earth radii, is the gravitational field strength " + fmt(g, 2) + " N/kg? Give your answer in Earth radii.",
+  var qq3204 = numq("Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. At what distance from Earth's centre, measured in Earth radii, is the gravitational field strength " + fmt(g, 2) + " N/kg? Give your answer in Earth radii.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Start from g = GM/r\u00B2 and solve for the distance: r\u00B2 = GM/g, so r is the square root of GM/g. Step 1: GM = " + iF(PHYS_GRAV * Me) + " N m\u00B2/kg (computed from G = 6.67 \u00D7 10\u207B\u00B9\u00B9 and M = " + gF(Me) + " kg). Step 2: dividing GM by g = " + fmt(g, 2) + " N/kg gives r\u00B2, and taking the square root gives r = " + iF(r) + " m. Step 3: divide by one Earth radius, " + gF(Re) + " m: r = " + F3(ans) + " Earth radii. The distance is " + F3(ans) + " Earth radii from the centre.",
-    {g: g});
+    {g: g}); qq3204.figure = p32figOrbit("? Earth radii","Earth"); return qq3204;
 });
 
 E("u3-71-weight-moon", 3, ["PH12.7.1"], 2, "gen", function(){
@@ -1283,10 +2017,10 @@ E("u3-72-satellite-speed", 3, ["PH12.7.2"], 2, "gen", function(){
   var r = Re + altKm * 1000;
   var v = Math.sqrt(PHYS_GRAV * Me / r);
   var ans = sfR(v, 3);
-  return numq("A satellite is in a circular orbit " + altKm + " km above Earth's surface. Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. Calculate the satellite's orbital speed. Give your answer in m/s.",
+  var qq3204 = numq("A satellite is in a circular orbit " + altKm + " km above Earth's surface. Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. Calculate the satellite's orbital speed. Give your answer in m/s.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Gravity provides the centripetal force, which gives v = \u221A(GM/r) for a circular orbit. The orbit radius is measured from Earth's centre: r = " + gF(Re) + " m + " + gF(altKm * 1000) + " m = " + iF(r) + " m. Dividing GM by this radius and taking the square root gives v = " + F3(ans) + " m/s. The orbital speed is " + F3(ans) + " m/s.",
-    {altKm: altKm});
+    {altKm: altKm}); qq3204.figure = p32figOrbit("altitude "+altKm+" km","Earth"); return qq3204;
 });
 
 E("u3-72-orbit-period", 3, ["PH12.7.2"], 2, "gen", function(){
@@ -1295,10 +2029,10 @@ E("u3-72-orbit-period", 3, ["PH12.7.2"], 2, "gen", function(){
   var r = Re + altKm * 1000;
   var T = 2 * Math.PI * Math.sqrt(r * r * r / (PHYS_GRAV * Me));
   var ans = sfR(T, 3);
-  return numq("A weather satellite is in a circular orbit " + altKm + " km above Earth's surface. Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. Calculate the satellite's orbital period. Give your answer in s.",
+  var qq3204 = numq("A weather satellite is in a circular orbit " + altKm + " km above Earth's surface. Earth has mass " + gF(Me) + " kg and radius " + gF(Re) + " m. Calculate the satellite's orbital period. Give your answer in s.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "For a circular orbit, T = 2\u03C0\u221A(r\u00B3/GM). Step 1: the orbit radius from Earth's centre is r = " + gF(Re) + " m + " + gF(altKm * 1000) + " m = " + iF(r) + " m. Step 2: cube the radius to get r\u00B3 and divide by GM, keeping the powers of ten in words to avoid errors. Step 3: take the square root and multiply by 2\u03C0. The period is T = " + F3(ans) + " s, about " + F3(T / 60) + " min. The orbital period is " + F3(ans) + " s.",
-    {altKm: altKm});
+    {altKm: altKm}); qq3204.figure = p32figOrbit("altitude "+altKm+" km","Earth"); return qq3204;
 });
 
 E("u3-72-planet-mass-moon", 3, ["PH12.7.2"], 3, "gen", function(){
@@ -1307,10 +2041,10 @@ E("u3-72-planet-mass-moon", 3, ["PH12.7.2"], 3, "gen", function(){
   var T = Tdays * 86400;
   var M = 4 * Math.PI * Math.PI * r * r * r / (PHYS_GRAV * T * T);
   var ans = sfR(M, 3);
-  return numq("A moon orbits a planet in a circle of radius " + gF(r) + " m with a period of " + gF(Tdays) + " days. Calculate the mass of the planet. Give your answer in kg.",
+  var qq3204 = numq("A moon orbits a planet in a circle of radius " + gF(r) + " m with a period of " + gF(Tdays) + " days. Calculate the mass of the planet. Give your answer in kg.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Gravity supplies the moon's centripetal force, which rearranges to M = 4\u03C0\u00B2r\u00B3/(GT\u00B2). Step 1: convert the period to seconds by multiplying the number of days by 86400 s/day, which gives T = " + iF(T) + " s. Step 2: cube the orbit radius and square the period, tracking powers of ten in words. Step 3: multiply r\u00B3 by 4\u03C0\u00B2 and divide by GT\u00B2. The planet's mass is M = " + F3(ans) + " kg. This is how astronomers weigh planets that have moons.",
-    {r: r, Tdays: Tdays});
+    {r: r, Tdays: Tdays}); qq3204.figure = p32figOrbit(gF(r)+" m","planet"); return qq3204;
 });
 
 E("u3-72-force-ratio-distance", 3, ["PH12.7.2"], 2, "gen", function(){
@@ -1358,10 +2092,10 @@ E("u3-73-field-point-charge", 3, ["PH12.7.3"], 2, "gen", function(){
   var r = sfR(rf(0.10, 0.90), 3);
   var E = PHYS_K * Q * 1e-6 / (r * r);
   var ans = sfR(E, 3);
-  return numq("A point charge of +" + gF(Q) + " \u03BCC is fixed in place. Calculate the electric field strength at a point " + gF(r) + " m from the charge. Give your answer in N/C.",
+  var qq3204 = numq("A point charge of +" + gF(Q) + " \u03BCC is fixed in place. Calculate the electric field strength at a point " + gF(r) + " m from the charge. Give your answer in N/C.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Use E = kQ/r\u00B2. Convert the charge to coulombs: Q = " + gF(Q) + " \u00D7 10\u207B\u2076 C. Multiply k = 8.99 \u00D7 10\u2079 N m\u00B2/C\u00B2 by Q, then divide by r\u00B2 = (" + gF(r) + " m)\u00B2, keeping the powers of ten in words as you go. The result is E = " + F3(ans) + " N/C, directed away from the charge because the charge is positive. The field strength is " + F3(ans) + " N/C.",
-    {Q: Q, r: r});
+    {Q: Q, r: r}); qq3204.figure = p32figPointCharge(Q,r); return qq3204;
 });
 
 E("u3-73-force-test-charge", 3, ["PH12.7.3"], 1, "gen", function(){
@@ -1388,10 +2122,10 @@ E("u3-73-net-field-midway", 3, ["PH12.7.3"], 2, "gen", function(){
   else { net = Math.abs(E2 - E1); wrongMag = E1 + E2; dirWord = "away from the larger positive charge"; }
   var key = F3(net) + " N/C, " + dirWord;
   var wrongDir = opp ? "toward the positive charge" : "toward the larger positive charge";
-  return mcq("Charge A is +" + gF(q1) + " \u03BCC and charge B is " + (opp ? "\u2212" : "+") + gF(q2) + " \u03BCC. They are " + gF(d) + " m apart. What is the electric field at the point midway between them?",
+  var qq3204 = mcq("Charge A is +" + gF(q1) + " \u03BCC and charge B is " + (opp ? "\u2212" : "+") + gF(q2) + " \u03BCC. They are " + gF(d) + " m apart. What is the electric field at the point midway between them?",
     key, [F3(net) + " N/C, " + wrongDir, F3(wrongMag) + " N/C, " + dirWord, F3(wrongMag) + " N/C, " + wrongDir],
     "At the midpoint each charge is " + gF(half) + " m away. Field from A: E = kQ/r\u00B2 = " + F3(E1) + " N/C, pointing away from A (A is positive). Field from B: " + F3(E2) + " N/C, pointing " + (opp ? "toward B, because B is negative, which is the same direction as the field from A" : "away from B, which is back toward A, opposite to the field from A") + ". So the fields " + (opp ? "add" : "partly cancel") + ", giving " + F3(net) + " N/C, " + dirWord + ". The net field is " + key + ".",
-    {q1: q1, q2: q2, d: d, opp: opp});
+    {q1: q1, q2: q2, d: d, opp: opp}); qq3204.figure = p32figMidway(q1,q2,d,opp); return qq3204;
 });
 
 E("u3-73-field-two-charges-point", 3, ["PH12.7.3"], 3, "gen", function(){
@@ -1404,10 +2138,10 @@ E("u3-73-field-two-charges-point", 3, ["PH12.7.3"], 3, "gen", function(){
   var net = Math.abs(E1 - E2);
   var ans = sfR(net, 3);
   var dirWord = E1 > E2 ? "away from the pair of charges, along the line" : "toward the pair of charges, along the line";
-  return numq("A charge of +" + gF(q1) + " \u03BCC and a charge of \u2212" + gF(q2) + " \u03BCC lie on a line. Point P is on the same line, on the side of the positive charge away from the negative charge, " + gF(d1) + " m from the positive charge and " + gF(d2) + " m from the negative charge. Calculate the magnitude of the net electric field at P. Give your answer in N/C.",
+  var qq3204 = numq("A charge of +" + gF(q1) + " \u03BCC and a charge of \u2212" + gF(q2) + " \u03BCC lie on a line. Point P is on the same line, on the side of the positive charge away from the negative charge, " + gF(d1) + " m from the positive charge and " + gF(d2) + " m from the negative charge. Calculate the magnitude of the net electric field at P. Give your answer in N/C.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Find each field at P, with signs, and add them as vectors. Step 1: the positive charge's field at P points away from the positive charge, outward along the line away from both charges: E = kQ/r\u00B2 = " + iF(E1) + " N/C. Step 2: the field of a negative charge points toward that charge, so at P the negative charge's field points back along the line toward the charges: E = " + iF(E2) + " N/C, in the opposite direction to the first field. Step 3: the two fields oppose, so the net magnitude is the difference of the magnitudes: " + F3(ans) + " N/C, directed " + dirWord + ", in the direction of the stronger field. The magnitude of the net field at P is " + F3(ans) + " N/C.",
-    {q1: q1, q2: q2, d1: d1, d2: d2});
+    {q1: q1, q2: q2, d1: d1, d2: d2}); qq3204.figure = p32figTwoChargesPoint(q1,q2,d1,d2); return qq3204;
 });
 
 E("u3-73-field-triangle", 3, ["PH12.7.3"], 2, "gen", function(){
@@ -1424,44 +2158,44 @@ E("u3-73-field-triangle", 3, ["PH12.7.3"], 2, "gen", function(){
     net = Math.sqrt(Ea * Ea + Eb * Eb);
   }
   var key = F3(net) + " N/C";
-  return mcq("Two charges, each +" + gF(q) + " \u03BCC, sit at two corners of a right triangle. Point P is at the third corner. P is " + gF(a) + " m from one charge, measured along one side of the triangle, and " + gF(b) + " m from the other charge, measured along the perpendicular side. What is the magnitude of the net electric field at P?",
+  var qq3204 = mcq("Two charges, each +" + gF(q) + " \u03BCC, sit at two corners of a right triangle. Point P is at the third corner. P is " + gF(a) + " m from one charge, measured along one side of the triangle, and " + gF(b) + " m from the other charge, measured along the perpendicular side. What is the magnitude of the net electric field at P?",
     key, [F3(Ea + Eb) + " N/C", F3(Math.abs(Ea - Eb)) + " N/C", F3(net / 2) + " N/C"],
     "Each field at P points away from its positive charge, along the side of the triangle joining them, so the two fields are perpendicular. Their magnitudes are E = kQ/r\u00B2: " + F3(Ea) + " N/C and " + F3(Eb) + " N/C. Perpendicular vectors combine by Pythagoras, not by adding or subtracting: the net magnitude is the square root of the sum of the squares, " + F3(net) + " N/C. The net field magnitude is " + key + ".",
-    {q: q, a: a, b: b});
+    {q: q, a: a, b: b}); qq3204.figure = p32figChargeTriangle("P","+"+gF(q)+" \u03BCC","+"+gF(q)+" \u03BCC",a,b); return qq3204;
 });
 
 E("u3-73-field-lines-concept", 3, ["PH12.7.3"], 1, "var", varset([
   function(){
-    return mcq("Which statement about electric field lines is correct?",
+    var qq3204 = mcq("Which statement about electric field lines is correct?",
       "Field lines begin on positive charges and end on negative charges, and they never cross",
       ["Field lines begin on negative charges and end on positive charges",
        "Field lines can cross where the field is very strong",
        "Field lines are the paths that electrons always follow exactly"],
-      "By convention, field lines show the direction of the force on a positive test charge, so they leave positive charges and arrive at negative charges. Two lines can never cross, because that would mean the field pointed in two directions at one point. Field lines begin on positive charges and end on negative charges, and they never cross.", {});
+      "By convention, field lines show the direction of the force on a positive test charge, so they leave positive charges and arrive at negative charges. Two lines can never cross, because that would mean the field pointed in two directions at one point. Field lines begin on positive charges and end on negative charges, and they never cross.", {}); qq3204.figure = p32figFieldLinesVar("posneg"); return qq3204;
   },
   function(){
-    return mcq("In a field line diagram, the field is strongest where",
+    var qq3204 = mcq("In a field line diagram, the field is strongest where",
       "The field lines are closest together",
       ["The field lines are farthest apart",
        "The field lines curve the most",
        "The field lines point straight up"],
-      "Line density represents strength: where lines crowd together, more lines pass through each unit of area and the field is stronger. Near a point charge the lines spread out with distance, matching the field's 1/r\u00B2 fall. The field is strongest where the lines are closest together.", {});
+      "Line density represents strength: where lines crowd together, more lines pass through each unit of area and the field is stronger. Near a point charge the lines spread out with distance, matching the field's 1/r\u00B2 fall. The field is strongest where the lines are closest together.", {}); qq3204.figure = p32figFieldLinesVar("density"); return qq3204;
   },
   function(){
-    return mcq("A positive test charge is released from rest at a point in an electric field. The direction it begins to move is",
+    var qq3204 = mcq("A positive test charge is released from rest at a point in an electric field. The direction it begins to move is",
       "Along the field line at that point, in the direction the line points",
       ["Opposite to the direction the field line points",
        "Perpendicular to the field line at that point",
        "Toward the nearest field line crossing"],
-      "The field at a point is defined by the force on a positive test charge there, and the field line's direction is the direction of that force. So a positive charge accelerates along the line, in the direction it points. A negative charge would start off the opposite way.", {});
+      "The field at a point is defined by the force on a positive test charge there, and the field line's direction is the direction of that force. So a positive charge accelerates along the line, in the direction it points. A negative charge would start off the opposite way.", {}); qq3204.figure = p32figFieldLinesVar("uniform"); return qq3204;
   },
   function(){
-    return mcq("The electric field inside a closed, hollow conductor in electrostatic equilibrium is",
+    var qq3204 = mcq("The electric field inside a closed, hollow conductor in electrostatic equilibrium is",
       "Zero everywhere inside the hollow space",
       ["Equal to the field at the conductor's surface",
        "Strongest at the centre of the hollow space",
        "Directed from the centre toward the walls"],
-      "In electrostatic equilibrium, any free charge in a conductor sits on its outer surface, and the field inside the material and inside a hollow space within it is zero. This is why a metal car body shields occupants from external fields. The field inside the hollow conductor is zero.", {});
+      "In electrostatic equilibrium, any free charge in a conductor sits on its outer surface, and the field inside the material and inside a hollow space within it is zero. This is why a metal car body shields occupants from external fields. The field inside the hollow conductor is zero.", {}); qq3204.figure = p32figFieldLinesVar("hollow"); return qq3204;
   }
 ]));
 
@@ -1473,10 +2207,10 @@ E("u3-73-zero-field-point", 3, ["PH12.7.3"], 3, "gen", function(){
   var root = Math.sqrt(mult);
   var x = d / (1 + root);
   var ans = sfR(x, 3);
-  return numq("A charge of +" + gF(q1) + " \u03BCC and a charge of +" + gF(q2) + " \u03BCC are " + gF(d) + " m apart. At what distance from the smaller charge, measured along the line between them, is the net electric field zero? Give your answer in m.",
+  var qq3204 = numq("A charge of +" + gF(q1) + " \u03BCC and a charge of +" + gF(q2) + " \u03BCC are " + gF(d) + " m apart. At what distance from the smaller charge, measured along the line between them, is the net electric field zero? Give your answer in m.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Between two positive charges the fields point in opposite directions, so they can cancel. Let x be the distance from the smaller charge; the other distance is " + gF(d) + " m minus x. Setting the field magnitudes equal, kq\u2081/x\u00B2 = kq\u2082/(" + gF(d) + " \u2212 x)\u00B2, the k and the units cancel. Because the larger charge is " + mult + " times the smaller, its distance must be \u221A" + mult + " = " + root + " times as great for the fields to match. So x + " + root + "x = " + gF(d) + " m, giving x = " + F3(ans) + " m. The zero-field point is " + F3(ans) + " m from the smaller charge, closer to it because its field weakens sooner.",
-    {q1: q1, q2: q2, d: d});
+    {q1: q1, q2: q2, d: d}); qq3204.figure = p32figZeroPoint(q1,q2,d); return qq3204;
 });
 
 /* ---------- PH12.7.4 Coulomb's law applied ---------- */
@@ -1487,10 +2221,10 @@ E("u3-74-coulomb-force", 3, ["PH12.7.4"], 2, "gen", function(){
   var r = sfR(rf(0.050, 0.500), 3);
   var F = PHYS_K * q1 * 1e-6 * q2 * 1e-6 / (r * r);
   var ans = sfR(F, 3);
-  return numq("Two small charged spheres have charges of +" + gF(q1) + " \u03BCC and \u2212" + gF(q2) + " \u03BCC. Their centres are " + gF(r) + " m apart. Calculate the magnitude of the electric force between them. Give your answer in N.",
+  var qq3204 = numq("Two small charged spheres have charges of +" + gF(q1) + " \u03BCC and \u2212" + gF(q2) + " \u03BCC. Their centres are " + gF(r) + " m apart. Calculate the magnitude of the electric force between them. Give your answer in N.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "Use Coulomb's law, F = kq\u2081q\u2082/r\u00B2. Convert both charges to coulombs (multiply each by 10\u207B\u2076), multiply by k = 8.99 \u00D7 10\u2079 N m\u00B2/C\u00B2, and divide by r\u00B2 = (" + gF(r) + " m)\u00B2, tracking powers of ten in words. The magnitude is F = " + F3(ans) + " N. Because the charges have opposite signs, the force is attractive. The force magnitude is " + F3(ans) + " N.",
-    {q1: q1, q2: q2, r: r});
+    {q1: q1, q2: q2, r: r}); qq3204.figure = p32figTwoSpheres("+"+gF(q1)+" \u03BCC","\u2212"+gF(q2)+" \u03BCC",gF(r)+" m"); return qq3204;
 });
 
 E("u3-74-scaling", 3, ["PH12.7.4"], 1, "var", varset([
@@ -1528,10 +2262,10 @@ E("u3-74-separation-from-force", 3, ["PH12.7.4"], 3, "gen", function(){
   var F = sfR(PHYS_K * q1 * 1e-6 * q2 * 1e-6 / (rTrue * rTrue), 3);
   var r = Math.sqrt(PHYS_K * q1 * 1e-6 * q2 * 1e-6 / F);
   var ans = sfR(r, 3);
-  return numq("Two charged spheres, +" + gF(q1) + " \u03BCC and +" + gF(q2) + " \u03BCC, repel each other with a force of " + gF(F) + " N. Calculate the distance between their centres. Give your answer in m.",
+  var qq3204 = numq("Two charged spheres, +" + gF(q1) + " \u03BCC and +" + gF(q2) + " \u03BCC, repel each other with a force of " + gF(F) + " N. Calculate the distance between their centres. Give your answer in m.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Rearrange Coulomb's law: r\u00B2 = kq\u2081q\u2082/F, then take the square root. Step 1: convert the charges to coulombs and compute kq\u2081q\u2082, tracking the powers of ten in words. Step 2: divide by F = " + gF(F) + " N to get r\u00B2 = " + iF(r * r) + " m\u00B2. Step 3: r is the square root of that: r = " + F3(ans) + " m. The distance between the centres is " + F3(ans) + " m.",
-    {q1: q1, q2: q2, F: F});
+    {q1: q1, q2: q2, F: F}); qq3204.figure = p32figTwoSpheres("+"+gF(q1)+" \u03BCC","+"+gF(q2)+" \u03BCC","?"); return qq3204;
 });
 
 E("u3-74-charge-from-force", 3, ["PH12.7.4"], 3, "gen", function(){
@@ -1540,10 +2274,10 @@ E("u3-74-charge-from-force", 3, ["PH12.7.4"], 3, "gen", function(){
   var F = sfR(PHYS_K * qTrue * 1e-6 * qTrue * 1e-6 / (r * r), 3);
   var q = Math.sqrt(F * r * r / PHYS_K) * 1e6;
   var ans = sfR(q, 3);
-  return numq("Two identical small spheres carry equal charges and are " + gF(r) + " m apart. They repel each other with a force of " + gF(F) + " N. Calculate the charge on each sphere. Give your answer in \u03BCC.",
+  var qq3204 = numq("Two identical small spheres carry equal charges and are " + gF(r) + " m apart. They repel each other with a force of " + gF(F) + " N. Calculate the charge on each sphere. Give your answer in \u03BCC.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "With equal charges, Coulomb's law reads F = kq\u00B2/r\u00B2, so q\u00B2 = Fr\u00B2/k. Step 1: square the separation: r\u00B2 = (" + gF(r) + " m)\u00B2 = " + iF(r * r) + " m\u00B2. Step 2: multiply F = " + gF(F) + " N by r\u00B2 and divide by k = 8.99 \u00D7 10\u2079, tracking powers of ten in words, to get q\u00B2 in C\u00B2. Step 3: take the square root and convert back to microcoulombs by multiplying by 10\u2076: q = " + F3(ans) + " \u03BCC. The charge on each sphere is " + F3(ans) + " \u03BCC.",
-    {r: r, F: F});
+    {r: r, F: F}); qq3204.figure = p32figTwoSpheres("? \u03BCC","? \u03BCC",gF(r)+" m"); return qq3204;
 });
 
 E("u3-74-net-force-collinear", 3, ["PH12.7.4"], 3, "gen", function(){
@@ -1557,10 +2291,10 @@ E("u3-74-net-force-collinear", 3, ["PH12.7.4"], 3, "gen", function(){
   var net = Math.abs(FBA - FBC);
   var ans = sfR(net, 3);
   var toward = FBA > FBC ? "toward A" : "toward C";
-  return numq("Three charges lie on a line in the order A, B, C. A is +" + gF(qA) + " \u03BCC, B is +" + gF(qB) + " \u03BCC and C is +" + gF(qC) + " \u03BCC. A and B are " + gF(dAB) + " m apart and B and C are " + gF(dBC) + " m apart. Calculate the magnitude of the net force on charge B. Give your answer in N.",
+  var qq3204 = numq("Three charges lie on a line in the order A, B, C. A is +" + gF(qA) + " \u03BCC, B is +" + gF(qB) + " \u03BCC and C is +" + gF(qC) + " \u03BCC. A and B are " + gF(dAB) + " m apart and B and C are " + gF(dBC) + " m apart. Calculate the magnitude of the net force on charge B. Give your answer in N.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "All three charges are positive, so both neighbours repel B. Step 1: A repels B toward C, with force from Coulomb's law F = " + iF(FBA) + " N. Step 2: C repels B toward A with F = " + iF(FBC) + " N. Step 3: the two forces point in opposite directions, so the net force is the difference of the magnitudes: " + F3(ans) + " N, directed " + toward + ", toward the weaker push. The magnitude of the net force on B is " + F3(ans) + " N.",
-    {qA: qA, qB: qB, qC: qC, dAB: dAB, dBC: dBC});
+    {qA: qA, qB: qB, qC: qC, dAB: dAB, dBC: dBC}); qq3204.figure = p32figCollinear3(qA,qB,qC,dAB,dBC); return qq3204;
 });
 
 E("u3-74-net-force-triangle", 3, ["PH12.7.4"], 2, "gen", function(){
@@ -1578,10 +2312,10 @@ E("u3-74-net-force-triangle", 3, ["PH12.7.4"], 2, "gen", function(){
     net = Math.sqrt(Fa * Fa + Fb * Fb);
   }
   var key = F3(net) + " N";
-  return mcq("A charge of +" + gF(qt) + " \u03BCC sits at the corner of a right triangle. Along one side, " + gF(a) + " m away, is a charge of +" + gF(q) + " \u03BCC. Along the perpendicular side, " + gF(b) + " m away, is another charge of +" + gF(q) + " \u03BCC. What is the magnitude of the net electric force on the first charge?",
+  var qq3204 = mcq("A charge of +" + gF(qt) + " \u03BCC sits at the corner of a right triangle. Along one side, " + gF(a) + " m away, is a charge of +" + gF(q) + " \u03BCC. Along the perpendicular side, " + gF(b) + " m away, is another charge of +" + gF(q) + " \u03BCC. What is the magnitude of the net electric force on the first charge?",
     key, [F3(Fa + Fb) + " N", F3(Math.abs(Fa - Fb)) + " N", F3(net / 2) + " N"],
     "Both charges repel the first charge, pushing it away along each side of the triangle, so the two forces are perpendicular. Their magnitudes from Coulomb's law are " + F3(Fa) + " N and " + F3(Fb) + " N. Perpendicular forces combine by Pythagoras: the net magnitude is the square root of the sum of the squares, " + F3(net) + " N. The net force magnitude is " + key + ".",
-    {q: q, qt: qt, a: a, b: b});
+    {q: q, qt: qt, a: a, b: b}); qq3204.figure = p32figChargeTriangle("+"+gF(qt)+" \u03BCC","+"+gF(q)+" \u03BCC","+"+gF(q)+" \u03BCC",a,b); return qq3204;
 });
 
 E("u3-74-attract-repel", 3, ["PH12.7.4"], 1, "var", varset([
@@ -1710,10 +2444,10 @@ E("u3-75-kirchhoff-junction", 3, ["PH12.7.5"], 1, "gen", function(){
   var guard = 0;
   while ((Math.abs(d - c) < 0.005 || Math.abs(d - Math.abs(a - b)) < 0.005 || Math.abs(c - Math.abs(a - b)) < 0.005) && guard++ < 50) { c = sfR(rf(0.5, a + b - 0.5), 2); d = Math.round((a + b - c) * 100) / 100; }
   var key = fmt(d, 2) + " A";
-  return mcq("At a junction in a circuit, currents of " + fmt(a, 2) + " A and " + fmt(b, 2) + " A flow into the junction. One wire leaving the junction carries " + fmt(c, 2) + " A. What current flows in the only other wire leaving the junction?",
+  var qq3204 = mcq("At a junction in a circuit, currents of " + fmt(a, 2) + " A and " + fmt(b, 2) + " A flow into the junction. One wire leaving the junction carries " + fmt(c, 2) + " A. What current flows in the only other wire leaving the junction?",
     key, [fmt(a + b, 2) + " A", fmt(Math.abs(a - b), 2) + " A", fmt(c, 2) + " A"],
     "Kirchhoff's junction rule: charge is conserved, so the current entering a junction equals the current leaving it. Total in = " + fmt(a, 2) + " A + " + fmt(b, 2) + " A = " + fmt(a + b, 2) + " A. One leaving wire takes " + fmt(c, 2) + " A, so the other carries " + fmt(a + b, 2) + " A \u2212 " + fmt(c, 2) + " A = " + fmt(d, 2) + " A. The current is " + key + ".",
-    {a: a, b: b, c: c});
+    {a: a, b: b, c: c}); qq3204.figure = p32figJunction(a,b,c); return qq3204;
 });
 
 E("u3-75-kirchhoff-loop", 3, ["PH12.7.5"], 2, "gen", function(){
@@ -1730,19 +2464,19 @@ E("u3-75-kirchhoff-loop", 3, ["PH12.7.5"], 2, "gen", function(){
     v1 = sfR(rf(2.0, emf / 3), 2); v2 = sfR(rf(2.0, emf / 3), 2); v3 = Math.round((emf - v1 - v2) * 100) / 100;
   }
   var key = fmt(v3, 2) + " V";
-  return mcq("A series loop contains a " + emf + " V battery and three resistors. The potential drops across two of the resistors are " + fmt(v1, 2) + " V and " + fmt(v2, 2) + " V. What is the potential drop across the third resistor?",
+  var qq3204 = mcq("A series loop contains a " + emf + " V battery and three resistors. The potential drops across two of the resistors are " + fmt(v1, 2) + " V and " + fmt(v2, 2) + " V. What is the potential drop across the third resistor?",
     key, [fmt(v1 + v2, 2) + " V", fmt(emf - v1, 2) + " V", fmt(emf, 2) + " V"],
     "Kirchhoff's loop rule: going around a closed loop, the battery's gain equals the sum of the drops. So the three drops add to " + emf + " V. The third drop is " + emf + " V \u2212 " + fmt(v1, 2) + " V \u2212 " + fmt(v2, 2) + " V = " + fmt(v3, 2) + " V. The third drop is " + key + ".",
-    {emf: emf, v1: v1, v2: v2});
+    {emf: emf, v1: v1, v2: v2}); qq3204.figure = p32figLoopDrops(emf,v1,v2); return qq3204;
 });
 
 E("u3-75-series-resistance", 3, ["PH12.7.5"], 1, "gen", function(){
   var rs = [ri(2, 40), ri(2, 40), ri(2, 40)];
   var tot = rs[0] + rs[1] + rs[2];
-  return numq("Three resistors of " + rs[0] + " \u03A9, " + rs[1] + " \u03A9 and " + rs[2] + " \u03A9 are connected in series. Calculate the equivalent resistance. Give your answer in \u03A9.",
+  var qq3204 = numq("Three resistors of " + rs[0] + " \u03A9, " + rs[1] + " \u03A9 and " + rs[2] + " \u03A9 are connected in series. Calculate the equivalent resistance. Give your answer in \u03A9.",
     tot, 0.4,
     "Resistances in series add directly, because the same current must pass through each one in turn: R = " + rs[0] + " \u03A9 + " + rs[1] + " \u03A9 + " + rs[2] + " \u03A9 = " + tot + " \u03A9. The equivalent resistance is " + tot + " \u03A9.",
-    {rs: rs});
+    {rs: rs}); qq3204.figure = p32figCircuitSeries(null,[rs[0]+" \u03A9",rs[1]+" \u03A9",rs[2]+" \u03A9"]); return qq3204;
 });
 
 E("u3-75-parallel-resistance", 3, ["PH12.7.5"], 2, "gen", function(){
@@ -1750,10 +2484,10 @@ E("u3-75-parallel-resistance", 3, ["PH12.7.5"], 2, "gen", function(){
   var r2 = ri(3, 60);
   var Rp = r1 * r2 / (r1 + r2);
   var ans = sfR(Rp, 3);
-  return numq("Resistors of " + r1 + " \u03A9 and " + r2 + " \u03A9 are connected in parallel. Calculate the equivalent resistance. Give your answer in \u03A9.",
+  var qq3204 = numq("Resistors of " + r1 + " \u03A9 and " + r2 + " \u03A9 are connected in parallel. Calculate the equivalent resistance. Give your answer in \u03A9.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "For two resistors in parallel, use the product over the sum: R = (R\u2081 \u00D7 R\u2082)/(R\u2081 + R\u2082) = (" + r1 + " \u03A9 \u00D7 " + r2 + " \u03A9) \u00F7 (" + r1 + " \u03A9 + " + r2 + " \u03A9) = " + (r1 * r2) + " \u00F7 " + (r1 + r2) + " = " + F3(ans) + " \u03A9. The equivalent resistance is smaller than either resistor alone, because the current has two paths. The equivalent resistance is " + F3(ans) + " \u03A9.",
-    {r1: r1, r2: r2});
+    {r1: r1, r2: r2}); qq3204.figure = p32figCircuitParallel(null,r1,r2); return qq3204;
 });
 
 E("u3-75-combination-circuit", 3, ["PH12.7.5"], 3, "gen", function(){
@@ -1765,10 +2499,10 @@ E("u3-75-combination-circuit", 3, ["PH12.7.5"], 3, "gen", function(){
   var Req = r1 + Rp;
   var I = V / Req;
   var ans = sfR(I, 3);
-  return numq("A " + V + " V battery is connected to a " + r1 + " \u03A9 resistor in series with a parallel pair of " + r2 + " \u03A9 and " + r3 + " \u03A9 resistors. Calculate the total current drawn from the battery. Give your answer in A.",
+  var qq3204 = numq("A " + V + " V battery is connected to a " + r1 + " \u03A9 resistor in series with a parallel pair of " + r2 + " \u03A9 and " + r3 + " \u03A9 resistors. Calculate the total current drawn from the battery. Give your answer in A.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Reduce the circuit step by step. Step 1: the parallel pair: R = (" + r2 + " \u00D7 " + r3 + ") \u00F7 (" + r2 + " + " + r3 + ") = " + iF(Rp) + " \u03A9. Step 2: add the series resistor: R(total) = " + r1 + " \u03A9 + " + iF(Rp) + " \u03A9 = " + iF(Req) + " \u03A9. Step 3: total current I = V/R = " + V + " V \u00F7 " + iF(Req) + " \u03A9 = " + F3(ans) + " A. The total current is " + F3(ans) + " A.",
-    {V: V, r1: r1, r2: r2, r3: r3});
+    {V: V, r1: r1, r2: r2, r3: r3}); qq3204.figure = p32figCircuitCombo(V,r1,r2,r3); return qq3204;
 });
 
 E("u3-75-circuit-table", 3, ["PH12.7.5"], 2, "gen", function(){
@@ -1778,10 +2512,10 @@ E("u3-75-circuit-table", 3, ["PH12.7.5"], 2, "gen", function(){
   var I = V / (r1 + r2);
   var v2 = I * r2;
   var ans = sfR(v2, 3);
-  return numq("A " + V + " V source is connected across a series circuit of a " + r1 + " \u03A9 resistor and a " + r2 + " \u03A9 resistor. For a circuit table of this circuit, calculate the potential difference across the " + r2 + " \u03A9 resistor. Give your answer in V.",
+  var qq3204 = numq("A " + V + " V source is connected across a series circuit of a " + r1 + " \u03A9 resistor and a " + r2 + " \u03A9 resistor. For a circuit table of this circuit, calculate the potential difference across the " + r2 + " \u03A9 resistor. Give your answer in V.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "In series the current is the same everywhere. Step 1: total resistance R = " + r1 + " \u03A9 + " + r2 + " \u03A9 = " + (r1 + r2) + " \u03A9. Step 2: current I = V/R = " + V + " V \u00F7 " + (r1 + r2) + " \u03A9 = " + iF(I) + " A. Step 3: the drop across the " + r2 + " \u03A9 resistor is V = IR = " + iF(I) + " A \u00D7 " + r2 + " \u03A9 = " + F3(ans) + " V. As a check, the drop across the other resistor makes the total add back to " + V + " V. The potential difference is " + F3(ans) + " V.",
-    {V: V, r1: r1, r2: r2});
+    {V: V, r1: r1, r2: r2}); qq3204.figure = p32figCircuitSeries(V,[r1+" \u03A9",r2+" \u03A9"]); return qq3204;
 });
 
 E("u3-75-parallel-branches", 3, ["PH12.7.5"], 2, "gen", function(){
@@ -1791,10 +2525,10 @@ E("u3-75-parallel-branches", 3, ["PH12.7.5"], 2, "gen", function(){
   var I1 = V / r1, I2 = V / r2;
   var Itot = I1 + I2;
   var ans = sfR(Itot, 3);
-  return numq("A " + V + " V source is connected across two parallel branches. One branch has a resistance of " + r1 + " \u03A9 and the other a resistance of " + r2 + " \u03A9. Calculate the total current drawn from the source. Give your answer in A.",
+  var qq3204 = numq("A " + V + " V source is connected across two parallel branches. One branch has a resistance of " + r1 + " \u03A9 and the other a resistance of " + r2 + " \u03A9. Calculate the total current drawn from the source. Give your answer in A.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Each parallel branch has the full source voltage across it. Step 1: current in the " + r1 + " \u03A9 branch: I = V/R = " + V + " V \u00F7 " + r1 + " \u03A9 = " + iF(I1) + " A. Step 2: current in the " + r2 + " \u03A9 branch: I = " + V + " V \u00F7 " + r2 + " \u03A9 = " + iF(I2) + " A. Step 3: by the junction rule the total current is the sum of the branch currents: " + iF(I1) + " A + " + iF(I2) + " A = " + F3(ans) + " A. The total current is " + F3(ans) + " A.",
-    {V: V, r1: r1, r2: r2});
+    {V: V, r1: r1, r2: r2}); qq3204.figure = p32figCircuitParallel(V,r1,r2); return qq3204;
 });
 
 E("u3-75-fuse-rating", 3, ["PH12.7.5"], 3, "gen", function(){
@@ -1816,106 +2550,106 @@ E("u3-75-fuse-rating", 3, ["PH12.7.5"], 3, "gen", function(){
 
 E("u3-76-field-lines-magnet", 3, ["PH12.7.6"], 1, "var", varset([
   function(){
-    return mcq("Outside a bar magnet, the magnetic field lines are drawn",
+    var qq3204 = mcq("Outside a bar magnet, the magnetic field lines are drawn",
       "Leaving the north pole and entering the south pole",
       ["Leaving the south pole and entering the north pole",
        "Leaving both poles and meeting halfway between them",
        "Circling the magnet like the lines around a wire"],
-      "By convention, field lines show the direction a north pole would be pushed. Outside the magnet they leave the north pole and enter the south pole. Inside the magnet they continue from south to north, so each line is a closed loop. Field lines leave the north pole and enter the south pole outside the magnet.", {});
+      "By convention, field lines show the direction a north pole would be pushed. Outside the magnet they leave the north pole and enter the south pole. Inside the magnet they continue from south to north, so each line is a closed loop. Field lines leave the north pole and enter the south pole outside the magnet.", {}); qq3204.figure = p32figBarMagnet(false); return qq3204;
   },
   function(){
-    return mcq("The magnetic field of a bar magnet is strongest",
+    var qq3204 = mcq("The magnetic field of a bar magnet is strongest",
       "Near the poles, where the field lines are closest together",
       ["At the centre of the magnet, halfway between the poles",
        "Far from the magnet, where the field lines spread out",
        "Everywhere along the magnet equally"],
-      "Line spacing shows strength: lines crowd together near the poles and spread out with distance. The field is strongest near the poles, which is why a magnet picks up pins at its ends, not its middle.", {});
+      "Line spacing shows strength: lines crowd together near the poles and spread out with distance. The field is strongest near the poles, which is why a magnet picks up pins at its ends, not its middle.", {}); qq3204.figure = p32figBarMagnet(false); return qq3204;
   },
   function(){
-    return mcq("A small compass is placed just outside the north pole of a bar magnet, on the magnet's axis. The compass needle's north pole points",
+    var qq3204 = mcq("A small compass is placed just outside the north pole of a bar magnet, on the magnet's axis. The compass needle's north pole points",
       "Away from the magnet's north pole, along the field line",
       ["Toward the magnet's north pole",
        "Toward the magnet's south pole along the side of the magnet",
        "Straight up, because compasses only respond to Earth's field"],
-      "A compass needle aligns with the local field, and its north pole points in the field's direction. Outside the north pole the field points away from the magnet, so the needle's north points away too. Compasses respond to any magnetic field, not just Earth's.", {});
+      "A compass needle aligns with the local field, and its north pole points in the field's direction. Outside the north pole the field points away from the magnet, so the needle's north points away too. Compasses respond to any magnetic field, not just Earth's.", {}); qq3204.figure = p32figBarMagnet(false); return qq3204;
   },
   function(){
-    return mcq("Two magnetic field lines in a diagram of a bar magnet's field",
+    var qq3204 = mcq("Two magnetic field lines in a diagram of a bar magnet's field",
       "Never cross, because the field has a single direction at each point",
       ["Cross at the neutral point between two magnets only",
        "Cross wherever the field is strongest",
        "Cross at the poles, where all lines meet"],
-      "A field line shows the field's direction at each point it passes through. If two lines crossed, the field at the crossing would point two ways at once, which is impossible. Field lines never cross.", {});
+      "A field line shows the field's direction at each point it passes through. If two lines crossed, the field at the crossing would point two ways at once, which is impossible. Field lines never cross.", {}); qq3204.figure = p32figBarMagnet(false); return qq3204;
   }
 ]));
 
 E("u3-76-field-wire-lines", 3, ["PH12.7.6"], 1, "var", varset([
   function(){
-    return mcq("The magnetic field lines around a long straight wire carrying a steady current form",
+    var qq3204 = mcq("The magnetic field lines around a long straight wire carrying a steady current form",
       "Concentric circles centred on the wire",
       ["Straight lines radiating out from the wire",
        "Lines running parallel to the wire along its length",
        "A helix that spirals along the wire"],
-      "The field circles the wire: a compass placed anywhere near the wire aligns tangent to a circle centred on the wire. The pattern is concentric circles, with the direction given by the right-hand rule: thumb along the current, fingers curl with the field.", {});
+      "The field circles the wire: a compass placed anywhere near the wire aligns tangent to a circle centred on the wire. The pattern is concentric circles, with the direction given by the right-hand rule: thumb along the current, fingers curl with the field.", {}); qq3204.figure = p32figWireCircles(); return qq3204;
   },
   function(){
-    return mcq("As you move farther from a long straight current-carrying wire, the field lines in a diagram are drawn",
+    var qq3204 = mcq("As you move farther from a long straight current-carrying wire, the field lines in a diagram are drawn",
       "Farther apart, because the field gets weaker with distance",
       ["Closer together, because the field gets stronger with distance",
        "At the same spacing, because the field around a wire is uniform",
        "In the opposite direction, because the field reverses"],
-      "The field around a wire falls off as 1/r, so it weakens steadily with distance. In a line diagram, weakening is shown by lines spreading apart. The field keeps the same circular direction; only its strength falls.", {});
+      "The field around a wire falls off as 1/r, so it weakens steadily with distance. In a line diagram, weakening is shown by lines spreading apart. The field keeps the same circular direction; only its strength falls.", {}); qq3204.figure = p32figWireCircles(); return qq3204;
   },
   function(){
-    return mcq("The current in a straight wire is reversed. What happens to the magnetic field around the wire?",
+    var qq3204 = mcq("The current in a straight wire is reversed. What happens to the magnetic field around the wire?",
       "Every field line keeps its circular shape but points the opposite way around the wire",
       ["The field disappears until the current is restored",
        "The field lines become straight and point along the wire",
        "Nothing changes, because field direction does not depend on current direction"],
-      "The right-hand rule ties field direction to current direction: reverse the thumb and the fingers curl the other way. The circles stay circles, centred on the wire, but their direction reverses everywhere. The field reverses direction when the current reverses.", {});
+      "The right-hand rule ties field direction to current direction: reverse the thumb and the fingers curl the other way. The circles stay circles, centred on the wire, but their direction reverses everywhere. The field reverses direction when the current reverses.", {}); qq3204.figure = p32figWireCircles(); return qq3204;
   },
   function(){
-    return mcq("To find the field direction around a straight wire using the right hand, you",
+    var qq3204 = mcq("To find the field direction around a straight wire using the right hand, you",
       "Point the thumb along the conventional current and let the fingers curl in the field's direction",
       ["Point the fingers along the current and the thumb gives the field direction",
        "Point the thumb opposite to the current and the fingers give the field direction",
        "Hold the hand flat with the palm facing the wire, and the palm gives the direction"],
-      "For a straight wire it is the grasp rule: thumb in the direction of conventional current (flow of positive charge), and the curling fingers show the way the field circles the wire. This is the correct use of the right hand for a wire.", {});
+      "For a straight wire it is the grasp rule: thumb in the direction of conventional current (flow of positive charge), and the curling fingers show the way the field circles the wire. This is the correct use of the right hand for a wire.", {}); qq3204.figure = p32figWireCircles(); return qq3204;
   }
 ]));
 
 E("u3-76-compass-wire", 3, ["PH12.7.6"], 2, "var", varset([
   function(){
-    return mcq("A compass sits beside a straight vertical wire. With no current in the wire, the compass points north, along Earth's field. The current is switched on, flowing upward, and the compass needle swings away from north. The needle swings because",
+    var qq3204 = mcq("A compass sits beside a straight vertical wire. With no current in the wire, the compass points north, along Earth's field. The current is switched on, flowing upward, and the compass needle swings away from north. The needle swings because",
       "The wire's circular field at the compass is strong enough to pull the needle partly toward the field's local direction",
       ["The current heats the compass and weakens its magnet",
        "Earth's field is switched off by the current in the wire",
        "The electric field of the wire pushes the needle directly"],
-      "The needle aligns with the net field at its location. With the current on, the wire's circular field adds to Earth's field, and the needle settles along the combination, deflected from north. Nothing switches Earth's field off, and it is the magnetic field of the wire that acts on the needle.", {});
+      "The needle aligns with the net field at its location. With the current on, the wire's circular field adds to Earth's field, and the needle settles along the combination, deflected from north. Nothing switches Earth's field off, and it is the magnetic field of the wire that acts on the needle.", {}); qq3204.figure = p32figCompassWire(false); return qq3204;
   },
   function(){
-    return mcq("In the same setup, the current in the wire is reversed. The compass needle, which had deflected one way, now",
+    var qq3204 = mcq("In the same setup, the current in the wire is reversed. The compass needle, which had deflected one way, now",
       "Deflects to the opposite side of north, because the wire's field has reversed",
       ["Returns exactly to north and stays there",
        "Deflects farther in the same direction",
        "Spins continuously while the current flows"],
-      "Reversing the current reverses the wire's circular field. The wire's contribution at the compass now pulls the needle the other way, so the deflection flips to the opposite side of north. The needle deflects to the opposite side when the current reverses.", {});
+      "Reversing the current reverses the wire's circular field. The wire's contribution at the compass now pulls the needle the other way, so the deflection flips to the opposite side of north. The needle deflects to the opposite side when the current reverses.", {}); qq3204.figure = p32figCompassWire(false); return qq3204;
   },
   function(){
-    return mcq("A compass near a current-carrying wire deflects 30 degrees from north. The current is then doubled. The deflection",
+    var qq3204 = mcq("A compass near a current-carrying wire deflects 30 degrees from north. The current is then doubled. The deflection",
       "Increases, because the wire's field is stronger and pulls the needle farther from Earth's field direction",
       ["Stays exactly 30 degrees, because compasses measure direction only",
        "Decreases, because a stronger field aligns needles with north",
        "Becomes 60 degrees exactly, because deflection is proportional to current"],
-      "Doubling the current doubles the wire's field, so the wire's sideways pull on the needle grows relative to Earth's field and the needle settles farther from north. The exact new angle is not simply double, because the needle balances two fields at right angles to each other, but it definitely increases.", {});
+      "Doubling the current doubles the wire's field, so the wire's sideways pull on the needle grows relative to Earth's field and the needle settles farther from north. The exact new angle is not simply double, because the needle balances two fields at right angles to each other, but it definitely increases.", {}); qq3204.figure = p32figCompassWire(false); return qq3204;
   },
   function(){
-    return mcq("A wire runs horizontally above a compass, in the north-south direction, with current flowing north. The compass needle deflects. When the same current flows through the wire running east-west instead, directly above the compass, the needle",
+    var qq3204 = mcq("A wire runs horizontally above a compass, in the north-south direction, with current flowing north. The compass needle deflects. When the same current flows through the wire running east-west instead, directly above the compass, the needle",
       "Deflects much less, because the wire's field at the compass is then along the north-south line rather than across it",
       ["Deflects exactly the same amount, because the current is unchanged",
        "Deflects twice as far, because the wire is closer to the needle's poles",
        "Cannot deflect, because an east-west wire produces no field"],
-      "Deflection comes from the part of the wire's field that points across Earth's field (east-west). With the wire running east-west, the circular field directly below the wire points north or south, along Earth's field, so it barely turns the needle. Geometry, not just current size, decides the deflection.", {});
+      "Deflection comes from the part of the wire's field that points across Earth's field (east-west). With the wire running east-west, the circular field directly below the wire points north or south, along Earth's field, so it barely turns the needle. Geometry, not just current size, decides the deflection.", {}); qq3204.figure = p32figCompassWire(true); return qq3204;
   }
 ]));
 
@@ -1972,20 +2706,20 @@ E("u3-76-field-direction", 3, ["PH12.7.6"], 2, "var", varset([
       "Opposite poles attract. The needle's north pole is drawn toward the pole near geographic north, so that pole must be a magnetic south pole, whatever it is called geographically. Like poles would repel and point the needle south. The pole near geographic north is a magnetic south pole.", {});
   },
   function(){
-    return mcq("A bar magnet is hung from a thread so it can swing freely, far from other magnets. It settles pointing roughly north-south because",
+    var qq3204 = mcq("A bar magnet is hung from a thread so it can swing freely, far from other magnets. It settles pointing roughly north-south because",
       "It aligns itself with Earth's magnetic field, like a large compass needle",
       ["Earth's gravity pulls the heavier north pole downward toward the north",
        "The thread twists until the magnet points north by itself",
        "The magnet is attracted to the iron in distant buildings"],
-      "A freely suspended magnet experiences a turning effect from Earth's field until its own field aligns with it, exactly as a compass needle does. It comes to rest along the local field direction, north-south. Gravity acts at the centre of mass and does not aim the poles.", {});
+      "A freely suspended magnet experiences a turning effect from Earth's field until its own field aligns with it, exactly as a compass needle does. It comes to rest along the local field direction, north-south. Gravity acts at the centre of mass and does not aim the poles.", {}); qq3204.figure = p32figBarMagnet(false); return qq3204;
   },
   function(){
-    return mcq("Iron filings are sprinkled on a card over a bar magnet and the card is tapped. The filings form curved lines that are densest at the poles. The pattern shows",
+    var qq3204 = mcq("Iron filings are sprinkled on a card over a bar magnet and the card is tapped. The filings form curved lines that are densest at the poles. The pattern shows",
       "The shape of the field and where it is strongest, with each filing aligning along the field like a tiny compass",
       ["The exact paths that magnetic charges travel along the card",
        "That the field exists only exactly on those lines, with gaps between",
        "The temperature pattern of the magnet's surface"],
-      "Each filing becomes a small induced magnet and rotates to lie along the local field, chaining into lines that trace the field's shape. The lines are a sampling of a field that exists everywhere in the region, not wires the field travels on, and crowding at the poles shows the field is strongest there.", {});
+      "Each filing becomes a small induced magnet and rotates to lie along the local field, chaining into lines that trace the field's shape. The lines are a sampling of a field that exists everywhere in the region, not wires the field travels on, and crowding at the poles shows the field is strongest there.", {}); qq3204.figure = p32figBarMagnet(false); return qq3204;
   }
 ]));
 
@@ -1996,10 +2730,10 @@ E("u3-77-field-wire", 3, ["PH12.7.7"], 1, "gen", function(){
   var r = sfR(rf(0.010, 0.200), 3);
   var B = MU0 * I / (2 * Math.PI * r);
   var ans = sfR(B, 3);
-  return numq("The magnetic field strength at a distance r from a long straight wire is B = \u03BC\u2080I/(2\u03C0r), where \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 T m/A. A wire carries a current of " + gF(I) + " A. Calculate the field strength at a point " + gF(r) + " m from the wire. Give your answer in T.",
+  var qq3204 = numq("The magnetic field strength at a distance r from a long straight wire is B = \u03BC\u2080I/(2\u03C0r), where \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 T m/A. A wire carries a current of " + gF(I) + " A. Calculate the field strength at a point " + gF(r) + " m from the wire. Give your answer in T.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "Substitute into B = \u03BC\u2080I/(2\u03C0r). The 4\u03C0 in \u03BC\u2080 cancels the 2\u03C0 partly, leaving 2 \u00D7 10\u207B\u2077 times I divided by r: B = 2 \u00D7 10\u207B\u2077 \u00D7 " + gF(I) + " \u00F7 " + gF(r) + ", evaluated with the power of ten handled in words. The field strength is B = " + F3(ans) + " T. Fields near household wires are tiny compared with Earth's field of about 5 \u00D7 10\u207B\u2075 T.",
-    {I: I, r: r});
+    {I: I, r: r}); qq3204.figure = p32figWireCircles(); return qq3204;
 });
 
 E("u3-77-current-from-field", 3, ["PH12.7.7"], 2, "gen", function(){
@@ -2008,10 +2742,10 @@ E("u3-77-current-from-field", 3, ["PH12.7.7"], 2, "gen", function(){
   var B = sfR(MU0 * ITrue / (2 * Math.PI * r), 3);
   var I = 2 * Math.PI * r * B / MU0;
   var ans = sfR(I, 3);
-  return numq("A long straight power line produces a magnetic field of " + gF(B) + " T at a point " + gF(r) + " m from the wire. Using B = \u03BC\u2080I/(2\u03C0r) with \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 T m/A, calculate the current in the wire. Give your answer in A.",
+  var qq3204 = numq("A long straight power line produces a magnetic field of " + gF(B) + " T at a point " + gF(r) + " m from the wire. Using B = \u03BC\u2080I/(2\u03C0r) with \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 T m/A, calculate the current in the wire. Give your answer in A.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Rearrange the formula before substituting: I = 2\u03C0rB/\u03BC\u2080. Step 1: because \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077, the ratio 2\u03C0/\u03BC\u2080 simplifies to 1/(2 \u00D7 10\u207B\u2077) = 5 \u00D7 10\u2076, so I = 5 \u00D7 10\u2076 \u00D7 r \u00D7 B with r and B in SI units. Step 2: substitute r = " + gF(r) + " m and B = " + gF(B) + " T, handling the power of ten in words: I = " + F3(ans) + " A. The current in the wire is " + F3(ans) + " A.",
-    {B: B, r: r});
+    {B: B, r: r}); qq3204.figure = p32figWireCircles(); return qq3204;
 });
 
 E("u3-77-net-field-two-wires", 3, ["PH12.7.7"], 3, "gen", function(){
@@ -2033,10 +2767,10 @@ E("u3-77-net-field-two-wires", 3, ["PH12.7.7"], 3, "gen", function(){
     geom = "outside the pair, " + gF(x) + " m beyond the second wire on the line joining the wires";
   }
   var ans = sfR(net, 3);
-  return numq("Two long parallel wires are " + gF(d) + " m apart and carry currents of " + gF(I1) + " A and " + gF(I2) + " A in the same direction. Calculate the magnitude of the net magnetic field at a point " + geom + ". Give your answer in T.",
+  var qq3204 = numq("Two long parallel wires are " + gF(d) + " m apart and carry currents of " + gF(I1) + " A and " + gF(I2) + " A in the same direction. Calculate the magnitude of the net magnetic field at a point " + geom + ". Give your answer in T.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "Find each wire's field at the point with B = \u03BC\u2080I/(2\u03C0r), then combine directions. Wire 1 contributes " + iF(B1) + " T and wire 2 contributes " + iF(B2) + " T. " + (midway ? "Between the wires, the two circular fields point in opposite directions (the right-hand rule gives one pointing into the page and the other out of it), so the net field is the difference of the magnitudes." : "Outside the pair on this side, both circular fields point in the same direction, so the magnitudes add.") + " The net field magnitude is " + F3(ans) + " T.",
-    {I1: I1, I2: I2, d: d, midway: midway});
+    {I1: I1, I2: I2, d: d, midway: midway}); qq3204.figure = p32figTwoWires(I1,I2,d,midway,typeof x==="undefined"?null:x); return qq3204;
 });
 
 E("u3-77-field-scaling", 3, ["PH12.7.7"], 2, "var", varset([
@@ -2069,10 +2803,10 @@ E("u3-77-solenoid-field", 3, ["PH12.7.7"], 2, "gen", function(){
   var n = N / L;
   var B = MU0 * n * I;
   var ans = sfR(B, 3);
-  return numq("A solenoid has " + N + " turns wound over a length of " + gF(L) + " m and carries a current of " + gF(I) + " A. The field inside a solenoid is B = \u03BC\u2080nI, where n is the number of turns per metre and \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 T m/A. Calculate the field strength inside the solenoid. Give your answer in T.",
+  var qq3204 = numq("A solenoid has " + N + " turns wound over a length of " + gF(L) + " m and carries a current of " + gF(I) + " A. The field inside a solenoid is B = \u03BC\u2080nI, where n is the number of turns per metre and \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 T m/A. Calculate the field strength inside the solenoid. Give your answer in T.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "Step 1: turns per metre n = N/L = " + N + " \u00F7 " + gF(L) + " m = " + iF(n) + " turns/m. Step 2: B = \u03BC\u2080nI: multiply \u03BC\u2080 = 4\u03C0 \u00D7 10\u207B\u2077 by n and by I = " + gF(I) + " A, tracking the power of ten in words. The field inside is B = " + F3(ans) + " T, directed along the solenoid's axis. The field strength inside the solenoid is " + F3(ans) + " T.",
-    {N: N, L: L, I: I});
+    {N: N, L: L, I: I}); qq3204.figure = p32figSolenoid(N,L,I); return qq3204;
 });
 
 E("u3-77-solenoid-poles", 3, ["PH12.7.7"], 2, "gen", function(){
@@ -2080,67 +2814,67 @@ E("u3-77-solenoid-poles", 3, ["PH12.7.7"], 2, "gen", function(){
   var turns = ri(150, 900);
   var key = ccw ? "End A acts as a north pole" : "End A acts as a south pole";
   var other = ccw ? "End A acts as a south pole" : "End A acts as a north pole";
-  return mcq("A solenoid of " + turns + " turns carries a steady current. Looking directly at end A of the solenoid, you see the current circulating " + (ccw ? "counterclockwise" : "clockwise") + " around that end. Which statement is correct?",
+  var qq3204 = mcq("A solenoid of " + turns + " turns carries a steady current. Looking directly at end A of the solenoid, you see the current circulating " + (ccw ? "counterclockwise" : "clockwise") + " around that end. Which statement is correct?",
     key, [other, "Both ends act as north poles", "Neither end acts as a pole until a core is inserted"],
     "Use the right-hand rule for a coil: curl the fingers of the right hand in the direction the current circulates, and the thumb points toward the north end. Current circulating counterclockwise as seen from end A means the thumb points out of end A, toward you, so end A is the north end. (Clockwise as seen from an end makes that end a south pole.) " + key + ". An iron core strengthens a solenoid but is not needed for it to have poles.",
-    {ccw: ccw, turns: turns});
+    {ccw: ccw, turns: turns}); qq3204.figure = p32figSolenoidEnd(ccw,turns); return qq3204;
 });
 
 E("u3-77-compass-solenoid", 3, ["PH12.7.7"], 1, "var", varset([
   function(){
-    return mcq("A current flows through a solenoid, making its end A a north pole. A compass is placed just outside end A, on the axis. The compass needle's north pole points",
+    var qq3204 = mcq("A current flows through a solenoid, making its end A a north pole. A compass is placed just outside end A, on the axis. The compass needle's north pole points",
       "Away from end A, continuing the line of the field outside the solenoid",
       ["Toward end A, because opposite poles attract the needle",
        "Sideways, because the field outside a solenoid is circular",
        "Nowhere, because a solenoid's field exists only inside it"],
-      "Outside a solenoid the field has the same pattern as a bar magnet's: lines leave the north pole. A compass north pole follows the field direction, so outside end A it points away from the solenoid. The field does not stop at the solenoid's surface; it loops around outside from north to south.", {});
+      "Outside a solenoid the field has the same pattern as a bar magnet's: lines leave the north pole. A compass north pole follows the field direction, so outside end A it points away from the solenoid. The field does not stop at the solenoid's surface; it loops around outside from north to south.", {}); qq3204.figure = p32figSolenoidCompass("outside"); return qq3204;
   },
   function(){
-    return mcq("The current through a solenoid is switched off while a compass sits beside it, deflected by the solenoid's field. The compass needle",
+    var qq3204 = mcq("The current through a solenoid is switched off while a compass sits beside it, deflected by the solenoid's field. The compass needle",
       "Settles back to pointing along Earth's field, roughly north",
       ["Stays deflected, because the solenoid stays magnetized forever",
        "Points at the solenoid's south end, which keeps its pole",
        "Spins until the current is turned on again"],
-      "An air-core solenoid is an electromagnet: no current, no field of its own. (A steel core can keep a little residual magnetism, but the strong field vanishes with the current.) The compass then answers only to Earth's field and settles back toward north.", {});
+      "An air-core solenoid is an electromagnet: no current, no field of its own. (A steel core can keep a little residual magnetism, but the strong field vanishes with the current.) The compass then answers only to Earth's field and settles back toward north.", {}); qq3204.figure = p32figSolenoidCompass("outside"); return qq3204;
   },
   function(){
-    return mcq("A compass is placed inside a current-carrying solenoid, away from the ends. The needle",
+    var qq3204 = mcq("A compass is placed inside a current-carrying solenoid, away from the ends. The needle",
       "Aligns with the solenoid's axis, pointing toward the north end of the solenoid",
       ["Points around a circle, following the windings",
        "Is unaffected, because the fields of the loops cancel inside",
        "Points toward whichever end is nearer, regardless of polarity"],
-      "Inside a solenoid the fields of all the loops add along the axis, producing a strong, nearly uniform field parallel to the axis. A compass there aligns with the axis, its north pole toward the solenoid's north end, just as it would inside the field of a hollow bar magnet.", {});
+      "Inside a solenoid the fields of all the loops add along the axis, producing a strong, nearly uniform field parallel to the axis. A compass there aligns with the axis, its north pole toward the solenoid's north end, just as it would inside the field of a hollow bar magnet.", {}); qq3204.figure = p32figSolenoidCompass("inside"); return qq3204;
   },
   function(){
-    return mcq("Two identical solenoids carry the same current. One has an iron core and one is hollow. A compass near the north end of each deflects far more for the iron-core solenoid because",
+    var qq3204 = mcq("Two identical solenoids carry the same current. One has an iron core and one is hollow. A compass near the north end of each deflects far more for the iron-core solenoid because",
       "The iron's domains align with the coil's field and add their own field to it",
       ["Iron conducts the current better, so the coil carries more current",
        "The iron core blocks Earth's field so the compass sees only the coil",
        "Iron is naturally attracted to compass needles"],
-      "The coil's field magnetizes the iron: its domains align and the core becomes a magnet in its own right, adding to the coil's field. The current is the same in both coils; it is the core's added magnetization that strengthens the total field.", {});
+      "The coil's field magnetizes the iron: its domains align and the core becomes a magnet in its own right, adding to the coil's field. The current is the same in both coils; it is the core's added magnetization that strengthens the total field.", {}); qq3204.figure = p32figSolenoidCompass("core"); return qq3204;
   }
 ]));
 
 E("u3-77-hand-rule", 3, ["PH12.7.7"], 1, "var", varset([
   function(){
-    return mcq("A vertical wire carries current straight upward. At a point due east of the wire, the magnetic field points",
+    var qq3204 = mcq("A vertical wire carries current straight upward. At a point due east of the wire, the magnetic field points",
       "North", ["South", "East", "Up"],
-      "Use the grasp rule: right thumb up, along the current. On the east side of the wire the fingers, and so the field, point north (tangent to the circle around the wire). At a point east of the wire, the field points north.", {});
+      "Use the grasp rule: right thumb up, along the current. On the east side of the wire the fingers, and so the field, point north (tangent to the circle around the wire). At a point east of the wire, the field points north.", {}); qq3204.figure = p32figHandRule(0); return qq3204;
   },
   function(){
-    return mcq("A vertical wire carries current straight upward. At a point due west of the wire, the magnetic field points",
+    var qq3204 = mcq("A vertical wire carries current straight upward. At a point due west of the wire, the magnetic field points",
       "South", ["North", "West", "Down"],
-      "With the thumb up along the current, the fingers circle the wire. On the west side they point opposite to their direction on the east side: south. At a point west of the wire, the field points south.", {});
+      "With the thumb up along the current, the fingers circle the wire. On the west side they point opposite to their direction on the east side: south. At a point west of the wire, the field points south.", {}); qq3204.figure = p32figHandRule(1); return qq3204;
   },
   function(){
-    return mcq("A vertical wire carries current straight downward. At a point due east of the wire, the magnetic field points",
+    var qq3204 = mcq("A vertical wire carries current straight downward. At a point due east of the wire, the magnetic field points",
       "South", ["North", "East", "Down"],
-      "Reversing the current reverses the field everywhere. Thumb down: on the east side the fingers now point south, where they pointed north for an upward current. At a point east of the wire, the field points south.", {});
+      "Reversing the current reverses the field everywhere. Thumb down: on the east side the fingers now point south, where they pointed north for an upward current. At a point east of the wire, the field points south.", {}); qq3204.figure = p32figHandRule(2); return qq3204;
   },
   function(){
-    return mcq("A horizontal wire runs east-west above a table and carries current toward the east. At a point on the table directly below the wire, the magnetic field points",
+    var qq3204 = mcq("A horizontal wire runs east-west above a table and carries current toward the east. At a point on the table directly below the wire, the magnetic field points",
       "North", ["South", "East", "Down"],
-      "Point the right thumb east, along the current. Below the wire the curled fingers point north (on the underside of the circle around the wire). So directly below the wire, the field points north.", {});
+      "Point the right thumb east, along the current. Below the wire the curled fingers point north (on the underside of the circle around the wire). So directly below the wire, the field points north.", {}); qq3204.figure = p32figHandRule(3); return qq3204;
   }
 ]));
 
@@ -2186,24 +2920,24 @@ E("u3-78-force-angle", 3, ["PH12.7.8"], 2, "gen", function(){
 
 E("u3-78-force-direction", 3, ["PH12.7.8"], 2, "var", varset([
   function(){
-    return mcq("A positively charged ion moves east through a magnetic field that points north. The force on the ion is directed",
+    var qq3204 = mcq("A positively charged ion moves east through a magnetic field that points north. The force on the ion is directed",
       "Up, out of the horizontal plane", ["Down, into the horizontal plane", "East, along its motion", "North, along the field"],
-      "Use the right hand for a positive charge: fingers along the velocity (east), curl them toward the field (north), and the thumb gives the force: up. The magnetic force is always perpendicular to both the velocity and the field, so it cannot point along either. The force is directed up.", {});
+      "Use the right hand for a positive charge: fingers along the velocity (east), curl them toward the field (north), and the thumb gives the force: up. The magnetic force is always perpendicular to both the velocity and the field, so it cannot point along either. The force is directed up.", {}); qq3204.figure = p32figForceDir(0); return qq3204;
   },
   function(){
-    return mcq("An electron moves east through a magnetic field that points north. The force on the electron is directed",
+    var qq3204 = mcq("An electron moves east through a magnetic field that points north. The force on the electron is directed",
       "Down, into the horizontal plane", ["Up, out of the horizontal plane", "East, along its motion", "West, opposite its motion"],
-      "For a positive charge the same setup gives an upward force. An electron carries the opposite sign of charge, so its force is exactly reversed: down. Sign of charge flips the force direction, a point that matters in every deflection question. The force on the electron is directed down.", {});
+      "For a positive charge the same setup gives an upward force. An electron carries the opposite sign of charge, so its force is exactly reversed: down. Sign of charge flips the force direction, a point that matters in every deflection question. The force on the electron is directed down.", {}); qq3204.figure = p32figForceDir(1); return qq3204;
   },
   function(){
-    return mcq("A proton moves north across a table while a magnetic field points vertically down through the table. The force on the proton is directed",
+    var qq3204 = mcq("A proton moves north across a table while a magnetic field points vertically down through the table. The force on the proton is directed",
       "West", ["East", "North", "Up"],
-      "Right hand: fingers north (velocity), curl down (field, the way the fingers bend through the table), thumb points west. Equivalently, velocity cross field for a positive charge gives west. The force on the proton is directed west, perpendicular to both its motion and the field.", {});
+      "Right hand: fingers north (velocity), curl down (field, the way the fingers bend through the table), thumb points west. Equivalently, velocity cross field for a positive charge gives west. The force on the proton is directed west, perpendicular to both its motion and the field.", {}); qq3204.figure = p32figForceDir(2); return qq3204;
   },
   function(){
-    return mcq("A wire carries current toward the north through a magnetic field that points east. The force on the wire is directed",
+    var qq3204 = mcq("A wire carries current toward the north through a magnetic field that points east. The force on the wire is directed",
       "Down, perpendicular to both the wire and the field", ["Up, perpendicular to both the wire and the field", "East, pushing the wire along the field", "North, pushing the wire along the current"],
-      "A current is moving positive charge, so use the same right-hand rule: fingers north (current), curl toward east (field), thumb points down. The force is perpendicular to both the current and the field, never along either one. The force on the wire is directed down.", {});
+      "A current is moving positive charge, so use the same right-hand rule: fingers north (current), curl toward east (field), thumb points down. The force is perpendicular to both the current and the field, never along either one. The force on the wire is directed down.", {}); qq3204.figure = p32figForceDir(3); return qq3204;
   }
 ]));
 
@@ -2212,10 +2946,10 @@ E("u3-78-circular-radius", 3, ["PH12.7.8"], 2, "gen", function(){
   var B = sfR(rf(0.100, 1.00), 3);
   var r = PHYS_MP * v / (PHYS_E * B);
   var ans = sfR(r, 3);
-  return numq("A proton (mass 1.67 \u00D7 10\u207B\u00B2\u2077 kg, charge 1.60 \u00D7 10\u207B\u00B9\u2079 C) moves at " + gF(v) + " m/s perpendicular to a uniform magnetic field of " + gF(B) + " T, and follows a circular path. Calculate the radius of the path. Give your answer in m.",
+  var qq3204 = numq("A proton (mass 1.67 \u00D7 10\u207B\u00B2\u2077 kg, charge 1.60 \u00D7 10\u207B\u00B9\u2079 C) moves at " + gF(v) + " m/s perpendicular to a uniform magnetic field of " + gF(B) + " T, and follows a circular path. Calculate the radius of the path. Give your answer in m.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "The magnetic force supplies the centripetal force: qvB = mv\u00B2/r, which gives r = mv/(qB). Substitute m = 1.67 \u00D7 10\u207B\u00B2\u2077 kg, v = " + gF(v) + " m/s, q = 1.60 \u00D7 10\u207B\u00B9\u2079 C and B = " + gF(B) + " T, combining the powers of ten in words. The radius is r = " + F3(ans) + " m. A faster proton or a weaker field makes a wider circle. The radius is " + F3(ans) + " m.",
-    {v: v, B: B});
+    {v: v, B: B}); qq3204.figure = p32figChargeCircle(gF(v)+" m/s",gF(B)+" T","?","proton"); return qq3204;
 });
 
 E("u3-78-circular-speed", 3, ["PH12.7.8"], 3, "gen", function(){
@@ -2223,10 +2957,10 @@ E("u3-78-circular-speed", 3, ["PH12.7.8"], 3, "gen", function(){
   var r = sfR(rf(0.050, 0.600), 3);
   var v = PHYS_E * B * r / PHYS_MP;
   var ans = sfR(v, 3);
-  return numq("A proton (mass 1.67 \u00D7 10\u207B\u00B2\u2077 kg, charge 1.60 \u00D7 10\u207B\u00B9\u2079 C) moves in a circle of radius " + gF(r) + " m in a uniform magnetic field of " + gF(B) + " T, entering the field perpendicular to it. Calculate the proton's speed. Give your answer in m/s.",
+  var qq3204 = numq("A proton (mass 1.67 \u00D7 10\u207B\u00B2\u2077 kg, charge 1.60 \u00D7 10\u207B\u00B9\u2079 C) moves in a circle of radius " + gF(r) + " m in a uniform magnetic field of " + gF(B) + " T, entering the field perpendicular to it. Calculate the proton's speed. Give your answer in m/s.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "Set the magnetic force equal to the centripetal force: qvB = mv\u00B2/r. Step 1: cancel one v and rearrange for the speed: v = qBr/m. Step 2: substitute q = 1.60 \u00D7 10\u207B\u00B9\u2079 C, B = " + gF(B) + " T, r = " + gF(r) + " m and m = 1.67 \u00D7 10\u207B\u00B2\u2077 kg, combining powers of ten in words. Step 3: v = " + F3(ans) + " m/s. The mass cancels nothing here: a heavier particle at the same radius and field would be moving faster. The proton's speed is " + F3(ans) + " m/s.",
-    {B: B, r: r});
+    {B: B, r: r}); qq3204.figure = p32figChargeCircle("?",gF(B)+" T",gF(r)+" m","proton"); return qq3204;
 });
 
 E("u3-78-field-from-orbit", 3, ["PH12.7.8"], 2, "gen", function(){
@@ -2235,10 +2969,10 @@ E("u3-78-field-from-orbit", 3, ["PH12.7.8"], 2, "gen", function(){
   var mA = 6.64e-27, qA = 3.20e-19;
   var B = mA * v / (qA * r);
   var ans = sfR(B, 3);
-  return numq("An alpha particle (mass 6.64 \u00D7 10\u207B\u00B2\u2077 kg, charge 3.20 \u00D7 10\u207B\u00B9\u2079 C) moves at " + gF(v) + " m/s perpendicular to a magnetic field and follows a circle of radius " + gF(r) + " m. Calculate the strength of the field. Give your answer in T.",
+  var qq3204 = numq("An alpha particle (mass 6.64 \u00D7 10\u207B\u00B2\u2077 kg, charge 3.20 \u00D7 10\u207B\u00B9\u2079 C) moves at " + gF(v) + " m/s perpendicular to a magnetic field and follows a circle of radius " + gF(r) + " m. Calculate the strength of the field. Give your answer in T.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "From qvB = mv\u00B2/r, solve for the field: B = mv/(qr). Step 1: multiply mass by speed: mv is computed from m = 6.64 \u00D7 10\u207B\u00B2\u2077 kg and v = " + gF(v) + " m/s. Step 2: multiply charge by radius: qr from q = 3.20 \u00D7 10\u207B\u00B9\u2079 C and r = " + gF(r) + " m. Step 3: divide, combining powers of ten in words: B = " + F3(ans) + " T. The field strength is " + F3(ans) + " T.",
-    {v: v, r: r});
+    {v: v, r: r}); qq3204.figure = p32figChargeCircle(gF(v)+" m/s","?",gF(r)+" m","alpha particle"); return qq3204;
 });
 
 E("u3-78-particle-id", 3, ["PH12.7.8"], 3, "gen", function(){
@@ -2255,10 +2989,10 @@ E("u3-78-parallel-wires", 3, ["PH12.7.8"], 2, "gen", function(){
   var i1 = ri(5, 40), i2 = ri(5, 40);
   var key = same ? "The wires attract each other" : "The wires repel each other";
   var other = same ? "The wires repel each other" : "The wires attract each other";
-  return mcq("Two long parallel wires carry currents of " + i1 + " A and " + i2 + " A in " + (same ? "the same direction" : "opposite directions") + ". Each wire sits in the magnetic field of the other. What do the wires do?",
+  var qq3204 = mcq("Two long parallel wires carry currents of " + i1 + " A and " + i2 + " A in " + (same ? "the same direction" : "opposite directions") + ". Each wire sits in the magnetic field of the other. What do the wires do?",
     key, [other, "Nothing, because parallel wires produce no field", "The wires twist around each other like a solenoid"],
     "Each wire's field circles it, and at the neighbouring wire that field points across the current there, so each wire feels a force. Working through the right-hand rule: currents in the same direction pull the wires together, and currents in opposite directions push them apart. Here the currents are " + (same ? "in the same direction, so the wires attract." : "in opposite directions, so the wires repel.") + " " + key + ".",
-    {same: same, i1: i1, i2: i2});
+    {same: same, i1: i1, i2: i2}); qq3204.figure = p32figParallelWires(i1,i2,same); return qq3204;
 });
 
 /* ---------- PH12.7.9 Electromagnetic induction ---------- */
@@ -2374,10 +3108,10 @@ E("u3-79-motional-emf", 3, ["PH12.7.9"], 2, "gen", function(){
   var v = sfR(rf(0.500, 6.00), 3);
   var emf = B * l * v;
   var ans = sfR(emf, 3);
-  return numq("A metal rod of length " + gF(l) + " m slides at " + gF(v) + " m/s along rails through a uniform magnetic field of " + gF(B) + " T directed perpendicular to the plane of the rails. Calculate the emf induced in the rod. Give your answer in V.",
+  var qq3204 = numq("A metal rod of length " + gF(l) + " m slides at " + gF(v) + " m/s along rails through a uniform magnetic field of " + gF(B) + " T directed perpendicular to the plane of the rails. Calculate the emf induced in the rod. Give your answer in V.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-12),
     "A moving conductor in a field generates a motional emf: emf = Blv. So emf = " + gF(B) + " T \u00D7 " + gF(l) + " m \u00D7 " + gF(v) + " m/s = " + F3(ans) + " V. The charges in the rod are driven to its ends by the magnetic force until the resulting voltage balances it. The induced emf is " + F3(ans) + " V.",
-    {B: B, l: l, v: v});
+    {B: B, l: l, v: v}); qq3204.figure = p32figMotional(B,l,v); return qq3204;
 });
 
 E("u3-79-transformer", 3, ["PH12.7.9"], 2, "gen", function(){
@@ -2389,10 +3123,10 @@ E("u3-79-transformer", 3, ["PH12.7.9"], 2, "gen", function(){
   var Vs = Vp / ratio;
   if (!stepDown) { var t = Vs; Vs = Vp; Vp = t; var t2 = Ns; Ns = Np; Np = t2; }
   var ans = sfR(Vs, 3);
-  return numq("A transformer has " + Np + " turns on its primary coil and " + Ns + " turns on its secondary coil. The primary is connected to a " + Vp + " V alternating supply. Calculate the voltage across the secondary coil. Give your answer in V.",
+  var qq3204 = numq("A transformer has " + Np + " turns on its primary coil and " + Ns + " turns on its secondary coil. The primary is connected to a " + Vp + " V alternating supply. Calculate the voltage across the secondary coil. Give your answer in V.",
     ans, Math.max(0.02 * Math.abs(ans), 1e-9),
     "The transformer ratio links voltages to turns: Vs/Vp = Ns/Np. Step 1: the turns ratio is Ns/Np = " + Ns + " \u00F7 " + Np + " = " + fmt(Ns / Np, 3) + ". Step 2: Vs = Vp \u00D7 (Ns/Np) = " + Vp + " V \u00D7 " + fmt(Ns / Np, 3) + " = " + F3(ans) + " V. Fewer secondary turns than primary turns means a step-down transformer; more means step-up. The secondary voltage is " + F3(ans) + " V.",
-    {Np: Np, Ns: Ns, Vp: Vp});
+    {Np: Np, Ns: Ns, Vp: Vp}); qq3204.figure = p32figTransformer(Np,Ns,Vp); return qq3204;
 });
 
 E("u3-79-transmission", 3, ["PH12.7.9"], 3, "gen", function(){
@@ -2564,6 +3298,9 @@ E("u3-710-lift-motor", 3, ["PH12.7.10"], 3, "gen", function(){
 });
 
 /* ----- bank-u4.js ----- */
+// Diagram figures (Phase C, Nov 2026): entries whose source question type
+// carried a diagram now set qq3204.figure from the draw's own values via the
+// p32fig* helpers in bank-helpers.js. Asked unknowns are labelled "?".
 // Physics 3204 Unit 4 Introduction to Quantum Physics question bank
 // CRMARKS: u4-82-photoelectric-cr=4
 // CRMARKS: u4-82-threshold-cr=3
@@ -2662,10 +3399,10 @@ E("u4-82-work-function",4,["PH12.8.2"],2,"gen",function(){
   var phiJ=PHYS_H*PHYS_C/(lam0*1e-9);
   var phi=phiJ/PHYS_E;
   var ans=sfR(phi,3);
-  return numq("The threshold wavelength of a metal surface is "+gF(lam0)+" nm. Calculate the work function of the metal. Give your answer in electron volts (eV).",
+  var qq3204 = numq("The threshold wavelength of a metal surface is "+gF(lam0)+" nm. Calculate the work function of the metal. Give your answer in electron volts (eV).",
     ans,Math.max(0.02*Math.abs(ans),0.001),
     "The work function equals the energy of a photon at the threshold wavelength, \u03C6 = hc / \u03BB\u2080. Dividing hc by the threshold wavelength gives "+F3(phiJ)+" J, and dividing by 1.60 \u00D7 10\u207B\u00B9\u2079 J per eV converts this to electron volts. \u03C6 = "+F3(phi)+" eV.",
-    {lam0:lam0});
+    {lam0:lam0}); qq3204.figure = p32figPhoto("threshold "+gF(lam0)+" nm","work function ?",false); return qq3204;
 });
 
 E("u4-82-max-ke",4,["PH12.8.2"],2,"gen",function(){
@@ -2674,11 +3411,11 @@ E("u4-82-max-ke",4,["PH12.8.2"],2,"gen",function(){
   var Ep=sfR(E,3);
   var phi=sfR(E*rf(0.45,0.72),3);
   var ke=Ep-phi;
-  return mcq("Light of wavelength "+gF(lam)+" nm shines on a metal whose work function is "+gF(phi)+" eV. What is the maximum kinetic energy of the emitted electrons?",
+  var qq3204 = mcq("Light of wavelength "+gF(lam)+" nm shines on a metal whose work function is "+gF(phi)+" eV. What is the maximum kinetic energy of the emitted electrons?",
     F3(ke)+" eV",
     [F3(Ep+phi)+" eV",F3(Ep)+" eV",F3(Ep-phi/2)+" eV"],
     "The photon energy is E = hc / \u03BB, which is "+F3(Ep)+" eV once the joules are divided by 1.60 \u00D7 10\u207B\u00B9\u2079 J per eV. Each electron must spend the work function escaping, so the maximum kinetic energy is "+gF(Ep)+" - "+gF(phi)+" = "+F3(ke)+" eV.",
-    {lam:lam,phi:phi});
+    {lam:lam,phi:phi}); qq3204.figure = p32figPhoto(gF(lam)+" nm","work function "+gF(phi)+" eV",true); return qq3204;
 });
 
 E("u4-82-stopping-potential",4,["PH12.8.2"],2,"gen",function(){
@@ -2688,10 +3425,10 @@ E("u4-82-stopping-potential",4,["PH12.8.2"],2,"gen",function(){
   var phi=sfR(E*rf(0.40,0.70),3);
   var ke=Ep-phi;
   var ans=sfR(ke,3);
-  return numq("Light of wavelength "+gF(lam)+" nm shines on a metal whose work function is "+gF(phi)+" eV. What stopping potential is needed to halt the most energetic emitted electrons? Give your answer in volts (V).",
+  var qq3204 = numq("Light of wavelength "+gF(lam)+" nm shines on a metal whose work function is "+gF(phi)+" eV. What stopping potential is needed to halt the most energetic emitted electrons? Give your answer in volts (V).",
     ans,Math.max(0.02*Math.abs(ans),0.001),
     "The photon energy is E = hc / \u03BB = "+F3(Ep)+" eV. The maximum kinetic energy of the electrons is "+gF(Ep)+" - "+gF(phi)+" = "+F3(ke)+" eV. A stopping potential of V volts removes V eV of energy from each electron, so the stopping potential in volts has the same value as the maximum kinetic energy in electron volts. V = "+F3(ke)+" V.",
-    {lam:lam,phi:phi});
+    {lam:lam,phi:phi}); qq3204.figure = p32figPhoto(gF(lam)+" nm","work function "+gF(phi)+" eV",true); return qq3204;
 });
 
 E("u4-82-threshold-frequency",4,["PH12.8.2"],2,"gen",function(){
@@ -2746,10 +3483,10 @@ E("u4-82-photoelectric-cr",4,["PH12.8.2"],2,"gen",function(){
   var phi=sfR((EJ/PHYS_E)*rf(0.55,0.80),3);
   var ke=Ep-phi;
   var ans=sfR(ke,3);
-  return numq("Ultraviolet light of wavelength "+gF(lam)+" nm falls on a metal surface whose work function is "+gF(phi)+" eV, and electrons are emitted. Calculate the stopping potential that would halt the most energetic of these electrons. Give your answer in volts (V).",
+  var qq3204 = numq("Ultraviolet light of wavelength "+gF(lam)+" nm falls on a metal surface whose work function is "+gF(phi)+" eV, and electrons are emitted. Calculate the stopping potential that would halt the most energetic of these electrons. Give your answer in volts (V).",
     ans,Math.max(0.02*Math.abs(ans),0.001),
     "Step 1: photon energy. E = hc / \u03BB gives "+F3(EJ)+" J. Step 2: convert to electron volts by dividing by 1.60 \u00D7 10\u207B\u00B9\u2079 J per eV: E = "+F3(Ep)+" eV. Step 3: the most energetic electron keeps whatever photon energy is left after paying the work function: "+gF(Ep)+" - "+gF(phi)+" = "+F3(ke)+" eV. Step 4: a stopping potential of V volts removes V eV from each electron, so the stopping potential is "+F3(ke)+" V.",
-    {lam:lam,phi:phi});
+    {lam:lam,phi:phi}); qq3204.figure = p32figPhoto(gF(lam)+" nm","work function "+gF(phi)+" eV",true); return qq3204;
 });
 
 E("u4-82-threshold-cr",4,["PH12.8.2"],3,"gen",function(){
@@ -2758,10 +3495,10 @@ E("u4-82-threshold-cr",4,["PH12.8.2"],3,"gen",function(){
   var lamA=sfR(lam0*rf(0.75,0.90),3);
   var lamB=sfR(lam0*rf(1.10,1.30),3);
   var ans=sfR(lam0,3);
-  return numq("A metal has a work function of "+gF(phi)+" eV. A technician tests two lamps on it: lamp A, emitting light of wavelength "+gF(lamA)+" nm, and lamp B, emitting light of wavelength "+gF(lamB)+" nm. Only one of the lamps produces a photocurrent. Calculate the threshold wavelength of the metal. Give your answer in nanometres (nm).",
+  var qq3204 = numq("A metal has a work function of "+gF(phi)+" eV. A technician tests two lamps on it: lamp A, emitting light of wavelength "+gF(lamA)+" nm, and lamp B, emitting light of wavelength "+gF(lamB)+" nm. Only one of the lamps produces a photocurrent. Calculate the threshold wavelength of the metal. Give your answer in nanometres (nm).",
     ans,Math.max(0.02*Math.abs(ans),0.01),
     "At the threshold wavelength the photon energy exactly equals the work function, so \u03BB\u2080 = hc / \u03C6, with \u03C6 first converted to joules. This gives \u03BB\u2080 = "+F3(lam0)+" nm. Lamp A emits at "+gF(lamA)+" nm, which is shorter than the threshold wavelength, so its photons carry more than the work function and it produces the photocurrent. Lamp B emits at "+gF(lamB)+" nm, longer than the threshold wavelength, so its photons cannot free electrons at any intensity.",
-    {phi:phi});
+    {phi:phi}); qq3204.figure = p32figPhoto("lamp A "+gF(lamA)+" nm, lamp B "+gF(lamB)+" nm","threshold wavelength ?",false); return qq3204;
 });
 
 /* ---------- PH12.8.3 Compton effect ---------- */
@@ -2814,10 +3551,10 @@ E("u4-83-scattered-wavelength",4,["PH12.8.3"],2,"gen",function(){
   var dl=sfR(0.00243*(1-cosv),4);
   var lamp=lam+dl;
   var ans=sfR(lamp,3);
-  return numq("An X-ray photon of wavelength "+gF(lam)+" nm strikes a nearly free electron and is scattered through an angle of "+ang+"\u00B0. For scattering through an angle \u03B8, the wavelength increase is (0.00243 nm)(1 - cos \u03B8). Calculate the wavelength of the scattered photon. Give your answer in nanometres (nm).",
+  var qq3204 = numq("An X-ray photon of wavelength "+gF(lam)+" nm strikes a nearly free electron and is scattered through an angle of "+ang+"\u00B0. For scattering through an angle \u03B8, the wavelength increase is (0.00243 nm)(1 - cos \u03B8). Calculate the wavelength of the scattered photon. Give your answer in nanometres (nm).",
     ans,Math.max(0.02*Math.abs(ans),0.00005),
     "First find the shift. cos "+ang+"\u00B0 = "+fmt(cosv,1)+", so 1 - cos \u03B8 = "+fmt(1-cosv,1)+". Multiplying by 0.00243 nm gives a wavelength increase of "+iF(dl)+" nm. Adding the increase to the incoming wavelength: "+gF(lam)+" + "+iF(dl)+" = "+iF(lamp)+" nm, which is "+F3(lamp)+" nm at three significant figures.",
-    {lam:lam,ang:ang});
+    {lam:lam,ang:ang}); qq3204.figure = p32figCompton(gF(lam)+" nm",ang); return qq3204;
 });
 
 E("u4-83-shift-reasoning",4,["PH12.8.3"],2,"var",varset([
@@ -2948,12 +3685,12 @@ E("u4-84-bohr-accounts",4,["PH12.8.4"],2,"var",varset([
 
 E("u4-84-debroglie-orbits",4,["PH12.8.4"],2,"var",varset([
   function(){
-    return mcq("De Broglie suggested that Bohr's allowed orbits are the ones where the electron wave fits neatly around the nucleus. The condition for an orbit to be allowed is that",
+    var qq3204 = mcq("De Broglie suggested that Bohr's allowed orbits are the ones where the electron wave fits neatly around the nucleus. The condition for an orbit to be allowed is that",
       "The circumference of the orbit equals a whole number of electron wavelengths, so the wave joins up with itself in phase",
       ["The circumference of the orbit equals exactly one electron wavelength for every orbit",
        "The electron completes the orbit in a whole number of seconds",
        "The wavelength of the electron equals the radius of the orbit"],
-      "If the wave meets itself in phase after one lap, it reinforces and survives as a standing wave. That requires the circumference to be a whole number of wavelengths: 1, 2, 3 and so on.",{});
+      "If the wave meets itself in phase after one lap, it reinforces and survives as a standing wave. That requires the circumference to be a whole number of wavelengths: 1, 2, 3 and so on.",{}); qq3204.figure = p32figStandingWave(3,"circumference = a whole number of wavelengths"); return qq3204;
   },
   function(){
     return mcq("According to de Broglie, an orbit whose circumference is two and a half electron wavelengths cannot exist, because",
@@ -2964,18 +3701,18 @@ E("u4-84-debroglie-orbits",4,["PH12.8.4"],2,"var",varset([
       "After one trip around, the wave would be exactly out of phase with itself, crest meeting trough. Destructive interference wipes the wave out, so no such orbit is possible.",{});
   },
   function(){
-    return mcq("An electron orbit has a circumference exactly 4 times the electron's de Broglie wavelength, so the wave fits around it four times. This corresponds to",
+    var qq3204 = mcq("An electron orbit has a circumference exactly 4 times the electron's de Broglie wavelength, so the wave fits around it four times. This corresponds to",
       "The fourth allowed orbit, n = 4",
       ["The second allowed orbit, n = 2","The eighth allowed orbit, n = 8","No allowed orbit, because the fit must be exact to one wavelength"],
-      "The number of wavelengths fitted around the circumference is the orbit number n. Four wavelengths per lap means n = 4.",{});
+      "The number of wavelengths fitted around the circumference is the orbit number n. Four wavelengths per lap means n = 4.",{}); qq3204.figure = p32figStandingWave(4,"circumference = 4 wavelengths"); return qq3204;
   },
   function(){
-    return mcq("De Broglie's standing-wave idea was important because it",
+    var qq3204 = mcq("De Broglie's standing-wave idea was important because it",
       "Explained why only certain orbits are allowed, which Bohr had simply assumed",
       ["Proved that electrons are classical waves like sound",
        "Showed that the nucleus contains protons and neutrons",
        "Measured the charge of the electron for the first time"],
-      "Bohr had to postulate his allowed orbits with no reason behind them. De Broglie's wave condition, a whole number of wavelengths around the orbit, supplies the reason.",{});
+      "Bohr had to postulate his allowed orbits with no reason behind them. De Broglie's wave condition, a whole number of wavelengths around the orbit, supplies the reason.",{}); qq3204.figure = p32figStandingWave(3,"allowed orbits are standing waves"); return qq3204;
   }
 ]));
 
@@ -2987,10 +3724,10 @@ E("u4-85-transition-energy",4,["PH12.8.5"],2,"gen",function(){
   var Ei=bohrE(ni), Ef=bohrE(nf);
   var dE=Math.abs(Ei)-Math.abs(Ef);
   var ans=sfR(dE,3);
-  return numq("An electron in a hydrogen atom "+ctx+" falls from the n = "+ni+" level to the n = "+nf+" level. Calculate the energy of the photon emitted. Give your answer in electron volts (eV).",
+  var qq3204 = numq("An electron in a hydrogen atom "+ctx+" falls from the n = "+ni+" level to the n = "+nf+" level. Calculate the energy of the photon emitted. Give your answer in electron volts (eV).",
     ans,Math.max(0.02*Math.abs(ans),0.001),
     "The hydrogen level energies are E_n = -13.6 eV / n\u00B2. For n = "+ni+": 13.6 / "+(ni*ni)+" = "+gF(Math.abs(Ei))+", so the level energy is "+gF(Ei)+" eV. For n = "+nf+": 13.6 / "+(nf*nf)+" = "+gF(Math.abs(Ef))+", so the level energy is "+gF(Ef)+" eV. The photon carries away the difference: "+gF(Math.abs(Ei))+" - "+gF(Math.abs(Ef))+" = "+gF(dE)+" eV, which is "+F3(dE)+" eV at three significant figures.",
-    {ni:ni,nf:nf});
+    {ni:ni,nf:nf}); qq3204.figure = p32figBohr(6,ni,nf,"down"); return qq3204;
 });
 
 E("u4-85-photon-wavelength",4,["PH12.8.5"],2,"gen",function(){
@@ -3000,38 +3737,38 @@ E("u4-85-photon-wavelength",4,["PH12.8.5"],2,"gen",function(){
   var dE=Math.abs(Ei)-Math.abs(Ef);
   var lam=PHYS_H*PHYS_C/(dE*PHYS_E)/1e-9;
   var ans=sfR(lam,3);
-  return numq("An electron in a hydrogen atom "+ctx+" falls from the n = "+ni+" level to the n = "+nf+" level. Calculate the wavelength of the photon emitted. Give your answer in nanometres (nm).",
+  var qq3204 = numq("An electron in a hydrogen atom "+ctx+" falls from the n = "+ni+" level to the n = "+nf+" level. Calculate the wavelength of the photon emitted. Give your answer in nanometres (nm).",
     ans,Math.max(0.02*Math.abs(ans),0.01),
     "The level energies are E_n = -13.6 eV / n\u00B2, so the n = "+ni+" level is "+gF(Ei)+" eV and the n = "+nf+" level is "+gF(Ef)+" eV. The photon energy is the difference, "+gF(Math.abs(Ei))+" - "+gF(Math.abs(Ef))+" = "+gF(dE)+" eV. Converting that energy to joules and using \u03BB = hc / E gives the wavelength. \u03BB = "+F3(lam)+" nm.",
-    {ni:ni,nf:nf});
+    {ni:ni,nf:nf}); qq3204.figure = p32figBohr(6,ni,nf,"down"); return qq3204;
 });
 
 E("u4-85-greatest-transitions",4,["PH12.8.5"],3,"var",varset([
   function(){
-    return mcq("Which of these electron transitions in hydrogen releases the most energy?",
+    var qq3204 = mcq("Which of these electron transitions in hydrogen releases the most energy?",
       "n = 5 to n = 1",
       ["n = 6 to n = 5","n = 4 to n = 2","n = 3 to n = 2"],
-      "Energy released is the gap between the levels, using E_n = -13.6 eV / n\u00B2. The gaps are: n = 5 to n = 1, 13.06 eV; n = 4 to n = 2, 2.55 eV; n = 3 to n = 2, 1.89 eV; n = 6 to n = 5, 0.166 eV. Falling all the way to the ground level from n = 5 releases by far the most energy.",{});
+      "Energy released is the gap between the levels, using E_n = -13.6 eV / n\u00B2. The gaps are: n = 5 to n = 1, 13.06 eV; n = 4 to n = 2, 2.55 eV; n = 3 to n = 2, 1.89 eV; n = 6 to n = 5, 0.166 eV. Falling all the way to the ground level from n = 5 releases by far the most energy.",{}); qq3204.figure = p32figBohr(6,null,null,null); return qq3204;
   },
   function(){
-    return mcq("Which of these electron transitions in hydrogen requires the most energy to be absorbed?",
+    var qq3204 = mcq("Which of these electron transitions in hydrogen requires the most energy to be absorbed?",
       "n = 1 to n = 4",
       ["n = 1 to n = 2","n = 2 to n = 5","n = 3 to n = 6"],
-      "Energy absorbed is the gap between the levels, using E_n = -13.6 eV / n\u00B2. The gaps are: n = 1 to n = 4, 12.75 eV; n = 1 to n = 2, 10.2 eV; n = 2 to n = 5, 2.86 eV; n = 3 to n = 6, 1.13 eV. Climbing from the ground level to n = 4 is the biggest jump listed.",{});
+      "Energy absorbed is the gap between the levels, using E_n = -13.6 eV / n\u00B2. The gaps are: n = 1 to n = 4, 12.75 eV; n = 1 to n = 2, 10.2 eV; n = 2 to n = 5, 2.86 eV; n = 3 to n = 6, 1.13 eV. Climbing from the ground level to n = 4 is the biggest jump listed.",{}); qq3204.figure = p32figBohr(6,null,null,null); return qq3204;
   },
   function(){
-    return mcq("Which of these electron transitions in hydrogen emits the photon with the longest wavelength?",
+    var qq3204 = mcq("Which of these electron transitions in hydrogen emits the photon with the longest wavelength?",
       "n = 6 to n = 5",
       ["n = 2 to n = 1","n = 4 to n = 3","n = 5 to n = 4"],
-      "The longest wavelength belongs to the least energetic photon, since \u03BB = hc / E. The gaps are: n = 6 to n = 5, 0.166 eV; n = 5 to n = 4, 0.306 eV; n = 4 to n = 3, 0.661 eV; n = 2 to n = 1, 10.2 eV. Neighbouring high levels are closest together in energy, so n = 6 to n = 5 gives the smallest energy and the longest wavelength.",{});
+      "The longest wavelength belongs to the least energetic photon, since \u03BB = hc / E. The gaps are: n = 6 to n = 5, 0.166 eV; n = 5 to n = 4, 0.306 eV; n = 4 to n = 3, 0.661 eV; n = 2 to n = 1, 10.2 eV. Neighbouring high levels are closest together in energy, so n = 6 to n = 5 gives the smallest energy and the longest wavelength.",{}); qq3204.figure = p32figBohr(6,null,null,null); return qq3204;
   },
   function(){
-    return mcq("An electron in hydrogen falls from n = 5 to n = 2, emitting a photon of about 434 nm. All transitions ending at n = 2 form the Balmer series. This photon is",
+    var qq3204 = mcq("An electron in hydrogen falls from n = 5 to n = 2, emitting a photon of about 434 nm. All transitions ending at n = 2 form the Balmer series. This photon is",
       "In the visible region, since 434 nm lies between about 380 nm and 750 nm",
       ["In the ultraviolet, since all hydrogen lines are ultraviolet",
        "In the infrared, since n = 2 is a low level",
        "An X-ray, since it comes from an energy level change"],
-      "Falls to n = 2 give the Balmer series, and this one's wavelength, about 434 nm, sits inside the visible band. Falls to n = 1 give ultraviolet Lyman lines and falls to n = 3 give infrared Paschen lines.",{});
+      "Falls to n = 2 give the Balmer series, and this one's wavelength, about 434 nm, sits inside the visible band. Falls to n = 1 give ultraviolet Lyman lines and falls to n = 3 give infrared Paschen lines.",{}); qq3204.figure = p32figBohr(6,null,null,null); return qq3204;
   }
 ]));
 
@@ -3045,10 +3782,10 @@ E("u4-85-transition-cr",4,["PH12.8.5"],3,"gen",function(){
   var lam=PHYS_H*PHYS_C/EJ/1e-9;
   var ans=sfR(lam,3);
   var region=lam<380?"This wavelength is in the ultraviolet region.":(lam<=750?"This wavelength is in the visible region.":"This wavelength is in the infrared region.");
-  return numq("An electron in a hydrogen atom "+ctx+" falls from the n = "+ni+" level to the n = "+nf+" level. Calculate the wavelength of the photon emitted. Give your answer in nanometres (nm).",
+  var qq3204 = numq("An electron in a hydrogen atom "+ctx+" falls from the n = "+ni+" level to the n = "+nf+" level. Calculate the wavelength of the photon emitted. Give your answer in nanometres (nm).",
     ans,Math.max(0.02*Math.abs(ans),0.01),
     "Step 1: level energies from E_n = -13.6 eV / n\u00B2. For n = "+ni+": 13.6 / "+(ni*ni)+" = "+gF(Math.abs(Ei))+", so E = "+gF(Ei)+" eV. For n = "+nf+": 13.6 / "+(nf*nf)+" = "+gF(Math.abs(Ef))+", so E = "+gF(Ef)+" eV. Step 2: the photon takes the difference: "+gF(Math.abs(Ei))+" - "+gF(Math.abs(Ef))+" = "+gF(dE)+" eV. Step 3: in joules, multiplying by 1.60 \u00D7 10\u207B\u00B9\u2079 J per eV, the photon energy is "+F3(EJ)+" J. Step 4: \u03BB = hc / E then gives the wavelength in metres, converted here to nanometres: \u03BB = "+F3(lam)+" nm. "+region,
-    {ni:ni,nf:nf});
+    {ni:ni,nf:nf}); qq3204.figure = p32figBohr(6,ni,nf,"down"); return qq3204;
 });
 
 E("u4-85-absorption-cr",4,["PH12.8.5"],2,"gen",function(){
@@ -3058,10 +3795,10 @@ E("u4-85-absorption-cr",4,["PH12.8.5"],2,"gen",function(){
   var Ei=bohrE(ni), Ef=bohrE(nf);
   var Eph=Ef-Ei;
   var ans=nf;
-  return numq("A hydrogen atom "+ctx+" has an electron in the n = "+ni+" level. It absorbs a photon of energy "+gF(Eph)+" eV. The level energies are: n = 1: -13.6 eV, n = 2: -3.40 eV, n = 3: -1.51 eV, n = 4: -0.850 eV, n = 5: -0.544 eV, n = 6: -0.378 eV. To which level does the electron rise? Give your answer as a whole number.",
+  var qq3204 = numq("A hydrogen atom "+ctx+" has an electron in the n = "+ni+" level. It absorbs a photon of energy "+gF(Eph)+" eV. The level energies are: n = 1: -13.6 eV, n = 2: -3.40 eV, n = 3: -1.51 eV, n = 4: -0.850 eV, n = 5: -0.544 eV, n = 6: -0.378 eV. To which level does the electron rise? Give your answer as a whole number.",
     ans,0.4,
     "The electron gains the photon's energy, so its new energy is the starting level energy plus "+gF(Eph)+" eV: "+gF(Ei)+" + "+gF(Eph)+" = "+gF(Ef)+" eV. Comparing with the listed level energies, "+gF(Ef)+" eV is exactly the n = "+nf+" level, so the electron rises to n = "+nf+". A photon works for this jump only if its energy matches the gap exactly.",
-    {ni:ni,nf:nf});
+    {ni:ni,nf:nf}); qq3204.figure = p32figBohr(6,null,null,null); return qq3204;
 });
 
 /* ---------- PH12.8.6 Quantum model and luminous phenomena ---------- */
@@ -3375,10 +4112,10 @@ E("u4-83-compton-cr",4,["PH12.8.3"],2,"gen",function(){
   var lamP=sfR(lam+shiftP,4);
   var ekeV=1.240e6/lamP/1000;
   var ans=sfR(ekeV,3);
-  return numq("An X-ray photon with a wavelength of "+gF(lam)+" pm strikes a stationary electron and is scattered at "+gF(th)+"\u00B0 from its original direction. Calculate the energy of the scattered photon. Give your answer in keV.",
+  var qq3204 = numq("An X-ray photon with a wavelength of "+gF(lam)+" pm strikes a stationary electron and is scattered at "+gF(th)+"\u00B0 from its original direction. Calculate the energy of the scattered photon. Give your answer in keV.",
     ans,Math.max(0.02*Math.abs(ans),0.01),
     "Step 1: the Compton shift is \u0394\u03BB = (h / (m_e c)) (1 - cos \u03B8), and the Compton wavelength h / (m_e c) is 2.43 pm, so at this angle the shift is \u0394\u03BB = "+iF(shiftP)+" pm. Step 2: the scattered wavelength is \u03BB' = "+gF(lam)+" pm + "+iF(shiftP)+" pm = "+iF(lamP)+" pm. Step 3: photon energy is E = hc / \u03BB', with hc = 1.240 \u00D7 10\u2076 eV\u00B7pm, so E = "+F3(ekeV)+" keV. The photon leaves with less energy than it brought; the difference is the kinetic energy handed to the electron, which is the particle behaviour Compton set out to prove.",
-    {lam:lam, th:th});
+    {lam:lam, th:th}); qq3204.figure = p32figCompton(gF(lam)+" pm",th); return qq3204;
 });
 
 /* ============ Constructed-response marks (generated) ============ */
