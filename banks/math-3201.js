@@ -500,7 +500,7 @@ E("u1-npv-equation",1,["3.13"],1,"gen",function(){
     "Non-permissible values come from the denominators: \\("+linF(a)+"\\) is zero at \\(x = "+a+"\\) and \\("+linF(b)+"\\) is zero at \\(x = "+b+"\\). The numerators \\("+m+"\\) and \\("+n+"\\) play no part. The non-permissible values are <b>"+pair(a,b)+"</b>.",
     {a:a,b:b,m:m,n:n});
 });
-E("u1-solve-simple",1,["3.14"],1,"gen",function(){
+E("u1-solve-simple",1,["3.14"],2,"gen",function(){
   var a,b,c,x,t=0;
   if(Math.random()<0.5){
     do{a=ri(2,9);b=ri(2,9);c=ri(2,9);t++;}while((a*c)%b!==0&&t<90);
@@ -2101,7 +2101,7 @@ E("u5-interpret-graph",5,["4.4"],1,"gen",function(){
   q.figure=fig([]);
   return q;
 });
-E("u5-context-model",5,["4.6"],2,"var",varset([
+E("u5-context-model",5,["4.6"],1,"var",varset([
   function(){return mcq("The sound level of a noise, in decibels, is modelled by \\(L = 10\\log_{10}\\left(\\frac{I}{I_0}\\right)\\), where \\(I\\) is the intensity of the sound and \\(I_0\\) is a reference intensity. A factory machine produces a sound with intensity \\(I = 10^{7} I_0\\). What is its sound level?",
     "70 dB",
     ["7 dB","17 dB","700 dB"],
@@ -2805,7 +2805,7 @@ E("u7-set-concepts",7,["2.1"],1,"var",varset([
     ["all students in the school, in every grade level","all teenagers in the province, wherever they live","the students who have weekend jobs"],
     "The universal set is the set of everything under consideration for the problem at hand. Here every question is about the 28 surveyed students, so they form the universal set; the students with jobs are just a subset of it.",{});}
 ]));
-E("u7-subset-relation",7,["2.1"],1,"gen",function(){
+E("u7-subset-relation",7,["2.1"],2,"gen",function(){
   var U=u7Universe();
   var got=u7pair(function(A,B){
     var subAB=A.every(function(x){return B.indexOf(x)>=0;}),subBA=B.every(function(x){return A.indexOf(x)>=0;});
