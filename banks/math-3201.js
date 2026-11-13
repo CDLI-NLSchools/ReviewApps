@@ -4525,6 +4525,171 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
   }
 ]));
 
+/* --- binomial distribution (enrichment, Nov 13, 2026) --- */
+/* No Math 3201 indicator names the binomial distribution, so
+   the three entries in this section are enrichment, flagged at
+   the foot of this file: they stay out of default practice
+   pools and composed papers unless a teacher deliberately
+   includes them from Advanced tools (Jason's ruling, Nov 13,
+   2026; build step 8 of the Pure Math scan's build order, the
+   source types mined from the Pure Math 30 statistics material
+   and rewritten). The mathematics is the unit's own machinery
+   carried one step further: combinations choose which trials
+   succeed (9.30 feeding 9.32) and independent-trial
+   probabilities multiply along each arrangement (9.13). */
+/* Distribution terms are carried as exact integer pairs: with
+   p = a/d, P(X = j) = C(n, j) a^j (d - a)^(n - j) / d^n. At the
+   sizes used here the numerators and denominators are exact
+   integers in floating point, so the fractions shown in the
+   solutions and the key always agree. */
+function binTermNum(n,j,a,d){return nCr(n,j)*Math.pow(a,j)*Math.pow(d-a,n-j);}
+function binTermStr(n,j,a,d){return "\\binom{"+n+"}{"+j+"} \\left("+frN(a,d)+"\\right)^{"+j+"} \\left("+frN(d-a,d)+"\\right)^{"+(n-j)+"}";}
+var BIN_CTX=[
+  {id:"throws",a:3,d:4,nMin:5,nMax:8,succ:"made free throws",
+   setup:function(n){return "A basketball player makes any one free throw with probability \\("+frN(3,4)+"\\), independently of her other attempts. She takes "+n+" free throws.";},
+   evE:function(n,k){return "she makes exactly "+k+" of the "+n;},
+   evM:function(n,k){return "she makes at most "+k+" of the "+n;},
+   ev1:function(n){return "she makes at least one of the "+n;},
+   evT:function(n){return "she makes at least "+(n-1)+" of the "+n;}},
+  {id:"defects",a:1,d:5,nMin:5,nMax:8,succ:"defective parts",
+   setup:function(n){return "A production line produces a defective part with probability \\("+frN(1,5)+"\\), independently from part to part. An inspector samples "+n+" parts.";},
+   evE:function(n,k){return "exactly "+k+" of the "+n+" parts are defective";},
+   evM:function(n,k){return "at most "+k+" of the "+n+" parts are defective";},
+   ev1:function(n){return "at least one of the "+n+" parts is defective";},
+   evT:function(n){return "at least "+(n-1)+" of the "+n+" parts are defective";}},
+  {id:"guessing",a:1,d:4,nMin:5,nMax:8,succ:"correct answers",
+   setup:function(n){return "A student guesses every answer on a quiz of four-option multiple-choice questions, independently from question to question, so each guess is correct with probability \\("+frN(1,4)+"\\). The quiz has "+n+" questions.";},
+   evE:function(n,k){return "the student answers exactly "+k+" of the "+n+" questions correctly";},
+   evM:function(n,k){return "the student answers at most "+k+" of the "+n+" questions correctly";},
+   ev1:function(n){return "the student answers at least one of the "+n+" questions correctly";},
+   evT:function(n){return "the student answers at least "+(n-1)+" of the "+n+" questions correctly";}},
+  {id:"coin",a:1,d:2,nMin:5,nMax:8,succ:"heads",
+   setup:function(n){return "A fair coin is flipped "+n+" times, so each flip lands heads with probability \\("+frN(1,2)+"\\), independently of the others.";},
+   evE:function(n,k){return "exactly "+k+" of the "+n+" flips land heads";},
+   evM:function(n,k){return "at most "+k+" of the "+n+" flips land heads";},
+   ev1:function(n){return "at least one of the "+n+" flips lands heads";},
+   evT:function(n){return "at least "+(n-1)+" of the "+n+" flips land heads";}},
+  {id:"seeds",a:4,d:5,nMin:5,nMax:8,succ:"germinated seeds",
+   setup:function(n){return "A gardener plants "+n+" seeds of a variety in which each seed germinates with probability \\("+frN(4,5)+"\\), independently of the others.";},
+   evE:function(n,k){return "exactly "+k+" of the "+n+" seeds germinate";},
+   evM:function(n,k){return "at most "+k+" of the "+n+" seeds germinate";},
+   ev1:function(n){return "at least one of the "+n+" seeds germinates";},
+   evT:function(n){return "at least "+(n-1)+" of the "+n+" seeds germinate";}}
+];
+var BIN_CANDY={id:"candies",a:1,d:20,nMin:12,nMax:20,succ:"peppermint candies",
+  setup:function(n){return "In a very large batch of mixed candies, \\("+frN(1,20)+"\\) of the candies are peppermint. A handful of "+n+" candies is drawn at random, so the draws are effectively independent.";},
+  ev1:function(n){return "at least one of the "+n+" candies is peppermint";}};
+E("u9-binomial-prob",9,["9.13","9.32"],2,"gen",function(){
+  var arm=pick(["exact","atmost","atleast1","top"]);
+  function proposal(){
+    var cx,n,lo,hi;
+    if(arm==="atleast1"&&Math.random()<0.45){cx=BIN_CANDY;n=ri(cx.nMin,cx.nMax);lo=1;hi=n;}
+    else{cx=pick(BIN_CTX);n=ri(cx.nMin,cx.nMax);
+      if(arm==="exact"){var k=ri(1,n-1);lo=hi=k;}
+      else if(arm==="atmost"){lo=0;hi=pick([1,2]);}
+      else if(arm==="atleast1"){lo=1;hi=n;}
+      else{lo=n-1;hi=n;}}
+    var num=0,j;for(j=lo;j<=hi;j++)num+=binTermNum(n,j,cx.a,cx.d);
+    return {cx:cx,n:n,lo:lo,hi:hi,num:num,den:Math.pow(cx.d,n)};
+  }
+  /* A draw is only usable when its probability is worth stating
+     to three decimal places: below 0.02 the key rounds away to
+     (nearly) nothing, and an at-least-one key above 0.9995
+     rounds to 1. Proposals are resampled until the value lands
+     in range; each arm's fallback proposal is in range by
+     construction, so the loop always ends on a sound draw. */
+  var FALLBACK={exact:{cx:"coin",n:6,lo:3,hi:3},atmost:{cx:"coin",n:7,lo:0,hi:2},atleast1:{cx:"defects",n:6,lo:1,hi:6},top:{cx:"coin",n:6,lo:5,hi:6}};
+  var draw=null,tries;
+  for(tries=0;tries<12&&!draw;tries++){var p=proposal();if(p.num/p.den>=0.02&&p.num/p.den<=0.9995)draw=p;}
+  if(!draw){var f=FALLBACK[arm];var fc=BIN_CTX.filter(function(c){return c.id===f.cx;})[0];var numF=0,jF;for(jF=f.lo;jF<=f.hi;jF++)numF+=binTermNum(f.n,jF,fc.a,fc.d);draw={cx:fc,n:f.n,lo:f.lo,hi:f.hi,num:numF,den:Math.pow(fc.d,f.n)};}
+  var cx=draw.cx,n=draw.n,lo=draw.lo,hi=draw.hi,num=draw.num,den=draw.den,a=cx.a,d=cx.d,ev,sol;
+  var head="Let \\(X\\) be the number of "+cx.succ+". The "+n+" trials are independent, each trial has two outcomes, and the success probability is \\(p = "+frN(a,d)+"\\) on every trial, so \\(X\\) has a binomial distribution with \\(n = "+n+"\\): \\(P(X = j) = \\binom{"+n+"}{j} p^{j} (1-p)^{"+n+"-j}\\). ";
+  if(arm==="exact"){
+    ev=cx.evE(n,lo);
+    sol=head+"For exactly "+lo+": \\[ P(X = "+lo+") = "+binTermStr(n,lo,a,d)+" = "+frN(num,den)+" \\approx "+fmt(num/den,3)+" \\]";
+  }else if(arm==="atmost"){
+    ev=cx.evM(n,hi);
+    var parts=[],j;for(j=0;j<=hi;j++)parts.push("\\(P(X = "+j+") = "+frN(binTermNum(n,j,a,d),den)+"\\)");
+    sol=head+"At most "+hi+" means \\(X\\) is 0, 1, ..., "+hi+", so those terms add: "+parts.join(", ")+". The sum is \\("+frN(num,den)+" \\approx "+fmt(num/den,3)+"\\).";
+  }else if(arm==="atleast1"){
+    ev=cx.ev1(n);var p0=binTermNum(n,0,a,d);
+    if(den<=100000)sol=head+"At least one is everything except none at all, so use the complement: \\[ P(X \\ge 1) = 1 - P(X = 0) = 1 - "+binTermStr(n,0,a,d)+" = 1 - "+frN(p0,den)+" = "+frN(num,den)+" \\approx "+fmt(num/den,3)+" \\]";
+    else sol=head+"At least one is everything except none at all, so use the complement: \\[ P(X \\ge 1) = 1 - P(X = 0) = 1 - "+binTermStr(n,0,a,d)+" \\approx 1 - "+fmt(p0/den,3)+" = "+fmt(num/den,3)+" \\]";
+  }else{
+    ev=cx.evT(n);var t1=binTermNum(n,n-1,a,d),t2=binTermNum(n,n,a,d);
+    sol=head+"At least "+(n-1)+" leaves only two cases: \\[ P(X \\ge "+(n-1)+") = P(X = "+(n-1)+") + P(X = "+n+") = "+frN(t1,den)+" + "+frN(t2,den)+" = "+frN(num,den)+" \\approx "+fmt(num/den,3)+" \\]";
+  }
+  return numq(cx.setup(n)+" What is the probability that "+ev+"? Give your answer as a decimal (to three decimal places).",
+    Math.round(num/den*1000)/1000,0.002,sol,{arm:arm,cx:cx.id,n:n,lo:lo,hi:hi,a:a,d:d});
+});
+var BIN_EXP=[
+  {id:"bolts",n:40,a:1,d:8,item:"defective bolts",fail:"non-defective bolts",run:"batch of 40 bolts",
+   setup:"A machine fills batches of 40 bolts. Each bolt is defective with probability \\(\\frac{1}{8}\\), independently of the others."},
+  {id:"throws",n:200,a:3,d:4,item:"made free throws",fail:"missed free throws",run:"block of 200 attempts",
+   setup:"A basketball player makes each free throw with probability \\(\\frac{3}{4}\\), independently of the others. Consider her next 200 attempts."},
+  {id:"guessing",n:20,a:1,d:4,item:"correct guesses",fail:"incorrect guesses",run:"20-question guessed quiz",
+   setup:"A student guesses every answer on a 20-question quiz with four options per question, independently, so each guess is correct with probability \\(\\frac{1}{4}\\)."},
+  {id:"seeds",n:60,a:5,d:6,item:"germinated seeds",fail:"seeds that fail to germinate",run:"tray of 60 seeds",
+   setup:"A nursery plants trays of 60 seeds. Each seed germinates with probability \\(\\frac{5}{6}\\), independently of the others."},
+  {id:"wells",n:24,a:2,d:3,item:"wells that strike water",fail:"dry wells",run:"set of 24 wells",
+   setup:"In one region, each drilled well strikes water with probability \\(\\frac{2}{3}\\), independently of the others. A contractor drills 24 wells."}
+];
+E("u9-binomial-expected",9,["9.5","9.6"],2,"gen",function(){
+  var cx=pick(BIN_EXP),n=cx.n,a=cx.a,d=cx.d;
+  var ev0=n*a/d,fv0=n*(d-a)/d;
+  var lr=function(v){return v+". It is the long-run average: over many runs like this one, the number of "+cx.item+" averages about "+v+" per "+cx.run+", though any single run may give more or fewer.";};
+  var d1=ev0+". Every run gives exactly "+ev0+" "+cx.item+"; the count is fixed by the probability and does not vary from run to run.";
+  var d3=ev0+". It is the most likely single count, so nearly every run gives exactly "+ev0+" "+cx.item+".";
+  var sol="The number of "+cx.item+" is binomial with \\(n = "+n+"\\) and \\(p = "+frN(a,d)+"\\), so its expected value is \\(E(X) = np = "+n+" \\times "+frN(a,d)+" = "+ev0+"\\). An expected value is a long-run average, not a promise about a single run: repeat the run many times and the counts average out to about "+ev0+" per run, while individual runs land above and below it. Two of the other options pair the right value with the wrong meaning (a count that never varies, or one that nearly every run hits exactly). The remaining one uses the failure probability instead: \\("+n+" \\times "+frN(d-a,d)+" = "+fv0+"\\) is the expected number of "+cx.fail+", not of "+cx.item+".";
+  return mcq(cx.setup+" What is the expected number of "+cx.item+", and what does that number mean?",
+    lr(ev0),[d1,lr(fv0),d3],sol,{cx:cx.id,n:n,a:a,d:d,E:ev0,F:fv0});
+});
+var BIN_GOOD=[
+  {id:"coin-flips",t:"A fair coin is flipped 6 times, and X is the number of heads."},
+  {id:"seed-packet",t:"A packet holds 12 seeds, and each seed germinates with probability \\(\\frac{4}{5}\\), independently of the others. X is the number of seeds that germinate."},
+  {id:"bottle-check",t:"A machine fills bottles one after another, and each bottle is underfilled with probability \\(\\frac{1}{10}\\), independently of the others. An inspector checks 15 bottles, and X is the number that are underfilled."},
+  {id:"quiz-guess",t:"A student guesses on each of 8 multiple-choice questions with four options, independently from question to question. X is the number of questions answered correctly."},
+  {id:"free-throws",t:"A player takes 10 free throws, making each one with probability \\(\\frac{3}{4}\\), independently of the others. X is the number of free throws she makes."}
+];
+var BIN_BAD={
+  fixed:[
+    {id:"until-defect",t:"An inspector tests light bulbs one at a time until she finds the first defective bulb, and then stops. X is the number of bulbs she tests.",why:"testing stops at the first defective bulb, so how many trials occur is decided by the outcomes, not fixed beforehand"},
+    {id:"until-sale",t:"A salesperson phones potential customers until she makes her first sale, and then stops for the day. X is the number of calls she makes.",why:"calling stops at the first sale, so how many trials occur is decided by the outcomes, not fixed beforehand"},
+    {id:"until-six",t:"A player rolls a die again and again until a 6 appears. X is the number of rolls made.",why:"rolling stops when a 6 appears, so how many trials occur is decided by the outcomes, not fixed beforehand"}],
+  binary:[
+    {id:"die-sum",t:"A die is rolled 8 times, and X is the sum of the eight numbers rolled.",why:"each roll has six outcomes, not two, and X adds the results instead of counting successes"},
+    {id:"spinner-total",t:"A spinner numbered 1 to 5 is spun 9 times, and X is the total of the nine numbers spun.",why:"each spin has five outcomes, not two, and X adds the results instead of counting successes"},
+    {id:"highest-roll",t:"Each of 7 students rolls a die once, and X is the highest number rolled.",why:"each roll has six outcomes, not two, and X takes the largest result instead of counting successes"}],
+  indep:[
+    {id:"marbles-wor",t:"A bag holds 5 red and 5 blue marbles. Five marbles are drawn without replacement, and X is the number of red marbles drawn.",why:"the draws are made without replacement, so each draw changes the bag and the draws are not independent"},
+    {id:"cards-wor",t:"Five cards are drawn from a standard deck without replacement, and X is the number of hearts among them.",why:"the draws are made without replacement, so each draw changes the deck and the draws are not independent"},
+    {id:"names-wor",t:"The names of 20 students are in a hat, 8 of them in Grade 12. Four names are drawn without replacement, and X is the number of Grade 12 names drawn.",why:"the draws are made without replacement, so each draw changes the hat and the draws are not independent"}],
+  prob:[
+    {id:"quiz-harder",t:"A student writes a 10-question quiz in which the questions grow steadily harder, so her probability of answering correctly is different on every question. X is the number of questions she answers correctly.",why:"her probability of success changes from question to question instead of staying the same on every trial"},
+    {id:"darts-warm",t:"A dart player throws 20 darts in a session. As she warms up, her probability of hitting the bullseye rises steadily from throw to throw. X is the number of bullseyes.",why:"her probability of success changes from throw to throw instead of staying the same on every trial"},
+    {id:"throws-tire",t:"A player takes 20 free throws in a row. As she tires, her probability of making each throw drops steadily. X is the number of free throws she makes.",why:"her probability of success changes from throw to throw instead of staying the same on every trial"}]
+};
+var BIN_CAT_NAME={fixed:"the fixed number of trials condition",binary:"the two outcomes per trial condition",indep:"the independent trials condition",prob:"the same probability of success on every trial condition"};
+E("u9-binomial-identify",9,["9.12","9.13"],2,"gen",function(){
+  var good=pick(BIN_GOOD);
+  var cats=shuffle(["fixed","binary","indep","prob"]).slice(0,3);
+  var bads=cats.map(function(c){return {cat:c,s:pick(BIN_BAD[c])};});
+  var sol="X has a binomial distribution only when four conditions all hold: the number of trials is fixed in advance, each trial has exactly two outcomes (success and failure), the trials are independent, and the probability of success is the same on every trial. The keyed setting is the only one meeting all four. Each other setting breaks exactly one condition: "+bads.map(function(b){return "\""+b.s.t+"\" breaks "+BIN_CAT_NAME[b.cat]+", because "+b.s.why;}).join("; ")+".";
+  return mcq("In which setting does X have a binomial distribution?",
+    good.t,bads.map(function(b){return b.s.t;}),sol,
+    {good:good.id,cats:cats.join(","),bads:bads.map(function(b){return b.s.id;}).join(",")});
+});
+/* Enrichment flags (Nov 13, 2026): no Math 3201 indicator
+   names the binomial distribution, so the three entries above
+   are enrichment. The flag is a property on the entry, set
+   here in the bank module the way the Math 2201 Unit 7 flags
+   are set in that course's bank-u7.js; assembly carries it
+   into banks/math-3201.js verbatim, and the shell keeps
+   flagged entries out of practice draws and composed papers
+   unless a teacher deliberately includes them from Advanced
+   tools. */
+BANK.forEach(function(e){if(e.id==="u9-binomial-prob"||e.id==="u9-binomial-expected"||e.id==="u9-binomial-identify")e.enrich=true;});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
