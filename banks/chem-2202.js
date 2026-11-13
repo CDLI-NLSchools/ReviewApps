@@ -2430,7 +2430,7 @@ E("u3-71-carbon-bonds",3,["7.1"],1,"gen",function(){
 });
 E("u3-71-catenation",3,["7.1"],1,"gen",function(){
   var roots={3:"prop",4:"but",5:"pent",6:"hex",7:"hept",8:"oct"};
-  var n=ri(3,8); var form=pick(["chain","branch","ring"]); var desc="";
+  var n=ri(3,8); var form=pick(["chain","branch","ring"]); if(form==="branch"&&n<4){n=ri(4,8);} var desc="";
   if(form==="chain"){desc="the straight chain compound "+roots[n]+"ane";}
   else if(form==="branch"){desc="the branched compound 2-methyl"+roots[n-1]+"ane";}
   else{desc="the ring compound cyclo"+roots[n]+"ane";}
