@@ -1204,7 +1204,7 @@ function retryMissed(){
    the question's _tuid, totals are untouched, and set links store
    tokens in set order, so a reordered set reopens in its new order. */
 var TEACHER=false;
-function isPK(e){return e.indicators.some(function(c){return c.indexOf("PK")===0;});} /* shim: this bank carries no PK-coded indicators, so this is always false here; the teacher block calls it. */
+function isPK(e){return !!e.pkFlag||e.indicators.some(function(c){return c.indexOf("PK")===0;});} /* Prior knowledge: an entry counts when it carries a PK-coded indicator (the Math 2201 guide codes PK.1 and PK.2) or the pkFlag property set in its bank module by the flagging pass of Nov 13, 2026: entries whose assessed target belongs to an earlier course, approved family by family under the assessed-target standard (see the prior knowledge audit). */
 var T=null; /* teacher context for the set on screen, or null */
 var examState=null,sheetState=null;
 var _tUid=0;
