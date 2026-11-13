@@ -16,6 +16,149 @@
    (mid scope) and tranche2/unit5.js to unit9.js (final scope). Spliced into
    index.html by inject_bank.py. */
 
+/* ==== Graphics pass Tranche 2 (November 12, 2026): parabola and
+   rectangle figure builders, ported verbatim from the Math 2201
+   bank's Tranche 1 builders (banks/math-2201/bank-helpers.js).
+   Same contract: every figure is drawn from the calling entry's
+   own drawn values, in the shell figure style (FIG_INK, FIG_SHADE,
+   FIG_ACC, _txt, fmt). parSVG label modes: "values" shows axis
+   numbers (read-off questions); "none" (the default) shows
+   gridlines and unlabelled dots only, so the figure supports a
+   compute question without giving away its key. ==== */
+function _parNum(v){var r=Math.round(v*10)/10;return (r===Math.round(r))?(""+Math.round(r)):(""+r);}
+function parSVG(a,b,c,o){
+  o=o||{};
+  var W=340,H=252;
+  var showVals=o.labels==="values";
+  var mL=showVals?38:16,mR=14,mT=14,mB=o.xLab?36:26;
+  var iw=W-mL-mR,ih=H-mT-mB;
+  var f=function(x){return a*x*x+b*x+c;};
+  var hv=-b/(2*a),kv=f(hv);
+  var D=b*b-4*a*c,roots=[];
+  if(D>0.000001){var sq=Math.sqrt(D);roots=[(-b-sq)/(2*a),(-b+sq)/(2*a)];}
+  else if(D>=-0.000001){roots=[hv];}
+  var x0,x1,y0,y1;
+  if(o.traj){
+    x0=0;
+    var pr=roots.filter(function(r){return r>0;});
+    x1=pr.length?pr[0]*1.06:hv*2.2;
+    if(!(x1>0))x1=10;
+    y1=Math.max(kv,c,1)*1.14+0.5;
+    if(o.hline!==undefined)y1=Math.max(y1,o.hline*1.06);
+    y0=-0.07*y1;
+  }else if(o.xrange){
+    x0=o.xrange[0];x1=o.xrange[1];
+    var lo2=Math.min(kv,0,c),hi2=Math.max(kv,0,c),pd2=(hi2-lo2)*0.16+0.7;
+    y0=lo2-pd2;y1=hi2+pd2;
+  }else{
+    var xs=[hv,0].concat(roots);
+    var lo=Math.min.apply(null,xs),hi=Math.max.apply(null,xs),sp=Math.max(hi-lo,4);
+    x0=lo-sp*0.30-0.5;x1=hi+sp*0.30+0.5;
+    var lo3=Math.min(kv,0),hi3=Math.max(kv,0),sp3=Math.max(hi3-lo3,3);
+    if(c>=lo3-sp3*0.9-3&&c<=hi3+sp3*0.9+3){lo3=Math.min(lo3,c);hi3=Math.max(hi3,c);}
+    var pd3=(hi3-lo3)*0.16+0.7;
+    y0=lo3-pd3;y1=hi3+pd3;
+  }
+  function X(x){return mL+(x-x0)/(x1-x0)*iw;}
+  function Y(y){return mT+(y1-y)/(y1-y0)*ih;}
+  function stepFor(s){return s<=13?1:(s<=32?2:(s<=75?5:10));}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+(o.aria||"Graph of a parabola")+'">';
+  var sx=stepFor(x1-x0),sy=stepFor(y1-y0),g;
+  for(g=Math.ceil(x0/sx)*sx;g<=x1+1e-9;g+=sx){
+    if(Math.abs(g)<1e-9)continue;
+    out+='<line x1="'+fmt(X(g),1)+'" y1="'+mT+'" x2="'+fmt(X(g),1)+'" y2="'+(mT+ih)+'" stroke="#d8e2dc" stroke-width="1"/>';
+    if(showVals)out+=_txt(X(g),mT+ih+13,_parNum(g),10.5,false);
+  }
+  for(g=Math.ceil(y0/sy)*sy;g<=y1+1e-9;g+=sy){
+    if(Math.abs(g)<1e-9)continue;
+    out+='<line x1="'+mL+'" y1="'+fmt(Y(g),1)+'" x2="'+(mL+iw)+'" y2="'+fmt(Y(g),1)+'" stroke="#d8e2dc" stroke-width="1"/>';
+    if(showVals)out+=_txt(mL-5,Y(g),_parNum(g),10.5,false,"end");
+  }
+  var yAx=(y0<0&&y1>0)?Y(0):(mT+ih),xAx=(x0<0&&x1>0)?X(0):mL;
+  out+='<line x1="'+mL+'" y1="'+fmt(yAx,1)+'" x2="'+(mL+iw)+'" y2="'+fmt(yAx,1)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+='<polygon points="'+(mL+iw)+','+fmt(yAx,1)+' '+(mL+iw-8)+','+fmt(yAx-3.4,1)+' '+(mL+iw-8)+','+fmt(yAx+3.4,1)+'" fill="'+FIG_INK+'"/>';
+  out+='<line x1="'+fmt(xAx,1)+'" y1="'+mT+'" x2="'+fmt(xAx,1)+'" y2="'+(mT+ih)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+='<polygon points="'+fmt(xAx,1)+','+mT+' '+fmt(xAx-3.4,1)+','+(mT+8)+' '+fmt(xAx+3.4,1)+','+(mT+8)+'" fill="'+FIG_INK+'"/>';
+  if(showVals&&(x0<0&&x1>0)&&(y0<0&&y1>0))out+=_txt(X(0)-7,Y(0)+12,"0",10.5,false);
+  if(o.vline!==undefined&&o.vline>x0&&o.vline<x1)
+    out+='<line x1="'+fmt(X(o.vline),1)+'" y1="'+mT+'" x2="'+fmt(X(o.vline),1)+'" y2="'+(mT+ih)+'" stroke="'+FIG_ALT+'" stroke-width="1.5" stroke-dasharray="6 4"/>';
+  if(o.hline!==undefined&&o.hline>y0&&o.hline<y1)
+    out+='<line x1="'+mL+'" y1="'+fmt(Y(o.hline),1)+'" x2="'+(mL+iw)+'" y2="'+fmt(Y(o.hline),1)+'" stroke="'+FIG_ALT+'" stroke-width="1.5" stroke-dasharray="6 4"/>';
+  var d="",pen=false,i,x,y;
+  for(i=0;i<=90;i++){
+    x=x0+(x1-x0)*i/90;y=f(x);
+    if(y<y0||y>y1){pen=false;continue;}
+    d+=(pen?"L":"M")+fmt(X(x),1)+" "+fmt(Y(y),1);pen=true;
+  }
+  out+='<path d="'+d+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  var marks=(o.marks||[]).slice();
+  if(o.traj&&c>0)marks.push({x:0,y:c});
+  marks.forEach(function(mk){
+    if(mk.x<x0||mk.x>x1||mk.y<y0||mk.y>y1)return;
+    out+='<circle cx="'+fmt(X(mk.x),1)+'" cy="'+fmt(Y(mk.y),1)+'" r="3.6" fill="'+FIG_ACC+'" stroke="#ffffff" stroke-width="1.2"/>';
+    if(mk.label)out+=_txt(X(mk.x),Y(mk.y)-13,mk.label,11.5,true);
+  });
+  if(o.xLab)out+=_txt(mL+iw,H-4,o.xLab,12,false,"end");
+  if(o.yLab)out+='<text x="13" y="'+fmt(mT+ih/2,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 13 '+fmt(mT+ih/2,1)+')">'+o.yLab+'</text>';
+  return out+'</svg>';
+}
+/* P2: trajectory setting of parSVG (first-quadrant height-time). */
+function trajSVG(a,b,c,o){
+  o=o||{};o.traj=true;
+  o.xLab=o.xLab||"t (s)";o.yLab=o.yLab||"h (m)";
+  o.aria=o.aria||"Height-time graph of a projectile";
+  return parSVG(a,b,c,o);
+}
+/* P3: comparison panels, small parabolas in a row. Each panel is
+   {a, b, c, caption, xrange, yrange} for y = a x^2 + b x + c. */
+function parPanelsSVG(panels){
+  var n=panels.length,pw=150,gap=10,W=n*pw+(n-1)*gap,ph=148,H=ph+22;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parabolas compared side by side">';
+  panels.forEach(function(p,idx){
+    var ox=idx*(pw+gap),x0=p.xrange[0],x1=p.xrange[1],y0=p.yrange[0],y1=p.yrange[1];
+    var mL=8,mR=8,mT=8,iw=pw-mL-mR,ih=ph-mT-8;
+    function X(x){return ox+mL+(x-x0)/(x1-x0)*iw;}
+    function Y(y){return mT+(y1-y)/(y1-y0)*ih;}
+    out+='<rect x="'+ox+'" y="0" width="'+pw+'" height="'+ph+'" fill="none" stroke="#c9d4cd"/>';
+    if(y0<0&&y1>0)out+='<line x1="'+ox+'" y1="'+fmt(Y(0),1)+'" x2="'+(ox+pw)+'" y2="'+fmt(Y(0),1)+'" stroke="#9db3a6" stroke-width="1.2"/>';
+    if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="0" x2="'+fmt(X(0),1)+'" y2="'+ph+'" stroke="#9db3a6" stroke-width="1.2"/>';
+    var d="",pen=false,i,x,y;
+    for(i=0;i<=60;i++){
+      x=x0+(x1-x0)*i/60;y=p.a*x*x+p.b*x+p.c;
+      if(y<y0||y>y1){pen=false;continue;}
+      d+=(pen?"L":"M")+fmt(X(x),1)+" "+fmt(Y(y),1);pen=true;
+    }
+    out+='<path d="'+d+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+=_txt(ox+pw/2,ph+13,p.caption,11,true);
+  });
+  return out+'</svg>';
+}
+/* P4: rectangle against a wall, fencing on the other three sides.
+   The wall side is drawn heavy and hatched; total is the drawn
+   fencing length in metres. */
+function fenceSVG(total,wall){
+  var W=340,H=198,x0=64,x1=276,y0=60,y1=150;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle fenced on three sides against a wall">';
+  out+='<rect x="'+x0+'" y="'+y0+'" width="'+(x1-x0)+'" height="'+(y1-y0)+'" fill="#f4f8f5"/>';
+  out+='<path d="M'+x0+' '+y0+' L'+x0+' '+y1+' L'+x1+' '+y1+' L'+x1+' '+y0+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2.4"/>';
+  out+='<line x1="'+(x0-14)+'" y1="'+y0+'" x2="'+(x1+14)+'" y2="'+y0+'" stroke="#7d8a82" stroke-width="5"/>';
+  for(var hx=x0-8;hx<=x1+8;hx+=16)
+    out+='<line x1="'+hx+'" y1="'+y0+'" x2="'+(hx-7)+'" y2="'+(y0-11)+'" stroke="#7d8a82" stroke-width="1.6"/>';
+  out+=_txt((x0+x1)/2,y0-26,wall,12.5,true);
+  out+=_txt((x0+x1)/2,y1+24,"Total fencing: "+total+" m",12.5,false);
+  return out+'</svg>';
+}
+/* P4: plain labelled rectangle (modelling diagrams). */
+function rectDiagSVG(wLab,lLab,capLab){
+  var W=340,H=202,x0=70,x1=262,y0=38,y1=140;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle diagram">';
+  out+='<rect x="'+x0+'" y="'+y0+'" width="'+(x1-x0)+'" height="'+(y1-y0)+'" fill="#f4f8f5" stroke="'+FIG_INK+'" stroke-width="2.2"/>';
+  out+=_txt((x0+x1)/2,(y0+y1)/2,capLab,13.5,true);
+  out+=_txt((x0+x1)/2,y1+22,lLab,12.5,false);
+  out+=_txt(x1+22,(y0+y1)/2,wLab,12.5,false);
+  return out+'</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 2200 Unit 1 Trigonometry question bank
 // CRMARKS: u1-ambiguous-case=3
@@ -605,6 +748,11 @@ E("u1-reflection-points", 1, ["7.13", "7.21"], 3, "gen", function () {
 
 /* ----- bank-u2.js ----- */
 // Math 2200 Unit 2 Quadratic Functions question bank
+// Graphics pass Tranche 2 (November 12, 2026): figures attached
+// attach-only from the builders ported into bank-helpers.js;
+// u2-translations, u2-intercepts-count and u2-vertex-standard
+// gained graphed read-off second arms under the Tranche 1b ruling
+// (their original generators sit verbatim as arm 1).
 // CRMARKS: u2-analyze-problem=3
 // CRMARKS: u2-complete-square=2
 // CRMARKS: u2-cts-reasoning=2
@@ -665,6 +813,15 @@ function u2Plot(fn,x0,x1,o){ /* axes-and-curve SVG, y-range fitted from samples 
   (o.points||[]).forEach(function(p){ out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>'; });
   return out+'</svg>';
 }
+function u2EffectPanels(items){ /* parPanelsSVG panels for y = v x^2 items, at a common scale */
+  function plain(d){ return d.replace(/\\frac\{(\d+)\}\{(\d+)\}/,"$1/$2"); }
+  var maxAbs=1; items.forEach(function(it){ if(Math.abs(it.v)>maxAbs) maxAbs=Math.abs(it.v); });
+  var yAbs=4*maxAbs, anyNeg=items.some(function(it){ return it.v<0; });
+  var yr=anyNeg?[-yAbs*1.06, yAbs*1.06]:[-yAbs*0.16, yAbs*1.06];
+  return parPanelsSVG(items.map(function(it){
+    return {a:it.v, b:0, c:0, caption:(it.d===""?"y = x\u00B2":"y = "+plain(it.d)+"x\u00B2"), xrange:[-2,2], yrange:yr};
+  }));
+}
 
 /* ---------- 4.29: effect of a on the width of y = ax^2 (L1) ---------- */
 E("u2-effect-of-a",2,["4.29"],1,"gen",function(){
@@ -686,23 +843,28 @@ E("u2-effect-of-a",2,["4.29"],1,"gen",function(){
     var dis=items.filter(function(it){ return eqOf(it)!==keyEq; }).map(eqOf);
     dis.push("All three parabolas are equally wide.");
     var absList=items.map(function(it){ var av=Math.abs(it.v); return "\\(\\left|"+(it.d===""?"1":it.d)+"\\right| "+(Number.isInteger(av*4)?"=":"\\approx")+" "+fmt(av,2)+"\\)"; }).join(", ");
-    return mcq("The graphs of \\(y = x^2\\), \\(y = "+it1.d+"x^2\\) and \\(y = "+it2.d+"x^2\\) are drawn on the same axes. Which parabola is the <b>"+(askWide?"widest":"narrowest")+"</b>?",
+    var qe1=mcq("The graphs of \\(y = x^2\\), \\(y = "+it1.d+"x^2\\) and \\(y = "+it2.d+"x^2\\) are drawn on the same axes. Which parabola is the <b>"+(askWide?"widest":"narrowest")+"</b>?",
       keyEq, dis,
       "Comparing parabolas of the form \\(y = ax^2\\), the width is decided by \\(\\left|a\\right|\\): the larger \\(\\left|a\\right|\\) is, the faster the values grow and the narrower the parabola; the smaller \\(\\left|a\\right|\\), the wider it is. Here the absolute values are "+absList+". So the "+(askWide?"widest":"narrowest")+" parabola is "+keyEq+". A negative value of \\(a\\) reflects a parabola in the x-axis but does not change its width.",
       {askWide:askWide, v1:it1.v, v2:it2.v});
+    qe1.figure=u2EffectPanels(items);
+    return qe1;
   }
   var it=pick(pool);
   var W=Math.abs(it.v)>1?"narrower":"wider", O=it.v>0?"opens upward":"opens downward";
   var W2=Math.abs(it.v)>1?"wider":"narrower", O2=it.v>0?"opens downward":"opens upward";
   function stmt(w,o){ return "It is "+w+" and "+o+"."; }
-  return mcq("Compared with the graph of \\(y = x^2\\), how does the graph of \\(y = "+it.d+"x^2\\) differ?",
+  var qe2=mcq("Compared with the graph of \\(y = x^2\\), how does the graph of \\(y = "+it.d+"x^2\\) differ?",
     stmt(W,O), [stmt(W2,O), stmt(W,O2), stmt(W2,O2)],
     "For \\(y = ax^2\\), compare \\(\\left|a\\right|\\) with 1 and check the sign of \\(a\\). Here \\(\\left|a\\right| = "+fmt(Math.abs(it.v),2)+"\\), which is "+(Math.abs(it.v)>1?"greater":"less")+" than 1, so the values of \\(y\\) change "+(Math.abs(it.v)>1?"faster":"more slowly")+" than for \\(y = x^2\\) and the parabola is "+W+". The coefficient is "+(it.v>0?"positive, so the parabola still opens upward.":"negative, so the parabola is reflected in the x-axis and opens downward."),
     {v:it.v});
+  qe2.figure=u2EffectPanels([{d:"",v:1},it]);
+  return qe2;
 });
 
 /* ---------- 4.30 and 4.31: translations from p and q (L1) ---------- */
-E("u2-translations",2,["4.30","4.31"],1,"gen",function(){
+E("u2-translations",2,["4.30","4.31"],1,"var",varset([
+  function(){
   var fam=pick(["p","q","both"]);
   if(fam==="p"){
     var p=ri(2,8), sgn=pick([1,-1]);
@@ -731,7 +893,29 @@ E("u2-translations",2,["4.30","4.31"],1,"gen",function(){
     st(H,V), [st(H2,V), st(H,V2), st(H2,V2)],
     "The two changes act independently. Inside the brackets, \\((x "+(sp>0?"- ":"+ ")+p2+")\\) shifts the graph "+p2+" units "+H+" (the sign inside points opposite to the shift). The constant "+(sq>0?"+ "+q2:"- "+q2)+" added to the whole function shifts it "+q2+" units "+V+".",
     {fam:fam, p:p2, q:q2, sp:sp, sq:sq});
-});
+},
+  function(){
+    var fam=pick(["p","q","both"]);
+    var P=0, Q=0;
+    if(fam==="p"){ P=ri(2,8)*pick([1,-1]); }
+    else if(fam==="q"){ Q=ri(2,9)*pick([1,-1]); }
+    else { P=ri(2,8)*pick([1,-1]); Q=ri(2,8)*pick([1,-1]); }
+    var H=P>0?"to the right":"to the left", H2=P>0?"to the left":"to the right";
+    var V=Q>0?"up":"down", V2=Q>0?"down":"up";
+    function st(h,v){ return "It shifts "+Math.abs(P)+" units "+h+" and "+Math.abs(Q)+" units "+v+"."; }
+    var key, dis;
+    if(fam==="p"){ key="It shifts "+Math.abs(P)+" units "+H+"."; dis=["It shifts "+Math.abs(P)+" units "+H2+".", "It shifts "+Math.abs(P)+" units up.", "It shifts "+Math.abs(P)+" units down."]; }
+    else if(fam==="q"){ key="It shifts "+Math.abs(Q)+" units "+V+"."; dis=["It shifts "+Math.abs(Q)+" units "+V2+".", "It shifts "+Math.abs(Q)+" units to the right.", "It shifts "+Math.abs(Q)+" units to the left."]; }
+    else { key=st(H,V); dis=[st(H2,V), st(H,V2), st(H2,V2)]; }
+    var move=(P!==0?Math.abs(P)+" units "+H:"")+((P!==0&&Q!==0)?" and ":"")+(Q!==0?Math.abs(Q)+" units "+V:"");
+    var qfig=mcq("The graph shows the parabola obtained by transforming the graph of \\(y = x^2\\). How has the graph changed?",
+      key, dis,
+      "The graph of \\(y = x^2\\) has its vertex at \\((0, 0)\\). The marked vertex of the shown graph is \\(("+P+", "+Q+")\\), so the graph has shifted "+move+".",
+      {fam:fam, P:P, Q:Q});
+    qfig.figure=parSVG(1,-2*P,P*P+Q,{labels:"values",marks:[{x:P,y:Q}]});
+    return qfig;
+  }
+]));
 
 /* ---------- 4.38: read the vertex from vertex form (L1) ---------- */
 E("u2-vertex-read",2,["4.38"],1,"gen",function(){
@@ -739,14 +923,17 @@ E("u2-vertex-read",2,["4.38"],1,"gen",function(){
   var p=0, q=0;
   while(p===0) p=ri(-6,6);
   while(q===0) q=ri(-6,6);
-  return mcq("What are the coordinates of the <b>vertex</b> of the graph of \\(y = "+u2VS(a,p,q)+"\\)?",
+  var qv=mcq("What are the coordinates of the <b>vertex</b> of the graph of \\(y = "+u2VS(a,p,q)+"\\)?",
     u2Pair(p,q), [u2Pair(-p,q), u2Pair(p,-q), u2Pair(-p,-q)],
     "In the form \\(y = a(x - p)^2 + q\\), the vertex is \\((p, q)\\): the squared part is zero when \\(x = "+p+"\\), and the value of the function there is \\("+q+"\\). A check on a graphing utility shows the turning point at "+u2Pair(p,q)+", confirming the read-off.",
     {a:a, p:p, q:q});
+  qv.figure=parSVG(a,-2*a*p,a*p*p+q,{marks:[{x:p,y:q}]});
+  return qv;
 });
 
 /* ---------- 4.27: number of x-intercepts from a and q (L2) ---------- */
-E("u2-intercepts-count",2,["4.27"],1,"gen",function(){
+E("u2-intercepts-count",2,["4.27"],1,"var",varset([
+  function(){
   var mode=pick(["two","two","one","none","none"]);
   var a=pick([1,2,3,-1,-2,-3]), q;
   if(mode==="one") q=0;
@@ -765,7 +952,21 @@ E("u2-intercepts-count",2,["4.27"],1,"gen",function(){
   }
   return mcq("A quadratic function is written as \\(y = a(x - p)^2 + q\\), with \\(a = "+a+"\\) and \\(q = "+q+"\\). How many <b>x-intercepts</b> does its graph have?",
     key, dis, sol, {a:a, q:q, mode:mode});
-});
+},
+  function(){
+    var a=pick([1,2,-1,-2,3,-3]), h=ri(-6,6), k=ri(-9,9);
+    var cnt=(k===0)?1:(((a>0&&k<0)||(a<0&&k>0))?2:0);
+    var mk=[];
+    if(cnt===2){ var sd=Math.sqrt(-k/a); mk=[{x:h-sd,y:0},{x:h+sd,y:0}]; }
+    else if(cnt===1){ mk=[{x:h,y:0}]; }
+    var qfig=numq("How many x-intercepts does the parabola shown in the graph have?",
+      cnt,0.011,
+      "The vertex is \\(("+h+", "+k+")\\) and the parabola opens "+(a>0?"upward":"downward")+". "+(k===0?"The vertex sits right on the x-axis, so the graph touches it at exactly one point: <b>1</b> x-intercept.":(cnt===2?"The vertex is on the opposite side of the x-axis from the direction the parabola opens away from, so the graph must cross the axis twice: <b>2</b> x-intercepts.":"The vertex is on the same side of the x-axis as the opening, so the graph never reaches the axis: <b>0</b> x-intercepts.")),
+      {a:a,h:h,k:k});
+    qfig.figure=parSVG(a,-2*a*h,a*h*h+k,{labels:"values",marks:mk});
+    return qfig;
+  }
+]));
 
 /* ---------- 4.28: features of a graphed parabola in vertex form (L2) ---------- */
 E("u2-graph-features",2,["4.28"],1,"gen",function(){
@@ -791,7 +992,8 @@ E("u2-graph-features",2,["4.28"],1,"gen",function(){
 });
 
 /* ---------- 4.32: vertex of a standard-form quadratic (L2) ---------- */
-E("u2-vertex-standard",2,["4.32"],2,"gen",function(){
+E("u2-vertex-standard",2,["4.32"],2,"var",varset([
+  function(){
   var a=pick([1,2,3,-1,-2]);
   var p=0, q=0, att=0, b, c;
   while(att<200){
@@ -811,7 +1013,28 @@ E("u2-vertex-standard",2,["4.32"],2,"gen",function(){
     "\\[ \\begin{aligned} x &= \\frac{-b}{2a} = \\frac{"+(-b)+"}{"+(2*a)+"} = "+p+" \\\\ y &= "+sub+" \\\\ &= "+u2JoinSigned([a*p*p, b*p, c])+" \\\\ &= "+q+" \\end{aligned} \\]"+
     "So the vertex, the point where the graph turns, is "+u2Pair(p,q)+".",
     {a:a, p:p, q:q, b:b, c:c});
-});
+},
+  function(){
+    var a=pick([1,2,3,-1,-2]);
+    var p=0, q=0, att=0, b, c;
+    while(att<200){
+      att++;
+      p=0; while(p===0) p=ri(-5,5);
+      q=ri(-6,6);
+      b=-2*a*p; c=a*p*p+q;
+      var fneg=a*p*p - b*p + c;
+      if(q!==c && fneg!==q && fneg!==c) break;
+    }
+    b=-2*a*p; c=a*p*p+q;
+    var fneg2=a*p*p - b*p + c;
+    var qfig=mcq("The graph shows a parabola with its vertex marked. What is the <b>vertex</b> of the graph?",
+      u2Pair(p,q), [u2Pair(-p,q), u2Pair(p,c), u2Pair(p,fneg2)],
+      "The marked point is the turning point of the graph, its vertex: "+u2Pair(p,q)+".",
+      {a:a, p:p, q:q, b:b, c:c});
+    qfig.figure=parSVG(a,b,c,{labels:"values",marks:[{x:p,y:q}]});
+    return qfig;
+  }
+]));
 
 /* ---------- 4.41: characteristics of a standard-form quadratic (L2) ---------- */
 E("u2-characteristics-standard",2,["4.41"],2,"gen",function(){
@@ -833,10 +1056,12 @@ E("u2-characteristics-standard",2,["4.41"],2,"gen",function(){
   var keyChar=pick(["yint","axis","open","extr"]);
   var opts={};
   ["yint","axis","open","extr"].forEach(function(k){ opts[k]=(k===keyChar?chars[k].t:chars[k].f); });
-  return mcq("Which statement about the graph of \\(y = "+u2Std(a,b,c)+"\\) is <b>correct</b>?",
+  var qc=mcq("Which statement about the graph of \\(y = "+u2Std(a,b,c)+"\\) is <b>correct</b>?",
     opts[keyChar], ["yint","axis","open","extr"].filter(function(k){ return k!==keyChar; }).map(function(k){ return opts[k]; }),
     "Work through the characteristics one at a time. The y-intercept comes from setting \\(x = 0\\), which leaves \\(y = "+c+"\\). The axis of symmetry is \\(x = \\frac{-b}{2a} = \\frac{"+(-b)+"}{"+(2*a)+"} = "+p+"\\). Since \\(a = "+a+"\\) is "+(a>0?"positive":"negative")+", the parabola opens "+(a>0?"upward":"downward")+", so the vertex \\(("+p+", "+q+")\\) gives a "+(a>0?"minimum":"maximum")+" value of \\("+q+"\\). Only one of the four statements matches all of this.",
     {a:a, p:p, q:q, keyChar:keyChar});
+  qc.figure=parSVG(a,-2*a*p,a*p*p+q,{marks:[{x:p,y:q}]});
+  return qc;
 });
 
 /* ---------- 4.43 and 4.45: complete the square, and verify two forms agree (L2) ---------- */
@@ -985,20 +1210,24 @@ E("u2-write-from-characteristics",2,["4.40"],2,"gen",function(){
   var qTail=(q>0?" + "+q:q<0?" - "+(-q):"");
   if(fam==="point"){
     var d=pick([1,2,3]), x1=p+(ri(0,1)===0?d:-d), y1=a*d*d+q, dx=x1-p;
-    return mcq("A parabola has vertex \\(("+p+", "+q+")\\) and passes through the point \\(("+x1+", "+y1+")\\). Which function, in vertex form, describes the parabola?",
+    var qw=mcq("A parabola has vertex \\(("+p+", "+q+")\\) and passes through the point \\(("+x1+", "+y1+")\\). Which function, in vertex form, describes the parabola?",
       key, dis,
       "Use the vertex form \\(y = a(x - p)^2 + q\\) with the given vertex, then substitute the known point to find \\(a\\):"+
       "\\[ \\begin{aligned} "+y1+" &= a("+dx+")^2"+qTail+" \\\\ "+(y1-q)+" &= "+(d*d)+"a \\\\ a &= \\frac{"+(y1-q)+"}{"+(d*d)+"} = "+a+" \\end{aligned} \\]"+
       "So the function is \\(y = "+u2VS(a,p,q)+"\\).",
       {fam:fam, a:a, p:p, q:q, x1:x1, y1:y1});
+    qw.figure=parSVG(a,-2*a*p,a*p*p+q,{marks:[{x:p,y:q},{x:x1,y:y1}]});
+    return qw;
   }
   var yi=a*p*p+q;
-  return mcq("A parabola has vertex \\(("+p+", "+q+")\\) and y-intercept \\("+yi+"\\). Which function, in vertex form, describes the parabola?",
+  var qw=mcq("A parabola has vertex \\(("+p+", "+q+")\\) and y-intercept \\("+yi+"\\). Which function, in vertex form, describes the parabola?",
     key, dis,
     "Use the vertex form \\(y = a(x - p)^2 + q\\) with the given vertex. The y-intercept is the value at \\(x = 0\\), so substitute the point \\((0, "+yi+")\\) to find \\(a\\):"+
     "\\[ \\begin{aligned} "+yi+" &= a("+(0-p)+")^2"+qTail+" \\\\ "+(yi-q)+" &= "+(p*p)+"a \\\\ a &= \\frac{"+(yi-q)+"}{"+(p*p)+"} = "+a+" \\end{aligned} \\]"+
     "So the function is \\(y = "+u2VS(a,p,q)+"\\).",
     {fam:fam, a:a, p:p, q:q, yi:yi});
+  qw.figure=parSVG(a,-2*a*p,a*p*p+q,{marks:[{x:p,y:q},{x:0,y:yi}]});
+  return qw;
 });
 
 /* ---------- 4.46: write a quadratic model, with assumptions (L2, var) ---------- */
@@ -1025,13 +1254,15 @@ E("u2-model-situation",2,["4.46"],2,"var",varset([
   },
   function(){
     var W=pick([40,48,60,80]);
-    return mcq("A farmer uses "+W+" m of fencing to enclose a rectangular pen on three sides, with a long barn wall forming the fourth side. The two sides perpendicular to the wall each have length \\(x\\) metres. Which function gives the area \\(A\\), in square metres, of the pen?",
+    var qf=mcq("A farmer uses "+W+" m of fencing to enclose a rectangular pen on three sides, with a long barn wall forming the fourth side. The two sides perpendicular to the wall each have length \\(x\\) metres. Which function gives the area \\(A\\), in square metres, of the pen?",
       "\\(A(x) = x("+W+" - 2x)\\)",
       ["\\(A(x) = x("+W+" - x)\\)",
        "\\(A(x) = 2x("+W+" - 2x)\\)",
        "\\(A(x) = x("+(W/2)+" - x)\\)"],
       "The fencing covers two sides of length \\(x\\) and the side opposite the wall, so that side has length \\("+W+" - 2x\\) metres. Area is length times width: \\(A(x) = x("+W+" - 2x)\\). The model assumes the barn wall is at least as long as the side opposite it and that the pen is rectangular.",
       {ctx:"fenced pen", W:W});
+    qf.figure=fenceSVG(W,"barn wall");
+    return qf;
   },
   function(){
     var S=pick([20,24,30,36]);
@@ -1055,18 +1286,20 @@ E("u2-analyze-problem",2,["4.47"],2,"gen",function(){
       {n:"A ball is launched upward from a platform", h0s:[2,3,4,5], vs:[10,20]}];
     var ctx=pick(ctxs), h0=pick(ctx.h0s), v=pick(ctx.vs);
     var ts=v/10, mx=h0+v*v/20;
-    return numq(ctx.n+" "+h0+" m above the ground. Its height, in metres, after \\(t\\) seconds is modelled by \\(h(t) = -5t^2 + "+v+"t + "+h0+"\\). What is the <b>maximum height</b>, in metres, that the ball reaches?",
+    var qa=numq(ctx.n+" "+h0+" m above the ground. Its height, in metres, after \\(t\\) seconds is modelled by \\(h(t) = -5t^2 + "+v+"t + "+h0+"\\). What is the <b>maximum height</b>, in metres, that the ball reaches?",
       mx, 0.01,
       "The height function is a downward-opening parabola, so its maximum is at the vertex. The time at the vertex is \\(t = \\frac{-b}{2a}\\):"+
       "\\[ \\begin{aligned} t &= \\frac{-"+v+"}{2(-5)} = "+ts+" \\\\ h("+ts+") &= -5("+ts+")^2 + "+v+"("+ts+") + "+h0+" \\\\ &= "+u2JoinSigned([-5*ts*ts, v*ts, h0])+" \\\\ &= "+mx+" \\end{aligned} \\]"+
       "So the maximum height is <b>"+mx+" m</b>, reached after "+ts+" s.",
       {fam:fam, ctx:ctx.n, h0:h0, v:v});
+    qa.figure=trajSVG(-5,v,h0);
+    return qa;
   }
   if(fam==="revenue"){
     var ctx=pick([{n:"A concert venue", item:"tickets"}, {n:"A community theatre", item:"tickets"}, {n:"A ski hill", item:"lift passes"}]);
     var k=pick([10,20,25,50]), p0=pick([8,10,12,15,20]), xs=pick([2,3,4,5,6,8]);
     var n0=k*(2*xs+p0), B=n0-k*p0, price=p0+xs;
-    return numq(ctx.n+" sells "+n0+" "+ctx.item+" at $"+p0+" each. For each $1 increase in price, "+k+" fewer "+ctx.item+" are sold. The revenue is modelled by \\(R(x) = ("+p0+" + x)("+n0+" - "+k+"x)\\), where \\(x\\) is the number of $1 increases. What ticket price, in dollars, gives the <b>maximum revenue</b>?",
+    var qa=numq(ctx.n+" sells "+n0+" "+ctx.item+" at $"+p0+" each. For each $1 increase in price, "+k+" fewer "+ctx.item+" are sold. The revenue is modelled by \\(R(x) = ("+p0+" + x)("+n0+" - "+k+"x)\\), where \\(x\\) is the number of $1 increases. What ticket price, in dollars, gives the <b>maximum revenue</b>?",
       price, 0.01,
       "First expand the revenue function into standard form:"+
       "\\[ \\begin{aligned} R(x) &= ("+p0+" + x)("+n0+" - "+k+"x) \\\\ &= -"+k+"x^2 + "+B+"x + "+(p0*n0)+" \\end{aligned} \\]"+
@@ -1074,17 +1307,21 @@ E("u2-analyze-problem",2,["4.47"],2,"gen",function(){
       "\\[ \\begin{aligned} x &= \\frac{-"+B+"}{2(-"+k+")} = "+xs+" \\end{aligned} \\]"+
       "That is "+xs+" increases of $1 on the starting price of $"+p0+", so the price that gives the maximum revenue is <b>$"+price+"</b>.",
       {fam:fam, ctx:ctx.n, k:k, p0:p0, xs:xs, n0:n0});
+    qa.figure=parSVG(-k,B,p0*n0,{xrange:[0,n0/k],xLab:"x",yLab:"R(x)",aria:"Revenue parabola"});
+    return qa;
   }
   var ctx2=pick([{n:"A farmer builds a rectangular pen against a long barn wall", Ws:[40,60,80,100,120]},
                  {n:"A gardener makes a rectangular plot against a house wall", Ws:[40,60,80]},
                  {n:"A school builds a rectangular garden plot against a gym wall", Ws:[40,60]}]);
   var W=pick(ctx2.Ws), Amax=W*W/8;
-  return numq(ctx2.n+", using "+W+" m of fencing for the other three sides. The area is modelled by \\(A(x) = x("+W+" - 2x)\\), where \\(x\\) is the length, in metres, of each side perpendicular to the wall. What is the <b>maximum area</b>, in square metres, of the plot?",
+  var qa=numq(ctx2.n+", using "+W+" m of fencing for the other three sides. The area is modelled by \\(A(x) = x("+W+" - 2x)\\), where \\(x\\) is the length, in metres, of each side perpendicular to the wall. What is the <b>maximum area</b>, in square metres, of the plot?",
     Amax, 0.01,
     "Expand the area function: \\(A(x) = -2x^2 + "+W+"x\\). This parabola opens downward, so the maximum is at the vertex:"+
     "\\[ \\begin{aligned} x &= \\frac{-"+W+"}{2(-2)} = "+(W/4)+" \\\\ A("+(W/4)+") &= "+(W/4)+"\\left("+W+" - 2("+ (W/4) +")\\right) \\\\ &= "+(W/4)+" \\times "+(W/2)+" \\\\ &= "+Amax+" \\end{aligned} \\]"+
     "So the maximum area is <b>"+Amax+" m<sup>2</sup></b>, when each perpendicular side is "+(W/4)+" m.",
     {fam:fam, ctx:ctx2.n, W:W});
+  qa.figure=fenceSVG(W,(ctx2.n.indexOf("barn")>=0?"barn wall":(ctx2.n.indexOf("house")>=0?"house wall":"gym wall")));
+  return qa;
 });
 
 /* ---------- 4.44: diagnose and correct an error in completing the square (L3, error analysis) ---------- */
@@ -1166,16 +1403,25 @@ E("u2-evaluate-claim",2,["4.47"],3,"gen",function(){
     "The claim is correct. The vertex is at \\(x = "+xc+"\\), so the greatest revenue is $"+Mc+".",
     "The claim is incorrect. The vertex is at \\(x = "+x2+"\\), so the greatest revenue is $"+M2+".",
     "The claim is incorrect. The revenue has no maximum, because it keeps increasing as \\(x\\) increases."];
-  return mcq(ctx.n+" models its revenue, in dollars, by \\(R(x) = "+u2Std(-a,b,c)+"\\), where \\(x\\) is the number of one-dollar increases in its "+ctx.item+". The manager claims that the revenue is greatest after "+xc+" increases. Which statement evaluates the claim correctly?",
+  var qe=mcq(ctx.n+" models its revenue, in dollars, by \\(R(x) = "+u2Std(-a,b,c)+"\\), where \\(x\\) is the number of one-dollar increases in its "+ctx.item+". The manager claims that the revenue is greatest after "+xc+" increases. Which statement evaluates the claim correctly?",
     key, dis,
     "The revenue graph opens downward, so its maximum is at the vertex:"+
     "\\[ \\begin{aligned} x &= \\frac{-b}{2a} = \\frac{-"+b+"}{2("+(-a)+")} = "+xs+" \\\\ R("+xs+") &= "+u2JoinSigned([-a*xs*xs, b*xs, c])+" = "+M+" \\end{aligned} \\]"+
     "So the greatest revenue is $"+M+", after "+xs+" increases, not "+xc+". The manager divided by the coefficient of \\(x^2\\) only once instead of twice (using \\(x = "+xc+"\\)); at that point the revenue has already fallen back to $"+Mc+", the same as with no increase at all. (Revenue values check: \\(R("+x2+") = "+Rv(x2)+"\\), also less than $"+M+".)",
     {ctx:ctx.n, a:a, xs:xs, xc:xc});
+  qe.figure=parSVG(-a,b,c,{xLab:"x",yLab:"R(x)",aria:"Revenue parabola"});
+  return qe;
 });
 
 /* ----- bank-u3.js ----- */
 // Math 2200 Unit 3 Quadratic Equations question bank
+// Graphics pass Tranche 2 (November 12, 2026): figures attached
+// attach-only from the builders ported into bank-helpers.js;
+// u3-discriminant-nature gained a graphed read-off second arm
+// under the Tranche 1b ruling (its original generator sits
+// verbatim as arm 1). The frame context of u3-problem-model
+// carries no figure: the border builder's labels are in metres
+// and that context is in centimetres.
 // CRMARKS: u3-derive-formula=4
 // CRMARKS: u3-discriminant-k=3
 // CRMARKS: u3-error-analysis=3
@@ -1320,18 +1566,22 @@ E("u3-roots-zeros",3,["4.9"],1,"gen",function(){
   if(mode==="given"){
     var key=andPairN(lo,hi);
     var cands=[andPairN(-lo,-hi), andPairN(-lo,hi), andPairN(lo,-hi), andPairN(lo+hi, lo*hi)];
-    return mcq("The equation \\("+Q+" = 0\\) has solutions \\(x = "+lo+"\\) and \\(x = "+hi+"\\). What are the <b>zeros</b> of the function \\(f(x) = "+Q+"\\)?",
+    var qz=mcq("The equation \\("+Q+" = 0\\) has solutions \\(x = "+lo+"\\) and \\(x = "+hi+"\\). What are the <b>zeros</b> of the function \\(f(x) = "+Q+"\\)?",
       key, u3Opts(key,cands),
       "The zeros of a function are the input values that make the output zero, so they are exactly the solutions of the equation \\(f(x) = 0\\). The zeros are <b>\\(x = "+lo+"\\)</b> and <b>\\(x = "+hi+"\\)</b>.",
       {mode:mode, a:a});
+    qz.figure=parSVG(a,b,c,{marks:[{x:lo,y:0},{x:hi,y:0}]});
+    return qz;
   }
   if(mode==="intercepts"){
     var key2=andPairN(lo,hi);
     var cands2=[andPairN(-lo,-hi), andPairN(-lo,hi), andPairN(lo,-hi), andPairN(lo+hi, lo*hi)];
-    return mcq("The graph of the function \\(f(x) = "+Q+"\\) crosses the x-axis at \\(("+lo+", 0)\\) and \\(("+hi+", 0)\\). What are the <b>solutions</b> of the equation \\("+Q+" = 0\\)?",
+    var qz=mcq("The graph of the function \\(f(x) = "+Q+"\\) crosses the x-axis at \\(("+lo+", 0)\\) and \\(("+hi+", 0)\\). What are the <b>solutions</b> of the equation \\("+Q+" = 0\\)?",
       key2, u3Opts(key2,cands2),
       "An x-intercept is a point where the function value is zero, so its x-coordinate is a solution of \\(f(x) = 0\\). The solutions are <b>\\(x = "+lo+"\\)</b> and <b>\\(x = "+hi+"\\)</b>.",
       {mode:mode, a:a});
+    qz.figure=parSVG(a,b,c,{marks:[{x:lo,y:0},{x:hi,y:0}]});
+    return qz;
   }
   /* factored */
   var fS="\\(f(x) = "+(a===1?"":a)+u3FacS(r1)+u3FacS(r2)+"\\)";
@@ -1340,10 +1590,12 @@ E("u3-roots-zeros",3,["4.9"],1,"gen",function(){
   var key3=ptPairN(lo,hi);
   var cands3=[ptPairN(-lo,-hi), ptPairN(-lo,hi), ptPairN(lo,-hi),
               "\\((0, "+lo+")\\) and \\((0, "+hi+")\\)"];
-  return mcq("Given "+fS+", what are the <b>x-intercepts</b> of the graph of \\(f\\)?",
+  var qz=mcq("Given "+fS+", what are the <b>x-intercepts</b> of the graph of \\(f\\)?",
     key3, u3Opts(key3,cands3),
     "The product "+(a===1?"":a)+u3FacS(r1)+u3FacS(r2)+" is zero when one of its factors is zero: \\("+u3BinS(r1)+" = 0\\) gives \\(x = "+r1+"\\), and \\("+u3BinS(r2)+" = 0\\) gives \\(x = "+r2+"\\). So the graph crosses the x-axis at <b>\\(("+lo+", 0)\\)</b> and <b>\\(("+hi+", 0)\\)</b>.",
     {mode:mode, a:a});
+  qz.figure=parSVG(a,b,c,{marks:[{x:lo,y:0},{x:hi,y:0}]});
+  return qz;
 });
 
 /* ---------- 3.15: factor trinomials and differences of squares (L2) ---------- */
@@ -1551,7 +1803,8 @@ E("u3-solve-strategies",3,["4.10"],2,"gen",function(){
 });
 
 /* ---------- 4.14: discriminant and the nature of the roots (L2) ---------- */
-E("u3-discriminant-nature",3,["4.14"],2,"gen",function(){
+E("u3-discriminant-nature",3,["4.14"],2,"var",varset([
+  function(){
   var N={two:"two distinct real roots", rep:"one repeated real root", none:"no real roots"};
   var G={two:"crosses the x-axis at two points", rep:"touches the x-axis at exactly one point", none:"does not cross the x-axis"};
   if(Math.random()<0.3){
@@ -1598,7 +1851,29 @@ E("u3-discriminant-nature",3,["4.14"],2,"gen",function(){
       : ck2==="rep" ? "The discriminant is zero, so there is <b>one repeated real root</b>, and the graph touches the x-axis at exactly one point."
       : "The discriminant is negative, so there are <b>no real roots</b>, and the graph does not cross the x-axis."),
     {mode:"equation", D:D});
-});
+},
+  function(){
+    var kind=pick(["two","rep","none"]);var a=pick([1,2]),b,c,D;
+    if(kind==="rep"){b=pick([4,6]);c=b*b/(4*a);D=0;}
+    else if(kind==="two"){b=ri(3,9);c=ri(-6,3);D=b*b-4*a*c;if(D<=0){c=-5;D=b*b-4*a*c;}}
+    else{b=ri(1,4);c=ri(3,9);D=b*b-4*a*c;if(D>=0){b=1;c=9;D=1-4*a*9;}}
+    var NN={two:"two distinct real roots",rep:"one repeated real root",none:"no real roots"};
+    var SS={two:"positive",rep:"zero",none:"negative"};
+    function stmt(n){ return "The equation has "+NN[n]+", and its discriminant is "+SS[n]; }
+    var key=stmt(kind);
+    var others=["two","rep","none"].filter(function(x){ return x!==kind; });
+    var solD=kind==="two" ? "The graph crosses the x-axis at two points, so the equation has two distinct real roots. That happens exactly when the discriminant is positive."
+      : kind==="rep" ? "The graph touches the x-axis at exactly one point, so the equation has one repeated real root. That happens exactly when the discriminant is zero."
+      : "The graph never reaches the x-axis, so the equation has no real roots. That happens exactly when the discriminant is negative.";
+    var qfig=mcq("The graph of a quadratic function is shown. Which statement about the corresponding equation is correct?",
+      key,[stmt(others[0]),stmt(others[1]),"It cannot be determined from the graph"],
+      solD,
+      {kind:kind,a:a,b:b,c:c,D:D});
+    var mk=[];if(D>0){var sq=Math.sqrt(D);mk=[{x:(-b-sq)/(2*a),y:0},{x:(-b+sq)/(2*a),y:0}];}else if(D===0){mk=[{x:-b/(2*a),y:0}];}
+    qfig.figure=parSVG(a,b,c,{labels:"values",marks:mk});
+    return qfig;
+  }
+]));
 
 /* ---------- 4.14: find k from a discriminant condition (L2) ---------- */
 E("u3-discriminant-k",3,["4.14"],2,"gen",function(){
@@ -1657,24 +1932,28 @@ E("u3-problem-model",3,["4.15"],2,"gen",function(){
   var ctx=pick(["rect","projectile","consecutive","frame"]);
   if(ctx==="rect"){
     var w=ri(4,15), d=ri(2,7), A=w*(w+d);
-    return numq("A rectangular garden is "+d+" m longer than it is wide, and its area is "+A+" m². What is the width of the garden, in metres?",
+    var qp=numq("A rectangular garden is "+d+" m longer than it is wide, and its area is "+A+" m². What is the width of the garden, in metres?",
       w, 0.001,
       "Let the width be \\(w\\) metres, so the length is \\(w + "+d+"\\) metres. Area gives:"+
       "\\[ \\begin{aligned} w(w + "+d+") &= "+A+" \\\\ w^2 + "+d+"w - "+A+" &= 0 \\\\ (w - "+w+")(w + "+(w+d)+") &= 0 \\end{aligned} \\]"+
       "So \\(w = "+w+"\\) or \\(w = "+(-(w+d))+"\\). A width cannot be negative, so the width is <b>"+w+" m</b>.",
       {ctx:"rect", w:w, d:d});
+    qp.figure=rectDiagSVG("w m","w + "+d+" m","Area = "+A+" m²");
+    return qp;
   }
   if(ctx==="projectile"){
     var T=pick([2,3,4]);
     var v=pick(T===2?[5]:(T===3?[5,10]:[5,10,15]));
     var h0=T*(5*T-v), Dv=(10*T-v)*(10*T-v), sD=10*T-v;
     var surface=(h0>=40)?"the top of a cliff":"a platform";
-    return numq("A ball is thrown upward from "+surface+" "+h0+" m above the ground, with an initial speed of "+v+" m/s. Its height above the ground, in metres, after \\(t\\) seconds is \\(h(t) = -5t^2 + "+v+"t + "+h0+"\\). How long does it take for the ball to reach the ground, in seconds?",
+    var qp=numq("A ball is thrown upward from "+surface+" "+h0+" m above the ground, with an initial speed of "+v+" m/s. Its height above the ground, in metres, after \\(t\\) seconds is \\(h(t) = -5t^2 + "+v+"t + "+h0+"\\). How long does it take for the ball to reach the ground, in seconds?",
       T, 0.001,
       "The ball reaches the ground when \\(h(t) = 0\\). Apply the quadratic formula:"+
       "\\[ \\begin{aligned} -5t^2 + "+v+"t + "+h0+" &= 0 \\\\ t &= \\frac{-"+v+" \\pm \\sqrt{"+v+"^2 - 4(-5)("+h0+")}}{2(-5)} \\\\ &= \\frac{-"+v+" \\pm "+sD+"}{-10} \\end{aligned} \\]"+
       "The two values are \\(t = "+T+"\\) and \\(t = "+fmt((v-5*T)/5,2)+"\\). Time cannot be negative, so the ball reaches the ground after <b>"+T+" s</b>.",
       {ctx:"projectile", T:T, v:v, h0:h0, surface:surface});
+    qp.figure=trajSVG(-5,v,h0);
+    return qp;
   }
   if(ctx==="consecutive"){
     var kind=pick(["plain","even","odd"]);
