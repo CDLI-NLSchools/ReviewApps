@@ -4010,18 +4010,22 @@ E("u7-sample-space",7,["12.3","12.4"],1,"gen",function(){
       qT.figure=u7tableSVG("Dé",colHead,rows);return qT;
     }
     if(ask==="dienum"){var target=ri(1,d);
-      var dsD=u7numOpts(ncols,[ncols+1,total,d]).map(function(v){return {t:String(v),fb:"Trouve la rangée de ce numéro de dé et compte ses cellules, une pour chaque résultat de l'autre évènement."};});
+      /* Option A fix (Nov 2026): this ask is worded for the coin, so force the coin table here regardless of the spinner draw; the spinner table stays in play for the total ask only. */
+      var chead=["F","P"],cnc=2,ctot=d*2,crows=[];for(var cr=1;cr<=d;cr++){var crow=[String(cr)];for(var cc=0;cc<cnc;cc++)crow.push(chead[cc]+cr);crows.push(crow);}
+      var dsD=u7numOpts(cnc,[cnc+1,ctot,d]).map(function(v){return {t:String(v),fb:"Trouve la rangée de ce numéro de dé et compte ses cellules, une pour chaque résultat de l'autre évènement."};});
       var qD=mcq("Le tableau montre tous les résultats quand on lance une pièce et un dé à "+d+" faces. Combien de résultats ont le numéro de dé "+target+" ?",
-        {t:String(ncols),fb:"Oui : le numéro de dé "+target+" apparaît une fois avec face et une fois avec pile."},dsD,
-        "La rangée du numéro de dé "+target+" contient une cellule pour face et une pour pile. La réponse est <b>"+ncols+"</b> résultats.",{mode:"table"});
-      qD.figure=u7tableSVG("Dé",["F","P"],rows);return qD;
+        {t:String(cnc),fb:"Oui : le numéro de dé "+target+" apparaît une fois avec face et une fois avec pile."},dsD,
+        "La rangée du numéro de dé "+target+" contient une cellule pour face et une pour pile. La réponse est <b>"+cnc+"</b> résultats.",{mode:"table"});
+      qD.figure=u7tableSVG("Dé",chead,crows);return qD;
     }
     var k=ri(1,d);var face=pick(["F","P"]);
-    var dsS=u7numOpts(1,[2,d,total]).map(function(v){return {t:String(v),fb:"Une seule combinaison exacte apparaît exactement une fois dans un tableau complet des résultats."};});
+    /* Option A fix (Nov 2026): as in the dienum branch above, force the coin table for this coin-worded ask. */
+    var chead=["F","P"],cnc=2,ctot=d*2,crows=[];for(var cr=1;cr<=d;cr++){var crow=[String(cr)];for(var cc=0;cc<cnc;cc++)crow.push(chead[cc]+cr);crows.push(crow);}
+    var dsS=u7numOpts(1,[2,d,ctot]).map(function(v){return {t:String(v),fb:"Une seule combinaison exacte apparaît exactement une fois dans un tableau complet des résultats."};});
     var qS=mcq("Le tableau montre tous les résultats quand on lance une pièce et un dé à "+d+" faces. Combien de résultats sont exactement "+face+k+" (résultat de la pièce "+face+", numéro du dé "+k+") ?",
       {t:"1",fb:"Oui : cette combinaison exacte remplit exactement une cellule du tableau."},dsS,
       "Chaque cellule du tableau est une combinaison exacte, et "+face+k+" remplit une cellule. La réponse est <b>1</b>.",{mode:"table"});
-    qS.figure=u7tableSVG("Dé",["F","P"],rows);return qS;
+    qS.figure=u7tableSVG("Dé",chead,crows);return qS;
   }
   var devA=[["une pièce",2,"la pièce"],["une roulette à trois sections",3,"la roulette"],["une roulette à quatre sections",4,"la roulette"],["une roulette à cinq sections",5,"la roulette"],["un dé à six faces",6,"le dé"],["un dé à huit faces",8,"le dé"]];
   var devB=[["une pièce",2,"la pièce"],["un dé à quatre faces",4,"le dé"],["une roulette à six sections",6,"la roulette"],["un dé à huit faces",8,"le dé"],["une roulette à trois sections",3,"la roulette"],["un dé à quatre faces",4,"le dé"]];
