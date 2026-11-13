@@ -46,6 +46,178 @@ function tblHTML(xs,ys,xh,yh){
   return s+'</tr></table>';
 }
 
+/* ================= Graphics pass tranche 4 builders (ported from the Math 3200 helpers) ================= */
+// fnPathD: sample fn on [x0,x1]; skip non-finite values and break the path
+// on jumps (asymptotes) instead of drawing false lines. No clamping.
+function fnPathD(fn,X,Y,x0,x1,y0,y1,N){
+  N=N||240;var d="",pen=false,py=0,i,x,y;
+  for(i=0;i<=N;i++){
+    x=x0+(x1-x0)*i/N;
+    try{y=fn(x);}catch(e){y=NaN;}
+    if(typeof y!=="number"||!isFinite(y)||y<y0||y>y1){pen=false;continue;}
+    if(pen&&Math.abs(y-py)>0.75*(y1-y0)){pen=false;}
+    d+=(pen?"L ":"M ")+fmt(X(x),1)+" "+fmt(Y(y),1)+" ";
+    pen=true;py=y;
+  }
+  return d;
+}
+function fnPlotSVG(fn,x0,x1,y0,y1,o){
+  o=o||{};
+  var i,x,y;
+  if(y0===undefined||y1===undefined){
+    var lo=Infinity,hi=-Infinity;
+    for(i=0;i<=400;i++){
+      x=x0+(x1-x0)*i/400;
+      try{y=fn(x);}catch(e){y=NaN;}
+      if(typeof y==="number"&&isFinite(y)){if(y<lo)lo=y;if(y>hi)hi=y;}
+    }
+    if(!isFinite(lo)){lo=-1;hi=1;}
+    if(o.asymY!==undefined){lo=Math.min(lo,o.asymY);hi=Math.max(hi,o.asymY);}
+    var padY=(hi-lo)*0.15+0.5;
+    if(y0===undefined)y0=Math.floor((lo-padY)*2)/2;
+    if(y1===undefined)y1=Math.ceil((hi+padY)*2)/2;
+    if(y1-y0<1)y1=y0+1;
+  }
+  var W=440,H=250,padL=30,padR=12,padT=10,padB=24;
+  var X=function(x){return padL+(x-x0)/(x1-x0)*(W-padL-padR);};
+  var Y=function(y){return H-padB-(y-y0)/(y1-y0)*(H-padT-padB);};
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  function labFmt(v,labels){
+    if(labels){for(var j=0;j<labels.length;j++){if(Math.abs(labels[j][0]-v)<1e-6)return labels[j][1];}}
+    return fmt(v);
+  }
+  var gx=o.gx||1,gy=o.gy||1,g,idx;
+  if((x1-x0)/gx<=220){
+    idx=0;
+    for(g=Math.ceil(x0/gx)*gx;g<=x1+1e-9;g+=gx,idx++){
+      out+='<line x1="'+fmt(X(g),1)+'" y1="'+padT+'" x2="'+fmt(X(g),1)+'" y2="'+(H-padB)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(o.labelX&&(!o.labelEvery||idx%o.labelEvery===0))
+        out+='<text x="'+fmt(X(g),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+labFmt(g,o.xLabels)+'</text>';
+    }
+  }
+  if((y1-y0)/gy<=220){
+    for(g=Math.ceil(y0/gy)*gy;g<=y1+1e-9;g+=gy){
+      out+='<line x1="'+padL+'" y1="'+fmt(Y(g),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(g),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(o.labelY&&!(g===0&&o.labelX))
+        out+='<text x="'+(padL-4)+'" y="'+fmt(Y(g)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+labFmt(g,o.yLabels)+'</text>';
+    }
+  }
+  if(y0<0&&y1>0)out+='<line x1="'+padL+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.3"/>';
+  if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="'+padT+'" x2="'+fmt(X(0),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_INK+'" stroke-width="1.3"/>';
+  var xLabY=(y0<0&&y1>0)?Y(0):(H-padB);
+  out+='<text x="'+(W-padR-2)+'" y="'+fmt(xLabY-6,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">x</text>';
+  var yLabX=(x0<0&&x1>0)?X(0):padL;
+  out+='<text x="'+fmt(yLabX+6,1)+'" y="'+(padT+10)+'" font-size="12" fill="'+FIG_INK+'">y</text>';
+  if(o.asymY!==undefined&&o.asymY>y0&&o.asymY<y1){
+    out+='<line x1="'+padL+'" y1="'+fmt(Y(o.asymY),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(o.asymY),1)+'" stroke="'+FIG_ALT+'" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+(W-padR-4)+'" y="'+fmt(Y(o.asymY)-5,1)+'" font-size="10" fill="'+FIG_ALT+'" text-anchor="end">y = '+fmt(o.asymY)+'</text>';
+  }
+  if(o.asymX!==undefined&&o.asymX>=x0&&o.asymX<=x1){
+    out+='<line x1="'+fmt(X(o.asymX),1)+'" y1="'+padT+'" x2="'+fmt(X(o.asymX),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_ALT+'" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+fmt(X(o.asymX)+5,1)+'" y="'+(padT+24)+'" font-size="10" fill="'+FIG_ALT+'">x = '+fmt(o.asymX)+'</text>';
+  }
+  if(fn){
+    var d=fnPathD(fn,X,Y,x0,x1,y0,y1,o.N);
+    if(d)out+='<path d="'+d+'" fill="none" stroke="'+(o.color||FIG_ACC)+'" stroke-width="2.2"/>';
+  }
+  (o.extraFns||[]).forEach(function(ef){
+    var dd=fnPathD(ef.fn,X,Y,x0,x1,y0,y1,o.N);
+    if(dd)out+='<path d="'+dd+'" fill="none" stroke="'+(ef.color||FIG_ALT)+'" stroke-width="2"/>';
+  });
+  (o.points||[]).forEach(function(p,i){
+    out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="'+FIG_ALT+'"/>';
+    if(o.pointLabels&&o.pointLabels[i])out+='<text x="'+fmt(X(p[0])+7,1)+'" y="'+fmt(Y(p[1])-7,1)+'" font-size="10" fill="'+FIG_INK+'">'+o.pointLabels[i]+'</text>';
+  });
+  return out+'</svg>';
+}
+function treeSVG(stages,o){
+  o=o||{};
+  function optsAt(depth,path){
+    var s=stages[depth];
+    return (typeof s.options==="function")?s.options(path.slice()):s.options;
+  }
+  function countLeaves(depth,path){
+    if(depth>=stages.length)return 1;
+    var opts=optsAt(depth,path),sum=0,i;
+    for(i=0;i<opts.length;i++)sum+=countLeaves(depth+1,path.concat([opts[i]]));
+    return sum;
+  }
+  var leaves=countLeaves(0,[]);
+  var maxL=o.maxLeaves||120;
+  if(leaves>maxL)return null;
+  var pitch=leaves<=12?24:(leaves<=30?19:16);
+  var colW=o.colW||104;
+  var leafW=o.leafLabel?58:14;
+  var W=36+stages.length*colW+leafW;
+  var top=34,H=top+leaves*pitch+8;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:520px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  var d,px,cx;
+  for(d=0;d<stages.length;d++){
+    px=(d===0)?18:36+(d-1)*colW;
+    cx=36+d*colW;
+    if(stages[d].title)out+='<text x="'+fmt((px+cx)/2,1)+'" y="16" font-size="10.5" fill="'+FIG_INK+'" text-anchor="middle">'+stages[d].title+'</text>';
+  }
+  var body="",leafIdx=0;
+  function layout(depth,path){
+    var x=(depth<0)?18:36+depth*colW;
+    if(depth===stages.length-1){
+      var ly=top+(leafIdx+0.5)*pitch;leafIdx++;
+      body+='<circle cx="'+x+'" cy="'+fmt(ly,1)+'" r="2.6" fill="'+FIG_ALT+'"/>';
+      if(o.leafLabel)body+='<text x="'+(x+8)+'" y="'+fmt(ly+3.5,1)+'" font-size="10.5" fill="'+FIG_INK+'">'+o.leafLabel(path)+'</text>';
+      return ly;
+    }
+    var opts=optsAt(depth+1,path),ys=[],i;
+    for(i=0;i<opts.length;i++)ys.push(layout(depth+1,path.concat([opts[i]])));
+    var y=(ys[0]+ys[ys.length-1])/2;
+    var nx=36+(depth+1)*colW;
+    for(i=0;i<opts.length;i++){
+      body+='<line x1="'+x+'" y1="'+fmt(y,1)+'" x2="'+nx+'" y2="'+fmt(ys[i],1)+'" stroke="#8a8272" stroke-width="1.2"/>';
+      body+='<text x="'+fmt(nx-7,1)+'" y="'+fmt(ys[i]-5,1)+'" font-size="10" fill="#5a5344" text-anchor="end">'+opts[i]+'</text>';
+    }
+    body+='<circle cx="'+x+'" cy="'+fmt(y,1)+'" r="2.6" fill="'+FIG_INK+'"/>';
+    return y;
+  }
+  layout(-1,[]);
+  return out+body+'</svg>';
+}
+
+/* ================= Venn builders, moved from bank-u7.js (Graphics pass tranche 4) ================= */
+function venn2(aO,both,bO,none,lA,lB,mark){
+  var s="<svg viewBox='0 0 220 150' width='220' height='150' xmlns='http://www.w3.org/2000/svg'>"
+  +"<rect x='4' y='4' width='212' height='142' fill='none' stroke='#888'/>"
+  +"<circle cx='84' cy='74' r='44' fill='#3a7bd5' fill-opacity='0.22' stroke='#3a7bd5'/>"
+  +"<circle cx='136' cy='74' r='44' fill='#e67e22' fill-opacity='0.22' stroke='#e67e22'/>"
+  +"<text x='14' y='20' font-size='12' fill='#666'>U</text>"
+  +"<text x='52' y='38' font-size='13' font-weight='bold' fill='#2c5f9e'>"+lA+"</text>"
+  +"<text x='146' y='38' font-size='13' font-weight='bold' fill='#b35c14'>"+lB+"</text>";
+  if(aO!==null)s+="<text x='66' y='79' font-size='14' text-anchor='middle'>"+aO+"</text>";
+  if(both!==null)s+="<text x='110' y='79' font-size='14' text-anchor='middle'>"+both+"</text>";
+  if(bO!==null)s+="<text x='154' y='79' font-size='14' text-anchor='middle'>"+bO+"</text>";
+  if(none!==null)s+="<text x='206' y='136' font-size='14' text-anchor='end'>"+none+"</text>";
+  if(mark)s+="<text x='"+mark[0]+"' y='"+mark[1]+"' font-size='17' text-anchor='middle' fill='#c0392b'>★</text>";
+  return s+"</svg>";
+}
+function venn3(aO,bO,cO,ab,ac,bc,abc,none,lA,lB,lC){
+  var s="<svg viewBox='0 0 220 172' width='220' height='172' xmlns='http://www.w3.org/2000/svg'>"
+  +"<rect x='4' y='4' width='212' height='164' fill='none' stroke='#888'/>"
+  +"<circle cx='110' cy='64' r='40' fill='#3a7bd5' fill-opacity='0.20' stroke='#3a7bd5'/>"
+  +"<circle cx='82' cy='110' r='40' fill='#27ae60' fill-opacity='0.20' stroke='#27ae60'/>"
+  +"<circle cx='138' cy='110' r='40' fill='#e67e22' fill-opacity='0.20' stroke='#e67e22'/>"
+  +"<text x='14' y='20' font-size='12' fill='#666'>U</text>"
+  +"<text x='110' y='16' font-size='13' font-weight='bold' text-anchor='middle' fill='#2c5f9e'>"+lA+"</text>"
+  +"<text x='30' y='88' font-size='13' font-weight='bold' fill='#1e8449'>"+lB+"</text>"
+  +"<text x='178' y='88' font-size='13' font-weight='bold' fill='#b35c14'>"+lC+"</text>"
+  +"<text x='110' y='45' font-size='13' text-anchor='middle'>"+aO+"</text>"
+  +"<text x='52' y='133' font-size='13' text-anchor='middle'>"+bO+"</text>"
+  +"<text x='168' y='133' font-size='13' text-anchor='middle'>"+cO+"</text>"
+  +"<text x='83' y='86' font-size='13' text-anchor='middle'>"+ab+"</text>"
+  +"<text x='137' y='86' font-size='13' text-anchor='middle'>"+ac+"</text>"
+  +"<text x='110' y='133' font-size='13' text-anchor='middle'>"+bc+"</text>"
+  +"<text x='110' y='106' font-size='13' text-anchor='middle'>"+abc+"</text>"
+  +"<text x='208' y='162' font-size='13' text-anchor='end'>"+none+"</text>";
+  return s+"</svg>";
+}
+
 /* ----- bank-u1.js ----- */
 // Math 3201 Unit 1 Rational Expressions and Equations question bank
 // CRMARKS: u1-add-diff-den=2
@@ -976,7 +1148,8 @@ E("u3-eq-range-midline",3,["7.4"],1,"gen",function(){
     "The amplitude is \\(|a| = "+Math.abs(a)+"\\), so the graph runs from \\(d - |a| = "+lo+"\\) up to \\(d + |a| = "+hi+"\\) around the midline \\(y = "+d+"\\). The interval that stops at the midline, and the one that forgets the vertical shift, are the traps.",
     {feat:feat,a:a,d:d});
 });
-E("u3-eq-phase-shift",3,["7.4"],1,"gen",function(){
+E("u3-eq-phase-shift",3,["7.4"],1,"var",varset([
+  function(){
   var c=pick([15,30,45,60,90])*pick([1,-1]),a=pick([1,2,3]),d=pick([-2,0,1]),trig=pick(["sin","cos"]);
   var eq=sinS(a,trig,pick([1,2]),c,d);
   var corr=(c>0)?("Shifted right "+c+"°"):("Shifted left "+(-c)+"°");
@@ -985,7 +1158,22 @@ E("u3-eq-phase-shift",3,["7.4"],1,"gen",function(){
     [(c>0?("Shifted left "+c+"°"):("Shifted right "+(-c)+"°")),"Shifted up "+Math.abs(c)+"°","There is no horizontal shift"],
     "In the form \\(y = a \\"+trig+" b(x - c) + d\\), the value inside the brackets with \\(x\\) gives the horizontal shift: here \\(c = "+c+"\\), so the graph moves "+(c>0?"right by "+c+"°":"left by "+(-c)+"°")+". The trap is reading the sign backwards: \\((x - "+Math.abs(c)+"^\\circ)\\) shifts right, not left.",
     {c:c});
-});
+},
+  function(){
+    var c=pick([15,30,45,60,90])*pick([1,-1]),a=pick([1,2,3]),d=pick([-2,0,1]),trig=pick(["sin","cos"]);
+    var b=pick([1,2]);
+    var eq=sinS(a,trig,b,c,d);
+    var corr=(c>0)?("Shifted right "+c+"°"):("Shifted left "+(-c)+"°");
+    var q=mcq("Compared with the graph of \\(y = "+(a===1?"":a)+" \\"+trig+" x"+(d!==0?((d>0?" + ":" - ")+Math.abs(d)):"")+"\\), how is the graph of \\("+eq+"\\) (graphed below) shifted horizontally?",
+      corr,
+      [(c>0?("Shifted left "+c+"°"):("Shifted right "+(-c)+"°")),"Shifted up "+Math.abs(c)+"°","There is no horizontal shift"],
+      "In the form \\(y = a \\"+trig+" b(x - c) + d\\), the value inside the brackets with \\(x\\) gives the horizontal shift: here \\(c = "+c+"\\), so the graph moves "+(c>0?"right by "+c+"°":"left by "+(-c)+"°")+". The trap is reading the sign backwards: \\((x - "+Math.abs(c)+"^\\circ)\\) shifts right, not left.",
+      {c:c});
+    var x0=(c<0?-180:0);
+    q.figure=fnPlotSVG(sinFn(a,trig,b,c,d),x0,x0+720,d-a-1,d+a+1,{gx:15,gy:1,labelX:true,labelY:true,labelEvery:6,points:[[c,trig==="sin"?d:a+d]]});
+    return q;
+  }
+]));
 E("u3-match-eq-graph",3,["7.5"],2,"gen",function(){
   var a=pick([2,3,4]),b=pick([1,2,3]),d=pick([-3,-2,-1,1,2,3]),trig=pick(["sin","cos"]);
   var fn=sinFn(a,trig,b,0,d);
@@ -1025,16 +1213,17 @@ E("u3-data-fit-params",3,["7.6"],1,"gen",function(){
   while(d===a||2*a===d)d=pick([2,3,4,5,6,8,10]);
   var xs=[0,3,6,9,12],ys=[d,d+a,d,d-a,d];
   var tbl=tblHTML(xs,ys.map(function(v){return fmt(v);}),"Time (h)","Height (m)");
+  var fig=fnPlotSVG(null,-1,13,Math.floor(d-a)-1,Math.ceil(d+a)+1,{gx:3,gy:1,labelX:true,labelY:true,points:xs.map(function(x,ix){return [x,ys[ix]];})});
   if(feat==="amplitude"){
-    return mcq("Heights of a tide in Petty Harbour are recorded every 3 hours. "+tbl+" Which value, in metres, is the <b>amplitude</b> of a sinusoidal model of this data?",
+    var q=mcq("Heights of a tide in Petty Harbour are recorded every 3 hours. "+tbl+" Which value, in metres, is the <b>amplitude</b> of a sinusoidal model of this data?",
       fmt(a),[fmt(d),fmt(d+a),fmt(2*a)],
       "The heights run from a low of "+fmt(d-a)+" m to a high of "+fmt(d+a)+" m around a midline of "+fmt(d)+" m. The amplitude is the distance from the midline to the high: "+fmt(d+a)+" - "+fmt(d)+" = <b>"+fmt(a)+" m</b>.",
-      {feat:feat,a:a,d:d});
+      {feat:feat,a:a,d:d}); q.figure=fig; return q;
   }
-  return mcq("Heights of a tide in Petty Harbour are recorded every 3 hours. "+tbl+" Which value, in hours, is the <b>period</b> of a sinusoidal model of this data?",
+  var q=mcq("Heights of a tide in Petty Harbour are recorded every 3 hours. "+tbl+" Which value, in hours, is the <b>period</b> of a sinusoidal model of this data?",
     "12",["6","24","3"],
     "The pattern high, mid, low, mid returns to its starting height at 12 h (high at 3 h repeats at 15 h), so one full cycle takes <b>12 h</b>. The 6 h figure is only the high-to-low half cycle.",
-    {feat:feat,a:a,d:d});
+    {feat:feat,a:a,d:d}); q.figure=fig; return q;
 });
 E("u3-data-equation",3,["7.6"],2,"gen",function(){
   var a=pick([2,3,4]),d=pick([3,4,5,6,8,10]),b=pick([15,30]),fam=pick(["sin","cos"]);
@@ -1043,14 +1232,15 @@ E("u3-data-equation",3,["7.6"],2,"gen",function(){
   var ys=(fam==="sin")?[d,d+a,d,d-a,d]:[d+a,d,d-a,d,d+a];
   var alt=(fam==="sin")?"cos":"sin";
   var tbl=tblHTML(xs,ys,"Time (h)","Depth (m)");
+  var fig=fnPlotSVG(null,-1,per+1,d-a-1,d+a+1,{gx:per/4,gy:1,labelX:true,labelY:true,points:xs.map(function(x,ix){return [x,ys[ix]];})});
   function eqFor(aa,tr,bb,dd){return sinS(aa,tr,bb,0,dd).replace("y =","D(t) =").replace("(x","(t");}
-  return mcq("The depth of water at a wharf is recorded over one full tidal cycle. "+tbl+" Which equation, with \\(t\\) in hours, models the depth?",
+  var q=mcq("The depth of water at a wharf is recorded over one full tidal cycle. "+tbl+" Which equation, with \\(t\\) in hours, models the depth?",
     "\\("+eqFor(a,fam,b,d)+"\\)",
     ["\\("+eqFor(a,alt,b,d)+"\\)",
      "\\("+eqFor(d,fam,b,a)+"\\)",
      "\\("+eqFor(a,fam,2*b,d)+"\\)"],
     (fam==="sin"?"The depth starts at the midline value "+d+" and rises to "+(d+a)+", the sine pattern starting at its midline.":"The depth starts at its maximum "+(d+a)+" and falls, the cosine pattern starting at a peak.")+" The midline is "+d+", the amplitude is "+a+", and the cycle takes "+per+" h, so \\(b = \\frac{360}{"+per+"} = "+b+"\\) with the cycle measured in degrees. The model is \\("+eqFor(a,fam,b,d)+"\\).",
-    {a:a,d:d,b:b,fam:fam});
+    {a:a,d:d,b:b,fam:fam}); q.figure=fig; return q;
 });
 E("u3-tide-predict",3,["7.7"],3,"gen",function(){
   var H=pick([3.6,4.2,4.8,5.4]),L=pick([0.4,0.6,0.8,1.2]);
@@ -2575,41 +2765,6 @@ E("u6-cost-benefit",6,["1.17"],3,"gen",function(){
 // CRMARKS: u7-venn-three-read=2
 /* ================= Unit 7: Set Theory ================= */
 function roster(arr){return arr.length?"{"+arr.join(", ")+"}":"∅";}
-function venn2(aO,both,bO,none,lA,lB,mark){
-  var s="<svg viewBox='0 0 220 150' width='220' height='150' xmlns='http://www.w3.org/2000/svg'>"
-  +"<rect x='4' y='4' width='212' height='142' fill='none' stroke='#888'/>"
-  +"<circle cx='84' cy='74' r='44' fill='#3a7bd5' fill-opacity='0.22' stroke='#3a7bd5'/>"
-  +"<circle cx='136' cy='74' r='44' fill='#e67e22' fill-opacity='0.22' stroke='#e67e22'/>"
-  +"<text x='14' y='20' font-size='12' fill='#666'>U</text>"
-  +"<text x='52' y='38' font-size='13' font-weight='bold' fill='#2c5f9e'>"+lA+"</text>"
-  +"<text x='146' y='38' font-size='13' font-weight='bold' fill='#b35c14'>"+lB+"</text>";
-  if(aO!==null)s+="<text x='66' y='79' font-size='14' text-anchor='middle'>"+aO+"</text>";
-  if(both!==null)s+="<text x='110' y='79' font-size='14' text-anchor='middle'>"+both+"</text>";
-  if(bO!==null)s+="<text x='154' y='79' font-size='14' text-anchor='middle'>"+bO+"</text>";
-  if(none!==null)s+="<text x='206' y='136' font-size='14' text-anchor='end'>"+none+"</text>";
-  if(mark)s+="<text x='"+mark[0]+"' y='"+mark[1]+"' font-size='17' text-anchor='middle' fill='#c0392b'>★</text>";
-  return s+"</svg>";
-}
-function venn3(aO,bO,cO,ab,ac,bc,abc,none,lA,lB,lC){
-  var s="<svg viewBox='0 0 220 172' width='220' height='172' xmlns='http://www.w3.org/2000/svg'>"
-  +"<rect x='4' y='4' width='212' height='164' fill='none' stroke='#888'/>"
-  +"<circle cx='110' cy='64' r='40' fill='#3a7bd5' fill-opacity='0.20' stroke='#3a7bd5'/>"
-  +"<circle cx='82' cy='110' r='40' fill='#27ae60' fill-opacity='0.20' stroke='#27ae60'/>"
-  +"<circle cx='138' cy='110' r='40' fill='#e67e22' fill-opacity='0.20' stroke='#e67e22'/>"
-  +"<text x='14' y='20' font-size='12' fill='#666'>U</text>"
-  +"<text x='110' y='16' font-size='13' font-weight='bold' text-anchor='middle' fill='#2c5f9e'>"+lA+"</text>"
-  +"<text x='30' y='88' font-size='13' font-weight='bold' fill='#1e8449'>"+lB+"</text>"
-  +"<text x='178' y='88' font-size='13' font-weight='bold' fill='#b35c14'>"+lC+"</text>"
-  +"<text x='110' y='45' font-size='13' text-anchor='middle'>"+aO+"</text>"
-  +"<text x='52' y='133' font-size='13' text-anchor='middle'>"+bO+"</text>"
-  +"<text x='168' y='133' font-size='13' text-anchor='middle'>"+cO+"</text>"
-  +"<text x='83' y='86' font-size='13' text-anchor='middle'>"+ab+"</text>"
-  +"<text x='137' y='86' font-size='13' text-anchor='middle'>"+ac+"</text>"
-  +"<text x='110' y='133' font-size='13' text-anchor='middle'>"+bc+"</text>"
-  +"<text x='110' y='106' font-size='13' text-anchor='middle'>"+abc+"</text>"
-  +"<text x='208' y='162' font-size='13' text-anchor='end'>"+none+"</text>";
-  return s+"</svg>";
-}
 var U7PROPS=[
   {n:"even numbers",f:function(x){return x%2===0;}},
   {n:"odd numbers",f:function(x){return x%2===1;}},
@@ -2754,21 +2909,21 @@ E("u7-region-meaning",7,["2.3"],1,"gen",function(){
   var others=shuffle(U7REGIONS.filter(function(r){return r!==reg;}));
   var fig=venn2(null,null,null,null,c.lA,c.lB,style==="pos"?reg.mark:null);
   var head="In a Venn diagram of a student survey, circle A represents students who "+c.aP+" and circle B represents students who "+c.bP+". ";
-  if(style==="pos")return mcq(head+"The region marked with a star represents",
+  if(style==="pos"){var q=mcq(head+"The region marked with a star represents",
     reg.phrase(c),
     [others[0].phrase(c),others[1].phrase(c),others[2].phrase(c)],
     "Read the star's position: it sits "+(reg.key==="Aonly"?"inside A but outside B":reg.key==="Bonly"?"inside B but outside A":reg.key==="both"?"inside both circles":"outside both circles")+", so it represents "+reg.phrase(c)+". In set notation this region is \\("+reg.notn+"\\).",
-    {ctx:c.lA,reg:reg.key,style:style},fig);
-  if(style==="phrase2not")return mcq(head+"Which set notation represents: "+reg.phrase(c)+"?",
+    {ctx:c.lA,reg:reg.key,style:style}); q.figure=fig; return q;}
+  if(style==="phrase2not"){var q=mcq(head+"Which set notation represents: "+reg.phrase(c)+"?",
     MV(reg.notn),
     [MV(others[0].notn),MV(others[1].notn),MV(others[2].notn)],
     "\"And\" between conditions means intersection, \"or\" means union, and \"do not\" adds a complement. The description matches \\("+reg.notn+"\\): check each distractor by reading it back into words.",
-    {ctx:c.lA,reg:reg.key,style:style},fig);
-  return mcq(head+"Which description matches the set notation \\("+reg.notn+"\\)?",
+    {ctx:c.lA,reg:reg.key,style:style}); q.figure=fig; return q;}
+  var q=mcq(head+"Which description matches the set notation \\("+reg.notn+"\\)?",
     reg.phrase(c),
     [others[0].phrase(c),others[1].phrase(c),others[2].phrase(c)],
     "Read the notation piece by piece: \\(\\cap\\) is \"and\", \\(\\cup\\) is \"or\", and a prime means \"not\". That gives: "+reg.phrase(c)+".",
-    {ctx:c.lA,reg:reg.key,style:style},fig);
+    {ctx:c.lA,reg:reg.key,style:style}); q.figure=fig; return q;
 });
 
 /* --- organizing information in Venn diagrams (2.2) --- */
@@ -2794,29 +2949,29 @@ E("u7-venn-read",7,["2.2"],1,"gen",function(){
     union:["How many students do at least one of the two activities?",union,"Add the three regions inside the circles: \\("+r.aO+" + "+r.both+" + "+r.bO+" = "+union+"\\). The outside region is excluded."],
     total:["How many students were surveyed in total?",total,"Add all four regions, including the students outside both circles: \\("+r.aO+" + "+r.both+" + "+r.bO+" + "+r.none+" = "+total+"\\)."]
   }[target];
-  return numq("A survey of students produced this Venn diagram (A: "+c.lA+", B: "+c.lB+"). "+Q[0],
-    Q[1],0.001,Q[2],{ctx:c.lA,target:target},fig);
+  var q=numq("A survey of students produced this Venn diagram (A: "+c.lA+", B: "+c.lB+"). "+Q[0],
+    Q[1],0.001,Q[2],{ctx:c.lA,target:target}); q.figure=fig; return q;
 });
 E("u7-venn-fill",7,["2.2"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions();
   var nA=r.aO+r.both,nB=r.bO+r.both,union=r.aO+r.both+r.bO,total=union+r.none;
   var target=pick(["aonly","bonly","none","union"]);
   var head="In a survey of "+total+" students, "+nA+" "+c.aP+", "+nB+" "+c.bP+", and "+r.both+" do both. ";
-  if(target==="aonly")return numq(head+"How many students "+c.aP+" only?",
-    r.aO,0.001,"Work from the overlap outwards: of the "+nA+" students in A, "+r.both+" are also in B, so \\[ \\begin{aligned} n(A \\cap B') &= n(A) - n(A \\cap B) \\\\ &= "+nA+" - "+r.both+" \\\\ &= "+r.aO+" \\end{aligned} \\]",{ctx:c.lA,target:target});
-  if(target==="bonly")return numq(head+"How many students "+c.bP+" only?",
-    r.bO,0.001,"Work from the overlap outwards: of the "+nB+" students in B, "+r.both+" are also in A, so \\[ \\begin{aligned} n(A' \\cap B) &= n(B) - n(A \\cap B) \\\\ &= "+nB+" - "+r.both+" \\\\ &= "+r.bO+" \\end{aligned} \\]",{ctx:c.lA,target:target});
-  if(target==="union")return numq(head+"How many students do at least one of the two activities?",
-    union,0.001,"Use the union formula so the overlap is not counted twice: \\[ \\begin{aligned} n(A \\cup B) &= n(A) + n(B) - n(A \\cap B) \\\\ &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\end{aligned} \\]",{ctx:c.lA,target:target});
-  return numq(head+"How many students do neither activity?",
-    r.none,0.001,"First the union, then subtract from the total surveyed: \\[ \\begin{aligned} n(A \\cup B) &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\\\ n((A \\cup B)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\]",{ctx:c.lA,target:target});
+  if(target==="aonly"){var q=numq(head+"How many students "+c.aP+" only?",
+    r.aO,0.001,"Work from the overlap outwards: of the "+nA+" students in A, "+r.both+" are also in B, so \\[ \\begin{aligned} n(A \\cap B') &= n(A) - n(A \\cap B) \\\\ &= "+nA+" - "+r.both+" \\\\ &= "+r.aO+" \\end{aligned} \\]",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,c.lA,c.lB,null); return q;}
+  if(target==="bonly"){var q=numq(head+"How many students "+c.bP+" only?",
+    r.bO,0.001,"Work from the overlap outwards: of the "+nB+" students in B, "+r.both+" are also in A, so \\[ \\begin{aligned} n(A' \\cap B) &= n(B) - n(A \\cap B) \\\\ &= "+nB+" - "+r.both+" \\\\ &= "+r.bO+" \\end{aligned} \\]",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,c.lA,c.lB,null); return q;}
+  if(target==="union"){var q=numq(head+"How many students do at least one of the two activities?",
+    union,0.001,"Use the union formula so the overlap is not counted twice: \\[ \\begin{aligned} n(A \\cup B) &= n(A) + n(B) - n(A \\cap B) \\\\ &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\end{aligned} \\]",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,c.lA,c.lB,null); return q;}
+  var q=numq(head+"How many students do neither activity?",
+    r.none,0.001,"First the union, then subtract from the total surveyed: \\[ \\begin{aligned} n(A \\cup B) &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\\\ n((A \\cup B)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\]",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,c.lA,c.lB,null); return q;
 });
 E("u7-venn-missing",7,["2.2"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions(),total=r.aO+r.both+r.bO+r.none;
-  if(Math.random()<0.5)return numq("A Venn diagram for a survey (A: "+c.lA+", B: "+c.lB+") shows "+r.aO+" students in A only, "+r.both+" in both, "+r.bO+" in B only, and "+r.none+" in neither. How many students were surveyed?",
-    total,0.001,"Every surveyed student sits in exactly one region, so add all four regions: \\("+r.aO+" + "+r.both+" + "+r.bO+" + "+r.none+" = "+total+"\\).",{ctx:c.lA});
-  return numq("A survey of "+total+" students (A: "+c.lA+", B: "+c.lB+") has a Venn diagram showing "+r.both+" students in both sets, "+r.bO+" in B only, and "+r.none+" in neither. How many students are in A only?",
-    r.aO,0.001,"The four regions must add to the total surveyed, so the missing region is \\("+total+" - "+r.both+" - "+r.bO+" - "+r.none+" = "+r.aO+"\\) students.",{ctx:c.lA});
+  if(Math.random()<0.5){var q=numq("A Venn diagram for a survey (A: "+c.lA+", B: "+c.lB+") shows "+r.aO+" students in A only, "+r.both+" in both, "+r.bO+" in B only, and "+r.none+" in neither. How many students were surveyed?",
+    total,0.001,"Every surveyed student sits in exactly one region, so add all four regions: \\("+r.aO+" + "+r.both+" + "+r.bO+" + "+r.none+" = "+total+"\\).",{ctx:c.lA}); q.figure=venn2(r.aO,r.both,r.bO,r.none,c.lA,c.lB,null); return q;}
+  var q=numq("A survey of "+total+" students (A: "+c.lA+", B: "+c.lB+") has a Venn diagram showing "+r.both+" students in both sets, "+r.bO+" in B only, and "+r.none+" in neither. How many students are in A only?",
+    r.aO,0.001,"The four regions must add to the total surveyed, so the missing region is \\("+total+" - "+r.both+" - "+r.bO+" - "+r.none+" = "+r.aO+"\\) students.",{ctx:c.lA}); q.figure=venn2("?",r.both,r.bO,r.none,c.lA,c.lB,null); return q;
 });
 E("u7-venn-three-read",7,["2.2"],1,"gen",function(){
   var r={a:ri(1,9),b:ri(1,9),c:ri(1,9),ab:ri(0,7),ac:ri(0,7),bc:ri(0,7),abc:ri(1,5),none:ri(0,9)};
@@ -2829,8 +2984,8 @@ E("u7-venn-three-read",7,["2.2"],1,"gen",function(){
     atleasttwo:["How many students do at least two of the three activities?",r.ab+r.ac+r.bc+r.abc,"Add the regions that lie in two or more circles: \\("+r.ab+" + "+r.ac+" + "+r.bc+" + "+r.abc+" = "+(r.ab+r.ac+r.bc+r.abc)+"\\) (the three overlap-only regions plus the centre)."],
     none:["How many students do none of the three activities?",r.none,"That is the region outside all three circles, which shows "+r.none+"."]
   }[target];
-  return numq("A survey about winter activities produced this three-set Venn diagram. "+Q[0],
-    Q[1],0.001,Q[2],{target:target},fig);
+  var q=numq("A survey about winter activities produced this three-set Venn diagram. "+Q[0],
+    Q[1],0.001,Q[2],{target:target}); q.figure=fig; return q;
 });
 /* --- contextual problems with set notation (2.5) --- */
 E("u7-two-set-problem",7,["2.5"],2,"gen",function(){
@@ -2840,12 +2995,12 @@ E("u7-two-set-problem",7,["2.5"],2,"gen",function(){
   var head="In a survey of "+total+" students, "+nA+" "+c.aP+", "+nB+" "+c.bP+", and "+r.both+" do both. ";
   var fig=venn2(r.aO,r.both,r.bO,r.none,"A","B");
   var fill="Fill the Venn diagram from the overlap out. The overlap is \\("+r.both+"\\). Taking it out of each set total leaves \\("+nA+" - "+r.both+" = "+r.aO+"\\) in A only and \\("+nB+" - "+r.both+" = "+r.bO+"\\) in B only, with \\("+r.none+"\\) outside both circles:<br><div style='text-align:center'>"+fig+"</div>";
-  if(target==="none")return numq(head+"How many students do <b>neither</b> activity?",
-    r.none,0.001,fill+"Record the solution in set notation: \\[ \\begin{aligned} n(A \\cup B) &= n(A) + n(B) - n(A \\cap B) \\\\ &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\\\ n((A \\cup B)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\] The overlap is subtracted once in the union formula because those students were counted in both n(A) and n(B).",{ctx:c.lA,target:target});
-  if(target==="aonly")return numq(head+"How many students "+c.aP+" <b>only</b>?",
-    r.aO,0.001,fill+"In set notation the question asks for \\(n(A \\cap B')\\): \\[ \\begin{aligned} n(A \\cap B') &= n(A) - n(A \\cap B) \\\\ &= "+nA+" - "+r.both+" \\\\ &= "+r.aO+" \\end{aligned} \\] The students who do both must be removed from the A total.",{ctx:c.lA,target:target});
-  return numq(head+"How many students "+c.bP+" <b>only</b>?",
-    r.bO,0.001,fill+"In set notation the question asks for \\(n(A' \\cap B)\\): \\[ \\begin{aligned} n(A' \\cap B) &= n(B) - n(A \\cap B) \\\\ &= "+nB+" - "+r.both+" \\\\ &= "+r.bO+" \\end{aligned} \\] The students who do both must be removed from the B total.",{ctx:c.lA,target:target});
+  if(target==="none"){var q=numq(head+"How many students do <b>neither</b> activity?",
+    r.none,0.001,fill+"Record the solution in set notation: \\[ \\begin{aligned} n(A \\cup B) &= n(A) + n(B) - n(A \\cap B) \\\\ &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\\\ n((A \\cup B)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\] The overlap is subtracted once in the union formula because those students were counted in both n(A) and n(B).",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,"A","B",null); return q;}
+  if(target==="aonly"){var q=numq(head+"How many students "+c.aP+" <b>only</b>?",
+    r.aO,0.001,fill+"In set notation the question asks for \\(n(A \\cap B')\\): \\[ \\begin{aligned} n(A \\cap B') &= n(A) - n(A \\cap B) \\\\ &= "+nA+" - "+r.both+" \\\\ &= "+r.aO+" \\end{aligned} \\] The students who do both must be removed from the A total.",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,"A","B",null); return q;}
+  var q=numq(head+"How many students "+c.bP+" <b>only</b>?",
+    r.bO,0.001,fill+"In set notation the question asks for \\(n(A' \\cap B)\\): \\[ \\begin{aligned} n(A' \\cap B) &= n(B) - n(A \\cap B) \\\\ &= "+nB+" - "+r.both+" \\\\ &= "+r.bO+" \\end{aligned} \\] The students who do both must be removed from the B total.",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,"A","B",null); return q;
 });
 E("u7-two-set-notation",7,["2.5"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions();
@@ -2871,14 +3026,14 @@ E("u7-three-set-problem",7,["2.5"],2,"gen",function(){
   var fig=venn3(r.a,r.b,r.c,r.ab,r.ac,r.bc,r.abc,r.none,"A","B","C");
   var fill="Fill the Venn diagram from the centre out. The centre is \\("+r.abc+"\\). Each pair count includes the centre, so the pair-only regions are \\("+pAB+" - "+r.abc+" = "+r.ab+"\\), \\("+pAC+" - "+r.abc+" = "+r.ac+"\\) and \\("+pBC+" - "+r.abc+" = "+r.bc+"\\). Each single-only region is its set total minus the regions overlapping it, for example A only \\(= "+nA+" - "+r.ab+" - "+r.ac+" - "+r.abc+" = "+r.a+"\\). The completed diagram:<br><div style='text-align:center'>"+fig+"</div>";
   var target=pick(["exactlyone","exactlytwo","none","union"]);
-  if(target==="exactlytwo"){var v=r.ab+r.ac+r.bc;return numq(head+"How many students do <b>exactly two</b> of the activities?",
-    v,0.001,fill+"Exactly two of the activities means the three pair-only regions: \\[ \\begin{aligned} \\text{exactly two} &= "+r.ab+" + "+r.ac+" + "+r.bc+" \\\\ &= "+v+" \\end{aligned} \\]",{target:target});}
-  if(target==="exactlyone"){var v1=r.a+r.b+r.c;return numq(head+"How many students do <b>exactly one</b> of the activities?",
-    v1,0.001,fill+"Exactly one activity means the three single-only regions: \\[ \\begin{aligned} \\text{exactly one} &= "+r.a+" + "+r.b+" + "+r.c+" \\\\ &= "+v1+" \\end{aligned} \\]",{target:target});}
-  if(target==="union")return numq(head+"How many students do <b>at least one</b> of the activities?",
-    union,0.001,fill+"At least one activity means every region inside the circles: \\[ \\begin{aligned} n(A \\cup B \\cup C) &= "+r.a+" + "+r.b+" + "+r.c+" + "+r.ab+" + "+r.ac+" + "+r.bc+" + "+r.abc+" \\\\ &= "+union+" \\end{aligned} \\]",{target:target});
-  return numq(head+"How many students do <b>none</b> of the activities?",
-    r.none,0.001,fill+"The regions inside the circles add to \\("+union+"\\), so the students outside all three circles are: \\[ \\begin{aligned} n((A \\cup B \\cup C)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\]",{target:target});
+  if(target==="exactlytwo"){var v=r.ab+r.ac+r.bc;var q=numq(head+"How many students do <b>exactly two</b> of the activities?",
+    v,0.001,fill+"Exactly two of the activities means the three pair-only regions: \\[ \\begin{aligned} \\text{exactly two} &= "+r.ab+" + "+r.ac+" + "+r.bc+" \\\\ &= "+v+" \\end{aligned} \\]",{target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;}
+  if(target==="exactlyone"){var v1=r.a+r.b+r.c;var q=numq(head+"How many students do <b>exactly one</b> of the activities?",
+    v1,0.001,fill+"Exactly one activity means the three single-only regions: \\[ \\begin{aligned} \\text{exactly one} &= "+r.a+" + "+r.b+" + "+r.c+" \\\\ &= "+v1+" \\end{aligned} \\]",{target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;}
+  if(target==="union"){var q=numq(head+"How many students do <b>at least one</b> of the activities?",
+    union,0.001,fill+"At least one activity means every region inside the circles: \\[ \\begin{aligned} n(A \\cup B \\cup C) &= "+r.a+" + "+r.b+" + "+r.c+" + "+r.ab+" + "+r.ac+" + "+r.bc+" + "+r.abc+" \\\\ &= "+union+" \\end{aligned} \\]",{target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;}
+  var q=numq(head+"How many students do <b>none</b> of the activities?",
+    r.none,0.001,fill+"The regions inside the circles add to \\("+union+"\\), so the students outside all three circles are: \\[ \\begin{aligned} n((A \\cup B \\cup C)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\]",{target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;
 });
 /* --- errors in set solutions (2.6) --- */
 E("u7-error-identify",7,["2.6"],2,"var",varset([
@@ -2912,8 +3067,8 @@ E("u7-error-venn",7,["2.6"],1,"gen",function(){
   var kind=pick(["forgotNone","doubleBoth","forgotBoth"]);
   var wrong=kind==="forgotNone"?r.aO+r.both+r.bO:kind==="doubleBoth"?total+r.both:r.aO+r.bO+r.none;
   var why=kind==="forgotNone"?"forgot the "+r.none+" students outside both circles":kind==="doubleBoth"?"counted the "+r.both+" students in the overlap twice":"left out the "+r.both+" students in the overlap";
-  return numq("A Venn diagram for a survey (A: "+c.lA+", B: "+c.lB+") shows "+r.aO+" students in A only, "+r.both+" in both, "+r.bO+" in B only, and "+r.none+" in neither region. A student reports that "+wrong+" students were surveyed. What is the <b>correct</b> total?",
-    total,0.001,"The student "+why+". Every student belongs to exactly one region, so the correct total is \\("+r.aO+" + "+r.both+" + "+r.bO+" + "+r.none+" = "+total+"\\) students.",{ctx:c.lA,kind:kind});
+  var q=numq("A Venn diagram for a survey (A: "+c.lA+", B: "+c.lB+") shows "+r.aO+" students in A only, "+r.both+" in both, "+r.bO+" in B only, and "+r.none+" in neither region. A student reports that "+wrong+" students were surveyed. What is the <b>correct</b> total?",
+    total,0.001,"The student "+why+". Every student belongs to exactly one region, so the correct total is \\("+r.aO+" + "+r.both+" + "+r.bO+" + "+r.none+" = "+total+"\\) students.",{ctx:c.lA,kind:kind}); q.figure=venn2(r.aO,r.both,r.bO,r.none,c.lA,c.lB,null); return q;
 });
 /* --- applications of set theory (2.7) --- */
 E("u7-applications",7,["2.7"],1,"var",varset([
@@ -2987,14 +3142,14 @@ E("u7-exactly-two-cr",7,["2.5"],3,"gen",function(){
   var total=onlyA+onlyB+onlyC+ab+ac+bc+abc+none;
   var target=pick(["two","one"]);
   var head="In a survey of "+total+" students, let \\(A\\) be the set of students who "+cx.A+", \\(B\\) the set of students who "+cx.B+", and \\(C\\) the set of students who "+cx.C+". The counts are \\(n(A) = "+nA+"\\), \\(n(B) = "+nB+"\\), \\(n(C) = "+nC+"\\), \\(n(A \\cap B) = "+pAB+"\\), \\(n(A \\cap C) = "+pAC+"\\), \\(n(B \\cap C) = "+pBC+"\\), and \\(n(A \\cap B \\cap C) = "+abc+"\\). ";
-  if(target==="two") return numq(head+"How many students are in <b>exactly two</b> of the three sets?",
+  if(target==="two"){var q=numq(head+"How many students are in <b>exactly two</b> of the three sets?",
     ab+ac+bc,0.001,
     "Each pairwise count includes the "+abc+" students who are in all three sets. Removing them from each pair gives the exactly-two regions: \\(("+pAB+" - "+abc+") + ("+pAC+" - "+abc+") + ("+pBC+" - "+abc+") = "+ab+" + "+ac+" + "+bc+" = <b>"+(ab+ac+bc)+"</b>\\).",
-    {target:target});
-  return numq(head+"How many students are in <b>exactly one</b> of the three sets?",
+    {target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;}
+  var q=numq(head+"How many students are in <b>exactly one</b> of the three sets?",
     onlyA+onlyB+onlyC,0.001,
     "Work set by set, removing both pairwise overlaps and adding back the all-three group, which was removed twice: only \\(A\\): \\("+nA+" - "+pAB+" - "+pAC+" + "+abc+" = "+onlyA+"\\); only \\(B\\): \\("+nB+" - "+pAB+" - "+pBC+" + "+abc+" = "+onlyB+"\\); only \\(C\\): \\("+nC+" - "+pAC+" - "+pBC+" + "+abc+" = "+onlyC+"\\). The total in exactly one set is \\("+onlyA+" + "+onlyB+" + "+onlyC+" = <b>"+(onlyA+onlyB+onlyC)+"</b>\\).",
-    {target:target});
+    {target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;
 });
 E("u7-relations-count-cr",7,["2.1","2.4"],3,"gen",function(){
   var nB=ri(12,30), nA=ri(10,30), U=nA+nB, nC=ri(3,nB-4), ans=nB-nC;
@@ -3077,10 +3232,14 @@ E("u8-tree-diagram",8,["9.16"],1,"gen",function(){
   var descText=desc.length===2?desc.join(" and "):desc[0]+", "+desc[1]+" and "+desc[2];
   var counts=ctx.parts.map(function(p){return p[0];});
   var total=counts.reduce(function(x,y){return x*y;},1);
-  return numq(ctx.lead+" "+descText+". A tree diagram is used to organize the choices. How many different outcomes does the tree have?",
+  var titles=ctx.parts.map(function(pp,ix){var t=pp[1];if(t.indexOf("symbols in the ")===0)return "Position "+(ix+1);if(t.indexOf("pairs of ")===0)t=t.slice(9);return t.charAt(0).toUpperCase()+t.slice(1);});
+  var q=numq(ctx.lead+" "+descText+". A tree diagram is used to organize the choices. How many different outcomes does the tree have?",
     total,0.001,
     "Each stage of the tree multiplies the number of branches: "+counts.join(" × ")+" = "+total+" outcomes. The tree makes the multiplication visible: every choice at one stage is paired with every choice at the next.",
     {lead:ctx.lead,stages:counts.length});
+  var tf=treeSVG(ctx.parts.map(function(pp,ix){var opts=[];for(var jj=1;jj<=pp[0];jj++)opts.push(""+jj);return {title:titles[ix],options:opts};}),{maxLeaves:48});
+  if(tf)q.figure=tf;
+  return q;
 });
 E("u8-tree-outcomes",8,["9.16"],2,"gen",function(){
   function coinDie(){
@@ -3093,7 +3252,7 @@ E("u8-tree-outcomes",8,["9.16"],2,"gen",function(){
     for(k=2;k<=5;k++){(function(kk){conds.push({d:"a head and a number greater than "+kk,f:function(o){return o[0]==="H"&&+o[1]>kk;}});})(k);}
     for(k=3;k<=6;k++){(function(kk){conds.push({d:"a tail and a number less than "+kk,f:function(o){return o[0]==="T"&&+o[1]<kk;}});})(k);}
     conds.push({d:"a prime number on the die (either coin result)",f:function(o){return [2,3,5].indexOf(+o[1])>=0;}});
-    return {desc:"A coin is tossed and then a standard die is rolled",stages:[["H","T"],["1","2","3","4","5","6"]],conds:conds};
+    return {desc:"A coin is tossed and then a standard die is rolled",stages:[["H","T"],["1","2","3","4","5","6"]],titles:["Coin","Die"],lf:function(pp){return pp[0]+pp[1];},conds:conds};
   }
   function diceDice(){
     var conds=[],s,k;
@@ -3104,7 +3263,7 @@ E("u8-tree-outcomes",8,["9.16"],2,"gen",function(){
     conds.push({d:"two odd numbers",f:function(o){return +o[0]%2===1&&+o[1]%2===1;}});
     conds.push({d:"one even and one odd number",f:function(o){return (+o[0]%2)!==(+o[1]%2);}});
     conds.push({d:"a larger number on the first die than on the second",f:function(o){return +o[0]>+o[1];}});
-    return {desc:"Two standard dice are rolled",stages:[["1","2","3","4","5","6"],["1","2","3","4","5","6"]],conds:conds};
+    return {desc:"Two standard dice are rolled",stages:[["1","2","3","4","5","6"],["1","2","3","4","5","6"]],titles:["First die","Second die"],lf:function(pp){return "("+pp[0]+", "+pp[1]+")";},conds:conds};
   }
   function spinnerCoin(){
     var conds=[],v;
@@ -3114,15 +3273,17 @@ E("u8-tree-outcomes",8,["9.16"],2,"gen",function(){
       conds.push({d:"a "+sn+" and a number greater than 2",f:function(o){return o[1]===s&&+o[0]>2;}});
       for(v=1;v<=4;v++){(function(vv){conds.push({d:"a "+sn+" and a "+vv,f:function(o){return o[1]===s&&+o[0]===vv;}});})(v);}
     });
-    return {desc:"A spinner numbered 1 to 4 is spun and then a coin is tossed",stages:[["1","2","3","4"],["H","T"]],conds:conds};
+    return {desc:"A spinner numbered 1 to 4 is spun and then a coin is tossed",stages:[["1","2","3","4"],["H","T"]],titles:["Spinner","Coin"],lf:function(pp){return pp[0]+pp[1];},conds:conds};
   }
   var T=pick([coinDie(),diceDice(),spinnerCoin()]);
   var cond=pick(T.conds),count=0,totalOut=0;
   T.stages[0].forEach(function(x){T.stages[1].forEach(function(y){totalOut++;if(cond.f([x,y]))count++;});});
-  return numq(T.desc+". Using a tree diagram (or an organized list), how many outcomes show "+cond.d+"?",
+  var q=numq(T.desc+". Using a tree diagram (or an organized list), how many outcomes show "+cond.d+"?",
     count,0.001,
     "The tree has "+T.stages[0].length+" × "+T.stages[1].length+" = "+totalOut+" outcomes in total. Following only the branches that match the condition gives "+count+" of them. An organized count beats guessing: list the matching first-stage results and count the second-stage results that complete each one.",
     {t:T.desc.slice(0,14),cond:cond.d});
+  q.figure=treeSVG(T.stages.map(function(st,ix){return {title:T.titles[ix],options:st};}),{leafLabel:T.lf});
+  return q;
 });
 E("u8-fcp-pattern",8,["9.17"],1,"gen",function(){
   if(Math.random()<0.5){
