@@ -2100,6 +2100,7 @@ E("u4-chain-values",4,["3.16"],3,"gen",function(){
 // CRMARKS: u5-opt-solve-a=3
 // CRMARKS: u5-opt-solve-b=2
 // CRMARKS: u5-opt-endpoint=4
+// CRMARKS: u5-opt-charter=3
 /* ================= Unit 5: Applications of Derivatives (MA3208.3.21 to 3.34) =================
    Tranche 2, final scope. */
 
@@ -2543,7 +2544,7 @@ E("u5-rr-interpret",5,["3.30"],1,"var",varset([
 ]));
 
 E("u5-opt-setup",5,["3.31","3.32"],2,"gen",function(){
-  var mode=ri(0,4);
+  var mode=ri(0,5);
   if(mode===0){
     var A=pick([12,16,20,24,30,36,40]), B=pick([10,14,18,22,26,34,38]);
     var prompt="An open-top box is made by cutting squares of side \\( x \\) from the corners of a \\( "+A+" \\) cm by \\( "+B+" \\) cm sheet of cardboard and folding up the sides. Which function gives the volume of the box in terms of \\( x \\)?";
@@ -2571,6 +2572,15 @@ E("u5-opt-setup",5,["3.31","3.32"],2,"gen",function(){
     var key="\\( S(r) = 2\\pi r^2 + \\frac{"+(2*V0)+"}{r} \\)";
     var sol="The constraint gives \\( h = \\frac{"+V0+"}{\\pi r^2} \\). The surface area is two caps plus the lateral area: \\( S = 2\\pi r^2 + 2\\pi r h \\), and substituting the constraint turns the second term into \\( \\frac{"+(2*V0)+"}{r} \\). The surface area function is <b>"+key+"</b>.";
     return mcq(prompt, key, ["\\( S(r) = 2\\pi r^2 + \\frac{"+V0+"}{r} \\)","\\( S(r) = \\pi r^2 + \\frac{"+(2*V0)+"}{r} \\)","\\( S(r) = 2\\pi r^2 + "+(2*V0)+"r \\)"], sol, {mode:"canobj"});
+  }
+  if(mode===5){
+    /* Scenario arm added Nov 13, 2026 (build order step 9): the tiered
+       charter pricing setup from the Math 31 applications files. */
+    var P0=pick([60,75,80,90,100,120]), T=pick([20,25,30,40,50]), d=pick([1,2]);
+    var key="\\( R(n) = n("+(P0+d*T)+" - "+(d===1?"n":d+"n")+") \\)";
+    var prompt="A tour boat charges "+P0+" dollars per person when at most "+T+" people board. If more than "+T+" people board, the fare for every passenger drops by "+d+(d===1?" dollar":" dollars")+" for each passenger beyond "+T+". For \\( n > "+T+" \\), which function gives the total revenue \\( R(n) \\) in dollars?";
+    var sol="With \\( n > "+T+" \\) passengers, each passenger beyond "+T+" lowers every fare by "+d+(d===1?" dollar":" dollars")+", so the fare per person is \\( "+P0+" - "+d+"(n - "+T+") = "+(P0+d*T)+" - "+d+"n \\) dollars. Revenue is the number of passengers times the fare each one pays. The revenue function is <b>"+key+"</b>.";
+    return mcq(prompt, key, ["\\( R(n) = n("+P0+" - "+(d===1?"n":d+"n")+") \\)","\\( R(n) = "+P0+"n - "+d+"(n - "+T+") \\)","\\( R(n) = n("+(P0+d*T)+" + "+(d===1?"n":d+"n")+") \\)"], sol, {mode:"charter",P0:P0,T:T,d:d});
   }
   var P=pick([24,32,40,48,60,80,100]), half=P/2;
   var prompt="A rectangular garden plot is to be enclosed with \\( "+P+" \\) m of fencing on all four sides. With \\( x \\) one side length, which function gives the area in terms of \\( x \\)?";
@@ -2639,7 +2649,7 @@ E("u5-opt-solve-a",5,["3.33"],2,"gen",function(){
 });
 
 E("u5-opt-solve-b",5,["3.33"],2,"gen",function(){
-  var mode=ri(0,4);
+  var mode=ri(0,5);
   if(mode===0){
     var m=pick([1,2,3,4,5,6]), V0=2*m*m*m;
     if(Math.random()<0.5){
@@ -2697,6 +2707,31 @@ E("u5-opt-solve-b",5,["3.33"],2,"gen",function(){
     var sol="The printed area is maximized at poster width \\( w = "+w+" \\) cm and height \\( "+hg+" \\) cm. Removing the margins leaves a printed region of \\( "+w+" - "+(2*sm)+" = "+(w-2*sm)+" \\) cm by \\( "+hg+" - "+(2*tm)+" = "+(hg-2*tm)+" \\) cm. \\[ \\begin{aligned} P &= "+(w-2*sm)+" \\times "+(hg-2*tm)+" = "+pr+" \\end{aligned} \\] The maximum printed area is <b>"+pr+" square centimetres</b>.";
     return numq(prompt, pr, 0.011, sol, {mode:"postP"});
   }
+  if(mode===5){
+    /* Scenario arm added Nov 13, 2026 (build order step 9): the
+       fixed-sum number problems from the Math 31 applications files. */
+    var S=pick([12,16,20,24,30,36,40,48,60]), half2=S/2, fam=pick(["sumsq","prod"]), askN=ri(0,1);
+    if(fam==="sumsq"){
+      var minV=S*S/2;
+      if(askN===0){
+        var prompt="Two positive numbers add to "+S+". Find the minimum possible value of the sum of their squares.";
+        var sol="Let one number be \\( x \\); the other is \\( "+S+" - x \\). The sum of the squares is \\( Q(x) = x^2 + ("+S+" - x)^2 = 2x^2 - "+(2*S)+"x + "+(S*S)+" \\). \\[ \\begin{aligned} Q'(x) &= 4x - "+(2*S)+" = 0 \\\\ x &= "+half2+" \\end{aligned} \\] The second derivative is positive, so this is the minimum, reached when both numbers equal \\( "+half2+" \\). \\[ \\begin{aligned} Q("+half2+") &= "+half2+"^2 + "+half2+"^2 = "+minV+" \\end{aligned} \\] The minimum sum of squares is <b>"+minV+"</b>.";
+        return numq(prompt, minV, 0.011, sol, {mode:"numsumsq",S:S,ask:"value",ans:minV});
+      }
+      var prompt="Two positive numbers add to "+S+". The sum of their squares is as small as possible. What is the value of each number?";
+      var sol="With the numbers \\( x \\) and \\( "+S+" - x \\), the sum of the squares is \\( Q(x) = 2x^2 - "+(2*S)+"x + "+(S*S)+" \\), and \\( Q'(x) = 4x - "+(2*S)+" = 0 \\) gives \\( x = "+half2+" \\). The other number is \\( "+S+" - "+half2+" = "+half2+" \\) as well: the sum of squares is least when the total is split evenly. Each number is <b>"+half2+"</b>.";
+      return numq(prompt, half2, 0.011, sol, {mode:"numsumsq",S:S,ask:"each",ans:half2});
+    }
+    var maxV=half2*half2;
+    if(askN===0){
+      var prompt="Two positive numbers add to "+S+". Find the maximum possible value of their product.";
+      var sol="Let one number be \\( x \\); the other is \\( "+S+" - x \\). The product is \\( P(x) = x("+S+" - x) = "+S+"x - x^2 \\). \\[ \\begin{aligned} P'(x) &= "+S+" - 2x = 0 \\\\ x &= "+half2+" \\end{aligned} \\] The second derivative is negative, so this is the maximum, reached when both numbers equal \\( "+half2+" \\). \\[ \\begin{aligned} P("+half2+") &= "+half2+" \\times "+half2+" = "+maxV+" \\end{aligned} \\] The maximum product is <b>"+maxV+"</b>.";
+      return numq(prompt, maxV, 0.011, sol, {mode:"numprod",S:S,ask:"value",ans:maxV});
+    }
+    var prompt="Two positive numbers add to "+S+". Their product is as large as possible. What is the value of each number?";
+    var sol="With the numbers \\( x \\) and \\( "+S+" - x \\), the product is \\( P(x) = "+S+"x - x^2 \\), and \\( P'(x) = "+S+" - 2x = 0 \\) gives \\( x = "+half2+" \\). The other number is \\( "+S+" - "+half2+" = "+half2+" \\) as well: the product is greatest when the total is split evenly. Each number is <b>"+half2+"</b>.";
+    return numq(prompt, half2, 0.011, sol, {mode:"numprod",S:S,ask:"each",ans:half2});
+  }
   var A0=pick([36,64,100,144,225,400,900]), sd=Math.sqrt(A0);
   if(Math.random()<0.5){
     var prompt="A rectangular enclosure must have area \\( "+A0+" \\) square metres and use the least possible fencing on all four sides. Find the side length, in metres, of the enclosure.";
@@ -2722,6 +2757,47 @@ E("u5-opt-endpoint",5,["3.33","3.34"],3,"gen",function(){
   var prompt="A rectangular pen is built against "+bound+", using \\( "+F+" \\) m of fencing for the other three sides. Find the length, in metres, of each side perpendicular to the boundary in the pen of maximum area.";
   var sol="With \\( x \\) the perpendicular side, \\( A(x) = x("+F+" - 2x) \\) and \\( A'(x) = "+F+" - 4x \\). The critical point \\( x = "+xstar+" \\) would force the parallel side to be \\( "+parstar+" \\) m, exceeding the \\( "+W+" \\) m boundary, so it is infeasible. The constraint \\( "+F+" - 2x \\le "+W+" \\) gives \\( x \\ge "+x+" \\), and \\( A \\) is decreasing throughout that feasible interval, so the maximum sits at its left endpoint. The perpendicular sides are <b>"+x+" metres</b> each.";
   return numq(prompt, x, 0.011, sol, {mode:"side"});
+});
+
+/* Tiered charter pricing (3.33, L3, CR 3). New entry added Nov 13, 2026
+   (build order step 9): the tiered charter problem from the Math 31
+   applications files, rewritten. The optimum nStar is chosen first and
+   the base fare is read off it (P0 = d(2 nStar - T)), so the vertex of
+   the discount-tier revenue sits exactly at nStar, the fare there is
+   exactly d*nStar, and the maximum revenue is exactly d*nStar^2. */
+E("u5-opt-charter",5,["3.33"],3,"gen",function(){
+  var skins=[
+    {biz:"A whale-watching company",veh:"tour boat",loc:"out of Bay Bulls",capWord:"passengers"},
+    {biz:"A harbour cruise company",veh:"cruise boat",loc:"in St. John's harbour",capWord:"passengers"},
+    {biz:"A fishing charter company",veh:"charter boat",loc:"out of Petty Harbour",capWord:"passengers"},
+    {biz:"A bus company",veh:"charter bus",loc:"for a school trip to Gros Morne",capWord:"passengers"}
+  ];
+  var sk=pick(skins);
+  var d,T,Cap,nStar,P0,t=0;
+  do{
+    d=pick([1,2]);T=pick([20,24,25,30,32,40]);Cap=pick([60,64,70,75,80,90,100]);
+    var lo=Math.max(T+3,Math.floor(Cap/2)+1);
+    nStar=ri(lo,Cap-2);P0=d*(2*nStar-T);t++;
+  }while(t<300&&(P0<45||P0>180));
+  if(t>=300){d=1;T=30;Cap=80;nStar=45;P0=60;}
+  var fareStar=d*nStar, revStar=d*nStar*nStar, revT=P0*T;
+  var terms="The "+sk.veh+" holds at most "+Cap+" "+sk.capWord+". The fare is "+P0+" dollars per person when at most "+T+" people board. If more than "+T+" people board, the fare for every person drops by "+d+(d===1?" dollar":" dollars")+" for each person beyond "+T+".";
+  var ask=ri(0,2);
+  var dc=(d===1?"":d);
+  var deriv="For \\( n > "+T+" \\) the fare per person is \\( "+P0+" - "+d+"(n - "+T+") = "+(P0+d*T)+" - "+dc+"n \\), so the revenue is \\[ \\begin{aligned} R(n) &= n("+(P0+d*T)+" - "+dc+"n) = -"+dc+"n^2 + "+(P0+d*T)+"n \\\\ R'(n) &= "+(P0+d*T)+" - "+(2*d)+"n \\end{aligned} \\] Setting \\( R'(n) = 0 \\) gives \\( n = "+nStar+" \\), and \\( R''(n) = -"+(2*d)+" < 0 \\), so this critical point is a maximum of the discount-tier revenue. It lies inside the tier (\\( "+nStar+" > "+T+" \\)) and within capacity (\\( "+nStar+" \\le "+Cap+" \\)). For comparison, the best revenue with no discount is at \\( n = "+T+" \\): \\( "+P0+" \\times "+T+" = "+revT+" \\) dollars, less than the discount-tier maximum of "+revStar+" dollars.";
+  if(ask===0){
+    return numq(sk.biz+" runs a "+sk.veh+" "+sk.loc+". "+terms+" How many people must board for the revenue to be as large as possible?",
+      nStar,0.011,deriv+" The revenue is maximized with <b>"+nStar+" people</b> aboard.",
+      {mode:"count",skin:sk.biz,P0:P0,d:d,T:T,Cap:Cap,nStar:nStar,ans:nStar});
+  }
+  if(ask===1){
+    return numq(sk.biz+" runs a "+sk.veh+" "+sk.loc+". "+terms+" What is the greatest possible revenue, in dollars?",
+      revStar,0.011,deriv+" At \\( n = "+nStar+" \\) the fare per person is \\( "+(P0+d*T)+" - "+d+" \\times "+nStar+" = "+fareStar+" \\) dollars, so the greatest revenue is \\( "+nStar+" \\times "+fareStar+" = \\) <b>"+revStar+" dollars</b>.",
+      {mode:"revenue",skin:sk.biz,P0:P0,d:d,T:T,Cap:Cap,nStar:nStar,ans:revStar});
+  }
+  return numq(sk.biz+" runs a "+sk.veh+" "+sk.loc+". "+terms+" When the revenue is as large as possible, what is the fare paid by each person, in dollars?",
+    fareStar,0.011,deriv+" At \\( n = "+nStar+" \\) the fare per person is \\( "+(P0+d*T)+" - "+d+" \\times "+nStar+" = \\) <b>"+fareStar+" dollars</b>.",
+    {mode:"fare",skin:sk.biz,P0:P0,d:d,T:T,Cap:Cap,nStar:nStar,ans:fareStar});
 });
 
 /* ----- bank-u6.js ----- */
@@ -4386,4 +4462,4 @@ E("u3-rational-equation-cr",3,["1.8","1.9"],3,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
