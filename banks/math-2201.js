@@ -834,16 +834,35 @@ function vertB(a,h,k){var s=(a===1?"":a===-1?"-":""+a)+(h===0?"x^2":"(x "+(h>0?"
 function vertT(a,h,k){return "\\(y = "+vertB(a,h,k)+"\\)";}
 function factB(a,r1,r2){function f(r){return r===0?"x":(r>0?"(x - "+r+")":"(x + "+(-r)+")");}return (a===1?"":a===-1?"-":""+a)+f(r1)+f(r2);}
 function factT(a,r1,r2){return "\\(y = "+factB(a,r1,r2)+"\\)";}
-E("u2-vertex-x",2,["4.12"],1,"gen",function(){
+E("u2-vertex-x",2,["4.12"],1,"var",varset([
+  function(){
   var a=pick([1,1,2,-1]),h=ri(-5,6)||2;var b=-2*a*h;var c=a*h*h+ri(-6,6);
   return numq("What is the x-coordinate of the vertex of \\(y = "+quadB(a,b,c)+"\\)?",
     h,0.011,"Axis of symmetry: \\(x = \\frac{-b}{2a} = \\frac{-("+b+")}{"+(2*a)+"} = \\)<b>\\("+h+"\\)</b>. The vertex sits on the axis of symmetry.",{a:a,b:b,c:c});
-});
-E("u2-vertex-value",2,["4.11"],2,"gen",function(){
+},
+  function(){
+  var a=pick([1,1,2,-1]),h=ri(-5,6)||2;var b=-2*a*h;var c=a*h*h+ri(-6,6);
+  var kv=c-a*h*h;
+  var qfig=numq("The graph shows a parabola with its vertex marked. What is the x-coordinate of the vertex?",
+    h,0.011,"The marked point is the vertex, \\(("+h+", "+kv+")\\). The x-coordinate of the vertex is <b>\\("+h+"\\)</b>.",{a:a,b:b,c:c});
+  qfig.figure=parSVG(a,b,c,{labels:"values",marks:[{x:h,y:kv}]});
+  return qfig;
+}
+]));
+E("u2-vertex-value",2,["4.11"],2,"var",varset([
+  function(){
   var a=pick([1,2,-1]),h=ri(-4,5),k=ri(-8,12);var b=-2*a*h,c=a*h*h+k;
   return numq("Find the "+(a>0?"minimum":"maximum")+" value of \\(y = "+quadB(a,b,c)+"\\)"+".",
     k,0.011,"The vertex is at \\(x = \\frac{-b}{2a} = "+h+"\\). Substituting: \\(y = "+a+"("+h+")^2 + ("+b+")("+h+") + ("+c+") = \\)<b>\\("+k+"\\)</b>. Since \\(a "+(a>0?">":"<")+" 0\\), the parabola opens "+(a>0?"up and this is a minimum.":"down and this is a maximum."),{a:a,h:h,k:k});
-});
+},
+  function(){
+  var a=pick([1,2,-1]),h=ri(-4,5),k=ri(-8,12);var b=-2*a*h,c=a*h*h+k;
+  var qfig=numq("The graph shows a parabola with its vertex marked. Find the "+(a>0?"minimum":"maximum")+" value of the function.",
+    k,0.011,"The marked point is the vertex, \\(("+h+", "+k+")\\). Since the parabola opens "+(a>0?"up, the vertex is its lowest point, so the minimum value is the y-coordinate of the vertex":"down, the vertex is its highest point, so the maximum value is the y-coordinate of the vertex")+": <b>\\("+k+"\\)</b>.",{a:a,h:h,k:k});
+  qfig.figure=parSVG(a,b,c,{labels:"values",marks:[{x:h,y:k}]});
+  return qfig;
+}
+]));
 E("u2-axis-from-intercepts",2,["4.13"],1,"gen",function(){
   var p=ri(-10,-1),q=ri(1,10);var mid=(p+q)/2;
   var frame=pick([
@@ -853,20 +872,38 @@ E("u2-axis-from-intercepts",2,["4.13"],1,"gen",function(){
   qfig.figure=parSVG(1,-(p+q),p*q,{marks:[{x:p,y:0},{x:q,y:0}]});
   return qfig;
 });
-E("u2-xintercepts",2,["4.4"],2,"gen",function(){
+E("u2-xintercepts",2,["4.4"],2,"var",varset([
+  function(){
   var p=ri(-9,-1),q=ri(1,10);var b=-(p+q),c=p*q;
   var factored=false;
   var prompt=factored? "A parabola has equation "+factT(1,p,q)+". What is the larger x-intercept?"
                      : "Find the larger x-intercept of \\(y = "+quadB(1,b,c)+"\\)"+".";
   return numq(prompt,q,0.011,"Factor: "+factT(1,p,q)+". The intercepts are \\(x = "+p+"\\) and \\(x = "+q+"\\); the larger is <b>\\("+q+"\\)</b>.",{p:p,q:q});
-});
-E("u2-xintercepts-factored",2,["4.4"],1,"gen",function(){
+},
+  function(){
+  var p=ri(-9,-1),q=ri(1,10);var b=-(p+q),c=p*q;
+  var qfig=numq("The graph shows a parabola with its x-intercepts marked. What is the larger x-intercept?",
+    q,0.011,"The marked intercepts are \\(x = "+p+"\\) and \\(x = "+q+"\\); the larger is <b>\\("+q+"\\)</b>.",{p:p,q:q});
+  qfig.figure=parSVG(1,b,c,{labels:"values",marks:[{x:p,y:0},{x:q,y:0}]});
+  return qfig;
+}
+]));
+E("u2-xintercepts-factored",2,["4.4"],1,"var",varset([
+  function(){
   var p=ri(-9,-1),q=ri(1,10);var b=-(p+q),c=p*q;
   var factored=true;
   var prompt=factored? "A parabola has equation "+factT(1,p,q)+". What is the larger x-intercept?"
                      : "Find the larger x-intercept of \\(y = "+quadB(1,b,c)+"\\)"+".";
   return numq(prompt,q,0.011,"Factor: "+factT(1,p,q)+". The intercepts are \\(x = "+p+"\\) and \\(x = "+q+"\\); the larger is <b>\\("+q+"\\)</b>.",{p:p,q:q});
-});
+},
+  function(){
+  var p=ri(-9,-1),q=ri(1,10);var b=-(p+q),c=p*q;
+  var qfig=numq("The parabola shown in the graph crosses the x-axis at the marked points. What is the larger x-intercept?",
+    q,0.011,"The marked intercepts are \\(x = "+p+"\\) and \\(x = "+q+"\\); the larger is <b>\\("+q+"\\)</b>.",{p:p,q:q});
+  qfig.figure=parSVG(1,b,c,{labels:"values",marks:[{x:p,y:0},{x:q,y:0}]});
+  return qfig;
+}
+]));
 E("u2-factored-coeffs",2,["4.5"],1,"gen",function(){
   var p=ri(-7,-2),q=ri(2,7);var askB=Math.random()<0.5;
   return numq("A quadratic function has zeros \\("+p+"\\) and \\("+q+"\\), so its equation can be written \\(y = (x - ("+p+"))(x - ("+q+"))\\). Expanded into the form \\(y = x^2 + bx + c\\), what is the value of \\("+(askB?"b":"c")+"\\)?",
@@ -933,7 +970,8 @@ E("u3-formula",3,["4.9"],2,"gen",function(){
   return numq("Use the quadratic formula to solve "+"\\("+quadB(a,b,c)+" = 0\\)"+". Give the larger root, to two decimal places.",
     Math.round(big*100)/100,0.011,"\\(D = b^2 - 4ac = "+D+"\\). \\(x = \\frac{"+(-b)+" \\pm \\sqrt{"+D+"}}{"+(2*a)+"}\\), giving \\(x \\approx "+fmt(r1)+"\\) or \\(x \\approx "+fmt(r2)+"\\). The larger root is <b>\\("+fmt(big)+"\\)</b>.",{a:a,b:b,c:c,D:D});
 });
-E("u3-discriminant",3,["4.7"],2,"gen",function(){
+E("u3-discriminant",3,["4.7"],2,"var",varset([
+  function(){
   var kind=pick(["two","one","zero"]);var a=pick([1,2]),b,c,D;
   if(kind==="one"){b=pick([4,6]);c=b*b/(4*a);D=0;}
   else if(kind==="two"){b=ri(3,9);c=ri(-6,3);D=b*b-4*a*c;if(D<=0){c=-5;D=b*b-4*a*c;}}
@@ -942,7 +980,21 @@ E("u3-discriminant",3,["4.7"],2,"gen",function(){
   return mcq("How many x-intercepts does the graph of \\(y = "+quadB(a,b,c)+"\\) have?",correct,
     ["Two x-intercepts \u2014 the discriminant is positive","One x-intercept \u2014 the discriminant is zero","No x-intercepts \u2014 the discriminant is negative","It is impossible to tell without graphing"].filter(function(s){return s!==correct;}),
     "Discriminant: \\(b^2 - 4ac = "+(b*b)+" - "+(4*a*c)+" = "+D+"\\). "+(D>0?"Positive, so the parabola crosses the x-axis twice.":D===0?"Zero, so the vertex just touches the x-axis \u2014 one intercept (a repeated root).":"Negative, so the parabola never reaches the x-axis."),{a:a,b:b,c:c,D:D});
-});
+},
+  function(){
+  var kind=pick(["two","one","zero"]);var a=pick([1,2]),b,c,D;
+  if(kind==="one"){b=pick([4,6]);c=b*b/(4*a);D=0;}
+  else if(kind==="two"){b=ri(3,9);c=ri(-6,3);D=b*b-4*a*c;if(D<=0){c=-5;D=b*b-4*a*c;}}
+  else{b=ri(1,4);c=ri(3,9);D=b*b-4*a*c;if(D>=0){b=1;c=9;D=1-4*a*9;}}
+  var correct=kind==="two"?"Two x-intercepts \u2014 the discriminant is positive":kind==="one"?"One x-intercept \u2014 the discriminant is zero":"No x-intercepts \u2014 the discriminant is negative";
+  var qfig=mcq("How many x-intercepts does the parabola shown in the graph have?",correct,
+    ["Two x-intercepts \u2014 the discriminant is positive","One x-intercept \u2014 the discriminant is zero","No x-intercepts \u2014 the discriminant is negative","It is impossible to tell without graphing"].filter(function(s){return s!==correct;}),
+    "Discriminant: \\(b^2 - 4ac = "+(b*b)+" - "+(4*a*c)+" = "+D+"\\). "+(D>0?"Positive, so the parabola crosses the x-axis twice.":D===0?"Zero, so the vertex just touches the x-axis \u2014 one intercept (a repeated root).":"Negative, so the parabola never reaches the x-axis."),{a:a,b:b,c:c,D:D});
+  var mk=[];if(D>0){var sq=Math.sqrt(D);mk=[{x:(-b-sq)/(2*a),y:0},{x:(-b+sq)/(2*a),y:0}];}else if(D===0){mk=[{x:-b/(2*a),y:0}];}
+  qfig.figure=parSVG(a,b,c,{labels:"values",marks:mk});
+  return qfig;
+}
+]));
 E("u3-roots-zeros",3,["4.6"],1,"var",varset([
   figArm(function(){return mcq("The equation \\(x^2 - 5x + 6 = 0\\) has roots \\(2\\) and \\(3\\). What does that say about the function \\(f(x) = x^2 - 5x + 6\\)?",
     "Its zeros are \\(2\\) and \\(3\\), and its graph crosses the x-axis at \\((2, 0)\\) and \\((3, 0)\\)",
@@ -3368,7 +3420,8 @@ E("u2-evaluate-f",2,["4.1"],1,"gen",function(){
     "Substitute \\(x = "+d+"\\): \\(f("+d+") = "+a+" \\times ("+d+")^2 + ("+b+") \\times ("+d+") + ("+c+") = "+(a*d*d)+" + "+(b*d)+" + "+c+" = \\)<b>\\("+ans+"\\)</b>.",
     {a:a,b:b,c:c,d:d,ans:ans});
 });
-E("u2-vertex-shift",2,["4.15"],1,"gen",function(){
+E("u2-vertex-shift",2,["4.15"],1,"var",varset([
+  function(){
   var a=0,h=0,k=0,tries=0;
   while((a===0||h===0||k===0)&&tries<60){a=ri(-5,5);h=ri(-7,7);k=ri(-9,9);tries++;}
   var open=a>0?"upward":"downward";
@@ -3379,7 +3432,22 @@ E("u2-vertex-shift",2,["4.15"],1,"gen",function(){
     [vt(-h,k)+"; opens "+open,vt(h,-k)+"; opens "+open,vt(-h,-k)+"; opens "+open],
     "In \\(y = a(x - h)^2 + k\\) the vertex is \\((h, k)\\). Here the squared part is \\((x "+(h>0?"- "+h:"+ "+(-h))+")\\), so \\(h = "+h+"\\) (the sign flips from how it appears), and \\(k = "+k+"\\). Since \\(a = "+a+"\\) is "+(a>0?"positive":"negative")+", the graph opens "+open+". The vertex is <b>"+key+"</b>.",
     {a:a,h:h,k:k});
-});
+},
+  function(){
+  var a=0,h=0,k=0,tries=0;
+  while((a===0||h===0||k===0)&&tries<60){a=ri(-5,5);h=ri(-7,7);k=ri(-9,9);tries++;}
+  var open=a>0?"upward":"downward";
+  function vt(x,y){return "\\(("+x+", "+y+"\\)";}
+  var key=vt(h,k)+"; opens "+open;
+  var qfig=mcq("The graph shows a parabola with its vertex marked. What is the vertex, and which way does the graph open?",
+    key,
+    [vt(-h,k)+"; opens "+open,vt(h,-k)+"; opens "+open,vt(-h,-k)+"; opens "+open],
+    "The marked point is the vertex, \\(("+h+", "+k+")\\). The arms of the parabola point "+open+", so the graph opens "+open+". The vertex is <b>"+key+"</b>.",
+    {a:a,h:h,k:k});
+  qfig.figure=parSVG(a,-2*a*h,a*h*h+k,{labels:"values",marks:[{x:h,y:k}]});
+  return qfig;
+}
+]));
 E("u2-factored-max-height",2,["4.2"],2,"gen",function(){
   var a=pick([2,3,4,5]),r1=ri(3,14),r2=ri(1,8);if(r2>=r1)r2=r1-1;
   var S=r1+r2,max=a*S*S/4,tstar=(r1-r2)/2;
