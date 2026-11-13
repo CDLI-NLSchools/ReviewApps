@@ -2720,7 +2720,7 @@ E("u6-trig-limit",6,["2.20"],2,"gen",function(){
   return numq(prompt, ans, 0.011, sol, prm);
 });
 
-E("u6-deriv-proof",6,["3.35"],2,"var",varset([
+E("u6-deriv-proof",6,["3.35"],1,"var",varset([
   function(){return mcq("The derivative of \\( \\sin x \\) is derived from the definition \\( \\lim_{h \\to 0} \\frac{\\sin(x + h) - \\sin x}{h} \\). Applying the sum identity for sine rewrites the numerator as",
     "\\( \\sin x \\cos h + \\cos x \\sin h - \\sin x \\)",
     ["\\( \\sin x \\cos h - \\cos x \\sin h - \\sin x \\)",
@@ -2840,7 +2840,7 @@ E("u6-tangent-trig",6,["3.37"],2,"gen",function(){
   return numq(prompt, slope, 0.011, sol, {mode:0, fn:fn, a:a, x0:ang.xv});
 });
 
-E("u6-invderiv-derive",6,["3.38"],2,"var",varset([
+E("u6-invderiv-derive",6,["3.38"],1,"var",varset([
   function(){return mcq("To derive the derivative of \\( \\arcsin x \\), set \\( y = \\arcsin x \\), so that \\( \\sin y = x \\). Differentiating both sides with respect to \\( x \\) gives",
     "\\( \\cos y \\, \\frac{dy}{dx} = 1 \\)",
     ["\\( \\sin y \\, \\frac{dy}{dx} = 1 \\)","\\( \\cos y \\, \\frac{dy}{dx} = 0 \\)","\\( -\\sin y \\, \\frac{dy}{dx} = 1 \\)"],
@@ -3089,7 +3089,7 @@ E("u7-exponential-limit",7,["2.21"],1,"gen",function(){
   return mcq(prompt,""+lim,ds.map(function(v){return ""+v;}),sol,{k:k,form:form,side:side,hs:hs});
 });
 
-E("u7-derivation-next-step",7,["3.41"],2,"var",varset([
+E("u7-derivation-next-step",7,["3.41"],1,"var",varset([
   function(){return mcq("To derive the derivative of \\( y = a^x \\), the first step rewrites it as \\( y = e^{x \\ln a} \\). Applying the chain rule to that form gives",
     "\\( a^x \\ln a \\)",
     ["\\( x a^{x - 1} \\)","\\( e^{x \\ln a} \\)","\\( \\frac{a^x}{\\ln a} \\)"],
