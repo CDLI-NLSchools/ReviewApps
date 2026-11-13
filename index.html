@@ -32,6 +32,7 @@
   .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}
   input[type=number]{width:76px;padding:7px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;}
   input[type=text].ans{width:170px;padding:8px;border:1px solid var(--line);border-radius:6px;font-size:.95rem;}
+  textarea.ans{display:block;width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:6px;font-size:.95rem;margin-top:4px;resize:vertical;}
   select{padding:7px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;}
   .q{margin-bottom:18px;}
   .qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
@@ -150,11 +151,11 @@
   html[data-a11y-text="large"] #app .q .prompt,html[data-a11y-text="large"] #app .exbox,html[data-a11y-text="large"] #app .refbody{font-size:1.12rem;}
   html[data-a11y-text="large"] #app .q .opts label,html[data-a11y-text="large"] #app .exbox .opts label{font-size:1.09rem;}
   html[data-a11y-text="large"] #app .q .fb,html[data-a11y-text="large"] #app .q .sol,html[data-a11y-text="large"] #app .q .rep{font-size:1.06rem;}
-  html[data-a11y-text="large"] #app .q input[type=text].ans{font-size:1.1rem;}
+  html[data-a11y-text="large"] #app .q input[type=text].ans,html[data-a11y-text="large"] #app .q textarea.ans{font-size:1.1rem;}
   html[data-a11y-text="xlarge"] #app .q .prompt,html[data-a11y-text="xlarge"] #app .exbox,html[data-a11y-text="xlarge"] #app .refbody{font-size:1.3rem;}
   html[data-a11y-text="xlarge"] #app .q .opts label,html[data-a11y-text="xlarge"] #app .exbox .opts label{font-size:1.26rem;}
   html[data-a11y-text="xlarge"] #app .q .fb,html[data-a11y-text="xlarge"] #app .q .sol,html[data-a11y-text="xlarge"] #app .q .rep{font-size:1.22rem;}
-  html[data-a11y-text="xlarge"] #app .q input[type=text].ans{font-size:1.28rem;}
+  html[data-a11y-text="xlarge"] #app .q input[type=text].ans,html[data-a11y-text="xlarge"] #app .q textarea.ans{font-size:1.28rem;}
   /* Roomier spacing, same online-practice scope as text size. */
   html[data-a11y-spacing="roomy"] #app .q .prompt{line-height:1.9;letter-spacing:.015em;}
   html[data-a11y-spacing="roomy"] #app .q .opts{gap:12px;}
@@ -2012,6 +2013,8 @@ function renderOnline(scroll){
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc"){
       html+='<div class="opts">'+q.options.map(function(o,j){return '<label><input type="radio" name="opt'+i+'" value="'+j+'"> <span>'+o+'</span></label>';}).join("")+'</div>';
+    }else if(q.type==="text"){
+      html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<textarea class="ans" id="ans'+i+'" rows="4" autocomplete="off"></textarea></p>';
     }else{
       html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
       if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
