@@ -84,7 +84,7 @@ E("u1-evaluate-operation",1,["1.1"],1,"gen",function(){
     "Evaluate each function at \\(x = "+p+"\\), then combine the two values: \\[ \\begin{aligned} "+fLine+" \\\\ g("+p+") &= "+u1mult(c2,p)+u1sgnT(d2)+" = "+gv2+" \\\\ "+opName+"("+p+") &= "+comb+" = "+ans2+" \\end{aligned} \\] So \\("+opName+"("+p+") = \\) <b>"+ans2+"</b>.",
     {shape:shape,p:p,op:op,c1:c1,d1:d1,c2:c2,d2:d2,qb:(shape===2?qb:0),qc:(shape===2?qc:0)});
 });
-E("u1-compose-value",1,["1.4"],1,"gen",function(){
+E("u1-compose-value",1,["1.4"],2,"gen",function(){
   var shape=ri(1,4);
   if(shape===1){
     var a1=u1nz(-4,4),b1=ri(-6,6),a2=u1nz(-4,4),b2=ri(-6,6),a=ri(-4,4),dir=ri(1,3);
@@ -690,7 +690,7 @@ E("u2-asymptote-behaviour",2,["2.9"],2,"gen",function(){
     "The denominator is zero at \\(x = "+a+"\\) while the numerator is not, so there is a vertical asymptote there. Just right of the point the denominator is a small positive number and the numerator keeps the sign it has at the point, giving "+(s>0?"positive":"negative")+" infinity; just left of the point the denominator is a small negative number, which flips the sign. So the two sides head to opposite infinities: <b>down on the "+(s>0?"left":"right")+" side and up on the other</b>, matching the key statement.",
     {form:form,a:a,formSign:s});
 });
-E("u2-limit-at-infinity",2,["2.10"],2,"gen",function(){
+E("u2-limit-at-infinity",2,["2.10"],1,"gen",function(){
   var mode=pick(["less","equal","greater1","greater2"]);
   var dir=pick(["\\infty","-\\infty"]);
   var dirNeg=(dir.charAt(0)==="-");
@@ -1052,7 +1052,7 @@ E("u3-hole-or-asymptote",3,["1.9"],1,"gen",function(){
 });
 
 /* ---------- u3-near-npv (1.8, Level 2) ---------- */
-E("u3-near-npv",3,["1.8"],2,"gen",function(){
+E("u3-near-npv",3,["1.8"],1,"gen",function(){
   var a=ri(-6,6), b;
   do{ b=ri(-6,6); }while(b===a);
   var m=pick([-5,-4,-3,-2,-1,1,2,3,4,5]), p=pick([1,2]);
@@ -1089,7 +1089,7 @@ E("u3-hole-coordinates",3,["1.9"],2,"gen",function(){
 });
 
 /* ---------- u3-features-basic (1.10, Level 2) ---------- */
-E("u3-features-basic",3,["1.10"],2,"gen",function(){
+E("u3-features-basic",3,["1.10"],1,"gen",function(){
   var mode=ri(0,1);
   var vs=u3Distinct(2,-6,6,true), a=vs[0], b=vs[1];
   var k=pick([1,2,3]);
@@ -1170,7 +1170,7 @@ E("u3-asymptote-set",3,["1.10"],2,"gen",function(){
 });
 
 /* ---------- u3-sketch-features (1.10, Level 2) ---------- */
-E("u3-sketch-features",3,["1.10"],2,"gen",function(){
+E("u3-sketch-features",3,["1.10"],1,"gen",function(){
   var h, a, r, vs, guard=0;
   do{ vs=u3Distinct(3,-6,6,true); h=vs[0]; a=vs[1]; r=vs[2]; }
   while(Math.abs(h-r)===Math.abs(h-a) && guard++<200);
