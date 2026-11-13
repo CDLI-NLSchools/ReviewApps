@@ -3207,7 +3207,8 @@ E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
 // CRMARKS: u8-fixed-position=2
 // CRMARKS: u8-identical-perm=2
 // CRMARKS: u8-mixed-roles=2
-// CRMARKS: u8-pathways=3
+// CRMARKS: u8-pathways=2
+// CRMARKS: u8-pathways-context=3
 // CRMARKS: u8-perm-or-comb=1
 // CRMARKS: u8-perm-r=1
 // CRMARKS: u8-prob-comb=2
@@ -3756,7 +3757,7 @@ E("u8-mixed-roles",8,["9.24"],2,"gen",function(){
     nPr(n,r),0.001,"Work in two steps: choose the group, then assign the roles: \\[ \\begin{aligned} \\binom{"+n+"}{"+r+"} \\times "+r+"! &= "+nCr(n,r)+" \\times "+fact(r)+" \\\\ &= "+nPr(n,r)+" \\end{aligned} \\] The two steps combine into the permutation \\(_{"+n+"}P_{"+r+"}\\), because choosing and then ordering is the same as choosing in order.",{n:n,r:r});
 });
 
-/* --- pathways on a grid (9.30): combinations in disguise --- */
+/* --- pathways on a grid (9.30): combinations in disguise. Split by ruling 49 (Nov 13, 2026): the diagram arms (plain, straight waypoint) sit at Level 2 here; the blocked grid and the story arms sit at Level 3 in u8-pathways-context below. --- */
 function pathGridSVG(m,n,opt){
   opt=opt||{};
   var cell=(m>5||n>5)?31:36;
@@ -3787,15 +3788,14 @@ function pathGridSVG(m,n,opt){
   out+='<text x="'+(X(m)+9)+'" y="'+(Y(n)+4)+'" font-size="12" fill="'+FIG_INK+'">B</text>';
   return out+'</svg>';
 }
-E("u8-pathways",8,["9.30"],3,"gen",function(){
-  var J=" Justification for Level 3: nothing in the diagram names an operation; a route first has to be recoded as a sequence of moves, and any point the route must use or avoid restructures the count.";
-  var arm=pick(["plain","plain","waypoint","waypoint","blocked","context","context"]);
+E("u8-pathways",8,["9.30"],2,"gen",function(){
+  var arm=pick(["plain","waypoint"]);
   if(arm==="plain"){
     var m=ri(2,6),n=ri(2,6);if(m+n>11)n=11-m;
     var ans=nCr(m+n,m);
     var qp=numq("A path travels from point A to point B along the lines of the grid in the diagram, moving only to the right or up. Point B is "+m+" moves to the right and "+n+" moves up from point A. How many different paths are there from A to B?",
       ans,0.001,
-      "Every path uses "+(m+n)+" moves in total: "+m+" to the right and "+n+" up, in some order. Choosing which "+m+" of the "+(m+n)+" moves are the rightward ones fixes the whole path, so the count is a combination: \\[ \\begin{aligned} \\binom{"+(m+n)+"}{"+m+"} &= "+ans+" \\end{aligned} \\] The tempting wrong counts miss the structure: "+m+" \\times "+n+" = "+(m*n)+" counts the blocks of the grid, and "+(m+n)+" counts only the moves in a single path."+J,
+      "Every path uses "+(m+n)+" moves in total: "+m+" to the right and "+n+" up, in some order. Choosing which "+m+" of the "+(m+n)+" moves are the rightward ones fixes the whole path, so the count is a combination: \\[ \\begin{aligned} \\binom{"+(m+n)+"}{"+m+"} &= "+ans+" \\end{aligned} \\] The tempting wrong counts miss the structure: "+m+" \\times "+n+" = "+(m*n)+" counts the blocks of the grid, and "+(m+n)+" counts only the moves in a single path.",
       {arm:arm,m:m,n:n});
     qp.figure=pathGridSVG(m,n,{});
     return qp;
@@ -3805,11 +3805,17 @@ E("u8-pathways",8,["9.30"],3,"gen",function(){
     var leg1=nCr(px+py,px),leg2=nCr((m2-px)+(n2-py),m2-px),ans2=leg1*leg2;
     var qw=numq("A path travels from point A to point B along the lines of the grid in the diagram, moving only to the right or up, and the path must pass through point P. How many different paths are there from A to B through P?",
       ans2,0.001,
-      "Split the journey at P. From A to P the path makes "+px+" rightward and "+py+" upward moves, in any order: \\(\\binom{"+(px+py)+"}{"+px+"} = "+leg1+"\\) paths. From P to B it makes "+(m2-px)+" rightward and "+(n2-py)+" upward moves: \\(\\binom{"+((m2-px)+(n2-py))+"}{"+(m2-px)+"} = "+leg2+"\\) paths. Every first leg can be followed by every second leg, so multiply: \\("+leg1+" \\times "+leg2+" = "+ans2+"\\)."+J,
+      "Split the journey at P. From A to P the path makes "+px+" rightward and "+py+" upward moves, in any order: \\(\\binom{"+(px+py)+"}{"+px+"} = "+leg1+"\\) paths. From P to B it makes "+(m2-px)+" rightward and "+(n2-py)+" upward moves: \\(\\binom{"+((m2-px)+(n2-py))+"}{"+(m2-px)+"} = "+leg2+"\\) paths. Every first leg can be followed by every second leg, so multiply: \\("+leg1+" \\times "+leg2+" = "+ans2+"\\).",
       {arm:arm,m:m2,n:n2,px:px,py:py});
     qw.figure=pathGridSVG(m2,n2,{wp:[px,py]});
     return qw;
   }
+});
+
+/* --- pathways in context (9.30): the blocked grid, and the grid hidden in a story (L3) --- */
+E("u8-pathways-context",8,["9.30"],3,"gen",function(){
+  var J=" Justification for Level 3: nothing in the diagram names an operation; a route first has to be recoded as a sequence of moves, and any point the route must use or avoid restructures the count.";
+  var arm=pick(["blocked","context","ctxwp"]);
   if(arm==="blocked"){
     var m3=ri(3,6),n3=ri(3,6),bx=ri(1,m3-1),by=ri(1,n3-1);
     var tot=nCr(m3+n3,m3),thru=nCr(bx+by,bx)*nCr((m3-bx)+(n3-by),m3-bx),ans3=tot-thru;
@@ -3819,6 +3825,22 @@ E("u8-pathways",8,["9.30"],3,"gen",function(){
       {arm:arm,m:m3,n:n3,bx:bx,by:by});
     qb.figure=pathGridSVG(m3,n3,{blk:[bx,by]});
     return qb;
+  }
+  if(arm==="ctxwp"){
+    var stp=pick([
+      {who:"Mina",from:"her home",to:"her school",stop:"the library"},
+      {who:"Jonah",from:"the bakery",to:"the market",stop:"the post office"},
+      {who:"Priya",from:"the arena",to:"the community centre",stop:"the pharmacy"},
+      {who:"Tomas",from:"the harbour",to:"the school",stop:"the bakery"}
+    ]);
+    var m5=ri(3,5),n5=ri(3,5),sx=ri(1,m5-1),sy=ri(1,n5-1);
+    var sleg1=nCr(sx+sy,sx),sleg2=nCr((m5-sx)+(n5-sy),m5-sx),ans5=sleg1*sleg2;
+    var qs=numq(stp.who+" walks from "+stp.from+" to "+stp.to+" along the streets shown in the diagram, walking only east or north, and stops at "+stp.stop+" on the way. The stop is marked as point P in the diagram: it is "+sx+" blocks east and "+sy+" blocks north of the start. The destination is "+m5+" blocks east and "+n5+" blocks north of the start (point A marks the start and point B the destination). How many different routes can "+stp.who+" take that pass the stop?",
+      ans5,0.001,
+      "Pull the grid out of the story first: eastward and northward blocks are the moves, and the stop splits the walk into two legs. From the start to "+stp.stop+" the walk makes "+sx+" eastward and "+sy+" northward blocks, in any order: \\(\\binom{"+(sx+sy)+"}{"+sx+"} = "+sleg1+"\\) routes. From the stop to the destination it makes "+(m5-sx)+" eastward and "+(n5-sy)+" northward blocks: \\(\\binom{"+((m5-sx)+(n5-sy))+"}{"+(m5-sx)+"} = "+sleg2+"\\) routes. Every first leg can be followed by every second leg, so multiply: \\("+sleg1+" \\times "+sleg2+" = "+ans5+"\\). The street grid is a combination in disguise on each leg: the blocks travelled are chosen, not arranged one by one."+J,
+      {arm:arm,m:m5,n:n5,px:sx,py:sy});
+    qs.figure=pathGridSVG(m5,n5,{wp:[sx,sy]});
+    return qs;
   }
   var ctx=pick([
     {who:"Mina",from:"her home",to:"the library"},
@@ -4339,4 +4361,4 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-correct-the-claim-cr":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-interpret-model":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compare-frequency":2,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-deferred-offer":3,"u6-depreciation-value":2,"u6-find-term":2,"u6-interest-earned":2,"u6-payments-term":1,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-total-cost-loan":1,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-error-correct":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-subset-difference-cr":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-comb-r":1,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-fraction":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-pathways":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-nonme-prob":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
+window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-correct-the-claim-cr":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-interpret-model":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compare-frequency":2,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-deferred-offer":3,"u6-depreciation-value":2,"u6-find-term":2,"u6-interest-earned":2,"u6-payments-term":1,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-total-cost-loan":1,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-error-correct":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-subset-difference-cr":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-comb-r":1,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-fraction":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-nonme-prob":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
