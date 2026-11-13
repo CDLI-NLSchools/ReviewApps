@@ -20,6 +20,7 @@
   .applogo-d{display:none;}
   html[data-a11y-theme="dark"] .applogo-l{display:none;}
   html[data-a11y-theme="dark"] .applogo-d{display:block;}
+  html[data-a11y-theme="dark"] .allcourses a{color:#5eead4;}
   .sheetbrand{margin:0 0 10px;}
   .sheetbrand img{height:18px;width:auto;display:block;}
   h2{font-size:1.05rem;margin:0 0 10px;}
@@ -209,6 +210,7 @@
   html[data-a11y-theme="dark"] .exbox{background:#1d2a1a;border-color:#4a6741;}
   html[data-a11y-theme="dark"] .summarybox{border-top-color:#33475c;}
   html[data-a11y-theme="dark"] button.alt{background:var(--card);}
+  html[data-a11y-theme="dark"] button.alt{color:#5eead4;border-color:#5eead4;}
   html[data-a11y-theme="dark"] .indbox{background:var(--card);}
   html[data-a11y-theme="dark"] .tpick{background:var(--card);}
   html[data-a11y-theme="dark"] .tpick button{background:var(--card);}
@@ -3819,7 +3821,7 @@ if(window.__NOCOURSE){(function(){
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
   var style=document.createElement("style");
-  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemerow{margin:0 0 12px;text-align:right}.pkthemebtn{font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}.pkthemebtn[aria-pressed='true']{background:#1f4e79;color:#fff}html[data-a11y-theme='dark'] .pkthemebtn{border-color:#5eead4;color:#5eead4}html[data-a11y-theme='dark'] .pkthemebtn[aria-pressed='true']{background:#5eead4;color:#0e1418}";
+  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemerow{margin:0 0 12px;text-align:right}.pkthemebtn{font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}.pkthemebtn[aria-pressed='true']{background:#1f4e79;color:#fff}html[data-a11y-theme='dark'] .pkthemebtn{border-color:#5eead4;color:#5eead4}html[data-a11y-theme='dark'] .pkthemebtn[aria-pressed='true']{background:#5eead4;color:#0e1418}html[data-a11y-theme='dark'] .pkchip[aria-pressed='true']{background:#1f4e79;border-color:#5eead4;color:#fff}";
   pk.appendChild(style);
   var pkThemeBtn=document.getElementById("pkTheme");
   if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.setAttribute("aria-pressed",document.documentElement.getAttribute("data-a11y-theme")==="dark"?"true":"false");};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}
