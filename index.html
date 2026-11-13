@@ -16,6 +16,12 @@
   .allcourses{font-size:.82rem;margin:0 0 6px;}
   .allcourses a{color:var(--accent);text-decoration:none;}
   .allcourses a:hover,.allcourses a:focus-visible{text-decoration:underline;}
+  .applogo{height:44px;width:auto;display:block;margin:0 0 10px;}
+  .applogo-d{display:none;}
+  html[data-a11y-theme="dark"] .applogo-l{display:none;}
+  html[data-a11y-theme="dark"] .applogo-d{display:block;}
+  .sheetbrand{margin:0 0 10px;}
+  .sheetbrand img{height:18px;width:auto;display:block;}
   h2{font-size:1.05rem;margin:0 0 10px;}
   .sub{font-size:.9rem;color:#4b5a61;margin:0 0 16px;line-height:1.45;}
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px;}
@@ -245,8 +251,10 @@
    just leaves the defaults in place. */
 (function(){try{
   var store=window.localStorage||null;if(!store)return;
-  var raw=store.getItem((window.__COURSE?window.__COURSE.storagePrefix:"app")+"-a11y-v1");if(!raw)return;
-  var p=JSON.parse(raw);if(!p)return;
+  var raw=store.getItem((window.__COURSE?window.__COURSE.storagePrefix:"app")+"-a11y-v1");
+  var p=null;if(raw){try{p=JSON.parse(raw);}catch(e){}}
+  if(!p||typeof p.theme==="undefined"){try{var graw=store.getItem("app-a11y-v1");if(graw){var gp=JSON.parse(graw);if(gp&&gp.theme==="dark"){if(!p)p={};p.theme="dark";}}}catch(e){}}
+  if(!p)return;
   var h=document.documentElement;
   if(p.text==="large"||p.text==="xlarge")h.setAttribute("data-a11y-text",p.text);
   if(p.theme==="dark")h.setAttribute("data-a11y-theme","dark");
@@ -262,6 +270,7 @@
   <img class="pklogo pklogo-d" src="cdli-logo-white.svg" alt="CDLI">
   <h1>Review Apps</h1>
   <p class="sub pktag">Online or Printable Practice Exercises</p>
+  <p class="pkthemerow"><button type="button" id="pkTheme" class="pkthemebtn" aria-pressed="false">Dark mode</button></p>
   <div class="card">
     <h2 style="margin-top:0;">Choose your course</h2>
     <div id="courseList"></div>
@@ -301,6 +310,8 @@
   </div>
 </div>
 <div class="wrap" id="app">
+  <img class="applogo applogo-l" src="cdli-logo.svg" alt="CDLI">
+  <img class="applogo applogo-d" src="cdli-logo-white.svg" alt="CDLI">
   <h1 id="appTitle">Review Apps</h1>
   <p class="allcourses"><a href="./">&larr; All courses</a></p>
   <p class="sub">Fresh practice questions for <span id="appSubName">your course</span>, drawn by unit or by curriculum indicator.</p>
@@ -913,14 +924,16 @@ var A11Y_KEY=(window.__COURSE?window.__COURSE.storagePrefix:"app")+"-a11y-v1";
 var a11y={text:"std",theme:"light",font:false,spacing:false,motion:false};
 function a11yStore(){try{return window.localStorage||null;}catch(e){return null;}}
 function a11yLoad(){
-  var had=false,store=a11yStore();
+  var had=false,hadTheme=false,store=a11yStore();
   if(store){try{var raw=store.getItem(A11Y_KEY);if(raw){var p=JSON.parse(raw);if(p){had=true;
     if(p.text==="std"||p.text==="large"||p.text==="xlarge")a11y.text=p.text;
-    if(p.theme==="light"||p.theme==="dark")a11y.theme=p.theme;
+    if(p.theme==="light"||p.theme==="dark"){a11y.theme=p.theme;hadTheme=true;}
     a11y.font=!!p.font;a11y.spacing=!!p.spacing;a11y.motion=!!p.motion;}}}catch(e){}}
+  if(store&&!hadTheme&&A11Y_KEY!=="app-a11y-v1"){try{var graw=store.getItem("app-a11y-v1");if(graw){var gp=JSON.parse(graw);if(gp&&(gp.theme==="light"||gp.theme==="dark"))a11y.theme=gp.theme;}}catch(e){}}
   if(!had&&typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)a11y.motion=true;
 }
-function a11ySave(){var store=a11yStore();if(!store)return;try{store.setItem(A11Y_KEY,JSON.stringify(a11y));}catch(e){}}
+function a11ySave(){var store=a11yStore();if(!store)return;try{store.setItem(A11Y_KEY,JSON.stringify(a11y));}catch(e){}
+  if(A11Y_KEY!=="app-a11y-v1"){try{var g={};var raw=store.getItem("app-a11y-v1");if(raw)g=JSON.parse(raw)||{};g.theme=a11y.theme;store.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}}}
 function a11yApply(){
   var h=document.documentElement;if(!h||!h.setAttribute)return;
   function set(name,val){if(val)h.setAttribute(name,val);else h.removeAttribute(name);}
@@ -2577,7 +2590,7 @@ function renderExam(){
   stopExamTimer();
   var ex=examState.ex,s=examState.s,single=examState.single,wsCrF=examState.wsCrF,scope=examState.scope,title=examState.title;
   var lv=examLive(ex);
-  var paper='<div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
+  var paper='<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
   paper+='<h1 style="font-size:1.3rem;">'+title+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
   paper+='<p style="font-size:.92rem;">'+L9("Answer all questions. In Section A, choose the best answer for each question and record it on the answer record at the end of Section A. In Section B, show all workings in the space provided; marks are shown beside each question.","Réponds à toutes les questions. Dans la section A, choisis la meilleure réponse pour chaque question et inscris-la dans le relevé de réponses à la fin de la section A. Dans la section B, montre tout ton travail dans l'espace fourni; les points sont indiqués à côté de chaque question.")+'</p>';
   var n=0;
@@ -2596,7 +2609,7 @@ function renderExam(){
     var h=Math.max(80,Math.round(it.marks*62*wsCrF));if(wsCrF>0)paper+=wsBox(h);
     paper+='</div>';});
   paper+='<p style="font-size:.85rem;color:#555;">'+((T&&T.edited)?("This paper was edited from the blueprint: selected response "+lv.sr+" marks, constructed response "+lv.cr+" marks, of which Level 3 carries "+lv.l3+" marks."):(FR9?("Construit selon les tableaux de spécifications 2026-2027, aussi fidèlement que la banque de questions le permet : réponses choisies "+lv.sr+" points, réponses construites "+lv.cr+" points, dont le niveau 3 vaut "+lv.l3+" points."):("Built to the 2026-2027 tables of specifications as closely as the question bank allows: selected response "+lv.sr+" marks, constructed response "+lv.cr+" marks, of which Level 3 carries "+lv.l3+" marks.")))+'</p>';
-  var key='<h1 style="font-size:1.3rem;">'+title+L9(": Answer Key"," : Corrigé")+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
+  var key='<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><h1 style="font-size:1.3rem;">'+title+L9(": Answer Key"," : Corrigé")+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
   key+='<h2 style="font-size:1.05rem;">'+L9("Section A answers","Réponses de la section A")+'</h2><p style="font-size:.92rem;">'+L9("The correct letter for each question, in the same layout as the answer record on the student paper.","La bonne lettre pour chaque question, dans la même disposition que le relevé de réponses sur la copie de l'élève.")+'</p>';
   key+=recGrid(ex.srItems,true);
   key+='<h2 style="font-size:1.05rem;">'+L9("Section B: worked solutions","Section B : solutions détaillées")+'</h2>';
@@ -2648,7 +2661,7 @@ function renderSheet(){
   var s=sheetState.s;var res={items:sheetState.items,thin:sheetState.thin};
   var unitNames=s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
   wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
-  var html='<div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
+  var html='<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
   var wsMcF=(typeof s.wsMc==="number"&&!isNaN(s.wsMc))?s.wsMc:0;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
   html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+L9(": Practice Sheet"," : Feuille de pratique")+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 "+L9("Indicators: ","Notions : ")+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[0])||'Show all workings in the space provided.'):((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[1])||'Show all workings on your own paper.'))+'</p>';
@@ -3806,8 +3819,10 @@ if(window.__NOCOURSE){(function(){
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
   var style=document.createElement("style");
-  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}";
+  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemerow{margin:0 0 12px;text-align:right}.pkthemebtn{font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}.pkthemebtn[aria-pressed='true']{background:#1f4e79;color:#fff}html[data-a11y-theme='dark'] .pkthemebtn{border-color:#5eead4;color:#5eead4}html[data-a11y-theme='dark'] .pkthemebtn[aria-pressed='true']{background:#5eead4;color:#0e1418}";
   pk.appendChild(style);
+  var pkThemeBtn=document.getElementById("pkTheme");
+  if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.setAttribute("aria-pressed",document.documentElement.getAttribute("data-a11y-theme")==="dark"?"true":"false");};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}
   var groups={};
   Object.keys(window.COURSES||{}).forEach(function(id){
     var c=window.COURSES[id];if(c.listed===false)return;
