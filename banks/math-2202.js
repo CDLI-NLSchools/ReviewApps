@@ -2488,6 +2488,21 @@ E("u4-cr-percent-change", 4, ["6.7", "6.3"], 3, "gen", function () {
   return q;
 }, ["Read the values off the scale rather than judging the bar heights, since the axis is cut.", "Subtract to get the increase, divide by the starting value, and multiply by 100."]);
 
+
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess a Math 1202 outcome (percent change, indicator 1.4), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-2202.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u4-cr-percent-change","u4-misleading-actual"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ----- bank-u5.js ----- */
 // Math 2202 Unit 5 Budgets question bank
 // Cut verbatim from the standalone bank source
@@ -4945,6 +4960,21 @@ E("u8-cr-baseline-height", 8, ["2.4", "5.2", "2.3"], 3, "gen", function () {
   q.figure = u8ElevFig(aN, "?", "?");
   return q;
 }, ["Both sightings form right triangles that share the unknown height.", "Express each ground distance using the height, and set their difference equal to the measured baseline."]);
+
+
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 1201 primary trigonometric ratio outcomes (indicators 7.1 to 7.4), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-2202.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u8-choose-ratio-equation","u8-cr-find-angle"].indexOf(e.id)>=0)e.pkFlag=true;});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
