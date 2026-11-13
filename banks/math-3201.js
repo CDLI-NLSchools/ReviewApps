@@ -271,7 +271,7 @@ E("u1-npv-why",1,["3.1"],1,"var",varset([
     ["Substituting \\(x = 2\\) makes the numerator equal to 0, and a numerator of 0 is not allowed","Substituting \\(x = 2\\) makes the expression equal to 0, and the expression cannot equal 0 there","The denominator is a multiple of the numerator when \\(x = 2\\), and that relationship is not allowed"],
     "In the denominator, \\(3(2) - 6 = 0\\). Non-permissible values always come from the denominator being zero, never from the numerator.",{});}
 ]));
-E("u1-npv-quadratic",1,["3.2"],2,"gen",function(){
+E("u1-npv-quadratic",1,["3.2"],1,"gen",function(){
   var r1=ri(-8,8),r2=ri(-8,8),t=0;
   while((r1===0||r2===0||r1===r2||r1+r2===0)&&t<60){r1=ri(-8,8);r2=ri(-8,8);t++;}
   var lo=Math.min(r1,r2),hi=Math.max(r1,r2);
@@ -442,7 +442,7 @@ E("u1-mult",1,["3.12"],1,"gen",function(){
     "Multiply the numerators and denominators, then cancel the shared factor \\("+linF(b)+"\\): the product is <b>\\("+(cj+FR(linF(a),linF(c)))+"\\)</b>. The first distractor skips the cancellation, and the second flips the result.",
     {a:a,b:b,c:c,m:m,n:n});
 });
-E("u1-div",1,["3.12"],2,"gen",function(){
+E("u1-div",1,["3.12"],1,"gen",function(){
   var a=ri(-8,8),b=ri(-8,8),c=ri(-8,8),t=0;
   while((a===b||a===c||b===c)&&t<80){a=ri(-8,8);b=ri(-8,8);c=ri(-8,8);t++;}
   return mcq("Determine, in simplified form: \\("+FR(linF(a),linF(b))+" \\div "+FR(linF(a),linF(c))+"\\)",
@@ -451,7 +451,7 @@ E("u1-div",1,["3.12"],2,"gen",function(){
     "Dividing by a fraction means multiplying by its reciprocal: \\("+FR(linF(a),linF(b))+" \\times "+FR(linF(c),linF(a))+"\\). The factor \\("+linF(a)+"\\) cancels, leaving <b>\\("+FR(linF(c),linF(b))+"\\)</b>. Multiplying straight across without flipping is the first distractor.",
     {a:a,b:b,c:c});
 });
-E("u1-npv-operations",1,["3.9"],2,"gen",function(){
+E("u1-npv-operations",1,["3.9"],1,"gen",function(){
   function sample4(){var s=new Set();while(s.size<4)s.add(ri(-8,8));return [...s];}
   var v=sample4(),s=v[0],p=v[1],q=v[2],r=v[3];
   function lst(vals){return vals.slice().sort(function(x,y){return x-y;}).map(function(x){return "\\(x \\ne "+x+"\\)";}).join(", ");}
@@ -1508,7 +1508,7 @@ function expDataGen(){
   var ys=xs.map(function(x,i){return A*Math.pow(bv,i);});
   return {bp:bp,bv:bv,A:A,step:step,xs:xs,ys:ys,ctx:pick(EXP_CTX)};
 }
-E("u4-data-fit-equation",4,["4.1"],2,"gen",function(){
+E("u4-data-fit-equation",4,["4.1"],1,"gen",function(){
   var g=expDataGen(),recip=[g.bp[1],g.bp[0]];
   var tbl=tblHTML(g.xs,g.ys.map(function(v){return fmt(v);}),g.ctx.xu,g.ctx.yu);
   var eqv=function(aa,bp){return "P(t) = "+(aa===1?"":aa)+"("+bStr(bp[0],bp[1])+")^{t"+(g.step===1?"":"/"+g.step)+"}" ;};
@@ -1553,7 +1553,7 @@ E("u4-interpret-graph-model",4,["4.3"],2,"var",varset([
       "Read across from 540 on the vertical axis to the curve and down: the graph passes through (4, 180) and (8, 540), since the count triples every 4 days (60, 180, 540). It takes 8 days.",{});
     q.figure=plotSVG(fn,0,10,0,2000,{gx:1,gy:250,labelX:true});return q;}
 ]));
-E("u4-solve-common-base",4,["4.7"],2,"gen",function(){
+E("u4-solve-common-base",4,["4.7"],1,"gen",function(){
   var bp=pick([[2,1],[3,1],[4,1],[5,1],[9,1],[25,1],[1,2],[1,3]]),k=pick([-3,-2,-1,1,2,3,4]);
   var v=powVal(bp[0],bp[1],k);
   return numq("Solve for \\(x\\): \\("+bStr(bp[0],bp[1])+"^x = "+valStr(v[0],v[1])+"\\)",
@@ -1805,7 +1805,7 @@ E("u5-convert-form",5,["1.1"],1,"gen",function(){
     "The base of the power stays the base of the logarithm, the exponent \\("+e+"\\) becomes the value of the logarithm, and the result \\("+v+"\\) becomes the argument: \\("+lg+"\\). The distractors swap the argument with the exponent, or use the wrong base.",
     {b:b,e:e,toExp:0});
 });
-E("u5-solve-log-basic",5,["1.1"],2,"gen",function(){
+E("u5-solve-log-basic",5,["1.1"],1,"gen",function(){
   var shape=ri(1,3);
   if(shape===1){
     var b=pick([2,3,4,5,6,7,8,9]),e=pick([-1,2,2,3]),ans=e<0?1/b:Math.pow(b,e);
@@ -1908,7 +1908,7 @@ E("u5-which-law",5,["1.3"],1,"var",varset([
 ]));
 
 /* --- laws of logarithms (1.3, 1.4) --- */
-E("u5-law-numeric",5,["1.3"],2,"gen",function(){
+E("u5-law-numeric",5,["1.3"],1,"gen",function(){
   var LV={2:0.3010,3:0.4771,5:0.6990,7:0.8451},LVS={2:"0.3010",3:"0.4771",5:"0.6990",7:"0.8451"};
   var pr=pick([[2,3],[2,5],[2,7],[3,5],[3,7],[5,7]]),p=pr[0],q=pr[1],lp=LV[p],lq=LV[q],lps=LVS[p],lqs=LVS[q];
   var forms=[
@@ -2045,7 +2045,7 @@ E("u5-estimate-log",5,["1.5"],1,"gen",function(){
     "Bracket the argument between consecutive powers of \\("+b+"\\): \\("+b+"^{"+fl+"} = "+Math.pow(b,fl)+"\\) and \\("+b+"^{"+(fl+1)+"} = "+Math.pow(b,fl+1)+"\\), so the logarithm lies between \\("+fl+"\\) and \\("+(fl+1)+"\\) \\((\\log_{"+b+"} "+n+" \\approx "+fmt(tv,2)+")\\). Of the choices, only \\("+corr+"\\) sits in that bracket at the right distance from the ends.",
     {b:b,n:n});
 });
-E("u5-data-fit-log",5,["4.2"],2,"gen",function(){
+E("u5-data-fit-log",5,["4.2"],1,"gen",function(){
   var mode=pick(["ten","two","five"]),base=mode==="ten"?10:mode==="two"?2:5;
   var xs=mode==="ten"?[1,10,100,1000]:mode==="two"?[1,2,4,8,16]:[1,5,25,125];
   var c=ri(1,9),d=mode==="ten"?pick([2,3,4,5]):mode==="two"?pick([2,3]):pick([2,3,4]),t=0;
@@ -2524,7 +2524,7 @@ E("u6-simple-interest",6,["1.8"],1,"gen",function(){
     "Simple interest is \\(I = Prt = "+P+" \\times "+fmt(r/100,3)+" \\times "+t+" = "+fmtF(I,2)+"\\), calculated on the original principal only."+(askAmt?" Adding the principal gives a total of "+mon(P+I)+" to repay.":""),
     {P:P,r:r,t:t});
 });
-E("u6-compound-amount",6,["1.8"],2,"gen",function(){
+E("u6-compound-amount",6,["1.8"],1,"gen",function(){
   var s=finPick(),P=pick([400,500,800,1000,1200,1500,2000,2500,3000,5000]);
   var A=P*Math.pow(1+s.i,s.n),loan=Math.random()<0.4;
   return numq((loan?"A loan of ":"An investment of ")+mon(P)+" is made at "+s.r+"% compounded "+s.fw+". "+(loan?"If no payments are made, how much is owed":"What is the value")+" after "+s.term+", in dollars?",
@@ -2532,7 +2532,7 @@ E("u6-compound-amount",6,["1.8"],2,"gen",function(){
     "Use \\(A = P(1 + i)^n\\) with the periodic rate \\(i = "+s.r+"\\% \\div "+s.m+" = "+fmt(s.i*100,2)+"\\%\\) and \\(n = "+s.n+"\\) periods: \\[ \\begin{aligned} A &= P(1 + i)^n \\\\ &= "+P+"("+fmt(1+s.i,4)+")^{"+s.n+"} \\\\ &= "+fmtF(A,2)+" \\end{aligned} \\] So the amount is "+mon(A)+". The rate must be divided by the compounding frequency before it goes into the formula.",
     {P:P,r:s.r,fw:s.fw});
 });
-E("u6-interest-earned",6,["1.10"],2,"gen",function(){
+E("u6-interest-earned",6,["1.10"],1,"gen",function(){
   var s=finPick(),P=pick([400,500,800,1000,1200,1500,2000,2500,3000,5000]);
   var A=P*Math.pow(1+s.i,s.n),I=A-P,loan=Math.random()<0.5;
   return numq("A "+(loan?"loan":"deposit")+" of "+mon(P)+" grows at "+s.r+"% compounded "+s.fw+" and is settled in one payment after "+s.term+". How much <b>interest</b> is "+(loan?"charged":"earned")+", in dollars?",
@@ -2593,7 +2593,7 @@ E("u6-compare-costs",6,["1.9"],3,"gen",function(){
 });
 
 /* --- loan costs and amortization (1.11) --- */
-E("u6-total-cost-loan",6,["1.11"],2,"gen",function(){
+E("u6-total-cost-loan",6,["1.11"],1,"gen",function(){
   var pay=pick([74.50,86.25,95.75,109.99,124.60,138.45,152.30,175.80,210.25,249.99]),n=pick([12,18,24,36,48,60]);
   var total=Math.round(pay*n*100)/100,P=0,tries=0;
   while(tries++<40){P=pick([500,600,800,1000,1200,1500,2000,2500,3000]);if(P<total*0.95&&P>total*0.4)break;P=0;}
@@ -2685,7 +2685,7 @@ E("u6-appreciate-depreciate",6,["1.14"],1,"var",varset([
     ["A new smartphone","A new car that is driven daily","A laptop computer"],
     "Real estate in a growing area commonly gains value as demand rises, so the house is the appreciating asset. Phones, cars and laptops are depreciating assets: they lose value with age, wear and newer models replacing them.",{});}
 ]));
-E("u6-depreciation-value",6,["1.14"],2,"gen",function(){
+E("u6-depreciation-value",6,["1.14"],1,"gen",function(){
   var asset=pick([
     {n:"car",mode:"dep",pool:[12000,15000,18000,20000,24000,28000,32000]},
     {n:"ATV",mode:"dep",pool:[7000,8500,9000,11000]},
@@ -3241,7 +3241,7 @@ E("u8-tree-diagram",8,["9.16"],1,"gen",function(){
   if(tf)q.figure=tf;
   return q;
 });
-E("u8-tree-outcomes",8,["9.16"],2,"gen",function(){
+E("u8-tree-outcomes",8,["9.16"],1,"gen",function(){
   function coinDie(){
     var conds=[],side,d,v,k;
     ["H","T"].forEach(function(s){var sn=s==="H"?"head":"tail";
@@ -3643,7 +3643,7 @@ E("u8-order-matters",8,["9.29"],1,"var",varset([
     ["Yes: the book picked first sits at the bottom of the bag, so the packing order is part of the outcome","Yes: choosing is always a permutation, because items are picked one at a time in some order","No: order never matters for objects, only for people, because people can hold ranked roles"],
     "The outcome is just the set of 4 books in the bag; reordering the picks changes nothing about the result. So the count is a combination, C(9, 4) = 126. What the items are (books or people) is irrelevant; what matters is whether a swap changes the outcome.",{});}
 ]));
-E("u8-perm-or-comb",8,["9.29"],2,"gen",function(){
+E("u8-perm-or-comb",8,["9.29"],1,"gen",function(){
   var T=pick(["perm","comb","fact","power"]);
   var n=pick([6,7,8,9,10,11]),r=pick([2,3,4]);
   var roleSets={2:"a captain and a vice-captain",3:"a chairperson, a secretary and a treasurer",4:"a president, a vice-president, a secretary and a treasurer"};
