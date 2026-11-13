@@ -2664,6 +2664,7 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
 // CRMARKS: u4-domain-range=3
 // CRMARKS: u4-rate-of-change=3
 // CRMARKS: u4-intercepts=2
+// CRMARKS: u4-intercepts-solve=2
 // CRMARKS: u4-context-problem=3
 // CRMARKS: u4-eval-function=2
 // CRMARKS: u4-solve-input=2
@@ -3251,9 +3252,24 @@ E("u4-rate-of-change",4,["4.19"],1,"gen",function(){
     {mode:mode,x1:x1,y1:y1,x2:x2,y2:y2,ans:m});
 });
 
-/* ================= 18. one intercept from an equation (4.28, L2, gen, num, CR 2) ================= */
-E("u4-intercepts",4,["4.28"],2,"gen",function(){
-  var askX=Math.random()<0.5;
+/* ================= 18. y-intercept from an equation, read off (4.28, L1, gen, num, CR 2; the read-off family kept when u4-intercepts was split under the ruling 8 principle, Nov 13, 2026) ================= */
+E("u4-intercepts",4,["4.28"],1,"gen",function(){
+  var askX=false;
+  var m=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  var xi=ri(-9,9);while(xi===0)xi=ri(-9,9);
+  var b=-m*xi;
+  var ans=askX?xi:b;
+  var eq="y = "+u4lin(m,b);
+  var sol=askX?
+    "The \\(x\\)-intercept is where the graph meets the horizontal axis, so set the output to zero and solve: \\[ \\begin{aligned} 0 &= "+u4lin(m,b)+" \\\\ "+(-b)+" &= "+u4num(m)+"x \\\\ x &= "+xi+" \\end{aligned} \\] The \\(x\\)-intercept is <b>\\("+xi+"\\)</b>, at the point \\("+u4pairS(xi,0)+"\\)":
+    "The \\(y\\)-intercept is where the graph meets the vertical axis, so use an input of zero: \\[ \\begin{aligned} y &= "+u4lin(m,b)+" \\\\ y &= "+u4num(m)+"(0) + ("+b+") \\\\ &= "+b+" \\end{aligned} \\] The \\(y\\)-intercept is <b>\\("+b+"\\)</b>, at the point \\("+u4pairS(0,b)+"\\)";
+  return numq("A linear relation is given by the equation \\("+eq+"\\). What is the value of the "+(askX?"\\(x\\)-intercept":"\\(y\\)-intercept")+" of its graph?",
+    ans,0.011,sol,{askX:askX,m:m,b:b,ans:ans});
+});
+
+/* ================= 18b. x-intercept from an equation, solved (4.28, L2, gen, num, CR 2; the solve family split from u4-intercepts under the ruling 8 principle, Nov 13, 2026) ================= */
+E("u4-intercepts-solve",4,["4.28"],2,"gen",function(){
+  var askX=true;
   var m=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
   var xi=ri(-9,9);while(xi===0)xi=ri(-9,9);
   var b=-m*xi;
@@ -3560,6 +3576,7 @@ E("u4-domain-decision",4,["4.10","4.12"],3,"gen",function(){
 // Cut verbatim from the standalone bank source
 // (math-1201-review/bank-src.js, lines 3076 to 3697).
 // CRMARKS: u5-problem-equation=2
+// CRMARKS: u5-problem-equation-solve=2
 // CRMARKS: u5-slope-rate=3
 // CRMARKS: u5-parallel-perp=2
 // CRMARKS: u5-slope-context=3
@@ -3618,9 +3635,40 @@ function u5eqCands(keyT,candTs){
   return out;
 }
 
-/* ================= 1. problem using an equation (4.17, L2, num, CR 2) ================= */
-E("u5-problem-equation",5,["4.17"],2,"gen",function(){
-  var mode=ri(1,4);
+/* ================= 1. problem using an equation: substitute to evaluate (4.17, L1, num, CR 2; the substitution family kept when u5-problem-equation was split under the ruling 8 principle, Nov 13, 2026) ================= */
+E("u5-problem-equation",5,["4.17"],1,"gen",function(){
+  var mode=2;
+  if(mode===1){
+    var m=pick([12,15,18,20,24,25,30,36]),b=pick([15,20,25,30,40,50,60]),x=ri(2,9),y=m*x+b;
+    return numq("A community hall charges a booking fee plus an hourly rate. The total cost, in dollars, is given by \\(C = "+m+"h + "+b+"\\), where \\(h\\) is the number of hours booked. A group pays "+y+" dollars in total. For how many hours did the group book the hall?",
+      x,0.001,
+      "Set the total cost equal to \\("+y+"\\) and solve for \\(h\\): \\[ \\begin{aligned} "+y+" &= "+m+"h + "+b+" \\\\ "+(y-b)+" &= "+m+"h \\\\ h &= "+x+" \\end{aligned} \\] The group booked the hall for <b>\\("+x+"\\) hours</b>.",
+      {mode:mode,m:m,b:b,given:y,ans:x});
+  }
+  if(mode===2){
+    var m2=pick([8,10,12,14,15,16,20,25]),b2=pick([20,30,40,50,60,80,100]),t=ri(2,12),ans=m2*t+b2;
+    return numq("A water tank is being filled. The volume of water in the tank, in litres, is given by \\(V = "+m2+"t + "+b2+"\\), where \\(t\\) is the time in minutes since filling started. What is the volume of water in the tank after \\("+t+"\\) minutes?",
+      ans,0.001,
+      "Substitute \\(t = "+t+"\\) into the equation: \\[ \\begin{aligned} V &= "+m2+"("+t+") + "+b2+" \\\\ &= "+(m2*t)+" + "+b2+" \\\\ &= "+ans+" \\end{aligned} \\] The volume is <b>\\("+ans+"\\) litres</b>.",
+      {mode:mode,m:m2,b:b2,given:t,ans:ans});
+  }
+  if(mode===3){
+    var p=pick([8,9,10,11,12,14,15]),q=pick([5,6,7,8,9,10]),a=ri(2,8),c=ri(2,9),tot=p*a+q*c;
+    return numq("Adult tickets cost "+p+" dollars each and child tickets cost "+q+" dollars each. The total cost, in dollars, is given by \\(T = "+p+"a + "+q+"c\\), where \\(a\\) is the number of adult tickets and \\(c\\) is the number of child tickets. A group pays "+tot+" dollars in total and buys "+a+" adult tickets. How many child tickets does the group buy?",
+      c,0.001,
+      "Substitute the total and the number of adult tickets, then solve for \\(c\\): \\[ \\begin{aligned} "+tot+" &= "+p+"("+a+") + "+q+"c \\\\ "+tot+" &= "+(p*a)+" + "+q+"c \\\\ "+(tot-p*a)+" &= "+q+"c \\\\ c &= "+c+" \\end{aligned} \\] The group buys <b>\\("+c+"\\) child tickets</b>.",
+      {mode:mode,p:p,q:q,given:a,tot:tot,ans:c});
+  }
+  var m4=pick([20,25,30,35,40,45,50,60]),b4=pick([30,40,50,60,80,100,120]),x4=ri(2,10),y4=m4*x4+b4;
+  return numq("A student is saving toward a goal. The total saved, in dollars, is given by \\(S = "+m4+"w + "+b4+"\\), where \\(w\\) is the number of weeks of saving. The student reaches a total of "+y4+" dollars. For how many weeks has the student been saving?",
+    x4,0.001,
+    "Set the total saved equal to \\("+y4+"\\) and solve for \\(w\\): \\[ \\begin{aligned} "+y4+" &= "+m4+"w + "+b4+" \\\\ "+(y4-b4)+" &= "+m4+"w \\\\ w &= "+x4+" \\end{aligned} \\] The student has been saving for <b>\\("+x4+"\\) weeks</b>.",
+    {mode:mode,m:m4,b:b4,given:y4,ans:x4});
+});
+
+/* ================= 1b. problem using an equation: solve for the other variable (4.17, L2, num, CR 2; the solve family split from u5-problem-equation under the ruling 8 principle, Nov 13, 2026) ================= */
+E("u5-problem-equation-solve",5,["4.17"],2,"gen",function(){
+  var mode=pick([1,3,4]);
   if(mode===1){
     var m=pick([12,15,18,20,24,25,30,36]),b=pick([15,20,25,30,40,50,60]),x=ri(2,9),y=m*x+b;
     return numq("A community hall charges a booking fee plus an hourly rate. The total cost, in dollars, is given by \\(C = "+m+"h + "+b+"\\), where \\(h\\) is the number of hours booked. A group pays "+y+" dollars in total. For how many hours did the group book the hall?",
@@ -5687,4 +5735,4 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-solve-triangle":3,"u7-two-triangles":2};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-solve-triangle":3,"u7-two-triangles":2};
