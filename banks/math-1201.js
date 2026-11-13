@@ -4704,6 +4704,9 @@ E("u6-word-problem",6,["4.54"],2,"gen",function(){
 // CRMARKS: u7-solve-triangle=3
 // CRMARKS: u7-two-triangles=2
 // CRMARKS: u7-elevation-decision=2
+// CRMARKS: u7-rope-angle=2
+// CRMARKS: u7-ramp-run=3
+// CRMARKS: u7-brace-leftover=2
 /* Math 1201 Review, Unit 7: Trigonometry (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u7. Degrees only. Every entry returns the same question
@@ -5460,6 +5463,117 @@ E("u7-choose-ratio",7,["7.3","7.4"],1,"gen",function(){
   return q;
 });
 
+/* ================= 13 to 15. authored CR items (Nov 13, 2026) =================
+   Replacement Level 2 constructed-response items, commissioned by
+   Jason after ruling 33 moved the four single-step computations
+   (u7-find-angle, u7-find-side, u7-find-hypotenuse, u7-pythagoras)
+   to Level 1 and dropped the Unit 7 exam-eligible CR pool to 10
+   marks against its 14-mark floor. Each entry is a varset whose
+   variants share one chained demand: a first computation feeds a
+   second, and only the final result is typed (textq, as in the CR
+   items of the sibling banks). u7trim prints a drawn value with at
+   most two decimals and no trailing zeros, for stems and solutions;
+   u7ans1 builds the accepted typed answers for a value reported to
+   the nearest tenth (the one-decimal form, plus the whole-number
+   form when the value is whole). */
+function u7trim(n){var r=Math.round(n*100)/100;return ""+r;}
+function u7ans1(v){var a=u7f1(v),out=[a];if(a.slice(-2)===".0")out.push(a.slice(0,-2));return out;}
+
+/* ================= 13. slant length and ground distance, find the angle (7.3, 7.7, L2, var text, CR 2) =================
+   The slant (rope, slide or string) and the horizontal distance are
+   given. The height comes first, by the Pythagorean theorem, and
+   feeds the tangent ratio that gives the angle: two linked steps. */
+function u7slantAngle(kind){
+  var scales,lo,hi,tries=0,D=null;
+  if(kind==="rope"){scales=[0.5,1,1.5];lo=3;hi=9;}
+  else if(kind==="slide"){scales=[0.5,1];lo=4;hi=11;}
+  else if(kind==="zip"){scales=[1,1.5,2,2.5,3];lo=12;hi=45;}
+  else{scales=[1,1.5,2,2.5,3];lo=18;hi=65;}
+  do{
+    tries++;
+    var t=pick(U7_TRIPLES),k=pick(scales),hyp=t[2]*k,ground,height;
+    if(pick([true,false])){ground=t[0]*k;height=t[1]*k;}else{ground=t[1]*k;height=t[0]*k;}
+    D={hyp:hyp,ground:ground,height:height,ang:Math.round(u7atanD(height/ground))};
+  }while((D.ang<20||D.ang>70||hyp<lo||hyp>hi)&&tries<120);
+  var stem;
+  if(kind==="rope")stem="A tent guy rope runs in a straight line from the top of a tent pole to a peg in level ground. The rope is \\("+u7trim(D.hyp)+"\\) m long, and the peg is \\("+u7trim(D.ground)+"\\) m from the base of the pole. Find the angle the rope makes with the ground, in degrees, to the nearest degree.";
+  else if(kind==="slide")stem="A playground slide runs in a straight line from the top of a platform down to level ground. The slide is \\("+u7trim(D.hyp)+"\\) m long, and its foot is \\("+u7trim(D.ground)+"\\) m horizontally from the base of the platform. Find the angle the slide makes with the ground, in degrees, to the nearest degree.";
+  else if(kind==="zip")stem="A zip line runs in a straight line from a launch platform to a landing point on level ground. The cable is \\("+u7trim(D.hyp)+"\\) m long, and the landing point is \\("+u7trim(D.ground)+"\\) m horizontally from the base of the platform. Find the angle the cable makes with the ground, in degrees, to the nearest degree.";
+  else stem="A kite string is tied to a stake in level ground and pulled taut in a straight line to the kite. The string is \\("+u7trim(D.hyp)+"\\) m long, and the kite is \\("+u7trim(D.ground)+"\\) m horizontally from the stake. Find the angle of elevation of the string, in degrees, to the nearest degree.";
+  var q=textq(stem,
+    [""+D.ang,D.ang+"°",D.ang+" degrees"],
+    "First find the height with the Pythagorean theorem, then use the tangent ratio with that height and the ground distance: \\[ \\begin{aligned} h^2 &= "+u7trim(D.hyp)+"^2 - "+u7trim(D.ground)+"^2 \\\\ h^2 &= "+u7trim(D.height*D.height)+" \\\\ h &= "+u7trim(D.height)+" \\\\ \\tan \\theta &= "+FR(u7trim(D.height),u7trim(D.ground))+" \\\\ \\theta &= \\tan^{-1}\\left("+FR(u7trim(D.height),u7trim(D.ground))+"\\right) \\\\ &\\approx "+D.ang+"^\\circ \\end{aligned} \\] The angle is <b>\\("+D.ang+"^\\circ\\)</b>.",
+    {kind:kind,hyp:D.hyp,ground:D.ground,height:D.height,ang:D.ang});
+  q.figure=u7triSceneSVG({vert:D.height,ground:D.ground,slant:D.hyp,vertLabel:"?",groundLabel:u7trim(D.ground)+" m",slantLabel:u7trim(D.hyp)+" m",dashedVert:kind==="kite"});
+  return q;
+}
+E("u7-rope-angle",7,["7.3","7.7"],2,"var",varset([
+  function(){return u7slantAngle("rope");},
+  function(){return u7slantAngle("slide");},
+  function(){return u7slantAngle("zip");},
+  function(){return u7slantAngle("kite");}
+]));
+
+/* ================= 14. rise and incline angle, find the horizontal distance (7.4, 7.5, L2, var text, CR 3) =================
+   The vertical rise and the incline angle are given. The incline
+   length comes first, from the sine ratio rearranged, and feeds
+   the cosine ratio that gives the horizontal distance: two linked
+   steps, the pattern of u7-solve-triangle carried into a scene. */
+function u7riseRun(kind){
+  var h,theta;
+  if(kind==="dock"){h=pick([1.0,1.1,1.2,1.3,1.4,1.5,1.6]);theta=pick([25,28,30,32,35]);}
+  else if(kind==="belt"){h=pick([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8]);theta=pick([25,28,30,32,35,38,40]);}
+  else{h=pick([3.6,4.2,4.8,5.4,6.0]);theta=pick([28,30,32,35]);}
+  var L=h/u7sinD(theta),run=L*u7cosD(theta),ans=u7r1(run);
+  var stem;
+  if(kind==="dock")stem="A loading ramp rises to a dock \\("+u7trim(h)+"\\) m above level ground. The ramp runs in a straight line and makes an angle of \\("+theta+"^\\circ\\) with the ground. How far, in metres, is the foot of the ramp from the base of the dock? Give your answer to the nearest tenth.";
+  else if(kind==="belt")stem="A conveyor belt carries gravel in a straight line up to the top of a storage bin \\("+u7trim(h)+"\\) m above level ground. The belt makes an angle of \\("+theta+"^\\circ\\) with the ground. How far, in metres, is the foot of the belt from the point on the ground directly below the top of the bin? Give your answer to the nearest tenth.";
+  else stem="An escalator rises \\("+u7trim(h)+"\\) m from one floor to the next, running in a straight line at an angle of \\("+theta+"^\\circ\\) to the horizontal. How far, in metres, does the escalator carry a passenger horizontally? Give your answer to the nearest tenth.";
+  var q=textq(stem,u7ans1(ans),
+    "The incline length comes first, from the sine ratio with the rise, rearranged; the horizontal distance then comes from that length and the cosine ratio: \\[ \\begin{aligned} \\sin "+theta+"^\\circ &= "+FR(u7trim(h),"L")+" \\\\ L &= "+FR(u7trim(h),"\\sin "+theta+"^\\circ")+" \\\\ &\\approx "+u7f1(L)+" \\\\ \\text{distance} &= "+u7f1(L)+" \\times \\cos "+theta+"^\\circ \\\\ &\\approx "+u7f1(ans)+" \\end{aligned} \\] The distance is <b>\\("+u7f1(ans)+"\\) m</b>.",
+    {kind:kind,h:h,theta:theta,L:L,run:run,ans:ans});
+  q.figure=u7triSceneSVG({vert:h,ground:run,slant:L,vertLabel:u7trim(h)+" m",groundLabel:"?",slantLabel:"?",angle:theta+"°"});
+  return q;
+}
+E("u7-ramp-run",7,["7.4","7.5"],2,"var",varset([
+  function(){return u7riseRun("dock");},
+  function(){return u7riseRun("belt");},
+  function(){return u7riseRun("escalator");}
+]));
+
+/* ================= 15. diagonal brace cut from a stock length (7.5, 7.7, L2, var text, CR 2) =================
+   The brace length comes from the Pythagorean theorem on the
+   rectangle; the answer is what the stated stock length leaves
+   after that cut, so the computation feeds a check against the
+   stock: two linked steps. */
+function u7braceLeft(kind){
+  var t,k,w,h,brace,tries=0;
+  do{
+    tries++;
+    t=pick(U7_TRIPLES);k=pick([0.5,1,1.5,2]);
+    w=t[0]*k;h=t[1]*k;
+    if(pick([true,false])){var sw=w;w=h;h=sw;}
+    brace=t[2]*k;
+  }while((Math.max(w,h)>3.6||brace>4.6)&&tries<120);
+  var off=pick([0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.2,1.5]);
+  var stock=brace+off;
+  var obj,stockNoun;
+  if(kind==="door"){obj="shed door";stockNoun="plank";}
+  else if(kind==="gate"){obj="garden gate";stockNoun="board";}
+  else{obj="trellis panel";stockNoun="strip of wood";}
+  var stem="A rectangular "+obj+" is \\("+u7trim(w)+"\\) m wide and \\("+u7trim(h)+"\\) m tall. A brace is cut to fit exactly along the diagonal, from one corner to the opposite corner. The brace is cut from a "+stockNoun+" \\("+u7trim(stock)+"\\) m long. How much of the "+stockNoun+", in metres, is left over? Give your answer to the nearest tenth.";
+  var q=textq(stem,u7ans1(off),
+    "The brace is the diagonal of the rectangle, so find its length with the Pythagorean theorem; the leftover is what the stock length leaves after that length is cut: \\[ \\begin{aligned} b^2 &= "+u7trim(w)+"^2 + "+u7trim(h)+"^2 \\\\ b^2 &= "+u7trim(brace*brace)+" \\\\ b &= "+u7trim(brace)+" \\\\ \\text{left over} &= "+u7trim(stock)+" - "+u7trim(brace)+" \\\\ &= "+u7f1(off)+" \\end{aligned} \\] The amount left over is <b>\\("+u7f1(off)+"\\) m</b>.",
+    {kind:kind,w:w,h:h,brace:brace,stock:stock,left:off});
+  q.figure=u7rectDiagSVG(w,h);
+  return q;
+}
+E("u7-brace-leftover",7,["7.5","7.7"],2,"var",varset([
+  function(){return u7braceLeft("door");},
+  function(){return u7braceLeft("gate");},
+  function(){return u7braceLeft("trellis");}
+]));
+
 /* ----- bank-fix.js ----- */
 // Math 1201 unit test pool fix additions (November 9, 2026)
 // Cut verbatim from the standalone bank source
@@ -5735,4 +5849,4 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-solve-triangle":3,"u7-two-triangles":2};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2};
