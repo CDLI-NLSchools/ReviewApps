@@ -1844,7 +1844,7 @@ E("u2-65-result-judgement",2,["PH11.6.5"],3,"gen",function(){
 
 /* ----- bank-u3.js ----- */
 // Diagram figures (Phase C, Nov 2026): spring graphs and scenes, half life decay curve, pendulum and slope scenes added where the source types carried diagrams; see bank-helpers.js p22 helpers.
-// Tranche 6 (Nov 2026): energy bar charts (p22Bars), ramp diagrams (p22Ramp), the angled pull scene and further spring scenes added attach-only. u3-76-friction-cr carries its ramp only on draws whose slope length exceeds the height, the only draws whose slope geometry can exist.
+// Tranche 6 (Nov 2026): energy bar charts (p22Bars), ramp diagrams (p22Ramp), the angled pull scene and further spring scenes added attach-only. u3-76-friction-cr originally carried its ramp only on draws whose slope length exceeded the height; a guard in that entry (Nov 2026) now draws the slope length above the height on every draw, so the ramp attaches on all draws.
 // CRMARKS: u3-75-energy-cr=5
 // CRMARKS: u3-711-shm-energy-cr=4
 // CRMARKS: u3-76-friction-cr=4
@@ -2140,7 +2140,10 @@ E("u3-75-pendulum",3,["PH11.7.5"],3,"gen",function(){
 
 E("u3-76-friction-cr",3,["PH11.7.6"],2,"gen",function(){
   var m=sfR(rf(3,8),3),h=sfR(rf(3,7),3),w=sfR(m*9.8,4),eg=sfR(w*h,3);
-  var f=sfR(rf(10,25),3),s=sfR(rf(3,6),3),Q=sfR(f*s,3);
+  var f=sfR(rf(10,25),3),s=sfR(rf(3,6),3);
+  // Guard (Nov 2026): a slope length at or below the height cannot exist, so redraw it above the height; if that would make friction heat reach the starting potential energy, cap it just below that bound instead.
+  if(s<=h){s=sfR(h+rf(0.5,3),3);if(f*s>=0.98*eg)s=sfR(0.95*eg/f,3);}
+  var Q=sfR(f*s,3);
   var ekf=sfR(eg-Q,3),twoEk=sfR(2*ekf,4),v2=sfR(twoEk/m,4),v=sfR(Math.sqrt(v2),3);
   var q=numq("A "+gF(m)+" kg block starts from rest at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. As it slides down a slope of length "+gF(s)+" m, friction of "+gF(f)+" N acts on it. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Use conservation of energy with a heat term. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N. The starting gravitational potential energy is "+iF(w)+" N × "+gF(h)+" m = "+F3(eg)+" J. Friction produces heat of "+gF(f)+" N × "+gF(s)+" m = "+F3(Q)+" J. The kinetic energy at the bottom is "+F3(eg)+" J - "+F3(Q)+" J = "+F3(ekf)+" J, so the account balances: potential energy at the top equals kinetic energy at the bottom plus heat. Twice the final kinetic energy is 2 × "+F3(ekf)+" J = "+iF(twoEk)+" J. Then "+iF(twoEk)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,h:h,f:f,s:s});
