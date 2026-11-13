@@ -1096,6 +1096,19 @@ E("u2-repeating-decimal",2,["2.10"],2,"gen",function(){
     {W:W,head:head,block:block,h:h,p:p});
 });
 
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess a Math 2200 outcome (the sum of an infinite geometric series, indicator 4.71), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-3208.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u2-repeating-decimal"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ----- bank-u3.js ----- */
 // Math 3208 Unit 3 Rational Functions question bank
 // CRMARKS: u3-end-behaviour=2
