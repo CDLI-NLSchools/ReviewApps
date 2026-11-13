@@ -729,6 +729,27 @@ function p32figPhoto(lamLabel,subLabel,showElectron){
   if(subLabel)s+=p32t(180,196,subLabel,10,false);
   return p32svg(340,206,s,"Photoelectric diagram: light of the drawn wavelength falls on a metal surface and electrons are emitted");
 }
+/* Photoelectric graph (Tranche 6, Nov 2026): maximum kinetic energy
+   against frequency for a metal of work function phi (eV, from the
+   draw). The line is KEmax = hf - phi: its intercept on the energy axis
+   is -phi, labelled with the draw's value because the stem states phi.
+   The threshold frequency, where the line crosses zero, is what the
+   attached questions ask for, so it is marked "?" and the axes carry no
+   scale: the crossing is drawn schematically and cannot be read off. */
+function p32figPhotoGraph(phi){
+  var OX=74,OY=140,s="";
+  s+=p32arrow(OX,196,OX,28,FIG_INK,1.8)+p32arrow(OX,OY,314,OY,FIG_INK,1.8);
+  s+=p32t(80,16,"maximum kinetic energy (eV)",11,true,"start");
+  s+=p32t(310,158,"frequency f",11,true,"end");
+  s+=p32line(OX,192,292,42,FIG_ACC,2.6);
+  s+=p32dot(150,OY,4,FIG_ALT);
+  s+=p32line(150,OY,150,166,FIG_INK,1.3,true);
+  s+=p32t(150,180,"f\u2080 = ?",11,true);
+  s+=p32t(OX-6,196,"-"+gF(phi)+" eV",10,false,"end");
+  s+=p32t(202,58,"KEmax = hf - \u03C6",11,false);
+  s+=p32t(314,214,"threshold marked ?, drawn schematically",9,false,"end");
+  return p32svg(340,222,s,"Photoelectric graph: maximum kinetic energy against frequency is a straight line whose intercept is minus the work function of the metal; the threshold frequency where the line crosses zero is marked as the unknown and is not drawn to scale");
+}
 function p32figStandingWave(n,label){
   var cx=168, cy=102, R=62, pts=[];
   for(var i=0;i<=72;i++){var a=i/72*2*Math.PI, rr=R+7*Math.sin(n*a);pts.push(fmt(cx+rr*Math.cos(a),1)+","+fmt(cy+rr*Math.sin(a),1));}
@@ -3301,6 +3322,10 @@ E("u3-710-lift-motor", 3, ["PH12.7.10"], 3, "gen", function(){
 // Diagram figures (Phase C, Nov 2026): entries whose source question type
 // carried a diagram now set qq3204.figure from the draw's own values via the
 // p32fig* helpers in bank-helpers.js. Asked unknowns are labelled "?".
+// Tranche 6 (Nov 2026): u4-82-threshold-frequency gains the photoelectric
+// graph (p32figPhotoGraph). The Unit 4 energy level diagrams were already
+// complete on the 8.5 entries; u4-85-absorption-cr keeps levels with no
+// arrow, because the arrow would name the level the question asks for.
 // Physics 3204 Unit 4 Introduction to Quantum Physics question bank
 // CRMARKS: u4-82-photoelectric-cr=4
 // CRMARKS: u4-82-threshold-cr=3
@@ -3435,10 +3460,10 @@ E("u4-82-threshold-frequency",4,["PH12.8.2"],2,"gen",function(){
   var phi=sfR(rf(1.90,4.60),3);
   var f0=phi*PHYS_E/PHYS_H;
   var ans=sfR(f0,3);
-  return numq("A metal has a work function of "+gF(phi)+" eV. Calculate the threshold frequency of the metal. Give your answer in hertz (Hz).",
+  var qq3204 = numq("A metal has a work function of "+gF(phi)+" eV. Calculate the threshold frequency of the metal. Give your answer in hertz (Hz).",
     ans,Math.max(0.02*Math.abs(ans),1e12),
     "At the threshold frequency the photon energy exactly equals the work function, so f\u2080 = \u03C6 / h. First convert the work function to joules by multiplying by 1.60 \u00D7 10\u207B\u00B9\u2079 J per eV, then divide by the Planck constant. f\u2080 = "+F3(f0)+" Hz. Light below this frequency cannot eject electrons from this metal, however bright it is.",
-    {phi:phi});
+    {phi:phi}); qq3204.figure = p32figPhotoGraph(phi); return qq3204;
 });
 
 E("u4-82-intensity-frequency",4,["PH12.8.2"],2,"var",varset([

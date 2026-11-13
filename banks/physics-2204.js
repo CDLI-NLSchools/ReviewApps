@@ -394,6 +394,64 @@ function p22Shape(kind,note){
   if(note)o+=p22Txt((L+R)/2,20,note,11,false);
   return p22Svg(W,H,o,"Distance time graph diagram");
 }
+/* Energy bar chart (Tranche 6, Nov 2026). bars: [{t (category label),
+   v (numeric value, sets the height), vl (value label printed above the
+   bar)}]. Heights are proportional to the values. Callers pass only
+   values the stem itself states, so the chart never displays a computed
+   answer or a computed remainder as a bar. */
+function p22Bars(bars){
+  var W=340,H=212,BASE=164,MAXH=112,mx=0;
+  bars.forEach(function(b){mx=Math.max(mx,b.v);});
+  var cols=[P22_ACC,P22_ALT,"#476b8a"];
+  var o=p22Txt(22,18,"energy (J)",11,true,"start");
+  var slot=(W-76)/bars.length,bw=Math.min(88,slot*0.52);
+  bars.forEach(function(b,i){
+    var cx=48+slot*i+slot/2,bh=MAXH*b.v/mx;
+    o+='<rect x="'+p22n(cx-bw/2)+'" y="'+p22n(BASE-bh)+'" width="'+p22n(bw)+'" height="'+p22n(bh)+'" fill="'+cols[i%3]+'" stroke="'+P22_INK+'" stroke-width="1.6"/>';
+    o+=p22Txt(cx,BASE-bh-12,b.vl,12,true);
+    o+=p22Txt(cx,BASE+17,b.t,11,false);
+  });
+  o+=p22Line(30,BASE,324,BASE,2);
+  return p22Svg(W,H,o,"Energy bar chart: bar heights are proportional to the energy values labelled, which are the values stated in the question");
+}
+/* Ramp and incline diagram (Tranche 6, Nov 2026). cfg: hLabel (label for
+   the full height bracket), h and h2 with h2Label (a second, lower point
+   on the slope, its height bracket drawn at the right), sLabel (label
+   along the slope), ref (mark the bottom as the reference level).
+   When cfg.s is given and longer than cfg.h, the slope is drawn to
+   scale from the draw's own height and slope length; otherwise the
+   slope shape is the bank's standard schematic (as in p22Incline) and
+   only the labels carry the draw's values. The unknown a question asks
+   for is never encoded: a caller asking for a height passes "?" as its
+   label and no s, so the shape stays schematic. */
+function p22Ramp(cfg){
+  var W=340,H=200,GY=168,TX=66,Hpx=110,RUN=222,toScale=false;
+  if(cfg.h&&cfg.s&&cfg.s>cfg.h){
+    var run=Math.sqrt(cfg.s*cfg.s-cfg.h*cfg.h),k=Math.min(110/cfg.h,222/run);
+    Hpx=cfg.h*k; RUN=run*k; toScale=true;
+  }
+  var Tx=TX,Ty=GY-Hpx,Bx=TX+RUN;
+  var o=p22Line(26,GY,322,GY,2.4);
+  o+=p22Line(Tx,Ty,Tx,GY,1.4,true);
+  o+=p22Line(Tx,Ty,Bx,GY,2.6);
+  var fx=Tx+0.10*RUN,fy=Ty+0.10*Hpx;
+  o+=p22Rect(fx-2,fy-17,32,17,"#ffffff");
+  o+=p22Line(46,Ty,46,GY,1.6)+p22Line(41,Ty,51,Ty,1.6)+p22Line(41,GY,51,GY,1.6);
+  o+=p22Txt(40,(Ty+GY)/2,cfg.hLabel,12,true,"end");
+  if(cfg.h2Label&&cfg.h&&cfg.h2){
+    var f=(cfg.h-cfg.h2)/cfg.h,Px=Tx+RUN*f,Py=Ty+Hpx*f;
+    o+='<circle cx="'+p22n(Px)+'" cy="'+p22n(Py)+'" r="3.4" fill="'+P22_INK+'"/>';
+    o+=p22Line(Px,Py,304,Py,1.2,true);
+    o+=p22Line(304,Py,304,GY,1.6)+p22Line(299,Py,309,Py,1.6)+p22Line(299,GY,309,GY,1.6);
+    o+=p22Txt(Px-8,Py-12,cfg.h2Label,11,true,"end");
+  }
+  if(cfg.sLabel){
+    var mxp=(Tx+Bx)/2,myp=(Ty+GY)/2,len=Math.sqrt(RUN*RUN+Hpx*Hpx);
+    o+=p22Txt(mxp+Hpx/len*17,myp-RUN/len*17,cfg.sLabel,12,true);
+  }
+  if(cfg.ref)o+=p22Txt(318,190,"bottom (reference level)",10,false,"end");
+  return p22Svg(W,H,o,"Ramp diagram: a block at the top of a slope, with the heights and slope length labelled as in the question"+(toScale?"; the slope is drawn to scale from those values":""));
+}
 /* Half life decay curve through the three points the stem states. */
 function p22Decay(M0,T,unit){
   var pts=[];
@@ -1786,6 +1844,7 @@ E("u2-65-result-judgement",2,["PH11.6.5"],3,"gen",function(){
 
 /* ----- bank-u3.js ----- */
 // Diagram figures (Phase C, Nov 2026): spring graphs and scenes, half life decay curve, pendulum and slope scenes added where the source types carried diagrams; see bank-helpers.js p22 helpers.
+// Tranche 6 (Nov 2026): energy bar charts (p22Bars), ramp diagrams (p22Ramp), the angled pull scene and further spring scenes added attach-only. u3-76-friction-cr carries its ramp only on draws whose slope length exceeds the height, the only draws whose slope geometry can exist.
 // CRMARKS: u3-75-energy-cr=5
 // CRMARKS: u3-711-shm-energy-cr=4
 // CRMARKS: u3-76-friction-cr=4
@@ -1810,10 +1869,11 @@ E("u3-71-work-parallel",3,["PH11.7.1"],2,"gen",function(){
 E("u3-71-work-angle",3,["PH11.7.1"],2,"gen",function(){
   var F=sfR(rf(30,90),3),d=sfR(rf(3,12),3),ang=pick([25,30,35,40,50,55,60]);
   var rad=ang*Math.PI/180,Fp=sfR(F*Math.cos(rad),4),W=sfR(Fp*d,3);
-  return mcq("A rope pulls a sled with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal. The sled moves "+gF(d)+" m across the snow. How much work does the rope do?",
+  var q=mcq("A rope pulls a sled with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal. The sled moves "+gF(d)+" m across the snow. How much work does the rope do?",
     F3(W)+" J",
     [F3(F*d)+" J",F3(F*d*Math.sin(rad))+" J",F3(W/2)+" J"],
     "Only the component of the force along the motion does work. That component is "+iF(Fp)+" N. Then "+iF(Fp)+" N × "+gF(d)+" m = "+F3(W)+" J. The rope does "+F3(W)+" J of work.",{F:F,d:d,ang:ang});
+  q.figure=p22AngScene(gF(F)+" N",ang,"pull",null);return q;
 });
 
 E("u3-71-work-opposing",3,["PH11.7.1"],1,"var",varset([
@@ -1974,8 +2034,9 @@ E("u3-73-friction-stop",3,["PH11.7.3"],3,"gen",function(){
 
 E("u3-74-mechanical-sum",3,["PH11.7.4"],1,"gen",function(){
   var ek=sfR(rf(20,300),3),eg=sfR(rf(20,300),3),em=sfR(ek+eg,3);
-  return numq("At one point in its motion an object has a kinetic energy of "+gF(ek)+" J and a gravitational potential energy of "+gF(eg)+" J, measured from the stated reference level. What is its mechanical energy at that point? Give your answer in J.",em,Math.max(0.02*Math.abs(em),1e-9),
+  var q=numq("At one point in its motion an object has a kinetic energy of "+gF(ek)+" J and a gravitational potential energy of "+gF(eg)+" J, measured from the stated reference level. What is its mechanical energy at that point? Give your answer in J.",em,Math.max(0.02*Math.abs(em),1e-9),
   "Mechanical energy is the sum of the kinetic and potential energies: Em = Ek + Eg. "+gF(ek)+" J + "+gF(eg)+" J = "+F3(em)+" J. The mechanical energy is "+F3(em)+" J.",{ek:ek,eg:eg});
+  q.figure=p22Bars([{t:"kinetic",v:ek,vl:F3(ek)+" J"},{t:"gravitational",v:eg,vl:F3(eg)+" J"}]);return q;
 });
 
 E("u3-74-mechanical-concept",3,["PH11.7.4"],1,"var",varset([
@@ -2014,8 +2075,9 @@ E("u3-74-mechanical-concept",3,["PH11.7.4"],1,"var",varset([
 
 E("u3-74-find-ek",3,["PH11.7.4"],2,"gen",function(){
   var eg=sfR(rf(50,200),3),em=sfR(eg+rf(50,250),3),ek=sfR(em-eg,3);
-  return numq("An object has a mechanical energy of "+gF(em)+" J. At the point of interest its gravitational potential energy, measured from the stated reference level, is "+gF(eg)+" J. What is its kinetic energy at that point? Give your answer in J.",ek,Math.max(0.02*Math.abs(ek),1e-9),
+  var q=numq("An object has a mechanical energy of "+gF(em)+" J. At the point of interest its gravitational potential energy, measured from the stated reference level, is "+gF(eg)+" J. What is its kinetic energy at that point? Give your answer in J.",ek,Math.max(0.02*Math.abs(ek),1e-9),
   "Mechanical energy is the sum: Em = Ek + Eg, so Ek = Em - Eg. "+gF(em)+" J - "+gF(eg)+" J = "+F3(ek)+" J. The kinetic energy is "+F3(ek)+" J.",{em:em,eg:eg});
+  q.figure=p22Bars([{t:"mechanical",v:em,vl:F3(em)+" J"},{t:"gravitational",v:eg,vl:F3(eg)+" J"}]);return q;
 });
 
 E("u3-74-find-height",3,["PH11.7.4"],3,"gen",function(){
@@ -2034,13 +2096,15 @@ E("u3-75-energy-cr",3,["PH11.7.5"],3,"gen",function(){
     var h1=sfR(rf(6,14),3),h2=sfR(rf(1,Math.max(2,h1-4)),3);
     var dh=sfR(h1-h2,3),v2=sfR(19.6*dh,4),v=sfR(Math.sqrt(v2),3);
     var ctx=pick(["A skier starts from rest at the top of a slope","A toboggan starts from rest at the top of a hill","A cart starts from rest at the top of a ramp"]);
-    return numq(ctx+" "+gF(h1)+" m above the bottom, taken as the reference level, and reaches a point "+gF(h2)+" m above the bottom. Friction is ignored. What is its speed at the lower point? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+    var q=numq(ctx+" "+gF(h1)+" m above the bottom, taken as the reference level, and reaches a point "+gF(h2)+" m above the bottom. Friction is ignored. What is its speed at the lower point? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
     "Mechanical energy is conserved when friction is ignored, and gravitational and kinetic changes are the only ones here. The drop in height is "+gF(h1)+" m - "+gF(h2)+" m = "+F3(dh)+" m. The lost gravitational potential energy becomes kinetic energy, so the speed squared is 19.6 m/s^2 × "+F3(dh)+" m = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{h1:h1,h2:h2});
+    q.figure=p22Ramp({h:h1,h2:h2,hLabel:gF(h1)+" m",h2Label:gF(h2)+" m",ref:true});return q;
   }
   var v=sfR(rf(4,12),3),v2=sfR(v*v,4),h=sfR(v2/19.6,3);
   var ctx2=pick(["A skier starts from rest and wants to reach the bottom of a slope","A sled starts from rest and wants to reach the foot of a hill","A cart starts from rest and wants to reach the bottom of a ramp"]);
-  return numq(ctx2+" travelling at "+gF(v)+" m/s. Friction is ignored and the bottom is the reference level. From what height above the bottom must it start? Give your answer in m.",h,Math.max(0.02*Math.abs(h),1e-9),
+  var q2=numq(ctx2+" travelling at "+gF(v)+" m/s. Friction is ignored and the bottom is the reference level. From what height above the bottom must it start? Give your answer in m.",h,Math.max(0.02*Math.abs(h),1e-9),
   "Mechanical energy is conserved when friction is ignored. At the bottom all the starting gravitational potential energy has become kinetic energy, so the height is the speed squared divided by 19.6 m/s^2. The speed squared is "+gF(v)+" m/s × "+gF(v)+" m/s = "+iF(v2)+" m^2/s^2. Then "+iF(v2)+" m^2/s^2 / 19.6 m/s^2 = "+F3(h)+" m. It must start "+F3(h)+" m above the bottom.",{v:v});
+  q2.figure=p22Ramp({hLabel:"?",ref:true});return q2;
 });
 
 E("u3-75-drop-speed",3,["PH11.7.5"],2,"gen",function(){
@@ -2078,8 +2142,9 @@ E("u3-76-friction-cr",3,["PH11.7.6"],2,"gen",function(){
   var m=sfR(rf(3,8),3),h=sfR(rf(3,7),3),w=sfR(m*9.8,4),eg=sfR(w*h,3);
   var f=sfR(rf(10,25),3),s=sfR(rf(3,6),3),Q=sfR(f*s,3);
   var ekf=sfR(eg-Q,3),twoEk=sfR(2*ekf,4),v2=sfR(twoEk/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg block starts from rest at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. As it slides down a slope of length "+gF(s)+" m, friction of "+gF(f)+" N acts on it. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg block starts from rest at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. As it slides down a slope of length "+gF(s)+" m, friction of "+gF(f)+" N acts on it. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Use conservation of energy with a heat term. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N. The starting gravitational potential energy is "+iF(w)+" N × "+gF(h)+" m = "+F3(eg)+" J. Friction produces heat of "+gF(f)+" N × "+gF(s)+" m = "+F3(Q)+" J. The kinetic energy at the bottom is "+F3(eg)+" J - "+F3(Q)+" J = "+F3(ekf)+" J, so the account balances: potential energy at the top equals kinetic energy at the bottom plus heat. Twice the final kinetic energy is 2 × "+F3(ekf)+" J = "+iF(twoEk)+" J. Then "+iF(twoEk)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,h:h,f:f,s:s});
+  if(s>h)q.figure=p22Ramp({h:h,s:s,hLabel:gF(h)+" m",sLabel:gF(s)+" m",ref:true});return q;
 });
 
 E("u3-76-heat-friction",3,["PH11.7.6"],2,"gen",function(){
@@ -2129,17 +2194,19 @@ E("u3-76-final-speed-heat",3,["PH11.7.6"],3,"gen",function(){
   var w=sfR(m*9.8,4),eg=sfR(w*h,3);
   var hm=sfR(0.5*m,4),v2i=sfR(vi*vi,4),eki=sfR(hm*v2i,3);
   var etot=sfR(eki+eg,3),ekf=sfR(etot-Q,3),twoEk=sfR(2*ekf,4),v2=sfR(twoEk/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg cart is moving at "+gF(vi)+" m/s at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. It slides to the bottom, and friction produces "+gF(Q)+" J of heat during the slide. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg cart is moving at "+gF(vi)+" m/s at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. It slides to the bottom, and friction produces "+gF(Q)+" J of heat during the slide. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Start with the total energy at the top. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N, so the gravitational potential energy is "+iF(w)+" N × "+gF(h)+" m = "+F3(eg)+" J. Half the mass is 0.500 × "+gF(m)+" kg = "+iF(hm)+" kg. The initial speed squared is "+gF(vi)+" m/s × "+gF(vi)+" m/s = "+iF(v2i)+" m^2/s^2, so the initial kinetic energy is "+iF(hm)+" kg × "+iF(v2i)+" m^2/s^2 = "+F3(eki)+" J. The total at the top is "+F3(eki)+" J + "+F3(eg)+" J = "+F3(etot)+" J. After the heat loss, the kinetic energy at the bottom is "+F3(etot)+" J - "+gF(Q)+" J = "+F3(ekf)+" J. Twice that is 2 × "+F3(ekf)+" J = "+iF(twoEk)+" J. Then "+iF(twoEk)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,vi:vi,h:h,Q:Q});
+  q.figure=p22Ramp({h:h,hLabel:gF(h)+" m",ref:true});return q;
 });
 
 E("u3-76-energy-account",3,["PH11.7.6"],3,"gen",function(){
   var ef=sfR(rf(90,200),3),Q0=sfR(rf(30,70),3),ei=sfR(ef+Q0,3),Q=sfR(ei-ef,3);
   var ctx=pick(["A block slides down a slope and friction acts.","A sled comes down a hill and friction acts.","A cart rolls down a ramp and friction acts."]);
-  return mcq(ctx+" The total mechanical energy at the top is "+gF(ei)+" J and the kinetic energy at the bottom is "+gF(ef)+" J. How much heat was produced by friction?",
+  var q=mcq(ctx+" The total mechanical energy at the top is "+gF(ei)+" J and the kinetic energy at the bottom is "+gF(ef)+" J. How much heat was produced by friction?",
     F3(Q)+" J",
     [F3(ef)+" J",F3(ei)+" J",F3(ei+ef)+" J"],
     "The energy account must balance. The starting total is split between the kinetic energy at the bottom and the heat produced, so the heat is "+gF(ei)+" J - "+gF(ef)+" J = "+F3(Q)+" J.",{ei:ei,ef:ef});
+  q.figure=p22Bars([{t:"total at top",v:ei,vl:F3(ei)+" J"},{t:"kinetic at bottom",v:ef,vl:F3(ef)+" J"}]);return q;
 });
 
 /* ---------- 7.7 Efficiency ---------- */
@@ -2353,22 +2420,25 @@ E("u3-711-shm-energy-cr",3,["PH11.7.11"],3,"gen",function(){
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),x2=sfR(x*x,4);
   var etot=sfR(halfk*A2,3),es=sfR(halfk*x2,3),ke=sfR(etot-es,3);
   var where=branch==="table"?"on a frictionless table":"on a smooth horizontal track";
-  return numq("A mass oscillates "+where+" on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its kinetic energy when it is "+gF(x)+" m from equilibrium? Give your answer in J.",ke,Math.max(0.02*Math.abs(ke),1e-9),
+  var q=numq("A mass oscillates "+where+" on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its kinetic energy when it is "+gF(x)+" m from equilibrium? Give your answer in J.",ke,Math.max(0.02*Math.abs(ke),1e-9),
   "The total energy is set by the amplitude, where all the energy is elastic potential energy. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The amplitude squared is "+gF(A)+" m × "+gF(A)+" m = "+iF(A2)+" m^2, so the total energy is "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J. At the stated displacement, the displacement squared is "+gF(x)+" m × "+gF(x)+" m = "+iF(x2)+" m^2, so the elastic potential energy is "+iF(halfk)+" N/m × "+iF(x2)+" m^2 = "+F3(es)+" J. The rest is kinetic: "+F3(etot)+" J - "+F3(es)+" J = "+F3(ke)+" J. The kinetic energy is "+F3(ke)+" J.",{k:k,A:A,x:x});
+  q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
 E("u3-711-elastic-pe",3,["PH11.7.11"],2,"gen",function(){
   var k=sfR(rf(20,150),3),x=sfR(rf(0.05,0.35),3);
   var halfk=sfR(0.5*k,4),x2=sfR(x*x,4),es=sfR(halfk*x2,3);
-  return numq("A spring with spring constant "+gF(k)+" N/m is stretched by "+gF(x)+" m. What is the elastic potential energy stored in the spring? Give your answer in J.",es,Math.max(0.02*Math.abs(es),1e-9),
+  var q=numq("A spring with spring constant "+gF(k)+" N/m is stretched by "+gF(x)+" m. What is the elastic potential energy stored in the spring? Give your answer in J.",es,Math.max(0.02*Math.abs(es),1e-9),
   "Elastic potential energy is Es = 1/2 k x^2. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The stretch squared is "+gF(x)+" m × "+gF(x)+" m = "+iF(x2)+" m^2. Then "+iF(halfk)+" N/m × "+iF(x2)+" m^2 = "+F3(es)+" J. The elastic potential energy is "+F3(es)+" J.",{k:k,x:x});
+  q.figure=p22Spring(gF(x)+" m",null);return q;
 });
 
 E("u3-711-total-energy",3,["PH11.7.11"],2,"gen",function(){
   var k=sfR(rf(20,150),3),A=sfR(rf(0.08,0.35),3);
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),etot=sfR(halfk*A2,3);
-  return numq("A mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is the total mechanical energy of the system? Give your answer in J.",etot,Math.max(0.02*Math.abs(etot),1e-9),
+  var q=numq("A mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is the total mechanical energy of the system? Give your answer in J.",etot,Math.max(0.02*Math.abs(etot),1e-9),
   "At the amplitude the mass is momentarily at rest, so all the energy is elastic potential energy and that amount is the total. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The amplitude squared is "+gF(A)+" m × "+gF(A)+" m = "+iF(A2)+" m^2. Then "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J. The total mechanical energy is "+F3(etot)+" J.",{k:k,A:A});
+  q.figure=p22Spring("amplitude "+gF(A)+" m",null);return q;
 });
 
 E("u3-711-speed-at-x",3,["PH11.7.11"],3,"gen",function(){
@@ -2376,16 +2446,18 @@ E("u3-711-speed-at-x",3,["PH11.7.11"],3,"gen",function(){
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),x2=sfR(x*x,4);
   var etot=sfR(halfk*A2,3),es=sfR(halfk*x2,3),ke=sfR(etot-es,3);
   var twoKe=sfR(2*ke,4),v2=sfR(twoKe/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed when it is "+gF(x)+" m from equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed when it is "+gF(x)+" m from equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Find the kinetic energy at that displacement first. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The total energy, from the amplitude, is "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J, using the amplitude squared, "+iF(A2)+" m^2. The elastic potential energy at the displacement is "+iF(halfk)+" N/m × "+iF(x2)+" m^2 = "+F3(es)+" J, using the displacement squared, "+iF(x2)+" m^2. The kinetic energy is "+F3(etot)+" J - "+F3(es)+" J = "+F3(ke)+" J. Twice the kinetic energy is 2 × "+F3(ke)+" J = "+iF(twoKe)+" J. Then "+iF(twoKe)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,k:k,A:A,x:x});
+  q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
 E("u3-711-speed-equilibrium",3,["PH11.7.11"],3,"gen",function(){
   var m=sfR(rf(0.5,3),3),k=sfR(rf(20,100),3),A=sfR(rf(0.10,0.35),3);
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),etot=sfR(halfk*A2,3);
   var twoE=sfR(2*etot,4),v2=sfR(twoE/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed as it passes through equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed as it passes through equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "At equilibrium the elastic potential energy is zero, so all the total energy is kinetic there. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The amplitude squared is "+gF(A)+" m × "+gF(A)+" m = "+iF(A2)+" m^2, so the total energy is "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J. Twice the total energy is 2 × "+F3(etot)+" J = "+iF(twoE)+" J. Then "+iF(twoE)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,k:k,A:A});
+  q.figure=p22Spring("amplitude "+gF(A)+" m",null);return q;
 });
 
 /* ---------- 7.12 Elastic and inelastic collisions ---------- */
@@ -2426,8 +2498,9 @@ E("u3-712-classify-mcq",3,["PH11.7.12"],3,"gen",function(){
 
 E("u3-712-ke-lost",3,["PH11.7.12"],2,"gen",function(){
   var kei=sfR(rf(150,600),3),kef=sfR(kei*rf(0.3,0.7),3),lost=sfR(kei-kef,3);
-  return numq("In a collision, the total kinetic energy of the objects is "+gF(kei)+" J before the collision and "+gF(kef)+" J after the collision. How much kinetic energy is lost in the collision? Give your answer in J.",lost,Math.max(0.02*Math.abs(lost),1e-9),
+  var q=numq("In a collision, the total kinetic energy of the objects is "+gF(kei)+" J before the collision and "+gF(kef)+" J after the collision. How much kinetic energy is lost in the collision? Give your answer in J.",lost,Math.max(0.02*Math.abs(lost),1e-9),
   "The kinetic energy lost is the drop in kinetic energy. "+gF(kei)+" J - "+gF(kef)+" J = "+F3(lost)+" J. The collision loses "+F3(lost)+" J of kinetic energy, so it is not elastic.",{kei:kei,kef:kef});
+  q.figure=p22Bars([{t:"before",v:kei,vl:F3(kei)+" J"},{t:"after",v:kef,vl:F3(kef)+" J"}]);return q;
 });
 
 E("u3-712-which-law",3,["PH11.7.12"],1,"var",varset([
