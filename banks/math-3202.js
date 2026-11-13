@@ -4501,6 +4501,19 @@ var BRIDGE_SRC={
 };
 BANK.forEach(function(e){ var s=BRIDGE_SRC[e.id]; if(s){ e.bridging=true; e.bridgeSrc=s; } });
 
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 1202 primary trigonometric ratio outcomes (indicators 5.1 to 5.6), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-3202.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u9r-ratio-value","u9r-find-side","u9r-find-side-workplace","u9r-find-angle","u9r-elevation-depression","u9r-reasonable-result"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ----- bank-u10.js ----- */
 // Math 3202 Unit 10 Probability question bank
 // CRMARKS: u10-prob-data-cr=3
