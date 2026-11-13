@@ -3213,6 +3213,7 @@ E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
 // CRMARKS: u8-perm-r=1
 // CRMARKS: u8-prob-comb=2
 // CRMARKS: u8-prob-comb-hard=3
+// CRMARKS: u8-reverse-count=2
 // CRMARKS: u8-together-apart=3
 // CRMARKS: u8-tree-diagram=1
 // CRMARKS: u8-tree-outcomes=2
@@ -3857,6 +3858,172 @@ E("u8-pathways-context",8,["9.30"],3,"gen",function(){
   return qc;
 });
 
+/* --- reverse counting (9.19): given a target total, find the conditions that produce it.
+   The key set of conditions is built first and the target is read off its count, so the
+   item is solvable by construction. Each distractor changes exactly one condition of
+   the key (one position's restriction, or the repetition rule of one uniform group),
+   so its count lands close to the target but never on it. --- */
+var RCN_DIG={
+  any:{set:[0,1,2,3,4,5,6,7,8,9],pos:"can be any digit",uni:"can be any digit",short:"any"},
+  nz:{set:[1,2,3,4,5,6,7,8,9],pos:"cannot be 0",uni:"is never 0",short:"not 0"},
+  even:{set:[0,2,4,6,8],pos:"is even",uni:"is even",short:"even"},
+  odd:{set:[1,3,5,7,9],pos:"is odd",uni:"is odd",short:"odd"},
+  prime:{set:[2,3,5,7],pos:"is prime",uni:"is prime",short:"prime"},
+  gt3:{set:[4,5,6,7,8,9],pos:"is greater than 3",uni:"is greater than 3",short:"over 3"},
+  gt4:{set:[5,6,7,8,9],pos:"is greater than 4",uni:"is greater than 4",short:"over 4"},
+  gt5:{set:[6,7,8,9],pos:"is greater than 5",uni:"is greater than 5",short:"over 5"},
+  lt5:{set:[0,1,2,3,4],pos:"is less than 5",uni:"is less than 5",short:"under 5"},
+  lt6:{set:[0,1,2,3,4,5],pos:"is less than 6",uni:"is less than 6",short:"under 6"},
+  lo16:{set:[1,2,3,4,5,6],pos:"is from 1 to 6",uni:"is from 1 to 6",short:"1 to 6"},
+  hi49:{set:[4,5,6,7,8,9],pos:"is from 4 to 9",uni:"is from 4 to 9",short:"4 to 9"}
+};
+var RCN_LET={
+  any:{set:"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),pos:"can be any letter",uni:"can be any letter",short:"any"},
+  vowel:{set:["A","E","I","O","U"],pos:"is a vowel",uni:"is a vowel",short:"vowel"},
+  cons:{set:"BCDFGHJKLMNPQRSTVWXYZ".split(""),pos:"is a consonant",uni:"is a consonant",short:"consonant"},
+  am:{set:"ABCDEFGHIJKLM".split(""),pos:"is from A to M",uni:"is from A to M",short:"A to M"},
+  ntoz:{set:"NOPQRSTUVWXYZ".split(""),pos:"is from N to Z",uni:"is from N to Z",short:"N to Z"}
+};
+var RCN_WORLDS=[
+  {id:"digits3",
+   leads:["A locker code consists of three digits (each digit from 0 to 9).","A bike-lock code consists of three digits (each digit from 0 to 9).","A gym locker code consists of three digits (each digit from 0 to 9)."],
+   groups:[{alpha:"d",pos:[0,1,2],labels:["the first digit","the middle digit","the last digit"],short:["first","middle","last"]}]},
+  {id:"digits4",
+   leads:["An access code consists of four digits (each digit from 0 to 9).","An alarm code consists of four digits (each digit from 0 to 9).","A door entry code consists of four digits (each digit from 0 to 9)."],
+   groups:[{alpha:"d",pos:[0,1,2,3],labels:["the first digit","the second digit","the third digit","the fourth digit"],short:["first","second","third","fourth"]}]},
+  {id:"plateLDD",
+   leads:["A permit code consists of one letter followed by two digits.","A visitor pass code consists of one letter followed by two digits."],
+   groups:[{alpha:"l",pos:[0],labels:["the letter"],short:["letter"]},
+           {alpha:"d",pos:[1,2],labels:["the first digit","the second digit"],short:["first digit","second digit"]}]},
+  {id:"plateLLD",
+   leads:["A plate code consists of two letters followed by one digit.","A trailer tag code consists of two letters followed by one digit."],
+   groups:[{alpha:"l",pos:[0,1],labels:["the first letter","the second letter"],short:["first letter","second letter"]},
+           {alpha:"d",pos:[2],labels:["the digit"],short:["digit"]}]}
+];
+function rcnPool(alpha,leadDigit){
+  if(alpha==="l")return ["any","vowel","cons","am","ntoz"];
+  var p=["any","even","odd","prime","gt3","gt4","gt5","lt5","lt6","lo16","hi49"];
+  return leadDigit?["nz"].concat(p):p;
+}
+function rcnDesc(alpha,code){return (alpha==="d"?RCN_DIG:RCN_LET)[code];}
+function rcnCount(world,spec){
+  var factors=[],count=1,i,j,g,ixs,code,s0,f;
+  for(var gi=0;gi<world.groups.length;gi++){
+    g=world.groups[gi];ixs=g.pos;
+    if(spec.rep[g.alpha]){
+      for(i=0;i<ixs.length;i++){f=rcnDesc(g.alpha,spec.sets[ixs[i]]).set.length;factors.push(f);count*=f;}
+    }else{
+      code=spec.sets[ixs[0]];
+      for(j=1;j<ixs.length;j++)if(spec.sets[ixs[j]]!==code)return null;
+      s0=rcnDesc(g.alpha,code).set.length;
+      for(j=0;j<ixs.length;j++){f=s0-j;if(f<=0)return null;factors.push(f);count*=f;}
+    }
+  }
+  return {count:count,factors:factors};
+}
+function rcnUniformIn(world,spec,g){
+  var c=spec.sets[g.pos[0]];
+  for(var i=1;i<g.pos.length;i++)if(spec.sets[g.pos[i]]!==c)return false;
+  return true;
+}
+function rcnOptionText(world,spec){
+  var parts=[];
+  world.groups.forEach(function(g){
+    var codes=g.pos.map(function(ix){return spec.sets[ix];});
+    var clause;
+    if(g.pos.length>1&&rcnUniformIn(world,spec,g)){
+      clause="each "+(g.alpha==="d"?"digit":"letter")+" "+rcnDesc(g.alpha,codes[0]).uni;
+    }else{
+      clause=g.pos.map(function(ix,k){return g.labels[k]+" "+rcnDesc(g.alpha,spec.sets[ix]).pos;}).join(", ");
+    }
+    if(g.pos.length>1){
+      clause+=spec.rep[g.alpha]?"; "+(g.alpha==="d"?"digits":"letters")+" may repeat":"; no "+(g.alpha==="d"?"digit":"letter")+" repeats";
+    }
+    parts.push(clause);
+  });
+  var t=parts.join("; ");
+  return t.charAt(0).toUpperCase()+t.slice(1)+".";
+}
+function rcnSummary(world,spec){
+  var bits=[];
+  world.groups.forEach(function(g){
+    g.pos.forEach(function(ix,k){bits.push(g.short[k]+" "+rcnDesc(g.alpha,spec.sets[ix]).short);});
+    if(g.pos.length>1)bits.push(spec.rep[g.alpha]?(g.alpha==="d"?"digits":"letters")+" may repeat":"no "+(g.alpha==="d"?"digit":"letter")+" repeats");
+  });
+  return bits.join(", ");
+}
+function rcnClone(spec){return {sets:spec.sets.slice(),rep:{d:spec.rep.d,l:spec.rep.l}};}
+function rcnBuildDraw(world){
+  var attempt,spec,cc,tries=0;
+  while(tries++<300){
+    spec={sets:[],rep:{d:true,l:true}};
+    world.groups.forEach(function(g){
+      if(g.pos.length>1&&Math.random()<0.5){
+        var c=pick(rcnPool(g.alpha,g.pos[0]===0&&g.alpha==="d"));
+        g.pos.forEach(function(ix){spec.sets[ix]=c;});
+        spec.rep[g.alpha]=Math.random()<0.5;
+      }else{
+        g.pos.forEach(function(ix){spec.sets[ix]=pick(rcnPool(g.alpha,ix===0&&g.alpha==="d"));});
+        spec.rep[g.alpha]=true;
+      }
+    });
+    cc=rcnCount(world,spec);
+    if(!cc||cc.count<24||cc.count>9500)continue;
+    var target=cc.count;
+    var cand=[],seenCount={};
+    function offer(s2){
+      var c2=rcnCount(world,s2);if(!c2)return;
+      var n=c2.count;
+      if(n===target||n<10||n>20000||n<target/9||n>target*9||seenCount[n])return;
+      seenCount[n]=1;cand.push({spec:s2,count:n,factors:c2.factors});
+    }
+    world.groups.forEach(function(g){
+      g.pos.forEach(function(ix){
+        rcnPool(g.alpha,ix===0&&g.alpha==="d").forEach(function(code){
+          if(code===spec.sets[ix])return;
+          var s2=rcnClone(spec);s2.sets[ix]=code;offer(s2);
+        });
+      });
+      if(g.pos.length>1&&rcnUniformIn(world,spec,g)){
+        var s3=rcnClone(spec);s3.rep[g.alpha]=!s3.rep[g.alpha];offer(s3);
+      }
+    });
+    if(cand.length<3)continue;
+    cand.sort(function(a,b){return Math.abs(Math.log(a.count/target))-Math.abs(Math.log(b.count/target));});
+    var near=shuffle(cand.slice(0,Math.min(8,cand.length))).slice(0,3);
+    var specs=[spec].concat(near.map(function(c){return c.spec;}));
+    var texts=specs.map(function(s){return rcnOptionText(world,s);});
+    var uniq={};var allDiff=true;
+    texts.forEach(function(t){if(uniq[t])allDiff=false;uniq[t]=1;});
+    if(!allDiff)continue;
+    return {world:world,key:spec,target:target,specs:specs,texts:texts};
+  }
+  return null;
+}
+E("u8-reverse-count",8,["9.19"],2,"gen",function(){
+  var world=pick(RCN_WORLDS);
+  var draw=rcnBuildDraw(world);
+  if(!draw){
+    world=RCN_WORLDS[0];
+    var key={sets:["nz","even","any"],rep:{d:true,l:true}};
+    var ds=[{sets:["nz","prime","any"],rep:{d:true,l:true}},{sets:["any","even","any"],rep:{d:true,l:true}},{sets:["nz","even","lt6"],rep:{d:true,l:true}}];
+    draw={world:world,key:key,target:450,specs:[key].concat(ds),texts:[key].concat(ds).map(function(s){return rcnOptionText(world,s);})};
+  }
+  var lead=pick(draw.world.leads);
+  var lines=draw.specs.map(function(s){
+    var c=rcnCount(draw.world,s);
+    return "Conditions ("+rcnSummary(draw.world,s)+"): "+c.factors.join(" \\times ")+" = "+c.count+" codes.";
+  });
+  var sol="Count the codes under each set of conditions with the Fundamental Counting Principle. "+lines.join(" ")+
+    " Only the conditions ("+rcnSummary(draw.world,draw.key)+") give exactly "+draw.target+" codes. Every other set differs from that one in exactly one condition, so its count moves off the target instead of landing on it: running the count backwards from a total to the conditions means testing each candidate set, not guessing one.";
+  var alphas=[];
+  draw.world.groups.forEach(function(g){g.pos.forEach(function(ix){alphas[ix]=g.alpha;});});
+  return mcq(lead+" Which set of conditions produces exactly "+draw.target+" codes?",
+    draw.texts[0],[draw.texts[1],draw.texts[2],draw.texts[3]],sol,
+    {world:draw.world.id,target:draw.target,alphas:alphas,
+     options:draw.specs.map(function(s,i){return {sets:s.sets.slice(),repD:s.rep.d,repL:s.rep.l,count:rcnCount(draw.world,s).count,text:draw.texts[i]};})});
+});
+
 /* ----- bank-u9.js ----- */
 // Math 3201 Unit 9 Probability question bank
 // CRMARKS: u9-compare-games=3
@@ -4361,4 +4528,4 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-correct-the-claim-cr":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-interpret-model":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compare-frequency":2,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-deferred-offer":3,"u6-depreciation-value":2,"u6-find-term":2,"u6-interest-earned":2,"u6-payments-term":1,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-total-cost-loan":1,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-error-correct":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-subset-difference-cr":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-comb-r":1,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-fraction":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-nonme-prob":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
+window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-correct-the-claim-cr":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-interpret-model":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compare-frequency":2,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-deferred-offer":3,"u6-depreciation-value":2,"u6-find-term":2,"u6-interest-earned":2,"u6-payments-term":1,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-total-cost-loan":1,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-error-correct":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-subset-difference-cr":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-comb-r":1,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-fraction":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-reverse-count":2,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-nonme-prob":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
