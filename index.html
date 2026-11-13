@@ -258,7 +258,8 @@
 </head>
 <body>
 <div class="wrap" id="coursePicker" hidden>
-  <img class="pklogo" src="cdli-logo.jpg" alt="CDLI">
+  <img class="pklogo pklogo-l" src="cdli-logo.svg" alt="CDLI">
+  <img class="pklogo pklogo-d" src="cdli-logo-white.svg" alt="CDLI">
   <h1>Review Apps</h1>
   <p class="sub pktag">Online or Printable Practice Exercises</p>
   <div class="card">
@@ -3805,7 +3806,7 @@ if(window.__NOCOURSE){(function(){
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
   var style=document.createElement("style");
-  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}";
+  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}";
   pk.appendChild(style);
   var groups={};
   Object.keys(window.COURSES||{}).forEach(function(id){
