@@ -126,6 +126,241 @@ function chemShiftedLatticeSVG(){
   return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: one layer of an ionic lattice shifted sideways by one ion spacing, so ions of the same charge face each other across a plane">'+body+'</svg>';
 }
 
+/* ============ Condensed structure figures (Tranche 7, Nov 2026) ============
+   A condensed structural formula is parsed into a graph of group tiles
+   (CH3, CH2, CH, COOH, and so on) joined by single, double, or triple
+   bonds, with bracketed groups drawn as branches. The parse is strict:
+   every group tile's incident bond-order sum must equal the valence the
+   group has in the bank's own condensed notation, and any formula the
+   parser cannot account for completely returns null, so the entry
+   carries no figure rather than a wrong one. The diagram transcribes
+   the condensed formula already printed in the stem; it adds no atoms,
+   bonds, or positions the formula does not state. Ring shorthand
+   "(CH2)n ring" draws a polygon of CH2 tiles, and benzene draws as the
+   usual hexagon with a circle. Disubstituted benzene formulas such as
+   C6H4Cl2 are molecular formulas, not structures, and return null. */
+var CHEM_SUBD={"\u2082":2,"\u2083":3,"\u2084":4,"\u2085":5,"\u2086":6,"\u2087":7,"\u2088":8,"\u2089":9};
+var CHEM_TOKENS=[
+ ["CONH\u2082",{C:1,O:1,N:1,H:2},1],
+ ["COOH",{C:1,O:2,H:1},1],
+ ["C\u2086H\u2085",{C:6,H:5},1],
+ ["C\u2086H\u2084",{C:6,H:4},2],
+ ["C\u2082H\u2085",{C:2,H:5},1],
+ ["C\u2083H\u2087",{C:3,H:7},1],
+ ["C\u2084H\u2089",{C:4,H:9},1],
+ ["CH\u2083",{C:1,H:3},1],
+ ["CH\u2082",{C:1,H:2},2],
+ ["CH\u2084",{C:1,H:4},0],
+ ["CHO",{C:1,H:1,O:1},1],
+ ["NH\u2082",{N:1,H:2},1],
+ ["CH",{C:1,H:1},3],
+ ["CO",{C:1,O:1},2],
+ ["Cl",{Cl:1},1],
+ ["Br",{Br:1},1],
+ ["OH",{O:1,H:1},1],
+ ["C",{C:1},4],
+ ["O",{O:1},2],
+ ["H",{H:1},1],
+ ["F",{F:1},1],
+ ["I",{I:1},1]
+];
+var CHEM_TOKEN_MAP={};
+CHEM_TOKENS.forEach(function(t){CHEM_TOKEN_MAP[t[0]]=t;});
+function chemFigTxt(x,y,str,size,bold,anchor){
+  return '<text x="'+fmt(x,1)+'" y="'+fmt(y,1)+'" font-size="'+(size||13)+'" fill="#17352a" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="'+(anchor||"middle")+'" dominant-baseline="central"'+(bold?' font-weight="bold"':"")+'>'+str+'</text>';
+}
+function chemParseSeq(str){
+  var items=[],bonds=[],queued=[],i=0,pending=1;
+  function clone(o){return JSON.parse(JSON.stringify(o));}
+  while(i<str.length){
+    var ch=str.charAt(i);
+    if(ch===" "){i++;continue;}
+    if(ch==="="||ch==="\u2261"){
+      if(pending!==1)return null;
+      pending=(ch==="=")?2:3; i++; continue;
+    }
+    if(ch==="("){
+      if(pending!==1)return null;
+      var depth=0,j=i;
+      for(;j<str.length;j++){
+        var cj=str.charAt(j);
+        if(cj==="(")depth++;
+        else if(cj===")"){depth--; if(depth===0)break;}
+      }
+      if(j>=str.length||depth!==0)return null;
+      var inner=chemParseSeq(str.slice(i+1,j));
+      if(!inner)return null;
+      /* A bracketed substituent on its own, as in CH3CH(OH)CH3, parses to
+         an empty sequence with the group left queued; promote the queued
+         group to the branch sequence so the branch is not lost. */
+      if(inner.seq.length===0){
+        if(inner.queued&&inner.queued.length){
+          var qItem=inner.queued[0].seq[0];
+          qItem.branches=inner.queued.slice(1);
+          inner={seq:[qItem],bonds:[]};
+        }else{return null;}
+      }
+      var rep=1,k=j+1;
+      if(k<str.length&&CHEM_SUBD[str.charAt(k)]!==undefined){rep=CHEM_SUBD[str.charAt(k)];k++;}
+      if(inner.seq.length===1&&inner.seq[0].label==="CH\u2082"&&inner.seq[0].branches.length===0&&rep>=2&&items.length>0){
+        for(var r=0;r<rep;r++){bonds.push(1); items.push(clone(inner.seq[0]));}
+      }else{
+        for(var r2=0;r2<rep;r2++){
+          if(items.length>0){items[items.length-1].branches.push(clone(inner));}
+          else{queued.push(clone(inner));}
+        }
+      }
+      i=k; continue;
+    }
+    var matched=null;
+    for(var t=0;t<CHEM_TOKENS.length;t++){
+      if(str.substr(i,CHEM_TOKENS[t][0].length)===CHEM_TOKENS[t][0]){matched=CHEM_TOKENS[t][0];break;}
+    }
+    if(!matched)return null;
+    /* "CHOH" is a CH group bearing an OH group, not the aldehyde group
+       CHO followed by H; condensed notation never writes the latter. */
+    if(matched==="CHO"&&str.substr(i,4)==="CHOH")matched="CH";
+    /* Halogens, OH, and NH2 written mid-sequence are substituents on the
+       previous group (CH3CHClCH3, CH3CHOHCH3), not links in the chain:
+       attach them as branches and let the chain continue past them. */
+    if(matched==="Cl"||matched==="Br"||matched==="F"||matched==="I"||matched==="OH"||matched==="NH\u2082"){
+      if(pending!==1)return null;
+      var sbr={seq:[{label:matched,branches:[]}],bonds:[]};
+      if(items.length>0){items[items.length-1].branches.push(sbr);}
+      else{queued.push(sbr);}
+      i+=matched.length; continue;
+    }
+    var item={label:matched,branches:queued}; queued=[];
+    if(items.length>0)bonds.push(pending);
+    items.push(item); pending=1; i+=matched.length;
+  }
+  if(pending!==1)return null;
+  return {seq:items,bonds:bonds,queued:queued};
+}
+function chemBuildGraph(tree){
+  var nodes=[],edges=[],occ={},failed=false;
+  var SLOTS=[[0,-1],[0,1],[-1,-1],[1,-1],[-1,1],[1,1],[0,-2],[0,2]];
+  function placeSeq(seq,bonds,gx,gy,dx,dy){
+    var first=-1,prev=-1;
+    for(var idx=0;idx<seq.length;idx++){
+      var it=seq[idx];
+      var x=gx+dx*idx, y=gy+dy*idx;
+      var key=x+","+y;
+      if(occ[key]){failed=true;return -1;}
+      occ[key]=1;
+      var id=nodes.length;
+      nodes.push({label:it.label,gx:x,gy:y});
+      if(first<0)first=id;
+      if(prev>=0)edges.push([prev,id,bonds[idx-1]||1]);
+      prev=id;
+      for(var b=0;b<it.branches.length;b++){
+        var slot=SLOTS[b%SLOTS.length];
+        var br=it.branches[b];
+        var bid=placeSeq(br.seq,br.bonds,x+slot[0],y+slot[1],slot[0],slot[1]<0?-1:1);
+        if(bid<0){failed=true;return -1;}
+        edges.push([id,bid,1]);
+      }
+    }
+    return first;
+  }
+  var first=placeSeq(tree.seq,tree.bonds,0,0,1,0);
+  if(failed||first<0)return null;
+  return {nodes:nodes,edges:edges};
+}
+function chemValidateGraph(g){
+  var sums=[],atoms={},i;
+  for(i=0;i<g.nodes.length;i++)sums.push(0);
+  g.edges.forEach(function(e){sums[e[0]]+=e[2]; sums[e[1]]+=e[2];});
+  for(i=0;i<g.nodes.length;i++){
+    var spec=CHEM_TOKEN_MAP[g.nodes[i].label];
+    if(!spec||sums[i]!==spec[2])return null;
+    var at=spec[1];
+    for(var k in at){atoms[k]=(atoms[k]||0)+at[k];}
+  }
+  return atoms;
+}
+function chemFigParts(src){
+  if(typeof src!=="string")return null;
+  var s=src.trim(),INK="#17352a";
+  if(s==="six carbon ring, C\u2086H\u2086"||s==="C\u2086H\u2086 ring"){
+    var bbody='<polygon points="110,28 168,61 168,129 110,162 52,129 52,61" fill="none" stroke="'+INK+'" stroke-width="2.2"/><circle cx="110" cy="95" r="30" fill="none" stroke="'+INK+'" stroke-width="2"/>';
+    return {body:bbody,w:220,h:190,atoms:{C:6,H:6}};
+  }
+  var rm=s.match(/^\((CH\u2082)\)(.+) ring$/);
+  if(rm){
+    var n=CHEM_SUBD[rm[2]];
+    if(!n||n<3||n>8)return null;
+    var cx=110,cy=95,R=Math.max(34,23/Math.sin(Math.PI/n)),pts=[],i2,rbody="";
+    for(i2=0;i2<n;i2++){var a=-Math.PI/2+i2*2*Math.PI/n; pts.push([cx+R*Math.cos(a),cy+R*Math.sin(a)]);}
+    for(i2=0;i2<n;i2++){
+      var p1=pts[i2],p2=pts[(i2+1)%n];
+      rbody+='<line x1="'+fmt(p1[0],1)+'" y1="'+fmt(p1[1],1)+'" x2="'+fmt(p2[0],1)+'" y2="'+fmt(p2[1],1)+'" stroke="'+INK+'" stroke-width="2"/>';
+    }
+    for(i2=0;i2<n;i2++){
+      rbody+='<circle cx="'+fmt(pts[i2][0],1)+'" cy="'+fmt(pts[i2][1],1)+'" r="16" fill="#eef6f0" stroke="'+INK+'" stroke-width="1.4"/>'+chemFigTxt(pts[i2][0],pts[i2][1],"CH\u2082",11,true);
+    }
+    return {body:rbody,w:220,h:190,atoms:{C:n,H:2*n}};
+  }
+  var tree=chemParseSeq(s);
+  if(!tree||!tree.seq.length)return null;
+  var g=chemBuildGraph(tree);
+  if(!g)return null;
+  var atoms=chemValidateGraph(g);
+  if(!atoms)return null;
+  var mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;
+  g.nodes.forEach(function(nd){
+    mnx=Math.min(mnx,nd.gx); mxx=Math.max(mxx,nd.gx);
+    mny=Math.min(mny,nd.gy); mxy=Math.max(mxy,nd.gy);
+  });
+  function X(nd){return 48+(nd.gx-mnx)*62;}
+  function Y(nd){return 46+(nd.gy-mny)*52;}
+  var W=(mxx-mnx)*62+96, H=(mxy-mny)*52+92, body="";
+  g.edges.forEach(function(e){
+    var a=g.nodes[e[0]],b=g.nodes[e[1]];
+    var x1=X(a),y1=Y(a),x2=X(b),y2=Y(b);
+    var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy)||1,px=-dy/len,py=dx/len;
+    var offs=e[2]===1?[0]:e[2]===2?[-3.6,3.6]:[-4.6,0,4.6];
+    offs.forEach(function(off){
+      body+='<line x1="'+fmt(x1+px*off,1)+'" y1="'+fmt(y1+py*off,1)+'" x2="'+fmt(x2+px*off,1)+'" y2="'+fmt(y2+py*off,1)+'" stroke="'+INK+'" stroke-width="2"/>';
+    });
+  });
+  g.nodes.forEach(function(nd){
+    var wpx=Math.max(34,nd.label.length*8.2+16);
+    body+='<rect x="'+fmt(X(nd)-wpx/2,1)+'" y="'+fmt(Y(nd)-14,1)+'" width="'+fmt(wpx,1)+'" height="28" rx="7" fill="#eef6f0" stroke="'+INK+'" stroke-width="1.4"/>';
+    body+=chemFigTxt(X(nd),Y(nd)+1,nd.label,13,true);
+  });
+  return {body:body,w:W,h:H,atoms:atoms};
+}
+function chemCondensedFigure(src){
+  var p=chemFigParts(src);
+  if(!p)return null;
+  return '<svg viewBox="0 0 '+p.w+' '+p.h+'" width="340" height="'+Math.round(340*p.h/p.w)+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Condensed structure diagram for '+src+'">'+p.body+'</svg>';
+}
+function chemMultiFigure(srcs,labels){
+  var parts=[],i,p;
+  for(i=0;i<srcs.length;i++){
+    p=chemFigParts(srcs[i]);
+    if(!p)return null;
+    parts.push(p);
+  }
+  var W=0,H=0;
+  parts.forEach(function(p2){W=Math.max(W,p2.w); H+=p2.h+(labels?18:6);});
+  var body="",y=0;
+  parts.forEach(function(p2,idx){
+    if(labels){body+=chemFigTxt(14,y+13,labels[idx],13,true,"start"); y+=18;}
+    body+='<g transform="translate(0,'+y+')">'+p2.body+'</g>';
+    y+=p2.h+6;
+  });
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="340" height="'+Math.round(340*H/W)+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Condensed structure diagrams">'+body+'</svg>';
+}
+function chemPairFigure(a,b){
+  return chemMultiFigure([a,b],["A","B"]);
+}
+function chemCondensedInfo(src){
+  var p=chemFigParts(src);
+  return p?{atoms:p.atoms}:null;
+}
+
 /* ----- bank-u1.js ----- */
 // Chemistry 2202 Unit 1 Stoichiometry question bank
 // CRMARKS: u1-51-write-formula=2
@@ -2402,6 +2637,9 @@ E("u2-61", 2, ["6.13"], 3, "gen", function () {
 
 /* ----- bank-u3.js ----- */
 // Chemistry 2202 Review, Unit 3: Organic Chemistry. Fragment file: E(...) registrations only.
+// Tranche 7 (Nov 2026): condensed structure figures (chemCondensedFigure and
+// chemPairFigure in bank-helpers.js) attach to entries whose stem already
+// prints the structure. Attach-only; no stem, answer, or solution changes.
 // CRMARKS: u3-73-formula-from-name=2
 // CRMARKS: u3-73-name-hard=2
 // CRMARKS: u3-73-formula-branch=3
@@ -2424,9 +2662,11 @@ E("u3-71-carbon-bonds",3,["7.1"],1,"gen",function(){
     "How many covalent bonds does a carbon atom form in the organic compound "+c[0]+"?",
     "Each carbon atom in "+c[0]+" ("+c[1]+") is bonded so that it has a complete outer shell. How many bonds does each carbon atom form?"];
   var ds=shuffle(["2","3","5","6"]).slice(0,3);
-  return mcq(prompts[ph],"4",ds,
+  var q=mcq(prompts[ph],"4",ds,
     "Carbon has four electrons in its outer shell. It shares them in four covalent bonds, so each carbon atom forms four bonds in total. A double bond counts as two bonds and a triple bond counts as three.",
     {compound:c[0],form:ph});
+  if(ph===0||ph===2||ph===4){var f=chemCondensedFigure(c[1]); if(f)q.figure=f;}
+  return q;
 });
 E("u3-71-catenation",3,["7.1"],1,"gen",function(){
   var roots={3:"prop",4:"but",5:"pent",6:"hex",7:"hept",8:"oct"};
@@ -2452,21 +2692,26 @@ E("u3-71-bond-types",3,["7.1"],2,"gen",function(){
   var it=pick(T); var form=ri(0,2);
   var word=(it[2]===1)?"single":((it[2]===2)?"double":"triple");
   var sol="In "+it[0]+" ("+it[1]+"), the carbon to carbon bond is a "+word+" bond. A single bond shares one pair of electrons, a double bond shares two pairs, and a triple bond shares three pairs.";
+  var q;
   if(form===0){
-    return mcq("What type of carbon to carbon bond is present in "+it[0]+" ("+it[1]+")?",
+    q=mcq("What type of carbon to carbon bond is present in "+it[0]+" ("+it[1]+")?",
       word+" bond",shuffle(["single bond","double bond","triple bond","ionic bond"].filter(function(x){return x!==word+" bond";})).slice(0,3),
       sol,{compound:it[0],form:form});
   }
-  if(form===1){
+  else if(form===1){
     var others=["1","2","3","4"].filter(function(x){return x!==String(it[2]);});
-    return mcq("In "+it[0]+" ("+it[1]+"), how many pairs of electrons are shared in the carbon to carbon bond?",
+    q=mcq("In "+it[0]+" ("+it[1]+"), how many pairs of electrons are shared in the carbon to carbon bond?",
       String(it[2]),shuffle(others).slice(0,3),sol,{compound:it[0],form:form});
   }
-  var stmts=["All carbon to carbon bonds are single bonds","One carbon to carbon bond is a double bond","One carbon to carbon bond is a triple bond","All carbon to carbon bonds are triple bonds"];
-  var correct=stmts[it[2]-1];
-  var ds2=stmts.filter(function(x){return x!==correct;});
-  return mcq("Which statement about the carbon to carbon bonds in "+it[0]+" ("+it[1]+") is true?",
-    correct,ds2,sol,{compound:it[0],form:form});
+  else{
+    var stmts=["All carbon to carbon bonds are single bonds","One carbon to carbon bond is a double bond","One carbon to carbon bond is a triple bond","All carbon to carbon bonds are triple bonds"];
+    var correct=stmts[it[2]-1];
+    var ds2=stmts.filter(function(x){return x!==correct;});
+    q=mcq("Which statement about the carbon to carbon bonds in "+it[0]+" ("+it[1]+") is true?",
+      correct,ds2,sol,{compound:it[0],form:form});
+  }
+  var f=chemCondensedFigure(it[1]); if(f)q.figure=f;
+  return q;
 });
 E("u3-71-why-many-var",3,["7.1"],2,"var",varset([
   function(){return mcq("Why are there millions of known organic compounds, built from only a few elements?",
@@ -2509,9 +2754,11 @@ E("u3-72-family-from-structure",3,["7.2"],2,"gen",function(){
   var it=pick(ALL); var form=ri(0,1);
   var shown=(form===0)?it[1]:it[1]+", formula "+it[3];
   var ds=shuffle(FAMS.filter(function(f){return f!==it[2];})).slice(0,3);
-  return mcq("To which family does the compound "+shown+" belong?",it[2],ds,
+  var q=mcq("To which family does the compound "+shown+" belong?",it[2],ds,
     "Classify by the bonding and the functional group present. The structure "+it[1]+" shows the features of the "+it[2]+" family.",
     {compound:it[0],form:form});
+  var f=chemCondensedFigure(it[1]); if(f)q.figure=f;
+  return q;
 });
 E("u3-72-family-from-name",3,["7.2"],1,"gen",function(){
   var HC=[["methane","alkane"],["ethane","alkane"],["propane","alkane"],["butane","alkane"],["pentane","alkane"],["hexane","alkane"],["2-methylpropane","alkane"],["cyclohexane","cycloalkane"],["cyclopentane","cycloalkane"],["ethene","alkene"],["propene","alkene"],["but-2-ene","alkene"],["pent-1-ene","alkene"],["ethyne","alkyne"],["propyne","alkyne"],["but-2-yne","alkyne"],["benzene","aromatic"],["methylbenzene","aromatic"],["chlorobenzene","aromatic"]];
@@ -2557,10 +2804,12 @@ E("u3-72-classify-pair",3,["7.2"],3,"gen",function(){
   var fx=others[0], fy=others[1];
   var correct="A is "+a[2]+" and B is "+b[2];
   var ds=["A is "+b[2]+" and B is "+a[2],"A is "+fx+" and B is "+b[2],"A is "+a[2]+" and B is "+fy];
-  return mcq("Compound A is "+a[0]+" ("+a[1]+"). Compound B is "+b[0]+" ("+b[1]+"). Which classification is correct?",
+  var q=mcq("Compound A is "+a[0]+" ("+a[1]+"). Compound B is "+b[0]+" ("+b[1]+"). Which classification is correct?",
     correct,ds,
     "Classify each compound on its own first. A, "+a[0]+", is a member of the "+a[2]+" family. B, "+b[0]+", is a member of the "+b[2]+" family. Only one option states both correctly.",
     {a:a[0],b:b[0]});
+  var f=chemPairFigure(a[1],b[1]); if(f)q.figure=f;
+  return q;
 });
 E("u3-72-saturation",3,["7.2"],2,"gen",function(){
   var SAT=[["propane","CH\u2083CH\u2082CH\u2083","C\u2083H\u2088"],["butane","CH\u2083CH\u2082CH\u2082CH\u2083","C\u2084H\u2081\u2080"],["pentane","CH\u2083CH\u2082CH\u2082CH\u2082CH\u2083","C\u2085H\u2081\u2082"],["hexane","CH\u2083CH\u2082CH\u2082CH\u2082CH\u2082CH\u2083","C\u2086H\u2081\u2084"],["heptane","CH\u2083CH\u2082CH\u2082CH\u2082CH\u2082CH\u2082CH\u2083","C\u2087H\u2081\u2086"],["octane","CH\u2083CH\u2082CH\u2082CH\u2082CH\u2082CH\u2082CH\u2082CH\u2083","C\u2088H\u2081\u2088"],["2-methylpropane","CH\u2083CH(CH\u2083)CH\u2083","C\u2084H\u2081\u2080"],["cyclohexane","(CH\u2082)\u2086 ring","C\u2086H\u2081\u2082"],["cyclopentane","(CH\u2082)\u2085 ring","C\u2085H\u2081\u2080"],["cyclobutane","(CH\u2082)\u2084 ring","C\u2084H\u2088"]];
@@ -2570,9 +2819,11 @@ E("u3-72-saturation",3,["7.2"],2,"gen",function(){
   var shown=(rep===0)?it[0]:((rep===1)?it[1]:it[2]);
   var correct=sat?"A saturated hydrocarbon":"An unsaturated hydrocarbon";
   var ds=[sat?"An unsaturated hydrocarbon":"A saturated hydrocarbon","A hydrocarbon derivative","An inorganic compound"];
-  return mcq("How is the compound "+shown+" best described?",correct,ds,
+  var q=mcq("How is the compound "+shown+" best described?",correct,ds,
     (sat?"Saturated hydrocarbons hold the maximum possible number of hydrogens, with single bonds only (rings included). ":"Unsaturated hydrocarbons contain a double or triple bond, so they hold fewer hydrogens than the saturated compound with the same number of carbons. ")+"The compound shown is "+it[0]+", so it is "+(sat?"saturated.":"unsaturated."),
     {compound:it[0],sat:sat,rep:rep});
+  if(rep===1){var f=chemCondensedFigure(it[1]); if(f)q.figure=f;}
+  return q;
 });
 E("u3-72-formula-family",3,["7.2"],1,"gen",function(){
   var SB=["\u2080","\u2081","\u2082","\u2083","\u2084","\u2085","\u2086","\u2087","\u2088","\u2089"];
@@ -2609,9 +2860,11 @@ E("u3-73-name-alkane",3,["7.3"],2,"gen",function(){
   var names=T.map(function(x){return x[1];}); var structs=T.map(function(x){return x[0];});
   if(mode===0){
     var ds=shuffle(names.filter(function(x){return x!==it[1];}).filter(function(x,i,a){return a.indexOf(x)===i;})).slice(0,3);
-    return mcq("What is the IUPAC name of "+it[0]+"?"+ctx,it[1],ds,
+    var q=mcq("What is the IUPAC name of "+it[0]+"?"+ctx,it[1],ds,
       "Find the longest chain first, then number it to give the branches the lowest positions. The structure "+it[0]+" is named "+it[1]+".",
       {mode:mode,compound:it[1]});
+    var f=chemCondensedFigure(it[0]); if(f)q.figure=f;
+    return q;
   }
   var ds2=shuffle(structs.filter(function(x){return x!==it[0];})).slice(0,3);
   return mcq("Which condensed structure matches the name "+it[1]+"?"+ctx,it[0],ds2,
@@ -2631,7 +2884,9 @@ E("u3-73-name-unsaturated",3,["7.3"],2,"gen",function(){
   var sol="Number the longest chain so the multiple bond gets the lowest possible position, then name any branches. The compound "+it[0]+" is "+it[1]+".";
   if(mode===0){
     var ds=shuffle(names.filter(function(x){return x!==it[1];})).slice(0,3);
-    return mcq("What is the IUPAC name of "+it[0]+"?",it[1],ds,sol,{mode:mode,compound:it[1]});
+    var q0=mcq("What is the IUPAC name of "+it[0]+"?",it[1],ds,sol,{mode:mode,compound:it[1]});
+    var f0=chemCondensedFigure(it[0]); if(f0)q0.figure=f0;
+    return q0;
   }
   if(mode===1){
     var ds2=shuffle(structs.filter(function(x){return x!==it[0];})).slice(0,3);
@@ -2642,7 +2897,9 @@ E("u3-73-name-unsaturated",3,["7.3"],2,"gen",function(){
   var branched=(it[1].indexOf("methyl")>=0)?it[1].replace("methyl","ethyl"):("2-methyl"+it[1]);
   var cand=[alkaneName,otherBond,branched].filter(function(x){return x!==it[1];});
   var ds3=shuffle(cand.concat(names.filter(function(x){return x!==it[1]&&cand.indexOf(x)<0;}))).slice(0,3);
-  return mcq("A compound has the condensed structure "+it[0]+". What is its correct IUPAC name?",it[1],ds3,sol,{mode:mode,compound:it[1]});
+  var q2=mcq("A compound has the condensed structure "+it[0]+". What is its correct IUPAC name?",it[1],ds3,sol,{mode:mode,compound:it[1]});
+  var f2=chemCondensedFigure(it[0]); if(f2)q2.figure=f2;
+  return q2;
 });
 E("u3-73-formula-from-name",3,["7.3"],2,"gen",function(){
   var roots=["","","eth","prop","but","pent","hex","hept","oct"];
@@ -2675,14 +2932,19 @@ E("u3-73-chain-length",3,["7.3"],2,"gen",function(){
     ["CH\u2082=CHCH(CH\u2083)CH\u2083",4,5],["CH\u2083C(CH\u2083)=CHCH\u2083",4,5],["CH\u2082=C(CH\u2083)CH\u2082CH\u2083",4,5],["CH\u2082=CHCH\u2082CH(CH\u2083)CH\u2083",5,6],["CH\u2083CH=C(CH\u2083)CH\u2082CH\u2083",5,6],
     ["HC\u2261CCH(CH\u2083)CH\u2083",4,5],["CH\u2083C\u2261CCH(CH\u2083)CH\u2083",5,6],["HC\u2261CCH\u2082CH(CH\u2083)CH\u2083",5,6]];
   var it=pick(T); var askTotal=(ri(0,1)===1);
+  var q;
   if(askTotal){
-    return numq("How many carbon atoms in total, including branches, are in "+it[0]+"?",it[2],0,
+    q=numq("How many carbon atoms in total, including branches, are in "+it[0]+"?",it[2],0,
       "Count every carbon: the groups in the main chain plus each branch carbon, including the carbons inside brackets. The total is "+it[2]+" carbons.",
       {ask:"total",struct:it[0]});
   }
-  return numq("How many carbon atoms are in the longest continuous chain of "+it[0]+"?",it[1],0,
-    "Trace the longest unbroken run of carbon atoms through the structure, turning at a branch if that gives a longer run. Branch carbons hanging off the chain do not count. The longest chain has "+it[1]+" carbons.",
-    {ask:"parent",struct:it[0]});
+  else{
+    q=numq("How many carbon atoms are in the longest continuous chain of "+it[0]+"?",it[1],0,
+      "Trace the longest unbroken run of carbon atoms through the structure, turning at a branch if that gives a longer run. Branch carbons hanging off the chain do not count. The longest chain has "+it[1]+" carbons.",
+      {ask:"parent",struct:it[0]});
+  }
+  var f=chemCondensedFigure(it[0]); if(f)q.figure=f;
+  return q;
 });
 E("u3-73-name-hard",3,["7.3"],3,"gen",function(){
   var roots=["","","","prop","but","pent","hex","hept","oct"];
@@ -2720,9 +2982,11 @@ E("u3-73-name-hard",3,["7.3"],3,"gen",function(){
   var it=pick(SPECS); var form=ri(0,1);
   var prompt=(form===0)?("Write the IUPAC name of "+it.struct+"."):("A hydrocarbon has the condensed structure "+it.struct+". Write its IUPAC name.");
   var answers=[it.name]; if(it.alt&&it.alt!==it.name){answers.push(it.alt);}
-  return textq(prompt,answers,
+  var q=textq(prompt,answers,
     "Find the longest chain containing any multiple bond. Number it so the multiple bond, then the branches, get the lowest positions. Name the branches with their positions in front of the parent name. The name is "+it.name+".",
     {name:it.name,form:form});
+  var f=chemCondensedFigure(it.struct); if(f)q.figure=f;
+  return q;
 });
 E("u3-73-formula-branch",3,["7.3"],3,"gen",function(){
   var T=[
@@ -2783,15 +3047,19 @@ E("u3-74-shared-formula",3,["7.4"],3,"gen",function(){
   if(useTriple){
     var t=pick(TRIPLES);
     var promptT=(form===0)?("The three compounds "+t[1]+", "+t[3]+" and "+t[5]+" are structural isomers of each other. Write the molecular formula they all share."):("Three isomers are shown: "+t[1]+", "+t[3]+", "+t[5]+". Write their shared molecular formula.");
-    return textq(promptT,[t[6]],
+    var qT=textq(promptT,[t[6]],
       "Count the atoms in any one structure, including branch carbons and the hydrogens on each group. All three give the same count, "+t[7]+". Write the formula without subscripts, for example C5H12.",
       {formula:t[6],triple:true});
+    var fT=chemMultiFigure([t[1],t[3],t[5]],null); if(fT)qT.figure=fT;
+    return qT;
   }
   var it=pick(PAIRS);
   var prompt=(form===0)?("The compounds "+it[1]+" and "+it[3]+" are structural isomers. Write the molecular formula they share."):((form===1)?("Two structural isomers are shown: "+it[1]+" and "+it[3]+". Write their shared molecular formula."):("Isomers have the same molecular formula. For the pair "+it[1]+" and "+it[3]+", write that shared formula."));
-  return textq(prompt,[it[4]],
+  var q=textq(prompt,[it[4]],
     "Count the atoms in one structure, including every branch. Both structures contain the same atoms, giving "+it[5]+". Write the formula without subscripts, for example C5H12.",
     {formula:it[4],triple:false});
+  var f=chemMultiFigure([it[1],it[3]],null); if(f)q.figure=f;
+  return q;
 });
 E("u3-74-evaluate-claim",3,["7.4"],2,"gen",function(){
   var CASES=[
@@ -2838,9 +3106,12 @@ E("u3-74-relationship",3,["7.4"],3,"gen",function(){
   var form=ri(0,2);
   var prompt=(form===0)?("How are these two compounds related: "+pair[0]+" and "+pair[1]+"?"):((form===1)?("Two compounds are shown: "+pair[0]+" and "+pair[1]+". Which statement describes their relationship?"):("Decide how these compounds are related: "+pair[0]+" and "+pair[1]+"."));
   var ds=[S.same,S.iso,S.diff,S.trap].filter(function(x){return x!==S[cat];});
-  return mcq(prompt,S[cat],ds,
+  var q=mcq(prompt,S[cat],ds,
     "Compare the molecular formulas first, then the structures. For this pair the correct description is: "+S[cat]+".",
     {pair:pair[0],cat:cat,form:form});
+  function structOf(s){return s.slice(s.indexOf("(")+1,s.lastIndexOf(")"));}
+  var f=chemPairFigure(structOf(pair[0]),structOf(pair[1])); if(f)q.figure=f;
+  return q;
 });
 
 /* 7.5 Aromatic compounds */
@@ -2864,7 +3135,7 @@ E("u3-75-name-derivative",3,["7.5"],2,"gen",function(){
   var it=pick(T); var mode=ri(0,3); var ph=pick([""," A sample in the lab is identified from its structure."," The compound is a simple derivative of benzene."]);
   var names=T.map(function(x){return x[0];}); var structs=T.map(function(x){return x[1];}); var forms=T.map(function(x){return x[2];});
   var sol="Simple benzene derivatives are named for the group that replaces a ring hydrogen. "+it[0]+" has the structure "+it[1]+" and formula "+it[2]+".";
-  if(mode===0){return mcq("What is the name of the compound with structure "+it[1]+"?"+ph,it[0],shuffle(names.filter(function(x){return x!==it[0];})).slice(0,3),sol,{mode:mode,compound:it[0]});}
+  if(mode===0){var q0=mcq("What is the name of the compound with structure "+it[1]+"?"+ph,it[0],shuffle(names.filter(function(x){return x!==it[0];})).slice(0,3),sol,{mode:mode,compound:it[0]}); var f0=chemCondensedFigure(it[1]); if(f0)q0.figure=f0; return q0;}
   if(mode===1){return mcq("Which structure matches the name "+it[0]+"?"+ph,it[1],shuffle(structs.filter(function(x){return x!==it[1];})).slice(0,3),sol,{mode:mode,compound:it[0]});}
   if(mode===2){return mcq("Which molecular formula matches "+it[0]+"?"+ph,it[2],shuffle(forms.filter(function(x){return x!==it[2];})).slice(0,3),sol,{mode:mode,compound:it[0]});}
   return mcq("A compound has the molecular formula "+it[2]+". Which structure could it have?"+ph,it[1],shuffle(structs.filter(function(x){return x!==it[1];})).slice(0,3),sol,{mode:mode,compound:it[0]});
@@ -2878,9 +3149,11 @@ E("u3-75-aromatic-formula",3,["7.5"],2,"gen",function(){
   else if(form===1){prompt="Give the molecular formula of "+it[0]+", the aromatic compound.";}
   else{prompt="Write the molecular formula of "+it[0]+".";}
   prompt=pre+prompt;
-  return textq(prompt,[it[1]],
+  var q=textq(prompt,[it[1]],
     "Start from the benzene ring, C\u2086H\u2086. Each group that replaces a ring hydrogen removes one H and adds its own atoms. Counting all atoms in "+it[0]+" gives "+it[2]+". Write the formula without subscripts, keeping the order C, then H, then other elements, for example C7H8.",
     {name:it[0],form:form});
+  if(it[3]&&form===2){var f=chemCondensedFigure(it[3]); if(f)q.figure=f;}
+  return q;
 });
 E("u3-75-aromatic-or-aliphatic",3,["7.5"],2,"gen",function(){
   var AROM=[["benzene","six carbon ring, C\u2086H\u2086","C\u2086H\u2086"],["methylbenzene","C\u2086H\u2085CH\u2083","C\u2087H\u2088"],["ethylbenzene","C\u2086H\u2085CH\u2082CH\u2083","C\u2088H\u2081\u2080"],["propylbenzene","C\u2086H\u2085CH\u2082CH\u2082CH\u2083","C\u2089H\u2081\u2082"],["chlorobenzene","C\u2086H\u2085Cl","C\u2086H\u2085Cl"],["bromobenzene","C\u2086H\u2085Br","C\u2086H\u2085Br"],["fluorobenzene","C\u2086H\u2085F","C\u2086H\u2085F"],["iodobenzene","C\u2086H\u2085I","C\u2086H\u2085I"]];
@@ -2889,9 +3162,11 @@ E("u3-75-aromatic-or-aliphatic",3,["7.5"],2,"gen",function(){
   var shown=(rep===0)?it[0]:((rep===1)?it[1]:it[2]);
   var correct=arom?"An aromatic compound":"An aliphatic hydrocarbon";
   var ds=[arom?"An aliphatic hydrocarbon":"An aromatic compound","An aliphatic derivative","An inorganic compound"];
-  return mcq("How is the compound "+shown+" classified?",correct,ds,
+  var q=mcq("How is the compound "+shown+" classified?",correct,ds,
     (arom?"Aromatic compounds contain a benzene ring. ":"Aliphatic compounds are chains or non benzene rings, with no benzene ring present. ")+"The compound shown is "+it[0]+", so it is "+(arom?"aromatic.":"aliphatic."),
     {compound:it[0],arom:arom,rep:rep});
+  if(rep===1){var f=chemCondensedFigure(it[1]); if(f)q.figure=f;}
+  return q;
 });
 E("u3-75-benzene-compare",3,["7.5"],3,"gen",function(){
   var PAIRS=[
@@ -2937,18 +3212,22 @@ E("u3-76-group-id",3,["7.6"],1,"gen",function(){
   var labels=Object.keys(GRP).map(function(k){return GRP[k];});
   var correct=GRP[it[2]];
   var ds=shuffle(labels.filter(function(x){return x!==correct;})).slice(0,3);
-  return mcq("Which functional group is present in "+shown+"?",correct,ds,
+  var q=mcq("Which functional group is present in "+shown+"?",correct,ds,
     "Look for the atom pattern that is not part of the hydrocarbon backbone. In "+it[1]+" the functional group is the "+correct+", which makes the compound a member of the "+it[2]+" family.",
     {compound:it[0],form:form});
+  var f=chemCondensedFigure(it[1]); if(f)q.figure=f;
+  return q;
 });
 E("u3-76-name-derivative",3,["7.6"],2,"gen",function(){
   var DV=[["methanol","CH\u2083OH"],["ethanol","CH\u2083CH\u2082OH"],["propan-1-ol","CH\u2083CH\u2082CH\u2082OH"],["propan-2-ol","CH\u2083CH(OH)CH\u2083"],["butan-1-ol","CH\u2083CH\u2082CH\u2082CH\u2082OH"],["methanoic acid","HCOOH"],["ethanoic acid","CH\u2083COOH"],["propanoic acid","CH\u2083CH\u2082COOH"],["butanoic acid","CH\u2083CH\u2082CH\u2082COOH"],["methyl methanoate","HCOOCH\u2083"],["methyl ethanoate","CH\u2083COOCH\u2083"],["ethyl ethanoate","CH\u2083COOCH\u2082CH\u2083"],["ethyl methanoate","HCOOCH\u2082CH\u2083"],["methyl propanoate","CH\u2083CH\u2082COOCH\u2083"],["methanal","HCHO"],["ethanal","CH\u2083CHO"],["propanal","CH\u2083CH\u2082CHO"],["butanal","CH\u2083CH\u2082CH\u2082CHO"],["propanone","CH\u2083COCH\u2083"],["butan-2-one","CH\u2083COCH\u2082CH\u2083"],["pentan-3-one","CH\u2083CH\u2082COCH\u2082CH\u2083"],["pentan-2-one","CH\u2083COCH\u2082CH\u2082CH\u2083"],["methoxymethane","CH\u2083OCH\u2083"],["methoxyethane","CH\u2083OCH\u2082CH\u2083"],["ethoxyethane","CH\u2083CH\u2082OCH\u2082CH\u2083"],["methylamine","CH\u2083NH\u2082"],["ethylamine","CH\u2083CH\u2082NH\u2082"],["propylamine","CH\u2083CH\u2082CH\u2082NH\u2082"],["ethanamide","CH\u2083CONH\u2082"],["propanamide","CH\u2083CH\u2082CONH\u2082"],["chloromethane","CH\u2083Cl"],["chloroethane","CH\u2083CH\u2082Cl"],["bromoethane","CH\u2083CH\u2082Br"],["2-chloropropane","CH\u2083CHClCH\u2083"]];
   var it=pick(DV); var mode=ri(0,1);
   var names=DV.map(function(x){return x[0];}); var structs=DV.map(function(x){return x[1];});
   if(mode===0){
-    return mcq("What is the name of the compound "+it[1]+"?",it[0],shuffle(names.filter(function(x){return x!==it[0];})).slice(0,3),
+    var q=mcq("What is the name of the compound "+it[1]+"?",it[0],shuffle(names.filter(function(x){return x!==it[0];})).slice(0,3),
       "Name the parent chain, then add the ending for the functional group present. The structure "+it[1]+" is "+it[0]+".",
       {mode:mode,compound:it[0]});
+    var f=chemCondensedFigure(it[1]); if(f)q.figure=f;
+    return q;
   }
   return mcq("Which condensed structure matches the name "+it[0]+"?",it[1],shuffle(structs.filter(function(x){return x!==it[1];})).slice(0,3),
     "Build the chain named in "+it[0]+" and place its functional group as the name requires. The matching structure is "+it[1]+".",
@@ -2970,10 +3249,10 @@ E("u3-76-ester-naming",3,["7.6"],2,"gen",function(){
   var allNames=[]; var allStructs=[];
   ACIDS.forEach(function(x){ALKYL.forEach(function(y){allNames.push(y[0]+" "+x[0]); allStructs.push(x[1]+"COO"+y[1]);});});
   var sol="Esters are named in two parts: the alkyl group from the alcohol first, then the acid part ending in oate. "+name+" comes from "+al[2]+" and "+a[2]+", and its structure is "+struct+".";
-  if(mode===0){return mcq("What is the name of the ester "+struct+"?",name,shuffle(allNames.filter(function(x){return x!==name;})).slice(0,3),sol,{mode:mode,ester:name});}
+  if(mode===0){var q0=mcq("What is the name of the ester "+struct+"?",name,shuffle(allNames.filter(function(x){return x!==name;})).slice(0,3),sol,{mode:mode,ester:name}); var f0=chemCondensedFigure(struct); if(f0)q0.figure=f0; return q0;}
   if(mode===1){return mcq("Which structure matches the ester "+name+"?",struct,shuffle(allStructs.filter(function(x){return x!==struct;})).slice(0,3),sol,{mode:mode,ester:name});}
-  if(mode===2){return mcq("The ester "+struct+" ("+name+") was made by esterification. Which alcohol was one of the reactants?",al[2],shuffle(ALKYL.map(function(x){return x[2];}).filter(function(x){return x!==al[2];})).slice(0,3),sol,{mode:mode,ester:name});}
-  return mcq("The ester "+struct+" ("+name+") was made by esterification. Which carboxylic acid was one of the reactants?",a[2],shuffle(ACIDS.map(function(x){return x[2];}).filter(function(x){return x!==a[2];})).slice(0,3),sol,{mode:mode,ester:name});
+  if(mode===2){var q2=mcq("The ester "+struct+" ("+name+") was made by esterification. Which alcohol was one of the reactants?",al[2],shuffle(ALKYL.map(function(x){return x[2];}).filter(function(x){return x!==al[2];})).slice(0,3),sol,{mode:mode,ester:name}); var f2=chemCondensedFigure(struct); if(f2)q2.figure=f2; return q2;}
+  var q3=mcq("The ester "+struct+" ("+name+") was made by esterification. Which carboxylic acid was one of the reactants?",a[2],shuffle(ACIDS.map(function(x){return x[2];}).filter(function(x){return x!==a[2];})).slice(0,3),sol,{mode:mode,ester:name}); var f3=chemCondensedFigure(struct); if(f3)q3.figure=f3; return q3;
 });
 E("u3-76-carbonyl-choice",3,["7.6"],3,"gen",function(){
   var ITEMS=[
@@ -3000,17 +3279,21 @@ E("u3-76-carbonyl-choice",3,["7.6"],3,"gen",function(){
   var correct="It is a member of the "+it[2]+" family, because "+it[3];
   var fams=["carboxylic acid","ester","aldehyde","ketone"].filter(function(f){return f!==it[2];});
   var ds=fams.map(function(f){return "It is a member of the "+f+" family, because "+REASONS[f];});
-  return mcq("A compound has the structure "+shown+". Which statement about it is correct?",correct,ds,
+  var q=mcq("A compound has the structure "+shown+". Which statement about it is correct?",correct,ds,
     "All four families contain a C=O group, so the deciding detail is what else the carbonyl carbon is bonded to. In "+it[0]+", "+it[3]+", so the compound is a member of the "+it[2]+" family.",
     {family:it[2],form:form});
+  var f=chemCondensedFigure(it[0]); if(f)q.figure=f;
+  return q;
 });
 E("u3-76-formula-from-structure",3,["7.6"],2,"gen",function(){
   var DV=[["CH\u2083OH","CH4O","CH\u2084O",null],["CH\u2083CH\u2082OH","C2H6O","C\u2082H\u2086O","C\u2082H\u2085OH"],["CH\u2083CH\u2082CH\u2082OH","C3H8O","C\u2083H\u2088O","C\u2083H\u2087OH"],["CH\u2083CH(OH)CH\u2083","C3H8O","C\u2083H\u2088O","(CH\u2083)\u2082CHOH"],["CH\u2083CH\u2082CH\u2082CH\u2082OH","C4H10O","C\u2084H\u2081\u2080O","C\u2084H\u2089OH"],["HCOOH","CH2O2","CH\u2082O\u2082",null],["CH\u2083COOH","C2H4O2","C\u2082H\u2084O\u2082",null],["CH\u2083CH\u2082COOH","C3H6O2","C\u2083H\u2086O\u2082",null],["CH\u2083CH\u2082CH\u2082COOH","C4H8O2","C\u2084H\u2088O\u2082",null],["HCOOCH\u2083","C2H4O2","C\u2082H\u2084O\u2082",null],["CH\u2083COOCH\u2083","C3H6O2","C\u2083H\u2086O\u2082",null],["CH\u2083COOCH\u2082CH\u2083","C4H8O2","C\u2084H\u2088O\u2082","CH\u2083COOC\u2082H\u2085"],["HCOOCH\u2082CH\u2083","C3H6O2","C\u2083H\u2086O\u2082",null],["CH\u2083CH\u2082COOCH\u2083","C4H8O2","C\u2084H\u2088O\u2082",null],["HCHO","CH2O","CH\u2082O",null],["CH\u2083CHO","C2H4O","C\u2082H\u2084O",null],["CH\u2083CH\u2082CHO","C3H6O","C\u2083H\u2086O",null],["CH\u2083CH\u2082CH\u2082CHO","C4H8O","C\u2084H\u2088O",null],["CH\u2083COCH\u2083","C3H6O","C\u2083H\u2086O","(CH\u2083)\u2082CO"],["CH\u2083COCH\u2082CH\u2083","C4H8O","C\u2084H\u2088O","CH\u2083CH\u2082COCH\u2083"],["CH\u2083CH\u2082COCH\u2082CH\u2083","C5H10O","C\u2085H\u2081\u2080O",null],["CH\u2083COCH\u2082CH\u2082CH\u2083","C5H10O","C\u2085H\u2081\u2080O","CH\u2083CH\u2082CH\u2082COCH\u2083"],["CH\u2083OCH\u2083","C2H6O","C\u2082H\u2086O","(CH\u2083)\u2082O"],["CH\u2083OCH\u2082CH\u2083","C3H8O","C\u2083H\u2088O",null],["CH\u2083CH\u2082OCH\u2082CH\u2083","C4H10O","C\u2084H\u2081\u2080O","(C\u2082H\u2085)\u2082O"],["CH\u2083NH\u2082","CH5N","CH\u2085N",null],["CH\u2083CH\u2082NH\u2082","C2H7N","C\u2082H\u2087N",null],["CH\u2083CH\u2082CH\u2082NH\u2082","C3H9N","C\u2083H\u2089N",null],["CH\u2083CONH\u2082","C2H5NO","C\u2082H\u2085NO",null],["CH\u2083CH\u2082CONH\u2082","C3H7NO","C\u2083H\u2087NO",null],["CH\u2083Cl","CH3Cl","CH\u2083Cl",null],["CH\u2083CH\u2082Cl","C2H5Cl","C\u2082H\u2085Cl",null],["CH\u2083CH\u2082Br","C2H5Br","C\u2082H\u2085Br",null],["CH\u2083CHClCH\u2083","C3H7Cl","C\u2083H\u2087Cl","(CH\u2083)\u2082CHCl"]];
   var it=pick(DV); var useAlt=(it[3]!==null&&ri(0,1)===0);
   var shown=useAlt?it[3]:it[0]; var pre=pick(["","In a derivatives exercise, ","For a structure worksheet, "]);
-  return textq(pre+"Write the molecular formula of the compound with condensed structure "+shown+".",[it[1]],
+  var q=textq(pre+"Write the molecular formula of the compound with condensed structure "+shown+".",[it[1]],
     "Expand the condensed structure in your head and count each element, including the atoms inside brackets and the hydrogen on any -OH or -NH\u2082 group. The count gives "+it[2]+". Write the formula without subscripts, in the order C, then H, then other elements.",
     {struct:shown,alt:useAlt});
+  var f=chemCondensedFigure(shown); if(f)q.figure=f;
+  return q;
 });
 
 /* 7.7 Reactions of organic compounds */
@@ -3061,18 +3344,23 @@ E("u3-77-addition-product",3,["7.7"],2,"gen",function(){
   var wording=pick(["symbol","words"]);
   var reagentShown=(wording==="symbol")?c[2]:({"H\u2082":"hydrogen gas with a catalyst","Br\u2082":"bromine","H\u2082O":"water with an acid catalyst"})[c[2]];
   var sibs=COMBOS.filter(function(x){return x[0]===c[0]&&x[3]!==c[3];});
+  var q;
   if(askStruct){
     var dsS=sibs.map(function(x){return x[5];}).concat([c[1]]);
-    return mcq(c[0]+" ("+c[1]+") undergoes "+c[3]+" with "+reagentShown+". What is the condensed structure of the product?",
+    q=mcq(c[0]+" ("+c[1]+") undergoes "+c[3]+" with "+reagentShown+". What is the condensed structure of the product?",
       c[5],dsS,
       "In "+c[3]+", the reagent adds across the double bond, so the double bond becomes a single bond and each carbon of the former double bond gains one new group. The product is "+c[4]+", "+c[5]+".",
       {alkene:c[0],reaction:c[3],ask:"struct"});
   }
-  var dsN=sibs.map(function(x){return x[4];}).concat([c[0]]);
-  return mcq(c[0]+" ("+c[1]+") undergoes "+c[3]+" with "+reagentShown+". What is the name of the organic product?",
-    c[4],dsN,
-    "In "+c[3]+", the reagent adds across the double bond of "+c[0]+". Following where each added atom goes gives the product "+c[4]+".",
-    {alkene:c[0],reaction:c[3],ask:"name"});
+  else{
+    var dsN=sibs.map(function(x){return x[4];}).concat([c[0]]);
+    q=mcq(c[0]+" ("+c[1]+") undergoes "+c[3]+" with "+reagentShown+". What is the name of the organic product?",
+      c[4],dsN,
+      "In "+c[3]+", the reagent adds across the double bond of "+c[0]+". Following where each added atom goes gives the product "+c[4]+".",
+      {alkene:c[0],reaction:c[3],ask:"name"});
+  }
+  var f=chemCondensedFigure(c[1]); if(f)q.figure=f;
+  return q;
 });
 E("u3-77-esterification",3,["7.7"],2,"gen",function(){
   var ACIDS=[["methanoic acid","methanoate"],["ethanoic acid","ethanoate"],["propanoic acid","propanoate"],["butanoic acid","butanoate"]];

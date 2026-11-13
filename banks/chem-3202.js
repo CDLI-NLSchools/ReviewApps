@@ -10,6 +10,10 @@
 // entries. Shared figure helpers live below the sig-fig helpers in this
 // slice because the assembler order for chem-3202 is u1, u2, u3, u4, br
 // and this course has no bank-helpers.js slice; Units 2 to 4 reuse them.
+// Tranche 7 (Nov 2026): Maxwell-Boltzmann and equilibrium graphs in this
+// unit, computed and schematic titration curves in Unit 2, an enthalpy
+// level diagram in Unit 3, and cell, beaker, and plating diagrams in
+// Unit 4, all attach-only with no stem, answer, or solution changes.
 // CRMARKS: u1-51-rate-explain=3
 // CRMARKS: u1-52-rate-scenario=2
 // CRMARKS: u1-53-ea-reverse=3
@@ -173,6 +177,165 @@ function c32electroSVG(name){
   return out+'</svg>';
 }
 
+/* ============ Tranche 7 figures (Nov 2026) ============
+   c32mbSVG draws the Maxwell-Boltzmann energy distribution at two
+   temperatures from the stem, computed from the distribution itself
+   with equal total areas; the activation energy line carries no value,
+   and the fraction of successful collisions is deliberately not shaded,
+   because judging that fraction is the question. c32eqConcSVG is a
+   schematic concentration-time graph for a system reaching equilibrium:
+   generic labels, no values, and the two plateaus deliberately unequal,
+   because equal concentrations is one of the distractors. c32titrCalcSVG
+   computes the strong acid and strong base curve point by point from
+   the draw's own volumes and concentrations and marks the equivalence
+   point where the calculation puts it; the volume axis carries no
+   numbers, because that volume is the asked answer. c32titrDiproticSVG
+   is the schematic two-jump diprotic shape (the bank supplies no Ka
+   values, so no computed curve is possible), with both equivalence
+   points at the volume fractions the stoichiometry fixes. c32beakerSVG
+   shows only the setup a stem describes (strip and ion solution), never
+   the outcome. c32plateSVG draws an electrolytic bath with labels taken
+   from the stem; terminal marks appear only when the stem states them. */
+function c32mbSVG(tLow,tHigh){
+  var W=340,H=248,x0=52,x1=314,yb=212,yt=30,Emax=120,Ea=78;
+  function X(e){return x0+e/Emax*(x1-x0);}
+  function dist(e,tau){return Math.sqrt(Math.max(e,0.0001))*Math.exp(-e/tau);}
+  function curve(tC){
+    var tau=0.115*(tC+273),pts=[],area=0,prev=null,i,e,y;
+    for(i=0;i<=120;i++){
+      e=Emax*i/120; y=dist(e,tau);
+      if(prev!==null)area+=(y+prev)/2*(Emax/120);
+      prev=y; pts.push([e,y]);
+    }
+    var peak=0; pts.forEach(function(p){if(p[1]>peak)peak=p[1];});
+    return {raw:pts,area:area,peak:peak,tau:tau};
+  }
+  var lo=curve(tLow),hi=curve(tHigh);
+  var scale=(yb-yt-26)/Math.max(lo.peak/lo.area,hi.peak/hi.area);
+  function ptsStr(c){
+    return c.raw.map(function(p){
+      return fmt(X(p[0]),1)+","+fmt(yb-(p[1]/c.area)*scale,2);
+    }).join(" ");
+  }
+  function peakXY(c){
+    var bp=c.raw[0]; c.raw.forEach(function(p){if(p[1]>bp[1])bp=p;});
+    return [X(bp[0]),yb-(bp[1]/c.area)*scale];
+  }
+  var pkL=peakXY(lo),pkH=peakXY(hi);
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Maxwell-Boltzmann distribution curves at '+tLow+' and '+tHigh+' degrees Celsius" data-t1="'+tLow+'" data-t2="'+tHigh+'">';
+  out+='<line x1="'+x0+'" y1="24" x2="'+x0+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="'+x0+'" y1="'+yb+'" x2="'+x1+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="'+fmt(X(Ea),1)+'" y1="34" x2="'+fmt(X(Ea),1)+'" y2="'+yb+'" stroke="#b3541e" stroke-width="1.6" stroke-dasharray="5 4"/>';
+  out+=c32txt(X(Ea)+2,26,"Ea",11.5,true,"start","#b3541e");
+  out+='<polyline class="mb-low" points="'+ptsStr(lo)+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  out+='<polyline class="mb-high" points="'+ptsStr(hi)+'" fill="none" stroke="#2e7d4f" stroke-width="2.2"/>';
+  out+=c32txt(pkL[0],pkL[1]-14,tLow+" \u00B0C",11.5,true);
+  out+=c32txt(pkH[0]+16,pkH[1]-14,tHigh+" \u00B0C",11.5,true,"middle","#2e7d4f");
+  out+=c32txt(30,26,"Number of particles",11,true);
+  out+=c32txt(183,234,"Particle energy",11.5,false);
+  return out+'</svg>';
+}
+function c32eqConcSVG(){
+  var W=340,H=248,x0=52,x1=314,yb=212;
+  function rp(x){return 150-92*Math.exp(-(x-x0)/52);}
+  function pp(x){return 112+94*Math.exp(-(x-x0)/52);}
+  var rPts=[],pPts=[],x;
+  for(x=x0;x<=x1;x+=7){rPts.push(fmt(x,1)+","+fmt(rp(x),1)); pPts.push(fmt(x,1)+","+fmt(pp(x),1));}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Concentration against time graph: reactant and product concentrations level off at equilibrium">';
+  out+='<line x1="'+x0+'" y1="24" x2="'+x0+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="'+x0+'" y1="'+yb+'" x2="'+x1+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<polyline class="eq-react" points="'+rPts.join(" ")+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  out+='<polyline class="eq-prod" points="'+pPts.join(" ")+'" fill="none" stroke="#2e7d4f" stroke-width="2.2"/>';
+  out+=c32txt(268,164,"Reactants",11.5,true);
+  out+=c32txt(268,100,"Products",11.5,true,"middle","#2e7d4f");
+  out+=c32txt(30,26,"Concentration",11,true);
+  out+=c32txt(183,234,"Time",11.5,false);
+  return out+'</svg>';
+}
+function c32titrCalcSVG(va,ca,cb,vb){
+  var W=340,H=248,x0=52,x1=314,yb=212;
+  var vmax=Math.ceil(vb*1.6/5)*5;
+  function X(v){return x0+v/vmax*(x1-x0);}
+  function Y(ph){return yb-(ph/14)*178;}
+  function pHat(v){
+    var ex=ca*va-cb*v,tot=va+v,ph;
+    if(ex>1e-9){ph=-Math.log10(ex/tot);}
+    else if(ex<-1e-9){ph=14+Math.log10(-ex/tot);}
+    else{ph=7;}
+    return Math.max(0,Math.min(14,ph));
+  }
+  var pts=[],i,v;
+  for(i=0;i<=80;i++){v=vmax*i/80; pts.push([X(v),Y(pHat(v))]);}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Titration curve computed from the stated volumes and concentrations" data-eq-vb="'+fmt(vb,4)+'" data-vmax="'+vmax+'">';
+  [0,7,14].forEach(function(ph){
+    out+='<line x1="'+x0+'" y1="'+fmt(Y(ph),1)+'" x2="'+x1+'" y2="'+fmt(Y(ph),1)+'" stroke="#cfe4d6" stroke-width="1"/>';
+    out+=c32txt(42,Y(ph),String(ph),10.5,false,"end");
+  });
+  out+='<line x1="'+x0+'" y1="24" x2="'+x0+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="'+x0+'" y1="'+yb+'" x2="'+x1+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<path d="'+c32smooth(pts)+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  out+='<line x1="'+fmt(X(vb),1)+'" y1="'+fmt(Y(7),1)+'" x2="'+fmt(X(vb),1)+'" y2="'+yb+'" stroke="#b3541e" stroke-width="1.2" stroke-dasharray="4 3"/>';
+  out+='<circle class="eq-dot" cx="'+fmt(X(vb),1)+'" cy="'+fmt(Y(7),1)+'" r="4.5" fill="#b3541e"/>';
+  var anchorEnd=X(vb)>x0+(x1-x0)*0.52;
+  out+=c32txt(anchorEnd?X(vb)-9:X(vb)+9,Y(7)-16,"equivalence point",11,true,anchorEnd?"end":"start","#b3541e");
+  out+=c32txt(30,26,"pH",12,true);
+  out+=c32txt(183,234,"Volume of base added",11.5,false);
+  return out+'</svg>';
+}
+function c32titrDiproticSVG(vb2){
+  var W=340,H=248,x0=52,x1=314,yb=212;
+  var vmax=vb2*1.5;
+  function X(v){return x0+v/vmax*(x1-x0);}
+  function Y(ph){return yb-(ph/14)*178;}
+  var keys=[[0,2.2],[0.2,3.4],[0.4,4.4],[0.48,5.0],[0.52,6.2],[0.7,7.0],[0.9,7.9],[0.97,8.6],[1.0,9.8],[1.05,11.0],[1.25,11.9],[1.5,12.3]];
+  var pts=keys.map(function(k){return [X(k[0]*vb2),Y(k[1])];});
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schematic titration curve for a diprotic acid, with two equivalence points" data-vb2="'+fmt(vb2,4)+'">';
+  [0,7,14].forEach(function(ph){
+    out+='<line x1="'+x0+'" y1="'+fmt(Y(ph),1)+'" x2="'+x1+'" y2="'+fmt(Y(ph),1)+'" stroke="#cfe4d6" stroke-width="1"/>';
+    out+=c32txt(42,Y(ph),String(ph),10.5,false,"end");
+  });
+  out+='<line x1="'+x0+'" y1="24" x2="'+x0+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<line x1="'+x0+'" y1="'+yb+'" x2="'+x1+'" y2="'+yb+'" stroke="#17352a" stroke-width="1.4"/>';
+  out+='<path d="'+c32smooth(pts)+'" fill="none" stroke="#17352a" stroke-width="2.2"/>';
+  out+='<circle class="eq-dot1" cx="'+fmt(X(vb2/2),1)+'" cy="'+fmt(Y(5.6),1)+'" r="4" fill="#b3541e"/>';
+  out+='<circle class="eq-dot2" cx="'+fmt(X(vb2),1)+'" cy="'+fmt(Y(9.8),1)+'" r="4.5" fill="#b3541e"/>';
+  out+=c32txt(X(vb2/2)-8,Y(5.6)-14,"first equivalence point",10.5,true,"end","#b3541e");
+  out+=c32txt(X(vb2)+8,Y(9.8)-14,"second equivalence point",10.5,true,"start","#b3541e");
+  out+=c32txt(30,26,"pH",12,true);
+  out+=c32txt(183,234,"Volume of base added",11.5,false);
+  return out+'</svg>';
+}
+function c32beakerSVG(stripMetal,ionLabel){
+  var W=340,H=240;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beaker containing a solution of '+ionLabel+' ions, with a '+stripMetal+' strip dipping into it">';
+  out+='<rect x="72" y="112" width="196" height="91" fill="#dceef7"/>';
+  out+='<path d="M70 70 L70 205 L270 205 L270 70" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<rect x="152" y="30" width="26" height="122" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+=c32txt(165,18,stripMetal+" strip",12,true);
+  out+=c32txt(170,182,ionLabel+" ions (aq)",11.5,false);
+  out+=c32txt(170,226,"Metal strip in an ion solution",11,false);
+  return out+'</svg>';
+}
+function c32plateSVG(lLab,rLab,solLab,lTag,rTag){
+  var W=340,H=254;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Electrolytic cell diagram">';
+  out+='<rect x="72" y="146" width="196" height="67" fill="#dceef7"/>';
+  out+='<path d="M70 118 L70 215 L270 215 L270 118" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<rect x="118" y="58" width="12" height="104" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+='<rect x="208" y="58" width="12" height="104" fill="#b9c4cc" stroke="#17352a" stroke-width="1.6"/>';
+  out+='<path d="M124 58 L124 40 L172 40" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<path d="M188 40 L214 40 L214 58" fill="none" stroke="#17352a" stroke-width="2"/>';
+  out+='<line x1="172" y1="25" x2="172" y2="55" stroke="#17352a" stroke-width="3"/>';
+  out+='<line x1="188" y1="33" x2="188" y2="47" stroke="#17352a" stroke-width="6"/>';
+  out+=c32txt(170,12,"DC power supply",11,false);
+  if(lTag)out+=c32txt(104,66,lTag,14,true,"end","#b3541e");
+  if(rTag)out+=c32txt(236,66,rTag,14,true,"start","#b3541e");
+  out+=c32txt(170,184,solLab,11.5,true);
+  out+=c32txt(124,234,lLab,12,true);
+  out+=c32txt(214,234,rLab,12,true);
+  return out+'</svg>';
+}
+
 /* ---------- 5.1 Collision theory ---------- */
 
 E("u1-51-collision-conditions",1,["5.1"],1,"gen",function(){
@@ -299,12 +462,14 @@ E("u1-51-rate-explain",1,["5.1"],2,"var",varset([
 E("u1-51-temperature-effect",1,["5.1"],2,"gen",function(){
   var rise=pick([10,10,20]),factor=rise===20?"about four times":"about double";
   var base=ri(10,40);
-  return mcq("For many reactions, raising the temperature from "+base+" \u00B0C by "+rise+" \u00B0C makes the reaction run "+factor+" as fast. Which statement best explains why the effect of temperature is so large?",
+  var q=mcq("For many reactions, raising the temperature from "+base+" \u00B0C by "+rise+" \u00B0C makes the reaction run "+factor+" as fast. Which statement best explains why the effect of temperature is so large?",
     "Particles collide slightly more often, but the main effect is that a much larger fraction of collisions reach the activation energy",
     ["Particles collide "+factor+" as often, and the fraction reaching the activation energy is unchanged",
      "The activation energy falls as temperature rises, so the same collisions succeed more easily",
      "The reaction becomes more exothermic at higher temperatures, so it releases energy faster"],
     "Collision frequency rises only modestly with temperature. The large effect comes from the energy distribution: at the higher temperature a much larger fraction of collisions carry at least the activation energy, so far more collisions succeed. Particles collide slightly more often, but the main effect is that a much larger fraction of collisions reach the activation energy.",{rise:rise,base:base});
+  q.figure=c32mbSVG(base,base+rise);
+  return q;
 });
 
 E("u1-51-catalyst-collision",1,["5.1"],2,"var",varset([
@@ -701,12 +866,14 @@ E("u1-54-mechanism-analysis",1,["5.4"],3,"var",varset([
 E("u1-55-equilibrium-state",1,["5.5"],1,"gen",function(){
   var rxn=pick(["N\u2082O\u2084(g) \u21CC 2 NO\u2082(g)","H\u2082(g) + I\u2082(g) \u21CC 2 HI(g)","2 SO\u2082(g) + O\u2082(g) \u21CC 2 SO\u2083(g)","PCl\u2085(g) \u21CC PCl\u2083(g) + Cl\u2082(g)"]);
   var t=pick([25,80,150,200,250,300,350,400,450,500,550,600,700,800,1000]);
-  return mcq("The reaction "+rxn+" has reached equilibrium in a sealed container at "+t+" \u00B0C. Which statement correctly describes the system?",
+  var q=mcq("The reaction "+rxn+" has reached equilibrium in a sealed container at "+t+" \u00B0C. Which statement correctly describes the system?",
     "The forward and reverse reactions continue at equal rates, so the concentrations stay constant",
     ["Both reactions have stopped, so the concentrations stay constant",
      "The concentrations of reactants and products are equal",
      "The forward reaction continues but the reverse reaction has stopped"],
     "Equilibrium is dynamic: both reactions keep running, but at equal rates, so there is no net change. Concentrations stay constant, but they are not necessarily equal to each other. The forward and reverse reactions continue at equal rates, so the concentrations stay constant.",{rxn:rxn});
+  q.figure=c32eqConcSVG();
+  return q;
 });
 
 E("u1-55-not-equilibrium",1,["5.5"],2,"var",varset([
@@ -1873,9 +2040,11 @@ E("u2-68-titration-calc",2,["6.8"],2,"gen",function(){
   var n=sfR(ca*va/1000,5);
   var vb=n/cb*1000;
   var ans=sfR(vb,3);
-  return numq(gF(va)+" mL of "+gF(ca)+" mol/L "+pr[0]+" is titrated with "+gF(cb)+" mol/L "+pr[1]+" solution. Calculate the volume of base needed to reach the equivalence point. Give your answer in mL.",
+  var q=numq(gF(va)+" mL of "+gF(ca)+" mol/L "+pr[0]+" is titrated with "+gF(cb)+" mol/L "+pr[1]+" solution. Calculate the volume of base needed to reach the equivalence point. Give your answer in mL.",
     ans,Math.max(0.02*ans,0.05),
     "Moles of acid: n = C \u00D7 V = "+gF(ca)+" mol/L \u00D7 "+gF(va)+" mL / 1000 = "+iF(n)+" mol. The reaction is 1:1, so the moles of base needed equal "+iF(n)+" mol. Volume of base: V = n / C = "+iF(n)+" / "+gF(cb)+" = "+iF(vb/1000)+" L = <b>"+F3(ans)+" mL</b>.",{});
+  q.figure=c32titrCalcSVG(va,ca,cb,vb);
+  return q;
 });
 
 E("u2-68-titration-diprotic",2,["6.8"],3,"gen",function(){
@@ -1886,16 +2055,20 @@ E("u2-68-titration-diprotic",2,["6.8"],3,"gen",function(){
     var ca=pick([0.0500,0.100,0.125,0.200]),va=pick([10.0,20.0,25.0]),cb=pick([0.100,0.200,0.250]);
     var na=sfR(ca*va/1000,5),nb=sfR(2*na,5),vb=nb/cb*1000;
     var ans=sfR(vb,3);
-    return numq(gF(va)+" mL of "+gF(ca)+" mol/L "+a[0]+" ("+a[1]+", a diprotic acid) is titrated with "+gF(cb)+" mol/L sodium hydroxide. Calculate the volume of base needed to reach the second equivalence point, where both protons have reacted. Give your answer in mL.",
+    var qv=numq(gF(va)+" mL of "+gF(ca)+" mol/L "+a[0]+" ("+a[1]+", a diprotic acid) is titrated with "+gF(cb)+" mol/L sodium hydroxide. Calculate the volume of base needed to reach the second equivalence point, where both protons have reacted. Give your answer in mL.",
       ans,Math.max(0.02*ans,0.05),
       "Moles of acid: n = "+gF(ca)+" mol/L \u00D7 "+gF(va)+" mL / 1000 = "+iF(na)+" mol. Each acid molecule reacts with two OH\u207B ions, so moles of base = 2 \u00D7 "+iF(na)+" = "+iF(nb)+" mol. Volume of base: V = "+iF(nb)+" / "+gF(cb)+" = "+iF(vb/1000)+" L = <b>"+F3(ans)+" mL</b>. Forgetting the 2:1 ratio is the classic error here.",{mode:"vol"});
+    qv.figure=c32titrDiproticSVG(vb);
+    return qv;
   }
   var vb2=pick([18.0,22.5,24.0,30.0,36.0,40.0]),cb2=pick([0.100,0.125,0.200]),va2=pick([20.0,25.0]);
   var nb2=sfR(cb2*vb2/1000,5),na2=sfR(nb2/2,5),ca2=na2/(va2/1000);
   var ans2=sfR(ca2,3);
-  return numq("A "+gF(va2)+" mL sample of "+a[0]+" ("+a[1]+", a diprotic acid) requires "+gF(vb2)+" mL of "+gF(cb2)+" mol/L sodium hydroxide to reach the second equivalence point. Calculate the concentration of the acid. Give your answer in mol/L.",
+  var qc=numq("A "+gF(va2)+" mL sample of "+a[0]+" ("+a[1]+", a diprotic acid) requires "+gF(vb2)+" mL of "+gF(cb2)+" mol/L sodium hydroxide to reach the second equivalence point. Calculate the concentration of the acid. Give your answer in mol/L.",
     ans2,Math.max(0.02*ans2,0.001),
     "Moles of base: n = "+gF(cb2)+" mol/L \u00D7 "+gF(vb2)+" mL / 1000 = "+iF(nb2)+" mol. The ratio is 2 mol OH\u207B to 1 mol acid, so moles of acid = "+iF(nb2)+" / 2 = "+iF(na2)+" mol. Concentration: C = "+iF(na2)+" / ("+gF(va2)+" / 1000) L = "+iF(ca2)+" mol/L. The concentration is <b>"+F3(ans2)+" mol/L</b>.",{mode:"conc"});
+  qc.figure=c32titrDiproticSVG(vb2);
+  return qc;
 });
 
 E("u2-68-technique",2,["6.8"],1,"var",varset([
@@ -2092,9 +2265,11 @@ E("u3-72-delta-h-numeric",3,["7.2"],2,"gen",function(){
   var d=pick([-140,-95,-70,-45,-30,35,60,85,120]);
   var Hprod=Hreact+d;
   var ans=sfR(d,3);
-  return numq("The total enthalpy of the reactants of a chemical system is "+Hreact+" kJ and the total enthalpy of the products is "+Hprod+" kJ. Calculate \u0394H for the reaction. Give your answer in kJ.",
+  var q=numq("The total enthalpy of the reactants of a chemical system is "+Hreact+" kJ and the total enthalpy of the products is "+Hprod+" kJ. Calculate \u0394H for the reaction. Give your answer in kJ.",
     ans,1,
     "\u0394H = H(products) - H(reactants) = "+Hprod+" kJ - "+Hreact+" kJ = "+(d>0?"+":"")+iF(d)+" kJ. So \u0394H = <b>"+(d>0?"+":"")+F3(d)+" kJ</b>"+(d<0?", and the reaction is exothermic.":", and the reaction is endothermic."),{});
+  q.figure=c32peSVG(Hreact,Math.max(Hreact,Hprod)+55,Hprod,{r:"Reactants: "+Hreact+" kJ",p:"Products: "+Hprod+" kJ"});
+  return q;
 });
 
 E("u3-72-temp-direction",3,["7.2"],1,"var",varset([
@@ -3434,12 +3609,14 @@ E("u4-85-molten-products",4,["8.5"],2,"gen",function(){
 
 E("u4-85-scenario-judgement",4,["8.5"],3,"var",varset([
   function(){
-    return mcq("A jeweller connects a silver-plating bath to a DC power supply: the object to be plated is wired to the negative terminal and a silver bar to the positive terminal, both in a silver nitrate solution. Which judgement is correct?",
+    var q=mcq("A jeweller connects a silver-plating bath to a DC power supply: the object to be plated is wired to the negative terminal and a silver bar to the positive terminal, both in a silver nitrate solution. Which judgement is correct?",
       "This is an electrolytic cell: the object is the cathode, where Ag\u207A is reduced and deposited, and the silver bar is the anode, where silver is oxidized to replace the ions used",
       ["This is a galvanic cell: the object is the anode, where silver is deposited by oxidation",
        "This is an electrolytic cell: the object is the anode, where Ag\u207A is reduced",
        "No cell is involved, because plating is a physical coating process"],
       "Plating is driven by the supply, so it is electrolysis. Reduction (deposition) happens at the cathode, which must be the object; the supply's negative terminal feeds it electrons. The silver anode dissolves to keep [Ag\u207A] steady. <b>Electrolytic; object = cathode; bar = anode</b>.",{});
+    q.figure=c32plateSVG("Object to be plated","Silver bar","Silver nitrate solution","-","+");
+    return q;
   },
   function(){
     return mcq("A fuel cell in a bus combines hydrogen and oxygen to produce water and electricity, and it runs a motor as long as fuel is supplied. Which judgement is correct?",
@@ -3479,9 +3656,11 @@ E("u4-86-predict-spontaneous",4,["8.6"],2,"gen",function(){
     ["The "+strip.metal+" strip dissolves and "+ionC.metal+" plates out, because any metal dissolves in any ion solution",
      "The solution changes colour as "+strip.ion+" is reduced by the "+ionC.metal+" ions",
      "Hydrogen gas bubbles off the strip, because ion solutions are acidic"];
-  return mcq("A strip of "+strip.metal+" is placed in "+vol+" mL of a "+gF(conc)+" mol/L solution containing "+ionC.ion+" ions. Using the reduction potentials in the Reference Information (E\u00B0 for "+strip.ion+" is "+eF(strip.e)+" V and for "+ionC.ion+" is "+eF(ionC.e)+" V), what is observed?",
+  var q=mcq("A strip of "+strip.metal+" is placed in "+vol+" mL of a "+gF(conc)+" mol/L solution containing "+ionC.ion+" ions. Using the reduction potentials in the Reference Information (E\u00B0 for "+strip.ion+" is "+eF(strip.e)+" V and for "+ionC.ion+" is "+eF(ionC.e)+" V), what is observed?",
     correct,wrongs,
     "A metal can reduce the ions of a metal below it in the reduction table, that is, a couple with a higher E\u00B0. Here E\u00B0("+ionC.ion+") = "+eF(ionC.e)+" V and E\u00B0("+strip.ion+") = "+eF(strip.e)+" V. "+(reacts?"Since "+eF(ionC.e)+" > "+eF(strip.e)+", the displacement goes ahead.":"Since "+eF(ionC.e)+" < "+eF(strip.e)+", the displacement cannot go ahead.")+" <b>"+(reacts?"The reaction is spontaneous":"No reaction")+"</b>.",{});
+  q.figure=c32beakerSVG(strip.metal,ionC.ion);
+  return q;
 });
 
 E("u4-86-table-reading",4,["8.6"],1,"gen",function(){
@@ -3561,9 +3740,11 @@ E("u4-87-cell-voltage",4,["8.7"],2,"gen",function(){
   if(hi.e<lo.e){var tmp=hi;hi=lo;lo=tmp;}
   var E=sfR(hi.e-lo.e,3);
   var device=pick(["a voltmeter","a small electric motor","an LED circuit"]);
-  return numq("A galvanic cell is built from a "+lo.metal+" electrode in "+lo.ion+" solution and a "+hi.metal+" electrode in "+hi.ion+" solution, and connected to "+device+". Using the standard reduction potentials in the Reference Information, calculate the standard cell potential. Give your answer in V.",
+  var q=numq("A galvanic cell is built from a "+lo.metal+" electrode in "+lo.ion+" solution and a "+hi.metal+" electrode in "+hi.ion+" solution, and connected to "+device+". Using the standard reduction potentials in the Reference Information, calculate the standard cell potential. Give your answer in V.",
     E,0.02,
     "The cathode is the couple with the higher E\u00B0: "+hi.ion+" ("+eF(hi.e)+" V). The anode is "+lo.ion+" ("+eF(lo.e)+" V). E\u00B0cell = E\u00B0(cathode) - E\u00B0(anode) = "+fmtF(hi.e,2)+" V - ("+fmtF(lo.e,2)+" V) = +"+fmtF(E,2)+" V. The standard cell potential is <b>+"+fmtF(E,2)+" V</b>.",{});
+  q.figure=c32cellSVG(lo.metal+" electrode",lo.ion+"(aq) solution",hi.metal+" electrode",hi.ion+"(aq) solution","Salt bridge");
+  return q;
 });
 
 E("u4-87-find-e-half",4,["8.7"],3,"gen",function(){
@@ -3662,9 +3843,11 @@ E("u4-88-faraday-mass",4,["8.8"],3,"gen",function(){
   var n=sfR(ne/p.z,4);
   var mass=sfR(n*p.M,4);
   var ans=sfR(mass,3);
-  return numq("A solution containing "+p.ion+" ions is electrolyzed with a current of "+gF(I)+" A for "+gF(mins)+" min. Calculate the mass of "+p.metal+" deposited at the cathode. Use F = 9.65 \u00D7 10\u2074 C/mol. Give your answer in g.",
+  var q=numq("A solution containing "+p.ion+" ions is electrolyzed with a current of "+gF(I)+" A for "+gF(mins)+" min. Calculate the mass of "+p.metal+" deposited at the cathode. Use F = 9.65 \u00D7 10\u2074 C/mol. Give your answer in g.",
     ans,Math.max(0.02*ans,0.01),
     "Charge passed: Q = I \u00D7 t = "+gF(I)+" A \u00D7 ("+gF(mins)+" \u00D7 60) s = "+iF(Q)+" C. Moles of electrons: n = Q / F = "+iF(Q)+" / 96500 = "+iF(ne)+" mol. Each "+p.ion+" ion needs "+p.z+" electron"+(p.z>1?"s":"")+", so moles of "+p.metal+" = "+iF(ne)+" / "+p.z+" = "+iF(n)+" mol. Mass = "+iF(n)+" mol \u00D7 "+gF(p.M)+" g/mol = "+iF(mass)+" g. The mass deposited is <b>"+F3(ans)+" g</b>.",{});
+  q.figure=c32plateSVG("Cathode","Electrode","Solution containing "+p.ion+" ions",null,null);
+  return q;
 });
 
 E("u4-88-faraday-time",4,["8.8"],3,"gen",function(){
@@ -3677,9 +3860,11 @@ E("u4-88-faraday-time",4,["8.8"],3,"gen",function(){
   var tsec=sfR(Q/I,4);
   var tmin=sfR(tsec/60,4);
   var ans=sfR(tmin,3);
-  return numq("How long must a current of "+gF(I)+" A be passed through a solution containing "+p.ion+" ions to deposit "+gF(target)+" g of "+p.metal+" at the cathode? Use F = 9.65 \u00D7 10\u2074 C/mol. Give your answer in minutes.",
+  var q=numq("How long must a current of "+gF(I)+" A be passed through a solution containing "+p.ion+" ions to deposit "+gF(target)+" g of "+p.metal+" at the cathode? Use F = 9.65 \u00D7 10\u2074 C/mol. Give your answer in minutes.",
     ans,Math.max(0.02*ans,0.2),
     "Moles of "+p.metal+": n = "+gF(target)+" g / "+gF(p.M)+" g/mol = "+iF(n)+" mol. Each "+p.ion+" ion needs "+p.z+" electron"+(p.z>1?"s":"")+", so moles of electrons = "+p.z+" \u00D7 "+iF(n)+" = "+iF(ne)+" mol. Charge needed: Q = "+iF(ne)+" \u00D7 96500 = "+iF(Q)+" C. Time: t = Q / I = "+iF(Q)+" / "+gF(I)+" = "+iF(tsec)+" s = "+iF(tmin)+" min. The time required is <b>"+F3(ans)+" min</b>.",{});
+  q.figure=c32plateSVG("Cathode","Electrode","Solution containing "+p.ion+" ions",null,null);
+  return q;
 });
 
 E("u4-88-electrons-moles",4,["8.8"],2,"gen",function(){
