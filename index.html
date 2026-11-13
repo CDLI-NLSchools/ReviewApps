@@ -41,6 +41,7 @@
   .qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
   .tag{display:inline-block;font-size:.7rem;font-weight:bold;letter-spacing:.04em;padding:2px 8px;border-radius:20px;color:#fff;background:var(--accent);}
   .tag.lvl{background:#4b5a61;} .tag.ind{background:var(--accent2);}
+  .tag.enr{background:#8a5a00;}
   .prompt{line-height:1.55;font-size:.96rem;}
   .prompt table{border-collapse:collapse;margin:8px 0;}
   .prompt th,.prompt td{border:1px solid var(--line);padding:4px 10px;text-align:center;font-size:.9rem;}
@@ -767,9 +768,44 @@ var CR_MARKS=window.__BANK_CRMARKS||{};
    scope carry preFinal instead, poolFor's cap argument
    is the string "final" for that scope, and scopeCap
    resolves a unit selection to the cap it carries. */
+/* Enrichment (Nov 13, 2026): an entry flagged enrich carries
+   content beyond the named indicators of its course. Such
+   entries stay out of every automatic pool: poolFor excludes
+   them unless enrichIncluded() reports the current state
+   includes them, composeExam filters them unconditionally,
+   and the pick from bank lists (the one deliberate surface)
+   include them, marked, through PICKER_SCOPE. The flag is a
+   property on the entry, set in the bank module of the
+   course exactly the way postMid and preFinal are set. The
+   default is out, everywhere. */
+var PICKER_SCOPE=false;
+function enrichIncluded(){
+  if(typeof PICKER_SCOPE!=="undefined"&&PICKER_SCOPE)return true;
+  var el=null;
+  try{el=document.getElementById("enrChk");}catch(err){}
+  if(el)return !!el.checked;
+  return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.enr:false;
+}
+/* Prior knowledge in practice (Nov 13, 2026): PK-coded entries
+   sit in practice pools by default, the mirror image of
+   enrichment. pkIncluded() reports the Advanced tools switch
+   (the checkbox pkInChk when it is on the page, else the
+   hidCtl stash), defaulting to included: the behaviour the
+   apps have always had. drawSet filters PK entries out of
+   the practice pool when the switch is deliberately off;
+   poolFor is shared with exam composition, whose includePK
+   scope rule is separate and untouched, so the filter lives
+   in drawSet, the practice draw funnel, and nowhere else. */
+function pkIncluded(){
+  var el=null;
+  try{el=document.getElementById("pkInChk");}catch(err){}
+  if(el)return !!el.checked;
+  return (typeof hidCtl!=="undefined"&&hidCtl)?hidCtl.pkIn!==false:true;
+}
 function poolFor(units,inds,cap,pred){
   return BANK.filter(function(e){
     if(pred&&!pred(e))return false;
+    if(e.enrich&&!(typeof enrichIncluded==="function"&&enrichIncluded()))return false;
     if(cap==="final"){if(e.preFinal)return false;}
     else if(cap&&e.postMid)return false;
     if(units.indexOf(e.unit)<0)return false;
@@ -800,7 +836,9 @@ function canonQ(q){ // canonical form of a generated question: normalized prompt
   return norm(q.prompt)+" || "+a;
 }
 function drawSet(units,inds,n,mix,orderMode,cap,pred){
-  var pool=poolFor(units,inds,cap,pred);if(!pool.length||n<1)return{items:[],short:0,pool:0,thin:false};
+  var pool=poolFor(units,inds,cap,pred);
+  if(typeof pkIncluded==="function"&&!pkIncluded())pool=pool.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
+  if(!pool.length||n<1)return{items:[],short:0,pool:0,thin:false};
   var targets=levelTargets(n,mix);var chosen=[],used={};
   function take(level,count){
     var cands=shuffle(pool.filter(function(e){return e.level===level&&!used[e.id];}));
@@ -987,17 +1025,19 @@ function updatePoolInfo(){refreshFace();
    resolve when the controls are absent from the DOM: hiding a control
    never disables the setting behind it, and a link a teacher built
    composes the identical set for a student. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:true};
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
-  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk");
+  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk");
   if(mc)hidCtl.mc=mc.value;
   if(nc)hidCtl.nc=nc.value;
   if(l1&&l2&&l3)hidCtl.mix=[l1.value,l2.value,l3.value];
   if(pk)hidCtl.pk=!!pk.checked;
+  if(en)hidCtl.enr=!!en.checked;
+  if(pi)hidCtl.pkIn=!!pi.checked;
   if(TEACHER)return;
-  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk"].forEach(function(id){
+  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","pkInChk"].forEach(function(id){
     var el=$(id);if(!el)return;
     var lab=(el.closest?el.closest("label"):null)||el;
     if(lab.parentNode)lab.parentNode.removeChild(lab);
@@ -1015,12 +1055,14 @@ function settings(){
     wsCr:($("wsCrIn")?parseFloat($("wsCrIn").value):2.3),
     chk:($("chkIn")?$("chkIn").value:"each"),
     timer:($("timerChk")?$("timerChk").checked:false),
+    enr:enrichIncluded(),
+    pkIn:pkIncluded(),
     seed:($("seedIn")?$("seedIn").value.trim():""),
     mix:[+tCtlVal("lv1",hidCtl.mix[0])||0,+tCtlVal("lv2",hidCtl.mix[1])||0,+tCtlVal("lv3",hidCtl.mix[2])||0]};
 }
 function tags(q){
   var e=q._entry;
-  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> <span class="tag ind">'+e.indicators.join(", ")+'</span> <span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>';
+  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> <span class="tag ind">'+e.indicators.join(", ")+'</span> <span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"");
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
@@ -1249,8 +1291,16 @@ function tAdoptDrawn(q,avoid){
 }
 function tScopePool(){
   if(!T)return [];
-  if(T.view==="exam")return poolFor(T.scope.units,T.scope.inds,T.scope.examCap,function(e){return T.scope.includePK||!isPK(e);});
-  return poolFor(T.scope.units,T.scope.inds,T.scope.finalCap?"final":T.scope.midCap);
+  /* Pick from bank is the deliberate surface: its pool includes
+     enrichment entries (marked in the list) whatever the practice
+     toggle says, because picking one is an explicit per-question
+     choice. Automatic draws and composition stay fenced. */
+  PICKER_SCOPE=true;
+  var p;
+  if(T.view==="exam")p=poolFor(T.scope.units,T.scope.inds,T.scope.examCap,function(e){return T.scope.includePK||!isPK(e);});
+  else p=poolFor(T.scope.units,T.scope.inds,T.scope.finalCap?"final":T.scope.midCap);
+  PICKER_SCOPE=false;
+  return p;
 }
 function tCrPool(){return tScopePool().filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;});}
 function tAvoidAll(items){var a={};items.forEach(function(q){if(q)a[canonQ(q)]=1;});return a;}
@@ -1360,7 +1410,7 @@ function tOpenPicker(title,pool,onPick,wantType){
       var samp="",sq=null;
       try{for(var k=0;k<40;k++){var cand=e.gen();if(cand&&tTypeOk(cand,wantType)){sq=cand;break;}}}catch(err){}
       if(sq&&sq.prompt){sq._entry=e;samples[e.id]=sq;samp=sq.prompt;}
-      h+='<button type="button" data-tpent="'+e.id+'">Unit '+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+": "+esc(desc)+' <span class="tid">'+e.id+"</span>"+(samp?'<span class="tsamp">Sample: '+samp+"</span>":"")+"</button>";
+      h+='<button type="button" data-tpent="'+e.id+'">Unit '+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(e.enrich?" \u00B7 Enrichment":"")+": "+esc(desc)+' <span class="tid">'+e.id+"</span>"+(samp?'<span class="tsamp">Sample: '+samp+"</span>":"")+"</button>";
     });
   });
   h+="</div>";
@@ -1723,7 +1773,7 @@ function tctlHtml(i){
 }
 function tBarHtml(){
   if(!TEACHER||!T||T.view!=="online")return "";
-  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label></div></div><div id="tPicker" hidden></div></div>';
+  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+(BANK.some(function(e){return isPK(e);})?'<label><input type="checkbox" id="pkInChk"'+(settings().pkIn?" checked":"")+'> Include prior knowledge questions (practice draws only; tests and exams treat prior knowledge separately)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
 }
 function tOnlineStatus(m){var st=$("tStatus");if(st)st.textContent=m;}
 function tWireOnline(){
@@ -2209,6 +2259,14 @@ function composeExam(units,inds,includePK){
          (the teacher override startExam reads from the builder).
          Neither key is set by any other course, and both branches
          are inert without them.
+       - Enrichment: an entry flagged enrich (content beyond the
+         named indicators, flagged in the course's bank module the
+         way postMid flags are set) is filtered out of the pool
+         below, unconditionally. No caller argument and no builder
+         toggle reaches composition: the practice-side "Include
+         enrichment questions" option affects practice draws only,
+         and a teacher who wants an enrichment entry on a paper
+         adds it explicitly through pick from bank.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -2222,6 +2280,7 @@ function composeExam(units,inds,includePK){
   var capX=scopeCap(units);
   var pool=poolFor(units,inds,capX);
   if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
+  pool=pool.filter(function(e){return !e.enrich;});
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
   if(C.exam&&C.exam.singleOnly&&!single)return null;
@@ -3577,6 +3636,8 @@ function settingsToURL(){
   if(s.wsCr!==2.3)p.set("wscr",s.wsCr);
   if(s.chk==="end")p.set("chk","end");
   if(s.timer)p.set("tm","1");
+  if(s.enr)p.set("enr","1");
+  if(!s.pkIn)p.set("pkin","0");
   if(s.seed)p.set("seed",s.seed);
   if(s.mix.join()!==((window.__COURSE&&window.__COURSE.defaultMix)?window.__COURSE.defaultMix.join(","):"20,60,20"))p.set("levels",s.mix.join(","));
   return location.pathname+"?"+p.toString();
@@ -3599,6 +3660,8 @@ function applyURL(){
   if(p.get("chk")==="end"&&$("chkIn"))$("chkIn").value="end";
   if(p.get("tm")==="1"&&$("timerChk"))$("timerChk").checked=true;
   if(p.get("pk")==="1"&&$("pkChk"))$("pkChk").checked=true;
+  if(p.get("enr")==="1"){hidCtl.enr=true;if($("enrChk"))$("enrChk").checked=true;}
+  if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").checked=false;}
   if(p.get("seed")&&$("seedIn"))$("seedIn").value=p.get("seed");
   if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
   if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;}

@@ -1588,6 +1588,101 @@ E("u7-proof-error",7,["2.8"],3,"var",varset([
     ["The arithmetic is wrong: \\((-1)^2\\) is \\(-1\\), not \\(1\\), because a negative times a negative stays negative","You are never allowed to square both sides of an equation, because squaring is not a permitted step","There is no flaw - the proof is correct, because square rooting undoes squaring exactly"],
     "Squaring is not reversible on its own: both \\(1\\) and \\(-1\\) square to \\(1\\). The step treats the square root as if it restored the original number exactly.",{});}
 ]));
+/* ============ Enrichment: converse and contrapositive (Nov 13, 2026) ============
+   Built at Jason's direction from step 7 of the Pure Math bank
+   scan's build order. No Unit 7 indicator names the converse or
+   the contrapositive, so both entries are flagged enrichment at
+   the foot of this file: they stay out of practice draws and
+   composed papers unless a teacher deliberately includes them
+   from Advanced tools. Every statement is generated from
+   hypothesis and conclusion parts (h, c, and their negations nh,
+   nc), so each derived form is built mechanically: the original
+   is h then c, the converse swaps the parts, the inverse negates
+   both parts without swapping, and the contrapositive negates
+   both parts and swaps them. Truth values in the second entry
+   come from template families whose truth and converse truth are
+   known by construction: definitions, which hold both ways, and
+   one-way properties, each carrying its standard counterexample. */
+var U7_FORMS=[
+  {h:"a triangle is equilateral",c:"it is equiangular",nh:"a triangle is not equilateral",nc:"it is not equiangular"},
+  {h:"a quadrilateral is a square",c:"it is a rectangle",nh:"a quadrilateral is not a square",nc:"it is not a rectangle"},
+  {h:"a whole number is divisible by 6",c:"it is divisible by 3",nh:"a whole number is not divisible by 6",nc:"it is not divisible by 3"},
+  {h:"two lines are parallel",c:"the alternate interior angles formed by a transversal are equal",nh:"two lines are not parallel",nc:"the alternate interior angles formed by a transversal are not equal"},
+  {h:"an angle is a right angle",c:"it measures 90 degrees",nh:"an angle is not a right angle",nc:"it does not measure 90 degrees"},
+  {h:"a point is the midpoint of a segment",c:"it divides the segment into two equal parts",nh:"a point is not the midpoint of a segment",nc:"it does not divide the segment into two equal parts"},
+  {h:"a line through the centre of a circle is perpendicular to a chord",c:"it bisects the chord",nh:"a line through the centre of a circle is not perpendicular to a chord",nc:"it does not bisect the chord"},
+  {h:"two angles are vertical angles",c:"they have the same measure",nh:"two angles are not vertical angles",nc:"they do not have the same measure"},
+  {h:"a library book is returned late",c:"a fine is charged",nh:"a library book is not returned late",nc:"no fine is charged"}
+];
+function u7Stmt(h,c){return "If "+h+", then "+c+".";}
+E("u7-converse-contrapositive",7,["2.3"],2,"gen",function(){
+  var t=pick(U7_FORMS);
+  var orig=u7Stmt(t.h,t.c),conv=u7Stmt(t.c,t.h),inv=u7Stmt(t.nh,t.nc),contra=u7Stmt(t.nc,t.nh);
+  var ask=pick(["converse","contrapositive"]);
+  var key=ask==="converse"?conv:contra;
+  var distract=[orig,inv,ask==="converse"?contra:conv];
+  var sol=ask==="converse"
+    ? "The converse swaps the hypothesis and the conclusion, leaving both statements positive: ‘"+conv+"’ The inverse negates both parts without swapping them, and the contrapositive negates both parts and swaps them, so neither of those is the converse."
+    : "The contrapositive negates both parts and swaps them: ‘"+contra+"’ The converse swaps the parts without negating them, and the inverse negates both parts without swapping them, so neither of those is the contrapositive.";
+  return mcq("Consider the statement ‘"+orig+"’ Which statement is the "+ask+" of this statement?",key,distract,sol,{h:t.h,c:t.c,nh:t.nh,nc:t.nc,ask:ask});
+});
+var U7_FALSE_CONVERSE=[
+  {h:"a quadrilateral is a square",c:"it is a rectangle",nh:"a quadrilateral is not a square",nc:"it is not a rectangle",counter:"a rectangle measuring 3 units by 5 units is a rectangle, but it is not a square"},
+  {h:"a whole number is divisible by 6",c:"it is divisible by 3",nh:"a whole number is not divisible by 6",nc:"it is not divisible by 3",counter:"9 is divisible by 3, but 9 is not divisible by 6"},
+  {h:"a whole number is divisible by 4",c:"it is even",nh:"a whole number is not divisible by 4",nc:"it is not even",counter:"6 is even, but 6 is not divisible by 4"},
+  {h:"a whole number greater than 2 is prime",c:"it is odd",nh:"a whole number greater than 2 is not prime",nc:"it is not odd",counter:"9 is odd, but 9 is not prime"},
+  {h:"a student is on the school hockey team",c:"the student attends this school",nh:"a student is not on the school hockey team",nc:"the student does not attend this school",counter:"Alex attends this school but is not on the hockey team"}
+];
+var U7_TRUE_CONVERSE=[
+  {h:"a triangle is equilateral",c:"it is equiangular",nh:"a triangle is not equilateral",nc:"it is not equiangular",why:"the statement is a definition in both directions: a triangle with all sides equal has all angles equal, and a triangle with all angles equal has all sides equal"},
+  {h:"an angle is a right angle",c:"it measures 90 degrees",nh:"an angle is not a right angle",nc:"it does not measure 90 degrees",why:"that is the definition of a right angle: an angle measuring 90 degrees is a right angle, and every right angle measures 90 degrees"},
+  {h:"a point is the midpoint of a segment",c:"it divides the segment into two equal parts",nh:"a point is not the midpoint of a segment",nc:"it does not divide the segment into two equal parts",why:"that is the definition of a midpoint: a point on a segment that divides it into two equal parts is its midpoint, and the midpoint always divides it that way"},
+  {h:"a whole number is even",c:"it is divisible by 2",nh:"a whole number is not even",nc:"it is not divisible by 2",why:"that is the definition of an even number: the whole numbers divisible by 2 are exactly the even numbers, with nothing left over on either side"}
+];
+E("u7-converse-truth",7,["2.4","2.3"],2,"gen",function(){
+  var arm=pick(["falseConverse","trueConverse","equivalence"]);
+  if(arm==="equivalence"){
+    var t=pick(U7_FORMS);
+    var givenTrue=Math.random()<0.5;
+    var orig=u7Stmt(t.h,t.c),contra=u7Stmt(t.nc,t.nh);
+    var gv=givenTrue?"true":"false",opp=givenTrue?"false":"true";
+    return mcq("The statement ‘"+orig+"’ is "+gv+". What must be true about its contrapositive, ‘"+contra+"’?",
+      "It must also be "+gv+". A statement and its contrapositive always have the same truth value: they stand or fall together.",
+      ["It must be "+opp+". Negating both parts of a statement reverses its truth value, so the contrapositive always differs from the original statement.",
+       "It may be true or false. Like the converse, the contrapositive has to be checked on its own before anything can be concluded about it.",
+       "Nothing follows about it, because the contrapositive is just the converse with negatives added, and only the converse is tied to the original."],
+      "A statement is logically equivalent to its contrapositive: whenever one is "+gv+", the other is "+gv+" too. That is exactly what sets the contrapositive apart from the converse and the inverse, which can differ in truth from the original statement.",
+      {arm:arm,h:t.h,c:t.c,nh:t.nh,nc:t.nc,given:gv});
+  }
+  var fam=arm==="falseConverse"?U7_FALSE_CONVERSE:U7_TRUE_CONVERSE;
+  var t=pick(fam);
+  var orig=u7Stmt(t.h,t.c),conv=u7Stmt(t.c,t.h);
+  if(arm==="falseConverse"){
+    return mcq("The statement ‘"+orig+"’ is true. Its converse is ‘"+conv+"’ Is the converse true?",
+      "No. The converse is false: "+t.counter+".",
+      ["Yes. The converse of a true statement is always true, because swapping the hypothesis and the conclusion cannot change whether a statement holds.",
+       "Yes. The hypothesis and the conclusion of a true statement can be swapped freely, since each one implies the other whenever the original statement is true.",
+       "It cannot be decided. A converse always has to be checked separately, and nothing in this question settles whether it is true or false."],
+      "The original statement being true says nothing on its own about the converse. Here the converse fails outright: "+t.counter+". One counterexample is enough to show a converse is false. Notice the contrast with the contrapositive, which always shares the original statement's truth value.",
+      {arm:arm,h:t.h,c:t.c,nh:t.nh,nc:t.nc,converseTrue:false,counter:t.counter});
+  }
+  return mcq("The statement ‘"+orig+"’ is true. Its converse is ‘"+conv+"’ Is the converse true?",
+    "Yes. The converse is also true: "+t.why+".",
+    ["No. A converse is never guaranteed to be true, so this converse must be false as well, whatever the statement happens to say.",
+     "No. The converse is false: a statement and its converse can both be true only for a definition, and this statement is not a definition.",
+     "It cannot be decided. A converse always has to be checked separately, and nothing in this question settles whether it is true or false."],
+    "A converse is never guaranteed, but it can still be true, and here it is: "+t.why+". The converse has to be checked on its own merits, and this one passes the check.",
+    {arm:arm,h:t.h,c:t.c,nh:t.nh,nc:t.nc,converseTrue:true,why:t.why});
+});
+/* Enrichment flags (Nov 13, 2026): converse and contrapositive
+   work is beyond the named Unit 7 indicators, so these two
+   entries are enrichment. The flag is a property on the entry,
+   set here in the bank module the way the postMid flags are set
+   in bank-fix.js; assembly carries it into banks/math-2201.js
+   verbatim, and the shell keeps flagged entries out of practice
+   draws and composed papers unless a teacher deliberately
+   includes them from Advanced tools. */
+BANK.forEach(function(e){if(e.id==="u7-converse-contrapositive"||e.id==="u7-converse-truth")e.enrich=true;});
 
 /* ----- bank-u8.js ----- */
 // Math 2201 Unit 8: Properties of Angles and Triangles question bank
