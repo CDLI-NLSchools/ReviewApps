@@ -949,6 +949,8 @@ E("u2-limit-error-analysis",2,["2.7","2.16"],3,"var",varset([
 // CRMARKS: u3-asymptote-set=3
 // CRMARKS: u3-sketch-features=3
 // CRMARKS: u3-behaviour-analysis=2
+// CRMARKS: u3-build-from-features=2
+// CRMARKS: u3-inequality-integers=2
 /* ================= Unit 3: Rational Functions (MA3208.1.8 to 1.10) =================
    Tranche 1, mid scope. All functions, values and statements are original.
    Helpers are prefixed u3; entries register through E(...). */
@@ -1225,6 +1227,187 @@ E("u3-behaviour-analysis",3,["1.8","1.9"],2,"gen",function(){
   }
   return mcq(prompt, key, dis, sol, {mode:mode, h:h, s:s, a:a});
 });
+
+/* ================= authored CR items (Nov 13, 2026) =================
+   Replacement Level 2 constructed-response items, commissioned by
+   Jason after ruling 46 moved u3-near-npv, u3-features-basic and
+   u3-sketch-features to Level 1 and left the Unit 3 exam-eligible
+   CR pool at 15 marks whose denominations {3, 3, 2, 3, 2, 2} cannot
+   sum to the 14 a single-unit test needs (Unit 3 tests composed at
+   24 of 25 marks, flagged short). Each new entry is a varset
+   returning textq, as in the CR items of the sibling banks: the
+   chained work is shown in the solution and only the final result
+   is typed. Neither entry re-covers the read-off work that moved
+   down: the first works backwards from stated features to the
+   function, the second runs a full sign chart. */
+
+/* ---------- helpers for the authored CR items ---------- */
+function u3FracP(num,den){ /* reduced fraction as plain text, for figure labels */
+  if(den<0){ num=-num; den=-den; }
+  var g=u3Gcd(num,den); num/=g; den/=g;
+  return den===1?""+num:num+"/"+den;
+}
+function u3Par(n){ /* an integer, parenthesized when negative */
+  return n<0?"("+n+")":""+n;
+}
+function u3FeatSVG(o){ /* coordinate plane showing stated features only:
+   dashed asymptote lines with their equations, an open circle for a
+   hole whose height is given, a filled dot for a given point. No
+   curve is drawn, so nothing about the answer is shown. */
+  var W=300,H=300,pad=30,xMin=-8,xMax=8,yMin=-8,yMax=8;
+  function X(x){ return pad+(x-xMin)/(xMax-xMin)*(W-2*pad); }
+  function Y(y){ return H-pad-(y-yMin)/(yMax-yMin)*(H-2*pad); }
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coordinate plane showing the stated features of a rational function">';
+  out+='<line x1="'+fmt(X(xMin),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(xMax),1)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+  out+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(yMin),1)+'" x2="'+fmt(X(0),1)+'" y2="'+fmt(Y(yMax),1)+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+  out+=_txt(X(xMax)-4,Y(0)-8,"x",12,false,"end");
+  out+=_txt(X(0)+6,Y(yMin)+14,"y",12,false);
+  out+='<line x1="'+fmt(X(o.va),1)+'" y1="'+fmt(Y(yMin),1)+'" x2="'+fmt(X(o.va),1)+'" y2="'+fmt(Y(yMax),1)+'" stroke="'+FIG_ACC+'" stroke-width="1.6" stroke-dasharray="5 4"/>';
+  out+=_txt(X(o.va)+(o.va>=0?-6:6),Y(yMax)+14,"x = "+o.va,12,false,o.va>=0?"end":"start");
+  out+='<line x1="'+fmt(X(xMin),1)+'" y1="'+fmt(Y(o.ha),1)+'" x2="'+fmt(X(xMax),1)+'" y2="'+fmt(Y(o.ha),1)+'" stroke="'+FIG_ACC+'" stroke-width="1.6" stroke-dasharray="5 4"/>';
+  out+=_txt(X(xMax)-4,Y(o.ha)-6,"y = "+o.ha,12,false,"end");
+  if(o.hole){
+    out+='<circle cx="'+fmt(X(o.hole.x),1)+'" cy="'+fmt(Y(o.hole.y),1)+'" r="4.5" fill="#ffffff" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+=_txt(X(o.hole.x)+(o.hole.x>=3?-8:8),Y(o.hole.y)-8,"("+o.hole.x+", "+o.hole.yLabel+")",12,false,o.hole.x>=3?"end":"start");
+  }
+  if(o.point){
+    out+='<circle cx="'+fmt(X(o.point.x),1)+'" cy="'+fmt(Y(o.point.y),1)+'" r="4" fill="'+FIG_ACC+'"/>';
+    out+=_txt(X(o.point.x)+(o.point.x>=3?-8:8),Y(o.point.y)-8,"("+o.point.x+", "+o.point.yLabel+")",12,false,o.point.x>=3?"end":"start");
+  }
+  return out+'</svg>';
+}
+
+/* ---------- u3-build-from-features (1.9, 1.10, Level 2, var text, CR 2) ----------
+   The features are stated and the function must be built backwards:
+   the horizontal asymptote fixes the leading coefficient of the
+   reduced form, and the hole's height (or a point on the graph)
+   then determines the remaining unknown through a linear solve.
+   The typed result is the x-intercept, the unknown the whole
+   construction turns on. */
+function u3BuildFeat(mode){
+  var a=0,h=0,r=0,m=2,gN=0,gD=1,gX=0,tries=0,ok=false;
+  while(!ok&&tries++<400){
+    var vs=u3Distinct(2,-5,5,true); a=vs[0]; h=vs[1];
+    r=ri(-6,6); if(r===a||r===h) continue;
+    m=pick([2,3,-2,-3]);
+    if(mode==="hole"){
+      gN=m*(h-r); gD=h-a;
+      if(gN===0||Math.abs(gN)>6*Math.abs(gD)) continue;
+    } else {
+      gX=ri(-6,6); if(gX===a||gX===h||gX===r) continue;
+      gN=m*(gX-r); gD=gX-a;
+      if(gN===0||Math.abs(gN)>6*Math.abs(gD)) continue;
+    }
+    ok=true;
+  }
+  var given=u3FracS(gN,gD), givenP=u3FracP(gN,gD);
+  var mfac=""+m;
+  var built=FR(mfac+u3FacS(r)+u3FacS(h), u3FacS(a)+u3FacS(h));
+  var stem, sol, fig;
+  if(mode==="hole"){
+    stem="A rational function \\(f\\) is a quotient of two quadratic polynomials. The graph of \\(f\\) has a hole at \\(\\left("+h+", "+given+"\\right)\\), a vertical asymptote \\(x = "+a+"\\), and a horizontal asymptote \\(y = "+m+"\\). What is the \\(x\\)-intercept of the graph of \\(f\\)?";
+    sol="Cancelling the common factor leaves a reduced form \\(g(x) = \\dfrac{A(x - r)}{"+u3FacS(a)+"}\\), where \\(r\\) is the \\(x\\)-intercept. "
+      +"The degrees are equal, so the horizontal asymptote is the ratio of the leading coefficients and \\(A = "+m+"\\). "
+      +"The height of the hole is the reduced function's value at \\(x = "+h+"\\): \\[ \\frac{"+m+"("+h+" - r)}{"+u3Par(h-a)+"} = "+given+" \\] "
+      +"Cross-multiplying gives \\("+m+"("+h+" - r) = "+gN+"\\), so \\("+h+" - r = "+(h-r)+"\\) and \\(r = "+r+"\\). "
+      +"The function is \\(f(x) = "+built+"\\). Its numerator is zero at \\(x = "+r+"\\); the other numerator zero, \\(x = "+h+"\\), is the hole, not an intercept. "
+      +"The \\(x\\)-intercept is <b>\\("+r+"\\)</b>.";
+    fig=u3FeatSVG({va:a, ha:m, hole:{x:h, y:gN/gD, yLabel:givenP}});
+    var q1=textq(stem, [""+r, "x = "+r, "("+r+", 0)"], sol, {mode:mode, a:a, h:h, m:m, r:r, gN:gN, gD:gD});
+    q1.figure=fig;
+    return q1;
+  }
+  stem="A rational function \\(f\\) is a quotient of two quadratic polynomials. The graph of \\(f\\) has a hole at \\(x = "+h+"\\), a vertical asymptote \\(x = "+a+"\\), a horizontal asymptote \\(y = "+m+"\\), and passes through the point \\(\\left("+gX+", "+given+"\\right)\\). What is the \\(x\\)-intercept of the graph of \\(f\\)?";
+  sol="Cancelling the common factor leaves a reduced form \\(g(x) = \\dfrac{A(x - r)}{"+u3FacS(a)+"}\\), where \\(r\\) is the \\(x\\)-intercept. "
+    +"The degrees are equal, so the horizontal asymptote is the ratio of the leading coefficients and \\(A = "+m+"\\). "
+    +"The given point lies on the reduced function as well, since \\("+gX+"\\) is not the hole: \\[ \\frac{"+m+"("+gX+" - r)}{"+u3Par(gX-a)+"} = "+given+" \\] "
+    +"Cross-multiplying gives \\("+m+"("+gX+" - r) = "+gN+"\\), so \\("+gX+" - r = "+(gX-r)+"\\) and \\(r = "+r+"\\). "
+    +"The function is \\(f(x) = "+built+"\\). Its numerator is zero at \\(x = "+r+"\\); the other numerator zero, \\(x = "+h+"\\), is the hole, not an intercept. "
+    +"The \\(x\\)-intercept is <b>\\("+r+"\\)</b>.";
+  fig=u3FeatSVG({va:a, ha:m, point:{x:gX, y:gN/gD, yLabel:givenP}});
+  var q2=textq(stem, [""+r, "x = "+r, "("+r+", 0)"], sol, {mode:mode, a:a, h:h, m:m, r:r, gX:gX, gN:gN, gD:gD});
+  q2.figure=fig;
+  return q2;
+}
+E("u3-build-from-features",3,["1.9","1.10"],2,"var",varset([
+  function(){ return u3BuildFeat("hole"); },
+  function(){ return u3BuildFeat("point"); }
+]));
+
+/* ---------- u3-inequality-integers (1.10, Level 2, var text, CR 2) ----------
+   A rational inequality solved in full: critical values from the
+   numerator's zeros and the non-permissible values, a sign chart
+   across the four intervals, the solution set, and finally the
+   count of integers in the stated range that satisfy it. Only the
+   count is typed. */
+function u3IneqCount(shape){
+  var k=1, sense=0, crits=[], numS="", denS="", tries=0, ok=false, ints=[], regionSign=[0,0,0,0];
+  while(!ok&&tries++<400){
+    k=pick([1,-1]); sense=ri(0,3);
+    var vs=u3Distinct(3,-6,6,false);
+    if(shape==="den2"){
+      numS=(k===1?"":"-")+u3FacS(vs[0]); denS=u3FacS(vs[1])+u3FacS(vs[2]);
+      crits=[{v:vs[0],t:"z"},{v:vs[1],t:"n"},{v:vs[2],t:"n"}];
+    } else {
+      numS=(k===1?"":"-")+u3FacS(vs[0])+u3FacS(vs[1]); denS=u3FacS(vs[2]);
+      crits=[{v:vs[0],t:"z"},{v:vs[1],t:"z"},{v:vs[2],t:"n"}];
+    }
+    crits.sort(function(p,q){ return p.v-q.v; });
+    regionSign=[-k, k, -k, k];
+    ints=[];
+    for(var n=-8;n<=8;n++){
+      var isN=false, isZ=false, ci;
+      for(ci=0;ci<3;ci++){ if(crits[ci].v===n){ if(crits[ci].t==="n") isN=true; else isZ=true; } }
+      if(isN) continue;
+      if(isZ){ if(sense===1||sense===3) ints.push(n); continue; }
+      var reg=n<crits[0].v?0:(n<crits[1].v?1:(n<crits[2].v?2:3));
+      var pos=regionSign[reg]>0;
+      if((sense>=2)===pos) ints.push(n);
+    }
+    if(ints.length>=2&&ints.length<=15) ok=true;
+  }
+  var strict=(sense===0||sense===2);
+  var senseTex=(sense===0?"<":(sense===1?"\\le":(sense===2?">":"\\ge")));
+  function regionOk(i){ return (sense>=2)===(regionSign[i]>0); }
+  /* solution set, in interval notation, built from the chart */
+  var items=[], i, cur=null;
+  function closeCur(){ if(cur){ items.push(cur); cur=null; } }
+  for(i=0;i<4;i++){
+    if(!regionOk(i)){ closeCur(); continue; }
+    var loC=i===0?null:crits[i-1], hiC=i===3?null:crits[i];
+    if(cur&&loC&&loC.t==="z"&&!strict){ cur.hiC=hiC; }
+    else { closeCur(); cur={loC:loC, hiC:hiC, key:loC?loC.v:-Infinity}; }
+  }
+  closeCur();
+  var setParts=items.map(function(it){
+    var l=it.loC?(""+it.loC.v):"-\\infty", lb=(!it.loC)?"(":((it.loC.t==="z"&&!strict)?"[":"(");
+    var rr=it.hiC?(""+it.hiC.v):"+\\infty", rb=(!it.hiC)?")":((it.hiC.t==="z"&&!strict)?"]":")");
+    return {key:it.key, s:lb+l+", "+rr+rb};
+  });
+  for(var zi=0;zi<3;zi++){
+    if(crits[zi].t!=="z"||strict) continue;
+    var covL=zi>0&&regionOk(zi-1), covR=regionOk(zi);
+    if(!covL&&!covR) setParts.push({key:crits[zi].v, s:"\\{"+crits[zi].v+"\\}"});
+  }
+  setParts.sort(function(p,q){ return p.key-q.key; });
+  var setStr=setParts.map(function(p){ return p.s; }).join(" \\cup ");
+  var zeros=crits.filter(function(c){ return c.t==="z"; }).map(function(c){ return ""+c.v; });
+  var npvs=crits.filter(function(c){ return c.t==="n"; }).map(function(c){ return ""+c.v; });
+  var c1=crits[0].v, c2=crits[1].v, c3=crits[2].v;
+  function sgn(v){ return v>0?"+":"-"; }
+  var stem="Let \\(f(x) = "+FR(numS,denS)+"\\). How many integers \\(x\\) with \\(-8 \\le x \\le 8\\) satisfy \\(f(x) "+senseTex+" 0\\)?";
+  var sol="The numerator is zero at \\(x = "+zeros.join("\\) and \\(x = ")+"\\), and \\(f\\) is undefined at \\(x = "+npvs.join("\\) and \\(x = ")+"\\). "
+    +"These critical values split the number line into four intervals; the sign of \\(f\\) on each interval is "
+    +"\\[ \\begin{array}{c|cccc} \\text{interval} & x < "+c1+" & "+c1+" < x < "+c2+" & "+c2+" < x < "+c3+" & x > "+c3+" \\\\ \\hline \\text{sign of } f(x) & "+sgn(regionSign[0])+" & "+sgn(regionSign[1])+" & "+sgn(regionSign[2])+" & "+sgn(regionSign[3])+" \\end{array} \\] "
+    +"So \\(f(x) "+senseTex+" 0\\) exactly when \\(x \\in "+setStr+"\\) (the non-permissible values are never included). "
+    +"Within \\(-8 \\le x \\le 8\\), the integers in the solution set are \\("+ints.join(", ")+"\\), which is <b>"+ints.length+"</b> integers.";
+  return textq(stem, [""+ints.length], sol,
+    {shape:shape, k:k, sense:sense, crits:crits, regionSign:regionSign, count:ints.length, ints:ints});
+}
+E("u3-inequality-integers",3,["1.10"],2,"var",varset([
+  function(){ return u3IneqCount("den2"); },
+  function(){ return u3IneqCount("num2"); }
+]));
 
 /* ----- bank-u4.js ----- */
 // Math 3208 Unit 4 Derivatives question bank
@@ -4046,4 +4229,4 @@ E("u3-rational-equation-cr",3,["1.8","1.9"],3,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
