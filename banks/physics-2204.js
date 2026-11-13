@@ -876,6 +876,19 @@ E("u1-53-wind-roundtrip",1,["PH11.5.3"],3,"gen",function(){
     q.figure=p22VecLanes([{v:va,east:true,t:"way out, plane: "+gF(va)+" km/h"},{v:w,east:true,t:"way out, wind (tailwind): "+gF(w)+" km/h"},{v:va,east:false,t:"way back, plane: "+gF(va)+" km/h"},{v:w,east:true,t:"way back, wind (headwind): "+gF(w)+" km/h"}]);return q;
 });
 
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess a Science 1206 bridging skill (unit conversion, this course's own bridging code B.3), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/physics-2204.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u1-51-convert-speed"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ----- bank-u2.js ----- */
 // Diagram figures (Phase C, Nov 2026): force diagrams, angled force scenes, Atwood, connected crates, elevator and force time graphs added where the source types carried diagrams; see bank-helpers.js p22 helpers.
 // Physics 2204 Unit 2 Dynamics question bank
@@ -2932,6 +2945,19 @@ E("u3-716-energy-compare",3,["PH11.7.16"],3,"gen",function(){
      bigName+" releases more energy in total, by a factor of about "+F3(rat*10)],
     "Compare the two totals directly. Dividing the larger total by the smaller total gives a factor of about "+F3(rat)+". So "+bigName.toLowerCase()+" releases more energy in total, by a factor of about "+F3(rat)+".",{ratio:ratio,smallCoeff:smallCoeff,bigIsFission:bigIsFission});
 });
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess junior science atomic structure outcomes (counting subatomic particles), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/physics-2204.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u3-713-nuclear-notation"].indexOf(e.id)>=0)e.pkFlag=true;});
 
 /* ----- bank-u4.js ----- */
 // Diagram figures (Phase C, Nov 2026): wave anatomy, standing wave and air column patterns, double slit geometry and refraction diagrams added where the source types carried diagrams; see bank-helpers.js p22 helpers.
