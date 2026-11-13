@@ -3907,7 +3907,7 @@ function u6stageFig(counts, item) {
 }
 
 // 1. L1, 7.1: tile pattern in a figure, choose the expression for stage n.
-E("u6-pattern-figure-expr", 6, ["7.1"], 1, "gen", function () {
+E("u6-pattern-figure-expr", 6, ["7.1"], 2, "gen", function () {
   var item = pick(["tuiles", "points", "blocs", "jetons"]);
   var m = ri(2, 6), b = ri(1, 8), att = 0;
   while (m === b && att < 40) { m = ri(2, 6); b = ri(1, 8); att++; }
@@ -4034,7 +4034,7 @@ E("u6-equation-context", 6, ["7.3"], 1, "var", varset([
 ]), ["Dans l'équation, le nombre ajouté une fois est la valeur de départ et le nombre qui multiplie x est le pas.", "Fais d'abord correspondre la valeur de départ : cherche la situation avec ce montant unique."]);
 
 // 5. L1, 7.4: table of values as text lines, choose the equation.
-E("u6-table-equation", 6, ["7.4"], 1, "gen", function () {
+E("u6-table-equation", 6, ["7.4"], 2, "gen", function () {
   var S = ri(1, 12), P = ri(2, 7), att = 0;
   while (S === P && att < 40) { S = ri(1, 12); P = ri(2, 7); att++; }
   if (S === P) { S = 4; P = 3; }

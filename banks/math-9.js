@@ -3677,7 +3677,7 @@ function u6stageFig(counts, item) {
 // CRMARKS: u6-two-plans-graph=3
 // CRMARKS: u6-pattern-solve-n=3
 // CRMARKS: u6-pattern-large=2
-E("u6-pattern-figure-expr", 6, ["7.1"], 1, "gen", function () {
+E("u6-pattern-figure-expr", 6, ["7.1"], 2, "gen", function () {
   var item = pick(["tiles", "dots", "blocks", "counters"]);
   var m = ri(2, 6), b = ri(1, 8), att = 0;
   while (m === b && att < 40) { m = ri(2, 6); b = ri(1, 8); att++; }
@@ -3804,7 +3804,7 @@ E("u6-equation-context", 6, ["7.3"], 1, "var", varset([
 ]), ["In the equation, the number added once is the start value and the number multiplying x is the step.", "Match the start value first: look for the situation with that one-time amount."]);
 
 // 5. L1, 7.4: table of values as text lines, choose the equation.
-E("u6-table-equation", 6, ["7.4"], 1, "gen", function () {
+E("u6-table-equation", 6, ["7.4"], 2, "gen", function () {
   var S = ri(1, 12), P = ri(2, 7), att = 0;
   while (S === P && att < 40) { S = ri(1, 12); P = ri(2, 7); att++; }
   if (S === P) { S = 4; P = 3; }
