@@ -4938,7 +4938,7 @@ E("u7-ratio-def",7,["7.2"],1,"gen",function(){
 });
 
 /* ================= 4. find a missing angle (7.3, L2, gen num, CR 2) ================= */
-E("u7-find-angle",7,["7.3"],2,"gen",function(){
+E("u7-find-angle",7,["7.3"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var rt=pick(["sin","cos","tan"]),num,den,sideText,ratioDisp,raw,tries=0;
@@ -4975,7 +4975,7 @@ E("u7-find-angle",7,["7.3"],2,"gen",function(){
 });
 
 /* ================= 5. find a missing side (7.4, L2, gen num, CR 3) ================= */
-E("u7-find-side",7,["7.4"],2,"gen",function(){
+E("u7-find-side",7,["7.4"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var theta=pick(U7_ANGLES),mode=ri(1,4),given,targetName,givenText,raw,steps;
@@ -5020,7 +5020,7 @@ E("u7-find-side",7,["7.4"],2,"gen",function(){
 });
 
 /* ================= 6. find the hypotenuse or a rearranged leg (7.4, L2, gen num, CR 2) ================= */
-E("u7-find-hypotenuse",7,["7.4"],2,"gen",function(){
+E("u7-find-hypotenuse",7,["7.4"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var theta=pick(U7_ANGLES),mode=ri(1,3),given,targetName,givenText,raw,steps,askWord;
@@ -5059,7 +5059,7 @@ E("u7-find-hypotenuse",7,["7.4"],2,"gen",function(){
 });
 
 /* ================= 7. Pythagorean theorem in context (7.5, 7.7, L2, gen mcq, CR 2) ================= */
-E("u7-pythagoras",7,["7.5","7.7"],2,"gen",function(){
+E("u7-pythagoras",7,["7.5","7.7"],1,"gen",function(){
   var ctx=ri(1,11);
   var maxHyp=(ctx===1||ctx===6)?15:((ctx===8||ctx===11)?20:(ctx===3?30:(ctx===7?12:(ctx===2?60:150))));
   var scales=[0.5,1,1.5,2,2.5,3,4,5];
