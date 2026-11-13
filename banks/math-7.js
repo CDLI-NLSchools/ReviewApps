@@ -3744,18 +3744,22 @@ E("u7-sample-space",7,["12.3","12.4"],1,"gen",function(){
       qT.figure=u7tableSVG("Die",colHead,rows);return qT;
     }
     if(ask==="dienum"){var target=ri(1,d);
-      var dsD=u7numOpts(ncols,[ncols+1,total,d]).map(function(v){return {t:String(v),fb:"Find the row for that die number and count its cells, one for each result of the other event."};});
+      /* Option A fix (Nov 2026): this ask is worded for the coin, so force the coin table here regardless of the spinner draw; the spinner table stays in play for the total ask only. */
+      var chead=["H","T"],cnc=2,ctot=d*2,crows=[];for(var cr=1;cr<=d;cr++){var crow=[String(cr)];for(var cc=0;cc<cnc;cc++)crow.push(chead[cc]+cr);crows.push(crow);}
+      var dsD=u7numOpts(cnc,[cnc+1,ctot,d]).map(function(v){return {t:String(v),fb:"Find the row for that die number and count its cells, one for each result of the other event."};});
       var qD=mcq("The table shows all outcomes when a coin is tossed and a "+d+"-sided die is rolled. How many outcomes have die number "+target+"?",
-        {t:String(ncols),fb:"Yes: die number "+target+" appears once with heads and once with tails."},dsD,
-        "The row for die number "+target+" holds one cell for heads and one for tails. The answer is <b>"+ncols+"</b> outcomes.",{mode:"table"});
-      qD.figure=u7tableSVG("Die",["H","T"],rows);return qD;
+        {t:String(cnc),fb:"Yes: die number "+target+" appears once with heads and once with tails."},dsD,
+        "The row for die number "+target+" holds one cell for heads and one for tails. The answer is <b>"+cnc+"</b> outcomes.",{mode:"table"});
+      qD.figure=u7tableSVG("Die",chead,crows);return qD;
     }
     var k=ri(1,d);var face=pick(["H","T"]);
-    var dsS=u7numOpts(1,[2,d,total]).map(function(v){return {t:String(v),fb:"A single exact combination appears exactly once in a complete outcome table."};});
+    /* Option A fix (Nov 2026): as in the dienum branch above, force the coin table for this coin-worded ask. */
+    var chead=["H","T"],cnc=2,ctot=d*2,crows=[];for(var cr=1;cr<=d;cr++){var crow=[String(cr)];for(var cc=0;cc<cnc;cc++)crow.push(chead[cc]+cr);crows.push(crow);}
+    var dsS=u7numOpts(1,[2,d,ctot]).map(function(v){return {t:String(v),fb:"A single exact combination appears exactly once in a complete outcome table."};});
     var qS=mcq("The table shows all outcomes when a coin is tossed and a "+d+"-sided die is rolled. How many outcomes are exactly "+face+k+" (coin result "+face+", die number "+k+")?",
       {t:"1",fb:"Yes: that exact combination fills exactly one cell of the table."},dsS,
       "Each cell of the table is one exact combination, and "+face+k+" fills one cell. The answer is <b>1</b>.",{mode:"table"});
-    qS.figure=u7tableSVG("Die",["H","T"],rows);return qS;
+    qS.figure=u7tableSVG("Die",chead,crows);return qS;
   }
   var devA=[["coin",2],["three-section spinner",3],["four-section spinner",4],["five-section spinner",5],["six-sided die",6],["eight-sided die",8]];
   var devB=[["coin",2],["four-sided die",4],["six-section spinner",6],["eight-sided die",8],["three-section spinner",3],["four-sided die",4]];
