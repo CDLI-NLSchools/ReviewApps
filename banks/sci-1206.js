@@ -307,6 +307,110 @@ function s6dis(key, cands, n) {
   return out;
 }
 
+/* ---------- Tranche 5 (Nov 2026): Unit 3 motion diagrams ----------
+   A dart target for the accuracy and precision entry, arrow path
+   diagrams for the out-and-back trip entries, and a four-panel
+   story-to-graph figure. All drawn from each entry's own values. */
+function s6Arr(x1, y1, x2, y2, col) {
+  var a = Math.atan2(y2 - y1, x2 - x1);
+  return '<line x1="' + s6f1(x1) + '" y1="' + s6f1(y1) + '" x2="' + s6f1(x2) + '" y2="' + s6f1(y2) + '" stroke="' + col + '" stroke-width="2.6"/>' +
+    '<polygon points="' + s6f1(x2) + ',' + s6f1(y2) + ' ' + s6f1(x2 + 11 * Math.cos(a + 2.65)) + ',' + s6f1(y2 + 11 * Math.sin(a + 2.65)) + ' ' + s6f1(x2 + 11 * Math.cos(a - 2.65)) + ',' + s6f1(y2 + 11 * Math.sin(a - 2.65)) + '" fill="' + col + '"/>';
+}
+/* Concentric target with a cluster of hits. cxU and cyU give the
+   cluster centre in ring units from the bullseye (x right, y up);
+   spreadU gives the cluster spread in the same units. The key of the
+   arm that uses this figure is decided by those same parameters:
+   a small spread is precision, a centre far from the bullseye is
+   inaccuracy. */
+function s6TargetSVG(cxU, cyU, spreadU) {
+  var C = 110, RU = 18;
+  var jit = [[-0.30, -0.12], [0.24, 0.28], [-0.06, 0.40], [0.36, -0.24], [-0.42, 0.16], [0.08, -0.36]];
+  var out = '<svg viewBox="0 0 220 220" width="220" height="220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Target with a cluster of dart hits">';
+  [4, 3, 2, 1].forEach(function (k) {
+    out += '<circle cx="' + C + '" cy="' + C + '" r="' + (k * RU) + '" fill="' + (k % 2 ? "#ffffff" : "#eef6f0") + '" stroke="#9db8a8" stroke-width="1.4"/>';
+  });
+  out += '<circle cx="' + C + '" cy="' + C + '" r="3.6" fill="' + S6_INK + '"/>';
+  jit.forEach(function (j) {
+    var hx = C + (cxU + j[0] * spreadU) * RU, hy = C - (cyU + j[1] * spreadU) * RU;
+    out += '<circle cx="' + s6f1(hx) + '" cy="' + s6f1(hy) + '" r="4" fill="' + S6_RED + '" stroke="#ffffff" stroke-width="1.2"/>';
+  });
+  return out + "</svg>";
+}
+/* Out-and-back path along one line. legs: [{len, dir (+1 forward,
+   -1 back), label}]. One row per leg, positions to a common scale,
+   with Start and Finish markers on a shared baseline. */
+function s6PathLineSVG(legs) {
+  var pos = [0];
+  legs.forEach(function (l) { pos.push(pos[pos.length - 1] + l.dir * l.len); });
+  var minP = Math.min.apply(null, pos), maxP = Math.max.apply(null, pos);
+  var base = 36 + legs.length * 34, H = base + 34;
+  function X(p) { return 36 + (p - minP) * 288 / ((maxP - minP) || 1); }
+  var cols = [S6_INK, S6_ACC, S6_ALT];
+  var out = '<svg viewBox="0 0 360 ' + H + '" width="360" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Path diagram of the trip legs">';
+  pos.forEach(function (p, i) {
+    if (i === 0) return;
+    out += '<line x1="' + s6f1(X(p)) + '" y1="' + (30 + (i - 1) * 34) + '" x2="' + s6f1(X(p)) + '" y2="' + base + '" stroke="#9db8a8" stroke-width="1.1" stroke-dasharray="4 3"/>';
+  });
+  legs.forEach(function (l, i) {
+    var y = 30 + i * 34, col = cols[i % 3];
+    out += s6Arr(X(pos[i]), y, X(pos[i + 1]), y, col);
+    out += s6txt((X(pos[i]) + X(pos[i + 1])) / 2, y - 12, l.label, 12, true, "middle", col);
+  });
+  out += '<line x1="24" y1="' + base + '" x2="336" y2="' + base + '" stroke="' + S6_INK + '" stroke-width="1.6"/>';
+  var sx = X(0), fx = X(pos[pos.length - 1]);
+  if (Math.abs(fx - sx) < 10) {
+    out += '<circle cx="' + s6f1(sx - 3.5) + '" cy="' + base + '" r="4.2" fill="' + S6_INK + '"/>';
+    out += '<circle cx="' + s6f1(fx + 3.5) + '" cy="' + base + '" r="4.2" fill="' + S6_ALT + '"/>';
+    out += s6txt(sx - 6, base + 17, "Start", 12, true, "end");
+    out += s6txt(fx + 6, base + 17, "Finish", 12, true, "start");
+  } else {
+    out += '<circle cx="' + s6f1(sx) + '" cy="' + base + '" r="4.2" fill="' + S6_INK + '"/>';
+    out += '<circle cx="' + s6f1(fx) + '" cy="' + base + '" r="4.2" fill="' + S6_ALT + '"/>';
+    out += s6txt(sx, base + 17, "Start", 12, true);
+    out += s6txt(fx, base + 17, "Finish", 12, true);
+  }
+  return out + "</svg>";
+}
+/* Two perpendicular legs (north then east) with a dashed displacement
+   line from start to finish. The dashed line carries no value: its
+   length is what the question asks for. */
+function s6PathPerpSVG(aLen, bLen, aLab, bLab) {
+  var sx = 66, sy = 168, sc = Math.min(116 / aLen, 210 / bLen);
+  var ty = sy - aLen * sc, fx = sx + bLen * sc;
+  var out = '<svg viewBox="0 0 330 202" width="330" height="202" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Path diagram with two perpendicular legs">';
+  out += '<line x1="' + sx + '" y1="' + sy + '" x2="' + s6f1(fx) + '" y2="' + s6f1(ty) + '" stroke="' + S6_ALT + '" stroke-width="2" stroke-dasharray="6 4"/>';
+  out += s6Arr(sx, sy, sx, ty, S6_INK);
+  out += s6Arr(sx, ty, fx, ty, S6_ACC);
+  out += s6txt(sx - 9, (sy + ty) / 2, aLab, 12, true, "end");
+  out += s6txt((sx + fx) / 2, ty - 12, bLab, 12, true, "middle", S6_ACC);
+  out += '<circle cx="' + sx + '" cy="' + sy + '" r="4.2" fill="' + S6_INK + '"/>';
+  out += '<circle cx="' + s6f1(fx) + '" cy="' + s6f1(ty) + '" r="4.2" fill="' + S6_ALT + '"/>';
+  out += s6txt(sx, sy + 17, "Start", 12, true);
+  out += s6txt(fx, ty - 14, "Finish", 12, true);
+  return out + "</svg>";
+}
+/* Four small position-time panels in a 2 by 2 grid, lettered A to D.
+   panels: [{pts: [[x, y], ...]}] in data units, x from 0 to 12 and
+   y from 0 to 10. One shared pair of axis labels. */
+function s6StoryPanelsSVG(panels) {
+  var org = [[48, 20], [216, 20], [48, 168], [216, 168]];
+  var out = '<svg viewBox="0 0 368 302" width="368" height="302" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four position-time graphs labelled A to D">';
+  out += '<text x="14" y="144" font-size="12.5" font-weight="bold" fill="' + S6_INK + '" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 14 144)">position (m)</text>';
+  panels.forEach(function (p, i) {
+    var ox = org[i][0], oy = org[i][1];
+    function X(x) { return ox + x * 11; }
+    function Y(y) { return oy + 100 - y * 10; }
+    out += '<rect x="' + ox + '" y="' + oy + '" width="132" height="100" fill="#fbfdfb" stroke="' + S6_GRID + '" stroke-width="1"/>';
+    out += '<line x1="' + ox + '" y1="' + (oy + 100) + '" x2="' + (ox + 132) + '" y2="' + (oy + 100) + '" stroke="' + S6_INK + '" stroke-width="1.5"/>';
+    out += '<line x1="' + ox + '" y1="' + oy + '" x2="' + ox + '" y2="' + (oy + 100) + '" stroke="' + S6_INK + '" stroke-width="1.5"/>';
+    var d = p.pts.map(function (pt, j) { return (j ? "L" : "M") + s6f1(X(pt[0])) + "," + s6f1(Y(pt[1])); }).join(" ");
+    out += '<path d="' + d + '" fill="none" stroke="' + S6_INK + '" stroke-width="2.4"/>';
+    out += s6txt(ox - 16, oy + 10, "ABCD"[i], 15, true);
+  });
+  out += s6txt(184, 292, "time (s)", 12.5, true);
+  return out + "</svg>";
+}
+
 /* ----- bank-u1.js ----- */
 // CRMARKS: sci-u1-cr-climate=4
 // CRMARKS: sci-u1-cr-frontpass=3
@@ -2980,10 +3084,12 @@ E("sci-u3-sigfigs-calc", 3, ["SC10.8.7"], 2, "gen", function () {
 
 E("sci-u3-accuracy", 3, ["SC10.8.7"], 1, "var", varset([
   function () {
-    return mcq("A set of darts all land in a tight cluster, but the cluster is well to the left of the bullseye. The throws are",
+    var q = mcq("A set of darts all land in a tight cluster, but the cluster is well to the left of the bullseye. The throws are",
       "precise but not accurate: they agree with each other but miss the true target",
       ["accurate but not precise: the tight cluster proves the aim was true and steady", "both accurate and precise: a tight cluster is what careful throwing always produces", "neither accurate nor precise: the cluster misses, so the throws count as neither one"],
       "Accuracy is closeness to the true value; precision is closeness of results to each other. A tight cluster off target is the textbook picture of precision without accuracy, usually a systematic error (aim or equipment) behind it.", {});
+    q.figure = s6TargetSVG(-2.3, 0.3, 0.45);
+    return q;
   },
   function () {
     return mcq("Four students time the same pendulum swing as 1.48 s, 1.50 s, 1.49 s and 1.49 s. The teacher's photogate reads 1.49 s. Their results are",
@@ -3111,21 +3217,28 @@ E("sci-u3-dist-disp", 3, ["SC10.8.8"], 2, "gen", function () {
     var back = s6pick([40, 50, 60, 80, 90]);
     var dist = out + back, disp = out - back;
     var ask = s6pick(["distance", "displacement"]);
+    var figD = s6PathLineSVG([{ len: out, dir: 1, label: out + " m east" }, { len: back, dir: -1, label: back + " m west" }]);
     if (ask === "distance") {
-      return mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What total distance did the dog travel?",
+      var q1 = mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What total distance did the dog travel?",
         dist + " m", [disp + " m", out + " m", (dist + 20) + " m"],
         "Distance adds every leg, direction ignored: " + out + " + " + back + " = " + dist + " m. The " + disp + " m option is the displacement, a different quantity.", { mode: mode, ask: ask });
+      q1.figure = figD;
+      return q1;
     }
-    return mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What is the dog's displacement?",
+    var q2 = mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What is the dog's displacement?",
       disp + " m [east]", [dist + " m [east]", back + " m [west]", disp + " m"],
       "Displacement is finish minus start, with direction: " + out + " east - " + back + " west = " + disp + " m [east]. Total path length (" + dist + " m) is the distance, and a displacement answer without a direction is incomplete.", { mode: mode, ask: ask });
+    q2.figure = figD;
+    return q2;
   }
   var tri = s6pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [9, 12, 15]]);
   var k = s6pick([10, 20, 25]);
   var a = tri[0] * k, b = tri[1] * k, c = tri[2] * k;
-  return mcq("A hiker walks " + a + " m north, then " + b + " m east. What is the magnitude of the hiker's displacement from the start?",
+  var q3 = mcq("A hiker walks " + a + " m north, then " + b + " m east. What is the magnitude of the hiker's displacement from the start?",
     c + " m", [(a + b) + " m", Math.abs(a - b) + " m", (c + k) + " m"],
     "The two legs are perpendicular, so the displacement is the hypotenuse: sqrt(" + a + "² + " + b + "²) = sqrt(" + (a * a + b * b) + ") = " + c + " m. Adding the legs (" + (a + b) + " m) gives the distance walked, not the straight-line displacement.", { a: a, b: b, c: c });
+  q3.figure = s6PathPerpSVG(a, b, a + " m north", b + " m east");
+  return q3;
 }, ["Distance counts the path; displacement measures the gap between start and finish, direction included."]);
 
 E("sci-u3-avgvelocity", 3, ["SC10.8.8"], 3, "gen", function () {
@@ -3136,9 +3249,11 @@ E("sci-u3-avgvelocity", 3, ["SC10.8.8"], 3, "gen", function () {
   var keyV = s6sf(disp / tTot, 2);
   var avgSpd = s6sf(dist / tTot, 2);
   var legAvg = s6sf((300 / 60 + 100 / 50) / 2, 2);
-  return mcq("A delivery driver goes 300 m east in 60 s, then 100 m west in 50 s. What is the driver's average velocity for the whole trip?",
+  var q = mcq("A delivery driver goes 300 m east in 60 s, then 100 m west in 50 s. What is the driver's average velocity for the whole trip?",
     keyV + " m/s [east]", [avgSpd + " m/s [east]", legAvg + " m/s [east]", s6sf(disp / 60, 2) + " m/s [east]"],
     "Average velocity = total displacement / total time. Displacement = 300 - 100 = 200 m [east]; time = 110 s; 200/110 = " + keyV + " m/s [east]. The " + avgSpd + " option is the average speed (uses the 400 m path), and averaging the two leg velocities ignores that the legs took different times.", { keyV: keyV });
+  q.figure = s6PathLineSVG([{ len: legs[0].d, dir: 1, label: legs[0].d + " m east" }, { len: legs[1].d, dir: -1, label: legs[1].d + " m west" }]);
+  return q;
 }, ["Average velocity divides total displacement by total time. Never average the leg velocities directly."]);
 
 E("sci-u3-disp-scenarios", 3, ["SC10.8.8"], 2, "var", varset([
@@ -3242,6 +3357,59 @@ E("sci-u3-dt-slope", 3, ["SC10.8.9"], 3, "gen", function () {
   q.figure = fig;
   return q;
 }, ["Pick two points on the line, subtract in the same order top and bottom, then divide."]);
+
+/* Tranche 5 (Nov 2026): story-to-graph matching. Four position-time
+   panels, one per option; the distractors are plausible wrong graphs
+   (wrong slope direction, a flat segment that is not in the story, a
+   return that stops short or goes too far). */
+E("sci-u3-dt-story", 3, ["SC10.8.9"], 2, "gen", function () {
+  var scs = [
+    { name: "mailbox",
+      story: "Leah walks from her house to the community mailbox at a steady pace, stops to chat with a neighbour for a while, then walks back home at the same steady pace.",
+      key: [[0, 0], [4, 8], [7, 8], [11, 0]],
+      wrong: [
+        [[0, 0], [4, 8], [7, 8], [11, 10]],
+        [[0, 0], [4, 8], [7, 8], [11, 3]],
+        [[0, 0], [1, 0.7], [2, 2.1], [3, 4.3], [4, 8], [7, 8], [11, 0]]
+      ],
+      explain: "The position rises steadily (a steady pace away from home), stays flat while she chats (her position is not changing), then falls steadily back to zero (home again, at the same pace). A graph that rises after the flat part has her walking farther away instead of turning home; one whose fall stops above zero has her not getting home; a curved first part has her speeding up instead of keeping a steady pace." },
+    { name: "cyclist",
+      story: "A cyclist rides away from the trailhead quickly, then turns around and rides back to the trailhead more slowly.",
+      key: [[0, 0], [3, 9], [11, 0]],
+      wrong: [
+        [[0, 0], [8, 9], [11, 0]],
+        [[0, 0], [3, 9], [6, 9], [11, 0]],
+        [[0, 0], [5.5, 9], [11, 0]]
+      ],
+      explain: "The steep rise is the fast ride out, and the longer, gentler fall is the slower ride back to position zero, the trailhead. A graph with a flat top adds a rest stop that never happens; one with equal slopes makes the two speeds the same; one with a gentle rise and a steep fall swaps the fast and slow legs." },
+    { name: "bus",
+      story: "A Metrobus leaves the depot, drives at a steady speed, stops at a bus stop, then drives on at a steady speed in the same direction.",
+      key: [[0, 0], [4, 6], [6, 6], [11, 10]],
+      wrong: [
+        [[0, 0], [4, 6], [6, 6], [11, 0]],
+        [[0, 0], [11, 9]],
+        [[0, 4], [5, 8], [7, 8], [11, 10]]
+      ],
+      explain: "The graph rises, goes flat for the stop, then rises again: the bus keeps going the same way. A graph that falls after the flat part brings the bus back toward the depot; a single straight rise has no stop at all; a graph that starts above zero has the bus starting partway along its route instead of at the depot." },
+    { name: "lunch",
+      story: "Noah walks away from home toward school at a steady pace, realizes he forgot his lunch, walks partway back, then turns and walks on to school.",
+      key: [[0, 0], [4, 7], [6, 4], [11, 10]],
+      wrong: [
+        [[0, 0], [4, 7], [7, 0], [11, 10]],
+        [[0, 0], [4, 7], [6, 7], [11, 10]],
+        [[0, 0], [4, 7], [11, 10]]
+      ],
+      explain: "The graph rises (walking away), falls partway (coming back for the lunch, but not all the way home), then rises again to the finish (on to school). A graph that falls to zero has him going all the way home first; a flat middle has him stopping instead of turning back; a graph that only rises leaves out the trip back entirely." }
+  ];
+  var sc = s6pick(scs);
+  var shapes = s6shuf([{ pts: sc.key, isKey: true }].concat(sc.wrong.map(function (w) { return { pts: w, isKey: false }; })));
+  var ki = shapes.findIndex(function (s) { return s.isKey; });
+  var letter = "ABCD"[ki];
+  var ds = ["A", "B", "C", "D"].filter(function (L) { return L !== letter; }).map(function (L) { return "Graph " + L; });
+  var q = mcq(sc.story + " Which graph shows this trip?", "Graph " + letter, ds, sc.explain, { sc: sc.name });
+  q.figure = s6StoryPanelsSVG(shapes);
+  return q;
+}, ["Read the story in pieces: each piece of the trip is one segment of the graph."]);
 
 /* ---------- SC10.8.10 Instantaneous vs average ---------- */
 
@@ -3451,14 +3619,18 @@ E("sci-u3-accel-concept", 3, ["SC10.8.12"], 2, "var", varset([
 
 E("sci-u3-cr-trip", 3, ["SC10.8.8"], 2, "var", varset([
   function () {
-    return textq("A trip in two legs (4 marks)\nA student walks 240 m east to a store in 200 s, then walks 60 m back west toward home in 75 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the student's displacement for the whole trip, with direction. (1)\n(c) Calculate the average speed for the whole trip. (1)\n(d) Calculate the average velocity for the whole trip. (1)", ["(a) Distance = 240 + 60 = 300 m."], 
-      "(a) Distance = 240 + 60 = 300 m. (b) Displacement = 240 - 60 = 180 m [east]. (c) Average speed = 300 m / 275 s = 1.1 m/s. (d) Average velocity = 180 m [east] / 275 s = 0.65 m/s [east]. (Total time 200 + 75 = 275 s; answers to 2 significant figures as the data warrant.)", 
+    var q = textq("A trip in two legs (4 marks)\nA student walks 240 m east to a store in 200 s, then walks 60 m back west toward home in 75 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the student's displacement for the whole trip, with direction. (1)\n(c) Calculate the average speed for the whole trip. (1)\n(d) Calculate the average velocity for the whole trip. (1)", ["(a) Distance = 240 + 60 = 300 m."], 
+      "(a) Distance = 240 + 60 = 300 m. (b) Displacement = 240 - 60 = 180 m [east]. (c) Average speed = 300 m / 275 s = 1.1 m/s. (d) Average velocity = 180 m [east] / 275 s = 0.65 m/s [east]. (Total time 200 + 75 = 275 s; answers to 2 significant figures as the data warrant.)",
       {});
+    q.figure = s6PathLineSVG([{ len: 240, dir: 1, label: "240 m east" }, { len: 60, dir: -1, label: "60 m west" }]);
+    return q;
   },
   function () {
-    return textq("Training laps (4 marks)\nA runner on a straight out-and-back course runs 400 m north in 100 s, turns, and runs 400 m south in 125 s, finishing exactly at the start.\n(a) Calculate the total distance run. (1)\n(b) State the runner's displacement for the full run, and explain the value. (1)\n(c) Calculate the average speed for the full run. (1)\n(d) State the average velocity for the full run, and explain why it differs from the average speed. (1)", ["(a) Distance = 400 + 400 = 800 m."], 
-      "(a) Distance = 400 + 400 = 800 m. (b) Displacement = 0 m: the finish is the start, so the straight-line change in position is zero. (c) Average speed = 800 m / 225 s = 3.6 m/s. (d) Average velocity = 0 m / 225 s = 0 m/s. It differs because average velocity divides displacement (zero here), while average speed divides distance (800 m); the two quantities agree only for straight-line motion with no reversal.", 
+    var q = textq("Training laps (4 marks)\nA runner on a straight out-and-back course runs 400 m north in 100 s, turns, and runs 400 m south in 125 s, finishing exactly at the start.\n(a) Calculate the total distance run. (1)\n(b) State the runner's displacement for the full run, and explain the value. (1)\n(c) Calculate the average speed for the full run. (1)\n(d) State the average velocity for the full run, and explain why it differs from the average speed. (1)", ["(a) Distance = 400 + 400 = 800 m."], 
+      "(a) Distance = 400 + 400 = 800 m. (b) Displacement = 0 m: the finish is the start, so the straight-line change in position is zero. (c) Average speed = 800 m / 225 s = 3.6 m/s. (d) Average velocity = 0 m / 225 s = 0 m/s. It differs because average velocity divides displacement (zero here), while average speed divides distance (800 m); the two quantities agree only for straight-line motion with no reversal.",
       {});
+    q.figure = s6PathLineSVG([{ len: 400, dir: 1, label: "400 m north" }, { len: 400, dir: -1, label: "400 m south" }]);
+    return q;
   },
   function () {
     return textq("Comparing two drivers (4 marks)\nMaya drives for 2.00 hours at a steady 68.0 km/h. Tomas drives for 120 minutes at a steady 19.0 m/s.\n(a) Convert Tomas's speed to kilometres per hour. (1)\n(b) Who is travelling faster, and by how much? (1)\n(c) Calculate the distance Maya travels. (1)\n(d) Calculate the distance Tomas travels in his 120 minutes. (1)",
@@ -3467,10 +3639,12 @@ E("sci-u3-cr-trip", 3, ["SC10.8.8"], 2, "var", varset([
       {});
   },
   function () {
-    return textq("A warden's patrol (4 marks)\nA park warden walks 350 m north in 250 s, then 150 m south in 100 s, then 100 m north in 80 s.\n(a) Calculate the total distance walked. (1)\n(b) Calculate the warden's displacement for the whole patrol. (1)\n(c) Calculate the average speed for the patrol. (1)\n(d) Calculate the average velocity for the patrol. (1)",
+    var q = textq("A warden's patrol (4 marks)\nA park warden walks 350 m north in 250 s, then 150 m south in 100 s, then 100 m north in 80 s.\n(a) Calculate the total distance walked. (1)\n(b) Calculate the warden's displacement for the whole patrol. (1)\n(c) Calculate the average speed for the patrol. (1)\n(d) Calculate the average velocity for the patrol. (1)",
       ["(a) 600 m. (b) 300 m [north]. (c) 1.4 m/s. (d) 0.70 m/s [north]"],
       "(a) Distance = 350 + 150 + 100 = 600 m. (b) Displacement = 350 - 150 + 100 = 300 m [north] (north taken as positive). (c) Total time = 250 + 100 + 80 = 430 s; average speed = 600 / 430 = 1.4 m/s. (d) Average velocity = 300 m [north] / 430 s = 0.70 m/s [north]. The southward leg cancels part of the northward progress, so the average velocity comes out well below the average speed even though the warden's walking pace was steady throughout.",
       {});
+    q.figure = s6PathLineSVG([{ len: 350, dir: 1, label: "350 m north" }, { len: 150, dir: -1, label: "150 m south" }, { len: 100, dir: 1, label: "100 m north" }]);
+    return q;
   }
 ]), ["Show the formula, the substitution and the unit in every part; direction is part of any displacement or velocity answer."]);
 
@@ -3593,10 +3767,12 @@ E("sci-u3-round-trip", 3, ["SC10.8.8"], 3, "gen", function () {
   var avg = 2 * d / tTot;
   var key = s6sf(avg, 2);
   var naive = s6sf((vOut + vBack) / 2, 2);
-  return mcq("A kayaker paddles 120 m across a pond at " + vOut + " m/s and returns the same 120 m at " + vBack + " m/s. The average speed for the round trip is",
+  var q = mcq("A kayaker paddles 120 m across a pond at " + vOut + " m/s and returns the same 120 m at " + vBack + " m/s. The average speed for the round trip is",
     key + " m/s", [naive + " m/s", s6sf(vOut, 2) + " m/s", s6sf(2 * d / (d / vOut), 2) + " m/s"],
     "Average speed is total distance over total time: time out = 120/" + vOut + " = " + s6sf(d / vOut, 3) + " s; time back = 120/" + vBack + " = " + s6sf(d / vBack, 3) + " s; average = 240 / " + s6sf(tTot, 3) + " = " + key + " m/s. Simply averaging the two speeds (" + naive + ") is wrong because more time is spent at the slower speed.",
     { avg: avg, key: key });
+  q.figure = s6PathLineSVG([{ len: d, dir: 1, label: d + " m at " + vOut + " m/s" }, { len: d, dir: -1, label: d + " m at " + vBack + " m/s" }]);
+  return q;
 }, ["Round trips punish the naive average: you spend longer at the slow speed, so it counts for more."]);
 
 /* ----- bank-u4.js ----- */
