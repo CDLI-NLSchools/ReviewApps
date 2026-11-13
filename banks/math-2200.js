@@ -4731,11 +4731,12 @@ E("u7-tangent-param", 7, ["4.49", "4.51"], 3, "gen", function () {
 // CRMARKS: u8-quad-solve-special=3
 // CRMARKS: u8-solve-linear-basic=1
 // CRMARKS: u8-solve-linear-flip=2
+// CRMARKS: u8-scenario-solve=2
 /* ================= Unit 8: Linear and Quadratic Inequalities ================= */
 /* ================= Unit 8: Linear and Quadratic Inequalities =================
    Tranche 2, final scope. All stems, contexts and values are original.
    Helpers are prefixed u8; entries register through E(...).
-   12 entries: L1 3, L2 7, L3 2.
+   13 entries: L1 3, L2 8, L3 2.
    Codes: 4.16/4.17 solve and graph one-variable linear inequalities;
    4.18 graph linear inequalities in two variables (test point, solid/broken);
    4.19 model a context as a two-variable inequality, feasible combinations;
@@ -4984,7 +4985,15 @@ var U8CTX = [
   { name: "two jobs", v1: "t", v2: "s", p1: 15, p2: 11, rel: "ge", caps: [170, 185, 200, 215, 230], maxXY: 14,
     defs: "Let \\(t\\) be the number of hours spent tutoring and \\(s\\) be the number of hours spent shelving books.",
     text: function (cap) { return "Sam earns $15 per hour tutoring and $11 per hour shelving books at a library. Sam wants to earn at least $" + cap + " next week."; },
-    total: "total earnings in dollars", pairWords: "hours of tutoring and hours shelving books" }
+    total: "total earnings in dollars", pairWords: "hours of tutoring and hours shelving books" },
+  { name: "delivery van", v1: "w", v2: "j", p1: 12, p2: 9, rel: "le", caps: [240, 270, 300, 330, 360], maxXY: 20,
+    defs: "Let \\(w\\) be the number of crates of bottled water and \\(j\\) be the number of crates of juice.",
+    text: function (cap) { return "A delivery van carries crates of bottled water weighing 12 kg each and crates of juice weighing 9 kg each. The total load must be at most " + cap + " kg."; },
+    total: "total load in kilograms", pairWords: "crates of bottled water and crates of juice" },
+  { name: "print order", v1: "p", v2: "f", p1: 5, p2: 2, rel: "le", caps: [50, 60, 70, 80, 90], maxXY: 16,
+    defs: "Let \\(p\\) be the number of posters and \\(f\\) be the number of flyers.",
+    text: function (cap) { return "A student council prints posters for $5 each and flyers for $2 each for a school event. The council can spend at most $" + cap + " on printing."; },
+    total: "total printing cost in dollars", pairWords: "posters and flyers" }
 ];
 E("u8-model-context", 8, ["4.19"], 1, "gen", function () {
   var ctx = pick(U8CTX), cap = pick(ctx.caps), shape = pick(["model", "feasible"]);
@@ -5203,6 +5212,80 @@ E("u8-both-hold", 8, ["4.25", "4.26"], 3, "gen", function () {
   return mcq("A value of \\(x\\) must satisfy both \\(" + ineq1 + "\\) and \\(" + ineq2 + "\\). Which interval gives all such values?",
     u8wrap(keyBody), dis, sol,
     { kind: "both", A1: 1, B1: -(r1 + r2), C1: r1 * r2, sym1: sym1, A2: 1, B2: -(s1 + s2), C2: s1 * s2, sym2: sym2 });
+});
+
+/* ---------- 4.16, 4.17: solve a one-variable inequality from a scenario (L2, CR 2) ----------
+   Scenario arms harvested Nov 13, 2026 (build order step 9): budget
+   limits, grade-needed, savings goals and within-tolerance bands from
+   the Pure Math 20 inequality files, rewritten. Whole-number answers
+   are built boundary-first: the budget and the goal are set relative
+   to the answer so the floor and ceiling behaviour is exact. */
+E("u8-scenario-solve", 8, ["4.16", "4.17"], 2, "gen", function () {
+  var shape = pick(["budget", "grade", "tolerance", "goal"]);
+  if (shape === "budget") {
+    var ctxs = [
+      { who: "A grad committee", fixed: "hall rental", unit: "tickets", item: "dance tickets", verb: "sell" },
+      { who: "A hockey team", fixed: "equipment fee", unit: "jerseys", item: "team jerseys", verb: "buy" },
+      { who: "A caterer", fixed: "room fee", unit: "guests", item: "guest meals", verb: "serve" }
+    ];
+    var cx = pick(ctxs);
+    var x = ri(4, 30), p = pick([6, 8, 9, 10, 12, 15, 20, 25]), F = pick([40, 60, 75, 80, 100, 120, 150, 200]);
+    var r = ri(0, p - 1), B = F + p * x + r;
+    var sol = "Let \\(x\\) be the number of " + cx.unit + ". The total cost is the fixed " + cx.fixed + " plus the per-unit cost: \\(" + p + "x + " + F + " \\le " + B + "\\). Solving: \\[ \\begin{aligned} " + p + "x + " + F + " &\\le " + B + " \\\\ " + p + "x &\\le " + (B - F) + " \\\\ x &\\le " + (x + r / p).toFixed(2).replace(/\.?0+$/, "") + " \\end{aligned} \\] The number of " + cx.unit + " must be a whole number, so at most \\(" + x + "\\) can be afforded (one more would cost $" + (F + p * (x + 1)) + ", over the $" + B + " budget). The greatest number is <b>" + x + "</b>.";
+    return numq(cx.who + " has $" + B + " to spend. The " + cx.fixed + " is a fixed $" + F + ", and each of the " + cx.item + " costs $" + p + ". What is the greatest number of " + cx.unit + " that can be paid for?",
+      x, 0.01, sol,
+      { kind: "scen", shape: shape, p: p, F: F, B: B, ans: x });
+  }
+  if (shape === "grade") {
+    var a, b, c, G, need, t = 0;
+    do {
+      a = ri(55, 98); b = ri(55, 98); c = ri(55, 98); G = pick([70, 75, 80, 85]);
+      need = 4 * G - (a + b + c); t++;
+    } while (t < 300 && (need < 30 || need > 100));
+    if (t >= 300) { a = 78; b = 84; c = 82; G = 80; need = 76; }
+    var sum = a + b + c;
+    var sol = "Let \\(x\\) be the score on the fourth test. The average of the four tests must reach the goal: \\(\\frac{" + sum + " + x}{4} \\ge " + G + "\\). Solving: \\[ \\begin{aligned} " + sum + " + x &\\ge " + (4 * G) + " \\\\ x &\\ge " + need + " \\end{aligned} \\] A score of \\(" + (need - 1) + "\\) would leave the average at \\(" + ((sum + need - 1) / 4) + "\\), just short, so the minimum score needed is <b>" + need + "</b>.";
+    return numq("A student has written three tests, scoring " + a + ", " + b + " and " + c + " out of 100. The student wants the average of the four tests to be at least " + G + ". What is the minimum score the student needs on the fourth test?",
+      need, 0.01, sol,
+      { kind: "scen", shape: shape, sum: sum, G: G, ans: need });
+  }
+  if (shape === "tolerance") {
+    var dec = Math.random() < 0.5;
+    var cx2, cc, tt;
+    if (dec) {
+      var pr = pick([[25, 0.4, "mm"], [40, 0.25, "mm"], [12.5, 0.3, "cm"], [60, 0.75, "mm"], [8.5, 0.15, "cm"]]);
+      cx2 = pick([
+        "A machined pin must have a diameter of " + pr[0] + " " + pr[2] + ", within " + pr[1] + " " + pr[2] + " of the target",
+        "A cut board must have a length of " + pr[0] + " " + pr[2] + ", within " + pr[1] + " " + pr[2] + " of the target"
+      ]);
+      cc = pr[0]; tt = pr[1];
+    } else {
+      var pr2 = pick([[500, 6, "mL"], [750, 10, "mL"], [2000, 25, "g"], [1000, 15, "g"]]);
+      cx2 = pick([
+        "A bottling machine fills bottles with a target of " + pr2[0] + " " + pr2[2] + ", within " + pr2[1] + " " + pr2[2] + " of the target",
+        "A scale packs bags with a target mass of " + pr2[0] + " " + pr2[2] + ", within " + pr2[1] + " " + pr2[2] + " of the target"
+      ]);
+      cc = pr2[0]; tt = pr2[1];
+    }
+    var hi = Math.round((cc + tt) * 100) / 100, lo = Math.round((cc - tt) * 100) / 100;
+    var askHi = Math.random() < 0.5, ans = askHi ? hi : lo;
+    var sol = "Within \\(" + tt + "\\) of the target means the measurement \\(x\\) satisfies \\(|x - " + cc + "| \\le " + tt + "\\), the two-sided band \\[ " + lo + " \\le x \\le " + hi + " \\] Every value in this band is acceptable, and the endpoints themselves are included because \"within\" allows equality. The " + (askHi ? "greatest" : "least") + " acceptable measurement is <b>" + fmt(ans) + "</b>.";
+    return numq(cx2 + ". What is the " + (askHi ? "greatest" : "least") + " acceptable measurement?",
+      ans, 0.01, sol,
+      { kind: "scen", shape: shape, c: cc, t: tt, askHi: askHi, ans: ans });
+  }
+  var ctxs3 = [
+    { who: "Riley", have: "has saved", earn: "washing cars", item: "a bicycle", per: "week" },
+    { who: "Jae", have: "has saved", earn: "mowing lawns", item: "a laptop", per: "week" },
+    { who: "Priya", have: "has saved", earn: "babysitting", item: "a class trip", per: "week" }
+  ];
+  var cx3 = pick(ctxs3);
+  var x3 = ri(2, 20), w = pick([15, 20, 25, 30, 40, 50]), S = pick([0, 25, 40, 60, 80, 100, 120]);
+  var G3 = S + w * (x3 - 1) + ri(1, w);
+  var sol3 = "Let \\(x\\) be the number of weeks. The savings reach the goal when \\(" + S + " + " + w + "x \\ge " + G3 + "\\). Solving: \\[ \\begin{aligned} " + w + "x &\\ge " + (G3 - S) + " \\\\ x &\\ge " + ((G3 - S) / w).toFixed(2).replace(/\.?0+$/, "") + " \\end{aligned} \\] A fraction of a week does not finish the saving, so round up: after \\(" + (x3 - 1) + "\\) weeks the savings are $" + (S + w * (x3 - 1)) + ", still short of $" + G3 + ". The number of weeks needed is <b>" + x3 + "</b>.";
+  return numq(cx3.who + " " + cx3.have + " $" + S + " and earns $" + w + " per " + cx3.per + " " + cx3.earn + ". How many weeks until " + cx3.who + " can afford " + cx3.item + " costing $" + G3 + "?",
+    x3, 0.01, sol3,
+    { kind: "scen", shape: shape, S: S, w: w, G: G3, ans: x3 });
 });
 
 /* ----- bank-u9.js ----- */
@@ -5872,4 +5955,4 @@ E("u7-context-roots-cr",7,["4.53","4.54"],3,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-case":3,"u1-axis-ratios":2,"u1-context-distance":3,"u1-cosine-law":2,"u1-exact-values":2,"u1-law-proof-steps":3,"u1-point-angle":2,"u1-point-distance":2,"u1-point-ratios":2,"u1-quadrant":1,"u1-read-sketch":1,"u1-reference-angle":1,"u1-same-reference":2,"u1-sine-law":2,"u1-solve-equation":2,"u1-terminal-point-cr":3,"u2-analyze-problem":3,"u2-complete-square":2,"u2-cts-reasoning":2,"u2-error-complete-square":3,"u2-evaluate-claim":4,"u2-intercepts-count":2,"u2-model-situation":3,"u2-model-situation-evaluate":3,"u2-translations":1,"u2-vertex-read":1,"u2-vertex-rule":3,"u2-vertex-standard":2,"u2-why-quadratic":2,"u2-write-from-characteristics":3,"u3-derive-formula":4,"u3-discriminant-k":3,"u3-error-analysis":3,"u3-factor-common":1,"u3-factor-func-diff":2,"u3-factor-test":2,"u3-factor-trinomial":2,"u3-factor-trinomial-nonmonic":2,"u3-method-choice":3,"u3-problem-model":3,"u3-roots-zeros":1,"u3-solve-strategies":2,"u4-conjugate-why":3,"u4-convert-numeric":1,"u4-defined-values":2,"u4-extraneous-why":3,"u4-identity-truth":2,"u4-model-radical":3,"u4-order-radicals":2,"u4-rationalize-binomial":3,"u4-rationalize-mono":1,"u4-root-of-square":1,"u4-simplify-ops":2,"u4-solve-radical":2,"u4-var-to-entire":1,"u4-var-to-mixed":2,"u4-verify-roots":2,"u5-add-subtract":2,"u5-complex-fraction":2,"u5-divide":2,"u5-equivalent-form":1,"u5-equivalent-restrictions":2,"u5-error-cancel":2,"u5-lcd":1,"u5-lcd-choose":2,"u5-meeting-problem":3,"u5-multiply":2,"u5-npv-basic":1,"u5-npv-quadratic":2,"u5-simplify-basic":1,"u5-simplify-evaluate":2,"u5-simplify-trinomial":2,"u5-solve-extraneous":3,"u5-solve-linear":2,"u5-word-problem":3,"u6-abs-context":2,"u6-distance":1,"u6-equation-from-graph":2,"u6-evaluate-abs":1,"u6-invariant-points":2,"u6-no-solution":2,"u6-order-abs":1,"u6-original-from-reciprocal":3,"u6-piecewise":2,"u6-recip-features":2,"u6-simplify-expr":2,"u6-solve-graphical":2,"u6-solve-linear":2,"u6-solve-quadratic":3,"u7-classify-algebraic":2,"u7-context-area":2,"u7-context-projectile":3,"u7-context-roots-cr":2,"u7-graph-count":1,"u7-graph-solutions":2,"u7-intersection-meaning":1,"u7-model-two-numbers":3,"u7-solve-linquad":2,"u7-solve-quadquad":2,"u7-tangent-param":4,"u8-both-hold":3,"u8-inequality-design":3,"u8-model-context":3,"u8-numberline-quad":2,"u8-numberline-read":1,"u8-quad-graph-id":2,"u8-quad-solve-inside":2,"u8-quad-solve-special":3,"u8-sign-analysis-cr":2,"u8-solve-linear-basic":1,"u8-solve-linear-flip":2,"u9-arith-diff":1,"u9-arith-find-missing":2,"u9-arith-general-term":2,"u9-arith-graph-link":2,"u9-arith-nth-count":2,"u9-arith-series-context":2,"u9-arith-sum-formula":2,"u9-crossover":3,"u9-derive-formulas":4,"u9-evaluate-offers":3,"u9-geo-find-index":2,"u9-geo-nth-term":2,"u9-geo-ratio":1,"u9-geo-sum-finite":2,"u9-infinite-sum":2};
+window.__BANK_CRMARKS={"u1-ambiguous-case":3,"u1-axis-ratios":2,"u1-context-distance":3,"u1-cosine-law":2,"u1-exact-values":2,"u1-law-proof-steps":3,"u1-point-angle":2,"u1-point-distance":2,"u1-point-ratios":2,"u1-quadrant":1,"u1-read-sketch":1,"u1-reference-angle":1,"u1-same-reference":2,"u1-sine-law":2,"u1-solve-equation":2,"u1-terminal-point-cr":3,"u2-analyze-problem":3,"u2-complete-square":2,"u2-cts-reasoning":2,"u2-error-complete-square":3,"u2-evaluate-claim":4,"u2-intercepts-count":2,"u2-model-situation":3,"u2-model-situation-evaluate":3,"u2-translations":1,"u2-vertex-read":1,"u2-vertex-rule":3,"u2-vertex-standard":2,"u2-why-quadratic":2,"u2-write-from-characteristics":3,"u3-derive-formula":4,"u3-discriminant-k":3,"u3-error-analysis":3,"u3-factor-common":1,"u3-factor-func-diff":2,"u3-factor-test":2,"u3-factor-trinomial":2,"u3-factor-trinomial-nonmonic":2,"u3-method-choice":3,"u3-problem-model":3,"u3-roots-zeros":1,"u3-solve-strategies":2,"u4-conjugate-why":3,"u4-convert-numeric":1,"u4-defined-values":2,"u4-extraneous-why":3,"u4-identity-truth":2,"u4-model-radical":3,"u4-order-radicals":2,"u4-rationalize-binomial":3,"u4-rationalize-mono":1,"u4-root-of-square":1,"u4-simplify-ops":2,"u4-solve-radical":2,"u4-var-to-entire":1,"u4-var-to-mixed":2,"u4-verify-roots":2,"u5-add-subtract":2,"u5-complex-fraction":2,"u5-divide":2,"u5-equivalent-form":1,"u5-equivalent-restrictions":2,"u5-error-cancel":2,"u5-lcd":1,"u5-lcd-choose":2,"u5-meeting-problem":3,"u5-multiply":2,"u5-npv-basic":1,"u5-npv-quadratic":2,"u5-simplify-basic":1,"u5-simplify-evaluate":2,"u5-simplify-trinomial":2,"u5-solve-extraneous":3,"u5-solve-linear":2,"u5-word-problem":3,"u6-abs-context":2,"u6-distance":1,"u6-equation-from-graph":2,"u6-evaluate-abs":1,"u6-invariant-points":2,"u6-no-solution":2,"u6-order-abs":1,"u6-original-from-reciprocal":3,"u6-piecewise":2,"u6-recip-features":2,"u6-simplify-expr":2,"u6-solve-graphical":2,"u6-solve-linear":2,"u6-solve-quadratic":3,"u7-classify-algebraic":2,"u7-context-area":2,"u7-context-projectile":3,"u7-context-roots-cr":2,"u7-graph-count":1,"u7-graph-solutions":2,"u7-intersection-meaning":1,"u7-model-two-numbers":3,"u7-solve-linquad":2,"u7-solve-quadquad":2,"u7-tangent-param":4,"u8-both-hold":3,"u8-inequality-design":3,"u8-model-context":3,"u8-numberline-quad":2,"u8-numberline-read":1,"u8-quad-graph-id":2,"u8-quad-solve-inside":2,"u8-quad-solve-special":3,"u8-scenario-solve":2,"u8-sign-analysis-cr":2,"u8-solve-linear-basic":1,"u8-solve-linear-flip":2,"u9-arith-diff":1,"u9-arith-find-missing":2,"u9-arith-general-term":2,"u9-arith-graph-link":2,"u9-arith-nth-count":2,"u9-arith-series-context":2,"u9-arith-sum-formula":2,"u9-crossover":3,"u9-derive-formulas":4,"u9-evaluate-offers":3,"u9-geo-find-index":2,"u9-geo-nth-term":2,"u9-geo-ratio":1,"u9-geo-sum-finite":2,"u9-infinite-sum":2};
