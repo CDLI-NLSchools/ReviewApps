@@ -218,6 +218,141 @@ function twoSquaresSVG(m){
   return out+'</svg>';
 }
 
+/* ==== Graphics pass Tranche 3 (November 12, 2026): the Unit 5
+   chart family, bank-local to Math 2201. Same contract as the
+   earlier tranches: every figure is drawn from the calling
+   entry's own drawn values, in the shell figure style (FIG_INK,
+   FIG_SHADE, FIG_ACC, FIG_ALT, _txt, fmt). dotPlotSVG draws one
+   row of dots on a labelled axis, or two rows sharing one scale
+   (o.rows: [{label, data}]); o.band shades a value interval
+   [lo, hi) behind the dots; o.mean draws a dashed line at the
+   given mean. barsSVG draws labelled bars: o.touch makes them
+   touch (histogram bars over intervals), otherwise they stand
+   apart (category bars); bar heights read off the frequency
+   axis, which is always labelled. polyPairSVG draws two
+   frequency polygons on shared axes with an UNLABELLED
+   frequency axis: it asserts shape only (tall and narrow
+   against low and wide), for the one entry whose stem describes
+   the two polygons in exactly those terms and gives no heights.
+   The classification found no scatter or box-and-whisker data
+   anywhere in Unit 5, so no builders for those were needed;
+   the normal-curve figures reuse the shell's own normSVG. ==== */
+function _chartStep(span){return span<=13?1:(span<=32?2:(span<=75?5:(span<=160?10:(span<=320?25:50))));}
+function dotPlotSVG(data,o){
+  o=o||{};
+  var rows=o.rows||[{label:"",data:data}];
+  var all=[];rows.forEach(function(r){all=all.concat(r.data);});
+  if(o.band){all.push(o.band[0],o.band[1]);}
+  if(o.mean!==undefined)all.push(o.mean);
+  var mn=Math.min.apply(null,all),mx=Math.max.apply(null,all);
+  var step=_chartStep(Math.max(mx-mn,1));
+  var pad=step*0.55,x0=mn-pad,x1=mx+pad;
+  if(x1<=x0)x1=x0+step;
+  var W=340,mL=30,mR=16,iw=W-mL-mR;
+  function X(v){return mL+(v-x0)/(x1-x0)*iw;}
+  var mTop=(o.mean!==undefined)?17:6;
+  var counts=rows.map(function(r){
+    var c={},mxst=0;
+    r.data.forEach(function(v){c[v]=(c[v]||0)+1;if(c[v]>mxst)mxst=c[v];});
+    return {c:c,mx:mxst};
+  });
+  var rowH=counts.map(function(cc){return cc.mx*10.5+30;});
+  var H=mTop+rowH.reduce(function(s,h){return s+h;},0)+4;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+(o.aria||"Dot plot of a data set")+'">';
+  var t,lastAxisY=0;
+  for(t=Math.ceil(x0/step)*step;t<=x1+1e-9;t+=step){
+    out+='<line x1="'+fmt(X(t),1)+'" y1="'+mTop+'" x2="'+fmt(X(t),1)+'" y2="'+(H-24)+'" stroke="#d8e2dc" stroke-width="1"/>';
+  }
+  var yCursor=mTop;
+  rows.forEach(function(r,ri2){
+    var cc=counts[ri2],stackH=cc.mx*10.5,axisY=yCursor+stackH+8;
+    lastAxisY=axisY;
+    if(o.band&&ri2===0){
+      out+='<rect x="'+fmt(X(o.band[0]),1)+'" y="'+(mTop-2)+'" width="'+fmt(X(o.band[1])-X(o.band[0]),1)+'" height="'+(axisY-mTop+2)+'" fill="'+FIG_SHADE+'"/>';
+      out+='<line x1="'+fmt(X(o.band[0]),1)+'" y1="'+(mTop-2)+'" x2="'+fmt(X(o.band[0]),1)+'" y2="'+axisY+'" stroke="#7d8a82" stroke-width="1.5" stroke-dasharray="5 4"/>';
+      out+='<line x1="'+fmt(X(o.band[1]),1)+'" y1="'+(mTop-2)+'" x2="'+fmt(X(o.band[1]),1)+'" y2="'+axisY+'" stroke="#7d8a82" stroke-width="1.5" stroke-dasharray="5 4"/>';
+    }
+    var seen={};
+    r.data.forEach(function(v){
+      seen[v]=(seen[v]||0)+1;
+      var cy=axisY-6-(seen[v]-1)*10.5;
+      out+='<circle cx="'+fmt(X(v),1)+'" cy="'+fmt(cy,1)+'" r="4.2" fill="'+FIG_ACC+'" stroke="#ffffff" stroke-width="1.2"/>';
+    });
+    out+='<line x1="'+mL+'" y1="'+axisY+'" x2="'+(mL+iw)+'" y2="'+axisY+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    out+='<polygon points="'+(mL+iw)+','+axisY+' '+(mL+iw-8)+','+(axisY-3.4)+' '+(mL+iw-8)+','+(axisY+3.4)+'" fill="'+FIG_INK+'"/>';
+    if(r.label)out+=_txt(2,axisY-stackH/2-3,r.label,12.5,true,"start");
+    yCursor=axisY+22;
+  });
+  for(t=Math.ceil(x0/step)*step;t<=x1+1e-9;t+=step){
+    out+=_txt(X(t),lastAxisY+13,_parNum(t),10.5,false);
+  }
+  if(o.mean!==undefined){
+    out+='<line x1="'+fmt(X(o.mean),1)+'" y1="'+(mTop-4)+'" x2="'+fmt(X(o.mean),1)+'" y2="'+lastAxisY+'" stroke="'+FIG_ALT+'" stroke-width="1.5" stroke-dasharray="6 4"/>';
+    out+=_txt(X(o.mean),8,"mean = "+_parNum(o.mean),10.5,false);
+  }
+  return out+'</svg>';
+}
+/* Bars for a frequency display. bars: [{label, f}]. */
+function barsSVG(bars,o){
+  o=o||{};
+  var W=340,mL=36,mR=10,mT=12,ih=148,mB=o.xLab?42:30;
+  var H=mT+ih+mB,iw=W-mL-mR;
+  var maxF=0;bars.forEach(function(b){if(b.f>maxF)maxF=b.f;});
+  var step=maxF<=6?1:(maxF<=12?2:(maxF<=25?5:10));
+  var yMax=Math.max(step,Math.ceil(maxF/step)*step);
+  function Y(f){return mT+ih-(f/yMax)*ih;}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+(o.aria||"Bar chart")+'">';
+  for(var g=0;g<=yMax;g+=step){
+    out+='<line x1="'+mL+'" y1="'+fmt(Y(g),1)+'" x2="'+(mL+iw)+'" y2="'+fmt(Y(g),1)+'" stroke="#d8e2dc" stroke-width="1"/>';
+    out+=_txt(mL-5,Y(g),""+g,10.5,false,"end");
+  }
+  out+='<line x1="'+mL+'" y1="'+(mT+ih)+'" x2="'+(mL+iw)+'" y2="'+(mT+ih)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  var bw=iw/bars.length;
+  bars.forEach(function(b,i){
+    var wpx=o.touch?bw-1.5:bw*0.6;
+    var x=mL+i*bw+(bw-wpx)/2;
+    out+='<rect x="'+fmt(x,1)+'" y="'+fmt(Y(b.f),1)+'" width="'+fmt(wpx,1)+'" height="'+fmt(mT+ih-Y(b.f),1)+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    out+=_txt(mL+i*bw+bw/2,mT+ih+13,b.label,10.5,false);
+  });
+  if(o.yLab)out+='<text x="13" y="'+fmt(mT+ih/2,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 13 '+fmt(mT+ih/2,1)+')">'+o.yLab+'</text>';
+  if(o.xLab)out+=_txt(mL+iw/2,H-4,o.xLab,12,false);
+  return out+'</svg>';
+}
+/* Two frequency polygons on shared axes, shape only: route A is
+   tall and narrow, peaked over [peakLo, peakHi]; route B is low
+   and wide, spread over the 10-wide intervals from 0 to top. */
+function polyPairSVG(o){
+  var W=340,H=200,mL=30,mR=10,mT=24,mB=28,iw=W-mL-mR,ih=H-mT-mB;
+  var midA=(o.peakLo+o.peakHi)/2;
+  var x0=-10,x1=Math.max(o.top+10,midA+22);
+  function X(x){return mL+(x-x0)/(x1-x0)*iw;}
+  function Y(r){return mT+ih-r*ih;}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+(o.aria||"Two frequency polygons on the same axes")+'">';
+  out+='<line x1="'+(mL+2)+'" y1="11" x2="'+(mL+18)+'" y2="11" stroke="'+FIG_INK+'" stroke-width="2"/><text x="'+(mL+23)+'" y="15" font-size="11.5" fill="'+FIG_INK+'" text-anchor="start">Route A</text>';
+  out+='<line x1="'+(mL+92)+'" y1="11" x2="'+(mL+108)+'" y2="11" stroke="'+FIG_ALT+'" stroke-width="2"/><text x="'+(mL+113)+'" y="15" font-size="11.5" fill="'+FIG_ALT+'" text-anchor="start">Route B</text>';
+  out+='<line x1="'+mL+'" y1="'+Y(0)+'" x2="'+(mL+iw)+'" y2="'+Y(0)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+='<line x1="'+mL+'" y1="'+mT+'" x2="'+mL+'" y2="'+Y(0)+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  var nb=(o.top+1)/10,i;
+  for(i=0;i<nb;i++){
+    out+=_txt(X(i*10+4.5),Y(0)+13,(i*10)+"-"+(i*10+9),9,false);
+  }
+  out+='<text x="12" y="'+fmt(mT+ih/2,1)+'" font-size="11.5" fill="'+FIG_INK+'" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 12 '+fmt(mT+ih/2,1)+')">Frequency</text>';
+  var bPts=[[-5.5,0]],i2;
+  for(i2=0;i2<nb;i2++)bPts.push([i2*10+4.5,0.30*(0.55+0.45*Math.sin(Math.PI*(i2+0.5)/nb))]);
+  bPts.push([o.top+5.5,0]);
+  var aPts=[[midA-20,0],[midA-10,0.45],[midA,1],[midA+10,0.45],[midA+20,0]];
+  function poly(pts,col){
+    var d="",s="";
+    pts.forEach(function(p,j){d+=(j?"L":"M")+fmt(X(p[0]),1)+" "+fmt(Y(p[1]),1);});
+    s+='<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="2"/>';
+    pts.forEach(function(p){s+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="2.6" fill="'+col+'"/>';});
+    return s;
+  }
+  out+=poly(bPts,FIG_ALT);
+  out+=poly(aPts,FIG_INK);
+  return out+'</svg>';
+}
+
 /* ----- bank-u5.js ----- */
 // Math 2201 Unit 5: Statistical Reasoning question bank
 // Cut verbatim from the standalone app's served file
@@ -272,18 +407,22 @@ E("u5-centre-mean",5,["PK.1"],1,"gen",function(){
   var c=pick([{w:"quiz marks",u:""},{w:"daily high temperatures",u:"\u00B0C"},{w:"goals per game",u:""},{w:"pages read each day",u:""}]);
   var n=ri(5,7),base=ri(4,14),data=[],i;for(i=0;i<n;i++)data.push(base+ri(-4,6));
   var m=mean(data);
-  return numq("A student records these "+c.w+": <b>\\(\\{"+data.join(", ")+"\\}\\)</b>. What is the <b>mean</b>?",
+  var q=numq("A student records these "+c.w+": <b>\\(\\{"+data.join(", ")+"\\}\\)</b>. What is the <b>mean</b>?",
     Math.round(m*100)/100,0.011,
     "Add the values: \\("+data.join(" + ")+" = "+fmt(sum(data))+"\\). There are "+n+" values, so the mean is <b>\\("+fmt(sum(data))+" \\div "+n+" = "+fmt(m)+"\\)</b>.",
     {data:data});
+  q.figure=dotPlotSVG(data,{aria:"Dot plot of the recorded values"});
+  return q;
 });
 E("u5-centre-median",5,["PK.1"],1,"gen",function(){
   var n=pick([6,8]),base=ri(5,15),data=[],i;for(i=0;i<n;i++)data.push(base+ri(-5,7));
   var md=median(data),s=sorted(data),lo=s[n/2-1],hi=s[n/2];
-  return numq("Find the <b>median</b> of: <b>\\(\\{"+data.join(", ")+"\\}\\)</b>.",
+  var q=numq("Find the <b>median</b> of: <b>\\(\\{"+data.join(", ")+"\\}\\)</b>.",
     md,0.011,
     "In order: \\(\\{"+s.join(", ")+"\\}\\). With "+n+" values the median is the average of the two middle values, \\("+lo+"\\) and \\("+hi+"\\): <b>\\(\\frac{"+lo+" + "+hi+"}{2} = "+fmt(md)+"\\)</b>.",
     {data:data});
+  q.figure=dotPlotSVG(data,{aria:"Dot plot of the data values"});
+  return q;
 });
 E("u5-centre-mode",5,["PK.1"],1,"gen",function(){
   var cols=["red","blue","green","black","purple","orange"];
@@ -313,22 +452,26 @@ E("u5-choosing-measure",5,["PK.1"],2,"var",varset([
 E("u5-range",5,["8.6"],1,"gen",function(){
   var c=pick(["daily step counts (thousands)","lengths of fish caught (cm)","marks on a quiz","laps swum each day"]);
   var n=ri(5,6),base=ri(8,20),data=[],i;for(i=0;i<n;i++)data.push(base+ri(-6,9));
-  return numq("Find the <b>range</b> of these "+c+": <b>\\(\\{"+data.join(", ")+"\\}\\)</b>.",
+  var q=numq("Find the <b>range</b> of these "+c+": <b>\\(\\{"+data.join(", ")+"\\}\\)</b>.",
     rngOf(data),0.001,
     "Range <b>\\(= \\text{highest} - \\text{lowest} = "+Math.max.apply(null,data)+" - "+Math.min.apply(null,data)+" = "+rngOf(data)+"\\)</b>.",
     {data:data});
+  q.figure=dotPlotSVG(data,{aria:"Dot plot of the data values"});
+  return q;
 });
 E("u5-outlier-range",5,["8.6"],2,"gen",function(){
   var lo=ri(5,10),cluster=[],i;for(i=0;i<5;i++)cluster.push(lo+ri(0,5));
   var out=Math.max.apply(null,cluster)+ri(18,30);var data=shuffle(cluster.concat([out]));
   var without=rngOf(cluster);
   var correct="\\("+out+"\\) is the outlier, and the range without it is \\("+without+"\\)";
-  return mcq("For the data set <b>\\(\\{"+data.join(", ")+"\\}\\)</b>, which statement is correct?",correct,
+  var q=mcq("For the data set <b>\\(\\{"+data.join(", ")+"\\}\\)</b>, which statement is correct?",correct,
     ["\\("+Math.min.apply(null,data)+"\\) is the outlier, and the range without it is \\("+without+"\\)",
      "\\("+out+"\\) is the outlier, and the range without it is \\("+rngOf(data)+"\\)",
      "There is no outlier, and the range is \\("+rngOf(data)+"\\)"],
     "The value \\("+out+"\\) sits far above the cluster \\(\\{"+cluster.join(", ")+"\\}\\). Without it, the range is \\("+Math.max.apply(null,cluster)+" - "+Math.min.apply(null,cluster)+" = "+without+"\\). With it, the range stretches to \\("+rngOf(data)+"\\), which is why one outlier can make a set look far more spread out than it really is.",
     {data:data,out:out,without:without});
+  q.figure=dotPlotSVG(data,{aria:"Dot plot of the data set, with one value far from the rest"});
+  return q;
 });
 E("u5-dispersion-compare",5,["8.6"],2,"gen",function(){
   var ctx=pick([
@@ -350,11 +493,13 @@ E("u5-ad-claim",5,["8.6"],3,"gen",function(){
   var base=[ri(4,8),ri(6,10),ri(5,9),ri(8,12),ri(6,9),ri(9,13),ri(7,11)];
   var big=ri(220,360);var data=base.concat([big]);var m=mean(data),md=median(data);
   var claim=Math.round(m);
-  return mcq("A gym advertises: \u201COur members lose an average of "+claim+" lb in their first month!\u201D The amounts actually lost by eight members were <b>\\(\\{"+data.join(", ")+"\\}\\)</b> lb. Why is the advertisement misleading?",
+  var q=mcq("A gym advertises: \u201COur members lose an average of "+claim+" lb in their first month!\u201D The amounts actually lost by eight members were <b>\\(\\{"+data.join(", ")+"\\}\\)</b> lb. Why is the advertisement misleading?",
     "It uses the mean, which one member's \\("+big+"\\) lb loss pulls far above what a typical member loses (the median loss is \\("+fmt(md)+"\\) lb)",
     ["It uses the median, which one large loss pulls far above the rest, so the median ends up inflated like the advertised figure","The range of the losses is too small to support the claim, because so narrow a range means no one lost enough to lift the average that high","The mode of the losses is higher than the advertised average, because the most common loss sits above what the gym says members lose"],
     "Mean \\(= "+fmt(sum(data))+" \\div 8 = "+fmt(m)+" \\approx "+claim+"\\), so the gym used the mean. But sorted, the middle values give a median of \\("+fmt(md)+"\\) lb \u2014 a far better picture of a typical member. One extreme value did all the work in the ad.",
     {data:data,mean:m,median:md,big:big});
+  q.figure=dotPlotSVG(data,{aria:"Dot plot of the eight amounts, with one value far from the rest"});
+  return q;
 });
 /* --- frequency tables, histograms, polygons (8.7) --- */
 E("u5-freq-total",5,["8.7"],1,"gen",function(){
@@ -372,8 +517,10 @@ E("u5-freq-countin",5,["8.7"],1,"gen",function(){
   var w=pick([5,10]);var lo=ri(0,3)*w;var hi=lo+w;
   var data=[],i;for(i=0;i<18;i++)data.push(ri(0,hi+w+8));
   var cnt=data.filter(function(x){return x>=lo&&x<hi;}).length;
-  return numq("Using the class intervals from the course (lower value included, upper value excluded), how many of these values fall in the interval <b>\\("+lo+"\\text{-}"+hi+"\\)</b>?<br><b>\\(\\{"+data.join(", ")+"\\}\\)</b>",
+  var q=numq("Using the class intervals from the course (lower value included, upper value excluded), how many of these values fall in the interval <b>\\("+lo+"\\text{-}"+hi+"\\)</b>?<br><b>\\(\\{"+data.join(", ")+"\\}\\)</b>",
     cnt,0.001,"Count the values that are at least \\("+lo+"\\) and less than \\("+hi+"\\): there are <b>\\("+cnt+"\\)</b>. A value of exactly \\("+hi+"\\) would belong to the next interval, not this one.",{data:data,lo:lo,hi:hi});
+  q.figure=dotPlotSVG(data,{band:[lo,hi],aria:"Dot plot of the values, with the interval "+lo+" to "+hi+" shaded"});
+  return q;
 });
 E("u5-relfreq",5,["8.7"],1,"gen",function(){
   var pcts=[5,10,12.5,15,20,25,30,40,50,60,75,80],totals=[40,60,80,100,120,160,200,240];
@@ -391,13 +538,25 @@ E("u5-relfreq-rev",5,["8.7"],1,"gen",function(){
   return numq(ctx+" relative frequency is \\("+fmt(pct)+"\\%\\), and the table's total is \\("+total+"\\) values. What is the interval's frequency?",
     f,0.001,"<b>\\("+fmt(pct)+"\\% \\text{ of } "+total+" = "+fmt(pct/100,4)+" \\times "+total+" = "+f+"\\)</b>.",{total:total,pct:pct});
 });
-E("u5-histogram-read",5,["8.7"],1,"gen",function(){
+E("u5-histogram-read",5,["8.7"],1,"var",varset([
+  function(){
   var labels=["\\(0\\text{-}9\\)","\\(10\\text{-}19\\)","\\(20\\text{-}29\\)","\\(30\\text{-}39\\)"];var fs=[ri(2,7),ri(8,13),ri(5,10),ri(1,5)];
   var ans=fs[2]+fs[3];
   var rows=labels.map(function(l,i){return "<tr><td>"+l+"</td><td>\\("+fs[i]+"\\)</td></tr>";}).join("");
-  return numq("A histogram is built from this table of daily high temperatures recorded over "+sum(fs)+" days:<table><tr><th>Temperature (\u00B0C)</th><th>Frequency</th></tr>"+rows+"</table>On how many days was the high temperature <b>\\(20^\\circ \\text{C}\\) or more</b>?",
+  var q=numq("A histogram is built from this table of daily high temperatures recorded over "+sum(fs)+" days:<table><tr><th>Temperature (\u00B0C)</th><th>Frequency</th></tr>"+rows+"</table>On how many days was the high temperature <b>\\(20^\\circ \\text{C}\\) or more</b>?",
     ans,0.001,"Add the frequencies for \\(20\\text{-}29\\) and \\(30\\text{-}39\\): <b>\\("+fs[2]+" + "+fs[3]+" = "+ans+"\\)</b> days.",{fs:fs});
-});
+  q.figure=barsSVG([{label:"0-9",f:fs[0]},{label:"10-19",f:fs[1]},{label:"20-29",f:fs[2]},{label:"30-39",f:fs[3]}],{touch:true,yLab:"Frequency",aria:"Histogram of daily high temperatures"});
+  return q;
+},
+  function(){
+  var fs=[ri(2,7),ri(8,13),ri(5,10),ri(1,5)];
+  var ans=fs[2]+fs[3];
+  var q=numq("The histogram shows daily high temperatures recorded over "+sum(fs)+" days. On how many days was the high temperature <b>\\(20^\\circ \\text{C}\\) or more</b>?",
+    ans,0.001,"Read the bar heights off the frequency axis: the \\(20\\text{-}29\\) bar reaches \\("+fs[2]+"\\) and the \\(30\\text{-}39\\) bar reaches \\("+fs[3]+"\\). Add them: <b>\\("+fs[2]+" + "+fs[3]+" = "+ans+"\\)</b> days.",{fs:fs});
+  q.figure=barsSVG([{label:"0-9",f:fs[0]},{label:"10-19",f:fs[1]},{label:"20-29",f:fs[2]},{label:"30-39",f:fs[3]}],{touch:true,yLab:"Frequency",aria:"Histogram of daily high temperatures"});
+  return q;
+}
+]));
 E("u5-midpoint",5,["8.7"],1,"gen",function(){
   var w=pick([4,5,10,20]);var lo=ri(0,12)*w;var hi=lo+w-1;var mid=(lo+hi)/2;
   var tail=pick([""," (from a frequency table)"," (from a table of daily high temperatures)"," (from a grouped table of sprint times)"]);
@@ -429,10 +588,12 @@ E("u5-histogram-concepts",5,["8.7"],2,"var",varset([
 E("u5-polygon-compare",5,["8.7"],2,"gen",function(){
   var ctx=pick(["ferry routes' passenger counts per crossing","city bus routes' passenger counts per trip","school shuttle routes' rider counts per run","commuter train routes' passenger counts per trip"]);
   var lo1=pick([20,25,30,35,40]),hi1=lo1+9;var bHi=pick([49,59,69,79]);
-  return mcq("Two "+ctx+" are drawn as frequency polygons on the same axes. Route A's polygon is tall and narrow, peaked at \\("+lo1+"\\text{-}"+hi1+"\\) passengers. Route B's polygon is low and wide, spread from \\(0\\text{-}9\\) up to \\("+(bHi-9)+"\\text{-}"+bHi+"\\) passengers. Which statement is correct?",
+  var q=mcq("Two "+ctx+" are drawn as frequency polygons on the same axes. Route A's polygon is tall and narrow, peaked at \\("+lo1+"\\text{-}"+hi1+"\\) passengers. Route B's polygon is low and wide, spread from \\(0\\text{-}9\\) up to \\("+(bHi-9)+"\\text{-}"+bHi+"\\) passengers. Which statement is correct?",
     "Route B's passenger counts are more spread out, because its polygon covers a much wider range of intervals",
     ["Route A carries more passengers in total, because its polygon is taller, and its taller peak means more carried overall","Both routes are equally consistent, because both polygons peak, and a peak in the middle means equal consistency","Route B's mean is \\("+fmt(bHi-4.5,1)+"\\) passengers, the midpoint of its widest interval, so that midpoint is the mean"],
     "A polygon stretched over many intervals means the values vary widely \u2014 Route B is far more spread out. Height alone does not give a total, and a midpoint is not a mean.",{lo1:lo1});
+  q.figure=polyPairSVG({peakLo:lo1,peakHi:hi1,top:bHi,aria:"The two frequency polygons described, on the same axes"});
+  return q;
 });
 /* --- standard deviation (8.8, 8.9, 8.10, 8.16) --- */
 E("u5-sd-calc",5,["8.9"],2,"gen",function(){
@@ -440,10 +601,12 @@ E("u5-sd-calc",5,["8.9"],2,"gen",function(){
   var data=pick(sets).map(function(x){return x+ri(0,3);});
   var m=mean(data),v=pvar(data),sd=Math.sqrt(v);
   var devs=data.map(function(x){return fmt(x-m);}).join(", ");
-  return numq("Using technology (or the formula), find the <b>population standard deviation</b> of <b>\\(\\{"+data.join(", ")+"\\}\\)</b>, to two decimal places. The mean is \\("+fmt(m)+"\\).",
+  var q=numq("Using technology (or the formula), find the <b>population standard deviation</b> of <b>\\(\\{"+data.join(", ")+"\\}\\)</b>, to two decimal places. The mean is \\("+fmt(m)+"\\).",
     Math.round(sd*100)/100,0.011,
     "Deviations from the mean: \\("+devs+"\\). Square them and average: the variance is \\("+fmt(v)+"\\). Then <b>\\(\\sigma = \\sqrt{"+fmt(v)+"} \\approx "+fmt(sd)+"\\)</b>.",
     {data:data});
+  q.figure=dotPlotSVG(data,{mean:m,aria:"Dot plot of the data values, with the mean marked"});
+  return q;
 });
 E("u5-sd-from-variance",5,["8.9"],1,"gen",function(){
   var sd=pick([0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,11,12]);var v=sd*sd;
@@ -471,11 +634,13 @@ E("u5-sd-compare",5,["8.8"],2,"gen",function(){
   var m=ri(20,60),d1=pick([2,3]),d2=pick([9,10,12]);
   var A=[m-d1,m,m+d1],B=[m-d2,m,m+d2];var swap=Math.random()<0.5;
   var first=swap?B:A,second=swap?A:B;var wider=swap?"A":"B";
-  return mcq("Set A is \\(\\{"+first.join(", ")+"\\}\\). Set B is \\(\\{"+second.join(", ")+"\\}\\). Both sets have mean \\("+m+"\\). Which statement is correct?",
+  var q=mcq("Set A is \\(\\{"+first.join(", ")+"\\}\\). Set B is \\(\\{"+second.join(", ")+"\\}\\). Both sets have mean \\("+m+"\\). Which statement is correct?",
     "Set "+wider+" has the larger standard deviation, because its values lie farther from the mean",
     ["Set "+(wider==="A"?"B":"A")+" has the larger standard deviation, because its values are closer together overall","Both sets have the same standard deviation, because they have the same mean value","Neither set has a standard deviation, because they have only three values each"],
     "Both sets are centred at \\("+m+"\\), but Set "+wider+"'s values sit \\("+(wider==="A"?(swap?d2:d1):(swap?d1:d2))+"\\) units away while the other's sit closer. Farther from the mean means a larger standard deviation, whatever the mean is.",
     {A:A,B:B,wider:wider,m:m});
+  q.figure=dotPlotSVG(null,{rows:[{label:"A",data:first},{label:"B",data:second}],mean:m,aria:"Dot plots of the two sets on a shared scale, with their common mean marked"});
+  return q;
 });
 E("u5-sd-interpret",5,["8.10"],2,"gen",function(){
   var ctx=pick([
@@ -513,10 +678,10 @@ E("u5-normal-props",5,["8.11","8.13"],1,"var",varset([
     "It is symmetric, and its mean, median and mode are all equal",
     ["Its mean is larger than its median, sitting above the middle one","It is skewed to the right, tailing off toward larger values","Its total area under the curve is \\(100\\), not a proportion of one"],
     "A normal curve is a single symmetric hump centred on the mean, so mean = median = mode, and the total area under the curve is \\(1\\) (\\(100\\%\\) of the data).",{});},
-  function(){return mcq("Two caf\u00E9s both serve lunch in a mean time of \\(14\\) minutes. Caf\u00E9 A has a standard deviation of \\(2\\) minutes; Caf\u00E9 B, \\(5\\) minutes. What do the two normal curves look like?",
+  figArm(function(){return mcq("Two caf\u00E9s both serve lunch in a mean time of \\(14\\) minutes. Caf\u00E9 A has a standard deviation of \\(2\\) minutes; Caf\u00E9 B, \\(5\\) minutes. What do the two normal curves look like?",
     "Caf\u00E9 A's curve is taller and narrower; Caf\u00E9 B's is shorter and wider, and both are centred at \\(14\\)",
     ["Caf\u00E9 B's curve is taller and narrower, because its times vary more, and more variation raises the peak","Both curves are identical, because the means are equal, and equal means mean equal shapes","Caf\u00E9 A's curve is centred at \\(2\\) and Caf\u00E9 B's at \\(5\\), because each centre is a standard deviation"],
-    "Same mean means the same centre. A smaller standard deviation squeezes the data toward the centre, so the curve grows taller and narrower to keep the same total area.",{});},
+    "Same mean means the same centre. A smaller standard deviation squeezes the data toward the centre, so the curve grows taller and narrower to keep the same total area.",{});},function(){return normSVG({mu:14, sd:2, curve2:{sd:5, tagA:"A: \u03C3 = 2", tagB:"B: \u03C3 = 5"}});}),
   function(){return mcq("What does the standard deviation do to the shape of a normal curve?",
     "A larger standard deviation makes the curve wider and flatter; a smaller one makes it taller and narrower",
     ["It moves the curve left or right along the axis, because more spread slides the curve toward larger values","It makes the curve skewed toward the larger values, stretching the side with the larger values out sideways","It has no effect on the shape, only on the labels, because the curve is fixed once the mean is set"],
@@ -606,8 +771,10 @@ E("u5-z-applied",5,["8.15"],2,"gen",function(){
   var up=Math.random()<0.5;var dir=up?fam.hi:fam.lo;var z0=pick(dir.zs);
   var thr=Math.round((mu+z0*sd)*10)/10;
   var z=(thr-mu)/sd;var cdf=zTab(z);var p=up?1-cdf:cdf;var pct=Math.round(p*10000)/100;
-  return numq("Values for "+fam.w+" are normally distributed with mean \\("+fmt(mu)+"\\) "+fam.unit+" and standard deviation \\("+fmt(sd)+"\\) "+fam.unit+". What percent (to two decimal places) "+dir.verb+" \\("+fmt(thr,1)+"\\) "+fam.unit+"? (Just the number.)",
+  var q=numq("Values for "+fam.w+" are normally distributed with mean \\("+fmt(mu)+"\\) "+fam.unit+" and standard deviation \\("+fmt(sd)+"\\) "+fam.unit+". What percent (to two decimal places) "+dir.verb+" \\("+fmt(thr,1)+"\\) "+fam.unit+"? (Just the number.)",
     pct,0.06,"\\(z = \\frac{"+fmt(thr,1)+" - "+fmt(mu)+"}{"+fmt(sd)+"} = "+fmt(z)+"\\). From the table, the area "+(up?"to the right of":"to the left of")+" \\(z = "+fmt(z)+"\\) is \\("+fmt(p,4)+"\\), about <b>\\("+fmt(pct)+"\\%\\)</b>.",{ctx:{thr:thr,mu:mu,sd:sd,verb:dir.verb}});
+  q.figure=normSVG({mu:mu, sd:sd, lo:(up? thr : mu-3.4*sd), hi:(up? mu+3.4*sd : thr), cuts:[{v:thr, label:""+fmt(thr,1)}]});
+  return q;
 });
 /* --- confidence intervals (8.17-8.22) --- */
 E("u5-ci-endpoint",5,["8.17"],1,"gen",function(){
