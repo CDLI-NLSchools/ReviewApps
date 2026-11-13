@@ -26,6 +26,7 @@ function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 // CRMARKS: u1-compose-equation=2
 // CRMARKS: u1-decompose=2
 // CRMARKS: u1-graph-operation=2
+// CRMARKS: u1-compound-inequality=2
 /* ================= Unit 1: Pre-Calculus ================= */
 /* Indicators: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7. Types follow the Mauger
    Chapter 1 harvest (operations on functions, compositions in both
@@ -330,6 +331,83 @@ E("u1-graph-operation",1,["1.2"],1,"gen",function(){
   return numq("The graphs of two functions \\(f\\) and \\(g\\) pass through the points listed. For \\(f\\): "+pts(fv)+". For \\(g\\): "+pts(gv)+". Determine \\("+comp+"\\).",ans,0.011,sol,{p:p,ask:ask,fv:fv,gv:gv});
 });
 
+/* Pure Math harvest addition, November 13, 2026 (scan build order step 3):
+   compound quadratic inequalities in interval notation, mined from the
+   St. Pat's Math 31 precalculus material and rewritten. The app config
+   carries no inequality-specific indicator for Unit 1; the entry is
+   filed under 1.3 because it asks for the set of inputs whose outputs
+   land in a stated range, a domain determination. */
+function u1ivl(a,clA,b,clB){var l=(a==="-inf")?"-\\infty":(""+a),r=(b==="inf")?"\\infty":(""+b);return (clA?"[":"(")+l+", "+r+(clB?"]":")");}
+function u1u2(p1,p2){return "\\("+p1+" \\cup "+p2+"\\)";}
+E("u1-compound-inequality",1,["1.3"],2,"gen",function(){
+  var mode=pick(["chain0","chainL","single"]);
+  var cand=null,tries=0;
+  while(!cand&&tries<300){
+    tries++;
+    var r1=ri(-6,4),r2=r1+ri(2,7);
+    if(r2>6)continue;
+    var d1=(mode==="chainL")?ri(2,3):ri(1,3);
+    var t1=r1-d1,t2=(r1+r2)-t1,M=(t1-r1)*(t1-r2);
+    var q=u1quad(1,-(r1+r2),r1*r2);
+    var fq="\\(\\left("+u1lin(1,-r1)+"\\right)\\left("+u1lin(1,-r2)+"\\right)\\)";
+    var key,ds,sol,prompt,sig;
+    if(mode==="chain0"){
+      key=u1u2(u1ivl(t1,false,r1,false),u1ivl(r2,false,t2,false));
+      ds=[u1u2(u1ivl("-inf",false,r1,false),u1ivl(r2,false,"inf",false)),
+          "\\("+u1ivl(t1,false,t2,false)+"\\)",
+          u1u2(u1ivl(t1,true,r1,true),u1ivl(r2,true,t2,true))];
+      sol="Solve the two conditions separately, then keep only the values that satisfy both. The quadratic factors as "+fq+". It is positive outside its roots \\("+r1+"\\) and \\("+r2+"\\), which handles the left condition \\(0 < "+q+"\\): \\(x < "+r1+"\\) or \\(x > "+r2+"\\). For the right condition, \\("+q+" - "+M+" = \\left("+u1lin(1,-t1)+"\\right)\\left("+u1lin(1,-t2)+"\\right)\\), which is negative between its roots: \\("+t1+" < x < "+t2+"\\). A chain is an AND, so the answer is the overlap of the two sets: <b>"+key+"</b>. Every endpoint is excluded, because both inequalities are strict.";
+      prompt="Solve the inequality \\(0 < "+q+" < "+M+"\\). Give the solution set in interval notation.";
+      sig={mode:mode,r1:r1,r2:r2,t1:t1,t2:t2,M:M,L:0,w1:null,w2:null,sub:"",strict:true};
+    }else if(mode==="chainL"){
+      var w1=t1+ri(1,d1-1),w2=(r1+r2)-w1,L=(w1-r1)*(w1-r2);
+      key=u1u2(u1ivl(t1,false,w1,false),u1ivl(w2,false,t2,false));
+      ds=[u1u2(u1ivl("-inf",false,w1,false),u1ivl(w2,false,"inf",false)),
+          "\\("+u1ivl(t1,false,t2,false)+"\\)",
+          u1u2(u1ivl(t1,true,w1,true),u1ivl(w2,true,t2,true))];
+      sol="Solve the two conditions separately, then keep only the values that satisfy both. For the left condition, \\("+q+" - "+L+" = \\left("+u1lin(1,-w1)+"\\right)\\left("+u1lin(1,-w2)+"\\right)\\), which is positive outside its roots: \\(x < "+w1+"\\) or \\(x > "+w2+"\\). For the right condition, \\("+q+" - "+M+" = \\left("+u1lin(1,-t1)+"\\right)\\left("+u1lin(1,-t2)+"\\right)\\), which is negative between its roots: \\("+t1+" < x < "+t2+"\\). A chain is an AND, so the answer is the overlap: <b>"+key+"</b>. Every endpoint is excluded, because both inequalities are strict.";
+      prompt="Solve the inequality \\("+L+" < "+q+" < "+M+"\\). Give the solution set in interval notation.";
+      sig={mode:mode,r1:r1,r2:r2,t1:t1,t2:t2,M:M,L:L,w1:w1,w2:w2,sub:"",strict:true};
+    }else{
+      var sub=pick(["gtM","ltM","gt0","lt0"]),strict=ri(0,1)===0,sym;
+      if(sub==="gtM"||sub==="ltM"){
+        var rays=u1u2(u1ivl("-inf",false,t1,!strict),u1ivl(t2,!strict,"inf",false));
+        var intv="\\("+u1ivl(t1,!strict,t2,!strict)+"\\)";
+        var raysF=u1u2(u1ivl("-inf",false,t1,strict),u1ivl(t2,strict,"inf",false));
+        var intvF="\\("+u1ivl(t1,strict,t2,strict)+"\\)";
+        var raysR=u1u2(u1ivl("-inf",false,-t2,!strict),u1ivl(-t1,!strict,"inf",false));
+        var intvR="\\("+u1ivl(-t2,!strict,-t1,!strict)+"\\)";
+        if(sub==="gtM"){key=rays;ds=[intv,raysF,raysR];}else{key=intv;ds=[rays,intvF,intvR];}
+        sym=strict?(sub==="gtM"?">":"<"):(sub==="gtM"?"\\geq":"\\leq");
+        sol="The expression \\("+q+" - "+M+"\\) factors as \\(\\left("+u1lin(1,-t1)+"\\right)\\left("+u1lin(1,-t2)+"\\right)\\), an upward parabola in disguise: it is negative between its roots \\("+t1+"\\) and \\("+t2+"\\) and positive outside them. So \\("+q+"\\) is "+(sub==="gtM"?"above":"below")+" \\("+M+"\\) "+(sub==="gtM"?"outside that pair of points":"between them")+". The endpoints are "+(strict?"excluded, because the inequality is strict":"included, because the inequality allows equality")+". The solution set is <b>"+key+"</b>.";
+        prompt="Solve the inequality \\("+q+" "+sym+" "+M+"\\). Give the solution set in interval notation.";
+        sig={mode:mode,r1:r1,r2:r2,t1:t1,t2:t2,M:M,L:0,w1:null,w2:null,sub:sub,strict:strict};
+      }else{
+        var rays0=u1u2(u1ivl("-inf",false,r1,!strict),u1ivl(r2,!strict,"inf",false));
+        var intv0="\\("+u1ivl(r1,!strict,r2,!strict)+"\\)";
+        var rays0F=u1u2(u1ivl("-inf",false,r1,strict),u1ivl(r2,strict,"inf",false));
+        var intv0F="\\("+u1ivl(r1,strict,r2,strict)+"\\)";
+        var rays0R=u1u2(u1ivl("-inf",false,-r2,!strict),u1ivl(-r1,!strict,"inf",false));
+        var intv0R="\\("+u1ivl(-r2,!strict,-r1,!strict)+"\\)";
+        if(sub==="gt0"){key=rays0;ds=[intv0,rays0F,rays0R];}else{key=intv0;ds=[rays0,intv0F,intv0R];}
+        sym=strict?(sub==="gt0"?">":"<"):(sub==="gt0"?"\\geq":"\\leq");
+        sol="The quadratic factors as "+fq+", an upward parabola with roots \\("+r1+"\\) and \\("+r2+"\\). It is positive outside its roots and negative between them. So \\("+q+" "+sym+" 0\\) holds "+(sub==="gt0"?"outside the roots":"between the roots")+". The endpoints are "+(strict?"excluded, because the inequality is strict":"included, because the inequality allows equality")+". The solution set is <b>"+key+"</b>.";
+        prompt="Solve the inequality \\("+q+" "+sym+" 0\\). Give the solution set in interval notation.";
+        sig={mode:mode,r1:r1,r2:r2,t1:t1,t2:t2,M:M,L:0,w1:null,w2:null,sub:sub,strict:strict};
+      }
+    }
+    if(new Set([key].concat(ds)).size===4)cand=mcq(prompt,key,ds,sol,sig);
+  }
+  if(!cand){
+    var k2=u1u2(u1ivl(-3,false,-1,false),u1ivl(1,false,3,false));
+    cand=mcq("Solve the inequality \\(0 < x^2 - 1 < 8\\). Give the solution set in interval notation.",
+      k2,["\\("+u1ivl(-3,false,3,false)+"\\)",u1u2(u1ivl("-inf",false,-1,false),u1ivl(1,false,"inf",false)),u1u2(u1ivl(-3,true,-1,true),u1ivl(1,true,3,true))],
+      "The quadratic \\(x^2 - 1\\) is positive outside its roots \\(-1\\) and \\(1\\), and \\(x^2 - 1 < 8\\) means \\(x^2 < 9\\), that is \\(-3 < x < 3\\). Both conditions at once give <b>"+k2+"</b>.",
+      {mode:"chain0",r1:-1,r2:1,t1:-3,t2:3,M:8,L:0,w1:null,w2:null,sub:"",strict:true});
+  }
+  return cand;
+});
+
 /* ----- bank-u2.js ----- */
 // Math 3208 Unit 2 Limits and Continuity question bank
 // CRMARKS: u2-limit-table=1
@@ -348,6 +426,8 @@ E("u1-graph-operation",1,["1.2"],1,"gen",function(){
 // CRMARKS: u2-continuity-definition=3
 // CRMARKS: u2-removable-redefine=3
 // CRMARKS: u2-limit-absvalue=2
+// CRMARKS: u2-sequence-convergence=1
+// CRMARKS: u2-repeating-decimal=2
 /* Math 3208 Review, Unit 2 (Limits and Continuity) entries. Helpers carry the
    u2q prefix so they cannot collide with other units when files are assembled. */
 function u2qGcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -469,6 +549,7 @@ E("u2-limit-existence",2,["2.3"],1,"var",varset([
     "Both one-sided approaches head to \\(0\\), so the limit is \\(0\\). A function does not need to be defined at the point for its limit there to exist. The limit is <b>\\(0\\)</b>.",
     {v:4});}
 ]));
+
 E("u2-limit-graph",2,["2.1","2.4","2.5"],2,"gen",function(){
   var a=ri(-3,3);
   var m1=pick([1,2,-1,-2,3]),m2=pick([1,2,-1,-2]);
@@ -938,6 +1019,82 @@ E("u2-limit-error-analysis",2,["2.7","2.16"],3,"var",varset([
     "The number \\(0.001\\) tests only the right side of \\(0\\). From the left, values such as \\(\\frac{1}{-0.001} = -1000\\) are large and negative, so the two sides disagree completely. The first statement is the accurate one: <b>only the right side was considered, and the two-sided limit does not exist</b>.",
     {v:4});}
 ]));
+
+/* Pure Math harvest additions, November 13, 2026 (scan build order step 3):
+   sequence convergence identification and the repeating decimal as the
+   limit of an infinite geometric series, both mined from the St. Pat's
+   Math 31 limits material and rewritten. Helpers carry the u2s prefix. */
+function u2sPoly(cf){var n=cf.length-1,parts=[];for(var i=0;i<cf.length;i++){var c=cf[i],p=n-i;if(c===0)continue;var mag=Math.abs(c),term;if(p===0)term=""+mag;else{var cs=mag===1?"":(""+mag);term=cs+(p===1?"n":"n^"+p);}parts.push({neg:c<0,term:term});}if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
+function u2sFr(n,d){return (n<0?"-":"")+"\\frac{"+Math.abs(n)+"}{"+d+"}";}
+E("u2-sequence-convergence",2,["2.10"],1,"gen",function(){
+  function nz(lo,hi){var v=0;do{v=ri(lo,hi);}while(v===0);return v;}
+  function ratT(num,den){return "\\frac{"+u2sPoly(num)+"}{"+u2sPoly(den)+"}";}
+  function denOK(den){for(var n=1;n<=80;n++){var v=0;for(var i=0;i<den.length;i++)v=v*n+den[i];if(v===0)return false;}return true;}
+  function build(fam){
+    var i;
+    if(fam==="cr"){var a=nz(-6,6),b=ri(-8,8),c=nz(-6,6),d=ri(-8,8);
+      return {fam:fam,tex:"\\("+ratT([a,b],[c,d])+"\\)",prm:{num:[a,b],den:[c,d]},
+        note:"\\("+ratT([a,b],[c,d])+"\\): the numerator and denominator grow at the same rate, so the terms settle at the ratio of the leading coefficients, \\("+u2qFracRaw(a,c)+"\\)"};}
+    if(fam==="cd"){var a2=nz(-6,6),b2=ri(-8,8),c2=nz(-3,3),d2=ri(-6,6),e2=ri(-6,6);
+      return {fam:fam,tex:"\\("+ratT([a2,b2],[c2,d2,e2])+"\\)",prm:{num:[a2,b2],den:[c2,d2,e2]},
+        note:"\\("+ratT([a2,b2],[c2,d2,e2])+"\\): the denominator is a degree higher and outgrows the numerator, so the terms shrink toward \\(0\\)"};}
+    if(fam==="cg"){var k=ri(2,7),bs=pick([[1,2],[1,3],[2,3],[-1,2],[-2,3],[1,4],[3,4],[-3,4],[2,5],[-1,3]]),p=bs[0],q=bs[1];
+      return {fam:fam,tex:"\\("+k+"\\left("+u2sFr(p,q)+"\\right)^n\\)",prm:{k:k,p:p,q:q},
+        note:"\\("+k+"\\left("+u2sFr(p,q)+"\\right)^n\\): each term is the one before it multiplied by \\("+u2sFr(p,q)+"\\), whose absolute value is less than \\(1\\), so the terms shrink toward \\(0\\)"};}
+    if(fam==="ca"){var c3=ri(1,9),m3=ri(1,9);
+      return {fam:fam,tex:"\\(\\frac{(-1)^n"+(c3===1?"":" \\cdot "+c3)+"}{"+u2sPoly([1,m3])+"}\\)",prm:{c:c3,m:m3},
+        note:"\\(\\frac{(-1)^n"+(c3===1?"":" \\cdot "+c3)+"}{"+u2sPoly([1,m3])+"}\\): the sign alternates, but the size of the terms shrinks toward \\(0\\), so the terms still settle at \\(0\\)"};}
+    if(fam==="dg"){var a4=nz(-4,4),b4=ri(-6,6),c4=ri(-6,6),d4=nz(-3,3),e4=ri(-6,6);
+      return {fam:fam,tex:"\\("+ratT([a4,b4,c4],[d4,e4])+"\\)",prm:{num:[a4,b4,c4],den:[d4,e4]},
+        note:"\\("+ratT([a4,b4,c4],[d4,e4])+"\\): the numerator is a degree higher and outgrows the denominator, so the terms grow without bound"};}
+    if(fam==="de"){var k5=ri(1,6),bs5=pick([[3,2],[5,4],[2,1],[3,1],[5,3],[4,3]]),p5=bs5[0],q5=bs5[1];
+      var base5=q5===1?(""+p5):("\\frac{"+p5+"}{"+q5+"}");
+      return {fam:fam,tex:"\\("+(k5===1?"":k5)+"\\left("+base5+"\\right)^n\\)",prm:{k:k5,p:p5,q:q5},
+        note:"\\("+(k5===1?"":k5)+"\\left("+base5+"\\right)^n\\): each term is the one before it multiplied by a number greater than \\(1\\), so the terms grow without bound"};}
+    if(fam==="dob"){var a6=nz(-6,6),b6=ri(-8,8),c6=nz(-6,6),d6=ri(-8,8);
+      return {fam:fam,tex:"\\((-1)^n \\cdot "+ratT([a6,b6],[c6,d6])+"\\)",prm:{num:[a6,b6],den:[c6,d6]},
+        note:"\\((-1)^n \\cdot "+ratT([a6,b6],[c6,d6])+"\\): the factor \\((-1)^n\\) flips the sign at every step while the size of the fraction approaches \\("+u2qFracRaw(Math.abs(a6),Math.abs(c6))+"\\), so the terms keep jumping between two different values and never settle"};}
+    var k7=ri(1,5),bs7=pick([[-3,2],[-5,4],[-2,1],[-3,1],[-5,3],[-4,3]]),p7=bs7[0],q7=bs7[1];
+    var base7=q7===1?(""+p7):u2sFr(p7,q7);
+    return {fam:fam,tex:"\\("+(k7===1?"":k7)+"\\left("+base7+"\\right)^n\\)",prm:{k:k7,p:p7,q:q7},
+      note:"\\("+(k7===1?"":k7)+"\\left("+base7+"\\right)^n\\): the terms alternate in sign and each one is larger in size than the one before, so they grow without settling anywhere"};
+  }
+  var convFam=pick(["cr","cd","cg","ca"]);
+  var divFams=shuffle(["dg","de","dob","dou"]).slice(0,3);
+  var items=[],tries=0;
+  do{
+    items=[build(convFam)];
+    for(var j=0;j<3;j++)items.push(build(divFams[j]));
+    tries++;
+  }while((new Set(items.map(function(x){return x.tex;})).size<4||items.some(function(x){return x.prm.den&&!denOK(x.prm.den);})||(convFam==="cr"&&items[0].prm.num[0]*items[0].prm.den[1]===items[0].prm.num[1]*items[0].prm.den[0]))&&tries<200);
+  var conv=items[0],divs=items.slice(1);
+  var sol="A sequence converges when its terms settle toward a single finite number as \\(n\\) grows. Check each one. "+conv.note+", so this sequence converges. The other three diverge: "+divs.map(function(x){return x.note;}).join("; ")+". The convergent sequence is <b>"+conv.tex+"</b>.";
+  return mcq("Which one of the following sequences converges?",
+    conv.tex,divs.map(function(x){return x.tex;}),sol,
+    {conv:{fam:convFam,prm:conv.prm},divs:divs.map(function(x){return {fam:x.fam,prm:x.prm};})});
+});
+E("u2-repeating-decimal",2,["2.10"],2,"gen",function(){
+  function red(n,d){var g=u2qGcd(n,d);return [n/g,d/g];}
+  function pairStr(pr){return "\\("+u2qFracRaw(pr[0],pr[1])+"\\)";}
+  var W,h,p,head,block,H,B,pH,pP,key,e1,e2,e3,tries=0;
+  do{
+    W=ri(0,9);h=ri(1,2);p=ri(1,3);head="";block="";
+    for(var i1=0;i1<h;i1++)head+=""+ri(0,9);
+    for(var i2=0;i2<p;i2++)block+=""+ri(0,9);
+    H=parseInt(head,10);B=parseInt(block,10);
+    pH=Math.pow(10,h);pP=Math.pow(10,p);
+    key=red((W*pH+H)*(pP-1)+B,pH*(pP-1));
+    e1=red((W*pH+H)*(pP*10-1)+B,pH*(pP*10-1));
+    e2=red(W*(pH*pP-1)+(H*pP+B),pH*pP-1);
+    e3=red((W*pH+H)*(pP-1)+B*pH,pH*(pP-1));
+    tries++;
+  }while((/^0+$/.test(block)||/^9+$/.test(block)||new Set([key,e1,e2,e3].map(function(pr){return pr[0]+"/"+pr[1];})).size<4)&&tries<200);
+  var S1=H*pP+B,den=pH*pP-pH;
+  var sol="Work with the repeating part. Let \\(y = 0."+head+"\\overline{"+block+"}\\). Multiplying by \\(10^{"+(h+p)+"}\\) moves the decimal point past the head and one full repeat: \\(10^{"+(h+p)+"} y = "+S1+".\\overline{"+block+"}\\). Multiplying by \\(10^{"+h+"}\\) moves it just past the head: \\(10^{"+h+"} y = "+H+".\\overline{"+block+"}\\). Subtracting removes the repeating tail: \\[ \\left(10^{"+(h+p)+"} - 10^{"+h+"}\\right) y = "+S1+" - "+H+" = "+(S1-H)+" \\] So \\(y = \\frac{"+(S1-H)+"}{"+den+"}\\), and adding back the whole part \\("+W+"\\) and reducing gives \\(x = \\) <b>"+pairStr(key)+"</b>. (The repeating tail is an infinite geometric series with ratio \\(10^{-"+p+"}\\), and the subtraction is its sum formula in disguise.)";
+  return mcq("Express the repeating decimal \\("+W+"."+head+"\\overline{"+block+"}\\) as a fraction in lowest terms.",
+    pairStr(key),[pairStr(e1),pairStr(e2),pairStr(e3)],sol,
+    {W:W,head:head,block:block,h:h,p:p});
+});
 
 /* ----- bank-u3.js ----- */
 // Math 3208 Unit 3 Rational Functions question bank
@@ -4229,4 +4386,4 @@ E("u3-rational-equation-cr",3,["1.8","1.9"],3,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
