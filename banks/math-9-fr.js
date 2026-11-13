@@ -349,6 +349,19 @@ function solSideLabels(P, labs) {
   return out;
 }
 
+/* Tranche 5 (nov. 2026) : le modèle du carré pour les entrées de
+   racines de l'unité 2. Un carré dont l'aire est étiquetée à
+   l'intérieur et un côté étiqueté sous le bord inférieur; la valeur
+   inconnue est passée comme « ? », donc la figure donne la donnée
+   et jamais la réponse. */
+function solSquare(areaLab, sideLab, aria) {
+  var s = '<svg viewBox="0 0 200 172" width="200" height="172" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">';
+  s += '<rect x="45" y="14" width="110" height="110" fill="#eceff1" stroke="#37474f" stroke-width="2"/>';
+  s += solT(100, 69, areaLab, 14, true);
+  s += solT(100, 146, sideLab, 13, false);
+  return s + "</svg>";
+}
+
 /* ----- bank-u1.js ----- */
 // Math 9 (French) Unit 1 Rational Numbers question bank
 // Cut verbatim from the standalone bank source
@@ -688,26 +701,32 @@ E("u2-sqrt-perfect", 2, ["6.9"], 1, "gen", function(){
     var r=ri(2,20); var n=r*r;
     var ds=u2d3(r,[r+1,r-1,r+2,r*2,r+3]);
     var opts=ds.map(function(d){return {t:String(d), fb:fmtD(d)+" au carré donne "+fmtD(d*d)+", pas "+n+" : essaie une autre valeur."};});
-    return mcq("Que vaut \\(\\sqrt{"+n+"}\\) ?", {t:String(r), fb:"Oui : "+r+" fois "+r+" égale "+n+"."}, opts,
+    var q = mcq("Que vaut \\(\\sqrt{"+n+"}\\) ?", {t:String(r), fb:"Oui : "+r+" fois "+r+" égale "+n+"."}, opts,
       "\\("+r+" \\times "+r+" = "+n+"\\), donc \\(\\sqrt{"+n+"} = "+r+"\\). La racine carrée est <b>"+r+"</b>.",
       {mode:"whole", n:n});
+    q.figure = solSquare(String(n), "?", "Carré avec l'aire étiquetée et le côté inconnu");
+    return q;
   }
   if(mode==="decimal"){
     var k=ri(3,25); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
     var dc=u2d3(rd,[u2r1(rd+0.1),u2r1(rd-0.1),u2r1(rd+1),u2r1(rd*2),u2r1(rd+0.2)]);
     var dopts=dc.map(function(d){return {t:fmtD(d), fb:fmtD(d)+" au carré donne "+fmtD(u2r2(d*d))+", pas "+fmtD(nd)+"."};});
-    return mcq("Que vaut \\(\\sqrt{"+fmtD(nd)+"}\\) ?", {t:fmtD(rd), fb:"Oui : "+fmtD(rd)+" fois "+fmtD(rd)+" égale "+fmtD(nd)+"."}, dopts,
+    var q = mcq("Que vaut \\(\\sqrt{"+fmtD(nd)+"}\\) ?", {t:fmtD(rd), fb:"Oui : "+fmtD(rd)+" fois "+fmtD(rd)+" égale "+fmtD(nd)+"."}, dopts,
       "\\("+fmtD(rd)+" \\times "+fmtD(rd)+" = "+fmtD(nd)+"\\), donc \\(\\sqrt{"+fmtD(nd)+"} = "+fmtD(rd)+"\\). La racine carrée est <b>"+fmtD(rd)+"</b>.",
       {mode:"decimal", n:nd});
+    q.figure = solSquare(fmtD(nd), "?", "Carré avec l'aire étiquetée et le côté inconnu");
+    return q;
   }
   var p=ri(2,9); var q=ri(3,11); var g=0;
   while(u2gcd(p,q)!==1&&g<40){p=ri(2,9);q=ri(3,11);g++;}
   var fopts=[{t:"\\("+FR(p+1,q)+"\\)", fb:"En le mettant au carré, on obtient un mauvais numérateur : vérifie les deux parties."},
              {t:"\\("+FR(p,q+1)+"\\)", fb:"En le mettant au carré, on obtient un mauvais dénominateur : vérifie les deux parties."},
              {t:"\\("+FR(p-1,q)+"\\)", fb:"En le mettant au carré, on obtient un numérateur plus petit que celui montré."}];
-  return mcq("Que vaut \\(\\sqrt{"+FR(p*p,q*q)+"}\\) ?", {t:"\\("+FR(p,q)+"\\)", fb:"Oui : les deux parties au carré donnent les parties montrées."}, fopts,
+  var qq = mcq("Que vaut \\(\\sqrt{"+FR(p*p,q*q)+"}\\) ?", {t:"\\("+FR(p,q)+"\\)", fb:"Oui : les deux parties au carré donnent les parties montrées."}, fopts,
     "Le numérateur "+(p*p)+" est "+p+" au carré, et le dénominateur "+(q*q)+" est "+q+" au carré. \\[ \\sqrt{"+FR(p*p,q*q)+"} = "+FR(p,q)+" \\] La racine carrée est <b>\\("+FR(p,q)+"\\)</b>.",
     {mode:"fraction", p:p, q:q});
+  qq.figure = solSquare((p*p)+"/"+(q*q), "?", "Carré avec l'aire étiquetée et le côté inconnu");
+  return qq;
 }, ["Pense au nombre qui, multiplié par lui-même, donne la valeur sous le signe de racine.", "Essaie les petits carrés dans l'ordre jusqu'à ce qu'un d'eux donne exactement le nombre montré."]);
 
 E("u2-square-from-root", 2, ["6.11"], 1, "gen", function(){
@@ -716,26 +735,32 @@ E("u2-square-from-root", 2, ["6.11"], 1, "gen", function(){
     var r=ri(2,30); var n=r*r;
     var ds=u2d3(n,[2*r,n+1,n-1,n+r,n+10,3*r]);
     var opts=ds.map(function(d){return {t:String(d), fb:"Cette valeur ne vient pas de "+r+" au carré : essaie "+r+" fois "+r+"."};});
-    return mcq("Un nombre positif a pour racine carrée "+r+". Quel est ce nombre ?", {t:String(n), fb:"Oui : mettre la racine au carré redonne le nombre."}, opts,
+    var q = mcq("Un nombre positif a pour racine carrée "+r+". Quel est ce nombre ?", {t:String(n), fb:"Oui : mettre la racine au carré redonne le nombre."}, opts,
       "Mettre au carré défait une racine carrée : \\[ "+r+"^{2} = "+r+" \\times "+r+" = "+n+" \\] Le nombre est <b>"+n+"</b>.",
       {mode:"whole", r:r});
+    q.figure = solSquare("?", String(r), "Carré avec le côté étiqueté et l'aire inconnue");
+    return q;
   }
   if(mode==="decimal"){
     var k=ri(2,30); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
     var dc=u2d3(nd,[u2r2(2*rd),u2r2((rd+1)*(rd+1)),u2r2(nd+1),u2r2(nd+0.1),u2r2(nd+2)]);
     var dopts=fmtPairDsD(fmtD(nd), dc.map(function(d){return {v:d, fb:"Ce n'est pas "+fmtD(rd)+" fois "+fmtD(rd)+" : mets la racine elle-même au carré."};}));
-    return mcq("Un nombre positif a pour racine carrée "+fmtD(rd)+". Quel est ce nombre ?", {t:fmtD(nd), fb:"Oui : "+fmtD(rd)+" au carré égale "+fmtD(nd)+"."}, dopts,
+    var q = mcq("Un nombre positif a pour racine carrée "+fmtD(rd)+". Quel est ce nombre ?", {t:fmtD(nd), fb:"Oui : "+fmtD(rd)+" au carré égale "+fmtD(nd)+"."}, dopts,
       "Mettre au carré défait une racine carrée : \\[ "+fmtD(rd)+"^{2} = "+fmtD(rd)+" \\times "+fmtD(rd)+" = "+fmtD(nd)+" \\] Le nombre est <b>"+fmtD(nd)+"</b>.",
       {mode:"decimal", r:rd});
+    q.figure = solSquare("?", fmtD(rd), "Carré avec le côté étiqueté et l'aire inconnue");
+    return q;
   }
   var p=ri(2,9); var q=ri(3,11); var g=0;
   while(u2gcd(p,q)!==1&&g<40){p=ri(2,9);q=ri(3,11);g++;}
   var fopts=[{t:"\\("+FR(p*p,q)+"\\)", fb:"Seul le haut a été mis au carré : le bas doit aussi être mis au carré."},
              {t:"\\("+FR(p,q*q)+"\\)", fb:"Seul le bas a été mis au carré : le haut doit aussi être mis au carré."},
              {t:"\\("+FR(p*p,q*q+q)+"\\)", fb:"Mets la partie du bas au carré : ne l'additionne pas à elle-même."}];
-  return mcq("Un nombre positif a pour racine carrée \\("+FR(p,q)+"\\) . Quel est ce nombre ?", {t:"\\("+FR(p*p,q*q)+"\\)", fb:"Oui : mets le haut et le bas au carré séparément."}, fopts,
+  var qq = mcq("Un nombre positif a pour racine carrée \\("+FR(p,q)+"\\) . Quel est ce nombre ?", {t:"\\("+FR(p*p,q*q)+"\\)", fb:"Oui : mets le haut et le bas au carré séparément."}, fopts,
     "Mets le haut et le bas au carré : \\[ \\left("+FR(p,q)+"\\right)^{2} = "+FR(p*p,q*q)+" \\] Le nombre est <b>\\("+FR(p*p,q*q)+"\\)</b>.",
     {mode:"fraction", p:p, q:q});
+  qq.figure = solSquare("?", p+"/"+q, "Carré avec le côté étiqueté et l'aire inconnue");
+  return qq;
 }, ["Mettre au carré et prendre la racine carrée se défont l'un l'autre, donc mets la racine donnée au carré.", "Multiplie la racine par elle-même, en mettant le haut et le bas au carré séparément pour une fraction."]);
 
 E("u2-identify-square", 2, ["3.3"], 1, "gen", function(){
@@ -1013,10 +1038,12 @@ E("u2-best-estimate-side", 2, ["6.5","6.8"], 3, "gen", function(){
   var opts=vals.slice(0,1).concat(vals.slice(2)).map(function(v){
     return {t:fmtD(v), fb:"Mets-le au carré : "+fmtD(v)+" au carré donne "+fmtD(u2r2(v*v))+", pas le carré le plus proche de "+fmtD(A)+"."};
   });
-  return mcq(ctx+" a une aire de "+fmtD(A)+" mètres carrés. Quelle est la meilleure estimation de la longueur de son côté, en mètres ?",
+  var q = mcq(ctx+" a une aire de "+fmtD(A)+" mètres carrés. Quelle est la meilleure estimation de la longueur de son côté, en mètres ?",
     {t:fmtD(best), fb:"Oui : "+fmtD(best)+" au carré donne "+fmtD(u2r2(best*best))+", le plus proche de "+fmtD(A)+"."}, opts,
     "La longueur du côté est \\(\\sqrt{"+fmtD(A)+"}\\). Puisque \\("+fmtD(best)+"^{2} = "+fmtD(u2r2(best*best))+"\\), le carré le plus proche de "+fmtD(A)+", la meilleure estimation est <b>"+fmtD(best)+" m</b>.",
     {mode:"best-estimate", A:A});
+  q.figure = solSquare(fmtD(A)+" m²", "?", "Carré avec l'aire étiquetée et le côté inconnu");
+  return q;
 }, ["La longueur du côté est la racine carrée de l'aire, donc estime cette racine.", "Mets au carré chaque valeur à une décimale voisine et trouve quel carré tombe le plus proche de l'aire."]);
 
 E("u2-reasoning-var", 2, ["3.3","6.10"], 3, "var", varset([
@@ -2182,16 +2209,20 @@ E("u2-sqrt-fraction", 2, ["6.9"], 1, "gen", function(){
     ];
     var opts=[], seen={};
     for(var i=0;i<cands.length&&opts.length<3;i++){if(cands[i].t!==correct&&!seen[cands[i].t]){seen[cands[i].t]=1;opts.push(cands[i]);}}
-    return mcq("Que vaut \\(\\sqrt{"+FR(a*a,b*b)+"}\\) ? Donne la valeur exacte.", {t:correct, fb:"Oui : "+a+" au carré donne "+(a*a)+" et "+b+" au carré donne "+(b*b)+"."}, opts,
+    var q = mcq("Que vaut \\(\\sqrt{"+FR(a*a,b*b)+"}\\) ? Donne la valeur exacte.", {t:correct, fb:"Oui : "+a+" au carré donne "+(a*a)+" et "+b+" au carré donne "+(b*b)+"."}, opts,
       "Prends la racine du haut et du bas séparément : \\[ \\begin{aligned} \\sqrt{"+FR(a*a,b*b)+"} &= "+FR(a,b)+" \\end{aligned} \\] La racine carrée est <b>\\("+FR(a,b)+"\\)</b>.",
       {mode:"fraction", a:a, b:b});
+    q.figure = solSquare((a*a)+"/"+(b*b), "?", "Carré avec l'aire étiquetée et le côté inconnu");
+    return q;
   }
   var k=ri(3,39); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
   var dc=u2d3(rd,[u2r1(rd+0.1),u2r1(rd-0.1),u2r1(rd*2),u2r1(rd+0.2),u2r1(rd/2),u2r1(rd+1)]);
   var dopts=fmtPairDsD(fmtD(rd), dc.map(function(d){return {v:d, fb:fmtD(d)+" au carré donne "+fmtD(u2r2(d*d))+", et non "+fmtD(nd)+" : essaie un autre dixième."};}));
-  return mcq("Que vaut \\(\\sqrt{"+fmtD(nd)+"}\\) ? Donne la valeur exacte.", {t:fmtD(rd), fb:"Oui : "+fmtD(rd)+" fois "+fmtD(rd)+" donne "+fmtD(nd)+"."}, dopts,
+  var q = mcq("Que vaut \\(\\sqrt{"+fmtD(nd)+"}\\) ? Donne la valeur exacte.", {t:fmtD(rd), fb:"Oui : "+fmtD(rd)+" fois "+fmtD(rd)+" donne "+fmtD(nd)+"."}, dopts,
     "Trouve le nombre décimal qui, multiplié par lui-même, donne "+fmtD(nd)+": \\[ \\begin{aligned} "+fmtD(rd)+" \\times "+fmtD(rd)+" &= "+fmtD(nd)+" \\\\ \\sqrt{"+fmtD(nd)+"} &= "+fmtD(rd)+" \\end{aligned} \\] La racine carrée est <b>"+fmtD(rd)+"</b>.",
     {mode:"decimal", n:nd});
+  q.figure = solSquare(fmtD(nd), "?", "Carré avec l'aire étiquetée et le côté inconnu");
+  return q;
 }, ["Pour une fraction, prends la racine du haut et du bas séparément ; pour un nombre décimal, cherche parmi les dixièmes.", "Demande-toi quel nombre, multiplié par lui-même, donne exactement la valeur sous le signe de racine."]);
 
 E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
@@ -2208,9 +2239,11 @@ E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
     ];
     var opts=[], seen={};
     for(var i=0;i<cands.length&&opts.length<3;i++){if(cands[i].t!==correct&&!seen[cands[i].t]){seen[cands[i].t]=1;opts.push(cands[i]);}}
-    return mcq("Un nombre positif a pour racine carrée \\("+FR(p,q)+"\\) . Quel est ce nombre ?", {t:correct, fb:"Oui : mets le haut et le bas au carré séparément."}, opts,
+    var qq = mcq("Un nombre positif a pour racine carrée \\("+FR(p,q)+"\\) . Quel est ce nombre ?", {t:correct, fb:"Oui : mets le haut et le bas au carré séparément."}, opts,
       "Mettre au carré annule une racine carrée, et les deux parties sont mises au carré : \\[ \\begin{aligned} \\left("+FR(p,q)+"\\right)^{2} &= "+FR(p,q)+" \\times "+FR(p,q)+" \\\\ &= "+FR(p*p,q*q)+" \\end{aligned} \\] Le nombre est <b>\\("+FR(p*p,q*q)+"\\)</b>.",
       {mode:"fraction", p:p, q:q});
+    qq.figure = solSquare("?", p+"/"+q, "Carré avec le côté étiqueté et l'aire inconnue");
+    return qq;
   }
   var k=ri(4,29); var g2=0;
   while(k%10===0&&g2<40){k=ri(4,29);g2++;}
@@ -2225,9 +2258,11 @@ E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
   var dopts=[], seen2={};
   for(var j=0;j<cands2.length&&dopts.length<3;j++){var v=cands2[j].v; if(v!==nd&&v>0&&!seen2[v]){seen2[v]=1;dopts.push({v:v, fb:cands2[j].fb});}}
   dopts=fmtPairDsD(fmtD(nd), dopts);
-  return mcq("Un nombre positif a pour racine carrée "+fmtD(rd)+". Quel est ce nombre ?", {t:fmtD(nd), fb:"Oui : "+fmtD(rd)+" fois "+fmtD(rd)+" donne "+fmtD(nd)+"."}, dopts,
+  var q = mcq("Un nombre positif a pour racine carrée "+fmtD(rd)+". Quel est ce nombre ?", {t:fmtD(nd), fb:"Oui : "+fmtD(rd)+" fois "+fmtD(rd)+" donne "+fmtD(nd)+"."}, dopts,
     "Mettre au carré annule une racine carrée : \\[ \\begin{aligned} "+fmtD(rd)+"^{2} &= "+fmtD(rd)+" \\times "+fmtD(rd)+" \\\\ &= "+fmtD(nd)+" \\end{aligned} \\] Le nombre est <b>"+fmtD(nd)+"</b>.",
     {mode:"decimal", r:rd});
+  q.figure = solSquare("?", fmtD(rd), "Carré avec le côté étiqueté et l'aire inconnue");
+  return q;
 }, ["Mettre au carré et prendre la racine carrée s'annulent, donc mets la racine donnée au carré.", "Multiplie la racine par elle-même ; pour une fraction, mets le haut et le bas au carré séparément."]);
 
 E("u2-calc-root-round", 2, ["6.6"], 1, "gen", function(){
