@@ -4737,7 +4737,11 @@ E("u7-tangent-param", 7, ["4.49", "4.51"], 3, "gen", function () {
    Tranche 2, final scope. All stems, contexts and values are original.
    Helpers are prefixed u8; entries register through E(...).
    13 entries: L1 3, L2 8, L3 2.
-   Codes: 4.16/4.17 solve and graph one-variable linear inequalities;
+   Codes: 4.16 determine the solution region of a linear inequality
+   using test points; 4.17 solid or broken boundary lines (both
+   two-variable outcomes per the curriculum guide, corrected
+   Nov 13, 2026; the one-variable solving entries in this file
+   assess Math 9 outcomes and carry the pkFlag, below);
    4.18 graph linear inequalities in two variables (test point, solid/broken);
    4.19 model a context as a two-variable inequality, feasible combinations;
    4.20-4.23 quadratic inequalities in two variables (regions, test points,
@@ -5287,6 +5291,19 @@ E("u8-scenario-solve", 8, ["4.16", "4.17"], 2, "gen", function () {
     x3, 0.01, sol3,
     { kind: "scen", shape: shape, S: S, w: w, G: G3, ans: x3 });
 });
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 9 one-variable linear inequality outcomes (indicators 8.24, 8.26 and 8.27), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-2200.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u8-solve-linear-basic","u8-solve-linear-flip","u8-numberline-read"].indexOf(e.id)>=0)e.pkFlag=true;});
 
 /* ----- bank-u9.js ----- */
 // Math 2200 Unit 9 Sequences and Series question bank
