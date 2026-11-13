@@ -3101,7 +3101,9 @@ E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
 // CRMARKS: u6-nonpermissible-basic=2
 // CRMARKS: u6-nonpermissible-identity=2
 // CRMARKS: u6-numeric-verify=1
+// CRMARKS: u6-proof-direct=3
 // CRMARKS: u6-proof-invalid-step=3
+// CRMARKS: u6-proof-strategy=3
 // CRMARKS: u6-simplify-expression=2
 // CRMARKS: u6-solve-double-angle=2
 // CRMARKS: u6-solve-identity-sub=3
@@ -3110,7 +3112,7 @@ E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
 /* ================= Unit 6: Trigonometric Identities ================= */
 /* ================= Unit 6: Trigonometric Identities =================
    Helpers are prefixed u6; the only other top-level statements are E(...) calls.
-   16 entries: L1 3, L2 10, L3 3. Codes: MA3200.7.34 to 7.37, 7.39 to 7.46. */
+   20 entries: L1 6, L2 8, L3 6. Codes: MA3200.7.34 to 7.37, 7.39 to 7.46. */
 
 function u6gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
 
@@ -4264,6 +4266,250 @@ E("u6-coincidence-check-cr",6,["7.42","7.46"],3,"var",varset([
       "One value where the sides agree never proves an identity; the claim must hold for every value. A single value where the sides differ disproves it: at \\(x = \\frac{5\\pi}{4}\\), \\(\\sqrt{\\sin^2 x} = \\frac{\\sqrt{2}}{2}\\) (a square root is never negative) while \\(\\sin x = -\\frac{\\sqrt{2}}{2}\\). So the claim is false, and the matching value at \\(x = \\frac{\\pi}{4}\\) was a coincidence.",
       {sc:"sqrt-sin"});
   }
+]));
+
+/* ================= Full proofs (7.43), added Nov 13, 2026 =================
+   Build step 1 of the Pure Math scan build order: complete identity
+   proofs as constructed response. Every identity is TRUE BY
+   CONSTRUCTION. Each family starts from its target (the right side)
+   and grows the left side by reversible moves: a Pythagorean
+   substitution run backwards, a fraction split into a difference, a
+   conjugate pair multiplied out, a difference of squares waiting to
+   be factored. The model proof walks the recorded growth path in
+   reverse, so the solution's steps are generated from the same parts
+   that built the two sides and cannot drift from the draw.
+   u6-proof-direct takes the routine route (write everything in sine
+   and cosine, combine, apply the Pythagorean identity), so it sits at
+   Level 2 beside u6-solve-identity-sub; u6-proof-strategy needs one
+   chosen strategic move (multiply by a conjugate, factor a difference
+   of squares, split one term into two), so it sits at Level 3 beside
+   the unit's other non-routine proof work, u6-proof-invalid-step.
+   Both carry 3 marks, the unit's proof weight. The typed check is the
+   proof's final line in plain text; the proof itself is the response,
+   marked against the model proof in the solution. */
+
+function u6pfArgs() {
+  var v = pick(["\\theta", "\\theta", "x"]);
+  var dbl = Math.random() < 0.35;
+  return { v: v, dbl: dbl, A: dbl ? "2" + v : v, aw: v === "x" ? (dbl ? "2x" : "x") : (dbl ? "2theta" : "theta") };
+}
+
+function u6pfAnswers(forms, aw) { /* plain-text spellings of a form: spaced, compact, angle in brackets, fraction bracketed */
+  var seen = {}, out = [];
+  function add(s) { if (s && !seen[s]) { seen[s] = 1; out.push(s); } }
+  forms.forEach(function (f) {
+    add(f);
+    add(f.replace(/ /g, ""));
+    add(f.split(aw).join("(" + aw + ")"));
+    add(f.split(aw).join("(" + aw + ")").replace(/ /g, ""));
+    if (f.charAt(0) !== "(" && f.indexOf(" / ") >= 0) {
+      var p = f.split(" / ");
+      if (p.length === 2) { add("(" + p[0] + ") / (" + p[1] + ")"); add("(" + p[0] + ")/(" + p[1] + ")"); }
+    }
+    if (aw.length > 1 && aw.charAt(0) === "2" && aw.charAt(1) !== " ") {
+      add(f.split(aw).join("2 " + aw.slice(1)));
+      add(f.split(aw).join("(2 " + aw.slice(1) + ")"));
+    }
+  });
+  return out;
+}
+
+function u6pfQ(fam, sig, forms, lead, restr, v, plainForms, aw) {
+  var lhs = forms[0], rhs = forms[forms.length - 1];
+  var chain = lhs + forms.slice(1).map(function (f) { return " &= " + f; }).join(" \\\\ ");
+  var sol = lead + " \\[ \\begin{aligned} " + chain + " \\end{aligned} \\] ";
+  sol += restr
+    ? "The identity holds for every permissible value of \\(" + v + "\\), that is, wherever \\(" + restr + "\\); values where either side is undefined are excluded. "
+    : "Both sides are defined for every value of \\(" + v + "\\), so the identity holds for all \\(" + v + "\\). ";
+  sol += "The last line is the right side, so the proof is complete. The final line of the proof is <b>\\(" + rhs + "\\)</b>.";
+  sig.fam = fam; sig.lhs = lhs; sig.rhs = rhs;
+  return textq("Prove the identity \\(" + lhs + " = " + rhs + "\\), working with the left side only. Give the final line of your proof as plain text (for example, 3 sin x tan x).",
+    u6pfAnswers(plainForms, aw), sol, sig);
+}
+
+/* Direct family 1: k sec A - k cos A = k sin A tan A (and the sin/cos swap).
+   Grown from the target k G^2 / F by splitting the fraction and then
+   replacing G^2 with 1 - F^2 run backwards. */
+function u6pfD1() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var swap = Math.random() < 0.5, k = pick([1, 1, 2, 3]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var F = swap ? "\\sin" : "\\cos", G = swap ? "\\cos" : "\\sin";
+  var rec = swap ? "\\csc" : "\\sec", quo = swap ? "\\cot" : "\\tan";
+  var Ft = F + " " + A, Gt = G + " " + A, F2 = F + "^2 " + A, G2 = G + "^2 " + A;
+  var lhs = kp + rec + " " + A + " - " + kp + Ft;
+  var rhs = kp + Gt + " " + quo + " " + A;
+  var forms = [lhs,
+    "\\frac{" + k + "}{" + Ft + "} - " + kp + Ft,
+    "\\frac{" + k + " - " + kp + F2 + "}{" + Ft + "}",
+    "\\frac{" + kp + G2 + "}{" + Ft + "}",
+    rhs];
+  var lead = "Work with the left side only. Write the " + (swap ? "cosecant" : "secant") + " in terms of " + (swap ? "sine" : "cosine") + ", combine over a common denominator, and apply the Pythagorean identity:";
+  var plain = [kps + (swap ? "cos " : "sin ") + g.aw + " " + (swap ? "cot " : "tan ") + g.aw,
+    kps + (swap ? "cot " : "tan ") + g.aw + " " + (swap ? "cos " : "sin ") + g.aw,
+    kps + (swap ? "cos^2 " : "sin^2 ") + g.aw + " / " + (swap ? "sin " : "cos ") + g.aw];
+  return u6pfQ("D1", { swap: swap, k: k, dbl: g.dbl }, forms, lead, F + " " + A + " \\ne 0", v, plain, g.aw);
+}
+
+/* Direct family 2: k csc A - k cos A cot A = k sin A (and the swap).
+   Grown from the target by writing it as k F^2 / F and splitting. */
+function u6pfD2() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var swap = Math.random() < 0.5, k = pick([1, 1, 2, 3]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var F = swap ? "\\cos" : "\\sin", G = swap ? "\\sin" : "\\cos";
+  var rec = swap ? "\\sec" : "\\csc", quo = swap ? "\\tan" : "\\cot";
+  var Ft = F + " " + A, Gt = G + " " + A, F2 = F + "^2 " + A, G2 = G + "^2 " + A;
+  var lhs = kp + rec + " " + A + " - " + kp + Gt + " " + quo + " " + A;
+  var rhs = kp + Ft;
+  var forms = [lhs,
+    "\\frac{" + k + "}{" + Ft + "} - \\frac{" + kp + G2 + "}{" + Ft + "}",
+    "\\frac{" + k + " - " + kp + G2 + "}{" + Ft + "}",
+    "\\frac{" + kp + F2 + "}{" + Ft + "}",
+    rhs];
+  var lead = "Work with the left side only. Write every ratio in terms of sine and cosine, combine the terms over a common denominator, and apply the Pythagorean identity:";
+  var plain = [kps + (swap ? "cos " : "sin ") + g.aw,
+    kps + (swap ? "cos^2 " : "sin^2 ") + g.aw + " / " + (swap ? "cos " : "sin ") + g.aw];
+  return u6pfQ("D2", { swap: swap, k: k, dbl: g.dbl }, forms, lead, F + " " + A + " \\ne 0", v, plain, g.aw);
+}
+
+/* Direct family 3: k(1 - cos^2 A) / (sin A cos A) = k tan A (and the swap).
+   Grown from k sin A / cos A by un-cancelling a sine factor and then
+   replacing sin^2 A with 1 - cos^2 A run backwards. */
+function u6pfD3() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var swap = Math.random() < 0.5, k = pick([1, 1, 2, 3]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var P = swap ? "\\sin" : "\\cos", Q = swap ? "\\cos" : "\\sin";
+  var P2 = P + "^2 " + A, Q2 = Q + "^2 " + A;
+  var lhs = "\\frac{" + (k > 1 ? k + "(1 - " + P2 + ")" : "1 - " + P2) + "}{\\sin " + A + " \\cos " + A + "}";
+  var rhs = kp + (swap ? "\\cot " : "\\tan ") + A;
+  var forms = [lhs,
+    "\\frac{" + kp + Q2 + "}{\\sin " + A + " \\cos " + A + "}",
+    "\\frac{" + kp + Q + " " + A + "}{" + P + " " + A + "}",
+    rhs];
+  var lead = "Work with the left side only. Apply the Pythagorean identity to the numerator, \\(1 - " + P2 + " = " + Q2 + "\\), then cancel the common factor:";
+  var plain = [kps + (swap ? "cot " : "tan ") + g.aw,
+    kps + (swap ? "cos " : "sin ") + g.aw + " / " + (swap ? "sin " : "cos ") + g.aw];
+  return u6pfQ("D3", { swap: swap, k: k, dbl: g.dbl }, forms, lead, "\\sin " + A + " \\ne 0 \\text{ and } \\cos " + A + " \\ne 0", v, plain, g.aw);
+}
+
+/* Direct family 4: k sin A (1 + tan^2 A) = k tan A sec A (and the swap).
+   Grown from the target by merging the two ratios into one fraction
+   and replacing sec^2 A with 1 + tan^2 A run backwards. */
+function u6pfD4() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var swap = Math.random() < 0.5, k = pick([1, 1, 2, 3]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var M = swap ? "\\cos" : "\\sin", D = swap ? "\\sin" : "\\cos";
+  var quo = swap ? "\\cot" : "\\tan", rec = swap ? "\\csc" : "\\sec";
+  var lhs = kp + M + " " + A + "(1 + " + quo + "^2 " + A + ")";
+  var rhs = kp + quo + " " + A + " " + rec + " " + A;
+  var forms = [lhs,
+    kp + M + " " + A + " " + rec + "^2 " + A,
+    "\\frac{" + kp + M + " " + A + "}{" + D + "^2 " + A + "}",
+    rhs];
+  var lead = "Work with the left side only. Use the Pythagorean identity in the form \\(1 + " + quo + "^2 " + A + " = " + rec + "^2 " + A + "\\), then write the result in terms of sine and cosine and split it into two ratios:";
+  var plain = [kps + (swap ? "cot " : "tan ") + g.aw + " " + (swap ? "csc " : "sec ") + g.aw,
+    kps + (swap ? "csc " : "sec ") + g.aw + " " + (swap ? "cot " : "tan ") + g.aw,
+    kps + (swap ? "cos " : "sin ") + g.aw + " / " + (swap ? "sin^2 " : "cos^2 ") + g.aw];
+  return u6pfQ("D4", { swap: swap, k: k, dbl: g.dbl }, forms, lead, D + " " + A + " \\ne 0", v, plain, g.aw);
+}
+
+/* ---- 7.43: prove an identity by the direct route (CR) ---- */
+E("u6-proof-direct", 6, ["7.43"], 2, "var", varset([
+  function () { return u6pfD1(); },
+  function () { return u6pfD2(); },
+  function () { return u6pfD3(); },
+  function () { return u6pfD4(); }
+]));
+
+/* Strategic family 1: k sin A / (1 + cos A) = k(1 - cos A) / sin A, both
+   signs and the sin/cos swap. Grown from the right side by multiplying
+   numerator and denominator by the conjugate and cancelling; the proof
+   runs the same multiplication on the left side. */
+function u6pfSA() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var swap = Math.random() < 0.5, sgn = Math.random() < 0.5 ? 1 : -1, k = pick([1, 1, 2]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var N = swap ? "\\cos" : "\\sin", D = swap ? "\\sin" : "\\cos";
+  var Nt = N + " " + A, Dt = D + " " + A;
+  var sg = sgn > 0 ? "+" : "-", op = sgn > 0 ? "-" : "+";
+  var lhs = "\\frac{" + kp + Nt + "}{1 " + sg + " " + Dt + "}";
+  var rhs = "\\frac{" + (k > 1 ? k + "(1 " + op + " " + Dt + ")" : "1 " + op + " " + Dt) + "}{" + Nt + "}";
+  var forms = [lhs,
+    "\\frac{" + kp + Nt + "(1 " + op + " " + Dt + ")}{(1 " + sg + " " + Dt + ")(1 " + op + " " + Dt + ")}",
+    "\\frac{" + kp + Nt + "(1 " + op + " " + Dt + ")}{" + N + "^2 " + A + "}",
+    rhs];
+  var lead = "Work with the left side only. Multiply the numerator and denominator by the conjugate of the denominator, \\(1 " + op + " " + Dt + "\\), which turns the denominator into a Pythagorean form:";
+  var nName = swap ? "cos " : "sin ", dName = swap ? "sin " : "cos ";
+  var numP = k > 1 ? k + "(1 " + op + " " + dName + g.aw + ")" : "1 " + op + " " + dName + g.aw;
+  var plain = ["(" + numP + ") / " + nName + g.aw,
+    "(" + kps + nName + g.aw + "(1 " + op + " " + dName + g.aw + ")) / " + nName + "^2 " + g.aw];
+  return u6pfQ("SA", { swap: swap, sgn: sgn, k: k, dbl: g.dbl }, forms, lead,
+    N + " " + A + " \\ne 0 \\text{ and } " + D + " " + A + " \\ne " + (sgn > 0 ? "-1" : "1"), v, plain, g.aw);
+}
+
+/* Strategic family 2: (sin^4 A - cos^4 A) / (sin^2 A - cos^2 A) = 1 and
+   (sin^4 A - cos^4 A) / (sin^2 A + cos^2 A) = sin^2 A - cos^2 A, with the
+   sin/cos swap and a coefficient. Grown by multiplying the target by
+   (sin^2 A - cos^2 A) / (sin^2 A - cos^2 A) and expanding the numerator
+   as a difference of squares run backwards. */
+function u6pfSB() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var swap = Math.random() < 0.5, form = Math.random() < 0.5 ? "one" : "diff", k = pick([1, 1, 2, 3]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var P = swap ? "\\cos" : "\\sin", Q = swap ? "\\sin" : "\\cos";
+  var P2 = P + "^2 " + A, Q2 = Q + "^2 " + A, P4 = P + "^4 " + A, Q4 = Q + "^4 " + A;
+  var den = form === "one" ? P2 + " - " + Q2 : P2 + " + " + Q2;
+  var lhs = kp + "\\frac{" + P4 + " - " + Q4 + "}{" + den + "}";
+  var fact = kp + "\\frac{(" + P2 + " - " + Q2 + ")(" + P2 + " + " + Q2 + ")}{" + den + "}";
+  var pName = swap ? "cos^2 " : "sin^2 ", qName = swap ? "sin^2 " : "cos^2 ";
+  var forms, rhs, restr, plain;
+  if (form === "one") {
+    rhs = "" + k;
+    forms = [lhs, fact, kp + "(" + P2 + " + " + Q2 + ")", rhs];
+    restr = P2 + " \\ne " + Q2;
+    plain = ["" + k, kps + "(" + pName + g.aw + " + " + qName + g.aw + ")", kps + pName + g.aw + " + " + qName + g.aw];
+  } else {
+    rhs = kp + "(" + P2 + " - " + Q2 + ")";
+    forms = [lhs, fact, rhs];
+    restr = null;
+    plain = [kps + "(" + pName + g.aw + " - " + qName + g.aw + ")", kps + pName + g.aw + " - " + qName + g.aw];
+  }
+  var lead = "Work with the left side only. The numerator is a difference of squares in \\(" + P2 + "\\) and \\(" + Q2 + "\\); factor it, then cancel the common factor:";
+  return u6pfQ("SB", { swap: swap, form: form, k: k, dbl: g.dbl }, forms, lead, restr, v, plain, g.aw);
+}
+
+/* Strategic family 3: k / (sin A cos A) = k tan A + k cot A. Grown from
+   the right side by combining over a common denominator; the proof
+   splits the numerator k into k sin^2 A + k cos^2 A and splits the
+   single fraction into two. */
+function u6pfSC() {
+  var g = u6pfArgs(), A = g.A, v = g.v;
+  var k = pick([1, 1, 2, 3]);
+  var kp = k > 1 ? "" + k : "", kps = k > 1 ? k + " " : "";
+  var S = "\\sin " + A, C = "\\cos " + A, S2 = "\\sin^2 " + A, C2 = "\\cos^2 " + A;
+  var lhs = "\\frac{" + k + "}{" + S + " " + C + "}";
+  var rhs = kp + "\\tan " + A + " + " + kp + "\\cot " + A;
+  var splitNum = k > 1 ? k + S2 + " + " + k + C2 : S2 + " + " + C2;
+  var forms = [lhs,
+    "\\frac{" + splitNum + "}{" + S + " " + C + "}",
+    "\\frac{" + kp + S2 + "}{" + S + " " + C + "} + \\frac{" + kp + C2 + "}{" + S + " " + C + "}",
+    "\\frac{" + kp + S + "}{" + C + "} + \\frac{" + kp + C + "}{" + S + "}",
+    rhs];
+  var lead = "Work with the left side only. Split the numerator: since \\(" + S2 + " + " + C2 + " = 1\\), the numerator " + k + " can be written as \\(" + splitNum + "\\). Then split the fraction into two parts and cancel in each part:";
+  var plain = [kps + "tan " + g.aw + " + " + kps + "cot " + g.aw,
+    kps + "cot " + g.aw + " + " + kps + "tan " + g.aw,
+    kps + "sin " + g.aw + " / cos " + g.aw + " + " + kps + "cos " + g.aw + " / sin " + g.aw];
+  return u6pfQ("SC", { k: k, dbl: g.dbl }, forms, lead, "\\sin " + A + " \\ne 0 \\text{ and } \\cos " + A + " \\ne 0", v, plain, g.aw);
+}
+
+/* ---- 7.43: prove an identity with one strategic step (CR) ---- */
+E("u6-proof-strategy", 6, ["7.43"], 3, "var", varset([
+  function () { return u6pfSA(); },
+  function () { return u6pfSB(); },
+  function () { return u6pfSC(); }
 ]));
 
 /* ----- bank-u7.js ----- */
@@ -6490,4 +6736,4 @@ E("u9-not-adjacent-cr",9,["9.10"],3,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-modelling":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-evaluate":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-ratio-problem":2,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-build":3,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-invalid-step":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-model-from-data":4,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u9-binomial-expand":2,"u9-binomial-term":2,"u9-comb-basic":2,"u9-comb-symmetry-solve":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-patterns-coefficients":2,"u9-perm-basic":2,"u9-perm-constraints":3,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
+window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-modelling":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-evaluate":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-ratio-problem":2,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-build":3,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-direct":3,"u6-proof-invalid-step":3,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-model-from-data":4,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u9-binomial-expand":2,"u9-binomial-term":2,"u9-comb-basic":2,"u9-comb-symmetry-solve":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-patterns-coefficients":2,"u9-perm-basic":2,"u9-perm-constraints":3,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
