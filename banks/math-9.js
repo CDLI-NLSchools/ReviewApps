@@ -287,6 +287,18 @@ function solSideLabels(P, labs) {
   return out;
 }
 
+/* Tranche 5 (Nov 2026): the square-area model for the Unit 2 root
+   entries. A square outline with the area labelled inside and a side
+   label under the bottom edge; whichever of the two is unknown is
+   passed as "?", so the figure states the given and never the key. */
+function solSquare(areaLab, sideLab, aria) {
+  var s = '<svg viewBox="0 0 200 172" width="200" height="172" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">';
+  s += '<rect x="45" y="14" width="110" height="110" fill="#eceff1" stroke="#37474f" stroke-width="2"/>';
+  s += solT(100, 69, areaLab, 14, true);
+  s += solT(100, 146, sideLab, 13, false);
+  return s + "</svg>";
+}
+
 /* ----- bank-u1.js ----- */
 // Math 9 Unit 1 Rational Numbers question bank
 // Cut verbatim from the standalone bank source
@@ -626,26 +638,32 @@ E("u2-sqrt-perfect", 2, ["6.9"], 1, "gen", function(){
     var r=ri(2,20); var n=r*r;
     var ds=u2d3(r,[r+1,r-1,r+2,r*2,r+3]);
     var opts=ds.map(function(d){return {t:String(d), fb:fmt(d)+" squared is "+fmt(d*d)+", not "+n+": try another value."};});
-    return mcq("What is \\(\\sqrt{"+n+"}\\)?", {t:String(r), fb:"Yes: "+r+" times "+r+" equals "+n+"."}, opts,
+    var q = mcq("What is \\(\\sqrt{"+n+"}\\)?", {t:String(r), fb:"Yes: "+r+" times "+r+" equals "+n+"."}, opts,
       "\\("+r+" \\times "+r+" = "+n+"\\), so \\(\\sqrt{"+n+"} = "+r+"\\). The square root is <b>"+r+"</b>.",
       {mode:"whole", n:n});
+    q.figure = solSquare(String(n), "?", "Square with labelled area and unknown side");
+    return q;
   }
   if(mode==="decimal"){
     var k=ri(3,25); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
     var dc=u2d3(rd,[u2r1(rd+0.1),u2r1(rd-0.1),u2r1(rd+1),u2r1(rd*2),u2r1(rd+0.2)]);
     var dopts=dc.map(function(d){return {t:fmt(d), fb:fmt(d)+" squared is "+fmt(u2r2(d*d))+", not "+fmt(nd)+"."};});
-    return mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)?", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
+    var q = mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)?", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
       "\\("+fmt(rd)+" \\times "+fmt(rd)+" = "+fmt(nd)+"\\), so \\(\\sqrt{"+fmt(nd)+"} = "+fmt(rd)+"\\). The square root is <b>"+fmt(rd)+"</b>.",
       {mode:"decimal", n:nd});
+    q.figure = solSquare(fmt(nd), "?", "Square with labelled area and unknown side");
+    return q;
   }
   var p=ri(2,9); var q=ri(3,11); var g=0;
   while(u2gcd(p,q)!==1&&g<40){p=ri(2,9);q=ri(3,11);g++;}
   var fopts=[{t:"\\("+FR(p+1,q)+"\\)", fb:"Squaring it gives the wrong numerator: check both parts."},
              {t:"\\("+FR(p,q+1)+"\\)", fb:"Squaring it gives the wrong denominator: check both parts."},
              {t:"\\("+FR(p-1,q)+"\\)", fb:"Squaring it gives a smaller numerator than the one shown."}];
-  return mcq("What is \\(\\sqrt{"+FR(p*p,q*q)+"}\\)?", {t:"\\("+FR(p,q)+"\\)", fb:"Yes: both parts square to the parts shown."}, fopts,
+  var qq = mcq("What is \\(\\sqrt{"+FR(p*p,q*q)+"}\\)?", {t:"\\("+FR(p,q)+"\\)", fb:"Yes: both parts square to the parts shown."}, fopts,
     "The numerator "+(p*p)+" is "+p+" squared, and the denominator "+(q*q)+" is "+q+" squared. \\[ \\sqrt{"+FR(p*p,q*q)+"} = "+FR(p,q)+" \\] The square root is <b>\\("+FR(p,q)+"\\)</b>.",
     {mode:"fraction", p:p, q:q});
+  qq.figure = solSquare((p*p)+"/"+(q*q), "?", "Square with labelled area and unknown side");
+  return qq;
 }, ["Think of the number that multiplies by itself to give the value under the root sign.", "Work through small squares in order until one of them lands exactly on the number shown."]);
 
 E("u2-square-from-root", 2, ["6.11"], 1, "gen", function(){
@@ -654,26 +672,32 @@ E("u2-square-from-root", 2, ["6.11"], 1, "gen", function(){
     var r=ri(2,30); var n=r*r;
     var ds=u2d3(n,[2*r,n+1,n-1,n+r,n+10,3*r]);
     var opts=ds.map(function(d){return {t:String(d), fb:"That value does not come from squaring "+r+": try "+r+" times "+r+"."};});
-    return mcq("A positive number has square root "+r+". What is the number?", {t:String(n), fb:"Yes: squaring the root gives back the number."}, opts,
+    var q = mcq("A positive number has square root "+r+". What is the number?", {t:String(n), fb:"Yes: squaring the root gives back the number."}, opts,
       "Squaring undoes a square root: \\[ "+r+"^{2} = "+r+" \\times "+r+" = "+n+" \\] The number is <b>"+n+"</b>.",
       {mode:"whole", r:r});
+    q.figure = solSquare("?", String(r), "Square with labelled side and unknown area");
+    return q;
   }
   if(mode==="decimal"){
     var k=ri(2,30); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
     var dc=u2d3(nd,[u2r2(2*rd),u2r2((rd+1)*(rd+1)),u2r2(nd+1),u2r2(nd+0.1),u2r2(nd+2)]);
     var dopts=fmtPairDs(fmt(nd), dc.map(function(d){return {v:d, fb:"That is not "+fmt(rd)+" times "+fmt(rd)+": square the root itself."};}));
-    return mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" squared equals "+fmt(nd)+"."}, dopts,
+    var q = mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" squared equals "+fmt(nd)+"."}, dopts,
       "Squaring undoes a square root: \\[ "+fmt(rd)+"^{2} = "+fmt(rd)+" \\times "+fmt(rd)+" = "+fmt(nd)+" \\] The number is <b>"+fmt(nd)+"</b>.",
       {mode:"decimal", r:rd});
+    q.figure = solSquare("?", fmt(rd), "Square with labelled side and unknown area");
+    return q;
   }
   var p=ri(2,9); var q=ri(3,11); var g=0;
   while(u2gcd(p,q)!==1&&g<40){p=ri(2,9);q=ri(3,11);g++;}
   var fopts=[{t:"\\("+FR(p*p,q)+"\\)", fb:"Only the top was squared: the bottom must be squared too."},
              {t:"\\("+FR(p,q*q)+"\\)", fb:"Only the bottom was squared: the top must be squared too."},
              {t:"\\("+FR(p*p,q*q+q)+"\\)", fb:"Square the bottom part itself: do not add it to itself."}];
-  return mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:"\\("+FR(p*p,q*q)+"\\)", fb:"Yes: square the top and the bottom separately."}, fopts,
+  var qq = mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:"\\("+FR(p*p,q*q)+"\\)", fb:"Yes: square the top and the bottom separately."}, fopts,
     "Square the top and the bottom: \\[ \\left("+FR(p,q)+"\\right)^{2} = "+FR(p*p,q*q)+" \\] The number is <b>\\("+FR(p*p,q*q)+"\\)</b>.",
     {mode:"fraction", p:p, q:q});
+  qq.figure = solSquare("?", p+"/"+q, "Square with labelled side and unknown area");
+  return qq;
 }, ["Squaring and square roots undo each other, so square the given root.", "Multiply the root by itself, squaring the top and bottom separately for a fraction."]);
 
 E("u2-identify-square", 2, ["3.3"], 1, "gen", function(){
@@ -951,10 +975,12 @@ E("u2-best-estimate-side", 2, ["6.5","6.8"], 3, "gen", function(){
   var opts=vals.slice(0,1).concat(vals.slice(2)).map(function(v){
     return {t:fmt(v), fb:"Square it: "+fmt(v)+" squared is "+fmt(u2r2(v*v))+", not the closest square to "+fmt(A)+"."};
   });
-  return mcq(ctx+" has an area of "+fmt(A)+" square metres. What is the best estimate for its side length, in metres?",
+  var q = mcq(ctx+" has an area of "+fmt(A)+" square metres. What is the best estimate for its side length, in metres?",
     {t:fmt(best), fb:"Yes: "+fmt(best)+" squared is "+fmt(u2r2(best*best))+", closest to "+fmt(A)+"."}, opts,
     "The side length is \\(\\sqrt{"+fmt(A)+"}\\). Since \\("+fmt(best)+"^{2} = "+fmt(u2r2(best*best))+"\\), the square closest to "+fmt(A)+", the best estimate is <b>"+fmt(best)+" m</b>.",
     {mode:"best-estimate", A:A});
+  q.figure = solSquare(fmt(A)+" m²", "?", "Square with labelled area and unknown side");
+  return q;
 }, ["The side length is the square root of the area, so estimate that root.", "Square each nearby one-decimal value and find which square lands closest to the area."]);
 
 E("u2-reasoning-var", 2, ["3.3","6.10"], 3, "var", varset([
@@ -2058,16 +2084,20 @@ E("u2-sqrt-fraction", 2, ["6.9"], 1, "gen", function(){
     ];
     var opts=[], seen={};
     for(var i=0;i<cands.length&&opts.length<3;i++){if(cands[i].t!==correct&&!seen[cands[i].t]){seen[cands[i].t]=1;opts.push(cands[i]);}}
-    return mcq("What is \\(\\sqrt{"+FR(a*a,b*b)+"}\\)? Give the exact value.", {t:correct, fb:"Yes: "+a+" squared is "+(a*a)+" and "+b+" squared is "+(b*b)+"."}, opts,
+    var q = mcq("What is \\(\\sqrt{"+FR(a*a,b*b)+"}\\)? Give the exact value.", {t:correct, fb:"Yes: "+a+" squared is "+(a*a)+" and "+b+" squared is "+(b*b)+"."}, opts,
       "Root the top and the bottom separately: \\[ \\begin{aligned} \\sqrt{"+FR(a*a,b*b)+"} &= "+FR(a,b)+" \\end{aligned} \\] The square root is <b>\\("+FR(a,b)+"\\)</b>.",
       {mode:"fraction", a:a, b:b});
+    q.figure = solSquare((a*a)+"/"+(b*b), "?", "Square with labelled area and unknown side");
+    return q;
   }
   var k=ri(3,39); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
   var dc=u2d3(rd,[u2r1(rd+0.1),u2r1(rd-0.1),u2r1(rd*2),u2r1(rd+0.2),u2r1(rd/2),u2r1(rd+1)]);
   var dopts=fmtPairDs(fmt(rd), dc.map(function(d){return {v:d, fb:fmt(d)+" squared is "+fmt(u2r2(d*d))+", not "+fmt(nd)+": try another tenth."};}));
-  return mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)? Give the exact value.", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
+  var q = mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)? Give the exact value.", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
     "Find the decimal that multiplies by itself to give "+fmt(nd)+": \\[ \\begin{aligned} "+fmt(rd)+" \\times "+fmt(rd)+" &= "+fmt(nd)+" \\\\ \\sqrt{"+fmt(nd)+"} &= "+fmt(rd)+" \\end{aligned} \\] The square root is <b>"+fmt(rd)+"</b>.",
     {mode:"decimal", n:nd});
+  q.figure = solSquare(fmt(nd), "?", "Square with labelled area and unknown side");
+  return q;
 }, ["For a fraction, root the top and the bottom separately; for a decimal, hunt among the tenths.", "Ask which number, multiplied by itself, gives exactly the value under the root sign."]);
 
 E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
@@ -2084,9 +2114,11 @@ E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
     ];
     var opts=[], seen={};
     for(var i=0;i<cands.length&&opts.length<3;i++){if(cands[i].t!==correct&&!seen[cands[i].t]){seen[cands[i].t]=1;opts.push(cands[i]);}}
-    return mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:correct, fb:"Yes: square the top and the bottom separately."}, opts,
+    var qq = mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:correct, fb:"Yes: square the top and the bottom separately."}, opts,
       "Squaring undoes a square root, and both parts are squared: \\[ \\begin{aligned} \\left("+FR(p,q)+"\\right)^{2} &= "+FR(p,q)+" \\times "+FR(p,q)+" \\\\ &= "+FR(p*p,q*q)+" \\end{aligned} \\] The number is <b>\\("+FR(p*p,q*q)+"\\)</b>.",
       {mode:"fraction", p:p, q:q});
+    qq.figure = solSquare("?", p+"/"+q, "Square with labelled side and unknown area");
+    return qq;
   }
   var k=ri(4,29); var g2=0;
   while(k%10===0&&g2<40){k=ri(4,29);g2++;}
@@ -2101,9 +2133,11 @@ E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
   var dopts=[], seen2={};
   for(var j=0;j<cands2.length&&dopts.length<3;j++){var v=cands2[j].v; if(v!==nd&&v>0&&!seen2[v]){seen2[v]=1;dopts.push({v:v, fb:cands2[j].fb});}}
   dopts=fmtPairDs(fmt(nd), dopts);
-  return mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
+  var q = mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
     "Squaring undoes a square root: \\[ \\begin{aligned} "+fmt(rd)+"^{2} &= "+fmt(rd)+" \\times "+fmt(rd)+" \\\\ &= "+fmt(nd)+" \\end{aligned} \\] The number is <b>"+fmt(nd)+"</b>.",
     {mode:"decimal", r:rd});
+  q.figure = solSquare("?", fmt(rd), "Square with labelled side and unknown area");
+  return q;
 }, ["Squaring and square roots undo each other, so square the given root.", "Multiply the root by itself, squaring the top and bottom separately for a fraction."]);
 
 E("u2-calc-root-round", 2, ["6.6"], 1, "gen", function(){
