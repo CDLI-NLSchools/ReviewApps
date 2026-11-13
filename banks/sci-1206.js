@@ -346,19 +346,19 @@ E("sci-u1-specific-heat", 1, ["SC10.6.1"], 2, "var", varset([
   function () {
     return mcq("Two towns sit at the same latitude. Town A is on the coast and Town B is 300 km inland. In January, Town A's average temperature is -2 °C and Town B's is -14 °C. The best explanation is that",
       "the ocean stores summer heat and releases it through the fall and winter, keeping the coast milder",
-      ["the coast receives more direct sunlight in winter than the interior", "ocean water freezes and gives off heat all winter long", "winds blow only from the ocean toward Town A"],
+      ["the coast receives more direct sunlight in winter than the interior because its skies stay clearer", "ocean water freezes along the shore and gives off heat to the air above it steadily all winter long", "winds blow only from the ocean toward Town A and never carry cold continental air across the coastal town at all"],
       "At the same latitude both towns receive the same sunlight. The difference is storage: the ocean absorbed heat all summer and releases it slowly, so the coastal town stays milder. The inland town, surrounded by land that cools quickly, gets much colder.", {});
   },
   function () {
     return mcq("On a summer afternoon, the sand at a beach is too hot to walk on while the ocean water beside it is still cool. This happens because",
       "land has a lower specific heat capacity than water, so the sand's temperature rises faster",
-      ["the Sun shines more strongly on sand than on water", "the water reflects all of the Sun's energy", "the sand absorbs heat and the water does not"],
+      ["the Sun shines more strongly on the sand than on the water beside it through the whole afternoon", "the water reflects all of the Sun's energy back to the sky, so none of it warms the surface", "the sand absorbs heat from sunlight while the water absorbs none of the energy reaching it"],
       "Both surfaces receive the same sunlight. Sand (land) heats quickly because it takes little energy to raise its temperature; water needs much more energy for the same rise, so it stays cool. Both absorb energy: the difference is how much their temperatures change.", {});
   },
   function () {
     return mcq("A coastal city and an inland city have the same summer daytime high of 24 °C. At midnight the coastal city is at 19 °C and the inland city is at 11 °C. The coastal city cools less overnight because",
       "the nearby ocean releases stored heat, slowing the cooling of the air above the coast",
-      ["the ocean produces heat during the night", "clouds never form over coastal cities", "the land near the coast cannot lose heat"],
+      ["the ocean produces its own heat during the night through currents under the surface", "clouds never form over coastal cities at night, so warm air stays over the coast", "the land near the coast cannot lose any heat at night because its soil traps it"],
       "The ocean stored heat during the day (and the season) and gives it back slowly at night, so coastal air cools less. Land stores little heat, so the inland city radiates its heat away and cools quickly.", {});
   },
   function () {
@@ -373,13 +373,13 @@ E("sci-u1-heatsink-app", 1, ["SC10.6.1"], 2, "var", varset([
   function () {
     return mcq("St. John's often has its warmest weather in late August and September, weeks after the longest day. The main reason is that",
       "the Atlantic Ocean takes all summer to warm up and keeps releasing heat into the fall",
-      ["Earth is closest to the Sun in September", "the Labrador Current stops flowing in the fall", "daylight lasts longer in September than in June"],
+      ["Earth is closest to the Sun in September, so sunlight reaching the island is strongest then", "the Labrador Current stops flowing in the fall, so cold water no longer reaches the coast", "daylight lasts longer in September than in June, so the ground gets more heating each day"],
       "The ocean is a slow heat store. It lags the seasons: still cold in spring, still warm in early fall. Day length peaks in June, so sunlight alone cannot explain a September warm peak.", {});
   },
   function () {
     return mcq("Gardeners near a large lake can often grow plants that would be killed by early frost a short distance inland. The lake helps because it",
       "releases stored heat at night and in the fall, keeping nearby air a few degrees warmer",
-      ["reflects extra sunlight onto the plants in the evening", "stops frost from forming anywhere in the region", "raises the altitude of the shoreline"],
+      ["reflects extra sunlight onto the plants in the evening, warming the beds after sunset", "stops frost from forming anywhere in the whole region, including fields far inland", "raises the altitude of the shoreline so gardens sit above the cold air settling inland"],
       "The lake's stored heat leaks back into the air during cool nights, delaying the first frost near shore. The effect is a few degrees and local; it does not prevent frost across the whole region.", {});
   },
   function () {
@@ -415,19 +415,19 @@ E("sci-u1-albedo-effect", 1, ["SC10.6.1"], 2, "var", varset([
   function () {
     return mcq("As Arctic sea ice melts, more dark ocean water is exposed. This speeds up further warming because the exposed water",
       "has a lower albedo than the ice, so it absorbs more sunlight and warms, melting still more ice",
-      ["has a higher albedo than the ice, so it reflects more sunlight", "blocks sunlight from reaching the remaining ice", "cools the air, which then freezes more water elsewhere"],
+      ["has a higher albedo than the ice, so it reflects more sunlight back to space and cools the surface below", "blocks sunlight from reaching the remaining ice, so the ice underneath stays shaded and melts more slowly", "cools the air above it, which then freezes more water elsewhere and slows the overall loss of sea ice"],
       "This is the ice-albedo feedback: ice reflects, water absorbs. Losing ice replaces a reflector with an absorber, adding heat, which melts more ice. The loop reinforces itself.", {});
   },
   function () {
     return mcq("Two fields side by side receive equal sunlight. One is bare dark soil and the other is covered with light-coloured straw mulch. After several hours, the air just above the soil field is warmer mainly because the soil",
       "absorbed more sunlight due to its lower albedo and heated the air in contact with it",
-      ["reflected more sunlight into the air above it", "stored heat from the previous night", "blocked the wind from cooling it"],
+      ["reflected more sunlight into the air above it, warming that air as the light passed up", "stored heat from the previous night deep below its surface and released it all day", "blocked the wind from cooling it, so warm air stayed trapped above the soil all afternoon"],
       "Dark soil absorbs more sunlight (lower albedo), becomes hotter, and heats the air touching it by conduction and then convection. Reflected sunlight mostly passes back through the air without warming it directly.", {});
   },
   function () {
     return mcq("A town paints its flat rooftops white. The most likely local effect on a sunny summer day is",
       "slightly cooler air temperatures in the town, because less solar energy is absorbed by the roofs",
-      ["warmer air temperatures, because white surfaces store more heat", "no change, because albedo does not affect temperature", "more rainfall, because reflected sunlight seeds clouds"],
+      ["warmer air temperatures in the town, because white surfaces store more heat during the day than dark ones do", "no change in the town, because albedo does not affect the temperature of a surface or the air above it at all", "more rainfall over the town, because the reflected sunlight seeds clouds in the moist air passing overhead"],
       "Raising the albedo of the roofs means more sunlight is reflected and less is absorbed as heat, so the surfaces and the air above them stay a little cooler. Albedo does affect temperature: that is the point of the change.", {});
   }
 ]), ["Follow the energy: does the surface reflect it away or absorb it as heat? Then ask what that does next."]);
@@ -493,13 +493,13 @@ E("sci-u1-watercycle", 1, ["SC10.6.2"], 2, "var", varset([
   function () {
     return mcq("Inside a rising cloud, water vapour condenses into droplets. Condensation affects the air in the cloud by",
       "releasing the energy that was stored during evaporation, warming the air and helping it keep rising",
-      ["absorbing energy from the air, which makes the cloud sink", "having no effect, because changes of state involve no energy", "cooling the air, which is why clouds are cold on top"],
+      ["absorbing energy from the air around it, which cools the cloud and makes the whole cloud sink toward the ground", "having no effect on the air at all, because changes of state involve no energy moving in either direction", "cooling the air inside it steadily, which is why clouds are always colder at the top than at their base level"],
       "Condensation is evaporation in reverse: the stored latent energy is released as heat into the cloud air. That extra warmth is a real engine inside storms, making the air more buoyant.", {});
   },
   function () {
     return mcq("Which step of the water cycle moves the largest amount of energy from the ocean into the atmosphere?",
       "Evaporation from the ocean surface, with the energy released later when the vapour condenses",
-      ["Rain falling back into the ocean", "Rivers flowing from land to the sea", "Ocean currents flowing poleward"],
+      ["Rain falling back into the ocean, returning water and its energy directly to the surface it fell from", "Rivers flowing from land to the sea, carrying water downhill from the continents into the ocean", "Ocean currents flowing poleward, carrying warm surface water from the tropics toward the higher latitudes"],
       "Evaporation loads water vapour with latent energy drawn from the ocean; condensation in clouds releases it into the atmosphere. Rain and rivers move water, and currents move heat within the ocean, but the evaporation-condensation pair is the big ocean-to-air transfer.", {});
   },
   function () {
@@ -535,7 +535,7 @@ E("sci-u1-conduction-materials", 1, ["SC10.6.2"], 2, "var", varset([
   function () {
     return mcq("A metal rod and a wooden rod of the same size have one end each placed in hot water. After a minute the far end of the metal rod is warm but the wooden rod's far end is not. The difference is that",
       "metal's particles pass on vibrations (and its free electrons carry energy) far more effectively than wood's",
-      ["metal absorbs more heat from the water because it is heavier", "wood reflects the heat back into the water", "the water heats metal by convection but wood by conduction"],
+      ["metal absorbs more heat from the water because it is heavier, and heavier materials take in heat faster", "wood reflects the heat from the hot water back into the pot before any of it can travel along the length of the rod", "the water heats the metal rod by convection currents in the pot but heats the wooden rod by conduction alone at its end"],
       "Both rods are heated by conduction at the hot end. Metals conduct well because their structure passes energy along efficiently; wood's structure does not. The method is the same; the rate differs.", {});
   },
   function () {
@@ -547,7 +547,7 @@ E("sci-u1-conduction-materials", 1, ["SC10.6.2"], 2, "var", varset([
   function () {
     return mcq("Double-glazed windows have a narrow gap of air or argon gas between the panes. The gap reduces heat loss because the gas",
       "conducts poorly and the narrow gap is too small for convection currents to form",
-      ["absorbs the heat and stores it until night", "reflects all infrared radiation back into the room", "creates a vacuum that blocks radiation"],
+      ["absorbs the heat passing through it and stores that heat in the gap until night", "reflects all infrared radiation back into the room before any heat escapes", "creates a complete vacuum between the panes, and that vacuum blocks radiation"],
       "The gas layer attacks conduction (gas conducts poorly) and convection (the gap is too narrow for currents). Radiation losses are handled by coatings, not by the gas itself, and the gap is not a vacuum.", {});
   }
 ]), ["Do not just name the method: think about how fast each material moves heat, and why."]);
@@ -600,19 +600,19 @@ E("sci-u1-currents-cause", 1, ["SC10.6.3"], 1, "var", varset([
   function () {
     return mcq("Surface ocean currents are driven mainly by",
       "the prevailing winds dragging on the water surface, deflected by the Coriolis effect and blocked by continents",
-      ["the Moon's gravity alone", "differences in the salt content of the water only", "heat conducted up from Earth's core"],
+      ["the Moon's gravity alone, pulling the surface water around the ocean basins in the same way it pulls the daily tides around", "differences in the salt content of the water only, with saltier water sinking and pulling the surface flow along", "heat conducted up from Earth's core through the ocean floor, warming the bottom water so it rises and drags the surface along"],
       "Wind friction starts surface water moving; Coriolis bends the flow and continents redirect it into the great gyres. The Moon drives tides, and deep circulation involves density, but surface currents are wind-driven.", {});
   },
   function () {
     return mcq("Warm surface currents generally flow",
       "from the equator toward the poles along the eastern sides of ocean basins (western sides of oceans carry them poleward), carrying heat with them",
-      ["from the poles toward the equator on both sides of every ocean", "in straight lines from east to west everywhere", "only in the Southern Hemisphere"],
+      ["from the poles toward the equator on both sides of every ocean basin, carrying cold water into the tropics and cooling the coasts they pass along the way", "in straight lines from east to west everywhere on Earth, following the rotation of the planet without bending or splitting around any of the continents", "only in the Southern Hemisphere, where the large open oceans let warm water circle the globe without meeting land, while northern oceans stay cold all year"],
       "Currents redistribute the heat the tropics absorb: warm water moves poleward and cold water returns equatorward. The Gulf Stream carrying warm water past the Atlantic provinces is the local example.", {});
   },
   function () {
     return mcq("The water in a current keeps moving in a curve even after the wind pattern changes, partly because of inertia, but the large-scale curving of ocean gyres is set by",
       "the Coriolis effect and the shape of the continents",
-      ["the saltiness of the water", "the depth of the ocean floor", "the pull of the Sun's gravity"],
+      ["the saltiness of the water in parts of the ocean basin", "the depth of the ocean floor below the surface water", "the pull of the Sun's gravity on the surface water"],
       "Gyres are the product of wind drive plus Coriolis deflection plus continents blocking the flow. Salinity matters for deep density currents, not for the surface gyre pattern.", {});
   }
 ]), ["Surface currents start with wind. Then ask what bends them and what blocks them."]);
@@ -648,19 +648,19 @@ E("sci-u1-labrador-current", 1, ["SC10.6.3"], 2, "var", varset([
   function () {
     return mcq("The Labrador Current flows southward along the Labrador coast and past the island of Newfoundland. Its effect on coastal weather is to bring",
       "cold water and cold air, giving cool summers, sea ice and icebergs, and frequent fog where it meets warm moist air",
-      ["warm water that makes the coast warmer than inland areas in winter", "dry desert-like conditions to the coast", "hurricanes toward the province every summer"],
+      ["warm water and warm air, making the coast warmer than inland areas in winter across the island", "dry, desert-like conditions to the coast, because cold water stops rain clouds forming along the shore", "hurricanes toward the province every summer, because cold water steers tropical storms north to the coast"],
       "The Labrador Current is a cold current: it chills the air above it, keeps summers cool, carries icebergs south, and where its cold air undercuts warm moist air from the Gulf Stream region, fog forms. It is a major reason the province's east coast is cooler than places at the same latitude in Europe.", {});
   },
   function () {
     return mcq("Western Europe at the same latitude as Labrador has much milder winters. A major reason is that Europe is warmed by",
       "the warm North Atlantic Drift (an extension of the Gulf Stream) flowing past its coasts",
-      ["the Labrador Current flowing toward Europe", "hot winds blowing off the Sahara in winter", "heat conducted through the Atlantic Ocean floor"],
+      ["the Labrador Current flowing across the Atlantic toward Europe and warming its coasts", "hot winds blowing off the Sahara Desert in winter, warming all of western Europe", "heat conducted through the Atlantic Ocean floor from warm rocks below the seabed"],
       "Warm currents carry tropical heat to Europe's coasts while cold currents carry Arctic water past Labrador. Same latitude, opposite currents, opposite climates: currents move heat, and coasts feel it.", {});
   },
   function () {
     return mcq("Grand Banks fog forms most often when",
       "warm, moist air from over the Gulf Stream moves over the cold water of the Labrador Current and is chilled to its dewpoint",
-      ["cold dry air moves over warm water in winter", "the Labrador Current stops flowing", "high pressure pushes the fog out to sea"],
+      ["cold, dry air moves over warm water in winter and picks up vapour that condenses at once into a thick bank of fog over the harbour", "the Labrador Current stops flowing for several weeks, leaving still cold water that chills any air crossing the Grand Banks area", "high pressure builds over the island and pushes a layer of fog out to sea, where it stays parked over the Banks for days at a time"],
       "Air chilled from below reaches its dewpoint and the moisture condenses into fog. The meeting of the warm Gulf Stream air and the cold Labrador Current water is one of the foggiest combinations on Earth.", {});
   }
 ]), ["The local example matters here: one cold current, and everything it explains about this province's weather."]);
@@ -711,7 +711,7 @@ E("sci-u1-current-effects", 1, ["SC10.6.3"], 3, "var", varset([
   function () {
     return mcq("Suppose the warm Gulf Stream shifted so that it flowed closer to the Nova Scotia and Newfoundland coasts. The most likely change to coastal winters would be",
       "milder temperatures and more moisture available for snow and rain, because the warm current heats and moistens the air above it",
-      ["colder temperatures, because a warm current pushes cold air ahead of it", "no change, because currents do not affect the air above them", "much drier winters, because warm water absorbs moisture from the air"],
+      ["colder temperatures along the coast, because a warm current pushes a band of cold air ahead of it as it moves northward past the shore", "no change to coastal winters at all, because ocean currents do not affect the air above them in any season or at any latitude on Earth", "much drier winters along the coast, because warm ocean water absorbs moisture out of the air above it instead of adding vapour to it"],
       "Currents move heat, and the air takes on the character of the water it crosses. Warm water near the coast would warm and moisten the air, softening winter cold and feeding precipitation. The province's present climate is shaped the same way by the cold Labrador Current.", {});
   },
   function () {
@@ -723,7 +723,7 @@ E("sci-u1-current-effects", 1, ["SC10.6.3"], 3, "var", varset([
   function () {
     return mcq("Peru's coast is unusually cold and dry for its latitude because a cold current flows along it. The cold current produces this climate mainly by",
       "chilling the air above it so the air holds little moisture and sinks rather than rising to form rain",
-      ["blocking warm winds from ever reaching the coast", "reflecting sunlight back into space from the water surface", "pulling all of the region's rain clouds out to sea"],
+      ["blocking warm winds from ever reaching the coast, because cold water turns onshore breezes back to sea", "reflecting sunlight back into space from the water surface, so the coast gets far less solar heating", "pulling all of the region's rain clouds out to sea, where storms release their rain over the ocean"],
       "Cold water cools the air in contact with it; cool air holds less moisture and tends to sink, suppressing rain. It is the same mechanism, with the sign reversed, as warm currents moistening and warming the coasts they pass.", {});
   }
 ]), ["A current is a heat delivery system. Ask what the water does to the air above it, then what that air does to the coast."]);
@@ -746,13 +746,13 @@ E("sci-u1-airmass-id", 1, ["SC10.6.4"], 1, "var", varset([
   function () {
     return mcq("Which air mass is most likely to bring a July heat wave with high humidity to the island of Newfoundland?",
       "Maritime Tropical (mT) air moving up from the warm Atlantic and the Gulf Stream region",
-      ["Continental Arctic (cA) air from the far north", "Continental Polar (cP) air from the Prairies", "Maritime Arctic air from the Labrador Sea"],
+      ["Continental Arctic (cA) air from the far north, bringing cold, dry winter conditions south", "Continental Polar (cP) air from the Prairies, bringing cool, dry conditions to the island", "Maritime Arctic air from the Labrador Sea, bringing chilled ocean air south along the coast"],
       "July heat with humidity needs a warm, moist source: the tropical Atlantic. The polar and arctic air masses are cold, and continental polar air is dry as well as cool.", {});
   },
   function () {
     return mcq("An air mass takes on the temperature and moisture characteristics of",
       "the surface it sits over for several days (its source region)",
-      ["the last front it crossed", "the altitude at which it formed", "the season in which it is named"],
+      ["the last front it crossed on its way into the region days earlier", "the altitude at which it formed high above the surface of the Earth", "the season in which it is named, no matter which surface it came from"],
       "Air masses are made by contact: days spent over cold ocean make air cold and moist; days over hot desert make it hot and dry. That is why the classification names the source: surface first, temperature second.", {});
   }
 ]), ["Decode the two letters: surface (c or m) sets moisture, temperature (A, P or T) sets warmth."]);
@@ -767,13 +767,13 @@ E("sci-u1-airmass-source", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("After several days of warm, humid weather, a town's air becomes noticeably drier and cooler without any rain. The most likely cause is",
       "a continental Polar air mass replacing the maritime Tropical air mass over the town",
-      ["the maritime Tropical air mass losing moisture to the Sun", "a front forming inside the air mass", "the town's altitude increasing"],
+      ["the maritime Tropical air mass losing its moisture to the Sun, drying and cooling in place", "a front forming inside the air mass, splitting it into warm and cool, dry parts", "the town's altitude increasing slowly, lifting it into cooler and drier air above the valley"],
       "Air mass weather changes when one air mass replaces another. Cool and dry replacing warm and moist is the signature of continental Polar air (from the northern land interior) displacing maritime Tropical air.", {});
   },
   function () {
     return mcq("Why does maritime Polar air bring cool, cloudy, showery weather to the province in spring?",
       "It forms over cold North Pacific and North Atlantic water, so it arrives cool and loaded with moisture picked up from the ocean",
-      ["It forms over the Arctic ice cap and picks up moisture crossing the Prairies", "It is heated from below by the warm ocean floor", "It only travels at night, when temperatures fall"],
+      ["It forms over the Arctic ice cap, then picks up moisture while crossing the Prairies on its long route to the Atlantic coast", "It is heated from below by the warm ocean floor, so it arrives warm and unstable, ready to produce heavy downpours each day", "It only travels at night, when temperatures fall, so it reaches the province cooled and filled with fog gathered over the water"],
       "Maritime means the moisture comes with it from its ocean source, and polar means cold water, so cool air. Cool moist air lifted over the coast gives cloud and showers: classic spring weather on the island.", {});
   }
 ]), ["Use the two properties separately: temperature points to the latitude of the source, moisture points to land or water."]);
@@ -796,25 +796,25 @@ E("sci-u1-front-weather", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("A cold front is usually associated with",
       "a narrow band of heavy showers or thunderstorms, followed by clearing and cooler air",
-      ["days of gentle, steady rain over a wide area", "fog and drizzle that last for a week", "no change in weather at all"],
+      ["days of gentle, steady rain over a wide area, with mild temperatures behind it for a week", "fog and drizzle that last for a week, with calm winds and little temperature change", "no change in weather at all, because a cold front affects only pressure readings"],
       "A cold front lifts warm air abruptly along a steep boundary, producing a narrow, intense band of precipitation. Once it passes, cooler, drier air and clearing skies follow. Long, gentle, wide-area rain belongs to warm fronts.", {});
   },
   function () {
     return mcq("As a warm front approaches a town, the usual sequence is",
       "high thin clouds thickening into a wide shield of steady rain, then warmer air arriving as the front passes",
-      ["a sudden thunderstorm, then an immediate drop in temperature", "clear skies until the front arrives, then heavy snow", "fog that lifts the moment the front passes into colder air"],
+      ["a sudden thunderstorm along a narrow line, followed at once by a drop in temperature and clearing skies", "clear skies until the front arrives, then heavy snow beginning suddenly with no cloud ahead of it", "fog that forms ahead of the front and lifts the moment it passes, leaving colder, drier air behind"],
       "Warm air slides gradually up over the cool air ahead of a warm front, so clouds build and thicken over a wide area well before the surface front arrives, giving steady precipitation, and temperatures rise after passage.", {});
   },
   function () {
     return mcq("Which pairing of front and precipitation pattern is correct?",
       "Warm front: steady rain over a large area for many hours. Cold front: brief, heavy showers in a narrow band.",
-      ["Warm front: brief, heavy showers. Cold front: steady rain over a large area.", "Both fronts: identical precipitation patterns.", "Warm front: no precipitation. Cold front: steady rain for days."],
+      ["Warm front: brief, heavy showers in a narrow band. Cold front: steady rain over a large area for many hours at a time.", "Both fronts: identical precipitation patterns, with the same width, intensity and duration of rain.", "Warm front: no precipitation at all in any season. Cold front: steady rain for days over the whole region behind the line."],
       "The slope of the boundary sets the pattern: the warm front's gentle slope spreads lifting (and rain) over hundreds of kilometres, while the cold front's steep slope concentrates it in a narrow, intense band.", {});
   },
   function () {
     return mcq("A stationary front has stalled over a region for two days. The most likely weather there is",
       "prolonged cloud and repeated periods of rain along the boundary, with little temperature change",
-      ["rapid clearing and warming", "a single short thunderstorm and then sunshine", "steadily falling temperatures for the whole period"],
+      ["rapid clearing and warming, as the stalled boundary breaks up and dry air floods in", "a single short thunderstorm as the front stalls, then sunshine and warming air", "steadily falling temperatures, as cold air slowly wins and pushes the boundary south"],
       "Neither air mass is winning, so the boundary and its lifting zone sit in place. The result is persistent cloud and on-and-off rain with temperatures stuck on each side of the line.", {});
   }
 ]), ["Picture the boundary's slope: steep (cold front) means narrow and intense; gentle (warm front) means wide and steady."]);
@@ -829,13 +829,13 @@ E("sci-u1-front-passage", 1, ["SC10.6.4"], 3, "var", varset([
   function () {
     return mcq("Ahead of an approaching cold front, a town's pressure is falling and its temperature is warm. A forecaster wants to warn residents about the wind change at frontal passage. The warning should say the winds will shift to blow from the",
       "northwest, and strengthen briefly in gusts with the showers",
-      ["southeast, and die out completely", "south, and stay warm and gentle", "northeast, bringing warmer air"],
+      ["southeast, and die out completely once the front has passed by", "south, and stay warm and gentle for the rest of the day ahead", "northeast, bringing warmer and moister air in off the ocean"],
       "Winds ahead of the front blow from the south or southwest (warm sector). At passage they veer sharply to the northwest, the direction of the cold air behind the front, often with gusts in the shower band.", {});
   },
   function () {
     return mcq("Two neighbouring towns are on opposite sides of a cold front that is nearly stationary this morning. Town A reports 19 °C and humid; Town B, 60 km away, reports 7 °C and dry. Later the front surges southeast. By evening Town A should expect",
       "a sharp temperature drop into the range Town B reported, with a band of showers as the front crosses",
-      ["no change, because fronts do not affect towns ahead of them", "a gradual warming as the front approaches", "the same weather as Town B had, but without any precipitation"],
+      ["no change at all, because a cold front does not affect towns ahead of it before it crosses", "a gradual warming as the front approaches, with humid air deepening and no rain that day", "the same weather as Town B had, with the same cold, dry air, but without any precipitation"],
       "A front is a boundary between two air masses; crossing it swaps one air mass for the other. Town B's current weather is the preview of Town A's post-frontal weather, delivered with the front's rain band.", {});
   }
 ]), ["Read the instruments as a story in time order: before, during and after the boundary crosses the station."]);
@@ -850,7 +850,7 @@ E("sci-u1-pressure-systems", 1, ["SC10.6.4"], 1, "var", varset([
   function () {
     return mcq("High-pressure systems are usually associated with fair weather because the air in a high is",
       "sinking, which warms it slightly and prevents clouds from forming",
-      ["rising, which cools it and squeezes out moisture", "moving so fast that clouds cannot form", "always colder than the air around it"],
+      ["rising, which cools it and squeezes out moisture as cloud", "moving so fast across the region that clouds cannot form in it", "always colder than the air around it, which keeps the skies clear"],
       "Sinking air is compressed and warmed as it descends, so its relative humidity drops and clouds evaporate. Rising air (in a low) does the opposite: it cools, condenses and makes weather.", {});
   },
   function () {
@@ -862,7 +862,7 @@ E("sci-u1-pressure-systems", 1, ["SC10.6.4"], 1, "var", varset([
   function () {
     return mcq("A barometer at a coastal station reads 1041 hPa and has been steady for two days. The station is most likely under",
       "a high-pressure system, with settled, fair weather",
-      ["an intense low-pressure system", "a cold front at the moment of passage", "a hurricane"],
+      ["an intense low-pressure system bringing stormy weather", "a cold front passing at that moment, with shifting winds", "a hurricane centred just offshore, at its lowest pressure"],
       "1041 hPa is well above the average sea-level pressure of about 1013 hPa, and steady high pressure means sinking air and fair weather. Lows and fronts come with lower and changing pressure.", {});
   }
 ]), ["Lows: air rises, winds spiral in counterclockwise. Highs: air sinks, winds spiral out clockwise. Isobars are equal pressure."]);
@@ -871,7 +871,7 @@ E("sci-u1-isobars", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("Two weather maps show lows of the same central pressure. On Map 1 the isobars are drawn close together; on Map 2 they are far apart. The winds will be stronger on",
       "Map 1, because closely spaced isobars mean the pressure changes quickly over distance, which drives strong winds",
-      ["Map 2, because widely spaced isobars give the wind room to accelerate", "both maps equally, because the central pressures are the same", "Map 2, because weak pressure gradients always produce storms"],
+      ["Map 2, because widely spaced isobars give the wind room to accelerate over long distances between lines", "both maps equally, because the central pressures are the same and the centre value alone decides the winds", "Map 2, because weak pressure gradients always produce the strongest storms, while steep gradients keep winds light"],
       "Wind strength is set by the pressure gradient, the change in pressure over distance, not by the central value alone. Tight spacing equals a steep gradient equals strong wind. This is why forecasters look at spacing first.", {});
   },
   function () {
@@ -883,7 +883,7 @@ E("sci-u1-isobars", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("Sailors in the centre of a large high-pressure system often report frustrating conditions for sailing. The reason is that near a high's centre",
       "the isobars are widely spaced, the pressure gradient is weak, and winds are light and variable",
-      ["the pressure is so high it pushes the sails flat", "the air is too dense for a boat to move through", "the winds circle so fast the boat cannot steer"],
+      ["the pressure is so high it pushes the sails flat and stops the boat gathering speed", "the air near the centre is too dense for a boat to move through, so sails hang limp", "the winds circle so fast around the centre that the boat cannot hold a course in them"],
       "At the centre of a high the pressure barely changes from place to place, so there is almost no gradient to drive wind. The same weak-gradient logic explains calms in the doldrums and horse latitudes.", {});
   }
 ]), ["Forget the centre's number: spacing is the wind. Tight isobars, steep gradient, strong wind."]);
@@ -892,19 +892,19 @@ E("sci-u1-low-formation", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("Mid-latitude low-pressure systems (the storms that cross this province) typically develop",
       "along a front where cold polar air meets warm tropical air, with the boundary beginning to wave and wrap around a centre",
-      ["in the middle of a uniform air mass, for no boundary reason", "only over tropical oceans in summer", "where two high-pressure systems collide"],
+      ["in the middle of a uniform air mass, far from any boundary, with the pressure falling for no reason tied to contrast", "only over warm tropical oceans in summer, where hurricanes form, never along air mass boundaries at mid-latitudes", "where two high-pressure systems collide and squeeze the air between them down until a low forms at the surface"],
       "The energy for these storms comes from the contrast between air masses along a front. A wave forms on the boundary, pressure falls at the wave's crest, and the cold and warm fronts of the mature low develop from there. Hurricanes are the tropical exception, not the local rule.", {});
   },
   function () {
     return mcq("Why do so many of the province's storms arrive from the southwest and travel toward the northeast?",
       "The prevailing westerlies steer weather systems from west to east across the mid-latitudes, and the storm track follows the temperature contrast along the coast",
-      ["Storms are pulled northeast by the Labrador Current", "The Coriolis effect pushes every storm northeast regardless of other factors", "Storms form over the province and drift backward"],
+      ["Storms are pulled northeast by the Labrador Current, which drags the low-pressure centres along the coast in the same direction as the cold water flows past the island each season", "The Coriolis effect pushes every storm toward the northeast regardless of the winds around it, so each low follows the same curving path no matter where it first formed", "Storms form directly over the province and then drift backward toward the southwest, which is why forecasters watch the waters off Nova Scotia for the systems that arrive here"],
       "Systems are embedded in the westerly flow of the mid-latitudes, so they are carried west to east (here, southwest to northeast). The strong land-ocean temperature contrast along the east coast helps intensify them on the way.", {});
   },
   function () {
     return mcq("A low deepens (its central pressure falls) as it approaches the province. Deepening means the storm is",
       "intensifying: its pressure gradient steepens and its winds strengthen",
-      ["weakening and about to clear", "slowing down and becoming stationary", "changing into a high-pressure system"],
+      ["weakening steadily and about to clear, with lighter winds and breaking cloud", "slowing down and becoming stationary, with its winds dying out as it stalls", "changing into a high-pressure system, with sinking air and clearing skies"],
       "Falling central pressure against the surrounding pressure steepens the gradient, and a steeper gradient means faster winds and usually more precipitation. A filling low (rising central pressure) is the one that is weakening.", {});
   }
 ]), ["Storms here are born on boundaries between air masses and ride the westerlies. Contrast is the fuel."]);
@@ -913,19 +913,19 @@ E("sci-u1-extreme", 1, ["SC10.6.4"], 1, "var", varset([
   function () {
     return mcq("A hurricane gets its energy from",
       "the heat stored in warm tropical ocean water, released as water vapour condenses in the storm",
-      ["the cold Labrador Current", "friction with the land as it approaches the coast", "the collision of two cold fronts"],
+      ["the cold Labrador Current flowing south past the island, whose cold water feeds the storm", "friction with the land as it approaches the coast, which spins the storm up as it nears shore", "the collision of two cold fronts over the ocean, releasing energy stored along their boundaries"],
       "Hurricanes are heat engines run on warm water (generally above about 26.5 °C): evaporation loads the air with latent energy and condensation aloft releases it. Over land or cold water the fuel supply is cut and the storm weakens.", {});
   },
   function () {
     return mcq("Which conditions are required for a blizzard?",
       "Strong winds (at least 40 km/h), falling or blowing snow reducing visibility below about 400 m, lasting at least four hours (with dangerous cold in the Canadian definition)",
-      ["A temperature below -30 °C, with any amount of snow", "Snowfall of exactly 25 cm in one hour", "A low-pressure centre passing directly overhead"],
+      ["A temperature below -30 °C lasting a full day, with any amount of snow on the ground, even when the air is calm and visibility stays clear for kilometres in every direction", "Snowfall of exactly 25 cm within a single hour, measured at the station, no matter what the wind is doing or whether visibility in the falling snow stays good throughout", "A low-pressure centre passing directly overhead at the height of the storm, regardless of the wind speed, the visibility in blowing snow, or how long the conditions last"],
       "A blizzard is defined by wind and visibility in snow, not by a snowfall total: even old snow blown by strong wind can produce one (a ground blizzard). The temperature criterion applies in the Canadian Prairie definition; the wind and visibility criteria are the core everywhere.", {});
   },
   function () {
     return mcq("During a winter storm warning for the island, the safest interpretation of a forecast calling for a nor'easter is",
       "a strong low tracking northeastward along the coast, bringing heavy snow and powerful northeast winds to the island",
-      ["a gentle rain event with winds from the southwest", "a high-pressure system arriving from the northeast", "a thunderstorm moving in from the Labrador Sea"],
+      ["a gentle rain event with light southwest winds, bringing mild air and small amounts of rain", "a high-pressure system arriving from the northeast, bringing sinking air and clearing skies to the island", "a thunderstorm moving in from the Labrador Sea, bringing brief heavy rain and gusty winds for an hour or two"],
       "A nor'easter is named for its winds: a coastal low travelling up the seaboard drives strong northeasterlies into the province, usually with heavy snow. It is the classic major winter storm pattern here.", {});
   }
 ]), ["Extreme weather still runs on this unit's engines: stored ocean heat for hurricanes, wind plus snow for blizzards."]);
@@ -934,13 +934,13 @@ E("sci-u1-climate-factors", 1, ["SC10.6.4", "SC10.6.1"], 2, "var", varset([
   function () {
     return mcq("St. John's, Newfoundland (47.6 °N) has much colder winters than Lisbon, Portugal (38.7 °N) mainly because of latitude, but Vancouver (49.3 °N) is far milder than St. John's at nearly the same latitude. The Vancouver difference is mostly due to",
       "ocean currents and prevailing winds: Vancouver receives air that has crossed the warm Pacific, St. John's receives air from the cold Arctic and sits beside the cold Labrador Current",
-      ["Vancouver being much closer to the equator in practice", "St. John's higher altitude", "the tilt of Earth's axis changing over Canada"],
+      ["Vancouver being much closer to the equator in practice, because the curve of the continent places it far to the south of St. John's in sunlight terms even though the two latitudes look similar on a map", "altitude alone: St. John's sits high enough above sea level for its winter air to stay far colder than Vancouver's, while Vancouver rests in a deep, sheltered valley close to the water on the Pacific coast", "the tilt of Earth's axis changing over Canada through the winter, so the eastern half of the country tips away from the Sun while the western half keeps facing it for more hours each short winter day"],
       "Latitude sets the sunlight budget, but currents and wind direction deliver the heat. Pacific air and a warm current moderate Vancouver; Arctic air masses and a cold current chill St. John's. Altitude is a red herring here: St. John's is near sea level.", {});
   },
   function () {
     return mcq("A mountain town at 1500 m elevation is consistently about 9 °C colder than a town in the valley below it. This is the effect of",
       "altitude: temperature falls as elevation increases because the air is thinner and less able to hold heat",
-      ["latitude", "albedo of the valley floor", "distance from the ocean"],
+      ["latitude: the mountain town lies much farther from the equator than the valley town below it", "albedo of the valley floor: the bright valley surface reflects sunlight up and keeps slopes cold", "distance from the ocean: the mountain town is cut off from the sea, while the valley town is coastal"],
       "Temperature drops roughly 6 to 10 °C per kilometre of elevation. The two towns share latitude and region, so elevation is the factor that differs.", {});
   },
   function () {
@@ -952,7 +952,7 @@ E("sci-u1-climate-factors", 1, ["SC10.6.4", "SC10.6.1"], 2, "var", varset([
   function () {
     return mcq("A desert sits at 30 degrees south latitude on a continent's west coast, where a cold current flows and the horse-latitude high dominates. Its dryness is best explained by",
       "sinking air under the high (which suppresses cloud and rain) plus cold coastal water chilling and stabilizing the air",
-      ["its distance from the equator alone", "the rain shadow of the ocean", "the absence of any air masses over the region"],
+      ["its distance from the equator alone, because places at 30 degrees south receive too little sunlight to evaporate water and form clouds", "the rain shadow of the ocean, because the sea blocks moist air from the coast as a mountain range blocks it inland", "the absence of any air masses over the region, because no air moves into the horse latitudes from nearby oceans"],
       "The great deserts cluster near 30 degrees in both hemispheres where air sinks, and a cold current adds stability on the west coasts. Two of this unit's mechanisms stack to produce the desert.", {});
   }
 ]), ["Separate the controls: latitude, altitude, water, currents, winds. Then ask which one actually differs between the two places."]);
@@ -961,19 +961,19 @@ E("sci-u1-greenhouse", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("The natural greenhouse effect works because greenhouse gases in the atmosphere",
       "let sunlight pass through but absorb much of the infrared radiation Earth emits, sending some of it back toward the surface",
-      ["reflect sunlight back to space before it reaches the ground", "produce heat through chemical reactions in the air", "trap air so it cannot circulate to space"],
+      ["reflect incoming sunlight back to space before it reaches the ground, so the surface warms only from heat generated inside the Earth itself", "produce heat through chemical reactions in the air, releasing energy as the gases combine and break apart high above the surface of the Earth", "trap a layer of air against the surface so it cannot circulate to space, holding the day's warmth in place"],
       "Sunlight (mostly visible) passes through; Earth's outgoing infrared is absorbed by gases such as water vapour, carbon dioxide and methane, warming the lower atmosphere. Without the natural effect Earth would average about -18 °C instead of about +15 °C.", {});
   },
   function () {
     return mcq("The enhanced greenhouse effect refers to",
       "human activities increasing greenhouse gas concentrations, strengthening the natural effect and warming the planet",
-      ["the Sun becoming hotter over the last century", "greenhouses being used to grow food in winter", "a hole in the ozone layer letting heat in"],
+      ["the Sun becoming steadily hotter over the last century, sending more energy to Earth and warming every planet in the same way", "greenhouses being used to grow food in winter, whose glass roofs trap enough heat across the world to warm the whole planet", "a hole in the ozone layer letting extra heat into the atmosphere from space, warming the surface below it year after year"],
       "The enhanced effect is the natural mechanism plus extra gases (mainly carbon dioxide from burning fossil fuels, and methane). The ozone hole is a separate issue about ultraviolet radiation, and the Sun's output has not risen enough to explain the warming.", {});
   },
   function () {
     return mcq("Venus is far hotter than Earth mainly because its atmosphere",
       "is very thick and almost all carbon dioxide, producing an extreme greenhouse effect",
-      ["is closer to the Sun, which alone explains any temperature", "contains no clouds", "reflects no sunlight at all"],
+      ["is closer to the Sun than Earth is, which alone explains its whole temperature difference", "contains no clouds at all, so nothing reflects any sunlight away from its surface", "reflects no sunlight at all back to space, absorbing every ray that reaches its surface"],
       "Venus is closer to the Sun, but the runaway greenhouse effect of its massive carbon dioxide atmosphere is what pushes its surface to about 460 °C. It is the solar system's demonstration of the greenhouse mechanism at full strength.", {});
   }
 ]), ["Short wavelengths in, long wavelengths partly trapped. Natural effect keeps us livable; enhancement is the human addition."]);
@@ -1088,19 +1088,19 @@ E("sci-u1-pressure-tendency", 1, ["SC10.6.5"], 2, "var", varset([
   function () {
     return mcq("A barometer has fallen steadily by 8 hPa over the last 12 hours. The most likely weather development is",
       "an approaching low or front: expect increasing cloud, strengthening winds and precipitation to follow",
-      ["improving weather, as high pressure is building in", "no change, because pressure changes do not affect weather", "an earthquake warning for the region"],
+      ["improving weather with clearing skies, as high pressure is building in and pushing the clouds away from the region", "no change in the weather at all, because pressure changes do not affect cloud, wind or precipitation in any way", "an earthquake warning for the region, because a falling barometer is the signal used for ground movement"],
       "Falling pressure means a low or front is approaching or deepening. The faster and further it falls, the worse the coming weather tends to be. Rising pressure is the improving signal.", {});
   },
   function () {
     return mcq("After two days of rain, a station's pressure has risen 10 hPa in 24 hours and the wind has shifted northwest. The best short forecast is",
       "clearing skies and cooler air, with the fair weather likely to last a day or more",
-      ["heavier rain within the hour", "a warm front arriving by evening", "fog thickening overnight because of the pressure rise"],
+      ["heavier rain within the hour, as the departing low deepens again just off the coast nearby", "a warm front arriving by evening, with thickening cloud and steady rain following it", "fog thickening overnight because of the pressure rise, with calm, saturated air all night"],
       "Rising pressure plus a northwest shift is the post-frontal signature: the low has moved off and a high is building in behind it. Expect clearing and cooler, drier air.", {});
   },
   function () {
     return mcq("A pressure reading of 1013 hPa that has not changed in three days tells a forecaster",
       "less than the tendency does: the same value with a falling trend would mean approaching poor weather",
-      ["that fair weather is guaranteed for the week", "that a storm is exactly 24 hours away", "that the barometer must be broken"],
+      ["that fair weather is guaranteed for the whole week ahead, no matter what systems are approaching the region", "that a storm is exactly 24 hours away from the station, arriving on a fixed schedule set by that pressure value", "that the barometer must be broken, because a working instrument would never hold one reading for three days"],
       "The value alone is just near-average pressure. Forecasters read the tendency, the direction and rate of change: falling means trouble approaching, rising means improvement, steady means the current pattern persists.", {});
   }
 ]), ["The trend is the forecast: falling, trouble coming; rising, improvement; steady, more of the same."]);
@@ -1130,19 +1130,19 @@ E("sci-u1-humidity", 1, ["SC10.6.5"], 2, "var", varset([
   function () {
     return mcq("On a clear, calm night, grass becomes wet with dew even though no rain fell. This happens because",
       "the grass cools to the dewpoint of the air touching it, so water vapour condenses on it",
-      ["the grass produces water overnight", "water rises from the soil through the grass blades", "the air's pressure falls below the dewpoint"],
+      ["the grass produces water overnight and pushes it out through its leaves by morning", "water rises from the soil through the grass blades at night and collects on them", "the air's pressure falls below the dewpoint at night, forcing vapour onto the grass"],
       "Radiational cooling drops the grass to the dewpoint temperature; vapour in contact with it condenses into liquid droplets. Dew is condensation at the surface, not rain and not water from inside the plant.", {});
   },
   function () {
     return mcq("Two towns have the same temperature, 12 °C. Town A's dewpoint is 11 °C and Town B's is 3 °C. Which statement is correct?",
       "Town A's air is much closer to saturation, so fog or cloud forms far more easily there",
-      ["Town B's air holds more water vapour", "Both towns have identical relative humidity", "Town A must be raining at the moment"],
+      ["Town B's air holds more water vapour than Town A's, because a lower dewpoint means more vapour", "Both towns have identical relative humidity, because humidity depends only on temperature", "Town A must be raining at the moment, because air that close to saturation always rains"],
       "The temperature-dewpoint spread measures closeness to saturation: 1 degree at Town A versus 9 degrees at Town B. Town A's air needs only slight cooling to condense; Town B's air is dry. Near saturation does not guarantee rain, but it makes condensation easy.", {});
   },
   function () {
     return mcq("Relative humidity rises through a clear evening even though no moisture is added to the air. This is because",
       "the air cools toward its (unchanging) dewpoint, and cooler air reaches saturation with less vapour",
-      ["evaporation speeds up as the temperature falls", "the dewpoint rises all evening", "pressure changes alter the amount of vapour present"],
+      ["evaporation speeds up as the temperature falls in the evening, adding extra vapour to the air near the ground", "the dewpoint rises all evening to meet the temperature, though the moisture stays the same", "pressure changes alter the amount of vapour present, raising the total held in the air"],
       "Relative humidity compares the vapour present to the amount needed for saturation at that temperature. Cooling shrinks the denominator, so the percentage rises until it hits 100 percent at the dewpoint and dew or fog forms.", {});
   }
 ]), ["Watch the gap between temperature and dewpoint: small gap, saturated air; shrinking gap, condensation coming."]);
@@ -1151,19 +1151,19 @@ E("sci-u1-forecast-reason", 1, ["SC10.6.5", "SC10.6.4"], 3, "var", varset([
   function () {
     return mcq("A forecaster in St. John's sees: a low southwest of Nova Scotia tracking northeast, pressure at St. John's falling steadily, and winds backing to the southeast and strengthening. The best forecast for the Avalon over the next 24 hours is",
       "increasing cloud and wind with rain arriving, heaviest as the low passes, because the region is entering the low's warm sector and frontal zones",
-      ["clearing and colder conditions, because lows bring fair weather as they approach", "fair weather throughout, because falling pressure means a high is arriving", "snow flurries with light winds, because southeast winds are always cold"],
+      ["clearing and colder conditions over the Avalon, because an approaching low brings fair weather and falling temperatures to the region ahead of its centre as a rule", "fair weather throughout the next day, because steadily falling pressure means a high-pressure system is arriving and will bring sinking, clearing air with it", "snow flurries with light winds over the Avalon, because southeast winds are always cold in this region and can only bring brief, scattered flurries with them"],
       "All three clues agree: an approaching low on the usual southwest-to-northeast track, falling pressure, and strengthening southeast flow ahead of the system. That combination delivers the low's cloud shield and frontal rain to the Avalon.", {});
   },
   function () {
     return mcq("Two forecasts are issued for a town. Forecast 1 uses only the current sunny conditions and predicts sun tomorrow. Forecast 2 uses falling pressure, thickening high cloud and a low approaching from the southwest, and predicts rain tomorrow. Forecast 2 is stronger because it",
       "is based on the system's approach signals (pressure tendency, cloud sequence and the storm track), not just persistence of current weather",
-      ["uses more instruments than Forecast 1", "was made later in the day", "assumes the weather always changes every 24 hours"],
+      ["uses more instruments than Forecast 1, and a greater number of instruments always produces a stronger forecast overall", "was made later in the day than Forecast 1, and a forecast issued closer to the event it predicts is automatically the more reliable of the two in every case", "assumes the weather always changes every 24 hours, so a sunny day must be followed by rain because the day has turned"],
       "Good forecasts read the dynamics: pressure tendency and the warm-front cloud sequence are the atmosphere announcing an approaching system. Assuming today repeats itself fails exactly when a system is arriving, which is when the forecast matters most.", {});
   },
   function () {
     return mcq("A cold front passed a town at noon. At 3 p.m. the sky is clearing and the temperature has dropped 6 °C, but a second band of showers is showing on radar behind the front. The best interpretation is",
       "showers can continue for a time in the unstable cold air behind the front even as the overall trend is toward clearing and colder conditions",
-      ["the front has reversed direction and is coming back", "a warm front is now passing", "the temperature drop was an instrument error"],
+      ["the front has reversed direction and is coming back, bringing its main band of showers across again before evening", "a warm front is now passing, bringing a wide shield of steady rain and a slow rise in temperature through the day", "the temperature drop was an instrument error, and the air behind the front is still the warm air mass from before noon"],
       "Post-frontal cold air moving over relatively warmer ground or water is unstable and often produces scattered showers behind the main band. The trend (falling temperature, rising pressure) still says clearing overall; the radar showers are the cold air mass's own weather, not the front returning.", {});
   }
 ]), ["Combine independent clues: pressure tendency, cloud sequence, system track, and what the air behind a front does."]);
@@ -1172,13 +1172,13 @@ E("sci-u1-heatsink-data", 1, ["SC10.6.1"], 3, "var", varset([
   function () {
     return mcq("Monthly average temperatures: Town X: January -9 °C, July 21 °C. Town Y: January -1 °C, July 16 °C. Both are at the same latitude. Which conclusion is best supported?",
       "Town Y is coastal and Town X is inland: the ocean narrows Town Y's yearly temperature range (milder winter, cooler summer)",
-      ["Town X is coastal and Town Y is inland", "Town Y must be much farther south than Town X", "The data must be wrong, because towns at one latitude have identical climates"],
+      ["Town X is coastal and Town Y is inland: the ocean narrows Town X's yearly range while the land lets Town Y swing widely", "Town Y must be much farther south than Town X, close enough to the equator to explain its mild winter and cool summer", "The data must be wrong, because towns at one latitude have identical climates and any difference is a measuring error"],
       "Compute the ranges: Town X swings 30 degrees between January and July; Town Y swings only 17. A narrow range with milder winters and cooler summers is the fingerprint of ocean moderation, the heat sink effect in data form.", {});
   },
   function () {
     return mcq("A lake town and an inland town 80 km apart record these July overnight lows on the same clear night: lake town 17 °C, inland town 10 °C. Three nights later, under cloudy and windy conditions, the lows are 15 °C and 14 °C. The best explanation for the difference between the two nights is that",
       "on the clear calm night the inland town radiated its heat away quickly while the lake kept the shore town warm; clouds and wind on the later night reduced the contrast for both",
-      ["the lake stopped storing heat on the later night", "the inland town's altitude changed between the nights", "clouds always make coastal towns colder than inland towns"],
+      ["the lake stopped storing any heat on the later night, because a lake can only hold heat for one night at a time and must release all of it before it can moderate the next night", "the inland town's altitude changed between the two nights, lifting it into colder air on the later night and removing the elevation advantage it had held over the lake town earlier", "clouds always make coastal towns colder than inland towns on summer nights, because the cloud layer reflects the lake's stored heat back down and chills the shoreline air before morning"],
       "The lake's moderation is strongest when the land can cool freely (clear and calm). Cloud cover acts like a blanket over both towns and wind mixes the air, so the land water contrast shrinks. Same heat sink, different conditions for expressing it.", {});
   }
 ]), ["Compute the temperature range and ask which place the ocean is smoothing out."]);
@@ -1246,7 +1246,7 @@ E("sci-u1-spheres", 1, ["SC10.6.1"], 1, "var", varset([
   function () {
     return mcq("Almost all weather occurs in the troposphere because that layer",
       "holds nearly all the atmosphere's water vapour and is heated from below by the Earth's surface, so air there rises, sinks and churns",
-      ["is the hottest layer of the atmosphere", "is where the ozone layer absorbs ultraviolet light", "contains no gravity to hold clouds down"],
+      ["is the hottest layer of the atmosphere, so its air is always expanding and rising through the cooler layers above", "is where the ozone layer absorbs ultraviolet light, and that energy drives the rising and sinking that makes storms", "contains no gravity to hold clouds down, so droplets drift freely and gather into cloud wherever air moves upward"],
       "The troposphere is heated from the ground up, which makes it unstable and mixing, and it contains the water vapour that becomes clouds and precipitation. Weather needs both ingredients, and only this layer has them.", {});
   }
 ]), ["Weather is the four spheres interacting, and it lives in the lowest layer of the air."]);
@@ -1255,19 +1255,19 @@ E("sci-u1-jetstream", 1, ["SC10.6.3"], 1, "var", varset([
   function () {
     return mcq("The jet stream is best described as",
       "a narrow band of very strong winds high in the troposphere that flows generally from west to east",
-      ["a fast ocean current along the Labrador coast", "a river of warm air at ground level that melts snow", "the boundary line drawn between two air masses"],
+      ["a fast ocean current along the Labrador coast that carries cold water southward past the island all year", "a river of warm air at ground level that flows across the province in winter and melts the snow it passes over", "the boundary line drawn between two air masses on a weather map, marking where cold and warm air meet below"],
       "Jet streams are high-altitude wind rivers (around 10 km up) marking the boundary between cold polar air and warmer air to the south. Airliners ride them eastbound and avoid them westbound.", {});
   },
   function () {
     return mcq("Newfoundland and Labrador's weather is strongly affected by the jet stream because it",
       "steers surface low pressure systems (storms) across the province and separates the cold air to its north from warmer air to its south",
-      ["blocks all storms from reaching the Atlantic provinces", "warms the ocean surface directly beneath it", "creates the tides in the Bay of Fundy"],
+      ["blocks all storms from reaching the Atlantic provinces, turning them southward over the ocean long before any system can make landfall in this region", "warms the ocean surface directly beneath it as it flows, heating the water under its track and changing Atlantic currents", "creates the tides in the Bay of Fundy, because its winds push the ocean water in and out of the bay on a twice-daily cycle"],
       "Storms travel along the jet stream like cars on a highway, and the province sits near its usual track: that is why systems so often sweep up the Atlantic coast toward the island and Labrador.", {});
   },
   function () {
     return mcq("In winter the jet stream over eastern Canada usually shifts",
       "southward, letting Arctic air spill down over the province more often and strengthening the storms along the boundary",
-      ["northward over the pole, ending winter storms", "down to ground level, where it becomes a surface wind", "into a north-to-south flow that stops all weather systems"],
+      ["northward over the pole, ending winter storms and leaving mild, settled air in place all season", "down to ground level, where it becomes a surface wind blowing across the province through the long winter", "into a north-to-south flow that stops all weather systems crossing the province until the flow returns in spring"],
       "The polar jet follows the temperature contrast. In winter the cold air mass expands south, the jet moves with it, and the island and Labrador sit more often on the cold, stormy side of the boundary.", {});
   }
 ]), ["The jet stream is the storm highway: high, fast, west to east, and it moves with the seasons."]);
@@ -1276,19 +1276,19 @@ E("sci-u1-clouds", 1, ["SC10.6.4"], 1, "var", varset([
   function () {
     return mcq("Clouds form when moist air rises and cools because",
       "cooling lowers the air's capacity to hold water vapour, so the vapour condenses onto tiny particles as droplets or ice crystals",
-      ["rising air gets heavier and squeezes the water out", "the Sun's rays freeze the vapour at high altitude", "wind blows the water vapour together into visible clumps"],
+      ["rising air gets heavier as it climbs and squeezes the water out of itself until droplets appear in the column", "the Sun's rays freeze the vapour at high altitude, turning it into ice crystals that gather into clouds", "wind blows the water vapour together into visible clumps, pushing vapour from a wide area into narrow puffs"],
       "Condensation is the trigger: a parcel of air cooled to its dew point cannot hold all its vapour, and the excess condenses on dust and salt particles. Clouds are the visible result, droplet by droplet.", {});
   },
   function () {
     return mcq("Towering cumulonimbus clouds are the type associated with",
       "thunderstorms: heavy showers, lightning and gusty winds",
-      ["days of gentle, steady drizzle", "fog at ground level", "clear, calm winter nights"],
+      ["days of gentle, steady drizzle falling over a wide area", "fog at ground level that forms on clear, calm nights", "clear, calm winter nights with frost forming on the ground"],
       "Cumulus family clouds grow upward where air rises strongly; the biggest, cumulonimbus, reach the top of the troposphere and carry the updrafts that build lightning and downpours. Flat layered stratus brings the steady drizzle instead.", {});
   },
   function () {
     return mcq("Thin, wispy cirrus clouds high in the sky are made of",
       "ice crystals: at that altitude the air is far below freezing",
-      ["liquid water droplets only", "smoke from surface fires", "frozen carbon dioxide"],
+      ["liquid water droplets only, the same as a low rain cloud", "smoke from surface fires carried up to that height by winds", "frozen carbon dioxide crystals formed high in the cold air"],
       "Cirrus live at the top of the troposphere where temperatures are well below 0 C, so their moisture exists as ice crystals. Lower, warmer clouds are mostly liquid droplets.", {});
   }
 ]), ["Clouds are condensation made visible; their shape tells you how the air is moving."]);
@@ -1297,19 +1297,19 @@ E("sci-u1-precipitation", 1, ["SC10.6.4"], 2, "var", varset([
   function () {
     return mcq("Freezing rain forms when",
       "rain falls through a shallow layer of below-freezing air near the ground and freezes on contact with cold surfaces",
-      ["snowflakes partially melt and refreeze into pellets in mid-air", "the whole air column is below freezing from cloud to ground", "rain evaporates and re-condenses as ice in the cloud"],
+      ["snowflakes partially melt and refreeze into pellets in mid-air, then bounce off cold surfaces at the ground", "the whole air column is below freezing from cloud to ground, so precipitation falls as ice the entire way down", "rain evaporates in the cloud and re-condenses as ice before it leaves the cloud, falling as a glaze on surfaces"],
       "The layer cake decides the precipitation type: freezing rain melts fully in a warm layer aloft, then lands on sub-freezing surfaces and glazes them. Pellets that refreeze in mid-air are ice pellets (sleet), a different structure.", {});
   },
   function () {
     return mcq("A winter storm drops snow on the island's west coast but rain on the Avalon Peninsula at the same time. The most likely reason is",
       "the Avalon is surrounded by ocean water that moderates its air temperature to just above freezing, while the west coast air is colder",
-      ["the west coast is closer to the North Pole", "rain cannot fall west of the Long Range Mountains", "the Avalon receives more sunlight in January"],
+      ["the west coast is much closer to the North Pole, so its air stays colder while the Avalon stays farther south", "rain cannot fall west of the Long Range Mountains in winter, because high ground blocks rain from the west coast", "the Avalon receives far more sunlight in January, warming its air by several degrees during winter storms in the region"],
       "The two coasts sit in the same storm but different air: the ocean keeps coastal Avalon air marginal (near 0 C), tipping the precipitation to rain, while colder air inland and west keeps it snow. Small temperature differences near zero flip the type.", {});
   },
   function () {
     return mcq("Hail forms inside strong thunderstorm clouds because",
       "powerful updrafts carry water droplets up into freezing air repeatedly, adding layers of ice until the stones are too heavy to hold up",
-      ["rain falls so fast that it freezes from the speed", "lightning freezes the raindrops it strikes", "hailstones fall from the stratosphere where it is always cold"],
+      ["rain falls so fast that it freezes from the speed of its fall, turning to ice before reaching the ground below the cloud", "lightning freezes the raindrops it strikes, turning each drop it touches into a stone of ice that falls within minutes", "hailstones fall ready-made from the stratosphere, dropping through the cloud without growing on the way down"],
       "Hail is a cycling product: updraft, freeze, fall partly, rise again, grow another layer. Only the violent updrafts of cumulonimbus can keep stones aloft long enough to grow, which is why hail is a warm-season thunderstorm hazard.", {});
   }
 ]), ["Precipitation type is a temperature-profile question: read the column from cloud to ground."]);
@@ -1333,13 +1333,13 @@ E("sci-u1-weather-lore", 1, ["SC10.6.5"], 1, "var", varset([
   function () {
     return mcq("The old saying 'red sky at night, sailor's delight; red sky in the morning, sailor's warning' has a scientific basis in mid-latitudes because",
       "weather systems here travel west to east: a red sunset means dry air and clear skies to the west (coming our way), while a red sunrise means the clear air has passed and wet weather approaches",
-      ["the colour red repels rain clouds", "sailors only ever sailed in the evening", "the Sun sets in the east, so a red sunset shows tomorrow's weather"],
+      ["the colour red in the sky repels rain clouds as they approach, pushing wet systems away from any place where a red sunset is seen and drawing them toward places that see a red sunrise instead", "sailors only ever sailed in the evening, so a morning sky was never part of the saying and the warning half of it was added much later by farmers who worked the fields at dawn in all weathers", "the Sun sets in the east in mid-latitudes, so a red sunset is a view of the eastern sky where tomorrow's weather is coming from, while a red sunrise shows weather that has already gone by in the west"],
       "The lore encodes the prevailing flow: we mostly receive tomorrow's weather from the west. Dusty, dry western air at sunset promises a fine tomorrow; the same sky at dawn means the dry air is already east of us and the next system follows.", {});
   },
   function () {
     return mcq("Weather lore such as 'when the wind is from the east, it is neither good for man nor beast' (an east wind in Newfoundland often brings cold, damp weather off the Atlantic) is best judged scientifically as",
       "a local observation pattern with a real mechanism behind it, useful as a clue but no substitute for measured data and a forecast",
-      ["always true and more reliable than instruments", "pure superstition with no connection to real weather", "a rule that works the same way everywhere on Earth"],
+      ["always true in every season and more reliable than instruments, so forecasters trust it ahead of barometers", "pure superstition with no connection to real weather at all in this region, invented after storms happened", "a rule that works the same way everywhere on Earth, because an east wind brings the same weather to every coast"],
       "Good lore is compressed local experience: an easterly flow here really does cross cold ocean water first. It fails as a universal rule and cannot beat barometers and models, which is exactly how forecasters treat it: a hint, not a verdict.", {});
   }
 ]), ["Lore is local experience in rhyme: respect the mechanism, verify with the instruments."]);
@@ -1640,14 +1640,14 @@ function s6mMakeQ(sc, type){
       var aw=s6mpick(ahead);
       return s6mQ(aw.name+" is in the cool air north of the warm front, and the front is advancing toward it. What change should "+aw.name+" expect as the warm front passes?",
         "Temperatures rise and winds shift to come from the south or southwest, with the steady rain ending",
-        ["Temperatures fall sharply and winds shift to the northwest","Pressure rises quickly and skies clear within the hour","The rain changes to a long period of heavy snow"],
+        ["Temperatures fall sharply and winds shift to the northwest, with the steady rain ending","Pressure rises quickly and skies clear within the hour, with winds shifting to the northwest","The rain changes to a long period of heavy snow as colder air deepens over the town"],
         aw.name+" currently plots "+aw.d.T+" °C with winds from the "+aw.d.windFrom+" and steady rain ahead of the front. Behind a warm front a town sits in the warm sector: warmer air, southerly winds, and the steady frontal rain gives way to the warm sector's milder, damper pattern.", [aw.name]);
     }
     var warm=s6mbyRole(sc,["warmSector","warmSectorWet"]);
     var target=warm.length?s6mpick(warm):s6mpick(sc.towns);
     return s6mQ("The cold front is advancing toward "+target.name+", which is still in the warm air ahead of it (plotted "+target.d.T+" °C, wind from the "+target.d.windFrom+"). What change should "+target.name+" expect when the front passes?",
       "A drop in temperature, a band of showers, and winds shifting to the northwest",
-      ["A rise in temperature and winds shifting to the southeast","Fog forming as the pressure rises steadily","Several days of gentle, steady rain"],
+      ["A rise in temperature, a band of showers, and winds shifting to the southeast","Fog forming as the pressure rises steadily and the winds fall light for days","Several days of gentle, steady rain with winds staying in the southeast"],
       "Cold-front passage replaces warm-sector air with the post-frontal pattern: colder and drier air, a wind shift to the northwest, rising pressure and clearing skies, the pattern the communities behind the front are already plotting.", [target.name]);
   }
   if(type==="precip"){
@@ -1949,25 +1949,25 @@ E("sci-u2-naming-rules", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("In the name of a binary ionic compound, the negative ion's name is changed to end in",
       "-ide (chlorine becomes chloride, oxygen becomes oxide)",
-      ["-ite (chlorine becomes chlorite)", "-ate (oxygen becomes oxate)", "-ium (oxygen becomes oxium)"],
+      ["-ite (chlorine becomes chlorite, oxygen becomes oxite)", "-ate (oxygen becomes oxate, chlorine becomes chlorate)", "-ium (oxygen becomes oxium, chlorine becomes chlorium)"],
       "Binary compounds (two elements) use -ide for the anion: chloride, oxide, sulfide, nitride. The -ite and -ate endings belong to polyatomic ions containing oxygen (sulfite, sulfate), not to single elements.", {});
   },
   function () {
     return mcq("A Roman numeral appears in the name iron(III) chloride because",
       "iron forms ions with more than one possible charge, and the numeral states which one this compound contains",
-      ["there are three iron atoms in the formula", "iron is in group 3 of the periodic table", "the compound contains three chlorine atoms"],
+      ["there are three iron atoms in the formula, and the numeral counts the iron atoms present", "iron is in group 3 of the periodic table, and the numeral copies the group number into the name", "the compound contains three chlorine atoms, and the numeral counts the chlorine atoms present"],
       "Multivalent metals need the numeral to give the ion's charge: iron(III) is Fe with a 3+ charge. The numeral says nothing about atom counts, which the formula's subscripts handle.", {});
   },
   function () {
     return mcq("Why does the name sodium chloride need no Roman numeral and no prefixes?",
       "Sodium forms only one ion (Na with a 1+ charge), and ionic compounds are named without prefixes because the charges fix the ratio",
-      ["Sodium is not a metal", "The compound is molecular, so prefixes are optional", "Roman numerals are only used for compounds containing oxygen"],
+      ["Sodium is not a metal, so its compounds are named with the molecular prefix system rather than with ion charges", "The compound is molecular, so prefixes are optional in its name and the charges play no part in naming it", "Roman numerals are only used for compounds containing oxygen, and sodium chloride contains no oxygen at all"],
       "One possible charge means no ambiguity to resolve. Prefixes belong to the molecular naming system; in ionic compounds the neutral-charge requirement determines the subscripts on its own.", {});
   },
   function () {
     return mcq("The polyatomic ion SO4 with a 2- charge is named sulfate. In the compound CaSO4, the correct name is",
       "calcium sulfate (the polyatomic ion keeps its own name as a unit)",
-      ["calcium sulfite", "calcium sulfur oxide", "calcium sulfide"],
+      ["calcium sulfite (the polyatomic ion is renamed with an -ite ending here)", "calcium sulfur oxide (the elements in the group are named one by one)", "calcium sulfide (the whole sulfate group is treated as a sulfide ion)"],
       "Polyatomic ions are named as units and keep their names inside compounds: sulfate stays sulfate. Sulfide is the single sulfur ion (S, 2-), and sulfite is SO3 with a 2- charge, a different ion.", {});
   }
 ]), ["Three systems, three signal features: -ide for binary anions, Roman numerals for multivalent metals, prefixes for molecules."]);
@@ -1976,19 +1976,19 @@ E("sci-u2-ionic-molecular", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("A compound is made of a metal and a nonmetal. It conducts electricity when melted but not as a solid. The compound is",
       "ionic: its ions are locked in place in the solid but move freely when melted",
-      ["molecular: its molecules break apart when melted", "a metal alloy", "an acid"],
+      ["molecular: its neutral molecules carry the current once the solid has melted", "a metal alloy: its free electrons carry the current in both the solid and the liquid", "an acid: it releases hydrogen ions in the solid that move freely once it melts"],
       "Conductivity that switches on when a solid melts is the ionic signature: the charged particles exist in the solid but cannot move until the lattice breaks down. Molecular compounds do not conduct in either state.", {});
   },
   function () {
     return mcq("Which compound is molecular (covalent) rather than ionic?",
       "Carbon dioxide, CO2: two nonmetals sharing electrons",
-      ["Sodium chloride, NaCl", "Magnesium oxide, MgO", "Calcium fluoride, CaF2"],
+      ["Sodium chloride, NaCl: metal plus nonmetal ions", "Magnesium oxide, MgO: metal plus nonmetal ions", "Calcium fluoride, CaF2: metal plus nonmetal ions"],
       "Metal plus nonmetal means ionic in this course's compounds. Carbon and oxygen are both nonmetals, so CO2 is molecular, named with prefixes and existing as separate molecules.", {});
   },
   function () {
     return mcq("Which property set belongs to ionic compounds?",
       "High melting points, brittle crystals, conduct when molten or dissolved",
-      ["Low melting points, soft, never conduct in any state", "Gases at room temperature, conduct as solids", "High melting points, malleable like metals"],
+      ["Low melting points, soft crystals, never conduct electricity in any state", "Gases at room temperature, soft, and able to conduct electricity as solids", "High melting points, malleable like metals, conduct electricity as solids"],
       "The strong attraction throughout an ionic lattice gives high melting points and brittleness, and the ions conduct once they can move (molten or in solution). Malleability is a metal property, not an ionic one.", {});
   }
 ]), ["Metal plus nonmetal, think ionic. Then let the conductivity behaviour confirm it."]);
@@ -2177,13 +2177,13 @@ E("sci-u2-conservation-why", 2, ["SC10.8.2"], 2, "var", varset([
   function () {
     return mcq("A log burns down to a small pile of ash weighing far less than the log. This does not break the conservation of mass because",
       "most of the log's mass left as carbon dioxide and water vapour in the smoke and gases",
-      ["burning destroys the mass of the wood", "the ash absorbed the missing mass as heat", "conservation of mass does not apply to burning"],
+      ["burning destroys the mass of the wood, turning most of it into heat and light", "the ash absorbed the missing mass as heat, so the mass is stored inside the ash", "conservation of mass does not apply to burning, because burning is not a chemical change"],
       "The ash is only the part that stayed. The gases carried the rest away; weigh the log, the oxygen it consumed, and all the products (ash plus gases) and the totals match.", {});
   },
   function () {
     return mcq("Which change would let a student prove conservation of mass for a fizzing antacid tablet reaction?",
       "Run the reaction in a sealed container (or trap the gas in a balloon) so no product escapes before weighing",
-      ["Use a bigger beaker", "Weigh the products while they are still fizzing", "Repeat the reaction three times and average"],
+      ["Use a much bigger beaker so the fizzing gas has far more room to spread out before weighing", "Weigh the products while they are still fizzing, before any of the gas can leave the beaker", "Repeat the reaction three times and average the three results to cancel out the lost gas"],
       "The apparent mass loss is gas escaping. Sealing the system keeps every product in the weighing, and then the totals match. Bigger glassware and averaging do nothing about the escaping gas.", {});
   }
 ]), ["Atoms are neither created nor destroyed in chemistry. If the scale disagrees, hunt for what crossed the container's boundary."]);
@@ -2213,19 +2213,19 @@ E("sci-u2-reaction-evidence", 2, ["SC10.8.3"], 1, "var", varset([
   function () {
     return mcq("Which observation is the strongest evidence that a chemical reaction (not just a physical change) has occurred?",
       "A new substance with different properties has formed, such as a precipitate appearing when two clear solutions mix",
-      ["The mixture became warmer while it was stirred over a flame", "A solid dissolved and the solution changed colour slightly", "Bubbles appeared while a liquid boiled"],
+      ["The mixture became warmer while it was stirred over a flame for several minutes beforehand", "A solid dissolved in a liquid and the solution changed colour slightly as it spread evenly through it", "Bubbles appeared throughout a liquid while it was boiling on a stove at a steady temperature"],
       "A chemical reaction makes new substances. A precipitate from two clear solutions is a new solid that was not there before. Dissolving, boiling and warming over a flame can all happen with no new substance at all.", {});
   },
   function () {
     return mcq("Fizzing is observed in four situations. In which one is the gas certainly from a chemical reaction?",
       "An antacid tablet in water producing gas while the tablet's material is used up and the water's acidity falls",
-      ["Soda water releasing bubbles when the bottle is opened", "Water boiling on a stove", "Dry ice producing fog in warm air"],
+      ["Soda water releasing bubbles of dissolved gas when the bottle is opened and the pressure drops", "Water boiling on a stove, with bubbles of water vapour forming throughout the hot liquid", "Dry ice producing a white fog in warm air as it turns directly from a solid into a gas"],
       "The antacid's fizz comes from a reaction between the tablet and the acid, consuming reactants and changing the solution. The others are physical: released dissolved gas, a change of state, and condensing vapour.", {});
   },
   function () {
     return mcq("Which list contains only reliable signs that a chemical change may have occurred?",
       "Formation of a precipitate, production of a gas in a mixture at room temperature, a permanent colour change, an unexpected temperature change",
-      ["Melting, dissolving, breaking, evaporating", "A change of shape, a change of state, a change of size", "Boiling, condensing, freezing, dissolving"],
+      ["Melting, dissolving, breaking, evaporating, stretching, crushing, bending and mixing substances together without reacting", "A change of shape, a change of state, a change of size, a change of position and a change of temperature from heating", "Boiling, condensing, freezing, dissolving, filtering, separating mixtures and cutting materials into smaller pieces"],
       "Each item in the correct list points to a new substance forming. The other lists are physical changes, where the substance itself stays the same.", {});
   }
 ]), ["The test is always the same: is a NEW substance there at the end?"]);
@@ -2372,13 +2372,13 @@ E("sci-u2-ph-compare", 2, ["SC10.8.4"], 2, "var", varset([
   function () {
     return mcq("Solution A has pH 3 and Solution B has pH 5. How do their acidities compare?",
       "A is 100 times as acidic as B: each pH step is a factor of 10, and the solutions differ by 2 steps",
-      ["A is twice as acidic as B", "A is 2 times as acidic as B because 5 - 3 = 2", "B is 100 times as acidic as A"],
+      ["A is twice as acidic as B, because its pH reading sits two places lower on the scale", "A is 2 times as acidic as B, because the pH values differ by 2 and each unit counts once", "B is 100 times as acidic as A: each pH step is a factor of 10, read in the other direction"],
       "The pH scale is logarithmic: one unit means ten times the hydrogen ion concentration. Two units of difference means 10 x 10 = 100 times. Subtracting the pH values directly is the classic error.", {});
   },
   function () {
     return mcq("Adding water to dilute an acid with pH 2 will move its pH",
       "upward toward 7, because the hydrogen ions are spread through more water (lower concentration)",
-      ["downward toward 0", "past 7 into the basic range", "nowhere: dilution does not change pH"],
+      ["downward toward 0, because adding water makes the acid more concentrated overall", "past 7 into the basic range, because enough added water turns any acid into a base", "nowhere: dilution does not change pH, because only the volume and not the acidity changes"],
       "Dilution lowers the ion concentration, so the pH of an acid rises toward 7, but dilution alone can never carry it past neutral into basic territory.", {});
   },
   function () {
@@ -2393,7 +2393,7 @@ E("sci-u2-indicators", 2, ["SC10.8.4"], 2, "var", varset([
   function () {
     return mcq("Phenolphthalein is colourless in an unknown solution and turns pink when a few drops of sodium hydroxide solution are added. The colour change shows that",
       "the mixture has become basic: phenolphthalein is colourless in acids and neutral solutions and pink in bases",
-      ["the mixture has become acidic", "the unknown was a strong acid all along", "phenolphthalein reacts with water to make pink dye"],
+      ["the mixture has become acidic: phenolphthalein turns pink only when a solution becomes acidic", "the unknown was a strong acid all along, and the pink colour proves the acid was present", "phenolphthalein reacts with water to make a pink dye, whether the solution is acidic or basic"],
       "Phenolphthalein's job is to signal the acid-base state: colourless at and below neutral, pink in base. The pink appears because the added base carried the mixture past neutral.", {});
   },
   function () {
@@ -2405,7 +2405,7 @@ E("sci-u2-indicators", 2, ["SC10.8.4"], 2, "var", varset([
   function () {
     return mcq("Red cabbage juice turns red-pink in vinegar, purple in tap water and green in a baking soda solution. Cabbage juice is useful here because it is",
       "a natural indicator: a substance whose colour depends on whether the solution is acidic, neutral or basic",
-      ["an acid that reacts with all three solutions", "a base that neutralizes the other solutions", "a salt that precipitates in vinegar"],
+      ["an acid that reacts with all three solutions and is used up while changing their colours", "a base that neutralizes the other solutions, raising the pH of each one toward neutral", "a salt that precipitates in vinegar, settles in tap water and dissolves in baking soda"],
       "An indicator reports the solution's character through its own colour change without taking part as a reactant in any important way. Plant pigments like cabbage juice do this across a range of colours.", {});
   }
 ]), ["An indicator is a reporter, not a player: its colour tells you which side of neutral the solution is on."]);
@@ -2479,25 +2479,25 @@ E("sci-u2-neut-apps", 2, ["SC10.8.5"], 2, "var", varset([
   function () {
     return mcq("Antacid tablets contain bases such as magnesium hydroxide. They relieve heartburn by",
       "neutralizing some of the excess hydrochloric acid in the stomach, raising its pH toward a comfortable level",
-      ["coating the stomach so acid cannot touch it", "stopping the stomach from producing acid permanently", "diluting the acid with the water in the tablet"],
+      ["coating the stomach lining with a protective layer so the acid cannot touch it at all", "stopping the stomach from producing any more acid, permanently shutting down acid production", "diluting the acid with the small amount of water that is taken along with the antacid tablet"],
       "Heartburn is excess stomach acid reaching the esophagus. The antacid base reacts with the acid (neutralization), consuming hydrogen ions and lifting the pH. It treats the excess, not the acid production itself.", {});
   },
   function () {
     return mcq("Farmers spread crushed limestone (calcium carbonate) on fields with acidic soil. The limestone helps because it",
       "reacts with and neutralizes some of the soil's acidity, moving the pH toward neutral where crops grow best",
-      ["adds acid to balance the soil", "kills all organisms in the soil", "changes the soil's colour so it absorbs more sunlight"],
+      ["adds extra acid to the soil, balancing the soil by matching its low pH exactly in every part of the field", "kills all of the organisms living in the soil, removing the original source of the acidity there", "changes the colour of the soil so the darker surface absorbs more sunlight and warms up"],
       "Limestone is a base in this context (a carbonate that consumes hydrogen ions). Liming is an industrial-scale neutralization, the same chemistry as the antacid, applied to a field.", {});
   },
   function () {
     return mcq("A factory must treat acidic wastewater before releasing it into a river. The correct treatment is to",
       "add a base in controlled amounts until the wastewater is near neutral (pH around 7)",
-      ["add more acid so the river cannot change it further", "heat the wastewater until the acid evaporates", "release it at night when fewer organisms are active"],
+      ["add more acid so the river water cannot change the wastewater any further", "heat the wastewater until all of the acid in it has evaporated into the air", "release it at night, when fewer organisms in the river are active and awake"],
       "Neutralization is the only option that removes the acidity itself: base plus acid gives a salt plus water. Dilution and timing do not change the total acid load the river receives.", {});
   },
   function () {
     return mcq("Bee stings inject a mild acid, and a traditional remedy applies baking soda paste. Wasp stings are alkaline, and vinegar is applied. The logic in both cases is",
       "neutralization: apply the opposite character (a mild base for the acid sting, a mild acid for the alkaline sting)",
-      ["the paste smothers the sting so air cannot reach it", "both remedies work by cooling the skin", "the remedies dissolve the sting under the skin"],
+      ["the paste smothers the sting so that air cannot reach it, and the sting then fades on its own", "both remedies work by cooling the skin around the sting until the injected chemical breaks down", "the remedies dissolve the sting structure under the skin so the body can absorb it harmlessly"],
       "Acid sting plus mild base, alkaline sting plus mild acid: each remedy is a small neutralization chosen to oppose the sting's chemistry.", {});
   }
 ]), ["Every application is the same reaction in different clothes: acid plus base, chosen to oppose the problem's character."]);
@@ -2506,19 +2506,19 @@ E("sci-u2-neut-reason", 2, ["SC10.8.5"], 3, "var", varset([
   function () {
     return mcq("Acid rain (pH about 4.5) falls on a limestone lake bed and the lake's pH stays near 6.5, while a nearby granite-bed lake falls to pH 5.0. The limestone lake is protected because",
       "the carbonate in the limestone neutralizes incoming acid, consuming hydrogen ions before they can lower the lake's pH much",
-      ["limestone reflects the rain back into the clouds", "granite produces extra acid that adds to the rain", "the limestone lake is deeper, and depth alone sets pH"],
+      ["limestone reflects the acid rain back into the clouds before it can mix into the lake water at all", "granite produces extra acid of its own that adds to the rain falling on the granite-bed lake nearby", "the limestone lake is deeper, and depth alone sets the pH of a lake regardless of the bedrock beneath it"],
       "This is buffering by neutralization: CaCO3 reacts with the acid (producing a calcium salt, water and carbon dioxide), spending the acid on the rock instead of on the lake. Granite has no such chemistry to offer.", {});
   },
   function () {
     return mcq("A student neutralizes 25 mL of an acid with a base and reports the products are 'just water'. The report is wrong because",
       "a salt is also formed and remains dissolved in the water; evaporating the water would leave it behind",
-      ["neutralization produces no water at all", "the acid disappears completely from the universe", "the base is still present unchanged at the end"],
+      ["neutralization produces no water at all, and the liquid left is the original solvent only", "the acid disappears completely from the universe once the base has been added to it", "the base is still present unchanged at the end, dissolved alongside the product water"],
       "Acid plus base gives salt plus water, always both. The salt is invisible only because it is dissolved; evaporation reveals it. Matter is conserved, so the acid's anion and the base's cation must be somewhere: they are the salt.", {});
   },
   function () {
     return mcq("Equal volumes of two acids are tested: Acid X at pH 1 and Acid Y at pH 3. Equal volumes of the same base are added to each. Which result is expected?",
       "Acid X needs roughly 100 times as much base to neutralize, so the added base will neutralize Y but leave X still strongly acidic",
-      ["Both are neutralized, because equal volumes of base neutralize equal volumes of any acid", "Acid Y needs more base because weaker acids resist neutralization", "Neither can be predicted from pH at all"],
+      ["Both are neutralized, because equal volumes of base always neutralize equal volumes of any acid, whatever its pH", "Acid Y needs more base because weaker acids resist neutralization and hold on to their hydrogen ions longer", "Neither result can be predicted from pH at all, because pH says nothing about how much acid is present"],
       "pH 1 versus pH 3 is a hundredfold difference in hydrogen ion concentration (two logarithmic steps). The base supply that handles Y is nowhere near enough for X. Equal volumes do not mean equal amounts of acid.", {});
   }
 ]), ["Neutralization is quantitative: count the hydrogen ions and the hydroxides, and remember the salt in the beaker."]);
@@ -2529,19 +2529,19 @@ E("sci-u2-rates-factors", 2, ["SC10.8.6"], 1, "var", varset([
   function () {
     return mcq("Which change would make a reaction between a solid and a liquid proceed FASTER?",
       "Crush the solid into a powder, increasing its surface area",
-      ["Use one large lump of the solid", "Cool the mixture in ice", "Dilute the liquid with extra water"],
+      ["Use one large lump of the solid with a smooth surface", "Cool the mixture in ice to slow the particles down", "Dilute the liquid with extra water before mixing it"],
       "Powder exposes far more surface for collisions per second. A lump hides most of its particles inside, cooling slows particles down, and diluting spreads the liquid's particles thinner: all three slow the reaction.", {});
   },
   function () {
     return mcq("The five factors that change reaction rate studied in this course are",
       "temperature, surface area, concentration, catalyst and the nature of the reactants (including light for some reactions)",
-      ["mass, volume, colour, density and pressure only", "the size of the container and the brand of chemicals", "stirring speed alone"],
+      ["mass, volume, colour, density and pressure only, along with the shape and size of the container used", "the size of the container, the brand of chemicals, the mass of solid used and the volume of liquid", "stirring speed alone, together with the volume of the container and the mass of the solid used"],
       "Rate is controlled by anything that changes how often and how effectively particles collide: hotter (faster particles), more surface, more concentrated, a catalyst's lower-energy pathway, and the reactants' own nature.", {});
   },
   function () {
     return mcq("Milk sours faster on a warm counter than in a refrigerator. The best explanation is",
       "higher temperature: the particles move faster, collide more often and collide with more energy, so the souring reactions run faster",
-      ["the refrigerator's darkness stops all chemistry", "cold milk has fewer bacteria because cold kills instantly at 4 °C", "warm air pushes the milk particles apart"],
+      ["the darkness inside the refrigerator stops all chemistry, so no souring reactions can take place in the cold and dark", "cold milk has fewer bacteria because the cold kills the bacteria instantly at 4 °C, leaving the milk sterile", "warm air pushes the milk particles farther apart, and the extra space lets the souring reactions run faster"],
       "Temperature is the rate factor at work. Refrigeration does not stop reactions or sterilize the milk; it slows particle motion enough that the same reactions take much longer.", {});
   }
 ]), ["Rate rises with anything that makes collisions more frequent or more effective."]);
@@ -2550,19 +2550,19 @@ E("sci-u2-collision", 2, ["SC10.8.6"], 2, "var", varset([
   function () {
     return mcq("According to collision theory, a reaction happens when particles",
       "collide with enough energy and the right orientation to break and rearrange bonds",
-      ["touch each other gently at any speed", "collide any number of times, regardless of energy", "are heated until they melt"],
+      ["touch each other gently at any speed, provided they stay in contact long enough", "collide any number of times, regardless of their energy or their orientation", "are heated until they melt, and the reaction happens as the liquid forms"],
       "Most collisions do nothing: the particles bounce off unchanged. Only collisions with energy at or above the activation energy, and a workable orientation, rearrange bonds into products.", {});
   },
   function () {
     return mcq("Raising the concentration of a reactant speeds a reaction because",
       "with more particles in the same volume, collisions happen more frequently",
-      ["each particle gains extra energy from its neighbours", "the activation energy of the reaction drops", "the particles become smaller"],
+      ["each particle gains extra energy from its neighbours as the mixture gets crowded", "the activation energy of the reaction drops as more reactant is added", "the particles become smaller, so they can move and collide much more easily"],
       "Concentration works through collision frequency alone: same energy per particle, same activation energy, but more encounters per second means more successful reactions per second.", {});
   },
   function () {
     return mcq("A catalyst speeds up a reaction by",
       "providing an alternative pathway with a lower activation energy, and it is not used up in the reaction",
-      ["being consumed and turning into extra product", "raising the temperature of the mixture automatically", "increasing the concentration of the reactants permanently"],
+      ["being consumed as it turns into extra product, so more catalyst always means more product", "raising the temperature of the whole mixture automatically as soon as it is added to it", "increasing the concentration of the reactants permanently, packing more particles into the volume"],
       "The catalyst opens an easier route over a lower energy barrier, so a bigger fraction of collisions succeed. It emerges unchanged at the end, which is why a small amount can process a lot of reactant.", {});
   }
 ]), ["Collisions are the currency: rate factors all work by changing collision frequency, collision energy, or the energy a collision needs."]);
@@ -2572,22 +2572,22 @@ E("sci-u2-rate-scenarios", 2, ["SC10.8.6"], 2, "gen", function () {
     { setup: "Two identical antacid tablets are dropped into equal volumes of water. One tablet is whole; the other is crushed to powder first. Both fizz until they disappear.",
       ask: "Which tablet finishes first, and why?",
       key: "The crushed tablet: powdering hugely increases surface area, so far more particles are exposed to collisions each second",
-      dis: ["The whole tablet: its particles are packed tighter, which speeds reactions", "They finish together: the masses are equal, so the rates must be equal", "The whole tablet: powder particles dissolve into the water and are lost"],
+      dis: ["The whole tablet: its particles are packed tighter together, and tighter packing is what speeds reactions up", "They finish together: the masses of the two tablets are equal, so their reaction rates must also be equal", "The whole tablet: the powder particles dissolve into the water and are lost before they can react at all"],
       why: "Equal masses can react at very different rates. Surface area decides how many solid particles are available at the surface for collisions, and the powder wins by a wide margin despite identical mass and temperature." },
     { setup: "Zinc reacts with hydrochloric acid, producing hydrogen gas. Trial 1 uses acid labelled 1.0 mol/L; Trial 2 uses acid labelled 3.0 mol/L, with everything else identical.",
       ask: "Which trial bubbles faster at the start?",
       key: "Trial 2: the more concentrated acid packs three times as many acid particles into each volume, so collisions with the zinc are far more frequent",
-      dis: ["Trial 1: dilute acid soaks into the metal better", "Both start equally: the zinc amount is the same in each", "Trial 1: concentrated acid particles crowd each other and cannot move"],
+      dis: ["Trial 1: the dilute acid soaks into the metal better, reaching fresh zinc surfaces deep inside the sample more quickly", "Both start equally: the zinc amount is the same in each trial, and the zinc alone decides the starting rate in both", "Trial 1: concentrated acid particles crowd each other and cannot move, so the dilute acid reaches the zinc first"],
       why: "Concentration is collision frequency. Triple the particles per litre means roughly triple the collision rate at the metal surface, so hydrogen forms faster from the first seconds." },
     { setup: "Hydrogen peroxide decomposes slowly in a dark bottle, releasing oxygen. The rate is much slower in the dark than on a sunny windowsill, even at the same temperature.",
       ask: "What factor explains the difference?",
       key: "Light: for this reaction, light energy helps particles clear the activation energy, so decomposition speeds up in sunlight",
-      dis: ["Concentration: sunlight concentrates the peroxide", "A catalyst: the glass bottle catalyzes the reaction in light", "Surface area: the windowsill exposes more of the bottle"],
+      dis: ["Concentration: sunlight shining on the bottle concentrates the peroxide near the surface of the liquid", "A catalyst: the glass of the bottle acts as a catalyst for the reaction whenever light shines on it", "Surface area: the sunny windowsill exposes more of the bottle and its contents to the open air above it"],
       why: "Some reactions are light-sensitive: photons supply activation energy. That is why peroxide is sold in dark bottles. Temperature, concentration and amount are all unchanged between the two spots." },
     { setup: "A glow stick glows brightly in warm water and dimly in ice water.",
       ask: "What does this show about temperature and reaction rate?",
       key: "The reaction inside runs faster when warm: brighter glow means product (and light) forming faster, matching collision theory's prediction for hotter, faster particles",
-      dis: ["Warm water melts the chemicals so they can finally mix", "Cold water absorbs the light before it can escape", "The glow chemicals evaporate in warm water and glow in the air"],
+      dis: ["Warm water melts the glow chemicals so they can finally mix, and the unmelted chemicals in ice water cannot react at all during the test", "Cold water absorbs the light before it can escape the stick, so the same reaction only appears dimmer while it sits in the ice water bath", "The glow chemicals evaporate in warm water and glow in the air above the stick, while in ice water they stay trapped inside the plastic"],
       why: "Brightness tracks the rate of the light-producing reaction. Warmth speeds the particles, raising both collision frequency and collision energy; ice water slows both, and the glow fades accordingly." }
   ];
   var it = s6pick(sc);
@@ -2650,12 +2650,12 @@ E("sci-u2-catalyst-curve", 2, ["SC10.8.6"], 3, "gen", function () {
   if (mode === "barrier") {
     q = mcq("The diagram shows the energy pathway of a reaction with and without a catalyst. The catalyst works because the dashed pathway",
       "has a lower hump (lower activation energy), so more collisions have enough energy to succeed",
-      ["starts from higher-energy reactants", "ends at lower-energy products", "removes the hump completely so no energy is needed"],
+      ["starts from higher-energy reactants than the uncatalyzed pathway starts from", "ends at lower-energy products than the products of the uncatalyzed pathway", "removes the hump completely, so no collision energy is needed for the reaction at all"],
       "A catalyst changes the route, not the endpoints: reactants and products sit at the same energies on both curves. Only the barrier between them drops, letting a larger fraction of collisions succeed.", { mode: mode });
   } else {
     q = mcq("On the energy diagram, the reactants and products sit at exactly the same heights on both the solid and dashed curves. This shows that a catalyst",
       "does not change the overall energy change of the reaction, only how fast equilibrium amounts are reached",
-      ["makes the reaction release more energy overall", "turns an endothermic reaction into an exothermic one", "stores the saved energy inside itself permanently"],
+      ["makes the reaction release more energy overall than it would release without a catalyst", "turns an endothermic reaction into an exothermic one by supplying the missing energy itself", "stores the saved energy inside itself permanently, holding it for the rest of the reaction"],
       "Endpoints identical means the energy difference between reactants and products is identical. The catalyst is a shortcut over the hill, not a change of destination, and it is regenerated unchanged.", { mode: mode });
   }
   q.figure = s;
@@ -2672,7 +2672,7 @@ E("sci-u2-rates-experiment", 2, ["SC10.8.6"], 3, "var", varset([
   function () {
     return mcq("Enzymes in the human body are catalysts. A high fever is dangerous partly because",
       "at temperatures well above 37 °C, enzyme molecules lose their shape and stop catalyzing, so essential reactions slow drastically",
-      ["enzymes evaporate from the blood", "all reactions stop instantly at 40 °C", "the body runs out of activation energy"],
+      ["enzymes evaporate from the blood as the temperature rises, leaving too few behind to run the reactions", "all chemical reactions in the body stop instantly at 40 °C, including the ones that release energy for cells", "the body runs out of activation energy, so no reaction can clear its energy barrier at all any more"],
       "Biological catalysts are proteins folded into precise shapes; the pathway they offer depends on that shape. Excess heat unfolds (denatures) them, removing the low-energy route for reactions the body cannot do without. Rate and catalyst shape are the same story told twice.", {});
   }
 ]), ["Design questions are variable questions: find the pair of trials that differ in exactly one factor."]);
@@ -2683,25 +2683,25 @@ E("sci-u2-whmis-symbols", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("A container in the lab carries a WHMIS pictogram showing a flame. The hazard is that the contents are",
       "flammable: they can catch fire easily and must be kept away from heat and sparks",
-      ["corrosive to skin and metal", "a health hazard affecting the lungs over time", "compressed gas under pressure"],
+      ["corrosive to skin and metal: it eats into materials and burns skin on contact", "a health hazard affecting the lungs over time with repeated exposure to it", "compressed gas under pressure: it is stored in a cylinder that may burst if heated"],
       "The flame pictogram means flammable (gases, liquids or solids, and materials that can ignite in air). Each WHMIS pictogram is a picture of its hazard: flame for fire, test tubes dripping for corrosion, a cylinder for compressed gas.", {});
   },
   function () {
     return mcq("The WHMIS pictogram showing a picture of a skull and crossbones means",
       "acute toxicity: the substance can cause death or serious harm from a small exposure",
-      ["the substance is explosive", "the substance is harmful only to fish and aquatic life", "the substance is a mild skin irritant only"],
+      ["the substance is explosive: it can detonate or burst violently when it is heated", "the substance is harmful only to fish and aquatic life, and is safe for people to handle", "the substance is a mild skin irritant only, causing redness that fades within a day"],
       "Skull and crossbones is the most serious immediate-health warning in the system: fatal or toxic if swallowed, inhaled or absorbed through skin. It demands the strictest handling in the room.", {});
   },
   function () {
     return mcq("A pictogram shows liquid dripping from test tubes onto a hand and a surface, eating into both. This warns that the substance is",
       "corrosive: it can burn skin and eyes and damage materials on contact",
-      ["flammable", "an oxidizer that feeds fires", "radioactive"],
+      ["flammable: it catches fire easily near heat, sparks or open flames", "an oxidizer that feeds fires, releasing oxygen as it burns", "radioactive: it gives off invisible radiation that damages body cells"],
       "The corrosion pictogram shows the damage itself: drips eating into skin and metal. Corrosives like strong acids and bases carry it, which ties straight back to the acids and bases work in this unit.", {});
   },
   function () {
     return mcq("The exclamation mark pictogram on a lab container indicates",
       "a less severe health hazard, such as skin or eye irritation or skin sensitization",
-      ["an explosive material", "a gas under pressure", "a substance fatal in small doses"],
+      ["an explosive material that can detonate if it is dropped, heated or struck", "a gas under pressure, stored in a heavy cylinder that must never be heated", "a substance fatal in small doses if it is swallowed, inhaled or absorbed"],
       "The exclamation mark flags the lower-severity health hazards: irritation, allergic skin reaction, drowsiness. It still means read the label and handle with care, but it is a step below the skull and crossbones.", {});
   }
 ]), ["Read the picture literally: each WHMIS pictogram draws its own hazard."]);
@@ -2710,13 +2710,13 @@ E("sci-u2-whmis-safety", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("Before using any chemical in the lab, the first safety step is to",
       "read its label (and SDS when needed) for the WHMIS pictograms, hazard statements and precautions",
-      ["smell it cautiously to identify it", "mix a small amount with water to see what happens", "check its colour against a wall chart"],
+      ["smell it cautiously to identify it, comparing its odour with odours you already know", "mix a small amount with water to see what happens before you use the full amount", "check its colour against a wall chart of common chemicals posted beside the bench"],
       "The label is the contract: pictograms, signal word, hazard and precautionary statements tell you the risks and the handling before you open the container. Never identify a chemical by smell or taste, and never test-react an unknown.", {});
   },
   function () {
     return mcq("A student gets a splash of a corrosive liquid on their skin. The correct immediate action is to",
       "flush the skin with plenty of water at the safety station right away and tell the teacher",
-      ["wipe it off with a paper towel and continue working", "apply a neutralizing chemical from the shelf to the skin", "wait until the end of class to mention it"],
+      ["wipe it off carefully with a paper towel and then continue working as if nothing happened", "apply a neutralizing chemical taken from the shelf directly onto the affected skin", "wait until the end of class to mention it to anyone, so the lesson is not interrupted"],
       "Water, immediately and in quantity, dilutes and carries the corrosive away; seconds matter with burns. Neutralizers are for benches and spills under teacher direction, never for skin, and delay makes chemical burns worse.", {});
   }
 ]), ["Label first, water first: the two reflexes that prevent most lab injuries."]);
@@ -2838,7 +2838,7 @@ E("sci-u2-identify", 2, ["SC10.8.1"], 2, "var", varset([
   function () {
     return mcq("An unknown white solid does not conduct electricity as a solid OR when dissolved in water, and it melts at a low temperature. The compound is most likely",
       "a molecular compound (such as sugar): its neutral molecules carry no charge in any state",
-      ["an ionic compound: its ions are locked in place until it melts", "a metal: its electrons are shared in a lattice", "an acid: it must produce hydrogen ions in water"],
+      ["an ionic compound: its ions are locked in place in the solid and stay locked when dissolved", "a metal: its electrons are shared in a lattice that carries charge only when it is solid", "an acid: it must produce hydrogen ions in water, which then stay bound and cannot move"],
       "No conduction in either state rules out ions entirely: ionic compounds conduct once their ions are free (molten or dissolved). Charge-free molecules explain both observations and the low melting point fits weak intermolecular forces.", {});
   },
   function () {
@@ -2850,7 +2850,7 @@ E("sci-u2-identify", 2, ["SC10.8.1"], 2, "var", varset([
   function () {
     return mcq("Two unlabelled bottles hold white powders: sodium chloride and glucose (a molecular compound). The safest distinguishing test is to",
       "dissolve each in distilled water and test the solutions with a conductivity tester: the salt solution conducts, the glucose solution does not",
-      ["taste a tiny amount of each", "heat both until they decompose and compare the smells", "add acid to both and watch for fizzing"],
+      ["taste a tiny amount of each powder in turn and compare the flavours, since salt and sugar taste very different indeed", "heat both powders strongly until they decompose and compare the smells given off as each one breaks down completely", "add acid to both powders and watch closely for fizzing, since only one of them will produce any gas at all"],
       "Ionic versus molecular shows up cleanly in solution conductivity: NaCl releases ions, glucose stays as neutral molecules. Tasting unknown chemicals is never an option, and both powders survive gentle tests without telling you anything as clear.", {});
   }
 ]), ["Let the properties vote: conduction sorts ionic from molecular, litmus sorts acid from base from neutral."]);
@@ -2861,13 +2861,13 @@ E("sci-u2-symbolic-read", 2, ["SC10.8.2"], 2, "var", varset([
   function () {
     return mcq("The equation 2 H2 + O2 → 2 H2O is read aloud correctly as",
       "'Two molecules of hydrogen react with one molecule of oxygen to produce two molecules of water'",
-      ["'Two atoms of hydrogen react with oxygen to produce water'", "'Hydrogen and oxygen produce hydrogen peroxide'", "'Two grams of hydrogen react with one gram of oxygen'"],
+      ["'Two atoms of hydrogen react with one atom of oxygen to produce two atoms of water'", "'Hydrogen and oxygen react together in equal amounts to produce hydrogen peroxide'", "'Two grams of hydrogen react with one gram of oxygen to produce two grams of water'"],
       "Coefficients count molecules (or moles) of each substance, not atoms and not grams: the 2 in front of H2 doubles the whole H2 molecule. Subscripts belong to the formulas and are never read as quantities reacting.", {});
   },
   function () {
     return mcq("In the equation CH4 + 2 O2 → CO2 + 2 H2O, the coefficient 2 in front of O2 means",
       "two molecules of oxygen take part for every one molecule of methane burned",
-      ["each oxygen molecule contains two atoms", "two grams of oxygen are needed", "the oxygen is twice as reactive as the methane"],
+      ["each methane molecule needs two oxygen atoms, taken from a single oxygen molecule", "two grams of oxygen are needed for every gram of methane that is burned", "the oxygen is twice as reactive as the methane, so it reacts twice as fast"],
       "Coefficients are the recipe ratio between substances. The subscript in O2 (the 2 inside the formula) is the one that says two atoms per molecule; the coefficient outside multiplies whole molecules.", {});
   }
 ]), ["Coefficients count whole molecules in the recipe; subscripts live inside a formula and describe its makeup."]);
@@ -2876,13 +2876,13 @@ E("sci-u2-states", 2, ["SC10.8.2"], 1, "var", varset([
   function () {
     return mcq("In the equation AgNO3(aq) + NaCl(aq) → AgCl(s) + NaNO3(aq), the state symbols tell you that",
       "the silver chloride forms as a solid precipitate, while the other substances are dissolved in water (aqueous)",
-      ["all four substances are gases", "the (s) substance is a solution", "the (aq) substances are pure liquids"],
+      ["all four substances are gases, and the equation describes a reaction between gases in air", "the (s) substance is a solution, while the other substances are all undissolved solids", "the (aq) substances are pure liquids, measured out without any water acting as a solvent"],
       "(aq) means aqueous: dissolved in water. (s) is solid, and a solid appearing from two clear solutions is a precipitate, the visual evidence of this double replacement reaction.", {});
   },
   function () {
     return mcq("Which state symbol set is written correctly?",
       "H2O(l) for liquid water, CO2(g) for carbon dioxide gas, NaCl(s) for solid salt, NaCl(aq) for salt solution",
-      ["H2O(g) for the water in a beaker", "CO2(s) for the gas in a soda", "NaCl(aq) for dry table salt in a shaker"],
+      ["H2O(g) for liquid water, CO2(g) for carbon dioxide gas, NaCl(s) for solid salt, NaCl(aq) for salt solution", "H2O(l) for liquid water, CO2(s) for carbon dioxide gas, NaCl(s) for solid salt, NaCl(aq) for salt solution", "H2O(l) for liquid water, CO2(g) for carbon dioxide gas, NaCl(aq) for solid salt, NaCl(s) for salt solution"],
       "(s), (l), (g) and (aq) describe the physical state in the reaction as written: beaker water is liquid, soda bubbles are gas, shaker salt is a dry solid, and (aq) requires actual water as the solvent.", {});
   }
 ]), ["State symbols: (s) solid, (l) liquid, (g) gas, (aq) dissolved in water."]);
@@ -2891,13 +2891,13 @@ E("sci-u2-acid-rain", 2, ["SC10.8.5"], 3, "var", varset([
   function () {
     return mcq("Acid rain forms when sulfur dioxide and nitrogen oxides from burning fossil fuels react with water in the atmosphere to make sulfuric and nitric acids. In Newfoundland and Labrador the damage is worse than the emissions alone would suggest because",
       "much of the province's bedrock is granite with little carbonate, so soils and lakes have almost no natural base to neutralize the incoming acid",
-      ["the province receives more rain than anywhere else on Earth", "the acids become stronger in cold climates", "local lakes contain no organisms to absorb the acid"],
+      ["the province receives more rain than anywhere else on Earth, so its lakes collect far more acid than lakes in other regions", "the acids in the rain become stronger in cold climates, gaining strength as the rain falls through cold northern air", "local lakes contain no organisms able to absorb the acid, so every bit of acid stays dissolved in the lake water there"],
       "Neutralization capacity (buffering) is geology: limestone country spends the acid on rock, granite country cannot. The same deposition that a limestone lake shrugs off acidifies a granite-bed lake, which is why monitoring here watches lake pH closely.", {});
   },
   function () {
     return mcq("A lake's pH has fallen from 6.5 to 5.0 over twenty years of acid deposition. The hydrogen ion concentration has",
       "increased by a factor of about 30 (1.5 pH units of change, at tenfold per unit)",
-      ["increased by a factor of 1.5", "decreased by a factor of 30", "stayed the same: only the reading changed"],
+      ["increased by a factor of 1.5, matching the size of the pH change itself", "decreased by a factor of about 30, because a falling pH means falling acidity", "stayed the same: only the pH reading changed, not the chemistry of the water"],
       "Each pH unit is a tenfold step: 1 unit is x10, and the extra half unit multiplies by about 3 more, giving roughly x30. Small-looking pH changes are large chemistry changes, which is why a drop of 1.5 units transforms a lake's biology.", {});
   }
 ]), ["Acid rain is a neutralization problem written across a whole landscape: the damage depends on what base the land can offer."]);
@@ -2982,25 +2982,25 @@ E("sci-u3-accuracy", 3, ["SC10.8.7"], 1, "var", varset([
   function () {
     return mcq("A set of darts all land in a tight cluster, but the cluster is well to the left of the bullseye. The throws are",
       "precise but not accurate: they agree with each other but miss the true target",
-      ["accurate but not precise", "both accurate and precise", "neither: a tight cluster is always accurate"],
+      ["accurate but not precise: the tight cluster proves the aim was true and steady", "both accurate and precise: a tight cluster is what careful throwing always produces", "neither accurate nor precise: the cluster misses, so the throws count as neither one"],
       "Accuracy is closeness to the true value; precision is closeness of results to each other. A tight cluster off target is the textbook picture of precision without accuracy, usually a systematic error (aim or equipment) behind it.", {});
   },
   function () {
     return mcq("Four students time the same pendulum swing as 1.48 s, 1.50 s, 1.49 s and 1.49 s. The teacher's photogate reads 1.49 s. Their results are",
       "both accurate (centred on the true value) and precise (tightly clustered)",
-      ["precise but not accurate", "accurate in spread but imprecise", "neither accurate nor precise"],
+      ["precise but not accurate, because hand timing can never match a photogate", "accurate in spread but imprecise: the readings are too far apart to be precise", "neither accurate nor precise: readings that differ cannot show either quality"],
       "The readings cluster tightly (precision) around the accepted value (accuracy). Both qualities can be judged from the same data set: compare the spread for precision, compare the centre to the true value for accuracy.", {});
   },
   function () {
     return mcq("A balance reads 0.3 g with nothing on the pan, and every mass measured afterward is 0.3 g too heavy. This is",
       "a systematic error: it shifts every reading the same way and destroys accuracy while precision can stay high",
-      ["a random error: it scatters readings unpredictably", "a parallax error caused by viewing angle", "not an error at all if the readings are consistent"],
+      ["a random error: it scatters readings unpredictably, higher one time and lower the next, with no fixed pattern", "a parallax error: it comes from viewing a scale from an angle instead of straight on, at eye level", "not an error at all if the readings are consistent, even though the balance was never re-zeroed first"],
       "A zero error repeats identically, which is the mark of a systematic error. Re-zeroing (taring) the balance removes it. Random errors scatter both ways and cannot be corrected by a single adjustment.", {});
   },
   function () {
     return mcq("Reading a liquid level in a graduated cylinder from an angle, instead of at eye level with the meniscus, produces",
       "a parallax error, which can be avoided by always reading at eye level",
-      ["a zero error in the cylinder's scale", "no error, because the angle cancels out", "a change in the liquid's actual volume"],
+      ["a zero error in the cylinder's scale, printed into the glass at the factory", "no error, because the viewing angle cancels out if you read it the same way", "a change in the liquid's actual volume caused by the viewing angle"],
       "Parallax is the apparent shift from viewing position: the meniscus lines up against different scale marks from different heights. Eye level, bottom of the meniscus, every time, removes the error at its source.", {});
   }
 ]), ["Accuracy is about the truth; precision is about agreement. Both are judged differently, and each error type has its own fix."]);
@@ -3015,7 +3015,7 @@ E("sci-u3-units", 3, ["SC10.8.7"], 1, "var", varset([
   function () {
     return mcq("A measurement is recorded as '12.5' with no unit. The record is incomplete because",
       "a measurement is a number plus a unit: 12.5 m, 12.5 s and 12.5 m/s are entirely different quantities",
-      ["numbers over 10 require two units", "the teacher prefers fractions", "12.5 has too many significant figures"],
+      ["numbers over 10 require two units, one for the tens place and one for the ones place in the value", "the teacher prefers fractions, so a decimal value like this one is not an acceptable record", "12.5 has too many significant figures, so the record fails for that reason alone, unit or no unit"],
       "Values and units travel together. Dropping the unit destroys the information: nobody downstream can tell a distance from a time from a speed, and any calculation using it is meaningless.", {});
   }
 ]), ["Never let a number travel without its unit."]);
@@ -3087,19 +3087,19 @@ E("sci-u3-scalar-vector", 3, ["SC10.8.8"], 1, "var", varset([
   function () {
     return mcq("Which list contains only vector quantities?",
       "Displacement, velocity, acceleration: each needs a magnitude and a direction",
-      ["Distance, speed, time", "Displacement, speed, mass", "Velocity, distance, temperature"],
+      ["Distance, speed, time: each is a motion quantity measured along the path taken", "Displacement, speed, mass: displacement alone carries the direction this list requires", "Velocity, distance, temperature: velocity and distance both describe the motion itself"],
       "Vectors carry direction: 5 m [east] is a displacement, while 5 m alone is a distance (scalar). Speed is the scalar partner of velocity; distance pairs with displacement; time, mass and temperature are scalars.", {});
   },
   function () {
     return mcq("A student records a measurement as '24 m/s [north]'. Because it includes a direction, this quantity is the",
       "velocity (a vector), not the speed",
-      ["speed (a scalar)", "distance travelled", "acceleration"],
+      ["speed (a scalar), not a vector", "distance travelled along the route", "acceleration for the whole trip"],
       "The bracketed direction is the giveaway: speed plus direction is velocity. The same value without the direction (24 m/s) would be reported as speed.", {});
   },
   function () {
     return mcq("Which measurement is a scalar quantity?",
       "A temperature of -4 °C: it has size but no direction",
-      ["A displacement of 300 m [west]", "A velocity of 12 m/s [downstream]", "An acceleration of 2.0 m/s² [south]"],
+      ["A displacement of 300 m [west] from the start", "A velocity of 12 m/s [downstream] in the river", "An acceleration of 2.0 m/s² [south] at the start"],
       "Negative is not a direction: -4 °C is a position on a temperature scale, not a heading in space. The other three each state a direction explicitly, which makes them vectors. (In one-dimensional motion a sign can stand in for direction, but a temperature sign is just above or below zero.)", {});
   }
 ]), ["Direction present means vector. Learn the pairs: distance/displacement, speed/velocity."]);
@@ -3150,13 +3150,13 @@ E("sci-u3-disp-scenarios", 3, ["SC10.8.8"], 2, "var", varset([
   function () {
     return mcq("A swimmer completes a full lap in a 50 m pool and finishes at the starting wall. Her displacement for the lap is",
       "0 m: she ends where she started",
-      ["100 m", "50 m", "200 m"],
+      ["100 m: the full distance she swam", "50 m: one length of the pool", "200 m: two laps' worth of distance"],
       "Out 50 m and back 50 m returns her to the start, so displacement is zero even though she swam 100 m of distance. Zero displacement with nonzero distance is the signature of any closed loop.", {});
   },
   function () {
     return mcq("A car travels around a roundabout and exits on the same street it entered, heading back the way it came. At the moment it completes the circle, its displacement from entry is",
       "zero, because it is back at its starting position (its distance travelled is the circumference)",
-      ["equal to the circumference of the roundabout", "equal to the diameter of the roundabout", "impossible to state without the car's speed"],
+      ["equal to the circumference of the roundabout, because the car travelled that full distance around", "equal to the diameter of the roundabout, because the car ends up across the circle from its entry", "impossible to state without the car's speed, because displacement is calculated from speed and time"],
       "Displacement depends only on start and end positions. Same position means zero displacement, however long and curvy the path between them was.", {});
   }
 ]), ["If the finish is the start, the displacement is zero, whatever the odometer says."]);
@@ -3182,7 +3182,7 @@ E("sci-u3-dt-read", 3, ["SC10.8.9"], 2, "gen", function () {
   if (mode === "stopped") {
     q = mcq("The graph shows a cyclist's position over 30 s. Between 10 s and 20 s the cyclist is",
       "stopped: the position stays at 30 m, so the slope (velocity) is zero",
-      ["moving at a constant 3.0 m/s", "returning toward the start", "speeding up steadily"],
+      ["moving at a constant 3.0 m/s, the same speed as the first section of the ride", "returning toward the start at the same steady speed as the ride out", "speeding up steadily as the line continues across the graph"],
       "A flat section on a position-time graph means position is not changing: velocity is the slope, and the slope here is 0. The cyclist rides out for 10 s, rests for 10 s, then rides partway back.", { mode: mode });
   } else if (mode === "speed1") {
     q = mcq("Using the graph, the cyclist's velocity during the first 10 s is",
@@ -3191,7 +3191,7 @@ E("sci-u3-dt-read", 3, ["SC10.8.9"], 2, "gen", function () {
   } else {
     q = mcq("During the last 10 s of the graph, the cyclist's velocity is",
       "-2.0 m/s: the position falls from 30 m to 10 m, and the negative sign shows motion back toward the start",
-      ["2.0 m/s", "-20 m/s", "0 m/s"],
+      ["2.0 m/s: the speed value is right but the direction back toward the start is ignored, so the sign is lost", "-20 m/s: the total drop in position is used as the velocity, without dividing by the 10 s it took", "0 m/s: the cyclist is treated as stopped because this section follows the flat middle section"],
       "Slope = (10 - 30) / 10 = -2.0 m/s. On a position-time graph the sign of the slope is the direction of travel: negative here means heading back toward the reference point.", { mode: mode });
   }
   q.figure = fig;
@@ -3249,13 +3249,13 @@ E("sci-u3-inst-avg", 3, ["SC10.8.10"], 2, "var", varset([
   function () {
     return mcq("A car's speedometer reads 62 km/h at the instant it passes a sign. That reading is the car's",
       "instantaneous speed: its speed at that one moment",
-      ["average speed for the whole trip", "average velocity for the whole trip", "acceleration at the sign"],
+      ["average speed for the whole trip up to that sign", "average velocity for the whole trip up to that sign", "acceleration at the sign as the car passes it"],
       "A speedometer reports the moment-by-moment speed, not any trip average. Average values are computed afterward from totals (total distance over total time) and can differ a lot from what the needle showed at any instant.", {});
   },
   function () {
     return mcq("A bus completes a route with an average velocity of 8.0 m/s [east]. Which statement must be true?",
       "Its displacement divided by its travel time equals 8.0 m/s [east]; its speedometer may have read many different values along the way",
-      ["Its speedometer read exactly 8.0 m/s at every moment", "It never stopped during the route", "Its instantaneous velocity was 8.0 m/s [east] at the midpoint"],
+      ["Its speedometer read exactly 8.0 m/s at every moment, because an average velocity must hold at each instant", "It never stopped during the route, because any stop would make an average velocity in one direction impossible", "Its instantaneous velocity was 8.0 m/s [east] at the midpoint, because the average must equal the value halfway"],
       "An average is a totals statement, not a moment-by-moment claim: stops, starts and speed changes all fold into it. Only the ratio of total displacement to total time is fixed by the average.", {});
   },
   function () {
@@ -3315,17 +3315,17 @@ E("sci-u3-vt-read", 3, ["SC10.8.11"], 2, "gen", function () {
   if (mode === "const") {
     q = mcq("The velocity-time graph shows a scooter trip. Between 5 s and 10 s the scooter is",
       "travelling at a constant velocity of 6 m/s (zero acceleration)",
-      ["stopped", "speeding up steadily", "slowing down steadily"],
+      ["stopped, because a flat line on any motion graph means rest", "speeding up steadily as time passes across this section", "slowing down steadily as time passes across this section"],
       "The line is flat at 6 m/s across that stretch: velocity is not changing, so acceleration is zero. Flat on a velocity graph means steady motion, not rest (flat at zero would be rest).", { mode: mode });
   } else if (mode === "decel") {
     q = mcq("Between 10 s and 13 s, the scooter's motion is",
       "slowing down at a steady rate until it stops",
-      ["speeding up", "moving backwards", "stopped for the whole segment"],
+      ["speeding up as it leaves the flat section behind", "moving backwards for the whole segment shown here", "stopped for the whole segment from its start onward"],
       "The velocity falls steadily from 6 m/s to 0: steady deceleration to a stop. It reaches zero only at the final instant, so 'stopped throughout' misreads the graph; and a falling positive velocity is slowing, not reversing.", { mode: mode });
   } else {
     q = mcq("At t = 2 s, the scooter's velocity is",
       "about 2.4 m/s: the line rises steadily from 0 to 6 m/s over the first 5 s",
-      ["6 m/s", "0 m/s", "about 12 m/s"],
+      ["6 m/s: the top value of the rising section, read as if it applied from the start", "0 m/s: the starting value, read as if the scooter had not yet begun to move at 2 s", "about 12 m/s: twice the graph's top value, from adding rise and run"],
       "Read the value off the rising line: it gains 6 m/s in 5 s (1.2 m/s each second), so at 2 s it reads about 2.4 m/s. The peak value (6) is not reached until 5 s.", { mode: mode });
   }
   q.figure = fig;
@@ -3349,12 +3349,12 @@ E("sci-u3-vt-accel", 3, ["SC10.8.11", "SC10.8.12"], 3, "gen", function () {
   if (mode === "up") {
     q = mcq("From the velocity-time graph, the scooter's acceleration during the first 5 s is",
       "1.2 m/s²: the slope of the rising section, (6 - 0) / 5",
-      ["6 m/s²", "30 m/s²", "0.83 m/s²"],
+      ["6 m/s²: the final velocity, used without dividing by time", "30 m/s²: velocity multiplied by time instead of divided", "0.83 m/s²: the division is inverted, time over velocity"],
       "Acceleration is the slope of a velocity-time graph: rise 6 m/s over run 5 s gives 1.2 m/s². The inverted division (5/6) and the product are the standard traps.", { mode: mode });
   } else {
     q = mcq("From the velocity-time graph, the scooter's acceleration during the final 3 s is",
       "-2.0 m/s²: the slope of the falling section, (0 - 6) / 3",
-      ["2.0 m/s²", "-6 m/s²", "-0.5 m/s²"],
+      ["2.0 m/s²: the size is right but the negative sign is dropped", "-6 m/s²: the velocity change is used without dividing by the 3 s", "-0.5 m/s²: the division is inverted, time over change"],
       "Slope of the falling section: change in velocity -6 m/s over 3 s = -2.0 m/s². The negative sign carries the meaning: velocity shrinking in the positive direction. Dropping the sign erases the physics.", { mode: mode });
   }
   q.figure = fig;
@@ -3436,13 +3436,13 @@ E("sci-u3-accel-concept", 3, ["SC10.8.12"], 2, "var", varset([
   function () {
     return mcq("Which object is definitely accelerating?",
       "A car rounding a curve at a steady 50 km/h: its direction changes, and velocity includes direction",
-      ["A car parked with the engine off", "A train moving in a straight line at a constant 80 km/h", "A book sitting on a desk"],
+      ["A car parked with the engine off, because its weight acts downward on the ground below", "A train moving in a straight line at a constant 80 km/h, because it is travelling very fast indeed", "A book sitting on a desk, because gravity pulls on it the whole time it rests there"],
       "Velocity is speed with direction, so changing direction at constant speed is still a velocity change, which is acceleration. Only the curve qualifies; the others have constant (or zero) velocity.", {});
   },
   function () {
     return mcq("An acceleration of -3.0 m/s² for an object moving in the positive direction means",
       "each second, its velocity drops by 3.0 m/s",
-      ["it moves backwards at 3.0 m/s", "it travels 3.0 m every second", "its velocity is -3.0 m/s"],
+      ["it moves backwards at a steady 3.0 m/s", "it travels 3.0 m every second it moves", "its velocity is -3.0 m/s at every moment"],
       "Acceleration is measured in velocity change per second: -3.0 m/s² subtracts 3.0 m/s from the velocity every second while the sign convention holds. It says nothing directly about the current velocity, which could still be large and positive.", {});
   }
 ]), ["Acceleration is about change: speeding up, slowing down, or turning all count."]);
@@ -3534,13 +3534,13 @@ E("sci-u3-motion-vocab", 3, ["SC10.8.8"], 1, "var", varset([
   function () {
     return mcq("In motion studies, a position measurement is always made relative to",
       "a reference point: the fixed place chosen as 'zero' that all positions are measured from",
-      ["the moving object itself", "the North Pole in every problem", "wherever the object stops"],
+      ["the moving object itself, because its position is measured from wherever it happens to be", "the North Pole in every problem, because all positions on Earth are measured from that one point", "wherever the object stops, because the final position is the one every measurement builds on"],
       "Position has no meaning without an origin: '3 m' only locates something when you know 3 m from what, and in which direction. Changing the reference point changes every position value but no distances travelled.", {});
   },
   function () {
     return mcq("An object is in motion when",
       "its position changes relative to a reference point as time passes",
-      ["it makes a sound", "its engine is running", "it feels like it is moving to a passenger"],
+      ["it makes a sound that a nearby observer can hear while it travels", "its engine is running, whether or not it is going anywhere yet", "it feels like it is moving to a passenger riding on it at the time"],
       "Motion is defined by changing position, full stop. A parked car with the engine running is not in motion; a passenger on a smooth train may feel still while their position changes rapidly. Feelings and engines are not part of the definition.", {});
   }
 ]), ["Position needs a reference point the way a price needs a currency."]);
@@ -3558,13 +3558,13 @@ E("sci-u3-dt-shapes", 3, ["SC10.8.9"], 1, "var", varset([
   function () {
     return mcq("On a position-time graph, a straight diagonal line (constant slope) tells you the object is",
       "moving at a constant velocity: equal distances in equal times",
-      ["speeding up", "slowing down", "stopped"],
+      ["speeding up steadily from rest as the line climbs upward", "slowing down steadily from its fastest speed at the start", "stopped, because a straight line shows no change at all"],
       "Constant slope means constant velocity, since slope IS velocity on this graph. A curve bending upward means speeding up; bending toward flat means slowing down; a flat line is stopped.", {});
   },
   function () {
     return mcq("A position-time graph curves upward, getting steeper and steeper. The object is",
       "speeding up: the slope (velocity) grows as time passes",
-      ["moving at constant velocity", "slowing down", "returning to its start"],
+      ["moving at constant velocity the whole time shown", "slowing down as the slope gets steeper and steeper", "returning toward its start as the graph goes on"],
       "Steepening slope is growing velocity. Read any curve by asking what the slope is doing: rising slope, speeding up; falling slope, slowing down; steady slope, steady speed.", {});
   }
 ]), ["Slope behaviour is the whole reading: steady, steepening, flattening or flat."]);
@@ -3579,7 +3579,7 @@ E("sci-u3-accel-plain", 3, ["SC10.8.12"], 1, "var", varset([
   function () {
     return mcq("A motion described as 'uniform' (constant velocity) has an acceleration of",
       "zero: the velocity is not changing at all",
-      ["9.8 m/s², like gravity", "whatever the velocity is", "one, by definition"],
+      ["9.8 m/s², like gravity near Earth's surface", "whatever the velocity is at that moment", "one, by definition of the word uniform"],
       "Acceleration measures change: no change in speed and no change in direction means no acceleration, however fast the object travels. A cruising airliner at 900 km/h in a straight line has zero acceleration.", {});
   }
 ]), ["Big acceleration means velocity changing fast, not velocity being big."]);
@@ -3617,13 +3617,13 @@ E("sci-u4-organization", 4, ["SC10.10.1"], 1, "var", varset([
   function () {
     return mcq("A pond's community plus the water, sunlight, dissolved oxygen and mud it interacts with is called",
       "an ecosystem: the living community together with the abiotic factors it exchanges matter and energy with",
-      ["a population", "a habitat only", "a biosphere"],
+      ["a population: all the members of one species living together in that pond at the same time", "a habitat only: just the place where one organism lives, without the community around it", "a biosphere: all the ecosystems of Earth combined, taking in every region where life exists"],
       "Ecosystem = community + abiotic environment, with the interactions counted. A habitat is just the place an organism lives; the biosphere is the global sum of all ecosystems.", {});
   },
   function () {
     return mcq("Which list contains only abiotic factors?",
       "Temperature, sunlight, soil pH, dissolved oxygen and wind",
-      ["Bacteria, fungi, temperature and sunlight", "Soil pH, algae, wind and rainfall", "Predators, prey, temperature and water"],
+      ["Bacteria, fungi, temperature, sunlight and rainfall", "Soil pH, algae, wind, rainfall and pond water depth", "Predators, prey, temperature, water and dissolved gases"],
       "Abiotic means non-living: physical and chemical conditions. Bacteria, fungi, algae, predators and prey are all living (biotic), whatever list they sneak into.", {});
   }
 ]), ["One species is a population; all the species are a community; community plus the non-living world is an ecosystem."]);
@@ -3632,13 +3632,13 @@ E("sci-u4-niche-habitat", 4, ["SC10.10.1"], 2, "var", varset([
   function () {
     return mcq("An organism's niche is best described as",
       "its role in the ecosystem: what it eats, what eats it, where and when it is active, and how it interacts with other organisms and factors",
-      ["the exact physical spot where it sleeps", "the size of its territory", "the species it belongs to"],
+      ["the exact physical spot where it sleeps, shelters from weather and returns each night, with nothing about feeding or interactions", "the size of its territory and the boundaries it defends against rivals of its own species throughout the breeding season", "the species it belongs to, along with the scientific name used to classify it among all the other living organisms"],
       "Habitat is the address; niche is the job description. Two species can share a habitat, but if their niches overlap completely, competition sharpens until one wins out.", {});
   },
   function () {
     return mcq("A moose's habitat, stated properly, is",
       "the boreal forest and wetland environment where it lives and finds food, water and shelter",
-      ["eating shrubs and aquatic plants", "being prey for wolves and bears", "competing with caribou for browse"],
+      ["eating shrubs and aquatic plants, the foods it spends much of its day gathering and chewing", "being prey for wolves and bears, which hunt it across its range through the seasons", "competing with caribou for browse in the places where their feeding ranges overlap"],
       "Habitat names the place and its conditions. Eating, being eaten and competing are interactions, parts of the niche instead. Mixing the two lists is the classic slip.", {});
   }
 ]), ["Habitat is where; niche is what it does there."]);
@@ -3658,7 +3658,7 @@ E("sci-u4-growth-curves", 4, ["SC10.10.2"], 2, "gen", function () {
   if (mode === "which") {
     q = mcq("Two populations are graphed. Curve L levels off while curve E climbs ever more steeply. Curve L shows",
       "logistic growth: the population grows quickly, then levels at the environment's carrying capacity as limiting factors bite",
-      ["exponential growth with no limits", "a population going extinct", "growth controlled only by predators arriving late"],
+      ["exponential growth with no limits: the population keeps doubling, with no ceiling in sight, year after year", "a population going extinct: numbers fall steadily until no individuals are left alive to reproduce at all", "growth controlled only by predators arriving late: numbers rise until hunters alone bring them down"],
       "The S-curve is logistic: early exponential-like growth, then a ceiling. The ceiling is the carrying capacity, the population the environment can sustain with its food, space and other limits. Curve E is the unbounded exponential (J-curve).", { mode: mode });
   } else if (mode === "capacity") {
     q = mcq("From curve L on the graph, the carrying capacity of this environment for the population is approximately",
@@ -3668,7 +3668,7 @@ E("sci-u4-growth-curves", 4, ["SC10.10.2"], 2, "gen", function () {
   } else {
     q = mcq("A population introduced to a new island with plentiful food and no predators at first follows the pattern of curve E. The realistic long-term expectation is that",
       "growth will slow and level off (switching to the logistic pattern) as food, space and waste limits appear",
-      ["growth will stay exponential forever, because nothing eats them", "the population will stop growing the moment food drops by any amount", "the population will return to zero on its own"],
+      ["growth will stay exponential forever, because nothing eats them and limits never develop over time", "the population will stop growing the moment food drops by any amount, falling straight back to its starting size", "the population will return to zero on its own, with every individual dying out within a few years"],
       "Exponential growth is always a temporary chapter: resources are finite, so limiting factors eventually bend the J into an S. Island introductions (rabbits, deer, and locally, moose in Newfoundland's history) show the boom first and the limits later.", { mode: mode });
   }
   q.figure = fig;
@@ -3687,7 +3687,7 @@ E("sci-u4-pop-change", 4, ["SC10.10.2"], 2, "gen", function () {
   }
   return mcq("In the hare population data (" + B + " births, " + D + " deaths, " + I + " immigrating, " + E2 + " emigrating), which pair of factors INCREASES the population?",
     "Births and immigration: both add individuals to the population",
-    ["Births and emigration", "Deaths and immigration", "Deaths and emigration"],
+    ["Births and emigration: one adds individuals, one removes them", "Deaths and immigration: one removes individuals, one adds them", "Deaths and emigration: both remove individuals from the population"],
     "Two doors in (birth, immigration) and two doors out (death, emigration). Net growth happens only when the in-door total beats the out-door total.", { mode: mode });
 }, ["Population change is bookkeeping: (births + immigration) - (deaths + emigration)."]);
 
@@ -3701,13 +3701,13 @@ E("sci-u4-limiting", 4, ["SC10.10.2"], 2, "var", varset([
   function () {
     return mcq("A late-June frost kills half the new growth on blueberry barrens across the whole region, in crowded patches and sparse ones alike. The frost acts as a",
       "density-independent limiting factor: its effect does not depend on how crowded the plants are",
-      ["density-dependent factor", "form of competition", "predator"],
+      ["density-dependent factor: its impact grows stronger as the population gets more crowded", "form of competition: plants in crowded patches struggle against each other for light and water", "predator: another organism that attacks the plants and kills a share of them outright"],
       "Weather events are the standard density-independent examples: the fraction harmed is set by exposure, not by population density. They can crash a population, but they do not regulate it smoothly the way density-dependent factors do.", {});
   },
   function () {
     return mcq("As a moose population grows toward the carrying capacity of its range, the growth rate slows mainly because",
       "limiting factors (food shortage, competition, parasites) raise deaths and lower births until gains and losses balance",
-      ["moose decide to reproduce less for the good of the herd", "the population reaches a fixed age and stops", "immigration becomes physically impossible"],
+      ["moose decide to reproduce less for the good of the herd, spacing their calves on purpose as the range fills up", "the population reaches a fixed age and stops, like an individual animal that has finished growing for good", "immigration becomes physically impossible, because the range is sealed off and no new moose can enter it at all"],
       "No planning is involved: scarcer browse per animal means poorer condition, fewer calves and more deaths. The balance point where births plus immigration equal deaths plus emigration is the carrying capacity in action.", {});
   }
 ]), ["Sort limiting factors by one question: does the impact grow with crowding?"]);
@@ -3731,19 +3731,19 @@ E("sci-u4-nitrogen", 4, ["SC10.10.3"], 2, "var", varset([
   function () {
     return mcq("Plants cannot use nitrogen gas (N2) directly from the air, even though air is 78 percent nitrogen. The step that makes nitrogen usable is",
       "nitrogen fixation: certain bacteria (and lightning) convert N2 into compounds such as ammonia and nitrates that plants can absorb",
-      ["photosynthesis by the plant's leaves", "respiration in the roots", "evaporation of soil water"],
+      ["photosynthesis by the plant's leaves, which pulls nitrogen gas in through the leaf pores along with carbon dioxide", "respiration in the roots, which breaks the strong bonds in nitrogen gas while the roots take up soil water", "evaporation of soil water, which leaves the nitrogen from the air dissolved in the topsoil for the roots"],
       "The triple bond in N2 is too strong for most organisms to break. Fixing bacteria, many living in legume root nodules, do the chemistry; that is why clover and alders enrich a soil and why farmers rotate legumes.", {});
   },
   function () {
     return mcq("Denitrification is the part of the nitrogen cycle that",
       "returns nitrogen to the atmosphere: bacteria in waterlogged soil convert nitrates back into nitrogen gas",
-      ["builds proteins inside animal bodies", "adds nitrate fertilizer to fields", "converts ammonia into plant food"],
+      ["builds proteins inside animal bodies, using nitrogen taken in when animals eat plants or other animals", "adds nitrate fertilizer to fields, as farmers spread stored nitrogen compounds on their crops each spring", "converts ammonia into plant food, changing one usable nitrogen compound into another in the soil"],
       "The cycle closes where it opened: denitrifying bacteria turn nitrates back into N2 gas, balancing the fixers. Waterlogged soils (bogs and wetlands, common here) are denitrification hotspots.", {});
   },
   function () {
     return mcq("Excess nitrogen fertilizer washing off fields into a pond most directly causes",
       "an algal bloom: the added nitrogen (with phosphorus) removes the nutrient limit on algae, which multiply, die and decay, using up the water's oxygen",
-      ["the pond water to become sterile", "nitrogen gas to bubble out until the pond is empty of nitrogen", "fish to grow faster with no downside"],
+      ["the pond water to become sterile, killing all the algae and other life in it as soon as the fertilizer arrives in the runoff", "nitrogen gas to bubble out until the pond is empty of nitrogen, leaving the water unable to support any algal growth at all", "fish to grow faster with no downside, feeding on the extra algae and thriving as the pond grows richer in nutrients each year"],
       "Nitrogen is a limiting nutrient in most fresh water, so adding it lifts the limit. The bloom's decay is the oxygen problem: decomposers consume dissolved oxygen faster than it is replaced, and fish suffocate in water full of life gone wrong (eutrophication).", {});
   }
 ]), ["Nitrogen's problem is access: fixation opens the door, denitrification closes the loop."]);
@@ -3752,13 +3752,13 @@ E("sci-u4-cycle-reason", 4, ["SC10.10.3"], 3, "var", varset([
   function () {
     return mcq("Cutting down a forest and burning the wood affects the carbon cycle in two ways that both raise atmospheric carbon dioxide. The two ways are",
       "combustion releases the trees' stored carbon at once, and removing the trees ends their photosynthesis, so less carbon dioxide is drawn back out",
-      ["the soil stops producing carbon dioxide entirely", "rainfall over the region becomes carbonated", "animals move in and breathe harder"],
+      ["the soil stops producing carbon dioxide entirely, so the ground under the cleared forest stops releasing carbon at all", "rainfall over the region becomes carbonated, carrying the extra carbon back down to the ground in every storm that follows", "animals move in and breathe harder, and their extra respiration becomes the main source of new carbon dioxide in the region"],
       "A standing forest is both a store and a pump. Burning empties the store in days; clearing stops the pump for decades. Either alone raises CO2; together they are the double effect that makes deforestation a major term in the carbon budget.", {});
   },
   function () {
     return mcq("Peat bogs cover large areas of Newfoundland and Labrador and matter to the global carbon cycle because",
       "waterlogged, acidic peat slows decay almost to a stop, locking carbon away in the ground for thousands of years",
-      ["peat produces oxygen faster than forests", "bogs convert carbon dioxide directly into peat fuel for export", "bog water dissolves carbon dioxide permanently"],
+      ["peat produces oxygen faster than forests, pulling extra carbon out of the air through the bog plants each summer", "bogs convert carbon dioxide directly into peat fuel for export, storing it in harvested blocks burned elsewhere", "bog water dissolves carbon dioxide permanently, holding it in the dark water so it can never return to the air"],
       "Decay needs what a bog denies: oxygen and warmth. Plant material sinks into cold, airless water and accumulates as peat instead of rotting back to CO2, making northern peatlands one of the planet's great long-term carbon stores. Draining or burning peat reverses the storage.", {});
   }
 ]), ["Cycles questions come down to stores and flows: what holds the element, and which arrows speed up or slow down."]);
@@ -3769,19 +3769,19 @@ E("sci-u4-soil", 4, ["SC10.10.4"], 1, "var", varset([
   function () {
     return mcq("From the surface downward, the usual order of soil horizons is",
       "O (organic litter), A (topsoil), B (subsoil), C (parent material), over bedrock",
-      ["A (topsoil), O (litter), C (parent material), B (subsoil)", "Bedrock, C, B, A, O from the top", "Topsoil, bedrock, subsoil, litter"],
+      ["A (topsoil), O (litter), C (parent material), B (subsoil), over bedrock", "Bedrock, C (parent material), B (subsoil), A (topsoil), O (litter), from the top", "Topsoil, bedrock, subsoil, litter, then parent material, in that order down"],
       "Soil is built in layers: dead material on top, dark humus-rich topsoil where most roots and organisms live, paler subsoil where washed-down minerals collect, then broken parent rock. Remember 'O-A-B-C' from the surface down.", {});
   },
   function () {
     return mcq("Topsoil (the A horizon) is the most valuable layer for plants because it",
       "contains the humus (decayed organic matter) that holds nutrients and water, plus most of the soil's living organisms",
-      ["is the deepest layer, closest to groundwater", "is made of pure sand that drains fastest", "contains no organisms to compete with roots"],
+      ["is the deepest layer, closest to groundwater, lying below the subsoil and the parent material in the profile", "is made of pure sand that drains fastest, with coarse grains that hold neither water nor nutrients for roots", "contains no organisms to compete with roots, so plants grow in a clean layer free of microbes and worms"],
       "Humus is the soil's bank account: it stores nutrients, holds moisture and feeds the microbes that cycle matter. Lose the A horizon to erosion and the land's productivity goes with it, which is why topsoil loss is treated as a slow emergency.", {});
   },
   function () {
     return mcq("Leaching in soil refers to",
       "water percolating down through the soil and carrying dissolved minerals and nutrients with it, out of the upper horizons",
-      ["plants pulling water upward against gravity", "earthworms mixing the horizons together", "frost heaving stones to the surface"],
+      ["plants pulling water upward against gravity, carrying dissolved minerals from deep soil up into their leaves", "earthworms mixing the horizons together, dragging surface material down and bringing subsoil up as they burrow", "frost heaving stones to the surface, pushing buried rocks upward through the soil a little more each winter"],
       "Heavy rainfall regions (including this province) leach their soils steadily: nutrients wash from the A horizon into the B, leaving acidic, nutrient-poor topsoil. It is one reason local garden soils need lime and feeding.", {});
   }
 ]), ["O, A, B, C from the top down; the A horizon is where the value is."]);
@@ -3790,19 +3790,19 @@ E("sci-u4-soil-ph", 4, ["SC10.10.4"], 2, "var", varset([
   function () {
     return mcq("Most garden and farm plants grow best in soil that is",
       "slightly acidic to neutral (about pH 6.0 to 7.0): at that range, essential nutrients stay available to roots",
-      ["strongly acidic (pH 3 to 4)", "strongly alkaline (pH 10 to 11)", "any pH at all: pH does not affect plants"],
+      ["strongly acidic (pH 3 to 4): roots thrive in very sour soil, and nutrients stay fully available there", "strongly alkaline (pH 10 to 11): roots thrive in very limy soil, and nutrients stay available there", "any pH at all: pH does not affect plants, and roots take up the same nutrients equally well in any soil"],
       "Soil pH controls nutrient availability, not just comfort: in strongly acidic soil, aluminum becomes soluble (toxic) and phosphorus locks up; in strongly alkaline soil, iron and manganese lock up instead. The middle range keeps the pantry open.", {});
   },
   function () {
     return mcq("Newfoundland garden soils are often too acidic for vegetables. The standard correction is to add",
       "crushed limestone (lime): a base that neutralizes some of the soil acidity and raises the pH toward neutral",
-      ["sulfur, to lower the pH further", "peat moss, to acidify the soil", "extra rainwater collected in barrels"],
+      ["sulfur, to lower the pH further: a treatment that pushes acidic soil in the direction it already leans", "peat moss, to acidify the soil: a material gardeners use when they want a soil to become more acidic", "extra rainwater collected in barrels: stored rain is slightly acidic and is added to the beds each week"],
       "Liming is neutralization applied to a field: calcium carbonate reacts with soil acids (the same chemistry as Unit 2's antacid). Peat and sulfur push pH the wrong way for this problem.", {});
   },
   function () {
     return mcq("Acid precipitation harms forests partly through the soil: as soil acidifies,",
       "toxic aluminum is released from soil minerals and damages roots, while nutrient cations such as calcium and magnesium leach away faster",
-      ["the soil becomes so basic that roots dissolve", "all soil bacteria multiply beyond control", "the horizons physically swap places"],
+      ["the soil becomes so basic that roots dissolve, as the acid rain turns the topsoil strongly alkaline over time", "all soil bacteria multiply beyond control, feeding on the extra acid and crowding out the roots of the trees", "the horizons physically swap places, with the subsoil rising above the topsoil as acid works down the profile"],
       "Acid rain's damage runs underground: hydrogen ions displace nutrient cations (washed away by leaching) and free aluminum that healthy soil keeps locked up. Trees then starve and weaken even if the rain never touches their leaves.", {});
   }
 ]), ["Soil pH is a nutrient-availability switch: lime raises it, and the province's soils usually need exactly that."]);
@@ -3827,12 +3827,12 @@ E("sci-u4-bioaccum-table", 4, ["SC10.10.5"], 3, "gen", function () {
   if (mode === "factor") {
     return mcq(tableTxt + " By what factor is the pesticide concentrated from the water fleas to the harbour seal?",
       "1000 times: three trophic transfers at about 10 times each (10 x 10 x 10)",
-      ["10 times", "30 times", "4 times, one for each level listed"],
+      ["10 times: only one trophic transfer at about 10 times, with no compounding at all", "30 times: three trophic transfers added together, 10 plus 10 plus 10 in total", "4 times: one for each level listed, counting the levels instead of the transfers"],
       "Count the arrows, not the animals: flea to capelin (x10), capelin to cod (x10), cod to seal (x10). Three multiplications of 10 compound to 1000. This compounding is the magnification in biomagnification.", { mode: mode });
   }
   return mcq(tableTxt + " The seal faces the greatest risk from this pesticide mainly because",
     "it sits at the top of the chain: it eats many contaminated cod over a long life, and the persistent chemical is stored in fat faster than the body can break it down or excrete it",
-    ["seals drink more harbour water than fish do", "the pesticide is produced inside seal tissue", "seals have no predators to keep their numbers down"],
+    ["seals drink more harbour water than fish do, taking in the pesticide directly from the water in far larger daily amounts than any fish in the harbour", "the pesticide is produced inside seal tissue as the seal digests its food, so each seal makes its own supply rather than receiving it from its prey", "seals have no predators to keep their numbers down, so their growing population crowds the harbour until every seal shares the same contaminated water"],
     "Two ingredients make biomagnification dangerous: the chemical persists (it is not broken down), and each predator concentrates what its many prey carried. Long-lived top consumers collect the whole chain's burden.", { mode: mode });
 }, ["Count the arrows between levels and multiply by ten for each: the top of the chain collects everything."]);
 
@@ -3840,19 +3840,19 @@ E("sci-u4-bioaccum-concepts", 4, ["SC10.10.5"], 2, "var", varset([
   function () {
     return mcq("Bioaccumulation and biomagnification differ in that",
       "bioaccumulation is the build-up of a substance inside one organism over its life; biomagnification is the increasing concentration at higher trophic levels of a food chain",
-      ["bioaccumulation happens only in water, biomagnification only on land", "biomagnification is the build-up inside one organism over its life", "they are two names for exactly the same process"],
+      ["bioaccumulation happens only in water, biomagnification only on land, and neither process can cross between the two environments in a food chain", "biomagnification is the build-up inside one organism over its life, while bioaccumulation is the rising concentration at higher trophic levels", "they are two names for exactly the same process, used for build-up in a single organism and for rising levels across a whole food chain alike"],
       "One organism versus the whole chain: a mussel accumulating metals from the water is bioaccumulation; the gull eating a thousand mussels and ending with far higher levels is biomagnification. The seal table question shows the chain effect.", {});
   },
   function () {
     return mcq("DDT was banned in Canada after it was linked to thinning eggshells in eagles and falcons. The birds were exposed so heavily because",
       "DDT persists in the environment and biomagnifies: top predators ate many contaminated prey, concentrating the chemical until it interfered with calcium use in eggshells",
-      ["farmers sprayed DDT directly on the birds' nests", "the birds drank DDT from puddles on farms", "DDT was fed to the birds as medicine"],
+      ["farmers sprayed DDT directly on the birds' nests, coating the eggs each spring when sprayers passed the fields and woodlands near the nesting sites", "the birds drank DDT from puddles on farms, where rainwater collected the spray in low spots the birds visited daily through the breeding season", "DDT was fed to the birds as medicine, given to nesting pairs by workers who believed it would protect the birds from insect pests in the nest"],
       "The birds were never the target and never touched the spray: the food chain delivered the dose. Persistence plus trophic magnification is exactly the combination that makes a 'safe at low levels' chemical dangerous at the top.", {});
   },
   function () {
     return mcq("Mercury advisories tell people to limit how much large predatory fish (such as shark or swordfish) they eat, especially during pregnancy, because",
       "methylmercury biomagnifies, so long-lived top predators carry the highest mercury levels, and mercury damages the developing nervous system",
-      ["large fish are harder to cook safely", "mercury evaporates from small fish before they are caught", "the advisories are about the fish's own health"],
+      ["large fish are harder to cook safely, so home cooks often serve them before the mercury in the flesh has been cooked out", "mercury evaporates from small fish before they are caught, so only the largest fish still contain mercury when they reach a net or a hook", "the advisories are about the fish's own health, warning people not to eat fish that are themselves sick from mercury in their bodies"],
       "Same pattern, different chemical: emissions become methylmercury in water, plankton take it up, and each trophic step multiplies it. A top predator's flesh can carry a million times the water's concentration, which is why size and trophic level, not freshness, drive the advice.", {});
   }
 ]), ["Persistence plus a food chain equals magnification: the top consumer always gets the largest dose."]);
@@ -3885,22 +3885,22 @@ E("sci-u4-foodweb", 4, ["SC10.10.1", "SC10.10.2"], 2, "gen", function () {
   if (mode === "producer") {
     q = mcq("In the food web shown, the producers are",
       "shrubs and grasses, berries and seeds, and aquatic plants: they make their own food by photosynthesis and every arrow of energy starts with them",
-      ["the snowshoe hare, field mouse and tadpole", "the red fox and the lynx", "the great horned owl and the frog"],
+      ["the snowshoe hare, field mouse and tadpole: the first consumers in the web, feeding directly on the producers at the base", "the red fox and the lynx: two predators near the top of the web, hunting the smaller consumers that feed on plants", "the great horned owl and the frog: two consumers in the middle of the web, catching and eating other animals for food"],
       "Producers sit at the base and have only outgoing arrows (others eat them; they eat nothing in the web). Every consumer in the web traces its energy back to one of these three.", { mode: mode });
   } else if (mode === "topeater") {
     q = mcq("Which organism in the web is a top consumer (nothing in this web eats it)?",
       "The lynx: arrows point into it from fox and owl prey lines, but no arrow leaves it toward another predator",
-      ["The red fox", "The great horned owl", "The snowshoe hare"],
+      ["The red fox: it eats hares and mice, but an arrow also runs from the fox up to the lynx that eats it", "The great horned owl: it eats mice and other small animals, but the lynx also takes owls in this web", "The snowshoe hare: it eats shrubs and grasses, and it is eaten in turn by the fox and by the lynx"],
       "Follow the arrows: the fox is eaten by the lynx, and the owl is also taken by the lynx in this web (both arrows run upward into the lynx). The lynx alone has incoming arrows only.", { mode: mode });
   } else if (mode === "remove") {
     q = mcq("If the snowshoe hare were removed from this web, the most direct effects would be",
       "the fox loses a major prey, and the shrubs and grasses face less grazing pressure; the lynx then leans harder on its other prey",
-      ["nothing changes: every species has exactly one food", "the producers all die out within a season", "the owl immediately goes extinct"],
+      ["nothing changes: every species has exactly one food, and each species in the web carries on exactly as before", "the producers all die out within a season, as the shrubs and grasses lose the animal that kept them trimmed", "the owl immediately goes extinct, because it depended entirely on the hare and has no other food in the web"],
       "Webs buffer shocks precisely because most consumers have more than one food (the fox also takes mice). Removal ripples: prey of the hare's predators get hunted harder, and the hare's food is released. Single-chain thinking overstates the damage; ignoring the ripples understates it.", { mode: mode });
   } else {
     q = mcq("A frog in this web gets its energy from the tadpole it eats. Tracing the energy back, the frog's energy originally came from",
       "the Sun, captured by the aquatic plants through photosynthesis, then passed to the tadpole and then the frog",
-      ["the water itself, which produces energy as it flows", "the soil under the pond", "the frog's own respiration"],
+      ["the water itself, which produces energy as it flows through the pond and passes it to every animal there", "the soil under the pond, where energy stored in the mud is taken up by the tadpole as it feeds below", "the frog's own respiration, which makes new energy inside the frog's body each time it breathes"],
       "Every food chain is a relay of captured sunlight: producer photosynthesis is the entry point, and each consumer passes along only a fraction (about 10 percent) of what it received, which is why chains stay short.", { mode: mode });
   }
   q.figure = s6WebSVG();
@@ -3919,19 +3919,19 @@ E("sci-u4-symbiosis", 4, ["SC10.10.7"], 1, "var", varset([
   function () {
     return mcq("A black-legged tick feeds on a moose's blood and can weaken the animal through the winter. The tick and moose relationship is",
       "parasitism: the tick benefits and the moose is harmed",
-      ["mutualism", "commensalism", "competition"],
+      ["mutualism: both partners benefit from the relationship", "commensalism: one benefits, the other is unaffected", "competition: both sides lose out while contesting a resource"],
       "The tick gains meals; the moose loses blood, energy and sometimes its life to heavy infestations (winter tick is a real and growing pressure on moose here). Plus for one, minus for the other: parasitism.", {});
   },
   function () {
     return mcq("Whale barnacles ride on a whale's skin, gaining transport to food-rich waters; the whale is neither helped nor noticeably harmed. This is",
       "commensalism: one benefits, the other is unaffected",
-      ["mutualism: both benefit", "parasitism: one is harmed", "intraspecific competition"],
+      ["mutualism: both partners benefit from the arrangement", "parasitism: one partner benefits and the other is harmed", "intraspecific competition: rivals of one species compete"],
       "One plus and one zero: commensalism. The test is the second partner's score: no clear benefit rules out mutualism, and no harm rules out parasitism.", {});
   },
   function () {
     return mcq("Two bull moose fight over access to a cow moose during the rut. This interaction is",
       "intraspecific competition: members of the SAME species competing for a resource (here, mates)",
-      ["interspecific competition: different species competing", "predation", "mutualism"],
+      ["interspecific competition: members of different species competing against each other for a shared resource", "predation: one animal hunts, kills and eats another, gaining a meal from the encounter", "mutualism: both animals benefit from taking part in the interaction with each other"],
       "Intra means within: same species. Inter means between species. The contested resource (food, mates, territory, light) can be anything; the classification turns only on whether the rivals are the same species.", {});
   }
 ]), ["Score each partner (+, -, 0) and the relationship names itself."]);
@@ -3940,19 +3940,19 @@ E("sci-u4-adaptations", 4, ["SC10.10.7"], 2, "var", varset([
   function () {
     return mcq("The snowshoe hare turns white in winter and brown in summer. This adaptation helps it survive mainly by",
       "camouflage: matching the background in each season makes it harder for predators (lynx, owls, foxes) to spot",
-      ["keeping it warmer in winter through white fur insulation", "signalling to other hares that winter has arrived", "absorbing more sunlight in summer to speed digestion"],
+      ["keeping it warmer in winter through white fur insulation, because a white coat traps body heat better than a brown one does", "signalling to other hares that winter has arrived, so the whole population changes its behaviour at the same time of year", "absorbing more sunlight in summer to speed digestion, because the brown coat takes in heat that helps the gut work faster"],
       "The colour tracks the background, not the temperature: a white hare on snow and a brown hare on bare ground are both hard to see. Climate shifts that uncouple snow cover from the hare's timing expose it, which is why this adaptation is now a climate-change case study.", {});
   },
   function () {
     return mcq("A ptarmigan's feathered feet act like snowshoes, spreading its weight on snow. This is classified as a",
       "structural (physical) adaptation: a body feature that improves survival in its environment",
-      ["behavioural adaptation: something the bird does", "physiological adaptation: an internal body process", "learned behaviour passed down by teaching"],
+      ["behavioural adaptation: something the bird does, an action it takes to improve its chances in snow", "physiological adaptation: an internal body process, a chemical change inside the bird that helps it", "learned behaviour passed down by teaching, as older birds show the young how to manage in deep snow"],
       "The three families: structural (built into the body), behavioural (actions, like migration), physiological (internal chemistry, like producing antifreeze proteins). Feathered feet are anatomy, so structural.", {});
   },
   function () {
     return mcq("Spruce trees in exposed coastal sites grow flagged: branches only on the sheltered side, trunks bent away from the wind (tuckamore). This growth pattern is",
       "a response to an abiotic factor: the constant wind prunes and shapes the growing tree",
-      ["a disease caused by a fungus", "damage done by moose browsing", "a genetic defect in coastal spruce"],
+      ["a disease caused by a fungus, which kills the branches on the exposed side of the tree", "damage done by moose browsing, as moose strip the reachable branches on one side of trees", "a genetic defect in coastal spruce, passed down in the seed of the trees near the shore"],
       "Wind is abiotic, and the tree's shape is a living record of it. The same species grows tall and straight inland: the difference is environment, not genes, which is the mark of a plastic response to a non-living factor.", {});
   }
 ]), ["Adaptation questions ask 'what problem does this solve?' Name the problem first."]);
@@ -3963,7 +3963,7 @@ E("sci-u4-biodiversity", 4, ["SC10.10.8"], 2, "var", varset([
   function () {
     return mcq("A forest with many species is generally more stable than a single-species plantation because",
       "biodiversity provides backups: if one species is hit by disease or a bad year, others fill its role, and food webs reroute",
-      ["more species means more sunlight reaches the forest", "plantations are illegal in Canada", "diverse forests have no pests at all"],
+      ["more species means more sunlight reaches the forest, because a mixed canopy of taller trees lets extra light through", "plantations are illegal in Canada, so single-species stands are never planted and mixed forests are the only kind", "diverse forests have no pests at all, because insects and diseases cannot survive where many tree species grow"],
       "Diversity is insurance. A spruce plantation can be levelled by one budworm outbreak with the right host everywhere; a mixed forest loses some trees and keeps functioning. Stability comes from the web having alternate paths.", {});
   },
   function () {
@@ -3975,7 +3975,7 @@ E("sci-u4-biodiversity", 4, ["SC10.10.8"], 2, "var", varset([
   function () {
     return mcq("A keystone species is one whose",
       "effect on its ecosystem is far larger than its numbers suggest: removing it reshapes the whole community (sea otters holding kelp forests together by eating urchins is the classic case)",
-      ["population is the largest in the ecosystem", "name appears first in the species list", "body size is the biggest of any consumer"],
+      ["population is the largest in the ecosystem, with more individuals than any other species in the community, so its sheer numbers dominate every food web in the system around it", "name appears first in the species list, at the head of every official list of the ecosystem's species, which is what marks it out as the most important species present there", "body size is the biggest of any consumer, larger and heavier than every other animal that feeds in the ecosystem, which is what gives it such influence over the whole community"],
       "Keystone status is about leverage, not abundance. Sea otters are few compared with urchins, but remove the otters and urchins strip the kelp, collapsing the habitat for hundreds of other species.", {});
   }
 ]), ["Diversity is insurance; succession is rebuilding, and it is secondary whenever the soil survives."]);
@@ -3984,19 +3984,19 @@ E("sci-u4-external", 4, ["SC10.10.6"], 3, "var", varset([
   function () {
     return mcq("The European green crab, an invasive species, has spread into Placentia Bay and other local waters, where it digs up eelgrass beds and eats juvenile shellfish. Its success as an invader is best explained by",
       "arriving without its natural predators and diseases, in an environment with food and habitat it can exploit, so its population grows unchecked",
-      ["being the largest crab species in the Atlantic", "local species choosing not to compete with it", "the water being too warm for any native crabs"],
+      ["being the largest crab species in the Atlantic, too big for any local predator or competitor to challenge in its new home waters", "local species choosing not to compete with it, leaving the eelgrass beds and shellfish grounds open for the crab to take over", "the water being too warm for any native crabs, so the bay held no crabs at all until the green crab arrived from overseas"],
       "Invasions are population ecology with the limits removed: enemy release plus available resources gives exponential-style growth, and the damage falls on native species that evolved without this predator or competitor.", {});
   },
   function () {
     return mcq("The 1992 northern cod moratorium followed decades of improving fishing technology and rising catches. In population terms, the collapse happened because",
       "the harvest removed fish faster than births and growth could replace them, so the population was pushed far below a sustainable level and spawning stock shrank",
-      ["cod migrated permanently to another ocean", "the ocean ran out of plankton in one season", "cod stopped reproducing for genetic reasons"],
+      ["cod migrated permanently to another ocean, leaving the Grand Banks empty as the whole stock moved away to distant southern waters for good", "the ocean ran out of plankton in one season, starving the cod all at once when the food at the base of their food chain vanished in a single year", "cod stopped reproducing for genetic reasons, with the whole stock losing the ability to spawn at the same time for reasons inside the fish themselves"],
       "A harvested population is a balance sheet: removals beyond the surplus production draw down the capital (the spawning stock). Once the breeders are too few, even stopping the harvest entirely gives a slow, uncertain recovery, which is the lesson the moratorium taught.", {});
   },
   function () {
     return mcq("A highway and subdivision split a forest into two patches, and a ground-nesting bird disappears from the smaller patch within a few years while surviving in the larger one. The best explanation is",
       "habitat fragmentation: the small patch cannot support a viable population (too few mates, too much edge exposure to predators and weather), so local extinction follows even though some habitat remains",
-      ["the birds all chose to move to the bigger patch", "the smaller patch's soil changed type", "birds cannot cross roads under any circumstances"],
+      ["the birds all chose to move to the bigger patch, preferring its size and leaving the smaller patch empty even though it still offered food and nesting sites of their own", "the smaller patch's soil changed type, turning from rich forest soil into poor ground that could no longer support the trees and plants the birds depended on for cover", "birds cannot cross roads under any circumstances, so the two patches were cut off completely the day the highway opened and no bird ever moved between them again"],
       "Fragmentation shrinks effective population size and raises edge effects. A patch can look green and suitable yet function as a sink, which is why conservation planning counts connected area, not just any green space.", {});
   }
 ]), ["External factors work through the same population bookkeeping: births, deaths, and the limits they run into."]);
@@ -4005,19 +4005,19 @@ E("sci-u4-sustainability", 4, ["SC10.10.8"], 2, "var", varset([
   function () {
     return mcq("Sustainability, as used in this unit, means",
       "using resources and managing ecosystems so that present needs are met without destroying the ability of future generations (and other species) to meet theirs",
-      ["never using any natural resource at all", "maximizing this year's harvest while prices are high", "keeping every ecosystem exactly as it is today, with no change allowed"],
+      ["never using any natural resource at all, leaving forests, fish stocks and farmland completely untouched by people in every generation", "maximizing this year's harvest while prices are high, taking as much as the market will buy now and leaving future years to themselves", "keeping every ecosystem exactly as it is today, with no change allowed in any habitat, population or harvest anywhere at any time"],
       "Sustainability is not zero use and not frozen nature; it is use within the system's replacement rates, so the capital (soil, stocks, cycles) survives the spending of the interest. The cod collapse is the local monument to the opposite choice.", {});
   },
   function () {
     return mcq("A town wants its fishery to be sustainable. Which policy best fits the science of this unit?",
       "Set catch limits from population surveys so the harvest stays within the stock's surplus production, and protect spawning habitat",
-      ["Let each boat catch as much as it can while fish are plentiful", "Ban all fishing permanently, everywhere", "Import fish and stop monitoring the local stock"],
+      ["Let each boat catch as much as it can while fish are plentiful, trusting that the stock will always replace what the fleet takes", "Ban all fishing permanently, everywhere, so that no boat ever removes another fish from any stock in any season again", "Import fish and stop monitoring the local stock, relying on foreign catches while the local population goes uncounted"],
       "Sustainable harvest is arithmetic plus habitat: measure the population, take less than the growth, and keep the nursery habitat intact. A permanent total ban is more than sustainability requires, and unmonitored freedom is how stocks collapse.", {});
   },
   function () {
     return mcq("An ecological footprint measures",
       "the area of land and water needed to supply a person's (or a nation's) resources and absorb its wastes, letting lifestyles be compared for sustainability",
-      ["the physical size of a person's property", "the number of species a person can name", "the distance a person walks outdoors each year"],
+      ["the physical size of a person's property, counting the house lot and any other land the person owns or rents where they live", "the number of species a person can name, scored on a test of the plants and animals found in the region around their home", "the distance a person walks outdoors each year, added up from daily walks and hikes on the trails near their home community"],
       "The footprint converts consumption into the one currency ecosystems deal in: productive area. When humanity's total footprint exceeds the planet's productive area (overshoot), the difference is paid out of stored capital, like drawing down a bank account.", {});
   }
 ]), ["Sustainability is living on the interest, not the capital."]);
@@ -4079,19 +4079,19 @@ E("sci-u4-biomes", 4, ["SC10.10.1"], 1, "var", varset([
   function () {
     return mcq("Most of Newfoundland and Labrador's land area belongs to which terrestrial biome?",
       "Boreal forest (taiga): coniferous forest of spruce and fir with cold winters, short cool summers and acidic, nutrient-poor soils",
-      ["Tundra across the whole province", "Temperate deciduous forest of maple and oak", "Grassland: the province is mostly open prairie"],
+      ["Tundra across the whole province, with low plants, permafrost and no trees anywhere from the coast to the interior", "Temperate deciduous forest of maple and oak, with mild winters and broad-leaved trees that drop their leaves in autumn", "Grassland: the province is mostly open prairie, with deep grass soils and almost no forest cover in any region"],
       "The island and southern Labrador are boreal: conifers built for snow load and a short growing season. Tundra takes over in northern Labrador and at high elevations; deciduous forest and grassland belong to milder, drier regions far to the south and west.", {});
   },
   function () {
     return mcq("A biome is defined mainly by",
       "its climate (temperature and precipitation patterns) and the community of organisms adapted to that climate",
-      ["the country it is in", "the single largest animal living there", "the type of rock under the soil alone"],
+      ["the country it is in, together with the borders and the part of the continent where the biome happens to be found", "the single largest animal living there, whose size and habits set the character of the whole community around it", "the type of rock under the soil alone, regardless of the rain, snow and temperatures the region receives each year"],
       "Climate is the sorting force: the same biome (boreal forest, desert, tundra) appears on different continents wherever the same temperature and rainfall pattern occurs, with different but similarly adapted species filling the roles.", {});
   },
   function () {
     return mcq("Tundra plants such as those in northern Labrador are typically low, ground-hugging and fast to flower. These traits are adaptations to",
       "a very short, cold growing season with strong winds and a layer of permanently frozen ground (permafrost) below the surface",
-      ["extreme heat and drought", "deep shade under tall trees", "soil that is rich and deep"],
+      ["extreme heat and drought, in a climate where summer temperatures stay high and rain almost never falls at all", "deep shade under tall trees, where little sunlight reaches the ground through a closed canopy overhead in summer", "soil that is rich and deep, offering roots easy growing conditions and a long season to spread through it freely"],
       "Tundra life is a race against the calendar: grow low (out of the wind), flower fast, and root shallow above the permafrost. Every trait on the list answers a specific hardship of the climate.", {});
   }
 ]), ["Biome equals climate plus its adapted community: name the climate and the community follows."]);
@@ -4100,19 +4100,19 @@ E("sci-u4-foodchain", 4, ["SC10.10.1", "SC10.10.2"], 1, "var", varset([
   function () {
     return mcq("In the chain grass → grasshopper → frog → heron, the frog is the",
       "secondary consumer: it eats a primary consumer (the grasshopper, which ate the producer)",
-      ["producer", "primary consumer", "decomposer"],
+      ["producer: it makes its own food from sunlight by photosynthesis, as the grass does", "primary consumer: it eats a producer (the grass, at the start of the chain) directly", "decomposer: it breaks down dead organisms and returns their nutrients to the soil"],
       "Count from the producer: grass (producer), grasshopper (primary consumer, herbivore), frog (secondary consumer), heron (tertiary consumer). Trophic level and consumer level are the same count.", {});
   },
   function () {
     return mcq("Only about 10 percent of the energy at one trophic level becomes biomass at the next. The other 90 percent is mostly",
       "used by the organisms for living (movement, body heat, life processes) and lost as heat, or passed to decomposers in waste and uneaten parts",
-      ["destroyed, violating conservation of energy", "stored in the soil as new minerals", "reflected back to the Sun"],
+      ["destroyed, violating conservation of energy, so the missing energy simply stops existing once an animal has used its food", "stored in the soil as new minerals, buried under the ground where the next trophic level cannot reach them ever again", "reflected back to the Sun, returned to space as light given off by the animals and plants at each level in turn"],
       "Energy is never destroyed, it is spent: an animal burns most of its food staying alive, and that energy leaves as heat. The 10 percent rule is why food chains rarely exceed four or five levels and why top predators are always rare.", {});
   },
   function () {
     return mcq("Decomposers (bacteria and fungi) are essential to every ecosystem because they",
       "break down dead organisms and waste, returning nutrients to the soil and water for producers to use again",
-      ["produce energy from sunlight for the food web", "eat only invasive species", "prevent all disease in populations"],
+      ["produce energy from sunlight for the food web, capturing light the way green plants do in photosynthesis", "eat only invasive species, keeping introduced pests down so native food webs are never disturbed by them", "prevent all disease in populations, killing the microbes that would otherwise spread sickness through herds"],
       "Without decomposers, nutrients would stay locked in dead bodies and ecosystems would run out of the raw materials for new growth within years. They are the cycle-closers of Unit 4, just as they were in the carbon cycle.", {});
   }
 ]), ["Count trophic levels from the producer, and remember the 10 percent toll at every step."]);
@@ -4121,13 +4121,13 @@ E("sci-u4-invasive", 4, ["SC10.10.6"], 1, "var", varset([
   function () {
     return mcq("An invasive species is best defined as",
       "a non-native species whose population spreads and causes harm to native ecosystems, economies or health in its new home",
-      ["any species that lives near people", "any species with a large population", "a species that is endangered in its home range"],
+      ["any species that lives near people, found around towns, farms and harbours wherever settlement provides it with food", "any species with a large population, spreading quickly because its numbers are already high in the place where it lives", "a species that is endangered in its home range, at risk there and protected by law in the country it came from"],
       "Three parts: not from here, spreading, and causing harm. Plenty of introduced species stay quiet (most garden plants); the invasive minority combine fast reproduction with freedom from their natural enemies.", {});
   },
   function () {
     return mcq("Moose are not native to the island of Newfoundland: a few were introduced in 1878 and 1904. Their population exploded in the new home mainly because",
       "the island offered abundant food and habitat with none of the mainland's established wolf packs to limit them",
-      ["moose reproduce faster in cold climates by nature", "the introduced moose were a special fast-breeding variety", "there were no other animals eating plants on the island"],
+      ["moose reproduce faster in cold climates by nature, so each cow raised more calves on the island than elsewhere", "the introduced moose were a special fast-breeding variety, selected for rapid reproduction before their release", "there were no other animals eating plants on the island, so every shrub and tree was left to the moose alone"],
       "Classic introduction pattern: resources plentiful, predators and parasites left behind, so the population grew exponentially for decades before food limits and management brought it toward balance. The moose is now both a valued game animal and an ecosystem force (its browsing reshapes forests).", {});
   }
 ]), ["Introduced is a fact; invasive is introduced plus spreading plus harmful."]);
@@ -4136,13 +4136,13 @@ E("sci-u4-species-risk", 4, ["SC10.10.8"], 2, "var", varset([
   function () {
     return mcq("Newfoundland's woodland caribou herds declined sharply in recent decades. Which combination of factors do biologists most often cite?",
       "Predation on calves (including by coyotes, a recent arrival on the island), habitat change, and hunting pressure together outpacing calf survival",
-      ["Caribou forgot their migration routes", "The herds all moved to Labrador permanently", "Winters became so warm that caribou overheat"],
+      ["Caribou forgot their migration routes, losing the paths to their calving grounds and wintering areas as the older animals died off", "The herds all moved to Labrador permanently, leaving the island empty as the animals crossed to the mainland for better feeding", "Winters became so warm that caribou overheat, their heavy winter coats trapping heat through the season until the animals weaken"],
       "Population decline is bookkeeping again: when deaths (calves especially) exceed births year after year, the herd shrinks. A new predator changed the death column while habitat change squeezed the birth column (lichen-rich mature forest lost), and management responds on both sides of the ledger.", {});
   },
   function () {
     return mcq("Protecting a species at risk usually requires protecting its habitat, not just banning hunting, because",
       "a population cannot recover without the food, shelter, breeding sites and space its life cycle needs, however safe individuals are from being killed",
-      ["hunting bans are impossible to enforce anywhere", "habitats are cheaper to protect than species", "individual animals do not matter to populations"],
+      ["hunting bans are impossible to enforce anywhere at all, so officers cannot stop illegal hunting even where a ban is in place", "habitats are cheaper to protect than species, so governments choose the option that costs the public the least money each year", "individual animals do not matter to populations, so protecting single animals never helps a species recover its numbers"],
       "Individuals are the population only when the environment can carry them: protect the animals but lose the calving grounds or the winter range, and the births column collapses anyway. Habitat is the carrying capacity made visible.", {});
   }
 ]), ["Conservation works on the whole ledger: births, deaths and the habitat that sets both."]);
