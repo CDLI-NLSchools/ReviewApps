@@ -3,6 +3,182 @@
    per-unit sources there, not this file. Entries register through
    the shell's E(id, unit, indicators, level, kind, gen). */
 
+/* ----- bank-helpers.js ----- */
+// Math 3200 shared bank helpers (added Nov 12, 2026 for Graphics Pass
+// Tranche 4). The unit files keep their unit-prefixed local helpers;
+// these builders are shared across units.
+/* ================= Tranche 4 graphics builders =================
+   fnPlotSVG: an honest general function plotter. It samples the given
+   function and draws only where the value is finite and inside the
+   window: nothing is clamped, so logarithmic and radical curves stop
+   at their domain edges, and asymptotes break the path instead of
+   drawing a false line across. fnPanelsSVG draws two such panels side
+   by side for transformation comparisons. treeSVG draws a branching
+   tree diagram with stage titles and edge labels; a stage's options
+   may be a fixed list or a function of the path taken so far (for
+   arrangements without repetition). treeSVG returns null when the
+   tree has more leaves than o.maxLeaves (default 120), so callers can
+   leave oversized draws unfigured. */
+function fnPathD(fn,X,Y,x0,x1,y0,y1,N){
+  N=N||240;var d="",pen=false,py=0,i,x,y;
+  for(i=0;i<=N;i++){
+    x=x0+(x1-x0)*i/N;
+    try{y=fn(x);}catch(e){y=NaN;}
+    if(typeof y!=="number"||!isFinite(y)||y<y0||y>y1){pen=false;continue;}
+    if(pen&&Math.abs(y-py)>0.75*(y1-y0)){pen=false;}
+    d+=(pen?"L ":"M ")+fmt(X(x),1)+" "+fmt(Y(y),1)+" ";
+    pen=true;py=y;
+  }
+  return d;
+}
+function fnPlotSVG(fn,x0,x1,y0,y1,o){
+  o=o||{};
+  var i,x,y;
+  if(y0===undefined||y1===undefined){
+    var lo=Infinity,hi=-Infinity;
+    for(i=0;i<=400;i++){
+      x=x0+(x1-x0)*i/400;
+      try{y=fn(x);}catch(e){y=NaN;}
+      if(typeof y==="number"&&isFinite(y)){if(y<lo)lo=y;if(y>hi)hi=y;}
+    }
+    if(!isFinite(lo)){lo=-1;hi=1;}
+    if(o.asymY!==undefined){lo=Math.min(lo,o.asymY);hi=Math.max(hi,o.asymY);}
+    var padY=(hi-lo)*0.15+0.5;
+    if(y0===undefined)y0=Math.floor((lo-padY)*2)/2;
+    if(y1===undefined)y1=Math.ceil((hi+padY)*2)/2;
+    if(y1-y0<1)y1=y0+1;
+  }
+  var W=440,H=250,padL=30,padR=12,padT=10,padB=24;
+  var X=function(x){return padL+(x-x0)/(x1-x0)*(W-padL-padR);};
+  var Y=function(y){return H-padB-(y-y0)/(y1-y0)*(H-padT-padB);};
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  function labFmt(v,labels){
+    if(labels){for(var j=0;j<labels.length;j++){if(Math.abs(labels[j][0]-v)<1e-6)return labels[j][1];}}
+    return fmt(v);
+  }
+  var gx=o.gx||1,gy=o.gy||1,g,idx;
+  if((x1-x0)/gx<=220){
+    idx=0;
+    for(g=Math.ceil(x0/gx)*gx;g<=x1+1e-9;g+=gx,idx++){
+      out+='<line x1="'+fmt(X(g),1)+'" y1="'+padT+'" x2="'+fmt(X(g),1)+'" y2="'+(H-padB)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(o.labelX&&(!o.labelEvery||idx%o.labelEvery===0))
+        out+='<text x="'+fmt(X(g),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+labFmt(g,o.xLabels)+'</text>';
+    }
+  }
+  if((y1-y0)/gy<=220){
+    for(g=Math.ceil(y0/gy)*gy;g<=y1+1e-9;g+=gy){
+      out+='<line x1="'+padL+'" y1="'+fmt(Y(g),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(g),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(o.labelY&&!(g===0&&o.labelX))
+        out+='<text x="'+(padL-4)+'" y="'+fmt(Y(g)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+labFmt(g,o.yLabels)+'</text>';
+    }
+  }
+  if(y0<0&&y1>0)out+='<line x1="'+padL+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.3"/>';
+  if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="'+padT+'" x2="'+fmt(X(0),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_INK+'" stroke-width="1.3"/>';
+  var xLabY=(y0<0&&y1>0)?Y(0):(H-padB);
+  out+='<text x="'+(W-padR-2)+'" y="'+fmt(xLabY-6,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">x</text>';
+  var yLabX=(x0<0&&x1>0)?X(0):padL;
+  out+='<text x="'+fmt(yLabX+6,1)+'" y="'+(padT+10)+'" font-size="12" fill="'+FIG_INK+'">y</text>';
+  if(o.asymY!==undefined&&o.asymY>y0&&o.asymY<y1){
+    out+='<line x1="'+padL+'" y1="'+fmt(Y(o.asymY),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(o.asymY),1)+'" stroke="'+FIG_ALT+'" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+(W-padR-4)+'" y="'+fmt(Y(o.asymY)-5,1)+'" font-size="10" fill="'+FIG_ALT+'" text-anchor="end">y = '+fmt(o.asymY)+'</text>';
+  }
+  if(o.asymX!==undefined&&o.asymX>=x0&&o.asymX<=x1){
+    out+='<line x1="'+fmt(X(o.asymX),1)+'" y1="'+padT+'" x2="'+fmt(X(o.asymX),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_ALT+'" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+fmt(X(o.asymX)+5,1)+'" y="'+(padT+24)+'" font-size="10" fill="'+FIG_ALT+'">x = '+fmt(o.asymX)+'</text>';
+  }
+  if(fn){
+    var d=fnPathD(fn,X,Y,x0,x1,y0,y1,o.N);
+    if(d)out+='<path d="'+d+'" fill="none" stroke="'+(o.color||FIG_ACC)+'" stroke-width="2.2"/>';
+  }
+  (o.extraFns||[]).forEach(function(ef){
+    var dd=fnPathD(ef.fn,X,Y,x0,x1,y0,y1,o.N);
+    if(dd)out+='<path d="'+dd+'" fill="none" stroke="'+(ef.color||FIG_ALT)+'" stroke-width="2"/>';
+  });
+  (o.points||[]).forEach(function(p,i){
+    out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="'+FIG_ALT+'"/>';
+    if(o.pointLabels&&o.pointLabels[i])out+='<text x="'+fmt(X(p[0])+7,1)+'" y="'+fmt(Y(p[1])-7,1)+'" font-size="10" fill="'+FIG_INK+'">'+o.pointLabels[i]+'</text>';
+  });
+  return out+'</svg>';
+}
+function fnPanelsSVG(panels,o){
+  o=o||{};
+  var W=440,H=250,gap=12,np=panels.length;
+  var pw=(W-gap*(np-1))/np;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  panels.forEach(function(pn,pi){
+    var ox=pi*(pw+gap),padL=24,padR=5,padT=18,padB=20;
+    var x0=pn.x0,x1=pn.x1,y0=pn.y0,y1=pn.y1;
+    var X=function(x){return ox+padL+(x-x0)/(x1-x0)*(pw-padL-padR);};
+    var Y=function(y){return H-padB-(y-y0)/(y1-y0)*(H-padT-padB);};
+    out+='<rect x="'+fmt(ox+0.5,1)+'" y="0.5" width="'+fmt(pw-1,1)+'" height="'+(H-1)+'" fill="none" stroke="#eae5d6" stroke-width="1"/>';
+    if(pn.title)out+='<text x="'+fmt(ox+pw/2,1)+'" y="13" font-size="11" fill="'+FIG_INK+'" text-anchor="middle">'+pn.title+'</text>';
+    var gx=pn.gx||1,gy=pn.gy||1,g;
+    if((x1-x0)/gx<=60){for(g=Math.ceil(x0/gx)*gx;g<=x1+1e-9;g+=gx){
+      out+='<line x1="'+fmt(X(g),1)+'" y1="'+padT+'" x2="'+fmt(X(g),1)+'" y2="'+(H-padB)+'" stroke="#eae5d6" stroke-width="1"/>';
+      out+='<text x="'+fmt(X(g),1)+'" y="'+(H-5)+'" font-size="8" fill="#5a5344" text-anchor="middle">'+fmt(g)+'</text>';}}
+    if((y1-y0)/gy<=60){for(g=Math.ceil(y0/gy)*gy;g<=y1+1e-9;g+=gy){
+      out+='<line x1="'+fmt(ox+padL,1)+'" y1="'+fmt(Y(g),1)+'" x2="'+fmt(ox+pw-padR,1)+'" y2="'+fmt(Y(g),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(g!==0)out+='<text x="'+fmt(ox+padL-3,1)+'" y="'+fmt(Y(g)+3,1)+'" font-size="8" fill="#5a5344" text-anchor="end">'+fmt(g)+'</text>';}}
+    if(y0<0&&y1>0)out+='<line x1="'+fmt(ox+padL,1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(ox+pw-padR,1)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+    if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="'+padT+'" x2="'+fmt(X(0),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+    if(pn.asymY!==undefined&&pn.asymY>y0&&pn.asymY<y1)
+      out+='<line x1="'+fmt(ox+padL,1)+'" y1="'+fmt(Y(pn.asymY),1)+'" x2="'+fmt(ox+pw-padR,1)+'" y2="'+fmt(Y(pn.asymY),1)+'" stroke="'+FIG_ALT+'" stroke-width="1.3" stroke-dasharray="5 4"/>';
+    if(pn.fn){var d=fnPathD(pn.fn,X,Y,x0,x1,y0,y1,200);if(d)out+='<path d="'+d+'" fill="none" stroke="'+(pn.color||FIG_ACC)+'" stroke-width="2.2"/>';}
+    (pn.points||[]).forEach(function(p){out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.2" fill="'+FIG_ALT+'"/>';});
+  });
+  return out+'</svg>';
+}
+function treeSVG(stages,o){
+  o=o||{};
+  function optsAt(depth,path){
+    var s=stages[depth];
+    return (typeof s.options==="function")?s.options(path.slice()):s.options;
+  }
+  function countLeaves(depth,path){
+    if(depth>=stages.length)return 1;
+    var opts=optsAt(depth,path),sum=0,i;
+    for(i=0;i<opts.length;i++)sum+=countLeaves(depth+1,path.concat([opts[i]]));
+    return sum;
+  }
+  var leaves=countLeaves(0,[]);
+  var maxL=o.maxLeaves||120;
+  if(leaves>maxL)return null;
+  var pitch=leaves<=12?24:(leaves<=30?19:16);
+  var colW=o.colW||104;
+  var leafW=o.leafLabel?58:14;
+  var W=36+stages.length*colW+leafW;
+  var top=34,H=top+leaves*pitch+8;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:520px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  var d,px,cx;
+  for(d=0;d<stages.length;d++){
+    px=(d===0)?18:36+(d-1)*colW;
+    cx=36+d*colW;
+    if(stages[d].title)out+='<text x="'+fmt((px+cx)/2,1)+'" y="16" font-size="10.5" fill="'+FIG_INK+'" text-anchor="middle">'+stages[d].title+'</text>';
+  }
+  var body="",leafIdx=0;
+  function layout(depth,path){
+    var x=(depth<0)?18:36+depth*colW;
+    if(depth===stages.length-1){
+      var ly=top+(leafIdx+0.5)*pitch;leafIdx++;
+      body+='<circle cx="'+x+'" cy="'+fmt(ly,1)+'" r="2.6" fill="'+FIG_ALT+'"/>';
+      if(o.leafLabel)body+='<text x="'+(x+8)+'" y="'+fmt(ly+3.5,1)+'" font-size="10.5" fill="'+FIG_INK+'">'+o.leafLabel(path)+'</text>';
+      return ly;
+    }
+    var opts=optsAt(depth+1,path),ys=[],i;
+    for(i=0;i<opts.length;i++)ys.push(layout(depth+1,path.concat([opts[i]])));
+    var y=(ys[0]+ys[ys.length-1])/2;
+    var nx=36+(depth+1)*colW;
+    for(i=0;i<opts.length;i++){
+      body+='<line x1="'+x+'" y1="'+fmt(y,1)+'" x2="'+nx+'" y2="'+fmt(ys[i],1)+'" stroke="#8a8272" stroke-width="1.2"/>';
+      body+='<text x="'+fmt(nx-7,1)+'" y="'+fmt(ys[i]-5,1)+'" font-size="10" fill="#5a5344" text-anchor="end">'+opts[i]+'</text>';
+    }
+    body+='<circle cx="'+x+'" cy="'+fmt(y,1)+'" r="2.6" fill="'+FIG_INK+'"/>';
+    return y;
+  }
+  layout(-1,[]);
+  return out+body+'</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 3200 Unit 1 Polynomial Functions question bank
 // CRMARKS: u1-divide-quotient=2
@@ -634,6 +810,38 @@ function u2baseDisplay(base){
   if(base==="sqrt")return "\\sqrt{x}";
   return "\\frac{1}{x}";
 }
+function u2baseFn(base){ /* the base function itself, as a JS function */
+  if(base==="sq")return function(x){return x*x;};
+  if(base==="cu")return function(x){return x*x*x;};
+  if(base==="abs")return function(x){return Math.abs(x);};
+  if(base==="sqrt")return function(x){return Math.sqrt(x);};
+  return function(x){return 1/x;}; /* rec */
+}
+function u2baseFig(base){ /* a graph of the untransformed base function (Tranche 4) */
+  var fn=u2baseFn(base);
+  if(base==="sq")return fnPlotSVG(fn,-4,4,-2,17,{gx:1,gy:2,labelX:true,labelY:true});
+  if(base==="cu")return fnPlotSVG(fn,-3,3,-27,27,{gx:1,gy:9,labelX:true,labelY:true});
+  if(base==="abs")return fnPlotSVG(fn,-5,5,-1,6,{gx:1,gy:1,labelX:true,labelY:true});
+  if(base==="sqrt")return fnPlotSVG(fn,-1,9,-1,4,{gx:1,gy:1,labelX:true,labelY:true});
+  return fnPlotSVG(fn,-5,5,-5,5,{gx:1,gy:1,labelX:true,labelY:true,asymX:0});
+}
+function u2autoWin(fns,x0,x1){ /* a y-window covering every finite value of the given functions on [x0, x1], with a readable grid step */
+  var lo=Infinity,hi=-Infinity,i,x,y,j;
+  for(i=0;i<=200;i++){x=x0+(x1-x0)*i/200;
+    for(j=0;j<fns.length;j++){try{y=fns[j](x);}catch(e){y=NaN;}
+      if(typeof y==="number"&&isFinite(y)){if(y<lo)lo=y;if(y>hi)hi=y;}}}
+  if(!isFinite(lo)){lo=-1;hi=1;}
+  var pad=(hi-lo)*0.12+0.5;lo=Math.floor(lo-pad);hi=Math.ceil(hi+pad);
+  var span=hi-lo,gy=span<=14?1:span<=35?2:span<=70?5:10;
+  return [lo,hi,gy];
+}
+function u2origFig(base,c){ /* a graph of the original function y = base(x) + c (Tranche 4) */
+  var bf=u2baseFn(base);
+  var fn=function(x){return bf(x)+c;};
+  var xr=(base==="sq")?[-4,4]:(base==="cu")?[-3,3]:(base==="abs")?[-6,6]:[-1,16];
+  var wv=u2autoWin([fn],xr[0],xr[1]);
+  return fnPlotSVG(fn,xr[0],xr[1],wv[0],wv[1],{gx:1,gy:wv[2],labelX:true,labelY:true});
+}
 function u2coefBase(n,d,base){ /* coefficient n/d times a base function, as a string */
   var b=u2baseDisplay(base);
   if(n===d)return b;
@@ -754,26 +962,26 @@ E("u2-inv-domran",2,["4.7"],1,"gen",function(){
     {a:a,b:b,c:c,d:d});
 });
 E("u2-inv-restrict",2,["4.8","4.1"],3,"var",varset([
-  function(){return mcq("The function \\(f(x) = (x - 3)^2 + 2\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+  function(){var q=mcq("The function \\(f(x) = (x - 3)^2 + 2\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
     "\\(x \\geq 3\\)",
     ["\\(x \\geq 2\\)","\\(x \\leq 4\\)","No restriction is needed"],
     "The graph of \\(f\\) is a parabola with vertex \\((3, 2)\\). It fails the horizontal line test because points on the left and right of \\(x = 3\\) share the same \\(y\\)-value. Restricting the domain to one side of the vertex, such as \\(x \\geq 3\\), makes \\(f\\) one-to-one, so its inverse is a function. The restrictions \\(x \\geq 2\\) and \\(x \\leq 4\\) both keep points from both sides of the vertex, so they do not work.",
-    {v:1});},
-  function(){return mcq("The function \\(f(x) = x^2 - 4x + 1\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    {v:1});q.figure=fnPlotSVG(function(x){return (x-3)*(x-3)+2;},-1,7,undefined,undefined,{gx:1,gy:2,labelX:true,labelY:true,points:[[3,2]]});return q;},
+  function(){var q=mcq("The function \\(f(x) = x^2 - 4x + 1\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
     "\\(x \\leq 2\\)",
     ["\\(x \\geq -3\\)","\\(x \\leq 3\\)","No restriction is needed"],
     "Complete the square to locate the vertex: \\[ \\begin{aligned} f(x) &= x^2 - 4x + 1 \\\\ &= (x - 2)^2 - 3 \\end{aligned} \\] The vertex is \\((2, -3)\\), so \\(f\\) is one-to-one on either side of \\(x = 2\\). Restricting the domain to \\(x \\leq 2\\) keeps only the left branch, and the inverse is then a function. The value \\(-3\\) is the minimum value of \\(f\\), not the \\(x\\)-coordinate of the vertex.",
-    {v:2});},
-  function(){return mcq("The function \\(f(x) = |x + 1| - 4\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    {v:2});q.figure=fnPlotSVG(function(x){return x*x-4*x+1;},-2,6,undefined,undefined,{gx:1,gy:2,labelX:true,labelY:true,points:[[2,-3]]});return q;},
+  function(){var q=mcq("The function \\(f(x) = |x + 1| - 4\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
     "\\(x \\geq -1\\)",
     ["\\(x \\geq -4\\)","\\(x \\leq 0\\)","No restriction is needed"],
     "The graph of \\(f\\) is a V with its vertex at \\((-1, -4)\\). Inputs on opposite sides of \\(x = -1\\) can give the same output, so the inverse is not a function. Keeping only one side of the V, such as \\(x \\geq -1\\), makes \\(f\\) one-to-one. The restrictions \\(x \\geq -4\\) and \\(x \\leq 0\\) both include inputs from both sides of the vertex.",
-    {v:3});},
-  function(){return mcq("The function \\(f(x) = (x + 2)^2 - 5\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
+    {v:3});q.figure=fnPlotSVG(function(x){return Math.abs(x+1)-4;},-7,5,undefined,undefined,{gx:1,gy:1,labelX:true,labelY:true,points:[[-1,-4]]});return q;},
+  function(){var q=mcq("The function \\(f(x) = (x + 2)^2 - 5\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
     "\\(x \\leq -2\\)",
     ["\\(x \\geq -5\\)","\\(x \\leq -1\\)","No restriction is needed"],
     "The graph of \\(f\\) is a parabola with vertex \\((-2, -5)\\). On the domain \\(x \\leq -2\\) the function decreases steadily, so it is one-to-one and its inverse is a function. The restrictions \\(x \\geq -5\\) and \\(x \\leq -1\\) both keep inputs from both sides of the vertex, and \\(-5\\) is the minimum value of \\(f\\), not the vertex \\(x\\)-coordinate.",
-    {v:4});}
+    {v:4});q.figure=fnPlotSVG(function(x){return (x+2)*(x+2)-5;},-7,3,undefined,undefined,{gx:1,gy:2,labelX:true,labelY:true,points:[[-2,-5]]});return q;}
 ]));
 
 /* ---------- translations: 4.13 to 4.17 ---------- */
@@ -828,10 +1036,12 @@ E("u2-trans-equation",2,["4.17","4.15"],1,"gen",function(){
     "\\(g(x) = "+u2shifted(base,sx,-sy)+"\\)",
     "\\(g(x) = "+u2shifted(base,-sx,-sy)+"\\)"
   ];
-  return mcq("The graph of \\(y = "+u2baseDisplay(base)+"\\) is translated "+desc+". What is the equation of the image graph?",
+  var q=mcq("The graph of \\(y = "+u2baseDisplay(base)+"\\) is translated "+desc+". What is the equation of the image graph?",
     correct,dis,
     "A translation of "+Math.abs(sx)+" units "+(sx>0?"right":"left")+" replaces \\(x\\) by \\("+u2xarg(sx)+"\\), and a translation of "+Math.abs(sy)+" units "+(sy>0?"up":"down")+" adds "+sy+" to the whole function. The image is \\(g(x) = "+u2shifted(base,sx,sy)+"\\) . The horizontal change uses the opposite sign from the direction of travel, which is the most common error in this type of question.",
     {base:base,sx:sx,sy:sy});
+  q.figure=u2baseFig(base);
+  return q;
 });
 
 /* ---------- stretches and the full transformation: 4.18 to 4.24 ---------- */
@@ -863,12 +1073,24 @@ E("u2-stretch-identify",2,["4.18","4.19"],1,"gen",function(){
       "\\(("+u2scaleExpr(n,d,"x")+", "+u2scaleExpr(n,d,"y")+")\\)"
     ];
   }
-  return mcq("The graph of "+orig+" is transformed to give the graph of "+trans+". Under this transformation, each point \\((x, y)\\) on the original graph maps to which point?",
+  var bf=u2baseFn(base);
+  var fOrig=function(x){return bf(x)+c;};
+  var fTrans=(dir===0)?function(x){return (n/d)*(bf(x)+c);}:function(x){return bf((d/n)*x)+c;};
+  var wxr=(base==="sq")?[-4,4]:(base==="cu")?[-3,3]:(base==="abs")?[-6,6]:[0,16];
+  var wv=u2autoWin([fOrig,fTrans],wxr[0],wxr[1]);
+  var pgx=(base==="sq"||base==="cu")?1:2;
+  var fig=fnPanelsSVG([
+    {fn:fOrig,x0:wxr[0],x1:wxr[1],y0:wv[0],y1:wv[1],gx:pgx,gy:wv[2],title:"Original graph"},
+    {fn:fTrans,x0:wxr[0],x1:wxr[1],y0:wv[0],y1:wv[1],gx:pgx,gy:wv[2],title:"Image graph"}
+  ]);
+  var q=mcq("The graph of "+orig+" is transformed to give the graph of "+trans+". Under this transformation, each point \\((x, y)\\) on the original graph maps to which point?",
     correct,dis,
     dir===0
       ?"A coefficient in front of the function multiplies every \\(y\\)-coordinate (the constant term is part of the function, so it is multiplied too): each point \\((x, y)\\) maps to \\((x, "+u2scaleExpr(n,d,"y")+"))\\). The \\(x\\)-coordinates do not change."
       :"Changing the input of a function stretches the graph horizontally: to land on the same output, each \\(x\\)-coordinate is multiplied by \\("+u2coefStr(n,d)+"\\), so each point \\((x, y)\\) maps to \\(("+u2scaleExpr(n,d,"x")+", y)\\) . Notice the equation divides \\(x\\) by that factor, which is why the direction surprises many students.",
     {base:base,c:c,n:n,d:d,dir:dir});
+  q.figure=fig;
+  return q;
 });
 E("u2-stretch-point",2,["4.20","4.21"],2,"gen",function(){
   var A=pick([[2,1],[3,1],[1,2],[1,3]]);
@@ -907,10 +1129,12 @@ E("u2-stretch-equation",2,["4.22"],1,"gen",function(){
       "\\(g(x) = "+u2coefBase(d,n,base)+u2pmFrac(d*c,n)+"\\)",
       "\\(g(x) = "+origD+u2pmFrac(n,d)+"\\)"
     ];
-    return mcq("The graph of \\(y = "+origD+"\\) is stretched vertically by a factor of \\("+u2coefStr(n,d)+"\\). What is the equation of the image graph?",
+    var qv=mcq("The graph of \\(y = "+origD+"\\) is stretched vertically by a factor of \\("+u2coefStr(n,d)+"\\). What is the equation of the image graph?",
       correct,dis,
       "A vertical stretch by a factor of \\("+u2coefStr(n,d)+"\\) multiplies the whole function, including its constant term, by that factor, giving \\(g(x) = "+u2coefBase(n,d,base)+u2pmFrac(n*c,d)+"\\) . Putting the factor inside with the \\(x\\) would stretch the graph horizontally instead.",
       {shape:"v",base:base,c:c,n:n,d:d});
+    qv.figure=u2origFig(base,c);
+    return qv;
   }
   var fac2=pick([[2,1],[3,1],[1,2],[1,3]]);
   var sn=fac2[0],sd=fac2[1];
@@ -920,10 +1144,12 @@ E("u2-stretch-equation",2,["4.22"],1,"gen",function(){
     "\\(g(x) = "+u2coefBase(sn,sd,base)+u2pmFrac(sn*c,sd)+"\\)",
     "\\(g(x) = "+u2coefBase(sd,sn,base)+u2pmFrac(sd*c,sn)+"\\)"
   ];
-  return mcq("The graph of \\(y = "+origD+"\\) is stretched horizontally by a factor of \\("+u2coefStr(sn,sd)+"\\). What is the equation of the image graph?",
+  var qh=mcq("The graph of \\(y = "+origD+"\\) is stretched horizontally by a factor of \\("+u2coefStr(sn,sd)+"\\). What is the equation of the image graph?",
     correct2,dis2,
     "A horizontal stretch by a factor of \\("+u2coefStr(sn,sd)+"\\) multiplies every \\(x\\)-coordinate by that factor, so the equation must divide \\(x\\) by it, while the constant term stays as it is: \\(g(x) = "+argForm(sd,sn)+u2pm(c)+"\\) . The factor appears with the \\(x\\), not as a coefficient in front of the function.",
     {shape:"h",base:base,c:c,sn:sn,sd:sd});
+  qh.figure=u2origFig(base,c);
+  return qh;
 });
 E("u2-full-equation",2,["4.23","4.24"],2,"gen",function(){
   var pattern=ri(0,3);
@@ -1019,43 +1245,52 @@ E("u2-refl-point",2,["4.40","4.45"],1,"gen",function(){
   var rule=axis==="x"?"a reflection in the \\(x\\)-axis keeps the \\(x\\)-coordinate and negates the \\(y\\)-coordinate"
     :axis==="y"?"a reflection in the \\(y\\)-axis negates the \\(x\\)-coordinate and keeps the \\(y\\)-coordinate"
     :"a reflection in the line \\(y = x\\) swaps the two coordinates";
-  return mcq("The point \\(P"+u2pt(x,y)+"\\) is reflected in "+axisName+". What is the image of \\(P\\)?",
+  var q=mcq("The point \\(P"+u2pt(x,y)+"\\) is reflected in "+axisName+". What is the image of \\(P\\)?",
     correct,dis,
     "Use the coordinate rule: "+rule+". Applying it to \\("+u2pt(x,y)+"\\) gives "+correct+" .",
     {x:x,y:y,axis:axis});
+  q.figure=fnPlotSVG(null,-10,10,-10,10,{gx:2,gy:2,labelX:true,labelY:true,points:[[x,y]]});
+  return q;
 });
 E("u2-refl-equation",2,["4.41","4.42","4.43","4.44"],1,"gen",function(){
   var t=ri(1,3),axis=pick(["x","y"]);
-  var f,negF,fNeg,negFNeg;
+  var f,negF,fNeg,negFNeg,fn;
   if(t===1){
     var c=ri(-9,9);while(c===0)c=ri(-9,9);
     f="x^3"+u2pm(c);
     negF="-x^3"+u2pm(-c);
     fNeg="-x^3"+u2pm(c);
     negFNeg="x^3"+u2pm(-c);
+    fn=function(x){return x*x*x+c;};
   }else if(t===2){
     var b=pick([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]);
     f="x^2"+u2pm(b)+"x";
     negF="-x^2"+u2pm(-b)+"x";
     fNeg="x^2"+u2pm(-b)+"x";
     negFNeg="-x^2"+u2pm(b)+"x";
+    fn=function(x){return x*x+b*x;};
   }else{
     var h=pick([-5,-4,-3,-2,-1,1,2,3,4,5]),k=ri(-6,6);
     f="|"+u2xarg(h)+"|"+u2pm0(k);
     negF="-|"+u2xarg(h)+"|"+u2pm0(-k);
     fNeg="|"+u2xarg(-h)+"|"+u2pm0(k);
     negFNeg="-|"+u2xarg(-h)+"|"+u2pm0(-k);
+    fn=function(x){return Math.abs(x-h)+k;};
   }
   var correct="\\(g(x) = "+(axis==="x"?negF:fNeg)+"\\)";
   var all=[negF,fNeg,negFNeg,f];
   var dis=all.filter(function(s){return "\\(g(x) = "+s+"\\)"!==correct;}).map(function(s){return "\\(g(x) = "+s+"\\)";});
   var axisName=axis==="x"?"the \\(x\\)-axis":"the \\(y\\)-axis";
-  return mcq("The graph of \\(f(x) = "+f+"\\) is reflected in "+axisName+". What is the equation of the image graph?",
+  var q=mcq("The graph of \\(f(x) = "+f+"\\) is reflected in "+axisName+". What is the equation of the image graph?",
     correct,dis,
     axis==="x"
       ?"A reflection in the \\(x\\)-axis negates the whole function: \\(g(x) = -f(x)\\). Negating every term of \\(f(x) = "+f+"\\) gives "+correct+" . Replacing \\(x\\) by \\(-x\\) instead would reflect in the \\(y\\)-axis."
       :"A reflection in the \\(y\\)-axis replaces \\(x\\) by \\(-x\\) throughout: \\(g(x) = f(-x)\\). Applying that to \\(f(x) = "+f+"\\) gives "+correct+" . Negating the whole function instead would reflect in the \\(x\\)-axis.",
     {t:t,axis:axis});
+  var txr=(t===1)?[-3,3]:(t===2)?[-6,6]:[h-7,h+7];
+  var tw=u2autoWin([fn],txr[0],txr[1]);
+  q.figure=fnPlotSVG(fn,txr[0],txr[1],tw[0],tw[1],{gx:1,gy:tw[2],labelX:true,labelY:true});
+  return q;
 });
 E("u2-refl-yx",2,["4.46","4.47"],3,"var",varset([
   function(){return mcq("The graph of a function \\(f\\) is reflected in the line \\(y = x\\). The image graph does <b>not</b> pass the vertical line test. What must be true of \\(f\\)?",
@@ -1096,32 +1331,42 @@ E("u2-inverse-points-cr",2,["4.2","4.4"],2,"gen",function(){
   var pts=xs.map(function(x,i){return [x,ys[i]];});
   var tg=pick(pts);
   var list=pts.map(function(p){return u2pt(p[0],p[1]);}).join(", ");
-  return numq("A relation contains the points \\("+list+"\\). The inverse relation is formed by swapping the coordinates of each point. In the inverse relation, what is the <b>y-coordinate</b> of the point whose x-coordinate is "+tg[1]+"?",
+  var q=numq("A relation contains the points \\("+list+"\\). The inverse relation is formed by swapping the coordinates of each point. In the inverse relation, what is the <b>y-coordinate</b> of the point whose x-coordinate is "+tg[1]+"?",
     tg[0],0.001,
     "Swapping the coordinates of \\("+u2pt(tg[0],tg[1])+"\\) gives the inverse point \\("+u2pt(tg[1],tg[0])+"\\), and no other listed point produces that x-coordinate. Its y-coordinate is <b>"+tg[0]+"</b>.",
     {tg:tg});
+  q.figure=u2pointsSVG(pts);
+  return q;
 });
 function u2reflPoly(A,B,C){ var s=(A===1?"x^2":A===-1?"-x^2":A+"x^2"); s+=(B>0?" + ":" - ")+(Math.abs(B)===1?"x":Math.abs(B)+"x"); s+=(C>0?" + "+C:" - "+(-C)); return s; }
 E("u2-reflection-equation-cr",2,["4.43","4.44"],2,"var",varset([
   function(){
     var a=pick([1,2,3]), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=pick([-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]);
-    return mcq("The graph of \\(f(x) = "+u2reflPoly(a,b,c)+"\\) is reflected in the <b>y-axis</b>. What is the equation of the image?",
+    var q=mcq("The graph of \\(f(x) = "+u2reflPoly(a,b,c)+"\\) is reflected in the <b>y-axis</b>. What is the equation of the image?",
       "\\(y = "+u2reflPoly(a,-b,c)+"\\)",
       ["\\(y = "+u2reflPoly(a,b,c)+"\\)",
        "\\(y = "+u2reflPoly(-a,-b,-c)+"\\)",
        "\\(y = "+u2reflPoly(a,-b,-c)+"\\)"],
       "A reflection in the y-axis replaces \\(x\\) with \\(-x\\). The \\(x^2\\) term is unchanged, the \\(x\\) term changes sign, and the constant is unchanged, giving <b>\\(y = "+u2reflPoly(a,-b,c)+"\\)</b>.",
       {a:a,b:b,c:c,axis:"y"});
+    var fn=function(x){return a*x*x+b*x+c;};
+    var wv=u2autoWin([fn],-6,6);
+    q.figure=fnPlotSVG(fn,-6,6,wv[0],wv[1],{gx:1,gy:wv[2],labelX:true,labelY:true});
+    return q;
   },
   function(){
     var a=pick([1,2,3]), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=pick([-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]);
-    return mcq("The graph of \\(f(x) = "+u2reflPoly(a,b,c)+"\\) is reflected in the <b>x-axis</b>. What is the equation of the image?",
+    var q=mcq("The graph of \\(f(x) = "+u2reflPoly(a,b,c)+"\\) is reflected in the <b>x-axis</b>. What is the equation of the image?",
       "\\(y = "+u2reflPoly(-a,-b,-c)+"\\)",
       ["\\(y = "+u2reflPoly(a,-b,c)+"\\)",
        "\\(y = "+u2reflPoly(a,b,c)+"\\)",
        "\\(y = "+u2reflPoly(-a,-b,c)+"\\)"],
       "A reflection in the x-axis negates the whole function: every term of \\(f(x)\\) changes sign, giving <b>\\(y = "+u2reflPoly(-a,-b,-c)+"\\)</b>.",
       {a:a,b:b,c:c,axis:"x"});
+    var fn=function(x){return a*x*x+b*x+c;};
+    var wv=u2autoWin([fn],-6,6);
+    q.figure=fnPlotSVG(fn,-6,6,wv[0],wv[1],{gx:1,gy:wv[2],labelX:true,labelY:true});
+    return q;
   }
 ]));
 
@@ -1154,6 +1399,21 @@ function u3coef(a){return a===1?"":(a===-1?"-":""+a);}
 function u3eqnT(a,b,h,k){
   var inner=(b===1)?u3inside(-h):b+"("+u3inside(-h)+")";
   return "y = "+u3coef(a)+"\\sqrt{"+inner+"}"+u3sgn(k);
+}
+function u3figT(a,b,h,k){ /* graph of y = a sqrt(b(x - h)) + k with its starting point marked (Tranche 4) */
+  var fn=function(x){return a*Math.sqrt(b*(x-h))+k;};
+  var x1=h+14/b, yEnd=a*Math.sqrt(14)+k;
+  var y0=Math.floor(Math.min(0,k,yEnd)-1.5), y1=Math.ceil(Math.max(0,k,yEnd)+1.5);
+  return fnPlotSVG(fn,h-1,x1,y0,y1,{gx:1,gy:(y1-y0>12?2:1),labelX:true,labelY:true,points:[[h,k]]});
+}
+function u3figCompare(r,h,n,lo,hi){ /* the parabola f and g = sqrt(f) side by side (Tranche 4) */
+  var f=function(x){return (x-h)*(x-h)-n;};
+  var g=function(x){var v=f(x);return v<0?NaN:Math.sqrt(v);};
+  var fx=r+2, fy=f(h-fx), fspan=fy+n+2;
+  return fnPanelsSVG([
+    {fn:f,x0:h-fx,x1:h+fx,y0:-n-2,y1:fy,gx:2,gy:(fspan<=20?2:fspan<=45?5:10),title:"f(x)",points:[[lo,0],[hi,0]]},
+    {fn:g,x0:h-fx,x1:h+fx,y0:-0.5,y1:Math.sqrt(fy)+0.5,gx:2,gy:1,title:"g(x) = \u221af(x)"}
+  ]);
 }
 function u3svgSolve(form,a,c,sol){
   var xMin=-2,xMax=Math.max(16,sol+5),yMin=-1.5,yMax=c+1.5;
@@ -1214,11 +1474,13 @@ E("u3-start-point",3,["4.11"],2,"gen",function(){
   var a=pick([-3,-2,-1,1,2,3]),b=pick([1,2,4]),h=0,k=0,t=0;
   while((h===0||k===0)&&t<60){h=ri(-6,6);k=ri(-6,6);t++;}
   var eq=u3eqnT(a,b,h,k);
-  return mcq("The graph of \\("+eq+"\\) is a transformation of the graph of \\(y = \\sqrt{x}\\). At which point does the graph begin?",
+  var q=mcq("The graph of \\("+eq+"\\) is a transformation of the graph of \\(y = \\sqrt{x}\\). At which point does the graph begin?",
     "("+h+", "+k+")",
     ["("+(-h)+", "+k+")","("+h+", "+(-k)+")","("+(-h)+", "+(-k)+")"],
     "The graph of \\(y = \\sqrt{x}\\) begins at \\((0, 0)\\), where the radicand first reaches zero. Here the radicand is zero when \\(x = "+h+"\\), and at that point the value of the function is the vertical shift, \\(y = "+k+"\\). So the graph begins at <b>("+h+", "+k+")</b>. The factors \\(a = "+a+"\\) and \\(b = "+b+"\\) stretch, compress or reflect the graph, but they do not move its starting point.",
     {a:a,b:b,h:h,k:k});
+  q.figure=u3figT(a,b,h,k);
+  return q;
 });
 
 E("u3-transform-domain-range",3,["4.11"],2,"gen",function(){
@@ -1230,19 +1492,19 @@ E("u3-transform-domain-range",3,["4.11"],2,"gen",function(){
     var inn=u3inside(-h),rad=(b===1)?inn:b+"("+inn+")",steps;
     if(b===1)steps=rad+" &\\geq 0 \\\\ x &\\geq "+h;
     else steps=rad+" &\\geq 0 \\\\ "+inn+" &\\geq 0 \\\\ x &\\geq "+h;
-    return mcq("What is the <b>domain</b> of the function \\("+eq+"\\)?",
+    var q=mcq("What is the <b>domain</b> of the function \\("+eq+"\\)?",
       "\\(x \\geq "+h+"\\)",
       ["\\(x \\geq "+(-h)+"\\)","\\(x \\leq "+h+"\\)","\\(x \\geq "+k+"\\)"],
       "The radicand of a square root must be non-negative. Because \\(b = "+b+"\\) is positive, dividing by it keeps the direction of the inequality: \\[ \\begin{aligned} "+steps+" \\end{aligned} \\] So the domain is <b>\\(x \\geq "+h+"\\)</b>.",
-      {a:a,b:b,h:h,k:k,shape:shape});
+      {a:a,b:b,h:h,k:k,shape:shape});q.figure=u3figT(a,b,h,k);return q;
   }
   var up=(a>0),cor,dis;
   if(up){cor="\\(y \\geq "+k+"\\)";dis=["\\(y \\leq "+k+"\\)","\\(y \\geq "+(-k)+"\\)","\\(y \\geq "+h+"\\)"];}
   else{cor="\\(y \\leq "+k+"\\)";dis=["\\(y \\geq "+k+"\\)","\\(y \\leq "+(-k)+"\\)","\\(y \\leq "+h+"\\)"];}
-  return mcq("What is the <b>range</b> of the function \\("+eq+"\\)?",
+  var q=mcq("What is the <b>range</b> of the function \\("+eq+"\\)?",
     cor,dis,
     "A square root is never negative, so \\(\\sqrt{"+((b===1)?u3inside(-h):b+"("+u3inside(-h)+")")+"}\\) takes every value from \\(0\\) upward. Multiplying by \\(a = "+a+"\\) makes the term "+(up?"non-negative":"non-positive")+", and the vertical shift then moves its smallest or largest value to \\("+k+"\\). So the range is <b>"+cor+"</b>.",
-    {a:a,b:b,h:h,k:k,shape:shape});
+    {a:a,b:b,h:h,k:k,shape:shape});q.figure=u3figT(a,b,h,k);return q;
 });
 
 E("u3-sqrtf-evaluate",3,["4.12"],2,"gen",function(){
@@ -1272,21 +1534,21 @@ E("u3-compare-domains",3,["4.9"],2,"gen",function(){
   var base=shifted?"("+u3inside(-h)+")^2":"x^2",fstr=base+" - "+n;
   var lo=h-r,hi=h+r,shape=pick(["domain","range"]);
   if(shape==="domain"){
-    return mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>domains</b> of the two functions?",
+    var q=mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>domains</b> of the two functions?",
       "The domain of f is all real numbers, but the domain of g is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
       ["The domain of f is all real numbers, but the domain of g is \\(x \\geq "+hi+"\\)",
        "The domain of g is all real numbers, but the domain of f is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
        "The domains are the same, because taking a square root does not restrict where a function is defined"],
       "A polynomial such as \\(f\\) is defined for every real value of \\(x\\). For \\(g\\), the radicand must be non-negative: \\("+fstr+" \\geq 0\\) holds exactly where the parabola is on or above the x-axis, which is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\). So building \\(g\\) from the square root of \\(f\\) restricts the domain to where \\(f(x) \\geq 0\\).",
-      {r:r,h:h,shape:shape});
+      {r:r,h:h,shape:shape});q.figure=u3figCompare(r,h,n,lo,hi);return q;
   }
-  return mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>ranges</b> of the two functions?",
+  var q=mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>ranges</b> of the two functions?",
     "The range of f is \\(y \\geq "+(-n)+"\\), but the range of g is \\(y \\geq 0\\)",
     ["The range of f is \\(y \\geq 0\\), but the range of g is \\(y \\geq "+(-n)+"\\)",
      "The range of f is \\(y \\geq "+(-n)+"\\), and the range of g is \\(y \\geq "+(-n)+"\\) as well",
      "The range of f is \\(y \\geq "+n+"\\), but the range of g is \\(y \\geq 0\\)"],
     "The parabola \\(f\\) opens upward with minimum value \\(-"+n+"\\) at its vertex, so the range of \\(f\\) is \\(y \\geq "+(-n)+"\\). A square root never gives a negative output, and as \\(f(x)\\) grows, \\(\\sqrt{f(x)}\\) takes every value from \\(0\\) upward, so the range of \\(g\\) is \\(y \\geq 0\\). The square root discards the negative part of the range of \\(f\\).",
-    {r:r,h:h,shape:shape});
+    {r:r,h:h,shape:shape});q.figure=u3figCompare(r,h,n,lo,hi);return q;
 });
 
 E("u3-intercept-solution",3,["4.25"],2,"gen",function(){
@@ -1294,10 +1556,13 @@ E("u3-intercept-solution",3,["4.25"],2,"gen",function(){
   if(form===1){a=ri(1,b*b-1);sol=b*b-a;inn=a;}
   else{a=ri(1,9);sol=b*b+a;inn=-a;}
   var rad="\\sqrt{"+u3inside(inn)+"}";
-  return numq("The graph of \\(y = "+rad+" - "+b+"\\) has exactly one x-intercept. What is the solution of the equation \\("+rad+" = "+b+"\\)?",
+  var q=numq("The graph of \\(y = "+rad+" - "+b+"\\) has exactly one x-intercept. What is the solution of the equation \\("+rad+" = "+b+"\\)?",
     sol,0.01,
     "At an x-intercept, \\(y = 0\\), so the intercept is the value of \\(x\\) that makes \\("+rad+" - "+b+" = 0\\): \\[ \\begin{aligned} "+rad+" &= "+b+" \\\\ "+u3inside(inn)+" &= "+(b*b)+" \\\\ x &= "+sol+" \\end{aligned} \\] The solution is <b>\\(x = "+sol+"\\)</b>. In general, the roots of a radical equation are exactly the x-intercepts of the corresponding radical function.",
     {a:a,b:b,form:form});
+  var fn=function(x){return Math.sqrt(x+inn)-b;};
+  q.figure=fnPlotSVG(fn,-inn-1,sol+6,-(b+2),Math.ceil(Math.sqrt(b*b+6)-b)+1,{gx:1,gy:1,labelX:true,labelY:true,points:[[sol,0]]});
+  return q;
 });
 
 E("u3-graphical-solve",3,["4.26"],2,"gen",function(){
@@ -1343,11 +1608,14 @@ E("u3-intercept-statement",3,["4.25"],1,"gen",function(){
   if(form===1){a=ri(1,b*b-1);tv=b*b-a;inn=a;}
   else{a=ri(1,9);tv=b*b+a;inn=-a;}
   var rad="\\sqrt{"+u3inside(inn)+"}",radOpp="\\sqrt{"+u3inside(-inn)+"}";
-  return mcq("The graph of \\(y = "+rad+" - "+b+"\\) has x-intercept \\(x = "+tv+"\\). Which statement must be true?",
+  var q=mcq("The graph of \\(y = "+rad+" - "+b+"\\) has x-intercept \\(x = "+tv+"\\). Which statement must be true?",
     "\\("+rad+" = "+b+"\\)",
     ["\\("+rad+" = 0\\)","\\("+rad+" = "+(-b)+"\\)","\\("+radOpp+" = "+b+"\\)"],
     "At an x-intercept, the y-value is \\(0\\): \\[ \\begin{aligned} 0 &= "+rad+" - "+b+" \\\\ "+rad+" &= "+b+" \\end{aligned} \\] So the intercept \\(x = "+tv+"\\) is a root of the equation \\("+rad+" = "+b+"\\). This is the general relationship: the roots of a radical equation are the x-intercepts of the corresponding radical function.",
     {a:a,b:b,form:form});
+  var fn2=function(x){return Math.sqrt(x+inn)-b;};
+  q.figure=fnPlotSVG(fn2,-inn-1,tv+6,-(b+2),Math.ceil(Math.sqrt(b*b+6)-b)+1,{gx:1,gy:1,labelX:true,labelY:true,points:[[tv,0]]});
+  return q;
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (2 and 3 marks) and two Level 2 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry and an all-2-mark Level 2 pool. ---------- */
@@ -1357,13 +1625,17 @@ E("u3-domain-from-quadratic-cr",3,["4.9"],3,"gen",function(){
   var fs="x^2";
   if(B!==0) fs+=(B>0?" + ":" - ")+(Math.abs(B)===1?"x":Math.abs(B)+"x");
   if(C!==0) fs+=(C>0?" + "+C:" - "+(-C));
-  return mcq("What is the domain of the function \\(g(x) = \\sqrt{"+fs+"}\\)?",
+  var qq=mcq("What is the domain of the function \\(g(x) = \\sqrt{"+fs+"}\\)?",
     "\\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\)",
     ["\\("+p+" \\leq x \\leq "+q+"\\)",
      "\\(x \\geq "+q+"\\) only",
      "All real numbers"],
     "The radicand must be non-negative. Since \\("+fs+" = "+u3facS(p)+u3facS(q)+"\\), the radicand is zero at \\(x = "+p+"\\) and \\(x = "+q+"\\). The parabola opens upward, so the radicand is positive outside the interval between the roots. The domain is \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\).",
     {p:p,q:q});
+  var fn3=function(x){return (x-p)*(x-q);};
+  var vy=fn3((p+q)/2), fy=Math.max(fn3(p-2),fn3(q+2));
+  qq.figure=fnPlotSVG(fn3,p-2,q+2,Math.floor(vy)-2,Math.ceil(fy)+2,{gx:1,gy:(fy-vy>24?2:1),labelX:true,labelY:true,points:[[p,0],[q,0]]});
+  return qq;
 });
 E("u3-recover-coefficient-cr",3,["4.12"],3,"gen",function(){
   var p=ri(-5,1), q=p+ri(3,7);
@@ -3382,6 +3654,26 @@ E("u6-numeric-verify", 6, ["7.42"], 1, "gen", function () {
 });
 
 /* ---- 7.40: judge an identity from a graph comparison ---- */
+function u6PairFns(trel,coef){ /* the two sides of a graphical-validity relation as JS functions of the angle in radians (Tranche 4) */
+  var S=Math.sin,C=Math.cos;
+  function T(x){return Math.tan(x);}
+  if(trel.indexOf("C\\tan")>=0)return [function(x){return coef*S(x);},function(x){return coef*T(x)*C(x);}];
+  if(trel.indexOf("\\tan V \\cos V")>=0)return [function(x){return T(x)*C(x);},S];
+  if(trel.indexOf("\\sin V = \\tan V")>=0)return [S,function(x){return T(x)*C(x);}];
+  if(trel.indexOf("\\cos V = \\cot V")>=0)return [C,function(x){return C(x)/S(x)*S(x);}];
+  if(trel.indexOf("\\sin^2 V + \\cos^2 V")>=0)return [function(x){return S(x)*S(x)+C(x)*C(x);},function(x){return 1;}];
+  if(trel.indexOf("1 - 2\\sin^2 V")>=0)return [function(x){return 1-2*S(x)*S(x);},function(x){return C(2*x);}];
+  if(trel.indexOf("\\cos 2V")>=0)return [function(x){return C(2*x);},function(x){return C(x)*C(x)-S(x)*S(x);}];
+  if(trel.indexOf("\\sin V = \\cos V")>=0)return [S,C];
+  if(trel.indexOf("\\sin V + \\cos V")>=0)return [function(x){return S(x)+C(x);},function(x){return 1;}];
+  if(trel.indexOf("\\sin 2V = 2\\sin V")>=0)return [function(x){return S(2*x);},function(x){return 2*S(x);}];
+  if(trel.indexOf("\\sec^2 V")>=0)return [function(x){return 1/(C(x)*C(x));},function(x){return 1+T(x)*T(x);}];
+  if(trel.indexOf("\\tan V = \\frac")>=0)return [T,function(x){return S(x)/C(x);}];
+  if(trel.indexOf("2 - \\cos V")>=0)return [S,function(x){return 2-C(x);}];
+  if(trel.indexOf("\\cos V = \\sin V")>=0)return [C,S];
+  if(trel.indexOf("\\csc V")>=0)return [function(x){return S(x)/S(x);},function(x){return 1;}];
+  return [S,C];
+}
 E("u6-graphical-validity", 6, ["7.40"], 1, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -3418,12 +3710,16 @@ E("u6-graphical-validity", 6, ["7.40"], 1, "gen", function () {
   else if (T.cat === "full") { key = kId; dis = ["The relation is not an identity: the graphs agree only at isolated points", "The relation is an equation with exactly two solutions on the interval", "Graphs can never give evidence about whether a relation is an identity"]; }
   else if (T.cat === "cross") { key = kNot; dis = ["The relation is an identity: the graphs cross, so the two sides are equal", kId, "Graphs can never give evidence about whether a relation is an identity"]; }
   else { key = kNever; dis = [kId, "The relation is an equation with one solution on the interval", "Graphs can never give evidence about an identity"]; }
-  return mcq("A student graphs \\(y = " + rel.split(" = ")[0] + "\\) and \\(y = " + rel.split(" = ")[1] + "\\) on " + (rad ? "\\([0, 2\\pi)\\)" : "\\([0^\\circ, 360^\\circ)\\)") + ". " + desc + " What is the correct conclusion?",
+  var q=mcq("A student graphs \\(y = " + rel.split(" = ")[0] + "\\) and \\(y = " + rel.split(" = ")[1] + "\\) on " + (rad ? "\\([0, 2\\pi)\\)" : "\\([0^\\circ, 360^\\circ)\\)") + ". " + desc + " What is the correct conclusion?",
     key, dis,
     (T.cat === "holes" || T.cat === "full")
       ? "Matching graphs at every permissible value is exactly what an identity requires; points where a side is undefined are excluded from consideration, not counterexamples. The conclusion is: <b>" + key + "</b>."
       : "An identity needs agreement at every permissible value. Agreement at isolated points (or nowhere) makes the relation an equation at best. The conclusion is: <b>" + key + "</b>.",
     { cat: T.cat, rel: rel, rad: rad });
+  var pr=u6PairFns(T.rel, T.coef?Number(rel.charAt(0)):1);
+  if(rad){ q.figure=fnPlotSVG(function(x){return pr[0](x);},0,2*Math.PI,-3,3,{gx:Math.PI/2,gy:1,labelX:true,labelY:true,xLabels:[[0,"0"],[Math.PI/2,"\u03c0/2"],[Math.PI,"\u03c0"],[3*Math.PI/2,"3\u03c0/2"],[2*Math.PI,"2\u03c0"]],extraFns:[{fn:function(x){return pr[1](x);}}]}); }
+  else { q.figure=fnPlotSVG(function(x){return pr[0](x*Math.PI/180);},0,360,-3,3,{gx:90,gy:1,labelX:true,labelY:true,extraFns:[{fn:function(x){return pr[1](x*Math.PI/180);}}]}); }
+  return q;
 });
 
 /* ---- 7.41: non-permissible values of a full identity ---- */
@@ -4511,9 +4807,12 @@ E("u7-characteristics",7,["4.48"],1,"gen",function(){
     var dis=["The graph is "+dirF+" and its y-intercept is "+a+".",
              "The graph is "+dir+" and its y-intercept is \\("+u7rat(c[0],c[1])+"\\).",
              "The graph is "+dirF+" and its y-intercept is \\("+u7rat(c[0],c[1])+"\\)."];
-    return mcq("Which statement is <b>true</b> for the graph of "+eq+"?",
+    var q=mcq("Which statement is <b>true</b> for the graph of "+eq+"?",
       corr,dis,
       "The base \\("+u7rat(c[0],c[1])+"\\) is "+(cv>1?"greater than \\(1\\), so the values grow as \\(x\\) increases: the graph is "+dir+".":"less than \\(1\\), so the values shrink as \\(x\\) increases: the graph is "+dir+".")+" At \\(x = 0\\) the value is \\("+a+" \\times 1 = "+a+"\\), so the y-intercept is \\("+a+"\\). The true statement is: <b>"+corr+"</b>",{ask:ask});
+    var spT=Math.min(3,Math.max(1.5,Math.log(28/a)/Math.log(Math.max(cv,1/cv))));
+    q.figure=fnPlotSVG(function(x){return a*Math.pow(cv,x);},-spT,spT,undefined,undefined,{gx:1,gy:5,labelX:true,labelY:true,points:[[0,a]]});
+    return q;
   }
   if(ask==="asym"){
     var k2=pick([0,0,2,3,-2,-4]),c2=pick([[2,1],[3,1],[1,2],[2,3]]);
@@ -4523,9 +4822,11 @@ E("u7-characteristics",7,["4.48"],1,"gen",function(){
     var dis2=["The graph crosses the line \\("+asy+"\\) at some point when \\(x\\) is very large.",
               "The graph stops at the line \\("+asy+"\\) and does not continue past it in either direction from there.",
               "The line \\(x = "+k2+"\\) is the horizontal asymptote of the graph shown."];
-    return mcq("Which statement best describes the <b>horizontal asymptote</b> of the graph of "+eq2+"?",
+    var q=mcq("Which statement best describes the <b>horizontal asymptote</b> of the graph of "+eq2+"?",
       corr2,dis2,
       "The power in "+eq2+" is always positive and can become as small as we like, so the function values approach \\("+k2+"\\) (the asymptote \\("+asy+"\\)) without ever equalling it. That is the significance of the asymptote: it is a boundary the graph approaches but never reaches, and the value \\("+k2+"\\) is excluded from the range.",{ask:ask,k:k2});
+    q.figure=fnPlotSVG(function(x){return Math.pow(c2[0]/c2[1],x)+k2;},-3,3,undefined,undefined,{gx:1,gy:1,labelX:true,labelY:true,asymY:k2});
+    return q;
   }
   if(ask==="xint"){
     var k3=pick([-5,-4,-3,-2,2,3,4,5]),c3=pick([[2,1],[3,1],[5,1]]);
@@ -4541,22 +4842,28 @@ E("u7-characteristics",7,["4.48"],1,"gen",function(){
       :["It has an x-intercept, because the range \\(\\{y \\mid y > "+k3+"\\}\\) includes \\(0\\).",
         "Its x-intercept is the point \\((0, "+(1+k3)+")\\), on the y-axis.",
         "It has an x-intercept at the point where the graph meets its horizontal asymptote, far out to the right of the graph."];
-    return mcq("Which statement about the <b>x-intercept</b> of the graph of "+eq3+" is correct?",
+    var q=mcq("Which statement about the <b>x-intercept</b> of the graph of "+eq3+" is correct?",
       corr3,dis3,
       "The range of "+eq3+" is \\(\\{y \\mid y > "+k3+"\\}\\) because the power is positive and the graph is shifted by \\("+k3+"\\) . "+(has?"Since \\(0\\) is greater than \\("+k3+"\\), the value \\(0\\) is in the range, so the graph crosses the x-axis: it has an x-intercept. The point \\((0, "+(1+k3)+")\\) is the y-intercept, not the x-intercept.":"Since every value stays above \\("+k3+" > 0\\), the graph never reaches \\(y = 0\\), so there is no x-intercept.")+" The correct statement is: <b>"+corr3+"</b>",{ask:ask,k:k3});
+    q.figure=fnPlotSVG(function(x){return Math.pow(c3[0]/c3[1],x)+k3;},-3,3,undefined,undefined,{gx:1,gy:1,labelX:true,labelY:true});
+    return q;
   }
   var a4=pick([1,2,3]),k4=pick([-4,-3,-2,-1,1,2,3,4]),c4=pick([[2,1],[3,1],[1,2]]);
   var dom=pick([true,false]);
   if(dom){
-    return mcq("What is the <b>domain</b> of the function \\(y = "+u7expStr(a4,c4,"x",k4)+"\\)?",
+    var q=mcq("What is the <b>domain</b> of the function \\(y = "+u7expStr(a4,c4,"x",k4)+"\\)?",
       "\\(\\mathbb{R}\\)",
       ["\\(\\{x \\mid x > 0\\}\\)","\\(\\{x \\mid x \\ge 0\\}\\)","\\(\\{x \\mid x \\ne 0\\}\\)"],
       "The exponent \\(x\\) can be any real number: the power is defined for positive, negative and zero inputs alike, and the shifts do not restrict the inputs. The domain is <b>all real numbers</b>.",{ask:ask});
+    q.figure=fnPlotSVG(function(x){return a4*Math.pow(c4[0]/c4[1],x)+k4;},-3,3,undefined,undefined,{gx:1,gy:1,labelX:true,labelY:true,asymY:k4});
+    return q;
   }
-  return mcq("What is the <b>range</b> of the function \\(y = "+u7expStr(a4,c4,"x",k4)+"\\)?",
+  var q=mcq("What is the <b>range</b> of the function \\(y = "+u7expStr(a4,c4,"x",k4)+"\\)?",
     "\\(\\{y \\mid y > "+k4+"\\}\\)",
     ["\\(\\{y \\mid y \\ge "+k4+"\\}\\)","\\(\\{y \\mid y > 0\\}\\)","the set of all real numbers"],
     "The power is always positive, and multiplying by \\("+a4+"\\) keeps it positive, so the function values are all greater than the shift \\("+k4+"\\) and can approach it as closely as we like without reaching it. The range is <b>\\(\\{y \\mid y > "+k4+"\\}\\)</b>.",{ask:ask,k:k4});
+    q.figure=fnPlotSVG(function(x){return a4*Math.pow(c4[0]/c4[1],x)+k4;},-3,3,undefined,undefined,{gx:1,gy:1,labelX:true,labelY:true,asymY:k4});
+    return q;
 });
 
 E("u7-compare-models",7,["4.30"],3,"gen",function(){
@@ -4715,6 +5022,17 @@ function u8tuples(){
   });
   return out;
 }
+function u8logFig(bv){ /* graph of y = log base bv of x, landmarks (1, 0) and (bv, 1) marked (Tranche 4) */
+  var x1=Math.max(Math.pow(bv,2),Math.pow(bv,-2))+1;
+  var gx=x1>60?10:x1>20?5:x1>8?2:1;
+  return fnPlotSVG(function(x){return Math.log(x)/Math.log(bv);},0,x1,-2.4,2.4,{gx:gx,gy:1,labelX:true,labelY:true,asymX:0,points:[[1,0],[bv,1]]});
+}
+function u8tlogFig(b,a,h,k){ /* graph of y = a log_b(x - h) + k with its asymptote and the point at x = h + b marked (Tranche 4) */
+  var fn=function(x){return a*Math.log(x-h)/Math.log(b)+k;};
+  var y0=Math.floor(Math.min(-2*a+k,2*a+k)-1), y1=Math.ceil(Math.max(-2*a+k,2*a+k)+1);
+  var gx=(b===10)?10:(b===5)?5:1;
+  return fnPlotSVG(fn,h,h+b*b,y0,y1,{gx:gx,gy:1,labelX:true,labelY:true,asymX:h,points:[[h+b,a+k]]});
+}
 function u8invSVG(c){
   var ox = 70, oy = 135, u = 20, tmax = c === 2 ? 2.3 : 1.6;
   function PX(x){ return (ox + x * u).toFixed(1); }
@@ -4797,29 +5115,29 @@ E("u8-sketch-log",8,["4.38"],1,"gen",function(){
   var C = pick(bases), cs = C.s;
   var fn = "y = " + u8L(cs, "x");
   var ask = pick(["xint","asym","valc","val1","domain","range","dir"]);
-  if (ask === "xint") return mcq("What is the \\(x\\)-intercept of the graph of \\(" + fn + "\\)?",
+  if (ask === "xint"){ q=mcq("What is the \\(x\\)-intercept of the graph of \\(" + fn + "\\)?",
     "\\(1\\)", ["\\(0\\)", "\\(" + cs + "\\)", "\\(-1\\)"],
-    "The graph crosses the \\(x\\)-axis where \\(" + u8L(cs, "x") + " = 0\\). Since \\(" + cs + "^0 = 1\\), this happens at \\(x = 1\\).", {ask:ask, c:cs});
-  if (ask === "asym") return mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
+    "The graph crosses the \\(x\\)-axis where \\(" + u8L(cs, "x") + " = 0\\). Since \\(" + cs + "^0 = 1\\), this happens at \\(x = 1\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "asym"){ q=mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
     "\\(x = 0\\)", ["\\(y = 0\\)", "\\(x = 1\\)", "\\(x = " + cs + "\\)"],
-    "The argument \\(x\\) must stay positive, and as \\(x\\) approaches \\(0\\) the values drop without bound, so the graph approaches the line \\(x = 0\\) but never touches it.", {ask:ask, c:cs});
-  if (ask === "valc") return mcq("What is the value of \\(" + fn + "\\) at \\(x = " + cs + "\\)?",
+    "The argument \\(x\\) must stay positive, and as \\(x\\) approaches \\(0\\) the values drop without bound, so the graph approaches the line \\(x = 0\\) but never touches it.", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "valc"){ q=mcq("What is the value of \\(" + fn + "\\) at \\(x = " + cs + "\\)?",
     "\\(1\\)", ["\\(0\\)", "\\(" + cs + "\\)", "\\(-1\\)"],
-    "A logarithm gives the exponent on its base: \\(" + u8L(cs, cs) + " = 1\\) because \\(" + cs + "^1 = " + cs + "\\).", {ask:ask, c:cs});
-  if (ask === "val1") return mcq("What is the value of \\(" + fn + "\\) at \\(x = 1\\)?",
+    "A logarithm gives the exponent on its base: \\(" + u8L(cs, cs) + " = 1\\) because \\(" + cs + "^1 = " + cs + "\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "val1"){ q=mcq("What is the value of \\(" + fn + "\\) at \\(x = 1\\)?",
     "\\(0\\)", ["\\(1\\)", "\\(" + cs + "\\)", "undefined"],
-    "Since \\(" + cs + "^0 = 1\\), the exponent is \\(0\\): \\(" + u8L(cs, "1") + " = 0\\).", {ask:ask, c:cs});
-  if (ask === "domain") return mcq("What is the domain of \\(" + fn + "\\)?",
+    "Since \\(" + cs + "^0 = 1\\), the exponent is \\(0\\): \\(" + u8L(cs, "1") + " = 0\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "domain"){ q=mcq("What is the domain of \\(" + fn + "\\)?",
     "\\(x > 0\\)", ["\\(x \\ge 0\\)", "\\(x < 0\\)", "all real numbers"],
-    "A logarithm is defined only for positive arguments, so \\(x > 0\\).", {ask:ask, c:cs});
-  if (ask === "range") return mcq("What is the range of \\(" + fn + "\\)?",
+    "A logarithm is defined only for positive arguments, so \\(x > 0\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "range"){ q=mcq("What is the range of \\(" + fn + "\\)?",
     "all real numbers", ["\\(y > 0\\)", "\\(y \\ge 0\\)", "\\(y < 0\\)"],
-    "As \\(x\\) grows, the logarithm grows without bound, and as \\(x\\) approaches \\(0\\) it falls without bound, so every real value occurs.", {ask:ask, c:cs});
+    "As \\(x\\) grows, the logarithm grows without bound, and as \\(x\\) approaches \\(0\\) it falls without bound, so every real value occurs.", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
   var inc = C.v > 1;
-  return mcq("As \\(x\\) increases, the values of \\(" + fn + "\\)",
+  var q=mcq("As \\(x\\) increases, the values of \\(" + fn + "\\)",
     inc ? "increase" : "decrease",
     [inc ? "decrease" : "increase", "stay the same", "increase, then decrease"],
-    (inc ? "The base \\(" + cs + "\\) is greater than \\(1\\), so larger inputs need larger exponents: the graph rises." : "The base \\(" + cs + "\\) is between \\(0\\) and \\(1\\), so larger inputs need smaller exponents: the graph falls."), {ask:ask, c:cs});
+    (inc ? "The base \\(" + cs + "\\) is greater than \\(1\\), so larger inputs need larger exponents: the graph rises." : "The base \\(" + cs + "\\) is between \\(0\\) and \\(1\\), so larger inputs need smaller exponents: the graph falls."), {ask:ask, c:cs});q.figure=u8logFig(C.v);return q;
 });
 
 E("u8-estimate-approx",8,["1.4","1.8"],1,"gen",function(){
@@ -5057,30 +5375,30 @@ E("u8-transformed-log",8,["4.39","4.49"],2,"gen",function(){
     var kk2 = -a * j;
     var fn2 = fnStr(a, h, kk2);
     var ans = h + Math.pow(b, j);
-    return numq("What is the \\(x\\)-intercept of the graph of \\(" + fn2 + "\\)?", ans, 0.01,
+    var q=numq("What is the \\(x\\)-intercept of the graph of \\(" + fn2 + "\\)?", ans, 0.01,
       "Set \\(y = 0\\): \\[ \\begin{aligned} " + (a === -1 ? "-" : "" + a) + u8L(b, argS) + u8sgn(kk2) + " &= 0 \\\\ " + u8L(b, argS) + " &= " + j + " \\\\ " + argS + " &= " + b + "^{" + j + "} = " + fmt(Math.pow(b, j), 3) + " \\\\ x &= " + fmt(ans, 3) + " \\end{aligned} \\] The intercept is \\(x = " + fmt(ans, 3) + "\\).",
-      {ask:ask, b:b});
+      {ask:ask, b:b});q.figure=u8tlogFig(b,a,h,kk2);return q;
   }
-  if (ask === "asym") return mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
+  if (ask === "asym"){ q=mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
     "\\(x = " + h + "\\)",
     ["\\(x = " + (-h) + "\\)", "\\(x = " + k + "\\)", "\\(y = " + k + "\\)"],
     "The logarithm is defined only when its argument is positive: \\(" + argS + " > 0\\), so \\(x > " + h + "\\). The graph approaches the line \\(x = " + h + "\\) without ever touching it.",
-    {ask:ask, b:b, h:h});
-  if (ask === "domain") return mcq("What is the domain of \\(" + fn + "\\)?",
+    {ask:ask, b:b, h:h});q.figure=u8tlogFig(b,a,h,k);return q; }
+  if (ask === "domain"){ q=mcq("What is the domain of \\(" + fn + "\\)?",
     "\\(x > " + h + "\\)",
     ["\\(x < " + h + "\\)", "\\(x > " + k + "\\)", "all real numbers"],
     "The argument of the logarithm must be positive: \\(" + argS + " > 0\\) gives \\(x > " + h + "\\).",
-    {ask:ask, b:b, h:h});
-  if (ask === "range") return mcq("What is the range of \\(" + fn + "\\)?",
+    {ask:ask, b:b, h:h});q.figure=u8tlogFig(b,a,h,k);return q; }
+  if (ask === "range"){ q=mcq("What is the range of \\(" + fn + "\\)?",
     "all real numbers",
     ["\\(y > " + k + "\\)", "\\(y < " + k + "\\)", "positive real numbers only"],
     "As \\(" + argS + "\\) approaches \\(0\\), the logarithm falls without bound, and as \\(" + argS + "\\) grows, it rises without bound. The vertical shift and stretch do not bound the values, so every real number occurs.",
-    {ask:ask, b:b});
-  return mcq("The graph of \\(" + fn + "\\) is",
+    {ask:ask, b:b});q.figure=u8tlogFig(b,a,h,k);return q; }
+  var q=mcq("The graph of \\(" + fn + "\\) is",
     a > 0 ? "increasing" : "decreasing",
     [a > 0 ? "decreasing" : "increasing", "constant", "first increasing, then decreasing"],
     (a > 0 ? "The coefficient \\(" + a + "\\) is positive and the base \\(" + b + "\\) is greater than \\(1\\), so larger inputs give larger values." : "The coefficient \\(" + a + "\\) is negative, so the base graph is reflected: larger inputs give smaller values."),
-    {ask:ask, b:b});
+    {ask:ask, b:b});q.figure=u8tlogFig(b,a,h,k);return q;
 });
 
 E("u8-model-log",8,["4.30"],3,"var",varset([
@@ -5170,17 +5488,17 @@ E("u8-inverse-graph",8,["4.37"],3,"gen",function(){
   if (mode === "swap"){
     var c2 = pick([2,3,5,10]);
     if (Math.random() < 0.5){
-      return mcq("The domain of \\(y = " + u8L(c2, "x") + "\\) is the same as which feature of \\(y = " + c2 + "^{x}\\)?",
+      var q=mcq("The domain of \\(y = " + u8L(c2, "x") + "\\) is the same as which feature of \\(y = " + c2 + "^{x}\\)?",
         "its range",
         ["its domain", "its \\(x\\)-intercept", "its asymptote"],
         "Inverse functions swap domain and range: \\(y = " + u8L(c2, "x") + "\\) has domain \\(x > 0\\), and \\(y = " + c2 + "^{x}\\) has range \\(y > 0\\). The domains are different: the exponential function is defined for every real \\(x\\).",
-        {mode:mode, c:c2});
+        {mode:mode, c:c2});if(c2<=3)q.figure=u8invSVG(c2);return q;
     }
-    return mcq("The range of \\(y = " + c2 + "^{x}\\) is the same as which feature of \\(y = " + u8L(c2, "x") + "\\)?",
+    var q=mcq("The range of \\(y = " + c2 + "^{x}\\) is the same as which feature of \\(y = " + u8L(c2, "x") + "\\)?",
       "its domain",
       ["its range", "its \\(y\\)-intercept", "its asymptote"],
       "Inverse functions swap domain and range: \\(y = " + c2 + "^{x}\\) has range \\(y > 0\\), and \\(y = " + u8L(c2, "x") + "\\) has domain \\(x > 0\\).",
-      {mode:mode, c:c2});
+      {mode:mode, c:c2});if(c2<=3)q.figure=u8invSVG(c2);return q;
   }
   if (mode === "intercepts"){
     var c3 = pick([2,3,5,10]);
@@ -5199,26 +5517,26 @@ E("u8-inverse-graph",8,["4.37"],3,"gen",function(){
     p = pick(ps);
     var val = Math.pow(c4, p);
     var vs = p < 0 ? u8frac(1, Math.pow(c4, -p)) : "" + val;
-    return mcq("The point \\(\\left(" + p + ", " + vs + "\\right)\\) lies on the graph of \\(y = " + c4 + "^{x}\\). Which point lies on the graph of \\(y = " + u8L(c4, "x") + "\\)?",
+    var q=mcq("The point \\(\\left(" + p + ", " + vs + "\\right)\\) lies on the graph of \\(y = " + c4 + "^{x}\\). Which point lies on the graph of \\(y = " + u8L(c4, "x") + "\\)?",
       "\\(\\left(" + vs + ", " + p + "\\right)\\)",
       ["\\(\\left(" + p + ", " + vs + "\\right)\\)",
        "\\(\\left(" + vs + ", " + (-p) + "\\right)\\)",
        "\\(\\left(" + (-p) + ", " + vs + "\\right)\\)"],
       "Inverse functions swap coordinates: the point \\(\\left(" + p + ", " + vs + "\\right)\\) on \\(y = " + c4 + "^{x}\\) corresponds to \\(\\left(" + vs + ", " + p + "\\right)\\) on \\(y = " + u8L(c4, "x") + "\\), since \\(" + u8L(c4, vs) + " = " + p + "\\).",
-      {mode:mode, c:c4, p:p});
+      {mode:mode, c:c4, p:p});if(c4<=3)q.figure=u8invSVG(c4);return q;
   }
   c4 = pick([2,3,5,10]);
   var ps2 = c4 === 2 ? [-3,-2,-1,1,2,3] : (c4 === 3 ? [-2,-1,1,2,3] : (c4 === 5 ? [-1,1,2] : [-2,-1,1,2,3]));
   p = pick(ps2);
   var val2 = Math.pow(c4, p);
   var vs2 = p < 0 ? u8frac(1, Math.pow(c4, -p)) : "" + val2;
-  return mcq("The point \\(\\left(" + vs2 + ", " + p + "\\right)\\) lies on the graph of \\(y = " + u8L(c4, "x") + "\\). Which point lies on the graph of \\(y = " + c4 + "^{x}\\)?",
+  var q=mcq("The point \\(\\left(" + vs2 + ", " + p + "\\right)\\) lies on the graph of \\(y = " + u8L(c4, "x") + "\\). Which point lies on the graph of \\(y = " + c4 + "^{x}\\)?",
     "\\(\\left(" + p + ", " + vs2 + "\\right)\\)",
     ["\\(\\left(" + vs2 + ", " + p + "\\right)\\)",
      "\\(\\left(" + (-p) + ", " + vs2 + "\\right)\\)",
      "\\(\\left(" + vs2 + ", " + (-p) + "\\right)\\)"],
     "Inverse functions swap coordinates: the point \\(\\left(" + vs2 + ", " + p + "\\right)\\) on \\(y = " + u8L(c4, "x") + "\\) corresponds to \\(\\left(" + p + ", " + vs2 + "\\right)\\) on \\(y = " + c4 + "^{x}\\), since \\(" + c4 + "^{" + p + "} = " + vs2 + "\\).",
-    {mode:mode, c:c4, p:p});
+    {mode:mode, c:c4, p:p});if(c4<=3)q.figure=u8invSVG(c4);return q;
 });
 
 E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
@@ -5508,16 +5826,18 @@ E("u9-counting-organizers",9,["9.1","9.4"],1,"gen",function(){
   }
   if(mode==="three"){
     var c3=pick([
-      {parts:"2 kinds of bread, 3 fillings and 2 spreads",v:[2,3,2],w:"sandwiches"},
-      {parts:"3 shirts, 2 pairs of pants and 2 pairs of shoes",v:[3,2,2],w:"outfits"},
-      {parts:"2 soups, 4 mains and 2 desserts",v:[2,4,2],w:"meals"},
-      {parts:"3 juices, 2 cereals and 3 fruits",v:[3,2,3],w:"breakfasts"}
+      {parts:"2 kinds of bread, 3 fillings and 2 spreads",v:[2,3,2],w:"sandwiches",t:["Bread","Fillings","Spreads"]},
+      {parts:"3 shirts, 2 pairs of pants and 2 pairs of shoes",v:[3,2,2],w:"outfits",t:["Shirts","Pants","Shoes"]},
+      {parts:"2 soups, 4 mains and 2 desserts",v:[2,4,2],w:"meals",t:["Soups","Mains","Desserts"]},
+      {parts:"3 juices, 2 cereals and 3 fruits",v:[3,2,3],w:"breakfasts",t:["Juices","Cereals","Fruits"]}
     ]);
     var tot=c3.v[0]*c3.v[1]*c3.v[2];
-    return numq("A tree diagram is used to count the "+c3.w+" that can be made from "+c3.parts+". How many endpoints does the tree diagram have?",
+    var q=numq("A tree diagram is used to count the "+c3.w+" that can be made from "+c3.parts+". How many endpoints does the tree diagram have?",
       tot,0.001,
       "Each stage of the tree splits every branch again: \\("+c3.v[0]+" \\times "+c3.v[1]+" \\times "+c3.v[2]+" = "+tot+"\\) endpoints.",
       {mode:mode,tot:tot});
+      q.figure=treeSVG(c3.v.map(function(n,i){var opts=[];for(var j=1;j<=n;j++)opts.push(""+j);return {title:c3.t[i],options:opts};}));
+      return q;
   }
   if(mode==="row"){
     var c4=pick([
@@ -5525,10 +5845,14 @@ E("u9-counting-organizers",9,["9.1","9.4"],1,"gen",function(){
       {what:"different books",n:4},{what:"runners",n:4},{what:"different cards",n:3}
     ]);
     var parts4=[]; for(var i4=c4.n;i4>=1;i4--) parts4.push(i4);
-    return numq("A tree diagram is used to count the orders in which "+c4.n+" "+c4.what+" can be placed in a row. How many orders does the tree diagram show?",
+    var q=numq("A tree diagram is used to count the orders in which "+c4.n+" "+c4.what+" can be placed in a row. How many orders does the tree diagram show?",
       u9fact(c4.n),0.001,
       "At each stage of the tree, one fewer item remains: \\("+parts4.join(" \\times ")+" = "+u9fact(c4.n)+"\\) orders.",
       {n:c4.n,mode:mode});
+      var letters=["A","B","C","D"].slice(0,c4.n), ord=["1st","2nd","3rd","4th"], stages=[];
+      for(var si=0;si<c4.n;si++){(function(idx){stages.push({title:ord[idx]+" position",options:function(path){return letters.filter(function(L){return path.indexOf(L)<0;});}});})(si);}
+      q.figure=treeSVG(stages);
+      return q;
   }
   var pair=pick([[12,3],[12,4],[18,3],[20,4],[24,4],[24,6],[16,4],[15,3],[15,5],[20,5],[18,6],[14,2]]);
   return numq("A tree diagram for a two-stage choice has "+pair[0]+" endpoints. The first stage has "+pair[1]+" options. How many options are there at the second stage?",
