@@ -7318,6 +7318,20 @@ E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
     sol, { mode: "gap-freq-mean-mc", S: S, N: N });
 }, ["La moyenne d'une table de fréquences pondère chaque valeur par le nombre de fois qu'elle se produit, puis divise par le compte total.", "Multiplie chaque nombre d'animaux par son nombre de ménages comme première étape."]);
 
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 7 outcomes (the mean of a data set, Math 7 indicators 11.6 and 11.9); this bank mirrors Math 9, and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-9-fr.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap-freq-mean-mc"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
