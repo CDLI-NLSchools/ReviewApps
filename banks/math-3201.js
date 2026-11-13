@@ -1743,6 +1743,19 @@ E("u4-compare-models",4,["4.13"],3,"gen",function(){
     {t:t,a1:a1,a2:a2,b1:b1,b2:b2});
 });
 
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 9 exponent outcomes (indicators 3.6, 3.7 and 3.10: expressing and evaluating powers), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-3201.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u4-express-as-power"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ----- bank-u5.js ----- */
 // Math 3201 Unit 5 Logarithmic Functions question bank
 // CRMARKS: u5-catch-up=3
