@@ -5366,6 +5366,21 @@ E("u8-changed-side-view-gap", 8, ["10.15", "10.9"], 2, "gen", function(){
   return q;
 }, ["Les cubes ajoutés changent une pile avant que la vue de côté soit lue, alors mets d'abord la carte à jour.", "Additionne les nouveaux cubes à la pile nommée, puis prends la pile la plus haute de chaque rangée et additionne-les."]);
 
+
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 7 outcomes (working with the mean of a data set, Math 7 indicators 11.6 and 11.9); this bank mirrors Math 8, and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-8-fr.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u7-missing-mean-value-gap","u7-mean-difference-gap","u7-combined-mean-gap"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
