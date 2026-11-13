@@ -2143,6 +2143,8 @@ E("u3-76-friction-cr",3,["PH11.7.6"],2,"gen",function(){
   var f=sfR(rf(10,25),3),s=sfR(rf(3,6),3);
   // Guard (Nov 2026): a slope length at or below the height cannot exist, so redraw it above the height; if that would make friction heat reach the starting potential energy, cap it just below that bound instead.
   if(s<=h){s=sfR(h+rf(0.5,3),3);if(f*s>=0.98*eg)s=sfR(0.95*eg/f,3);}
+  // Extension (Nov 2026, Jason's commission): apply the same energy margin on every draw, not only on redrawn slopes. Friction is a plain given, so redraw it below the 95 percent bound when the bound leaves a range above its 10 N floor; if that range is empty, cap the slope length just below the bound instead.
+  if(f*s>=0.98*eg){var fLimit=0.95*eg/s;if(fLimit>10.01){f=sfR(rf(10,0.999*fLimit),3);}else{s=sfR(0.95*eg/f,3);}}
   var Q=sfR(f*s,3);
   var ekf=sfR(eg-Q,3),twoEk=sfR(2*ekf,4),v2=sfR(twoEk/m,4),v=sfR(Math.sqrt(v2),3);
   var q=numq("A "+gF(m)+" kg block starts from rest at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. As it slides down a slope of length "+gF(s)+" m, friction of "+gF(f)+" N acts on it. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
