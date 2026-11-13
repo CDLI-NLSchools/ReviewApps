@@ -4358,6 +4358,8 @@ E("u5-identify-form",5,["4.39"],1,"gen",function(){
 // CRMARKS: u6-break-even=2
 // CRMARKS: u6-solve-elimination=4
 // CRMARKS: u6-word-problem=2
+// CRMARKS: u6-mixture=2
+// CRMARKS: u6-travel=2
 /* Math 1201 Review, Unit 6: Systems of Linear Equations (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u6. Every entry returns the same question type on every draw.
@@ -4522,7 +4524,9 @@ E("u6-problem",6,["4.54"],3,"gen",function(){
     {intro:"A cafe sells baked goods to two customers on the same morning.",n1:"scones",n2:"muffins",buyer:"customer"},
     {intro:"A fruit stand sells bags of fruit to two shoppers on the same day.",n1:"bags of strawberries",n2:"bags of blueberries",buyer:"shopper"},
     {intro:"A craft shop sells supplies to two makers on the same afternoon.",n1:"balls of yarn",n2:"packs of buttons",buyer:"maker"},
-    {intro:"A snack cart sells items to two students on the same lunch break.",n1:"granola bars",n2:"trail mix pouches",buyer:"student"}
+    {intro:"A snack cart sells items to two students on the same lunch break.",n1:"granola bars",n2:"trail mix pouches",buyer:"student"},
+    {intro:"A fish market sells fresh fish to two buyers on the same morning.",n1:"cod fillets",n2:"salmon portions",buyer:"buyer"},
+    {intro:"A garden centre sells plants to two customers on the same afternoon.",n1:"tomato seedlings",n2:"pepper plants",buyer:"customer"}
   ];
   var pi=ri(0,profs.length-1),prof=profs[pi];
   var px=ri(2,7),py=ri(2,7),t0=0;
@@ -4690,7 +4694,9 @@ E("u6-break-even",6,["4.54"],3,"gen",function(){
     {intro:"A community gym offers two class passes.",unit:"classes attended",per:"class attended"},
     {intro:"A print studio offers two pricing plans for posters.",unit:"posters printed",per:"poster printed"},
     {intro:"A boat rental shop offers two pricing plans.",unit:"hours rented",per:"hour rented"},
-    {intro:"A mobile provider offers two monthly data plans.",unit:"extra gigabytes used",per:"extra gigabyte used"}
+    {intro:"A mobile provider offers two monthly data plans.",unit:"extra gigabytes used",per:"extra gigabyte used"},
+    {intro:"A community hall offers two rental plans for events.",unit:"hours rented",per:"hour rented"},
+    {intro:"A snow-clearing service offers two contracts for the winter season.",unit:"snowfalls cleared",per:"snowfall cleared"}
   ];
   var pi=ri(0,profs.length-1),prof=profs[pi];
   var U=ri(4,28),fA=ri(5,60),rB=ri(1,12),dd=ri(1,6);
@@ -4797,6 +4803,139 @@ E("u6-word-problem",6,["4.54"],2,"gen",function(){
     "\\begin{aligned} x + y &= "+N4+" \\\\ 10x + 25y &= "+V4+" \\end{aligned} \\]"+
     " Multiply the first equation by \\(10\\) and subtract it from the second: \\(15y = "+(V4-10*N4)+"\\), so \\(y = "+nQ+"\\) quarters, and then \\(x = "+N4+" - "+nQ+" = "+nD+"\\) dimes. The number of "+(askD?"dimes":"quarters")+" is <b>"+ans4+"</b>.",
     {mode:mode,N:N4,V:V4,ans:ans4,askD:askD});
+});
+
+/* ================= 13. mixture problems (4.54, L2, gen num, CR 2) =================
+   Scenario arms harvested Nov 13, 2026 (build order step 9): the mixture
+   class from the Pure Math 20 systems files, rewritten. Amounts are
+   chosen first and the target concentration or price is read off them,
+   so every key is an exact integer. */
+E("u6-mixture",6,["4.54"],2,"gen",function(){
+  var mode=ri(1,3);
+  if(mode===1){
+    var profs=[
+      {who:"A lab technician",sub:"salt solution",verb:"mixes"},
+      {who:"A pharmacist",sub:"antiseptic solution",verb:"mixes"},
+      {who:"A groundskeeper",sub:"fertilizer solution",verb:"mixes"},
+      {who:"A caterer",sub:"juice concentrate",verb:"mixes"}
+    ];
+    var prof=pick(profs);
+    var a,b,x,y,V,c,t=0;
+    do{
+      a=pick([10,15,20,25]);b=pick([40,50,60,70,80]);x=ri(2,15);y=ri(2,15);V=x+y;t++;
+    }while(t<300&&((a*x+b*y)%V!==0||(a*x+b*y)/V<=a||(a*x+b*y)/V>=b));
+    c=(a*x+b*y)/V;
+    var askA=Math.random()<0.5,ans=askA?x:y;
+    var sol="Let \\(x\\) be the number of litres of the \\("+a+"\\)% solution and \\(y\\) be the number of litres of the \\("+b+"\\)% solution. The total volume and the total amount of dissolved substance give the system \\["+
+    "\\begin{aligned} x + y &= "+V+" \\\\ "+a+"x + "+b+"y &= "+(c*V)+" \\end{aligned} \\]"+
+    " (the second equation is the percent equation multiplied by \\(100\\): the mixture must contain \\("+c+"\\)% of \\("+V+"\\) litres of dissolved substance). Multiply the first equation by \\("+a+"\\) and subtract: \\("+(b-a)+"y = "+(c*V-a*V)+"\\), so \\(y = "+y+"\\), and then \\(x = "+V+" - "+y+" = "+x+"\\). The amount of the \\("+(askA?a:b)+"\\)% solution needed is <b>"+ans+" litres</b>.";
+    return numq(prof.who+" "+prof.verb+" a \\("+a+"\\)% "+prof.sub+" with a \\("+b+"\\)% "+prof.sub+" to prepare \\("+V+"\\) litres of a \\("+c+"\\)% "+prof.sub+". How many litres of the \\("+(askA?a:b)+"\\)% solution are needed?",
+      ans,0.001,sol,
+      {mode:mode,a:a,b:b,x:x,y:y,V:V,c:c,askA:askA,ans:ans});
+  }
+  if(mode===2){
+    var profs2=[
+      {who:"A pool operator",sub:"chlorine solution",unit:"litres"},
+      {who:"A lab technician",sub:"salt solution",unit:"litres"}
+    ];
+    var prof2=pick(profs2);
+    var V0,a2,w,c2,t2=0;
+    do{
+      V0=ri(4,20);a2=pick([20,25,30,40,50,60]);w=ri(2,16);t2++;
+    }while(t2<300&&((a2*V0)%(V0+w)!==0||(a2*V0)/(V0+w)<5||(a2*V0)/(V0+w)>=a2));
+    c2=(a2*V0)/(V0+w);
+    var sol2="Let \\(w\\) be the number of litres of water added. Adding water does not change the amount of dissolved substance, so the substance in the original \\("+V0+"\\) litres must equal the substance in the final \\("+V0+" + w\\) litres: \\["+
+    "\\begin{aligned} "+a2+"("+V0+") &= "+c2+"("+V0+" + w) \\\\ "+(a2*V0)+" &= "+(c2*V0)+" + "+c2+"w \\\\ "+c2+"w &= "+(a2*V0-c2*V0)+" \\\\ w &= "+w+" \\end{aligned} \\]"+
+    " The amount of water to add is <b>"+w+" litres</b>.";
+    return numq(prof2.who+" has \\("+V0+"\\) litres of a \\("+a2+"\\)% "+prof2.sub+". Water is added to dilute it to a \\("+c2+"\\)% "+prof2.sub+". How many litres of water must be added?",
+      w,0.001,sol2,
+      {mode:mode,V0:V0,a:a2,w:w,c:c2,ans:w});
+  }
+  var profs3=[
+    {who:"A bulk food shop",i1:"cashews",i2:"dried cranberries",blend:"trail mix"},
+    {who:"A coffee roaster",i1:"dark roast beans",i2:"light roast beans",blend:"house blend"},
+    {who:"A feed store",i1:"oats",i2:"barley",blend:"feed mix"}
+  ];
+  var prof3=pick(profs3);
+  var p1,p2,x3,y3,W,m,t3=0;
+  do{
+    p1=pick([4,5,6,8]);p2=pick([12,14,16,18,20]);x3=ri(2,18);y3=ri(2,18);W=x3+y3;t3++;
+  }while(t3<300&&((p1*x3+p2*y3)%W!==0||(p1*x3+p2*y3)/W<=p1||(p1*x3+p2*y3)/W>=p2));
+  m=(p1*x3+p2*y3)/W;
+  var ask1=Math.random()<0.5,ans3=ask1?x3:y3;
+  var sol3="Let \\(x\\) be the number of kilograms of "+prof3.i1+" and \\(y\\) be the number of kilograms of "+prof3.i2+". The total mass and the total value give the system \\["+
+  "\\begin{aligned} x + y &= "+W+" \\\\ "+p1+"x + "+p2+"y &= "+(m*W)+" \\end{aligned} \\]"+
+  " Multiply the first equation by \\("+p1+"\\) and subtract it from the second: \\("+(p2-p1)+"y = "+(m*W-p1*W)+"\\), so \\(y = "+y3+"\\), and then \\(x = "+W+" - "+y3+" = "+x3+"\\). The amount of "+(ask1?prof3.i1:prof3.i2)+" needed is <b>"+ans3+" kilograms</b>.";
+  return numq(prof3.who+" blends "+prof3.i1+" costing "+p1+" dollars per kilogram with "+prof3.i2+" costing "+p2+" dollars per kilogram to make "+W+" kilograms of "+prof3.blend+" worth "+m+" dollars per kilogram. How many kilograms of "+(ask1?prof3.i1:prof3.i2)+" are needed?",
+    ans3,0.001,sol3,
+    {mode:mode,p1:p1,p2:p2,x:x3,y:y3,W:W,m:m,ask1:ask1,ans:ans3});
+});
+
+/* ================= 14. rate and distance problems (4.54, L2, gen num, CR 2) =================
+   Scenario arms harvested Nov 13, 2026 (build order step 9): the rate
+   and distance class from the Pure Math 20 systems files, rewritten.
+   Speeds and times are chosen first, so every key is an exact integer. */
+E("u6-travel",6,["4.54"],2,"gen",function(){
+  var mode=ri(1,3);
+  if(mode===1){
+    var skins=[
+      {veh:"boat",med:"river",moving:"travels",still:"still water",flow:"current",down:"downstream",up:"upstream",unit:"km"},
+      {veh:"plane",med:"air",moving:"flies",still:"still air",flow:"wind",down:"with the wind",up:"against the wind",unit:"km"}
+    ];
+    var sk=pick(skins);
+    var u,v,D,t1,t2,t=0;
+    do{
+      if(sk.veh==="boat"){u=ri(12,40);t1=ri(1,6);t2=t1+ri(1,4);}
+      else{u=pick([240,280,300,320,360,400,420,480]);t1=ri(1,3);t2=t1+ri(1,2);}
+      D=u*t1;t++;
+    }while(t<300&&(D%t2!==0||(v=D/t2)>=u||v<4||((u-v)%2)!==0));
+    if(t>=300){u=30;t1=4;t2=6;D=120;v=20;}
+    var s=(u+v)/2,cur=(u-v)/2;
+    var askS=Math.random()<0.5,ans=askS?s:cur;
+    var sol="Let \\(s\\) be the speed of the "+sk.veh+" in "+sk.still+" and \\(c\\) be the speed of the "+sk.flow+", in kilometres per hour. Travelling "+sk.down+", the speeds add; travelling "+sk.up+", they subtract: \\["+
+    "\\begin{aligned} s + c &= "+u+" \\\\ s - c &= "+v+" \\end{aligned} \\]"+
+    " (each right side is the distance \\("+D+"\\) km divided by its travel time). Adding the equations gives \\(2s = "+(u+v)+"\\), so \\(s = "+s+"\\); subtracting gives \\(2c = "+(u-v)+"\\), so \\(c = "+cur+"\\). The "+(askS?("speed of the "+sk.veh+" in "+sk.still):("speed of the "+sk.flow))+" is <b>"+ans+" km/h</b>.";
+    return numq("A "+sk.veh+" "+sk.moving+" "+D+" "+sk.unit+" "+sk.down+" and then returns over the same route. The trip "+sk.down+" takes "+t1+" hour"+(t1===1?"":"s")+" and the return trip takes "+t2+" hours. The speed of the "+sk.veh+" in "+sk.still+" and the speed of the "+sk.flow+" stay constant. What is the "+(askS?("speed of the "+sk.veh+" in "+sk.still):("speed of the "+sk.flow))+", in kilometres per hour?",
+      ans,0.001,sol,
+      {mode:mode,skin:(sk.veh==="boat"?0:1),u:u,v:v,D:D,t1:t1,t2:t2,s:s,cur:cur,askS:askS,ans:ans});
+  }
+  if(mode===2){
+    var skins2=[
+      {who1:"cyclist",whoP:"cyclists",from1:"one town",from2:"a neighbouring town",verb:"ride towards each other",speeds:[12,15,18,20,24]},
+      {who1:"snowmobiler",whoP:"snowmobilers",from1:"one cabin",from2:"another cabin",verb:"ride towards each other",speeds:[30,36,40,45,50,60]},
+      {who1:"ferry",whoP:"ferries",from1:"one terminal",from2:"the other terminal",verb:"sail towards each other",speeds:[12,15,18,20,24,25,30]}
+    ];
+    var sk2=pick(skins2);
+    var v1=pick(sk2.speeds),v2=pick(sk2.speeds);
+    var tm=ri(1,5),D2=(v1+v2)*tm;
+    var askT=Math.random()<0.5,ans2=askT?tm:(v1*tm);
+    var sol2="Let \\(t\\) be the number of hours until the two "+sk2.whoP+" meet. Together they close the whole \\("+D2+"\\) km gap, at a combined rate of \\("+v1+" + "+v2+" = "+(v1+v2)+"\\) km/h: \\["+
+    "\\begin{aligned} "+(v1+v2)+"t &= "+D2+" \\\\ t &= "+tm+" \\end{aligned} \\]"+
+    " In that time the first "+sk2.who1+" covers \\("+v1+" \\times "+tm+" = "+(v1*tm)+"\\) km. The "+(askT?"time until they meet":"distance covered by the first "+sk2.who1)+" is <b>"+ans2+(askT?" hours":" km")+"</b>.";
+    return numq("Two "+sk2.whoP+" leave "+sk2.from1+" and "+sk2.from2+" at the same time and "+sk2.verb+" along the same route, which is "+D2+" km long. The first travels at "+v1+" km/h and the second at "+v2+" km/h. "+(askT?"How many hours pass until they meet?":"How many kilometres does the first "+sk2.who1+" cover before they meet?"),
+      ans2,0.001,sol2,
+      {mode:mode,v1:v1,v2:v2,t:tm,D:D2,askT:askT,ans:ans2});
+  }
+  var skins3=[
+    {veh:"delivery truck",cargo:"highway",speeds:[40,50,60,70,80,90],diffs:[5,10,15,20,25,30]},
+    {veh:"ferry",cargo:"channel",speeds:[15,18,20,24,25,30],diffs:[2,3,4,5,6,10]},
+    {veh:"bus",cargo:"highway",speeds:[40,50,60,70,80,90],diffs:[5,10,15,20,25,30]}
+  ];
+  var sk3=pick(skins3);
+  var vA,diff,h,t3=0,tc;
+  do{
+    vA=pick(sk3.speeds);h=pick([1,2,3]);diff=pick(sk3.diffs);t3++;
+  }while(t3<300&&((vA*h)%diff!==0||(vA*h)/diff>12));
+  if(t3>=300){vA=60;h=1;diff=20;}
+  tc=(vA*h)/diff;
+  var vB=vA+diff,dist=vB*tc;
+  var askT3=Math.random()<0.5,ans3b=askT3?tc:dist;
+  var sol3="Let \\(t\\) be the number of hours the second "+sk3.veh+" travels before catching up. By then the first "+sk3.veh+" has travelled for \\(t + "+h+"\\) hours, and the two have covered the same distance: \\["+
+  "\\begin{aligned} "+vB+"t &= "+vA+"(t + "+h+") \\\\ "+vB+"t &= "+vA+"t + "+(vA*h)+" \\\\ "+diff+"t &= "+(vA*h)+" \\\\ t &= "+tc+" \\end{aligned} \\]"+
+  " The meeting point is \\("+vB+" \\times "+tc+" = "+dist+"\\) km from the start. The "+(askT3?"time for the second "+sk3.veh+" to catch up":"distance from the start where it catches up")+" is <b>"+ans3b+(askT3?" hours":" km")+"</b>.";
+  return numq("A "+sk3.veh+" leaves a depot and travels along a "+sk3.cargo+" at "+vA+" km/h. "+h+" hour"+(h===1?"":"s")+" later, a second "+sk3.veh+" leaves the same depot and follows at "+vB+" km/h. "+(askT3?"How many hours after it leaves does the second "+sk3.veh+" catch up to the first?":"How far from the depot, in kilometres, does the second "+sk3.veh+" catch up to the first?"),
+    ans3b,0.001,sol3,
+    {mode:mode,vA:vA,vB:vB,h:h,t:tc,dist:dist,askT:askT3,ans:ans3b});
 });
 
 /* ----- bank-u7.js ----- */
@@ -5956,4 +6095,4 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-mixture":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-travel":2,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2};
