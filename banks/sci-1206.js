@@ -1109,7 +1109,7 @@ E("sci-u1-station-model", 1, ["SC10.6.5"], 2, "var", varset([
   function () {
     return mcq("A station model plots a temperature of 17 °C and a dewpoint of 16 °C, with a completely filled (black) station circle. The best interpretation is",
       "the air is nearly saturated and overcast, so fog or precipitation is likely",
-      ["the air is very dry and the sky is clear", "a cold front has just passed", "the station is at the centre of a high"],
+      ["the air is very dry, with a wide gap between temperature and dewpoint, under a clear sky", "a cold front has just passed through, leaving cooler and drier air moving in behind it", "the station is at the centre of a high pressure system, where sinking air keeps skies clear"],
       "When the dewpoint nearly equals the temperature, the air is at saturation: cloud and precipitation processes are active, matching the filled circle (overcast). A large gap between temperature and dewpoint would mean dry air.", {});
   },
   function () {
@@ -1318,13 +1318,13 @@ E("sci-u1-mountain-winds", 1, ["SC10.6.3"], 2, "var", varset([
   function () {
     return mcq("Moist air from the Gulf of St. Lawrence is forced up over the Long Range Mountains. As the air rises on the windward side it",
       "cools, its vapour condenses, and clouds and precipitation form on the slopes facing the wind",
-      ["warms up and dries out", "stops moving entirely", "gains water vapour from the rocks"],
+      ["warms up and dries out, so any clouds already in the air break apart and the slopes stay clear", "stops moving entirely, pooling against the mountainside so that no clouds can form there at all", "gains water vapour from the rocks it passes over, growing warmer and heavier as it climbs"],
       "Lifting is cooling: forced ascent chills the air to its dew point, wringing out moisture as orographic precipitation. The same mechanism gives the west coast of the island its heavy rain and snow while sheltered valleys stay drier.", {});
   },
   function () {
     return mcq("After crossing a mountain range, the descending air on the leeward side typically arrives",
       "warmer and drier than it started (a foehn or chinook type wind), because it lost moisture on the way up and compresses as it sinks",
-      ["colder and wetter than it started", "at exactly the same temperature and humidity", "carrying the clouds it made on the windward side"],
+      ["colder and wetter than it started, because it picks up fresh moisture from the snowfields along the ridge as it crosses over", "at exactly the same temperature and humidity it had when it reached the shore, because moving air keeps its properties unchanged", "carrying the clouds it made on the windward side along with it, so the valleys just beyond the range receive the same heavy rain"],
       "The mountain takes its toll in moisture on the way up; the dried air then warms by compression on the way down, arriving as a warm, dry wind. Alberta's chinooks are the famous Canadian example of the same physics.", {});
   }
 ]), ["Mountains are weather machines: lift, cool, condense on the way up; sink, warm, dry on the way down."]);
