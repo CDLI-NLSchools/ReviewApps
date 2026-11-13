@@ -1910,6 +1910,7 @@ E("u2-order-irrational",2,["1.22"],3,"gen",function(){
 // CRMARKS: u3-diff-squares=2
 // CRMARKS: u3-mult-error=2
 // CRMARKS: u3-factor-error=3
+// CRMARKS: u3-factorable-k=3
 /* Math 1201 Review, Unit 3 (Factors and Products) bank entries.
    Authored November 2026 from the tranche 1 briefs. All scenarios and
    values are original. Polynomials are rendered by the u3 helpers below:
@@ -2043,6 +2044,20 @@ function u3FacDistr(gRaw, facs, v, targetCoeffs, count) {
   return out.slice(0, count);
 }
 function u3Nz(a, b) { var n = 0; while (n === 0) n = ri(a, b); return n; }
+/* Factor pairs [p, q] with p <= q and p * q = m, in increasing p. */
+function u3PairsOf(m) {
+  var out = [];
+  for (var p = 1; p * p <= m; p++) if (m % p === 0) out.push([p, m / p]);
+  return out;
+}
+/* A value set as a sorted, deduplicated array, and its KaTeX raw
+   rendering as a brace set, for the find-all-k entry. */
+function u3SetArr(a) {
+  var seen = {}, out = [];
+  a.forEach(function (v) { if (!seen[v]) { seen[v] = 1; out.push(v); } });
+  return out.sort(function (x, y) { return x - y; });
+}
+function u3SetRaw(a) { return "\\{" + u3SetArr(a).join(", ") + "\\}"; }
 
 /* ============ 1. monomial times a binomial or trinomial (3.4, L1) ============ */
 E("u3-monomial-expand", 3, ["3.4"], 1, "gen", function () {
@@ -2656,6 +2671,98 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
       { t: "fac", g: "4x", parts: [[1, 2]], v: "x" });
   }
 ]));
+
+/* ============ 19. find all k that make a trinomial factorable (3.12, L2) ============ */
+/* The reverse factoring question: instead of factoring a given
+   trinomial, find every integer k that would let one factor. The
+   constant (or the middle coefficient's partner) is built from
+   factor pairs, so the key is a set of k values. Four arms: k in
+   the middle with a positive constant, k in the middle with a
+   negative constant, k as the constant with only positive values
+   possible to list (unrestricted, that set is infinite), and a
+   positive-values-only variant of the middle arms. Parameters
+   are bounded so the key set stays between two and six values:
+   constants have two or three factor pairs. Distractors are
+   wrong in one identifiable way each: one factor pair missed,
+   a sign or restriction error, or a set built from a bogus
+   split of the constant. */
+E("u3-factorable-k", 3, ["3.12"], 2, "gen", function () {
+  function pairList(P) { return P.map(function (f) { return "(" + f[0] + ", " + f[1] + ")"; }).join(", "); }
+  function draw(arm) {
+    var prompt, sol, sig, key, dMiss, dSign, dExtra;
+    if (arm === "mid") {
+      var c = ri(6, 48), P = u3PairsOf(c);
+      if (P.length < 2 || P.length > 3) return null;
+      var sums = P.map(function (f) { return f[0] + f[1]; });
+      key = []; sums.forEach(function (s) { key.push(s, -s); });
+      var last = P[P.length - 1], sl = last[0] + last[1];
+      dMiss = key.filter(function (v) { return v !== sl && v !== -sl; });
+      dSign = sums.slice();
+      dExtra = key.concat([c + 2, -(c + 2)]);
+      prompt = "Find all integer values of \\(k\\) for which the trinomial \\(x^2 + kx + " + c + "\\) is factorable over the integers.";
+      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x + q)\\) with \\(pq = " + c + "\\) and \\(p + q = k\\). The factor pairs of \\(" + c + "\\) are " + pairList(P) + ". Their sums are " + sums.join(", ") + ", and taking both members of a pair negative gives the further sums " + sums.map(function (s) { return -s; }).join(", ") + ". No other pair of integers has product \\(" + c + "\\), so these are all the possible values of \\(k\\). The values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+      sig = { t: "kfac", arm: "mid", c: c };
+    } else if (arm === "midneg") {
+      var m = ri(6, 48), P2 = u3PairsOf(m);
+      if (P2.length < 2 || P2.length > 3) return null;
+      var diffs = P2.map(function (f) { return f[1] - f[0]; });
+      var hasZero = diffs.indexOf(0) >= 0;
+      key = [];
+      P2.forEach(function (f) { var d = f[1] - f[0]; if (d > 0) { key.push(d, -d); } else { key.push(0); } });
+      var nz = P2.filter(function (f) { return f[1] > f[0]; });
+      var dl = nz[nz.length - 1][1] - nz[nz.length - 1][0];
+      dMiss = key.filter(function (v) { return v !== dl && v !== -dl; });
+      dSign = []; P2.forEach(function (f) { var s = f[0] + f[1]; dSign.push(s, -s); });
+      dExtra = hasZero ? key.filter(function (v) { return v !== 0; }) : key.concat([0]);
+      prompt = "Find all integer values of \\(k\\) for which the trinomial \\(x^2 + kx - " + m + "\\) is factorable over the integers.";
+      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x - q)\\) with \\(pq = " + m + "\\), and then \\(k = p - q\\). The factor pairs of \\(" + m + "\\) are " + pairList(P2) + ", and their differences \\(q - p\\) are " + diffs.join(", ") + ". Interchanging the two members of a pair changes the sign of the difference, which gives the negative values of \\(k\\) as well." +
+        (hasZero ? " The pair with equal members has difference \\(0\\), so \\(k = 0\\) is included." : "") +
+        " The values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+      sig = { t: "kfac", arm: "midneg", c: -m };
+    } else if (arm === "const") {
+      var b = ri(4, 10), prods = [], prs = [];
+      for (var p = 1; p < b; p++) { prods.push(p * (b - p)); if (p <= b - p) prs.push([p, b - p]); }
+      key = u3SetArr(prods);
+      var p0 = Math.floor(b / 2), prod0 = p0 * (b - p0);
+      dMiss = key.filter(function (v) { return v !== prod0; });
+      dSign = key.concat([0]);
+      dExtra = key.concat([-(b + 1)]);
+      prompt = "Find all positive integer values of \\(k\\) for which the trinomial \\(x^2 + " + b + "x + k\\) is factorable over the integers.";
+      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x + q)\\) with \\(p + q = " + b + "\\) and \\(pq = k\\). Because \\(k\\) must be positive, \\(p\\) and \\(q\\) have the same sign, and because their sum is the positive number \\(" + b + "\\), both are positive. The pairs of positive integers with sum \\(" + b + "\\) are " + pairList(prs) + ", and their products are " + key.join(", ") + ". The positive integer values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+      sig = { t: "kfac", arm: "const", b: b };
+    } else {
+      var sgn = pick([1, -1]), m2 = ri(6, 36), c2 = sgn * m2, P3 = u3PairsOf(m2);
+      if (P3.length < 2 || P3.length > 3) return null;
+      var contribs = P3.map(function (f) {
+        return c2 > 0 ? { f: f, into: f[0] + f[1], out: f[1] - f[0] } : { f: f, into: f[1] - f[0], out: f[0] + f[1] };
+      }).filter(function (x) { return x.into > 0; });
+      key = u3SetArr(contribs.map(function (x) { return x.into; }));
+      if (key.length < 2 || key.length > 3) return null;
+      var lastC = contribs[contribs.length - 1];
+      dMiss = key.filter(function (v) { return v !== lastC.into; });
+      var byInto = contribs.slice().sort(function (x, y) { return x.into - y.into; }), swapped = null;
+      for (var i = 0; i < byInto.length && !swapped; i++) {
+        if (key.indexOf(byInto[i].out) < 0 && (c2 < 0 || byInto[i].out > 0)) swapped = byInto[i];
+      }
+      if (!swapped) return null;
+      dSign = key.filter(function (v) { return v !== swapped.into; }).concat([swapped.out]);
+      dExtra = key.concat([c2 > 0 ? m2 + 2 : m2]);
+      prompt = "Find all positive integer values of \\(k\\) for which the trinomial \\(x^2 + kx " + (c2 > 0 ? "+ " + m2 : "- " + m2) + "\\) is factorable over the integers.";
+      sol = (c2 > 0
+        ? "The trinomial factors over the integers exactly when \\(k\\) is the sum of a factor pair of \\(" + m2 + "\\) or the negative of such a sum, since the two numbers in a pair are either both positive or both negative. The factor pairs of \\(" + m2 + "\\) are " + pairList(P3) + ", with sums " + P3.map(function (f) { return f[0] + f[1]; }).join(", ") + ". Only the positive sums answer the question."
+        : "The trinomial factors over the integers exactly when it splits as \\((x + p)(x - q)\\) with \\(pq = " + m2 + "\\) and \\(k = p - q\\), or with the factors interchanged, which negates \\(k\\). The factor pairs of \\(" + m2 + "\\) are " + pairList(P3) + ", with differences " + P3.map(function (f) { return f[1] - f[0]; }).join(", ") + ". Only the positive differences answer the question.") +
+        " The positive integer values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+      sig = { t: "kfac", arm: "posonly", c: c2 };
+    }
+    var raws = [u3SetRaw(key), u3SetRaw(dMiss), u3SetRaw(dSign), u3SetRaw(dExtra)];
+    if (new Set(raws).size !== 4) return null;
+    return { prompt: prompt, sol: sol, sig: sig, key: u3M(raws[0]), distr: [u3M(raws[1]), u3M(raws[2]), u3M(raws[3])] };
+  }
+  var arm = pick(["mid", "mid", "midneg", "midneg", "const", "posonly"]);
+  var drawn = null, guard = 0;
+  while (!drawn && guard < 80) { guard++; drawn = draw(arm); }
+  return mcq(drawn.prompt, drawn.key, drawn.distr, drawn.sol, drawn.sig);
+});
 
 /* ----- bank-u4.js ----- */
 // Math 1201 Unit 4 Relations and Functions question bank
@@ -5849,4 +5956,4 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2};
