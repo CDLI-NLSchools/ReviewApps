@@ -5879,6 +5879,7 @@ E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
 // CRMARKS: u9-identical-elements=2
 // CRMARKS: u9-not-adjacent-cr=3
 // CRMARKS: u9-pascal-next-row=1
+// CRMARKS: u9-pathways=3
 // CRMARKS: u9-patterns-coefficients=2
 // CRMARKS: u9-perm-basic=2
 // CRMARKS: u9-perm-constraints=3
@@ -6733,7 +6734,79 @@ E("u9-not-adjacent-cr",9,["9.10"],3,"gen",function(){
     {n:n});
 });
 
+/* ---------- 9.12: pathways on a grid, combinations in disguise (L3) ---------- */
+function u9pathSVG(m,n,opt){
+  opt=opt||{};
+  var cell=(m>5||n>5)?31:36;
+  var L=30,R=30,T=20,B=20,W=L+m*cell+R,H=T+n*cell+B;
+  function X(i){return L+i*cell;}
+  function Y(j){return T+(n-j)*cell;}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:'+Math.min(W,360)+'px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  var i,j;
+  for(i=0;i<=m;i++)out+='<line x1="'+X(i)+'" y1="'+Y(0)+'" x2="'+X(i)+'" y2="'+Y(n)+'" stroke="#a89f83" stroke-width="1.1"/>';
+  for(j=0;j<=n;j++)out+='<line x1="'+X(0)+'" y1="'+Y(j)+'" x2="'+X(m)+'" y2="'+Y(j)+'" stroke="#a89f83" stroke-width="1.1"/>';
+  for(i=0;i<=m;i++)for(j=0;j<=n;j++){
+    if(opt.blk&&opt.blk[0]===i&&opt.blk[1]===j)continue;
+    if(opt.wp&&opt.wp[0]===i&&opt.wp[1]===j)continue;
+    out+='<circle cx="'+X(i)+'" cy="'+Y(j)+'" r="2.2" fill="'+FIG_INK+'"/>';
+  }
+  if(opt.blk){
+    var bx=X(opt.blk[0]),by=Y(opt.blk[1]);
+    out+='<line x1="'+(bx-6)+'" y1="'+(by-6)+'" x2="'+(bx+6)+'" y2="'+(by+6)+'" stroke="'+FIG_ALT+'" stroke-width="2.4"/>';
+    out+='<line x1="'+(bx-6)+'" y1="'+(by+6)+'" x2="'+(bx+6)+'" y2="'+(by-6)+'" stroke="'+FIG_ALT+'" stroke-width="2.4"/>';
+  }
+  if(opt.wp){
+    out+='<circle cx="'+X(opt.wp[0])+'" cy="'+Y(opt.wp[1])+'" r="5.2" fill="'+FIG_ACC+'" stroke="#fff" stroke-width="1.6"/>';
+    out+='<text x="'+(X(opt.wp[0])+9)+'" y="'+(Y(opt.wp[1])-8)+'" font-size="12" fill="'+FIG_INK+'">P</text>';
+  }
+  out+='<circle cx="'+X(0)+'" cy="'+Y(0)+'" r="5" fill="'+FIG_INK+'"/>';
+  out+='<text x="'+(X(0)-9)+'" y="'+(Y(0)+4)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">A</text>';
+  out+='<circle cx="'+X(m)+'" cy="'+Y(n)+'" r="5" fill="'+FIG_INK+'"/>';
+  out+='<text x="'+(X(m)+9)+'" y="'+(Y(n)+4)+'" font-size="12" fill="'+FIG_INK+'">B</text>';
+  return out+'</svg>';
+}
+E("u9-pathways",9,["9.12"],3,"gen",function(){
+  var arm=pick(["plain","plain","waypoint","waypoint","blocked","context","context"]);
+  if(arm==="plain"){
+    var m=ri(2,6),n=ri(2,6);if(m+n>11)n=11-m;
+    var ans=u9comb(m+n,m);
+    var qp=numq("A path travels from point A to point B along the lines of the grid in the diagram, moving only to the right or up. Point B is "+m+" moves to the right and "+n+" moves up from point A. How many different paths are there from A to B?",
+      ans,0.001,
+      "Every path uses "+(m+n)+" moves in total: "+m+" to the right and "+n+" up, in some order. Choosing which "+m+" of the "+(m+n)+" moves are the rightward ones fixes the whole path, so the count is a combination:\\[ \\begin{aligned} "+u9binS(m+n,m)+" &= "+u9big(ans)+" \\end{aligned} \\] The tempting wrong counts miss the structure: "+m+" \\times "+n+" = "+(m*n)+" counts the blocks of the grid, and "+(m+n)+" counts only the moves in a single path.",
+      {arm:arm,m:m,n:n});
+    qp.figure=u9pathSVG(m,n,{});
+    return qp;
+  }
+  if(arm==="waypoint"){
+    var m2=ri(3,6),n2=ri(3,6),px=ri(1,m2-1),py=ri(1,n2-1);
+    var leg1=u9comb(px+py,px),leg2=u9comb((m2-px)+(n2-py),m2-px),ans2=leg1*leg2;
+    var qw=numq("A path travels from point A to point B along the lines of the grid in the diagram, moving only to the right or up, and the path must pass through point P. How many different paths are there from A to B through P?",
+      ans2,0.001,
+      "Split the journey at P. From A to P the path makes "+px+" rightward and "+py+" upward moves, in any order: \\("+u9binS(px+py,px)+" = "+leg1+"\\) paths. From P to B it makes "+(m2-px)+" rightward and "+(n2-py)+" upward moves: \\("+u9binS((m2-px)+(n2-py),m2-px)+" = "+leg2+"\\) paths. Every first leg can be followed by every second leg, so multiply: \\("+leg1+" \\times "+leg2+" = "+u9big(ans2)+"\\).",
+      {arm:arm,m:m2,n:n2,px:px,py:py});
+    qw.figure=u9pathSVG(m2,n2,{wp:[px,py]});
+    return qw;
+  }
+  if(arm==="blocked"){
+    var m3=ri(3,6),n3=ri(3,6),bx=ri(1,m3-1),by=ri(1,n3-1);
+    var tot=u9comb(m3+n3,m3),thru=u9comb(bx+by,bx)*u9comb((m3-bx)+(n3-by),m3-bx),ans3=tot-thru;
+    var qb=numq("A path travels from point A to point B along the lines of the grid in the diagram, moving only to the right or up. The intersection marked with a cross cannot be used. How many different paths from A to B avoid the marked intersection?",
+      ans3,0.001,
+      "Count all the paths, then remove the ones that use the marked intersection. In total there are \\("+u9binS(m3+n3,m3)+" = "+tot+"\\) paths. A path through the marked intersection is two legs: A to the intersection in \\("+u9binS(bx+by,bx)+"\\) ways and onward to B in \\("+u9binS((m3-bx)+(n3-by),m3-bx)+"\\) ways, giving "+thru+" paths to remove. Avoiding it: \\("+tot+" - "+thru+" = "+u9big(ans3)+"\\).",
+      {arm:arm,m:m3,n:n3,bx:bx,by:by});
+    qb.figure=u9pathSVG(m3,n3,{blk:[bx,by]});
+    return qb;
+  }
+  var m4=ri(2,5),n4=ri(2,5),ans4=u9comb(m4+n4,m4);
+  var qc=numq("In a park, trails run along the lines of the grid in the diagram. A walker travels from the gate at point A to the lookout at point B, following trails only to the right or up. The lookout is "+m4+" trail sections to the right and "+n4+" trail sections up from the gate. How many different routes can the walker take?",
+    ans4,0.001,
+    "Lay the walk out as moves: every route makes "+m4+" rightward sections and "+n4+" upward sections, "+(m4+n4)+" sections in total, and the route is fixed once the positions of the "+m4+" rightward sections among the "+(m4+n4)+" are chosen:\\[ \\begin{aligned} "+u9binS(m4+n4,m4)+" &= "+u9big(ans4)+" \\end{aligned} \\] The trail grid is a combination in disguise: the sections travelled are chosen, not arranged one by one.",
+    {arm:arm,m:m4,n:n4});
+  qc.figure=u9pathSVG(m4,n4,{});
+  return qc;
+});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-modelling":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-evaluate":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-ratio-problem":2,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-build":3,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-direct":3,"u6-proof-invalid-step":3,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-model-from-data":4,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u9-binomial-expand":2,"u9-binomial-term":2,"u9-comb-basic":2,"u9-comb-symmetry-solve":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-patterns-coefficients":2,"u9-perm-basic":2,"u9-perm-constraints":3,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
+window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-modelling":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-evaluate":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-ratio-problem":2,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-build":3,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-direct":3,"u6-proof-invalid-step":3,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-model-from-data":4,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u9-binomial-expand":2,"u9-binomial-term":2,"u9-comb-basic":2,"u9-comb-symmetry-solve":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-pathways":3,"u9-patterns-coefficients":2,"u9-perm-basic":2,"u9-perm-constraints":3,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
