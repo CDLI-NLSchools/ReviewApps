@@ -6462,6 +6462,7 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var tr = pick([[3, 4, 5], [5, 12, 13], [6, 8, 10], [8, 15, 17]]);
   var a = tr[0], b = tr[1], c = tr[2];
   var L = ri(5, 12), W = ri(4, 9), H = ri(3, 8);
+  if (a > W) W = ri(a, 9);
   var saBox = 2 * (L * W + L * H + W * H);
   var saPrism = a * b + (a + b + c) * L;
   var contact = a * L;
