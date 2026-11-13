@@ -2158,6 +2158,19 @@ E("u2-68-standard-solution",2,["6.8"],1,"var",varset([
   }
 ]));
 
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess a Science 1206 outcome (acid and base properties, indicator SC10.8.4), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/chem-3202.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u2-61-properties"].indexOf(e.id)>=0)e.pkFlag=true;});
+
 /* ----- bank-u3.js ----- */
 // Chemistry 3202 Unit 3 Thermochemistry question bank
 // Phase C diagram figures (Nov 2026): u3-72-diagram-language now draws the
