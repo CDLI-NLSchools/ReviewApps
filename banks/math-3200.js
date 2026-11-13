@@ -1690,7 +1690,7 @@ E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
 /* ================= Unit 4: Trigonometry and the Unit Circle ================= */
 /* ================= Unit 4: Trigonometry and the Unit Circle =================
    Helpers are prefixed u4; the only other top-level statements are E(...) calls.
-   18 entries: L1 4, L2 11, L3 3. Codes: MA3200.7.1 to 7.19, 7.34 to 7.37. */
+   21 entries: L1 10, L2 7, L3 4. Codes: MA3200.7.1 to 7.19, 7.34 to 7.37. */
 
 function u4gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
 
@@ -2511,6 +2511,79 @@ E("u4-angle-measures-cr",4,["7.16"],2,"var",varset([
   }
 ]));
 
+/* ================= Numerical Response form, added Nov 13, 2026 =================
+   Build step 6 of the Pure Math scan build order: the diploma
+   Numerical Response code-assembly form on this unit's exact-value
+   family (7.14). Two scaled special-angle ratios sharing a radicand
+   combine into a single surd value a sqrt(b) / c, and the student
+   records a, b, c in that order as a three-digit code, checked with
+   the app's ordinary numeric answer checking (tol 0.4, so only the
+   exact code is accepted). The code-format hazards are handled by
+   construction: a is a positive single digit, so the code never
+   carries a leading zero; b and c are single digits; the fraction
+   is in lowest terms and b is squarefree, so the stated form is
+   unique and the code is unambiguous. Level 2: the family entry
+   u4-exact-special recalls a single value at Level 1, while
+   combining two values into one lowest-terms form is the unit's
+   Level 2 exact work (compare u4-other-ratios); the recording step
+   itself adds no demand. A selected-response entry: no CR marks. */
+
+var u4NRV = { /* exact ratio values at first-quadrant special angles as [n, d, r]: value = (n / d) * sqrt(r) */
+  sin: { 30: [1, 2, 1], 45: [1, 2, 2], 60: [1, 2, 3] },
+  cos: { 30: [1, 2, 3], 45: [1, 2, 2], 60: [1, 2, 1] },
+  tan: { 30: [1, 3, 3], 45: [1, 1, 1], 60: [1, 1, 3] },
+  csc: { 30: [2, 1, 1], 45: [1, 1, 2], 60: [2, 3, 3] },
+  sec: { 30: [2, 3, 3], 45: [1, 1, 2], 60: [2, 1, 1] },
+  cot: { 30: [1, 1, 3], 45: [1, 1, 1], 60: [1, 3, 3] }
+};
+
+function u4nrSurd(n, d, b) { /* (n / d) * sqrt(b) as a KaTeX body, n and d positive */
+  var core = n === 1 ? "\\sqrt{" + b + "}" : n + "\\sqrt{" + b + "}";
+  return d === 1 ? core : "\\frac{" + core + "}{" + d + "}";
+}
+
+/* ---- 7.14: Numerical Response code from the parts of an exact value ---- */
+E("u4-nr-exact-code", 4, ["7.14"], 2, "gen", function () {
+  var rad = Math.random() < 0.5;
+  function angS(d) { return rad ? u4radS(d) : d + "^\\circ"; }
+  var b = pick([2, 3]);
+  var pool = [];
+  u4KINDS.forEach(function (k) {
+    [30, 45, 60].forEach(function (d) {
+      var t = u4NRV[k][d];
+      if (t[2] === b) pool.push({ k: k, d: d, n: t[0], dn: t[1] });
+    });
+  });
+  var T1 = null, T2 = null, sgn = 1, A = 0, C = 0, guard = 0;
+  while (guard++ < 300 && !T1) {
+    var i1 = ri(0, pool.length - 1), i2 = ri(0, pool.length - 1);
+    if (i1 === i2) continue;
+    var c1 = ri(1, 3), c2 = ri(1, 3), sg = Math.random() < 0.45 ? -1 : 1;
+    var num = c1 * pool[i1].n * pool[i2].dn + sg * c2 * pool[i2].n * pool[i1].dn;
+    var den = pool[i1].dn * pool[i2].dn;
+    if (num <= 0) continue;
+    var g = u4gcd(num, den);
+    if (num / g > 9 || den / g > 9) continue;
+    T1 = { k: pool[i1].k, d: pool[i1].d, c: c1, n: pool[i1].n, dn: pool[i1].dn };
+    T2 = { k: pool[i2].k, d: pool[i2].d, c: c2, n: pool[i2].n, dn: pool[i2].dn };
+    sgn = sg; A = num / g; C = den / g;
+  }
+  if (!T1) { /* deterministic fallback draw: 2 tan 60 - sec 30 = 4 sqrt(3) / 3 */
+    T1 = { k: "tan", d: 60, c: 2, n: 1, dn: 1 };
+    T2 = { k: "sec", d: 30, c: 1, n: 2, dn: 3 };
+    sgn = -1; A = 4; C = 3; b = 3;
+  }
+  function termStr(T) { return (T.c > 1 ? T.c : "") + "\\" + T.k + "\\left(" + angS(T.d) + "\\right)"; }
+  function termVal(T) { var g2 = u4gcd(T.c * T.n, T.dn); return u4nrSurd(T.c * T.n / g2, T.dn / g2, b); }
+  var expr = termStr(T1) + (sgn > 0 ? " + " : " - ") + termStr(T2);
+  var valStr = u4nrSurd(A, C, b);
+  var code = 100 * A + 10 * b + C;
+  return numq("The exact value of \\(" + expr + "\\) can be written in the form \\(\\frac{a\\sqrt{b}}{c}\\), where \\(a\\), \\(b\\) and \\(c\\) are positive integers, the fraction is in lowest terms, and \\(b\\) is not divisible by any perfect square greater than 1. As a numerical response, record the values of \\(a\\), \\(b\\) and \\(c\\), in that order, as a single three-digit number.",
+    code, 0.4,
+    "Work out each ratio exactly: \\(" + termStr(T1) + " = " + termVal(T1) + "\\) and \\(" + termStr(T2) + " = " + termVal(T2) + "\\). Combine them: \\[ " + expr + " = " + valStr + " \\] So in the form \\(\\frac{a\\sqrt{b}}{c}\\), \\(a = " + A + "\\), \\(b = " + b + "\\) and \\(c = " + C + "\\). Recorded in that order, \\(a\\), then \\(b\\), then \\(c\\), the code is <b>" + code + "</b>.",
+    { form: "abc", terms: [{ k: T1.k, d: T1.d, c: T1.c }, { k: T2.k, d: T2.d, c: T2.c }], sgn: sgn, rad: rad, a: A, b: b, c: C });
+});
+
 /* ----- bank-u5.js ----- */
 // Math 3200 Unit 5 Trigonometric Functions and Graphs question bank
 // CRMARKS: u5-amplitude-a=1
@@ -3112,7 +3185,7 @@ E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
 /* ================= Unit 6: Trigonometric Identities ================= */
 /* ================= Unit 6: Trigonometric Identities =================
    Helpers are prefixed u6; the only other top-level statements are E(...) calls.
-   20 entries: L1 6, L2 8, L3 6. Codes: MA3200.7.34 to 7.37, 7.39 to 7.46. */
+   22 entries: L1 6, L2 10, L3 6. Codes: MA3200.7.34 to 7.37, 7.39 to 7.46. */
 
 function u6gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
 
@@ -4511,6 +4584,203 @@ E("u6-proof-strategy", 6, ["7.43"], 3, "var", varset([
   function () { return u6pfSB(); },
   function () { return u6pfSC(); }
 ]));
+
+/* ================= Numerical Response form, added Nov 13, 2026 =================
+   Build step 6 of the Pure Math scan build order: the diploma
+   Numerical Response code-assembly form on this unit's exact-value
+   family (7.45), the material of u6-exact-values. u6-nr-matching
+   records a four-expression match as a code; u6-nr-exact-code
+   records the parts of an exact value in a stated surd form. Both
+   are checked with the app's ordinary numeric answer checking
+   (tol 0.4, so only the exact code is accepted). Level 2
+   throughout, the level of u6-exact-values: the moves are the
+   family's own moves, and recording a code adds ordering only, not
+   demand (repetition of the same move does not raise a level).
+   Selected-response entries: no CR marks. */
+
+var u6NRDEC = { /* decompositions of the sum and difference targets, the same table u6-exact-values uses */
+  15: [[45, -1, 30], [60, -1, 45]], 75: [[45, 1, 30], [120, -1, 45], [135, -1, 60]],
+  105: [[60, 1, 45], [135, -1, 30], [150, -1, 45]], 165: [[135, 1, 30], [120, 1, 45]]
+};
+var u6NRTAN = { /* tan of each target as [a, s]: value = a + s * sqrt(3) */
+  15: [2, -1], 75: [2, 1], 105: [-2, -1], 165: [-2, 1]
+};
+
+/* ---- 7.45: Numerical Response statement matching ----
+   Four expressions, labelled A to D, and four exact values,
+   labelled 1 to 4; the code records, in the order A, B, C, D, the
+   number of the value matching each expression. The hazard set is
+   handled by construction: the four values on a draw are always
+   distinct, so the matching is unique; the code is therefore a
+   permutation of 1, 2, 3, 4, four distinct digits with no leading
+   zero possible. Statement values are computed with the unit's
+   exact surd arithmetic (the u6sp helpers above). Matching sits in
+   Unit 6 rather than Unit 4 because every statement is worked with
+   a sum, difference or double-angle identity: the Unit 4 families
+   hold single recalled values, which would make a four-way match a
+   recall exercise instead of identity work. */
+E("u6-nr-matching", 6, ["7.45"], 2, "gen", function () {
+  function stmtSC() {
+    var T = pick([15, 75, 105, 165]), kind = pick(["sin", "cos"]);
+    var dc = pick(u6NRDEC[T]), A = dc[0], sg = dc[1], B = dc[2];
+    var rad = Math.random() < 0.4;
+    var aD = rad ? u6radS(A) : A + "^\\circ", bD = rad ? u6radS(B) : B + "^\\circ";
+    var SA = u6sp.apply(null, u6SC[A].s), CA = u6sp.apply(null, u6SC[A].c);
+    var SB = u6sp.apply(null, u6SC[B].s), CB = u6sp.apply(null, u6SC[B].c);
+    var sp = kind === "sin" ? u6spAdd(u6spMul(SA, CB), u6spMul(CA, SB), sg)
+                            : u6spAdd(u6spMul(CA, CB), u6spMul(SA, SB), -sg);
+    return { disp: "\\" + kind + "\\left(" + aD + (sg > 0 ? " + " : " - ") + bD + "\\right)",
+      sp: sp, sem: { t: "sc", kind: kind, A: A, sgn: sg, B: B } };
+  }
+  function stmtTAN() {
+    var T = pick([15, 75, 105, 165]);
+    var dc = pick(u6NRDEC[T]), A = dc[0], sg = dc[1], B = dc[2];
+    var rad = Math.random() < 0.4;
+    var aD = rad ? u6radS(A) : A + "^\\circ", bD = rad ? u6radS(B) : B + "^\\circ";
+    var tp = u6NRTAN[T];
+    return { disp: "\\tan\\left(" + aD + (sg > 0 ? " + " : " - ") + bD + "\\right)",
+      sp: { t: { 1: tp[0], 3: tp[1] }, d: 1 }, sem: { t: "tan", A: A, sgn: sg, B: B } };
+  }
+  function stmtDBL() {
+    var T = pick([15, 75, 105, 165]);
+    var form = pick(["2sc", "ccss", "1m2s", "2c1", "ss", "cc"]);
+    var rad = Math.random() < 0.4;
+    var ang = rad ? "\\left(" + u6radS(T) + "\\right)" : T + "^\\circ";
+    var sS = (T === 15 || T === 75) ? 1 : -1;  /* sign of sin(2T) */
+    var sC = (T === 15 || T === 165) ? 1 : -1; /* sign of cos(2T) */
+    var disp, sp;
+    if (form === "2sc") { disp = "2\\sin " + ang + " \\cos " + ang; sp = { t: { 1: sS }, d: 2 }; }
+    else if (form === "ss") { disp = "\\sin^2 " + ang; sp = { t: { 1: 2, 3: -sC }, d: 4 }; }
+    else if (form === "cc") { disp = "\\cos^2 " + ang; sp = { t: { 1: 2, 3: sC }, d: 4 }; }
+    else {
+      sp = { t: { 3: sC }, d: 2 };
+      disp = form === "ccss" ? "\\cos^2 " + ang + " - \\sin^2 " + ang
+        : form === "1m2s" ? "1 - 2\\sin^2 " + ang : "2\\cos^2 " + ang + " - 1";
+    }
+    return { disp: disp, sp: sp, sem: { t: "dbl", form: form, T: T } };
+  }
+  var makers = [stmtSC, stmtSC, stmtTAN, stmtDBL, stmtDBL];
+  var chosen = [], rounds = 0;
+  while (chosen.length < 4 && rounds++ < 5) {
+    var poolC = [];
+    for (var i = 0; i < 60; i++) poolC.push(pick(makers)());
+    for (var j = 0; j < poolC.length && chosen.length < 4; j++) {
+      var v = u6spVal(poolC[j].sp);
+      if (!chosen.some(function (s) { return Math.abs(u6spVal(s.sp) - v) < 1e-9; })) chosen.push(poolC[j]);
+    }
+  }
+  var labelStmt = shuffle([0, 1, 2, 3]); /* labelStmt[L] is the statement index shown at label L + 1 */
+  var code = 0, matchTxt = [];
+  chosen.forEach(function (s, i) {
+    var lab = labelStmt.indexOf(i) + 1;
+    code = code * 10 + lab;
+    matchTxt.push("ABCD".charAt(i) + " matches value " + lab);
+  });
+  var prompt = "Each of the expressions A to D is equal to exactly one of the values 1 to 4.<br><br>Expressions:<br>" +
+    chosen.map(function (s, i) { return "ABCD".charAt(i) + ". \\(" + s.disp + "\\)"; }).join("<br>") +
+    "<br><br>Values:<br>" +
+    labelStmt.map(function (si, L) { return (L + 1) + ". \\(" + u6spRender(chosen[si].sp) + "\\)"; }).join("<br>") +
+    "<br><br>As a numerical response, record the number of the value that matches expression A, then B, then C, then D, as a single four-digit number.";
+  var sol = "Evaluate each expression exactly:<br>" +
+    chosen.map(function (s, i) { return "ABCD".charAt(i) + ". \\(" + s.disp + " = " + u6spRender(s.sp) + "\\)"; }).join("<br>") +
+    "<br>So " + matchTxt.join(", ") + ". Recorded in the order A, B, C, D, the code is <b>" + code + "</b>.";
+  return numq(prompt, code, 0.4, sol,
+    { form: "match", stmts: chosen.map(function (s) { return s.sem; }), disps: chosen.map(function (s) { return s.disp; }), labels: labelStmt.slice(), code: code });
+});
+
+/* ---- 7.45: Numerical Response code from the parts of an exact value ----
+   Two modes, both on the family's exact values. Mode T builds on
+   the tangent and cotangent values: a scaled ratio, its square, or
+   one plus its square all land in the form a + b sqrt(c) or
+   a - b sqrt(c). The stated form carries the sign, as diploma
+   items state it, and the code records a, b, c in that order; the
+   radicand c is the family's 3 throughout, while a and b carry the
+   draw. Mode P adds or subtracts two sine or cosine values of the
+   family and scales the result: the pair collapses to a single
+   surd a sqrt(b) / c, the stated form of the Unit 4 entry. Hazards
+   in both modes: a is a positive single digit (never a leading
+   zero), b and c are single digits, and in mode P the fraction is
+   in lowest terms with b squarefree, so the stated form is unique. */
+E("u6-nr-exact-code", 6, ["7.45"], 2, "gen", function () {
+  if (Math.random() < 0.5) {
+    /* Mode T: tangent and cotangent forms, value = a +/- b sqrt(3) */
+    var kind = pick(["tan", "cot"]);
+    var T = pick([15, 75]);
+    var dc = pick(u6NRDEC[T]), A = dc[0], sg = dc[1], B = dc[2];
+    var rad = Math.random() < 0.4;
+    var aD = rad ? u6radS(A) : A + "^\\circ", bD = rad ? u6radS(B) : B + "^\\circ";
+    var arg = aD + (sg > 0 ? " + " : " - ") + bD;
+    var sBase = (kind === "tan") === (T === 75) ? 1 : -1; /* sign of sqrt(3) in the base value 2 + s sqrt(3) */
+    var sgnS = sBase > 0 ? " + " : " - ";
+    var baseStr = "2" + sgnS + "\\sqrt{3}";
+    var tmpl = pick(["k", "k", "sq", "id"]);
+    var a, bb, expr, stepTxt;
+    if (tmpl === "k") {
+      var k = pick([1, 2, 3]);
+      a = 2 * k; bb = k;
+      expr = (k > 1 ? k : "") + "\\" + kind + "\\left(" + arg + "\\right)";
+      stepTxt = k > 1 ? "Multiply by " + k + ": \\(" + k + "\\left(" + baseStr + "\\right) = " + a + sgnS + (bb === 1 ? "" : bb) + "\\sqrt{3}\\). "
+                      : "The value is already in the stated form. ";
+    } else if (tmpl === "sq") {
+      a = 7; bb = 4;
+      expr = "\\" + kind + "^2\\left(" + arg + "\\right)";
+      stepTxt = "Square the value: \\(\\left(" + baseStr + "\\right)^2 = 4" + sgnS + "4\\sqrt{3} + 3 = " + a + sgnS + bb + "\\sqrt{3}\\). ";
+    } else {
+      a = 8; bb = 4;
+      expr = "1 + \\" + kind + "^2\\left(" + arg + "\\right)";
+      stepTxt = "Add 1: \\(1 + \\left(" + baseStr + "\\right)^2 = 1 + 7" + sgnS + "4\\sqrt{3} = " + a + sgnS + bb + "\\sqrt{3}\\). ";
+    }
+    var idLine;
+    if (kind === "tan") {
+      var opS = sg > 0 ? " + " : " - ", opF = sg > 0 ? "-" : "+";
+      idLine = "\\tan\\left(" + arg + "\\right) &= \\frac{\\tan " + aD + opS + "\\tan " + bD + "}{1 " + opF + " \\tan " + aD + " \\tan " + bD + "} \\\\ &= \\frac{" + u6TANSC[A] + opS + "\\left(" + u6TANSC[B] + "\\right)}{1 " + opF + " \\left(" + u6TANSC[A] + "\\right)\\left(" + u6TANSC[B] + "\\right)} \\\\ &= " + baseStr;
+    } else {
+      var tanOfT = T === 15 ? "2 - \\sqrt{3}" : "2 + \\sqrt{3}";
+      idLine = "\\cot\\left(" + arg + "\\right) &= \\frac{1}{\\tan\\left(" + arg + "\\right)} \\\\ &= \\frac{1}{" + tanOfT + "} \\\\ &= " + baseStr;
+    }
+    var codeT = 100 * a + 10 * bb + 3;
+    return numq("The exact value of \\(" + expr + "\\) can be written in the form \\(a" + sgnS + "b\\sqrt{c}\\), where \\(a\\), \\(b\\) and \\(c\\) are positive integers and \\(c\\) is not divisible by any perfect square greater than 1. As a numerical response, record the values of \\(a\\), \\(b\\) and \\(c\\), in that order, as a single three-digit number.",
+      codeT, 0.4,
+      "Use the " + (sg > 0 ? "sum" : "difference") + " identity" + (kind === "cot" ? " and the reciprocal relation" : "") + ": \\[ \\begin{aligned} " + idLine + " \\end{aligned} \\] " + stepTxt + "So in the form \\(a" + sgnS + "b\\sqrt{c}\\), \\(a = " + a + "\\), \\(b = " + bb + "\\) and \\(c = 3\\). Recorded in that order, the code is <b>" + codeT + "</b>.",
+      { form: "pm", tmpl: tmpl, kind: kind, A: A, sgn: sg, B: B, k: tmpl === "k" ? k : 1, a: a, b: bb, c: 3, sign: sBase });
+  }
+  /* Mode P: a pair of sine or cosine values collapses to a single surd a sqrt(b) / c */
+  var TERMS = [
+    { kind: "sin", T: 15, p: 1, q: -1 }, { kind: "cos", T: 15, p: 1, q: 1 },
+    { kind: "sin", T: 75, p: 1, q: 1 }, { kind: "cos", T: 75, p: 1, q: -1 },
+    { kind: "sin", T: 105, p: 1, q: 1 }, { kind: "sin", T: 165, p: 1, q: -1 }
+  ]; /* each value is (p sqrt(6) + q sqrt(2)) / 4 */
+  var X = null, Y = null, op = 1, rp = 0, rq = 0, guard2 = 0;
+  while (guard2++ < 200 && !X) {
+    var xi = ri(0, 5), yi = ri(0, 5);
+    if (xi === yi) continue;
+    var o = Math.random() < 0.5 ? 1 : -1;
+    var tp = TERMS[xi].p + o * TERMS[yi].p, tq = TERMS[xi].q + o * TERMS[yi].q;
+    if (!((tp === 2 && tq === 0) || (tp === 0 && tq === 2))) continue;
+    X = TERMS[xi]; Y = TERMS[yi]; op = o; rp = tp; rq = tq;
+  }
+  if (!X) { X = TERMS[1]; Y = TERMS[0]; op = 1; rp = 2; rq = 0; } /* cos 15 + sin 15 = sqrt(6) / 2 */
+  var bP = rp === 2 ? 6 : 2;
+  var kP = pick([1, 2, 3]);
+  var gP = u6gcd(kP, 2), AP = kP / gP, CP = 2 / gP;
+  var radP = Math.random() < 0.4;
+  function termDisp(tm) {
+    var dcp = pick(u6NRDEC[tm.T]);
+    var a1 = radP ? u6radS(dcp[0]) : dcp[0] + "^\\circ", b1 = radP ? u6radS(dcp[2]) : dcp[2] + "^\\circ";
+    return "\\" + tm.kind + "\\left(" + a1 + (dcp[1] > 0 ? " + " : " - ") + b1 + "\\right)";
+  }
+  var dispX = termDisp(X), dispY = termDisp(Y);
+  var exprP = (kP > 1 ? kP + "\\left(" : "") + dispX + (op > 0 ? " + " : " - ") + dispY + (kP > 1 ? "\\right)" : "");
+  var spX = { t: { 6: X.p, 2: X.q }, d: 4 }, spY = { t: { 6: Y.p, 2: Y.q }, d: 4 };
+  var sumStr = u6spRender(u6spAdd(spX, spY, op));
+  var finStr = CP === 1 ? (AP === 1 ? "\\sqrt{" + bP + "}" : AP + "\\sqrt{" + bP + "}")
+    : "\\frac{" + (AP === 1 ? "\\sqrt{" + bP + "}" : AP + "\\sqrt{" + bP + "}") + "}{" + CP + "}";
+  var codeP = 100 * AP + 10 * bP + CP;
+  return numq("The exact value of \\(" + exprP + "\\) can be written in the form \\(\\frac{a\\sqrt{b}}{c}\\), where \\(a\\), \\(b\\) and \\(c\\) are positive integers, the fraction is in lowest terms, and \\(b\\) is not divisible by any perfect square greater than 1. As a numerical response, record the values of \\(a\\), \\(b\\) and \\(c\\), in that order, as a single three-digit number.",
+    codeP, 0.4,
+    "Evaluate each term with a sum or difference identity: \\(" + dispX + " = " + u6spRender(spX) + "\\) and \\(" + dispY + " = " + u6spRender(spY) + "\\). Combine them: \\[ " + dispX + (op > 0 ? " + " : " - ") + dispY + " = " + sumStr + " \\] " + (kP > 1 ? "Multiply by " + kP + ": \\(" + kP + " \\cdot " + sumStr + " = " + finStr + "\\). " : "") + "So in the form \\(\\frac{a\\sqrt{b}}{c}\\), \\(a = " + AP + "\\), \\(b = " + bP + "\\) and \\(c = " + CP + "\\). Recorded in that order, the code is <b>" + codeP + "</b>.",
+    { form: "abc", terms: [{ kind: X.kind, T: X.T }, { kind: Y.kind, T: Y.T }], op: op, k: kP, a: AP, b: bP, c: CP });
+});
 
 /* ----- bank-u7.js ----- */
 // Math 3200 Unit 7 Exponential Functions question bank
