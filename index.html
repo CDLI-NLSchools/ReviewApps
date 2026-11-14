@@ -105,6 +105,8 @@
   .fig{margin:8px 0 4px;}
   .fig svg{max-width:100%;height:auto;}
   .sheetPrev{border:1px solid var(--line);background:#fff;color:#16281f;padding:20px;border-radius:6px;margin-top:12px;}
+  .resumebar{border:1px solid var(--acc);background:var(--card);border-radius:6px;padding:12px 14px;margin:0 0 12px;}
+  .qline{margin:1em 0;}
   .sheetPrev .pq{margin-bottom:14px;}
   .sheetPrev .ws{border-bottom:1px solid #ddd;}
   .sheetPrev.editing{outline:2px dashed var(--acc);outline-offset:3px;}
@@ -1673,6 +1675,7 @@ function advSetRestore(){
     if(TEACHER){T=advTCtx("online",P,lastSettings);current.forEach(advAdopt);}
     renderOnline(false);
     advRestoreOnlineState(P);
+    _resumeAppliedSig=_resumeLiveSig;resumeSaveNow();
     return true;
   }
   if(P.v==="sheet"){
@@ -1699,9 +1702,192 @@ function advSetRestore(){
     T=null;
     if(TEACHER){T=advTCtx("exam",P,examState.s);sr.concat(cr).forEach(function(it){advAdopt(it.q);});}
     renderExam();
+    _resumeAppliedSig=_resumeLiveSig;resumeSaveNow();
     return true;
   }
   return false;
+}
+/* ============ Interrupted-set resume (Nov 2026) ============
+   A student who is interrupted in the middle of a set (the bell
+   rings, the page closes, the browser crashes) used to lose every
+   answer they had entered: the questions themselves survive,
+   because a seeded or shared set redraws identically, but the
+   answers lived only in the page. This section keeps the
+   in-progress state of the set on screen in localStorage, per
+   course (the same storagePrefix keying the display settings
+   use), and offers it back when the identical set is drawn or
+   opened again.
+   What is stored: the set signature (course, view, seed, the
+   settings signature and the ordered drawn entry ids with each
+   question's variant identity), the entered answers and the
+   checked, revealed and worked-example states, and a timestamp.
+   No identifying information is stored, only answers and states.
+   The offer is never silent: when a drawn set's signature matches
+   the save exactly, a banner offers Resume or Start fresh. A
+   different set replaces the save, so a set a teacher has since
+   edited (its signature changed) is never resurrected. Saves
+   expire after RESUME_TTL_DAYS days. The sheet view is an output
+   surface, not an answering surface, and is not covered. */
+var RESUME_TTL_DAYS=7;
+var RESUME_TTL_MS=RESUME_TTL_DAYS*24*60*60*1000;
+var RESUME_KEY=(window.__COURSE?window.__COURSE.storagePrefix:"app")+"-resume-v1";
+var _resumeTimer=null,_resumeLiveSig="",_resumeAppliedSig="",_resumeBannerSig="",_resumeDrawn=false,_resumeExamInt=null;
+function resumeStore(){try{return window.localStorage||null;}catch(e){return null;}}
+function resumeHash(s){var h=0x811c9dc5;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*0x01000193)>>>0;}return ("0000000"+h.toString(16)).slice(-8);}
+function resumeVariantKey(q){
+  if(q._ts){if(q._ts.raw)return "r"+resumeHash(JSON.stringify(q._ts.raw));return "s"+(q._ts.n||0)+"."+(q._ts.i||0);}
+  return "c"+resumeHash(canonQ(q));
+}
+function resumeSig(view,items){
+  var parts=[(window.__COURSE?window.__COURSE.id:""),view,sessionSeed||""];
+  try{parts.push(settingsToURL());}catch(e){parts.push("");}
+  parts.push(items.map(function(q){return (q._entry?q._entry.id:"?")+"#"+resumeVariantKey(q);}).join(","));
+  return resumeHash(parts.join("|"));
+}
+function resumeDrop(){var store=resumeStore();if(store){try{store.removeItem(RESUME_KEY);}catch(e){}}}
+function resumeLoad(){
+  var store=resumeStore();if(!store)return null;
+  var raw=null;try{raw=store.getItem(RESUME_KEY);}catch(e){}
+  if(!raw)return null;
+  var P=null;try{P=JSON.parse(raw);}catch(e){resumeDrop();return null;}
+  if(!P||P.v!==1||!P.sig||!P.ts||!P.body){resumeDrop();return null;}
+  if(Date.now()-P.ts>RESUME_TTL_MS){resumeDrop();return null;}
+  return P;
+}
+function resumeCaptureState(){
+  return current.map(function(q,i){
+    var o={given:null,givenText:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:""};
+    if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel){o.given=+sel.value;o.givenText=q.options[o.given];}}
+    else{var inp=$("ans"+i);if(inp)o.given=inp.value;}
+    var fb=$("fb"+i);if(fb){o.done=!!fb.dataset.done;o.fbShown=fb.classList.contains("show");o.fb=fb.innerHTML;}
+    var fbt=$("fbt"+i);if(fbt)o.fbt=fbt.innerHTML;
+    var sl=$("sol"+i);if(sl)o.sol=sl.classList.contains("show");
+    var hb=$("hint"+i);if(hb){o.hintStage=+(hb.dataset.stage||0);o.hintShown=!hb.hidden;o.hintHtml=hb.innerHTML;}
+    var xb=$("ex"+i);if(xb){o.exOpen=!xb.hidden;o.exn=+(xb.dataset.exn||0);if(xb._exq)o.exq=advQSer(xb._exq);}
+    var rp=$("rep"+i);if(rp){o.repOpen=rp.classList.contains("show");var rt=$("reptype"+i);if(rt)o.repType=rt.value;var rn=$("repnote"+i);if(rn)o.repNote=rn.value;}
+    return o;
+  });
+}
+function resumeHasProgress(st){
+  return st.some(function(o){return !!o&&((o.given!==null&&o.given!=="")||o.done||o.fbShown||o.sol||o.hintStage>0||o.exOpen||o.repOpen);});
+}
+function resumeCaptureExam(){
+  var ex=examState.ex;
+  return {sr:ex.srItems.map(function(it){return {q:advQSer(it.q),marks:it.marks};}),
+    cr:ex.crItems.map(function(it){return {q:advQSer(it.q),marks:it.marks};}),
+    single:!!examState.single,wsCrF:examState.wsCrF,scope:examState.scope,title:examState.title,
+    s:examState.s,short:!!ex.short,elapsed:Date.now()-(examState.t0||Date.now())};
+}
+function resumeSaveNow(){
+  var store=resumeStore();if(!store||!window.__COURSE)return;
+  try{
+    if(current&&current.length&&document.getElementById("againBtn")){
+      var st=resumeCaptureState();
+      if(!resumeHasProgress(st)){try{store.removeItem(RESUME_KEY);}catch(e){}return;}
+      var sig=resumeSig("online",current);_resumeLiveSig=sig;
+      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,checkMode:checkMode,endGraded:!!endGraded}}));
+      if(_resumeBannerSig&&_resumeBannerSig===sig)resumeHideBanner();
+    }else if(examState&&examState.ex&&document.getElementById("printPaperBtn")){
+      var items=examState.ex.srItems.map(function(it){return it.q;}).concat(examState.ex.crItems.map(function(it){return it.q;}));
+      var sig2=resumeSig("exam",items);_resumeLiveSig=sig2;
+      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"exam",ts:Date.now(),sig:sig2,body:resumeCaptureExam()}));
+      if(_resumeBannerSig&&_resumeBannerSig===sig2)resumeHideBanner();
+    }
+  }catch(e){}
+}
+function resumeSaveSoon(){if(_resumeTimer)clearTimeout(_resumeTimer);_resumeTimer=setTimeout(resumeSaveNow,250);}
+function resumeHideBanner(){var b=$("resumeBar");if(b&&b.parentNode)b.parentNode.removeChild(b);_resumeBannerSig="";}
+function resumeShowBanner(save,mode){
+  resumeHideBanner();
+  _resumeBannerSig=save.sig;
+  var sess=$("session");if(!sess)return;
+  var bar=document.createElement("div");
+  bar.className="resumebar";bar.id="resumeBar";
+  var lead,detail;
+  if(save.view==="exam"){
+    lead=L9("You started this practice test earlier on this device, and it is saved.","Tu as commencé ce test de pratique plus tôt sur cet appareil, et il est enregistré.");
+    detail=L9("Resume brings back the same test with its timer where it left off. Start fresh clears the saved test.","Reprendre ramène le même test avec son minuteur où il s'était arrêté. Recommencer efface le test enregistré.");
+  }else{
+    lead=L9("You started this set earlier on this device, and your answers are saved.","Tu as commencé cette série plus tôt sur cet appareil, et tes réponses sont enregistrées.");
+    detail=L9("Resume puts your saved answers back in place. Start fresh clears the saved work.","Reprendre remet tes réponses enregistrées en place. Recommencer efface le travail enregistré.");
+  }
+  bar.innerHTML='<p style="margin:0 0 8px;">'+lead+" "+detail+'</p><p style="margin:0;"><button type="button" id="resumeGoBtn">'+L9("Resume","Reprendre")+'</button> <button type="button" class="alt" id="resumeFreshBtn">'+L9("Start fresh","Recommencer")+'</button></p>';
+  if(sess.firstChild)sess.insertBefore(bar,sess.firstChild);else sess.appendChild(bar);
+  $("resumeGoBtn").addEventListener("click",function(){
+    if(save.view==="online")resumeApplyOnline(save);
+    else if(mode==="examBoot")resumeRebuildExam(save);
+    else{examState.t0=Date.now()-((save.body&&save.body.elapsed)||0);_resumeAppliedSig=save.sig;resumeHideBanner();renderExam();}
+  });
+  $("resumeFreshBtn").addEventListener("click",function(){resumeDrop();resumeHideBanner();});
+}
+function resumeApplyOnline(save){
+  var b=save.body||{};
+  checkedCount=b.checked||0;correctCount=b.correct||0;setResults=b.results||{};
+  if(b.checkMode)checkMode=b.checkMode;
+  endGraded=!!b.endGraded;
+  var P={state:(b.state||[]).map(function(o,i){
+    if(o&&current[i]&&current[i].type==="mc"&&o.givenText!==null&&o.givenText!==undefined){
+      var hits=[];current[i].options.forEach(function(op,j){if(op===o.givenText)hits.push(j);});
+      if(hits.length===1){var c={};for(var k in o)c[k]=o[k];c.given=hits[0];return c;}
+    }
+    return o;})};
+  _resumeAppliedSig=save.sig;
+  advRestoreOnlineState(P);
+  resumeHideBanner();
+  resumeSaveNow();
+}
+function resumeRebuildExam(save){
+  var b=save.body||{};
+  var sr=(b.sr||[]).map(function(it){var q=advQDes(it.q);return q?{q:q,marks:it.marks}:null;}).filter(Boolean);
+  var cr=(b.cr||[]).map(function(it){var q=advQDes(it.q);return q?{q:q,marks:it.marks}:null;}).filter(Boolean);
+  if(!sr.length&&!cr.length){resumeDrop();resumeHideBanner();return;}
+  stopExamTimer();
+  var exO={srItems:sr,crItems:cr,single:!!b.single,short:!!b.short};
+  var lv=examLive(exO);exO.srMarks=lv.sr;exO.crMarks=lv.cr;exO.l3Marks=lv.l3;exO.total=lv.total;
+  examState={ex:exO,s:b.s||settings(),single:!!b.single,wsCrF:(typeof b.wsCrF==="number")?b.wsCrF:2.3,scope:b.scope||"",title:b.title||"",t0:Date.now()-((b.elapsed)||0)};
+  wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
+  T=null;
+  if(TEACHER){T=advTCtx("exam",{T:null},examState.s);sr.concat(cr).forEach(function(it){advAdopt(it.q);});}
+  _resumeAppliedSig=save.sig;
+  resumeHideBanner();
+  renderExam();
+}
+function resumeAfterRender(view){
+  if(!window.__COURSE)return;
+  var items=null;
+  if(view==="online"){if(!current||!current.length)return;items=current;}
+  else if(view==="exam"){
+    if(!examState||!examState.ex)return;
+    items=examState.ex.srItems.map(function(it){return it.q;}).concat(examState.ex.crItems.map(function(it){return it.q;}));
+    if(_resumeExamInt)clearInterval(_resumeExamInt);
+    _resumeExamInt=setInterval(function(){if(examState)resumeSaveNow();else if(_resumeExamInt){clearInterval(_resumeExamInt);_resumeExamInt=null;}},20000);
+  }else return;
+  if(!items.length)return;
+  _resumeDrawn=true;
+  var sig=resumeSig(view,items);_resumeLiveSig=sig;
+  var save=resumeLoad();
+  if(save&&save.view===view&&save.sig===sig){
+    if(_resumeAppliedSig===sig){resumeSaveNow();return;}
+    resumeShowBanner(save,view==="exam"?"examLive":"online");return;
+  }
+  resumeSaveSoon();
+}
+function resumeBootCheck(){
+  if(!window.__COURSE||_resumeDrawn)return;
+  if(current&&current.length)return;
+  if(examState||sheetState)return;
+  var save=resumeLoad();if(!save||save.view!=="exam")return;
+  resumeShowBanner(save,"examBoot");
+}
+if(window.__COURSE){
+  var _rsess=$("session");
+  if(_rsess){
+    _rsess.addEventListener("change",function(){resumeSaveSoon();});
+    _rsess.addEventListener("input",function(){resumeSaveSoon();});
+    _rsess.addEventListener("click",function(ev){var t=ev.target;if(t&&t.closest&&t.closest("[data-check],[data-sol],[data-ex],[data-hint],[data-exanother],#gradeBtn"))resumeSaveSoon();});
+  }
+  document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")resumeSaveNow();});
+  window.addEventListener("beforeunload",function(){resumeSaveNow();});
 }
 function tRebuildFromURL(){
   var set=new URLSearchParams(location.search).get("set");if(!set)return false;
@@ -2107,6 +2293,7 @@ function renderOnline(scroll){
   $("againBtn").addEventListener("click",startOnline);
   if($("gradeBtn"))$("gradeBtn").addEventListener("click",gradeAll);
   tWireOnline();
+  resumeAfterRender("online");
   if(scroll!==false)box.scrollIntoView({behavior:scrollBehavior()});
 }
 function stepHTML(h){
@@ -2597,7 +2784,7 @@ function renderExam(){
   var n=0;
   paper+='<h2 style="font-size:1.05rem;">'+L9("Section A: Selected Response (","Section A : Réponses choisies (")+lv.sr+L9(" marks)"," points)")+'</h2>';
   ex.srItems.forEach(function(it){n++;var q=it.q;
-    paper+='<div class="pq"><p><b>'+n+'.</b></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
+    paper+='<div class="pq"><div class="qline"><b>'+n+'.</b> <span class="prompt">'+stepHTML(q.prompt)+'</span></div>';
     if(q.figure)paper+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc")paper+='<div class="opts">'+q.options.map(function(o,oi){return '<label style="display:block;margin:4px 0;"><b>'+"ABCD"[oi]+'.</b> '+o+'</label>';}).join("")+'</div>';
     paper+='</div>';});
@@ -2605,7 +2792,7 @@ function renderExam(){
   paper+='<h2 style="font-size:1.05rem;">'+L9("Section B: Constructed Response (","Section B : Réponses construites (")+lv.cr+L9(" marks)"," points)")+'</h2>';
   if(!ex.crItems.length)paper+='<p>'+L9("No constructed-response questions are available for this selection yet.","Aucune question à réponse construite n'est disponible pour cette sélection pour le moment.")+'</p>';
   ex.crItems.forEach(function(it){n++;var q=it.q;
-    paper+='<div class="pq"><p><b>'+n+'.</b> <span style="font-size:.85rem;color:#555;">('+it.marks+L9(" marks"," points")+'</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
+    paper+='<div class="pq"><div class="qline"><b>'+n+'.</b> <span style="font-size:.85rem;color:#555;">('+it.marks+L9(" marks"," points")+'</span> <span class="prompt">'+stepHTML(q.prompt)+'</span></div>';
     if(q.figure)paper+='<div class="fig">'+q.figure+'</div>';
     var h=Math.max(80,Math.round(it.marks*62*wsCrF));if(wsCrF>0)paper+=wsBox(h);
     paper+='</div>';});
@@ -2618,7 +2805,7 @@ function renderExam(){
   ex.crItems.forEach(function(it){m++;var q=it.q;var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0]));
     key+='<div class="solp"><p><b>'+m+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+ans+'</b> ('+it.marks+L9(" marks"," points")+'</p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';});
   key+='<h2 style="font-size:1.05rem;">'+L9("Appendix: Section A worked solutions","Annexe : solutions détaillées de la section A")+'</h2><div class="solAppendix">';
-  ex.srItems.forEach(function(it,ix){var q=it.q;key+='<div class="solp"><p><b>'+(ix+1)+'.</b> <b>('+"ABCD"[q.correct]+')</b></p><div>'+stepHTML(q.solution)+'</div></div>';});
+  ex.srItems.forEach(function(it,ix){var q=it.q;key+='<div class="solp"><div class="qline"><b>'+(ix+1)+'.</b> <b>('+"ABCD"[q.correct]+')</b> '+stepHTML(q.solution)+'</div></div>';});
   key+='</div>';
   $("printArea").innerHTML=paper;
   $("session").innerHTML='<div class="card"><p>'+(FR9?("Ton "+(single?"test de pratique":"examen de pratique")+" est prêt : "+ex.srItems.length+" questions à réponses choisies et "+ex.crItems.length+" questions à réponses construites, "+lv.total+" points au total. La copie d'examen et le corrigé s'impriment séparément."):("Your "+(single?"practice unit test":"practice exam")+" is ready: "+ex.srItems.length+" selected-response questions and "+ex.crItems.length+" constructed-response questions, "+lv.total+" marks in total. The exam paper and the answer key print separately."))+'</p>'
@@ -2640,6 +2827,7 @@ function renderExam(){
   $("printPaperBtn").addEventListener("click",function(){var pp=previewParts();if(pp){$("printArea").innerHTML=pp.paper;}else{$("printArea").innerHTML=paper;typesetMath($("printArea"));}window.print();});
   $("printKeyBtn").addEventListener("click",function(){var pp=previewParts();if(pp){$("printArea").innerHTML=pp.key;}else{$("printArea").innerHTML=key;typesetMath($("printArea"));}window.print();});
   tWireExam();
+  resumeAfterRender("exam");
 }
 function startSheet(){
   stopExamTimer();
@@ -2668,7 +2856,7 @@ function renderSheet(){
   html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+L9(": Practice Sheet"," : Feuille de pratique")+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 "+L9("Indicators: ","Notions : ")+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[0])||'Show all workings in the space provided.'):((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[1])||'Show all workings on your own paper.'))+'</p>';
   res.items.forEach(function(q,i){
     var h=Math.round((q._entry.level===3?170:(q.type==="mc"?120:150))*((q.type==="mc")?wsMcF:wsCrF));
-    html+='<div class="pq"><p><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">('+L9("Unit ","Unité ")+q._entry.unit+' \u00B7 '+q._entry.indicators.join(", ")+' \u00B7 '+L9("Level ","Niveau ")+q._entry.level+')</span></p><div class="prompt">'+stepHTML(q.prompt)+'</div>';
+    html+='<div class="pq"><div class="qline"><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">('+L9("Unit ","Unité ")+q._entry.unit+' \u00B7 '+q._entry.indicators.join(", ")+' \u00B7 '+L9("Level ","Niveau ")+q._entry.level+')</span> <span class="prompt">'+stepHTML(q.prompt)+'</span></div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc"){html+='<div class="opts">'+q.options.map(function(o){return '<label style="display:block;margin:4px 0;">\u25CB '+o+'</label>';}).join("")+'</div>';}
     html+=wsBox(h);
@@ -3798,6 +3986,7 @@ else if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
 else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
   var _m=(new URLSearchParams(location.search).get("mode"));if(_m==="sheet"||_m==="worksheet"){startSheet();}else if(_m==="exam"){startExam();}else{startOnline();}
 }
+resumeBootCheck();
 }
 </script>
 <script>
