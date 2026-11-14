@@ -7,6 +7,7 @@ window.COURSES = {
 
 "physics-3204": {
   id: "physics-3204",
+  curriculum: "NL",
   title: "Physics 3204 Review: Practice Question Bank",
   shortName: "Physics 3204",
   storagePrefix: "p3204",
@@ -119,6 +120,7 @@ window.COURSES = {
 
 "physics-2204": {
   id: "physics-2204",
+  curriculum: "NL",
   title: "Physics 2204 Review: Practice Question Bank",
   shortName: "Physics 2204",
   storagePrefix: "p2204",
@@ -283,6 +285,7 @@ window.COURSES = {
 
 "bio-3201": {
   id: "bio-3201",
+  curriculum: "NL",
   title: "Biology 3201 Review: Practice Question Bank",
   shortName: "Biology 3201",
   storagePrefix: "bio3201",
@@ -427,6 +430,7 @@ window.COURSES = {
 
 "bio-2201": {
   id: "bio-2201",
+  curriculum: "NL",
   title: "Biology 2201 Review: Practice Question Bank",
   shortName: "Biology 2201",
   storagePrefix: "bio2201",
@@ -530,6 +534,7 @@ window.COURSES = {
 
 "sci-1206": {
   id: "sci-1206",
+  curriculum: "NL",
   title: "Science 1206 Review: Practice Question Bank",
   shortName: "Science 1206",
   storagePrefix: "sci1206",
@@ -660,6 +665,7 @@ window.COURSES = {
 
 "chem-3202": {
   id: "chem-3202",
+  curriculum: "NL",
   title: "Chemistry 3202 Review: Practice Question Bank",
   shortName: "Chemistry 3202",
   storagePrefix: "c3202",
@@ -831,6 +837,7 @@ window.COURSES = {
 
 "chem-2202": {
   id: "chem-2202",
+  curriculum: "NL",
   title: "Chemistry 2202 Review: Practice Question Bank",
   shortName: "Chemistry 2202",
   storagePrefix: "c2202",
@@ -994,8 +1001,223 @@ window.COURSES = {
   }
 },
 
+"earth-3209": {
+  id: "earth-3209",
+  curriculum: "NL",
+  title: "Earth Systems 3209 Review: Practice Question Bank",
+  shortName: "Earth Systems 3209",
+  storagePrefix: "earth3209",
+  reportName: "Earth Systems 3209",
+  language: "en",
+  bankFile: "earth-3209.js",
+  subject: "Science",
+  grade: 12,
+  listed: true,
+  panels: {},
+
+  units: {
+    1: "Introduction to Earth Science",
+    2: "Historical Geology",
+    3: "Earth Materials",
+    4: "The Forces within Earth",
+    5: "Earth Resources: Real Life Applications"
+  },
+
+  /* All 117 indicators from the eNLightenED Units and Indicators
+     spreadsheet, grouped inside their units in spreadsheet order.
+     Names are shortened topic titles drawn from the indicator text. */
+  indicators: {
+    "EA12.6.1": "At least two aspects of Earth science that make it",
+    "EA12.1.1": "The four stages of the nebular hypothesis that led to",
+    "EA12.6.2": "The roles of evidence, theories and paradigms in the",
+    "EA12.1.2": "The formation and segregation of Earth layers",
+    "EA12.1.3": "The various Earth layers",
+    "EA12.1.4": "That Earth is a dynamic planet",
+    "EA12.1.5": "That Earth processes operate within spheres",
+    "EA12.2.1": "Uniformitarianism",
+    "EA12.2.2": "Distinguish between absolute and relative time",
+    "EA12.2.3": "Demonstrate an understanding of the principles and",
+    "EA12.2.4": "Construct and interpret cross-sectional diagrams of",
+    "EA12.2.5": "Theories and evaluate the limits of our understanding",
+    "EA12.2.6": "Demonstrate an understanding of the processes and",
+    "EA12.2.7": "How the half-lives of radioactive elements are used",
+    "EA12.11.5": "Evaluate the sources of error and limitations in",
+    "EA12.7.3": "The importance of communicating the results of a",
+    "EA12.2.8": "How fossils are used to distinguish geologic time",
+    "EA12.2.9": "Fossil",
+    "EA12.2.10": "Three conditions necessary for fossilization",
+    "EA12.2.11": "The formation of various types of fossils",
+    "EA12.2.12": "Geological evidence that suggests life forms,",
+    "EA12.2.13": "That the geologic time scale is divided into eons,",
+    "EA12.2.14": "That Precambrian time represents the greatest part of",
+    "EA12.2.15": "That the Phanerozoic eon represents the emergence of",
+    "EA12.2.16": "Distinguish between Precambrian time and the",
+    "EA12.2.17": "List the dominant life forms present at each era",
+    "EA12.2.18": "List the time frame that correlates with the dominant",
+    "EA12.2.19": "That life forms, climate, continental positions, and",
+    "EA12.3.1": "Mineral chemistry terms",
+    "EA12.3.2": "How atoms combine to form compounds",
+    "EA12.3.3": "The abundance of the elements that comprise Earth’s",
+    "EA12.3.4": "A mineral",
+    "EA12.3.5": "The relationship between the abundance of the",
+    "EA12.3.6": "The major mineral groups",
+    "EA12.3.7": "Mineral groups based on mineral formulas",
+    "EA12.3.8": "The arrangement of silicon and oxygen within a",
+    "EA12.3.9": "The mineral properties that are used for identifying",
+    "EA12.3.10": "Minerals based on their mineral properties and",
+    "EA12.8.1": "Careers in Mineral Chemistry",
+    "EA12.3.11": "Rocks and minerals",
+    "EA12.8.2": "The Rock Cycle as a Natural System",
+    "EA12.3.12": "That igneous rocks are classified according to their",
+    "EA12.3.13": "How mafic igneous rocks differ from felsic igneous",
+    "EA12.3.14": "Igneous rocks that have similar chemical compositions",
+    "EA12.3.15": "Igneous rocks based on texture",
+    "EA12.3.16": "Igneous rock textures",
+    "EA12.3.17": "How cooling rate and mineral composition determine",
+    "EA12.3.18": "Igneous rocks based on mineral composition and texture",
+    "EA12.3.19": "Kimberlite and Diamond Deposits",
+    "EA12.3.20": "The origin and process of formation of sedimentary",
+    "EA12.3.21": "The classes of sedimentary rocks",
+    "EA12.3.22": "Clastic sedimentary rocks",
+    "EA12.3.23": "Sediment sorting to clastic sedimentary rocks",
+    "EA12.3.24": "Particle size to current velocity",
+    "EA12.3.25": "The environments and rock types that relate to",
+    "EA12.3.26": "Chemical sedimentary rocks",
+    "EA12.3.27": "The environments and rock types that relate to",
+    "EA12.3.28": "Biochemical sedimentary rocks",
+    "EA12.3.29": "The sequence of formation of coal",
+    "EA12.3.30": "The environments and rock types that relate to",
+    "EA12.3.31": "Sedimentary rocks",
+    "EA12.3.32": "The process of metamorphism",
+    "EA12.3.33": "Possible changes that result from metamorphism",
+    "EA12.3.34": "The result of selected rocks being metamorphosed",
+    "EA12.3.35": "The two types of metamorphism",
+    "EA12.3.36": "The locations where contact metamorphism occurs",
+    "EA12.3.37": "Buried Lava Flow or Intrusive Sill",
+    "EA12.3.38": "The locations where regional metamorphism occurs",
+    "EA12.3.39": "Metamorphic rocks",
+    "EA12.8.8": "Careers in the Study of Rocks",
+    "EA12.9.1": "The roles of evidence, theories, and paradigms in the",
+    "EA12.9.2": "How a major scientific milestone revolutionized",
+    "EA12.9.3": "How scientific knowledge evolves as new evidence",
+    "EA12.4.1": "And give examples of convergent, divergent and",
+    "EA12.4.2": "And give examples of the different types of",
+    "EA12.4.3": "A rift valley and how it evolves into a divergent",
+    "EA12.4.4": "Evidence for plate tectonics theory",
+    "EA12.9.4": "Examples of Canadian contributions to science and",
+    "EA12.9.5": "Examples of Canadian contributions to science",
+    "EA12.4.5": "Use appropriate evidence to describe the geologic",
+    "EA12.9.6": "Provide examples of how science and technology are an",
+    "EA12.4.6": "Terminology related to crustal deformation",
+    "EA12.4.7": "The types of forces and stresses that produce crustal",
+    "EA12.4.8": "The types of deformation",
+    "EA12.4.9": "The factors that affect deformation",
+    "EA12.4.10": "And relate faulting to the factors that affect",
+    "EA12.4.11": "The two major types of faults and associated forces",
+    "EA12.4.12": "And relate folding to the factors that affect",
+    "EA12.4.13": "Earthquake and related terminology",
+    "EA12.4.14": "The location of earthquakes and relate them to their",
+    "EA12.4.15": "Properties of the different seismic waves",
+    "EA12.4.16": "Distinguish between earthquake scales",
+    "EA12.4.17": "In relation to the Richter scale how amplitude and",
+    "EA12.4.18": "How seismographs and resulting seismograms are used",
+    "EA12.4.19": "Distinguish between the types of volcanoes and",
+    "EA12.4.20": "The type of eruption for each volcano type in",
+    "EA12.4.21": "The rocks that form in relation to each type of",
+    "EA12.4.22": "Distinguish between the types of lava",
+    "EA12.4.23": "Intraplate volcanism as it relates to hotspots",
+    "EA12.4.24": "The formation of a lava plateau",
+    "EA12.4.25": "Major interactions among the hydrosphere,",
+    "EA12.9.7": "And describe science and technology-based careers",
+    "EA12.5.1": "The importance of minerals and mineral exploration at",
+    "EA12.5.2": "The evolution of extraction and the use of several",
+    "EA12.10.1": "And describe examples where technologies were",
+    "EA12.5.3": "The processes and techniques involved in processing",
+    "EA12.5.4": "Terminology related to hydrocarbons",
+    "EA12.5.5": "The origin and the process of formation of petroleum",
+    "EA12.5.6": "Interactions among Earth’s spheres",
+    "EA12.5.7": "Kerogen",
+    "EA12.5.8": "The three phases in the evolution of organic matter",
+    "EA12.5.9": "The components involved in the formation of petroleum",
+    "EA12.5.10": "The types of petroleum traps",
+    "EA12.5.11": "The distribution of petroleum in a reservoir",
+    "EA12.5.12": "The two main means of extracting petroleum from Earth",
+    "EA12.5.13": "The methods of refining petroleum",
+    "EA12.5.14": "Factors involved in developing Earth’s resources in a"
+  },
+
+  unitInd: {
+    1: ["EA12.6.1", "EA12.1.1", "EA12.6.2", "EA12.1.2", "EA12.1.3", "EA12.1.4", "EA12.1.5"],
+    2: ["EA12.2.1", "EA12.2.2", "EA12.2.3", "EA12.2.4", "EA12.2.5", "EA12.2.6", "EA12.2.7", "EA12.11.5", "EA12.7.3", "EA12.2.8", "EA12.2.9", "EA12.2.10", "EA12.2.11", "EA12.2.12", "EA12.2.13", "EA12.2.14", "EA12.2.15", "EA12.2.16", "EA12.2.17", "EA12.2.18", "EA12.2.19"],
+    3: ["EA12.3.1", "EA12.3.2", "EA12.3.3", "EA12.3.4", "EA12.3.5", "EA12.3.6", "EA12.3.7", "EA12.3.8", "EA12.3.9", "EA12.3.10", "EA12.8.1", "EA12.3.11", "EA12.8.2", "EA12.3.12", "EA12.3.13", "EA12.3.14", "EA12.3.15", "EA12.3.16", "EA12.3.17", "EA12.3.18", "EA12.3.19", "EA12.3.20", "EA12.3.21", "EA12.3.22", "EA12.3.23", "EA12.3.24", "EA12.3.25", "EA12.3.26", "EA12.3.27", "EA12.3.28", "EA12.3.29", "EA12.3.30", "EA12.3.31", "EA12.3.32", "EA12.3.33", "EA12.3.34", "EA12.3.35", "EA12.3.36", "EA12.3.37", "EA12.3.38", "EA12.3.39", "EA12.8.8"],
+    4: ["EA12.9.1", "EA12.9.2", "EA12.9.3", "EA12.4.1", "EA12.4.2", "EA12.4.3", "EA12.4.4", "EA12.9.4", "EA12.9.5", "EA12.4.5", "EA12.9.6", "EA12.4.6", "EA12.4.7", "EA12.4.8", "EA12.4.9", "EA12.4.10", "EA12.4.11", "EA12.4.12", "EA12.4.13", "EA12.4.14", "EA12.4.15", "EA12.4.16", "EA12.4.17", "EA12.4.18", "EA12.4.19", "EA12.4.20", "EA12.4.21", "EA12.4.22", "EA12.4.23", "EA12.4.24", "EA12.4.25", "EA12.9.7"],
+    5: ["EA12.5.1", "EA12.5.2", "EA12.10.1", "EA12.5.3", "EA12.5.4", "EA12.5.5", "EA12.5.6", "EA12.5.7", "EA12.5.8", "EA12.5.9", "EA12.5.10", "EA12.5.11", "EA12.5.12", "EA12.5.13", "EA12.5.14"]
+  },
+
+  /* Staged hints: bank entries carry one hint stage each. */
+  hints: true,
+
+  /* The PEP mid-course band is 19/30/11 of 60 (about 32/50/18), so the
+     level mix starts there instead of at the chassis default. */
+  defaultMix: [32, 50, 18],
+
+  timerNote: "2 hours",
+
+  presets: {
+    mid:   { units: [1, 2, 3], cap: true, label: "Mid-course review (Units 1 to 3, Unit 3 to EA12.3.19)", faceLabel: "Mid-course review (Units 1 to 3)" },
+    final: { units: [3, 4, 5], cap: true, label: "Final review (Units 3 to 5, Unit 3 from EA12.3.20)", faceLabel: "Final review (Units 3 to 5)" }
+  },
+
+  /* Shown in the pool line while the mid-course cap is on. The cap
+     holds out the Unit 3 entries the bank flags postMid (indicators
+     EA12.3.20 onward) whenever the mid scope is composed. The final
+     preset carries the matching cap (presets.final.cap): the bank
+     flags the Unit 3 entries through EA12.3.19 (plus EA12.8.1 and
+     EA12.8.2) preFinal, and the shell holds them out whenever the
+     final scope is composed. */
+  midNote: "Mid-course scope: Unit 3 stops at indicator EA12.3.19, so the sedimentary and metamorphic rock questions are held out.",
+
+  /* Exam blueprints. The mid-course blueprint is the governing PEP
+     table (EECD memo, Sep 29, 2026): 60 marks, 48 selected response
+     and 12 constructed response, per-unit level marks 19/30/11. The
+     memo gives no per-unit selected/constructed split; following the
+     Biology 3201 precedent, the 12 CR marks are allocated in
+     proportion to unit totals (Unit 1: 2, Unit 2: 4, Unit 3: 6) and
+     selected response takes the remainder. The final blueprint is an
+     ADOPTED BEST GUESS on the Physics 3204 pattern: the final covers
+     what the mid does not (the remainder rule), in the mid's 60-mark
+     shape, with unit totals Unit 3 remainder 18, Unit 4 28, Unit 5 14
+     and levels taken from the January 2019 public exam Table of
+     Specifications. */
+  exam: {
+    mid: {
+      units: [1, 2, 3], total: 60, srCount: 48, crMarks: 12,
+      perUnit: {
+        1: { sr: 10, cr: 2, levels: [4, 6, 2] },
+        2: { sr: 12, cr: 4, levels: [3, 9, 4] },
+        3: { sr: 26, cr: 6, levels: [12, 15, 5] }
+      }
+    },
+    final: {
+      units: [3, 4, 5], total: 60, srCount: 48, crMarks: 12,
+      perUnit: {
+        3: { sr: 14, cr: 4, levels: [7, 8, 3] },
+        4: { sr: 23, cr: 5, levels: [11, 12, 5] },
+        5: { sr: 11, cr: 3, levels: [5, 6, 3] }
+      }
+    },
+    fallback: { srCount: 48, crMarks: 12 }
+  },
+
+  /* Shown with the pool information whenever the final scope is selected. */
+  finalNote: "Note: no official Table of Specifications has been published for the Earth Systems 3209 final. This preset uses an adopted best guess (60 marks in the mid-course shape: Unit 3 from EA12.3.20 worth 18 marks, Unit 4 worth 28, Unit 5 worth 14, with proportions and levels taken from the January 2019 public exam Table of Specifications). If an official table is published, it replaces this guess.",
+
+  unitTest: { total: 25, sr: 11, cr: 14 }
+},
+
 "math-3200": {
   id: "math-3200",
+  curriculum: "NL",
   title: "Math 3200 Review: Practice Question Bank",
   shortName: "Math 3200",
   storagePrefix: "m3200",
@@ -1382,6 +1604,7 @@ window.COURSES = {
 
 "math-3201": {
   id: "math-3201",
+  curriculum: "NL",
   title: "Math 3201 Review: Practice Question Bank",
   shortName: "Math 3201",
   storagePrefix: "m3201",
@@ -1691,6 +1914,7 @@ window.COURSES = {
 
 "math-3202": {
   id: "math-3202",
+  curriculum: "NL",
   title: "Math 3202 Review: Practice Question Bank",
   shortName: "Math 3202",
   storagePrefix: "m3202",
@@ -1948,6 +2172,7 @@ window.COURSES = {
 
 "math-3208": {
   id: "math-3208",
+  curriculum: "NL",
   title: "Math 3208 Review: Practice Question Bank",
   shortName: "Math 3208",
   storagePrefix: "m3208",
@@ -2262,6 +2487,7 @@ window.COURSES = {
 
 "math-2200": {
   id: "math-2200",
+  curriculum: "NL",
   title: "Math 2200 Review: Practice Question Bank",
   shortName: "Math 2200",
   storagePrefix: "m2200",
@@ -2496,6 +2722,7 @@ window.COURSES = {
 },
 "math-2201": {
   id: "math-2201",
+  curriculum: "NL",
   title: "Math 2201 Review: Practice Question Bank",
   shortName: "Math 2201",
   storagePrefix: "m2201",
@@ -2695,6 +2922,7 @@ window.COURSES = {
 
 "math-2202": {
   id: "math-2202",
+  curriculum: "NL",
   title: "Math 2202 Review: Practice Question Bank",
   shortName: "Math 2202",
   storagePrefix: "m2202",
@@ -2886,6 +3114,7 @@ window.COURSES = {
 
 "math-1201": {
   id: "math-1201",
+  curriculum: "NL",
   title: "Math 1201 Review: Practice Question Bank",
   shortName: "Math 1201",
   storagePrefix: "m1201",
@@ -3113,6 +3342,7 @@ window.COURSES = {
 
 "math-1202": {
   id: "math-1202",
+  curriculum: "NL",
   title: "Math 1202 Review: Practice Question Bank",
   shortName: "Math 1202",
   storagePrefix: "m1202",
@@ -3340,6 +3570,7 @@ window.COURSES = {
      (listed:false) until Jason passes it. */
   "math-9": {
   id: "math-9",
+  curriculum: "NL",
   shortName: "Math 9",
 
   /* Long name (ruling 5 in the junior scoping): the standalone
@@ -3600,6 +3831,7 @@ window.COURSES = {
      picker (listed:false) for now. */
   "math-9-fr": {
   id: "math-9-fr",
+  curriculum: "NL",
   shortName: "Mathématiques 9",
 
   /* Long name and app name as the fork carries them: the fork
@@ -3940,6 +4172,7 @@ window.COURSES = {
   },
   "math-8-fr": {
   id: "math-8-fr",
+  curriculum: "NL",
   shortName: "Mathématiques 8",
 
   /* Long name and app name as the fork carries them: the fork
@@ -4277,6 +4510,7 @@ window.COURSES = {
 
   "math-7-fr": {
   id: "math-7-fr",
+  curriculum: "NL",
   shortName: "Mathématiques 7",
 
   /* Long name and app name as the fork carries them: the fork
@@ -4669,6 +4903,7 @@ window.COURSES = {
      it. */
   "math-8": {
   id: "math-8",
+  curriculum: "NL",
   shortName: "Math 8",
 
   /* Long name (ruling 5 in the junior scoping): the standalone
@@ -4923,6 +5158,7 @@ window.COURSES = {
      it. */
   "math-7": {
   id: "math-7",
+  curriculum: "NL",
   shortName: "Math 7",
 
   /* Long name (ruling 5 in the junior scoping): the standalone
