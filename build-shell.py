@@ -1681,6 +1681,84 @@ rep('  if(p.get("nohint")==="1")NO_HINT=true;\n  if(p.get("noex")==="1")NO_EX=tr
 rep('  var first=h1?stepHTML(h1):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l\'exemple travaillé pour ce type de question, puis essaie le même premier pas ici.");',
     '  var first=h1?stepHTML(h1):(exSuppressed()?L9("Work out the first step this kind of question calls for, and try just that step here.","Trouve le premier pas que ce type de question demande, et essaie seulement ce pas ici."):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l\'exemple travaillé pour ce type de question, puis essaie le même premier pas ici."));', count=1)  # fallback hint wording follows example suppression
 
+# ---------- Help tracking and teacher dark panels (Nov 15, 2026) ----------
+# Two changes from Jason's rulings of November 15, 2026, built
+# into the shipped shell and back-ported here in the same pass.
+# Part 1, help tracking: opening a hint so it displays, opening
+# the worked example, or opening the worked solution before a
+# question's first recorded result marks the question as helped
+# (helpUsed, set by noteHelp from the three toggles; the prose
+# guard keeps the designed prose reveal, which opens the
+# solution directly rather than through the toggle, from ever
+# counting). A helped question answered correctly keeps its
+# score, but its indicators join the practice list and the
+# retryMissed draw on ordinary sets, and its skill group counts
+# as needing more practice on a prerequisite check, with a plain
+# sentence in the summary (helpNoteHtml) whenever helped-but-
+# correct questions exist. The flags ride the resume save body,
+# the teacher set capture, and the teacher set sync, the way the
+# prose self-rating does, and reset wherever setResults resets.
+# Part 2, teacher dark panels: .tctl, .tbar and .tpanel carried
+# a hard-coded near-white background with no dark override, so
+# their headings and hint text rendered near-white on near-white
+# in dark mode; they now take var(--card) in the dark block, the
+# bank picker's .tqprompt .opts and .tlist .tid take the muted
+# dark ink the picker sample already used, and the teacher
+# note's Turn off advanced tools link takes the dark link colour
+# the All courses link already used. Light mode is untouched.
+rep('  html[data-a11y-theme="dark"] .tpick .tsamp{color:#b9c6cc;}',
+    '  html[data-a11y-theme="dark"] .tpick .tsamp{color:#b9c6cc;}\n  html[data-a11y-theme="dark"] .tctl,html[data-a11y-theme="dark"] .tbar,html[data-a11y-theme="dark"] .tpanel{background:var(--card);}\n  html[data-a11y-theme="dark"] .tqprompt .opts{color:#b9c6cc;}\n  html[data-a11y-theme="dark"] .tlist .tid{color:#b9c6cc;}\n  html[data-a11y-theme="dark"] #teacherNote a{color:#5eead4;}', count=1)  # dark overrides for the teacher panels, picker text and note link
+rep('var setResults={};\n/* Reference panels come from the active course configuration (the',
+    'var setResults={};\n/* Help tracking (Nov 15, 2026, Jason\'s ruling): opening a hint so\n   it displays, opening the worked example, or opening the worked\n   solution BEFORE a question\'s first recorded result marks the\n   question as helped. A helped question still scores when it is\n   answered correctly, but it counts as needing practice in the\n   set summary and in the Practice what I missed draw. The flags\n   ride the resume save, the teacher set capture and the teacher\n   set sync, the way the prose self-rating does. The designed\n   prose reveal opens the solution directly rather than through\n   the toggle, so it never lands here, and the prose guard below\n   covers any other route to the solution toggle. */\nvar helpUsed={};\nfunction noteHelp(i,kind){\n  var fb=$("fb"+i);if(!fb||fb.dataset.done)return;\n  if(kind==="sol"&&isProseText(current[i]))return;\n  if(!helpUsed[i])helpUsed[i]={};\n  helpUsed[i][kind]=1;\n}\n/* Reference panels come from the active course configuration (the', count=1)  # helpUsed and noteHelp
+rep('box.dataset.stage="1";}',
+    'box.dataset.stage="1";noteHelp(i,"hint");}', count=1)  # showHint stage 1 records help
+rep('box.dataset.stage="2";}',
+    'box.dataset.stage="2";noteHelp(i,"hint");}', count=1)  # showHint stage 2 records help
+rep('function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open)closeScaffolding(i);}',
+    'function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open){closeScaffolding(i);noteHelp(i,"sol");}}', count=1)  # solution toggle records help
+rep('  if(box._exq){box.hidden=false;setExLabel(i,true);return;}',
+    '  if(box._exq){box.hidden=false;setExLabel(i,true);noteHelp(i,"ex");return;}', count=1)  # example reshow records help
+rep('  var exq=dealExample(i,0,null);\n  if(!exq)return;\n  renderExample(i,exq);setExLabel(i,true);',
+    '  var exq=dealExample(i,0,null);\n  if(!exq)return;\n  renderExample(i,exq);setExLabel(i,true);noteHelp(i,"ex");', count=1)  # example first show records help
+rep('  if(Object.keys(setResults).length<current.length)return;\n  var missed=[];\n  Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});',
+    '  if(Object.keys(setResults).length<current.length)return;\n  var missed=[];\n  Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});\n  /* Help tracking (Nov 15, 2026): a question answered correctly\n     after using help keeps its score, but its indicators join the\n     practice list below, and on a prerequisite check its skill\n     group counts as needing more practice. */\n  var helpedInds=[],anyHelped=false;\n  Object.keys(helpUsed).forEach(function(k){if(setResults[k]&&setResults[k].ok){anyHelped=true;setResults[k].inds.forEach(function(c){if(helpedInds.indexOf(c)<0&&missed.indexOf(c)<0)helpedInds.push(c);});}});\n  var practiceInds=missed.concat(helpedInds);', count=1)  # summary: helped indicators join the practice list
+rep('       does: a group is missed when any of its questions carries\n       a recorded not-correct result (a prose self-rating of part\n       or missed included). The retry button below keys on these\n       groups. */',
+    '       does: a group is missed when any of its questions carries\n       a recorded not-correct result (a prose self-rating of part\n       or missed included). A group is also marked when any of\n       its questions was answered correctly only after using help\n       (help tracking, Nov 15, 2026). The retry button below keys\n       on these groups. */', count=1)  # check summary comment: helped groups
+rep('      if(!gStat[g]){gStat[g]={missed:false};gList.push(g);}\n      if(setResults[i]&&!setResults[i].ok)gStat[g].missed=true;\n    });\n    var anyMissedG=gList.some(function(g){return gStat[g].missed;});',
+    '      if(!gStat[g]){gStat[g]={missed:false,helped:false};gList.push(g);}\n      if(setResults[i]&&!setResults[i].ok)gStat[g].missed=true;\n      else if(setResults[i]&&helpUsed[i])gStat[g].helped=true;\n    });\n    var anyMissedG=gList.some(function(g){return gStat[g].missed||gStat[g].helped;});\n    var anyHelpedG=gList.some(function(g){return gStat[g].helped;});', count=1)  # check summary: group help state
+rep('(gStat[g].missed?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))',
+    '(gStat[g].missed||gStat[g].helped?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))', count=1)  # check summary: helped group reads as needing practice
+rep('    if(anyMissedG){\n      h+=retryModeNoteHtml()+\'<p><button type="button" id="retryMissedBtn">\'+L9("Practice what I missed","Pratiquer ce que j\'ai manqué")+\'</button></p>\';',
+    '    if(anyMissedG){\n      h+=(anyHelpedG?helpNoteHtml():"")+retryModeNoteHtml()+\'<p><button type="button" id="retryMissedBtn">\'+L9("Practice what I missed","Pratiquer ce que j\'ai manqué")+\'</button></p>\';', count=1)  # check summary: help sentence before the retry button
+rep('  }else if(missed.length){\n    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+missed.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+\'</ul>\'+retryModeNoteHtml()+\'<p><button type="button" id="retryMissedBtn">\'+L9("Practice what I missed","Pratiquer ce que j\'ai manqué")+\'</button></p>\';',
+    '  }else if(practiceInds.length){\n    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+practiceInds.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+\'</ul>\'+(anyHelped?helpNoteHtml():"")+retryModeNoteHtml()+\'<p><button type="button" id="retryMissedBtn">\'+L9("Practice what I missed","Pratiquer ce que j\'ai manqué")+\'</button></p>\';', count=1)  # ordinary summary: practice list covers helped indicators, with the help sentence
+rep('function retryModeNoteHtml(){',
+    'function helpNoteHtml(){\n  return \'<p class="thinNote">\'+L9("Some questions were answered correctly after using help (a hint, a worked example or the worked solution). They are worth another round, so they are in this practice list too.","Certaines questions ont été réussies après avoir utilisé de l’aide (un indice, un exemple travaillé ou la solution détaillée). Elles méritent un autre tour, alors elles sont aussi dans cette liste de pratique.")+"</p>";\n}\nfunction retryModeNoteHtml(){', count=1)  # the summary help sentence
+rep('      if(setResults[i]&&!setResults[i].ok&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}',
+    '      if(setResults[i]&&(!setResults[i].ok||helpUsed[i])&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}', count=1)  # check retry draws helped groups
+rep('  var missed=[];\n  Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});\n  if(!missed.length)return;',
+    '  var missed=[];\n  Object.keys(setResults).forEach(function(k){if(!setResults[k].ok||helpUsed[k])setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});\n  if(!missed.length)return;', count=1)  # ordinary retry draws helped indicators
+rep('      P.checked=checkedCount;P.correct=correctCount;P.results=setResults;',
+    '      P.checked=checkedCount;P.correct=correctCount;P.results=setResults;P.help=helpUsed;', count=1)  # teacher set capture carries the flags
+rep('    checkedCount=P.checked||0;correctCount=P.correct||0;setResults=P.results||{};',
+    '    checkedCount=P.checked||0;correctCount=P.correct||0;setResults=P.results||{};helpUsed=P.help||{};', count=1)  # teacher set restore reads the flags
+rep('results:setResults,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0',
+    'results:setResults,help:helpUsed,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0', count=1)  # resume save body carries the flags
+rep('  checkedCount=b.checked||0;correctCount=b.correct||0;setResults=b.results||{};',
+    '  checkedCount=b.checked||0;correctCount=b.correct||0;setResults=b.results||{};helpUsed=b.help||{};', count=1)  # resume apply reads the flags
+rep('endGraded=false;setResults={};sessionSeed="";',
+    'endGraded=false;setResults={};helpUsed={};sessionSeed="";', count=1)  # teacher set rebuild resets the flags
+rep('    var o={done:false,ok:false,given:null,fb:"",sol:false,exOpen:false,exq:null,exn:0,selfRate:"",srShown:false};',
+    '    var o={done:false,ok:false,help:null,given:null,fb:"",sol:false,exOpen:false,exq:null,exn:0,selfRate:"",srShown:false};', count=1)  # teacher sync state gains the help slot
+rep('    o.ok=!!(setResults[i]&&setResults[i].ok);',
+    '    o.ok=!!(setResults[i]&&setResults[i].ok);\n    o.help=helpUsed[i]||null;', count=1)  # teacher sync copies the flag per question
+rep('  checkedCount=0;correctCount=0;setResults={};',
+    '  checkedCount=0;correctCount=0;setResults={};helpUsed={};', count=1)  # teacher restore resets, then rebuilds, the flags
+rep('    if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");\n    if(o.exOpen&&o.exq){var exb=$("ex"+i);if(exb){exb.dataset.exn=String(o.exn);renderExample(i,o.exq);setExLabel(i,true);}}',
+    '    if(o.help)helpUsed[i]=o.help;\n    if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");\n    if(o.exOpen&&o.exq){var exb=$("ex"+i);if(exb){exb.dataset.exn=String(o.exn);renderExample(i,o.exq);setExLabel(i,true);}}', count=1)  # teacher restore puts the flag back on the question's new index
+rep('endGraded=false;setResults={};\n  lastSettings=s;onlineThin=res.thin;T=null;',
+    'endGraded=false;setResults={};helpUsed={};\n  lastSettings=s;onlineThin=res.thin;T=null;', count=1)  # startOnline resets the flags with the results
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

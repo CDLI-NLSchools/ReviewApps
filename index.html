@@ -224,6 +224,10 @@
   html[data-a11y-theme="dark"] .tpick{background:var(--card);}
   html[data-a11y-theme="dark"] .tpick button{background:var(--card);}
   html[data-a11y-theme="dark"] .tpick .tsamp{color:#b9c6cc;}
+  html[data-a11y-theme="dark"] .tctl,html[data-a11y-theme="dark"] .tbar,html[data-a11y-theme="dark"] .tpanel{background:var(--card);}
+  html[data-a11y-theme="dark"] .tqprompt .opts{color:#b9c6cc;}
+  html[data-a11y-theme="dark"] .tlist .tid{color:#b9c6cc;}
+  html[data-a11y-theme="dark"] #teacherNote a{color:#5eead4;}
   html[data-a11y-theme="dark"] details#builderBox>summary,html[data-a11y-theme="dark"] details#a11yBox>summary{background:var(--card);border-color:var(--line);}
   html[data-a11y-theme="dark"] input,html[data-a11y-theme="dark"] select,html[data-a11y-theme="dark"] textarea{background:#222e35;color:var(--ink);border-color:var(--line);}
   html[data-a11y-theme="dark"] :focus-visible{outline-color:#ffd166;}
@@ -1304,6 +1308,24 @@ function tags(q){
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
+/* Help tracking (Nov 15, 2026, Jason's ruling): opening a hint so
+   it displays, opening the worked example, or opening the worked
+   solution BEFORE a question's first recorded result marks the
+   question as helped. A helped question still scores when it is
+   answered correctly, but it counts as needing practice in the
+   set summary and in the Practice what I missed draw. The flags
+   ride the resume save, the teacher set capture and the teacher
+   set sync, the way the prose self-rating does. The designed
+   prose reveal opens the solution directly rather than through
+   the toggle, so it never lands here, and the prose guard below
+   covers any other route to the solution toggle. */
+var helpUsed={};
+function noteHelp(i,kind){
+  var fb=$("fb"+i);if(!fb||fb.dataset.done)return;
+  if(kind==="sol"&&isProseText(current[i]))return;
+  if(!helpUsed[i])helpUsed[i]={};
+  helpUsed[i][kind]=1;
+}
 /* Reference panels come from the active course configuration (the
    course's data-sheet material, config key: panels). */
 var REF_HTML=(window.__COURSE&&window.__COURSE.panels)||{};
@@ -1334,8 +1356,8 @@ function showHint(i){
   var first=h1?stepHTML(h1):(exSuppressed()?L9("Work out the first step this kind of question calls for, and try just that step here.","Trouve le premier pas que ce type de question demande, et essaie seulement ce pas ici."):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l'exemple travaillé pour ce type de question, puis essaie le même premier pas ici."));
   var last=h2?2:1;
   if(stage>=last){box.hidden=true;box.innerHTML="";box.dataset.stage="0";}
-  else if(stage===0){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first;box.hidden=false;box.dataset.stage="1";}
-  else if(stage===1){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first+(h2?("<br><b>"+L9("First step:","Premier pas :")+"</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";}
+  else if(stage===0){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first;box.hidden=false;box.dataset.stage="1";noteHelp(i,"hint");}
+  else if(stage===1){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first+(h2?("<br><b>"+L9("First step:","Premier pas :")+"</b> "+stepHTML(h2)):"");box.hidden=false;box.dataset.stage="2";noteHelp(i,"hint");}
 }
 function exampleCapable(e){
   // A worked example only helps when the entry can deal a question that
@@ -1374,16 +1396,16 @@ function renderExample(i,exq){
 function setExLabel(i,open){var b=document.querySelector('[data-ex="'+i+'"]');if(b)b.textContent=open?L9("Hide worked example","Masquer l'exemple travaillé"):L9("See a worked example","Voir un exemple travaillé");}
 function setSolLabel(i,open){var b=document.querySelector('[data-sol="'+i+'"]');if(b)b.textContent=open?L9("Hide worked solution","Masquer la solution détaillée"):L9("Show worked solution","Voir la solution détaillée");}
 function closeScaffolding(i){var hb=$("hint"+i);if(hb){hb.hidden=true;hb.innerHTML="";hb.dataset.stage="0";}var xb=$("ex"+i);if(xb&&!xb.hidden){xb.hidden=true;setExLabel(i,false);}}
-function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open)closeScaffolding(i);}
+function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open){closeScaffolding(i);noteHelp(i,"sol");}}
 function toggleExample(i){
   var q=current[i];if(!q||!q._entry)return;
   var box=$("ex"+i);if(!box)return;
   if(!box.hidden){box.hidden=true;setExLabel(i,false);return;}
-  if(box._exq){box.hidden=false;setExLabel(i,true);return;}
+  if(box._exq){box.hidden=false;setExLabel(i,true);noteHelp(i,"ex");return;}
   box.dataset.exn="0";
   var exq=dealExample(i,0,null);
   if(!exq)return;
-  renderExample(i,exq);setExLabel(i,true);
+  renderExample(i,exq);setExLabel(i,true);noteHelp(i,"ex");
 }
 function anotherExample(i){
   var box=$("ex"+i);if(!box||!box._exq)return;
@@ -1397,6 +1419,13 @@ function maybeSummary(){
   if(Object.keys(setResults).length<current.length)return;
   var missed=[];
   Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});
+  /* Help tracking (Nov 15, 2026): a question answered correctly
+     after using help keeps its score, but its indicators join the
+     practice list below, and on a prerequisite check its skill
+     group counts as needing more practice. */
+  var helpedInds=[],anyHelped=false;
+  Object.keys(helpUsed).forEach(function(k){if(setResults[k]&&setResults[k].ok){anyHelped=true;setResults[k].inds.forEach(function(c){if(helpedInds.indexOf(c)<0&&missed.indexOf(c)<0)helpedInds.push(c);});}});
+  var practiceInds=missed.concat(helpedInds);
   var h='<div class="summarybox"><h3>'+L9("Set complete","Série terminée")+'</h3><p>'+(FR9?("Tu as obtenu "+correctCount+" sur "+current.length+" aux premières vérifications."):("You scored "+correctCount+" of "+current.length+" on first checks."))+"</p>";
   if(pkOnlyActive()){
     /* Group readout (Nov 15, 2026): a check's summary names the
@@ -1407,26 +1436,30 @@ function maybeSummary(){
        status reads setResults exactly as the indicator readout
        does: a group is missed when any of its questions carries
        a recorded not-correct result (a prose self-rating of part
-       or missed included). The retry button below keys on these
-       groups. */
+       or missed included). A group is also marked when any of
+       its questions was answered correctly only after using help
+       (help tracking, Nov 15, 2026). The retry button below keys
+       on these groups. */
     var gStat={},gList=[];
     current.forEach(function(q,i){
       if(!q._entry)return;
       var g=pkGroupOf(q._entry);
-      if(!gStat[g]){gStat[g]={missed:false};gList.push(g);}
+      if(!gStat[g]){gStat[g]={missed:false,helped:false};gList.push(g);}
       if(setResults[i]&&!setResults[i].ok)gStat[g].missed=true;
+      else if(setResults[i]&&helpUsed[i])gStat[g].helped=true;
     });
-    var anyMissedG=gList.some(function(g){return gStat[g].missed;});
+    var anyMissedG=gList.some(function(g){return gStat[g].missed||gStat[g].helped;});
+    var anyHelpedG=gList.some(function(g){return gStat[g].helped;});
     h+="<p><b>"+L9("Skills in this check:","Compétences vérifiées :")+"</b></p><ul>"+gList.map(function(g){
-      return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gStat[g].missed?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))+"</li>";
+      return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gStat[g].missed||gStat[g].helped?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))+"</li>";
     }).join("")+"</ul>";
     if(anyMissedG){
-      h+=retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
+      h+=(anyHelpedG?helpNoteHtml():"")+retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
     }else{
       h+="<p>"+L9("Every skill in this check was answered correctly on its first check. Nice work.","Chaque compétence de cette vérification a été réussie à la première vérification. Beau travail.")+"</p>";
     }
-  }else if(missed.length){
-    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+missed.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+'</ul>'+retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
+  }else if(practiceInds.length){
+    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+practiceInds.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+'</ul>'+(anyHelped?helpNoteHtml():"")+retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
   }else{
     h+="<p>"+L9("Every indicator in this set was answered correctly on its first check. Nice work.","Chaque notion de cette série a été réussie à la première vérification. Beau travail.")+"</p>";
   }
@@ -1446,7 +1479,7 @@ function retryMissed(){
     current.forEach(function(q,i){
       if(!q._entry)return;
       var g=pkGroupOf(q._entry);
-      if(setResults[i]&&!setResults[i].ok&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}
+      if(setResults[i]&&(!setResults[i].ok||helpUsed[i])&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}
     });
     if(!gMissed.length)return;
     PKRETRY_GROUPS=gMissed;
@@ -1457,7 +1490,7 @@ function retryMissed(){
     return;
   }
   var missed=[];
-  Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});
+  Object.keys(setResults).forEach(function(k){if(!setResults[k].ok||helpUsed[k])setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});
   if(!missed.length)return;
   state.inds=missed;
   if(retryWillSwitch())RETRY_AS_EACH=true;
@@ -1782,6 +1815,9 @@ var NO_HINT=false,NO_EX=false;
    like any set's, so a resumed retry keeps checking as-you-go. */
 var RETRY_KEEP=false,RETRY_AS_EACH=false;
 function retryWillSwitch(){return !TEACHER&&checkMode==="end"&&!RETRY_KEEP;}
+function helpNoteHtml(){
+  return '<p class="thinNote">'+L9("Some questions were answered correctly after using help (a hint, a worked example or the worked solution). They are worth another round, so they are in this practice list too.","Certaines questions ont été réussies après avoir utilisé de l’aide (un indice, un exemple travaillé ou la solution détaillée). Elles méritent un autre tour, alors elles sont aussi dans cette liste de pratique.")+"</p>";
+}
 function retryModeNoteHtml(){
   if(!retryWillSwitch())return "";
   return "<p>"+L9("This practice set checks each question as you go, so you can correct mistakes as they come up.","Cette série de pratique vérifie chaque question au fur et à mesure, afin que tu puisses corriger tes erreurs dès qu'elles se présentent.")+"</p>";
@@ -1961,7 +1997,7 @@ function advSetCapture(){
       P.items=current.map(advQSer);
       P.s=lastSettings;P.thin=!!onlineThin;
       P.checkMode=checkMode;P.endGraded=!!endGraded;
-      P.checked=checkedCount;P.correct=correctCount;P.results=setResults;
+      P.checked=checkedCount;P.correct=correctCount;P.results=setResults;P.help=helpUsed;
       P.state=current.map(function(q,i){
         var o={given:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:"",selfRate:"",srShown:false};
         if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel)o.given=+sel.value;}
@@ -2023,7 +2059,7 @@ function advSetRestore(){
     current=items;sessionSeed=P.seed||"";
     lastSettings=P.s||s;onlineThin=!!P.thin;
     checkMode=P.checkMode||((s&&s.chk==="end")?"end":"each");endGraded=!!P.endGraded;
-    checkedCount=P.checked||0;correctCount=P.correct||0;setResults=P.results||{};
+    checkedCount=P.checked||0;correctCount=P.correct||0;setResults=P.results||{};helpUsed=P.help||{};
     T=null;
     if(TEACHER){T=advTCtx("online",P,lastSettings);current.forEach(advAdopt);}
     renderOnline(false);
@@ -2139,7 +2175,7 @@ function resumeSaveNow(){
       var st=resumeCaptureState();
       if(!resumeHasProgress(st)){try{store.removeItem(RESUME_KEY);}catch(e){}return;}
       var sig=resumeSig("online",current);_resumeLiveSig=sig;
-      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0}}));
+      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,help:helpUsed,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0}}));
       if(_resumeBannerSig&&_resumeBannerSig===sig)resumeHideBanner();
     }else if(examState&&examState.ex&&document.getElementById("printPaperBtn")){
       var items=examState.ex.srItems.map(function(it){return it.q;}).concat(examState.ex.crItems.map(function(it){return it.q;}));
@@ -2176,7 +2212,7 @@ function resumeShowBanner(save,mode){
 }
 function resumeApplyOnline(save){
   var b=save.body||{};
-  checkedCount=b.checked||0;correctCount=b.correct||0;setResults=b.results||{};
+  checkedCount=b.checked||0;correctCount=b.correct||0;setResults=b.results||{};helpUsed=b.help||{};
   if(b.checkMode)checkMode=b.checkMode;
   endGraded=!!b.endGraded;
   if(b.nohint)NO_HINT=true;if(b.noex)NO_EX=true;
@@ -2255,7 +2291,7 @@ function tRebuildFromURL(){
     body.split(",").forEach(function(tok){if(tok){var q=tBuildTok(tok,avoid,salt);if(q)items.push(q);}});
     if(!items.length)return false;
     stopExamTimer();
-    current=items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};sessionSeed="";
+    current=items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};helpUsed={};sessionSeed="";
     lastSettings=s;onlineThin=false;T=null;
     if(TEACHER)T={view:"online",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:edited,state:{},endGraded:false,picker:null};
     if(!TEACHER&&SHUFFLE_OPTS)current=current.map(shufQ);
@@ -2355,7 +2391,7 @@ function tSyncOnline(){
   if(!T||T.view!=="online"||!current)return;
   var st={};
   current.forEach(function(q,i){
-    var o={done:false,ok:false,given:null,fb:"",sol:false,exOpen:false,exq:null,exn:0,selfRate:"",srShown:false};
+    var o={done:false,ok:false,help:null,given:null,fb:"",sol:false,exOpen:false,exq:null,exn:0,selfRate:"",srShown:false};
     if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel)o.given=+sel.value;}
     else{var inp=$("ans"+i);if(inp&&inp.value!=="")o.given=inp.value;}
     var fb=$("fb"+i);if(fb){o.done=!!fb.dataset.done;o.fb=fb.innerHTML;}
@@ -2363,19 +2399,21 @@ function tSyncOnline(){
     var exb=$("ex"+i);if(exb){o.exOpen=!exb.hidden;o.exq=exb._exq||null;o.exn=+(exb.dataset.exn||0);}
     var srb=$("sr"+i);if(srb){o.selfRate=srb.dataset.selfrate||"";o.srShown=!srb.hidden;}
     o.ok=!!(setResults[i]&&setResults[i].ok);
+    o.help=helpUsed[i]||null;
     st[q._tuid]=o;
   });
   T.state=st;T.endGraded=endGraded;
 }
 function tRestoreOnline(){
   if(!T||T.view!=="online"||!current)return;
-  checkedCount=0;correctCount=0;setResults={};
+  checkedCount=0;correctCount=0;setResults={};helpUsed={};
   current.forEach(function(q,i){
     var o=T.state&&T.state[q._tuid];if(!o)return;
     if(q.type==="mc"){if(o.given!==null){var r=document.querySelector('input[name="opt'+i+'"][value="'+o.given+'"]');if(r)r.checked=true;}}
     else if(o.given!==null){var inp=$("ans"+i);if(inp)inp.value=o.given;}
     if(o.done){var fb=$("fb"+i);if(fb){fb.classList.add("show");fb.dataset.done="1";fb.innerHTML=o.fb;}setResults[i]={ok:o.ok,inds:q._entry.indicators.slice()};checkedCount++;if(o.ok)correctCount++;}
     if(o.sol){var sl=$("sol"+i);if(sl)sl.classList.add("show");}
+    if(o.help)helpUsed[i]=o.help;
     if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");
     if(o.exOpen&&o.exq){var exb=$("ex"+i);if(exb){exb.dataset.exn=String(o.exn);renderExample(i,o.exq);setExLabel(i,true);}}
   });
@@ -2609,7 +2647,7 @@ function startOnline(){
   PKRETRY_GROUPS=null;
   var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
   PKONLY_DRAW=false;PKONLY_GROUPS=null;
-  current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};
+  current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};helpUsed={};
   lastSettings=s;onlineThin=res.thin;T=null;
   if(TEACHER&&current.length){
     T={view:"online",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,state:{},endGraded:false,picker:null};
