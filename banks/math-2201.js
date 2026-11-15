@@ -2843,7 +2843,12 @@ E("u3-context-area",3,["4.3"],2,"gen",function(){
      (a shared source: the same generator is also copied into Units 4 and 8
      under their own host ids, because equation solving underpins all three).
    - u3-pk-radical-mixed: copied from math-1201 u2-radical-mixed, indicator 1.16
-     (also copied into Unit 4 under its own host id).
+     (also copied into Unit 4 under its own host id). DEVIATION from the
+     source, this host copy only: the generator's radical index is fixed
+     at 2 (square roots only), because Unit 3 readiness needs square-root
+     simplification for the quadratic formula and quadratic roots, not
+     cube or fourth roots (Jason's ruling, November 15, 2026). The
+     math-1201 source and the Unit 4 host copy keep the full index range.
    The u3 and u2 helper families these entries call were copied into
    bank-helpers.js with the tranche. Indicator tags are support tags,
    not assessed targets: assessed targets are in pkSrc, the full
@@ -2915,7 +2920,7 @@ E("u3-pk-solve-two-step", 3, ["4.8"], 2, "gen", function () {
   return numq("Solve the equation \\(" + fmt(a3) + "x = " + u5lin(c3, b3) + "\\). What is the value of \\(x\\)?", x2, 0.01, sol3, { mode: "ax=cx+b", a: a3, b: b3, c: c3 });
 }, ["Undo the operations in reverse order: deal with the constant term before the term attached to x.", "First isolate the x term on one side, using the same operation on both sides."]);
 E("u3-pk-radical-mixed", 3, ["4.9"], 1, "gen",function(){
-  var idx=pick([2,2,3,3,4]),k,m,N,mlist;
+  var idx=2,k,m,N,mlist;
   if(idx===2){k=ri(2,15);mlist=[2,3,5,6,7,10,11,13,14,15,17,19,21,22,23,26,29,30,31,33,34,35,37,38,39];}
   else if(idx===3){k=ri(2,7);mlist=[2,3,4,5,6,7,9,10,11,12,13,14,15,17,18,19,20,21,22,23,25,26,28,29,30,31,33,34,35,36,37,38,39,41,42];}
   else{k=ri(2,4);mlist=[2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,22,24,25,26,27,28,29,30,31];}
@@ -2940,7 +2945,7 @@ var PKT_U3={
  "u3-pk-gcf":{src:"math-1201:3.10",group:"common-factor"},
  "u3-pk-binom-tri-expand":{src:"math-1201:3.4",group:"polynomial-multiply"},
  "u3-pk-solve-two-step":{src:"math-9:8.18",group:"linear-equations"},
- "u3-pk-radical-mixed":{src:"math-1201:1.16",group:"radicals"}};
+ "u3-pk-radical-mixed":{src:"math-1201:1.16, host copy index fixed at 2 (Jason ruling 2026-11-15)",group:"radicals"}};
 BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U3_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u4.js ----- */
