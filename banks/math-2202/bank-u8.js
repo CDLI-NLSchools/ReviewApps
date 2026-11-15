@@ -642,3 +642,147 @@ E("u8-cr-baseline-height", 8, ["2.4", "5.2", "2.3"], 3, "gen", function () {
 }, ["Both sightings form right triangles that share the unknown height.", "Express each ground distance using the height, and set their difference equal to the measured baseline."]);
 
 
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 1201 primary trigonometric ratio outcomes (indicators 7.1 to 7.4), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-2202.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u8-choose-ratio-equation","u8-cr-find-angle"].indexOf(e.id)>=0)e.pkFlag=true;});
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 15 support set (single triangle trigonometry). Borrowed verbatim from Mathematics 1202 (u7-choose-ratio, u7-sine-ratio-constant, u7-unknown-angle-mc, u7-cr-find-angle, u7-cr-hypotenuse-rearrange, u7-reasonable-or-not); feeder helper copies ride in bank-helpers.js. The cluster's state A core (u8-choose-ratio-equation, u8-cr-find-angle) sits in the unit's main block above, flagged on November 13, 2026; its metadata is completed by this tranche's pass below. ===== */
+E("u8-pk-choose-ratio", 8, ["5.1"], 1, "gen", function(){
+  var combos=[
+    {known:"opposite", wanted:"adjacent", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"adjacent", wanted:"opposite", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"opposite", wanted:"hypotenuse", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"hypotenuse", wanted:"opposite", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"adjacent", wanted:"hypotenuse", ratio:"cosine", def:"cosine: adjacent / hypotenuse"},
+    {known:"hypotenuse", wanted:"adjacent", ratio:"cosine", def:"cosine: adjacent / hypotenuse"} ];
+  var c=pick(combos), ang=u7Ang(), val=ri(4,30);
+  var ctx=pick(["a ladder against a wall","a roof section","a loading ramp","a guy wire on a pole","a wheelchair ramp","a stair stringer"]);
+  var prompt="A right triangle models "+ctx+". The marked angle is \\("+ang+"^\\circ\\). The "+c.known+" side is known (it measures "+val+" units) and the "+c.wanted+" side is wanted. Which ratio should be used?";
+  var defs={ tangent:"tangent: opposite / adjacent", sine:"sine: opposite / hypotenuse", cosine:"cosine: adjacent / hypotenuse" };
+  var names=["tangent","sine","cosine"];
+  var distract=names.filter(function(n){ return n!==c.ratio; }).map(function(n){ return {t:defs[n], fb:"The "+n+" ratio uses the "+(n==="tangent"?"opposite and adjacent":(n==="sine"?"opposite and hypotenuse":"adjacent and hypotenuse"))+" sides, which is not the known and wanted pair here."}; });
+  var recip={ tangent:"adjacent / opposite", sine:"hypotenuse / opposite", cosine:"hypotenuse / adjacent" };
+  distract.push({t:c.ratio+" flipped: "+recip[c.ratio], fb:"That is the "+c.ratio+" ratio with its two sides swapped. The ratio must pair the sides as "+defs[c.ratio].split(": ")[1]+"."});
+  var sol="The known side is the "+c.known+" and the wanted side is the "+c.wanted+". The ratio that uses exactly those two sides is the <b>"+c.ratio+" ratio</b>: "+defs[c.ratio]+".";
+  var q=mcq(prompt, {t:defs[c.ratio], fb:"Correct: the "+c.ratio+" ratio is the one built from the "+c.known+" and "+c.wanted+" sides."}, distract, sol, {ratio:c.ratio, ang:ang});
+  var lab={ opposite:"opp", adjacent:"adj", hypotenuse:"hyp" };
+  var oL=c.known==="opposite"?val:(c.wanted==="opposite"?"?":"opp"), aL=c.known==="adjacent"?val:(c.wanted==="adjacent"?"?":"adj"), hL=c.known==="hypotenuse"?val:(c.wanted==="hypotenuse"?"?":"hyp");
+  q.figure=u7FigTri(oL, aL, hL, ang+" deg");
+  return q;
+}, ["Name the known and wanted sides relative to the marked angle first.", "Pick the ratio whose definition uses exactly those two sides."]);
+
+E("u8-pk-sine-ratio-constant", 8, ["5.1"], 1, "gen", function(){
+  var tr=u7Triple(), o=tr[0], a=tr[1], h=tr[2], k=pick([2,3]), o2=o*k, h2=h*k, r=o/h;
+  var prompt="Two right triangles share the acute angle A. The smaller triangle has opposite side "+o+" cm and hypotenuse "+h+" cm. The larger triangle has opposite side "+o2+" cm and hypotenuse "+h2+" cm. What is the ratio opposite / hypotenuse for angle A?";
+  var sol="Smaller triangle: \\("+o+" \\div "+h+" = "+fmtF(r,2)+ "\\). Larger triangle: \\("+o2+" \\div "+h2+" = "+fmtF(r,2)+ "\\). The ratio is the same in both triangles, and this ratio is the sine ratio: \\(\\sin A = "+FR("opposite","hypotenuse")+"\\). The answer is <b>"+fmtF(r,2)+"</b>.";
+  var q=mcq(prompt, {t:fmtF(r,2), fb:"Correct: "+o+" / "+h+" and "+o2+" / "+h2+" both give this value."},
+    [ {t:fmtF(h/o,2), fb:"That is hypotenuse / opposite, the ratio turned upside down. A sine value cannot be greater than 1."},
+      {t:fmtF(a/h,2), fb:"That is adjacent / hypotenuse, which is the cosine ratio, not opposite / hypotenuse."},
+      {t:fmtF(o/a,2), fb:"That is opposite / adjacent, which is the tangent ratio, not opposite / hypotenuse."} ], sol, {o:o,h:h,k:k});
+  q.figure=u7FigTriPair({o:o,a:a,oL:o+" cm",aL:"",hL:h+" cm",angL:"A"},{o:o2,a:a*k,oL:o2+" cm",aL:"",hL:h2+" cm",angL:"A"});
+  return q;
+}, ["The sine ratio compares the opposite side to the hypotenuse for the marked angle.", "Work out opposite divided by hypotenuse for the smaller triangle first."]);
+
+E("u8-pk-unknown-angle", 8, ["5.2"], 2, "gen", function(){
+  var mode=ri(0,2), angDeg, knownTxt, ratioName, oL, aL, hL, tries=0;
+  var o=ri(3,20), a=ri(3,20);
+  while((o===a || Math.abs(Math.atan2(o,a)*180/Math.PI-45)<3) && tries<30){ o=ri(3,20); a=ri(3,20); tries++; }
+  if(mode===0){ angDeg=Math.atan2(o,a)*180/Math.PI; ratioName="tangent"; knownTxt="the side opposite the angle is "+o+" m and the side adjacent is "+a+" m"; oL=o+" m"; aL=a+" m"; hL="hyp"; }
+  else if(mode===1){ var h=o+ri(2,15); angDeg=Math.asin(o/h)*180/Math.PI; ratioName="sine"; knownTxt="the side opposite the angle is "+o+" m and the hypotenuse is "+h+" m"; oL=o+" m"; aL="adj"; hL=h+" m"; }
+  else { var h2=a+ri(2,15); angDeg=Math.acos(a/h2)*180/Math.PI; ratioName="cosine"; knownTxt="the side adjacent to the angle is "+a+" m and the hypotenuse is "+h2+" m"; oL="opp"; aL=a+" m"; hL=h2+" m"; }
+  var correct=Math.round(angDeg);
+  var d1=correct+10; if(d1>89) d1=correct-20;
+  var d2=correct-10; if(d2<1) d2=correct+20; if(d2===d1) d2=correct+15;
+  var comp=90-correct; if(comp===d1||comp===d2||comp===correct) comp=correct+5;
+  var prompt="In a right triangle, "+knownTxt+". What is the measure of the angle, to the nearest degree?";
+  var sol="Use the inverse of the "+ratioName+" ratio on a calculator: the ratio value gives an angle of about \\("+fmtF(angDeg,1)+"^\\circ\\), which rounds to <b>"+correct+" degrees</b>.";
+  var q=mcq(prompt, {t:correct+"°", fb:"Correct: the inverse "+ratioName+" of the side ratio gives about "+fmtF(angDeg,1)+" degrees."},
+    [ {t:d1+"°", fb:"That is 10 degrees too large: recheck the ratio before using the inverse key."},
+      {t:d2+"°", fb:"That is off the computed value of about "+fmtF(angDeg,1)+" degrees: recheck which sides form the ratio."},
+      {t:comp+"°", fb:"That is the other acute angle of the triangle (90 minus the answer), not the angle at the marked vertex."} ], sol, {mode:mode, correct:correct});
+  q.figure=u7FigTri(oL, aL, hL, "?");
+  return q;
+}, ["An unknown angle calls for the inverse of the ratio formed by the two known sides.", "Form the ratio from the known sides first, then apply the matching inverse ratio."]);
+
+E("u8-pk-find-angle-num", 8, ["5.2"], 2, "gen", function(){
+  var ctxs=[ {n:"a wheelchair ramp", s:"rise"}, {n:"a loading ramp", s:"rise"}, {n:"a roof section", s:"rise"} ];
+  var c=pick(ctxs), rise=ri(1,6), run=ri(4,12), ang=Math.atan2(rise,run)*180/Math.PI, ans=Math.round(ang);
+  var prompt="A "+c.n.split(" ").slice(1).join(" ")+" has a "+c.s+" of "+rise+" m over a horizontal run of "+run+" m. Find the angle the surface makes with the ground, to the nearest degree. Show your work.";
+  var sol="The rise is opposite the angle and the run is adjacent, so use the inverse tangent: \\[ \\begin{aligned} \\tan A &= "+FR(rise, run) +" \\\\ A &= \\tan^{-1}\\left("+fmtF(rise/run,3)+"\\right) \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The angle is <b>"+ans+" degrees</b>.";
+  var q=numq(prompt, ans, 0.6, sol, {rise:rise, run:run}); q.figure=u7FigTri(rise+" m", run+" m", "ramp", "?"); return q;
+}, ["Rise and run are the two legs, so the tangent ratio connects them to the angle.", "Divide the rise by the run, then use the inverse tangent."]);
+
+E("u8-pk-hypotenuse-rearrange", 8, ["5.2"], 2, "gen", function(){
+  var ang=u7Ang(), opp=ri(4,20), hyp=opp/Math.sin(u7Rad(ang));
+  var prompt="A ladder leans against a wall. The ladder makes an angle of \\("+ang+"^\\circ\\) with the ground and reaches "+opp+" m up the wall. Find the length of the ladder, to the nearest tenth of a metre. Show your work.";
+  var sol="The height up the wall is opposite the angle and the ladder is the hypotenuse, so start with sine and rearrange to make the hypotenuse the subject: \\[ \\begin{aligned} \\sin("+ang+"^\\circ) &= "+FR(opp, "ladder") +" \\\\ \\text{ladder} &= "+opp+" \\div \\sin("+ang+"^\\circ) \\\\ &= "+fmtF(hyp,1)+" \\end{aligned} \\] The ladder is <b>"+fmtF(hyp,1)+" m</b> long, which is longer than the height it reaches, as it should be.";
+  var q=numq(prompt, Math.round(hyp*10)/10, 0.15, sol, {ang:ang, opp:opp}); q.figure=u7FigTri(opp+" m", "", "?", ang+"\u00B0"); return q;
+}, ["Sine links the opposite side to the hypotenuse.", "Write sin(angle) = opposite / hypotenuse, then rearrange so the ladder length is on its own."]);
+
+E("u8-pk-reasonable", 8, ["5.4"], 2, "gen", function(){
+  var mode=ri(0,3), prompt, correct, distract, sol;
+  if(mode===0){
+    var H=ri(12,30), claim=H+ri(2,10);
+    prompt="A student solves a right triangle problem and reports that one leg is "+claim+" m while the hypotenuse is "+H+" m. Is the solution reasonable?";
+    correct={t:"No. A leg of a right triangle can never be longer than the hypotenuse.", fb:"Correct: the hypotenuse is the longest side of a right triangle."};
+    distract=[ {t:"Yes. A leg can be any length as long as the angle is acute.", fb:"No side can pass the hypotenuse: it is opposite the right angle and is always the longest side."},
+      {t:"Yes. The leg and the hypotenuse are usually about the same size.", fb:"They can be close, but a leg of "+claim+" m against a hypotenuse of "+H+" m is impossible, not just unusual."},
+      {t:"No. A leg should always be exactly half the hypotenuse in any right triangle.", fb:"The verdict is right but the reason is wrong: a leg can be more than half the hypotenuse, just never longer than it."} ];
+    sol="The hypotenuse is the side opposite the \\(90^\\circ\\) angle and is the longest side of a right triangle. A leg of "+claim+" m cannot exceed a hypotenuse of "+H+" m, so the solution is <b>not reasonable</b>.";
+  } else if(mode===1){
+    var ang=ri(95,130);
+    prompt="In a right triangle, a student reports that one of the acute angles measures \\("+ang+"^\\circ\\). Is the solution reasonable?";
+    correct={t:"No. An acute angle must be less than 90 degrees.", fb:"Correct: with one angle already 90 degrees, each of the others must be under 90 degrees."};
+    distract=[ {t:"Yes. Angles in a triangle can be up to 180 degrees each.", fb:"The three angles sum to 180 degrees in total: one angle of "+ang+" degrees plus the right angle already passes that."},
+      {t:"Yes. It is reasonable if the triangle is very large.", fb:"Size does not change angle rules: the angles of any triangle sum to 180 degrees."},
+      {t:"No. Acute angles must be less than 45 degrees.", fb:"The verdict is right but the limit is wrong: acute means less than 90 degrees, not less than 45."} ];
+    sol="The angles of a triangle sum to \\(180^\\circ\\). The right angle takes \\(90^\\circ\\), leaving less than \\(90^\\circ\\) for each acute angle. A value of \\("+ang+"^\\circ\\) is <b>not reasonable</b> for an acute angle.";
+  } else if(mode===2){
+    var sv=fmtF(ri(11,19)/10,1);
+    prompt="A student calculates \\(\\sin A = "+sv+"\\) for an acute angle A in a right triangle. Is the solution reasonable?";
+    correct={t:"No. Sine is opposite / hypotenuse, and the opposite side cannot exceed the hypotenuse, so sine is at most 1.", fb:"Correct: a part divided by the whole hypotenuse can never pass 1."};
+    distract=[ {t:"Yes. Sine values can be any positive number, as large as the angle in the triangle needs them to be, and beyond.", fb:"Sine is a ratio of a leg to the hypotenuse, so it is capped at 1."},
+      {t:"Yes. It is reasonable because the angle might be large enough to give a sine value over 1 easily.", fb:"Even at angles close to 90 degrees, sine stays at or below 1."},
+      {t:"No. A sine value must always come out less than 0.5, whatever the size of the angle is here.", fb:"The verdict is right but the cap is wrong: sine can be up to 1, for example about 0.87 at 60 degrees."} ];
+    sol="\\(\\sin A = "+FR("opposite","hypotenuse")+"\\). The opposite side is a leg, and a leg cannot be longer than the hypotenuse, so the ratio is at most \\(1\\). A sine of "+sv+" is <b>not reasonable</b>.";
+  } else {
+    var H2=ri(15,40), leg=ri(4,H2-3);
+    prompt="A student solves a right triangle problem and reports a leg of "+leg+" m with a hypotenuse of "+H2+" m, found using the sine ratio. Is the solution reasonable?";
+    correct={t:"Yes. The leg is shorter than the hypotenuse, as it must be.", fb:"Correct: "+leg+" m is less than "+H2+" m, so the size check passes."};
+    distract=[ {t:"No. A leg must be less than half the hypotenuse.", fb:"There is no such rule: a leg can be close to the hypotenuse when the opposite angle is near 90 degrees."},
+      {t:"No. Legs found with sine are always longer than the hypotenuse.", fb:"That reverses the rule: sine results are legs, and legs are always shorter than the hypotenuse."},
+      {t:"Yes. Any answer from a calculator is automatically reasonable.", fb:"Calculator output still needs a check: a wrong ratio can give an impossible answer."} ];
+    sol="The check is the size comparison: a leg must be shorter than the hypotenuse. Here \\("+leg+" < "+H2+"\\), so the solution passes the check and is <b>reasonable</b>.";
+  }
+  return mcq(prompt, correct, distract, sol, {mode:mode});
+}, ["Run a size check: compare legs with the hypotenuse and angles with 90 degrees.", "Ask whether each reported value could exist in a real right triangle."]);
+
+/* PK tranche metadata pass for Unit 8. The tranche's own entries are flagged here. This pass also completes the tranche metadata of the two entries flagged on November 13, 2026 (u8-choose-ratio-equation, u8-cr-find-angle) without retagging or reflagging them. */
+var PKT_U8_FOR=["5.1","5.2","5.3","5.4"];
+var PKT_U8={
+ "u8-choose-ratio-equation":{src:"math-1201:7.2",group:"trig-ratios"},
+ "u8-cr-find-angle":{src:"math-1201:7.3",group:"find-angle"},
+ "u8-pk-choose-ratio":{src:"math-1202:5.5",group:"trig-ratios"},
+ "u8-pk-sine-ratio-constant":{src:"math-1202:5.2",group:"trig-ratios"},
+ "u8-pk-unknown-angle":{src:"math-1202:5.5",group:"find-angle"},
+ "u8-pk-find-angle-num":{src:"math-1202:5.5",group:"find-angle"},
+ "u8-pk-hypotenuse-rearrange":{src:"math-1202:5.5",group:"find-side"},
+ "u8-pk-reasonable":{src:"math-1202:5.6",group:"reasonable-result"}
+};
+BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U8_FOR.slice();e.pkGroup=t.group;}});
+
+/* ===== Distinctness guard for u8-pk-unknown-angle (borrowed from Mathematics 1202's u7-unknown-angle-mc, whose bank wraps the generator in the identical guard; placed after the entry so the pass runs on the registered entry). ===== */
+(function(){var e=BANK.filter(function(x){return x.id==="u8-pk-unknown-angle";})[0];if(!e)return;var inner=e.gen;e.gen=function(){var q=inner(),tries=0;while(q&&q.options&&new Set(q.options.map(function(o){return String(o).trim();})).size<4&&tries<60){q=inner();tries++;}return q;};})();
+
+/* ===== Distinctness guard for u8-pk-sine-ratio-constant (borrowed from Mathematics 1202's u7-sine-ratio-constant, one of the nine entries that bank's guard wraps; placed after the entry so the pass runs on the registered entry). ===== */
+(function(){var e=BANK.filter(function(x){return x.id==="u8-pk-sine-ratio-constant";})[0];if(!e)return;var inner=e.gen;e.gen=function(){var q=inner(),tries=0;while(q&&q.options&&new Set(q.options.map(function(o){return String(o).trim();})).size<4&&tries<60){q=inner();tries++;}return q;};})();

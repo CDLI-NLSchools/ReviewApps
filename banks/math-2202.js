@@ -76,6 +76,532 @@ function balOpts(key, ds){
   return [withT(key, out[0]), ds.map(function(d,i){ return withT(d, out[i+1]); })];
 }
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): feeder helper copies for the
+   borrowed entries. u8RandHM from Mathematics 8 (the views height maps);
+   u4graphData from Mathematics 7 (the graph reading entries); u7Triple,
+   u7Ang, u6Scaled and u6Triples from Mathematics 1202 (the trigonometry
+   support set and the find a leg entry). Each name is unused elsewhere in
+   this bank, so the copies ride under their feeder names. ===== */
+function u8RandHM(rows, cols, maxH, minTot, maxTot) {
+  for (var att = 0; att < 300; att++) {
+    var hm = [], r, c, tot = 0, nz = 0;
+    for (r = 0; r < rows; r++) { var row = []; for (c = 0; c < cols; c++) { var v = ri(0, maxH); row.push(v); tot += v; if (v > 0) nz++; } hm.push(row); }
+    if (tot < minTot || tot > maxTot || nz < 3) continue;
+    var heights = {}; hm.forEach(function (rw) { rw.forEach(function (v) { heights[v] = 1; }); });
+    if (Object.keys(heights).length < 3) continue;
+    return hm;
+  }
+  return [[2, 0, 1], [1, 3, 1]];
+}
+
+function u4graphData(){
+  var topics=[
+    {t:"favourite lunch", cats:["Pizza","Salad","Soup","Sandwich"]},
+    {t:"favourite sport", cats:["Soccer","Hockey","Dance","Swimming"]},
+    {t:"way of getting to school", cats:["Bus","Walk","Car","Bike"]},
+    {t:"weekend activity", cats:["Gaming","Reading","Sports","Music"]}
+  ];
+  var tp=pick(topics), guard=0, ps=null;
+  while(guard++<300){
+    var a=ri(30,45), b=ri(20,32), c=ri(12,22), d=100-a-b-c;
+    if(d<6||d>25)continue;
+    var arr=[a,b,c,d], ok=true;
+    for(var i=0;i<4;i++)for(var j=i+1;j<4;j++)if(arr[i]===arr[j])ok=false;
+    if(ok){ps=arr;break;}
+  }
+  if(!ps)ps=[40,28,20,12];
+  var cats=tp.cats.map(function(name,i){return {name:name, pct:ps[i]};});
+  return {topic:tp.t, cats:cats};
+}
+
+function u7Triple(){ var m=ri(2,6); var n=ri(1,m-1); var a=m*m-n*n; var b=2*m*n; var c=m*m+n*n; if(Math.random()<0.5){ var t=a; a=b; b=t; } return [a,b,c]; }
+
+function u7Ang(){ return pick([26,28,30,32,35,38,40,42,48,50,55,58,60,62,65]); }
+
+function u6Scaled(){ var t=pick(u6Triples()), k=ri(1,3); return [t[0]*k, t[1]*k, t[2]*k, k]; }
+
+function u6Triples(){ return [[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[7,24,25],[12,16,20],[9,40,41],[20,21,29],[12,35,37],[15,20,25],[10,24,26],[18,24,30],[16,30,34]]; }
+
+/* PK tranche helper transport, round 1 (Nov 15, 2026). */
+/* u8RotHM from math-8 */
+function u8RotHM(hm, turns) { // turns of 90 degrees clockwise, seen from above (back stays at top)
+  var cur = hm, t, r, c;
+  for (t = 0; t < turns; t++) {
+    var nr = cur[0].length, nc = cur.length, nxt = [];
+    for (r = 0; r < nr; r++) { var row = []; for (c = 0; c < nc; c++) row.push(cur[nc - 1 - c][r]); nxt.push(row); }
+    cur = nxt;
+  }
+  return cur;
+}
+
+/* u7Poly from math-9 */
+function u7Poly(pts, fill, dash) {
+  return '<polygon points="' + u7Pts(pts) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="2"' + (dash ? ' stroke-dasharray="6 4"' : "") + '/>';
+}
+
+/* u3UniqText from math-1202 */
+function u3UniqText(arr){ var s={}, i; for(i=0;i<arr.length;i++){ if(s[arr[i]]) return false; s[arr[i]]=1; } return true; }
+
+/* u2Dist from math-1202 */
+function u2Dist(correct, wrongs, unit, fbC, fbW){
+  /* Rule 9 (Nov 8, 2026): the unit lives in the prompt at every call site, so
+     options carry bare values; balDpStrs then pairs their precision (Rule 7).
+     The unit parameter is retained for call-site compatibility. */
+  var seen={}; seen[correct]=1; var out=[];
+  for(var i=0;i<wrongs.length && out.length<3;i++){ var w=wrongs[i]; if(w>0 && !seen[w]){ seen[w]=1; out.push({t:fmt(w), fb:fbW(out.length)}); } }
+  var k=2; while(out.length<3){ var cand=correct*k+1; if(!seen[cand]){ seen[cand]=1; out.push({t:fmt(cand), fb:"Check the conversion factor and the direction of the conversion."}); } k++; }
+  var strs=balDpStrs([fmt(correct)].concat(out.map(function(o){ return o.t; })));
+  return {c:{t:strs[0], fb:fbC}, d:out.map(function(o,i){ var n={}; for(var key in o) n[key]=o[key]; n.t=strs[i+1]; return n; })};
+}
+
+/* m8PrismBaseSVG from math-8 */
+function m8PrismBaseSVG(kind,labBase,labH){
+  if(kind==="cyl"){return m8CylBaseSVG(labBase,labH);}
+  if(kind==="rect"){
+    var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right prism with the area of its base marked">';
+    s+='<polygon points="70,75 120,37 230,37 180,75" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<polygon points="180,75 230,37 230,117 180,155" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<rect x="70" y="75" width="110" height="80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    s+='<line x1="120" y1="37" x2="120" y2="117" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    if(labBase){s+=_txt(150,56,labBase,11,true);}
+    if(labH){s+=_txt(56,115,labH,13,false);}
+    return s+'</svg>';
+  }
+  if(kind==="tri"){
+    var t='<svg viewBox="0 0 310 190" width="310" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right triangular prism with the area of its base marked">';
+    t+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    t+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    t+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+    if(labBase){t+=_txt(182,94,labBase,11,true);}
+    if(labH){t+=_txt(198,32,labH,13,false);}
+    return t+'</svg>';
+  }
+  var g='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a right prism with the area of its base marked">';
+  g+='<polygon points="115,72 195,57 210,137 130,157" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<polygon points="70,44 150,29 165,109 85,129" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="115" y1="72" x2="70" y2="44" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="195" y1="57" x2="150" y2="29" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  g+='<line x1="210" y1="137" x2="165" y2="109" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(labBase){g+=_txt(163,108,labBase,11,true);}
+  if(labH){g+=_txt(84,44,labH,13,false);}
+  return g+'</svg>';
+}
+
+/* u4r1 from math-8 */
+function u4r1(x){return Math.round(x*10)/10;}
+
+/* u6TriSVG from math-1202 */
+function u6TriSVG(aVal,bVal,aLab,bLab,cLab){
+  var s=Math.min(185/Math.max(aVal,1),118/Math.max(bVal,1));
+  var ox=78, oy=178, x2=ox+aVal*s, y2=oy-bVal*s;
+  var mx=(ox+x2)/2, my=(oy+y2)/2;
+  var out='<svg viewBox="0 0 320 210" width="320" height="210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Right triangle diagram">';
+  out+='<polygon points="'+fmt(ox,1)+','+oy+' '+fmt(x2,1)+','+oy+' '+ox+','+fmt(y2,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<path d="M '+(ox+15)+' '+oy+' L '+(ox+15)+' '+(oy-15)+' L '+ox+' '+(oy-15)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+=_txt(mx,oy+18,aLab,12.5,false);
+  out+=_txt(ox-24,(oy+y2)/2,bLab,12.5,false);
+  out+=_txt(mx+22,my-8,cLab,12.5,false);
+  return out+'</svg>';
+}
+
+/* u7numOpts from math-7 */
+function u7numOpts(correct,cands){var out=[],seen={};seen[String(correct)]=1;for(var i=0;i<cands.length;i++){var v=cands[i];if(v===null||v===undefined)continue;var k=String(v);if(!seen[k]){seen[k]=1;out.push(v);if(out.length===3)break;}}var step=1;while(out.length<3){var v=correct+step;if(!seen[String(v)]){seen[String(v)]=1;out.push(v);}step++;}return out;}
+
+/* u4R from math-1202 */
+function u4R(n){return Math.round(n*100)/100;}
+
+/* u4M from math-1202 */
+function u4M(n){var s=fmtF(u4R(n),2);var p=s.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return "$"+p.join(".");}
+
+/* u3PowDist from math-9 */
+function u3PowDist(a, correctExp, pairs) {
+  var out = [], seen = {};
+  seen[String(correctExp)] = 1;
+  for (var i = 0; i < pairs.length && out.length < 3; i++) {
+    var e = pairs[i].v;
+    if (!seen[String(e)]) { seen[String(e)] = 1; out.push({ t: "\\(" + a + "^{" + e + "}\\)", fb: pairs[i].fb }); }
+  }
+  return out;
+}
+
+/* u1R2 from math-1202 */
+function u1R2(x){ return Math.round(x*100)/100; }
+
+/* u5pick3 from math-9 */
+function u5pick3(c, cands) { var out = [], seen = [c]; for (var i = 0; i < cands.length && out.length < 3; i++) { if (seen.indexOf(cands[i].t) < 0) { seen.push(cands[i].t); out.push(cands[i]); } } return out; }
+
+/* u5r2 from math-8 */
+function u5r2(x) { return Math.round(x * 100) / 100; }
+
+/* u7Rad from math-1202 */
+function u7Rad(d){ return d*Math.PI/180; }
+
+/* PK tranche helper transport, round 2 (Nov 15, 2026). */
+/* u8FrontProf from math-8 */
+function u8FrontProf(hm) {
+  var out = [], c, r;
+  for (c = 0; c < hm[0].length; c++) { var m = 0; for (r = 0; r < hm.length; r++) m = Math.max(m, hm[r][c]); out.push(m); }
+  return out;
+}
+
+/* u8SideProf from math-8 */
+function u8SideProf(hm) { // right side view, left to right in the drawing = front row to back row
+  var out = [], r, c;
+  for (r = hm.length - 1; r >= 0; r--) { var m = 0; for (c = 0; c < hm[r].length; c++) m = Math.max(m, hm[r][c]); out.push(m); }
+  return out;
+}
+
+/* solBarsFig from math-9 */
+function solBarsFig(rows, aria) {
+  var maxL = 0;
+  rows.forEach(function (r) { maxL = Math.max(maxL, r.len); });
+  var sc = 195 / Math.max(maxL, 0.01), out = "", y = 34;
+  rows.forEach(function (r) {
+    if (r.name) out += '<text x="86" y="' + fmt(y + 8, 1) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="end" dominant-baseline="central" font-weight="bold">' + r.name + '</text>';
+    out += '<rect x="92" y="' + fmt(y, 1) + '" width="' + fmt(Math.max(r.len * sc, 2), 1) + '" height="15" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+    out += solT(92 + r.len * sc + 16, y + 8, r.lab, 12, false);
+    y += 42;
+  });
+  return solSvg(340, Math.max(y + 6, 80), out, aria);
+}
+
+/* u3CylFig from math-1202 */
+function u3CylFig(r,h,unit){
+  var s='<svg viewBox="0 0 220 190" width="220" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Right cylinder">';
+  s+='<ellipse cx="110" cy="42" rx="58" ry="16" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="52" y1="42" x2="52" y2="142" stroke="'+FIG_INK+'" stroke-width="2"/><line x1="168" y1="42" x2="168" y2="142" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<ellipse cx="110" cy="142" rx="58" ry="16" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="110" y1="42" x2="168" y2="42" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<text x="140" y="32" font-size="13" fill="'+FIG_INK+'" text-anchor="middle">r = '+r+' '+unit+'</text>';
+  s+='<text x="182" y="95" font-size="13" fill="'+FIG_INK+'" text-anchor="start">h = '+h+' '+unit+'</text>';
+  return s+'</svg>';
+}
+
+/* u4triSVG from math-8 */
+function u4triSVG(a,b,c,L){
+  var s='<svg viewBox="0 0 310 190" xmlns="http://www.w3.org/2000/svg">';
+  s+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+=_txt(105,166,b+" cm",13,false);
+  s+=_txt(44,110,a+" cm",13,false);
+  s+=_txt(96,84,c+" cm",13,false);
+  s+=_txt(198,32,L+" cm",13,false);
+  return s+"</svg>";
+}
+
+/* u4cylSVG from math-8 */
+function u4cylSVG(r,h,useD){
+  var s='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">';
+  s+='<ellipse cx="150" cy="52" rx="56" ry="16" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 94 52 L 94 148 A 56 16 0 0 0 206 148 L 206 52" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(useD){
+    s+='<line x1="94" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    s+=_txt(150,30,(2*r)+" cm",13,false);
+  } else {
+    s+='<line x1="150" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    s+=_txt(178,40,r+" cm",13,false);
+  }
+  s+=_txt(224,104,h+" cm",13,false);
+  return s+"</svg>";
+}
+
+/* m12CircleSVG from math-1202 */
+function m12CircleSVG(rLab){
+  var s='<svg viewBox="0 0 310 210" width="310" height="210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circle with labelled radius">';
+  s+='<circle cx="155" cy="105" r="72" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="155" y1="105" x2="227" y2="105" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<circle cx="155" cy="105" r="3" fill="'+FIG_INK+'"/>';
+  s+=_txt(191,90,rLab,12.5,false);
+  return s+'</svg>';
+}
+
+/* u6pick3 from math-9 */
+function u6pick3(corr, cands) {
+  var out = [], seen = {}; seen[corr] = 1;
+  var sh = shuffle(cands);
+  for (var i = 0; i < sh.length && out.length < 3; i++) {
+    if (!seen[sh[i].t]) { seen[sh[i].t] = 1; out.push(sh[i]); }
+  }
+  return out.length === 3 ? out : null;
+}
+
+/* u6graph from math-9 */
+function u6graph(o) {
+  var W = 360, H = 302, x0 = 56, y0 = 256, x1 = 338, y1 = 28;
+  var sx = (x1 - x0) / o.xmax, sy = (y0 - y1) / o.ymax;
+  function X(v) { return fmt(x0 + v * sx, 1); }
+  function Y(v) { return fmt(y0 - v * sy, 1); }
+  var xs = o.xstep || (o.xmax <= 10 ? 1 : 2);
+  var ys = o.ystep || (o.ymax <= 12 ? 1 : (o.ymax <= 26 ? 2 : 5));
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Graph of a linear relation">';
+  var g;
+  for (g = xs; g < o.xmax; g += xs) s += '<line x1="' + X(g) + '" y1="' + y1 + '" x2="' + X(g) + '" y2="' + y0 + '" stroke="#dce8df" stroke-width="1"/>';
+  for (g = ys; g < o.ymax; g += ys) s += '<line x1="' + x0 + '" y1="' + Y(g) + '" x2="' + x1 + '" y2="' + Y(g) + '" stroke="#dce8df" stroke-width="1"/>';
+  (o.lines || []).forEach(function (L) {
+    var pts = L.pts.map(function (p) { return X(p[0]) + "," + Y(p[1]); }).join(" ");
+    s += '<polyline points="' + pts + '" fill="none" stroke="' + (L.col || FIG_INK) + '" stroke-width="' + (L.w || 2.5) + '"' + (L.dash ? ' stroke-dasharray="7 5"' : "") + '/>';
+    if (L.lab) { var lp = L.pts[L.pts.length - 1]; s += '<text x="' + fmt(x0 + lp[0] * sx - 4, 1) + '" y="' + fmt(y0 - lp[1] * sy - 10, 1) + '" font-size="12" font-weight="bold" fill="' + (L.col || FIG_INK) + '" text-anchor="end">' + L.lab + '</text>'; }
+  });
+  (o.points || []).forEach(function (P) {
+    s += '<circle cx="' + X(P.x) + '" cy="' + Y(P.y) + '" r="3.5" fill="' + (P.col || FIG_ACC) + '"/>';
+    if (P.lab) s += '<text x="' + fmt(x0 + P.x * sx + 8, 1) + '" y="' + fmt(y0 - P.y * sy - 8, 1) + '" font-size="12" fill="' + FIG_INK + '">' + P.lab + '</text>';
+  });
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x1 + '" y2="' + y0 + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<polygon points="' + x1 + ',' + y0 + ' ' + (x1 - 9) + ',' + (y0 - 4) + ' ' + (x1 - 9) + ',' + (y0 + 4) + '" fill="' + FIG_INK + '"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + y1 + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<polygon points="' + x0 + ',' + y1 + ' ' + (x0 - 4) + ',' + (y1 + 9) + ' ' + (x0 + 4) + ',' + (y1 + 9) + '" fill="' + FIG_INK + '"/>';
+  for (g = 0; g <= o.xmax; g += xs) s += '<line x1="' + X(g) + '" y1="' + y0 + '" x2="' + X(g) + '" y2="' + (y0 + 5) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + X(g) + '" y="' + (y0 + 20) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">' + g + '</text>';
+  for (g = ys; g <= o.ymax; g += ys) s += '<line x1="' + (x0 - 5) + '" y1="' + Y(g) + '" x2="' + x0 + '" y2="' + Y(g) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + (x0 - 10) + '" y="' + Y(g) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="end" dominant-baseline="central">' + g + '</text>';
+  s += '<text x="' + x1 + '" y="' + (y0 + 38) + '" font-size="13" font-style="italic" fill="' + FIG_INK + '" text-anchor="end">' + (o.xlab || "x") + '</text>';
+  s += '<text x="' + fmt(x0 - 4, 1) + '" y="' + (y1 - 10) + '" font-size="13" font-style="italic" fill="' + FIG_INK + '" text-anchor="middle">' + (o.ylab || "y") + '</text>';
+  return s + '</svg>';
+}
+
+/* u4Dist from math-1202 */
+function u4Dist(c,ds,ff,step){var seen={};seen[ff(c)]=1;return ds.map(function(d){var v=d.v,g=0;while(seen[ff(v)]&&g<80){v=u4R(v+step);g++;}seen[ff(v)]=1;return {t:ff(v),fb:d.fb};});}
+
+/* u1Pick3 from math-1202 */
+function u1Pick3(ans, cands, step){
+  /* cands: array of {v, fb}. Returns up to 3 distractor objects whose fmtF(v,2) differ from ans and each other. */
+  var used={}; used[fmtF(ans,2)]=1; var out=[];
+  for(var i=0;i<cands.length&&out.length<3;i++){
+    var v=u1R2(cands[i].v); var g=0;
+    while((used[fmtF(v,2)]||v<=0)&&g++<80){ v=u1R2(v+step); }
+    if(v>0&&!used[fmtF(v,2)]){ used[fmtF(v,2)]=1; out.push({v:v, fb:cands[i].fb}); }
+  }
+  var k=1;
+  while(out.length<3){ var w=u1R2(ans+k*(step*7+0.31)); if(w>0&&!used[fmtF(w,2)]){ used[fmtF(w,2)]=1; out.push({v:w, fb:"Check the calculation: that value does not follow from the given numbers."}); } k++; }
+  return out;
+}
+
+/* u1Dol from math-1202 */
+function u1Dol(x){ var s=fmtF(Math.abs(x),2); var p=s.split("."); var ip=p[0]; var out=""; while(ip.length>3){ out=","+ip.slice(-3)+out; ip=ip.slice(0,-3); } return (x<0?"-$":"$")+ip+out+"."+p[1]; }
+
+/* u7FigTri from math-1202 */
+function u7FigTri(oL,aL,hL,angL){
+  var s='<svg viewBox="0 0 280 200" width="280" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Right triangle diagram">';
+  s+='<polygon points="55,50 55,165 245,165" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 67 165 L 67 153 L 55 153" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<path d="M 219 165 A 26 26 0 0 1 228 154" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+=u7Txt(24,108,oL,13); s+=u7Txt(150,185,aL,13); s+=u7Txt(163,92,hL,13); s+=u7Txt(200,150,angL,13);
+  return s+'</svg>';
+}
+
+/* PK tranche helper transport, round 3 (Nov 15, 2026). */
+/* u8ProfStr from math-8 */
+function u8ProfStr(p) { return p.map(function (v) { return fmt(v); }).join(", "); }
+
+/* u8SumArr from math-8 */
+function u8SumArr(a) { var s = 0; a.forEach(function (v) { s += v; }); return s; }
+
+/* u4Hrs from math-1202 */
+function u4Hrs(v){return fmt(v)+" hours";}
+
+/* PK tranche helper transport, round 4 (Nov 15, 2026). */
+/* u8T from math-8 */
+function u8T(x, y, str, size, bold, anchor) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 12) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+
+/* u2RectFig from math-1202 */
+function u2RectFig(L,Wd){
+  var s='<svg viewBox="0 0 260 170" width="260" height="170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle with labelled length and width">';
+  s+='<rect x="45" y="35" width="170" height="95" fill="'+FIG_SHADE+'" fill-opacity="0.4" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<text x="130" y="22" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">'+fmt(L)+' m</text>';
+  s+='<text x="232" y="86" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">'+fmt(Wd)+' m</text></svg>';
+  return s;
+}
+
+/* u4pieFig from math-7 */
+function u4pieFig(cats, angleLabels){
+  var cx=92, cy=92, R=68;
+  var fills=[FIG_SHADE,"#ffffff","#8fb8a0","#e6ddcb"];
+  var out='<svg viewBox="0 0 330 190" width="330" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circle graph">';
+  var start=0, letters=["A","B","C","D"];
+  cats.forEach(function(c,i){
+    var sweep=c.pct*3.6, end=start+sweep;
+    var p1=u4pt(cx,cy,R,start), p2=u4pt(cx,cy,R,end);
+    var large=sweep>180?1:0;
+    out+='<path d="M '+cx+' '+cy+' L '+fmt(p1[0],1)+' '+fmt(p1[1],1)+' A '+R+' '+R+' 0 '+large+' 1 '+fmt(p2[0],1)+' '+fmt(p2[1],1)+' Z" fill="'+fills[i%4]+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    var mid=u4pt(cx,cy,42,(start+end)/2);
+    out+=_txt(mid[0],mid[1],angleLabels?String(c.ang)+"°":letters[i],13,true);
+    start=end;
+  });
+  if(!angleLabels){
+    cats.forEach(function(c,i){
+      var y=42+i*34;
+      out+='<rect x="196" y="'+(y-9)+'" width="12" height="12" fill="'+fills[i%4]+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+      out+='<text x="214" y="'+(y+1)+'" font-size="12.5" fill="'+FIG_INK+'">'+letters[i]+" = "+c.name+" "+c.pct+"%</text>";
+    });
+  }
+  return out+'</svg>';
+}
+
+/* u7lineSVG from math-7 */
+function u7lineSVG(labels,vals,unit){
+  var W=330,H=215,base=175,top=30,maxV=Math.max.apply(null,vals)+2,minV=0;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line graph">';
+  out+='<line x1="45" y1="'+base+'" x2="'+(W-15)+'" y2="'+base+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  out+='<line x1="45" y1="'+top+'" x2="45" y2="'+base+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  var pts=[];
+  for(var i=0;i<labels.length;i++){var x=65+i*(W-95)/(labels.length-1);var y=base-(base-top)*(vals[i]-minV)/(maxV-minV);pts.push([x,y]);
+    out+='<circle cx="'+fmt(x,1)+'" cy="'+fmt(y,1)+'" r="3.2" fill="'+FIG_INK+'"/>';
+    out+=_txt(x,y-13,String(vals[i]),12,true);
+    out+=_txt(x,base+16,labels[i],11,false);
+  }
+  for(var j=0;j<pts.length-1;j++){out+='<line x1="'+fmt(pts[j][0],1)+'" y1="'+fmt(pts[j][1],1)+'" x2="'+fmt(pts[j+1][0],1)+'" y2="'+fmt(pts[j+1][1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';}
+  out+=_txt(20,(top+base)/2,unit,11,false);
+  return out+'</svg>';
+}
+
+/* u4TableFig from math-1202 */
+function u4TableFig(rows){
+  var cols=rows[0].length,W=320,rowH=28,H=rows.length*rowH+16,colW=(W-20)/cols;
+  var s='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  rows.forEach(function(r,i){var y=8+i*rowH;
+    s+='<rect x="10" y="'+y+'" width="'+(W-20)+'" height="'+rowH+'" fill="'+(i===0?FIG_SHADE:"none")+'" stroke="'+FIG_INK+'" stroke-width="1.2"/>';
+    r.forEach(function(c,j){var x=10+j*colW;if(j>0)s+='<line x1="'+fmt(x,1)+'" y1="'+y+'" x2="'+fmt(x,1)+'" y2="'+(y+rowH)+'" stroke="'+FIG_INK+'" stroke-width="1"/>';
+      s+='<text x="'+fmt(x+colW/2,1)+'" y="'+(y+rowH/2+4)+'" font-size="12" '+(i===0?'font-weight="bold" ':"")+'fill="'+FIG_INK+'" text-anchor="middle">'+c+'</text>';});});
+  return s+'</svg>';
+}
+
+/* u7FigPair from math-1202 */
+function u7FigPair(w1,h1,t1,w2,h2,t2){
+  var u1=88/Math.max(w1,h1), u2=88/Math.max(w2,h2);
+  var s='<svg viewBox="0 0 300 180" width="300" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two rectangles diagram">';
+  s+='<rect x="30" y="'+fmt(135-h1*u1,1)+'" width="'+fmt(w1*u1,1)+'" height="'+fmt(h1*u1,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="175" y="'+fmt(135-h2*u2,1)+'" width="'+fmt(w2*u2,1)+'" height="'+fmt(h2*u2,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=u7Txt(30+w1*u1/2,155,t1,12); s+=u7Txt(175+w2*u2/2,155,t2,12);
+  return s+'</svg>';
+}
+
+/* u7FigTriPair from math-1202 */
+function u7FigTriPair(t1,t2){
+  function draw(t,x0){
+    var s=Math.min(112/Math.max(t.a,1),118/Math.max(t.o,1));
+    var bx=x0, by=172, tx=x0, ty=by-t.o*s, rx=x0+t.a*s;
+    var out='<polygon points="'+fmt(tx,1)+','+fmt(ty,1)+' '+fmt(bx,1)+','+by+' '+fmt(rx,1)+','+by+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    out+='<path d="M '+(bx+13)+' '+by+' L '+(bx+13)+' '+(by-13)+' L '+bx+' '+(by-13)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+    if(t.oL) out+=u7Txt(bx-15,(by+ty)/2,t.oL,12);
+    if(t.aL) out+=u7Txt((bx+rx)/2,by+16,t.aL,12);
+    if(t.hL) out+=u7Txt((tx+rx)/2+17,(ty+by)/2-4,t.hL,12);
+    if(t.angL) out+=u7Txt(rx-24,by-12,t.angL,12);
+    if(t.tL) out+=u7Txt(tx+17,ty+11,t.tL,12);
+    return out;
+  }
+  var s='<svg viewBox="0 0 320 205" width="320" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two right triangles">';
+  s+=draw(t1,36); s+=draw(t2,186);
+  return s+'</svg>';
+}
+
+/* PK tranche helper transport, round 6 (Nov 15, 2026). */
+/* u3BoxFig from math-1202 */
+function u3BoxFig(l,w,h,unit){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Closed rectangular box">';
+  s+='<polygon points="70,80 210,80 210,160 70,160" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="70,80 110,40 250,40 210,80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="210,80 250,40 250,120 210,160" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<text x="140" y="178" font-size="13" fill="'+FIG_INK+'" text-anchor="middle">length '+l+' '+unit+'</text>';
+  s+='<text x="262" y="105" font-size="13" fill="'+FIG_INK+'" text-anchor="middle">width '+w+' '+unit+'</text>';
+  s+='<text x="52" y="122" font-size="13" fill="'+FIG_INK+'" text-anchor="end">height '+h+' '+unit+'</text>';
+  return s+'</svg>';
+}
+
+/* u3StepFig from math-1202 */
+function u3StepFig(W1,H1,W2,H2,unit){
+  // Step shape: bottom rectangle W1 x H1, top-left block W2 x H2 above it.
+  var sc=16, W=(W1*sc)+56, H=((H1+H2)*sc)+44, ox=28, base=18+(H1+H2)*sc, s="";
+  var yTop=18, yMid=18+H2*sc;
+  s+='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Step shaped composite figure">';
+  s+='<polygon points="'+ox+','+base+' '+(ox+W1*sc)+','+base+' '+(ox+W1*sc)+','+yMid+' '+(ox+W2*sc)+','+yMid+' '+(ox+W2*sc)+','+yTop+' '+ox+','+yTop+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<text x="'+(ox+W1*sc/2)+'" y="'+(base+18)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">'+W1+' '+unit+'</text>';
+  s+='<text x="'+(ox+W1*sc+6)+'" y="'+(yMid+H1*sc/2)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="start">'+H1+' '+unit+'</text>';
+  s+='<text x="'+(ox+W2*sc/2)+'" y="'+(yTop-5)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">'+W2+' '+unit+'</text>';
+  s+='<text x="'+(ox-6)+'" y="'+(yTop+H2*sc/2)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">'+H2+' '+unit+'</text>';
+  return s+'</svg>';
+}
+
+/* m8TanksSVG from math-8 */
+function m8TanksSVG(sets,names){
+  var s='<svg viewBox="0 0 330 180" width="330" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: four storage tanks with their dimensions">';
+  for(var i=0;i<4;i++){
+    var ox=i*82+6;
+    s+='<polygon points="'+(ox+8)+',70 '+(ox+20)+',54 '+(ox+72)+',54 '+(ox+60)+',70" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+='<rect x="'+(ox+8)+'" y="70" width="52" height="54" fill="none" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+='<polygon points="'+(ox+60)+',70 '+(ox+72)+',54 '+(ox+72)+',108 '+(ox+60)+',124" fill="none" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+    s+=_txt(ox+40,36,names[i],10.5,true);
+    s+=_txt(ox+40,142,sets[i][0]+" × "+sets[i][1]+" × "+sets[i][2],9,false);
+    s+=_txt(ox+40,158,"cm",9,false);
+  }
+  return s+'</svg>';
+}
+
+/* PK tranche helper transport, final round (Nov 15, 2026). */
+/* u8HM from math-8 */
+function u8HM(hm, x0, y0, cell) {
+  var s = "", r, c;
+  for (r = 0; r < hm.length; r++) for (c = 0; c < hm[r].length; c++) {
+    s += u8Rect(x0 + c * cell, y0 + r * cell, cell, cell, hm[r][c] > 0 ? FIG_SHADE : "#ffffff");
+    s += u8T(x0 + c * cell + cell / 2, y0 + r * cell + cell / 2 + 1, fmt(hm[r][c]), 13, true);
+  }
+  var w = hm[0].length * cell, h = hm.length * cell;
+  s += u8T(x0 + w / 2, y0 - 11, "BACK", 10, true);
+  s += u8T(x0 + w / 2, y0 + h + 12, "FRONT", 10, true);
+  s += u8T(x0 - 13, y0 + h / 2, "L", 10, true);
+  s += u8T(x0 + w + 13, y0 + h / 2, "R", 10, true);
+  return s;
+}
+
+/* u7Pts from math-9 */
+function u7Pts(pts) { return pts.map(function (p) { return fmt(p[0], 1) + "," + fmt(p[1], 1); }).join(" "); }
+
+/* solT from math-9 */
+function solT(x, y, str, size, bold) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 12) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+
+/* u4pt from math-7 */
+function u4pt(cx,cy,r,deg){var t=deg*Math.PI/180;return [cx+r*Math.sin(t), cy-r*Math.cos(t)];}
+
+/* u7Txt from math-1202 */
+function u7Txt(x,y,str,size,anchor){ return '<text x="'+fmt(x,1)+'" y="'+fmt(y,1)+'" font-size="'+(size||13)+'" fill="'+FIG_INK+'" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="'+(anchor||"middle")+'" dominant-baseline="central">'+str+'</text>'; }
+
+/* PK tranche helper transport, final round (Nov 15, 2026). */
+/* u8Rect from math-8 */
+function u8Rect(x, y, w, h, fill) {
+  return '<rect x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" width="' + fmt(w, 1) + '" height="' + fmt(h, 1) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+}
+
+/* u7T from math-9 */
+function u7T(x, y, str, size, bold, anchor) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 13) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+
+/* solSvg from math-9 */
+function solSvg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+
+/* PK tranche helper transport, final round (Nov 15, 2026). */
+/* u8Svg from math-8 */
+function u8Svg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+
+/* PK tranche helper transport, final round (Nov 15, 2026). */
+/* u8Key from math-8 */
+function u8Key(a) { return JSON.stringify(a); }
+
+/* u7Svg from math-9 */
+function u7Svg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 2202 Unit 1 Drawing and Design question bank
 // Cut verbatim from the standalone bank source
@@ -490,6 +1016,138 @@ E("u1-cr-scale-area",1,["3.27","3.28"],3,"gen",function(){
     "Scale each length first: width "+w+" x "+n+" = "+(w*n)+" cm = "+fmt(rw)+" m, and height "+hd+" x "+n+" = "+(hd*n)+" cm = "+fmt(rh)+" m. \\[ \\begin{aligned} \\text{area} &= "+fmt(rw)+" \\times "+fmt(rh)+" \\\\ &= "+fmt(area)+" \\text{ m}^2 \\end{aligned} \\] The answer is <b>"+fmt(area)+" m²</b>.",
     {w:w,hd:hd,n:n});
 },["Scale the width and the height separately before finding any area.","Convert each real length to metres, then multiply the two lengths."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 1 (views and drawing to scale). Borrowed verbatim from Mathematics 8 (u8-rotate-predict, u8-rotated-side-view-gap, u8-rotate-front-num) and Mathematics 9 (u7-scale-draw-num, u7-scale-factor-num); feeder helper copies ride in bank-helpers.js. ===== */
+E("u1-pk-rotate-predict", 1, ["3.21"], 2, "gen", function () {
+  for (var att = 0; att < 200; att++) {
+    var hm = u8RandHM(2, 3, 3, 5, 9);
+    var turns = pick([1, 2, 3]);
+    var rot = u8RotHM(hm, turns);
+    var newFront = u8FrontProf(rot), oldFront = u8FrontProf(hm), newSide = u8SideProf(rot);
+    var mirrorFront = newFront.slice().reverse();
+    var optsT = [u8ProfStr(newFront), u8ProfStr(oldFront), u8ProfStr(newSide), u8ProfStr(mirrorFront)];
+    if (new Set(optsT).size < 4) continue;
+    // where does the tallest stack go?
+    var ti = 0, tj = 0, tv = -1, r, c;
+    for (r = 0; r < hm.length; r++) for (c = 0; c < hm[0].length; c++) if (hm[r][c] > tv) { tv = hm[r][c]; ti = r; tj = c; }
+    if (hm.flat().filter(function (v) { return v === tv; }).length !== 1) continue;
+    var dirWord = turns === 1 ? "90° clockwise" : (turns === 2 ? "180°" : "90° counterclockwise");
+    var cell = 24, body = u8T(160, 14, "Object before the turn (numbers = cubes)", 11, true);
+    body += u8HM(hm, 124, 30, cell);
+    var fig = u8Svg(320, 112, body, "Height map of a block object before a rotation");
+    var q = mcq("The diagram shows a block object as a height map. The whole object is turned " + dirWord + " on the table, seen from above. After the turn, what are the column heights of the front view, read left to right? Each height is the tallest stack in that column.",
+      { t: u8ProfStr(newFront), fb: "Correct. Turning the plan and then taking the tallest stack in each new column gives these heights." },
+      [
+        { t: u8ProfStr(oldFront), fb: "Those are the front heights before the turn; the turn moves the stacks to new columns." },
+        { t: u8ProfStr(newSide), fb: "That reads a side direction of the turned object rather than its front." },
+        { t: u8ProfStr(mirrorFront), fb: "That reverses the turned front view left to right; check which end the tall stacks move to." }
+      ],
+      "Turn the height map " + dirWord + " first, then take the tallest stack in each column of the turned map. The turned front column heights are <b>" + u8ProfStr(newFront) + "</b>.",
+      { mode: "rotate-predict", hm: u8Key(hm), turns: turns });
+    q.figure = fig;
+    return q;
+  }
+  return mcq("A block object is turned 180° on the table. What are the front view column heights after the turn?",
+    { t: "1, 2, 3", fb: "Correct." },
+    [{ t: "3, 2, 1", fb: "That is the view before the turn." }, { t: "2, 2, 2", fb: "That flattens the stacks." }, { t: "3, 1, 2", fb: "That scrambles the columns." }],
+    "Turning the map 180 degrees reverses the columns, giving <b>1, 2, 3</b>.", { mode: "rotate-predict", hm: "fb", turns: 2 });
+}, ["Turn the whole height map first, in the direction named, keeping the back of the map at the top.", "After turning, take the tallest stack in each column, left to right."]);
+
+E("u1-pk-rotated-side-view", 1, ["3.18"], 2, "gen", function(){
+  var hm=u8RandHM(2, 3, 3, 6, 12);
+  var turns=pick([1,2,3]);
+  var rot=u8RotHM(hm, turns);
+  var prof=u8SideProf(rot), ans=u8SumArr(prof);
+  var dirWord=turns===1 ? "90° clockwise" : (turns===2 ? "180°" : "90° counterclockwise");
+  var cell=24, body=u8T(160, 14, "Object before the turn (numbers = cubes)", 11, true);
+  body+=u8HM(hm, 124, 30, cell);
+  var fig=u8Svg(320, 112, body, "Height map of a block object before a rotation");
+  var q=numq("The diagram shows a block object as a height map: each number tells how many cubes are stacked on that square. The object is turned "+dirWord+" on the table, seen from above, and then the right side view is drawn. How many squares show in that side view?", ans, 0,
+    "Turn the map "+dirWord+" first. In the side view, each row of the turned map contributes its tallest stack, giving heights "+u8ProfStr(prof)+": \\[ \\begin{aligned} \\text{squares} &= "+prof.join(" + ")+" \\\\ &= "+fmt(ans)+" \\end{aligned} \\] The answer is <b>"+fmt(ans)+"</b>.",
+    {mode:"rotated-side-view", hm:u8Key(hm), turns:turns});
+  q.figure=fig;
+  return q;
+}, ["The rotation changes which stacks line up in the side view, so turn the map before reading it.", "Turn the height map first, then take the tallest stack in each row of the turned map and add them."]);
+
+E("u1-pk-rotate-front", 1, ["3.18"], 2, "gen", function () {
+  var hm = u8RandHM(2, 3, 3, 6, 10);
+  var turns = pick([1, 2, 3]);
+  var rot = u8RotHM(hm, turns);
+  var prof = u8FrontProf(rot), ans = u8SumArr(prof);
+  var dirWord = turns === 1 ? "90° clockwise" : (turns === 2 ? "180°" : "90° counterclockwise");
+  var cell = 24, body = u8T(160, 14, "Object before the turn (numbers = cubes)", 11, true);
+  body += u8HM(hm, 124, 30, cell);
+  var fig = u8Svg(320, 112, body, "Height map of a block object before a rotation");
+  var chain = prof.map(function (v, i) { return (i === 0 ? "" : " &+ ") + fmt(v); }).join("");
+  var q = numq("The diagram shows a block object as a height map: each number tells how many cubes are stacked on that square. The object is turned " + dirWord + " on the table, seen from above, and then the front view is drawn. How many squares show in that front view? Count each visible square in every column.",
+    ans, 0,
+    "Turn the map " + dirWord + ", then take the tallest stack in each column of the turned map: \\[ \\begin{aligned} \\text{front heights} &= " + u8ProfStr(prof) + " \\\\ \\text{squares} &= " + prof.join(" + ") + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the front view after the turn shows <b>" + fmt(ans) + "</b> squares.",
+    { mode: "rotate-front-num", hm: u8Key(hm), turns: turns });
+  q.figure = fig;
+  return q;
+}, ["The rotation changes which stacks line up in each front column.", "Turn the map first, write the new column heights, then add them."]);
+
+E("u1-pk-scale-draw", 1, ["3.18"], 1, "gen", function () {
+  var ks = [0.5, 1.5, 2, 2.5, 3];
+  var k = pick(ks), kind = pick(["rect", "tri"]);
+  var word = k < 1 ? "reduction" : "enlargement";
+  if (kind === "rect") {
+    var w = ri(3, 9), h = ri(2, 7), askW = Math.random() < 0.5;
+    var side = askW ? w : h, ans = Math.round(side * k * 100) / 100;
+    var u = Math.min(24, 220 / w, 110 / h), x0 = 60, y0 = 40;
+    var body = u7Poly([[x0, y0], [x0 + w * u, y0], [x0 + w * u, y0 + h * u], [x0, y0 + h * u]], FIG_SHADE);
+    body += u7T(x0 + w * u / 2, y0 - 14, fmt(w) + " cm", 13, false);
+    body += u7T(x0 + w * u + 26, y0 + h * u / 2, fmt(h) + " cm", 13, false);
+    body += u7T(x0 + w * u / 2, y0 + h * u + 20, "Original", 13, true);
+    var q = numq("The diagram shows a rectangle. It is redrawn as a " + word + " with scale factor " + fmt(k) + ". How long is the side of the image that matches the " + fmt(side) + " cm side, in centimetres?",
+      ans, 0.01,
+      "Multiply the original side by the scale factor: \\[ \\begin{aligned} \\text{image side} &= " + fmt(side) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the matching side of the image is <b>" + fmt(ans) + " cm</b>.",
+      { mode: "draw-rect", w: w, h: h, k: k, side: side });
+    q.figure = u7Svg(340, 200, body, "Rectangle with labelled sides");
+    return q;
+  }
+  var a = ri(3, 10), b = ri(3, 10), askA = Math.random() < 0.5;
+  var side2 = askA ? a : b, ans2 = Math.round(side2 * k * 100) / 100;
+  var u2 = Math.min(24, 220 / a, 120 / b), x1 = 60, y1 = 160;
+  var body2 = u7Poly([[x1, y1], [x1 + a * u2, y1], [x1, y1 - b * u2]], FIG_SHADE);
+  body2 += u7T(x1 + a * u2 / 2, y1 + 18, fmt(a) + " cm", 13, false);
+  body2 += u7T(x1 - 26, y1 - b * u2 / 2, fmt(b) + " cm", 13, false);
+  body2 += u7T(x1 + a * u2 / 2, y1 - b * u2 - 16, "Original", 13, true);
+  var q2 = numq("The diagram shows a right triangle. It is redrawn as a " + word + " with scale factor " + fmt(k) + ". How long is the side of the image that matches the " + fmt(side2) + " cm side, in centimetres?",
+    ans2, 0.01,
+    "Multiply the original side by the scale factor: \\[ \\begin{aligned} \\text{image side} &= " + fmt(side2) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans2) + " \\end{aligned} \\] So the matching side of the image is <b>" + fmt(ans2) + " cm</b>.",
+    { mode: "draw-tri", a: a, b: b, k: k, side: side2 });
+  q2.figure = u7Svg(340, 200, body2, "Right triangle with labelled sides");
+  return q2;
+}, ["The image side is the original side multiplied by the scale factor.", "Find the given side in the diagram, then multiply it by the scale factor."]);
+
+E("u1-pk-scale-factor", 1, ["3.27"], 1, "gen", function () {
+  var pairs = [[1, 4], [2, 5], [1, 2], [3, 5], [3, 4], [6, 5], [5, 4], [3, 2], [8, 5], [2, 1], [5, 2], [3, 1], [4, 1]];
+  var pr = pick(pairs), p = pr[0], d = pr[1], m = ri(2, 10);
+  var orig = d * m, img = p * m, ans = Math.round(p / d * 100) / 100;
+  var ctxs = [["A drawing of a sunflower is ", " cm tall. The real sunflower is ", " cm tall."],
+            ["A model boat is ", " cm long. The real boat is ", " cm long."],
+            ["A photo print is ", " cm wide. The screen image it came from is ", " cm wide."]];
+  var c = pick(ctxs);
+  var prompt, oLen, iLen;
+  if (Math.random() < 0.5) { oLen = orig; iLen = img; } else { oLen = orig; iLen = img; }
+  prompt = c[0] + fmt(iLen) + c[1] + fmt(oLen) + c[2] + " The first length is the image and the second is the original. What is the scale factor for the diagram? Give the scale factor as a decimal or whole number.";
+  var sol = "The scale factor is the image length divided by the original length: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(iLen) + " \\div " + fmt(oLen) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the scale factor is <b>" + fmt(ans) + "</b>.";
+  var q = numq(prompt, ans, 0.01, sol, { mode: "scale-factor", orig: oLen, img: iLen });
+    q.figure = solBarsFig([{ name: "Image", len: iLen, lab: fmt(iLen) + " cm" }, { name: "Original", len: oLen, lab: fmt(oLen) + " cm" }], "Image and original lengths as bars");
+    return q;
+}, ["Scale factor is image length divided by original length.", "Put the image length first, then divide by the original length."]);
+
+/* PK tranche metadata pass for Unit 1. The tranche's own entries are flagged here.  */
+var PKT_U1_FOR=["3.17","3.18","3.19","3.20","3.21","3.22","3.23","3.24","3.25","3.26","3.27","3.28"];
+var PKT_U1={
+ "u1-pk-rotate-predict":{src:"math-8:10.10",group:"views"},
+ "u1-pk-rotated-side-view":{src:"math-8:10.10",group:"views"},
+ "u1-pk-rotate-front":{src:"math-8:10.16",group:"views"},
+ "u1-pk-scale-draw":{src:"math-9:10.16",group:"scale"},
+ "u1-pk-scale-factor":{src:"math-9:10.17",group:"scale"}
+};
+BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U1_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u2.js ----- */
 // Math 2202 Unit 2 Surface Area question bank
@@ -1191,6 +1849,194 @@ E("u2-cr-correct-error", 2, ["2.5","4.12","3.4"], 3, "gen", function(){
     "Correct the conversion first: an area in m² converts with the squared factor, \\(1 \\text{ m}^2 = 10\\,000 \\text{ cm}^2\\), giving \\(" + fmtF(SAm,2) + " \\times 10\\,000 \\approx " + fmt(Math.round(SAcm)) + " \\text{ cm}^2\\), not " + fmt(stuCm) + " cm². Then use the correct sphere formula \\(SA = 4\\pi r^2\\): \\[ \\begin{aligned} r^2 &= \\frac{" + fmt(Math.round(SAcm)) + "}{4\\pi} \\\\ &\\approx " + fmtF(r*r,1) + " \\\\ r &\\approx " + r + " \\end{aligned} \\] The correct radius is <b>about " + r + " cm</b>.",
     {r: r});
 }, ["Fix the work in order: first the unit conversion, then the formula, then solve.", "Area conversions use the square of the length factor, and a sphere uses 4 pi r squared."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 2, 3 and 4 (surface area readiness, the formula strand, unit conversion). Borrowed verbatim from Mathematics 1202 (u3-surface-prism, u3-cr-cylinder-sa, u3-composite-area, u3-circle-area, u2-perimeter, u2-cr-formula-manip, u3-error-analysis, u2-si-imp-convert, u2-imp-si-convert, u2-si-convert); feeder helper copies ride in bank-helpers.js. ===== */
+E("u2-pk-surface-prism", 2, ["3.3"], 2, "gen", function(){
+  var l=0,w=0,h=0,guard=0, SA=0, vol=0, half=0, sumEdges=0;
+  do { l=ri(2,9); w=ri(2,9); h=ri(2,8); SA=2*(l*w+l*h+w*h); vol=l*w*h; half=l*w+l*h+w*h; sumEdges=4*(l+w+h); guard++; }
+  while(guard<60 && (!u3UniqText([String(SA),String(vol),String(half),String(sumEdges)])));
+  var ctx=pick(["a closed storage crate","a closed gift box","a closed tool box","a closed shipping carton"]);
+  var q=mcq("Find the surface area of "+ctx+", "+l+" cm by "+w+" cm by "+h+" cm.",
+    {t:fmt(SA)+" \\(\\text{cm}^2\\)", fb:"Yes: add all six faces, in three matching pairs."},
+    [{t:fmt(vol)+" \\(\\text{cm}^2\\)", fb:"That multiplies all three dimensions, which gives volume, not surface area."},
+     {t:fmt(half)+" \\(\\text{cm}^2\\)", fb:"That adds only one face from each pair. Each face has a matching opposite face."},
+     {t:fmt(sumEdges)+" \\(\\text{cm}^2\\)", fb:"That adds edge lengths. Surface area adds the areas of the faces."}],
+    "Add the three face areas, then double for the matching opposite faces. \\[ \\begin{aligned} S &= 2(lw + lh + wh) \\\\ &= 2("+fmt(l*w)+" + "+fmt(l*h)+" + "+fmt(w*h)+") \\\\ &= "+fmt(SA)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(SA)+" square centimetres</b>.",
+    {l:l,w:w,h:h});
+  q.figure=u3BoxFig(l,w,h,"cm");
+  return q;
+}, ["Surface area is the total area of all the faces.", "Find the three different face areas first, then double their sum."]);
+
+E("u2-pk-cylinder-sa", 2, ["3.3"], 2, "gen", function(){
+  var ctxs=["a closed water tank","a closed storage can","a closed paint drum"];
+  var ctx=pick(ctxs), r=ri(2,6), h=ri(4,12), sa=2*Math.PI*r*h+2*Math.PI*r*r, ans=Math.round(sa*10)/10;
+  var q=numq("Find the surface area, in square centimetres, of "+ctx+" shaped like a closed right cylinder with radius "+r+" cm and height "+h+" cm, as shown in the figure. Give your answer to the nearest tenth. Show your work on paper, then enter the surface area.",
+    ans, 0.4,
+    "Add the curved side and the two circular ends. \\[ \\begin{aligned} S &= 2\\pi r h + 2\\pi r^2 \\\\ &= 2\\pi ("+r+")("+h+") + 2\\pi ("+r+")^2 \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
+    {r:r,h:h});
+  q.figure=u3CylFig(r,h,"cm");
+  return q;
+}, ["A closed cylinder has a curved side plus two circular ends.", "Find the side area first, then add both end areas."]);
+
+E("u2-pk-composite-area", 2, ["3.1"], 2, "gen", function(){
+  var W1=0, H1=0, W2=0, H2=0, unit=pick(["m","ft"]), bottom=0, top=0, ans=0, bound=0, per=0, g3=0;
+  do { W1=ri(6,10); H1=ri(3,5); W2=ri(2,4); H2=ri(2,4); if(W2>=W1) W2=W1-2; bottom=W1*H1; top=W2*H2; ans=bottom+top; bound=W1*(H1+H2); per=2*(W1+H1+H2); g3++; }
+  while(g3<80 && !u3UniqText([String(ans),String(bound),String(bottom),String(per)]));
+  var q=mcq("Find the area of the step shaped floor shown in the figure.",
+    {t:fmt(ans)+" \\(\\text{"+unit+"}^2\\)", fb:"Yes: split the step into two rectangles and add their areas."},
+    [{t:fmt(bound)+" \\(\\text{"+unit+"}^2\\)", fb:"That is the full bounding rectangle. The step is missing its top right corner, so that overcounts."},
+     {t:fmt(bottom)+" \\(\\text{"+unit+"}^2\\)", fb:"That is only the bottom rectangle. The raised block on the left is also part of the floor."},
+     {t:fmt(per)+" \\(\\text{"+unit+"}^2\\)", fb:"That value comes from adding side lengths, a perimeter style total, not an area."}],
+    "Split the shape into a bottom rectangle and a top block, then add. \\[ \\begin{aligned} A &= ("+W1+" \\times "+H1+") + ("+W2+" \\times "+H2+") \\\\ &= "+fmt(bottom)+" + "+fmt(top)+" \\\\ &= "+fmt(ans)+"\\ \\text{"+unit+"}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans)+"</b>.",
+    {W1:W1,H1:H1,W2:W2,H2:H2});
+  q.figure=u3StepFig(W1,H1,W2,H2,unit);
+  return q;
+}, ["Split a composite shape into rectangles you can handle.", "Find the bottom rectangle first, then the raised block, then add."]);
+
+E("u2-pk-circle-area", 2, ["3.1"], 2, "gen", function(){
+  var ctxs=["a round rug","a round pizza","a circular garden","a round trampoline mat","a circular clock face"];
+  var ctx=pick(ctxs), r=ri(3,14), area=Math.PI*r*r, aTxt=fmtF(area,1);
+  var circ=fmtF(2*Math.PI*r,1), diam=fmtF(Math.PI*(2*r)*(2*r),1), nosq=fmtF(Math.PI*r,1);
+  var q=mcq("Find the area of "+ctx+" with radius "+r+" cm. Give the answer to the nearest tenth.",
+    {t:aTxt+" \\(\\text{cm}^2\\)", fb:"Yes: area of a circle is pi times the radius squared."},
+    [{t:circ+" \\(\\text{cm}^2\\)", fb:"That is the circumference, the distance around the circle, not the area it covers."},
+     {t:diam+" \\(\\text{cm}^2\\)", fb:"That uses the diameter in place of the radius before squaring."},
+     {t:nosq+" \\(\\text{cm}^2\\)", fb:"That multiplies pi by the radius once. The radius must be squared."}],
+    "Use \\(A = \\pi r^2\\) with the radius given. \\[ \\begin{aligned} A &= \\pi ("+r+")^2 \\\\ &= "+fmtF(area,4)+"\\ldots \\\\ &\\approx "+aTxt+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+aTxt+" square centimetres</b>.",
+    {r:r}); q.figure=m12CircleSVG("r = "+r+" cm"); return q;
+}, ["For a circle, use pi times radius squared.", "Square the radius first, then multiply by pi."]);
+
+E("u2-pk-perimeter", 2, ["2.1"], 2, "gen", function(){
+  var ctx=pick([
+    {o:"garden bed", act:"edging around"},
+    {o:"classroom bulletin board", act:"trim around"},
+    {o:"picture frame", act:"framing around"},
+    {o:"rug outline", act:"binding around the edge of"}
+  ]);
+  var L=ri(3,14), W=ri(2,10); if(W>=L){ var tmp=L; L=W+ri(1,3); W=tmp; }
+  var guardP=0; while(guardP<40){ var valsP=[2*(L+W), L*W, L+W, 2*L+W]; var setP={}; var dupP=false; valsP.forEach(function(x){ if(setP[x]) dupP=true; setP[x]=1; }); if(!dupP) break; L=ri(3,14); W=ri(2,10); if(W>=L){ var t2=L; L=W+ri(1,3); W=t2; } guardP++; }
+  var P=2*(L+W);
+  var ds=[
+    {t:fmt(L*W), fb:"That multiplies length by width, which gives area, not the distance around."},
+    {t:fmt(L+W), fb:"That adds only one length and one width, half the trip around."},
+    {t:fmt(2*L+W), fb:"That counts one width only once: both widths are part of the boundary."}
+  ];
+  var q=mcq("A rectangular "+ctx.o+" is \\("+L+"\\ \\text{m}\\) long and \\("+W+"\\ \\text{m}\\) wide. How much material, in metres, is needed for "+ctx.act+" it? Use \\(P = 2L + 2W\\).",
+    {t:fmt(P), fb:"Correct: add both lengths and both widths."}, ds,
+    "Perimeter is the distance around, and the formula applies directly. \\[ \\begin{aligned} P &= 2L + 2W \\\\ &= 2("+L+") + 2("+W+") \\\\ &= "+P+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+P+" m</b>.",
+    {L:L, W:W});
+  q.figure=u2RectFig(L,W);
+  return q;
+}, ["Perimeter is the distance all the way around a shape.", "Add both lengths and both widths, or use P = 2L + 2W."]);
+
+E("u2-pk-formula-manip", 2, ["2.2"], 2, "gen", function(){
+  var W=ri(3,12), L=W+ri(2,10); var P=2*(L+W);
+  return numq("A rectangular pen has a perimeter of \\("+P+"\\ \\text{m}\\) and a width of \\("+W+"\\ \\text{m}\\). Find its length, in metres. Use \\(P = 2L + 2W\\), rearranged to solve for \\(L\\).", L, 0.01,
+    "Rearrange the formula, then substitute. \\[ \\begin{aligned} L &= \\frac{P - 2W}{2} \\\\ &= \\frac{"+P+" - 2("+W+")}{2} \\\\ &= "+L+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+L+" m</b>.",
+    {P:P, W:W});
+}, ["The unknown is inside the formula, so rearrange before substituting.", "Subtract twice the width from the perimeter, then divide by 2."]);
+
+E("u2-pk-error-analysis", 2, ["2.5"], 2, "var", varset([
+  function(){ return mcq("A student finds the area of a triangle with base 8 cm and height 6 cm, and writes \\(8 \\times 6 = 48\\ \\text{cm}^2\\). What is the correct area?",
+    {t:"24 \\(\\text{cm}^2\\)", fb:"Yes: the student forgot to divide by 2."},
+    [{t:"48 \\(\\text{cm}^2\\)", fb:"That is the student's value. A triangle is half of its bounding rectangle."},
+     {t:"14 \\(\\text{cm}^2\\)", fb:"That adds the base and height. Area multiplies them, then halves."},
+     {t:"28 \\(\\text{cm}^2\\)", fb:"That is the perimeter of the bounding rectangle, not the triangle area."}],
+    "Correct the missing step. \\[ \\begin{aligned} A &= \\tfrac{1}{2}(8)(6) \\\\ &= 24\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>24 square centimetres</b>.", {}); },
+  function(){ return mcq("A student finds the area of a circle with diameter 10 m, and writes \\(\\pi (10)^2 = 314.2\\ \\text{m}^2\\). What is the correct area, to the nearest tenth?",
+    {t:"78.5 \\(\\text{m}^2\\)", fb:"Yes: the radius is 5 m, and the student used the diameter as the radius."},
+    [{t:"314.2 \\(\\text{m}^2\\)", fb:"That is the student's value, built on the diameter instead of the radius."},
+     {t:"31.4 \\(\\text{m}^2\\)", fb:"That is the circumference of the circle, not its area."},
+     {t:"157.0 \\(\\text{m}^2\\)", fb:"That halves the student's value, but the fix is to halve the diameter first, then square."}],
+    "Halve the diameter to get the radius, then use the formula. \\[ \\begin{aligned} r &= 10 \\div 2 = 5\\ \\text{m} \\\\ A &= \\pi (5)^2 \\approx 78.5\\ \\text{m}^2 \\end{aligned} \\] The answer is <b>78.5 square metres</b>.", {}); },
+  function(){ return mcq("A student converts the area of a floor, \\(6\\ \\text{m}^2\\), to square centimetres and writes \\(6 \\times 100 = 600\\ \\text{cm}^2\\). What is the correct value?",
+    {t:"60 000 \\(\\text{cm}^2\\)", fb:"Yes: the student used the linear factor 100 instead of the squared factor 10 000."},
+    [{t:"600 \\(\\text{cm}^2\\)", fb:"That is the student's value, built on the linear conversion factor."},
+     {t:"6 000 \\(\\text{cm}^2\\)", fb:"That uses 1000, still not the squared factor for metres to centimetres."},
+     {t:"60 \\(\\text{cm}^2\\)", fb:"That moves the wrong way: square centimetres are smaller units, so the count must grow."}],
+    "Area conversions use squared factors. \\[ \\begin{aligned} 6\\ \\text{m}^2 &= 6 \\times 10000\\ \\text{cm}^2 \\\\ &= 60000\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>60 000 square centimetres</b>.", {}); },
+  function(){ return mcq("A student finds the area of a parallelogram with base 9 cm, slant side 7 cm and vertical height 5 cm, and writes \\(9 \\times 7 = 63\\ \\text{cm}^2\\). What is the correct area?",
+    {t:"45 \\(\\text{cm}^2\\)", fb:"Yes: the student used the slant side. A parallelogram uses base times vertical height."},
+    [{t:"63 \\(\\text{cm}^2\\)", fb:"That is the student's value, built on the slant side instead of the height."},
+     {t:"32 \\(\\text{cm}^2\\)", fb:"That is the perimeter of the parallelogram, not its area."},
+     {t:"35 \\(\\text{cm}^2\\)", fb:"That multiplies the slant side by the height and leaves out the base."}],
+    "Use base times vertical height. \\[ \\begin{aligned} A &= 9 \\times 5 \\\\ &= 45\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>45 square centimetres</b>.", {}); },
+  function(){ return mcq("A student finds the area of an L shaped room, 8 m by 6 m overall with a 3 m by 2 m corner missing, and writes \\(8 \\times 6 = 48\\ \\text{m}^2\\). What is the correct area?",
+    {t:"42 \\(\\text{m}^2\\)", fb:"Yes: the student left the missing corner in. Subtract its area."},
+    [{t:"48 \\(\\text{m}^2\\)", fb:"That is the student's value, the full bounding rectangle with nothing removed."},
+     {t:"54 \\(\\text{m}^2\\)", fb:"That adds the missing corner instead of subtracting it."},
+     {t:"28 \\(\\text{m}^2\\)", fb:"That is the distance around the overall rectangle, not an area."}],
+    "Complete the rectangle, then subtract the missing corner. \\[ \\begin{aligned} A &= (8 \\times 6) - (3 \\times 2) \\\\ &= 48 - 6 \\\\ &= 42\\ \\text{m}^2 \\end{aligned} \\] The answer is <b>42 square metres</b>.", {}); },
+  function(){ return mcq("A student finds the surface area of a closed cylinder with radius 3 cm and height 8 cm, and writes only the side area, \\(2\\pi (3)(8) = 150.8\\ \\text{cm}^2\\). What is the correct surface area, to the nearest tenth?",
+    {t:"207.3 \\(\\text{cm}^2\\)", fb:"Yes: a closed cylinder also has two circular ends. The student left them out."},
+    [{t:"150.8 \\(\\text{cm}^2\\)", fb:"That is the student's value, the curved side only."},
+     {t:"179.1 \\(\\text{cm}^2\\)", fb:"That adds only one circular end. A closed cylinder has two ends."},
+     {t:"226.2 \\(\\text{cm}^2\\)", fb:"That uses the diameter in the side area, which inflates the total."}],
+    "Add the curved side and both ends. \\[ \\begin{aligned} S &= 2\\pi (3)(8) + 2\\pi (3)^2 \\\\ &= 150.8 + 56.5 \\\\ &\\approx 207.3\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>207.3 square centimetres</b>.", {}); }
+]), ["Read the student's working and find the step that went wrong.", "Name the error first, then redo the calculation with the fix in place."]);
+
+E("u2-pk-si-imp-convert", 2, ["4.11"], 2, "gen", function(){
+  var cm=pick([10,15,20,25,30,40,50,60,75,80,90,100,120,150]);
+  var ans=Math.round(cm/2.54*100)/100;
+  var ctx=pick(["A shelf is","A countertop section is","A piece of trim is","A toolbox is"]);
+  var ds=[
+    {t:fmt(Math.round(cm*2.54*100)/100), fb:"That multiplies by 2.54, which converts inches to centimetres, the reverse direction."},
+    {t:fmt(Math.round(cm/2*100)/100), fb:"That divides by 2 instead of 2.54, so the proportion is off."},
+    {t:fmt(cm), fb:"That keeps the same number: centimetres and inches are different sizes, so the number must change."}
+  ];
+  var bo=balOpts({t:fmtF(ans,2), fb:"Correct: set up the proportion with 2.54 cm per inch and divide."}, ds);
+  return mcq(ctx+" \\("+cm+"\\ \\text{cm}\\) long. Convert this length to inches. Use \\(1\\ \\text{in} = 2.54\\ \\text{cm}\\). Give the answer to two decimal places.",
+    bo[0], bo[1],
+    "Use proportional reasoning with the given rate. \\[ \\begin{aligned} \\text{inches} &= "+cm+" \\div 2.54 \\\\ &= "+fmtF(ans,2)+"\\ \\text{in} \\end{aligned} \\] The length is <b>"+fmtF(ans,2)+" in</b>.",
+    {cm:cm});
+}, ["Write the rate as a proportion: 2.54 cm stands with 1 inch.", "Divide the centimetre measure by 2.54 to get inches."]);
+
+E("u2-pk-imp-si-convert", 2, ["4.11"], 2, "gen", function(){
+  var inches=pick([4,5,6,8,9,10,12,15,18,20,24,30,36]);
+  var ans=Math.round(inches*2.54*100)/100;
+  var ctx=pick(["A bolt is","A photo frame side is","A pipe section is","A bookcase shelf is"]);
+  var ds=[
+    {t:fmt(Math.round(inches/2.54*100)/100), fb:"That divides by 2.54, which converts centimetres to inches, the reverse direction."},
+    {t:fmt(Math.round(inches*2*100)/100), fb:"That uses 2 cm per inch instead of 2.54, so the proportion is off."},
+    {t:fmt(inches), fb:"That keeps the same number: an inch is larger than a centimetre, so the centimetre number must be larger."}
+  ];
+  var corr=fmt(ans); ds.forEach(function(d){ if(d.t===corr) d.t=fmt(ans+2.54); });
+  var bo=balOpts({t:corr, fb:"Correct: multiply by 2.54 cm per inch."}, ds);
+  return mcq(ctx+" \\("+inches+"\\ \\text{in}\\) long. Convert this length to centimetres. Use \\(1\\ \\text{in} = 2.54\\ \\text{cm}\\).",
+    bo[0], bo[1],
+    "Use proportional reasoning with the given rate. \\[ \\begin{aligned} \\text{centimetres} &= "+inches+" \\times 2.54 \\\\ &= "+fmt(ans)+"\\ \\text{cm} \\end{aligned} \\] The length is <b>"+fmt(ans)+" cm</b>.",
+    {inches:inches});
+}, ["Write the rate as a proportion: 1 inch stands with 2.54 cm.", "Multiply the inch measure by 2.54 to get centimetres."]);
+
+E("u2-pk-si-convert", 2, ["4.11"], 1, "gen", function(){
+  var modes=[
+    {f:"mm",t:"cm",k:0.1},{f:"cm",t:"m",k:0.01},{f:"m",t:"km",k:0.001},{f:"cm",t:"mm",k:10},{f:"m",t:"cm",k:100},{f:"km",t:"m",k:1000}
+  ];
+  var ctx=pick(["A shelf board","A ribbon for a gift box","A hallway in a school","A garden hose","A walking trail","A piece of trim"]);
+  var m=pick(modes); var v=ri(3,480); if(m.k<1 && v<20) v=v+40;
+  var ans=Math.round(v*m.k*1000)/1000;
+  var dd=u2Dist(ans,[ans*10,ans/10,ans+ (m.k>=1?10:-ans/2)], m.t, "Correct: each step on the SI ladder moves the decimal point by the power of ten for that step.", function(i){ return ["That moves the decimal point the wrong way or by the wrong number of places.","That uses the wrong power of ten for this step on the ladder.","That changes the value instead of only changing the unit."][i]; });
+  return mcq(ctx+" measures \\("+fmt(v)+"\\ \\text{"+m.f+"}\\). Write this length in "+m.t+".",
+    dd.c, dd.d,
+    "SI units are based on powers of ten. \\[ "+fmt(v)+"\\ \\text{"+m.f+"} \\times "+fmt(m.k)+" = "+fmt(ans)+"\\ \\text{"+m.t+"} \\] The length is <b>"+fmt(ans)+" "+m.t+"</b>.",
+    {mode:m.f+"-"+m.t, v:v});
+}, ["Use the SI ladder: each step is a power of ten.", "Decide whether the new unit is larger or smaller, then move the decimal point the right number of places."]);
+
+/* PK tranche metadata pass for Unit 2. The tranche's own entries are flagged here.  */
+var PKT_U2_FOR=["3.1","3.2","3.3","3.4","3.5","2.1","2.2","2.3","2.4","2.5","2.6","4.10","4.11","4.12"];
+var PKT_U2={
+ "u2-pk-surface-prism":{src:"math-1202:3.34",group:"surface-area"},
+ "u2-pk-cylinder-sa":{src:"math-1202:3.34",group:"surface-area"},
+ "u2-pk-composite-area":{src:"math-1202:3.31",group:"area"},
+ "u2-pk-circle-area":{src:"math-1202:3.32",group:"area"},
+ "u2-pk-perimeter":{src:"math-1202:2.3",group:"formula-use"},
+ "u2-pk-formula-manip":{src:"math-1202:2.4",group:"formula-use"},
+ "u2-pk-error-analysis":{src:"math-1202:2.5",group:"formula-use"},
+ "u2-pk-si-imp-convert":{src:"math-1202:3.6",group:"conversion"},
+ "u2-pk-imp-si-convert":{src:"math-1202:3.13",group:"conversion"},
+ "u2-pk-si-convert":{src:"math-1202:3.7",group:"conversion"}
+};
+BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U2_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u3.js ----- */
 // Math 2202 Unit 3 Volume and Capacity question bank
@@ -1933,6 +2779,194 @@ E("u3-cr-find-base-side", 3, ["2.2","3.12"], 3, "gen", function(){
     {s:s,h:h});
 }, ["Write the pyramid volume formula first, using one letter for both base sides.", "Multiply the volume by 3, divide by the height, then take the square root."]);
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 5 and 3 (volume and capacity, formula strand support). Borrowed verbatim from Mathematics 8 (u4-vol-base-times-height, u4-vol-tri-prism, u4-vol-cylinder, u4-holds-most, u4-tank-litres-gap) and Mathematics 1202 (u3-si-convert, u3-imperial-convert, u3-convert-advanced, u2-cr-circ, u6-cr-leg); feeder helper copies ride in bank-helpers.js. ===== */
+E("u3-pk-vol-base-height", 3, ["3.12"], 1, "gen", function(){
+  var B=ri(8,60), h=ri(3,15);
+  var obj=pick(["right prism","right triangular prism","right rectangular prism"]);
+  var q=numq("A "+obj+" has a base with area "+B+" cm\\(^{2}\\) and a height of "+h+" cm. Find its volume, in cubic centimetres.", B*h, 0.01,
+    "The volume of a right prism is the base area multiplied by the height: \\[ \\begin{aligned} V &= B \\times h \\\\ &= "+B+" \\times "+h+" \\\\ &= "+(B*h)+" \\end{aligned} \\] The volume is <b>"+(B*h)+" cm\\(^{3}\\)</b>.",
+    {mode:"base-height", B:B, h:h}); q.figure=m8PrismBaseSVG(obj==="right triangular prism"?"tri":(obj==="right rectangular prism"?"rect":"generic"), B+" cm\u00B2", h+" cm"); return q;
+}, ["For any right prism, volume is base area multiplied by height.", "Multiply the given base area by the given height."]);
+
+E("u3-pk-vol-tri-prism", 3, ["3.12"], 1, "gen", function(){
+  var tr=pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20]]);
+  var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,16);
+  var B=a*b/2; var V=B*L;
+  var q=numq("Find the volume of the right triangular prism shown, in cubic centimetres.", V, 0.01,
+    "Find the area of the triangular base first, then multiply by the length of the prism: \\[ \\begin{aligned} B &= "+FR(1,2)+"\\times "+a+"\\times "+b+" = "+fmt(B)+" \\\\ V &= B \\times L \\\\ &= "+fmt(B)+" \\times "+L+" \\\\ &= "+fmt(V)+" \\end{aligned} \\] The volume is <b>"+fmt(V)+" cm\\(^{3}\\)</b>.",
+    {mode:"tri-vol", a:a, b:b, c:c, L:L});
+  q.figure=u4triSVG(a,b,c,L);
+  return q;
+}, ["Volume of a prism is base area multiplied by the length it runs for.", "Find the triangle area with one half times leg times leg, then multiply by the prism length."]);
+
+E("u3-pk-vol-cylinder", 3, ["3.12"], 1, "gen", function(){
+  var r=ri(2,10), h=ri(3,15);
+  var V=u4r1(3.14*r*r*h);
+  var q=numq("Find the volume of the right cylinder shown. Use \\(\\pi = 3.14\\) and give your answer in cubic centimetres, to one decimal place.", V, 0.6,
+    "A cylinder is a prism with a circular base, so its volume is base area times height: \\[ \\begin{aligned} V &= \\pi r^{2} h \\\\ &= 3.14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmt(V)+" \\end{aligned} \\] The volume is <b>"+fmt(V)+" cm\\(^{3}\\)</b>.",
+    {mode:"cyl-vol", r:r, h:h});
+  q.figure=u4cylSVG(r,h,false);
+  return q;
+}, ["Treat the cylinder like a prism whose base is a circle.", "Find the circle area with pi times radius squared, then multiply by the height."]);
+
+E("u3-pk-holds-most", 3, ["3.16"], 2, "gen", function(){
+  var sets=null, vols=null, t=0;
+  while(t<200){
+    var cand=[]; for(var i=0;i<4;i++){ cand.push([ri(2,12),ri(2,12),ri(2,12)]); }
+    var vs=cand.map(function(s){return s[0]*s[1]*s[2];});
+    var mx=Math.max.apply(null,vs);
+    if(vs.filter(function(v){return v===mx;}).length===1 && new Set(vs).size>=3){ sets=cand; vols=vs; break; }
+    t++;
+  }
+  if(!sets){ sets=[[4,5,6],[3,5,9],[6,6,5],[2,8,7]]; vols=sets.map(function(s){return s[0]*s[1]*s[2];}); }
+  var best=vols.indexOf(Math.max.apply(null,vols));
+  var names=["Tank A","Tank B","Tank C","Tank D"];
+  var opts=names.filter(function(n,i){return i!==best;}).map(function(n){
+    var i=names.indexOf(n);
+    return {t:n, fb:n+" holds "+vols[i]+" cm\\(^{3}\\), which is less than the largest volume."};
+  });
+  var desc=sets.map(function(s,i){return names[i]+": "+s[0]+" cm by "+s[1]+" cm by "+s[2]+" cm";}).join("; ");
+  var q=mcq("Four storage tanks are shaped like right rectangular prisms. "+desc+". Which tank holds the most water?",
+    {t:names[best], fb:"Yes: its volume, "+vols[best]+" cm\\(^{3}\\), is the largest of the four."}, opts,
+    "Find each volume by multiplying the three dimensions: "+vols.map(function(v,i){return names[i]+" holds "+v+" cm\\(^{3}\\)";}).join(", ")+". The largest volume belongs to <b>"+names[best]+"</b>.",
+    {mode:"holds-most", best:best}); q.figure=m8TanksSVG(sets,names); return q;
+}, ["Holding the most water means having the greatest volume.", "Multiply the three dimensions of each tank, then compare the four volumes."]);
+
+E("u3-pk-tank-litres", 3, ["3.13"], 2, "gen", function(){
+  var r=pick([4,5,6,8,10,12,15,20]); var d=2*r; var h=ri(6,40);
+  var vol=3.14*r*r*h;
+  var litres=Math.round(vol/10)/100;
+  var ctx=pick(["storage tank","water barrel","feed silo","rain barrel"]);
+  var q=numq("A cylindrical "+ctx+" has a diameter of "+d+" cm and a height of "+h+" cm. How many litres of water does it hold when full? Use \\(\\pi = 3.14\\), and use 1000 cm\\(^{3}\\) = 1 L. Give your answer to two decimal places.", litres, 0.02,
+    "Halve the diameter to get the radius, then find the volume: \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ V &= \\pi r^{2} h \\\\ &= 3.14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmt(vol)+" \\text{ cm}^{3} \\end{aligned} \\] Convert to litres: \\("+fmt(vol)+" \\div 1000 = "+fmt(litres)+"\\). The answer is <b>"+fmt(litres)+" L</b>.",
+    {mode:"tank-litres", r:r, h:h}); q.figure=u4cylSVG(r,h,true); return q;
+}, ["The formula needs the radius, and the question asks for litres rather than cubic centimetres.", "Halve the diameter first, find the volume, then divide by 1000 to change the unit."]);
+
+E("u3-pk-area-si-convert", 3, ["3.10"], 1, "gen", function(){
+  var mode=pick(["m2cm","cm2mm","cm2m"]);
+  if(mode==="m2cm"){ var v=ri(2,18), ans=v*10000;
+    return mcq("Write \\("+v+"\\ \\text{m}^2\\) in square centimetres.",
+      {t:fmt(ans)+" \\(\\text{cm}^2\\)", fb:"Yes: 1 square metre is 10 000 square centimetres."},
+      [{t:fmt(v*100)+" \\(\\text{cm}^2\\)", fb:"That uses the linear factor 100. Areas use the squared factor, 10 000."},
+       {t:fmt(v*1000)+" \\(\\text{cm}^2\\)", fb:"That uses 1000, the cubic factor. Areas use 10 000 here."},
+       {t:fmt(v*10)+" \\(\\text{cm}^2\\)", fb:"That is far too small: each square metre holds 10 000 square centimetres."}],
+      "\\[ \\begin{aligned} "+v+"\\ \\text{m}^2 &= "+v+" \\times 10000\\ \\text{cm}^2 \\\\ &= "+fmt(ans)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans)+" square centimetres</b>.", {mode:mode,v:v}); }
+  if(mode==="cm2mm"){ var v2=ri(3,40), ans2=v2*100;
+    return mcq("Write \\("+v2+"\\ \\text{cm}^2\\) in square millimetres.",
+      {t:fmt(ans2)+" \\(\\text{mm}^2\\)", fb:"Yes: 1 square centimetre is 100 square millimetres."},
+      [{t:fmt(v2*10)+" \\(\\text{mm}^2\\)", fb:"That uses the linear factor 10. Areas use the squared factor, 100."},
+       {t:fmt(v2*1000)+" \\(\\text{mm}^2\\)", fb:"That is ten times too large: the squared factor from centimetres to millimetres is 100."},
+       {t:fmt(v2)+" \\(\\text{mm}^2\\)", fb:"The value must change: square millimetres are smaller units, so the count grows."}],
+      "\\[ \\begin{aligned} "+v2+"\\ \\text{cm}^2 &= "+v2+" \\times 100\\ \\text{mm}^2 \\\\ &= "+fmt(ans2)+"\\ \\text{mm}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans2)+" square millimetres</b>.", {mode:mode,v:v2}); }
+  var k=ri(2,15), v3=k*10000, ans3=k;
+  return mcq("Write \\("+fmt(v3)+"\\ \\text{cm}^2\\) in square metres.",
+    {t:fmt(ans3)+" \\(\\text{m}^2\\)", fb:"Yes: divide by 10 000 to move to the larger unit."},
+    [{t:fmt(v3/100)+" \\(\\text{m}^2\\)", fb:"That divides by the linear factor 100. Areas use the squared factor, 10 000."},
+     {t:fmt(v3/1000)+" \\(\\text{m}^2\\)", fb:"That divides by 1000. Areas use the squared factor, 10 000."},
+     {t:fmt(v3*10000)+" \\(\\text{m}^2\\)", fb:"That multiplies, but moving to a larger unit makes the count smaller, not larger."}],
+    "\\[ \\begin{aligned} "+fmt(v3)+"\\ \\text{cm}^2 &= "+fmt(v3)+" \\div 10000\\ \\text{m}^2 \\\\ &= "+fmt(ans3)+"\\ \\text{m}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans3)+" square metres</b>.", {mode:mode,v:v3});
+}, ["Area conversions use squared factors, not the linear factors.", "For metres to centimetres, the area factor is 100 squared, which is 10 000."]);
+
+E("u3-pk-area-imp-convert", 3, ["3.11"], 1, "gen", function(){
+  var mode=pick(["ft2in","yd2ft","ft2yd"]);
+  if(mode==="ft2in"){ var v=ri(2,30), ans=v*144;
+    return mcq("Write \\("+v+"\\ \\text{ft}^2\\) in square inches.",
+      {t:fmt(ans)+" \\(\\text{in}^2\\)", fb:"Yes: 1 square foot is 144 square inches."},
+      [{t:fmt(v*12)+" \\(\\text{in}^2\\)", fb:"That uses the linear factor 12. Areas use the squared factor, 144."},
+       {t:fmt(v*24)+" \\(\\text{in}^2\\)", fb:"That doubles the linear factor. Areas use the squared factor, 144."},
+       {t:fmt(v*100)+" \\(\\text{in}^2\\)", fb:"100 is an SI-style factor. For feet to inches the squared factor is 144."}],
+      "\\[ \\begin{aligned} "+v+"\\ \\text{ft}^2 &= "+v+" \\times 144\\ \\text{in}^2 \\\\ &= "+fmt(ans)+"\\ \\text{in}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans)+" square inches</b>.", {mode:mode,v:v}); }
+  if(mode==="yd2ft"){ var v2=ri(2,30), ans2=v2*9;
+    return mcq("Write \\("+v2+"\\ \\text{yd}^2\\) in square feet.",
+      {t:fmt(ans2)+" \\(\\text{ft}^2\\)", fb:"Yes: 1 square yard is 9 square feet."},
+      [{t:fmt(v2*3)+" \\(\\text{ft}^2\\)", fb:"That uses the linear factor 3. Areas use the squared factor, 9."},
+       {t:fmt(v2*6)+" \\(\\text{ft}^2\\)", fb:"That doubles the linear factor. Areas use the squared factor, 9."},
+       {t:fmt(v2*36)+" \\(\\text{ft}^2\\)", fb:"36 is the squared factor for yards to inches. For yards to feet it is 9."}],
+      "\\[ \\begin{aligned} "+v2+"\\ \\text{yd}^2 &= "+v2+" \\times 9\\ \\text{ft}^2 \\\\ &= "+fmt(ans2)+"\\ \\text{ft}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans2)+" square feet</b>.", {mode:mode,v:v2}); }
+  var k=ri(2,30), v3=k*9, ans3=k;
+  return mcq("Write \\("+v3+"\\ \\text{ft}^2\\) in square yards.",
+    {t:fmt(ans3)+" \\(\\text{yd}^2\\)", fb:"Yes: divide by 9 to move to the larger unit."},
+    [{t:fmt(v3/3)+" \\(\\text{yd}^2\\)", fb:"That divides by the linear factor 3. Areas use the squared factor, 9."},
+     {t:fmt(v3*9)+" \\(\\text{yd}^2\\)", fb:"That multiplies, but moving to a larger unit makes the count smaller."},
+     {t:fmt(v3)+" \\(\\text{yd}^2\\)", fb:"The value must change: square yards are larger units, so the count drops."}],
+    "\\[ \\begin{aligned} "+v3+"\\ \\text{ft}^2 &= "+v3+" \\div 9\\ \\text{yd}^2 \\\\ &= "+fmt(ans3)+"\\ \\text{yd}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans3)+" square yards</b>.", {mode:mode,v:v3});
+}, ["Area conversions use squared factors, not the linear factors.", "For feet to inches, the area factor is 12 squared, which is 144."]);
+
+E("u3-pk-area-convert-adv", 3, ["3.10"], 2, "gen", function(){
+  var mode=pick(["m2cmD","cm2mD","yd2in","in2ft"]);
+  if(mode==="m2cmD"){ var v=pick([0.25,0.5,0.75,1.25,1.5,1.75,2.25,2.5,3.5,4.25,0.35,0.65,1.35,2.75,3.25,5.5,6.75,0.15,1.05,2.05]), ans=v*10000;
+    return mcq("Write \\("+fmt(v)+"\\ \\text{m}^2\\) in square centimetres.",
+      {t:fmt(ans)+" \\(\\text{cm}^2\\)", fb:"Yes: multiply by the squared factor 10 000."},
+      [{t:fmt(v*100)+" \\(\\text{cm}^2\\)", fb:"That uses the linear factor 100. Areas use the squared factor."},
+       {t:fmt(v*1000)+" \\(\\text{cm}^2\\)", fb:"That uses 1000. The squared factor from metres to centimetres is 10 000."},
+       {t:fmt(ans*10)+" \\(\\text{cm}^2\\)", fb:"That is ten times too large: it adds a factor of 10 to the correct squared conversion."}],
+      "\\[ \\begin{aligned} "+fmt(v)+"\\ \\text{m}^2 &= "+fmt(v)+" \\times 10000\\ \\text{cm}^2 \\\\ &= "+fmt(ans)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans)+" square centimetres</b>.", {mode:mode,v:v}); }
+  if(mode==="cm2mD"){ var k=pick([12500,17500,22500,25000,32500,47500,52500,60000,13500,26500,37500,42500,57500,72500,82500,92500,10500,15500,20500,30500]), ans=k/10000;
+    return mcq("Write \\("+fmt(k)+"\\ \\text{cm}^2\\) in square metres.",
+      {t:fmt(ans)+" \\(\\text{m}^2\\)", fb:"Yes: divide by the squared factor 10 000."},
+      [{t:fmt(k/100)+" \\(\\text{m}^2\\)", fb:"That divides by the linear factor 100. Areas use the squared factor."},
+       {t:fmt(k/1000)+" \\(\\text{m}^2\\)", fb:"That divides by 1000. The squared factor from centimetres to metres is 10 000."},
+       {t:fmt(ans/10)+" \\(\\text{m}^2\\)", fb:"That is one tenth of the correct value: one factor too many was removed."}],
+      "\\[ \\begin{aligned} "+fmt(k)+"\\ \\text{cm}^2 &= "+fmt(k)+" \\div 10000\\ \\text{m}^2 \\\\ &= "+fmt(ans)+"\\ \\text{m}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans)+" square metres</b>.", {mode:mode,v:k}); }
+  if(mode==="yd2in"){ var v2=ri(2,20), ans2=v2*1296;
+    return mcq("Write \\("+v2+"\\ \\text{yd}^2\\) in square inches.",
+      {t:fmt(ans2)+" \\(\\text{in}^2\\)", fb:"Yes: 1 square yard is 1296 square inches, since 36 squared is 1296."},
+      [{t:fmt(v2*36)+" \\(\\text{in}^2\\)", fb:"That uses the linear factor 36. Areas use the squared factor, 1296."},
+       {t:fmt(v2*144)+" \\(\\text{in}^2\\)", fb:"144 is the squared factor from feet to inches. This conversion starts from yards."},
+       {t:fmt(v2*108)+" \\(\\text{in}^2\\)", fb:"That triples the linear factor. Areas use the squared factor, 1296."}],
+      "\\[ \\begin{aligned} "+v2+"\\ \\text{yd}^2 &= "+v2+" \\times 1296\\ \\text{in}^2 \\\\ &= "+fmt(ans2)+"\\ \\text{in}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans2)+" square inches</b>.", {mode:mode,v:v2}); }
+  var k2=ri(2,20), v3=k2*144, ans3=k2;
+  return mcq("Write \\("+fmt(v3)+"\\ \\text{in}^2\\) in square feet.",
+    {t:fmt(ans3)+" \\(\\text{ft}^2\\)", fb:"Yes: divide by the squared factor 144."},
+    [{t:fmt(v3/12)+" \\(\\text{ft}^2\\)", fb:"That divides by the linear factor 12. Areas use the squared factor, 144."},
+     {t:fmt(v3*144)+" \\(\\text{ft}^2\\)", fb:"That multiplies, but moving to a larger unit makes the count smaller."},
+     {t:fmt(v3/100)+" \\(\\text{ft}^2\\)", fb:"100 is an SI-style factor. For inches to feet the squared factor is 144."}],
+    "\\[ \\begin{aligned} "+fmt(v3)+"\\ \\text{in}^2 &= "+fmt(v3)+" \\div 144\\ \\text{ft}^2 \\\\ &= "+fmt(ans3)+"\\ \\text{ft}^2 \\end{aligned} \\] The answer is <b>"+fmt(ans3)+" square feet</b>.", {mode:mode,v:v3});
+}, ["Chain the squared factors: square each linear factor before you use it.", "Decide the direction first: a smaller unit means a larger count."]);
+
+E("u3-pk-circumference", 3, ["2.1"], 2, "gen", function(){
+  var r=ri(2,30); var C=Math.round(2*Math.PI*r*10)/10;
+  var ctx=pick(["round rug","circular garden","round table top","circular fire pit"]);
+  var q=numq("A "+ctx+" has a radius of \\("+r+"\\ \\text{m}\\). Find its circumference. Use \\(C = 2\\pi r\\). Round the answer to one decimal place, in metres.", C, 0.15,
+    "Apply the circumference formula directly. \\[ \\begin{aligned} C &= 2\\pi r \\\\ &= 2\\pi("+r+") \\\\ &\\approx "+fmt(C,1)+"\\ \\text{m} \\end{aligned} \\] The answer is <b>"+fmt(C,1)+" m</b>.",
+    {r:r}); q.figure=m12CircleSVG("r = "+r+" m"); return q;
+}, ["Circumference is the distance around a circle.", "Substitute the radius into C = 2 pi r."]);
+
+E("u3-pk-find-leg", 3, ["2.2"], 2, "gen", function(){
+  var sc=u6Scaled(), legA=sc[0], legB=sc[1], hyp=sc[2];
+  var giveFirst=ri(0,1)===0;
+  var given=giveFirst?legA:legB, wanted=giveFirst?legB:legA;
+  var unit=pick(["m","ft","cm"]);
+  var ctx=pick([
+    "A kite string is "+hyp+" "+unit+" long and the kite is "+given+" "+unit+" directly above the ground point used for measuring.",
+    "A roof rafter is "+hyp+" "+unit+" long and the roof rises "+given+" "+unit+" from the wall plate to the ridge.",
+    "A brace board is "+hyp+" "+unit+" long and it reaches "+given+" "+unit+" up a post.",
+    "A zipline cable is "+hyp+" "+unit+" long and the finish platform is "+given+" "+unit+" lower than the start platform."]);
+  var wantedName=giveFirst?"the other leg of the right triangle":"the other leg of the right triangle";
+  var q=numq(ctx+" The string, board or cable forms the hypotenuse of a right triangle. How long, in "+unit+", is "+wantedName+"?",
+    wanted, 0.1,
+    "The formula must be rearranged to isolate the unknown leg. \\[ \\begin{aligned} b^2 &= c^2 - a^2 \\\\ &= "+hyp+"^2 - "+given+"^2 = "+(hyp*hyp)+" - "+(given*given)+" = "+(wanted*wanted)+" \\\\ b &= "+wanted+" \\end{aligned} \\] The answer is <b>"+wanted+" "+unit+"</b>.",
+    {hyp:hyp,given:given});
+  q.figure=giveFirst?u6TriSVG(given,wanted,fmt(given)+" "+unit,"?",fmt(hyp)+" "+unit):u6TriSVG(wanted,given,"?",fmt(given)+" "+unit,fmt(hyp)+" "+unit);
+  return q;
+}, ["For a missing leg, rearrange the theorem: the leg squared equals the hypotenuse squared minus the known leg squared.", "Start by squaring the hypotenuse and the known leg separately."]);
+
+/* PK tranche metadata pass for Unit 3. The tranche's own entries are flagged here.  */
+var PKT_U3_FOR=["3.6","3.7","3.8","3.9","3.10","3.11","3.12","3.13","3.14","3.15","3.16","2.1","2.2","2.3","2.4","2.5","2.6"];
+var PKT_U3={
+ "u3-pk-vol-base-height":{src:"math-8:9.7",group:"volume"},
+ "u3-pk-vol-tri-prism":{src:"math-8:9.7",group:"volume"},
+ "u3-pk-vol-cylinder":{src:"math-8:9.9",group:"volume"},
+ "u3-pk-holds-most":{src:"math-8:9.11",group:"volume"},
+ "u3-pk-tank-litres":{src:"math-8:9.9",group:"volume"},
+ "u3-pk-area-si-convert":{src:"math-1202:3.29",group:"conversion"},
+ "u3-pk-area-imp-convert":{src:"math-1202:3.30",group:"conversion"},
+ "u3-pk-area-convert-adv":{src:"math-1202:3.29",group:"conversion"},
+ "u3-pk-circumference":{src:"math-1202:2.3",group:"formula-use"},
+ "u3-pk-find-leg":{src:"math-1202:2.4",group:"formula-use"}
+};
+BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U3_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u4.js ----- */
 // Math 2202 Unit 4 Interpreting Graphs question bank
 // Cut verbatim from the standalone bank source
@@ -2503,6 +3537,207 @@ E("u4-cr-percent-change", 4, ["6.7", "6.3"], 3, "gen", function () {
    tools. */
 BANK.forEach(function(e){if(["u4-cr-percent-change","u4-misleading-actual"].indexOf(e.id)>=0)e.pkFlag=true;});
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 6 (reading and describing graphs). Borrowed verbatim from Mathematics 9 (u6-graph-describe, u6-point-on-graph, u6-interpolate-graph, u6-gap-missing-coord-cr) and Mathematics 7 (u4-graph-read, u4-graph-quantities, u7-line-graph); feeder helper copies ride in bank-helpers.js. Cluster 7's stock (u4-misleading-actual, u4-cr-percent-change) sits in the unit's main block above, flagged on November 13, 2026; its metadata is completed by this tranche's pass below. ===== */
+E("u4-pk-graph-describe", 4, ["6.4"], 2, "gen", function () {
+  var ctxs = [
+    { x: "hours", y: "km", xl: "hours", yl: "km" },
+    { x: "minutes", y: "litres", xl: "minutes", yl: "L" },
+    { x: "items", y: "dollars", xl: "items", yl: "$" },
+    { x: "weeks", y: "centimetres", xl: "weeks", yl: "cm" }
+  ];
+  for (var att = 0; att < 300; att++) {
+    var b = ri(1, 6), m = ri(1, 3), ctx = pick(ctxs);
+    var corr = "It starts at " + fmt(b) + " and increases by " + fmt(m) + " each step.";
+    var cands = [
+      { t: "It starts at " + fmt(m) + " and increases by " + fmt(b) + " each step.", fb: "That swaps the start and the step. The line crosses the y-axis at " + fmt(b) + "." },
+      { t: "It starts at " + fmt(b) + " and increases by " + fmt(m + 1) + " each step.", fb: "The start is right, but check the rise between two neighbouring points: it is " + fmt(m) + ", not " + fmt(m + 1) + "." },
+      { t: "It starts at " + fmt(b + 1) + " and increases by " + fmt(m) + " each step.", fb: "The step is right, but the line crosses the y-axis at " + fmt(b) + ", not " + fmt(b + 1) + "." },
+      { t: "It starts at " + fmt(b) + " and decreases by " + fmt(m) + " each step.", fb: "The line rises as x grows, so the values increase; they do not decrease." },
+      { t: "It starts at 0 and increases by " + fmt(m) + " each step.", fb: "The step is right, but the line crosses the y-axis at " + fmt(b) + ", not at 0." }
+    ];
+    var ds = u6pick3(corr, cands);
+    if (!ds) continue;
+    var xmax = 5, ymax = b + m * xmax;
+    var pts = []; for (var k = 0; k <= xmax; k++) pts.push({ x: k, y: b + m * k });
+    var sol = "Read the start where the line crosses the y-axis, then the rise between neighbouring points: \\[ \\begin{aligned} \\text{start} &= " + fmt(b) + " \\\\ \\text{step} &= " + fmt(b + m) + " - " + fmt(b) + " = " + fmt(m) + " \\end{aligned} \\] So the pattern is <b>" + corr + "</b>";
+    var q = mcq("The graph shows a linear relation. The x-axis is measured in " + ctx.x + " and the y-axis in " + ctx.y + ". Which sentence describes the pattern in the graph?",
+      { t: corr, fb: "Correct. The y-intercept is the start, and the rise per step is the step." }, ds, sol,
+      { mode: "graph-describe", b: b, m: m, ctx: ctx.x });
+    q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: ctx.xl, ylab: ctx.yl, lines: [{ pts: pts.map(function (p) { return [p.x, p.y]; }) }], points: pts });
+    return q;
+  }
+  var qf = mcq("The graph shows a linear relation. The x-axis is measured in hours and the y-axis in km. Which sentence describes the pattern in the graph?",
+    { t: "It starts at 2 and increases by 1 each step.", fb: "Correct. The y-intercept is the start, and the rise per step is the step." },
+    [
+      { t: "It starts at 1 and increases by 2 each step.", fb: "That swaps the start and the step." },
+      { t: "It starts at 2 and increases by 2 each step.", fb: "The rise between neighbouring points is 1, not 2." },
+      { t: "It starts at 2 and decreases by 1 each step.", fb: "The line rises, so the values increase." }
+    ],
+    "The line crosses the y-axis at 2 and rises by 1 per step, so the pattern is <b>It starts at 2 and increases by 1 each step.</b>",
+    { mode: "graph-describe", b: 2, m: 1, ctx: "hours" });
+  var ptsf = []; for (var k2 = 0; k2 <= 5; k2++) ptsf.push({ x: k2, y: 2 + k2 });
+  qf.figure = u6graph({ xmax: 5, ymax: 7, xlab: "hours", ylab: "km", lines: [{ pts: ptsf.map(function (p) { return [p.x, p.y]; }) }], points: ptsf });
+  return qf;
+}, ["The start value is where the line crosses the y-axis.", "Pick two neighbouring plotted points and find how much y rises from one to the next."]);
+
+E("u4-pk-point-on-graph", 4, ["6.3"], 1, "gen", function () {
+  var kind = pick(["slope", "slope", "horiz", "vert"]);
+  function pt(x, y) { return "(" + fmt(x) + ", " + fmt(y) + ")"; }
+  if (kind === "slope") {
+    for (var att = 0; att < 300; att++) {
+      var b = ri(1, 5), m = ri(1, 3);
+      var xmax = 6, ymax = b + m * xmax;
+      var x0 = ri(2, 5), y0 = b + m * x0;
+      var corr = pt(x0, y0);
+      var raw = [[x0, y0 + 1], [x0, y0 - 1], [x0 + 1, y0], [x0 - 1, y0], [0, m], [y0, x0]];
+      var cands = [];
+      raw.forEach(function (c) {
+        if (c[0] < 0 || c[1] < 0) return;
+        if (b + m * c[0] === c[1]) return;
+        cands.push({ t: pt(c[0], c[1]), fb: "That point is not on the line. At x = " + fmt(c[0]) + ", the line has y = " + fmt(b + m * c[0]) + "." });
+      });
+      var ds = u6pick3(corr, cands);
+      if (!ds) continue;
+      var sol = "Points on the line follow its pattern, starting at " + fmt(b) + " and rising by " + fmt(m) + " per step: \\[ \\begin{aligned} y(" + x0 + ") &= " + b + " + " + fmt(m) + "(" + x0 + ") \\\\ &= " + fmt(y0) + " \\end{aligned} \\] So a point on the graph is <b>" + corr + "</b>.";
+      var q = mcq("Which point lies on the graph shown?", { t: corr, fb: "Correct. That point sits exactly on the line." }, ds, sol, { mode: "point-slope", b: b, m: m, x0: x0 });
+      q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: "x", ylab: "y", lines: [{ pts: [[0, b], [xmax, ymax]] }] });
+      return q;
+    }
+  } else if (kind === "horiz") {
+    var c = ri(2, 9), x0 = ri(1, 5);
+    var corrH = pt(x0, c);
+    var rawH = [[x0, c + 1], [x0, c + 2], [x0 + 1, c - 1], [c, x0], [x0 + 2, c + 3]];
+    var candsH = [];
+    rawH.forEach(function (cc) {
+      if (cc[1] === c || cc[1] < 0) return;
+      candsH.push({ t: pt(cc[0], cc[1]), fb: "Every point on this line has y = " + fmt(c) + ", and that point has y = " + fmt(cc[1]) + "." });
+    });
+    var dsH = u6pick3(corrH, candsH);
+    if (dsH) {
+      var solH = "The graph is a horizontal line: \\[ \\begin{aligned} y &= " + fmt(c) + " \\end{aligned} \\] Every point on it has \\(y = " + fmt(c) + "\\), whatever its \\(x\\) value is. So a point on the graph is <b>" + corrH + "</b>.";
+      var qH = mcq("Which point lies on the graph shown?", { t: corrH, fb: "Correct. Its y value is " + fmt(c) + ", like every point on the line." }, dsH, solH, { mode: "point-horiz", c: c, x0: x0 });
+      qH.figure = u6graph({ xmax: 6, ymax: 12, xlab: "x", ylab: "y", lines: [{ pts: [[0, c], [6, c]] }] });
+      return qH;
+    }
+  } else {
+    var cv = ri(2, 5), y0v = ri(1, 10);
+    var corrV = pt(cv, y0v);
+    var rawV = [[cv + 1, y0v], [cv - 1, y0v], [y0v, cv], [cv + 2, y0v + 1]];
+    var candsV = [];
+    rawV.forEach(function (cc) {
+      if (cc[0] === cv) return;
+      candsV.push({ t: pt(cc[0], cc[1]), fb: "Every point on this line has x = " + fmt(cv) + ", and that point has x = " + fmt(cc[0]) + "." });
+    });
+    var dsV = u6pick3(corrV, candsV);
+    if (dsV) {
+      var solV = "The graph is a vertical line: \\[ \\begin{aligned} x &= " + fmt(cv) + " \\end{aligned} \\] Every point on it has \\(x = " + fmt(cv) + "\\), whatever its \\(y\\) value is. So a point on the graph is <b>" + corrV + "</b>.";
+      var qV = mcq("Which point lies on the graph shown?", { t: corrV, fb: "Correct. Its x value is " + fmt(cv) + ", like every point on the line." }, dsV, solV, { mode: "point-vert", c: cv, y0: y0v });
+      qV.figure = u6graph({ xmax: 6, ymax: 12, xlab: "x", ylab: "y", lines: [{ pts: [[cv, 0], [cv, 12]] }] });
+      return qV;
+    }
+  }
+  var qf = mcq("Which point lies on the graph shown?", { t: "(3, 7)", fb: "Correct. That point sits exactly on the line." },
+    [
+      { t: "(3, 6)", fb: "At x = 3, the line has y = 7." },
+      { t: "(3, 8)", fb: "At x = 3, the line has y = 7." },
+      { t: "(4, 7)", fb: "At x = 4, the line has y = 9." }
+    ],
+    "The line starts at 1 and rises by 2 per step, so at x = 3, y = 7. A point on the graph is <b>(3, 7)</b>.",
+    { mode: "point-slope", b: 1, m: 2, x0: 3 });
+  qf.figure = u6graph({ xmax: 6, ymax: 13, xlab: "x", ylab: "y", lines: [{ pts: [[0, 1], [6, 13]] }] });
+  return qf;
+}, ["For a sloped line, use its start and step to find the y value for a given x. For a flat or upright line, check which coordinate stays the same.", "First decide what kind of line it is: sloped, horizontal or vertical."]);
+
+E("u4-pk-interpolate", 4, ["6.5"], 1, "gen", function () {
+  var ctxs = [
+    { xl: "hours", yl: "km", prompt: "The graph shows the distance a bus has travelled since leaving the depot. The x-axis is time in hours and the y-axis is distance in kilometres.", ask: "How many kilometres has the bus travelled after XQ hours?" },
+    { xl: "minutes", yl: "L", prompt: "The graph shows the water in a tank as it fills. The x-axis is time in minutes and the y-axis is volume in litres.", ask: "How many litres are in the tank after XQ minutes?" },
+    { xl: "photos", yl: "$", prompt: "The graph shows the cost of printing photos. The x-axis is the number of photos and the y-axis is the cost in dollars.", ask: "What is the cost of printing XQ photos, in dollars?" },
+    { xl: "hours", yl: "cm", prompt: "The graph shows the depth of snow during a storm. The x-axis is time in hours and the y-axis is the depth of snow in centimetres.", ask: "What is the depth of snow after XQ hours, in centimetres?" }
+  ];
+  var ctx = pick(ctxs);
+  var b = ri(2, 10), m = ri(2, 5), xmax = 6, xq = ri(2, 5);
+  var ymax = b + m * xmax, ans = b + m * xq;
+  var pts = []; for (var k = 0; k <= xmax; k++) pts.push({ x: k, y: b + m * k });
+  var sol = "Read across from \\(x = " + xq + "\\) to the line, then down to the y-axis. The pattern starts at " + fmt(b) + " and steps by " + fmt(m) + ": \\[ \\begin{aligned} y &= " + b + " + " + fmt(m) + "(" + xq + ") \\\\ &= " + b + " + " + fmt(m * xq) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the value at \\(x = " + xq + "\\) is <b>" + fmt(ans) + "</b>.";
+  var q = numq(ctx.prompt + " " + ctx.ask.replace("XQ", xq), ans, 0.01, sol, { mode: "interpolate", b: b, m: m, xq: xq, ctx: ctx.xl + "/" + ctx.yl });
+  q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: ctx.xl, ylab: ctx.yl, lines: [{ pts: pts.map(function (p) { return [p.x, p.y]; }) }], points: pts });
+  return q;
+}, ["Go across from the given x value to the line, then straight down to read the y value.", "You can also use the pattern: start value plus step times x."]);
+
+E("u4-pk-missing-coord", 4, ["6.5"], 2, "gen", function () {
+  var m = ri(2, 5), b = ri(1, 12);
+  var x1 = ri(0, 3), x2 = x1 + ri(2, 4), x3 = x2 + ri(2, 5);
+  var y1 = b + m * x1, y2 = b + m * x2, ans = b + m * x3;
+  var prompt = "The points (" + x1 + ", " + y1 + ") and (" + x2 + ", " + y2 + ") lie on a straight line. The point (" + x3 + ", y) is also on the same line. What is the value of y?";
+  var sol = "Find the slope from the two given points first, then extend the pattern to the new x: \\[ \\begin{aligned} \\text{slope} &= \\frac{" + y2 + " - " + y1 + "}{" + x2 + " - " + x1 + "} = " + m + " \\\\ y &= " + y2 + " + " + m + "(" + x3 + " - " + x2 + ") = " + ans + " \\end{aligned} \\] The answer is <b>" + ans + "</b>.";
+  return numq(prompt, ans, 0.01, sol, { mode: "gap-missing-coord", m: m, x3: x3 });
+}, ["The rate of the line must be worked out from the two complete points before the incomplete point can be used.", "Divide the change in y by the change in x for the two given points as the first step."]);
+
+E("u4-pk-graph-read", 4, ["6.3"], 1, "gen", function(){
+  var g=u4graphData(), idx=ri(0,3), cat=g.cats[idx];
+  var ds=g.cats.filter(function(c,i){return i!==idx;}).map(function(c){
+    return {t:c.pct+"%", fb:"That is the percent for "+c.name+": find "+cat.name+" in the legend."};
+  });
+  var q=mcq("The circle graph shows students' "+g.topic+". What percent of students chose "+cat.name+"?",
+    {t:cat.pct+"%", fb:"Yes: the legend gives "+cat.name+" as "+cat.pct+"%."},
+    ds,
+    "Match "+cat.name+" in the legend to its sector: it is labelled "+cat.pct+"%. The answer is <b>"+cat.pct+"%</b>.",
+    {topic:g.topic, idx:idx});
+  q.figure=u4pieFig(g.cats,false);
+  return q;
+}, ["Use the legend to match each sector letter to its category and percent.", "Start by finding the category in the legend beside the graph."]);
+
+E("u4-pk-graph-quantities", 4, ["6.3"], 1, "gen", function(){
+  var g=u4graphData(), idx=ri(0,3), cat=g.cats[idx];
+  var T=pick([100,200,300,400]), qty=cat.pct*T/100;
+  var ds=g.cats.filter(function(c,i){return i!==idx;}).map(function(c){
+    return {t:String(c.pct*T/100), fb:"That is the count for "+c.name+": use the percent for "+cat.name+"."};
+  });
+  var q=mcq("The circle graph shows the "+g.topic+" of "+T+" students. How many students chose "+cat.name+"?",
+    {t:String(qty), fb:"Yes: "+cat.pct+"% of "+T+" is "+qty+"."},
+    ds,
+    "\\[ \\begin{aligned} \\text{students} &= "+FR(cat.pct,"100")+" \\times "+T+" \\\\ &= "+qty+" \\end{aligned} \\] The answer is <b>"+qty+"</b>.",
+    {topic:g.topic, idx:idx, T:T});
+  q.figure=u4pieFig(g.cats,false);
+  return q;
+}, ["Turn the sector's percent into a count by multiplying it by the total surveyed.", "Start by reading the percent for the category from the legend."]);
+
+E("u4-pk-line-graph", 4, ["6.4"],1,"gen",function(){
+  var days=["Mon","Tue","Wed","Thu","Fri"];var vals=days.map(function(){return ri(6,24);});
+  var mode=pick(["warmest","change","read"]);
+  var prompt,correct,ds,sol;
+  if(mode==="warmest"){var mi=vals.indexOf(Math.max.apply(null,vals));correct=days[mi];
+    ds=days.filter(function(d,i){return i!==mi;}).slice(0,3).map(function(d){return {t:d,fb:"The highest point on the line graph marks the greatest temperature."};});
+    prompt="The line graph shows the daily high temperature for five days. On which day was it warmest?";sol="The highest point is on "+days[mi]+" at "+vals[mi]+" degrees. The answer is <b>"+days[mi]+"</b>.";
+  } else if(mode==="change"){var i1=ri(0,2),i2=ri(3,4);var d=vals[i2]-vals[i1];correct=String(d);
+    ds=u7numOpts(d,[d+2,d-2,-d===d?d+3:-d]).map(function(v){return {t:String(v),fb:"Subtract the earlier temperature from the later temperature, keeping the sign."};});
+    if(ds.length<3)ds.push({t:String(d+5),fb:"Subtract the earlier temperature from the later temperature, keeping the sign."});
+    prompt="The line graph shows the daily high temperature for five days. By how many degrees did the temperature change from "+days[i1]+" to "+days[i2]+"?";sol="\\[ \\begin{aligned} \\text{change} &= "+vals[i2]+" - "+vals[i1]+" \\\\ &= "+d+" \\end{aligned} \\] The change is <b>"+d+" degrees</b>.";
+  } else {var i3=ri(0,4);correct=String(vals[i3]);
+    ds=u7numOpts(vals[i3],[vals[i3]+2,Math.max(vals[i3]-2,0),vals[(i3+2)%5]]).map(function(v){return {t:String(v),fb:"Find "+days[i3]+" on the horizontal axis and read the point value above it."};});
+    prompt="The line graph shows the daily high temperature for five days. What was the temperature on "+days[i3]+"?";sol="The point above "+days[i3]+" sits at "+vals[i3]+" degrees. The answer is <b>"+vals[i3]+" degrees</b>.";
+  }
+  var q=mcq(prompt,{t:correct,fb:"Yes, that reading matches the line graph."},ds,sol,{mode:mode});
+  q.figure=u7lineSVG(days,vals,"Degrees");
+  return q;
+},["Each point on a line graph gives the value for that day.","Start by reading the two values you need straight off the graph."]);
+
+/* PK tranche metadata pass for Unit 4. The tranche's own entries are flagged here. This pass also completes the tranche metadata of the two entries flagged on November 13, 2026 (u4-misleading-actual, u4-cr-percent-change) without retagging or reflagging them. */
+var PKT_U4_FOR=["6.1","6.2","6.3","6.4","6.5","6.6","6.7"];
+var PKT_U4={
+ "u4-misleading-actual":{src:"math-1202:1.4",group:"percent-change"},
+ "u4-cr-percent-change":{src:"math-1202:1.4",group:"percent-change"},
+ "u4-pk-graph-describe":{src:"math-9:7.5",group:"graph-trends"},
+ "u4-pk-point-on-graph":{src:"math-9:7.7",group:"graph-reading"},
+ "u4-pk-interpolate":{src:"math-9:7.8",group:"interp-extrap"},
+ "u4-pk-missing-coord":{src:"math-9:7.7",group:"interp-extrap"},
+ "u4-pk-graph-read":{src:"math-7:11.4",group:"graph-reading"},
+ "u4-pk-graph-quantities":{src:"math-7:11.5",group:"graph-reading"},
+ "u4-pk-line-graph":{src:"math-7:11.9",group:"graph-reading"}
+};
+BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U4_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u5.js ----- */
 // Math 2202 Unit 5 Budgets question bank
 // Cut verbatim from the standalone bank source
@@ -3001,6 +4236,128 @@ E("u5-cr-max-wants-spending", 5, ["1.3","1.5","1.6"], 3, "gen", function(){
     550, 0.01,
     "The new income is 2500 times 1.10, which is 2750. Subtract the needs and the goal: 2750 minus 1900 minus 300 is 550. The answer is <b>$550.00</b>.", {maxWants:55000});
 }, ["Wants get whatever is left after the new income covers the needs and the saving goal.", "Start by applying the raise to find the new monthly income."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 8 (pay and budget readiness). Borrowed verbatim from Mathematics 1202 (u4-decimal-hours-total, u4-gross-overtime, u4-gross-with-tips, u4-deduction-calc, u4-cpp-ei-tax-cr, u4-net-from-deductions) and Mathematics 8 (u5-percent-of-number); feeder helper copies ride in bank-helpers.js. ===== */
+E("u5-pk-hours-total", 5, ["1.3"],1,"gen",function(){
+ var days=["Monday","Tuesday","Wednesday"], hs=[], ms=[], tot=0, wrongMin=0, parts=[], chain=[];
+ for(var i=0;i<3;i++){var h=ri(4,9), m=pick([0,15,30,45]); hs.push(h); ms.push(m); tot+=h+m/60; wrongMin+=h+m/100; parts.push(days[i]+" "+h+" h "+(m<10?"0":"")+m+" min"); chain.push(fmt(h+m/60));}
+ var last=hs[2]+ms[2]/60;
+ var ds=u4Dist(tot,[{v:wrongMin,fb:"That treats the minutes as hundredths of an hour. Divide minutes by 60 to change them to hours."},{v:tot-last,fb:"That leaves out one day. Add the time for all three days."},{v:tot+1,fb:"That adds a full extra hour. Convert each day's minutes by dividing by 60, then add."}],function(v){return fmt(v);},0.25);
+ var _bo=balOpts({t:fmt(tot),fb:"Yes: change each day's minutes to a decimal part of an hour, then add the three days."},ds);
+ var q=mcq("The table shows the time one worker put in on three days. What is the total time worked, in decimal hours?",
+  _bo[0],_bo[1],
+  "Change minutes to hours by dividing by 60, then add. \\[ \\begin{aligned} \\text{Total} &= "+chain.join(" + ")+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total time worked is <b>"+u4Hrs(tot)+"</b>.",
+  {hs:hs,ms:ms});
+ q.figure=u4TableFig([["Day","Time worked"]].concat(parts.map(function(p){var b=p.split(" ");return [b[0],b.slice(1).join(" ")];})));
+ return q;
+},["Decimal hours means the minutes become a decimal part of one hour.","For each day, divide the minutes by 60 and add that to the hours, then total the days."]);
+
+E("u5-pk-gross-overtime", 5, ["1.3"],2,"gen",function(){
+ var w=ri(1500,2600)/100, R=ri(30,40), O=ri(2,10);
+ var reg=u4R(R*w), ot=u4R(O*1.5*w), gross=u4R(reg+ot);
+ var ds=u4Dist(gross,[{v:u4R((R+O)*w),fb:"That pays every hour at the regular rate. Overtime hours earn time and a half, not the regular rate."},
+  {v:u4R(reg+O*2*w),fb:"That pays overtime at double time, which is 2 times the wage. The stem says time and a half, which is 1.5 times."},
+  {v:reg,fb:"That is only the regular hours. Add pay for the overtime hours at 1.5 times the wage."}],u4M,2.50);
+ return mcq("A cook earns "+u4M(w)+" per hour. In one week the cook works "+R+" regular hours and "+O+" overtime hours paid at time and a half. What is the gross pay for the week?",
+  {t:u4M(gross),fb:"Yes: regular pay plus overtime pay at 1.5 times the wage."},ds,
+  "Work out regular pay and overtime pay, then add. \\[ \\begin{aligned} \\text{Regular pay} &= "+R+" \\times "+fmtF(w,2)+" = "+fmtF(reg,2)+" \\\\ \\text{Overtime pay} &= "+O+" \\times 1.5 \\times "+fmtF(w,2)+" = "+fmtF(ot,2)+" \\\\ \\text{Gross pay} &= "+fmtF(reg,2)+" + "+fmtF(ot,2)+" = "+fmtF(gross,2)+" \\end{aligned} \\] The gross pay is <b>"+u4M(gross)+"</b>.",
+  {w:w,R:R,O:O});
+},["Split the hours into regular hours and overtime hours, and price each group at its own rate.","Start with the regular hours times the wage."]);
+
+E("u5-pk-gross-tips", 5, ["1.3"],2,"gen",function(){
+ var w=ri(1400,2000)/100, h=ri(20,38), tips=ri(40,240);
+ var wage=u4R(h*w), gross=u4R(wage+tips);
+ var ds=u4Dist(gross,[{v:wage,fb:"That is the wage only. The tips are part of gross pay too, so add them."},
+  {v:u4R(wage-tips),fb:"That subtracts the tips. Tips add to what the server earned."},
+  {v:u4R(h*(w+tips)),fb:"That treats the tips as an hourly rate and multiplies them by the hours. Tips are one total amount, added once."}],u4M,2.50);
+ return mcq("A server earns "+u4M(w)+" per hour and works "+h+" hours in a week. The server also receives "+u4M(tips)+" in tips. What is the gross pay for the week?",
+  {t:u4M(gross),fb:"Yes: hours times wage, plus the full tips amount, gives gross pay."},ds,
+  "Gross pay counts both the wage and the tips. \\[ \\begin{aligned} \\text{Wage} &= "+h+" \\times "+fmtF(w,2)+" = "+fmtF(wage,2)+" \\\\ \\text{Gross pay} &= "+fmtF(wage,2)+" + "+fmtF(tips,2)+" = "+fmtF(gross,2)+" \\end{aligned} \\] The gross pay is <b>"+u4M(gross)+"</b>.",
+  {w:w,h:h,tips:tips});
+},["Gross pay includes everything earned in the period: the wage and the tips.","Start with hours times the hourly wage."]);
+
+E("u5-pk-deduction-calc", 5, ["1.3"],2,"gen",function(){
+ var G=ri(1500,3400), mode=ri(1,4), name="", rate=0, ded=0, cap=0, stem="";
+ if(mode===1){name="CPP"; rate=pick([5,5.5,6,6.5]); ded=u4R(G*rate/100); stem="The CPP rate given for this problem is "+fmt(rate)+"% of gross pay.";}
+ else if(mode===2){name="EI"; rate=pick([1.5,2,2.5]); ded=u4R(G*rate/100); stem="The EI rate given for this problem is "+fmt(rate)+"% of gross pay.";}
+ else if(mode===3){name="income tax"; rate=pick([10,12,15,20]); ded=u4R(G*rate/100); stem="The income tax rate given for this problem is "+fmt(rate)+"% of gross pay.";}
+ else {name="CPP"; rate=pick([6,6.5,7]); cap=ri(150,210); var raw=u4R(G*rate/100); ded=Math.min(raw,cap); stem="The CPP rate given for this problem is "+fmt(rate)+"% of gross pay, up to a maximum deduction of "+u4M(cap)+" per pay period.";}
+ var ds=u4Dist(ded,[{v:u4R(G-ded),fb:"That is the pay left after this one deduction. The question asks for the deduction itself."},
+  {v:u4R(ded/2),fb:"That takes half of the deduction. Apply the stated percent to the full gross pay for the period."},
+  {v:u4R(G*(rate+2)/100),fb:"That uses a rate 2 percent higher than the stated rate. Use the rate given in the stem."}],u4M,2.50);
+ var capNote=(mode===4)?" The percent gives "+fmtF(u4R(G*rate/100),2)+", which is over the maximum, so the deduction is capped at "+fmtF(cap,2)+".":"";
+ return mcq("A worker's gross pay for one pay period is "+u4M(G)+". "+stem+" What is the "+name+" deduction for this period?",
+  {t:u4M(ded),fb:"Yes: apply the stated rate to the gross pay"+(mode===4?", and respect the stated maximum":"")+"."},ds,
+  "A percent deduction is the rate times the gross pay. \\[ \\begin{aligned} \\text{"+name+" deduction} &= "+fmt(rate)+"\\% \\times "+fmtF(G,2)+" \\\\ &= "+fmtF(u4R(G*rate/100),2)+" \\end{aligned} \\]"+capNote+" The "+name+" deduction is <b>"+u4M(ded)+"</b>.",
+  {mode:mode,G:G,rate:rate});
+},["Percent deduction means rate times gross pay. Watch for a stated maximum.","Start by writing the rate as a decimal or as a fraction of 100."]);
+
+E("u5-pk-cpp-ei-tax", 5, ["1.3"],2,"gen",function(){
+ var G=ri(140,320)*10, cppR=pick([5,5.5,6]), eiR=pick([1.5,2]), taxR=pick([10,12,15]);
+ var cpp=u4R(G*cppR/100), ei=u4R(G*eiR/100), tax=u4R(G*taxR/100), tot=u4R(cpp+ei+tax);
+ return numq("A worker's gross pay for a pay period is "+u4M(G)+". For this problem, use these deduction rates: CPP is "+fmt(cppR)+"% of gross pay, EI is "+fmt(eiR)+"% of gross pay, and income tax is "+fmt(taxR)+"% of gross pay. Find the total of these three deductions. Give your answer in dollars.",
+  tot,0.05,
+  "Apply each stated rate to the gross pay, then add. \\[ \\begin{aligned} \\text{CPP} &= "+fmt(cppR)+"\\% \\times "+fmtF(G,2)+" = "+fmtF(cpp,2)+" \\\\ \\text{EI} &= "+fmt(eiR)+"\\% \\times "+fmtF(G,2)+" = "+fmtF(ei,2)+" \\\\ \\text{Income tax} &= "+fmt(taxR)+"\\% \\times "+fmtF(G,2)+" = "+fmtF(tax,2)+" \\\\ \\text{Total} &= "+fmtF(cpp,2)+" + "+fmtF(ei,2)+" + "+fmtF(tax,2)+" = "+fmtF(tot,2)+" \\end{aligned} \\] The total deductions are <b>"+u4M(tot)+"</b>.",
+  {G:G,cppR:cppR,eiR:eiR,taxR:taxR});
+},["Each deduction is its stated percent of the same gross pay.","Start with the CPP amount: rate times gross pay, with the percent changed to a decimal."]);
+
+E("u5-pk-net-pay", 5, ["1.3"],2,"gen",function(){
+ var G=ri(1500,3000), mode=ri(1,2);
+ var items=[["health plan",ri(30,90)],["union dues",ri(20,60)],["uniform cost",ri(10,40)],["charitable donation",ri(5,30)]];
+ var use=items.slice(0,ri(3,4)), tot=0, list=use.map(function(x){tot+=x[1]; return x[0]+" "+u4M(x[1]);}).join(", ");
+ var vp=0, vpText="", earn=G;
+ if(mode===2){var pct=pick([4,6]); vp=u4R(G*pct/100); vpText=" Vacation pay of "+pct+"% of gross pay is added before deductions."; earn=u4R(G+vp);}
+ var good=u4R(earn-tot);
+ var ds=u4Dist(good,[{v:u4R(G-tot),fb:mode===2?"That leaves out the vacation pay. Add the vacation pay to gross pay first, then subtract deductions.":"That subtracts from gross pay only. Check every amount that should come off."},
+  {v:u4R(earn+tot),fb:"That adds the deductions. Deductions come off, so net pay is smaller."},
+  {v:u4R(earn-use[0][1]),fb:"That subtracts only the first deduction. Subtract the total of all the deductions listed."}],u4M,2.50);
+ return mcq("A worker's gross pay for a period is "+u4M(G)+"."+vpText+" The deductions for the period are: "+list+". What is the net pay?",
+  {t:u4M(good),fb:"Yes: total the deductions and subtract them"+(mode===2?" after adding the vacation pay":"")+"."},ds,
+  "Add any extra earnings, total the deductions, then subtract. \\[ \\begin{aligned} \\text{Total deductions} &= "+use.map(function(x){return fmtF(x[1],2);}).join(" + ")+" = "+fmtF(tot,2)+" \\\\ \\text{Net pay} &= "+fmtF(earn,2)+" - "+fmtF(tot,2)+" = "+fmtF(good,2)+" \\end{aligned} \\] The net pay is <b>"+u4M(good)+"</b>.",
+  {mode:mode,G:G,tot:tot,vp:vp});
+},["Net pay is what remains after every listed deduction comes off the earnings.","Start by adding all the deductions into one total."]);
+
+E("u5-pk-percent-of-amount", 5, ["1.5"], 1, "gen", function () {
+  var mode = ri(0, 2);
+  if (mode === 0) {
+    var pairs = [[20, 150], [25, 240], [30, 120], [40, 250], [50, 180], [60, 350], [75, 160], [80, 450], [15, 200], [35, 300], [90, 600], [10, 480], [45, 220], [55, 400], [65, 500], [70, 320], [85, 700], [95, 900], [5, 640], [12, 350], [18, 450], [22, 550]];
+    var pr = pick(pairs), p = pr[0], W = pr[1], ans = W * p / 100;
+    var ctxs = [
+      "In a survey, " + p + "% of " + W + " students said they walk to school. How many students said they walk to school?",
+      "A hockey team won " + p + "% of its " + W + " shots on goal as goals this season. How many goals did the team score?",
+      "A store sold " + p + "% of " + W + " concert tickets in the first hour. How many tickets were sold in the first hour?"
+    ];
+    var prompt = pick(ctxs);
+    var sol = "Find the percent of the whole amount: \\[ \\begin{aligned} " + p + "\\% \\text{ of } " + W + " &= " + fmt(p / 100, 2) + " \\times " + W + " \\\\ &= " + fmt(ans, 0) + " \\end{aligned} \\] So the answer is <b>" + fmt(ans, 0) + "</b>.";
+    return numq(prompt, ans, 0.01, sol, { mode: "pct-of-std", p: p, w: W });
+  }
+  if (mode === 1) {
+    var pairs2 = [[110, 200], [120, 250], [125, 160], [130, 300], [150, 240], [175, 120], [200, 90], [140, 350], [115, 400], [135, 500], [160, 450], [180, 600], [225, 320], [250, 280]];
+    var pr2 = pick(pairs2), p2 = pr2[0], W2 = pr2[1], ans2 = W2 * p2 / 100;
+    var prompt2 = "Last year a trail crew cleared " + W2 + " m of trail. This year the crew cleared " + p2 + "% as much trail as last year. How many metres of trail did the crew clear this year?";
+    var sol2 = "A percent over 100% gives an amount larger than the whole it is compared with: \\[ \\begin{aligned} " + p2 + "\\% \\text{ of } " + W2 + " &= " + fmt(p2 / 100, 2) + " \\times " + W2 + " \\\\ &= " + fmt(ans2, 0) + " \\end{aligned} \\] So the crew cleared <b>" + fmt(ans2, 0) + " m</b>.";
+    return numq(prompt2, ans2, 0.01, sol2, { mode: "pct-of-over", p: p2, w: W2 });
+  }
+  var pairs3 = [[5, 4000], [4, 5000], [8, 2000], [5, 8000], [2, 10000], [8, 6000], [4, 12000], [2, 15000], [5, 20000], [8, 9000], [4, 25000], [2, 30000]];
+  var pr3 = pick(pairs3), p10 = pr3[0], W3 = pr3[1], ans3 = W3 * p10 / 1000;
+  var pStr3 = fmt(p10 / 10, 1);
+  var prompt3 = "A town has " + W3 + " residents. About " + pStr3 + "% of the residents were born on a holiday. About how many residents were born on a holiday?";
+  var sol3 = "A percent under 1% is a small fraction of the whole: \\[ \\begin{aligned} " + pStr3 + "\\% \\text{ of } " + W3 + " &= " + fmt(p10 / 1000, 4) + " \\times " + W3 + " \\\\ &= " + fmt(ans3, 0) + " \\end{aligned} \\] So about <b>" + fmt(ans3, 0) + " residents</b> were born on a holiday.";
+  return numq(prompt3, ans3, 0.01, sol3, { mode: "pct-of-small", p: pStr3, w: W3 });
+}, ["Turn the percent into a decimal first, then multiply by the whole amount.", "First write the percent as a decimal by dividing it by 100."]);
+
+/* PK tranche metadata pass for Unit 5. The tranche's own entries are flagged here.  */
+var PKT_U5_FOR=["1.1","1.2","1.3","1.4","1.5","1.6"];
+var PKT_U5={
+ "u5-pk-hours-total":{src:"math-1202:1.11",group:"gross-pay"},
+ "u5-pk-gross-overtime":{src:"math-1202:1.12",group:"gross-pay"},
+ "u5-pk-gross-tips":{src:"math-1202:1.12",group:"gross-pay"},
+ "u5-pk-deduction-calc":{src:"math-1202:1.16",group:"payroll"},
+ "u5-pk-cpp-ei-tax":{src:"math-1202:1.16",group:"payroll"},
+ "u5-pk-net-pay":{src:"math-1202:1.17",group:"payroll"},
+ "u5-pk-percent-of-amount":{src:"math-8:6.1",group:"percent-of-amount"}
+};
+BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U5_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u6.js ----- */
 // Math 2202 Unit 6 Banking question bank
@@ -3736,6 +5093,180 @@ E("u6-promo-vs-loan", 6, ["1.23","1.19"], 3, "gen", function(){
     {mode:"diff", P:P, rp:rp, fp:fp, rl:rl, fl:fl});
 }, ["Cost both plans in full, including deferred interest on the full price and all fees, before comparing.", "First compute the promotion total exactly as its terms state it."]);
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 9, 10 and 12 (percent fluency, powers of ten, applying percent change). Cluster 11 (banking services) contributes no entries: its map entry names no assessable prerequisite, and the gap is recorded in the tranche spec. Borrowed verbatim from Mathematics 8 (u5-percent-of-number, u5-find-the-whole), Mathematics 9 (u3-evaluate-single-power, u3-product-law, u3-two-laws-evaluate) and Mathematics 1202 (u4-commission-plus-base, u1-percent-change, u1-cr-percent-change); feeder helper copies ride in bank-helpers.js. ===== */
+E("u6-pk-percent-of-amount", 6, ["1.7"], 1, "gen", function () {
+  var mode = ri(0, 2);
+  if (mode === 0) {
+    var pairs = [[20, 150], [25, 240], [30, 120], [40, 250], [50, 180], [60, 350], [75, 160], [80, 450], [15, 200], [35, 300], [90, 600], [10, 480], [45, 220], [55, 400], [65, 500], [70, 320], [85, 700], [95, 900], [5, 640], [12, 350], [18, 450], [22, 550]];
+    var pr = pick(pairs), p = pr[0], W = pr[1], ans = W * p / 100;
+    var ctxs = [
+      "In a survey, " + p + "% of " + W + " students said they walk to school. How many students said they walk to school?",
+      "A hockey team won " + p + "% of its " + W + " shots on goal as goals this season. How many goals did the team score?",
+      "A store sold " + p + "% of " + W + " concert tickets in the first hour. How many tickets were sold in the first hour?"
+    ];
+    var prompt = pick(ctxs);
+    var sol = "Find the percent of the whole amount: \\[ \\begin{aligned} " + p + "\\% \\text{ of } " + W + " &= " + fmt(p / 100, 2) + " \\times " + W + " \\\\ &= " + fmt(ans, 0) + " \\end{aligned} \\] So the answer is <b>" + fmt(ans, 0) + "</b>.";
+    return numq(prompt, ans, 0.01, sol, { mode: "pct-of-std", p: p, w: W });
+  }
+  if (mode === 1) {
+    var pairs2 = [[110, 200], [120, 250], [125, 160], [130, 300], [150, 240], [175, 120], [200, 90], [140, 350], [115, 400], [135, 500], [160, 450], [180, 600], [225, 320], [250, 280]];
+    var pr2 = pick(pairs2), p2 = pr2[0], W2 = pr2[1], ans2 = W2 * p2 / 100;
+    var prompt2 = "Last year a trail crew cleared " + W2 + " m of trail. This year the crew cleared " + p2 + "% as much trail as last year. How many metres of trail did the crew clear this year?";
+    var sol2 = "A percent over 100% gives an amount larger than the whole it is compared with: \\[ \\begin{aligned} " + p2 + "\\% \\text{ of } " + W2 + " &= " + fmt(p2 / 100, 2) + " \\times " + W2 + " \\\\ &= " + fmt(ans2, 0) + " \\end{aligned} \\] So the crew cleared <b>" + fmt(ans2, 0) + " m</b>.";
+    return numq(prompt2, ans2, 0.01, sol2, { mode: "pct-of-over", p: p2, w: W2 });
+  }
+  var pairs3 = [[5, 4000], [4, 5000], [8, 2000], [5, 8000], [2, 10000], [8, 6000], [4, 12000], [2, 15000], [5, 20000], [8, 9000], [4, 25000], [2, 30000]];
+  var pr3 = pick(pairs3), p10 = pr3[0], W3 = pr3[1], ans3 = W3 * p10 / 1000;
+  var pStr3 = fmt(p10 / 10, 1);
+  var prompt3 = "A town has " + W3 + " residents. About " + pStr3 + "% of the residents were born on a holiday. About how many residents were born on a holiday?";
+  var sol3 = "A percent under 1% is a small fraction of the whole: \\[ \\begin{aligned} " + pStr3 + "\\% \\text{ of } " + W3 + " &= " + fmt(p10 / 1000, 4) + " \\times " + W3 + " \\\\ &= " + fmt(ans3, 0) + " \\end{aligned} \\] So about <b>" + fmt(ans3, 0) + " residents</b> were born on a holiday.";
+  return numq(prompt3, ans3, 0.01, sol3, { mode: "pct-of-small", p: pStr3, w: W3 });
+}, ["Turn the percent into a decimal first, then multiply by the whole amount.", "First write the percent as a decimal by dividing it by 100."]);
+
+E("u6-pk-commission", 6, ["1.7"],2,"gen",function(){
+ var base=ri(1200,2400), sales=ri(40,300)*100, rate=pick([3,4,5,6,8,10]);
+ var comm=u4R(sales*rate/100), gross=u4R(base+comm);
+ var ds=u4Dist(gross,[{v:comm,fb:"That is the commission only. Add the base salary to get gross pay."},
+  {v:u4R(base+sales*2*rate/100),fb:"That doubles the commission rate. Use the single rate stated in the stem."},
+  {v:u4R(base+sales),fb:"That adds the full sales amount. The worker earns only the stated percent of sales."}],u4M,2.50);
+ return mcq("A salesperson earns a base salary of "+u4M(base)+" per month plus commission at "+rate+"% of sales. In one month the salesperson sells "+u4M(sales)+" of furniture. What is the gross pay for the month?",
+  {t:u4M(gross),fb:"Yes: base salary plus the percent of sales."},ds,
+  "Apply the commission formula, then add the base. \\[ \\begin{aligned} \\text{Commission} &= "+fmt(rate)+"\\% \\times "+fmtF(sales,2)+" = "+fmtF(comm,2)+" \\\\ \\text{Gross pay} &= "+fmtF(base,2)+" + "+fmtF(comm,2)+" = "+fmtF(gross,2)+" \\end{aligned} \\] The gross pay is <b>"+u4M(gross)+"</b>.",
+  {base:base,sales:sales,rate:rate});
+},["Gross pay here has two parts: a fixed base and a percent of sales.","Start with the commission: the rate times the sales."]);
+
+E("u6-pk-evaluate-power", 6, ["1.9"], 1, "gen", function () {
+  var tuples = [];
+  for (var pb = 2; pb <= 12; pb++) for (var pe = 2; pe <= 4; pe++) tuples.push([pb, pe, 1]);
+  for (var qb = 2; qb <= 6; qb++) tuples.push([qb, 5, 1]);
+  for (var nb2 = 2; nb2 <= 9; nb2++) for (var ne = 2; ne <= 3; ne++) tuples.push([nb2, ne, -1]);
+  var tt = pick(tuples), b = tt[0], e = tt[1], mode = tt[2] < 0 ? "neg" : "pos";
+  var val, shown;
+  if (mode === "neg") { val = Math.pow(-b, e); shown = "(-" + b + ")^{" + e + "}"; }
+  else { val = Math.pow(b, e); shown = b + "^{" + e + "}"; }
+  var base = (mode === "neg") ? -b : b;
+  var sol = "Expand as repeated multiplication and multiply step by step: \\[ \\begin{aligned} " + shown + " &= " + fmt(val) + " \\end{aligned} \\] So the value is <b>" + fmt(val) + "</b>.";
+  return numq("Evaluate \\(" + shown + "\\).", val, 0, sol, { mode: "evaluate-single", base: base, e: e });
+}, ["Expand the power as repeated multiplication first.", "Multiply the base by itself, using the exponent as the count."]);
+
+E("u6-pk-product-law", 6, ["1.9"], 1, "gen", function () {
+  var a = ri(2, 9), m = ri(2, 6), n = ri(1, 6);
+  if (m === 2 && n === 2) n = 3;
+  var ds = u3PowDist(a, m + n, [
+    { v: m * n, fb: "That multiplies the exponents. The product law adds them." },
+    { v: m + n + 1, fb: "That adds one extra. Add the two exponents only." },
+    { v: m + n - 1, fb: "That is one too small. Add the two exponents." },
+    { v: Math.abs(m - n), fb: "That subtracts the exponents. The product law adds them." },
+    { v: m * n + 1, fb: "That multiplies and adds one. Add the exponents instead." }
+  ]);
+  return mcq("Write \\(" + a + "^{" + m + "}\\times " + a + "^{" + n + "}\\) as a single power.",
+    { t: "\\(" + a + "^{" + (m + n) + "}\\)", fb: "Correct. Same base, so the exponents add." }, ds,
+    "The bases match, so add the exponents: \\[ \\begin{aligned} " + a + "^{" + m + "}\\times " + a + "^{" + n + "} &= " + a + "^{" + m + "+" + n + "} \\\\ &= " + a + "^{" + (m + n) + "} \\end{aligned} \\] So the single power is <b>\\(" + a + "^{" + (m + n) + "}\\)</b>.",
+    { mode: "product-law", a: a, m: m, n: n });
+}, ["Check whether the bases match. Matching bases use the product law.", "Add the two exponents and keep the same base."]);
+
+E("u6-pk-two-laws", 6, ["1.9"], 1, "gen", function () {
+  var mode = pick(["prod", "quot", "powpow"]);
+  var a, expr, val, steps;
+  if (mode === "prod") {
+    a = ri(2, 6); var m = ri(2, 3), n = ri(2, 3);
+    val = Math.pow(a, m + n);
+    expr = a + "^{" + m + "}\\times " + a + "^{" + n + "}";
+    steps = a + "^{" + m + "}\\times " + a + "^{" + n + "} &= " + a + "^{" + (m + n) + "} \\\\ &= " + fmt(val);
+  } else if (mode === "quot") {
+    a = ri(2, 7); var n2 = ri(1, 2), m2 = n2 + ri(3, 4);
+    val = Math.pow(a, m2 - n2);
+    expr = a + "^{" + m2 + "}\\div " + a + "^{" + n2 + "}";
+    steps = a + "^{" + m2 + "}\\div " + a + "^{" + n2 + "} &= " + a + "^{" + (m2 - n2) + "} \\\\ &= " + fmt(val);
+  } else {
+    a = ri(2, 5); var m3 = ri(2, 3), n3 = 2;
+    val = Math.pow(a, m3 * n3);
+    expr = "(" + a + "^{" + m3 + "})^{" + n3 + "}";
+    steps = "(" + a + "^{" + m3 + "})^{" + n3 + "} &= " + a + "^{" + (m3 * n3) + "} \\\\ &= " + fmt(val);
+  }
+  return numq("Evaluate \\(" + expr + "\\) by first writing it as a single power.", val, 0,
+    "Apply the exponent law first, then evaluate: \\[ \\begin{aligned} " + steps + " \\end{aligned} \\] So the value is <b>" + fmt(val) + "</b>.",
+    { mode: "two-laws-" + mode, a: a });
+}, ["Use an exponent law to write the expression as one power first.", "Combine the exponents with the matching law, then evaluate that power."]);
+
+E("u6-pk-percent-change", 6, ["1.22"], 2, "gen", function(){
+  var mode=ri(1,2);
+  var ctxs=[
+    {name:"The monthly rent on an apartment", fmtC:function(v){ return u1Dol(v); }},
+    {name:"The price of a winter coat", fmtC:function(v){ return u1Dol(v); }},
+    {name:"A ferry fare", fmtC:function(v){ return u1Dol(v); }},
+    {name:"A monthly phone plan", fmtC:function(v){ return u1Dol(v); }},
+    {name:"The price of a used bicycle", fmtC:function(v){ return u1Dol(v); }},
+    {name:"A weekly grocery bill total", fmtC:function(v){ return u1Dol(v); }}
+  ];
+  var cx=pick(ctxs); var O=pick([40,50,60,75,80,100,120,125,150,160,200,240,250,300,400,500,600,800]);
+  var p=pick([10,12.5,15,20,25,30,40,50,60,75]); var inc=Math.random()<0.5;
+  var N=u1R2(inc?O*(1+p/100):O*(1-p/100)); var diff=u1R2(Math.abs(N-O));
+  if(mode===1){
+    var wrongBase=u1R2(diff/N*100);
+    var ds=u1Pick3(p,[
+      {v:wrongBase, fb:"That divides the change by the new price. Percent change always divides by the original price."},
+      {v:p+10, fb:"That adds 10 to the percent. Divide the change by the original price instead."},
+      {v:100-p, fb:"That subtracts the percent from 100, which gives a share remaining, not the percent change."},
+      {v:p/2, fb:"That halves the percent. Divide the full change by the original price."}
+    ],0.9);
+    var opts=ds.map(function(d){ return {t:fmt(d.v)+"%", fb:d.fb}; });
+    var _bo0=balOpts({t:fmt(p)+"%", fb:"Yes: the change of "+cx.fmtC(diff)+" divided by the original "+cx.fmtC(O)+" gives "+fmt(p)+"%."}, opts); return mcq(cx.name+" changed from "+cx.fmtC(O)+" to "+cx.fmtC(N)+". What is the percent "+(inc?"increase":"decrease")+"?", _bo0[0], _bo0[1],
+      "\\[ \\begin{aligned} \\text{Change} &= |"+fmtF(N,2)+" - "+fmtF(O,2)+"| = "+fmtF(diff,2)+" \\\\ \\text{Percent change} &= \\frac{"+fmtF(diff,2)+"}{"+fmtF(O,2)+"} \\times 100 = "+fmt(p)+"\\% \\end{aligned} \\] The answer is <b>"+fmt(p)+"% "+(inc?"increase":"decrease")+"</b>.",
+      {mode:1,O:O,N:N});
+  }
+  var ans=N;
+  var ds2=u1Pick3(ans,[
+    {v:O+diff*2, fb:"That doubles the change. Apply the percent change once."},
+    {v:inc?O-diff:O+diff, fb:"That moves the price in the wrong direction for a percent "+(inc?"increase":"decrease")+"."},
+    {v:O+p, fb:"That adds the percent as dollars. A percent must be applied to the original price first."},
+    {v:inc?u1R2(O*(1+p/100)+O*0.05):u1R2(O*(1-p/100)-O*0.05), fb:"That applies a different percent than the one given."}
+  ],1.37);
+  var opts2=ds2.map(function(d){ return {t:u1Dol(d.v), fb:d.fb}; });
+  var _bo1=balOpts({t:u1Dol(ans), fb:"Yes: "+fmt(p)+"% of "+cx.fmtC(O)+" is "+cx.fmtC(diff)+", and the new amount follows from it."}, opts2); return mcq(cx.name+" was "+cx.fmtC(O)+". It then had a percent "+(inc?"increase":"decrease")+" of "+fmt(p)+"%. What is the new amount?", _bo1[0], _bo1[1],
+    "\\[ \\begin{aligned} \\text{Change} &= "+fmt(p)+"\\% \\text{ of } "+fmtF(O,2)+" = "+fmtF(diff,2)+" \\\\ \\text{New amount} &= "+fmtF(O,2)+" "+(inc?"+":"-")+" "+fmtF(diff,2)+" = "+fmtF(ans,2)+" \\end{aligned} \\] The answer is <b>"+u1Dol(ans)+"</b>.",
+    {mode:2,O:O,p:p,inc:inc?1:0});
+}, ["Percent change is always measured against the original amount.", "Start by finding the size of the change, then compare it with the original amount."]);
+
+E("u6-pk-percent-change-cr", 6, ["1.22"], 2, "gen", function(){
+  var ctxs=["The price of a cord of firewood","The monthly rent on a two bedroom apartment","The price of a snowmobile jacket","A weekly paycheque amount","The price of a litre of home heating oil, in dollars","The cost of a semester parking pass"];
+  var cx=pick(ctxs);
+  var O=pick([80,100,120,150,160,200,240,250,300,320,400,500,600,750,800,1000]);
+  var p=pick([10,15,20,25,30,40,50,60]); var inc=Math.random()<0.5;
+  var N=u1R2(inc?O*(1+p/100):O*(1-p/100)); var diff=u1R2(Math.abs(N-O));
+  return numq(cx+" changed from "+u1Dol(O)+" to "+u1Dol(N)+". Find the percent "+(inc?"increase":"decrease")+". Show your work.",
+    p, 0.6,
+    "\\[ \\begin{aligned} \\text{Change} &= |"+fmtF(N,2)+" - "+fmtF(O,2)+"| = "+fmtF(diff,2)+" \\\\ \\text{Percent change} &= \\frac{"+fmtF(diff,2)+"}{"+fmtF(O,2)+"} \\times 100 = "+fmt(p)+"\\% \\end{aligned} \\] The answer is <b>"+fmt(p)+"%</b>.",
+    {O:O,N:N,inc:inc?1:0});
+}, ["Percent change compares the change with the original amount.", "Start by finding the change, then divide it by the original amount."]);
+
+E("u6-pk-find-the-whole", 6, ["1.22"], 2, "gen", function () {
+  var pool = [[25, 60], [20, 80], [30, 90], [40, 150], [50, 70], [75, 120], [80, 200], [10, 240], [60, 300], [90, 400], [15, 200], [35, 260], [12, 250], [16, 150], [18, 200], [22, 150], [28, 250], [32, 200], [38, 150], [42, 200], [48, 250], [52, 200], [56, 150], [64, 200], [72, 250], [84, 150], [88, 200], [45, 180], [65, 140], [85, 220], [55, 160], [95, 300]];
+  var pr = pick(pool), p = pr[0], W = pr[1], part = W * p / 100;
+  var ctxs = [
+    { q: part + " students is " + p + "% of the students in a school. How many students are in the school?", unit: "students" },
+    { q: "A team scored " + part + " points, which is " + p + "% of the points it needs for a banner. How many points does the team need in total?", unit: "points" },
+    { q: "After a morning sale, " + part + " tickets remained unsold, and that is " + p + "% of the tickets printed. How many tickets were printed?", unit: "tickets" }
+  ];
+  var cx = pick(ctxs);
+  var sol = "The part and its percent give the whole when the part is divided by the percent as a decimal: \\[ \\begin{aligned} \\text{whole} &= " + part + " \\div " + fmt(p / 100, 2) + " \\\\ &= " + W + " \\end{aligned} \\] So the whole is <b>" + W + " " + cx.unit + "</b>.";
+  return numq(cx.q, W, 0.01, sol, { mode: "find-whole", p: p, part: part });
+}, ["The given amount is only the named percent of the whole, so the whole is larger.", "First write the percent as a decimal, then divide the part by that decimal."]);
+
+/* PK tranche metadata pass for Unit 6. The tranche's own entries are flagged here.  */
+var PKT_U6_FOR=["1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16","1.17","1.18","1.19","1.20","1.21","1.22","1.23"];
+var PKT_U6={
+ "u6-pk-percent-of-amount":{src:"math-8:6.1",group:"percent-of-amount"},
+ "u6-pk-commission":{src:"math-1202:2.3",group:"formula-use"},
+ "u6-pk-evaluate-power":{src:"math-9:3.10",group:"powers"},
+ "u6-pk-product-law":{src:"math-9:3.11",group:"powers"},
+ "u6-pk-two-laws":{src:"math-9:3.12",group:"powers"},
+ "u6-pk-percent-change":{src:"math-1202:1.4",group:"percent-change"},
+ "u6-pk-percent-change-cr":{src:"math-1202:1.4",group:"percent-change"},
+ "u6-pk-find-the-whole":{src:"math-8:6.1",group:"percent-of-amount"}
+};
+BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U6_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u7.js ----- */
 // Math 2202 Unit 7 Slope and Scale question bank
 // Cut verbatim from the standalone bank source
@@ -4316,6 +5847,162 @@ E("u7-cr-create-scale", 7, ["2.4","4.17"], 3, "gen", function(){
     {rep:rep,drawnW:drawnW,drawnH:drawnH});
   q.figure=u7ScaleFig(drawnW, drawnH, "Garden plot on the plan"); return q;
 }, ["Lengths scale by the scale factor, so scale both sides before finding area.", "Find the actual length and the actual width first, then multiply them."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 13 and 14 (rate readiness, similarity and scale). Borrowed verbatim from Mathematics 8 (u5-express-rate, u5-identify-rate-example, u5-rate-problem-solve, u5-unit-rate-cost-gap), Mathematics 1202 (u7-similar-check, u7-corresponding-sides, u7-similar-missing-side-mc) and Mathematics 9 (u7-gap-scale-apply-cr); feeder helper copies ride in bank-helpers.js. ===== */
+E("u7-pk-express-rate", 7, ["4.4"], 1, "gen", function () {
+  var tmpls = [
+    { desc: "A bus travels {A} km in {B} h", u1: "km", u2: "h", w1: "kilometres", w2: "hour" },
+    { desc: "A tap fills {A} L in {B} min", u1: "L", u2: "min", w1: "litres", w2: "minute" },
+    { desc: "A worker earns ${A} in {B} h", u1: "$", u2: "h", w1: "dollars", w2: "hour" },
+    { desc: "A printer prints {A} pages in {B} min", u1: "pages", u2: "min", w1: "pages", w2: "minute" },
+    { desc: "A car uses {A} L of fuel for {B} km driven", u1: "L", u2: "km", w1: "litres", w2: "kilometre" },
+    { desc: "A ferry carries {A} passengers in {B} trips", u1: "passengers", u2: "trips", w1: "passengers", w2: "trip" },
+    { desc: "A heart beats {A} times in {B} min", u1: "beats", u2: "min", w1: "beats", w2: "minute" },
+    { desc: "Snow falls {A} cm in {B} h", u1: "cm", u2: "h", w1: "centimetres", w2: "hour" }
+  ];
+  var t = pick(tmpls), A = ri(4, 95), B = pick([2, 3, 4, 5, 6, 8, 10, 12]);
+  var desc = t.desc.replace("{A}", A).replace("{B}", B);
+  var corr = A + " " + t.u1 + "/" + B + " " + t.u2;
+  var cands = [
+    { t: B + " " + t.u2 + "/" + A + " " + t.u1, fb: "That reverses the rate; the amount measured goes first and the unit it is measured against goes second." },
+    { t: A + " " + t.u2 + "/" + B + " " + t.u1, fb: "That swaps the two units; each number must keep the unit it was measured in." },
+    { t: A + " " + t.u1 + " in total", fb: "That gives only the amount; a rate must also say what the amount is measured against." },
+    { t: A + ":" + B, fb: "That is ratio notation for two amounts of the same kind; a rate keeps both units written in." }
+  ];
+  var ds = u5pick3(corr, cands);
+  var sol = "A rate joins an amount to the unit it is measured against: \\[ \\begin{aligned} \\text{rate} &= " + A + " \\text{ " + t.w1 + " per } " + B + " \\text{ " + t.w2 + "} \\end{aligned} \\] Written with symbols, the rate is <b>" + corr + "</b>.";
+  return mcq(desc + ". Which expression records this rate with symbols?", { t: corr, fb: "Correct: the measured amount and its unit come first, then the unit it is measured against." }, ds, sol, { mode: "express-rate", a: A, b: B });
+}, ["A rate compares two different units, and both units stay in the written rate.", "First write the measured amount with its unit, then a slash, then the second amount with its unit."]);
+
+E("u7-pk-identify-rate", 7, ["4.1"], 1, "gen", function () {
+  var tmpls = [
+    { s: "Maya rode {A} km in {B} h on a coastal trail and paid a $12 trail fee.", A: [12, 60], B: [2, 6], corr: function (A, B) { return A + " km in " + B + " h"; }, rev: function (A, B) { return B + " h in " + A + " km"; }, wrong: "12 dollars for the trail fee", wfb: "The fee is a single amount with no second amount to compare it with, so it is not the rate in this example." },
+    { s: "A pump moved {A} L of water in {B} min while a crew of 6 workers watched.", A: [20, 90], B: [2, 9], corr: function (A, B) { return A + " L in " + B + " min"; }, rev: function (A, B) { return B + " min in " + A + " L"; }, wrong: "6 workers on the crew", wfb: "The crew size is a single count with no comparison built in, so it is not the rate in this example." },
+    { s: "Jonah earned ${A} for {B} h of yard work and bought a $9 snack afterward.", A: [30, 120], B: [2, 8], corr: function (A, B) { return "$" + A + " in " + B + " h"; }, rev: function (A, B) { return B + " h for $" + A; }, wrong: "$9 for the snack", wfb: "The snack price is a single amount, not a comparison of two amounts, so it is not the rate here." },
+    { s: "A printer produced {A} pages in {B} min using 2 ink cartridges.", A: [30, 150], B: [2, 10], corr: function (A, B) { return A + " pages in " + B + " min"; }, rev: function (A, B) { return B + " min in " + A + " pages"; }, wrong: "2 ink cartridges", wfb: "The cartridge count is a single count, not a comparison of two amounts, so it is not the rate here." }
+  ];
+  var t = pick(tmpls), A = ri(t.A[0], t.A[1]), B = ri(t.B[0], t.B[1]);
+  var corr = t.corr(A, B);
+  var cands = [
+    { t: t.rev(A, B), fb: "That reverses the comparison; the amount earned, moved or produced is described over the time it took." },
+    { t: t.wrong, fb: t.wfb },
+    { t: A + " to " + B + " as a ratio of the same kind", fb: "The two amounts here have different units, so together they form a rate, not a same-kind ratio." }
+  ];
+  var ds = u5pick3(corr, cands);
+  var sol = "A rate is the pair of amounts with different units that go together in the example: \\[ \\begin{aligned} \\text{rate} &= \\text{two amounts measured in different units} \\end{aligned} \\] So the rate described is <b>" + corr + "</b>.";
+  return mcq(t.s.replace("{A}", A).replace("{B}", B) + " Which pair of amounts gives the rate in this example?", { t: corr, fb: "Correct: those two amounts, with different units, are the ones compared in the example." }, ds, sol, { mode: "identify-rate", a: A, b: B });
+}, ["A rate in an example is a pair of amounts with different units that belong together.", "First look for two amounts measured in different units that describe the same activity."]);
+
+E("u7-pk-rate-problem", 7, ["4.9"], 2, "gen", function () {
+  var mode = ri(0, 2);
+  if (mode === 0) {
+    var u = ri(12, 28), h1 = ri(3, 9), h2 = ri(10, 20); if (h2 === h1) h2 += 3;
+    var earned = u * h1, ans = u * h2;
+    var sol = "Find the unit rate first, then use it for the new time: \\[ \\begin{aligned} \\text{unit rate} &= " + earned + " \\div " + h1 + " = " + u + " \\text{ dollars per hour} \\\\ \\text{new earnings} &= " + u + " \\times " + h2 + " = " + ans + " \\end{aligned} \\] So the earnings are <b>$" + ans + "</b>.";
+    return numq("Sam earned $" + earned + " for " + h1 + " h of work at a steady rate. At the same rate, how much will Sam earn for " + h2 + " h of work, in dollars?", ans, 0.01, sol, { mode: "rate-earn", u: u });
+  }
+  if (mode === 1) {
+    var sp = pick([40, 50, 60, 70, 80, 90, 100]), t1 = ri(2, 5), D = sp * ri(3, 7), ansT = D / sp;
+    var dist1 = sp * t1;
+    var sol2 = "The speed is the unit rate, and time is distance divided by that rate: \\[ \\begin{aligned} \\text{time} &= " + D + " \\div " + sp + " = " + ansT + " \\text{ h} \\end{aligned} \\] So the trip takes <b>" + ansT + " h</b>.";
+    return numq("A bus travels at a steady speed. It covers " + dist1 + " km in " + t1 + " h. At the same speed, how many hours will it take to travel " + D + " km?", ansT, 0.01, sol2, { mode: "rate-speed", sp: sp });
+  }
+  var u3 = ri(3, 12), m1 = ri(2, 8), m2 = ri(9, 20), vol = u3 * m1, ans3 = u3 * m2;
+  var sol3 = "Find the flow per minute first, then multiply by the new time: \\[ \\begin{aligned} \\text{unit rate} &= " + vol + " \\div " + m1 + " = " + u3 + " \\text{ L per min} \\\\ \\text{new volume} &= " + u3 + " \\times " + m2 + " = " + ans3 + " \\end{aligned} \\] So the volume is <b>" + ans3 + " L</b>.";
+  return numq("A hose delivers " + vol + " L of water in " + m1 + " min at a steady rate. At the same rate, how many litres will it deliver in " + m2 + " min?", ans3, 0.01, sol3, { mode: "rate-flow", u: u3 });
+}, ["Every rate problem starts from the unit rate: the amount for one unit of the second quantity.", "First divide to get the amount per single hour, kilometre or minute in the problem."]);
+
+E("u7-pk-unit-rate-cost", 7, ["4.9"], 2, "gen", function(){
+  var goods=[["muffins","muffin"],["juice boxes","juice box"],["granola bars","granola bar"],["yogurt cups","yogurt cup"],["bagels","bagel"]];
+  var g=pick(goods);
+  var q1=pick([4,5,8,10,20,25]);
+  var unit=pick([0.75,1.25,1.5,1.75,2.25,2.5,3.25,3.5,4.75]);
+  var C=u5r2(q1*unit);
+  var q2=ri(3,30); if(q2===q1) q2=q1+3;
+  var ans=u5r2(unit*q2);
+  return numq("A pack of "+q1+" "+g[0]+" costs $"+fmtF(C,2)+". At this rate, what is the cost of "+q2+" "+g[0]+", in dollars?", ans, 0.01,
+    "Find the cost of one "+g[1]+" first: \\[ \\begin{aligned} \\text{unit rate} &= "+fmtF(C,2)+" \\div "+q1+" \\\\ &= "+fmtF(unit,2)+" \\text{ dollars per "+g[1]+"} \\end{aligned} \\] Then multiply by the new quantity: \\("+fmtF(unit,2)+" \\times "+q2+" = "+fmtF(ans,2)+"\\). The answer is <b>$"+fmtF(ans,2)+"</b>.",
+    {mode:"unit-rate-cost", q1:q1, q2:q2});
+}, ["The cost per single item is the bridge between the two quantities.", "Divide the pack cost by the pack size to get the unit rate, then multiply by the new quantity."]);
+
+E("u7-pk-similar-check", 7, ["4.17"], 1, "gen", function(){
+  var w=ri(2,9), h=ri(2,8), k=pick([2,3]), similar=Math.random()<0.5, w2, h2, tries=0;
+  if(similar){ w2=w*k; h2=h*k; } else { w2=w*k; h2=h*k+ri(1,3); }
+  var prompt="Rectangle A is "+w+" cm wide and "+h+" cm high. Rectangle B is "+w2+" cm wide and "+h2+" cm high. Are the two rectangles similar?";
+  var sol="Compare the ratios of corresponding sides. Widths: \\("+w2+" \\div "+w+" = "+fmt(w2/w)+"\\). Heights: \\("+h2+" \\div "+h+" = "+fmt(h2/h)+"\\) . ";
+  var q;
+  if(similar){
+    sol+="The ratios are equal and all angles are right angles, so the rectangles are <b>similar</b>.";
+    q=mcq(prompt, {t:"Yes. The corresponding sides are in the same ratio and the angles are equal.", fb:"Correct: both side ratios equal "+fmt(k)+", and rectangles have equal corresponding angles."},
+      [ {t:"No. The corresponding sides are not in the same ratio.", fb:"Check again: "+w2+" / "+w+" and "+h2+" / "+h+" both equal "+fmt(k)+"."},
+        {t:"No. Rectangle B is larger, so the two cannot be similar.", fb:"Size does not rule out similarity: an enlargement of a shape is similar to it."},
+        {t:"Yes. Any two rectangles are similar because all their angles are right angles.", fb:"Equal angles alone are not enough reasoning here: the side ratios must also match, and in this case they do."} ], sol, {mode:"similar"});
+  } else {
+    sol+="The ratios differ, so the rectangles are <b>not similar</b>.";
+    q=mcq(prompt, {t:"No. The corresponding sides are not in the same ratio.", fb:"Correct: the width ratio is "+fmt(w2/w)+" but the height ratio is "+fmt(h2/h)+"."},
+      [ {t:"Yes. The corresponding sides are in the same ratio and the angles are equal.", fb:"The angles are equal, but the side ratios are not: "+fmt(w2/w)+" versus "+fmt(h2/h)+"."},
+        {t:"Yes. Any two rectangles are similar because all their angles are right angles.", fb:"Equal angles are not enough: corresponding sides must also be in the same ratio, and here they are not."},
+        {t:"No. Rectangle B is larger, so size alone rules out similarity.", fb:"The verdict is right but the reason is wrong: larger shapes can be similar. The side ratios are what fail here."} ], sol, {mode:"notsimilar"});
+  }
+  q.figure=u7FigPair(w,h,"A: "+w+" by "+h, w2,h2,"B: "+w2+" by "+h2);
+  return q;
+}, ["Similar shapes need equal corresponding angles and corresponding sides in the same ratio.", "Divide the width of B by the width of A, then do the same for the heights, and compare."]);
+
+E("u7-pk-corresponding-sides", 7, ["4.17"], 2, "gen", function(){
+  var k=pick([2,3,4]), a1=ri(3,12), a2=ri(3,12), b1=a1*k, b2=a2*k, fromB=Math.random()<0.5;
+  var prompt="Polygons A and B are similar. In polygon A, two sides measure "+a1+" cm and "+a2+" cm. The corresponding sides in polygon B measure "+b1+" cm and "+b2+" cm. What is the scale factor "+(fromB?"from B to A":"from A to B")+"?";
+  var ans=fromB?1/k:k;
+  var sol="Each B side divided by the matching A side gives the same value: \\("+b1+" \\div "+a1+" = "+k+"\\) and \\("+b2+" \\div "+a2+" = "+k+"\\). "+(fromB?"Going from B back to A uses the reciprocal, \\(1 \\div "+k+" = "+fmtF(1/k,2)+ "\\).":"")+" The scale factor is <b>"+fmtF(ans,2)+"</b>.";
+  var opts=[ {t:fmtF(fromB?k:1/k,2), fb:"That is the scale factor in the opposite direction."},
+             {t:String(b1-a1), fb:"That is the difference between the sides. A scale factor is a ratio, found by dividing, not subtracting."},
+             {t:fmtF(k+0.5,2), fb:"Check the division: "+b1+" divided by "+a1+" is "+k+", not "+fmtF(k+0.5,2)+"."} ];
+  var _bo0=balOpts({t:fmtF(ans,2), fb:"Correct: corresponding sides of similar polygons are all in the one ratio."}, opts); var q=mcq(prompt, _bo0[0], _bo0[1], sol, {k:k, fromB:fromB}); q.figure=u7FigPair(a1,a2,"A: "+a1+" and "+a2, b1,b2,"B: "+b1+" and "+b2); return q;
+}, ["Corresponding sides of similar polygons are all in the same ratio.", "Divide a B side by its matching A side, then check the direction the question asks for."]);
+
+E("u7-pk-similar-missing-side", 7, ["4.14"], 2, "gen", function(){
+  var ctxs=[ {n:"a photo enlargement", u:"cm"}, {n:"a model of a fishing stage", u:"cm"}, {n:"a blueprint of a shed", u:"cm"}, {n:"a trail map drawing", u:"cm"}, {n:"a scaled drawing of a wharf", u:"cm"} ];
+  var c=pick(ctxs), k=pick([2,3]), a=ri(2,10), b=a*k, s=ri(3,15), x=s*k;
+  var prompt="In "+c.n+", the small figure and the large figure are similar. A side of "+a+" "+c.u+" on the small figure matches a side of "+b+" "+c.u+" on the large figure. Another side of the small figure measures "+s+" "+c.u+". What is the matching side length on the large figure, in "+c.u+"?";
+  var sol="The scale factor is \\("+b+" \\div "+a+" = "+k+"\\), so multiply the small side by the same factor: \\[ "+s+" \\times "+k+" = "+x+" \\] The matching side is <b>"+x+" "+c.u+"</b>.";
+  var _bo0=balOpts({t:String(x), fb:"Correct: scale factor "+k+" applied to "+s+" gives "+x+"."}, [ {t:String(s+(b-a)), fb:"That adds the difference of the known pair. Similarity scales by multiplying, not by adding."},
+      {t:fmtF(s/k,2), fb:"That divides by the scale factor, which is the direction for going from large back to small."},
+      {t:String(s+k), fb:"That adds the scale factor to the side. The scale factor multiplies the side instead."} ]); var q=mcq(prompt, _bo0[0], _bo0[1], sol, {k:k,s:s});
+  q.figure=u7FigPair(a,s,"small: "+a+" and "+s, b,x,"large: "+b+" and ?");
+  return q;
+}, ["Find the scale factor from the pair of sides you know first.", "Divide the large known side by the small known side, then multiply the other small side by that factor."]);
+
+E("u7-pk-scale-apply", 7, ["4.14"], 2, "gen", function () {
+  var k = pick([1.5, 2, 2.5, 3]);
+  var o1 = pick([6, 8, 10, 12]);
+  var i1 = o1 * k;
+  var o2 = pick([5, 7, 9, 11, 14]);
+  var ans = Math.round(o2 * k * 100) / 100;
+  var ctx = pick([
+    "A poster is an enlargement of a drawing. One side of the drawing is " + o1 + " cm and the matching side of the poster is " + fmt(i1) + " cm. Another side of the drawing is " + o2 + " cm. How long is the matching side of the poster, in centimetres?",
+    "A banner is an enlargement of a logo. One side of the logo is " + o1 + " cm and the matching side of the banner is " + fmt(i1) + " cm. Another side of the logo is " + o2 + " cm. How long is the matching side of the banner, in centimetres?"
+  ]);
+  var sol = "Find the scale factor from the known pair first, then apply it to the second side: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(i1) + " \\div " + o1 + " = " + fmt(k) + " \\\\ \\text{new side} &= " + o2 + " \\times " + fmt(k) + " = " + fmt(ans) + " \\end{aligned} \\] The answer is <b>" + fmt(ans) + " cm</b>.";
+  var q = numq(ctx, ans, 0.01, sol, { mode: "gap-scale-apply", k: k });
+  q.figure = solBarsFig([{ name: "Original", len: o1, lab: fmt(o1) + " cm" }, { name: "Image", len: i1, lab: fmt(i1) + " cm" }, { name: "Original", len: o2, lab: fmt(o2) + " cm" }, { name: "Image", len: ans, lab: "?" }], "Matching sides of an original and its image as bars");
+  return q;
+}, ["The scale factor is not stated; it must be recovered from the pair of matching sides first.", "Divide the image side by its matching original side as the first step."]);
+
+/* PK tranche metadata pass for Unit 7. The tranche's own entries are flagged here.  */
+var PKT_U7_FOR=["4.1","4.2","4.3","4.4","4.5","4.6","4.7","4.8","4.9","4.13","4.14","4.15","4.16","4.17","2.1","2.2","2.3","2.4","2.5","2.6"];
+var PKT_U7={
+ "u7-pk-express-rate":{src:"math-8:3.16",group:"rate"},
+ "u7-pk-identify-rate":{src:"math-8:3.17",group:"rate"},
+ "u7-pk-rate-problem":{src:"math-8:6.29",group:"rate"},
+ "u7-pk-unit-rate-cost":{src:"math-8:6.29",group:"rate"},
+ "u7-pk-similar-check":{src:"math-1202:3.60",group:"similarity"},
+ "u7-pk-corresponding-sides":{src:"math-1202:3.62",group:"similarity"},
+ "u7-pk-similar-missing-side":{src:"math-1202:3.64",group:"scale"},
+ "u7-pk-scale-apply":{src:"math-9:10.17",group:"scale"}
+};
+BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U7_FOR.slice();e.pkGroup=t.group;}});
+
+/* ===== Distinctness guard for u7-pk-similar-missing-side (borrowed from Mathematics 1202's u7-similar-missing-side-mc, whose bank wraps the generator in the identical guard; placed after the entry so the pass runs on the registered entry). ===== */
+(function(){var e=BANK.filter(function(x){return x.id==="u7-pk-similar-missing-side";})[0];if(!e)return;var inner=e.gen;e.gen=function(){var q=inner(),tries=0;while(q&&q.options&&new Set(q.options.map(function(o){return String(o).trim();})).size<4&&tries<60){q=inner();tries++;}return q;};})();
 
 /* ----- bank-u8.js ----- */
 // Math 2202 Unit 8 Trigonometry question bank
@@ -4975,6 +6662,137 @@ E("u8-cr-baseline-height", 8, ["2.4", "5.2", "2.3"], 3, "gen", function () {
    when a teacher turns prior knowledge off in Advanced
    tools. */
 BANK.forEach(function(e){if(["u8-choose-ratio-equation","u8-cr-find-angle"].indexOf(e.id)>=0)e.pkFlag=true;});
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 15 support set (single triangle trigonometry). Borrowed verbatim from Mathematics 1202 (u7-choose-ratio, u7-sine-ratio-constant, u7-unknown-angle-mc, u7-cr-find-angle, u7-cr-hypotenuse-rearrange, u7-reasonable-or-not); feeder helper copies ride in bank-helpers.js. The cluster's state A core (u8-choose-ratio-equation, u8-cr-find-angle) sits in the unit's main block above, flagged on November 13, 2026; its metadata is completed by this tranche's pass below. ===== */
+E("u8-pk-choose-ratio", 8, ["5.1"], 1, "gen", function(){
+  var combos=[
+    {known:"opposite", wanted:"adjacent", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"adjacent", wanted:"opposite", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"opposite", wanted:"hypotenuse", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"hypotenuse", wanted:"opposite", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"adjacent", wanted:"hypotenuse", ratio:"cosine", def:"cosine: adjacent / hypotenuse"},
+    {known:"hypotenuse", wanted:"adjacent", ratio:"cosine", def:"cosine: adjacent / hypotenuse"} ];
+  var c=pick(combos), ang=u7Ang(), val=ri(4,30);
+  var ctx=pick(["a ladder against a wall","a roof section","a loading ramp","a guy wire on a pole","a wheelchair ramp","a stair stringer"]);
+  var prompt="A right triangle models "+ctx+". The marked angle is \\("+ang+"^\\circ\\). The "+c.known+" side is known (it measures "+val+" units) and the "+c.wanted+" side is wanted. Which ratio should be used?";
+  var defs={ tangent:"tangent: opposite / adjacent", sine:"sine: opposite / hypotenuse", cosine:"cosine: adjacent / hypotenuse" };
+  var names=["tangent","sine","cosine"];
+  var distract=names.filter(function(n){ return n!==c.ratio; }).map(function(n){ return {t:defs[n], fb:"The "+n+" ratio uses the "+(n==="tangent"?"opposite and adjacent":(n==="sine"?"opposite and hypotenuse":"adjacent and hypotenuse"))+" sides, which is not the known and wanted pair here."}; });
+  var recip={ tangent:"adjacent / opposite", sine:"hypotenuse / opposite", cosine:"hypotenuse / adjacent" };
+  distract.push({t:c.ratio+" flipped: "+recip[c.ratio], fb:"That is the "+c.ratio+" ratio with its two sides swapped. The ratio must pair the sides as "+defs[c.ratio].split(": ")[1]+"."});
+  var sol="The known side is the "+c.known+" and the wanted side is the "+c.wanted+". The ratio that uses exactly those two sides is the <b>"+c.ratio+" ratio</b>: "+defs[c.ratio]+".";
+  var q=mcq(prompt, {t:defs[c.ratio], fb:"Correct: the "+c.ratio+" ratio is the one built from the "+c.known+" and "+c.wanted+" sides."}, distract, sol, {ratio:c.ratio, ang:ang});
+  var lab={ opposite:"opp", adjacent:"adj", hypotenuse:"hyp" };
+  var oL=c.known==="opposite"?val:(c.wanted==="opposite"?"?":"opp"), aL=c.known==="adjacent"?val:(c.wanted==="adjacent"?"?":"adj"), hL=c.known==="hypotenuse"?val:(c.wanted==="hypotenuse"?"?":"hyp");
+  q.figure=u7FigTri(oL, aL, hL, ang+" deg");
+  return q;
+}, ["Name the known and wanted sides relative to the marked angle first.", "Pick the ratio whose definition uses exactly those two sides."]);
+
+E("u8-pk-sine-ratio-constant", 8, ["5.1"], 1, "gen", function(){
+  var tr=u7Triple(), o=tr[0], a=tr[1], h=tr[2], k=pick([2,3]), o2=o*k, h2=h*k, r=o/h;
+  var prompt="Two right triangles share the acute angle A. The smaller triangle has opposite side "+o+" cm and hypotenuse "+h+" cm. The larger triangle has opposite side "+o2+" cm and hypotenuse "+h2+" cm. What is the ratio opposite / hypotenuse for angle A?";
+  var sol="Smaller triangle: \\("+o+" \\div "+h+" = "+fmtF(r,2)+ "\\). Larger triangle: \\("+o2+" \\div "+h2+" = "+fmtF(r,2)+ "\\). The ratio is the same in both triangles, and this ratio is the sine ratio: \\(\\sin A = "+FR("opposite","hypotenuse")+"\\). The answer is <b>"+fmtF(r,2)+"</b>.";
+  var q=mcq(prompt, {t:fmtF(r,2), fb:"Correct: "+o+" / "+h+" and "+o2+" / "+h2+" both give this value."},
+    [ {t:fmtF(h/o,2), fb:"That is hypotenuse / opposite, the ratio turned upside down. A sine value cannot be greater than 1."},
+      {t:fmtF(a/h,2), fb:"That is adjacent / hypotenuse, which is the cosine ratio, not opposite / hypotenuse."},
+      {t:fmtF(o/a,2), fb:"That is opposite / adjacent, which is the tangent ratio, not opposite / hypotenuse."} ], sol, {o:o,h:h,k:k});
+  q.figure=u7FigTriPair({o:o,a:a,oL:o+" cm",aL:"",hL:h+" cm",angL:"A"},{o:o2,a:a*k,oL:o2+" cm",aL:"",hL:h2+" cm",angL:"A"});
+  return q;
+}, ["The sine ratio compares the opposite side to the hypotenuse for the marked angle.", "Work out opposite divided by hypotenuse for the smaller triangle first."]);
+
+E("u8-pk-unknown-angle", 8, ["5.2"], 2, "gen", function(){
+  var mode=ri(0,2), angDeg, knownTxt, ratioName, oL, aL, hL, tries=0;
+  var o=ri(3,20), a=ri(3,20);
+  while((o===a || Math.abs(Math.atan2(o,a)*180/Math.PI-45)<3) && tries<30){ o=ri(3,20); a=ri(3,20); tries++; }
+  if(mode===0){ angDeg=Math.atan2(o,a)*180/Math.PI; ratioName="tangent"; knownTxt="the side opposite the angle is "+o+" m and the side adjacent is "+a+" m"; oL=o+" m"; aL=a+" m"; hL="hyp"; }
+  else if(mode===1){ var h=o+ri(2,15); angDeg=Math.asin(o/h)*180/Math.PI; ratioName="sine"; knownTxt="the side opposite the angle is "+o+" m and the hypotenuse is "+h+" m"; oL=o+" m"; aL="adj"; hL=h+" m"; }
+  else { var h2=a+ri(2,15); angDeg=Math.acos(a/h2)*180/Math.PI; ratioName="cosine"; knownTxt="the side adjacent to the angle is "+a+" m and the hypotenuse is "+h2+" m"; oL="opp"; aL=a+" m"; hL=h2+" m"; }
+  var correct=Math.round(angDeg);
+  var d1=correct+10; if(d1>89) d1=correct-20;
+  var d2=correct-10; if(d2<1) d2=correct+20; if(d2===d1) d2=correct+15;
+  var comp=90-correct; if(comp===d1||comp===d2||comp===correct) comp=correct+5;
+  var prompt="In a right triangle, "+knownTxt+". What is the measure of the angle, to the nearest degree?";
+  var sol="Use the inverse of the "+ratioName+" ratio on a calculator: the ratio value gives an angle of about \\("+fmtF(angDeg,1)+"^\\circ\\), which rounds to <b>"+correct+" degrees</b>.";
+  var q=mcq(prompt, {t:correct+"°", fb:"Correct: the inverse "+ratioName+" of the side ratio gives about "+fmtF(angDeg,1)+" degrees."},
+    [ {t:d1+"°", fb:"That is 10 degrees too large: recheck the ratio before using the inverse key."},
+      {t:d2+"°", fb:"That is off the computed value of about "+fmtF(angDeg,1)+" degrees: recheck which sides form the ratio."},
+      {t:comp+"°", fb:"That is the other acute angle of the triangle (90 minus the answer), not the angle at the marked vertex."} ], sol, {mode:mode, correct:correct});
+  q.figure=u7FigTri(oL, aL, hL, "?");
+  return q;
+}, ["An unknown angle calls for the inverse of the ratio formed by the two known sides.", "Form the ratio from the known sides first, then apply the matching inverse ratio."]);
+
+E("u8-pk-find-angle-num", 8, ["5.2"], 2, "gen", function(){
+  var ctxs=[ {n:"a wheelchair ramp", s:"rise"}, {n:"a loading ramp", s:"rise"}, {n:"a roof section", s:"rise"} ];
+  var c=pick(ctxs), rise=ri(1,6), run=ri(4,12), ang=Math.atan2(rise,run)*180/Math.PI, ans=Math.round(ang);
+  var prompt="A "+c.n.split(" ").slice(1).join(" ")+" has a "+c.s+" of "+rise+" m over a horizontal run of "+run+" m. Find the angle the surface makes with the ground, to the nearest degree. Show your work.";
+  var sol="The rise is opposite the angle and the run is adjacent, so use the inverse tangent: \\[ \\begin{aligned} \\tan A &= "+FR(rise, run) +" \\\\ A &= \\tan^{-1}\\left("+fmtF(rise/run,3)+"\\right) \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The angle is <b>"+ans+" degrees</b>.";
+  var q=numq(prompt, ans, 0.6, sol, {rise:rise, run:run}); q.figure=u7FigTri(rise+" m", run+" m", "ramp", "?"); return q;
+}, ["Rise and run are the two legs, so the tangent ratio connects them to the angle.", "Divide the rise by the run, then use the inverse tangent."]);
+
+E("u8-pk-hypotenuse-rearrange", 8, ["5.2"], 2, "gen", function(){
+  var ang=u7Ang(), opp=ri(4,20), hyp=opp/Math.sin(u7Rad(ang));
+  var prompt="A ladder leans against a wall. The ladder makes an angle of \\("+ang+"^\\circ\\) with the ground and reaches "+opp+" m up the wall. Find the length of the ladder, to the nearest tenth of a metre. Show your work.";
+  var sol="The height up the wall is opposite the angle and the ladder is the hypotenuse, so start with sine and rearrange to make the hypotenuse the subject: \\[ \\begin{aligned} \\sin("+ang+"^\\circ) &= "+FR(opp, "ladder") +" \\\\ \\text{ladder} &= "+opp+" \\div \\sin("+ang+"^\\circ) \\\\ &= "+fmtF(hyp,1)+" \\end{aligned} \\] The ladder is <b>"+fmtF(hyp,1)+" m</b> long, which is longer than the height it reaches, as it should be.";
+  var q=numq(prompt, Math.round(hyp*10)/10, 0.15, sol, {ang:ang, opp:opp}); q.figure=u7FigTri(opp+" m", "", "?", ang+"\u00B0"); return q;
+}, ["Sine links the opposite side to the hypotenuse.", "Write sin(angle) = opposite / hypotenuse, then rearrange so the ladder length is on its own."]);
+
+E("u8-pk-reasonable", 8, ["5.4"], 2, "gen", function(){
+  var mode=ri(0,3), prompt, correct, distract, sol;
+  if(mode===0){
+    var H=ri(12,30), claim=H+ri(2,10);
+    prompt="A student solves a right triangle problem and reports that one leg is "+claim+" m while the hypotenuse is "+H+" m. Is the solution reasonable?";
+    correct={t:"No. A leg of a right triangle can never be longer than the hypotenuse.", fb:"Correct: the hypotenuse is the longest side of a right triangle."};
+    distract=[ {t:"Yes. A leg can be any length as long as the angle is acute.", fb:"No side can pass the hypotenuse: it is opposite the right angle and is always the longest side."},
+      {t:"Yes. The leg and the hypotenuse are usually about the same size.", fb:"They can be close, but a leg of "+claim+" m against a hypotenuse of "+H+" m is impossible, not just unusual."},
+      {t:"No. A leg should always be exactly half the hypotenuse in any right triangle.", fb:"The verdict is right but the reason is wrong: a leg can be more than half the hypotenuse, just never longer than it."} ];
+    sol="The hypotenuse is the side opposite the \\(90^\\circ\\) angle and is the longest side of a right triangle. A leg of "+claim+" m cannot exceed a hypotenuse of "+H+" m, so the solution is <b>not reasonable</b>.";
+  } else if(mode===1){
+    var ang=ri(95,130);
+    prompt="In a right triangle, a student reports that one of the acute angles measures \\("+ang+"^\\circ\\). Is the solution reasonable?";
+    correct={t:"No. An acute angle must be less than 90 degrees.", fb:"Correct: with one angle already 90 degrees, each of the others must be under 90 degrees."};
+    distract=[ {t:"Yes. Angles in a triangle can be up to 180 degrees each.", fb:"The three angles sum to 180 degrees in total: one angle of "+ang+" degrees plus the right angle already passes that."},
+      {t:"Yes. It is reasonable if the triangle is very large.", fb:"Size does not change angle rules: the angles of any triangle sum to 180 degrees."},
+      {t:"No. Acute angles must be less than 45 degrees.", fb:"The verdict is right but the limit is wrong: acute means less than 90 degrees, not less than 45."} ];
+    sol="The angles of a triangle sum to \\(180^\\circ\\). The right angle takes \\(90^\\circ\\), leaving less than \\(90^\\circ\\) for each acute angle. A value of \\("+ang+"^\\circ\\) is <b>not reasonable</b> for an acute angle.";
+  } else if(mode===2){
+    var sv=fmtF(ri(11,19)/10,1);
+    prompt="A student calculates \\(\\sin A = "+sv+"\\) for an acute angle A in a right triangle. Is the solution reasonable?";
+    correct={t:"No. Sine is opposite / hypotenuse, and the opposite side cannot exceed the hypotenuse, so sine is at most 1.", fb:"Correct: a part divided by the whole hypotenuse can never pass 1."};
+    distract=[ {t:"Yes. Sine values can be any positive number, as large as the angle in the triangle needs them to be, and beyond.", fb:"Sine is a ratio of a leg to the hypotenuse, so it is capped at 1."},
+      {t:"Yes. It is reasonable because the angle might be large enough to give a sine value over 1 easily.", fb:"Even at angles close to 90 degrees, sine stays at or below 1."},
+      {t:"No. A sine value must always come out less than 0.5, whatever the size of the angle is here.", fb:"The verdict is right but the cap is wrong: sine can be up to 1, for example about 0.87 at 60 degrees."} ];
+    sol="\\(\\sin A = "+FR("opposite","hypotenuse")+"\\). The opposite side is a leg, and a leg cannot be longer than the hypotenuse, so the ratio is at most \\(1\\). A sine of "+sv+" is <b>not reasonable</b>.";
+  } else {
+    var H2=ri(15,40), leg=ri(4,H2-3);
+    prompt="A student solves a right triangle problem and reports a leg of "+leg+" m with a hypotenuse of "+H2+" m, found using the sine ratio. Is the solution reasonable?";
+    correct={t:"Yes. The leg is shorter than the hypotenuse, as it must be.", fb:"Correct: "+leg+" m is less than "+H2+" m, so the size check passes."};
+    distract=[ {t:"No. A leg must be less than half the hypotenuse.", fb:"There is no such rule: a leg can be close to the hypotenuse when the opposite angle is near 90 degrees."},
+      {t:"No. Legs found with sine are always longer than the hypotenuse.", fb:"That reverses the rule: sine results are legs, and legs are always shorter than the hypotenuse."},
+      {t:"Yes. Any answer from a calculator is automatically reasonable.", fb:"Calculator output still needs a check: a wrong ratio can give an impossible answer."} ];
+    sol="The check is the size comparison: a leg must be shorter than the hypotenuse. Here \\("+leg+" < "+H2+"\\), so the solution passes the check and is <b>reasonable</b>.";
+  }
+  return mcq(prompt, correct, distract, sol, {mode:mode});
+}, ["Run a size check: compare legs with the hypotenuse and angles with 90 degrees.", "Ask whether each reported value could exist in a real right triangle."]);
+
+/* PK tranche metadata pass for Unit 8. The tranche's own entries are flagged here. This pass also completes the tranche metadata of the two entries flagged on November 13, 2026 (u8-choose-ratio-equation, u8-cr-find-angle) without retagging or reflagging them. */
+var PKT_U8_FOR=["5.1","5.2","5.3","5.4"];
+var PKT_U8={
+ "u8-choose-ratio-equation":{src:"math-1201:7.2",group:"trig-ratios"},
+ "u8-cr-find-angle":{src:"math-1201:7.3",group:"find-angle"},
+ "u8-pk-choose-ratio":{src:"math-1202:5.5",group:"trig-ratios"},
+ "u8-pk-sine-ratio-constant":{src:"math-1202:5.2",group:"trig-ratios"},
+ "u8-pk-unknown-angle":{src:"math-1202:5.5",group:"find-angle"},
+ "u8-pk-find-angle-num":{src:"math-1202:5.5",group:"find-angle"},
+ "u8-pk-hypotenuse-rearrange":{src:"math-1202:5.5",group:"find-side"},
+ "u8-pk-reasonable":{src:"math-1202:5.6",group:"reasonable-result"}
+};
+BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U8_FOR.slice();e.pkGroup=t.group;}});
+
+/* ===== Distinctness guard for u8-pk-unknown-angle (borrowed from Mathematics 1202's u7-unknown-angle-mc, whose bank wraps the generator in the identical guard; placed after the entry so the pass runs on the registered entry). ===== */
+(function(){var e=BANK.filter(function(x){return x.id==="u8-pk-unknown-angle";})[0];if(!e)return;var inner=e.gen;e.gen=function(){var q=inner(),tries=0;while(q&&q.options&&new Set(q.options.map(function(o){return String(o).trim();})).size<4&&tries<60){q=inner();tries++;}return q;};})();
+
+/* ===== Distinctness guard for u8-pk-sine-ratio-constant (borrowed from Mathematics 1202's u7-sine-ratio-constant, one of the nine entries that bank's guard wraps; placed after the entry so the pass runs on the registered entry). ===== */
+(function(){var e=BANK.filter(function(x){return x.id==="u8-pk-sine-ratio-constant";})[0];if(!e)return;var inner=e.gen;e.gen=function(){var q=inner(),tries=0;while(q&&q.options&&new Set(q.options.map(function(o){return String(o).trim();})).size<4&&tries<60){q=inner();tries++;}return q;};})();
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
