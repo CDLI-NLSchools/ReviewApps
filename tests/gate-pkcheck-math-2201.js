@@ -11,6 +11,16 @@
    panel (the panel holds the host unit's material, not the
    feeder skills a check measures); the same unit's ordinary
    render keeps its panel, and a resumed check stays panel-free.
+   Follow-on (Nov 15, 2026, Jason): the retry on a check is
+   group-keyed. The summary names the sampled skill groups in
+   plain language (solid, or needs more practice) instead of
+   host indicator codes, and Practice what I missed deals a
+   fresh set at the check size from the missed groups only,
+   round-robin, entries repeating as new instances when a group
+   is thin, with the check's Level 3 discipline; the retry set
+   is itself a check set (pkonly stays on, link keeps pkonly=1,
+   panel stays suppressed, progress saves). Ordinary sets keep
+   the indicator-keyed retry exactly.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pkcheck-math-2201.js */
 const fs = require("fs");
 const vm = require("vm");
@@ -92,6 +102,66 @@ run("__PK=true;");
   const a = checkDraw(5, [], 424242), b = checkDraw(5, [], 424242);
   ok(JSON.stringify(a.ids) === JSON.stringify(b.ids) && JSON.stringify(a.canon) === JSON.stringify(b.canon),
      "seeded identity: the same seed redraws the identical Unit 5 check");
+}
+/* group-keyed retry draws: PKONLY_GROUPS narrows the pkonly
+   branch to the missed groups of a completed check. Entries
+   repeat as fresh instances when a group is thin, mastered
+   groups contribute nothing, and the Level 3 discipline is the
+   check's: a single Level 3 question, admitted on the turn of
+   a group whose entries are all Level 3. */
+run('var PKONLY_GROUPS=null;');
+function retryDraw(unit, groups, seed, n) {
+  run("__reseed(" + seed + ");");
+  return run("(function(){PKONLY_GROUPS=" + JSON.stringify(groups) + ";var r=drawSet([" + unit + "],[]," + (n || 8) + ",[20,60,20],'unit',false);PKONLY_GROUPS=null;"
+    + "return {n:r.items.length,pool:r.pool,thin:r.thin,reused:r.reused,"
+    + "ids:r.items.map(function(q){return q._entry.id;}),"
+    + "groups:r.items.map(function(q){return pkGroupOf(q._entry);}),"
+    + "l3:r.items.filter(function(q){return q._entry.level>=3;}).length,"
+    + "distinct:new Set(r.items.map(function(q){return q._entry.id;})).size};})()");
+}
+for (const seed of [11, 99, 424242, 7, 2026]) {
+  const r = retryDraw(3, ["polynomial-multiply"], seed);
+  ok(r.n === 8 && r.pool === 1, "retry u3 seed " + seed + ": one missed group deals the full retry size of 8 from its single entry, saw n=" + r.n + " pool=" + r.pool);
+  ok(r.groups.every((g) => g === "polynomial-multiply") && r.ids.every((id) => id === "u3-pk-binom-tri-expand"),
+     "retry u3 seed " + seed + ": every retry question is from the missed group only");
+  ok(r.l3 === 0, "retry u3 seed " + seed + ": no Level 3 question in the polynomial retry");
+}
+{
+  const r = retryDraw(3, ["polynomial-multiply", "common-factor"], 99);
+  const c = {}; r.groups.forEach((g) => { c[g] = (c[g] || 0) + 1; });
+  ok(r.n === 8 && c["polynomial-multiply"] === 4 && c["common-factor"] === 4,
+     "retry u3: two missed groups split the retry round-robin (4 and 4), saw " + JSON.stringify(c));
+}
+{
+  const r = retryDraw(3, ["radicals", "PK.2", "linear-equations", "common-factor"], 424242);
+  ok(r.n === 8 && !r.groups.includes("polynomial-multiply"),
+     "retry u3: a mastered group contributes nothing even when every other group is missed");
+  ok(r.groups.every((g) => ["radicals", "PK.2", "linear-equations", "common-factor"].includes(g)),
+     "retry u3: the four-group retry draws only from those groups");
+}
+{
+  const r = retryDraw(1, ["trig-ratios"], 7);
+  ok(r.n === 8 && r.distinct === 3 && r.reused === 5 && r.groups.every((g) => g === "trig-ratios"),
+     "retry u1: the three trig-ratios entries repeat as fresh instances to fill 8 (reused 5), saw distinct=" + r.distinct + " reused=" + r.reused);
+}
+{
+  /* Unit 5 data-claims is the tranche's only Level 3 only
+     group. Missed alongside a Level 1-2 group it contributes
+     exactly one question, as it does in the check; missed
+     alone, the retry is that one question and thin reports
+     the shortfall. */
+  const m = retryDraw(5, ["data-claims", "freq-table"], 99);
+  const c = {}; m.groups.forEach((g) => { c[g] = (c[g] || 0) + 1; });
+  ok(m.n === 8 && m.l3 === 1 && c["data-claims"] === 1 && c["freq-table"] === 7,
+     "retry u5: alongside a Level 1-2 group, the Level 3 only group contributes exactly one question, saw " + JSON.stringify(c) + " l3=" + m.l3);
+  const r = retryDraw(5, ["data-claims"], 99);
+  ok(r.n === 1 && r.l3 === 1 && r.thin === true && r.groups.every((g) => g === "data-claims"),
+     "retry u5: the Level 3 only group missed alone deals one Level 3 question, thin reported, saw n=" + r.n + " l3=" + r.l3 + " thin=" + r.thin);
+}
+{
+  const r = retryDraw(3, null, 99);
+  ok(r.n === 7 && JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(3)),
+     "retry: with no group restriction the pkonly draw is the ordinary full check");
 }
 /* sheets and exams ignore pkonly, even with the flag fraudulently
    set: sheet draws always pass a predicate and the pkonly branch
@@ -175,6 +245,33 @@ function settleBoot(dom) {
 }
 const ev = (d, code) => d.window.eval(code);
 function resumeKey(shared) { return Object.keys(shared).find((k) => k.endsWith("-resume-v1")) || null; }
+/* Answer every question on the dealt set and check each one:
+   all correct, except the questions the miss spec selects
+   ({group: "polynomial-multiply"} or {index: n}), which are
+   answered wrong (a prose text item is self-rated missed).
+   Returns nothing; the set summary is the observable result. */
+function answerAll(d, missSpec) {
+  ev(d, `(function(spec){
+    for(var i=0;i<current.length;i++){
+      var q=current[i];
+      var miss=spec?(spec.group!=null?(pkGroupOf(q._entry)===spec.group):(i===spec.index)):false;
+      if(q.type==="mc"){
+        var v=miss?((q.correct+1)%q.options.length):q.correct;
+        var r=document.querySelector('input[name="opt'+i+'"][value="'+v+'"]');
+        if(r){r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}
+      }else if(q.type==="num"){
+        var inp=document.getElementById("ans"+i);
+        if(inp){inp.value=String(miss?(q.answer+3):q.answer);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}
+      }else{
+        var inp2=document.getElementById("ans"+i);
+        if(inp2){inp2.value=miss?"zzz not the answer":q.answers[0];inp2.dispatchEvent(new window.Event("input",{bubbles:true}));}
+      }
+      var cb=document.querySelector('[data-check="'+i+'"]');if(cb)cb.click();
+      var sr=document.getElementById("sr"+i);
+      if(sr&&!sr.hidden){var b=sr.querySelector('[data-rate="'+(miss?"missed":"got")+'"]');if(b)b.click();}
+    }
+  })(${JSON.stringify(missSpec || null)})`);
+}
 
 (async () => {
   /* ===== a student pkonly link deals the check ===== */
@@ -258,6 +355,78 @@ function resumeKey(shared) { return Object.keys(shared).find((k) => k.endsWith("
   d = await boot("course=math-2201&teacher=1&unit=3,5&count=8", {});
   ok(ev(d, "!!document.getElementById('pkCheckBtn') && document.getElementById('pkCheckBtn').hidden") === true,
      "visibility: teacher mode with two units selected hides the action (a check is per unit)");
+  d.window.close();
+
+  /* ===== group-keyed retry: the scripted Unit 3 check =====
+     Jason's case: the polynomial multiplication question is
+     missed, everything else (radicals included) is aced. The
+     summary must name the skills, and the retry must deal
+     polynomial questions only. */
+  const sharedR = {};
+  d = await boot("course=math-2201&unit=3&pkonly=1&seed=retry1&count=8", sharedR);
+  answerAll(d, { group: "polynomial-multiply" });
+  ok(!!d.window.document.getElementById("retryMissedBtn"), "retry: a check with a missed group offers Practice what I missed");
+  const sumText = d.window.document.getElementById("setSummary").textContent;
+  ok(sumText.includes("Multiplying polynomials") && sumText.includes("needs more practice"),
+     "summary: the missed group is named in plain language as needing practice, saw: " + sumText.replace(/\s+/g, " ").slice(0, 240));
+  ok(sumText.includes("Simplifying square roots") && sumText.includes("solid"),
+     "summary: a mastered group is named and marked solid");
+  ok(sumText.includes("Factoring quadratic expressions"),
+     "summary: the coded PK.2 family is named by its label, not its code");
+  ok(!sumText.includes("Indicators to practise more") && !sumText.includes("4.8"),
+     "summary: the check summary does not present the host indicator (4.8) as the thing to practise");
+  ev(d, `document.getElementById("retryMissedBtn").click()`);
+  await sleep(300);
+  ok(ev(d, "current.length") === 8, "retry: the retry set deals the check size of 8, saw " + ev(d, "current.length"));
+  ok(ev(d, "current.every(function(q){return pkGroupOf(q._entry)==='polynomial-multiply';})") === true,
+     "retry: every retry question comes from the missed group");
+  ok(ev(d, "current.every(function(q){return q._entry.id==='u3-pk-binom-tri-expand';})") === true,
+     "retry: no mastered-group entry appears in the retry set");
+  ok(ev(d, "settings().pkOnly") === true && ev(d, "settingsToURL()").includes("pkonly=1"),
+     "retry: the retry set is itself a check set and its link keeps pkonly=1");
+  ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
+     "retry: the retry render also carries no Formulas and facts panel");
+  ev(d, `(function(){
+    var q=current[0];
+    if(q.type==="mc"){var r=document.querySelector('input[name="opt0"][value="'+q.correct+'"]');r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}
+    else{var inp=document.getElementById("ans0");inp.value=(q.type==="num"?String(q.answer):q.answers[0]);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}
+  })()`);
+  ev(d, `document.querySelector('[data-check="0"]').click()`);
+  await sleep(900);
+  ok(!!resumeKey(sharedR), "retry: progress on the retry set is saved like any check set");
+  d.window.close();
+
+  /* a fully correct check (another seed) offers no retry */
+  d = await boot("course=math-2201&unit=3&pkonly=1&seed=retry2&count=8", {});
+  answerAll(d, null);
+  ok(!d.window.document.getElementById("retryMissedBtn"), "retry: a fully correct check offers no retry button");
+  ok(d.window.document.getElementById("setSummary").textContent.includes("Every skill in this check"),
+     "summary: a fully correct check says so in skill language");
+  d.window.close();
+
+  /* a different missed group on a third seed retries that group */
+  d = await boot("course=math-2201&unit=3&pkonly=1&seed=retry3&count=8", {});
+  answerAll(d, { group: "radicals" });
+  ev(d, `document.getElementById("retryMissedBtn").click()`);
+  await sleep(300);
+  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-radical-mixed';})") === true,
+     "retry: missing radicals on another seed deals only radical questions (8 fresh instances)");
+  d.window.close();
+
+  /* ===== ordinary sets keep the indicator retry (regression) ===== */
+  d = await boot("course=math-2201&unit=3&seed=ord1&count=8", {});
+  const target = ev(d, "(function(){for(var i=0;i<current.length;i++){if(!isPK(current[i]._entry))return {idx:i,ind:current[i]._entry.indicators[0]};}return null;})()");
+  ok(!!target, "regression: the ordinary Unit 3 set contains a non-PK question to miss deliberately");
+  answerAll(d, { index: target.idx });
+  ok((d.window.document.getElementById("setSummary").textContent || "").includes("Indicators to practise more"),
+     "regression: the ordinary summary still lists indicators to practise more");
+  ev(d, `document.getElementById("retryMissedBtn").click()`);
+  await sleep(300);
+  ok(ev(d, "settings().pkOnly") === false, "regression: the ordinary retry does not turn pkOnly on");
+  ok(ev(d, "settings().inds").includes(target.ind),
+     "regression: the ordinary retry keys on the missed indicator (" + target.ind + "), saw " + JSON.stringify(ev(d, "settings().inds")));
+  ok(ev(d, "current.length>0&&current.every(function(q){var inds=settings().inds;return q._entry.indicators.some(function(c){return inds.indexOf(c)>=0;});})") === true,
+     "regression: the ordinary retry set draws only questions carrying a missed indicator");
   d.window.close();
 
   console.log("GATE-PKCHECK-MATH-2201: " + pass + " passed, " + fail + " failed");
