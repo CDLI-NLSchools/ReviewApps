@@ -2,6 +2,13 @@
 
 All notable changes to the CDLI Review Apps are listed here, newest first. The notes are written for teachers and students who use the apps.
 
+## v1.1.0 - 2026-11-15
+
+### Added
+
+- The course picker now has a "What's new" link at the top. It opens these release notes, so you can follow improvements and changes to the apps as they land.
+- No student information is collected by the apps' new usage counting. The apps now tally anonymous counts of which courses and features are used, so we can improve the ones teachers and students rely on. The counts never include names, answers, scores, or anything that identifies a student, a class, or a device, and a short note on the course picker explains this.
+
 ## v1.0.0 - 2026-11-15
 
 ### Added
@@ -32,6 +39,12 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - Teachers who prefer the first set's checking style can choose "Keep the first set's mode" for student links.
 - A missed skill group made only of harder questions can now repeat with fresh versions until the retry set reaches its full size.
 - If worked examples are turned off in a student link, the general hint no longer points students to a worked example they cannot open.
+
+### Math 2200 prerequisite checks
+
+- Math 2200 now has a short prerequisite check for each of its nine units, built the same way as the Math 2201 checks. Each check uses skills from earlier courses that the unit builds on.
+- At the end of a check, the summary names the skill groups in plain language and marks each one as solid or needing more practice, and practising what was missed deals fresh questions from the missed skill groups only.
+- Prerequisite check questions no longer appear in composed tests and exams for Math 2200. Teachers can still include them on purpose with the existing teacher choice.
 
 ## 2026-11-14
 
