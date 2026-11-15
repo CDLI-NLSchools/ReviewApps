@@ -429,7 +429,7 @@ rep('return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}',
 # again. The shell's first version stopped at the last stage and
 # left the hint on screen.
 rep('  .exbox{margin:8px 0;padding:10px 12px;border:1px solid #b7c9a8;background:#f6faf2;border-radius:8px;line-height:1.5;}',
-    '  .exbox{margin:8px 0;padding:10px 12px;border:1px solid #b7c9a8;background:#f6faf2;border-radius:8px;line-height:1.5;}\n  .hintbox{margin:8px 0;padding:8px 12px;border-left:4px solid #f2b134;background:#fff8e6;border-radius:0 8px 8px 0;line-height:1.5;}', count=1)
+    '  .exbox{margin:8px 0;padding:10px 12px;border:1px solid #b7c9a8;background:#f6faf2;border-radius:8px;line-height:1.5;}\n  .hintbox{margin:8px 0;padding:8px 12px;border-left:4px solid #f2b134;background:#fff8e6;color:#1c2b33;border-radius:0 8px 8px 0;line-height:1.5;}', count=1)
 rep("    html+='<p><button type=\"button\" data-check=\"'+i+'\">Check</button> <button type=\"button\" class=\"alt\" data-ex=\"'+i+'\">See a worked example</button> <button type=\"button\" class=\"alt\" data-sol=\"'+i+'\">Show worked solution</button></p><div class=\"fb\" id=\"fb'+i+'\"></div><div class=\"exbox\" id=\"ex'+i+'\" hidden></div><div class=\"sol\" id=\"sol'+i+'\"><b>Worked solution:</b> '+stepHTML(q.solution)+'</div>'",
     "    html+='<p><button type=\"button\" data-check=\"'+i+'\">Check</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type=\"button\" class=\"alt\" data-hint=\"'+i+'\">Hint</button> ':'')+'<button type=\"button\" class=\"alt\" data-ex=\"'+i+'\">See a worked example</button> <button type=\"button\" class=\"alt\" data-sol=\"'+i+'\">Show worked solution</button></p><div class=\"fb\" id=\"fb'+i+'\"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class=\"hintbox\" id=\"hint'+i+'\" hidden></div>':'')+'<div class=\"exbox\" id=\"ex'+i+'\" hidden></div><div class=\"sol\" id=\"sol'+i+'\"><b>Worked solution:</b> '+stepHTML(q.solution)+'</div>'", count=1)
 rep('  Array.prototype.forEach.call(box.querySelectorAll("[data-ex]"),function(b){b.addEventListener("click",function(){toggleExample(+b.getAttribute("data-ex"));});});',
@@ -1399,6 +1399,23 @@ rep('    a11y.font=!!p.font;a11y.spacing=!!p.spacing;a11y.motion=!!p.motion;}}}c
 rep('  html[data-a11y-theme="dark"] button.alt{background:var(--card);}',
     '  html[data-a11y-theme="dark"] button.alt{background:var(--card);}\n'
     '  html[data-a11y-theme="dark"] button.alt{color:#5eead4;border-color:#5eead4;}',
+    count=1)
+
+# ---------- hint box dark contrast and report form name (Nov 14, 2026) ----------
+# The hint box kept its light cream background in dark mode while its
+# text inherited the dark theme's near-white ink, so hints rendered
+# almost invisibly (found live on Earth Systems 3209). The base rule
+# above now pins the light ink colour, and in dark mode the box takes
+# the worked solution's warm dark background with the theme ink.
+rep('  html[data-a11y-theme="dark"] .exbox{background:#1d2a1a;border-color:#4a6741;}',
+    '  html[data-a11y-theme="dark"] .exbox{background:#1d2a1a;border-color:#4a6741;}\n'
+    '  html[data-a11y-theme="dark"] .hintbox{background:#2b2118;color:var(--ink);}',
+    count=1)
+# The shared report form was renamed from "Math Review Apps" to
+# "CDLI Review Apps" when the apps branched beyond math; the comment
+# above the REPORT_FORM constant still used the old name.
+rep('/* Report-a-problem: one Google Form, "Math Review Apps: Report a Problem", serves',
+    '/* Report-a-problem: one Google Form, "CDLI Review Apps: Report a Problem", serves',
     count=1)
 
 

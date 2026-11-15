@@ -137,7 +137,7 @@
   .refpanel summary{cursor:pointer;font-weight:bold;}
   .refbody{margin-top:8px;line-height:1.55;font-size:.95rem;}
   .exbox{margin:8px 0;padding:10px 12px;border:1px solid #b7c9a8;background:#f6faf2;border-radius:8px;line-height:1.5;}
-  .hintbox{margin:8px 0;padding:8px 12px;border-left:4px solid #f2b134;background:#fff8e6;border-radius:0 8px 8px 0;line-height:1.5;}
+  .hintbox{margin:8px 0;padding:8px 12px;border-left:4px solid #f2b134;background:#fff8e6;color:#1c2b33;border-radius:0 8px 8px 0;line-height:1.5;}
   .exbox .opts label{display:block;margin:3px 0;}
   .timerbar{font-weight:bold;background:#eef4ff;border:1px solid #c9d4e4;border-radius:8px;padding:8px 12px;margin-bottom:10px;}
   .summarybox{margin-top:14px;border-top:2px solid #dfe6f0;padding-top:10px;}
@@ -210,6 +210,7 @@
   html[data-a11y-theme="dark"] .rep{background:#141c21;}
   html[data-a11y-theme="dark"] .refpanel,html[data-a11y-theme="dark"] .timerbar{background:#16202a;border-color:#33475c;}
   html[data-a11y-theme="dark"] .exbox{background:#1d2a1a;border-color:#4a6741;}
+  html[data-a11y-theme="dark"] .hintbox{background:#2b2118;color:var(--ink);}
   html[data-a11y-theme="dark"] .summarybox{border-top-color:#33475c;}
   html[data-a11y-theme="dark"] button.alt{background:var(--card);}
   html[data-a11y-theme="dark"] button.alt{color:#5eead4;border-color:#5eead4;}
@@ -1000,7 +1001,7 @@ function detexClone(node){
   return c;
 }
 var state={units:[],inds:[],midCap:false,finalCap:false};
-/* Report-a-problem: one Google Form, "Math Review Apps: Report a Problem", serves
+/* Report-a-problem: one Google Form, "CDLI Review Apps: Report a Problem", serves
    every review app. The app name, the unit and indicators, and the full report text
    are pre-filled through the entry IDs below, which are the form's pre-filled-link
    IDs. If url is ever emptied, the panel falls back to copying the report text for
