@@ -404,6 +404,7 @@
       </div>
       <div class="modebar">
         <button type="button" id="goOnline">Practice online</button>
+        <button type="button" id="pkCheckBtn" hidden>Start prerequisite check</button>
       </div>
     </div>
     <div class="group">
@@ -801,6 +802,13 @@ var CR_MARKS=window.__BANK_CRMARKS||{};
    course exactly the way postMid and preFinal are set. The
    default is out, everywhere. */
 var PICKER_SCOPE=false;
+/* Prerequisite check draws (Nov 15, 2026): PKONLY_DRAW is set by
+   startOnline for the duration of one practice draw when the
+   settings carry pkOnly (the pkonly=1 link parameter); drawSet's
+   pkonly branch answers it. It is never set on the sheet or exam
+   paths, so sheets, exams and exports ignore pkonly by
+   construction. */
+var PKONLY_DRAW=false;
 function enrichIncluded(){
   if(typeof PICKER_SCOPE!=="undefined"&&PICKER_SCOPE)return true;
   var el=null;
@@ -823,6 +831,21 @@ function pkIncluded(){
   try{el=document.getElementById("pkInChk");}catch(err){}
   if(el)return !!el.checked;
   return (typeof hidCtl!=="undefined"&&hidCtl)?hidCtl.pkIn!==false:true;
+}
+/* Prerequisite checks (Nov 15, 2026, the Math 2201 PK tranche):
+   pkOnlyActive() reports the pkonly state stashed in hidCtl (set
+   from the pkonly=1 link parameter by applyURL, or by the Advanced
+   tools prerequisite check action). pkGroupOf(e) names the skill
+   family a check samples: the entry's pkGroup property where its
+   bank module sets one, else its PK code, else its own id, so the
+   coded PK.1 and PK.2 families group without being edited. */
+function pkOnlyActive(){
+  return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.pkOnly:false;
+}
+function pkGroupOf(e){
+  if(e.pkGroup)return e.pkGroup;
+  for(var i=0;i<e.indicators.length;i++){if(e.indicators[i].indexOf("PK")===0)return e.indicators[i];}
+  return e.id;
 }
 function poolFor(units,inds,cap,pred){
   return BANK.filter(function(e){
@@ -858,6 +881,54 @@ function canonQ(q){ // canonical form of a generated question: normalized prompt
   return norm(q.prompt)+" || "+a;
 }
 function drawSet(units,inds,n,mix,orderMode,cap,pred){
+  if(typeof PKONLY_DRAW!=="undefined"&&PKONLY_DRAW&&!pred){
+    /* Prerequisite check draw (Nov 15, 2026): the pool is the
+       selected units' prior knowledge entries only, taken with no
+       indicator filter and no cap: pkonly overrides the practice
+       PK switch (pkin=0) and any indicator selection carried on
+       the link. The branch answers only predicate-free draws (the
+       practice funnel): sheet draws always pass a predicate, so a
+       sheet can never enter it, whatever the flag's state. The
+       check deals min(n, pool) questions, at most
+       one entry per pkGroup until every group is sampled, no
+       entry repeated, and at most one Level 3 question, admitted
+       only as filler when the Level 1 and 2 entries cannot fill
+       the check. Dealing the whole pool is a full check, not a
+       thin one; thin reports only a genuine duplicate or a
+       shortfall against the requested count. */
+    var pkPool=poolFor(units,[],false).filter(function(e){return typeof isPK==="function"&&isPK(e);});
+    if(!pkPool.length||n<1)return{items:[],short:0,pool:0,thin:false};
+    var want=Math.min(n,pkPool.length);
+    var byGroup={},gNames=[];
+    pkPool.forEach(function(e){var g=pkGroupOf(e);if(!byGroup[g]){byGroup[g]=[];gNames.push(g);}byGroup[g].push(e);});
+    var chosenP=[],usedP={};
+    shuffle(gNames.slice()).forEach(function(g){
+      if(chosenP.length>=want)return;
+      var cands=shuffle(byGroup[g].filter(function(e){return e.level<3&&!usedP[e.id];}));
+      if(cands.length){chosenP.push(cands[0]);usedP[cands[0].id]=1;}
+    });
+    if(chosenP.length<want){
+      shuffle(pkPool.filter(function(e){return e.level<3&&!usedP[e.id];})).forEach(function(e){
+        if(chosenP.length<want){chosenP.push(e);usedP[e.id]=1;}
+      });
+    }
+    if(chosenP.length<want){
+      var l3=shuffle(pkPool.filter(function(e){return e.level>=3&&!usedP[e.id];}));
+      if(l3.length){chosenP.push(l3[0]);usedP[l3[0].id]=1;}
+    }
+    var itemsP=[],seenPC={};
+    chosenP.forEach(function(e){
+      var q=e.gen(),c=canonQ(q),tries=0;
+      while(seenPC[c]&&tries<25){q=e.gen();c=canonQ(q);tries++;}
+      seenPC[c]=1;q._entry=e;itemsP.push(q);
+    });
+    if(orderMode==="unit")itemsP.sort(function(a,b){return a._entry.unit-b._entry.unit;});
+    else itemsP=shuffle(itemsP);
+    var dupP=false,seenP3={};
+    itemsP.forEach(function(q){var c=canonQ(q);if(seenP3[c])dupP=true;seenP3[c]=1;});
+    var wholePool=itemsP.length>=pkPool.length;
+    return {items:itemsP,reused:0,pool:pkPool.length,thin:wholePool?false:(dupP||itemsP.length<want)};
+  }
   var pool=poolFor(units,inds,cap,pred);
   if(typeof pkIncluded==="function"&&!pkIncluded())pool=pool.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
   if(!pool.length||n<1)return{items:[],short:0,pool:0,thin:false};
@@ -1018,7 +1089,7 @@ function unitCheckboxes(){
     return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> '+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</label>";
   }).join("");
   Array.prototype.forEach.call(document.querySelectorAll(".unitChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;readUnits();renderIndicators();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;readUnits();renderIndicators();updatePoolInfo();});
   });
 }
 function readUnits(){
@@ -1036,7 +1107,23 @@ function renderIndicators(){
 function readInds(){
   state.inds=Array.prototype.map.call(document.querySelectorAll(".indChk:checked"),function(cb){return cb.value;});
 }
-function updatePoolInfo(){refreshFace();
+function refreshPkCheckBtn(){
+  var b=$("pkCheckBtn");if(!b)return;
+  var show=false;
+  if(typeof TEACHER!=="undefined"&&TEACHER&&state.units.length===1){
+    show=poolFor(state.units,[],false).some(function(e){return typeof isPK==="function"&&isPK(e);});
+  }
+  b.hidden=!show;
+  if(show)b.textContent=L9("Start prerequisite check","Commencer la vérification des préalables");
+}
+function updatePoolInfo(){refreshFace();refreshPkCheckBtn();
+  if(pkOnlyActive()){
+    var pkp=poolFor(state.units,[],false).filter(function(e){return typeof isPK==="function"&&isPK(e);});
+    $("poolInfo").textContent=state.units.length===1?
+      L9("Prerequisite check pool for Unit ","Réserve pour la vérification des préalables, unité ")+state.units[0]+L9(": "," : ")+pkp.length+L9(" questions"," questions"):
+      L9("Prerequisite check pool: ","Réserve pour la vérification des préalables : ")+pkp.length+L9(" questions"," questions");
+    return;
+  }
   var p=poolFor(state.units,state.inds,state.finalCap?"final":state.midCap);
   var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});
   $("poolInfo").textContent=p.length?L9("Question bank for this selection: ","Banque de questions pour cette sélection : ")+p.length+L9(" question templates (Level 1: "," modèles de questions (Niveau 1 : ")+byL[1]+L9(", Level 2: ",", Niveau 2 : ")+byL[2]+L9(", Level 3: ",", Niveau 3 : ")+byL[3]+L9("). Generators make a fresh question every draw.","). Les générateurs créent une nouvelle question à chaque tirage.")+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:"")+(window.__COURSE&&window.__COURSE.midNote&&state.midCap?" "+window.__COURSE.midNote:""):
@@ -1049,7 +1136,7 @@ function updatePoolInfo(){refreshFace();
    resolve when the controls are absent from the DOM: hiding a control
    never disables the setting behind it, and a link a teacher built
    composes the identical set for a student. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:true};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:true,pkOnly:false};
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
@@ -1081,6 +1168,7 @@ function settings(){
     timer:($("timerChk")?$("timerChk").checked:false),
     enr:enrichIncluded(),
     pkIn:pkIncluded(),
+    pkOnly:pkOnlyActive(),
     seed:($("seedIn")?$("seedIn").value.trim():""),
     mix:[+tCtlVal("lv1",hidCtl.mix[0])||0,+tCtlVal("lv2",hidCtl.mix[1])||0,+tCtlVal("lv3",hidCtl.mix[2])||0]};
 }
@@ -2259,7 +2347,9 @@ var lastSettings=null,onlineThin=false;
 function startOnline(){
   stopExamTimer();
   var s=settings();var _sd=activeSeed(s);sessionSeed=_sd;
+  PKONLY_DRAW=!!s.pkOnly;
   var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
+  PKONLY_DRAW=false;
   current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};
   lastSettings=s;onlineThin=res.thin;T=null;
   if(TEACHER&&current.length){
@@ -3915,6 +4005,7 @@ function settingsToURL(){
   if(s.timer)p.set("tm","1");
   if(s.enr)p.set("enr","1");
   if(!s.pkIn)p.set("pkin","0");
+  if(s.pkOnly)p.set("pkonly","1");
   if(s.seed)p.set("seed",s.seed);
   if(s.mix.join()!==((window.__COURSE&&window.__COURSE.defaultMix)?window.__COURSE.defaultMix.join(","):"20,60,20"))p.set("levels",s.mix.join(","));
   return location.pathname+"?"+p.toString();
@@ -3939,13 +4030,14 @@ function applyURL(){
   if(p.get("pk")==="1"&&$("pkChk"))$("pkChk").checked=true;
   if(p.get("enr")==="1"){hidCtl.enr=true;if($("enrChk"))$("enrChk").checked=true;}
   if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").checked=false;}
+  if(p.get("pkonly")==="1"){hidCtl.pkOnly=true;}
   if(p.get("seed")&&$("seedIn"))$("seedIn").value=p.get("seed");
   if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
   if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;}
   if(p.get("shuf")==="1")SHUFFLE_OPTS=true;
   return touched;
 }
-function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");unitCheckboxes();renderIndicators();updatePoolInfo();}
+function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=(__c.appName||(__c.shortName+" Review"));var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.appName||((__c.longName||__c.shortName)+" Review"));var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 /* French static markup (student side): when the active course is
@@ -4032,7 +4124,13 @@ $("seedGen").addEventListener("click",function(){var words=["otter","maple","har
 $("seedIn").addEventListener("input",refreshFace);
 $("countIn").addEventListener("input",refreshFace);
 $("chkIn").addEventListener("change",refreshFace);
-$("goOnline").addEventListener("click",startOnline);
+$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;startOnline();});
+(function(){var b=$("pkCheckBtn");if(!b)return;b.addEventListener("click",function(){
+  hidCtl.pkOnly=true;
+  var pool=poolFor(state.units,[],false).filter(function(e){return isPK(e);});
+  var ci=$("countIn");if(ci)ci.value=Math.min(8,pool.length);
+  updatePoolInfo();startOnline();
+});})();
 $("goSheet").addEventListener("click",startSheet);
 $("goExam").addEventListener("click",startExam);
 $("copyLink").addEventListener("click",function(){
