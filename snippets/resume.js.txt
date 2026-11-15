@@ -105,6 +105,7 @@ function resumeShowBanner(save,mode){
   bar.innerHTML='<p style="margin:0 0 8px;">'+lead+" "+detail+'</p><p style="margin:0;"><button type="button" id="resumeGoBtn">'+L9("Resume","Reprendre")+'</button> <button type="button" class="alt" id="resumeFreshBtn">'+L9("Start fresh","Recommencer")+'</button></p>';
   if(sess.firstChild)sess.insertBefore(bar,sess.firstChild);else sess.appendChild(bar);
   $("resumeGoBtn").addEventListener("click",function(){
+    countEvent("resume_accept",[analyticsCourse()]);
     if(save.view==="online")resumeApplyOnline(save);
     else if(mode==="examBoot")resumeRebuildExam(save);
     else{examState.t0=Date.now()-((save.body&&save.body.elapsed)||0);_resumeAppliedSig=save.sig;resumeHideBanner();renderExam();}

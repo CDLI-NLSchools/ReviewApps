@@ -284,7 +284,8 @@
   <img class="pklogo pklogo-l" src="cdli-logo.svg" alt="CDLI">
   <img class="pklogo pklogo-d" src="cdli-logo-white.svg" alt="CDLI">
   <h1>Review Apps</h1>
-  <div class="pkheadrow"><p class="sub pktag">Online or Printable Practice Exercises</p><button type="button" id="pkTheme" class="pkthemebtn">Dark mode</button></div>
+  <div class="pkheadrow"><p class="sub pktag">Online or Printable Practice Exercises</p><span class="pkheadright"><a id="pkWhatsNew" class="pkwn" href="https://github.com/CDLI-NLSchools/ReviewApps/releases" target="_blank" rel="noopener">What's new</a><button type="button" id="pkTheme" class="pkthemebtn">Dark mode</button></span></div>
+  <p class="sub pkprivacy" id="pkPrivacy">Anonymous usage counts help us see which courses and features are used. No student information is collected.</p>
   <div class="card">
     <h2 style="margin-top:0;">Choose your course</h2>
     <div id="courseList"></div>
@@ -1231,6 +1232,43 @@ var state={units:[],inds:[],midCap:false,finalCap:false};
    IDs. If url is ever emptied, the panel falls back to copying the report text for
    the teacher. */
 var REPORT_FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSetn4AeZSWxcO_3zawHsAPNqZPLsQzu_bCCw6Li-J3PAy9knw/viewform",appEntry:"entry.2102073803",appName:(window.__COURSE?((window.__COURSE.appName)||(window.__COURSE.shortName+" Review")):"Review Apps"),unitEntry:"entry.1142563169",detailsEntry:"entry.1416174508"};
+/* Anonymous usage counting (Nov 15, 2026, Jason's analytics spec):
+   aggregate counts only, through GoatCounter (site code cdli).
+   countEvent(name, dims) builds a path from the event name and the
+   dimension values the caller passes; every value comes from a
+   closed internal vocabulary (the registry course id, a unit scope,
+   the view, a feature kind), and nothing else is ever sent: no page
+   URL (seeded set links live in it), no referrer, no seed, no
+   answer, no score, no identifier of any kind. The send is
+   fire-and-forget inside a guard: a blocked, failed or slow
+   endpoint changes nothing in the app, and an empty endpoint
+   disables counting entirely. */
+var ANALYTICS_ENDPOINT="https://cdli.goatcounter.com/count";
+function analyticsCourse(){try{var id=new URLSearchParams(location.search).get("course");return (id&&window.COURSES&&window.COURSES[id])?id:null;}catch(e){return null;}}
+function analyticsSend(path,isEvent){
+  try{
+    if(!ANALYTICS_ENDPOINT)return;
+    var url=ANALYTICS_ENDPOINT+"?p="+encodeURIComponent(path)+(isEvent?"&e=1":"");
+    if(navigator.sendBeacon&&navigator.sendBeacon(url))return;
+    var img=new Image();img.src=url;
+  }catch(e){}
+}
+function countEvent(name,dims){
+  var parts=(dims||[]).filter(function(d){return d!==null&&d!==undefined&&d!=="";});
+  analyticsSend("/event/"+name+(parts.length?"/"+parts.join("/"):""),true);
+}
+function countPageview(){analyticsSend("/",false);}
+function examPresetName(units){
+  try{
+    var key=units.slice().sort(function(a,b){return a-b;}).join(),C=window.__COURSE;
+    if(C&&C.presets){
+      if(C.presets.mid&&C.presets.mid.units.slice().sort(function(a,b){return a-b;}).join()===key)return "mid";
+      if(C.presets.final&&C.presets.final.units.slice().sort(function(a,b){return a-b;}).join()===key)return "final";
+    }
+  }catch(e){}
+  return "custom";
+}
+var ANALYTICS_RETRY_KIND=null,ANALYTICS_FINISHED=false,ANALYTICS_TEACHER_SENT=false,ANALYTICS_OPEN_SENT=false;
 function unitCheckboxes(){
   $("unitGrid").innerHTML=Object.keys(UNITS).map(function(u){
     return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> '+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</label>";
@@ -1342,6 +1380,7 @@ function noteHelp(i,kind){
   if(kind==="sol"&&isProseText(current[i]))return;
   if(!helpUsed[i])helpUsed[i]={};
   helpUsed[i][kind]=1;
+  if(!TEACHER)countEvent("help_open",[analyticsCourse(),kind==="ex"?"example":(kind==="sol"?"solution":"hint")]);
 }
 /* Reference panels come from the active course configuration (the
    course's data-sheet material, config key: panels). */
@@ -1434,6 +1473,7 @@ function anotherExample(i){
 function maybeSummary(){
   var box=$("setSummary");if(!box||!current)return;
   if(Object.keys(setResults).length<current.length)return;
+  if(!ANALYTICS_FINISHED){ANALYTICS_FINISHED=true;countEvent("practice_finish",[analyticsCourse(),TEACHER?"teacher":"student"]);}
   var missed=[];
   Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});
   /* Help tracking (Nov 15, 2026): a question answered correctly
@@ -1503,6 +1543,7 @@ function retryMissed(){
     if(retryWillSwitch())RETRY_AS_EACH=true;
     $("countIn").value=8;
     _suppressSeedOnce=true;
+    ANALYTICS_RETRY_KIND="pk";
     updatePoolInfo();startOnline();
     return;
   }
@@ -1513,6 +1554,7 @@ function retryMissed(){
   if(retryWillSwitch())RETRY_AS_EACH=true;
   $("countIn").value=Math.min(15,Math.max(5,missed.length*2));
   _suppressSeedOnce=true;
+  ANALYTICS_RETRY_KIND="ordinary";
   renderIndicators();updatePoolInfo();startOnline();
 }
 /* ============ Teacher set-editing (pilot, Nov 2026) ============
@@ -1905,6 +1947,7 @@ function tShareURL(teacher){
 function tCopyLink(teacher,statusEl){
   var url=tShareURL(teacher);
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
+  if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
   if(statusEl)statusEl.textContent=teacher?"Teacher link copied: it opens this exact set with the editing controls on. Keep it for yourself.":"Link copied for students: it opens this exact set, with no editing controls.";
   if(!teacher){try{history.replaceState(null,"",url.slice(location.origin.length));}catch(e){}}
 }
@@ -2221,6 +2264,7 @@ function resumeShowBanner(save,mode){
   bar.innerHTML='<p style="margin:0 0 8px;">'+lead+" "+detail+'</p><p style="margin:0;"><button type="button" id="resumeGoBtn">'+L9("Resume","Reprendre")+'</button> <button type="button" class="alt" id="resumeFreshBtn">'+L9("Start fresh","Recommencer")+'</button></p>';
   if(sess.firstChild)sess.insertBefore(bar,sess.firstChild);else sess.appendChild(bar);
   $("resumeGoBtn").addEventListener("click",function(){
+    countEvent("resume_accept",[analyticsCourse()]);
     if(save.view==="online")resumeApplyOnline(save);
     else if(mode==="examBoot")resumeRebuildExam(save);
     else{examState.t0=Date.now()-((save.body&&save.body.elapsed)||0);_resumeAppliedSig=save.sig;resumeHideBanner();renderExam();}
@@ -2664,7 +2708,7 @@ function startOnline(){
   PKRETRY_GROUPS=null;
   var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
   PKONLY_DRAW=false;PKONLY_GROUPS=null;
-  current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};helpUsed={};
+  current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};helpUsed={};ANALYTICS_FINISHED=false;
   lastSettings=s;onlineThin=res.thin;T=null;
   if(TEACHER&&current.length){
     T={view:"online",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,state:{},endGraded:false,picker:null};
@@ -2672,6 +2716,13 @@ function startOnline(){
     current=current.map(function(q){return _sd?tAdoptDrawn(q,_av):tFreezeSlot(q._entry,q.type,_av,T.salt);});
   }
   if(!TEACHER&&SHUFFLE_OPTS)current=current.map(shufQ);
+  if(current.length){
+    var _ac=analyticsCourse();
+    if(ANALYTICS_RETRY_KIND){countEvent("retry_start",[_ac,ANALYTICS_RETRY_KIND]);}
+    else if(s.pkOnly){countEvent("pkcheck_start",s.units.length===1?[_ac,"u"+s.units[0]]:[_ac]);}
+    else{countEvent("practice_start",[_ac,s.units.length===1?("u"+s.units[0]):"all",TEACHER?"teacher":"student"]);}
+  }
+  ANALYTICS_RETRY_KIND=null;
   renderOnline(true);
 }
 function renderOnline(scroll){
@@ -3244,6 +3295,8 @@ function startExam(){
   if(window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.singleOnly&&s.units.length!==1){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"Practice tests are built one unit at a time, like the unit tests in the course. Choose exactly one unit above, then make the practice test again. To practise across several units, make a practice sheet instead.":"Choose one unit above, then make the practice test.")+'</p></div>';return;}
   var ex=withSeed(_sd,function(){return composeExam(s.units,s.inds,pkOn);});
   if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
+  countEvent("exam_compose",[analyticsCourse(),examPresetName(s.units)]);
+  countEvent("sheet_generate",[analyticsCourse(),"test"]);
   var single=s.units.length===1;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
   var scope=single?(L9("Unit ","Unité ")+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
@@ -3324,6 +3377,7 @@ function startSheet(){
   wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
   T=null;
   sheetState={items:res.items,s:s,thin:res.thin};
+  countEvent("sheet_generate",[analyticsCourse(),"practice"]);if(s.wantKey)countEvent("sheet_generate",[analyticsCourse(),"key"]);
   if(TEACHER){
     T={view:"sheet",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,textEdited:false,picker:null};
     var _av={};
@@ -4355,7 +4409,7 @@ function applyURL(){
   if(p.get("pkonly")==="1"){hidCtl.pkOnly=true;}
   if(p.get("seed")&&$("seedIn"))$("seedIn").value=p.get("seed");
   if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
-  if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;}
+  if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;if(!ANALYTICS_TEACHER_SENT){ANALYTICS_TEACHER_SENT=true;countEvent("teacher_open",[analyticsCourse()]);}}
   if(p.get("shuf")==="1")SHUFFLE_OPTS=true;
   if(p.get("nohint")==="1")NO_HINT=true;
   if(p.get("noex")==="1")NO_EX=true;
@@ -4470,6 +4524,7 @@ $("copyLink").addEventListener("click",function(){
 });
 a11yInit();
 var urlTouched=applyURL();
+if(window.__COURSE&&!ANALYTICS_OPEN_SENT){ANALYTICS_OPEN_SENT=true;countEvent("course_open",[analyticsCourse()]);}
 tGateStudentUI();
 unitCheckboxes();renderIndicators();updatePoolInfo();
 if(advSetRestore()){
@@ -4479,6 +4534,8 @@ if(advSetRestore()){
 }
 else if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
   /* A set link was opened: the exact set it encodes is on screen. */
+  var _lu=(typeof T!=="undefined"&&T&&T.scope&&T.scope.units)?T.scope.units:null;
+  countEvent("practice_start",[analyticsCourse(),(_lu&&_lu.length===1)?("u"+_lu[0]):"all",TEACHER?"teacher":"student"]);
 }
 else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
   var _m=(new URLSearchParams(location.search).get("mode"));if(_m==="sheet"||_m==="worksheet"){startSheet();}else if(_m==="exam"){startExam();}else{startOnline();}
@@ -4506,10 +4563,15 @@ if(window.__NOCOURSE){(function(){
   var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
   var list=document.getElementById("courseList");if(!list)return;
   var style=document.createElement("style");
-  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme='dark'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme='dark'] .pkchip[aria-pressed='true']{background:#1f4e79;border-color:#5eead4;color:#fff}";
+  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme='dark'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme='dark'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme='dark'] .pkchip[aria-pressed='true']{background:#1f4e79;border-color:#5eead4;color:#fff}";
   pk.appendChild(style);
   var pkThemeBtn=document.getElementById("pkTheme");
   if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.textContent=document.documentElement.getAttribute("data-a11y-theme")==="dark"?"Light mode":"Dark mode";};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}
+  var pkWn=document.getElementById("pkWhatsNew");
+  if(pkWn){pkWn.textContent=L9("What's new","Nouveautés");pkWn.addEventListener("click",function(){countEvent("whatsnew_click",[]);});}
+  var pkPv=document.getElementById("pkPrivacy");
+  if(pkPv){pkPv.textContent=L9("Anonymous usage counts help us see which courses and features are used. No student information is collected.","Des comptes d'utilisation anonymes nous aident à voir quels cours et quelles fonctions sont utilisés. Aucun renseignement sur les élèves n'est recueilli.");}
+  countPageview();
   var groups={};
   Object.keys(window.COURSES||{}).forEach(function(id){
     var c=window.COURSES[id];if(c.listed===false)return;
