@@ -1724,6 +1724,47 @@ function tStripTeacher(url){
    the teacher's preference is remembered on their device, and a link
    without the flag behaves exactly as before. */
 var SHUFFLE_OPTS=false;
+/* Scaffold suppression for shared student links (Jason, Nov 15,
+   2026): the companion toggles to the shuffle choice above, raised
+   by Jason after he found the Worked example button still offered
+   in check-at-the-end mode. A teacher copying a student link can
+   turn Hints or Worked examples Off for that link; the link then
+   carries nohint=1 or noex=1, and a student opening it never sees
+   the suppressed scaffold (no Hint button, no Worked example
+   button) at any materialization point: settings draws, seeded
+   links, teacher-built set links and resume restores alike. The
+   choices default On (today's behaviour), persist on the teacher's
+   device like shufPref, and teacher links never carry the flags.
+   The teacher's own view is immune: with the flags present, a
+   teacher still sees both scaffolds, because hiding a control for
+   students never disables its setting for teachers. Print sheets
+   and Word exports carry no scaffolds, so the flags have no effect
+   on those routes. Separately, in check-at-the-end mode the Worked
+   example button is deferred for students until the set is graded:
+   a worked example is a solved parallel problem, so it follows the
+   worked solutions, which that mode already holds back until
+   grading. Hints are not deferred. A suppressed example never
+   appears, even after grading; a deferred but unsuppressed one
+   appears at grading. */
+var NO_HINT=false,NO_EX=false;
+function hintsAllowed(){return !!(window.__COURSE&&window.__COURSE.hints)&&!(!TEACHER&&NO_HINT);}
+function exSuppressed(){return !TEACHER&&NO_EX;}
+function exDeferred(){return !TEACHER&&checkMode==="end"&&!endGraded;}
+function exAllowedQ(q){return exampleCapable(q&&q._entry)&&!exSuppressed()&&!exDeferred();}
+function revealExamples(){
+  if(!current||exSuppressed())return;
+  current.forEach(function(q,i){
+    if(!exampleCapable(q._entry))return;
+    if(document.querySelector('[data-ex="'+i+'"]'))return;
+    var solB=document.querySelector('[data-sol="'+i+'"]');if(!solB||!solB.parentNode)return;
+    var b=document.createElement("button");
+    b.type="button";b.className="alt";b.setAttribute("data-ex",String(i));
+    b.textContent=L9("See a worked example","Voir un exemple travaillé");
+    b.addEventListener("click",function(){toggleExample(i);});
+    solB.parentNode.insertBefore(b,solB);
+    solB.parentNode.insertBefore(document.createTextNode(" "),solB);
+  });
+}
 function shufQ(q){
   if(!q||q.type!=="mc"||!q.options||q.options.length<2)return q;
   var idx=q.options.map(function(_,j){return j;});
@@ -1739,12 +1780,26 @@ function tShufSelHtml(){
   var pref=tShufPref();
   return ' <label class="hint">Answer choices in student links: <select id="tShufSel"><option value="sorted"'+(pref==="sorted"?" selected":"")+'>Sorted</option><option value="shuf"'+(pref==="shuf"?" selected":"")+'>Shuffled per student</option></select></label>';
 }
+function tHintPref(){try{return localStorage.getItem("hintPref")==="off"?"off":"on";}catch(e){return "on";}}
+function tExPref(){try{return localStorage.getItem("exPref")==="off"?"off":"on";}catch(e){return "on";}}
+function tScafSelHtml(){
+  var hp=tHintPref(),ep=tExPref();
+  return ' <label class="hint">'+L9("Hints in student links:","Indices dans les liens des élèves :")+' <select id="tHintSel"><option value="on"'+(hp==="on"?" selected":"")+'>'+L9("On","Activés")+'</option><option value="off"'+(hp==="off"?" selected":"")+'>'+L9("Off","Désactivés")+'</option></select></label>'
+    +' <label class="hint">'+L9("Worked examples in student links:","Exemples travaillés dans les liens des élèves :")+' <select id="tExSel"><option value="on"'+(ep==="on"?" selected":"")+'>'+L9("On","Activés")+'</option><option value="off"'+(ep==="off"?" selected":"")+'>'+L9("Off","Désactivés")+'</option></select></label>';
+}
 function tShareURL(teacher){
   var p=new URLSearchParams(settingsToURL().split("?")[1]||"");
   p.delete("teacher");p.delete("seed");p.delete("shuf");
   var shufSel=$("tShufSel");
   if(shufSel){try{localStorage.setItem("shufPref",shufSel.value);}catch(e){}
     if(!teacher&&shufSel.value==="shuf")p.set("shuf","1");}
+  p.delete("nohint");p.delete("noex");
+  var hintSel=$("tHintSel");
+  if(hintSel){try{localStorage.setItem("hintPref",hintSel.value);}catch(e){}
+    if(!teacher&&hintSel.value==="off")p.set("nohint","1");}
+  var exSel=$("tExSel");
+  if(exSel){try{localStorage.setItem("exPref",exSel.value);}catch(e){}
+    if(!teacher&&exSel.value==="off")p.set("noex","1");}
   if(T){var sv=tSetValue();if(sv)p.set("set",sv);
     if(T.view==="exam")p.set("mode","exam");else if(T.view==="sheet")p.set("mode","sheet");else p.delete("mode");}
   if(teacher)p.set("teacher","1");
@@ -1898,12 +1953,12 @@ function advRestoreOnlineState(P){
     var fb=$("fb"+i);if(fb){if(o.fbShown)fb.classList.add("show");if(o.done)fb.dataset.done="1";if(o.fb)fb.innerHTML=o.fb;}
     var fbt=$("fbt"+i);if(fbt&&o.fbt)fbt.innerHTML=o.fbt;
     if(o.sol){var sl=$("sol"+i);if(sl){sl.classList.add("show");setSolLabel(i,true);}}
-    var hb=$("hint"+i);if(hb&&o.hintStage){hb.dataset.stage=String(o.hintStage);if(o.hintShown){hb.innerHTML=o.hintHtml;hb.hidden=false;}}
+    var hb=$("hint"+i);if(hb&&o.hintStage&&hintsAllowed()){hb.dataset.stage=String(o.hintStage);if(o.hintShown){hb.innerHTML=o.hintHtml;hb.hidden=false;}}
     if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");
-    if(o.exOpen&&o.exq){var xb=$("ex"+i);var exq=advQDes(o.exq);if(xb&&exq){xb.dataset.exn=String(o.exn||0);renderExample(i,exq);setExLabel(i,true);}}
+    if(o.exOpen&&o.exq&&!exSuppressed()){var xb=$("ex"+i);var exq=advQDes(o.exq);if(xb&&exq){xb.dataset.exn=String(o.exn||0);renderExample(i,exq);setExLabel(i,true);}}
     if(o.repOpen){var rp=$("rep"+i);if(rp)rp.classList.add("show");var rt=$("reptype"+i);if(rt&&o.repType)rt.value=o.repType;var rn=$("repnote"+i);if(rn)rn.value=o.repNote||"";}
   });
-  if(endGraded){for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2){s2.classList.add("show");setSolLabel(j,true);}}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}}
+  if(endGraded){for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2){s2.classList.add("show");setSolLabel(j,true);}}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}revealExamples();}
   updateScore();maybeSummary();
 }
 function advSetRestore(){
@@ -1993,7 +2048,7 @@ function resumeVariantKey(q){
   return "c"+resumeHash(canonQ(q));
 }
 function resumeSig(view,items){
-  var parts=[(window.__COURSE?window.__COURSE.id:""),view,sessionSeed||""];
+  var parts=[(window.__COURSE?window.__COURSE.id:""),view,sessionSeed||"",(NO_HINT?"nh":"")+(NO_EX?"nx":"")];
   try{parts.push(settingsToURL());}catch(e){parts.push("");}
   parts.push(items.map(function(q){return (q._entry?q._entry.id:"?")+"#"+resumeVariantKey(q);}).join(","));
   return resumeHash(parts.join("|"));
@@ -2040,7 +2095,7 @@ function resumeSaveNow(){
       var st=resumeCaptureState();
       if(!resumeHasProgress(st)){try{store.removeItem(RESUME_KEY);}catch(e){}return;}
       var sig=resumeSig("online",current);_resumeLiveSig=sig;
-      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,checkMode:checkMode,endGraded:!!endGraded}}));
+      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0}}));
       if(_resumeBannerSig&&_resumeBannerSig===sig)resumeHideBanner();
     }else if(examState&&examState.ex&&document.getElementById("printPaperBtn")){
       var items=examState.ex.srItems.map(function(it){return it.q;}).concat(examState.ex.crItems.map(function(it){return it.q;}));
@@ -2080,6 +2135,7 @@ function resumeApplyOnline(save){
   checkedCount=b.checked||0;correctCount=b.correct||0;setResults=b.results||{};
   if(b.checkMode)checkMode=b.checkMode;
   endGraded=!!b.endGraded;
+  if(b.nohint)NO_HINT=true;if(b.noex)NO_EX=true;
   var P={state:(b.state||[]).map(function(o,i){
     if(o&&current[i]&&current[i].type==="mc"&&o.givenText!==null&&o.givenText!==undefined){
       var hits=[];current[i].options.forEach(function(op,j){if(op===o.givenText)hits.push(j);});
@@ -2229,7 +2285,7 @@ function tctlHtml(i){
 }
 function tBarHtml(){
   if(!TEACHER||!T||T.view!=="online")return "";
-  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+(BANK.some(function(e){return isPK(e);})?'<label><input type="checkbox" id="pkInChk"'+(settings().pkIn?" checked":"")+'> Include prior knowledge questions (practice draws only; tests and exams treat prior knowledge separately)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
+  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+tScafSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+(BANK.some(function(e){return isPK(e);})?'<label><input type="checkbox" id="pkInChk"'+(settings().pkIn?" checked":"")+'> Include prior knowledge questions (practice draws only; tests and exams treat prior knowledge separately)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
 }
 function tOnlineStatus(m){var st=$("tStatus");if(st)st.textContent=m;}
 function tWireOnline(){
@@ -2279,7 +2335,7 @@ function tRestoreOnline(){
     if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");
     if(o.exOpen&&o.exq){var exb=$("ex"+i);if(exb){exb.dataset.exn=String(o.exn);renderExample(i,o.exq);setExLabel(i,true);}}
   });
-  if(T.endGraded){endGraded=true;for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2)s2.classList.add("show");}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}}
+  if(T.endGraded){endGraded=true;for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2)s2.classList.add("show");}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}revealExamples();}
   updateScore();maybeSummary();
 }
 function tAfterOnlineEdit(){renderOnline(false);tRestoreOnline();}
@@ -2346,7 +2402,7 @@ function tExamPanelHtml(){
    +'<ol class="tlist">'+ex.srItems.map(function(it,i){return row("sr",it,i);}).join("")+"</ol>"
    +'<div><b>Section B: constructed response</b> <button type="button" class="alt" id="tAddCrBtn">Add question</button><button type="button" class="alt" id="tAddCrBankBtn">Add from bank</button></div>'
    +'<ol class="tlist">'+ex.crItems.map(function(it,i){return row("cr",it,i);}).join("")+"</ol>"
-   +'<div><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button><button type="button" class="alt" id="tBsBtn">Download for Brightspace</button>'+tShufSelHtml()+' <span class="hint" id="tExamStatus" role="status"></span></div>'
+   +'<div><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button><button type="button" class="alt" id="tBsBtn">Download for Brightspace</button>'+tShufSelHtml()+tScafSelHtml()+' <span class="hint" id="tExamStatus" role="status"></span></div>'
    +'<div id="tPicker" hidden></div></div>';
 }
 function tPanelPause(panelId){
@@ -2436,7 +2492,7 @@ function tSheetPanelHtml(){
    +'<p class="hint">Changes update the sheet and its answer key at once. These controls and the free text editor (Edit the sheet) are alternatives: once free text editing is on, the question controls and set links pause for this sheet, because they work from the question set rather than edited text. Print, Word and Copy below always use the sheet exactly as shown.</p>'
    +'<p class="hint" id="tPanelNote" hidden>Free text editing is on for this sheet, so the question controls are paused. Make a new sheet to use them again.</p>'
    +'<ol class="tlist">'+sheetState.items.map(row).join("")+"</ol>"
-   +'<div><button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+' <span class="hint" id="tSheetStatus" role="status"></span></div>'
+   +'<div><button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+tScafSelHtml()+' <span class="hint" id="tSheetStatus" role="status"></span></div>'
    +'<div id="tPicker" hidden></div></div>';
 }
 function tSheetStatus(m){var st=$("tSheetStatus");if(st)st.textContent=m;}
@@ -2542,7 +2598,7 @@ function renderOnline(scroll){
       html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
       if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
-    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exampleCapable(q._entry)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
+    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(hintsAllowed()?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exAllowedQ(q)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(hintsAllowed()?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
       +(isProseText(q)?'<div class="selfrate" id="sr'+i+'" hidden><p class="srlead">'+L9("Compare your answer with the model answer and the marking points. How did you do?","Compare ta réponse avec la réponse modèle et les points de notation. Comment t'en es-tu sorti ?")+'</p><p class="srbtns"><button type="button" class="alt" data-rate="got" data-rateq="'+i+'">'+L9("I got it","Je l'ai réussie")+'</button> <button type="button" class="alt" data-rate="part" data-rateq="'+i+'">'+L9("I got part of it","Je l'ai réussie en partie")+'</button> <button type="button" class="alt" data-rate="missed" data-rateq="'+i+'">'+L9("I missed it","Je l'ai manquée")+'</button></p></div>':'')
       +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">'+L9("Report a problem","Signaler un problème")+'</button></p>'
       +'<div class="rep" id="rep'+i+'"><label>'+L9("What is the problem?","Quel est le problème ?")+'<select id="reptype'+i+'"><option>'+L9("The question looks wrong or unclear","La question semble fausse ou peu claire")+'</option><option>'+L9("The worked solution doesn't work out","La solution détaillée ne fonctionne pas")+'</option><option>'+L9("My answer was marked wrong but should be right","Ma réponse a été marquée fausse, mais elle devrait être bonne")+'</option><option>'+L9("Something else is out of place","Quelque chose d'autre ne va pas")+'</option></select></label>'
@@ -2704,6 +2760,7 @@ function gradeAll(){
     }else checkQ(i);
   }
   for(var j=0;j<current.length;j++)$("sol"+j).classList.add("show");
+  revealExamples();
   maybeSummary();
   updateScore();
   var b=$("gradeBtn");if(b){b.disabled=true;b.textContent=L9("Answers checked","Réponses vérifiées");}
@@ -4201,6 +4258,8 @@ function applyURL(){
   if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
   if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;}
   if(p.get("shuf")==="1")SHUFFLE_OPTS=true;
+  if(p.get("nohint")==="1")NO_HINT=true;
+  if(p.get("noex")==="1")NO_EX=true;
   return touched;
 }
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;unitCheckboxes();renderIndicators();updatePoolInfo();}
