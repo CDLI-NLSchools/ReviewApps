@@ -120,7 +120,10 @@ ok(COURSE_IDS.every(id => id === "math-2201" || id === "math-3201" || (flaggedBy
    approved spec of November 14, 2026): Math 2201's set grows
    by the tranche's 59 flagged entries to 66, and the programme
    total to 96. The pin change is deliberate and recorded in
-   the tranche build report. */
+   the tranche build report. Extended again November 15, 2026
+   for the Math 2200 PK tranche: Math 2200's set grows by the
+   tranche's 72 flagged entries to 75, and the programme total
+   to 168, recorded in that tranche's build report. */
 const PK_PIN = {
   "math-2201": ["u1-pk-find-angle", "u1-pk-find-side", "u1-pk-label-sides", "u1-pk-pythagoras", "u1-pk-ramp-run", "u1-pk-ratio-def", "u1-pk-rope-angle", "u1-pk-solve-triangle", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-eval-function", "u2-pk-graph-data", "u2-pk-graph-form", "u2-pk-graph-strategy", "u2-pk-intercepts", "u2-pk-solve-input", "u3-factor-difference", "u3-factor-monic", "u3-factor-nonmonic", "u3-pk-binom-tri-expand", "u3-pk-gcf", "u3-pk-radical-mixed", "u3-pk-solve-two-step", "u4-pk-defined", "u4-pk-evaluate-exp", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-which-is-solution", "u5-centre-mean", "u5-centre-median", "u5-centre-mode", "u5-choosing-measure", "u5-pk-freq-mean", "u5-pk-generalization-critique", "u5-pk-sample-or-population", "u5-pk-sample-scale", "u5-pk-supported-conclusion", "u6-pk-convert-multistep", "u6-pk-rate-of-change", "u6-pk-sa-basic", "u6-pk-scale-draw", "u6-pk-scale-factor", "u6-pk-solve-input", "u6-pk-unit-rate", "u6-pk-vol-basic", "u7-pk-angle-justify", "u7-pk-conjecture", "u7-pk-counterexample", "u7-pk-inductive-limit", "u7-pk-pattern-figure", "u7-pk-pattern-word", "u7-pk-proof-error", "u7-pk-table-equation", "u7-pk-valid-chain", "u8-pk-angle-measure", "u8-pk-comp-supp", "u8-pk-parallel-decision", "u8-pk-polygon-sum", "u8-pk-solve-two-step", "u8-pk-transversal-measure", "u8-pk-transversal-pairs", "u8-pk-triangle-sum", "u8-pk-word-two-step"],
   "math-9": ["u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr"],
@@ -129,13 +132,13 @@ const PK_PIN = {
   "math-8-fr": ["u7-combined-mean-gap", "u7-mean-difference-gap", "u7-missing-mean-value-gap"],
   "math-3201": ["u4-express-as-power"],
   "math-3202": ["u9r-elevation-depression", "u9r-find-angle", "u9r-find-side", "u9r-find-side-workplace", "u9r-ratio-value", "u9r-reasonable-result"],
-  "math-2200": ["u8-numberline-read", "u8-solve-linear-basic", "u8-solve-linear-flip"],
+  "math-2200": ["u1-pk-find-angle", "u1-pk-find-side", "u1-pk-grid-distance", "u1-pk-label-sides", "u1-pk-pythagoras", "u1-pk-ramp-run", "u1-pk-ratio-def", "u1-pk-ratio-similar", "u1-pk-rope-angle", "u1-pk-solve-triangle", "u2-pk-binom-expand", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-eval-function", "u2-pk-factor-monic", "u2-pk-graph-data", "u2-pk-intercepts", "u2-pk-intercepts-solve", "u3-pk-diff-squares", "u3-pk-factor-monic", "u3-pk-gcf", "u3-pk-graph-form", "u3-pk-graph-strategy", "u3-pk-monomial-expand", "u3-pk-solve-input", "u3-pk-sqrt-eval", "u4-pk-approx", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-sort-numbers", "u4-pk-subsets", "u4-pk-which-is-solution", "u5-pk-equiv-fractions", "u5-pk-factor-product", "u5-pk-frac-context", "u5-pk-frac-div-add", "u5-pk-gcf", "u5-pk-multistep-rational", "u5-pk-npv-numerical", "u5-pk-solve-two-step", "u6-pk-approx", "u6-pk-domain-range", "u6-pk-eval-function", "u6-pk-fn-notation", "u6-pk-graph-data", "u6-pk-number-line-distance", "u6-pk-reciprocal-values", "u6-pk-sort-numbers", "u7-pk-intersection", "u7-pk-relate", "u7-pk-solve-algebra", "u7-pk-solve-by-factoring", "u7-pk-solve-elimination", "u7-pk-solve-graph", "u7-pk-strategy", "u7-pk-verify", "u8-numberline-read", "u8-pk-context-graph", "u8-pk-graph-boundary", "u8-pk-graph-to-ineq", "u8-pk-solve-ineq-pos-div", "u8-pk-solve-ineq-two-step", "u8-solve-linear-basic", "u8-solve-linear-flip", "u9-pk-context-equation", "u9-pk-fn-notation", "u9-pk-growth", "u9-pk-laws-integral", "u9-pk-pattern-figure", "u9-pk-pattern-word", "u9-pk-solve-input", "u9-pk-table-equation"],
   "math-2202": ["u4-cr-percent-change", "u4-misleading-actual", "u8-choose-ratio-equation", "u8-cr-find-angle"],
   "math-3208": ["u2-repeating-decimal"],
   "physics-2204": ["u1-51-convert-speed", "u3-713-nuclear-notation"],
   "chem-3202": ["u2-61-properties"]
 };
-ok(totalPk === 96, "programme carries exactly 96 prior knowledge entries (66 in Math 2201: 7 PK-coded plus the 59 tranche-flagged; 30 pkFlag instances in the other courses), saw " + totalPk + " in " + JSON.stringify(pkByCourse));
+ok(totalPk === 168, "programme carries exactly 168 prior knowledge entries (66 in Math 2201: 7 PK-coded plus the 59 tranche-flagged; 102 pkFlag instances in the other courses, 75 of them in Math 2200), saw " + totalPk + " in " + JSON.stringify(pkByCourse));
 for (const id of Object.keys(PK_PIN)) ok(JSON.stringify(pkIdsByCourse[id] || []) === JSON.stringify(PK_PIN[id]), id + ": prior knowledge set is the pinned set, saw " + JSON.stringify(pkIdsByCourse[id]));
 ok(COURSE_IDS.every(id => PK_PIN[id] || (pkIdsByCourse[id] || []).length === 0), "no course outside the pinned set carries a prior knowledge entry");
 

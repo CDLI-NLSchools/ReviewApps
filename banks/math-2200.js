@@ -159,6 +159,643 @@ function rectDiagSVG(wLab,lLab,capLab){
   return out+'</svg>';
 }
 
+/* ============ Prior knowledge tranche helpers (Nov 15, 2026) ============ */
+/* Helper families copied from the feeder banks for the borrowed
+   tranche entries. The Mathematics 9 families travel under n1, n5
+   and n6 prefixes: their original names collide with Math 2200
+   helpers of different behaviour (notably u5lin). The Mathematics
+   1201 and Mathematics 8 families copy verbatim; the gcd helpers
+   whose bodies are identical in both banks were not duplicated. */
+
+/* u7names: from math-1201:u7names */
+function u7names(){return pick([["A","B","C"],["D","E","F"],["G","H","J"],["K","L","M"],["M","N","P"],["P","Q","R"],["S","T","U"],["V","W","X"],["B","C","D"],["H","J","K"],["R","S","T"],["W","X","Y"],["C","D","E"],["F","G","H"],["J","K","L"],["N","P","Q"],["Q","R","S"],["T","U","V"],["X","Y","Z"],["D","F","G"],["E","G","H"],["L","M","N"],["P","R","S"],["U","V","W"],["A","C","E"],["B","D","F"],["H","K","M"],["K","M","P"],["M","P","R"],["R","T","V"]]);}
+
+/* u7side: from math-1201:u7side */
+function u7side(a,b){return a+b;}
+
+/* FR: from math-1201:FR */
+function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
+
+/* u7red: from math-1201:u7red */
+function u7red(n,d){var g=u7gcd(n,d);n/=g;d/=g;if(d<0){n=-n;d=-d;}return [n,d];}
+
+/* u7fracS: from math-1201:u7fracS */
+function u7fracS(n,d){var r=u7red(n,d);if(r[1]===1)return ""+r[0];return FR(r[0],r[1]);}
+
+/* u7pickS3: from math-1201:u7pickS3 */
+function u7pickS3(ans,cands){
+  var out=[],seen={};seen[ans]=1;
+  for(var i=0;i<cands.length&&out.length<3;i++){var c=cands[i];if(typeof c==="string"&&c!==ans&&!seen[c]){seen[c]=1;out.push(c);}}
+  var k=2;while(out.length<3){var c2="\\("+(ans.length+k)+"\\)";k++;if(!seen[c2]){seen[c2]=1;out.push(c2);}}
+  return out;
+}
+
+/* U7_TRIPLES: from math-1201:U7_TRIPLES */
+var U7_TRIPLES=[[3,4,5],[5,12,13],[8,15,17],[7,24,25],[6,8,10],[9,12,15],[20,21,29],[9,40,41],[12,35,37],[10,24,26],[12,16,20],[16,30,34]];
+
+/* u7figArc: from math-1201:u7figArc */
+function u7figArc(E,r,u,hx){
+  var sweep=(hx*u[1]>0)?1:0;
+  return '<path d="M '+fmt(E[0]+r*hx,1)+' '+fmt(E[1],1)+' A '+r+' '+r+' 0 0 '+sweep+' '+fmt(E[0]+r*u[0],1)+' '+fmt(E[1]+r*u[1],1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+}
+
+/* u7pairSVG: from math-1201:u7pairSVG */
+function u7pairSVG(){
+  function place(pts,ox,base,sc){return pts.map(function(p){return [ox+p[0]*sc,base-p[1]*sc];});}
+  function drawTri(P,labA,labC){
+    var out='<polygon points="'+P.map(function(p){return fmt(p[0],1)+","+fmt(p[1],1);}).join(" ")+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    var G=[(P[0][0]+P[1][0]+P[2][0])/3,(P[0][1]+P[1][1]+P[2][1])/3];
+    var M=[(P[1][0]+P[2][0])/2,(P[1][1]+P[2][1])/2],off=_sideOff(P[1],P[2],G,14);
+    out+=_txt(M[0]+off[0],M[1]+off[1],labA,12,false);
+    out+=_txt((P[0][0]+P[1][0])/2,P[0][1]+15,labC,12,false);
+    var u=_vnorm(_vsub(P[2],P[0]));
+    out+=u7figArc(P[0],13,u,1);
+    return out;
+  }
+  var P1=place(triLayout(4,3,5),26,172,15),P2=place(triLayout(12,9,15),168,172,10.5);
+  return '<svg viewBox="0 0 340 200" width="340" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A right triangle and its enlargement by a scale factor of 3">'+drawTri(P1,"4 cm","5 cm")+drawTri(P2,"12 cm","15 cm")+'</svg>';
+}
+
+/* u7asinD: from math-1201:u7asinD */
+function u7asinD(x){return Math.asin(x)*180/Math.PI;}
+
+/* u7acosD: from math-1201:u7acosD */
+function u7acosD(x){return Math.acos(x)*180/Math.PI;}
+
+/* u7atanD: from math-1201:u7atanD */
+function u7atanD(x){return Math.atan(x)*180/Math.PI;}
+
+/* u7sinD: from math-1201:u7sinD */
+function u7sinD(d){return Math.sin(d*Math.PI/180);}
+
+/* u7cosD: from math-1201:u7cosD */
+function u7cosD(d){return Math.cos(d*Math.PI/180);}
+
+/* u7tanD: from math-1201:u7tanD */
+function u7tanD(d){return Math.tan(d*Math.PI/180);}
+
+/* u7r1: from math-1201:u7r1 */
+function u7r1(n){return Math.round(n*10)/10;}
+
+/* u7f1: from math-1201:u7f1 */
+function u7f1(n){return (Math.round(n*10)/10).toFixed(1);}
+
+/* U7_ANGLES: from math-1201:U7_ANGLES */
+var U7_ANGLES=[25,28,30,32,35,38,40,42,45,48,50,52,55,58,60,62,65];
+
+/* balDp: from math-1201:balDp */
+function balDp(keyStr,ds){
+  function dpOf(s){var m=/^-?\d+(?:\.(\d+))?$/.exec(s);if(!m)return null;return m[1]?m[1].length:0;}
+  function padTo(s,dp){var cur=dpOf(s);if(cur===null||dp<=cur)return s;if(s.indexOf(".")<0)return s+"."+Array(dp+1).join("0");return s+Array(dp-cur+1).join("0");}
+  var all=[keyStr].concat(ds),dps=all.map(dpOf);
+  if(dps.some(function(d){return d===null;}))return ds;
+  function ok(list){var c={};list.forEach(function(d){c[d]=(c[d]||0)+1;});return Object.keys(c).every(function(k){return c[k]!==1;});}
+  if(ok(dps))return ds;
+  var cap=Math.max.apply(null,dps)+2,best=null,bestCost=1e9;
+  for(var a=dps[1];a<=cap;a++)for(var b=dps[2];b<=cap;b++)for(var c2=dps[3];c2<=cap;c2++){
+    var cand=[dps[0],a,b,c2];
+    if(!ok(cand))continue;
+    var cost=(a-dps[1])+(b-dps[2])+(c2-dps[3]);
+    if(cost<bestCost){bestCost=cost;best=[a,b,c2];}
+  }
+  if(!best)return ds;
+  return ds.map(function(s,i){return padTo(s,best[i]);});
+}
+
+/* u7figLine: from math-1201:u7figLine */
+function u7figLine(x1,y1,x2,y2,w,dash){
+  return '<line x1="'+fmt(x1,1)+'" y1="'+fmt(y1,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y2,1)+'" stroke="'+FIG_INK+'" stroke-width="'+(w||2)+'"'+(dash?' stroke-dasharray="5 4"':"")+'/>';
+}
+
+/* u7figAngLab: from math-1201:u7figAngLab */
+function u7figAngLab(E,r,u,hx,str){
+  var bx=hx+u[0],by=u[1],bl=Math.sqrt(bx*bx+by*by)||1;
+  return _txt(E[0]+(r+13)*bx/bl,E[1]+(r+13)*by/bl,str,12,false);
+}
+
+/* u7triSceneSVG: from math-1201:u7triSceneSVG */
+function u7triSceneSVG(o){
+  var W=340,H=250,wallH=(o.wallH===undefined||o.wallH===null)?o.vert:o.wallH;
+  var T=_fit([[0,0],[o.ground,0],[o.ground,wallH],[o.ground,o.vert]],W,H,44);
+  var F=T([0,0]),B=T([o.ground,0]),TP=T([o.ground,o.vert]),WT=T([o.ground,wallH]);
+  var out=u7figLine(F[0]-22,F[1],B[0]+22,B[1],2);
+  out+=u7figLine(B[0],B[1],WT[0],WT[1],2.4,o.dashedVert);
+  out+=u7figLine(F[0],F[1],TP[0],TP[1],2);
+  if(o.vertLabel)out+=_txt(B[0]-10,(B[1]+WT[1])/2,o.vertLabel,12,false,"end");
+  if(o.groundLabel)out+=_txt((F[0]+B[0])/2,F[1]+16,o.groundLabel,12,false);
+  if(o.slantLabel){
+    var C=[(F[0]+B[0]+TP[0])/3,(F[1]+B[1]+TP[1])/3],M=[(F[0]+TP[0])/2,(F[1]+TP[1])/2],off=_sideOff(F,TP,C,15);
+    out+=_txt(M[0]+off[0],M[1]+off[1],o.slantLabel,12,false);
+  }
+  if(o.angle){
+    var u=_vnorm(_vsub(TP,F));
+    out+=u7figArc(F,20,u,1)+u7figAngLab(F,20,u,1,o.angle);
+  }
+  if(o.sill){
+    var sy=T([o.ground,o.sill.h])[1];
+    out+=u7figLine(B[0]-11,sy,B[0],sy,2);
+    out+=_txt(B[0]-15,sy,o.sill.label,12,false,"end");
+  }
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Right triangle scene diagram">'+out+'</svg>';
+}
+
+/* u7rectDiagSVG: from math-1201:u7rectDiagSVG */
+function u7rectDiagSVG(w,h){
+  var W=320,H=235,T=_fit([[0,0],[w,0],[w,h],[0,h]],W,H,42);
+  var P00=T([0,0]),P10=T([w,0]),P11=T([w,h]),P01=T([0,h]);
+  var out=u7figLine(P00[0],P00[1],P10[0],P10[1],2)+u7figLine(P10[0],P10[1],P11[0],P11[1],2)+u7figLine(P11[0],P11[1],P01[0],P01[1],2)+u7figLine(P01[0],P01[1],P00[0],P00[1],2);
+  out+=u7figLine(P00[0],P00[1],P11[0],P11[1],1.8);
+  out+=_txt((P00[0]+P10[0])/2,P00[1]+16,w+" m",12,false);
+  out+=_txt(P00[0]-11,(P00[1]+P01[1])/2,h+" m",12,false,"end");
+  var M=[(P00[0]+P11[0])/2,(P00[1]+P11[1])/2],off=_sideOff(P00,P11,P10,14);
+  out+=_txt(M[0]+off[0],M[1]+off[1],"?",12.5,false);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle with diagonal">'+out+'</svg>';
+}
+
+/* m8GridDistSVG: from math-8:m8GridDistSVG */
+function m8GridDistSVG(x1,y1,x2,y2){
+  var xm=x2+1,ym=y2+1,cell=Math.min(230/Math.max(xm,1),165/Math.max(ym,1));
+  var ox=45,oy=195;
+  function X(v){return ox+v*cell;} function Y(v){return oy-v*cell;}
+  var s='<svg viewBox="0 0 320 225" width="320" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: two points on a grid joined by a straight line">';
+  for(var i=0;i<=xm;i++){s+='<line x1="'+fmt(X(i),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(i),1)+'" y2="'+fmt(Y(ym),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1.2"/>';}
+  for(var j=0;j<=ym;j++){s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(j),1)+'" x2="'+fmt(X(xm),1)+'" y2="'+fmt(Y(j),1)+'" stroke="'+FIG_SHADE+'" stroke-width="1.2"/>';}
+  s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(xm),1)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<line x1="'+fmt(X(0),1)+'" y1="'+fmt(Y(0),1)+'" x2="'+fmt(X(0),1)+'" y2="'+fmt(Y(ym),1)+'" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  s+='<line x1="'+fmt(X(x1),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y1),1)+'" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="'+fmt(X(x2),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y2),1)+'" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="'+fmt(X(x1),1)+'" y1="'+fmt(Y(y1),1)+'" x2="'+fmt(X(x2),1)+'" y2="'+fmt(Y(y2),1)+'" stroke="'+FIG_ACC+'" stroke-width="2.4"/>';
+  s+='<circle cx="'+fmt(X(x1),1)+'" cy="'+fmt(Y(y1),1)+'" r="3.6" fill="'+FIG_INK+'"/>';
+  s+='<circle cx="'+fmt(X(x2),1)+'" cy="'+fmt(Y(y2),1)+'" r="3.6" fill="'+FIG_INK+'"/>';
+  s+=_txt(X(x1)-4,Y(y1)+18,"("+x1+", "+y1+")",11.5,true);
+  s+=_txt(X(x2)+6,Y(y2)-14,"("+x2+", "+y2+")",11.5,true);
+  s+=_txt((X(x1)+X(x2))/2-13,(Y(y1)+Y(y2))/2-10,"?",14,true);
+  return s+'</svg>';
+}
+
+/* u7trim: from math-1201:u7trim */
+function u7trim(n){var r=Math.round(n*100)/100;return ""+r;}
+
+/* u7slantAngle: from math-1201:u7slantAngle */
+function u7slantAngle(kind){
+  var scales,lo,hi,tries=0,D=null;
+  if(kind==="rope"){scales=[0.5,1,1.5];lo=3;hi=9;}
+  else if(kind==="slide"){scales=[0.5,1];lo=4;hi=11;}
+  else if(kind==="zip"){scales=[1,1.5,2,2.5,3];lo=12;hi=45;}
+  else{scales=[1,1.5,2,2.5,3];lo=18;hi=65;}
+  do{
+    tries++;
+    var t=pick(U7_TRIPLES),k=pick(scales),hyp=t[2]*k,ground,height;
+    if(pick([true,false])){ground=t[0]*k;height=t[1]*k;}else{ground=t[1]*k;height=t[0]*k;}
+    D={hyp:hyp,ground:ground,height:height,ang:Math.round(u7atanD(height/ground))};
+  }while((D.ang<20||D.ang>70||hyp<lo||hyp>hi)&&tries<120);
+  var stem;
+  if(kind==="rope")stem="A tent guy rope runs in a straight line from the top of a tent pole to a peg in level ground. The rope is \\("+u7trim(D.hyp)+"\\) m long, and the peg is \\("+u7trim(D.ground)+"\\) m from the base of the pole. Find the angle the rope makes with the ground, in degrees, to the nearest degree.";
+  else if(kind==="slide")stem="A playground slide runs in a straight line from the top of a platform down to level ground. The slide is \\("+u7trim(D.hyp)+"\\) m long, and its foot is \\("+u7trim(D.ground)+"\\) m horizontally from the base of the platform. Find the angle the slide makes with the ground, in degrees, to the nearest degree.";
+  else if(kind==="zip")stem="A zip line runs in a straight line from a launch platform to a landing point on level ground. The cable is \\("+u7trim(D.hyp)+"\\) m long, and the landing point is \\("+u7trim(D.ground)+"\\) m horizontally from the base of the platform. Find the angle the cable makes with the ground, in degrees, to the nearest degree.";
+  else stem="A kite string is tied to a stake in level ground and pulled taut in a straight line to the kite. The string is \\("+u7trim(D.hyp)+"\\) m long, and the kite is \\("+u7trim(D.ground)+"\\) m horizontally from the stake. Find the angle of elevation of the string, in degrees, to the nearest degree.";
+  var q=textq(stem,
+    [""+D.ang,D.ang+"°",D.ang+" degrees"],
+    "First find the height with the Pythagorean theorem, then use the tangent ratio with that height and the ground distance: \\[ \\begin{aligned} h^2 &= "+u7trim(D.hyp)+"^2 - "+u7trim(D.ground)+"^2 \\\\ h^2 &= "+u7trim(D.height*D.height)+" \\\\ h &= "+u7trim(D.height)+" \\\\ \\tan \\theta &= "+FR(u7trim(D.height),u7trim(D.ground))+" \\\\ \\theta &= \\tan^{-1}\\left("+FR(u7trim(D.height),u7trim(D.ground))+"\\right) \\\\ &\\approx "+D.ang+"^\\circ \\end{aligned} \\] The angle is <b>\\("+D.ang+"^\\circ\\)</b>.",
+    {kind:kind,hyp:D.hyp,ground:D.ground,height:D.height,ang:D.ang});
+  q.figure=u7triSceneSVG({vert:D.height,ground:D.ground,slant:D.hyp,vertLabel:"?",groundLabel:u7trim(D.ground)+" m",slantLabel:u7trim(D.hyp)+" m",dashedVert:kind==="kite"});
+  return q;
+}
+
+/* u7ans1: from math-1201:u7ans1 */
+function u7ans1(v){var a=u7f1(v),out=[a];if(a.slice(-2)===".0")out.push(a.slice(0,-2));return out;}
+
+/* u7riseRun: from math-1201:u7riseRun */
+function u7riseRun(kind){
+  var h,theta;
+  if(kind==="dock"){h=pick([1.0,1.1,1.2,1.3,1.4,1.5,1.6]);theta=pick([25,28,30,32,35]);}
+  else if(kind==="belt"){h=pick([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8]);theta=pick([25,28,30,32,35,38,40]);}
+  else{h=pick([3.6,4.2,4.8,5.4,6.0]);theta=pick([28,30,32,35]);}
+  var L=h/u7sinD(theta),run=L*u7cosD(theta),ans=u7r1(run);
+  var stem;
+  if(kind==="dock")stem="A loading ramp rises to a dock \\("+u7trim(h)+"\\) m above level ground. The ramp runs in a straight line and makes an angle of \\("+theta+"^\\circ\\) with the ground. How far, in metres, is the foot of the ramp from the base of the dock? Give your answer to the nearest tenth.";
+  else if(kind==="belt")stem="A conveyor belt carries gravel in a straight line up to the top of a storage bin \\("+u7trim(h)+"\\) m above level ground. The belt makes an angle of \\("+theta+"^\\circ\\) with the ground. How far, in metres, is the foot of the belt from the point on the ground directly below the top of the bin? Give your answer to the nearest tenth.";
+  else stem="An escalator rises \\("+u7trim(h)+"\\) m from one floor to the next, running in a straight line at an angle of \\("+theta+"^\\circ\\) to the horizontal. How far, in metres, does the escalator carry a passenger horizontally? Give your answer to the nearest tenth.";
+  var q=textq(stem,u7ans1(ans),
+    "The incline length comes first, from the sine ratio with the rise, rearranged; the horizontal distance then comes from that length and the cosine ratio: \\[ \\begin{aligned} \\sin "+theta+"^\\circ &= "+FR(u7trim(h),"L")+" \\\\ L &= "+FR(u7trim(h),"\\sin "+theta+"^\\circ")+" \\\\ &\\approx "+u7f1(L)+" \\\\ \\text{distance} &= "+u7f1(L)+" \\times \\cos "+theta+"^\\circ \\\\ &\\approx "+u7f1(ans)+" \\end{aligned} \\] The distance is <b>\\("+u7f1(ans)+"\\) m</b>.",
+    {kind:kind,h:h,theta:theta,L:L,run:run,ans:ans});
+  q.figure=u7triSceneSVG({vert:h,ground:run,slant:L,vertLabel:u7trim(h)+" m",groundLabel:"?",slantLabel:"?",angle:theta+"°"});
+  return q;
+}
+
+/* u4pickS3: from math-1201:u4pickS3 */
+function u4pickS3(ans,cands){
+  var out=[],seen={};seen[ans]=1;
+  for(var i=0;i<cands.length&&out.length<3;i++){var c=cands[i];if(typeof c==="string"&&c!==ans&&!seen[c]){seen[c]=1;out.push(c);}}
+  var pad=[" (one reading of the graph)"," (a second reading of the graph)"," (a third reading of the graph)"];
+  var k=0;while(out.length<3){out.push(ans+pad[k]);k++;}
+  return out;
+}
+
+/* u4setS: from math-1201:u4setS */
+function u4setS(arr){return "\\{"+arr.join(", ")+"\\}";}
+
+/* u4num: from math-1201:u4num */
+function u4num(n){var v=Math.round(n*100)/100;return ""+v;}
+
+/* u4pairS: from math-1201:u4pairS */
+function u4pairS(x,y){return "("+u4num(x)+", "+u4num(y)+")";}
+
+/* u4pairsS: from math-1201:u4pairsS */
+function u4pairsS(pairs){return "\\{"+pairs.map(function(p){return u4pairS(p[0],p[1]);}).join(", ")+"\\}";}
+
+/* u4interval: from math-1201:u4interval */
+function u4interval(v,lo,hi){return "\\("+lo+" \\le "+v+" \\le "+hi+"\\)";}
+
+/* u4term: from math-1201:u4term */
+function u4term(m){
+  if(m===1)return "x"; if(m===-1)return "-x";
+  return u4num(m)+"x";
+}
+
+/* u4lin: from math-1201:u4lin */
+function u4lin(m,b){
+  var s=u4term(m);
+  if(b>0)s+=" + "+b; else if(b<0)s+=" - "+Math.abs(b);
+  return s;
+}
+
+/* u3VarPart: from math-1201:u3VarPart */
+function u3VarPart(ex, ey) {
+  var s = "";
+  if (ex > 0) s += "x" + (ex > 1 ? "^" + ex : "");
+  if (ey > 0) s += "y" + (ey > 1 ? "^" + ey : "");
+  return s;
+}
+
+/* u3Body: from math-1201:u3Body */
+function u3Body(c, ex, ey) {
+  var vp = u3VarPart(ex, ey);
+  return (vp && Math.abs(c) === 1) ? vp : Math.abs(c) + vp;
+}
+
+/* u3Str: from math-1201:u3Str */
+function u3Str(list) {
+  var map = {}, keys = [];
+  list.forEach(function (t) {
+    if (t[0] === 0) return;
+    var k = t[1] * 100 + t[2];
+    if (map[k] === undefined) { map[k] = [0, t[1], t[2]]; keys.push(k); }
+    map[k][0] += t[0];
+  });
+  var terms = keys.map(function (k) { return map[k]; }).filter(function (t) { return t[0] !== 0; });
+  terms.sort(function (p, q) { var dp = p[1] + p[2], dq = q[1] + q[2]; if (dp !== dq) return dq - dp; return q[1] - p[1]; });
+  if (!terms.length) return "0";
+  return terms.map(function (t, i) {
+    var b = u3Body(t[0], t[1], t[2]);
+    if (i === 0) return (t[0] < 0 ? "-" : "") + b;
+    return (t[0] < 0 ? " - " : " + ") + b;
+  }).join("");
+}
+
+/* u3TermsOf: from math-1201:u3TermsOf */
+function u3TermsOf(coeffs, v) {
+  return coeffs.map(function (c, i) { var p = coeffs.length - 1 - i; return v === "y" ? [c, 0, p] : [c, p, 0]; });
+}
+
+/* u3PC: from math-1201:u3PC */
+function u3PC(coeffs, v) { return u3Str(u3TermsOf(coeffs, v)); }
+
+/* u3Alg: from math-1201:u3Alg */
+function u3Alg(lines) { return "\\[ \\begin{aligned} " + lines.join(" \\\\ ") + " \\end{aligned} \\]"; }
+
+/* u3Par: from math-1201:u3Par */
+function u3Par(coeffs, v) { return "(" + u3PC(coeffs, v) + ")"; }
+
+/* u3FacRaw: from math-1201:u3FacRaw */
+function u3FacRaw(gRaw, facs, v) {
+  return (gRaw || "") + facs.map(function (f) { return u3Par(f, v); }).join("");
+}
+
+/* u3Nz: from math-1201:u3Nz */
+function u3Nz(a, b) { var n = 0; while (n === 0) n = ri(a, b); return n; }
+
+/* u3StrSeq: from math-1201:u3StrSeq */
+function u3StrSeq(list) {
+  var parts = list.filter(function (t) { return t[0] !== 0; });
+  if (!parts.length) return "0";
+  return parts.map(function (t, i) {
+    var b = u3Body(t[0], t[1], t[2]);
+    if (i === 0) return (t[0] < 0 ? "-" : "") + b;
+    return (t[0] < 0 ? " - " : " + ") + b;
+  }).join("");
+}
+
+/* u3Mul: from math-1201:u3Mul */
+function u3Mul(P, Q) {
+  var out = [];
+  P.forEach(function (p) { Q.forEach(function (q) { out.push([p[0] * q[0], p[1] + q[1], p[2] + q[2]]); }); });
+  return out;
+}
+
+/* u3Conv: from math-1201:u3Conv */
+function u3Conv(A, B) {
+  var out = [], i;
+  for (i = 0; i < A.length + B.length - 1; i++) out.push(0);
+  A.forEach(function (a, j) { B.forEach(function (b, k) { out[j + k] += a * b; }); });
+  return out;
+}
+
+/* u3M: from math-1201:u3M */
+function u3M(raw) { return "\\(" + raw + "\\)"; }
+
+/* u3PerturbCoeffs: from math-1201:u3PerturbCoeffs */
+function u3PerturbCoeffs(coeffs) {
+  var out = [], i, c2;
+  for (i = 1; i < coeffs.length; i++) {
+    if (coeffs[i] !== 0) { c2 = coeffs.slice(); c2[i] = -c2[i]; out.push(c2); }
+    c2 = coeffs.slice(); c2[i] += 1; out.push(c2);
+    c2 = coeffs.slice(); c2[i] -= 1; out.push(c2);
+    c2 = coeffs.slice(); c2[i] += 2; out.push(c2);
+    c2 = coeffs.slice(); c2[i] -= 2; out.push(c2);
+  }
+  c2 = coeffs.slice(); c2[0] += 1; out.push(c2);
+  if (coeffs[0] > 1) { c2 = coeffs.slice(); c2[0] -= 1; out.push(c2); }
+  if (coeffs.length > 2) { c2 = coeffs.slice(); var t = c2[1]; c2[1] = c2[2]; c2[2] = t; out.push(c2); }
+  return out;
+}
+
+/* u3DistrCoeffs: from math-1201:u3DistrCoeffs */
+function u3DistrCoeffs(keyCoeffs, v, count) {
+  var key = u3PC(keyCoeffs, v), seen = {}, out = [];
+  shuffle(u3PerturbCoeffs(keyCoeffs)).forEach(function (c) {
+    var s = u3PC(c, v);
+    if (s !== key && !seen[s]) { seen[s] = 1; out.push(u3M(s)); }
+  });
+  var guard = 0;
+  while (out.length < count && guard < 60) {
+    guard++;
+    var c2 = keyCoeffs.slice(), i = ri(1, keyCoeffs.length - 1);
+    c2[i] += pick([-3, -2, -1, 1, 2, 3]);
+    var s2 = u3PC(c2, v);
+    if (s2 !== key && !seen[s2]) { seen[s2] = 1; out.push(u3M(s2)); }
+  }
+  return out.slice(0, count);
+}
+
+/* u3GCD: from math-1201:u3GCD */
+function u3GCD(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a; }
+
+/* u3GCD3: from math-1201:u3GCD3 */
+function u3GCD3(a, b, c) { return u3GCD(u3GCD(a, b), c); }
+
+/* u3FacExpand: from math-1201:u3FacExpand */
+function u3FacExpand(facs) {
+  var acc = [1];
+  facs.forEach(function (f) { acc = u3Conv(acc, f); });
+  return acc;
+}
+
+/* u3SameArr: from math-1201:u3SameArr */
+function u3SameArr(a, b) { return a.length === b.length && a.every(function (x, i) { return x === b[i]; }); }
+
+/* u3FacDistr: from math-1201:u3FacDistr */
+function u3FacDistr(gRaw, facs, v, targetCoeffs, count) {
+  var key = u3FacRaw(gRaw, facs, v), seen = {}, out = [];
+  var cands = [];
+  facs.forEach(function (f, fi) {
+    [1, -1, 2, -2].forEach(function (d) {
+      var nf = facs.map(function (g) { return g.slice(); });
+      nf[fi][nf[fi].length - 1] += d;
+      cands.push(nf);
+    });
+    var sf = facs.map(function (g) { return g.slice(); });
+    sf[fi][sf[fi].length - 1] = -sf[fi][sf[fi].length - 1];
+    cands.push(sf);
+  });
+  if (facs.length > 1) {
+    var sw = facs.map(function (g) { return g.slice(); });
+    var t = sw[0][sw[0].length - 1]; sw[0][sw[0].length - 1] = sw[1][sw[1].length - 1]; sw[1][sw[1].length - 1] = t;
+    cands.push(sw);
+  }
+  shuffle(cands).forEach(function (nf) {
+    if (u3SameArr(u3FacExpand(nf), targetCoeffs)) return;
+    var s = u3FacRaw(gRaw, nf, v);
+    if (s !== key && !seen[s]) { seen[s] = 1; out.push(u3M(s)); }
+  });
+  return out.slice(0, count);
+}
+
+/* u3PerturbTerms: from math-1201:u3PerturbTerms */
+function u3PerturbTerms(terms) {
+  var base = [];
+  var map = {}, keys = [];
+  terms.forEach(function (t) { var k = t[1] * 100 + t[2]; if (map[k] === undefined) { map[k] = [0, t[1], t[2]]; keys.push(k); } map[k][0] += t[0]; });
+  keys.forEach(function (k) { if (map[k][0] !== 0) base.push(map[k]); });
+  var out = [];
+  base.forEach(function (t, i) {
+    [function (c) { return -c; }, function (c) { return c + 1; }, function (c) { return c - 1; }, function (c) { return c + 2; }].forEach(function (f) {
+      var nt = base.map(function (g) { return g.slice(); });
+      nt[i][0] = f(nt[i][0]);
+      out.push(u3Str(nt));
+    });
+    var dropped = base.filter(function (g, j) { return j !== i; });
+    if (dropped.length) out.push(u3Str(dropped));
+  });
+  return out;
+}
+
+/* u5red: from math-1201:u5red */
+function u5red(n,d){var g=u5gcd(n,d);n/=g;d/=g;if(d<0){n=-n;d=-d;}return [n,d];}
+
+/* u5fs: from math-1201:u5fs */
+function u5fs(n,d){var r=u5red(n,d);if(r[1]===1)return ""+r[0];if(r[0]<0)return "-"+FR(-r[0],r[1]);return FR(r[0],r[1]);}
+
+/* u5coef: from math-1201:u5coef */
+function u5coef(n,d,v){var r=u5red(n,d);if(r[0]===0)return "0";if(r[1]===1){if(r[0]===1)return v;if(r[0]===-1)return "-"+v;return r[0]+v;}return u5fs(r[0],r[1])+v;}
+
+/* u5ybRaw: from math-1201:u5ybRaw */
+function u5ybRaw(mN,mD,b){var r=u5red(mN,mD);if(r[0]===0)return "y = "+b;var s="y = "+u5coef(r[0],r[1],"x");if(b>0)s+=" + "+b;else if(b<0)s+=" - "+(-b);return s;}
+
+/* u5genRaw: from math-1201:u5genRaw */
+function u5genRaw(A,B,C){
+  var s=(A===1?"x":A===-1?"-x":A+"x");
+  s+=(B<0?" - ":" + ")+(Math.abs(B)===1?"y":Math.abs(B)+"y");
+  if(C>0)s+=" + "+C;else if(C<0)s+=" - "+(-C);
+  return s+" = 0";
+}
+
+/* u5genFromLine: from math-1201:u5genFromLine */
+function u5genFromLine(mN,mD,b){ /* primitive general form of y = mx + b, A positive */
+  var r=u5red(mN,mD),p=r[0],q=r[1];
+  var A=Math.abs(p),B=(p>0?-q:q),C=(p>0?q*b:-q*b);
+  if(p===0){A=0;B=1;C=-b;}
+  return [A,B,C];
+}
+
+/* u5pickD3: from math-1201:u5pickD3 */
+function u5pickD3(ans,cands){
+  var out=[],seen={};seen[ans]=1;
+  for(var i=0;i<cands.length&&out.length<3;i++){var c=cands[i];if(typeof c==="number"&&isFinite(c)&&c!==ans&&!seen[c]){seen[c]=1;out.push(c);}}
+  var k=2;while(out.length<3){var c2=ans+k;k++;if(!seen[c2]){seen[c2]=1;out.push(c2);}}
+  return out;
+}
+
+/* u5slopes: from math-1201:u5slopes */
+function u5slopes(){return [[1,2],[2,3],[3,2],[2,1],[3,1],[1,3],[4,3],[3,4],[5,2],[1,4],[5,4],[4,5],[-1,2],[-2,3],[-3,2],[-2,1],[-3,1],[-1,3],[-4,3],[-3,4],[-5,2],[-1,4],[-5,4],[-4,5]];}
+
+/* u5pickSlope: from math-1201:u5pickSlope */
+function u5pickSlope(){return pick(u5slopes());}
+
+/* u5pt: from math-1201:u5pt */
+function u5pt(x,y){return "("+x+", "+y+")";}
+
+/* u5minusTerm: from math-1201:u5minusTerm */
+function u5minusTerm(v,val){return v+(val>=0?" - "+val:" + "+(-val));}
+
+/* u2radS: from math-1201:u2radS */
+function u2radS(idx,rad){return idx===2?("\\sqrt{"+rad+"}"):("\\sqrt["+idx+"]{"+rad+"}");}
+
+/* u2pickS3: from math-1201:u2pickS3 */
+function u2pickS3(ans,cands){
+  var out=[],seen={};seen[ans]=1;
+  for(var i=0;i<cands.length&&out.length<3;i++){var c=cands[i];if(typeof c==="string"&&c!==ans&&!seen[c]){seen[c]=1;out.push(c);}}
+  return out;
+}
+
+/* u2gcd: from math-1201:u2gcd */
+function u2gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+
+/* u2red: from math-1201:u2red */
+function u2red(n,d){var g=u2gcd(n,d);n/=g;d/=g;if(d<0){n=-n;d=-d;}return [n,d];}
+
+/* u2expStr: from math-1201:u2expStr */
+function u2expStr(base,n,d){
+  var r=u2red(n,d);
+  if(r[0]===0)return "\\(1\\)";
+  if(r[1]===1){if(r[0]===1)return "\\("+base+"\\)";return "\\("+base+"^{"+r[0]+"}\\)";}
+  return "\\("+base+"^{"+FR(r[0],r[1])+"}\\)";
+}
+
+/* u2isSq: from math-1201:u2isSq */
+function u2isSq(n){var r=Math.round(Math.sqrt(n));return r*r===n;}
+
+/* u2isCu: from math-1201:u2isCu */
+function u2isCu(n){var r=Math.round(Math.cbrt(n));return r*r*r===n;}
+
+/* n5lin: from math-9:u5lin */
+function n5lin(a, b) { var s; if (a === 1) s = "x"; else if (a === -1) s = "-x"; else s = fmt(a) + "x"; if (b > 0) s += "+" + fmt(b); else if (b < 0) s += "-" + fmt(-b); return s; }
+
+/* n1gcd: from math-9:u1gcd */
+function n1gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+
+/* n1red: from math-9:u1red */
+function n1red(n, d) { var g = n1gcd(n, d); return [n / g, d / g]; }
+
+/* n1frac: from math-9:u1frac */
+function n1frac(n, d) { var r = n1red(n, d); n = r[0]; d = r[1]; if (d === 1) return "\\(" + n + "\\)"; if (n < 0) return "\\(-" + FR(-n, d) + "\\)"; return "\\(" + FR(n, d) + "\\)"; }
+
+/* n1round: from math-9:u1round */
+function n1round(x, p) { var m = Math.pow(10, p); return Math.round(x * m) / m; }
+
+/* solT: from math-9:solT */
+function solT(x, y, str, size, bold) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 12) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+
+/* u6sgn: from math-1201:u6sgn */
+function u6sgn(n){return n>0?(" + "+n):(n<0?(" - "+(-n)):"");}
+
+/* u6coefVar: from math-1201:u6coefVar */
+function u6coefVar(c,v){if(c===1)return v;if(c===-1)return "-"+v;return c+v;}
+
+/* u6slopeTerm: from math-1201:u6slopeTerm */
+function u6slopeTerm(m){return u6coefVar(m,"x");}
+
+/* u6yRHS: from math-1201:u6yRHS */
+function u6yRHS(m,b){return u6slopeTerm(m)+u6sgn(b);}
+
+/* u6yEq: from math-1201:u6yEq */
+function u6yEq(m,b){return "y = "+u6yRHS(m,b);}
+
+/* u6pair: from math-1201:u6pair */
+function u6pair(x,y){return "("+x+", "+y+")";}
+
+/* u6meetSol: from math-1201:u6meetSol */
+function u6meetSol(m1,b1,m2,b2,X,Y,ask){
+  return "\\[ \\begin{aligned} "+u6yEq(m1,b1)+" \\\\ "+u6yEq(m2,b2)+" \\end{aligned} \\]"+
+  " At the intersection the two \\(y\\) values are equal, so set the right sides equal and solve: \\["+
+  "\\begin{aligned} "+u6yRHS(m1,b1)+" &= "+u6yRHS(m2,b2)+" \\\\ "+u6coefVar(m1-m2,"x")+" &= "+(b2-b1)+" \\\\ x &= "+X+" \\end{aligned} \\]"+
+  " Substitute \\(x = "+X+"\\) into the first equation to get \\(y\\): \\["+
+  "\\begin{aligned} y &= "+m1+"("+X+")"+u6sgn(b1)+" \\\\ y &= "+Y+" \\end{aligned} \\]"+
+  " The point of intersection is \\("+u6pair(X,Y)+"\\) (check: the second equation also gives \\("+m2+"("+X+")"+u6sgn(b2)+" = "+Y+"\\), confirming the solution in both equations). The "+(ask==="x"?"x":"y")+"-value is <b>\\("+(ask==="x"?X:Y)+"\\)</b>.";
+}
+
+/* u6lhs: from math-1201:u6lhs */
+function u6lhs(a,b){var s=u6coefVar(a,"x");if(b>0)s+=" + "+u6coefVar(b,"y").replace("-","");else if(b<0)s+=" - "+u6coefVar(-b,"y");return s;}
+
+/* u6std: from math-1201:u6std */
+function u6std(a,b,c){return u6lhs(a,b)+" = "+c;}
+
+/* n5sym: from math-9:u5sym */
+function n5sym(r) { return r === "le" ? "\\le" : r === "ge" ? "\\ge" : r === "lt" ? "<" : ">"; }
+
+/* n5ineqTex: from math-9:u5ineqTex */
+function n5ineqTex(v, r, rhs) { return "\\(" + v + " " + n5sym(r) + " " + rhs + "\\)"; }
+
+/* n5line: from math-9:u5line */
+function n5line(k, closed, dir) {
+  var lo = k - 4, W = 320, H = 72, cy = 38;
+  function X(v) { return 20 + (v - lo) * 35; }
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Number line graph">';
+  s += '<line x1="8" y1="' + cy + '" x2="312" y2="' + cy + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+  s += '<polygon points="312,' + cy + ' 302,' + (cy - 4) + ' 302,' + (cy + 4) + '" fill="' + FIG_INK + '"/>';
+  s += '<polygon points="8,' + cy + ' 18,' + (cy - 4) + ' 18,' + (cy + 4) + '" fill="' + FIG_INK + '"/>';
+  for (var v = lo; v <= k + 4; v++) { s += '<line x1="' + X(v) + '" y1="' + (cy - 5) + '" x2="' + X(v) + '" y2="' + (cy + 5) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + X(v) + '" y="' + (cy + 22) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">' + fmt(v) + '</text>'; }
+  var ex = dir === "right" ? 306 : 14;
+  s += '<line x1="' + X(k) + '" y1="' + cy + '" x2="' + ex + '" y2="' + cy + '" stroke="' + FIG_ACC + '" stroke-width="4"/>';
+  if (dir === "right") s += '<polygon points="' + ex + ',' + cy + ' ' + (ex - 9) + ',' + (cy - 5) + ' ' + (ex - 9) + ',' + (cy + 5) + '" fill="' + FIG_ACC + '"/>';
+  else s += '<polygon points="' + ex + ',' + cy + ' ' + (ex + 9) + ',' + (cy - 5) + ' ' + (ex + 9) + ',' + (cy + 5) + '" fill="' + FIG_ACC + '"/>';
+  s += '<circle cx="' + X(k) + '" cy="' + cy + '" r="6" fill="' + (closed ? FIG_INK : "#ffffff") + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  return s + '</svg>';
+}
+
+/* n5gcd: from math-9:u5gcd */
+function n5gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+
+/* n5fracTex: from math-9:u5fracTex */
+function n5fracTex(p, q) { if (q < 0) { p = -p; q = -q; } var g = n5gcd(p, q); p /= g; q /= g; if (q === 1) return fmt(p); if (p < 0) return "-" + FR(-p, q); return FR(p, q); }
+
+/* n5flip: from math-9:u5flip */
+function n5flip(r) { return r === "lt" ? "gt" : r === "gt" ? "lt" : r === "le" ? "ge" : "le"; }
+
+/* n6lin: from math-9:u6lin */
+function n6lin(m, b, v) {
+  var head = (m === 1 ? v : fmt(m) + v);
+  if (b > 0) return head + " + " + fmt(b);
+  if (b < 0) return head + " - " + fmt(-b);
+  return head;
+}
+
+/* n6stageFig: from math-9:u6stageFig */
+function n6stageFig(counts, item) {
+  var sq = 15, gap = 3, per = 8, pad = 12, seg = 26;
+  var widths = counts.map(function (c) { var cols = Math.min(per, c); return cols * (sq + gap) - gap; });
+  var maxRows = 1;
+  counts.forEach(function (c) { var r = Math.ceil(c / per); if (r > maxRows) maxRows = r; });
+  var totW = pad * 2 + seg * (counts.length - 1);
+  widths.forEach(function (w) { totW += w; });
+  var H = 22 + (maxRows * (sq + gap) - gap) + 26;
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + totW + '" height="' + H + '" viewBox="0 0 ' + totW + ' ' + H + '" role="img" aria-label="First three stages of a growing pattern">';
+  var cx = pad;
+  counts.forEach(function (c, i) {
+    var w = widths[i], mid = fmt(cx + w / 2, 1);
+    s += '<text x="' + mid + '" y="12" font-size="12" font-weight="bold" fill="' + FIG_INK + '" text-anchor="middle">Stage ' + (i + 1) + '</text>';
+    for (var k = 0; k < c; k++) {
+      var col = k % per, row = Math.floor(k / per);
+      s += '<rect x="' + (cx + col * (sq + gap)) + '" y="' + (22 + row * (sq + gap)) + '" width="' + sq + '" height="' + sq + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.2"/>';
+    }
+    s += '<text x="' + mid + '" y="' + (H - 6) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">' + c + ' ' + item + '</text>';
+    cx += w + seg;
+  });
+  return s + '</svg>';
+}
+
 /* ----- bank-u1.js ----- */
 // Math 2200 Unit 1 Trigonometry question bank
 // CRMARKS: u1-ambiguous-case=3
@@ -745,6 +1382,419 @@ E("u1-reflection-points", 1, ["7.13", "7.21"], 3, "gen", function () {
   var p = pick(pats);
   return mcq(p.prompt, p.correct, p.dis, p.sol + " The true statement is <b>" + p.correct + "</b>.", { mode: "pattern" });
 });
+
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u1-pk-label-sides: borrowed verbatim from math-1201 entry u7-label-sides (math-1201:7.1). */
+E("u1-pk-label-sides",1,["7.1"],1,"gen",function(){
+  var ns=u7names(),X=ns[0],Y=ns[1],R=ns[2];
+  var marked=pick([X,Y]),other=(marked===X?Y:X);
+  var hyp=u7side(X,Y),oppM=u7side(other,R),adjM=u7side(marked,R);
+  var ask=pick(["hyp","opp","adj"]);
+  function stmt(side1,role1,side2,role2){return side1+" is "+role1+", and "+side2+" is "+role2;}
+  var key,ds,promptCore,solRole;
+  if(ask==="hyp"){
+    key=stmt(hyp,"the hypotenuse",oppM,"opposite angle "+marked);
+    ds=[stmt(adjM,"the hypotenuse",oppM,"opposite angle "+marked),
+        stmt(hyp,"the hypotenuse",adjM,"opposite angle "+marked),
+        stmt(oppM,"the hypotenuse",hyp,"opposite angle "+marked)];
+    promptCore="correctly identifies the <b>hypotenuse</b>";
+    solRole="The hypotenuse is the side opposite the right angle at "+R+", so it is <b>\\("+hyp+"\\)</b>.";
+  }else if(ask==="opp"){
+    key=stmt(oppM,"opposite angle "+marked,adjM,"adjacent to angle "+marked);
+    ds=[stmt(adjM,"opposite angle "+marked,oppM,"adjacent to angle "+marked),
+        stmt(hyp,"opposite angle "+marked,adjM,"adjacent to angle "+marked),
+        stmt(oppM,"opposite angle "+marked,hyp,"adjacent to angle "+marked)];
+    promptCore="correctly identifies the side <b>opposite</b> angle "+marked;
+    solRole="The side opposite angle "+marked+" does not touch angle "+marked+"; it joins "+other+" and "+R+", so it is <b>\\("+oppM+"\\)</b>. The side adjacent to angle "+marked+" (other than the hypotenuse) is \\("+adjM+"\\).";
+  }else{
+    key=stmt(adjM,"adjacent to angle "+marked,oppM,"opposite angle "+marked);
+    ds=[stmt(oppM,"adjacent to angle "+marked,adjM,"opposite angle "+marked),
+        stmt(hyp,"adjacent to angle "+marked,oppM,"opposite angle "+marked),
+        stmt(adjM,"adjacent to angle "+marked,hyp,"opposite angle "+marked)];
+    promptCore="correctly identifies the side <b>adjacent</b> to angle "+marked;
+    solRole="The side adjacent to angle "+marked+" forms that angle together with the hypotenuse; it joins "+marked+" and "+R+", so it is <b>\\("+adjM+"\\)</b>. The side opposite angle "+marked+" is \\("+oppM+"\\).";
+  }
+  var tri=X+Y+R;
+  var prompt=pick([
+    "Triangle "+tri+" is a right triangle with the right angle at "+R+". Angle "+marked+" is marked. Which statement "+promptCore+"?",
+    "In right triangle "+tri+", the right angle is at "+R+" and angle "+marked+" is marked. Which statement "+promptCore+"?"
+  ]);
+  var angLab=[null,null,null];angLab[marked===X?0:1]=marked;
+  var q=mcq(prompt,key,ds,
+    "In triangle "+tri+" the right angle is at "+R+". "+solRole,
+    {stmt:true,keyText:key,X:X,Y:Y,R:R,marked:marked,ask:ask});
+  q.figure=triSVG(4,3,5,{L:[X,Y,R],ang:angLab,side:[Y+R,X+R,X+Y]});
+  return q;
+});
+
+/* u1-pk-ratio-def: borrowed verbatim from math-1201 entry u7-ratio-def (math-1201:7.2). */
+E("u1-pk-ratio-def",1,["7.2"],1,"gen",function(){
+  var ns=u7names(),X=ns[0],Y=ns[1],R=ns[2];
+  var t=pick(U7_TRIPLES),k=ri(1,5);
+  var swap=pick([true,false]);
+  var legXR=(swap?t[1]:t[0])*k, legYR=(swap?t[0]:t[1])*k, hyp=t[2]*k;
+  var ang=pick([X,Y]);
+  var opp=(ang===X?legYR:legXR), adj=(ang===X?legXR:legYR);
+  var fn=pick(["sin","cos","tan"]);
+  var num,den;
+  if(fn==="sin"){num=opp;den=hyp;}else if(fn==="cos"){num=adj;den=hyp;}else{num=opp;den=adj;}
+  var key="\\("+u7fracS(num,den)+"\\)";
+  var all=[[opp,hyp],[adj,hyp],[opp,adj],[adj,opp],[hyp,opp],[hyp,adj]];
+  var cands=[];
+  all.forEach(function(pr){var s="\\("+u7fracS(pr[0],pr[1])+"\\)";if(s!==key)cands.push(s);});
+  cands=shuffle(cands);
+  var ds=u7pickS3(key,cands);
+  var fnName=(fn==="sin"?"sine":fn==="cos"?"cosine":"tangent");
+  var ratioWord=(fn==="tan"?"opposite over adjacent":fn==="sin"?"opposite over hypotenuse":"adjacent over hypotenuse");
+  var unit=pick(["cm","m"]);
+  var prompt="Triangle "+X+Y+R+" is a right triangle with the right angle at "+R+". Side "+X+R+" is \\("+legXR+"\\) "+unit+", side "+Y+R+" is \\("+legYR+"\\) "+unit+", and side "+X+Y+" is \\("+hyp+"\\) "+unit+". What is the value of \\(\\"+fn+" "+ang+"\\)?";
+  var q=mcq(prompt,key,ds,
+    "The "+fnName+" ratio is "+ratioWord+". For angle "+ang+", the opposite side is \\("+opp+"\\) "+unit+", the adjacent side is \\("+adj+"\\) "+unit+", and the hypotenuse is \\("+hyp+"\\) "+unit+": \\[ \\begin{aligned} \\"+fn+" "+ang+" &= "+FR(num,den)+(u7red(num,den)[1]===1?"":" \\\\ &= "+u7fracS(num,den))+" \\end{aligned} \\] The value of \\(\\"+fn+" "+ang+"\\) is <b>"+key+"</b>.",
+    {ang:ang,fn:fn,opp:opp,adj:adj,hyp:hyp,keyText:key});
+  q.figure=triSVG(legYR,legXR,hyp,{L:[X,Y,R],side:[legYR+" "+unit,legXR+" "+unit,hyp+" "+unit]});
+  return q;
+});
+
+/* u1-pk-ratio-similar: borrowed verbatim from math-1201 entry u7-ratio-similar (math-1201:7.2). */
+E("u1-pk-ratio-similar",1,["7.2"],1,"var",varset([
+  function(){var key="The triangles are similar, so matching sides stay in proportion, and the opposite side divided by the hypotenuse is the same in both";
+    return mcq("Two right triangles each have an acute angle of \\(38^\\circ\\). One triangle is an enlargement of the other. Why is \\(\\sin 38^\\circ\\) the same for both triangles?",
+    key,
+    ["The triangles are congruent, so matching sides stay equal in length, and the opposite side divided by the hypotenuse is the same in both",
+     "The sine ratio uses only the angle in its name, and the side lengths of a triangle play no part at all in the value of the ratio",
+     "The larger triangle has longer sides all round, so its ratios grow in step, and the value works out the same by coincidence"],
+    "Enlarging a triangle keeps its angles and multiplies every side by the same scale factor, so the triangles are similar. In the ratio for \\(\\sin 38^\\circ\\), the scale factor appears in both the opposite side and the hypotenuse and cancels. The ratio depends on the angle alone: <b>the triangles are similar, so the ratio is the same in both</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Both sides in the ratio are doubled, so the doubling cancels and the value of the tangent ratio stays exactly the same as at first";
+    return mcq("Every side of a right triangle is doubled to make a larger triangle. What happens to the value of \\(\\tan A\\) for the matching acute angle \\(A\\)?",
+    key,
+    ["Only the side opposite the angle is doubled, so the doubling stays in the ratio and the value of the tangent ratio doubles as well",
+     "Both sides in the ratio are halved when the triangle grows, so the value of the tangent ratio falls to exactly one half of its value",
+     "The tangent ratio compares side lengths with the angle size, so a larger triangle gives a larger value for the tangent ratio overall"],
+    "The tangent ratio is opposite divided by adjacent. Doubling the triangle doubles both of those sides, and the factor of \\(2\\) cancels in the fraction: \\[ \\begin{aligned} \\tan A &= \\frac{2 \\times \\text{opposite}}{2 \\times \\text{adjacent}} \\\\ &= \\frac{\\text{opposite}}{\\text{adjacent}} \\end{aligned} \\] The value of the tangent ratio <b>stays exactly the same</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="\\(\\cos A\\) is the adjacent side over the hypotenuse, \\(AC\\) over \\(AB\\), because \\(AC\\) forms angle \\(A\\) with the hypotenuse";
+    var q=mcq("Triangle \\(ABC\\) has the right angle at \\(C\\). Which statement correctly gives \\(\\cos A\\) and the reason for the sides it uses?",
+    key,
+    ["\\(\\cos A\\) is the opposite side over the hypotenuse, \\(BC\\) over \\(AB\\), because \\(BC\\) forms angle \\(A\\) with the hypotenuse",
+     "\\(\\cos A\\) is the adjacent side over the opposite side, \\(AC\\) over \\(BC\\), because \\(AC\\) forms angle \\(A\\) with the side \\(BC\\)",
+     "\\(\\cos A\\) is the hypotenuse over the adjacent side, \\(AB\\) over \\(AC\\), because \\(AB\\) is the longest side of the whole triangle"],
+    "By definition, \\(\\cos A = "+FR("\\text{adjacent}","\\text{hypotenuse}")+"\\). For angle \\(A\\), the adjacent side is \\(AC\\), the side that forms angle \\(A\\) with the hypotenuse \\(AB\\). So \\(\\cos A\\) is <b>\\("+FR("AC","AB")+"\\)</b>, the adjacent side over the hypotenuse.",
+    {stmt:true,keyText:key});
+    q.figure=triSVG(3,4,5,{L:["A","B","C"],ang:["A",null,null],side:["BC","AC","AB"]});
+    return q;},
+  function(){var key="The hypotenuse grew, but the opposite side grew by the same factor, so their ratio is unchanged and the sine value stays the same";
+    return mcq("A student says the sine of an acute angle must be larger in a bigger right triangle because the hypotenuse is longer. Which statement corrects the student?",
+    key,
+    ["The hypotenuse grew, and the opposite side stayed the same length, so their ratio is smaller and the sine value actually goes down",
+     "The hypotenuse is the only side used in the sine ratio, so a longer hypotenuse does give a larger value for the sine of the angle",
+     "The sine of an angle is set by the size of the triangle, so the bigger triangle does have the larger sine value for its angles"],
+    "Sine is a ratio, opposite divided by hypotenuse, not a length. In a bigger similar triangle both the opposite side and the hypotenuse are multiplied by the same scale factor, which cancels in the ratio. So <b>the sine value stays the same</b>; it depends on the angle, not on the size of the triangle.",
+    {stmt:true,keyText:key});},
+  function(){var key="Scaling by \\(3\\) multiplies the opposite side and the hypotenuse alike, so their ratio is still \\("+FR(4,5)+"\\), as in the small triangle";
+    var q=mcq("In a small right triangle, an acute angle has opposite side \\(4\\) cm and hypotenuse \\(5\\) cm. The triangle is enlarged by a scale factor of \\(3\\). Which statement gives the sine of the matching angle in the large triangle?",
+    key,
+    ["Scaling by \\(3\\) multiplies the opposite side only, so their ratio becomes \\("+FR(12,5)+"\\), which is larger than the ratio in the small triangle",
+     "Scaling by \\(3\\) multiplies the hypotenuse only, so their ratio becomes \\("+FR(4,15)+"\\), which is smaller than the ratio in the small triangle",
+     "Scaling by \\(3\\) adds \\(3\\) cm to each side in turn, so their ratio becomes \\("+FR(7,8)+"\\), a value close to the ratio in the small one"],
+    "In the large triangle the opposite side is \\(3 \\times 4 = 12\\) cm and the hypotenuse is \\(3 \\times 5 = 15\\) cm: \\[ \\begin{aligned} \\sin &= \\frac{12}{15} \\\\ &= \\frac{4}{5} \\end{aligned} \\] The scale factor cancels, so the sine is <b>\\("+FR(4,5)+"\\)</b>, the same as in the small triangle.",
+    {stmt:true,keyText:key});
+    q.figure=u7pairSVG();
+    return q;}
+]));
+
+/* u1-pk-find-angle: borrowed verbatim from math-1201 entry u7-find-angle (math-1201:7.3). */
+E("u1-pk-find-angle",1,["7.3"],1,"gen",function(){
+  var V=pick(["A","B"]);
+  var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
+  var rt=pick(["sin","cos","tan"]),num,den,sideText,ratioDisp,raw,tries=0;
+  do{
+    tries++;
+    if(rt==="sin"){num=ri(4,30);den=num+ri(3,30);}
+    else if(rt==="cos"){num=ri(4,30);den=num+ri(3,30);}
+    else{num=ri(4,30);den=ri(4,30);}
+    raw=(rt==="sin"?u7asinD(num/den):rt==="cos"?u7acosD(num/den):u7atanD(num/den));
+  }while((raw<15||raw>75)&&tries<100);
+  var ans=Math.round(raw);
+  if(rt==="sin"){sideText="the side opposite angle "+V+", "+oppName+", is \\("+num+"\\) cm and the hypotenuse, AB, is \\("+den+"\\) cm";
+    ratioDisp="\\sin "+V+" &= "+FR(num,den);}
+  else if(rt==="cos"){sideText="the side adjacent to angle "+V+", "+adjName+", is \\("+num+"\\) cm and the hypotenuse, AB, is \\("+den+"\\) cm";
+    ratioDisp="\\cos "+V+" &= "+FR(num,den);}
+  else{sideText="the side opposite angle "+V+", "+oppName+", is \\("+num+"\\) cm and the side adjacent to angle "+V+", "+adjName+", is \\("+den+"\\) cm";
+    ratioDisp="\\tan "+V+" &= "+FR(num,den);}
+  var inv=(rt==="sin"?"\\sin^{-1}":rt==="cos"?"\\cos^{-1}":"\\tan^{-1}");
+  var q=numq("A right triangle ABC has the right angle at C. In the triangle, "+sideText+". Give the measure of angle "+V+", in degrees, to the nearest degree.",
+    ans,0.51,
+    "Use the ratio that involves the two known sides, then undo it with the inverse ratio: \\[ \\begin{aligned} "+ratioDisp+" \\\\ "+V+" &= "+inv+"\\left("+FR(num,den)+"\\right) \\\\ &\\approx "+ans+"^\\circ \\end{aligned} \\] The measure of angle "+V+" is <b>\\("+ans+"^\\circ\\)</b>.",
+    {V:V,rt:rt,num:num,den:den,ans:ans});
+  var oppV,adjV,hypV;
+  if(rt==="sin"){oppV=num;hypV=den;adjV=Math.sqrt(den*den-num*num);}
+  else if(rt==="cos"){adjV=num;hypV=den;oppV=Math.sqrt(den*den-num*num);}
+  else{oppV=num;adjV=den;hypV=Math.sqrt(num*num+den*den);}
+  var sLab=[null,null,null];
+  if(rt==="sin"){sLab[V==="A"?0:1]=num+" cm";sLab[2]=den+" cm";}
+  else if(rt==="cos"){sLab[V==="A"?1:0]=num+" cm";sLab[2]=den+" cm";}
+  else{sLab[V==="A"?0:1]=num+" cm";sLab[V==="A"?1:0]=den+" cm";}
+  var aLab=[null,null,null];aLab[V==="A"?0:1]="?";
+  q.figure=triSVG(V==="A"?oppV:adjV,V==="A"?adjV:oppV,hypV,{L:["A","B","C"],side:sLab,ang:aLab});
+  return q;
+});
+
+/* u1-pk-find-side: borrowed verbatim from math-1201 entry u7-find-side (math-1201:7.4). */
+E("u1-pk-find-side",1,["7.4"],1,"gen",function(){
+  var V=pick(["A","B"]);
+  var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
+  var theta=pick(U7_ANGLES),mode=ri(1,4),given,targetName,givenText,raw,steps;
+  if(mode===1){
+    given=ri(12,48);targetName=oppName;
+    givenText="the hypotenuse, AB, is \\("+given+"\\) cm";
+    raw=given*u7sinD(theta);
+    steps="\\sin "+theta+"^\\circ &= "+FR("x",given)+" \\\\ x &= "+given+" \\times \\sin "+theta+"^\\circ \\\\ &\\approx "+u7f1(raw);
+  }else if(mode===2){
+    given=ri(12,48);targetName=adjName;
+    givenText="the hypotenuse, AB, is \\("+given+"\\) cm";
+    raw=given*u7cosD(theta);
+    steps="\\cos "+theta+"^\\circ &= "+FR("x",given)+" \\\\ x &= "+given+" \\times \\cos "+theta+"^\\circ \\\\ &\\approx "+u7f1(raw);
+  }else if(mode===3){
+    given=ri(8,40);targetName=oppName;theta=pick(U7_ANGLES.filter(function(a){return a>=25&&a<=60;}));
+    givenText="the side adjacent to angle "+V+", "+adjName+", is \\("+given+"\\) cm";
+    raw=given*u7tanD(theta);
+    steps="\\tan "+theta+"^\\circ &= "+FR("x",given)+" \\\\ x &= "+given+" \\times \\tan "+theta+"^\\circ \\\\ &\\approx "+u7f1(raw);
+  }else{
+    given=ri(8,40);targetName=adjName;theta=pick(U7_ANGLES.filter(function(a){return a>=30&&a<=65;}));
+    givenText="the side opposite angle "+V+", "+oppName+", is \\("+given+"\\) cm";
+    raw=given/u7tanD(theta);
+    steps="\\tan "+theta+"^\\circ &= "+FR(given,"x")+" \\\\ x &= "+FR(given,"\\tan "+theta+"^\\circ")+" \\\\ &\\approx "+u7f1(raw);
+  }
+  var ans=u7r1(raw);
+  var q=numq("A right triangle ABC has the right angle at C and angle "+V+" is \\("+theta+"^\\circ\\). In the triangle, "+givenText+". Find the length of side "+targetName+", in centimetres, to the nearest tenth.",
+    ans,0.06,
+    "Let \\(x\\) be the length of side "+targetName+". The known and unknown sides give this ratio at angle "+V+": \\[ \\begin{aligned} "+steps+" \\end{aligned} \\] The length of side "+targetName+" is <b>\\("+u7f1(ans)+"\\) cm</b>.",
+    {mode:mode,V:V,theta:theta,given:given,ans:ans});
+  var oppV,adjV,hypV;
+  if(mode===1){hypV=given;oppV=given*u7sinD(theta);adjV=given*u7cosD(theta);}
+  else if(mode===2){hypV=given;adjV=given*u7cosD(theta);oppV=given*u7sinD(theta);}
+  else if(mode===3){adjV=given;oppV=given*u7tanD(theta);hypV=given/u7cosD(theta);}
+  else{oppV=given;adjV=given/u7tanD(theta);hypV=given/u7sinD(theta);}
+  var oi=(V==="A"?0:1),ai=(V==="A"?1:0);
+  var sLab=[null,null,null];
+  sLab[(mode<=2)?2:(mode===3?ai:oi)]=given+" cm";
+  sLab[(mode===1||mode===3)?oi:ai]="?";
+  var aLab=[null,null,null];aLab[V==="A"?0:1]=theta+"°";
+  q.figure=triSVG(V==="A"?oppV:adjV,V==="A"?adjV:oppV,hypV,{L:["A","B","C"],side:sLab,ang:aLab});
+  return q;
+});
+
+/* u1-pk-pythagoras: borrowed verbatim from math-1201 entry u7-pythagoras (math-1201:7.5). */
+E("u1-pk-pythagoras",1,["7.14"],1,"gen",function(){
+  var ctx=ri(1,11);
+  var maxHyp=(ctx===1||ctx===6)?15:((ctx===8||ctx===11)?20:(ctx===3?30:(ctx===7?12:(ctx===2?60:150))));
+  var scales=[0.5,1,1.5,2,2.5,3,4,5];
+  var t=pick(U7_TRIPLES),k=pick(scales),trC=0;
+  while(t[2]*k>maxHyp&&trC<200){t=pick(U7_TRIPLES);k=pick(scales);trC++;}
+  var legA=t[0]*k,legB=t[1]*k,hyp=t[2]*k;
+  if(pick([true,false])){var swp=legA;legA=legB;legB=swp;}
+  var kind,prompt,solSteps,ans,known1,known2;
+  if(ctx===1||ctx===6||ctx===8||ctx===11){
+    kind="leg";var heightLeg=(ctx===1?legA:legB),otherLeg=(ctx===1?legB:legA);
+    ans=otherLeg;known1=hyp;known2=heightLeg;
+    if(ctx===1)prompt="A ladder \\("+hyp+"\\) m long leans against a vertical wall. The top of the ladder touches the wall \\("+heightLeg+"\\) m above the ground. How far, in metres, is the foot of the ladder from the wall?";
+    else if(ctx===6)prompt="A ladder \\("+hyp+"\\) m long is placed with its foot \\("+heightLeg+"\\) m from the base of a vertical wall. How high, in metres, does the ladder reach up the wall?";
+    else if(ctx===8)prompt="A staircase stringer \\("+hyp+"\\) m long rises \\("+heightLeg+"\\) m vertically from floor to landing. How long, in metres, is the horizontal run of the staircase?";
+    else prompt="A loading ramp \\("+hyp+"\\) m long rises to a dock \\("+heightLeg+"\\) m above the ground. How far, in metres, does the foot of the ramp sit from the base of the dock?";
+    solSteps="\\begin{aligned} x^2 + "+heightLeg+"^2 &= "+hyp+"^2 \\\\ x^2 &= "+hyp+"^2 - "+heightLeg+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else if(ctx===3){
+    kind="leg";ans=legB;known1=hyp;known2=legA;
+    prompt="A guy wire \\("+hyp+"\\) m long runs from the top of a vertical pole to a ground anchor. The wire is attached \\("+legA+"\\) m up the pole. How far, in metres, is the anchor from the base of the pole?";
+    solSteps="\\begin{aligned} x^2 + "+legA+"^2 &= "+hyp+"^2 \\\\ x^2 &= "+hyp+"^2 - "+legA+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else if(ctx===2){
+    kind="hyp";ans=hyp;known1=legA;known2=legB;
+    prompt="A rectangular garden plot measures \\("+legA+"\\) m by \\("+legB+"\\) m. How long, in metres, is a path that runs straight from one corner of the plot to the opposite corner?";
+    solSteps="\\begin{aligned} x^2 &= "+legA+"^2 + "+legB+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else if(ctx===4){
+    kind="hyp";ans=hyp;known1=legA;known2=legB;
+    prompt="A rectangular playing field is \\("+legA+"\\) m long and \\("+legB+"\\) m wide. A player runs in a straight line from one corner of the field to the diagonally opposite corner. How far, in metres, does the player run?";
+    solSteps="\\begin{aligned} x^2 &= "+legA+"^2 + "+legB+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else if(ctx===9){
+    kind="hyp";ans=hyp;known1=legA;known2=legB;
+    prompt="A rectangular building lot is \\("+legA+"\\) m long and \\("+legB+"\\) m wide. A survey line runs straight from one corner of the lot to the opposite corner. How long, in metres, is the survey line?";
+    solSteps="\\begin{aligned} x^2 &= "+legA+"^2 + "+legB+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else if(ctx===10){
+    kind="hyp";ans=hyp;known1=legA;known2=legB;
+    prompt="A rectangular meadow is \\("+legA+"\\) m long and \\("+legB+"\\) m wide. A hiker walks in a straight line from one corner of the meadow to the diagonally opposite corner. How far, in metres, does the hiker walk?";
+    solSteps="\\begin{aligned} x^2 &= "+legA+"^2 + "+legB+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else if(ctx===7){
+    kind="hyp";ans=hyp;known1=legA;known2=legB;
+    prompt="A rectangular driveway gate is \\("+legA+"\\) m wide and \\("+legB+"\\) m tall. A brace runs straight from one corner of the gate to the opposite corner. How long, in metres, is the brace?";
+    solSteps="\\begin{aligned} x^2 &= "+legA+"^2 + "+legB+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }else{
+    kind="hyp";ans=hyp;known1=legA;known2=legB;
+    prompt="A kite string is held so that the kite is directly above a point \\("+legA+"\\) m away from the flyer, at a height of \\("+legB+"\\) m above the flyer's hand. How long, in metres, is the straight section of string from the hand to the kite?";
+    solSteps="\\begin{aligned} x^2 &= "+legA+"^2 + "+legB+"^2 \\\\ x^2 &= "+(ans*ans)+" \\\\ x &= "+ans+" \\end{aligned}";
+  }
+  var cands;
+  if(kind==="leg")cands=[known1,known2,known1-known2,known1+known2,Math.abs(known2-2),ans+known2];
+  else cands=[known1+known2,Math.abs(known1-known2),Math.max(known1,known2),known1+known2-1,Math.max(known1,known2)+1];
+  var seenD={},ds=[];
+  cands.forEach(function(c){if(ds.length<3&&typeof c==="number"&&isFinite(c)&&c>0&&c!==ans&&!seenD[c]){seenD[c]=1;ds.push(""+c);}});
+  var pad=1;while(ds.length<3){var cc=ans+pad+2;pad++;if(!seenD[cc]){seenD[cc]=1;ds.push(""+cc);}}
+  var q=mcq(prompt,""+ans,balDp(""+ans,ds),
+    "The situation forms a right triangle, so the Pythagorean theorem applies. Let \\(x\\) be the length asked for: \\[ "+solSteps+" \\] The length is <b>\\("+ans+"\\) m</b>.",
+    {kind:kind,x:known1,y:known2,ans:ans});
+  if(ctx===2||ctx===4||ctx===7||ctx===9||ctx===10){
+    q.figure=u7rectDiagSVG(legA,legB);
+  }else if(ctx===5){
+    q.figure=u7triSceneSVG({vert:legB,ground:legA,slant:hyp,vertLabel:legB+" m",groundLabel:legA+" m",slantLabel:"?",dashedVert:true});
+  }else if(ctx===3){
+    q.figure=u7triSceneSVG({vert:legA,ground:ans,slant:hyp,vertLabel:legA+" m",groundLabel:"?",slantLabel:hyp+" m"});
+  }else if(ctx===6){
+    q.figure=u7triSceneSVG({vert:ans,ground:heightLeg,slant:hyp,vertLabel:"?",groundLabel:heightLeg+" m",slantLabel:hyp+" m"});
+  }else{
+    q.figure=u7triSceneSVG({vert:heightLeg,ground:ans,slant:hyp,vertLabel:heightLeg+" m",groundLabel:"?",slantLabel:hyp+" m"});
+  }
+  return q;
+});
+
+/* u1-pk-grid-distance: borrowed verbatim from math-8 entry u1-grid-distance-gap (math-8:9.12). */
+E("u1-pk-grid-distance",1,["7.14"], 2, "gen", function(){
+  var base=pick([[3,4,5],[5,12,13],[8,15,17],[6,8,10],[9,12,15]]);
+  var kk=ri(1,2); var dx=base[0]*kk, dy=base[1]*kk, c=base[2]*kk;
+  var x1=ri(0,4), y1=ri(0,4), x2=x1+dx, y2=y1+dy;
+  var q=numq("On a grid map, a library stands at ("+x1+", "+y1+") and a skating rink stands at ("+x2+", "+y2+"). Each grid square represents 1 km. What is the straight-line distance between the library and the rink, in kilometres?", c, 0.01,
+    "The two points give the legs of a right triangle: the horizontal change is "+x2+" - "+x1+" = "+dx+" and the vertical change is "+y2+" - "+y1+" = "+dy+". Then: \\[ \\begin{aligned} d^{2} &= "+dx+"^{2} + "+dy+"^{2} \\\\ &= "+(dx*dx)+" + "+(dy*dy)+" \\\\ &= "+(c*c)+" \\\\ d &= "+c+" \\end{aligned} \\] The answer is <b>"+c+" km</b>.",
+    {mode:"grid-distance", x1:x1, y1:y1, x2:x2, y2:y2}); q.figure=m8GridDistSVG(x1,y1,x2,y2); return q;
+}, ["Subtract the coordinates to find the two legs before using the theorem.", "Find the horizontal change and the vertical change first, then square and add them."]);
+
+/* u1-pk-solve-triangle: borrowed verbatim from math-1201 entry u7-solve-triangle (math-1201:7.6). */
+E("u1-pk-solve-triangle",1,["7.2"],2,"gen",function(){
+  var fam=ri(1,4),facts,tasks=[];
+  var P={fam:fam};
+  if(fam===1){
+    var H=ri(14,50),theta=pick(U7_ANGLES);P.H=H;P.theta=theta;
+    facts="the hypotenuse AB is \\("+H+"\\) cm and angle A is \\("+theta+"^\\circ\\)";
+    tasks=[
+      {f:"comp",ask:"the measure of angle B, in degrees, to the nearest degree",ans:90-theta,tol:0.51,
+       sol:"The acute angles of a right triangle add to \\(90^\\circ\\): \\[ \\begin{aligned} B &= 90^\\circ - "+theta+"^\\circ \\\\ &= "+(90-theta)+"^\\circ \\end{aligned} \\] The measure of angle B is <b>\\("+(90-theta)+"^\\circ\\)</b>."},
+      {f:"hSin",ask:"the length of side BC, in centimetres, to the nearest tenth",ans:u7r1(H*u7sinD(theta)),tol:0.06,
+       sol:"Side BC is opposite angle A, so use sine with the hypotenuse: \\[ \\begin{aligned} \\sin "+theta+"^\\circ &= "+FR("BC",""+H)+" \\\\ BC &= "+H+" \\times \\sin "+theta+"^\\circ \\\\ &\\approx "+u7f1(H*u7sinD(theta))+" \\end{aligned} \\] The length of side BC is <b>\\("+u7f1(H*u7sinD(theta))+"\\) cm</b>."},
+      {f:"hCos",ask:"the length of side AC, in centimetres, to the nearest tenth",ans:u7r1(H*u7cosD(theta)),tol:0.06,
+       sol:"Side AC is adjacent to angle A, so use cosine with the hypotenuse: \\[ \\begin{aligned} \\cos "+theta+"^\\circ &= "+FR("AC",""+H)+" \\\\ AC &= "+H+" \\times \\cos "+theta+"^\\circ \\\\ &\\approx "+u7f1(H*u7cosD(theta))+" \\end{aligned} \\] The length of side AC is <b>\\("+u7f1(H*u7cosD(theta))+"\\) cm</b>."}
+    ];
+  }else if(fam===2){
+    var G2=ri(10,42),th2=pick(U7_ANGLES.filter(function(a){return a>=28&&a<=62;}));P.G=G2;P.theta=th2;
+    facts="side AC, adjacent to angle A, is \\("+G2+"\\) cm and angle A is \\("+th2+"^\\circ\\)";
+    tasks=[
+      {f:"comp",ask:"the measure of angle B, in degrees, to the nearest degree",ans:90-th2,tol:0.51,
+       sol:"The acute angles of a right triangle add to \\(90^\\circ\\): \\[ \\begin{aligned} B &= 90^\\circ - "+th2+"^\\circ \\\\ &= "+(90-th2)+"^\\circ \\end{aligned} \\] The measure of angle B is <b>\\("+(90-th2)+"^\\circ\\)</b>."},
+      {f:"aTan",ask:"the length of side BC, in centimetres, to the nearest tenth",ans:u7r1(G2*u7tanD(th2)),tol:0.06,
+       sol:"Side BC is opposite angle A and side AC is adjacent, so use tangent: \\[ \\begin{aligned} \\tan "+th2+"^\\circ &= "+FR("BC",""+G2)+" \\\\ BC &= "+G2+" \\times \\tan "+th2+"^\\circ \\\\ &\\approx "+u7f1(G2*u7tanD(th2))+" \\end{aligned} \\] The length of side BC is <b>\\("+u7f1(G2*u7tanD(th2))+"\\) cm</b>."},
+      {f:"aHypCos",ask:"the length of the hypotenuse AB, in centimetres, to the nearest tenth",ans:u7r1(G2/u7cosD(th2)),tol:0.06,
+       sol:"Side AC is adjacent to angle A, so use cosine and rearrange for the hypotenuse: \\[ \\begin{aligned} \\cos "+th2+"^\\circ &= "+FR(G2,"AB")+" \\\\ AB &= "+FR(G2,"\\cos "+th2+"^\\circ")+" \\\\ &\\approx "+u7f1(G2/u7cosD(th2))+" \\end{aligned} \\] The length of the hypotenuse AB is <b>\\("+u7f1(G2/u7cosD(th2))+"\\) cm</b>."}
+    ];
+  }else if(fam===3){
+    var G3=ri(10,42),th3=pick(U7_ANGLES.filter(function(a){return a>=28&&a<=62;}));P.G=G3;P.theta=th3;
+    facts="side BC, opposite angle A, is \\("+G3+"\\) cm and angle A is \\("+th3+"^\\circ\\)";
+    tasks=[
+      {f:"comp",ask:"the measure of angle B, in degrees, to the nearest degree",ans:90-th3,tol:0.51,
+       sol:"The acute angles of a right triangle add to \\(90^\\circ\\): \\[ \\begin{aligned} B &= 90^\\circ - "+th3+"^\\circ \\\\ &= "+(90-th3)+"^\\circ \\end{aligned} \\] The measure of angle B is <b>\\("+(90-th3)+"^\\circ\\)</b>."},
+      {f:"oAdjTan",ask:"the length of side AC, in centimetres, to the nearest tenth",ans:u7r1(G3/u7tanD(th3)),tol:0.06,
+       sol:"Side BC is opposite angle A and side AC is adjacent, so use tangent and rearrange: \\[ \\begin{aligned} \\tan "+th3+"^\\circ &= "+FR(G3,"AC")+" \\\\ AC &= "+FR(G3,"\\tan "+th3+"^\\circ")+" \\\\ &\\approx "+u7f1(G3/u7tanD(th3))+" \\end{aligned} \\] The length of side AC is <b>\\("+u7f1(G3/u7tanD(th3))+"\\) cm</b>."},
+      {f:"oHypSin",ask:"the length of the hypotenuse AB, in centimetres, to the nearest tenth",ans:u7r1(G3/u7sinD(th3)),tol:0.06,
+       sol:"Side BC is opposite angle A, so use sine and rearrange for the hypotenuse: \\[ \\begin{aligned} \\sin "+th3+"^\\circ &= "+FR(G3,"AB")+" \\\\ AB &= "+FR(G3,"\\sin "+th3+"^\\circ")+" \\\\ &\\approx "+u7f1(G3/u7sinD(th3))+" \\end{aligned} \\] The length of the hypotenuse AB is <b>\\("+u7f1(G3/u7sinD(th3))+"\\) cm</b>."}
+    ];
+  }else{
+    var t=pick(U7_TRIPLES),k=ri(1,4),aL=t[0]*k,bL=t[1]*k,cL=t[2]*k;
+    var sub=pick(["legs","hypLeg"]);P.a=aL;P.b=bL;P.c=cL;P.sub=sub;
+    if(sub==="legs"){
+      facts="side BC is \\("+aL+"\\) cm and side AC is \\("+bL+"\\) cm";
+      var angA=u7atanD(aL/bL);
+      tasks=[
+        {f:"pythHyp",ask:"the length of the hypotenuse AB, in centimetres",ans:cL,tol:0.001,
+         sol:"Use the Pythagorean theorem with the two legs: \\[ \\begin{aligned} AB^2 &= "+aL+"^2 + "+bL+"^2 \\\\ AB^2 &= "+(cL*cL)+" \\\\ AB &= "+cL+" \\end{aligned} \\] The length of the hypotenuse AB is <b>\\("+cL+"\\) cm</b>."},
+        {f:"invTanA",ask:"the measure of angle A, in degrees, to the nearest degree",ans:Math.round(angA),tol:0.51,
+         sol:"Side BC is opposite angle A and side AC is adjacent, so use inverse tangent: \\[ \\begin{aligned} \\tan A &= "+FR(aL,bL)+" \\\\ A &= \\tan^{-1}\\left("+FR(aL,bL)+"\\right) \\\\ &\\approx "+Math.round(angA)+"^\\circ \\end{aligned} \\] The measure of angle A is <b>\\("+Math.round(angA)+"^\\circ\\)</b>."},
+        {f:"invTanB",ask:"the measure of angle B, in degrees, to the nearest degree",ans:Math.round(90-angA),tol:0.51,
+         sol:"Side AC is opposite angle B and side BC is adjacent, so use inverse tangent: \\[ \\begin{aligned} \\tan B &= "+FR(bL,aL)+" \\\\ B &= \\tan^{-1}\\left("+FR(bL,aL)+"\\right) \\\\ &\\approx "+Math.round(90-angA)+"^\\circ \\end{aligned} \\] The measure of angle B is <b>\\("+Math.round(90-angA)+"^\\circ\\)</b>."}
+      ];
+    }else{
+      facts="the hypotenuse AB is \\("+cL+"\\) cm and side BC is \\("+aL+"\\) cm";
+      var angA2=u7asinD(aL/cL);
+      tasks=[
+        {f:"pythLeg",ask:"the length of side AC, in centimetres",ans:bL,tol:0.001,
+         sol:"Use the Pythagorean theorem and rearrange for the missing leg: \\[ \\begin{aligned} AC^2 &= "+cL+"^2 - "+aL+"^2 \\\\ AC^2 &= "+(bL*bL)+" \\\\ AC &= "+bL+" \\end{aligned} \\] The length of side AC is <b>\\("+bL+"\\) cm</b>."},
+        {f:"invSinA",ask:"the measure of angle A, in degrees, to the nearest degree",ans:Math.round(angA2),tol:0.51,
+         sol:"Side BC is opposite angle A and AB is the hypotenuse, so use inverse sine: \\[ \\begin{aligned} \\sin A &= "+FR(aL,cL)+" \\\\ A &= \\sin^{-1}\\left("+FR(aL,cL)+"\\right) \\\\ &\\approx "+Math.round(angA2)+"^\\circ \\end{aligned} \\] The measure of angle A is <b>\\("+Math.round(angA2)+"^\\circ\\)</b>."},
+        {f:"compFromA",ask:"the measure of angle B, in degrees, to the nearest degree",ans:Math.round(90-angA2),tol:0.51,
+         sol:"First find angle A with inverse sine, since BC is opposite A: \\(A \\approx "+u7f1(angA2)+"^\\circ\\). The acute angles add to \\(90^\\circ\\): \\[ \\begin{aligned} B &= 90^\\circ - "+u7f1(angA2)+"^\\circ \\\\ &\\approx "+Math.round(90-angA2)+"^\\circ \\end{aligned} \\] The measure of angle B is <b>\\("+Math.round(90-angA2)+"^\\circ\\)</b>."}
+      ];
+    }
+  }
+  var task=pick(tasks);P.f=task.f;
+  var fig;
+  if(fam===1){
+    var sL1=[null,null,H+" cm"],aL1=[theta+"°",null,null];
+    if(task.f==="comp")aL1[1]="?";else if(task.f==="hSin")sL1[0]="?";else sL1[1]="?";
+    fig=triSVG(H*u7sinD(theta),H*u7cosD(theta),H,{L:["A","B","C"],side:sL1,ang:aL1});
+  }else if(fam===2){
+    var sL2=[null,G2+" cm",null],aL2=[th2+"°",null,null];
+    if(task.f==="comp")aL2[1]="?";else if(task.f==="aTan")sL2[0]="?";else sL2[2]="?";
+    fig=triSVG(G2*u7tanD(th2),G2,G2/u7cosD(th2),{L:["A","B","C"],side:sL2,ang:aL2});
+  }else if(fam===3){
+    var sL3=[G3+" cm",null,null],aL3=[th3+"°",null,null];
+    if(task.f==="comp")aL3[1]="?";else if(task.f==="oAdjTan")sL3[1]="?";else sL3[2]="?";
+    fig=triSVG(G3,G3/u7tanD(th3),G3/u7sinD(th3),{L:["A","B","C"],side:sL3,ang:aL3});
+  }else if(sub==="legs"){
+    var sL4=[aL+" cm",bL+" cm",null],aL4=[null,null,null];
+    if(task.f==="pythHyp")sL4[2]="?";else if(task.f==="invTanA")aL4[0]="?";else aL4[1]="?";
+    fig=triSVG(aL,bL,cL,{L:["A","B","C"],side:sL4,ang:aL4});
+  }else{
+    var sL5=[aL+" cm",null,cL+" cm"],aL5=[null,null,null];
+    if(task.f==="pythLeg")sL5[1]="?";else if(task.f==="invSinA")aL5[0]="?";else aL5[1]="?";
+    fig=triSVG(aL,bL,cL,{L:["A","B","C"],side:sL5,ang:aL5});
+  }
+  var q=numq("A right triangle ABC has the right angle at C. In the triangle, "+facts+". Find "+task.ask+".",
+    task.ans,task.tol,task.sol,P);
+  q.figure=fig;
+  return q;
+});
+
+/* u1-pk-rope-angle: borrowed verbatim from math-1201 entry u7-rope-angle (math-1201:7.3). */
+E("u1-pk-rope-angle",1,["7.22"],2,"var",varset([
+  function(){return u7slantAngle("rope");},
+  function(){return u7slantAngle("slide");},
+  function(){return u7slantAngle("zip");},
+  function(){return u7slantAngle("kite");}
+]));
+
+/* u1-pk-ramp-run: borrowed verbatim from math-1201 entry u7-ramp-run (math-1201:7.4). */
+E("u1-pk-ramp-run",1,["7.22"],2,"var",varset([
+  function(){return u7riseRun("dock");},
+  function(){return u7riseRun("belt");},
+  function(){return u7riseRun("escalator");}
+]));
+
+/* PK tranche pass for Unit 1. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U1_FOR=["7.1","7.2","7.3","7.4","7.5","7.6","7.7","7.8","7.9","7.10","7.11","7.12","7.13","7.14","7.15","7.16","7.17","7.18","7.19","7.20","7.21","7.22"];
+var PKT_U1={
+ "u1-pk-label-sides":{src:"math-1201:7.1",group:"trig-sides"},
+ "u1-pk-ratio-def":{src:"math-1201:7.2",group:"trig-ratios"},
+ "u1-pk-ratio-similar":{src:"math-1201:7.2",group:"trig-ratios"},
+ "u1-pk-find-angle":{src:"math-1201:7.3",group:"trig-ratios"},
+ "u1-pk-find-side":{src:"math-1201:7.4",group:"trig-ratios"},
+ "u1-pk-pythagoras":{src:"math-1201:7.5",group:"pythagoras"},
+ "u1-pk-grid-distance":{src:"math-8:9.12",group:"pythagoras"},
+ "u1-pk-solve-triangle":{src:"math-1201:7.6",group:"solve-triangle"},
+ "u1-pk-rope-angle":{src:"math-1201:7.3",group:"trig-context"},
+ "u1-pk-ramp-run":{src:"math-1201:7.4",group:"trig-context"}
+};
+BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U1_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u2.js ----- */
 // Math 2200 Unit 2 Quadratic Functions question bank
@@ -1417,6 +2467,159 @@ E("u2-evaluate-claim",2,["4.47"],3,"gen",function(){
   qe.figure=parSVG(-a,b,c,{xLab:"x",yLab:"R(x)",aria:"Revenue parabola"});
   return qe;
 });
+
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u2-pk-graph-data: borrowed verbatim from math-1201 entry u4-graph-data (math-1201:4.9). */
+E("u2-pk-graph-data",2,["4.41"],1,"gen",function(){
+  var profs=[
+    {name:"A weather station records the day number of a study and the high temperature that day, in degrees",xlab:"day",ylab:"temperature"},
+    {name:"A coach records the week number of a training plan and the number of laps the team swam that week",xlab:"week",ylab:"laps"},
+    {name:"A shop records the number of hours since opening and the number of loaves sold so far that day",xlab:"hours",ylab:"loaves"},
+    {name:"A class records the number of school days since seeds were planted and the average seedling height, in centimetres",xlab:"days",ylab:"height"}
+  ];
+  var prof=pick(profs);
+  var xs=shuffle([1,2,3,4,5,6,7]).slice(0,4).sort(function(a,b){return a-b;});
+  var ys=[];while(ys.length<4){var y=ri(3,28);if(ys.indexOf(y)<0)ys.push(y);}
+  var askRange=Math.random()<0.5;
+  var vals=askRange?ys.slice().sort(function(a,b){return a-b;}):xs;
+  var other=askRange?xs:ys.slice().sort(function(a,b){return a-b;});
+  var key="\\("+u4setS(vals)+"\\)";
+  var alt=vals.slice();alt[alt.length-1]=alt[alt.length-1]+2;
+  var short=vals.slice(0,3);
+  var ds=u4pickS3(key,["\\("+u4setS(other)+"\\)","\\("+u4setS(alt)+"\\)","\\("+u4setS(short)+"\\)"]);
+  var pairs=xs.map(function(x,i){return [x,ys[i]];});
+  return mcq(prof.name+". The data points are \\("+u4pairsS(pairs)+"\\), where the first coordinate is the "+prof.xlab+" value and the second is the "+prof.ylab+" value. What is the <b>"+(askRange?"range":"domain")+"</b> of this relation?",
+    key,ds,
+    "The domain is the set of first coordinates and the range is the set of second coordinates. From \\("+u4pairsS(pairs)+"\\), the "+(askRange?"second":"first")+" coordinates are \\("+vals.join(", ")+"\\). The <b>"+(askRange?"range":"domain")+" is \\("+u4setS(vals)+"\\)</b>.",
+    {profName:prof.name,asked:askRange?"range":"domain",xs:xs,ys:ys,keyStr:key});
+});
+
+/* u2-pk-domain-range: borrowed verbatim from math-1201 entry u4-domain-range (math-1201:4.10). */
+E("u2-pk-domain-range",2,["4.28"],1,"gen",function(){
+  var useTable=Math.random()<0.5;
+  var xs=shuffle([0,1,2,3,4,5,6,7,8,9]).slice(0,4);
+  var ys=[];while(ys.length<4){var y=ri(1,18);if(ys.indexOf(y)<0)ys.push(y);}
+  var pairs=xs.map(function(x,i){return [x,ys[i]];});
+  var dom=xs.slice(),rng=ys.slice();
+  function drStr(d,r){return "Domain: \\("+u4setS(d)+"\\); range: \\("+u4setS(r)+"\\)";}
+  var key=drStr(dom,rng);
+  var altR=rng.slice();altR[0]=altR[0]+3;while(dom.indexOf(altR[0])>=0&&rng.indexOf(altR[0])>=0)altR[0]++;
+  var ds=u4pickS3(key,[drStr(rng,dom),drStr(dom,altR),drStr(xs.slice(0,3),rng)]);
+  var shown=useTable?("A table of values has \\(x\\) values \\("+xs.join(", ")+"\\) with matching \\(y\\) values, in the same order, \\("+ys.join(", ")+"\\)"):("A relation is given by the set of ordered pairs \\("+u4pairsS(pairs)+"\\)");
+  return mcq(shown+". Which choice gives the domain and the range of this relation?",
+    key,ds,
+    "Collect the first coordinates for the domain and the second coordinates for the range, listing each value once: \\[ \\begin{aligned} \\text{Domain} &= "+u4setS(dom)+" \\\\ \\text{Range} &= "+u4setS(rng)+" \\end{aligned} \\] The domain and range are <b>domain \\("+u4setS(dom)+"\\) and range \\("+u4setS(rng)+"\\)</b>.",
+    {pairs:pairs,dom:dom,rng:rng,keyStr:key});
+});
+
+/* u2-pk-dr-linear: borrowed verbatim from math-1201 entry u4-dr-linear (math-1201:4.12). */
+E("u2-pk-dr-linear",2,["4.28"],1,"gen",function(){
+  var x1=ri(-6,2),x2=x1+ri(3,9);
+  var m=pick([-2,-1,1,2]),b=ri(-5,6);
+  var y1=m*x1+b,y2=m*x2+b;
+  var askRange=Math.random()<0.5;
+  var lo=askRange?Math.min(y1,y2):x1, hi=askRange?Math.max(y1,y2):x2;
+  var vname=askRange?"y":"x";
+  var key=u4interval(vname,lo,hi);
+  var oLo=askRange?x1:Math.min(y1,y2), oHi=askRange?x2:Math.max(y1,y2), oV=askRange?"x":"y";
+  var ds=u4pickS3(key,[u4interval(oV,oLo,oHi),u4interval(vname,lo,hi+2),u4interval(vname,lo-1,hi)]);
+  return mcq("The graph of a linear relation is the line segment joining the points \\("+u4pairS(x1,y1)+"\\) and \\("+u4pairS(x2,y2)+"\\), including both endpoints. What is the <b>"+(askRange?"range":"domain")+"</b> of this relation?",
+    key,ds,
+    "On a line segment, the domain runs from the smallest to the largest first coordinate and the range runs from the smallest to the largest second coordinate. The endpoints give \\(x\\) from \\("+x1+"\\) to \\("+x2+"\\) and \\(y\\) from \\("+Math.min(y1,y2)+"\\) to \\("+Math.max(y1,y2)+"\\): \\[ \\begin{aligned} \\text{Domain} &: "+x1+" \\le x \\le "+x2+" \\\\ \\text{Range} &: "+Math.min(y1,y2)+" \\le y \\le "+Math.max(y1,y2)+" \\end{aligned} \\] The <b>"+(askRange?"range":"domain")+" is "+key+"</b>.",
+    {x1:x1,x2:x2,y1:y1,y2:y2,asked:askRange?"range":"domain",keyStr:key});
+});
+
+/* u2-pk-intercepts: borrowed verbatim from math-1201 entry u4-intercepts (math-1201:4.28). */
+E("u2-pk-intercepts",2,["4.41"],1,"gen",function(){
+  var askX=false;
+  var m=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  var xi=ri(-9,9);while(xi===0)xi=ri(-9,9);
+  var b=-m*xi;
+  var ans=askX?xi:b;
+  var eq="y = "+u4lin(m,b);
+  var sol=askX?
+    "The \\(x\\)-intercept is where the graph meets the horizontal axis, so set the output to zero and solve: \\[ \\begin{aligned} 0 &= "+u4lin(m,b)+" \\\\ "+(-b)+" &= "+u4num(m)+"x \\\\ x &= "+xi+" \\end{aligned} \\] The \\(x\\)-intercept is <b>\\("+xi+"\\)</b>, at the point \\("+u4pairS(xi,0)+"\\)":
+    "The \\(y\\)-intercept is where the graph meets the vertical axis, so use an input of zero: \\[ \\begin{aligned} y &= "+u4lin(m,b)+" \\\\ y &= "+u4num(m)+"(0) + ("+b+") \\\\ &= "+b+" \\end{aligned} \\] The \\(y\\)-intercept is <b>\\("+b+"\\)</b>, at the point \\("+u4pairS(0,b)+"\\)";
+  return numq("A linear relation is given by the equation \\("+eq+"\\). What is the value of the "+(askX?"\\(x\\)-intercept":"\\(y\\)-intercept")+" of its graph?",
+    ans,0.011,sol,{askX:askX,m:m,b:b,ans:ans});
+});
+
+/* u2-pk-intercepts-solve: borrowed verbatim from math-1201 entry u4-intercepts-solve (math-1201:4.28). */
+E("u2-pk-intercepts-solve",2,["4.41"],2,"gen",function(){
+  var askX=true;
+  var m=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+  var xi=ri(-9,9);while(xi===0)xi=ri(-9,9);
+  var b=-m*xi;
+  var ans=askX?xi:b;
+  var eq="y = "+u4lin(m,b);
+  var sol=askX?
+    "The \\(x\\)-intercept is where the graph meets the horizontal axis, so set the output to zero and solve: \\[ \\begin{aligned} 0 &= "+u4lin(m,b)+" \\\\ "+(-b)+" &= "+u4num(m)+"x \\\\ x &= "+xi+" \\end{aligned} \\] The \\(x\\)-intercept is <b>\\("+xi+"\\)</b>, at the point \\("+u4pairS(xi,0)+"\\)":
+    "The \\(y\\)-intercept is where the graph meets the vertical axis, so use an input of zero: \\[ \\begin{aligned} y &= "+u4lin(m,b)+" \\\\ y &= "+u4num(m)+"(0) + ("+b+") \\\\ &= "+b+" \\end{aligned} \\] The \\(y\\)-intercept is <b>\\("+b+"\\)</b>, at the point \\("+u4pairS(0,b)+"\\)";
+  return numq("A linear relation is given by the equation \\("+eq+"\\). What is the value of the "+(askX?"\\(x\\)-intercept":"\\(y\\)-intercept")+" of its graph?",
+    ans,0.011,sol,{askX:askX,m:m,b:b,ans:ans});
+});
+
+/* u2-pk-eval-function: borrowed verbatim from math-1201 entry u4-eval-function (math-1201:4.47). */
+E("u2-pk-eval-function",2,["4.41"],1,"gen",function(){
+  var fn=pick(["f","g","h"]);
+  var m=pick([-4,-3,-2,-1,1,2,3,4,5]),b=ri(-9,10),x0=ri(-5,8);
+  var ans=m*x0+b;
+  return numq("A linear function is given by \\("+fn+"(x) = "+u4lin(m,b)+"\\). What is the value of \\("+fn+"("+x0+")\\)?",
+    ans,0.011,
+    "Substitute the given domain value into the function and simplify: \\[ \\begin{aligned} "+fn+"("+x0+") &= "+u4num(m)+"("+x0+") + ("+b+") \\\\ &= "+u4num(m*x0)+" + ("+b+") \\\\ &= "+ans+" \\end{aligned} \\] The value is <b>\\("+ans+"\\)</b>.",
+    {fn:fn,m:m,b:b,x0:x0,ans:ans});
+});
+
+/* u2-pk-factor-monic: borrowed verbatim from math-1201 entry u3-factor-monic (math-1201:3.12). */
+E("u2-pk-factor-monic",2,["4.41"], 2, "gen", function () {
+  var v = pick(["x", "y"]);
+  var r = u3Nz(-9, 9), s = u3Nz(-9, 9), guard = 0;
+  while (r === s && guard < 40) { guard++; s = u3Nz(-9, 9); }
+  var B = r + s, C = r * s;
+  var poly = u3PC([1, B, C], v);
+  var facs = [[1, Math.min(r, s)], [1, Math.max(r, s)]];
+  var ans = Math.max(r, s);
+  var prompt = "When the trinomial \\(" + poly + "\\) is factored as a product of two binomials, the two constant terms are two numbers. What is the larger of those two numbers?";
+  var sol = "Find two numbers that multiply to \\(" + C + "\\) and add to \\(" + B + "\\): the numbers are \\(" + Math.min(r, s) + "\\) and \\(" + Math.max(r, s) + "\\)." +
+    u3Alg([poly + " &= " + u3FacRaw("", facs, v)]) +
+    "The larger of the two constant terms is **" + ans + "**.";
+  return numq(prompt, ans, 0.01, sol, { t: "pair", r: r, s: s, B: B, C: C });
+});
+
+/* u2-pk-binom-expand: borrowed verbatim from math-1201 entry u3-binom-tri-expand (math-1201:3.4). */
+E("u2-pk-binom-expand",2,["4.43"], 2, "gen", function () {
+  var A = [ri(1, 3), u3Nz(-5, 5)];
+  var B = [ri(1, 3), u3Nz(-5, 5), u3Nz(-6, 6)];
+  var prod = u3Conv(A, B), keyRaw = u3PC(prod, "x");
+  var partials = u3Mul(u3TermsOf(A, "x"), u3TermsOf(B, "x"));
+  var prompt = "Expand and simplify \\(" + u3Par(A, "x") + u3Par(B, "x") + "\\).";
+  var sol = "Multiply each term of the binomial by each of the three terms of the trinomial, giving six partial products, then combine like terms." +
+    u3Alg([u3Par(A, "x") + u3Par(B, "x") + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
+    "The expanded form is **" + u3M(keyRaw) + "**.";
+  return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, "x", 3), sol,
+    { t: "expand", P: u3TermsOf(A, "x"), Q: u3TermsOf(B, "x") });
+});
+
+/* PK tranche pass for Unit 2. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U2_FOR=["4.27","4.28","4.29","4.30","4.31","4.32","4.37","4.38","4.39","4.40","4.41","4.42","4.43","4.44","4.45","4.46","4.47"];
+var PKT_U2={
+ "u2-pk-graph-data":{src:"math-1201:4.9",group:"graphing-data"},
+ "u2-pk-domain-range":{src:"math-1201:4.10",group:"domain-range"},
+ "u2-pk-dr-linear":{src:"math-1201:4.12",group:"domain-range"},
+ "u2-pk-intercepts":{src:"math-1201:4.28",group:"intercepts"},
+ "u2-pk-intercepts-solve":{src:"math-1201:4.28",group:"intercepts"},
+ "u2-pk-eval-function":{src:"math-1201:4.47",group:"substitution"},
+ "u2-pk-factor-monic":{src:"math-1201:3.12",group:"factoring"},
+ "u2-pk-binom-expand":{src:"math-1201:3.4",group:"polynomial-multiply"}
+};
+BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U2_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u3.js ----- */
 // Math 2200 Unit 3 Quadratic Equations question bank
@@ -2273,6 +3476,256 @@ E("u3-method-choice",3,["4.13"],3,"gen",function(){
     {sc:sc});
 });
 
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u3-pk-gcf: borrowed verbatim from math-1201 entry u3-gcf (math-1201:3.10). */
+E("u3-pk-gcf",3,["3.14"], 2, "gen", function () {
+  var gp = ri(0, 2), gn, tries = 0;
+  if (gp === 0) gn = ri(2, 7); else gn = pick([1, 2, 3, 4, 5, 6]);
+  var A = ri(1, 6), B = u3Nz(-6, 6), C = u3Nz(-6, 6);
+  while (u3GCD3(A, Math.abs(B), Math.abs(C)) !== 1 && tries < 60) { tries++; A = ri(1, 6); B = u3Nz(-6, 6); C = u3Nz(-6, 6); }
+  var quo = [A, B, C];
+  var polyTerms = [[gn * A, gp + 2, 0], [gn * B, gp + 1, 0], [gn * C, gp, 0]];
+  var polyRaw = u3Str(polyTerms);
+  var gRaw = u3Str([[gn, gp, 0]]);
+  var keyRaw = gRaw + u3Par(quo, "x");
+  var cands = [], seen = {};
+  function addCand(s) { if (s !== keyRaw && !seen[s]) { seen[s] = 1; cands.push(u3M(s)); } }
+  /* partial factor: only part of the common factor is removed */
+  if (gn > 1) {
+    var divs = [];
+    for (var d = 1; d < gn; d++) if (gn % d === 0) divs.push(d);
+    var dv = pick(divs), sc = gn / dv;
+    addCand(u3Str([[dv, gp, 0]]) + u3Par([A * sc, B * sc, C * sc], "x"));
+  } else {
+    addCand(u3Str([[1, gp - 1, 0]]) + "(" + u3Str([[A, 3, 0], [B, 2, 0], [C, 1, 0]]) + ")");
+  }
+  /* quotient slips: one term not divided correctly */
+  addCand(gRaw + u3Par([A, B + (B > 0 ? 1 : -1), C], "x"));
+  addCand(gRaw + u3Par([A, B, gn * C], "x"));
+  addCand(gRaw + u3Par([A, B, -C], "x"));
+  addCand(gRaw + u3Par([A + 1, B, C], "x"));
+  var prompt = "Determine the greatest common factor of the terms of \\(" + polyRaw + "\\), and express the polynomial in factored form.";
+  var sol = "Every term contains the factor \\(" + gRaw + "\\). Dividing each term by \\(" + gRaw + "\\) leaves \\(" + u3PC(quo, "x") + "\\), whose terms share no further common factor." +
+    u3Alg([polyRaw + " &= " + keyRaw]) +
+    "In factored form, the polynomial is **" + u3M(keyRaw) + "**.";
+  return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
+    { t: "fac", g: gRaw, parts: [quo], v: "x" });
+});
+
+/* u3-pk-factor-monic: borrowed verbatim from math-1201 entry u3-factor-monic (math-1201:3.12). */
+E("u3-pk-factor-monic",3,["3.15"], 2, "gen", function () {
+  var v = pick(["x", "y"]);
+  var r = u3Nz(-9, 9), s = u3Nz(-9, 9), guard = 0;
+  while (r === s && guard < 40) { guard++; s = u3Nz(-9, 9); }
+  var B = r + s, C = r * s;
+  var poly = u3PC([1, B, C], v);
+  var facs = [[1, Math.min(r, s)], [1, Math.max(r, s)]];
+  var ans = Math.max(r, s);
+  var prompt = "When the trinomial \\(" + poly + "\\) is factored as a product of two binomials, the two constant terms are two numbers. What is the larger of those two numbers?";
+  var sol = "Find two numbers that multiply to \\(" + C + "\\) and add to \\(" + B + "\\): the numbers are \\(" + Math.min(r, s) + "\\) and \\(" + Math.max(r, s) + "\\)." +
+    u3Alg([poly + " &= " + u3FacRaw("", facs, v)]) +
+    "The larger of the two constant terms is **" + ans + "**.";
+  return numq(prompt, ans, 0.01, sol, { t: "pair", r: r, s: s, B: B, C: C });
+});
+
+/* u3-pk-diff-squares: borrowed verbatim from math-1201 entry u3-diff-squares (math-1201:3.14). */
+E("u3-pk-diff-squares",3,["3.15"], 1, "gen", function () {
+  var mode = pick(["pure", "pure", "twovar"]);
+  if (mode === "twovar") {
+    var a = ri(1, 4), b = ri(1, 6);
+    var polyTerms = [[a * a, 2, 0], [-b * b, 0, 2]];
+    var poly = u3Str(polyTerms);
+    var f1 = u3Str([[a, 1, 0], [b, 0, 1]]), f2 = u3Str([[a, 1, 0], [-b, 0, 1]]);
+    var keyRaw = "(" + f1 + ")(" + f2 + ")";
+    var P = [[a, 1, 0], [b, 0, 1]], Q = [[a, 1, 0], [-b, 0, 1]];
+    var cands = [], seen = {};
+    function addT(s) { if (s !== keyRaw && !seen[s]) { seen[s] = 1; cands.push(u3M(s)); } }
+    addT("(" + f2 + ")(" + f2 + ")");
+    addT("(" + f1 + ")(" + f1 + ")");
+    addT("(" + u3Str([[a, 1, 0], [b * b, 0, 1]]) + ")(" + u3Str([[a, 1, 0], [-b * b, 0, 1]]) + ")");
+    addT("(" + u3Str([[1, 1, 0], [b, 0, 1]]) + ")(" + u3Str([[1, 1, 0], [-b, 0, 1]]) + ")");
+    addT("(" + u3Str([[a, 1, 0], [b + 1, 0, 1]]) + ")(" + f2 + ")");
+    addT("(" + u3Str([[a + 1, 1, 0], [b, 0, 1]]) + ")(" + u3Str([[a + 1, 1, 0], [-b, 0, 1]]) + ")");
+    var solT = "Each term is a perfect square: \\(" + poly + " = (" + a + "x)^2 - (" + b + "y)^2\\). A difference of squares factors into a sum and a difference of the two square roots. As a trinomial the middle term is \\(0\\): a pair of numbers multiplying to the negative constant term and adding to \\(0\\) must be opposites, which is why the two factors differ only in sign." +
+      u3Alg([poly + " &= " + keyRaw]) +
+      "The factored form is **" + u3M(keyRaw) + "**.";
+    return mcq("Factor the polynomial \\(" + poly + "\\).",
+      u3M(keyRaw), shuffle(cands).slice(0, 3), solT, { t: "facT", P: P, Q: Q, poly: poly });
+  }
+  var v = pick(["x", "y"]);
+  var a2 = ri(1, 5), b2 = ri(1, 9);
+  var prod = [a2 * a2, 0, -b2 * b2];
+  var poly2 = u3PC(prod, v);
+  var facs = [[a2, b2], [a2, -b2]];
+  var keyRaw2 = u3FacRaw("", facs, v);
+  var sqTerm = a2 === 1 ? v + "^2" : (a2 * a2) + v + "^2";
+  var sol = "Each term is a perfect square: \\(" + poly2 + " = (" + a2 + v + ")^2 - " + b2 + "^2\\). Written as a trinomial, this is \\(" + sqTerm + " + 0" + v + " - " + (b2 * b2) + "\\), the case where the middle coefficient is \\(0\\). A factor pair of \\(-" + (b2 * b2) + "\\) that adds to \\(0\\) must consist of opposites, \\(" + b2 + "\\) and \\(-" + b2 + "\\), so the factors differ only in sign." +
+    u3Alg([poly2 + " &= " + keyRaw2]) +
+    "The factored form is **" + u3M(keyRaw2) + "**.";
+  return mcq("Factor the polynomial \\(" + poly2 + "\\).",
+    u3M(keyRaw2), u3FacDistr("", facs, v, prod, 3), sol,
+    { t: "fac", g: "", parts: facs, v: v });
+});
+
+/* u3-pk-monomial-expand: borrowed verbatim from math-1201 entry u3-monomial-expand (math-1201:3.4). */
+E("u3-pk-monomial-expand",3,["3.14"], 1, "gen", function () {
+  var mode = ri(0, 2), P, Q, pdesc;
+  if (mode === 0) {
+    var a = u3Nz(-6, 6); if (Math.abs(a) < 2) a = a < 0 ? -3 : 3;
+    var k = ri(1, 2), p = ri(1, 4), q = u3Nz(-7, 7);
+    P = [[a, k, 0]]; Q = [[p, 1, 0], [q, 0, 0]];
+    pdesc = u3Str(P) + u3Par([p, q], "x");
+  } else if (mode === 1) {
+    var a2 = u3Nz(-5, 5); if (Math.abs(a2) < 2) a2 = a2 < 0 ? -2 : 2;
+    var p2 = ri(1, 3), q2 = u3Nz(-6, 6), r2 = u3Nz(-8, 8);
+    P = [[a2, 1, 0]]; Q = [[p2, 2, 0], [q2, 1, 0], [r2, 0, 0]];
+    pdesc = u3Str(P) + u3Par([p2, q2, r2], "x");
+  } else {
+    var a3 = u3Nz(-5, 5); if (Math.abs(a3) < 2) a3 = a3 < 0 ? -4 : 4;
+    var p3 = ri(1, 3), q3 = u3Nz(-4, 4);
+    P = [[a3, 1, 1]]; Q = [[p3, 1, 0], [q3, 0, 1]];
+    pdesc = u3Str(P) + "(" + u3Str(Q) + ")";
+  }
+  var partials = u3Mul(P, Q), keyRaw = u3Str(partials);
+  var seen = {}, distr = [];
+  shuffle(u3PerturbTerms(partials)).forEach(function (s) {
+    if (s !== keyRaw && !seen[s]) { seen[s] = 1; distr.push(u3M(s)); }
+  });
+  var prompt = "Expand and simplify \\(" + pdesc + "\\).";
+  var sol = "Multiply the monomial by every term inside the brackets." +
+    u3Alg([pdesc + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
+    "The expanded form is **" + u3M(keyRaw) + "**.";
+  return mcq(prompt, u3M(keyRaw), distr.slice(0, 3), sol, { t: "expand", P: P, Q: Q });
+});
+
+/* u3-pk-graph-strategy: borrowed verbatim from math-1201 entry u5-graph-strategy (math-1201:4.34). */
+E("u3-pk-graph-strategy",3,["4.9"],1,"var",varset([
+  function(){var key="Plot the y-intercept first, then use the slope as rise over run to find another point and draw the line";
+    return mcq("Which strategy graphs a linear relation given in slope-intercept form?",
+    key,
+    ["Plot the x-intercept first, then use the intercept as rise over run to find another point and draw the line",
+     "Plot both intercepts first, then use the slope as rise over run to confirm a point and draw the line",
+     "Plot a point from the equation first, then read the slope off the axes to find the intercept and draw the line"],
+    "Slope-intercept form states the y-intercept and the slope directly, so the natural strategy is to plot the intercept, then step out the slope to a second point. The strategy is: <b>plot the y-intercept, then use the slope as rise over run</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Find the two intercepts by setting each variable to zero in turn, plot those two points, and draw the line";
+    return mcq("Which strategy graphs a linear relation given in general form, using the intercepts directly?",
+    key,
+    ["Find the two intercepts by setting each variable to one in turn, plot those two points, and draw the line through them",
+     "Find the one intercept by setting both variables to zero in turn, plot that one point, and draw the line",
+     "Find the two intercepts by reading each coefficient in turn, plot those two points, and draw the line"],
+    "In general form neither the slope nor an intercept is stated directly, but setting \\(x = 0\\) gives the y-intercept and setting \\(y = 0\\) gives the x-intercept. Two points fix a line, so the strategy is: <b>find both intercepts, plot them, and draw the line</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Plot the given point first, then use the slope as rise over run to reach another point and draw the line";
+    return mcq("Which strategy graphs a linear relation given in slope-point form?",
+    key,
+    ["Plot the given intercept first, then use the slope as rise over run to reach another point and draw the line",
+     "Plot the given point first, then use the intercept as rise over run to reach another point and draw the line",
+     "Plot the given point first, then use the run over rise of the slope to reach a point and draw the line"],
+    "Slope-point form states one point on the line and the slope directly, so the natural strategy is to plot that point, then step out the slope to a second point. The strategy is: <b>plot the given point, then use the slope as rise over run</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="The form decides the first step: an intercept and slope, a stated point and slope, or the two intercepts for general form";
+    return mcq("A student must graph three relations, one in each of slope-intercept, slope-point and general form. Which statement about strategy is correct?",
+    key,
+    ["The form decides the first step: the two intercepts in every case, since each form is graphed from its intercepts alone",
+     "The form decides the last step: an intercept and slope, a stated point and slope, or the two intercepts for general form",
+     "The form changes nothing about strategy: an intercept and slope, a stated point and slope, or two intercepts for general form"],
+    "Each form hands over different starting information. Slope-intercept form gives an intercept and a slope, slope-point form gives a point and a slope, and general form is handled most directly through its two intercepts. So <b>the form decides the first step</b> of the graphing strategy.",
+    {stmt:true,keyText:key});}
+]));
+
+/* u3-pk-graph-form: borrowed verbatim from math-1201 entry u5-graph-form (math-1201:4.35). */
+E("u3-pk-graph-form",3,["4.9"],2,"gen",function(){
+  var mode=ri(1,3);
+  if(mode===1){
+    var s=u5pickSlope(),mN=s[0],mD=s[1];
+    var xi=mD*ri(1,4)*(pick([-1,1]));if(xi===0)xi=mD;
+    var b=-(mN*xi)/mD; /* integer since xi is a multiple of mD */
+    var key=""+xi;
+    var ds=u5pickD3(xi,[-xi,b,-b,xi+1,xi-1]).map(function(v){return ""+v;});
+    return mcq("A linear relation is given in slope-intercept form as \\("+u5ybRaw(mN,mD,b)+"\\) (given in the form \\(y = mx + b\\)). Using the strategy for this form, the line is plotted from its intercept and slope. What is the x-intercept of its graph?",
+      key,ds,
+      "The x-intercept is where \\(y = 0\\). Set \\(y\\) to \\(0\\) and solve: \\[ \\begin{aligned} 0 &= "+u5coef(mN,mD,"x")+(b>0?" + "+b:b<0?" - "+(-b):"")+" \\\\ x &= "+xi+" \\end{aligned} \\] The x-intercept is <b>\\("+xi+"\\)</b>.",
+      {mode:mode,mN:mN,mD:mD,b:b,ansVal:xi});
+  }
+  if(mode===2){
+    var s2=u5pickSlope(),mN2=s2[0],mD2=s2[1],b2=ri(-9,9);
+    var g=u5genFromLine(mN2,mD2,b2),A=g[0],B=g[1],C=g[2];
+    var targetY=pick([true,false]);
+    var ansVal=targetY?b2:(-C/A); /* x-intercept: integer? A divides C check below handled by construction */
+    if(!targetY&&C%A!==0){targetY=true;ansVal=b2;}
+    var key2=""+ansVal;
+    var ds2=u5pickD3(ansVal,[-ansVal,ansVal+2,ansVal-2,b2,-b2]).map(function(v){return ""+v;});
+    return mcq("A linear relation is given in general form as \\("+u5genRaw(A,B,C)+"\\) (given in the form \\(Ax + By + C = 0\\)). Using the intercept strategy for this form, what is the "+(targetY?"y-intercept":"x-intercept")+" of its graph?",
+      key2,ds2,
+      (targetY?
+        "The y-intercept is where \\(x = 0\\). Setting \\(x = 0\\) leaves \\("+B+"y "+(C>0?"+ "+C:C<0?"- "+(-C):"")+" = 0\\), which gives \\(y = "+ansVal+"\\).":
+        "The x-intercept is where \\(y = 0\\). Setting \\(y = 0\\) leaves \\("+A+"x "+(C>0?"+ "+C:C<0?"- "+(-C):"")+" = 0\\), which gives \\(x = "+ansVal+"\\).")+
+      " The "+(targetY?"y-intercept":"x-intercept")+" is <b>\\("+ansVal+"\\)</b>.",
+      {mode:mode,A:A,B:B,C:C,targetY:targetY,ansVal:ansVal});
+  }
+  var s3=u5pickSlope(),mN3=s3[0],mD3=s3[1];
+  var x1=mD3*ri(-2,3),y1=ri(-8,10),b3=y1-(mN3*x1)/mD3;
+  var key3=""+b3;
+  var ds3=u5pickD3(b3,[-b3,b3+2,b3-2,y1,-y1]).map(function(v){return ""+v;});
+  var lhs=u5minusTerm("y",y1),rhs=u5coef(mN3,mD3,"")+"("+u5minusTerm("x",x1)+")";
+  if(u5coef(mN3,mD3,"")==="1")rhs="("+u5minusTerm("x",x1)+")";else if(u5coef(mN3,mD3,"")==="-1")rhs="-("+u5minusTerm("x",x1)+")";else if(u5red(mN3,mD3)[1]===1)rhs=u5red(mN3,mD3)[0]+"("+u5minusTerm("x",x1)+")";else rhs=u5fs(mN3,mD3)+"("+u5minusTerm("x",x1)+")";
+  return mcq("A linear relation is given in slope-point form as \\("+lhs+" = "+rhs+"\\) (given in the form \\(y - y_1 = m(x - x_1)\\)). The line is plotted from the stated point and slope. What is the y-intercept of its graph?",
+    key3,ds3,
+    "The stated point is \\("+u5pt(x1,y1)+"\\) and the slope is \\("+u5fs(mN3,mD3)+"\\). Work back to where \\(x = 0\\): \\[ \\begin{aligned} b &= y_1 - m x_1 \\\\ &= "+y1+" - ("+u5fs(mN3,mD3)+")("+x1+") \\\\ &= "+b3+" \\end{aligned} \\] The y-intercept is <b>\\("+b3+"\\)</b>.",
+    {mode:mode,mN:mN3,mD:mD3,x1:x1,y1:y1,ansVal:b3});
+});
+
+/* u3-pk-solve-input: borrowed verbatim from math-1201 entry u4-solve-input (math-1201:4.48). */
+E("u3-pk-solve-input",3,["4.10"],2,"gen",function(){
+  var fn=pick(["f","g","h"]);
+  var m=pick([-4,-3,-2,-1,1,2,3,4,5]),b=ri(-9,10),xAns=ri(-6,9);
+  var target=m*xAns+b;
+  return numq("A linear function is given by \\("+fn+"(x) = "+u4lin(m,b)+"\\). For what domain value is \\("+fn+"(x) = "+target+"\\)?",
+    xAns,0.011,
+    "Set the function equal to the given range value and solve for the input: \\[ \\begin{aligned} "+u4lin(m,b)+" &= "+target+" \\\\ "+u4num(m)+"x &= "+(target-b)+" \\\\ x &= "+xAns+" \\end{aligned} \\] The domain value is <b>\\("+xAns+"\\)</b>.",
+    {fn:fn,m:m,b:b,target:target,ans:xAns});
+});
+
+/* u3-pk-sqrt-eval: authored micro-item (authored:squares-and-square-roots),
+   written for this tranche. */
+E("u3-pk-sqrt-eval",3,["4.10"],1,"gen",function(){
+  var a=ri(3,15);
+  if(ri(0,1)===0){
+    return mcq("What is \\(\\sqrt{(-"+a+")^2}\\)?",
+      "\\("+a+"\\)",
+      ["\\("+(-a)+"\\)","\\("+(a*a)+"\\)","\\("+(-(a*a))+"\\)"],
+      "Squaring \\(-"+a+"\\) gives \\((-"+a+")^2 = "+(a*a)+"\\), and the square root then returns the size of the number: \\(\\sqrt{"+(a*a)+"} = "+a+"\\). The answer is <b>\\("+a+"\\)</b>.",
+      {mode:"root-of-square",a:a,ans:a});
+  }
+  return mcq("What is \\((-"+a+")^2\\)?",
+    "\\("+(a*a)+"\\)",
+    ["\\("+(-(a*a))+"\\)","\\("+a+"\\)","\\("+(2*a)+"\\)"],
+    "A negative number squared gives a positive result: \\((-"+a+")^2 = (-"+a+") \\times (-"+a+") = "+(a*a)+"\\). The answer is <b>\\("+(a*a)+"\\)</b>.",
+    {mode:"square-of-negative",a:a,ans:a*a});
+}, ["Work out the square first, then the root.", "Squaring a negative number gives a positive result."]);
+
+/* PK tranche pass for Unit 3. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U3_FOR=["3.14","3.15","3.16","3.17","4.9","4.10","4.11","4.12","4.13","4.14","4.15"];
+var PKT_U3={
+ "u3-pk-gcf":{src:"math-1201:3.10",group:"common-factor"},
+ "u3-pk-factor-monic":{src:"math-1201:3.12",group:"factoring"},
+ "u3-pk-diff-squares":{src:"math-1201:3.14",group:"factoring"},
+ "u3-pk-monomial-expand":{src:"math-1201:3.4",group:"polynomial-multiply"},
+ "u3-pk-graph-strategy":{src:"math-1201:4.34",group:"graph-forms"},
+ "u3-pk-graph-form":{src:"math-1201:4.35",group:"graph-forms"},
+ "u3-pk-solve-input":{src:"math-1201:4.48",group:"isolate-variable"},
+ "u3-pk-sqrt-eval":{src:"authored:squares-and-square-roots",group:"square-roots"}
+};
+BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U3_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u4.js ----- */
 // Math 2200 Unit 4 Radical Expressions and Equations question bank
 // CRMARKS: u4-conjugate-why=3
@@ -2847,6 +4300,338 @@ E("u4-model-radical",4,["1.20"],3,"gen",function(){
     "Substitute \\(h = "+fmt(th,1)+"\\) and evaluate: \\[ \\begin{aligned} v &= \\sqrt{19.6 \\times "+fmt(th,1)+"} \\\\ &= \\sqrt{"+fmt(19.6*th,1)+"} \\\\ &\\approx "+fmt(tv,2)+" \\end{aligned} \\] The speed is about <b>"+fmt(tv,2)+" m/s</b>.",
     {ctx:"tank: "+tc.key,h:th,v:Math.round(tv*100)/100});
 });
+
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u4-pk-radical-mixed: borrowed verbatim from math-1201 entry u2-radical-mixed (math-1201:1.16). */
+E("u4-pk-radical-mixed",4,["1.1"],1,"gen",function(){
+  var idx=pick([2,2,3,3,4]),k,m,N,mlist;
+  if(idx===2){k=ri(2,15);mlist=[2,3,5,6,7,10,11,13,14,15,17,19,21,22,23,26,29,30,31,33,34,35,37,38,39];}
+  else if(idx===3){k=ri(2,7);mlist=[2,3,4,5,6,7,9,10,11,12,13,14,15,17,18,19,20,21,22,23,25,26,28,29,30,31,33,34,35,36,37,38,39,41,42];}
+  else{k=ri(2,4);mlist=[2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,22,24,25,26,27,28,29,30,31];}
+  m=pick(mlist);N=Math.pow(k,idx)*m;
+  var key="\\("+k+u2radS(idx,m)+"\\)";
+  var mAlt=pick(mlist.filter(function(x){return x!==m;}));
+  var cands=["\\("+(k+1)+u2radS(idx,m)+"\\)","\\("+k+u2radS(idx,mAlt)+"\\)","\\("+(k*k)+u2radS(idx,m)+"\\)"];
+  if(k>2)cands.push("\\("+(k-1)+u2radS(idx,m)+"\\)");
+  cands.push("\\("+k+u2radS(idx,m*2)+"\\)");
+  var ds=u2pickS3(key,cands);
+  return mcq("Express \\("+u2radS(idx,N)+"\\) as a <b>mixed radical</b> in simplest form.",
+    key,ds,
+    "Pull out the largest perfect "+(idx===2?"square":idx===3?"cube":"fourth power")+" factor of \\("+N+"\\): \\["+
+    "\\begin{aligned} "+u2radS(idx,N)+" &= "+u2radS(idx,Math.pow(k,idx)+" \\times "+m)+" \\\\ &= "+k+u2radS(idx,m)+" \\end{aligned} \\]"+
+    " The mixed radical in simplest form is <b>\\("+k+u2radS(idx,m)+"\\)</b>.",
+    {idx:idx,k:k,m:m,N:N});
+});
+
+/* u4-pk-radical-entire: borrowed verbatim from math-1201 entry u2-radical-entire (math-1201:1.17). */
+E("u4-pk-radical-entire",4,["1.2"],1,"gen",function(){
+  var idx=pick([2,2,3,3,4]),k,m,mlist;
+  if(idx===2){k=ri(2,12);mlist=[2,3,5,6,7,10,11,13,14,15,17,19,21,22,23,26,29,30];}
+  else if(idx===3){k=ri(2,6);mlist=[2,3,4,5,6,7,9,10,11,12,13,14,15,17,18,19,20,21,22,23,25,26,28,29,30];}
+  else{k=ri(2,3);mlist=[2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,22,24,25,26,27,28,29,30,31];}
+  m=pick(mlist);
+  var ansN=Math.pow(k,idx)*m;
+  var key="\\("+u2radS(idx,ansN)+"\\)";
+  var candN=[k*m,Math.pow(k,idx+1)*m,Math.pow(k+1,idx)*m,Math.pow(k,idx)*(m+1),Math.pow(k,idx-1)*m];
+  var ds=u2pickS3(key,candN.map(function(v){return "\\("+u2radS(idx,v)+"\\)";}));
+  return mcq("Express \\("+k+u2radS(idx,m)+"\\) as an <b>entire radical</b>.",
+    key,ds,
+    "Bring the coefficient \\("+k+"\\) under the radical sign by writing it as a root: \\("+k+" = "+u2radS(idx,Math.pow(k,idx))+"\\). Then \\["+
+    "\\begin{aligned} "+k+u2radS(idx,m)+" &= "+u2radS(idx,Math.pow(k,idx))+" \\times "+u2radS(idx,m)+" \\\\ &= "+u2radS(idx,ansN)+" \\end{aligned} \\]"+
+    " The entire radical is <b>\\("+u2radS(idx,ansN)+"\\)</b>.",
+    {idx:idx,k:k,m:m,ansN:ansN});
+});
+
+/* u4-pk-laws-integral: borrowed verbatim from math-1201 entry u2-laws-integral (math-1201:1.6). */
+E("u4-pk-laws-integral",4,["1.13"],2,"gen",function(){
+  var mode=ri(1,6);
+  if(mode===1){
+    var a=ri(2,9),b=ri(2,9),t=0;
+    while((a*b===a+b||Math.abs(a-b)===a+b||a+b+1===a*b)&&t<100){a=ri(2,9);b=ri(2,9);t++;}
+    var key="\\(x^{"+(a+b)+"}\\)";
+    var ds=u2pickS3(key,["\\(x^{"+(a*b)+"}\\)","\\(x^{"+Math.abs(a-b)+"}\\)","\\(x^{"+(a+b+1)+"}\\)","\\(x^{"+(a+b-1)+"}\\)"]);
+    return mcq("Simplify: \\(x^{"+a+"} \\times x^{"+b+"}\\)",
+      key,ds,
+      "When multiplying powers with the same base, add the exponents: \\["+
+      "\\begin{aligned} x^{"+a+"} \\times x^{"+b+"} &= x^{"+a+" + "+b+"} \\\\ &= x^{"+(a+b)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a+b)+"}\\)</b>.",
+      {mode:mode,a:a,b:b,keyStr:key});
+  }
+  if(mode===2){
+    var a2=ri(5,12),b2=ri(2,10),t2=0;
+    while((a2-b2<1||a2+b2===a2||a2-b2+1===a2)&&t2<100){a2=ri(5,12);b2=ri(2,a2-2);t2++;}
+    var key2="\\(x^{"+(a2-b2)+"}\\)";
+    var ds2=u2pickS3(key2,["\\(x^{"+(a2+b2)+"}\\)","\\(x^{"+a2+"}\\)","\\(x^{"+(a2-b2+1)+"}\\)","\\(x^{"+(a2*b2)+"}\\)"]);
+    return mcq("Simplify: \\("+FR("x^{"+a2+"}","x^{"+b2+"}")+"\\)",
+      key2,ds2,
+      "When dividing powers with the same base, subtract the exponents: \\["+
+      "\\begin{aligned} "+FR("x^{"+a2+"}","x^{"+b2+"}")+" &= x^{"+a2+" - "+b2+"} \\\\ &= x^{"+(a2-b2)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a2-b2)+"}\\)</b>.",
+      {mode:mode,a:a2,b:b2,keyStr:key2});
+  }
+  if(mode===3){
+    var a3=ri(2,4),b3=ri(2,4);
+    if(a3===2&&b3===2)a3=3;
+    var key3="\\(x^{"+(a3*b3)+"}\\)";
+    var ds3=u2pickS3(key3,["\\(x^{"+(a3+b3)+"}\\)","\\(x^{"+Math.pow(a3,b3)+"}\\)","\\(x^{"+Math.pow(b3,a3)+"}\\)","\\(x^{"+(a3*b3+2)+"}\\)"]);
+    return mcq("Simplify: \\(\\left(x^{"+a3+"}\\right)^{"+b3+"}\\)",
+      key3,ds3,
+      "When a power is raised to a power, multiply the exponents: \\["+
+      "\\begin{aligned} \\left(x^{"+a3+"}\\right)^{"+b3+"} &= x^{"+a3+" \\times "+b3+"} \\\\ &= x^{"+(a3*b3)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a3*b3)+"}\\)</b>.",
+      {mode:mode,a:a3,b:b3,keyStr:key3});
+  }
+  if(mode===4){
+    var a4=ri(2,6);
+    var key4="\\(x^{"+a4+"}y^{"+a4+"}\\)";
+    var ds4=u2pickS3(key4,["\\(x^{"+a4+"}y\\)","\\(xy^{"+a4+"}\\)","\\((xy)^{"+(a4*a4)+"}\\)"]);
+    return mcq("Simplify: \\((xy)^{"+a4+"}\\)",
+      key4,ds4,
+      "A power of a product applies the exponent to each factor: \\["+
+      "\\begin{aligned} (xy)^{"+a4+"} &= x^{"+a4+"}y^{"+a4+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+a4+"}y^{"+a4+"}\\)</b>.",
+      {mode:mode,a:a4,keyStr:key4});
+  }
+  if(mode===5){
+    var a5=ri(3,8),b5=ri(3,8),c5=ri(3,8),d5=ri(3,8);
+    var key5="\\(x^{"+(a5+c5)+"}y^{"+(b5+d5)+"}\\)";
+    var ds5=u2pickS3(key5,["\\(x^{"+(a5*c5)+"}y^{"+(b5*d5)+"}\\)","\\(x^{"+(a5+c5)+"}y^{"+(b5*d5)+"}\\)","\\(x^{"+(a5*c5)+"}y^{"+(b5+d5)+"}\\)","\\(x^{"+Math.abs(a5-c5)+"}y^{"+(b5+d5)+"}\\)"]);
+    return mcq("Simplify: \\(x^{"+a5+"}y^{"+b5+"} \\times x^{"+c5+"}y^{"+d5+"}\\)",
+      key5,ds5,
+      "Group the powers base by base and add exponents for each base: \\["+
+      "\\begin{aligned} x^{"+a5+"}y^{"+b5+"} \\times x^{"+c5+"}y^{"+d5+"} &= x^{"+a5+" + "+c5+"}y^{"+b5+" + "+d5+"} \\\\ &= x^{"+(a5+c5)+"}y^{"+(b5+d5)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a5+c5)+"}y^{"+(b5+d5)+"}\\)</b>.",
+      {mode:mode,a:a5,b:b5,c:c5,d:d5,keyStr:key5});
+  }
+  var b6=ri(2,8),c6=pick([3,4,5,6,7]);
+  var key6="\\("+c6+"y^{"+b6+"}\\)";
+  var ds6=u2pickS3(key6,["\\(0\\)","\\("+c6+"xy^{"+b6+"}\\)","\\(y^{"+b6+"}\\)"]);
+  return mcq("Simplify: \\("+c6+"x^0y^{"+b6+"}\\)",
+    key6,ds6,
+    "Any nonzero base to the exponent \\(0\\) equals \\(1\\), so \\(x^0 = 1\\) and the factor \\(x\\) drops out without changing the coefficient: \\["+
+    "\\begin{aligned} "+c6+"x^0y^{"+b6+"} &= "+c6+"(1)y^{"+b6+"} \\\\ &= "+c6+"y^{"+b6+"} \\end{aligned} \\]"+
+    " The simplified form is <b>\\("+c6+"y^{"+b6+"}\\)</b>.",
+    {mode:mode,b:b6,c:c6,keyStr:key6});
+});
+
+/* u4-pk-laws-rational: borrowed verbatim from math-1201 entry u2-laws-rational (math-1201:1.6). */
+E("u4-pk-laws-rational",4,["1.13"],2,"gen",function(){
+  var base=pick(["x","y","z","t"]),mode=ri(1,3);
+  var p=ri(1,7),q=pick([2,3,4,5,6]),r=ri(1,7),s=pick([2,3,4,5,6]),t=0;
+  while(t<200){var rr1=u2red(p,q),rr2=u2red(r,s);if(rr1[1]>=2&&rr2[1]>=2)break;p=ri(1,7);q=pick([2,3,4,5,6]);r=ri(1,7);s=pick([2,3,4,5,6]);t++;}
+  p=rr1[0];q=rr1[1];r=rr2[0];s=rr2[1];
+  var eN,eD,lawText,exprStr;
+  if(mode===1){eN=p*s+r*q;eD=q*s;lawText="When multiplying powers with the same base, add the exponents. Use a common denominator of \\("+(q*s)+"\\)";
+    exprStr=base+"^{"+FR(p,q)+"} \\times "+base+"^{"+FR(r,s)+"}";}
+  else if(mode===2){eN=p*s-r*q;eD=q*s;var t2=0;while(eN===0&&t2<50){r=ri(1,7);var rr3=u2red(r,s);r=rr3[0];s=rr3[1];eN=p*s-r*q;eD=q*s;t2++;}
+    lawText="When dividing powers with the same base, subtract the exponents. Use a common denominator of \\("+(q*s)+"\\)";
+    exprStr=FR(base+"^{"+FR(p,q)+"}",base+"^{"+FR(r,s)+"}");}
+  else{var kk=pick([2,3]);eN=p*kk;eD=q;lawText="When a power is raised to a power, multiply the exponents";
+    exprStr="\\left("+base+"^{"+FR(p,q)+"}\\right)^{"+kk+"}";}
+  var er=u2red(eN,eD);eN=er[0];eD=er[1];
+  var key=u2expStr(base,eN,eD);
+  var candPairs;
+  if(mode===1)candPairs=[[p*s-r*q,q*s],[p*r,q*s],[eN+eD,eD],[eN,eD+1]];
+  else if(mode===2)candPairs=[[p*s+r*q,q*s],[p*r,q*s],[eN+eD,eD],[eN,eD+1]];
+  else candPairs=[[p*2,q],[p*3,q],[p+1,q]];
+  var seenV={},ds=[];
+  candPairs.forEach(function(pr){
+    if(ds.length>=3)return;
+    var cr=u2red(pr[0],pr[1]);
+    if(cr[0]*eD===eN*cr[1])return;
+    var vk=cr[0]+"/"+cr[1];if(seenV[vk])return;seenV[vk]=1;
+    ds.push(u2expStr(base,cr[0],cr[1]));
+  });
+  var pad=2;while(ds.length<3){var cr2=u2red(eN+pad*eD,eD);ds.push(u2expStr(base,cr2[0],cr2[1]));pad++;}
+  return mcq("Simplify: \\("+exprStr+"\\)",
+    key,ds,
+    lawText+": \\[ \\begin{aligned} "+exprStr+" &= "+(key.slice(2,-2))+" \\end{aligned} \\]"+
+    " The simplified form is <b>"+key+"</b>.",
+    {mode:mode,base:base,p:p,q:q,r:r,s:s,eN:eN,eD:eD,keyStr:key});
+});
+
+/* u4-pk-sort-numbers: borrowed verbatim from math-1201 entry u2-sort-numbers (math-1201:1.18). */
+E("u4-pk-sort-numbers",4,["1.9"],1,"gen",function(){
+  function ratItem(){
+    var kind=ri(1,5);
+    if(kind===1){var p=ri(1,15),q=pick([2,3,4,5,6,7,8,9]),tg=0;while(u2gcd(p,q)!==1&&tg<60){p=ri(1,15);q=pick([2,3,4,5,6,7,8,9]);tg++;}return {str:"\\("+FR(p,q)+"\\)",rat:true};}
+    if(kind===2){return {str:""+pick([0.5,1.25,2.75,3.4,0.125,5.6,7.05,0.9]),rat:true};}
+    if(kind===3){var r=ri(2,12);return {str:"\\(\\sqrt{"+(r*r)+"}\\)",rat:true};}
+    if(kind===4){return {str:"\\(0.\\overline{"+ri(2,9)+"}\\)",rat:true};}
+    var r5=ri(2,6);return {str:"\\(\\sqrt[3]{"+(r5*r5*r5)+"}\\)",rat:true};
+  }
+  function irrItem(){
+    var kind=ri(1,4);
+    if(kind===1){var n=ri(2,60);var t=0;while(u2isSq(n)&&t<100){n=ri(2,60);t++;}return {str:"\\(\\sqrt{"+n+"}\\)",rat:false};}
+    if(kind===2){var n2=ri(2,80);var t2=0;while(u2isCu(n2)&&t2<100){n2=ri(2,80);t2++;}return {str:"\\(\\sqrt[3]{"+n2+"}\\)",rat:false};}
+    if(kind===3){return {str:"\\(\\pi\\)",rat:false};}
+    return {str:pick(["1.01001000100001...","2.12112111211112...","0.123456789101112...","3.23223222322223..."]),rat:false};
+  }
+  var mode=ri(1,3);
+  if(mode===3){
+    function rawOf(it){var s=it.str;if(s.slice(0,2)==="\\("&&s.slice(-2)==="\\)")return s.slice(2,-2);return s;}
+    function fragSet(wantBad){
+      var frags=[],seenF={},g=0;
+      while(frags.length<3&&g<300){g++;
+        var it=(wantBad&&frags.length===2)?irrItem():ratItem();
+        var f=rawOf(it);
+        if(seenF[f])continue;seenF[f]=1;frags.push(f);}
+      return shuffle(frags);
+    }
+    function setStr(frags){return "\\(\\{"+frags.join(", ")+"\\}\\)";}
+    var good=setStr(fragSet(false));
+    var bads=[],guard=0;
+    while(bads.length<3&&guard<200){guard++;var bs=setStr(fragSet(true));if(bs!==good&&bads.indexOf(bs)<0)bads.push(bs);}
+    return mcq("Which set contains <b>only</b> rational numbers?",
+      good,bads,
+      "A rational number can be written as a ratio of integers, which includes fractions, terminating decimals, repeating decimals, and roots of perfect powers. Roots of numbers that are not perfect powers, \\(\\pi\\), and decimals that go on without repeating are irrational. Only one set avoids all of those. The set with only rational numbers is <b>"+good+"</b>.",
+      {mode:mode,keyStr:good});
+  }
+  var wantIrr=(mode===1);
+  var items=[],seen={};
+  function addItem(it){if(!it||seen[it.str])return;seen[it.str]=1;items.push(it);}
+  if(wantIrr){
+    addItem(irrItem());
+    var g1=0;while(items.length<4&&g1<300){g1++;addItem(ratItem());}
+  }else{
+    addItem(ratItem());
+    var g2=0;while(items.length<4&&g2<300){g2++;addItem(irrItem());}
+  }
+  var target=items.filter(function(x){return x.rat===!wantIrr;})[0];
+  var others=items.filter(function(x){return x!==target;}).map(function(x){return x.str;});
+  return mcq(wantIrr?"Which number is <b>irrational</b>?":"Which number is <b>rational</b>?",
+    target.str,others,
+    "Rational numbers are exactly the numbers that can be written as a ratio of two integers: fractions, terminating or repeating decimals, and roots that come out whole. A root of a number that is not a perfect power, the number \\(\\pi\\), and a decimal that continues without repeating are irrational. The "+(wantIrr?"irrational":"rational")+" number in the list is <b>"+target.str+"</b>.",
+    {mode:mode,items:items,keyStr:target.str});
+});
+
+/* u4-pk-subsets: borrowed verbatim from math-1201 entry u2-subsets (math-1201:1.19). */
+E("u4-pk-subsets",4,["1.9"],1,"var",varset([
+  function(){var key="Integers: the whole numbers, their negatives, and zero";
+    return mcq("What is the <b>most specific</b> subset of the real numbers that \\(-12\\) belongs to?",
+    key,["Natural numbers: the counting numbers, starting from one","Whole numbers: the counting numbers, together with zero","Rational numbers: ratios of two integers"],
+    "The number \\(-12\\) is a negative whole value. It is not a natural number (the counting numbers start at \\(1\\)) and not a whole number (whole numbers are \\(0\\) and up). It is an integer, and although every integer is also rational, the most specific set that fits is the integers. The most specific subset is <b>integers</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Whole numbers: the counting numbers, together with zero";
+    return mcq("What is the <b>most specific</b> subset of the real numbers that \\(0\\) belongs to?",
+    key,["Natural numbers: the counting numbers, starting from one","Integers: the whole numbers, their negatives, and zero","Rational numbers: ratios of two integers"],
+    "The number \\(0\\) is not a natural number, because the natural numbers are the counting numbers \\(1, 2, 3, \\ldots\\). It is a whole number, since the whole numbers are the natural numbers together with \\(0\\). It is also an integer and a rational number, but the most specific set that fits is the whole numbers. The most specific subset is <b>whole numbers</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Rational numbers: ratios of two integers, with a nonzero denominator";
+    return mcq("What is the <b>most specific</b> subset of the real numbers that \\("+FR(4,5)+"\\) belongs to?",
+    key,["Natural numbers: the counting numbers, starting from one and continuing without end","Whole numbers: the counting numbers, together with zero","Integers: the whole numbers, their negatives, and zero"],
+    "The value \\("+FR(4,5)+"\\) is a ratio of two integers, which is exactly the definition of a rational number. It is not a counting number, a whole number, or an integer, because it lies between \\(0\\) and \\(1\\). The most specific subset is <b>rational numbers</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Irrational numbers: real numbers that are not ratios of integers";
+    return mcq("What is the <b>most specific</b> subset of the real numbers that \\(\\sqrt{7}\\) belongs to?",
+    key,["Natural numbers: the counting numbers, starting from one","Integers: the whole numbers, their negatives, and zero","Rational numbers: ratios of two integers, with a nonzero denominator, in lowest terms"],
+    "The value \\(\\sqrt{7}\\) cannot be written as a ratio of two integers, because \\(7\\) is not a perfect square and its root is a non-terminating, non-repeating decimal. Numbers that are real but not rational form the irrational numbers. The most specific subset is <b>irrational numbers</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Natural numbers: the counting numbers, starting from one";
+    return mcq("What is the <b>most specific</b> subset of the real numbers that \\(9\\) belongs to?",
+    key,["Whole numbers: the counting numbers, together with the number zero","Integers: the whole numbers, their negatives, and zero","Rational numbers: ratios of two integers"],
+    "The number \\(9\\) is a counting number, so it is a natural number. Every natural number is also a whole number, an integer, and a rational number, since the sets nest inside each other, but the most specific set that fits is the smallest one containing it. The most specific subset is <b>natural numbers</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Every integer is also a rational number";
+    return mcq("Which statement about the subsets of the real numbers is <b>true</b>?",
+    key,
+    ["Every rational number is an integer","Every whole number is also a natural number","Irrational numbers are rational numbers written in lowest terms"],
+    "The subsets nest: natural numbers sit inside whole numbers, inside integers, inside rational numbers. So any integer \\(k\\) can be written as the ratio \\("+FR("k",1)+"\\), which makes it rational. The reverse claims fail: \\("+FR(1,2)+"\\) is rational but not an integer, \\(0\\) is whole but not natural, and irrational numbers cannot be written as ratios at all. The true statement is: <b>every integer is also a rational number</b>.",
+    {stmt:true,keyText:key});}
+]));
+
+/* u4-pk-approx: borrowed verbatim from math-1201 entry u2-approx (math-1201:1.20). */
+E("u4-pk-approx",4,["1.9"],2,"gen",function(){
+  var roll=Math.random();
+  if(roll<0.6){
+    var n=ri(2,600),t=0;while(u2isSq(n)&&t<200){n=ri(2,600);t++;}
+    var lo=Math.floor(Math.sqrt(n)),ans=Math.round(Math.sqrt(n)*10)/10;
+    var dLo=n-lo*lo,dHi=(lo+1)*(lo+1)-n;
+    return numq("Give the approximate value of \\(\\sqrt{"+n+"}\\) to one decimal place.",
+      ans,0.051,
+      "Locate \\(\\sqrt{"+n+"}\\) between consecutive perfect squares: \\["+
+      "\\begin{aligned} "+(lo*lo)+" &< "+n+" < "+((lo+1)*(lo+1))+" \\\\ "+lo+" &< \\sqrt{"+n+"} < "+(lo+1)+" \\end{aligned} \\]"+
+      " Since \\("+n+"\\) is closer to \\("+(dLo<dHi?(lo*lo):((lo+1)*(lo+1)))+"\\), the root is closer to \\("+(dLo<dHi?lo:(lo+1))+"\\), and checking tenths gives \\(\\sqrt{"+n+"} \\approx "+ans+"\\). On a number line it sits between \\("+lo+"\\) and \\("+(lo+1)+"\\), nearer \\("+(dLo<dHi?lo:(lo+1))+"\\). The approximate value is <b>\\("+ans+"\\)</b>.",
+      {mode:2,n:n,ans:ans});
+  }
+  if(roll<0.9){
+    var n3=ri(2,600),t3=0;while(u2isCu(n3)&&t3<200){n3=ri(2,600);t3++;}
+    var lo3=Math.floor(Math.cbrt(n3)),ans3=Math.round(Math.cbrt(n3)*10)/10;
+    var dLo3=n3-lo3*lo3*lo3,dHi3=(lo3+1)*(lo3+1)*(lo3+1)-n3;
+    return numq("Give the approximate value of \\(\\sqrt[3]{"+n3+"}\\) to one decimal place.",
+      ans3,0.051,
+      "Locate \\(\\sqrt[3]{"+n3+"}\\) between consecutive perfect cubes: \\["+
+      "\\begin{aligned} "+(lo3*lo3*lo3)+" &< "+n3+" < "+((lo3+1)*(lo3+1)*(lo3+1))+" \\\\ "+lo3+" &< \\sqrt[3]{"+n3+"} < "+(lo3+1)+" \\end{aligned} \\]"+
+      " Since \\("+n3+"\\) is closer to \\("+(dLo3<dHi3?(lo3*lo3*lo3):((lo3+1)*(lo3+1)*(lo3+1)))+"\\), the root is closer to \\("+(dLo3<dHi3?lo3:(lo3+1))+"\\), and checking tenths gives \\(\\sqrt[3]{"+n3+"} \\approx "+ans3+"\\). On a number line it sits between \\("+lo3+"\\) and \\("+(lo3+1)+"\\). The approximate value is <b>\\("+ans3+"\\)</b>.",
+      {mode:3,n:n3,ans:ans3});
+  }
+  var k=ri(2,9),ansP=Math.round(k*Math.PI*100)/100;
+  return numq("Give the approximate value of \\("+k+"\\pi\\) to two decimal places.",
+    ansP,0.011,
+    "Use \\(\\pi \\approx 3.14159\\): \\["+
+    "\\begin{aligned} "+k+"\\pi &\\approx "+k+" \\times 3.14159 \\\\ &\\approx "+ansP+" \\end{aligned} \\]"+
+    " The approximate value is <b>\\("+ansP+"\\)</b>.",
+    {mode:1,k:k,ans:ansP});
+});
+
+/* u4-pk-solve-two-step: borrowed verbatim from math-9 entry u5-solve-two-step (math-9:8.18). */
+E("u4-pk-solve-two-step",4,["1.17"], 2, "gen", function () {
+  var form = ri(0, 2);
+  if (form === 0) {
+    var a = ri(2, 9), x0 = ri(-9, 9); if (x0 === 0) x0 = 4;
+    var b = ri(-12, 12); if (b === 0) b = 5;
+    var c = a * x0 + b;
+    var sol = "Undo the constant first, then undo the multiplication: \\[ \\begin{aligned} " + n5lin(a, b) + " &= " + fmt(c) + " \\\\ " + fmt(a) + "x &= " + fmt(c - b) + " \\\\ x &= " + fmt(x0) + " \\end{aligned} \\] So the solution is <b>\\(x = " + fmt(x0) + "\\)</b>.";
+    return numq("Solve the equation \\(" + n5lin(a, b) + " = " + fmt(c) + "\\). What is the value of \\(x\\)?", x0, 0.01, sol, { mode: "ax+b", a: a, b: b, c: c });
+  }
+  if (form === 1) {
+    var a2 = ri(2, 6), k = ri(-6, 6); if (k === 0) k = 3;
+    var x1 = a2 * k, b2 = ri(-9, 9); if (b2 === 0) b2 = -4;
+    var c2 = k + b2;
+    var sol2 = "Undo the constant first, then undo the division: \\[ \\begin{aligned} " + FR("x", a2) + (b2 >= 0 ? "+" + fmt(b2) : "-" + fmt(-b2)) + " &= " + fmt(c2) + " \\\\ " + FR("x", a2) + " &= " + fmt(k) + " \\\\ x &= " + fmt(x1) + " \\end{aligned} \\] So the solution is <b>\\(x = " + fmt(x1) + "\\)</b>.";
+    return numq("Solve the equation \\(" + FR("x", a2) + (b2 >= 0 ? " + " + fmt(b2) : " - " + fmt(-b2)) + " = " + fmt(c2) + "\\). What is the value of \\(x\\)?", x1, 0.01, sol2, { mode: "x/a+b", a: a2, b: b2, c: c2 });
+  }
+  var x2 = ri(-8, 8); if (x2 === 0) x2 = 5;
+  var a3 = ri(3, 9), c3 = ri(2, a3 - 1), b3 = (a3 - c3) * x2;
+  var sol3 = "Collect the x terms on one side first: \\[ \\begin{aligned} " + fmt(a3) + "x &= " + n5lin(c3, b3) + " \\\\ " + fmt(a3 - c3) + "x &= " + fmt(b3) + " \\\\ x &= " + fmt(x2) + " \\end{aligned} \\] So the solution is <b>\\(x = " + fmt(x2) + "\\)</b>.";
+  return numq("Solve the equation \\(" + fmt(a3) + "x = " + n5lin(c3, b3) + "\\). What is the value of \\(x\\)?", x2, 0.01, sol3, { mode: "ax=cx+b", a: a3, b: b3, c: c3 });
+}, ["Undo the operations in reverse order: deal with the constant term before the term attached to x.", "First isolate the x term on one side, using the same operation on both sides."]);
+
+/* u4-pk-which-is-solution: borrowed verbatim from math-9 entry u5-which-is-solution (math-9:8.20). */
+E("u4-pk-which-is-solution",4,["1.18"], 1, "gen", function () {
+  var a = ri(2, 7), x0 = ri(-6, 9), b = ri(-9, 9);
+  var c = a * x0 + b;
+  function fbFor(v) { return "Substituting \\(x = " + fmt(v) + "\\) gives a left side of " + fmt(a * v + b) + ", which is not " + fmt(c) + "."; }
+  var cands = [
+    { t: fmt(x0 + 1), fb: fbFor(x0 + 1) },
+    { t: fmt(x0 - 1), fb: fbFor(x0 - 1) },
+    { t: fmt(x0 + 2), fb: fbFor(x0 + 2) }
+  ];
+  var sol = "Substitute the value and compare the two sides: \\[ \\begin{aligned} " + n5lin(a, b) + " &= " + fmt(a) + "(" + fmt(x0) + ")" + (b >= 0 ? "+" + fmt(b) : "-" + fmt(-b)) + " \\\\ &= " + fmt(c) + " \\end{aligned} \\] Both sides match, so the solution is <b>\\(x = " + fmt(x0) + "\\)</b>.";
+  return mcq("Which value is the solution of \\(" + n5lin(a, b) + " = " + fmt(c) + "\\)?", { t: fmt(x0), fb: "Correct: substituting it makes both sides equal." }, cands, sol, { mode: "which-sol", a: a, b: b, c: c });
+}, ["A solution is a value that makes both sides equal when it is substituted.", "First substitute one value and work out the left side, then compare it with the right side."]);
+
+/* PK tranche pass for Unit 4. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U4_FOR=["1.1","1.2","1.3","1.4","1.9","1.11","1.12","1.13","1.14","1.15","1.16","1.17","1.18","1.19","1.20"];
+var PKT_U4={
+ "u4-pk-radical-mixed":{src:"math-1201:1.16",group:"radical-forms"},
+ "u4-pk-radical-entire":{src:"math-1201:1.17",group:"radical-forms"},
+ "u4-pk-laws-integral":{src:"math-1201:1.6",group:"exponent-laws"},
+ "u4-pk-laws-rational":{src:"math-1201:1.6",group:"exponent-laws"},
+ "u4-pk-sort-numbers":{src:"math-1201:1.18",group:"real-numbers"},
+ "u4-pk-subsets":{src:"math-1201:1.19",group:"real-numbers"},
+ "u4-pk-approx":{src:"math-1201:1.20",group:"real-numbers"},
+ "u4-pk-solve-two-step":{src:"math-9:8.18",group:"linear-equations"},
+ "u4-pk-which-is-solution":{src:"math-9:8.20",group:"verify-solution"}
+};
+BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U4_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u5.js ----- */
 // Math 2200 Unit 5 Rational Expressions and Equations question bank
@@ -3595,6 +5380,231 @@ E("u5-meeting-problem",5,["3.21"],3,"gen",function(){
     meta);
 });
 
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u5-pk-frac-context: borrowed verbatim from math-9 entry u1-frac-context (math-9:6.1). */
+E("u5-pk-frac-context",5,["3.8"], 1, "gen", function () {
+  var dens = [2, 4, 5, 8, 10, 20];
+  var d1 = pick(dens), d2 = pick(dens);
+  var n1 = ri(1, 15), n2 = ri(1, 15);
+  var v1 = n1 / d1, v2 = n2 / d2;
+  var sub = Math.random() < 0.5;
+  if (sub && v2 > v1) { var tn = n1; n1 = n2; n2 = tn; var td = d1; d1 = d2; d2 = td; v1 = n1 / d1; v2 = n2 / d2; }
+  if (sub && Math.abs(v1 - v2) < 0.01) { n1 += d1; v1 = n1 / d1; }
+  var ctxs = ["cups of flour", "metres of ribbon", "litres of juice"];
+  var thing = pick(ctxs);
+  var ans = n1round(sub ? v1 - v2 : v1 + v2, 4);
+  var lcm = (d1 * d2) / n1gcd(d1, d2);
+  var e1 = n1 * (lcm / d1), e2 = n2 * (lcm / d2);
+  var resN = sub ? e1 - e2 : e1 + e2;
+  var prompt = sub
+    ? "A project starts with " + n1frac(n1, d1) + " " + thing + ". Then " + n1frac(n2, d2) + " " + thing + " is used. How much is left? Give your answer as a decimal."
+    : "A project uses " + n1frac(n1, d1) + " " + thing + " in the morning and " + n1frac(n2, d2) + " " + thing + " in the afternoon. How much is used in total? Give your answer as a decimal.";
+  var solution = "Use the common denominator \\(" + lcm + "\\): \\[ \\begin{aligned} " + FR(n1, d1) + (sub ? " - " : " + ") + FR(n2, d2) + " &= " + FR(e1, lcm) + (sub ? " - " : " + ") + FR(e2, lcm) + " \\\\ &= " + FR(resN, lcm) + " = " + fmt(ans) + " \\end{aligned} \\] So the answer is <b>" + fmt(ans) + "</b>.";
+  return numq(prompt, ans, 0.01, solution, { mode: sub ? "sub-frac-ctx" : "add-frac-ctx", a: n1, b: d1, c: n2, d: d2 });
+}, ["Fractions with different denominators need a common denominator first.", "Rewrite both fractions with the least common denominator, then combine the numerators."]);
+
+/* u5-pk-frac-div-add: borrowed verbatim from math-9 entry u1-gap-div-add-cr (math-9:6.1). */
+E("u5-pk-frac-div-add",5,["3.8"], 2, "gen", function () {
+  var q = pick([3, 4, 5, 6]);
+  var r = pick([2, 3]);
+  var p = r * ri(2, 5);
+  var f = pick([4, 8]);
+  var e = ri(1, f - 1);
+  var quot = p / r;
+  var ans = Math.round((quot + e / f) * 1000) / 1000;
+  var prompt = "Evaluate \\(" + FR(p, q) + " \\div " + FR(r, q) + " + " + FR(e, f) + "\\). Give your answer as a decimal.";
+  var sol = "Divide first by multiplying by the reciprocal, then add: \\[ \\begin{aligned} " + FR(p, q) + " \\div " + FR(r, q) + " &= " + FR(p, q) + " \\times " + FR(q, r) + " = " + fmt(quot) + " \\\\ " + fmt(quot) + " + " + FR(e, f) + " &= " + fmt(quot) + " + " + fmt(e / f, 3) + " = " + fmt(ans, 3) + " \\end{aligned} \\] The answer is <b>" + fmt(ans, 3) + "</b>.";
+  return numq(prompt, ans, 0.01, sol, { mode: "gap-div-add", p: p, q: q, r: r, e: e, f: f });
+}, ["Division is the first job: flip the divisor and multiply, then do the addition.", "Rewrite the division as a multiplication by the reciprocal of the second fraction."]);
+
+/* u5-pk-multistep-rational: borrowed verbatim from math-9 entry u1-multistep-rational (math-9:6.1). */
+E("u5-pk-multistep-rational",5,["3.8"], 3, "gen", function () {
+  var mode = ri(0, 2);
+  if (mode === 0) {
+    var start = ri(-160, 80) / 4, r1 = ri(2, 20) / 4, f1 = ri(2, 16) / 4, r2 = ri(2, 12) / 4;
+    var ans = n1round(start + r1 - f1 + r2, 4);
+    var promptT = "At 6 a.m. the temperature in St. John's is " + fmt(start) + " degrees. By noon it rises by " + fmt(r1) + " degrees, by 6 p.m. it falls by " + fmt(f1) + " degrees, and by midnight it rises by " + fmt(r2) + " degrees. Determine the temperature at midnight, in degrees.";
+    var solT = "Apply each change in order: \\[ \\begin{aligned} " + fmt(start) + " + " + fmt(r1) + " - " + fmt(f1) + " + " + fmt(r2) + " &= " + fmt(n1round(start + r1, 4)) + " - " + fmt(f1) + " + " + fmt(r2) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the temperature at midnight is <b>" + fmt(ans) + " degrees</b>.";
+    return numq(promptT, ans, 0.01, solT, { mode: "temp-change", start: start });
+  }
+  if (mode === 1) {
+    var startC = ri(2000, 20000), depC = ri(500, 8000), w1C = ri(400, 6000), w2C = ri(300, 5000);
+    var ansB = n1round((startC + depC - w1C - w2C) / 100, 2);
+    var promptB = "A bank account starts with $" + (startC / 100).toFixed(2) + ". A deposit of $" + (depC / 100).toFixed(2) + " is made, then withdrawals of $" + (w1C / 100).toFixed(2) + " and $" + (w2C / 100).toFixed(2) + " are made. Determine the final balance, in dollars.";
+    var solB = "Add the deposit and subtract both withdrawals: \\[ \\begin{aligned} " + (startC / 100).toFixed(2) + " + " + (depC / 100).toFixed(2) + " - " + (w1C / 100).toFixed(2) + " - " + (w2C / 100).toFixed(2) + " &= " + ((startC + depC) / 100).toFixed(2) + " - " + (w1C / 100).toFixed(2) + " - " + (w2C / 100).toFixed(2) + " \\\\ &= " + ansB.toFixed(2) + " \\end{aligned} \\] So the final balance is <b>$" + ansB.toFixed(2) + "</b>.";
+    return numq(promptB, ansB, 0.01, solB, { mode: "bank-balance", start: startC });
+  }
+  var dens = [2, 4, 5, 8, 10];
+  var dA = pick(dens), dB = pick(dens), dC = pick(dens);
+  var nA = ri(3, 30), nB = ri(3, 30), nC = ri(3, 30);
+  var ansD = n1round(nA / dA + nB / dB + nC / dC, 4);
+  var promptD = "On a three day hike, a group walks " + n1frac(nA, dA) + " km on day 1, " + n1frac(nB, dB) + " km on day 2, and " + n1frac(nC, dC) + " km on day 3. Determine the total distance walked, in kilometres, as a decimal.";
+  var solD = "Add the three distances as decimals: \\[ \\begin{aligned} " + FR(nA, dA) + " + " + FR(nB, dB) + " + " + FR(nC, dC) + " &= " + fmt(n1round(nA / dA, 4)) + " + " + fmt(n1round(nB / dB, 4)) + " + " + fmt(n1round(nC / dC, 4)) + " \\\\ &= " + fmt(ansD) + " \\end{aligned} \\] So the total distance is <b>" + fmt(ansD) + " km</b>.";
+  return numq(promptD, ansD, 0.01, solD, { mode: "distance-3day", a: nA, b: nB, c: nC });
+}, ["Break the problem into one change or part at a time, in order.", "Start from the opening value and apply each step before moving to the next."]);
+
+/* u5-pk-equiv-fractions: authored micro-item (authored:equivalent-fractions),
+   written for this tranche. */
+E("u5-pk-equiv-fractions",5,["3.3"],1,"gen",function(){
+  var fr=function(p,q){return "\\(\\frac{"+p+"}{"+q+"}\\)";};
+  var gcd=function(x,y){while(y){var t=x%y;x=y;y=t;}return x;};
+  if(ri(0,1)===0){
+    var p=ri(1,9),q=p+ri(1,9),k=ri(2,6);
+    return mcq("Which fraction is equivalent to "+fr(p,q)+"?",
+      fr(p*k,q*k),
+      [fr(p+k,q+k),fr(p*k,q),fr(p,q*k)],
+      "Equivalent fractions come from multiplying the numerator and the denominator by the same number: \\(\\frac{"+p+"}{"+q+"} = \\frac{"+p+" \\times "+k+"}{"+q+" \\times "+k+"} = \\frac{"+(p*k)+"}{"+(q*k)+"}\\). Changing only one of the two numbers, or adding instead of multiplying, gives a different value. The answer is <b>"+fr(p*k,q*k)+"</b>.",
+      {mode:"build",p:p,q:q,k:k});
+  }
+  var g=pick([2,3,4,5,6]),p2=2,q2=3,tries=0;
+  do { p2=ri(2,9); q2=p2+ri(1,8); tries++; } while(gcd(p2,q2)!==1&&tries<60);
+  var P=p2*g,Q=q2*g;
+  return mcq("Write "+fr(P,Q)+" in lowest terms.",
+    fr(p2,q2),
+    [fr(p2,Q),fr(P,q2),fr(P-g,Q-g)],
+    "The numerator and the denominator share the factor "+g+", so divide both by "+g+": \\(\\frac{"+P+"}{"+Q+"} = \\frac{"+P+" \\div "+g+"}{"+Q+" \\div "+g+"} = \\frac{"+p2+"}{"+q2+"}\\). Dividing only one of the two numbers, or subtracting instead of dividing, changes the value. The answer is <b>"+fr(p2,q2)+"</b>.",
+    {mode:"reduce",P:P,Q:Q,g:g});
+}, ["The numerator and the denominator must change in the same way.", "Look for a factor the numerator and the denominator share."]);
+
+/* u5-pk-gcf: borrowed verbatim from math-1201 entry u3-gcf (math-1201:3.10). */
+E("u5-pk-gcf",5,["3.5"], 2, "gen", function () {
+  var gp = ri(0, 2), gn, tries = 0;
+  if (gp === 0) gn = ri(2, 7); else gn = pick([1, 2, 3, 4, 5, 6]);
+  var A = ri(1, 6), B = u3Nz(-6, 6), C = u3Nz(-6, 6);
+  while (u3GCD3(A, Math.abs(B), Math.abs(C)) !== 1 && tries < 60) { tries++; A = ri(1, 6); B = u3Nz(-6, 6); C = u3Nz(-6, 6); }
+  var quo = [A, B, C];
+  var polyTerms = [[gn * A, gp + 2, 0], [gn * B, gp + 1, 0], [gn * C, gp, 0]];
+  var polyRaw = u3Str(polyTerms);
+  var gRaw = u3Str([[gn, gp, 0]]);
+  var keyRaw = gRaw + u3Par(quo, "x");
+  var cands = [], seen = {};
+  function addCand(s) { if (s !== keyRaw && !seen[s]) { seen[s] = 1; cands.push(u3M(s)); } }
+  /* partial factor: only part of the common factor is removed */
+  if (gn > 1) {
+    var divs = [];
+    for (var d = 1; d < gn; d++) if (gn % d === 0) divs.push(d);
+    var dv = pick(divs), sc = gn / dv;
+    addCand(u3Str([[dv, gp, 0]]) + u3Par([A * sc, B * sc, C * sc], "x"));
+  } else {
+    addCand(u3Str([[1, gp - 1, 0]]) + "(" + u3Str([[A, 3, 0], [B, 2, 0], [C, 1, 0]]) + ")");
+  }
+  /* quotient slips: one term not divided correctly */
+  addCand(gRaw + u3Par([A, B + (B > 0 ? 1 : -1), C], "x"));
+  addCand(gRaw + u3Par([A, B, gn * C], "x"));
+  addCand(gRaw + u3Par([A, B, -C], "x"));
+  addCand(gRaw + u3Par([A + 1, B, C], "x"));
+  var prompt = "Determine the greatest common factor of the terms of \\(" + polyRaw + "\\), and express the polynomial in factored form.";
+  var sol = "Every term contains the factor \\(" + gRaw + "\\). Dividing each term by \\(" + gRaw + "\\) leaves \\(" + u3PC(quo, "x") + "\\), whose terms share no further common factor." +
+    u3Alg([polyRaw + " &= " + keyRaw]) +
+    "In factored form, the polynomial is **" + u3M(keyRaw) + "**.";
+  return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
+    { t: "fac", g: gRaw, parts: [quo], v: "x" });
+});
+
+/* u5-pk-factor-product: borrowed verbatim from math-1201 entry u3-factor-product (math-1201:3.9). */
+E("u5-pk-factor-product",5,["3.5"], 2, "gen", function () {
+  var mode = pick(["bb", "mt"]);
+  if (mode === "bb") {
+    var a = ri(2, 4), b = u3Nz(-6, 6), c = u3Nz(-6, 6), prod, tries = 0;
+    do { tries++; b = u3Nz(-6, 6); c = u3Nz(-6, 6); prod = u3Conv([a, b], [1, c]); }
+    while (u3GCD3(prod[0], Math.abs(prod[1]), Math.abs(prod[2])) !== 1 && tries < 80);
+    var facs = [[a, b], [1, c]];
+    var keyRaw = u3FacRaw("", facs, "x");
+    var poly = u3PC(prod, "x");
+    var sol = "Find the two binomials whose product gives the polynomial, then verify by multiplying the factors back out." +
+      u3Alg([poly + " &= " + keyRaw,
+             keyRaw + " &= " + u3StrSeq(u3Mul(u3TermsOf(facs[0], "x"), u3TermsOf(facs[1], "x"))),
+             "&= " + poly]) +
+      "As a product of its factors, the polynomial is **" + u3M(keyRaw) + "**.";
+    return mcq("Express the polynomial \\(" + poly + "\\) as a product of its factors.",
+      u3M(keyRaw), u3FacDistr("", facs, "x", prod, 3), sol,
+      { t: "fac", g: "", parts: facs, v: "x" });
+  }
+  var gn = ri(2, 5), gp = ri(1, 2);
+  var A = ri(1, 3), B = u3Nz(-5, 5), C = u3Nz(-6, 6), t2 = 0;
+  while (u3GCD3(A, Math.abs(B), Math.abs(C)) !== 1 && t2 < 60) { t2++; A = ri(1, 3); B = u3Nz(-5, 5); C = u3Nz(-6, 6); }
+  var quo = [A, B, C];
+  var polyTerms = [[gn * A, gp + 2, 0], [gn * B, gp + 1, 0], [gn * C, gp, 0]];
+  var polyRaw = u3Str(polyTerms);
+  var gRaw = u3Str([[gn, gp, 0]]);
+  var keyRaw2 = gRaw + u3Par(quo, "x");
+  var prodTerms = u3Mul([[gn, gp, 0]], u3TermsOf(quo, "x"));
+  var cands = [], seen = {};
+  function addC(s) { if (s !== keyRaw2 && !seen[s]) { seen[s] = 1; cands.push(u3M(s)); } }
+  addC(gRaw + u3Par([A, B + (B > 0 ? 1 : -1), C], "x"));
+  addC(gRaw + u3Par([A, B, -C], "x"));
+  addC(u3Str([[gn, gp + 1, 0]]) + u3Par(quo, "x"));
+  addC(gRaw + u3Par([A + 1, B, C], "x"));
+  var sol2 = "The terms share the factor \\(" + gRaw + "\\). Removing it leaves \\(" + u3PC(quo, "x") + "\\). Verify by multiplying the factors back out." +
+    u3Alg([keyRaw2 + " &= " + u3StrSeq(prodTerms), "&= " + polyRaw]) +
+    "As a product of its factors, the polynomial is **" + u3M(keyRaw2) + "**.";
+  return mcq("Express the polynomial \\(" + polyRaw + "\\) as a product of its factors.",
+    u3M(keyRaw2), shuffle(cands).slice(0, 3), sol2,
+    { t: "fac", g: gRaw, parts: [quo], v: "x" });
+});
+
+/* u5-pk-npv-numerical: authored micro-item (authored:undefined-numerical-fraction),
+   written for this tranche. */
+E("u5-pk-npv-numerical",5,["3.1"],1,"gen",function(){
+  var fr=function(n,d){return "\\(\\frac{"+n+"}{"+d+"}\\)";};
+  var a=ri(2,9),b=ri(2,9);
+  var undef=pick([
+    fr(a,b+" - "+b),
+    fr(a,(2*b)+" - "+b+" \\times 2"),
+    fr(a,b+" \\times 3 - "+(3*b)),
+    fr(a,(b+4)+" - "+(b+4))
+  ]);
+  var defs=[fr(a+1,b+" - 1"),fr(b,a+" + 2"),fr(a+b,"2 \\times "+b)];
+  return mcq("Which of these fractions is <b>undefined</b>?",
+    undef,defs,
+    "A fraction is undefined when its denominator works out to 0, because division by 0 is undefined. In "+undef+" the denominator is 0. Each of the other denominators works out to a nonzero number, so those fractions are defined. The answer is <b>"+undef+"</b>.",
+    {mode:"which-undefined",a:a,b:b});
+}, ["Work out each denominator first.", "A fraction with denominator 0 has no value."]);
+
+/* u5-pk-solve-two-step: borrowed verbatim from math-9 entry u5-solve-two-step (math-9:8.18). */
+E("u5-pk-solve-two-step",5,["3.19"], 2, "gen", function () {
+  var form = ri(0, 2);
+  if (form === 0) {
+    var a = ri(2, 9), x0 = ri(-9, 9); if (x0 === 0) x0 = 4;
+    var b = ri(-12, 12); if (b === 0) b = 5;
+    var c = a * x0 + b;
+    var sol = "Undo the constant first, then undo the multiplication: \\[ \\begin{aligned} " + n5lin(a, b) + " &= " + fmt(c) + " \\\\ " + fmt(a) + "x &= " + fmt(c - b) + " \\\\ x &= " + fmt(x0) + " \\end{aligned} \\] So the solution is <b>\\(x = " + fmt(x0) + "\\)</b>.";
+    return numq("Solve the equation \\(" + n5lin(a, b) + " = " + fmt(c) + "\\). What is the value of \\(x\\)?", x0, 0.01, sol, { mode: "ax+b", a: a, b: b, c: c });
+  }
+  if (form === 1) {
+    var a2 = ri(2, 6), k = ri(-6, 6); if (k === 0) k = 3;
+    var x1 = a2 * k, b2 = ri(-9, 9); if (b2 === 0) b2 = -4;
+    var c2 = k + b2;
+    var sol2 = "Undo the constant first, then undo the division: \\[ \\begin{aligned} " + FR("x", a2) + (b2 >= 0 ? "+" + fmt(b2) : "-" + fmt(-b2)) + " &= " + fmt(c2) + " \\\\ " + FR("x", a2) + " &= " + fmt(k) + " \\\\ x &= " + fmt(x1) + " \\end{aligned} \\] So the solution is <b>\\(x = " + fmt(x1) + "\\)</b>.";
+    return numq("Solve the equation \\(" + FR("x", a2) + (b2 >= 0 ? " + " + fmt(b2) : " - " + fmt(-b2)) + " = " + fmt(c2) + "\\). What is the value of \\(x\\)?", x1, 0.01, sol2, { mode: "x/a+b", a: a2, b: b2, c: c2 });
+  }
+  var x2 = ri(-8, 8); if (x2 === 0) x2 = 5;
+  var a3 = ri(3, 9), c3 = ri(2, a3 - 1), b3 = (a3 - c3) * x2;
+  var sol3 = "Collect the x terms on one side first: \\[ \\begin{aligned} " + fmt(a3) + "x &= " + n5lin(c3, b3) + " \\\\ " + fmt(a3 - c3) + "x &= " + fmt(b3) + " \\\\ x &= " + fmt(x2) + " \\end{aligned} \\] So the solution is <b>\\(x = " + fmt(x2) + "\\)</b>.";
+  return numq("Solve the equation \\(" + fmt(a3) + "x = " + n5lin(c3, b3) + "\\). What is the value of \\(x\\)?", x2, 0.01, sol3, { mode: "ax=cx+b", a: a3, b: b3, c: c3 });
+}, ["Undo the operations in reverse order: deal with the constant term before the term attached to x.", "First isolate the x term on one side, using the same operation on both sides."]);
+
+/* PK tranche pass for Unit 5. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U5_FOR=["3.1","3.2","3.3","3.4","3.5","3.6","3.7","3.8","3.9","3.10","3.11","3.12","3.13","3.18","3.19","3.20","3.21"];
+var PKT_U5={
+ "u5-pk-frac-context":{src:"math-9:6.1",group:"fraction-operations"},
+ "u5-pk-frac-div-add":{src:"math-9:6.1",group:"fraction-operations"},
+ "u5-pk-multistep-rational":{src:"math-9:6.1",group:"fraction-operations"},
+ "u5-pk-equiv-fractions":{src:"authored:equivalent-fractions",group:"equivalent-fractions"},
+ "u5-pk-gcf":{src:"math-1201:3.10",group:"common-factor"},
+ "u5-pk-factor-product":{src:"math-1201:3.9",group:"factoring"},
+ "u5-pk-npv-numerical":{src:"authored:undefined-numerical-fraction",group:"undefined-values"},
+ "u5-pk-solve-two-step":{src:"math-9:8.18",group:"linear-equations"}
+};
+BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U5_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u6.js ----- */
 // Math 2200 Unit 6 Absolute Value and Reciprocal Functions question bank
 // CRMARKS: u6-abs-context=2
@@ -4302,6 +6312,229 @@ E("u6-original-from-reciprocal",6,["4.36","4.34"],3,"gen",function(){
   return qQ;
 });
 
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u6-pk-number-line-distance: authored micro-item (authored:number-line-distance),
+   written for this tranche. */
+E("u6-pk-number-line-distance",6,["1.7"],1,"gen",function(){
+  var mode=ri(0,1),a,b;
+  if(mode===0){ a=-ri(2,12); b=ri(1,12); }
+  else { a=-(ri(1,9)+0.5); b=ri(1,9)+0.5; }
+  var d=b-a, as=fmt(a), bs=fmt(b), ds=fmt(d);
+  return numq("Two points are marked on a number line at \\("+as+"\\) and \\("+bs+"\\). What is the distance between the two points?",
+    d,0.01,
+    "Distance is always positive, so take the positive difference of the two positions: \\("+bs+" - ("+as+") = "+ds+"\\). The distance is <b>"+ds+"</b>.",
+    {mode:mode,a:a,b:b,ans:d});
+}, ["Distance is never negative.", "Subtract the smaller position from the larger one."]);
+
+/* u6-pk-domain-range: borrowed verbatim from math-1201 entry u4-domain-range (math-1201:4.10). */
+E("u6-pk-domain-range",6,["4.33"],1,"gen",function(){
+  var useTable=Math.random()<0.5;
+  var xs=shuffle([0,1,2,3,4,5,6,7,8,9]).slice(0,4);
+  var ys=[];while(ys.length<4){var y=ri(1,18);if(ys.indexOf(y)<0)ys.push(y);}
+  var pairs=xs.map(function(x,i){return [x,ys[i]];});
+  var dom=xs.slice(),rng=ys.slice();
+  function drStr(d,r){return "Domain: \\("+u4setS(d)+"\\); range: \\("+u4setS(r)+"\\)";}
+  var key=drStr(dom,rng);
+  var altR=rng.slice();altR[0]=altR[0]+3;while(dom.indexOf(altR[0])>=0&&rng.indexOf(altR[0])>=0)altR[0]++;
+  var ds=u4pickS3(key,[drStr(rng,dom),drStr(dom,altR),drStr(xs.slice(0,3),rng)]);
+  var shown=useTable?("A table of values has \\(x\\) values \\("+xs.join(", ")+"\\) with matching \\(y\\) values, in the same order, \\("+ys.join(", ")+"\\)"):("A relation is given by the set of ordered pairs \\("+u4pairsS(pairs)+"\\)");
+  return mcq(shown+". Which choice gives the domain and the range of this relation?",
+    key,ds,
+    "Collect the first coordinates for the domain and the second coordinates for the range, listing each value once: \\[ \\begin{aligned} \\text{Domain} &= "+u4setS(dom)+" \\\\ \\text{Range} &= "+u4setS(rng)+" \\end{aligned} \\] The domain and range are <b>domain \\("+u4setS(dom)+"\\) and range \\("+u4setS(rng)+"\\)</b>.",
+    {pairs:pairs,dom:dom,rng:rng,keyStr:key});
+});
+
+/* u6-pk-graph-data: borrowed verbatim from math-1201 entry u4-graph-data (math-1201:4.9). */
+E("u6-pk-graph-data",6,["4.2"],1,"gen",function(){
+  var profs=[
+    {name:"A weather station records the day number of a study and the high temperature that day, in degrees",xlab:"day",ylab:"temperature"},
+    {name:"A coach records the week number of a training plan and the number of laps the team swam that week",xlab:"week",ylab:"laps"},
+    {name:"A shop records the number of hours since opening and the number of loaves sold so far that day",xlab:"hours",ylab:"loaves"},
+    {name:"A class records the number of school days since seeds were planted and the average seedling height, in centimetres",xlab:"days",ylab:"height"}
+  ];
+  var prof=pick(profs);
+  var xs=shuffle([1,2,3,4,5,6,7]).slice(0,4).sort(function(a,b){return a-b;});
+  var ys=[];while(ys.length<4){var y=ri(3,28);if(ys.indexOf(y)<0)ys.push(y);}
+  var askRange=Math.random()<0.5;
+  var vals=askRange?ys.slice().sort(function(a,b){return a-b;}):xs;
+  var other=askRange?xs:ys.slice().sort(function(a,b){return a-b;});
+  var key="\\("+u4setS(vals)+"\\)";
+  var alt=vals.slice();alt[alt.length-1]=alt[alt.length-1]+2;
+  var short=vals.slice(0,3);
+  var ds=u4pickS3(key,["\\("+u4setS(other)+"\\)","\\("+u4setS(alt)+"\\)","\\("+u4setS(short)+"\\)"]);
+  var pairs=xs.map(function(x,i){return [x,ys[i]];});
+  return mcq(prof.name+". The data points are \\("+u4pairsS(pairs)+"\\), where the first coordinate is the "+prof.xlab+" value and the second is the "+prof.ylab+" value. What is the <b>"+(askRange?"range":"domain")+"</b> of this relation?",
+    key,ds,
+    "The domain is the set of first coordinates and the range is the set of second coordinates. From \\("+u4pairsS(pairs)+"\\), the "+(askRange?"second":"first")+" coordinates are \\("+vals.join(", ")+"\\). The <b>"+(askRange?"range":"domain")+" is \\("+u4setS(vals)+"\\)</b>.",
+    {profName:prof.name,asked:askRange?"range":"domain",xs:xs,ys:ys,keyStr:key});
+});
+
+/* u6-pk-eval-function: borrowed verbatim from math-1201 entry u4-eval-function (math-1201:4.47). */
+E("u6-pk-eval-function",6,["4.2"],1,"gen",function(){
+  var fn=pick(["f","g","h"]);
+  var m=pick([-4,-3,-2,-1,1,2,3,4,5]),b=ri(-9,10),x0=ri(-5,8);
+  var ans=m*x0+b;
+  return numq("A linear function is given by \\("+fn+"(x) = "+u4lin(m,b)+"\\). What is the value of \\("+fn+"("+x0+")\\)?",
+    ans,0.011,
+    "Substitute the given domain value into the function and simplify: \\[ \\begin{aligned} "+fn+"("+x0+") &= "+u4num(m)+"("+x0+") + ("+b+") \\\\ &= "+u4num(m*x0)+" + ("+b+") \\\\ &= "+ans+" \\end{aligned} \\] The value is <b>\\("+ans+"\\)</b>.",
+    {fn:fn,m:m,b:b,x0:x0,ans:ans});
+});
+
+/* u6-pk-fn-notation: borrowed verbatim from math-1201 entry u4-fn-notation (math-1201:4.45). */
+E("u6-pk-fn-notation",6,["4.33"],1,"gen",function(){
+  var m=pick([-5,-4,-3,-2,-1,1,2,3,4,5]),b=ri(-15,16);
+  var key="\\(f(x) = "+u4lin(m,b)+"\\)";
+  var ds=u4pickS3(key,["\\(f(y) = "+u4lin(m,b)+"\\)","\\(f(x) = "+u4lin(m,-b)+"\\)","\\(f(x) = "+u4lin(-m,b)+"\\)","\\(f(x) = "+u4lin(b===0?m+1:b,m)+"\\)"]);
+  if(b===0)ds=u4pickS3(key,["\\(f(y) = "+u4lin(m,b)+"\\)","\\(f(x) = "+u4lin(-m,b)+"\\)","\\(f(x) = "+u4lin(m+1,b)+"\\)"]);
+  return mcq("Rewrite the equation \\(y = "+u4lin(m,b)+"\\) using function notation.",
+    key,ds,
+    "Function notation names the output \\(f(x)\\) in place of \\(y\\), and the rule on the right side stays unchanged: \\[ \\begin{aligned} y &= "+u4lin(m,b)+" \\\\ f(x) &= "+u4lin(m,b)+" \\end{aligned} \\] In function notation, the equation is <b>\\(f(x) = "+u4lin(m,b)+"\\)</b>.",
+    {m:m,b:b,keyStr:key});
+});
+
+/* u6-pk-sort-numbers: borrowed verbatim from math-1201 entry u2-sort-numbers (math-1201:1.18). */
+E("u6-pk-sort-numbers",6,["1.8"],1,"gen",function(){
+  function ratItem(){
+    var kind=ri(1,5);
+    if(kind===1){var p=ri(1,15),q=pick([2,3,4,5,6,7,8,9]),tg=0;while(u2gcd(p,q)!==1&&tg<60){p=ri(1,15);q=pick([2,3,4,5,6,7,8,9]);tg++;}return {str:"\\("+FR(p,q)+"\\)",rat:true};}
+    if(kind===2){return {str:""+pick([0.5,1.25,2.75,3.4,0.125,5.6,7.05,0.9]),rat:true};}
+    if(kind===3){var r=ri(2,12);return {str:"\\(\\sqrt{"+(r*r)+"}\\)",rat:true};}
+    if(kind===4){return {str:"\\(0.\\overline{"+ri(2,9)+"}\\)",rat:true};}
+    var r5=ri(2,6);return {str:"\\(\\sqrt[3]{"+(r5*r5*r5)+"}\\)",rat:true};
+  }
+  function irrItem(){
+    var kind=ri(1,4);
+    if(kind===1){var n=ri(2,60);var t=0;while(u2isSq(n)&&t<100){n=ri(2,60);t++;}return {str:"\\(\\sqrt{"+n+"}\\)",rat:false};}
+    if(kind===2){var n2=ri(2,80);var t2=0;while(u2isCu(n2)&&t2<100){n2=ri(2,80);t2++;}return {str:"\\(\\sqrt[3]{"+n2+"}\\)",rat:false};}
+    if(kind===3){return {str:"\\(\\pi\\)",rat:false};}
+    return {str:pick(["1.01001000100001...","2.12112111211112...","0.123456789101112...","3.23223222322223..."]),rat:false};
+  }
+  var mode=ri(1,3);
+  if(mode===3){
+    function rawOf(it){var s=it.str;if(s.slice(0,2)==="\\("&&s.slice(-2)==="\\)")return s.slice(2,-2);return s;}
+    function fragSet(wantBad){
+      var frags=[],seenF={},g=0;
+      while(frags.length<3&&g<300){g++;
+        var it=(wantBad&&frags.length===2)?irrItem():ratItem();
+        var f=rawOf(it);
+        if(seenF[f])continue;seenF[f]=1;frags.push(f);}
+      return shuffle(frags);
+    }
+    function setStr(frags){return "\\(\\{"+frags.join(", ")+"\\}\\)";}
+    var good=setStr(fragSet(false));
+    var bads=[],guard=0;
+    while(bads.length<3&&guard<200){guard++;var bs=setStr(fragSet(true));if(bs!==good&&bads.indexOf(bs)<0)bads.push(bs);}
+    return mcq("Which set contains <b>only</b> rational numbers?",
+      good,bads,
+      "A rational number can be written as a ratio of integers, which includes fractions, terminating decimals, repeating decimals, and roots of perfect powers. Roots of numbers that are not perfect powers, \\(\\pi\\), and decimals that go on without repeating are irrational. Only one set avoids all of those. The set with only rational numbers is <b>"+good+"</b>.",
+      {mode:mode,keyStr:good});
+  }
+  var wantIrr=(mode===1);
+  var items=[],seen={};
+  function addItem(it){if(!it||seen[it.str])return;seen[it.str]=1;items.push(it);}
+  if(wantIrr){
+    addItem(irrItem());
+    var g1=0;while(items.length<4&&g1<300){g1++;addItem(ratItem());}
+  }else{
+    addItem(ratItem());
+    var g2=0;while(items.length<4&&g2<300){g2++;addItem(irrItem());}
+  }
+  var target=items.filter(function(x){return x.rat===!wantIrr;})[0];
+  var others=items.filter(function(x){return x!==target;}).map(function(x){return x.str;});
+  return mcq(wantIrr?"Which number is <b>irrational</b>?":"Which number is <b>rational</b>?",
+    target.str,others,
+    "Rational numbers are exactly the numbers that can be written as a ratio of two integers: fractions, terminating or repeating decimals, and roots that come out whole. A root of a number that is not a perfect power, the number \\(\\pi\\), and a decimal that continues without repeating are irrational. The "+(wantIrr?"irrational":"rational")+" number in the list is <b>"+target.str+"</b>.",
+    {mode:mode,items:items,keyStr:target.str});
+});
+
+/* u6-pk-approx: borrowed verbatim from math-1201 entry u2-approx (math-1201:1.20). */
+E("u6-pk-approx",6,["1.8"],2,"gen",function(){
+  var roll=Math.random();
+  if(roll<0.6){
+    var n=ri(2,600),t=0;while(u2isSq(n)&&t<200){n=ri(2,600);t++;}
+    var lo=Math.floor(Math.sqrt(n)),ans=Math.round(Math.sqrt(n)*10)/10;
+    var dLo=n-lo*lo,dHi=(lo+1)*(lo+1)-n;
+    return numq("Give the approximate value of \\(\\sqrt{"+n+"}\\) to one decimal place.",
+      ans,0.051,
+      "Locate \\(\\sqrt{"+n+"}\\) between consecutive perfect squares: \\["+
+      "\\begin{aligned} "+(lo*lo)+" &< "+n+" < "+((lo+1)*(lo+1))+" \\\\ "+lo+" &< \\sqrt{"+n+"} < "+(lo+1)+" \\end{aligned} \\]"+
+      " Since \\("+n+"\\) is closer to \\("+(dLo<dHi?(lo*lo):((lo+1)*(lo+1)))+"\\), the root is closer to \\("+(dLo<dHi?lo:(lo+1))+"\\), and checking tenths gives \\(\\sqrt{"+n+"} \\approx "+ans+"\\). On a number line it sits between \\("+lo+"\\) and \\("+(lo+1)+"\\), nearer \\("+(dLo<dHi?lo:(lo+1))+"\\). The approximate value is <b>\\("+ans+"\\)</b>.",
+      {mode:2,n:n,ans:ans});
+  }
+  if(roll<0.9){
+    var n3=ri(2,600),t3=0;while(u2isCu(n3)&&t3<200){n3=ri(2,600);t3++;}
+    var lo3=Math.floor(Math.cbrt(n3)),ans3=Math.round(Math.cbrt(n3)*10)/10;
+    var dLo3=n3-lo3*lo3*lo3,dHi3=(lo3+1)*(lo3+1)*(lo3+1)-n3;
+    return numq("Give the approximate value of \\(\\sqrt[3]{"+n3+"}\\) to one decimal place.",
+      ans3,0.051,
+      "Locate \\(\\sqrt[3]{"+n3+"}\\) between consecutive perfect cubes: \\["+
+      "\\begin{aligned} "+(lo3*lo3*lo3)+" &< "+n3+" < "+((lo3+1)*(lo3+1)*(lo3+1))+" \\\\ "+lo3+" &< \\sqrt[3]{"+n3+"} < "+(lo3+1)+" \\end{aligned} \\]"+
+      " Since \\("+n3+"\\) is closer to \\("+(dLo3<dHi3?(lo3*lo3*lo3):((lo3+1)*(lo3+1)*(lo3+1)))+"\\), the root is closer to \\("+(dLo3<dHi3?lo3:(lo3+1))+"\\), and checking tenths gives \\(\\sqrt[3]{"+n3+"} \\approx "+ans3+"\\). On a number line it sits between \\("+lo3+"\\) and \\("+(lo3+1)+"\\). The approximate value is <b>\\("+ans3+"\\)</b>.",
+      {mode:3,n:n3,ans:ans3});
+  }
+  var k=ri(2,9),ansP=Math.round(k*Math.PI*100)/100;
+  return numq("Give the approximate value of \\("+k+"\\pi\\) to two decimal places.",
+    ansP,0.011,
+    "Use \\(\\pi \\approx 3.14159\\): \\["+
+    "\\begin{aligned} "+k+"\\pi &\\approx "+k+" \\times 3.14159 \\\\ &\\approx "+ansP+" \\end{aligned} \\]"+
+    " The approximate value is <b>\\("+ansP+"\\)</b>.",
+    {mode:1,k:k,ans:ansP});
+});
+
+/* u6-pk-reciprocal-values: authored micro-item (authored:reciprocal-of-a-value),
+   written for this tranche. */
+E("u6-pk-reciprocal-values",6,["4.33"],1,"gen",function(){
+  var fr=function(p,q){return "\\(\\frac{"+p+"}{"+q+"}\\)";};
+  var frI=function(p,q){return "\\frac{"+p+"}{"+q+"}";};
+  var mode=ri(0,2);
+  if(mode===0){
+    var n=pick([-10,-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9,10]);
+    var keyIn= n>0 ? frI(1,n) : "-"+frI(1,-n);
+    var oppIn= n>0 ? "-"+frI(1,n) : frI(1,-n);
+    return mcq("A function table gives \\(f(3) = "+n+"\\). What is \\(\\frac{1}{f(3)}\\)?",
+      "\\("+keyIn+"\\)",
+      ["\\("+n+"\\)","\\("+(-n)+"\\)","\\("+oppIn+"\\)"],
+      "The reciprocal of a number flips it over and keeps its sign: \\(\\frac{1}{"+n+"} = "+keyIn+"\\). A small number has a large reciprocal, and a negative number has a negative reciprocal. The answer is <b>\\("+keyIn+"\\)</b>.",
+      {mode:"integer",n:n});
+  }
+  if(mode===1){
+    var k=pick([2,3,4,5,6,8,10]);
+    return mcq("A function table gives \\(f(5) = "+frI(1,k)+"\\). What is \\(\\frac{1}{f(5)}\\)?",
+      "\\("+k+"\\)",
+      [fr(1,k),"\\("+(-k)+"\\)",fr(1,k*k)],
+      "The reciprocal of \\("+frI(1,k)+"\\) flips it over: \\(\\frac{1}{1/"+k+"} = "+k+"\\). A number smaller than 1 has a reciprocal larger than 1. The answer is <b>\\("+k+"\\)</b>.",
+      {mode:"unit-fraction",k:k});
+  }
+  var pair=pick([[2,3],[2,5],[3,4],[3,5],[4,5],[2,7],[3,7],[5,6],[5,8],[4,7]]);
+  var p=pair[0],q=pair[1];
+  return mcq("A function table gives \\(f(2) = -"+frI(p,q)+"\\). What is \\(\\frac{1}{f(2)}\\)?",
+    "\\(-"+frI(q,p)+"\\)",
+    [fr(q,p),"\\(-"+frI(p,q)+"\\)",fr(p,q)],
+    "The reciprocal of \\(-"+frI(p,q)+"\\) flips the fraction over and keeps the negative sign: the reciprocal is \\(-"+frI(q,p)+"\\). The answer is <b>\\(-"+frI(q,p)+"\\)</b>.",
+    {mode:"fraction",p:p,q:q});
+}, ["The reciprocal flips the number over.", "The sign does not change when you take a reciprocal."]);
+
+/* PK tranche pass for Unit 6. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U6_FOR=["1.5","1.6","1.7","1.8","1.10","4.1","4.2","4.3","4.4","4.5","4.6","4.7","4.8","4.33","4.34","4.35","4.36"];
+var PKT_U6={
+ "u6-pk-number-line-distance":{src:"authored:number-line-distance",group:"number-line-distance"},
+ "u6-pk-domain-range":{src:"math-1201:4.10",group:"domain-range"},
+ "u6-pk-graph-data":{src:"math-1201:4.9",group:"graphing-data"},
+ "u6-pk-eval-function":{src:"math-1201:4.47",group:"substitution"},
+ "u6-pk-fn-notation":{src:"math-1201:4.45",group:"function-notation"},
+ "u6-pk-sort-numbers":{src:"math-1201:1.18",group:"real-numbers"},
+ "u6-pk-approx":{src:"math-1201:1.20",group:"real-numbers"},
+ "u6-pk-reciprocal-values":{src:"authored:reciprocal-of-a-value",group:"reciprocal-values"}
+};
+BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U6_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u7.js ----- */
 // Math 2200 Unit 7 Systems of Equations question bank
 // CRMARKS: u7-classify-algebraic=2
@@ -4719,6 +6952,283 @@ E("u7-tangent-param", 7, ["4.49", "4.51"], 3, "gen", function () {
     key, u7dist3(key, cands), sol,
     { P: P, M: M, Q: Q, k: kk });
 });
+
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u7-pk-relate: borrowed verbatim from math-1201 entry u6-relate (math-1201:4.51). */
+E("u7-pk-relate",7,["4.48"],1,"var",varset([
+  function(){var key="It says that the total number of muffins and scones bought adds up to 18 items in total";
+    return mcq("Leah buys muffins and scones at a bakery. Let \\(x\\) be the number of muffins and \\(y\\) be the number of scones. One equation in the system for her purchase is \\(x + y = 18\\). What does this equation represent?",
+    key,
+    ["It says that the total cost of the muffins and scones bought comes to 18 dollars in all",
+     "It says that the number of muffins bought is 18 more than the number of scones she bought",
+     "It says that one muffin and one scone bought together cost a combined 18 dollars in all"],
+    "The variables \\(x\\) and \\(y\\) count items, not dollars, so their sum counts items. The equation \\(x + y = 18\\) adds the number of muffins and the number of scones, so <b>it says that the total number of muffins and scones bought adds up to 18 items in total</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="It is the total cost, in dollars, of all the cars that used the parking lot that day";
+    return mcq("A parking lot charges 20 dollars per car and 35 dollars per truck. Let \\(x\\) be the number of cars and \\(y\\) be the number of trucks that used the lot one day, with \\(x + y = 40\\) and \\(20x + 35y = 950\\). In the second equation, what does the term \\(20x\\) represent?",
+    key,
+    ["It is the total number of cars that used the parking lot on that particular busy day",
+     "It is the cost, in dollars, of parking one single car in the lot for one full day there",
+     "It is the total cost, in dollars, of all the trucks that used the lot that day instead"],
+    "The term \\(20x\\) multiplies the price for one car, \\(20\\) dollars, by the number of cars, \\(x\\). A price times a count gives a total cost, so <b>it is the total cost, in dollars, of all the cars that used the parking lot that day</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="It says the total amount spent on smoothies and salads together is exactly 84 dollars";
+    return mcq("At a juice stand, a smoothie costs 6 dollars and a salad costs 9 dollars. Let \\(x\\) be the number of smoothies and \\(y\\) be the number of salads in one order. One equation for the order is \\(6x + 9y = 84\\). What does this equation represent?",
+    key,
+    ["It says the total number of smoothies and salads in the order together is 84 items",
+     "It says one smoothie and one salad in the order together cost a combined 84 dollars",
+     "It says the number of smoothies in the order is 84 more than the number of salads in it"],
+    "Each term multiplies a price by a count: \\(6x\\) is the cost of the smoothies and \\(9y\\) is the cost of the salads. Their sum is a total cost, so <b>it says the total amount spent on smoothies and salads together is exactly 84 dollars</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="The number of junior skaters at the session";
+    return mcq("A skating rink records attendance at a session. Let \\(x\\) be the number of adult skaters and \\(y\\) be the number of junior skaters, with \\(x + y = 52\\) and \\(12x + 7y = 469\\). What does the variable \\(y\\) represent in this system?",
+    key,
+    ["The number of adult skaters at the session",
+     "The total admission money collected at the session",
+     "The admission price charged to one junior skater"],
+    "The first equation, \\(x + y = 52\\), adds two counts of people to get the total attendance, so each variable counts one group of skaters. Since \\(x\\) counts the adult skaters, \\(y\\) is <b>the number of junior skaters at the session</b>.",
+    {keyText:key});}
+]));
+
+/* u7-pk-intersection: borrowed verbatim from math-1201 entry u6-intersection (math-1201:4.52). */
+E("u7-pk-intersection",7,["4.48"],1,"var",varset([
+  function(){var key="When 18 posters are printed, both plans charge the same total cost, which is 126 dollars";
+    return mcq("Two printing plans are graphed with cost in dollars against the number of posters printed. The graphs cross at the point \\((18, 126)\\). What does this point mean for the two plans?",
+    key,
+    ["When 126 posters are printed, both plans charge the same total cost, which is 18 dollars",
+     "After 18 posters are printed, one of the plans stops charging and the work becomes free",
+     "When 18 posters are printed, the two plans together charge a combined cost of 126 dollars"],
+    "On the graph, the first coordinate counts posters and the second coordinate gives cost in dollars. Where the graphs cross, both plans give the same cost for the same number of posters. So the point means: <b>when 18 posters are printed, both plans charge the same total cost, which is 126 dollars</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="After 3 hours of riding, both cyclists are the same distance of 24 km from the start line";
+    return mcq("Two cyclists leave the same start line, and each rider has a graph of distance from the start against time. The graphs cross at the point \\((3, 24)\\). What does this point mean for the two cyclists?",
+    key,
+    ["After 24 hours of riding, both cyclists are the same distance of 3 km from the start line",
+     "After 3 hours of riding, the two cyclists have covered 24 km when their distances are added",
+     "After 3 hours of riding, one cyclist stops for a rest and the other rider carries on alone"],
+    "The first coordinate is the time in hours and the second is the distance from the start in kilometres. At a crossing point, both graphs share the same time and the same distance. So the point means: <b>after 3 hours of riding, both cyclists are the same distance of 24 km from the start line</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="After 5 minutes of filling, both tanks hold the same amount of water, which is 40 litres";
+    return mcq("Two water tanks are being filled, and each tank has a graph of the volume of water against time. The graphs cross at the point \\((5, 40)\\). What does this point mean for the two tanks?",
+    key,
+    ["After 40 minutes of filling, both tanks hold the same amount of water, which is 5 litres",
+     "After 5 minutes of filling, the two tanks together hold a combined amount of 40 litres",
+     "After 5 minutes of filling, one tank is completely full and the other tank is fully empty"],
+    "The first coordinate is the time in minutes and the second is the volume in litres. Where the graphs cross, the two tanks are measured at the same time and hold the same volume. So the point means: <b>after 5 minutes of filling, both tanks hold the same amount of water, which is 40 litres</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="After 2 hours of hiking, both hikers stand at the same height of 150 m above the valley";
+    return mcq("Two hikers climb from the same valley, and each hiker has a graph of height above the valley against time. The graphs cross at the point \\((2, 150)\\). What does this point mean for the two hikers?",
+    key,
+    ["After 150 hours of hiking, both hikers stand at the same height of 2 m above the valley",
+     "After 2 hours of hiking, the two hikers have heights that add together to give 150 m",
+     "After 2 hours of hiking, one hiker reaches the summit and the other turns back to camp"],
+    "The first coordinate is the time in hours and the second is the height in metres. At a crossing point, both hikers share the same time and the same height. So the point means: <b>after 2 hours of hiking, both hikers stand at the same height of 150 m above the valley</b>.",
+    {stmt:true,keyText:key});}
+]));
+
+/* u7-pk-solve-graph: borrowed verbatim from math-1201 entry u6-solve-graph (math-1201:4.53). */
+E("u7-pk-solve-graph",7,["4.50"],2,"gen",function(){
+  var X=ri(-4,8),Y=ri(-3,11);
+  var slopes=[-3,-2,-1,1,2,3];
+  var m1=pick(slopes),m2=pick(slopes),t=0;
+  while(m2===m1&&t<50){m2=pick(slopes);t++;}
+  var b1=Y-m1*X,b2=Y-m2*X;
+  var ask=pick(["x","y"]),ans=(ask==="x"?X:Y),mode=ri(1,2);
+  if(mode===1){
+    return numq("A graph shows two straight lines. The first line has slope \\("+m1+"\\) and \\(y\\)-intercept \\("+b1+"\\). The second line has slope \\("+m2+"\\) and \\(y\\)-intercept \\("+b2+"\\). The lines intersect at one point. By writing an equation for each line, determine the \\("+ask+"\\)-value of the point of intersection.",
+      ans,0.001,
+      "Write each line in slope-intercept form: "+u6meetSol(m1,b1,m2,b2,X,Y,ask),
+      {mode:mode,m1:m1,b1:b1,m2:m2,b2:b2,X:X,Y:Y,ask:ask,ans:ans});
+  }
+  var dx1=ri(1,3),dx2=ri(1,3);
+  var pts=[[X-dx1,Y-m1*dx1],[X+dx1,Y+m1*dx1],[X-dx2,Y-m2*dx2],[X+dx2,Y+m2*dx2]];
+  return numq("A graph shows two straight lines. The first line passes through the points \\("+u6pair(pts[0][0],pts[0][1])+"\\) and \\("+u6pair(pts[1][0],pts[1][1])+"\\). The second line passes through the points \\("+u6pair(pts[2][0],pts[2][1])+"\\) and \\("+u6pair(pts[3][0],pts[3][1])+"\\). The lines intersect at one point. By writing an equation for each line, determine the \\("+ask+"\\)-value of the point of intersection.",
+    ans,0.001,
+    "Find the slope of each line from its two points, then write each equation. The first line has slope \\("+m1+"\\) and equation \\("+u6yEq(m1,b1)+"\\); the second line has slope \\("+m2+"\\) and equation \\("+u6yEq(m2,b2)+"\\). "+u6meetSol(m1,b1,m2,b2,X,Y,ask),
+    {mode:mode,pts:pts,X:X,Y:Y,ask:ask,ans:ans});
+});
+
+/* u7-pk-verify: borrowed verbatim from math-1201 entry u6-verify (math-1201:4.53). */
+E("u7-pk-verify",7,["4.51"],1,"gen",function(){
+  var m1=pick([-3,-2,-1,1,2,3]),m2=pick([-3,-2,-1,1,2,3]),t=0;
+  while(m2===m1&&t<50){m2=pick([-3,-2,-1,1,2,3]);t++;}
+  var b1=ri(-8,8),b2=ri(-8,8),cat=ri(1,4),px,py;
+  if(cat===1){px=ri(-5,8);py=m1*px+b1;b2=py-m2*px;}
+  else if(cat===2){px=ri(-5,8);py=m1*px+b1;var g=0;while(py===m2*px+b2&&g<50){px++;py=m1*px+b1;g++;}}
+  else if(cat===3){px=ri(-5,8);py=m2*px+b2;var g2=0;while(py===m1*px+b1&&g2<50){px++;py=m2*px+b2;g2++;}}
+  else{px=ri(-5,8);py=m1*px+b1+pick([2,3,4]);var g3=0;while(py===m2*px+b2&&g3<50){py++;g3++;}}
+  var key=(cat===1?"Yes, it is a solution because it satisfies both equations in the system":
+    cat===2?"No, it is not a solution, because it satisfies the first equation alone":
+    cat===3?"No, it is not a solution, because it satisfies the second equation only":
+    "No, it is not a solution, because it satisfies neither of the equations");
+  var all=["Yes, it is a solution because it satisfies both equations in the system",
+    "No, it is not a solution, because it satisfies the first equation alone",
+    "No, it is not a solution, because it satisfies the second equation only",
+    "No, it is not a solution, because it satisfies neither of the equations"];
+  var ds=all.filter(function(s){return s!==key;});
+  var v1=m1*px+b1,v2=m2*px+b2;
+  return mcq("Consider the system \\("+u6yEq(m1,b1)+"\\) and \\("+u6yEq(m2,b2)+"\\) (first equation listed first). Is the ordered pair \\("+u6pair(px,py)+"\\) a solution of the system?",
+    key,ds,
+    "A solution must satisfy both equations. Substitute \\(x = "+px+"\\) and \\(y = "+py+"\\) into each one: \\["+
+    "\\begin{aligned} "+m1+"("+px+")"+u6sgn(b1)+" &= "+v1+" \\\\ "+m2+"("+px+")"+u6sgn(b2)+" &= "+v2+" \\end{aligned} \\]"+
+    " The pair gives \\(y = "+v1+"\\) in the first equation and \\(y = "+v2+"\\) in the second, while the pair itself has \\(y = "+py+"\\). So the pair <b>"+(cat===1?"satisfies both equations and is a solution":(cat===2?"satisfies the first equation only, so it is not a solution":(cat===3?"satisfies the second equation only, so it is not a solution":"satisfies neither equation, so it is not a solution")))+"</b>.",
+    {m1:m1,b1:b1,m2:m2,b2:b2,px:px,py:py,cat:cat,stmt:true,keyText:key});
+});
+
+/* u7-pk-solve-algebra: borrowed verbatim from math-1201 entry u6-solve-algebra (math-1201:4.55). */
+E("u7-pk-solve-algebra",7,["4.51"],2,"gen",function(){
+  var X=ri(-4,9),Y=ri(-3,10);
+  var m=pick([-3,-2,-1,1,2,3]),mode=ri(1,2);
+  var b=(mode===1)?(Y-m*X):(X-m*Y);
+  var p,q,d,t=0;
+  do{p=ri(-4,4);q=ri(-4,4);t++;}while(t<200&&((p===0||q===0)||(mode===1?(p+q*m===0):(q+p*m===0))));
+  d=p*X+q*Y;
+  var ask=pick(["x","y"]),ans=(ask==="x"?X:Y);
+  var givenEq,otherEq,sol;
+  if(mode===1){
+    givenEq=u6yEq(m,b);otherEq=u6std(p,q,d);
+    var coef=p+q*m,rest=d-q*b;
+    var qPart=(q>0?(" + "+(Math.abs(q)===1?"":Math.abs(q))+"("+u6yRHS(m,b)+")"):(" - "+(Math.abs(q)===1?"":Math.abs(q))+"("+u6yRHS(m,b)+")"));
+    sol="The first equation is already solved for \\(y\\), so substitute its right side into the second equation: \\["+
+    "\\begin{aligned} "+u6coefVar(p,"x")+qPart+" &= "+d+" \\\\ "+u6coefVar(coef,"x")+u6sgn(q*b)+" &= "+d+" \\\\ "+u6coefVar(coef,"x")+" &= "+rest+" \\\\ x &= "+X+" \\end{aligned} \\]"+
+    " Substitute \\(x = "+X+"\\) back into \\("+givenEq+"\\) to get \\(y\\): \\["+
+    "\\begin{aligned} y &= "+m+"("+X+")"+u6sgn(b)+" \\\\ y &= "+Y+" \\end{aligned} \\]"+
+    " The solution is \\("+u6pair(X,Y)+"\\) (check in the second equation: \\("+p+"("+X+")"+(q>0?(" + "+q+"("+Y+")"):(" - "+(-q)+"("+Y+")"))+" = "+d+"\\)). The "+ask+"-value is <b>\\("+ans+"\\)</b>.";
+  }else{
+    givenEq="x = "+u6coefVar(m,"y")+u6sgn(b);otherEq=u6std(p,q,d);
+    var coef2=q+p*m,rest2=d-p*b;
+    var pPart=(p>0?((Math.abs(p)===1?"":Math.abs(p))+"("+u6coefVar(m,"y")+u6sgn(b)+")"):(" - "+(Math.abs(p)===1?"":Math.abs(p))+"("+u6coefVar(m,"y")+u6sgn(b)+")"));
+    var lead=(p>0?pPart:(" - "+(Math.abs(p)===1?"":Math.abs(p))+"("+u6coefVar(m,"y")+u6sgn(b)+")"));
+    /* build the substituted left side carefully: p*(x expression) followed by the q y term */
+    var subLhs=(p>0?((p===1?"":p)+"("):("-"+(p===-1?"":(-p))+"("))+u6coefVar(m,"y")+u6sgn(b)+")"+(q>0?(" + "+u6coefVar(q,"y")):(" - "+u6coefVar(-q,"y")));
+    sol="The first equation is already solved for \\(x\\), so substitute its right side into the second equation: \\["+
+    "\\begin{aligned} "+subLhs+" &= "+d+" \\\\ "+u6coefVar(coef2,"y")+u6sgn(p*b)+" &= "+d+" \\\\ "+u6coefVar(coef2,"y")+" &= "+rest2+" \\\\ y &= "+Y+" \\end{aligned} \\]"+
+    " Substitute \\(y = "+Y+"\\) back into \\("+givenEq+"\\) to get \\(x\\): \\["+
+    "\\begin{aligned} x &= "+m+"("+Y+")"+u6sgn(b)+" \\\\ x &= "+X+" \\end{aligned} \\]"+
+    " The solution is \\("+u6pair(X,Y)+"\\) (check in the second equation: \\("+p+"("+X+")"+(q>0?(" + "+q+"("+Y+")"):(" - "+(-q)+"("+Y+")"))+" = "+d+"\\)). The "+ask+"-value is <b>\\("+ans+"\\)</b>.";
+  }
+  return numq("Solve this system of equations using substitution, and give the "+ask+"-value of the solution: \\[ \\begin{aligned} "+givenEq+" \\\\ "+otherEq+" \\end{aligned} \\]",
+    ans,0.001,sol,
+    {mode:mode,m:m,b:b,p:p,q:q,d:d,X:X,Y:Y,ask:ask,ans:ans});
+});
+
+/* u7-pk-solve-elimination: borrowed verbatim from math-1201 entry u6-solve-elimination (math-1201:4.55). */
+E("u7-pk-solve-elimination",7,["4.51"],2,"gen",function(){
+  var X=ri(-5,9),Y=ri(-4,10);
+  var a1=ri(-4,4),b1=ri(-3,3),t=0;
+  while((a1===0||b1===0)&&t<100){a1=ri(-4,4);b1=ri(-3,3);t++;}
+  var mode=ri(1,3),a2,b2,k=1;
+  if(mode===1){b2=-b1;a2=ri(-4,4);var t1=0;while((a2===0||a2===-a1)&&t1<100){a2=ri(-4,4);t1++;}}
+  else if(mode===2){b2=b1;a2=ri(-4,4);var t2=0;while((a2===0||a2===a1)&&t2<100){a2=ri(-4,4);t2++;}}
+  else{k=pick([2,3]);b2=-k*b1;a2=ri(-4,4);var t3=0;while((a2===0||k*a1+a2===0)&&t3<100){a2=ri(-4,4);t3++;}}
+  var c1=a1*X+b1*Y,c2=a2*X+b2*Y;
+  var ask=pick(["x","y"]),ans=(ask==="x"?X:Y);
+  var elimLine,firstLines;
+  if(mode===1){
+    firstLines=u6std(a1,b1,c1)+" \\\\ "+u6std(a2,b2,c2);
+    elimLine="Add the two equations so the \\(y\\) terms cancel: \\["+
+    "\\begin{aligned} "+firstLines+" \\\\ "+u6coefVar(a1+a2,"x")+" &= "+(c1+c2)+" \\\\ x &= "+X+" \\end{aligned} \\]";
+  }else if(mode===2){
+    firstLines=u6std(a1,b1,c1)+" \\\\ "+u6std(a2,b2,c2);
+    elimLine="Subtract the second equation from the first so the \\(y\\) terms cancel: \\["+
+    "\\begin{aligned} "+firstLines+" \\\\ "+u6coefVar(a1-a2,"x")+" &= "+(c1-c2)+" \\\\ x &= "+X+" \\end{aligned} \\]";
+  }else{
+    firstLines=u6std(k*a1,k*b1,k*c1)+" \\\\ "+u6std(a2,b2,c2);
+    elimLine="Multiply the first equation by \\("+k+"\\) so the \\(y\\) terms become opposites, then add: \\["+
+    "\\begin{aligned} "+firstLines+" \\\\ "+u6coefVar(k*a1+a2,"x")+" &= "+(k*c1+c2)+" \\\\ x &= "+X+" \\end{aligned} \\]";
+  }
+  var subTerm=(b1>0?(" + "+u6coefVar(b1,"y")):(" - "+u6coefVar(-b1,"y")));
+  var sol=elimLine+" Substitute \\(x = "+X+"\\) into the first equation to get \\(y\\): \\["+
+  "\\begin{aligned} "+(a1*X)+subTerm+" &= "+c1+" \\\\ "+u6coefVar(b1,"y")+" &= "+(c1-a1*X)+" \\\\ y &= "+Y+" \\end{aligned} \\]"+
+  " The solution is \\("+u6pair(X,Y)+"\\) (check in the second equation: \\("+a2+"("+X+")"+(b2>0?(" + "+b2+"("+Y+")"):(" - "+(-b2)+"("+Y+")"))+" = "+c2+"\\), confirming the solution in both equations). The "+ask+"-value is <b>\\("+ans+"\\)</b>.";
+  return numq("Solve this system of equations using elimination, and give the "+ask+"-value of the solution: \\[ \\begin{aligned} "+u6std(a1,b1,c1)+" \\\\ "+u6std(a2,b2,c2)+" \\end{aligned} \\]",
+    ans,0.001,sol,
+    {mode:mode,k:k,a1:a1,b1:b1,a2:a2,b2:b2,c1:c1,c2:c2,X:X,Y:Y,ask:ask,ans:ans});
+});
+
+/* u7-pk-strategy: borrowed verbatim from math-1201 entry u6-strategy (math-1201:4.56). */
+E("u7-pk-strategy",7,["4.51"],1,"var",varset([
+  function(){var key="Use substitution, because the first equation already gives y directly in terms of x, so it drops right into the second equation";
+    return mcq("A system begins with the equation \\(y = 3x - 2\\), followed by \\(2x + 5y = 31\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use elimination, because the second equation has coefficients 2 and 5, and those numbers line up for adding right away here",
+     "Use graphing, because the first equation already gives y directly in terms of x, and a picture is the only way to use that fact",
+     "Use substitution, because the second equation has both variables in it, so the first equation cannot be used anywhere at all"],
+    "Substitution works when one variable is already isolated. Here \\(y\\) is given directly as \\(3x - 2\\), so replacing \\(y\\) in the second equation leaves one equation in \\(x\\) alone. The best fit is <b>substitution, because the first equation already gives y directly in terms of x</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use elimination here, because the x terms are opposites, so adding the two equations removes x in a single step right away";
+    return mcq("A system consists of \\(4x + 3y = 26\\) and \\(-4x + 5y = 6\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use substitution, because the x terms are opposites, so one variable must be isolated before anything can be combined here",
+     "Use elimination, because the y terms are opposites, so adding the two equations removes y in a single step right away here",
+     "Use graphing, because the x terms are opposites, so only a picture can show what happens when the equations are combined"],
+    "Elimination works when one pair of terms cancels on adding or subtracting. Here the \\(x\\) terms, \\(4x\\) and \\(-4x\\), are opposites, so adding the equations removes \\(x\\) at once and leaves a single equation in \\(y\\). The best fit is <b>elimination, because the x terms are opposites</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use graphing, because the question asks only for an estimate of where the lines meet, and the graph gives that estimate directly";
+    return mcq("A question gives two lines drawn on a grid and asks for an estimate of the point where the two lines cross. Which strategy fits this task best, and why?",
+    key,
+    ["Use substitution, because the question asks only for an estimate of where the lines meet, and algebra gives exact values only",
+     "Use elimination, because the question asks only for an estimate of where the lines meet, and the coefficients are already lined up",
+     "Use graphing, because the question asks only for an exact algebraic answer, and a graph is the tool that produces exact values"],
+    "When only an estimate is needed and the lines are already drawn, reading the crossing point off the graph is the direct route; algebra would give an exact answer the question did not ask for. The best fit is <b>graphing, because the question asks only for an estimate of where the lines meet</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use substitution, because the second equation already gives x directly in terms of y, so it drops right into the first equation";
+    return mcq("A system consists of \\(3x - 2y = 12\\) and \\(x = 4y + 1\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use elimination, because the first equation has coefficients 3 and 2, and those numbers line up for adding right away here",
+     "Use graphing, because the second equation already gives x directly in terms of y, and a picture is the only way to use that fact",
+     "Use substitution, because the first equation has both variables in it, so the second equation cannot be used anywhere at all"],
+    "Substitution works when one variable is already isolated. Here \\(x\\) is given directly as \\(4y + 1\\), so replacing \\(x\\) in the first equation leaves one equation in \\(y\\) alone. The best fit is <b>substitution, because the second equation already gives x directly in terms of y</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use elimination, because tripling the first equation lines the x terms up, so subtracting then removes x in one clean step";
+    return mcq("A system consists of \\(2x + y = 9\\) and \\(6x - y = 7\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use substitution, because tripling the first equation lines the x terms up, so one variable must be isolated beforehand",
+     "Use elimination, because doubling the second equation lines the x terms up, so subtracting then removes x in one clean step",
+     "Use graphing, because tripling the first equation lines the x terms up, so only a picture can show the two equations combined"],
+    "Elimination also works after one equation is multiplied to line up a pair of terms. Tripling the first equation makes its \\(x\\) term \\(6x\\), matching the second equation, so subtracting removes \\(x\\). The best fit is <b>elimination, because tripling the first equation lines the x terms up</b>.",
+    {stmt:true,keyText:key});}
+]));
+
+/* u7-pk-solve-by-factoring: authored micro-item (authored:solve-quadratic-by-factoring),
+   written for this tranche. */
+E("u7-pk-solve-by-factoring",7,["4.51"],2,"gen",function(){
+  var lo=0,hi=0,tries=0;
+  do { var r1=ri(-6,6),r2=ri(-6,8); lo=Math.min(r1,r2); hi=Math.max(r1,r2); tries++; } while((lo===hi||lo===0||hi===0)&&tries<80);
+  var B=-(lo+hi), C=lo*hi;
+  var lin=function(v){ return v===1?"x":(v===-1?"-x":v+"x"); };
+  var eq="x^2";
+  if(B!==0) eq+= B>0 ? " + "+lin(B) : " - "+lin(-B);
+  eq+= C>0 ? " + "+C : " - "+(-C);
+  var fac=function(r){ return r>0 ? "(x - "+r+")" : "(x + "+(-r)+")"; };
+  var askLarger=ri(0,1)===0;
+  var ans=askLarger?hi:lo;
+  return numq("Solve the equation \\("+eq+" = 0\\) by factoring. What is the "+(askLarger?"larger":"smaller")+" root?",
+    ans,0.01,
+    "The quadratic factors as \\("+eq+" = "+fac(lo)+fac(hi)+"\\). A product is 0 when one of its factors is 0, so \\(x = "+lo+"\\) or \\(x = "+hi+"\\). The "+(askLarger?"larger":"smaller")+" root is <b>"+ans+"</b>.",
+    {lo:lo,hi:hi,ans:ans});
+}, ["Find two numbers that multiply to the constant term and add to the middle coefficient.", "Set each factor equal to 0."]);
+
+/* PK tranche pass for Unit 7. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U7_FOR=["4.48","4.49","4.50","4.51","4.52","4.53","4.54"];
+var PKT_U7={
+ "u7-pk-relate":{src:"math-1201:4.51",group:"intersection-meaning"},
+ "u7-pk-intersection":{src:"math-1201:4.52",group:"intersection-meaning"},
+ "u7-pk-solve-graph":{src:"math-1201:4.53",group:"systems-graphical"},
+ "u7-pk-verify":{src:"math-1201:4.53",group:"verify-solution"},
+ "u7-pk-solve-algebra":{src:"math-1201:4.55",group:"systems-algebraic"},
+ "u7-pk-solve-elimination":{src:"math-1201:4.55",group:"systems-algebraic"},
+ "u7-pk-strategy":{src:"math-1201:4.56",group:"systems-algebraic"},
+ "u7-pk-solve-by-factoring":{src:"authored:solve-quadratic-by-factoring",group:"solve-quadratic"}
+};
+BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U7_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u8.js ----- */
 // Math 2200 Unit 8 Linear and Quadratic Inequalities question bank
@@ -5305,6 +7815,105 @@ E("u8-scenario-solve", 8, ["4.16", "4.17"], 2, "gen", function () {
    tools. */
 BANK.forEach(function(e){if(["u8-solve-linear-basic","u8-solve-linear-flip","u8-numberline-read"].indexOf(e.id)>=0)e.pkFlag=true;});
 
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u8-pk-graph-to-ineq: borrowed verbatim from math-9 entry u5-graph-to-ineq (math-9:8.24). */
+E("u8-pk-graph-to-ineq",8,["4.24"], 1, "gen", function () {
+  var k = ri(-8, 8), r = pick(["lt", "gt", "le", "ge"]);
+  var closed = (r === "le" || r === "ge"), dir = (r === "gt" || r === "ge") ? "right" : "left";
+  var corr = n5ineqTex("x", r, fmt(k));
+  var others = ["lt", "gt", "le", "ge"].filter(function (s) { return s !== r; });
+  var fbMap = { lt: "That uses a strict sign the wrong way for this graph; check the circle and the shading direction.", gt: "That points the shading the wrong way or uses the wrong circle for this graph.", le: "That does not match both the circle type and the shading direction in the graph.", ge: "That does not match both the circle type and the shading direction in the graph." };
+  var ds = others.map(function (s) { return { t: n5ineqTex("x", s, fmt(k)), fb: fbMap[s] }; });
+  var sol = "The circle sits at \\(" + fmt(k) + "\\), it is " + (closed ? "closed, so the endpoint is included and the sign has an equals part" : "open, so the endpoint is not included and the sign is strict") + ", and the shading goes to the " + dir + ". So the graph represents <b>" + corr + "</b>.";
+  var q = mcq("The number line in the diagram graphs an inequality. Which inequality does the graph represent?", { t: corr, fb: "Correct: the circle type, its position and the shading direction all match." }, ds, sol, { mode: "graph-to-ineq", r: r, k: k });
+  q.figure = n5line(k, closed, dir);
+  return q;
+}, ["Read the graph in three parts: where the circle sits, whether it is open or closed, and which way the shading goes.", "First find the number under the circle; that is the boundary value in every choice."]);
+
+/* u8-pk-graph-boundary: borrowed verbatim from math-9 entry u5-graph-boundary (math-9:8.24). */
+E("u8-pk-graph-boundary",8,["4.24"], 1, "gen", function () {
+  var k = ri(-9, 9), r = pick(["lt", "gt", "le", "ge"]);
+  var closed = (r === "le" || r === "ge"), dir = (r === "gt" || r === "ge") ? "right" : "left";
+  var sol = "The circle always sits on the boundary value of the inequality, the number the variable is compared with: \\[ \\begin{aligned} x &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(k) + " \\end{aligned} \\] So the circle sits on <b>" + fmt(k) + "</b>.";
+  return numq("The inequality \\(" + "x " + n5sym(r) + " " + fmt(k) + "\\) is graphed on a number line. The graph has a" + (closed ? " closed" : "n open") + " circle and the shading goes to the " + dir + ". On what number does the circle sit?", k, 0.01, sol, { mode: "boundary", r: r, k: k });
+}, ["The circle sits on the number the variable is compared with in the inequality.", "First find the constant on the other side of the inequality sign from x."]);
+
+/* u8-pk-solve-ineq-pos-div: borrowed verbatim from math-9 entry u5-solve-ineq-pos-div (math-9:8.26). */
+E("u8-pk-solve-ineq-pos-div",8,["4.24"], 2, "gen", function () {
+  var a = ri(2, 8), k = ri(-6, 9), b = ri(-11, 11); if (b === 0) b = 4;
+  var c = a * k + b, r = pick(["lt", "gt", "le", "ge"]), fr = n5flip(r);
+  var alt = n5fracTex(c + b, a);
+  var corr = n5ineqTex("x", r, fmt(k));
+  var ds = [
+    { t: n5ineqTex("x", fr, fmt(k)), fb: "The boundary is right, but dividing by a positive number keeps the sign direction; it does not flip." },
+    { t: n5ineqTex("x", r, alt), fb: "That boundary comes from moving the constant the wrong way before dividing." },
+    { t: n5ineqTex("x", fr, alt), fb: "That has both slips: the constant was moved the wrong way and the sign was flipped needlessly." }
+  ];
+  var sol = "Isolate x step by step; the divisor is positive, so the sign stays as it is: \\[ \\begin{aligned} " + n5lin(a, b) + " &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(c) + " \\\\ " + fmt(a) + "x &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(c - b) + " \\\\ x &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(k) + " \\end{aligned} \\] So the solution is <b>" + corr + "</b>.";
+  return mcq("Solve the inequality \\(" + n5lin(a, b) + " " + n5sym(r) + " " + fmt(c) + "\\). Which inequality is the solution?", { t: corr, fb: "Correct: the constant was undone, then both sides were divided by the positive coefficient." }, ds, sol, { mode: "pos-div", a: a, b: b, c: c, r: r });
+}, ["Solve it like the matching equation, and remember dividing by a positive number never flips the sign.", "First undo the constant term, then divide both sides by the coefficient of x."]);
+
+/* u8-pk-solve-ineq-two-step: borrowed verbatim from math-9 entry u5-solve-ineq-two-step-choose (math-9:8.27). */
+E("u8-pk-solve-ineq-two-step",8,["4.24"], 2, "gen", function () {
+  var a = ri(2, 8), k = ri(-6, 9), b = ri(2, 11), c = a * k - b, r = pick(["lt", "gt", "le", "ge"]), fr = n5flip(r);
+  var alt = n5fracTex(c - b, a);
+  var corr = n5ineqTex("x", r, fmt(k));
+  var ds = [
+    { t: n5ineqTex("x", fr, fmt(k)), fb: "The boundary is right, but nothing here flips the sign: the coefficient of x is positive." },
+    { t: n5ineqTex("x", r, alt), fb: "That boundary comes from subtracting the constant again instead of adding it back." },
+    { t: n5ineqTex("x", fr, alt), fb: "That has both slips: the constant was handled the wrong way and the sign was flipped needlessly." }
+  ];
+  var sol = "Undo the subtraction by adding to both sides, then divide by the positive coefficient: \\[ \\begin{aligned} " + fmt(a) + "x-" + fmt(b) + " &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(c) + " \\\\ " + fmt(a) + "x &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(c + b) + " \\\\ x &" + (r === "lt" || r === "le" ? "<" : ">") + " " + fmt(k) + " \\end{aligned} \\] So the fully correct solution is <b>" + corr + "</b>.";
+  return mcq("Which inequality is the fully correct solution of \\(" + fmt(a) + "x - " + fmt(b) + " " + n5sym(r) + " " + fmt(c) + "\\)?", { t: corr, fb: "Correct: both steps are right and the sign direction is unchanged." }, ds, sol, { mode: "two-step-choose", a: a, b: b, c: c, r: r });
+}, ["Work the solution yourself, one step at a time, then match it against the choices.", "First undo the constant term by adding it to both sides, then divide."]);
+
+/* u8-pk-context-graph: borrowed verbatim from math-9 entry u5-context-graph (math-9:8.30). */
+E("u8-pk-context-graph",8,["4.19"], 1, "gen", function () {
+  var ctxs = [
+    { v: "s", r: "le", text: function (k) { return "A school club can spend at most $" + fmt(k) + " on supplies. Let s be the amount spent, in dollars."; } },
+    { v: "a", r: "ge", text: function (k) { return "Riders must be at least " + fmt(k) + " cm tall for a certain ride. Let a be a rider's height, in centimetres."; } },
+    { v: "p", r: "lt", text: function (k) { return "Each piece cut from a board must be shorter than " + fmt(k) + " cm. Let p be the length of a piece, in centimetres."; } },
+    { v: "g", r: "gt", text: function (k) { return "A team needs to score more than " + fmt(k) + " points to advance. Let g be the points the team scores."; } }
+  ];
+  var cx = pick(ctxs), k = ri(6, 40) * pick([1, 1, 2, 5]);
+  var closed = (cx.r === "le" || cx.r === "ge"), dir = (cx.r === "gt" || cx.r === "ge") ? "right" : "left";
+  var corr = n5ineqTex(cx.v, cx.r, fmt(k));
+  var others = ["lt", "gt", "le", "ge"].filter(function (s) { return s !== cx.r; });
+  var ds = others.map(function (s) { return { t: n5ineqTex(cx.v, s, fmt(k)), fb: "That inequality does not match the graph: check the circle type and the shading direction against the story." }; });
+  var sol = "The story gives the boundary \\(" + fmt(k) + "\\), and the graph shows a " + (closed ? "closed" : "open") + " circle there with shading to the " + dir + ". So the inequality for the situation is <b>" + corr + "</b>.";
+  var q = mcq(cx.text(k) + " The number line in the diagram graphs the amounts that fit the situation. Which inequality describes the situation?", { t: corr, fb: "Correct: the variable, boundary, circle type and shading direction all match the story." }, ds, sol, { mode: "context-graph", r: cx.r, k: k, v: cx.v });
+  q.figure = n5line(k, closed, dir);
+  return q;
+}, ["Translate the story into an inequality, then check it against the circle and shading in the graph.", "First find the boundary number in the story; the graph circle sits on that same number."]);
+
+/* PK tranche pass for Unit 8. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U8_FOR=["4.16","4.17","4.18","4.19","4.20","4.21","4.22","4.23","4.24","4.25","4.26"];
+var PKT_U8={
+ "u8-pk-graph-to-ineq":{src:"math-9:8.24",group:"inequality-graphing"},
+ "u8-pk-graph-boundary":{src:"math-9:8.24",group:"inequality-graphing"},
+ "u8-pk-solve-ineq-pos-div":{src:"math-9:8.26",group:"inequality-solving"},
+ "u8-pk-solve-ineq-two-step":{src:"math-9:8.27",group:"inequality-solving"},
+ "u8-pk-context-graph":{src:"math-9:8.30",group:"inequality-context"}
+};
+BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U8_FOR.slice();e.pkGroup=t.group;}});
+
+/* PK tranche metadata completion for Unit 8 (Nov 15, 2026): the
+   three entries flagged in the Nov 13, 2026 pass above gain their
+   pkSrc, pkFor and pkGroup records. They are not retagged and not
+   reflagged; the flag pass above already set pkFlag. */
+var PKT_U8_META={
+ "u8-solve-linear-basic":{src:"math-9:8.27",group:"inequality-solving"},
+ "u8-solve-linear-flip":{src:"math-9:8.26",group:"inequality-solving"},
+ "u8-numberline-read":{src:"math-9:8.24",group:"inequality-graphing"}};
+BANK.forEach(function(e){var t=PKT_U8_META[e.id];if(t){e.pkSrc=t.src;e.pkFor=PKT_U8_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u9.js ----- */
 // Math 2200 Unit 9 Sequences and Series question bank
 // CRMARKS: u9-arith-diff=1
@@ -5848,6 +8457,222 @@ E("u9-crossover", 9, ["4.59", "4.60"], 3, "gen", function () {
   var sol = "Both amounts form arithmetic sequences. The gap between them starts at \\(" + (A0 - B0) + "\\) and closes by \\(" + dB + " - " + dA + " = " + (dB - dA) + "\\) each " + c.unit + ". B first moves ahead when \\((n - 1)(" + (dB - dA) + ") > " + (A0 - B0) + "\\), which first happens at \\(n = " + n + "\\). Checking the two " + c.unit + "s either side: in " + c.unit + " " + (n - 1) + " the amounts are \\(" + aPrev + "\\) and \\(" + bPrev + "\\) (B still behind), and in " + c.unit + " " + n + " they are \\(" + aNow + "\\) and \\(" + bNow + "\\), so B is first ahead in " + c.unit + " " + n + ".";
   return numq(prompt, n, 0.01, sol, { ctx: c.key, A0: A0, B0: B0, dA: dA, dB: dB });
 });
+
+/* ============ Prior knowledge tranche (Nov 15, 2026) ============ */
+/* Borrowed verbatim from the feeder banks named in the source
+   comments and the PKT table below, plus authored micro-items
+   where the prior knowledge map names a skill no feeder entry
+   assesses. Spec: Math-2200-PK-Tranche-Spec-2026-11-15.md. */
+
+/* u9-pk-pattern-word: borrowed verbatim from math-9 entry u6-pattern-word-total (math-9:7.1). */
+E("u9-pk-pattern-word",9,["4.57"], 1, "gen", function () {
+  var S = ri(4, 48), r = ri(2, 9), N = ri(11, 30);
+  var ctx = pick([
+    "A savings jar starts with $" + S + ". Each week, $" + r + " is added to the jar. How much money, in dollars, is in the jar after " + N + " weeks?",
+    "A tomato plant is " + S + " cm tall. It grows " + r + " cm each week. How tall, in centimetres, is the plant after " + N + " weeks?",
+    "A reader has finished " + S + " pages of a novel. She reads " + r + " more pages each day. How many pages has she finished after " + N + " days?",
+    "A water tank holds " + S + " litres. A hose adds " + r + " litres each hour. How many litres are in the tank after " + N + " hours?"
+  ]);
+  var ans = S + r * N;
+  var sol = "Start with the opening amount, then add the step once for each stage: \\[ \\begin{aligned} \\text{total} &= " + S + " + " + fmt(r) + " \\times " + N + " \\\\ &= " + S + " + " + fmt(r * N) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the total after " + N + " stages is <b>" + fmt(ans) + "</b>.";
+  return numq(ctx, ans, 0.01, sol, { mode: "pattern-word-total", S: S, r: r, N: N });
+}, ["The total is the start amount plus the step, added once for each stage.", "First multiply the step by the number of stages."]);
+
+/* u9-pk-pattern-figure: borrowed verbatim from math-9 entry u6-pattern-figure-expr (math-9:7.1). */
+E("u9-pk-pattern-figure",9,["4.57"], 2, "gen", function () {
+  var item = pick(["tiles", "dots", "blocks", "counters"]);
+  var m = ri(2, 6), b = ri(1, 8), att = 0;
+  while (m === b && att < 40) { m = ri(2, 6); b = ri(1, 8); att++; }
+  if (m === b) { m = 3; b = 2; }
+  var counts = [b + m, b + 2 * m, b + 3 * m];
+  var corr = "\\(" + n6lin(m, b, "n") + "\\)";
+  var ds = [
+    { t: "\\(" + n6lin(b, m, "n") + "\\)", fb: "That swaps the start value and the step. The count grows by " + fmt(m) + " each stage, so " + fmt(m) + " multiplies n." },
+    { t: "\\(" + n6lin(m, -b, "n") + "\\)", fb: "That subtracts the start value. The start value is added, because Stage 1 is already more than one step." },
+    { t: "\\(" + fmt(m + b) + "n\\)", fb: "That folds the start value into the step. The start value is added once, not once per stage." }
+  ];
+  var sol = "The counts grow by the same amount each stage: \\[ \\begin{aligned} \\text{step} &= " + counts[1] + " - " + counts[0] + " = " + fmt(m) + " \\\\ \\text{start} &= " + counts[0] + " - " + fmt(m) + " = " + fmt(b) + " \\end{aligned} \\] So the number of " + item + " at Stage \\(n\\) is <b>" + corr + "</b>.";
+  var q = mcq("The diagram shows the first three stages of a pattern made with " + item + ". Which expression gives the number of " + item + " at Stage \\(n\\)?",
+    { t: corr, fb: "Correct. The start value is " + fmt(b) + " and each new stage adds " + fmt(m) + "." }, ds, sol,
+    { mode: "pattern-figure-expr", m: m, b: b, item: item });
+  q.figure = n6stageFig(counts, item);
+  return q;
+}, ["Find how much the count grows from one stage to the next; that growth is the step.", "Work backwards from Stage 1 by subtracting one step to get the start value."]);
+
+/* u9-pk-table-equation: borrowed verbatim from math-9 entry u6-table-equation (math-9:7.4). */
+E("u9-pk-table-equation",9,["4.57"], 2, "gen", function () {
+  var S = ri(1, 12), P = ri(2, 7), att = 0;
+  while (S === P && att < 40) { S = ri(1, 12); P = ri(2, 7); att++; }
+  if (S === P) { S = 4; P = 3; }
+  var x0 = pick([0, 0, 1]);
+  var xs = [], ys = [];
+  for (var k = 0; k < 5; k++) { xs.push(x0 + k); ys.push(S + P * (x0 + k)); }
+  var corr = "\\(y = " + n6lin(P, S, "x") + "\\)";
+  var startNote = x0 === 0
+    ? "When \\(x = 0\\), \\(y = " + S + "\\), so the start value is " + S + "."
+    : "Extending the pattern back one step, when \\(x = 0\\), \\(y = " + ys[0] + " - " + P + " = " + S + "\\), so the start value is " + S + ".";
+  var sol = "The \\(y\\) values rise by the same amount each time \\(x\\) grows by 1: \\[ \\begin{aligned} \\text{step} &= " + ys[1] + " - " + ys[0] + " = " + fmt(P) + " \\end{aligned} \\] " + startNote + " So the equation is <b>" + corr + "</b>.";
+  var prompt = "A table of values for a linear relation is shown.<br>x: " + xs.join(", ") + "<br>y: " + ys.join(", ") + "<br>Which equation fits the table?";
+  return mcq(prompt,
+    { t: corr, fb: "Correct. The step is " + fmt(P) + " and the start value is " + fmt(S) + "." },
+    [
+      { t: "\\(y = " + n6lin(S, P, "x") + "\\)", fb: "That swaps the start value and the step. Check it at the first table value." },
+      { t: "\\(y = " + n6lin(P, -S, "x") + "\\)", fb: "That subtracts the start value. The y values are larger than the step alone, so the start is added." },
+      { t: "\\(y = " + n6lin(P, S + P, "x") + "\\)", fb: "The step is right, but the start value is too big. Use the y value when x is 0." }
+    ], sol, { mode: "table-equation", S: S, P: P, x0: x0 });
+}, ["Find the step first: how much does y change when x grows by 1?", "The start value is the y value when x is 0; extend the pattern back if the table starts later."]);
+
+/* u9-pk-context-equation: borrowed verbatim from math-9 entry u6-context-equation (math-9:7.2). */
+E("u9-pk-context-equation",9,["4.60"], 1, "gen", function () {
+  var B = ri(3, 40), R = ri(2, 15), att = 0;
+  while (B === R && att < 40) { B = ri(3, 40); R = ri(2, 15); att++; }
+  if (B === R) { B = 12; R = 3; }
+  var ctx = pick([
+    "A taxi ride costs a base fee of $" + B + " plus $" + R + " for each kilometre driven. Let \\(x\\) be the number of kilometres and \\(y\\) be the total cost in dollars.",
+    "A gym charges a sign-up fee of $" + B + " plus $" + R + " for each class attended. Let \\(x\\) be the number of classes and \\(y\\) be the total cost in dollars.",
+    "A plumber charges a call-out fee of $" + B + " plus $" + R + " for each hour of work. Let \\(x\\) be the number of hours and \\(y\\) be the total cost in dollars.",
+    "A snack cart charges $" + B + " for a tray plus $" + R + " for each drink on it. Let \\(x\\) be the number of drinks and \\(y\\) be the total cost in dollars."
+  ]);
+  var corr = "\\(y = " + n6lin(R, B, "x") + "\\)";
+  var sol = "The fee of $" + B + " is paid once, and the $" + R + " charge is paid \\(x\\) times: \\[ \\begin{aligned} y &= " + B + " + " + fmt(R) + "x \\end{aligned} \\] So the equation is <b>" + corr + "</b>.";
+  return mcq(ctx + " Which equation gives \\(y\\)?",
+    { t: corr, fb: "Correct. The one-time fee is the start value and the per-unit charge is the step." },
+    [
+      { t: "\\(y = " + n6lin(B, R, "x") + "\\)", fb: "That swaps the two amounts. The fee is paid once, so it is not multiplied by x." },
+      { t: "\\(y = " + B + " + " + R + " + x\\)", fb: "That adds the rate instead of multiplying it by the number of units." },
+      { t: "\\(y = " + fmt(B + R) + "x\\)", fb: "That adds the fee and the rate together and multiplies the sum by x, so the fee gets charged every unit." }
+    ], sol, { mode: "context-equation", B: B, R: R });
+}, ["Decide which amount is paid once and which amount is paid for each unit.", "The amount paid for each unit multiplies x; the one-time amount stands alone."]);
+
+/* u9-pk-fn-notation: borrowed verbatim from math-1201 entry u4-fn-notation (math-1201:4.45). */
+E("u9-pk-fn-notation",9,["4.57"],1,"gen",function(){
+  var m=pick([-5,-4,-3,-2,-1,1,2,3,4,5]),b=ri(-15,16);
+  var key="\\(f(x) = "+u4lin(m,b)+"\\)";
+  var ds=u4pickS3(key,["\\(f(y) = "+u4lin(m,b)+"\\)","\\(f(x) = "+u4lin(m,-b)+"\\)","\\(f(x) = "+u4lin(-m,b)+"\\)","\\(f(x) = "+u4lin(b===0?m+1:b,m)+"\\)"]);
+  if(b===0)ds=u4pickS3(key,["\\(f(y) = "+u4lin(m,b)+"\\)","\\(f(x) = "+u4lin(-m,b)+"\\)","\\(f(x) = "+u4lin(m+1,b)+"\\)"]);
+  return mcq("Rewrite the equation \\(y = "+u4lin(m,b)+"\\) using function notation.",
+    key,ds,
+    "Function notation names the output \\(f(x)\\) in place of \\(y\\), and the rule on the right side stays unchanged: \\[ \\begin{aligned} y &= "+u4lin(m,b)+" \\\\ f(x) &= "+u4lin(m,b)+" \\end{aligned} \\] In function notation, the equation is <b>\\(f(x) = "+u4lin(m,b)+"\\)</b>.",
+    {m:m,b:b,keyStr:key});
+});
+
+/* u9-pk-solve-input: borrowed verbatim from math-1201 entry u4-solve-input (math-1201:4.48). */
+E("u9-pk-solve-input",9,["4.58"],2,"gen",function(){
+  var fn=pick(["f","g","h"]);
+  var m=pick([-4,-3,-2,-1,1,2,3,4,5]),b=ri(-9,10),xAns=ri(-6,9);
+  var target=m*xAns+b;
+  return numq("A linear function is given by \\("+fn+"(x) = "+u4lin(m,b)+"\\). For what domain value is \\("+fn+"(x) = "+target+"\\)?",
+    xAns,0.011,
+    "Set the function equal to the given range value and solve for the input: \\[ \\begin{aligned} "+u4lin(m,b)+" &= "+target+" \\\\ "+u4num(m)+"x &= "+(target-b)+" \\\\ x &= "+xAns+" \\end{aligned} \\] The domain value is <b>\\("+xAns+"\\)</b>.",
+    {fn:fn,m:m,b:b,target:target,ans:xAns});
+});
+
+/* u9-pk-laws-integral: borrowed verbatim from math-1201 entry u2-laws-integral (math-1201:1.6). */
+E("u9-pk-laws-integral",9,["4.65"],2,"gen",function(){
+  var mode=ri(1,6);
+  if(mode===1){
+    var a=ri(2,9),b=ri(2,9),t=0;
+    while((a*b===a+b||Math.abs(a-b)===a+b||a+b+1===a*b)&&t<100){a=ri(2,9);b=ri(2,9);t++;}
+    var key="\\(x^{"+(a+b)+"}\\)";
+    var ds=u2pickS3(key,["\\(x^{"+(a*b)+"}\\)","\\(x^{"+Math.abs(a-b)+"}\\)","\\(x^{"+(a+b+1)+"}\\)","\\(x^{"+(a+b-1)+"}\\)"]);
+    return mcq("Simplify: \\(x^{"+a+"} \\times x^{"+b+"}\\)",
+      key,ds,
+      "When multiplying powers with the same base, add the exponents: \\["+
+      "\\begin{aligned} x^{"+a+"} \\times x^{"+b+"} &= x^{"+a+" + "+b+"} \\\\ &= x^{"+(a+b)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a+b)+"}\\)</b>.",
+      {mode:mode,a:a,b:b,keyStr:key});
+  }
+  if(mode===2){
+    var a2=ri(5,12),b2=ri(2,10),t2=0;
+    while((a2-b2<1||a2+b2===a2||a2-b2+1===a2)&&t2<100){a2=ri(5,12);b2=ri(2,a2-2);t2++;}
+    var key2="\\(x^{"+(a2-b2)+"}\\)";
+    var ds2=u2pickS3(key2,["\\(x^{"+(a2+b2)+"}\\)","\\(x^{"+a2+"}\\)","\\(x^{"+(a2-b2+1)+"}\\)","\\(x^{"+(a2*b2)+"}\\)"]);
+    return mcq("Simplify: \\("+FR("x^{"+a2+"}","x^{"+b2+"}")+"\\)",
+      key2,ds2,
+      "When dividing powers with the same base, subtract the exponents: \\["+
+      "\\begin{aligned} "+FR("x^{"+a2+"}","x^{"+b2+"}")+" &= x^{"+a2+" - "+b2+"} \\\\ &= x^{"+(a2-b2)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a2-b2)+"}\\)</b>.",
+      {mode:mode,a:a2,b:b2,keyStr:key2});
+  }
+  if(mode===3){
+    var a3=ri(2,4),b3=ri(2,4);
+    if(a3===2&&b3===2)a3=3;
+    var key3="\\(x^{"+(a3*b3)+"}\\)";
+    var ds3=u2pickS3(key3,["\\(x^{"+(a3+b3)+"}\\)","\\(x^{"+Math.pow(a3,b3)+"}\\)","\\(x^{"+Math.pow(b3,a3)+"}\\)","\\(x^{"+(a3*b3+2)+"}\\)"]);
+    return mcq("Simplify: \\(\\left(x^{"+a3+"}\\right)^{"+b3+"}\\)",
+      key3,ds3,
+      "When a power is raised to a power, multiply the exponents: \\["+
+      "\\begin{aligned} \\left(x^{"+a3+"}\\right)^{"+b3+"} &= x^{"+a3+" \\times "+b3+"} \\\\ &= x^{"+(a3*b3)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a3*b3)+"}\\)</b>.",
+      {mode:mode,a:a3,b:b3,keyStr:key3});
+  }
+  if(mode===4){
+    var a4=ri(2,6);
+    var key4="\\(x^{"+a4+"}y^{"+a4+"}\\)";
+    var ds4=u2pickS3(key4,["\\(x^{"+a4+"}y\\)","\\(xy^{"+a4+"}\\)","\\((xy)^{"+(a4*a4)+"}\\)"]);
+    return mcq("Simplify: \\((xy)^{"+a4+"}\\)",
+      key4,ds4,
+      "A power of a product applies the exponent to each factor: \\["+
+      "\\begin{aligned} (xy)^{"+a4+"} &= x^{"+a4+"}y^{"+a4+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+a4+"}y^{"+a4+"}\\)</b>.",
+      {mode:mode,a:a4,keyStr:key4});
+  }
+  if(mode===5){
+    var a5=ri(3,8),b5=ri(3,8),c5=ri(3,8),d5=ri(3,8);
+    var key5="\\(x^{"+(a5+c5)+"}y^{"+(b5+d5)+"}\\)";
+    var ds5=u2pickS3(key5,["\\(x^{"+(a5*c5)+"}y^{"+(b5*d5)+"}\\)","\\(x^{"+(a5+c5)+"}y^{"+(b5*d5)+"}\\)","\\(x^{"+(a5*c5)+"}y^{"+(b5+d5)+"}\\)","\\(x^{"+Math.abs(a5-c5)+"}y^{"+(b5+d5)+"}\\)"]);
+    return mcq("Simplify: \\(x^{"+a5+"}y^{"+b5+"} \\times x^{"+c5+"}y^{"+d5+"}\\)",
+      key5,ds5,
+      "Group the powers base by base and add exponents for each base: \\["+
+      "\\begin{aligned} x^{"+a5+"}y^{"+b5+"} \\times x^{"+c5+"}y^{"+d5+"} &= x^{"+a5+" + "+c5+"}y^{"+b5+" + "+d5+"} \\\\ &= x^{"+(a5+c5)+"}y^{"+(b5+d5)+"} \\end{aligned} \\]"+
+      " The simplified form is <b>\\(x^{"+(a5+c5)+"}y^{"+(b5+d5)+"}\\)</b>.",
+      {mode:mode,a:a5,b:b5,c:c5,d:d5,keyStr:key5});
+  }
+  var b6=ri(2,8),c6=pick([3,4,5,6,7]);
+  var key6="\\("+c6+"y^{"+b6+"}\\)";
+  var ds6=u2pickS3(key6,["\\(0\\)","\\("+c6+"xy^{"+b6+"}\\)","\\(y^{"+b6+"}\\)"]);
+  return mcq("Simplify: \\("+c6+"x^0y^{"+b6+"}\\)",
+    key6,ds6,
+    "Any nonzero base to the exponent \\(0\\) equals \\(1\\), so \\(x^0 = 1\\) and the factor \\(x\\) drops out without changing the coefficient: \\["+
+    "\\begin{aligned} "+c6+"x^0y^{"+b6+"} &= "+c6+"(1)y^{"+b6+"} \\\\ &= "+c6+"y^{"+b6+"} \\end{aligned} \\]"+
+    " The simplified form is <b>\\("+c6+"y^{"+b6+"}\\)</b>.",
+    {mode:mode,b:b6,c:c6,keyStr:key6});
+});
+
+/* u9-pk-growth: authored micro-item (authored:percent-growth-repeated-multiplication),
+   written for this tranche. */
+E("u9-pk-growth",9,["4.65"],2,"gen",function(){
+  if(ri(0,1)===0){
+    var pair=pick([[800,5],[500,10],[1000,20],[400,25],[200,50],[1200,5],[600,10],[250,20],[900,10],[800,25]]);
+    var P=pair[0], r=pair[1], g=1+r/100;
+    var y1=P*g, y2=y1*g;
+    return numq("A town has "+P+" people. Its population grows by "+r+"% each year. How many people will there be after 2 years?",
+      Math.round(y2*100)/100,0.01,
+      "Growing by "+r+"% means multiplying by \\(1 + "+r+"\\% = "+fmt(g)+"\\), once for each year. After 1 year: \\("+P+" \\times "+fmt(g)+" = "+fmt(y1)+"\\). After 2 years: \\("+fmt(y1)+" \\times "+fmt(g)+" = "+fmt(y2)+"\\). There will be <b>"+fmt(y2)+" people</b>.",
+      {mode:"percent",P:P,r:r,ans:y2});
+  }
+  var s=pick([20,25,30,40,50,60]), f=pick([2,3]), ans=s*f*f*f;
+  return numq("A rumour starts with "+s+" people who have heard it. Each day, the number of people who have heard it is multiplied by "+f+". How many people have heard it after 3 days?",
+    ans,0.01,
+    "Multiply by "+f+" once for each day: \\("+s+" \\times "+f+" = "+(s*f)+"\\), then \\("+(s*f)+" \\times "+f+" = "+(s*f*f)+"\\), then \\("+(s*f*f)+" \\times "+f+" = "+ans+"\\). After 3 days, <b>"+ans+" people</b> have heard it.",
+    {mode:"repeated",s:s,f:f,ans:ans});
+}, ["Growth by a percent is repeated multiplication, not repeated addition.", "Work one year (or one day) at a time."]);
+
+/* PK tranche pass for Unit 9. pkFor is the cluster's dependent
+   indicator list from the prior knowledge map, as registered
+   for this unit in courses.js. */
+var PKT_U9_FOR=["4.55","4.56","4.57","4.58","4.59","4.60","4.61","4.62","4.63","4.64","4.65","4.66","4.67","4.68","4.69","4.70","4.71"];
+var PKT_U9={
+ "u9-pk-pattern-word":{src:"math-9:7.1",group:"patterns"},
+ "u9-pk-pattern-figure":{src:"math-9:7.1",group:"patterns"},
+ "u9-pk-table-equation":{src:"math-9:7.4",group:"patterns"},
+ "u9-pk-context-equation":{src:"math-9:7.2",group:"patterns"},
+ "u9-pk-fn-notation":{src:"math-1201:4.45",group:"function-notation"},
+ "u9-pk-solve-input":{src:"math-1201:4.48",group:"isolate-variable"},
+ "u9-pk-laws-integral":{src:"math-1201:1.6",group:"exponent-laws"},
+ "u9-pk-growth":{src:"authored:percent-growth-repeated-multiplication",group:"growth-percent"}
+};
+BANK.forEach(function(e){var t=PKT_U9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U9_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-fix.js ----- */
 // Math 2200 Unit 8, 1 and 7 pool fix additions, carried verbatim from the

@@ -2684,6 +2684,16 @@ window.COURSES = {
      inputs ship at 20/60/20, lines 369 to 371). */
   defaultMix: [20, 60, 20],
 
+  /* Prior-knowledge entries are practice-only (Nov 15, 2026,
+     the Math 2200 PK tranche): the composer leaves the flagged
+     entries (the three Unit 8 entries flagged Nov 13, 2026 and
+     the tranche's 72 flagged entries across all nine units) out
+     of practice tests and exams unless the teacher ticks the
+     include-prior-knowledge override. Ordinary practice sets
+     and the pkonly prerequisite checks keep them. Mirrors the
+     Math 2201 flag above. */
+  pkPracticeOnly: true,
+
   /* Exam blueprint, translated from the standalone app's
      composer (math-2200-review/index.html, composeExam, lines
      7424 to 7470). That composer is the pooled composer Math
