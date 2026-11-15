@@ -662,3 +662,93 @@ var BRIDGE_SRC={
   "u9r-reasonable-result":"MA1202.5.6"
 };
 BANK.forEach(function(e){ var s=BRIDGE_SRC[e.id]; if(s){ e.bridging=true; e.bridgeSrc=s; } });
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 1202 primary trigonometric ratio outcomes (indicators 5.1 to 5.6), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-3202.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u9r-ratio-value","u9r-find-side","u9r-find-side-workplace","u9r-find-angle","u9r-elevation-depression","u9r-reasonable-result"].indexOf(e.id)>=0)e.pkFlag=true;});
+
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 12 (trigonometry: sine and cosine law readiness). The six u9r bridging entries already in this file (flagged November 13, 2026) are prior knowledge stock under the defining test: they assess Mathematics 1202 outcomes 5.1 to 5.6 and nothing on this course's list. The pass below completes their tranche metadata (pkSrc, pkFor, pkGroup) without retagging or reflagging them; their bridging and bridgeSrc records stand as ruled on November 8, 2026. Support set borrowed verbatim from Mathematics 1202 (u7-choose-ratio, u7-unknown-angle-mc); feeder helper copies ride in bank-helpers.js. ===== */
+E("u9-pk-choose-ratio", 9, ["5.1"], 1, "gen", function(){
+  var combos=[
+    {known:"opposite", wanted:"adjacent", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"adjacent", wanted:"opposite", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"opposite", wanted:"hypotenuse", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"hypotenuse", wanted:"opposite", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"adjacent", wanted:"hypotenuse", ratio:"cosine", def:"cosine: adjacent / hypotenuse"},
+    {known:"hypotenuse", wanted:"adjacent", ratio:"cosine", def:"cosine: adjacent / hypotenuse"} ];
+  var c=pick(combos), ang=u7Ang(), val=ri(4,30);
+  var ctx=pick(["a ladder against a wall","a roof section","a loading ramp","a guy wire on a pole","a wheelchair ramp","a stair stringer"]);
+  var prompt="A right triangle models "+ctx+". The marked angle is \\("+ang+"^\\circ\\). The "+c.known+" side is known (it measures "+val+" units) and the "+c.wanted+" side is wanted. Which ratio should be used?";
+  var defs={ tangent:"tangent: opposite / adjacent", sine:"sine: opposite / hypotenuse", cosine:"cosine: adjacent / hypotenuse" };
+  var names=["tangent","sine","cosine"];
+  var distract=names.filter(function(n){ return n!==c.ratio; }).map(function(n){ return {t:defs[n], fb:"The "+n+" ratio uses the "+(n==="tangent"?"opposite and adjacent":(n==="sine"?"opposite and hypotenuse":"adjacent and hypotenuse"))+" sides, which is not the known and wanted pair here."}; });
+  var recip={ tangent:"adjacent / opposite", sine:"hypotenuse / opposite", cosine:"hypotenuse / adjacent" };
+  distract.push({t:c.ratio+" flipped: "+recip[c.ratio], fb:"That is the "+c.ratio+" ratio with its two sides swapped. The ratio must pair the sides as "+defs[c.ratio].split(": ")[1]+"."});
+  var sol="The known side is the "+c.known+" and the wanted side is the "+c.wanted+". The ratio that uses exactly those two sides is the <b>"+c.ratio+" ratio</b>: "+defs[c.ratio]+".";
+  var q=mcq(prompt, {t:defs[c.ratio], fb:"Correct: the "+c.ratio+" ratio is the one built from the "+c.known+" and "+c.wanted+" sides."}, distract, sol, {ratio:c.ratio, ang:ang});
+  var lab={ opposite:"opp", adjacent:"adj", hypotenuse:"hyp" };
+  var oL=c.known==="opposite"?val:(c.wanted==="opposite"?"?":"opp"), aL=c.known==="adjacent"?val:(c.wanted==="adjacent"?"?":"adj"), hL=c.known==="hypotenuse"?val:(c.wanted==="hypotenuse"?"?":"hyp");
+  q.figure=u7FigTri(oL, aL, hL, ang+" deg");
+  return q;
+}, ["Name the known and wanted sides relative to the marked angle first.", "Pick the ratio whose definition uses exactly those two sides."]);
+
+E("u9-pk-unknown-angle", 9, ["5.2"], 2, "gen", function(){
+  var mode=ri(0,2), angDeg, knownTxt, ratioName, oL, aL, hL, tries=0;
+  var o=ri(3,20), a=ri(3,20);
+  while((o===a || Math.abs(Math.atan2(o,a)*180/Math.PI-45)<3) && tries<30){ o=ri(3,20); a=ri(3,20); tries++; }
+  if(mode===0){ angDeg=Math.atan2(o,a)*180/Math.PI; ratioName="tangent"; knownTxt="the side opposite the angle is "+o+" m and the side adjacent is "+a+" m"; oL=o+" m"; aL=a+" m"; hL="hyp"; }
+  else if(mode===1){ var h=o+ri(2,15); angDeg=Math.asin(o/h)*180/Math.PI; ratioName="sine"; knownTxt="the side opposite the angle is "+o+" m and the hypotenuse is "+h+" m"; oL=o+" m"; aL="adj"; hL=h+" m"; }
+  else { var h2=a+ri(2,15); angDeg=Math.acos(a/h2)*180/Math.PI; ratioName="cosine"; knownTxt="the side adjacent to the angle is "+a+" m and the hypotenuse is "+h2+" m"; oL="opp"; aL=a+" m"; hL=h2+" m"; }
+  var correct=Math.round(angDeg);
+  var d1=correct+10; if(d1>89) d1=correct-20;
+  var d2=correct-10; if(d2<1) d2=correct+20; if(d2===d1) d2=correct+15;
+  var comp=90-correct; if(comp===d1||comp===d2||comp===correct) comp=correct+5;
+  var prompt="In a right triangle, "+knownTxt+". What is the measure of the angle, to the nearest degree?";
+  var sol="Use the inverse of the "+ratioName+" ratio on a calculator: the ratio value gives an angle of about \\("+fmtF(angDeg,1)+"^\\circ\\), which rounds to <b>"+correct+" degrees</b>.";
+  var q=mcq(prompt, {t:correct+"°", fb:"Correct: the inverse "+ratioName+" of the side ratio gives about "+fmtF(angDeg,1)+" degrees."},
+    [ {t:d1+"°", fb:"That is 10 degrees too large: recheck the ratio before using the inverse key."},
+      {t:d2+"°", fb:"That is off the computed value of about "+fmtF(angDeg,1)+" degrees: recheck which sides form the ratio."},
+      {t:comp+"°", fb:"That is the other acute angle of the triangle (90 minus the answer), not the angle at the marked vertex."} ], sol, {mode:mode, correct:correct});
+  q.figure=u7FigTri(oL, aL, hL, "?");
+  return q;
+}, ["An unknown angle calls for the inverse of the ratio formed by the two known sides.", "Form the ratio from the known sides first, then apply the matching inverse ratio."]);
+
+/* PK tranche metadata pass for Unit 9. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U9_FOR=["5.1","5.2","5.3","5.4"];
+var PKT_U9={
+ "u9r-ratio-value":{src:"math-1202:5.1,5.2,5.3",group:"trig-ratios"},
+ "u9r-find-side":{src:"math-1202:5.5",group:"find-side"},
+ "u9r-find-side-workplace":{src:"math-1202:5.5",group:"find-side"},
+ "u9r-find-angle":{src:"math-1202:5.5",group:"find-angle"},
+ "u9r-elevation-depression":{src:"math-1202:5.5",group:"elevation-depression"},
+ "u9r-reasonable-result":{src:"math-1202:5.6",group:"reasonable-result"},
+ "u9-pk-choose-ratio":{src:"math-1202:5.5",group:"trig-ratios"},
+ "u9-pk-unknown-angle":{src:"math-1202:5.5",group:"find-angle"}
+};
+BANK.forEach(function(e){var t=PKT_U9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U9_FOR.slice();e.pkGroup=t.group;}});
+
+/* Distinctness guard for u9-pk-unknown-angle, carried with the entry from
+   its home bank (Mathematics 1202, bank-u7.js, where the same guard wraps
+   the original): the generator can, on rare draws, round two different
+   error values to the same displayed option; redraw those draws so every
+   question keeps four distinct options. */
+(function(){
+  var ids=["u9-pk-unknown-angle"];
+  BANK.forEach(function(e){
+    if(ids.indexOf(e.id)<0) return;
+    var orig=e.gen;
+    e.gen=function(){ var q, t=0; do { q=orig(); t++; } while(q && q.type==="mc" && new Set(q.options).size<4 && t<40); return q; };
+  });
+})();

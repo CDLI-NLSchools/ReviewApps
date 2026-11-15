@@ -82,6 +82,496 @@ function balOpts(key, ds){
   return [withT(key, out[0]), ds.map(function(d,i){ return withT(d, out[i+1]); })];
 }
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): feeder helper copies for the
+   tranche entries in the unit files (dependency closure over the feeder banks;
+   identical bodies already in this bank were skipped; the one name taken in
+   this bank by a different body, Mathematics 2202's u5M money formatter,
+   rides renamed as f22_u5M). ===== */
+function u2RulerFig(inches){
+  var scale=22, x0=30, len=inches*scale, W=Math.ceil(x0+len+30), s='<svg viewBox="0 0 '+W+' 110" width="'+W+'" height="110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ruler with an object ending at a marked length">';
+  s+='<rect x="'+x0+'" y="30" width="'+fmt(len,1)+'" height="26" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+  s+='<rect x="'+x0+'" y="62" width="'+fmt(8*scale,1)+'" height="20" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+  for(var i=0;i<=64;i++){ var x=x0+i*(scale/8); var h=(i%8===0)?14:(i%4===0?10:6); s+='<line x1="'+fmt(x,1)+'" y1="82" x2="'+fmt(x,1)+'" y2="'+fmt(82-h,1)+'" stroke="'+FIG_INK+'" stroke-width="1"/>'; if(i%8===0){ s+='<text x="'+fmt(x,1)+'" y="98" font-size="10" fill="'+FIG_INK+'" text-anchor="middle">'+(i/8)+'</text>'; } }
+  s+='<text x="'+fmt(x0+len/2,1)+'" y="20" font-size="11" fill="'+FIG_INK+'" text-anchor="middle">object</text></svg>';
+  return s;
+}
+
+function u2Dist(correct, wrongs, unit, fbC, fbW){
+  /* Rule 9 (Nov 8, 2026): the unit lives in the prompt at every call site, so
+     options carry bare values; balDpStrs then pairs their precision (Rule 7).
+     The unit parameter is retained for call-site compatibility. */
+  var seen={}; seen[correct]=1; var out=[];
+  for(var i=0;i<wrongs.length && out.length<3;i++){ var w=wrongs[i]; if(w>0 && !seen[w]){ seen[w]=1; out.push({t:fmt(w), fb:fbW(out.length)}); } }
+  var k=2; while(out.length<3){ var cand=correct*k+1; if(!seen[cand]){ seen[cand]=1; out.push({t:fmt(cand), fb:"Check the conversion factor and the direction of the conversion."}); } k++; }
+  var strs=balDpStrs([fmt(correct)].concat(out.map(function(o){ return o.t; })));
+  return {c:{t:strs[0], fb:fbC}, d:out.map(function(o,i){ var n={}; for(var key in o) n[key]=o[key]; n.t=strs[i+1]; return n; })};
+}
+
+function u2CirclesFig(od, idd){
+  var s='<svg viewBox="0 0 240 170" width="240" height="170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipe end showing outside and inside diameters">';
+  s+='<circle cx="120" cy="80" r="62" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<circle cx="120" cy="80" r="'+fmt(62*idd/od,1)+'" fill="#ffffff" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="58" y1="80" x2="182" y2="80" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<text x="120" y="18" font-size="11" fill="'+FIG_INK+'" text-anchor="middle">outside diameter '+fmt(od)+' cm</text>';
+  s+='<text x="120" y="160" font-size="11" fill="'+FIG_INK+'" text-anchor="middle">wall thickness shown by the shaded ring</text></svg>';
+  return s;
+}
+
+function u7Frac(n,d){ var g=1; for(var i=2;i<=Math.min(n,d);i++){ if(n%i===0&&d%i===0) g=i; } return (n/g)+"/"+(d/g); }
+
+function u7RampFig(rise, run, title){
+  var sc = Math.min(170/Math.max(run,1), 100/Math.max(rise,1));
+  var dx = Math.max(40, run*sc), dy = Math.max(18, rise*sc);
+  var x0=35, y0=135;
+  var s='<svg viewBox="0 0 280 165" width="280" height="165" xmlns="http://www.w3.org/2000/svg" role="img">';
+  s+='<text x="140" y="14" font-size="12" font-weight="bold" fill="'+FIG_INK+'" text-anchor="middle">'+title+'</text>';
+  s+='<polygon points="'+x0+','+y0+' '+(x0+dx)+','+y0+' '+(x0+dx)+','+fmt(y0-dy,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.5" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+(x0+dx)+'" y1="'+y0+'" x2="'+(x0+dx)+'" y2="'+fmt(y0-dy,1)+'" stroke="'+FIG_ALT+'" stroke-width="2" stroke-dasharray="4 3"/>';
+  s+='<text x="'+fmt(x0+dx/2,1)+'" y="'+(y0+16)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">run = '+fmt(run)+' </text>';
+  s+='<text x="'+(x0+dx+6)+'" y="'+fmt(y0-dy/2,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="start">rise = '+fmt(rise)+'</text>';
+  s+='</svg>'; return s;
+}
+
+function u7GraphFig(x1,y1,x2,y2,xlab,ylab){
+  var mx=Math.max(x1,x2,4), my=Math.max(y1,y2,4);
+  var sx=200/mx, sy=110/my, ox=35, oy=140;
+  function X(v){return fmt(ox+v*sx,1);} function Y(v){return fmt(oy-v*sy,1);}
+  var s='<svg viewBox="0 0 280 170" width="280" height="170" xmlns="http://www.w3.org/2000/svg" role="img">';
+  s+='<line x1="'+ox+'" y1="'+oy+'" x2="255" y2="'+oy+'" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<line x1="'+ox+'" y1="'+oy+'" x2="'+ox+'" y2="15" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<line x1="'+X(x1)+'" y1="'+Y(y1)+'" x2="'+X(x2)+'" y2="'+Y(y2)+'" stroke="'+FIG_ACC+'" stroke-width="2.4"/>';
+  s+='<circle cx="'+X(x1)+'" cy="'+Y(y1)+'" r="4" fill="'+FIG_INK+'"/><circle cx="'+X(x2)+'" cy="'+Y(y2)+'" r="4" fill="'+FIG_ALT+'"/>';
+  s+='<text x="'+X(x1)+'" y="'+fmt(oy-y1*sy-10,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">('+fmt(x1)+', '+fmt(y1)+')</text>';
+  s+='<text x="'+X(x2)+'" y="'+fmt(oy-y2*sy-10,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">('+fmt(x2)+', '+fmt(y2)+')</text>';
+  s+='<text x="250" y="'+(oy+16)+'" font-size="11" fill="'+FIG_INK+'" text-anchor="end">'+xlab+'</text>';
+  s+='<text x="10" y="22" font-size="11" fill="'+FIG_INK+'" text-anchor="middle">'+ylab+'</text>';
+  s+='</svg>'; return s;
+}
+
+function u6lin(m, b, v) {
+  var head = (m === 1 ? v : fmt(m) + v);
+  if (b > 0) return head + " + " + fmt(b);
+  if (b < 0) return head + " - " + fmt(-b);
+  return head;
+}
+
+function u6pick3(corr, cands) {
+  var out = [], seen = {}; seen[corr] = 1;
+  var sh = shuffle(cands);
+  for (var i = 0; i < sh.length && out.length < 3; i++) {
+    if (!seen[sh[i].t]) { seen[sh[i].t] = 1; out.push(sh[i]); }
+  }
+  return out.length === 3 ? out : null;
+}
+
+function u6graph(o) {
+  var W = 360, H = 302, x0 = 56, y0 = 256, x1 = 338, y1 = 28;
+  var sx = (x1 - x0) / o.xmax, sy = (y0 - y1) / o.ymax;
+  function X(v) { return fmt(x0 + v * sx, 1); }
+  function Y(v) { return fmt(y0 - v * sy, 1); }
+  var xs = o.xstep || (o.xmax <= 10 ? 1 : 2);
+  var ys = o.ystep || (o.ymax <= 12 ? 1 : (o.ymax <= 26 ? 2 : 5));
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Graph of a linear relation">';
+  var g;
+  for (g = xs; g < o.xmax; g += xs) s += '<line x1="' + X(g) + '" y1="' + y1 + '" x2="' + X(g) + '" y2="' + y0 + '" stroke="#dce8df" stroke-width="1"/>';
+  for (g = ys; g < o.ymax; g += ys) s += '<line x1="' + x0 + '" y1="' + Y(g) + '" x2="' + x1 + '" y2="' + Y(g) + '" stroke="#dce8df" stroke-width="1"/>';
+  (o.lines || []).forEach(function (L) {
+    var pts = L.pts.map(function (p) { return X(p[0]) + "," + Y(p[1]); }).join(" ");
+    s += '<polyline points="' + pts + '" fill="none" stroke="' + (L.col || FIG_INK) + '" stroke-width="' + (L.w || 2.5) + '"' + (L.dash ? ' stroke-dasharray="7 5"' : "") + '/>';
+    if (L.lab) { var lp = L.pts[L.pts.length - 1]; s += '<text x="' + fmt(x0 + lp[0] * sx - 4, 1) + '" y="' + fmt(y0 - lp[1] * sy - 10, 1) + '" font-size="12" font-weight="bold" fill="' + (L.col || FIG_INK) + '" text-anchor="end">' + L.lab + '</text>'; }
+  });
+  (o.points || []).forEach(function (P) {
+    s += '<circle cx="' + X(P.x) + '" cy="' + Y(P.y) + '" r="3.5" fill="' + (P.col || FIG_ACC) + '"/>';
+    if (P.lab) s += '<text x="' + fmt(x0 + P.x * sx + 8, 1) + '" y="' + fmt(y0 - P.y * sy - 8, 1) + '" font-size="12" fill="' + FIG_INK + '">' + P.lab + '</text>';
+  });
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x1 + '" y2="' + y0 + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<polygon points="' + x1 + ',' + y0 + ' ' + (x1 - 9) + ',' + (y0 - 4) + ' ' + (x1 - 9) + ',' + (y0 + 4) + '" fill="' + FIG_INK + '"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + y1 + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<polygon points="' + x0 + ',' + y1 + ' ' + (x0 - 4) + ',' + (y1 + 9) + ' ' + (x0 + 4) + ',' + (y1 + 9) + '" fill="' + FIG_INK + '"/>';
+  for (g = 0; g <= o.xmax; g += xs) s += '<line x1="' + X(g) + '" y1="' + y0 + '" x2="' + X(g) + '" y2="' + (y0 + 5) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + X(g) + '" y="' + (y0 + 20) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">' + g + '</text>';
+  for (g = ys; g <= o.ymax; g += ys) s += '<line x1="' + (x0 - 5) + '" y1="' + Y(g) + '" x2="' + x0 + '" y2="' + Y(g) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + (x0 - 10) + '" y="' + Y(g) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="end" dominant-baseline="central">' + g + '</text>';
+  s += '<text x="' + x1 + '" y="' + (y0 + 38) + '" font-size="13" font-style="italic" fill="' + FIG_INK + '" text-anchor="end">' + (o.xlab || "x") + '</text>';
+  s += '<text x="' + fmt(x0 - 4, 1) + '" y="' + (y1 - 10) + '" font-size="13" font-style="italic" fill="' + FIG_INK + '" text-anchor="middle">' + (o.ylab || "y") + '</text>';
+  return s + '</svg>';
+}
+
+function u5lin(a, b) { var s; if (a === 1) s = "x"; else if (a === -1) s = "-x"; else s = fmt(a) + "x"; if (b > 0) s += "+" + fmt(b); else if (b < 0) s += "-" + fmt(-b); return s; }
+
+function u5pick3(c, cands) { var out = [], seen = [c]; for (var i = 0; i < cands.length && out.length < 3; i++) { if (seen.indexOf(cands[i].t) < 0) { seen.push(cands[i].t); out.push(cands[i]); } } return out; }
+
+function u5balance(a, b, c) {
+  var W = 340, H = 178, panY = 118;
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Balance model">';
+  s += '<line x1="18" y1="34" x2="322" y2="34" stroke="' + FIG_INK + '" stroke-width="3"/>';
+  s += '<polygon points="170,34 156,66 184,66" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+  s += '<rect x="160" y="66" width="20" height="8" fill="' + FIG_INK + '"/>';
+  function pan(cx, nx, nu) {
+    var w = nx * 27 + nu * 17, x = cx - w / 2, out = "";
+    out += '<line x1="' + cx + '" y1="34" x2="' + (cx - 62) + '" y2="' + panY + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+    out += '<line x1="' + cx + '" y1="34" x2="' + (cx + 62) + '" y2="' + panY + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+    out += '<line x1="' + (cx - 72) + '" y1="' + panY + '" x2="' + (cx + 72) + '" y2="' + panY + '" stroke="' + FIG_INK + '" stroke-width="3"/>';
+    var bx = x;
+    for (var i = 0; i < nx; i++) { out += '<rect x="' + fmt(bx, 1) + '" y="' + (panY - 26) + '" width="24" height="26" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + fmt(bx + 12, 1) + '" y="' + (panY - 13) + '" font-size="13" fill="' + FIG_INK + '" text-anchor="middle" dominant-baseline="central">x</text>'; bx += 27; }
+    for (var j = 0; j < nu; j++) { out += '<rect x="' + fmt(bx, 1) + '" y="' + (panY - 16) + '" width="14" height="16" fill="#ffffff" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + fmt(bx + 7, 1) + '" y="' + (panY - 8) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle" dominant-baseline="central">1</text>'; bx += 17; }
+    return out;
+  }
+  s += pan(85, a, b);
+  s += pan(255, 0, c);
+  s += '<text x="85" y="140" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">left pan</text>';
+  s += '<text x="255" y="140" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">right pan</text>';
+  s += '<text x="170" y="164" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">The pans balance, so the two sides are equal.</text>';
+  return s + '</svg>';
+}
+
+function u4Distractors(ans, pool) {
+  var out = [], seen = { }, c = 0;
+  seen[String(ans)] = 1;
+  while (out.length < 3 && c < 60) {
+    c++;
+    var d = pick(pool);
+    if (d > 0 && !seen[String(d)]) { seen[String(d)] = 1; out.push(d); }
+  }
+  var f = ans + 3;
+  while (out.length < 3) { if (!seen[String(f)]) { seen[String(f)] = 1; out.push(f); } f++; }
+  return out;
+}
+
+function u4BarFig(labels, vals, yMax, yTitle, xTitle, base) {
+  base = base || 0;
+  var s = '<svg viewBox="0 0 340 232" width="340" height="232" xmlns="http://www.w3.org/2000/svg" role="img">';
+  var ticks = [base, base + (yMax - base) / 2, yMax], i, y;
+  for (i = 0; i < ticks.length; i++) {
+    y = 186 - ((ticks[i] - base) / (yMax - base)) * 148;
+    s += '<line x1="52" y1="' + fmt(y, 1) + '" x2="322" y2="' + fmt(y, 1) + '" stroke="' + FIG_SHADE + '" stroke-width="1"/>';
+    s += _txt(46, y, fmt(ticks[i]), 11, false, "end");
+  }
+  s += '<line x1="52" y1="30" x2="52" y2="186" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<line x1="52" y1="186" x2="322" y2="186" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += _txt(20, 108, yTitle, 11, true);
+  if (xTitle) s += _txt(187, 224, xTitle, 11, true);
+  var bw = 258 / vals.length;
+  for (i = 0; i < vals.length; i++) {
+    var bx = 58 + i * bw + bw * 0.18, bwid = bw * 0.64;
+    var by = 186 - ((vals[i] - base) / (yMax - base)) * 148;
+    s += '<rect x="' + fmt(bx, 1) + '" y="' + fmt(by, 1) + '" width="' + fmt(bwid, 1) + '" height="' + fmt(186 - by, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+    s += _txt(bx + bwid / 2, 202, labels[i], 11, false);
+  }
+  return s + "</svg>";
+}
+
+function u4NiceMax(v) { var m = Math.ceil(v * 1.25); return Math.max(10, Math.ceil(m / 10) * 10); }
+
+function u4HistFig(labels, freqs, yMax, yTitle, xTitle) {
+  var s = u4Frame(yMax, yTitle, xTitle), bw = 264 / freqs.length;
+  for (var i = 0; i < freqs.length; i++) {
+    var bx = 52 + i * bw, by = u4Y(freqs[i], yMax);
+    s += '<rect x="' + fmt(bx, 1) + '" y="' + fmt(by, 1) + '" width="' + fmt(bw, 1) + '" height="' + fmt(186 - by, 1) + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+    s += _txt(bx + bw / 2, 202, labels[i], 10, false);
+  }
+  return s + "</svg>";
+}
+
+function u4Frame(yMax, yTitle, xTitle) {
+  var s = '<svg viewBox="0 0 340 232" width="340" height="232" xmlns="http://www.w3.org/2000/svg" role="img">';
+  var ticks = [0, yMax / 2, yMax];
+  for (var i = 0; i < ticks.length; i++) {
+    var y = u4Y(ticks[i], yMax);
+    s += '<line x1="52" y1="' + fmt(y, 1) + '" x2="322" y2="' + fmt(y, 1) + '" stroke="' + FIG_SHADE + '" stroke-width="1"/>';
+    s += _txt(46, y, fmt(ticks[i]), 11, false, "end");
+  }
+  s += '<line x1="52" y1="30" x2="52" y2="186" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<line x1="52" y1="186" x2="322" y2="186" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += _txt(20, 108, yTitle, 11, true);
+  if (xTitle) s += _txt(187, 224, xTitle, 11, true);
+  return s;
+}
+
+function u4Y(v, yMax) { return 186 - (v / yMax) * 148; }
+
+function u4LineFig(labels, vals, yMax, yTitle, xTitle) {
+  var s = u4Frame(yMax, yTitle, xTitle), pts = "";
+  for (var i = 0; i < vals.length; i++) {
+    var x = u4X(i, vals.length), y = u4Y(vals[i], yMax);
+    pts += fmt(x, 1) + "," + fmt(y, 1) + " ";
+    s += "";
+  }
+  s += '<polyline points="' + pts + '" fill="none" stroke="' + FIG_ACC + '" stroke-width="2.5"/>';
+  for (var j = 0; j < vals.length; j++) {
+    var x2 = u4X(j, vals.length), y2 = u4Y(vals[j], yMax);
+    s += '<circle cx="' + fmt(x2, 1) + '" cy="' + fmt(y2, 1) + '" r="4" fill="' + FIG_INK + '"/>';
+    s += _txt(x2, 202, labels[j], 11, false);
+  }
+  return s + "</svg>";
+}
+
+function u4X(i, n) { return 58 + i * (258 / Math.max(n - 1, 1)); }
+
+function u4ScatterFig(pts, xMax, yMax, yTitle, xTitle) {
+  var s = u4Frame(yMax, yTitle, xTitle);
+  var xt = [0, xMax / 2, xMax];
+  for (var i = 0; i < xt.length; i++) {
+    var x = 52 + (xt[i] / xMax) * 270;
+    s += _txt(x, 202, fmt(xt[i]), 11, false);
+    s += '<line x1="' + fmt(x, 1) + '" y1="186" x2="' + fmt(x, 1) + '" y2="182" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+  }
+  for (var j = 0; j < pts.length; j++) {
+    var px = 52 + (pts[j][0] / xMax) * 270, py = u4Y(pts[j][1], yMax);
+    s += '<circle cx="' + fmt(px, 1) + '" cy="' + fmt(py, 1) + '" r="4" fill="' + FIG_ALT + '"/>';
+  }
+  return s + "</svg>";
+}
+
+function u7mean(a){var s=0;for(var i=0;i<a.length;i++)s+=a[i];return s/a.length;}
+
+function u7numOpts(correct,cands){var out=[],seen={};seen[String(correct)]=1;for(var i=0;i<cands.length;i++){var v=cands[i];if(v===null||v===undefined)continue;var k=String(v);if(!seen[k]){seen[k]=1;out.push(v);if(out.length===3)break;}}var step=1;while(out.length<3){var v=correct+step;if(!seen[String(v)]){seen[String(v)]=1;out.push(v);}step++;}return out;}
+
+function u7median(a){var s=a.slice().sort(function(x,y){return x-y;});var m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+
+function precPair(keyT, ds){
+  function parse(s){ var m=String(s).match(/^(\$?)(-?\d+)(?:\.(\d+))?(%?)$/); if(!m) return null; return {pre:m[1], intp:m[2], frac:m[3]||"", suf:m[4], dp:(m[3]||"").length}; }
+  var k=parse(keyT); if(!k) return ds;
+  var ps=ds.map(function(o){ return parse(o.t); });
+  if(ps.some(function(p){ return !p; })) return ds;
+  var M=k.dp; ps.forEach(function(p){ if(p.dp>M) M=p.dp; });
+  function render(p,target){
+    var core;
+    if(target===0) core=p.intp;
+    else if(p.dp>=target) core=p.intp+"."+p.frac;
+    else if(p.dp===0) core=p.intp+"."+("000000".slice(0,target));
+    else core=p.intp+"."+p.frac+("000000".slice(0,target-p.dp));
+    return p.pre+core+p.suf;
+  }
+  var targets=new Array(ps.length), found=null;
+  function countsOk(arr){ var c={}, i; c[k.dp]=1; for(i=0;i<arr.length;i++) c[arr[i]]=(c[arr[i]]||0)+1; for(var v in c){ if(c[v]===1) return false; } return true; }
+  function search(i){ if(found) return; if(i===ps.length){ if(countsOk(targets)) found=targets.slice(); return; } for(var t=ps[i].dp;t<=M;t++){ targets[i]=t; search(i+1); if(found) return; } }
+  search(0);
+  if(!found) return ds;
+  return ds.map(function(o,i){ var nt=render(ps[i],found[i]); if(nt===o.t) return o; var n2={}; for(var kk in o) n2[kk]=o[kk]; n2.t=nt; return n2; });
+}
+
+var u5Names=["Alex","Maya","Jordan","Priya","Sam","Taylor","Noah","Emma","Liam","Zoe"];
+
+function u5Budget(){
+  var inc=ri(2000,3800)*100;
+  var exps=[
+    {label:"Housing", c:ri(800,1400)*100},
+    {label:"Food", c:ri(300,650)*100},
+    {label:"Transport", c:ri(120,350)*100},
+    {label:"Phone and internet", c:ri(70,150)*100},
+    {label:"Other spending", c:ri(100,400)*100}
+  ];
+  var tot=0; exps.forEach(function(e){ tot+=e.c; });
+  return {inc:inc, exps:exps, tot:tot, bal:inc-tot};
+}
+
+function f22_u5M(c){ var neg=c<0; var a=Math.abs(Math.round(c)); var d=Math.floor(a/100); var r=a%100; var ds=String(d).replace(/\B(?=(\d{3})+(?!\d))/g,","); return (neg?"-":"")+"$"+ds+"."+(r<10?"0":"")+r; }
+
+function u5ExpList(exps){ return exps.map(function(e){ return e.label.toLowerCase()+" "+f22_u5M(e.c); }).join(", "); }
+
+function u5MoneyOpts(correctC,errs){
+  /* errs: [{v: cents, fb: string}]; guarantees 3 distinct distractor texts */
+  var seen={}; seen[correctC]=1; var out=[];
+  errs.forEach(function(e){
+    var v=Math.round(e.v), guard=0;
+    while((seen[v]||v===correctC)&&guard<60){ v+=1000; guard++; }
+    seen[v]=1; out.push({t:f22_u5M(v), fb:e.fb});
+  });
+  return out;
+}
+
+function u5BarFig(title,labels,valsC){
+  var max=1; valsC.forEach(function(v){ if(v>max)max=v; });
+  var H=labels.length*30+34, s='<svg viewBox="0 0 340 '+H+'" xmlns="http://www.w3.org/2000/svg" role="img">';
+  s+='<text x="170" y="16" font-size="13" font-weight="bold" fill="'+FIG_INK+'" text-anchor="middle">'+title+'</text>';
+  for(var i=0;i<labels.length;i++){
+    var y=26+i*30, w=Math.max(4,Math.round(valsC[i]/max*160));
+    s+='<text x="88" y="'+(y+13)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">'+labels[i]+'</text>';
+    s+='<rect x="94" y="'+y+'" width="'+w+'" height="18" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+    s+='<text x="'+(100+w)+'" y="'+(y+13)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="start">'+f22_u5M(valsC[i])+'</text>';
+  }
+  return s+'</svg>';
+}
+
+function u5PctTxt(p){ return fmtF(Math.round(p*10)/10,1)+"%"; }
+
+function u6names(){return pick(["Maya","Liam","Sofia","Noah","Emma","Lucas","Ava","Ethan","Mia","Chloe","Ben","Ruby"]);}
+
+function u6d(x){var s=(Math.round(x*100)/100).toFixed(2);var p=s.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return "$"+p.join(".");}
+
+function u6goal(){return pick(["a used car","a furnace repair","tuition fees","a snowmobile","a laptop for work","a wedding","a fishing boat motor","a home renovation"]);}
+
+function u1Dol(x){ var s=fmtF(Math.abs(x),2); var p=s.split("."); var ip=p[0]; var out=""; while(ip.length>3){ out=","+ip.slice(-3)+out; ip=ip.slice(0,-3); } return (x<0?"-$":"$")+ip+out+"."+p[1]; }
+
+function u1R2(x){ return Math.round(x*100)/100; }
+
+function u1Pick3(ans, cands, step){
+  /* cands: array of {v, fb}. Returns up to 3 distractor objects whose fmtF(v,2) differ from ans and each other. */
+  var used={}; used[fmtF(ans,2)]=1; var out=[];
+  for(var i=0;i<cands.length&&out.length<3;i++){
+    var v=u1R2(cands[i].v); var g=0;
+    while((used[fmtF(v,2)]||v<=0)&&g++<80){ v=u1R2(v+step); }
+    if(v>0&&!used[fmtF(v,2)]){ used[fmtF(v,2)]=1; out.push({v:v, fb:cands[i].fb}); }
+  }
+  var k=1;
+  while(out.length<3){ var w=u1R2(ans+k*(step*7+0.31)); if(w>0&&!used[fmtF(w,2)]){ used[fmtF(w,2)]=1; out.push({v:w, fb:"Check the calculation: that value does not follow from the given numbers."}); } k++; }
+  return out;
+}
+
+function u4R(n){return Math.round(n*100)/100;}
+
+function u4M(n){var s=fmtF(u4R(n),2);var p=s.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return "$"+p.join(".");}
+
+function u4Dist(c,ds,ff,step){var seen={};seen[ff(c)]=1;return ds.map(function(d){var v=d.v,g=0;while(seen[ff(v)]&&g<80){v=u4R(v+step);g++;}seen[ff(v)]=1;return {t:ff(v),fb:d.fb};});}
+
+function u5DegOpts(ans,pool){
+  var out=[];pool.forEach(function(v){if(v!==ans&&v>0&&v<360&&out.indexOf(v)<0)out.push(v);});
+  var k=20;while(out.length<3){if(ans+k!==ans&&out.indexOf(ans+k)<0)out.push(ans+k);k+=15;}
+  return out.slice(0,3).map(function(v){return {t:v+"°", fb:v+"° does not follow from the angle relationship used here: check the sum or equality the diagram gives."};});
+}
+
+function u5PairSVG(a, comp){
+  var cx=110, cy=150, end=comp?90:180, s='<svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two adjacent angles forming a pair">';
+  var p0=u5Pt(cx,cy,92,0), pm=u5Pt(cx,cy,92,a), pe=u5Pt(cx,cy,92,end);
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(p0[0],1)+'" y2="'+fmt(p0[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pm[0],1)+'" y2="'+fmt(pm[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(pe[0],1)+'" y2="'+fmt(pe[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(comp) s+='<path d="M '+(cx+20)+' '+cy+' L '+(cx+20)+' '+(cy-20)+' L '+cx+' '+(cy-20)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+  s+=u5ArcPath(cx,cy,32,0,a)+u5ArcPath(cx,cy,32,a,end);
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  var m1=u5Pt(cx,cy,60,a/2), m2=u5Pt(cx,cy,60,(a+end)/2);
+  s+=_txt(m1[0],m1[1],a+"\u00B0",12.5,false);
+  s+=_txt(m2[0],m2[1],"?",12.5,false);
+  return s+'</svg>';
+}
+
+function u5Pt(cx,cy,r,deg){var t=deg*Math.PI/180;return [cx+r*Math.cos(t),cy-r*Math.sin(t)];}
+
+function u5ArcPath(cx,cy,r,a0,a1){
+  var p0=u5Pt(cx,cy,r,a0), p1=u5Pt(cx,cy,r,a1), large=(a1-a0)>180?1:0;
+  return '<path d="M '+fmt(p0[0],1)+' '+fmt(p0[1],1)+' A '+r+' '+r+' 0 '+large+' 0 '+fmt(p1[0],1)+' '+fmt(p1[1],1)+'" fill="none" stroke="'+FIG_INK+'" stroke-width="1.5"/>';
+}
+
+function u5AdjSVG(x,y){
+  var cx=150,cy=115,W=300,H=200;
+  var p0=u5Pt(cx,cy,88,0),p1=u5Pt(cx,cy,88,x),p2=u5Pt(cx,cy,88,x+y);
+  var m1=u5Pt(cx,cy,60,x/2),m2=u5Pt(cx,cy,60,x+y/2);
+  var s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two adjacent angles sharing a side">';
+  s+='<polygon points="'+cx+','+cy+' '+fmt(p0[0],1)+','+fmt(p0[1],1)+' '+fmt(p1[0],1)+','+fmt(p1[1],1)+'" fill="'+FIG_SHADE+'"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(p0[0],1)+'" y2="'+fmt(p0[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(p1[0],1)+'" y2="'+fmt(p1[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+fmt(p2[0],1)+'" y2="'+fmt(p2[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  s+=_txt(m1[0],m1[1],"A: "+x+"°",12,false);
+  s+=_txt(m2[0],m2[1],"B: "+y+"°",12,false);
+  return s+'</svg>';
+}
+
+function u5VertSVG(a){
+  var cx=150, cy=102, s='<svg viewBox="0 0 300 205" width="300" height="205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two crossing lines with vertically opposite angles">';
+  var d1=10, d2=10+a;
+  [d1,d2].forEach(function(d){ var p1=u5Pt(cx,cy,88,d), p2=u5Pt(cx,cy,88,d+180); s+='<line x1="'+fmt(p1[0],1)+'" y1="'+fmt(p1[1],1)+'" x2="'+fmt(p2[0],1)+'" y2="'+fmt(p2[1],1)+'" stroke="'+FIG_INK+'" stroke-width="2"/>'; });
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="'+FIG_INK+'"/>';
+  var m1=u5Pt(cx,cy,50,(d1+d2)/2), m2=u5Pt(cx,cy,50,(d1+d2)/2+180);
+  s+=_txt(m1[0],m1[1],a+"\u00B0",12.5,false);
+  s+=_txt(m2[0],m2[1],"?",12.5,false);
+  return s+'</svg>';
+}
+
+function u7ScaleFig(drawnW, drawnH, label){
+  var w=Math.max(60,Math.min(190,drawnW*14)), h=Math.max(30,Math.min(90,drawnH*14));
+  var x0=fmt(140-w/2,1), y0=fmt(85-h/2,1);
+  var s='<svg viewBox="0 0 280 165" width="280" height="165" xmlns="http://www.w3.org/2000/svg" role="img">';
+  s+='<rect x="'+x0+'" y="'+y0+'" width="'+fmt(w,1)+'" height="'+fmt(h,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.5" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<text x="140" y="'+fmt(85+h/2+20,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="middle">drawing width = '+fmt(drawnW)+' cm</text>';
+  s+='<text x="140" y="18" font-size="12" font-weight="bold" fill="'+FIG_INK+'" text-anchor="middle">'+label+'</text>';
+  s+='</svg>'; return s;
+}
+
+function u7FigPair(w1,h1,t1,w2,h2,t2){
+  var u1=88/Math.max(w1,h1), u2=88/Math.max(w2,h2);
+  var s='<svg viewBox="0 0 300 180" width="300" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two rectangles diagram">';
+  s+='<rect x="30" y="'+fmt(135-h1*u1,1)+'" width="'+fmt(w1*u1,1)+'" height="'+fmt(h1*u1,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="175" y="'+fmt(135-h2*u2,1)+'" width="'+fmt(w2*u2,1)+'" height="'+fmt(h2*u2,1)+'" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=u7Txt(30+w1*u1/2,155,t1,12); s+=u7Txt(175+w2*u2/2,155,t2,12);
+  return s+'</svg>';
+}
+
+function u7Txt(x,y,str,size,anchor){ return '<text x="'+fmt(x,1)+'" y="'+fmt(y,1)+'" font-size="'+(size||13)+'" fill="'+FIG_INK+'" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="'+(anchor||"middle")+'" dominant-baseline="central">'+str+'</text>'; }
+
+function u7Grid(o) {
+  var cell = o.cell || 24, W = (o.xMax - o.xMin) * cell + 40, H = (o.yMax - o.yMin) * cell + 40;
+  var ox = 20 - o.xMin * cell, oy = 20 + o.yMax * cell;
+  function X(x) { return ox + x * cell; } function Y(y) { return oy - y * cell; }
+  var s = "", x, y;
+  for (x = o.xMin; x <= o.xMax; x++) s += '<line x1="' + fmt(X(x), 1) + '" y1="' + fmt(Y(o.yMin), 1) + '" x2="' + fmt(X(x), 1) + '" y2="' + fmt(Y(o.yMax), 1) + '" stroke="#d7e0da" stroke-width="1"/>';
+  for (y = o.yMin; y <= o.yMax; y++) s += '<line x1="' + fmt(X(o.xMin), 1) + '" y1="' + fmt(Y(y), 1) + '" x2="' + fmt(X(o.xMax), 1) + '" y2="' + fmt(Y(y), 1) + '" stroke="#d7e0da" stroke-width="1"/>';
+  s += u7Line([X(o.xMin), Y(0)], [X(o.xMax), Y(0)], false, 2);
+  s += u7Line([X(0), Y(o.yMin)], [X(0), Y(o.yMax)], false, 2);
+  s += u7T(X(o.xMax) - 6, Y(0) - 11, "x", 13, true) + u7T(X(0) + 11, Y(o.yMax) + 4, "y", 13, true);
+  (o.lines || []).forEach(function (L) { s += u7Line([X(L.a[0]), Y(L.a[1])], [X(L.b[0]), Y(L.b[1])], L.dash, L.w || 2, L.col); });
+  (o.shapes || []).forEach(function (sh) { s += u7Poly(sh.pts.map(function (p) { return [X(p[0]), Y(p[1])]; }), sh.fill, sh.dash); });
+  (o.marks || []).forEach(function (mk) {
+    s += u7Dot([X(mk.p[0]), Y(mk.p[1])], 3.2);
+    if (mk.label) s += u7T(X(mk.p[0]) + (mk.dx || 10), Y(mk.p[1]) + (mk.dy || -10), mk.label, 13, true);
+  });
+  (o.labels || []).forEach(function (lb) { s += u7T(X(lb.p[0]) + (lb.dx || 0), Y(lb.p[1]) + (lb.dy || 0), lb.str, lb.size || 13, lb.bold); });
+  return u7Svg(W, H, s, o.aria || "Diagram on a grid");
+}
+
+function u7Line(p, q, dash, w, col) {
+  return '<line x1="' + fmt(p[0], 1) + '" y1="' + fmt(p[1], 1) + '" x2="' + fmt(q[0], 1) + '" y2="' + fmt(q[1], 1) + '" stroke="' + (col || FIG_INK) + '" stroke-width="' + (w || 2) + '"' + (dash ? ' stroke-dasharray="6 4"' : "") + '/>';
+}
+
+function u7T(x, y, str, size, bold, anchor) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 13) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+
+function u7Poly(pts, fill, dash) {
+  return '<polygon points="' + u7Pts(pts) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="2"' + (dash ? ' stroke-dasharray="6 4"' : "") + '/>';
+}
+
+function u7Dot(p, r) { return '<circle cx="' + fmt(p[0], 1) + '" cy="' + fmt(p[1], 1) + '" r="' + (r || 3) + '" fill="' + FIG_INK + '"/>'; }
+
+function u7Svg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+
+function u7Pts(pts) { return pts.map(function (p) { return fmt(p[0], 1) + "," + fmt(p[1], 1); }).join(" "); }
+
+function u7Coord(p) { return "(" + fmt(p[0]) + ", " + fmt(p[1]) + ")"; }
+
+function u8pair(x,y){return "("+x+", "+y+")";}
+
+function u8gridSVG(points,polys,segs){
+  var W=280,H=280,c=140,st=20;
+  function X(x){return c+x*st;}function Y(y){return c-y*st;}
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cartesian plane grid">';
+  for(var g=-6;g<=6;g++){if(g===0)continue;out+='<line x1="'+X(g)+'" y1="8" x2="'+X(g)+'" y2="272" stroke="'+FIG_SHADE+'" stroke-width="1"/>';out+='<line x1="8" y1="'+Y(g)+'" x2="272" y2="'+Y(g)+'" stroke="'+FIG_SHADE+'" stroke-width="1"/>';}
+  out+='<line x1="8" y1="140" x2="272" y2="140" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  out+='<line x1="140" y1="8" x2="140" y2="272" stroke="'+FIG_INK+'" stroke-width="1.8"/>';
+  out+='<polygon points="272,140 264,135 264,145" fill="'+FIG_INK+'"/><polygon points="140,8 135,16 145,16" fill="'+FIG_INK+'"/>';
+  out+=_txt(266,126,"x",13,true)+_txt(152,20,"y",13,true);
+  if(segs)segs.forEach(function(s){out+='<line x1="'+X(s[0])+'" y1="'+Y(s[1])+'" x2="'+X(s[2])+'" y2="'+Y(s[3])+'" stroke="'+FIG_INK+'" stroke-width="2"'+(s[4]?' stroke-dasharray="5 4"':"")+'/>';});
+  if(polys)polys.forEach(function(p){out+='<polygon points="'+p.map(function(q){return fmt(X(q[0]),1)+","+fmt(Y(q[1]),1);}).join(" ")+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';});
+  if(points)points.forEach(function(p){out+='<circle cx="'+X(p.x)+'" cy="'+Y(p.y)+'" r="3.4" fill="'+FIG_INK+'"/>';if(p.label)out+=_txt(X(p.x)+11,Y(p.y)-10,p.label,13,true);});
+  return out+'</svg>';
+}
+
+function u7Ang(){ return pick([26,28,30,32,35,38,40,42,48,50,55,58,60,62,65]); }
+
+function u7FigTri(oL,aL,hL,angL){
+  var s='<svg viewBox="0 0 280 200" width="280" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Right triangle diagram">';
+  s+='<polygon points="55,50 55,165 245,165" fill="'+FIG_SHADE+'" fill-opacity="0.30" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 67 165 L 67 153 L 55 153" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+='<path d="M 219 165 A 26 26 0 0 1 228 154" fill="none" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+  s+=u7Txt(24,108,oL,13); s+=u7Txt(150,185,aL,13); s+=u7Txt(163,92,hL,13); s+=u7Txt(200,150,angL,13);
+  return s+'</svg>';
+}
+
+function u7fracStr(n,d){if(d<0){n=-n;d=-d;}var g=u7gcd(n,d);n/=g;d/=g;if(d===1)return String(n);return n+"/"+d;}
+
+function u7gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+
 /* ----- bank-u1.js ----- */
 // Math 3202 Unit 1 Measurement question bank
 // CRMARKS: u1-cr-uncertainty-interval=3
@@ -537,6 +1027,204 @@ E("u1-cr-assembly-tolerance", 1, ["3.9","3.8"], 3, "gen", function(){
     "\\[ \\begin{aligned} \\text{Part A "+(askMax?"max":"min")+"} &= "+u1Fmt(A)+" "+(askMax?"+":"-")+" "+u1Fmt(TA)+" = "+u1Fmt(Math.round((askMax?A+TA:A-TA)*100)/100)+" \\\\ \\text{Part B "+(askMax?"max":"min")+"} &= "+u1Fmt(B)+" "+(askMax?"+":"-")+" "+u1Fmt(TB)+" = "+u1Fmt(Math.round((askMax?B+TB:B-TB)*100)/100)+" \\\\ \\text{Total} &= "+u1Fmt(ans)+" \\end{aligned} \\] The answer is <b>"+u1Fmt(ans)+" "+sc.unit+"</b>.",
     {A:A,B:B,TA:TA,TB:TB,askMax:askMax?1:0});
 }, ["Each part can sit at the same end of its tolerance at the same time.", "Start by finding the extreme value for the first part."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 1 (measurement: precision, accuracy and tolerance readiness). Borrowed verbatim from Mathematics 1202 (u2-referent, u2-measure-read, u2-estimate-ref, u2-reasonable, u2-diameter-fig); feeder helper copies ride in bank-helpers.js. Authored for this tranche: u1-pk-rounding (the rounding rule inside the cluster's source gap) and u1-pk-tolerance-arithmetic (the cluster's tolerance-arithmetic skill, written without the course's own notation, the Math 2200 number-line discipline). ===== */
+E("u1-pk-referent", 1, ["3.2"], 1, "gen", function(){
+  var items=[
+    {u:"1 centimetre", good:"the width of a fingernail", bad:["the height of a doorway","the length of a school bus","the width of a football field"], why:"A fingernail is about a centimetre wide."},
+    {u:"1 metre", good:"the height of a kitchen counter, roughly", bad:["the thickness of a coin in your pocket","the length of a new pencil on a desk","the height of a two storey house nearby"], why:"A counter top sits about a metre above the floor."},
+    {u:"1 inch", good:"the width of a thumb at the nail", bad:["the length of a forearm, roughly","the height of a door knob, roughly","the width of a sheet of paper"], why:"A thumb width is a common inch referent."},
+    {u:"1 foot", good:"the length of a standard ruler", bad:["the width of a wide hand span","the height of a tall coffee mug","the length of a parked car"], why:"A standard ruler is 12 inches, which is 1 foot."},
+    {u:"1 yard", good:"the height of a door knob from the floor, roughly", bad:["the length of a shoelace tip on a winter boot","the width of a doorway step at the front door","the length of a hockey rink in a small town"], why:"A door knob sits about a yard above the floor."},
+    {u:"1 kilometre", good:"about a 10 minute walk", bad:["the length of a city bus","about a 1 minute walk","the distance across a classroom"], why:"Walking a kilometre takes roughly 10 minutes."},
+    {u:"1 millimetre", good:"the thickness of a dime", bad:["the width of a fingernail","the length of an ant, roughly","the thickness of a textbook"], why:"A dime is about a millimetre thick."}
+  ];
+  var it=pick(items);
+  var frame=pick(["Which referent best matches ","For a quick estimate, which referent best matches ","A student needs a referent. Which one best matches ","In a workshop, which referent best matches ","For measuring at home, which referent best matches ","Which familiar object is the best referent for ","A camper wants a referent. Which one best matches ","Which referent should a student picture for "]);
+  var ds=it.bad.map(function(b){ return {t:b, fb:"That object is far from "+it.u+" in size, so it would mislead an estimate."}; });
+  return mcq(frame+it.u+"? A referent is a familiar object used to judge a measure.",
+    {t:it.good, fb:"Yes. "+it.why}, ds,
+    it.why+" So the best referent for "+it.u+" is <b>"+it.good+"</b>.",
+    {unit:it.u});
+}, ["Picture each object and compare its size with the unit.", "Rule out objects that are clearly much larger or much smaller first."]);
+
+E("u1-pk-measure-read", 1, ["3.5"], 2, "gen", function(){
+  var whole=ri(2,11); var eighths=pick([1,2,3,4,5,6,7]); var objName=pick(["object","board end","ribbon","strip of card"]); var val=whole+eighths/8;
+  var names={1:"1/8",2:"1/4",3:"3/8",4:"1/2",5:"5/8",6:"3/4",7:"7/8"};
+  var good=whole+" "+names[eighths]+" in";
+  function lab(w,e){ if(e===0) return w+" in"; if(e===8) return (w+1)+" in"; return w+" "+names[e]+" in"; }
+  var cand=[[whole,eighths+1],[whole,eighths-1],[whole+1,eighths],[whole, eighths+2]];
+  var ds=[]; var used={}; used[good]=1;
+  for(var i=0;i<cand.length && ds.length<3;i++){ var t=lab(cand[i][0],cand[i][1]); if(!used[t]){ used[t]=1; ds.push({t:t, fb:"That reading is off the end mark: count the whole inches first, then the eighth inch marks. Tape measures use fractions of an inch because small lengths must be marked precisely."}); } }
+  while(ds.length<3){ var t2=lab(whole+2, eighths); if(!used[t2]){ used[t2]=1; ds.push({t:t2, fb:"That reading is well past the end of the object."}); } else break; }
+  var q=mcq("The "+objName+" starts at 0 on the ruler in the diagram. Imperial rulers divide each inch into fractions such as eighths. What is the length of the object?",
+    {t:good, fb:"Correct: count the whole inches, then count eighth inch marks past the last whole inch."}, ds,
+    "Read from 0. The object ends at "+whole+" whole inches plus "+eighths+" eighth marks. \\[ "+whole+" + "+FR(eighths,8)+" = "+fmt(val)+" \\] The length is <b>"+good+"</b>.",
+    {whole:whole, eighths:eighths});
+  q.figure=u2RulerFig(val);
+  return q;
+}, ["Count whole units first, then the fractional marks.", "Find the last whole inch mark the object passes, then count the small marks after it."]);
+
+E("u1-pk-estimate-ref", 1, ["3.1"], 2, "gen", function(){
+  var scenes=[
+    {obj:"height of a door", ref:"metre stick", per:1, unit:"m", lo:2, hi:3},
+    {obj:"length of a classroom", ref:"foot long ruler laid end to end", per:1, unit:"ft", lo:24, hi:36},
+    {obj:"width of a hallway", ref:"yard stick", per:1, unit:"yd", lo:2, hi:4},
+    {obj:"height of a desk", ref:"foot long ruler", per:1, unit:"ft", lo:2, hi:3},
+    {obj:"length of a school bus", ref:"metre stick", per:1, unit:"m", lo:10, hi:14},
+    {obj:"length of a gym", ref:"metre stick", per:1, unit:"m", lo:18, hi:30},
+    {obj:"height of a counter", ref:"30 cm ruler", per:0.3, unit:"m", lo:3, hi:3},
+    {obj:"width of a driveway", ref:"yard stick", per:1, unit:"yd", lo:3, hi:6}
+  ];
+  var sc=pick(scenes); var n=ri(sc.lo*2,sc.hi*2)/2; var ans=Math.round(n*sc.per*10)/10;
+  var dd=u2Dist(ans,[ans*2,ans/2,ans+(ans>=10?5:1)], sc.unit, "Correct: multiply the number of referents by the size of one referent.", function(i){ return ["That doubles the count of referents without a reason.","That uses only half the referents that were counted.","That does not match the count of referents that was given."][i]; });
+  return mcq("To estimate the "+sc.obj+", a student uses a "+sc.ref+" as a referent. It takes about "+n+" referents to match it. One referent is about "+fmt(sc.per)+" "+sc.unit+". About how long is it, in "+sc.unit+"?",
+    dd.c, dd.d,
+    "Multiply the count by the size of one referent. \\[ "+n+" \\times "+fmt(sc.per)+"\\ \\text{"+sc.unit+"} = "+fmt(ans)+"\\ \\text{"+sc.unit+"} \\] The estimate is about <b>"+fmt(ans)+" "+sc.unit+"</b>.",
+    {obj:sc.obj, n:n});
+}, ["An estimate with a referent is a count times the size of one referent.", "Multiply how many referents fit by the length of one referent."]);
+
+E("u1-pk-reasonable", 1, ["3.9"], 2, "gen", function(){
+  var mode=pick(["classroom","frame","doorway","plate","parcel","fence"]);
+  if(mode==="classroom"){
+    var trueL=ri(7,12); var rep=trueL*100;
+    return mcq("A student measures a classroom and reports the length as "+rep+" m. Is this reasonable?",
+      {t:"No: a classroom is about "+trueL+" m long, so "+rep+" m is far too large, likely a centimetre value given in metres", fb:"Correct: the judgement matches a referent check."},
+      [{t:"Yes: classrooms are hundreds of metres long, so a value like this is reasonable for a school", fb:"Compare the reported value with a referent: a classroom is only several metres long."},{t:"Yes: any measured value is automatically reasonable as long as a tape measure was used to take it carefully", fb:"A reported value still has to fit the size of the object."},{t:"No: a classroom is about "+(trueL*10)+" m long, so "+rep+" m is only a little too large to matter at all", fb:"That referent is itself far too large for a classroom."}],
+      "Judge against a referent. A classroom is about "+trueL+" m long, so "+rep+" m is not reasonable. The judgement is <b>no, the value is far too large</b>.", {mode:mode, trueL:trueL});
+  }
+  if(mode==="frame"){
+    var L=ri(25,60), W=ri(20,50); var P=2*(L+W);
+    return mcq("A student finds the perimeter of a picture frame ("+L+" cm by "+W+" cm) is "+P+" cm. Is this reasonable?",
+      {t:"Yes: the sides add to "+L+" + "+W+" + "+L+" + "+W+" = "+P+" cm, which fits a frame of that size", fb:"Correct: the check calculation confirms the value."},
+      [{t:"No: the perimeter should be "+L+" × "+W+" = "+(L*W)+" cm, found by multiplying the two sides together", fb:"Multiplying gives area, not perimeter."},{t:"Yes: perimeters are always in the hundreds, so any value near there works fine for a frame", fb:"Reasonableness comes from a check, not from the size of the number alone."},{t:"No: a picture frame perimeter must be under 100 cm, so this one is too big", fb:"These sides already add past 100 cm, so that claim fails the check."}],
+      "Check by adding the sides: "+L+" + "+W+" + "+L+" + "+W+" = "+P+" cm. The judgement is <b>yes, it is reasonable</b>.", {mode:mode, L:L, W:W});
+  }
+  if(mode==="doorway"){
+    var repD=pick([19,20,21,22,23]);
+    return mcq("A student reports a doorway height of "+repD+" m. Is this reasonable?",
+      {t:"No: a doorway is about 2.1 m high, so a decimal point error is likely", fb:"Correct: the value is about ten times a sensible doorway height."},
+      [{t:"Yes: doorways in schools are over 18 m high in many school buildings", fb:"Compare with a referent: a doorway is only a little over 2 m."},{t:"No: a doorway is about 21 cm high, so the value is far too large", fb:"That referent is far too small: a person must fit through a doorway."},{t:"Yes: height values in metres are always in the tens, like this one", fb:"The unit alone does not make a value reasonable."}],
+      "Judge against a referent. A doorway is about 2.1 m high, so "+repD+" m is not reasonable. The judgement is <b>no, a decimal point error is likely</b>.", {mode:mode});
+  }
+  if(mode==="plate"){
+    var d=ri(20,32); var C=Math.round(Math.PI*d);
+    return mcq("A student finds the circumference of a dinner plate with diameter "+d+" cm is about "+C+" cm. Is this reasonable?",
+      {t:"Yes: circumference is a little over 3 times the diameter, and 3 times "+d+" is "+(3*d)+", close to "+C, fb:"Correct: the quick check with 3 times the diameter confirms it."},
+      [{t:"No: a circumference should be less than the diameter, since going around is shorter", fb:"Going around a circle is longer than going straight across it."},{t:"No: the circumference should be about "+(d*d)+" cm, the diameter squared, so the reported value is too small", fb:"Squaring belongs to area, not circumference."},{t:"Yes: any value with pi in the calculation is automatically reasonable, so no check is needed", fb:"The value still needs a size check against the diameter."}],
+      "Circumference is a little over 3 times the diameter: 3 times "+d+" is "+(3*d)+", close to "+C+". The judgement is <b>yes, it is reasonable</b>.", {mode:mode, d:d});
+  }
+  if(mode==="parcel"){
+    var L=ri(30,60), W=ri(20,50), H=ri(15,40); var S=L+W+H, prod=L*W*H;
+    return mcq("A parcel measures "+L+" cm by "+W+" cm by "+H+" cm. A student gives the shipping size L + W + H as "+prod+" cm. Is this reasonable?",
+      {t:"No: the sum is "+L+" + "+W+" + "+H+" = "+S+" cm, so "+prod+" cm comes from multiplying, the wrong operation", fb:"Correct: the check sum exposes the wrong operation."},
+      [{t:"Yes: shipping sizes are usually in the tens of thousands for a parcel, so this value is reasonable", fb:"Add the three measures and compare: the sum is only in the low hundreds."},{t:"No: the sum should be "+L+" + "+W+" + "+H+" divided by 10, which gives about "+Math.round(S/10)+" cm, not the reported value", fb:"That is a tenth of the actual sum: recheck the addition."},{t:"Yes: multiplying the three measures is the shipping rule, so the value is right", fb:"The shipping rule is a sum, L + W + H."}],
+      "Add the measures: "+L+" + "+W+" + "+H+" = "+S+" cm, so "+prod+" cm is not reasonable. The judgement is <b>no, the wrong operation was used</b>.", {mode:mode, L:L, W:W, H:H});
+  }
+  var run=ri(15,40); var repF=run*10;
+  return mcq("A student reports that a garden fence run is "+repF+" m long, for a small backyard garden. Is this reasonable?",
+    {t:"No: a small backyard fence run is in the tens of metres at most, so "+repF+" m is far too large", fb:"Correct: the value does not fit the setting."},
+    [{t:"Yes: backyard fences are usually hundreds of metres long, so this value fits a small garden perfectly well", fb:"Compare with a referent: a backyard is tens of metres across, not hundreds."},{t:"Yes: a bigger number always means a better, more careful measurement was taken on site", fb:"Size of the number says nothing without a fit check."},{t:"No: a fence run cannot be longer than 5 m in any backyard, so the report must be wrong", fb:"Many backyard runs are longer than 5 m: the reported value is too large, but not by that test."}],
+    "A small backyard fence run is roughly "+run+" m scale, in the tens of metres. "+repF+" m is far too large. The judgement is <b>no, it is not reasonable</b>.", {mode:mode, run:run});
+}, ["Compare the answer with a familiar referent or a rough check calculation.", "Ask whether the size of the answer fits the object being measured."]);
+
+E("u1-pk-diameter-fig", 1, ["3.5"], 3, "gen", function(){
+  var wall=pick([0.5,1,1.5,2,2.5,3]); var od=ri(10,32); var idd=od-2*wall;
+  var ds=[
+    {t:fmt(od-wall), fb:"That subtracts the wall only once: the wall appears on both sides of the opening."},
+    {t:fmt(od), fb:"That is the outside diameter, not the inside opening."},
+    {t:fmt(od-4*wall), fb:"That subtracts the wall four times: it appears twice across a diameter."}
+  ];
+  var bo=balOpts({t:fmt(idd), fb:"Correct: subtract the wall thickness on both sides of the opening."}, ds);
+  var q=mcq("The diagram shows the end of a pipe. The outside diameter is "+fmt(od)+" cm and the wall is "+fmt(wall)+" cm thick all around. What is the inside diameter of the pipe, in centimetres? Inside diameter is the width of the opening.",
+    bo[0], bo[1],
+    "Across a diameter, the wall is crossed twice. \\[ \\begin{aligned} \\text{inside diameter} &= "+fmt(od)+" - 2("+fmt(wall)+") \\\\ &= "+fmt(idd)+"\\ \\text{cm} \\end{aligned} \\] The answer is <b>"+fmt(idd)+" cm</b>.",
+    {od:od, wall:wall});
+  q.figure=u2CirclesFig(od, idd);
+  return q;
+}, ["Picture a line straight across the opening: it crosses the wall twice.", "Subtract twice the wall thickness from the outside diameter."]);
+
+E("u1-pk-rounding", 1, ["3.7"], 1, "gen", function () {
+  var ctxs = [["a length of ribbon", "m"], ["a jug of water", "L"], ["a bag of flour", "kg"], ["a board", "m"], ["a mass on a scale", "kg"]];
+  var c = pick(ctxs);
+  var ip = ri(2, 60), d1 = ri(0, 9), d2 = ri(0, 9), d3 = ri(0, 9);
+  var p = pick([1, 2]);
+  var placeName = p === 1 ? "nearest tenth" : "nearest hundredth";
+  function rounded(place, alwaysUp) {
+    var ds = String(ip).split("").map(Number).concat([d1, d2, d3]);
+    var intLen = String(ip).length, keep = intLen + place;
+    var up = alwaysUp || ds[keep] >= 5;
+    if (up) {
+      var i = keep - 1; ds[i]++;
+      while (ds[i] === 10) { ds[i] = 0; i--; if (i < 0) { ds.unshift(1); intLen++; break; } ds[i]++; }
+    }
+    var s = ds.slice(0, intLen).join("") + "." + ds.slice(intLen, intLen + place).join("");
+    return place === 0 ? ds.slice(0, intLen).join("") : s;
+  }
+  var valStr = ip + "." + d1 + d2 + d3;
+  var key = rounded(p, false);
+  var upVal = rounded(p, true);
+  var truncVal = (function () { var ds = String(ip).split("").map(Number).concat([d1, d2, d3]); var intLen = String(ip).length; return ds.slice(0, intLen).join("") + "." + ds.slice(intLen, intLen + p).join(""); })();
+  var finer = rounded(Math.min(p + 1, 3), false);
+  var coarser = rounded(p - 1, false);
+  var keyT = key + " " + c[1];
+  var candMap = {};
+  candMap[keyT] = 1;
+  var dsOpts = [];
+  function addD(txt, fb) { if (!candMap[txt]) { candMap[txt] = 1; dsOpts.push({ t: txt, fb: fb }); } }
+  addD(upVal + " " + c[1], "That rounds up, but the digit after the " + (p === 1 ? "tenths" : "hundredths") + " place is " + (p === 1 ? d2 : d3) + ", which is less than 5, so the place digit stays as it is.");
+  addD(truncVal + " " + c[1], "That just drops the extra digits. The digit after the place is " + (p === 1 ? d2 : d3) + ", which is 5 or more, so the place digit rounds up.");
+  addD(finer + " " + c[1], "That keeps one decimal place too many: the question asks for the " + placeName + ".");
+  addD(coarser + " " + c[1], "That rounds to a coarser place than the " + placeName + " asked for.");
+  var sol = "The digit in the " + (p === 1 ? "tenths" : "hundredths") + " place is followed by " + (p === 1 ? d2 : d3) + ". " +
+    ((p === 1 ? d2 : d3) >= 5 ? "Since that digit is 5 or more, the place digit rounds up" : "Since that digit is less than 5, the place digit stays the same") +
+    ", giving <b>" + keyT + "</b>.";
+  return mcq("A measurement of " + c[0] + " is " + valStr + " " + c[1] + ". What is this measurement rounded to the " + placeName + "?",
+    { t: keyT, fb: "Correct: look at the digit after the place you are rounding to." },
+    dsOpts.slice(0, 3), sol, { mode: "round-place", value: valStr, place: p, ans: key });
+}, ["Find the digit in the place you are rounding to.", "Look at the digit just after it: 5 or more rounds the place digit up, less than 5 leaves it."]);
+
+E("u1-pk-tolerance-arithmetic", 1, ["3.8"], 2, "gen", function () {
+  var ctxs = [
+    ["A machine part is made to a length of", "mm", "part"],
+    ["A ribbon is cut to a length of", "cm", "piece"],
+    ["A bag of screws is filled to a mass of", "g", "bag"],
+    ["A tank is filled to a volume of", "mL", "tank"],
+    ["A board is cut to a length of", "cm", "board"]
+  ];
+  var c = pick(ctxs);
+  var N = ri(12, 90) + pick([0, 0.5]);
+  var t = pick([0.2, 0.3, 0.4, 0.5, 0.8, 1.0, 1.5, 2.0]);
+  var lo = Math.round((N - t) * 10) / 10, hi = Math.round((N + t) * 10) / 10;
+  function rng(a, b) { return "Smallest " + fmt(a, 1) + " " + c[1] + ", largest " + fmt(b, 1) + " " + c[1]; }
+  var keyT = rng(lo, hi);
+  var dsOpts = [
+    { t: rng(N, Math.round((N + 2 * t) * 10) / 10), fb: "That adds the amount on the top side twice and never subtracts it: the smallest value also moves down by the amount." },
+    { t: rng(lo, N), fb: "That moves only the smallest value down. The amount applies in both directions, so the largest value moves up by the same amount." },
+    { t: rng(hi, lo), fb: "Those are the right two values with their labels swapped: the smallest comes from subtracting the amount, the largest from adding it." }
+  ];
+  var sol = "Within " + fmt(t, 1) + " " + c[1] + " above or below means the value can drop by " + fmt(t, 1) + " and rise by " + fmt(t, 1) + ": smallest = " +
+    fmt(N, 1) + " - " + fmt(t, 1) + " = " + fmt(lo, 1) + " " + c[1] + ", and largest = " + fmt(N, 1) + " + " + fmt(t, 1) + " = " + fmt(hi, 1) + " " + c[1] +
+    ". The acceptable range is <b>" + keyT.toLowerCase() + "</b>.";
+  return mcq(c[0] + " " + fmt(N, 1) + " " + c[1] + ". A " + c[2] + " is accepted if its measurement is within " + fmt(t, 1) + " " + c[1] + " of this value, above or below. What are the smallest and largest acceptable measurements?",
+    { t: keyT, fb: "Correct: subtract the amount for the smallest value and add it for the largest." },
+    dsOpts, sol, { mode: "accept-range", nominal: N, amount: t, lo: lo, hi: hi });
+}, ["The amount applies in both directions from the stated value.", "Subtract the amount for the smallest acceptable value and add it for the largest."]);
+
+/* PK tranche metadata pass for Unit 1. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U1_FOR=["3.1","3.2","3.3","3.4","3.5","3.6","3.7","3.8","3.9"];
+var PKT_U1={
+ "u1-pk-referent":{src:"math-1202:3.17",group:"estimation"},
+ "u1-pk-measure-read":{src:"math-1202:3.16",group:"instrument-reading"},
+ "u1-pk-estimate-ref":{src:"math-1202:3.18",group:"estimation"},
+ "u1-pk-reasonable":{src:"math-1202:3.23",group:"estimation"},
+ "u1-pk-diameter-fig":{src:"math-1202:3.16",group:"instrument-reading"},
+ "u1-pk-rounding":{src:"authored:rounding-a-measurement, placement unevidenced",group:"rounding"},
+ "u1-pk-tolerance-arithmetic":{src:"authored:tolerance-arithmetic",group:"tolerance-arithmetic"}
+};
+BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U1_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u2.js ----- */
 // Math 3202 Unit 2 Linear Relationships question bank
@@ -1050,6 +1738,216 @@ E("u2-cr-budget-solve", 2, ["2.7","2.8"], 3, "gen", function(){
     {M:M,B:B,x:x});
 }, ["Write the cost equation first, then solve it for the unknown count.", "Start by setting the total equal to the rate times the count plus the fee."]);
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 2 (linear relationships: slope, rate and pattern readiness). Borrowed verbatim from Mathematics 2202 (u7-rise-run-intro, u7-slope-from-ramp, u7-slope-two-points, u7-error-slope, u7-rate-of-change-intro) and Mathematics 9 (u6-table-equation, u6-point-on-graph, u5-balance-model); feeder helper copies ride in bank-helpers.js. ===== */
+E("u2-pk-rise-run", 2, ["2.4"], 1, "gen", function(){
+  var rise=ri(1,6), run=ri(2,12); if(run===rise) run=run+3;
+  var obj=pick(["garden ramp","deck step stringer","loading ramp","shed roof edge"]);
+  var q=mcq("The diagram shows a "+obj+". What is its slope, written as rise over run?",
+    {t:u7Frac(rise,run), fb:"Correct: slope is rise over run, "+rise+" over "+run+", which reduces to "+u7Frac(rise,run)+"."},
+    [{t:u7Frac(run,rise), fb:"This swaps rise and run. Slope puts the rise on top."},
+     {t:String(rise+run), fb:"Adding rise and run does not give slope. Slope is a ratio, rise divided by run."},
+     {t:String(Math.max(1,rise*run)), fb:"Multiplying rise by run does not give slope. Divide the rise by the run."}],
+    "Slope is rise over run. \\[ \\begin{aligned} m &= \\frac{\\text{rise}}{\\text{run}} = \\frac{"+rise+"}{"+run+"} \\\\ &= "+u7Frac(rise,run)+" \\end{aligned} \\] The answer is <b>"+u7Frac(rise,run)+"</b>.",
+    {rise:rise,run:run});
+  q.figure=u7RampFig(rise,run,"Rise and run"); return q;
+}, ["The slope is a ratio: vertical change on top, horizontal change on the bottom.", "Read the rise and the run off the diagram, then write rise divided by run."]);
+
+E("u2-pk-slope-ramp", 2, ["2.4"], 2, "gen", function(){
+  var rise=pick([30,40,50,60,75,80,90,100,120]);
+  var run = rise * pick([4,5,6,8,10]);
+  var slope=rise/run;
+  var obj=pick(["access ramp at a clinic","loading ramp at a warehouse","boat launch ramp","pedestrian ramp at a school"]);
+  var _bo0=balOpts({t:fmt(slope), fb:"Correct: slope is rise over run, "+rise+" divided by "+run+"."}, [{t:fmt(run/rise), fb:"This is run over rise, the ratio flipped. Slope puts rise on top."},
+     {t:fmt(rise+run), fb:"Adding gives a total length in centimetres, not a slope ratio."},
+     {t:fmt(slope*10), fb:"This is ten times too large. Divide "+rise+" by "+run+" directly."}]); var q=mcq("A "+obj+" rises "+rise+" cm over a horizontal run of "+run+" cm, as shown. What is the slope of the ramp?", _bo0[0], _bo0[1],
+    "Apply the formula directly. \\[ \\begin{aligned} m &= \\frac{\\text{rise}}{\\text{run}} = \\frac{"+rise+"}{"+run+"} \\\\ &= "+fmt(slope)+" \\end{aligned} \\] The answer is <b>"+fmt(slope)+"</b>.",
+    {rise:rise,run:run});
+  q.figure=u7RampFig(rise/10, run/10, "Ramp, rise and run in cm scaled for drawing"); return q;
+}, ["Slope is rise divided by run, using the same units top and bottom.", "Write the rise over the run as a fraction, then divide."]);
+
+E("u2-pk-slope-two-points", 2, ["2.4"], 2, "gen", function(){
+  var horiz = Math.random()<0.18;
+  var x1=ri(0,3), dx=ri(2,6), x2=x1+dx;
+  var y1=ri(1,8), dy=horiz?0:pick([-4,-3,-2,2,3,4,5,6]);
+  var y2=y1+dy; if(y2<0){ y2=y1+Math.abs(dy); dy=y2-y1; }
+  if(Math.abs(dy)===dx){ dy = dy>0 ? dy+2 : dy-2; y2=y1+dy; if(y2<0){ y2=y1+Math.abs(dy); dy=y2-y1; } }
+  var m=dy/dx;
+  var cand=[
+    {v:(dy===0?null:dx/dy), fb:"This divides change in x by change in y, the ratio flipped. Slope is change in y over change in x."},
+    {v:-m, fb:"Watch the sign and the order: subtract the first coordinates from the second ones in the same order top and bottom."},
+    {v:dy+dx, fb:"Adding the changes does not give slope. Divide the change in y by the change in x."},
+    {v:m+2, fb:"This is 2 more than the true slope. Divide the change in y by the change in x."},
+    {v:Math.abs(m)+1, fb:"This is not the quotient of the changes. Divide the change in y by the change in x."},
+    {v:m-2, fb:"This is 2 less than the true slope. Divide the change in y by the change in x."},
+    {v:m+3, fb:"This is 3 more than the true slope. Divide the change in y by the change in x."}
+  ];
+  var ds=[], usedD={}; usedD[fmt(m)]=1;
+  for(var ci2=0; ci2<cand.length && ds.length<3; ci2++){ var cv=cand[ci2].v; if(cv===null||cv===undefined) continue; var ks=fmt(cv); if(usedD[ks]) continue; usedD[ks]=1; ds.push({t:ks, fb:cand[ci2].fb}); }
+  var _bo0=balOpts({t:fmt(m), fb:"Correct: change in y is "+dy+" and change in x is "+dx+", so the slope is "+fmt(m)+"."}, ds); var q=mcq("The graph shows a line through ("+x1+", "+y1+") and ("+x2+", "+y2+"). What is the slope of the line?", _bo0[0], _bo0[1],
+    "\\[ \\begin{aligned} m &= \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{"+y2+" - "+y1+"}{"+x2+" - "+x1+"} \\\\ &= \\frac{"+dy+"}{"+dx+"} = "+fmt(m)+" \\end{aligned} \\] "+(horiz?"The line is horizontal, so its slope is 0. ":"")+"The answer is <b>"+fmt(m)+"</b>.",
+    {x1:x1,y1:y1,x2:x2,y2:y2});
+  q.figure=u7GraphFig(x1,y1,x2,y2,"x","y"); return q;
+}, ["Slope from two points is change in y divided by change in x.", "Subtract the y values, subtract the x values, then divide."]);
+
+E("u2-pk-error-slope", 2, ["2.7"], 2, "gen", function(){
+  var x1=ri(1,4), x2=x1+ri(3,6), y1=ri(1,5), y2=y1+ri(4,9);
+  var dy=y2-y1, dx=x2-x1; if(dy===dx){ dy=dy+2; y2=y1+dy; }
+  var errMode=pick(["swap","order","add"]);
+  var wrongTxt, errName;
+  if(errMode==="swap"){ wrongTxt=fmt(dx/dy); errName="rise and run were swapped, giving run over rise"; }
+  else if(errMode==="order"){ wrongTxt=fmt(-dy/dx); errName="the points were subtracted in opposite orders, flipping the sign"; }
+  else { wrongTxt=fmt(dy+dx); errName="the changes were added instead of divided"; }
+  return mcq("A student finds the slope between ("+x1+", "+y1+") and ("+x2+", "+y2+") and gets "+wrongTxt+". What error did the student make, and what is the correct slope?",
+    {t:"Error: "+errName+"; correct slope is "+fmt(dy/dx), fb:"Correct: change in y is "+dy+" and change in x is "+dx+", so the slope is "+fmt(dy/dx)+"."},
+    [{t:"Error: the points were read off the wrong axes; correct slope is "+fmt(dy/dx), fb:"The points are used correctly here. The error is in how the changes were combined."},
+     {t:"Error: rise and run were swapped, giving run over rise; correct slope is "+fmt(dx/dy), fb:"That corrected value is itself run over rise. The slope must be change in y over change in x, which is "+fmt(dy/dx)+"."},
+     {t:"No error; the slope is "+wrongTxt, fb:"Recompute: change in y is "+dy+" and change in x is "+dx+", and "+dy+" divided by "+dx+" is "+fmt(dy/dx)+"."}],
+    "\\[ \\begin{aligned} m &= \\frac{"+y2+" - "+y1+"}{"+x2+" - "+x1+"} = \\frac{"+dy+"}{"+dx+"} \\\\ &= "+fmt(dy/dx)+" \\end{aligned} \\] The stated value came from this error: "+errName+". The answer is <b>correct slope "+fmt(dy/dx)+"</b>.",
+    {errMode:errMode,x1:x1,x2:x2,y1:y1,y2:y2});
+}, ["Recompute the slope yourself first, then match the stated wrong value to an error.", "Find the change in y and the change in x, then test each error description against them."]);
+
+E("u2-pk-rate-of-change", 2, ["2.4"], 1, "gen", function(){
+  var mode=pick([
+    {u:"dollars per hour", s:"A worker earns $PLACE per hour of work. The pay rate is a slope because it compares", a:"money earned with time worked"},
+    {u:"litres per minute", s:"A tank drains at PLACE litres per minute. The drainage rate is a slope because it compares", a:"volume drained with time passed"},
+    {u:"kilometres per hour", s:"A delivery van travels at PLACE kilometres per hour. The speed is a slope because it compares", a:"distance travelled with time passed"},
+    {u:"dollars per kilogram", s:"Fish at a market costs $PLACE per kilogram. The unit price is a slope because it compares", a:"cost with mass bought"}
+  ]);
+  var v=pick([8,10,12,15,18,20,24,25,30,36,40,45,50,60]);
+  var prompt=mode.s.replace("PLACE", v)+":";
+  return mcq(prompt,
+    {t:mode.a, fb:"Correct: a rate with units like "+mode.u+" compares two quantities, exactly like rise over run."},
+    [{t:"the colour with the size", fb:"Colour and size are not the two quantities in this rate."},
+     {t:"the starting value with itself", fb:"A rate compares a change in one quantity with a change in another, not a value with itself."},
+     {t:"the name with the address", fb:"Names and addresses are not quantities that change together in a rate."}],
+    "A rate such as "+v+" "+mode.u+" is a slope: it is a change in one quantity divided by a change in another. The answer is <b>"+mode.a+"</b>.",
+    {mode:mode.u,v:v});
+}, ["Look for the two quantities named in the units of the rate.", "Units like per hour tell you the second quantity; the amount tells you the first."]);
+
+E("u2-pk-table-equation", 2, ["2.6"], 2, "gen", function () {
+  var S = ri(1, 12), P = ri(2, 7), att = 0;
+  while (S === P && att < 40) { S = ri(1, 12); P = ri(2, 7); att++; }
+  if (S === P) { S = 4; P = 3; }
+  var x0 = pick([0, 0, 1]);
+  var xs = [], ys = [];
+  for (var k = 0; k < 5; k++) { xs.push(x0 + k); ys.push(S + P * (x0 + k)); }
+  var corr = "\\(y = " + u6lin(P, S, "x") + "\\)";
+  var startNote = x0 === 0
+    ? "When \\(x = 0\\), \\(y = " + S + "\\), so the start value is " + S + "."
+    : "Extending the pattern back one step, when \\(x = 0\\), \\(y = " + ys[0] + " - " + P + " = " + S + "\\), so the start value is " + S + ".";
+  var sol = "The \\(y\\) values rise by the same amount each time \\(x\\) grows by 1: \\[ \\begin{aligned} \\text{step} &= " + ys[1] + " - " + ys[0] + " = " + fmt(P) + " \\end{aligned} \\] " + startNote + " So the equation is <b>" + corr + "</b>.";
+  var prompt = "A table of values for a linear relation is shown.<br>x: " + xs.join(", ") + "<br>y: " + ys.join(", ") + "<br>Which equation fits the table?";
+  return mcq(prompt,
+    { t: corr, fb: "Correct. The step is " + fmt(P) + " and the start value is " + fmt(S) + "." },
+    [
+      { t: "\\(y = " + u6lin(S, P, "x") + "\\)", fb: "That swaps the start value and the step. Check it at the first table value." },
+      { t: "\\(y = " + u6lin(P, -S, "x") + "\\)", fb: "That subtracts the start value. The y values are larger than the step alone, so the start is added." },
+      { t: "\\(y = " + u6lin(P, S + P, "x") + "\\)", fb: "The step is right, but the start value is too big. Use the y value when x is 0." }
+    ], sol, { mode: "table-equation", S: S, P: P, x0: x0 });
+}, ["Find the step first: how much does y change when x grows by 1?", "The start value is the y value when x is 0; extend the pattern back if the table starts later."]);
+
+E("u2-pk-point-on-graph", 2, ["2.1"], 1, "gen", function () {
+  var kind = pick(["slope", "slope", "horiz", "vert"]);
+  function pt(x, y) { return "(" + fmt(x) + ", " + fmt(y) + ")"; }
+  if (kind === "slope") {
+    for (var att = 0; att < 300; att++) {
+      var b = ri(1, 5), m = ri(1, 3);
+      var xmax = 6, ymax = b + m * xmax;
+      var x0 = ri(2, 5), y0 = b + m * x0;
+      var corr = pt(x0, y0);
+      var raw = [[x0, y0 + 1], [x0, y0 - 1], [x0 + 1, y0], [x0 - 1, y0], [0, m], [y0, x0]];
+      var cands = [];
+      raw.forEach(function (c) {
+        if (c[0] < 0 || c[1] < 0) return;
+        if (b + m * c[0] === c[1]) return;
+        cands.push({ t: pt(c[0], c[1]), fb: "That point is not on the line. At x = " + fmt(c[0]) + ", the line has y = " + fmt(b + m * c[0]) + "." });
+      });
+      var ds = u6pick3(corr, cands);
+      if (!ds) continue;
+      var sol = "Points on the line follow its pattern, starting at " + fmt(b) + " and rising by " + fmt(m) + " per step: \\[ \\begin{aligned} y(" + x0 + ") &= " + b + " + " + fmt(m) + "(" + x0 + ") \\\\ &= " + fmt(y0) + " \\end{aligned} \\] So a point on the graph is <b>" + corr + "</b>.";
+      var q = mcq("Which point lies on the graph shown?", { t: corr, fb: "Correct. That point sits exactly on the line." }, ds, sol, { mode: "point-slope", b: b, m: m, x0: x0 });
+      q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: "x", ylab: "y", lines: [{ pts: [[0, b], [xmax, ymax]] }] });
+      return q;
+    }
+  } else if (kind === "horiz") {
+    var c = ri(2, 9), x0 = ri(1, 5);
+    var corrH = pt(x0, c);
+    var rawH = [[x0, c + 1], [x0, c + 2], [x0 + 1, c - 1], [c, x0], [x0 + 2, c + 3]];
+    var candsH = [];
+    rawH.forEach(function (cc) {
+      if (cc[1] === c || cc[1] < 0) return;
+      candsH.push({ t: pt(cc[0], cc[1]), fb: "Every point on this line has y = " + fmt(c) + ", and that point has y = " + fmt(cc[1]) + "." });
+    });
+    var dsH = u6pick3(corrH, candsH);
+    if (dsH) {
+      var solH = "The graph is a horizontal line: \\[ \\begin{aligned} y &= " + fmt(c) + " \\end{aligned} \\] Every point on it has \\(y = " + fmt(c) + "\\), whatever its \\(x\\) value is. So a point on the graph is <b>" + corrH + "</b>.";
+      var qH = mcq("Which point lies on the graph shown?", { t: corrH, fb: "Correct. Its y value is " + fmt(c) + ", like every point on the line." }, dsH, solH, { mode: "point-horiz", c: c, x0: x0 });
+      qH.figure = u6graph({ xmax: 6, ymax: 12, xlab: "x", ylab: "y", lines: [{ pts: [[0, c], [6, c]] }] });
+      return qH;
+    }
+  } else {
+    var cv = ri(2, 5), y0v = ri(1, 10);
+    var corrV = pt(cv, y0v);
+    var rawV = [[cv + 1, y0v], [cv - 1, y0v], [y0v, cv], [cv + 2, y0v + 1]];
+    var candsV = [];
+    rawV.forEach(function (cc) {
+      if (cc[0] === cv) return;
+      candsV.push({ t: pt(cc[0], cc[1]), fb: "Every point on this line has x = " + fmt(cv) + ", and that point has x = " + fmt(cc[0]) + "." });
+    });
+    var dsV = u6pick3(corrV, candsV);
+    if (dsV) {
+      var solV = "The graph is a vertical line: \\[ \\begin{aligned} x &= " + fmt(cv) + " \\end{aligned} \\] Every point on it has \\(x = " + fmt(cv) + "\\), whatever its \\(y\\) value is. So a point on the graph is <b>" + corrV + "</b>.";
+      var qV = mcq("Which point lies on the graph shown?", { t: corrV, fb: "Correct. Its x value is " + fmt(cv) + ", like every point on the line." }, dsV, solV, { mode: "point-vert", c: cv, y0: y0v });
+      qV.figure = u6graph({ xmax: 6, ymax: 12, xlab: "x", ylab: "y", lines: [{ pts: [[cv, 0], [cv, 12]] }] });
+      return qV;
+    }
+  }
+  var qf = mcq("Which point lies on the graph shown?", { t: "(3, 7)", fb: "Correct. That point sits exactly on the line." },
+    [
+      { t: "(3, 6)", fb: "At x = 3, the line has y = 7." },
+      { t: "(3, 8)", fb: "At x = 3, the line has y = 7." },
+      { t: "(4, 7)", fb: "At x = 4, the line has y = 9." }
+    ],
+    "The line starts at 1 and rises by 2 per step, so at x = 3, y = 7. A point on the graph is <b>(3, 7)</b>.",
+    { mode: "point-slope", b: 1, m: 2, x0: 3 });
+  qf.figure = u6graph({ xmax: 6, ymax: 13, xlab: "x", ylab: "y", lines: [{ pts: [[0, 1], [6, 13]] }] });
+  return qf;
+}, ["For a sloped line, use its start and step to find the y value for a given x. For a flat or upright line, check which coordinate stays the same.", "First decide what kind of line it is: sloped, horizontal or vertical."]);
+
+E("u2-pk-balance-model", 2, ["2.7"], 1, "gen", function () {
+  var a = ri(1, 3), b = ri(1, 4), c = ri(b + 2, 10);
+  function eq(x, y, z) { return "\\(" + u5lin(x, y) + "=" + fmt(z) + "\\)"; }
+  var corr = eq(a, b, c);
+  var cands = [
+    { t: eq(a, c, b), fb: "That swaps the unit blocks: the left pan has " + fmt(b) + " unit blocks and the right pan has " + fmt(c) + "." },
+    { t: eq(b, a, c), fb: "That swaps the counts: there are " + fmt(a) + " x blocks and " + fmt(b) + " unit blocks on the left pan." },
+    { t: eq(a + 1, b, c), fb: "That counts one x block too many; the left pan shows " + fmt(a) + " x blocks." },
+    { t: eq(a, b, c + 1), fb: "That counts one unit block too many on the right pan; it shows " + fmt(c) + "." },
+    { t: eq(a, b + 1, c), fb: "That counts one unit block too many on the left pan; it shows " + fmt(b) + "." }
+  ];
+  var ds = u5pick3(corr, cands);
+  var sol = "Count the blocks on each pan: \\[ \\begin{aligned} \\text{left pan} &= " + fmt(a) + " \\text{ x blocks} + " + fmt(b) + " \\text{ unit blocks} \\\\ \\text{right pan} &= " + fmt(c) + " \\text{ unit blocks} \\end{aligned} \\] The pans balance, so the model shows <b>" + corr + "</b>.";
+  var q = mcq("The diagram shows a balance model. Each large block is labelled x and each small block is labelled 1. The pans balance. Which equation does the model show?", { t: corr, fb: "Correct: the left pan gives the x terms and units, and the right pan gives the total." }, ds, sol, { mode: "balance", a: a, b: b, c: c });
+  q.figure = u5balance(a, b, c);
+  return q;
+}, ["Count the blocks on the left pan first: x blocks give the x term, small blocks give the constant.", "The left pan is one side of the equation and the right pan is the other side."]);
+
+/* PK tranche metadata pass for Unit 2. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U2_FOR=["2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8"];
+var PKT_U2={
+ "u2-pk-rise-run":{src:"math-2202:4.4",group:"slope"},
+ "u2-pk-slope-ramp":{src:"math-2202:4.4",group:"slope"},
+ "u2-pk-slope-two-points":{src:"math-2202:4.9",group:"slope"},
+ "u2-pk-error-slope":{src:"math-2202:4.9",group:"slope"},
+ "u2-pk-rate-of-change":{src:"math-2202:4.8",group:"rate-of-change"},
+ "u2-pk-table-equation":{src:"math-9:7.4",group:"tables-and-graphs"},
+ "u2-pk-point-on-graph":{src:"math-9:7.7",group:"tables-and-graphs"},
+ "u2-pk-balance-model":{src:"math-9:8.17",group:"linear-equations"}
+};
+BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U2_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u3.js ----- */
 // Math 3202 Unit 3 Graphing Data question bank
 // CRMARKS: u3-interpolate-cr=3
@@ -1409,6 +2307,227 @@ E("u3-scale-design-cr", 3, ["6.14"], 3, "gen", function(){
     "Divide the largest value by the number of intervals, round up to a tidy step, then multiply back. \\[ \\begin{aligned} "+maxVal+" \\div "+intervals+" &\\approx "+fmt(raw,1)+" \\\\ \\text{Tidy step} &= "+inc+" \\\\ \\text{Top} &= "+inc+" \\times "+intervals+" = "+top+" \\end{aligned} \\] The answer is <b>"+top+"</b>.",
     {maxVal:maxVal, intervals:intervals, inc:inc, ctx:ctx});
 }, ["The top of the axis is the scale step multiplied by the number of intervals.", "Start by dividing the largest value by the number of intervals."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 3 (graphing data and scatter plots). Borrowed verbatim from Mathematics 2202 Unit 4 (u4-read-value, u4-histogram-read, u4-trend-basic, u4-scatter-trend, u4-choose-graph, u4-interpolate, u4-misleading-axis, u4-two-conclusions); feeder helper copies ride in bank-helpers.js. Codes outside the cluster's named feeder codes (6.1, 6.2, 6.6, 6.7) are support-set borrows on the cluster's named skills, recorded per entry in pkSrc. ===== */
+E("u3-pk-read-value", 3, ["6.13"], 1, "gen", function () {
+  var ctxs = [
+    { thing: "concession sales at a rink in Mount Pearl", unit: "hot dogs sold", labels: ["Fri", "Sat", "Sun", "Mon"] },
+    { thing: "a bakery in Bonavista", unit: "loaves sold", labels: ["Tue", "Wed", "Thu", "Fri"] },
+    { thing: "a bike shop in St. John's", unit: "bikes serviced", labels: ["Wk 1", "Wk 2", "Wk 3", "Wk 4"] },
+    { thing: "a ferry terminal in Port aux Basques", unit: "vehicles boarded", labels: ["6 AM", "9 AM", "12 PM", "3 PM"] }
+  ];
+  var c = pick(ctxs), vals = [], i;
+  for (i = 0; i < 4; i++) vals.push(ri(3, 18) * 5);
+  var k = ri(0, 3), ans = vals[k];
+  var pool = [ans + 5, ans - 5, ans + 10, vals[(k + 1) % 4], vals[(k + 3) % 4]];
+  var ds = u4Distractors(ans, pool).map(function (d) { return { t: String(d), fb: d + " is a reading from a different bar or a scale slip: check the " + c.labels[k] + " bar again." }; });
+  var q = mcq("The bar graph shows " + c.unit + " for " + c.thing + ". How many were recorded for " + c.labels[k] + "?",
+    { t: String(ans), fb: "Yes: the top of the " + c.labels[k] + " bar lines up with " + ans + "." }, ds,
+    "Read the height of the " + c.labels[k] + " bar against the scale. It reaches " + ans + ". The answer is <b>" + ans + "</b>.",
+    { k: k, ans: ans });
+  q.figure = u4BarFig(c.labels, vals, u4NiceMax(Math.max.apply(null, vals)), c.unit, "");
+  return q;
+}, ["Find the category named in the question along the bottom first.", "Follow the top of its bar across to the scale and read the value."]);
+
+E("u3-pk-histogram-read", 3, ["6.13"], 1, "gen", function () {
+  var ctxs = [
+    { item: "members at a gym in Clarenville", unit: "minutes of exercise per visit", w: 10 },
+    { item: "students at a school in Corner Brook", unit: "pages read in one evening", w: 5 },
+    { item: "shoppers at a market in Gander", unit: "dollars spent on groceries", w: 10 },
+    { item: "workers at a plant in Labrador City", unit: "minutes for the drive to work", w: 5 }
+  ];
+  var c = pick(ctxs), labels = [], freqs = [], i;
+  for (i = 0; i < 5; i++) { labels.push((i * c.w) + "-" + ((i + 1) * c.w - 1)); freqs.push(ri(2, 13)); }
+  var k = ri(0, 4), ans = freqs[k];
+  var pool = [ans + 1, ans - 1, ans + 2, freqs[(k + 1) % 5], freqs[(k + 4) % 5], ans + 4];
+  var ds = u4Distractors(ans, pool).map(function (d) { return { t: String(d), fb: d + " does not match the height of the " + labels[k] + " bar: read that bar against the frequency scale." }; });
+  var q = mcq("A histogram shows " + c.unit + " for " + c.item + ". How many are in the " + labels[k] + " interval?",
+    { t: String(ans), fb: "Yes: the bar for " + labels[k] + " reaches " + ans + " on the frequency axis." }, ds,
+    "Find the bar labelled " + labels[k] + " and read its height on the frequency axis. It reaches " + ans + ". The answer is <b>" + ans + "</b>.",
+    { k: k, ans: ans });
+  q.figure = u4HistFig(labels, freqs, u4NiceMax(Math.max.apply(null, freqs)), "Frequency", c.unit);
+  return q;
+}, ["Find the interval named in the question along the horizontal axis first.", "Follow the top of that bar across to the frequency scale and read the value."]);
+
+E("u3-pk-trend-basic", 3, ["6.11"], 1, "gen", function () {
+  var ctxs = [
+    { thing: "Daily visitors to a ski hill in Marble Mountain", x: "Day", labels: ["Mon", "Tue", "Wed", "Thu", "Fri"] },
+    { thing: "Water level in a rain barrel in St. John's, in cm", x: "Week", labels: ["Wk 1", "Wk 2", "Wk 3", "Wk 4", "Wk 5"] },
+    { thing: "Fuel left in a tour boat tank in Twillingate, in litres", x: "Hour", labels: ["9 AM", "10 AM", "11 AM", "12 PM", "1 PM"] },
+    { thing: "Tickets sold each day for a theatre show in Grand Falls-Windsor", x: "Day", labels: ["Mon", "Tue", "Wed", "Thu", "Fri"] }
+  ];
+  var c = pick(ctxs), mode = pick(["up", "down", "flat"]), vals = [], i, start = ri(15, 45), step = ri(2, 7);
+  for (i = 0; i < 5; i++) vals.push(mode === "up" ? start + step * i : mode === "down" ? start + step * 4 - step * i : start);
+  var correct = mode === "up" ? "It rises steadily across the whole period" : mode === "down" ? "It falls steadily across the whole period" : "It stays about the same across the whole period";
+  var opts = ["It rises steadily across the whole period", "It falls steadily across the whole period", "It stays about the same across the whole period", "It rises, then falls back to its starting value"].filter(function (t) { return t !== correct; }).map(function (t) {
+    return { t: t, fb: "Compare the first and last points and the direction between them: that pattern does not match this graph." };
+  });
+  var q = mcq(c.thing + " is graphed over time. Which sentence describes the trend?",
+    { t: correct, fb: "Yes: the points move in that one direction (or stay level) from start to finish." }, opts,
+    "The first value is " + vals[0] + " and the last value is " + vals[4] + ", and every step between them moves the same way. The answer is <b>" + correct + "</b>.",
+    { mode: mode, start: start, step: step });
+  q.figure = u4LineFig(c.labels, vals, u4NiceMax(Math.max.apply(null, vals)), "Value", c.x);
+  return q;
+}, ["Compare the first point with the last point, then check the direction in between.", "Decide whether the line climbs, drops, or stays level as you read left to right."]);
+
+E("u3-pk-scatter-trend", 3, ["6.11"], 2, "gen", function () {
+  var ctxs = [
+    { x: "Hours of practice per week", y: "Songs played cleanly", xlab: "Hours", ylab: "Songs" },
+    { x: "Centimetres of rain in a month", y: "Trail closures that month", xlab: "Rain (cm)", ylab: "Closures" },
+    { x: "Minutes a soup simmers", y: "Flavour score out of 50", xlab: "Minutes", ylab: "Score" },
+    { x: "Kilometres driven per day", y: "Fuel used that day (L)", xlab: "Kilometres", ylab: "Litres" }
+  ];
+  var c = pick(ctxs), mode = pick(["pos", "neg", "none"]), pts = [], i;
+  for (i = 0; i < 9; i++) {
+    var x = 2 + i * 2 + ri(0, 1), yv;
+    if (mode === "pos") yv = Math.round(6 + x * 1.6 + ri(-4, 4));
+    else if (mode === "neg") yv = Math.round(52 - x * 1.8 + ri(-4, 4));
+    else yv = ri(14, 44);
+    pts.push([x, Math.max(2, yv)]);
+  }
+  var correct = mode === "pos" ? "As one measure rises, the other tends to rise too" : mode === "neg" ? "As one measure rises, the other tends to fall" : "The points show no clear pattern linking the measures";
+  var all = ["As one measure rises, the other tends to rise too", "As one measure rises, the other tends to fall", "The points show no clear pattern linking the measures", "Every point follows the pattern with no exceptions at all"];
+  var opts = all.filter(function (t) { return t !== correct; }).map(function (t) {
+    return { t: t, fb: mode === "none" && t.indexOf("Every point") === 0 ? "Scatter points are scattered, so no point by point rule holds here." : "Look at the overall drift of the cloud of points, not at any single point." };
+  });
+  var q = mcq("A scatter plot links " + c.x.toLowerCase() + " with " + c.y.toLowerCase() + ". Which sentence describes the trend?",
+    { t: correct, fb: "Yes: that matches the overall drift of the points." }, opts,
+    "Ignore single points and follow the cloud as a whole from left to right. Its overall drift gives the trend. The answer is <b>" + correct + "</b>.",
+    { mode: mode });
+  q.figure = u4ScatterFig(pts, 20, 60, c.ylab, c.xlab);
+  return q;
+}, ["Look at the whole cloud of points rather than any single point.", "Follow the cloud from left to right and judge whether it drifts up, drifts down, or spreads with no drift."]);
+
+E("u3-pk-choose-graph", 3, ["6.14"], 1, "var", varset([
+  function () {
+    return mcq("A cafeteria manager records the number of each lunch item sold on Monday: sandwiches, soup, salads and wraps. She wants to compare the four items side by side. Which graph suits this best?",
+      { t: "Bar graph", fb: "Yes: separate bars compare separate categories clearly." },
+      [{ t: "Line graph", fb: "A line graph shows change over time, and these items are not a time order." },
+       { t: "Histogram", fb: "A histogram groups measured values into intervals, not named menu items." },
+       { t: "Scatter plot", fb: "A scatter plot shows a relationship between two measured variables." }],
+      "The data are counts in separate categories, so bars that can be compared side by side fit best. The answer is <b>Bar graph</b>.", {});
+  },
+  function () {
+    return mcq("A lifeguard records the air temperature every hour from 9 AM to 5 PM to show parents how the day warmed up. Which graph suits this best?",
+      { t: "Line graph", fb: "Yes: points joined in time order show how temperature changed." },
+      [{ t: "Bar graph", fb: "Bars compare categories; here the point is change over time." },
+       { t: "Circle graph", fb: "A circle graph shows parts of one whole, not change over hours." },
+       { t: "Pictograph", fb: "A pictograph uses picture symbols for counts and hides the hourly pattern." }],
+      "The values are ordered in time and the goal is to show change, so a line graph fits best. The answer is <b>Line graph</b>.", {});
+  },
+  function () {
+    return mcq("A student council president wants to show what share of a $600 fundraiser came from each of four activities. Which graph suits this best?",
+      { t: "Circle graph", fb: "Yes: slices show each part as a share of the whole $600." },
+      [{ t: "Line graph", fb: "A line graph shows change over time, not shares of a total." },
+       { t: "Histogram", fb: "A histogram groups measured values into intervals." },
+       { t: "Scatter plot", fb: "A scatter plot compares two measured variables, not parts of a whole." }],
+      "The message is parts of one whole total, so a circle graph fits best. The answer is <b>Circle graph</b>.", {});
+  },
+  function () {
+    return mcq("A gym coach measures the resting heart rates of 40 members and groups them as 50 to 59, 60 to 69, 70 to 79 and 80 to 89 beats per minute. Which graph suits this best?",
+      { t: "Histogram", fb: "Yes: a histogram shows how many values fall in each interval." },
+      [{ t: "Bar graph", fb: "Bar graphs use separate named categories; these are intervals of a measurement." },
+       { t: "Circle graph", fb: "A circle graph shows shares of a whole, not a spread of measurements." },
+       { t: "Line graph", fb: "A line graph shows change over time; heart rates here are not ordered in time." }],
+      "Measured values grouped into equal intervals are shown with a histogram. The answer is <b>Histogram</b>.", {});
+  },
+  function () {
+    return mcq("A driving instructor records, for each of 12 learners, the hours of practice and the score on a road test. She wants to see if more practice goes with higher scores. Which graph suits this best?",
+      { t: "Scatter plot", fb: "Yes: each learner is one point, so the pattern between the two measures shows." },
+      [{ t: "Bar graph", fb: "Bars compare categories; both measures here are numbers per learner." },
+       { t: "Circle graph", fb: "A circle graph shows parts of a whole, not a relationship." },
+       { t: "Histogram", fb: "A histogram shows one measurement grouped into intervals, not two linked measures." }],
+      "Two number measures recorded for the same learners call for a scatter plot. The answer is <b>Scatter plot</b>.", {});
+  },
+  function () {
+    return mcq("A teacher wants one clear disadvantage of using a circle graph for the daily high temperatures of a whole month. Which statement gives it?",
+      { t: "A circle graph cannot show how values change from day to day", fb: "Yes: slices have no time order, so the daily pattern is lost." },
+      [{ t: "A circle graph uses too many colours to print clearly in a book", fb: "Colour is a design choice, not a limit of the graph type itself." },
+       { t: "A circle graph can only hold four values at a time, no more", fb: "A circle graph can hold more parts; the issue is change over time." },
+       { t: "A circle graph always starts its scale at a wrong value every time", fb: "Circle graphs have slices, not a scale that can start wrongly." }],
+      "Daily temperatures are a time sequence, and a circle graph shows parts of a whole with no time order. The answer is <b>A circle graph cannot show how values change from day to day</b>.", {});
+  }
+]), ["Match the graph to the job: categories, change over time, parts of a whole, intervals, or two linked measures.", "Ask what the reader should see first, then pick the graph built for that job."]);
+
+E("u3-pk-interpolate", 3, ["6.12"], 2, "gen", function () {
+  var ctxs = [
+    { thing: "temperature inside a greenhouse in Mount Pearl", x: "Hour after sunrise", y: "Degrees C", unit: "degrees" },
+    { thing: "distance covered by a snowmobile tour near Deer Lake", x: "Hour", y: "Kilometres", unit: "km" },
+    { thing: "water pumped into a tank at a fish plant in Harbour Grace", x: "Minute", y: "Litres", unit: "litres" },
+    { thing: "height of a sunflower in a garden in Clarenville", x: "Week", y: "Centimetres", unit: "cm" }
+  ];
+  var c = pick(ctxs), start = ri(4, 30), step = pick([2, 4, 5, 6, 8, 10]), labels = [], vals = [], i;
+  for (i = 0; i < 6; i++) { labels.push(String(i)); vals.push(start + step * i); }
+  var k = ri(1, 4), ans = (vals[k] + vals[k + 1]) / 2;
+  var pool = [vals[k], vals[k + 1], ans + step, ans - step / 2, vals[k] + step * 2];
+  var ds = u4Distractors(ans, pool).map(function (d) { return { t: String(d) + "", fb: "That value sits on a plotted point or past it: halfway in time means halfway between the two neighbouring values." }; });
+  var q = mcq("The line graph shows " + c.thing + ". The value changes steadily between plotted points. Interpolate the value at " + k + ".5 on the horizontal axis, in " + c.unit + ".",
+    { t: String(fmt(ans)) + "", fb: "Yes: halfway between " + vals[k] + " and " + vals[k + 1] + " is " + fmt(ans) + "." }, ds,
+    "\\[ \\begin{aligned} \\text{Interpolated value} &= \\frac{" + vals[k] + " + " + vals[k + 1] + "}{2} \\\\ &= " + fmt(ans) + " \\end{aligned} \\] The answer is <b>" + fmt(ans) + " " + c.unit + "</b>.",
+    { k: k, ans: ans });
+  q.figure = u4LineFig(labels, vals, u4NiceMax(vals[5]), c.y, c.x);
+  return q;
+}, ["Interpolation means reading a value between two plotted points.", "Find the two points on either side of the requested spot and take the value halfway between them."]);
+
+E("u3-pk-misleading-axis", 3, ["6.13"], 2, "gen", function () {
+  var ctxs = [
+    { thing: "monthly memberships at two gyms in St. John's", labels: ["Gym A", "Gym B"], unit: "members" },
+    { thing: "weekly sales at two food trucks in Corner Brook", labels: ["Truck A", "Truck B"], unit: "meals" },
+    { thing: "season points for two curling teams in Gander", labels: ["Team A", "Team B"], unit: "points" },
+    { thing: "daily riders on two bus routes in Mount Pearl", labels: ["Route A", "Route B"], unit: "riders" }
+  ];
+  var c = pick(ctxs), v1 = ri(55, 90), gap = pick([4, 5, 6, 8, 10]), v2 = v1 + gap;
+  var base = v1 - pick([5, 10, 15]), yMax = v2 + pick([2, 4, 6]);
+  var q = mcq("The bar graph shows " + c.thing + ": " + v1 + " " + c.unit + " for " + c.labels[0] + " and " + v2 + " " + c.unit + " for " + c.labels[1] + ". The second bar looks far taller than the first. What makes the graph misleading?",
+    { t: "The vertical axis starts at " + base + " instead of 0", fb: "Yes: starting above 0 stretches the visible gap between the bars." },
+    [{ t: "The two bars are drawn in two different widths", fb: "Check the figure: the bars have the same width, so width is not the trick." },
+     { t: "The bars are arranged in the wrong time order", fb: "These are two separate entries, not a time order, and order does not change bar heights." },
+     { t: "The graph uses bars instead of a circle format", fb: "Bars suit this comparison; the problem is where the scale begins." }],
+    "The values differ by only " + gap + ", but the scale begins at " + base + ", so only the tops of the bars are compared. A scale that starts above 0 exaggerates a small difference. The answer is <b>The vertical axis starts at " + base + " instead of 0</b>.",
+    { v1: v1, v2: v2, base: base });
+  q.figure = u4BarFig(c.labels, [v1, v2], yMax, c.unit, "", base);
+  return q;
+}, ["Compare the size of the real difference with how big it looks on the page.", "Check where the vertical scale starts before trusting the bar heights."]);
+
+E("u3-pk-two-conclusions", 3, ["6.13"], 2, "gen", function () {
+  var ctxs = [
+    { thing: "registrations for a learn to curl program in St. John's", unit: "registrations", verb: "Registrations" },
+    { thing: "attendance at a farmers market in Clarenville", unit: "visitors", verb: "Attendance" },
+    { thing: "borrowing at a public library in Corner Brook", unit: "books borrowed", verb: "Borrowing" },
+    { thing: "ridership on a town shuttle in Gander", unit: "riders", verb: "Ridership" }
+  ];
+  var c = pick(ctxs), up = pick([true, false]), start = ri(20, 60), change = pick([10, 15, 20, 25, 30]);
+  var labels = ["Sep", "Oct", "Nov", "Dec", "Jan"], vals = [], i;
+  for (i = 0; i < 5; i++) vals.push(up ? start + Math.round(change * i / 4) : start + change - Math.round(change * i / 4));
+  var first = vals[0], last = vals[4];
+  var claimA = up ? c.verb + " grew from " + first + " in Sep to " + last + " in Jan" : c.verb + " fell from " + first + " in Sep to " + last + " in Jan";
+  var correct = up ? c.verb + " was higher in Jan than in Sep" : c.verb + " was lower in Jan than in Sep";
+  var q = mcq("One reader concludes: \"" + claimA + ".\" Which second conclusion does the same graph also support?",
+    { t: correct, fb: "Yes: comparing the first and last plotted values gives exactly that." },
+    [{ t: "A new advertising campaign caused the change", fb: "The graph shows values over time only; it carries no information about causes." },
+     { t: "The trend will continue in the same way next year", fb: "A graph of past months cannot guarantee what happens next year." },
+     { t: "The program earned more money in Jan than in Sep", fb: "The graph counts " + c.unit + ", not money, so earnings cannot be read from it." }],
+    "The graph supports readings of its own plotted values, such as comparing the first and last points. It says nothing about causes, future values, or money. The answer is <b>" + correct + "</b>.",
+    { up: up, first: first, last: last });
+  q.figure = u4LineFig(labels, vals, u4NiceMax(Math.max.apply(null, vals)), c.unit, "Month");
+  return q;
+}, ["A graph supports conclusions about the values it actually plots.", "Test each option: is it read off the plotted values, or does it add a cause, a prediction, or a new measure?"]);
+
+/* PK tranche metadata pass for Unit 3. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U3_FOR=["6.11","6.12","6.13","6.14","6.15"];
+var PKT_U3={
+ "u3-pk-read-value":{src:"math-2202:6.3",group:"graph-reading"},
+ "u3-pk-histogram-read":{src:"math-2202:6.2",group:"graph-reading"},
+ "u3-pk-trend-basic":{src:"math-2202:6.4",group:"graph-trends"},
+ "u3-pk-scatter-trend":{src:"math-2202:6.4",group:"graph-trends"},
+ "u3-pk-choose-graph":{src:"math-2202:6.1",group:"graph-choice"},
+ "u3-pk-interpolate":{src:"math-2202:6.5",group:"interp-extrap"},
+ "u3-pk-misleading-axis":{src:"math-2202:6.7",group:"graph-judgement"},
+ "u3-pk-two-conclusions":{src:"math-2202:6.6",group:"graph-judgement"}
+};
+BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U3_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u4.js ----- */
 // Math 3202 Unit 4 Working with Data question bank
@@ -1829,6 +2948,125 @@ E("u4-weighted-advanced-cr", 4, ["6.6","6.5"], 3, "gen", function(){
     {tests:tests, proj:proj, exam:exam});
 }, ["Handle the test average first, then apply the weights.", "Start by averaging the three test marks."]);
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 4 (working with data: central tendency). Borrowed verbatim from Mathematics 7 (u7-mean-basic, u7-median-mode, u7-median-range-cr, u7-gap-median-range-cr2, u7-missing-value-cr, u7-gap-missing-mean-cr, u7-central-problem-cr), across the three-course gap the prior knowledge map records; feeder helper copies ride in bank-helpers.js. The graph-reading entries banked under the same feeder codes (u7-bar-graph, u7-line-graph, u7-circle-graph) were range-checked out: they assess graph reading, not a centre. ===== */
+E("u4-pk-mean-basic", 4, ["6.1"],1,"gen",function(){
+  var ctx=pick(["quiz scores","laps swum each day","pages read each day","points scored each game","seedlings sprouting each day"]);
+  var n=pick([5,5,6]);var vals=[];for(var i=0;i<n;i++)vals.push(ri(2,14));
+  var m=u7mean(vals);var ms=fmt(m);
+  var cand=u7numOpts(m,[fmt(m+1),fmt(m-1),fmt(u7median(vals)),fmt(m+2),fmt(Math.max.apply(null,vals))]).map(function(v){return String(v);});
+  var seen={};var ds=[];cand.forEach(function(v){if(v!==ms&&!seen[v]){seen[v]=1;ds.push({t:v,fb:"That value does not equal the total divided by "+n+". Add all the values first, then divide by how many there are."});}});
+  while(ds.length<3){var v=fmt(m+ds.length+2);if(v!==ms&&!seen[v]){seen[v]=1;ds.push({t:v,fb:"Add all the values first, then divide by "+n+"."});}}
+  ds=precPair(ms,ds);
+  var q=mcq("A student's "+ctx+" are: "+vals.join(", ")+". What is the mean?",
+    {t:ms,fb:"Yes: the total is "+fmt(u7mean(vals)*n)+" and "+fmt(u7mean(vals)*n)+" divided by "+n+" is "+ms+"."},ds.slice(0,3),
+    "Add the values, then divide by how many there are. \\[ \\begin{aligned} \\text{total} &= "+vals.join(" + ")+" = "+fmt(m*n)+" \\\\ \\text{mean} &= "+fmt(m*n)+" \\div "+n+" = "+ms+" \\end{aligned} \\] The mean is <b>"+ms+"</b>.",
+    {mode:"mean",n:n});
+  return q;
+},["The mean is the total of all the values divided by how many values there are.","Start by adding all the values together."]);
+
+E("u4-pk-median-mode", 4, ["6.1"],1,"gen",function(){
+  var askMode=Math.random()<0.5;
+  var base=ri(3,9);var vals;
+  if(askMode){var modeV=ri(2,12);var others=[];while(others.length<4){var v=ri(1,15);if(v!==modeV&&others.indexOf(v)<0)others.push(v);}vals=shuffle([modeV,modeV,modeV].concat(others.slice(0,3)));
+    var correct=String(modeV);
+    var cand=u7numOpts(modeV,[others[0],others[1],Math.round(u7mean(vals))]).map(String);
+    var ds=cand.filter(function(v){return v!==correct;}).slice(0,3).map(function(v){return {t:v,fb:"Count how often each value appears. The mode is the value that appears most often."};});
+    while(ds.length<3){var v=String(modeV+ds.length+3);ds.push({t:v,fb:"Count how often each value appears."});}
+    return mcq("Data set: "+vals.join(", ")+". What is the mode?",{t:correct,fb:"Yes: "+modeV+" appears three times, more often than any other value."},ds,
+      "Count the frequency of each value. The value "+modeV+" appears 3 times, more than any other value. The mode is <b>"+modeV+"</b>.",{mode:"mode"});
+  }
+  var n=pick([5,7]);vals=[];for(var i=0;i<n;i++)vals.push(ri(1,16));
+  var med=u7median(vals);var srt=vals.slice().sort(function(a,b){return a-b;});
+  var cand2=u7numOpts(med,[fmt(u7mean(vals)),srt[0],srt[srt.length-1],med+1]).map(function(v){return String(v);});
+  var ds2=cand2.filter(function(v){return v!==fmt(med);}).slice(0,3).map(function(v){return {t:v,fb:"Order the values first. The median is the middle value of the ordered list."};});
+  while(ds2.length<3){var w=fmt(med+ds2.length+2);ds2.push({t:w,fb:"Order the values first, then take the middle one."});}
+  ds2=precPair(fmt(med),ds2);
+  return mcq("Data set: "+vals.join(", ")+". What is the median?",{t:fmt(med),fb:"Yes: ordered, the list is "+srt.join(", ")+", and the middle value is "+fmt(med)+"."},ds2,
+    "Order the values: "+srt.join(", ")+". With "+n+" values, the middle position holds <b>"+fmt(med)+"</b>.",{mode:"median"});
+},["Order the values first for the median; count frequencies for the mode.","Start by rewriting the data set in increasing order."]);
+
+E("u4-pk-median-range", 4, ["6.1"],1,"gen",function(){
+  var mode=pick(["median6","median5","range"]);
+  if(mode==="range"){var lo=ri(3,12),hi=lo+ri(5,16);var vals=[lo,hi];for(var i=0;i<4;i++)vals.push(ri(lo,hi));vals=shuffle(vals);
+    return numq("Data set: "+vals.join(", ")+". What is the range?",hi-lo,0,
+      "The largest value is "+hi+" and the smallest is "+lo+". \\[ \\begin{aligned} \\text{range} &= "+hi+" - "+lo+" \\\\ &= "+(hi-lo)+" \\end{aligned} \\] The range is <b>"+(hi-lo)+"</b>.",{mode:"range"});
+  }
+  if(mode==="median5"){var v5=[];for(var a=0;a<5;a++)v5.push(ri(2,18));var s5=v5.slice().sort(function(x,y){return x-y;});var med5=s5[2];
+    return numq("Data set: "+v5.join(", ")+". What is the median?",med5,0,
+      "Order the values: "+s5.join(", ")+". The middle value is <b>"+med5+"</b>.",{mode:"median5"});
+  }
+  var v6=[];for(var b=0;b<6;b++)v6.push(ri(2,20));var s6=v6.slice().sort(function(x,y){return x-y;});var med6=(s6[2]+s6[3])/2;
+  return numq("Data set: "+v6.join(", ")+". What is the median?",med6,0.01,
+    "Order the values: "+s6.join(", ")+". With six values, average the two middle values. \\[ \\begin{aligned} \\text{median} &= \\frac{"+s6[2]+" + "+s6[3]+"}{2} \\\\ &= "+fmt(med6)+" \\end{aligned} \\] The median is <b>"+fmt(med6)+"</b>.",{mode:"median6"});
+},["Order the values before finding a median; the range needs only the two extremes.","Start by rewriting the data set in increasing order."]);
+
+E("u4-pk-median-range-2", 4, ["6.1"], 2, "gen", function(){
+  var m=ri(8,20);
+  var low=[m-ri(4,7), m-ri(2,3), m-ri(1,2)], high=[m+ri(1,2), m+ri(3,4), m+ri(5,8)];
+  var sorted=low.concat([m],high), range=sorted[6]-sorted[0], ans=m+range;
+  var shown=shuffle(sorted);
+  return numq("A data set is "+shown.join(", ")+". Find the median of the set and the range of the set, and give the sum of the median and the range. Show your work.", ans, 0,
+    "Order the values first; the median is the middle value and the range is the spread. \\[ \\begin{aligned} \\text{ordered} &= "+sorted.join(", ")+" \\\\ \\text{median} &= "+m+" \\\\ \\text{range} &= "+sorted[6]+" - "+sorted[0]+" = "+range+" \\\\ \\text{sum} &= "+m+" + "+range+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
+    {m:m,range:range});
+}, ["Order the data first; both the median and the range come from the ordered set, then combine them.", "Start by writing the values in order from smallest to largest."]);
+
+E("u4-pk-missing-value", 4, ["6.2"],2,"gen",function(){
+  var meanT=ri(6,12);var known=[];var s=0;for(var i=0;i<4;i++){var v=ri(3,15);known.push(v);s+=v;}
+  var missing=5*meanT-s;var guard=0;
+  while((missing<1||missing>20)&&guard<40){known=[];s=0;for(var j=0;j<4;j++){var w=ri(3,15);known.push(w);s+=w;}missing=5*meanT-s;guard++;}
+  if(missing<1||missing>20){known=[meanT-2,meanT,meanT+1,meanT+1];s=4*meanT;missing=meanT;}
+  return numq("Four quiz scores are "+known.join(", ")+". What fifth score gives a mean of exactly "+meanT+"?",
+    missing,0,
+    "The five scores must total \\(5 \\times "+meanT+" = "+(5*meanT)+"\\). \\[ \\begin{aligned} \\text{known total} &= "+known.join(" + ")+" = "+s+" \\\\ \\text{fifth score} &= "+(5*meanT)+" - "+s+" = "+missing+" \\end{aligned} \\] The fifth score is <b>"+missing+"</b>.",
+    {mode:"missing",mean:meanT});
+},["Work backwards from the mean: the total is the mean times the number of values.","Start by multiplying the target mean by 5 to find the required total."]);
+
+E("u4-pk-missing-mean", 4, ["6.2"], 2, "gen", function(){
+  var M=ri(8,16), known=[], missing=0, g=0;
+  while(g++<300){ known=[]; var s=0; for(var i=0;i<5;i++){ var v=ri(4,20); known.push(v); s+=v; } missing=6*M-s; if(missing>=2&&missing<=24) break; }
+  return numq("The mean of six quiz scores is "+M+". Five of the scores are "+known.join(", ")+". What is the sixth score? Show your work.", missing, 0,
+    "The mean fixes the total of all six scores, so find that total and subtract the known scores. \\[ \\begin{aligned} \\text{total} &= 6 \\times "+M+" = "+(6*M)+" \\\\ \\text{sixth score} &= "+(6*M)+" - "+(6*M-missing)+" = "+missing+" \\end{aligned} \\] The answer is <b>"+missing+"</b>.",
+    {M:M,known:known});
+}, ["A stated mean tells you the total; work from the total back to the missing value.", "Start by multiplying the mean by the number of scores."]);
+
+E("u4-pk-central-problem", 4, ["6.2"],3,"gen",function(){
+  var mode=pick(["remove","combine","target"]);
+  if(mode==="remove"){
+    var base=ri(6,12);var vals=[];for(var i=0;i<5;i++)vals.push(base+ri(-2,2));var out=base+ri(28,44);var all=shuffle(vals.concat([out]));
+    var m5=u7mean(vals);
+    return numq("Data set: "+all.join(", ")+". The largest value is an outlier. What is the mean of the remaining five values?",
+      m5,0.01,
+      "Remove the outlier "+out+". The remaining values total "+fmt(m5*5)+". \\[ \\begin{aligned} \\text{mean} &= "+fmt(m5*5)+" \\div 5 \\\\ &= "+fmt(m5)+" \\end{aligned} \\] The mean is <b>"+fmt(m5)+"</b>.",{mode:"remove"});
+  }
+  if(mode==="combine"){
+    var n1=pick([4,5]),n2=pick([4,5]);var m1=ri(6,11),m2=ri(7,13);var ans=(n1*m1+n2*m2)/(n1+n2);
+    return numq("Group A has "+n1+" students with a mean score of "+m1+". Group B has "+n2+" students with a mean score of "+m2+". What is the mean score of all the students combined?",
+      ans,0.01,
+      "Turn each mean back into a total. \\[ \\begin{aligned} \\text{total} &= "+n1+" \\times "+m1+" + "+n2+" \\times "+m2+" = "+(n1*m1+n2*m2)+" \\\\ \\text{mean} &= "+(n1*m1+n2*m2)+" \\div "+(n1+n2)+" = "+fmt(ans)+" \\end{aligned} \\] The combined mean is <b>"+fmt(ans)+"</b>.",{mode:"combine"});
+  }
+  var cur=[ri(5,9),ri(5,9),ri(5,9),ri(5,9)];var s=cur.reduce(function(a,b){return a+b;},0);var target=ri(72,88);var need=target/10*5-s;var guard=0;
+  while((need<1||need>10)&&guard<30){cur=[ri(5,9),ri(5,9),ri(5,9),ri(5,9)];s=cur.reduce(function(a,b){return a+b;},0);need=target/10*5-s;guard++;}
+  if(need<1||need>10){cur=[7,7,7,7];s=28;target=76;need=10;}
+  return numq("After four tests, a student's scores are "+cur.join(", ")+" out of 10. What score on the fifth test gives an overall mean of "+fmt(target/10,1)+" out of 10?",
+    need,0.01,
+    "Five tests with mean "+fmt(target/10,1)+" must total \\(5 \\times "+fmt(target/10,1)+" = "+fmt(target/2,1)+"\\). \\[ \\begin{aligned} \\text{fifth score} &= "+fmt(target/2,1)+" - "+s+" \\\\ &= "+fmt(need,1)+" \\end{aligned} \\] The fifth score is <b>"+fmt(need,1)+"</b>.",{mode:"target"});
+},["Turn means into totals first; totals are what combine and compare.","Start by multiplying each mean by its number of values."]);
+
+/* PK tranche metadata pass for Unit 4. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U4_FOR=["6.1","6.2","6.3","6.4","6.5","6.6","6.7","6.8","6.9","6.10"];
+var PKT_U4={
+ "u4-pk-mean-basic":{src:"math-7:11.6",group:"centre-measures"},
+ "u4-pk-median-mode":{src:"math-7:11.6",group:"centre-measures"},
+ "u4-pk-median-range":{src:"math-7:11.6",group:"centre-measures"},
+ "u4-pk-median-range-2":{src:"math-7:11.6",group:"centre-measures"},
+ "u4-pk-missing-value":{src:"math-7:11.9",group:"centre-backwards"},
+ "u4-pk-missing-mean":{src:"math-7:11.9",group:"centre-backwards"},
+ "u4-pk-central-problem":{src:"math-7:11.9",group:"centre-backwards"}
+};
+BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U4_FOR.slice();e.pkGroup=t.group;}});
+
 /* ----- bank-u5.js ----- */
 // Math 3202 Unit 5 Major Financial Purchases question bank
 // CRMARKS: u5-lease-total-cr=3
@@ -2157,6 +3395,266 @@ E("u5-mileage-decision", 5, ["1.2"], 3, "gen", function(){
     "Cost the extra kilometres over the whole term. \\[ \\begin{aligned} \\text{extra km per year} &= "+fmt(allow+excess)+" - "+fmt(allow)+" = "+fmt(excess)+" \\\\ \\text{charge} &= "+fmt(excess)+" \\times "+fmt(rate)+" \\times "+years+" = "+fmt(over)+" \\end{aligned} \\] Charges of that size are a strong reason to buy. The answer is <b>the "+u5M(over)+" statement</b>.",
     {excess:excess,years:years,rate:rate,over:over});
 }, ["Cost the extra kilometres across every year of the lease, not just one year.", "Start by subtracting the allowance from the expected yearly kilometres."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 5 and 6 (vehicles; housing). Borrowed verbatim from Mathematics 2202 (u5-budget-totals-mc, u5-percent-of-income-mc, u6-credit-interest-cost, u6-card-vs-loan-cost, u5-modify-for-goal-mc) and Mathematics 1202 (u1-percent-change); feeder helper copies ride in bank-helpers.js (the feeder money formatter u5M rides renamed as f22_u5M: the name is taken in this bank by a different body). Authored for this tranche: u5-pk-operating-cost (totalling fixed and ongoing costs over a period, vehicle dress) and u5-pk-rent-compare (comparing rentals by totalling each over the same period). ===== */
+E("u5-pk-budget-totals", 5, ["1.3"], 2, "gen", function(){
+  var name=pick(u5Names), b=u5Budget(), mode=ri(0,1), guard=0;
+  while(mode===1 && b.bal===0 && guard<20){ b=u5Budget(); guard++; }
+  var prompt=name+" has a monthly income of "+f22_u5M(b.inc)+". The monthly expenses are: "+u5ExpList(b.exps)+". ";
+  var q;
+  if(mode===0){
+    var smallest=Math.min.apply(null,b.exps.map(function(e){return e.c;}));
+    var opts=u5MoneyOpts(b.tot,[
+      {v:b.tot-smallest, fb:"This leaves out one of the expense items. Add every expense listed."},
+      {v:b.tot-b.exps[0].c, fb:"This leaves out the housing cost. Housing is part of the total."},
+      {v:b.inc+b.tot, fb:"This adds the income to the expenses. The question asks for expenses only."}]);
+    q=mcq(prompt+"What are the total monthly expenses?",
+      {t:f22_u5M(b.tot), fb:"Yes. Adding all five expenses gives this total."}, opts,
+      "Add every expense, in dollars. \\[ \\begin{aligned} \\text{Total expenses} &= "+b.exps.map(function(e){return fmtF(e.c/100,2);}).join(" + ")+" \\\\ &= "+fmtF(b.tot/100,2)+" \\end{aligned} \\] Rounded to the cent, the answer is <b>"+f22_u5M(b.tot)+"</b>.",
+      {mode:"total", tot:b.tot});
+  } else {
+    var opts2=u5MoneyOpts(b.bal,[
+      {v:b.tot-b.inc, fb:"This subtracts in the wrong order. The balance is income minus expenses."},
+      {v:b.inc-b.exps[0].c, fb:"This subtracts only the housing cost. Subtract all of the expenses."},
+      {v:b.inc+b.tot, fb:"This adds income and expenses. The balance is the difference between them."}]);
+    q=mcq(prompt+"What is the monthly balance (income minus total expenses)?",
+      {t:f22_u5M(b.bal), fb:"Yes. Income minus the total of all expenses gives this balance."}, opts2,
+      "First total the expenses, then subtract from the income. \\[ \\begin{aligned} \\text{Total expenses} &= "+fmtF(b.tot/100,2)+" \\\\ \\text{Balance} &= "+fmtF(b.inc/100,2)+" - "+fmtF(b.tot/100,2)+" \\\\ &= "+fmtF(b.bal/100,2)+" \\end{aligned} \\] The answer is <b>"+f22_u5M(b.bal)+"</b>.",
+      {mode:"balance", bal:b.bal});
+  }
+  q.figure=u5BarFig("Monthly expenses", b.exps.map(function(e){return e.label;}), b.exps.map(function(e){return e.c;}));
+  return q;
+}, ["The balance is income minus expenses, so the expense total is needed either way.", "Start by adding all of the expense amounts together."]);
+
+E("u5-pk-percent-of-income", 5, ["1.4"], 2, "gen", function(){
+  var name=pick(u5Names), attempt=0, out=null;
+  while(attempt<60 && !out){
+    attempt++;
+    var inc=ri(1800,4200)*100, mode=ri(0,2);
+    var cats=[{label:"housing", lo:700, hi:1500},{label:"food", lo:280, hi:650},{label:"transport", lo:110, hi:380},{label:"child care", lo:300, hi:800}];
+    var c1=pick(cats), a1=ri(c1.lo,c1.hi)*100;
+    var c2=pick(cats.filter(function(c){return c.label!==c1.label;}));
+    var a2=ri(c2.lo,c2.hi)*100;
+    var save=ri(100,500)*100;
+    var part, partTxt, prompt, errVals;
+    if(mode===0){
+      part=a1; partTxt=c1.label;
+      prompt=name+" has a monthly income of "+f22_u5M(inc)+". The amount spent on "+c1.label+" is "+f22_u5M(a1)+". What percent of the income is spent on "+c1.label+"?";
+      errVals=[
+        {p:(inc-a1)/inc*100, fb:"This is the percent of income left after "+c1.label+", not the percent spent on it."},
+        {p:a1/(inc+a1)*100, fb:"This divides by the income plus the expense. Divide by the income alone."},
+        {p:inc/a1*100, fb:"This divides the income by the expense, which reverses the ratio and gives a value over 100%."}];
+    } else if(mode===1){
+      part=a1+a2; partTxt=c1.label+" and "+c2.label;
+      prompt=name+" has a monthly income of "+f22_u5M(inc)+". The amounts spent are "+f22_u5M(a1)+" on "+c1.label+" and "+f22_u5M(a2)+" on "+c2.label+". What percent of the income is spent on "+c1.label+" and "+c2.label+" combined?";
+      errVals=[
+        {p:a1/inc*100, fb:"This counts only the "+c1.label+" amount. Add both amounts first."},
+        {p:a2/inc*100, fb:"This counts only the "+c2.label+" amount. Add both amounts first."},
+        {p:(inc-part)/inc*100, fb:"This is the percent of income left after both costs, not the percent spent on them."}];
+    } else {
+      part=save; partTxt="savings";
+      prompt=name+" has a monthly income of "+f22_u5M(inc)+" and puts "+f22_u5M(save)+" into savings each month. What percent of the income goes into savings?";
+      errVals=[
+        {p:(inc-save)/inc*100, fb:"This is the percent of income that is not saved, not the percent saved."},
+        {p:save/(inc-save)*100, fb:"This divides by the income after saving. Divide by the full income."},
+        {p:inc/save*100, fb:"This divides the income by the savings, which reverses the ratio."}];
+    }
+    var correct=Math.round(part/inc*1000)/10;
+    var seen={}; seen[correct]=1; var ok=true; var distractors=[];
+    for(var i=0;i<errVals.length;i++){
+      var v=Math.round(errVals[i].p*10)/10;
+      if(seen[v]||v<=0){ ok=false; break; }
+      seen[v]=1; distractors.push({t:u5PctTxt(v), fb:errVals[i].fb});
+    }
+    if(!ok) continue;
+    var sol="Divide the part by the full income, then multiply by 100. \\[ \\begin{aligned} \\text{Percent} &= \\frac{"+fmtF(part/100,2)+"}{"+fmtF(inc/100,2)+"} \\times 100 \\\\ &\\approx "+fmtF(correct,1)+"\\% \\end{aligned} \\] The answer is <b>"+u5PctTxt(correct)+"</b>.";
+    out=mcq(prompt, {t:u5PctTxt(correct), fb:"Yes. The part divided by the income, times 100, gives this percent."}, distractors, sol, {mode:mode, pct:correct});
+  }
+  if(out) return out;
+  return mcq("A monthly income is $2,000.00. The amount spent on housing is $800.00. What percent of the income is spent on housing?",
+    {t:"40.0%", fb:"Yes. 800 divided by 2000, times 100, is 40.0%."},
+    [{t:"60.0%", fb:"This is the percent of income left after housing."},{t:"250.0%", fb:"This reverses the ratio."},{t:"20.0%", fb:"This uses half of the housing amount."}],
+    "Divide the part by the full income, then multiply by 100: 800 divided by 2000 times 100 is 40.0%. The answer is <b>40.0%</b>.", {mode:0, pct:40});
+}, ["A percent of income is the part divided by the income, times 100.", "Write the amounts as a fraction with the category amount on top and the income on the bottom."]);
+
+E("u5-pk-credit-interest", 5, ["1.3"], 2, "gen", function(){
+  var who=u6names();
+  if(ri(0,1)===0){
+    var B=pick([500,750,1000,1250,1500,2000,2500]);
+    var mr=pick([1,1.5,2]);
+    var m=ri(3,12);
+    var I=B*mr/100*m;
+    return numq(who+" carries a credit card balance of "+u6d(B)+". The card charges "+fmt(mr)+"% interest per month, charged each month on the starting balance. No payments are made and no new purchases are added for "+m+" months. How much interest builds up, in dollars?",
+      Math.round(I*100)/100, 0.05,
+      "Multiply the balance by the monthly rate and the number of months. \\[ \\begin{aligned} I &= "+fmt(B)+" \\times "+fmt(mr/100,4)+" \\times "+m+" \\\\ &= "+fmtF(I,2)+" \\end{aligned} \\] The interest that builds up is <b>"+u6d(I)+"</b>.",
+      {mode:"card", B:B, mr:mr, m:m});
+  }
+  var P=pick([800,1000,1500,2000,2500,3000,4000]);
+  var r=pick([5,6,7,8,9,11]);
+  var t=pick([1,2,3,4,5]);
+  var I2=P*r/100*t, tot=P+I2;
+  if(ri(0,1)===0){
+    return numq(who+" takes a personal loan of "+u6d(P)+" at a simple interest rate of "+fmt(r)+"% per year for "+t+" years to pay for "+u6goal()+". How much interest is paid over the loan, in dollars?",
+      Math.round(I2*100)/100, 0.05,
+      "Use \\(I = Prt\\). \\[ \\begin{aligned} I &= "+fmt(P)+" \\times "+fmt(r/100,4)+" \\times "+t+" \\\\ &= "+fmtF(I2,2)+" \\end{aligned} \\] The interest paid is <b>"+u6d(I2)+"</b>.",
+      {mode:"loanI", P:P, r:r, t:t});
+  }
+  return numq(who+" takes a personal loan of "+u6d(P)+" at a simple interest rate of "+fmt(r)+"% per year for "+t+" years to pay for "+u6goal()+". What is the total amount repaid, in dollars?",
+    Math.round(tot*100)/100, 0.05,
+    "Find the interest first, then add the principal. \\[ \\begin{aligned} I &= "+fmt(P)+" \\times "+fmt(r/100,4)+" \\times "+t+" = "+fmtF(I2,2)+" \\\\ \\text{Total repaid} &= "+fmt(P)+" + "+fmtF(I2,2)+" = "+fmtF(tot,2)+" \\end{aligned} \\] The total amount repaid is <b>"+u6d(tot)+"</b>.",
+    {mode:"loanTot", P:P, r:r, t:t});
+}, ["Pick the interest model the stem describes: a monthly rate on a card balance, or I = Prt on a loan.", "First identify the balance or principal, the rate and the time period."]);
+
+E("u5-pk-card-vs-loan", 5, ["1.3"], 2, "gen", function(){
+  var attempt=0, P=1200, rc=21, fc=0, rl=9, fl=75, cTot=0, lTot=0;
+  while(attempt<80){
+    attempt++;
+    P=pick([800,1000,1200,1500,2000,2500,3000]);
+    rc=pick([19,21,24]); fc=pick([0,39]);
+    rl=pick([7,9,11]); fl=pick([50,75,100]);
+    cTot=P+P*rc/100+fc; lTot=P+P*rl/100+fl;
+    if(Math.abs(cTot-lTot)>=10) break;
+  }
+  var cheap=Math.min(cTot,lTot), other=Math.max(cTot,lTot);
+  var cheapInt=(cTot<lTot)?P*rc/100:P*rl/100;
+  var otherInt=(cTot<lTot)?P*rl/100:P*rc/100;
+  var cheapFee=(cTot<lTot)?fc:fl;
+  var item=u6goal();
+  return mcq(u6names()+" needs "+u6d(P)+" for "+item+", repaid over one year. A credit card charges "+fmt(rc)+"% annual interest and a "+u6d(fc)+" annual fee. A personal loan charges "+fmt(rl)+"% simple interest for the year and a "+u6d(fl)+" setup fee. Interest is charged on the full amount for the year. What is the total cost of the cheaper option, including repaying the "+u6d(P)+"?",
+    {t:u6d(cheap), fb:"Correct: principal plus interest plus fees gives the lower total of "+u6d(cheap)+"."},
+    [{t:u6d(other), fb:"That is the total for the other option. Compare both totals and take the lower one."},
+     {t:u6d(cheapInt), fb:"That is the interest only. The amount borrowed and the fee must be added."},
+     {t:u6d(P+otherInt+cheapFee), fb:"That mixes the interest of one option with the fee of the other. Cost each option fully on its own."}],
+    "Cost each option as principal plus interest plus fees. \\[ \\begin{aligned} \\text{Card} &= "+fmt(P)+" + "+fmt(P)+" \\times "+fmt(rc/100)+" + "+fmt(fc)+" = "+fmtF(cTot,2)+" \\\\ \\text{Loan} &= "+fmt(P)+" + "+fmt(P)+" \\times "+fmt(rl/100)+" + "+fmt(fl)+" = "+fmtF(lTot,2)+" \\end{aligned} \\] The cheaper option costs <b>"+u6d(cheap)+"</b> in total.",
+    {P:P, rc:rc, fc:fc, rl:rl, fl:fl});
+}, ["Total cost means the amount borrowed plus its interest plus its fees, worked out separately for each option.", "First compute one year of interest on the card option."]);
+
+E("u5-pk-percent-change", 5, ["1.11"], 2, "gen", function(){
+  var mode=ri(1,2);
+  var ctxs=[
+    {name:"The monthly rent on an apartment", fmtC:function(v){ return u1Dol(v); }},
+    {name:"The price of a winter coat", fmtC:function(v){ return u1Dol(v); }},
+    {name:"A ferry fare", fmtC:function(v){ return u1Dol(v); }},
+    {name:"A monthly phone plan", fmtC:function(v){ return u1Dol(v); }},
+    {name:"The price of a used bicycle", fmtC:function(v){ return u1Dol(v); }},
+    {name:"A weekly grocery bill total", fmtC:function(v){ return u1Dol(v); }}
+  ];
+  var cx=pick(ctxs); var O=pick([40,50,60,75,80,100,120,125,150,160,200,240,250,300,400,500,600,800]);
+  var p=pick([10,12.5,15,20,25,30,40,50,60,75]); var inc=Math.random()<0.5;
+  var N=u1R2(inc?O*(1+p/100):O*(1-p/100)); var diff=u1R2(Math.abs(N-O));
+  if(mode===1){
+    var wrongBase=u1R2(diff/N*100);
+    var ds=u1Pick3(p,[
+      {v:wrongBase, fb:"That divides the change by the new price. Percent change always divides by the original price."},
+      {v:p+10, fb:"That adds 10 to the percent. Divide the change by the original price instead."},
+      {v:100-p, fb:"That subtracts the percent from 100, which gives a share remaining, not the percent change."},
+      {v:p/2, fb:"That halves the percent. Divide the full change by the original price."}
+    ],0.9);
+    var opts=ds.map(function(d){ return {t:fmt(d.v)+"%", fb:d.fb}; });
+    var _bo0=balOpts({t:fmt(p)+"%", fb:"Yes: the change of "+cx.fmtC(diff)+" divided by the original "+cx.fmtC(O)+" gives "+fmt(p)+"%."}, opts); return mcq(cx.name+" changed from "+cx.fmtC(O)+" to "+cx.fmtC(N)+". What is the percent "+(inc?"increase":"decrease")+"?", _bo0[0], _bo0[1],
+      "\\[ \\begin{aligned} \\text{Change} &= |"+fmtF(N,2)+" - "+fmtF(O,2)+"| = "+fmtF(diff,2)+" \\\\ \\text{Percent change} &= \\frac{"+fmtF(diff,2)+"}{"+fmtF(O,2)+"} \\times 100 = "+fmt(p)+"\\% \\end{aligned} \\] The answer is <b>"+fmt(p)+"% "+(inc?"increase":"decrease")+"</b>.",
+      {mode:1,O:O,N:N});
+  }
+  var ans=N;
+  var ds2=u1Pick3(ans,[
+    {v:O+diff*2, fb:"That doubles the change. Apply the percent change once."},
+    {v:inc?O-diff:O+diff, fb:"That moves the price in the wrong direction for a percent "+(inc?"increase":"decrease")+"."},
+    {v:O+p, fb:"That adds the percent as dollars. A percent must be applied to the original price first."},
+    {v:inc?u1R2(O*(1+p/100)+O*0.05):u1R2(O*(1-p/100)-O*0.05), fb:"That applies a different percent than the one given."}
+  ],1.37);
+  var opts2=ds2.map(function(d){ return {t:u1Dol(d.v), fb:d.fb}; });
+  var _bo1=balOpts({t:u1Dol(ans), fb:"Yes: "+fmt(p)+"% of "+cx.fmtC(O)+" is "+cx.fmtC(diff)+", and the new amount follows from it."}, opts2); return mcq(cx.name+" was "+cx.fmtC(O)+". It then had a percent "+(inc?"increase":"decrease")+" of "+fmt(p)+"%. What is the new amount?", _bo1[0], _bo1[1],
+    "\\[ \\begin{aligned} \\text{Change} &= "+fmt(p)+"\\% \\text{ of } "+fmtF(O,2)+" = "+fmtF(diff,2)+" \\\\ \\text{New amount} &= "+fmtF(O,2)+" "+(inc?"+":"-")+" "+fmtF(diff,2)+" = "+fmtF(ans,2)+" \\end{aligned} \\] The answer is <b>"+u1Dol(ans)+"</b>.",
+    {mode:2,O:O,p:p,inc:inc?1:0});
+}, ["Percent change is always measured against the original amount.", "Start by finding the size of the change, then compare it with the original amount."]);
+
+E("u5-pk-modify-for-goal", 5, ["1.10"], 3, "gen", function(){
+  var name=pick(u5Names), attempt=0, out=null;
+  while(attempt<80 && !out){
+    attempt++;
+    var b=u5Budget();
+    var goal=ri(200,550)*100;
+    if(b.bal>=goal) continue;
+    var need=goal-b.bal;
+    var cand=[goal, goal-2*b.bal, Math.abs(b.bal)];
+    var vals=[need].concat(cand); var seen={}; var bad=false;
+    vals.forEach(function(v){ if(v<=0||seen[v]) bad=true; seen[v]=1; });
+    if(bad) continue;
+    var prompt=name+" has a monthly income of "+f22_u5M(b.inc)+" and monthly expenses of: "+u5ExpList(b.exps)+". "+name+" wants to save "+f22_u5M(goal)+" each month. By how much must monthly spending be reduced to reach that saving goal?";
+    out=mcq(prompt,
+      {t:f22_u5M(need), fb:"Yes. The goal minus the current balance is the extra amount that must be freed."},
+      [{t:f22_u5M(cand[0]), fb:"This is the full goal. It ignores the balance the budget already has, whether it is a surplus or a shortfall."},
+       {t:f22_u5M(cand[1]), fb:"This counts the current balance twice. Use the goal minus the balance, once."},
+       {t:f22_u5M(cand[2]), fb:"This is just the size of the current balance. The cut must close the gap between the balance and the goal."}],
+      "Find the current balance, then the gap to the goal. \\[ \\begin{aligned} \\text{Balance} &= "+fmtF(b.inc/100,2)+" - "+fmtF(b.tot/100,2)+" = "+fmtF(b.bal/100,2)+" \\\\ \\text{Extra saving needed} &= "+fmtF(goal/100,2)+" - ("+fmtF(b.bal/100,2)+") \\\\ &= "+fmtF(need/100,2)+" \\end{aligned} \\] Spending must be reduced by <b>"+f22_u5M(need)+"</b> per month.",
+      {need:need, goal:goal, bal:b.bal});
+  }
+  if(out) return out;
+  return mcq("A monthly budget has an income of $2,600.00 and total expenses of $2,500.00. The goal is to save $300.00 each month. By how much must monthly spending be reduced?",
+    {t:"$200.00", fb:"Yes. The current balance is $100.00, so another $200.00 must be freed."},
+    [{t:"$300.00", fb:"This is the full goal and ignores the current balance."},{t:"$100.00", fb:"This is the current balance, not the extra cut needed."},{t:"$400.00", fb:"This counts the current balance the wrong way."}],
+    "The balance is 2600 minus 2500, which is 100. The gap to the goal is 300 minus 100, which is 200. Spending must be reduced by <b>$200.00</b>.", {need:20000});
+}, ["Work out the current balance first. The cut needed is the gap between that balance and the saving goal.", "Start with income minus total expenses to find what the budget already saves or overspends."]);
+
+E("u5-pk-operating-cost", 5, ["1.4"], 2, "gen", function () {
+  var Y = pick([2, 3, 4]);
+  var ins = ri(21, 48) * 50;
+  var lic = pick([120, 150, 180, 200, 240]);
+  var fuel = ri(9, 26) * 10;
+  var maint = ri(6, 18) * 50;
+  var perYear = ins + lic + maint + 12 * fuel;
+  var total = Y * perYear;
+  var prompt = "Sam buys a car and keeps it for " + Y + " years. The yearly costs are insurance $" + ins + " and licensing $" + lic +
+    ", maintenance averages $" + maint + " per year, and fuel costs $" + fuel + " per month. What is the total cost of owning the car over the " + Y + " years?";
+  var sol = "First build one year: insurance $" + ins + " + licensing $" + lic + " + maintenance $" + maint + " + fuel 12 x $" + fuel + " = $" + (12 * fuel) +
+    ", for a one-year total of $" + perYear + ". Over " + Y + " years: " + Y + " x $" + perYear + " = <b>$" + total + "</b>.";
+  return numq(prompt, total, 1, sol, { mode: "operating-cost", years: Y, ins: ins, lic: lic, fuel: fuel, maint: maint, perYear: perYear, ans: total });
+}, ["Work out one year first: add the yearly costs and twelve months of fuel.", "Multiply the one-year total by the number of years."]);
+
+E("u5-pk-rent-compare", 5, ["1.12"], 2, "gen", function () {
+  function mny(v) { return "$" + String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  var ra, ua, da, rb, db, TA, TB, keyT, dWrongOpt, dDep, dHalf, tries = 0;
+  do {
+    ra = ri(34, 56) * 25; ua = ri(9, 22) * 10; da = ri(8, 18) * 50;
+    rb = ra + ri(-6, 10) * 25; db = ri(8, 18) * 50;
+    TA = 12 * (ra + ua) + da; TB = 12 * rb + db;
+    var aCheaper = TA < TB, D = Math.abs(TA - TB);
+    keyT = "Option " + (aCheaper ? "A" : "B") + " costs less, by " + mny(D);
+    dWrongOpt = "Option " + (aCheaper ? "B" : "A") + " costs less, by " + mny(Math.abs(12 * ((ra + ua) - rb)));
+    var depA = 12 * (ra + ua + da), depB = 12 * (rb + db);
+    dDep = "Option " + (depA < depB ? "A" : "B") + " costs less, by " + mny(Math.abs(depA - depB));
+    dHalf = "Option " + (aCheaper ? "A" : "B") + " costs less, by " + mny(Math.abs(6 * ((ra + ua) - rb) + (da - db)));
+    tries++;
+  } while ((TA === TB || D < 60 || new Set([keyT, dWrongOpt, dDep, dHalf]).size !== 4) && tries < 200);
+  var aCh = TA < TB, DD = Math.abs(TA - TB);
+  var dsOpts = [
+    { t: dWrongOpt, fb: "That compares only the monthly costs. The one-time deposits differ too, and over the full first year they change which option costs less or by how much." },
+    { t: dDep, fb: "That counts the deposit as if it were paid every month. A deposit is paid once, so it enters the year total only once." },
+    { t: dHalf, fb: "That totals only six months of the monthly costs. The question asks about the full first year, so use twelve months." }
+  ];
+  var sol = "Total each option over the same twelve months, adding the one-time deposit once. Option A: 12 x (" + mny(ra) + " + " + mny(ua) + ") + " + mny(da) + " = " + mny(TA) +
+    ". Option B: 12 x " + mny(rb) + " + " + mny(db) + " = " + mny(TB) + ". So <b>" + keyT.toLowerCase() + "</b>.";
+  return mcq("Maya is comparing two rentals for the first year. Option A rents for " + mny(ra) + " per month plus utilities of " + mny(ua) + " per month, with a one-time deposit of " + mny(da) +
+    ". Option B rents for " + mny(rb) + " per month with utilities included, with a one-time deposit of " + mny(db) + ". Which option costs less over the first year, and by how much?",
+    { t: keyT, fb: "Correct: both options are totalled over the same twelve months, with each deposit counted once." },
+    dsOpts, sol, { mode: "rent-compare", ra: ra, ua: ua, da: da, rb: rb, db: db, totalA: TA, totalB: TB, ans: aCh ? "A" : "B" });
+}, ["Total each option over the same period: twelve months of monthly costs plus the one-time deposit.", "The deposit is paid once, not every month."]);
+
+/* PK tranche metadata pass for Unit 5. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U5_FOR=["1.1","1.2","1.3","1.4","1.10","1.11","1.12"];
+var PKT_U5={
+ "u5-pk-budget-totals":{src:"math-2202:1.3",group:"budgeting"},
+ "u5-pk-percent-of-income":{src:"math-2202:1.3",group:"budgeting"},
+ "u5-pk-credit-interest":{src:"math-2202:1.22",group:"credit-and-loans"},
+ "u5-pk-card-vs-loan":{src:"math-2202:1.22",group:"credit-and-loans"},
+ "u5-pk-percent-change":{src:"math-1202:1.4",group:"percent-of-amount"},
+ "u5-pk-modify-for-goal":{src:"math-2202:1.5",group:"budget-goals"},
+ "u5-pk-operating-cost":{src:"authored:total-cost-over-a-period",group:"cost-totals"},
+ "u5-pk-rent-compare":{src:"authored:comparing-rental-costs",group:"cost-totals"}
+};
+BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U5_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u6.js ----- */
 // Math 3202 Unit 6 Businesses and Taxes question bank
@@ -2534,6 +4032,199 @@ E("u6-seasonal-analysis", 6, ["1.9","1.7"], 3, "gen", function(){
   q.figure=u6Bar([{label:"Peak month",v:p1},{label:"Off month loss",v:loss}]);
   return q;
 }, ["Total the peak months and the off season months separately, then combine them.", "Start by multiplying the peak monthly profit by the number of peak months."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 7 and 8 (businesses; taxes). Borrowed verbatim from Mathematics 2202 (u5-budget-totals-mc, shared with Unit 5's pool under a separate host entry, and u5-week-spending-mc), Mathematics 9 (u5-balance-model, shared with Unit 2's pool under a separate host entry, and u5-gap-both-sides-cr) and Mathematics 1202 (u4-deduction-calc, u4-net-from-deductions); feeder helper copies ride in bank-helpers.js. Authored for this tranche: u6-pk-profit-loss (revenue and expenses to a profit or loss, business dress). The community-knowledge element of indicator 1.6 is not assessable and carries no item (source gap 2). ===== */
+E("u6-pk-budget-totals", 6, ["1.8"], 2, "gen", function(){
+  var name=pick(u5Names), b=u5Budget(), mode=ri(0,1), guard=0;
+  while(mode===1 && b.bal===0 && guard<20){ b=u5Budget(); guard++; }
+  var prompt=name+" has a monthly income of "+f22_u5M(b.inc)+". The monthly expenses are: "+u5ExpList(b.exps)+". ";
+  var q;
+  if(mode===0){
+    var smallest=Math.min.apply(null,b.exps.map(function(e){return e.c;}));
+    var opts=u5MoneyOpts(b.tot,[
+      {v:b.tot-smallest, fb:"This leaves out one of the expense items. Add every expense listed."},
+      {v:b.tot-b.exps[0].c, fb:"This leaves out the housing cost. Housing is part of the total."},
+      {v:b.inc+b.tot, fb:"This adds the income to the expenses. The question asks for expenses only."}]);
+    q=mcq(prompt+"What are the total monthly expenses?",
+      {t:f22_u5M(b.tot), fb:"Yes. Adding all five expenses gives this total."}, opts,
+      "Add every expense, in dollars. \\[ \\begin{aligned} \\text{Total expenses} &= "+b.exps.map(function(e){return fmtF(e.c/100,2);}).join(" + ")+" \\\\ &= "+fmtF(b.tot/100,2)+" \\end{aligned} \\] Rounded to the cent, the answer is <b>"+f22_u5M(b.tot)+"</b>.",
+      {mode:"total", tot:b.tot});
+  } else {
+    var opts2=u5MoneyOpts(b.bal,[
+      {v:b.tot-b.inc, fb:"This subtracts in the wrong order. The balance is income minus expenses."},
+      {v:b.inc-b.exps[0].c, fb:"This subtracts only the housing cost. Subtract all of the expenses."},
+      {v:b.inc+b.tot, fb:"This adds income and expenses. The balance is the difference between them."}]);
+    q=mcq(prompt+"What is the monthly balance (income minus total expenses)?",
+      {t:f22_u5M(b.bal), fb:"Yes. Income minus the total of all expenses gives this balance."}, opts2,
+      "First total the expenses, then subtract from the income. \\[ \\begin{aligned} \\text{Total expenses} &= "+fmtF(b.tot/100,2)+" \\\\ \\text{Balance} &= "+fmtF(b.inc/100,2)+" - "+fmtF(b.tot/100,2)+" \\\\ &= "+fmtF(b.bal/100,2)+" \\end{aligned} \\] The answer is <b>"+f22_u5M(b.bal)+"</b>.",
+      {mode:"balance", bal:b.bal});
+  }
+  q.figure=u5BarFig("Monthly expenses", b.exps.map(function(e){return e.label;}), b.exps.map(function(e){return e.c;}));
+  return q;
+}, ["The balance is income minus expenses, so the expense total is needed either way.", "Start by adding all of the expense amounts together."]);
+
+E("u6-pk-week-spending", 6, ["1.8"], 2, "gen", function(){
+  var name=pick(u5Names), attempt=0, out=null;
+  while(attempt<60 && !out){
+    attempt++;
+    var food=[
+      {d:"Monday", t:"groceries", c:ri(2400,9200)},
+      {d:"Wednesday", t:"lunch at a cafe", c:ri(950,2400)},
+      {d:"Friday", t:"groceries", c:ri(1800,7600)},
+      {d:"Saturday", t:"snacks for a movie night at home", c:ri(800,3200)}];
+    var trans=[
+      {d:"Tuesday", t:"bus fares", c:ri(300,1200)},
+      {d:"Thursday", t:"gasoline", c:ri(2800,8200)}];
+    var fun=[
+      {d:"Friday", t:"a movie ticket", c:ri(1100,1900)},
+      {d:"Sunday", t:"a video game rental", c:ri(500,1500)}];
+    var all=food.concat(trans).concat(fun);
+    var sumF=0; food.forEach(function(e){sumF+=e.c;});
+    var sumT=0; trans.forEach(function(e){sumT+=e.c;});
+    var sumFun=0; fun.forEach(function(e){sumFun+=e.c;});
+    var total=sumF+sumT+sumFun;
+    var list=all.map(function(e){ return e.d+": "+e.t+", "+f22_u5M(e.c); }).join("; ")+".";
+    var mode=ri(0,2), prompt, correctC, errs, solHead, solParts;
+    if(mode===0){
+      prompt=name+" recorded one week of spending. "+list+" What was the total spent on food (groceries, lunch and snacks)?";
+      correctC=sumF; solHead="Add only the food items: groceries, lunch and snacks.";
+      solParts=food.map(function(e){return fmtF(e.c/100,2);});
+      errs=[{v:sumF-food[1].c, fb:"This leaves out the cafe lunch, which is a food cost."},
+            {v:total, fb:"This is the total for the whole week, including transport and fun spending."},
+            {v:sumF+sumT, fb:"This adds the transport costs to the food costs."}];
+    } else if(mode===1){
+      prompt=name+" recorded one week of spending. "+list+" What was the total spent during the week?";
+      correctC=total; solHead="Add every item recorded during the week.";
+      solParts=all.map(function(e){return fmtF(e.c/100,2);});
+      errs=[{v:sumF, fb:"This counts only the food items. Add transport and fun spending as well."},
+            {v:total-fun[0].c-fun[1].c, fb:"This leaves out the fun spending. It is part of the week total."},
+            {v:total+trans[1].c, fb:"This counts the gasoline cost twice."}];
+    } else {
+      prompt=name+" recorded one week of spending. "+list+" What was the total spent on transport and fun activities combined?";
+      correctC=sumT+sumFun; solHead="Add the transport items and the fun items, and leave out the food items.";
+      solParts=trans.concat(fun).map(function(e){return fmtF(e.c/100,2);});
+      errs=[{v:sumT, fb:"This counts only transport. Add the fun activities as well."},
+            {v:sumFun, fb:"This counts only the fun activities. Add transport as well."},
+            {v:total, fb:"This includes the food costs, which the question does not ask for."}];
+    }
+    var vals=[correctC].concat(errs.map(function(e){return e.v;}));
+    var uniq={}; var dup=false;
+    vals.forEach(function(v){ if(uniq[v]) dup=true; uniq[v]=1; });
+    if(dup) continue;
+    var distractors=errs.map(function(e){ return {t:f22_u5M(e.v), fb:e.fb}; });
+    var q=mcq(prompt, {t:f22_u5M(correctC), fb:"Yes. Adding the matching items gives this total."}, distractors,
+      solHead+" \\[ \\begin{aligned} \\text{Total} &= "+solParts.join(" + ")+" \\\\ &= "+fmtF(correctC/100,2)+" \\end{aligned} \\] Rounded to the cent, the answer is <b>"+f22_u5M(correctC)+"</b>.",
+      {mode:mode, tot:correctC});
+    q.figure=u5BarFig("Week spending by category", ["Food","Transport","Fun"], [sumF,sumT,sumFun]);
+    out=q;
+  }
+  if(out) return out;
+  return mcq("One week of spending: Monday: groceries, $40.00; Tuesday: bus fares, $6.00. What was the total spent on food?",
+    {t:"$40.00", fb:"Yes. The groceries are the only food item."},
+    [{t:"$46.00", fb:"This adds the bus fares, which are transport."},{t:"$6.00", fb:"This is the transport cost, not food."},{t:"$34.00", fb:"This subtracts the fares from the groceries."}],
+    "Add only the food items. The groceries are the only food cost, so the total is $40.00. The answer is <b>$40.00</b>.", {mode:0});
+}, ["First sort the records into categories, then add only the items the question asks about.", "Go through the list one item at a time and mark which category each item belongs to."]);
+
+E("u6-pk-profit-loss", 6, ["1.8"], 1, "gen", function () {
+  function mny(v) { return "$" + String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  var biz = pick([["food truck", ["sales", "catering"], ["food supplies", "fuel", "market fees"]],
+    ["lawn care service", ["weekly mowing contracts", "one-time cleanups"], ["fuel", "equipment repairs", "advertising"]],
+    ["craft stall", ["market sales", "online orders"], ["materials", "stall fees", "packaging"]],
+    ["bike repair shop", ["repairs", "parts sales"], ["parts", "rent", "tools"]]]);
+  var rev = [ri(30, 90) * 25, ri(10, 50) * 25];
+  var exp = [ri(15, 60) * 25, ri(8, 40) * 25, ri(5, 30) * 25];
+  var R = rev[0] + rev[1], E2 = exp[0] + exp[1] + exp[2];
+  var tries = 0;
+  while ((R === E2 || Math.abs(R - E2) < 100) && tries < 40) { rev[1] = ri(10, 50) * 25; R = rev[0] + rev[1]; tries++; }
+  var profit = R > E2, D = Math.abs(R - E2);
+  var word = profit ? "profit" : "loss";
+  var keyT = "A " + word + " of " + mny(D);
+  var dsOpts = [
+    { t: "A " + (profit ? "loss" : "profit") + " of " + mny(D), fb: profit ? "The money coming in is larger than the money going out, so the business made a profit, not a loss." : "The money going out is larger than the money coming in, so the business took a loss, not a profit." },
+    { t: "A " + word + " of " + mny(R + E2), fb: "That adds the revenue and the expenses together. A " + word + " comes from the difference between them, not their total." },
+    { t: profit ? "A profit of " + mny(R) : "A loss of " + mny(E2), fb: profit ? "That is the revenue on its own. The profit is what remains after the expenses come off the revenue." : "That is the expenses on their own. The loss is how much the expenses pass the revenue, not the whole expense total." }
+  ];
+  var sol = "Total the money in: " + mny(rev[0]) + " + " + mny(rev[1]) + " = " + mny(R) + ". Total the money out: " + mny(exp[0]) + " + " + mny(exp[1]) + " + " + mny(exp[2]) + " = " + mny(E2) +
+    ". The difference is " + mny(D) + ", and since the money " + (profit ? "in is larger" : "out is larger") + ", the business made <b>" + keyT.toLowerCase() + "</b>.";
+  var prompt = "A " + biz[0] + " has these amounts for one month. Money in: " + biz[1][0] + " " + mny(rev[0]) + ", " + biz[1][1] + " " + mny(rev[1]) +
+    ". Money out: " + biz[2][0] + " " + mny(exp[0]) + ", " + biz[2][1] + " " + mny(exp[1]) + ", " + biz[2][2] + " " + mny(exp[2]) + ". What was the business's result for the month?";
+  return mcq(prompt, { t: keyT, fb: "Correct: revenue minus expenses gives the result, and its direction names it a " + word + "." },
+    dsOpts, sol, { mode: "profit-loss", revenue: R, expenses: E2, ans: D, profit: profit });
+}, ["Total the money coming in and the money going out separately.", "Revenue minus expenses: a positive result is a profit, and if expenses are bigger the business took a loss."]);
+
+E("u6-pk-balance-model", 6, ["1.8"], 1, "gen", function () {
+  var a = ri(1, 3), b = ri(1, 4), c = ri(b + 2, 10);
+  function eq(x, y, z) { return "\\(" + u5lin(x, y) + "=" + fmt(z) + "\\)"; }
+  var corr = eq(a, b, c);
+  var cands = [
+    { t: eq(a, c, b), fb: "That swaps the unit blocks: the left pan has " + fmt(b) + " unit blocks and the right pan has " + fmt(c) + "." },
+    { t: eq(b, a, c), fb: "That swaps the counts: there are " + fmt(a) + " x blocks and " + fmt(b) + " unit blocks on the left pan." },
+    { t: eq(a + 1, b, c), fb: "That counts one x block too many; the left pan shows " + fmt(a) + " x blocks." },
+    { t: eq(a, b, c + 1), fb: "That counts one unit block too many on the right pan; it shows " + fmt(c) + "." },
+    { t: eq(a, b + 1, c), fb: "That counts one unit block too many on the left pan; it shows " + fmt(b) + "." }
+  ];
+  var ds = u5pick3(corr, cands);
+  var sol = "Count the blocks on each pan: \\[ \\begin{aligned} \\text{left pan} &= " + fmt(a) + " \\text{ x blocks} + " + fmt(b) + " \\text{ unit blocks} \\\\ \\text{right pan} &= " + fmt(c) + " \\text{ unit blocks} \\end{aligned} \\] The pans balance, so the model shows <b>" + corr + "</b>.";
+  var q = mcq("The diagram shows a balance model. Each large block is labelled x and each small block is labelled 1. The pans balance. Which equation does the model show?", { t: corr, fb: "Correct: the left pan gives the x terms and units, and the right pan gives the total." }, ds, sol, { mode: "balance", a: a, b: b, c: c });
+  q.figure = u5balance(a, b, c);
+  return q;
+}, ["Count the blocks on the left pan first: x blocks give the x term, small blocks give the constant.", "The left pan is one side of the equation and the right pan is the other side."]);
+
+E("u6-pk-both-sides", 6, ["1.8"], 2, "gen", function () {
+  var x0 = ri(-9, 9);
+  if (x0 === 0) x0 = 4;
+  var a = ri(4, 9), c = ri(2, a - 2), b = ri(-10, 10), d = b + (a - c) * x0;
+  var prompt = "Solve the equation \\(" + u5lin(a, b) + " = " + u5lin(c, d) + "\\). What is the value of \\(x\\)?";
+  var sol = "Collect the x terms on one side first, then collect the constants: \\[ \\begin{aligned} " + u5lin(a, b) + " &= " + u5lin(c, d) + " \\\\ " + fmt(a - c) + "x &= " + fmt(d - b) + " \\\\ x &= " + fmt(x0) + " \\end{aligned} \\] The answer is <b>" + fmt(x0) + "</b>.";
+  return numq(prompt, x0, 0.01, sol, { mode: "gap-both-sides", a: a, c: c, b: b, d: d });
+}, ["The x terms start on both sides, so they must be gathered before dividing.", "Subtract the smaller x term from both sides as the first step."]);
+
+E("u6-pk-deduction-calc", 6, ["1.15"],2,"gen",function(){
+ var G=ri(1500,3400), mode=ri(1,4), name="", rate=0, ded=0, cap=0, stem="";
+ if(mode===1){name="CPP"; rate=pick([5,5.5,6,6.5]); ded=u4R(G*rate/100); stem="The CPP rate given for this problem is "+fmt(rate)+"% of gross pay.";}
+ else if(mode===2){name="EI"; rate=pick([1.5,2,2.5]); ded=u4R(G*rate/100); stem="The EI rate given for this problem is "+fmt(rate)+"% of gross pay.";}
+ else if(mode===3){name="income tax"; rate=pick([10,12,15,20]); ded=u4R(G*rate/100); stem="The income tax rate given for this problem is "+fmt(rate)+"% of gross pay.";}
+ else {name="CPP"; rate=pick([6,6.5,7]); cap=ri(150,210); var raw=u4R(G*rate/100); ded=Math.min(raw,cap); stem="The CPP rate given for this problem is "+fmt(rate)+"% of gross pay, up to a maximum deduction of "+u4M(cap)+" per pay period.";}
+ var ds=u4Dist(ded,[{v:u4R(G-ded),fb:"That is the pay left after this one deduction. The question asks for the deduction itself."},
+  {v:u4R(ded/2),fb:"That takes half of the deduction. Apply the stated percent to the full gross pay for the period."},
+  {v:u4R(G*(rate+2)/100),fb:"That uses a rate 2 percent higher than the stated rate. Use the rate given in the stem."}],u4M,2.50);
+ var capNote=(mode===4)?" The percent gives "+fmtF(u4R(G*rate/100),2)+", which is over the maximum, so the deduction is capped at "+fmtF(cap,2)+".":"";
+ return mcq("A worker's gross pay for one pay period is "+u4M(G)+". "+stem+" What is the "+name+" deduction for this period?",
+  {t:u4M(ded),fb:"Yes: apply the stated rate to the gross pay"+(mode===4?", and respect the stated maximum":"")+"."},ds,
+  "A percent deduction is the rate times the gross pay. \\[ \\begin{aligned} \\text{"+name+" deduction} &= "+fmt(rate)+"\\% \\times "+fmtF(G,2)+" \\\\ &= "+fmtF(u4R(G*rate/100),2)+" \\end{aligned} \\]"+capNote+" The "+name+" deduction is <b>"+u4M(ded)+"</b>.",
+  {mode:mode,G:G,rate:rate});
+},["Percent deduction means rate times gross pay. Watch for a stated maximum.","Start by writing the rate as a decimal or as a fraction of 100."]);
+
+E("u6-pk-net-from-deductions", 6, ["1.15"],2,"gen",function(){
+ var G=ri(1500,3000), mode=ri(1,2);
+ var items=[["health plan",ri(30,90)],["union dues",ri(20,60)],["uniform cost",ri(10,40)],["charitable donation",ri(5,30)]];
+ var use=items.slice(0,ri(3,4)), tot=0, list=use.map(function(x){tot+=x[1]; return x[0]+" "+u4M(x[1]);}).join(", ");
+ var vp=0, vpText="", earn=G;
+ if(mode===2){var pct=pick([4,6]); vp=u4R(G*pct/100); vpText=" Vacation pay of "+pct+"% of gross pay is added before deductions."; earn=u4R(G+vp);}
+ var good=u4R(earn-tot);
+ var ds=u4Dist(good,[{v:u4R(G-tot),fb:mode===2?"That leaves out the vacation pay. Add the vacation pay to gross pay first, then subtract deductions.":"That subtracts from gross pay only. Check every amount that should come off."},
+  {v:u4R(earn+tot),fb:"That adds the deductions. Deductions come off, so net pay is smaller."},
+  {v:u4R(earn-use[0][1]),fb:"That subtracts only the first deduction. Subtract the total of all the deductions listed."}],u4M,2.50);
+ return mcq("A worker's gross pay for a period is "+u4M(G)+"."+vpText+" The deductions for the period are: "+list+". What is the net pay?",
+  {t:u4M(good),fb:"Yes: total the deductions and subtract them"+(mode===2?" after adding the vacation pay":"")+"."},ds,
+  "Add any extra earnings, total the deductions, then subtract. \\[ \\begin{aligned} \\text{Total deductions} &= "+use.map(function(x){return fmtF(x[1],2);}).join(" + ")+" = "+fmtF(tot,2)+" \\\\ \\text{Net pay} &= "+fmtF(earn,2)+" - "+fmtF(tot,2)+" = "+fmtF(good,2)+" \\end{aligned} \\] The net pay is <b>"+u4M(good)+"</b>.",
+  {mode:mode,G:G,tot:tot,vp:vp});
+},["Net pay is what remains after every listed deduction comes off the earnings.","Start by adding all the deductions into one total."]);
+
+/* PK tranche metadata pass for Unit 6. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U6_FOR=["1.5","1.6","1.7","1.8","1.9","1.13","1.14","1.15"];
+var PKT_U6={
+ "u6-pk-budget-totals":{src:"math-2202:1.3",group:"business-totals"},
+ "u6-pk-week-spending":{src:"math-2202:1.4",group:"business-totals"},
+ "u6-pk-profit-loss":{src:"authored:profit-and-loss",group:"business-totals"},
+ "u6-pk-balance-model":{src:"math-9:8.17",group:"break-even"},
+ "u6-pk-both-sides":{src:"math-9:8.17",group:"break-even"},
+ "u6-pk-deduction-calc":{src:"math-1202:1.16",group:"payroll"},
+ "u6-pk-net-from-deductions":{src:"math-1202:1.17",group:"payroll"}
+};
+BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U6_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u7.js ----- */
 // Math 3202 Unit 7 Properties of Figures question bank
@@ -3107,6 +4798,144 @@ E("u7-cr-tri-perimeter", 7, ["3.14"], 3, "gen", function(){
     "The perimeter is the total of the three sides.\n\\[ \\begin{aligned} \\text{third side} &= "+P+" - "+s1+" - "+s2+" \\\\ &= "+t+" \\text{ m} \\end{aligned} \\]\nTriangle inequality check: \\("+s1+" + "+s2+" = "+(s1+s2)+" > "+t+"\\), and the two sums using the third side are also larger than the remaining side, so the lengths do form a triangle. The longest side, \\("+longest+"\\) m, sits opposite the largest angle. The answer is <b>"+t+" m</b>.",
     {s1:s1, s2:s2, t:t});
 }, ["The perimeter is the sum of the three sides, and a valid triangle must pass the triangle inequality.", "Start by subtracting the two known sides from the perimeter, then check the result against the sum of the other two sides."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 9 (properties of figures: angle facts and transversals). Borrowed verbatim from Mathematics 1202 Unit 5 (u5-comp-supp-basic, u5-pair-names, u5-adjacent-describe, u5-trans-relationships, u5-trans-find, u5-context-transversal, u5-trans-algebra); feeder helper copies ride in bank-helpers.js. ===== */
+E("u7-pk-comp-supp", 7, ["3.10"], 1, "gen", function(){
+  var comp=ri(0,1)===0; var a=comp?ri(12,78):ri(25,155);
+  var ans=comp?90-a:180-a;
+  var ctx=pick(["the corner of a square tile is split by a diagonal strip","a straight shelf edge is split by a bracket","the corner of a folded card is split by a crease","a straight road edge is split by a driveway"]);
+  var pool=[comp?180-a:90-a, a, ans+15, ans-12, 90, 180];
+  var q=mcq("In "+ctx+", one angle measures \\("+a+"^\\circ\\). It forms a "+(comp?"complementary pair (the two angles fill a right angle)":"supplementary pair (the two angles fill a straight line)")+" with a second angle. What is the measure of the second angle?",
+    {t:ans+"°", fb:"Yes: "+(comp?"complementary angles add to 90°, and 90 - "+a+" = "+ans:"supplementary angles add to 180°, and 180 - "+a+" = "+ans)+"."},
+    u5DegOpts(ans,pool),
+    (comp?"Complementary angles add to \\(90^\\circ\\).":"Supplementary angles add to \\(180^\\circ\\).")+"\\[ \\begin{aligned} \\text{second angle} &= "+(comp?90:180)+"^\\circ - "+a+"^\\circ \\\\ &= "+ans+"^\\circ \\end{aligned} \\] The answer is <b>"+ans+"°</b>.", {a:a,comp:comp});
+  q.figure=u5PairSVG(a, comp);
+  return q;
+}, ["Recall the total that this kind of angle pair must add to.", "Subtract the given angle from that total."]);
+
+E("u7-pk-pair-names", 7, ["3.10"], 1, "gen", function(){
+  var types=[
+    {name:"Corresponding angles", desc:"in matching corner positions at each of the two lines, on the same side of the transversal", fb:"Matching corners at the two crossings are corresponding angles."},
+    {name:"Vertically opposite angles", desc:"directly across from each other at a single crossing, formed by two crossing lines", fb:"Angles across from each other at one crossing are vertically opposite."},
+    {name:"Alternate interior angles", desc:"between the two lines, on opposite sides of the transversal", fb:"Inside the strip between the lines and on opposite sides of the transversal: alternate interior."},
+    {name:"Alternate exterior angles", desc:"outside the two lines, on opposite sides of the transversal", fb:"Outside the strip and on opposite sides of the transversal: alternate exterior."},
+    {name:"Interior angles on the same side of the transversal", desc:"between the two lines, on the same side of the transversal", fb:"Inside the strip and on the same side of the transversal."},
+    {name:"Exterior angles on the same side of the transversal", desc:"outside the two lines, on the same side of the transversal", fb:"Outside the strip and on the same side of the transversal."}];
+  var t=pick(types);
+  var ctx=pick(["Two parallel shelf edges are crossed by a diagonal brace.","Two parallel road edges are crossed by a cross street.","Two parallel fence rails are crossed by a slanted post.","Two parallel sidelines are crossed by a centre line.","Two parallel counter edges are crossed by a support bar.","Two parallel window blind slats are crossed by a lift cord.","Two parallel deck boards are crossed by a diagonal brace.","Two parallel ski tracks are crossed by a fallen pole.","Two parallel garden rows are crossed by an irrigation line.","Two parallel train rails are crossed by a maintenance walkway.","Two parallel ladder rails are crossed by a diagonal strap.","Two parallel table edges are crossed by a table runner seam."]);
+  var others=types.filter(function(o){return o.name!==t.name;});
+  var dis=[]; var used={}; var guard=0;
+  while(dis.length<3&&guard<20){guard++; var o=pick(others); if(!used[o.name]){used[o.name]=1; dis.push({t:o.name, fb:"That name belongs to a different position: "+o.desc+"."});}}
+  return mcq(ctx+" A pair of angles sits "+t.desc+". What is the name of this angle pair?",
+    {t:t.name, fb:"Yes: "+t.fb}, dis,
+    "Use the position: where the angles sit relative to the two lines and to the transversal decides the name. This pair is <b>"+t.name.toLowerCase()+"</b>.", {pair:t.name});
+}, ["First decide whether the angles are between the two lines, outside them, or at one crossing.", "Then decide whether they are on the same side or opposite sides of the transversal."]);
+
+E("u7-pk-adjacent-describe", 7, ["3.11"], 2, "gen", function(){
+  var x=pick([34,41,47,53,58,64,72,79]), y=pick([37,44,52,63,68,77,83,91]);
+  if(x+y===90||x+y===180) y=y+7;
+  var s=x+y;
+  var q=mcq("The diagram shows two adjacent angles, A and B, that share a side at one vertex. Angle A measures \\("+x+"^\\circ\\) and angle B measures \\("+y+"^\\circ\\). Which statement describes this pair?",
+    {t:"They are adjacent, and their sum of "+s+"° makes them neither a complementary pair nor a supplementary pair", fb:"Yes: "+x+" + "+y+" = "+s+", which is neither 90 nor 180."},
+    [{t:"They are a complementary pair, because adjacent angles that share a side always add to exactly 90°", fb:"Adjacent angles can add to any total: complementary pairs are the ones that add to exactly 90, and this sum is "+s+"."},
+     {t:"They are a supplementary pair, because adjacent angles that share a side always add to exactly 180° in total", fb:"Supplementary pairs add to exactly 180: this sum is "+s+", not 180."},
+     {t:"They are vertically opposite angles, because they share a vertex and sit across from each other", fb:"Vertically opposite angles sit across a crossing from each other and do not share a side: this pair shares a side."}],
+    "Add the measures: \\("+x+"^\\circ + "+y+"^\\circ = "+s+"^\\circ\\). The sum is neither \\(90^\\circ\\) nor \\(180^\\circ\\), and the angles share a side. The answer is <b>adjacent, and neither complementary nor supplementary</b>.", {x:x,y:y});
+  q.figure=u5AdjSVG(x,y); return q;
+}, ["Add the two measures and compare the sum with 90 and 180.", "Sharing a side at one vertex is what makes the pair adjacent."]);
+
+E("u7-pk-trans-relationships", 7, ["3.12"], 2, "gen", function(){
+  var mode=pick(["alt","corr","vert","same","nonpar"]);
+  var a=pick([36,42,49,53,58,64,67,71,74,82,96,103,109,118,122,126,133,139,147,152]);
+  var scene=pick(["on a shelf diagram","on a street map","on a fence plan","on a rink diagram"]);
+  var sceneTxt=" ("+scene+")";
+  var ans, sol, prompt, corrFb;
+  if(mode==="alt"){ ans=a+"°"; prompt="Two parallel lines are cut by a transversal. One angle measures \\("+a+"^\\circ\\). What is the measure of the alternate interior angle on the other line?"; corrFb="Yes: alternate interior angles formed by parallel lines are equal."; sol="Alternate interior angles formed by parallel lines are equal, so the angle is also \\("+a+"^\\circ\\). The answer is <b>"+a+"°</b>."; }
+  else if(mode==="corr"){ ans=a+"°"; prompt="Two parallel lines are cut by a transversal. One angle measures \\("+a+"^\\circ\\). What is the measure of the corresponding angle on the other line?"; corrFb="Yes: corresponding angles formed by parallel lines are equal."; sol="Corresponding angles formed by parallel lines are equal, so the angle is also \\("+a+"^\\circ\\). The answer is <b>"+a+"°</b>."; }
+  else if(mode==="vert"){ ans=a+"°"; prompt="Two lines cross and form an angle of \\("+a+"^\\circ\\). What is the measure of the angle directly across the crossing from it?"; corrFb="Yes: vertically opposite angles are equal."; sol="Vertically opposite angles are equal, so the angle across the crossing is also \\("+a+"^\\circ\\). The answer is <b>"+a+"°</b>."; }
+  else if(mode==="same"){ ans=(180-a)+"°"; prompt="Two parallel lines are cut by a transversal. One interior angle measures \\("+a+"^\\circ\\). What is the measure of the interior angle on the same side of the transversal at the other line?"; corrFb="Yes: interior angles on the same side of a transversal add to 180°, and 180 - "+a+" = "+(180-a)+"."; sol="Interior angles on the same side of the transversal are supplementary. \\[ 180^\\circ - "+a+"^\\circ = "+(180-a)+"^\\circ \\] The answer is <b>"+(180-a)+"°</b>."; }
+  else { ans="It cannot be found from the given angle alone"; prompt="Two lines that lean toward each other (they are not parallel) are cut by a transversal. One angle measures \\("+a+"^\\circ\\). A student claims the corresponding angle must also measure \\("+a+"^\\circ\\) because the lines look straight. What is correct?"; corrFb="Yes: the equal angle relationships need parallel lines. When the lines lean toward each other, the corresponding angle takes a different measure."; sol="The angle relationships for a transversal hold only when the two lines are parallel. These lines are not parallel, so the corresponding angle is not forced to equal \\("+a+"^\\circ\\). The answer is <b>it cannot be found from the given angle alone</b>."; }
+  prompt = prompt.slice(0,-1)+sceneTxt+"?";
+  var numAns = (mode==="same") ? 180-a : a;
+  var dis;
+  if(mode==="nonpar"){
+    dis=[{t:a+"°", fb:"That claim assumes the lines are parallel: here they lean toward each other, so the relationship does not apply."},
+         {t:(180-a)+"°", fb:"Supplementary pairs come from a straight line or same side interior angles on parallel lines: neither is given here."},
+         {t:"90°", fb:"Nothing in this diagram makes a right angle."}];
+  } else {
+    dis=u5DegOpts(numAns,[180-numAns, a===numAns? a+18:a, 90, numAns+22]);
+    if(mode==="same") dis=u5DegOpts(numAns,[a, 90, numAns+20]);
+  }
+  var q=mcq(prompt, {t:ans, fb:corrFb}, dis, sol, {mode:mode,a:a});
+  if(mode==="alt") q.figure=transversalSVG("TR", a+"\u00B0", "BL", "?");
+  else if(mode==="vert") q.figure=u5VertSVG(a);
+  else if(mode==="same") q.figure=transversalSVG("TR", a+"\u00B0", "BR", "?");
+  return q;
+}, ["Name the angle pair first: its position decides whether the measures are equal or add to 180.", "Check that the two lines are parallel before using any equal angle relationship."]);
+
+E("u7-pk-trans-find", 7, ["3.12"], 2, "gen", function(){
+  var pairs=[
+    {g:"TR",k:"BL",rel:"eq",name:"alternate interior angles"},
+    {g:"TL",k:"BR",rel:"eq",name:"alternate interior angles"},
+    {g:"TR",k:"BR",rel:"supp",name:"interior angles on the same side of the transversal"},
+    {g:"TL",k:"BL",rel:"supp",name:"interior angles on the same side of the transversal"}];
+  var p=pick(pairs); var a=pick([38,47,55,63,72,84,96,108,117,129,138,146]);
+  var ans=p.rel==="eq"?a:180-a;
+  var ctx=pick(["two parallel window blinds slats cut by a cord","two parallel deck boards cut by a diagonal brace","two parallel ski tracks cut by a fallen pole","two parallel shelf edges cut by a support"]);
+  var q=mcq("The diagram shows "+ctx+". The marked angle measures \\("+a+"^\\circ\\). What is the measure of the angle marked with a question mark?",
+    {t:ans+"°", fb:"Yes: the two marked angles are "+p.name+", so they are "+(p.rel==="eq"?"equal":"supplementary, and 180 - "+a+" = "+ans)+"."},
+    u5DegOpts(ans,[180-ans, a===ans?a+16:a, 90]),
+    "The marked pair are "+p.name+". "+(p.rel==="eq"?"Those angles are equal when the lines are parallel.":"Those angles add to \\(180^\\circ\\) when the lines are parallel: \\(180^\\circ - "+a+"^\\circ = "+ans+"^\\circ\\).")+" The answer is <b>"+ans+"°</b>.", {a:a,rel:p.rel});
+  q.figure=transversalSVG(p.g,a+"°",p.k,"?"); return q;
+}, ["Name the relationship between the two marked angles.", "Equal pairs keep the measure; same side interior pairs add to 180."]);
+
+E("u7-pk-context-transversal", 7, ["3.16"], 2, "gen", function(){
+  var scenes=[
+    {s:"Two parallel streets are crossed by one straight side street", rel:"eq", name:"corresponding angles"},
+    {s:"Two parallel garden paths are crossed by a straight drainage channel", rel:"supp", name:"interior angles on the same side of the transversal"},
+    {s:"Two parallel rink boards are crossed by a straight centre line painted diagonally", rel:"eq", name:"alternate interior angles"},
+    {s:"Two parallel clotheslines are crossed by a straight support rope", rel:"supp", name:"interior angles on the same side of the transversal"}];
+  var sc=pick(scenes); var a=pick([37,43,48,52,59,64,71,76,83,89,97,104,112,119,124,131,138,143,148,154]);
+  var ans=sc.rel==="eq"?a:180-a;
+  var q=mcq(sc.s+". One of the angles formed measures \\("+a+"^\\circ\\). A second marked angle is related to it as "+sc.name.toLowerCase()+". What is the measure of the second marked angle?",
+    {t:ans+"°", fb:"Yes: "+sc.name+" formed by parallel lines are "+(sc.rel==="eq"?"equal":"supplementary, and 180 - "+a+" = "+ans)+"."},
+    u5DegOpts(ans,[180-ans, a===ans?a+14:a, 90]),
+    "The two lines are parallel, so "+sc.name.toLowerCase()+" apply. "+(sc.rel==="eq"?"Those angles are equal.":"Those angles add to \\(180^\\circ\\): \\(180^\\circ - "+a+"^\\circ = "+ans+"^\\circ\\).")+" The answer is <b>"+ans+"°</b>.", {a:a,rel:sc.rel});
+  q.figure=transversalSVG("TR",a+"°", sc.rel==="eq"?"BL":"BR", "?"); return q;
+}, ["Confirm the two lines in the story are parallel, then name the angle pair.", "Equal pairs keep the measure; same side interior pairs add to 180."]);
+
+E("u7-pk-trans-algebra", 7, ["3.12"], 3, "gen", function(){
+  var supp=ri(0,1)===0;
+  var x0=pick([9,11,12,14,15,16,18,20]), aC=pick([3,4,5]);
+  var A=aC*x0; if(A<30||A>150){A=60;x0=15;aC=4;}
+  var gPos=pick(["TR","TL"]), kPos, pairName;
+  if(supp){ kPos=(gPos==="TR")?"BR":"BL"; pairName="interior angles on the same side of the transversal"; }
+  else { kPos=(gPos==="TR")?"BL":"BR"; pairName="alternate interior angles"; }
+  var B=supp?180-A:A;
+  var bC=1, c=B-x0; if(c<=0){c=B-2*x0;bC=2;}
+  var givenExpr="("+aC+"x)°", askedExpr="("+bC+"x + "+c+")°";
+  var pool=[A, x0, B+20, B-18, 90];
+  var q=mcq("Two parallel lines are cut by a transversal. The marked angles are "+pairName+". One angle measures \\("+givenExpr+"\\) and the other measures \\("+askedExpr+"\\). What is the measure of the angle marked \\("+askedExpr+"\\)?",
+    {t:B+"°", fb:"Yes: solving gives x = "+x0+", and substituting back gives "+B+"°."},
+    u5DegOpts(B,pool),
+    (supp?("Same side interior angles add to \\(180^\\circ\\): \\[ \\begin{aligned} "+aC+"x + "+bC+"x + "+c+" &= 180 \\\\ "+(aC+bC)+"x &= "+(180-c)+" \\\\ x &= "+x0+" \\end{aligned} \\]"):("Alternate interior angles are equal: \\[ \\begin{aligned} "+aC+"x &= "+bC+"x + "+c+" \\\\ "+(aC-bC)+"x &= "+c+" \\\\ x &= "+x0+" \\end{aligned} \\]"))+" Substituting back, the asked angle is \\("+bC+"("+x0+") + "+c+" = "+B+"^\\circ\\). The answer is <b>"+B+"°</b>.", {x0:x0,B:B,supp:supp});
+  q.figure=transversalSVG(gPos,givenExpr,kPos,askedExpr); return q;
+}, ["Name the pair from the diagram: the name tells you whether to set the expressions equal or add them to 180.", "Solve for x first, then substitute back into the asked expression."]);
+
+/* PK tranche metadata pass for Unit 7. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U7_FOR=["3.10","3.11","3.12","3.13","3.14","3.15","3.16"];
+var PKT_U7={
+ "u7-pk-comp-supp":{src:"math-1202:3.36",group:"angle-measure"},
+ "u7-pk-pair-names":{src:"math-1202:3.38",group:"transversal-pairs"},
+ "u7-pk-adjacent-describe":{src:"math-1202:3.36",group:"angle-measure"},
+ "u7-pk-trans-relationships":{src:"math-1202:3.39",group:"transversal-pairs"},
+ "u7-pk-trans-find":{src:"math-1202:3.40",group:"transversal-use"},
+ "u7-pk-context-transversal":{src:"math-1202:3.43",group:"transversal-use"},
+ "u7-pk-trans-algebra":{src:"math-1202:3.40",group:"transversal-use"}
+};
+BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U7_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-u8.js ----- */
 // Math 3202 Unit 8 Transformations question bank
@@ -3835,6 +5664,320 @@ E("u8-cr-similar-sides", 8, ["3.17", "3.18"], 3, "gen", function(){
   return q;
 }, ["Find the scale factor from the pair of matching sides you know completely, then use it once more.", "Start by dividing the known image side by its matching original side."]);
 
+/* ===== Prior knowledge tranche (Nov 15, 2026): Clusters 10 and 11 (dilations and similarity; transformations). Borrowed verbatim from Mathematics 2202 (u7-scale-drawing-read, u7-scale-actual), Mathematics 1202 (u7-similar-check, u7-corresponding-sides, u7-similar-missing-side-mc), Mathematics 9 (u7-related-shapes, u7-transformation-symmetry, u7-translation-rule, u7-rotate-vertex) and Mathematics 7 (u8-reflect-point); feeder helper copies ride in bank-helpers.js. ===== */
+E("u8-pk-scale-read", 8, ["3.17"], 1, "gen", function(){
+  var rep=pick([2,4,5,10,20,25,50]);
+  var drawn=ri(3,12);
+  var actual=drawn*rep;
+  var kind=pick(["floor plan of a small studio","map of a hiking trail","blueprint of a garage","plan of a community garden"]);
+  var q=mcq("On a "+kind+", the scale is 1 cm : "+rep+" m. A part of the drawing is "+drawn+" cm long, as shown. What is the actual length, in metres?",
+    {t:fmt(actual)+"", fb:"Correct: each centimetre stands for "+rep+" m, so "+drawn+" cm stands for "+drawn+" times "+rep+" m."},
+    [{t:fmt(drawn+rep)+"", fb:"Adding the scale number is the error here. Scale problems multiply."},
+     {t:fmt(actual*2)+"", fb:"This doubles the actual length. The scale factor "+rep+" is applied once, not twice."},
+     {t:fmt(drawn)+"", fb:"That is the drawn length itself. The actual object is larger by the scale factor."}],
+    "\\[ \\begin{aligned} \\text{actual} &= "+drawn+" \\times "+rep+" \\\\ &= "+actual+" \\text{ m} \\end{aligned} \\] The answer is <b>"+fmt(actual)+" m</b>.",
+    {rep:rep,drawn:drawn});
+  q.figure=u7ScaleFig(drawn, Math.max(2,Math.round(drawn/2)), "Scale drawing"); return q;
+}, ["Each unit on the drawing stands for the number of units named in the scale.", "Multiply the drawn length by the number in the scale."]);
+
+E("u8-pk-scale-actual", 8, ["3.18"], 2, "gen", function(){
+  var rep=pick([3,5,8,10,15,20,40,50,100]);
+  var drawn=pick([2,3,4,5,6,7,8,9,11,12,14,15]);
+  var actual=drawn*rep;
+  var ctx=pick([
+    {o:"kitchen wall on a floor plan", u:"cm", s:"1 cm : "+rep+" cm"},
+    {o:"fishing stage (a wooden platform) on a blueprint", u:"cm", s:"1 cm : "+rep+" cm"},
+    {o:"trail segment on a park map", u:"m", s:"1 cm : "+rep+" m"},
+    {o:"model boat hull length on its plan", u:"cm", s:"1 : "+rep}
+  ]);
+  var q=mcq("A "+ctx.o+" is drawn "+drawn+" cm long. The scale is "+ctx.s+". What is the actual length, in " + (ctx.u === "cm" ? "centimetres" : "metres") + "?",
+    {t:fmt(actual)+"", fb:"Correct: multiply the drawn length by the scale factor "+rep+"."},
+    [{t:fmt(drawn+rep)+"", fb:"Adding the scale factor is the error. Proportional reasoning multiplies."},
+     {t:fmt(actual+rep)+"", fb:"This adds the scale factor to the answer instead of using it as the multiplier throughout."},
+     {t:fmt(actual*2)+"", fb:"This doubles the actual length. The scale factor "+rep+" is applied once, not twice."}],
+    "\\[ \\begin{aligned} \\text{actual} &= "+drawn+" \\times "+rep+" \\\\ &= "+actual+" \\text{ "+ctx.u+"} \\end{aligned} \\] The answer is <b>"+fmt(actual)+" "+ctx.u+"</b>.",
+    {rep:rep,drawn:drawn});
+  q.figure=u7ScaleFig(drawn, Math.max(2,Math.round(drawn/2)), "Drawn length"); return q;
+}, ["Set up the proportion: drawn length times the scale factor gives the actual length.", "Multiply the drawn measurement by the number in the scale."]);
+
+E("u8-pk-similar-check", 8, ["3.17"], 1, "gen", function(){
+  var w=ri(2,9), h=ri(2,8), k=pick([2,3]), similar=Math.random()<0.5, w2, h2, tries=0;
+  if(similar){ w2=w*k; h2=h*k; } else { w2=w*k; h2=h*k+ri(1,3); }
+  var prompt="Rectangle A is "+w+" cm wide and "+h+" cm high. Rectangle B is "+w2+" cm wide and "+h2+" cm high. Are the two rectangles similar?";
+  var sol="Compare the ratios of corresponding sides. Widths: \\("+w2+" \\div "+w+" = "+fmt(w2/w)+"\\). Heights: \\("+h2+" \\div "+h+" = "+fmt(h2/h)+"\\) . ";
+  var q;
+  if(similar){
+    sol+="The ratios are equal and all angles are right angles, so the rectangles are <b>similar</b>.";
+    q=mcq(prompt, {t:"Yes. The corresponding sides are in the same ratio and the angles are equal.", fb:"Correct: both side ratios equal "+fmt(k)+", and rectangles have equal corresponding angles."},
+      [ {t:"No. The corresponding sides are not in the same ratio.", fb:"Check again: "+w2+" / "+w+" and "+h2+" / "+h+" both equal "+fmt(k)+"."},
+        {t:"No. Rectangle B is larger, so the two cannot be similar.", fb:"Size does not rule out similarity: an enlargement of a shape is similar to it."},
+        {t:"Yes. Any two rectangles are similar because all their angles are right angles.", fb:"Equal angles alone are not enough reasoning here: the side ratios must also match, and in this case they do."} ], sol, {mode:"similar"});
+  } else {
+    sol+="The ratios differ, so the rectangles are <b>not similar</b>.";
+    q=mcq(prompt, {t:"No. The corresponding sides are not in the same ratio.", fb:"Correct: the width ratio is "+fmt(w2/w)+" but the height ratio is "+fmt(h2/h)+"."},
+      [ {t:"Yes. The corresponding sides are in the same ratio and the angles are equal.", fb:"The angles are equal, but the side ratios are not: "+fmt(w2/w)+" versus "+fmt(h2/h)+"."},
+        {t:"Yes. Any two rectangles are similar because all their angles are right angles.", fb:"Equal angles are not enough: corresponding sides must also be in the same ratio, and here they are not."},
+        {t:"No. Rectangle B is larger, so size alone rules out similarity.", fb:"The verdict is right but the reason is wrong: larger shapes can be similar. The side ratios are what fail here."} ], sol, {mode:"notsimilar"});
+  }
+  q.figure=u7FigPair(w,h,"A: "+w+" by "+h, w2,h2,"B: "+w2+" by "+h2);
+  return q;
+}, ["Similar shapes need equal corresponding angles and corresponding sides in the same ratio.", "Divide the width of B by the width of A, then do the same for the heights, and compare."]);
+
+E("u8-pk-corresponding-sides", 8, ["3.18"], 2, "gen", function(){
+  var k=pick([2,3,4]), a1=ri(3,12), a2=ri(3,12), b1=a1*k, b2=a2*k, fromB=Math.random()<0.5;
+  var prompt="Polygons A and B are similar. In polygon A, two sides measure "+a1+" cm and "+a2+" cm. The corresponding sides in polygon B measure "+b1+" cm and "+b2+" cm. What is the scale factor "+(fromB?"from B to A":"from A to B")+"?";
+  var ans=fromB?1/k:k;
+  var sol="Each B side divided by the matching A side gives the same value: \\("+b1+" \\div "+a1+" = "+k+"\\) and \\("+b2+" \\div "+a2+" = "+k+"\\). "+(fromB?"Going from B back to A uses the reciprocal, \\(1 \\div "+k+" = "+fmtF(1/k,2)+ "\\).":"")+" The scale factor is <b>"+fmtF(ans,2)+"</b>.";
+  var opts=[ {t:fmtF(fromB?k:1/k,2), fb:"That is the scale factor in the opposite direction."},
+             {t:String(b1-a1), fb:"That is the difference between the sides. A scale factor is a ratio, found by dividing, not subtracting."},
+             {t:fmtF(k+0.5,2), fb:"Check the division: "+b1+" divided by "+a1+" is "+k+", not "+fmtF(k+0.5,2)+"."} ];
+  var _bo0=balOpts({t:fmtF(ans,2), fb:"Correct: corresponding sides of similar polygons are all in the one ratio."}, opts); var q=mcq(prompt, _bo0[0], _bo0[1], sol, {k:k, fromB:fromB}); q.figure=u7FigPair(a1,a2,"A: "+a1+" and "+a2, b1,b2,"B: "+b1+" and "+b2); return q;
+}, ["Corresponding sides of similar polygons are all in the same ratio.", "Divide a B side by its matching A side, then check the direction the question asks for."]);
+
+E("u8-pk-similar-missing-side", 8, ["3.18"], 2, "gen", function(){
+  var ctxs=[ {n:"a photo enlargement", u:"cm"}, {n:"a model of a fishing stage", u:"cm"}, {n:"a blueprint of a shed", u:"cm"}, {n:"a trail map drawing", u:"cm"}, {n:"a scaled drawing of a wharf", u:"cm"} ];
+  var c=pick(ctxs), k=pick([2,3]), a=ri(2,10), b=a*k, s=ri(3,15), x=s*k;
+  var prompt="In "+c.n+", the small figure and the large figure are similar. A side of "+a+" "+c.u+" on the small figure matches a side of "+b+" "+c.u+" on the large figure. Another side of the small figure measures "+s+" "+c.u+". What is the matching side length on the large figure, in "+c.u+"?";
+  var sol="The scale factor is \\("+b+" \\div "+a+" = "+k+"\\), so multiply the small side by the same factor: \\[ "+s+" \\times "+k+" = "+x+" \\] The matching side is <b>"+x+" "+c.u+"</b>.";
+  var _bo0=balOpts({t:String(x), fb:"Correct: scale factor "+k+" applied to "+s+" gives "+x+"."}, [ {t:String(s+(b-a)), fb:"That adds the difference of the known pair. Similarity scales by multiplying, not by adding."},
+      {t:fmtF(s/k,2), fb:"That divides by the scale factor, which is the direction for going from large back to small."},
+      {t:String(s+k), fb:"That adds the scale factor to the side. The scale factor multiplies the side instead."} ]); var q=mcq(prompt, _bo0[0], _bo0[1], sol, {k:k,s:s});
+  q.figure=u7FigPair(a,s,"small: "+a+" and "+s, b,x,"large: "+b+" and ?");
+  return q;
+}, ["Find the scale factor from the pair of sides you know first.", "Divide the large known side by the small known side, then multiply the other small side by that factor."]);
+
+E("u8-pk-related-shapes", 8, ["3.24"], 1, "gen", function () {
+  function sqLens(pts) {
+    var out = [];
+    for (var i = 0; i < pts.length; i++) { var a = pts[i], b = pts[(i + 1) % pts.length]; out.push((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
+    return out.sort(function (x, y) { return x - y; }).join(",");
+  }
+  for (var att = 0; att < 200; att++) {
+    var A = [[-5 + ri(0, 1), -3 + ri(0, 2)], [-1 - ri(0, 1), -2 + ri(0, 2)], [-4 + ri(0, 1), 2 + ri(0, 2)]];
+    var area = Math.abs((A[1][0] - A[0][0]) * (A[2][1] - A[0][1]) - (A[2][0] - A[0][0]) * (A[1][1] - A[0][1]));
+    if (area < 4) continue;
+    var mode = pick(["reflection", "rotation", "neither"]);
+    var B;
+    if (mode === "reflection") B = A.map(function (p) { return [-p[0], p[1]]; });
+    else if (mode === "rotation") B = A.map(function (p) { return [-p[0], -p[1]]; });
+    else { B = A.map(function (p) { return [-p[0], p[1]]; }); B[1] = [B[1][0], B[1][1] + 1]; if (sqLens(A) === sqLens(B)) continue; }
+    var cenA = [(A[0][0] + A[1][0] + A[2][0]) / 3, (A[0][1] + A[1][1] + A[2][1]) / 3];
+    var cenB = [(B[0][0] + B[1][0] + B[2][0]) / 3, (B[0][1] + B[1][1] + B[2][1]) / 3];
+    var grid = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+      shapes: [{ pts: A, fill: FIG_SHADE }, { pts: B, fill: "#ffffff" }],
+      labels: [{ p: cenA, str: "A", size: 14, bold: true }, { p: cenB, str: "B", size: 14, bold: true }],
+      aria: "Two triangles A and B on a grid" });
+    var reflT = "They are related by a reflection (one is the mirror image of the other).";
+    var rotT = "They are related by a rotation (one is a turned copy of the other).";
+    var neiT = "They are not related by a reflection or a rotation.";
+    var enlT = "Shape B is an enlargement of shape A.";
+    var sol, q;
+    var prompt = "Shape A and shape B are shown on the grid. How are the two shapes related?";
+    if (mode === "reflection") {
+      sol = "Shape B has the same side lengths as shape A but is flipped: each vertex of B is the mirror image of a vertex of A across the y-axis. So <b>they are related by a reflection (one is the mirror image of the other)</b>.";
+      q = mcq(prompt, { t: reflT, fb: "Correct. B is the mirror image of A across the y-axis." },
+        [{ t: rotT, fb: "A rotation keeps the handedness of a shape; B is flipped compared with A." }, { t: neiT, fb: "They are related: check what a mirror across the y-axis does to A." }, { t: enlT, fb: "The side lengths are the same, so B is not larger than A." }], sol, { mode: "related-refl", A: A.join(";") });
+    } else if (mode === "rotation") {
+      sol = "Shape B has the same side lengths and the same handedness as shape A, turned a half turn about the origin: each vertex " + "\\((x, y)\\)" + " of A lands at " + "\\((-x, -y)\\)" + " in B. So <b>they are related by a rotation (one is a turned copy of the other)</b>.";
+      q = mcq(prompt, { t: rotT, fb: "Correct. B is A turned a half turn about the origin." },
+        [{ t: reflT, fb: "A reflection would flip the shape; B keeps the same handedness as A." }, { t: neiT, fb: "They are related: check what a half turn about the origin does to A." }, { t: enlT, fb: "The side lengths are the same, so B is not larger than A." }], sol, { mode: "related-rot", A: A.join(";") });
+    } else {
+      sol = "Shape B does not have the same side lengths as shape A, so it cannot be a mirror image or a turned copy, since reflections and rotations keep side lengths. So <b>they are not related by a reflection or a rotation</b>.";
+      q = mcq(prompt, { t: neiT, fb: "Correct. One side length differs, and reflections and rotations never change side lengths." },
+        [{ t: reflT, fb: "A mirror image would keep every side length; compare the sides here." }, { t: rotT, fb: "A turned copy would keep every side length; compare the sides here." }, { t: enlT, fb: "An enlargement scales every side by one factor; here only part of the shape changed." }], sol, { mode: "related-neither", A: A.join(";") });
+    }
+    q.figure = grid;
+    return q;
+  }
+  var qf = mcq("Shape A and shape B are shown on the grid. How are the two shapes related?",
+    { t: "They are related by a reflection (one is the mirror image of the other).", fb: "Correct." },
+    [{ t: "They are related by a rotation (one is a turned copy of the other).", fb: "B is flipped compared with A." }, { t: "They are not related by a reflection or a rotation.", fb: "Check a mirror across the y-axis." }, { t: "Shape B is an enlargement of shape A.", fb: "The side lengths are the same." }],
+    "Each vertex of B is the mirror image of a vertex of A across the y-axis, so <b>they are related by a reflection</b>.", { mode: "related-refl", A: "-4,-2;-1,-1;-3,2" });
+  qf.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22, shapes: [{ pts: [[-4, -2], [-1, -1], [-3, 2]], fill: FIG_SHADE }, { pts: [[4, -2], [1, -1], [3, 2]], fill: "#ffffff" }], labels: [{ p: [-2.7, -0.3], str: "A", size: 14, bold: true }, { p: [2.7, -0.3], str: "B", size: 14, bold: true }], aria: "Two triangles A and B on a grid" });
+  return qf;
+}, ["Reflections and rotations never change side lengths, so compare the sides first.", "If the sides match, decide whether the second shape is flipped (reflection) or just turned (rotation)."]);
+
+E("u8-pk-transformation-symmetry", 8, ["3.24"], 1, "gen", function () {
+  var mode = pick(["reflY", "reflX", "rot180"]);
+  var A = [[ri(1, 2), ri(1, 2)], [ri(4, 5), ri(1, 2)], [ri(1, 3), ri(4, 5)]];
+  var area19 = Math.abs((A[1][0] - A[0][0]) * (A[2][1] - A[0][1]) - (A[2][0] - A[0][0]) * (A[1][1] - A[0][1]));
+  if (area19 < 4) { A = [[1, 1], [5, 2], [2, 5]]; }
+  var B;
+  if (mode === "reflY") B = A.map(function (p) { return [-p[0], p[1]]; });
+  else if (mode === "reflX") B = A.map(function (p) { return [p[0], -p[1]]; });
+  else B = A.map(function (p) { return [-p[0], -p[1]]; });
+  var cenA = [(A[0][0] + A[1][0] + A[2][0]) / 3, (A[0][1] + A[1][1] + A[2][1]) / 3];
+  var cenB = [(B[0][0] + B[1][0] + B[2][0]) / 3, (B[0][1] + B[1][1] + B[2][1]) / 3];
+  var grid = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+    shapes: [{ pts: A, fill: FIG_SHADE }, { pts: B, fill: "#ffffff" }],
+    labels: [{ p: cenA, str: "Shape", size: 12, bold: true }, { p: cenB, str: "Image", size: 12, bold: true }],
+    aria: "A shape and its image on a grid" });
+  var yT = "The shape and its image have line symmetry across the y-axis.";
+  var xT = "The shape and its image have line symmetry across the x-axis.";
+  var rT = "The shape and its image have rotation symmetry of order 2 about the origin.";
+  var nT = "The shape and its image have no line or rotation symmetry.";
+  var corrT = mode === "reflY" ? yT : (mode === "reflX" ? xT : rT);
+  var all = [yT, xT, rT, nT];
+  var rest = all.filter(function (t) { return t !== corrT; }).map(function (t) {
+    return { t: t, fb: t === nT ? "The combined picture does have a symmetry; picture folding it or turning it as one piece." : "That names the wrong mirror line or centre for this picture; check where the image sits." };
+  });
+  var expl = mode === "reflY" ? "The image is the mirror image of the shape across the y-axis, so the combined picture folds exactly onto itself along the y-axis."
+    : mode === "reflX" ? "The image is the mirror image of the shape across the x-axis, so the combined picture folds exactly onto itself along the x-axis."
+    : "The image is the shape turned a half turn about the origin, so the combined picture matches itself after a half turn about the origin, which is rotation symmetry of order 2.";
+  var q = mcq("A shape and its image after a transformation are shown on the grid. Which statement describes the symmetry of the combined picture (the shape and its image together)?",
+    { t: corrT, fb: "Correct. " + expl }, rest,
+    expl + " So the statement is: <b>" + corrT + "</b>",
+    { mode: "transf-" + mode, A: A.join(";") });
+  q.figure = grid;
+  return q;
+}, ["Treat the shape and its image as one picture, then test folds and turns on the whole picture.", "Look at where the image sits compared with the shape: mirrored sideways, mirrored up and down, or turned a half turn."]);
+
+E("u8-pk-translation-rule", 8, ["3.21"], 1, "gen", function () {
+  for (var att = 0; att < 200; att++) {
+    var a = ri(1, 5), b = ri(1, 5);
+    if (a === b) continue;
+    var dx = (Math.random() < 0.5 ? 1 : -1) * a, dy = (Math.random() < 0.5 ? 1 : -1) * b;
+    var pts = [[ri(-3, 3), ri(-3, 3)], [ri(-3, 4), ri(-3, 4)], [ri(-3, 4), ri(-3, 4)]];
+    if (new Set(pts.map(u7Coord)).size < 3) continue;
+    var ask = ri(0, 2), P = pts[ask];
+    var img = [P[0] + dx, P[1] + dy];
+    var cand = [img, [P[0] - dx, P[1] + dy], [P[0] + dx, P[1] - dy], [P[0] + dy, P[1] + dx]];
+    if (new Set(cand.map(u7Coord)).size < 4) continue;
+    var hWord = dx > 0 ? "R" + fmt(dx) : "L" + fmt(-dx);
+    var vWord = dy > 0 ? "U" + fmt(dy) : "D" + fmt(-dy);
+    var hTxt = dx > 0 ? "right " + fmt(dx) : "left " + fmt(-dx);
+    var vTxt = dy > 0 ? "up " + fmt(dy) : "down " + fmt(-dy);
+    var names = ["A", "B", "C"];
+    var prompt = "A shape has vertices A" + u7Coord(pts[0]) + ", B" + u7Coord(pts[1]) + " and C" + u7Coord(pts[2]) + ". It is translated by the rule " + hWord + ", " + vWord + ", which means slide " + hTxt + " and " + vTxt + ". What are the coordinates of the image of vertex " + names[ask] + "?";
+    var sol = "Apply the slide to vertex " + names[ask] + u7Coord(P) + ": \\[ \\begin{aligned} x' &= " + fmt(P[0]) + (dx >= 0 ? " + " + fmt(dx) : " - " + fmt(-dx)) + " = " + fmt(img[0]) + " \\\\ y' &= " + fmt(P[1]) + (dy >= 0 ? " + " + fmt(dy) : " - " + fmt(-dy)) + " = " + fmt(img[1]) + " \\end{aligned} \\] So the image of vertex " + names[ask] + " is <b>" + u7Coord(img) + "</b>.";
+    var q = mcq(prompt,
+      { t: u7Coord(img), fb: "Correct. The x slide and the y slide are both applied to the vertex." },
+      [
+        { t: u7Coord(cand[1]), fb: "The sideways slide went the wrong way; check whether the rule says left or right." },
+        { t: u7Coord(cand[2]), fb: "The vertical slide went the wrong way; check whether the rule says up or down." },
+        { t: u7Coord(cand[3]), fb: "That swaps the two slides; the first number in the rule is the sideways slide." }
+      ], sol, { mode: "translation", dx: dx, dy: dy, P: P.join(","), img: img.join(",") });
+    q.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+      shapes: [{ pts: pts, fill: FIG_SHADE }],
+      marks: pts.map(function (p2, i2) { return { p: p2, label: names[i2], dx: 11, dy: -11 }; }),
+      aria: "A triangle on a grid" });
+    return q;
+  }
+  var q = mcq("A shape has vertices A(0, 0), B(3, 1) and C(1, 4). It is translated by the rule R2, U3, which means slide right 2 and up 3. What are the coordinates of the image of vertex B?",
+    { t: "(5, 4)", fb: "Correct." },
+    [{ t: "(1, 4)", fb: "The sideways slide went the wrong way." }, { t: "(5, -2)", fb: "The vertical slide went the wrong way." }, { t: "(6, 3)", fb: "That swaps the two slides." }],
+    "Adding the slides to B(3, 1) gives (5, 4), so the image of B is <b>(5, 4)</b>.", { mode: "translation", dx: 2, dy: 3, P: "3,1", img: "5,4" });
+  q.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+    shapes: [{ pts: [[0, 0], [3, 1], [1, 4]], fill: FIG_SHADE }],
+    marks: [{ p: [0, 0], label: "A", dx: 11, dy: -11 }, { p: [3, 1], label: "B", dx: 11, dy: -11 }, { p: [1, 4], label: "C", dx: 11, dy: -11 }],
+    aria: "A triangle on a grid" });
+  return q;
+}, ["In the rule, the letter tells the direction and the number tells how far, first sideways then up or down.", "Add the sideways slide to the x coordinate and the vertical slide to the y coordinate (subtracting for left or down)."]);
+
+E("u8-pk-reflect-point", 8, ["3.21"],1,"gen",function(){
+  var x=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);var y=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var overX=Math.random()<0.5;var axis=overX?"x-axis":"y-axis";
+  var img=overX?[x,-y]:[-x,y];var other=overX?[-x,y]:[x,-y];
+  var correct=u8pair(img[0],img[1]);
+  var raw=[u8pair(x,y),u8pair(other[0],other[1]),u8pair(-x,-y)];
+  var ds=raw.map(function(t,i){return {t:t,fb:i===0?"That is the original point; a reflection moves it across the axis.":(i===1?"That is a reflection across the other axis; check which axis the question names.":"That flips both coordinates, which is a half-turn, not a single-axis reflection.")};});
+  var q=mcq("Point P "+u8pair(x,y)+" is reflected across the "+axis+". What are the coordinates of the image?",
+    {t:correct,fb:"Yes: reflection across the "+axis+" flips the sign of the "+(overX?"y":"x")+"-coordinate only."},ds,
+    "Reflecting across the "+axis+" changes the sign of the "+(overX?"y":"x")+"-coordinate and leaves the other alone: "+u8pair(x,y)+" becomes <b>"+correct+"</b>.",{mode:overX?"rx":"ry"});
+  q.figure=u8gridSVG([{x:x,y:y,label:"P"}],null,null);
+  return q;
+},["Reflection across the x-axis flips the y sign; across the y-axis flips the x sign.","Start by deciding which coordinate changes sign for the named axis."]);
+
+E("u8-pk-rotate-vertex", 8, ["3.21"], 2, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var V = [ri(-2, 2), ri(-2, 2)];
+    var othersL = ["A", "B", "C"];
+    var pivotIdx = ri(0, 2);
+    var pts = [null, null, null];
+    pts[pivotIdx] = V;
+    var placed = [V];
+    var ok = true;
+    for (var i = 0; i < 3; i++) {
+      if (i === pivotIdx) continue;
+      var p = [ri(-4, 4), ri(-4, 4)];
+      var tries = 0;
+      while ((p[0] === V[0] && p[1] === V[1]) || placed.some(function (q2) { return q2[0] === p[0] && q2[1] === p[1]; })) { p = [ri(-4, 4), ri(-4, 4)]; if (++tries > 40) { ok = false; break; } }
+      if (!ok) break;
+      pts[i] = p; placed.push(p);
+    }
+    if (!ok) continue;
+    var area = Math.abs((pts[1][0] - pts[0][0]) * (pts[2][1] - pts[0][1]) - (pts[2][0] - pts[0][0]) * (pts[1][1] - pts[0][1]));
+    if (area === 0) continue;
+    var askIdx = pick([0, 1, 2].filter(function (i2) { return i2 !== pivotIdx; }));
+    var P = pts[askIdx];
+    var dx = P[0] - V[0], dy = P[1] - V[1];
+    if (dx === 0 && dy === 0) continue;
+    var cw = Math.random() < 0.5;
+    var img = cw ? [V[0] + dy, V[1] - dx] : [V[0] - dy, V[1] + dx];
+    var wrong = cw ? [V[0] - dy, V[1] + dx] : [V[0] + dy, V[1] - dx];
+    var aboutOrigin = cw ? [P[1], -P[0]] : [-P[1], P[0]];
+    var cand = [img, wrong, aboutOrigin, P];
+    if (new Set(cand.map(u7Coord)).size < 4) continue;
+    if (img[0] < -6 || img[0] > 6 || img[1] < -6 || img[1] > 6) continue;
+    var dirWord = cw ? "clockwise" : "counterclockwise";
+    var names = ["A", "B", "C"];
+    var prompt = "Triangle ABC has vertices A" + u7Coord(pts[0]) + ", B" + u7Coord(pts[1]) + " and C" + u7Coord(pts[2]) + ". The triangle is rotated 90° " + dirWord + " about vertex " + names[pivotIdx] + ". What are the coordinates of the image of vertex " + names[askIdx] + "?";
+    var rotTxt = cw ? "(" + fmt(dx) + ", " + fmt(dy) + ") becomes (" + fmt(dy) + ", " + fmt(-dx) + ")" : "(" + fmt(dx) + ", " + fmt(dy) + ") becomes (" + fmt(-dy) + ", " + fmt(dx) + ")";
+    var sol = "Work from the pivot " + names[pivotIdx] + u7Coord(V) + ". The step from the pivot to " + names[askIdx] + " is " + rotTxt + " under a 90° " + dirWord + " turn: \\[ \\begin{aligned} \\text{image} &= " + u7Coord(V) + " + (" + fmt(img[0] - V[0]) + ", " + fmt(img[1] - V[1]) + ") \\\\ &= " + u7Coord(img) + " \\end{aligned} \\] So the image of vertex " + names[askIdx] + " is <b>" + u7Coord(img) + "</b>.";
+    var grid = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22,
+      shapes: [{ pts: pts, fill: FIG_SHADE }],
+      marks: pts.map(function (p2, i2) { return { p: p2, label: names[i2], dx: p2[0] >= V[0] ? 11 : -11, dy: -11 }; }),
+      aria: "A triangle on a grid" });
+    var q = mcq(prompt,
+      { t: u7Coord(img), fb: "Correct. The step from the pivot turns 90° " + dirWord + " and keeps its length." },
+      [
+        { t: u7Coord(wrong), fb: "That turns the step the other way; check the stated direction." },
+        { t: u7Coord(aboutOrigin), fb: "That rotates about the origin; this turn is about vertex " + names[pivotIdx] + "." },
+        { t: u7Coord(P), fb: "That is the starting point of vertex " + names[askIdx] + "; only the pivot stays in place." }
+      ], sol, { mode: cw ? "rot-cw" : "rot-ccw", V: V.join(","), P: P.join(","), img: img.join(",") });
+    q.figure = grid;
+    return q;
+  }
+  var qf = mcq("Triangle ABC has vertices A(0, 0), B(3, 0) and C(0, 2). The triangle is rotated 90° clockwise about vertex A. What are the coordinates of the image of vertex B?",
+    { t: "(0, -3)", fb: "Correct." },
+    [{ t: "(0, 3)", fb: "That turns the step the other way." }, { t: "(3, 0)", fb: "That is the starting point of B." }, { t: "(-3, 0)", fb: "That is a half turn, not a quarter turn." }],
+    "The step from A to B is (3, 0); a 90° clockwise turn makes it (0, -3), so the image of B is <b>(0, -3)</b>.", { mode: "rot-cw", V: "0,0", P: "3,0", img: "0,-3" });
+  qf.figure = u7Grid({ xMin: -6, xMax: 6, yMin: -6, yMax: 6, cell: 22, shapes: [{ pts: [[0, 0], [3, 0], [0, 2]], fill: FIG_SHADE }], marks: [{ p: [0, 0], label: "A", dx: -11, dy: -11 }, { p: [3, 0], label: "B", dx: 11, dy: -11 }, { p: [0, 2], label: "C", dx: -11, dy: -11 }], aria: "A triangle on a grid" });
+  return qf;
+}, ["The pivot vertex stays fixed; every other vertex swings around it.", "Find the step from the pivot to the named vertex, turn that step 90 degrees, then add it back to the pivot."]);
+
+/* PK tranche metadata pass for Unit 8. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U8_FOR=["3.17","3.18","3.19","3.20","3.21","3.22","3.23","3.24","3.25"];
+var PKT_U8={
+ "u8-pk-scale-read":{src:"math-2202:4.14",group:"scale"},
+ "u8-pk-scale-actual":{src:"math-2202:4.14",group:"scale"},
+ "u8-pk-similar-check":{src:"math-1202:3.60",group:"similarity"},
+ "u8-pk-corresponding-sides":{src:"math-1202:3.62",group:"similarity"},
+ "u8-pk-similar-missing-side":{src:"math-1202:3.64",group:"similarity"},
+ "u8-pk-related-shapes":{src:"math-9:10.5",group:"symmetry"},
+ "u8-pk-transformation-symmetry":{src:"math-9:10.6",group:"symmetry"},
+ "u8-pk-translation-rule":{src:"math-9:10.13",group:"transformations"},
+ "u8-pk-reflect-point":{src:"math-7:10.12",group:"transformations"},
+ "u8-pk-rotate-vertex":{src:"math-9:10.10",group:"transformations"}
+};
+BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U8_FOR.slice();e.pkGroup=t.group;}});
+
+/* Distinctness guard for u8-pk-similar-missing-side, carried with the entry
+   from its home bank (Mathematics 1202, bank-u7.js, where the same guard
+   wraps the original): the generator can, on rare draws, round two
+   different error values to the same displayed option; redraw those draws
+   so every question keeps four distinct options. */
+(function(){
+  var ids=["u8-pk-similar-missing-side"];
+  BANK.forEach(function(e){
+    if(ids.indexOf(e.id)<0) return;
+    var orig=e.gen;
+    e.gen=function(){ var q, t=0; do { q=orig(); t++; } while(q && q.type==="mc" && new Set(q.options).size<4 && t<40); return q; };
+  });
+})();
+
 /* ----- bank-u9.js ----- */
 // Math 3202 Unit 9 Trigonometry question bank
 // CRMARKS: u9-sine-side-cr=3
@@ -4514,6 +6657,83 @@ BANK.forEach(function(e){ var s=BRIDGE_SRC[e.id]; if(s){ e.bridging=true; e.brid
    tools. */
 BANK.forEach(function(e){if(["u9r-ratio-value","u9r-find-side","u9r-find-side-workplace","u9r-find-angle","u9r-elevation-depression","u9r-reasonable-result"].indexOf(e.id)>=0)e.pkFlag=true;});
 
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 12 (trigonometry: sine and cosine law readiness). The six u9r bridging entries already in this file (flagged November 13, 2026) are prior knowledge stock under the defining test: they assess Mathematics 1202 outcomes 5.1 to 5.6 and nothing on this course's list. The pass below completes their tranche metadata (pkSrc, pkFor, pkGroup) without retagging or reflagging them; their bridging and bridgeSrc records stand as ruled on November 8, 2026. Support set borrowed verbatim from Mathematics 1202 (u7-choose-ratio, u7-unknown-angle-mc); feeder helper copies ride in bank-helpers.js. ===== */
+E("u9-pk-choose-ratio", 9, ["5.1"], 1, "gen", function(){
+  var combos=[
+    {known:"opposite", wanted:"adjacent", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"adjacent", wanted:"opposite", ratio:"tangent", def:"tangent: opposite / adjacent"},
+    {known:"opposite", wanted:"hypotenuse", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"hypotenuse", wanted:"opposite", ratio:"sine", def:"sine: opposite / hypotenuse"},
+    {known:"adjacent", wanted:"hypotenuse", ratio:"cosine", def:"cosine: adjacent / hypotenuse"},
+    {known:"hypotenuse", wanted:"adjacent", ratio:"cosine", def:"cosine: adjacent / hypotenuse"} ];
+  var c=pick(combos), ang=u7Ang(), val=ri(4,30);
+  var ctx=pick(["a ladder against a wall","a roof section","a loading ramp","a guy wire on a pole","a wheelchair ramp","a stair stringer"]);
+  var prompt="A right triangle models "+ctx+". The marked angle is \\("+ang+"^\\circ\\). The "+c.known+" side is known (it measures "+val+" units) and the "+c.wanted+" side is wanted. Which ratio should be used?";
+  var defs={ tangent:"tangent: opposite / adjacent", sine:"sine: opposite / hypotenuse", cosine:"cosine: adjacent / hypotenuse" };
+  var names=["tangent","sine","cosine"];
+  var distract=names.filter(function(n){ return n!==c.ratio; }).map(function(n){ return {t:defs[n], fb:"The "+n+" ratio uses the "+(n==="tangent"?"opposite and adjacent":(n==="sine"?"opposite and hypotenuse":"adjacent and hypotenuse"))+" sides, which is not the known and wanted pair here."}; });
+  var recip={ tangent:"adjacent / opposite", sine:"hypotenuse / opposite", cosine:"hypotenuse / adjacent" };
+  distract.push({t:c.ratio+" flipped: "+recip[c.ratio], fb:"That is the "+c.ratio+" ratio with its two sides swapped. The ratio must pair the sides as "+defs[c.ratio].split(": ")[1]+"."});
+  var sol="The known side is the "+c.known+" and the wanted side is the "+c.wanted+". The ratio that uses exactly those two sides is the <b>"+c.ratio+" ratio</b>: "+defs[c.ratio]+".";
+  var q=mcq(prompt, {t:defs[c.ratio], fb:"Correct: the "+c.ratio+" ratio is the one built from the "+c.known+" and "+c.wanted+" sides."}, distract, sol, {ratio:c.ratio, ang:ang});
+  var lab={ opposite:"opp", adjacent:"adj", hypotenuse:"hyp" };
+  var oL=c.known==="opposite"?val:(c.wanted==="opposite"?"?":"opp"), aL=c.known==="adjacent"?val:(c.wanted==="adjacent"?"?":"adj"), hL=c.known==="hypotenuse"?val:(c.wanted==="hypotenuse"?"?":"hyp");
+  q.figure=u7FigTri(oL, aL, hL, ang+" deg");
+  return q;
+}, ["Name the known and wanted sides relative to the marked angle first.", "Pick the ratio whose definition uses exactly those two sides."]);
+
+E("u9-pk-unknown-angle", 9, ["5.2"], 2, "gen", function(){
+  var mode=ri(0,2), angDeg, knownTxt, ratioName, oL, aL, hL, tries=0;
+  var o=ri(3,20), a=ri(3,20);
+  while((o===a || Math.abs(Math.atan2(o,a)*180/Math.PI-45)<3) && tries<30){ o=ri(3,20); a=ri(3,20); tries++; }
+  if(mode===0){ angDeg=Math.atan2(o,a)*180/Math.PI; ratioName="tangent"; knownTxt="the side opposite the angle is "+o+" m and the side adjacent is "+a+" m"; oL=o+" m"; aL=a+" m"; hL="hyp"; }
+  else if(mode===1){ var h=o+ri(2,15); angDeg=Math.asin(o/h)*180/Math.PI; ratioName="sine"; knownTxt="the side opposite the angle is "+o+" m and the hypotenuse is "+h+" m"; oL=o+" m"; aL="adj"; hL=h+" m"; }
+  else { var h2=a+ri(2,15); angDeg=Math.acos(a/h2)*180/Math.PI; ratioName="cosine"; knownTxt="the side adjacent to the angle is "+a+" m and the hypotenuse is "+h2+" m"; oL="opp"; aL=a+" m"; hL=h2+" m"; }
+  var correct=Math.round(angDeg);
+  var d1=correct+10; if(d1>89) d1=correct-20;
+  var d2=correct-10; if(d2<1) d2=correct+20; if(d2===d1) d2=correct+15;
+  var comp=90-correct; if(comp===d1||comp===d2||comp===correct) comp=correct+5;
+  var prompt="In a right triangle, "+knownTxt+". What is the measure of the angle, to the nearest degree?";
+  var sol="Use the inverse of the "+ratioName+" ratio on a calculator: the ratio value gives an angle of about \\("+fmtF(angDeg,1)+"^\\circ\\), which rounds to <b>"+correct+" degrees</b>.";
+  var q=mcq(prompt, {t:correct+"°", fb:"Correct: the inverse "+ratioName+" of the side ratio gives about "+fmtF(angDeg,1)+" degrees."},
+    [ {t:d1+"°", fb:"That is 10 degrees too large: recheck the ratio before using the inverse key."},
+      {t:d2+"°", fb:"That is off the computed value of about "+fmtF(angDeg,1)+" degrees: recheck which sides form the ratio."},
+      {t:comp+"°", fb:"That is the other acute angle of the triangle (90 minus the answer), not the angle at the marked vertex."} ], sol, {mode:mode, correct:correct});
+  q.figure=u7FigTri(oL, aL, hL, "?");
+  return q;
+}, ["An unknown angle calls for the inverse of the ratio formed by the two known sides.", "Form the ratio from the known sides first, then apply the matching inverse ratio."]);
+
+/* PK tranche metadata pass for Unit 9. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U9_FOR=["5.1","5.2","5.3","5.4"];
+var PKT_U9={
+ "u9r-ratio-value":{src:"math-1202:5.1,5.2,5.3",group:"trig-ratios"},
+ "u9r-find-side":{src:"math-1202:5.5",group:"find-side"},
+ "u9r-find-side-workplace":{src:"math-1202:5.5",group:"find-side"},
+ "u9r-find-angle":{src:"math-1202:5.5",group:"find-angle"},
+ "u9r-elevation-depression":{src:"math-1202:5.5",group:"elevation-depression"},
+ "u9r-reasonable-result":{src:"math-1202:5.6",group:"reasonable-result"},
+ "u9-pk-choose-ratio":{src:"math-1202:5.5",group:"trig-ratios"},
+ "u9-pk-unknown-angle":{src:"math-1202:5.5",group:"find-angle"}
+};
+BANK.forEach(function(e){var t=PKT_U9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U9_FOR.slice();e.pkGroup=t.group;}});
+
+/* Distinctness guard for u9-pk-unknown-angle, carried with the entry from
+   its home bank (Mathematics 1202, bank-u7.js, where the same guard wraps
+   the original): the generator can, on rare draws, round two different
+   error values to the same displayed option; redraw those draws so every
+   question keeps four distinct options. */
+(function(){
+  var ids=["u9-pk-unknown-angle"];
+  BANK.forEach(function(e){
+    if(ids.indexOf(e.id)<0) return;
+    var orig=e.gen;
+    e.gen=function(){ var q, t=0; do { q=orig(); t++; } while(q && q.type==="mc" && new Set(q.options).size<4 && t<40); return q; };
+  });
+})();
+
 /* ----- bank-u10.js ----- */
 // Math 3202 Unit 10 Probability question bank
 // CRMARKS: u10-prob-data-cr=3
@@ -4927,6 +7147,252 @@ E("u8-cr-triple-transform", 8, ["3.23", "3.18"], 3, "gen", function(){
   q.figure=u8grid([{pts:[P], labs:["P"]}], 6);
   return q;
 }, ["The order matters: work through the three transformations one at a time, writing down the coordinates after each step.", "Start with the first transformation only, and record the new point before applying the second."]);
+
+/* ===== Prior knowledge tranche (Nov 15, 2026): Cluster 13 (probability). Borrowed verbatim from Mathematics 7 (u7-prob-basic, u7-two-events-prob) and Mathematics 9 (u9-gap-expected-freq-cr, u9-prob-in-media, u9-combined-decision, u9-classify-probability); feeder helper copies ride in bank-helpers.js. Odds is first taught inside this course (indicators 7.3, 7.4, 7.7) and appears nowhere in this pool. ===== */
+E("u10-pk-prob-basic", 10, ["7.1"],1,"gen",function(){
+  var mode=pick(["bag","bag","die","spinner","zero"]);
+  if(mode==="zero"){
+    var cols=["red","blue","green"];var counts=[ri(2,5),ri(2,5),ri(2,5)];var total=counts[0]+counts[1]+counts[2];
+    var absent=pick(["purple","orange","yellow"]);
+    var ds=[{t:"1/"+total,fb:"There are no "+absent+" marbles in the bag, so this event cannot happen."},{t:"0/"+counts[0],fb:"A probability of 0 is written as 0. No "+absent+" marbles means the event is impossible."},{t:"1",fb:"A probability of 1 means the event is certain. Drawing "+absent+" is impossible here, not certain."}];
+    return mcq("A bag holds "+counts[0]+" red, "+counts[1]+" blue and "+counts[2]+" green marbles. One marble is drawn at random. What is the probability of drawing a "+absent+" marble?",
+      {t:"0",fb:"Yes: there are no "+absent+" marbles, so the probability is 0."},ds,
+      "There are 0 "+absent+" marbles out of "+total+" in total. \\(P = "+FR(0,total)+" = 0\\). The probability is <b>0</b>.",{mode:"zero"});
+  }
+  if(mode==="die"){
+    var target=pick(["an even number","an odd number","a number greater than 4","a number less than 3","a 6","a number greater than 2"]);
+    var fav={"an even number":3,"an odd number":3,"a number greater than 4":2,"a number less than 3":2,"a 6":1,"a number greater than 2":4}[target];
+    var cs=u7fracStr(fav,6);
+    var alts=[u7fracStr(6-fav,6),fav+"/6",u7fracStr(fav+1,6),u7fracStr(fav,6-fav+6)];
+    var seen={};seen[cs]=1;var ds=[];
+    alts.forEach(function(a){if(!seen[a]){seen[a]=1;ds.push({t:"\\("+a+"\\)",fb:"Count the favourable faces first, then write favourable over 6 and simplify."});}});
+    var extra=2;while(ds.length<3){var a=u7fracStr(extra,6);if(!seen[a]){seen[a]=1;ds.push({t:"\\("+a+"\\)",fb:"Count the favourable faces first, then write favourable over 6 and simplify."});}extra++;}
+    return mcq("A fair six-sided die is rolled once. What is the probability of rolling "+target+"?",
+      {t:"\\("+cs+"\\)",fb:"Yes: "+fav+" of the 6 faces match, and "+fav+"/6 simplifies to "+cs+"."},ds.slice(0,3),
+      "There are "+fav+" favourable faces out of 6. \\(P = "+FR(fav,6)+" = "+cs+"\\). The probability is <b>\\("+cs+"\\)</b>.",{mode:"die"});
+  }
+  if(mode==="spinner"){
+    var secs=pick([4,6,8]);var favSecs=ri(1,secs-1);var cs2=u7fracStr(favSecs,secs);
+    var seen2={};seen2[cs2]=1;var ds2=[];
+    [u7fracStr(secs-favSecs,secs),favSecs+"/"+secs,u7fracStr(favSecs+1,secs),u7fracStr(1,secs)].forEach(function(a){if(!seen2[a]&&ds2.length<3){seen2[a]=1;ds2.push({t:"\\("+a+"\\)",fb:"Use the number of matching sections over the total number of equal sections, then simplify."});}});
+    var e2=2;while(ds2.length<3){var a2=u7fracStr(e2,secs);if(!seen2[a2]){seen2[a2]=1;ds2.push({t:"\\("+a2+"\\)",fb:"Use matching sections over total sections, then simplify."});}e2++;}
+    return mcq("A spinner has "+secs+" equal sections. Exactly "+favSecs+" of the sections are shaded. What is the probability of landing on a shaded section?",
+      {t:"\\("+cs2+"\\)",fb:"Yes: "+favSecs+" of "+secs+" sections are shaded, which simplifies to "+cs2+"."},ds2.slice(0,3),
+      "Favourable sections: "+favSecs+". Total sections: "+secs+". \\(P = "+FR(favSecs,secs)+" = "+cs2+"\\). The probability is <b>\\("+cs2+"\\)</b>.",{mode:"spinner"});
+  }
+  var r=ri(1,6),b=ri(1,6),g=ri(0,5);var total2=r+b+g;var colPick=pick(["red","blue"]);var fav2=colPick==="red"?r:b;
+  var cs3=u7fracStr(fav2,total2);var seen3={};seen3[cs3]=1;var ds3=[];
+  [u7fracStr(total2-fav2,total2),fav2+"/"+total2,u7fracStr(fav2,total2-fav2),u7fracStr(fav2+1,total2)].forEach(function(a){if(!seen3[a]&&ds3.length<3){seen3[a]=1;ds3.push({t:"\\("+a+"\\)",fb:"The numerator counts only the "+colPick+" marbles, and the denominator is the total number of marbles. Simplify at the end."});}});
+  var e3=1;while(ds3.length<3){var a3=u7fracStr(e3,total2+3);if(!seen3[a3]){seen3[a3]=1;ds3.push({t:"\\("+a3+"\\)",fb:"Count the "+colPick+" marbles over the total, then simplify."});}e3++;}
+  return mcq("A bag holds "+r+" red, "+b+" blue"+(g?" and "+g+" green":"")+" marbles. One marble is drawn at random. What is the probability of drawing a "+colPick+" marble?",
+    {t:"\\("+cs3+"\\)",fb:"Yes: "+fav2+" of the "+total2+" marbles are "+colPick+", which simplifies to "+cs3+"."},ds3.slice(0,3),
+    "Favourable outcomes: "+fav2+". Total outcomes: "+total2+". \\(P = "+FR(fav2,total2)+" = "+cs3+"\\). The probability is <b>\\("+cs3+"\\)</b>.",{mode:"bag"});
+},["Probability is favourable outcomes divided by total possible outcomes.","Start by counting the favourable outcomes and the total number of outcomes, then simplify the fraction."]);
+
+E("u10-pk-two-events", 10, ["7.2"],2,"gen",function(){
+  var fam=pick(["twocoin","coindie","coindie","spincoin","spindie","twospin","dicesum"]);
+  var fav,total,desc,target;
+  if(fam==="twocoin"){var tg=pick([["two heads",1],["two tails",1],["exactly one head",2],["at least one head",3],["exactly one tail",2]]);fav=tg[1];total=4;desc="two coins are tossed";target=tg[0];}
+  else if(fam==="coindie"){var tg2=pick([["heads and an even number",3],["tails and an odd number",3],["heads and a number greater than 4",2],["heads and a number less than 3",2],["tails and a 6",1],["heads and a 1",1],["heads and a prime number",3]]);fav=tg2[1];total=12;desc="a coin is tossed and a die is rolled";target=tg2[0];}
+  else if(fam==="spincoin"){var s1=pick([3,4,6,8]);var k=ri(1,s1);var face=pick(["heads","tails"]);fav=1;total=2*s1;desc="a "+s1+"-section spinner is spun and a coin is tossed";target="section "+k+" and "+face;}
+  else if(fam==="spindie"){var s2=pick([3,4,5,6]);var k2=ri(1,s2);var j=ri(1,6);fav=1;total=6*s2;desc="a "+s2+"-section spinner is spun and a die is rolled";target="section "+k2+" and a "+j;}
+  else if(fam==="twospin"){var s3=pick([3,4,5,6]);var k3=ri(1,s3);var k4=ri(1,s3);fav=1;total=s3*s3;desc="a "+s3+"-section spinner is spun twice";target="section "+k3+" then section "+k4;}
+  else {var t=ri(2,9);fav=t<=7?t-1:13-t;total=36;desc="two dice are rolled";target="a total of "+t;}
+  var opener=pick(["When ","At a games table, when ","In a class game, when ","During a board game, when "]);
+  var cs=u7fracStr(fav,total);
+  var seen={};seen[cs]=1;var ds=[];
+  [u7fracStr(total-fav,total),fav+"/"+total,u7fracStr(fav+1,total),u7fracStr(fav,total+6)].forEach(function(a){if(!seen[a]&&ds.length<3){seen[a]=1;ds.push({t:"\\("+a+"\\)",fb:"Count the matching combined outcomes over the full sample space, then simplify."});}});
+  var e=3;while(ds.length<3){var a2=u7fracStr(e,total);if(!seen[a2]){seen[a2]=1;ds.push({t:"\\("+a2+"\\)",fb:"Count the matching combined outcomes over the full sample space, then simplify."});}e++;}
+  return mcq(opener+desc+", what is the theoretical probability of getting "+target+"?",
+    {t:"\\("+cs+"\\)",fb:"Yes: "+fav+" of the "+total+" combined outcomes match, which simplifies to "+cs+"."},ds,
+    "The sample space has "+total+" equally likely outcomes and "+fav+" match the target. \\(P = "+FR(fav,total)+" = "+cs+"\\). The probability is <b>\\("+cs+"\\)</b>.",{mode:"two",fam:fam});
+},["Build the combined sample space first, then count the matching outcomes.","Start by multiplying the outcome counts of the two events to get the sample space size."]);
+
+E("u10-pk-expected-freq", 10, ["7.1"], 2, "gen", function () {
+  var b = pick([4, 5, 6, 8, 10]);
+  var a = ri(1, b - 1);
+  var mult = ri(12, 30);
+  var N = b * mult, ans = a * mult;
+  var prompt = "A spinner is divided into " + b + " equal sectors, and " + a + " of the sectors are red. The spinner is spun " + N + " times. How many of the spins are expected to land on red?";
+  var sol = "The probability of red gives the expected share of the spins: \\[ \\begin{aligned} P(\\text{red}) &= \\frac{" + a + "}{" + b + "} \\\\ \\text{expected red} &= \\frac{" + a + "}{" + b + "} \\times " + N + " = " + ans + " \\end{aligned} \\] The answer is <b>" + ans + "</b>.";
+  return numq(prompt, ans, 0.01, sol, { mode: "gap-expected-freq", a: a, b: b, N: N });
+}, ["An expected count is the probability applied to the whole set of trials.", "Write the probability of red as a fraction as the first step."]);
+
+E("u10-pk-prob-in-media", 10, ["7.5"], 1, "var", varset([
+  function(){
+    return mcq("Four short items appear in a school newsletter. Which item uses probability?",
+      {t:"There is a 70% chance of snow for the outdoor skating party on Friday", fb:"Right: a percent chance states how likely the snow is, which is probability in use."},
+      [{t:"The skating party will start at noon on Friday in the school gym lobby", fb:"That item gives a time and a place, with no statement about how likely anything is."},
+       {t:"Last winter the school held three skating parties for students and staff", fb:"That item reports a count from the past, with no statement about chance."},
+       {t:"Students voted skating as their favourite winter activity this school year", fb:"That item reports a vote result, with no statement about how likely an event is."}],
+      "Probability is used when a statement gives how likely an event is. The item that uses probability is <b>the 70% chance of snow for the skating party</b>.",
+      {mode:"media-weather"});
+  },
+  function(){
+    return mcq("Four short items appear on a sports page. Which item uses probability?",
+      {t:"Forecasters give the home team a 3 in 5 chance of winning on Saturday", fb:"Right: a 3 in 5 chance states how likely a win is, which is probability in use."},
+      [{t:"The home team scored two late goals to win the game on Saturday", fb:"That item reports what already happened, with no statement about chance."},
+       {t:"Tickets for the game on Saturday cost eight dollars at the door", fb:"That item gives a price, with no statement about how likely anything is."},
+       {t:"The team will practise on Tuesday and Thursday evenings this week", fb:"That item gives a schedule, with no statement about how likely an event is."}],
+      "Probability is used when a statement gives how likely an event is. The item that uses probability is <b>the 3 in 5 chance of winning on Saturday</b>.",
+      {mode:"media-sports"});
+  },
+  function(){
+    return mcq("Four short items appear on a clinic poster board. Which item uses probability?",
+      {t:"A health poster says about 1 in 4 teens will catch a cold this winter", fb:"Right: 1 in 4 states how likely catching a cold is, which is probability in use."},
+      [{t:"The clinic is open on weekdays from nine in the morning until five", fb:"That item gives opening hours, with no statement about how likely anything is."},
+       {t:"Washing hands with soap helps remove germs picked up during the day", fb:"That item gives health advice, with no statement about chance."},
+       {t:"Two nurses and one doctor work at the clinic on most weekdays in town", fb:"That item reports a staffing count, with no statement about how likely an event is."}],
+      "Probability is used when a statement gives how likely an event is. The item that uses probability is <b>about 1 in 4 teens catching a cold this winter</b>.",
+      {mode:"media-health"});
+  },
+  function(){
+    return mcq("Four short items appear in a student council report. Which item uses probability?",
+      {t:"A poll gives one candidate a 55% chance of winning the council vote", fb:"Right: a 55% chance states how likely a win is, which is probability in use."},
+      [{t:"Voting for student council will take place in the gym at lunch time", fb:"That item gives a place and a time, with no statement about chance."},
+       {t:"Three candidates are running for president of the student council", fb:"That item gives a count of candidates, with no statement about how likely anything is."},
+       {t:"Last year the council raised money with a bake sale in the fall", fb:"That item reports a past event, with no statement about how likely an event is."}],
+      "Probability is used when a statement gives how likely an event is. The item that uses probability is <b>the 55% chance of winning the council vote</b>.",
+      {mode:"media-election"});
+  },
+  function(){
+    return mcq("Four short items appear on signs at a school fair. Which item uses probability?",
+      {t:"A game sign says players have a 1 in 6 chance of winning a prize", fb:"Right: a 1 in 6 chance states how likely a win is, which is probability in use."},
+      [{t:"The ring toss game costs two dollars for three tries at the fair", fb:"That sign gives a price, with no statement about how likely anything is."},
+       {t:"Prizes for the games are kept on the top shelf of the booth", fb:"That sign gives a location, with no statement about chance."},
+       {t:"The school fair opens at six in the evening and closes at nine", fb:"That sign gives opening hours, with no statement about how likely an event is."}],
+      "Probability is used when a statement gives how likely an event is. The item that uses probability is <b>the 1 in 6 chance of winning a prize</b>.",
+      {mode:"media-fair"});
+  },
+  function(){
+    return mcq("Four short items appear in a community radio report. Which item uses probability?",
+      {t:"The report says there is a 40% chance of rain for the festival weekend", fb:"Right: a 40% chance states how likely rain is, which is probability in use."},
+      [{t:"The harbour festival will run from Friday evening until Sunday night", fb:"That item gives dates, with no statement about how likely anything is."},
+       {t:"Last summer forty boats took part in the harbour festival boat parade", fb:"That item reports a count from the past, with no statement about chance."},
+       {t:"Festival tickets can be bought at the town office during the week", fb:"That item tells where to buy tickets, with no statement about how likely an event is."}],
+      "Probability is used when a statement gives how likely an event is. The item that uses probability is <b>the 40% chance of rain for the festival weekend</b>.",
+      {mode:"media-festival"});
+  }
+]), ["Probability shows up as a chance, an odds statement or a percent chance that something will happen.", "Scan the four items for words like chance, in 4, or percent, tied to a future event."]);
+
+E("u10-pk-combined-decision", 10, ["7.5"], 1, "var", varset([
+  function(){
+    return mcq("A coach must choose a shooter for a final free throw. The chance from the chart counts equally likely outcomes, practice trials show the shooter made 18 of 20 shots this week, and the coach feels this player stays calm under pressure. Which option describes how the three kinds of probability combine in this decision?",
+      {t:"The chart gives theoretical probability, the practice record gives experimental probability, and the calm feeling is subjective judgement", fb:"Right: equal outcomes are theoretical, trial results are experimental, and a feeling is subjective."},
+      [{t:"The chart gives experimental probability, the practice record gives theoretical probability, and the calm feeling is subjective judgement", fb:"The chart counts set outcomes, which is theoretical, while counted practice shots are experimental."},
+       {t:"The chart gives theoretical probability, the practice record gives subjective judgement, and the calm feeling is experimental probability", fb:"Counted practice shots are data from trials, and a feeling is a judgement, so those two are swapped."},
+       {t:"The chart gives subjective judgement, the practice record gives experimental probability, and the calm feeling is theoretical probability", fb:"A chart of equal outcomes is not a feeling, and a feeling is not a count of equal outcomes."}],
+      "Decisions often combine all three kinds: theoretical probability from equally likely outcomes, experimental probability from trials, and subjective judgement from personal feel. Here the correct description is <b>the chart is theoretical, the practice record is experimental, and the calm feeling is subjective judgement</b>.",
+      {mode:"combine-coach"});
+  },
+  function(){
+    return mcq("A board game player decides whether to risk a move. The die gives six equally likely faces, the player remembers rolling many low numbers in past games, and the player feels a high roll is due this turn. Which option describes how the three kinds of probability combine in this decision?",
+      {t:"The die faces give theoretical probability, past rolls give experimental probability, and the due feeling is subjective judgement", fb:"Right: equal faces are theoretical, remembered results are experimental, and a due feeling is subjective."},
+      [{t:"The die faces give subjective judgement, past rolls give theoretical probability, and the due feeling is experimental probability", fb:"Equal faces are counted, not felt, and remembered rolls are trial results rather than theory."},
+       {t:"The die faces give theoretical probability, past rolls give subjective judgement, and the due feeling is experimental probability", fb:"Remembered rolls are records of trials, and a feeling of being due is a judgement, so those are swapped."},
+       {t:"The die faces give experimental probability, past rolls give subjective judgement, and the due feeling is theoretical probability", fb:"No part is matched correctly here: faces are counted, rolls are trials, and feelings are judgements."}],
+      "Decisions often combine all three kinds: theoretical probability from equally likely outcomes, experimental probability from past trials, and subjective judgement from personal feel. Here the correct description is <b>the die faces are theoretical, past rolls are experimental, and the due feeling is subjective judgement</b>.",
+      {mode:"combine-boardgame"});
+  },
+  function(){
+    return mcq("A farmer in the valley decides when to plant. A forecast model gives a 60% chance of rain this week, her own fields gave good crops in 4 of the last 5 wet springs, and she judges her soil feels ready when she checks it by hand. Which option describes how the three kinds of probability combine in this decision?",
+      {t:"The forecast model gives theoretical probability, her field records give experimental probability, and her soil feel is subjective judgement", fb:"Right: a model estimate is theoretical, her recorded springs are experimental, and hand feel is subjective."},
+      [{t:"The forecast model gives experimental probability, her field records give subjective judgement, and her soil feel is theoretical probability", fb:"Her own past springs are trial records, not feelings, and a hand check is a judgement, not a model."},
+       {t:"The forecast model gives subjective judgement, her field records give experimental probability, and her soil feel is theoretical probability", fb:"The forecast comes from a model rather than a feeling, and the soil check is the personal judgement."},
+       {t:"The forecast model gives theoretical probability, her field records give subjective judgement, and her soil feel is experimental probability", fb:"Field records over five springs are data from trials, while the soil feel is the judgement part."}],
+      "Decisions often combine all three kinds: theoretical probability from a model, experimental probability from recorded trials, and subjective judgement from personal feel. Here the correct description is <b>the forecast is theoretical, the field records are experimental, and the soil feel is subjective judgement</b>.",
+      {mode:"combine-farmer"});
+  },
+  function(){
+    return mcq("A fishing captain decides whether to head out at dawn. A forecast model gives a 30% chance of high winds, his logbook shows rough seas on 2 of his last 10 dawn trips, and he judges the sky looks settled when he studies it at the wharf. Which option describes how the three kinds of probability combine in this decision?",
+      {t:"The forecast model gives theoretical probability, the logbook gives experimental probability, and the sky judgement is subjective judgement", fb:"Right: the model is theoretical, the logged trips are experimental, and reading the sky is subjective."},
+      [{t:"The forecast model gives subjective judgement, the logbook gives theoretical probability, and the sky judgement is experimental probability", fb:"A logbook is a record of trials, not theory, and reading the sky is a judgement, not a trial."},
+       {t:"The forecast model gives theoretical probability, the logbook gives subjective judgement, and the sky judgement is experimental probability", fb:"Logged past trips are data from trials, and a personal reading of the sky is the judgement part."},
+       {t:"The forecast model gives experimental probability, the logbook gives subjective judgement, and the sky judgement is theoretical probability", fb:"The model estimate is not trial data, and neither the logbook nor the sky reading is a theory count."}],
+      "Decisions often combine all three kinds: theoretical probability from a model, experimental probability from recorded trials, and subjective judgement from personal feel. Here the correct description is <b>the forecast is theoretical, the logbook is experimental, and the sky judgement is subjective judgement</b>.",
+      {mode:"combine-captain"});
+  },
+  function(){
+    return mcq("A student chooses which carnival game to play. One game wins on 2 of 8 equally likely spinner sections, the student watched 30 plays at another game and saw 6 wins, and the student feels the third game is the luckiest of the row. Which option describes how the three kinds of probability combine in this decision?",
+      {t:"The spinner count gives theoretical probability, the watched plays give experimental probability, and the lucky feeling is subjective judgement", fb:"Right: equal sections are theoretical, watched plays are experimental, and a lucky feeling is subjective."},
+      [{t:"The spinner count gives experimental probability, the watched plays give subjective judgement, and the lucky feeling is theoretical probability", fb:"Counting equal sections is theory, watched plays are trial data, and luck is a feeling, so all three shift."},
+       {t:"The spinner count gives subjective judgement, the watched plays give experimental probability, and the lucky feeling is theoretical probability", fb:"A count of equal sections is not a feeling, and a lucky feeling is not a count of outcomes."},
+       {t:"The spinner count gives theoretical probability, the watched plays give subjective judgement, and the lucky feeling is experimental probability", fb:"Watched plays supply real trial results, and the lucky feeling is the judgement, so those two are swapped."}],
+      "Decisions often combine all three kinds: theoretical probability from equally likely outcomes, experimental probability from observed trials, and subjective judgement from personal feel. Here the correct description is <b>the spinner count is theoretical, the watched plays are experimental, and the lucky feeling is subjective judgement</b>.",
+      {mode:"combine-carnival"});
+  }
+]), ["Sort the decision into three parts: counted equal outcomes, results from trials, and a personal feeling.", "Match each detail in order: equal outcomes first, trial results second, feelings last."]);
+
+E("u10-pk-classify-probability", 10, ["7.6"], 1, "var", varset([
+  function(){
+    return mcq("Maya flipped a coin 50 times and it landed on heads 28 times. She says her chance of heads is 28 out of 50. Which option classifies this judgement correctly?",
+      {t:"Experimental probability, because it is based on results from trials that were carried out", fb:"Right: the value comes from counting what happened in 50 real trials."},
+      [{t:"Theoretical probability, because it is based on results from trials that were carried out", fb:"The reason names trials, which is experimental; theoretical counts equally likely outcomes instead."},
+       {t:"Subjective judgement, because it is based on results from trials that were carried out", fb:"The reason names counted trial results, which is data, while subjective judgement rests on a feeling."},
+       {t:"Theoretical probability, because it is based on counting the equally likely sides of a coin", fb:"Maya used her flip results, not the two equal sides, so this reason describes a different judgement."}],
+      "A probability built from the results of trials that were carried out is experimental probability. The correct classification is <b>experimental probability, because it is based on results from trials</b>.",
+      {mode:"classify-flips"});
+  },
+  function(){
+    return mcq("Liam counts the cards in a full deck and says his chance of drawing a heart is 13 out of 52, or \\(\\frac{1}{4}\\). Which option classifies this judgement correctly?",
+      {t:"Theoretical probability, because it is based on counting the equally likely cards in a deck", fb:"Right: the value comes from counting outcomes in a full deck where each card is equally likely."},
+      [{t:"Experimental probability, because it is based on counting the equally likely cards in a deck", fb:"The reason names counting equal outcomes, which is theoretical; experimental needs trial results."},
+       {t:"Subjective judgement, because it is based on counting the equally likely cards in a deck", fb:"The reason names a count of outcomes, which is worked out, while subjective judgement rests on a feeling."},
+       {t:"Experimental probability, because it is based on results from cards drawn in earlier games", fb:"Liam counted the deck itself and drew no cards, so no earlier game results are involved here."}],
+      "A probability built by counting equally likely outcomes is theoretical probability. The correct classification is <b>theoretical probability, because it is based on counting the equally likely cards</b>.",
+      {mode:"classify-deck"});
+  },
+  function(){
+    return mcq("A teacher looks at a new class list and says she feels about two thirds of the class will enjoy the outdoor lesson, before meeting any of the students. Which option classifies this judgement correctly?",
+      {t:"Subjective judgement, because it is based on a personal feeling with no counts or trials", fb:"Right: with no outcomes counted and no trials run, the estimate rests on personal feeling alone."},
+      [{t:"Theoretical probability, because it is based on a personal feeling with no counts or trials", fb:"The reason names a feeling with no counts, which is subjective; theoretical needs counted equal outcomes."},
+       {t:"Experimental probability, because it is based on a personal feeling with no counts or trials", fb:"The reason names a feeling with no trials, which is subjective; experimental needs results from trials."},
+       {t:"Theoretical probability, because it is based on counting the equally likely names on the list", fb:"The teacher counted nothing on the list; she gave a feeling before meeting the class at all."}],
+      "A probability that rests on a personal feeling, with no counts and no trials, is subjective judgement. The correct classification is <b>subjective judgement, because it is based on a personal feeling</b>.",
+      {mode:"classify-teacher-feel"});
+  },
+  function(){
+    return mcq("A spinner has 8 equal sections and 2 of them are red. Noah says the chance of landing on red is \\(\\frac{2}{8}\\), or \\(\\frac{1}{4}\\). Which option classifies this judgement correctly?",
+      {t:"Theoretical probability, because it is based on counting the equally likely sections of a spinner", fb:"Right: the value comes from counting red sections out of equal sections, with no spins needed."},
+      [{t:"Experimental probability, because it is based on counting the equally likely sections of a spinner", fb:"The reason names counting equal sections, which is theoretical; experimental needs results from spins."},
+       {t:"Subjective judgement, because it is based on counting the equally likely sections of a spinner", fb:"The reason names a count of sections, which is worked out, while subjective judgement rests on a feeling."},
+       {t:"Experimental probability, because it is based on results from spins the student did earlier", fb:"Noah counted the sections and did no spins, so no earlier spin results are involved here."}],
+      "A probability built by counting equally likely outcomes is theoretical probability: \\(\\frac{2}{8} = \\frac{1}{4}\\). The correct classification is <b>theoretical probability, because it is based on counting the equally likely sections</b>.",
+      {mode:"classify-spinner"});
+  },
+  function(){
+    return mcq("Sofia took 20 practice shots at a basket and scored on 11 of them. She says her chance of scoring on the next shot is 11 out of 20. Which option classifies this judgement correctly?",
+      {t:"Experimental probability, because it is based on results from trials that were carried out", fb:"Right: the value comes from counting scores in 20 real practice trials."},
+      [{t:"Theoretical probability, because it is based on results from trials that were carried out", fb:"The reason names trials, which is experimental; theoretical counts equally likely outcomes instead."},
+       {t:"Subjective judgement, because it is based on results from trials that were carried out", fb:"The reason names counted trial results, which is data, while subjective judgement rests on a feeling."},
+       {t:"Subjective judgement, because it is based on how confident the player feels at practice", fb:"Sofia used her counted scores, not her confidence, so this reason describes a different judgement."}],
+      "A probability built from the results of trials that were carried out is experimental probability. The correct classification is <b>experimental probability, because it is based on results from trials</b>.",
+      {mode:"classify-shots"});
+  },
+  function(){
+    return mcq("An old sailor in the community looks at the evening sky and says he feels there is a good chance of a storm tomorrow, without checking any forecast or records. Which option classifies this judgement correctly?",
+      {t:"Subjective judgement, because it is based on a personal feeling with no counts or trials", fb:"Right: with no forecast counted and no records checked, the estimate rests on personal feeling."},
+      [{t:"Theoretical probability, because it is based on a personal feeling with no counts or trials", fb:"The reason names a feeling with no counts, which is subjective; theoretical needs counted equal outcomes."},
+       {t:"Experimental probability, because it is based on a personal feeling with no counts or trials", fb:"The reason names a feeling with no trials, which is subjective; experimental needs results from trials."},
+       {t:"Experimental probability, because it is based on weather records the sailor kept for years", fb:"The sailor checked no records for this call; he gave a feeling from looking at the sky."}],
+      "A probability that rests on a personal feeling, with no counts and no trials, is subjective judgement. The correct classification is <b>subjective judgement, because it is based on a personal feeling</b>.",
+      {mode:"classify-sailor"});
+  }
+]), ["Ask where the number came from: counted equal outcomes, results of trials, or a personal feeling.", "Check the story for trials that were actually carried out; their presence points to experimental probability."]);
+
+/* PK tranche metadata pass for Unit 10. pkFor is the unit's cluster
+   indicator list from the prior knowledge map, as registered for this
+   unit in courses.js. */
+var PKT_U10_FOR=["7.1","7.2","7.3","7.4","7.5","7.6","7.7"];
+var PKT_U10={
+ "u10-pk-prob-basic":{src:"math-7:12.1",group:"probability-forms"},
+ "u10-pk-two-events":{src:"math-7:12.1",group:"probability-forms"},
+ "u10-pk-expected-freq":{src:"math-9:12.4",group:"probability-forms"},
+ "u10-pk-prob-in-media":{src:"math-9:12.1",group:"probability-decisions"},
+ "u10-pk-combined-decision":{src:"math-9:12.4",group:"probability-decisions"},
+ "u10-pk-classify-probability":{src:"math-9:12.4",group:"probability-decisions"}
+};
+BANK.forEach(function(e){var t=PKT_U10[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U10_FOR.slice();e.pkGroup=t.group;}});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of

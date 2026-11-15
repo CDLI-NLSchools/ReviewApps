@@ -2129,6 +2129,19 @@ window.COURSES = {
      both buttons for a course whose config names neither. */
   presets: {},
 
+  /* Prior-knowledge entries are practice-only (Nov 15, 2026,
+     the Math 3202 PK tranche): the composer leaves the flagged
+     entries (the six Unit 9 bridging entries flagged Nov 13, 2026
+     and the tranche's 70 added entries across all ten units) out
+     of practice tests and exams unless the teacher ticks the
+     include-prior-knowledge override. Ordinary practice sets
+     and the pkonly prerequisite checks keep them. Mirrors the
+     Math 2201 and Math 2200 flags. Before this flag, the six
+     bridging entries could enter composed Unit 9 tests by
+     default; the tranche's composition fingerprints differ from
+     the raw baseline in Unit 9 only, for exactly that reason. */
+  pkPracticeOnly: true,
+
   /* Exam blueprint, translated from the standalone app's composer
      (math-3202-review/index.html, composeExam, lines 6733 to 6775;
      UNIT_CR_TARGET at line 6724; the blueprint note at line 6391).
