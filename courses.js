@@ -663,6 +663,89 @@ window.COURSES = {
   }
 },
 
+"sci-7": {
+  id: "sci-7",
+  curriculum: "NL",
+  title: "Science 7 Review: Practice Question Bank",
+  shortName: "Science 7",
+  storagePrefix: "sci7",
+  reportName: "Science 7 Review",
+  language: "en",
+  bankFile: "sci-7.js",
+  subject: "Science",
+  grade: 7,
+  listed: false,
+  panels: {},
+
+  units: {
+    1: "Interactions Within Ecosystems"
+  },
+
+  /* Unit 1 indicators from the eNLightenED Units and Indicators
+     spreadsheet for the current guide (Version 2023.001.010), in
+     spreadsheet order. The course is built strand by strand; Units
+     2 to 4 register when their builds land. SC7.3.5 (work
+     cooperatively with team members) is registered for completeness
+     but carries no entries: an individual practice app cannot
+     assess cooperation, and the gap is recorded, not papered over
+     (Science 7 scoping, Nov 15, 2026). */
+  indicators: {
+    "SC7.1.1": "Biotic and abiotic factors of a local ecosystem",
+    "SC7.1.2": "Interactions between biotic and abiotic factors",
+    "SC7.1.3": "Niche of producers, consumers, and decomposers",
+    "SC7.1.4": "Classify organisms as producers, consumers, or decomposers",
+    "SC7.1.5": "How energy is supplied to, and flows through, a food chain",
+    "SC7.1.6": "How energy flows through a food chain and food web",
+    "SC7.1.7": "How matter is recycled in an ecosystem",
+    "SC7.1.8": "Changes in a local ecosystem over time",
+    "SC7.2.1": "Choosing words that are scientifically appropriate",
+    "SC7.2.2": "The food web as a tool for interpreting an ecosystem",
+    "SC7.2.3": "Silviculture and the continuous supply of wood",
+    "SC7.2.4": "Informed decisions about forest harvesting techniques",
+    "SC7.2.5": "Boreal forest ecology and harvesting practices",
+    "SC7.2.6": "Careers in forest management and harvesting",
+    "SC7.2.7": "Defending a course of action to protect a local habitat",
+    "SC7.2.8": "Groups and individuals interested in protecting the environment",
+    "SC7.3.1": "Identify questions related to a local ecosystem",
+    "SC7.3.2": "Define and delimit questions to investigate",
+    "SC7.3.3": "Organize and record information using instruments",
+    "SC7.3.4": "Communicate questions, ideas, plans, and results",
+    "SC7.3.5": "Work cooperatively with team members",
+    "SC7.3.6": "Evaluate individual and group processes",
+    "SC7.3.7": "Use a key to identify biotic factors",
+    "SC7.3.8": "Design and carry out an experiment controlling variables",
+    "SC7.3.9": "Organize, compile and display data using tables",
+    "SC7.3.10": "Defend a position based on findings",
+    "SC7.3.11": "Flow chart of changes in an ecosystem (succession)"
+  },
+
+  unitInd: {
+    1: ["SC7.1.1", "SC7.1.2", "SC7.1.3", "SC7.1.4", "SC7.1.5", "SC7.1.6", "SC7.1.7", "SC7.1.8",
+        "SC7.2.1", "SC7.2.2", "SC7.2.3", "SC7.2.4", "SC7.2.5", "SC7.2.6", "SC7.2.7", "SC7.2.8",
+        "SC7.3.1", "SC7.3.2", "SC7.3.3", "SC7.3.4", "SC7.3.5", "SC7.3.6", "SC7.3.7", "SC7.3.8",
+        "SC7.3.9", "SC7.3.10", "SC7.3.11"]
+  },
+
+  /* No exam presets: there is no common examination at this
+     level and the scoping decision was deliberately no
+     whole-course exam preset. The empty object is required: the
+     shell reads course.presets.mid during setup and throws when
+     the property itself is absent (found by gate-practice,
+     Nov 15, 2026). */
+  presets: {},
+
+  /* Staged hints: bank entries carry two hint stages each. */
+  hints: true,
+
+  /* Unit test convention (Science 7 scoping, Nov 15, 2026, labelled
+     as convention: there is no common examination at this level):
+     per unit, 20 selected response at 1 mark plus 2 constructed
+     response at 3 marks, 26 marks. No mid or final presets: the
+     course has one unit built so far and no whole-course exam
+     preset is specified at this level. */
+  unitTest: { total: 26, sr: 20, cr: 6 }
+},
+
 "chem-3202": {
   id: "chem-3202",
   curriculum: "NL",
