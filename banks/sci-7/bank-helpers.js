@@ -237,3 +237,206 @@ function s7KeyFigure(keyLines, specimens) {
   h += "</div>";
   return h;
 }
+
+/* ----- Unit 4 figure families (Earth's Crust, Nov 15, 2026) -----
+   G1 layered Earth interior, G2 world distribution map, G3 mineral
+   classification key panel, G4 rock cycle diagram, G5 soil drainage
+   data display, G6 geological time strip. Same conventions as the
+   Unit 1 families: no figure labels its own answer, and data-driven
+   families are generated from each item's own values. */
+
+/* G1: layered interior of the Earth, drawn once. Labels name the
+   layers only (reference content, as in the nutrient cycle family);
+   items ask about composition, state and thickness relations. */
+function s7EarthLayersSVG() {
+  var cx = 130, cy = 130;
+  var s = "<svg viewBox=\"0 0 460 260\" width=\"100%\" style=\"max-width:460px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<circle cx=\"" + cx + "\" cy=\"" + cy + "\" r=\"118\" fill=\"#f3e2c7\" stroke=\"#8a6d3b\" stroke-width=\"2\"/>";
+  s += "<circle cx=\"" + cx + "\" cy=\"" + cy + "\" r=\"112\" fill=\"#e8a04c\"/>";
+  s += "<circle cx=\"" + cx + "\" cy=\"" + cy + "\" r=\"52\" fill=\"#d94f30\"/>";
+  s += "<circle cx=\"" + cx + "\" cy=\"" + cy + "\" r=\"22\" fill=\"#8f1d1d\"/>";
+  function leader(r, ang, tx, label, sub) {
+    var rad = ang * Math.PI / 180;
+    var x1 = cx + r * Math.cos(rad), y1 = cy + r * Math.sin(rad);
+    var x2 = cx + 128 * Math.cos(rad), y2 = cy + 128 * Math.sin(rad);
+    s += "<line x1=\"" + x1.toFixed(1) + "\" y1=\"" + y1.toFixed(1) + "\" x2=\"" + x2.toFixed(1) + "\" y2=\"" + y2.toFixed(1) + "\" stroke=\"#555\" stroke-width=\"1\"/>";
+    s += "<text x=\"" + tx + "\" y=\"" + y2.toFixed(1) + "\" font-weight=\"bold\">" + label + "</text>";
+    if (sub) s += "<text x=\"" + tx + "\" y=\"" + (y2 + 15).toFixed(1) + "\" fill=\"#444\">" + sub + "</text>";
+  }
+  leader(115, -38, 268, "Crust", "thin solid rock layer");
+  leader(82, -8, 268, "Mantle", "");
+  leader(38, 28, 268, "Outer core", "");
+  leader(10, 62, 268, "Inner core", "");
+  s += "</svg>";
+  return s;
+}
+
+/* G2: world distribution map, drawn once. Continent outlines are
+   simplified coastlines placed from real longitude and latitude
+   coordinates (equirectangular projection); the plotted earthquake
+   and volcano locations are real places. The pattern is the content:
+   the points cluster along belts, they do not scatter evenly. */
+function s7WorldMapSVG() {
+  var W = 660, H = 300;
+  function X(lon) { return (lon + 180) / 360 * W; }
+  function Y(lat) { return (84 - lat) / 144 * H; }
+  var lands = [
+    [[-168,66],[-158,71],[-142,70],[-130,70],[-118,69],[-106,68],[-97,69],[-92,69],[-88,66],[-86,62],[-90,58],[-94,56],[-93,52],[-88,51],[-82,50],[-79,51],[-77,54],[-79,58],[-82,62],[-77,62],[-72,62],[-68,58],[-65,60],[-64,58],[-60,55],[-56,52],[-59,49],[-64,47],[-65,44],[-69,44],[-70,42],[-73,40],[-75,38],[-76,35],[-79,33],[-81,31],[-81,26],[-80,22],[-82,24],[-84,29],[-87,30],[-90,29],[-94,29],[-97,27],[-97,23],[-95,19],[-92,19],[-90,21],[-88,21],[-86,16],[-83,15],[-80,9],[-78,8],[-80,9],[-84,11],[-87,13],[-91,14],[-95,16],[-98,17],[-103,19],[-106,22],[-109,24],[-111,27],[-114,30],[-117,33],[-121,35],[-123,38],[-124,43],[-125,48],[-129,51],[-132,54],[-135,57],[-141,60],[-149,60],[-154,58],[-160,56],[-164,59],[-166,61],[-168,66]],
+    [[-53,47],[-53,49],[-56,50],[-59,48],[-57,47],[-54,46],[-53,47]],
+    [[-45,60],[-42,62],[-38,65],[-32,68],[-24,70],[-19,74],[-24,78],[-36,80],[-50,79],[-57,76],[-57,72],[-54,68],[-53,64],[-51,61],[-45,60]],
+    [[-78,8],[-75,10],[-72,12],[-68,11],[-62,10],[-56,6],[-51,4],[-50,0],[-44,-3],[-35,-8],[-38,-13],[-40,-20],[-42,-23],[-48,-27],[-52,-33],[-57,-38],[-62,-41],[-65,-45],[-67,-50],[-69,-52],[-68,-55],[-71,-54],[-73,-50],[-73,-43],[-73,-37],[-71,-31],[-70,-24],[-70,-18],[-74,-15],[-77,-12],[-80,-6],[-81,-3],[-80,1],[-77,4],[-78,8]],
+    [[-9,37],[-9,43],[-2,44],[-1,46],[-4,48],[0,50],[4,52],[7,54],[8,57],[11,58],[14,56],[18,56],[21,59],[23,63],[25,66],[30,70],[40,68],[50,69],[62,69],[72,70],[82,71],[92,72],[102,73],[112,74],[122,73],[132,72],[142,72],[152,71],[162,70],[172,70],[179,66],[179,63],[171,60],[163,58],[159,52],[156,48],[151,45],[143,42],[141,39],[139,36],[135,34],[131,33],[127,30],[122,28],[120,25],[118,22],[110,20],[108,16],[107,12],[104,8],[101,6],[99,9],[97,14],[94,16],[91,22],[88,21],[85,19],[82,16],[80,13],[77,8],[74,13],[72,19],[70,22],[66,25],[61,25],[57,27],[52,28],[49,30],[48,30],[44,29],[40,31],[36,36],[31,36],[27,37],[26,39],[23,37],[21,39],[19,41],[14,43],[11,44],[8,44],[6,43],[3,42],[0,39],[-2,37],[-6,36],[-9,37]],
+    [[-5,50],[-3,53],[-5,55],[-7,57],[-5,58],[-3,57],[-1,54],[-1,52],[1,51],[-3,50],[-5,50]],
+    [[130,31],[132,33],[135,34],[137,35],[139,36],[140,38],[141,40],[141,42],[142,44],[143,45],[141,43],[140,40],[138,37],[136,35],[133,34],[131,32],[130,31]],
+    [[-6,35],[-2,35],[3,37],[10,37],[11,34],[16,32],[22,33],[30,31],[32,31],[34,28],[36,24],[38,21],[39,18],[41,15],[43,12],[44,11],[48,11],[51,12],[50,14],[46,10],[42,4],[41,-1],[40,-6],[39,-11],[38,-16],[36,-21],[34,-26],[31,-29],[28,-33],[21,-35],[19,-34],[18,-31],[16,-27],[14,-21],[13,-15],[12,-9],[13,-4],[9,0],[9,4],[4,6],[-3,5],[-8,5],[-13,8],[-16,12],[-17,15],[-17,20],[-16,25],[-14,29],[-10,31],[-6,35]],
+    [[44,-16],[47,-14],[49,-16],[50,-20],[47,-24],[45,-25],[44,-21],[43,-18],[44,-16]],
+    [[95,5],[100,0],[104,-3],[106,-6],[103,-5],[99,0],[96,4],[95,5]],
+    [[109,1],[113,4],[117,6],[119,2],[117,-2],[113,-3],[110,-2],[109,1]],
+    [[106,-6],[110,-7],[114,-8],[114,-9],[108,-8],[106,-7],[106,-6]],
+    [[131,-1],[136,-2],[141,-3],[146,-6],[150,-9],[147,-10],[142,-8],[137,-7],[132,-4],[131,-1]],
+    [[114,-22],[113,-26],[115,-32],[117,-35],[121,-34],[126,-32],[131,-32],[135,-35],[137,-35],[139,-37],[142,-38],[146,-38],[149,-37],[151,-35],[153,-31],[153,-27],[151,-23],[149,-20],[146,-19],[144,-14],[142,-11],[142,-14],[141,-17],[139,-18],[136,-15],[135,-12],[132,-11],[129,-12],[126,-14],[122,-17],[118,-20],[114,-22]],
+    [[167,-45],[170,-43],[172,-41],[174,-39],[176,-38],[175,-37],[173,-39],[171,-42],[169,-44],[167,-46],[167,-45]]
+  ];
+  var quakes = [[138,37],[95,3],[85,28],[30,39],[53,32],[70,29],[-70,-33],[-72,-13],[-121,36],[-150,61],[-102,18],[22,38],[119,-2],[-18,65],[159,56]];
+  var volcs = [[-18,65],[14,41],[105,-6],[110,-7],[138,35],[121,13],[-156,20],[-68,-23],[-78,-1],[29,-1],[-28,39],[159,55],[-165,54],[-99,19],[115,-8],[-30,-2]];
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:660px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"11\">";
+  s += "<rect x=\"0\" y=\"0\" width=\"" + W + "\" height=\"" + H + "\" fill=\"#dceef7\"/>";
+  lands.forEach(function (poly) {
+    var pts = poly.map(function (p) { return X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1); }).join(" ");
+    s += "<polygon points=\"" + pts + "\" fill=\"#e9e2cd\" stroke=\"#8a8266\" stroke-width=\"1\"/>";
+  });
+  quakes.forEach(function (p) {
+    s += "<circle cx=\"" + X(p[0]).toFixed(1) + "\" cy=\"" + Y(p[1]).toFixed(1) + "\" r=\"3.4\" fill=\"#c0392b\" fill-opacity=\"0.85\"/>";
+  });
+  volcs.forEach(function (p) {
+    var x = X(p[0]), y = Y(p[1]);
+    s += "<polygon points=\"" + x.toFixed(1) + "," + (y - 4.4).toFixed(1) + " " + (x - 4).toFixed(1) + "," + (y + 3.2).toFixed(1) + " " + (x + 4).toFixed(1) + "," + (y + 3.2).toFixed(1) + "\" fill=\"#e67e22\" stroke=\"#a3540d\" stroke-width=\"0.6\"/>";
+  });
+  s += "<rect x=\"10\" y=\"" + (H - 40) + "\" width=\"196\" height=\"32\" fill=\"#ffffff\" fill-opacity=\"0.9\" stroke=\"#999\"/>";
+  s += "<circle cx=\"24\" cy=\"" + (H - 29) + "\" r=\"3.4\" fill=\"#c0392b\"/>";
+  s += "<text x=\"34\" y=\"" + (H - 25) + "\">earthquake location</text>";
+  s += "<polygon points=\"24," + (H - 19) + " 20," + (H - 12) + " 28," + (H - 12) + "\" fill=\"#e67e22\" stroke=\"#a3540d\" stroke-width=\"0.6\"/>";
+  s += "<text x=\"34\" y=\"" + (H - 11) + "\">volcano location</text>";
+  s += "</svg>";
+  return s;
+}
+
+/* G3: mineral classification key panel. The key is a constant (it is
+   the key from the guide's mineral study, written for the bank); the
+   specimen property rows are supplied per item. The panel never
+   names a specimen's identity: the student works the key. */
+var S7_MINERAL_KEY_LINES = [
+  "1a. The mineral is attracted to a magnet ... magnetite",
+  "1b. The mineral is not attracted to a magnet ... go to 2",
+  "2a. The mineral leaves a red-brown streak ... hematite",
+  "2b. The streak is not red-brown ... go to 3",
+  "3a. The mineral breaks into cube-shaped pieces and feels very heavy for its size ... galena",
+  "3b. It does not break into cubes ... go to 4",
+  "4a. The mineral splits into thin, flexible sheets ... mica",
+  "4b. It does not split into sheets ... go to 5",
+  "5a. A fingernail scratches the mineral ... go to 6",
+  "5b. A fingernail does not scratch the mineral ... go to 8",
+  "6a. The mineral feels greasy and marks paper easily ... graphite",
+  "6b. It does not mark paper ... go to 7",
+  "7a. The mineral feels soapy or greasy and is pearly white ... talc",
+  "7b. Silky or pearly, white or clear, and not greasy ... gypsum",
+  "8a. The mineral fizzes (bubbles) when weak acid is dripped on it ... calcite",
+  "8b. It does not fizz in acid ... go to 9",
+  "9a. Brassy yellow colour with a metallic lustre ... pyrite",
+  "9b. Not brassy yellow ... go to 10",
+  "10a. Glassy lustre, no cleavage, breaks with a shell-like fracture, hardness 7 ... quartz",
+  "10b. Cleavage in two directions, pearly to glassy lustre, hardness 6 ... feldspar"
+];
+function s7MineralKeyFigure(specimens) {
+  return s7KeyFigure(S7_MINERAL_KEY_LINES, specimens);
+}
+
+/* G4: rock cycle diagram, drawn once. Boxes name the three rock
+   families and magma; arrows are labelled with the processes. The
+   guide's own example path (sedimentary to igneous only by way of
+   metamorphic rock and melting) is a labelled route through the
+   diagram, not an answer key. */
+function s7RockCycleSVG() {
+  var s = "<svg viewBox=\"0 0 600 330\" width=\"100%\" style=\"max-width:600px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<defs><marker id=\"s7rcA\" markerWidth=\"8\" markerHeight=\"8\" refX=\"7\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L8,3 L0,6 Z\" fill=\"#555\"/></marker></defs>";
+  function box(x, y, w, label, fill) {
+    s += "<rect x=\"" + x + "\" y=\"" + y + "\" width=\"" + w + "\" height=\"36\" rx=\"6\" fill=\"" + fill + "\" stroke=\"#555\"/>";
+    s += "<text x=\"" + (x + w / 2) + "\" y=\"" + (y + 22) + "\" text-anchor=\"middle\" font-weight=\"bold\">" + label + "</text>";
+  }
+  function arrow(x1, y1, x2, y2, tx, ty, label, anchor) {
+    s += "<line x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" stroke=\"#555\" stroke-width=\"1.6\" marker-end=\"url(#s7rcA)\"/>";
+    s += "<text x=\"" + tx + "\" y=\"" + ty + "\" text-anchor=\"" + (anchor || "middle") + "\" fill=\"#333\">" + label + "</text>";
+  }
+  box(240, 12, 120, "Magma", "#f6c9a0");
+  box(452, 92, 128, "Igneous rock", "#d9d9d9");
+  box(420, 238, 150, "Sediments", "#efe3b0");
+  box(196, 268, 168, "Sedimentary rock", "#cfe0ef");
+  box(20, 92, 150, "Metamorphic rock", "#d8cdea");
+  arrow(362, 40, 470, 88, 448, 52, "cooling", "middle");
+  arrow(512, 130, 500, 232, 522, 186, "weathering", "start");
+  arrow(512, 196, 500, 232, 522, 204, "and erosion", "start");
+  arrow(418, 262, 368, 278, 392, 254, "compaction and", "middle");
+  arrow(418, 274, 368, 284, 392, 300, "cementation", "middle");
+  arrow(196, 268, 150, 132, 128, 208, "heat and", "middle");
+  arrow(196, 268, 158, 132, 128, 222, "pressure", "middle");
+  arrow(150, 92, 268, 46, 196, 58, "melting", "middle");
+  arrow(452, 110, 172, 110, 312, 100, "heat and pressure", "middle");
+  arrow(300, 268, 300, 52, 312, 168, "melting", "start");
+  s += "</svg>";
+  return s;
+}
+
+/* G5: soil drainage data display, data driven. samples is a list of
+   {name, secs}: the time for 25 mL of water to drain through each
+   sample, drawn as horizontal bars. The display shows the data; the
+   item asks for the relationship. */
+function s7DrainSVG(samples) {
+  var max = 0;
+  samples.forEach(function (sm) { if (sm.secs > max) max = sm.secs; });
+  var W = 520, rowH = 34, top = 30, H = top + samples.length * rowH + 26;
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:520px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<text x=\"150\" y=\"18\" font-weight=\"bold\">Time for 25 mL of water to drain through each soil sample</text>";
+  samples.forEach(function (sm, i) {
+    var y = top + i * rowH;
+    var w = Math.max(4, sm.secs / max * 300);
+    s += "<text x=\"142\" y=\"" + (y + 17) + "\" text-anchor=\"end\">" + s7Esc(sm.name) + "</text>";
+    s += "<rect x=\"150\" y=\"" + (y + 3) + "\" width=\"" + w.toFixed(1) + "\" height=\"20\" fill=\"#7fb069\" stroke=\"#4c7a3f\"/>";
+    s += "<text x=\"" + (158 + w).toFixed(1) + "\" y=\"" + (y + 17) + "\">" + sm.secs + " s</text>";
+  });
+  s += "</svg>";
+  return s;
+}
+
+/* G6: geological time strip, drawn once, era blocks to proportional
+   length on a 4.6 billion year line (Precambrian about 87 percent of
+   Earth's history). Labels give each era's name and the major events
+   the guide names; the proportions are the content. */
+function s7TimeStripSVG() {
+  var W = 640, x0 = 30, x1 = 610, y = 58, h = 44;
+  var eras = [
+    { name: "Precambrian", yrs: 4000, fill: "#b08968", ev: "first life forms" },
+    { name: "Paleozoic", yrs: 290, fill: "#7fb069", ev: "first fish; first forests" },
+    { name: "Mesozoic", yrs: 185, fill: "#e0a458", ev: "first mammals; first flowering plants" },
+    { name: "Cenozoic", yrs: 66, fill: "#5b8e7d", ev: "first humans" }
+  ];
+  var total = 4541, x = x0;
+  var s = "<svg viewBox=\"0 0 " + W + " 190\" width=\"100%\" style=\"max-width:640px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<text x=\"" + x0 + "\" y=\"24\" font-weight=\"bold\">Geological time: 4.6 billion years of Earth's history, drawn to scale</text>";
+  s += "<text x=\"" + x0 + "\" y=\"44\">4.6 billion years ago</text>";
+  s += "<text x=\"" + x1 + "\" y=\"44\" text-anchor=\"end\">today</text>";
+  eras.forEach(function (e, i) {
+    var w = e.yrs / total * (x1 - x0);
+    s += "<rect x=\"" + x.toFixed(1) + "\" y=\"" + y + "\" width=\"" + Math.max(w, 3).toFixed(1) + "\" height=\"" + h + "\" fill=\"" + e.fill + "\" stroke=\"#555\"/>";
+    if (i < 2) {
+      s += "<text x=\"" + (x + w / 2).toFixed(1) + "\" y=\"" + (y + 26) + "\" text-anchor=\"middle\" font-weight=\"bold\" fill=\"#fff\">" + e.name + "</text>";
+      s += "<text x=\"" + (x + w / 2).toFixed(1) + "\" y=\"" + (y + h + 20) + "\" text-anchor=\"middle\">" + e.ev + "</text>";
+    } else {
+      var lx = x + w + 6;
+      s += "<line x1=\"" + (x + w / 2).toFixed(1) + "\" y1=\"" + (y + h) + "\" x2=\"" + (x + w / 2).toFixed(1) + "\" y2=\"" + (y + h + 12) + "\" stroke=\"#555\"/>";
+      s += "<text x=\"" + Math.min(lx, W - 190) + "\" y=\"" + (y + h + 26 + (i - 2) * 18) + "\" font-weight=\"bold\">" + e.name + ": <tspan font-weight=\"normal\">" + e.ev + "</tspan></text>";
+    }
+    x += w;
+  });
+  s += "</svg>";
+  return s;
+}

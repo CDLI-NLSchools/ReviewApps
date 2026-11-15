@@ -678,17 +678,18 @@ window.COURSES = {
   panels: {},
 
   units: {
-    1: "Interactions Within Ecosystems"
+    1: "Interactions Within Ecosystems",
+    4: "Earth's Crust"
   },
 
-  /* Unit 1 indicators from the eNLightenED Units and Indicators
-     spreadsheet for the current guide (Version 2023.001.010), in
-     spreadsheet order. The course is built strand by strand; Units
-     2 to 4 register when their builds land. SC7.3.5 (work
-     cooperatively with team members) is registered for completeness
-     but carries no entries: an individual practice app cannot
-     assess cooperation, and the gap is recorded, not papered over
-     (Science 7 scoping, Nov 15, 2026). */
+  /* Unit 1 and Unit 4 indicators from the eNLightenED Units and
+     Indicators spreadsheet for the current guide (Version
+     2023.001.010), in spreadsheet order. The course is built strand
+     by strand; Units 2 and 3 register when their builds land. SC7.3.5
+     (work cooperatively with team members) is registered for
+     completeness but carries no entries: an individual practice app
+     cannot assess cooperation, and the gap is recorded, not papered
+     over (Science 7 scoping, Nov 15, 2026). */
   indicators: {
     "SC7.1.1": "Biotic and abiotic factors of a local ecosystem",
     "SC7.1.2": "Interactions between biotic and abiotic factors",
@@ -716,14 +717,43 @@ window.COURSES = {
     "SC7.3.8": "Design and carry out an experiment controlling variables",
     "SC7.3.9": "Organize, compile and display data using tables",
     "SC7.3.10": "Defend a position based on findings",
-    "SC7.3.11": "Flow chart of changes in an ecosystem (succession)"
+    "SC7.3.11": "Flow chart of changes in an ecosystem (succession)",
+    "SC7.10.1": "Classify minerals by physical properties",
+    "SC7.10.2": "Classify rocks by characteristics and formation",
+    "SC7.10.3": "Earth's crust characteristics and technologies for studying geological features",
+    "SC7.10.4": "Catastrophic events: earthquakes and volcanic eruptions",
+    "SC7.10.5": "Organize and analyze earthquake and volcano distribution data",
+    "SC7.10.6": "Processes of mountain formation",
+    "SC7.10.7": "Chronological model or geological time scale of major events",
+    "SC7.10.8": "Ways rocks are weathered and eroded to form soils",
+    "SC7.10.9": "Classify soils by characteristics (texture classes)",
+    "SC7.11.1": "How plate tectonic theory evolved with new evidence",
+    "SC7.11.2": "Canadian contributions to geology, local to global",
+    "SC7.11.3": "Explanations rest on evidence and relationships between observations",
+    "SC7.11.4": "Understanding of Earth's forces changed as evidence collected",
+    "SC7.11.5": "Continental drift as an early explanation",
+    "SC7.11.6": "Plate tectonics as a major shift in world view",
+    "SC7.11.7": "Past theories for volcanic activity, earthquakes and mountain building",
+    "SC7.12.1": "Use a mineral classification key on practical problems",
+    "SC7.12.2": "Select methods and tools for collecting data to identify minerals",
+    "SC7.12.3": "Identify common minerals using a classification key",
+    "SC7.12.4": "Identify questions arising from rock cycle study",
+    "SC7.12.5": "Carry out procedures controlling variables, practical issues",
+    "SC7.12.6": "Use instruments effectively and accurately for collecting data",
+    "SC7.12.7": "Compile, organize and display data in tabular format",
+    "SC7.12.8": "Interpret patterns and trends in data; infer relationships",
+    "SC7.12.9": "State a conclusion from experimental data; supports or refutes"
   },
 
   unitInd: {
     1: ["SC7.1.1", "SC7.1.2", "SC7.1.3", "SC7.1.4", "SC7.1.5", "SC7.1.6", "SC7.1.7", "SC7.1.8",
         "SC7.2.1", "SC7.2.2", "SC7.2.3", "SC7.2.4", "SC7.2.5", "SC7.2.6", "SC7.2.7", "SC7.2.8",
         "SC7.3.1", "SC7.3.2", "SC7.3.3", "SC7.3.4", "SC7.3.5", "SC7.3.6", "SC7.3.7", "SC7.3.8",
-        "SC7.3.9", "SC7.3.10", "SC7.3.11"]
+        "SC7.3.9", "SC7.3.10", "SC7.3.11"],
+    4: ["SC7.10.1", "SC7.10.2", "SC7.10.3", "SC7.10.4", "SC7.10.5", "SC7.10.6", "SC7.10.7", "SC7.10.8",
+        "SC7.10.9", "SC7.11.1", "SC7.11.2", "SC7.11.3", "SC7.11.4", "SC7.11.5", "SC7.11.6", "SC7.11.7",
+        "SC7.12.1", "SC7.12.2", "SC7.12.3", "SC7.12.4", "SC7.12.5", "SC7.12.6", "SC7.12.7", "SC7.12.8",
+        "SC7.12.9"]
   },
 
   /* No exam presets: there is no common examination at this
@@ -3041,6 +3071,16 @@ window.COURSES = {
   subject: "Mathematics",
   grade: 11,
   listed: true,
+
+  /* Prior-knowledge entries are practice-only (Nov 15, 2026,
+     the Math 2202 PK tranche): the composer leaves the flagged
+     entries (the four entries flagged Nov 13, 2026 and the
+     tranche's 61 flagged entries across all eight units) out
+     of practice tests and exams unless the teacher ticks the
+     include-prior-knowledge override. Ordinary practice sets
+     and the pkonly prerequisite checks keep them. Mirrors the
+     Math 2201, 2200 and 3202 flags. */
+  pkPracticeOnly: true,
 
   units: {
     "1": "Drawing and Design",

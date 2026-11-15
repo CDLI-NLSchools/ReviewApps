@@ -1,19 +1,26 @@
 #!/usr/bin/env node
-/* Gate (load + census + draw) for the Science 7 Unit 1 build:
+/* Gate (load + census + draw) for the Science 7 build, Units 1 and 4:
      node tests/gate-load-sci-7.js
-   Expectations are the Ecosystems authoring spec (Nov 15, 2026):
+   Expectations are the two authoring specs (Nov 15, 2026):
    - courses.js registers sci-7 (Science, grade 7, listed:false,
-     curriculum NL), Unit 1 only, 27 indicators.
-   - The bank registers exactly 80 entries: 65 SR + 15 CR, levels
-     32/32/16, per-indicator counts equal to the spec Section 3,
-     SC7.3.5 at zero (recorded NONE), no tags outside the 27.
-   - CR marks manifest: 15 keys, denominations 2x4, 3x10... see
-     below; marks sum 41; nine entries at exactly 3 marks.
-   - Symbiosis sweep: no student-facing text names mutualism,
-     commensalism or parasitism.
+     curriculum NL), Units 1 and 4, 52 indicators.
+   - Unit 1 (Ecosystems): exactly 80 entries, 65 SR + 15 CR, levels
+     32/32/16, per-indicator counts equal to the Ecosystems spec
+     Section 3, SC7.3.5 at zero (recorded NONE), CR marks sum 41,
+     nine entries at exactly 3 marks.
+   - Unit 4 (Earth's Crust): exactly 85 entries, 68 SR + 17 CR,
+     levels 34/34/17, per-indicator counts equal to the Earth's
+     Crust spec Section 3, CR marks sum 46, ten entries at exactly
+     3 marks.
+   - Both design CRs carry 4 marks and the noCompose flag (exactly
+     two noCompose entries in the course).
+   - Symbiosis sweep (Unit 1, Jason's ruling): no student-facing
+     text names mutualism, commensalism or parasitism.
+   - Terminology sweep (Unit 4): no student-facing text names the
+     Richter scale; the guide's term is the moment magnitude scale.
    - Every entry draws clean questions; SR draws carry exactly 4
-     options with exactly one correct; the 14 figure entries carry
-     a figure on every draw. */
+     options with exactly one correct; figure entries carry a
+     figure on at least one draw. */
 const fs = require("fs");
 const ROOT = process.env.HOME + "/workspace/review-app-unified";
 let pass = 0, fail = 0;
@@ -25,8 +32,8 @@ const C = window.COURSES["sci-7"];
 ok(!!C, "courses.js registers sci-7");
 ok(C.listed === false, "sci-7 is unlisted");
 ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 7, "curriculum NL, Science, grade 7");
-ok(C.units[1] === "Interactions Within Ecosystems" && Object.keys(C.units).length === 1, "Unit 1 only registered");
-ok(Object.keys(C.indicators).length === 27, "27 indicators registered, saw " + Object.keys(C.indicators).length);
+ok(C.units[1] === "Interactions Within Ecosystems" && C.units[4] === "Earth's Crust" && Object.keys(C.units).length === 2, "Units 1 and 4 registered");
+ok(Object.keys(C.indicators).length === 52, "52 indicators registered, saw " + Object.keys(C.indicators).length);
 ok(C.unitTest && C.unitTest.total === 26 && C.unitTest.sr === 20 && C.unitTest.cr === 6, "unit test convention 20 SR + 2 CR at 3 = 26");
 
 const built = fs.readFileSync(ROOT + "/index.html", "utf8");
@@ -45,10 +52,13 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 eval(fs.readFileSync(ROOT + "/banks/sci-7.js", "utf8"));
 const CR = window.__BANK_CRMARKS || {};
 
-ok(BANK.length === 80, "bank registers 80 entries, saw " + BANK.length);
+const U1 = BANK.filter(e => e.unit === 1);
+const U4 = BANK.filter(e => e.unit === 4);
+ok(BANK.length === 165, "bank registers 165 entries, saw " + BANK.length);
+ok(U1.length === 80 && U4.length === 85, "unit split 80 / 85, saw " + U1.length + " / " + U4.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 80, "all entry ids unique");
-ok(BANK.every(e => e.unit === 1), "every entry is Unit 1");
+ok(ids.size === 165, "all entry ids unique");
+ok(BANK.every(e => e.unit === 1 || e.unit === 4), "every entry is Unit 1 or Unit 4");
 
 const SPEC_COUNT = {
   "SC7.1.1": 4, "SC7.1.2": 4, "SC7.1.3": 3, "SC7.1.4": 3, "SC7.1.5": 4, "SC7.1.6": 4, "SC7.1.7": 3, "SC7.1.8": 4,
@@ -56,37 +66,60 @@ const SPEC_COUNT = {
   "SC7.3.1": 3, "SC7.3.2": 2, "SC7.3.3": 3, "SC7.3.4": 2, "SC7.3.5": 0, "SC7.3.6": 2, "SC7.3.7": 3, "SC7.3.8": 4,
   "SC7.3.9": 4, "SC7.3.10": 2, "SC7.3.11": 4
 };
-const primary = {};
-BANK.forEach(e => { primary[e.indicators[0]] = (primary[e.indicators[0]] || 0) + 1; });
-for (const tag of Object.keys(SPEC_COUNT)) {
-  ok((primary[tag] || 0) === SPEC_COUNT[tag], "primary count " + tag + " = " + SPEC_COUNT[tag] + ", saw " + (primary[tag] || 0));
+const SPEC_COUNT_U4 = {
+  "SC7.10.1": 5, "SC7.10.2": 6, "SC7.10.3": 3, "SC7.10.4": 4, "SC7.10.5": 4, "SC7.10.6": 3, "SC7.10.7": 3,
+  "SC7.10.8": 5, "SC7.10.9": 4, "SC7.11.1": 5, "SC7.11.2": 2, "SC7.11.3": 3, "SC7.11.4": 3, "SC7.11.5": 3,
+  "SC7.11.6": 2, "SC7.11.7": 3, "SC7.12.1": 3, "SC7.12.2": 3, "SC7.12.3": 4, "SC7.12.4": 3, "SC7.12.5": 3,
+  "SC7.12.6": 2, "SC7.12.7": 3, "SC7.12.8": 3, "SC7.12.9": 3
+};
+function primaryCounts(list) {
+  const p = {};
+  list.forEach(e => { p[e.indicators[0]] = (p[e.indicators[0]] || 0) + 1; });
+  return p;
 }
-ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the 27 registered indicators");
+const p1 = primaryCounts(U1), p4 = primaryCounts(U4);
+for (const tag of Object.keys(SPEC_COUNT)) {
+  ok((p1[tag] || 0) === SPEC_COUNT[tag], "U1 primary count " + tag + " = " + SPEC_COUNT[tag] + ", saw " + (p1[tag] || 0));
+}
+for (const tag of Object.keys(SPEC_COUNT_U4)) {
+  ok((p4[tag] || 0) === SPEC_COUNT_U4[tag], "U4 primary count " + tag + " = " + SPEC_COUNT_U4[tag] + ", saw " + (p4[tag] || 0));
+}
+ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the 52 registered indicators");
 ok(!BANK.some(e => e.indicators.includes("SC7.3.5")), "SC7.3.5 carries no entries (NONE, recorded)");
 
-const crEntries = BANK.filter(e => CR[e.id] !== undefined);
-ok(crEntries.length === 15, "15 CR entries in the marks manifest, saw " + crEntries.length);
-ok(Object.values(CR).reduce((a, b) => a + b, 0) === 41, "CR marks sum to 41, saw " + Object.values(CR).reduce((a, b) => a + b, 0));
-ok(Object.values(CR).filter(m => m === 3).length === 9, "nine CR entries at exactly 3 marks, saw " + Object.values(CR).filter(m => m === 3).length);
-ok(CR["s7-u1-cr-design-experiment"] === 4, "design CR carries 4 marks");
-const srEntries = BANK.filter(e => CR[e.id] === undefined);
-ok(srEntries.length === 65, "65 SR entries, saw " + srEntries.length);
-const lv = [0, 0, 0];
-BANK.forEach(e => { lv[e.level - 1]++; });
-ok(JSON.stringify(lv) === "[32,32,16]", "levels 32/32/16, saw " + JSON.stringify(lv));
-const gens = BANK.filter(e => e.kind === "gen");
-ok(gens.length === 10, "10 generator entries per the spec Section 3 tables, saw " + gens.length);
+const crAll = BANK.filter(e => CR[e.id] !== undefined);
+const crU1 = U1.filter(e => CR[e.id] !== undefined);
+const crU4 = U4.filter(e => CR[e.id] !== undefined);
+ok(crAll.length === 32, "32 CR entries in the marks manifest, saw " + crAll.length);
+ok(crU1.length === 15 && crU4.length === 17, "CR split 15 / 17, saw " + crU1.length + " / " + crU4.length);
+const markSum = list => list.reduce((a, e) => a + CR[e.id], 0);
+ok(markSum(crU1) === 41, "U1 CR marks sum to 41, saw " + markSum(crU1));
+ok(markSum(crU4) === 46, "U4 CR marks sum to 46, saw " + markSum(crU4));
+ok(crU1.filter(e => CR[e.id] === 3).length === 9, "nine U1 CR entries at exactly 3 marks, saw " + crU1.filter(e => CR[e.id] === 3).length);
+ok(crU4.filter(e => CR[e.id] === 3).length === 10, "ten U4 CR entries at exactly 3 marks, saw " + crU4.filter(e => CR[e.id] === 3).length);
+ok(CR["s7-u1-cr-design-experiment"] === 4 && CR["s7-u4-cr-design-investigation"] === 4, "both design CRs carry 4 marks");
+ok(BANK.filter(e => CR[e.id] === undefined).length === 133, "133 SR entries, saw " + BANK.filter(e => CR[e.id] === undefined).length);
+function levels(list) { const lv = [0, 0, 0]; list.forEach(e => { lv[e.level - 1]++; }); return JSON.stringify(lv); }
+ok(levels(U1) === "[32,32,16]", "U1 levels 32/32/16, saw " + levels(U1));
+ok(levels(U4) === "[34,34,17]", "U4 levels 34/34/17, saw " + levels(U4));
+ok(U1.filter(e => e.kind === "gen").length === 10, "10 U1 generator entries, saw " + U1.filter(e => e.kind === "gen").length);
+ok(U4.filter(e => e.kind === "gen").length === 11, "11 U4 generator entries, saw " + U4.filter(e => e.kind === "gen").length);
+const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
+ok(JSON.stringify(noComp) === JSON.stringify(["s7-u1-cr-design-experiment", "s7-u4-cr-design-investigation"]),
+  "exactly the two design CRs carry noCompose, saw " + noComp.join(","));
 
 const FIG_ENTRIES = ["s7-u1-tolerance-curve", "s7-u1-pond-interactions", "s7-u1-chain-order",
   "s7-u1-web-readoff", "s7-u1-web-removal", "s7-u1-cr-web-change", "s7-u1-nutrient-cycle",
   "s7-u1-organization-set", "s7-u1-web-roles", "s7-u1-web-chains", "s7-u1-web-predict",
   "s7-u1-cr-web-interpret", "s7-u1-key-work", "s7-u1-key-work-2",
   "s7-u1-graph-interpret", "s7-u1-cr-data-display",
-  "s7-u1-succession-order", "s7-u1-flowchart-complete", "s7-u1-succession-predict", "s7-u1-cr-succession-stages"];
-/* Figure-bearing entries per the spec Section 5 table: 20 entries
-   across the 9 families (the web family alone serves 7). The
-   spec's summary line says 14; its own table lists 20, and the
-   table governs. */
+  "s7-u1-succession-order", "s7-u1-flowchart-complete", "s7-u1-succession-predict", "s7-u1-cr-succession-stages",
+  "s7-u4-earth-layers", "s7-u4-distribution-map", "s7-u4-ring-of-fire", "s7-u4-cr-distribution",
+  "s7-u4-key-mineral", "s7-u4-key-mineral-2", "s7-u4-mineral-id", "s7-u4-mineral-id-2", "s7-u4-cr-mineral-id",
+  "s7-u4-cycle-diagram", "s7-u4-cycle-path", "s7-u4-soil-drainage", "s7-u4-pattern-drainage", "s7-u4-era-scale"];
+/* Figure-bearing entries: 20 in Unit 1 (the Ecosystems spec Section 5
+   table; its summary line says 14 and the table governs) and 14 in
+   Unit 4 (the Earth's Crust spec Section 5 table). */
 
 let badDraws = [];
 BANK.forEach(e => {
@@ -110,11 +143,11 @@ BANK.forEach(e => {
 });
 ok(badDraws.length === 0, "all entries draw clean (2000 draws per generator, 300 per varset): " + badDraws.slice(0, 5).join("; "));
 
-/* Symbiosis sweep over student-facing text: sample draws of every
-   entry and scan prompts, options, answers and solutions. */
+/* Symbiosis sweep over Unit 1 student-facing text (Jason's ruling:
+   the named relationship types appear nowhere in the English bank). */
 const BANNED = [/mutualis/i, /commensalis/i, /parasitis/i, /symbios/i, /symbiotic/i];
 let hits = [];
-BANK.forEach(e => {
+U1.forEach(e => {
   for (let i = 0; i < 40; i++) {
     const q = e.gen();
     const text = [q.prompt, q.solution].concat(q.options || [], q.answers || []).join(" ");
@@ -122,6 +155,19 @@ BANK.forEach(e => {
   }
 });
 ok(hits.length === 0, "symbiosis sweep clean, hits: " + hits.join(","));
+
+/* Terminology sweep over Unit 4 student-facing text: the guide's
+   term for earthquake strength is the moment magnitude scale; the
+   harvested sources' Richter scale was mined for type only. */
+let rHits = [];
+U4.forEach(e => {
+  for (let i = 0; i < 40; i++) {
+    const q = e.gen();
+    const text = [q.prompt, q.solution].concat(q.options || [], q.answers || []).join(" ");
+    if (/richter/i.test(text)) { rHits.push(e.id); break; }
+  }
+});
+ok(rHits.length === 0, "Richter sweep clean, hits: " + rHits.join(","));
 
 /* Negative stems, listed for judgement (spec audit). */
 const NEG = [];
