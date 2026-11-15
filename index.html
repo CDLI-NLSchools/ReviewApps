@@ -138,6 +138,10 @@
   .refbody{margin-top:8px;line-height:1.55;font-size:.95rem;}
   .exbox{margin:8px 0;padding:10px 12px;border:1px solid #b7c9a8;background:#f6faf2;border-radius:8px;line-height:1.5;}
   .hintbox{margin:8px 0;padding:8px 12px;border-left:4px solid #f2b134;background:#fff8e6;color:#1c2b33;border-radius:0 8px 8px 0;line-height:1.5;}
+  .selfrate{margin:8px 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#f4f7fb;line-height:1.5;}
+  .selfrate .srlead{margin:0 0 8px;font-size:.9rem;}
+  .selfrate .srbtns{margin:0;}
+  button.rated{background:var(--accent);color:#fff;border-color:var(--accent);}
   .exbox .opts label{display:block;margin:3px 0;}
   .timerbar{font-weight:bold;background:#eef4ff;border:1px solid #c9d4e4;border-radius:8px;padding:8px 12px;margin-bottom:10px;}
   .summarybox{margin-top:14px;border-top:2px solid #dfe6f0;padding-top:10px;}
@@ -214,6 +218,8 @@
   html[data-a11y-theme="dark"] .summarybox{border-top-color:#33475c;}
   html[data-a11y-theme="dark"] button.alt{background:var(--card);}
   html[data-a11y-theme="dark"] button.alt{color:#5eead4;border-color:#5eead4;}
+  html[data-a11y-theme="dark"] .selfrate{background:#16202a;border-color:#33475c;}
+  html[data-a11y-theme="dark"] button.rated{background:#0f766e;color:#fff;border-color:#0f766e;}
   html[data-a11y-theme="dark"] .indbox{background:var(--card);}
   html[data-a11y-theme="dark"] .tpick{background:var(--card);}
   html[data-a11y-theme="dark"] .tpick button{background:var(--card);}
@@ -1613,13 +1619,14 @@ function advSetCapture(){
       P.checkMode=checkMode;P.endGraded=!!endGraded;
       P.checked=checkedCount;P.correct=correctCount;P.results=setResults;
       P.state=current.map(function(q,i){
-        var o={given:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:""};
+        var o={given:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:"",selfRate:"",srShown:false};
         if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel)o.given=+sel.value;}
         else{var inp=$("ans"+i);if(inp)o.given=inp.value;}
         var fb=$("fb"+i);if(fb){o.done=!!fb.dataset.done;o.fbShown=fb.classList.contains("show");o.fb=fb.innerHTML;}
         var fbt=$("fbt"+i);if(fbt)o.fbt=fbt.innerHTML;
         var sl=$("sol"+i);if(sl)o.sol=sl.classList.contains("show");
         var hb=$("hint"+i);if(hb){o.hintStage=+(hb.dataset.stage||0);o.hintShown=!hb.hidden;o.hintHtml=hb.innerHTML;}
+        var srb=$("sr"+i);if(srb){o.selfRate=srb.dataset.selfrate||"";o.srShown=!srb.hidden;}
         var xb=$("ex"+i);if(xb){o.exOpen=!xb.hidden;o.exn=+(xb.dataset.exn||0);if(xb._exq)o.exq=advQSer(xb._exq);}
         var rp=$("rep"+i);if(rp){o.repOpen=rp.classList.contains("show");var rt=$("reptype"+i);if(rt)o.repType=rt.value;var rn=$("repnote"+i);if(rn)o.repNote=rn.value;}
         return o;
@@ -1647,6 +1654,7 @@ function advRestoreOnlineState(P){
     var fbt=$("fbt"+i);if(fbt&&o.fbt)fbt.innerHTML=o.fbt;
     if(o.sol){var sl=$("sol"+i);if(sl){sl.classList.add("show");setSolLabel(i,true);}}
     var hb=$("hint"+i);if(hb&&o.hintStage){hb.dataset.stage=String(o.hintStage);if(o.hintShown){hb.innerHTML=o.hintHtml;hb.hidden=false;}}
+    if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");
     if(o.exOpen&&o.exq){var xb=$("ex"+i);var exq=advQDes(o.exq);if(xb&&exq){xb.dataset.exn=String(o.exn||0);renderExample(i,exq);setExLabel(i,true);}}
     if(o.repOpen){var rp=$("rep"+i);if(rp)rp.classList.add("show");var rt=$("reptype"+i);if(rt&&o.repType)rt.value=o.repType;var rn=$("repnote"+i);if(rn)rn.value=o.repNote||"";}
   });
@@ -1757,20 +1765,21 @@ function resumeLoad(){
 }
 function resumeCaptureState(){
   return current.map(function(q,i){
-    var o={given:null,givenText:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:""};
+    var o={given:null,givenText:null,done:false,fbShown:false,fb:"",fbt:"",sol:false,hintStage:0,hintShown:false,hintHtml:"",exOpen:false,exq:null,exn:0,repOpen:false,repType:"",repNote:"",selfRate:"",srShown:false};
     if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel){o.given=+sel.value;o.givenText=q.options[o.given];}}
     else{var inp=$("ans"+i);if(inp)o.given=inp.value;}
     var fb=$("fb"+i);if(fb){o.done=!!fb.dataset.done;o.fbShown=fb.classList.contains("show");o.fb=fb.innerHTML;}
     var fbt=$("fbt"+i);if(fbt)o.fbt=fbt.innerHTML;
     var sl=$("sol"+i);if(sl)o.sol=sl.classList.contains("show");
     var hb=$("hint"+i);if(hb){o.hintStage=+(hb.dataset.stage||0);o.hintShown=!hb.hidden;o.hintHtml=hb.innerHTML;}
+    var srb=$("sr"+i);if(srb){o.selfRate=srb.dataset.selfrate||"";o.srShown=!srb.hidden;}
     var xb=$("ex"+i);if(xb){o.exOpen=!xb.hidden;o.exn=+(xb.dataset.exn||0);if(xb._exq)o.exq=advQSer(xb._exq);}
     var rp=$("rep"+i);if(rp){o.repOpen=rp.classList.contains("show");var rt=$("reptype"+i);if(rt)o.repType=rt.value;var rn=$("repnote"+i);if(rn)o.repNote=rn.value;}
     return o;
   });
 }
 function resumeHasProgress(st){
-  return st.some(function(o){return !!o&&((o.given!==null&&o.given!=="")||o.done||o.fbShown||o.sol||o.hintStage>0||o.exOpen||o.repOpen);});
+  return st.some(function(o){return !!o&&((o.given!==null&&o.given!=="")||o.done||o.fbShown||o.sol||o.hintStage>0||o.exOpen||o.repOpen||o.selfRate||o.srShown);});
 }
 function resumeCaptureExam(){
   var ex=examState.ex;
@@ -1885,7 +1894,7 @@ if(window.__COURSE){
   if(_rsess){
     _rsess.addEventListener("change",function(){resumeSaveSoon();});
     _rsess.addEventListener("input",function(){resumeSaveSoon();});
-    _rsess.addEventListener("click",function(ev){var t=ev.target;if(t&&t.closest&&t.closest("[data-check],[data-sol],[data-ex],[data-hint],[data-exanother],#gradeBtn"))resumeSaveSoon();});
+    _rsess.addEventListener("click",function(ev){var t=ev.target;if(t&&t.closest&&t.closest("[data-check],[data-sol],[data-ex],[data-hint],[data-exanother],[data-rate],#gradeBtn"))resumeSaveSoon();});
   }
   document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")resumeSaveNow();});
   window.addEventListener("beforeunload",function(){resumeSaveNow();});
@@ -2001,12 +2010,13 @@ function tSyncOnline(){
   if(!T||T.view!=="online"||!current)return;
   var st={};
   current.forEach(function(q,i){
-    var o={done:false,ok:false,given:null,fb:"",sol:false,exOpen:false,exq:null,exn:0};
+    var o={done:false,ok:false,given:null,fb:"",sol:false,exOpen:false,exq:null,exn:0,selfRate:"",srShown:false};
     if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(sel)o.given=+sel.value;}
     else{var inp=$("ans"+i);if(inp&&inp.value!=="")o.given=inp.value;}
     var fb=$("fb"+i);if(fb){o.done=!!fb.dataset.done;o.fb=fb.innerHTML;}
     var sol=$("sol"+i);if(sol)o.sol=sol.classList.contains("show");
     var exb=$("ex"+i);if(exb){o.exOpen=!exb.hidden;o.exq=exb._exq||null;o.exn=+(exb.dataset.exn||0);}
+    var srb=$("sr"+i);if(srb){o.selfRate=srb.dataset.selfrate||"";o.srShown=!srb.hidden;}
     o.ok=!!(setResults[i]&&setResults[i].ok);
     st[q._tuid]=o;
   });
@@ -2021,6 +2031,7 @@ function tRestoreOnline(){
     else if(o.given!==null){var inp=$("ans"+i);if(inp)inp.value=o.given;}
     if(o.done){var fb=$("fb"+i);if(fb){fb.classList.add("show");fb.dataset.done="1";fb.innerHTML=o.fb;}setResults[i]={ok:o.ok,inds:q._entry.indicators.slice()};checkedCount++;if(o.ok)correctCount++;}
     if(o.sol){var sl=$("sol"+i);if(sl)sl.classList.add("show");}
+    if(o.selfRate||o.srShown)applyRateVisual(i,o.selfRate||"");
     if(o.exOpen&&o.exq){var exb=$("ex"+i);if(exb){exb.dataset.exn=String(o.exn);renderExample(i,o.exq);setExLabel(i,true);}}
   });
   if(T.endGraded){endGraded=true;for(var j=0;j<current.length;j++){var s2=$("sol"+j);if(s2)s2.classList.add("show");}var gb=$("gradeBtn");if(gb){gb.disabled=true;gb.textContent=L9("Answers checked","Réponses vérifiées");}}
@@ -2276,6 +2287,7 @@ function renderOnline(scroll){
       if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
     html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(window.__COURSE&&window.__COURSE.hints?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exampleCapable(q._entry)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(window.__COURSE&&window.__COURSE.hints?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
+      +(isProseText(q)?'<div class="selfrate" id="sr'+i+'" hidden><p class="srlead">'+L9("Compare your answer with the model answer and the marking points. How did you do?","Compare ta réponse avec la réponse modèle et les points de notation. Comment t'en es-tu sorti ?")+'</p><p class="srbtns"><button type="button" class="alt" data-rate="got" data-rateq="'+i+'">'+L9("I got it","Je l'ai réussie")+'</button> <button type="button" class="alt" data-rate="part" data-rateq="'+i+'">'+L9("I got part of it","Je l'ai réussie en partie")+'</button> <button type="button" class="alt" data-rate="missed" data-rateq="'+i+'">'+L9("I missed it","Je l'ai manquée")+'</button></p></div>':'')
       +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">'+L9("Report a problem","Signaler un problème")+'</button></p>'
       +'<div class="rep" id="rep'+i+'"><label>'+L9("What is the problem?","Quel est le problème ?")+'<select id="reptype'+i+'"><option>'+L9("The question looks wrong or unclear","La question semble fausse ou peu claire")+'</option><option>'+L9("The worked solution doesn't work out","La solution détaillée ne fonctionne pas")+'</option><option>'+L9("My answer was marked wrong but should be right","Ma réponse a été marquée fausse, mais elle devrait être bonne")+'</option><option>'+L9("Something else is out of place","Quelque chose d'autre ne va pas")+'</option></select></label>'
       +'<label>'+L9("Anything you noticed (optional)","Ce que tu as remarqué (facultatif)")+'<textarea id="repnote'+i+'" rows="3"></textarea></label>'
@@ -2288,6 +2300,7 @@ function renderOnline(scroll){
   Array.prototype.forEach.call(box.querySelectorAll("[data-sol]"),function(b){b.addEventListener("click",function(){toggleSolution(+b.getAttribute("data-sol"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-ex]"),function(b){b.addEventListener("click",function(){toggleExample(+b.getAttribute("data-ex"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-hint]"),function(b){b.addEventListener("click",function(){showHint(+b.getAttribute("data-hint"));});});
+  Array.prototype.forEach.call(box.querySelectorAll("[data-rate]"),function(b){b.addEventListener("click",function(){rateProse(+b.getAttribute("data-rateq"),b.getAttribute("data-rate"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-rep]"),function(b){b.addEventListener("click",function(){$("rep"+b.getAttribute("data-rep")).classList.toggle("show");});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-repsend]"),function(b){b.addEventListener("click",function(){openReport(+b.getAttribute("data-repsend"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-repcopy]"),function(b){b.addEventListener("click",function(){copyReport(+b.getAttribute("data-repcopy"));});});
@@ -2352,12 +2365,72 @@ function checkQ(i){
   var q=current[i],ok=false,given=null;
   if(q.type==="mc"){var sel=document.querySelector('input[name="opt'+i+'"]:checked');if(!sel){$("fb"+i).innerHTML='<span class="notyet">'+L9("Pick an option first.","Choisis d'abord une option.")+'</span>';$("fb"+i).classList.add("show");return;}given=+sel.value;ok=(given===q.correct);}
   else if(q.type==="num"){var v=FR9?frParseNum(($("ans"+i).value||"")):parseFloat(($("ans"+i).value||"").replace(/[$,%\u00B0]/g,""));if(isNaN(v)){$("fb"+i).innerHTML='<span class="notyet">'+L9("Type a number first.","Entre d'abord un nombre.")+'</span>';$("fb"+i).classList.add("show");return;}ok=Math.abs(v-q.answer)<=q.tol;}
+  else if(isProseText(q)){checkProse(i);return;}
   else{var t=($("ans"+i).value||"").trim().toLowerCase().replace(/\s+/g," ");ok=q.answers.some(function(a){return t===a.replace(/\s+/g," ");});}
   var fb=$("fb"+i);fb.classList.add("show");
   if(!fb.dataset.done){checkedCount++;if(ok)correctCount++;fb.dataset.done="1";setResults[i]={ok:ok,inds:(q._entry?q._entry.indicators.slice():[])};updateScore();maybeSummary();}
   fb.innerHTML=ok?('<span class="ok">'+L9("Correct.","Exact.")+'</span> '+L9("Nice work.","Beau travail.")):(checkMode==="end"?('<span class="notyet">'+L9("Not quite.","Pas tout à fait.")+'</span> '+L9("The worked solution is open below.","La solution détaillée est ouverte ci-dessous.")):('<span class="notyet">'+L9("Not quite.","Pas tout à fait.")+'</span> '+L9("Try again, or open the worked solution.","Essaie encore, ou ouvre la solution détaillée.")));
   var fbt=$("fbt"+i);if(fbt)fbt.innerHTML=(q.type==="mc"&&q.fb&&given!==null&&q.fb[given])?("<b>"+L9("About your answer:","À propos de ta réponse :")+"</b> "+stepHTML(q.fb[given])):"";
   if(ok)$("sol"+i).classList.remove("show");
+}
+/* ============ Prose constructed response: self-check (Nov 2026) ============
+   A text question counts as prose when even its shortest accepted
+   answer runs longer than PROSE_TEXT_MIN characters: the banked
+   answers are concept phrases or a full model sentence, not a short
+   answer a student could reproduce verbatim. (The threshold came
+   from a survey of every bank, Nov 14, 2026: precise short answers,
+   formulas, names and orderings top out in the low thirties, while
+   prose concept phrases start at 37.) Exact match cannot mark prose:
+   a genuine answer in the student's own words never equals the
+   banked string, so "Idk" and a good paragraph scored alike.
+   Checking a prose answer therefore opens the worked solution (the
+   model answer and marking points, closing the hint and the worked
+   example the way opening the solution always does) and asks the
+   student to rate their own answer. "I got it" counts as correct;
+   the other two count as not correct. The rating is recorded
+   exactly once, like any other check; changing it afterwards moves
+   the counters with the change rather than double-counting, which
+   betters the first-check-sticks behaviour of the auto-marked
+   types. Short text answers keep the exact-match check above. */
+var PROSE_TEXT_MIN=36;
+function isProseText(q){return !!q&&q.type==="text"&&!!q.answers&&q.answers.length>0&&Math.min.apply(null,q.answers.map(function(a){return String(a).length;}))>PROSE_TEXT_MIN;}
+function proseReveal(i){
+  var sol=$("sol"+i);if(sol&&!sol.classList.contains("show")){sol.classList.add("show");setSolLabel(i,true);}
+  closeScaffolding(i);
+  var sr=$("sr"+i);if(sr)sr.hidden=false;
+}
+function checkProse(i){
+  var q=current[i];if(!q)return;
+  var fb=$("fb"+i);if(!fb)return;
+  var txt=($("ans"+i).value||"").trim();
+  if(!fb.dataset.done&&txt===""){
+    fb.innerHTML='<span class="notyet">'+L9("Write an answer first.","Écris d'abord une réponse.")+'</span> '+L9("Then compare it with the model answer and rate how you did.","Compare-la ensuite avec la réponse modèle, puis note comment tu t'en es sorti.");
+    fb.classList.add("show");return;
+  }
+  if(!fb.dataset.done){fb.innerHTML="";fb.classList.remove("show");}
+  proseReveal(i);
+}
+function applyRateVisual(i,rate){
+  var sr=$("sr"+i);if(!sr)return;
+  sr.dataset.selfrate=rate||"";sr.hidden=false;
+  Array.prototype.forEach.call(sr.querySelectorAll("[data-rate]"),function(b){var on=!!rate&&b.getAttribute("data-rate")===rate;b.classList.toggle("rated",on);b.setAttribute("aria-pressed",on?"true":"false");});
+}
+function rateProse(i,rate){
+  var q=current[i];if(!q)return;
+  var fb=$("fb"+i);if(!fb)return;
+  var sr=$("sr"+i);
+  var prev=sr?(sr.dataset.selfrate||""):"";
+  var ok=(rate==="got");
+  if(!fb.dataset.done){
+    fb.dataset.done="1";checkedCount++;if(ok)correctCount++;
+  }else if(prev&&(prev==="got")!==ok){
+    correctCount+=ok?1:-1;
+  }
+  setResults[i]={ok:ok,inds:(q._entry?q._entry.indicators.slice():[])};
+  applyRateVisual(i,rate);
+  fb.classList.add("show");
+  fb.innerHTML=(rate==="got"?('<span class="ok">'+L9("You marked this: I got it.","Tu as noté : je l'ai réussie.")+'</span> '+L9("Nice work.","Beau travail.")):rate==="part"?('<span class="notyet">'+L9("You marked this: I got part of it.","Tu as noté : je l'ai réussie en partie.")+'</span> '+L9("Look at the marking points to see what was missing.","Regarde les points de notation pour voir ce qui manquait.")):('<span class="notyet">'+L9("You marked this: I missed it.","Tu as noté : je l'ai manquée.")+'</span> '+L9("Read the model answer and the marking points, then practise this idea again soon.","Lis la réponse modèle et les points de notation, puis pratique cette idée de nouveau bientôt.")));
+  updateScore();maybeSummary();
 }
 function gradeAll(){
   if(endGraded||!current)return;
