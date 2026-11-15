@@ -6,20 +6,23 @@
    Nov 15, 2026; labelled convention, no common exam exists at
    this level). At least 190 of 200 trials must land exactly on
    shape, with no repeated prompt on a paper and SR spread across
-   all three targets. The spec also asked for no indicator drawn
-   more than twice per paper; the shell composer has no
-   per-indicator cap (its programme-wide contract, per the
-   Science 1206 compose gate, is shape, scope and no duplicates),
-   and the spec's own census gives several indicators 3 or 4
-   entries, so that sub-condition is measured and printed here
-   as information, not asserted. The same applies to the CR
-   denomination split: the spec's convention reads "2 CR at
-   3 marks", and its Section 4 keeps the 4-mark design CR out
-   of the unit test convention, but the composer's subset-sum
-   guarantees 6 CR marks, not denominations, so some papers
-   land 2+4 and the design CR appears in them. Both deviations
-   are measured and printed, not asserted. See the build
-   report: the contradictions are flagged for Jason's ruling. */
+   all three targets.
+   The Nov 15, 2026 shell change (v1.2.0) added the three
+   composer mechanisms the Ecosystems build report flagged for
+   Jason's ruling, and this gate now ASSERTS the two spec
+   sub-conditions that were previously only measured:
+     - per-indicator cap: the sci-7 unit test carries
+       unitTest.indCap 2, so no indicator may appear more than
+       twice on one composed paper;
+     - CR denomination preference: unitTest.crPref [3, 3], so
+       every composed paper's CR section is exactly 2 items at
+       3 marks whenever the pool can sum that way (it always
+       can here);
+     - compose exclusion: the 4-mark design CR
+       (s7-u1-cr-design-experiment) carries the entry flag
+       noCompose and must never appear on a composed paper,
+       while remaining available to practice draws (asserted
+       below against drawSet on its own indicator). */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
 
@@ -47,43 +50,63 @@ function extractFn(src, name) {
   }
   throw new Error("unbalanced " + name);
 }
-for (const n of ["poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "composeExam"]) eval(extractFn(html, n));
+for (const n of ["poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "composeExam", "drawSet"]) eval(extractFn(html, n));
 
+const DESIGN_CR = "s7-u1-cr-design-experiment";
 let good = 0, firstBad = null;
 const indMaxDist = {};
 const crSplits = {};
 let designCR = 0;
+let capViol = 0, denomViol = 0, totalViol = 0;
 for (let t = 0; t < 200; t++) {
   const res = composeExam([1], []);
   if (!res) { if (!firstBad) firstBad = "composeExam returned null"; continue; }
   let clean = res.total === 26 && res.srMarks === 20 && res.crMarks === 6 && !res.short;
   let why = clean ? "" : "off-shape (total " + res.total + ", sr " + res.srMarks + ", cr " + res.crMarks + ", short " + res.short + ")";
-  if (clean) {
-    const prompts = new Set();
-    const indCount = {};
-    const targets = new Set();
-    for (const it of res.srItems.concat(res.crItems)) {
-      if (prompts.has(it.q.prompt)) { clean = false; why = "duplicate prompt"; break; }
-      prompts.add(it.q.prompt);
-      const tag = it.q._entry.indicators[0];
-      indCount[tag] = (indCount[tag] || 0) + 1;
-      targets.add(tag.split(".")[1]);
-    }
-    if (clean) {
-      const ms = res.crItems.map(it => CR_MARKS[it.q._entry.id]).sort().join("+");
-      crSplits[ms] = (crSplits[ms] || 0) + 1;
-      if (res.crItems.some(it => it.q._entry.id === "s7-u1-cr-design-experiment")) designCR++;
-    }
-    const mx = Math.max.apply(null, Object.values(indCount));
-    indMaxDist[mx] = (indMaxDist[mx] || 0) + 1;
-    if (clean && targets.size < 3) { clean = false; why = "SR spread misses a target: " + [...targets].join(","); }
-    if (clean && res.crItems.length !== 2) { clean = false; why = "CR item count " + res.crItems.length; }
+  if (res.total !== 26) totalViol++;
+  const prompts = new Set();
+  const indCount = {};
+  const targets = new Set();
+  for (const it of res.srItems.concat(res.crItems)) {
+    if (prompts.has(it.q.prompt)) { if (clean) { clean = false; why = "duplicate prompt"; } }
+    prompts.add(it.q.prompt);
+    const tag = it.q._entry.indicators[0];
+    indCount[tag] = (indCount[tag] || 0) + 1;
+    targets.add(tag.split(".")[1]);
   }
+  const mx = Math.max.apply(null, Object.values(indCount).concat([0]));
+  indMaxDist[mx] = (indMaxDist[mx] || 0) + 1;
+  if (mx > 2) capViol++;
+  if (res.crItems.some(it => it.q._entry.id === DESIGN_CR)) designCR++;
+  if (res.crMarks === 6) {
+    const ms = res.crItems.map(it => CR_MARKS[it.q._entry.id]).sort((a, b) => a - b).join("+");
+    crSplits[ms] = (crSplits[ms] || 0) + 1;
+    if (ms !== "3+3" || res.crItems.length !== 2) denomViol++;
+  }
+  if (clean && targets.size < 3) { clean = false; why = "SR spread misses a target: " + [...targets].join(","); }
+  if (clean && res.crItems.length !== 2) { clean = false; why = "CR item count " + res.crItems.length; }
   if (clean) good++;
   else if (!firstBad) firstBad = why;
 }
 console.log("Unit test composition: " + good + "/200 exact (26 total, 20 SR, 2 CR at 3 marks)" + (firstBad ? " (first bad: " + firstBad + ")" : ""));
-console.log("Max entries sharing one indicator per paper (information, see header): " + JSON.stringify(indMaxDist));
-console.log("CR denomination splits (information, see header): " + JSON.stringify(crSplits) + "; design CR in " + designCR + " papers");
-console.log(good >= 190 ? "GATE-COMPOSE-SCI-7: PASS" : "GATE-COMPOSE-SCI-7: FAIL");
-process.exit(good >= 190 ? 0 : 1);
+console.log("Max entries sharing one indicator per paper: " + JSON.stringify(indMaxDist) + "; papers over the cap of 2: " + capViol);
+console.log("CR denomination splits: " + JSON.stringify(crSplits) + "; off-preference papers (CR marks 6, not 3+3): " + denomViol + "; design CR in " + designCR + " papers");
+
+/* The excluded entry stays in the practice pool and is dealt by
+   practice draws on its own indicator. */
+const dEntry = BANK.find(e => e.id === DESIGN_CR);
+let practiceOk = !!dEntry && dEntry.noCompose === true;
+console.log("Design CR entry present with noCompose flag: " + practiceOk);
+const inPool = poolFor([1], [], false).some(e => e.id === DESIGN_CR);
+console.log("Design CR present in the practice pool (poolFor): " + inPool);
+let dealt = 0;
+for (let t = 0; t < 80 && inPool; t++) {
+  const r = drawSet([1], ["SC7.3.8"], 8, [20, 60, 20], "unit", false);
+  if (r.items.some(q => q._entry.id === DESIGN_CR)) dealt++;
+}
+console.log("Design CR dealt in " + dealt + "/80 practice draws on SC7.3.8");
+practiceOk = practiceOk && inPool && dealt > 0;
+
+const pass = good >= 190 && capViol === 0 && denomViol === 0 && designCR === 0 && practiceOk;
+console.log(pass ? "GATE-COMPOSE-SCI-7: PASS" : "GATE-COMPOSE-SCI-7: FAIL");
+process.exit(pass ? 0 : 1);

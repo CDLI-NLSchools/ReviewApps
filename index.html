@@ -3036,6 +3036,33 @@ function composeExam(units,inds,includePK){
          enrichment questions" option affects practice draws only,
          and a teacher who wants an enrichment entry on a paper
          adds it explicitly through pick from bank.
+       - Compose exclusion (Nov 15, 2026): an entry flagged
+         noCompose is filtered out of the pool below on the same
+         terms as enrichment: it never reaches a composed paper
+         (unit test, mid, final or custom composition), while
+         practice draws, prerequisite checks and explicit teacher
+         picks are untouched. A course uses it for an entry whose
+         role is practice by design (Science 7's 4-mark design
+         experiment, whose unit test convention prefers the
+         denominations named below).
+       - Per-indicator cap (Nov 15, 2026): a composition may carry
+         indCap (unitTest.indCap for a unit test, a scope's
+         per-unit or scope-level indCap, or exam.fallback.indCap),
+         limiting how many items sharing one primary indicator
+         (indicators[0]) the paper may carry, counted across
+         selected and constructed response together. Unset means
+         uncapped, the long-standing behaviour. The fixed-shape
+         sibling branch above (pairCr, trioCr, sextetCr) does not
+         read it: those shapes pin their sections exactly already,
+         and no course using them sets it.
+       - CR denomination preference (Nov 15, 2026): a composition
+         may carry crPref (the same homes as indCap), the
+         preferred constructed-response mark pattern as a list of
+         marks, for example [3, 3]. When an exact subset matching
+         the pattern is achievable from the eligible pool it is
+         preferred over any other exact subset; otherwise the
+         composer falls back to any combination reaching the
+         required total, exactly as before.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -3050,6 +3077,7 @@ function composeExam(units,inds,includePK){
   var pool=poolFor(units,inds,capX);
   if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
   pool=pool.filter(function(e){return !e.enrich;});
+  pool=pool.filter(function(e){return !e.noCompose;});
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
   if(C.exam&&C.exam.singleOnly&&!single)return null;
@@ -3142,23 +3170,57 @@ function composeExam(units,inds,includePK){
     return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};
   }
   var parts;
-  if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null}];}
-  else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null};});}
-  else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:fb.levels?fb.levels.slice():null,crL3:fb.crL3?fb.crL3.slice():null}];}
+  if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null,indCap:(typeof ut.indCap==="number"?ut.indCap:null),crPref:ut.crPref?ut.crPref.slice():null}];}
+  else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null,indCap:(typeof pu.indCap==="number"?pu.indCap:(typeof scope.indCap==="number"?scope.indCap:null)),crPref:pu.crPref?pu.crPref.slice():(scope.crPref?scope.crPref.slice():null)};});}
+  else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:fb.levels?fb.levels.slice():null,crL3:fb.crL3?fb.crL3.slice():null,indCap:(typeof fb.indCap==="number"?fb.indCap:null),crPref:fb.crPref?fb.crPref.slice():null}];}
   var expectedTotal=single?ut.total:(scope?scope.total:((typeof fb!=="undefined"&&fb&&fb.total)||50));
   function genFrom(e){var q=e.gen();q._entry=e;return q;}
+  function indKeyOf(e){return (e.indicators&&e.indicators.length)?e.indicators[0]:null;}
+  function marksKey(items){return items.map(function(x){return x.marks;}).sort(function(a,b){return a-b;}).join("+");}
+  function prefKey(pref){return pref.slice().sort(function(a,b){return a-b;}).join("+");}
   function crPoolFor(part){
     return pool.filter(function(e){return part.units.indexOf(e.unit)>=0&&typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
   }
   function crOptions(part){
     var cp=crPoolFor(part);var opts=[];var seenK={};var nulls=0;
+    function capOk(items){
+      if(!part.indCap)return true;
+      var cnt={};
+      for(var ci=0;ci<items.length;ci++){var kk=indKeyOf(items[ci].e);if(kk){cnt[kk]=(cnt[kk]||0)+1;if(cnt[kk]>part.indCap)return false;}}
+      return true;
+    }
+    function pushOpt(sub,exact){
+      var l2=0,l3=0;sub.forEach(function(x){if(x.e.level===3)l3+=x.marks;else l2+=x.marks;});
+      var k=sub.map(function(x){return x.e.id;}).sort().join(",");
+      if(seenK[k])return;seenK[k]=1;
+      opts.push({items:sub,l2:l2,l3:l3,exact:exact});
+    }
+    if(part.crPref){
+      /* Denomination preference (Nov 15, 2026): build options
+         matching the preferred mark pattern directly, so an
+         achievable pattern is always among the options the combo
+         chooser weighs; planFor then prefers them over any other
+         exact subset. */
+      var want=part.crPref.slice().sort(function(a,b){return a-b;});
+      var wantSum=want.reduce(function(a,b){return a+b;},0);
+      if(wantSum===part.cr){
+        for(var pa=0;pa<24&&opts.length<6;pa++){
+          var gotP=[],shufP=shuffle(cp.slice()),usedP={};
+          for(var wi=0;wi<want.length;wi++){
+            var candP=null;
+            for(var si2=0;si2<shufP.length;si2++){var xx=shufP[si2];if(!usedP[xx.e.id]&&xx.marks===want[wi]){candP=xx;break;}}
+            if(!candP)break;
+            usedP[candP.e.id]=1;gotP.push(candP);
+          }
+          if(gotP.length===want.length&&capOk(gotP))pushOpt(gotP,true);
+        }
+      }
+    }
     for(var i=0;i<48&&opts.length<14;i++){
       var sub=subsetSumMarks(cp,part.cr);
       if(!sub){if(++nulls>=5)break;continue;}
-      var l2=0,l3=0;sub.forEach(function(x){if(x.e.level===3)l3+=x.marks;else l2+=x.marks;});
-      var k=sub.map(function(x){return x.e.id;}).sort().join(",");
-      if(seenK[k])continue;seenK[k]=1;
-      opts.push({items:sub,l2:l2,l3:l3,exact:true});
+      if(!capOk(sub))continue;
+      pushOpt(sub,true);
     }
     if(!opts.length&&cp.length){ // no exact subset: best-effort greedy option
       var rest=cp.slice().sort(function(a,b){return b.e.level-a.e.level||Math.random()-0.5;});
@@ -3211,6 +3273,7 @@ function composeExam(units,inds,includePK){
       opts.forEach(function(o){dev+=(o.l3>=4&&o.l3<=6)?Math.abs(o.l3-5):10+Math.abs(o.l3-5);if(!o.exact)dev+=100;});
     }
     parts.forEach(function(p,i){if(p.crL3&&opts[i]){var ix=p.crL3.indexOf(opts[i].l3);dev+=ix<0?40:2*ix;}});
+    parts.forEach(function(p,i){if(p.crPref&&opts[i]&&marksKey(opts[i].items)!==prefKey(p.crPref))dev+=40;});
     return {plans:plans,dev:dev,scopeDev:scopeDev};
   }
   function chooseCombo(){
@@ -3230,22 +3293,33 @@ function composeExam(units,inds,includePK){
   }
   function drawAll(combo){
     var seen={},srItems=[],crItems=[],short=false;
+    var indCount={},reservedCR={};
+    function indTake(e){var k=indKeyOf(e);if(k)indCount[k]=(indCount[k]||0)+1;}
+    function indRoom(part,e){if(!part.indCap)return true;var k=indKeyOf(e);if(!k)return true;return (indCount[k]||0)<part.indCap;}
     parts.forEach(function(part,pi){
       var ppool=pool.filter(function(e){return part.units.indexOf(e.unit)>=0;});
       var plan=combo.plans[pi];
+      /* Per-indicator cap: the part's chosen CR items reserve
+         their primary indicators first, so the SR drawing below
+         counts the whole paper, not just Section A. A CR item
+         that later fails to draw keeps its reservation: the cap
+         only ever binds tighter within an attempt, never looser. */
+      if(part.indCap)combo.opts[pi].items.forEach(function(x){reservedCR[x.e.id]=1;indTake(x.e);});
       function takeSR(level,count){
         var cands=ppool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
         var guard=0;
         while(count>0&&guard++<600&&cands.length){
-          var q=genFrom(pick(cands));var c=canonQ(q);
-          if(q.type!=="mc"||seen[c])continue;seen[c]=1;srItems.push({q:q,marks:1});count--;
+          var eSR=pick(cands);
+          if(!indRoom(part,eSR)){cands.splice(cands.indexOf(eSR),1);continue;}
+          var q=genFrom(eSR);var c=canonQ(q);
+          if(q.type!=="mc"||seen[c])continue;seen[c]=1;srItems.push({q:q,marks:1});indTake(eSR);count--;
         }
         return count;
       }
       var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}
       if(miss>0){
         var allC=ppool.filter(function(e){return probeType(e)==="mc";});var guard2=0;
-        while(miss>0&&guard2++<900&&allC.length){var qb=genFrom(pick(allC));var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});miss--;}
+        while(miss>0&&guard2++<900&&allC.length){var eB=pick(allC);if(!indRoom(part,eB)){allC.splice(allC.indexOf(eB),1);continue;}var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);miss--;}
       }
       if(miss>0)short=true;
       var cp=crPoolFor(part);
@@ -3254,8 +3328,13 @@ function composeExam(units,inds,includePK){
         var q=null,c=null,tries=0;
         do{q=genFrom(x.e);c=canonQ(q);tries++;}while(seen[c]&&tries<25);
         if(seen[c]){
-          var subs=cp.filter(function(y){return y.e.level===x.e.level&&y.marks===x.marks&&y.e!==x.e;});
-          for(var si=0;si<subs.length&&seen[c];si++){var q2=null,c2=null,t2=0;do{q2=genFrom(subs[si].e);c2=canonQ(q2);t2++;}while(seen[c2]&&t2<25);if(!seen[c2]){q=q2;c=c2;}}
+          var subs=cp.filter(function(y){return y.e.level===x.e.level&&y.marks===x.marks&&y.e!==x.e&&(!part.indCap||indKeyOf(y.e)===indKeyOf(x.e)||(indCount[indKeyOf(y.e)]||0)<part.indCap);});
+          for(var si=0;si<subs.length&&seen[c];si++){var q2=null,c2=null,t2=0;do{q2=genFrom(subs[si].e);c2=canonQ(q2);t2++;}while(seen[c2]&&t2<25);if(!seen[c2]){q=q2;c=c2;
+            /* A substitute on a different primary indicator takes
+               over the reserved item's cap slot: release the
+               reservation and count the substitute instead. */
+            if(part.indCap&&reservedCR[x.e.id]&&indKeyOf(subs[si].e)!==indKeyOf(x.e)){var kx=indKeyOf(x.e);if(kx)indCount[kx]--;indTake(subs[si].e);}
+          }}
         }
         if(seen[c])return false;
         seen[c]=1;partCR.push({q:q,marks:x.marks});return true;
@@ -3267,7 +3346,7 @@ function composeExam(units,inds,includePK){
       if(partCR.length===0&&cp.length){ // greedy fallback for this part, flagged short
         var rest=cp.slice().sort(function(a,b){return b.e.level-a.e.level||Math.random()-0.5;});
         var sm=0;
-        for(var gi=0;gi<rest.length;gi++){var gx=rest[gi];if(sm+gx.marks>part.cr)continue;if(drawCR(gx)){sm+=gx.marks;}}
+        for(var gi=0;gi<rest.length;gi++){var gx=rest[gi];if(sm+gx.marks>part.cr)continue;if(!indRoom(part,gx))continue;if(drawCR(gx)){sm+=gx.marks;indTake(partCR[partCR.length-1].q._entry);}}
         pmarks=partCR.reduce(function(a,it){return a+it.marks;},0);
         short=true;
       }

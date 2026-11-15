@@ -742,8 +742,11 @@ window.COURSES = {
      per unit, 20 selected response at 1 mark plus 2 constructed
      response at 3 marks, 26 marks. No mid or final presets: the
      course has one unit built so far and no whole-course exam
-     preset is specified at this level. */
-  unitTest: { total: 26, sr: 20, cr: 6 }
+     preset is specified at this level. Composer options (Nov 15,
+     2026): indCap 2 keeps any one indicator to at most two items
+     on a composed unit test, and crPref [3, 3] names the preferred
+     constructed response split, two items at 3 marks. */
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
 },
 
 "chem-3202": {

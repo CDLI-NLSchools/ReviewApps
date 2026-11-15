@@ -1337,3 +1337,13 @@ E("s7-u1-cr-succession-stages", 1, ["SC7.3.11", "SC7.1.8"], 2, "var", varset([
     return q;
   }
 ]), ["Tell the story of the soil: it is the thread that links all four stages.", "For each stage ask two things: what grows now, and what does its living and dying leave behind?"]);
+
+/* Compose exclusion (Nov 15, 2026): entries named here carry noCompose, and
+   composeExam leaves them out of every composed paper (unit tests, mid-course
+   and final reviews, custom compositions) while practice draws, prerequisite
+   checks and explicit teacher picks keep them. The design-an-experiment item
+   is practice and teacher-picked only, per Jason's ruling of Nov 15, 2026. */
+var NO_COMPOSE={
+  "s7-u1-cr-design-experiment":true
+};
+BANK.forEach(function(e){ if(NO_COMPOSE[e.id]){ e.noCompose=true; } });

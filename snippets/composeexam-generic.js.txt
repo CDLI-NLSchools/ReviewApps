@@ -1,0 +1,410 @@
+function composeExam(units,inds,includePK){
+  /* Blueprint-driven exam composer for the unified shell. The plan comes
+     from the active course configuration:
+       - a single unit composes the unit test (config unitTest: SR count
+         plus CR marks, levels guided 20/60/20, CR Level 3 marks steered
+         into the 4 to 6 window the senior pattern uses);
+       - a unit set matching a configured exam scope composes to that
+         scope's blueprint: per-unit selected-response counts, per-unit
+         constructed-response marks and the scope level totals are met
+         exactly, and per-unit level marks are met exactly wherever the
+         bank's CR denominations allow (a unit whose CR marks cannot
+         split at its own level targets borrows level room from the other
+         unit in the scope, so the scope totals still land);
+       - any other multi-unit set uses the course's configured pooled
+         fallback (exam.fallback in the course configuration; 27 selected
+         response and 23 constructed response when a course sets none).
+         A fallback may also carry levels (the pooled paper's total
+         level marks) and crL3 (the preferred Level 3 constructed
+         response mark totals, in order); both are set only by a course
+         whose standalone composer pools every multi-unit paper,
+         Math 3200 being the case in point. A fallback may also carry
+         total (the pooled paper's total marks), read by the
+         expected-total check below and defaulting to 50; the junior
+         pooled family sets it (Math 9: a 35-mark multi-unit paper);
+       - a course whose papers are single-unit tests only
+         (exam.singleOnly, unitTest.pairCr: Math 3202) composes nothing
+         for a multi-unit selection, and its unit test follows the
+         pairCr branch below: a fixed selected-response level split
+         (unitTest.srLevels) with the standalone's any-level top-up,
+         plus exactly two constructed-response entries whose marks sum
+         to the unit's own target (unitTest.perUnitCr), preferring a
+         pair that carries a Level 3 entry;
+       - a sibling single-unit shape (unitTest.trioCr: Math 2202)
+         shares that branch's selected-response machinery and differs
+         only in Section B: exactly three constructed-response
+         entries, one at 2 marks and two at 3 (its standalone
+         composer's TEST_CR constants), at least one of them at
+         Level 3, summing to unitTest.cr;
+       - a third sibling (unitTest.sextetCr: Math 1202) shares the
+         same machinery and differs only in Section B: exactly six
+         constructed-response entries, three at 2 marks and three
+         at 3 (its standalone composer's TEST_CR constants), at
+         least one of them at Level 3, summing to unitTest.cr;
+       - two scope rules a course may carry in its configuration,
+         both read from the standalone composers that had them (Math
+         2201): presets.mid.cap engages the poolFor cap for exactly
+         the mid scope, holding out the bank entries the course's
+         bank module flags postMid; and pkPracticeOnly leaves the
+         course's prior-knowledge entries (indicators coded PK) out
+         of every composed paper unless the caller passes includePK
+         (the teacher override startExam reads from the builder).
+         Neither key is set by any other course, and both branches
+         are inert without them.
+       - Enrichment: an entry flagged enrich (content beyond the
+         named indicators, flagged in the course's bank module the
+         way postMid flags are set) is filtered out of the pool
+         below, unconditionally. No caller argument and no builder
+         toggle reaches composition: the practice-side "Include
+         enrichment questions" option affects practice draws only,
+         and a teacher who wants an enrichment entry on a paper
+         adds it explicitly through pick from bank.
+       - Compose exclusion (Nov 15, 2026): an entry flagged
+         noCompose is filtered out of the pool below on the same
+         terms as enrichment: it never reaches a composed paper
+         (unit test, mid, final or custom composition), while
+         practice draws, prerequisite checks and explicit teacher
+         picks are untouched. A course uses it for an entry whose
+         role is practice by design (Science 7's 4-mark design
+         experiment, whose unit test convention prefers the
+         denominations named below).
+       - Per-indicator cap (Nov 15, 2026): a composition may carry
+         indCap (unitTest.indCap for a unit test, a scope's
+         per-unit or scope-level indCap, or exam.fallback.indCap),
+         limiting how many items sharing one primary indicator
+         (indicators[0]) the paper may carry, counted across
+         selected and constructed response together. Unset means
+         uncapped, the long-standing behaviour. The fixed-shape
+         sibling branch above (pairCr, trioCr, sextetCr) does not
+         read it: those shapes pin their sections exactly already,
+         and no course using them sets it.
+       - CR denomination preference (Nov 15, 2026): a composition
+         may carry crPref (the same homes as indCap), the
+         preferred constructed-response mark pattern as a list of
+         marks, for example [3, 3]. When an exact subset matching
+         the pattern is achievable from the eligible pool it is
+         preferred over any other exact subset; otherwise the
+         composer falls back to any combination reaching the
+         required total, exactly as before.
+     Constructed response is drawn only from Level 2 and Level 3 entries
+     carrying CR_MARKS of 2 or more. Composition retries internally with
+     fresh random subsets; when no exact composition is found the best
+     attempt is returned flagged short, the same honest fallback the
+     current apps use. */
+  var C=window.__COURSE||{};
+  var single=units.length===1;
+  var key=units.slice().sort(function(a,b){return a-b;}).join();
+  var scope=null;
+  if(!single&&C.exam){Object.keys(C.exam).forEach(function(nm){var sc=C.exam[nm];if(sc&&sc.units&&sc.units.slice().sort(function(a,b){return a-b;}).join()===key)scope=sc;});}
+  var capX=scopeCap(units);
+  var pool=poolFor(units,inds,capX);
+  if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
+  pool=pool.filter(function(e){return !e.enrich;});
+  pool=pool.filter(function(e){return !e.noCompose;});
+  if(!pool.length)return null;
+  var ut=C.unitTest||{total:25,sr:11,cr:14};
+  if(C.exam&&C.exam.singleOnly&&!single)return null;
+  if(single&&(ut.pairCr||ut.trioCr||ut.sextetCr)){
+    /* The Math 3202 unit test, reproduced from its standalone
+       composer: Section A at the exact srLevels split with an
+       any-level top-up, Section B as one pair of constructed-response
+       entries summing to the unit's target, Level 3 pairs preferred.
+       Only a course setting pairCr enters this branch. Math 2202
+       (trioCr) shares the Section A machinery; its Section B is
+       the trio selected below. Math 1202 (sextetCr) shares it too;
+       its Section B is the sextet selected below. */
+    var unitP=units[0];
+    var targetP=(ut.perUnitCr&&ut.perUnitCr[unitP])||ut.cr;
+    var seenA={};
+    function genFromA(e){var q=e.gen();q._entry=e;return q;}
+    var srA=[];
+    function takeSRA(level,count){
+      var cands=pool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
+      var guard=0;
+      while(count>0&&guard++<600&&cands.length){
+        var q=genFromA(pick(cands));var c=canonQ(q);
+        if(q.type!=="mc"||seenA[c])continue;seenA[c]=1;srA.push({q:q,marks:1});count--;
+      }
+      return count;
+    }
+    var srTP=ut.srLevels||[2,5,1];
+    var missA=0;for(var LA=1;LA<=3;LA++){missA+=takeSRA(LA,srTP[LA-1]);}
+    if(missA>0){
+      var extraA=pool.filter(function(e){return probeType(e)==="mc";});var g2A=0;
+      while(missA>0&&g2A++<600&&extraA.length){var qA=genFromA(pick(extraA));var cA=canonQ(qA);if(qA.type!=="mc"||seenA[cA])continue;seenA[cA]=1;srA.push({q:qA,marks:1});missA--;}
+    }
+    var chosenA=null,crWantA=2,crTargetA=targetP;
+    if(ut.pairCr){
+    var crPoolA=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+    var pairsA=[];
+    for(var iA=0;iA<crPoolA.length;iA++)for(var jA=iA+1;jA<crPoolA.length;jA++){if(crPoolA[iA].marks+crPoolA[jA].marks===targetP)pairsA.push([crPoolA[iA],crPoolA[jA]]);}
+    pairsA=shuffle(pairsA);
+    var withL3A=pairsA.filter(function(p){return p[0].e.level===3||p[1].e.level===3;});
+    chosenA=withL3A.length?withL3A[0]:(pairsA.length?pairsA[0]:null);
+    } else if(ut.sextetCr){
+      /* Math 1202's Section B, from its standalone composer
+         (TEST_CR_COUNT 6, TEST_CR_TARGET 15): three 2-mark and
+         three 3-mark entries, Level 2 or 3, at least one of the
+         six at Level 3. The standalone retries shuffled sextets
+         up to 500 times for one carrying a Level 3 entry, then
+         settles for any sextet; both behaviours are carried here. */
+      var crPoolS=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&(CR_MARKS[e.id]===2||CR_MARKS[e.id]===3)&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+      var twosS=crPoolS.filter(function(x){return x.marks===2;});
+      var threesS=crPoolS.filter(function(x){return x.marks===3;});
+      crWantA=6;crTargetA=ut.cr;
+      if(twosS.length>=3&&threesS.length>=3){
+        for(var atS=0;atS<500&&!chosenA;atS++){
+          var selS=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
+          if(selS.some(function(x){return x.e.level===3;}))chosenA=selS;
+        }
+        if(!chosenA)chosenA=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
+      }
+    } else {
+      /* Math 2202's Section B, from its standalone composer
+         (TEST_CR_COUNT 3, TEST_CR_TARGET 8): one 2-mark and two
+         3-mark entries, Level 2 or 3, at least one of the three at
+         Level 3. The standalone retries shuffled trios up to 500
+         times for one carrying a Level 3 entry, then settles for
+         any trio; both behaviours are carried here. */
+      var crPoolT=pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&(CR_MARKS[e.id]===2||CR_MARKS[e.id]===3)&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+      var twosT=crPoolT.filter(function(x){return x.marks===2;});
+      var threesT=crPoolT.filter(function(x){return x.marks===3;});
+      crWantA=3;crTargetA=ut.cr;
+      if(twosT.length>=1&&threesT.length>=2){
+        for(var atT=0;atT<500&&!chosenA;atT++){
+          var selT=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
+          if(selT.some(function(x){return x.e.level===3;}))chosenA=selT;
+        }
+        if(!chosenA)chosenA=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
+      }
+    }
+    var crA=[],crMarksA=0,l3A=0,shortA=missA>0;
+    if(chosenA){
+      var seenCA={};srA.forEach(function(it){seenCA[canonQ(it.q)]=1;});
+      chosenA.forEach(function(x){
+        var q=null,c=null,tries=0;
+        do{q=genFromA(x.e);c=canonQ(q);tries++;}while(seenCA[c]&&tries<25);
+        if(seenCA[c]){shortA=true;return;}
+        seenCA[c]=1;crA.push({q:q,marks:x.marks});crMarksA+=x.marks;if(x.e.level===3)l3A+=x.marks;
+      });
+      if(crA.length!==crWantA||((ut.trioCr||ut.sextetCr)&&crMarksA!==crTargetA))shortA=true;
+    } else shortA=true;
+    crA.sort(function(a,b){return a.q._entry.level-b.q._entry.level;});
+    return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};
+  }
+  var parts;
+  if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null,indCap:(typeof ut.indCap==="number"?ut.indCap:null),crPref:ut.crPref?ut.crPref.slice():null}];}
+  else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null,indCap:(typeof pu.indCap==="number"?pu.indCap:(typeof scope.indCap==="number"?scope.indCap:null)),crPref:pu.crPref?pu.crPref.slice():(scope.crPref?scope.crPref.slice():null)};});}
+  else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:fb.levels?fb.levels.slice():null,crL3:fb.crL3?fb.crL3.slice():null,indCap:(typeof fb.indCap==="number"?fb.indCap:null),crPref:fb.crPref?fb.crPref.slice():null}];}
+  var expectedTotal=single?ut.total:(scope?scope.total:((typeof fb!=="undefined"&&fb&&fb.total)||50));
+  function genFrom(e){var q=e.gen();q._entry=e;return q;}
+  function indKeyOf(e){return (e.indicators&&e.indicators.length)?e.indicators[0]:null;}
+  function marksKey(items){return items.map(function(x){return x.marks;}).sort(function(a,b){return a-b;}).join("+");}
+  function prefKey(pref){return pref.slice().sort(function(a,b){return a-b;}).join("+");}
+  function crPoolFor(part){
+    return pool.filter(function(e){return part.units.indexOf(e.unit)>=0&&typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+  }
+  function crOptions(part){
+    var cp=crPoolFor(part);var opts=[];var seenK={};var nulls=0;
+    function capOk(items){
+      if(!part.indCap)return true;
+      var cnt={};
+      for(var ci=0;ci<items.length;ci++){var kk=indKeyOf(items[ci].e);if(kk){cnt[kk]=(cnt[kk]||0)+1;if(cnt[kk]>part.indCap)return false;}}
+      return true;
+    }
+    function pushOpt(sub,exact){
+      var l2=0,l3=0;sub.forEach(function(x){if(x.e.level===3)l3+=x.marks;else l2+=x.marks;});
+      var k=sub.map(function(x){return x.e.id;}).sort().join(",");
+      if(seenK[k])return;seenK[k]=1;
+      opts.push({items:sub,l2:l2,l3:l3,exact:exact});
+    }
+    if(part.crPref){
+      /* Denomination preference (Nov 15, 2026): build options
+         matching the preferred mark pattern directly, so an
+         achievable pattern is always among the options the combo
+         chooser weighs; planFor then prefers them over any other
+         exact subset. */
+      var want=part.crPref.slice().sort(function(a,b){return a-b;});
+      var wantSum=want.reduce(function(a,b){return a+b;},0);
+      if(wantSum===part.cr){
+        for(var pa=0;pa<24&&opts.length<6;pa++){
+          var gotP=[],shufP=shuffle(cp.slice()),usedP={};
+          for(var wi=0;wi<want.length;wi++){
+            var candP=null;
+            for(var si2=0;si2<shufP.length;si2++){var xx=shufP[si2];if(!usedP[xx.e.id]&&xx.marks===want[wi]){candP=xx;break;}}
+            if(!candP)break;
+            usedP[candP.e.id]=1;gotP.push(candP);
+          }
+          if(gotP.length===want.length&&capOk(gotP))pushOpt(gotP,true);
+        }
+      }
+    }
+    for(var i=0;i<48&&opts.length<14;i++){
+      var sub=subsetSumMarks(cp,part.cr);
+      if(!sub){if(++nulls>=5)break;continue;}
+      if(!capOk(sub))continue;
+      pushOpt(sub,true);
+    }
+    if(!opts.length&&cp.length){ // no exact subset: best-effort greedy option
+      var rest=cp.slice().sort(function(a,b){return b.e.level-a.e.level||Math.random()-0.5;});
+      var got=[],sm=0,gl2=0,gl3=0;
+      rest.forEach(function(x){if(sm+x.marks<=part.cr){got.push(x);sm+=x.marks;if(x.e.level===3)gl3+=x.marks;else gl2+=x.marks;}});
+      opts.push({items:got,l2:gl2,l3:gl3,exact:false});
+    }
+    if(!opts.length)opts.push({items:[],l2:0,l3:0,exact:false});
+    return opts;
+  }
+  function planFor(opts){
+    var plans=[],dev=0,i,L;
+    for(i=0;i<parts.length;i++){
+      var p=parts[i],o=opts[i];
+      if(p.levels){
+        var plan=[p.levels[0],p.levels[1]-o.l2,p.levels[2]-o.l3];
+        for(L=0;L<3;L++){if(plan[L]<0){var need=-plan[L];plan[L]=0;var best=-1;for(var M=0;M<3;M++){if(M!==L&&(best<0||plan[M]>plan[best]))best=M;}if(best>=0)plan[best]=Math.max(0,plan[best]-need);}}
+        var s=plan[0]+plan[1]+plan[2],guard=0;
+        while(s>p.sr&&guard++<60){var bi=0;for(var b=1;b<3;b++)if(plan[b]>plan[bi])bi=b;if(plan[bi]<=0)break;plan[bi]--;s--;}
+        while(s<p.sr&&guard++<120){plan[1]++;s++;}
+        plans.push(plan);
+      }else{
+        plans.push(levelTargets(p.sr,[20,60,20]));
+      }
+    }
+    var scoped=parts.every(function(p){return !!p.levels;});
+    var scopeDev=0;
+    if(scoped){
+      var scopeLv=[0,0,0];parts.forEach(function(p){for(var a=0;a<3;a++)scopeLv[a]+=p.levels[a];});
+      var tl2=0,tl3=0;opts.forEach(function(o){tl2+=o.l2;tl3+=o.l3;});
+      var target=[scopeLv[0],scopeLv[1]-tl2,scopeLv[2]-tl3];
+      for(var an=0;an<3;an++){if(target[an]<0)dev+=10000;}
+      var g2=0;
+      while(g2++<300){
+        var ach=[0,0,0];plans.forEach(function(pl){for(var a2=0;a2<3;a2++)ach[a2]+=pl[a2];});
+        var d=[target[0]-ach[0],target[1]-ach[1],target[2]-ach[2]];
+        if(d[0]===0&&d[1]===0&&d[2]===0)break;
+        var up=-1,dn=-1;for(var a3=0;a3<3;a3++){if(d[a3]>0)up=a3;if(d[a3]<0)dn=a3;}
+        if(up<0||dn<0)break;
+        var moved=false;
+        for(var pi=0;pi<plans.length&&!moved;pi++){if(plans[pi][dn]>0){plans[pi][dn]--;plans[pi][up]++;moved=true;}}
+        if(!moved)break;
+      }
+      var achF=[0,0,0];plans.forEach(function(pl){for(var a4=0;a4<3;a4++)achF[a4]+=pl[a4];});
+      scopeDev=Math.abs(target[0]-achF[0])+Math.abs(target[1]-achF[1])+Math.abs(target[2]-achF[2]);
+      dev+=10*scopeDev;
+      for(i=0;i<parts.length;i++){var pp=parts[i],oo=opts[i],pl2=plans[i];
+        dev+=Math.abs(pl2[0]+0-pp.levels[0])+Math.abs(pl2[1]+oo.l2-pp.levels[1])+Math.abs(pl2[2]+oo.l3-pp.levels[2]);}
+    }else{
+      opts.forEach(function(o){dev+=(o.l3>=4&&o.l3<=6)?Math.abs(o.l3-5):10+Math.abs(o.l3-5);if(!o.exact)dev+=100;});
+    }
+    parts.forEach(function(p,i){if(p.crL3&&opts[i]){var ix=p.crL3.indexOf(opts[i].l3);dev+=ix<0?40:2*ix;}});
+    parts.forEach(function(p,i){if(p.crPref&&opts[i]&&marksKey(opts[i].items)!==prefKey(p.crPref))dev+=40;});
+    return {plans:plans,dev:dev,scopeDev:scopeDev};
+  }
+  function chooseCombo(){
+    var optLists=parts.map(crOptions);
+    var combos=[[]];
+    optLists.forEach(function(list){
+      var next=[];
+      combos.forEach(function(c){list.forEach(function(o){next.push(c.concat([o]));});});
+      combos=next.length>512?shuffle(next).slice(0,512):next;
+    });
+    var bestC=null;
+    combos.forEach(function(opts){
+      var pl=planFor(opts);
+      if(!bestC||pl.dev<bestC.dev)bestC={opts:opts,plans:pl.plans,dev:pl.dev,scopeDev:pl.scopeDev};
+    });
+    return bestC;
+  }
+  function drawAll(combo){
+    var seen={},srItems=[],crItems=[],short=false;
+    var indCount={},reservedCR={};
+    function indTake(e){var k=indKeyOf(e);if(k)indCount[k]=(indCount[k]||0)+1;}
+    function indRoom(part,e){if(!part.indCap)return true;var k=indKeyOf(e);if(!k)return true;return (indCount[k]||0)<part.indCap;}
+    parts.forEach(function(part,pi){
+      var ppool=pool.filter(function(e){return part.units.indexOf(e.unit)>=0;});
+      var plan=combo.plans[pi];
+      /* Per-indicator cap: the part's chosen CR items reserve
+         their primary indicators first, so the SR drawing below
+         counts the whole paper, not just Section A. A CR item
+         that later fails to draw keeps its reservation: the cap
+         only ever binds tighter within an attempt, never looser. */
+      if(part.indCap)combo.opts[pi].items.forEach(function(x){reservedCR[x.e.id]=1;indTake(x.e);});
+      function takeSR(level,count){
+        var cands=ppool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
+        var guard=0;
+        while(count>0&&guard++<600&&cands.length){
+          var eSR=pick(cands);
+          if(!indRoom(part,eSR)){cands.splice(cands.indexOf(eSR),1);continue;}
+          var q=genFrom(eSR);var c=canonQ(q);
+          if(q.type!=="mc"||seen[c])continue;seen[c]=1;srItems.push({q:q,marks:1});indTake(eSR);count--;
+        }
+        return count;
+      }
+      var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}
+      if(miss>0){
+        var allC=ppool.filter(function(e){return probeType(e)==="mc";});var guard2=0;
+        while(miss>0&&guard2++<900&&allC.length){var eB=pick(allC);if(!indRoom(part,eB)){allC.splice(allC.indexOf(eB),1);continue;}var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);miss--;}
+      }
+      if(miss>0)short=true;
+      var cp=crPoolFor(part);
+      var partCR=[];
+      function drawCR(x){
+        var q=null,c=null,tries=0;
+        do{q=genFrom(x.e);c=canonQ(q);tries++;}while(seen[c]&&tries<25);
+        if(seen[c]){
+          var subs=cp.filter(function(y){return y.e.level===x.e.level&&y.marks===x.marks&&y.e!==x.e&&(!part.indCap||indKeyOf(y.e)===indKeyOf(x.e)||(indCount[indKeyOf(y.e)]||0)<part.indCap);});
+          for(var si=0;si<subs.length&&seen[c];si++){var q2=null,c2=null,t2=0;do{q2=genFrom(subs[si].e);c2=canonQ(q2);t2++;}while(seen[c2]&&t2<25);if(!seen[c2]){q=q2;c=c2;
+            /* A substitute on a different primary indicator takes
+               over the reserved item's cap slot: release the
+               reservation and count the substitute instead. */
+            if(part.indCap&&reservedCR[x.e.id]&&indKeyOf(subs[si].e)!==indKeyOf(x.e)){var kx=indKeyOf(x.e);if(kx)indCount[kx]--;indTake(subs[si].e);}
+          }}
+        }
+        if(seen[c])return false;
+        seen[c]=1;partCR.push({q:q,marks:x.marks});return true;
+      }
+      var bShort=false;
+      combo.opts[pi].items.forEach(function(x){if(!drawCR(x))bShort=true;});
+      if(bShort)short=true;
+      var pmarks=partCR.reduce(function(a,it){return a+it.marks;},0);
+      if(partCR.length===0&&cp.length){ // greedy fallback for this part, flagged short
+        var rest=cp.slice().sort(function(a,b){return b.e.level-a.e.level||Math.random()-0.5;});
+        var sm=0;
+        for(var gi=0;gi<rest.length;gi++){var gx=rest[gi];if(sm+gx.marks>part.cr)continue;if(!indRoom(part,gx))continue;if(drawCR(gx)){sm+=gx.marks;indTake(partCR[partCR.length-1].q._entry);}}
+        pmarks=partCR.reduce(function(a,it){return a+it.marks;},0);
+        short=true;
+      }
+      if(pmarks!==part.cr)short=true;
+      partCR.forEach(function(it){crItems.push(it);});
+    });
+    crItems.sort(function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;});
+    var crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
+    var l3Marks=crItems.filter(function(it){return it.q._entry.level===3;}).reduce(function(a,it){return a+it.marks;},0);
+    var scopedPlan=parts.every(function(p){return !!p.levels;});
+    if(scopedPlan&&combo.scopeDev>0)short=true; // marks filled but the scope level totals are off blueprint: flag it honestly
+    return {srItems:srItems,crItems:crItems,srMarks:srItems.length,crMarks:crMarks,l3Marks:l3Marks,total:srItems.length+crMarks,single:single,short:short,dev:combo.dev,scopeDev:combo.scopeDev||0};
+  }
+  var best=null,bestExact=null;
+  for(var attempt=0;attempt<30;attempt++){
+    var combo=chooseCombo();
+    if(!combo)break;
+    var res=drawAll(combo);
+    if(!res.short&&res.total===expectedTotal){
+      /* An exact paper whose Section B Level 3 share misses the
+         course's own preference list (a pooled fallback's crL3) is
+         kept as the fallback, not returned: the standalone pooled
+         composers force one of their listed targets (8, then 9,
+         then 7) whenever the pool can sum to it, so the shell
+         retries for an on-preference paper and settles for the
+         off-preference exact only when none surfaces. Only a
+         single pooled part carries crL3, so blueprint scopes and
+         unit tests are untouched. */
+      if(!(parts.length===1&&parts[0].crL3&&parts[0].crL3.indexOf(res.l3Marks)<0))return res;
+      if(!bestExact||res.dev<bestExact.dev)bestExact=res;
+      continue;
+    }
+    if(!best||res.total>best.total||(res.total===best.total&&res.dev<best.dev))best=res;
+  }
+  if(bestExact)return bestExact;
+  if(best)return best;
+  return {srItems:[],crItems:[],srMarks:0,crMarks:0,l3Marks:0,total:0,single:single,short:true,dev:0};
+}
