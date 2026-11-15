@@ -6,7 +6,11 @@
    selection; a seeded pkonly link redraws the identical set; the
    set saves and resumes like any practice set, and an ordinary
    set for the same unit does not resurrect it; sheets and exams
-   ignore pkonly entirely.
+   ignore pkonly entirely. Follow-on (Nov 15, 2026, Jason): a
+   pkonly check render carries no Formulas and facts reference
+   panel (the panel holds the host unit's material, not the
+   feeder skills a check measures); the same unit's ordinary
+   render keeps its panel, and a resumed check stays panel-free.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pkcheck-math-2201.js */
 const fs = require("fs");
 const vm = require("vm");
@@ -184,6 +188,10 @@ function resumeKey(shared) { return Object.keys(shared).find((k) => k.endsWith("
      "link: the pool line reads as a prerequisite check pool, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
   ok(ev(d, "!!document.getElementById('pkCheckBtn') && document.getElementById('pkCheckBtn').hidden") === true,
      "visibility: a student opening a pkonly link does not see the Advanced tools action");
+  ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
+     "panel: the pkonly check render contains no refpanel markup");
+  ok(!d.window.document.getElementById("session").innerHTML.includes("Formulas and facts"),
+     "panel: the pkonly check render contains no Formulas and facts panel");
 
   /* sheets and exams ignore pkonly: the sheet drawn from this
      pkonly state is the ordinary sheet for the scope (prior
@@ -214,12 +222,20 @@ function resumeKey(shared) { return Object.keys(shared).find((k) => k.endsWith("
   ok(!!d.window.document.getElementById("resumeBar"), "resume: reopening the pkonly link offers Resume");
   ev(d, `document.getElementById("resumeGoBtn").click()`);
   ok(ev(d, `document.getElementById("fb0").dataset.done`) === "1", "resume: the checked state is restored on the check");
+  ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
+     "panel: the resumed check also renders with no refpanel markup");
+  ok(!d.window.document.getElementById("session").innerHTML.includes("Formulas and facts"),
+     "panel: the resumed check also renders with no Formulas and facts panel");
   d.window.close();
 
   /* ===== the ordinary link for the same unit does not resurrect it ===== */
   d = await boot("course=math-2201&unit=3&seed=pkc1&count=8", shared);
   ok(!d.window.document.getElementById("resumeBar"), "signature: the ordinary Unit 3 set gets no offer from the check's save");
   ok(ev(d, "current.some(function(q){return !isPK(q._entry);})") === true, "signature: the ordinary set is an ordinary set");
+  ok(d.window.document.getElementById("session").innerHTML.includes("refpanel"),
+     "panel: the ordinary Unit 3 render does contain the refpanel markup");
+  ok(d.window.document.getElementById("session").innerHTML.includes("Formulas and facts for Unit 3"),
+     "panel: the ordinary Unit 3 render shows its Formulas and facts panel");
   {
     const sheetIdsOrdinary = ev(d, "(function(){var s=settings();var r=withSeed(activeSeed(s),function(){return drawSheetSet(s);});return r.items.map(function(q){return q._entry.id;});})()");
     ok(JSON.stringify(sheetIdsOrdinary) === JSON.stringify(sheetIdsPkonly),
@@ -235,6 +251,8 @@ function resumeKey(shared) { return Object.keys(shared).find((k) => k.endsWith("
   await sleep(300);
   ok(ev(d, "settings().pkOnly") === true && ev(d, "current.length") === 7 && ev(d, "current.every(function(q){return isPK(q._entry);})") === true,
      "action: clicking Start prerequisite check deals the Unit 3 check");
+  ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
+     "panel: the check dealt by the Advanced tools action also renders with no refpanel markup");
   d.window.close();
 
   d = await boot("course=math-2201&teacher=1&unit=3,5&count=8", {});

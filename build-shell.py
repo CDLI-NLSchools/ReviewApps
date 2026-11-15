@@ -1550,6 +1550,15 @@ rep('function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=
     'function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;unitCheckboxes();renderIndicators();updatePoolInfo();}', count=1)  # setPreset clears pkOnly
 rep('$("goOnline").addEventListener("click",startOnline);',
     '$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;startOnline();});\n(function(){var b=$("pkCheckBtn");if(!b)return;b.addEventListener("click",function(){\n  hidCtl.pkOnly=true;\n  var pool=poolFor(state.units,[],false).filter(function(e){return isPK(e);});\n  var ci=$("countIn");if(ci)ci.value=Math.min(8,pool.length);\n  updatePoolInfo();startOnline();\n});})();', count=1)  # goOnline clears and pkCheckBtn action
+# Follow-on (Nov 15, 2026, Jason): a prerequisite check render
+# carries no Formulas and facts panel. renderOnline is the only
+# consumer of refPanelsHtml; the suppression keys off the live
+# pkOnlyActive() state at render time, so resumed checks render
+# panel-free too. Sheets, exams and exports never call it.
+rep('refPanelsHtml(s.units)',
+    '(pkOnlyActive()?"":refPanelsHtml(s.units))', count=1)  # no panel on pkonly renders
+rep('function renderOnline(scroll){\n  var s=lastSettings;var res={thin:onlineThin};',
+    'function renderOnline(scroll){\n  var s=lastSettings;var res={thin:onlineThin};\n  /* Prerequisite checks carry no Formulas and facts panel (Nov 15,\n     2026, Jason): the panel holds the host unit\'s reference\n     material, while a check measures feeder skills the student is\n     expected to already have. The suppression keys off the live\n     pkOnlyActive() state at render time, so a resumed check (whose\n     save only matches when the pkonly link state is reproduced)\n     renders panel-free as well. */', count=1)  # panel suppression note
 
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the

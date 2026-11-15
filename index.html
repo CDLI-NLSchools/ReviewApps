@@ -2362,9 +2362,16 @@ function startOnline(){
 }
 function renderOnline(scroll){
   var s=lastSettings;var res={thin:onlineThin};
+  /* Prerequisite checks carry no Formulas and facts panel (Nov 15,
+     2026, Jason): the panel holds the host unit's reference
+     material, while a check measures feeder skills the student is
+     expected to already have. The suppression keys off the live
+     pkOnlyActive() state at render time, so a resumed check (whose
+     save only matches when the pkonly link state is reproduced)
+     renders panel-free as well. */
   var box=$("session");
   if(!current.length){box.innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
-  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+refPanelsHtml(s.units)+(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':"")+'<p class="scoreline" id="score"></p>';
+  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+(pkOnlyActive()?"":refPanelsHtml(s.units))+(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':"")+'<p class="scoreline" id="score"></p>';
   current.forEach(function(q,i){
     html+='<div class="q" id="q'+i+'"><div class="qhead"><b>Question '+(i+1)+'</b> '+tags(q)+'</div><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
