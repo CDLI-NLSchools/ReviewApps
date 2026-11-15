@@ -2,6 +2,13 @@
 
 All notable changes to the CDLI Review Apps are listed here, newest first. The notes are written for teachers and students who use the apps.
 
+## v1.2.0 - 2026-11-15
+
+### Added
+
+- Composed tests now spread their questions more evenly across a unit's outcomes. A composition can limit how many questions on one paper come from a single outcome, so one outcome no longer crowds a paper by chance. Science 7 unit tests use this now, and other courses can adopt it as their question banks are built.
+- A course can now mark a question as practice only. Practice-only questions stay available in practice sets and for teachers to pick directly, and they stay out of composed tests and reviews. Science 7 uses this for its design-an-experiment question, which is written for practice rather than for a unit test paper.
+
 ## v1.1.0 - 2026-11-15
 
 ### Added
