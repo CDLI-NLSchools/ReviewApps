@@ -21,6 +21,21 @@
    is itself a check set (pkonly stays on, link keeps pkonly=1,
    panel stays suppressed, progress saves). Ordinary sets keep
    the indicator-keyed retry exactly.
+   Follow-on (Nov 15, 2026, Jason): the retry fill. When the
+   missed groups cannot fill the retry under the one Level 3
+   cap because a missed group is all Level 3 (Unit 5's
+   data-claims is the only such group), the cap relaxes after
+   the round-robin to the extent of the shortfall and the
+   group repeats as fresh instances to the check size; missed
+   alongside a Level 1-2 group it still contributes exactly
+   one question, and ordinary checks keep the cap exactly.
+   Follow-on (Nov 15, 2026, Jason): the retry checking mode.
+   A retry launched from a check-at-the-end set runs
+   check-as-you-go by default, with one line in the summary
+   saying so; rkeep=1 on the link (the teacher's Retry
+   checking choice) keeps the first set's mode, a kept retry
+   defers worked examples until grading like any end-mode
+   set, and the switched mode rides the retry's resume save.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pkcheck-math-2201.js */
 const fs = require("fs");
 const vm = require("vm");
@@ -147,16 +162,25 @@ for (const seed of [11, 99, 424242, 7, 2026]) {
 {
   /* Unit 5 data-claims is the tranche's only Level 3 only
      group. Missed alongside a Level 1-2 group it contributes
-     exactly one question, as it does in the check; missed
-     alone, the retry is that one question and thin reports
-     the shortfall. */
-  const m = retryDraw(5, ["data-claims", "freq-table"], 99);
-  const c = {}; m.groups.forEach((g) => { c[g] = (c[g] || 0) + 1; });
-  ok(m.n === 8 && m.l3 === 1 && c["data-claims"] === 1 && c["freq-table"] === 7,
-     "retry u5: alongside a Level 1-2 group, the Level 3 only group contributes exactly one question, saw " + JSON.stringify(c) + " l3=" + m.l3);
-  const r = retryDraw(5, ["data-claims"], 99);
-  ok(r.n === 1 && r.l3 === 1 && r.thin === true && r.groups.every((g) => g === "data-claims"),
-     "retry u5: the Level 3 only group missed alone deals one Level 3 question, thin reported, saw n=" + r.n + " l3=" + r.l3 + " thin=" + r.thin);
+     exactly one question, as it does in the check: the fill
+     relaxation reaches only as far as a shortfall, and there
+     is none. Missed alone, the cap relaxes after the
+     round-robin and the group repeats as fresh instances to
+     fill the retry to the check size (Jason's ruling,
+     Nov 15, 2026). The check draws above still cap every
+     unit, Unit 5 included, at one Level 3 question. */
+  for (const seed of [99, 11, 2026]) {
+    const m = retryDraw(5, ["data-claims", "freq-table"], seed);
+    const c = {}; m.groups.forEach((g) => { c[g] = (c[g] || 0) + 1; });
+    ok(m.n === 8 && m.l3 === 1 && c["data-claims"] === 1 && c["freq-table"] === 7,
+       "retry u5 seed " + seed + ": alongside a Level 1-2 group, the Level 3 only group contributes exactly one question, saw " + JSON.stringify(c) + " l3=" + m.l3);
+  }
+  for (const seed of [11, 99, 424242, 7, 2026]) {
+    const r = retryDraw(5, ["data-claims"], seed);
+    ok(r.n === 8 && r.l3 === 8 && r.groups.every((g) => g === "data-claims"),
+       "retry u5 seed " + seed + ": the Level 3 only group missed alone fills the retry to 8 by repeating, saw n=" + r.n + " l3=" + r.l3);
+    ok(r.distinct === 2, "retry u5 seed " + seed + ": the fill round-robins across both data-claims entries, saw distinct=" + r.distinct);
+  }
 }
 {
   const r = retryDraw(3, null, 99);
@@ -269,6 +293,39 @@ function answerAll(d, missSpec) {
       var cb=document.querySelector('[data-check="'+i+'"]');if(cb)cb.click();
       var sr=document.getElementById("sr"+i);
       if(sr&&!sr.hidden){var b=sr.querySelector('[data-rate="'+(miss?"missed":"got")+'"]');if(b)b.click();}
+    }
+  })(${JSON.stringify(missSpec || null)})`);
+}
+
+/* End-mode variant of answerAll: the answers are entered but
+   not checked individually; the set is graded with the Check
+   all button, and any prose items the grading reveals are
+   then self-rated (missed for the miss spec's group or index,
+   got otherwise), which completes the summary. */
+function answerAllEnd(d, missSpec) {
+  ev(d, `(function(spec){
+    for(var i=0;i<current.length;i++){
+      var q=current[i];
+      var miss=spec?(spec.group!=null?(pkGroupOf(q._entry)===spec.group):(i===spec.index)):false;
+      if(q.type==="mc"){
+        var v=miss?((q.correct+1)%q.options.length):q.correct;
+        var r=document.querySelector('input[name="opt'+i+'"][value="'+v+'"]');
+        if(r){r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}
+      }else if(q.type==="num"){
+        var inp=document.getElementById("ans"+i);
+        if(inp){inp.value=String(miss?(q.answer+3):q.answer);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}
+      }else{
+        var inp2=document.getElementById("ans"+i);
+        if(inp2){inp2.value=miss?"zzz not the answer":q.answers[0];inp2.dispatchEvent(new window.Event("input",{bubbles:true}));}
+      }
+    }
+    document.getElementById("gradeBtn").click();
+    for(var j=0;j<current.length;j++){
+      var sr=document.getElementById("sr"+j);
+      if(sr&&!sr.hidden){
+        var missJ=spec?(spec.group!=null?(pkGroupOf(current[j]._entry)===spec.group):(j===spec.index)):false;
+        var b=sr.querySelector('[data-rate="'+(missJ?"missed":"got")+'"]');if(b)b.click();
+      }
     }
   })(${JSON.stringify(missSpec || null)})`);
 }
@@ -411,6 +468,73 @@ function answerAll(d, missSpec) {
   await sleep(300);
   ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-radical-mixed';})") === true,
      "retry: missing radicals on another seed deals only radical questions (8 fresh instances)");
+  d.window.close();
+
+  /* ===== retry checking mode: an end-mode check retries as-you-go =====
+     Jason's ruling (Nov 15, 2026): the first set at the end is
+     the honest attempt; the retry on what was missed checks
+     each question as it goes, so mistakes are corrected as
+     they come up. The summary says so in one line. */
+  const sharedE = {};
+  d = await boot("course=math-2201&unit=3&pkonly=1&chk=end&seed=rk1&count=8", sharedE);
+  ok(ev(d, "checkMode") === "end", "retry mode: the check itself runs check-at-the-end");
+  answerAllEnd(d, { group: "polynomial-multiply" });
+  ok(!!d.window.document.getElementById("retryMissedBtn"), "retry mode: the end-mode check with a missed group offers the retry");
+  ok(d.window.document.getElementById("setSummary").textContent.includes("checks each question as you go"),
+     "retry mode: the summary says the retry checks each question as you go");
+  ev(d, `document.getElementById("retryMissedBtn").click()`);
+  await sleep(300);
+  ok(ev(d, "checkMode") === "each", "retry mode: the retry set runs check-as-you-go, saw " + ev(d, "checkMode"));
+  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return pkGroupOf(q._entry)==='polynomial-multiply';})") === true,
+     "retry mode: the switched retry is still the group-keyed retry (8 questions, missed group only)");
+  ev(d, `(function(){
+    var q=current[0];
+    if(q.type==="mc"){var r=document.querySelector('input[name="opt0"][value="'+q.correct+'"]');r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}
+    else{var inp=document.getElementById("ans0");inp.value=(q.type==="num"?String(q.answer):q.answers[0]);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}
+  })()`);
+  ev(d, `document.querySelector('[data-check="0"]').click()`);
+  ev(d, `(function(){var sr=document.getElementById("sr0");if(sr&&!sr.hidden){var b=sr.querySelector('[data-rate="got"]');if(b)b.click();}})()`);
+  ok(ev(d, `document.getElementById("fb0").dataset.done`) === "1",
+     "retry mode: the switched retry checks a question the moment it is asked (as-you-go is live)");
+  await sleep(900);
+  const keyE = resumeKey(sharedE);
+  ok(!!keyE, "retry mode: progress on the switched retry is saved");
+  let bodyE = null;
+  try { bodyE = JSON.parse(sharedE[keyE]).body; } catch (e) {}
+  ok(bodyE && bodyE.checkMode === "each", "retry mode: the retry's resume save carries checkMode each, saw " + (bodyE && bodyE.checkMode));
+  {
+    const saveE = JSON.parse(sharedE[keyE]);
+    ev(d, "checkMode='end';");
+    ev(d, `resumeApplyOnline(${JSON.stringify(saveE)})`);
+    ok(ev(d, "checkMode") === "each", "retry mode: restoring the retry's save restores check-as-you-go with it");
+  }
+  d.window.close();
+
+  /* rkeep=1: the teacher's Retry checking choice keeps the mode */
+  d = await boot("course=math-2201&unit=3&pkonly=1&chk=end&rkeep=1&seed=rk2&count=8", {});
+  ok(ev(d, "typeof RETRY_KEEP !== 'undefined' && RETRY_KEEP") === true, "retry mode (keep): rkeep=1 is read from the link");
+  answerAllEnd(d, { group: "polynomial-multiply" });
+  ok(!!d.window.document.getElementById("retryMissedBtn"), "retry mode (keep): the end-mode check with a missed group offers the retry");
+  ok(!d.window.document.getElementById("setSummary").textContent.includes("checks each question as you go"),
+     "retry mode (keep): the summary carries no switch note when the mode is kept");
+  ev(d, `document.getElementById("retryMissedBtn").click()`);
+  await sleep(300);
+  ok(ev(d, "checkMode") === "end", "retry mode (keep): the retry keeps check-at-the-end, saw " + ev(d, "checkMode"));
+  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-binom-tri-expand';})") === true,
+     "retry mode (keep): the kept retry is still group-keyed (8 questions, missed group only)");
+  ok(d.window.document.querySelectorAll("[data-ex]").length === 0,
+     "retry mode (keep): the kept end-mode retry defers worked examples until grading (scaffold composition)");
+  ev(d, "gradeAll()");
+  ok(d.window.document.querySelectorAll("[data-ex]").length > 0,
+     "retry mode (keep): grading the kept retry reveals its worked examples");
+  d.window.close();
+
+  /* an as-you-go check carries no switch note (nothing switches) */
+  d = await boot("course=math-2201&unit=3&pkonly=1&seed=rk3&count=8", {});
+  answerAll(d, { group: "polynomial-multiply" });
+  ok(!!d.window.document.getElementById("retryMissedBtn"), "retry mode (as-you-go check): the retry is offered");
+  ok(!d.window.document.getElementById("setSummary").textContent.includes("checks each question as you go"),
+     "retry mode (as-you-go check): no switch note when the first set already checked as-you-go");
   d.window.close();
 
   /* ===== ordinary sets keep the indicator retry (regression) ===== */

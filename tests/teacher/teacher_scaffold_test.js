@@ -13,6 +13,18 @@
    is unchanged, and a suppressed example never appears even after
    grading. Subject course: Math 2202 (hints on in its config, and
    its generator entries are worked-example capable).
+   Retry package follow-on (Nov 15, 2026): the harness also
+   covers the Retry checking teacher choice (rendered in all
+   three teacher views beside the scaffold choices, persists as
+   retryPref, mints rkeep=1 for student links only), the retry
+   checking-mode switch on ordinary sets (an end-mode set's
+   retry runs check-as-you-go by default, with the note in the
+   summary; rkeep=1 keeps the first set's mode; the teacher's
+   own retry never switches), and the fallback hint wording:
+   the generic fallback hint points at the worked example, so
+   when examples are suppressed it uses a variant wording that
+   does not (Bio 2201 Unit 1, indicator 5.4, whose generator
+   entries carry no banked hint).
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/teacher/teacher_scaffold_test.js */
 const fs = require("fs");
 const { JSDOM } = require("jsdom");
@@ -104,16 +116,30 @@ const BASE = "course=math-2202&unit=1&count=10";
   ok(sharedT.exPref === "off", "teacher device: exPref persists as off");
   const tURL = ev(d, "tShareURL(true)");
   ok(/[?&]teacher=1/.test(tURL) && !/[?&](nohint|noex)=/.test(tURL), "teacher link: keeps teacher=1 and never carries suppression flags");
+  const rSel = d.window.document.querySelector("#tRetrySel");
+  ok(!!rSel, "teacher bar (online): Retry checking in student links choice is offered beside the copy buttons");
+  ok(rSel && rSel.value === "switch", "teacher bar: Retry checking defaults to Switch to as-you-go");
+  ok(!/[?&]rkeep=/.test(onURL), "student link: no rkeep flag while Retry checking is Switch");
+  if (rSel) rSel.value = "keep";
+  const keepURL = ev(d, "tShareURL(false)");
+  ok(/[?&]rkeep=1/.test(keepURL), "student link: carries rkeep=1 when Retry checking is Keep");
+  ok(sharedT.retryPref === "keep", "teacher device: retryPref persists as keep");
+  const tURL2 = ev(d, "tShareURL(true)");
+  ok(/[?&]teacher=1/.test(tURL2) && !/[?&]rkeep=/.test(tURL2), "teacher link: keeps teacher=1 and never carries rkeep");
   d.window.close();
 
   /* ===== the exam and sheet panels offer the same choices ===== */
   d = await boot("course=math-2202&unit=1&mode=exam&teacher=1");
   ok(!!d.window.document.querySelector("#tExamPanel #tHintSel") && !!d.window.document.querySelector("#tExamPanel #tExSel"),
      "teacher panel (exam): both scaffold choices are offered");
+  ok(!!d.window.document.querySelector("#tExamPanel #tRetrySel"),
+     "teacher panel (exam): the Retry checking choice is offered");
   d.window.close();
   d = await boot("course=math-2202&unit=1&mode=sheet&teacher=1");
   ok(!!d.window.document.querySelector("#tSheetPanel #tHintSel") && !!d.window.document.querySelector("#tSheetPanel #tExSel"),
      "teacher panel (sheet): both scaffold choices are offered");
+  ok(!!d.window.document.querySelector("#tSheetPanel #tRetrySel"),
+     "teacher panel (sheet): the Retry checking choice is offered");
   if (d.window.document.querySelector("#tSheetPanel #tExSel")) d.window.document.querySelector("#tSheetPanel #tExSel").value = "off";
   const sheetURL = ev(d, "tShareURL(false)");
   ok(/[?&]noex=1/.test(sheetURL) && /[?&]mode=sheet/.test(sheetURL), "sheet student link: carries noex=1 and mode=sheet");
@@ -217,6 +243,90 @@ const BASE = "course=math-2202&unit=1&count=10";
   /* ===== sheet route: the flags have no effect there ===== */
   d = await boot("course=math-2202&unit=1&mode=sheet&nohint=1&noex=1");
   ok(ev(d, "!!sheetState && sheetState.items.length > 0"), "sheet route: a sheet still builds with suppression flags present (flags ignored there)");
+  d.window.close();
+
+  /* ===== retry package, Part B: the retry checking-mode switch
+     on ordinary sets. The first set at the end is the honest
+     attempt; its retry checks as-you-go by default, the
+     summary says so, rkeep=1 keeps the mode, and the
+     teacher's own retry never switches. ===== */
+  function answerEnd(d, missIdx) {
+    ev(d, `(function(miss){
+      for(var i=0;i<current.length;i++){
+        var q=current[i],m=(i===miss);
+        if(q.type==="mc"){var v=m?((q.correct+1)%q.options.length):q.correct;var r=document.querySelector('input[name="opt'+i+'"][value="'+v+'"]');if(r){r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}}
+        else if(q.type==="num"){var inp=document.getElementById("ans"+i);if(inp){inp.value=String(m?(q.answer+3):q.answer);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}}
+        else{var inp2=document.getElementById("ans"+i);if(inp2){inp2.value=m?"zzz not the answer":q.answers[0];inp2.dispatchEvent(new window.Event("input",{bubbles:true}));}}
+      }
+      gradeAll();
+      for(var j=0;j<current.length;j++){
+        var sr=document.getElementById("sr"+j);
+        if(sr&&!sr.hidden){var b=sr.querySelector('[data-rate="'+(j===miss?"missed":"got")+'"]');if(b)b.click();}
+      }
+    })(${missIdx})`);
+  }
+  d = await boot(BASE + "&teacher=1", sharedT);
+  ok(d.window.document.querySelector("#tRetrySel") && d.window.document.querySelector("#tRetrySel").value === "keep",
+     "teacher device: a later teacher opening renders Retry checking as Keep (retryPref persisted)");
+  d.window.close();
+
+  d = await boot("course=math-2202&unit=1&count=6&seed=scafR1&chk=end");
+  ok(ev(d, "checkMode") === "end", "retry mode (ordinary): the first set runs check-at-the-end");
+  answerEnd(d, 0);
+  ok(!!d.window.document.querySelector("#retryMissedBtn"), "retry mode (ordinary): a missed question offers the retry");
+  ok(d.window.document.querySelector("#setSummary").textContent.includes("checks each question as you go"),
+     "retry mode (ordinary): the summary says the retry checks each question as you go");
+  ev(d, "document.querySelector('#retryMissedBtn').click()");
+  await new Promise((r) => setTimeout(r, 150));
+  ok(ev(d, "checkMode") === "each", "retry mode (ordinary): the retry runs check-as-you-go, saw " + ev(d, "checkMode"));
+  ok(ev(d, "current.length") > 0, "retry mode (ordinary): the retry set is dealt");
+  d.window.close();
+
+  d = await boot("course=math-2202&unit=1&count=6&seed=scafR1&chk=end&rkeep=1");
+  answerEnd(d, 0);
+  ok(!!d.window.document.querySelector("#retryMissedBtn"), "retry mode (ordinary, keep): the retry is offered");
+  ok(!d.window.document.querySelector("#setSummary").textContent.includes("checks each question as you go"),
+     "retry mode (ordinary, keep): no switch note when the teacher kept the mode");
+  ev(d, "document.querySelector('#retryMissedBtn').click()");
+  await new Promise((r) => setTimeout(r, 150));
+  ok(ev(d, "checkMode") === "end", "retry mode (ordinary, keep): the retry keeps check-at-the-end, saw " + ev(d, "checkMode"));
+  d.window.close();
+
+  d = await boot(BASE + "&chk=end&teacher=1");
+  ok(ev(d, "checkMode") === "end", "retry mode (teacher): the teacher's first set runs check-at-the-end");
+  answerEnd(d, 0);
+  ok(!!d.window.document.querySelector("#retryMissedBtn"), "retry mode (teacher): the retry is offered in the teacher view");
+  ok(!d.window.document.querySelector("#setSummary").textContent.includes("checks each question as you go"),
+     "retry mode (teacher): no switch note in the teacher view");
+  ev(d, "document.querySelector('#retryMissedBtn').click()");
+  await new Promise((r) => setTimeout(r, 150));
+  ok(ev(d, "checkMode") === "end", "retry mode (teacher): the teacher's retry keeps the first set's mode");
+  d.window.close();
+
+  /* ===== retry package, Part C: the fallback hint wording =====
+     Bio 2201 Unit 1 indicator 5.4 deals generator entries
+     carrying no banked hint, so their Hint button shows the
+     generic fallback. With worked examples suppressed the
+     fallback must not point at one; allowed, it is unchanged. */
+  const fbIdxOf = (dd) => ev(dd, "(function(){for(var i=0;i<current.length;i++){if(!current[i]._entry.hint1)return i;}return -1;})()");
+  d = await boot("course=bio-2201&unit=1&indicator=5.4&count=8&seed=scafC1&noex=1");
+  const fbI = fbIdxOf(d);
+  ok(fbI >= 0, "fallback (noex): the dealt set contains a question with no banked hint (index " + fbI + ")");
+  if (fbI >= 0) {
+    ev(d, "document.querySelector('[data-hint=\"" + fbI + "\"]').click()");
+    const t = d.window.document.getElementById("hint" + fbI).textContent;
+    ok(!/worked example/i.test(t), "fallback (noex): the generic hint does not point at a worked example, saw: " + t.trim().slice(0, 140));
+    ok(/first step/i.test(t), "fallback (noex): the variant fallback wording is used");
+  }
+  d.window.close();
+  d = await boot("course=bio-2201&unit=1&indicator=5.4&count=8&seed=scafC1");
+  const fbI2 = fbIdxOf(d);
+  ok(fbI2 >= 0 && fbI2 === fbI, "fallback (control): the same seed deals the same set without the flag");
+  if (fbI2 >= 0) {
+    ev(d, "document.querySelector('[data-hint=\"" + fbI2 + "\"]').click()");
+    const t2 = d.window.document.getElementById("hint" + fbI2).textContent;
+    ok(/worked example/i.test(t2), "fallback (control): with examples allowed the fallback points at the worked example, as today");
+  }
   d.window.close();
 
   console.log(fail ? "SCAFFOLD TEST FAIL (" + fail + ")" : "SCAFFOLD TEST PASS: " + pass + " assertions");

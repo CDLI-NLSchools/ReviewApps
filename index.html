@@ -972,19 +972,26 @@ function drawSet(units,inds,n,mix,orderMode,cap,pred){
          (regenerate up to 25 times to avoid an identical
          canonical question). A group whose entries are all
          Level 3 takes its turn through a single Level 3 question
-         for the whole set, the check's filler discipline; if the
-         missed groups are all Level 3, the set is that one
-         question and thin reports the shortfall. thin otherwise
-         reports only a genuine duplicate, as the check reports
-         it. */
+         for the whole set, the check's filler discipline. If the
+         set is still short after the round-robin, the cap then
+         relaxes for those all-Level-3 groups alone (Jason's
+         ruling, Nov 15, 2026): they deal further fresh instances,
+         round-robin among themselves, until the set reaches its
+         size or their variants run out, so a missed data-claims
+         group fills its retry instead of dealing a single
+         question. The relaxation reaches only as far as the
+         shortfall: when the other missed groups fill the set,
+         the cap binds as before, and ordinary checks keep the
+         cap exactly. thin otherwise reports only a genuine
+         duplicate, as the check reports it. */
       var rPool=pkPool.filter(function(e){return PKONLY_GROUPS.indexOf(pkGroupOf(e))>=0;});
       if(rPool.length){
         var byGroupR={},gOrder=[];
         rPool.forEach(function(e){var g=pkGroupOf(e);if(!byGroupR[g]){byGroupR[g]=[];gOrder.push(g);}byGroupR[g].push(e);});
         gOrder=shuffle(gOrder);
         var itemsR=[],seenRC={},useR={},l3R=0;
-        var dealR=function(g,allowL3){
-          var cands=byGroupR[g].filter(function(e){return allowL3?(e.level>=3&&l3R<1):e.level<3;});
+        var dealR=function(g,allowL3,fillL3){
+          var cands=byGroupR[g].filter(function(e){return allowL3?(e.level>=3&&(fillL3||l3R<1)):e.level<3;});
           if(!cands.length)return false;
           cands=shuffle(cands).sort(function(a,b){return (useR[a.id]||0)-(useR[b.id]||0);});
           var e=cands[0];
@@ -998,6 +1005,16 @@ function drawSet(units,inds,n,mix,orderMode,cap,pred){
           progressR=false;
           for(var gi=0;gi<gOrder.length&&itemsR.length<n;gi++){
             if(dealR(gOrder[gi],false)||dealR(gOrder[gi],true))progressR=true;
+          }
+        }
+        if(itemsR.length<n){
+          var l3OnlyR=gOrder.filter(function(g){return byGroupR[g].every(function(e){return e.level>=3;});});
+          var progressF=true;
+          while(itemsR.length<n&&progressF&&l3OnlyR.length){
+            progressF=false;
+            for(var fi=0;fi<l3OnlyR.length&&itemsR.length<n;fi++){
+              if(dealR(l3OnlyR[fi],true,true))progressF=true;
+            }
           }
         }
         if(orderMode==="unit")itemsR.sort(function(a,b){return a._entry.unit-b._entry.unit;});
@@ -1314,7 +1331,7 @@ function showHint(i){
   var box=$("hint"+i);if(!box)return;
   var stage=+(box.dataset.stage||0);
   var h1=q._entry.hint1||"",h2=q._entry.hint2||"";
-  var first=h1?stepHTML(h1):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l'exemple travaillé pour ce type de question, puis essaie le même premier pas ici.");
+  var first=h1?stepHTML(h1):(exSuppressed()?L9("Work out the first step this kind of question calls for, and try just that step here.","Trouve le premier pas que ce type de question demande, et essaie seulement ce pas ici."):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l'exemple travaillé pour ce type de question, puis essaie le même premier pas ici."));
   var last=h2?2:1;
   if(stage>=last){box.hidden=true;box.innerHTML="";box.dataset.stage="0";}
   else if(stage===0){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first;box.hidden=false;box.dataset.stage="1";}
@@ -1404,12 +1421,12 @@ function maybeSummary(){
       return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gStat[g].missed?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))+"</li>";
     }).join("")+"</ul>";
     if(anyMissedG){
-      h+='<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
+      h+=retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
     }else{
       h+="<p>"+L9("Every skill in this check was answered correctly on its first check. Nice work.","Chaque compétence de cette vérification a été réussie à la première vérification. Beau travail.")+"</p>";
     }
   }else if(missed.length){
-    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+missed.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+'</ul><p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
+    h+="<p><b>"+L9("Indicators to practise more:","Notions à pratiquer davantage :")+"</b></p><ul>"+missed.map(function(c){return "<li>"+c+L9(": "," : ")+(INDICATORS[c]||"")+"</li>";}).join("")+'</ul>'+retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
   }else{
     h+="<p>"+L9("Every indicator in this set was answered correctly on its first check. Nice work.","Chaque notion de cette série a été réussie à la première vérification. Beau travail.")+"</p>";
   }
@@ -1433,6 +1450,7 @@ function retryMissed(){
     });
     if(!gMissed.length)return;
     PKRETRY_GROUPS=gMissed;
+    if(retryWillSwitch())RETRY_AS_EACH=true;
     $("countIn").value=8;
     _suppressSeedOnce=true;
     updatePoolInfo();startOnline();
@@ -1442,6 +1460,7 @@ function retryMissed(){
   Object.keys(setResults).forEach(function(k){if(!setResults[k].ok)setResults[k].inds.forEach(function(c){if(missed.indexOf(c)<0)missed.push(c);});});
   if(!missed.length)return;
   state.inds=missed;
+  if(retryWillSwitch())RETRY_AS_EACH=true;
   $("countIn").value=Math.min(15,Math.max(5,missed.length*2));
   _suppressSeedOnce=true;
   renderIndicators();updatePoolInfo();startOnline();
@@ -1747,6 +1766,26 @@ var SHUFFLE_OPTS=false;
    appears, even after grading; a deferred but unsuppressed one
    appears at grading. */
 var NO_HINT=false,NO_EX=false;
+/* Retry checking mode (Nov 15, 2026): a retry launched from a
+   check-at-the-end set runs check-as-you-go by default, so a
+   student corrects each mistake as it comes up instead of
+   rehearsing it to the end of another set (Jason's ruling, on
+   the feedback-timing evidence: Shute 2008 and the error
+   correction literature). RETRY_KEEP is set by applyURL from
+   rkeep=1, which a student link carries only when the teacher's
+   Retry checking choice (beside the other student link choices)
+   is set to Keep the first set's mode; teacher links never carry
+   it, and the teacher's own retries never switch. RETRY_AS_EACH
+   is the one-draw stash retryMissed sets and startOnline
+   consumes where it assigns checkMode, in the PKRETRY_GROUPS
+   manner. The switched retry's mode rides the resume save body
+   like any set's, so a resumed retry keeps checking as-you-go. */
+var RETRY_KEEP=false,RETRY_AS_EACH=false;
+function retryWillSwitch(){return !TEACHER&&checkMode==="end"&&!RETRY_KEEP;}
+function retryModeNoteHtml(){
+  if(!retryWillSwitch())return "";
+  return "<p>"+L9("This practice set checks each question as you go, so you can correct mistakes as they come up.","Cette série de pratique vérifie chaque question au fur et à mesure, afin que tu puisses corriger tes erreurs dès qu'elles se présentent.")+"</p>";
+}
 function hintsAllowed(){return !!(window.__COURSE&&window.__COURSE.hints)&&!(!TEACHER&&NO_HINT);}
 function exSuppressed(){return !TEACHER&&NO_EX;}
 function exDeferred(){return !TEACHER&&checkMode==="end"&&!endGraded;}
@@ -1782,10 +1821,12 @@ function tShufSelHtml(){
 }
 function tHintPref(){try{return localStorage.getItem("hintPref")==="off"?"off":"on";}catch(e){return "on";}}
 function tExPref(){try{return localStorage.getItem("exPref")==="off"?"off":"on";}catch(e){return "on";}}
+function tRetryPref(){try{return localStorage.getItem("retryPref")==="keep"?"keep":"switch";}catch(e){return "switch";}}
 function tScafSelHtml(){
-  var hp=tHintPref(),ep=tExPref();
+  var hp=tHintPref(),ep=tExPref(),rp=tRetryPref();
   return ' <label class="hint">'+L9("Hints in student links:","Indices dans les liens des élèves :")+' <select id="tHintSel"><option value="on"'+(hp==="on"?" selected":"")+'>'+L9("On","Activés")+'</option><option value="off"'+(hp==="off"?" selected":"")+'>'+L9("Off","Désactivés")+'</option></select></label>'
-    +' <label class="hint">'+L9("Worked examples in student links:","Exemples travaillés dans les liens des élèves :")+' <select id="tExSel"><option value="on"'+(ep==="on"?" selected":"")+'>'+L9("On","Activés")+'</option><option value="off"'+(ep==="off"?" selected":"")+'>'+L9("Off","Désactivés")+'</option></select></label>';
+    +' <label class="hint">'+L9("Worked examples in student links:","Exemples travaillés dans les liens des élèves :")+' <select id="tExSel"><option value="on"'+(ep==="on"?" selected":"")+'>'+L9("On","Activés")+'</option><option value="off"'+(ep==="off"?" selected":"")+'>'+L9("Off","Désactivés")+'</option></select></label>'
+    +' <label class="hint">'+L9("Retry checking in student links:","Correction des reprises dans les liens des élèves :")+' <select id="tRetrySel"><option value="switch"'+(rp==="switch"?" selected":"")+'>'+L9("Switch to as-you-go","Passer à la correction au fur et à mesure")+'</option><option value="keep"'+(rp==="keep"?" selected":"")+'>'+L9("Keep the first set's mode","Garder le mode de la première série")+'</option></select></label>';
 }
 function tShareURL(teacher){
   var p=new URLSearchParams(settingsToURL().split("?")[1]||"");
@@ -1793,13 +1834,16 @@ function tShareURL(teacher){
   var shufSel=$("tShufSel");
   if(shufSel){try{localStorage.setItem("shufPref",shufSel.value);}catch(e){}
     if(!teacher&&shufSel.value==="shuf")p.set("shuf","1");}
-  p.delete("nohint");p.delete("noex");
+  p.delete("nohint");p.delete("noex");p.delete("rkeep");
   var hintSel=$("tHintSel");
   if(hintSel){try{localStorage.setItem("hintPref",hintSel.value);}catch(e){}
     if(!teacher&&hintSel.value==="off")p.set("nohint","1");}
   var exSel=$("tExSel");
   if(exSel){try{localStorage.setItem("exPref",exSel.value);}catch(e){}
     if(!teacher&&exSel.value==="off")p.set("noex","1");}
+  var retrySel=$("tRetrySel");
+  if(retrySel){try{localStorage.setItem("retryPref",retrySel.value);}catch(e){}
+    if(!teacher&&retrySel.value==="keep")p.set("rkeep","1");}
   if(T){var sv=tSetValue();if(sv)p.set("set",sv);
     if(T.view==="exam")p.set("mode","exam");else if(T.view==="sheet")p.set("mode","sheet");else p.delete("mode");}
   if(teacher)p.set("teacher","1");
@@ -2565,7 +2609,7 @@ function startOnline(){
   PKRETRY_GROUPS=null;
   var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
   PKONLY_DRAW=false;PKONLY_GROUPS=null;
-  current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};
+  current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};
   lastSettings=s;onlineThin=res.thin;T=null;
   if(TEACHER&&current.length){
     T={view:"online",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,state:{},endGraded:false,picker:null};
@@ -4260,6 +4304,7 @@ function applyURL(){
   if(p.get("shuf")==="1")SHUFFLE_OPTS=true;
   if(p.get("nohint")==="1")NO_HINT=true;
   if(p.get("noex")==="1")NO_EX=true;
+  if(p.get("rkeep")==="1")RETRY_KEEP=true;
   return touched;
 }
 function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;unitCheckboxes();renderIndicators();updatePoolInfo();}
