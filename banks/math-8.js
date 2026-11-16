@@ -6375,10 +6375,12 @@ BANK.forEach(function(e){var t=PKT8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pk
    (November 16, 2026)
    =====================================================================
    Thirty-four entries, appended after the Band 1 table above and
-   flagged by the PKT8S table at the end of this section. Twenty-seven
-   are verbatim copies of Mathematics 7 generators (only the entry id,
-   unit, host indicator tag and tranche metadata differ); seven are
-   authored for this adaptation. Provenance is recorded three ways, as
+   flagged by the PKT8S table at the end of this section, plus the
+   six Decision 7 completion entries at the end of this file,
+   flagged by the PKT8D7 table there. Twenty-seven of the
+   thirty-four are verbatim copies of Mathematics 7 generators
+   (only the entry id, unit, host indicator tag and tranche
+   metadata differ); seven are authored for this adaptation. Provenance is recorded three ways, as
    the specification requires: the pkSrc on each entry, this comment
    block, and the build report's source-to-host table.
 
@@ -6429,19 +6431,23 @@ BANK.forEach(function(e){var t=PKT8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pk
    8.12 to 8.17 (whole number equation forms, solving, and verifying
    by substitution), pkFor 8.1 to 8.7.
 
-   NOT IN THIS SECTION: four groups named in Section 4 of the
-   specification (factors-multiples, integer-operations,
-   fraction-operations, percent-of-amount) are held, with nothing
-   shipped for them. Their named sources are Mathematics 7 generators
-   the Band 1 tranche above already borrowed into the same groups
-   (factors-multiples and integer-operations at the specification's
-   full pool depth; fraction-operations and percent-of-amount in
-   part, with the unborrowed remainder too small, or Level 3 only,
-   to fill the specified pools). Whether the Band 1 entries count
-   toward the strand pools, the pools are filled by duplicating
-   generators already in this bank, or the shortfall is authored,
-   is a ruling the specification does not make; the groups await
-   Jason's ruling. See the build report.
+   FOUR GROUPS COMPLETED UNDER DECISION 7: four groups named in
+   Section 4 of the specification (factors-multiples,
+   integer-operations, fraction-operations, percent-of-amount) were
+   held when this section first shipped, because their named sources
+   are Mathematics 7 generators the Band 1 tranche above already
+   borrowed into the same groups, and the specification did not
+   settle whether those entries count toward the strand pools.
+   Jason's Decision 7 (November 16, 2026) rules that they do count.
+   On that count, factors-multiples (5 Band 1 entries against a
+   specified pool of 4) and integer-operations (6 against 6) already
+   stand at the specified depth and gain no entries; the completion
+   block at the end of this file tops up fraction-operations by 3
+   copies (5 Band 1 entries against a specified 8) and authors the
+   percent-of-amount shortfall of 3 entries (3 Band 1 entries
+   against a specified 6). No generator already in this bank is
+   duplicated under a second ID; that is the standing rule
+   Decision 7 sets. See the build report.
 
    Ported helpers: pk7uniq, pk7fill and pk7line are ported verbatim
    from banks/math-7/bank-pk.js, as the ladder copies call them and
@@ -6959,6 +6965,162 @@ var PKT8S = {
   "u6-pkf-check-diff": { src: "math-7:8.17", group: "verify-solution", for: PK8S_FOR_EQ }
 };
 BANK.forEach(function (e) { var t = PKT8S[e.id]; if (t) { e.pkFlag = true; e.pkSrc = t.src; e.pkFor = t.for.slice(); e.pkGroup = t.group; } });
+
+
+/* =====================================================================
+   DECISION 7 COMPLETION (November 16, 2026): the four held groups
+   =====================================================================
+   Six entries, flagged by the PKT8D7 table at the end of this block.
+   Jason's Decision 7 rules that the Band 1 entries already in this
+   bank count toward the strand pools of the four groups held when
+   the strand section above first shipped. The accounting:
+
+     factors-multiples (Unit 1): 5 Band 1 entries, specified pool 4.
+       At depth on the Band 1 count; no entries added.
+     integer-operations (Unit 2): 6 Band 1 entries, specified pool 6.
+       At depth on the Band 1 count; no entries added.
+     fraction-operations (Unit 3): 5 Band 1 entries, specified
+       pool 8. Topped up below by 3 verbatim copies of unborrowed
+       in-construct Mathematics 7 generators.
+     percent-of-amount (Unit 5): 3 Band 1 entries, specified pool 6.
+       The shortfall of 3 is authored below, at Levels 1 and 2,
+       because the only unborrowed percent generators in the
+       Mathematics 7 bank are both Level 3 and the bank admits
+       exactly one flagged Level 3 entry.
+
+   FRACTION-OPERATIONS TOP-UP (3 copies): the pool the Band 1
+   tranche left covers unlike-denominator addition and subtraction,
+   mixed-number addition and subtraction, and an addition problem.
+   The three copies complete the group's named construct (add and
+   subtract fractions and mixed numbers) at the grains it lacked:
+   like-denominator addition (u5-add-like), like-denominator
+   subtraction (u5-sub-like), and a subtraction problem on mixed
+   numbers (u5-problem-sub-mixed). Three further unborrowed
+   in-construct generators were not taken: the two figure-model
+   entries (u5-model-add-figure, u5-model-sub-figure), whose
+   u5barsSVG helper this bank does not carry, and the
+   constructed-response gap entry (u5-gap-sub-mixed-dec-cr), a
+   second format for the mixed-subtraction construct the pool
+   already carries twice. The pool reaches its specified depth
+   without them; they stay unborrowed, recorded here.
+
+   PERCENT-OF-AMOUNT SHORTFALL (3 authored): written for this
+   adaptation under Decision 7, in the group's construct (percent
+   as fraction and decimal, percent of a number, one-step percent
+   problems) at the sub-constructs the Band 1 three do not cover:
+   writing a decimal or a fraction as a percent (the reverse of
+   u5-pk-percent-convert's direction), finding the whole when the
+   part and the percent are given, and a total with 15% HST added
+   at friendly prices (the percent-on counterpart of
+   u5-pk-discount-total's percent-off problem, pitched at Level 2;
+   the Mathematics 7 bank's own tax generator is Level 3 and stays
+   unborrowed, as Decision 7 directs). Grounding: Mathematics 7
+   indicators 3.7, 6.11 and 6.12, recorded per entry in pkSrc. */
+
+E("u3-pkf-add-like", 3, ["6.4"], 1, "gen", function(){
+  var d=pick([4,5,6,7,8,9,10,11,12]);var a=ri(1,d-2);var b=ri(1,d-1-a);var s=a+b;
+  var ctx=pick(["pure","trail","recipe"]);
+  var prompt;
+  if(ctx==="trail")prompt="A hiker walks "+u5M(a,d)+" of a trail in the morning and "+u5M(b,d)+" of the trail in the afternoon. What fraction of the trail did the hiker walk in all?";
+  else if(ctx==="recipe")prompt="A recipe uses "+u5M(a,d)+" of a cup of oats and then another "+u5M(b,d)+" of a cup of oats. How many cups of oats is that in all?";
+  else prompt="What is "+u5M(a,d)+" + "+u5M(b,d)+"?";
+  var sol="Think of one whole split into "+d+" equal parts. Both fractions count parts of that same size, so add the numerators and keep the denominator.\\[ \\begin{aligned} "+FR(a,d)+" + "+FR(b,d)+" &= "+FR(s,d);
+  var rr=u5red(s,d);if(rr[0]!==s||rr[1]!==d)sol+=" \\\\ &= "+u5disp(s,d);
+  sol+=" \\end{aligned} \\] The answer is <b>"+u5M(s,d)+"</b>.";
+  return mcq(prompt,{t:u5M(s,d),fb:"Yes: the parts are the same size, so "+a+" parts + "+b+" parts = "+s+" parts of size "+d+"." },
+    u5fopts([s,d],[{p:[s,2*d],fb:"That adds the denominators as well. The size of the parts does not change when you add parts together."},{p:[Math.abs(a-b),d],fb:"That subtracts the numerators. The question asks for the total, so the numerators are added."},{p:[s+1,d],fb:"That counts one part too many: "+a+" + "+b+" = "+s+", not "+(s+1)+"."}]),
+    sol,{mode:"add-like",a:a,b:b,d:d});
+}, ["The denominators match, so the parts are the same size.","Start by adding the numerators and keeping the denominator the same."]);
+
+E("u3-pkf-sub-like", 3, ["6.4"], 1, "gen", function(){
+  var d=pick([4,5,6,7,8,9,10,12]);var a=ri(3,d-1);var b=ri(1,a-1);var s=a-b;
+  var ctx=pick(["pure","ribbon","tank"]);
+  var prompt;
+  if(ctx==="ribbon")prompt="A ribbon is "+u5M(a,d)+" of a metre long. A piece "+u5M(b,d)+" of a metre is cut off. How much ribbon is left?";
+  else if(ctx==="tank")prompt="A tank is "+u5M(a,d)+" full. Then "+u5M(b,d)+" of the tank is used. What fraction of the tank is left?";
+  else prompt="What is "+u5M(a,d)+" - "+u5M(b,d)+"?";
+  var sol="The parts are the same size, so subtract the numerators and keep the denominator.\\[ \\begin{aligned} "+FR(a,d)+" - "+FR(b,d)+" &= "+FR(s,d);
+  var rr=u5red(s,d);if(rr[0]!==s||rr[1]!==d)sol+=" \\\\ &= "+u5disp(s,d);
+  sol+=" \\end{aligned} \\] The answer is <b>"+u5M(s,d)+"</b>.";
+  return mcq(prompt,{t:u5M(s,d),fb:"Yes: "+a+" parts take away "+b+" parts leaves "+s+" parts of size "+d+"."},
+    u5fopts([s,d],[{p:[a+b,d],fb:"That adds the numerators. The question asks how much is left, so subtract."},{p:[s,2*d],fb:"That changes the denominator. Subtracting parts does not change the size of each part."},{p:[s+1,d],fb:"That counts one part too many: "+a+" - "+b+" = "+s+", not "+(s+1)+"."}]),
+    sol,{mode:"sub-like",a:a,b:b,d:d});
+}, ["The denominators match, so the parts are the same size.","Start by subtracting the numerators and keeping the denominator the same."]);
+
+E("u3-pkf-problem-sub-mixed", 3, ["6.4"], 1, "gen", function(){
+  var d=pick([3,4,5,6,8,10,12]);var w2=ri(1,3);var w1=w2+ri(1,3);var n2=ri(1,d-2);var n1=n2+ri(1,d-1-n2);var cc=0;
+  while((u5gcd(n1,d)!==1||u5gcd(n2,d)!==1)&&cc<40){n2=ri(1,d-2);n1=n2+ri(1,d-1-n2);cc++;}
+  if(u5gcd(n1,d)!==1||u5gcd(n2,d)!==1){d=7;n2=ri(1,5);n1=n2+ri(1,6-n2);}
+  var N=(w1-w2)*d+(n1-n2);
+  var A=u5disp(w1*d+n1,d),B=u5disp(w2*d+n2,d);
+  var ctx=pick(["rope","juice","ribbon"]);
+  var prompt;
+  if(ctx==="rope")prompt="A rope is "+"\\("+A+"\\)"+" metres long. A piece "+"\\("+B+"\\)"+" metres long is cut off for a tent. How many metres of rope are left? Give your answer as a fraction or mixed number in lowest terms.";
+  else if(ctx==="juice")prompt="A jug holds "+"\\("+A+"\\)"+" litres of juice. At lunch, "+"\\("+B+"\\)"+" litres are poured out. How many litres are left? Give your answer as a fraction or mixed number in lowest terms.";
+  else prompt="A ribbon is "+"\\("+A+"\\)"+" metres long. A gift uses "+"\\("+B+"\\)"+" metres of it. How many metres of ribbon are left? Give your answer as a fraction or mixed number in lowest terms.";
+  var sol="The amount left is a difference. Subtract the whole numbers and then the fraction parts.\\[ \\begin{aligned} "+A+" - "+B+" &= "+(w1-w2)+" + "+FR(n1-n2,d)+" \\\\ &= "+u5disp(N,d)+" \\end{aligned} \\] The answer is <b>"+u5M(N,d)+"</b>.";
+  return textq(prompt,u5accept(N,d),sol,{mode:"problem-sub-mixed",w1:w1,n1:n1,w2:w2,n2:n2,d:d});
+}, ["The question asks how much is left, so the amounts are subtracted.","Start by subtracting the whole numbers, then subtract the fraction parts."]);
+
+E("u5-pkf-write-percent", 5, ["3.1"], 1, "gen", function(){
+  var mode = pick(["dec","frac"]);
+  var p, prompt, sol;
+  if(mode==="dec"){
+    p = ri(12,88);
+    var stem = fmt(p/100);
+    prompt = "Write " + stem + " as a percent.";
+    sol = "To write a decimal as a percent, multiply by 100, which moves the decimal point two places to the right. \\[ " + stem + " \\times 100 = " + p + " \\] The answer is <b>" + p + "%</b>.";
+  } else {
+    var fr = pick([[3,4],[2,5],[3,5],[4,5],[7,10],[3,10],[9,20],[11,20],[13,20],[17,20],[7,25],[13,25],[17,25],[19,25],[21,25],[23,50],[29,50],[31,50],[33,50],[41,50]]);
+    p = fr[0]*100/fr[1];
+    var k = 100/fr[1];
+    prompt = "Write " + u5M(fr[0],fr[1]) + " as a percent.";
+    sol = "Rewrite the fraction with denominator 100, since a percent is a part out of 100. \\[ " + FR(fr[0],fr[1]) + " = " + FR(fr[0]*k,100) + " = " + p + "\\% \\] The answer is <b>" + p + "%</b>.";
+  }
+  var compT = (p === 50) ? "25%" : (100 - p) + "%";
+  var compFb = (p === 50)
+    ? "That is half of the correct percent. The given value is 50 parts out of 100, not 25."
+    : "That is the part of 100 left over after " + p + "% is taken. The question asks for the percent that equals the given value.";
+  return mcq(prompt,
+    { t: p + "%", fb: "Yes: the given value is " + p + " parts out of 100." },
+    [ { t: compT, fb: compFb },
+      { t: fmt(p/10) + "%", fb: "That is one tenth of the correct percent. A percent counts parts out of 100, not out of 10." },
+      { t: (p*10) + "%", fb: "That is ten times the correct percent. A percent counts parts out of 100, not out of 1000." } ],
+    sol, { mode: mode, p: p });
+}, ["A percent is a part out of 100.", "Start by writing the given value as a part out of 100."]);
+
+E("u5-pkf-find-whole", 5, ["3.1"], 2, "gen", function(){
+  var W = pick([40,50,60,80,100,120,150,200,240,300,400]);
+  var ps = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95].filter(function(x){ return (W*x)%100===0; });
+  var p = pick(ps), part = W*p/100;
+  var ctx = pick(["pure","bus","league"]);
+  var prompt;
+  if(ctx==="bus") prompt = part + " students at a school take the bus. That is " + p + "% of the students at the school. How many students are at the school? Show your work.";
+  else if(ctx==="league") prompt = "A sports league has " + part + " players who live in one town. That is " + p + "% of the league's players. How many players are in the league? Show your work.";
+  else prompt = part + " is " + p + "% of what number? Show your work.";
+  var sol = "The given amount is the part, and it is " + p + "% of the whole. Divide the part by the decimal form of the percent. \\[ \\begin{aligned} \\text{whole} &= " + part + " \\div " + fmt(p/100) + " \\\\ &= " + W + " \\end{aligned} \\] Check: " + p + "% of " + W + " is " + part + ". The answer is <b>" + W + "</b>.";
+  return numq(prompt, W, 0, sol, { W: W, p: p, part: part });
+}, ["The percent and the part are given; the whole is the missing value.", "Start by dividing the part by the percent written as a decimal."]);
+
+E("u5-pkf-hst-total", 5, ["3.1"], 2, "gen", function(){
+  var P = pick([40,60,80,100,120,140,160,180,200,240,300]);
+  var tax = P*15/100, total = P + tax;
+  var item = pick(["pair of winter boots","bicycle helmet","winter jacket","set of skates","backpack"]);
+  var sol = "Find the tax first, then add it to the price. \\[ \\begin{aligned} \\text{tax} &= 15\\% \\text{ of } " + P + " = " + tax + " \\\\ \\text{total cost} &= " + P + " + " + tax + " = " + total + " \\end{aligned} \\] The answer is <b>$" + total + "</b>.";
+  return numq("A " + item + " is priced at $" + P + " before tax. HST of 15% is added to the price. What is the total cost, in dollars? Show your work.", total, 0, sol, { P: P });
+}, ["HST is charged on top of the price: find 15% of the price first, then add it on.", "Start by multiplying the price by 0.15 to get the tax."]);
+
+var PK8S_FOR_FRAC = ["6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13", "6.14", "6.15", "6.16", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15", "3.16", "3.17", "3.18"];
+var PK8S_FOR_PCT = ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "6.1", "6.2", "6.3"];
+var PKT8D7 = {
+  "u3-pkf-add-like": { src: "math-7:6.14,6.13", group: "fraction-operations", for: PK8S_FOR_FRAC },
+  "u3-pkf-sub-like": { src: "math-7:6.19", group: "fraction-operations", for: PK8S_FOR_FRAC },
+  "u3-pkf-problem-sub-mixed": { src: "math-7:6.23,6.21", group: "fraction-operations", for: PK8S_FOR_FRAC },
+  "u5-pkf-write-percent": { src: "authored:percent as a decimal or fraction written as a percent, authored for this adaptation under Decision 7, placement per the specification (Math 7 indicator 3.7)", group: "percent-of-amount", for: PK8S_FOR_PCT },
+  "u5-pkf-find-whole": { src: "authored:one-step percent problems (find the whole from the part and the percent), authored for this adaptation under Decision 7, placement per the specification (Math 7 indicators 6.11, 6.12)", group: "percent-of-amount", for: PK8S_FOR_PCT },
+  "u5-pkf-hst-total": { src: "authored:one-step percent problems (total cost with 15% HST added), authored for this adaptation under Decision 7, placement per the specification (Math 7 indicators 6.11, 6.12)", group: "percent-of-amount", for: PK8S_FOR_PCT }
+};
+BANK.forEach(function (e) { var t = PKT8D7[e.id]; if (t) { e.pkFlag = true; e.pkSrc = t.src; e.pkFor = t.for.slice(); e.pkGroup = t.group; } });
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
