@@ -1844,6 +1844,26 @@ rep(' "ordering-numbers":["Ordering numbers on a number line","Ordonner des nomb
 rep(' "substitution":["Evaluating expressions by substitution","Évaluer des expressions par substitution"],',
     ' "squares":["Squaring numbers","Élever un nombre au carré"],\n "substitution":["Evaluating expressions by substitution","Évaluer des expressions par substitution"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
 
+# ---------- Band 3 Piece 1 grp link parameter (Nov 16, 2026) ----------
+rep('pk:false,enr:false,pkIn:true,pkOnly:false};',
+    'pk:false,enr:false,pkIn:true,pkOnly:false,pkGroups:null};', count=1)  # grp: hidCtl stash (Nov 16, 2026)
+rep('function pkOnlyActive(){\n  return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.pkOnly:false;\n}',
+    'function pkOnlyActive(){\n  return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.pkOnly:false;\n}\n/* Fluency strand practice links (Nov 16, 2026, Band 3 Piece 1):\n   the grp link parameter names pkGroup slugs for a pkonly set;\n   applyURL stashes them in hidCtl.pkGroups, settings() carries\n   them only on a pkOnly set, settingsToURL writes them back as\n   grp so the parameter round-trips and a grp set\'s save\n   signature differs from a plain check\'s, and startOnline seeds\n   PKONLY_GROUPS from them when no retry stash is pending, so\n   drawSet\'s group-keyed branch deals the named groups mixed\n   (round-robin across them), or the single named group alone\n   for a repair set. */\nfunction pkGroupsActive(){\n  return (typeof hidCtl!=="undefined"&&hidCtl&&hidCtl.pkGroups&&hidCtl.pkGroups.length)?hidCtl.pkGroups.slice():null;\n}', count=1)  # grp: reader (Nov 16, 2026)
+rep('    pkOnly:pkOnlyActive(),',
+    '    pkOnly:pkOnlyActive(),\n    pkGroups:pkOnlyActive()?pkGroupsActive():null,', count=1)  # grp: settings (Nov 16, 2026)
+rep('  if(s.pkOnly)p.set("pkonly","1");',
+    '  if(s.pkOnly)p.set("pkonly","1");\n  if(s.pkOnly&&s.pkGroups&&s.pkGroups.length)p.set("grp",s.pkGroups.join(","));', count=1)  # grp: settingsToURL (Nov 16, 2026)
+rep('  if(p.get("pkonly")==="1"){hidCtl.pkOnly=true;}',
+    '  if(p.get("pkonly")==="1"){hidCtl.pkOnly=true;}\n  if(p.get("grp")){hidCtl.pkGroups=p.get("grp").split(",").map(function(x){return x.trim();}).filter(function(x){return x;});}', count=1)  # grp: applyURL (Nov 16, 2026)
+rep('  PKONLY_GROUPS=(PKONLY_DRAW&&typeof PKRETRY_GROUPS!=="undefined"&&PKRETRY_GROUPS&&PKRETRY_GROUPS.length)?PKRETRY_GROUPS:null;',
+    '  PKONLY_GROUPS=(PKONLY_DRAW&&typeof PKRETRY_GROUPS!=="undefined"&&PKRETRY_GROUPS&&PKRETRY_GROUPS.length)?PKRETRY_GROUPS:(PKONLY_DRAW&&s.pkGroups&&s.pkGroups.length?s.pkGroups:null);', count=1)  # grp: startOnline seeding (Nov 16, 2026)
+rep('state.finalCap=(cap==="final");hidCtl.pkOnly=false;unitCheckboxes();',
+    'state.finalCap=(cap==="final");hidCtl.pkOnly=false;hidCtl.pkGroups=null;unitCheckboxes();', count=1)  # grp: preset clears the stash (Nov 16, 2026)
+rep('$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;startOnline();});',
+    '$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;hidCtl.pkGroups=null;startOnline();});', count=1)  # grp: ordinary practice clears the stash (Nov 16, 2026)
+rep('b.addEventListener("click",function(){\n  hidCtl.pkOnly=true;',
+    'b.addEventListener("click",function(){\n  hidCtl.pkOnly=true;hidCtl.pkGroups=null;', count=1)  # grp: the check action deals the full check (Nov 16, 2026)
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

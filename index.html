@@ -854,6 +854,19 @@ function pkIncluded(){
 function pkOnlyActive(){
   return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.pkOnly:false;
 }
+/* Fluency strand practice links (Nov 16, 2026, Band 3 Piece 1):
+   the grp link parameter names pkGroup slugs for a pkonly set;
+   applyURL stashes them in hidCtl.pkGroups, settings() carries
+   them only on a pkOnly set, settingsToURL writes them back as
+   grp so the parameter round-trips and a grp set's save
+   signature differs from a plain check's, and startOnline seeds
+   PKONLY_GROUPS from them when no retry stash is pending, so
+   drawSet's group-keyed branch deals the named groups mixed
+   (round-robin across them), or the single named group alone
+   for a repair set. */
+function pkGroupsActive(){
+  return (typeof hidCtl!=="undefined"&&hidCtl&&hidCtl.pkGroups&&hidCtl.pkGroups.length)?hidCtl.pkGroups.slice():null;
+}
 function pkGroupOf(e){
   if(e.pkGroup)return e.pkGroup;
   for(var i=0;i<e.indicators.length;i++){if(e.indicators[i].indexOf("PK")===0)return e.indicators[i];}
@@ -1389,7 +1402,7 @@ function updatePoolInfo(){refreshFace();refreshPkCheckBtn();
    resolve when the controls are absent from the DOM: hiding a control
    never disables the setting behind it, and a link a teacher built
    composes the identical set for a student. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:true,pkOnly:false};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:true,pkOnly:false,pkGroups:null};
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
@@ -1422,6 +1435,7 @@ function settings(){
     enr:enrichIncluded(),
     pkIn:pkIncluded(),
     pkOnly:pkOnlyActive(),
+    pkGroups:pkOnlyActive()?pkGroupsActive():null,
     seed:($("seedIn")?$("seedIn").value.trim():""),
     mix:[+tCtlVal("lv1",hidCtl.mix[0])||0,+tCtlVal("lv2",hidCtl.mix[1])||0,+tCtlVal("lv3",hidCtl.mix[2])||0]};
 }
@@ -2783,7 +2797,7 @@ function startOnline(){
   stopExamTimer();
   var s=settings();var _sd=activeSeed(s);sessionSeed=_sd;
   PKONLY_DRAW=!!s.pkOnly;
-  PKONLY_GROUPS=(PKONLY_DRAW&&typeof PKRETRY_GROUPS!=="undefined"&&PKRETRY_GROUPS&&PKRETRY_GROUPS.length)?PKRETRY_GROUPS:null;
+  PKONLY_GROUPS=(PKONLY_DRAW&&typeof PKRETRY_GROUPS!=="undefined"&&PKRETRY_GROUPS&&PKRETRY_GROUPS.length)?PKRETRY_GROUPS:(PKONLY_DRAW&&s.pkGroups&&s.pkGroups.length?s.pkGroups:null);
   PKRETRY_GROUPS=null;
   var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
   PKONLY_DRAW=false;PKONLY_GROUPS=null;
@@ -4540,6 +4554,7 @@ function settingsToURL(){
   if(s.enr)p.set("enr","1");
   if(!s.pkIn)p.set("pkin","0");
   if(s.pkOnly)p.set("pkonly","1");
+  if(s.pkOnly&&s.pkGroups&&s.pkGroups.length)p.set("grp",s.pkGroups.join(","));
   if(s.seed)p.set("seed",s.seed);
   if(s.mix.join()!==((window.__COURSE&&window.__COURSE.defaultMix)?window.__COURSE.defaultMix.join(","):"20,60,20"))p.set("levels",s.mix.join(","));
   return location.pathname+"?"+p.toString();
@@ -4565,6 +4580,7 @@ function applyURL(){
   if(p.get("enr")==="1"){hidCtl.enr=true;if($("enrChk"))$("enrChk").checked=true;}
   if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").checked=false;}
   if(p.get("pkonly")==="1"){hidCtl.pkOnly=true;}
+  if(p.get("grp")){hidCtl.pkGroups=p.get("grp").split(",").map(function(x){return x.trim();}).filter(function(x){return x;});}
   if(p.get("seed")&&$("seedIn"))$("seedIn").value=p.get("seed");
   if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
   if(p.get("teacher")==="1"){TEACHER=true;var tn=$("teacherNote");if(tn)tn.hidden=false;if(!ANALYTICS_TEACHER_SENT){ANALYTICS_TEACHER_SENT=true;countEvent("teacher_open",[analyticsCourse()]);}}
@@ -4574,7 +4590,7 @@ function applyURL(){
   if(p.get("rkeep")==="1")RETRY_KEEP=true;
   return touched;
 }
-function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;unitCheckboxes();renderIndicators();updatePoolInfo();}
+function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;hidCtl.pkGroups=null;unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=(__c.appName||(__c.shortName+" Review"));var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.appName||((__c.longName||__c.shortName)+" Review"));var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 /* French static markup (student side): when the active course is
@@ -4661,9 +4677,9 @@ $("seedGen").addEventListener("click",function(){var words=["otter","maple","har
 $("seedIn").addEventListener("input",refreshFace);
 $("countIn").addEventListener("input",refreshFace);
 $("chkIn").addEventListener("change",refreshFace);
-$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;startOnline();});
+$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;hidCtl.pkGroups=null;startOnline();});
 (function(){var b=$("pkCheckBtn");if(!b)return;b.addEventListener("click",function(){
-  hidCtl.pkOnly=true;
+  hidCtl.pkOnly=true;hidCtl.pkGroups=null;
   var pool=poolFor(state.units,[],false).filter(function(e){return isPK(e);});
   var ci=$("countIn");if(ci)ci.value=Math.min(8,pool.length);
   updatePoolInfo();startOnline();
