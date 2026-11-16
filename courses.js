@@ -835,6 +835,164 @@ window.COURSES = {
   unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
 },
 
+"sci-7-fr": {
+  id: "sci-7-fr",
+  curriculum: "NL",
+  longName: "Sciences 7e année",
+  appName: "Révision de sciences 7e année",
+  title: "Sciences 7e année : banque de questions d’entraînement",
+  shortName: "Sciences 7",
+  storagePrefix: "s7fr",
+  reportName: "Révision de sciences 7e année",
+  language: "fr",
+  bankFile: "sci-7-fr.js",
+  subject: "Sciences",
+  grade: 7,
+  listed: false,
+  panels: {},
+
+  units: {
+    1: "Les interactions au sein des écosystèmes",
+    2: "La chaleur",
+    3: "Les mélanges et les solutions",
+    4: "La croûte terrestre"
+  },
+
+  /* All four units' indicators from the eNLightenED Units
+     and Indicators spreadsheet for the current French guide,
+     in spreadsheet order. Built Nov 16, 2026, keyed to the
+     French guide; the course stays unlisted until Jason
+     releases it. */
+  indicators: {
+    "SC7.1.1": "Les facteurs biotiques et abiotiques d’un écosystème local",
+    "SC7.1.2": "Des interactions entre des facteurs biotiques et abiotiques dans un écosystème (interactions biotiques-abiotiques, interactions abiotiques-abiotiques, interactions biotiques-biotiques)",
+    "SC7.1.3": "Une interaction entre un facteur biotique et un facteur abiotique dans un écosystème",
+    "SC7.1.4": "La symbiose",
+    "SC7.1.5": "Les rôles de producteurs, consommateurs et décomposeurs dans un écosystème local",
+    "SC7.1.6": "Classer les membres d’un groupe diversifié d’organismes, selon qu’il s’agit de producteurs, de consommateurs ou de décomposeurs",
+    "SC7.1.7": "Comment l’énergie est fournie à un réseau alimentaire et comment elle est transmise dans celui-ci",
+    "SC7.1.8": "Décrire, à l’aide d’une pyramide, comment l’énergie est fournie à une chaîne alimentaire et comment elle est transmise dans celle-ci",
+    "SC7.1.9": "Comment la matière est recyclée dans un écosystème par l’entremise d’interactions entre des plantes, des animaux, des champignons et des microorganismes",
+    "SC7.1.10": "Des signes de la succession écologique dans un écosystème local",
+    "SC7.2.1": "Montrer l’importance de choisir des termes scientifiques pertinents",
+    "SC7.2.2": "Le concept de réseau alimentaire comme outil d’interprétation de la structure et des interactions d’un écosystème",
+    "SC7.2.3": "En quoi notre besoin d’approvisionnement continu en bois a donné lieu à la création de la sylviculture",
+    "SC7.2.4": "Prendre des décisions avisées sur les techniques d’exploitation forestière en tenant compte des avantages et des inconvénients pour l’environnement",
+    "SC7.2.5": "Donner des exemples de la façon dont notre compréhension de l’écologie de la forêt boréale a conditionné nos méthodes d’exploitation forestière en soulignant les effets positifs de ces méthodes",
+    "SC7.2.6": "Repérer différentes carrières axées sur les sciences et la technologie dans le domaine de la gestion et de l’exploitation forestières",
+    "SC7.2.7": "Et défendre un plan d’action afin de protéger l’habitat local d’un organisme donné",
+    "SC7.2.8": "Différentes sources pour faire des recherches auprès de personnes ou de groupes au Canada soucieux de la protection de l’environnement (Notamment : personnes et groupes locaux, nationaux, internationaux)",
+    "SC7.3.1": "Des questions sur un écosystème local, notamment : « Quels types d’espèces vivent dans un écosystème donné? »",
+    "SC7.3.2": "Et délimiter des questions afin d’explorer un écosystème local",
+    "SC7.3.3": "À l’aide d’instruments utilisés de façon efficace et avec exactitude, organiser et consigner les données recueillies au cours de l’exploration d’un écosystème",
+    "SC7.3.4": "Des questions, des idées, des plans et des résultats par l’entremise de listes, de notes écrites en style télégraphique, de phrases, de langage oral et d’autres moyens",
+    "SC7.3.5": "En collaboration avec des membres d’une équipe pour élaborer et réaliser un plan et traiter des problèmes au fur et à mesure qu’ils surviennent",
+    "SC7.3.6": "Des procédures utilisées par des individus et des groupes dans la planification, la prise de décisions et l’accomplissement d’une tâche",
+    "SC7.3.7": "Une clé pour identifier les facteurs biotiques observés dans un écosystème local",
+    "SC7.3.8": "Et réaliser une expérience et contrôler les variables",
+    "SC7.3.9": "Organiser, compiler et afficher des données sous forme de tableaux",
+    "SC7.3.10": "Une position sur une question ou un problème, basée sur des découvertes",
+    "SC7.3.11": "Dresser une liste des limites des chaînes alimentaires, des réseaux alimentaires et des pyramides d’énergie",
+    "SC7.3.12": "Ce à quoi un écosystème ressemblera à l’avenir selon les caractéristiques de la région",
+    "SC7.3.13": "Les changements qui se produisent au cours de la succession primaire et secondaire à l’aide d’une représentation graphique",
+    "SC7.4.1": "Différents instruments utilisés pour mesurer la température (thermomètre à liquide, thermocouple, thermomètre à résistance, thermomètre à bilame (thermostat), thermomètre à infrarouge)",
+    "SC7.4.2": "La température à l’aide du modèle particulaire de la matière",
+    "SC7.4.3": "Comment chaque état de la matière réagit aux changements de température",
+    "SC7.4.4": "Les changements d’état à l’aide du modèle particulaire de la matière (notamment : fusion, congélation, évaporation)",
+    "SC7.4.5": "La transmission de la chaleur par conduction, convection et radiation",
+    "SC7.4.6": "Comment diverses surfaces absorbent de la chaleur radiante",
+    "SC7.4.7": "Comparer, en termes qualitatifs, les différences entre la chaleur massique de certains matériaux familiers (notamment: eau, glace, aluminium, ciment, acier)",
+    "SC7.5.1": "Des liens entre ses activités personnelles et la température, dans des situations formelles et informelles",
+    "SC7.5.2": "Donner des exemples de technologies utilisées autrefois pour mesurer la température (notamment: Thermomètre à air de Galilée, Premiers thermomètres à liquide)",
+    "SC7.5.3": "Donner des exemples de technologies de chauffage utilisées autrefois et de nos jours pour chauffer les maisons de Terre-Neuve-et-Labrador (notamment: poêle à bois, chauffage électrique, chaudière à mazout, pompe à chaleur air-air,",
+    "SC7.5.4": "Les différentes approches utilisées pour résoudre les problèmes de chauffage domestique pendant les périodes froides de l’année",
+    "SC7.5.5": "Prendre des décisions avisées quant aux différentes technologies de chauffage domestique utilisées, en tenant compte des avantages et des inconvénients éventuels",
+    "SC7.5.6": "Des exemples par lesquels des technologies utilisées pour le chauffage domestique se sont améliorées au fil du temps",
+    "SC7.5.7": "Donner des exemples de la façon dont notre compréhension de l’évaporation et de la condensation des liquides a donné lieu au développement de la pompe à chaleur",
+    "SC7.5.8": "Donner des exemples de technologies isolantes utilisées aujourd’hui et dans le passé (notamment: fourrure animale, gazon, fibre de verre, matériaux isothermes)",
+    "SC7.5.9": "Comment nos besoins peuvent mener à des développements scientifiques et technologiques",
+    "SC7.5.10": "Des carrières fondées sur les sciences et la technologie, et qui sont liées à la chaleur et à la température",
+    "SC7.6.1": "Des méthodes et des outils qui conviennent à la construction et à la mise à l’essai d’un thermomètre",
+    "SC7.6.2": "Compiler et afficher des données collectées au cours de la mise à l’essai de la conception du thermomètre fabriqué",
+    "SC7.6.3": "Une hypothèse, faire une expérience, repérer et contrôler les variables importantes et énoncer une conclusion fondée sur des données expérimentales",
+    "SC7.6.4": "Des dispositifs de chauffage et des instruments de mesure de façon sûre et avec précision",
+    "SC7.6.5": "Organiser, compiler et afficher des données à l’aide de tableaux et de graphiques",
+    "SC7.6.6": "Et réaliser une expérience pour vérifier des questions définies, énoncer une hypothèse, et définir et contrôler des variables importantes",
+    "SC7.6.7": "Des outils et des instruments de façon sécuritaire",
+    "SC7.6.8": "Et afficher des données à l’aide de tableaux et de graphiques",
+    "SC7.6.9": "Une conclusion fondée sur des données expérimentales et expliquer comment les données recueillies appuient ou réfutent une idée initiale",
+    "SC7.7.1": "Des substances pures de mélanges, en utilisant la théorie particulaire de la matière",
+    "SC7.7.2": "Faire la différence entre un mélange hétérogène (mécanique) et un mélange homogène (solution) à l’aide du modèle particulaire de la matière",
+    "SC7.7.3": "La dissolution comme une caractéristique de solutions à l’aide du modèle particulaire de la matière",
+    "SC7.7.4": "Qualitativement et quantitativement la concentration des solutions",
+    "SC7.7.5": "Qualitativement les facteurs qui affectent la solubilité d’un solide et d’un gaz. Notamment : (i) température (ii) pression",
+    "SC7.7.6": "Des outils et des instruments de façon sûre, et identifier et séparer les composantes de mélanges",
+    "SC7.7.7": "Des techniques de séparation courantes. Notamment : (i) égoutter des spaghettis dans une passoire (ii) dégraisser une soupe (iii) faire sécher du linge (séparer l’eau du tissu) (iv) utiliser une moustiquaire pour laisser en",
+    "SC7.8.1": "Les sciences qui sous-tendent l’utilisation d’un dispositif de distillation, à l’aide des termes suivants : ébullition, évaporation et condensation",
+    "SC7.8.2": "La distillation comme exemple pour montrer l’évolution des techniques de raffinage et de séparation. Notamment : - distillation simple - distillation fractionnée",
+    "SC7.8.3": "Donner des exemples de façons par lesquelles les sciences affectent sa vie au chapitre des mélanges et des solutions",
+    "SC7.8.4": "Certains effets positifs et négatifs, ainsi que des conséquences prévues et imprévues de l’utilisation de sel sur les routes",
+    "SC7.8.5": "Comment notre compréhension des propriétés des solutions a entraîné le développement des technologies de déglaçage des routes",
+    "SC7.8.6": "Prendre des décisions avisées sur l’utilisation du sel de voirie comme principal produit chimique destiné à déglacer les routes en tenant compte des avantages et des inconvénients sociaux, économiques et environnementaux",
+    "SC7.9.1": "Une hypothèse basée sur des renseignements de fond ou un schéma d’événements observés",
+    "SC7.9.2": "Et délimiter des questions et des problèmes facilitant la réalisation de recherches",
+    "SC7.9.3": "Repérer la droite la mieux ajustée et interpoler ou extrapoler en fonction de celle-ci",
+    "SC7.9.4": "Une hypothèse vérifiable sur les effets de la température sur la solubilité",
+    "SC7.9.5": "Des procédures qui contrôlent les variables importantes pour étudier l’effet de la température sur la solubilité",
+    "SC7.9.6": "Des procédures qui contrôlent les variables importantes pour répondre à des questions découlant de problèmes pratiques et d’enjeux",
+    "SC7.9.7": "De façon efficace et avec exactitude des outils et des instruments appliqués à des procédures et à la collecte de données",
+    "SC7.9.8": "Répondre à de nouvelles questions résultant des activités de séparation de mélanges",
+    "SC7.10.1": "Les minéraux selon leurs propriétés physiques",
+    "SC7.10.2": "Les roches selon leurs caractéristiques et leur mode de formation",
+    "SC7.10.3": "Les caractéristiques de la croûte terrestre et de certaines technologies qui ont permis aux scientifiques d’étudier les caractéristiques géologiques de la croûte terrestre, en profondeur et en surface",
+    "SC7.10.4": "Certains événements catastrophiques tels que les séismes ou les éruptions volcaniques qui surviennent à la surface ou près de la surface terrestre",
+    "SC7.10.5": "Et analyser des données liées à la distribution géographique des séismes et des éruptions volcaniques afin de déterminer des régularités et des tendances",
+    "SC7.10.6": "Le processus de la formation de montagnes",
+    "SC7.10.7": "Développer un modèle chronologique ou une échelle du temps géologique traçant les événements prédominants de l’histoire de la Terre",
+    "SC7.10.8": "Les différentes façons dont les roches sont altérées et érodées pour former les sols",
+    "SC7.10.9": "Les différents types de sols selon leurs caractéristiques. Notamment : (i) sol de texture grossière (gravier sableux) (ii) sol de texture moyenne (loameux) (iii) sol de texture fine (argile)",
+    "SC7.11.1": "Comment la théorie de la tectonique des plaques a évolué à la lumière de nouvelles données géologiques",
+    "SC7.11.2": "Donner des exemples de la contribution canadienne à notre compréhension de la géologie locale, régionale et mondiale",
+    "SC7.11.3": "Comment nos explications de la façon dont la Terre a évolué au fil du temps reposent sur un ensemble de données et de relations entre différentes observations",
+    "SC7.11.4": "Comment notre compréhension des forces qui ont façonné la Terre ont évolué au fil du temps à mesure que de nouvelles données étaient recueillies",
+    "SC7.11.5": "La théorie de la dérive des continents comme l’une des premières explications de la façon dont la Terre a évolué au fil du temps",
+    "SC7.11.6": "La théorie de la tectonique des plaques comme un exemple d’un changement radical dans notre vision du monde",
+    "SC7.11.7": "Donner des exemples de théories utilisées autrefois pour expliquer l’activité volcanique, les séismes et la formation des montagnes",
+    "SC7.12.1": "Une clé de classification des minéraux pour explorer les questions découlant de problèmes pratiques",
+    "SC7.12.2": "Des méthodes et des outils qui conviennent à la collecte et à l’organisation de données afin d’identifier des minéraux",
+    "SC7.12.3": "À l’aide d’une clé de classification, identifier des minéraux courants, notamment : (i) quartz (ii) calcite (iii) magnétite (iv) mica (v) pyrite (vi) galène (vii) gypse (viii)talc (ix) feldspath (x) hématite",
+    "SC7.12.4": "Des questions à étudier découlant de l’étude du cycle des roches",
+    "SC7.12.5": "Des procédures qui contrôlent les variables importantes pour répondre à des questions découlant de problèmes pratiques",
+    "SC7.12.6": "De façon efficace et avec exactitude des instruments de collecte de données",
+    "SC7.12.7": "Compiler, organiser et afficher des données sous forme de tableau",
+    "SC7.12.8": "Des régularités et des tendances dans des données et inférer et expliquer des rapports entre des variables",
+    "SC7.12.9": "Une conclusion fondée sur des données expérimentales et expliquer comment les données recueillies appuient ou réfutent une idée initiale"
+  },
+
+  unitInd: {
+    1: ["SC7.1.1", "SC7.1.2", "SC7.1.3", "SC7.1.4", "SC7.1.5", "SC7.1.6", "SC7.1.7", "SC7.1.8", "SC7.1.9",
+        "SC7.1.10", "SC7.2.1", "SC7.2.2", "SC7.2.3", "SC7.2.4", "SC7.2.5", "SC7.2.6", "SC7.2.7", "SC7.2.8",
+        "SC7.3.1", "SC7.3.2", "SC7.3.3", "SC7.3.4", "SC7.3.5", "SC7.3.6", "SC7.3.7", "SC7.3.8", "SC7.3.9",
+        "SC7.3.10", "SC7.3.11", "SC7.3.12", "SC7.3.13"],
+    2: ["SC7.4.1", "SC7.4.2", "SC7.4.3", "SC7.4.4", "SC7.4.5", "SC7.4.6", "SC7.4.7", "SC7.5.1", "SC7.5.2",
+        "SC7.5.3", "SC7.5.4", "SC7.5.5", "SC7.5.6", "SC7.5.7", "SC7.5.8", "SC7.5.9", "SC7.5.10", "SC7.6.1",
+        "SC7.6.2", "SC7.6.3", "SC7.6.4", "SC7.6.5", "SC7.6.6", "SC7.6.7", "SC7.6.8", "SC7.6.9"],
+    3: ["SC7.7.1", "SC7.7.2", "SC7.7.3", "SC7.7.4", "SC7.7.5", "SC7.7.6", "SC7.7.7", "SC7.8.1", "SC7.8.2",
+        "SC7.8.3", "SC7.8.4", "SC7.8.5", "SC7.8.6", "SC7.9.1", "SC7.9.2", "SC7.9.3", "SC7.9.4", "SC7.9.5",
+        "SC7.9.6", "SC7.9.7", "SC7.9.8"],
+    4: ["SC7.10.1", "SC7.10.2", "SC7.10.3", "SC7.10.4", "SC7.10.5", "SC7.10.6", "SC7.10.7", "SC7.10.8", "SC7.10.9",
+        "SC7.11.1", "SC7.11.2", "SC7.11.3", "SC7.11.4", "SC7.11.5", "SC7.11.6", "SC7.11.7", "SC7.12.1", "SC7.12.2",
+        "SC7.12.3", "SC7.12.4", "SC7.12.5", "SC7.12.6", "SC7.12.7", "SC7.12.8", "SC7.12.9"]
+  },
+
+  presets: {},
+
+  /* Staged hints: bank entries carry two hint stages each. */
+  hints: true,
+
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+},
+
 "sci-8": {
   id: "sci-8",
   curriculum: "NL",
@@ -2120,6 +2278,15 @@ window.COURSES = {
   /* The standalone builder's own default level mix (its level
      inputs ship at 20/62/18, the mid-course blueprint mix). */
   defaultMix: [20, 62, 18],
+
+  /* Prior knowledge tranche (November 16, 2026, Band 2): the 49
+     flagged entries in bank-pk.js (45 borrowed from the Math 2200
+     and Math 1201 banks, 4 authored counting bridge items for
+     Unit 9) stay out of practice tests and exams unless the
+     teacher ticks the include-prior-knowledge override. Ordinary
+     practice sets and the pkonly prerequisite checks keep them.
+     Mirrors the Band 1 flags. */
+  pkPracticeOnly: true,
 
   /* Exam blueprint, translated from the standalone app's composer
      (math-3200-review/index.html, composeExam, lines 7962-8019).

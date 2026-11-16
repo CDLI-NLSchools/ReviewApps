@@ -69,10 +69,20 @@ COURSES = {
     # (s9u1 to s9u4 prefixes), so there is no shared helpers file.
     "sci-9": ("Science 9",
               ["bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
+    # French junior science (Nov 16, 2026): each bank is its own
+    # build keyed to the French guide, mirroring the English bank
+    # structure for the same grade. sci-9-fr unit files define their
+    # figure builders locally, like sci-9, so no shared helpers file.
+    "sci-7-fr": ("Sciences 7",
+                 ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
+    "sci-8-fr": ("Sciences 8",
+                 ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
+    "sci-9-fr": ("Sciences 9",
+                 ["bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
     "math-3200": ("Math 3200",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js",
                    "bank-u4.js", "bank-u5.js", "bank-u6.js",
-                   "bank-u7.js", "bank-u8.js", "bank-u9.js"]),
+                   "bank-u7.js", "bank-u8.js", "bank-u9.js", "bank-pk.js"]),
     "math-3201": ("Math 3201",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js",
                    "bank-u3.js", "bank-u4.js", "bank-u5.js",
