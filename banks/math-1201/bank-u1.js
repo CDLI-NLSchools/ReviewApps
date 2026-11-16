@@ -707,3 +707,357 @@ E("u1-composite-sa",1,["5.9"],3,"gen",function(){
   q.figure=u1figTower(r4,h4,l4,fmt(r4)+" cm",fmt(h4)+" cm",fmt(l4)+" cm");
   return q;
 });
+
+/* ---- Prior knowledge tranche entries (Nov 15, 2026) ----
+   Borrowed verbatim from the feeder banks named in each entry's
+   pkSrc (see the metadata pass at the end of this file), under the
+   Math 1201 PK tranche spec. */
+E("u1-pk-sa-problem", 1, ["5.2"], 2, "gen", function(){
+  if(pick(["cans","cost"])==="cans"){
+    var l=ri(4,11)/2, w=ri(3,9)/2, h=ri(3,8)/2;
+    var sa=2*(l*w+l*h+w*h);
+    var cover=pick([8,10,12,15,20]);
+    var cans=Math.ceil(sa/cover-0.0000001);
+    var q = numq("A storage tank shaped like a right rectangular prism measures "+fmt(l)+" m long, "+fmt(w)+" m wide and "+fmt(h)+" m high. It will be painted on the outside, on all faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
+      "Work face by face: the three different faces have areas "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", and each face has an identical partner opposite it, so the surface area is twice the sum of the three face areas: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] Then \\("+fmt(sa)+" \\div "+cover+" \\approx "+fmt(u2r2(sa/cover))+"\\), so a part can is not enough. The number of cans needed is <b>"+cans+"</b>.",
+      {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
+    q.figure = solRectPrism(l, w, h, fmt(l) + " m", fmt(w) + " m", fmt(h) + " m", "Rectangular prism tank with labelled dimensions");
+    return q;
+  }
+  var l2=ri(8,30)/10, w2=ri(6,24)/10, h2=ri(4,18)/10;
+  var sa2=2*(l2*w2+l2*h2+w2*h2);
+  var price=pick([4,5,6,8,9]);
+  var cost=u2r2(sa2*price);
+  var q = numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" m long, "+fmt(w2)+" m wide and "+fmt(h2)+" m high. It is covered on all faces with fabric that costs $"+price+" per square metre. What is the total cost of the fabric, in dollars, to the nearest cent?", cost, 0.05,
+    "Work face by face: the three different faces have areas "+fmt(u2r2(l2*w2))+", "+fmt(u2r2(l2*h2))+" and "+fmt(u2r2(w2*h2))+", and each face has an identical partner opposite it, so the surface area is twice the sum of the three face areas: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(l2*w2))+"+"+fmt(u2r2(l2*h2))+"+"+fmt(u2r2(w2*h2))+") \\\\ &= "+fmt(u2r2(sa2))+" \\end{aligned} \\] Then \\("+fmt(u2r2(sa2))+" \\times "+price+" = "+fmt(cost)+"\\). The total cost is <b>$"+fmt(cost)+"</b>.",
+    {mode:"fabric-cost", l:l2, w:w2, h:h2, price:price});
+    q.figure = solRectPrism(l2, w2, h2, fmt(l2) + " m", fmt(w2) + " m", fmt(h2) + " m", "Rectangular prism box with labelled dimensions");
+    return q;
+}, ["Work out the total surface area before you use the coverage or the price.", "Divide the surface area by the coverage per can, or multiply it by the price per square metre."]);
+E("u1-pk-sa-rect-prism", 1, ["5.2"], 2, "gen", function(){
+  var l=ri(3,14), w=ri(3,12), h=ri(2,10);
+  var sa=2*(l*w+l*h+w*h);
+  var q=numq("Find the surface area of the right rectangular prism shown, in square centimetres.", sa, 0.01,
+    "Work face by face. The front and back are "+l+" by "+h+", the sides are "+w+" by "+h+", and the top and bottom are "+l+" by "+w+": \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= 2("+fmt(l*w+l*h+w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    {mode:"rect-sa", l:l, w:w, h:h});
+  q.figure=u4boxSVG(l,w,h);
+  return q;
+}, ["Picture the net: three different faces, each with a matching partner.", "Find the area of the top, the front and one side, add them, then double."]);
+E("u1-pk-sa-tri-prism", 1, ["5.2"], 2, "gen", function(){
+  var tr=pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20]]);
+  var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,16);
+  var sa=a*b+(a+b+c)*L;
+  var q=numq("Find the surface area of the right triangular prism shown, in square centimetres.", sa, 0.01,
+    "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    {mode:"tri-sa", a:a, b:b, c:c, L:L});
+  q.figure=u4triSVG(a,b,c,L);
+  return q;
+}, ["Split the surface into the two triangular ends and the three rectangles.", "Find the ends first, then multiply the perimeter of one end by the length for the rectangles."]);
+E("u1-pk-sa-cylinder", 1, ["5.2"], 2, "gen", function(){
+  var r=ri(2,9), h=ri(3,14);
+  var sa=u4r1(2*3.14*r*(r+h));
+  var q=numq("Find the surface area of the right cylinder shown. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.", sa, 0.6,
+    "Two circles plus the curved side, which unrolls into a rectangle: \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3.14)("+r+")("+r+"+"+h+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+    {mode:"cyl-sa", r:r, h:h});
+  q.figure=u4cylSVG(r,h,false);
+  return q;
+}, ["Unroll the cylinder in your mind: two circles and one rectangle.", "Use the radius for both circle areas and for the width around the curved side."]);
+E("u1-pk-sa-from-net", 1, ["5.2"], 1, "gen", function(){
+  var l=ri(3,11), w=ri(3,11), h=ri(2,9);
+  var top=l*w, front=l*h, side=w*h;
+  var sa=2*(top+front+side);
+  var once=top+front+side;
+  var ds=u4d3(sa,[once,2*top+front+side,top+2*front+2*side,sa+top,4*(top+front+side)]);
+  var opts=ds.map(function(d){
+    var fb=(d===once)?"That adds each different face only once: every face on a prism has a matching partner opposite it.":"That total double-counts or misses a face: each of the three face areas must appear exactly twice.";
+    return {t:String(d), fb:fb};
+  });
+  var q=mcq("A net of a right rectangular prism has three different face areas: "+top+" cm\\(^{2}\\) for the top, "+front+" cm\\(^{2}\\) for the front and "+side+" cm\\(^{2}\\) for the side. What is the surface area of the prism, in square centimetres?",
+    {t:String(sa), fb:"Yes: each face area appears twice, once for each side of the prism."}, opts,
+    "Surface area is the total area of the 2-D faces in the net. Each different face has an identical partner opposite it: \\[ \\begin{aligned} SA &= 2("+top+"+"+front+"+"+side+") \\\\ &= 2("+once+") \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    {mode:"net-areas", l:l, w:w, h:h}); q.figure=m8NetAreaSVG(top,front,side); return q;
+}, ["Surface area is the sum of the areas of all the flat faces in the net.", "Add the three different face areas, then double the total because each face has a partner."]);
+E("u1-pk-sa-composite", 1, ["5.3"], 2, "gen", function(){
+  var X=ri(8,16), W=ri(4,10), H1=ri(3,7), X2=ri(3,6), H2=ri(2,6);
+  if(X2>=X){X2=X-3;}
+  var sa1=2*(X*W+X*H1+W*H1), sa2=2*(X2*W+X2*H2+W*H2), contact=X2*W;
+  var tot=sa1+sa2-2*contact;
+  var q = numq("A step is built from two boxes joined together. The bottom box measures "+X+" cm long, "+W+" cm wide and "+H1+" cm high. The top box measures "+X2+" cm long, "+W+" cm wide and "+H2+" cm high, and it sits on top of the bottom box, flush with the back and the left side. Find the total surface area of the step, in square centimetres.", tot, 0.01,
+    "Work face by face for each box: a box has three different faces, and each face has an identical partner opposite it. Find each box on its own, then subtract the touching face twice because it is hidden on both boxes: \\[ \\begin{aligned} SA &= 2("+fmt(X*W)+"+"+fmt(X*H1)+"+"+fmt(W*H1)+") + 2("+fmt(X2*W)+"+"+fmt(X2*H2)+"+"+fmt(W*H2)+") - 2("+contact+") \\\\ &= "+sa1+" + "+sa2+" - "+(2*contact)+" \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
+    {mode:"step", X:X, W:W, H1:H1, X2:X2, H2:H2});
+    q.figure = solStep(X, W, H1, X2, H2, fmt(X) + " cm", fmt(W) + " cm", fmt(H1) + " cm", fmt(X2) + " cm", fmt(H2) + " cm", "Step built from two boxes with labelled dimensions");
+    return q;
+}, ["Treat the step as two separate boxes first, then adjust for the join.", "Add both surface areas, then subtract the touching face twice since it is hidden on both boxes."]);
+E("u1-pk-overlap", 1, ["5.3"], 1, "gen", function(){
+  var p=ri(2,11), q=ri(2,10);
+  var bl=ri(p+2,p+8), bw=ri(q+2,q+8);
+  var qq = numq("A small box sits on top of a larger box that is "+bl+" cm long and "+bw+" cm wide. The two boxes touch over a rectangle that measures "+p+" cm by "+q+" cm. What is the area of the overlap, in square centimetres?", p*q, 0.01,
+    "The overlap is the rectangle where the boxes touch: \\[ \\begin{aligned} A &= "+p+" \\times "+q+" \\\\ &= "+(p*q)+" \\end{aligned} \\] The area of the overlap is <b>"+(p*q)+" cm\\(^{2}\\)</b>.",
+    {mode:"overlap", p:p, q:q});
+    qq.figure = solOverlapPlan(bl, bw, p, q, fmt(p) + " cm", fmt(q) + " cm", fmt(bl) + " cm", fmt(bw) + " cm", "Plan view of two boxes with the overlap shaded");
+    return qq;
+}, ["The overlap is the rectangle where the two solids touch each other.", "Find the area of the touching rectangle first, then think about how many faces it hides."]);
+E("u1-pk-vol-rect-prism", 1, ["5.4"], 1, "gen", function(){
+  var l=ri(3,13), w=ri(2,11), h=ri(2,10);
+  var V=l*w*h;
+  var sa=2*(l*w+l*h+w*h);
+  var ds=u4d3(V,[sa,l+w+h,l*w,l*w*h+l,l*w*(h+1),l*(w+1)*h]);
+  var opts=ds.map(function(d){
+    var fb=(d===sa)?"That is the surface area in square units: volume counts the space inside, in cubic units.":"That value comes from the wrong combination of dimensions: volume multiplies all three together.";
+    return {t:String(d), fb:fb};
+  });
+  var q=mcq("What is the volume of the right rectangular prism shown, in cubic centimetres?",
+    {t:String(V), fb:"Yes: length times width times height gives the space inside."}, opts,
+    "Multiply the three dimensions: \\[ \\begin{aligned} V &= l \\times w \\times h \\\\ &= "+l+" \\times "+w+" \\times "+h+" \\\\ &= "+V+" \\end{aligned} \\] The volume is <b>"+V+" cm\\(^{3}\\)</b>.",
+    {mode:"rect-vol", l:l, w:w, h:h});
+  q.figure=u4boxSVG(l,w,h);
+  return q;
+}, ["Volume counts the space inside the prism, so all three dimensions are used.", "Multiply length by width by height."]);
+E("u1-pk-vol-tri-prism", 1, ["5.4"], 1, "gen", function(){
+  var tr=pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20]]);
+  var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,16);
+  var B=a*b/2; var V=B*L;
+  var q=numq("Find the volume of the right triangular prism shown, in cubic centimetres.", V, 0.01,
+    "Find the area of the triangular base first, then multiply by the length of the prism: \\[ \\begin{aligned} B &= "+FR(1,2)+"\\times "+a+"\\times "+b+" = "+fmt(B)+" \\\\ V &= B \\times L \\\\ &= "+fmt(B)+" \\times "+L+" \\\\ &= "+fmt(V)+" \\end{aligned} \\] The volume is <b>"+fmt(V)+" cm\\(^{3}\\)</b>.",
+    {mode:"tri-vol", a:a, b:b, c:c, L:L});
+  q.figure=u4triSVG(a,b,c,L);
+  return q;
+}, ["Volume of a prism is base area multiplied by the length it runs for.", "Find the triangle area with one half times leg times leg, then multiply by the prism length."]);
+E("u1-pk-vol-cylinder", 1, ["5.4"], 1, "gen", function(){
+  var r=ri(2,10), h=ri(3,15);
+  var V=u4r1(3.14*r*r*h);
+  var q=numq("Find the volume of the right cylinder shown. Use \\(\\pi = 3.14\\) and give your answer in cubic centimetres, to one decimal place.", V, 0.6,
+    "A cylinder is a prism with a circular base, so its volume is base area times height: \\[ \\begin{aligned} V &= \\pi r^{2} h \\\\ &= 3.14 \\times "+r+"^{2} \\times "+h+" \\\\ &= "+fmt(V)+" \\end{aligned} \\] The volume is <b>"+fmt(V)+" cm\\(^{3}\\)</b>.",
+    {mode:"cyl-vol", r:r, h:h});
+  q.figure=u4cylSVG(r,h,false);
+  return q;
+}, ["Treat the cylinder like a prism whose base is a circle.", "Find the circle area with pi times radius squared, then multiply by the height."]);
+E("u1-pk-area-circle", 1, ["5.2"], 2, "gen", function(){
+  var modeA=ri(0,2);
+  if(modeA===2){
+    var rs=ri(2,20), As=3.14*rs*rs/2;
+    var poolS=[3.14*rs*rs,2*3.14*rs,3.14*rs,As*4,As/2,As*3];
+    var seenS={}; seenS[fmtF(As,2)]=1; var dsS=[];
+    for(var s2=0;s2<poolS.length&&dsS.length<3;s2++){
+      var kk=fmtF(poolS[s2],2);
+      if(seenS[kk])continue; seenS[kk]=1;
+      dsS.push({t:kk+" cm²", fb:s2===0?"That is the area of the full circle: a semicircle is half of it.":"Check the steps: find the full circle area with pi x r², then halve it."});
+    }
+    var qS=mcq("The diagram shows a semicircle (half of a circle) with radius "+rs+" cm. What is its area? Use 3.14 for pi.",
+      {t:fmtF(As,2)+" cm²", fb:"Yes: half of 3.14 x "+rs+"² is "+fmtF(As,2)+" cm²."},
+      dsS,
+      "\\[ \\begin{aligned} A &= "+FR("3.14 \\times "+rs+"^2","2")+" \\\\ &= "+fmtF(As,2)+" \\text{ cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(As,2)+" cm²</b>.",
+      {mode:"semi", r:rs});
+    qS.figure=u4circleFig("r = "+rs+" cm","r");
+    return qS;
+  }
+  if(modeA===0){
+    var r=ri(3,20), A=3.14*r*r;
+    var pool=[2*3.14*r,3.14*r,3.14*2*r*r,A+3.14*r];
+    var seen={}; seen[fmtF(A,2)]=1; var ds=[];
+    for(var i=0;i<pool.length&&ds.length<3;i++){
+      var k=fmtF(pool[i],2);
+      if(seen[k])continue; seen[k]=1;
+      ds.push({t:k+" cm²", fb:i===0?"That is the circumference: area uses pi times the radius squared.":"Check the formula: A = pi x r² with pi = 3.14."});
+    }
+    var q=mcq("What is the area of the circle in the diagram? Use 3.14 for pi.",
+      {t:fmtF(A,2)+" cm²", fb:"Yes: A = 3.14 x "+r+"² = "+fmtF(A,2)+" cm²."},
+      ds,
+      "\\[ \\begin{aligned} A &= \\pi r^2 \\\\ &= 3.14 \\times "+r+"^2 \\\\ &= "+fmtF(A,2)+" \\text{ cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(A,2)+" cm²</b>.",
+      {mode:"r", r:r});
+    q.figure=u4circleFig("r = "+r+" cm","r");
+    return q;
+  }
+  var d=2*ri(3,20), r2=d/2, A2=3.14*r2*r2;
+  var pool2=[2*3.14*r2,3.14*d*d,A2*2,3.14*r2];
+  var seen2={}; seen2[fmtF(A2,2)]=1; var ds2=[];
+  for(var j=0;j<pool2.length&&ds2.length<3;j++){
+    var k2=fmtF(pool2[j],2);
+    if(seen2[k2])continue; seen2[k2]=1;
+    ds2.push({t:k2+" cm²", fb:j===1?"That squares the diameter: halve the diameter to get the radius first.":"Check the steps: halve the diameter for the radius, then A = pi x r²."});
+  }
+  var q2=mcq("What is the area of the circle in the diagram? Use 3.14 for pi.",
+    {t:fmtF(A2,2)+" cm²", fb:"Yes: radius is "+r2+" cm, and A = 3.14 x "+r2+"² = "+fmtF(A2,2)+" cm²."},
+    ds2,
+    "\\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r2+" \\\\ A &= \\pi r^2 = 3.14 \\times "+r2+"^2 \\\\ &= "+fmtF(A2,2)+" \\text{ cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(A2,2)+" cm²</b>.",
+    {mode:"d", d:d});
+  q2.figure=u4circleFig("d = "+d+" cm","d");
+  return q2;
+}, ["Area of a circle is pi times the radius squared.", "Start by making sure you have the radius; halve the diameter if that is what is given."]);
+E("u1-pk-circumference", 1, ["5.2"], 1, "gen", function(){
+  if(ri(0,1)===0){
+    var d=ri(3,40), C=3.14*d;
+    var pool=[3.14*(d/2),3*d,3.14*(d/2)*(d/2),C+3.14];
+    var seen={}; seen[fmtF(C,2)]=1; var ds=[];
+    for(var i=0;i<pool.length&&ds.length<3;i++){
+      var k=fmtF(pool[i],2);
+      if(seen[k])continue; seen[k]=1;
+      ds.push({t:k, fb:i===2?"That uses the area formula with the radius: circumference is pi times diameter.":"Check the formula: C = pi x d with pi = 3.14."});
+    }
+    var q=mcq("What is the circumference of the circle in the diagram, in centimetres? Use 3.14 for pi.",
+      {t:fmtF(C,2), fb:"Yes: C = 3.14 x "+d+" = "+fmtF(C,2)+" cm."},
+      ds,
+      "\\[ \\begin{aligned} C &= \\pi d \\\\ &= 3.14 \\times "+d+" \\\\ &= "+fmtF(C,2)+" \\text{ cm} \\end{aligned} \\] The answer is <b>"+fmtF(C,2)+" cm</b>.",
+      {mode:"d", d:d});
+    q.figure=u4circleFig("d = "+d+" cm","d");
+    return q;
+  }
+  var r=ri(2,25), C2=2*3.14*r;
+  var pool2=[3.14*r,3.14*r*r,3*r*2,2*3.14*(r+1)];
+  var seen2={}; seen2[fmtF(C2,2)]=1; var ds2=[];
+  for(var j=0;j<pool2.length&&ds2.length<3;j++){
+    var k2=fmtF(pool2[j],2);
+    if(seen2[k2])continue; seen2[k2]=1;
+    ds2.push({t:k2, fb:j===1?"That uses the area formula: circumference is 2 x pi x r.":"Check the formula: C = 2 x pi x r with pi = 3.14."});
+  }
+  var q2=mcq("What is the circumference of the circle in the diagram, in centimetres? Use 3.14 for pi.",
+    {t:fmtF(C2,2), fb:"Yes: C = 2 x 3.14 x "+r+" = "+fmtF(C2,2)+" cm."},
+    ds2,
+    "\\[ \\begin{aligned} C &= 2\\pi r \\\\ &= 2 \\times 3.14 \\times "+r+" \\\\ &= "+fmtF(C2,2)+" \\text{ cm} \\end{aligned} \\] The answer is <b>"+fmtF(C2,2)+" cm</b>.",
+    {mode:"r", r:r});
+  q2.figure=u4circleFig("r = "+r+" cm","r");
+  return q2;
+}, ["Circumference is pi times the diameter, or two times pi times the radius.", "Start by deciding whether the diagram gives you the radius or the diameter."]);
+E("u1-pk-pythag-model", 1, ["5.3"], 1, "gen", function(){
+  var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29]]);
+  var kk=ri(1,4); var tr=[base[0]*kk,base[1]*kk,base[2]*kk];
+  if(pick(["ab","ba"])==="ba"){ var tmp=tr[0]; tr[0]=tr[1]; tr[1]=tmp; }
+  var a=tr[0], b=tr[1], c=tr[2];
+  var punit=pick(["cm","m"]);
+  var correct="\\("+a+"^{2} + "+b+"^{2} = "+c+"^{2}\\)";
+  var opts=[
+    {t:"\\("+a+" + "+b+" = "+c+"\\)", fb:"The theorem uses squares of the sides, not the sides themselves."},
+    {t:"\\("+a+"^{2} + "+c+"^{2} = "+b+"^{2}\\)", fb:"The hypotenuse squared stands alone: here "+c+" is the hypotenuse."},
+    {t:"\\("+c+"^{2} - "+a+"^{2} = "+a+"^{2}\\)", fb:"Both legs are squared and added: check which sides are the legs."}
+  ];
+  var q=mcq("A right triangle has legs of "+a+" "+punit+" and "+b+" "+punit+" and a hypotenuse of "+c+" "+punit+", as shown. Which equation models the Pythagorean theorem for this triangle?", {t:correct, fb:"Yes: the squares of the two legs add to the square of the hypotenuse."}, opts,
+    "The theorem says the squares of the legs add to the square of the hypotenuse: \\[ \\begin{aligned} "+a+"^{2} + "+b+"^{2} &= "+(a*a)+" + "+(b*b)+" \\\\ &= "+(c*c)+" \\\\ &= "+c+"^{2} \\end{aligned} \\] The modelling equation is <b>\\("+a+"^{2} + "+b+"^{2} = "+c+"^{2}\\)</b>.",
+    {a:a, b:b, c:c});
+  q.figure=u1triFig(c,b,a,c+" "+punit,b+" "+punit,a+" "+punit);
+  return q;
+}, ["The hypotenuse is the longest side, opposite the right angle.", "Square each leg, add them, and set the sum equal to the hypotenuse squared."]);
+E("u1-pk-frac-context", 1, ["6.2"], 1, "gen", function () {
+  var dens = [2, 4, 5, 8, 10, 20];
+  var d1 = pick(dens), d2 = pick(dens);
+  var n1 = ri(1, 15), n2 = ri(1, 15);
+  var v1 = n1 / d1, v2 = n2 / d2;
+  var sub = Math.random() < 0.5;
+  if (sub && v2 > v1) { var tn = n1; n1 = n2; n2 = tn; var td = d1; d1 = d2; d2 = td; v1 = n1 / d1; v2 = n2 / d2; }
+  if (sub && Math.abs(v1 - v2) < 0.01) { n1 += d1; v1 = n1 / d1; }
+  var ctxs = ["cups of flour", "metres of ribbon", "litres of juice"];
+  var thing = pick(ctxs);
+  var ans = u1round(sub ? v1 - v2 : v1 + v2, 4);
+  var lcm = (d1 * d2) / u1gcd(d1, d2);
+  var e1 = n1 * (lcm / d1), e2 = n2 * (lcm / d2);
+  var resN = sub ? e1 - e2 : e1 + e2;
+  var prompt = sub
+    ? "A project starts with " + u1frac(n1, d1) + " " + thing + ". Then " + u1frac(n2, d2) + " " + thing + " is used. How much is left? Give your answer as a decimal."
+    : "A project uses " + u1frac(n1, d1) + " " + thing + " in the morning and " + u1frac(n2, d2) + " " + thing + " in the afternoon. How much is used in total? Give your answer as a decimal.";
+  var solution = "Use the common denominator \\(" + lcm + "\\): \\[ \\begin{aligned} " + FR(n1, d1) + (sub ? " - " : " + ") + FR(n2, d2) + " &= " + FR(e1, lcm) + (sub ? " - " : " + ") + FR(e2, lcm) + " \\\\ &= " + FR(resN, lcm) + " = " + fmt(ans) + " \\end{aligned} \\] So the answer is <b>" + fmt(ans) + "</b>.";
+  return numq(prompt, ans, 0.01, solution, { mode: sub ? "sub-frac-ctx" : "add-frac-ctx", a: n1, b: d1, c: n2, d: d2 });
+}, ["Fractions with different denominators need a common denominator first.", "Rewrite both fractions with the least common denominator, then combine the numerators."]);
+E("u1-pk-money-decimals", 1, ["6.2"], 1, "gen", function () {
+  var items = [["notebook", "pen", "snack bar"], ["juice box", "muffin", "apple"], ["poster", "marker set", "sticker pack"], ["bus pass top-up", "coffee", "sandwich"]];
+  var set = pick(items);
+  if (Math.random() < 0.5) {
+    var p1 = ri(125, 2499), p2 = ri(125, 2499), p3 = ri(99, 1999);
+    var tot = (p1 + p2 + p3) / 100;
+    var promptT = "Sam buys a " + set[0] + " for $" + (p1 / 100).toFixed(2) + ", a " + set[1] + " for $" + (p2 / 100).toFixed(2) + ", and a " + set[2] + " for $" + (p3 / 100).toFixed(2) + ". What is the total cost, in dollars?";
+    var solT = "Add the three prices: \\[ \\begin{aligned} " + (p1 / 100).toFixed(2) + " + " + (p2 / 100).toFixed(2) + " + " + (p3 / 100).toFixed(2) + " &= " + tot.toFixed(2) + " \\end{aligned} \\] So the total cost is <b>$" + tot.toFixed(2) + "</b>.";
+    return numq(promptT, u1round(tot, 2), 0.005, solT, { mode: "money-total", p1: p1, p2: p2, p3: p3 });
+  }
+  var bill = pick([20, 50, 100]);
+  var cost = ri(350, bill * 100 - 250);
+  var change = (bill * 100 - cost) / 100;
+  var promptC = "A school hoodie costs $" + (cost / 100).toFixed(2) + ". Priya pays with a $" + bill + " bill. How much change does she get, in dollars?";
+  var solC = "Subtract the cost from the amount paid: \\[ \\begin{aligned} " + bill.toFixed(2) + " - " + (cost / 100).toFixed(2) + " &= " + change.toFixed(2) + " \\end{aligned} \\] So the change is <b>$" + change.toFixed(2) + "</b>.";
+  return numq(promptC, u1round(change, 2), 0.005, solC, { mode: "money-change", bill: bill, cost: cost });
+}, ["Line up the decimal points before you add or subtract money amounts.", "Work in dollars and cents, keeping two decimal places for cents."]);
+E("u1-pk-ratio-problem", 1, ["6.1"], 2, "gen", function () {
+  if (Math.random() < 0.5) {
+    var pairs = [[2, 3], [3, 5], [2, 5], [3, 4], [4, 7], [5, 3]];
+    var pr = pick(pairs), a = pr[0], b = pr[1], s = ri(2, 9), given = a * s, ans = b * s;
+    var ctxs = [
+      "Paint is mixed in the ratio " + a + ":" + b + " of blue paint to white paint. A batch uses " + given + " L of blue paint. How many litres of white paint does the batch use?",
+      "A smoothie recipe uses berries and yogurt in the ratio " + a + ":" + b + ". A large batch uses " + given + " cups of berries. How many cups of yogurt does the large batch use?",
+      "Trail mix has peanuts and raisins in the ratio " + a + ":" + b + ". A bag is made with " + given + " g of peanuts. How many grams of raisins are in the bag?"
+    ];
+    var prompt = pick(ctxs);
+    var sol = "Each ratio part stands for the same scale amount: \\[ \\begin{aligned} \\text{scale} &= " + given + " \\div " + a + " = " + s + " \\\\ \\text{second amount} &= " + b + " \\times " + s + " = " + ans + " \\end{aligned} \\] So the second amount is <b>" + ans + "</b>.";
+    return numq(prompt, ans, 0.01, sol, { mode: "ratio-scale", a: a, b: b });
+  }
+  var pairs2 = [[3, 2], [5, 3], [4, 3], [7, 5], [3, 5], [5, 2]];
+  var pr2 = pick(pairs2), a2 = pr2[0], b2 = pr2[1], s2 = ri(2, 8), tot = (a2 + b2) * s2, ans2 = a2 * s2;
+  var ctxs2 = [
+    "Two cousins share " + tot + " stickers in the ratio " + a2 + ":" + b2 + ", with the older cousin getting the first share. How many stickers does the older cousin get?",
+    "A " + tot + " cm ribbon is cut into two pieces in the ratio " + a2 + ":" + b2 + ". How long is the first piece, in centimetres?",
+    "A class fund of $" + tot + " is split between a field trip and supplies in the ratio " + a2 + ":" + b2 + ", with the field trip getting the first share. How many dollars go to the field trip?"
+  ];
+  var prompt2 = pick(ctxs2);
+  var sol2 = "Add the ratio parts to find the value of one part, then take the first share: \\[ \\begin{aligned} \\text{one part} &= " + tot + " \\div " + (a2 + b2) + " = " + s2 + " \\\\ \\text{first share} &= " + a2 + " \\times " + s2 + " = " + ans2 + " \\end{aligned} \\] So the first share is <b>" + ans2 + "</b>.";
+  return numq(prompt2, ans2, 0.01, sol2, { mode: "ratio-share", a: a2, b: b2 });
+}, ["Work out the value of one ratio part first; every part in the ratio has that same value.", "First find the scale or the value of one part from the amount you are given."]);
+E("u1-pk-unit-rate-cost", 1, ["6.1"], 2, "gen", function(){
+  var goods=[["muffins","muffin"],["juice boxes","juice box"],["granola bars","granola bar"],["yogurt cups","yogurt cup"],["bagels","bagel"]];
+  var g=pick(goods);
+  var q1=pick([4,5,8,10,20,25]);
+  var unit=pick([0.75,1.25,1.5,1.75,2.25,2.5,3.25,3.5,4.75]);
+  var C=u5r2(q1*unit);
+  var q2=ri(3,30); if(q2===q1) q2=q1+3;
+  var ans=u5r2(unit*q2);
+  return numq("A pack of "+q1+" "+g[0]+" costs $"+fmtF(C,2)+". At this rate, what is the cost of "+q2+" "+g[0]+", in dollars?", ans, 0.01,
+    "Find the cost of one "+g[1]+" first: \\[ \\begin{aligned} \\text{unit rate} &= "+fmtF(C,2)+" \\div "+q1+" \\\\ &= "+fmtF(unit,2)+" \\text{ dollars per "+g[1]+"} \\end{aligned} \\] Then multiply by the new quantity: \\("+fmtF(unit,2)+" \\times "+q2+" = "+fmtF(ans,2)+"\\). The answer is <b>$"+fmtF(ans,2)+"</b>.",
+    {mode:"unit-rate-cost", q1:q1, q2:q2});
+}, ["The cost per single item is the bridge between the two quantities.", "Divide the pack cost by the pack size to get the unit rate, then multiply by the new quantity."]);
+E("u1-pk-estimate-count", 1, ["5.12"], 1, "gen", function(){
+  var cfgs=[
+    {size:30, unit:"cm", stem:function(n){return "A floor tile is 30 cm wide. The floor of a classroom is about "+n+" tiles wide. Which is the best estimate of the width of the floor?";}},
+    {size:4, unit:"m", stem:function(n){return "A parked car is about 4 m long. A row of "+n+" cars is parked end to end with no gaps. Which is the best estimate of the length of the row?";}},
+    {size:25, unit:"cm", stem:function(n){return "A brick is about 25 cm long. A garden edge is about "+n+" bricks long. Which is the best estimate of the length of the garden edge?";}},
+    {size:75, unit:"cm", stem:function(n){return "One of Sam's strides is about 75 cm. Sam takes "+n+" strides across the gym. Which is the best estimate of the distance across the gym?";}}
+  ];
+  var c=pick(cfgs); var n=ri(6,16); var ans=c.size*n;
+  return mcq(c.stem(n), ans+" "+c.unit, [n+" "+c.unit, c.size+" "+c.unit, (c.size+n)+" "+c.unit],
+    "Estimate by multiplying the count by the size of one: \\[ "+c.size+" \\times "+n+" = "+ans+" \\] The best estimate is <b>"+ans+" "+c.unit+"</b>.",
+    {mode:"estimate-count", n:n});
+}, ["Think of the known size repeated the given number of times.", "Multiply the size of one by how many of them fit."]);;
+E("u1-pk-estimate-reasonable", 1, ["5.12"], 1, "gen", function(){
+  var cfgs=[
+    {thing:"the length of a school bus", ans:12, unit:"m", why:"A school bus is longer than a car but far shorter than a football field."},
+    {thing:"the height of a classroom door", ans:2, unit:"m", why:"A door is a little taller than most adults."},
+    {thing:"the length of a new pencil", ans:18, unit:"cm", why:"A pencil is shorter than a 30 cm ruler."},
+    {thing:"the height of a two-storey house", ans:7, unit:"m", why:"Each storey is about 3 m, and the roof adds a little more."},
+    {thing:"the length of a paperback book", ans:25, unit:"cm", why:"A paperback is a bit shorter than a 30 cm ruler."},
+    {thing:"the width of a soccer field", ans:60, unit:"m", why:"A soccer field is about 100 m long and a little over half as wide."}
+  ];
+  var c=pick(cfgs);
+  var opts=[c.ans/10, c.ans*10, c.ans*100].map(function(v){return fmt(v)+" "+c.unit;});
+  return mcq("Which is the most reasonable estimate of "+c.thing+"?", fmt(c.ans)+" "+c.unit, opts,
+    c.why+" The reasonable estimate is <b>"+fmt(c.ans)+" "+c.unit+"</b>; the other choices are ten or a hundred times too large or too small.",
+    {mode:"estimate-reasonable"});
+}, ["Compare the choices with a familiar object of about that size.", "Rule out any choice that is ten or a hundred times too big or too small."]);;
+
+/* PK tranche metadata pass for Unit 1. The tranche's own entries are flagged here.  */
+var PKT_U1_FOR=["5.1","5.2","5.3","5.4","5.5","5.6","5.7","5.8","5.9","5.10","5.11","5.12","5.13","5.14","5.15","6.1","6.2","6.3","6.4"];
+var PKT_U1={
+ "u1-pk-sa-problem":{src:"math-9:9.3",group:"measurement"},
+ "u1-pk-sa-rect-prism":{src:"math-8:9.4",group:"measurement"},
+ "u1-pk-sa-tri-prism":{src:"math-8:9.4",group:"measurement"},
+ "u1-pk-sa-cylinder":{src:"math-8:9.6",group:"measurement"},
+ "u1-pk-sa-from-net":{src:"math-8:9.3",group:"measurement"},
+ "u1-pk-sa-composite":{src:"math-9:9.2",group:"measurement"},
+ "u1-pk-overlap":{src:"math-9:9.1",group:"measurement"},
+ "u1-pk-vol-rect-prism":{src:"math-8:9.11",group:"measurement"},
+ "u1-pk-vol-tri-prism":{src:"math-8:9.7,9.11",group:"measurement"},
+ "u1-pk-vol-cylinder":{src:"math-8:9.9",group:"measurement"},
+ "u1-pk-area-circle":{src:"math-7:9.9,9.3",group:"area"},
+ "u1-pk-circumference":{src:"math-7:9.10,9.8",group:"area"},
+ "u1-pk-pythag-model":{src:"math-8:9.1",group:"pythagoras"},
+ "u1-pk-frac-context":{src:"math-9:6.1",group:"fraction-operations"},
+ "u1-pk-money-decimals":{src:"math-9:6.1",group:"fraction-operations"},
+ "u1-pk-ratio-problem":{src:"math-8:6.28",group:"rate"},
+ "u1-pk-unit-rate-cost":{src:"math-8:6.29",group:"unit-rate"},
+ "u1-pk-estimate-count":{src:"authored:estimating-a-linear-measure, placement unevidenced",group:"estimation"},
+ "u1-pk-estimate-reasonable":{src:"authored:estimating-a-linear-measure, placement unevidenced",group:"estimation"}
+};
+BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U1_FOR.slice();e.pkGroup=t.group;}});

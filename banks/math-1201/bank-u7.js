@@ -9,6 +9,9 @@
 // CRMARKS: u7-solve-triangle=3
 // CRMARKS: u7-two-triangles=2
 // CRMARKS: u7-elevation-decision=2
+// CRMARKS: u7-rope-angle=2
+// CRMARKS: u7-ramp-run=3
+// CRMARKS: u7-brace-leftover=2
 /* Math 1201 Review, Unit 7: Trigonometry (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u7. Degrees only. Every entry returns the same question
@@ -215,7 +218,7 @@ E("u7-label-sides",7,["7.1"],1,"gen",function(){
 });
 
 /* ================= 2. ratios and similar triangles (7.2, L2, var mcq) ================= */
-E("u7-ratio-similar",7,["7.2"],2,"var",varset([
+E("u7-ratio-similar",7,["7.2"],1,"var",varset([
   function(){var key="The triangles are similar, so matching sides stay in proportion, and the opposite side divided by the hypotenuse is the same in both";
     return mcq("Two right triangles each have an acute angle of \\(38^\\circ\\). One triangle is an enlargement of the other. Why is \\(\\sin 38^\\circ\\) the same for both triangles?",
     key,
@@ -291,7 +294,7 @@ E("u7-ratio-def",7,["7.2"],1,"gen",function(){
 });
 
 /* ================= 4. find a missing angle (7.3, L2, gen num, CR 2) ================= */
-E("u7-find-angle",7,["7.3"],2,"gen",function(){
+E("u7-find-angle",7,["7.3"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var rt=pick(["sin","cos","tan"]),num,den,sideText,ratioDisp,raw,tries=0;
@@ -328,7 +331,7 @@ E("u7-find-angle",7,["7.3"],2,"gen",function(){
 });
 
 /* ================= 5. find a missing side (7.4, L2, gen num, CR 3) ================= */
-E("u7-find-side",7,["7.4"],2,"gen",function(){
+E("u7-find-side",7,["7.4"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var theta=pick(U7_ANGLES),mode=ri(1,4),given,targetName,givenText,raw,steps;
@@ -373,7 +376,7 @@ E("u7-find-side",7,["7.4"],2,"gen",function(){
 });
 
 /* ================= 6. find the hypotenuse or a rearranged leg (7.4, L2, gen num, CR 2) ================= */
-E("u7-find-hypotenuse",7,["7.4"],2,"gen",function(){
+E("u7-find-hypotenuse",7,["7.4"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var theta=pick(U7_ANGLES),mode=ri(1,3),given,targetName,givenText,raw,steps,askWord;
@@ -412,7 +415,7 @@ E("u7-find-hypotenuse",7,["7.4"],2,"gen",function(){
 });
 
 /* ================= 7. Pythagorean theorem in context (7.5, 7.7, L2, gen mcq, CR 2) ================= */
-E("u7-pythagoras",7,["7.5","7.7"],2,"gen",function(){
+E("u7-pythagoras",7,["7.5","7.7"],1,"gen",function(){
   var ctx=ri(1,11);
   var maxHyp=(ctx===1||ctx===6)?15:((ctx===8||ctx===11)?20:(ctx===3?30:(ctx===7?12:(ctx===2?60:150))));
   var scales=[0.5,1,1.5,2,2.5,3,4,5];
@@ -688,7 +691,7 @@ E("u7-elevation-decision",7,["7.5","7.7"],3,"gen",function(){
 });
 
 /* ================= 12. choose the ratio setup (7.3, 7.4, L2, gen mcq) ================= */
-E("u7-choose-ratio",7,["7.3","7.4"],2,"gen",function(){
+E("u7-choose-ratio",7,["7.3","7.4"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
   var theta=pick(U7_ANGLES),mode=ri(1,6);
@@ -764,3 +767,328 @@ E("u7-choose-ratio",7,["7.3","7.4"],2,"gen",function(){
   q.figure=triSVG(V==="A"?oppV:adjV,V==="A"?adjV:oppV,hypV,{L:["A","B","C"],side:sLab,ang:aLab});
   return q;
 });
+
+/* ================= 13 to 15. authored CR items (Nov 13, 2026) =================
+   Replacement Level 2 constructed-response items, commissioned by
+   Jason after ruling 33 moved the four single-step computations
+   (u7-find-angle, u7-find-side, u7-find-hypotenuse, u7-pythagoras)
+   to Level 1 and dropped the Unit 7 exam-eligible CR pool to 10
+   marks against its 14-mark floor. Each entry is a varset whose
+   variants share one chained demand: a first computation feeds a
+   second, and only the final result is typed (textq, as in the CR
+   items of the sibling banks). u7trim prints a drawn value with at
+   most two decimals and no trailing zeros, for stems and solutions;
+   u7ans1 builds the accepted typed answers for a value reported to
+   the nearest tenth (the one-decimal form, plus the whole-number
+   form when the value is whole). */
+function u7trim(n){var r=Math.round(n*100)/100;return ""+r;}
+function u7ans1(v){var a=u7f1(v),out=[a];if(a.slice(-2)===".0")out.push(a.slice(0,-2));return out;}
+
+/* ================= 13. slant length and ground distance, find the angle (7.3, 7.7, L2, var text, CR 2) =================
+   The slant (rope, slide or string) and the horizontal distance are
+   given. The height comes first, by the Pythagorean theorem, and
+   feeds the tangent ratio that gives the angle: two linked steps. */
+function u7slantAngle(kind){
+  var scales,lo,hi,tries=0,D=null;
+  if(kind==="rope"){scales=[0.5,1,1.5];lo=3;hi=9;}
+  else if(kind==="slide"){scales=[0.5,1];lo=4;hi=11;}
+  else if(kind==="zip"){scales=[1,1.5,2,2.5,3];lo=12;hi=45;}
+  else{scales=[1,1.5,2,2.5,3];lo=18;hi=65;}
+  do{
+    tries++;
+    var t=pick(U7_TRIPLES),k=pick(scales),hyp=t[2]*k,ground,height;
+    if(pick([true,false])){ground=t[0]*k;height=t[1]*k;}else{ground=t[1]*k;height=t[0]*k;}
+    D={hyp:hyp,ground:ground,height:height,ang:Math.round(u7atanD(height/ground))};
+  }while((D.ang<20||D.ang>70||hyp<lo||hyp>hi)&&tries<120);
+  var stem;
+  if(kind==="rope")stem="A tent guy rope runs in a straight line from the top of a tent pole to a peg in level ground. The rope is \\("+u7trim(D.hyp)+"\\) m long, and the peg is \\("+u7trim(D.ground)+"\\) m from the base of the pole. Find the angle the rope makes with the ground, in degrees, to the nearest degree.";
+  else if(kind==="slide")stem="A playground slide runs in a straight line from the top of a platform down to level ground. The slide is \\("+u7trim(D.hyp)+"\\) m long, and its foot is \\("+u7trim(D.ground)+"\\) m horizontally from the base of the platform. Find the angle the slide makes with the ground, in degrees, to the nearest degree.";
+  else if(kind==="zip")stem="A zip line runs in a straight line from a launch platform to a landing point on level ground. The cable is \\("+u7trim(D.hyp)+"\\) m long, and the landing point is \\("+u7trim(D.ground)+"\\) m horizontally from the base of the platform. Find the angle the cable makes with the ground, in degrees, to the nearest degree.";
+  else stem="A kite string is tied to a stake in level ground and pulled taut in a straight line to the kite. The string is \\("+u7trim(D.hyp)+"\\) m long, and the kite is \\("+u7trim(D.ground)+"\\) m horizontally from the stake. Find the angle of elevation of the string, in degrees, to the nearest degree.";
+  var q=textq(stem,
+    [""+D.ang,D.ang+"°",D.ang+" degrees"],
+    "First find the height with the Pythagorean theorem, then use the tangent ratio with that height and the ground distance: \\[ \\begin{aligned} h^2 &= "+u7trim(D.hyp)+"^2 - "+u7trim(D.ground)+"^2 \\\\ h^2 &= "+u7trim(D.height*D.height)+" \\\\ h &= "+u7trim(D.height)+" \\\\ \\tan \\theta &= "+FR(u7trim(D.height),u7trim(D.ground))+" \\\\ \\theta &= \\tan^{-1}\\left("+FR(u7trim(D.height),u7trim(D.ground))+"\\right) \\\\ &\\approx "+D.ang+"^\\circ \\end{aligned} \\] The angle is <b>\\("+D.ang+"^\\circ\\)</b>.",
+    {kind:kind,hyp:D.hyp,ground:D.ground,height:D.height,ang:D.ang});
+  q.figure=u7triSceneSVG({vert:D.height,ground:D.ground,slant:D.hyp,vertLabel:"?",groundLabel:u7trim(D.ground)+" m",slantLabel:u7trim(D.hyp)+" m",dashedVert:kind==="kite"});
+  return q;
+}
+E("u7-rope-angle",7,["7.3","7.7"],2,"var",varset([
+  function(){return u7slantAngle("rope");},
+  function(){return u7slantAngle("slide");},
+  function(){return u7slantAngle("zip");},
+  function(){return u7slantAngle("kite");}
+]));
+
+/* ================= 14. rise and incline angle, find the horizontal distance (7.4, 7.5, L2, var text, CR 3) =================
+   The vertical rise and the incline angle are given. The incline
+   length comes first, from the sine ratio rearranged, and feeds
+   the cosine ratio that gives the horizontal distance: two linked
+   steps, the pattern of u7-solve-triangle carried into a scene. */
+function u7riseRun(kind){
+  var h,theta;
+  if(kind==="dock"){h=pick([1.0,1.1,1.2,1.3,1.4,1.5,1.6]);theta=pick([25,28,30,32,35]);}
+  else if(kind==="belt"){h=pick([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8]);theta=pick([25,28,30,32,35,38,40]);}
+  else{h=pick([3.6,4.2,4.8,5.4,6.0]);theta=pick([28,30,32,35]);}
+  var L=h/u7sinD(theta),run=L*u7cosD(theta),ans=u7r1(run);
+  var stem;
+  if(kind==="dock")stem="A loading ramp rises to a dock \\("+u7trim(h)+"\\) m above level ground. The ramp runs in a straight line and makes an angle of \\("+theta+"^\\circ\\) with the ground. How far, in metres, is the foot of the ramp from the base of the dock? Give your answer to the nearest tenth.";
+  else if(kind==="belt")stem="A conveyor belt carries gravel in a straight line up to the top of a storage bin \\("+u7trim(h)+"\\) m above level ground. The belt makes an angle of \\("+theta+"^\\circ\\) with the ground. How far, in metres, is the foot of the belt from the point on the ground directly below the top of the bin? Give your answer to the nearest tenth.";
+  else stem="An escalator rises \\("+u7trim(h)+"\\) m from one floor to the next, running in a straight line at an angle of \\("+theta+"^\\circ\\) to the horizontal. How far, in metres, does the escalator carry a passenger horizontally? Give your answer to the nearest tenth.";
+  var q=textq(stem,u7ans1(ans),
+    "The incline length comes first, from the sine ratio with the rise, rearranged; the horizontal distance then comes from that length and the cosine ratio: \\[ \\begin{aligned} \\sin "+theta+"^\\circ &= "+FR(u7trim(h),"L")+" \\\\ L &= "+FR(u7trim(h),"\\sin "+theta+"^\\circ")+" \\\\ &\\approx "+u7f1(L)+" \\\\ \\text{distance} &= "+u7f1(L)+" \\times \\cos "+theta+"^\\circ \\\\ &\\approx "+u7f1(ans)+" \\end{aligned} \\] The distance is <b>\\("+u7f1(ans)+"\\) m</b>.",
+    {kind:kind,h:h,theta:theta,L:L,run:run,ans:ans});
+  q.figure=u7triSceneSVG({vert:h,ground:run,slant:L,vertLabel:u7trim(h)+" m",groundLabel:"?",slantLabel:"?",angle:theta+"°"});
+  return q;
+}
+E("u7-ramp-run",7,["7.4","7.5"],2,"var",varset([
+  function(){return u7riseRun("dock");},
+  function(){return u7riseRun("belt");},
+  function(){return u7riseRun("escalator");}
+]));
+
+/* ================= 15. diagonal brace cut from a stock length (7.5, 7.7, L2, var text, CR 2) =================
+   The brace length comes from the Pythagorean theorem on the
+   rectangle; the answer is what the stated stock length leaves
+   after that cut, so the computation feeds a check against the
+   stock: two linked steps. */
+function u7braceLeft(kind){
+  var t,k,w,h,brace,tries=0;
+  do{
+    tries++;
+    t=pick(U7_TRIPLES);k=pick([0.5,1,1.5,2]);
+    w=t[0]*k;h=t[1]*k;
+    if(pick([true,false])){var sw=w;w=h;h=sw;}
+    brace=t[2]*k;
+  }while((Math.max(w,h)>3.6||brace>4.6)&&tries<120);
+  var off=pick([0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.2,1.5]);
+  var stock=brace+off;
+  var obj,stockNoun;
+  if(kind==="door"){obj="shed door";stockNoun="plank";}
+  else if(kind==="gate"){obj="garden gate";stockNoun="board";}
+  else{obj="trellis panel";stockNoun="strip of wood";}
+  var stem="A rectangular "+obj+" is \\("+u7trim(w)+"\\) m wide and \\("+u7trim(h)+"\\) m tall. A brace is cut to fit exactly along the diagonal, from one corner to the opposite corner. The brace is cut from a "+stockNoun+" \\("+u7trim(stock)+"\\) m long. How much of the "+stockNoun+", in metres, is left over? Give your answer to the nearest tenth.";
+  var q=textq(stem,u7ans1(off),
+    "The brace is the diagonal of the rectangle, so find its length with the Pythagorean theorem; the leftover is what the stock length leaves after that length is cut: \\[ \\begin{aligned} b^2 &= "+u7trim(w)+"^2 + "+u7trim(h)+"^2 \\\\ b^2 &= "+u7trim(brace*brace)+" \\\\ b &= "+u7trim(brace)+" \\\\ \\text{left over} &= "+u7trim(stock)+" - "+u7trim(brace)+" \\\\ &= "+u7f1(off)+" \\end{aligned} \\] The amount left over is <b>\\("+u7f1(off)+"\\) m</b>.",
+    {kind:kind,w:w,h:h,brace:brace,stock:stock,left:off});
+  q.figure=u7rectDiagSVG(w,h);
+  return q;
+}
+E("u7-brace-leftover",7,["7.5","7.7"],2,"var",varset([
+  function(){return u7braceLeft("door");},
+  function(){return u7braceLeft("gate");},
+  function(){return u7braceLeft("trellis");}
+]));
+
+/* ---- Prior knowledge tranche entries (Nov 15, 2026) ----
+   Borrowed verbatim from the feeder banks named in each entry's
+   pkSrc (see the metadata pass at the end of this file), under the
+   Math 1201 PK tranche spec. */
+E("u7-pk-hypotenuse", 7, ["7.4"], 1, "gen", function(){
+  var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29],[9,40,41],[12,35,37]]);
+  var kk=ri(1,4); var tr=[base[0]*kk,base[1]*kk,base[2]*kk];
+  var a=tr[0], b=tr[1], c=tr[2];
+  var unit=pick(["cm","m"]);
+  var q=numq("A right triangle has legs of "+a+" "+unit+" and "+b+" "+unit+", as shown in the diagram. Find the length of the hypotenuse, in "+unit+".", c, 0.01,
+    "Use the Pythagorean theorem, with the hypotenuse as the unknown: \\[ \\begin{aligned} c^{2} &= "+a+"^{2} + "+b+"^{2} \\\\ &= "+(a*a)+" + "+(b*b)+" \\\\ &= "+(c*c)+" \\\\ c &= "+c+" \\end{aligned} \\] The hypotenuse is <b>"+c+" "+unit+"</b>.",
+    {a:a, b:b, c:c});
+  q.figure=u1triFig(c,b,a,"?",b+" "+unit,a+" "+unit);
+  return q;
+}, ["The hypotenuse is opposite the right angle and is found from the two legs.", "Square both legs and add, then take the square root of the sum."]);
+E("u7-pk-missing-leg", 7, ["7.4"], 1, "gen", function(){
+  var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29],[9,40,41]]);
+  var kk=ri(1,4); var tr=[base[0]*kk,base[1]*kk,base[2]*kk];
+  var a=tr[0], b=tr[1], c=tr[2];
+  var known=pick(["a","b"]); var knownLeg=(known==="a")?a:b; var unknown=(known==="a")?b:a;
+  var unit=pick(["cm","m"]);
+  var q=numq("A right triangle has a hypotenuse of "+c+" "+unit+" and one leg of "+knownLeg+" "+unit+", as shown in the diagram. Find the length of the other leg, in "+unit+".", unknown, 0.01,
+    "Rearrange the theorem to solve for the missing leg: \\[ \\begin{aligned} b^{2} &= "+c+"^{2} - "+knownLeg+"^{2} \\\\ &= "+(c*c)+" - "+(knownLeg*knownLeg)+" \\\\ &= "+(unknown*unknown)+" \\\\ b &= "+unknown+" \\end{aligned} \\] The other leg is <b>"+unknown+" "+unit+"</b>.",
+    {a:a, b:b, c:c, known:known});
+  if(known==="a"){ q.figure=u1triFig(c,b,a,c+" "+unit,"?",a+" "+unit); }
+  else { q.figure=u1triFig(c,b,a,c+" "+unit,b+" "+unit,"?"); }
+  return q;
+}, ["A missing leg is found by subtracting, not adding, the squares.", "Square the hypotenuse, subtract the square of the known leg, then take the square root."]);
+E("u7-pk-is-right", 7, ["7.7"], 1, "gen", function(){
+  var isRight=pick([true,false]);
+  var a,b,c;
+  if(isRight){ var tr=pick([[3,4,5],[6,8,10],[5,12,13],[9,12,15],[8,15,17]]); a=tr[0]; b=tr[1]; c=tr[2]; }
+  else { a=ri(3,9); b=ri(4,12); c=ri(b+1,17); var t=0; while(a*a+b*b===c*c&&t<40){c++;t++;} }
+  var sum=a*a+b*b, csq=c*c;
+  var ansTxt=isRight?"Yes, it is a right triangle":"No, it is not a right triangle";
+  var opts=isRight?[
+    {t:"No, it is not a right triangle", fb:"Check the sums: the squares of the two shorter sides add to the square of the longest side."},
+    {t:"It cannot be decided", fb:"Side lengths are enough: the theorem gives a yes or no test."},
+    {t:"Yes, if the longest side is at the bottom", fb:"Position does not matter: only the side lengths decide."}
+  ]:[
+    {t:"Yes, it is a right triangle", fb:"Check the sums: "+(a*a)+" + "+(b*b)+" is "+sum+", which does not equal "+csq+"."},
+    {t:"It cannot be decided", fb:"Side lengths are enough: the theorem gives a yes or no test."},
+    {t:"Yes, since the sides are close to a triple", fb:"Close is not enough: the squares must match exactly."}
+  ];
+  var q=mcq("A triangle has sides of "+a+" cm, "+b+" cm and "+c+" cm, as shown. Is it a right triangle?", {t:ansTxt, fb:isRight?"Yes: "+(a*a)+" + "+(b*b)+" equals "+csq+".":"Right: "+(a*a)+" + "+(b*b)+" is "+sum+", not "+csq+"."}, opts,
+    "Test the longest side against the other two: \\[ \\begin{aligned} "+a+"^{2} + "+b+"^{2} &= "+(a*a)+" + "+(b*b)+" \\\\ &= "+sum+" \\\\ "+c+"^{2} &= "+csq+" \\end{aligned} \\] "+(isRight?"The two values are equal, so the triangle <b>is a right triangle</b>.":"The two values differ, so the triangle <b>is not a right triangle</b>."),
+    {a:a, b:b, c:c, isRight:isRight});
+  q.figure=u1triFig(c,b,a,c+" cm",b+" cm",a+" cm");
+  return q;
+}, ["Square the two shorter sides and compare their sum with the square of the longest side.", "Add the squares of the two shorter sides first."]);
+E("u7-pk-ladder-context", 7, ["7.5"], 1, "gen", function(){
+  var mode=pick(["reach","distance","foot"]);
+  if(mode==="reach"){
+    var base=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25]]);
+    var kk=ri(1,4); var tr=[base[0]*kk,base[1]*kk,base[2]*kk];
+    var foot=tr[0], height=tr[1], lad=tr[2];
+    var place=pick(["in St. John's","in Gander","in Corner Brook","in Clarenville"]);
+    var q=numq("A ladder "+lad+" m long leans against a wall "+place+". Its foot stands "+foot+" m from the wall, and the wall meets the ground at a right angle. How high up the wall does the ladder reach, in metres?", height, 0.01,
+      "The ladder is the hypotenuse: \\[ \\begin{aligned} h^{2} &= "+lad+"^{2} - "+foot+"^{2} \\\\ &= "+(lad*lad)+" - "+(foot*foot)+" \\\\ &= "+(height*height)+" \\\\ h &= "+height+" \\end{aligned} \\] The ladder reaches <b>"+height+" m</b> up the wall.",
+      {mode:"reach", foot:foot, height:height, lad:lad});
+    q.figure=u1triFig(lad,height,foot,lad+" m",height+" m",foot+" m");
+    return q;
+  }
+  if(mode==="foot"){
+    var base3=pick([[3,4,5],[5,12,13],[8,15,17]]);
+    var k3=ri(1,4); var ft=base3[0]*k3, ht=base3[1]*k3, ld=base3[2]*k3;
+    var q3=numq("A support cable "+ld+" m long runs from the top of a pole to a point on level ground. The cable touches the ground level at the top of the pole, which is "+ht+" m tall, and the pole meets the ground at a right angle. How far from the base of the pole is the cable anchored, in metres?", ft, 0.01,
+      "The cable is the hypotenuse: \\[ \\begin{aligned} f^{2} &= "+ld+"^{2} - "+ht+"^{2} \\\\ &= "+(ld*ld)+" - "+(ht*ht)+" \\\\ &= "+(ft*ft)+" \\\\ f &= "+ft+" \\end{aligned} \\] The anchor is <b>"+ft+" m</b> from the base.",
+      {mode:"foot", ft:ft, ht:ht, ld:ld});
+    q3.figure=u1triFig(ld,ht,ft,ld+" m",ht+" m","?");
+    return q3;
+  }
+  var tr2=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25]]);
+  var sc=ri(1,4); var east=tr2[0]*sc, north=tr2[1]*sc, hyp=tr2[2]*sc;
+  var q2=numq("A ferry dock lies "+east+" km east and "+north+" km north of a harbour, in a straight line across open water at a right angle to both legs of the trip. What is the straight-line distance from the harbour to the dock, in kilometres?", hyp, 0.01,
+    "The straight line is the hypotenuse: \\[ \\begin{aligned} d^{2} &= "+east+"^{2} + "+north+"^{2} \\\\ &= "+(east*east)+" + "+(north*north)+" \\\\ &= "+(hyp*hyp)+" \\\\ d &= "+hyp+" \\end{aligned} \\] The straight-line distance is <b>"+hyp+" km</b>.",
+    {mode:"distance", east:east, north:north, hyp:hyp});
+  q2.figure=u1triFig(hyp,north,east,"?",north+" km",east+" km");
+  return q2;
+}, ["Draw the situation as a right triangle and mark the hypotenuse.", "Decide whether the unknown is a leg (subtract the squares) or the hypotenuse (add the squares)."]);
+E("u7-pk-similar-verdict", 7, ["7.2"], 1, "gen", function () {
+  var triples = [[3, 4, 5], [5, 12, 13], [6, 8, 10], [5, 5, 6], [5, 5, 8], [8, 15, 17]];
+  function angsOf(s) {
+    function ang(opp, x, y) { var v = (x * x + y * y - opp * opp) / (2 * x * y); v = Math.max(-1, Math.min(1, v)); return Math.round(Math.acos(v) * 180 / Math.PI); }
+    return [ang(s[0], s[1], s[2]), ang(s[1], s[0], s[2]), ang(s[2], s[0], s[1])];
+  }
+  for (var att = 0; att < 200; att++) {
+    var tr = pick(triples), angs = angsOf(tr);
+    if (angs[0] + angs[1] + angs[2] !== 180) continue;
+    var k = pick([1.5, 2, 2.5, 3]);
+    var img = tr.map(function (s) { return Math.round(s * k * 10) / 10; });
+    var mode = pick(["similar", "angles", "sides"]);
+    var angs2 = angs.slice(), img2 = img.slice();
+    if (mode === "angles") { angs2 = [angs[0] + 10, angs[1] - 10, angs[2]]; if (angs2[1] < 10) continue; }
+    if (mode === "sides") { img2 = [img[0], img[1], Math.round((img[2] + 2) * 10) / 10]; }
+    var P1 = u7FitTri(tr, 8, 18, 150, 140), P2 = u7FitTri(img2, 182, 18, 150, 140);
+    var body = u7Poly(P1, FIG_SHADE) + u7Poly(P2, "#ffffff");
+    body += u7TriLabels(P1, ["A", "B", "C"], angs, tr.map(function (s) { return fmt(s); }));
+    body += u7TriLabels(P2, ["D", "E", "F"], angs2, img2.map(function (s) { return fmt(s); }));
+    var fig = u7Svg(345, 185, body, "Two triangles with side and angle labels");
+    var prompt = "Use the labels in the diagram. Which statement about triangles ABC and DEF is correct?";
+    var simT = "They are similar, because matching angles are equal and matching sides are in proportion.";
+    var angT = "They are not similar, because the matching angles are not all equal.";
+    var sideT = "They are not similar, because matching sides are not in proportion.";
+    var congT = "They are congruent, because they have the same angles.";
+    var sol, q;
+    if (mode === "similar") {
+      sol = "The angles match, and the side ratios agree: \\[ \\begin{aligned} " + fmt(img[0]) + " \\div " + fmt(tr[0]) + " &= " + fmt(k) + " \\\\ " + fmt(img[1]) + " \\div " + fmt(tr[1]) + " &= " + fmt(k) + " \\\\ " + fmt(img[2]) + " \\div " + fmt(tr[2]) + " &= " + fmt(k) + " \\end{aligned} \\] So <b>they are similar, because matching angles are equal and matching sides are in proportion</b>.";
+      q = mcq(prompt, { t: simT, fb: "Correct. Equal angles and one shared side ratio show similarity." },
+        [{ t: angT, fb: "The angle labels do match here; compare them vertex by vertex." }, { t: sideT, fb: "The side ratios do match here; each one equals " + fmt(k) + "." }, { t: congT, fb: "Same angles alone do not make triangles congruent; the sides here are scaled, not equal." }],
+        sol, { mode: "verdict-similar", tr: tr.join(","), k: k });
+    } else if (mode === "angles") {
+      sol = "Compare the angles: triangle ABC has an angle of " + angs[0] + " degrees where triangle DEF has " + angs2[0] + " degrees. Similar polygons need all matching angles equal, so <b>they are not similar, because the matching angles are not all equal</b>.";
+      q = mcq(prompt, { t: angT, fb: "Correct. One pair of matching angles differs, so the triangles cannot be similar." },
+        [{ t: simT, fb: "Check the angle labels again; one pair of matching angles differs." }, { t: sideT, fb: "The sides are in proportion here; the angles are the problem." }, { t: congT, fb: "The angles are not all the same, and the sides are scaled, not equal." }],
+        sol, { mode: "verdict-angles", tr: tr.join(","), k: k });
+    } else {
+      sol = "The angles match, but the side ratios do not: \\[ \\begin{aligned} " + fmt(img2[0]) + " \\div " + fmt(tr[0]) + " &= " + fmt(k) + " \\\\ " + fmt(img2[2]) + " \\div " + fmt(tr[2]) + " &= " + fmt(Math.round(img2[2] / tr[2] * 100) / 100) + " \\end{aligned} \\] The ratios differ, so <b>they are not similar, because matching sides are not in proportion</b>.";
+      q = mcq(prompt, { t: sideT, fb: "Correct. The angles match, but one side ratio differs from the others." },
+        [{ t: simT, fb: "Check every side ratio; one of them differs from the rest." }, { t: angT, fb: "The angle labels do match here; compare them vertex by vertex." }, { t: congT, fb: "Same angles alone do not make triangles congruent; the sides here are scaled, not equal." }],
+        sol, { mode: "verdict-sides", tr: tr.join(","), k: k });
+    }
+    q.figure = fig;
+    return q;
+  }
+  return mcq("Use the labels in the diagram. Which statement about the two triangles is correct?",
+    { t: "They are similar, because matching angles are equal and matching sides are in proportion.", fb: "Correct." },
+    [{ t: "They are not similar, because the matching angles are not all equal.", fb: "The angle labels match here." }, { t: "They are not similar, because matching sides are not in proportion.", fb: "The side ratios match here." }, { t: "They are congruent, because they have the same angles.", fb: "Same angles alone do not show congruence." }],
+    "The angles match and every side ratio is 2, so <b>they are similar</b>.", { mode: "verdict-similar", tr: "3,4,5", k: 2 });
+}, ["Similar polygons need both checks: equal matching angles and proportional matching sides.", "First compare the angle labels, then divide each image side by its matching original side."]);
+E("u7-pk-similar-context", 7, ["7.5"], 2, "gen", function () {
+  var mode = ri(0, 2);
+  if (mode === 0) {
+    var w = pick([8, 10, 12, 15, 20]), k = pick([1.5, 2, 2.5, 3]);
+    var h = pick([6, 8, 9, 10, 12, 16]);
+    var W = Math.round(w * k * 10) / 10, ans = Math.round(h * k * 100) / 100;
+    var prompt = "A photo is " + fmt(w) + " cm wide and " + fmt(h) + " cm tall. It is enlarged so the print is " + fmt(W) + " cm wide, keeping the same shape. How tall is the print, in centimetres?";
+    var sol = "The enlargement scale factor comes from the widths: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(W) + " \\div " + fmt(w) + " = " + fmt(k) + " \\\\ \\text{print height} &= " + fmt(h) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the print is <b>" + fmt(ans) + " cm</b> tall.";
+    var q = numq(prompt, ans, 0.01, sol, { mode: "photo-enlarge", w: w, h: h, k: k });
+    q.figure = solRectPair({ w1: w, h1: h, wLab1: fmt(w) + " cm", hLab1: fmt(h) + " cm", cap1: "Photo", w2: W, h2: h * k, wLab2: fmt(W) + " cm", hLab2: "?", cap2: "Print", aria: "A photo and its enlargement with labelled sides" });
+    return q;
+  }
+  if (mode === 1) {
+    var real = pick([40, 50, 60, 80, 100]), mod = pick([8, 10, 12, 16, 20]);
+    var k2 = mod / real;
+    var part = pick([10, 15, 20, 25, 30]);
+    var ans2 = Math.round(part * k2 * 100) / 100;
+    if (Math.abs(ans2 - Math.round(ans2 * 10) / 10) > 0.001) { part = 20; ans2 = Math.round(part * k2 * 100) / 100; }
+    var prompt2 = "A real shed is " + fmt(real) + " m long, and a scale model of it is " + fmt(mod) + " cm long. A door on the real shed is " + fmt(part) + " m wide, measured along the same direction as the lengths. How wide is the door on the model, in centimetres?";
+    var sol2 = "The model scale factor is model length divided by real length: \\[ \\begin{aligned} \\text{scale factor} &= " + fmt(mod) + " \\div " + fmt(real) + " = " + fmt(k2) + " \\\\ \\text{model door} &= " + fmt(part) + " \\times " + fmt(k2) + " \\\\ &= " + fmt(ans2) + " \\end{aligned} \\] So the door on the model is <b>" + fmt(ans2) + " cm</b> wide.";
+    var q = numq(prompt2, ans2, 0.01, sol2, { mode: "model-door", real: real, mod: mod, part: part });
+    var figB = "";
+    figB += solPoly([[45, 36], [245, 36], [245, 78], [45, 78]], "#ffffff");
+    figB += solPoly([[45, 36], [45 + 200 * part / real, 36], [45 + 200 * part / real, 78], [45, 78]], FIG_SHADE);
+    figB += solT(145, 92, fmt(real) + " m", 12, false);
+    figB += solT(45 + 100 * part / real, 26, fmt(part) + " m", 11, false);
+    figB += solPoly([[85, 116], [205, 116], [205, 146], [85, 146]], "#ffffff");
+    figB += solPoly([[85, 116], [85 + 120 * part / real, 116], [85 + 120 * part / real, 146], [85, 146]], FIG_SHADE);
+    figB += solT(145, 160, fmt(mod) + " cm", 12, false);
+    figB += solT(85 + 60 * part / real, 108, "?", 12, false);
+    q.figure = solSvg(340, 172, figB, "A shed and its scale model with the door shaded");
+    return q;
+  }
+  var hp = pick([1.5, 1.6, 1.8]), mult = pick([2, 3, 4, 5]);
+  var sp = pick([1, 1.2, 1.5, 2]);
+  var sPole = Math.round(sp * mult * 10) / 10, ans3 = Math.round(hp * mult * 100) / 100;
+  var prompt3 = "A person " + fmt(hp) + " m tall casts a shadow " + fmt(sp) + " m long. At the same time, a flagpole casts a shadow " + fmt(sPole) + " m long. The pole and its shadow form a triangle similar to the person and shadow triangle. How tall is the flagpole, in metres?";
+  var sol3 = "The shadow is " + fmt(mult) + " times as long, so the pole is the same number of times as tall: \\[ \\begin{aligned} " + fmt(sPole) + " \\div " + fmt(sp) + " &= " + fmt(mult) + " \\\\ \\text{pole height} &= " + fmt(hp) + " \\times " + fmt(mult) + " \\\\ &= " + fmt(ans3) + " \\end{aligned} \\] So the flagpole is <b>" + fmt(ans3) + " m</b> tall.";
+  var q = numq(prompt3, ans3, 0.01, sol3, { mode: "shadow-pole", hp: hp, sp: sp, mult: mult });
+    q.figure = solShadowFig([{ name: "Person", h: hp, s: sp, hLab: fmt(hp) + " m", sLab: fmt(sp) + " m" }, { name: "Flagpole", h: ans3, s: sPole, hLab: "?", sLab: fmt(sPole) + " m" }], "A person and a flagpole with their shadows");
+    return q;
+}, ["Find the scale factor from the pair of lengths you know, then use it on the matching length.", "Divide the known image length by its matching original length first."]);
+E("u7-pk-draw-similar", 7, ["7.2"], 1, "gen", function () {
+  var ks = [0.5, 1.5, 2, 2.5, 3];
+  var k = pick(ks);
+  var isTri = Math.random() < 0.5, sides, pickIdx;
+  if (isTri) {
+    var tr = pick([[3, 4, 5], [5, 12, 13], [6, 8, 10], [5, 5, 8], [9, 12, 15]]);
+    var sc = pick([1, 1, 2]);
+    sides = tr.map(function (s) { return s * sc; });
+  } else {
+    sides = [ri(3, 9), ri(3, 9), ri(3, 9), ri(3, 9)];
+  }
+  pickIdx = ri(0, sides.length - 1);
+  var side = sides[pickIdx], ans = Math.round(side * k * 100) / 100;
+  var shapeWord = isTri ? "triangle" : "quadrilateral";
+  var prompt = "A " + shapeWord + " has sides " + sides.map(function (s) { return fmt(s); }).join(", ") + " cm. A similar " + shapeWord + " is drawn with scale factor " + fmt(k) + ". How long is the side of the new " + shapeWord + " that matches the " + fmt(side) + " cm side, in centimetres?";
+  var sol = "Matching sides of similar polygons follow the scale factor: \\[ \\begin{aligned} \\text{new side} &= " + fmt(side) + " \\times " + fmt(k) + " \\\\ &= " + fmt(ans) + " \\end{aligned} \\] So the matching side is <b>" + fmt(ans) + " cm</b>.";
+  var q = numq(prompt, ans, 0.01, sol, { mode: "draw-similar", sides: sides.join(","), k: k, side: side });
+  var figB2 = "";
+  if (isTri) {
+    var PT = u7FitTri(sides, 95, 22, 160, 125);
+    figB2 = u7Poly(PT, FIG_SHADE) + solSideLabels(PT, [fmt(sides[2]) + " cm", fmt(sides[0]) + " cm", fmt(sides[1]) + " cm"]);
+  } else {
+    var PQ = solQuadPts(sides, 95, 22, 160, 125);
+    if (PQ) figB2 = u7Poly(PQ, FIG_SHADE) + solSideLabels(PQ, sides.map(function (v) { return fmt(v) + " cm"; }));
+  }
+  if (figB2) q.figure = u7Svg(345, 170, figB2, "Polygon with labelled sides");
+  return q;
+}, ["A similar drawing multiplies every side by the same scale factor.", "Take the named side and multiply it by the scale factor."]);
+
+/* PK tranche metadata pass for Unit 7. The tranche's own entries are flagged here.  */
+var PKT_U7_FOR=["7.1","7.2","7.3","7.4","7.5","7.6","7.7"];
+var PKT_U7={
+ "u7-pk-hypotenuse":{src:"math-8:9.12",group:"pythagoras"},
+ "u7-pk-missing-leg":{src:"math-8:9.12",group:"pythagoras"},
+ "u7-pk-is-right":{src:"math-8:9.13",group:"pythagoras"},
+ "u7-pk-ladder-context":{src:"math-8:9.12",group:"pythagoras"},
+ "u7-pk-similar-verdict":{src:"math-9:10.7",group:"similarity"},
+ "u7-pk-similar-context":{src:"math-9:10.15",group:"similarity"},
+ "u7-pk-draw-similar":{src:"math-9:10.14",group:"similarity"}
+};
+BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U7_FOR.slice();e.pkGroup=t.group;}});

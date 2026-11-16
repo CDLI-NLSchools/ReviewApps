@@ -2,18 +2,30 @@
 /* Gate 1 (load parity) for the Math 1201 port:
      node tests/gate-load-math-1201.js
    - courses.js carries a math-1201 entry (Mathematics, grade 10,
-     listed:false); the same-numbered math-2202 and chem-2202
-     entries are separate and untouched.
-   - The bank module registers exactly the standalone's 147
-     entries in the standalone's per-unit counts, kind and level
-     censuses, and its CR_MARKS manifest equals the standalone
-     bank source's own CR_MARKS literal (bank-src.js line 4894:
-     71 keys, denominations 1x1, 2x42, 3x27, 4x1, marks sum 170).
+     listed); the same-numbered math-2202 and chem-2202 entries
+     are separate and untouched.
+   - The bank module registers 227 entries: the standalone's 149
+     in their per-unit counts, kind and level censuses, plus three
+     Level 2 CR entries authored Nov 13, 2026 for Unit 7
+     (u7-rope-angle, u7-ramp-run, u7-brace-leftover), one
+     Level 2 CR entry authored Nov 13, 2026 for Unit 3
+     (u3-factorable-k, the find-all-k reverse factoring entry
+     from build order step 4), and two Level 2 CR entries authored
+     Nov 13, 2026 for Unit 6 (u6-mixture, u6-travel, the scenario
+     harvest of build order step 9), which also extend the CR_MARKS
+     manifest past the standalone bank source's own CR_MARKS
+     literal (bank-src.js line 4940):
+     79 keys, denominations 1x1, 2x48, 3x29, 4x1, marks sum 188;
+     plus the 72 prior knowledge entries of the Nov 15, 2026 PK
+     tranche (70 borrowed placements and 2 authored, all flagged
+     with pkSrc, pkFor and pkGroup; the ordinary per-unit counts
+     reproduce the pre-tranche bank exactly).
    - Every indicator code is covered, every UNIT_IND placement
      (118 over the 118 codes) has an entry in its unit, and no
      entry uses an unregistered code.
    - Standalone parity facts: no entry carries a PK-coded
-     indicator and none carries a postMid flag (the standalone's
+     indicator (the PK tranche's flagged entries carry ordinary
+     host tags) and none carries a postMid flag (the standalone's
      selection-engine note, index.html lines 5785 to 5790).
    - Every entry generates 25 clean questions; a multiple-choice
      draw carries exactly 4 options. */
@@ -49,7 +61,11 @@ ok(typeof mcq === "function" && typeof numq === "function",
 
 var BANK = [];
 /* The shell's own E (build-shell.py bank loader), six-argument
-   form: this bank's entries carry no hint pair. */
+   form: the pre-tranche entries carry no hint pair; the PK
+   tranche's borrowed entries pass a hint pair as a seventh
+   argument, which this stub does not need and ignores. The
+   tranche's metadata postludes run inside the bank module and
+   set pkFlag, pkSrc, pkFor and pkGroup on the entry objects. */
 function E(id, unit, indicators, level, kind, gen) {
   BANK.push({ id, unit, indicators, level, kind, gen });
 }
@@ -64,29 +80,48 @@ ok(C.units[7] === "Trigonometry", "Unit 7 is Trigonometry, saw " + C.units[7]);
 const placements = Object.values(C.unitInd).reduce((n, a) => n + a.length, 0);
 ok(placements === 118, "UNIT_IND has 118 placements, saw " + placements);
 
-ok(BANK.length === 147, "bank registers 147 entries, saw " + BANK.length);
+ok(BANK.length === 227, "bank registers 227 entries, saw " + BANK.length);
 const perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-const wantPerUnit = { 1: 22, 2: 23, 3: 18, 4: 34, 5: 26, 6: 12, 7: 12 };
+const wantPerUnit = { 1: 41, 2: 40, 3: 26, 4: 43, 5: 35, 6: 20, 7: 22 };
 Object.keys(wantPerUnit).forEach(u =>
   ok(perUnit[u] === wantPerUnit[u], "Unit " + u + " has " + wantPerUnit[u] + " entries, saw " + perUnit[u]));
 const kinds = {};
 BANK.forEach(e => { kinds[e.kind] = (kinds[e.kind] || 0) + 1; });
-ok(kinds.gen === 111 && kinds.var === 36, "kind census gen 111 / var 36, saw " + JSON.stringify(kinds));
+ok(kinds.gen === 188 && kinds.var === 39, "kind census gen 188 / var 39, saw " + JSON.stringify(kinds));
 const levels = {};
 BANK.forEach(e => { levels[e.level] = (levels[e.level] || 0) + 1; });
-ok(levels[1] === 70 && levels[2] === 47 && levels[3] === 30,
-   "level census 70/47/30, saw " + JSON.stringify(levels));
+ok(levels[1] === 122 && levels[2] === 75 && levels[3] === 30,
+   "level census 122/75/30, saw " + JSON.stringify(levels));
 
-ok(Object.keys(CR).length === 71, "CR_MARKS manifest has 71 keys, saw " + Object.keys(CR).length);
+/* The Nov 15, 2026 prior knowledge tranche: exactly the pinned
+   72 IDs are flagged, each with provenance metadata, and the
+   ordinary partition reproduces the pre-tranche bank per unit. */
+const PK_IDS = ["u1-pk-area-circle", "u1-pk-circumference", "u1-pk-estimate-count", "u1-pk-estimate-reasonable", "u1-pk-frac-context", "u1-pk-money-decimals", "u1-pk-overlap", "u1-pk-pythag-model", "u1-pk-ratio-problem", "u1-pk-sa-composite", "u1-pk-sa-cylinder", "u1-pk-sa-from-net", "u1-pk-sa-problem", "u1-pk-sa-rect-prism", "u1-pk-sa-tri-prism", "u1-pk-unit-rate-cost", "u1-pk-vol-cylinder", "u1-pk-vol-rect-prism", "u1-pk-vol-tri-prism", "u2-pk-between-two", "u2-pk-decimal-to-fraction", "u2-pk-divisible-by", "u2-pk-estimate-between", "u2-pk-evaluate-power", "u2-pk-factor-list", "u2-pk-factors-root", "u2-pk-frac-to-decimal", "u2-pk-order-four", "u2-pk-parentheses-sign", "u2-pk-product-law", "u2-pk-repeated-mult", "u2-pk-root-between", "u2-pk-sqrt-perfect", "u2-pk-square-of-number", "u2-pk-sum-of-powers", "u2-pk-two-laws", "u3-pk-add", "u3-pk-addsub-xy", "u3-pk-degree", "u3-pk-divide-monomial", "u3-pk-multiply-monomial", "u3-pk-parts", "u3-pk-subtract", "u4-pk-evaluate-expression", "u4-pk-graph-describe", "u4-pk-interpolate", "u4-pk-pattern-figure", "u4-pk-pattern-word", "u4-pk-point-on-graph", "u4-pk-solve-two-step", "u4-pk-table-equation", "u5-pk-construct-graph", "u5-pk-express-rate", "u5-pk-graph-equation", "u5-pk-pattern-solve-n", "u5-pk-rate-problem", "u5-pk-two-term-ratio", "u5-pk-which-is-solution", "u5-pk-word-two-step", "u6-pk-balance-model", "u6-pk-break-even", "u6-pk-context-equation", "u6-pk-solve-two-step", "u6-pk-table-equation", "u6-pk-which-is-solution", "u7-pk-draw-similar", "u7-pk-hypotenuse", "u7-pk-is-right", "u7-pk-ladder-context", "u7-pk-missing-leg", "u7-pk-similar-context", "u7-pk-similar-verdict"];
+const flagged = BANK.filter(e => e.pkFlag);
+ok(flagged.length === 72, "72 entries are flagged prior knowledge, saw " + flagged.length);
+ok(JSON.stringify(flagged.map(e => e.id).sort()) === JSON.stringify(PK_IDS),
+   "the flagged set is exactly the tranche's pinned 72 IDs");
+ok(flagged.every(e => typeof e.pkSrc === "string" && e.pkSrc.length > 0 &&
+   Array.isArray(e.pkFor) && e.pkFor.length > 0 && typeof e.pkGroup === "string" && e.pkGroup.length > 0),
+   "every flagged entry carries pkSrc, pkFor and pkGroup");
+ok(flagged.every(e => e.pkFor.every(c => !!C.indicators[c])),
+   "every pkFor code is a registered indicator of this course");
+const wantOrdinary = { 1: 22, 2: 23, 3: 19, 4: 35, 5: 27, 6: 14, 7: 15 };
+Object.keys(wantOrdinary).forEach(u => {
+  const n = BANK.filter(e => e.unit === +u && !e.pkFlag).length;
+  ok(n === wantOrdinary[u], "Unit " + u + " ordinary count reproduces the pre-tranche bank (" + wantOrdinary[u] + "), saw " + n);
+});
+
+ok(Object.keys(CR).length === 79, "CR_MARKS manifest has 79 keys, saw " + Object.keys(CR).length);
 const ids = new Set(BANK.map(e => e.id));
 ok(ids.size === BANK.length, "entry ids are unique");
 ok(Object.keys(CR).every(k => ids.has(k)), "every CR key is a bank entry id");
 const den = {};
 Object.values(CR).forEach(v => { den[v] = (den[v] || 0) + 1; });
-ok(den[1] === 1 && den[2] === 42 && den[3] === 27 && den[4] === 1,
-   "CR denominations 1x1, 2x42, 3x27, 4x1, saw " + JSON.stringify(den));
-ok(Object.values(CR).reduce((a, b) => a + b, 0) === 170, "CR marks sum to 170");
+ok(den[1] === 1 && den[2] === 48 && den[3] === 29 && den[4] === 1,
+   "CR denominations 1x1, 2x48, 3x29, 4x1, saw " + JSON.stringify(den));
+ok(Object.values(CR).reduce((a, b) => a + b, 0) === 188, "CR marks sum to 188");
 /* Per unit, the exam-eligible CR pool (marks 2+, Level 2+) must
    be able to carry the 14-mark unit-test Section B. */
 for (let u = 1; u <= 7; u++) {

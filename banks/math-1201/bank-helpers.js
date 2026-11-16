@@ -351,3 +351,438 @@ function u1figRuler(o){
   out+=_txt(W-pad,13,o.unit,11.5,false,"end");
   return u1figSvg(W,H,out,"Ruler scale diagram");
 }
+
+/* ---- Prior knowledge tranche helpers (Nov 15, 2026) ----
+   Feeder helper families copied verbatim from the Mathematics 7, 8
+   and 9 banks for the Math 1201 prior knowledge tranche's borrowed
+   entries (the closure each borrowed generator needs, resolved
+   empirically). One rename: Mathematics 8's u5gcd rides as m8u5gcd,
+   because this bank's own Unit 5 file already defines a different
+   u5gcd; the one borrowed entry that calls it (u5-pk-two-term-ratio)
+   has that single reference rewritten. u5pick3 and u6pick3 are
+   identical in the Mathematics 8 and 9 banks; one copy serves both. */
+function precPair(keyT, ds){
+  function parse(s){ var m=String(s).match(/^(\$?)(-?\d+)(?:\.(\d+))?(%?)$/); if(!m) return null; return {pre:m[1], intp:m[2], frac:m[3]||"", suf:m[4], dp:(m[3]||"").length}; }
+  var k=parse(keyT); if(!k) return ds;
+  var ps=ds.map(function(o){ return parse(o.t); });
+  if(ps.some(function(p){ return !p; })) return ds;
+  var M=k.dp; ps.forEach(function(p){ if(p.dp>M) M=p.dp; });
+  function render(p,target){
+    var core;
+    if(target===0) core=p.intp;
+    else if(p.dp>=target) core=p.intp+"."+p.frac;
+    else if(p.dp===0) core=p.intp+"."+("000000".slice(0,target));
+    else core=p.intp+"."+p.frac+("000000".slice(0,target-p.dp));
+    return p.pre+core+p.suf;
+  }
+  var targets=new Array(ps.length), found=null;
+  function countsOk(arr){ var c={}, i; c[k.dp]=1; for(i=0;i<arr.length;i++) c[arr[i]]=(c[arr[i]]||0)+1; for(var v in c){ if(c[v]===1) return false; } return true; }
+  function search(i){ if(found) return; if(i===ps.length){ if(countsOk(targets)) found=targets.slice(); return; } for(var t=ps[i].dp;t<=M;t++){ targets[i]=t; search(i+1); if(found) return; } }
+  search(0);
+  if(!found) return ds;
+  return ds.map(function(o,i){ var nt=render(ps[i],found[i]); if(nt===o.t) return o; var n2={}; for(var kk in o) n2[kk]=o[kk]; n2.t=nt; return n2; });
+}
+function u1DigitSum(n){ var s=0; n=Math.abs(n); while(n>0){ s+=n%10; n=Math.floor(n/10);} return s; }
+function u1Expr(a,b,v){ v=v||"n"; var s=(a===1?v:a+v); if(b>0)s+=" + "+b; else if(b<0)s+=" - "+(-b); return s; }
+function u1Factors(n){ var f=[]; for(var i=1;i<=n;i++){ if(n%i===0)f.push(i);} return f; }
+function u1Why(n,d,yes){
+  var last=n%10, last2=n%100, last3=n%1000, ds=u1DigitSum(n);
+  if(d===2) return yes?("its last digit, "+last+", is even"):("its last digit, "+last+", is odd");
+  if(d===5) return yes?("it ends in "+last):("it ends in "+last+", not 0 or 5");
+  if(d===10) return yes?("it ends in 0"):("it ends in "+last+", not 0");
+  if(d===4) return yes?("its last two digits form "+last2+", which is divisible by 4"):("its last two digits form "+last2+", which is not divisible by 4");
+  if(d===8) return yes?("its last three digits form "+last3+", which is divisible by 8"):("its last three digits form "+last3+", which is not divisible by 8");
+  if(d===3) return yes?("its digits add to "+ds+", which is divisible by 3"):("its digits add to "+ds+", which is not divisible by 3");
+  if(d===9) return yes?("its digits add to "+ds+", which is divisible by 9"):("its digits add to "+ds+", which is not divisible by 9");
+  if(d===6){ if(yes) return "it is even and its digits add to "+ds+", divisible by 3";
+    if(n%2!==0) return "it is odd, so it fails the test for 2"; return "its digits add to "+ds+", not divisible by 3, so it fails the test for 3"; }
+  return "";
+}
+function u3gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function u3simp(n,d){var g=u3gcd(n,d);return [n/g,d/g];}
+function u4circleFig(label, mode){
+  var out='<svg viewBox="0 0 240 190" width="240" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circle diagram">';
+  out+='<circle cx="120" cy="88" r="66" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  out+='<circle cx="120" cy="88" r="2.6" fill="'+FIG_INK+'"/>';
+  if(mode==="r"){
+    out+='<line x1="120" y1="88" x2="186" y2="88" stroke="'+FIG_ACC+'" stroke-width="2"/>';
+    out+=_txt(153,74,label,12.5,false);
+  } else {
+    out+='<line x1="54" y1="88" x2="186" y2="88" stroke="'+FIG_ACC+'" stroke-width="2"/>';
+    out+=_txt(120,74,label,12.5,false);
+  }
+  return out+'</svg>';
+}
+function m8NetAreaSVG(top,front,side){
+  var s='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: the net of a right rectangular prism with the area of each face marked">';
+  s+='<rect x="110" y="60" width="70" height="46" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="40" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="180" y="60" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="110" y="14" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="110" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="180" y="106" width="70" height="46" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+=_txt(145,83,top+" cm²",11,true);
+  s+=_txt(145,37,front+" cm²",11,false);
+  s+=_txt(145,129,front+" cm²",11,false);
+  s+=_txt(75,83,side+" cm²",11,false);
+  s+=_txt(215,83,side+" cm²",11,false);
+  s+=_txt(215,129,top+" cm²",11,false);
+  return s+'</svg>';
+}
+function u1d3(val,cands){var out=[];for(var i=0;i<cands.length;i++){var c=cands[i];if(c!==val&&c>0&&out.indexOf(c)<0){out.push(c);}if(out.length===3){break;}}return out;}
+function u1gridSVG(s){
+  var cell=(s>10)?14:22,pad=26,W=s*cell+2*pad,H=s*cell+2*pad+8,out="";
+  out+='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Square region '+s+' units by '+s+' units">';
+  out+='<rect x="'+pad+'" y="'+pad+'" width="'+(s*cell)+'" height="'+(s*cell)+'" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  for(var i=1;i<s;i++){out+='<line x1="'+(pad+i*cell)+'" y1="'+pad+'" x2="'+(pad+i*cell)+'" y2="'+(pad+s*cell)+'" stroke="'+FIG_INK+'" stroke-width="0.7"/>';out+='<line x1="'+pad+'" y1="'+(pad+i*cell)+'" x2="'+(pad+s*cell)+'" y2="'+(pad+i*cell)+'" stroke="'+FIG_INK+'" stroke-width="0.7"/>';}
+  out+=_txt(pad+s*cell/2,pad-12,s+" units",12,true);
+  out+=_txt(10,pad+s*cell/2,s+"",12,true);
+  return out+'</svg>';
+}
+function u1nonSquare(lo,hi){var n=ri(lo,hi);var t=0;while(Math.floor(Math.sqrt(n))*Math.floor(Math.sqrt(n))===n&&t<80){n=ri(lo,hi);t++;}if(Math.floor(Math.sqrt(n))*Math.floor(Math.sqrt(n))===n){n=lo+1;while(Math.floor(Math.sqrt(n))*Math.floor(Math.sqrt(n))===n){n++;}}return n;}
+function u1numLineSVG(lo,hi){
+  var W=320,H=70,x0=35,x1=285,out="";
+  function X(v){return x0+(v-lo)/(hi-lo)*(x1-x0);}
+  out+='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Number line from '+lo+' to '+hi+'">';
+  out+='<line x1="'+x0+'" y1="38" x2="'+x1+'" y2="38" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  for(var v=lo;v<=hi;v++){out+='<line x1="'+X(v)+'" y1="32" x2="'+X(v)+'" y2="44" stroke="'+FIG_INK+'" stroke-width="1.6"/>';out+=_txt(X(v),58,String(v),12,false);}
+  return out+'</svg>';
+}
+function u1triFig(hyp,legV,base,labHyp,labV,labB){
+  return triSVG(hyp,legV,base,{L:["A","B","C"],side:[labHyp,labV,labB]});
+}
+function u4boxSVG(l,w,h){
+  var s='<svg viewBox="0 0 300 190" xmlns="http://www.w3.org/2000/svg">';
+  s+='<polygon points="70,75 120,37 230,37 180,75" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="180,75 230,37 230,117 180,155" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<rect x="70" y="75" width="110" height="80" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="120" y1="37" x2="120" y2="117" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+=_txt(125,172,l+" cm",13,false);
+  s+=_txt(56,115,h+" cm",13,false);
+  s+=_txt(212,26,w+" cm",13,false);
+  return s+"</svg>";
+}
+function u4cylSVG(r,h,useD){
+  var s='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">';
+  s+='<ellipse cx="150" cy="52" rx="56" ry="16" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<path d="M 94 52 L 94 148 A 56 16 0 0 0 206 148 L 206 52" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  if(useD){
+    s+='<line x1="94" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    s+=_txt(150,30,(2*r)+" cm",13,false);
+  } else {
+    s+='<line x1="150" y1="52" x2="206" y2="52" stroke="'+FIG_INK+'" stroke-width="1.6"/>';
+    s+=_txt(178,40,r+" cm",13,false);
+  }
+  s+=_txt(224,104,h+" cm",13,false);
+  return s+"</svg>";
+}
+function u4d3(val,cands){var out=[];for(var i=0;i<cands.length;i++){var c=cands[i];if(c!==val&&c>0&&out.indexOf(c)<0){out.push(c);}if(out.length===3){break;}}return out;}
+function u4r1(x){return Math.round(x*10)/10;}
+function u4triSVG(a,b,c,L){
+  var s='<svg viewBox="0 0 310 190" xmlns="http://www.w3.org/2000/svg">';
+  s+='<polygon points="150,120 240,120 150,40" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,120 150,40 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<polygon points="60,150 150,150 60,70" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+  s+='<line x1="150" y1="150" x2="150" y2="120" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+='<line x1="240" y1="120" x2="150" y2="150" stroke="'+FIG_INK+'" stroke-width="1.4" stroke-dasharray="5 4"/>';
+  s+=_txt(105,166,b+" cm",13,false);
+  s+=_txt(44,110,a+" cm",13,false);
+  s+=_txt(96,84,c+" cm",13,false);
+  s+=_txt(198,32,L+" cm",13,false);
+  return s+"</svg>";
+}
+/* Mathematics 8's u5gcd, renamed (see the note above). */
+function m8u5gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+function u5pick3(c, cands) { var out = [], seen = [c]; for (var i = 0; i < cands.length && out.length < 3; i++) { if (seen.indexOf(cands[i].t) < 0) { seen.push(cands[i].t); out.push(cands[i]); } } return out; }
+function u5r2(x) { return Math.round(x * 100) / 100; }
+function u6pick3(corr, cands) {
+  var out = [], seen = {}; seen[corr] = 1;
+  var sh = shuffle(cands);
+  for (var i = 0; i < sh.length && out.length < 3; i++) {
+    if (!seen[sh[i].t]) { seen[sh[i].t] = 1; out.push(sh[i]); }
+  }
+  return out.length === 3 ? out : null;
+}
+function fmtPairDs(keyT, ds) {
+  function exactDp(v) { for (var d = 0; d <= 6; d++) { if (Math.abs(v * Math.pow(10, d) - Math.round(v * Math.pow(10, d))) < 1e-9) return d; } return 6; }
+  var m = String(keyT).match(/\.(\d+)/); var kd = m ? m[1].length : 0;
+  var pairIdx = -1;
+  for (var i = 0; i < ds.length; i++) { if (exactDp(ds[i].v) <= kd) { pairIdx = i; break; } }
+  if (pairIdx < 0) { var am = 0; ds.forEach(function (d) { am = Math.max(am, exactDp(d.v)); }); return ds.map(function (d) { return { t: fmtF(d.v, am), fb: d.fb }; }); }
+  var common = 0; ds.forEach(function (d, i) { if (i !== pairIdx) common = Math.max(common, exactDp(d.v)); });
+  return ds.map(function (d, i) { return { t: fmtF(d.v, i === pairIdx ? kd : common), fb: d.fb }; });
+}
+function solLine(p, q, dash, w) {
+  return '<line x1="' + fmt(p[0], 1) + '" y1="' + fmt(p[1], 1) + '" x2="' + fmt(q[0], 1) + '" y2="' + fmt(q[1], 1) + '" stroke="' + FIG_INK + '" stroke-width="' + (w || 2) + '"' + (dash ? ' stroke-dasharray="5 4"' : "") + '/>';
+}
+function solOverlapPlan(bl, bw, p, q, labP, labQ, labBL, labBW, aria) {
+  var s = Math.min(225 / Math.max(bl, 0.01), 135 / Math.max(bw, 0.01));
+  var W = bl * s, H = bw * s, x0 = (340 - W) / 2 - 8, y0 = (215 - H) / 2;
+  var out = solPoly([[x0, y0], [x0 + W, y0], [x0 + W, y0 + H], [x0, y0 + H]], "#ffffff");
+  out += solPoly([[x0, y0], [x0 + p * s, y0], [x0 + p * s, y0 + q * s], [x0, y0 + q * s]], FIG_SHADE);
+  out += solT(x0 + W / 2, y0 + H + 15, labBL, 12, false);
+  out += solT(x0 + W + 14, y0 + H / 2, labBW, 12, false);
+  out += solT(x0 + p * s / 2, y0 + q * s + 13, labP, 11, false);
+  out += solT(x0 + p * s + 13, y0 + q * s / 2, labQ, 11, false);
+  return solSvg(340, 215, out, aria);
+}
+function solPoly(pts, fill, dash) {
+  return '<polygon points="' + solPts(pts) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="2"' + (dash ? ' stroke-dasharray="5 4"' : "") + '/>';
+}
+function solPts(pts) { return pts.map(function (p) { return fmt(p[0], 1) + "," + fmt(p[1], 1); }).join(" "); }
+function solQuadPts(sides, bx, by, bw, bh) {
+  var s0 = sides[0], s1 = sides[1], s2 = sides[2], s3 = sides[3];
+  var lo = Math.max(Math.abs(s0 - s1), Math.abs(s2 - s3)) + 0.25, hi = Math.min(s0 + s1, s2 + s3) - 0.25;
+  if (lo >= hi) return null;
+  var d = (lo + hi) / 2;
+  var cx = (s0 * s0 + d * d - s1 * s1) / (2 * s0);
+  var cy = Math.sqrt(Math.max(d * d - cx * cx, 0.0001));
+  var A = [0, 0], B = [s0, 0], C = [cx, cy];
+  var ux = cx / d, uy = cy / d;
+  var px = (s3 * s3 - s2 * s2 + d * d) / (2 * d), py = Math.sqrt(Math.max(s3 * s3 - px * px, 0.0001));
+  var D = [px * ux - py * uy, px * uy + py * ux];
+  var crossB = cx * B[1] - cy * B[0], crossD = cx * D[1] - cy * D[0];
+  if (crossB * crossD > 0) D = [px * ux + py * uy, px * uy - py * ux];
+  var pts = [A, B, C, D];
+  var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+  var w = Math.max.apply(null, xs) - Math.min.apply(null, xs), h = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+  var sc = Math.min(bw / Math.max(w, 0.01), bh / Math.max(h, 0.01));
+  var ccx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2, ccy = (Math.max.apply(null, ys) + Math.min.apply(null, ys)) / 2;
+  return pts.map(function (p) { return [bx + bw / 2 + (p[0] - ccx) * sc, by + bh / 2 - (p[1] - ccy) * sc]; });
+}
+function solRectPair(o) {
+  var mx = Math.max(o.w1, o.w2), mh = Math.max(o.h1, o.h2);
+  var sc = Math.min(125 / Math.max(mx, 0.01), 105 / Math.max(mh, 0.01));
+  function rect(x0, yBase, w, h, wLab, hLab, cap) {
+    var fw = w * sc, fh = h * sc, out = "";
+    out += solPoly([[x0, yBase - fh], [x0 + fw, yBase - fh], [x0 + fw, yBase], [x0, yBase]], FIG_SHADE);
+    out += solT(x0 + fw / 2, yBase - fh - 12, wLab, 12, false);
+    out += solT(x0 + fw + 14, yBase - fh / 2, hLab, 12, false);
+    if (cap) out += solT(x0 + fw / 2, yBase + 16, cap, 12, true);
+    return out;
+  }
+  var out = rect(28, 168, o.w1, o.h1, o.wLab1, o.hLab1, o.cap1);
+  out += rect(185, 168, o.w2, o.h2, o.wLab2, o.hLab2, o.cap2);
+  return solSvg(340, 205, out, o.aria);
+}
+function solRectPrism(l, w, h, labL, labW, labH, aria) {
+  var s = Math.min(150 / Math.max(l, 0.01), 105 / Math.max(h, 0.01));
+  var fw = l * s, fh = h * s, d = Math.min(w * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 192;
+  var F = [[x0, y0 - fh], [x0 + fw, y0 - fh], [x0 + fw, y0], [x0, y0]];
+  var B = F.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(B, "#ffffff") + solPoly(F, FIG_SHADE);
+  out += solLine(F[0], B[0]) + solLine(F[1], B[1]) + solLine(F[2], B[2]);
+  out += solT(x0 + fw / 2, y0 + 15, labL, 12, false);
+  out += solT(x0 - 13, y0 - fh / 2, labH, 12, false);
+  out += solT((F[1][0] + B[1][0]) / 2 + 13, (F[1][1] + B[1][1]) / 2 - 4, labW, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+function solShadowFig(items, aria) {
+  var maxS = 0, maxH = 0, totS = 0;
+  items.forEach(function (it) { maxS = Math.max(maxS, it.s); maxH = Math.max(maxH, it.h); totS += it.s; });
+  var sc = Math.min(290 / Math.max(totS, 0.01), 118 / Math.max(maxH, 0.01));
+  var y0 = 188, x = (340 - totS * sc) / 2, out = "";
+  out += solLine([18, y0], [322, y0], false, 2);
+  items.forEach(function (it) {
+    var w = it.s * sc, hh = it.h * sc;
+    out += solPoly([[x, y0], [x + w, y0], [x, y0 - hh]], FIG_SHADE);
+    if (it.name) out += solT(x + 4, y0 - hh - 11, it.name, 11, true);
+    out += solT(x - 12, y0 - hh / 2, it.hLab, 11, false);
+    out += solT(x + w / 2, y0 + 14, it.sLab, 11, false);
+    x += w + 8;
+  });
+  return solSvg(340, 215, out, aria);
+}
+function solSideLabels(P, labs) {
+  var G = [0, 0];
+  P.forEach(function (p) { G[0] += p[0] / P.length; G[1] += p[1] / P.length; });
+  var out = "";
+  for (var i = 0; i < P.length; i++) {
+    var M = [(P[i][0] + P[(i + 1) % P.length][0]) / 2, (P[i][1] + P[(i + 1) % P.length][1]) / 2];
+    var dx = M[0] - G[0], dy = M[1] - G[1], dl = Math.sqrt(dx * dx + dy * dy) || 1;
+    if (labs[i]) out += solT(M[0] + dx / dl * 13, M[1] + dy / dl * 13, labs[i], 11, false);
+  }
+  return out;
+}
+function solStep(X, W, H1, X2, H2, labX, labW, labH1, labX2, labH2, aria) {
+  var s = Math.min(175 / Math.max(X, 0.01), 115 / Math.max(H1 + H2, 0.01));
+  var fw = X * s, fh1 = H1 * s, fh2 = H2 * s, sw = X2 * s, d = Math.min(W * s * 0.5, 40);
+  var x0 = (340 - fw - d) / 2, y0 = 192;
+  var P = [[x0, y0], [x0 + fw, y0], [x0 + fw, y0 - fh1], [x0 + sw, y0 - fh1], [x0 + sw, y0 - fh1 - fh2], [x0, y0 - fh1 - fh2]];
+  var Q = P.map(function (p) { return [p[0] + d, p[1] - d]; });
+  var out = solPoly(Q, "#ffffff") + solPoly(P, FIG_SHADE);
+  out += solLine(P[4], Q[4]) + solLine(P[5], Q[5]) + solLine(P[3], Q[3]) + solLine(P[2], Q[2]) + solLine(P[1], Q[1]);
+  out += solT(x0 + fw / 2, y0 + 15, labX, 12, false);
+  out += solT(x0 + sw / 2, y0 - fh1 - fh2 - 12, labX2, 12, false);
+  out += solT(x0 - 13, y0 - fh1 - fh2 / 2, labH2, 12, false);
+  out += solT(x0 + fw + 13, y0 - fh1 / 2, labH1, 12, false);
+  out += solT((P[4][0] + Q[4][0]) / 2 + 6, (P[4][1] + Q[4][1]) / 2 - 12, labW, 12, false);
+  return solSvg(340, 225, out, aria);
+}
+function solSvg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+function solT(x, y, str, size, bold) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 12) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+function u1frac(n, d) { var r = u1red(n, d); n = r[0]; d = r[1]; if (d === 1) return "\\(" + n + "\\)"; if (n < 0) return "\\(-" + FR(-n, d) + "\\)"; return "\\(" + FR(n, d) + "\\)"; }
+function u1gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+function u1red(n, d) { var g = u1gcd(n, d); return [n / g, d / g]; }
+function u1round(x, p) { var m = Math.pow(10, p); return Math.round(x * m) / m; }
+function u2r2(x){return Math.round(x*100)/100;}
+function u3MultStr(factor, count) {
+  var parts = [];
+  for (var i = 0; i < count; i++) parts.push(String(factor));
+  return "\\(" + parts.join("\\times ") + "\\)";
+}
+function u3Pick3(correct, pairs) {
+  var out = [], seen = {};
+  seen[String(correct)] = 1;
+  for (var i = 0; i < pairs.length && out.length < 3; i++) {
+    var v = pairs[i].v;
+    if (!seen[String(v)]) { seen[String(v)] = 1; out.push({ t: fmt(v), fb: pairs[i].fb }); }
+  }
+  return out;
+}
+function u3PowDist(a, correctExp, pairs) {
+  var out = [], seen = {};
+  seen[String(correctExp)] = 1;
+  for (var i = 0; i < pairs.length && out.length < 3; i++) {
+    var e = pairs[i].v;
+    if (!seen[String(e)]) { seen[String(e)] = 1; out.push({ t: "\\(" + a + "^{" + e + "}\\)", fb: pairs[i].fb }); }
+  }
+  return out;
+}
+function u4expr(terms){var s="",first=true;for(var i=0;i<terms.length;i++){var cf=terms[i][0],v=terms[i][1];if(cf===0)continue;var mag;if(v===""){mag=fmt(Math.abs(cf));}else if(Math.abs(cf)===1){mag=v;}else{mag=fmt(Math.abs(cf))+v;}if(first){s+=(cf<0?"-":"")+mag;first=false;}else{s+=(cf<0?"-":"+")+mag;}}return s===""?"0":s;}
+function u4m(a,b,c){return "\\("+u4p(a,b,c)+"\\)";}
+function u4mxy(x,y,k){return "\\("+u4pxy(x,y,k)+"\\)";}
+function u4nz(a,b){var v=ri(a,b),g=0;while(v===0&&g<60){v=ri(a,b);g++;}return v===0?2:v;}
+function u4ok(c,ds){var all=[c];for(var i=0;i<ds.length;i++){if(all.indexOf(ds[i].t)>=0)return false;all.push(ds[i].t);}return true;}
+function u4p(a,b,c){return u4expr([[a,"x^{2}"],[b,"x"],[c,""]]);}
+function u4pick3(c,cands){var out=[],seen=[c];for(var i=0;i<cands.length&&out.length<3;i++){if(seen.indexOf(cands[i].t)<0){seen.push(cands[i].t);out.push(cands[i]);}}return out;}
+function u4pxy(x,y,k){return u4expr([[x,"x"],[y,"y"],[k,""]]);}
+function u5balance(a, b, c) {
+  var W = 340, H = 178, panY = 118;
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Balance model">';
+  s += '<line x1="18" y1="34" x2="322" y2="34" stroke="' + FIG_INK + '" stroke-width="3"/>';
+  s += '<polygon points="170,34 156,66 184,66" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+  s += '<rect x="160" y="66" width="20" height="8" fill="' + FIG_INK + '"/>';
+  function pan(cx, nx, nu) {
+    var w = nx * 27 + nu * 17, x = cx - w / 2, out = "";
+    out += '<line x1="' + cx + '" y1="34" x2="' + (cx - 62) + '" y2="' + panY + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+    out += '<line x1="' + cx + '" y1="34" x2="' + (cx + 62) + '" y2="' + panY + '" stroke="' + FIG_INK + '" stroke-width="1.5"/>';
+    out += '<line x1="' + (cx - 72) + '" y1="' + panY + '" x2="' + (cx + 72) + '" y2="' + panY + '" stroke="' + FIG_INK + '" stroke-width="3"/>';
+    var bx = x;
+    for (var i = 0; i < nx; i++) { out += '<rect x="' + fmt(bx, 1) + '" y="' + (panY - 26) + '" width="24" height="26" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + fmt(bx + 12, 1) + '" y="' + (panY - 13) + '" font-size="13" fill="' + FIG_INK + '" text-anchor="middle" dominant-baseline="central">x</text>'; bx += 27; }
+    for (var j = 0; j < nu; j++) { out += '<rect x="' + fmt(bx, 1) + '" y="' + (panY - 16) + '" width="14" height="16" fill="#ffffff" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + fmt(bx + 7, 1) + '" y="' + (panY - 8) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle" dominant-baseline="central">1</text>'; bx += 17; }
+    return out;
+  }
+  s += pan(85, a, b);
+  s += pan(255, 0, c);
+  s += '<text x="85" y="140" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">left pan</text>';
+  s += '<text x="255" y="140" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">right pan</text>';
+  s += '<text x="170" y="164" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">The pans balance, so the two sides are equal.</text>';
+  return s + '</svg>';
+}
+function u5lin(a, b) { var s; if (a === 1) s = "x"; else if (a === -1) s = "-x"; else s = fmt(a) + "x"; if (b > 0) s += "+" + fmt(b); else if (b < 0) s += "-" + fmt(-b); return s; }
+function u6graph(o) {
+  var W = 360, H = 302, x0 = 56, y0 = 256, x1 = 338, y1 = 28;
+  var sx = (x1 - x0) / o.xmax, sy = (y0 - y1) / o.ymax;
+  function X(v) { return fmt(x0 + v * sx, 1); }
+  function Y(v) { return fmt(y0 - v * sy, 1); }
+  var xs = o.xstep || (o.xmax <= 10 ? 1 : 2);
+  var ys = o.ystep || (o.ymax <= 12 ? 1 : (o.ymax <= 26 ? 2 : 5));
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Graph of a linear relation">';
+  var g;
+  for (g = xs; g < o.xmax; g += xs) s += '<line x1="' + X(g) + '" y1="' + y1 + '" x2="' + X(g) + '" y2="' + y0 + '" stroke="#dce8df" stroke-width="1"/>';
+  for (g = ys; g < o.ymax; g += ys) s += '<line x1="' + x0 + '" y1="' + Y(g) + '" x2="' + x1 + '" y2="' + Y(g) + '" stroke="#dce8df" stroke-width="1"/>';
+  (o.lines || []).forEach(function (L) {
+    var pts = L.pts.map(function (p) { return X(p[0]) + "," + Y(p[1]); }).join(" ");
+    s += '<polyline points="' + pts + '" fill="none" stroke="' + (L.col || FIG_INK) + '" stroke-width="' + (L.w || 2.5) + '"' + (L.dash ? ' stroke-dasharray="7 5"' : "") + '/>';
+    if (L.lab) { var lp = L.pts[L.pts.length - 1]; s += '<text x="' + fmt(x0 + lp[0] * sx - 4, 1) + '" y="' + fmt(y0 - lp[1] * sy - 10, 1) + '" font-size="12" font-weight="bold" fill="' + (L.col || FIG_INK) + '" text-anchor="end">' + L.lab + '</text>'; }
+  });
+  (o.points || []).forEach(function (P) {
+    s += '<circle cx="' + X(P.x) + '" cy="' + Y(P.y) + '" r="3.5" fill="' + (P.col || FIG_ACC) + '"/>';
+    if (P.lab) s += '<text x="' + fmt(x0 + P.x * sx + 8, 1) + '" y="' + fmt(y0 - P.y * sy - 8, 1) + '" font-size="12" fill="' + FIG_INK + '">' + P.lab + '</text>';
+  });
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x1 + '" y2="' + y0 + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<polygon points="' + x1 + ',' + y0 + ' ' + (x1 - 9) + ',' + (y0 - 4) + ' ' + (x1 - 9) + ',' + (y0 + 4) + '" fill="' + FIG_INK + '"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + y1 + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  s += '<polygon points="' + x0 + ',' + y1 + ' ' + (x0 - 4) + ',' + (y1 + 9) + ' ' + (x0 + 4) + ',' + (y1 + 9) + '" fill="' + FIG_INK + '"/>';
+  for (g = 0; g <= o.xmax; g += xs) s += '<line x1="' + X(g) + '" y1="' + y0 + '" x2="' + X(g) + '" y2="' + (y0 + 5) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + X(g) + '" y="' + (y0 + 20) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">' + g + '</text>';
+  for (g = ys; g <= o.ymax; g += ys) s += '<line x1="' + (x0 - 5) + '" y1="' + Y(g) + '" x2="' + x0 + '" y2="' + Y(g) + '" stroke="' + FIG_INK + '" stroke-width="1.5"/><text x="' + (x0 - 10) + '" y="' + Y(g) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="end" dominant-baseline="central">' + g + '</text>';
+  s += '<text x="' + x1 + '" y="' + (y0 + 38) + '" font-size="13" font-style="italic" fill="' + FIG_INK + '" text-anchor="end">' + (o.xlab || "x") + '</text>';
+  s += '<text x="' + fmt(x0 - 4, 1) + '" y="' + (y1 - 10) + '" font-size="13" font-style="italic" fill="' + FIG_INK + '" text-anchor="middle">' + (o.ylab || "y") + '</text>';
+  return s + '</svg>';
+}
+function u6lin(m, b, v) {
+  var head = (m === 1 ? v : fmt(m) + v);
+  if (b > 0) return head + " + " + fmt(b);
+  if (b < 0) return head + " - " + fmt(-b);
+  return head;
+}
+function u6stageFig(counts, item) {
+  var sq = 15, gap = 3, per = 8, pad = 12, seg = 26;
+  var widths = counts.map(function (c) { var cols = Math.min(per, c); return cols * (sq + gap) - gap; });
+  var maxRows = 1;
+  counts.forEach(function (c) { var r = Math.ceil(c / per); if (r > maxRows) maxRows = r; });
+  var totW = pad * 2 + seg * (counts.length - 1);
+  widths.forEach(function (w) { totW += w; });
+  var H = 22 + (maxRows * (sq + gap) - gap) + 26;
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" width="' + totW + '" height="' + H + '" viewBox="0 0 ' + totW + ' ' + H + '" role="img" aria-label="First three stages of a growing pattern">';
+  var cx = pad;
+  counts.forEach(function (c, i) {
+    var w = widths[i], mid = fmt(cx + w / 2, 1);
+    s += '<text x="' + mid + '" y="12" font-size="12" font-weight="bold" fill="' + FIG_INK + '" text-anchor="middle">Stage ' + (i + 1) + '</text>';
+    for (var k = 0; k < c; k++) {
+      var col = k % per, row = Math.floor(k / per);
+      s += '<rect x="' + (cx + col * (sq + gap)) + '" y="' + (22 + row * (sq + gap)) + '" width="' + sq + '" height="' + sq + '" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.2"/>';
+    }
+    s += '<text x="' + mid + '" y="' + (H - 6) + '" font-size="12" fill="' + FIG_INK + '" text-anchor="middle">' + c + ' ' + item + '</text>';
+    cx += w + seg;
+  });
+  return s + '</svg>';
+}
+function u7FitTri(sides, bx, by, bw, bh) {
+  var pts = u7TriCoords(sides);
+  var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+  var w = Math.max.apply(null, xs) - Math.min.apply(null, xs), h = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+  var sc = Math.min(bw / Math.max(w, 0.01), bh / Math.max(h, 0.01));
+  var cx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2, cy = (Math.max.apply(null, ys) + Math.min.apply(null, ys)) / 2;
+  return pts.map(function (p) { return [bx + bw / 2 + (p[0] - cx) * sc, by + bh / 2 - (p[1] - cy) * sc]; });
+}
+function u7Poly(pts, fill, dash) {
+  return '<polygon points="' + u7Pts(pts) + '" fill="' + (fill || "none") + '" stroke="' + FIG_INK + '" stroke-width="2"' + (dash ? ' stroke-dasharray="6 4"' : "") + '/>';
+}
+function u7Pts(pts) { return pts.map(function (p) { return fmt(p[0], 1) + "," + fmt(p[1], 1); }).join(" "); }
+function u7Svg(W, H, body, aria) {
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">' + body + '</svg>';
+}
+function u7T(x, y, str, size, bold, anchor) {
+  return '<text x="' + fmt(x, 1) + '" y="' + fmt(y, 1) + '" font-size="' + (size || 13) + '" fill="' + FIG_INK + '" stroke="#ffffff" stroke-width="3.5" style="paint-order:stroke" stroke-linejoin="round" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central"' + (bold ? ' font-weight="bold"' : "") + '>' + str + '</text>';
+}
+function u7TriCoords(sides) {
+  var a = sides[0], b = sides[1], c = sides[2];
+  var cx = (b * b + c * c - a * a) / (2 * c);
+  var h = Math.sqrt(Math.max(b * b - cx * cx, 0.01));
+  return [[0, 0], [c, 0], [cx, h]];
+}
+function u7TriLabels(P, letters, angs, sides) {
+  var G = [(P[0][0] + P[1][0] + P[2][0]) / 3, (P[0][1] + P[1][1] + P[2][1]) / 3], s = "", i;
+  for (i = 0; i < 3; i++) {
+    var V = P[i], dx = V[0] - G[0], dy = V[1] - G[1], dl = Math.sqrt(dx * dx + dy * dy) || 1;
+    s += u7T(V[0] + dx / dl * 15, V[1] + dy / dl * 15, letters[i], 14, true);
+    var bx2 = G[0] - V[0], by2 = G[1] - V[1], bl = Math.sqrt(bx2 * bx2 + by2 * by2) || 1;
+    if (angs) s += u7T(V[0] + bx2 / bl * 21, V[1] + by2 / bl * 21, angs[i] + "°", 12, false);
+  }
+  if (sides) {
+    var seg = [[1, 2], [2, 0], [0, 1]];
+    for (i = 0; i < 3; i++) {
+      var M = [(P[seg[i][0]][0] + P[seg[i][1]][0]) / 2, (P[seg[i][0]][1] + P[seg[i][1]][1]) / 2];
+      var ox2 = M[0] - G[0], oy2 = M[1] - G[1], ol = Math.sqrt(ox2 * ox2 + oy2 * oy2) || 1;
+      s += u7T(M[0] + ox2 / ol * 15, M[1] + oy2 / ol * 15, sides[i], 12, false);
+    }
+  }
+  return s;
+}
