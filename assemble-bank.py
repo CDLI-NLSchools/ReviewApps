@@ -64,7 +64,7 @@ COURSES = {
     "sci-7": ("Science 7",
               ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
     "sci-8": ("Science 8",
-              ["bank-helpers.js", "bank-u1.js", "bank-u2.js"]),
+              ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js"]),
     "math-3200": ("Math 3200",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js",
                    "bank-u4.js", "bank-u5.js", "bank-u6.js",
@@ -133,7 +133,7 @@ COURSES = {
                 "bank-u2-topup.js", "bank-u3-topup.js",
                 "bank-u4-topup.js", "bank-u5.js", "bank-u6.js",
                 "bank-u7.js", "bank-u8.js", "bank-u9.js",
-                "bank-fix.js"]),
+                "bank-fix.js", "bank-pk.js"]),
     # Build order mirrors the English Math 9 port and the French
     # standalone bank source's own order: helpers (the fork's chassis
     # number-format helpers plus the bank source head), Units 1 to 4,

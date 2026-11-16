@@ -14,8 +14,13 @@
      32/32/16, per-indicator counts equal to the Fluids spec, CR
      marks sum 44 (twelve at 3, two at 4: the SC8.5.2 cleaning
      claim CR and the SC8.6.5 design CR, the latter noCompose).
-     Course-wide after Unit 2: 160 entries, 28 CR, 88 CR marks,
-     exactly two noCompose design CRs.
+   - Unit 3 (Optics): exactly 85 entries, 70 SR + 15 CR, levels
+     34/34/17, per-indicator counts equal to the Optics spec, CR
+     marks sum 47 (thirteen at 3, two at 4: the SC8.8.5 fibre
+     optics CR and the SC8.9.11 design CR, the latter noCompose).
+     SC8.9.12 is registered with zero entries (NONE, on the
+     SC7.3.5 precedent). Course-wide after Unit 3: 245 entries,
+     43 CR, 135 CR marks, exactly three noCompose design CRs.
    - Terminology sweeps (guide discipline): Unit 1, no
      student-facing text keys a numeric salinity or density value
      (the guide directs qualitative comparison), and no text
@@ -39,7 +44,8 @@ ok(C.listed === false, "sci-8 is unlisted");
 ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 8, "curriculum NL, Science, grade 8");
 ok(C.units[1] === "Water Systems on Earth's Surface", "Unit 1 registered");
 ok(C.units[2] === "Fluids", "Unit 2 registered");
-ok(Object.keys(C.indicators).length === 53, "53 indicators registered so far, saw " + Object.keys(C.indicators).length);
+ok(C.units[3] === "Optics", "Unit 3 registered");
+ok(Object.keys(C.indicators).length === 78, "78 indicators registered so far, saw " + Object.keys(C.indicators).length);
 ok(C.unitTest && C.unitTest.total === 26 && C.unitTest.sr === 20 && C.unitTest.cr === 6 && C.unitTest.indCap === 2 && JSON.stringify(C.unitTest.crPref) === "[3,3]", "unit test convention 20 SR + 2 CR at 3 = 26, indCap 2, crPref [3,3]");
 
 const built = fs.readFileSync(ROOT + "/index.html", "utf8");
@@ -60,11 +66,13 @@ const CR = window.__BANK_CRMARKS || {};
 
 const U1 = BANK.filter(e => e.unit === 1);
 const U2 = BANK.filter(e => e.unit === 2);
-ok(BANK.length === 160, "bank registers 160 entries, saw " + BANK.length);
+const U3 = BANK.filter(e => e.unit === 3);
+ok(BANK.length === 245, "bank registers 245 entries, saw " + BANK.length);
 ok(U1.length === 80, "80 entries are Unit 1, saw " + U1.length);
 ok(U2.length === 80, "80 entries are Unit 2, saw " + U2.length);
+ok(U3.length === 85, "85 entries are Unit 3, saw " + U3.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 160, "all entry ids unique");
+ok(ids.size === 245, "all entry ids unique");
 
 const SPEC_COUNT = {
   "SC8.1.1": 6, "SC8.1.2": 3, "SC8.1.3": 5, "SC8.1.4": 4, "SC8.1.5": 4, "SC8.1.6": 6, "SC8.1.7": 5,
@@ -91,6 +99,17 @@ const p2 = primaryCounts(U2);
 for (const tag of Object.keys(SPEC_COUNT_U2)) {
   ok((p2[tag] || 0) === SPEC_COUNT_U2[tag], "U2 primary count " + tag + " = " + SPEC_COUNT_U2[tag] + ", saw " + (p2[tag] || 0));
 }
+const SPEC_COUNT_U3 = {
+  "SC8.7.1": 8, "SC8.7.2": 7, "SC8.7.3": 8, "SC8.7.4": 7, "SC8.8.1": 3, "SC8.8.2": 2, "SC8.8.3": 3,
+  "SC8.8.4": 3, "SC8.8.5": 3, "SC8.8.6": 3, "SC8.8.7": 3, "SC8.9.1": 2, "SC8.9.2": 3, "SC8.9.3": 6,
+  "SC8.9.4": 2, "SC8.9.5": 2, "SC8.9.6": 1, "SC8.9.7": 3, "SC8.9.8": 2, "SC8.9.9": 3, "SC8.9.10": 2,
+  "SC8.9.11": 2, "SC8.9.13": 4, "SC8.9.14": 3
+};
+const p3 = primaryCounts(U3);
+for (const tag of Object.keys(SPEC_COUNT_U3)) {
+  ok((p3[tag] || 0) === SPEC_COUNT_U3[tag], "U3 primary count " + tag + " = " + SPEC_COUNT_U3[tag] + ", saw " + (p3[tag] || 0));
+}
+ok(!BANK.some(e => e.indicators.includes("SC8.9.12")), "SC8.9.12 carries no entries (NONE, recorded)");
 ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the registered indicators");
 
 const crU1 = U1.filter(e => CR[e.id] !== undefined);
@@ -111,14 +130,25 @@ ok(CR["s8-u2-cr-cleaning-claim"] === 4 && CR["s8-u2-cr-design-viscosity"] === 4,
 ok(U2.filter(e => CR[e.id] === undefined).length === 66, "66 SR entries in Unit 2, saw " + U2.filter(e => CR[e.id] === undefined).length);
 ok(levels(U2) === "[32,32,16]", "U2 levels 32/32/16, saw " + levels(U2));
 ok(U2.filter(e => e.kind === "gen").length === 24, "24 U2 generator entries, saw " + U2.filter(e => e.kind === "gen").length);
-ok(crU1.length + crU2.length === 28 && markSum(crU1) + markSum(crU2) === 88, "course-wide CR manifest is 28 entries and 88 marks");
+const crU3 = U3.filter(e => CR[e.id] !== undefined);
+ok(crU3.length === 15, "15 CR entries in Unit 3, saw " + crU3.length);
+ok(markSum(crU3) === 47, "U3 CR marks sum to 47, saw " + markSum(crU3));
+ok(crU3.filter(e => CR[e.id] === 3).length === 13, "thirteen U3 CR entries at exactly 3 marks, saw " + crU3.filter(e => CR[e.id] === 3).length);
+ok(CR["s8-u3-cr-fibre"] === 4 && CR["s8-u3-cr-design-refraction"] === 4, "the fibre optics CR and the design CR carry 4 marks");
+ok(U3.filter(e => CR[e.id] === undefined).length === 70, "70 SR entries in Unit 3, saw " + U3.filter(e => CR[e.id] === undefined).length);
+ok(levels(U3) === "[34,34,17]", "U3 levels 34/34/17, saw " + levels(U3));
+ok(U3.filter(e => e.kind === "gen").length === 16, "16 U3 generator entries, saw " + U3.filter(e => e.kind === "gen").length);
+ok(crU1.length + crU2.length + crU3.length === 43 && markSum(crU1) + markSum(crU2) + markSum(crU3) === 135, "course-wide CR manifest is 43 entries and 135 marks");
 const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
-ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity", "s8-u2-cr-design-viscosity"]),
-  "exactly the two design CRs carry noCompose, saw " + noComp.join(","));
+ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity", "s8-u2-cr-design-viscosity", "s8-u3-cr-design-refraction"]),
+  "exactly the three design CRs carry noCompose, saw " + noComp.join(","));
 
 const FIG_ENTRIES = ["s8-u1-profile-figure", "s8-u1-landform-figure", "s8-u1-wave-energy",
   "s8-u1-health-figure", "s8-u1-pop-interpolate", "s8-u1-pop-extrapolate", "s8-u1-cr-population",
-  "s8-u2-flow-lab", "s8-u2-identify-substance", "s8-u2-force-figure", "s8-u2-bargraph", "s8-u2-pattern"];
+  "s8-u2-flow-lab", "s8-u2-identify-substance", "s8-u2-force-figure", "s8-u2-bargraph", "s8-u2-pattern",
+  "s8-u3-angle-calc", "s8-u3-plane-spot", "s8-u3-definitions-figure", "s8-u3-concave-spot",
+  "s8-u3-convex-spot", "s8-u3-bend-figure", "s8-u3-bend-straight", "s8-u3-estimate-bend",
+  "s8-u3-lenses", "s8-u3-lens-examples", "s8-u3-em-order", "s8-u3-em-compare"];
 
 let badDraws = [];
 BANK.forEach(e => {
@@ -170,6 +200,18 @@ U2.forEach(e => {
   }
 });
 ok(fHits.length === 0, "fluids terminology sweep clean, hits: " + fHits.join(","));
+
+/* Unit 3 sweep: Snell's law is named in the guide as not
+   expected; it never appears in student-facing text. */
+let oHits = [];
+U3.forEach(e => {
+  for (let i = 0; i < 40; i++) {
+    const q = e.gen();
+    const text = [q.prompt, q.solution].concat(q.options || [], q.answers || []).join(" ");
+    if (/Snell/i.test(text)) { oHits.push(e.id); break; }
+  }
+});
+ok(oHits.length === 0, "optics terminology sweep clean, hits: " + oHits.join(","));
 
 /* Negative stems, listed for judgement (spec audit). */
 const NEG = [];

@@ -207,3 +207,221 @@ function s8LineGraphSVG(xs, ys, xLabel, yLabel) {
   s += "</svg>";
   return s;
 }
+
+/* ================= Unit 3 (Optics) figure families =================
+   O1: reflection diagram at a given incidence angle (the angle is
+   labelled as given data, as in the core lab). O2: plane mirror
+   with object and image arrows. O3: concave mirror ray diagrams
+   at the guide's three object positions and a convex mirror
+   diagram, drawn with the two special rays under the paraxial
+   construction, so the image position and size follow the mirror
+   relationship. O4: refraction at a boundary (toward, away,
+   straight-on). O5: lens ray diagrams. O6: EM spectrum strip. */
+
+function s8ReflectSVG(angleDeg, callouts) {
+  var W = 400, H = 260, px = 300, py = 130;
+  var a = angleDeg * Math.PI / 180, L = 175;
+  var sx = px - L * Math.cos(a), sy = py - L * Math.sin(a);
+  var rx = px - L * Math.cos(a), ry = py + L * Math.sin(a);
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:400px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"13\">";
+  for (var h = 0; h < 7; h++) s += "<line x1=\"" + (px + 4) + "\" y1=\"" + (40 + h * 30) + "\" x2=\"" + (px + 16) + "\" y2=\"" + (30 + h * 30) + "\" stroke=\"#999\"/>";
+  s += "<line x1=\"" + px + "\" y1=\"25\" x2=\"" + px + "\" y2=\"235\" stroke=\"#444\" stroke-width=\"3\"/>";
+  s += "<line x1=\"55\" y1=\"" + py + "\" x2=\"" + px + "\" y2=\"" + py + "\" stroke=\"#888\" stroke-dasharray=\"6 4\"/>";
+  s += "<line x1=\"" + sx + "\" y1=\"" + sy + "\" x2=\"" + px + "\" y2=\"" + py + "\" stroke=\"#c0392b\" stroke-width=\"2.5\"/>";
+  s += "<line x1=\"" + px + "\" y1=\"" + py + "\" x2=\"" + rx + "\" y2=\"" + ry + "\" stroke=\"#2471a3\" stroke-width=\"2.5\"/>";
+  s += "<polygon points=\"" + px + "," + py + " " + (px - 12) + "," + (py - 5) + " " + (px - 10) + "," + (py + 6) + "\" fill=\"#c0392b\"/>";
+  s += "<polygon points=\"" + rx + "," + ry + " " + (rx + 11) + "," + (ry - 7) + " " + (rx + 3) + "," + (ry - 12) + "\" fill=\"#2471a3\"/>";
+  var arcR = 52;
+  var ax = px - arcR * Math.cos(a / 2) * 1.0, ay = py - arcR * Math.sin(a / 2);
+  s += "<path d=\"M " + (px - arcR) + " " + py + " A " + arcR + " " + arcR + " 0 0 1 " + (px - arcR * Math.cos(a)) + " " + (py - arcR * Math.sin(a)) + "\" fill=\"none\" stroke=\"#c0392b\"/>";
+  if (!callouts) {
+    s += "<text x=\"" + (ax - 16) + "\" y=\"" + (ay + 4) + "\" fill=\"#c0392b\">" + angleDeg + "&deg;</text>";
+  } else {
+    s += "<text x=\"" + (sx - 8) + "\" y=\"" + (sy - 8) + "\" font-weight=\"bold\">A</text>";
+    s += "<text x=\"" + (rx - 8) + "\" y=\"" + (ry + 18) + "\" font-weight=\"bold\">B</text>";
+    s += "<text x=\"60\" y=\"" + (py - 8) + "\" font-weight=\"bold\">C</text>";
+    s += "<text x=\"" + (px + 20) + "\" y=\"40\" font-weight=\"bold\">D</text>";
+  }
+  s += "</svg>";
+  return s;
+}
+
+function s8PlaneMirrorSVG() {
+  var W = 400, H = 250, mx = 240, axis = 195;
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:400px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  for (var h = 0; h < 7; h++) s += "<line x1=\"" + (mx + 4) + "\" y1=\"" + (35 + h * 28) + "\" x2=\"" + (mx + 16) + "\" y2=\"" + (25 + h * 28) + "\" stroke=\"#999\"/>";
+  s += "<line x1=\"" + mx + "\" y1=\"25\" x2=\"" + mx + "\" y2=\"215\" stroke=\"#444\" stroke-width=\"3\"/>";
+  s += "<line x1=\"150\" y1=\"" + axis + "\" x2=\"150\" y2=\"95\" stroke=\"#2471a3\" stroke-width=\"3\"/>";
+  s += "<polygon points=\"150,84 143,99 157,99\" fill=\"#2471a3\"/>";
+  s += "<line x1=\"330\" y1=\"" + axis + "\" x2=\"330\" y2=\"95\" stroke=\"#888\" stroke-width=\"3\" stroke-dasharray=\"6 4\"/>";
+  s += "<polygon points=\"330,84 323,99 337,99\" fill=\"#888\"/>";
+  s += "<line x1=\"150\" y1=\"228\" x2=\"" + mx + "\" y2=\"228\" stroke=\"#666\"/><line x1=\"" + mx + "\" y1=\"228\" x2=\"330\" y2=\"228\" stroke=\"#666\"/>";
+  s += "<text x=\"138\" y=\"245\">object</text><text x=\"312\" y=\"245\">image</text>";
+  s += "</svg>";
+  return s;
+}
+
+/* Concave mirror: vertex at x=300, centre of curvature at x=410,
+   focal point at x=355, radius 110, axis y=150. pos: "beyond"
+   (object beyond C), "between" (between F and C), "inside"
+   (between F and the mirror). */
+function s8ConcaveSVG(pos) {
+  var W = 520, H = 270, axis = 150, Vx = 300, Cx = 410, Fx = 355, R = 110;
+  var cfg = { beyond: { do: 150, ho: 44 }, between: { do: 80, ho: 30 }, inside: { do: 30, ho: 26 } }[pos];
+  var f = R / 2, d_o = cfg.do, ho = cfg.ho;
+  var di = 1 / (1 / f - 1 / d_o);
+  var m = -di / d_o;
+  var ox = Vx - d_o, ix = Vx + (di > 0 ? -di : -di);
+  var imageX = Vx - di;
+  var imgH = m * ho;
+  function mirrorX(y) { return Cx - Math.sqrt(Math.max(0, R * R - (y - axis) * (y - axis))); }
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:520px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  var path = "";
+  for (var t = -52; t <= 52; t += 4) {
+    var yy = axis + R * Math.sin(t * Math.PI / 180), xx = Cx - R * Math.cos(t * Math.PI / 180);
+    path += (t === -52 ? "M " : "L ") + xx.toFixed(1) + " " + yy.toFixed(1) + " ";
+  }
+  s += "<path d=\"" + path + "\" fill=\"none\" stroke=\"#444\" stroke-width=\"3\"/>";
+  s += "<line x1=\"15\" y1=\"" + axis + "\" x2=\"505\" y2=\"" + axis + "\" stroke=\"#bbb\" stroke-dasharray=\"7 4\"/>";
+  s += "<circle cx=\"" + Fx + "\" cy=\"" + axis + "\" r=\"3.5\" fill=\"#c0392b\"/><text x=\"" + (Fx - 3) + "\" y=\"" + (axis + 18) + "\" fill=\"#c0392b\">F</text>";
+  s += "<circle cx=\"" + Cx + "\" cy=\"" + axis + "\" r=\"3.5\" fill=\"#666\"/><text x=\"" + (Cx - 3) + "\" y=\"" + (axis + 18) + "\">C</text>";
+  var ot = axis - ho;
+  s += "<line x1=\"" + ox + "\" y1=\"" + axis + "\" x2=\"" + ox + "\" y2=\"" + ot + "\" stroke=\"#2471a3\" stroke-width=\"3\"/>";
+  s += "<polygon points=\"" + ox + "," + (ot - 9) + " " + (ox - 6) + "," + (ot + 4) + " " + (ox + 6) + "," + (ot + 4) + "\" fill=\"#2471a3\"/>";
+  var it = axis - imgH;
+  var imgStroke = di > 0 ? "#b3541e" : "#888";
+  var imgDash = di > 0 ? "" : " stroke-dasharray=\"6 4\"";
+  s += "<line x1=\"" + imageX + "\" y1=\"" + axis + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"" + imgStroke + "\" stroke-width=\"3\"" + imgDash + "/>";
+  if (imgH > 0) s += "<polygon points=\"" + imageX + "," + (it - 9) + " " + (imageX - 6) + "," + (it + 4) + " " + (imageX + 6) + "," + (it + 4) + "\" fill=\"" + imgStroke + "\"/>";
+  else s += "<polygon points=\"" + imageX + "," + (it + 9) + " " + (imageX - 6) + "," + (it - 4) + " " + (imageX + 6) + "," + (it - 4) + "\" fill=\"" + imgStroke + "\"/>";
+  var m1x = mirrorX(ot), m1y = ot;
+  s += "<line x1=\"" + ox + "\" y1=\"" + ot + "\" x2=\"" + m1x + "\" y2=\"" + m1y + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+  if (di > 0) {
+    s += "<line x1=\"" + m1x + "\" y1=\"" + m1y + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+  } else {
+    var ext1x = imageX, ext1y = it;
+    s += "<line x1=\"" + m1x + "\" y1=\"" + m1y + "\" x2=\"" + Fx + "\" y2=\"" + axis + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+    s += "<line x1=\"" + Fx + "\" y1=\"" + axis + "\" x2=\"" + (Fx - 34) + "\" y2=\"" + (axis + (axis - m1y) * 34 / (m1x - Fx)) + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+    s += "<line x1=\"" + m1x + "\" y1=\"" + m1y + "\" x2=\"" + ext1x + "\" y2=\"" + ext1y + "\" stroke=\"#c0392b\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\"/>";
+  }
+  var slopeB = (axis - ot) / (Fx - ox);
+  var m2y = ot + slopeB * (mirrorX(ot + slopeB * (Vx - ox)) - ox);
+  var m2x = mirrorX(m2y);
+  m2y = ot + slopeB * (m2x - ox);
+  s += "<line x1=\"" + ox + "\" y1=\"" + ot + "\" x2=\"" + m2x + "\" y2=\"" + m2y + "\" stroke=\"#1a7f4b\" stroke-width=\"1.8\"/>";
+  if (di > 0) {
+    s += "<line x1=\"" + m2x + "\" y1=\"" + m2y + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"#1a7f4b\" stroke-width=\"1.8\"/>";
+  } else {
+    s += "<line x1=\"" + m2x + "\" y1=\"" + m2y + "\" x2=\"" + (m2x - 120) + "\" y2=\"" + m2y + "\" stroke=\"#1a7f4b\" stroke-width=\"1.8\"/>";
+    s += "<line x1=\"" + m2x + "\" y1=\"" + m2y + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"#1a7f4b\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\"/>";
+  }
+  s += "<text x=\"" + (ox - 10) + "\" y=\"" + (axis + 18) + "\">object</text>";
+  s += "<text x=\"" + (imageX - 10) + "\" y=\"" + (axis + 18) + "\">image</text>";
+  s += "</svg>";
+  return s;
+}
+
+function s8ConvexSVG() {
+  var W = 460, H = 270, axis = 150;
+  var Cx = 170, R = 100, Vx = 270, Fx = 220;
+  var ox = 90, ho = 60, ot = axis - ho;
+  var imageX = 309, imgH = 13, it = axis - imgH;
+  function mirrorX(y) { return Cx + Math.sqrt(Math.max(0, R * R - (y - axis) * (y - axis))); }
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:460px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  var path = "";
+  for (var t = -55; t <= 55; t += 5) {
+    var yy = axis + R * Math.sin(t * Math.PI / 180), xx = Cx + R * Math.cos(t * Math.PI / 180);
+    path += (t === -55 ? "M " : "L ") + xx.toFixed(1) + " " + yy.toFixed(1) + " ";
+  }
+  s += "<path d=\"" + path + "\" fill=\"none\" stroke=\"#444\" stroke-width=\"3\"/>";
+  for (var h = 0; h < 6; h++) s += "<line x1=\"" + (mirrorX(70 + h * 32) + 2) + "\" y1=\"" + (70 + h * 32) + "\" x2=\"" + (mirrorX(70 + h * 32) + 13) + "\" y2=\"" + (62 + h * 32) + "\" stroke=\"#999\"/>";
+  s += "<line x1=\"15\" y1=\"" + axis + "\" x2=\"445\" y2=\"" + axis + "\" stroke=\"#bbb\" stroke-dasharray=\"7 4\"/>";
+  s += "<circle cx=\"" + Fx + "\" cy=\"" + axis + "\" r=\"3.5\" fill=\"#c0392b\"/><text x=\"" + (Fx - 3) + "\" y=\"" + (axis + 18) + "\" fill=\"#c0392b\">F</text>";
+  s += "<line x1=\"" + ox + "\" y1=\"" + axis + "\" x2=\"" + ox + "\" y2=\"" + ot + "\" stroke=\"#2471a3\" stroke-width=\"3\"/>";
+  s += "<polygon points=\"" + ox + "," + (ot - 9) + " " + (ox - 6) + "," + (ot + 4) + " " + (ox + 6) + "," + (ot + 4) + "\" fill=\"#2471a3\"/>";
+  s += "<line x1=\"" + imageX + "\" y1=\"" + axis + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"#888\" stroke-width=\"3\" stroke-dasharray=\"6 4\"/>";
+  s += "<polygon points=\"" + imageX + "," + (it - 8) + " " + (imageX - 5) + "," + (it + 3) + " " + (imageX + 5) + "," + (it + 3) + "\" fill=\"#888\"/>";
+  var m1x = mirrorX(ot), m1y = ot;
+  s += "<line x1=\"" + ox + "\" y1=\"" + ot + "\" x2=\"" + m1x + "\" y2=\"" + m1y + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+  var rSlope = (m1y - axis) / (m1x - Fx);
+  s += "<line x1=\"" + m1x + "\" y1=\"" + m1y + "\" x2=\"40\" y2=\"" + (m1y + rSlope * (40 - m1x)) + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+  s += "<line x1=\"" + m1x + "\" y1=\"" + m1y + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"#c0392b\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\"/>";
+  var slopeB = (axis - ot) / (Fx - ox);
+  var m2y = ot + slopeB * (mirrorX(ot) - ox), m2x = mirrorX(m2y);
+  m2y = ot + slopeB * (m2x - ox);
+  s += "<line x1=\"" + ox + "\" y1=\"" + ot + "\" x2=\"" + m2x + "\" y2=\"" + m2y + "\" stroke=\"#1a7f4b\" stroke-width=\"1.8\"/>";
+  s += "<line x1=\"" + m2x + "\" y1=\"" + m2y + "\" x2=\"40\" y2=\"" + m2y + "\" stroke=\"#1a7f4b\" stroke-width=\"1.8\"/>";
+  s += "<line x1=\"" + m2x + "\" y1=\"" + m2y + "\" x2=\"" + imageX + "\" y2=\"" + it + "\" stroke=\"#1a7f4b\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\"/>";
+  s += "<text x=\"" + (ox - 10) + "\" y=\"" + (axis + 18) + "\">object</text>";
+  s += "<text x=\"" + (imageX - 10) + "\" y=\"" + (axis + 18) + "\">image</text>";
+  s += "</svg>";
+  return s;
+}
+
+/* Refraction at a boundary. mode: "toward" (air into water, bends
+   toward the normal), "away" (water into air, bends away),
+   "straight" (along the normal, no bend). ghost draws the dashed
+   unbent continuation for comparison items. */
+function s8RefractSVG(mode, ghost) {
+  var W = 400, H = 270, by = 135, nx = 200;
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:400px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<rect x=\"0\" y=\"" + by + "\" width=\"" + W + "\" height=\"" + (H - by) + "\" fill=\"#dceef7\"/>";
+  s += "<line x1=\"0\" y1=\"" + by + "\" x2=\"" + W + "\" y2=\"" + by + "\" stroke=\"#5b8db8\" stroke-width=\"2\"/>";
+  s += "<line x1=\"" + nx + "\" y1=\"15\" x2=\"" + nx + "\" y2=\"" + (H - 15) + "\" stroke=\"#888\" stroke-dasharray=\"6 4\"/>";
+  s += "<text x=\"14\" y=\"30\">air (less dense)</text><text x=\"14\" y=\"" + (H - 14) + "\">water (more dense)</text>";
+  if (mode === "toward") {
+    s += "<line x1=\"105\" y1=\"38\" x2=\"" + nx + "\" y2=\"" + by + "\" stroke=\"#c0392b\" stroke-width=\"2.5\"/>";
+    s += "<line x1=\"" + nx + "\" y1=\"" + by + "\" x2=\"248\" y2=\"238\" stroke=\"#2471a3\" stroke-width=\"2.5\"/>";
+    if (ghost) s += "<line x1=\"" + nx + "\" y1=\"" + by + "\" x2=\"295\" y2=\"232\" stroke=\"#aaa\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/>";
+  } else if (mode === "away") {
+    s += "<line x1=\"105\" y1=\"232\" x2=\"" + nx + "\" y2=\"" + by + "\" stroke=\"#c0392b\" stroke-width=\"2.5\"/>";
+    s += "<line x1=\"" + nx + "\" y1=\"" + by + "\" x2=\"298\" y2=\"40\" stroke=\"#2471a3\" stroke-width=\"2.5\"/>";
+    if (ghost) s += "<line x1=\"" + nx + "\" y1=\"" + by + "\" x2=\"248\" y2=\"32\" stroke=\"#aaa\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/>";
+  } else {
+    s += "<line x1=\"" + nx + "\" y1=\"30\" x2=\"" + nx + "\" y2=\"240\" stroke=\"#c0392b\" stroke-width=\"2.5\"/>";
+  }
+  s += "</svg>";
+  return s;
+}
+
+function s8LensSVG(kind) {
+  var W = 400, H = 240, axis = 120, cx = 200;
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:400px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<line x1=\"10\" y1=\"" + axis + "\" x2=\"390\" y2=\"" + axis + "\" stroke=\"#bbb\" stroke-dasharray=\"7 4\"/>";
+  if (kind === "convex") {
+    s += "<path d=\"M " + cx + " 40 Q 232 " + axis + " " + cx + " 200 Q 168 " + axis + " " + cx + " 40 Z\" fill=\"#eaf3fa\" stroke=\"#2471a3\" stroke-width=\"2\"/>";
+    s += "<circle cx=\"268\" cy=\"" + axis + "\" r=\"3.5\" fill=\"#c0392b\"/><text x=\"262\" y=\"" + (axis + 18) + "\" fill=\"#c0392b\">F</text>";
+    s += "<circle cx=\"132\" cy=\"" + axis + "\" r=\"3.5\" fill=\"#c0392b\"/><text x=\"126\" y=\"" + (axis + 18) + "\" fill=\"#c0392b\">F</text>";
+    [78, 162].forEach(function (yy) {
+      s += "<line x1=\"30\" y1=\"" + yy + "\" x2=\"" + cx + "\" y2=\"" + yy + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+      s += "<line x1=\"" + cx + "\" y1=\"" + yy + "\" x2=\"330\" y2=\"" + axis + (yy < axis ? 0 : 0) + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+    });
+  } else {
+    s += "<path d=\"M " + cx + " 40 Q 178 " + axis + " " + cx + " 200 Q 222 " + axis + " " + cx + " 40 Z\" fill=\"#eaf3fa\" stroke=\"#2471a3\" stroke-width=\"2\"/>";
+    s += "<circle cx=\"132\" cy=\"" + axis + "\" r=\"3.5\" fill=\"#c0392b\"/><text x=\"126\" y=\"" + (axis + 18) + "\" fill=\"#c0392b\">F</text>";
+    [78, 162].forEach(function (yy) {
+      s += "<line x1=\"30\" y1=\"" + yy + "\" x2=\"" + cx + "\" y2=\"" + yy + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+      var dy = yy < axis ? -26 : 26;
+      s += "<line x1=\"" + cx + "\" y1=\"" + yy + "\" x2=\"330\" y2=\"" + (yy + dy * 2.2) + "\" stroke=\"#c0392b\" stroke-width=\"1.8\"/>";
+      s += "<line x1=\"" + cx + "\" y1=\"" + yy + "\" x2=\"132\" y2=\"" + axis + "\" stroke=\"#c0392b\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\"/>";
+    });
+  }
+  s += "</svg>";
+  return s;
+}
+
+function s8EMSpectrumSVG() {
+  var types = ["Radio waves", "Microwaves", "Infrared", "Visible light", "Ultraviolet", "X-rays", "Gamma rays"];
+  var W = 580, seg = (W - 40) / 7;
+  var s = "<svg viewBox=\"0 0 " + W + " 130\" width=\"100%\" style=\"max-width:580px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"11.5\">";
+  var cols = ["#8e6cc8", "#6c8ec8", "#c86c6c", "#57a05a", "#c8a44a", "#5a7fa0", "#8a4a6b"];
+  types.forEach(function (t, i) {
+    s += "<rect x=\"" + (20 + i * seg) + "\" y=\"34\" width=\"" + (seg - 3) + "\" height=\"30\" fill=\"" + cols[i] + "\" opacity=\"0.75\"/>";
+    s += "<text x=\"" + (20 + i * seg + seg / 2 - 1) + "\" y=\"" + (i % 2 === 0 ? 24 : 88) + "\" text-anchor=\"middle\">" + t + "</text>";
+  });
+  s += "<line x1=\"20\" y1=\"106\" x2=\"" + (W - 20) + "\" y2=\"106\" stroke=\"#666\" stroke-width=\"1.6\"/>";
+  s += "<polygon points=\"" + (W - 20) + ",106 " + (W - 32) + ",101 " + (W - 32) + ",111\" fill=\"#666\"/>";
+  s += "<text x=\"" + (W / 2) + "\" y=\"124\" text-anchor=\"middle\">wavelength decreases in this direction</text>";
+  s += "</svg>";
+  return s;
+}

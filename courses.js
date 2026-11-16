@@ -851,7 +851,8 @@ window.COURSES = {
 
   units: {
     1: "Water Systems on Earth's Surface",
-    2: "Fluids"
+    2: "Fluids",
+    3: "Optics"
   },
 
   /* Indicators from the eNLightenED Units and Indicators
@@ -914,7 +915,32 @@ window.COURSES = {
     "SC8.6.7": "Using instruments effectively and accurately",
     "SC8.6.8": "Volume of irregular objects by water displacement",
     "SC8.6.9": "Explanations for discrepancies in data, evaluated",
-    "SC8.6.10": "Calculating the density of various objects"
+    "SC8.6.10": "Calculating the density of various objects",
+    "SC8.7.1": "Properties of visible light",
+    "SC8.7.2": "Types of electromagnetic radiation compared",
+    "SC8.7.3": "Laws of reflection and their applications",
+    "SC8.7.4": "How visible light is refracted, qualitatively",
+    "SC8.8.1": "Ideas and theories of light used in the past",
+    "SC8.8.2": "Early technologies from scientific knowledge of light",
+    "SC8.8.3": "Using the words frequency and wavelength correctly",
+    "SC8.8.4": "Positive and negative effects of EM technologies",
+    "SC8.8.5": "Optical technologies developed through trial and error",
+    "SC8.8.6": "Optical technologies enabling research; personal activities",
+    "SC8.8.7": "Optics activities in individual and group settings",
+    "SC8.9.1": "New questions arising from what was learned about EM radiation",
+    "SC8.9.2": "Operational definitions: incidence, reflection, the normal",
+    "SC8.9.3": "Using mirrors to investigate image characteristics",
+    "SC8.9.4": "Defining and delimiting questions and problems",
+    "SC8.9.5": "Predictions and hypotheses from background information",
+    "SC8.9.6": "Using tools and apparatus safely",
+    "SC8.9.7": "Conclusions based on experimental data",
+    "SC8.9.8": "Refraction questions from practical problems and issues",
+    "SC8.9.9": "Estimating angles of incidence and refraction",
+    "SC8.9.10": "Experiments describing the path of refracted rays",
+    "SC8.9.11": "Designing an experiment and identifying major variables",
+    "SC8.9.12": "Working cooperatively and collaboratively with others",
+    "SC8.9.13": "Bending toward and away from the normal",
+    "SC8.9.14": "Predicting media effects on the angle of refraction"
   },
 
   unitInd: {
@@ -925,7 +951,11 @@ window.COURSES = {
     2: ["SC8.4.1", "SC8.4.2", "SC8.4.3", "SC8.4.4", "SC8.4.5", "SC8.4.6", "SC8.4.7", "SC8.4.8",
         "SC8.4.9", "SC8.4.10", "SC8.4.11", "SC8.5.1", "SC8.5.2", "SC8.5.3", "SC8.5.4",
         "SC8.5.5", "SC8.5.6", "SC8.5.7", "SC8.6.1", "SC8.6.2", "SC8.6.3", "SC8.6.4",
-        "SC8.6.5", "SC8.6.6", "SC8.6.7", "SC8.6.8", "SC8.6.9", "SC8.6.10"]
+        "SC8.6.5", "SC8.6.6", "SC8.6.7", "SC8.6.8", "SC8.6.9", "SC8.6.10"],
+    3: ["SC8.7.1", "SC8.7.2", "SC8.7.3", "SC8.7.4", "SC8.8.1", "SC8.8.2", "SC8.8.3",
+        "SC8.8.4", "SC8.8.5", "SC8.8.6", "SC8.8.7", "SC8.9.1", "SC8.9.2", "SC8.9.3",
+        "SC8.9.4", "SC8.9.5", "SC8.9.6", "SC8.9.7", "SC8.9.8", "SC8.9.9", "SC8.9.10",
+        "SC8.9.11", "SC8.9.12", "SC8.9.13", "SC8.9.14"]
   },
 
   /* No exam presets: there is no common examination at this
@@ -3914,6 +3944,12 @@ window.COURSES = {
   storagePrefix: "m9",
   bankFile: "math-9.js",
   defaultCheckMode: "each",
+
+  /* PK tranche (November 15, 2026): flagged prior knowledge
+     entries stay out of composed papers by default; they are
+     reached through the prerequisite checks and ordinary
+     practice. Mirrors the Math 2200 flag. */
+  pkPracticeOnly: true,
 
   /* Unit names verbatim from the standalone app (UNITS at
      line 652). */
