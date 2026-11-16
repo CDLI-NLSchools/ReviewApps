@@ -852,16 +852,15 @@ window.COURSES = {
   units: {
     1: "Water Systems on Earth's Surface",
     2: "Fluids",
-    3: "Optics"
+    3: "Optics",
+    4: "Cells, Tissues, Organs and Systems"
   },
 
   /* Indicators from the eNLightenED Units and Indicators
      spreadsheet for the current guide (Version 2023.001.009), in
-     spreadsheet order. The course is built strand by strand in
-     guide order; Unit 1 is registered here and the remaining
-     strands are added as they are built. The course stays
-     unlisted: the junior high science English courses release
-     together (Jason's decision, Nov 15, 2026). */
+     spreadsheet order. All four strands are built (Nov 15, 2026).
+     The course stays unlisted: the junior high science English
+     courses release together (Jason's decision, Nov 15, 2026). */
   indicators: {
     "SC8.1.1": "Interactions among the hydrosphere, lithosphere, and atmosphere",
     "SC8.1.2": "Climate change, glaciers, and effects on the environment",
@@ -940,7 +939,36 @@ window.COURSES = {
     "SC8.9.11": "Designing an experiment and identifying major variables",
     "SC8.9.12": "Working cooperatively and collaboratively with others",
     "SC8.9.13": "Bending toward and away from the normal",
-    "SC8.9.14": "Predicting media effects on the angle of refraction"
+    "SC8.9.14": "Predicting media effects on the angle of refraction",
+    "SC8.10.1": "Cell theory and the characteristics of life",
+    "SC8.10.2": "Plant and animal cells compared",
+    "SC8.10.3": "Cell division: growth and reproduction",
+    "SC8.10.4": "Levels of organization",
+    "SC8.10.5": "Basic needs of cells and organisms",
+    "SC8.10.6": "Factors affecting the functions of body systems",
+    "SC8.10.7": "Interdependence of body systems",
+    "SC8.11.1": "Early ideas about living things and modern cell theory",
+    "SC8.11.2": "Development of optical (microscope) technologies",
+    "SC8.11.3": "Proper terms for the parts of plant and animal cells",
+    "SC8.11.4": "Technologies that assist or replace unhealthy organs",
+    "SC8.11.5": "Scientific knowledge resulting in technologies",
+    "SC8.11.6": "Community needs leading to developments",
+    "SC8.11.7": "Informed decisions: environmental and social effects",
+    "SC8.11.8": "Proposing a course of action on social issues",
+    "SC8.11.9": "Careers associated with the health of body systems",
+    "SC8.11.10": "Informed decisions about human body systems",
+    "SC8.12.1": "Using a light microscope to image cells (core)",
+    "SC8.12.2": "Estimating measurements of cells under a microscope",
+    "SC8.12.3": "Care in the use and storage of the microscope (core)",
+    "SC8.12.4": "Constructing models of cells with team members",
+    "SC8.12.5": "Evaluating processes used in constructing cell models",
+    "SC8.12.6": "Designing the heart rate and breathing rate experiment",
+    "SC8.12.7": "Rephrasing questions into testable form",
+    "SC8.12.8": "Stating a hypothesis from background or a pattern",
+    "SC8.12.9": "Carrying out procedures controlling the major variables",
+    "SC8.12.10": "Compiling and displaying data in tables and graphs",
+    "SC8.12.11": "Explaining variations in repeated rate measurements",
+    "SC8.12.12": "Organizing data in an appropriate format"
   },
 
   unitInd: {
@@ -955,7 +983,12 @@ window.COURSES = {
     3: ["SC8.7.1", "SC8.7.2", "SC8.7.3", "SC8.7.4", "SC8.8.1", "SC8.8.2", "SC8.8.3",
         "SC8.8.4", "SC8.8.5", "SC8.8.6", "SC8.8.7", "SC8.9.1", "SC8.9.2", "SC8.9.3",
         "SC8.9.4", "SC8.9.5", "SC8.9.6", "SC8.9.7", "SC8.9.8", "SC8.9.9", "SC8.9.10",
-        "SC8.9.11", "SC8.9.12", "SC8.9.13", "SC8.9.14"]
+        "SC8.9.11", "SC8.9.12", "SC8.9.13", "SC8.9.14"],
+    4: ["SC8.10.1", "SC8.10.2", "SC8.10.3", "SC8.10.4", "SC8.10.5", "SC8.10.6", "SC8.10.7",
+        "SC8.11.1", "SC8.11.2", "SC8.11.3", "SC8.11.4", "SC8.11.5", "SC8.11.6", "SC8.11.7",
+        "SC8.11.8", "SC8.11.9", "SC8.11.10", "SC8.12.1", "SC8.12.2", "SC8.12.3", "SC8.12.4",
+        "SC8.12.5", "SC8.12.6", "SC8.12.7", "SC8.12.8", "SC8.12.9", "SC8.12.10", "SC8.12.11",
+        "SC8.12.12"]
   },
 
   /* No exam presets: there is no common examination at this

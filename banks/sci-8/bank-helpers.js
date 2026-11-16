@@ -425,3 +425,67 @@ function s8EMSpectrumSVG() {
   s += "</svg>";
   return s;
 }
+
+// ---- Cells C1: plant and animal cell diagrams (guide organelle set; wall outside membrane) ----
+function s8CellSVG(kind){
+  var plant = kind === "plant";
+  var s = '<svg viewBox="0 0 640 340" width="100%" role="img" aria-label="Cell diagram" style="max-width:640px;background:#fbfdff;border:1px solid #b9c8d4;border-radius:8px">';
+  function callout(x, y, tx, ty, letter){ return '<line x1="'+x+'" y1="'+y+'" x2="'+tx+'" y2="'+ty+'" stroke="#33475b" stroke-width="1.4"/><circle cx="'+tx+'" cy="'+ty+'" r="11" fill="#fff" stroke="#33475b" stroke-width="1.4"/><text x="'+tx+'" y="'+(ty+4)+'" text-anchor="middle" font-size="12" font-weight="bold" fill="#1c2b33">'+letter+'</text>'; }
+  if (plant){
+    s += '<rect x="90" y="50" width="420" height="240" rx="26" fill="#eef7ee" stroke="#2e7d32" stroke-width="7"/>';
+    s += '<rect x="104" y="64" width="392" height="212" rx="20" fill="#fdfdf5" stroke="#7cb342" stroke-width="2.5"/>';
+    s += '<rect x="215" y="105" width="190" height="120" rx="55" fill="#dceefb" stroke="#5b84a8" stroke-width="2"/>';
+    s += '<circle cx="165" cy="120" r="30" fill="#f3d9e8" stroke="#a04d7d" stroke-width="2"/>';
+    s += '<ellipse cx="440" cy="95" rx="26" ry="12" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.6" transform="rotate(25 440 95)"/>';
+    s += '<ellipse cx="150" cy="245" rx="26" ry="12" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.6" transform="rotate(-20 150 245)"/>';
+    s += '<ellipse cx="455" cy="245" rx="20" ry="10" fill="#f6c9a0" stroke="#b06a28" stroke-width="1.6"/>';
+    s += '<path d="M445 245 q10 -6 20 0" stroke="#b06a28" stroke-width="1.4" fill="none"/>';
+    s += callout(86, 90, 45, 70, "A") + callout(112, 130, 45, 140, "B") + callout(168, 118, 45, 215, "C") + callout(310, 160, 580, 80, "D") + callout(438, 96, 580, 150, "E") + callout(452, 243, 580, 225, "F") + callout(350, 255, 580, 295, "G");
+  } else {
+    s += '<path d="M150 70 C 260 30, 430 45, 490 130 C 540 200, 470 290, 330 305 C 210 318, 110 270, 100 180 C 94 120, 110 90, 150 70 Z" fill="#fdf6ec" stroke="#b06a28" stroke-width="3"/>';
+    s += '<circle cx="290" cy="165" r="42" fill="#f3d9e8" stroke="#a04d7d" stroke-width="2"/>';
+    s += '<ellipse cx="420" cy="120" rx="22" ry="11" fill="#f6c9a0" stroke="#b06a28" stroke-width="1.6"/>';
+    s += '<path d="M408 120 q12 -7 24 0" stroke="#b06a28" stroke-width="1.4" fill="none"/>';
+    s += '<ellipse cx="180" cy="240" rx="17" ry="9" fill="#f6c9a0" stroke="#b06a28" stroke-width="1.6"/>';
+    s += '<ellipse cx="415" cy="235" rx="26" ry="15" fill="#dceefb" stroke="#5b84a8" stroke-width="1.8"/>';
+    s += '<ellipse cx="170" cy="110" rx="20" ry="12" fill="#dceefb" stroke="#5b84a8" stroke-width="1.8"/>';
+    s += callout(128, 105, 45, 70, "A") + callout(288, 163, 45, 150, "B") + callout(350, 210, 45, 235, "C") + callout(418, 122, 580, 90, "D") + callout(413, 233, 580, 180, "E");
+  }
+  return s + '</svg>';
+}
+
+// ---- Cells C2: compound microscope diagram ----
+function s8MicroscopeSVG(){
+  var s = '<svg viewBox="0 0 640 360" width="100%" role="img" aria-label="Compound microscope diagram" style="max-width:640px;background:#fbfdff;border:1px solid #b9c8d4;border-radius:8px">';
+  function callout(x, y, tx, ty, letter){ return '<line x1="'+x+'" y1="'+y+'" x2="'+tx+'" y2="'+ty+'" stroke="#33475b" stroke-width="1.4"/><circle cx="'+tx+'" cy="'+ty+'" r="11" fill="#fff" stroke="#33475b" stroke-width="1.4"/><text x="'+tx+'" y="'+(ty+4)+'" text-anchor="middle" font-size="12" font-weight="bold" fill="#1c2b33">'+letter+'</text>'; }
+  s += '<rect x="180" y="322" width="240" height="16" rx="4" fill="#90a4ae"/>';
+  s += '<path d="M215 322 L215 130 Q215 105 245 100" stroke="#607d8b" stroke-width="16" fill="none"/>';
+  s += '<rect x="238" y="38" width="26" height="120" rx="8" fill="#78909c" transform="rotate(14 250 98)"/>';
+  s += '<rect x="252" y="22" width="34" height="20" rx="5" fill="#546e7a" transform="rotate(14 269 32)"/>';
+  s += '<circle cx="292" cy="140" r="13" fill="#546e7a"/>';
+  s += '<rect x="284" y="148" width="16" height="26" fill="#78909c"/>';
+  s += '<rect x="200" y="196" width="170" height="10" fill="#78909c"/>';
+  s += '<rect x="255" y="182" width="70" height="8" fill="#dceefb" stroke="#5b84a8"/>';
+  s += '<circle cx="290" cy="240" r="11" fill="#546e7a"/>';
+  s += '<circle cx="222" cy="205" r="15" fill="#90a4ae" stroke="#546e7a" stroke-width="2"/>';
+  s += '<circle cx="222" cy="245" r="10" fill="#b0bec5" stroke="#546e7a" stroke-width="2"/>';
+  s += '<ellipse cx="290" cy="290" rx="26" ry="9" fill="#ffe082" stroke="#b08900" stroke-width="1.6"/>';
+  s += callout(272, 30, 90, 35, "A") + callout(288, 158, 90, 120, "B") + callout(330, 200, 90, 205, "C") + callout(224, 203, 520, 90, "D") + callout(224, 243, 520, 160, "E") + callout(288, 288, 520, 235, "F") + callout(212, 200, 520, 300, "G") + callout(300, 330, 120, 320, "H");
+  return s + '</svg>';
+}
+
+// ---- Cells C3: labelled bar chart (animal heart rates and similar) ----
+function s8BarSVG(labels, values, yLabel){
+  var max = Math.max.apply(null, values) * 1.15, base = 285, top = 45, plotH = base - top;
+  var s = '<svg viewBox="0 0 640 340" width="100%" role="img" aria-label="Bar chart" style="max-width:640px;background:#fff;border:1px solid #b9c8d4;border-radius:8px">';
+  s += '<line x1="70" y1="'+base+'" x2="610" y2="'+base+'" stroke="#33475b" stroke-width="1.6"/><line x1="70" y1="'+top+'" x2="70" y2="'+base+'" stroke="#33475b" stroke-width="1.6"/>';
+  s += '<text x="22" y="170" font-size="12" fill="#33475b" text-anchor="middle" transform="rotate(-90 22 170)">'+yLabel+'</text>';
+  var bw = Math.min(64, 480 / values.length), gap = 500 / values.length;
+  for (var i = 0; i < values.length; i++){
+    var h = values[i] / max * plotH, x = 95 + i * gap;
+    s += '<rect x="'+x+'" y="'+(base - h)+'" width="'+bw+'" height="'+h+'" fill="#7fb3d5" stroke="#2e6da4"/>';
+    s += '<text x="'+(x + bw / 2)+'" y="'+(base - h - 6)+'" text-anchor="middle" font-size="12" font-weight="bold" fill="#1c2b33">'+values[i]+'</text>';
+    s += '<text x="'+(x + bw / 2)+'" y="'+(base + 20)+'" text-anchor="middle" font-size="12" fill="#33475b">'+labels[i]+'</text>';
+  }
+  return s + '</svg>';
+}

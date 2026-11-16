@@ -19,8 +19,15 @@
      marks sum 47 (thirteen at 3, two at 4: the SC8.8.5 fibre
      optics CR and the SC8.9.11 design CR, the latter noCompose).
      SC8.9.12 is registered with zero entries (NONE, on the
-     SC7.3.5 precedent). Course-wide after Unit 3: 245 entries,
-     43 CR, 135 CR marks, exactly three noCompose design CRs.
+     SC7.3.5 precedent).
+   - Unit 4 (Cells, Tissues, Organs and Systems): exactly 80
+     entries, 66 SR + 14 CR, levels 32/32/16, per-indicator counts
+     equal to the Cells spec, CR marks sum 44 (twelve at 3, two
+     at 4: the SC8.11.4 artificial organs CR and the SC8.12.6
+     design CR, the latter noCompose). Course-wide final: 325
+     entries, 57 CR, 179 CR marks, 107 indicators registered,
+     exactly four noCompose design CRs. Indicator coverage: 106
+     of 107 carry entries (SC8.9.12 the single NONE).
    - Terminology sweeps (guide discipline): Unit 1, no
      student-facing text keys a numeric salinity or density value
      (the guide directs qualitative comparison), and no text
@@ -45,7 +52,8 @@ ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 8, "curriculu
 ok(C.units[1] === "Water Systems on Earth's Surface", "Unit 1 registered");
 ok(C.units[2] === "Fluids", "Unit 2 registered");
 ok(C.units[3] === "Optics", "Unit 3 registered");
-ok(Object.keys(C.indicators).length === 78, "78 indicators registered so far, saw " + Object.keys(C.indicators).length);
+ok(C.units[4] === "Cells, Tissues, Organs and Systems", "Unit 4 registered");
+ok(Object.keys(C.indicators).length === 107, "107 indicators registered, saw " + Object.keys(C.indicators).length);
 ok(C.unitTest && C.unitTest.total === 26 && C.unitTest.sr === 20 && C.unitTest.cr === 6 && C.unitTest.indCap === 2 && JSON.stringify(C.unitTest.crPref) === "[3,3]", "unit test convention 20 SR + 2 CR at 3 = 26, indCap 2, crPref [3,3]");
 
 const built = fs.readFileSync(ROOT + "/index.html", "utf8");
@@ -67,12 +75,14 @@ const CR = window.__BANK_CRMARKS || {};
 const U1 = BANK.filter(e => e.unit === 1);
 const U2 = BANK.filter(e => e.unit === 2);
 const U3 = BANK.filter(e => e.unit === 3);
-ok(BANK.length === 245, "bank registers 245 entries, saw " + BANK.length);
+const U4 = BANK.filter(e => e.unit === 4);
+ok(BANK.length === 325, "bank registers 325 entries, saw " + BANK.length);
 ok(U1.length === 80, "80 entries are Unit 1, saw " + U1.length);
 ok(U2.length === 80, "80 entries are Unit 2, saw " + U2.length);
 ok(U3.length === 85, "85 entries are Unit 3, saw " + U3.length);
+ok(U4.length === 80, "80 entries are Unit 4, saw " + U4.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 245, "all entry ids unique");
+ok(ids.size === 325, "all entry ids unique");
 
 const SPEC_COUNT = {
   "SC8.1.1": 6, "SC8.1.2": 3, "SC8.1.3": 5, "SC8.1.4": 4, "SC8.1.5": 4, "SC8.1.6": 6, "SC8.1.7": 5,
@@ -109,6 +119,17 @@ const p3 = primaryCounts(U3);
 for (const tag of Object.keys(SPEC_COUNT_U3)) {
   ok((p3[tag] || 0) === SPEC_COUNT_U3[tag], "U3 primary count " + tag + " = " + SPEC_COUNT_U3[tag] + ", saw " + (p3[tag] || 0));
 }
+const SPEC_COUNT_U4 = {
+  "SC8.10.1": 4, "SC8.10.2": 4, "SC8.10.3": 4, "SC8.10.4": 4, "SC8.10.5": 3, "SC8.10.6": 4,
+  "SC8.10.7": 5, "SC8.11.1": 2, "SC8.11.2": 2, "SC8.11.3": 6, "SC8.11.4": 3, "SC8.11.5": 2,
+  "SC8.11.6": 2, "SC8.11.7": 2, "SC8.11.8": 2, "SC8.11.9": 2, "SC8.11.10": 2, "SC8.12.1": 3,
+  "SC8.12.2": 3, "SC8.12.3": 2, "SC8.12.4": 1, "SC8.12.5": 2, "SC8.12.6": 3, "SC8.12.7": 2,
+  "SC8.12.8": 2, "SC8.12.9": 2, "SC8.12.10": 3, "SC8.12.11": 2, "SC8.12.12": 2
+};
+const p4 = primaryCounts(U4);
+for (const tag of Object.keys(SPEC_COUNT_U4)) {
+  ok((p4[tag] || 0) === SPEC_COUNT_U4[tag], "U4 primary count " + tag + " = " + SPEC_COUNT_U4[tag] + ", saw " + (p4[tag] || 0));
+}
 ok(!BANK.some(e => e.indicators.includes("SC8.9.12")), "SC8.9.12 carries no entries (NONE, recorded)");
 ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the registered indicators");
 
@@ -138,17 +159,27 @@ ok(CR["s8-u3-cr-fibre"] === 4 && CR["s8-u3-cr-design-refraction"] === 4, "the fi
 ok(U3.filter(e => CR[e.id] === undefined).length === 70, "70 SR entries in Unit 3, saw " + U3.filter(e => CR[e.id] === undefined).length);
 ok(levels(U3) === "[34,34,17]", "U3 levels 34/34/17, saw " + levels(U3));
 ok(U3.filter(e => e.kind === "gen").length === 16, "16 U3 generator entries, saw " + U3.filter(e => e.kind === "gen").length);
-ok(crU1.length + crU2.length + crU3.length === 43 && markSum(crU1) + markSum(crU2) + markSum(crU3) === 135, "course-wide CR manifest is 43 entries and 135 marks");
+const crU4 = U4.filter(e => CR[e.id] !== undefined);
+ok(crU4.length === 14, "14 CR entries in Unit 4, saw " + crU4.length);
+ok(markSum(crU4) === 44, "U4 CR marks sum to 44, saw " + markSum(crU4));
+ok(crU4.filter(e => CR[e.id] === 3).length === 12, "twelve U4 CR entries at exactly 3 marks, saw " + crU4.filter(e => CR[e.id] === 3).length);
+ok(CR["s8-u4-cr-artificial"] === 4 && CR["s8-u4-cr-design-rates"] === 4, "the artificial organs CR and the design CR carry 4 marks");
+ok(U4.filter(e => CR[e.id] === undefined).length === 66, "66 SR entries in Unit 4, saw " + U4.filter(e => CR[e.id] === undefined).length);
+ok(levels(U4) === "[32,32,16]", "U4 levels 32/32/16, saw " + levels(U4));
+ok(U4.filter(e => e.kind === "gen").length === 2, "2 U4 generator entries, saw " + U4.filter(e => e.kind === "gen").length);
+ok(crU1.length + crU2.length + crU3.length + crU4.length === 57 && markSum(crU1) + markSum(crU2) + markSum(crU3) + markSum(crU4) === 179, "course-wide CR manifest is 57 entries and 179 marks");
 const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
-ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity", "s8-u2-cr-design-viscosity", "s8-u3-cr-design-refraction"]),
-  "exactly the three design CRs carry noCompose, saw " + noComp.join(","));
+ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity", "s8-u2-cr-design-viscosity", "s8-u3-cr-design-refraction", "s8-u4-cr-design-rates"]),
+  "exactly the four design CRs carry noCompose, saw " + noComp.join(","));
 
 const FIG_ENTRIES = ["s8-u1-profile-figure", "s8-u1-landform-figure", "s8-u1-wave-energy",
   "s8-u1-health-figure", "s8-u1-pop-interpolate", "s8-u1-pop-extrapolate", "s8-u1-cr-population",
   "s8-u2-flow-lab", "s8-u2-identify-substance", "s8-u2-force-figure", "s8-u2-bargraph", "s8-u2-pattern",
   "s8-u3-angle-calc", "s8-u3-plane-spot", "s8-u3-definitions-figure", "s8-u3-concave-spot",
   "s8-u3-convex-spot", "s8-u3-bend-figure", "s8-u3-bend-straight", "s8-u3-estimate-bend",
-  "s8-u3-lenses", "s8-u3-lens-examples", "s8-u3-em-order", "s8-u3-em-compare"];
+  "s8-u3-lenses", "s8-u3-lens-examples", "s8-u3-em-order", "s8-u3-em-compare",
+  "s8-u4-cell-figure", "s8-u4-organelle-figure", "s8-u4-micro-parts",
+  "s8-u4-rates-figure", "s8-u4-recovery-figure", "s8-u4-animal-pattern"];
 
 let badDraws = [];
 BANK.forEach(e => {
@@ -212,6 +243,18 @@ U3.forEach(e => {
   }
 });
 ok(oHits.length === 0, "optics terminology sweep clean, hits: " + oHits.join(","));
+
+/* Unit 4 sweep: the guide defers abiogenesis and biogenesis to
+   Biology 2201; neither term appears in student-facing text. */
+let cHits = [];
+U4.forEach(e => {
+  for (let i = 0; i < 40; i++) {
+    const q = e.gen();
+    const text = [q.prompt, q.solution].concat(q.options || [], q.answers || []).join(" ");
+    if (/abiogenesis|biogenesis/i.test(text)) { cHits.push(e.id); break; }
+  }
+});
+ok(cHits.length === 0, "cells terminology sweep clean, hits: " + cHits.join(","));
 
 /* Negative stems, listed for judgement (spec audit). */
 const NEG = [];
