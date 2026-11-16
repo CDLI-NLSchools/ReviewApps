@@ -6304,6 +6304,15 @@ window.COURSES = {
   bankFile: "math-7.js",
   defaultCheckMode: "each",
 
+  /* Prior knowledge, Band 3 Piece 1 (November 16, 2026): the
+     fluency strand flagged entries in bank-pk.js stay out of
+     practice tests and exams unless the teacher ticks the
+     include-prior-knowledge override. Ordinary practice sets
+     and the pkonly prerequisite checks keep them. Set before
+     any entry was flagged, on the Math 9 precedent, and proved
+     inert on its own (composition fingerprints identical). */
+  pkPracticeOnly: true,
+
   /* Unit names verbatim from the standalone app (UNITS at
      line 652). */
   units: {

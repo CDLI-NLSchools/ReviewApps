@@ -1830,6 +1830,20 @@ rep(' "scale":["Scale diagrams","Dessins à l\'échelle"],',
 rep(' \"listing-outcomes\":[\"Listing outcomes and multiplying counts\",\"D\u00e9nombrer les r\u00e9sultats et multiplier les comptes\"],',
     ' \"listing-outcomes\":[\"Listing outcomes and multiplying counts\",\"D\u00e9nombrer les r\u00e9sultats et multiplier les comptes\"],\n \"log-functions\":[\"Logarithmic functions\",\"Fonctions logarithmiques\"],\n \"log-laws\":[\"Laws of logarithms\",\"Lois des logarithmes\"],', count=1)  # Math 3208 log follow-up labels (Nov 16, 2026)
 
+# ---------- Band 3 Piece 1 fluency strand group labels (Nov 16, 2026) ----------
+rep(' "angle-facts":["Angle facts","Faits sur les angles"],',
+    ' "addition-subtraction":["Addition and subtraction fluency","Aisance en addition et en soustraction"],\n "angle-facts":["Angle facts","Faits sur les angles"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
+rep(' "break-even":["Setting up and solving equations","Établir et résoudre des équations"],',
+    ' "averaging":["Averaging a set of numbers","Moyenne d\'un ensemble de nombres"],\n "below-zero":["Integers in context","Entiers en contexte"],\n "break-even":["Setting up and solving equations","Établir et résoudre des équations"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
+rep(' "domain-range":["Domain and range","Domaine et image"],',
+    ' "division-fluency":["Dividing multi-digit numbers","Diviser des nombres à plusieurs chiffres"],\n "domain-range":["Domain and range","Domaine et image"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
+rep(' "number-line-distance":["Distance on a number line","Distance sur une droite numérique"],',
+    ' "multiples":["Multiples","Multiples"],\n "multiplication-facts":["Multiplication and division facts","Faits de multiplication et de division"],\n "multiplication-fluency":["Multiplying multi-digit numbers","Multiplier des nombres à plusieurs chiffres"],\n "number-line-distance":["Distance on a number line","Distance sur une droite numérique"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
+rep(' "ordering-numbers":["Ordering numbers on a number line","Ordonner des nombres sur une droite numérique"],',
+    ' "order-of-operations":["Order of operations","Ordre des opérations"],\n "ordering-numbers":["Ordering numbers on a number line","Ordonner des nombres sur une droite numérique"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
+rep(' "substitution":["Evaluating expressions by substitution","Évaluer des expressions par substitution"],',
+    ' "squares":["Squaring numbers","Élever un nombre au carré"],\n "substitution":["Evaluating expressions by substitution","Évaluer des expressions par substitution"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

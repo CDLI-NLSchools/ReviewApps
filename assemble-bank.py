@@ -180,7 +180,7 @@ COURSES = {
                ["bank-helpers.js", "bank-u1.js", "bank-u2.js",
                 "bank-u3.js", "bank-u4.js", "bank-u5.js",
                 "bank-u6.js", "bank-u7.js", "bank-u8.js",
-                "bank-fix.js"]),
+                "bank-fix.js", "bank-pk.js"]),
     # Same build order as the English courses: helpers (the fork's
     # chassis number-format helpers plus the bank source head), then
     # Units 1 to 8, then the pool-gap fill additions; the French
