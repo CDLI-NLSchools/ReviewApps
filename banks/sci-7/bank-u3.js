@@ -72,18 +72,18 @@ E("s7-u3-pure-misconception", 3, ["SC7.7.1"], 2, "var", varset([
   function () {
     return mcq("A juice box is labelled '100% pure orange juice.' A student says this means orange juice is a pure substance in the scientific sense. Which response is correct?",
       "The label uses 'pure' in the everyday sense; scientifically, orange juice is a mixture of water, sugars, pulp and other substances",
-      ["The student is right, because the label says pure",
-       "The student is right, because orange juice is clear enough to see through",
-       "The label is wrong, because pure substances are always safe to drink"],
+      ["The student is right, because the label says pure and labels must use words scientifically",
+       "The student is right, because orange juice is clear enough to see through when held up to the light",
+       "The label is wrong, because anything called a pure substance is always safe for people to drink or eat"],
       "Everyday 'pure' means something like unspoiled or nothing added. Scientific 'pure' means one kind of particle only. Orange juice contains many kinds of particle, so it is a mixture however honest the label is. The guide names this exact confusion, along with 'pure means safe to ingest' and 'pure means clear,' as misconceptions to correct.",
       {});
   },
   function () {
     return mcq("Which statement about pure substances is scientifically correct?",
       "Compounds such as salt, sugar and baking soda are pure substances, because each contains its particles in fixed proportions",
-      ["Only elements can be pure substances",
-       "A pure substance is one that is safe to eat or drink",
-       "If a substance looks clear and uniform, it must be a pure substance"],
+      ["Only elements can be pure substances; compounds are always mixtures of elements",
+       "A pure substance is one that is safe for people to eat or drink, with nothing harmful in it",
+       "If a substance looks clear and uniform all the way through, it must be a pure substance in the scientific sense"],
       "Pure substances are not limited to elements. A compound's particles are all alike, with their elements combined in fixed proportions, so compounds are pure substances. Safety and clarity are everyday meanings of 'pure,' not the scientific one: some pure substances are poisonous, and some mixtures look perfectly clear.",
       {});
   }
@@ -119,18 +119,18 @@ E("s7-u3-light-test", 3, ["SC7.7.2"], 2, "var", varset([
   function () {
     return mcq("A flashlight beam is shone through two mixtures in a dark room. Through Mixture A the beam passes cleanly and cannot be seen from the side. In Mixture B the beam scatters and glows as it crosses. What does the light test show?",
       "A is homogeneous (light passes through unaffected); B is heterogeneous (its particles scatter the light)",
-      ["A is heterogeneous; B is homogeneous",
-       "Both are homogeneous, because both let some light through",
-       "Both are pure substances, because light behaves specially in mixtures"],
+      ["A is heterogeneous; B is homogeneous, exactly the reverse of the correct reading",
+       "Both are homogeneous, because both of them let at least some light pass through",
+       "Both are pure substances, because light behaves in a special way when it crosses mixtures"],
       "Light behaviour separates the two mixture types: in a homogeneous mixture the particles are too evenly spread and small to disturb the beam, so it passes through unaffected. In a heterogeneous mixture the larger particles reflect and scatter the light, making the beam visible from the side.",
       {});
   },
   function () {
     return mcq("In a sunbeam crossing a classroom, the dust in the air becomes visible where the light passes. What does this reveal about classroom air?",
       "Classroom air is a heterogeneous mixture, because the dust particles in it scatter the light",
-      ["Classroom air is a pure substance, because gases are pure",
-       "Classroom air is homogeneous, because air always is",
-       "The sunbeam creates the dust, which was not there before"],
+      ["Classroom air is a pure substance, because all gases are pure substances",
+       "Classroom air is a homogeneous mixture, because air is homogeneous everywhere",
+       "The sunbeam creates the dust particles, which were not in the air before"],
       "Air's gases form a homogeneous mixture, but classroom air also carries dust particles, and those particles scatter the light and give the mixture away as heterogeneous. Clean air in a breathing apparatus, without the dust, is the homogeneous case.",
       {});
   }
@@ -140,9 +140,9 @@ E("s7-u3-combination", 3, ["SC7.7.2"], 2, "var", varset([
   function () {
     return mcq("Orange juice is described as a combination mixture. Why does it not fit neatly into either the homogeneous or the heterogeneous class?",
       "Its sugars are dissolved evenly in the water (a homogeneous part) while its pulp stays in visible pieces (a heterogeneous part)",
-      ["It changes class depending on the temperature of the room",
-       "It is actually a pure substance, so neither class applies",
-       "Its colour hides which class it belongs to"],
+      ["It changes class depending on the temperature of the room, being one class when warm and the other when cold",
+       "It is actually a pure substance in the scientific sense, so neither mixture class applies to it",
+       "Its orange colour hides which class it belongs to from anyone looking at it"],
       "Many real mixtures combine both behaviours. In orange juice the dissolved sugars and water form a solution, while the pulp remains as separate visible pieces. Milk and soft drinks are the guide's other combination examples. Classification questions in this strand stick to clear examples for the two main classes and treat combinations honestly as combinations.",
       {});
   }
@@ -177,9 +177,9 @@ E("s7-u3-dissolving-particles", 3, ["SC7.7.3"], 1, "var", varset([
   function () {
     return mcq("When sugar dissolves in water, what happens at the particle level?",
       "The sugar particles separate from each other and spread evenly among the water particles",
-      ["The sugar particles melt and become water particles",
-       "The sugar particles disappear completely",
-       "The water particles break apart into new particles"],
+      ["The sugar particles melt in the water and become water particles themselves",
+       "The sugar particles disappear completely and are gone for good",
+       "The water particles break apart and form entirely new particles"],
       "Dissolving is a physical mixing at the particle level: the solute's particles leave each other and distribute evenly through the solvent's particles. The sugar is still there, which is why the water tastes sweet and why evaporation can recover it. Nothing melts, disappears, or changes into a different particle.",
       {});
   },
@@ -245,9 +245,9 @@ E("s7-u3-saturated", 3, ["SC7.7.4"], 1, "var", varset([
   function () {
     return mcq("Which statement about concentrated and saturated is correct?",
       "A solution can be concentrated and still unsaturated, if it holds a lot of solute but could dissolve more",
-      ["Concentrated and saturated mean the same thing",
-       "A saturated solution is always dilute",
-       "An unsaturated solution can never be concentrated"],
+      ["Concentrated and saturated are two words that mean exactly the same thing in science",
+       "A saturated solution is always dilute, because being saturated means holding very little solute",
+       "An unsaturated solution can never be a concentrated one, by definition"],
       "The two pairs of terms answer different questions. Dilute and concentrated compare how much solute is present; unsaturated and saturated ask whether more could still dissolve. A strong solution that could take still more solute is concentrated and unsaturated at once.",
       {});
   }
@@ -257,9 +257,9 @@ E("s7-u3-conc-change", 3, ["SC7.7.4"], 2, "var", varset([
   function () {
     return mcq("A cook simmers an open pan of sauce for an hour. The sauce tastes stronger at the end, though nothing was added. Why is it more concentrated?",
       "Water evaporated from the sauce, so the same amount of flavouring is dissolved in less solvent",
-      ["Simmering creates more flavouring particles in the pan",
-       "The heat dissolved the pan into the sauce",
-       "Stirring forced more air into the sauce"],
+      ["Simmering slowly creates more flavouring particles in the pan as the sauce cooks",
+       "The heat of the stove dissolved part of the pan into the sauce",
+       "Stirring the sauce forced more air into it while it simmered"],
       "Concentration can rise two ways: add solute, or remove solvent. Simmering removes water by evaporation, leaving the same solute in less solvent, which is exactly the guide's example. No new flavouring was created.",
       {});
   },
@@ -267,8 +267,8 @@ E("s7-u3-conc-change", 3, ["SC7.7.4"], 2, "var", varset([
     return mcq("A drink mix tastes too strong. Which change dilutes it, and what happens to its concentration?",
       "Add more water; the same solute is spread through more solvent, so the concentration falls",
       ["Add more powder; the concentration falls because there is more mixture",
-       "Let it sit; concentrations always fall on their own",
-       "Pour half away; the concentration falls by half"],
+       "Let it sit undisturbed; concentrations always fall on their own over time",
+       "Pour half of it away; the concentration of the rest falls by half"],
       "Diluting means adding solvent: the solute amount stays the same while the volume grows, so the amount per volume falls. Pouring half away changes the amount of solution, not its concentration; what remains tastes exactly as strong.",
       {});
   }
@@ -288,8 +288,8 @@ E("s7-u3-solubility-temp", 3, ["SC7.7.5"], 1, "var", varset([
   function () {
     return mcq("As the temperature of water increases, what generally happens to the solubility of a solid solute and of a gas solute?",
       "The solid's solubility generally increases; the gas's solubility generally decreases",
-      ["Both generally increase",
-       "Both generally decrease",
+      ["Both generally increase steadily as the temperature of the water rises",
+       "Both generally decrease steadily as the temperature of the water rises",
        "The solid's generally decreases; the gas's generally increases"],
       "Temperature pushes the two solute kinds opposite ways. Most solids dissolve more in warmer water, which is why sugar dissolves faster and further in hot tea. Gases dissolve less in warmer water, which is why a warm soft drink loses its fizz. The guide states both as general rules; a few solids, like table salt, barely change.",
       {});
@@ -300,18 +300,18 @@ E("s7-u3-solubility-pressure", 3, ["SC7.7.5"], 2, "var", varset([
   function () {
     return mcq("A sealed bottle of pop is opened and hisses. Over the next hour the pop goes flat. Which explanation is correct?",
       "Opening the bottle drops the pressure, so the carbon dioxide's solubility falls and the gas escapes from solution",
-      ["Opening the bottle lets air in, and the air pushes the carbon dioxide out",
-       "The carbon dioxide reacts with the sugar once the bottle is opened",
-       "The pop warms up instantly on opening, and warm pop cannot hold gas"],
+      ["Opening the bottle lets air rush in, and the incoming air pushes the carbon dioxide out of the pop",
+       "The carbon dioxide reacts with the sugar in the pop once the bottle has been opened",
+       "The pop warms up instantly on opening, and warm pop cannot hold any dissolved gas"],
       "Inside the sealed bottle, high pressure keeps extra carbon dioxide dissolved. Opening releases the pressure, the gas's solubility drops, and the excess gas comes out of solution as bubbles until the pop is flat. Pressure affects the solubility of gases; it has no comparable effect on solids.",
       {});
   },
   function () {
     return mcq("Two identical bottles of pop are opened at the same time. One is left on a warm counter; the other goes straight into a refrigerator. Which goes flat faster, and why?",
       "The warm one, because a gas's solubility decreases as temperature rises, so its carbon dioxide escapes sooner",
-      ["The cold one, because cold liquids release gas more easily",
-       "Both at the same rate, because temperature does not affect gases in solution",
-       "The warm one, because heat creates extra carbon dioxide in the pop"],
+      ["The cold one, because cold liquids release their dissolved gas more easily",
+       "Both at the same rate, because temperature does not affect how gases behave in solution",
+       "The warm one, because the heat creates extra carbon dioxide inside the pop"],
       "Both bottles lost their pressure when opened. The warm bottle also fights temperature: warmer liquid holds less dissolved gas, so its carbon dioxide comes out of solution faster. The refrigerated bottle keeps more of its fizz for longer.",
       {});
   }
@@ -347,18 +347,18 @@ E("s7-u3-method-property", 3, ["SC7.7.6"], 2, "var", varset([
   function () {
     return mcq("A student tries to separate sugar water by pouring it through a coffee filter. The filtrate still tastes sweet. Why did filtration fail?",
       "Dissolved sugar particles are far too small to be trapped by the filter; filtration only separates undissolved solids from liquids",
-      ["The filter was the wrong colour for sugar",
-       "Sugar water is too heavy for a filter to hold",
-       "The sugar dissolved the filter paper as it passed"],
+      ["The filter paper was the wrong colour for separating sugar from water",
+       "Sugar water is too heavy for a filter to hold back, so it breaks through the paper under its own weight",
+       "The sugar dissolved the filter paper itself as the sweet water passed through it"],
       "A filter is a particle-size barrier: it stops pieces large enough to see and lets liquid and anything dissolved in it pass through. Dissolved sugar is spread at the particle level, so it passes with the water. Evaporation or distillation, which exploit the boiling point difference, are the methods that fit a solution.",
       {});
   },
   function () {
     return mcq("A magnet separates iron filings from sand easily, but cannot separate salt from sand. What property decides whether magnetism works?",
       "Whether one component of the mixture is magnetic; salt is not, so the magnet has nothing to pull",
-      ["Whether the components differ in colour",
-       "Whether the mixture is homogeneous or heterogeneous",
-       "Whether the components were mixed by hand or by machine"],
+      ["Whether the two components of the mixture differ in colour from each other",
+       "Whether the mixture is a homogeneous or a heterogeneous one",
+       "Whether the components were mixed together by hand or by a machine"],
       "Every separation method works on a property difference. Magnetism needs a magnetic component: iron filings respond, salt and sand do not. Salt and sand are separated instead by dissolving the salt in water, filtering out the sand, and evaporating the water, using solubility and boiling point differences.",
       {});
   }
@@ -376,12 +376,12 @@ E("s7-u3-cr-separate", 3, ["SC7.7.6"], 3, "var", varset([
 /* ---------- SC7.7.7 Common techniques; choosing a technique ---------- */
 E("s7-u3-home-techniques", 3, ["SC7.7.7"], 1, "gen", function () {
   var cases = [
-    { s: "straining cooked spaghetti in a colander", key: "Filtration (a coarse filter separates solid from liquid)", d: ["Evaporation", "Distillation", "Paper chromatography"] },
-    { s: "skimming the fat off the top of cooled soup", key: "Mechanical sorting (removing one visible part from another)", d: ["Distillation", "Filtration through paper", "Magnetism"] },
-    { s: "hanging wet clothes on a line until they are dry", key: "Evaporation (the water leaves as vapour)", d: ["Filtration", "Paper chromatography", "Flotation"] },
-    { s: "a window screen letting air in but keeping insects out", key: "Screening (a barrier with holes of a chosen size)", d: ["Evaporation", "Distillation", "Magnetism"] },
-    { s: "making coffee by pouring hot water through ground beans in a filter", key: "Filtration (the grounds are caught; the liquid passes)", d: ["Paper chromatography", "Evaporation", "Mechanical sorting"] },
-    { s: "spinning lettuce in a salad spinner to throw the water off", key: "Mechanical separation (the water is flung off the leaves)", d: ["Distillation", "Filtration through paper", "Evaporation"] }
+    { s: "straining cooked spaghetti in a colander", key: "Filtration (a coarse filter separates solid from liquid)", d: ["Evaporation (the liquid slowly leaves as a vapour)", "Distillation (the liquid is boiled and its vapour condensed)", "Paper chromatography (the parts spread out along paper)"] },
+    { s: "skimming the fat off the top of cooled soup", key: "Mechanical sorting (removing one visible part from another)", d: ["Distillation (the liquid is boiled and its vapour condensed)", "Filtration through paper (the liquid passes and solids are caught)", "Magnetism (one part is pulled out by a magnet)"] },
+    { s: "hanging wet clothes on a line until they are dry", key: "Evaporation (the water leaves as vapour)", d: ["Filtration (a filter catches the solid part)", "Paper chromatography (the parts spread out along paper)", "Flotation (one part floats and is skimmed off)"] },
+    { s: "a window screen letting air in but keeping insects out", key: "Screening (a barrier with holes of a chosen size)", d: ["Evaporation (the liquid slowly leaves as a vapour)", "Distillation (the liquid is boiled and its vapour condensed)", "Magnetism (one part is pulled out by a magnet)"] },
+    { s: "making coffee by pouring hot water through ground beans in a filter", key: "Filtration (the grounds are caught; the liquid passes)", d: ["Paper chromatography (the parts spread out along paper)", "Evaporation (the liquid slowly leaves as a vapour)", "Mechanical sorting (the parts are picked apart by hand)"] },
+    { s: "spinning lettuce in a salad spinner to throw the water off", key: "Mechanical separation (the water is flung off the leaves)", d: ["Distillation (the liquid is boiled and its vapour condensed)", "Filtration through paper (the liquid passes and solids are caught)", "Evaporation (the liquid slowly leaves as a vapour)"] }
   ];
   var c = pick(cases);
   return mcq("Which separation technique is at work here: " + c.s + "?",
@@ -394,18 +394,18 @@ E("s7-u3-choose-technique", 3, ["SC7.7.7"], 2, "var", varset([
   function () {
     return mcq("A gardener has topsoil mixed with small stones and wants the stones out before planting. Both are dry solids of similar colour, but the stones are larger. Which technique fits best?",
       "Screening the soil through a mesh the soil passes and the stones do not",
-      ["Dissolving the soil in water and filtering it",
-       "Passing a magnet over the mixture",
-       "Evaporating the mixture in the sun"],
+      ["Dissolving the whole mixture in water and then filtering it",
+       "Passing a strong magnet slowly over the whole mixture",
+       "Spreading the mixture out and evaporating it in the sun"],
       "The usable property difference is particle size, and screening exploits exactly that: soil grains pass the mesh, stones stay behind. Neither solid is magnetic, nothing needs dissolving, and evaporation separates liquids from solids, not two dry solids.",
       {});
   },
   function () {
     return mcq("A cook has accidentally poured salt into the sugar bowl. Both are white crystals of similar size, and both must be recovered if possible. Which plan has the best chance?",
       "Dissolve the mixture in water, then use the difference in how much of each the water can hold and careful evaporation and crystallization steps, accepting the separation is difficult",
-      ["Screen the mixture to separate the two crystal sizes",
-       "Pass a magnet through the bowl to lift out the salt",
-       "Filter the dry mixture through paper to catch the salt"],
+      ["Screen the mixture through a fine kitchen sieve to separate the two kinds of crystals by their slightly different sizes",
+       "Pass a strong magnet slowly through the bowl again and again to lift out all of the salt, leaving the clean sugar behind in the bowl ready to use",
+       "Filter the dry mixture through paper to catch the salt crystals, wash them off the paper with a little water, and dry both parts out again afterward"],
       "Salt and sugar defeat the simple methods: similar size rules out screening, neither is magnetic, and dry filtration separates solids from liquids, not two solids. Their solubilities differ, which gives a solution-based plan a chance, but this is genuinely one of the hard separations, which is why the guide asks students to consider mixtures that resist separating.",
       {});
   }
@@ -425,18 +425,18 @@ E("s7-u3-distill-parts", 3, ["SC7.8.1"], 1, "var", varset([
   function () {
     return mcq("In a distillation apparatus separating salt water, where do boiling, evaporation and condensation each happen?",
       "The solution boils in the heated flask; the water evaporates from the solution's surface and as vapour; the vapour condenses back to liquid in the cooled condenser",
-      ["Everything happens in the condenser, which does all three jobs",
-       "Boiling happens in the receiving flask; condensation happens in the heated flask",
-       "Evaporation happens in the receiving flask after the water arrives"],
+      ["Everything happens inside the condenser, which does all three of the jobs by itself",
+       "Boiling happens in the receiving flask; condensation happens in the heated flask; evaporation happens in the condenser tube as well",
+       "Evaporation happens in the receiving flask, after the liquid water has arrived there and settled"],
       "Distillation chains the changes of state in order. Heat boils the solution in the first flask and the solvent evaporates as vapour, leaving the solute behind. The vapour travels into the cooled condenser, where it condenses back to liquid and drips into the receiving flask. Both parts are recovered: the solvent as the distillate, the solute left in the first flask.",
       {});
   },
   function () {
     return mcq("Which parts of a solution does simple distillation recover?",
       "Both: the solvent is collected as the distillate and the solute remains in the boiling flask",
-      ["Only the solvent; the solute is destroyed by the heat",
-       "Only the solute; the solvent is lost as vapour",
-       "Neither; distillation only works on mechanical mixtures"],
+      ["Only the solvent is recovered; the solute is destroyed by the heat of boiling",
+       "Only the solute is recovered; the solvent is lost as vapour into the air",
+       "Neither part; distillation only works on mechanical mixtures, not on solutions"],
       "Recovering both parts is distillation's advantage over plain evaporation, which recovers the solute but loses the solvent to the air. In salt water distillation, pure water collects in the receiving flask and the salt stays behind in the first flask.",
       {});
   }
@@ -446,9 +446,9 @@ E("s7-u3-distill-vs-evap", 3, ["SC7.8.1"], 2, "var", varset([
   function () {
     return mcq("Evaporation and distillation both separate a solvent from a dissolved solute. What does distillation add that evaporation does not have?",
       "Condensation: the vapour is cooled and collected, so the solvent is recovered as a liquid",
-      ["Filtration: the solution is filtered as it boils",
-       "A magnet: the solute is pulled out during boiling",
-       "Chromatography: the components separate along a column"],
+      ["Filtration: the boiling solution is filtered through paper as it boils",
+       "A magnet: the dissolved solute is pulled out of the liquid during boiling",
+       "Chromatography: the components separate from each other along a tall column"],
       "Evaporation lets the solvent escape into the air; only the solute is recovered. Distillation captures the vapour and condenses it, so the solvent is recovered too. Condensation is the step that belongs to distillation and not to evaporation alone.",
       {});
   }
@@ -468,9 +468,9 @@ E("s7-u3-fractional", 3, ["SC7.8.2"], 1, "var", varset([
   function () {
     return mcq("How does fractional distillation go beyond simple distillation?",
       "It separates a mixture of several liquids from each other, using their different boiling points, instead of separating one solute from one solvent",
-      ["It uses a stronger flame, so the boiling is faster",
-       "It filters the vapour as it rises, catching impurities",
-       "It works without any heating, using gravity alone"],
+      ["It uses a much stronger flame under the flask, so the boiling happens faster and harder",
+       "It filters the vapour as it rises, catching impurities in a series of trays and screens stacked inside a tall column",
+       "It works without any heating at all, using gravity alone to pull the liquids apart"],
       "Simple distillation handles one dissolved solute and its solvent. Fractional distillation, the refining technique used on crude oil, separates many liquids in one process: each component boils at its own temperature and is condensed and collected in turn. That is the evolution the indicator names: from separating a solution to refining a complex liquid mixture.",
       {});
   }
@@ -480,9 +480,9 @@ E("s7-u3-refining-evolve", 3, ["SC7.8.2"], 2, "var", varset([
   function () {
     return mcq("Which account of how separation techniques developed is most accurate?",
       "They evolved by trial and error over a long time: simple methods for simple mixtures came first, and techniques like fractional distillation were developed when industries needed to separate complex mixtures like crude oil",
-      ["They were all invented at once when the first chemistry laboratory was built",
-       "They have not changed since ancient times, because mixtures have not changed",
-       "Each technique was designed on paper before anyone tried it on a real mixture"],
+      ["They were all invented at the same moment, when the first proper chemistry laboratory was built and staffed",
+       "They have not changed at all since ancient times, because mixtures themselves have not changed in any way that matters",
+       "Each technique was designed on paper first, with every step calculated in advance by scientists, and only then was it tried on real mixtures in workshops and factories around the world"],
       "The guide describes separation technology as developed through trial and error. Settling, sifting and simple distillation are ancient; fractional distillation arrived with the petroleum industry's need to split crude oil into useful fractions, and modern water treatment chains several techniques in sequence. Need drove each step.",
       {});
   }
@@ -493,18 +493,18 @@ E("s7-u3-lives-examples", 3, ["SC7.8.3"], 1, "var", varset([
   function () {
     return mcq("Which example best shows the science of mixtures and solutions at work in daily life?",
       "A water treatment plant filtering and treating river water so a town can drink it safely",
-      ["A library sorting its books by author",
-       "A baker choosing a cake recipe from a book",
-       "A hockey team practising its passing"],
+      ["A library sorting all of its books by the author's last name",
+       "A baker choosing a cake recipe from a book and baking the cake for a birthday",
+       "A hockey team practising its passing drills at the arena"],
       "Water purification is one of the guide's named examples: a town's drinking water is a mixture problem solved by separation science, screening, filtering and treating. Sewage treatment, solvents lifting stains from clothes, recycling depots sorting materials, and screening topsoil are the guide's other examples of the same science at work.",
       {});
   },
   function () {
     return mcq("A dry cleaner uses a solvent to lift grease stains out of a jacket. Which idea from this unit is the cleaner relying on?",
       "A grease that will not dissolve in water can dissolve in a different solvent; choosing the solvent is applied solution science",
-      ["Grease is a pure substance, so it leaves the fabric on its own",
-       "The solvent evaporates the jacket's fibres along with the stain",
-       "Stains are heterogeneous, so they can be picked off by hand"],
+      ["Grease is a pure substance, so given enough time it will leave the fabric entirely on its own",
+       "The solvent evaporates the fibres of the jacket itself along with all of the grease in the stain",
+       "Stains are heterogeneous mixtures, so they can simply be picked off the surface of the fabric by hand"],
       "Dissolving depends on the solute-solvent pair. Grease is insoluble in water but soluble in the dry cleaner's solvent, so the solvent carries it out of the fabric. The guide lists stain extraction among its examples of mixtures science affecting daily life.",
       {});
   }
@@ -514,9 +514,9 @@ E("s7-u3-lives-effects", 3, ["SC7.8.3"], 1, "var", varset([
   function () {
     return mcq("Smog hanging over a city is best described as which kind of effect of mixtures in our lives?",
       "An unintended one: exhaust gases and particles mix with air as a by-product of activities people value, not as a goal",
-      ["An intended one: cities produce smog on purpose to mark their boundaries",
-       "A positive one: smog shows the air is being cleaned",
-       "No effect at all: smog is a pure substance, not a mixture"],
+      ["An intended one: cities produce smog on purpose, to mark the boundaries of the city clearly",
+       "A positive one: smog hanging over a city shows that the air is being cleaned by the traffic",
+       "No effect at all: smog is a pure substance, not a mixture of anything"],
       "The guide asks students to notice that effects of mixture science can be intentional or unintentional. Smog is a mixture of exhaust gases and particles in air, produced as a side effect of driving and industry. Nobody aims to make it, which is what unintended means here; road salt's safety benefit, by contrast, is intended, while its corrosion is not.",
       {});
   }
@@ -527,9 +527,9 @@ E("s7-u3-salt-positive", 3, ["SC7.8.4"], 1, "var", varset([
   function () {
     return mcq("Which is a positive, intended effect of spreading salt on highways in winter?",
       "Salt lowers the freezing point of water on the road, melting ice and giving tires traction, which reduces collisions",
-      ["Salt makes roadside plants grow faster in spring",
-       "Salt prevents cars from rusting",
-       "Salt cleans the drinking water in nearby wells"],
+      ["Salt scattered on the road washes into the soil and makes roadside plants grow faster in spring",
+       "Salt protects cars and trucks from rusting through the winter",
+       "Salt cleans and purifies the drinking water that people draw from nearby wells"],
       "The intended benefit is safety: dissolved salt depresses water's freezing point, so ice melts (down to salt's practical limit of -9 °C) and snow does not bond to the pavement, keeping roads passable and reducing skidding and collisions. The other options name effects salt does not have; its real side effects run the other way.",
       {});
   }
@@ -539,9 +539,9 @@ E("s7-u3-salt-negative", 3, ["SC7.8.4"], 2, "var", varset([
   function () {
     return mcq("Which list contains only negative, unintended effects of road salt, as the STSE module presents them?",
       "Salt water reaching wells and streams, roadside vegetation dying back, soil hardening, and vehicles and bridges rusting faster",
-      ["Fewer collisions, passable roads, cheaper winter travel, and safer school bus routes",
-       "Salt-tolerant plants moving in, which gardeners prefer",
-       "Animals finding a needed mineral, with no other consequence"],
+      ["Fewer collisions on icy roads, passable highways, cheaper winter travel, and safer school bus routes",
+       "Salt-tolerant plants moving in along the roads, which most gardeners prefer",
+       "Animals finding a mineral they need at the roadside, with no other consequence for anyone"],
       "The module itemizes the harms: dissolved salt reaches surface and groundwater (drinking water and aquatic life suffer), soil hardens and loses fertility, roadside vegetation is damaged, wildlife is drawn to roadsides and into traffic, and salt dramatically speeds rusting of vehicles and damages concrete bridges. Even the animal item is double-edged in the module: the salt itself is not poison, but the collisions are the harm.",
       {});
   }
@@ -551,9 +551,9 @@ E("s7-u3-salt-classify-effects", 3, ["SC7.8.4"], 2, "var", varset([
   function () {
     return mcq("A town notices two results of its road salt use: emergency calls for winter collisions fall by a third, and the lilies in the ditch beside the highway die back every spring. How are the two results classified?",
       "The collision drop is a positive intended effect; the dying lilies are a negative unintended effect",
-      ["Both are positive intended effects",
-       "Both are negative unintended effects",
-       "The collision drop is unintended; the lilies are intended"],
+      ["Both results are positive intended effects of salting",
+       "Both results are negative unintended effects of salting",
+       "The collision drop is an unintended effect; the dying lilies are an intended one"],
       "Effects are classified on two axes at once: positive or negative, and intended or unintended. Safer roads are the whole point of salting: positive and intended. The damaged roadside vegetation is a harm nobody aimed at: negative and unintended. Most real technologies carry both kinds, which is why the decision indicator asks for them separated out.",
       {});
   }
@@ -562,9 +562,9 @@ E("s7-u3-salt-classify-effects", 3, ["SC7.8.4"], 2, "var", varset([
 /* ---------- SC7.8.5 Better road deicing technologies ---------- */
 E("s7-u3-deicer-compare", 3, ["SC7.8.5"], 2, "gen", function () {
   var cases = [
-    { s: "a night when the temperature falls to -20 °C and the roads must be treated", key: "Calcium chloride, because it keeps working down to about -29 °C while sodium chloride stops being effective below about -9 °C", d: ["Sodium chloride, because it is the cheapest and most familiar", "Ammonium sulfate, because it also fertilizes the roadside", "Potassium acetate, because it is biodegradable"] },
-    { s: "a road running beside a reservoir that supplies a town's drinking water", key: "Potassium acetate where budgets allow, because it is biodegradable, used with sand for traction", d: ["Extra sodium chloride, applied early and often", "Calcium chloride at double the usual rate", "Ammonium sulfate, because it is also a fertilizer"] },
-    { s: "a highway department that needs ice melted as fast as possible during a storm", key: "Calcium chloride or magnesium chloride, because both melt ice faster than sodium chloride", d: ["Sodium chloride alone, because nothing melts ice faster", "Ammonium sulfate, because it is the fastest melter in the table", "No chemical at all, because chemicals only prevent ice, never melt it"] }
+    { s: "a night when the temperature falls to -20 °C and the roads must be treated", key: "Calcium chloride, because it keeps working down to about -29 °C while sodium chloride stops being effective below about -9 °C", d: ["Sodium chloride, because it is the cheapest of the chemicals and the one every crew knows best", "Ammonium sulfate, because it also fertilizes the plants along the roadside while it melts the ice on the road", "Potassium acetate, because it is biodegradable and gentle on everything nearby"] },
+    { s: "a road running beside a reservoir that supplies a town's drinking water", key: "Potassium acetate where budgets allow, because it is biodegradable, used with sand for traction", d: ["Extra sodium chloride, applied early in the storm and often afterward", "Calcium chloride spread at double the usual rate everywhere", "Ammonium sulfate, because it is also a fertilizer and would feed the plants by the reservoir"] },
+    { s: "a highway department that needs ice melted as fast as possible during a storm", key: "Calcium chloride or magnesium chloride, because both melt ice faster than sodium chloride", d: ["Sodium chloride alone, because nothing else in the table melts ice any faster", "Ammonium sulfate, because it is the fastest melter in the table", "No chemical at all, because chemicals only prevent ice, never melt it"] }
   ];
   var c = pick(cases);
   return mcq("Using the de-icing chemicals table from the road salt module, which choice fits this situation best: " + c.s + "?",
@@ -577,9 +577,9 @@ E("s7-u3-deicing-improve", 3, ["SC7.8.5"], 1, "var", varset([
   function () {
     return mcq("Which practice is an improvement in de-icing that came from understanding solutions, as the module presents it?",
       "Anti-icing: using Road Weather Information Systems to apply salt before snow bonds to the road, forming a brine layer that plows clear easily, so less salt is needed overall",
-      ["Applying twice as much salt after every storm, just in case",
-       "Mixing all five de-icing chemicals together so one of them works",
-       "Salting only after accidents are reported on a road"],
+      ["Applying twice as much salt after every winter storm, just in case the first application was not enough to clear the road completely and safely",
+       "Mixing all five de-icing chemicals together in one load so that at least one of them is sure to work",
+       "Salting a road only after accidents have already been reported on it by drivers"],
       "The improvement is timing informed by science and data. Salt spread at a storm's start prevents bonding and creates a brine that clears easily; pre-wetting helps it stick and start working; and this province's Road Weather Information Systems tell crews when and where treatment will pay. The result the module stresses: the same safety with less salt and less harm.",
       {});
   }
@@ -589,9 +589,9 @@ E("s7-u3-salt-science", 3, ["SC7.8.5"], 3, "var", varset([
   function () {
     return mcq("Freezing point depression depends on the number of particles a substance dissolves into, not on the type of particle. Sodium chloride dissolves into 2 particles per unit; calcium chloride into 3. What does this predict, and does the module's table agree?",
       "Calcium chloride should lower water's freezing point more than sodium chloride, and it does: its practical limit is about -29 °C against salt's -9 °C",
-      ["Sodium chloride should work to the lower temperature, because it is the more common chemical",
-       "Both should stop working at the same temperature, because particle counts do not matter",
-       "Calcium chloride should work better only in powder form, not as a solution"],
+      ["Sodium chloride should work to the lower temperature, because it is far more common and more familiar to road crews",
+       "Both should stop working at exactly the same temperature, because the particle counts do not matter at all",
+       "Calcium chloride should work better only in its powder form, not once it has dissolved as a solution"],
       "More dissolved particles per unit means a larger freezing point depression. Calcium chloride's three particles beat sodium chloride's two, which is exactly why the table gives calcium chloride the far lower working temperature. This particle-count understanding is what let engineers choose and improve de-icing chemicals on evidence rather than habit.",
       {});
   }
@@ -602,18 +602,18 @@ E("s7-u3-salt-adv", 3, ["SC7.8.6"], 2, "var", varset([
   function () {
     return mcq("Which statement fairly states the strongest point on the 'keep road salt as the main de-icer' side of the decision?",
       "Salt is inexpensive, available in huge quantities, familiar to every road crew, and proven to cut winter collisions; no alternative matches all four at once",
-      ["Salt has no negative effects, so there is nothing to weigh",
-       "Salt is the only substance that can melt ice at any temperature",
-       "Alternatives have never been tested anywhere"],
+      ["Salt has no negative effects of any kind, so there is nothing at all on the other side of the decision to weigh",
+       "Salt is the only substance that can melt ice at any temperature, and it keeps working no matter how cold the night becomes",
+       "Alternatives to salt have never been tested anywhere in the world at any time"],
       "A fair decision starts by stating each side at its strongest. Salt's case is practical: cheap, abundant, understood, and effective for safety in the temperature range where most winter driving happens. Its limits are also real (it fails below about -9 °C and carries the harms the module lists), which is what the other side weighs.",
       {});
   },
   function () {
     return mcq("Which statement fairly states the strongest point on the 'reduce road salt use' side of the decision?",
       "Salt's harms accumulate in wells, streams, soil and vehicles year after year, and better timing, pre-wetting and weather information can hold much of the safety benefit with considerably less salt",
-      ["Salt never improves safety, so nothing is lost by stopping",
-       "Roads were safer before salt was invented",
-       "Every alternative is cheaper than salt in every situation"],
+      ["Salt never improves safety at all, so nothing would be lost by stopping its use completely and relying only on plows, sand and slower driving from now on",
+       "Roads in winter were safer for everyone before road salt was ever invented and used",
+       "Every alternative is cheaper than salt in every situation, easier to spread, and just as quick to melt ice on any road in any weather"],
       "The reduction case is not that salt does nothing; it is that its environmental and corrosion costs are cumulative, while modern practice (anti-icing, RWIS timing, pre-wetting, faster chemicals for the coldest nights) can keep most of the safety with less salt spread. Stating the other side fairly means granting salt its real safety record.",
       {});
   }
@@ -633,9 +633,9 @@ E("s7-u3-hypothesis-pattern", 3, ["SC7.9.1"], 1, "var", varset([
   function () {
     return mcq("In Core Lab 8-1C, a class observed that salt dissolved in water but not in oil, and flour dissolved in neither. Which hypothesis does this observed pattern best support for a follow-up test?",
       "Whether a solute dissolves depends on the particular solute and solvent pairing, so a new solute should be tested in both solvents before predicting",
-      ["All solutes dissolve in water eventually if stirred long enough",
-       "Oil dissolves nothing at all, in any amount",
-       "Flour is not a real solute because it is a food"],
+      ["All solutes dissolve in water eventually, as long as they are stirred long enough and the water is given enough time to work on them",
+       "Oil dissolves nothing at all, in any amount, no matter what is stirred into it",
+       "Flour is not a real solute at all, because it is a food rather than a chemical"],
       "A hypothesis grows out of the pattern actually observed. The pattern here is pairing-dependent: the same solute behaved differently in two solvents, and one solute dissolved in neither. The follow-up hypothesis stays inside that pattern. The other options overclaim beyond the observations (flour never dissolved, and oil was tested with only two solutes).",
       {});
   }
@@ -645,9 +645,9 @@ E("s7-u3-hypothesis-form", 3, ["SC7.9.1"], 1, "var", varset([
   function () {
     return mcq("Which statement is a testable hypothesis?",
       "More sugar will dissolve in hot water than in cold water, because temperature generally raises a solid's solubility",
-      ["Dissolving is a fascinating process found everywhere in nature",
-       "Sugar will do something surprising in water",
-       "Water is the best solvent for everything"],
+      ["Dissolving is a fascinating process that can be found everywhere in the natural world around us every day",
+       "Sugar will do something surprising at some point when it is put in water",
+       "Water is the best solvent for everything that needs dissolving"],
       "A testable hypothesis makes a prediction an experiment can judge, with a reason attached: here, a comparison (more in hot than cold) and the general rule behind it. A topic sentence, a prediction too vague to test, and an absolute claim no single test could settle all fail the form.",
       {});
   }
@@ -657,9 +657,9 @@ E("s7-u3-hypothesis-background", 3, ["SC7.9.1"], 2, "var", varset([
   function () {
     return mcq("A student notices that sugar vanishes quickly in hot tea but sits in grains in iced tea. She wants to investigate solubility and temperature. Which is the best statement of her hypothesis?",
       "The warmer the water, the more sugar will dissolve in it, up to its saturation point",
-      ["Temperature and solubility are related somehow",
-       "Hot tea tastes sweeter than iced tea",
-       "Sugar always dissolves completely in any drink"],
+      ["Temperature and solubility are related to each other somehow",
+       "Hot tea tastes sweeter than iced tea served in a glass",
+       "Sugar always dissolves completely and quickly in any drink, whether hot or cold"],
       "Her background observation is a pattern (fast in hot, slow and incomplete in cold), and the hypothesis converts it into a measurable prediction about amount dissolved against temperature. The taste statement is about perception, the vague statement predicts nothing measurable, and the absolute statement is already falsified by her own iced tea.",
       {});
   }
@@ -682,9 +682,9 @@ E("s7-u3-delimit-plan", 3, ["SC7.9.2"], 3, "var", varset([
   function () {
     return mcq("A group's question is: 'How does water temperature affect how much sugar dissolves?' Their plan measures the dissolving time for one spoonful of sugar at three temperatures, stirring each cup a different number of times 'to help it along.' What is wrong with the plan against its own question?",
       "The plan measures time, not amount, and lets stirring vary, so it cannot answer a question about how much dissolves",
-      ["Nothing; any plan with three temperatures answers the question",
-       "The plan uses too many temperatures; two would always be better",
-       "The plan should have used salt instead of sugar"],
+      ["Nothing is wrong; any plan that uses three different temperatures answers the question fully",
+       "The plan uses too many temperatures; two temperatures would always be better",
+       "The plan should have used salt instead of sugar as its solute"],
       "A delimited question dictates its data. This question asks about amount, so the plan must measure the amount dissolved at saturation at each temperature, with stirring (and volume, and sugar type) held the same. Measuring a different variable with a second variable left loose means the results cannot speak to the question, however carefully they are recorded.",
       {});
   }
@@ -695,9 +695,9 @@ E("s7-u3-best-fit", 3, ["SC7.9.3"], 1, "var", varset([
   function () {
     return mcq("What is a line of best fit on a solubility graph?",
       "A straight line drawn through the pattern of the points so it follows the overall trend, with points scattered on either side of it",
-      ["A line connecting every point in order, dot to dot",
-       "A line drawn from the first point straight to the last point, ignoring the rest",
-       "The line a graph must have before any data are plotted"],
+      ["A line connecting every single point in order, dot to dot, across the whole graph",
+       "A line drawn from the first point straight to the last point, ignoring all of the points in between them",
+       "The line that a graph must already have on it before any data are plotted"],
       "The line of best fit represents the trend the data show, passing as close as possible to all the points without necessarily touching each one; points scatter around it because measurements vary. It is the line used for reading off values between and beyond the measured points. Dot-to-dot lines, which the Plateau Problem also rejected, follow noise instead of trend.",
       {});
   }
@@ -758,9 +758,9 @@ E("s7-u3-hypothesis-temp", 3, ["SC7.9.4"], 1, "var", varset([
   function () {
     return mcq("Core Lab 8-2A asks how temperature affects the solubility of a solid in water. Which is its testable hypothesis in proper form?",
       "As the temperature of the water increases, the amount of solid that dissolves in it will increase",
-      ["Temperature will affect solubility in some way",
-       "Solubility is affected by many factors, including temperature",
-       "Hot water is better than cold water"],
+      ["Temperature will affect the solubility of the solid in some way or other",
+       "Solubility is affected by many different factors, including the temperature of the water",
+       "Hot water is simply better than cold water for dissolving things"],
       "The hypothesis predicts a direction (increase with increase) for the exact relationship the lab measures, so the data can support or refute it. 'In some way' predicts nothing; the factor list is background, not a prediction; 'better' is a value word, not a measurement.",
       {});
   }
@@ -770,9 +770,9 @@ E("s7-u3-variables-solubility", 3, ["SC7.9.4"], 2, "var", varset([
   function () {
     return mcq("In a group's temperature-solubility study, they heat 100 mL of water to several temperatures and add measured spoonfuls of the same solute until no more dissolves. Which variable naming is correct?",
       "Temperature is the manipulated variable; the amount of solute dissolved is the responding variable; water volume and solute type are controlled",
-      ["Amount dissolved is the manipulated variable; temperature is the responding variable",
-       "Water volume is the responding variable; stirring is the manipulated variable",
-       "Temperature and amount dissolved are both controlled variables"],
+      ["The amount of solute dissolved is the manipulated variable, and the temperature of the water is the responding variable",
+       "The water volume is the responding variable, and the stirring is the manipulated variable",
+       "Temperature and the amount dissolved are both controlled variables throughout the study"],
       "The group chooses the temperatures (manipulated), measures how much dissolves at each (responding), and holds the water volume and the solute the same so the comparison is fair (controlled). Naming them correctly is what makes the study a test of the hypothesis rather than a demonstration.",
       {});
   }
@@ -786,9 +786,9 @@ E("s7-u3-controls", 3, ["SC7.9.5"], 1, "var", varset([
   function () {
     return mcq("Which set of controls belongs in a fair temperature-solubility study?",
       "The same volume of water, the same solute, the same spoon for measuring additions, and the same stirring routine at every temperature",
-      ["A different solute at each temperature, to widen the study",
-       "Whatever water volume is convenient at each temperature",
-       "No stirring at the higher temperatures, because heat does the work"],
+      ["A different solute at each temperature, to widen the study and make the results more interesting and useful overall",
+       "Whatever volume of water happens to be convenient at each of the temperatures tested",
+       "No stirring at all at the higher temperatures, because the extra heat does all of the stirring work"],
       "Only temperature may change between runs. Volume, solute, measuring tool and stirring all affect how much dissolves or how fast, so each must be held the same; otherwise a difference in the results could belong to any of them instead of to temperature.",
       {});
   }
@@ -798,9 +798,9 @@ E("s7-u3-controls-judge", 3, ["SC7.9.5"], 3, "var", varset([
   function () {
     return mcq("A group reports: 'At 20 °C, 35 g dissolved in our beaker; at 60 °C, 52 g dissolved, so temperature increased the solubility.' Their notebook shows the 20 °C run used 100 mL of water and the 60 °C run used 150 mL. What should be concluded?",
       "Nothing yet: the larger volume at 60 °C would dissolve more solute on its own, so temperature and volume are confounded and the runs must be redone at one volume",
-      ["The conclusion stands, because more dissolved at the higher temperature",
-       "The conclusion is wrong; temperature must actually decrease solubility",
-       "The group should average the two volumes and keep the conclusion"],
+      ["The conclusion stands as it is, because more solute dissolved at the higher of the two temperatures",
+       "The conclusion is wrong; temperature must actually decrease the solubility, and the volume difference has nothing to do with it",
+       "The group should just average the two different volumes together and keep their conclusion as written"],
       "A fair test changes one variable. With volume differing alongside temperature, the extra dissolved solute could be the volume's doing, the temperature's, or both; the data cannot separate them. The fix is procedural, not mathematical: rerun both temperatures at the same volume.",
       {});
   }
@@ -823,9 +823,9 @@ E("s7-u3-procedure-order", 3, ["SC7.9.6"], 2, "var", varset([
   function () {
     return mcq("In Core Lab 9-1C, a group separates salt water first by evaporation and then by distillation. Which sequence detail matters most for safety and success?",
       "The flask is secured with a clamp and ring stand before heating, so the hot solution cannot spill if the apparatus is knocked",
-      ["The group tastes the residue to check that it is salt",
-       "The evaporating dish is filled to the brim to save time",
-       "The condenser is connected after the solution reaches a full boil"],
+      ["The group tastes a little of the residue left behind to check that it really is salt",
+       "The evaporating dish is filled right to the brim with solution to save time on refills",
+       "The condenser is connected to the apparatus only after the solution has reached a full rolling boil"],
       "The guide's own safety note for this laboratory is the clamp and ring stand: hot salt solution spilled from an unsecured flask is the laboratory's main hazard. Tasting is never a laboratory test, brim-full dishes boil over, and the condenser must be in place before vapour is produced or the solvent is lost.",
       {});
   }
@@ -835,9 +835,9 @@ E("s7-u3-procedure-problem", 3, ["SC7.9.6"], 1, "var", varset([
   function () {
     return mcq("Mid-procedure, a group filters a muddy sugar solution. The filtrate is clear but still sweet, and the group asks for a finer filter to 'get the sugar out.' What is the correct next step?",
       "Explain that no filter can remove a dissolved substance, and separate the sugar by evaporation or distillation instead",
-      ["Stack three filters together to make a finer barrier",
-       "Use a microscope to pick the sugar particles out",
-       "Add more water so the sugar spreads thinner and passes"],
+      ["Stack three filter papers together to make a much finer barrier for the sugar",
+       "Use a microscope and fine tweezers to pick the sugar particles out one by one",
+       "Add more water to the solution so the sugar spreads thinner and passes through the filter more easily"],
       "Filtration has already done all it can: it removed the undissolved mud. The sugar is dissolved at the particle level and passes any filter. The procedure must switch properties, from particle size to boiling point: evaporate the water away, or distill to recover it as well.",
       {});
   }
@@ -850,9 +850,9 @@ E("s7-u3-tools-safety", 3, ["SC7.9.7"], 1, "var", varset([
   function () {
     return mcq("Which practice is the safe one when evaporating salt water on a hot plate?",
       "Use a shallow evaporating dish filled no more than half, keep the hot plate's cord clear of the bench edge, and treat the dish as hot until it has cooled",
-      ["Fill the dish to the top so the run finishes sooner",
-       "Carry the hot dish across the room to cool by a window",
-       "Watch the dish from directly above at close range as it boils dry"],
+      ["Fill the evaporating dish right up to the top with solution so the whole run finishes sooner",
+       "Carry the hot dish across the room to cool by an open window, holding it carefully with both hands the whole way and weaving between the benches",
+       "Watch the dish closely from directly above it, at close range, while the last of the water boils dry"],
       "Hot solution, glassware and electricity meet in this procedure. A half-filled dish cannot boil over, a managed cord cannot pull the plate down, and heated glassware is treated as hot. Carrying hot dishes and leaning over boiling solution are the accident patterns.",
       {});
   }
@@ -862,9 +862,9 @@ E("s7-u3-tools-accurate", 3, ["SC7.9.7"], 2, "var", varset([
   function () {
     return mcq("A group's solubility results scatter badly between repeats. Their notebook shows water measured 'to about the line' from above, and solute added in heaped spoonfuls. Which fix most improves their accuracy?",
       "Read the graduated cylinder at eye level at the bottom of the meniscus, and measure the solute by mass on the balance for each addition",
-      ["Add the solute faster so the temperature does not change",
-       "Use a larger beaker so the numbers are bigger",
-       "Stir harder so the readings settle"],
+      ["Add all of the solute much faster, so the temperature of the water does not have time to change at all during the run",
+       "Use a much larger beaker for the runs so that all of the numbers come out bigger",
+       "Stir the solution much harder and faster so that the scattered readings settle down"],
       "Scattered results usually trace to scattered measurement. Eye-level meniscus reading removes the parallax error, and massing each addition replaces heaped spoonfuls, whose amounts vary, with measured quantities. Speed, beaker size and stirring force do not fix either error.",
       {});
   }
@@ -875,9 +875,9 @@ E("s7-u3-new-questions", 3, ["SC7.9.8"], 1, "var", varset([
   function () {
     return mcq("After the separation activities, which new question genuinely arises from the results students obtained?",
       "Why can one mixture be separated with a filter while another mixture cannot?",
-      ["What is the capital of the province?",
-       "Who invented the filter, and in what year?",
-       "Which group finished the activity first?"],
+      ["What is the capital city of the province called?",
+       "Who invented the filter, and in what year was it invented?",
+       "Which of the groups in the class finished the activity first?"],
       "New questions grow out of results: filtration succeeded on sand and water and failed on sugar water, and that contrast demands an explanation, which is the guide's own example of a question arising from these activities. The other options are trivia or logistics, not questions the data raise.",
       {});
   }

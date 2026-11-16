@@ -184,9 +184,9 @@ E("s7-u4-sedimentary-form", 4, ["SC7.10.2"], 2, "var", varset([
   function () {
     return mcq("Sediments settle in a lake bed. Which sequence turns them into sedimentary rock?",
       "More sediments pile on top, squeezing the layers (compaction), and dissolved minerals cement the grains together (cementation)",
-      ["The sediments melt from the heat of burial, then cool into solid rock",
-       "Heat and pressure deep in the crust recrystallize the sediments into bands",
-       "The sediments dry out in the sun until they harden into rock"],
+      ["The sediments melt completely from the heat of burial, then cool and harden into solid rock",
+       "Heat and pressure deep in the crust recrystallize the sediments, growing bands of new minerals through them",
+       "The sediments simply dry out in the sun and wind until they harden into solid rock"],
       "Sedimentary rock forms at or near the surface: burial compacts the sediment layers, and mineral cement glues the grains. Melting and recrystallizing belong to the igneous and metamorphic paths.", {});
   },
   function () {
@@ -239,7 +239,7 @@ E("s7-u4-earth-layers", 4, ["SC7.10.3"], 1, "var", varset([
   function () {
     var q = mcq("Use the diagram of Earth's interior. A student says the crust is like the skin of an apple compared with the whole fruit. What makes the comparison reasonable?",
       "The crust is extremely thin compared with the rest of the Earth beneath it",
-      ["The crust is the softest layer of the Earth", "The crust is the hottest layer of the Earth", "The crust is made of the same material as the core"],
+      ["The crust is the softest and weakest layer of the Earth", "The crust is the hottest of all the layers of the Earth", "The crust is made of the same material as the core below it"],
       "Even under the continents the crust is only a few tens of kilometres thick, against thousands of kilometres of mantle and core below it. Thin in proportion, like an apple's skin.", {});
     q.figure = s7EarthLayersSVG();
     return q;
@@ -250,17 +250,17 @@ E("s7-u4-crust-plates", 4, ["SC7.10.3"], 1, "var", varset([
   function () {
     return mcq("Which statement about Earth's crust is correct?",
       "The crust is broken into large pieces called plates that move slowly, carrying continents and ocean floor with them",
-      ["The crust is one unbroken shell, and only the continents on top of it move",
-       "The crust is broken into plates, but the plates are exactly the same as the continents",
-       "The crust floats as separate continent pieces on a completely liquid interior"],
+      ["The crust is one single unbroken shell, and only the continents sitting on top of it move",
+       "The crust is broken into plates, but the plates are exactly the same things as the continents",
+       "The crust floats as separate continent pieces on a completely liquid interior below"],
       "The crust (with the uppermost mantle) is broken into plates, and each plate can carry both continent and ocean floor. Plates are not the same as continents: several plates carry no continent at all, and some continents sit on more than one plate.", {});
   },
   function () {
     return mcq("A map shows a tectonic plate that includes South America and the western half of the Atlantic Ocean floor. What does this show about plates?",
       "A plate can carry both a continent and ocean floor; plates and continents are not the same thing",
-      ["Ocean floor is not part of the crust",
-       "Every continent sits on exactly one plate of its own",
-       "The Atlantic Ocean floor belongs to no plate"],
+      ["Ocean floor is not part of the Earth's crust at all",
+       "Every continent sits on exactly one plate of its own, separate from all the others",
+       "The floor of the Atlantic Ocean belongs to no plate at all"],
       "Plates are pieces of crust, and a single plate often carries a continent plus the ocean floor beside it out to a mid-ocean ridge. The plate boundaries do not follow the coastlines.", {});
   }
 ]), ["Plates are pieces of crust; continents are passengers on some of them.", "If an option makes plates and continents identical, it is the misconception, not the answer."]);
@@ -269,9 +269,9 @@ E("s7-u4-study-tech", 4, ["SC7.10.3"], 2, "var", varset([
   function () {
     return mcq("Scientists in the 1950s towed magnetometers behind ships and recorded stripes of normal and reversed magnetism in the ocean floor rocks. What did this technology let them study?",
       "How the ocean floor had spread apart over time, recorded in its magnetic stripes",
-      ["The exact age of the Earth, read directly from the stripes",
-       "The depth of the mantle below the ocean floor",
-       "The kinds of fish living along the mid-ocean ridge"],
+      ["The exact age of the Earth itself, read directly from the stripes",
+       "The depth of the mantle lying below the ocean floor rocks",
+       "The kinds of fish and sea life living along the mid-ocean ridge"],
       "Magnetometers detect the magnetism locked into rocks as they cool. The striped pattern, matching on both sides of a mid-ocean ridge, recorded the history of sea floor spreading.", {});
   },
   function () {
@@ -290,17 +290,17 @@ E("s7-u4-earthquake-why", 4, ["SC7.10.4"], 1, "var", varset([
   function () {
     return mcq("What is an earthquake?",
       "A sudden release of energy in the crust, as rock that has been slowly bent or squeezed snaps and shifts, sending out seismic waves",
-      ["A crack that opens in the ground and swallows the surface above it",
-       "A shaking caused by magma rising through a volcano",
-       "A giant wave that starts in the ocean and strikes the coast"],
+      ["A crack that opens in the ground during the shaking and swallows the surface above it, buildings and all",
+       "A shaking of the ground caused by magma rising up through the vent of a volcano",
+       "A giant wave that starts out in the ocean and travels to strike the coast with great force"],
       "Forces from moving plates slowly stress the rock until it breaks or slips along a fault; the stored energy is released as seismic waves. Ground cracks and ocean waves can result from an earthquake, but neither one is the earthquake itself.", {});
   },
   function () {
     return mcq("Which pairing is correct?",
       "A seismograph records seismic waves, and the moment magnitude scale describes the strength of an earthquake",
-      ["A seismograph predicts the exact day of the next earthquake",
-       "The moment magnitude scale measures how long an earthquake lasts",
-       "A seismograph measures the magnetism of the rocks at a fault"],
+      ["A seismograph predicts the exact day and hour of the next earthquake",
+       "The moment magnitude scale measures how long an earthquake lasts, from start to finish",
+       "A seismograph measures the magnetism of the rocks along a fault line"],
       "Seismographs record the waves an earthquake sends out, and scientists use the records to locate the earthquake and rate its strength on the moment magnitude scale. No instrument predicts the exact day of an earthquake.", {});
   }
 ]), ["Start from the cause: stressed rock, a sudden slip, energy released as waves.", "Separate the event itself from its effects: waves, cracks and tsunamis are results, not definitions."]);
@@ -309,17 +309,17 @@ E("s7-u4-volcano-where", 4, ["SC7.10.4"], 2, "var", varset([
   function () {
     return mcq("Volcanoes form in three settings. Which setting matches the Hawaiian Islands?",
       "A hot spot: a plate moves slowly over a place where magma rises through the crust, building island after island",
-      ["A converging boundary, where one plate dives under another",
-       "A diverging boundary, where two plates pull apart in the ocean",
-       "A transform boundary, where two plates slide sideways past each other"],
+      ["A converging boundary, where one plate dives down beneath another plate",
+       "A diverging boundary, where two plates pull apart from each other under the ocean",
+       "A transform boundary, where two plates slide sideways past each other for long distances"],
       "Hawaii sits in the middle of a plate, far from any boundary. A rising plume of magma (a hot spot) punches through the crust, and as the plate moves, the plume builds a chain of islands.", {});
   },
   function () {
     return mcq("Japan's volcanoes sit where one plate is diving beneath another. Which volcano setting is this?",
       "A converging boundary, where the diving plate melts and magma rises through the plate above",
-      ["A hot spot in the middle of a plate",
-       "A diverging boundary along a mid-ocean ridge",
-       "A transform boundary where plates slide sideways"],
+      ["A hot spot located in the middle of a single large plate",
+       "A diverging boundary, where plates pull apart from each other along a mid-ocean ridge",
+       "A transform boundary, where two plates slide sideways past each other"],
       "Where plates converge and one dives (subducts), the diving plate melts at depth and the magma rises to build volcanoes on the plate above, as in Japan. Sideways sliding (transform) builds no volcanoes.", {});
   }
 ]), ["Three settings only: plates colliding, plates parting, and hot spots.", "Middle of a plate rules out every boundary setting; look for the hot spot."]);
@@ -336,9 +336,9 @@ E("s7-u4-event-effects", 4, ["SC7.10.4"], 2, "var", varset([
   function () {
     return mcq("Mount St. Helens erupted in 1980 after a bulge grew on its side and an earthquake shook the mountain. What was the eruption's most destructive effect?",
       "The side of the mountain collapsed in a huge landslide and a sideways blast flattened forests over a wide area",
-      ["Lava flows slowly covered the surrounding towns",
-       "A tsunami from the mountain flooded the coast",
-       "Ash buried the entire country under a metre of debris"],
+      ["Lava flows slowly covered the surrounding towns and farmland in the weeks that followed",
+       "A tsunami from the mountain rushed inland and flooded the whole coast for kilometres",
+       "Ash buried the entire country under a metre of ash and debris from the eruption"],
       "The bulge gave way: the mountain's side slid off and the exposed magma blasted sideways, flattening forest for kilometres. Lava flows were minor by comparison, and there was no tsunami from the mountain.", {});
   }
 ]), ["Match the effect to the event's setting: sea floor earthquakes move water; bulging mountainsides fall.", "Watch for effects borrowed from the wrong event type."]);
@@ -357,17 +357,17 @@ E("s7-u4-distribution-data", 4, ["SC7.10.5"], 1, "var", varset([
   function () {
     return mcq("A class collects the locations of the world's major earthquakes and volcanoes for the past 50 years. Which way of organizing the data would best reveal a pattern?",
       "Plot every location as a point on a world map, using one symbol for earthquakes and another for volcanoes",
-      ["List the locations alphabetically by the nearest city",
-       "Sort the events by date, from oldest to newest",
-       "Average all the locations together into a single world position"],
+      ["List all of the locations alphabetically by the name of the nearest city",
+       "Sort all of the events by their dates, from the oldest to the newest",
+       "Average all the locations together into a single position at the centre of the world"],
       "Patterns in distribution are spatial: they only appear when the data sits on a map. Alphabetical and date orderings hide where the events are, and averaging destroys the locations entirely.", {});
   },
   function () {
     return mcq("Why do scientists plot earthquake and volcano locations on a map instead of studying a table of the same data?",
       "The map shows where the events cluster, and the clusters are the pattern that needs explaining",
-      ["Maps are always more accurate than tables",
-       "Tables cannot hold latitude and longitude numbers",
-       "The map removes the need to collect any data at all"],
+      ["Maps are always more accurate than tables are for the same data",
+       "Tables cannot hold latitude and longitude numbers, so the locations would be lost",
+       "The map removes the need to collect any field data at all"],
       "The table holds the same numbers, but the pattern (long belts of activity, empty stretches elsewhere) is visible only when the points are plotted. The pattern is what connects the events to plate boundaries.", {});
   }
 ]), ["Ask what each organization lets you SEE. The pattern lives in the geography.", "If an option throws the locations away, it throws the pattern away with them."]);
@@ -376,9 +376,9 @@ E("s7-u4-distribution-map", 4, ["SC7.10.5"], 2, "var", varset([
   function () {
     var q = mcq("Use the map of earthquake and volcano locations. Which statement best describes the pattern the map shows?",
       "The locations cluster along lines and belts, many of them around the edges of oceans and along the middle of the Atlantic",
-      ["The locations are spread evenly over the whole Earth",
-       "The locations occur only on land, never in the oceans",
-       "The locations form a single straight line around the equator"],
+      ["The locations are spread evenly over the whole Earth, with the same number in every region",
+       "The locations occur only on land, and never anywhere in the oceans",
+       "The locations form a single straight line that runs all the way around the Earth at the equator"],
       "Plot the points and the pattern is belts, not scatter: a ring around the Pacific, a line down the middle of the Atlantic, and a band through the Mediterranean to the Himalayas. Most of the Earth's surface has few or none.", {});
     q.figure = s7WorldMapSVG();
     return q;
@@ -399,9 +399,9 @@ E("s7-u4-ring-of-fire", 4, ["SC7.10.5"], 3, "var", varset([
   function () {
     var q = mcq("Use the map. The dense belt of earthquakes and volcanoes around the edge of the Pacific Ocean is called the Ring of Fire. What does this belt coincide with?",
       "The boundaries of the plate that lies under the Pacific Ocean, where it meets the plates around it",
-      ["The equator, where the Earth spins fastest",
-       "The edges of the Pacific's continents, by coincidence only",
-       "A chain of underwater mountains with no relation to plates"],
+      ["The equator, where the Earth spins fastest on its axis",
+       "The edges of the continents around the Pacific, by coincidence only",
+       "A chain of underwater mountains running around the Pacific with no relation to plates"],
       "The Ring of Fire traces the Pacific Plate's edges: where that plate dives under, pulls from or slides past its neighbours, earthquakes and volcanoes concentrate. The belt is a plate boundary drawn in events.", {});
     q.figure = s7WorldMapSVG();
     return q;
@@ -409,9 +409,9 @@ E("s7-u4-ring-of-fire", 4, ["SC7.10.5"], 3, "var", varset([
   function () {
     var q = mcq("Use the map. The middle of the Atlantic Ocean shows a line of earthquakes and volcanoes running north to south, far from any continent. What is the best inference from this line?",
       "A plate boundary runs down the middle of the Atlantic, even though it lies under the ocean",
-      ["Ships crossing the Atlantic cause the earthquakes along their routes",
-       "The line marks the equator, where earthquakes are most common",
-       "Volcanoes can only form in the middle of oceans"],
+      ["Ships crossing the Atlantic Ocean cause the earthquakes that happen along their sailing routes",
+       "The line marks the equator, where earthquakes and volcanoes are most common",
+       "Volcanoes can only ever form in the middle of oceans"],
       "Events cluster at plate boundaries wherever the boundaries are, including under oceans. A straight belt of events in mid-ocean is evidence of a boundary there: the mid-Atlantic ridge, where plates pull apart.", {});
     q.figure = s7WorldMapSVG();
     return q;
@@ -453,17 +453,17 @@ E("s7-u4-mountain-process", 4, ["SC7.10.6"], 2, "var", varset([
   function () {
     return mcq("The Appalachian Mountains, which run through western Newfoundland, formed hundreds of millions of years ago when continents collided. Which process built them?",
       "Folding and faulting: the collision squeezed the rock layers between the continents until they crumpled upward",
-      ["Volcanic build-up: lava piled up layer on layer until it stood high",
-       "Erosion: rivers carved the mountains out of a flat plain",
-       "Deposition: sediments piled up until they reached mountain height"],
+      ["Volcanic build-up: lava from eruptions piled up layer on layer until it stood high",
+       "Erosion: rivers and ice carved the mountains out of an older flat plain",
+       "Deposition: sediments piled up layer on layer until they reached the height of mountains"],
       "Continents colliding compress everything between them; the rock folds and faults upward into a range, as happened when the Appalachians rose. Erosion later wears ranges down; it does not raise them.", {});
   },
   function () {
     return mcq("In 1943, a Mexican farmer watched a crack open in his cornfield; within a year a new volcano, Paricutin, stood over 300 m tall where the field had been. Which mountain-building process does Paricutin show?",
       "Volcanic build-up: erupted lava and ash piled up around the vent until they formed a mountain",
-      ["Folding: rock layers bent upward under compression",
-       "Faulting: a block of crust was pushed up along a fault",
-       "Glacial deposition: ice left a pile of rock and soil behind"],
+      ["Folding: the flat rock layers bent upward under great compression",
+       "Faulting: a block of crust was pushed upward along a large fault",
+       "Glacial deposition: ice left behind a huge pile of rock and soil as it melted"],
       "Some mountains are built by accumulation: eruption after eruption stacks lava and ash into a cone. Paricutin grew in a field within a year, far too fast for folding or faulting, which work over millions of years.", {});
   }
 ]), ["Three builders: squeezing (folding and faulting), stacking (volcanic), and neither erosion nor deposition raises a range.", "Time is a clue: a mountain that appears in a year was stacked, not squeezed."]);
@@ -497,9 +497,9 @@ E("s7-u4-era-scale", 4, ["SC7.10.7"], 2, "var", varset([
   function () {
     var q = mcq("Use the geological time strip, which is drawn to scale. Which statement about the Precambrian is correct?",
       "It covers most of Earth's history, about 87 percent of the 4.6 billion years, even though its name is less familiar",
-      ["It is the shortest of the four divisions of Earth's history",
-       "It began when the first fish appeared in the oceans",
-       "It covers about the same length of time as the Cenozoic era"],
+      ["It is by far the shortest of the four divisions into which Earth's history is split",
+       "It began only when the first fish appeared in the oceans, a relatively recent event",
+       "It covers about the same total length of time as the Cenozoic era, the most recent one of all"],
       "Read the strip's proportions: the Precambrian block takes up nearly nine tenths of the whole line. The other three eras, which hold the fish, the forests, the mammals and us, share the remaining sliver.", {});
     q.figure = s7TimeStripSVG();
     return q;
@@ -507,9 +507,9 @@ E("s7-u4-era-scale", 4, ["SC7.10.7"], 2, "var", varset([
   function () {
     return mcq("A class models Earth's 4.6 billion year history on a 4.6 m strip of paper, one metre per billion years. Roughly how much of the strip do humans occupy?",
       "A tiny fraction of the last centimetre: humans have existed for only a very small part of Earth's history",
-      ["About half the strip, since humans are the most advanced life",
-       "About one full metre at the end of the strip",
-       "The whole strip, because the scale is a model of human history"],
+      ["About half the strip in total, since humans are the most advanced form of life on Earth",
+       "About one full metre at the very end of the paper strip",
+       "The whole strip, because the scale is meant as a model of human history"],
       "Humans appear only in the last part of the Cenozoic era, which is itself the last 66 million years: about 6.6 cm of the strip, and humans occupy only a sliver of that. On the scale of Earth's history, we are very recent arrivals.", {});
   }
 ]), ["The strip is drawn to scale: judge lengths, not the fame of the events.", "Recent does not mean long: the era we live in is the shortest on the strip."]);
@@ -549,17 +549,17 @@ E("s7-u4-frost-wedging", 4, ["SC7.10.8"], 1, "var", varset([
   function () {
     return mcq("Why does frost wedging break rock apart in a Newfoundland and Labrador spring?",
       "Water in the cracks freezes and expands at night, then melts by day; repeated freezing pries the cracks wider until pieces break off",
-      ["Ice is heavier than water and crushes the rock under its weight",
-       "Cold makes rock contract until it shatters into pieces",
-       "Frost dissolves the minerals that hold the rock together"],
+      ["Ice is heavier than the water it froze from, and its weight crushes the rock in the cracks apart",
+       "The cold makes the rock contract again and again, night after night, until it shatters into small pieces",
+       "Frost dissolves the minerals that hold the rock together, loosening it grain by grain"],
       "Water is unusual: it expands as it freezes. In a crack, that expansion pushes outward with great force, and freeze-thaw cycles through a spring wedge the crack wider each time until the rock splits. This is mechanical weathering.", {});
   },
   function () {
     return mcq("A gardener finds that the soil in spring is full of small stones that were not at the surface in the fall, pushed up by the freezing ground. Which weathering process is connected to this lifting and breaking of buried rock?",
       "Frost action: freezing water expands and heaves the ground, cracking rock as it does so",
-      ["Chemical weathering by plant roots dissolving the stones",
-       "Erosion by the wind blowing stones to the surface",
-       "Compaction of the soil under the snow's weight"],
+      ["Chemical weathering, as plant roots slowly dissolve the stones in the soil",
+       "Erosion by the wind, blowing loose stones up to the surface",
+       "Compaction of the soil under the weight of the winter snow"],
       "Freezing water expands, heaving soil and stones upward (frost heave) and wedging cracks in rock wider. The stones rose because the ground itself moved and broke rock apart, a mechanical process.", {});
   }
 ]), ["Water expands when it freezes: that one fact drives the whole process.", "Any answer about dissolving or chemical change belongs to the other kind of weathering."]);
@@ -587,17 +587,17 @@ E("s7-u4-winter-chime", 4, ["SC7.10.8"], 2, "var", varset([
   function () {
     return mcq("A class hangs a wind chime made of glass tubes and metal bells outside for a winter design challenge. By spring, the glass is chipped where small stones struck it on windy nights, and the metal bells show rust spots. Which pairing is correct?",
       "The chipping is mechanical weathering by wind-blown particles; the rusting is chemical weathering",
-      ["The chipping is chemical weathering; the rusting is mechanical weathering",
-       "Both the chipping and the rusting are erosion",
-       "Both the chipping and the rusting are chemical weathering"],
+      ["The chipping is chemical weathering, and the rusting is mechanical weathering",
+       "Both the chipping and the rusting are erosion by the winter weather",
+       "Both the chipping and the rusting are forms of chemical weathering"],
       "Impacts break the glass without changing what glass is: mechanical weathering. Rust is a new substance formed when iron reacts with oxygen and water: chemical weathering. Nothing here was carried away, so neither is erosion.", {});
   },
   function () {
     return mcq("For the same wind chime challenge, a team wants to slow the weathering of the metal bells. Which design choice targets the CHEMICAL weathering they observed?",
       "Coat the bells so water and oxygen cannot reach the metal surface as easily",
-      ["Hang the chime where wind-blown sand cannot strike it",
-       "Make the bells thicker so impacts chip them less",
-       "Hang the chime lower so it is easier to inspect"],
+      ["Hang the chime where wind-blown sand and grit cannot strike it",
+       "Make the metal bells thicker so that impacts chip them less",
+       "Hang the chime lower down so it is easier to inspect in spring"],
       "Rusting needs water and oxygen at the metal's surface; a coating blocks both and slows the reaction. Shielding from blown sand and thickening the metal target the mechanical damage instead.", {});
   }
 ]), ["Sort each damage type first: broken, or chemically changed?", "A protection only works on the process it blocks: coatings block reactions, shields block impacts."]);
@@ -637,17 +637,17 @@ E("s7-u4-soil-form", 4, ["SC7.10.9"], 1, "var", varset([
   function () {
     return mcq("What is soil made from?",
       "Weathered rock material mixed with decaying organic matter from living things, plus air and water in its spaces",
-      ["Rock dust alone, ground fine by glaciers",
-       "Decayed plants alone, with no rock material in it",
-       "Sand washed up from the ocean over thousands of years"],
+      ["Rock dust alone, ground very fine by glaciers and mixed with nothing else at all",
+       "Nothing but decayed plants, with no rock material of any kind in it, however long it took to form",
+       "Sand washed up from the ocean and piled on the land over thousands of years"],
       "Soil needs both parents: weathering supplies the mineral particles from rock, and living things supply the organic matter as they die and decay. Neither one alone makes soil.", {});
   },
   function () {
     return mcq("Two soils form side by side, one on granite bedrock and one on shale bedrock, under the same climate and plants. Why do the two soils differ?",
       "Soil inherits characteristics from its parent rock, so different bedrock produces different soil",
-      ["The climate must secretly be different over the two soils",
-       "Soils never differ when the plants growing in them are the same",
-       "The soil on granite is older, and age is the only thing that matters"],
+      ["The climate must secretly be different over each of the two soils",
+       "Soils never differ at all when the plants growing in them are the same",
+       "The soil on granite is much older, and age is the only thing that matters for a soil"],
       "The parent material is one of the things that shapes a soil: granite weathers to a coarser, sandier soil, while shale weathers toward finer, clay-rich soil. Same weather, same plants, different starting rock, different soil.", {});
   }
 ]), ["Soil has two parents: broken rock and once-living material.", "Where a soil forms decides what it starts from: the rock underneath matters."]);
@@ -656,9 +656,9 @@ E("s7-u4-soil-drainage", 4, ["SC7.10.9"], 2, "var", varset([
   function () {
     var q = mcq("Use the drainage results. Which soil would leave a plant's roots sitting in water longest after rain, and why?",
       "The clay soil: its fine particles pack tightly, leaving small spaces, so water moves through it very slowly (low permeability)",
-      ["The sandy soil: its large particles trap water between them",
-       "The gravel: its spaces are too small for water to enter",
-       "All three soils drain at the same rate once they are wet"],
+      ["The sandy soil: its large particles trap water between them and hold it there for days",
+       "The gravel: its spaces are too small for water to enter, so the water sits on top of it",
+       "All three soils drain at the same rate once they are wet, because wet soil of any kind lets water through equally fast"],
       "Read the bars: clay took by far the longest for the same volume of water. Fine particles pack closely, so the connected spaces are small and water creeps through slowly; sand and gravel have larger spaces and drain fast.", {});
     q.figure = s7DrainSVG([{ name: "sand", secs: 14 }, { name: "loam", secs: 47 }, { name: "clay", secs: 168 }, { name: "gravel", secs: 6 }]);
     return q;
@@ -666,9 +666,9 @@ E("s7-u4-soil-drainage", 4, ["SC7.10.9"], 2, "var", varset([
   function () {
     return mcq("What is the difference between a soil's porosity and its permeability?",
       "Porosity is how much open space the soil has to hold water; permeability is how easily water can move through those spaces",
-      ["Porosity is how fast water drains; permeability is how much water the soil holds",
-       "They are two names for the same property of a soil",
-       "Porosity applies only to clay and permeability only to sand"],
+      ["Porosity is how fast water drains through a soil; permeability is how much water the soil can hold",
+       "They are two different names for one and the same property of a soil",
+       "Porosity applies only to clay soils and permeability only to sandy soils"],
       "A soil can hold a lot of water yet let it move slowly: clay is porous but not very permeable, because its spaces are tiny. Porosity is storage; permeability is movement.", {});
   }
 ]), ["Longest bar means slowest drainage; connect slow drainage to small, tightly packed particles.", "Hold versus flow: one word is about space, the other about movement through the space."]);
@@ -735,9 +735,9 @@ E("s7-u4-convection", 4, ["SC7.11.1"], 2, "var", varset([
   function () {
     return mcq("Why did the idea of convection currents in the mantle matter so much to plate tectonic theory?",
       "It supplied a possible mechanism: a way for the plates to be moved, which continental drift had never explained",
-      ["It proved that the continents themselves were liquid",
-       "It explained why earthquakes happen on the Moon",
-       "It showed that the mantle was the same temperature throughout"],
+      ["It proved that the continents themselves were made of liquid rock all the way through",
+       "It explained why earthquakes and volcanoes happen on the Moon",
+       "It showed that the mantle was the same temperature throughout, at every depth inside the Earth"],
       "Wegener could say the continents moved but not what moved them, and that gap sank his theory. Convection currents gave plate tectonics the engine it needed: heat-driven circulation in the mantle dragging the plates.", {});
   }
 ]), ["The soup pot is a model: rising, spreading, sinking, in a slow loop.", "Ask what problem the idea solved. The theory before it had a famous missing piece."]);
@@ -746,17 +746,17 @@ E("s7-u4-new-evidence", 4, ["SC7.11.1"], 3, "var", varset([
   function () {
     return mcq("In the 1960s, drilling ships brought up rock samples from the ocean floor. The rocks were youngest at the mid-ocean ridges and older farther away, on both sides. Why was this evidence so powerful for plate tectonics?",
       "It showed new crust forming at the ridges and spreading outward, exactly as sea floor spreading predicted",
-      ["It proved the ocean floor was the oldest part of the Earth",
-       "It showed that the continents had never moved at all",
-       "It revealed that ocean water was slowly dissolving the crust"],
+      ["It proved the ocean floor was the oldest part of the Earth, older than any continent",
+       "It showed that the continents had never moved at all in Earth's history",
+       "It revealed that the ocean water was slowly dissolving the crust beneath it"],
       "A prediction confirmed is strong evidence: sea floor spreading said crust is born at ridges and ages as it moves away, and the drilled ages matched on both sides of the ridge. Continental drift alone never predicted this.", {});
   },
   function () {
     return mcq("Three technologies produced three discoveries: sonar mapped a mountain ridge down the middle of the Atlantic; magnetometers found magnetic stripes matching on both sides of the ridge; drilling showed the floor aging away from the ridge. Taken together, what did they establish?",
       "That the ocean floor is spreading apart from the ridges, carrying the continents with it",
-      ["That the Atlantic Ocean has always been its present size",
-       "That Wegener's original evidence had all been mistaken",
-       "That the continents plough through a stationary ocean floor"],
+      ["That the Atlantic Ocean has always been exactly its present size",
+       "That all of Wegener's original evidence had been mistaken from the start",
+       "That the continents plough their way through a stationary ocean floor"],
       "Each technology added a piece: shape (sonar), record (magnetism), and age (drilling). Together they replaced Wegener's picture of continents ploughing through the floor with plates, ocean floor included, moving as one.", {});
   }
 ]), ["Judge evidence by what it confirms: a prediction that comes true carries weight.", "Three tools, three different kinds of data, one conclusion: check that the conclusion uses all three."]);
@@ -775,17 +775,17 @@ E("s7-u4-canadian-match", 4, ["SC7.11.2"], 1, "var", varset([
   function () {
     return mcq("Which Canadian scientist is matched with the contribution he is known for?",
       "J. Tuzo Wilson recognized transform boundaries, where plates slide sideways past each other",
-      ["J. Tuzo Wilson discovered the fossil dinosaurs of Alberta",
-       "Joseph Tyrrell proposed the theory of continental drift",
-       "Harold Williams invented the seismograph"],
+      ["J. Tuzo Wilson discovered the fossil dinosaurs in the badlands of Alberta",
+       "Joseph Tyrrell proposed the theory of continental drift in 1912",
+       "Harold Williams invented the seismograph used for recording earthquakes"],
       "Wilson's contribution was transform boundaries, the third boundary type, which plate tectonics needed. Tyrrell is the dinosaur and past-climate name; Williams worked on plate activity along eastern North America; continental drift was Wegener, who was German.", {});
   },
   function () {
     return mcq("Harold Williams, working in Newfoundland, studied the rocks of the Appalachian region. What was his contribution?",
       "He recognized evidence of ancient plate activity along the eastern margin of North America, helping explain how the Appalachians formed",
-      ["He proved that Newfoundland was once part of Europe by drilling the ocean floor",
-       "He discovered the mid-Atlantic ridge using sonar",
-       "He named the three types of plate boundaries"],
+      ["He proved that Newfoundland was once part of Europe by drilling the ocean floor and matching the rocks he found",
+       "He discovered the mid-Atlantic ridge using sonar surveys of the ocean",
+       "He named and described the three types of plate boundaries"],
       "Williams read the rocks of Newfoundland and the Appalachians as the remains of an ancient ocean and its plate collisions, evidence that plate tectonics had been at work along eastern North America hundreds of millions of years ago.", {});
   }
 ]), ["Three Canadians, three contributions: boundaries, dinosaurs and climate, ancient plates in the east.", "If an option hands a Canadian someone else's famous work (drift, sonar, the seismograph), it is wrong."]);
@@ -815,17 +815,17 @@ E("s7-u4-imagination-role", 4, ["SC7.11.3"], 1, "var", varset([
   function () {
     return mcq("Fossils of ocean animals are found in rock high in the mountains of Newfoundland. What does this observation suggest, when scientists reason imaginatively from the evidence?",
       "That the rock formed under an ancient ocean and was later pushed up as mountains formed",
-      ["That the ocean animals once lived on dry land",
-       "That people carried the fossils up the mountains long ago",
-       "That the mountains were built by the fossils piling up"],
+      ["That the ocean animals once lived their lives on dry land",
+       "That people long ago carried the fossils up into the mountains by hand",
+       "That the mountains themselves were built by the fossils piling up"],
       "The fossils are evidence; the explanation is inferred. Ocean animals live in oceans, so their fossils in mountain rock mean the rock was once sea floor, raised up by the same plate forces that built the mountains.", {});
   },
   function () {
     return mcq("Minerals that form only in warm climates are found in rocks in the polar regions. Which statement best describes how a scientist uses this observation?",
       "The observation is evidence; imagining the continent in a warmer place in the past is the inference built on it",
-      ["The observation proves by itself exactly where the continent was",
-       "The observation is an opinion, because it cannot be seen today",
-       "The observation should be ignored, since the minerals might be wrong"],
+      ["The observation proves by itself exactly where the continent was in the past",
+       "The observation is only an opinion, because it cannot be seen happening today",
+       "The observation should simply be ignored, since the minerals identified might be wrong"],
       "Scientific explanations are built from evidence plus inferred relationships: the minerals (evidence) connect to a past climate, and the past climate connects to a continent that has moved. The observation alone is not the whole explanation.", {});
   }
 ]), ["Separate the two parts: what was observed, and what was inferred from it.", "An inference is not a guess: it is a relationship the evidence supports."]);
@@ -834,17 +834,17 @@ E("s7-u4-evidence-link", 4, ["SC7.11.3"], 2, "var", varset([
   function () {
     return mcq("A scientist argues that South America and Africa were once joined. Which PAIR of observations, taken together, makes the strongest case?",
       "The two coastlines fit together, and the same distinctive rock layers and fossils appear on both sides of the Atlantic",
-      ["Both continents have beaches, and both are in the southern hemisphere",
-       "Both continents are large, and both have mountains somewhere",
-       "Both continents have rivers, and both have warm climates today"],
+      ["Both continents have beaches, and both are in the southern hemisphere, south of the equator",
+       "Both continents are large landmasses, and both have high mountains somewhere on them",
+       "Both continents have rivers flowing to the sea, and both have warm climates today"],
       "One observation can be coincidence; two independent ones that point the same way are a relationship. Fit plus matching rocks and fossils is the combination Wegener built on. The other pairs are true of many places that were never joined.", {});
   },
   function () {
     return mcq("Which observation most directly supports the explanation that the Atlantic Ocean is still widening?",
       "Measurements show the ocean floor is youngest at the mid-Atlantic ridge and gets older toward both continents",
-      ["The Atlantic has storms that push water toward both shores",
-       "Ships take longer to cross the Atlantic than they used to",
-       "The coastlines of the Atlantic continents are slowly eroding"],
+      ["The Atlantic's storms push water toward both shores, widening the ocean a little each year",
+       "Ships take longer to cross the Atlantic now than they used to in the past",
+       "The coastlines of the continents around the Atlantic are slowly eroding away"],
       "A widening ocean predicts new crust at the ridge aging outward, and that is exactly what drilling found. The relationship between ridge, age and distance is the evidence; the other options do not measure the floor at all.", {});
   }
 ]), ["Strong cases pair independent observations that point the same way.", "Ask of each option: if this were true, would it actually support the claim?"]);
@@ -871,9 +871,9 @@ E("s7-u4-change-timeline", 4, ["SC7.11.4"], 1, "var", varset([
   function () {
     return mcq("Early maps, such as one from 1482, showed a world very different from the world map of 1587, after explorers had sailed the oceans. What made the pictured world change between the two maps?",
       "New observations: explorers' reports and measurements replaced guesses about lands no one had mapped",
-      ["Artists became more skilled at drawing coastlines",
-       "The continents moved noticeably during those hundred years",
-       "Mapmakers agreed to draw the world differently as a fashion"],
+      ["Artists and mapmakers became far more skilled at drawing coastlines",
+       "The continents themselves moved noticeably during those hundred years",
+       "Mapmakers agreed among themselves to draw the world differently, as a fashion"],
       "The world did not change; the evidence did. Each voyage added observations, and the picture of the Earth was redrawn to fit them, the same pattern by which plate tectonics later redrew it again.", {});
   }
 ]), ["The theory's story has a fixed order: proposal, rejection, new evidence, acceptance.", "When a picture of the world changes, ask what new observations forced the change."]);
@@ -890,9 +890,9 @@ E("s7-u4-change-why", 4, ["SC7.11.4"], 2, "var", varset([
   function () {
     return mcq("Why did acceptance of moving continents come in the 1960s rather than in Wegener's lifetime?",
       "New technology (sonar, magnetometers, drilling ships) produced ocean floor evidence that Wegener never had",
-      ["Scientists of the 1960s were simply more open-minded people",
-       "Wegener's original notes were rediscovered in an archive",
-       "A single large earthquake proved the continents were moving"],
+      ["Scientists of the 1960s were simply more open-minded and imaginative people than the scientists before them",
+       "Wegener's original notes and maps were rediscovered in an archive in Germany",
+       "A single very large earthquake in the Atlantic proved the continents were moving"],
       "The change was driven by evidence, not fashion: instruments that did not exist in 1912 mapped the ridges, read the magnetic stripes and dated the floor. Understanding changed when the evidence arrived.", {});
   }
 ]), ["A theory can have true evidence and still fail: check for the missing mechanism.", "Understanding changes when evidence changes; look for the new instrument or data set."]);
@@ -911,9 +911,9 @@ E("s7-u4-drift-identify", 4, ["SC7.11.5"], 1, "var", varset([
   function () {
     return mcq("What did the theory of continental drift claim?",
       "That the continents were once joined in a single landmass and have slowly moved apart to their present positions",
-      ["That the continents are shrinking as the Earth cools",
-       "That ocean water is slowly covering the continents",
-       "That the continents formed where they are and have never moved"],
+      ["That the continents are slowly shrinking as the whole Earth cools down",
+       "That ocean water is slowly covering the continents, which only look as if they moved",
+       "That the continents formed where they are and have never moved from those places at all"],
       "Continental drift (Wegener, 1912) proposed one supercontinent, Pangaea, breaking apart and drifting to today's map. It was the early explanation that plate tectonics later replaced and completed.", {});
   },
   function () {
@@ -928,17 +928,17 @@ E("s7-u4-drift-evidence", 4, ["SC7.11.5"], 2, "var", varset([
   function () {
     return mcq("Trilobite fossils found in the rocks of Newfoundland's Avalon Peninsula match fossils found in Wales, in the United Kingdom, more closely than fossils on the North American mainland nearby. How does this support continental drift?",
       "The Avalon region and Wales were once joined or close together, and drifted apart to their present positions",
-      ["Trilobites swam across the Atlantic and settled in both places",
-       "The fossils prove that Wales was once part of Canada politically",
-       "The matching is a coincidence with no geological meaning"],
+      ["Trilobites swam all the way across the Atlantic Ocean and settled in both places",
+       "The fossils prove that Wales was once politically part of Canada, long before Canada existed",
+       "The close matching is a coincidence that carries no geological meaning at all"],
       "Trilobites were shallow-water animals that could not cross a deep ocean. Matching fossils across the Atlantic make sense if the two coasts were once neighbours, as Newfoundland's Avalon zone is now understood to have been attached to the European side.", {});
   },
   function () {
     return mcq("Which observation did Wegener use that involves the SHAPE of the continents?",
       "The coastlines of South America and Africa fit together like pieces of a jigsaw puzzle",
-      ["Both continents are roughly triangular in shape",
-       "The continents are all wider in the north than in the south",
-       "The continents' shapes change noticeably every century"],
+      ["Both of the continents are roughly triangular in their shape",
+       "The continents are all much wider in the north than they are in the south",
+       "The shapes of the continents change noticeably in every century"],
       "The fit of the Atlantic coastlines was Wegener's starting observation, and it grew stronger when the fit was made at the edge of the continental shelves rather than the modern beaches.", {});
   }
 ]), ["Fossils that match across an ocean need the ocean to have been absent or narrow.", "Wegener's first clue was a map: look for the option about fit."]);
@@ -947,17 +947,17 @@ E("s7-u4-drift-flaw", 4, ["SC7.11.5"], 2, "var", varset([
   function () {
     return mcq("What was the major flaw in Wegener's theory of continental drift?",
       "It offered no workable mechanism: no force or process that could actually move the continents",
-      ["It claimed the continents moved at several metres per year",
-       "It was based on fossils that did not exist",
-       "It said the continents had once been joined, which was the flaw"],
+      ["It claimed that the continents moved at several metres per year",
+       "It was based entirely on fossils that did not actually exist",
+       "It said the continents had once been joined together, which was itself the flaw"],
       "The claim itself turned out to be right; the flaw was the missing engine. Wegener suggested forces far too weak to do the job, and until convection and sea floor spreading supplied a mechanism, the theory could not be accepted.", {});
   },
   function () {
     return mcq("Wegener suggested the continents ploughed through the ocean floor as they moved. Why did this part of his theory fail?",
       "The ocean floor is strong rock; continents cannot plough through it, and no grooves or crushed floor from such ploughing exist",
-      ["The ocean floor is liquid, so the continents would have sunk",
-       "Continents move too fast to leave any mark on the floor",
-       "The continents are lighter than air and float above the floor"],
+      ["The ocean floor is liquid, so the continents would have sunk through it to the centre of the Earth long ago",
+       "Continents move far too fast to leave any mark on the ocean floor beneath them",
+       "The continents are lighter than air and float above the floor, never touching it at all"],
       "Sea floor spreading replaced the ploughing picture: the floor moves with the continent as part of the same plate. Wegener's mechanism predicted a battered ocean floor that surveys never found.", {});
   }
 ]), ["The flaw was not the claim but the how: no mechanism strong enough.", "A mechanism makes predictions; check whether the predicted traces exist."]);
@@ -968,17 +968,17 @@ E("s7-u4-shift-identify", 4, ["SC7.11.6"], 1, "var", varset([
   function () {
     return mcq("Why is plate tectonics described as a major shift in the scientific world view, rather than a small correction?",
       "It replaced the picture of a fixed Earth with a picture of an Earth whose surface is constantly being created, moved and recycled",
-      ["It changed the names of the continents on world maps",
-       "It corrected the measured size of the Earth by a small amount",
-       "It only affected how earthquakes are named"],
+      ["It changed the names of the continents and oceans shown on world maps",
+       "It corrected the measured size of the Earth by a small amount, and adjusted a few dates in the time scale",
+       "It only affected how earthquakes and volcanoes are named"],
       "A world view shift changes the framework itself: before, the Earth's surface was fixed and only wore down; after, the surface is a system of moving plates that builds mountains, opens oceans and recycles crust. Everything in geology is read differently inside the new picture.", {});
   },
   function () {
     return mcq("Which statement belongs to the plate tectonics world view?",
       "The Earth's surface is divided into plates that move, carrying continents and ocean floor, and interact at their boundaries",
-      ["The continents are fixed, and only the oceans change over time",
-       "Mountains form mainly where rivers deposit sediment",
-       "The Earth's interior is completely solid and still"],
+      ["The continents are fixed in place forever, and only the oceans change over time",
+       "Mountains form mainly where rivers deposit their sediment, building it up over millions of years",
+       "The Earth's interior is completely solid, cold and perfectly still"],
       "The plate tectonics picture: a moving, divided surface, with earthquakes, volcanoes and mountains concentrated at the boundaries where plates interact. The fixed-surface statements belong to the older view.", {});
   }
 ]), ["A shift replaces the framework, not a detail inside it.", "Look for the option in which the surface itself is in motion."]);
@@ -987,17 +987,17 @@ E("s7-u4-shift-contrast", 4, ["SC7.11.6"], 2, "var", varset([
   function () {
     return mcq("A student writes: 'The Atlantic Ocean has always been the same width, because the continents cannot move.' Which world view is the student using, and what evidence contradicts it?",
       "The old fixed-continent view; the matching coastlines, fossils and rock layers across the Atlantic, and the young, spreading ocean floor between them, contradict it",
-      ["The plate tectonics view; no evidence contradicts it",
-       "The continental drift view; satellite photographs contradict it",
-       "The old fixed-continent view; the existence of tides contradicts it"],
+      ["The plate tectonics view, and there is no evidence anywhere that contradicts any part of it",
+       "The continental drift view; satellite photographs contradict it, as do modern laser and GPS measurements of the continents' positions",
+       "The old fixed-continent view; the existence of tides, currents and storms in the Atlantic contradicts it"],
       "Fixed continents was the pre-drift world view. It cannot explain why the Atlantic's shores match in shape, fossils and rocks, nor why the floor between them is young at the ridge and spreading: the ocean opened as the continents parted.", {});
   },
   function () {
     return mcq("Before plate tectonics, folded mountain ranges were explained by a cooling, shrinking Earth wrinkling like a baked apple. What did the plate tectonics shift change about this explanation?",
       "Mountains are now explained by plates colliding and squeezing the rock, a process still running today, not by a one-way shrinking of the whole Earth",
-      ["Mountains are now believed to form in a single day",
-       "The shrinking-apple explanation was proven correct in every detail",
-       "Mountains are no longer considered worth explaining"],
+      ["Mountains are now believed to form suddenly, in a single day of upheaval",
+       "The shrinking-apple explanation was proven correct in every detail, and plate tectonics simply confirmed it years later",
+       "Mountains are no longer considered worth explaining by scientists at all"],
       "The shift replaced a global shrinking with local, ongoing collisions: ranges rise where plates converge, which is why the Himalayas still grow and why ranges sit along boundary belts rather than anywhere at all.", {});
   }
 ]), ["Name the view from its claim: fixed, or moving?", "The contradicting evidence is the drift and spreading evidence, not everyday observations like tides."]);
@@ -1008,9 +1008,9 @@ E("s7-u4-past-explanations", 4, ["SC7.11.7"], 1, "var", varset([
   function () {
     return mcq("In Hawaiian tradition, volcanic eruptions were explained through Pele, the goddess of fire, whose anger or movements produced the lava. What observation was this explanation trying to account for?",
       "Lava erupting from the Earth and building new land, sometimes destructively and sometimes gently",
-      ["The movement of the stars across the Hawaiian sky",
-       "The arrival of the rainy season each year",
-       "The formation of fossils in mountain rocks"],
+      ["The movement of the stars across the Hawaiian sky at night, which sailors steered by",
+       "The arrival of the rainy season in the islands each year, with its floods and storms",
+       "The formation of fossils inside the rocks of the mountains"],
       "Past explanations addressed real observations: Hawaiians lived with active volcanoes, and the Pele tradition explained when and why eruptions came, and how new land formed, in the terms their culture had.", {});
   },
   function () {
@@ -1027,17 +1027,17 @@ E("s7-u4-past-purpose", 4, ["SC7.11.7"], 2, "var", varset([
   function () {
     return mcq("What do past explanations of volcanoes and earthquakes (such as Pele, or underground winds) have in common with modern scientific theories?",
       "Both try to explain observations of the natural world using the knowledge available at the time",
-      ["Both are tested by controlled experiments before anyone believes them",
-       "Both are written down by professional scientists",
-       "Both turn out to be correct in their details"],
+      ["Both are tested by controlled experiments before anyone is allowed to believe them",
+       "Both are written down in books by professional scientists",
+       "Both turn out to be correct in all of their details"],
       "The shared purpose is explanation: people in every era connect observations into accounts of why events happen. What changed is the method: modern theories must survive testing against new evidence, and are revised or replaced when they do not.", {});
   },
   function () {
     return mcq("How do past explanations differ most importantly from the modern theory of plate tectonics?",
       "Plate tectonics is tested against new evidence and revised when evidence demands; the past explanations were not put to such tests",
-      ["Plate tectonics is much older than the past explanations",
-       "Past explanations were never believed by the people who told them",
-       "Plate tectonics explains fewer observations than the past explanations"],
+      ["Plate tectonics is a much older theory than any of the past explanations",
+       "Past explanations were never truly believed by the people who told and retold them",
+       "Plate tectonics explains fewer observations than the past explanations, which claimed to cover everything on Earth"],
       "Belief and storytelling are not the difference; testing is. Plate tectonics makes predictions (where events occur, how old the floor is) that were checked and could have failed. The past explanations explained after the fact and were not tested that way.", {});
   }
 ]), ["Same job, different method: both explain; only one is tested.", "If an option says past peoples did not believe their own explanations, it underrates them and misses the point."]);
@@ -1105,17 +1105,17 @@ E("s7-u4-key-choose", 4, ["SC7.12.1"], 2, "var", varset([
   function () {
     return mcq("A student must identify an unknown mineral for a practical problem: it will be used to test whether a 'gold' nugget from a stream is real. Which property from the key should the student test FIRST to settle the question?",
       "Streak: gold leaves a yellow streak and its common look-alike, pyrite, leaves a greenish-black one",
-      ["Colour: gold is the only yellow mineral",
-       "Crystal form: gold never forms crystals",
-       "Transparency: gold lets light through and pyrite does not"],
+      ["Colour: gold is the only yellow mineral, so a yellow nugget must be gold",
+       "Crystal form: gold never forms crystals of any shape",
+       "Transparency: gold lets light pass through it when it is thin, and pyrite never does"],
       "The practical problem is gold against pyrite, and streak separates them in one test. Colour cannot settle it (that is the whole difficulty), and the other options are not reliable differences.", {});
   },
   function () {
     return mcq("A key user reaches step 8 with a specimen and is unsure whether it fizzed in acid, because only one tiny bubble appeared. What is the most sensible next step?",
       "Repeat the acid test on a fresh surface of the specimen and watch carefully, since the identification depends on it",
-      ["Skip the step and choose whichever mineral seems more likely",
-       "Abandon the key and identify the mineral by colour alone",
-       "Record the mineral as both calcite and not calcite"],
+      ["Skip the step and choose whichever of the two minerals seems more likely, based on its looks",
+       "Abandon the key completely and identify the mineral by its colour alone",
+       "Record the mineral in the notebook as both calcite and not calcite"],
       "A key is only as good as its observations. When a decisive observation is doubtful, the practical move is to repeat the test properly, not to guess past it.", {});
   }
 ]), ["Choose the test that separates the actual candidates, not a test that is merely easy.", "A doubtful observation at a branching step is worth repeating; guessing compounds the error."]);
@@ -1124,8 +1124,8 @@ E("s7-u4-key-choose", 4, ["SC7.12.1"], 2, "var", varset([
 
 E("s7-u4-tool-ladder", 4, ["SC7.12.2"], 1, "gen", function () {
   var sets = [
-    { q: "A mineral is scratched by a steel nail (hardness 4.5) but not by a copper penny (hardness 3.5). Which tool should be tried next to narrow down its hardness?", tool: "A glass plate (hardness 5.5): if the mineral scratches the glass, it is harder than 5.5; if not, its hardness lies between 4.5 and 5.5", others: ["A fingernail (hardness 2.5), which is softer than the penny that already failed", "Sandpaper alone, without comparing it to the known tools", "A magnet, to test the mineral's hardness by attraction"] },
-    { q: "A mineral cannot be scratched by a fingernail (hardness 2.5) but is scratched by a copper penny (hardness 3.5). What is the best next test?", tool: "Try the steel nail (hardness 4.5) to check whether the hardness reaches that high, bracketing the value between 3.5 and 4.5", others: ["Try the emery cloth (hardness 9) to see the mineral at its hardest test first", "Stop testing: the hardness is exactly 3.5", "Test the streak, which gives the hardness directly"] },
+    { q: "A mineral is scratched by a steel nail (hardness 4.5) but not by a copper penny (hardness 3.5). Which tool should be tried next to narrow down its hardness?", tool: "A glass plate (hardness 5.5): if the mineral scratches the glass, it is harder than 5.5; if not, its hardness lies between 4.5 and 5.5", others: ["A fingernail (hardness 2.5), which is softer than the copper penny that has already failed to scratch it at all", "Sandpaper alone, used without comparing it against any of the known tools", "A magnet, to test the mineral's hardness by how strongly it is attracted"] },
+    { q: "A mineral cannot be scratched by a fingernail (hardness 2.5) but is scratched by a copper penny (hardness 3.5). What is the best next test?", tool: "Try the steel nail (hardness 4.5) to check whether the hardness reaches that high, bracketing the value between 3.5 and 4.5", others: ["Try the emery cloth (hardness 9) to see the mineral at its hardest test first, before any other tool", "Stop testing at once: the hardness is exactly 3.5 and nothing more", "Test the streak on a plate, which gives the hardness directly"] },
     { q: "A mineral scratches a glass plate (hardness 5.5) but is scratched by a steel file (hardness 6.5). Which statement about its hardness is correct?", tool: "Its hardness is between 5.5 and 6.5", others: ["Its hardness is exactly 6.5, the file's value", "Its hardness is below 5.5, because the file scratched it", "Its hardness cannot be estimated from scratch tests"] }
   ];
   var s = pick(sets);
@@ -1137,17 +1137,17 @@ E("s7-u4-method-match", 4, ["SC7.12.2"], 1, "var", varset([
   function () {
     return mcq("A student wants to find out whether an unknown mineral reacts with acid, the way calcite does. Which method should the student select?",
       "Place a drop of weak acid (or vinegar) on a fresh surface of the mineral and watch for bubbles of gas",
-      ["Rub the mineral on a porcelain plate and examine the powder",
-       "Hold a magnet near the mineral and watch for movement",
-       "Shine a bright light through a thin edge of the mineral"],
+      ["Rub the mineral on a porcelain plate and examine the powder left behind on it",
+       "Hold a strong magnet near the mineral and watch carefully for any movement toward it",
+       "Shine a bright light through a thin edge of the mineral sample and look through it"],
       "Each method answers one question: acid tests for the carbonate reaction (fizzing), the plate gives streak, the magnet tests magnetism, and the light tests transparency. Match the method to the property asked about.", {});
   },
   function () {
     return mcq("Which method is the right tool for examining the tiny crystals on a mineral sample's surface?",
       "A hand lens, held close, to magnify the surface so the crystals can be seen and described",
-      ["A streak plate, rubbed across the surface",
-       "A steel file, drawn across the surface",
-       "A magnet, passed slowly over the surface"],
+      ["A porcelain streak plate, rubbed firmly across the surface of the sample",
+       "A steel file, drawn across the surface to scratch the tiny crystals off",
+       "A magnet, passed slowly over the surface of the sample several times in a row"],
       "Observation tools and testing tools do different jobs: the hand lens magnifies for looking; the plate, file and magnet all change or test the sample rather than help you see it.", {});
   }
 ]), ["One method per property: acid for reaction, plate for streak, magnet for magnetism, lens for looking.", "If a method would damage or alter the sample, it is not an observation tool."]);
@@ -1156,17 +1156,17 @@ E("s7-u4-method-plan", 4, ["SC7.12.2"], 2, "var", varset([
   function () {
     return mcq("A student is given one small unknown mineral sample that must be returned undamaged if possible. Which order of tests is the best plan?",
       "Observe colour and lustre, test magnetism and streak, then scratch tests from softest tool upward, and acid last on a small corner",
-      ["Acid first, then the steel file, then observation of colour and lustre",
-       "Scratch with the steel file first to settle the hardness at once",
-       "Break the sample in half first so the inside can be tested"],
+      ["Acid first on the whole sample, then the steel file, then observation of its colour and lustre, in that order",
+       "Scratch it with the steel file first, to settle the question of hardness at once, before anything else",
+       "Break the sample in half first, so that its inside surfaces can be tested directly"],
       "A good plan runs from least to most damaging and from observation to intervention: looking costs nothing, streak and magnetism leave the sample nearly untouched, scratch tools go soft to hard so the first successful scratch does the least harm, and acid, which consumes a little of the sample, goes last.", {});
   },
   function () {
     return mcq("Why do mineral testers work UP the hardness ladder (fingernail, penny, nail, glass, file) instead of starting with the steel file?",
       "Starting soft brackets the hardness with the least damage: each failed tool leaves no mark, and the first tool that works sets the upper edge of the bracket",
-      ["The file is too expensive to use on unknown minerals",
-       "The ladder's order is a tradition with no practical reason",
-       "Soft tools give more accurate hardness values than hard tools"],
+      ["The steel file is far too expensive to risk using on unknown mineral samples",
+       "The order of the ladder is just an old tradition, with no practical reason behind it at all",
+       "Soft tools give more accurate hardness values than hard tools ever can, so starting with the file would ruin the measurement"],
       "If the file went first, every soft mineral would be gouged before its hardness was known, and the result would only say 'softer than 6.5'. Climbing the ladder narrows the value step by step and leaves failed tests unmarked.", {});
   }
 ]), ["Order tests by cost: free observations first, damaging tests last.", "Soft-to-hard is not politeness; it is how the bracket narrows without ruining the sample."]);
@@ -1207,17 +1207,17 @@ E("s7-u4-mineral-pair", 4, ["SC7.12.3"], 2, "var", varset([
   function () {
     return mcq("Quartz and calcite can both be clear and glassy. Which single property from the key separates them most reliably?",
       "Hardness: quartz (7) cannot be scratched by a steel file, while calcite (3) is scratched even by a copper penny",
-      ["Colour: quartz is always white and calcite is always clear",
-       "Lustre: calcite is metallic and quartz is not",
-       "Streak: both leave a bright red streak"],
+      ["Colour: quartz is always white and calcite is always clear, so colour settles the question at once",
+       "Lustre: calcite has a metallic lustre and quartz does not",
+       "Streak: both minerals leave a bright red streak on the plate"],
       "Their looks overlap, but their hardnesses are far apart (7 against 3), so one scratch test settles it; calcite's acid fizz also separates them. Colour and lustre overlap too much to trust.", {});
   },
   function () {
     return mcq("Hematite and magnetite are both dark, heavy, metallic minerals. Which single test separates them fastest?",
       "A magnet: magnetite is attracted to it and hematite is not (and their streaks also differ, black against red-brown)",
-      ["Weighing them: both are heavy, so the heavier one is magnetite",
-       "Colour: magnetite is dark and hematite is light",
-       "Hardness: their hardnesses are at opposite ends of the scale"],
+      ["Weighing them carefully: both are heavy, so the heavier one is magnetite and the lighter is hematite",
+       "Colour: magnetite is dark in colour and hematite is light",
+       "Hardness: their hardness values sit at opposite ends of the hardness scale"],
       "Magnetism is decisive and instant for this pair: only magnetite responds. Weight and colour are too similar to separate them, and their hardness ranges overlap.", {});
   }
 ]), ["For a look-alike pair, hunt the property where the two minerals differ most.", "If both minerals share the property in an option, that option cannot separate them."]);
@@ -1248,9 +1248,9 @@ E("s7-u4-question-identify", 4, ["SC7.12.4"], 1, "var", varset([
   function () {
     return mcq("Which question arising from rock cycle study could actually be investigated with the samples and tools in a classroom?",
       "Why are some rocks rounded and others angular: what does the shape record about how far the pieces travelled?",
-      ["Why did the Earth form with exactly three rock families?",
-       "What will this rock look like in exactly one million years?",
-       "Which rock family is the most important on Earth?"],
+      ["Why did the Earth form with exactly three rock families and no others?",
+       "What will this rock look like in exactly one million years, and what colour will it be then?",
+       "Which of the three rock families is the most important family on Earth?"],
       "Rounded against angular pieces can be compared across samples and connected to transport distance, an investigation the class can run. The others ask for unknowable exact futures, purposes, or rankings no evidence can settle.", {});
   }
 ]), ["Investigable means evidence can be brought to bear: samples, observations, comparisons.", "Questions of taste, purpose or exact distant futures cannot be investigated, however interesting they are."]);
@@ -1259,17 +1259,17 @@ E("s7-u4-question-best", 4, ["SC7.12.4"], 3, "var", varset([
   function () {
     return mcq("After studying the rock cycle, a student still has a question and wants one that could drive a real investigation with rock samples, a freezer, water and a tumbler of sand. Which question is strongest?",
       "Does freezing and thawing water in rock cracks break rock faster than tumbling the same rock in sand and water?",
-      ["Why is the rock cycle a cycle and not a line?",
-       "How many rocks are there in the world?",
-       "What is the best rock for a pet rock?"],
+      ["Why is the rock cycle a cycle that goes around, and not a line that ends?",
+       "How many rocks are there in the world in total, if every single one could be counted today?",
+       "What is the best kind of rock to choose for a pet rock?"],
       "The strongest question compares two weathering processes under controlled conditions with the equipment named, and its answer comes from measurements the student can take. The others are definitional, uncountable, or matters of taste.", {});
   },
   function () {
     return mcq("A student asks: 'I wonder why this sedimentary rock has layers of different colours.' Which follow-up turns it into the strongest investigable question?",
       "Do the different-coloured layers contain different sediment sizes or materials, suggesting the conditions changed as each layer was deposited?",
-      ["Are the layers pretty enough to display in the classroom?",
-       "Who coloured the layers, and why did they choose those colours?",
-       "How old is each layer, to the exact year?"],
+      ["Are the layers pretty enough for the rock to be put on display in the classroom for everyone to see?",
+       "Who coloured the layers of the rock in the past, and why did they choose those colours rather than any others?",
+       "How old is each separate layer of the rock, dated to the exact year it formed?"],
       "The strong follow-up points at observable differences (grain size, material) that can be checked in the sample and connected to deposition conditions. Exact years are beyond the tools, and the rest are taste or false agency.", {});
   }
 ]), ["A strong question names something measurable and a comparison to make.", "If the question cannot be answered with the samples and tools at hand, it is not yet investigable."]);
@@ -1278,9 +1278,9 @@ E("s7-u4-cycle-path", 4, ["SC7.12.4"], 2, "var", varset([
   function () {
     var q = mcq("Use the rock cycle diagram. A question arises from the diagram: can a sedimentary rock become an igneous rock directly, in one step? What does the diagram show?",
       "No: the sedimentary rock must first be changed by heat and pressure and then melt, or melt as burial deepens, before cooling can make it igneous",
-      ["Yes: any rock can become any other rock in one step",
-       "No: sedimentary rock can never become igneous rock, even over millions of years",
-       "Yes, if the sedimentary rock is left at the surface long enough"],
+      ["Yes: any kind of rock can become any other kind of rock in a single step",
+       "No: sedimentary rock can never become igneous rock, even over millions of years, because the two kinds form in different places",
+       "Yes, if the sedimentary rock is simply left at the surface for long enough"],
       "Follow the arrows from the sedimentary box: none runs straight to igneous. The route passes through metamorphic rock and magma: heat and pressure, then melting, then cooling. The cycle allows the journey, but never in one step.", {});
     q.figure = s7RockCycleSVG();
     return q;
@@ -1288,9 +1288,9 @@ E("s7-u4-cycle-path", 4, ["SC7.12.4"], 2, "var", varset([
   function () {
     var q = mcq("Use the rock cycle diagram. Which route takes a metamorphic rock back to the start of the cycle as sediments?",
       "Weathering and erosion break the metamorphic rock down into sediments",
-      ["Melting turns it directly into sediments",
-       "Compaction and cementation press it into sediments",
-       "Cooling hardens it into sediments"],
+      ["Melting turns it directly into loose sediments",
+       "Compaction and cementation press loose material into sediments",
+       "Cooling and hardening turn it into sediments"],
       "Sediments are made by breaking rock down at the surface: weathering and erosion. Melting makes magma, compaction and cementation consume sediments rather than create them, and cooling makes igneous rock.", {});
     q.figure = s7RockCycleSVG();
     return q;
@@ -1328,17 +1328,17 @@ E("s7-u4-fair-test-design", 4, ["SC7.12.5"], 2, "var", varset([
   function () {
     return mcq("A class designs a fair test of how fast water drains through sand, clay and gravel. Which set of choices keeps the test fair?",
       "The same volume of each soil, the same volume of water poured the same way, the same cup and filter set-up, and timing started the same way for each",
-      ["More water for the clay, since it is slower, to help it finish in time",
-       "A bigger cup for the gravel so its large pieces fit better",
-       "Different amounts of soil, using whatever each group scooped up"],
+      ["More water for the clay, since it is slower, to help it finish in time, and less water for the gravel, which needs no help",
+       "A bigger cup for the gravel so its large pieces fit better, and a smaller cup for the fine clay",
+       "Different amounts of soil for each test, using whatever each group scooped up from the bags"],
       "A fair test changes only the soil type. Helping the clay with extra water, or changing the apparatus between samples, would mix other variables into the drainage times and ruin the comparison.", {});
   },
   function () {
     return mcq("Midway through the drainage test, a group notices their clay sample was packed down hard while the sand was poured loosely. What should they do?",
       "Restart the clay trial with the sample prepared the same way as the others, and note the change",
-      ["Keep the result, since clay is slow anyway",
-       "Pack the sand down in the next class to make up for it",
-       "Drop the clay result and report only sand and gravel"],
+      ["Keep the clay result as it is, since clay is slow to drain anyway",
+       "Pack the sand down hard in the next class to make up for the difference",
+       "Drop the clay result from the report and report only the sand and gravel results"],
       "Packing is a variable: if it differs between samples, the times no longer compare soils alone. The fair move is to redo the affected trial under the same preparation and record what was done.", {});
   }
 ]), ["Fair means one difference only: the thing being tested.", "A discovered unfairness is fixed by redoing the trial properly, not by adjusting the numbers."]);
@@ -1363,17 +1363,17 @@ E("s7-u4-instrument-read", 4, ["SC7.12.6"], 1, "var", varset([
   function () {
     return mcq("A student times how long 25 mL of water takes to drain through a soil sample. The stopwatch shows the water finished draining somewhere between 44 and 45 seconds, closer to 45. Which is the most accurate way to record the result?",
       "Record the time to the precision the watch allows (for example 44.8 s if the watch shows tenths), and use the same method for every sample",
-      ["Record exactly 45 s, since it must be a whole number",
-       "Record 'about a minute', since precision does not matter in a comparison",
-       "Record 44 s for this sample and round other samples differently to save time"],
+      ["Record exactly 45 s, since every proper time must be a whole number",
+       "Record the time as 'about a minute', since precision does not matter in a comparison test",
+       "Record 44 s for this sample, and round each of the other samples to whatever whole number saves the most time"],
       "Accuracy means reading the instrument to its real precision and reading every trial the same way. Invented round numbers and changing methods between samples both corrupt the comparison the times are for.", {});
   },
   function () {
     return mcq("A graduated cylinder holds water for the drainage test. The bottom of the water's curved surface (the meniscus) sits level with the 25 mark when viewed at eye level, but a student reading from above sees it at 27. Which reading is accurate, and why?",
       "25 mL: a meniscus is read at eye level, from the bottom of the curve, to avoid the viewing-angle error",
-      ["27 mL: the view from above is always the true one",
-       "26 mL: the average of the two views is most accurate",
-       "Either reading is fine, since 2 mL cannot affect the test"],
+      ["27 mL: the view from directly above is always the true and accurate one",
+       "26 mL: the average of the two different views is the most accurate reading",
+       "Either reading is fine for the test, since a difference of 2 mL cannot affect it"],
       "Liquid surfaces curve, and the scale is read at the bottom of the meniscus with the eye level with it. Reading from above introduces a consistent error, and 2 mL in 25 is an 8 percent error, large enough to distort a drainage comparison.", {});
   }
 ]), ["Read the instrument the way it was designed to be read: eye level, bottom of the meniscus, real precision.", "Consistency across trials is part of accuracy, not a nicety."]);
@@ -1382,9 +1382,9 @@ E("s7-u4-instrument-choose", 4, ["SC7.12.6"], 1, "var", varset([
   function () {
     return mcq("A Soil Sleuth team must compare the particle sizes of sand, clay and gravel samples. Which instrument and practice best serves the measurement?",
       "A hand lens and a ruler: examine the particles magnified and measure or compare their diameters against the ruler's scale",
-      ["A graduated cylinder: pour the particles in and read their size from the scale",
-       "A stopwatch: time how fast the particles settle and report the time as the size",
-       "A magnet: sort the particles by attraction and report the groups as sizes"],
+      ["A graduated cylinder: pour the particles into it and read their size off the scale on its side",
+       "A stopwatch: time how fast the particles settle in water and report the settling time as the particle size",
+       "A magnet: sort the particles by their attraction and report the groups as the sizes"],
       "Particle size is a length: it is measured by looking (magnified, with the hand lens) and comparing against a scale (the ruler). The cylinder measures volume, the watch measures time, and the magnet sorts by magnetism, none of which is a diameter.", {});
   },
   function () {
@@ -1403,17 +1403,17 @@ E("s7-u4-table-build", 4, ["SC7.12.7"], 1, "var", varset([
   function () {
     return mcq("A Soil Sleuth team records, for each of four samples (sand, clay, gravel, local soil), its colour, average particle size, texture and drainage time. Which table organizes this data correctly?",
       "A table with one row per sample and one column per measurement (colour, particle size, texture, drainage time), with a title naming what was measured",
-      ["A table with one row per measurement and the four samples' values added together in a single column",
-       "A list of the samples in the order the team happened to test them, with notes underneath",
-       "A table showing only the drainage times, since those are the results that matter"],
+      ["A table with one row per measurement and the values for all four samples added together in a single column at the end",
+       "A list of the samples written in the order the team happened to test them, with notes underneath it",
+       "A table showing only the drainage times for each sample, since those are the results that matter most"],
       "The data has two factors (sample and measurement), so the table needs rows for one and columns for the other, with every value kept separate and a title. Adding values together or dropping measurements destroys data the team collected.", {});
   },
   function () {
     return mcq("A mineral team tested eight samples and recorded colour, streak, hardness and the mineral each turned out to be. Which feature must their results table have to be useful for spotting patterns later?",
       "One row per sample with the properties in the same columns for every sample, so any property can be compared down its column",
-      ["The samples arranged by how much the team liked them",
-       "A separate small table for each sample, each with its own layout",
-       "Only the correctly identified samples included, to keep the table tidy"],
+      ["The samples arranged in order by how much the team liked each of them",
+       "A separate small table for each of the samples, each one drawn up with its own layout and headings",
+       "Only the correctly identified samples included in the table, to keep it looking tidy"],
       "Patterns appear down columns: streak against identification, hardness against identification. That requires a consistent grid, every sample in the same columns, including the misses, which are data too.", {});
   }
 ]), ["Rows for one factor, columns for the other, every value kept, and a title.", "A table that drops the failures drops the pattern with them."]);
@@ -1422,9 +1422,9 @@ E("s7-u4-table-read", 4, ["SC7.12.7"], 2, "var", varset([
   function () {
     return mcq("A results table from the mineral laboratory shows: Sample 1, streak white, hardness 3, fizzes in acid, identified as calcite; Sample 2, streak white, hardness 7, no fizz, identified as quartz; Sample 3, streak red-brown, hardness 6, no fizz, identified as hematite; Sample 4, streak yellow, hardness 3, no fizz, not in the key's ten minerals. Which conclusion does the table support?",
       "Streak colour alone does not identify a mineral: two samples share a white streak but are different minerals, separated by hardness and the acid test",
-      ["Every mineral with a white streak is calcite",
-       "Hardness never matters when the streak is known",
-       "Sample 4 must be gold, because its streak is yellow"],
+      ["Every mineral with a white streak is calcite, so Samples 1 and 2 are both calcite despite their different hardnesses",
+       "Hardness never matters at all in identification when the streak colour is already known",
+       "Sample 4 must be gold, because gold is the mineral whose streak is yellow"],
       "Read down the columns: Samples 1 and 2 share a streak but differ in hardness and acid reaction, and they are different minerals. Identification needs the combination of properties, which is the table's whole lesson. Sample 4's yellow streak is noted without an identification; the table does not name it gold.", {});
   }
 ]), ["Read down each column and look for what stays together and what splits.", "Shared values in one column mean that property alone cannot be the identifier."]);
@@ -1443,9 +1443,9 @@ E("s7-u4-pattern-drainage", 4, ["SC7.12.8"], 2, "var", varset([
   function () {
     var q = mcq("Use the drainage data display. Which relationship between particle size and drainage does the data show?",
       "As particle size increases, drainage gets faster: the coarse gravel drains quickest and the fine clay slowest",
-      ["As particle size increases, drainage gets slower",
-       "Particle size makes no difference to drainage in this data",
-       "The relationship reverses halfway: medium particles drain slowest of all"],
+      ["As the particle size increases, the drainage of water gets slower",
+       "Particle size makes no difference at all to drainage in this data",
+       "The relationship reverses halfway through: the medium-sized particles drain slowest of all"],
       "Read the bars against the particle sizes: gravel (coarsest) 6 s, sand 14 s, loam 47 s, clay (finest) 168 s. The times rise steadily as the particles get finer, a single clear relationship.", {});
     q.figure = s7DrainSVG([{ name: "gravel", secs: 6 }, { name: "sand", secs: 14 }, { name: "loam", secs: 47 }, { name: "clay", secs: 168 }]);
     return q;
@@ -1453,9 +1453,9 @@ E("s7-u4-pattern-drainage", 4, ["SC7.12.8"], 2, "var", varset([
   function () {
     var q = mcq("Use the drainage data display. A fifth sample, a coarse sand mixed with small pebbles, is tested the same way. Based on the pattern, what drainage time is most reasonable to predict?",
       "A short time, closer to gravel and sand than to clay, because its particles are coarse",
-      ["The longest time of all, because new samples always drain slowest",
-       "Exactly 168 s, the same as clay",
-       "The pattern gives no basis for any prediction"],
+      ["The longest time of all the samples, because new samples always drain the slowest",
+       "Exactly 168 s, precisely the same time as the clay sample",
+       "The pattern in the data gives no basis for making any prediction"],
       "Patterns earn their keep by predicting: drainage time falls as particle size rises, so a coarse mixture should drain fast, in the range of the other coarse samples, not near the clay's time.", {});
     q.figure = s7DrainSVG([{ name: "gravel", secs: 6 }, { name: "sand", secs: 14 }, { name: "loam", secs: 47 }, { name: "clay", secs: 168 }]);
     return q;
@@ -1466,17 +1466,17 @@ E("s7-u4-pattern-infer", 4, ["SC7.12.8"], 3, "var", varset([
   function () {
     return mcq("In the fizz test, the results were: granite no fizz, sandstone no fizz, shale no fizz, chalk strong fizz, marble strong fizz, limestone strong fizz. Marble is metamorphosed limestone, and chalk is a soft form of limestone. Which inference best explains the pattern?",
       "The fizzing rocks are all forms of the same material (limestone), so the acid reaction depends on what the rock is made of, not on the rock family it belongs to",
-      ["Metamorphic rocks always fizz and igneous rocks never do",
-       "Rocks with shorter names fizz more than rocks with longer names",
-       "The acid was stronger on the days the fizzing rocks were tested"],
+      ["Metamorphic rocks always fizz in acid and igneous rocks never fizz at all",
+       "Rocks with shorter names fizz more strongly in acid than rocks with longer names",
+       "The acid was stronger on the days the fizzing rocks were tested, and much weaker on the days the other rocks were tested in class"],
       "Group the results by composition and the pattern resolves: the three fizzers share limestone's material across two families (sedimentary chalk and limestone, metamorphic marble), while the non-fizzers are other materials. The variable that explains the split is composition.", {});
   },
   function () {
     return mcq("A class plots its mineral results: every sample with hardness above 5.5 scratched glass, every sample below 5.5 did not, and the one sample at about 5.5 left a faint mark. What relationship can the class infer?",
       "Whether a mineral scratches glass depends on whether its hardness is above or below the glass's hardness of 5.5",
-      ["Harder minerals are always darker in colour",
-       "Glass scratches every mineral given enough time",
-       "Hardness and scratching are unrelated, and the plot is a coincidence"],
+      ["Harder minerals are always darker in colour than softer ones",
+       "Glass will scratch every mineral if it is rubbed for long enough",
+       "Hardness and scratching are completely unrelated, and the pattern in the plot is a coincidence"],
       "The split in the data falls exactly at the glass's own hardness, which is the relationship scratch testing is built on: the harder material scratches the softer. Colour plays no part in the pattern.", {});
   }
 ]), ["Group the results two ways (by family, by composition; by colour, by hardness) and see which grouping explains the split.", "The explaining variable is the one whose groups line up perfectly with the outcomes."]);
@@ -1495,17 +1495,17 @@ E("s7-u4-conclusion-state", 4, ["SC7.12.9"], 2, "var", varset([
   function () {
     return mcq("A student's initial idea was: 'Any rock will fizz if you use enough acid.' In the test, granite, sandstone and shale produced no fizz at all with the acid used, while chalk, marble and limestone fizzed strongly. Which conclusion should the student state?",
       "The data refutes the initial idea as stated: with this acid, only the limestone-family rocks fizzed, so fizzing depends on what the rock is made of",
-      ["The data supports the initial idea, because some rocks fizzed",
-       "The data proves no rock anywhere can fizz",
-       "The conclusion is that the acid was too weak to test anything"],
+      ["The data supports the initial idea, because some rocks fizzed strongly, and partial support is enough to keep a claim",
+       "The data proves that no rock anywhere in the world can ever fizz",
+       "The conclusion is that the acid used was too weak to test anything about the rocks"],
       "A conclusion answers the initial idea directly: it predicted all rocks would fizz, and three did not. The supported conclusion is narrower and matches the data: composition decides. Some rocks fizzing does not rescue a claim about all rocks.", {});
   },
   function () {
     return mcq("A team hypothesized that the local soil would drain like sand, because it looks gritty. Their times were: local soil 41 s, sand 14 s, loam 47 s, clay 168 s. Which conclusion fits the data?",
       "The hypothesis is not supported: the local soil drained much more slowly than sand and closest to loam, so it behaves as a loamy soil despite its gritty look",
-      ["The hypothesis is supported, because the local soil did drain",
-       "The data is useless, because the hypothesis turned out wrong",
-       "The conclusion is that drainage times cannot be compared"],
+      ["The hypothesis is supported, because the local soil did drain, and any draining at all counts as support",
+       "The data collected is useless, because the team's hypothesis turned out to be wrong",
+       "The conclusion is that drainage times cannot be compared between different soils, so nothing at all can be said about the local soil"],
       "Compare the local soil's time with the references: 41 s sits beside loam's 47 s, far from sand's 14 s. The conclusion must follow the numbers, and a refuted hypothesis is a result, not a failure of the data.", {});
   }
 ]), ["A conclusion speaks to the initial idea by name: supported, or refuted, and by which numbers.", "'Some' never proves 'all': check the claim's exact wording against the data."]);
@@ -1514,9 +1514,9 @@ E("s7-u4-conclusion-refute", 4, ["SC7.12.9"], 2, "var", varset([
   function () {
     return mcq("A student predicted that a dark, heavy rock sample would fizz in acid 'because it looks like the rocks that fizzed yesterday'. It produced no fizz at all, and its streak was red-brown. What is the best conclusion?",
       "The prediction is refuted: appearance misled, and the data (no fizz, red-brown streak) point to the sample being hematite, an iron mineral that does not react with acid",
-      ["The prediction stands, because the rock still looks like a fizzing rock",
-       "The test must have been done wrong, since predictions are never wrong",
-       "The conclusion is that streak tests cause rocks not to fizz"],
+      ["The prediction stands, because the rock still looks like a fizzing rock, and appearance is a more reliable guide than one acid test",
+       "The test must have been done wrong in some way, since a prediction made beforehand is never wrong",
+       "The conclusion is that doing a streak test on a rock causes it not to fizz in acid afterward"],
       "Conclusions follow data, not hopes: the fizz test says not a limestone-family rock, and the streak identifies hematite. The refuted prediction is useful: it shows appearance is a poor guide, which the conclusion should say.", {});
   }
 ]), ["When the data and the prediction disagree, the conclusion sides with the data and says so.", "A refuted prediction is a finding: state what the data points to instead."]);

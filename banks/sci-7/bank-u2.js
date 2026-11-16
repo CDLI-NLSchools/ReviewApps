@@ -157,18 +157,18 @@ E("s7-u2-particle-speed", 2, ["SC7.4.2"], 3, "var", varset([
   function () {
     return mcq("Two identical containers hold the same gas. In container A the particles are drawn with short movement arrows and are close together. In container B the particles are drawn with long movement arrows and fill the whole container. What can be concluded?",
       "B is at the higher temperature, and its particles have spread out because they are moving faster",
-      ["A is at the higher temperature, because its particles are closer together",
-       "Both are at the same temperature, because they hold the same gas",
-       "B is at the higher temperature, because it holds more particles"],
+      ["A is at the higher temperature, because its particles are packed closer together in the container",
+       "Both are at the same temperature, because they hold the same gas in identical containers",
+       "B is at the higher temperature, because it holds more particles than container A holds"],
       "Arrow length stands for particle speed, and faster particles mean a higher average kinetic energy, which is a higher temperature. Moving faster, the particles also spread out to fill the container. Closeness does not mean hotter, and the containers hold the same amount of gas.",
       {});
   },
   function () {
     return mcq("A sealed balloon of air is moved from a cold porch into a warm room. After a while the balloon is slightly bigger. Which particle explanation is correct?",
       "The air particles move faster, push harder and more often on the balloon's walls, and spread farther apart",
-      ["The air particles grow larger as they warm up, so they take up more room",
-       "More air particles form inside the balloon as it warms",
-       "The particles slow down and settle, leaving more empty space"],
+      ["The air particles grow larger as they warm up, so each one takes up more room inside the balloon",
+       "More air particles form inside the balloon as it warms, so the balloon fills with extra air",
+       "The particles slow down and settle toward the bottom, leaving more empty space above them"],
       "Warming raises the particles' average kinetic energy: they move faster, collide harder and more often, and spread farther apart, which inflates the balloon. Particles never grow, no new particles appear, and warming speeds particles up rather than slowing them down.",
       {});
   }
@@ -188,9 +188,9 @@ E("s7-u2-states-compare", 2, ["SC7.4.3"], 1, "var", varset([
   function () {
     return mcq("Which comparison of the three states of matter is correct?",
       "A solid keeps its own shape and volume; a liquid keeps its volume but takes its container's shape; a gas takes both the shape and volume of its container",
-      ["A solid takes its container's shape; a liquid keeps its own shape; a gas keeps its own volume",
-       "A liquid expands to fill its container; a gas keeps a fixed volume; a solid flows to match its container",
-       "All three states keep their own shape and volume at any temperature"],
+      ["A solid takes its container's shape; a liquid keeps its own shape and volume; a gas keeps its own volume in any container",
+       "A liquid expands to fill its whole container; a gas keeps a fixed volume of its own; a solid flows slowly to match its container's shape",
+       "All three states keep their own shape and volume at any temperature, whatever container they are placed in"],
       "Solids hold both shape and volume because their particles are locked in place. Liquids hold volume but flow into their container's shape because their particles can slide past each other. Gases spread to fill all the space available because their particles move freely and far apart.",
       {});
   },
@@ -221,9 +221,9 @@ E("s7-u2-states-heated", 2, ["SC7.4.3"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows the particles of a solid, a liquid and a gas when cooler (top row) and warmer (bottom row). When a substance is heated, what changes about its particles?",
       "They move faster and, in liquids and gases, spread farther apart; the particles themselves stay the same size",
-      ["They grow larger, which is why the substance expands",
-       "They multiply, so there are more particles taking up space",
-       "They change into particles of a different substance"],
+      ["They grow larger as they warm up, which is why the substance expands to fill more space",
+       "They multiply as they warm, so there are more particles taking up space in the substance",
+       "They change into particles of a completely different substance, which is why the substance expands"],
       "Heating raises the particles' kinetic energy, so they move faster; in liquids and gases they also spread farther apart, which is expansion. The particles themselves do not grow, multiply, or change identity.",
       {});
     q.figure = s7ParticlePanelSVG();
@@ -232,9 +232,9 @@ E("s7-u2-states-heated", 2, ["SC7.4.3"], 2, "var", varset([
   function () {
     var q = mcq("A steel rail and a puddle of water are both left in the sun. By afternoon both are warmer. Which statement about their particles is true for both?",
       "In both, the particles are moving faster on average than they were in the morning",
-      ["In both, the particles have spread far apart like a gas",
-       "In both, the particles have stopped attracting each other",
-       "In both, the particles are larger than they were in the morning"],
+      ["In both, the particles have spread far apart like the particles of a gas",
+       "In both, the particles have stopped attracting each other altogether",
+       "In both, the particles themselves are larger than they were in the morning"],
       "Whatever the state, warming means faster particles on average. The rail's particles still vibrate in place and the puddle's particles still slide past each other; neither spreads out like a gas, and no particle grows.",
       {});
     q.figure = s7ParticlePanelSVG();
@@ -283,9 +283,9 @@ E("s7-u2-plateau-read", 2, ["SC7.4.4"], 2, "var", varset([
   function () {
     var q = mcq("On the graph, the two flat sections (plateaus) are at 0 °C and 100 °C. What is happening to the water along those sections?",
       "It is changing state: melting at 0 °C and boiling at 100 °C, with the temperature holding steady",
-      ["The heater has stopped working during those sections",
-       "The thermometer has reached the top of its scale",
-       "The water is cooling down between bursts of heating"],
+      ["The heater has stopped working during those sections, then started again afterward",
+       "The thermometer has reached the top of its scale and cannot show a higher temperature",
+       "The water is cooling down between bursts of heating, then warming up again afterward"],
       "A plateau means energy is being added but the temperature is not rising: the energy is being used to break attractions between particles as the state changes. Melting happens at 0 °C and boiling at 100 °C for water.",
       {});
     q.figure = s7HeatingCurveSVG(0, 100, 30, 120);
@@ -346,18 +346,18 @@ E("s7-u2-transfer-particles", 2, ["SC7.4.5"], 1, "var", varset([
   function () {
     return mcq("Which statement about the three heat transfer processes is correct?",
       "Conduction happens in solids, liquids and gases; convection happens only in liquids and gases; radiation needs no matter at all",
-      ["Convection happens in solids, liquids and gases; conduction happens only in solids",
-       "Radiation happens only when two objects are touching",
-       "Conduction is fastest in gases because their particles have the most room to move"],
+      ["Convection happens in solids, liquids and gases; conduction happens only in solids, never in fluids",
+       "Radiation happens only when two objects are touching each other directly",
+       "Conduction is fastest in gases because their particles have the most room to move freely and collide"],
       "Conduction works in all three states but is most efficient in solids, where particles are packed close and collide often, and least in gases. Convection needs a fluid that can flow, so it happens only in liquids and gases. Radiation is electromagnetic waves and crosses empty space, which is how the Sun's heat reaches Earth.",
       {});
   },
   function () {
     return mcq("In conduction, heat moves through a metal spoon because",
       "fast-moving particles collide with slower neighbours and pass kinetic energy along the spoon",
-      ["particles travel from the hot end of the spoon to the cold end",
-       "heat flows through the spoon as a liquid",
-       "the spoon's particles expand and carry the heat with them"],
+      ["particles travel all the way from the hot end of the spoon to the cold end",
+       "heat flows through the spoon as a liquid from the hot end to the cold end",
+       "the spoon's particles expand as they warm and carry the heat along with them"],
       "The particles themselves stay in place; what travels is the energy. Particles at the hot end vibrate faster, collide with their neighbours, and pass kinetic energy along particle by particle, like a parcel passed hand to hand down a line.",
       {});
   }
@@ -367,9 +367,9 @@ E("s7-u2-transfer-compare", 2, ["SC7.4.5"], 2, "var", varset([
   function () {
     return mcq("A metal spoon and a wooden spoon are left standing in the same pot of hot soup. The metal spoon's handle soon feels hot; the wooden spoon's handle does not. Why?",
       "Metal conducts heat well because its particles pass kinetic energy along quickly; wood is a poor conductor",
-      ["Wood absorbs the heat and destroys it before it reaches the handle",
-       "The metal spoon attracts heat from the soup",
-       "The wooden spoon reflects the heat back into the soup"],
+      ["Wood absorbs the heat and destroys it completely before it can reach the handle",
+       "The metal spoon attracts heat out of the hot soup into its handle",
+       "The wooden spoon reflects the heat back into the soup, so none of it reaches the handle"],
       "Both spoons sit in the same soup, so the difference is in the materials. Metal is a good conductor: its particles pass kinetic energy along efficiently. Wood is an insulator: its particles pass energy along poorly, so the handle stays cool.",
       {});
   },
@@ -388,9 +388,9 @@ E("s7-u2-stove-three", 2, ["SC7.4.5"], 2, "var", varset([
   function () {
     return mcq("A wood stove heats a cabin in all three ways at once. Which list matches each way to its process correctly?",
       "The stove top heats a kettle by conduction; air warmed by the stove rises and circulates by convection; campers feel warmth on their faces across the room by radiation",
-      ["The stove top heats a kettle by radiation; air circulates by conduction; warmth is felt across the room by convection",
-       "The stove top heats a kettle by convection; air circulates by radiation; warmth is felt across the room by conduction",
-       "All three effects are conduction, because everything touches the stove or the air"],
+      ["The stove top heats a kettle by radiation; air warmed by the stove circulates by conduction; warmth is felt across the room by convection",
+       "The stove top heats a kettle by convection; air warmed by the stove circulates by radiation; warmth is felt across the room by conduction",
+       "All three effects are conduction, because everything in the cabin touches the stove or touches the air around it"],
       "The kettle touches the stove top, so heat passes particle to particle: conduction. The warmed air rises and circulates, carrying heat: convection. The warmth felt across the room travels as electromagnetic waves through the air without the air carrying it: radiation.",
       {});
   }
@@ -423,9 +423,9 @@ E("s7-u2-absorb-lab", 2, ["SC7.4.6"], 3, "var", varset([
   function () {
     var q = mcq("Two cans of oil, one dark and one light, stood the same distance from a 100 W lamp. The graph shows their temperatures over 15 minutes. Which conclusion and caution are both sound?",
       "The dark can warmed faster; but before concluding, check that both cans held the same amount of oil and sat the same distance from the lamp",
-      ["The dark can warmed faster, which proves dark surfaces always heat twice as fast",
-       "The light can warmed faster, because light surfaces attract heat",
-       "The graph shows nothing, because the cans were different colours"],
+      ["The dark can warmed faster, which proves dark surfaces always heat twice as fast as light surfaces in any test",
+       "The light can warmed faster, because light surfaces attract heat from a lamp more strongly",
+       "The graph shows nothing useful, because the two cans were different colours and cannot be compared"],
       "The dark line climbs more steeply, so the dark surface absorbed more radiant heat and warmed its oil faster. A careful conclusion also checks the controlled factors the laboratory itself names: equal amounts of oil and equal distance from the lamp, since either one could produce a difference on its own. Nothing in the graph supports a claim about twice as fast.",
       {});
     q.figure = s7AbsorbGraphSVG([0, 5, 10, 15], [22, 30, 37, 43], [22, 26, 30, 33]);
@@ -485,17 +485,17 @@ E("s7-u2-heat-vs-temp", 2, ["SC7.4.7"], 1, "var", varset([
   function () {
     return mcq("Which statement correctly separates heat from temperature?",
       "Heat is energy transferred from a hotter object to a colder one; temperature measures the average kinetic energy of an object's particles",
-      ["Heat and temperature are two names for the same measurement",
-       "Temperature is energy transferred between objects; heat measures average kinetic energy",
-       "Heat is a substance that flows into an object and raises its particles"],
+      ["Heat and temperature are two names for the same measurement, taken in different units",
+       "Temperature is the energy transferred between objects; heat measures the average kinetic energy of an object's particles",
+       "Heat is a substance that flows into an object and raises the temperature of its particles"],
       "Heat is energy on the move, transferred because of a temperature difference, always from hotter to colder. Temperature is a property of one object: the average kinetic energy of its particles. Cold itself never travels; what people call cold moving is heat leaving.",
       {});
   },
   function () {
     return mcq("A student says, 'Close the door, you are letting the cold in.' What is wrong with that statement, scientifically?",
       "Cold does not travel; heat travels out of the warm room to the colder outdoors",
-      ["Nothing; cold air is a substance that flows through doors",
-       "The door blocks heat, so no transfer of any kind can happen",
+      ["Nothing; cold air is a substance that flows in through open doors",
+       "The door blocks heat completely, so no transfer of any kind can happen",
        "Cold travels faster than heat, so the statement has it backwards"],
       "Transfer is always of heat, and always from warmer to colder. Opening the door lets the room's heat escape to the colder air outside (and lets cold air in as air, but what is transferred is heat leaving). There is no substance called cold that flows.",
       {});
@@ -522,9 +522,9 @@ E("s7-u2-activity-temp", 2, ["SC7.5.1"], 1, "var", varset([
   function () {
     return mcq("After an hour of pond hockey on a -10 °C day, a player says she feels warm, even hot. The thermometer still reads -10 °C. What does this show about judging temperature by feel?",
       "Feelings of warmth depend on what your body is doing, not only on the temperature, so skin is an unreliable thermometer",
-      ["The thermometer must be broken, because the player feels warm",
-       "Exercise raises the temperature of the air around the player",
-       "Cold air feels warm whenever the sun is shining"],
+      ["The thermometer must be broken, because it cannot read -10 °C while the player out on the ice feels warm",
+       "Exercise raises the temperature of the air immediately around the player by several degrees",
+       "Cold air always feels warm to anyone whenever the winter sun is shining on them"],
       "Your sense of hot and cold responds to your own state: exercise generates heat inside the body, so the same -10 °C air feels mild. That is why a thermometer, not skin, is the tool for measuring temperature, and why hands dipped in the same water can disagree about it.",
       {});
   },
@@ -577,9 +577,9 @@ E("s7-u2-past-tech", 2, ["SC7.5.2"], 2, "var", varset([
   function () {
     return mcq("Early liquid thermometers existed before anyone could compare temperatures between towns. What development made such comparisons possible?",
       "Agreeing on a scale with fixed points, so the same reading meant the same temperature everywhere",
-      ["Making the glass tube longer so the liquid rose higher",
-       "Colouring the liquid so it could be seen more easily",
-       "Using wider tubes that held more liquid"],
+      ["Making the glass tube longer so the liquid rose higher when the temperature rose",
+       "Colouring the liquid in the tube so it could be seen more easily from a distance",
+       "Using wider tubes that held more liquid and were harder to break in use"],
       "A thermometer without a shared scale shows only warmer or cooler. Once scales were fixed to reproducible points, like water freezing and boiling, a reading of 20 meant the same thing in every town, and temperatures could be recorded, compared and used scientifically.",
       {});
   }
@@ -616,18 +616,18 @@ E("s7-u2-approaches", 2, ["SC7.5.4"], 1, "var", varset([
   function () {
     return mcq("A family installs a heat pump instead of a bigger furnace. Which approach to the home heating problem have they taken?",
       "Move heat that already exists outdoors into the house, instead of making all the heat themselves",
-      ["Burn a fuel on site to make heat",
-       "Turn electricity directly into heat in every room",
-       "Reduce the need for heat by sealing and insulating the house"],
+      ["Burn a fuel on site in a furnace or stove to make all the heat the house needs",
+       "Turn electricity directly into heat in every room with baseboard heaters",
+       "Reduce the need for heat by sealing drafts and insulating the whole house well"],
       "A heat pump does not create its heat by burning or by direct electric heating; it moves heat from the outdoor air (or ground) into the house. The other options name the other approaches: burning a fuel, direct electric heat, and reducing the need through insulation.",
       {});
   },
   function () {
     return mcq("Which household has taken the 'reduce the need' approach to heating?",
       "A household that adds insulation and seals drafts, so their existing furnace runs far less",
-      ["A household that switches from oil to a wood stove",
-       "A household that installs a larger oil furnace",
-       "A household that adds electric baseboards to every room"],
+      ["A household that switches from oil heat to a wood stove in the kitchen",
+       "A household that installs a larger oil furnace to replace its old one",
+       "A household that adds electric baseboard heaters to every room of the house"],
       "Reducing the need means the house loses less heat, so whatever system it has runs less. The other households changed how heat is made, not how much heat the house needs.",
       {});
   }
@@ -637,9 +637,9 @@ E("s7-u2-approaches-compare", 2, ["SC7.5.4"], 2, "var", varset([
   function () {
     return mcq("Household A heats with a wood stove because their property has plenty of free firewood and someone home all day. Household B, both adults working long shifts, heats with electric baseboards. Which statement best explains the difference?",
       "Each household's approach fits its situation: A can supply the labour wood heat demands; B needs heat that looks after itself",
-      ["Household B has chosen the approach that is always better in every situation",
-       "Household A is using an approach that no longer exists in this province",
-       "The two households are actually using the same approach"],
+      ["Household B has chosen the approach that is always better in every situation, whatever the house",
+       "Household A is using an approach that no longer exists in this province, because wood heat has been given up everywhere",
+       "The two households are actually using the same approach to heating their homes"],
       "Wood heat is cheap where firewood is free, but it demands daily labour: cutting, carrying, stoking. Electric baseboards cost more to run but need no labour at all. Neither approach is best in the abstract; each fits the household's circumstances, which is the heart of comparing approaches.",
       {});
   }
@@ -650,18 +650,18 @@ E("s7-u2-heating-adv", 2, ["SC7.5.5"], 2, "var", varset([
   function () {
     return mcq("Which is a genuine advantage of heating a home with a heat pump, as the Heat Pumps module presents it?",
       "It moves heat rather than making it, so it delivers more heat energy than the electrical energy it uses",
-      ["It needs no electricity to run",
-       "It works without any equipment outside the house",
-       "It costs nothing to install"],
+      ["It needs no electricity to run at all, even on the coldest days of the winter",
+       "It works without any equipment outside the house or anywhere else on the property",
+       "It costs nothing to install, so any household can have one put in without paying anything"],
       "Because a heat pump moves existing heat instead of converting electricity directly into heat, the heat delivered to the house can exceed the electrical energy consumed. It does use electricity, it does need an outdoor unit, and its installation cost is one of its real disadvantages.",
       {});
   },
   function () {
     return mcq("Which is a genuine advantage of heating with wood, as the Heat Pumps module presents it?",
       "The fuel is renewable and, for households with their own woodlot, can be very cheap",
-      ["It requires no labour once the stove is installed",
-       "It carries no risk of spills or air pollution",
-       "It heats every room of the house evenly"],
+      ["It requires no labour at all once the stove has been installed in the house",
+       "It carries no risk of fuel spills or of air pollution inside or outside the house",
+       "It heats every room of the house evenly, from the basement to the attic"],
       "Wood regrows, and a household cutting its own pays mostly in labour rather than money, which is wood's great advantage. Its disadvantages are just as real: heavy labour, storage space, smoke, and heat concentrated near the stove.",
       {});
   }
@@ -671,18 +671,18 @@ E("s7-u2-heating-disadv", 2, ["SC7.5.5"], 2, "var", varset([
   function () {
     return mcq("Which is a genuine disadvantage of heating with oil, as the Heat Pumps module presents it?",
       "The fuel must be delivered and stored in a tank, and a leak or spill can seriously damage soil and water",
-      ["Oil furnaces cannot heat a whole house",
-       "Oil produces no greenhouse gases, which confuses buyers",
-       "Oil tanks refill themselves automatically from the ground"],
+      ["Oil furnaces cannot heat a whole house, only one or two rooms at a time",
+       "Oil produces no greenhouse gases at all, which confuses buyers comparing heating fuels",
+       "Oil tanks refill themselves automatically from the ground beneath the house"],
       "Oil's costs include delivery, storage and price swings, and its environmental risk is the spill: a leaking tank can contaminate soil and groundwater, an expensive disaster. Oil furnaces heat whole houses perfectly well, and burning oil does produce greenhouse gases.",
       {});
   },
   function () {
     return mcq("Which is a genuine disadvantage of electric baseboard heating, as the Heat Pumps module presents it?",
       "Turning electricity directly into heat is one of the most expensive ways to heat a house",
-      ["Baseboards cannot be controlled room by room",
-       "Baseboards need a fuel truck to visit every month",
-       "Baseboards produce smoke inside the rooms they heat"],
+      ["Baseboards cannot be controlled room by room or turned down at night",
+       "Baseboards need a fuel truck to visit the house every month of the year",
+       "Baseboards produce smoke and soot inside the rooms they are heating"],
       "Baseboards are simple, cheap to install and controllable room by room, but every unit of heat costs a full unit of electricity, which makes running them expensive. They need no deliveries and produce no smoke; their weakness is running cost.",
       {});
   }
@@ -702,18 +702,18 @@ E("s7-u2-improvement", 2, ["SC7.5.6"], 1, "var", varset([
   function () {
     return mcq("Which change is an improvement in home heating technology over time, of the kind this unit studies?",
       "The open fireplace giving way to the airtight wood stove, which burns wood more completely and sends less heat up the chimney",
-      ["Houses being built with larger fireplaces than before",
-       "Families returning to heating one room only, as in the past",
-       "Furnaces being designed to need stoking every hour"],
+      ["Houses being built with larger open fireplaces than before in every main room",
+       "Families returning to heating one room only, as in the past, and closing off the rest of the house",
+       "Furnaces being designed to need stoking by hand every hour of the day and night"],
       "Improvements make heating more efficient, safer, cleaner or less labour-intensive. The airtight stove controls its air supply, burns wood more completely and keeps more heat in the room than an open fireplace, which loses most of its heat up the chimney.",
       {});
   },
   function () {
     return mcq("What did the thermostat improve about home heating when it became common?",
       "It let the heating system switch itself on and off to hold a set temperature, ending the need to tend the furnace by hand around the clock",
-      ["It made furnaces burn hotter than ever before",
-       "It removed the need for fuel deliveries",
-       "It allowed one furnace to heat several houses at once"],
+      ["It made furnaces burn hotter than ever before, so houses could be kept much warmer",
+       "It removed the need for fuel deliveries to the house altogether, in every season",
+       "It allowed one furnace to heat several houses at once, sending heat through long pipes buried under the street between them"],
       "A thermostat senses the room temperature and switches the system on and off to hold the setting, using a bimetallic strip or an electronic sensor. That automation is the improvement: steady temperatures with far less labour and less wasted fuel.",
       {});
   }
@@ -733,9 +733,9 @@ E("s7-u2-pump-cycle", 2, ["SC7.5.7"], 2, "var", varset([
   function () {
     return mcq("A heat pump's refrigerant carries heat from outside a house to inside. Which sequence of steps does the refrigerant follow?",
       "It evaporates at low pressure, absorbing heat outdoors; it is compressed; it condenses at high pressure indoors, releasing the heat; then it expands back through a valve",
-      ["It condenses outdoors, releasing heat; it evaporates indoors, absorbing the house's heat; then it is stored in a tank",
-       "It is compressed outdoors until it glows hot, then blown through ducts into the rooms",
-       "It freezes outside, is carried in as a solid, and melts indoors, releasing heat"],
+      ["It condenses outdoors, releasing heat; it evaporates indoors, absorbing the house's heat; then it is stored in a tank until it is needed again",
+       "It is compressed outdoors until it glows hot, then blown through ducts directly into the rooms of the house",
+       "It freezes outside into a solid, is carried indoors, and melts there, releasing its heat into the rooms"],
       "The cycle runs on the two changes of state. At low pressure in the outdoor coil the refrigerant evaporates, and evaporation takes in heat, even from cold air. The compressor squeezes it, and at high pressure indoors it condenses, and condensation gives heat off into the house. The expansion valve drops its pressure and the cycle repeats.",
       {});
   }
@@ -745,18 +745,18 @@ E("s7-u2-pump-science", 2, ["SC7.5.7"], 2, "var", varset([
   function () {
     return mcq("Why does lowering the pressure on a liquid refrigerant make it evaporate more easily, and why does that matter to a heat pump?",
       "At low pressure the particles need less energy to escape as a gas, so the refrigerant can evaporate at a low temperature and absorb heat from cold outdoor air",
-      ["Low pressure heats the refrigerant directly, boiling it with friction",
-       "At low pressure the refrigerant turns into a fuel and burns slowly",
-       "Low pressure removes the refrigerant's particles, leaving room for heat"],
+      ["Low pressure heats the refrigerant directly, boiling it with friction as it squeezes through the narrow valve",
+       "At low pressure the refrigerant turns into a fuel and burns slowly in the outdoor coil, and that burning is what warms the house",
+       "Low pressure removes most of the refrigerant's particles from the liquid, leaving room for heat to move in"],
       "Evaporation means particles escaping the liquid, and pressure pressing down on the liquid makes escape harder. Drop the pressure and the refrigerant boils at a much lower temperature, low enough to take heat from winter air. That is the same effect that makes a propane tank feel cold as gas escapes and the remaining liquid evaporates to replace it.",
       {});
   },
   function () {
     return mcq("A common objection is: 'There is no heat in -18 °C air for a heat pump to take.' Which reply is scientifically correct?",
       "Air at -18 °C still holds most of the heat energy it has at room temperature; heat exists in matter at every temperature above absolute zero",
-      ["The objection is correct; heat pumps stop working below 0 °C",
-       "The heat pump makes up the difference by burning a small amount of fuel",
-       "Cold air contains a different kind of heat that only heat pumps can use"],
+      ["The objection is correct; heat pumps stop working completely once the air falls below 0 °C",
+       "The heat pump makes up the difference by burning a small amount of fuel in a backup furnace inside the house",
+       "Cold air contains a different kind of heat that only heat pumps can use, stored in a form other machines cannot reach"],
       "Heat is particle energy, and particles hold energy at every temperature above absolute zero. Air at -18 °C holds roughly 85 percent of the heat it holds at 21 °C, so there is plenty for the refrigerant to absorb, even though the pump works harder as the temperature falls.",
       {});
   }
@@ -774,9 +774,9 @@ E("s7-u2-cr-pump-chain", 2, ["SC7.5.7"], 3, "var", varset([
 /* ---------- SC7.5.8 Insulating technologies ---------- */
 E("s7-u2-insulator-examples", 2, ["SC7.5.8"], 1, "gen", function () {
   var cases = [
-    { q: "Which of these is used as an insulator in the situation described?", key: "The trapped air in a puffy winter jacket, slowing heat loss from the body", d: ["The metal pot conducting heat to the soup inside it", "The copper wire carrying current to a heater", "The steel radiator giving off heat to a room"] },
+    { q: "Which of these is used as an insulator in the situation described?", key: "The trapped air in a puffy winter jacket, slowing heat loss from the body", d: ["The metal pot conducting heat from the stove to the soup inside it", "The copper wire carrying electric current to a heater in the next room", "The steel radiator giving off its heat to the air of the room"] },
     { q: "Which material is doing insulating work here?", key: "The fibreglass batts packed into an attic floor", d: ["The aluminum foil lining a roasting pan to spread heat", "The cast iron of a wood stove radiating heat", "The metal handle of a saucepan left on the stove"] },
-    { q: "Which is an example of insulation, past or present?", key: "Sod walls on an early settler's house, trapping air and slowing heat loss", d: ["A steel bridge expanding on a hot day", "A black roof absorbing the Sun's heat", "A metal spoon warming in hot soup"] }
+    { q: "Which is an example of insulation, past or present?", key: "Sod walls on an early settler's house, trapping air and slowing heat loss", d: ["A steel bridge expanding in the heat on a hot summer day", "A black roof absorbing the Sun's heat through the whole afternoon", "A metal spoon warming up quickly in a bowl of hot soup"] }
   ];
   var c = pick(cases);
   return mcq(c.q,
@@ -789,9 +789,9 @@ E("s7-u2-insulation-past", 2, ["SC7.5.8"], 1, "var", varset([
   function () {
     return mcq("Builders in Atlantic Canada once packed straw, seaweed, sawdust and even newspaper into house foundations and walls. Why did such loose, ordinary materials insulate at all?",
       "They trap a great deal of air in their spaces, and trapped air is a poor conductor of heat",
-      ["They generate a small amount of heat as they decay",
-       "They reflect heat back into the house like mirrors",
-       "They absorb water, and wet materials insulate best"],
+      ["They generate a small amount of heat of their own as they slowly decay",
+       "They reflect heat back into the house like mirrors on every side",
+       "They absorb a great deal of water, and wet materials insulate best"],
       "None of those materials is a remarkable insulator by itself; what they share is structure. Packed loosely, they hold pockets of still air, and still air conducts heat very poorly, so the wall loses heat slowly. Modern fibreglass and foam work on the same principle.",
       {});
   }
@@ -801,18 +801,18 @@ E("s7-u2-thermos", 2, ["SC7.5.8"], 2, "var", varset([
   function () {
     return mcq("A thermos keeps a cold drink cold for hours. Its wall is a vacuum (almost no air) between two layers, with a shiny inner surface. Which transfer processes do these features fight?",
       "The vacuum blocks conduction and convection, which need matter; the shiny surface reflects radiation",
-      ["The vacuum blocks radiation; the shiny surface blocks conduction",
-       "The vacuum absorbs heat; the shiny surface generates cold",
-       "Both features block convection only"],
+      ["The vacuum blocks radiation completely; the shiny surface blocks conduction and convection",
+       "The vacuum absorbs heat from the drink; the shiny surface generates cold to replace it",
+       "Both features work together to block convection and nothing else"],
       "Conduction and convection both need matter to move through, so a vacuum, with almost no particles, stops both. Radiation needs no matter, so the vacuum cannot stop it; the shiny surface handles radiation by reflecting it instead of absorbing it. A good thermos fights all three processes at once.",
       {});
   },
   function () {
     return mcq("In the Heat Transfer Design Challenge, a team must keep a refrigerated juice box within 5 °C of a control juice box's temperature for two hours. Which design choice best fits the science?",
       "Wrap the juice box in layers that trap air, like foam or crumpled paper inside a sealed container",
-      ["Wrap the juice box in a single layer of aluminum foil pressed tightly to it",
-       "Stand the juice box in a metal can so heat can spread evenly",
-       "Paint the juice box black so it absorbs warmth from the room"],
+      ["Wrap the juice box in a single layer of aluminum foil pressed tightly to it on all sides",
+       "Stand the juice box inside a metal can so heat can spread evenly around it",
+       "Paint the juice box black so it absorbs as much warmth from the room as possible"],
       "Layers that trap air insulate, because still air is a poor conductor, and sealing the container stops convection currents from carrying heat in. A tight metal wrap conducts; a metal can spreads heat; a black surface absorbs radiant heat, the opposite of the goal.",
       {});
   }
@@ -823,9 +823,9 @@ E("s7-u2-needs-tech", 2, ["SC7.5.9"], 1, "var", varset([
   function () {
     return mcq("Which pairing correctly matches a heat-related human need to the development it produced?",
       "Treating sprains and sports injuries led to instant cold packs and heat packs that work without a freezer or stove",
-      ["Wanting warmer houses led to the invention of the thermometer",
-       "Needing to cook food led to the development of fibreglass insulation",
-       "Wanting to measure temperature led to the invention of the heat pump"],
+      ["Wanting warmer houses in winter led to the invention of the thermometer to measure them",
+       "Needing to cook food over open fires led to the development of fibreglass insulation for houses",
+       "Wanting to measure temperature exactly led to the invention of the heat pump for houses"],
       "Instant packs answer a medical need: cold or heat applied on the spot, anywhere, with no equipment. The other pairings scramble the unit's stories: thermometers answer a measuring need, insulation a housing need, and the heat pump an energy need.",
       {});
   }
@@ -835,9 +835,9 @@ E("s7-u2-winter-clothing", 2, ["SC7.5.9"], 2, "var", varset([
   function () {
     return mcq("Fishers in this province once wore wool sweaters coated in linseed oil when working on cold water. What problem was the oil solving?",
       "Plain wool insulates well when dry but loses much of its insulating power when soaked; the oil shed water and kept the trapped air in the wool",
-      ["The oil made the wool produce its own heat",
-       "The oil made the sweater heavier so it would not blow off",
-       "The oil attracted heat from the sea air"],
+      ["The oil made the wool fibres produce their own heat, like a small stove worn next to the skin",
+       "The oil made the sweater much heavier, so it would not blow off in the strong wind coming off the cold water where the boats worked",
+       "The oil attracted heat out of the sea air and held it in the wool fibres for the whole working day on the water"],
       "Wool insulates by trapping air, and trapped air only works while it stays in place. Soaked wool loses its air to water and its insulation with it. An oil coating sheds the water, keeping the air trapped and the fisher warm. Modern technical fabrics solve the same problem with synthetic fibres and waterproof-breathable layers.",
       {});
   }
@@ -855,9 +855,9 @@ E("s7-u2-career-match", 2, ["SC7.5.10"], 1, "var", varset([
   function () {
     return mcq("A homeowner's furnace stops working in January. Which career from this unit's list is called, and why?",
       "A furnace service technician, who installs, maintains and repairs heating systems",
-      ["A blacksmith, who works with furnaces",
-       "A health care worker, who deals with emergencies",
-       "A light bulb manufacturer, who makes parts for the furnace"],
+      ["A blacksmith, who works with a forge furnace for shaping hot metal",
+       "A health care worker, who deals with medical emergencies of every kind",
+       "A light bulb manufacturer, who makes small parts that fit inside the furnace"],
       "Furnace service technicians are the heating-system specialists: they install, maintain and repair furnaces and heat pumps, which is exactly the January problem. The blacksmith's furnace is a forge for shaping metal, not a home heating system.",
       {});
   }
@@ -956,9 +956,9 @@ E("s7-u2-hypothesis-form", 2, ["SC7.6.3"], 1, "var", varset([
   function () {
     return mcq("A student asks: 'What happens to the temperature of ice water while the ice is melting?' Which is a proper testable hypothesis for this question?",
       "The temperature will stay the same while the ice melts, because the energy goes into breaking the ice's structure rather than warming the water",
-      ["Melting is an interesting process that has fascinated scientists for centuries",
-       "The temperature will do something unexpected during melting",
-       "Ice melts at 0 °C because that is its melting point"],
+      ["Melting is an interesting process that has fascinated scientists and students for centuries in many countries",
+       "The temperature will do something unexpected at some point during the melting of the ice",
+       "Ice melts at 0 °C because that is its melting point, listed in every table of melting points for common substances"],
       "A hypothesis is a prediction the experiment can test, with a reason attached: here, a flat temperature during melting, explained by energy going into the change of state. The other options are a topic sentence, a prediction too vague to test, and a fact restated rather than a prediction about the experiment.",
       {});
   }
@@ -968,9 +968,9 @@ E("s7-u2-experiment-chain", 2, ["SC7.6.3"], 3, "var", varset([
   function () {
     return mcq("A team investigated whether a black or a white can warms faster under a lamp. Their write-up says: 'Hypothesis: the black can will warm faster. We filled the black can with 200 mL of oil and the white can with 100 mL, put both under the lamp, and measured after 15 minutes. The black can was warmer, so our hypothesis was correct.' What is the serious flaw in this chain?",
       "The amounts of oil differed, so the colour was not the only difference between the cans; the conclusion cannot be trusted",
-      ["The hypothesis was stated before the experiment began",
-       "The team measured only once, at 15 minutes",
-       "The team used oil instead of water in the cans"],
+      ["The hypothesis was stated before the experiment began, which is when hypotheses are supposed to be stated",
+       "The team measured the temperatures only once, at the end of 15 minutes of heating",
+       "The team used oil instead of water in the cans for the whole investigation"],
       "A fair test changes one variable at a time. With 200 mL in one can and 100 mL in the other, the smaller amount would warm faster whatever its colour, so the warmer can proves nothing about colour. Stating the hypothesis first is correct practice, and single end measurements and oil are both workable choices.",
       {});
   }
@@ -993,18 +993,18 @@ E("s7-u2-tools-safety", 2, ["SC7.6.4"], 1, "var", varset([
   function () {
     return mcq("Which practice is the safe one when heating water for a class investigation?",
       "Use a hot plate or kettle as directed, keep the cord and water apart from the edge of the bench, and treat every heated container as hot",
-      ["Carry a full beaker of just-boiled water across the room to your bench",
-       "Lean over the container to watch the thermometer more closely",
-       "Leave the hot plate on and unattended while you get more materials"],
+      ["Carry a full beaker of just-boiled water across the crowded room to your bench when you are ready for it in class",
+       "Lean over the container of hot water to watch the thermometer reading inside it more closely",
+       "Leave the hot plate switched on and unattended while you leave to get more materials"],
       "Heating investigations combine hot water, glassware and electricity. Working at the bench, keeping water and cords managed, and assuming heated containers are hot prevents the common injuries. Carrying boiling water, leaning over steam, and leaving a hot plate unattended are the accident patterns.",
       {});
   },
   function () {
     return mcq("A thermometer breaks during an investigation. Which response is correct?",
       "Tell the teacher and keep clear of the spill; school thermometers contain alcohol, and cleanup follows the teacher's directions",
-      ["Pick up the glass quickly with bare hands before someone steps on it",
-       "Sweep the spill under the bench so the investigation can continue",
-       "Wash the liquid down the sink without mentioning it"],
+      ["Pick up the glass quickly with bare hands and carry it to the bin before someone steps on it in the classroom",
+       "Sweep the spill and the glass under the bench so the investigation can continue without delay",
+       "Wash the spilled liquid down the sink with plenty of water without mentioning it to anyone"],
       "Broken glass and spilled liquid are a teacher-managed cleanup: bare hands on glass and hidden spills injure other people. School thermometers use alcohol rather than mercury, which is safer, but the spill and glass still need proper handling.",
       {});
   }
@@ -1014,9 +1014,9 @@ E("s7-u2-tools-accurate", 2, ["SC7.6.4"], 2, "var", varset([
   function () {
     return mcq("A team records a different temperature every time they check the same beaker of warm water. Which change most improves the accuracy of their readings?",
       "Stir the water gently, keep the bulb off the beaker's bottom, and wait for the column to settle before reading at eye level",
-      ["Read the thermometer as quickly as possible each time",
-       "Use a different thermometer for each reading and average them",
-       "Hold the thermometer near the top of the water only"],
+      ["Read the thermometer as quickly as possible each time, before the column has settled",
+       "Use a different thermometer for each reading and average the three readings together",
+       "Hold the thermometer near the top of the water only, just under the surface, for every reading the team takes"],
       "Uneven temperatures in the beaker, a bulb touching hot glass, and reading a still-moving column all produce scattered readings. Stirring evens the water out, keeping the bulb in the liquid (not on the bottom) measures the water, and waiting for the column to settle, then reading at eye level, measures it the same way every time.",
       {});
   }
@@ -1027,9 +1027,9 @@ E("s7-u2-table-build", 2, ["SC7.6.5"], 1, "var", varset([
   function () {
     return mcq("Which table correctly organizes The Plateau Problem's data, where temperature was recorded every 3 minutes during melting and again during boiling?",
       "A table with a time column (0, 3, 6, 9... minutes) and two temperature columns, one for the melting run and one for the boiling run",
-      ["A table with one row listing every temperature in the order the student remembers them",
-       "A table with temperatures down the side and the names of group members across the top",
-       "A table with a single column of temperatures and no times"],
+      ["A table with one row listing every temperature in the order the student happens to remember them afterward",
+       "A table with temperatures down the side and the names of the group members across the top instead",
+       "A table with a single column of temperatures and no times recorded beside any of them"],
       "The data are temperatures measured at times, in two runs. The table needs the independent variable (time) and a column for each run's temperatures so the two plateaus can be compared. Times are essential: without them, the plateaus cannot be seen at all.",
       {});
   }
@@ -1080,9 +1080,9 @@ E("s7-u2-design-challenge", 2, ["SC7.6.6"], 2, "var", varset([
   function () {
     return mcq("In the Heat Transfer Design Challenge, every team insulates a juice box and compares it with an uninsulated control juice box taken from the same refrigerator. Why is the control box essential to the design?",
       "It shows how much an uninsulated box warms in the same conditions, so a team's result measures their insulation and not just the room",
-      ["It gives the team a spare juice box if theirs leaks",
-       "It keeps the refrigerator at a steady temperature",
-       "It proves that all juice boxes start at the same temperature"],
+      ["It gives the team a spare juice box to use if their insulated box leaks or is damaged during the two hours of the test",
+       "It keeps the refrigerator at a steady temperature while the test is running",
+       "It proves that all juice boxes taken from a refrigerator start out at exactly the same temperature"],
       "Rooms differ and afternoons warm up; without a control, a team cannot tell whether their box stayed cold because of their design or because the room was cool. The control warms under the same conditions with no insulation, so the difference between the two boxes is the design's effect.",
       {});
   }
@@ -1105,9 +1105,9 @@ E("s7-u2-apparatus-safety", 2, ["SC7.6.7"], 1, "var", varset([
   function () {
     return mcq("In Absorb That Energy, the apparatus includes a 100 W lamp, cans of oil, glassware and thermometers. Which set-up is the safe one?",
       "The lamp is clamped steady, cords are kept away from the oil and water, and the hot lamp is treated as hot even after it is switched off",
-      ["The lamp rests loosely on the bench so it can be aimed by hand during the run",
-       "The cans are filled to the brim so no oil can slosh out",
-       "The thermometers are laid across the lamp to warm up faster"],
+      ["The lamp rests loosely on the edge of the bench so anyone can aim it by hand at any point during the run",
+       "The cans of oil are filled right up to the brim so that no oil can possibly slosh out during the whole run",
+       "The thermometers are laid across the hot lamp before the run to warm them up faster"],
       "A 100 W lamp is a burn and electrical hazard: it must be secured, kept clear of liquids and cords, and treated as hot after use. Loose lamps fall, brim-full cans spill hot oil, and nothing belongs on the lamp itself.",
       {});
   }
@@ -1117,9 +1117,9 @@ E("s7-u2-apparatus-choice", 2, ["SC7.6.7"], 2, "var", varset([
   function () {
     return mcq("A team's Absorb That Energy readings jump around between minutes. Their thermometer is pushed through a hole in the can's lid so its bulb touches the can's metal side. What should they fix?",
       "Reposition the thermometer so its bulb sits in the oil, not touching the can, and seal the lid hole so heat does not escape",
-      ["Read the thermometer faster, before it changes",
-       "Use a bigger lamp so the temperature changes more",
-       "Stir the oil with the thermometer while it is still plugged into the lid"],
+      ["Read the thermometer much faster each time, before its reading has a chance to change at all",
+       "Use a bigger, more powerful lamp so the temperature of the oil changes more quickly",
+       "Stir the oil with the thermometer while it is still plugged through the hole in the lid of the can"],
       "A bulb touching the metal reads the can's temperature, not the oil's, and the can responds to the lamp faster and unevenly. The bulb belongs in the oil, clear of the sides, and the plasticine seal around the lid keeps heat in and the thermometer steady, which is part of the laboratory's own set-up.",
       {});
   }
@@ -1142,9 +1142,9 @@ E("s7-u2-display-absorb", 2, ["SC7.6.8", "SC7.6.5"], 3, "var", varset([
   function () {
     var q = mcq("The graph shows the two cans from Absorb That Energy. At the 15-minute mark the lamp is switched off. Which statement is best supported?",
       "At 15 minutes the dark can is about 10 °C warmer, and because good absorbers are also good emitters, the dark can should also cool faster once the lamp is off",
-      ["At 15 minutes the light can is warmer, and it will cool faster",
-       "The two cans are at the same temperature at 15 minutes",
-       "The dark can will stay warmer forever once the lamp is off"],
+      ["At 15 minutes the light can is warmer than the dark can, and because it warmed faster it will also cool faster once the lamp is off",
+       "The two cans have reached exactly the same temperature as each other at the 15-minute mark",
+       "The dark can will stay warmer than the light can forever, even long after the lamp is switched off"],
       "Reading the lines at 15 minutes: the dark can is near 43 °C and the light can near 33 °C, a difference of about 10 °C. The laboratory's analysis adds the emission principle: surfaces that absorb well also emit well, so the dark can gives its heat away faster and cools faster in the dark. Nothing supports forever; both cans return to room temperature.",
       {});
     q.figure = s7AbsorbGraphSVG([0, 5, 10, 15], [22, 30, 37, 43], [22, 26, 30, 33]);
@@ -1157,9 +1157,9 @@ E("s7-u2-conclusion-support", 2, ["SC7.6.9"], 2, "var", varset([
   function () {
     return mcq("In The Plateau Problem, a class's graph shows the temperature holding at 0 °C while ice melts, rising steadily, then holding at 100 °C while the water boils. Which conclusion do these data support?",
       "While a substance changes state, its temperature stays constant; the added energy goes into the change of state itself",
-      ["A thermometer cannot measure temperature while a substance is changing state",
-       "Ice melts and water boils at the same temperature",
-       "Heating a substance always raises its temperature steadily"],
+      ["A thermometer cannot measure temperature properly while a substance is in the middle of changing state",
+       "Ice melts and water boils at one and the same temperature on the graph",
+       "Heating a substance always raises its temperature steadily from start to finish"],
       "The two plateaus are the data's message: during melting and boiling, added energy does the work of changing state instead of raising temperature. The thermometer worked throughout, the two changes happen at different temperatures, and the steady-rise claim is exactly what the plateaus disprove.",
       {});
   }
@@ -1169,9 +1169,9 @@ E("s7-u2-conclusion-refute", 2, ["SC7.6.9"], 2, "var", varset([
   function () {
     return mcq("Before the investigation, a student predicted the dark can and the light can would warm at the same rate, 'because the lamp shines on both equally.' The data show the dark can 10 °C warmer after 15 minutes. What should the student conclude?",
       "The prediction is refuted: equal shining is not equal absorbing, and the dark surface absorbed more of the lamp's radiant heat",
-      ["The prediction is supported, because both cans did warm up",
-       "The data must be wrong, because the lamp shone equally on both",
-       "Nothing can be concluded until the test is done with water instead of oil"],
+      ["The prediction is supported, because both cans did warm up under the lamp",
+       "The data must be wrong, because the lamp shone equally on both cans the whole time",
+       "Nothing at all can be concluded until the whole test is done over again with water instead of oil in both cans"],
       "A conclusion judges the prediction against the data. Both cans received the same radiation, but absorption depends on the surface, and the 10 °C gap shows the dark surface absorbed more. The prediction is refuted, and the data, not the prediction, carry the conclusion.",
       {});
   }

@@ -1270,17 +1270,17 @@ E("s7-u1-position-support", 1, ["SC7.3.10"], 2, "var", varset([
   function () {
     return mcq("A student defends this position: \"Clearcutting this valley would seriously harm the salmon stream.\" Which finding from a survey of the valley best supports the position?",
       "After heavy rain, streams below clearcut areas in the region carried heavy loads of soil washed off the bare ground",
-      ["The valley's spruce trees are the tallest of any stand surveyed in the region this year",
-       "The company that would do the cutting has operated in the province for over thirty years",
-       "Salmon from this stream are sold in stores across the province and in other countries"],
+      ["The valley's spruce trees are the tallest of any stand surveyed in the region in the past ten years",
+       "The company that would do the cutting has operated in the province for over thirty years without a serious accident",
+       "Salmon from this stream are sold in stores across the province and in other countries every year"],
       "Support must connect the claim to evidence about the harm named. Soil washing into streams below clearcuts is direct evidence for the claimed harm. Tree height, company history and fish sales say nothing about whether clearcutting harms the stream.", {});
   },
   function () {
     return mcq("A student defends this position: \"The harvested area should be replanted within a year.\" Which finding best supports the position?",
       "On nearby sites left unplanted, shrubs crowded in and few spruce seedlings survived after five years",
       ["Spruce seedlings are available from the provincial nursery at a low cost per thousand",
-       "The harvested area is the largest cutover in the region in the past decade",
-       "Most residents surveyed said they preferred the look of a planted forest"],
+       "The harvested area is the largest cutover in the region in the past decade by a wide margin",
+       "Most residents surveyed in the nearby towns said they preferred the look of a planted forest"],
       "The finding about unplanted sites shows a consequence that replanting prevents, which is what support for the position requires. Seedling price, the site's size and public taste do not show that replanting matters ecologically.", {});
   }
 ]), ["A supporting finding must be evidence for the claim, not just a fact about the topic.", "Ask of each finding: if this is true, does the position become more believable?"]);

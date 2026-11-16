@@ -1933,17 +1933,17 @@ E("s7-u1-position-support", 1, ["SC7.3.10"], 2, "var", varset([
   function () {
     return mcq("A student defends this position: \"Clearcutting this valley would seriously harm the salmon stream.\" Which finding from a survey of the valley best supports the position?",
       "After heavy rain, streams below clearcut areas in the region carried heavy loads of soil washed off the bare ground",
-      ["The valley's spruce trees are the tallest of any stand surveyed in the region this year",
-       "The company that would do the cutting has operated in the province for over thirty years",
-       "Salmon from this stream are sold in stores across the province and in other countries"],
+      ["The valley's spruce trees are the tallest of any stand surveyed in the region in the past ten years",
+       "The company that would do the cutting has operated in the province for over thirty years without a serious accident",
+       "Salmon from this stream are sold in stores across the province and in other countries every year"],
       "Support must connect the claim to evidence about the harm named. Soil washing into streams below clearcuts is direct evidence for the claimed harm. Tree height, company history and fish sales say nothing about whether clearcutting harms the stream.", {});
   },
   function () {
     return mcq("A student defends this position: \"The harvested area should be replanted within a year.\" Which finding best supports the position?",
       "On nearby sites left unplanted, shrubs crowded in and few spruce seedlings survived after five years",
       ["Spruce seedlings are available from the provincial nursery at a low cost per thousand",
-       "The harvested area is the largest cutover in the region in the past decade",
-       "Most residents surveyed said they preferred the look of a planted forest"],
+       "The harvested area is the largest cutover in the region in the past decade by a wide margin",
+       "Most residents surveyed in the nearby towns said they preferred the look of a planted forest"],
       "The finding about unplanted sites shows a consequence that replanting prevents, which is what support for the position requires. Seedling price, the site's size and public taste do not show that replanting matters ecologically.", {});
   }
 ]), ["A supporting finding must be evidence for the claim, not just a fact about the topic.", "Ask of each finding: if this is true, does the position become more believable?"]);
@@ -2173,18 +2173,18 @@ E("s7-u2-particle-speed", 2, ["SC7.4.2"], 3, "var", varset([
   function () {
     return mcq("Two identical containers hold the same gas. In container A the particles are drawn with short movement arrows and are close together. In container B the particles are drawn with long movement arrows and fill the whole container. What can be concluded?",
       "B is at the higher temperature, and its particles have spread out because they are moving faster",
-      ["A is at the higher temperature, because its particles are closer together",
-       "Both are at the same temperature, because they hold the same gas",
-       "B is at the higher temperature, because it holds more particles"],
+      ["A is at the higher temperature, because its particles are packed closer together in the container",
+       "Both are at the same temperature, because they hold the same gas in identical containers",
+       "B is at the higher temperature, because it holds more particles than container A holds"],
       "Arrow length stands for particle speed, and faster particles mean a higher average kinetic energy, which is a higher temperature. Moving faster, the particles also spread out to fill the container. Closeness does not mean hotter, and the containers hold the same amount of gas.",
       {});
   },
   function () {
     return mcq("A sealed balloon of air is moved from a cold porch into a warm room. After a while the balloon is slightly bigger. Which particle explanation is correct?",
       "The air particles move faster, push harder and more often on the balloon's walls, and spread farther apart",
-      ["The air particles grow larger as they warm up, so they take up more room",
-       "More air particles form inside the balloon as it warms",
-       "The particles slow down and settle, leaving more empty space"],
+      ["The air particles grow larger as they warm up, so each one takes up more room inside the balloon",
+       "More air particles form inside the balloon as it warms, so the balloon fills with extra air",
+       "The particles slow down and settle toward the bottom, leaving more empty space above them"],
       "Warming raises the particles' average kinetic energy: they move faster, collide harder and more often, and spread farther apart, which inflates the balloon. Particles never grow, no new particles appear, and warming speeds particles up rather than slowing them down.",
       {});
   }
@@ -2204,9 +2204,9 @@ E("s7-u2-states-compare", 2, ["SC7.4.3"], 1, "var", varset([
   function () {
     return mcq("Which comparison of the three states of matter is correct?",
       "A solid keeps its own shape and volume; a liquid keeps its volume but takes its container's shape; a gas takes both the shape and volume of its container",
-      ["A solid takes its container's shape; a liquid keeps its own shape; a gas keeps its own volume",
-       "A liquid expands to fill its container; a gas keeps a fixed volume; a solid flows to match its container",
-       "All three states keep their own shape and volume at any temperature"],
+      ["A solid takes its container's shape; a liquid keeps its own shape and volume; a gas keeps its own volume in any container",
+       "A liquid expands to fill its whole container; a gas keeps a fixed volume of its own; a solid flows slowly to match its container's shape",
+       "All three states keep their own shape and volume at any temperature, whatever container they are placed in"],
       "Solids hold both shape and volume because their particles are locked in place. Liquids hold volume but flow into their container's shape because their particles can slide past each other. Gases spread to fill all the space available because their particles move freely and far apart.",
       {});
   },
@@ -2237,9 +2237,9 @@ E("s7-u2-states-heated", 2, ["SC7.4.3"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows the particles of a solid, a liquid and a gas when cooler (top row) and warmer (bottom row). When a substance is heated, what changes about its particles?",
       "They move faster and, in liquids and gases, spread farther apart; the particles themselves stay the same size",
-      ["They grow larger, which is why the substance expands",
-       "They multiply, so there are more particles taking up space",
-       "They change into particles of a different substance"],
+      ["They grow larger as they warm up, which is why the substance expands to fill more space",
+       "They multiply as they warm, so there are more particles taking up space in the substance",
+       "They change into particles of a completely different substance, which is why the substance expands"],
       "Heating raises the particles' kinetic energy, so they move faster; in liquids and gases they also spread farther apart, which is expansion. The particles themselves do not grow, multiply, or change identity.",
       {});
     q.figure = s7ParticlePanelSVG();
@@ -2248,9 +2248,9 @@ E("s7-u2-states-heated", 2, ["SC7.4.3"], 2, "var", varset([
   function () {
     var q = mcq("A steel rail and a puddle of water are both left in the sun. By afternoon both are warmer. Which statement about their particles is true for both?",
       "In both, the particles are moving faster on average than they were in the morning",
-      ["In both, the particles have spread far apart like a gas",
-       "In both, the particles have stopped attracting each other",
-       "In both, the particles are larger than they were in the morning"],
+      ["In both, the particles have spread far apart like the particles of a gas",
+       "In both, the particles have stopped attracting each other altogether",
+       "In both, the particles themselves are larger than they were in the morning"],
       "Whatever the state, warming means faster particles on average. The rail's particles still vibrate in place and the puddle's particles still slide past each other; neither spreads out like a gas, and no particle grows.",
       {});
     q.figure = s7ParticlePanelSVG();
@@ -2299,9 +2299,9 @@ E("s7-u2-plateau-read", 2, ["SC7.4.4"], 2, "var", varset([
   function () {
     var q = mcq("On the graph, the two flat sections (plateaus) are at 0 °C and 100 °C. What is happening to the water along those sections?",
       "It is changing state: melting at 0 °C and boiling at 100 °C, with the temperature holding steady",
-      ["The heater has stopped working during those sections",
-       "The thermometer has reached the top of its scale",
-       "The water is cooling down between bursts of heating"],
+      ["The heater has stopped working during those sections, then started again afterward",
+       "The thermometer has reached the top of its scale and cannot show a higher temperature",
+       "The water is cooling down between bursts of heating, then warming up again afterward"],
       "A plateau means energy is being added but the temperature is not rising: the energy is being used to break attractions between particles as the state changes. Melting happens at 0 °C and boiling at 100 °C for water.",
       {});
     q.figure = s7HeatingCurveSVG(0, 100, 30, 120);
@@ -2362,18 +2362,18 @@ E("s7-u2-transfer-particles", 2, ["SC7.4.5"], 1, "var", varset([
   function () {
     return mcq("Which statement about the three heat transfer processes is correct?",
       "Conduction happens in solids, liquids and gases; convection happens only in liquids and gases; radiation needs no matter at all",
-      ["Convection happens in solids, liquids and gases; conduction happens only in solids",
-       "Radiation happens only when two objects are touching",
-       "Conduction is fastest in gases because their particles have the most room to move"],
+      ["Convection happens in solids, liquids and gases; conduction happens only in solids, never in fluids",
+       "Radiation happens only when two objects are touching each other directly",
+       "Conduction is fastest in gases because their particles have the most room to move freely and collide"],
       "Conduction works in all three states but is most efficient in solids, where particles are packed close and collide often, and least in gases. Convection needs a fluid that can flow, so it happens only in liquids and gases. Radiation is electromagnetic waves and crosses empty space, which is how the Sun's heat reaches Earth.",
       {});
   },
   function () {
     return mcq("In conduction, heat moves through a metal spoon because",
       "fast-moving particles collide with slower neighbours and pass kinetic energy along the spoon",
-      ["particles travel from the hot end of the spoon to the cold end",
-       "heat flows through the spoon as a liquid",
-       "the spoon's particles expand and carry the heat with them"],
+      ["particles travel all the way from the hot end of the spoon to the cold end",
+       "heat flows through the spoon as a liquid from the hot end to the cold end",
+       "the spoon's particles expand as they warm and carry the heat along with them"],
       "The particles themselves stay in place; what travels is the energy. Particles at the hot end vibrate faster, collide with their neighbours, and pass kinetic energy along particle by particle, like a parcel passed hand to hand down a line.",
       {});
   }
@@ -2383,9 +2383,9 @@ E("s7-u2-transfer-compare", 2, ["SC7.4.5"], 2, "var", varset([
   function () {
     return mcq("A metal spoon and a wooden spoon are left standing in the same pot of hot soup. The metal spoon's handle soon feels hot; the wooden spoon's handle does not. Why?",
       "Metal conducts heat well because its particles pass kinetic energy along quickly; wood is a poor conductor",
-      ["Wood absorbs the heat and destroys it before it reaches the handle",
-       "The metal spoon attracts heat from the soup",
-       "The wooden spoon reflects the heat back into the soup"],
+      ["Wood absorbs the heat and destroys it completely before it can reach the handle",
+       "The metal spoon attracts heat out of the hot soup into its handle",
+       "The wooden spoon reflects the heat back into the soup, so none of it reaches the handle"],
       "Both spoons sit in the same soup, so the difference is in the materials. Metal is a good conductor: its particles pass kinetic energy along efficiently. Wood is an insulator: its particles pass energy along poorly, so the handle stays cool.",
       {});
   },
@@ -2404,9 +2404,9 @@ E("s7-u2-stove-three", 2, ["SC7.4.5"], 2, "var", varset([
   function () {
     return mcq("A wood stove heats a cabin in all three ways at once. Which list matches each way to its process correctly?",
       "The stove top heats a kettle by conduction; air warmed by the stove rises and circulates by convection; campers feel warmth on their faces across the room by radiation",
-      ["The stove top heats a kettle by radiation; air circulates by conduction; warmth is felt across the room by convection",
-       "The stove top heats a kettle by convection; air circulates by radiation; warmth is felt across the room by conduction",
-       "All three effects are conduction, because everything touches the stove or the air"],
+      ["The stove top heats a kettle by radiation; air warmed by the stove circulates by conduction; warmth is felt across the room by convection",
+       "The stove top heats a kettle by convection; air warmed by the stove circulates by radiation; warmth is felt across the room by conduction",
+       "All three effects are conduction, because everything in the cabin touches the stove or touches the air around it"],
       "The kettle touches the stove top, so heat passes particle to particle: conduction. The warmed air rises and circulates, carrying heat: convection. The warmth felt across the room travels as electromagnetic waves through the air without the air carrying it: radiation.",
       {});
   }
@@ -2439,9 +2439,9 @@ E("s7-u2-absorb-lab", 2, ["SC7.4.6"], 3, "var", varset([
   function () {
     var q = mcq("Two cans of oil, one dark and one light, stood the same distance from a 100 W lamp. The graph shows their temperatures over 15 minutes. Which conclusion and caution are both sound?",
       "The dark can warmed faster; but before concluding, check that both cans held the same amount of oil and sat the same distance from the lamp",
-      ["The dark can warmed faster, which proves dark surfaces always heat twice as fast",
-       "The light can warmed faster, because light surfaces attract heat",
-       "The graph shows nothing, because the cans were different colours"],
+      ["The dark can warmed faster, which proves dark surfaces always heat twice as fast as light surfaces in any test",
+       "The light can warmed faster, because light surfaces attract heat from a lamp more strongly",
+       "The graph shows nothing useful, because the two cans were different colours and cannot be compared"],
       "The dark line climbs more steeply, so the dark surface absorbed more radiant heat and warmed its oil faster. A careful conclusion also checks the controlled factors the laboratory itself names: equal amounts of oil and equal distance from the lamp, since either one could produce a difference on its own. Nothing in the graph supports a claim about twice as fast.",
       {});
     q.figure = s7AbsorbGraphSVG([0, 5, 10, 15], [22, 30, 37, 43], [22, 26, 30, 33]);
@@ -2501,17 +2501,17 @@ E("s7-u2-heat-vs-temp", 2, ["SC7.4.7"], 1, "var", varset([
   function () {
     return mcq("Which statement correctly separates heat from temperature?",
       "Heat is energy transferred from a hotter object to a colder one; temperature measures the average kinetic energy of an object's particles",
-      ["Heat and temperature are two names for the same measurement",
-       "Temperature is energy transferred between objects; heat measures average kinetic energy",
-       "Heat is a substance that flows into an object and raises its particles"],
+      ["Heat and temperature are two names for the same measurement, taken in different units",
+       "Temperature is the energy transferred between objects; heat measures the average kinetic energy of an object's particles",
+       "Heat is a substance that flows into an object and raises the temperature of its particles"],
       "Heat is energy on the move, transferred because of a temperature difference, always from hotter to colder. Temperature is a property of one object: the average kinetic energy of its particles. Cold itself never travels; what people call cold moving is heat leaving.",
       {});
   },
   function () {
     return mcq("A student says, 'Close the door, you are letting the cold in.' What is wrong with that statement, scientifically?",
       "Cold does not travel; heat travels out of the warm room to the colder outdoors",
-      ["Nothing; cold air is a substance that flows through doors",
-       "The door blocks heat, so no transfer of any kind can happen",
+      ["Nothing; cold air is a substance that flows in through open doors",
+       "The door blocks heat completely, so no transfer of any kind can happen",
        "Cold travels faster than heat, so the statement has it backwards"],
       "Transfer is always of heat, and always from warmer to colder. Opening the door lets the room's heat escape to the colder air outside (and lets cold air in as air, but what is transferred is heat leaving). There is no substance called cold that flows.",
       {});
@@ -2538,9 +2538,9 @@ E("s7-u2-activity-temp", 2, ["SC7.5.1"], 1, "var", varset([
   function () {
     return mcq("After an hour of pond hockey on a -10 °C day, a player says she feels warm, even hot. The thermometer still reads -10 °C. What does this show about judging temperature by feel?",
       "Feelings of warmth depend on what your body is doing, not only on the temperature, so skin is an unreliable thermometer",
-      ["The thermometer must be broken, because the player feels warm",
-       "Exercise raises the temperature of the air around the player",
-       "Cold air feels warm whenever the sun is shining"],
+      ["The thermometer must be broken, because it cannot read -10 °C while the player out on the ice feels warm",
+       "Exercise raises the temperature of the air immediately around the player by several degrees",
+       "Cold air always feels warm to anyone whenever the winter sun is shining on them"],
       "Your sense of hot and cold responds to your own state: exercise generates heat inside the body, so the same -10 °C air feels mild. That is why a thermometer, not skin, is the tool for measuring temperature, and why hands dipped in the same water can disagree about it.",
       {});
   },
@@ -2593,9 +2593,9 @@ E("s7-u2-past-tech", 2, ["SC7.5.2"], 2, "var", varset([
   function () {
     return mcq("Early liquid thermometers existed before anyone could compare temperatures between towns. What development made such comparisons possible?",
       "Agreeing on a scale with fixed points, so the same reading meant the same temperature everywhere",
-      ["Making the glass tube longer so the liquid rose higher",
-       "Colouring the liquid so it could be seen more easily",
-       "Using wider tubes that held more liquid"],
+      ["Making the glass tube longer so the liquid rose higher when the temperature rose",
+       "Colouring the liquid in the tube so it could be seen more easily from a distance",
+       "Using wider tubes that held more liquid and were harder to break in use"],
       "A thermometer without a shared scale shows only warmer or cooler. Once scales were fixed to reproducible points, like water freezing and boiling, a reading of 20 meant the same thing in every town, and temperatures could be recorded, compared and used scientifically.",
       {});
   }
@@ -2632,18 +2632,18 @@ E("s7-u2-approaches", 2, ["SC7.5.4"], 1, "var", varset([
   function () {
     return mcq("A family installs a heat pump instead of a bigger furnace. Which approach to the home heating problem have they taken?",
       "Move heat that already exists outdoors into the house, instead of making all the heat themselves",
-      ["Burn a fuel on site to make heat",
-       "Turn electricity directly into heat in every room",
-       "Reduce the need for heat by sealing and insulating the house"],
+      ["Burn a fuel on site in a furnace or stove to make all the heat the house needs",
+       "Turn electricity directly into heat in every room with baseboard heaters",
+       "Reduce the need for heat by sealing drafts and insulating the whole house well"],
       "A heat pump does not create its heat by burning or by direct electric heating; it moves heat from the outdoor air (or ground) into the house. The other options name the other approaches: burning a fuel, direct electric heat, and reducing the need through insulation.",
       {});
   },
   function () {
     return mcq("Which household has taken the 'reduce the need' approach to heating?",
       "A household that adds insulation and seals drafts, so their existing furnace runs far less",
-      ["A household that switches from oil to a wood stove",
-       "A household that installs a larger oil furnace",
-       "A household that adds electric baseboards to every room"],
+      ["A household that switches from oil heat to a wood stove in the kitchen",
+       "A household that installs a larger oil furnace to replace its old one",
+       "A household that adds electric baseboard heaters to every room of the house"],
       "Reducing the need means the house loses less heat, so whatever system it has runs less. The other households changed how heat is made, not how much heat the house needs.",
       {});
   }
@@ -2653,9 +2653,9 @@ E("s7-u2-approaches-compare", 2, ["SC7.5.4"], 2, "var", varset([
   function () {
     return mcq("Household A heats with a wood stove because their property has plenty of free firewood and someone home all day. Household B, both adults working long shifts, heats with electric baseboards. Which statement best explains the difference?",
       "Each household's approach fits its situation: A can supply the labour wood heat demands; B needs heat that looks after itself",
-      ["Household B has chosen the approach that is always better in every situation",
-       "Household A is using an approach that no longer exists in this province",
-       "The two households are actually using the same approach"],
+      ["Household B has chosen the approach that is always better in every situation, whatever the house",
+       "Household A is using an approach that no longer exists in this province, because wood heat has been given up everywhere",
+       "The two households are actually using the same approach to heating their homes"],
       "Wood heat is cheap where firewood is free, but it demands daily labour: cutting, carrying, stoking. Electric baseboards cost more to run but need no labour at all. Neither approach is best in the abstract; each fits the household's circumstances, which is the heart of comparing approaches.",
       {});
   }
@@ -2666,18 +2666,18 @@ E("s7-u2-heating-adv", 2, ["SC7.5.5"], 2, "var", varset([
   function () {
     return mcq("Which is a genuine advantage of heating a home with a heat pump, as the Heat Pumps module presents it?",
       "It moves heat rather than making it, so it delivers more heat energy than the electrical energy it uses",
-      ["It needs no electricity to run",
-       "It works without any equipment outside the house",
-       "It costs nothing to install"],
+      ["It needs no electricity to run at all, even on the coldest days of the winter",
+       "It works without any equipment outside the house or anywhere else on the property",
+       "It costs nothing to install, so any household can have one put in without paying anything"],
       "Because a heat pump moves existing heat instead of converting electricity directly into heat, the heat delivered to the house can exceed the electrical energy consumed. It does use electricity, it does need an outdoor unit, and its installation cost is one of its real disadvantages.",
       {});
   },
   function () {
     return mcq("Which is a genuine advantage of heating with wood, as the Heat Pumps module presents it?",
       "The fuel is renewable and, for households with their own woodlot, can be very cheap",
-      ["It requires no labour once the stove is installed",
-       "It carries no risk of spills or air pollution",
-       "It heats every room of the house evenly"],
+      ["It requires no labour at all once the stove has been installed in the house",
+       "It carries no risk of fuel spills or of air pollution inside or outside the house",
+       "It heats every room of the house evenly, from the basement to the attic"],
       "Wood regrows, and a household cutting its own pays mostly in labour rather than money, which is wood's great advantage. Its disadvantages are just as real: heavy labour, storage space, smoke, and heat concentrated near the stove.",
       {});
   }
@@ -2687,18 +2687,18 @@ E("s7-u2-heating-disadv", 2, ["SC7.5.5"], 2, "var", varset([
   function () {
     return mcq("Which is a genuine disadvantage of heating with oil, as the Heat Pumps module presents it?",
       "The fuel must be delivered and stored in a tank, and a leak or spill can seriously damage soil and water",
-      ["Oil furnaces cannot heat a whole house",
-       "Oil produces no greenhouse gases, which confuses buyers",
-       "Oil tanks refill themselves automatically from the ground"],
+      ["Oil furnaces cannot heat a whole house, only one or two rooms at a time",
+       "Oil produces no greenhouse gases at all, which confuses buyers comparing heating fuels",
+       "Oil tanks refill themselves automatically from the ground beneath the house"],
       "Oil's costs include delivery, storage and price swings, and its environmental risk is the spill: a leaking tank can contaminate soil and groundwater, an expensive disaster. Oil furnaces heat whole houses perfectly well, and burning oil does produce greenhouse gases.",
       {});
   },
   function () {
     return mcq("Which is a genuine disadvantage of electric baseboard heating, as the Heat Pumps module presents it?",
       "Turning electricity directly into heat is one of the most expensive ways to heat a house",
-      ["Baseboards cannot be controlled room by room",
-       "Baseboards need a fuel truck to visit every month",
-       "Baseboards produce smoke inside the rooms they heat"],
+      ["Baseboards cannot be controlled room by room or turned down at night",
+       "Baseboards need a fuel truck to visit the house every month of the year",
+       "Baseboards produce smoke and soot inside the rooms they are heating"],
       "Baseboards are simple, cheap to install and controllable room by room, but every unit of heat costs a full unit of electricity, which makes running them expensive. They need no deliveries and produce no smoke; their weakness is running cost.",
       {});
   }
@@ -2718,18 +2718,18 @@ E("s7-u2-improvement", 2, ["SC7.5.6"], 1, "var", varset([
   function () {
     return mcq("Which change is an improvement in home heating technology over time, of the kind this unit studies?",
       "The open fireplace giving way to the airtight wood stove, which burns wood more completely and sends less heat up the chimney",
-      ["Houses being built with larger fireplaces than before",
-       "Families returning to heating one room only, as in the past",
-       "Furnaces being designed to need stoking every hour"],
+      ["Houses being built with larger open fireplaces than before in every main room",
+       "Families returning to heating one room only, as in the past, and closing off the rest of the house",
+       "Furnaces being designed to need stoking by hand every hour of the day and night"],
       "Improvements make heating more efficient, safer, cleaner or less labour-intensive. The airtight stove controls its air supply, burns wood more completely and keeps more heat in the room than an open fireplace, which loses most of its heat up the chimney.",
       {});
   },
   function () {
     return mcq("What did the thermostat improve about home heating when it became common?",
       "It let the heating system switch itself on and off to hold a set temperature, ending the need to tend the furnace by hand around the clock",
-      ["It made furnaces burn hotter than ever before",
-       "It removed the need for fuel deliveries",
-       "It allowed one furnace to heat several houses at once"],
+      ["It made furnaces burn hotter than ever before, so houses could be kept much warmer",
+       "It removed the need for fuel deliveries to the house altogether, in every season",
+       "It allowed one furnace to heat several houses at once, sending heat through long pipes buried under the street between them"],
       "A thermostat senses the room temperature and switches the system on and off to hold the setting, using a bimetallic strip or an electronic sensor. That automation is the improvement: steady temperatures with far less labour and less wasted fuel.",
       {});
   }
@@ -2749,9 +2749,9 @@ E("s7-u2-pump-cycle", 2, ["SC7.5.7"], 2, "var", varset([
   function () {
     return mcq("A heat pump's refrigerant carries heat from outside a house to inside. Which sequence of steps does the refrigerant follow?",
       "It evaporates at low pressure, absorbing heat outdoors; it is compressed; it condenses at high pressure indoors, releasing the heat; then it expands back through a valve",
-      ["It condenses outdoors, releasing heat; it evaporates indoors, absorbing the house's heat; then it is stored in a tank",
-       "It is compressed outdoors until it glows hot, then blown through ducts into the rooms",
-       "It freezes outside, is carried in as a solid, and melts indoors, releasing heat"],
+      ["It condenses outdoors, releasing heat; it evaporates indoors, absorbing the house's heat; then it is stored in a tank until it is needed again",
+       "It is compressed outdoors until it glows hot, then blown through ducts directly into the rooms of the house",
+       "It freezes outside into a solid, is carried indoors, and melts there, releasing its heat into the rooms"],
       "The cycle runs on the two changes of state. At low pressure in the outdoor coil the refrigerant evaporates, and evaporation takes in heat, even from cold air. The compressor squeezes it, and at high pressure indoors it condenses, and condensation gives heat off into the house. The expansion valve drops its pressure and the cycle repeats.",
       {});
   }
@@ -2761,18 +2761,18 @@ E("s7-u2-pump-science", 2, ["SC7.5.7"], 2, "var", varset([
   function () {
     return mcq("Why does lowering the pressure on a liquid refrigerant make it evaporate more easily, and why does that matter to a heat pump?",
       "At low pressure the particles need less energy to escape as a gas, so the refrigerant can evaporate at a low temperature and absorb heat from cold outdoor air",
-      ["Low pressure heats the refrigerant directly, boiling it with friction",
-       "At low pressure the refrigerant turns into a fuel and burns slowly",
-       "Low pressure removes the refrigerant's particles, leaving room for heat"],
+      ["Low pressure heats the refrigerant directly, boiling it with friction as it squeezes through the narrow valve",
+       "At low pressure the refrigerant turns into a fuel and burns slowly in the outdoor coil, and that burning is what warms the house",
+       "Low pressure removes most of the refrigerant's particles from the liquid, leaving room for heat to move in"],
       "Evaporation means particles escaping the liquid, and pressure pressing down on the liquid makes escape harder. Drop the pressure and the refrigerant boils at a much lower temperature, low enough to take heat from winter air. That is the same effect that makes a propane tank feel cold as gas escapes and the remaining liquid evaporates to replace it.",
       {});
   },
   function () {
     return mcq("A common objection is: 'There is no heat in -18 °C air for a heat pump to take.' Which reply is scientifically correct?",
       "Air at -18 °C still holds most of the heat energy it has at room temperature; heat exists in matter at every temperature above absolute zero",
-      ["The objection is correct; heat pumps stop working below 0 °C",
-       "The heat pump makes up the difference by burning a small amount of fuel",
-       "Cold air contains a different kind of heat that only heat pumps can use"],
+      ["The objection is correct; heat pumps stop working completely once the air falls below 0 °C",
+       "The heat pump makes up the difference by burning a small amount of fuel in a backup furnace inside the house",
+       "Cold air contains a different kind of heat that only heat pumps can use, stored in a form other machines cannot reach"],
       "Heat is particle energy, and particles hold energy at every temperature above absolute zero. Air at -18 °C holds roughly 85 percent of the heat it holds at 21 °C, so there is plenty for the refrigerant to absorb, even though the pump works harder as the temperature falls.",
       {});
   }
@@ -2790,9 +2790,9 @@ E("s7-u2-cr-pump-chain", 2, ["SC7.5.7"], 3, "var", varset([
 /* ---------- SC7.5.8 Insulating technologies ---------- */
 E("s7-u2-insulator-examples", 2, ["SC7.5.8"], 1, "gen", function () {
   var cases = [
-    { q: "Which of these is used as an insulator in the situation described?", key: "The trapped air in a puffy winter jacket, slowing heat loss from the body", d: ["The metal pot conducting heat to the soup inside it", "The copper wire carrying current to a heater", "The steel radiator giving off heat to a room"] },
+    { q: "Which of these is used as an insulator in the situation described?", key: "The trapped air in a puffy winter jacket, slowing heat loss from the body", d: ["The metal pot conducting heat from the stove to the soup inside it", "The copper wire carrying electric current to a heater in the next room", "The steel radiator giving off its heat to the air of the room"] },
     { q: "Which material is doing insulating work here?", key: "The fibreglass batts packed into an attic floor", d: ["The aluminum foil lining a roasting pan to spread heat", "The cast iron of a wood stove radiating heat", "The metal handle of a saucepan left on the stove"] },
-    { q: "Which is an example of insulation, past or present?", key: "Sod walls on an early settler's house, trapping air and slowing heat loss", d: ["A steel bridge expanding on a hot day", "A black roof absorbing the Sun's heat", "A metal spoon warming in hot soup"] }
+    { q: "Which is an example of insulation, past or present?", key: "Sod walls on an early settler's house, trapping air and slowing heat loss", d: ["A steel bridge expanding in the heat on a hot summer day", "A black roof absorbing the Sun's heat through the whole afternoon", "A metal spoon warming up quickly in a bowl of hot soup"] }
   ];
   var c = pick(cases);
   return mcq(c.q,
@@ -2805,9 +2805,9 @@ E("s7-u2-insulation-past", 2, ["SC7.5.8"], 1, "var", varset([
   function () {
     return mcq("Builders in Atlantic Canada once packed straw, seaweed, sawdust and even newspaper into house foundations and walls. Why did such loose, ordinary materials insulate at all?",
       "They trap a great deal of air in their spaces, and trapped air is a poor conductor of heat",
-      ["They generate a small amount of heat as they decay",
-       "They reflect heat back into the house like mirrors",
-       "They absorb water, and wet materials insulate best"],
+      ["They generate a small amount of heat of their own as they slowly decay",
+       "They reflect heat back into the house like mirrors on every side",
+       "They absorb a great deal of water, and wet materials insulate best"],
       "None of those materials is a remarkable insulator by itself; what they share is structure. Packed loosely, they hold pockets of still air, and still air conducts heat very poorly, so the wall loses heat slowly. Modern fibreglass and foam work on the same principle.",
       {});
   }
@@ -2817,18 +2817,18 @@ E("s7-u2-thermos", 2, ["SC7.5.8"], 2, "var", varset([
   function () {
     return mcq("A thermos keeps a cold drink cold for hours. Its wall is a vacuum (almost no air) between two layers, with a shiny inner surface. Which transfer processes do these features fight?",
       "The vacuum blocks conduction and convection, which need matter; the shiny surface reflects radiation",
-      ["The vacuum blocks radiation; the shiny surface blocks conduction",
-       "The vacuum absorbs heat; the shiny surface generates cold",
-       "Both features block convection only"],
+      ["The vacuum blocks radiation completely; the shiny surface blocks conduction and convection",
+       "The vacuum absorbs heat from the drink; the shiny surface generates cold to replace it",
+       "Both features work together to block convection and nothing else"],
       "Conduction and convection both need matter to move through, so a vacuum, with almost no particles, stops both. Radiation needs no matter, so the vacuum cannot stop it; the shiny surface handles radiation by reflecting it instead of absorbing it. A good thermos fights all three processes at once.",
       {});
   },
   function () {
     return mcq("In the Heat Transfer Design Challenge, a team must keep a refrigerated juice box within 5 °C of a control juice box's temperature for two hours. Which design choice best fits the science?",
       "Wrap the juice box in layers that trap air, like foam or crumpled paper inside a sealed container",
-      ["Wrap the juice box in a single layer of aluminum foil pressed tightly to it",
-       "Stand the juice box in a metal can so heat can spread evenly",
-       "Paint the juice box black so it absorbs warmth from the room"],
+      ["Wrap the juice box in a single layer of aluminum foil pressed tightly to it on all sides",
+       "Stand the juice box inside a metal can so heat can spread evenly around it",
+       "Paint the juice box black so it absorbs as much warmth from the room as possible"],
       "Layers that trap air insulate, because still air is a poor conductor, and sealing the container stops convection currents from carrying heat in. A tight metal wrap conducts; a metal can spreads heat; a black surface absorbs radiant heat, the opposite of the goal.",
       {});
   }
@@ -2839,9 +2839,9 @@ E("s7-u2-needs-tech", 2, ["SC7.5.9"], 1, "var", varset([
   function () {
     return mcq("Which pairing correctly matches a heat-related human need to the development it produced?",
       "Treating sprains and sports injuries led to instant cold packs and heat packs that work without a freezer or stove",
-      ["Wanting warmer houses led to the invention of the thermometer",
-       "Needing to cook food led to the development of fibreglass insulation",
-       "Wanting to measure temperature led to the invention of the heat pump"],
+      ["Wanting warmer houses in winter led to the invention of the thermometer to measure them",
+       "Needing to cook food over open fires led to the development of fibreglass insulation for houses",
+       "Wanting to measure temperature exactly led to the invention of the heat pump for houses"],
       "Instant packs answer a medical need: cold or heat applied on the spot, anywhere, with no equipment. The other pairings scramble the unit's stories: thermometers answer a measuring need, insulation a housing need, and the heat pump an energy need.",
       {});
   }
@@ -2851,9 +2851,9 @@ E("s7-u2-winter-clothing", 2, ["SC7.5.9"], 2, "var", varset([
   function () {
     return mcq("Fishers in this province once wore wool sweaters coated in linseed oil when working on cold water. What problem was the oil solving?",
       "Plain wool insulates well when dry but loses much of its insulating power when soaked; the oil shed water and kept the trapped air in the wool",
-      ["The oil made the wool produce its own heat",
-       "The oil made the sweater heavier so it would not blow off",
-       "The oil attracted heat from the sea air"],
+      ["The oil made the wool fibres produce their own heat, like a small stove worn next to the skin",
+       "The oil made the sweater much heavier, so it would not blow off in the strong wind coming off the cold water where the boats worked",
+       "The oil attracted heat out of the sea air and held it in the wool fibres for the whole working day on the water"],
       "Wool insulates by trapping air, and trapped air only works while it stays in place. Soaked wool loses its air to water and its insulation with it. An oil coating sheds the water, keeping the air trapped and the fisher warm. Modern technical fabrics solve the same problem with synthetic fibres and waterproof-breathable layers.",
       {});
   }
@@ -2871,9 +2871,9 @@ E("s7-u2-career-match", 2, ["SC7.5.10"], 1, "var", varset([
   function () {
     return mcq("A homeowner's furnace stops working in January. Which career from this unit's list is called, and why?",
       "A furnace service technician, who installs, maintains and repairs heating systems",
-      ["A blacksmith, who works with furnaces",
-       "A health care worker, who deals with emergencies",
-       "A light bulb manufacturer, who makes parts for the furnace"],
+      ["A blacksmith, who works with a forge furnace for shaping hot metal",
+       "A health care worker, who deals with medical emergencies of every kind",
+       "A light bulb manufacturer, who makes small parts that fit inside the furnace"],
       "Furnace service technicians are the heating-system specialists: they install, maintain and repair furnaces and heat pumps, which is exactly the January problem. The blacksmith's furnace is a forge for shaping metal, not a home heating system.",
       {});
   }
@@ -2972,9 +2972,9 @@ E("s7-u2-hypothesis-form", 2, ["SC7.6.3"], 1, "var", varset([
   function () {
     return mcq("A student asks: 'What happens to the temperature of ice water while the ice is melting?' Which is a proper testable hypothesis for this question?",
       "The temperature will stay the same while the ice melts, because the energy goes into breaking the ice's structure rather than warming the water",
-      ["Melting is an interesting process that has fascinated scientists for centuries",
-       "The temperature will do something unexpected during melting",
-       "Ice melts at 0 °C because that is its melting point"],
+      ["Melting is an interesting process that has fascinated scientists and students for centuries in many countries",
+       "The temperature will do something unexpected at some point during the melting of the ice",
+       "Ice melts at 0 °C because that is its melting point, listed in every table of melting points for common substances"],
       "A hypothesis is a prediction the experiment can test, with a reason attached: here, a flat temperature during melting, explained by energy going into the change of state. The other options are a topic sentence, a prediction too vague to test, and a fact restated rather than a prediction about the experiment.",
       {});
   }
@@ -2984,9 +2984,9 @@ E("s7-u2-experiment-chain", 2, ["SC7.6.3"], 3, "var", varset([
   function () {
     return mcq("A team investigated whether a black or a white can warms faster under a lamp. Their write-up says: 'Hypothesis: the black can will warm faster. We filled the black can with 200 mL of oil and the white can with 100 mL, put both under the lamp, and measured after 15 minutes. The black can was warmer, so our hypothesis was correct.' What is the serious flaw in this chain?",
       "The amounts of oil differed, so the colour was not the only difference between the cans; the conclusion cannot be trusted",
-      ["The hypothesis was stated before the experiment began",
-       "The team measured only once, at 15 minutes",
-       "The team used oil instead of water in the cans"],
+      ["The hypothesis was stated before the experiment began, which is when hypotheses are supposed to be stated",
+       "The team measured the temperatures only once, at the end of 15 minutes of heating",
+       "The team used oil instead of water in the cans for the whole investigation"],
       "A fair test changes one variable at a time. With 200 mL in one can and 100 mL in the other, the smaller amount would warm faster whatever its colour, so the warmer can proves nothing about colour. Stating the hypothesis first is correct practice, and single end measurements and oil are both workable choices.",
       {});
   }
@@ -3009,18 +3009,18 @@ E("s7-u2-tools-safety", 2, ["SC7.6.4"], 1, "var", varset([
   function () {
     return mcq("Which practice is the safe one when heating water for a class investigation?",
       "Use a hot plate or kettle as directed, keep the cord and water apart from the edge of the bench, and treat every heated container as hot",
-      ["Carry a full beaker of just-boiled water across the room to your bench",
-       "Lean over the container to watch the thermometer more closely",
-       "Leave the hot plate on and unattended while you get more materials"],
+      ["Carry a full beaker of just-boiled water across the crowded room to your bench when you are ready for it in class",
+       "Lean over the container of hot water to watch the thermometer reading inside it more closely",
+       "Leave the hot plate switched on and unattended while you leave to get more materials"],
       "Heating investigations combine hot water, glassware and electricity. Working at the bench, keeping water and cords managed, and assuming heated containers are hot prevents the common injuries. Carrying boiling water, leaning over steam, and leaving a hot plate unattended are the accident patterns.",
       {});
   },
   function () {
     return mcq("A thermometer breaks during an investigation. Which response is correct?",
       "Tell the teacher and keep clear of the spill; school thermometers contain alcohol, and cleanup follows the teacher's directions",
-      ["Pick up the glass quickly with bare hands before someone steps on it",
-       "Sweep the spill under the bench so the investigation can continue",
-       "Wash the liquid down the sink without mentioning it"],
+      ["Pick up the glass quickly with bare hands and carry it to the bin before someone steps on it in the classroom",
+       "Sweep the spill and the glass under the bench so the investigation can continue without delay",
+       "Wash the spilled liquid down the sink with plenty of water without mentioning it to anyone"],
       "Broken glass and spilled liquid are a teacher-managed cleanup: bare hands on glass and hidden spills injure other people. School thermometers use alcohol rather than mercury, which is safer, but the spill and glass still need proper handling.",
       {});
   }
@@ -3030,9 +3030,9 @@ E("s7-u2-tools-accurate", 2, ["SC7.6.4"], 2, "var", varset([
   function () {
     return mcq("A team records a different temperature every time they check the same beaker of warm water. Which change most improves the accuracy of their readings?",
       "Stir the water gently, keep the bulb off the beaker's bottom, and wait for the column to settle before reading at eye level",
-      ["Read the thermometer as quickly as possible each time",
-       "Use a different thermometer for each reading and average them",
-       "Hold the thermometer near the top of the water only"],
+      ["Read the thermometer as quickly as possible each time, before the column has settled",
+       "Use a different thermometer for each reading and average the three readings together",
+       "Hold the thermometer near the top of the water only, just under the surface, for every reading the team takes"],
       "Uneven temperatures in the beaker, a bulb touching hot glass, and reading a still-moving column all produce scattered readings. Stirring evens the water out, keeping the bulb in the liquid (not on the bottom) measures the water, and waiting for the column to settle, then reading at eye level, measures it the same way every time.",
       {});
   }
@@ -3043,9 +3043,9 @@ E("s7-u2-table-build", 2, ["SC7.6.5"], 1, "var", varset([
   function () {
     return mcq("Which table correctly organizes The Plateau Problem's data, where temperature was recorded every 3 minutes during melting and again during boiling?",
       "A table with a time column (0, 3, 6, 9... minutes) and two temperature columns, one for the melting run and one for the boiling run",
-      ["A table with one row listing every temperature in the order the student remembers them",
-       "A table with temperatures down the side and the names of group members across the top",
-       "A table with a single column of temperatures and no times"],
+      ["A table with one row listing every temperature in the order the student happens to remember them afterward",
+       "A table with temperatures down the side and the names of the group members across the top instead",
+       "A table with a single column of temperatures and no times recorded beside any of them"],
       "The data are temperatures measured at times, in two runs. The table needs the independent variable (time) and a column for each run's temperatures so the two plateaus can be compared. Times are essential: without them, the plateaus cannot be seen at all.",
       {});
   }
@@ -3096,9 +3096,9 @@ E("s7-u2-design-challenge", 2, ["SC7.6.6"], 2, "var", varset([
   function () {
     return mcq("In the Heat Transfer Design Challenge, every team insulates a juice box and compares it with an uninsulated control juice box taken from the same refrigerator. Why is the control box essential to the design?",
       "It shows how much an uninsulated box warms in the same conditions, so a team's result measures their insulation and not just the room",
-      ["It gives the team a spare juice box if theirs leaks",
-       "It keeps the refrigerator at a steady temperature",
-       "It proves that all juice boxes start at the same temperature"],
+      ["It gives the team a spare juice box to use if their insulated box leaks or is damaged during the two hours of the test",
+       "It keeps the refrigerator at a steady temperature while the test is running",
+       "It proves that all juice boxes taken from a refrigerator start out at exactly the same temperature"],
       "Rooms differ and afternoons warm up; without a control, a team cannot tell whether their box stayed cold because of their design or because the room was cool. The control warms under the same conditions with no insulation, so the difference between the two boxes is the design's effect.",
       {});
   }
@@ -3121,9 +3121,9 @@ E("s7-u2-apparatus-safety", 2, ["SC7.6.7"], 1, "var", varset([
   function () {
     return mcq("In Absorb That Energy, the apparatus includes a 100 W lamp, cans of oil, glassware and thermometers. Which set-up is the safe one?",
       "The lamp is clamped steady, cords are kept away from the oil and water, and the hot lamp is treated as hot even after it is switched off",
-      ["The lamp rests loosely on the bench so it can be aimed by hand during the run",
-       "The cans are filled to the brim so no oil can slosh out",
-       "The thermometers are laid across the lamp to warm up faster"],
+      ["The lamp rests loosely on the edge of the bench so anyone can aim it by hand at any point during the run",
+       "The cans of oil are filled right up to the brim so that no oil can possibly slosh out during the whole run",
+       "The thermometers are laid across the hot lamp before the run to warm them up faster"],
       "A 100 W lamp is a burn and electrical hazard: it must be secured, kept clear of liquids and cords, and treated as hot after use. Loose lamps fall, brim-full cans spill hot oil, and nothing belongs on the lamp itself.",
       {});
   }
@@ -3133,9 +3133,9 @@ E("s7-u2-apparatus-choice", 2, ["SC7.6.7"], 2, "var", varset([
   function () {
     return mcq("A team's Absorb That Energy readings jump around between minutes. Their thermometer is pushed through a hole in the can's lid so its bulb touches the can's metal side. What should they fix?",
       "Reposition the thermometer so its bulb sits in the oil, not touching the can, and seal the lid hole so heat does not escape",
-      ["Read the thermometer faster, before it changes",
-       "Use a bigger lamp so the temperature changes more",
-       "Stir the oil with the thermometer while it is still plugged into the lid"],
+      ["Read the thermometer much faster each time, before its reading has a chance to change at all",
+       "Use a bigger, more powerful lamp so the temperature of the oil changes more quickly",
+       "Stir the oil with the thermometer while it is still plugged through the hole in the lid of the can"],
       "A bulb touching the metal reads the can's temperature, not the oil's, and the can responds to the lamp faster and unevenly. The bulb belongs in the oil, clear of the sides, and the plasticine seal around the lid keeps heat in and the thermometer steady, which is part of the laboratory's own set-up.",
       {});
   }
@@ -3158,9 +3158,9 @@ E("s7-u2-display-absorb", 2, ["SC7.6.8", "SC7.6.5"], 3, "var", varset([
   function () {
     var q = mcq("The graph shows the two cans from Absorb That Energy. At the 15-minute mark the lamp is switched off. Which statement is best supported?",
       "At 15 minutes the dark can is about 10 °C warmer, and because good absorbers are also good emitters, the dark can should also cool faster once the lamp is off",
-      ["At 15 minutes the light can is warmer, and it will cool faster",
-       "The two cans are at the same temperature at 15 minutes",
-       "The dark can will stay warmer forever once the lamp is off"],
+      ["At 15 minutes the light can is warmer than the dark can, and because it warmed faster it will also cool faster once the lamp is off",
+       "The two cans have reached exactly the same temperature as each other at the 15-minute mark",
+       "The dark can will stay warmer than the light can forever, even long after the lamp is switched off"],
       "Reading the lines at 15 minutes: the dark can is near 43 °C and the light can near 33 °C, a difference of about 10 °C. The laboratory's analysis adds the emission principle: surfaces that absorb well also emit well, so the dark can gives its heat away faster and cools faster in the dark. Nothing supports forever; both cans return to room temperature.",
       {});
     q.figure = s7AbsorbGraphSVG([0, 5, 10, 15], [22, 30, 37, 43], [22, 26, 30, 33]);
@@ -3173,9 +3173,9 @@ E("s7-u2-conclusion-support", 2, ["SC7.6.9"], 2, "var", varset([
   function () {
     return mcq("In The Plateau Problem, a class's graph shows the temperature holding at 0 °C while ice melts, rising steadily, then holding at 100 °C while the water boils. Which conclusion do these data support?",
       "While a substance changes state, its temperature stays constant; the added energy goes into the change of state itself",
-      ["A thermometer cannot measure temperature while a substance is changing state",
-       "Ice melts and water boils at the same temperature",
-       "Heating a substance always raises its temperature steadily"],
+      ["A thermometer cannot measure temperature properly while a substance is in the middle of changing state",
+       "Ice melts and water boils at one and the same temperature on the graph",
+       "Heating a substance always raises its temperature steadily from start to finish"],
       "The two plateaus are the data's message: during melting and boiling, added energy does the work of changing state instead of raising temperature. The thermometer worked throughout, the two changes happen at different temperatures, and the steady-rise claim is exactly what the plateaus disprove.",
       {});
   }
@@ -3185,9 +3185,9 @@ E("s7-u2-conclusion-refute", 2, ["SC7.6.9"], 2, "var", varset([
   function () {
     return mcq("Before the investigation, a student predicted the dark can and the light can would warm at the same rate, 'because the lamp shines on both equally.' The data show the dark can 10 °C warmer after 15 minutes. What should the student conclude?",
       "The prediction is refuted: equal shining is not equal absorbing, and the dark surface absorbed more of the lamp's radiant heat",
-      ["The prediction is supported, because both cans did warm up",
-       "The data must be wrong, because the lamp shone equally on both",
-       "Nothing can be concluded until the test is done with water instead of oil"],
+      ["The prediction is supported, because both cans did warm up under the lamp",
+       "The data must be wrong, because the lamp shone equally on both cans the whole time",
+       "Nothing at all can be concluded until the whole test is done over again with water instead of oil in both cans"],
       "A conclusion judges the prediction against the data. Both cans received the same radiation, but absorption depends on the surface, and the 10 °C gap shows the dark surface absorbed more. The prediction is refuted, and the data, not the prediction, carry the conclusion.",
       {});
   }
@@ -3285,18 +3285,18 @@ E("s7-u3-pure-misconception", 3, ["SC7.7.1"], 2, "var", varset([
   function () {
     return mcq("A juice box is labelled '100% pure orange juice.' A student says this means orange juice is a pure substance in the scientific sense. Which response is correct?",
       "The label uses 'pure' in the everyday sense; scientifically, orange juice is a mixture of water, sugars, pulp and other substances",
-      ["The student is right, because the label says pure",
-       "The student is right, because orange juice is clear enough to see through",
-       "The label is wrong, because pure substances are always safe to drink"],
+      ["The student is right, because the label says pure and labels must use words scientifically",
+       "The student is right, because orange juice is clear enough to see through when held up to the light",
+       "The label is wrong, because anything called a pure substance is always safe for people to drink or eat"],
       "Everyday 'pure' means something like unspoiled or nothing added. Scientific 'pure' means one kind of particle only. Orange juice contains many kinds of particle, so it is a mixture however honest the label is. The guide names this exact confusion, along with 'pure means safe to ingest' and 'pure means clear,' as misconceptions to correct.",
       {});
   },
   function () {
     return mcq("Which statement about pure substances is scientifically correct?",
       "Compounds such as salt, sugar and baking soda are pure substances, because each contains its particles in fixed proportions",
-      ["Only elements can be pure substances",
-       "A pure substance is one that is safe to eat or drink",
-       "If a substance looks clear and uniform, it must be a pure substance"],
+      ["Only elements can be pure substances; compounds are always mixtures of elements",
+       "A pure substance is one that is safe for people to eat or drink, with nothing harmful in it",
+       "If a substance looks clear and uniform all the way through, it must be a pure substance in the scientific sense"],
       "Pure substances are not limited to elements. A compound's particles are all alike, with their elements combined in fixed proportions, so compounds are pure substances. Safety and clarity are everyday meanings of 'pure,' not the scientific one: some pure substances are poisonous, and some mixtures look perfectly clear.",
       {});
   }
@@ -3332,18 +3332,18 @@ E("s7-u3-light-test", 3, ["SC7.7.2"], 2, "var", varset([
   function () {
     return mcq("A flashlight beam is shone through two mixtures in a dark room. Through Mixture A the beam passes cleanly and cannot be seen from the side. In Mixture B the beam scatters and glows as it crosses. What does the light test show?",
       "A is homogeneous (light passes through unaffected); B is heterogeneous (its particles scatter the light)",
-      ["A is heterogeneous; B is homogeneous",
-       "Both are homogeneous, because both let some light through",
-       "Both are pure substances, because light behaves specially in mixtures"],
+      ["A is heterogeneous; B is homogeneous, exactly the reverse of the correct reading",
+       "Both are homogeneous, because both of them let at least some light pass through",
+       "Both are pure substances, because light behaves in a special way when it crosses mixtures"],
       "Light behaviour separates the two mixture types: in a homogeneous mixture the particles are too evenly spread and small to disturb the beam, so it passes through unaffected. In a heterogeneous mixture the larger particles reflect and scatter the light, making the beam visible from the side.",
       {});
   },
   function () {
     return mcq("In a sunbeam crossing a classroom, the dust in the air becomes visible where the light passes. What does this reveal about classroom air?",
       "Classroom air is a heterogeneous mixture, because the dust particles in it scatter the light",
-      ["Classroom air is a pure substance, because gases are pure",
-       "Classroom air is homogeneous, because air always is",
-       "The sunbeam creates the dust, which was not there before"],
+      ["Classroom air is a pure substance, because all gases are pure substances",
+       "Classroom air is a homogeneous mixture, because air is homogeneous everywhere",
+       "The sunbeam creates the dust particles, which were not in the air before"],
       "Air's gases form a homogeneous mixture, but classroom air also carries dust particles, and those particles scatter the light and give the mixture away as heterogeneous. Clean air in a breathing apparatus, without the dust, is the homogeneous case.",
       {});
   }
@@ -3353,9 +3353,9 @@ E("s7-u3-combination", 3, ["SC7.7.2"], 2, "var", varset([
   function () {
     return mcq("Orange juice is described as a combination mixture. Why does it not fit neatly into either the homogeneous or the heterogeneous class?",
       "Its sugars are dissolved evenly in the water (a homogeneous part) while its pulp stays in visible pieces (a heterogeneous part)",
-      ["It changes class depending on the temperature of the room",
-       "It is actually a pure substance, so neither class applies",
-       "Its colour hides which class it belongs to"],
+      ["It changes class depending on the temperature of the room, being one class when warm and the other when cold",
+       "It is actually a pure substance in the scientific sense, so neither mixture class applies to it",
+       "Its orange colour hides which class it belongs to from anyone looking at it"],
       "Many real mixtures combine both behaviours. In orange juice the dissolved sugars and water form a solution, while the pulp remains as separate visible pieces. Milk and soft drinks are the guide's other combination examples. Classification questions in this strand stick to clear examples for the two main classes and treat combinations honestly as combinations.",
       {});
   }
@@ -3390,9 +3390,9 @@ E("s7-u3-dissolving-particles", 3, ["SC7.7.3"], 1, "var", varset([
   function () {
     return mcq("When sugar dissolves in water, what happens at the particle level?",
       "The sugar particles separate from each other and spread evenly among the water particles",
-      ["The sugar particles melt and become water particles",
-       "The sugar particles disappear completely",
-       "The water particles break apart into new particles"],
+      ["The sugar particles melt in the water and become water particles themselves",
+       "The sugar particles disappear completely and are gone for good",
+       "The water particles break apart and form entirely new particles"],
       "Dissolving is a physical mixing at the particle level: the solute's particles leave each other and distribute evenly through the solvent's particles. The sugar is still there, which is why the water tastes sweet and why evaporation can recover it. Nothing melts, disappears, or changes into a different particle.",
       {});
   },
@@ -3458,9 +3458,9 @@ E("s7-u3-saturated", 3, ["SC7.7.4"], 1, "var", varset([
   function () {
     return mcq("Which statement about concentrated and saturated is correct?",
       "A solution can be concentrated and still unsaturated, if it holds a lot of solute but could dissolve more",
-      ["Concentrated and saturated mean the same thing",
-       "A saturated solution is always dilute",
-       "An unsaturated solution can never be concentrated"],
+      ["Concentrated and saturated are two words that mean exactly the same thing in science",
+       "A saturated solution is always dilute, because being saturated means holding very little solute",
+       "An unsaturated solution can never be a concentrated one, by definition"],
       "The two pairs of terms answer different questions. Dilute and concentrated compare how much solute is present; unsaturated and saturated ask whether more could still dissolve. A strong solution that could take still more solute is concentrated and unsaturated at once.",
       {});
   }
@@ -3470,9 +3470,9 @@ E("s7-u3-conc-change", 3, ["SC7.7.4"], 2, "var", varset([
   function () {
     return mcq("A cook simmers an open pan of sauce for an hour. The sauce tastes stronger at the end, though nothing was added. Why is it more concentrated?",
       "Water evaporated from the sauce, so the same amount of flavouring is dissolved in less solvent",
-      ["Simmering creates more flavouring particles in the pan",
-       "The heat dissolved the pan into the sauce",
-       "Stirring forced more air into the sauce"],
+      ["Simmering slowly creates more flavouring particles in the pan as the sauce cooks",
+       "The heat of the stove dissolved part of the pan into the sauce",
+       "Stirring the sauce forced more air into it while it simmered"],
       "Concentration can rise two ways: add solute, or remove solvent. Simmering removes water by evaporation, leaving the same solute in less solvent, which is exactly the guide's example. No new flavouring was created.",
       {});
   },
@@ -3480,8 +3480,8 @@ E("s7-u3-conc-change", 3, ["SC7.7.4"], 2, "var", varset([
     return mcq("A drink mix tastes too strong. Which change dilutes it, and what happens to its concentration?",
       "Add more water; the same solute is spread through more solvent, so the concentration falls",
       ["Add more powder; the concentration falls because there is more mixture",
-       "Let it sit; concentrations always fall on their own",
-       "Pour half away; the concentration falls by half"],
+       "Let it sit undisturbed; concentrations always fall on their own over time",
+       "Pour half of it away; the concentration of the rest falls by half"],
       "Diluting means adding solvent: the solute amount stays the same while the volume grows, so the amount per volume falls. Pouring half away changes the amount of solution, not its concentration; what remains tastes exactly as strong.",
       {});
   }
@@ -3501,8 +3501,8 @@ E("s7-u3-solubility-temp", 3, ["SC7.7.5"], 1, "var", varset([
   function () {
     return mcq("As the temperature of water increases, what generally happens to the solubility of a solid solute and of a gas solute?",
       "The solid's solubility generally increases; the gas's solubility generally decreases",
-      ["Both generally increase",
-       "Both generally decrease",
+      ["Both generally increase steadily as the temperature of the water rises",
+       "Both generally decrease steadily as the temperature of the water rises",
        "The solid's generally decreases; the gas's generally increases"],
       "Temperature pushes the two solute kinds opposite ways. Most solids dissolve more in warmer water, which is why sugar dissolves faster and further in hot tea. Gases dissolve less in warmer water, which is why a warm soft drink loses its fizz. The guide states both as general rules; a few solids, like table salt, barely change.",
       {});
@@ -3513,18 +3513,18 @@ E("s7-u3-solubility-pressure", 3, ["SC7.7.5"], 2, "var", varset([
   function () {
     return mcq("A sealed bottle of pop is opened and hisses. Over the next hour the pop goes flat. Which explanation is correct?",
       "Opening the bottle drops the pressure, so the carbon dioxide's solubility falls and the gas escapes from solution",
-      ["Opening the bottle lets air in, and the air pushes the carbon dioxide out",
-       "The carbon dioxide reacts with the sugar once the bottle is opened",
-       "The pop warms up instantly on opening, and warm pop cannot hold gas"],
+      ["Opening the bottle lets air rush in, and the incoming air pushes the carbon dioxide out of the pop",
+       "The carbon dioxide reacts with the sugar in the pop once the bottle has been opened",
+       "The pop warms up instantly on opening, and warm pop cannot hold any dissolved gas"],
       "Inside the sealed bottle, high pressure keeps extra carbon dioxide dissolved. Opening releases the pressure, the gas's solubility drops, and the excess gas comes out of solution as bubbles until the pop is flat. Pressure affects the solubility of gases; it has no comparable effect on solids.",
       {});
   },
   function () {
     return mcq("Two identical bottles of pop are opened at the same time. One is left on a warm counter; the other goes straight into a refrigerator. Which goes flat faster, and why?",
       "The warm one, because a gas's solubility decreases as temperature rises, so its carbon dioxide escapes sooner",
-      ["The cold one, because cold liquids release gas more easily",
-       "Both at the same rate, because temperature does not affect gases in solution",
-       "The warm one, because heat creates extra carbon dioxide in the pop"],
+      ["The cold one, because cold liquids release their dissolved gas more easily",
+       "Both at the same rate, because temperature does not affect how gases behave in solution",
+       "The warm one, because the heat creates extra carbon dioxide inside the pop"],
       "Both bottles lost their pressure when opened. The warm bottle also fights temperature: warmer liquid holds less dissolved gas, so its carbon dioxide comes out of solution faster. The refrigerated bottle keeps more of its fizz for longer.",
       {});
   }
@@ -3560,18 +3560,18 @@ E("s7-u3-method-property", 3, ["SC7.7.6"], 2, "var", varset([
   function () {
     return mcq("A student tries to separate sugar water by pouring it through a coffee filter. The filtrate still tastes sweet. Why did filtration fail?",
       "Dissolved sugar particles are far too small to be trapped by the filter; filtration only separates undissolved solids from liquids",
-      ["The filter was the wrong colour for sugar",
-       "Sugar water is too heavy for a filter to hold",
-       "The sugar dissolved the filter paper as it passed"],
+      ["The filter paper was the wrong colour for separating sugar from water",
+       "Sugar water is too heavy for a filter to hold back, so it breaks through the paper under its own weight",
+       "The sugar dissolved the filter paper itself as the sweet water passed through it"],
       "A filter is a particle-size barrier: it stops pieces large enough to see and lets liquid and anything dissolved in it pass through. Dissolved sugar is spread at the particle level, so it passes with the water. Evaporation or distillation, which exploit the boiling point difference, are the methods that fit a solution.",
       {});
   },
   function () {
     return mcq("A magnet separates iron filings from sand easily, but cannot separate salt from sand. What property decides whether magnetism works?",
       "Whether one component of the mixture is magnetic; salt is not, so the magnet has nothing to pull",
-      ["Whether the components differ in colour",
-       "Whether the mixture is homogeneous or heterogeneous",
-       "Whether the components were mixed by hand or by machine"],
+      ["Whether the two components of the mixture differ in colour from each other",
+       "Whether the mixture is a homogeneous or a heterogeneous one",
+       "Whether the components were mixed together by hand or by a machine"],
       "Every separation method works on a property difference. Magnetism needs a magnetic component: iron filings respond, salt and sand do not. Salt and sand are separated instead by dissolving the salt in water, filtering out the sand, and evaporating the water, using solubility and boiling point differences.",
       {});
   }
@@ -3589,12 +3589,12 @@ E("s7-u3-cr-separate", 3, ["SC7.7.6"], 3, "var", varset([
 /* ---------- SC7.7.7 Common techniques; choosing a technique ---------- */
 E("s7-u3-home-techniques", 3, ["SC7.7.7"], 1, "gen", function () {
   var cases = [
-    { s: "straining cooked spaghetti in a colander", key: "Filtration (a coarse filter separates solid from liquid)", d: ["Evaporation", "Distillation", "Paper chromatography"] },
-    { s: "skimming the fat off the top of cooled soup", key: "Mechanical sorting (removing one visible part from another)", d: ["Distillation", "Filtration through paper", "Magnetism"] },
-    { s: "hanging wet clothes on a line until they are dry", key: "Evaporation (the water leaves as vapour)", d: ["Filtration", "Paper chromatography", "Flotation"] },
-    { s: "a window screen letting air in but keeping insects out", key: "Screening (a barrier with holes of a chosen size)", d: ["Evaporation", "Distillation", "Magnetism"] },
-    { s: "making coffee by pouring hot water through ground beans in a filter", key: "Filtration (the grounds are caught; the liquid passes)", d: ["Paper chromatography", "Evaporation", "Mechanical sorting"] },
-    { s: "spinning lettuce in a salad spinner to throw the water off", key: "Mechanical separation (the water is flung off the leaves)", d: ["Distillation", "Filtration through paper", "Evaporation"] }
+    { s: "straining cooked spaghetti in a colander", key: "Filtration (a coarse filter separates solid from liquid)", d: ["Evaporation (the liquid slowly leaves as a vapour)", "Distillation (the liquid is boiled and its vapour condensed)", "Paper chromatography (the parts spread out along paper)"] },
+    { s: "skimming the fat off the top of cooled soup", key: "Mechanical sorting (removing one visible part from another)", d: ["Distillation (the liquid is boiled and its vapour condensed)", "Filtration through paper (the liquid passes and solids are caught)", "Magnetism (one part is pulled out by a magnet)"] },
+    { s: "hanging wet clothes on a line until they are dry", key: "Evaporation (the water leaves as vapour)", d: ["Filtration (a filter catches the solid part)", "Paper chromatography (the parts spread out along paper)", "Flotation (one part floats and is skimmed off)"] },
+    { s: "a window screen letting air in but keeping insects out", key: "Screening (a barrier with holes of a chosen size)", d: ["Evaporation (the liquid slowly leaves as a vapour)", "Distillation (the liquid is boiled and its vapour condensed)", "Magnetism (one part is pulled out by a magnet)"] },
+    { s: "making coffee by pouring hot water through ground beans in a filter", key: "Filtration (the grounds are caught; the liquid passes)", d: ["Paper chromatography (the parts spread out along paper)", "Evaporation (the liquid slowly leaves as a vapour)", "Mechanical sorting (the parts are picked apart by hand)"] },
+    { s: "spinning lettuce in a salad spinner to throw the water off", key: "Mechanical separation (the water is flung off the leaves)", d: ["Distillation (the liquid is boiled and its vapour condensed)", "Filtration through paper (the liquid passes and solids are caught)", "Evaporation (the liquid slowly leaves as a vapour)"] }
   ];
   var c = pick(cases);
   return mcq("Which separation technique is at work here: " + c.s + "?",
@@ -3607,18 +3607,18 @@ E("s7-u3-choose-technique", 3, ["SC7.7.7"], 2, "var", varset([
   function () {
     return mcq("A gardener has topsoil mixed with small stones and wants the stones out before planting. Both are dry solids of similar colour, but the stones are larger. Which technique fits best?",
       "Screening the soil through a mesh the soil passes and the stones do not",
-      ["Dissolving the soil in water and filtering it",
-       "Passing a magnet over the mixture",
-       "Evaporating the mixture in the sun"],
+      ["Dissolving the whole mixture in water and then filtering it",
+       "Passing a strong magnet slowly over the whole mixture",
+       "Spreading the mixture out and evaporating it in the sun"],
       "The usable property difference is particle size, and screening exploits exactly that: soil grains pass the mesh, stones stay behind. Neither solid is magnetic, nothing needs dissolving, and evaporation separates liquids from solids, not two dry solids.",
       {});
   },
   function () {
     return mcq("A cook has accidentally poured salt into the sugar bowl. Both are white crystals of similar size, and both must be recovered if possible. Which plan has the best chance?",
       "Dissolve the mixture in water, then use the difference in how much of each the water can hold and careful evaporation and crystallization steps, accepting the separation is difficult",
-      ["Screen the mixture to separate the two crystal sizes",
-       "Pass a magnet through the bowl to lift out the salt",
-       "Filter the dry mixture through paper to catch the salt"],
+      ["Screen the mixture through a fine kitchen sieve to separate the two kinds of crystals by their slightly different sizes",
+       "Pass a strong magnet slowly through the bowl again and again to lift out all of the salt, leaving the clean sugar behind in the bowl ready to use",
+       "Filter the dry mixture through paper to catch the salt crystals, wash them off the paper with a little water, and dry both parts out again afterward"],
       "Salt and sugar defeat the simple methods: similar size rules out screening, neither is magnetic, and dry filtration separates solids from liquids, not two solids. Their solubilities differ, which gives a solution-based plan a chance, but this is genuinely one of the hard separations, which is why the guide asks students to consider mixtures that resist separating.",
       {});
   }
@@ -3638,18 +3638,18 @@ E("s7-u3-distill-parts", 3, ["SC7.8.1"], 1, "var", varset([
   function () {
     return mcq("In a distillation apparatus separating salt water, where do boiling, evaporation and condensation each happen?",
       "The solution boils in the heated flask; the water evaporates from the solution's surface and as vapour; the vapour condenses back to liquid in the cooled condenser",
-      ["Everything happens in the condenser, which does all three jobs",
-       "Boiling happens in the receiving flask; condensation happens in the heated flask",
-       "Evaporation happens in the receiving flask after the water arrives"],
+      ["Everything happens inside the condenser, which does all three of the jobs by itself",
+       "Boiling happens in the receiving flask; condensation happens in the heated flask; evaporation happens in the condenser tube as well",
+       "Evaporation happens in the receiving flask, after the liquid water has arrived there and settled"],
       "Distillation chains the changes of state in order. Heat boils the solution in the first flask and the solvent evaporates as vapour, leaving the solute behind. The vapour travels into the cooled condenser, where it condenses back to liquid and drips into the receiving flask. Both parts are recovered: the solvent as the distillate, the solute left in the first flask.",
       {});
   },
   function () {
     return mcq("Which parts of a solution does simple distillation recover?",
       "Both: the solvent is collected as the distillate and the solute remains in the boiling flask",
-      ["Only the solvent; the solute is destroyed by the heat",
-       "Only the solute; the solvent is lost as vapour",
-       "Neither; distillation only works on mechanical mixtures"],
+      ["Only the solvent is recovered; the solute is destroyed by the heat of boiling",
+       "Only the solute is recovered; the solvent is lost as vapour into the air",
+       "Neither part; distillation only works on mechanical mixtures, not on solutions"],
       "Recovering both parts is distillation's advantage over plain evaporation, which recovers the solute but loses the solvent to the air. In salt water distillation, pure water collects in the receiving flask and the salt stays behind in the first flask.",
       {});
   }
@@ -3659,9 +3659,9 @@ E("s7-u3-distill-vs-evap", 3, ["SC7.8.1"], 2, "var", varset([
   function () {
     return mcq("Evaporation and distillation both separate a solvent from a dissolved solute. What does distillation add that evaporation does not have?",
       "Condensation: the vapour is cooled and collected, so the solvent is recovered as a liquid",
-      ["Filtration: the solution is filtered as it boils",
-       "A magnet: the solute is pulled out during boiling",
-       "Chromatography: the components separate along a column"],
+      ["Filtration: the boiling solution is filtered through paper as it boils",
+       "A magnet: the dissolved solute is pulled out of the liquid during boiling",
+       "Chromatography: the components separate from each other along a tall column"],
       "Evaporation lets the solvent escape into the air; only the solute is recovered. Distillation captures the vapour and condenses it, so the solvent is recovered too. Condensation is the step that belongs to distillation and not to evaporation alone.",
       {});
   }
@@ -3681,9 +3681,9 @@ E("s7-u3-fractional", 3, ["SC7.8.2"], 1, "var", varset([
   function () {
     return mcq("How does fractional distillation go beyond simple distillation?",
       "It separates a mixture of several liquids from each other, using their different boiling points, instead of separating one solute from one solvent",
-      ["It uses a stronger flame, so the boiling is faster",
-       "It filters the vapour as it rises, catching impurities",
-       "It works without any heating, using gravity alone"],
+      ["It uses a much stronger flame under the flask, so the boiling happens faster and harder",
+       "It filters the vapour as it rises, catching impurities in a series of trays and screens stacked inside a tall column",
+       "It works without any heating at all, using gravity alone to pull the liquids apart"],
       "Simple distillation handles one dissolved solute and its solvent. Fractional distillation, the refining technique used on crude oil, separates many liquids in one process: each component boils at its own temperature and is condensed and collected in turn. That is the evolution the indicator names: from separating a solution to refining a complex liquid mixture.",
       {});
   }
@@ -3693,9 +3693,9 @@ E("s7-u3-refining-evolve", 3, ["SC7.8.2"], 2, "var", varset([
   function () {
     return mcq("Which account of how separation techniques developed is most accurate?",
       "They evolved by trial and error over a long time: simple methods for simple mixtures came first, and techniques like fractional distillation were developed when industries needed to separate complex mixtures like crude oil",
-      ["They were all invented at once when the first chemistry laboratory was built",
-       "They have not changed since ancient times, because mixtures have not changed",
-       "Each technique was designed on paper before anyone tried it on a real mixture"],
+      ["They were all invented at the same moment, when the first proper chemistry laboratory was built and staffed",
+       "They have not changed at all since ancient times, because mixtures themselves have not changed in any way that matters",
+       "Each technique was designed on paper first, with every step calculated in advance by scientists, and only then was it tried on real mixtures in workshops and factories around the world"],
       "The guide describes separation technology as developed through trial and error. Settling, sifting and simple distillation are ancient; fractional distillation arrived with the petroleum industry's need to split crude oil into useful fractions, and modern water treatment chains several techniques in sequence. Need drove each step.",
       {});
   }
@@ -3706,18 +3706,18 @@ E("s7-u3-lives-examples", 3, ["SC7.8.3"], 1, "var", varset([
   function () {
     return mcq("Which example best shows the science of mixtures and solutions at work in daily life?",
       "A water treatment plant filtering and treating river water so a town can drink it safely",
-      ["A library sorting its books by author",
-       "A baker choosing a cake recipe from a book",
-       "A hockey team practising its passing"],
+      ["A library sorting all of its books by the author's last name",
+       "A baker choosing a cake recipe from a book and baking the cake for a birthday",
+       "A hockey team practising its passing drills at the arena"],
       "Water purification is one of the guide's named examples: a town's drinking water is a mixture problem solved by separation science, screening, filtering and treating. Sewage treatment, solvents lifting stains from clothes, recycling depots sorting materials, and screening topsoil are the guide's other examples of the same science at work.",
       {});
   },
   function () {
     return mcq("A dry cleaner uses a solvent to lift grease stains out of a jacket. Which idea from this unit is the cleaner relying on?",
       "A grease that will not dissolve in water can dissolve in a different solvent; choosing the solvent is applied solution science",
-      ["Grease is a pure substance, so it leaves the fabric on its own",
-       "The solvent evaporates the jacket's fibres along with the stain",
-       "Stains are heterogeneous, so they can be picked off by hand"],
+      ["Grease is a pure substance, so given enough time it will leave the fabric entirely on its own",
+       "The solvent evaporates the fibres of the jacket itself along with all of the grease in the stain",
+       "Stains are heterogeneous mixtures, so they can simply be picked off the surface of the fabric by hand"],
       "Dissolving depends on the solute-solvent pair. Grease is insoluble in water but soluble in the dry cleaner's solvent, so the solvent carries it out of the fabric. The guide lists stain extraction among its examples of mixtures science affecting daily life.",
       {});
   }
@@ -3727,9 +3727,9 @@ E("s7-u3-lives-effects", 3, ["SC7.8.3"], 1, "var", varset([
   function () {
     return mcq("Smog hanging over a city is best described as which kind of effect of mixtures in our lives?",
       "An unintended one: exhaust gases and particles mix with air as a by-product of activities people value, not as a goal",
-      ["An intended one: cities produce smog on purpose to mark their boundaries",
-       "A positive one: smog shows the air is being cleaned",
-       "No effect at all: smog is a pure substance, not a mixture"],
+      ["An intended one: cities produce smog on purpose, to mark the boundaries of the city clearly",
+       "A positive one: smog hanging over a city shows that the air is being cleaned by the traffic",
+       "No effect at all: smog is a pure substance, not a mixture of anything"],
       "The guide asks students to notice that effects of mixture science can be intentional or unintentional. Smog is a mixture of exhaust gases and particles in air, produced as a side effect of driving and industry. Nobody aims to make it, which is what unintended means here; road salt's safety benefit, by contrast, is intended, while its corrosion is not.",
       {});
   }
@@ -3740,9 +3740,9 @@ E("s7-u3-salt-positive", 3, ["SC7.8.4"], 1, "var", varset([
   function () {
     return mcq("Which is a positive, intended effect of spreading salt on highways in winter?",
       "Salt lowers the freezing point of water on the road, melting ice and giving tires traction, which reduces collisions",
-      ["Salt makes roadside plants grow faster in spring",
-       "Salt prevents cars from rusting",
-       "Salt cleans the drinking water in nearby wells"],
+      ["Salt scattered on the road washes into the soil and makes roadside plants grow faster in spring",
+       "Salt protects cars and trucks from rusting through the winter",
+       "Salt cleans and purifies the drinking water that people draw from nearby wells"],
       "The intended benefit is safety: dissolved salt depresses water's freezing point, so ice melts (down to salt's practical limit of -9 °C) and snow does not bond to the pavement, keeping roads passable and reducing skidding and collisions. The other options name effects salt does not have; its real side effects run the other way.",
       {});
   }
@@ -3752,9 +3752,9 @@ E("s7-u3-salt-negative", 3, ["SC7.8.4"], 2, "var", varset([
   function () {
     return mcq("Which list contains only negative, unintended effects of road salt, as the STSE module presents them?",
       "Salt water reaching wells and streams, roadside vegetation dying back, soil hardening, and vehicles and bridges rusting faster",
-      ["Fewer collisions, passable roads, cheaper winter travel, and safer school bus routes",
-       "Salt-tolerant plants moving in, which gardeners prefer",
-       "Animals finding a needed mineral, with no other consequence"],
+      ["Fewer collisions on icy roads, passable highways, cheaper winter travel, and safer school bus routes",
+       "Salt-tolerant plants moving in along the roads, which most gardeners prefer",
+       "Animals finding a mineral they need at the roadside, with no other consequence for anyone"],
       "The module itemizes the harms: dissolved salt reaches surface and groundwater (drinking water and aquatic life suffer), soil hardens and loses fertility, roadside vegetation is damaged, wildlife is drawn to roadsides and into traffic, and salt dramatically speeds rusting of vehicles and damages concrete bridges. Even the animal item is double-edged in the module: the salt itself is not poison, but the collisions are the harm.",
       {});
   }
@@ -3764,9 +3764,9 @@ E("s7-u3-salt-classify-effects", 3, ["SC7.8.4"], 2, "var", varset([
   function () {
     return mcq("A town notices two results of its road salt use: emergency calls for winter collisions fall by a third, and the lilies in the ditch beside the highway die back every spring. How are the two results classified?",
       "The collision drop is a positive intended effect; the dying lilies are a negative unintended effect",
-      ["Both are positive intended effects",
-       "Both are negative unintended effects",
-       "The collision drop is unintended; the lilies are intended"],
+      ["Both results are positive intended effects of salting",
+       "Both results are negative unintended effects of salting",
+       "The collision drop is an unintended effect; the dying lilies are an intended one"],
       "Effects are classified on two axes at once: positive or negative, and intended or unintended. Safer roads are the whole point of salting: positive and intended. The damaged roadside vegetation is a harm nobody aimed at: negative and unintended. Most real technologies carry both kinds, which is why the decision indicator asks for them separated out.",
       {});
   }
@@ -3775,9 +3775,9 @@ E("s7-u3-salt-classify-effects", 3, ["SC7.8.4"], 2, "var", varset([
 /* ---------- SC7.8.5 Better road deicing technologies ---------- */
 E("s7-u3-deicer-compare", 3, ["SC7.8.5"], 2, "gen", function () {
   var cases = [
-    { s: "a night when the temperature falls to -20 °C and the roads must be treated", key: "Calcium chloride, because it keeps working down to about -29 °C while sodium chloride stops being effective below about -9 °C", d: ["Sodium chloride, because it is the cheapest and most familiar", "Ammonium sulfate, because it also fertilizes the roadside", "Potassium acetate, because it is biodegradable"] },
-    { s: "a road running beside a reservoir that supplies a town's drinking water", key: "Potassium acetate where budgets allow, because it is biodegradable, used with sand for traction", d: ["Extra sodium chloride, applied early and often", "Calcium chloride at double the usual rate", "Ammonium sulfate, because it is also a fertilizer"] },
-    { s: "a highway department that needs ice melted as fast as possible during a storm", key: "Calcium chloride or magnesium chloride, because both melt ice faster than sodium chloride", d: ["Sodium chloride alone, because nothing melts ice faster", "Ammonium sulfate, because it is the fastest melter in the table", "No chemical at all, because chemicals only prevent ice, never melt it"] }
+    { s: "a night when the temperature falls to -20 °C and the roads must be treated", key: "Calcium chloride, because it keeps working down to about -29 °C while sodium chloride stops being effective below about -9 °C", d: ["Sodium chloride, because it is the cheapest of the chemicals and the one every crew knows best", "Ammonium sulfate, because it also fertilizes the plants along the roadside while it melts the ice on the road", "Potassium acetate, because it is biodegradable and gentle on everything nearby"] },
+    { s: "a road running beside a reservoir that supplies a town's drinking water", key: "Potassium acetate where budgets allow, because it is biodegradable, used with sand for traction", d: ["Extra sodium chloride, applied early in the storm and often afterward", "Calcium chloride spread at double the usual rate everywhere", "Ammonium sulfate, because it is also a fertilizer and would feed the plants by the reservoir"] },
+    { s: "a highway department that needs ice melted as fast as possible during a storm", key: "Calcium chloride or magnesium chloride, because both melt ice faster than sodium chloride", d: ["Sodium chloride alone, because nothing else in the table melts ice any faster", "Ammonium sulfate, because it is the fastest melter in the table", "No chemical at all, because chemicals only prevent ice, never melt it"] }
   ];
   var c = pick(cases);
   return mcq("Using the de-icing chemicals table from the road salt module, which choice fits this situation best: " + c.s + "?",
@@ -3790,9 +3790,9 @@ E("s7-u3-deicing-improve", 3, ["SC7.8.5"], 1, "var", varset([
   function () {
     return mcq("Which practice is an improvement in de-icing that came from understanding solutions, as the module presents it?",
       "Anti-icing: using Road Weather Information Systems to apply salt before snow bonds to the road, forming a brine layer that plows clear easily, so less salt is needed overall",
-      ["Applying twice as much salt after every storm, just in case",
-       "Mixing all five de-icing chemicals together so one of them works",
-       "Salting only after accidents are reported on a road"],
+      ["Applying twice as much salt after every winter storm, just in case the first application was not enough to clear the road completely and safely",
+       "Mixing all five de-icing chemicals together in one load so that at least one of them is sure to work",
+       "Salting a road only after accidents have already been reported on it by drivers"],
       "The improvement is timing informed by science and data. Salt spread at a storm's start prevents bonding and creates a brine that clears easily; pre-wetting helps it stick and start working; and this province's Road Weather Information Systems tell crews when and where treatment will pay. The result the module stresses: the same safety with less salt and less harm.",
       {});
   }
@@ -3802,9 +3802,9 @@ E("s7-u3-salt-science", 3, ["SC7.8.5"], 3, "var", varset([
   function () {
     return mcq("Freezing point depression depends on the number of particles a substance dissolves into, not on the type of particle. Sodium chloride dissolves into 2 particles per unit; calcium chloride into 3. What does this predict, and does the module's table agree?",
       "Calcium chloride should lower water's freezing point more than sodium chloride, and it does: its practical limit is about -29 °C against salt's -9 °C",
-      ["Sodium chloride should work to the lower temperature, because it is the more common chemical",
-       "Both should stop working at the same temperature, because particle counts do not matter",
-       "Calcium chloride should work better only in powder form, not as a solution"],
+      ["Sodium chloride should work to the lower temperature, because it is far more common and more familiar to road crews",
+       "Both should stop working at exactly the same temperature, because the particle counts do not matter at all",
+       "Calcium chloride should work better only in its powder form, not once it has dissolved as a solution"],
       "More dissolved particles per unit means a larger freezing point depression. Calcium chloride's three particles beat sodium chloride's two, which is exactly why the table gives calcium chloride the far lower working temperature. This particle-count understanding is what let engineers choose and improve de-icing chemicals on evidence rather than habit.",
       {});
   }
@@ -3815,18 +3815,18 @@ E("s7-u3-salt-adv", 3, ["SC7.8.6"], 2, "var", varset([
   function () {
     return mcq("Which statement fairly states the strongest point on the 'keep road salt as the main de-icer' side of the decision?",
       "Salt is inexpensive, available in huge quantities, familiar to every road crew, and proven to cut winter collisions; no alternative matches all four at once",
-      ["Salt has no negative effects, so there is nothing to weigh",
-       "Salt is the only substance that can melt ice at any temperature",
-       "Alternatives have never been tested anywhere"],
+      ["Salt has no negative effects of any kind, so there is nothing at all on the other side of the decision to weigh",
+       "Salt is the only substance that can melt ice at any temperature, and it keeps working no matter how cold the night becomes",
+       "Alternatives to salt have never been tested anywhere in the world at any time"],
       "A fair decision starts by stating each side at its strongest. Salt's case is practical: cheap, abundant, understood, and effective for safety in the temperature range where most winter driving happens. Its limits are also real (it fails below about -9 °C and carries the harms the module lists), which is what the other side weighs.",
       {});
   },
   function () {
     return mcq("Which statement fairly states the strongest point on the 'reduce road salt use' side of the decision?",
       "Salt's harms accumulate in wells, streams, soil and vehicles year after year, and better timing, pre-wetting and weather information can hold much of the safety benefit with considerably less salt",
-      ["Salt never improves safety, so nothing is lost by stopping",
-       "Roads were safer before salt was invented",
-       "Every alternative is cheaper than salt in every situation"],
+      ["Salt never improves safety at all, so nothing would be lost by stopping its use completely and relying only on plows, sand and slower driving from now on",
+       "Roads in winter were safer for everyone before road salt was ever invented and used",
+       "Every alternative is cheaper than salt in every situation, easier to spread, and just as quick to melt ice on any road in any weather"],
       "The reduction case is not that salt does nothing; it is that its environmental and corrosion costs are cumulative, while modern practice (anti-icing, RWIS timing, pre-wetting, faster chemicals for the coldest nights) can keep most of the safety with less salt spread. Stating the other side fairly means granting salt its real safety record.",
       {});
   }
@@ -3846,9 +3846,9 @@ E("s7-u3-hypothesis-pattern", 3, ["SC7.9.1"], 1, "var", varset([
   function () {
     return mcq("In Core Lab 8-1C, a class observed that salt dissolved in water but not in oil, and flour dissolved in neither. Which hypothesis does this observed pattern best support for a follow-up test?",
       "Whether a solute dissolves depends on the particular solute and solvent pairing, so a new solute should be tested in both solvents before predicting",
-      ["All solutes dissolve in water eventually if stirred long enough",
-       "Oil dissolves nothing at all, in any amount",
-       "Flour is not a real solute because it is a food"],
+      ["All solutes dissolve in water eventually, as long as they are stirred long enough and the water is given enough time to work on them",
+       "Oil dissolves nothing at all, in any amount, no matter what is stirred into it",
+       "Flour is not a real solute at all, because it is a food rather than a chemical"],
       "A hypothesis grows out of the pattern actually observed. The pattern here is pairing-dependent: the same solute behaved differently in two solvents, and one solute dissolved in neither. The follow-up hypothesis stays inside that pattern. The other options overclaim beyond the observations (flour never dissolved, and oil was tested with only two solutes).",
       {});
   }
@@ -3858,9 +3858,9 @@ E("s7-u3-hypothesis-form", 3, ["SC7.9.1"], 1, "var", varset([
   function () {
     return mcq("Which statement is a testable hypothesis?",
       "More sugar will dissolve in hot water than in cold water, because temperature generally raises a solid's solubility",
-      ["Dissolving is a fascinating process found everywhere in nature",
-       "Sugar will do something surprising in water",
-       "Water is the best solvent for everything"],
+      ["Dissolving is a fascinating process that can be found everywhere in the natural world around us every day",
+       "Sugar will do something surprising at some point when it is put in water",
+       "Water is the best solvent for everything that needs dissolving"],
       "A testable hypothesis makes a prediction an experiment can judge, with a reason attached: here, a comparison (more in hot than cold) and the general rule behind it. A topic sentence, a prediction too vague to test, and an absolute claim no single test could settle all fail the form.",
       {});
   }
@@ -3870,9 +3870,9 @@ E("s7-u3-hypothesis-background", 3, ["SC7.9.1"], 2, "var", varset([
   function () {
     return mcq("A student notices that sugar vanishes quickly in hot tea but sits in grains in iced tea. She wants to investigate solubility and temperature. Which is the best statement of her hypothesis?",
       "The warmer the water, the more sugar will dissolve in it, up to its saturation point",
-      ["Temperature and solubility are related somehow",
-       "Hot tea tastes sweeter than iced tea",
-       "Sugar always dissolves completely in any drink"],
+      ["Temperature and solubility are related to each other somehow",
+       "Hot tea tastes sweeter than iced tea served in a glass",
+       "Sugar always dissolves completely and quickly in any drink, whether hot or cold"],
       "Her background observation is a pattern (fast in hot, slow and incomplete in cold), and the hypothesis converts it into a measurable prediction about amount dissolved against temperature. The taste statement is about perception, the vague statement predicts nothing measurable, and the absolute statement is already falsified by her own iced tea.",
       {});
   }
@@ -3895,9 +3895,9 @@ E("s7-u3-delimit-plan", 3, ["SC7.9.2"], 3, "var", varset([
   function () {
     return mcq("A group's question is: 'How does water temperature affect how much sugar dissolves?' Their plan measures the dissolving time for one spoonful of sugar at three temperatures, stirring each cup a different number of times 'to help it along.' What is wrong with the plan against its own question?",
       "The plan measures time, not amount, and lets stirring vary, so it cannot answer a question about how much dissolves",
-      ["Nothing; any plan with three temperatures answers the question",
-       "The plan uses too many temperatures; two would always be better",
-       "The plan should have used salt instead of sugar"],
+      ["Nothing is wrong; any plan that uses three different temperatures answers the question fully",
+       "The plan uses too many temperatures; two temperatures would always be better",
+       "The plan should have used salt instead of sugar as its solute"],
       "A delimited question dictates its data. This question asks about amount, so the plan must measure the amount dissolved at saturation at each temperature, with stirring (and volume, and sugar type) held the same. Measuring a different variable with a second variable left loose means the results cannot speak to the question, however carefully they are recorded.",
       {});
   }
@@ -3908,9 +3908,9 @@ E("s7-u3-best-fit", 3, ["SC7.9.3"], 1, "var", varset([
   function () {
     return mcq("What is a line of best fit on a solubility graph?",
       "A straight line drawn through the pattern of the points so it follows the overall trend, with points scattered on either side of it",
-      ["A line connecting every point in order, dot to dot",
-       "A line drawn from the first point straight to the last point, ignoring the rest",
-       "The line a graph must have before any data are plotted"],
+      ["A line connecting every single point in order, dot to dot, across the whole graph",
+       "A line drawn from the first point straight to the last point, ignoring all of the points in between them",
+       "The line that a graph must already have on it before any data are plotted"],
       "The line of best fit represents the trend the data show, passing as close as possible to all the points without necessarily touching each one; points scatter around it because measurements vary. It is the line used for reading off values between and beyond the measured points. Dot-to-dot lines, which the Plateau Problem also rejected, follow noise instead of trend.",
       {});
   }
@@ -3971,9 +3971,9 @@ E("s7-u3-hypothesis-temp", 3, ["SC7.9.4"], 1, "var", varset([
   function () {
     return mcq("Core Lab 8-2A asks how temperature affects the solubility of a solid in water. Which is its testable hypothesis in proper form?",
       "As the temperature of the water increases, the amount of solid that dissolves in it will increase",
-      ["Temperature will affect solubility in some way",
-       "Solubility is affected by many factors, including temperature",
-       "Hot water is better than cold water"],
+      ["Temperature will affect the solubility of the solid in some way or other",
+       "Solubility is affected by many different factors, including the temperature of the water",
+       "Hot water is simply better than cold water for dissolving things"],
       "The hypothesis predicts a direction (increase with increase) for the exact relationship the lab measures, so the data can support or refute it. 'In some way' predicts nothing; the factor list is background, not a prediction; 'better' is a value word, not a measurement.",
       {});
   }
@@ -3983,9 +3983,9 @@ E("s7-u3-variables-solubility", 3, ["SC7.9.4"], 2, "var", varset([
   function () {
     return mcq("In a group's temperature-solubility study, they heat 100 mL of water to several temperatures and add measured spoonfuls of the same solute until no more dissolves. Which variable naming is correct?",
       "Temperature is the manipulated variable; the amount of solute dissolved is the responding variable; water volume and solute type are controlled",
-      ["Amount dissolved is the manipulated variable; temperature is the responding variable",
-       "Water volume is the responding variable; stirring is the manipulated variable",
-       "Temperature and amount dissolved are both controlled variables"],
+      ["The amount of solute dissolved is the manipulated variable, and the temperature of the water is the responding variable",
+       "The water volume is the responding variable, and the stirring is the manipulated variable",
+       "Temperature and the amount dissolved are both controlled variables throughout the study"],
       "The group chooses the temperatures (manipulated), measures how much dissolves at each (responding), and holds the water volume and the solute the same so the comparison is fair (controlled). Naming them correctly is what makes the study a test of the hypothesis rather than a demonstration.",
       {});
   }
@@ -3999,9 +3999,9 @@ E("s7-u3-controls", 3, ["SC7.9.5"], 1, "var", varset([
   function () {
     return mcq("Which set of controls belongs in a fair temperature-solubility study?",
       "The same volume of water, the same solute, the same spoon for measuring additions, and the same stirring routine at every temperature",
-      ["A different solute at each temperature, to widen the study",
-       "Whatever water volume is convenient at each temperature",
-       "No stirring at the higher temperatures, because heat does the work"],
+      ["A different solute at each temperature, to widen the study and make the results more interesting and useful overall",
+       "Whatever volume of water happens to be convenient at each of the temperatures tested",
+       "No stirring at all at the higher temperatures, because the extra heat does all of the stirring work"],
       "Only temperature may change between runs. Volume, solute, measuring tool and stirring all affect how much dissolves or how fast, so each must be held the same; otherwise a difference in the results could belong to any of them instead of to temperature.",
       {});
   }
@@ -4011,9 +4011,9 @@ E("s7-u3-controls-judge", 3, ["SC7.9.5"], 3, "var", varset([
   function () {
     return mcq("A group reports: 'At 20 °C, 35 g dissolved in our beaker; at 60 °C, 52 g dissolved, so temperature increased the solubility.' Their notebook shows the 20 °C run used 100 mL of water and the 60 °C run used 150 mL. What should be concluded?",
       "Nothing yet: the larger volume at 60 °C would dissolve more solute on its own, so temperature and volume are confounded and the runs must be redone at one volume",
-      ["The conclusion stands, because more dissolved at the higher temperature",
-       "The conclusion is wrong; temperature must actually decrease solubility",
-       "The group should average the two volumes and keep the conclusion"],
+      ["The conclusion stands as it is, because more solute dissolved at the higher of the two temperatures",
+       "The conclusion is wrong; temperature must actually decrease the solubility, and the volume difference has nothing to do with it",
+       "The group should just average the two different volumes together and keep their conclusion as written"],
       "A fair test changes one variable. With volume differing alongside temperature, the extra dissolved solute could be the volume's doing, the temperature's, or both; the data cannot separate them. The fix is procedural, not mathematical: rerun both temperatures at the same volume.",
       {});
   }
@@ -4036,9 +4036,9 @@ E("s7-u3-procedure-order", 3, ["SC7.9.6"], 2, "var", varset([
   function () {
     return mcq("In Core Lab 9-1C, a group separates salt water first by evaporation and then by distillation. Which sequence detail matters most for safety and success?",
       "The flask is secured with a clamp and ring stand before heating, so the hot solution cannot spill if the apparatus is knocked",
-      ["The group tastes the residue to check that it is salt",
-       "The evaporating dish is filled to the brim to save time",
-       "The condenser is connected after the solution reaches a full boil"],
+      ["The group tastes a little of the residue left behind to check that it really is salt",
+       "The evaporating dish is filled right to the brim with solution to save time on refills",
+       "The condenser is connected to the apparatus only after the solution has reached a full rolling boil"],
       "The guide's own safety note for this laboratory is the clamp and ring stand: hot salt solution spilled from an unsecured flask is the laboratory's main hazard. Tasting is never a laboratory test, brim-full dishes boil over, and the condenser must be in place before vapour is produced or the solvent is lost.",
       {});
   }
@@ -4048,9 +4048,9 @@ E("s7-u3-procedure-problem", 3, ["SC7.9.6"], 1, "var", varset([
   function () {
     return mcq("Mid-procedure, a group filters a muddy sugar solution. The filtrate is clear but still sweet, and the group asks for a finer filter to 'get the sugar out.' What is the correct next step?",
       "Explain that no filter can remove a dissolved substance, and separate the sugar by evaporation or distillation instead",
-      ["Stack three filters together to make a finer barrier",
-       "Use a microscope to pick the sugar particles out",
-       "Add more water so the sugar spreads thinner and passes"],
+      ["Stack three filter papers together to make a much finer barrier for the sugar",
+       "Use a microscope and fine tweezers to pick the sugar particles out one by one",
+       "Add more water to the solution so the sugar spreads thinner and passes through the filter more easily"],
       "Filtration has already done all it can: it removed the undissolved mud. The sugar is dissolved at the particle level and passes any filter. The procedure must switch properties, from particle size to boiling point: evaporate the water away, or distill to recover it as well.",
       {});
   }
@@ -4063,9 +4063,9 @@ E("s7-u3-tools-safety", 3, ["SC7.9.7"], 1, "var", varset([
   function () {
     return mcq("Which practice is the safe one when evaporating salt water on a hot plate?",
       "Use a shallow evaporating dish filled no more than half, keep the hot plate's cord clear of the bench edge, and treat the dish as hot until it has cooled",
-      ["Fill the dish to the top so the run finishes sooner",
-       "Carry the hot dish across the room to cool by a window",
-       "Watch the dish from directly above at close range as it boils dry"],
+      ["Fill the evaporating dish right up to the top with solution so the whole run finishes sooner",
+       "Carry the hot dish across the room to cool by an open window, holding it carefully with both hands the whole way and weaving between the benches",
+       "Watch the dish closely from directly above it, at close range, while the last of the water boils dry"],
       "Hot solution, glassware and electricity meet in this procedure. A half-filled dish cannot boil over, a managed cord cannot pull the plate down, and heated glassware is treated as hot. Carrying hot dishes and leaning over boiling solution are the accident patterns.",
       {});
   }
@@ -4075,9 +4075,9 @@ E("s7-u3-tools-accurate", 3, ["SC7.9.7"], 2, "var", varset([
   function () {
     return mcq("A group's solubility results scatter badly between repeats. Their notebook shows water measured 'to about the line' from above, and solute added in heaped spoonfuls. Which fix most improves their accuracy?",
       "Read the graduated cylinder at eye level at the bottom of the meniscus, and measure the solute by mass on the balance for each addition",
-      ["Add the solute faster so the temperature does not change",
-       "Use a larger beaker so the numbers are bigger",
-       "Stir harder so the readings settle"],
+      ["Add all of the solute much faster, so the temperature of the water does not have time to change at all during the run",
+       "Use a much larger beaker for the runs so that all of the numbers come out bigger",
+       "Stir the solution much harder and faster so that the scattered readings settle down"],
       "Scattered results usually trace to scattered measurement. Eye-level meniscus reading removes the parallax error, and massing each addition replaces heaped spoonfuls, whose amounts vary, with measured quantities. Speed, beaker size and stirring force do not fix either error.",
       {});
   }
@@ -4088,9 +4088,9 @@ E("s7-u3-new-questions", 3, ["SC7.9.8"], 1, "var", varset([
   function () {
     return mcq("After the separation activities, which new question genuinely arises from the results students obtained?",
       "Why can one mixture be separated with a filter while another mixture cannot?",
-      ["What is the capital of the province?",
-       "Who invented the filter, and in what year?",
-       "Which group finished the activity first?"],
+      ["What is the capital city of the province called?",
+       "Who invented the filter, and in what year was it invented?",
+       "Which of the groups in the class finished the activity first?"],
       "New questions grow out of results: filtration succeeded on sand and water and failed on sugar water, and that contrast demands an explanation, which is the guide's own example of a question arising from these activities. The other options are trivia or logistics, not questions the data raise.",
       {});
   }
@@ -4300,9 +4300,9 @@ E("s7-u4-sedimentary-form", 4, ["SC7.10.2"], 2, "var", varset([
   function () {
     return mcq("Sediments settle in a lake bed. Which sequence turns them into sedimentary rock?",
       "More sediments pile on top, squeezing the layers (compaction), and dissolved minerals cement the grains together (cementation)",
-      ["The sediments melt from the heat of burial, then cool into solid rock",
-       "Heat and pressure deep in the crust recrystallize the sediments into bands",
-       "The sediments dry out in the sun until they harden into rock"],
+      ["The sediments melt completely from the heat of burial, then cool and harden into solid rock",
+       "Heat and pressure deep in the crust recrystallize the sediments, growing bands of new minerals through them",
+       "The sediments simply dry out in the sun and wind until they harden into solid rock"],
       "Sedimentary rock forms at or near the surface: burial compacts the sediment layers, and mineral cement glues the grains. Melting and recrystallizing belong to the igneous and metamorphic paths.", {});
   },
   function () {
@@ -4355,7 +4355,7 @@ E("s7-u4-earth-layers", 4, ["SC7.10.3"], 1, "var", varset([
   function () {
     var q = mcq("Use the diagram of Earth's interior. A student says the crust is like the skin of an apple compared with the whole fruit. What makes the comparison reasonable?",
       "The crust is extremely thin compared with the rest of the Earth beneath it",
-      ["The crust is the softest layer of the Earth", "The crust is the hottest layer of the Earth", "The crust is made of the same material as the core"],
+      ["The crust is the softest and weakest layer of the Earth", "The crust is the hottest of all the layers of the Earth", "The crust is made of the same material as the core below it"],
       "Even under the continents the crust is only a few tens of kilometres thick, against thousands of kilometres of mantle and core below it. Thin in proportion, like an apple's skin.", {});
     q.figure = s7EarthLayersSVG();
     return q;
@@ -4366,17 +4366,17 @@ E("s7-u4-crust-plates", 4, ["SC7.10.3"], 1, "var", varset([
   function () {
     return mcq("Which statement about Earth's crust is correct?",
       "The crust is broken into large pieces called plates that move slowly, carrying continents and ocean floor with them",
-      ["The crust is one unbroken shell, and only the continents on top of it move",
-       "The crust is broken into plates, but the plates are exactly the same as the continents",
-       "The crust floats as separate continent pieces on a completely liquid interior"],
+      ["The crust is one single unbroken shell, and only the continents sitting on top of it move",
+       "The crust is broken into plates, but the plates are exactly the same things as the continents",
+       "The crust floats as separate continent pieces on a completely liquid interior below"],
       "The crust (with the uppermost mantle) is broken into plates, and each plate can carry both continent and ocean floor. Plates are not the same as continents: several plates carry no continent at all, and some continents sit on more than one plate.", {});
   },
   function () {
     return mcq("A map shows a tectonic plate that includes South America and the western half of the Atlantic Ocean floor. What does this show about plates?",
       "A plate can carry both a continent and ocean floor; plates and continents are not the same thing",
-      ["Ocean floor is not part of the crust",
-       "Every continent sits on exactly one plate of its own",
-       "The Atlantic Ocean floor belongs to no plate"],
+      ["Ocean floor is not part of the Earth's crust at all",
+       "Every continent sits on exactly one plate of its own, separate from all the others",
+       "The floor of the Atlantic Ocean belongs to no plate at all"],
       "Plates are pieces of crust, and a single plate often carries a continent plus the ocean floor beside it out to a mid-ocean ridge. The plate boundaries do not follow the coastlines.", {});
   }
 ]), ["Plates are pieces of crust; continents are passengers on some of them.", "If an option makes plates and continents identical, it is the misconception, not the answer."]);
@@ -4385,9 +4385,9 @@ E("s7-u4-study-tech", 4, ["SC7.10.3"], 2, "var", varset([
   function () {
     return mcq("Scientists in the 1950s towed magnetometers behind ships and recorded stripes of normal and reversed magnetism in the ocean floor rocks. What did this technology let them study?",
       "How the ocean floor had spread apart over time, recorded in its magnetic stripes",
-      ["The exact age of the Earth, read directly from the stripes",
-       "The depth of the mantle below the ocean floor",
-       "The kinds of fish living along the mid-ocean ridge"],
+      ["The exact age of the Earth itself, read directly from the stripes",
+       "The depth of the mantle lying below the ocean floor rocks",
+       "The kinds of fish and sea life living along the mid-ocean ridge"],
       "Magnetometers detect the magnetism locked into rocks as they cool. The striped pattern, matching on both sides of a mid-ocean ridge, recorded the history of sea floor spreading.", {});
   },
   function () {
@@ -4406,17 +4406,17 @@ E("s7-u4-earthquake-why", 4, ["SC7.10.4"], 1, "var", varset([
   function () {
     return mcq("What is an earthquake?",
       "A sudden release of energy in the crust, as rock that has been slowly bent or squeezed snaps and shifts, sending out seismic waves",
-      ["A crack that opens in the ground and swallows the surface above it",
-       "A shaking caused by magma rising through a volcano",
-       "A giant wave that starts in the ocean and strikes the coast"],
+      ["A crack that opens in the ground during the shaking and swallows the surface above it, buildings and all",
+       "A shaking of the ground caused by magma rising up through the vent of a volcano",
+       "A giant wave that starts out in the ocean and travels to strike the coast with great force"],
       "Forces from moving plates slowly stress the rock until it breaks or slips along a fault; the stored energy is released as seismic waves. Ground cracks and ocean waves can result from an earthquake, but neither one is the earthquake itself.", {});
   },
   function () {
     return mcq("Which pairing is correct?",
       "A seismograph records seismic waves, and the moment magnitude scale describes the strength of an earthquake",
-      ["A seismograph predicts the exact day of the next earthquake",
-       "The moment magnitude scale measures how long an earthquake lasts",
-       "A seismograph measures the magnetism of the rocks at a fault"],
+      ["A seismograph predicts the exact day and hour of the next earthquake",
+       "The moment magnitude scale measures how long an earthquake lasts, from start to finish",
+       "A seismograph measures the magnetism of the rocks along a fault line"],
       "Seismographs record the waves an earthquake sends out, and scientists use the records to locate the earthquake and rate its strength on the moment magnitude scale. No instrument predicts the exact day of an earthquake.", {});
   }
 ]), ["Start from the cause: stressed rock, a sudden slip, energy released as waves.", "Separate the event itself from its effects: waves, cracks and tsunamis are results, not definitions."]);
@@ -4425,17 +4425,17 @@ E("s7-u4-volcano-where", 4, ["SC7.10.4"], 2, "var", varset([
   function () {
     return mcq("Volcanoes form in three settings. Which setting matches the Hawaiian Islands?",
       "A hot spot: a plate moves slowly over a place where magma rises through the crust, building island after island",
-      ["A converging boundary, where one plate dives under another",
-       "A diverging boundary, where two plates pull apart in the ocean",
-       "A transform boundary, where two plates slide sideways past each other"],
+      ["A converging boundary, where one plate dives down beneath another plate",
+       "A diverging boundary, where two plates pull apart from each other under the ocean",
+       "A transform boundary, where two plates slide sideways past each other for long distances"],
       "Hawaii sits in the middle of a plate, far from any boundary. A rising plume of magma (a hot spot) punches through the crust, and as the plate moves, the plume builds a chain of islands.", {});
   },
   function () {
     return mcq("Japan's volcanoes sit where one plate is diving beneath another. Which volcano setting is this?",
       "A converging boundary, where the diving plate melts and magma rises through the plate above",
-      ["A hot spot in the middle of a plate",
-       "A diverging boundary along a mid-ocean ridge",
-       "A transform boundary where plates slide sideways"],
+      ["A hot spot located in the middle of a single large plate",
+       "A diverging boundary, where plates pull apart from each other along a mid-ocean ridge",
+       "A transform boundary, where two plates slide sideways past each other"],
       "Where plates converge and one dives (subducts), the diving plate melts at depth and the magma rises to build volcanoes on the plate above, as in Japan. Sideways sliding (transform) builds no volcanoes.", {});
   }
 ]), ["Three settings only: plates colliding, plates parting, and hot spots.", "Middle of a plate rules out every boundary setting; look for the hot spot."]);
@@ -4452,9 +4452,9 @@ E("s7-u4-event-effects", 4, ["SC7.10.4"], 2, "var", varset([
   function () {
     return mcq("Mount St. Helens erupted in 1980 after a bulge grew on its side and an earthquake shook the mountain. What was the eruption's most destructive effect?",
       "The side of the mountain collapsed in a huge landslide and a sideways blast flattened forests over a wide area",
-      ["Lava flows slowly covered the surrounding towns",
-       "A tsunami from the mountain flooded the coast",
-       "Ash buried the entire country under a metre of debris"],
+      ["Lava flows slowly covered the surrounding towns and farmland in the weeks that followed",
+       "A tsunami from the mountain rushed inland and flooded the whole coast for kilometres",
+       "Ash buried the entire country under a metre of ash and debris from the eruption"],
       "The bulge gave way: the mountain's side slid off and the exposed magma blasted sideways, flattening forest for kilometres. Lava flows were minor by comparison, and there was no tsunami from the mountain.", {});
   }
 ]), ["Match the effect to the event's setting: sea floor earthquakes move water; bulging mountainsides fall.", "Watch for effects borrowed from the wrong event type."]);
@@ -4473,17 +4473,17 @@ E("s7-u4-distribution-data", 4, ["SC7.10.5"], 1, "var", varset([
   function () {
     return mcq("A class collects the locations of the world's major earthquakes and volcanoes for the past 50 years. Which way of organizing the data would best reveal a pattern?",
       "Plot every location as a point on a world map, using one symbol for earthquakes and another for volcanoes",
-      ["List the locations alphabetically by the nearest city",
-       "Sort the events by date, from oldest to newest",
-       "Average all the locations together into a single world position"],
+      ["List all of the locations alphabetically by the name of the nearest city",
+       "Sort all of the events by their dates, from the oldest to the newest",
+       "Average all the locations together into a single position at the centre of the world"],
       "Patterns in distribution are spatial: they only appear when the data sits on a map. Alphabetical and date orderings hide where the events are, and averaging destroys the locations entirely.", {});
   },
   function () {
     return mcq("Why do scientists plot earthquake and volcano locations on a map instead of studying a table of the same data?",
       "The map shows where the events cluster, and the clusters are the pattern that needs explaining",
-      ["Maps are always more accurate than tables",
-       "Tables cannot hold latitude and longitude numbers",
-       "The map removes the need to collect any data at all"],
+      ["Maps are always more accurate than tables are for the same data",
+       "Tables cannot hold latitude and longitude numbers, so the locations would be lost",
+       "The map removes the need to collect any field data at all"],
       "The table holds the same numbers, but the pattern (long belts of activity, empty stretches elsewhere) is visible only when the points are plotted. The pattern is what connects the events to plate boundaries.", {});
   }
 ]), ["Ask what each organization lets you SEE. The pattern lives in the geography.", "If an option throws the locations away, it throws the pattern away with them."]);
@@ -4492,9 +4492,9 @@ E("s7-u4-distribution-map", 4, ["SC7.10.5"], 2, "var", varset([
   function () {
     var q = mcq("Use the map of earthquake and volcano locations. Which statement best describes the pattern the map shows?",
       "The locations cluster along lines and belts, many of them around the edges of oceans and along the middle of the Atlantic",
-      ["The locations are spread evenly over the whole Earth",
-       "The locations occur only on land, never in the oceans",
-       "The locations form a single straight line around the equator"],
+      ["The locations are spread evenly over the whole Earth, with the same number in every region",
+       "The locations occur only on land, and never anywhere in the oceans",
+       "The locations form a single straight line that runs all the way around the Earth at the equator"],
       "Plot the points and the pattern is belts, not scatter: a ring around the Pacific, a line down the middle of the Atlantic, and a band through the Mediterranean to the Himalayas. Most of the Earth's surface has few or none.", {});
     q.figure = s7WorldMapSVG();
     return q;
@@ -4515,9 +4515,9 @@ E("s7-u4-ring-of-fire", 4, ["SC7.10.5"], 3, "var", varset([
   function () {
     var q = mcq("Use the map. The dense belt of earthquakes and volcanoes around the edge of the Pacific Ocean is called the Ring of Fire. What does this belt coincide with?",
       "The boundaries of the plate that lies under the Pacific Ocean, where it meets the plates around it",
-      ["The equator, where the Earth spins fastest",
-       "The edges of the Pacific's continents, by coincidence only",
-       "A chain of underwater mountains with no relation to plates"],
+      ["The equator, where the Earth spins fastest on its axis",
+       "The edges of the continents around the Pacific, by coincidence only",
+       "A chain of underwater mountains running around the Pacific with no relation to plates"],
       "The Ring of Fire traces the Pacific Plate's edges: where that plate dives under, pulls from or slides past its neighbours, earthquakes and volcanoes concentrate. The belt is a plate boundary drawn in events.", {});
     q.figure = s7WorldMapSVG();
     return q;
@@ -4525,9 +4525,9 @@ E("s7-u4-ring-of-fire", 4, ["SC7.10.5"], 3, "var", varset([
   function () {
     var q = mcq("Use the map. The middle of the Atlantic Ocean shows a line of earthquakes and volcanoes running north to south, far from any continent. What is the best inference from this line?",
       "A plate boundary runs down the middle of the Atlantic, even though it lies under the ocean",
-      ["Ships crossing the Atlantic cause the earthquakes along their routes",
-       "The line marks the equator, where earthquakes are most common",
-       "Volcanoes can only form in the middle of oceans"],
+      ["Ships crossing the Atlantic Ocean cause the earthquakes that happen along their sailing routes",
+       "The line marks the equator, where earthquakes and volcanoes are most common",
+       "Volcanoes can only ever form in the middle of oceans"],
       "Events cluster at plate boundaries wherever the boundaries are, including under oceans. A straight belt of events in mid-ocean is evidence of a boundary there: the mid-Atlantic ridge, where plates pull apart.", {});
     q.figure = s7WorldMapSVG();
     return q;
@@ -4569,17 +4569,17 @@ E("s7-u4-mountain-process", 4, ["SC7.10.6"], 2, "var", varset([
   function () {
     return mcq("The Appalachian Mountains, which run through western Newfoundland, formed hundreds of millions of years ago when continents collided. Which process built them?",
       "Folding and faulting: the collision squeezed the rock layers between the continents until they crumpled upward",
-      ["Volcanic build-up: lava piled up layer on layer until it stood high",
-       "Erosion: rivers carved the mountains out of a flat plain",
-       "Deposition: sediments piled up until they reached mountain height"],
+      ["Volcanic build-up: lava from eruptions piled up layer on layer until it stood high",
+       "Erosion: rivers and ice carved the mountains out of an older flat plain",
+       "Deposition: sediments piled up layer on layer until they reached the height of mountains"],
       "Continents colliding compress everything between them; the rock folds and faults upward into a range, as happened when the Appalachians rose. Erosion later wears ranges down; it does not raise them.", {});
   },
   function () {
     return mcq("In 1943, a Mexican farmer watched a crack open in his cornfield; within a year a new volcano, Paricutin, stood over 300 m tall where the field had been. Which mountain-building process does Paricutin show?",
       "Volcanic build-up: erupted lava and ash piled up around the vent until they formed a mountain",
-      ["Folding: rock layers bent upward under compression",
-       "Faulting: a block of crust was pushed up along a fault",
-       "Glacial deposition: ice left a pile of rock and soil behind"],
+      ["Folding: the flat rock layers bent upward under great compression",
+       "Faulting: a block of crust was pushed upward along a large fault",
+       "Glacial deposition: ice left behind a huge pile of rock and soil as it melted"],
       "Some mountains are built by accumulation: eruption after eruption stacks lava and ash into a cone. Paricutin grew in a field within a year, far too fast for folding or faulting, which work over millions of years.", {});
   }
 ]), ["Three builders: squeezing (folding and faulting), stacking (volcanic), and neither erosion nor deposition raises a range.", "Time is a clue: a mountain that appears in a year was stacked, not squeezed."]);
@@ -4613,9 +4613,9 @@ E("s7-u4-era-scale", 4, ["SC7.10.7"], 2, "var", varset([
   function () {
     var q = mcq("Use the geological time strip, which is drawn to scale. Which statement about the Precambrian is correct?",
       "It covers most of Earth's history, about 87 percent of the 4.6 billion years, even though its name is less familiar",
-      ["It is the shortest of the four divisions of Earth's history",
-       "It began when the first fish appeared in the oceans",
-       "It covers about the same length of time as the Cenozoic era"],
+      ["It is by far the shortest of the four divisions into which Earth's history is split",
+       "It began only when the first fish appeared in the oceans, a relatively recent event",
+       "It covers about the same total length of time as the Cenozoic era, the most recent one of all"],
       "Read the strip's proportions: the Precambrian block takes up nearly nine tenths of the whole line. The other three eras, which hold the fish, the forests, the mammals and us, share the remaining sliver.", {});
     q.figure = s7TimeStripSVG();
     return q;
@@ -4623,9 +4623,9 @@ E("s7-u4-era-scale", 4, ["SC7.10.7"], 2, "var", varset([
   function () {
     return mcq("A class models Earth's 4.6 billion year history on a 4.6 m strip of paper, one metre per billion years. Roughly how much of the strip do humans occupy?",
       "A tiny fraction of the last centimetre: humans have existed for only a very small part of Earth's history",
-      ["About half the strip, since humans are the most advanced life",
-       "About one full metre at the end of the strip",
-       "The whole strip, because the scale is a model of human history"],
+      ["About half the strip in total, since humans are the most advanced form of life on Earth",
+       "About one full metre at the very end of the paper strip",
+       "The whole strip, because the scale is meant as a model of human history"],
       "Humans appear only in the last part of the Cenozoic era, which is itself the last 66 million years: about 6.6 cm of the strip, and humans occupy only a sliver of that. On the scale of Earth's history, we are very recent arrivals.", {});
   }
 ]), ["The strip is drawn to scale: judge lengths, not the fame of the events.", "Recent does not mean long: the era we live in is the shortest on the strip."]);
@@ -4665,17 +4665,17 @@ E("s7-u4-frost-wedging", 4, ["SC7.10.8"], 1, "var", varset([
   function () {
     return mcq("Why does frost wedging break rock apart in a Newfoundland and Labrador spring?",
       "Water in the cracks freezes and expands at night, then melts by day; repeated freezing pries the cracks wider until pieces break off",
-      ["Ice is heavier than water and crushes the rock under its weight",
-       "Cold makes rock contract until it shatters into pieces",
-       "Frost dissolves the minerals that hold the rock together"],
+      ["Ice is heavier than the water it froze from, and its weight crushes the rock in the cracks apart",
+       "The cold makes the rock contract again and again, night after night, until it shatters into small pieces",
+       "Frost dissolves the minerals that hold the rock together, loosening it grain by grain"],
       "Water is unusual: it expands as it freezes. In a crack, that expansion pushes outward with great force, and freeze-thaw cycles through a spring wedge the crack wider each time until the rock splits. This is mechanical weathering.", {});
   },
   function () {
     return mcq("A gardener finds that the soil in spring is full of small stones that were not at the surface in the fall, pushed up by the freezing ground. Which weathering process is connected to this lifting and breaking of buried rock?",
       "Frost action: freezing water expands and heaves the ground, cracking rock as it does so",
-      ["Chemical weathering by plant roots dissolving the stones",
-       "Erosion by the wind blowing stones to the surface",
-       "Compaction of the soil under the snow's weight"],
+      ["Chemical weathering, as plant roots slowly dissolve the stones in the soil",
+       "Erosion by the wind, blowing loose stones up to the surface",
+       "Compaction of the soil under the weight of the winter snow"],
       "Freezing water expands, heaving soil and stones upward (frost heave) and wedging cracks in rock wider. The stones rose because the ground itself moved and broke rock apart, a mechanical process.", {});
   }
 ]), ["Water expands when it freezes: that one fact drives the whole process.", "Any answer about dissolving or chemical change belongs to the other kind of weathering."]);
@@ -4703,17 +4703,17 @@ E("s7-u4-winter-chime", 4, ["SC7.10.8"], 2, "var", varset([
   function () {
     return mcq("A class hangs a wind chime made of glass tubes and metal bells outside for a winter design challenge. By spring, the glass is chipped where small stones struck it on windy nights, and the metal bells show rust spots. Which pairing is correct?",
       "The chipping is mechanical weathering by wind-blown particles; the rusting is chemical weathering",
-      ["The chipping is chemical weathering; the rusting is mechanical weathering",
-       "Both the chipping and the rusting are erosion",
-       "Both the chipping and the rusting are chemical weathering"],
+      ["The chipping is chemical weathering, and the rusting is mechanical weathering",
+       "Both the chipping and the rusting are erosion by the winter weather",
+       "Both the chipping and the rusting are forms of chemical weathering"],
       "Impacts break the glass without changing what glass is: mechanical weathering. Rust is a new substance formed when iron reacts with oxygen and water: chemical weathering. Nothing here was carried away, so neither is erosion.", {});
   },
   function () {
     return mcq("For the same wind chime challenge, a team wants to slow the weathering of the metal bells. Which design choice targets the CHEMICAL weathering they observed?",
       "Coat the bells so water and oxygen cannot reach the metal surface as easily",
-      ["Hang the chime where wind-blown sand cannot strike it",
-       "Make the bells thicker so impacts chip them less",
-       "Hang the chime lower so it is easier to inspect"],
+      ["Hang the chime where wind-blown sand and grit cannot strike it",
+       "Make the metal bells thicker so that impacts chip them less",
+       "Hang the chime lower down so it is easier to inspect in spring"],
       "Rusting needs water and oxygen at the metal's surface; a coating blocks both and slows the reaction. Shielding from blown sand and thickening the metal target the mechanical damage instead.", {});
   }
 ]), ["Sort each damage type first: broken, or chemically changed?", "A protection only works on the process it blocks: coatings block reactions, shields block impacts."]);
@@ -4753,17 +4753,17 @@ E("s7-u4-soil-form", 4, ["SC7.10.9"], 1, "var", varset([
   function () {
     return mcq("What is soil made from?",
       "Weathered rock material mixed with decaying organic matter from living things, plus air and water in its spaces",
-      ["Rock dust alone, ground fine by glaciers",
-       "Decayed plants alone, with no rock material in it",
-       "Sand washed up from the ocean over thousands of years"],
+      ["Rock dust alone, ground very fine by glaciers and mixed with nothing else at all",
+       "Nothing but decayed plants, with no rock material of any kind in it, however long it took to form",
+       "Sand washed up from the ocean and piled on the land over thousands of years"],
       "Soil needs both parents: weathering supplies the mineral particles from rock, and living things supply the organic matter as they die and decay. Neither one alone makes soil.", {});
   },
   function () {
     return mcq("Two soils form side by side, one on granite bedrock and one on shale bedrock, under the same climate and plants. Why do the two soils differ?",
       "Soil inherits characteristics from its parent rock, so different bedrock produces different soil",
-      ["The climate must secretly be different over the two soils",
-       "Soils never differ when the plants growing in them are the same",
-       "The soil on granite is older, and age is the only thing that matters"],
+      ["The climate must secretly be different over each of the two soils",
+       "Soils never differ at all when the plants growing in them are the same",
+       "The soil on granite is much older, and age is the only thing that matters for a soil"],
       "The parent material is one of the things that shapes a soil: granite weathers to a coarser, sandier soil, while shale weathers toward finer, clay-rich soil. Same weather, same plants, different starting rock, different soil.", {});
   }
 ]), ["Soil has two parents: broken rock and once-living material.", "Where a soil forms decides what it starts from: the rock underneath matters."]);
@@ -4772,9 +4772,9 @@ E("s7-u4-soil-drainage", 4, ["SC7.10.9"], 2, "var", varset([
   function () {
     var q = mcq("Use the drainage results. Which soil would leave a plant's roots sitting in water longest after rain, and why?",
       "The clay soil: its fine particles pack tightly, leaving small spaces, so water moves through it very slowly (low permeability)",
-      ["The sandy soil: its large particles trap water between them",
-       "The gravel: its spaces are too small for water to enter",
-       "All three soils drain at the same rate once they are wet"],
+      ["The sandy soil: its large particles trap water between them and hold it there for days",
+       "The gravel: its spaces are too small for water to enter, so the water sits on top of it",
+       "All three soils drain at the same rate once they are wet, because wet soil of any kind lets water through equally fast"],
       "Read the bars: clay took by far the longest for the same volume of water. Fine particles pack closely, so the connected spaces are small and water creeps through slowly; sand and gravel have larger spaces and drain fast.", {});
     q.figure = s7DrainSVG([{ name: "sand", secs: 14 }, { name: "loam", secs: 47 }, { name: "clay", secs: 168 }, { name: "gravel", secs: 6 }]);
     return q;
@@ -4782,9 +4782,9 @@ E("s7-u4-soil-drainage", 4, ["SC7.10.9"], 2, "var", varset([
   function () {
     return mcq("What is the difference between a soil's porosity and its permeability?",
       "Porosity is how much open space the soil has to hold water; permeability is how easily water can move through those spaces",
-      ["Porosity is how fast water drains; permeability is how much water the soil holds",
-       "They are two names for the same property of a soil",
-       "Porosity applies only to clay and permeability only to sand"],
+      ["Porosity is how fast water drains through a soil; permeability is how much water the soil can hold",
+       "They are two different names for one and the same property of a soil",
+       "Porosity applies only to clay soils and permeability only to sandy soils"],
       "A soil can hold a lot of water yet let it move slowly: clay is porous but not very permeable, because its spaces are tiny. Porosity is storage; permeability is movement.", {});
   }
 ]), ["Longest bar means slowest drainage; connect slow drainage to small, tightly packed particles.", "Hold versus flow: one word is about space, the other about movement through the space."]);
@@ -4851,9 +4851,9 @@ E("s7-u4-convection", 4, ["SC7.11.1"], 2, "var", varset([
   function () {
     return mcq("Why did the idea of convection currents in the mantle matter so much to plate tectonic theory?",
       "It supplied a possible mechanism: a way for the plates to be moved, which continental drift had never explained",
-      ["It proved that the continents themselves were liquid",
-       "It explained why earthquakes happen on the Moon",
-       "It showed that the mantle was the same temperature throughout"],
+      ["It proved that the continents themselves were made of liquid rock all the way through",
+       "It explained why earthquakes and volcanoes happen on the Moon",
+       "It showed that the mantle was the same temperature throughout, at every depth inside the Earth"],
       "Wegener could say the continents moved but not what moved them, and that gap sank his theory. Convection currents gave plate tectonics the engine it needed: heat-driven circulation in the mantle dragging the plates.", {});
   }
 ]), ["The soup pot is a model: rising, spreading, sinking, in a slow loop.", "Ask what problem the idea solved. The theory before it had a famous missing piece."]);
@@ -4862,17 +4862,17 @@ E("s7-u4-new-evidence", 4, ["SC7.11.1"], 3, "var", varset([
   function () {
     return mcq("In the 1960s, drilling ships brought up rock samples from the ocean floor. The rocks were youngest at the mid-ocean ridges and older farther away, on both sides. Why was this evidence so powerful for plate tectonics?",
       "It showed new crust forming at the ridges and spreading outward, exactly as sea floor spreading predicted",
-      ["It proved the ocean floor was the oldest part of the Earth",
-       "It showed that the continents had never moved at all",
-       "It revealed that ocean water was slowly dissolving the crust"],
+      ["It proved the ocean floor was the oldest part of the Earth, older than any continent",
+       "It showed that the continents had never moved at all in Earth's history",
+       "It revealed that the ocean water was slowly dissolving the crust beneath it"],
       "A prediction confirmed is strong evidence: sea floor spreading said crust is born at ridges and ages as it moves away, and the drilled ages matched on both sides of the ridge. Continental drift alone never predicted this.", {});
   },
   function () {
     return mcq("Three technologies produced three discoveries: sonar mapped a mountain ridge down the middle of the Atlantic; magnetometers found magnetic stripes matching on both sides of the ridge; drilling showed the floor aging away from the ridge. Taken together, what did they establish?",
       "That the ocean floor is spreading apart from the ridges, carrying the continents with it",
-      ["That the Atlantic Ocean has always been its present size",
-       "That Wegener's original evidence had all been mistaken",
-       "That the continents plough through a stationary ocean floor"],
+      ["That the Atlantic Ocean has always been exactly its present size",
+       "That all of Wegener's original evidence had been mistaken from the start",
+       "That the continents plough their way through a stationary ocean floor"],
       "Each technology added a piece: shape (sonar), record (magnetism), and age (drilling). Together they replaced Wegener's picture of continents ploughing through the floor with plates, ocean floor included, moving as one.", {});
   }
 ]), ["Judge evidence by what it confirms: a prediction that comes true carries weight.", "Three tools, three different kinds of data, one conclusion: check that the conclusion uses all three."]);
@@ -4891,17 +4891,17 @@ E("s7-u4-canadian-match", 4, ["SC7.11.2"], 1, "var", varset([
   function () {
     return mcq("Which Canadian scientist is matched with the contribution he is known for?",
       "J. Tuzo Wilson recognized transform boundaries, where plates slide sideways past each other",
-      ["J. Tuzo Wilson discovered the fossil dinosaurs of Alberta",
-       "Joseph Tyrrell proposed the theory of continental drift",
-       "Harold Williams invented the seismograph"],
+      ["J. Tuzo Wilson discovered the fossil dinosaurs in the badlands of Alberta",
+       "Joseph Tyrrell proposed the theory of continental drift in 1912",
+       "Harold Williams invented the seismograph used for recording earthquakes"],
       "Wilson's contribution was transform boundaries, the third boundary type, which plate tectonics needed. Tyrrell is the dinosaur and past-climate name; Williams worked on plate activity along eastern North America; continental drift was Wegener, who was German.", {});
   },
   function () {
     return mcq("Harold Williams, working in Newfoundland, studied the rocks of the Appalachian region. What was his contribution?",
       "He recognized evidence of ancient plate activity along the eastern margin of North America, helping explain how the Appalachians formed",
-      ["He proved that Newfoundland was once part of Europe by drilling the ocean floor",
-       "He discovered the mid-Atlantic ridge using sonar",
-       "He named the three types of plate boundaries"],
+      ["He proved that Newfoundland was once part of Europe by drilling the ocean floor and matching the rocks he found",
+       "He discovered the mid-Atlantic ridge using sonar surveys of the ocean",
+       "He named and described the three types of plate boundaries"],
       "Williams read the rocks of Newfoundland and the Appalachians as the remains of an ancient ocean and its plate collisions, evidence that plate tectonics had been at work along eastern North America hundreds of millions of years ago.", {});
   }
 ]), ["Three Canadians, three contributions: boundaries, dinosaurs and climate, ancient plates in the east.", "If an option hands a Canadian someone else's famous work (drift, sonar, the seismograph), it is wrong."]);
@@ -4931,17 +4931,17 @@ E("s7-u4-imagination-role", 4, ["SC7.11.3"], 1, "var", varset([
   function () {
     return mcq("Fossils of ocean animals are found in rock high in the mountains of Newfoundland. What does this observation suggest, when scientists reason imaginatively from the evidence?",
       "That the rock formed under an ancient ocean and was later pushed up as mountains formed",
-      ["That the ocean animals once lived on dry land",
-       "That people carried the fossils up the mountains long ago",
-       "That the mountains were built by the fossils piling up"],
+      ["That the ocean animals once lived their lives on dry land",
+       "That people long ago carried the fossils up into the mountains by hand",
+       "That the mountains themselves were built by the fossils piling up"],
       "The fossils are evidence; the explanation is inferred. Ocean animals live in oceans, so their fossils in mountain rock mean the rock was once sea floor, raised up by the same plate forces that built the mountains.", {});
   },
   function () {
     return mcq("Minerals that form only in warm climates are found in rocks in the polar regions. Which statement best describes how a scientist uses this observation?",
       "The observation is evidence; imagining the continent in a warmer place in the past is the inference built on it",
-      ["The observation proves by itself exactly where the continent was",
-       "The observation is an opinion, because it cannot be seen today",
-       "The observation should be ignored, since the minerals might be wrong"],
+      ["The observation proves by itself exactly where the continent was in the past",
+       "The observation is only an opinion, because it cannot be seen happening today",
+       "The observation should simply be ignored, since the minerals identified might be wrong"],
       "Scientific explanations are built from evidence plus inferred relationships: the minerals (evidence) connect to a past climate, and the past climate connects to a continent that has moved. The observation alone is not the whole explanation.", {});
   }
 ]), ["Separate the two parts: what was observed, and what was inferred from it.", "An inference is not a guess: it is a relationship the evidence supports."]);
@@ -4950,17 +4950,17 @@ E("s7-u4-evidence-link", 4, ["SC7.11.3"], 2, "var", varset([
   function () {
     return mcq("A scientist argues that South America and Africa were once joined. Which PAIR of observations, taken together, makes the strongest case?",
       "The two coastlines fit together, and the same distinctive rock layers and fossils appear on both sides of the Atlantic",
-      ["Both continents have beaches, and both are in the southern hemisphere",
-       "Both continents are large, and both have mountains somewhere",
-       "Both continents have rivers, and both have warm climates today"],
+      ["Both continents have beaches, and both are in the southern hemisphere, south of the equator",
+       "Both continents are large landmasses, and both have high mountains somewhere on them",
+       "Both continents have rivers flowing to the sea, and both have warm climates today"],
       "One observation can be coincidence; two independent ones that point the same way are a relationship. Fit plus matching rocks and fossils is the combination Wegener built on. The other pairs are true of many places that were never joined.", {});
   },
   function () {
     return mcq("Which observation most directly supports the explanation that the Atlantic Ocean is still widening?",
       "Measurements show the ocean floor is youngest at the mid-Atlantic ridge and gets older toward both continents",
-      ["The Atlantic has storms that push water toward both shores",
-       "Ships take longer to cross the Atlantic than they used to",
-       "The coastlines of the Atlantic continents are slowly eroding"],
+      ["The Atlantic's storms push water toward both shores, widening the ocean a little each year",
+       "Ships take longer to cross the Atlantic now than they used to in the past",
+       "The coastlines of the continents around the Atlantic are slowly eroding away"],
       "A widening ocean predicts new crust at the ridge aging outward, and that is exactly what drilling found. The relationship between ridge, age and distance is the evidence; the other options do not measure the floor at all.", {});
   }
 ]), ["Strong cases pair independent observations that point the same way.", "Ask of each option: if this were true, would it actually support the claim?"]);
@@ -4987,9 +4987,9 @@ E("s7-u4-change-timeline", 4, ["SC7.11.4"], 1, "var", varset([
   function () {
     return mcq("Early maps, such as one from 1482, showed a world very different from the world map of 1587, after explorers had sailed the oceans. What made the pictured world change between the two maps?",
       "New observations: explorers' reports and measurements replaced guesses about lands no one had mapped",
-      ["Artists became more skilled at drawing coastlines",
-       "The continents moved noticeably during those hundred years",
-       "Mapmakers agreed to draw the world differently as a fashion"],
+      ["Artists and mapmakers became far more skilled at drawing coastlines",
+       "The continents themselves moved noticeably during those hundred years",
+       "Mapmakers agreed among themselves to draw the world differently, as a fashion"],
       "The world did not change; the evidence did. Each voyage added observations, and the picture of the Earth was redrawn to fit them, the same pattern by which plate tectonics later redrew it again.", {});
   }
 ]), ["The theory's story has a fixed order: proposal, rejection, new evidence, acceptance.", "When a picture of the world changes, ask what new observations forced the change."]);
@@ -5006,9 +5006,9 @@ E("s7-u4-change-why", 4, ["SC7.11.4"], 2, "var", varset([
   function () {
     return mcq("Why did acceptance of moving continents come in the 1960s rather than in Wegener's lifetime?",
       "New technology (sonar, magnetometers, drilling ships) produced ocean floor evidence that Wegener never had",
-      ["Scientists of the 1960s were simply more open-minded people",
-       "Wegener's original notes were rediscovered in an archive",
-       "A single large earthquake proved the continents were moving"],
+      ["Scientists of the 1960s were simply more open-minded and imaginative people than the scientists before them",
+       "Wegener's original notes and maps were rediscovered in an archive in Germany",
+       "A single very large earthquake in the Atlantic proved the continents were moving"],
       "The change was driven by evidence, not fashion: instruments that did not exist in 1912 mapped the ridges, read the magnetic stripes and dated the floor. Understanding changed when the evidence arrived.", {});
   }
 ]), ["A theory can have true evidence and still fail: check for the missing mechanism.", "Understanding changes when evidence changes; look for the new instrument or data set."]);
@@ -5027,9 +5027,9 @@ E("s7-u4-drift-identify", 4, ["SC7.11.5"], 1, "var", varset([
   function () {
     return mcq("What did the theory of continental drift claim?",
       "That the continents were once joined in a single landmass and have slowly moved apart to their present positions",
-      ["That the continents are shrinking as the Earth cools",
-       "That ocean water is slowly covering the continents",
-       "That the continents formed where they are and have never moved"],
+      ["That the continents are slowly shrinking as the whole Earth cools down",
+       "That ocean water is slowly covering the continents, which only look as if they moved",
+       "That the continents formed where they are and have never moved from those places at all"],
       "Continental drift (Wegener, 1912) proposed one supercontinent, Pangaea, breaking apart and drifting to today's map. It was the early explanation that plate tectonics later replaced and completed.", {});
   },
   function () {
@@ -5044,17 +5044,17 @@ E("s7-u4-drift-evidence", 4, ["SC7.11.5"], 2, "var", varset([
   function () {
     return mcq("Trilobite fossils found in the rocks of Newfoundland's Avalon Peninsula match fossils found in Wales, in the United Kingdom, more closely than fossils on the North American mainland nearby. How does this support continental drift?",
       "The Avalon region and Wales were once joined or close together, and drifted apart to their present positions",
-      ["Trilobites swam across the Atlantic and settled in both places",
-       "The fossils prove that Wales was once part of Canada politically",
-       "The matching is a coincidence with no geological meaning"],
+      ["Trilobites swam all the way across the Atlantic Ocean and settled in both places",
+       "The fossils prove that Wales was once politically part of Canada, long before Canada existed",
+       "The close matching is a coincidence that carries no geological meaning at all"],
       "Trilobites were shallow-water animals that could not cross a deep ocean. Matching fossils across the Atlantic make sense if the two coasts were once neighbours, as Newfoundland's Avalon zone is now understood to have been attached to the European side.", {});
   },
   function () {
     return mcq("Which observation did Wegener use that involves the SHAPE of the continents?",
       "The coastlines of South America and Africa fit together like pieces of a jigsaw puzzle",
-      ["Both continents are roughly triangular in shape",
-       "The continents are all wider in the north than in the south",
-       "The continents' shapes change noticeably every century"],
+      ["Both of the continents are roughly triangular in their shape",
+       "The continents are all much wider in the north than they are in the south",
+       "The shapes of the continents change noticeably in every century"],
       "The fit of the Atlantic coastlines was Wegener's starting observation, and it grew stronger when the fit was made at the edge of the continental shelves rather than the modern beaches.", {});
   }
 ]), ["Fossils that match across an ocean need the ocean to have been absent or narrow.", "Wegener's first clue was a map: look for the option about fit."]);
@@ -5063,17 +5063,17 @@ E("s7-u4-drift-flaw", 4, ["SC7.11.5"], 2, "var", varset([
   function () {
     return mcq("What was the major flaw in Wegener's theory of continental drift?",
       "It offered no workable mechanism: no force or process that could actually move the continents",
-      ["It claimed the continents moved at several metres per year",
-       "It was based on fossils that did not exist",
-       "It said the continents had once been joined, which was the flaw"],
+      ["It claimed that the continents moved at several metres per year",
+       "It was based entirely on fossils that did not actually exist",
+       "It said the continents had once been joined together, which was itself the flaw"],
       "The claim itself turned out to be right; the flaw was the missing engine. Wegener suggested forces far too weak to do the job, and until convection and sea floor spreading supplied a mechanism, the theory could not be accepted.", {});
   },
   function () {
     return mcq("Wegener suggested the continents ploughed through the ocean floor as they moved. Why did this part of his theory fail?",
       "The ocean floor is strong rock; continents cannot plough through it, and no grooves or crushed floor from such ploughing exist",
-      ["The ocean floor is liquid, so the continents would have sunk",
-       "Continents move too fast to leave any mark on the floor",
-       "The continents are lighter than air and float above the floor"],
+      ["The ocean floor is liquid, so the continents would have sunk through it to the centre of the Earth long ago",
+       "Continents move far too fast to leave any mark on the ocean floor beneath them",
+       "The continents are lighter than air and float above the floor, never touching it at all"],
       "Sea floor spreading replaced the ploughing picture: the floor moves with the continent as part of the same plate. Wegener's mechanism predicted a battered ocean floor that surveys never found.", {});
   }
 ]), ["The flaw was not the claim but the how: no mechanism strong enough.", "A mechanism makes predictions; check whether the predicted traces exist."]);
@@ -5084,17 +5084,17 @@ E("s7-u4-shift-identify", 4, ["SC7.11.6"], 1, "var", varset([
   function () {
     return mcq("Why is plate tectonics described as a major shift in the scientific world view, rather than a small correction?",
       "It replaced the picture of a fixed Earth with a picture of an Earth whose surface is constantly being created, moved and recycled",
-      ["It changed the names of the continents on world maps",
-       "It corrected the measured size of the Earth by a small amount",
-       "It only affected how earthquakes are named"],
+      ["It changed the names of the continents and oceans shown on world maps",
+       "It corrected the measured size of the Earth by a small amount, and adjusted a few dates in the time scale",
+       "It only affected how earthquakes and volcanoes are named"],
       "A world view shift changes the framework itself: before, the Earth's surface was fixed and only wore down; after, the surface is a system of moving plates that builds mountains, opens oceans and recycles crust. Everything in geology is read differently inside the new picture.", {});
   },
   function () {
     return mcq("Which statement belongs to the plate tectonics world view?",
       "The Earth's surface is divided into plates that move, carrying continents and ocean floor, and interact at their boundaries",
-      ["The continents are fixed, and only the oceans change over time",
-       "Mountains form mainly where rivers deposit sediment",
-       "The Earth's interior is completely solid and still"],
+      ["The continents are fixed in place forever, and only the oceans change over time",
+       "Mountains form mainly where rivers deposit their sediment, building it up over millions of years",
+       "The Earth's interior is completely solid, cold and perfectly still"],
       "The plate tectonics picture: a moving, divided surface, with earthquakes, volcanoes and mountains concentrated at the boundaries where plates interact. The fixed-surface statements belong to the older view.", {});
   }
 ]), ["A shift replaces the framework, not a detail inside it.", "Look for the option in which the surface itself is in motion."]);
@@ -5103,17 +5103,17 @@ E("s7-u4-shift-contrast", 4, ["SC7.11.6"], 2, "var", varset([
   function () {
     return mcq("A student writes: 'The Atlantic Ocean has always been the same width, because the continents cannot move.' Which world view is the student using, and what evidence contradicts it?",
       "The old fixed-continent view; the matching coastlines, fossils and rock layers across the Atlantic, and the young, spreading ocean floor between them, contradict it",
-      ["The plate tectonics view; no evidence contradicts it",
-       "The continental drift view; satellite photographs contradict it",
-       "The old fixed-continent view; the existence of tides contradicts it"],
+      ["The plate tectonics view, and there is no evidence anywhere that contradicts any part of it",
+       "The continental drift view; satellite photographs contradict it, as do modern laser and GPS measurements of the continents' positions",
+       "The old fixed-continent view; the existence of tides, currents and storms in the Atlantic contradicts it"],
       "Fixed continents was the pre-drift world view. It cannot explain why the Atlantic's shores match in shape, fossils and rocks, nor why the floor between them is young at the ridge and spreading: the ocean opened as the continents parted.", {});
   },
   function () {
     return mcq("Before plate tectonics, folded mountain ranges were explained by a cooling, shrinking Earth wrinkling like a baked apple. What did the plate tectonics shift change about this explanation?",
       "Mountains are now explained by plates colliding and squeezing the rock, a process still running today, not by a one-way shrinking of the whole Earth",
-      ["Mountains are now believed to form in a single day",
-       "The shrinking-apple explanation was proven correct in every detail",
-       "Mountains are no longer considered worth explaining"],
+      ["Mountains are now believed to form suddenly, in a single day of upheaval",
+       "The shrinking-apple explanation was proven correct in every detail, and plate tectonics simply confirmed it years later",
+       "Mountains are no longer considered worth explaining by scientists at all"],
       "The shift replaced a global shrinking with local, ongoing collisions: ranges rise where plates converge, which is why the Himalayas still grow and why ranges sit along boundary belts rather than anywhere at all.", {});
   }
 ]), ["Name the view from its claim: fixed, or moving?", "The contradicting evidence is the drift and spreading evidence, not everyday observations like tides."]);
@@ -5124,9 +5124,9 @@ E("s7-u4-past-explanations", 4, ["SC7.11.7"], 1, "var", varset([
   function () {
     return mcq("In Hawaiian tradition, volcanic eruptions were explained through Pele, the goddess of fire, whose anger or movements produced the lava. What observation was this explanation trying to account for?",
       "Lava erupting from the Earth and building new land, sometimes destructively and sometimes gently",
-      ["The movement of the stars across the Hawaiian sky",
-       "The arrival of the rainy season each year",
-       "The formation of fossils in mountain rocks"],
+      ["The movement of the stars across the Hawaiian sky at night, which sailors steered by",
+       "The arrival of the rainy season in the islands each year, with its floods and storms",
+       "The formation of fossils inside the rocks of the mountains"],
       "Past explanations addressed real observations: Hawaiians lived with active volcanoes, and the Pele tradition explained when and why eruptions came, and how new land formed, in the terms their culture had.", {});
   },
   function () {
@@ -5143,17 +5143,17 @@ E("s7-u4-past-purpose", 4, ["SC7.11.7"], 2, "var", varset([
   function () {
     return mcq("What do past explanations of volcanoes and earthquakes (such as Pele, or underground winds) have in common with modern scientific theories?",
       "Both try to explain observations of the natural world using the knowledge available at the time",
-      ["Both are tested by controlled experiments before anyone believes them",
-       "Both are written down by professional scientists",
-       "Both turn out to be correct in their details"],
+      ["Both are tested by controlled experiments before anyone is allowed to believe them",
+       "Both are written down in books by professional scientists",
+       "Both turn out to be correct in all of their details"],
       "The shared purpose is explanation: people in every era connect observations into accounts of why events happen. What changed is the method: modern theories must survive testing against new evidence, and are revised or replaced when they do not.", {});
   },
   function () {
     return mcq("How do past explanations differ most importantly from the modern theory of plate tectonics?",
       "Plate tectonics is tested against new evidence and revised when evidence demands; the past explanations were not put to such tests",
-      ["Plate tectonics is much older than the past explanations",
-       "Past explanations were never believed by the people who told them",
-       "Plate tectonics explains fewer observations than the past explanations"],
+      ["Plate tectonics is a much older theory than any of the past explanations",
+       "Past explanations were never truly believed by the people who told and retold them",
+       "Plate tectonics explains fewer observations than the past explanations, which claimed to cover everything on Earth"],
       "Belief and storytelling are not the difference; testing is. Plate tectonics makes predictions (where events occur, how old the floor is) that were checked and could have failed. The past explanations explained after the fact and were not tested that way.", {});
   }
 ]), ["Same job, different method: both explain; only one is tested.", "If an option says past peoples did not believe their own explanations, it underrates them and misses the point."]);
@@ -5221,17 +5221,17 @@ E("s7-u4-key-choose", 4, ["SC7.12.1"], 2, "var", varset([
   function () {
     return mcq("A student must identify an unknown mineral for a practical problem: it will be used to test whether a 'gold' nugget from a stream is real. Which property from the key should the student test FIRST to settle the question?",
       "Streak: gold leaves a yellow streak and its common look-alike, pyrite, leaves a greenish-black one",
-      ["Colour: gold is the only yellow mineral",
-       "Crystal form: gold never forms crystals",
-       "Transparency: gold lets light through and pyrite does not"],
+      ["Colour: gold is the only yellow mineral, so a yellow nugget must be gold",
+       "Crystal form: gold never forms crystals of any shape",
+       "Transparency: gold lets light pass through it when it is thin, and pyrite never does"],
       "The practical problem is gold against pyrite, and streak separates them in one test. Colour cannot settle it (that is the whole difficulty), and the other options are not reliable differences.", {});
   },
   function () {
     return mcq("A key user reaches step 8 with a specimen and is unsure whether it fizzed in acid, because only one tiny bubble appeared. What is the most sensible next step?",
       "Repeat the acid test on a fresh surface of the specimen and watch carefully, since the identification depends on it",
-      ["Skip the step and choose whichever mineral seems more likely",
-       "Abandon the key and identify the mineral by colour alone",
-       "Record the mineral as both calcite and not calcite"],
+      ["Skip the step and choose whichever of the two minerals seems more likely, based on its looks",
+       "Abandon the key completely and identify the mineral by its colour alone",
+       "Record the mineral in the notebook as both calcite and not calcite"],
       "A key is only as good as its observations. When a decisive observation is doubtful, the practical move is to repeat the test properly, not to guess past it.", {});
   }
 ]), ["Choose the test that separates the actual candidates, not a test that is merely easy.", "A doubtful observation at a branching step is worth repeating; guessing compounds the error."]);
@@ -5240,8 +5240,8 @@ E("s7-u4-key-choose", 4, ["SC7.12.1"], 2, "var", varset([
 
 E("s7-u4-tool-ladder", 4, ["SC7.12.2"], 1, "gen", function () {
   var sets = [
-    { q: "A mineral is scratched by a steel nail (hardness 4.5) but not by a copper penny (hardness 3.5). Which tool should be tried next to narrow down its hardness?", tool: "A glass plate (hardness 5.5): if the mineral scratches the glass, it is harder than 5.5; if not, its hardness lies between 4.5 and 5.5", others: ["A fingernail (hardness 2.5), which is softer than the penny that already failed", "Sandpaper alone, without comparing it to the known tools", "A magnet, to test the mineral's hardness by attraction"] },
-    { q: "A mineral cannot be scratched by a fingernail (hardness 2.5) but is scratched by a copper penny (hardness 3.5). What is the best next test?", tool: "Try the steel nail (hardness 4.5) to check whether the hardness reaches that high, bracketing the value between 3.5 and 4.5", others: ["Try the emery cloth (hardness 9) to see the mineral at its hardest test first", "Stop testing: the hardness is exactly 3.5", "Test the streak, which gives the hardness directly"] },
+    { q: "A mineral is scratched by a steel nail (hardness 4.5) but not by a copper penny (hardness 3.5). Which tool should be tried next to narrow down its hardness?", tool: "A glass plate (hardness 5.5): if the mineral scratches the glass, it is harder than 5.5; if not, its hardness lies between 4.5 and 5.5", others: ["A fingernail (hardness 2.5), which is softer than the copper penny that has already failed to scratch it at all", "Sandpaper alone, used without comparing it against any of the known tools", "A magnet, to test the mineral's hardness by how strongly it is attracted"] },
+    { q: "A mineral cannot be scratched by a fingernail (hardness 2.5) but is scratched by a copper penny (hardness 3.5). What is the best next test?", tool: "Try the steel nail (hardness 4.5) to check whether the hardness reaches that high, bracketing the value between 3.5 and 4.5", others: ["Try the emery cloth (hardness 9) to see the mineral at its hardest test first, before any other tool", "Stop testing at once: the hardness is exactly 3.5 and nothing more", "Test the streak on a plate, which gives the hardness directly"] },
     { q: "A mineral scratches a glass plate (hardness 5.5) but is scratched by a steel file (hardness 6.5). Which statement about its hardness is correct?", tool: "Its hardness is between 5.5 and 6.5", others: ["Its hardness is exactly 6.5, the file's value", "Its hardness is below 5.5, because the file scratched it", "Its hardness cannot be estimated from scratch tests"] }
   ];
   var s = pick(sets);
@@ -5253,17 +5253,17 @@ E("s7-u4-method-match", 4, ["SC7.12.2"], 1, "var", varset([
   function () {
     return mcq("A student wants to find out whether an unknown mineral reacts with acid, the way calcite does. Which method should the student select?",
       "Place a drop of weak acid (or vinegar) on a fresh surface of the mineral and watch for bubbles of gas",
-      ["Rub the mineral on a porcelain plate and examine the powder",
-       "Hold a magnet near the mineral and watch for movement",
-       "Shine a bright light through a thin edge of the mineral"],
+      ["Rub the mineral on a porcelain plate and examine the powder left behind on it",
+       "Hold a strong magnet near the mineral and watch carefully for any movement toward it",
+       "Shine a bright light through a thin edge of the mineral sample and look through it"],
       "Each method answers one question: acid tests for the carbonate reaction (fizzing), the plate gives streak, the magnet tests magnetism, and the light tests transparency. Match the method to the property asked about.", {});
   },
   function () {
     return mcq("Which method is the right tool for examining the tiny crystals on a mineral sample's surface?",
       "A hand lens, held close, to magnify the surface so the crystals can be seen and described",
-      ["A streak plate, rubbed across the surface",
-       "A steel file, drawn across the surface",
-       "A magnet, passed slowly over the surface"],
+      ["A porcelain streak plate, rubbed firmly across the surface of the sample",
+       "A steel file, drawn across the surface to scratch the tiny crystals off",
+       "A magnet, passed slowly over the surface of the sample several times in a row"],
       "Observation tools and testing tools do different jobs: the hand lens magnifies for looking; the plate, file and magnet all change or test the sample rather than help you see it.", {});
   }
 ]), ["One method per property: acid for reaction, plate for streak, magnet for magnetism, lens for looking.", "If a method would damage or alter the sample, it is not an observation tool."]);
@@ -5272,17 +5272,17 @@ E("s7-u4-method-plan", 4, ["SC7.12.2"], 2, "var", varset([
   function () {
     return mcq("A student is given one small unknown mineral sample that must be returned undamaged if possible. Which order of tests is the best plan?",
       "Observe colour and lustre, test magnetism and streak, then scratch tests from softest tool upward, and acid last on a small corner",
-      ["Acid first, then the steel file, then observation of colour and lustre",
-       "Scratch with the steel file first to settle the hardness at once",
-       "Break the sample in half first so the inside can be tested"],
+      ["Acid first on the whole sample, then the steel file, then observation of its colour and lustre, in that order",
+       "Scratch it with the steel file first, to settle the question of hardness at once, before anything else",
+       "Break the sample in half first, so that its inside surfaces can be tested directly"],
       "A good plan runs from least to most damaging and from observation to intervention: looking costs nothing, streak and magnetism leave the sample nearly untouched, scratch tools go soft to hard so the first successful scratch does the least harm, and acid, which consumes a little of the sample, goes last.", {});
   },
   function () {
     return mcq("Why do mineral testers work UP the hardness ladder (fingernail, penny, nail, glass, file) instead of starting with the steel file?",
       "Starting soft brackets the hardness with the least damage: each failed tool leaves no mark, and the first tool that works sets the upper edge of the bracket",
-      ["The file is too expensive to use on unknown minerals",
-       "The ladder's order is a tradition with no practical reason",
-       "Soft tools give more accurate hardness values than hard tools"],
+      ["The steel file is far too expensive to risk using on unknown mineral samples",
+       "The order of the ladder is just an old tradition, with no practical reason behind it at all",
+       "Soft tools give more accurate hardness values than hard tools ever can, so starting with the file would ruin the measurement"],
       "If the file went first, every soft mineral would be gouged before its hardness was known, and the result would only say 'softer than 6.5'. Climbing the ladder narrows the value step by step and leaves failed tests unmarked.", {});
   }
 ]), ["Order tests by cost: free observations first, damaging tests last.", "Soft-to-hard is not politeness; it is how the bracket narrows without ruining the sample."]);
@@ -5323,17 +5323,17 @@ E("s7-u4-mineral-pair", 4, ["SC7.12.3"], 2, "var", varset([
   function () {
     return mcq("Quartz and calcite can both be clear and glassy. Which single property from the key separates them most reliably?",
       "Hardness: quartz (7) cannot be scratched by a steel file, while calcite (3) is scratched even by a copper penny",
-      ["Colour: quartz is always white and calcite is always clear",
-       "Lustre: calcite is metallic and quartz is not",
-       "Streak: both leave a bright red streak"],
+      ["Colour: quartz is always white and calcite is always clear, so colour settles the question at once",
+       "Lustre: calcite has a metallic lustre and quartz does not",
+       "Streak: both minerals leave a bright red streak on the plate"],
       "Their looks overlap, but their hardnesses are far apart (7 against 3), so one scratch test settles it; calcite's acid fizz also separates them. Colour and lustre overlap too much to trust.", {});
   },
   function () {
     return mcq("Hematite and magnetite are both dark, heavy, metallic minerals. Which single test separates them fastest?",
       "A magnet: magnetite is attracted to it and hematite is not (and their streaks also differ, black against red-brown)",
-      ["Weighing them: both are heavy, so the heavier one is magnetite",
-       "Colour: magnetite is dark and hematite is light",
-       "Hardness: their hardnesses are at opposite ends of the scale"],
+      ["Weighing them carefully: both are heavy, so the heavier one is magnetite and the lighter is hematite",
+       "Colour: magnetite is dark in colour and hematite is light",
+       "Hardness: their hardness values sit at opposite ends of the hardness scale"],
       "Magnetism is decisive and instant for this pair: only magnetite responds. Weight and colour are too similar to separate them, and their hardness ranges overlap.", {});
   }
 ]), ["For a look-alike pair, hunt the property where the two minerals differ most.", "If both minerals share the property in an option, that option cannot separate them."]);
@@ -5364,9 +5364,9 @@ E("s7-u4-question-identify", 4, ["SC7.12.4"], 1, "var", varset([
   function () {
     return mcq("Which question arising from rock cycle study could actually be investigated with the samples and tools in a classroom?",
       "Why are some rocks rounded and others angular: what does the shape record about how far the pieces travelled?",
-      ["Why did the Earth form with exactly three rock families?",
-       "What will this rock look like in exactly one million years?",
-       "Which rock family is the most important on Earth?"],
+      ["Why did the Earth form with exactly three rock families and no others?",
+       "What will this rock look like in exactly one million years, and what colour will it be then?",
+       "Which of the three rock families is the most important family on Earth?"],
       "Rounded against angular pieces can be compared across samples and connected to transport distance, an investigation the class can run. The others ask for unknowable exact futures, purposes, or rankings no evidence can settle.", {});
   }
 ]), ["Investigable means evidence can be brought to bear: samples, observations, comparisons.", "Questions of taste, purpose or exact distant futures cannot be investigated, however interesting they are."]);
@@ -5375,17 +5375,17 @@ E("s7-u4-question-best", 4, ["SC7.12.4"], 3, "var", varset([
   function () {
     return mcq("After studying the rock cycle, a student still has a question and wants one that could drive a real investigation with rock samples, a freezer, water and a tumbler of sand. Which question is strongest?",
       "Does freezing and thawing water in rock cracks break rock faster than tumbling the same rock in sand and water?",
-      ["Why is the rock cycle a cycle and not a line?",
-       "How many rocks are there in the world?",
-       "What is the best rock for a pet rock?"],
+      ["Why is the rock cycle a cycle that goes around, and not a line that ends?",
+       "How many rocks are there in the world in total, if every single one could be counted today?",
+       "What is the best kind of rock to choose for a pet rock?"],
       "The strongest question compares two weathering processes under controlled conditions with the equipment named, and its answer comes from measurements the student can take. The others are definitional, uncountable, or matters of taste.", {});
   },
   function () {
     return mcq("A student asks: 'I wonder why this sedimentary rock has layers of different colours.' Which follow-up turns it into the strongest investigable question?",
       "Do the different-coloured layers contain different sediment sizes or materials, suggesting the conditions changed as each layer was deposited?",
-      ["Are the layers pretty enough to display in the classroom?",
-       "Who coloured the layers, and why did they choose those colours?",
-       "How old is each layer, to the exact year?"],
+      ["Are the layers pretty enough for the rock to be put on display in the classroom for everyone to see?",
+       "Who coloured the layers of the rock in the past, and why did they choose those colours rather than any others?",
+       "How old is each separate layer of the rock, dated to the exact year it formed?"],
       "The strong follow-up points at observable differences (grain size, material) that can be checked in the sample and connected to deposition conditions. Exact years are beyond the tools, and the rest are taste or false agency.", {});
   }
 ]), ["A strong question names something measurable and a comparison to make.", "If the question cannot be answered with the samples and tools at hand, it is not yet investigable."]);
@@ -5394,9 +5394,9 @@ E("s7-u4-cycle-path", 4, ["SC7.12.4"], 2, "var", varset([
   function () {
     var q = mcq("Use the rock cycle diagram. A question arises from the diagram: can a sedimentary rock become an igneous rock directly, in one step? What does the diagram show?",
       "No: the sedimentary rock must first be changed by heat and pressure and then melt, or melt as burial deepens, before cooling can make it igneous",
-      ["Yes: any rock can become any other rock in one step",
-       "No: sedimentary rock can never become igneous rock, even over millions of years",
-       "Yes, if the sedimentary rock is left at the surface long enough"],
+      ["Yes: any kind of rock can become any other kind of rock in a single step",
+       "No: sedimentary rock can never become igneous rock, even over millions of years, because the two kinds form in different places",
+       "Yes, if the sedimentary rock is simply left at the surface for long enough"],
       "Follow the arrows from the sedimentary box: none runs straight to igneous. The route passes through metamorphic rock and magma: heat and pressure, then melting, then cooling. The cycle allows the journey, but never in one step.", {});
     q.figure = s7RockCycleSVG();
     return q;
@@ -5404,9 +5404,9 @@ E("s7-u4-cycle-path", 4, ["SC7.12.4"], 2, "var", varset([
   function () {
     var q = mcq("Use the rock cycle diagram. Which route takes a metamorphic rock back to the start of the cycle as sediments?",
       "Weathering and erosion break the metamorphic rock down into sediments",
-      ["Melting turns it directly into sediments",
-       "Compaction and cementation press it into sediments",
-       "Cooling hardens it into sediments"],
+      ["Melting turns it directly into loose sediments",
+       "Compaction and cementation press loose material into sediments",
+       "Cooling and hardening turn it into sediments"],
       "Sediments are made by breaking rock down at the surface: weathering and erosion. Melting makes magma, compaction and cementation consume sediments rather than create them, and cooling makes igneous rock.", {});
     q.figure = s7RockCycleSVG();
     return q;
@@ -5444,17 +5444,17 @@ E("s7-u4-fair-test-design", 4, ["SC7.12.5"], 2, "var", varset([
   function () {
     return mcq("A class designs a fair test of how fast water drains through sand, clay and gravel. Which set of choices keeps the test fair?",
       "The same volume of each soil, the same volume of water poured the same way, the same cup and filter set-up, and timing started the same way for each",
-      ["More water for the clay, since it is slower, to help it finish in time",
-       "A bigger cup for the gravel so its large pieces fit better",
-       "Different amounts of soil, using whatever each group scooped up"],
+      ["More water for the clay, since it is slower, to help it finish in time, and less water for the gravel, which needs no help",
+       "A bigger cup for the gravel so its large pieces fit better, and a smaller cup for the fine clay",
+       "Different amounts of soil for each test, using whatever each group scooped up from the bags"],
       "A fair test changes only the soil type. Helping the clay with extra water, or changing the apparatus between samples, would mix other variables into the drainage times and ruin the comparison.", {});
   },
   function () {
     return mcq("Midway through the drainage test, a group notices their clay sample was packed down hard while the sand was poured loosely. What should they do?",
       "Restart the clay trial with the sample prepared the same way as the others, and note the change",
-      ["Keep the result, since clay is slow anyway",
-       "Pack the sand down in the next class to make up for it",
-       "Drop the clay result and report only sand and gravel"],
+      ["Keep the clay result as it is, since clay is slow to drain anyway",
+       "Pack the sand down hard in the next class to make up for the difference",
+       "Drop the clay result from the report and report only the sand and gravel results"],
       "Packing is a variable: if it differs between samples, the times no longer compare soils alone. The fair move is to redo the affected trial under the same preparation and record what was done.", {});
   }
 ]), ["Fair means one difference only: the thing being tested.", "A discovered unfairness is fixed by redoing the trial properly, not by adjusting the numbers."]);
@@ -5479,17 +5479,17 @@ E("s7-u4-instrument-read", 4, ["SC7.12.6"], 1, "var", varset([
   function () {
     return mcq("A student times how long 25 mL of water takes to drain through a soil sample. The stopwatch shows the water finished draining somewhere between 44 and 45 seconds, closer to 45. Which is the most accurate way to record the result?",
       "Record the time to the precision the watch allows (for example 44.8 s if the watch shows tenths), and use the same method for every sample",
-      ["Record exactly 45 s, since it must be a whole number",
-       "Record 'about a minute', since precision does not matter in a comparison",
-       "Record 44 s for this sample and round other samples differently to save time"],
+      ["Record exactly 45 s, since every proper time must be a whole number",
+       "Record the time as 'about a minute', since precision does not matter in a comparison test",
+       "Record 44 s for this sample, and round each of the other samples to whatever whole number saves the most time"],
       "Accuracy means reading the instrument to its real precision and reading every trial the same way. Invented round numbers and changing methods between samples both corrupt the comparison the times are for.", {});
   },
   function () {
     return mcq("A graduated cylinder holds water for the drainage test. The bottom of the water's curved surface (the meniscus) sits level with the 25 mark when viewed at eye level, but a student reading from above sees it at 27. Which reading is accurate, and why?",
       "25 mL: a meniscus is read at eye level, from the bottom of the curve, to avoid the viewing-angle error",
-      ["27 mL: the view from above is always the true one",
-       "26 mL: the average of the two views is most accurate",
-       "Either reading is fine, since 2 mL cannot affect the test"],
+      ["27 mL: the view from directly above is always the true and accurate one",
+       "26 mL: the average of the two different views is the most accurate reading",
+       "Either reading is fine for the test, since a difference of 2 mL cannot affect it"],
       "Liquid surfaces curve, and the scale is read at the bottom of the meniscus with the eye level with it. Reading from above introduces a consistent error, and 2 mL in 25 is an 8 percent error, large enough to distort a drainage comparison.", {});
   }
 ]), ["Read the instrument the way it was designed to be read: eye level, bottom of the meniscus, real precision.", "Consistency across trials is part of accuracy, not a nicety."]);
@@ -5498,9 +5498,9 @@ E("s7-u4-instrument-choose", 4, ["SC7.12.6"], 1, "var", varset([
   function () {
     return mcq("A Soil Sleuth team must compare the particle sizes of sand, clay and gravel samples. Which instrument and practice best serves the measurement?",
       "A hand lens and a ruler: examine the particles magnified and measure or compare their diameters against the ruler's scale",
-      ["A graduated cylinder: pour the particles in and read their size from the scale",
-       "A stopwatch: time how fast the particles settle and report the time as the size",
-       "A magnet: sort the particles by attraction and report the groups as sizes"],
+      ["A graduated cylinder: pour the particles into it and read their size off the scale on its side",
+       "A stopwatch: time how fast the particles settle in water and report the settling time as the particle size",
+       "A magnet: sort the particles by their attraction and report the groups as the sizes"],
       "Particle size is a length: it is measured by looking (magnified, with the hand lens) and comparing against a scale (the ruler). The cylinder measures volume, the watch measures time, and the magnet sorts by magnetism, none of which is a diameter.", {});
   },
   function () {
@@ -5519,17 +5519,17 @@ E("s7-u4-table-build", 4, ["SC7.12.7"], 1, "var", varset([
   function () {
     return mcq("A Soil Sleuth team records, for each of four samples (sand, clay, gravel, local soil), its colour, average particle size, texture and drainage time. Which table organizes this data correctly?",
       "A table with one row per sample and one column per measurement (colour, particle size, texture, drainage time), with a title naming what was measured",
-      ["A table with one row per measurement and the four samples' values added together in a single column",
-       "A list of the samples in the order the team happened to test them, with notes underneath",
-       "A table showing only the drainage times, since those are the results that matter"],
+      ["A table with one row per measurement and the values for all four samples added together in a single column at the end",
+       "A list of the samples written in the order the team happened to test them, with notes underneath it",
+       "A table showing only the drainage times for each sample, since those are the results that matter most"],
       "The data has two factors (sample and measurement), so the table needs rows for one and columns for the other, with every value kept separate and a title. Adding values together or dropping measurements destroys data the team collected.", {});
   },
   function () {
     return mcq("A mineral team tested eight samples and recorded colour, streak, hardness and the mineral each turned out to be. Which feature must their results table have to be useful for spotting patterns later?",
       "One row per sample with the properties in the same columns for every sample, so any property can be compared down its column",
-      ["The samples arranged by how much the team liked them",
-       "A separate small table for each sample, each with its own layout",
-       "Only the correctly identified samples included, to keep the table tidy"],
+      ["The samples arranged in order by how much the team liked each of them",
+       "A separate small table for each of the samples, each one drawn up with its own layout and headings",
+       "Only the correctly identified samples included in the table, to keep it looking tidy"],
       "Patterns appear down columns: streak against identification, hardness against identification. That requires a consistent grid, every sample in the same columns, including the misses, which are data too.", {});
   }
 ]), ["Rows for one factor, columns for the other, every value kept, and a title.", "A table that drops the failures drops the pattern with them."]);
@@ -5538,9 +5538,9 @@ E("s7-u4-table-read", 4, ["SC7.12.7"], 2, "var", varset([
   function () {
     return mcq("A results table from the mineral laboratory shows: Sample 1, streak white, hardness 3, fizzes in acid, identified as calcite; Sample 2, streak white, hardness 7, no fizz, identified as quartz; Sample 3, streak red-brown, hardness 6, no fizz, identified as hematite; Sample 4, streak yellow, hardness 3, no fizz, not in the key's ten minerals. Which conclusion does the table support?",
       "Streak colour alone does not identify a mineral: two samples share a white streak but are different minerals, separated by hardness and the acid test",
-      ["Every mineral with a white streak is calcite",
-       "Hardness never matters when the streak is known",
-       "Sample 4 must be gold, because its streak is yellow"],
+      ["Every mineral with a white streak is calcite, so Samples 1 and 2 are both calcite despite their different hardnesses",
+       "Hardness never matters at all in identification when the streak colour is already known",
+       "Sample 4 must be gold, because gold is the mineral whose streak is yellow"],
       "Read down the columns: Samples 1 and 2 share a streak but differ in hardness and acid reaction, and they are different minerals. Identification needs the combination of properties, which is the table's whole lesson. Sample 4's yellow streak is noted without an identification; the table does not name it gold.", {});
   }
 ]), ["Read down each column and look for what stays together and what splits.", "Shared values in one column mean that property alone cannot be the identifier."]);
@@ -5559,9 +5559,9 @@ E("s7-u4-pattern-drainage", 4, ["SC7.12.8"], 2, "var", varset([
   function () {
     var q = mcq("Use the drainage data display. Which relationship between particle size and drainage does the data show?",
       "As particle size increases, drainage gets faster: the coarse gravel drains quickest and the fine clay slowest",
-      ["As particle size increases, drainage gets slower",
-       "Particle size makes no difference to drainage in this data",
-       "The relationship reverses halfway: medium particles drain slowest of all"],
+      ["As the particle size increases, the drainage of water gets slower",
+       "Particle size makes no difference at all to drainage in this data",
+       "The relationship reverses halfway through: the medium-sized particles drain slowest of all"],
       "Read the bars against the particle sizes: gravel (coarsest) 6 s, sand 14 s, loam 47 s, clay (finest) 168 s. The times rise steadily as the particles get finer, a single clear relationship.", {});
     q.figure = s7DrainSVG([{ name: "gravel", secs: 6 }, { name: "sand", secs: 14 }, { name: "loam", secs: 47 }, { name: "clay", secs: 168 }]);
     return q;
@@ -5569,9 +5569,9 @@ E("s7-u4-pattern-drainage", 4, ["SC7.12.8"], 2, "var", varset([
   function () {
     var q = mcq("Use the drainage data display. A fifth sample, a coarse sand mixed with small pebbles, is tested the same way. Based on the pattern, what drainage time is most reasonable to predict?",
       "A short time, closer to gravel and sand than to clay, because its particles are coarse",
-      ["The longest time of all, because new samples always drain slowest",
-       "Exactly 168 s, the same as clay",
-       "The pattern gives no basis for any prediction"],
+      ["The longest time of all the samples, because new samples always drain the slowest",
+       "Exactly 168 s, precisely the same time as the clay sample",
+       "The pattern in the data gives no basis for making any prediction"],
       "Patterns earn their keep by predicting: drainage time falls as particle size rises, so a coarse mixture should drain fast, in the range of the other coarse samples, not near the clay's time.", {});
     q.figure = s7DrainSVG([{ name: "gravel", secs: 6 }, { name: "sand", secs: 14 }, { name: "loam", secs: 47 }, { name: "clay", secs: 168 }]);
     return q;
@@ -5582,17 +5582,17 @@ E("s7-u4-pattern-infer", 4, ["SC7.12.8"], 3, "var", varset([
   function () {
     return mcq("In the fizz test, the results were: granite no fizz, sandstone no fizz, shale no fizz, chalk strong fizz, marble strong fizz, limestone strong fizz. Marble is metamorphosed limestone, and chalk is a soft form of limestone. Which inference best explains the pattern?",
       "The fizzing rocks are all forms of the same material (limestone), so the acid reaction depends on what the rock is made of, not on the rock family it belongs to",
-      ["Metamorphic rocks always fizz and igneous rocks never do",
-       "Rocks with shorter names fizz more than rocks with longer names",
-       "The acid was stronger on the days the fizzing rocks were tested"],
+      ["Metamorphic rocks always fizz in acid and igneous rocks never fizz at all",
+       "Rocks with shorter names fizz more strongly in acid than rocks with longer names",
+       "The acid was stronger on the days the fizzing rocks were tested, and much weaker on the days the other rocks were tested in class"],
       "Group the results by composition and the pattern resolves: the three fizzers share limestone's material across two families (sedimentary chalk and limestone, metamorphic marble), while the non-fizzers are other materials. The variable that explains the split is composition.", {});
   },
   function () {
     return mcq("A class plots its mineral results: every sample with hardness above 5.5 scratched glass, every sample below 5.5 did not, and the one sample at about 5.5 left a faint mark. What relationship can the class infer?",
       "Whether a mineral scratches glass depends on whether its hardness is above or below the glass's hardness of 5.5",
-      ["Harder minerals are always darker in colour",
-       "Glass scratches every mineral given enough time",
-       "Hardness and scratching are unrelated, and the plot is a coincidence"],
+      ["Harder minerals are always darker in colour than softer ones",
+       "Glass will scratch every mineral if it is rubbed for long enough",
+       "Hardness and scratching are completely unrelated, and the pattern in the plot is a coincidence"],
       "The split in the data falls exactly at the glass's own hardness, which is the relationship scratch testing is built on: the harder material scratches the softer. Colour plays no part in the pattern.", {});
   }
 ]), ["Group the results two ways (by family, by composition; by colour, by hardness) and see which grouping explains the split.", "The explaining variable is the one whose groups line up perfectly with the outcomes."]);
@@ -5611,17 +5611,17 @@ E("s7-u4-conclusion-state", 4, ["SC7.12.9"], 2, "var", varset([
   function () {
     return mcq("A student's initial idea was: 'Any rock will fizz if you use enough acid.' In the test, granite, sandstone and shale produced no fizz at all with the acid used, while chalk, marble and limestone fizzed strongly. Which conclusion should the student state?",
       "The data refutes the initial idea as stated: with this acid, only the limestone-family rocks fizzed, so fizzing depends on what the rock is made of",
-      ["The data supports the initial idea, because some rocks fizzed",
-       "The data proves no rock anywhere can fizz",
-       "The conclusion is that the acid was too weak to test anything"],
+      ["The data supports the initial idea, because some rocks fizzed strongly, and partial support is enough to keep a claim",
+       "The data proves that no rock anywhere in the world can ever fizz",
+       "The conclusion is that the acid used was too weak to test anything about the rocks"],
       "A conclusion answers the initial idea directly: it predicted all rocks would fizz, and three did not. The supported conclusion is narrower and matches the data: composition decides. Some rocks fizzing does not rescue a claim about all rocks.", {});
   },
   function () {
     return mcq("A team hypothesized that the local soil would drain like sand, because it looks gritty. Their times were: local soil 41 s, sand 14 s, loam 47 s, clay 168 s. Which conclusion fits the data?",
       "The hypothesis is not supported: the local soil drained much more slowly than sand and closest to loam, so it behaves as a loamy soil despite its gritty look",
-      ["The hypothesis is supported, because the local soil did drain",
-       "The data is useless, because the hypothesis turned out wrong",
-       "The conclusion is that drainage times cannot be compared"],
+      ["The hypothesis is supported, because the local soil did drain, and any draining at all counts as support",
+       "The data collected is useless, because the team's hypothesis turned out to be wrong",
+       "The conclusion is that drainage times cannot be compared between different soils, so nothing at all can be said about the local soil"],
       "Compare the local soil's time with the references: 41 s sits beside loam's 47 s, far from sand's 14 s. The conclusion must follow the numbers, and a refuted hypothesis is a result, not a failure of the data.", {});
   }
 ]), ["A conclusion speaks to the initial idea by name: supported, or refuted, and by which numbers.", "'Some' never proves 'all': check the claim's exact wording against the data."]);
@@ -5630,9 +5630,9 @@ E("s7-u4-conclusion-refute", 4, ["SC7.12.9"], 2, "var", varset([
   function () {
     return mcq("A student predicted that a dark, heavy rock sample would fizz in acid 'because it looks like the rocks that fizzed yesterday'. It produced no fizz at all, and its streak was red-brown. What is the best conclusion?",
       "The prediction is refuted: appearance misled, and the data (no fizz, red-brown streak) point to the sample being hematite, an iron mineral that does not react with acid",
-      ["The prediction stands, because the rock still looks like a fizzing rock",
-       "The test must have been done wrong, since predictions are never wrong",
-       "The conclusion is that streak tests cause rocks not to fizz"],
+      ["The prediction stands, because the rock still looks like a fizzing rock, and appearance is a more reliable guide than one acid test",
+       "The test must have been done wrong in some way, since a prediction made beforehand is never wrong",
+       "The conclusion is that doing a streak test on a rock causes it not to fizz in acid afterward"],
       "Conclusions follow data, not hopes: the fizz test says not a limestone-family rock, and the streak identifies hematite. The refuted prediction is useful: it shows appearance is a poor guide, which the conclusion should say.", {});
   }
 ]), ["When the data and the prediction disagree, the conclusion sides with the data and says so.", "A refuted prediction is a finding: state what the data points to instead."]);
