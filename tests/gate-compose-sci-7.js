@@ -111,7 +111,8 @@ function runUnit(unit, designCR, designInd) {
 }
 
 const passU1 = runUnit(1, "s7-u1-cr-design-experiment", "SC7.3.8");
+const passU2 = runUnit(2, "s7-u2-cr-design-test", "SC7.6.6");
 const passU4 = runUnit(4, "s7-u4-cr-design-investigation", "SC7.12.5");
-const pass = passU1 && passU4;
+const pass = passU1 && passU2 && passU4;
 console.log(pass ? "GATE-COMPOSE-SCI-7: PASS" : "GATE-COMPOSE-SCI-7: FAIL");
 process.exit(pass ? 0 : 1);

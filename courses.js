@@ -679,13 +679,14 @@ window.COURSES = {
 
   units: {
     1: "Interactions Within Ecosystems",
+    2: "Heat",
     4: "Earth's Crust"
   },
 
-  /* Unit 1 and Unit 4 indicators from the eNLightenED Units and
-     Indicators spreadsheet for the current guide (Version
+  /* Unit 1, Unit 2 and Unit 4 indicators from the eNLightenED Units
+     and Indicators spreadsheet for the current guide (Version
      2023.001.010), in spreadsheet order. The course is built strand
-     by strand; Units 2 and 3 register when their builds land. SC7.3.5
+     by strand; Unit 3 registers when its build lands. SC7.3.5
      (work cooperatively with team members) is registered for
      completeness but carries no entries: an individual practice app
      cannot assess cooperation, and the gap is recorded, not papered
@@ -718,6 +719,32 @@ window.COURSES = {
     "SC7.3.9": "Organize, compile and display data using tables",
     "SC7.3.10": "Defend a position based on findings",
     "SC7.3.11": "Flow chart of changes in an ecosystem (succession)",
+    "SC7.4.1": "Instruments used to measure temperature",
+    "SC7.4.2": "Temperature defined by the particle theory",
+    "SC7.4.3": "How each state of matter reacts to temperature change",
+    "SC7.4.4": "Changes of state using the particle theory",
+    "SC7.4.5": "Compare conduction, convection and radiation",
+    "SC7.4.6": "How various surfaces absorb radiant heat",
+    "SC7.4.7": "Specific heat capacities compared qualitatively",
+    "SC7.5.1": "Personal activities and temperature",
+    "SC7.5.2": "Temperature measuring technologies of the past",
+    "SC7.5.3": "Home heating technologies in NL, past and present",
+    "SC7.5.4": "Different approaches to the home heating problem",
+    "SC7.5.5": "Informed decisions about home heating technologies",
+    "SC7.5.6": "How home heating has improved over time",
+    "SC7.5.7": "Evaporation and condensation understanding led to heat pumps",
+    "SC7.5.8": "Insulating technologies today and in the past",
+    "SC7.5.9": "Heat needs leading to developments in science and technology",
+    "SC7.5.10": "Careers associated with heat and temperature",
+    "SC7.6.1": "Construct and test a thermometer",
+    "SC7.6.2": "Compile and display thermometer test data",
+    "SC7.6.3": "Hypothesis, experiment, variables, conclusion",
+    "SC7.6.4": "Use tools and apparatus safely and accurately",
+    "SC7.6.5": "Organize and display data using tables and graphs",
+    "SC7.6.6": "Design and carry out an experiment controlling variables",
+    "SC7.6.7": "Use apparatus and materials safely",
+    "SC7.6.8": "Organize and display data using tables and graphs",
+    "SC7.6.9": "State a conclusion from data; supports or refutes",
     "SC7.10.1": "Classify minerals by physical properties",
     "SC7.10.2": "Classify rocks by characteristics and formation",
     "SC7.10.3": "Earth's crust characteristics and technologies for studying geological features",
@@ -750,6 +777,10 @@ window.COURSES = {
         "SC7.2.1", "SC7.2.2", "SC7.2.3", "SC7.2.4", "SC7.2.5", "SC7.2.6", "SC7.2.7", "SC7.2.8",
         "SC7.3.1", "SC7.3.2", "SC7.3.3", "SC7.3.4", "SC7.3.5", "SC7.3.6", "SC7.3.7", "SC7.3.8",
         "SC7.3.9", "SC7.3.10", "SC7.3.11"],
+    2: ["SC7.4.1", "SC7.4.2", "SC7.4.3", "SC7.4.4", "SC7.4.5", "SC7.4.6", "SC7.4.7",
+        "SC7.5.1", "SC7.5.2", "SC7.5.3", "SC7.5.4", "SC7.5.5", "SC7.5.6", "SC7.5.7", "SC7.5.8",
+        "SC7.5.9", "SC7.5.10", "SC7.6.1", "SC7.6.2", "SC7.6.3", "SC7.6.4", "SC7.6.5", "SC7.6.6",
+        "SC7.6.7", "SC7.6.8", "SC7.6.9"],
     4: ["SC7.10.1", "SC7.10.2", "SC7.10.3", "SC7.10.4", "SC7.10.5", "SC7.10.6", "SC7.10.7", "SC7.10.8",
         "SC7.10.9", "SC7.11.1", "SC7.11.2", "SC7.11.3", "SC7.11.4", "SC7.11.5", "SC7.11.6", "SC7.11.7",
         "SC7.12.1", "SC7.12.2", "SC7.12.3", "SC7.12.4", "SC7.12.5", "SC7.12.6", "SC7.12.7", "SC7.12.8",
@@ -3274,6 +3305,15 @@ window.COURSES = {
   grade: 10,
   listed: true,
 
+  /* Prior-knowledge entries are practice-only (Nov 15, 2026,
+     the Math 1201 PK tranche): the composer leaves the flagged
+     entries (the tranche's 72 flagged entries across all seven
+     units) out of practice tests and exams unless the teacher
+     ticks the include-prior-knowledge override. Ordinary
+     practice sets and the pkonly prerequisite checks keep them.
+     Mirrors the Math 2201, 2200, 3202 and 2202 flags. */
+  pkPracticeOnly: true,
+
   units: {
     "1": "Measurement",
     "2": "Roots and Powers",
@@ -3446,8 +3486,8 @@ window.COURSES = {
      is sampled partway in this course: no entry carries a
      postMid flag and neither preset caps the pool, so no cap
      or midNote is configured; and no entry carries a PK-coded
-     indicator (its isPK is a shim that is always false here),
-     so pkPracticeOnly is not set either. */
+     indicator (the PK tranche's flagged entries carry ordinary
+     host tags, and pkPracticeOnly is set above). */
   presets: {
     mid:   { units: [1, 2, 3], mix: [20, 60, 20], label: "Mid-course review (Units 1 to 3)" },
     final: { units: [4, 5, 6, 7], mix: [20, 60, 20], label: "Final review (Units 4 to 7)" }

@@ -440,3 +440,129 @@ function s7TimeStripSVG() {
   s += "</svg>";
   return s;
 }
+
+/* ================= Unit 2 (Heat) figure families =================
+   H1: heating curve, drawn from the item's own plateau values.
+   H2: particle panel for the three states at two temperatures, drawn once.
+   H3: specific heat bar display, drawn from the item's own values.
+   H4: two-line temperature graph for the absorption investigation. */
+
+// H1: temperature-time heating curve. melt and boil are the plateau
+// temperatures; tEnd the final time; yMax the top of the temperature axis.
+function s7HeatingCurveSVG(melt, boil, tEnd, yMax) {
+  var W = 460, H = 300, x0 = 62, x1 = 428, y0 = 252, y1 = 34;
+  function X(t) { return (x0 + (x1 - x0) * t / tEnd).toFixed(1); }
+  function Y(v) { return (y0 - (y0 - y1) * v / yMax).toFixed(1); }
+  var start = Math.max(0, melt - 18);
+  var t1 = tEnd * 0.22, t2 = tEnd * 0.46, t3 = tEnd * 0.72;
+  var pts = X(0) + "," + Y(start) + " " + X(t1) + "," + Y(melt) + " " + X(t2) + "," + Y(melt) +
+    " " + X(t3) + "," + Y(boil) + " " + X(tEnd) + "," + Y(boil);
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="460" height="300" role="img" aria-label="Heating curve graph" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x1 + '" y2="' + y0 + '" stroke="#33424e" stroke-width="1.5"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + y1 + '" stroke="#33424e" stroke-width="1.5"/>';
+  [melt, boil].forEach(function (v) {
+    s += '<line x1="' + x0 + '" y1="' + Y(v) + '" x2="' + x1 + '" y2="' + Y(v) + '" stroke="#c9d4da" stroke-width="1" stroke-dasharray="4 3"/>';
+    s += '<text x="' + (x0 - 8) + '" y="' + (Y(v) + 4) + '" font-size="12" text-anchor="end" fill="#1c2b33">' + v + '</text>';
+  });
+  s += '<text x="' + (x0 - 8) + '" y="' + (y0 + 4) + '" font-size="12" text-anchor="end" fill="#1c2b33">0</text>';
+  for (var tt = 0; tt <= tEnd; tt += 5) {
+    s += '<text x="' + X(tt) + '" y="' + (y0 + 18) + '" font-size="11" text-anchor="middle" fill="#1c2b33">' + tt + '</text>';
+  }
+  s += '<polyline points="' + pts + '" fill="none" stroke="#b3541e" stroke-width="2.5"/>';
+  s += '<text x="' + ((x0 + x1) / 2) + '" y="' + (H - 6) + '" font-size="12" text-anchor="middle" fill="#1c2b33">Time (min)</text>';
+  s += '<text x="16" y="' + ((y0 + y1) / 2) + '" font-size="12" text-anchor="middle" fill="#1c2b33" transform="rotate(-90 16 ' + ((y0 + y1) / 2) + ')">Temperature (°C)</text>';
+  s += '</svg>';
+  return s;
+}
+
+// H2: the three states at two temperatures. Dots are particle positions;
+// arrow length stands for particle speed. Drawn once as a constant.
+function s7ParticlePanelSVG() {
+  function box(x, y, label, kind, warm) {
+    var s = '<rect x="' + x + '" y="' + y + '" width="118" height="86" fill="#f4f7fb" stroke="#33424e" stroke-width="1.2"/>';
+    s += '<text x="' + (x + 59) + '" y="' + (y + 100) + '" font-size="12" text-anchor="middle" fill="#1c2b33">' + label + '</text>';
+    var pts = [];
+    var r, c;
+    if (kind === "solid") {
+      for (r = 0; r < 3; r++) for (c = 0; c < 4; c++) pts.push([x + 22 + c * 25, y + 22 + r * 20]);
+    } else if (kind === "liquid") {
+      var lp = [[20, 58], [42, 64], [64, 56], [86, 62], [30, 38], [56, 42], [80, 36], [98, 52], [46, 24], [72, 22]];
+      lp.forEach(function (p) { pts.push([x + p[0], y + p[1]]); });
+    } else {
+      var gp = [[16, 16], [58, 12], [100, 20], [34, 44], [82, 48], [14, 70], [104, 68], [60, 66]];
+      gp.forEach(function (p) { pts.push([x + p[0], y + p[1]]); });
+    }
+    var alen = warm ? 13 : 6;
+    pts.forEach(function (p, i) {
+      s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="#2e6f8e"/>';
+      var dx = (i % 2 === 0) ? alen : -alen, dy = (i % 3 === 0) ? alen * 0.5 : -alen * 0.4;
+      s += '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + (p[0] + dx) + '" y2="' + (p[1] + dy) + '" stroke="#b3541e" stroke-width="1.4"/>';
+    });
+    return s;
+  }
+  var s = '<svg viewBox="0 0 460 250" width="460" height="250" role="img" aria-label="Particles in the three states of matter at two temperatures" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="460" height="250" fill="#ffffff"/>';
+  s += '<text x="8" y="52" font-size="12" fill="#1c2b33">Cooler</text>';
+  s += '<text x="8" y="168" font-size="12" fill="#1c2b33">Warmer</text>';
+  s += box(70, 14, "Solid", "solid", false) + box(206, 14, "Liquid", "liquid", false) + box(342, 14, "Gas", "gas", false);
+  s += box(70, 130, "Solid", "solid", true) + box(206, 130, "Liquid", "liquid", true) + box(342, 130, "Gas", "gas", true);
+  s += '</svg>';
+  return s;
+}
+
+// H3: horizontal bars of temperature rise for equal masses given equal energy.
+function s7SHCBarsSVG(rows) {
+  var W = 460, rowH = 34, top = 26, H = top + rows.length * rowH + 34;
+  var maxV = 0; rows.forEach(function (r) { if (r.rise > maxV) maxV = r.rise; });
+  var x0 = 118, x1 = 420;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="460" height="' + H + '" role="img" aria-label="Temperature rise of equal masses given equal energy" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>';
+  rows.forEach(function (r, i) {
+    var y = top + i * rowH;
+    var wdt = (x1 - x0) * r.rise / maxV;
+    s += '<text x="' + (x0 - 8) + '" y="' + (y + 17) + '" font-size="12" text-anchor="end" fill="#1c2b33">' + r.name + '</text>';
+    s += '<rect x="' + x0 + '" y="' + y + '" width="' + wdt.toFixed(1) + '" height="20" fill="#2e6f8e"/>';
+    s += '<text x="' + (x0 + wdt + 8) + '" y="' + (y + 15) + '" font-size="12" fill="#1c2b33">' + r.rise + ' °C</text>';
+  });
+  s += '<text x="' + ((x0 + x1) / 2) + '" y="' + (H - 6) + '" font-size="12" text-anchor="middle" fill="#1c2b33">Temperature rise (°C)</text>';
+  s += '</svg>';
+  return s;
+}
+
+// H4: two temperature lines over time for the dark and light cans.
+function s7AbsorbGraphSVG(times, dark, light) {
+  var W = 460, H = 290, x0 = 62, x1 = 428, y0 = 240, y1 = 30;
+  var tMax = times[times.length - 1];
+  var vMax = 0; dark.concat(light).forEach(function (v) { if (v > vMax) vMax = v; });
+  vMax = Math.ceil(vMax / 10) * 10;
+  function X(t) { return (x0 + (x1 - x0) * t / tMax).toFixed(1); }
+  function Y(v) { return (y0 - (y0 - y1) * v / vMax).toFixed(1); }
+  function line(vals, color) {
+    var pts = vals.map(function (v, i) { return X(times[i]) + "," + Y(v); }).join(" ");
+    var out = '<polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="2.5"/>';
+    vals.forEach(function (v, i) { out += '<circle cx="' + X(times[i]) + '" cy="' + Y(v) + '" r="3.5" fill="' + color + '"/>'; });
+    return out;
+  }
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="460" height="290" role="img" aria-label="Temperature of two cans under a lamp over time" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x1 + '" y2="' + y0 + '" stroke="#33424e" stroke-width="1.5"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + y1 + '" stroke="#33424e" stroke-width="1.5"/>';
+  for (var v = 0; v <= vMax; v += 10) {
+    s += '<text x="' + (x0 - 8) + '" y="' + (Y(v) + 4) + '" font-size="11" text-anchor="end" fill="#1c2b33">' + v + '</text>';
+    s += '<line x1="' + x0 + '" y1="' + Y(v) + '" x2="' + x1 + '" y2="' + Y(v) + '" stroke="#e3eaee" stroke-width="1"/>';
+  }
+  times.forEach(function (t) {
+    s += '<text x="' + X(t) + '" y="' + (y0 + 18) + '" font-size="11" text-anchor="middle" fill="#1c2b33">' + t + '</text>';
+  });
+  s += line(dark, "#26343d") + line(light, "#b3541e");
+  s += '<rect x="' + (x1 - 128) + '" y="' + (y1 + 4) + '" width="124" height="40" fill="#ffffff" stroke="#c9d4da"/>';
+  s += '<line x1="' + (x1 - 120) + '" y1="' + (y1 + 16) + '" x2="' + (x1 - 96) + '" y2="' + (y1 + 16) + '" stroke="#26343d" stroke-width="2.5"/>';
+  s += '<text x="' + (x1 - 90) + '" y="' + (y1 + 20) + '" font-size="11" fill="#1c2b33">Dark can</text>';
+  s += '<line x1="' + (x1 - 120) + '" y1="' + (y1 + 34) + '" x2="' + (x1 - 96) + '" y2="' + (y1 + 34) + '" stroke="#b3541e" stroke-width="2.5"/>';
+  s += '<text x="' + (x1 - 90) + '" y="' + (y1 + 38) + '" font-size="11" fill="#1c2b33">Light can</text>';
+  s += '<text x="' + ((x0 + x1) / 2) + '" y="' + (H - 4) + '" font-size="12" text-anchor="middle" fill="#1c2b33">Time (min)</text>';
+  s += '<text x="16" y="' + ((y0 + y1) / 2) + '" font-size="12" text-anchor="middle" fill="#1c2b33" transform="rotate(-90 16 ' + ((y0 + y1) / 2) + ')">Temperature (°C)</text>';
+  s += '</svg>';
+  return s;
+}
