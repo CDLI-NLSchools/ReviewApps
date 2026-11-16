@@ -1789,6 +1789,35 @@ rep('  /* A set link was opened: the exact set it encodes is on screen. */\n}',
 rep('  var groups={};\n  Object.keys(window.COURSES||{}).forEach(function(id){',
     '  var pkWn=document.getElementById("pkWhatsNew");\n  if(pkWn){pkWn.textContent=L9("What\'s new","Nouveautés");pkWn.addEventListener("click",function(){countEvent("whatsnew_click",[]);});}\n  var pkPv=document.getElementById("pkPrivacy");\n  if(pkPv){pkPv.textContent=L9("Anonymous usage counts help us see which courses and features are used. No student information is collected.","Des comptes d\'utilisation anonymes nous aident à voir quels cours et quelles fonctions sont utilisés. Aucun renseignement sur les élèves n\'est recueilli.");}\n  countPageview();\n  var groups={};\n  Object.keys(window.COURSES||{}).forEach(function(id){', count=1)  # picker wiring
 
+# ---------- Band 2 bridge reporting (Nov 16, 2026) ----------
+# Bridge items (rollout plan Section 7, first built for the Math
+# 3200 tranche): the check summary reports a missed bridge group
+# as a starting point for the unit, never as needing more
+# practice, and bridge groups are excluded from the group-keyed
+# retry. The counting-bridge group label lands in the same pass.
+rep(' "conversion":["Converting units","Convertir des unités"],',
+    ' "conversion":["Converting units","Convertir des unités"],\n "counting-bridge":["Getting started with counting","Débuter le dénombrement"],', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('       on these groups. */\n    var gStat={},gList=[];',
+    '       on these groups. Bridge groups (Nov 16, 2026, rollout plan\n       Section 7) are the exception: their items probe transfer\n       toward content the unit itself teaches first, so a missed\n       bridge group is reported as a starting point for the unit,\n       never as needing more practice, and bridge groups never\n       drive the retry button or the help note. */\n    var gStat={},gList=[],gBridge={};', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('      if(!gStat[g]){gStat[g]={missed:false,helped:false};gList.push(g);}',
+    '      if(!gStat[g]){gStat[g]={missed:false,helped:false};gList.push(g);}\n      if(q._entry.pkBridge)gBridge[g]=true;', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('    var anyMissedG=gList.some(function(g){return gStat[g].missed||gStat[g].helped;});\n    var anyHelpedG=gList.some(function(g){return gStat[g].helped;});',
+    '    var anyMissedG=gList.some(function(g){return !gBridge[g]&&(gStat[g].missed||gStat[g].helped);});\n    var anyHelpedG=gList.some(function(g){return !gBridge[g]&&gStat[g].helped;});', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('      return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gStat[g].missed||gStat[g].helped?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))+"</li>";',
+    '      return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gBridge[g]?(gStat[g].missed||gStat[g].helped?L9("a starting point for this unit","un point de départ pour cette unité"):L9("solid","solide")):(gStat[g].missed||gStat[g].helped?L9("needs more practice","à pratiquer davantage"):L9("solid","solide")))+"</li>";', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('       groups only. */\n    var gMissed=[],gSeen={};',
+    '       groups only. Bridge groups (Nov 16, 2026, rollout plan\n       Section 7) are excluded: practice is prescribed only on\n       material that has been taught, and a miss on a bridge item\n       is a starting point, not a deficit. */\n    var gMissed=[],gSeen={},gBridge={};', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('    var gMissed=[],gSeen={},gBridge={};\n    current.forEach(function(q,i){\n      if(!q._entry)return;\n      var g=pkGroupOf(q._entry);',
+    '    var gMissed=[],gSeen={},gBridge={};\n    current.forEach(function(q,i){\n      if(!q._entry)return;\n      var g=pkGroupOf(q._entry);\n      if(q._entry.pkBridge)gBridge[g]=true;', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+rep('      if(setResults[i]&&(!setResults[i].ok||helpUsed[i])&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}\n    });\n    if(!gMissed.length)return;',
+    '      if(setResults[i]&&(!setResults[i].ok||helpUsed[i])&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}\n    });\n    gMissed=gMissed.filter(function(g){return !gBridge[g];});\n    if(!gMissed.length)return;', count=1)  # Band 2 bridge reporting (Nov 16, 2026)
+
+# ---------- Band 2 Math 3200 group labels (Nov 16, 2026) ----------
+rep(' "radical-forms":["Mixed and entire radicals","Radicaux mixtes et entiers"],',
+    ' "radical-equations":["Solving radical equations","Résoudre des équations avec radicaux"],\n "radical-forms":["Mixed and entire radicals","Radicaux mixtes et entiers"],', count=1)  # Band 2 Math 3200 labels (Nov 16, 2026)
+rep(' "ratio-rates":["Ratios and rates","Rapports et taux"],',
+    ' "ratio-rates":["Ratios and rates","Rapports et taux"],\n "rational-expressions":["Simplifying rational expressions","Simplifier des expressions rationnelles"],', count=1)  # Band 2 Math 3200 labels (Nov 16, 2026)
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

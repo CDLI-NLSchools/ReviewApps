@@ -882,6 +882,7 @@ var PK_GROUP_LABELS={
  "common-factor":["Finding common factors","Trouver les facteurs communs"],
  "conjecture":["Making and testing conjectures","Formuler et vérifier des conjectures"],
  "conversion":["Converting units","Convertir des unités"],
+ "counting-bridge":["Getting started with counting","Débuter le dénombrement"],
  "cost-totals":["Totalling costs over a period","Totaliser des coûts sur une période"],
  "counterexample":["Counterexamples","Contre-exemples"],
  "credit-and-loans":["Credit and loan costs","Coûts du crédit et des prêts"],
@@ -938,11 +939,13 @@ var PK_GROUP_LABELS={
  "probability-forms":["Forms of probability","Formes de probabilité"],
  "proof-error":["Spotting errors in a proof","Repérer les erreurs dans une preuve"],
  "pythagoras":["The Pythagorean theorem","Le théorème de Pythagore"],
+ "radical-equations":["Solving radical equations","Résoudre des équations avec radicaux"],
  "radical-forms":["Mixed and entire radicals","Radicaux mixtes et entiers"],
  "radicals":["Simplifying square roots","Simplifier des racines carrées"],
  "rate":["Rates and unit rates","Taux et taux unitaires"],
  "rate-of-change":["Rate of change","Taux de variation"],
  "ratio-rates":["Ratios and rates","Rapports et taux"],
+ "rational-expressions":["Simplifying rational expressions","Simplifier des expressions rationnelles"],
  "real-numbers":["Rational and irrational numbers","Nombres rationnels et irrationnels"],
  "reasonable-result":["Judging whether a trig result is reasonable","Juger si un résultat trigonométrique est raisonnable"],
  "reciprocal-values":["Reciprocals of numbers","Inverses de nombres"],
@@ -1547,19 +1550,25 @@ function maybeSummary(){
        or missed included). A group is also marked when any of
        its questions was answered correctly only after using help
        (help tracking, Nov 15, 2026). The retry button below keys
-       on these groups. */
-    var gStat={},gList=[];
+       on these groups. Bridge groups (Nov 16, 2026, rollout plan
+       Section 7) are the exception: their items probe transfer
+       toward content the unit itself teaches first, so a missed
+       bridge group is reported as a starting point for the unit,
+       never as needing more practice, and bridge groups never
+       drive the retry button or the help note. */
+    var gStat={},gList=[],gBridge={};
     current.forEach(function(q,i){
       if(!q._entry)return;
       var g=pkGroupOf(q._entry);
       if(!gStat[g]){gStat[g]={missed:false,helped:false};gList.push(g);}
+      if(q._entry.pkBridge)gBridge[g]=true;
       if(setResults[i]&&!setResults[i].ok)gStat[g].missed=true;
       else if(setResults[i]&&helpUsed[i])gStat[g].helped=true;
     });
-    var anyMissedG=gList.some(function(g){return gStat[g].missed||gStat[g].helped;});
-    var anyHelpedG=gList.some(function(g){return gStat[g].helped;});
+    var anyMissedG=gList.some(function(g){return !gBridge[g]&&(gStat[g].missed||gStat[g].helped);});
+    var anyHelpedG=gList.some(function(g){return !gBridge[g]&&gStat[g].helped;});
     h+="<p><b>"+L9("Skills in this check:","Compétences vérifiées :")+"</b></p><ul>"+gList.map(function(g){
-      return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gStat[g].missed||gStat[g].helped?L9("needs more practice","à pratiquer davantage"):L9("solid","solide"))+"</li>";
+      return "<li>"+pkGroupLabel(g)+L9(": "," : ")+(gBridge[g]?(gStat[g].missed||gStat[g].helped?L9("a starting point for this unit","un point de départ pour cette unité"):L9("solid","solide")):(gStat[g].missed||gStat[g].helped?L9("needs more practice","à pratiquer davantage"):L9("solid","solide")))+"</li>";
     }).join("")+"</ul>";
     if(anyMissedG){
       h+=(anyHelpedG?helpNoteHtml():"")+retryModeNoteHtml()+'<p><button type="button" id="retryMissedBtn">'+L9("Practice what I missed","Pratiquer ce que j'ai manqué")+'</button></p>';
@@ -1582,13 +1591,18 @@ function retryMissed(){
        next; the retry is itself a check set (pkOnly stays
        active, its link keeps pkonly=1, the formulas panel stays
        suppressed), dealt at the check size from the missed
-       groups only. */
-    var gMissed=[],gSeen={};
+       groups only. Bridge groups (Nov 16, 2026, rollout plan
+       Section 7) are excluded: practice is prescribed only on
+       material that has been taught, and a miss on a bridge item
+       is a starting point, not a deficit. */
+    var gMissed=[],gSeen={},gBridge={};
     current.forEach(function(q,i){
       if(!q._entry)return;
       var g=pkGroupOf(q._entry);
+      if(q._entry.pkBridge)gBridge[g]=true;
       if(setResults[i]&&(!setResults[i].ok||helpUsed[i])&&!gSeen[g]){gSeen[g]=1;gMissed.push(g);}
     });
+    gMissed=gMissed.filter(function(g){return !gBridge[g];});
     if(!gMissed.length)return;
     PKRETRY_GROUPS=gMissed;
     if(retryWillSwitch())RETRY_AS_EACH=true;
