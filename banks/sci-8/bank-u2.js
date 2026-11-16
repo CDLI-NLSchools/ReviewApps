@@ -57,9 +57,9 @@ E("s8-u2-viscosity-def", 2, ["SC8.4.1"], 1, "var", varset([
   function () {
     return mcq("What is viscosity?",
       "A liquid's resistance to flow, caused by friction between its particles as they move past one another",
-      ["A liquid's resistance to being compressed into a smaller volume",
-       "The speed at which a liquid evaporates from an open container",
-       "The force with which a liquid pushes up on objects placed in it"],
+      ["A liquid's resistance to being compressed into a smaller volume than the one it already fills",
+       "The speed at which a liquid evaporates away from the surface of an open container of it",
+       "The force with which a liquid pushes upward on any object that is placed into the liquid"],
       "Viscosity is a measure of how much a liquid resists flowing. The resistance comes from friction between the liquid's particles: the greater the friction or rubbing between particles, the higher the viscosity and the more slowly the liquid flows.",
       {});
   }
@@ -132,9 +132,9 @@ E("s8-u2-heating-honey", 2, ["SC8.4.2"], 2, "var", varset([
   function () {
     return mcq("Using the particle theory, why does heating honey make it flow faster?",
       "Heated particles move faster and farther apart, so there is less friction between them and their attraction weakens, lowering the viscosity",
-      ["Heated particles move slower and pack closer together, so the honey slides as one solid sheet",
-       "Heating adds more particles to the honey, raising its concentration and lowering its viscosity",
-       "Heating destroys the particles' attraction completely, so the honey becomes a gas"],
+      ["Heated particles move more slowly and pack closer together, so the warmed honey slides along as one solid sheet",
+       "Heating adds more particles to the honey as it warms, raising its concentration and lowering its viscosity that way",
+       "Heating destroys the attraction between the particles completely, so the honey turns into a gas as it warms"],
       "The particle theory explains it in three steps: particles are always in motion, heating gives them more energy so they move faster and farther apart, and with more space between them there is less friction and a weaker pull between particles. Less internal friction means lower viscosity, so warmed honey flows faster.",
       {});
   }
@@ -144,9 +144,9 @@ E("s8-u2-concentration", 2, ["SC8.4.2"], 3, "var", varset([
   function () {
     return mcq("A dairy lists skim milk, 1 percent milk, 2 percent milk, whole milk and cream in order of increasing fat concentration. A student predicts their viscosities will follow the same order. Is the prediction sound, and why?",
       "Yes: higher concentration means more particles in a given volume, which raises the friction between particles and so raises viscosity",
-      ["Yes, but only because cream is a different colour from skim milk",
-       "No: concentration affects only gases, never liquids",
-       "No: higher concentration always lowers a liquid's viscosity"],
+      ["Yes, the prediction is sound as far as it goes, but only because cream happens to be a different colour from skim milk and the other products in the list",
+       "No: concentration is a property that affects only gases in this way, and it never has any effect at all on the viscosity of liquids like milk",
+       "No: a higher concentration of particles always lowers the viscosity of a liquid, whatever the liquid happens to be and whatever is dissolved in it"],
       "Concentration is the amount of substance in a given volume. More particles crowded into the same space means more rubbing and friction as the liquid flows, which is higher viscosity. The dairy's order of concentration is therefore also the expected order of viscosity, with cream the most viscous.",
       {});
   }
@@ -177,7 +177,7 @@ E("s8-u2-definitions", 2, ["SC8.4.3"], 1, "var", varset([
 
 E("s8-u2-states-density", 2, ["SC8.4.3"], 1, "gen", function () {
   var cases = [
-    { q: "The same substance is compared as a solid, a liquid and a gas. Using the particle theory, which statement about density is generally correct?", k: "The solid is generally the densest state, because its particles are packed closest together, and the gas is the least dense", w: ["The gas is generally the densest state, because its particles move fastest", "All three states have the same density, because the substance is the same", "The liquid is always the densest state, whatever the substance"] },
+    { q: "The same substance is compared as a solid, a liquid and a gas. Using the particle theory, which statement about density is generally correct?", k: "The solid is generally the densest state, because its particles are packed closest together, and the gas is the least dense", w: ["The gas is generally the densest of the three states, because its particles are the ones that move the fastest of all", "All three states of the substance have exactly the same density as one another, because it is the same substance in each state", "The liquid state is always the densest of the three states, whatever substance is being compared in the test"] },
     { q: "A sealed syringe of air is pushed in, halving the air's volume while its mass stays the same. What happens to the air's density, and why?", k: "It doubles, because the same mass of particles is packed into half the space", w: ["It halves, because density falls whenever volume falls", "It stays the same, because the mass did not change", "It drops to zero, because gases have no density when compressed"] }
   ];
   var c = pick(cases);
@@ -190,9 +190,9 @@ E("s8-u2-ratio-constant", 2, ["SC8.4.3"], 2, "var", varset([
   function () {
     return mcq("A small aluminum sample has a mass of 27 g and a volume of 10 cm3. A much larger aluminum block has a volume of 100 cm3. What should the large block's mass be, and what principle does this show?",
       "270 g: the mass-to-volume ratio of a material is a constant value, so mass scales with volume",
-      ["27 g: the mass of a material does not depend on how much of it there is",
-       "54 g: mass doubles whenever volume increases at all",
-       "2700 g: mass grows with the square of the volume"],
+      ["27 g: the mass of a sample of a material does not depend at all on how much of the material there is",
+       "54 g: the mass of a sample doubles whenever its volume increases at all, by any amount whatsoever",
+       "2700 g: the mass of a sample grows with the square of its volume as the sample gets bigger and bigger"],
       "The small sample gives aluminum's density: 27 g / 10 cm3 = 2.7 g/cm3. Density is a constant ratio for a material, so the large block's mass is 2.7 x 100 = 270 g. A bigger piece has proportionally more mass, never the same mass and never a squared amount.",
       {});
   }
@@ -302,9 +302,9 @@ E("s8-u2-cr-density-block", 2, ["SC8.4.4"], 2, "var", varset([
 
 E("s8-u2-temp-density", 2, ["SC8.4.5"], 1, "gen", function () {
   var cases = [
-    { q: "An air-filled balloon is measured, placed in a freezer, and measured again: its circumference is smaller. What happened to the density of the air inside?", k: "It increased, because the same mass of air now occupies a smaller volume", w: ["It decreased, because cold air always weighs less", "It stayed the same, because the mass did not change", "It dropped to zero, because the air contracted"] },
-    { q: "The alcohol in a thermometer rises up the tube on a warm day. Which statement explains this using volume and density?", k: "The warmed alcohol expands, taking more volume, so its density falls and it rises in the tube", w: ["The warmed alcohol contracts, so its density rises and pushes it up the tube", "The glass tube shrinks in the heat, squeezing the alcohol upward", "The alcohol's mass increases as it warms, forcing it upward"] },
-    { q: "Power lines are strung loosely because they sag more in summer than in winter. What does the sagging show?", k: "The warmed metal expands, its volume increases, and its density decreases", w: ["The warmed metal contracts and grows denser", "The lines gain mass in the summer heat", "Gravity grows stronger in summer"] }
+    { q: "An air-filled balloon is measured, placed in a freezer, and measured again: its circumference is smaller. What happened to the density of the air inside?", k: "It increased, because the same mass of air now occupies a smaller volume", w: ["It decreased, because cold air always weighs less than the same air does when it is warm", "It stayed exactly the same, because the mass of the air inside did not change at all", "It dropped all the way to zero, because the air inside contracted in the cold freezer"] },
+    { q: "The alcohol in a thermometer rises up the tube on a warm day. Which statement explains this using volume and density?", k: "The warmed alcohol expands, taking more volume, so its density falls and it rises in the tube", w: ["The warmed alcohol contracts as it heats, so its density rises and pushes it up the narrow tube", "The glass tube shrinks in the heat of the day, squeezing the alcohol upward inside the tube", "The mass of the alcohol increases as it warms up, and the extra mass forces it upward in the tube"] },
+    { q: "Power lines are strung loosely because they sag more in summer than in winter. What does the sagging show?", k: "The warmed metal expands, its volume increases, and its density decreases", w: ["The warmed metal contracts in the heat and grows denser as it does", "The lines gain extra mass as they sit in the summer heat", "Gravity itself grows stronger during the summer months"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -316,9 +316,9 @@ E("s8-u2-ice-exception", 2, ["SC8.4.5"], 2, "var", varset([
   function () {
     return mcq("Most substances are denser as solids than as liquids, but ice floats on water. Which statement explains the exception?",
       "When water freezes it expands because of its molecular structure, so ice takes more volume for the same mass and its density drops below liquid water's",
-      ["Ice floats because it traps air bubbles, and frozen water without bubbles would sink",
-       "Ice is colder than water, and cold objects always float",
-       "Water is the exception because its liquid state is denser than every other liquid"],
+      ["Ice floats only because it traps air bubbles inside it, and frozen water without those bubbles would sink to the bottom",
+       "Ice is colder than the water under it, and cold objects always float on warmer ones beneath them",
+       "Water is the exception because its liquid state is denser than the liquid state of every other substance known"],
       "Water breaks the general rule. As it freezes, its molecules arrange into a structure with more space between them: the volume increases while the mass stays the same, so the density decreases. Ice, at about 0.92 g/cm3 in round terms used in class, is less dense than liquid water and floats. The guide names water as the exception explicitly.",
       {});
   }
@@ -328,9 +328,9 @@ E("s8-u2-hot-air", 2, ["SC8.4.5"], 1, "var", varset([
   function () {
     return mcq("Why does the air inside a hot air balloon become less dense when it is heated?",
       "The heated particles move faster and spread farther apart, so each unit of volume holds less mass",
-      ["Heating removes particles from the balloon through the opening",
-       "The heated particles shrink, leaving empty gaps with no mass",
-       "The fabric of the balloon stretches and adds volume with no change inside"],
+      ["Heating removes particles from the balloon by driving them out through the opening at its base",
+       "The heated particles themselves shrink in size, leaving empty gaps between them that hold no mass",
+       "The fabric of the balloon stretches and adds volume, while nothing inside the balloon changes at all"],
       "Heating gives the air's particles more energy; they move faster and spread farther apart. The balloon's volume then holds fewer particles, less mass in each unit of volume, which is lower density. That lower density is what lets the balloon's air be buoyed up by the cooler, denser air outside.",
       {});
   }
@@ -351,9 +351,9 @@ E("s8-u2-seasoning", 2, ["SC8.4.6"], 2, "var", varset([
   function () {
     return mcq("Boat builders dry (season) wood before using it, and dried wood floats higher than freshly cut wood. Why does drying change the wood this way?",
       "Drying removes water from the wood, so its mass falls while its volume stays nearly the same, lowering its density",
-      ["Drying adds air to the wood, and the added air increases its mass",
-       "Drying heats the wood permanently, keeping its particles spread out",
-       "Drying changes the wood's colour, which changes how water supports it"],
+      ["Drying adds air into the wood as it seasons, and the added air increases the mass of the wood",
+       "Drying heats the wood permanently, which keeps its particles spread out even after it cools again",
+       "Drying changes the colour of the wood, and the colour change is what changes how the water supports it"],
       "Seasoning is a deliberate density change. Fresh wood holds a great deal of water; as it dries, that water leaves, the mass drops, the volume barely changes, and the density falls. Lower density means the wood floats higher, one reason builders season wood for watercraft.",
       {});
   }
@@ -361,9 +361,9 @@ E("s8-u2-seasoning", 2, ["SC8.4.6"], 2, "var", varset([
 
 E("s8-u2-density-life", 2, ["SC8.4.6"], 1, "gen", function () {
   var cases = [
-    { q: "A submarine dives by opening its ballast tanks to the sea. What density change makes the dive happen?", k: "Water entering the tanks raises the submarine's average density above the seawater's, so it sinks", w: ["Air entering the tanks lowers the average density, so it sinks", "The tanks heat the seawater, lowering its density around the submarine", "The submarine's volume shrinks until it is denser than the water"] },
-    { q: "A fish rises from deep water toward the surface by inflating its swim bladder with gas. What has the fish changed?", k: "Its volume increased while its mass barely changed, lowering its average density", w: ["Its mass increased, raising its average density", "The water's density around it decreased", "Its weight increased beyond the buoyant force"] },
-    { q: "Swimmers find it easier to float in the ocean than in a freshwater pond. What density fact explains this?", k: "Seawater is denser than fresh water, so it provides a greater buoyant effect for the same swimmer", w: ["Seawater is less dense than fresh water, so swimmers sink less", "The ocean is deeper, and depth is what holds swimmers up", "Salt makes the swimmer's body less dense on contact"] }
+    { q: "A submarine dives by opening its ballast tanks to the sea. What density change makes the dive happen?", k: "Water entering the tanks raises the submarine's average density above the seawater's, so it sinks", w: ["Air entering the ballast tanks lowers the submarine's average density, and that is what makes it sink", "The tanks heat the seawater as it enters, lowering the density of the water around the submarine", "The submarine's hull shrinks in volume until the whole vessel is denser than the seawater around it"] },
+    { q: "A fish rises from deep water toward the surface by inflating its swim bladder with gas. What has the fish changed?", k: "Its volume increased while its mass barely changed, lowering its average density", w: ["Its mass increased as the bladder filled, which raised its average density instead of lowering it", "The density of the water around the fish decreased as the fish began to rise upward", "Its weight increased until it grew beyond the buoyant force acting on it in the water"] },
+    { q: "Swimmers find it easier to float in the ocean than in a freshwater pond. What density fact explains this?", k: "Seawater is denser than fresh water, so it provides a greater buoyant effect for the same swimmer", w: ["Seawater is less dense than fresh water, so swimmers sink less deeply when they float in the ocean", "The ocean is much deeper than a pond, and that depth is what holds swimmers up at the surface", "The salt in the water makes the swimmer's own body less dense the moment it touches the skin"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -384,9 +384,9 @@ E("s8-u2-cr-raise-ship", 2, ["SC8.4.6"], 3, "var", varset([
 
 E("s8-u2-forces", 2, ["SC8.4.7"], 1, "gen", function () {
   var cases = [
-    { q: "A wagon sits still on a slope because the pull down the slope is exactly matched by friction holding it. How are the forces on the wagon described?", k: "Balanced forces: equal and opposite, so the wagon does not accelerate", w: ["Unbalanced forces: the wagon is on a slope, so gravity must be winning", "Balanced forces: both forces point in the same direction", "No forces act on a wagon that is not moving"] },
-    { q: "A dropped stone speeds up as it falls through the air toward the ground. How are the forces on the stone described?", k: "Unbalanced forces: gravity's pull is greater than the air's resistance, so the stone accelerates", w: ["Balanced forces: falling objects always have balanced forces", "Unbalanced forces: the air's resistance is greater than gravity's pull", "No forces act once the stone leaves the hand"] },
-    { q: "A boat floats motionless at a dock, neither rising nor sinking. How are the forces on the boat described?", k: "Balanced forces: its weight and the buoyant force are equal and opposite", w: ["Unbalanced forces: floating always means buoyancy is greater", "Balanced forces: no forces act on anything floating", "Unbalanced forces: its weight is greater, but slowly"] }
+    { q: "A wagon sits still on a slope because the pull down the slope is exactly matched by friction holding it. How are the forces on the wagon described?", k: "Balanced forces: equal and opposite, so the wagon does not accelerate", w: ["Unbalanced forces: the wagon is on a slope, so gravity must be winning", "Balanced forces: both of the forces acting on the wagon point in the same direction", "No forces of any kind act on a wagon that is sitting still and not moving at all"] },
+    { q: "A dropped stone speeds up as it falls through the air toward the ground. How are the forces on the stone described?", k: "Unbalanced forces: gravity's pull is greater than the air's resistance, so the stone accelerates", w: ["Balanced forces: objects that are falling always have balanced forces acting on them", "Unbalanced forces: the resistance of the air is greater than the pull of gravity on the stone", "No forces at all act on the stone once it has left the hand that dropped it"] },
+    { q: "A boat floats motionless at a dock, neither rising nor sinking. How are the forces on the boat described?", k: "Balanced forces: its weight and the buoyant force are equal and opposite", w: ["Unbalanced forces: floating always means the buoyant force is the greater one", "Balanced forces: no forces at all act on anything that is floating on the water", "Unbalanced forces: its weight is greater than the buoyant force, but only slowly"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -398,9 +398,9 @@ E("s8-u2-force-figure", 2, ["SC8.4.7"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows a rock in water with two force arrows: the upward arrow stands for the buoyant force and the downward arrow for the rock's weight. What do the arrows tell you, and what happens to the rock?",
       "The weight is greater than the buoyant force, so the forces are unbalanced and the rock sinks",
-      ["The buoyant force is greater than the weight, so the rock rises",
-       "The forces are balanced, so the rock floats at that depth",
-       "The arrows show the rock's mass and volume, not its forces"],
+      ["The buoyant force is greater than the rock's weight, so the rock rises up through the water",
+       "The two forces are balanced and equal, so the rock floats suspended at that depth in the water",
+       "The arrows in the diagram show the rock's mass and its volume, not the forces acting on it"],
       "Arrow length stands for force size. The downward arrow, the weight, is longer than the upward buoyant arrow, so the forces are unbalanced with weight winning: the rock sinks. That is the guide's rule for sinking.",
       {});
     q.figure = s8ForceSVG("sink");
@@ -409,9 +409,9 @@ E("s8-u2-force-figure", 2, ["SC8.4.7"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows a boat at the water's surface with two force arrows: the upward arrow stands for the buoyant force and the downward arrow for the boat's weight. What do the arrows tell you?",
       "The forces are balanced and equal, so the boat floats without rising or sinking",
-      ["The weight is greater, so the boat is about to sink",
-       "The buoyant force is greater, so the boat is rising out of the water",
-       "Equal arrows mean no forces act on the boat"],
+      ["The weight is the greater of the two forces, so the boat is about to sink below the surface",
+       "The buoyant force is the greater of the two, so the boat is rising up out of the water",
+       "Equal arrows mean that no forces at all are acting on the boat while it floats there"],
       "The two arrows are the same length, so weight and buoyant force are equal and opposite: balanced forces. A floating object at rest is exactly that balance, the guide's rule for floating.",
       {});
     q.figure = s8ForceSVG("float");
@@ -420,9 +420,9 @@ E("s8-u2-force-figure", 2, ["SC8.4.7"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows a balloon under water with two force arrows: the upward arrow stands for the buoyant force and the downward arrow for the balloon's weight. What happens when the balloon is released, and why?",
       "It rises, because the buoyant force is greater than its weight, an unbalanced pair of forces",
-      ["It sinks, because its weight is greater than the buoyant force",
-       "It stays where it is, because the forces are balanced",
-       "It moves sideways, because both arrows point vertically"],
+      ["It sinks straight down, because its weight is greater than the buoyant force pushing up on it",
+       "It stays exactly where it is under the water, because the two forces acting on it are balanced",
+       "It moves sideways across the water, because both of the arrows point vertically up and down"],
       "The upward arrow is much longer: the buoyant force on the air-filled balloon far exceeds its small weight. Unbalanced forces accelerate the object toward the greater force, so the balloon rises, the guide's third pattern beside sinking and floating.",
       {});
     q.figure = s8ForceSVG("rise");
@@ -434,9 +434,9 @@ E("s8-u2-newton", 2, ["SC8.4.7"], 1, "var", varset([
   function () {
     return mcq("Which statement about force and its unit is correct?",
       "Force is measured in newtons; on Earth, a mass of about 100 g exerts a force of about 1 newton through gravity",
-      ["Force is measured in kilograms; a mass of 1 kg exerts 1 newton",
-       "Force is measured in pascals; 1 newton equals 1 pascal",
-       "Force and mass are measured in the same unit, the gram"],
+      ["Force is measured in kilograms; on Earth, a mass of 1 kg exerts a force of exactly 1 newton",
+       "Force is measured in pascals; in this system, 1 newton of force equals exactly 1 pascal",
+       "Force and mass are both measured in the same unit, the gram, in every measurement taken in class"],
       "The newton is the unit of force. The guide's practical anchor: on Earth, roughly 100 grams of mass weighs about 1 newton. Kilograms and grams measure mass, and pascals measure pressure; keeping the units separate is part of keeping the ideas separate.",
       {});
   }
@@ -446,9 +446,9 @@ E("s8-u2-newton", 2, ["SC8.4.7"], 1, "var", varset([
 
 E("s8-u2-mass-weight", 2, ["SC8.4.8"], 1, "gen", function () {
   var cases = [
-    { q: "Which quantity describes the amount of matter in an object, and what is it measured with?", k: "Mass, measured with a balance in grams or kilograms", w: ["Mass, measured with a force meter in newtons", "Weight, measured with a balance in grams or kilograms", "Weight, measured with a force meter in grams"] },
-    { q: "Which quantity describes the force of gravity pulling on an object, and what is it measured with?", k: "Weight, measured with a force meter (spring scale) in newtons", w: ["Mass, measured with a force meter in newtons", "Weight, measured with a balance in kilograms", "Mass, measured with a balance in newtons"] },
-    { q: "A brick is weighed on Earth, then lowered into a tank of water, where its measured weight drops. What happened to its mass?", k: "Its mass stayed the same; only the measured weight changed, because the water's buoyant force supports part of it", w: ["Its mass decreased by the amount of water it displaced", "Its mass increased, because it absorbed water", "Its mass became zero while it was submerged"] }
+    { q: "Which quantity describes the amount of matter in an object, and what is it measured with?", k: "Mass, measured with a balance in grams or kilograms", w: ["Mass, measured with a force meter and recorded in newtons in the lab", "Weight, measured with a balance in grams or kilograms", "Weight, measured with a force meter in grams"] },
+    { q: "Which quantity describes the force of gravity pulling on an object, and what is it measured with?", k: "Weight, measured with a force meter (spring scale) in newtons", w: ["Mass, measured with a force meter and recorded in newtons in the lab", "Weight, measured with a balance and recorded in kilograms in the lab", "Mass, measured with a balance and recorded in newtons in the lab"] },
+    { q: "A brick is weighed on Earth, then lowered into a tank of water, where its measured weight drops. What happened to its mass?", k: "Its mass stayed the same; only the measured weight changed, because the water's buoyant force supports part of it", w: ["Its mass decreased by exactly the amount of water it displaced as it was lowered under the surface", "Its mass increased while it was in the tank, because the brick absorbed water from around it", "Its mass became zero for the whole time it stayed submerged under the water in the tank"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -460,9 +460,9 @@ E("s8-u2-moon-suitcase", 2, ["SC8.4.8"], 3, "var", varset([
   function () {
     return mcq("An astronaut's suitcase is packed to the mission limit of 20 kg on Earth. On the Moon's space station, the astronaut finds the suitcase weighs noticeably less, and worries something was removed. A crewmate says nothing is missing. Who is right, and why?",
       "The crewmate: the suitcase's mass is still 20 kg because its matter is unchanged; its weight dropped because the Moon's gravity is weaker than Earth's",
-      ["The astronaut: a lower weight always means mass was lost on the journey",
-       "The crewmate, but because the suitcase's mass dropped along with its weight",
-       "Neither: weight cannot change unless the suitcase is opened"],
+      ["The astronaut is right to worry: a lower weight always means that some mass was lost from the suitcase somewhere on the journey up to the station",
+       "The crewmate is right that nothing is missing from the suitcase, but only because the suitcase's mass dropped along with its weight on the way up",
+       "Neither of them is right: an object's weight cannot change at all unless the suitcase is opened on the station and something is taken out of it"],
       "Mass and weight part company exactly here. The suitcase holds the same amount of matter on the Moon, so its mass is still 20 kg. Weight is gravity's force on that mass, and the Moon's gravitational pull is weaker than Earth's, so the same mass weighs less. The guide uses this exact scenario to separate the two ideas.",
       {});
   }
@@ -483,9 +483,9 @@ E("s8-u2-buoyancy-rule", 2, ["SC8.4.9"], 1, "var", varset([
   function () {
     return mcq("An object is placed fully under water and released. Which rule decides whether it floats up or sinks?",
       "It floats if the buoyant force on it is greater than its weight, and sinks if its weight is greater than the buoyant force",
-      ["It floats if it is lighter than the container holding the water",
-       "It sinks if it is made of a solid material, whatever the forces",
-       "It floats if its mass is less than the water's temperature in kilograms"],
+      ["It floats if it happens to be lighter, overall, than the container that is holding the water the object was placed in",
+       "It sinks if it is made of any solid material at all, whatever the sizes of the forces acting on it happen to be",
+       "It floats whenever its mass, measured in kilograms, is less than the temperature of the water it has been placed in"],
       "Buoyancy is a contest of two forces. The buoyant force pushes up; the object's weight pulls down. Buoyant force greater means the object rises and floats; weight greater means it sinks; equal forces mean it hovers or floats at rest. The material alone decides nothing; the forces decide.",
       {});
   }
@@ -505,8 +505,8 @@ E("s8-u2-archimedes", 2, ["SC8.4.9"], 2, "var", varset([
 
 E("s8-u2-balls", 2, ["SC8.4.9"], 1, "gen", function () {
   var cases = [
-    { q: "Three balls of the same size, made of styrofoam, rubber and metal, are pushed under water and released at the same moment. Which description of what happens is correct?", k: "The styrofoam ball shoots up and floats high, the rubber ball rises and floats lower, and the metal ball sinks", w: ["All three float at the same level, because they are the same size", "The metal ball floats highest, because it is the heaviest", "The rubber ball sinks, because rubber absorbs water instantly"] },
-    { q: "A beach ball is very hard to hold under the water at a pool, and it leaps out when released. Which statement explains the beach ball?", k: "Its buoyant force when fully immersed is much greater than its small weight, so the unbalanced force drives it up", w: ["Its weight is greater than the buoyant force, so it escapes upward", "The water's pressure cancels its weight entirely, so it has no forces on it", "Air inside the ball is attracted to the air above the pool"] }
+    { q: "Three balls of the same size, made of styrofoam, rubber and metal, are pushed under water and released at the same moment. Which description of what happens is correct?", k: "The styrofoam ball shoots up and floats high, the rubber ball rises and floats lower, and the metal ball sinks", w: ["All three balls float at exactly the same level in the water, because all three are the same size", "The metal ball floats the highest of the three, because it is the heaviest ball of the three", "The rubber ball sinks straight to the bottom, because rubber absorbs water the instant it touches it"] },
+    { q: "A beach ball is very hard to hold under the water at a pool, and it leaps out when released. Which statement explains the beach ball?", k: "Its buoyant force when fully immersed is much greater than its small weight, so the unbalanced force drives it up", w: ["Its weight is greater than the buoyant force on it, so the ball escapes upward out of the water", "The pressure of the water cancels out its weight entirely, so there are no forces acting on the ball at all", "The air sealed inside the ball is attracted to the air above the pool, and that pull lifts the ball"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -565,9 +565,9 @@ E("s8-u2-snowshoes", 2, ["SC8.4.10"], 1, "var", varset([
   function () {
     return mcq("A person wearing snowshoes can walk across deep, soft snow without sinking, while the same person in boots sinks at every step. What explains the difference?",
       "The snowshoes spread the person's weight (force) over a much larger area, so the pressure on the snow is much lower",
-      ["The snowshoes reduce the person's weight while they are worn",
-       "The snowshoes increase the pressure, which packs the snow harder",
-       "The snowshoes change the person's mass, so gravity pulls less"],
+      ["The snowshoes reduce the person's actual weight for as long as they are wearing them on the snow",
+       "The snowshoes increase the pressure on the snow, which packs the snow down harder under each step",
+       "The snowshoes change the person's mass while they are worn, so gravity pulls down on them less"],
       "The force is identical in both cases: the person's weight. Pressure is force divided by area, so spreading the same force over the snowshoes' larger area lowers the pressure below what the snow can support without giving way. Boots concentrate the force on a small area and the pressure punches through.",
       {});
   }
@@ -586,9 +586,9 @@ E("s8-u2-cr-pressure-crate", 2, ["SC8.4.10"], 2, "var", varset([
 
 E("s8-u2-gas-laws", 2, ["SC8.4.11"], 1, "gen", function () {
   var cases = [
-    { q: "A sealed syringe of air is pushed in, halving the air's volume while its temperature stays the same. What happens to the pressure of the air inside?", k: "It increases, because the particles are crowded into a smaller space and strike the walls more often", w: ["It decreases, because compressed air always loses pressure", "It stays the same, because the amount of air did not change", "It drops to zero until the plunger is released"] },
-    { q: "A balloon filled with air is placed in warm sunlight, free to expand, and it grows larger. Its pressure stays about the same. Which relationship does this show?", k: "Increasing a gas's temperature increases its volume when pressure is held constant", w: ["Increasing a gas's temperature decreases its volume when pressure is held constant", "Temperature has no effect on a gas's volume", "The gas's volume grew because its pressure doubled"] },
-    { q: "A scuba tank is filled to high pressure at the dive shop. In particle terms, what is true of the air inside compared with air at ordinary pressure?", k: "Far more particles are packed into the same volume, which is why gases, unlike liquids, can be compressed this way", w: ["The particles themselves have shrunk to fit more in", "The air has become a liquid under the pressure", "The tank holds the same number of particles, each under more force"] }
+    { q: "A sealed syringe of air is pushed in, halving the air's volume while its temperature stays the same. What happens to the pressure of the air inside?", k: "It increases, because the particles are crowded into a smaller space and strike the walls more often", w: ["It decreases, because air that is compressed into a smaller space always loses pressure as it is squeezed", "It stays exactly the same, because the amount of air sealed inside the syringe did not change at all", "It drops all the way to zero and stays there until the plunger of the syringe is released again"] },
+    { q: "A balloon filled with air is placed in warm sunlight, free to expand, and it grows larger. Its pressure stays about the same. Which relationship does this show?", k: "Increasing a gas's temperature increases its volume when pressure is held constant", w: ["Increasing a gas's temperature decreases its volume when pressure is held constant", "The temperature of a gas has no effect at all on the volume that the gas occupies", "The volume of the gas grew larger because its pressure doubled while it sat in the sunlight"] },
+    { q: "A scuba tank is filled to high pressure at the dive shop. In particle terms, what is true of the air inside compared with air at ordinary pressure?", k: "Far more particles are packed into the same volume, which is why gases, unlike liquids, can be compressed this way", w: ["The particles of the air themselves have shrunk in size so that more of them fit inside the tank", "The air inside the tank has become a liquid under the very high pressure used to fill the tank", "The tank holds exactly the same number of particles as ordinary air, with each one under more force"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -600,9 +600,9 @@ E("s8-u2-compressible", 2, ["SC8.4.11"], 1, "var", varset([
   function () {
     return mcq("Why can gases be compressed into a much smaller volume while liquids hardly compress at all?",
       "Gas particles are far apart with a great deal of empty space between them, while liquid particles are already close together with little space to remove",
-      ["Gas particles are smaller than liquid particles",
-       "Liquid particles repel one another, while gas particles attract",
-       "Gases weigh less than liquids, so pressure affects them more"],
+      ["The particles of a gas are much smaller in size than the particles of a liquid are, so far more of them fit into the same container",
+       "The particles of a liquid repel one another so strongly that they cannot be pushed closer, while the particles of a gas attract one another weakly",
+       "Gases weigh less than equal volumes of liquids do, so pressure applied from outside affects gases much more strongly than it affects liquids"],
       "Compressibility is about the space between particles. In a gas the particles are widely separated, so pushing them closer removes empty space and shrinks the volume greatly. In a liquid the particles are already nearly touching, so there is almost no space to remove and the volume barely changes: liquids are effectively incompressible, which is why they serve in hydraulic systems.",
       {});
   }
@@ -625,8 +625,8 @@ E("s8-u2-depth-pressure", 2, ["SC8.4.11"], 2, "var", varset([
 E("s8-u2-personal", 2, ["SC8.5.1"], 1, "gen", function () {
   var cases = [
     { q: "A cook finds that pancake batter made too thin runs all over the pan, while batter made too thick sits in lumps. Which fluid property is the cook adjusting?", k: "Viscosity: the batter's resistance to flow", w: ["Density: the batter's mass per unit volume", "Pressure: the force the batter exerts on the pan", "Buoyancy: the force the pan exerts on the batter"] },
-    { q: "A mechanic chooses a thinner motor oil for a car that will run through a Newfoundland winter. Which fluid fact is behind the choice?", k: "Oil's viscosity rises as temperature falls, so a thinner grade is needed to keep it flowing in the cold", w: ["Oil's density falls to zero in cold weather unless it is thin", "Cold weather compresses oil, so less of it is needed", "Winter air pressure forces thick oil out of engines"] },
-    { q: "A cyclist pumps a tire up hard before a race. Which fluid behaviour is she using?", k: "Air is a compressible fluid, so more particles can be packed into the tire to raise its pressure", w: ["Air is an incompressible fluid, like the liquids in brakes", "Air's viscosity drops when it is pumped", "The tire's density decreases as air is added"] }
+    { q: "A mechanic chooses a thinner motor oil for a car that will run through a Newfoundland winter. Which fluid fact is behind the choice?", k: "Oil's viscosity rises as temperature falls, so a thinner grade is needed to keep it flowing in the cold", w: ["The density of oil falls all the way to zero in cold weather unless the oil is a thin grade", "Cold winter weather compresses the oil in the engine, so less oil is needed to fill it", "The pressure of the winter air forces thick, heavy oil out of engines parked in the cold"] },
+    { q: "A cyclist pumps a tire up hard before a race. Which fluid behaviour is she using?", k: "Air is a compressible fluid, so more particles can be packed into the tire to raise its pressure", w: ["Air is an incompressible fluid, just like the liquids sealed inside a car's brake lines", "The viscosity of air drops sharply when it is pumped into a confined space like a tire", "The density of the tire itself decreases steadily as more and more air is added to it"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -638,9 +638,9 @@ E("s8-u2-winter-oil", 2, ["SC8.5.1"], 3, "var", varset([
   function () {
     return mcq("Two identical engines are filled with the same oil. One runs in a warm garage; the other is parked outside through a January cold snap in St. John's. On a cold start, the outdoor engine's oil circulates poorly and the engine wears faster. Which explanation connects the observation to the fluid science?",
       "Cold raised the oil's viscosity, so it resisted flowing to the moving parts; the oil's particles, moving slowly and staying close, produced more internal friction",
-      ["Cold lowered the oil's viscosity until it ran off the parts entirely",
-       "Cold compressed the oil into a solid, and solids cannot lubricate",
-       "The cold changed the oil's density to zero, so the pump could not lift it"],
+      ["The cold snap lowered the viscosity of the outdoor engine's oil so far that the thin oil ran off the moving parts entirely and left them unprotected",
+       "The cold compressed the oil in the outdoor engine until it turned into a solid block, and a solid cannot flow to lubricate the engine's moving parts at start-up",
+       "The cold of the January night changed the density of the outdoor engine's oil to zero, so the oil pump could not lift the oil up to the moving parts it protects"],
       "The observation, the property and the particle explanation line up: falling temperature raises a liquid's viscosity, the thickened oil resists flowing through the engine's passages, and parts that should be coated run nearly dry. It is why winter oil grades exist, and why the choice is a fluid dynamics decision, not a marketing one.",
       {});
   }
@@ -650,9 +650,9 @@ E("s8-u2-winter-oil", 2, ["SC8.5.1"], 3, "var", varset([
 
 E("s8-u2-products", 2, ["SC8.5.2"], 1, "gen", function () {
   var cases = [
-    { q: "Which product exists in several grades mainly because of our understanding of viscosity?", k: "Motor oil, graded so engines can be matched with an oil that flows properly at their working temperatures", w: ["Window glass, graded by how fast it flows", "Table salt, graded by how thickly it pours when dry", "Bicycle tires, graded by the viscosity of their rubber"] },
-    { q: "A shampoo is reformulated so it sits on the hand instead of running off, but still spreads through hair. What understanding guided the reformulation?", k: "Viscosity: adjusting the liquid's resistance to flow so it performs its function", w: ["Buoyancy: adjusting the shampoo's average density", "Pressure: adjusting the force the bottle must withstand", "Density: adjusting the mass in each bottle"] },
-    { q: "Ketchup is designed to sit thick in the bottle yet flow when the bottle is shaken and squeezed. Which science understanding is the design built on?", k: "How a liquid's flow behaviour can be engineered for its intended function", w: ["How gases compress inside sealed bottles", "How buoyant forces act on objects in liquids", "How Pascal's law transmits pressure through the bottle"] }
+    { q: "Which product exists in several grades mainly because of our understanding of viscosity?", k: "Motor oil, graded so engines can be matched with an oil that flows properly at their working temperatures", w: ["Window glass, which is graded for buildings by how fast the glass flows downward over time", "Table salt, which is graded for sale by how thickly the dry crystals pour from the box", "Bicycle tires, which are graded in sizes by the viscosity of the rubber they are made from"] },
+    { q: "A shampoo is reformulated so it sits on the hand instead of running off, but still spreads through hair. What understanding guided the reformulation?", k: "Viscosity: adjusting the liquid's resistance to flow so it performs its function", w: ["Buoyancy: adjusting the average density of the shampoo so that it floats on water", "Pressure: adjusting the force that the walls of the shampoo bottle must withstand", "Density: adjusting the mass of shampoo that is packed into each bottle sold"] },
+    { q: "Ketchup is designed to sit thick in the bottle yet flow when the bottle is shaken and squeezed. Which science understanding is the design built on?", k: "How a liquid's flow behaviour can be engineered for its intended function", w: ["How gases are compressed and stored inside sealed bottles under high pressure", "How buoyant forces act on solid objects that are placed in liquids of different densities", "How Pascal's law transmits pressure through a confined fluid from one end of the bottle to the other"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -664,9 +664,9 @@ E("s8-u2-cleaning", 2, ["SC8.5.2"], 2, "var", varset([
   function () {
     return mcq("The strand's core STSE studies cleaning fluids. How do soaps and detergents remove grease and dirt that plain water leaves behind?",
       "Their particles surround and lift the grease, breaking it into tiny droplets that stay suspended in the water and rinse away",
-      ["They dissolve the surface the dirt sits on, carrying the dirt with it",
-       "They raise the water's viscosity until the dirt floats off on its own",
-       "They compress the grease until it evaporates"],
+      ["They dissolve the surface that the dirt is sitting on, carrying all of the dirt away along with it",
+       "They raise the viscosity of the water until the dirt floats off the surface entirely on its own",
+       "They compress the grease on the surface until the grease evaporates away into the air"],
       "Water alone beads off grease. Soap and detergent particles have ends that behave differently: one end mixes with water and the other with grease, so they surround grease and dirt, lift them from the surface as tiny suspended droplets, and the rinse water carries them away. That is the science the Cleaning Fluids STSE is built on.",
       {});
   }
@@ -685,8 +685,8 @@ E("s8-u2-cr-cleaning-claim", 2, ["SC8.5.2"], 3, "var", varset([
 
 E("s8-u2-lives", 2, ["SC8.5.3"], 1, "gen", function () {
   var cases = [
-    { q: "Which example shows fluids science and technology affecting daily life in a community?", k: "A town's water system uses pumps and pressure to deliver clean water to homes at every height in the town", w: ["A town paints its water tower a new colour each spring", "A school buys new gym mats for the winter term", "A ferry changes its sailing schedule for the holidays"] },
-    { q: "Which example shows fluids science and technology affecting daily life in a home?", k: "Hydraulic brakes use an incompressible liquid to carry the driver's foot force to all four wheels", w: ["A family chooses a larger television for the living room", "A student sharpens pencils before class", "A baker sets the oven timer for a cake"] }
+    { q: "Which example shows fluids science and technology affecting daily life in a community?", k: "A town's water system uses pumps and pressure to deliver clean water to homes at every height in the town", w: ["A town paints the outside of its water tower a new colour each spring to keep it looking fresh", "A school buys a set of new gym mats for its students to use during the winter term indoors", "A ferry company changes its sailing schedule for the holiday season at the end of the year"] },
+    { q: "Which example shows fluids science and technology affecting daily life in a home?", k: "Hydraulic brakes use an incompressible liquid to carry the driver's foot force to all four wheels", w: ["A family chooses a larger television screen to mount on the wall of their living room at home", "A student sharpens a set of pencils at the sharpener before the start of class in the morning", "A baker sets the timer on the oven so that a cake baking inside it is not left in too long"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -698,9 +698,9 @@ E("s8-u2-community", 2, ["SC8.5.3"], 1, "var", varset([
   function () {
     return mcq("A coastal community is replacing the brakes and lift equipment in its vehicle service centre and upgrading the ferry's hydraulic steering. Which statement best describes how science and technology are affecting this community?",
       "Fluids technologies built on Pascal's law and the incompressibility of liquids are doing heavy work all through the community's transport system",
-      ["The community is affected only because the new equipment is more expensive",
-       "Fluids science affects the community only in its science classrooms",
-       "The ferry's steering is a technology, but vehicle brakes are not"],
+      ["The community is affected by the change only because the new equipment costs considerably more money than the older equipment it replaces in the centre",
+       "Fluids science affects this coastal community only inside its own science classrooms, and nowhere else in the daily life of the people who live there",
+       "The ferry's hydraulic steering counts as a technology in the community, but the brakes fitted in ordinary road vehicles do not count as a technology at all"],
       "Hydraulic systems transmit force through confined liquids, and they run the community's brakes, lifts and steering alike. Science and technology affect a community through the working systems it depends on, not only through laboratories and classrooms.",
       {});
   }
@@ -710,9 +710,9 @@ E("s8-u2-community", 2, ["SC8.5.3"], 1, "var", varset([
 
 E("s8-u2-underlying", 2, ["SC8.5.4"], 1, "gen", function () {
   var cases = [
-    { q: "A hydrometer floats higher in one liquid than in another and reads the liquid's density from how deep it sinks. Which science underlies this technology?", k: "Buoyancy and density: a floating object settles where the buoyant force balances its weight, deeper in less dense liquids", w: ["Viscosity: the hydrometer's sinking is slowed by thick liquids", "Pascal's law: pressure in the liquid is transmitted to the hydrometer", "Compressibility: the liquid is squeezed by the hydrometer's weight"] },
-    { q: "A liquid-in-glass thermometer is a technology built on which science?", k: "Thermal expansion: the liquid's volume and density change with temperature in a predictable way", w: ["Archimedes' principle: the liquid is buoyed up the tube", "Pascal's law: pressure is transmitted through the liquid", "Viscosity: warm liquid flows up the tube faster"] },
-    { q: "A dentist's chair rises smoothly when a small pedal is pressed. Which science underlies the technology?", k: "Pascal's law in a hydraulic system: pressure applied to a confined liquid is transmitted to a larger piston", w: ["Buoyancy: the chair floats on a hidden tank of water", "Thermal expansion: the pedal warms the liquid in the chair", "Density layering: liquids in the chair sort themselves by density"] }
+    { q: "A hydrometer floats higher in one liquid than in another and reads the liquid's density from how deep it sinks. Which science underlies this technology?", k: "Buoyancy and density: a floating object settles where the buoyant force balances its weight, deeper in less dense liquids", w: ["Viscosity: the sinking of the hydrometer is slowed down by liquids that are thick and slow flowing", "Pascal's law: the pressure in the liquid is transmitted through it and onto the hydrometer floating there", "Compressibility: the liquid under the hydrometer is squeezed smaller by the hydrometer's own weight"] },
+    { q: "A liquid-in-glass thermometer is a technology built on which science?", k: "Thermal expansion: the liquid's volume and density change with temperature in a predictable way", w: ["Archimedes' principle: the liquid inside the tube is buoyed upward by the liquid surrounding it", "Pascal's law: pressure applied at one point is transmitted through the liquid to every other point", "Viscosity: warm liquid flows more easily, so it runs up the inside of the tube faster when heated"] },
+    { q: "A dentist's chair rises smoothly when a small pedal is pressed. Which science underlies the technology?", k: "Pascal's law in a hydraulic system: pressure applied to a confined liquid is transmitted to a larger piston", w: ["Buoyancy: the chair floats upward on a hidden tank of water built into the base of the chair", "Thermal expansion: pressing the pedal warms the liquid in the chair until it expands and lifts it", "Density layering: the liquids inside the chair sort themselves into layers by their densities"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -749,9 +749,9 @@ E("s8-u2-pfd", 2, ["SC8.5.6"], 3, "var", varset([
   function () {
     return mcq("A life jacket that has served for many years is retired because it no longer keeps a swimmer afloat as well as it should. The guide explains this aging effect. Which statement gives the correct explanation, and the principle the jacket was built on?",
       "The jacket works by lowering the swimmer's average density below the water's; over years its foam compresses and grows denser, so it adds less low-density volume and buoys less",
-      ["The jacket works by raising the swimmer's average density; over years it absorbs water and grows lighter",
-       "The jacket works by heating the water around the swimmer; over years it loses that ability",
-       "The jacket works by increasing the swimmer's weight; over years the straps stretch and it fits loosely"],
+      ["The jacket works by raising the swimmer's average density above the water's; over years it absorbs water into its foam and grows lighter as it ages",
+       "The jacket works by heating the water around the swimmer to keep them afloat; over years of use it gradually loses that heating ability and so buoys less",
+       "The jacket works by increasing the swimmer's weight so they sit lower and steadier; over years the straps stretch and it fits too loosely to help"],
       "A personal flotation device is made of very low density material. Worn, it makes the average density of swimmer plus jacket less than the water's, so the combination floats. The guide's aging point: as the materials break down and compress over the years, they become more dense, the jacket contributes less low-density volume, and its buoyancy fades. Both the design and its failure run on average density.",
       {});
   }
@@ -773,9 +773,9 @@ E("s8-u2-average-density", 2, ["SC8.5.6"], 3, "var", varset([
   function () {
     return mcq("A wooden boat floats for decades, but a waterlogged stick of the same wood sinks. A solid steel block sinks instantly, but a steel ship floats. Which single idea explains both pairs?",
       "Average density: what matters is the total mass divided by the total volume of the whole object, including the air spaces and absorbed water it carries",
-      ["Shape alone: any object shaped like a boat floats, whatever it is made of",
-       "Age: older wooden objects absorb the ability to float",
-       "Surface area: objects with more surface always float"],
+      ["Shape alone: any object that is shaped like a boat will float on water, whatever material it happens to be made of and however heavy it is",
+       "Age: older wooden objects gradually absorb the ability to float from the water around them as the years go by on the water",
+       "Surface area: objects with more surface area exposed to the water always float on it, whatever material they are made of and however dense it is"],
       "Neither the material nor the shape alone decides it. The waterlogged stick has soaked up water until its average density passes the water's; the dry boat's wood and air spaces keep its average below. The steel block is solid steel throughout, while the ship is mostly enclosed air: its average density, mass over total volume, is below the water's. One ratio explains all four cases.",
       {});
   }
@@ -787,9 +787,9 @@ E("s8-u2-pascal", 2, ["SC8.5.7"], 1, "var", varset([
   function () {
     return mcq("What does Pascal's law state?",
       "Pressure applied to a confined fluid is transmitted equally in all directions throughout the fluid",
-      ["Pressure in a fluid decreases with depth in all directions",
-       "A confined gas expands until its pressure reaches zero",
-       "The buoyant force on an object equals the weight of the fluid it displaces"],
+      ["Pressure in a fluid decreases steadily with depth, equally in all directions throughout the fluid",
+       "A confined gas expands inside its container until its pressure falls all the way to zero",
+       "The buoyant force on an object equals the weight of the fluid that the object displaces as it sinks in"],
       "Pascal's law is the foundation of hydraulics and pneumatics: squeeze a confined fluid at one point and the pressure increase is felt everywhere in the fluid, in all directions. That is what lets a small force at one piston produce a large force at another.",
       {});
   }
@@ -799,9 +799,9 @@ E("s8-u2-hydraulic-pneumatic", 2, ["SC8.5.7"], 2, "var", varset([
   function () {
     return mcq("Which comparison of hydraulic and pneumatic systems is correct?",
       "Hydraulic systems use a liquid, which is incompressible and keeps a definite volume; pneumatic systems use a gas, which is compressible and has an indefinite volume",
-      ["Hydraulic systems use a gas, which is compressible; pneumatic systems use a liquid, which is not",
-       "Both systems use liquids; they differ only in the size of their pistons",
-       "Hydraulic systems use a compressible liquid, which is what makes them strong"],
+      ["Hydraulic systems use a gas, which is compressible and indefinite in volume; pneumatic systems use a liquid, which is not compressible",
+       "Both systems use liquids as their working fluid; they differ only in the size of the pistons fitted inside them",
+       "Hydraulic systems use a liquid that compresses easily under pressure, and that compressibility is what makes them strong"],
       "The two system families split on their fluid. Hydraulics run on liquids: effectively incompressible, definite volume, ideal for transmitting force exactly, as in brakes and lifts. Pneumatics run on gases: compressible, indefinite volume, as in air tools and tires. Pascal's law applies to both.",
       {});
   }
@@ -834,9 +834,9 @@ E("s8-u2-question-problem", 2, ["SC8.6.1"], 2, "var", varset([
   function () {
     return mcq("A bicycle shop finds that a hydraulic brake lever feels spongy and the brakes are weak. Which question turns this practical problem into an investigation?",
       "Does air trapped in the brake line reduce the force the brake pads apply, compared with a line containing only brake fluid?",
-      ["Why do customers prefer strong brakes?",
-       "Who invented hydraulic brakes?",
-       "Are hydraulic brakes better than cable brakes in every way?"],
+      ["Why is it that customers coming into the bicycle shop always say, when asked, that they prefer strong brakes on a bike?",
+       "Who was the person who first invented hydraulic brakes for use on bicycles, and in what country did they do the work?",
+       "Are hydraulic brakes on a bicycle simply better than the cable brakes they replace in every way that matters to a rider?"],
       "The practical problem is the spongy lever. The investigable version names a suspected cause that can be varied (air in the line, which compresses, unlike the liquid) and an effect that can be measured (the force at the pads). History and opinion questions do not test the problem.",
       {});
   }
@@ -848,9 +848,9 @@ E("s8-u2-rephrase", 2, ["SC8.6.2"], 1, "var", varset([
   function () {
     return mcq("A student's question reads: 'Is thick oil bad for engines?' Which rephrasing puts it in testable form?",
       "How does the temperature of motor oil affect the time it takes for 100 mL of the oil to drain through a funnel?",
-      ["Why do engines dislike thick oil so much?",
-       "Is winter oil a better invention than summer oil?",
-       "What is the best oil in the world?"],
+      ["Why do the engines in cold climates dislike thick, slow-flowing oil so much in the winter?",
+       "Is the winter grade of oil simply a better invention than the summer grade of oil overall?",
+       "What is the single best motor oil in the whole world for every engine ever built anywhere?"],
       "Testable form names the variable to change (temperature), the variable to measure (drain time for a fixed volume), and the material under test. The original question's 'bad' cannot be measured; the rephrasing replaces it with quantities.",
       {});
   }
@@ -860,9 +860,9 @@ E("s8-u2-define-problem", 2, ["SC8.6.2"], 2, "var", varset([
   function () {
     return mcq("A team must define a practical problem clearly before investigating: their school's soap dispensers keep clogging in winter. Which statement defines the problem in a way an investigation can address?",
       "In cold months the dispensers deliver soap slowly or not at all; the team will test whether the soap's higher viscosity at low temperature is the cause and whether a lower-viscosity soap fixes it",
-      ["The soap dispensers are annoying in winter and should be better",
-       "Someone should invent a perfect soap that never clogs anything",
-       "The dispensers clog because winter is cold, so the investigation is finished"],
+      ["The soap dispensers in the school washrooms are annoying in the winter months, and they really should work much better than they do for the students who use them daily",
+       "Someone should simply invent a perfect new soap that never clogs any dispenser or drain anywhere in the school, whatever the weather or the season of the year happens to be",
+       "The dispensers in the school clog in winter simply because winter is cold in this province, so there is nothing left for any investigation by the team to test or measure"],
       "A clearly defined practical problem states the observed difficulty, a testable suspected cause, and what a solution would look like. The first option does all three; the others complain, dream, or declare the answer before testing it.",
       {});
   }
@@ -874,9 +874,9 @@ E("s8-u2-discrepancy-flow", 2, ["SC8.6.3"], 2, "var", varset([
   function () {
     return mcq("In the flow rate lab, one group's honey time is 9 seconds while three other groups record 24, 26 and 25 seconds for the same honey through identical funnels. Which explanation for the discrepancy should be investigated first?",
       "A procedural difference in the fast group's trial, such as the funnel being warmed, the honey being a different sample, or the timing starting late",
-      ["Honey's viscosity changes randomly from minute to minute, so all results are equally valid",
-       "The three slower groups must all have made the same mistake",
-       "The fast result should be averaged in without question, since more data is always better"],
+      ["The viscosity of honey changes randomly from one minute to the next, so every group's result is equally valid as it stands",
+       "The three slower groups must all have made exactly the same mistake in their trials with the honey",
+       "The fast result should simply be averaged in with the others without question, since more data is always better in the end"],
       "A single result far from a cluster of agreeing results points first at the procedure behind it: something differed in that trial. Discrepancy work starts by hunting the difference (warmed funnel, different honey, timing error), not by discarding or blindly averaging the odd value.",
       {});
   }
@@ -886,9 +886,9 @@ E("s8-u2-discrepancy-density", 2, ["SC8.6.9"], 3, "var", varset([
   function () {
     return mcq("Four groups measure the density of the same aluminum bar. Three report 2.7 g/cm3. The fourth reports 3.4 g/cm3 and offers two explanations: (1) their bar was a different alloy; (2) they read the graduated cylinder's level from above instead of at eye level, under-recording the volume. The bars were all cut from one sheet. Which evaluation is strongest?",
       "Explanation (2) is the one to act on: the shared source rules out a different alloy, and under-recording volume inflates the calculated density in exactly the direction observed, so the group should re-measure at eye level",
-      ["Explanation (1), because any bar can secretly be a different alloy",
-       "Both explanations are equally likely, so the result should stand as reported",
-       "Neither: a density discrepancy of this size should simply be deleted from the class data"],
+      ["Explanation (1) is the one to act on first, because any metal bar in the set can secretly turn out to be made of a different alloy than the rest of the bars cut for the class",
+       "Both explanations offered by the fourth group are equally likely to be right, so the group's reported result should simply stand as it is in the class data, with no re-measuring done",
+       "Neither explanation matters here: a density discrepancy of this size should simply be deleted from the class data set without any further checking by the group or the teacher"],
       "Weighing explanations means testing them against the facts and the direction of the error. One sheet rules out a different alloy. A volume read too small makes m/V too large, which matches the high result exactly. The strongest evaluation names the explanation that fits both the facts and the arithmetic, and prescribes the re-measurement.",
       {});
   }
@@ -900,9 +900,9 @@ E("s8-u2-bargraph", 2, ["SC8.6.4"], 3, "var", varset([
   function () {
     var q = mcq("A group measured flow times for four liquids and displayed them in the bar graph shown. Their lab partner claims the graph proves Liquid B is the most viscous because its bar is 'in the middle.' Which evaluation of the display and the claim is correct?",
       "The bar graph is an appropriate display for comparing separate liquids, but the claim misreads it: the most viscous liquid is the one with the longest flow time, Liquid D",
-      ["The claim is correct, because the middle bar always represents the extreme value",
-       "The bar graph is the wrong display; only a line graph can compare liquids",
-       "The graph proves nothing, because flow times cannot be displayed graphically"],
+      ["The partner's claim is correct as it stands, because the middle bar in any bar graph always represents the extreme value in the data",
+       "The bar graph is the wrong display for this data; only a line graph can ever be used to compare the flow times of separate liquids",
+       "The graph itself proves nothing at all, because measured flow times cannot be displayed in any graphical form for comparison"],
       "Bar graphs suit this data: separate categories (four liquids) each with one measured value. Reading it is the second skill: viscosity rises with flow time, so the longest bar, Liquid D, is the most viscous. The display is right and the partner's reading of it is wrong.",
       {});
     q.figure = s8HealthSVG([{ name: "Liquid A", value: 6 }, { name: "Liquid B", value: 14 }, { name: "Liquid C", value: 11 }, { name: "Liquid D", value: 23 }], "Flow time", "s", null);
@@ -914,9 +914,9 @@ E("s8-u2-graph-choice", 2, ["SC8.6.4"], 1, "var", varset([
   function () {
     return mcq("A group has one flow time for each of five different liquids and must display the data. Which display is appropriate, and why?",
       "A bar graph, because the data are separate categories (different liquids), each with a single value to compare",
-      ["A line graph, because all science data must be drawn as lines",
-       "A circle graph, because the five times add to a whole",
-       "No graph, because times measured in seconds cannot be graphed"],
+      ["A line graph, because all data collected in science must be drawn as lines on a graph",
+       "A circle graph, because the five separate flow times can be added together to make a whole",
+       "No graph at all, because times that are measured in seconds cannot be shown on any graph"],
       "Display follows data shape. Five different liquids are categories, not a continuous variable, so bars compare them honestly; a line would invent a trend between unrelated liquids. The guide's own correction in Core Lab 8-2B makes the same point in reverse: class results there belong in a bar graph (histogram), not a line graph.",
       {});
   }
@@ -990,9 +990,9 @@ E("s8-u2-displacement", 2, ["SC8.6.8"], 1, "var", varset([
   function () {
     return mcq("Which procedure correctly determines the volume of an irregularly shaped stone by water displacement?",
       "Record the water level in a graduated cylinder, lower the stone in gently until it is fully submerged, record the new level, and subtract",
-      ["Drop the stone into a full beaker and weigh the stone again while it is wet",
-       "Measure the stone's length, width and height with a ruler and multiply",
-       "Float the stone on the water and read the level where it sits"],
+      ["Drop the stone into a full beaker of water and then weigh the stone a second time while it is still wet",
+       "Measure the stone's length, its width and its height with a ruler and multiply the three together",
+       "Float the stone on the surface of the water in the cylinder and read off the level where the stone sits at rest"],
       "Displacement works because the submerged stone pushes aside its own volume of water. The rise in level, final minus initial, is that volume. The stone must be fully submerged and lowered gently so no water splashes out; a ruler cannot capture an irregular shape, and a stone does not float.",
       {});
   }
@@ -1002,9 +1002,9 @@ E("s8-u2-displacement-error", 2, ["SC8.6.8"], 3, "var", varset([
   function () {
     return mcq("A group determines a metal cube's volume by displacement and gets 14 mL, but calculating from the cube's measured sides gives 27 cm3. Their notes say the cube 'stuck out of the water a little' in the cylinder, which was also too narrow, so the cube wedged against the sides. Which judgement best evaluates their displacement result?",
       "The displacement value is invalid: the cube was not fully submerged, so it displaced less than its full volume, and the wedging made it worse; they need a wider container and full submersion",
-      ["The displacement value is better, because water never lies, so the side measurements must be wrong",
-       "Both values should be averaged to give the true volume",
-       "The difference is unimportant, because volume does not affect the density calculation that follows"],
+      ["The displacement value must be the better one, because water never lies about volume, so the measurements of the cube's sides must be the wrong ones",
+       "The two values the group obtained should simply be averaged together to give the true volume of the cube",
+       "The difference between the two values is unimportant, because the volume figure does not affect the density calculation that the group does next with it"],
       "Judging a procedure means checking it against its own requirements. Displacement only equals volume when the object is fully submerged; a cube poking out displaces part of itself, so 14 mL understates the volume, and the direction of the error confirms the diagnosis. Averaging a valid value with an invalid one just contaminates the density that follows.",
       {});
   }

@@ -124,9 +124,9 @@ E("s8-u1-ice-age", 1, ["SC8.1.2"], 1, "var", varset([
   function () {
     return mcq("What is an ice age?",
       "An extended period of global cooling when glaciers advance and cover large areas of land",
-      ["A single very cold winter in one region",
-       "A period when ocean water freezes over completely",
-       "A short period when a glacier melts back a small distance"],
+      ["A single very cold winter season in one small region, with heavy snow and frozen lakes",
+       "A period when ocean water freezes over completely across the whole surface of the ocean",
+       "A short period of warming when a glacier melts back a small distance from its front edge"],
       "An ice age is an extended period of global cooling, lasting far beyond a single season, during which glaciers advance and spread over large areas. Periods of climate change like this have advanced and retreated glaciers many times in Earth's history.",
       {});
   }
@@ -209,9 +209,9 @@ E("s8-u1-productivity", 1, ["SC8.1.3"], 3, "var", varset([
   function () {
     return mcq("Two bays are surveyed. Bay A receives a steady upwelling of deep ocean water. Bay B has no upwelling and few nutrients reaching its surface water. Both bays get similar sunlight and temperatures. Which bay should support more species, and why?",
       "Bay A, because the upwelled water carries nutrients that feed plankton, which supports the rest of the food web",
-      ["Bay A, because deep water is colder, and cold water always holds more species",
-       "Bay B, because low nutrient levels keep algae from using up the oxygen",
-       "Both bays equally, because sunlight and temperature are the only factors that matter"],
+      ["Bay A, because deep water is colder, and cold water always holds more species than warm water does in any bay",
+       "Bay B, because low nutrient levels keep algae from using up the oxygen in the water, so more species survive there",
+       "Both bays equally, because sunlight and temperature are the only factors that matter for the species in a bay"],
       "Productivity depends on more than light and temperature. Upwelling brings nutrient-rich deep water to the surface, the nutrients feed plankton growth, and the plankton supports the food web above it. Bay B lacks that nutrient supply, so its productivity and species distribution are limited by it.",
       {});
   }
@@ -223,9 +223,9 @@ E("s8-u1-upwelling", 1, ["SC8.1.4"], 1, "var", varset([
   function () {
     return mcq("What is upwelling?",
       "The vertical movement of colder, denser, nutrient-rich water from below up to the ocean surface",
-      ["The movement of warm surface water down to the ocean floor",
-       "The sideways movement of surface water pushed by the wind",
-       "The rise of the ocean surface during a spring tide"],
+      ["The movement of warm surface water down through the water column to the ocean floor below",
+       "The sideways movement of surface water pushed along by the wind blowing over the ocean",
+       "The rise and fall of the ocean surface as the tides move in and out along the shore"],
       "Upwelling is the vertical motion that brings subsurface water, which is colder, denser and rich in nutrients, up to the surface. It is most common along the western coastlines of continents, and it feeds the productivity of those surface waters.",
       {});
   }
@@ -299,8 +299,8 @@ E("s8-u1-profile-figure", 1, ["SC8.1.5"], 1, "var", varset([
 
 E("s8-u1-basin-process", 1, ["SC8.1.5"], 3, "gen", function () {
   var cases = [
-    { d: "a long underwater mountain range where molten material rises, cools and hardens into new ocean floor", k: "Volcanic action and plate tectonics building new floor at a mid-ocean ridge", w: ["Erosion wearing down the continent's edge", "Glaciation carving a drainage channel", "Deposition of sediment on the abyssal plain"] },
-    { d: "a deep valley system on land that now carries a river's water toward the ocean, cut over thousands of years by moving ice and then by flowing water", k: "Glaciation and erosion shaping a continental drainage system", w: ["Plate tectonics raising a mid-ocean ridge", "Volcanic action forming new ocean floor", "Deposition building the continental shelf"] }
+    { d: "a long underwater mountain range where molten material rises, cools and hardens into new ocean floor", k: "Volcanic action and plate tectonics building new floor at a mid-ocean ridge", w: ["Erosion wearing down the outer edge of the continent over a long period of time", "Glaciation carving a deep drainage channel through the land as the ice moves", "Deposition of sediment settling slowly across the flat abyssal plain over time"] },
+    { d: "a deep valley system on land that now carries a river's water toward the ocean, cut over thousands of years by moving ice and then by flowing water", k: "Glaciation and erosion shaping a continental drainage system", w: ["Plate tectonics raising a mid-ocean ridge along the middle of the ocean floor", "Volcanic action forming new ocean floor where the plates spread apart", "Deposition building up the outer edge of the continental shelf over a long period of time"] }
   ];
   var c = pick(cases);
   return mcq("Which process or pair of processes best explains this feature: " + c.d + "?",
@@ -313,9 +313,9 @@ E("s8-u1-glaciation-role", 1, ["SC8.1.5"], 2, "var", varset([
   function () {
     return mcq("In the development of ocean basins and continental drainage systems, what is glaciation's role?",
       "Glaciation erodes land as ice moves, shaping the drainage systems that carry water to the ocean",
-      ["Glaciation builds new ocean floor where plates move apart",
-       "Glaciation deposits the sediment that forms the abyssal plain",
-       "Glaciation creates the volcanic action at mid-ocean ridges"],
+      ["Glaciation builds new ocean floor in the places where the plates of the crust move apart",
+       "Glaciation deposits the sediment that settles out and forms the flat abyssal plain",
+       "Glaciation creates the volcanic action that takes place all along the mid-ocean ridges"],
       "The guide limits glaciation's role to erosion in drainage systems: moving ice scrapes and carves the land, shaping the valleys and basins that drain toward the ocean. New ocean floor comes from volcanic action and plate tectonics, not from ice.",
       {});
   }
@@ -351,9 +351,9 @@ E("s8-u1-fog", 1, ["SC8.1.6"], 2, "var", varset([
   function () {
     return mcq("Newfoundland's coasts are famous for thick fog. What produces it?",
       "Warm, moist air carried by the Gulf Stream passes over the cold water of the Labrador Current and condenses",
-      ["Cold, dry air from the Labrador Current mixes with cold water offshore",
-       "Warm water from the Gulf Stream evaporates directly into fog over the Grand Banks",
-       "Cold air sinks over the warm Gulf Stream and forms clouds at the surface"],
+      ["Cold, dry air from the Labrador Current mixes with the cold water offshore and turns into fog banks",
+       "Warm water from the Gulf Stream evaporates directly into fog that hangs over the Grand Banks",
+       "Cold air sinks over the warm Gulf Stream and forms a layer of cloud right at the surface of the water"],
       "Fog forms when warm, moist air from over the Gulf Stream moves over the much colder surface water of the Labrador Current. The air cools, its water vapour condenses into tiny droplets, and fog results. The meeting of the two currents is why this province is so foggy.",
       {});
   }
@@ -375,9 +375,9 @@ E("s8-u1-heat-storage", 1, ["SC8.1.6"], 2, "var", varset([
   function () {
     return mcq("Coastal towns in this province usually have milder winters and cooler summers than inland towns at the same latitude. What property of the ocean causes this?",
       "Water heats up and cools down slowly, so the ocean stores heat and moderates the climate of nearby land",
-      ["Ocean currents move so fast that they carry summer heat away before winter",
-       "Salt water freezes at a lower temperature, which warms the air above it",
-       "The ocean reflects sunlight back into the air over coastal towns"],
+      ["Ocean currents move so fast that they carry the summer heat away from the coast before winter arrives",
+       "Salt water freezes at a lower temperature, which keeps warming the air above the coast all winter long",
+       "The ocean reflects sunlight back into the air over coastal towns, warming them in every season"],
       "Water has a high heat capacity: it takes a long time to heat up and a long time to cool down. The ocean stores summer heat and releases it slowly through winter, and stays cool into summer, so it moderates the climate of the land beside it. Convection and thermals then move that warmed or cooled air over the coast.",
       {});
   }
@@ -396,9 +396,9 @@ E("s8-u1-iceberg", 1, ["SC8.1.6"], 3, "var", varset([
   function () {
     return mcq("Each spring, tour operators off St. John's advertise iceberg viewing as the bergs drift south past the Avalon Peninsula. A student claims the Gulf Stream brings the bergs. Which correction is right, and why does it matter to the tour season?",
       "The cold Labrador Current carries the bergs south from Greenland; it matters because the bergs arrive as the current carries them past the coast in spring",
-      ["The Gulf Stream does bring the bergs, and it matters because its warm water melts them quickly",
-       "The Labrador Current carries the bergs north from Antarctica; it matters because they arrive in autumn",
-       "Neither current is involved; the bergs drift with the tides alone, which is why the season is short"],
+      ["The Gulf Stream does bring the bergs south, and it matters because its warm water melts them quickly once they reach the coast",
+       "The Labrador Current carries the bergs north from Antarctica; it matters because they arrive off the coast in the autumn instead",
+       "Neither current is involved; the bergs drift south with the tides alone, which is why the viewing season stays so short each year"],
       "Icebergs calve from Greenland's glaciers into the cold Labrador Current, which flows southward past Labrador and Newfoundland carrying them. The warm Gulf Stream flows the other way and would melt bergs, not deliver them. The viewing season follows the cold current's spring delivery.",
       {});
   }
@@ -490,9 +490,9 @@ E("s8-u1-wave-size", 1, ["SC8.1.7"], 3, "var", varset([
   function () {
     return mcq("Three storms are compared. Storm 1: strong wind for two hours over a small bay. Storm 2: the same wind for two days over a small bay. Storm 3: the same wind for two days across a wide ocean. Which storm produces the largest waves, and why?",
       "Storm 3, because wave size grows with wind speed, with how long the wind blows, and with the size of the water area it passes over",
-      ["Storm 1, because a small bay concentrates the wind's energy",
-       "Storm 2, because duration is the only factor that affects wave size",
-       "All three equally, because the wind speed is the same in each"],
+      ["Storm 1, because a small bay concentrates the wind's energy into a smaller area of water and builds the waves up there",
+       "Storm 2, because how long the wind blows is the only factor that affects the size of the waves a storm produces",
+       "All three storms equally, because the wind speed is exactly the same in each of the three storms compared here"],
       "Wave size is influenced by three things together: the speed of the wind, the duration it blows, and the size of the water area it passes over (the fetch). Storm 3 matches Storm 2 on speed and duration and adds a far greater fetch, so its waves grow largest before their energy reaches a shoreline.",
       {});
   }
@@ -528,9 +528,9 @@ E("s8-u1-rock-resistance", 1, ["SC8.1.8"], 1, "var", varset([
   function () {
     return mcq("The red rocks at St. George's are wearing away noticeably faster than the cliffs of Bell Island in Conception Bay. What does this comparison show?",
       "Less resistant rock types erode at a faster rate than more resistant rock types under the same wave action",
-      ["Red rock always erodes faster than grey rock, whatever the rock type",
-       "Rock type makes no difference to erosion rates; only wave energy matters",
-       "Cliffs erode slowly only because they are taller than other shores"],
+      ["Red rock always erodes faster than grey rock, whatever the actual rock type or its resistance to waves",
+       "Rock type makes no difference to erosion rates at all; only the energy of the waves striking the shore matters",
+       "Cliffs erode slowly only because they stand taller than the other shores along the same stretch of coast"],
       "The guide's own comparison: less resistant rock, such as the sandstone at St. George's, erodes faster than more resistant rock, such as the cliffs of Bell Island. Rock type is one of the factors that set how fast a shoreline changes, alongside slope, shape and wave energy.",
       {});
   }
@@ -579,9 +579,9 @@ E("s8-u1-landform-figure", 1, ["SC8.1.9"], 1, "var", varset([
 
 E("s8-u1-landform-formation", 1, ["SC8.1.9"], 2, "gen", function () {
   var cases = [
-    { q: "How does a sand bar form?", k: "Waves and currents deposit sand in shallow water, building up a ridge of sediment", w: ["Waves erode a headland until a ridge of rock is left standing", "A cave cuts through a headland and the roof collapses", "Wind blows beach sand into piles above the high tide line"] },
-    { q: "How does a beach form and grow?", k: "Deposition: waves drop sand and sediment along a gently sloping shore faster than they remove it", w: ["Erosion: waves tear sand from the shore and pile it at the waterline", "Deposition: glaciers leave sand behind as they retreat from the coast", "Weathering: rock breaks down in place and the pieces stay where they fell"] },
-    { q: "How does a shoal form?", k: "Sediment deposited in shallow water builds an area that is a hazard to boats", w: ["A stack collapses and its rubble spreads across the harbour entrance", "Tides carve a deep channel that fills with sediment at low tide", "Volcanic action raises the ocean floor near the shore"] }
+    { q: "How does a sand bar form?", k: "Waves and currents deposit sand in shallow water, building up a ridge of sediment", w: ["Waves erode a headland until a ridge of solid rock is left standing in the water", "A cave cuts through a headland and the roof collapses into the water below", "Wind blows dry beach sand into large piles above the high tide line on shore"] },
+    { q: "How does a beach form and grow?", k: "Deposition: waves drop sand and sediment along a gently sloping shore faster than they remove it", w: ["Erosion: waves tear sand from the shore and pile it up in a ridge at the waterline", "Deposition: glaciers leave sand and sediment behind as they slowly retreat back from the coast", "Weathering: rock breaks down in place and the broken pieces stay piled where they fell"] },
+    { q: "How does a shoal form?", k: "Sediment deposited in shallow water builds an area that is a hazard to boats", w: ["A stack collapses and its rubble spreads out across the shallow harbour entrance", "Tides carve a deep channel through the harbour that fills with sediment at low tide", "Volcanic action raises a new ridge on the ocean floor near the shore"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -619,9 +619,9 @@ E("s8-u1-institution-focus", 1, ["SC8.2.1"], 1, "var", varset([
   function () {
     return mcq("Which statement about Canadian ocean research institutions is correct?",
       "Institutions such as Environment Canada, the Federal Department of Fisheries and Memorial University's Ocean Sciences Centre all support research involving the oceans",
-      ["Only universities conduct ocean research in Canada",
-       "Ocean research in Canada is done entirely by private fishing companies",
-       "The institutions exist, but they study only freshwater lakes"],
+      ["Only universities conduct ocean research in Canada, and no government department at any level takes any part in the work at all, in any region of the country",
+       "Ocean research in Canada is carried out entirely by private fishing companies working on the Atlantic and Pacific coasts, with no other bodies involved",
+       "The institutions exist and employ many scientists, but they study only the freshwater lakes and rivers of Canada and never the oceans around its coasts"],
       "Ocean research in Canada is shared among government departments and university centres. Environment Canada covers weather, the Federal Department of Fisheries covers fisheries and oceans, and Memorial University's Ocean Sciences Centre, C-CORE and Marine Institute research the ocean from St. John's. The guide requires awareness that these institutions exist and support ocean research.",
       {});
   }
@@ -646,9 +646,9 @@ E("s8-u1-sonar", 1, ["SC8.2.2"], 1, "var", varset([
   function () {
     return mcq("Why is sonar so useful for researching ocean basins?",
       "Sound travels through water and returns echoes from the floor, so the floor's shape can be mapped without seeing it directly",
-      ["Sonar cameras take photographs in total darkness",
-       "Sonar lets divers breathe at any depth",
-       "Sonar measures the salt content of deep water directly"],
+      ["Sonar cameras take clear photographs of the ocean floor even in total darkness far below the surface",
+       "Sonar lets divers breathe safely at any depth they choose to descend to in the open ocean",
+       "Sonar measures the salt content and the temperature of deep ocean water directly as it passes"],
       "Sonar works by sending sound pulses into the water and timing the echoes that bounce back from the ocean floor. From the timing, scientists build a picture of the basin's shape. It is an indirect observation: the floor is mapped without anyone seeing it, which is how most basin research proceeds.",
       {});
   }
@@ -669,9 +669,9 @@ E("s8-u1-tech-change", 1, ["SC8.2.3"], 2, "var", varset([
   function () {
     return mcq("Early ocean researchers measured depth by lowering a weighted wire line over the side of a ship and noting its length when it reached bottom. Modern ships use sonar instead. What is the main improvement?",
       "Sonar produces a continuous depth record as the ship moves, so a whole basin profile can be mapped rather than single scattered depths",
-      ["Sonar works only in shallow water, where wire lines could not reach",
-       "Sonar removes the need for a ship, because it works from shore",
-       "Wire lines were more accurate; sonar is used only because it is cheaper"],
+      ["Sonar works only in shallow coastal water close to shore, where the old wire lines were never able to reach the bottom beneath the ship",
+       "Sonar removes the need for a ship at all in depth work, because its signals can be sent out from the shore instead of from a vessel",
+       "Wire lines were far more accurate than sonar ever is; sonar is used on ships today only because it is the cheaper of the two methods"],
       "A wire line gives one depth at one spot, slowly. Sonar times sound echoes continuously as the ship travels, producing a running profile of the floor. The improvement is in the amount and continuity of the evidence, which is what turned scattered soundings into basin maps.",
       {});
   }
@@ -681,9 +681,9 @@ E("s8-u1-tech-improve", 1, ["SC8.2.3"], 1, "var", varset([
   function () {
     return mcq("How have deep sea submersibles improved on diving for ocean research?",
       "Submersibles carry researchers and instruments far deeper and for longer than a diver's body and air supply allow",
-      ["Submersibles are smaller and cheaper than diving equipment",
-       "Submersibles replaced the need for any surface ship",
-       "Divers can now stay down as long as submersibles can"],
+      ["Submersibles are smaller, simpler and cheaper than the equipment that divers have to carry with them",
+       "Submersibles replaced the need for any surface ship to support the research work done below",
+       "Divers can now stay down just as long as submersibles can, using ordinary diving equipment"],
       "Diving is limited by the human body and its air supply, so it serves shallow water. Deep sea submersibles, the technology at the centre of the strand's Undersea Adventure STSE, protect their crews from pressure and carry instruments, opening the deep ocean floor to direct research. The pattern is the same across this indicator: each generation of technology extends where and how long scientists can gather evidence.",
       {});
   }
@@ -730,9 +730,9 @@ E("s8-u1-overfishing", 1, ["SC8.2.5"], 2, "var", varset([
   function () {
     return mcq("Fish stocks declined sharply in the decades when factory freezer trawlers spread through the fleet. Which statement best fits the guide's treatment of technology and overfishing?",
       "New technologies have contributed to overfishing: larger vessels, better fish-finding technology and more effective catch methods let fleets take fish faster than stocks can replace them",
-      ["Technology reduced overfishing, because freezer trawlers waste less of each catch",
-       "Overfishing was caused only by fish behaviour changing, not by technology",
-       "Factory freezer trawlers affected only freshwater fisheries"],
+      ["Technology reduced overfishing, because freezer trawlers waste less of each catch, so fleets needed to catch far fewer fish to supply the same markets",
+       "Overfishing was caused only by the behaviour of the fish themselves changing, and not by any change in fishing technology",
+       "Factory freezer trawlers affected only the freshwater fisheries of the inland lakes and rivers of Canada"],
       "The guide limits the discussion to the impact of improved fishing technology: catch methods, fish-finding technology and vessel type. Factory freezer trawlers combine all three, catching and processing huge amounts at sea, and that capability is a recognized contributor to the decline of stocks such as cod.",
       {});
   }
@@ -742,9 +742,9 @@ E("s8-u1-invasive", 1, ["SC8.2.5"], 2, "var", varset([
   function () {
     return mcq("The European green crab, a species not native to this province, is now established in Placentia Bay, and the violet tunicate has appeared in Belleoram. Which technology-related route best explains introductions like these?",
       "Oil tankers and other ships release bilge and ballast water carrying foreign organisms into native habitats",
-      ["Aquaculture pens release farmed fish that turn into crabs and tunicates",
-       "Factory freezer trawlers carry the species in their nets from harbour to harbour",
-       "Tidal power turbines transport organisms through their passages"],
+      ["Aquaculture pens release farmed fish into the bay, and those escaped fish turn into crabs and tunicates over time",
+       "Factory freezer trawlers carry the new species in their nets as they move from harbour to harbour along the coast",
+       "Tidal power turbines carry the organisms through their passages from one bay into another bay nearby"],
       "The guide names this route directly: when oil tankers release their bilge water, foreign species can be introduced, endangering native habitats and organisms. The green crab in Placentia Bay and the violet tunicate in Belleoram are its local examples.",
       {});
   }
@@ -754,9 +754,9 @@ E("s8-u1-aquaculture", 1, ["SC8.2.5"], 2, "var", varset([
   function () {
     return mcq("Mussel farms hang long lines of growing mussels in a bay. Which negative effect on the marine environment does the guide describe for this kind of aquaculture?",
       "Increased organic matter, called detritus rain, falls from the farms and accumulates on the sea floor",
-      ["The mussels filter so much water that the bay's salinity rises sharply",
-       "The lines block ocean currents and change the regional climate",
-       "The farms attract factory trawlers that overfish the bay"],
+      ["The mussels filter so much water as they feed that the salinity of the bay rises sharply within a single year",
+       "The long lines block the ocean currents and change the climate of the whole region around the bay",
+       "The farms attract factory trawlers into the bay, and the trawlers then overfish the wild stocks living there"],
       "The guide's aquaculture effects include the accidental release of farmed organisms into native populations, the spread of disease, and, for mussel farms specifically, detritus rain: increased organic matter falling and accumulating on the sea floor beneath the farm.",
       {});
   }
@@ -775,9 +775,9 @@ E("s8-u1-offshore", 1, ["SC8.2.5"], 3, "var", varset([
   function () {
     return mcq("A review of an offshore oil project lists four findings. Which finding describes an effect on marine environments that the guide attributes to the offshore oil industry?",
       "Drilling activity scours the ocean floor, destroying marine habitats, and spills can spread oil across the surface",
-      ["The project increases upwelling, raising the bay's productivity",
-       "The project's lights attract fish, which increases the local catch",
-       "The project lowers the ocean's salinity around the rig"],
+      ["The project increases upwelling around the rig, which raises the productivity of the whole bay for years",
+       "The project's lights attract fish to the waters around the rig, which increases the local catch there",
+       "The project lowers the salinity of the ocean water all around the rig and across the nearby bay"],
       "The guide's discussion of the offshore oil industry names pollution including oil spills, and the scouring of the ocean floor destroying marine habitats, with bilge water introductions as a further route of harm. The other findings invent mechanisms the guide does not describe.",
       {});
   }
@@ -812,9 +812,9 @@ E("s8-u1-lab-procedure", 1, ["SC8.3.1"], 1, "var", varset([
   function () {
     return mcq("In Core Lab 1-2B, a student investigates how salinity affects water density by adding drops of coloured fresh water to a container of salt water. Which procedure step is correct?",
       "Add the drops gently at the surface and observe where the coloured water settles before any stirring",
-      ["Stir the container briskly after each drop so the waters mix evenly",
-       "Pour the fresh water in quickly from a height so it reaches the bottom",
-       "Heat the salt water first so the fresh water spreads through it"],
+      ["Stir the container briskly after each drop so the two waters mix evenly through the container",
+       "Pour the fresh water in quickly from a height so that it plunges straight down to the bottom",
+       "Heat the salt water first so the fresh water spreads evenly through the whole container at once"],
       "The lab investigates how fresh and salt water interact when they meet. The coloured fresh water must be added gently and observed as it settles: it stays near the top, because fresh water is less dense than salt water. Stirring, pouring hard or heating would destroy the very layering the procedure is meant to reveal.",
       {});
   }
@@ -824,9 +824,9 @@ E("s8-u1-lab-extension", 1, ["SC8.3.1"], 2, "var", varset([
   function () {
     return mcq("Core Lab 1-2B ends by extending the result to environments where fresh water and ocean water meet. In an estuary, where river water flows into the ocean, what arrangement should the lab's result predict?",
       "The less dense fresh water from the river rides over the denser salt water it meets",
-      ["The denser fresh water sinks beneath the salt water it meets",
-       "The two waters always mix instantly into one uniform layer",
-       "The salt water floats on top because it is warmer"],
+      ["The denser fresh water sinks down beneath the salt water that it meets in the estuary",
+       "The two waters always mix instantly into one single uniform layer from top to bottom",
+       "The salt water floats on top of the fresh water because it is the warmer of the two"],
       "The lab's finding is that fresh water, being less dense, floats on salt water. Extended to an estuary, the river's fresh water rides over the ocean's salt water where they meet, which is part of what makes estuaries layered, productive environments.",
       {});
   }
@@ -847,9 +847,9 @@ E("s8-u1-safe-practice", 1, ["SC8.3.2"], 1, "var", varset([
   function () {
     return mcq("During the water health test, a student is about to carry a full container of pond water and a glass thermometer across the room. Which choice is the safe practice?",
       "Carry the container with two hands, walk slowly, and keep the thermometer in its case until it is needed at the bench",
-      ["Carry the container in one hand and the thermometer in the other to save a trip",
-       "Run the sample back quickly so the readings can be taken sooner",
-       "Hold the thermometer by its bulb while walking so it warms up ready for use"],
+      ["Carry the container in one hand and the thermometer in the other hand to save making a second trip",
+       "Run the sample back to the bench as quickly as possible so the readings can be taken sooner",
+       "Hold the thermometer by its bulb while walking across the room so it warms up ready for use at the bench"],
       "Safe tool use in this strand's labs means protecting both the student and the instruments: two hands for a full container, a slow walk, and glass instruments like thermometers kept protected until they are used at the bench. The bank carries this one entry on safe practice; safe handling itself is assessed in the classroom.",
       {});
   }
@@ -882,9 +882,9 @@ E("s8-u1-data-relationship", 1, ["SC8.3.3"], 3, "var", varset([
   function () {
     return mcq("A class measures a pond through the summer. In June the water is 12 degrees Celsius and holds 9.5 mg/L of dissolved oxygen. In July it is 18 degrees and holds 8.1 mg/L. In August it is 24 degrees and holds 6.8 mg/L. Which statement correctly interprets the trend in this data?",
       "As the water temperature increased, the dissolved oxygen decreased: warmer water holds less dissolved oxygen",
-      ["As the water temperature increased, the dissolved oxygen increased in step",
-       "Temperature and dissolved oxygen stayed in a fixed total all summer",
-       "The data show no relationship, because three measurements are too few to read"],
+      ["As the water temperature increased through the summer, the dissolved oxygen increased in step with it",
+       "Temperature and dissolved oxygen stayed in a fixed total added together all through the summer",
+       "The data show no relationship at all, because three measurements are too few to read a trend from"],
       "Reading the pairs in order: 12 degrees with 9.5 mg/L, 18 with 8.1, 24 with 6.8. Each temperature rise comes with an oxygen fall, a consistent inverse trend. That is the relationship the guide uses in its own example chain: warmer water holds less dissolved oxygen.",
       {});
   }
@@ -931,9 +931,9 @@ E("s8-u1-conclusion-judge", 1, ["SC8.3.5"], 2, "var", varset([
   function () {
     return mcq("A student floats the same wooden block in three tanks: fresh water, slightly salty water, and very salty water. The block floats lowest in fresh water and highest in the very salty water. Which conclusion is supported by these observations?",
       "As salinity increases, density increases, so the block is supported higher in saltier water",
-      ["As salinity increases, the block becomes lighter, so it floats higher",
-       "The block floats higher in salt water because salt water is warmer",
-       "No conclusion is possible, because the block was not weighed"],
+      ["As salinity increases, the block itself becomes lighter, so it floats higher in the tank",
+       "The block floats higher in the salt water simply because salt water is always the warmer water",
+       "No conclusion is possible from the test, because the block was not weighed before it was floated"],
       "The same block, with the same mass, floats at different heights, so the difference must be in the water. Floating higher means the water is supporting it more strongly, which is what greater density does. The observations support the conclusion that salinity increases density, the same conclusion as the core lab, reached by a different observation.",
       {});
   }
@@ -945,9 +945,9 @@ E("s8-u1-tool-choice", 1, ["SC8.3.6"], 1, "var", varset([
   function () {
     return mcq("For the water health test, a group must measure how cloudy a pond sample is, since turbidity is one of the abiotic factors being checked. Which tool choice fits the job?",
       "A turbidity tube or disc, which measures how far light penetrates the sample",
-      ["A thermometer, read carefully in the shade",
-       "A pH test kit, used twice to be sure",
-       "A dissolved oxygen meter, set to its cloudiness scale"],
+      ["A thermometer, read carefully in the shade at the edge of the pond beside the sample",
+       "A pH test kit, used twice on the same sample to be sure of the cloudiness reading",
+       "A dissolved oxygen meter, set over to its cloudiness scale to read the pond sample"],
       "Selecting a tool means matching it to the quantity being measured. Turbidity is cloudiness, the blocking of light by suspended particles, so it is measured by how far light or a marked disc can be seen through the water. Thermometers measure temperature, pH kits measure acidity, and oxygen meters measure dissolved oxygen.",
       {});
   }
@@ -971,9 +971,9 @@ E("s8-u1-pattern-infer", 1, ["SC8.3.7"], 2, "var", varset([
   function () {
     return mcq("Surveys of a bay over ten years show that in years when upwelling was strong, the catch of capelin was high, and in years when upwelling was weak, the catch was low. Which inference is best supported by this pattern?",
       "Strong upwelling supports larger capelin populations, because the upwelled water brings nutrients that feed the plankton capelin eat",
-      ["Capelin cause upwelling in the years when they are plentiful",
-       "The pattern proves fishing boats catch more whenever they choose to go out",
-       "Upwelling and capelin are unrelated, because the data cover only ten years"],
+      ["Capelin themselves cause the upwelling along the coast in the years when their numbers are plentiful in the bay and the catch is high",
+       "The pattern proves that fishing boats simply catch more capelin in any year they choose to go out to sea more often and stay out longer",
+       "Upwelling and capelin catches in the bay are unrelated to each other, because the survey data cover only ten years of the bay's history"],
       "The pattern repeats across ten years in the same direction, which supports an inference, and the mechanism is known: upwelling delivers nutrient-rich water, nutrients feed plankton, and capelin feed on plankton. An inference pairs the observed pattern with a mechanism that explains it.",
       {});
   }
@@ -983,9 +983,9 @@ E("s8-u1-relationship-explain", 1, ["SC8.3.7"], 3, "var", varset([
   function () {
     return mcq("Along a coastline, the bays with the most reliable upwelling also have the densest populations of seabirds, even though the birds nest on land. Which explanation best accounts for the whole pattern?",
       "Upwelling brings nutrients to the surface, plankton flourish, fish gather to feed on the plankton, and the seabirds feed on the fish, so the birds concentrate where the chain begins",
-      ["Seabirds prefer the smell of upwelled water and gather for that reason alone",
-       "Upwelling cools the air, and seabirds nest where the air is coolest",
-       "The pattern is a coincidence, because land birds cannot be connected to ocean processes"],
+      ["Seabirds prefer the smell of the cold upwelled water rising along the coast and gather in dense flocks along those bays for that reason alone, season after season",
+       "Upwelling cools the layer of air above the bay, and seabirds of every kind choose to nest along the stretches of coast wherever the air above the water is coolest",
+       "The pattern is only a coincidence in the survey results, because birds that nest on cliffs on land cannot possibly be connected to any processes taking place in the ocean"],
       "Explaining a pattern means tracing the relationship through every link. Upwelling supplies nutrients; nutrients grow plankton; plankton draws fish; fish feed the birds. The birds' distribution on land is the far end of a chain that starts with a water movement, which is the kind of relationship this strand's data work is meant to surface.",
       {});
   }
@@ -997,9 +997,9 @@ E("s8-u1-threshold-judge", 1, ["SC8.3.8"], 2, "var", varset([
   function () {
     return mcq("A freshwater sample from Core Lab 3-3B gives these results: dissolved oxygen 4.1 mg/L, phosphates 6 micrograms per litre, pH 6.8. Healthy ranges: dissolved oxygen 5 mg/L or greater; phosphates less than 10 micrograms per litre; pH 5 to 8.5. Which judgement is correct?",
       "The dissolved oxygen is below its healthy range, while phosphates and pH are within theirs, so the water may not support fish well",
-      ["All three factors are within their healthy ranges, so the water is healthy",
-       "The phosphates are above their healthy limit, which is the sample's main problem",
-       "The pH is outside its healthy range, which is the sample's main problem"],
+      ["All three factors are within their healthy ranges, so the sample shows the water is healthy for fish",
+       "The phosphates are above their healthy limit, and that is the main problem shown by this water sample",
+       "The pH is outside its healthy range, and that is the main problem shown by this sample of water"],
       "Compare each value with its range. Dissolved oxygen 4.1 mg/L is below the 5 mg/L minimum. Phosphates at 6 are under the limit of 10, and pH 6.8 sits inside 5 to 8.5. Only the oxygen fails, and low oxygen is what limits the fish the water can support.",
       {});
   }
@@ -1018,9 +1018,9 @@ E("s8-u1-process-evaluate", 1, ["SC8.3.8"], 3, "var", varset([
   function () {
     return mcq("A group evaluated its water health investigation afterwards. Their plan had been: one sample, taken at the pond's edge on one afternoon, tested once for each factor. Their report concluded the whole pond was unhealthy because the oxygen reading was low. Which evaluation of their process is most accurate?",
       "The process was too weak for the conclusion: a single edge sample on one day cannot represent the whole pond, and one low reading should have been checked with repeat samples before concluding",
-      ["The process was sound, because they used the correct test for each factor",
-       "The only weakness was that they sampled in the afternoon rather than the morning",
-       "The process was weak only because they wrote the conclusion too confidently"],
+      ["The process was sound from start to finish and needs no improvement, because they used the correct test for each factor and recorded each result carefully in their lab notebooks",
+       "The only weakness in their whole process was that they took the sample in the afternoon rather than in the morning of the same day, when the pond's oxygen level might have read differently",
+       "The process itself was weak in only one way that matters: they wrote the conclusion too confidently for the single set of readings they had taken at the pond on that one afternoon"],
       "Evaluating a process means judging whether the plan could support the conclusion drawn from it. One sample from one edge on one day describes that spot at that moment, not the whole pond, and a single surprising reading calls for repeats. The tests themselves were right; the sampling plan and the leap to a whole-pond conclusion were the weaknesses.",
       {});
   }
@@ -1085,9 +1085,9 @@ E("s8-u1-temp-population", 1, ["SC8.3.9"], 3, "var", varset([
   function () {
     return mcq("A class plots two graphs for the same bay over eight years: average summer water temperature, rising steadily, and the population of a cold-water fish species, falling steadily. They also know fishing pressure stayed about the same. Which suggestion best fits the guide's approach to relating the graphs?",
       "The rising temperature is a reasonable suggested cause of the decline, because warmer water holds less dissolved oxygen, but the graphs alone show a relationship, not proof, and other changing factors should be checked",
-      ["The graphs prove temperature caused the decline, so no other factor needs checking",
-       "No relationship can be suggested, because the two graphs measure different things",
-       "The fish decline must have caused the temperature rise, since the population graph falls as the other rises"],
+      ["The two graphs together prove that the temperature rise caused the decline outright, so no other changing factor in the bay needs to be checked before concluding",
+       "No relationship can ever be suggested from the graphs, because the two graphs measure different things, and different measures can never be compared in a useful way",
+       "The decline in the fish population must itself have caused the temperature of the bay to rise, since the population graph falls steadily as the temperature graph rises over the same years"],
       "Comparing population graphs with temperature graphs and suggesting possible relationships is exactly the activity the guide sets. The suggestion gains strength from a mechanism, warm water holding less oxygen, and from fishing pressure being steady. But two trends moving together show a relationship, not proof: an honest suggestion names the mechanism and keeps the door open to other factors.",
       {});
   }
@@ -1099,9 +1099,9 @@ E("s8-u1-tech-strength", 1, ["SC8.3.10"], 2, "var", varset([
   function () {
     return mcq("Which pairing gives a genuine strength and a genuine weakness of sonar for investigating the ocean floor?",
       "Strength: it maps the floor's shape across whole basins from a moving ship. Weakness: it shows shape, not what the floor is made of or what lives there",
-      ["Strength: it photographs organisms in total darkness. Weakness: it works only in shallow water",
-       "Strength: it carries researchers to the floor. Weakness: it endangers its crew at great depth",
-       "Strength: it measures water temperature at any depth. Weakness: it cannot detect the floor at all"],
+      ["Strength: it photographs organisms living in total darkness. Weakness: it works only in shallow coastal water",
+       "Strength: it carries researchers down to the floor itself. Weakness: it endangers its crew while working at great depth",
+       "Strength: it measures the temperature of the water at any depth. Weakness: it cannot detect the ocean floor at all"],
       "Judging a technology means pairing what it does well with what it cannot do. Sonar's strength is coverage: continuous depth readings from a moving ship become basin maps. Its weakness is that echoes give shape only; composition and life on the floor need other technologies, such as sampling, photography and submersibles.",
       {});
   }
@@ -1111,9 +1111,9 @@ E("s8-u1-tech-weakness", 1, ["SC8.3.10"], 1, "var", varset([
   function () {
     return mcq("Deep sea submersibles transformed ocean floor research, but they have a real limitation. Which statement names it?",
       "They are expensive, carry only a few people, and can stay at depth for a limited time, so they sample only tiny parts of the floor",
-      ["They cannot descend below the continental shelf",
-       "They disturb the water so much that sonar cannot be used near them",
-       "They work only when the ocean surface is completely calm"],
+      ["They cannot descend below the edge of the continental shelf into the deep ocean basin beyond it",
+       "They disturb the water around them so much that sonar cannot be used anywhere near them during a dive",
+       "They can work only on days when the surface of the ocean is completely calm from shore to shore"],
       "Submersibles reach the deep floor directly, which no other technology does with people aboard, but each dive is costly, brief and small in crew and coverage. That is why they complement rather than replace wide-coverage tools like sonar: the strength of one covers the weakness of the other.",
       {});
   }

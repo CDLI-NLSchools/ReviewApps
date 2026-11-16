@@ -623,9 +623,9 @@ E("s8-u1-ice-age", 1, ["SC8.1.2"], 1, "var", varset([
   function () {
     return mcq("What is an ice age?",
       "An extended period of global cooling when glaciers advance and cover large areas of land",
-      ["A single very cold winter in one region",
-       "A period when ocean water freezes over completely",
-       "A short period when a glacier melts back a small distance"],
+      ["A single very cold winter season in one small region, with heavy snow and frozen lakes",
+       "A period when ocean water freezes over completely across the whole surface of the ocean",
+       "A short period of warming when a glacier melts back a small distance from its front edge"],
       "An ice age is an extended period of global cooling, lasting far beyond a single season, during which glaciers advance and spread over large areas. Periods of climate change like this have advanced and retreated glaciers many times in Earth's history.",
       {});
   }
@@ -708,9 +708,9 @@ E("s8-u1-productivity", 1, ["SC8.1.3"], 3, "var", varset([
   function () {
     return mcq("Two bays are surveyed. Bay A receives a steady upwelling of deep ocean water. Bay B has no upwelling and few nutrients reaching its surface water. Both bays get similar sunlight and temperatures. Which bay should support more species, and why?",
       "Bay A, because the upwelled water carries nutrients that feed plankton, which supports the rest of the food web",
-      ["Bay A, because deep water is colder, and cold water always holds more species",
-       "Bay B, because low nutrient levels keep algae from using up the oxygen",
-       "Both bays equally, because sunlight and temperature are the only factors that matter"],
+      ["Bay A, because deep water is colder, and cold water always holds more species than warm water does in any bay",
+       "Bay B, because low nutrient levels keep algae from using up the oxygen in the water, so more species survive there",
+       "Both bays equally, because sunlight and temperature are the only factors that matter for the species in a bay"],
       "Productivity depends on more than light and temperature. Upwelling brings nutrient-rich deep water to the surface, the nutrients feed plankton growth, and the plankton supports the food web above it. Bay B lacks that nutrient supply, so its productivity and species distribution are limited by it.",
       {});
   }
@@ -722,9 +722,9 @@ E("s8-u1-upwelling", 1, ["SC8.1.4"], 1, "var", varset([
   function () {
     return mcq("What is upwelling?",
       "The vertical movement of colder, denser, nutrient-rich water from below up to the ocean surface",
-      ["The movement of warm surface water down to the ocean floor",
-       "The sideways movement of surface water pushed by the wind",
-       "The rise of the ocean surface during a spring tide"],
+      ["The movement of warm surface water down through the water column to the ocean floor below",
+       "The sideways movement of surface water pushed along by the wind blowing over the ocean",
+       "The rise and fall of the ocean surface as the tides move in and out along the shore"],
       "Upwelling is the vertical motion that brings subsurface water, which is colder, denser and rich in nutrients, up to the surface. It is most common along the western coastlines of continents, and it feeds the productivity of those surface waters.",
       {});
   }
@@ -798,8 +798,8 @@ E("s8-u1-profile-figure", 1, ["SC8.1.5"], 1, "var", varset([
 
 E("s8-u1-basin-process", 1, ["SC8.1.5"], 3, "gen", function () {
   var cases = [
-    { d: "a long underwater mountain range where molten material rises, cools and hardens into new ocean floor", k: "Volcanic action and plate tectonics building new floor at a mid-ocean ridge", w: ["Erosion wearing down the continent's edge", "Glaciation carving a drainage channel", "Deposition of sediment on the abyssal plain"] },
-    { d: "a deep valley system on land that now carries a river's water toward the ocean, cut over thousands of years by moving ice and then by flowing water", k: "Glaciation and erosion shaping a continental drainage system", w: ["Plate tectonics raising a mid-ocean ridge", "Volcanic action forming new ocean floor", "Deposition building the continental shelf"] }
+    { d: "a long underwater mountain range where molten material rises, cools and hardens into new ocean floor", k: "Volcanic action and plate tectonics building new floor at a mid-ocean ridge", w: ["Erosion wearing down the outer edge of the continent over a long period of time", "Glaciation carving a deep drainage channel through the land as the ice moves", "Deposition of sediment settling slowly across the flat abyssal plain over time"] },
+    { d: "a deep valley system on land that now carries a river's water toward the ocean, cut over thousands of years by moving ice and then by flowing water", k: "Glaciation and erosion shaping a continental drainage system", w: ["Plate tectonics raising a mid-ocean ridge along the middle of the ocean floor", "Volcanic action forming new ocean floor where the plates spread apart", "Deposition building up the outer edge of the continental shelf over a long period of time"] }
   ];
   var c = pick(cases);
   return mcq("Which process or pair of processes best explains this feature: " + c.d + "?",
@@ -812,9 +812,9 @@ E("s8-u1-glaciation-role", 1, ["SC8.1.5"], 2, "var", varset([
   function () {
     return mcq("In the development of ocean basins and continental drainage systems, what is glaciation's role?",
       "Glaciation erodes land as ice moves, shaping the drainage systems that carry water to the ocean",
-      ["Glaciation builds new ocean floor where plates move apart",
-       "Glaciation deposits the sediment that forms the abyssal plain",
-       "Glaciation creates the volcanic action at mid-ocean ridges"],
+      ["Glaciation builds new ocean floor in the places where the plates of the crust move apart",
+       "Glaciation deposits the sediment that settles out and forms the flat abyssal plain",
+       "Glaciation creates the volcanic action that takes place all along the mid-ocean ridges"],
       "The guide limits glaciation's role to erosion in drainage systems: moving ice scrapes and carves the land, shaping the valleys and basins that drain toward the ocean. New ocean floor comes from volcanic action and plate tectonics, not from ice.",
       {});
   }
@@ -850,9 +850,9 @@ E("s8-u1-fog", 1, ["SC8.1.6"], 2, "var", varset([
   function () {
     return mcq("Newfoundland's coasts are famous for thick fog. What produces it?",
       "Warm, moist air carried by the Gulf Stream passes over the cold water of the Labrador Current and condenses",
-      ["Cold, dry air from the Labrador Current mixes with cold water offshore",
-       "Warm water from the Gulf Stream evaporates directly into fog over the Grand Banks",
-       "Cold air sinks over the warm Gulf Stream and forms clouds at the surface"],
+      ["Cold, dry air from the Labrador Current mixes with the cold water offshore and turns into fog banks",
+       "Warm water from the Gulf Stream evaporates directly into fog that hangs over the Grand Banks",
+       "Cold air sinks over the warm Gulf Stream and forms a layer of cloud right at the surface of the water"],
       "Fog forms when warm, moist air from over the Gulf Stream moves over the much colder surface water of the Labrador Current. The air cools, its water vapour condenses into tiny droplets, and fog results. The meeting of the two currents is why this province is so foggy.",
       {});
   }
@@ -874,9 +874,9 @@ E("s8-u1-heat-storage", 1, ["SC8.1.6"], 2, "var", varset([
   function () {
     return mcq("Coastal towns in this province usually have milder winters and cooler summers than inland towns at the same latitude. What property of the ocean causes this?",
       "Water heats up and cools down slowly, so the ocean stores heat and moderates the climate of nearby land",
-      ["Ocean currents move so fast that they carry summer heat away before winter",
-       "Salt water freezes at a lower temperature, which warms the air above it",
-       "The ocean reflects sunlight back into the air over coastal towns"],
+      ["Ocean currents move so fast that they carry the summer heat away from the coast before winter arrives",
+       "Salt water freezes at a lower temperature, which keeps warming the air above the coast all winter long",
+       "The ocean reflects sunlight back into the air over coastal towns, warming them in every season"],
       "Water has a high heat capacity: it takes a long time to heat up and a long time to cool down. The ocean stores summer heat and releases it slowly through winter, and stays cool into summer, so it moderates the climate of the land beside it. Convection and thermals then move that warmed or cooled air over the coast.",
       {});
   }
@@ -895,9 +895,9 @@ E("s8-u1-iceberg", 1, ["SC8.1.6"], 3, "var", varset([
   function () {
     return mcq("Each spring, tour operators off St. John's advertise iceberg viewing as the bergs drift south past the Avalon Peninsula. A student claims the Gulf Stream brings the bergs. Which correction is right, and why does it matter to the tour season?",
       "The cold Labrador Current carries the bergs south from Greenland; it matters because the bergs arrive as the current carries them past the coast in spring",
-      ["The Gulf Stream does bring the bergs, and it matters because its warm water melts them quickly",
-       "The Labrador Current carries the bergs north from Antarctica; it matters because they arrive in autumn",
-       "Neither current is involved; the bergs drift with the tides alone, which is why the season is short"],
+      ["The Gulf Stream does bring the bergs south, and it matters because its warm water melts them quickly once they reach the coast",
+       "The Labrador Current carries the bergs north from Antarctica; it matters because they arrive off the coast in the autumn instead",
+       "Neither current is involved; the bergs drift south with the tides alone, which is why the viewing season stays so short each year"],
       "Icebergs calve from Greenland's glaciers into the cold Labrador Current, which flows southward past Labrador and Newfoundland carrying them. The warm Gulf Stream flows the other way and would melt bergs, not deliver them. The viewing season follows the cold current's spring delivery.",
       {});
   }
@@ -989,9 +989,9 @@ E("s8-u1-wave-size", 1, ["SC8.1.7"], 3, "var", varset([
   function () {
     return mcq("Three storms are compared. Storm 1: strong wind for two hours over a small bay. Storm 2: the same wind for two days over a small bay. Storm 3: the same wind for two days across a wide ocean. Which storm produces the largest waves, and why?",
       "Storm 3, because wave size grows with wind speed, with how long the wind blows, and with the size of the water area it passes over",
-      ["Storm 1, because a small bay concentrates the wind's energy",
-       "Storm 2, because duration is the only factor that affects wave size",
-       "All three equally, because the wind speed is the same in each"],
+      ["Storm 1, because a small bay concentrates the wind's energy into a smaller area of water and builds the waves up there",
+       "Storm 2, because how long the wind blows is the only factor that affects the size of the waves a storm produces",
+       "All three storms equally, because the wind speed is exactly the same in each of the three storms compared here"],
       "Wave size is influenced by three things together: the speed of the wind, the duration it blows, and the size of the water area it passes over (the fetch). Storm 3 matches Storm 2 on speed and duration and adds a far greater fetch, so its waves grow largest before their energy reaches a shoreline.",
       {});
   }
@@ -1027,9 +1027,9 @@ E("s8-u1-rock-resistance", 1, ["SC8.1.8"], 1, "var", varset([
   function () {
     return mcq("The red rocks at St. George's are wearing away noticeably faster than the cliffs of Bell Island in Conception Bay. What does this comparison show?",
       "Less resistant rock types erode at a faster rate than more resistant rock types under the same wave action",
-      ["Red rock always erodes faster than grey rock, whatever the rock type",
-       "Rock type makes no difference to erosion rates; only wave energy matters",
-       "Cliffs erode slowly only because they are taller than other shores"],
+      ["Red rock always erodes faster than grey rock, whatever the actual rock type or its resistance to waves",
+       "Rock type makes no difference to erosion rates at all; only the energy of the waves striking the shore matters",
+       "Cliffs erode slowly only because they stand taller than the other shores along the same stretch of coast"],
       "The guide's own comparison: less resistant rock, such as the sandstone at St. George's, erodes faster than more resistant rock, such as the cliffs of Bell Island. Rock type is one of the factors that set how fast a shoreline changes, alongside slope, shape and wave energy.",
       {});
   }
@@ -1078,9 +1078,9 @@ E("s8-u1-landform-figure", 1, ["SC8.1.9"], 1, "var", varset([
 
 E("s8-u1-landform-formation", 1, ["SC8.1.9"], 2, "gen", function () {
   var cases = [
-    { q: "How does a sand bar form?", k: "Waves and currents deposit sand in shallow water, building up a ridge of sediment", w: ["Waves erode a headland until a ridge of rock is left standing", "A cave cuts through a headland and the roof collapses", "Wind blows beach sand into piles above the high tide line"] },
-    { q: "How does a beach form and grow?", k: "Deposition: waves drop sand and sediment along a gently sloping shore faster than they remove it", w: ["Erosion: waves tear sand from the shore and pile it at the waterline", "Deposition: glaciers leave sand behind as they retreat from the coast", "Weathering: rock breaks down in place and the pieces stay where they fell"] },
-    { q: "How does a shoal form?", k: "Sediment deposited in shallow water builds an area that is a hazard to boats", w: ["A stack collapses and its rubble spreads across the harbour entrance", "Tides carve a deep channel that fills with sediment at low tide", "Volcanic action raises the ocean floor near the shore"] }
+    { q: "How does a sand bar form?", k: "Waves and currents deposit sand in shallow water, building up a ridge of sediment", w: ["Waves erode a headland until a ridge of solid rock is left standing in the water", "A cave cuts through a headland and the roof collapses into the water below", "Wind blows dry beach sand into large piles above the high tide line on shore"] },
+    { q: "How does a beach form and grow?", k: "Deposition: waves drop sand and sediment along a gently sloping shore faster than they remove it", w: ["Erosion: waves tear sand from the shore and pile it up in a ridge at the waterline", "Deposition: glaciers leave sand and sediment behind as they slowly retreat back from the coast", "Weathering: rock breaks down in place and the broken pieces stay piled where they fell"] },
+    { q: "How does a shoal form?", k: "Sediment deposited in shallow water builds an area that is a hazard to boats", w: ["A stack collapses and its rubble spreads out across the shallow harbour entrance", "Tides carve a deep channel through the harbour that fills with sediment at low tide", "Volcanic action raises a new ridge on the ocean floor near the shore"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -1118,9 +1118,9 @@ E("s8-u1-institution-focus", 1, ["SC8.2.1"], 1, "var", varset([
   function () {
     return mcq("Which statement about Canadian ocean research institutions is correct?",
       "Institutions such as Environment Canada, the Federal Department of Fisheries and Memorial University's Ocean Sciences Centre all support research involving the oceans",
-      ["Only universities conduct ocean research in Canada",
-       "Ocean research in Canada is done entirely by private fishing companies",
-       "The institutions exist, but they study only freshwater lakes"],
+      ["Only universities conduct ocean research in Canada, and no government department at any level takes any part in the work at all, in any region of the country",
+       "Ocean research in Canada is carried out entirely by private fishing companies working on the Atlantic and Pacific coasts, with no other bodies involved",
+       "The institutions exist and employ many scientists, but they study only the freshwater lakes and rivers of Canada and never the oceans around its coasts"],
       "Ocean research in Canada is shared among government departments and university centres. Environment Canada covers weather, the Federal Department of Fisheries covers fisheries and oceans, and Memorial University's Ocean Sciences Centre, C-CORE and Marine Institute research the ocean from St. John's. The guide requires awareness that these institutions exist and support ocean research.",
       {});
   }
@@ -1145,9 +1145,9 @@ E("s8-u1-sonar", 1, ["SC8.2.2"], 1, "var", varset([
   function () {
     return mcq("Why is sonar so useful for researching ocean basins?",
       "Sound travels through water and returns echoes from the floor, so the floor's shape can be mapped without seeing it directly",
-      ["Sonar cameras take photographs in total darkness",
-       "Sonar lets divers breathe at any depth",
-       "Sonar measures the salt content of deep water directly"],
+      ["Sonar cameras take clear photographs of the ocean floor even in total darkness far below the surface",
+       "Sonar lets divers breathe safely at any depth they choose to descend to in the open ocean",
+       "Sonar measures the salt content and the temperature of deep ocean water directly as it passes"],
       "Sonar works by sending sound pulses into the water and timing the echoes that bounce back from the ocean floor. From the timing, scientists build a picture of the basin's shape. It is an indirect observation: the floor is mapped without anyone seeing it, which is how most basin research proceeds.",
       {});
   }
@@ -1168,9 +1168,9 @@ E("s8-u1-tech-change", 1, ["SC8.2.3"], 2, "var", varset([
   function () {
     return mcq("Early ocean researchers measured depth by lowering a weighted wire line over the side of a ship and noting its length when it reached bottom. Modern ships use sonar instead. What is the main improvement?",
       "Sonar produces a continuous depth record as the ship moves, so a whole basin profile can be mapped rather than single scattered depths",
-      ["Sonar works only in shallow water, where wire lines could not reach",
-       "Sonar removes the need for a ship, because it works from shore",
-       "Wire lines were more accurate; sonar is used only because it is cheaper"],
+      ["Sonar works only in shallow coastal water close to shore, where the old wire lines were never able to reach the bottom beneath the ship",
+       "Sonar removes the need for a ship at all in depth work, because its signals can be sent out from the shore instead of from a vessel",
+       "Wire lines were far more accurate than sonar ever is; sonar is used on ships today only because it is the cheaper of the two methods"],
       "A wire line gives one depth at one spot, slowly. Sonar times sound echoes continuously as the ship travels, producing a running profile of the floor. The improvement is in the amount and continuity of the evidence, which is what turned scattered soundings into basin maps.",
       {});
   }
@@ -1180,9 +1180,9 @@ E("s8-u1-tech-improve", 1, ["SC8.2.3"], 1, "var", varset([
   function () {
     return mcq("How have deep sea submersibles improved on diving for ocean research?",
       "Submersibles carry researchers and instruments far deeper and for longer than a diver's body and air supply allow",
-      ["Submersibles are smaller and cheaper than diving equipment",
-       "Submersibles replaced the need for any surface ship",
-       "Divers can now stay down as long as submersibles can"],
+      ["Submersibles are smaller, simpler and cheaper than the equipment that divers have to carry with them",
+       "Submersibles replaced the need for any surface ship to support the research work done below",
+       "Divers can now stay down just as long as submersibles can, using ordinary diving equipment"],
       "Diving is limited by the human body and its air supply, so it serves shallow water. Deep sea submersibles, the technology at the centre of the strand's Undersea Adventure STSE, protect their crews from pressure and carry instruments, opening the deep ocean floor to direct research. The pattern is the same across this indicator: each generation of technology extends where and how long scientists can gather evidence.",
       {});
   }
@@ -1229,9 +1229,9 @@ E("s8-u1-overfishing", 1, ["SC8.2.5"], 2, "var", varset([
   function () {
     return mcq("Fish stocks declined sharply in the decades when factory freezer trawlers spread through the fleet. Which statement best fits the guide's treatment of technology and overfishing?",
       "New technologies have contributed to overfishing: larger vessels, better fish-finding technology and more effective catch methods let fleets take fish faster than stocks can replace them",
-      ["Technology reduced overfishing, because freezer trawlers waste less of each catch",
-       "Overfishing was caused only by fish behaviour changing, not by technology",
-       "Factory freezer trawlers affected only freshwater fisheries"],
+      ["Technology reduced overfishing, because freezer trawlers waste less of each catch, so fleets needed to catch far fewer fish to supply the same markets",
+       "Overfishing was caused only by the behaviour of the fish themselves changing, and not by any change in fishing technology",
+       "Factory freezer trawlers affected only the freshwater fisheries of the inland lakes and rivers of Canada"],
       "The guide limits the discussion to the impact of improved fishing technology: catch methods, fish-finding technology and vessel type. Factory freezer trawlers combine all three, catching and processing huge amounts at sea, and that capability is a recognized contributor to the decline of stocks such as cod.",
       {});
   }
@@ -1241,9 +1241,9 @@ E("s8-u1-invasive", 1, ["SC8.2.5"], 2, "var", varset([
   function () {
     return mcq("The European green crab, a species not native to this province, is now established in Placentia Bay, and the violet tunicate has appeared in Belleoram. Which technology-related route best explains introductions like these?",
       "Oil tankers and other ships release bilge and ballast water carrying foreign organisms into native habitats",
-      ["Aquaculture pens release farmed fish that turn into crabs and tunicates",
-       "Factory freezer trawlers carry the species in their nets from harbour to harbour",
-       "Tidal power turbines transport organisms through their passages"],
+      ["Aquaculture pens release farmed fish into the bay, and those escaped fish turn into crabs and tunicates over time",
+       "Factory freezer trawlers carry the new species in their nets as they move from harbour to harbour along the coast",
+       "Tidal power turbines carry the organisms through their passages from one bay into another bay nearby"],
       "The guide names this route directly: when oil tankers release their bilge water, foreign species can be introduced, endangering native habitats and organisms. The green crab in Placentia Bay and the violet tunicate in Belleoram are its local examples.",
       {});
   }
@@ -1253,9 +1253,9 @@ E("s8-u1-aquaculture", 1, ["SC8.2.5"], 2, "var", varset([
   function () {
     return mcq("Mussel farms hang long lines of growing mussels in a bay. Which negative effect on the marine environment does the guide describe for this kind of aquaculture?",
       "Increased organic matter, called detritus rain, falls from the farms and accumulates on the sea floor",
-      ["The mussels filter so much water that the bay's salinity rises sharply",
-       "The lines block ocean currents and change the regional climate",
-       "The farms attract factory trawlers that overfish the bay"],
+      ["The mussels filter so much water as they feed that the salinity of the bay rises sharply within a single year",
+       "The long lines block the ocean currents and change the climate of the whole region around the bay",
+       "The farms attract factory trawlers into the bay, and the trawlers then overfish the wild stocks living there"],
       "The guide's aquaculture effects include the accidental release of farmed organisms into native populations, the spread of disease, and, for mussel farms specifically, detritus rain: increased organic matter falling and accumulating on the sea floor beneath the farm.",
       {});
   }
@@ -1274,9 +1274,9 @@ E("s8-u1-offshore", 1, ["SC8.2.5"], 3, "var", varset([
   function () {
     return mcq("A review of an offshore oil project lists four findings. Which finding describes an effect on marine environments that the guide attributes to the offshore oil industry?",
       "Drilling activity scours the ocean floor, destroying marine habitats, and spills can spread oil across the surface",
-      ["The project increases upwelling, raising the bay's productivity",
-       "The project's lights attract fish, which increases the local catch",
-       "The project lowers the ocean's salinity around the rig"],
+      ["The project increases upwelling around the rig, which raises the productivity of the whole bay for years",
+       "The project's lights attract fish to the waters around the rig, which increases the local catch there",
+       "The project lowers the salinity of the ocean water all around the rig and across the nearby bay"],
       "The guide's discussion of the offshore oil industry names pollution including oil spills, and the scouring of the ocean floor destroying marine habitats, with bilge water introductions as a further route of harm. The other findings invent mechanisms the guide does not describe.",
       {});
   }
@@ -1311,9 +1311,9 @@ E("s8-u1-lab-procedure", 1, ["SC8.3.1"], 1, "var", varset([
   function () {
     return mcq("In Core Lab 1-2B, a student investigates how salinity affects water density by adding drops of coloured fresh water to a container of salt water. Which procedure step is correct?",
       "Add the drops gently at the surface and observe where the coloured water settles before any stirring",
-      ["Stir the container briskly after each drop so the waters mix evenly",
-       "Pour the fresh water in quickly from a height so it reaches the bottom",
-       "Heat the salt water first so the fresh water spreads through it"],
+      ["Stir the container briskly after each drop so the two waters mix evenly through the container",
+       "Pour the fresh water in quickly from a height so that it plunges straight down to the bottom",
+       "Heat the salt water first so the fresh water spreads evenly through the whole container at once"],
       "The lab investigates how fresh and salt water interact when they meet. The coloured fresh water must be added gently and observed as it settles: it stays near the top, because fresh water is less dense than salt water. Stirring, pouring hard or heating would destroy the very layering the procedure is meant to reveal.",
       {});
   }
@@ -1323,9 +1323,9 @@ E("s8-u1-lab-extension", 1, ["SC8.3.1"], 2, "var", varset([
   function () {
     return mcq("Core Lab 1-2B ends by extending the result to environments where fresh water and ocean water meet. In an estuary, where river water flows into the ocean, what arrangement should the lab's result predict?",
       "The less dense fresh water from the river rides over the denser salt water it meets",
-      ["The denser fresh water sinks beneath the salt water it meets",
-       "The two waters always mix instantly into one uniform layer",
-       "The salt water floats on top because it is warmer"],
+      ["The denser fresh water sinks down beneath the salt water that it meets in the estuary",
+       "The two waters always mix instantly into one single uniform layer from top to bottom",
+       "The salt water floats on top of the fresh water because it is the warmer of the two"],
       "The lab's finding is that fresh water, being less dense, floats on salt water. Extended to an estuary, the river's fresh water rides over the ocean's salt water where they meet, which is part of what makes estuaries layered, productive environments.",
       {});
   }
@@ -1346,9 +1346,9 @@ E("s8-u1-safe-practice", 1, ["SC8.3.2"], 1, "var", varset([
   function () {
     return mcq("During the water health test, a student is about to carry a full container of pond water and a glass thermometer across the room. Which choice is the safe practice?",
       "Carry the container with two hands, walk slowly, and keep the thermometer in its case until it is needed at the bench",
-      ["Carry the container in one hand and the thermometer in the other to save a trip",
-       "Run the sample back quickly so the readings can be taken sooner",
-       "Hold the thermometer by its bulb while walking so it warms up ready for use"],
+      ["Carry the container in one hand and the thermometer in the other hand to save making a second trip",
+       "Run the sample back to the bench as quickly as possible so the readings can be taken sooner",
+       "Hold the thermometer by its bulb while walking across the room so it warms up ready for use at the bench"],
       "Safe tool use in this strand's labs means protecting both the student and the instruments: two hands for a full container, a slow walk, and glass instruments like thermometers kept protected until they are used at the bench. The bank carries this one entry on safe practice; safe handling itself is assessed in the classroom.",
       {});
   }
@@ -1381,9 +1381,9 @@ E("s8-u1-data-relationship", 1, ["SC8.3.3"], 3, "var", varset([
   function () {
     return mcq("A class measures a pond through the summer. In June the water is 12 degrees Celsius and holds 9.5 mg/L of dissolved oxygen. In July it is 18 degrees and holds 8.1 mg/L. In August it is 24 degrees and holds 6.8 mg/L. Which statement correctly interprets the trend in this data?",
       "As the water temperature increased, the dissolved oxygen decreased: warmer water holds less dissolved oxygen",
-      ["As the water temperature increased, the dissolved oxygen increased in step",
-       "Temperature and dissolved oxygen stayed in a fixed total all summer",
-       "The data show no relationship, because three measurements are too few to read"],
+      ["As the water temperature increased through the summer, the dissolved oxygen increased in step with it",
+       "Temperature and dissolved oxygen stayed in a fixed total added together all through the summer",
+       "The data show no relationship at all, because three measurements are too few to read a trend from"],
       "Reading the pairs in order: 12 degrees with 9.5 mg/L, 18 with 8.1, 24 with 6.8. Each temperature rise comes with an oxygen fall, a consistent inverse trend. That is the relationship the guide uses in its own example chain: warmer water holds less dissolved oxygen.",
       {});
   }
@@ -1430,9 +1430,9 @@ E("s8-u1-conclusion-judge", 1, ["SC8.3.5"], 2, "var", varset([
   function () {
     return mcq("A student floats the same wooden block in three tanks: fresh water, slightly salty water, and very salty water. The block floats lowest in fresh water and highest in the very salty water. Which conclusion is supported by these observations?",
       "As salinity increases, density increases, so the block is supported higher in saltier water",
-      ["As salinity increases, the block becomes lighter, so it floats higher",
-       "The block floats higher in salt water because salt water is warmer",
-       "No conclusion is possible, because the block was not weighed"],
+      ["As salinity increases, the block itself becomes lighter, so it floats higher in the tank",
+       "The block floats higher in the salt water simply because salt water is always the warmer water",
+       "No conclusion is possible from the test, because the block was not weighed before it was floated"],
       "The same block, with the same mass, floats at different heights, so the difference must be in the water. Floating higher means the water is supporting it more strongly, which is what greater density does. The observations support the conclusion that salinity increases density, the same conclusion as the core lab, reached by a different observation.",
       {});
   }
@@ -1444,9 +1444,9 @@ E("s8-u1-tool-choice", 1, ["SC8.3.6"], 1, "var", varset([
   function () {
     return mcq("For the water health test, a group must measure how cloudy a pond sample is, since turbidity is one of the abiotic factors being checked. Which tool choice fits the job?",
       "A turbidity tube or disc, which measures how far light penetrates the sample",
-      ["A thermometer, read carefully in the shade",
-       "A pH test kit, used twice to be sure",
-       "A dissolved oxygen meter, set to its cloudiness scale"],
+      ["A thermometer, read carefully in the shade at the edge of the pond beside the sample",
+       "A pH test kit, used twice on the same sample to be sure of the cloudiness reading",
+       "A dissolved oxygen meter, set over to its cloudiness scale to read the pond sample"],
       "Selecting a tool means matching it to the quantity being measured. Turbidity is cloudiness, the blocking of light by suspended particles, so it is measured by how far light or a marked disc can be seen through the water. Thermometers measure temperature, pH kits measure acidity, and oxygen meters measure dissolved oxygen.",
       {});
   }
@@ -1470,9 +1470,9 @@ E("s8-u1-pattern-infer", 1, ["SC8.3.7"], 2, "var", varset([
   function () {
     return mcq("Surveys of a bay over ten years show that in years when upwelling was strong, the catch of capelin was high, and in years when upwelling was weak, the catch was low. Which inference is best supported by this pattern?",
       "Strong upwelling supports larger capelin populations, because the upwelled water brings nutrients that feed the plankton capelin eat",
-      ["Capelin cause upwelling in the years when they are plentiful",
-       "The pattern proves fishing boats catch more whenever they choose to go out",
-       "Upwelling and capelin are unrelated, because the data cover only ten years"],
+      ["Capelin themselves cause the upwelling along the coast in the years when their numbers are plentiful in the bay and the catch is high",
+       "The pattern proves that fishing boats simply catch more capelin in any year they choose to go out to sea more often and stay out longer",
+       "Upwelling and capelin catches in the bay are unrelated to each other, because the survey data cover only ten years of the bay's history"],
       "The pattern repeats across ten years in the same direction, which supports an inference, and the mechanism is known: upwelling delivers nutrient-rich water, nutrients feed plankton, and capelin feed on plankton. An inference pairs the observed pattern with a mechanism that explains it.",
       {});
   }
@@ -1482,9 +1482,9 @@ E("s8-u1-relationship-explain", 1, ["SC8.3.7"], 3, "var", varset([
   function () {
     return mcq("Along a coastline, the bays with the most reliable upwelling also have the densest populations of seabirds, even though the birds nest on land. Which explanation best accounts for the whole pattern?",
       "Upwelling brings nutrients to the surface, plankton flourish, fish gather to feed on the plankton, and the seabirds feed on the fish, so the birds concentrate where the chain begins",
-      ["Seabirds prefer the smell of upwelled water and gather for that reason alone",
-       "Upwelling cools the air, and seabirds nest where the air is coolest",
-       "The pattern is a coincidence, because land birds cannot be connected to ocean processes"],
+      ["Seabirds prefer the smell of the cold upwelled water rising along the coast and gather in dense flocks along those bays for that reason alone, season after season",
+       "Upwelling cools the layer of air above the bay, and seabirds of every kind choose to nest along the stretches of coast wherever the air above the water is coolest",
+       "The pattern is only a coincidence in the survey results, because birds that nest on cliffs on land cannot possibly be connected to any processes taking place in the ocean"],
       "Explaining a pattern means tracing the relationship through every link. Upwelling supplies nutrients; nutrients grow plankton; plankton draws fish; fish feed the birds. The birds' distribution on land is the far end of a chain that starts with a water movement, which is the kind of relationship this strand's data work is meant to surface.",
       {});
   }
@@ -1496,9 +1496,9 @@ E("s8-u1-threshold-judge", 1, ["SC8.3.8"], 2, "var", varset([
   function () {
     return mcq("A freshwater sample from Core Lab 3-3B gives these results: dissolved oxygen 4.1 mg/L, phosphates 6 micrograms per litre, pH 6.8. Healthy ranges: dissolved oxygen 5 mg/L or greater; phosphates less than 10 micrograms per litre; pH 5 to 8.5. Which judgement is correct?",
       "The dissolved oxygen is below its healthy range, while phosphates and pH are within theirs, so the water may not support fish well",
-      ["All three factors are within their healthy ranges, so the water is healthy",
-       "The phosphates are above their healthy limit, which is the sample's main problem",
-       "The pH is outside its healthy range, which is the sample's main problem"],
+      ["All three factors are within their healthy ranges, so the sample shows the water is healthy for fish",
+       "The phosphates are above their healthy limit, and that is the main problem shown by this water sample",
+       "The pH is outside its healthy range, and that is the main problem shown by this sample of water"],
       "Compare each value with its range. Dissolved oxygen 4.1 mg/L is below the 5 mg/L minimum. Phosphates at 6 are under the limit of 10, and pH 6.8 sits inside 5 to 8.5. Only the oxygen fails, and low oxygen is what limits the fish the water can support.",
       {});
   }
@@ -1517,9 +1517,9 @@ E("s8-u1-process-evaluate", 1, ["SC8.3.8"], 3, "var", varset([
   function () {
     return mcq("A group evaluated its water health investigation afterwards. Their plan had been: one sample, taken at the pond's edge on one afternoon, tested once for each factor. Their report concluded the whole pond was unhealthy because the oxygen reading was low. Which evaluation of their process is most accurate?",
       "The process was too weak for the conclusion: a single edge sample on one day cannot represent the whole pond, and one low reading should have been checked with repeat samples before concluding",
-      ["The process was sound, because they used the correct test for each factor",
-       "The only weakness was that they sampled in the afternoon rather than the morning",
-       "The process was weak only because they wrote the conclusion too confidently"],
+      ["The process was sound from start to finish and needs no improvement, because they used the correct test for each factor and recorded each result carefully in their lab notebooks",
+       "The only weakness in their whole process was that they took the sample in the afternoon rather than in the morning of the same day, when the pond's oxygen level might have read differently",
+       "The process itself was weak in only one way that matters: they wrote the conclusion too confidently for the single set of readings they had taken at the pond on that one afternoon"],
       "Evaluating a process means judging whether the plan could support the conclusion drawn from it. One sample from one edge on one day describes that spot at that moment, not the whole pond, and a single surprising reading calls for repeats. The tests themselves were right; the sampling plan and the leap to a whole-pond conclusion were the weaknesses.",
       {});
   }
@@ -1584,9 +1584,9 @@ E("s8-u1-temp-population", 1, ["SC8.3.9"], 3, "var", varset([
   function () {
     return mcq("A class plots two graphs for the same bay over eight years: average summer water temperature, rising steadily, and the population of a cold-water fish species, falling steadily. They also know fishing pressure stayed about the same. Which suggestion best fits the guide's approach to relating the graphs?",
       "The rising temperature is a reasonable suggested cause of the decline, because warmer water holds less dissolved oxygen, but the graphs alone show a relationship, not proof, and other changing factors should be checked",
-      ["The graphs prove temperature caused the decline, so no other factor needs checking",
-       "No relationship can be suggested, because the two graphs measure different things",
-       "The fish decline must have caused the temperature rise, since the population graph falls as the other rises"],
+      ["The two graphs together prove that the temperature rise caused the decline outright, so no other changing factor in the bay needs to be checked before concluding",
+       "No relationship can ever be suggested from the graphs, because the two graphs measure different things, and different measures can never be compared in a useful way",
+       "The decline in the fish population must itself have caused the temperature of the bay to rise, since the population graph falls steadily as the temperature graph rises over the same years"],
       "Comparing population graphs with temperature graphs and suggesting possible relationships is exactly the activity the guide sets. The suggestion gains strength from a mechanism, warm water holding less oxygen, and from fishing pressure being steady. But two trends moving together show a relationship, not proof: an honest suggestion names the mechanism and keeps the door open to other factors.",
       {});
   }
@@ -1598,9 +1598,9 @@ E("s8-u1-tech-strength", 1, ["SC8.3.10"], 2, "var", varset([
   function () {
     return mcq("Which pairing gives a genuine strength and a genuine weakness of sonar for investigating the ocean floor?",
       "Strength: it maps the floor's shape across whole basins from a moving ship. Weakness: it shows shape, not what the floor is made of or what lives there",
-      ["Strength: it photographs organisms in total darkness. Weakness: it works only in shallow water",
-       "Strength: it carries researchers to the floor. Weakness: it endangers its crew at great depth",
-       "Strength: it measures water temperature at any depth. Weakness: it cannot detect the floor at all"],
+      ["Strength: it photographs organisms living in total darkness. Weakness: it works only in shallow coastal water",
+       "Strength: it carries researchers down to the floor itself. Weakness: it endangers its crew while working at great depth",
+       "Strength: it measures the temperature of the water at any depth. Weakness: it cannot detect the ocean floor at all"],
       "Judging a technology means pairing what it does well with what it cannot do. Sonar's strength is coverage: continuous depth readings from a moving ship become basin maps. Its weakness is that echoes give shape only; composition and life on the floor need other technologies, such as sampling, photography and submersibles.",
       {});
   }
@@ -1610,9 +1610,9 @@ E("s8-u1-tech-weakness", 1, ["SC8.3.10"], 1, "var", varset([
   function () {
     return mcq("Deep sea submersibles transformed ocean floor research, but they have a real limitation. Which statement names it?",
       "They are expensive, carry only a few people, and can stay at depth for a limited time, so they sample only tiny parts of the floor",
-      ["They cannot descend below the continental shelf",
-       "They disturb the water so much that sonar cannot be used near them",
-       "They work only when the ocean surface is completely calm"],
+      ["They cannot descend below the edge of the continental shelf into the deep ocean basin beyond it",
+       "They disturb the water around them so much that sonar cannot be used anywhere near them during a dive",
+       "They can work only on days when the surface of the ocean is completely calm from shore to shore"],
       "Submersibles reach the deep floor directly, which no other technology does with people aboard, but each dive is costly, brief and small in crew and coverage. That is why they complement rather than replace wide-coverage tools like sonar: the strength of one covers the weakness of the other.",
       {});
   }
@@ -1688,9 +1688,9 @@ E("s8-u2-viscosity-def", 2, ["SC8.4.1"], 1, "var", varset([
   function () {
     return mcq("What is viscosity?",
       "A liquid's resistance to flow, caused by friction between its particles as they move past one another",
-      ["A liquid's resistance to being compressed into a smaller volume",
-       "The speed at which a liquid evaporates from an open container",
-       "The force with which a liquid pushes up on objects placed in it"],
+      ["A liquid's resistance to being compressed into a smaller volume than the one it already fills",
+       "The speed at which a liquid evaporates away from the surface of an open container of it",
+       "The force with which a liquid pushes upward on any object that is placed into the liquid"],
       "Viscosity is a measure of how much a liquid resists flowing. The resistance comes from friction between the liquid's particles: the greater the friction or rubbing between particles, the higher the viscosity and the more slowly the liquid flows.",
       {});
   }
@@ -1763,9 +1763,9 @@ E("s8-u2-heating-honey", 2, ["SC8.4.2"], 2, "var", varset([
   function () {
     return mcq("Using the particle theory, why does heating honey make it flow faster?",
       "Heated particles move faster and farther apart, so there is less friction between them and their attraction weakens, lowering the viscosity",
-      ["Heated particles move slower and pack closer together, so the honey slides as one solid sheet",
-       "Heating adds more particles to the honey, raising its concentration and lowering its viscosity",
-       "Heating destroys the particles' attraction completely, so the honey becomes a gas"],
+      ["Heated particles move more slowly and pack closer together, so the warmed honey slides along as one solid sheet",
+       "Heating adds more particles to the honey as it warms, raising its concentration and lowering its viscosity that way",
+       "Heating destroys the attraction between the particles completely, so the honey turns into a gas as it warms"],
       "The particle theory explains it in three steps: particles are always in motion, heating gives them more energy so they move faster and farther apart, and with more space between them there is less friction and a weaker pull between particles. Less internal friction means lower viscosity, so warmed honey flows faster.",
       {});
   }
@@ -1775,9 +1775,9 @@ E("s8-u2-concentration", 2, ["SC8.4.2"], 3, "var", varset([
   function () {
     return mcq("A dairy lists skim milk, 1 percent milk, 2 percent milk, whole milk and cream in order of increasing fat concentration. A student predicts their viscosities will follow the same order. Is the prediction sound, and why?",
       "Yes: higher concentration means more particles in a given volume, which raises the friction between particles and so raises viscosity",
-      ["Yes, but only because cream is a different colour from skim milk",
-       "No: concentration affects only gases, never liquids",
-       "No: higher concentration always lowers a liquid's viscosity"],
+      ["Yes, the prediction is sound as far as it goes, but only because cream happens to be a different colour from skim milk and the other products in the list",
+       "No: concentration is a property that affects only gases in this way, and it never has any effect at all on the viscosity of liquids like milk",
+       "No: a higher concentration of particles always lowers the viscosity of a liquid, whatever the liquid happens to be and whatever is dissolved in it"],
       "Concentration is the amount of substance in a given volume. More particles crowded into the same space means more rubbing and friction as the liquid flows, which is higher viscosity. The dairy's order of concentration is therefore also the expected order of viscosity, with cream the most viscous.",
       {});
   }
@@ -1808,7 +1808,7 @@ E("s8-u2-definitions", 2, ["SC8.4.3"], 1, "var", varset([
 
 E("s8-u2-states-density", 2, ["SC8.4.3"], 1, "gen", function () {
   var cases = [
-    { q: "The same substance is compared as a solid, a liquid and a gas. Using the particle theory, which statement about density is generally correct?", k: "The solid is generally the densest state, because its particles are packed closest together, and the gas is the least dense", w: ["The gas is generally the densest state, because its particles move fastest", "All three states have the same density, because the substance is the same", "The liquid is always the densest state, whatever the substance"] },
+    { q: "The same substance is compared as a solid, a liquid and a gas. Using the particle theory, which statement about density is generally correct?", k: "The solid is generally the densest state, because its particles are packed closest together, and the gas is the least dense", w: ["The gas is generally the densest of the three states, because its particles are the ones that move the fastest of all", "All three states of the substance have exactly the same density as one another, because it is the same substance in each state", "The liquid state is always the densest of the three states, whatever substance is being compared in the test"] },
     { q: "A sealed syringe of air is pushed in, halving the air's volume while its mass stays the same. What happens to the air's density, and why?", k: "It doubles, because the same mass of particles is packed into half the space", w: ["It halves, because density falls whenever volume falls", "It stays the same, because the mass did not change", "It drops to zero, because gases have no density when compressed"] }
   ];
   var c = pick(cases);
@@ -1821,9 +1821,9 @@ E("s8-u2-ratio-constant", 2, ["SC8.4.3"], 2, "var", varset([
   function () {
     return mcq("A small aluminum sample has a mass of 27 g and a volume of 10 cm3. A much larger aluminum block has a volume of 100 cm3. What should the large block's mass be, and what principle does this show?",
       "270 g: the mass-to-volume ratio of a material is a constant value, so mass scales with volume",
-      ["27 g: the mass of a material does not depend on how much of it there is",
-       "54 g: mass doubles whenever volume increases at all",
-       "2700 g: mass grows with the square of the volume"],
+      ["27 g: the mass of a sample of a material does not depend at all on how much of the material there is",
+       "54 g: the mass of a sample doubles whenever its volume increases at all, by any amount whatsoever",
+       "2700 g: the mass of a sample grows with the square of its volume as the sample gets bigger and bigger"],
       "The small sample gives aluminum's density: 27 g / 10 cm3 = 2.7 g/cm3. Density is a constant ratio for a material, so the large block's mass is 2.7 x 100 = 270 g. A bigger piece has proportionally more mass, never the same mass and never a squared amount.",
       {});
   }
@@ -1933,9 +1933,9 @@ E("s8-u2-cr-density-block", 2, ["SC8.4.4"], 2, "var", varset([
 
 E("s8-u2-temp-density", 2, ["SC8.4.5"], 1, "gen", function () {
   var cases = [
-    { q: "An air-filled balloon is measured, placed in a freezer, and measured again: its circumference is smaller. What happened to the density of the air inside?", k: "It increased, because the same mass of air now occupies a smaller volume", w: ["It decreased, because cold air always weighs less", "It stayed the same, because the mass did not change", "It dropped to zero, because the air contracted"] },
-    { q: "The alcohol in a thermometer rises up the tube on a warm day. Which statement explains this using volume and density?", k: "The warmed alcohol expands, taking more volume, so its density falls and it rises in the tube", w: ["The warmed alcohol contracts, so its density rises and pushes it up the tube", "The glass tube shrinks in the heat, squeezing the alcohol upward", "The alcohol's mass increases as it warms, forcing it upward"] },
-    { q: "Power lines are strung loosely because they sag more in summer than in winter. What does the sagging show?", k: "The warmed metal expands, its volume increases, and its density decreases", w: ["The warmed metal contracts and grows denser", "The lines gain mass in the summer heat", "Gravity grows stronger in summer"] }
+    { q: "An air-filled balloon is measured, placed in a freezer, and measured again: its circumference is smaller. What happened to the density of the air inside?", k: "It increased, because the same mass of air now occupies a smaller volume", w: ["It decreased, because cold air always weighs less than the same air does when it is warm", "It stayed exactly the same, because the mass of the air inside did not change at all", "It dropped all the way to zero, because the air inside contracted in the cold freezer"] },
+    { q: "The alcohol in a thermometer rises up the tube on a warm day. Which statement explains this using volume and density?", k: "The warmed alcohol expands, taking more volume, so its density falls and it rises in the tube", w: ["The warmed alcohol contracts as it heats, so its density rises and pushes it up the narrow tube", "The glass tube shrinks in the heat of the day, squeezing the alcohol upward inside the tube", "The mass of the alcohol increases as it warms up, and the extra mass forces it upward in the tube"] },
+    { q: "Power lines are strung loosely because they sag more in summer than in winter. What does the sagging show?", k: "The warmed metal expands, its volume increases, and its density decreases", w: ["The warmed metal contracts in the heat and grows denser as it does", "The lines gain extra mass as they sit in the summer heat", "Gravity itself grows stronger during the summer months"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -1947,9 +1947,9 @@ E("s8-u2-ice-exception", 2, ["SC8.4.5"], 2, "var", varset([
   function () {
     return mcq("Most substances are denser as solids than as liquids, but ice floats on water. Which statement explains the exception?",
       "When water freezes it expands because of its molecular structure, so ice takes more volume for the same mass and its density drops below liquid water's",
-      ["Ice floats because it traps air bubbles, and frozen water without bubbles would sink",
-       "Ice is colder than water, and cold objects always float",
-       "Water is the exception because its liquid state is denser than every other liquid"],
+      ["Ice floats only because it traps air bubbles inside it, and frozen water without those bubbles would sink to the bottom",
+       "Ice is colder than the water under it, and cold objects always float on warmer ones beneath them",
+       "Water is the exception because its liquid state is denser than the liquid state of every other substance known"],
       "Water breaks the general rule. As it freezes, its molecules arrange into a structure with more space between them: the volume increases while the mass stays the same, so the density decreases. Ice, at about 0.92 g/cm3 in round terms used in class, is less dense than liquid water and floats. The guide names water as the exception explicitly.",
       {});
   }
@@ -1959,9 +1959,9 @@ E("s8-u2-hot-air", 2, ["SC8.4.5"], 1, "var", varset([
   function () {
     return mcq("Why does the air inside a hot air balloon become less dense when it is heated?",
       "The heated particles move faster and spread farther apart, so each unit of volume holds less mass",
-      ["Heating removes particles from the balloon through the opening",
-       "The heated particles shrink, leaving empty gaps with no mass",
-       "The fabric of the balloon stretches and adds volume with no change inside"],
+      ["Heating removes particles from the balloon by driving them out through the opening at its base",
+       "The heated particles themselves shrink in size, leaving empty gaps between them that hold no mass",
+       "The fabric of the balloon stretches and adds volume, while nothing inside the balloon changes at all"],
       "Heating gives the air's particles more energy; they move faster and spread farther apart. The balloon's volume then holds fewer particles, less mass in each unit of volume, which is lower density. That lower density is what lets the balloon's air be buoyed up by the cooler, denser air outside.",
       {});
   }
@@ -1982,9 +1982,9 @@ E("s8-u2-seasoning", 2, ["SC8.4.6"], 2, "var", varset([
   function () {
     return mcq("Boat builders dry (season) wood before using it, and dried wood floats higher than freshly cut wood. Why does drying change the wood this way?",
       "Drying removes water from the wood, so its mass falls while its volume stays nearly the same, lowering its density",
-      ["Drying adds air to the wood, and the added air increases its mass",
-       "Drying heats the wood permanently, keeping its particles spread out",
-       "Drying changes the wood's colour, which changes how water supports it"],
+      ["Drying adds air into the wood as it seasons, and the added air increases the mass of the wood",
+       "Drying heats the wood permanently, which keeps its particles spread out even after it cools again",
+       "Drying changes the colour of the wood, and the colour change is what changes how the water supports it"],
       "Seasoning is a deliberate density change. Fresh wood holds a great deal of water; as it dries, that water leaves, the mass drops, the volume barely changes, and the density falls. Lower density means the wood floats higher, one reason builders season wood for watercraft.",
       {});
   }
@@ -1992,9 +1992,9 @@ E("s8-u2-seasoning", 2, ["SC8.4.6"], 2, "var", varset([
 
 E("s8-u2-density-life", 2, ["SC8.4.6"], 1, "gen", function () {
   var cases = [
-    { q: "A submarine dives by opening its ballast tanks to the sea. What density change makes the dive happen?", k: "Water entering the tanks raises the submarine's average density above the seawater's, so it sinks", w: ["Air entering the tanks lowers the average density, so it sinks", "The tanks heat the seawater, lowering its density around the submarine", "The submarine's volume shrinks until it is denser than the water"] },
-    { q: "A fish rises from deep water toward the surface by inflating its swim bladder with gas. What has the fish changed?", k: "Its volume increased while its mass barely changed, lowering its average density", w: ["Its mass increased, raising its average density", "The water's density around it decreased", "Its weight increased beyond the buoyant force"] },
-    { q: "Swimmers find it easier to float in the ocean than in a freshwater pond. What density fact explains this?", k: "Seawater is denser than fresh water, so it provides a greater buoyant effect for the same swimmer", w: ["Seawater is less dense than fresh water, so swimmers sink less", "The ocean is deeper, and depth is what holds swimmers up", "Salt makes the swimmer's body less dense on contact"] }
+    { q: "A submarine dives by opening its ballast tanks to the sea. What density change makes the dive happen?", k: "Water entering the tanks raises the submarine's average density above the seawater's, so it sinks", w: ["Air entering the ballast tanks lowers the submarine's average density, and that is what makes it sink", "The tanks heat the seawater as it enters, lowering the density of the water around the submarine", "The submarine's hull shrinks in volume until the whole vessel is denser than the seawater around it"] },
+    { q: "A fish rises from deep water toward the surface by inflating its swim bladder with gas. What has the fish changed?", k: "Its volume increased while its mass barely changed, lowering its average density", w: ["Its mass increased as the bladder filled, which raised its average density instead of lowering it", "The density of the water around the fish decreased as the fish began to rise upward", "Its weight increased until it grew beyond the buoyant force acting on it in the water"] },
+    { q: "Swimmers find it easier to float in the ocean than in a freshwater pond. What density fact explains this?", k: "Seawater is denser than fresh water, so it provides a greater buoyant effect for the same swimmer", w: ["Seawater is less dense than fresh water, so swimmers sink less deeply when they float in the ocean", "The ocean is much deeper than a pond, and that depth is what holds swimmers up at the surface", "The salt in the water makes the swimmer's own body less dense the moment it touches the skin"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2015,9 +2015,9 @@ E("s8-u2-cr-raise-ship", 2, ["SC8.4.6"], 3, "var", varset([
 
 E("s8-u2-forces", 2, ["SC8.4.7"], 1, "gen", function () {
   var cases = [
-    { q: "A wagon sits still on a slope because the pull down the slope is exactly matched by friction holding it. How are the forces on the wagon described?", k: "Balanced forces: equal and opposite, so the wagon does not accelerate", w: ["Unbalanced forces: the wagon is on a slope, so gravity must be winning", "Balanced forces: both forces point in the same direction", "No forces act on a wagon that is not moving"] },
-    { q: "A dropped stone speeds up as it falls through the air toward the ground. How are the forces on the stone described?", k: "Unbalanced forces: gravity's pull is greater than the air's resistance, so the stone accelerates", w: ["Balanced forces: falling objects always have balanced forces", "Unbalanced forces: the air's resistance is greater than gravity's pull", "No forces act once the stone leaves the hand"] },
-    { q: "A boat floats motionless at a dock, neither rising nor sinking. How are the forces on the boat described?", k: "Balanced forces: its weight and the buoyant force are equal and opposite", w: ["Unbalanced forces: floating always means buoyancy is greater", "Balanced forces: no forces act on anything floating", "Unbalanced forces: its weight is greater, but slowly"] }
+    { q: "A wagon sits still on a slope because the pull down the slope is exactly matched by friction holding it. How are the forces on the wagon described?", k: "Balanced forces: equal and opposite, so the wagon does not accelerate", w: ["Unbalanced forces: the wagon is on a slope, so gravity must be winning", "Balanced forces: both of the forces acting on the wagon point in the same direction", "No forces of any kind act on a wagon that is sitting still and not moving at all"] },
+    { q: "A dropped stone speeds up as it falls through the air toward the ground. How are the forces on the stone described?", k: "Unbalanced forces: gravity's pull is greater than the air's resistance, so the stone accelerates", w: ["Balanced forces: objects that are falling always have balanced forces acting on them", "Unbalanced forces: the resistance of the air is greater than the pull of gravity on the stone", "No forces at all act on the stone once it has left the hand that dropped it"] },
+    { q: "A boat floats motionless at a dock, neither rising nor sinking. How are the forces on the boat described?", k: "Balanced forces: its weight and the buoyant force are equal and opposite", w: ["Unbalanced forces: floating always means the buoyant force is the greater one", "Balanced forces: no forces at all act on anything that is floating on the water", "Unbalanced forces: its weight is greater than the buoyant force, but only slowly"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2029,9 +2029,9 @@ E("s8-u2-force-figure", 2, ["SC8.4.7"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows a rock in water with two force arrows: the upward arrow stands for the buoyant force and the downward arrow for the rock's weight. What do the arrows tell you, and what happens to the rock?",
       "The weight is greater than the buoyant force, so the forces are unbalanced and the rock sinks",
-      ["The buoyant force is greater than the weight, so the rock rises",
-       "The forces are balanced, so the rock floats at that depth",
-       "The arrows show the rock's mass and volume, not its forces"],
+      ["The buoyant force is greater than the rock's weight, so the rock rises up through the water",
+       "The two forces are balanced and equal, so the rock floats suspended at that depth in the water",
+       "The arrows in the diagram show the rock's mass and its volume, not the forces acting on it"],
       "Arrow length stands for force size. The downward arrow, the weight, is longer than the upward buoyant arrow, so the forces are unbalanced with weight winning: the rock sinks. That is the guide's rule for sinking.",
       {});
     q.figure = s8ForceSVG("sink");
@@ -2040,9 +2040,9 @@ E("s8-u2-force-figure", 2, ["SC8.4.7"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows a boat at the water's surface with two force arrows: the upward arrow stands for the buoyant force and the downward arrow for the boat's weight. What do the arrows tell you?",
       "The forces are balanced and equal, so the boat floats without rising or sinking",
-      ["The weight is greater, so the boat is about to sink",
-       "The buoyant force is greater, so the boat is rising out of the water",
-       "Equal arrows mean no forces act on the boat"],
+      ["The weight is the greater of the two forces, so the boat is about to sink below the surface",
+       "The buoyant force is the greater of the two, so the boat is rising up out of the water",
+       "Equal arrows mean that no forces at all are acting on the boat while it floats there"],
       "The two arrows are the same length, so weight and buoyant force are equal and opposite: balanced forces. A floating object at rest is exactly that balance, the guide's rule for floating.",
       {});
     q.figure = s8ForceSVG("float");
@@ -2051,9 +2051,9 @@ E("s8-u2-force-figure", 2, ["SC8.4.7"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows a balloon under water with two force arrows: the upward arrow stands for the buoyant force and the downward arrow for the balloon's weight. What happens when the balloon is released, and why?",
       "It rises, because the buoyant force is greater than its weight, an unbalanced pair of forces",
-      ["It sinks, because its weight is greater than the buoyant force",
-       "It stays where it is, because the forces are balanced",
-       "It moves sideways, because both arrows point vertically"],
+      ["It sinks straight down, because its weight is greater than the buoyant force pushing up on it",
+       "It stays exactly where it is under the water, because the two forces acting on it are balanced",
+       "It moves sideways across the water, because both of the arrows point vertically up and down"],
       "The upward arrow is much longer: the buoyant force on the air-filled balloon far exceeds its small weight. Unbalanced forces accelerate the object toward the greater force, so the balloon rises, the guide's third pattern beside sinking and floating.",
       {});
     q.figure = s8ForceSVG("rise");
@@ -2065,9 +2065,9 @@ E("s8-u2-newton", 2, ["SC8.4.7"], 1, "var", varset([
   function () {
     return mcq("Which statement about force and its unit is correct?",
       "Force is measured in newtons; on Earth, a mass of about 100 g exerts a force of about 1 newton through gravity",
-      ["Force is measured in kilograms; a mass of 1 kg exerts 1 newton",
-       "Force is measured in pascals; 1 newton equals 1 pascal",
-       "Force and mass are measured in the same unit, the gram"],
+      ["Force is measured in kilograms; on Earth, a mass of 1 kg exerts a force of exactly 1 newton",
+       "Force is measured in pascals; in this system, 1 newton of force equals exactly 1 pascal",
+       "Force and mass are both measured in the same unit, the gram, in every measurement taken in class"],
       "The newton is the unit of force. The guide's practical anchor: on Earth, roughly 100 grams of mass weighs about 1 newton. Kilograms and grams measure mass, and pascals measure pressure; keeping the units separate is part of keeping the ideas separate.",
       {});
   }
@@ -2077,9 +2077,9 @@ E("s8-u2-newton", 2, ["SC8.4.7"], 1, "var", varset([
 
 E("s8-u2-mass-weight", 2, ["SC8.4.8"], 1, "gen", function () {
   var cases = [
-    { q: "Which quantity describes the amount of matter in an object, and what is it measured with?", k: "Mass, measured with a balance in grams or kilograms", w: ["Mass, measured with a force meter in newtons", "Weight, measured with a balance in grams or kilograms", "Weight, measured with a force meter in grams"] },
-    { q: "Which quantity describes the force of gravity pulling on an object, and what is it measured with?", k: "Weight, measured with a force meter (spring scale) in newtons", w: ["Mass, measured with a force meter in newtons", "Weight, measured with a balance in kilograms", "Mass, measured with a balance in newtons"] },
-    { q: "A brick is weighed on Earth, then lowered into a tank of water, where its measured weight drops. What happened to its mass?", k: "Its mass stayed the same; only the measured weight changed, because the water's buoyant force supports part of it", w: ["Its mass decreased by the amount of water it displaced", "Its mass increased, because it absorbed water", "Its mass became zero while it was submerged"] }
+    { q: "Which quantity describes the amount of matter in an object, and what is it measured with?", k: "Mass, measured with a balance in grams or kilograms", w: ["Mass, measured with a force meter and recorded in newtons in the lab", "Weight, measured with a balance in grams or kilograms", "Weight, measured with a force meter in grams"] },
+    { q: "Which quantity describes the force of gravity pulling on an object, and what is it measured with?", k: "Weight, measured with a force meter (spring scale) in newtons", w: ["Mass, measured with a force meter and recorded in newtons in the lab", "Weight, measured with a balance and recorded in kilograms in the lab", "Mass, measured with a balance and recorded in newtons in the lab"] },
+    { q: "A brick is weighed on Earth, then lowered into a tank of water, where its measured weight drops. What happened to its mass?", k: "Its mass stayed the same; only the measured weight changed, because the water's buoyant force supports part of it", w: ["Its mass decreased by exactly the amount of water it displaced as it was lowered under the surface", "Its mass increased while it was in the tank, because the brick absorbed water from around it", "Its mass became zero for the whole time it stayed submerged under the water in the tank"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2091,9 +2091,9 @@ E("s8-u2-moon-suitcase", 2, ["SC8.4.8"], 3, "var", varset([
   function () {
     return mcq("An astronaut's suitcase is packed to the mission limit of 20 kg on Earth. On the Moon's space station, the astronaut finds the suitcase weighs noticeably less, and worries something was removed. A crewmate says nothing is missing. Who is right, and why?",
       "The crewmate: the suitcase's mass is still 20 kg because its matter is unchanged; its weight dropped because the Moon's gravity is weaker than Earth's",
-      ["The astronaut: a lower weight always means mass was lost on the journey",
-       "The crewmate, but because the suitcase's mass dropped along with its weight",
-       "Neither: weight cannot change unless the suitcase is opened"],
+      ["The astronaut is right to worry: a lower weight always means that some mass was lost from the suitcase somewhere on the journey up to the station",
+       "The crewmate is right that nothing is missing from the suitcase, but only because the suitcase's mass dropped along with its weight on the way up",
+       "Neither of them is right: an object's weight cannot change at all unless the suitcase is opened on the station and something is taken out of it"],
       "Mass and weight part company exactly here. The suitcase holds the same amount of matter on the Moon, so its mass is still 20 kg. Weight is gravity's force on that mass, and the Moon's gravitational pull is weaker than Earth's, so the same mass weighs less. The guide uses this exact scenario to separate the two ideas.",
       {});
   }
@@ -2114,9 +2114,9 @@ E("s8-u2-buoyancy-rule", 2, ["SC8.4.9"], 1, "var", varset([
   function () {
     return mcq("An object is placed fully under water and released. Which rule decides whether it floats up or sinks?",
       "It floats if the buoyant force on it is greater than its weight, and sinks if its weight is greater than the buoyant force",
-      ["It floats if it is lighter than the container holding the water",
-       "It sinks if it is made of a solid material, whatever the forces",
-       "It floats if its mass is less than the water's temperature in kilograms"],
+      ["It floats if it happens to be lighter, overall, than the container that is holding the water the object was placed in",
+       "It sinks if it is made of any solid material at all, whatever the sizes of the forces acting on it happen to be",
+       "It floats whenever its mass, measured in kilograms, is less than the temperature of the water it has been placed in"],
       "Buoyancy is a contest of two forces. The buoyant force pushes up; the object's weight pulls down. Buoyant force greater means the object rises and floats; weight greater means it sinks; equal forces mean it hovers or floats at rest. The material alone decides nothing; the forces decide.",
       {});
   }
@@ -2136,8 +2136,8 @@ E("s8-u2-archimedes", 2, ["SC8.4.9"], 2, "var", varset([
 
 E("s8-u2-balls", 2, ["SC8.4.9"], 1, "gen", function () {
   var cases = [
-    { q: "Three balls of the same size, made of styrofoam, rubber and metal, are pushed under water and released at the same moment. Which description of what happens is correct?", k: "The styrofoam ball shoots up and floats high, the rubber ball rises and floats lower, and the metal ball sinks", w: ["All three float at the same level, because they are the same size", "The metal ball floats highest, because it is the heaviest", "The rubber ball sinks, because rubber absorbs water instantly"] },
-    { q: "A beach ball is very hard to hold under the water at a pool, and it leaps out when released. Which statement explains the beach ball?", k: "Its buoyant force when fully immersed is much greater than its small weight, so the unbalanced force drives it up", w: ["Its weight is greater than the buoyant force, so it escapes upward", "The water's pressure cancels its weight entirely, so it has no forces on it", "Air inside the ball is attracted to the air above the pool"] }
+    { q: "Three balls of the same size, made of styrofoam, rubber and metal, are pushed under water and released at the same moment. Which description of what happens is correct?", k: "The styrofoam ball shoots up and floats high, the rubber ball rises and floats lower, and the metal ball sinks", w: ["All three balls float at exactly the same level in the water, because all three are the same size", "The metal ball floats the highest of the three, because it is the heaviest ball of the three", "The rubber ball sinks straight to the bottom, because rubber absorbs water the instant it touches it"] },
+    { q: "A beach ball is very hard to hold under the water at a pool, and it leaps out when released. Which statement explains the beach ball?", k: "Its buoyant force when fully immersed is much greater than its small weight, so the unbalanced force drives it up", w: ["Its weight is greater than the buoyant force on it, so the ball escapes upward out of the water", "The pressure of the water cancels out its weight entirely, so there are no forces acting on the ball at all", "The air sealed inside the ball is attracted to the air above the pool, and that pull lifts the ball"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2196,9 +2196,9 @@ E("s8-u2-snowshoes", 2, ["SC8.4.10"], 1, "var", varset([
   function () {
     return mcq("A person wearing snowshoes can walk across deep, soft snow without sinking, while the same person in boots sinks at every step. What explains the difference?",
       "The snowshoes spread the person's weight (force) over a much larger area, so the pressure on the snow is much lower",
-      ["The snowshoes reduce the person's weight while they are worn",
-       "The snowshoes increase the pressure, which packs the snow harder",
-       "The snowshoes change the person's mass, so gravity pulls less"],
+      ["The snowshoes reduce the person's actual weight for as long as they are wearing them on the snow",
+       "The snowshoes increase the pressure on the snow, which packs the snow down harder under each step",
+       "The snowshoes change the person's mass while they are worn, so gravity pulls down on them less"],
       "The force is identical in both cases: the person's weight. Pressure is force divided by area, so spreading the same force over the snowshoes' larger area lowers the pressure below what the snow can support without giving way. Boots concentrate the force on a small area and the pressure punches through.",
       {});
   }
@@ -2217,9 +2217,9 @@ E("s8-u2-cr-pressure-crate", 2, ["SC8.4.10"], 2, "var", varset([
 
 E("s8-u2-gas-laws", 2, ["SC8.4.11"], 1, "gen", function () {
   var cases = [
-    { q: "A sealed syringe of air is pushed in, halving the air's volume while its temperature stays the same. What happens to the pressure of the air inside?", k: "It increases, because the particles are crowded into a smaller space and strike the walls more often", w: ["It decreases, because compressed air always loses pressure", "It stays the same, because the amount of air did not change", "It drops to zero until the plunger is released"] },
-    { q: "A balloon filled with air is placed in warm sunlight, free to expand, and it grows larger. Its pressure stays about the same. Which relationship does this show?", k: "Increasing a gas's temperature increases its volume when pressure is held constant", w: ["Increasing a gas's temperature decreases its volume when pressure is held constant", "Temperature has no effect on a gas's volume", "The gas's volume grew because its pressure doubled"] },
-    { q: "A scuba tank is filled to high pressure at the dive shop. In particle terms, what is true of the air inside compared with air at ordinary pressure?", k: "Far more particles are packed into the same volume, which is why gases, unlike liquids, can be compressed this way", w: ["The particles themselves have shrunk to fit more in", "The air has become a liquid under the pressure", "The tank holds the same number of particles, each under more force"] }
+    { q: "A sealed syringe of air is pushed in, halving the air's volume while its temperature stays the same. What happens to the pressure of the air inside?", k: "It increases, because the particles are crowded into a smaller space and strike the walls more often", w: ["It decreases, because air that is compressed into a smaller space always loses pressure as it is squeezed", "It stays exactly the same, because the amount of air sealed inside the syringe did not change at all", "It drops all the way to zero and stays there until the plunger of the syringe is released again"] },
+    { q: "A balloon filled with air is placed in warm sunlight, free to expand, and it grows larger. Its pressure stays about the same. Which relationship does this show?", k: "Increasing a gas's temperature increases its volume when pressure is held constant", w: ["Increasing a gas's temperature decreases its volume when pressure is held constant", "The temperature of a gas has no effect at all on the volume that the gas occupies", "The volume of the gas grew larger because its pressure doubled while it sat in the sunlight"] },
+    { q: "A scuba tank is filled to high pressure at the dive shop. In particle terms, what is true of the air inside compared with air at ordinary pressure?", k: "Far more particles are packed into the same volume, which is why gases, unlike liquids, can be compressed this way", w: ["The particles of the air themselves have shrunk in size so that more of them fit inside the tank", "The air inside the tank has become a liquid under the very high pressure used to fill the tank", "The tank holds exactly the same number of particles as ordinary air, with each one under more force"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2231,9 +2231,9 @@ E("s8-u2-compressible", 2, ["SC8.4.11"], 1, "var", varset([
   function () {
     return mcq("Why can gases be compressed into a much smaller volume while liquids hardly compress at all?",
       "Gas particles are far apart with a great deal of empty space between them, while liquid particles are already close together with little space to remove",
-      ["Gas particles are smaller than liquid particles",
-       "Liquid particles repel one another, while gas particles attract",
-       "Gases weigh less than liquids, so pressure affects them more"],
+      ["The particles of a gas are much smaller in size than the particles of a liquid are, so far more of them fit into the same container",
+       "The particles of a liquid repel one another so strongly that they cannot be pushed closer, while the particles of a gas attract one another weakly",
+       "Gases weigh less than equal volumes of liquids do, so pressure applied from outside affects gases much more strongly than it affects liquids"],
       "Compressibility is about the space between particles. In a gas the particles are widely separated, so pushing them closer removes empty space and shrinks the volume greatly. In a liquid the particles are already nearly touching, so there is almost no space to remove and the volume barely changes: liquids are effectively incompressible, which is why they serve in hydraulic systems.",
       {});
   }
@@ -2256,8 +2256,8 @@ E("s8-u2-depth-pressure", 2, ["SC8.4.11"], 2, "var", varset([
 E("s8-u2-personal", 2, ["SC8.5.1"], 1, "gen", function () {
   var cases = [
     { q: "A cook finds that pancake batter made too thin runs all over the pan, while batter made too thick sits in lumps. Which fluid property is the cook adjusting?", k: "Viscosity: the batter's resistance to flow", w: ["Density: the batter's mass per unit volume", "Pressure: the force the batter exerts on the pan", "Buoyancy: the force the pan exerts on the batter"] },
-    { q: "A mechanic chooses a thinner motor oil for a car that will run through a Newfoundland winter. Which fluid fact is behind the choice?", k: "Oil's viscosity rises as temperature falls, so a thinner grade is needed to keep it flowing in the cold", w: ["Oil's density falls to zero in cold weather unless it is thin", "Cold weather compresses oil, so less of it is needed", "Winter air pressure forces thick oil out of engines"] },
-    { q: "A cyclist pumps a tire up hard before a race. Which fluid behaviour is she using?", k: "Air is a compressible fluid, so more particles can be packed into the tire to raise its pressure", w: ["Air is an incompressible fluid, like the liquids in brakes", "Air's viscosity drops when it is pumped", "The tire's density decreases as air is added"] }
+    { q: "A mechanic chooses a thinner motor oil for a car that will run through a Newfoundland winter. Which fluid fact is behind the choice?", k: "Oil's viscosity rises as temperature falls, so a thinner grade is needed to keep it flowing in the cold", w: ["The density of oil falls all the way to zero in cold weather unless the oil is a thin grade", "Cold winter weather compresses the oil in the engine, so less oil is needed to fill it", "The pressure of the winter air forces thick, heavy oil out of engines parked in the cold"] },
+    { q: "A cyclist pumps a tire up hard before a race. Which fluid behaviour is she using?", k: "Air is a compressible fluid, so more particles can be packed into the tire to raise its pressure", w: ["Air is an incompressible fluid, just like the liquids sealed inside a car's brake lines", "The viscosity of air drops sharply when it is pumped into a confined space like a tire", "The density of the tire itself decreases steadily as more and more air is added to it"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2269,9 +2269,9 @@ E("s8-u2-winter-oil", 2, ["SC8.5.1"], 3, "var", varset([
   function () {
     return mcq("Two identical engines are filled with the same oil. One runs in a warm garage; the other is parked outside through a January cold snap in St. John's. On a cold start, the outdoor engine's oil circulates poorly and the engine wears faster. Which explanation connects the observation to the fluid science?",
       "Cold raised the oil's viscosity, so it resisted flowing to the moving parts; the oil's particles, moving slowly and staying close, produced more internal friction",
-      ["Cold lowered the oil's viscosity until it ran off the parts entirely",
-       "Cold compressed the oil into a solid, and solids cannot lubricate",
-       "The cold changed the oil's density to zero, so the pump could not lift it"],
+      ["The cold snap lowered the viscosity of the outdoor engine's oil so far that the thin oil ran off the moving parts entirely and left them unprotected",
+       "The cold compressed the oil in the outdoor engine until it turned into a solid block, and a solid cannot flow to lubricate the engine's moving parts at start-up",
+       "The cold of the January night changed the density of the outdoor engine's oil to zero, so the oil pump could not lift the oil up to the moving parts it protects"],
       "The observation, the property and the particle explanation line up: falling temperature raises a liquid's viscosity, the thickened oil resists flowing through the engine's passages, and parts that should be coated run nearly dry. It is why winter oil grades exist, and why the choice is a fluid dynamics decision, not a marketing one.",
       {});
   }
@@ -2281,9 +2281,9 @@ E("s8-u2-winter-oil", 2, ["SC8.5.1"], 3, "var", varset([
 
 E("s8-u2-products", 2, ["SC8.5.2"], 1, "gen", function () {
   var cases = [
-    { q: "Which product exists in several grades mainly because of our understanding of viscosity?", k: "Motor oil, graded so engines can be matched with an oil that flows properly at their working temperatures", w: ["Window glass, graded by how fast it flows", "Table salt, graded by how thickly it pours when dry", "Bicycle tires, graded by the viscosity of their rubber"] },
-    { q: "A shampoo is reformulated so it sits on the hand instead of running off, but still spreads through hair. What understanding guided the reformulation?", k: "Viscosity: adjusting the liquid's resistance to flow so it performs its function", w: ["Buoyancy: adjusting the shampoo's average density", "Pressure: adjusting the force the bottle must withstand", "Density: adjusting the mass in each bottle"] },
-    { q: "Ketchup is designed to sit thick in the bottle yet flow when the bottle is shaken and squeezed. Which science understanding is the design built on?", k: "How a liquid's flow behaviour can be engineered for its intended function", w: ["How gases compress inside sealed bottles", "How buoyant forces act on objects in liquids", "How Pascal's law transmits pressure through the bottle"] }
+    { q: "Which product exists in several grades mainly because of our understanding of viscosity?", k: "Motor oil, graded so engines can be matched with an oil that flows properly at their working temperatures", w: ["Window glass, which is graded for buildings by how fast the glass flows downward over time", "Table salt, which is graded for sale by how thickly the dry crystals pour from the box", "Bicycle tires, which are graded in sizes by the viscosity of the rubber they are made from"] },
+    { q: "A shampoo is reformulated so it sits on the hand instead of running off, but still spreads through hair. What understanding guided the reformulation?", k: "Viscosity: adjusting the liquid's resistance to flow so it performs its function", w: ["Buoyancy: adjusting the average density of the shampoo so that it floats on water", "Pressure: adjusting the force that the walls of the shampoo bottle must withstand", "Density: adjusting the mass of shampoo that is packed into each bottle sold"] },
+    { q: "Ketchup is designed to sit thick in the bottle yet flow when the bottle is shaken and squeezed. Which science understanding is the design built on?", k: "How a liquid's flow behaviour can be engineered for its intended function", w: ["How gases are compressed and stored inside sealed bottles under high pressure", "How buoyant forces act on solid objects that are placed in liquids of different densities", "How Pascal's law transmits pressure through a confined fluid from one end of the bottle to the other"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2295,9 +2295,9 @@ E("s8-u2-cleaning", 2, ["SC8.5.2"], 2, "var", varset([
   function () {
     return mcq("The strand's core STSE studies cleaning fluids. How do soaps and detergents remove grease and dirt that plain water leaves behind?",
       "Their particles surround and lift the grease, breaking it into tiny droplets that stay suspended in the water and rinse away",
-      ["They dissolve the surface the dirt sits on, carrying the dirt with it",
-       "They raise the water's viscosity until the dirt floats off on its own",
-       "They compress the grease until it evaporates"],
+      ["They dissolve the surface that the dirt is sitting on, carrying all of the dirt away along with it",
+       "They raise the viscosity of the water until the dirt floats off the surface entirely on its own",
+       "They compress the grease on the surface until the grease evaporates away into the air"],
       "Water alone beads off grease. Soap and detergent particles have ends that behave differently: one end mixes with water and the other with grease, so they surround grease and dirt, lift them from the surface as tiny suspended droplets, and the rinse water carries them away. That is the science the Cleaning Fluids STSE is built on.",
       {});
   }
@@ -2316,8 +2316,8 @@ E("s8-u2-cr-cleaning-claim", 2, ["SC8.5.2"], 3, "var", varset([
 
 E("s8-u2-lives", 2, ["SC8.5.3"], 1, "gen", function () {
   var cases = [
-    { q: "Which example shows fluids science and technology affecting daily life in a community?", k: "A town's water system uses pumps and pressure to deliver clean water to homes at every height in the town", w: ["A town paints its water tower a new colour each spring", "A school buys new gym mats for the winter term", "A ferry changes its sailing schedule for the holidays"] },
-    { q: "Which example shows fluids science and technology affecting daily life in a home?", k: "Hydraulic brakes use an incompressible liquid to carry the driver's foot force to all four wheels", w: ["A family chooses a larger television for the living room", "A student sharpens pencils before class", "A baker sets the oven timer for a cake"] }
+    { q: "Which example shows fluids science and technology affecting daily life in a community?", k: "A town's water system uses pumps and pressure to deliver clean water to homes at every height in the town", w: ["A town paints the outside of its water tower a new colour each spring to keep it looking fresh", "A school buys a set of new gym mats for its students to use during the winter term indoors", "A ferry company changes its sailing schedule for the holiday season at the end of the year"] },
+    { q: "Which example shows fluids science and technology affecting daily life in a home?", k: "Hydraulic brakes use an incompressible liquid to carry the driver's foot force to all four wheels", w: ["A family chooses a larger television screen to mount on the wall of their living room at home", "A student sharpens a set of pencils at the sharpener before the start of class in the morning", "A baker sets the timer on the oven so that a cake baking inside it is not left in too long"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2329,9 +2329,9 @@ E("s8-u2-community", 2, ["SC8.5.3"], 1, "var", varset([
   function () {
     return mcq("A coastal community is replacing the brakes and lift equipment in its vehicle service centre and upgrading the ferry's hydraulic steering. Which statement best describes how science and technology are affecting this community?",
       "Fluids technologies built on Pascal's law and the incompressibility of liquids are doing heavy work all through the community's transport system",
-      ["The community is affected only because the new equipment is more expensive",
-       "Fluids science affects the community only in its science classrooms",
-       "The ferry's steering is a technology, but vehicle brakes are not"],
+      ["The community is affected by the change only because the new equipment costs considerably more money than the older equipment it replaces in the centre",
+       "Fluids science affects this coastal community only inside its own science classrooms, and nowhere else in the daily life of the people who live there",
+       "The ferry's hydraulic steering counts as a technology in the community, but the brakes fitted in ordinary road vehicles do not count as a technology at all"],
       "Hydraulic systems transmit force through confined liquids, and they run the community's brakes, lifts and steering alike. Science and technology affect a community through the working systems it depends on, not only through laboratories and classrooms.",
       {});
   }
@@ -2341,9 +2341,9 @@ E("s8-u2-community", 2, ["SC8.5.3"], 1, "var", varset([
 
 E("s8-u2-underlying", 2, ["SC8.5.4"], 1, "gen", function () {
   var cases = [
-    { q: "A hydrometer floats higher in one liquid than in another and reads the liquid's density from how deep it sinks. Which science underlies this technology?", k: "Buoyancy and density: a floating object settles where the buoyant force balances its weight, deeper in less dense liquids", w: ["Viscosity: the hydrometer's sinking is slowed by thick liquids", "Pascal's law: pressure in the liquid is transmitted to the hydrometer", "Compressibility: the liquid is squeezed by the hydrometer's weight"] },
-    { q: "A liquid-in-glass thermometer is a technology built on which science?", k: "Thermal expansion: the liquid's volume and density change with temperature in a predictable way", w: ["Archimedes' principle: the liquid is buoyed up the tube", "Pascal's law: pressure is transmitted through the liquid", "Viscosity: warm liquid flows up the tube faster"] },
-    { q: "A dentist's chair rises smoothly when a small pedal is pressed. Which science underlies the technology?", k: "Pascal's law in a hydraulic system: pressure applied to a confined liquid is transmitted to a larger piston", w: ["Buoyancy: the chair floats on a hidden tank of water", "Thermal expansion: the pedal warms the liquid in the chair", "Density layering: liquids in the chair sort themselves by density"] }
+    { q: "A hydrometer floats higher in one liquid than in another and reads the liquid's density from how deep it sinks. Which science underlies this technology?", k: "Buoyancy and density: a floating object settles where the buoyant force balances its weight, deeper in less dense liquids", w: ["Viscosity: the sinking of the hydrometer is slowed down by liquids that are thick and slow flowing", "Pascal's law: the pressure in the liquid is transmitted through it and onto the hydrometer floating there", "Compressibility: the liquid under the hydrometer is squeezed smaller by the hydrometer's own weight"] },
+    { q: "A liquid-in-glass thermometer is a technology built on which science?", k: "Thermal expansion: the liquid's volume and density change with temperature in a predictable way", w: ["Archimedes' principle: the liquid inside the tube is buoyed upward by the liquid surrounding it", "Pascal's law: pressure applied at one point is transmitted through the liquid to every other point", "Viscosity: warm liquid flows more easily, so it runs up the inside of the tube faster when heated"] },
+    { q: "A dentist's chair rises smoothly when a small pedal is pressed. Which science underlies the technology?", k: "Pascal's law in a hydraulic system: pressure applied to a confined liquid is transmitted to a larger piston", w: ["Buoyancy: the chair floats upward on a hidden tank of water built into the base of the chair", "Thermal expansion: pressing the pedal warms the liquid in the chair until it expands and lifts it", "Density layering: the liquids inside the chair sort themselves into layers by their densities"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2380,9 +2380,9 @@ E("s8-u2-pfd", 2, ["SC8.5.6"], 3, "var", varset([
   function () {
     return mcq("A life jacket that has served for many years is retired because it no longer keeps a swimmer afloat as well as it should. The guide explains this aging effect. Which statement gives the correct explanation, and the principle the jacket was built on?",
       "The jacket works by lowering the swimmer's average density below the water's; over years its foam compresses and grows denser, so it adds less low-density volume and buoys less",
-      ["The jacket works by raising the swimmer's average density; over years it absorbs water and grows lighter",
-       "The jacket works by heating the water around the swimmer; over years it loses that ability",
-       "The jacket works by increasing the swimmer's weight; over years the straps stretch and it fits loosely"],
+      ["The jacket works by raising the swimmer's average density above the water's; over years it absorbs water into its foam and grows lighter as it ages",
+       "The jacket works by heating the water around the swimmer to keep them afloat; over years of use it gradually loses that heating ability and so buoys less",
+       "The jacket works by increasing the swimmer's weight so they sit lower and steadier; over years the straps stretch and it fits too loosely to help"],
       "A personal flotation device is made of very low density material. Worn, it makes the average density of swimmer plus jacket less than the water's, so the combination floats. The guide's aging point: as the materials break down and compress over the years, they become more dense, the jacket contributes less low-density volume, and its buoyancy fades. Both the design and its failure run on average density.",
       {});
   }
@@ -2404,9 +2404,9 @@ E("s8-u2-average-density", 2, ["SC8.5.6"], 3, "var", varset([
   function () {
     return mcq("A wooden boat floats for decades, but a waterlogged stick of the same wood sinks. A solid steel block sinks instantly, but a steel ship floats. Which single idea explains both pairs?",
       "Average density: what matters is the total mass divided by the total volume of the whole object, including the air spaces and absorbed water it carries",
-      ["Shape alone: any object shaped like a boat floats, whatever it is made of",
-       "Age: older wooden objects absorb the ability to float",
-       "Surface area: objects with more surface always float"],
+      ["Shape alone: any object that is shaped like a boat will float on water, whatever material it happens to be made of and however heavy it is",
+       "Age: older wooden objects gradually absorb the ability to float from the water around them as the years go by on the water",
+       "Surface area: objects with more surface area exposed to the water always float on it, whatever material they are made of and however dense it is"],
       "Neither the material nor the shape alone decides it. The waterlogged stick has soaked up water until its average density passes the water's; the dry boat's wood and air spaces keep its average below. The steel block is solid steel throughout, while the ship is mostly enclosed air: its average density, mass over total volume, is below the water's. One ratio explains all four cases.",
       {});
   }
@@ -2418,9 +2418,9 @@ E("s8-u2-pascal", 2, ["SC8.5.7"], 1, "var", varset([
   function () {
     return mcq("What does Pascal's law state?",
       "Pressure applied to a confined fluid is transmitted equally in all directions throughout the fluid",
-      ["Pressure in a fluid decreases with depth in all directions",
-       "A confined gas expands until its pressure reaches zero",
-       "The buoyant force on an object equals the weight of the fluid it displaces"],
+      ["Pressure in a fluid decreases steadily with depth, equally in all directions throughout the fluid",
+       "A confined gas expands inside its container until its pressure falls all the way to zero",
+       "The buoyant force on an object equals the weight of the fluid that the object displaces as it sinks in"],
       "Pascal's law is the foundation of hydraulics and pneumatics: squeeze a confined fluid at one point and the pressure increase is felt everywhere in the fluid, in all directions. That is what lets a small force at one piston produce a large force at another.",
       {});
   }
@@ -2430,9 +2430,9 @@ E("s8-u2-hydraulic-pneumatic", 2, ["SC8.5.7"], 2, "var", varset([
   function () {
     return mcq("Which comparison of hydraulic and pneumatic systems is correct?",
       "Hydraulic systems use a liquid, which is incompressible and keeps a definite volume; pneumatic systems use a gas, which is compressible and has an indefinite volume",
-      ["Hydraulic systems use a gas, which is compressible; pneumatic systems use a liquid, which is not",
-       "Both systems use liquids; they differ only in the size of their pistons",
-       "Hydraulic systems use a compressible liquid, which is what makes them strong"],
+      ["Hydraulic systems use a gas, which is compressible and indefinite in volume; pneumatic systems use a liquid, which is not compressible",
+       "Both systems use liquids as their working fluid; they differ only in the size of the pistons fitted inside them",
+       "Hydraulic systems use a liquid that compresses easily under pressure, and that compressibility is what makes them strong"],
       "The two system families split on their fluid. Hydraulics run on liquids: effectively incompressible, definite volume, ideal for transmitting force exactly, as in brakes and lifts. Pneumatics run on gases: compressible, indefinite volume, as in air tools and tires. Pascal's law applies to both.",
       {});
   }
@@ -2465,9 +2465,9 @@ E("s8-u2-question-problem", 2, ["SC8.6.1"], 2, "var", varset([
   function () {
     return mcq("A bicycle shop finds that a hydraulic brake lever feels spongy and the brakes are weak. Which question turns this practical problem into an investigation?",
       "Does air trapped in the brake line reduce the force the brake pads apply, compared with a line containing only brake fluid?",
-      ["Why do customers prefer strong brakes?",
-       "Who invented hydraulic brakes?",
-       "Are hydraulic brakes better than cable brakes in every way?"],
+      ["Why is it that customers coming into the bicycle shop always say, when asked, that they prefer strong brakes on a bike?",
+       "Who was the person who first invented hydraulic brakes for use on bicycles, and in what country did they do the work?",
+       "Are hydraulic brakes on a bicycle simply better than the cable brakes they replace in every way that matters to a rider?"],
       "The practical problem is the spongy lever. The investigable version names a suspected cause that can be varied (air in the line, which compresses, unlike the liquid) and an effect that can be measured (the force at the pads). History and opinion questions do not test the problem.",
       {});
   }
@@ -2479,9 +2479,9 @@ E("s8-u2-rephrase", 2, ["SC8.6.2"], 1, "var", varset([
   function () {
     return mcq("A student's question reads: 'Is thick oil bad for engines?' Which rephrasing puts it in testable form?",
       "How does the temperature of motor oil affect the time it takes for 100 mL of the oil to drain through a funnel?",
-      ["Why do engines dislike thick oil so much?",
-       "Is winter oil a better invention than summer oil?",
-       "What is the best oil in the world?"],
+      ["Why do the engines in cold climates dislike thick, slow-flowing oil so much in the winter?",
+       "Is the winter grade of oil simply a better invention than the summer grade of oil overall?",
+       "What is the single best motor oil in the whole world for every engine ever built anywhere?"],
       "Testable form names the variable to change (temperature), the variable to measure (drain time for a fixed volume), and the material under test. The original question's 'bad' cannot be measured; the rephrasing replaces it with quantities.",
       {});
   }
@@ -2491,9 +2491,9 @@ E("s8-u2-define-problem", 2, ["SC8.6.2"], 2, "var", varset([
   function () {
     return mcq("A team must define a practical problem clearly before investigating: their school's soap dispensers keep clogging in winter. Which statement defines the problem in a way an investigation can address?",
       "In cold months the dispensers deliver soap slowly or not at all; the team will test whether the soap's higher viscosity at low temperature is the cause and whether a lower-viscosity soap fixes it",
-      ["The soap dispensers are annoying in winter and should be better",
-       "Someone should invent a perfect soap that never clogs anything",
-       "The dispensers clog because winter is cold, so the investigation is finished"],
+      ["The soap dispensers in the school washrooms are annoying in the winter months, and they really should work much better than they do for the students who use them daily",
+       "Someone should simply invent a perfect new soap that never clogs any dispenser or drain anywhere in the school, whatever the weather or the season of the year happens to be",
+       "The dispensers in the school clog in winter simply because winter is cold in this province, so there is nothing left for any investigation by the team to test or measure"],
       "A clearly defined practical problem states the observed difficulty, a testable suspected cause, and what a solution would look like. The first option does all three; the others complain, dream, or declare the answer before testing it.",
       {});
   }
@@ -2505,9 +2505,9 @@ E("s8-u2-discrepancy-flow", 2, ["SC8.6.3"], 2, "var", varset([
   function () {
     return mcq("In the flow rate lab, one group's honey time is 9 seconds while three other groups record 24, 26 and 25 seconds for the same honey through identical funnels. Which explanation for the discrepancy should be investigated first?",
       "A procedural difference in the fast group's trial, such as the funnel being warmed, the honey being a different sample, or the timing starting late",
-      ["Honey's viscosity changes randomly from minute to minute, so all results are equally valid",
-       "The three slower groups must all have made the same mistake",
-       "The fast result should be averaged in without question, since more data is always better"],
+      ["The viscosity of honey changes randomly from one minute to the next, so every group's result is equally valid as it stands",
+       "The three slower groups must all have made exactly the same mistake in their trials with the honey",
+       "The fast result should simply be averaged in with the others without question, since more data is always better in the end"],
       "A single result far from a cluster of agreeing results points first at the procedure behind it: something differed in that trial. Discrepancy work starts by hunting the difference (warmed funnel, different honey, timing error), not by discarding or blindly averaging the odd value.",
       {});
   }
@@ -2517,9 +2517,9 @@ E("s8-u2-discrepancy-density", 2, ["SC8.6.9"], 3, "var", varset([
   function () {
     return mcq("Four groups measure the density of the same aluminum bar. Three report 2.7 g/cm3. The fourth reports 3.4 g/cm3 and offers two explanations: (1) their bar was a different alloy; (2) they read the graduated cylinder's level from above instead of at eye level, under-recording the volume. The bars were all cut from one sheet. Which evaluation is strongest?",
       "Explanation (2) is the one to act on: the shared source rules out a different alloy, and under-recording volume inflates the calculated density in exactly the direction observed, so the group should re-measure at eye level",
-      ["Explanation (1), because any bar can secretly be a different alloy",
-       "Both explanations are equally likely, so the result should stand as reported",
-       "Neither: a density discrepancy of this size should simply be deleted from the class data"],
+      ["Explanation (1) is the one to act on first, because any metal bar in the set can secretly turn out to be made of a different alloy than the rest of the bars cut for the class",
+       "Both explanations offered by the fourth group are equally likely to be right, so the group's reported result should simply stand as it is in the class data, with no re-measuring done",
+       "Neither explanation matters here: a density discrepancy of this size should simply be deleted from the class data set without any further checking by the group or the teacher"],
       "Weighing explanations means testing them against the facts and the direction of the error. One sheet rules out a different alloy. A volume read too small makes m/V too large, which matches the high result exactly. The strongest evaluation names the explanation that fits both the facts and the arithmetic, and prescribes the re-measurement.",
       {});
   }
@@ -2531,9 +2531,9 @@ E("s8-u2-bargraph", 2, ["SC8.6.4"], 3, "var", varset([
   function () {
     var q = mcq("A group measured flow times for four liquids and displayed them in the bar graph shown. Their lab partner claims the graph proves Liquid B is the most viscous because its bar is 'in the middle.' Which evaluation of the display and the claim is correct?",
       "The bar graph is an appropriate display for comparing separate liquids, but the claim misreads it: the most viscous liquid is the one with the longest flow time, Liquid D",
-      ["The claim is correct, because the middle bar always represents the extreme value",
-       "The bar graph is the wrong display; only a line graph can compare liquids",
-       "The graph proves nothing, because flow times cannot be displayed graphically"],
+      ["The partner's claim is correct as it stands, because the middle bar in any bar graph always represents the extreme value in the data",
+       "The bar graph is the wrong display for this data; only a line graph can ever be used to compare the flow times of separate liquids",
+       "The graph itself proves nothing at all, because measured flow times cannot be displayed in any graphical form for comparison"],
       "Bar graphs suit this data: separate categories (four liquids) each with one measured value. Reading it is the second skill: viscosity rises with flow time, so the longest bar, Liquid D, is the most viscous. The display is right and the partner's reading of it is wrong.",
       {});
     q.figure = s8HealthSVG([{ name: "Liquid A", value: 6 }, { name: "Liquid B", value: 14 }, { name: "Liquid C", value: 11 }, { name: "Liquid D", value: 23 }], "Flow time", "s", null);
@@ -2545,9 +2545,9 @@ E("s8-u2-graph-choice", 2, ["SC8.6.4"], 1, "var", varset([
   function () {
     return mcq("A group has one flow time for each of five different liquids and must display the data. Which display is appropriate, and why?",
       "A bar graph, because the data are separate categories (different liquids), each with a single value to compare",
-      ["A line graph, because all science data must be drawn as lines",
-       "A circle graph, because the five times add to a whole",
-       "No graph, because times measured in seconds cannot be graphed"],
+      ["A line graph, because all data collected in science must be drawn as lines on a graph",
+       "A circle graph, because the five separate flow times can be added together to make a whole",
+       "No graph at all, because times that are measured in seconds cannot be shown on any graph"],
       "Display follows data shape. Five different liquids are categories, not a continuous variable, so bars compare them honestly; a line would invent a trend between unrelated liquids. The guide's own correction in Core Lab 8-2B makes the same point in reverse: class results there belong in a bar graph (histogram), not a line graph.",
       {});
   }
@@ -2621,9 +2621,9 @@ E("s8-u2-displacement", 2, ["SC8.6.8"], 1, "var", varset([
   function () {
     return mcq("Which procedure correctly determines the volume of an irregularly shaped stone by water displacement?",
       "Record the water level in a graduated cylinder, lower the stone in gently until it is fully submerged, record the new level, and subtract",
-      ["Drop the stone into a full beaker and weigh the stone again while it is wet",
-       "Measure the stone's length, width and height with a ruler and multiply",
-       "Float the stone on the water and read the level where it sits"],
+      ["Drop the stone into a full beaker of water and then weigh the stone a second time while it is still wet",
+       "Measure the stone's length, its width and its height with a ruler and multiply the three together",
+       "Float the stone on the surface of the water in the cylinder and read off the level where the stone sits at rest"],
       "Displacement works because the submerged stone pushes aside its own volume of water. The rise in level, final minus initial, is that volume. The stone must be fully submerged and lowered gently so no water splashes out; a ruler cannot capture an irregular shape, and a stone does not float.",
       {});
   }
@@ -2633,9 +2633,9 @@ E("s8-u2-displacement-error", 2, ["SC8.6.8"], 3, "var", varset([
   function () {
     return mcq("A group determines a metal cube's volume by displacement and gets 14 mL, but calculating from the cube's measured sides gives 27 cm3. Their notes say the cube 'stuck out of the water a little' in the cylinder, which was also too narrow, so the cube wedged against the sides. Which judgement best evaluates their displacement result?",
       "The displacement value is invalid: the cube was not fully submerged, so it displaced less than its full volume, and the wedging made it worse; they need a wider container and full submersion",
-      ["The displacement value is better, because water never lies, so the side measurements must be wrong",
-       "Both values should be averaged to give the true volume",
-       "The difference is unimportant, because volume does not affect the density calculation that follows"],
+      ["The displacement value must be the better one, because water never lies about volume, so the measurements of the cube's sides must be the wrong ones",
+       "The two values the group obtained should simply be averaged together to give the true volume of the cube",
+       "The difference between the two values is unimportant, because the volume figure does not affect the density calculation that the group does next with it"],
       "Judging a procedure means checking it against its own requirements. Displacement only equals volume when the object is fully submerged; a cube poking out displaces part of itself, so 14 mL understates the volume, and the direction of the error confirms the diagnosis. Averaging a valid value with an invalid one just contaminates the density that follows.",
       {});
   }
@@ -2767,9 +2767,9 @@ E("s8-u3-properties", 3, ["SC8.7.1"], 1, "gen", function () {
 
 E("s8-u3-materials", 3, ["SC8.7.1"], 1, "gen", function () {
   var cases = [
-    { q: "Which material is correctly classified by how much light it lets through?", k: "A frosted window is translucent: some light passes, but it is scattered so no clear image forms", w: ["A wooden door is translucent: some light passes through it", "A clear window pane is opaque: no light passes through it", "A frosted window is transparent: light passes and images stay sharp"] },
-    { q: "A student holds three materials in a projector beam: a glass pane, a pair of sunglasses, and a book. Which ordering by light passed is correct?", k: "Glass pane (most), then sunglasses, then the book (none)", w: ["Book (most), then sunglasses, then the glass pane (none)", "Sunglasses (most), then the glass pane, then the book", "All three pass the same amount of light"] },
-    { q: "Which example matches its category?", k: "A lampshade is translucent: it passes some light while scattering it", w: ["A brick wall is transparent", "A mirror is translucent", "Frosted glass is opaque"] }
+    { q: "Which material is correctly classified by how much light it lets through?", k: "A frosted window is translucent: some light passes, but it is scattered so no clear image forms", w: ["A solid wooden door is translucent: some of the light falling on it passes through the wood", "A clear window pane is opaque: no light at all passes through the glass of the pane", "A frosted window is transparent: light passes through it and the images seen stay sharp and clear"] },
+    { q: "A student holds three materials in a projector beam: a glass pane, a pair of sunglasses, and a book. Which ordering by light passed is correct?", k: "Glass pane (most), then sunglasses, then the book (none)", w: ["Book (most), then sunglasses, then the glass pane (none)", "Sunglasses (most), then the glass pane, then the book last of all (none)", "All three materials pass exactly the same amount of light through them"] },
+    { q: "Which example matches its category?", k: "A lampshade is translucent: it passes some light while scattering it", w: ["A brick wall is transparent: light passes through it and clear images form beyond it", "A mirror is translucent: some light passes through it, but the light is scattered", "Frosted glass is opaque: no light at all passes through a pane of frosted glass"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2793,9 +2793,9 @@ E("s8-u3-dispersion", 3, ["SC8.7.1"], 3, "var", varset([
   function () {
     return mcq("A teacher shines two beams through the same prism: white light from a ray box, and the single-colour light of a red laser. The white light fans into a spectrum, but the laser beam only bends, staying red. Which explanation is correct?",
       "Dispersion separates a mixture of colours; the laser's light is a single wavelength, so there is nothing to separate, though it still refracts",
-      ["The prism disperses only light that enters at low angles, and the laser entered too steeply",
-       "Laser light cannot refract, so it passes through unchanged in direction",
-       "The prism was used up by the white light and could not disperse a second beam"],
+      ["A prism disperses only light that enters it at low angles, and the laser beam entered the prism too steeply to spread out",
+       "Laser light cannot refract at all, so it passes straight through the prism unchanged in its direction",
+       "The prism was used up by the white light shone through it first, so it could not disperse a second beam after that"],
       "The two results separate refraction from dispersion. Both beams refract (bend) at the prism's surfaces. Only the white light disperses, because it is a combination of all the visible wavelengths, each refracting by a different amount. The laser is one wavelength only: it bends as one and stays one colour.",
       {});
   }
@@ -2805,9 +2805,9 @@ E("s8-u3-shadow", 3, ["SC8.7.1"], 2, "var", varset([
   function () {
     return mcq("A student moves a cardboard shape closer to a lamp, keeping the screen fixed, and its shadow grows larger and stays sharp. Which statement explains both observations?",
       "Light travels in straight lines from the lamp; a closer object blocks a wider cone of those straight rays, so the shadow grows, and the straight paths keep its edges sharp",
-      ["Light curves around the cardboard, and the curving grows as the object nears the lamp",
-       "The lamp's light speeds up near the cardboard, stretching the shadow",
-       "The shadow grows because the cardboard absorbs more colours when it is closer"],
+      ["Light curves around the edges of the cardboard shape, and the amount of curving grows steadily as the object moves nearer to the lamp",
+       "The light from the lamp speeds up as it passes near the cardboard, and that speeding up stretches the shadow out on the screen",
+       "The shadow grows larger because the cardboard absorbs more of the colours in the light whenever it sits closer to the lamp"],
       "Shadows are the straight-line property at work. Rays travel straight from the source; the object blocks a cone of them, and the nearer the object sits to the lamp, the wider the cone it blocks, so the shadow is larger. Because the rays do not bend around the edges, the shadow stays sharp.",
       {});
   }
@@ -2829,9 +2829,9 @@ E("s8-u3-colour-seen", 3, ["SC8.7.1"], 2, "var", varset([
   function () {
     return mcq("A green sweater is viewed in white light. Using what the guide says about wavelengths and objects, why does the sweater look green?",
       "The sweater absorbs the other wavelengths of white light and reflects the wavelength our brain interprets as green",
-      ["The sweater produces green light of its own in daylight",
-       "The sweater absorbs the green wavelength and reflects all the others",
-       "White light turns green whenever it strikes any fabric"],
+      ["The sweater produces green light of its own whenever it is worn outside in ordinary daylight",
+       "The sweater absorbs the green wavelength out of the white light and reflects all of the other wavelengths instead",
+       "White light simply turns green whenever it strikes any piece of fabric, whatever its colour"],
       "Objects do not hand us their colour; they select it. White light carries all the visible wavelengths; the sweater's material absorbs most of them and reflects the green wavelength to our eyes. A red object reflects red, a white object reflects nearly all, and a black object absorbs nearly all.",
       {});
   }
@@ -2916,9 +2916,9 @@ E("s8-u3-em-detection", 3, ["SC8.7.2"], 2, "var", varset([
   function () {
     return mcq("Electromagnetic radiation of many types is passing through the classroom right now, yet students notice only the light from the windows and lamps. Why does so much radiation go undetected by their senses?",
       "Our eyes detect only the visible band; the other types have wavelengths too long (like infrared) or too short (like ultraviolet) for our eyes to register",
-      ["The other types of radiation exist only inside machines and never travel through rooms",
-       "The other types are blocked completely by the classroom walls",
-       "Our eyes detect all radiation, but the brain ignores most of it on purpose"],
+      ["The other types of radiation exist only inside the machines that produce them, sealed in, and they never travel through ordinary rooms like this one",
+       "The other types of radiation are blocked completely by the walls and the roof of the classroom building before they can reach anyone sitting inside it",
+       "Our eyes actually detect all of the many types of radiation around us in the room, but the brain chooses to ignore most of what the eyes register, on purpose"],
       "Detection is a wavelength question. The radiation is continuously present, from radio signals to ultraviolet, but the human eye registers only the narrow visible band. Wavelengths longer than visible (infrared) or shorter (ultraviolet) pass unnoticed without instruments.",
       {});
   }
@@ -2980,9 +2980,9 @@ E("s8-u3-angle-calc", 3, ["SC8.7.3"], 2, "gen", function () {
 
 E("s8-u3-specular-diffuse", 3, ["SC8.7.3"], 1, "gen", function () {
   var cases = [
-    { q: "A photograph printed with a glossy finish shows glare spots under a lamp, while the same photograph in a matte finish does not. Which explanation uses the two kinds of reflection correctly?", k: "The glossy surface reflects specularly, sending rays in one direction to form glare; the matte surface reflects diffusely, scattering rays so no glare forms", w: ["The glossy surface reflects diffusely, and the matte surface reflects specularly", "Both surfaces reflect specularly; the matte print is simply darker", "The matte surface absorbs all light, so nothing reflects from it"] },
-    { q: "Which application is correctly matched to its kind of reflection?", k: "Car wax produces a specular finish: a smooth surface reflecting in one direction for shine", w: ["Matte paint is chosen for its specular reflection and high luster", "Glazed ceramics are examples of diffuse reflection", "A dusty windshield produces specular reflection like a mirror"] },
-    { q: "Why does a calm lake mirror the mountains while a wind-rippled lake shows only a glittering blur?", k: "The calm surface reflects specularly, in one direction, forming an image; the rippled surface reflects diffusely, scattering rays in many directions", w: ["The rippled lake absorbs the light that would form the image", "The calm lake refracts the light into an image", "Wind changes the water's surface into a convex mirror"] }
+    { q: "A photograph printed with a glossy finish shows glare spots under a lamp, while the same photograph in a matte finish does not. Which explanation uses the two kinds of reflection correctly?", k: "The glossy surface reflects specularly, sending rays in one direction to form glare; the matte surface reflects diffusely, scattering rays so no glare forms", w: ["The glossy surface reflects light diffusely in all directions, and the matte surface reflects it specularly in one direction", "Both surfaces reflect light specularly in one direction; the matte print is simply printed darker than the glossy one", "The matte surface of the print absorbs all of the light that falls on it, so no light reflects from it at all"] },
+    { q: "Which application is correctly matched to its kind of reflection?", k: "Car wax produces a specular finish: a smooth surface reflecting in one direction for shine", w: ["Matte paint is chosen by painters for its specular reflection and its high, glossy luster", "Glazed ceramic dishes are common examples of diffuse reflection from a household surface", "A dusty windshield produces a specular reflection of the road ahead, just like a polished mirror"] },
+    { q: "Why does a calm lake mirror the mountains while a wind-rippled lake shows only a glittering blur?", k: "The calm surface reflects specularly, in one direction, forming an image; the rippled surface reflects diffusely, scattering rays in many directions", w: ["The wind-rippled lake absorbs all of the light that would otherwise form the image of the mountains", "The calm lake refracts the light from the mountains and bends it into an image on its surface", "The wind changes the flat surface of the water into a curved convex mirror as the ripples form"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3006,9 +3006,9 @@ E("s8-u3-plane-spot", 3, ["SC8.7.3"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows an object arrow in front of a plane mirror and its image. Which set of image properties (SPOT) is correct for a plane mirror?",
       "Same size as the object, same distance behind the mirror as the object is in front, upright, and virtual",
-      ["Larger than the object, farther behind the mirror, upright, and real",
-       "Same size as the object, same distance behind the mirror, inverted, and real",
-       "Smaller than the object, closer to the mirror, upright, and virtual"],
+      ["Larger than the object itself, farther behind the mirror than the object is in front, upright, and real",
+       "Same size as the object, the same distance behind the mirror as the object in front, inverted, and real",
+       "Smaller than the object itself, closer to the mirror than the object is in front, upright, and virtual"],
       "Plane mirror images are the strand's reference case: Size the same, Position as far behind the mirror as the object is in front, Orientation upright, Type virtual (the rays only appear to meet behind the mirror, which is why the image arrow is dashed). Lateral inversion, the left-right reversal, is the one extra feature.",
       {});
     q.figure = s8PlaneMirrorSVG();
@@ -3020,9 +3020,9 @@ E("s8-u3-lateral", 3, ["SC8.7.3"], 3, "var", varset([
   function () {
     return mcq("The word AMBULANCE is printed in reverse on the front of the vehicle so that drivers ahead can read it in their rear-view mirrors. Which property of plane mirror images makes this work, and what exactly does the mirror do to the lettering?",
       "Lateral inversion: the mirror reverses the image left-to-right, so the reversed printing reads correctly in the mirror",
-      ["Magnification: the mirror enlarges the lettering until it becomes readable",
-       "The mirror rotates the lettering 180 degrees, turning it right side up",
-       "The mirror reverses the lettering top-to-bottom, which the brain corrects"],
+      ["Magnification: the mirror enlarges the lettering on the front of the vehicle until it becomes readable in traffic",
+       "The mirror rotates the whole lettering 180 degrees in the glass, turning it right side up for the driver",
+       "The mirror reverses the lettering from top to bottom instead, and the driver's brain corrects it while driving"],
       "A plane mirror image is laterally inverted: left and right are swapped, while top and bottom are not. Printing the word backwards on the vehicle means the mirror's left-right swap turns it into ordinary readable text for the driver ahead. It is the same effect that makes text held to a bathroom mirror unreadable.",
       {});
   }
@@ -3052,9 +3052,9 @@ E("s8-u3-refraction-def", 3, ["SC8.7.4"], 1, "var", varset([
   function () {
     return mcq("Which set of refraction terms is defined correctly?",
       "The incident ray is the incoming ray, the refracted ray is the ray after it bends at the boundary, and the angles of incidence and refraction are measured from the normal",
-      ["The incident ray is the ray after bending, and the angle of refraction is measured from the surface",
-       "The refracted ray is the ray that bounces back, and the normal is the surface itself",
-       "The angle of incidence is measured from the surface, and the refracted ray never changes direction"],
+      ["The incident ray is the ray after it has bent at the boundary, and the angle of refraction is measured from the surface itself rather than the normal",
+       "The refracted ray is the ray that bounces back from the boundary, and the normal is simply the surface of the medium itself",
+       "The angle of incidence is measured from the surface itself rather than the normal, and the refracted ray never changes its direction at the boundary"],
       "Refraction is the bending of light as it crosses a boundary between media. The incident ray arrives, the refracted ray leaves into the new medium, and both angles, of incidence and of refraction, are measured from the normal at the boundary point, exactly as in reflection.",
       {});
   }
@@ -3064,9 +3064,9 @@ E("s8-u3-bent-stick", 3, ["SC8.7.4"], 2, "var", varset([
   function () {
     return mcq("A popsicle stick standing in a beaker of water looks bent at the surface, though it is straight. Which explanation is correct?",
       "Light from the underwater part of the stick bends (refracts) as it leaves the water for the air, and our brain, assuming the light travelled straight, misplaces that part of the stick",
-      ["The water physically bends the stick, which straightens again when removed",
-       "The stick reflects the light at the surface, doubling its image",
-       "The water disperses the light, and the colours shift the stick's apparent shape"],
+      ["The water in the beaker physically bends the stick for as long as it stands in the water, pressing it out of shape, and the stick straightens itself again once it is removed and dried",
+       "The stick reflects the light reaching it at the surface of the water in the beaker, and that reflection doubles its image in the water, which is what makes the straight stick look bent",
+       "The water in the beaker disperses the light coming from the underwater part of the stick, and the separated colours produced shift the stick's apparent shape where it meets the surface"],
       "The bent stick is the guide's introduction to refraction. Light from the submerged part changes direction at the water-air boundary; the brain traces the rays back in straight lines, so the underwater part appears shifted from where it is, and the stick looks broken at the surface.",
       {});
   }
@@ -3076,9 +3076,9 @@ E("s8-u3-speed-density", 3, ["SC8.7.4"], 3, "var", varset([
   function () {
     return mcq("A ray of light passes at an angle from air into glass, and separately from glass back into air. Using the guide's speed and density account, which statement is correct?",
       "Light slows down entering the denser glass and bends; entering the less dense air it speeds up and bends the other way",
-      ["Light speeds up entering the denser glass, which is why it bends",
-       "Light keeps the same speed in both media; only its colour changes",
-       "Light bends only when it speeds up, never when it slows down"],
+      ["Light speeds up as it enters the denser glass from the air, and that increase in speed is what makes it bend",
+       "Light keeps exactly the same speed as it passes through both media; only the colour of the light changes at the boundary",
+       "Light bends at a boundary only when it speeds up on entering the new medium, and never when it slows down there"],
       "Refraction is caused by a speed change at the boundary. Light travels more slowly in a medium of greater density (glass) than in air, and the speed change at an angle is what swings the ray's direction. Returning to the less dense air, it speeds up and bends back. The guide's car-on-a-sandy-shoulder analogy models exactly this: slow one side first, and the direction veers.",
       {});
   }
@@ -3086,9 +3086,9 @@ E("s8-u3-speed-density", 3, ["SC8.7.4"], 3, "var", varset([
 
 E("s8-u3-lenses", 3, ["SC8.7.4"], 1, "gen", function () {
   var cases = [
-    { q: "Which description of a convex lens is correct?", k: "It is thicker across the middle than at the edges, and it causes parallel light rays to converge (come together)", w: ["It is thinner across the middle than at the edges, and it causes rays to diverge", "It is thicker across the middle, and it causes rays to diverge (spread apart)", "It has one flat side, and it reflects rays instead of refracting them"] },
+    { q: "Which description of a convex lens is correct?", k: "It is thicker across the middle than at the edges, and it causes parallel light rays to converge (come together)", w: ["It is thinner across the middle than at the edges, and it causes parallel light rays to converge (come together)", "It is thicker across the middle than at the edges, and it causes parallel light rays to diverge (spread apart)", "It has one flat side and one curved side, and it reflects light rays instead of refracting them as they pass"] },
     { q: "A lens spreads a parallel beam of light so the rays diverge, as if coming from a point behind the lens. Which lens is it, and what is its shape?", k: "A concave lens: thinner across the middle and thicker at the edges", w: ["A convex lens: thicker across the middle and thinner at the edges", "A concave lens: thicker across the middle and thinner at the edges", "A convex lens: thinner across the middle and thicker at the edges"] },
-    { q: "Which statement about lenses and light is correct?", k: "Lenses work by refraction: light bends at each surface of the lens, which is what brings rays together or spreads them apart", w: ["Lenses work by reflection: light bounces off the lens surfaces", "Lenses work by dispersion: they separate light into colours that form the image", "Lenses work by absorbing the rays that would blur the image"] }
+    { q: "Which statement about lenses and light is correct?", k: "Lenses work by refraction: light bends at each surface of the lens, which is what brings rays together or spreads them apart", w: ["Lenses work by reflection: the light that forms the image bounces off the curved surfaces of the lens", "Lenses work by dispersion: they separate the light passing through them into colours, and those colours form the image", "Lenses work by absorbing all of the light rays that would otherwise blur the image they form"] }
   ];
   var c = pick(cases);
   var q = mcq(c.q, c.k, c.w,
@@ -3100,8 +3100,8 @@ E("s8-u3-lenses", 3, ["SC8.7.4"], 1, "gen", function () {
 
 E("s8-u3-vision", 3, ["SC8.7.4"], 2, "gen", function () {
   var cases = [
-    { q: "A student is near-sighted: her eye's lens refracts light too much, so images of distant objects form in front of her retina. Which lens corrects her vision, and how?", k: "A concave lens, which diverges the light slightly before it enters the eye, so the eye's lens brings it to a focus on the retina", w: ["A convex lens, which converges the light more so it focuses sooner", "A concave lens, which converges the light so it focuses on the retina", "A convex lens, which diverges the light before it enters the eye"] },
-    { q: "A student is far-sighted: his eye's lens does not refract light enough, so images would form behind his retina. Which lens corrects his vision?", k: "A convex lens, which begins converging the light before it enters the eye, making up for the eye lens's shortfall", w: ["A concave lens, which diverges the light so the eye can catch up", "A convex lens, which diverges the light slightly before the eye", "A concave lens, which adds the missing convergence"] }
+    { q: "A student is near-sighted: her eye's lens refracts light too much, so images of distant objects form in front of her retina. Which lens corrects her vision, and how?", k: "A concave lens, which diverges the light slightly before it enters the eye, so the eye's lens brings it to a focus on the retina", w: ["A convex lens, which converges the light even more strongly so that it focuses sooner in the eye", "A concave lens, which converges the light entering the eye so that it focuses sooner, onto the retina", "A convex lens, which diverges the light slightly before the light enters the eye and reaches the lens"] },
+    { q: "A student is far-sighted: his eye's lens does not refract light enough, so images would form behind his retina. Which lens corrects his vision?", k: "A convex lens, which begins converging the light before it enters the eye, making up for the eye lens's shortfall", w: ["A concave lens, which diverges the light entering the eye so that the eye's weak lens can catch up", "A convex lens, which diverges the light slightly before it enters the eye and reaches the retina", "A concave lens, which adds the convergence that the eye's own lens is failing to provide"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3137,8 +3137,8 @@ E("s8-u3-cr-refraction", 3, ["SC8.7.4"], 3, "var", varset([
 E("s8-u3-history", 3, ["SC8.8.1"], 1, "gen", function () {
   var cases = [
     { q: "Which historical idea about light is correctly matched to its thinker?", k: "Pythagoras believed light consisted of beams of particles travelling from the eye... ", w: ["Galileo measured the speed of light exactly using two telescopes", "Michelson believed light was made of waves on water", "Pythagoras believed light travelled as waves through air"] },
-    { q: "What was Galileo's contribution to the study of light's speed?", k: "He attempted an experiment to determine whether light's speed could be measured, using lanterns over a distance", w: ["He calculated the speed of light exactly as 3 x 10^8 m/s", "He proved light travels instantaneously and has no speed", "He invented the telescope to measure light's speed"] },
-    { q: "What should students know about Michelson's experiment?", k: "It was conducted to calculate the speed of light, and it succeeded in measuring it; the details are not required", w: ["It proved light has no measurable speed", "It showed light travels at the speed of sound", "It was an attempt that failed completely and measured nothing"] }
+    { q: "What was Galileo's contribution to the study of light's speed?", k: "He attempted an experiment to determine whether light's speed could be measured, using lanterns over a distance", w: ["He calculated the speed of light exactly, arriving at the modern value of 3 x 10^8 m/s with lanterns", "He proved that light travels instantaneously from place to place and therefore has no speed at all", "He invented the telescope itself for the purpose of measuring the speed of light over a distance"] },
+    { q: "What should students know about Michelson's experiment?", k: "It was conducted to calculate the speed of light, and it succeeded in measuring it; the details are not required", w: ["It proved once and for all that light has no measurable speed that any experiment could detect", "It showed that light travels through the air at exactly the same speed as sound travels", "It was an attempt to measure the speed of light that failed completely and measured nothing at all"] }
   ];
   var c = pick(cases);
   if (c.k.indexOf("travelling from the eye") >= 0) c.k = "Pythagoras believed light consisted of beams of particles";
@@ -3151,9 +3151,9 @@ E("s8-u3-speed-light", 3, ["SC8.8.1"], 1, "var", varset([
   function () {
     return mcq("Which statement about the speeds of light and sound is correct?",
       "Light travels at 300,000,000 m/s (3 x 10^8 m/s), enormously faster than sound at about 330 m/s, which is why we see lightning before we hear its thunder",
-      ["Light and sound travel at the same speed, about 330 m/s",
-       "Sound travels faster than light, which is why thunder arrives first",
-       "Light travels at 300,000 m/s, only slightly faster than sound"],
+      ["Light and sound both travel through the air at the same speed, about 330 m/s, so the flash and the thunder of a storm arrive together",
+       "Sound travels faster than light through the air, which is why the thunder of a storm is always heard before its flash of lightning is seen",
+       "Light travels at 300,000 m/s through the air, which is only slightly faster than the speed of sound travelling the same path"],
       "The speed of light is 3 x 10^8 m/s, about 300,000 km/s. Sound manages roughly 330 m/s. In a storm the flash's light reaches us almost instantly while the thunder dawdles behind: the guide's rule of thumb is that every 3 seconds of delay means the strike was about 1 km away.",
       {});
   }
@@ -3174,9 +3174,9 @@ E("s8-u3-early-tech", 3, ["SC8.8.2"], 1, "var", varset([
   function () {
     return mcq("How did scientific knowledge of light lead to the early microscope and telescope?",
       "Understanding how lenses refract light let makers combine lenses so distant and tiny objects could be magnified and studied",
-      ["Understanding reflection let makers polish mirrors until objects looked bigger",
-       "The devices came first, and no knowledge of light was involved in making them",
-       "Understanding dispersion let makers separate light into colours for viewing"],
+      ["Understanding how reflection works let makers polish curved mirrors until the objects seen in them looked bigger",
+       "The devices themselves came first, built by trial alone, and no knowledge of how light behaves was involved in making them",
+       "Understanding how dispersion separates light into colours let makers build the devices for viewing distant objects"],
       "The microscope and telescope are the guide's examples of knowledge becoming technology: once lens makers understood that shaped glass refracts light in predictable ways, they could arrange lenses to magnify what the eye cannot resolve, near and far. The strand returns to their development again under trial and error.",
       {});
   }
@@ -3186,9 +3186,9 @@ E("s8-u3-telescope-types", 3, ["SC8.8.2"], 2, "var", varset([
   function () {
     return mcq("A reflecting telescope and a refracting telescope collect light from distant objects in different ways. Which description is correct?",
       "A reflecting telescope uses a large concave mirror to collect and focus the light; a refracting telescope uses lenses",
-      ["A reflecting telescope uses lenses; a refracting telescope uses a concave mirror",
-       "Both use concave mirrors; they differ only in size",
-       "A reflecting telescope uses a convex mirror, which is why its images are smaller"],
+      ["A reflecting telescope collects light with lenses; a refracting telescope collects light with a large concave mirror",
+       "Both kinds of telescope use large concave mirrors to collect light; they differ only in the size of the mirror",
+       "A reflecting telescope uses a convex mirror to collect its light, which is why the images it forms are smaller"],
       "The names say it: reflecting telescopes reflect, using a concave primary mirror (the Keck telescope's mirror is 10 m across) to gather light; refracting telescopes refract, using lenses. Binoculars are two small refracting telescopes mounted side by side.",
       {});
   }
@@ -3200,9 +3200,9 @@ E("s8-u3-freq-wave", 3, ["SC8.8.3"], 1, "var", varset([
   function () {
     return mcq("Which definitions of frequency and wavelength are correct?",
       "Wavelength is the distance between two neighbouring crests (or troughs); frequency is the number of waves passing a point in a given time, such as one second",
-      ["Wavelength is the number of waves per second; frequency is the distance between crests",
-       "Wavelength is the height of a crest; frequency is the speed of the wave",
-       "Frequency and wavelength are two names for the same measurement"],
+      ["Wavelength is the number of complete waves that pass a point in one second; frequency is the distance between neighbouring crests",
+       "Wavelength is the height of a wave's crest above the rest position; frequency is the speed at which the wave travels",
+       "Frequency and wavelength are simply two different names used for one and the same measurement of a wave"],
       "The guide insists on the words because they are easy to swap. Wavelength measures a length: crest to crest. Frequency measures a rate: how many waves pass a point per second. The stadium wave analogy helps: the spacing of the standing sections is like wavelength; how often they rise per minute is like frequency.",
       {});
   }
@@ -3212,9 +3212,9 @@ E("s8-u3-freq-relation", 3, ["SC8.8.3"], 2, "var", varset([
   function () {
     return mcq("A radio station broadcasts at 94.7 MHz and another at 95.9 MHz. A student says the second station's waves must have the longer wavelength 'because its number is bigger.' Correct the student using the frequency and wavelength relationship.",
       "The student has it backwards: higher frequency means shorter wavelength, so the 95.9 MHz waves are the shorter ones",
-      ["The student is right: frequency and wavelength grow together",
-       "Neither station has a wavelength, because radio waves are not light",
-       "The wavelengths are identical, because all radio waves share one wavelength"],
+      ["The student is right about the relationship: frequency and wavelength grow larger together, in step",
+       "Neither of the two stations has a wavelength at all, because radio waves are not a form of light",
+       "The wavelengths of the two stations are identical, because every radio wave shares one single wavelength"],
       "Frequency and wavelength are inversely related for waves travelling at the same speed: high frequency waves have short wavelengths, and low frequency waves have long wavelengths. Radio stations are identified by frequency (the guide's example is OZ FM at 94.7 MHz on the Avalon Peninsula), so the bigger frequency number means the shorter wavelength.",
       {});
   }
@@ -3233,8 +3233,8 @@ E("s8-u3-cr-words", 3, ["SC8.8.3"], 2, "var", varset([
 
 E("s8-u3-effects", 3, ["SC8.8.4"], 3, "gen", function () {
   var cases = [
-    { q: "Which analysis of a technology's effects is best supported?", k: "X-ray machines give doctors a way to detect injuries without surgery (positive), but each exposure adds a dose of higher-energy radiation, so exposures are limited and shielded (negative)", w: ["X-ray machines have only positive effects, because they are medical", "Microwave ovens are dangerous in the same way as gamma sources, because all radiation is equally harmful", "Cell phones have no effects worth discussing, positive or negative"] },
-    { q: "A safety pamphlet is being written about ultraviolet radiation. Which statement belongs in it?", k: "Ultraviolet is higher-energy radiation that can damage skin and eyes with overexposure, so protection such as sunscreen and sunglasses is advised, even though moderate exposure has uses such as tanning", w: ["Ultraviolet is the lowest-energy radiation and needs no precautions", "Ultraviolet exposure is beneficial in unlimited amounts", "Sunglasses protect the eyes from gamma radiation at the beach"] }
+    { q: "Which analysis of a technology's effects is best supported?", k: "X-ray machines give doctors a way to detect injuries without surgery (positive), but each exposure adds a dose of higher-energy radiation, so exposures are limited and shielded (negative)", w: ["X-ray machines have only positive effects on the patients who are examined with them in hospitals, because they are medical devices used by doctors", "Microwave ovens are dangerous to their users in the same way that gamma ray sources are dangerous, because every kind of radiation is equally harmful to the human body at any exposure", "Cell phones have no effects at all on the people who use them every day that are worth discussing in this strand, either positive effects or negative ones"] },
+    { q: "A safety pamphlet is being written about ultraviolet radiation. Which statement belongs in it?", k: "Ultraviolet is higher-energy radiation that can damage skin and eyes with overexposure, so protection such as sunscreen and sunglasses is advised, even though moderate exposure has uses such as tanning", w: ["Ultraviolet is the lowest-energy form of radiation found in sunlight at the beach, so it needs no precautions of any kind from the people exposed to it", "Exposure to ultraviolet radiation is beneficial to the skin and the eyes in unlimited amounts, at any time of day, so no limit on time in the sun is ever needed for anyone", "Sunglasses are worn at the beach in summer to protect the eyes from the gamma radiation that is present in the sunlight reaching the sand there"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3246,9 +3246,9 @@ E("s8-u3-harm-energy", 3, ["SC8.8.4"], 1, "var", varset([
   function () {
     return mcq("Generally, which electromagnetic radiation is the most dangerous to humans, and which is the least?",
       "Gamma rays (high frequency, short wavelength, high energy) are generally the most dangerous; radio waves (low frequency, long wavelength, low energy) are the least",
-      ["Radio waves are the most dangerous; gamma rays are the least",
-       "Visible light is the most dangerous, because we are exposed to it constantly",
-       "All types are equally dangerous at any exposure"],
+      ["Radio waves are the most dangerous type of radiation of all; gamma rays, at the other end of the spectrum, are the least dangerous of all",
+       "Visible light is the most dangerous type of radiation there is, because we are exposed to it constantly, all day long, wherever we go",
+       "All types of electromagnetic radiation, from radio waves to gamma rays, are equally dangerous to people, at any level of exposure to them"],
       "The guide's general rule: exposure to high frequency, short wavelength radiation, such as gamma rays, is generally more dangerous, and low frequency, long wavelength radiation, such as radio waves, is generally less dangerous. High frequency waves are the high energy waves, and energy is what does the damage.",
       {});
   }
@@ -3258,9 +3258,9 @@ E("s8-u3-atmosphere", 3, ["SC8.8.4"], 3, "var", varset([
   function () {
     return mcq("Astronauts outside Earth's atmosphere face a harsher radiation environment than people on the surface, even at the same distance from the Sun. Which explanation is correct?",
       "Earth's atmosphere blocks or absorbs much of the dangerous higher-energy radiation from space, and that protection is missing outside it",
-      ["Space contains more radiation because astronauts are closer to the stars",
-       "The atmosphere generates radiation that cancels the Sun's radiation at the surface",
-       "Spacesuits attract radiation, which is the whole problem"],
+      ["Space contains more radiation simply because astronauts travelling there are closer to the stars that produce it",
+       "The atmosphere above us generates its own radiation, which cancels out the Sun's radiation at the surface below",
+       "The spacesuits astronauts wear attract the radiation toward them, and that attraction is the whole problem"],
       "The guide ties habitability to shielding: Earth's atmosphere protects us from some of the more dangerous electromagnetic radiation present in space, which is part of what makes the surface safe for humans adapted to these conditions. Remove the atmosphere, as in space or on another planet, and the exposure rises sharply.",
       {});
   }
@@ -3272,9 +3272,9 @@ E("s8-u3-trial-error", 3, ["SC8.8.5"], 2, "var", varset([
   function () {
     return mcq("The Fibre Optics core STSE traces light communication from polished-shield signals and heliographs, through Bell's photophone, to lasers, and finally to fibre optic cable. Which statement best describes the development pattern the story shows?",
       "Each generation solved a problem the previous one exposed, and progress waited on materials: fibre optics became possible only when very pure glass could be drawn into hair-thin strands that guide light by reflection",
-      ["Fibre optics were invented in a single step by one inventor who foresaw the whole design",
-       "The photophone failed because its inventors did not understand light at all",
-       "Development was random: each device was unrelated to the ones before it"],
+      ["Fibre optics were invented in a single step by one inventor, working alone in a workshop, who foresaw the whole design of the finished system in every detail from the start",
+       "The photophone failed in the end simply because the people who invented it and tried to sell it did not understand the behaviour of light at all, in any of its forms",
+       "The development was essentially random from start to finish: each new device appeared on its own, unrelated to any of the devices that came before it in the story of light communication"],
       "The STSE's pattern is systematic trial and error under material constraints. Heliographs needed sun and line of sight; the photophone (1880) carried voice on light but weather and interference defeated it; lasers gave a concentrated beam but fog and buildings still blocked it; the answer was to guide the light inside a cable, which required glass pure and fine enough to serve as the core. Two companies, Corning and Siemens, combined their fibre and cabling work for the first cable in 1977.",
       {});
   }
@@ -3284,9 +3284,9 @@ E("s8-u3-materials-constraint", 3, ["SC8.8.5"], 1, "var", varset([
   function () {
     return mcq("Contact lenses could only become practical once a material existed that was transparent, shaped to refract light correctly, and safe and comfortable against the eye for hours. Which statement about optical technology does this example illustrate?",
       "Optical technologies develop through trial and error constrained by the optical properties of the available materials",
-      ["Optical technologies appear as soon as the idea for them is written down",
-       "The material used in an optical device has no effect on its design",
-       "Contact lenses work by reflection, so their material does not refract"],
+      ["New optical technologies appear in workshops as soon as the idea for them is first written down on paper",
+       "The material that an optical device is made from has no effect at all on how the device must be designed",
+       "Contact lenses work by reflecting light at their surfaces, so the material they are made of never refracts light"],
       "The guide's framing for this indicator: advances in optical technology follow the development of materials suited to the application. Lenses of any kind are hostage to their material's optical properties; contact lenses waited on a material that could be worn on the eye itself.",
       {});
   }
@@ -3305,8 +3305,8 @@ E("s8-u3-cr-fibre", 3, ["SC8.8.5"], 3, "var", varset([
 
 E("s8-u3-research-tech", 3, ["SC8.8.6"], 1, "gen", function () {
   var cases = [
-    { q: "Which example shows an optical technology enabling scientific research?", k: "Astronomy teams use large telescopes to survey the universe and gather light from objects too faint for the eye", w: ["A hockey player wears a face shield during a game", "A driver uses headlights on a dark road", "A student reads a book under a lamp"] },
-    { q: "Which personal activity is directly related to the optical technologies researchers use?", k: "Using a magnifying glass or a backyard telescope to observe specimens and the night sky", w: ["Wearing sunglasses at the beach", "Watching a movie at a theatre", "Using a microwave to heat lunch"] }
+    { q: "Which example shows an optical technology enabling scientific research?", k: "Astronomy teams use large telescopes to survey the universe and gather light from objects too faint for the eye", w: ["A hockey player wears a clear plastic face shield fitted on a helmet during a league game at the local arena", "A driver switches on the headlights of a car to see the road while driving along a dark road at night in the country", "A student sits at a desk at home in the evening and reads a book for school under the light of a desk lamp"] },
+    { q: "Which personal activity is directly related to the optical technologies researchers use?", k: "Using a magnifying glass or a backyard telescope to observe specimens and the night sky", w: ["Wearing a pair of sunglasses at the beach on a bright afternoon in summer", "Watching a movie on the large screen of a theatre in town on the weekend", "Using a microwave oven in the cafeteria to heat up a lunch brought from home"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3318,9 +3318,9 @@ E("s8-u3-personal-optics", 3, ["SC8.8.6"], 1, "var", varset([
   function () {
     return mcq("Which list contains only optical technologies, of the kind this strand studies?",
       "Face shields on hockey helmets, car headlights, flashlights, magnifying glasses, eyeglasses, contact lenses, microscopes, telescopes and cameras",
-      ["Face shields, headlights, radios, magnifying glasses and telescopes",
-       "Eyeglasses, contact lenses, microwave ovens and cameras",
-       "Flashlights, telescopes, cell phones and microscopes"],
+      ["Face shields, car headlights, radios, televisions, electric kettles, hair dryers, magnifying glasses and telescopes",
+       "Eyeglasses, contact lenses, microwave ovens, radios, toasters, televisions, hair dryers, electric kettles and cameras",
+       "Flashlights, telescopes, cell phones, microwave ovens, radios, toasters, televisions, hair dryers and microscopes"],
       "Every item on the correct list works by reflection or refraction of light, and the list is the guide's own example set for this indicator. Radios, microwaves and cell phones belong to the wider EM spectrum study, but they are not optical technologies.",
       {});
   }
@@ -3341,9 +3341,9 @@ E("s8-u3-individual-group", 3, ["SC8.8.7"], 1, "var", varset([
   function () {
     return mcq("Which pairing correctly illustrates individual and group scientific and technological activity in optics?",
       "Individual: a lens maker grinding and testing lenses in a workshop. Group: an astronomy team surveying the universe with a shared observatory",
-      ["Individual: the international Hubble telescope programme. Group: a single student with a magnifying glass",
-       "Individual and group work never both occur in the same field",
-       "Individual: an astronomy team. Group: a lone inventor"],
+      ["Individual: the international Hubble telescope programme with its many teams. Group: a single student working with a magnifying glass",
+       "Individual work and group work never both occur within one and the same field of science and technology",
+       "Individual: an astronomy team working at an observatory. Group: a lone inventor working alone at home"],
       "The guide's own contrast: some optics work is done by individuals, such as lens makers, and some by groups, such as astronomy teams investigating and surveying the universe. Modern flagships like the Hubble telescope are group work on the largest scale, while the craft tradition of the individual lens maker continues.",
       {});
   }
@@ -3353,9 +3353,9 @@ E("s8-u3-corning-siemens", 3, ["SC8.8.7"], 2, "var", varset([
   function () {
     return mcq("The first fibre optic cable, in 1977, combined Corning's fibre technology with Siemens' cabling technology. What does this example illustrate about scientific and technological activity?",
       "Major technologies often result from groups and organizations combining different expertise, not from a single worker",
-      ["Companies never share expertise in developing technology",
-       "The cable was the work of one individual at one company",
-       "Fibre optics required no scientific knowledge, only manufacturing"],
+      ["Companies working on new technology never share any of their expertise with one another during development",
+       "The finished cable was the work of one single individual, working alone at one of the two companies",
+       "Fibre optics required no scientific knowledge of light at all, only the manufacturing skill to make the cable"],
       "Neither company held the whole solution: one had the fibre, the other the cable. Their joint work is the STSE's clearest case of technological activity as a group enterprise, set beside individual workers like lens makers elsewhere in the strand.",
       {});
   }
@@ -3365,9 +3365,9 @@ E("s8-u3-hubble", 3, ["SC8.8.7"], 2, "var", varset([
   function () {
     return mcq("The Hubble Space Telescope was designed, built, launched and operated by large teams across many institutions and countries, and its mirror flaw was corrected by a servicing mission planned by still more teams. Which conclusion about optics work does Hubble best support?",
       "Modern optical research is predominantly group activity, building cumulatively on earlier workers' knowledge from Galileo and Newton onward",
-      ["One individual can still complete a flagship optical instrument alone",
-       "Hubble shows that group work produces flawed results and should be avoided",
-       "Optics knowledge was complete by Newton's time and has not changed since"],
+      ["One talented individual, working alone, can still design and complete a flagship optical instrument like Hubble",
+       "Hubble shows that work done by large groups produces flawed results, and that group work should be avoided in optics",
+       "Our knowledge of optics was already complete by Newton's time, and nothing about it has changed since then"],
       "The guide presents the line from Galileo to Newton to Hubble and laser technologies as knowledge under continuous, collective development: today's understanding is not stagnant and will be extended. Hubble's scale, and the team effort that repaired it, are the modern face of that group activity.",
       {});
   }
@@ -3379,9 +3379,9 @@ E("s8-u3-new-questions", 3, ["SC8.9.1"], 2, "var", varset([
   function () {
     return mcq("After studying the electromagnetic spectrum, a class brainstorms new questions that arise from what they learned. Which question genuinely arises from the spectrum material?",
       "If ultraviolet radiation is invisible and can damage skin, how much ultraviolet reaches us on a cloudy day, and does sunscreen block all of it?",
-      ["Why is the sky blue on some days and grey on others?",
-       "How do plants make food from sunlight?",
-       "What is the capital of every country that uses X-rays?"],
+      ["Why does the sky over the harbour look blue on some days of the year and grey and overcast on other days instead of blue?",
+       "How do the plants growing in a school garden make their own food from the sunlight that falls on their leaves through the day?",
+       "What is the capital city of every country in the world where X-ray machines are used in the hospitals of its towns and cities?"],
       "A question arises from what was learned when it grows out of the material itself: the spectrum study establishes that ultraviolet is invisible, energetic and harmful, and the question pushes exactly there. The other questions are fine questions, but they belong to other topics and other courses.",
       {});
   }
@@ -3391,9 +3391,9 @@ E("s8-u3-new-problem", 3, ["SC8.9.1"], 1, "var", varset([
   function () {
     return mcq("Studying fibre optics raises a practical problem for a school board: older buildings have copper wiring that is slow for the school's network. Which statement frames the problem the new learning creates?",
       "Can fibre optic cable be installed in the older buildings, and would its light-based signals solve the speed problem the copper creates?",
-      ["Why did the school board not invent fibre optics itself?",
-       "Copper wiring should be banned everywhere immediately",
-       "The school's network is a problem with no connection to optics"],
+      ["Why did the school board not simply invent fibre optic cable itself when the buildings were first wired?",
+       "Copper wiring should simply be banned in every building everywhere, starting immediately, whatever it costs",
+       "The speed of the school's network is a problem for the board, but it has no connection to optics at all"],
       "New learning creates new problems when it reveals a better possibility: knowing that fibre carries signals as light, quickly and without electrical interference, turns the old copper installation into a defined problem with a testable solution.",
       {});
   }
@@ -3403,9 +3403,9 @@ E("s8-u3-new-problem", 3, ["SC8.9.1"], 1, "var", varset([
 
 E("s8-u3-definitions", 3, ["SC8.9.2"], 1, "gen", function () {
   var cases = [
-    { q: "In a reflection diagram, what is the normal?", k: "The line drawn perpendicular (at 90 degrees) to the surface at the point where the ray strikes it", w: ["The line along the mirror's surface at the point of reflection", "The incoming ray itself", "The line halfway between the surface and the reflected ray"] },
+    { q: "In a reflection diagram, what is the normal?", k: "The line drawn perpendicular (at 90 degrees) to the surface at the point where the ray strikes it", w: ["The line running along the surface of the mirror itself at the point where the ray reflects", "The incoming ray itself, travelling toward the mirror", "The line drawn halfway between the surface of the mirror and the reflected ray leaving it"] },
     { q: "Which term names the ray that travels toward a mirror and strikes it?", k: "The incident ray", w: ["The reflected ray", "The normal", "The refracted ray"] },
-    { q: "What is the angle of incidence, operationally?", k: "The angle between the incident ray and the normal, measured at the point of incidence", w: ["The angle between the incident ray and the mirror's surface", "The angle between the reflected ray and the surface", "The angle between the two mirrors in a periscope"] }
+    { q: "What is the angle of incidence, operationally?", k: "The angle between the incident ray and the normal, measured at the point of incidence", w: ["The angle between the incoming incident ray and the surface of the mirror it strikes", "The angle between the reflected ray leaving the mirror and the surface of the mirror", "The angle formed between the two mirrors mounted inside the tube of a periscope"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3431,9 +3431,9 @@ E("s8-u3-operational", 3, ["SC8.9.2"], 2, "var", varset([
   function () {
     return mcq("A class watches a tennis ball bounce off the floor at several angles and maps its path, then does the same with a ray box and mirror. Which statement best formulates the operational definition they are building toward?",
       "For both the ball and the light ray, the angle at which the path meets the normal before the bounce equals the angle at which it leaves after the bounce",
-      ["Balls and light always bounce straight back the way they came",
-       "The bounce angle depends only on how hard the ball is thrown",
-       "Light obeys the bounce pattern only when a protractor is present"],
+      ["Balls and rays of light, in every case, always bounce straight back along exactly the same path by which they came in to the surface",
+       "The angle at which the path bounces off the surface depends only on how hard the ball happens to be thrown at the floor by the student",
+       "A ray of light obeys the bounce pattern only on those occasions when a protractor is present on the bench to measure the angles it makes"],
       "Operational definitions come from operations: doing the bouncing and measuring. Ball and ray behave the same way, which is why the guide introduces reflection through the ball demonstration: measure against the normal on both sides, and the equality is the definition in action.",
       {});
   }
@@ -3445,9 +3445,9 @@ E("s8-u3-protractor", 3, ["SC8.9.3"], 1, "var", varset([
   function () {
     return mcq("In Core Lab 5-2B, a group keeps getting angles of reflection a few degrees off their angles of incidence. Which practice most improves their accuracy?",
       "Draw the normal carefully at the exact point of incidence, place the protractor's centre on that point, and measure both angles from the normal",
-      ["Measure the incidence angle from the normal and the reflection angle from the mirror's surface",
-       "Estimate the angles by eye and average the group's guesses",
-       "Measure from the surface for both angles, since the surface is easier to see"],
+      ["Measure the angle of incidence from the normal as usual, but measure the angle of reflection from the mirror's surface itself",
+       "Estimate both of the angles by eye alone and then average the guesses made by the members of the group",
+       "Measure both of the angles from the surface of the mirror instead, since the surface is easier to see clearly"],
       "Accurate mirror work is a chain of small disciplines: the rays drawn straight with a ruler from marked dots, the normal drawn at the point of incidence, the protractor centred on that point, and both angles read from the normal. Mixing references (normal for one angle, surface for the other) manufactures exactly the few-degrees error described.",
       {});
   }
@@ -3519,9 +3519,9 @@ E("s8-u3-real-virtual", 3, ["SC8.9.3"], 1, "var", varset([
   function () {
     return mcq("On a ray diagram, how do you distinguish a real image from a virtual image?",
       "A real image forms in front of the mirror where the reflected rays actually meet; a virtual image forms behind the mirror where the rays' extensions appear to meet",
-      ["A real image is always larger; a virtual image is always smaller",
-       "A real image is upright; a virtual image is inverted",
-       "A real image can be seen only in photographs; a virtual image only in person"],
+      ["A real image is always larger than the object that forms it in front of the mirror; a virtual image is always smaller than the object that forms it",
+       "A real image always stands upright in front of the mirror that forms it; a virtual image, formed behind the mirror, is always inverted instead",
+       "A real image can be seen only in photographs taken of it; a virtual image can be seen only in person, never photographed"],
       "The guide limits the distinction to location on the diagram, and that is enough: rays actually converging in front of the mirror make a real image (it could be caught on a screen); rays that must be extrapolated backward to a meeting point behind the mirror make a virtual one. Size and orientation vary independently.",
       {});
   }
@@ -3542,9 +3542,9 @@ E("s8-u3-delimit", 3, ["SC8.9.4"], 2, "var", varset([
   function () {
     return mcq("A student's investigation question reads: 'Everything about how mirrors work.' Which revision properly defines and delimits it for an investigation?",
       "How does the angle of incidence of a ray on a plane mirror compare with its angle of reflection, for angles between 20 and 60 degrees?",
-      ["How do mirrors work in the universe?",
-       "Why are mirrors interesting?",
-       "What is the complete history of mirrors?"],
+      ["How do mirrors of every kind, plane and curved alike, work, everywhere in the universe and throughout all of history?",
+       "Why are mirrors so interesting to look at for people of all ages, and why do people enjoy playing with them so much?",
+       "What is the complete history of mirrors in human civilization, from the earliest polished metal mirrors to the present day?"],
       "Delimiting narrows a topic to a measurable question with boundaries: one mirror type, two named angles to compare, and a stated range. The original and the other options have no variables and no edges, so no investigation could finish them.",
       {});
   }
@@ -3554,9 +3554,9 @@ E("s8-u3-delimit-problem", 3, ["SC8.9.4"], 1, "var", varset([
   function () {
     return mcq("A team wants to investigate why the school gymnasium's windows produce glare on the floor during morning classes. Which problem statement is delimited well enough to investigate?",
       "Between 9 and 10 a.m., sunlight reflecting off the gym's east windows creates glare patches on the floor; the team will test which window covering removes the glare while keeping the gym usable",
-      ["The gym is too bright sometimes and something should be done",
-       "Sunlight is a problem for all schools everywhere",
-       "The team will solve glare in every building in the province"],
+      ["The school gymnasium is too bright inside at some times of the day, on some days of the week, and something should really be done about the brightness eventually, by somebody",
+       "Sunlight coming through classroom windows is a problem for all schools, in all places in the country, at all times of the day and in every season of the school year",
+       "The team will take on the job of solving, once and for all, the problem of window glare in every school building in every community in the whole province this year"],
       "A delimited problem names the place, the time, the phenomenon and the test to run. Province-wide and someday statements cannot be investigated by a school team; the first option can be, in a week of mornings.",
       {});
   }
@@ -3568,9 +3568,9 @@ E("s8-u3-hypothesis", 3, ["SC8.9.5"], 2, "var", varset([
   function () {
     return mcq("Before Core Lab 5-2B, a student must state a hypothesis about reflection. Which statement is a proper hypothesis for the lab?",
       "If a ray strikes a plane mirror at a measured angle of incidence, then the angle of reflection will equal it, because the law of reflection governs every ray at a smooth surface",
-      ["Mirrors are fun to work with and the lab will be interesting",
-       "The angle of reflection might do something when we shine the light",
-       "Reflection was discovered a long time ago by scientists"],
+      ["Mirrors are fun to work with in the laboratory during science class, and everyone in the class expects the reflection lab to be an interesting one to do",
+       "The angle of reflection might perhaps do something or other, we are not sure what, when we shine the light from the ray box onto the surface of the mirror",
+       "The reflection of light off smooth surfaces was discovered a very long time ago by scientists working in the distant past, long before this laboratory was built"],
       "A hypothesis is a testable statement with a reason attached: it predicts the measurable outcome (equal angles) and grounds the prediction (the law). Opinions, vague gestures and history are not hypotheses because the lab cannot test them.",
       {});
   }
@@ -3580,9 +3580,9 @@ E("s8-u3-prediction", 3, ["SC8.9.5"], 1, "var", varset([
   function () {
     return mcq("A group has measured angles of incidence and reflection of 20 and 20, 35 and 35, and 50 and 50 degrees. Based on the pattern, what is the sound prediction for a new trial at 65 degrees incidence, and what is it based on?",
       "The angle of reflection will be 65 degrees, based on the observed pattern that the two angles are always equal",
-      ["The angle of reflection will be 25 degrees, because the angles must add to 90",
-       "No prediction is possible from only three trials",
-       "The angle of reflection will be 130 degrees, doubling as the trials proceed"],
+      ["The angle of reflection will be 25 degrees, because the two angles in each trial must always add up to 90 degrees",
+       "No prediction of any kind is possible from the results of only three trials of the experiment",
+       "The angle of reflection will be 130 degrees, because the reflection angle doubles each time as the trials proceed"],
       "A prediction extends an observed pattern: three trials all show equality, so the next trial is predicted to show it too. Predictions are only as good as the pattern behind them, which is why the lab collects several angles instead of one.",
       {});
   }
@@ -3594,9 +3594,9 @@ E("s8-u3-safety", 3, ["SC8.9.6"], 1, "var", varset([
   function () {
     return mcq("Which practice is the safe and correct way to work with the ray box and mirrors in the optics labs?",
       "Never look directly into the ray box beam or shine it toward anyone's eyes, and handle mirrors by their edges to avoid cuts from chipped glass",
-      ["Look along the beam to check it is straight before measuring",
-       "Shine the beam at a partner's mirror to test their reflexes",
-       "Carry mirrors loosely in one hand while moving around the room"],
+      ["Look directly along the beam of the ray box with one eye held close to it to check that the beam is straight before measuring angles",
+       "Shine the beam of the ray box across the room at a partner's mirror on another bench to test how quick their reflexes are in catching it",
+       "Carry the mirrors loosely in one hand, without their cases, while walking around the room from bench to bench during the lab period"],
       "Optics apparatus has two standing hazards: beams aimed at eyes, and glass that can chip or break. The safe habits are to keep beams on the bench and away from eyes, and to handle mirrors carefully by their edges. Bench skill is classroom assessment; this entry carries the safety knowledge.",
       {});
   }
@@ -3608,9 +3608,9 @@ E("s8-u3-conclusion", 3, ["SC8.9.7"], 2, "var", varset([
   function () {
     return mcq("A group's reflection data read: incidence 15, reflection 15; incidence 30, reflection 29; incidence 45, reflection 46; incidence 60, reflection 60. Which conclusion is properly based on this data?",
       "The angle of reflection equals the angle of incidence, within the small measurement errors expected from protractor work",
-      ["The law of reflection is disproved, because two trials are off by one degree",
-       "The angle of reflection is sometimes larger and sometimes smaller, so no pattern exists",
-       "The group should change the two off values to match the law exactly"],
+      ["The law of reflection is disproved by this data, because two of the four trials are off by a single degree each",
+       "The angle of reflection in the data is sometimes larger and sometimes smaller than the incidence angle, so no pattern exists in it",
+       "The group should simply change the two values that are off by a degree so that all the data match the law exactly"],
       "Conclusions respect both the pattern and the instrument. Three exact matches and two misses of a single degree, the width of a pencil line on a protractor, support the law with measurement error named. Fudging the numbers to perfection would corrupt the data; declaring the law dead over one degree would ignore how measurement works.",
       {});
   }
@@ -3620,9 +3620,9 @@ E("s8-u3-evidence", 3, ["SC8.9.7"], 2, "var", varset([
   function () {
     return mcq("A student began the refraction unit predicting that light bends toward the normal when it speeds up. After Core Lab 5-1D, her diagrams show rays bending toward the normal as they enter water, where light travels more slowly. Which statement correctly relates her evidence to her initial idea?",
       "The evidence refutes her initial idea: bending toward the normal happens when light slows down entering a denser medium, the opposite of her prediction",
-      ["The evidence supports her idea, because the rays did bend toward the normal as she said",
-       "The evidence is unrelated to her idea, because diagrams are not evidence",
-       "Her idea and the evidence agree, since water is less dense than air"],
+      ["The evidence gathered in the lab supports her original idea, because the rays did bend toward the normal, just as she said they would",
+       "The evidence from the lab is unrelated to her original idea, because ray diagrams drawn on paper are not evidence",
+       "Her original idea and the lab evidence agree with each other, since water is a less dense medium than air is"],
       "Evidence work means comparing the claim with the result on the claim's own terms. She predicted the bend would accompany speeding up; the lab shows the bend toward the normal accompanying slowing down in the denser medium. The direction she named was right and the mechanism she attached to it was wrong, so the idea as stated is refuted and must be revised.",
       {});
   }
@@ -3643,9 +3643,9 @@ E("s8-u3-fish-question", 3, ["SC8.9.8"], 2, "var", varset([
   function () {
     return mcq("A fisher notices that a trout under the water is never quite where it appears to be. Which question turns this practical problem into an investigation of refraction?",
       "By how much does the apparent depth of an object under water differ from its real depth, and does the difference grow as the viewing angle changes?",
-      ["Why do trout avoid being caught?",
-       "Is fishing better in the morning or the evening?",
-       "Who first noticed that fish look displaced?"],
+      ["Why do the trout living in a pond learn, over a single season, to avoid being caught by the people who come to fish for them there?",
+       "Is fishing for trout in a pond better early in the morning, before the sun is high, or later on in the evening of the same day?",
+       "Who was the first person in recorded history to notice that fish under the water of a pond look displaced from where they really are?"],
       "The practical problem is the displacement. The investigable version measures it (apparent versus real depth) and varies a condition (viewing angle). The bent stick and the fish are the guide's own examples of refraction questions arising from practical problems.",
       {});
   }
@@ -3655,9 +3655,9 @@ E("s8-u3-coin-question", 3, ["SC8.9.8"], 1, "var", varset([
   function () {
     return mcq("A coin at the bottom of an empty opaque cup is hidden by the cup's rim. When water is poured in, the coin appears, as if it floated up. Which question should the class investigate from this demonstration?",
       "How does the water change the path of light from the coin so that it reaches the eye over the rim?",
-      ["Why did the coin not really float?",
-       "What is the coin made of?",
-       "How much water does the cup hold?"],
+      ["Why did the coin at the bottom of the cup not really float upward when the water was poured in?",
+       "What kind of metal is the coin at the bottom of the cup made of, and where was it minted?",
+       "How much water, in total, does the opaque cup used in the demonstration hold when it is full?"],
       "The demonstration's puzzle is optical: the coin did not move, its light's path did. The investigable question targets the refraction that bends the light at the surface, the same apparent-position effect as the bent stick and the fish.",
       {});
   }
@@ -3667,8 +3667,8 @@ E("s8-u3-coin-question", 3, ["SC8.9.8"], 1, "var", varset([
 
 E("s8-u3-estimate-bend", 3, ["SC8.9.9"], 2, "gen", function () {
   var cases = [
-    { mode: "toward", q: "The diagram shows a ray passing from air into water. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is smaller: entering the denser medium, the ray bends toward the normal", w: ["The angle of refraction is larger: the ray bends away from the normal", "The angles are equal: refraction never changes the angle", "The angle of refraction is zero: the ray stops at the surface"] },
-    { mode: "away", q: "The diagram shows a ray passing from water into air. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is larger: leaving the denser medium, the ray bends away from the normal", w: ["The angle of refraction is smaller: the ray bends toward the normal", "The angles are equal: the ray continues straight", "The angle of refraction is 90 degrees: the ray runs along the surface"] }
+    { mode: "toward", q: "The diagram shows a ray passing from air into water. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is smaller: entering the denser medium, the ray bends toward the normal", w: ["The angle of refraction is the larger one: the ray bends away from the normal as it enters the water", "The two angles are equal to each other: refraction at a surface never changes the angle of a ray at all", "The angle of refraction is zero degrees: the ray stops at the surface and goes no farther into the water"] },
+    { mode: "away", q: "The diagram shows a ray passing from water into air. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is larger: leaving the denser medium, the ray bends away from the normal", w: ["The angle of refraction is the smaller one: the ray bends toward the normal as it leaves the water", "The two angles are equal to each other: the ray continues perfectly straight across the boundary", "The angle of refraction is 90 degrees: on leaving the water, the ray runs along the surface itself"] }
   ];
   var c = pick(cases);
   var q = mcq(c.q, c.k, c.w,
@@ -3682,9 +3682,9 @@ E("s8-u3-estimate-compare", 3, ["SC8.9.9"], 3, "var", varset([
   function () {
     return mcq("Two rays strike a water surface from the air, one at 20 degrees incidence and one at 55 degrees. A student estimates both refraction angles. Which estimate pattern is sound?",
       "Both refraction angles are smaller than their incidence angles, and the 55 degree ray bends by more degrees than the 20 degree ray",
-      ["Both refraction angles are larger than their incidence angles",
-       "The 20 degree ray bends more than the 55 degree ray, because shallow rays bend most",
-       "Neither ray bends, because both start in air"],
+      ["Both of the refraction angles estimated are larger than the incidence angles they started from",
+       "The ray at 20 degrees bends by more degrees than the ray at 55 degrees, because rays arriving at shallow angles bend the most",
+       "Neither of the two rays bends at the surface at all, because both of them start out travelling in air"],
       "Entering water, every ray bends toward the normal, so every refraction angle is smaller than its incidence angle. The amount of bending grows with the incidence angle: a ray arriving nearly along the normal barely bends, and a steep ray bends the most, which the core lab's changing-angle observations show.",
       {});
   }
@@ -3705,9 +3705,9 @@ E("s8-u3-conduct", 3, ["SC8.9.10"], 2, "var", varset([
   function () {
     return mcq("In Core Lab 5-1D, students trace a refracted ray through a transparent block. Which procedure produces a trustworthy ray path?",
       "Mark two dots in the middle of the incident beam and two in the refracted beam, remove the ray box, and join the dots with a ruler, tracing the block's outline first",
-      ["Draw the ray freehand while the beam shines, estimating where it goes",
-       "Trace the block after measuring, and guess the ray's path from memory",
-       "Mark one dot in each beam and connect them to the corner of the block"],
+      ["Draw the path of the ray freehand on the page while the beam from the ray box is still shining, estimating where the ray goes through the block by eye alone",
+       "Trace the outline of the transparent block on the page only after all the measuring is finished, and guess the ray's path through it from memory afterwards",
+       "Mark a single dot in the middle of each beam on the page and connect those two dots with a line to the nearest corner of the transparent block"],
       "The core lab's method is built for accuracy: the block's outline is traced so it can be replaced exactly, dots mark the beams' centres (two per beam define a line), and a ruler joins them after the apparatus is removed. The guide stresses the process: careful marking is what makes the resulting angles worth measuring.",
       {});
   }
@@ -3717,9 +3717,9 @@ E("s8-u3-method-steps", 3, ["SC8.9.10"], 1, "var", varset([
   function () {
     return mcq("Which sequence correctly orders the steps for describing a refracted ray's path through a transparent medium?",
       "Set up the ray and medium, mark the incident and refracted beams, draw the normal at the boundary point, then measure the angles of incidence and refraction",
-      ["Measure the angles first, then set up the ray to match them",
-       "Draw the normal last, after the angles are recorded",
-       "Remove the medium, guess the path, and check with the ray afterward"],
+      ["Measure the angles of incidence and refraction first, then set up the ray and the medium afterwards to match them",
+       "Draw the normal at the boundary last of all, only after both of the angles have already been measured and recorded",
+       "Remove the transparent medium from the bench, guess the path the ray took through it, and check the guess with the ray afterward"],
       "Method order matters because each step feeds the next: the beams must exist before they can be marked, the normal must be drawn at the true boundary point before angles can be measured from it, and measurement comes last. Angles measured before the normal exists have no reference.",
       {});
   }
@@ -3733,7 +3733,7 @@ E("s8-u3-variables", 3, ["SC8.9.11"], 3, "var", varset([
       "Changed variable: the liquid. Measured variable: the angle of refraction. Kept the same: the angle of incidence, the ray source and the container",
       ["Changed variable: the angle of refraction. Measured variable: the liquid. Kept the same: the container only",
        "Changed variable: the angle of incidence. Measured variable: the liquid. Kept the same: the angle of refraction",
-       "There are no variables to identify, because the liquids are not alive"],
+       "There are no variables of any kind to identify in this experiment, because the liquids being tested are not alive"],
       "Design begins with the variable roles. The group deliberately changes the liquid, measures the refraction angle as the outcome, and holds the incidence angle and apparatus constant so the comparison among liquids is fair. Swapping the changed and measured roles is the classic design error this indicator targets.",
       {});
   }
@@ -3752,9 +3752,9 @@ E("s8-u3-cr-design-refraction", 3, ["SC8.9.11"], 3, "var", varset([
 
 E("s8-u3-bend-rule", 3, ["SC8.9.13"], 1, "gen", function () {
   var cases = [
-    { q: "A light ray travels from air into water at an angle. Which way does it bend?", k: "Toward the normal, because water is denser than air and the light slows down", w: ["Away from the normal, because water is denser than air", "Toward the normal, because the light speeds up in water", "It does not bend, because bending happens only in glass"] },
-    { q: "A light ray travels from glass into air at an angle. Which way does it bend?", k: "Away from the normal, because air is less dense than glass and the light speeds up", w: ["Toward the normal, because air is less dense than glass", "Away from the normal, because the light slows down in air", "Along the normal, because glass always straightens rays"] },
-    { q: "Which statement states the bending rule correctly?", k: "Into a medium of greater density, light bends toward the normal; into a medium of lesser density, it bends away from the normal", w: ["Into a medium of greater density, light bends away from the normal; into a lesser density, toward it", "Light always bends toward the normal, whatever the media", "Light always bends away from the normal, whatever the media"] }
+    { q: "A light ray travels from air into water at an angle. Which way does it bend?", k: "Toward the normal, because water is denser than air and the light slows down", w: ["Away from the normal at the surface, because water is a denser medium than the air above it", "Toward the normal at the surface, because the light speeds up as it enters the water from air", "It does not bend at all at the surface, because bending of light happens only in glass blocks"] },
+    { q: "A light ray travels from glass into air at an angle. Which way does it bend?", k: "Away from the normal, because air is less dense than glass and the light speeds up", w: ["Toward the normal at the surface, because air is a less dense medium than the glass it left", "Away from the normal at the surface, because the light slows down as it leaves the glass for the air", "Straight along the normal itself, because a glass block always straightens out any ray passing through it"] },
+    { q: "Which statement states the bending rule correctly?", k: "Into a medium of greater density, light bends toward the normal; into a medium of lesser density, it bends away from the normal", w: ["Into a medium of greater density, light bends away from the normal; into a lesser density, toward it", "Light always bends toward the normal at a boundary, whatever the two media on either side of it happen to be", "Light always bends away from the normal at a boundary, whatever the two media on either side of it happen to be"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3805,9 +3805,9 @@ E("s8-u3-bend-two-boundary", 3, ["SC8.9.13"], 3, "var", varset([
   function () {
     return mcq("A ray passes from air into a glass block, travels through it, and exits the parallel opposite face back into air. Which description of the ray's full path is correct?",
       "It bends toward the normal entering the glass, travels straight through, then bends away from the normal leaving, emerging parallel to its original direction but shifted sideways",
-      ["It bends away from the normal entering, then toward the normal leaving, emerging along its original line",
-       "It bends toward the normal at both faces and keeps bending inside the glass",
-       "It does not bend at either face, because the two faces cancel out before the ray arrives"],
+      ["It bends away from the normal as it enters the glass, then toward the normal as it leaves, emerging from the block along exactly its original line",
+       "It bends toward the normal at both faces of the block, and it keeps on bending steadily the whole way through the glass inside",
+       "It does not bend at either face of the block, because the effects of the two parallel faces cancel out before the ray even arrives"],
       "Each boundary applies the rule independently. Entering the denser glass: toward the normal. Leaving for the less dense air: away from the normal, by the same amount, because the faces are parallel. The two bends cancel in direction but not in position: the ray emerges parallel to its start, displaced sideways, the classic block result from the core lab family.",
       {});
   }
@@ -3817,8 +3817,8 @@ E("s8-u3-bend-two-boundary", 3, ["SC8.9.13"], 3, "var", varset([
 
 E("s8-u3-predict-media", 3, ["SC8.9.14"], 2, "gen", function () {
   var cases = [
-    { q: "A ray enters three liquids from air at the same angle of incidence: water, vegetable oil, and a 30 percent sugar solution. Knowing that oil and the sugar solution are denser than water, which prediction is sound?", k: "The ray bends more toward the normal in the oil and the sugar solution than in the water, so their angles of refraction are smaller", w: ["The ray bends most in the water, because it is the least dense", "All three bend identically, because the incidence angle is the same", "The ray bends away from the normal in the denser liquids"] },
-    { q: "A student predicts that a ray entering glycerol (denser than water) from air will have a larger angle of refraction than the same ray entering water. Evaluate the prediction.", k: "It is backwards: the denser medium bends the ray more toward the normal, giving a smaller angle of refraction", w: ["It is correct: denser media always give larger refraction angles", "It cannot be evaluated without knowing the temperature", "It is correct, because glycerol is thicker and pushes the ray wider"] }
+    { q: "A ray enters three liquids from air at the same angle of incidence: water, vegetable oil, and a 30 percent sugar solution. Knowing that oil and the sugar solution are denser than water, which prediction is sound?", k: "The ray bends more toward the normal in the oil and the sugar solution than in the water, so their angles of refraction are smaller", w: ["The ray bends the most in the water of the three liquids, because water is the least dense of them", "All three liquids bend the ray by exactly the same amount, because the angle of incidence is the same for all three", "The ray bends away from the normal as it enters each of the denser liquids from the air above them"] },
+    { q: "A student predicts that a ray entering glycerol (denser than water) from air will have a larger angle of refraction than the same ray entering water. Evaluate the prediction.", k: "It is backwards: the denser medium bends the ray more toward the normal, giving a smaller angle of refraction", w: ["The prediction is correct: media that are denser than water always give larger angles of refraction to a ray", "The student's prediction cannot be evaluated at all without first knowing the temperature of the two liquids", "The prediction is correct as stated, because glycerol is a thicker liquid and pushes the entering ray wider apart"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -3929,7 +3929,7 @@ E("s8-u4-nonliving", 4, ["SC8.10.1"], 1, "var", varset([
     "A rock does not grow, move on its own, respond to stimuli or reproduce, and it is not made of cells. Mushrooms, yeast and seaweed are living organisms made of cells.", {}); },
   function () { return mcq("A candle flame gets bigger, flickers and seems to move. Why is a flame not alive?",
     "It is not made of cells and does not reproduce or respond the way organisms do",
-    ["It is too hot to be alive", "It does not need oxygen", "It gives off light"],
+    ["It is simply too hot, as it flickers at the top of the candle, for anything living to survive in it", "It does not need oxygen from the air around it in order to keep burning on the candle", "It gives off light and heat into the room all around it for as long as it burns"],
     "Flames can grow and move, but they are not made of cells, do not reproduce and do not respond to stimuli as organisms do. Living things show all four characteristics and are made of cells.", {}); }
 ]), ["Check each option against the characteristics of life.", "Living things are made of cells."]);
 
@@ -3971,7 +3971,7 @@ E("s8-u4-vacuole-compare", 4, ["SC8.10.2"], 2, "var", varset([
 E("s8-u4-regular-shape", 4, ["SC8.10.2"], 1, "var", varset([
   function () { return mcq("Plant cells usually keep a regular, fixed shape. What gives them this shape?",
     "The cell wall",
-    ["The cell membrane alone", "The large vacuole pushing outward evenly", "The chloroplasts packed together"],
+    ["The cell membrane", "The vacuole", "The chloroplasts"],
     "The rigid cell wall outside the membrane holds the plant cell in a regular shape. Animal cells, with no wall, have more varied shapes.", {}); }
 ]), ["Which plant-only structure is rigid?", "It sits outside the membrane."]);
 
@@ -3996,7 +3996,7 @@ E("s8-u4-division-count", 4, ["SC8.10.3"], 2, "gen", function () {
 E("s8-u4-growth-example", 4, ["SC8.10.3"], 2, "var", varset([
   function () { return mcq("You cut your finger. Over the next week the cut heals as new skin covers it. Where did the new skin cells come from?",
     "Existing skin cells divided by mitosis to produce identical new cells",
-    ["Cells travelled from the stomach to the cut", "The cut produced cells from non-living material", "Bone cells changed into skin cells"],
+    ["Ready-made skin cells travelled through the body from the stomach all the way to the cut", "The cut itself produced the new cells out of non-living material in the bandage and the air", "Bone cells from deep in the finger changed themselves into new skin cells at the cut"],
     "Healing is growth and repair by mitosis: skin cells near the cut divide to produce identical new skin cells that cover the wound.", {}); },
   function () { return mcq("Which is an example of cell division serving reproduction rather than growth?",
     "A bacterium dividing into two bacteria",
@@ -4046,7 +4046,7 @@ E("s8-u4-cr-levels", 4, ["SC8.10.4"], 2, "var", varset([
 E("s8-u4-needs", 4, ["SC8.10.5"], 1, "var", varset([
   function () { return mcq("Cells and whole organisms share the same basic necessities. Which list names them?",
     "Oxygen, nutrients and the removal of wastes",
-    ["Sunlight, soil and shelter", "A skeleton, muscles and nerves", "Seeds, eggs and offspring"],
+    ["Sunlight, soil to root in and shelter from the weather", "A bony skeleton, working muscles and a network of nerves", "Seeds, eggs and the young offspring produced each season"],
     "Every cell needs oxygen and nutrients, and needs its wastes removed, exactly as the whole organism does. The body's systems exist to meet those cell needs.", {}); }
 ]), ["Think about what a single cell must take in and give off.", "The list has three items."]);
 
@@ -4060,7 +4060,7 @@ E("s8-u4-needs-apply", 4, ["SC8.10.5"], 2, "var", varset([
 E("s8-u4-needs-system", 4, ["SC8.10.5", "SC8.10.7"], 3, "var", varset([
   function () { return mcq("A cell deep in your leg muscle needs nutrients that entered your body through a meal. Which pairing of systems gets the nutrients from the meal to that cell?",
     "The digestive system breaks down the food and absorbs the nutrients, and the circulatory system carries them in the blood to the cell",
-    ["The respiratory system absorbs the nutrients and the nervous system carries them", "The excretory system absorbs the nutrients and the muscular system squeezes them to the cell", "The digestive system carries the nutrients itself through tubes to every cell"],
+    ["The respiratory system absorbs the nutrients from the meal and the nervous system carries them in signals to the cell", "The excretory system absorbs the nutrients from the meal and the muscular system squeezes them through the body to the cell", "The digestive system carries the absorbed nutrients itself, through its own tubes, directly to every cell in the leg"],
     "Nutrients pass through the wall of the small intestine into the blood, and the circulatory system transports them to cells throughout the body. The two systems depend on each other to meet the cells' needs.", {}); }
 ]), ["Two systems share this job.", "Absorption first, then transport."]);
 
@@ -4076,18 +4076,18 @@ E("s8-u4-factor-positive", 4, ["SC8.10.6"], 1, "var", varset([
 E("s8-u4-factor-effect", 4, ["SC8.10.6"], 2, "var", varset([
   function () { return mcq("How does smoking most directly harm the respiratory system?",
     "It damages the lungs and airways, so gas exchange becomes less efficient",
-    ["It makes the trachea grow longer", "It increases the number of alveoli", "It strengthens the breathing muscles"],
+    ["It makes the trachea in the throat grow longer and wider than it should be over time", "It increases the number of alveoli in the lungs, giving more surface for gas exchange", "It strengthens the muscles used in breathing, so the lungs work harder with each breath"],
     "Smoke damages the lungs and airways, reducing the surface and the efficiency of gas exchange, so the respiratory system delivers less oxygen to the blood.", {}); },
   function () { return mcq("A diet consistently high in fat most directly puts strain on which system, and why?",
     "The circulatory system, because fatty deposits narrow blood vessels and make the heart work harder",
-    ["The nervous system, because fat blocks nerve signals", "The excretory system, because fat cannot be filtered by the kidneys at all", "The muscular system, because fat replaces muscle tissue completely"],
+    ["The nervous system, because fatty deposits block the signals travelling along the nerves", "The excretory system, because fat in the blood cannot be filtered out by the kidneys at all", "The muscular system, because stored fat replaces healthy muscle tissue completely over time"],
     "Fatty deposits narrow the vessels, raising the heart's workload and reducing the circulatory system's efficiency over time.", {}); }
 ]), ["Name the system the factor acts on.", "Then say how its efficiency changes."]);
 
 E("s8-u4-sedentary", 4, ["SC8.10.6"], 3, "var", varset([
   function () { return mcq("Two students have similar diets. One is active daily; the other is sedentary. After a year, the sedentary student tires much faster climbing stairs. The best explanation is that",
     "without regular activity, the heart and breathing muscles stay less efficient, so oxygen reaches the muscles more slowly during effort",
-    ["the sedentary student's lungs have stopped exchanging gases at rest", "activity permanently enlarges the heart in the active student only", "the sedentary student's blood no longer carries oxygen"],
+    ["the sedentary student's lungs have stopped exchanging gases with the air even while the student is at rest", "Being active permanently enlarges the heart of the active student, and only of that student, over the year", "the sedentary student's blood has lost its ability to carry oxygen from the lungs to the muscles at all"],
     "Exercise keeps the circulatory and respiratory systems efficient. Without it, the heart pumps less effectively and breathing capacity is lower, so during effort the muscles get oxygen more slowly and tire sooner.", {}); }
 ]), ["Compare the two systems' efficiency.", "Oxygen delivery during effort is the key."]);
 
@@ -4102,7 +4102,7 @@ E("s8-u4-cr-factors", 4, ["SC8.10.6"], 3, "var", varset([
 E("s8-u4-pair-circ-resp", 4, ["SC8.10.7"], 1, "var", varset([
   function () { return mcq("How do the circulatory and respiratory systems depend on each other?",
     "The lungs take in oxygen and pass it to the blood, and the blood carries it to the cells and brings carbon dioxide back",
-    ["The heart breathes air in and the lungs pump it around the body", "The blood makes oxygen in the lungs and stores it in the heart", "The lungs filter wastes from the blood in place of the kidneys"],
+    ["The heart is the organ that breathes air in, and the lungs then pump that air around the whole body", "The blood itself makes the oxygen while it is in the lungs and then stores the oxygen in the heart", "The lungs do the job of filtering wastes out of the blood in the place of the kidneys in the body"],
     "The respiratory system exchanges the gases and the circulatory system transports them: oxygen from the lungs to the cells, carbon dioxide from the cells back to the lungs.", {}); }
 ]), ["One system exchanges, the other transports.", "Follow the oxygen, then the carbon dioxide."]);
 
@@ -4120,14 +4120,14 @@ E("s8-u4-pair-nerv-musc", 4, ["SC8.10.7"], 2, "var", varset([
     "Sense organs and the nervous system detect the temperature change and signal muscles to contract rapidly. Shivering is the nervous and muscular systems depending on each other.", {}); },
   function () { return mcq("On a hot day, your face flushes red. What has happened between systems?",
     "The nervous system signalled tiny muscles in the skin's blood vessels to relax, letting more blood flow near the surface and release heat",
-    ["The digestive system sent extra blood to the face for storage", "The excretory system pushed sweat into the blood vessels", "The respiratory system pumped air into the skin vessels"],
+    ["The digestive system sent extra blood up to the vessels of the face, where the blood is stored until the body needs it elsewhere", "The excretory system pushed the sweat it produced into the blood vessels of the skin, which carried the sweat to the face", "The respiratory system pumped fresh air from the lungs directly into the tiny blood vessels in the skin of the face"],
     "The nervous system coordinates the response: muscles in the vessel walls relax under its signals, blood flow near the skin rises, and heat escapes. The nervous, muscular and circulatory systems are interacting.", {}); }
 ]), ["One system senses and signals; another acts.", "Shivering is muscle work ordered by nerves."]);
 
 E("s8-u4-interdependence-why", 4, ["SC8.10.7"], 3, "var", varset([
   function () { return mcq("During a sprint, a runner's breathing rate and heart rate both rise sharply. Why must both rise together?",
     "Working muscles need much more oxygen and produce more carbon dioxide; the lungs must exchange gases faster while the heart transports them faster, so neither system can meet the need alone",
-    ["The heart rises first and forces the lungs to follow by pressure", "Breathing rises to cool the blood, and the heart rises only to move the cooled blood", "Both rates are controlled to rise by the same fixed amount in all situations"],
+    ["The heart rate rises first at the start of the sprint, and the pressure it builds up in the chest forces the lungs to follow along behind it at the same rate", "Breathing rate rises during a sprint mainly in order to cool the runner's blood down, and the heart rate rises only to move that cooled blood around the body to the skin", "Both rates are controlled by the runner's body to rise by exactly the same fixed amount, beat for beat, in every situation that a runner meets on the track"],
     "The systems are interdependent: the respiratory system can only load oxygen as fast as the blood carries it away, and the heart can only deliver what the lungs load. Sprinting raises the cells' demand, so both must increase together.", {}); }
 ]), ["Neither system can do the whole job alone.", "Demand at the cells drives both."]);
 
@@ -4148,14 +4148,14 @@ E("s8-u4-cr-living", 4, ["SC8.10.1"], 2, "var", varset([
 E("s8-u4-early-modern", 4, ["SC8.11.1"], 2, "var", varset([
   function () { return mcq("Ancient peoples explained living things using ideas about air, water and fire. How does the modern cell theory differ most from those early ideas?",
     "It is built on observations made with microscopes, which showed that living things are made of cells",
-    ["It rejects all observations and relies only on tradition", "It explains life using four elements instead of three", "It was developed before any tools for observing existed"],
+    ["It rejects every observation made of living things and relies only on tradition handed down over the years", "It explains all living things using a set of four elements, instead of the three the ancient peoples used", "It was fully developed long before any tools for observing very small things had been invented by anyone"],
     "Early explanations were guesses about the world without ways to observe the very small. The cell theory came from systematic observation once microscopes let scientists see that every living thing is made of cells.", {}); }
 ]), ["What tool changed what could be observed?", "The microscope is the turning point."]);
 
 E("s8-u4-dynamic", 4, ["SC8.11.1", "SC8.11.2"], 3, "var", varset([
   function () { return mcq("Early scientists could not agree on whether tiny organisms seen through early microscopes were really alive. The disagreement was settled mainly because",
     "improved microscopes gave clearer observations, showing the organisms were made of cells with the characteristics of life",
-    ["scientists voted on the question", "the organisms grew larger over time", "early scientists stopped studying the question"],
+    ["the scientists of the time settled the disagreement by voting on the question at a meeting", "the tiny organisms themselves grew larger over time until everyone could agree that they were alive", "the early scientists simply stopped studying the question and moved on to other problems instead"],
     "Science is dynamic: as tools improved, observations became clearer and theories were revised. Better lenses showed cell structures and life processes, settling what the organisms were.", {}); }
 ]), ["What changed: the tools or the organisms?", "Better observations revise theories."]);
 
@@ -4164,7 +4164,7 @@ E("s8-u4-dynamic", 4, ["SC8.11.1", "SC8.11.2"], 3, "var", varset([
 E("s8-u4-micro-development", 4, ["SC8.11.2"], 1, "var", varset([
   function () { return mcq("Leeuwenhoek's microscope used a single small lens, yet he was the first to observe bacteria. Later microscopes, up to the scanning electron microscope, revealed far more. What pattern does this history show?",
     "Optical technology developed through steady improvements, and each improvement let scientists observe more and revise their ideas",
-    ["Each new microscope made the previous discoveries worthless", "Microscopes were perfected in a single step", "Better microscopes ended scientific disagreement about cells"],
+    ["Each new and better microscope that was built made all of the previous discoveries with older ones worthless", "Microscopes were perfected all at once, in a single step, by the first person who built one", "Better microscopes brought scientific disagreement about cells to a complete end, once and for all"],
     "Microscope development was a long process of trial and improvement in lenses and design. Each advance extended what could be observed, and cell science advanced with it.", {}); }
 ]), ["Think about the sequence of tools.", "Better tools, better observations, revised ideas."]);
 
@@ -4224,7 +4224,7 @@ E("s8-u4-organelle-plant", 4, ["SC8.11.3"], 1, "var", varset([
 E("s8-u4-organelle-term", 4, ["SC8.11.3"], 2, "var", varset([
   function () { return mcq("Which comparison of plant and animal cells uses the proper terms correctly?",
     "Both have a cell membrane, but only the plant cell has a cell wall outside it, and the plant cell's vacuole is larger",
-    ["Both have a cell wall, but only the animal cell has a cell membrane", "The plant cell's membrane is outside its wall, unlike the animal cell", "Animal cells have chloroplasts in their cytoplasm, plant cells do not"],
+    ["Both kinds of cell have a cell wall around them, but only the animal cell has a cell membrane inside it", "The plant cell's membrane lies outside its cell wall, unlike the arrangement found in the animal cell", "Animal cells carry chloroplasts scattered in their cytoplasm, while plant cells have no chloroplasts at all"],
     "Every cell has a membrane; plant cells add a wall outside the membrane, and their vacuoles are fewer and larger. (Note: the textbook's plant cell diagram on page 405 prints two labels swapped; A is the cell wall and C is the cell membrane.)", {}); }
 ]), ["Wall outside, membrane inside it.", "Check each claim against the differences."]);
 
@@ -4239,22 +4239,22 @@ E("s8-u4-cr-organelles", 4, ["SC8.11.3"], 2, "var", varset([
 E("s8-u4-tech-examples", 4, ["SC8.11.4"], 1, "var", varset([
   function () { return mcq("Which technology assists or replaces the work of an unhealthy organ?",
     "A dialysis machine, which filters the blood when the kidneys fail",
-    ["A stethoscope, which listens to the heart", "An X-ray machine, which images bones", "A thermometer, which measures temperature"],
+    ["A stethoscope, which listens to the sounds of the heart beating inside the chest", "An X-ray machine, which takes images of the bones inside a patient's body at a hospital", "A thermometer, which measures the temperature of the body or of a liquid in a lab"],
     "Dialysis does the kidney's job of cleaning the blood when the kidneys cannot. The other devices observe or measure; they do not assist or replace an organ's work.", {}); },
   function () { return mcq("An insulin pump is worn by a person with diabetes. Which organ's work is it assisting?",
     "The pancreas, by regulating insulin levels in the blood",
-    ["The liver, by storing extra glucose", "The kidney, by filtering insulin from the blood", "The heart, by pumping insulin around the body"],
+    ["The liver, by storing extra glucose from food", "The kidney, by filtering insulin out of the blood", "The heart, by pumping insulin around the body in the blood"],
     "The insulin pump regulates insulin in the blood, assisting the pancreas, the organ that normally produces insulin.", {}); }
 ]), ["Does the device do the organ's job?", "Dialysis filters blood, like a kidney."]);
 
 E("s8-u4-tech-match", 4, ["SC8.11.4"], 1, "var", varset([
   function () { return mcq("A pacemaker is implanted in a patient's chest. What does it do?",
     "It sends electrical impulses that keep the heart beating in a steady rhythm",
-    ["It filters wastes from the blood", "It pumps blood in place of the heart entirely", "It produces insulin on a schedule"],
+    ["It filters all of the wastes out of the patient's blood as the blood passes through the chest", "It pumps the patient's blood around the body in place of the heart, doing the heart's whole job", "It produces insulin inside the patient's body and releases it on a regular daily schedule"],
     "A pacemaker replaces the heart's faulty electrical signals with steady impulses, so the heart keeps a regular beat. Filtering blood is dialysis; regulating insulin is an insulin pump.", {}); },
   function () { return mcq("A cochlear implant assists which sense organ, and how?",
     "The ear, by converting sound into electrical signals the nerves can carry",
-    ["The eye, by focusing light onto the retina", "The skin, by sensing pressure changes", "The tongue, by detecting chemicals in food"],
+    ["The eye, by focusing the light that enters it onto the retina at the back of the eyeball", "The skin, by sensing changes in pressure against its surface and sending signals to the brain", "The tongue, by detecting the chemicals dissolved in the food and drink that pass over it"],
     "Cochlear implants pick up sound and turn it into electrical impulses for the auditory nerve, assisting a damaged inner ear.", {}); }
 ]), ["Match the device to the organ it assists.", "Pacemaker: heart rhythm. Cochlear: hearing."]);
 
@@ -4274,7 +4274,7 @@ E("s8-u4-knowledge-tech", 4, ["SC8.11.5"], 2, "var", varset([
 E("s8-u4-knowledge-tech2", 4, ["SC8.11.5"], 3, "var", varset([
   function () { return mcq("Artificial heart valves are made of materials the body tolerates and shaped to open and close with blood flow. Which chain best explains how this technology came to exist?",
     "Knowledge of how heart valves work and of suitable materials was applied to design a replacement part",
-    ["The valves were discovered growing naturally and copied exactly", "Surgeons needed the part, so it appeared without any research", "Knowledge of blood cells alone was enough to produce the valve"],
+    ["The working valves were discovered growing naturally inside the body and were copied exactly as found", "Surgeons needed the replacement part, so the part simply appeared for them without any research behind it", "Knowledge of red blood cells alone, and nothing else, was enough for engineers to produce the valve"],
     "Technologies grow out of combined scientific knowledge: valve function, blood flow and material behaviour all had to be understood before a working replacement could be designed.", {}); }
 ]), ["Several kinds of knowledge combine.", "Function plus materials plus flow."]);
 
@@ -4283,7 +4283,7 @@ E("s8-u4-knowledge-tech2", 4, ["SC8.11.5"], 3, "var", varset([
 E("s8-u4-community-need", 4, ["SC8.11.6"], 2, "var", varset([
   function () { return mcq("A community has many residents whose kidneys have failed, but the nearest dialysis unit is hours away. A dialysis unit is built in the local hospital. This is an example of",
     "a community's needs leading to a development in applied science and technology",
-    ["technology creating a need that did not exist", "scientific knowledge replacing community input", "a community choosing to avoid medical technology"],
+    ["a new technology creating a need in the community that had not existed there before it arrived", "scientific knowledge from outside experts replacing the input of the community in every decision", "a community choosing to avoid the use of modern medical technology in its local hospital altogether"],
     "The need existed first: patients needed regular dialysis to survive. The community's need drove the development and placement of the technology.", {}); }
 ]), ["Which came first, the need or the technology?", "Patients needed treatment close to home."]);
 
@@ -4311,7 +4311,7 @@ E("s8-u4-cr-decision", 4, ["SC8.11.7"], 3, "var", varset([
 E("s8-u4-propose-sr", 4, ["SC8.11.8"], 2, "var", varset([
   function () { return mcq("A school is proposing a course of action on energy drinks being sold to students under 18. Which proposal best takes human and environmental needs into account?",
     "Restrict sales to under-18s near schools, with the health evidence explained to students and retailers",
-    ["Ban all drinks in the school, including water", "Ignore the issue because drink sales raise money", "Let each student decide with no information provided"],
+    ["Ban every kind of drink in the school building entirely, including the water students carry with them", "Ignore the issue completely, because the sale of the drinks raises money that the school can spend", "Let each student in the school decide for themselves, with no information about the drinks provided to anyone"],
     "A sound proposal acts on the health evidence (human needs) in a proportionate way and explains itself. Blanket bans on everything and doing nothing both fail the test.", {}); }
 ]), ["Proportionate, evidence-based, explained.", "Human needs include students' health."]);
 
@@ -4324,7 +4324,7 @@ E("s8-u4-cr-propose", 4, ["SC8.11.8"], 3, "var", varset([
 E("s8-u4-personal-decision", 4, ["SC8.11.10"], 2, "var", varset([
   function () { return mcq("A young athlete is offered steroids to build muscle faster. Which reasoning is an informed personal decision based on body systems?",
     "Refuse: steroids can damage the heart, liver and hormone systems, trading long-term health for short-term muscle gain",
-    ["Accept: muscle size is the only measure of a healthy muscular system", "Refuse only because they are expensive", "Accept if a friend has used them without obvious harm yet"],
+    ["Accept them: the size of an athlete's muscles is the only measure that matters of a healthy muscular system", "Refuse the offer only because the steroids cost more money than the athlete can afford to spend", "Accept the offer if a friend at the gym has used the same steroids without any obvious harm showing yet"],
     "An informed decision weighs the science: steroids affect several systems (circulatory, excretory organs such as the liver, and hormonal control), so the personal advantage is outweighed by real disadvantages.", {}); }
 ]), ["Weigh advantage against system damage.", "Short term gain, long term cost."]);
 
@@ -4346,7 +4346,7 @@ E("s8-u4-careers", 4, ["SC8.11.9"], 1, "var", varset([
 E("s8-u4-careers-match", 4, ["SC8.11.9"], 1, "var", varset([
   function () { return mcq("A public health nurse's work connects to body systems mainly by",
     "promoting healthy habits and preventing illness in the whole community",
-    ["operating on damaged organs", "designing artificial organs in a laboratory", "fitting artificial limbs"],
+    ["operating on damaged organs inside patients in the operating room of a hospital", "designing artificial organs in a laboratory for patients whose own organs have failed", "fitting artificial limbs to patients who have lost an arm or a leg in an accident"],
     "Public health nurses work at community level: vaccination, screening and health education that keep body systems healthy. The other roles belong to surgeons, biomedical engineers and prosthetists.", {}); },
   function () { return mcq("Which career works with the digestive system by advising patients on diet?",
     "Nutritionist",
@@ -4359,18 +4359,18 @@ E("s8-u4-careers-match", 4, ["SC8.11.9"], 1, "var", varset([
 E("s8-u4-focus-sequence", 4, ["SC8.12.1"], 1, "var", varset([
   function () { return mcq("Which sequence correctly brings a slide into focus?",
     "Start on low power, focus with the coarse adjustment, then switch to medium power and finish with the fine adjustment",
-    ["Start on the highest power and focus with the coarse adjustment", "Focus with the fine adjustment first, then the coarse", "Switch to medium power before placing the slide on the stage"],
+    ["Start the viewing on the highest power objective and focus the image using the coarse adjustment knob", "Focus with the fine adjustment knob first, and only afterwards turn to the coarse adjustment knob", "Switch the objective to medium power before the prepared slide is placed on the stage of the microscope"],
     "Correct technique starts on low power with the coarse adjustment knob, then moves to medium power and sharpens with the fine adjustment. High power use is not required at this level, and the coarse knob is for low and medium power focusing.", {}); }
 ]), ["Low power first.", "Coarse, then fine."]);
 
 E("s8-u4-parts-action", 4, ["SC8.12.1"], 1, "var", varset([
   function () { return mcq("The image under the microscope is too dim to see the cells clearly. Which part should be adjusted?",
     "The iris diaphragm, which controls the amount of light reaching the specimen",
-    ["The coarse adjustment knob", "The revolving nosepiece", "The base"],
+    ["The coarse adjustment knob, which opens and closes to control the light reaching the specimen", "The revolving nosepiece, which is adjusted to control the amount of light reaching the specimen", "The base, which is turned to control the amount of light that reaches the specimen on the stage"],
     "The iris diaphragm opens and closes to control light. The coarse knob changes focus, the nosepiece changes objectives, and the base is only support.", {}); },
   function () { return mcq("What does the revolving nosepiece do?",
     "It rotates to bring a different objective lens into position",
-    ["It holds the slide in place on the stage", "It focuses the image at high power", "It adjusts the brightness of the light source"],
+    ["It holds the prepared slide firmly in place on the stage while the slide is viewed", "It focuses the image sharply when the microscope is used at its high power setting", "It adjusts the brightness of the light source that shines up through the specimen"],
     "The nosepiece holds the objective lenses and rotates to switch between them. Slides sit on the stage, focusing is done with the adjustment knobs, and the diaphragm controls light.", {}); }
 ]), ["Dim image means a light problem.", "Diaphragm for light; nosepiece for lenses."]);
 
@@ -4383,7 +4383,7 @@ E("s8-u4-cr-microscope", 4, ["SC8.12.1", "SC8.12.3"], 2, "var", varset([
 E("s8-u4-care", 4, ["SC8.12.3"], 1, "var", varset([
   function () { return mcq("Which practice shows proper care of the compound microscope?",
     "Carrying it with one hand under the base and the other on the arm, and storing it covered on low power",
-    ["Carrying it by the tube with one hand", "Storing it with a slide left on the stage", "Cleaning the lenses with a paper towel"],
+    ["Carrying it around the laboratory by its tube, held in one hand while walking", "Storing it away in the cupboard with a prepared slide still left sitting on its stage", "Cleaning the lenses of its objectives with an ordinary paper towel from the bench"],
     "Two-handed carrying (base and arm), removing slides, returning to low power and covering the microscope for storage are the care standards. Lenses are cleaned only with lens paper.", {}); }
 ]), ["Two hands, covered, low power, no slide.", "Lens paper only for lenses."]);
 
@@ -4408,7 +4408,7 @@ E("s8-u4-estimate-gen", 4, ["SC8.12.2"], 2, "gen", function () {
 E("s8-u4-estimate-compare", 4, ["SC8.12.2"], 1, "var", varset([
   function () { return mcq("A student switches from the low power objective to the medium power objective. What happens to the field of view?",
     "It gets smaller, so fewer cells are visible but each appears larger",
-    ["It gets larger, so more cells are visible", "It stays exactly the same size", "It disappears until the coarse knob is turned"],
+    ["It gets larger as the power rises, so more of the cells on the slide become visible", "It stays exactly the same size as it was under the low power objective before", "It disappears from view entirely until the coarse adjustment knob is turned again"],
     "Higher magnification narrows the field of view: you see a smaller area in greater detail. That is why size estimates must use the field of view for the objective in use.", {}); }
 ]), ["More magnification, less area.", "The field shrinks as power rises."]);
 
@@ -4431,7 +4431,7 @@ E("s8-u4-model-accuracy", 4, ["SC8.12.4"], 2, "var", varset([
 E("s8-u4-eval-process", 4, ["SC8.12.5"], 3, "var", varset([
   function () { return mcq("A class builds cell models, then evaluates each group's process. Which evaluation is the fairest and most useful?",
     "Judge against a checklist the class agreed on before building (accuracy of parts, teamwork, use of time), with evidence noted for each point",
-    ["Give the highest mark to the best-looking model regardless of process", "Let each group mark itself with no criteria", "Rank the groups from first to last with no explanation"],
+    ["Give the highest mark in the class to whichever model looks the best finished, regardless of the process its group used", "Let each group in the class mark its own work by itself, with no criteria given to anyone beforehand", "Rank all of the groups in the class from first place to last place, with no explanation given for the order"],
     "Evaluating a process needs criteria set in advance and evidence against them. Judging only the final product ignores the process being evaluated, and criteria-free marking cannot be fair or useful.", {}); }
 ]), ["Criteria first, evidence second.", "Process, not just product."]);
 
@@ -4446,14 +4446,14 @@ E("s8-u4-cr-model-eval", 4, ["SC8.12.5"], 2, "var", varset([
 E("s8-u4-variables", 4, ["SC8.12.6", "SC8.12.9"], 2, "var", varset([
   function () { return mcq("In the heart rate experiment, a student measures her rate at rest, after walking, and after running. What is the manipulated (independent) variable, and what must be controlled?",
     "Activity level is manipulated; the same person, the same counting method and the same timing must be kept the same",
-    ["Heart rate is manipulated; activity level must be kept the same", "Activity level is manipulated; a different person should be used at each level", "Breathing rate is manipulated; heart rate must be kept the same"],
+    ["Heart rate is the variable manipulated; the activity level must be kept the same throughout", "Activity level is manipulated; a different person should be used at each level of activity in the experiment", "Breathing rate is the variable manipulated; the heart rate must be kept the same at every level"],
     "The experimenter changes the activity level and measures the response (heart rate). Fair comparison requires the same subject, the same 15 second count multiplied by 4, and the same timing at every level.", {}); }
 ]), ["What does the experimenter change?", "Everything else stays the same."]);
 
 E("s8-u4-protocol", 4, ["SC8.12.6"], 1, "var", varset([
   function () { return mcq("In Core Lab 12-1B, resting heart rate is measured by counting the pulse for 15 seconds and multiplying by 4. Why is the count repeated three times and averaged?",
     "Averaging three trials gives a more reliable resting value than a single count",
-    ["Three trials are needed to reach exactly the true value", "The first two counts are practice and are thrown away", "Multiplying by 4 only works after three trials"],
+    ["Three trials are needed so that the average reaches exactly the true resting value of the pulse", "The first two of the three counts are only practice attempts and are thrown away unused", "Multiplying the count by 4 gives a rate only when the count is made after three full trials"],
     "Single counts vary with small timing and counting errors. Repeating and averaging reduces the effect of any one faulty count, giving a more trustworthy resting rate.", {}); }
 ]), ["One count can be off.", "Repeats plus an average: reliability."]);
 
@@ -4466,21 +4466,21 @@ E("s8-u4-cr-design-rates", 4, ["SC8.12.6"], 3, "var", varset([
 E("s8-u4-testable", 4, ["SC8.12.7"], 2, "var", varset([
   function () { return mcq("Which rephrasing turns the topic into a testable question about fitness and health?",
     "Does resting heart rate decrease after six weeks of daily running?",
-    ["Is running good for people?", "Why is exercise the best activity?", "Do students like running more than walking?"],
+    ["Is running, in general, a good activity for people of all ages to take part in?", "Why is exercise considered by everyone to be the best of all physical activities?", "Do the students in the school like running as an activity more than they like walking?"],
     "A testable question names something measurable (resting heart rate) and a change to test (six weeks of running). The others ask for opinions or general judgements that cannot be measured as stated.", {}); }
 ]), ["Look for something measurable.", "A variable you can count or time."]);
 
 E("s8-u4-testable2", 4, ["SC8.12.7"], 1, "var", varset([
   function () { return mcq("Which question is already in testable form?",
     "How does breathing rate change when a student climbs stairs for one minute?",
-    ["Is fitness important for teenagers?", "What is the best sport for health?", "Why do athletes train so much?"],
+    ["Is being fit and active important for teenagers in their everyday lives at school?", "What is the single best sport in the world for a person's health and fitness overall?", "Why do competitive athletes spend so many hours training for their sport each week?"],
     "The first question can be answered by measurement: breathing rate before and after a defined activity. The others call for opinions or explanations too broad to test directly.", {}); }
 ]), ["Measurable as written?", "Breathing rate can be counted."]);
 
 E("s8-u4-hypothesis", 4, ["SC8.12.8"], 2, "var", varset([
   function () { return mcq("A student observes that classmates breathe faster after gym class. Which is a proper hypothesis based on that pattern?",
     "If activity level increases, then breathing rate increases, because the muscles need more oxygen",
-    ["Exercise is healthy for everyone", "Breathing is part of the respiratory system", "Students enjoy gym class more than math class"],
+    ["Taking regular exercise is a healthy thing for everyone to do, whatever their age", "Breathing is simply one part of the work done by the respiratory system of the body", "Students in the school enjoy their gym classes more than they enjoy their math classes"],
     "A hypothesis is a testable prediction linking the variables, ideally with a reason. The others are a general claim, a fact and an opinion, none of them a prediction to test.", {}); }
 ]), ["A prediction linking two variables.", "If... then... because..."]);
 
@@ -4494,14 +4494,14 @@ E("s8-u4-hypothesis-basis", 4, ["SC8.12.8"], 1, "var", varset([
 E("s8-u4-control", 4, ["SC8.12.9"], 2, "var", varset([
   function () { return mcq("During the activity experiment, one partner counts her pulse at her wrist while the other counts at his neck, and they compare results. What is wrong with this procedure?",
     "The measurement method is not controlled, so the two sets of results are not fairly comparable",
-    ["Nothing: any pulse point gives identical results", "The wrist pulse cannot be felt during exercise", "Partners are not allowed to compare data"],
+    ["Nothing is wrong with it: any pulse point on the body gives identical results in an experiment", "The pulse at the wrist cannot be felt at all by anyone while the exercise is being done", "Partners working together in the lab are simply not allowed to compare their data with each other"],
     "Controlling the major variables includes using the same measurement method for every trial and every person. Different pulse points and techniques introduce differences that are not caused by the activity.", {}); }
 ]), ["Fair tests keep methods identical.", "Same method for everyone."]);
 
 E("s8-u4-control-error", 4, ["SC8.12.9"], 3, "var", varset([
   function () { return mcq("A group tests activity levels this way: Person A rests, Person B walks, Person C runs, and they compare the three heart rates to decide the effect of activity. Why can they not conclude anything about activity from these results?",
     "Different people have different resting rates, so the person is an uncontrolled variable tangled up with the activity level",
-    ["Three people is too few for any experiment", "Heart rate cannot be measured after running", "The activities should have been done in the opposite order"],
+    ["Using only three people in total is far too few for any experiment of this kind to mean anything", "A person's heart rate cannot be measured at all in the minutes after they finish running", "The three activities should simply have been done by the group in the opposite order to theirs"],
     "The design confounds two variables: activity and person. A fitter person's running rate can be lower than an unfit person's resting rate, so the comparison says nothing reliable about activity. One person should do all three levels.", {}); }
 ]), ["Two things changed at once.", "Person and activity are tangled."]);
 
@@ -4531,14 +4531,14 @@ E("s8-u4-recovery-figure", 4, ["SC8.12.10", "SC8.12.6"], 3, "var", varset([
 E("s8-u4-variation-explain", 4, ["SC8.12.11"], 2, "var", varset([
   function () { return mcq("A class repeats the activity experiment on a second day. One student's resting heart rate is 76 on day one and 84 on day two. Which is a reasonable explanation for the variation?",
     "He had rushed up the stairs just before the day two measurement, so his rate had not settled to true rest",
-    ["Resting heart rate never changes, so one count must be fabricated", "His heart grew between the two days", "The multiplication by 4 works only on the first day"],
+    ["A person's resting heart rate never changes from day to day, so one of the two counts must have been fabricated", "The student's heart itself grew noticeably larger in the time between the two days of measuring", "The multiplication of the 15 second count by 4 works properly only on the first day of an experiment"],
     "Resting measurements vary with recent activity, stress, counting errors and time of day. A rate taken right after rushing upstairs is not a true resting rate, which is exactly why repeats and settling time matter.", {}); }
 ]), ["What differed between the two days?", "True rest must be settled."]);
 
 E("s8-u4-animal-pattern", 4, ["SC8.12.11", "SC8.10.6"], 3, "var", varset([
   function () { var q = mcq("The bar graph shows resting heart rates for five animals. Which statement best explains the pattern?",
     "Smaller animals have much higher resting heart rates; their bodies must circulate blood and deliver oxygen at a faster rate for their size",
-    ["Larger animals have higher resting heart rates because they have more blood", "Heart rate is unrelated to body size", "The whale's rate is lowest because it lives in cold water only"],
+    ["Larger animals have higher resting heart rates than smaller animals do, because their much bigger bodies hold a great deal more blood", "The resting heart rate of an animal is completely unrelated to the size of the animal's body or to the kind of life it lives", "The whale's resting rate is the lowest of the five animals only because the whale lives its whole life in cold ocean water"],
     "Across the data the pattern is consistent: mouse 450, hamster 300, cat 120, dog 70, whale 8 beats per minute. The smaller the animal, the higher its resting heart rate, because its cells' needs must be met by a faster circulation relative to its size.", {});
     q.figure = s8BarSVG(["Mouse", "Hamster", "Cat", "Dog", "Whale"], [450, 300, 120, 70, 8], "Resting heart rate (beats per minute)"); return q; }
 ]), ["Order the animals by size, then by rate.", "The trend runs opposite to size."]);
@@ -4546,14 +4546,14 @@ E("s8-u4-animal-pattern", 4, ["SC8.12.11", "SC8.10.6"], 3, "var", varset([
 E("s8-u4-organize", 4, ["SC8.12.12"], 1, "var", varset([
   function () { return mcq("Two partners each measure heart rate and breathing rate at three activity levels. Which format best organizes the data for comparison?",
     "A table with rows for each person and activity level, and columns for heart rate and breathing rate, including the averages",
-    ["A paragraph describing the busiest day", "A single list of all the numbers in the order measured", "A drawing of the gym where the activity happened"],
+    ["A paragraph of writing describing in words the busiest of the days on which the class did the activities", "A single long list of all of the numbers the two partners recorded, written down in the order they were measured", "A labelled drawing of the school gym, showing where the class carried out each of the activity measurements"],
     "A structured table keeps each measurement tied to its person, activity and rate type, and the averages column the lab requires. A loose list loses which number belongs to what.", {}); }
 ]), ["Comparison needs structure.", "Rows and columns with labels."]);
 
 E("s8-u4-organize-avg", 4, ["SC8.12.12"], 2, "var", varset([
   function () { return mcq("A data table for the resting measurements has three trial columns and an average column. Why does the lab organize the data this way?",
     "Showing the trials and their average makes the data transparent and the resting value more trustworthy",
-    ["The average column hides trials that disagree", "Three trials are required to fill the page", "Averages are used to change the results"],
+    ["The column for the average is there to hide away any trials that disagree with the rest of the data", "Three separate trials are required in the table simply so that the columns fill up the whole page", "Averages are calculated in the lab in order to change the results into the values the class wanted"],
     "Organizing trials beside their average lets anyone see the spread of the measurements and judge the resting value. Nothing is hidden: the trials stay on display.", {}); }
 ]), ["Transparency and trust.", "Trials visible, average beside them."]);
 

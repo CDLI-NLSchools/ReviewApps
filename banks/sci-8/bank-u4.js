@@ -72,7 +72,7 @@ E("s8-u4-nonliving", 4, ["SC8.10.1"], 1, "var", varset([
     "A rock does not grow, move on its own, respond to stimuli or reproduce, and it is not made of cells. Mushrooms, yeast and seaweed are living organisms made of cells.", {}); },
   function () { return mcq("A candle flame gets bigger, flickers and seems to move. Why is a flame not alive?",
     "It is not made of cells and does not reproduce or respond the way organisms do",
-    ["It is too hot to be alive", "It does not need oxygen", "It gives off light"],
+    ["It is simply too hot, as it flickers at the top of the candle, for anything living to survive in it", "It does not need oxygen from the air around it in order to keep burning on the candle", "It gives off light and heat into the room all around it for as long as it burns"],
     "Flames can grow and move, but they are not made of cells, do not reproduce and do not respond to stimuli as organisms do. Living things show all four characteristics and are made of cells.", {}); }
 ]), ["Check each option against the characteristics of life.", "Living things are made of cells."]);
 
@@ -114,7 +114,7 @@ E("s8-u4-vacuole-compare", 4, ["SC8.10.2"], 2, "var", varset([
 E("s8-u4-regular-shape", 4, ["SC8.10.2"], 1, "var", varset([
   function () { return mcq("Plant cells usually keep a regular, fixed shape. What gives them this shape?",
     "The cell wall",
-    ["The cell membrane alone", "The large vacuole pushing outward evenly", "The chloroplasts packed together"],
+    ["The cell membrane", "The vacuole", "The chloroplasts"],
     "The rigid cell wall outside the membrane holds the plant cell in a regular shape. Animal cells, with no wall, have more varied shapes.", {}); }
 ]), ["Which plant-only structure is rigid?", "It sits outside the membrane."]);
 
@@ -139,7 +139,7 @@ E("s8-u4-division-count", 4, ["SC8.10.3"], 2, "gen", function () {
 E("s8-u4-growth-example", 4, ["SC8.10.3"], 2, "var", varset([
   function () { return mcq("You cut your finger. Over the next week the cut heals as new skin covers it. Where did the new skin cells come from?",
     "Existing skin cells divided by mitosis to produce identical new cells",
-    ["Cells travelled from the stomach to the cut", "The cut produced cells from non-living material", "Bone cells changed into skin cells"],
+    ["Ready-made skin cells travelled through the body from the stomach all the way to the cut", "The cut itself produced the new cells out of non-living material in the bandage and the air", "Bone cells from deep in the finger changed themselves into new skin cells at the cut"],
     "Healing is growth and repair by mitosis: skin cells near the cut divide to produce identical new skin cells that cover the wound.", {}); },
   function () { return mcq("Which is an example of cell division serving reproduction rather than growth?",
     "A bacterium dividing into two bacteria",
@@ -189,7 +189,7 @@ E("s8-u4-cr-levels", 4, ["SC8.10.4"], 2, "var", varset([
 E("s8-u4-needs", 4, ["SC8.10.5"], 1, "var", varset([
   function () { return mcq("Cells and whole organisms share the same basic necessities. Which list names them?",
     "Oxygen, nutrients and the removal of wastes",
-    ["Sunlight, soil and shelter", "A skeleton, muscles and nerves", "Seeds, eggs and offspring"],
+    ["Sunlight, soil to root in and shelter from the weather", "A bony skeleton, working muscles and a network of nerves", "Seeds, eggs and the young offspring produced each season"],
     "Every cell needs oxygen and nutrients, and needs its wastes removed, exactly as the whole organism does. The body's systems exist to meet those cell needs.", {}); }
 ]), ["Think about what a single cell must take in and give off.", "The list has three items."]);
 
@@ -203,7 +203,7 @@ E("s8-u4-needs-apply", 4, ["SC8.10.5"], 2, "var", varset([
 E("s8-u4-needs-system", 4, ["SC8.10.5", "SC8.10.7"], 3, "var", varset([
   function () { return mcq("A cell deep in your leg muscle needs nutrients that entered your body through a meal. Which pairing of systems gets the nutrients from the meal to that cell?",
     "The digestive system breaks down the food and absorbs the nutrients, and the circulatory system carries them in the blood to the cell",
-    ["The respiratory system absorbs the nutrients and the nervous system carries them", "The excretory system absorbs the nutrients and the muscular system squeezes them to the cell", "The digestive system carries the nutrients itself through tubes to every cell"],
+    ["The respiratory system absorbs the nutrients from the meal and the nervous system carries them in signals to the cell", "The excretory system absorbs the nutrients from the meal and the muscular system squeezes them through the body to the cell", "The digestive system carries the absorbed nutrients itself, through its own tubes, directly to every cell in the leg"],
     "Nutrients pass through the wall of the small intestine into the blood, and the circulatory system transports them to cells throughout the body. The two systems depend on each other to meet the cells' needs.", {}); }
 ]), ["Two systems share this job.", "Absorption first, then transport."]);
 
@@ -219,18 +219,18 @@ E("s8-u4-factor-positive", 4, ["SC8.10.6"], 1, "var", varset([
 E("s8-u4-factor-effect", 4, ["SC8.10.6"], 2, "var", varset([
   function () { return mcq("How does smoking most directly harm the respiratory system?",
     "It damages the lungs and airways, so gas exchange becomes less efficient",
-    ["It makes the trachea grow longer", "It increases the number of alveoli", "It strengthens the breathing muscles"],
+    ["It makes the trachea in the throat grow longer and wider than it should be over time", "It increases the number of alveoli in the lungs, giving more surface for gas exchange", "It strengthens the muscles used in breathing, so the lungs work harder with each breath"],
     "Smoke damages the lungs and airways, reducing the surface and the efficiency of gas exchange, so the respiratory system delivers less oxygen to the blood.", {}); },
   function () { return mcq("A diet consistently high in fat most directly puts strain on which system, and why?",
     "The circulatory system, because fatty deposits narrow blood vessels and make the heart work harder",
-    ["The nervous system, because fat blocks nerve signals", "The excretory system, because fat cannot be filtered by the kidneys at all", "The muscular system, because fat replaces muscle tissue completely"],
+    ["The nervous system, because fatty deposits block the signals travelling along the nerves", "The excretory system, because fat in the blood cannot be filtered out by the kidneys at all", "The muscular system, because stored fat replaces healthy muscle tissue completely over time"],
     "Fatty deposits narrow the vessels, raising the heart's workload and reducing the circulatory system's efficiency over time.", {}); }
 ]), ["Name the system the factor acts on.", "Then say how its efficiency changes."]);
 
 E("s8-u4-sedentary", 4, ["SC8.10.6"], 3, "var", varset([
   function () { return mcq("Two students have similar diets. One is active daily; the other is sedentary. After a year, the sedentary student tires much faster climbing stairs. The best explanation is that",
     "without regular activity, the heart and breathing muscles stay less efficient, so oxygen reaches the muscles more slowly during effort",
-    ["the sedentary student's lungs have stopped exchanging gases at rest", "activity permanently enlarges the heart in the active student only", "the sedentary student's blood no longer carries oxygen"],
+    ["the sedentary student's lungs have stopped exchanging gases with the air even while the student is at rest", "Being active permanently enlarges the heart of the active student, and only of that student, over the year", "the sedentary student's blood has lost its ability to carry oxygen from the lungs to the muscles at all"],
     "Exercise keeps the circulatory and respiratory systems efficient. Without it, the heart pumps less effectively and breathing capacity is lower, so during effort the muscles get oxygen more slowly and tire sooner.", {}); }
 ]), ["Compare the two systems' efficiency.", "Oxygen delivery during effort is the key."]);
 
@@ -245,7 +245,7 @@ E("s8-u4-cr-factors", 4, ["SC8.10.6"], 3, "var", varset([
 E("s8-u4-pair-circ-resp", 4, ["SC8.10.7"], 1, "var", varset([
   function () { return mcq("How do the circulatory and respiratory systems depend on each other?",
     "The lungs take in oxygen and pass it to the blood, and the blood carries it to the cells and brings carbon dioxide back",
-    ["The heart breathes air in and the lungs pump it around the body", "The blood makes oxygen in the lungs and stores it in the heart", "The lungs filter wastes from the blood in place of the kidneys"],
+    ["The heart is the organ that breathes air in, and the lungs then pump that air around the whole body", "The blood itself makes the oxygen while it is in the lungs and then stores the oxygen in the heart", "The lungs do the job of filtering wastes out of the blood in the place of the kidneys in the body"],
     "The respiratory system exchanges the gases and the circulatory system transports them: oxygen from the lungs to the cells, carbon dioxide from the cells back to the lungs.", {}); }
 ]), ["One system exchanges, the other transports.", "Follow the oxygen, then the carbon dioxide."]);
 
@@ -263,14 +263,14 @@ E("s8-u4-pair-nerv-musc", 4, ["SC8.10.7"], 2, "var", varset([
     "Sense organs and the nervous system detect the temperature change and signal muscles to contract rapidly. Shivering is the nervous and muscular systems depending on each other.", {}); },
   function () { return mcq("On a hot day, your face flushes red. What has happened between systems?",
     "The nervous system signalled tiny muscles in the skin's blood vessels to relax, letting more blood flow near the surface and release heat",
-    ["The digestive system sent extra blood to the face for storage", "The excretory system pushed sweat into the blood vessels", "The respiratory system pumped air into the skin vessels"],
+    ["The digestive system sent extra blood up to the vessels of the face, where the blood is stored until the body needs it elsewhere", "The excretory system pushed the sweat it produced into the blood vessels of the skin, which carried the sweat to the face", "The respiratory system pumped fresh air from the lungs directly into the tiny blood vessels in the skin of the face"],
     "The nervous system coordinates the response: muscles in the vessel walls relax under its signals, blood flow near the skin rises, and heat escapes. The nervous, muscular and circulatory systems are interacting.", {}); }
 ]), ["One system senses and signals; another acts.", "Shivering is muscle work ordered by nerves."]);
 
 E("s8-u4-interdependence-why", 4, ["SC8.10.7"], 3, "var", varset([
   function () { return mcq("During a sprint, a runner's breathing rate and heart rate both rise sharply. Why must both rise together?",
     "Working muscles need much more oxygen and produce more carbon dioxide; the lungs must exchange gases faster while the heart transports them faster, so neither system can meet the need alone",
-    ["The heart rises first and forces the lungs to follow by pressure", "Breathing rises to cool the blood, and the heart rises only to move the cooled blood", "Both rates are controlled to rise by the same fixed amount in all situations"],
+    ["The heart rate rises first at the start of the sprint, and the pressure it builds up in the chest forces the lungs to follow along behind it at the same rate", "Breathing rate rises during a sprint mainly in order to cool the runner's blood down, and the heart rate rises only to move that cooled blood around the body to the skin", "Both rates are controlled by the runner's body to rise by exactly the same fixed amount, beat for beat, in every situation that a runner meets on the track"],
     "The systems are interdependent: the respiratory system can only load oxygen as fast as the blood carries it away, and the heart can only deliver what the lungs load. Sprinting raises the cells' demand, so both must increase together.", {}); }
 ]), ["Neither system can do the whole job alone.", "Demand at the cells drives both."]);
 
@@ -291,14 +291,14 @@ E("s8-u4-cr-living", 4, ["SC8.10.1"], 2, "var", varset([
 E("s8-u4-early-modern", 4, ["SC8.11.1"], 2, "var", varset([
   function () { return mcq("Ancient peoples explained living things using ideas about air, water and fire. How does the modern cell theory differ most from those early ideas?",
     "It is built on observations made with microscopes, which showed that living things are made of cells",
-    ["It rejects all observations and relies only on tradition", "It explains life using four elements instead of three", "It was developed before any tools for observing existed"],
+    ["It rejects every observation made of living things and relies only on tradition handed down over the years", "It explains all living things using a set of four elements, instead of the three the ancient peoples used", "It was fully developed long before any tools for observing very small things had been invented by anyone"],
     "Early explanations were guesses about the world without ways to observe the very small. The cell theory came from systematic observation once microscopes let scientists see that every living thing is made of cells.", {}); }
 ]), ["What tool changed what could be observed?", "The microscope is the turning point."]);
 
 E("s8-u4-dynamic", 4, ["SC8.11.1", "SC8.11.2"], 3, "var", varset([
   function () { return mcq("Early scientists could not agree on whether tiny organisms seen through early microscopes were really alive. The disagreement was settled mainly because",
     "improved microscopes gave clearer observations, showing the organisms were made of cells with the characteristics of life",
-    ["scientists voted on the question", "the organisms grew larger over time", "early scientists stopped studying the question"],
+    ["the scientists of the time settled the disagreement by voting on the question at a meeting", "the tiny organisms themselves grew larger over time until everyone could agree that they were alive", "the early scientists simply stopped studying the question and moved on to other problems instead"],
     "Science is dynamic: as tools improved, observations became clearer and theories were revised. Better lenses showed cell structures and life processes, settling what the organisms were.", {}); }
 ]), ["What changed: the tools or the organisms?", "Better observations revise theories."]);
 
@@ -307,7 +307,7 @@ E("s8-u4-dynamic", 4, ["SC8.11.1", "SC8.11.2"], 3, "var", varset([
 E("s8-u4-micro-development", 4, ["SC8.11.2"], 1, "var", varset([
   function () { return mcq("Leeuwenhoek's microscope used a single small lens, yet he was the first to observe bacteria. Later microscopes, up to the scanning electron microscope, revealed far more. What pattern does this history show?",
     "Optical technology developed through steady improvements, and each improvement let scientists observe more and revise their ideas",
-    ["Each new microscope made the previous discoveries worthless", "Microscopes were perfected in a single step", "Better microscopes ended scientific disagreement about cells"],
+    ["Each new and better microscope that was built made all of the previous discoveries with older ones worthless", "Microscopes were perfected all at once, in a single step, by the first person who built one", "Better microscopes brought scientific disagreement about cells to a complete end, once and for all"],
     "Microscope development was a long process of trial and improvement in lenses and design. Each advance extended what could be observed, and cell science advanced with it.", {}); }
 ]), ["Think about the sequence of tools.", "Better tools, better observations, revised ideas."]);
 
@@ -367,7 +367,7 @@ E("s8-u4-organelle-plant", 4, ["SC8.11.3"], 1, "var", varset([
 E("s8-u4-organelle-term", 4, ["SC8.11.3"], 2, "var", varset([
   function () { return mcq("Which comparison of plant and animal cells uses the proper terms correctly?",
     "Both have a cell membrane, but only the plant cell has a cell wall outside it, and the plant cell's vacuole is larger",
-    ["Both have a cell wall, but only the animal cell has a cell membrane", "The plant cell's membrane is outside its wall, unlike the animal cell", "Animal cells have chloroplasts in their cytoplasm, plant cells do not"],
+    ["Both kinds of cell have a cell wall around them, but only the animal cell has a cell membrane inside it", "The plant cell's membrane lies outside its cell wall, unlike the arrangement found in the animal cell", "Animal cells carry chloroplasts scattered in their cytoplasm, while plant cells have no chloroplasts at all"],
     "Every cell has a membrane; plant cells add a wall outside the membrane, and their vacuoles are fewer and larger. (Note: the textbook's plant cell diagram on page 405 prints two labels swapped; A is the cell wall and C is the cell membrane.)", {}); }
 ]), ["Wall outside, membrane inside it.", "Check each claim against the differences."]);
 
@@ -382,22 +382,22 @@ E("s8-u4-cr-organelles", 4, ["SC8.11.3"], 2, "var", varset([
 E("s8-u4-tech-examples", 4, ["SC8.11.4"], 1, "var", varset([
   function () { return mcq("Which technology assists or replaces the work of an unhealthy organ?",
     "A dialysis machine, which filters the blood when the kidneys fail",
-    ["A stethoscope, which listens to the heart", "An X-ray machine, which images bones", "A thermometer, which measures temperature"],
+    ["A stethoscope, which listens to the sounds of the heart beating inside the chest", "An X-ray machine, which takes images of the bones inside a patient's body at a hospital", "A thermometer, which measures the temperature of the body or of a liquid in a lab"],
     "Dialysis does the kidney's job of cleaning the blood when the kidneys cannot. The other devices observe or measure; they do not assist or replace an organ's work.", {}); },
   function () { return mcq("An insulin pump is worn by a person with diabetes. Which organ's work is it assisting?",
     "The pancreas, by regulating insulin levels in the blood",
-    ["The liver, by storing extra glucose", "The kidney, by filtering insulin from the blood", "The heart, by pumping insulin around the body"],
+    ["The liver, by storing extra glucose from food", "The kidney, by filtering insulin out of the blood", "The heart, by pumping insulin around the body in the blood"],
     "The insulin pump regulates insulin in the blood, assisting the pancreas, the organ that normally produces insulin.", {}); }
 ]), ["Does the device do the organ's job?", "Dialysis filters blood, like a kidney."]);
 
 E("s8-u4-tech-match", 4, ["SC8.11.4"], 1, "var", varset([
   function () { return mcq("A pacemaker is implanted in a patient's chest. What does it do?",
     "It sends electrical impulses that keep the heart beating in a steady rhythm",
-    ["It filters wastes from the blood", "It pumps blood in place of the heart entirely", "It produces insulin on a schedule"],
+    ["It filters all of the wastes out of the patient's blood as the blood passes through the chest", "It pumps the patient's blood around the body in place of the heart, doing the heart's whole job", "It produces insulin inside the patient's body and releases it on a regular daily schedule"],
     "A pacemaker replaces the heart's faulty electrical signals with steady impulses, so the heart keeps a regular beat. Filtering blood is dialysis; regulating insulin is an insulin pump.", {}); },
   function () { return mcq("A cochlear implant assists which sense organ, and how?",
     "The ear, by converting sound into electrical signals the nerves can carry",
-    ["The eye, by focusing light onto the retina", "The skin, by sensing pressure changes", "The tongue, by detecting chemicals in food"],
+    ["The eye, by focusing the light that enters it onto the retina at the back of the eyeball", "The skin, by sensing changes in pressure against its surface and sending signals to the brain", "The tongue, by detecting the chemicals dissolved in the food and drink that pass over it"],
     "Cochlear implants pick up sound and turn it into electrical impulses for the auditory nerve, assisting a damaged inner ear.", {}); }
 ]), ["Match the device to the organ it assists.", "Pacemaker: heart rhythm. Cochlear: hearing."]);
 
@@ -417,7 +417,7 @@ E("s8-u4-knowledge-tech", 4, ["SC8.11.5"], 2, "var", varset([
 E("s8-u4-knowledge-tech2", 4, ["SC8.11.5"], 3, "var", varset([
   function () { return mcq("Artificial heart valves are made of materials the body tolerates and shaped to open and close with blood flow. Which chain best explains how this technology came to exist?",
     "Knowledge of how heart valves work and of suitable materials was applied to design a replacement part",
-    ["The valves were discovered growing naturally and copied exactly", "Surgeons needed the part, so it appeared without any research", "Knowledge of blood cells alone was enough to produce the valve"],
+    ["The working valves were discovered growing naturally inside the body and were copied exactly as found", "Surgeons needed the replacement part, so the part simply appeared for them without any research behind it", "Knowledge of red blood cells alone, and nothing else, was enough for engineers to produce the valve"],
     "Technologies grow out of combined scientific knowledge: valve function, blood flow and material behaviour all had to be understood before a working replacement could be designed.", {}); }
 ]), ["Several kinds of knowledge combine.", "Function plus materials plus flow."]);
 
@@ -426,7 +426,7 @@ E("s8-u4-knowledge-tech2", 4, ["SC8.11.5"], 3, "var", varset([
 E("s8-u4-community-need", 4, ["SC8.11.6"], 2, "var", varset([
   function () { return mcq("A community has many residents whose kidneys have failed, but the nearest dialysis unit is hours away. A dialysis unit is built in the local hospital. This is an example of",
     "a community's needs leading to a development in applied science and technology",
-    ["technology creating a need that did not exist", "scientific knowledge replacing community input", "a community choosing to avoid medical technology"],
+    ["a new technology creating a need in the community that had not existed there before it arrived", "scientific knowledge from outside experts replacing the input of the community in every decision", "a community choosing to avoid the use of modern medical technology in its local hospital altogether"],
     "The need existed first: patients needed regular dialysis to survive. The community's need drove the development and placement of the technology.", {}); }
 ]), ["Which came first, the need or the technology?", "Patients needed treatment close to home."]);
 
@@ -454,7 +454,7 @@ E("s8-u4-cr-decision", 4, ["SC8.11.7"], 3, "var", varset([
 E("s8-u4-propose-sr", 4, ["SC8.11.8"], 2, "var", varset([
   function () { return mcq("A school is proposing a course of action on energy drinks being sold to students under 18. Which proposal best takes human and environmental needs into account?",
     "Restrict sales to under-18s near schools, with the health evidence explained to students and retailers",
-    ["Ban all drinks in the school, including water", "Ignore the issue because drink sales raise money", "Let each student decide with no information provided"],
+    ["Ban every kind of drink in the school building entirely, including the water students carry with them", "Ignore the issue completely, because the sale of the drinks raises money that the school can spend", "Let each student in the school decide for themselves, with no information about the drinks provided to anyone"],
     "A sound proposal acts on the health evidence (human needs) in a proportionate way and explains itself. Blanket bans on everything and doing nothing both fail the test.", {}); }
 ]), ["Proportionate, evidence-based, explained.", "Human needs include students' health."]);
 
@@ -467,7 +467,7 @@ E("s8-u4-cr-propose", 4, ["SC8.11.8"], 3, "var", varset([
 E("s8-u4-personal-decision", 4, ["SC8.11.10"], 2, "var", varset([
   function () { return mcq("A young athlete is offered steroids to build muscle faster. Which reasoning is an informed personal decision based on body systems?",
     "Refuse: steroids can damage the heart, liver and hormone systems, trading long-term health for short-term muscle gain",
-    ["Accept: muscle size is the only measure of a healthy muscular system", "Refuse only because they are expensive", "Accept if a friend has used them without obvious harm yet"],
+    ["Accept them: the size of an athlete's muscles is the only measure that matters of a healthy muscular system", "Refuse the offer only because the steroids cost more money than the athlete can afford to spend", "Accept the offer if a friend at the gym has used the same steroids without any obvious harm showing yet"],
     "An informed decision weighs the science: steroids affect several systems (circulatory, excretory organs such as the liver, and hormonal control), so the personal advantage is outweighed by real disadvantages.", {}); }
 ]), ["Weigh advantage against system damage.", "Short term gain, long term cost."]);
 
@@ -489,7 +489,7 @@ E("s8-u4-careers", 4, ["SC8.11.9"], 1, "var", varset([
 E("s8-u4-careers-match", 4, ["SC8.11.9"], 1, "var", varset([
   function () { return mcq("A public health nurse's work connects to body systems mainly by",
     "promoting healthy habits and preventing illness in the whole community",
-    ["operating on damaged organs", "designing artificial organs in a laboratory", "fitting artificial limbs"],
+    ["operating on damaged organs inside patients in the operating room of a hospital", "designing artificial organs in a laboratory for patients whose own organs have failed", "fitting artificial limbs to patients who have lost an arm or a leg in an accident"],
     "Public health nurses work at community level: vaccination, screening and health education that keep body systems healthy. The other roles belong to surgeons, biomedical engineers and prosthetists.", {}); },
   function () { return mcq("Which career works with the digestive system by advising patients on diet?",
     "Nutritionist",
@@ -502,18 +502,18 @@ E("s8-u4-careers-match", 4, ["SC8.11.9"], 1, "var", varset([
 E("s8-u4-focus-sequence", 4, ["SC8.12.1"], 1, "var", varset([
   function () { return mcq("Which sequence correctly brings a slide into focus?",
     "Start on low power, focus with the coarse adjustment, then switch to medium power and finish with the fine adjustment",
-    ["Start on the highest power and focus with the coarse adjustment", "Focus with the fine adjustment first, then the coarse", "Switch to medium power before placing the slide on the stage"],
+    ["Start the viewing on the highest power objective and focus the image using the coarse adjustment knob", "Focus with the fine adjustment knob first, and only afterwards turn to the coarse adjustment knob", "Switch the objective to medium power before the prepared slide is placed on the stage of the microscope"],
     "Correct technique starts on low power with the coarse adjustment knob, then moves to medium power and sharpens with the fine adjustment. High power use is not required at this level, and the coarse knob is for low and medium power focusing.", {}); }
 ]), ["Low power first.", "Coarse, then fine."]);
 
 E("s8-u4-parts-action", 4, ["SC8.12.1"], 1, "var", varset([
   function () { return mcq("The image under the microscope is too dim to see the cells clearly. Which part should be adjusted?",
     "The iris diaphragm, which controls the amount of light reaching the specimen",
-    ["The coarse adjustment knob", "The revolving nosepiece", "The base"],
+    ["The coarse adjustment knob, which opens and closes to control the light reaching the specimen", "The revolving nosepiece, which is adjusted to control the amount of light reaching the specimen", "The base, which is turned to control the amount of light that reaches the specimen on the stage"],
     "The iris diaphragm opens and closes to control light. The coarse knob changes focus, the nosepiece changes objectives, and the base is only support.", {}); },
   function () { return mcq("What does the revolving nosepiece do?",
     "It rotates to bring a different objective lens into position",
-    ["It holds the slide in place on the stage", "It focuses the image at high power", "It adjusts the brightness of the light source"],
+    ["It holds the prepared slide firmly in place on the stage while the slide is viewed", "It focuses the image sharply when the microscope is used at its high power setting", "It adjusts the brightness of the light source that shines up through the specimen"],
     "The nosepiece holds the objective lenses and rotates to switch between them. Slides sit on the stage, focusing is done with the adjustment knobs, and the diaphragm controls light.", {}); }
 ]), ["Dim image means a light problem.", "Diaphragm for light; nosepiece for lenses."]);
 
@@ -526,7 +526,7 @@ E("s8-u4-cr-microscope", 4, ["SC8.12.1", "SC8.12.3"], 2, "var", varset([
 E("s8-u4-care", 4, ["SC8.12.3"], 1, "var", varset([
   function () { return mcq("Which practice shows proper care of the compound microscope?",
     "Carrying it with one hand under the base and the other on the arm, and storing it covered on low power",
-    ["Carrying it by the tube with one hand", "Storing it with a slide left on the stage", "Cleaning the lenses with a paper towel"],
+    ["Carrying it around the laboratory by its tube, held in one hand while walking", "Storing it away in the cupboard with a prepared slide still left sitting on its stage", "Cleaning the lenses of its objectives with an ordinary paper towel from the bench"],
     "Two-handed carrying (base and arm), removing slides, returning to low power and covering the microscope for storage are the care standards. Lenses are cleaned only with lens paper.", {}); }
 ]), ["Two hands, covered, low power, no slide.", "Lens paper only for lenses."]);
 
@@ -551,7 +551,7 @@ E("s8-u4-estimate-gen", 4, ["SC8.12.2"], 2, "gen", function () {
 E("s8-u4-estimate-compare", 4, ["SC8.12.2"], 1, "var", varset([
   function () { return mcq("A student switches from the low power objective to the medium power objective. What happens to the field of view?",
     "It gets smaller, so fewer cells are visible but each appears larger",
-    ["It gets larger, so more cells are visible", "It stays exactly the same size", "It disappears until the coarse knob is turned"],
+    ["It gets larger as the power rises, so more of the cells on the slide become visible", "It stays exactly the same size as it was under the low power objective before", "It disappears from view entirely until the coarse adjustment knob is turned again"],
     "Higher magnification narrows the field of view: you see a smaller area in greater detail. That is why size estimates must use the field of view for the objective in use.", {}); }
 ]), ["More magnification, less area.", "The field shrinks as power rises."]);
 
@@ -574,7 +574,7 @@ E("s8-u4-model-accuracy", 4, ["SC8.12.4"], 2, "var", varset([
 E("s8-u4-eval-process", 4, ["SC8.12.5"], 3, "var", varset([
   function () { return mcq("A class builds cell models, then evaluates each group's process. Which evaluation is the fairest and most useful?",
     "Judge against a checklist the class agreed on before building (accuracy of parts, teamwork, use of time), with evidence noted for each point",
-    ["Give the highest mark to the best-looking model regardless of process", "Let each group mark itself with no criteria", "Rank the groups from first to last with no explanation"],
+    ["Give the highest mark in the class to whichever model looks the best finished, regardless of the process its group used", "Let each group in the class mark its own work by itself, with no criteria given to anyone beforehand", "Rank all of the groups in the class from first place to last place, with no explanation given for the order"],
     "Evaluating a process needs criteria set in advance and evidence against them. Judging only the final product ignores the process being evaluated, and criteria-free marking cannot be fair or useful.", {}); }
 ]), ["Criteria first, evidence second.", "Process, not just product."]);
 
@@ -589,14 +589,14 @@ E("s8-u4-cr-model-eval", 4, ["SC8.12.5"], 2, "var", varset([
 E("s8-u4-variables", 4, ["SC8.12.6", "SC8.12.9"], 2, "var", varset([
   function () { return mcq("In the heart rate experiment, a student measures her rate at rest, after walking, and after running. What is the manipulated (independent) variable, and what must be controlled?",
     "Activity level is manipulated; the same person, the same counting method and the same timing must be kept the same",
-    ["Heart rate is manipulated; activity level must be kept the same", "Activity level is manipulated; a different person should be used at each level", "Breathing rate is manipulated; heart rate must be kept the same"],
+    ["Heart rate is the variable manipulated; the activity level must be kept the same throughout", "Activity level is manipulated; a different person should be used at each level of activity in the experiment", "Breathing rate is the variable manipulated; the heart rate must be kept the same at every level"],
     "The experimenter changes the activity level and measures the response (heart rate). Fair comparison requires the same subject, the same 15 second count multiplied by 4, and the same timing at every level.", {}); }
 ]), ["What does the experimenter change?", "Everything else stays the same."]);
 
 E("s8-u4-protocol", 4, ["SC8.12.6"], 1, "var", varset([
   function () { return mcq("In Core Lab 12-1B, resting heart rate is measured by counting the pulse for 15 seconds and multiplying by 4. Why is the count repeated three times and averaged?",
     "Averaging three trials gives a more reliable resting value than a single count",
-    ["Three trials are needed to reach exactly the true value", "The first two counts are practice and are thrown away", "Multiplying by 4 only works after three trials"],
+    ["Three trials are needed so that the average reaches exactly the true resting value of the pulse", "The first two of the three counts are only practice attempts and are thrown away unused", "Multiplying the count by 4 gives a rate only when the count is made after three full trials"],
     "Single counts vary with small timing and counting errors. Repeating and averaging reduces the effect of any one faulty count, giving a more trustworthy resting rate.", {}); }
 ]), ["One count can be off.", "Repeats plus an average: reliability."]);
 
@@ -609,21 +609,21 @@ E("s8-u4-cr-design-rates", 4, ["SC8.12.6"], 3, "var", varset([
 E("s8-u4-testable", 4, ["SC8.12.7"], 2, "var", varset([
   function () { return mcq("Which rephrasing turns the topic into a testable question about fitness and health?",
     "Does resting heart rate decrease after six weeks of daily running?",
-    ["Is running good for people?", "Why is exercise the best activity?", "Do students like running more than walking?"],
+    ["Is running, in general, a good activity for people of all ages to take part in?", "Why is exercise considered by everyone to be the best of all physical activities?", "Do the students in the school like running as an activity more than they like walking?"],
     "A testable question names something measurable (resting heart rate) and a change to test (six weeks of running). The others ask for opinions or general judgements that cannot be measured as stated.", {}); }
 ]), ["Look for something measurable.", "A variable you can count or time."]);
 
 E("s8-u4-testable2", 4, ["SC8.12.7"], 1, "var", varset([
   function () { return mcq("Which question is already in testable form?",
     "How does breathing rate change when a student climbs stairs for one minute?",
-    ["Is fitness important for teenagers?", "What is the best sport for health?", "Why do athletes train so much?"],
+    ["Is being fit and active important for teenagers in their everyday lives at school?", "What is the single best sport in the world for a person's health and fitness overall?", "Why do competitive athletes spend so many hours training for their sport each week?"],
     "The first question can be answered by measurement: breathing rate before and after a defined activity. The others call for opinions or explanations too broad to test directly.", {}); }
 ]), ["Measurable as written?", "Breathing rate can be counted."]);
 
 E("s8-u4-hypothesis", 4, ["SC8.12.8"], 2, "var", varset([
   function () { return mcq("A student observes that classmates breathe faster after gym class. Which is a proper hypothesis based on that pattern?",
     "If activity level increases, then breathing rate increases, because the muscles need more oxygen",
-    ["Exercise is healthy for everyone", "Breathing is part of the respiratory system", "Students enjoy gym class more than math class"],
+    ["Taking regular exercise is a healthy thing for everyone to do, whatever their age", "Breathing is simply one part of the work done by the respiratory system of the body", "Students in the school enjoy their gym classes more than they enjoy their math classes"],
     "A hypothesis is a testable prediction linking the variables, ideally with a reason. The others are a general claim, a fact and an opinion, none of them a prediction to test.", {}); }
 ]), ["A prediction linking two variables.", "If... then... because..."]);
 
@@ -637,14 +637,14 @@ E("s8-u4-hypothesis-basis", 4, ["SC8.12.8"], 1, "var", varset([
 E("s8-u4-control", 4, ["SC8.12.9"], 2, "var", varset([
   function () { return mcq("During the activity experiment, one partner counts her pulse at her wrist while the other counts at his neck, and they compare results. What is wrong with this procedure?",
     "The measurement method is not controlled, so the two sets of results are not fairly comparable",
-    ["Nothing: any pulse point gives identical results", "The wrist pulse cannot be felt during exercise", "Partners are not allowed to compare data"],
+    ["Nothing is wrong with it: any pulse point on the body gives identical results in an experiment", "The pulse at the wrist cannot be felt at all by anyone while the exercise is being done", "Partners working together in the lab are simply not allowed to compare their data with each other"],
     "Controlling the major variables includes using the same measurement method for every trial and every person. Different pulse points and techniques introduce differences that are not caused by the activity.", {}); }
 ]), ["Fair tests keep methods identical.", "Same method for everyone."]);
 
 E("s8-u4-control-error", 4, ["SC8.12.9"], 3, "var", varset([
   function () { return mcq("A group tests activity levels this way: Person A rests, Person B walks, Person C runs, and they compare the three heart rates to decide the effect of activity. Why can they not conclude anything about activity from these results?",
     "Different people have different resting rates, so the person is an uncontrolled variable tangled up with the activity level",
-    ["Three people is too few for any experiment", "Heart rate cannot be measured after running", "The activities should have been done in the opposite order"],
+    ["Using only three people in total is far too few for any experiment of this kind to mean anything", "A person's heart rate cannot be measured at all in the minutes after they finish running", "The three activities should simply have been done by the group in the opposite order to theirs"],
     "The design confounds two variables: activity and person. A fitter person's running rate can be lower than an unfit person's resting rate, so the comparison says nothing reliable about activity. One person should do all three levels.", {}); }
 ]), ["Two things changed at once.", "Person and activity are tangled."]);
 
@@ -674,14 +674,14 @@ E("s8-u4-recovery-figure", 4, ["SC8.12.10", "SC8.12.6"], 3, "var", varset([
 E("s8-u4-variation-explain", 4, ["SC8.12.11"], 2, "var", varset([
   function () { return mcq("A class repeats the activity experiment on a second day. One student's resting heart rate is 76 on day one and 84 on day two. Which is a reasonable explanation for the variation?",
     "He had rushed up the stairs just before the day two measurement, so his rate had not settled to true rest",
-    ["Resting heart rate never changes, so one count must be fabricated", "His heart grew between the two days", "The multiplication by 4 works only on the first day"],
+    ["A person's resting heart rate never changes from day to day, so one of the two counts must have been fabricated", "The student's heart itself grew noticeably larger in the time between the two days of measuring", "The multiplication of the 15 second count by 4 works properly only on the first day of an experiment"],
     "Resting measurements vary with recent activity, stress, counting errors and time of day. A rate taken right after rushing upstairs is not a true resting rate, which is exactly why repeats and settling time matter.", {}); }
 ]), ["What differed between the two days?", "True rest must be settled."]);
 
 E("s8-u4-animal-pattern", 4, ["SC8.12.11", "SC8.10.6"], 3, "var", varset([
   function () { var q = mcq("The bar graph shows resting heart rates for five animals. Which statement best explains the pattern?",
     "Smaller animals have much higher resting heart rates; their bodies must circulate blood and deliver oxygen at a faster rate for their size",
-    ["Larger animals have higher resting heart rates because they have more blood", "Heart rate is unrelated to body size", "The whale's rate is lowest because it lives in cold water only"],
+    ["Larger animals have higher resting heart rates than smaller animals do, because their much bigger bodies hold a great deal more blood", "The resting heart rate of an animal is completely unrelated to the size of the animal's body or to the kind of life it lives", "The whale's resting rate is the lowest of the five animals only because the whale lives its whole life in cold ocean water"],
     "Across the data the pattern is consistent: mouse 450, hamster 300, cat 120, dog 70, whale 8 beats per minute. The smaller the animal, the higher its resting heart rate, because its cells' needs must be met by a faster circulation relative to its size.", {});
     q.figure = s8BarSVG(["Mouse", "Hamster", "Cat", "Dog", "Whale"], [450, 300, 120, 70, 8], "Resting heart rate (beats per minute)"); return q; }
 ]), ["Order the animals by size, then by rate.", "The trend runs opposite to size."]);
@@ -689,14 +689,14 @@ E("s8-u4-animal-pattern", 4, ["SC8.12.11", "SC8.10.6"], 3, "var", varset([
 E("s8-u4-organize", 4, ["SC8.12.12"], 1, "var", varset([
   function () { return mcq("Two partners each measure heart rate and breathing rate at three activity levels. Which format best organizes the data for comparison?",
     "A table with rows for each person and activity level, and columns for heart rate and breathing rate, including the averages",
-    ["A paragraph describing the busiest day", "A single list of all the numbers in the order measured", "A drawing of the gym where the activity happened"],
+    ["A paragraph of writing describing in words the busiest of the days on which the class did the activities", "A single long list of all of the numbers the two partners recorded, written down in the order they were measured", "A labelled drawing of the school gym, showing where the class carried out each of the activity measurements"],
     "A structured table keeps each measurement tied to its person, activity and rate type, and the averages column the lab requires. A loose list loses which number belongs to what.", {}); }
 ]), ["Comparison needs structure.", "Rows and columns with labels."]);
 
 E("s8-u4-organize-avg", 4, ["SC8.12.12"], 2, "var", varset([
   function () { return mcq("A data table for the resting measurements has three trial columns and an average column. Why does the lab organize the data this way?",
     "Showing the trials and their average makes the data transparent and the resting value more trustworthy",
-    ["The average column hides trials that disagree", "Three trials are required to fill the page", "Averages are used to change the results"],
+    ["The column for the average is there to hide away any trials that disagree with the rest of the data", "Three separate trials are required in the table simply so that the columns fill up the whole page", "Averages are calculated in the lab in order to change the results into the values the class wanted"],
     "Organizing trials beside their average lets anyone see the spread of the measurements and judge the resting value. Nothing is hidden: the trials stay on display.", {}); }
 ]), ["Transparency and trust.", "Trials visible, average beside them."]);
 

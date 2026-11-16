@@ -54,9 +54,9 @@ E("s8-u3-properties", 3, ["SC8.7.1"], 1, "gen", function () {
 
 E("s8-u3-materials", 3, ["SC8.7.1"], 1, "gen", function () {
   var cases = [
-    { q: "Which material is correctly classified by how much light it lets through?", k: "A frosted window is translucent: some light passes, but it is scattered so no clear image forms", w: ["A wooden door is translucent: some light passes through it", "A clear window pane is opaque: no light passes through it", "A frosted window is transparent: light passes and images stay sharp"] },
-    { q: "A student holds three materials in a projector beam: a glass pane, a pair of sunglasses, and a book. Which ordering by light passed is correct?", k: "Glass pane (most), then sunglasses, then the book (none)", w: ["Book (most), then sunglasses, then the glass pane (none)", "Sunglasses (most), then the glass pane, then the book", "All three pass the same amount of light"] },
-    { q: "Which example matches its category?", k: "A lampshade is translucent: it passes some light while scattering it", w: ["A brick wall is transparent", "A mirror is translucent", "Frosted glass is opaque"] }
+    { q: "Which material is correctly classified by how much light it lets through?", k: "A frosted window is translucent: some light passes, but it is scattered so no clear image forms", w: ["A solid wooden door is translucent: some of the light falling on it passes through the wood", "A clear window pane is opaque: no light at all passes through the glass of the pane", "A frosted window is transparent: light passes through it and the images seen stay sharp and clear"] },
+    { q: "A student holds three materials in a projector beam: a glass pane, a pair of sunglasses, and a book. Which ordering by light passed is correct?", k: "Glass pane (most), then sunglasses, then the book (none)", w: ["Book (most), then sunglasses, then the glass pane (none)", "Sunglasses (most), then the glass pane, then the book last of all (none)", "All three materials pass exactly the same amount of light through them"] },
+    { q: "Which example matches its category?", k: "A lampshade is translucent: it passes some light while scattering it", w: ["A brick wall is transparent: light passes through it and clear images form beyond it", "A mirror is translucent: some light passes through it, but the light is scattered", "Frosted glass is opaque: no light at all passes through a pane of frosted glass"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -80,9 +80,9 @@ E("s8-u3-dispersion", 3, ["SC8.7.1"], 3, "var", varset([
   function () {
     return mcq("A teacher shines two beams through the same prism: white light from a ray box, and the single-colour light of a red laser. The white light fans into a spectrum, but the laser beam only bends, staying red. Which explanation is correct?",
       "Dispersion separates a mixture of colours; the laser's light is a single wavelength, so there is nothing to separate, though it still refracts",
-      ["The prism disperses only light that enters at low angles, and the laser entered too steeply",
-       "Laser light cannot refract, so it passes through unchanged in direction",
-       "The prism was used up by the white light and could not disperse a second beam"],
+      ["A prism disperses only light that enters it at low angles, and the laser beam entered the prism too steeply to spread out",
+       "Laser light cannot refract at all, so it passes straight through the prism unchanged in its direction",
+       "The prism was used up by the white light shone through it first, so it could not disperse a second beam after that"],
       "The two results separate refraction from dispersion. Both beams refract (bend) at the prism's surfaces. Only the white light disperses, because it is a combination of all the visible wavelengths, each refracting by a different amount. The laser is one wavelength only: it bends as one and stays one colour.",
       {});
   }
@@ -92,9 +92,9 @@ E("s8-u3-shadow", 3, ["SC8.7.1"], 2, "var", varset([
   function () {
     return mcq("A student moves a cardboard shape closer to a lamp, keeping the screen fixed, and its shadow grows larger and stays sharp. Which statement explains both observations?",
       "Light travels in straight lines from the lamp; a closer object blocks a wider cone of those straight rays, so the shadow grows, and the straight paths keep its edges sharp",
-      ["Light curves around the cardboard, and the curving grows as the object nears the lamp",
-       "The lamp's light speeds up near the cardboard, stretching the shadow",
-       "The shadow grows because the cardboard absorbs more colours when it is closer"],
+      ["Light curves around the edges of the cardboard shape, and the amount of curving grows steadily as the object moves nearer to the lamp",
+       "The light from the lamp speeds up as it passes near the cardboard, and that speeding up stretches the shadow out on the screen",
+       "The shadow grows larger because the cardboard absorbs more of the colours in the light whenever it sits closer to the lamp"],
       "Shadows are the straight-line property at work. Rays travel straight from the source; the object blocks a cone of them, and the nearer the object sits to the lamp, the wider the cone it blocks, so the shadow is larger. Because the rays do not bend around the edges, the shadow stays sharp.",
       {});
   }
@@ -116,9 +116,9 @@ E("s8-u3-colour-seen", 3, ["SC8.7.1"], 2, "var", varset([
   function () {
     return mcq("A green sweater is viewed in white light. Using what the guide says about wavelengths and objects, why does the sweater look green?",
       "The sweater absorbs the other wavelengths of white light and reflects the wavelength our brain interprets as green",
-      ["The sweater produces green light of its own in daylight",
-       "The sweater absorbs the green wavelength and reflects all the others",
-       "White light turns green whenever it strikes any fabric"],
+      ["The sweater produces green light of its own whenever it is worn outside in ordinary daylight",
+       "The sweater absorbs the green wavelength out of the white light and reflects all of the other wavelengths instead",
+       "White light simply turns green whenever it strikes any piece of fabric, whatever its colour"],
       "Objects do not hand us their colour; they select it. White light carries all the visible wavelengths; the sweater's material absorbs most of them and reflects the green wavelength to our eyes. A red object reflects red, a white object reflects nearly all, and a black object absorbs nearly all.",
       {});
   }
@@ -203,9 +203,9 @@ E("s8-u3-em-detection", 3, ["SC8.7.2"], 2, "var", varset([
   function () {
     return mcq("Electromagnetic radiation of many types is passing through the classroom right now, yet students notice only the light from the windows and lamps. Why does so much radiation go undetected by their senses?",
       "Our eyes detect only the visible band; the other types have wavelengths too long (like infrared) or too short (like ultraviolet) for our eyes to register",
-      ["The other types of radiation exist only inside machines and never travel through rooms",
-       "The other types are blocked completely by the classroom walls",
-       "Our eyes detect all radiation, but the brain ignores most of it on purpose"],
+      ["The other types of radiation exist only inside the machines that produce them, sealed in, and they never travel through ordinary rooms like this one",
+       "The other types of radiation are blocked completely by the walls and the roof of the classroom building before they can reach anyone sitting inside it",
+       "Our eyes actually detect all of the many types of radiation around us in the room, but the brain chooses to ignore most of what the eyes register, on purpose"],
       "Detection is a wavelength question. The radiation is continuously present, from radio signals to ultraviolet, but the human eye registers only the narrow visible band. Wavelengths longer than visible (infrared) or shorter (ultraviolet) pass unnoticed without instruments.",
       {});
   }
@@ -267,9 +267,9 @@ E("s8-u3-angle-calc", 3, ["SC8.7.3"], 2, "gen", function () {
 
 E("s8-u3-specular-diffuse", 3, ["SC8.7.3"], 1, "gen", function () {
   var cases = [
-    { q: "A photograph printed with a glossy finish shows glare spots under a lamp, while the same photograph in a matte finish does not. Which explanation uses the two kinds of reflection correctly?", k: "The glossy surface reflects specularly, sending rays in one direction to form glare; the matte surface reflects diffusely, scattering rays so no glare forms", w: ["The glossy surface reflects diffusely, and the matte surface reflects specularly", "Both surfaces reflect specularly; the matte print is simply darker", "The matte surface absorbs all light, so nothing reflects from it"] },
-    { q: "Which application is correctly matched to its kind of reflection?", k: "Car wax produces a specular finish: a smooth surface reflecting in one direction for shine", w: ["Matte paint is chosen for its specular reflection and high luster", "Glazed ceramics are examples of diffuse reflection", "A dusty windshield produces specular reflection like a mirror"] },
-    { q: "Why does a calm lake mirror the mountains while a wind-rippled lake shows only a glittering blur?", k: "The calm surface reflects specularly, in one direction, forming an image; the rippled surface reflects diffusely, scattering rays in many directions", w: ["The rippled lake absorbs the light that would form the image", "The calm lake refracts the light into an image", "Wind changes the water's surface into a convex mirror"] }
+    { q: "A photograph printed with a glossy finish shows glare spots under a lamp, while the same photograph in a matte finish does not. Which explanation uses the two kinds of reflection correctly?", k: "The glossy surface reflects specularly, sending rays in one direction to form glare; the matte surface reflects diffusely, scattering rays so no glare forms", w: ["The glossy surface reflects light diffusely in all directions, and the matte surface reflects it specularly in one direction", "Both surfaces reflect light specularly in one direction; the matte print is simply printed darker than the glossy one", "The matte surface of the print absorbs all of the light that falls on it, so no light reflects from it at all"] },
+    { q: "Which application is correctly matched to its kind of reflection?", k: "Car wax produces a specular finish: a smooth surface reflecting in one direction for shine", w: ["Matte paint is chosen by painters for its specular reflection and its high, glossy luster", "Glazed ceramic dishes are common examples of diffuse reflection from a household surface", "A dusty windshield produces a specular reflection of the road ahead, just like a polished mirror"] },
+    { q: "Why does a calm lake mirror the mountains while a wind-rippled lake shows only a glittering blur?", k: "The calm surface reflects specularly, in one direction, forming an image; the rippled surface reflects diffusely, scattering rays in many directions", w: ["The wind-rippled lake absorbs all of the light that would otherwise form the image of the mountains", "The calm lake refracts the light from the mountains and bends it into an image on its surface", "The wind changes the flat surface of the water into a curved convex mirror as the ripples form"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -293,9 +293,9 @@ E("s8-u3-plane-spot", 3, ["SC8.7.3"], 2, "var", varset([
   function () {
     var q = mcq("The diagram shows an object arrow in front of a plane mirror and its image. Which set of image properties (SPOT) is correct for a plane mirror?",
       "Same size as the object, same distance behind the mirror as the object is in front, upright, and virtual",
-      ["Larger than the object, farther behind the mirror, upright, and real",
-       "Same size as the object, same distance behind the mirror, inverted, and real",
-       "Smaller than the object, closer to the mirror, upright, and virtual"],
+      ["Larger than the object itself, farther behind the mirror than the object is in front, upright, and real",
+       "Same size as the object, the same distance behind the mirror as the object in front, inverted, and real",
+       "Smaller than the object itself, closer to the mirror than the object is in front, upright, and virtual"],
       "Plane mirror images are the strand's reference case: Size the same, Position as far behind the mirror as the object is in front, Orientation upright, Type virtual (the rays only appear to meet behind the mirror, which is why the image arrow is dashed). Lateral inversion, the left-right reversal, is the one extra feature.",
       {});
     q.figure = s8PlaneMirrorSVG();
@@ -307,9 +307,9 @@ E("s8-u3-lateral", 3, ["SC8.7.3"], 3, "var", varset([
   function () {
     return mcq("The word AMBULANCE is printed in reverse on the front of the vehicle so that drivers ahead can read it in their rear-view mirrors. Which property of plane mirror images makes this work, and what exactly does the mirror do to the lettering?",
       "Lateral inversion: the mirror reverses the image left-to-right, so the reversed printing reads correctly in the mirror",
-      ["Magnification: the mirror enlarges the lettering until it becomes readable",
-       "The mirror rotates the lettering 180 degrees, turning it right side up",
-       "The mirror reverses the lettering top-to-bottom, which the brain corrects"],
+      ["Magnification: the mirror enlarges the lettering on the front of the vehicle until it becomes readable in traffic",
+       "The mirror rotates the whole lettering 180 degrees in the glass, turning it right side up for the driver",
+       "The mirror reverses the lettering from top to bottom instead, and the driver's brain corrects it while driving"],
       "A plane mirror image is laterally inverted: left and right are swapped, while top and bottom are not. Printing the word backwards on the vehicle means the mirror's left-right swap turns it into ordinary readable text for the driver ahead. It is the same effect that makes text held to a bathroom mirror unreadable.",
       {});
   }
@@ -339,9 +339,9 @@ E("s8-u3-refraction-def", 3, ["SC8.7.4"], 1, "var", varset([
   function () {
     return mcq("Which set of refraction terms is defined correctly?",
       "The incident ray is the incoming ray, the refracted ray is the ray after it bends at the boundary, and the angles of incidence and refraction are measured from the normal",
-      ["The incident ray is the ray after bending, and the angle of refraction is measured from the surface",
-       "The refracted ray is the ray that bounces back, and the normal is the surface itself",
-       "The angle of incidence is measured from the surface, and the refracted ray never changes direction"],
+      ["The incident ray is the ray after it has bent at the boundary, and the angle of refraction is measured from the surface itself rather than the normal",
+       "The refracted ray is the ray that bounces back from the boundary, and the normal is simply the surface of the medium itself",
+       "The angle of incidence is measured from the surface itself rather than the normal, and the refracted ray never changes its direction at the boundary"],
       "Refraction is the bending of light as it crosses a boundary between media. The incident ray arrives, the refracted ray leaves into the new medium, and both angles, of incidence and of refraction, are measured from the normal at the boundary point, exactly as in reflection.",
       {});
   }
@@ -351,9 +351,9 @@ E("s8-u3-bent-stick", 3, ["SC8.7.4"], 2, "var", varset([
   function () {
     return mcq("A popsicle stick standing in a beaker of water looks bent at the surface, though it is straight. Which explanation is correct?",
       "Light from the underwater part of the stick bends (refracts) as it leaves the water for the air, and our brain, assuming the light travelled straight, misplaces that part of the stick",
-      ["The water physically bends the stick, which straightens again when removed",
-       "The stick reflects the light at the surface, doubling its image",
-       "The water disperses the light, and the colours shift the stick's apparent shape"],
+      ["The water in the beaker physically bends the stick for as long as it stands in the water, pressing it out of shape, and the stick straightens itself again once it is removed and dried",
+       "The stick reflects the light reaching it at the surface of the water in the beaker, and that reflection doubles its image in the water, which is what makes the straight stick look bent",
+       "The water in the beaker disperses the light coming from the underwater part of the stick, and the separated colours produced shift the stick's apparent shape where it meets the surface"],
       "The bent stick is the guide's introduction to refraction. Light from the submerged part changes direction at the water-air boundary; the brain traces the rays back in straight lines, so the underwater part appears shifted from where it is, and the stick looks broken at the surface.",
       {});
   }
@@ -363,9 +363,9 @@ E("s8-u3-speed-density", 3, ["SC8.7.4"], 3, "var", varset([
   function () {
     return mcq("A ray of light passes at an angle from air into glass, and separately from glass back into air. Using the guide's speed and density account, which statement is correct?",
       "Light slows down entering the denser glass and bends; entering the less dense air it speeds up and bends the other way",
-      ["Light speeds up entering the denser glass, which is why it bends",
-       "Light keeps the same speed in both media; only its colour changes",
-       "Light bends only when it speeds up, never when it slows down"],
+      ["Light speeds up as it enters the denser glass from the air, and that increase in speed is what makes it bend",
+       "Light keeps exactly the same speed as it passes through both media; only the colour of the light changes at the boundary",
+       "Light bends at a boundary only when it speeds up on entering the new medium, and never when it slows down there"],
       "Refraction is caused by a speed change at the boundary. Light travels more slowly in a medium of greater density (glass) than in air, and the speed change at an angle is what swings the ray's direction. Returning to the less dense air, it speeds up and bends back. The guide's car-on-a-sandy-shoulder analogy models exactly this: slow one side first, and the direction veers.",
       {});
   }
@@ -373,9 +373,9 @@ E("s8-u3-speed-density", 3, ["SC8.7.4"], 3, "var", varset([
 
 E("s8-u3-lenses", 3, ["SC8.7.4"], 1, "gen", function () {
   var cases = [
-    { q: "Which description of a convex lens is correct?", k: "It is thicker across the middle than at the edges, and it causes parallel light rays to converge (come together)", w: ["It is thinner across the middle than at the edges, and it causes rays to diverge", "It is thicker across the middle, and it causes rays to diverge (spread apart)", "It has one flat side, and it reflects rays instead of refracting them"] },
+    { q: "Which description of a convex lens is correct?", k: "It is thicker across the middle than at the edges, and it causes parallel light rays to converge (come together)", w: ["It is thinner across the middle than at the edges, and it causes parallel light rays to converge (come together)", "It is thicker across the middle than at the edges, and it causes parallel light rays to diverge (spread apart)", "It has one flat side and one curved side, and it reflects light rays instead of refracting them as they pass"] },
     { q: "A lens spreads a parallel beam of light so the rays diverge, as if coming from a point behind the lens. Which lens is it, and what is its shape?", k: "A concave lens: thinner across the middle and thicker at the edges", w: ["A convex lens: thicker across the middle and thinner at the edges", "A concave lens: thicker across the middle and thinner at the edges", "A convex lens: thinner across the middle and thicker at the edges"] },
-    { q: "Which statement about lenses and light is correct?", k: "Lenses work by refraction: light bends at each surface of the lens, which is what brings rays together or spreads them apart", w: ["Lenses work by reflection: light bounces off the lens surfaces", "Lenses work by dispersion: they separate light into colours that form the image", "Lenses work by absorbing the rays that would blur the image"] }
+    { q: "Which statement about lenses and light is correct?", k: "Lenses work by refraction: light bends at each surface of the lens, which is what brings rays together or spreads them apart", w: ["Lenses work by reflection: the light that forms the image bounces off the curved surfaces of the lens", "Lenses work by dispersion: they separate the light passing through them into colours, and those colours form the image", "Lenses work by absorbing all of the light rays that would otherwise blur the image they form"] }
   ];
   var c = pick(cases);
   var q = mcq(c.q, c.k, c.w,
@@ -387,8 +387,8 @@ E("s8-u3-lenses", 3, ["SC8.7.4"], 1, "gen", function () {
 
 E("s8-u3-vision", 3, ["SC8.7.4"], 2, "gen", function () {
   var cases = [
-    { q: "A student is near-sighted: her eye's lens refracts light too much, so images of distant objects form in front of her retina. Which lens corrects her vision, and how?", k: "A concave lens, which diverges the light slightly before it enters the eye, so the eye's lens brings it to a focus on the retina", w: ["A convex lens, which converges the light more so it focuses sooner", "A concave lens, which converges the light so it focuses on the retina", "A convex lens, which diverges the light before it enters the eye"] },
-    { q: "A student is far-sighted: his eye's lens does not refract light enough, so images would form behind his retina. Which lens corrects his vision?", k: "A convex lens, which begins converging the light before it enters the eye, making up for the eye lens's shortfall", w: ["A concave lens, which diverges the light so the eye can catch up", "A convex lens, which diverges the light slightly before the eye", "A concave lens, which adds the missing convergence"] }
+    { q: "A student is near-sighted: her eye's lens refracts light too much, so images of distant objects form in front of her retina. Which lens corrects her vision, and how?", k: "A concave lens, which diverges the light slightly before it enters the eye, so the eye's lens brings it to a focus on the retina", w: ["A convex lens, which converges the light even more strongly so that it focuses sooner in the eye", "A concave lens, which converges the light entering the eye so that it focuses sooner, onto the retina", "A convex lens, which diverges the light slightly before the light enters the eye and reaches the lens"] },
+    { q: "A student is far-sighted: his eye's lens does not refract light enough, so images would form behind his retina. Which lens corrects his vision?", k: "A convex lens, which begins converging the light before it enters the eye, making up for the eye lens's shortfall", w: ["A concave lens, which diverges the light entering the eye so that the eye's weak lens can catch up", "A convex lens, which diverges the light slightly before it enters the eye and reaches the retina", "A concave lens, which adds the convergence that the eye's own lens is failing to provide"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -424,8 +424,8 @@ E("s8-u3-cr-refraction", 3, ["SC8.7.4"], 3, "var", varset([
 E("s8-u3-history", 3, ["SC8.8.1"], 1, "gen", function () {
   var cases = [
     { q: "Which historical idea about light is correctly matched to its thinker?", k: "Pythagoras believed light consisted of beams of particles travelling from the eye... ", w: ["Galileo measured the speed of light exactly using two telescopes", "Michelson believed light was made of waves on water", "Pythagoras believed light travelled as waves through air"] },
-    { q: "What was Galileo's contribution to the study of light's speed?", k: "He attempted an experiment to determine whether light's speed could be measured, using lanterns over a distance", w: ["He calculated the speed of light exactly as 3 x 10^8 m/s", "He proved light travels instantaneously and has no speed", "He invented the telescope to measure light's speed"] },
-    { q: "What should students know about Michelson's experiment?", k: "It was conducted to calculate the speed of light, and it succeeded in measuring it; the details are not required", w: ["It proved light has no measurable speed", "It showed light travels at the speed of sound", "It was an attempt that failed completely and measured nothing"] }
+    { q: "What was Galileo's contribution to the study of light's speed?", k: "He attempted an experiment to determine whether light's speed could be measured, using lanterns over a distance", w: ["He calculated the speed of light exactly, arriving at the modern value of 3 x 10^8 m/s with lanterns", "He proved that light travels instantaneously from place to place and therefore has no speed at all", "He invented the telescope itself for the purpose of measuring the speed of light over a distance"] },
+    { q: "What should students know about Michelson's experiment?", k: "It was conducted to calculate the speed of light, and it succeeded in measuring it; the details are not required", w: ["It proved once and for all that light has no measurable speed that any experiment could detect", "It showed that light travels through the air at exactly the same speed as sound travels", "It was an attempt to measure the speed of light that failed completely and measured nothing at all"] }
   ];
   var c = pick(cases);
   if (c.k.indexOf("travelling from the eye") >= 0) c.k = "Pythagoras believed light consisted of beams of particles";
@@ -438,9 +438,9 @@ E("s8-u3-speed-light", 3, ["SC8.8.1"], 1, "var", varset([
   function () {
     return mcq("Which statement about the speeds of light and sound is correct?",
       "Light travels at 300,000,000 m/s (3 x 10^8 m/s), enormously faster than sound at about 330 m/s, which is why we see lightning before we hear its thunder",
-      ["Light and sound travel at the same speed, about 330 m/s",
-       "Sound travels faster than light, which is why thunder arrives first",
-       "Light travels at 300,000 m/s, only slightly faster than sound"],
+      ["Light and sound both travel through the air at the same speed, about 330 m/s, so the flash and the thunder of a storm arrive together",
+       "Sound travels faster than light through the air, which is why the thunder of a storm is always heard before its flash of lightning is seen",
+       "Light travels at 300,000 m/s through the air, which is only slightly faster than the speed of sound travelling the same path"],
       "The speed of light is 3 x 10^8 m/s, about 300,000 km/s. Sound manages roughly 330 m/s. In a storm the flash's light reaches us almost instantly while the thunder dawdles behind: the guide's rule of thumb is that every 3 seconds of delay means the strike was about 1 km away.",
       {});
   }
@@ -461,9 +461,9 @@ E("s8-u3-early-tech", 3, ["SC8.8.2"], 1, "var", varset([
   function () {
     return mcq("How did scientific knowledge of light lead to the early microscope and telescope?",
       "Understanding how lenses refract light let makers combine lenses so distant and tiny objects could be magnified and studied",
-      ["Understanding reflection let makers polish mirrors until objects looked bigger",
-       "The devices came first, and no knowledge of light was involved in making them",
-       "Understanding dispersion let makers separate light into colours for viewing"],
+      ["Understanding how reflection works let makers polish curved mirrors until the objects seen in them looked bigger",
+       "The devices themselves came first, built by trial alone, and no knowledge of how light behaves was involved in making them",
+       "Understanding how dispersion separates light into colours let makers build the devices for viewing distant objects"],
       "The microscope and telescope are the guide's examples of knowledge becoming technology: once lens makers understood that shaped glass refracts light in predictable ways, they could arrange lenses to magnify what the eye cannot resolve, near and far. The strand returns to their development again under trial and error.",
       {});
   }
@@ -473,9 +473,9 @@ E("s8-u3-telescope-types", 3, ["SC8.8.2"], 2, "var", varset([
   function () {
     return mcq("A reflecting telescope and a refracting telescope collect light from distant objects in different ways. Which description is correct?",
       "A reflecting telescope uses a large concave mirror to collect and focus the light; a refracting telescope uses lenses",
-      ["A reflecting telescope uses lenses; a refracting telescope uses a concave mirror",
-       "Both use concave mirrors; they differ only in size",
-       "A reflecting telescope uses a convex mirror, which is why its images are smaller"],
+      ["A reflecting telescope collects light with lenses; a refracting telescope collects light with a large concave mirror",
+       "Both kinds of telescope use large concave mirrors to collect light; they differ only in the size of the mirror",
+       "A reflecting telescope uses a convex mirror to collect its light, which is why the images it forms are smaller"],
       "The names say it: reflecting telescopes reflect, using a concave primary mirror (the Keck telescope's mirror is 10 m across) to gather light; refracting telescopes refract, using lenses. Binoculars are two small refracting telescopes mounted side by side.",
       {});
   }
@@ -487,9 +487,9 @@ E("s8-u3-freq-wave", 3, ["SC8.8.3"], 1, "var", varset([
   function () {
     return mcq("Which definitions of frequency and wavelength are correct?",
       "Wavelength is the distance between two neighbouring crests (or troughs); frequency is the number of waves passing a point in a given time, such as one second",
-      ["Wavelength is the number of waves per second; frequency is the distance between crests",
-       "Wavelength is the height of a crest; frequency is the speed of the wave",
-       "Frequency and wavelength are two names for the same measurement"],
+      ["Wavelength is the number of complete waves that pass a point in one second; frequency is the distance between neighbouring crests",
+       "Wavelength is the height of a wave's crest above the rest position; frequency is the speed at which the wave travels",
+       "Frequency and wavelength are simply two different names used for one and the same measurement of a wave"],
       "The guide insists on the words because they are easy to swap. Wavelength measures a length: crest to crest. Frequency measures a rate: how many waves pass a point per second. The stadium wave analogy helps: the spacing of the standing sections is like wavelength; how often they rise per minute is like frequency.",
       {});
   }
@@ -499,9 +499,9 @@ E("s8-u3-freq-relation", 3, ["SC8.8.3"], 2, "var", varset([
   function () {
     return mcq("A radio station broadcasts at 94.7 MHz and another at 95.9 MHz. A student says the second station's waves must have the longer wavelength 'because its number is bigger.' Correct the student using the frequency and wavelength relationship.",
       "The student has it backwards: higher frequency means shorter wavelength, so the 95.9 MHz waves are the shorter ones",
-      ["The student is right: frequency and wavelength grow together",
-       "Neither station has a wavelength, because radio waves are not light",
-       "The wavelengths are identical, because all radio waves share one wavelength"],
+      ["The student is right about the relationship: frequency and wavelength grow larger together, in step",
+       "Neither of the two stations has a wavelength at all, because radio waves are not a form of light",
+       "The wavelengths of the two stations are identical, because every radio wave shares one single wavelength"],
       "Frequency and wavelength are inversely related for waves travelling at the same speed: high frequency waves have short wavelengths, and low frequency waves have long wavelengths. Radio stations are identified by frequency (the guide's example is OZ FM at 94.7 MHz on the Avalon Peninsula), so the bigger frequency number means the shorter wavelength.",
       {});
   }
@@ -520,8 +520,8 @@ E("s8-u3-cr-words", 3, ["SC8.8.3"], 2, "var", varset([
 
 E("s8-u3-effects", 3, ["SC8.8.4"], 3, "gen", function () {
   var cases = [
-    { q: "Which analysis of a technology's effects is best supported?", k: "X-ray machines give doctors a way to detect injuries without surgery (positive), but each exposure adds a dose of higher-energy radiation, so exposures are limited and shielded (negative)", w: ["X-ray machines have only positive effects, because they are medical", "Microwave ovens are dangerous in the same way as gamma sources, because all radiation is equally harmful", "Cell phones have no effects worth discussing, positive or negative"] },
-    { q: "A safety pamphlet is being written about ultraviolet radiation. Which statement belongs in it?", k: "Ultraviolet is higher-energy radiation that can damage skin and eyes with overexposure, so protection such as sunscreen and sunglasses is advised, even though moderate exposure has uses such as tanning", w: ["Ultraviolet is the lowest-energy radiation and needs no precautions", "Ultraviolet exposure is beneficial in unlimited amounts", "Sunglasses protect the eyes from gamma radiation at the beach"] }
+    { q: "Which analysis of a technology's effects is best supported?", k: "X-ray machines give doctors a way to detect injuries without surgery (positive), but each exposure adds a dose of higher-energy radiation, so exposures are limited and shielded (negative)", w: ["X-ray machines have only positive effects on the patients who are examined with them in hospitals, because they are medical devices used by doctors", "Microwave ovens are dangerous to their users in the same way that gamma ray sources are dangerous, because every kind of radiation is equally harmful to the human body at any exposure", "Cell phones have no effects at all on the people who use them every day that are worth discussing in this strand, either positive effects or negative ones"] },
+    { q: "A safety pamphlet is being written about ultraviolet radiation. Which statement belongs in it?", k: "Ultraviolet is higher-energy radiation that can damage skin and eyes with overexposure, so protection such as sunscreen and sunglasses is advised, even though moderate exposure has uses such as tanning", w: ["Ultraviolet is the lowest-energy form of radiation found in sunlight at the beach, so it needs no precautions of any kind from the people exposed to it", "Exposure to ultraviolet radiation is beneficial to the skin and the eyes in unlimited amounts, at any time of day, so no limit on time in the sun is ever needed for anyone", "Sunglasses are worn at the beach in summer to protect the eyes from the gamma radiation that is present in the sunlight reaching the sand there"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -533,9 +533,9 @@ E("s8-u3-harm-energy", 3, ["SC8.8.4"], 1, "var", varset([
   function () {
     return mcq("Generally, which electromagnetic radiation is the most dangerous to humans, and which is the least?",
       "Gamma rays (high frequency, short wavelength, high energy) are generally the most dangerous; radio waves (low frequency, long wavelength, low energy) are the least",
-      ["Radio waves are the most dangerous; gamma rays are the least",
-       "Visible light is the most dangerous, because we are exposed to it constantly",
-       "All types are equally dangerous at any exposure"],
+      ["Radio waves are the most dangerous type of radiation of all; gamma rays, at the other end of the spectrum, are the least dangerous of all",
+       "Visible light is the most dangerous type of radiation there is, because we are exposed to it constantly, all day long, wherever we go",
+       "All types of electromagnetic radiation, from radio waves to gamma rays, are equally dangerous to people, at any level of exposure to them"],
       "The guide's general rule: exposure to high frequency, short wavelength radiation, such as gamma rays, is generally more dangerous, and low frequency, long wavelength radiation, such as radio waves, is generally less dangerous. High frequency waves are the high energy waves, and energy is what does the damage.",
       {});
   }
@@ -545,9 +545,9 @@ E("s8-u3-atmosphere", 3, ["SC8.8.4"], 3, "var", varset([
   function () {
     return mcq("Astronauts outside Earth's atmosphere face a harsher radiation environment than people on the surface, even at the same distance from the Sun. Which explanation is correct?",
       "Earth's atmosphere blocks or absorbs much of the dangerous higher-energy radiation from space, and that protection is missing outside it",
-      ["Space contains more radiation because astronauts are closer to the stars",
-       "The atmosphere generates radiation that cancels the Sun's radiation at the surface",
-       "Spacesuits attract radiation, which is the whole problem"],
+      ["Space contains more radiation simply because astronauts travelling there are closer to the stars that produce it",
+       "The atmosphere above us generates its own radiation, which cancels out the Sun's radiation at the surface below",
+       "The spacesuits astronauts wear attract the radiation toward them, and that attraction is the whole problem"],
       "The guide ties habitability to shielding: Earth's atmosphere protects us from some of the more dangerous electromagnetic radiation present in space, which is part of what makes the surface safe for humans adapted to these conditions. Remove the atmosphere, as in space or on another planet, and the exposure rises sharply.",
       {});
   }
@@ -559,9 +559,9 @@ E("s8-u3-trial-error", 3, ["SC8.8.5"], 2, "var", varset([
   function () {
     return mcq("The Fibre Optics core STSE traces light communication from polished-shield signals and heliographs, through Bell's photophone, to lasers, and finally to fibre optic cable. Which statement best describes the development pattern the story shows?",
       "Each generation solved a problem the previous one exposed, and progress waited on materials: fibre optics became possible only when very pure glass could be drawn into hair-thin strands that guide light by reflection",
-      ["Fibre optics were invented in a single step by one inventor who foresaw the whole design",
-       "The photophone failed because its inventors did not understand light at all",
-       "Development was random: each device was unrelated to the ones before it"],
+      ["Fibre optics were invented in a single step by one inventor, working alone in a workshop, who foresaw the whole design of the finished system in every detail from the start",
+       "The photophone failed in the end simply because the people who invented it and tried to sell it did not understand the behaviour of light at all, in any of its forms",
+       "The development was essentially random from start to finish: each new device appeared on its own, unrelated to any of the devices that came before it in the story of light communication"],
       "The STSE's pattern is systematic trial and error under material constraints. Heliographs needed sun and line of sight; the photophone (1880) carried voice on light but weather and interference defeated it; lasers gave a concentrated beam but fog and buildings still blocked it; the answer was to guide the light inside a cable, which required glass pure and fine enough to serve as the core. Two companies, Corning and Siemens, combined their fibre and cabling work for the first cable in 1977.",
       {});
   }
@@ -571,9 +571,9 @@ E("s8-u3-materials-constraint", 3, ["SC8.8.5"], 1, "var", varset([
   function () {
     return mcq("Contact lenses could only become practical once a material existed that was transparent, shaped to refract light correctly, and safe and comfortable against the eye for hours. Which statement about optical technology does this example illustrate?",
       "Optical technologies develop through trial and error constrained by the optical properties of the available materials",
-      ["Optical technologies appear as soon as the idea for them is written down",
-       "The material used in an optical device has no effect on its design",
-       "Contact lenses work by reflection, so their material does not refract"],
+      ["New optical technologies appear in workshops as soon as the idea for them is first written down on paper",
+       "The material that an optical device is made from has no effect at all on how the device must be designed",
+       "Contact lenses work by reflecting light at their surfaces, so the material they are made of never refracts light"],
       "The guide's framing for this indicator: advances in optical technology follow the development of materials suited to the application. Lenses of any kind are hostage to their material's optical properties; contact lenses waited on a material that could be worn on the eye itself.",
       {});
   }
@@ -592,8 +592,8 @@ E("s8-u3-cr-fibre", 3, ["SC8.8.5"], 3, "var", varset([
 
 E("s8-u3-research-tech", 3, ["SC8.8.6"], 1, "gen", function () {
   var cases = [
-    { q: "Which example shows an optical technology enabling scientific research?", k: "Astronomy teams use large telescopes to survey the universe and gather light from objects too faint for the eye", w: ["A hockey player wears a face shield during a game", "A driver uses headlights on a dark road", "A student reads a book under a lamp"] },
-    { q: "Which personal activity is directly related to the optical technologies researchers use?", k: "Using a magnifying glass or a backyard telescope to observe specimens and the night sky", w: ["Wearing sunglasses at the beach", "Watching a movie at a theatre", "Using a microwave to heat lunch"] }
+    { q: "Which example shows an optical technology enabling scientific research?", k: "Astronomy teams use large telescopes to survey the universe and gather light from objects too faint for the eye", w: ["A hockey player wears a clear plastic face shield fitted on a helmet during a league game at the local arena", "A driver switches on the headlights of a car to see the road while driving along a dark road at night in the country", "A student sits at a desk at home in the evening and reads a book for school under the light of a desk lamp"] },
+    { q: "Which personal activity is directly related to the optical technologies researchers use?", k: "Using a magnifying glass or a backyard telescope to observe specimens and the night sky", w: ["Wearing a pair of sunglasses at the beach on a bright afternoon in summer", "Watching a movie on the large screen of a theatre in town on the weekend", "Using a microwave oven in the cafeteria to heat up a lunch brought from home"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -605,9 +605,9 @@ E("s8-u3-personal-optics", 3, ["SC8.8.6"], 1, "var", varset([
   function () {
     return mcq("Which list contains only optical technologies, of the kind this strand studies?",
       "Face shields on hockey helmets, car headlights, flashlights, magnifying glasses, eyeglasses, contact lenses, microscopes, telescopes and cameras",
-      ["Face shields, headlights, radios, magnifying glasses and telescopes",
-       "Eyeglasses, contact lenses, microwave ovens and cameras",
-       "Flashlights, telescopes, cell phones and microscopes"],
+      ["Face shields, car headlights, radios, televisions, electric kettles, hair dryers, magnifying glasses and telescopes",
+       "Eyeglasses, contact lenses, microwave ovens, radios, toasters, televisions, hair dryers, electric kettles and cameras",
+       "Flashlights, telescopes, cell phones, microwave ovens, radios, toasters, televisions, hair dryers and microscopes"],
       "Every item on the correct list works by reflection or refraction of light, and the list is the guide's own example set for this indicator. Radios, microwaves and cell phones belong to the wider EM spectrum study, but they are not optical technologies.",
       {});
   }
@@ -628,9 +628,9 @@ E("s8-u3-individual-group", 3, ["SC8.8.7"], 1, "var", varset([
   function () {
     return mcq("Which pairing correctly illustrates individual and group scientific and technological activity in optics?",
       "Individual: a lens maker grinding and testing lenses in a workshop. Group: an astronomy team surveying the universe with a shared observatory",
-      ["Individual: the international Hubble telescope programme. Group: a single student with a magnifying glass",
-       "Individual and group work never both occur in the same field",
-       "Individual: an astronomy team. Group: a lone inventor"],
+      ["Individual: the international Hubble telescope programme with its many teams. Group: a single student working with a magnifying glass",
+       "Individual work and group work never both occur within one and the same field of science and technology",
+       "Individual: an astronomy team working at an observatory. Group: a lone inventor working alone at home"],
       "The guide's own contrast: some optics work is done by individuals, such as lens makers, and some by groups, such as astronomy teams investigating and surveying the universe. Modern flagships like the Hubble telescope are group work on the largest scale, while the craft tradition of the individual lens maker continues.",
       {});
   }
@@ -640,9 +640,9 @@ E("s8-u3-corning-siemens", 3, ["SC8.8.7"], 2, "var", varset([
   function () {
     return mcq("The first fibre optic cable, in 1977, combined Corning's fibre technology with Siemens' cabling technology. What does this example illustrate about scientific and technological activity?",
       "Major technologies often result from groups and organizations combining different expertise, not from a single worker",
-      ["Companies never share expertise in developing technology",
-       "The cable was the work of one individual at one company",
-       "Fibre optics required no scientific knowledge, only manufacturing"],
+      ["Companies working on new technology never share any of their expertise with one another during development",
+       "The finished cable was the work of one single individual, working alone at one of the two companies",
+       "Fibre optics required no scientific knowledge of light at all, only the manufacturing skill to make the cable"],
       "Neither company held the whole solution: one had the fibre, the other the cable. Their joint work is the STSE's clearest case of technological activity as a group enterprise, set beside individual workers like lens makers elsewhere in the strand.",
       {});
   }
@@ -652,9 +652,9 @@ E("s8-u3-hubble", 3, ["SC8.8.7"], 2, "var", varset([
   function () {
     return mcq("The Hubble Space Telescope was designed, built, launched and operated by large teams across many institutions and countries, and its mirror flaw was corrected by a servicing mission planned by still more teams. Which conclusion about optics work does Hubble best support?",
       "Modern optical research is predominantly group activity, building cumulatively on earlier workers' knowledge from Galileo and Newton onward",
-      ["One individual can still complete a flagship optical instrument alone",
-       "Hubble shows that group work produces flawed results and should be avoided",
-       "Optics knowledge was complete by Newton's time and has not changed since"],
+      ["One talented individual, working alone, can still design and complete a flagship optical instrument like Hubble",
+       "Hubble shows that work done by large groups produces flawed results, and that group work should be avoided in optics",
+       "Our knowledge of optics was already complete by Newton's time, and nothing about it has changed since then"],
       "The guide presents the line from Galileo to Newton to Hubble and laser technologies as knowledge under continuous, collective development: today's understanding is not stagnant and will be extended. Hubble's scale, and the team effort that repaired it, are the modern face of that group activity.",
       {});
   }
@@ -666,9 +666,9 @@ E("s8-u3-new-questions", 3, ["SC8.9.1"], 2, "var", varset([
   function () {
     return mcq("After studying the electromagnetic spectrum, a class brainstorms new questions that arise from what they learned. Which question genuinely arises from the spectrum material?",
       "If ultraviolet radiation is invisible and can damage skin, how much ultraviolet reaches us on a cloudy day, and does sunscreen block all of it?",
-      ["Why is the sky blue on some days and grey on others?",
-       "How do plants make food from sunlight?",
-       "What is the capital of every country that uses X-rays?"],
+      ["Why does the sky over the harbour look blue on some days of the year and grey and overcast on other days instead of blue?",
+       "How do the plants growing in a school garden make their own food from the sunlight that falls on their leaves through the day?",
+       "What is the capital city of every country in the world where X-ray machines are used in the hospitals of its towns and cities?"],
       "A question arises from what was learned when it grows out of the material itself: the spectrum study establishes that ultraviolet is invisible, energetic and harmful, and the question pushes exactly there. The other questions are fine questions, but they belong to other topics and other courses.",
       {});
   }
@@ -678,9 +678,9 @@ E("s8-u3-new-problem", 3, ["SC8.9.1"], 1, "var", varset([
   function () {
     return mcq("Studying fibre optics raises a practical problem for a school board: older buildings have copper wiring that is slow for the school's network. Which statement frames the problem the new learning creates?",
       "Can fibre optic cable be installed in the older buildings, and would its light-based signals solve the speed problem the copper creates?",
-      ["Why did the school board not invent fibre optics itself?",
-       "Copper wiring should be banned everywhere immediately",
-       "The school's network is a problem with no connection to optics"],
+      ["Why did the school board not simply invent fibre optic cable itself when the buildings were first wired?",
+       "Copper wiring should simply be banned in every building everywhere, starting immediately, whatever it costs",
+       "The speed of the school's network is a problem for the board, but it has no connection to optics at all"],
       "New learning creates new problems when it reveals a better possibility: knowing that fibre carries signals as light, quickly and without electrical interference, turns the old copper installation into a defined problem with a testable solution.",
       {});
   }
@@ -690,9 +690,9 @@ E("s8-u3-new-problem", 3, ["SC8.9.1"], 1, "var", varset([
 
 E("s8-u3-definitions", 3, ["SC8.9.2"], 1, "gen", function () {
   var cases = [
-    { q: "In a reflection diagram, what is the normal?", k: "The line drawn perpendicular (at 90 degrees) to the surface at the point where the ray strikes it", w: ["The line along the mirror's surface at the point of reflection", "The incoming ray itself", "The line halfway between the surface and the reflected ray"] },
+    { q: "In a reflection diagram, what is the normal?", k: "The line drawn perpendicular (at 90 degrees) to the surface at the point where the ray strikes it", w: ["The line running along the surface of the mirror itself at the point where the ray reflects", "The incoming ray itself, travelling toward the mirror", "The line drawn halfway between the surface of the mirror and the reflected ray leaving it"] },
     { q: "Which term names the ray that travels toward a mirror and strikes it?", k: "The incident ray", w: ["The reflected ray", "The normal", "The refracted ray"] },
-    { q: "What is the angle of incidence, operationally?", k: "The angle between the incident ray and the normal, measured at the point of incidence", w: ["The angle between the incident ray and the mirror's surface", "The angle between the reflected ray and the surface", "The angle between the two mirrors in a periscope"] }
+    { q: "What is the angle of incidence, operationally?", k: "The angle between the incident ray and the normal, measured at the point of incidence", w: ["The angle between the incoming incident ray and the surface of the mirror it strikes", "The angle between the reflected ray leaving the mirror and the surface of the mirror", "The angle formed between the two mirrors mounted inside the tube of a periscope"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -718,9 +718,9 @@ E("s8-u3-operational", 3, ["SC8.9.2"], 2, "var", varset([
   function () {
     return mcq("A class watches a tennis ball bounce off the floor at several angles and maps its path, then does the same with a ray box and mirror. Which statement best formulates the operational definition they are building toward?",
       "For both the ball and the light ray, the angle at which the path meets the normal before the bounce equals the angle at which it leaves after the bounce",
-      ["Balls and light always bounce straight back the way they came",
-       "The bounce angle depends only on how hard the ball is thrown",
-       "Light obeys the bounce pattern only when a protractor is present"],
+      ["Balls and rays of light, in every case, always bounce straight back along exactly the same path by which they came in to the surface",
+       "The angle at which the path bounces off the surface depends only on how hard the ball happens to be thrown at the floor by the student",
+       "A ray of light obeys the bounce pattern only on those occasions when a protractor is present on the bench to measure the angles it makes"],
       "Operational definitions come from operations: doing the bouncing and measuring. Ball and ray behave the same way, which is why the guide introduces reflection through the ball demonstration: measure against the normal on both sides, and the equality is the definition in action.",
       {});
   }
@@ -732,9 +732,9 @@ E("s8-u3-protractor", 3, ["SC8.9.3"], 1, "var", varset([
   function () {
     return mcq("In Core Lab 5-2B, a group keeps getting angles of reflection a few degrees off their angles of incidence. Which practice most improves their accuracy?",
       "Draw the normal carefully at the exact point of incidence, place the protractor's centre on that point, and measure both angles from the normal",
-      ["Measure the incidence angle from the normal and the reflection angle from the mirror's surface",
-       "Estimate the angles by eye and average the group's guesses",
-       "Measure from the surface for both angles, since the surface is easier to see"],
+      ["Measure the angle of incidence from the normal as usual, but measure the angle of reflection from the mirror's surface itself",
+       "Estimate both of the angles by eye alone and then average the guesses made by the members of the group",
+       "Measure both of the angles from the surface of the mirror instead, since the surface is easier to see clearly"],
       "Accurate mirror work is a chain of small disciplines: the rays drawn straight with a ruler from marked dots, the normal drawn at the point of incidence, the protractor centred on that point, and both angles read from the normal. Mixing references (normal for one angle, surface for the other) manufactures exactly the few-degrees error described.",
       {});
   }
@@ -806,9 +806,9 @@ E("s8-u3-real-virtual", 3, ["SC8.9.3"], 1, "var", varset([
   function () {
     return mcq("On a ray diagram, how do you distinguish a real image from a virtual image?",
       "A real image forms in front of the mirror where the reflected rays actually meet; a virtual image forms behind the mirror where the rays' extensions appear to meet",
-      ["A real image is always larger; a virtual image is always smaller",
-       "A real image is upright; a virtual image is inverted",
-       "A real image can be seen only in photographs; a virtual image only in person"],
+      ["A real image is always larger than the object that forms it in front of the mirror; a virtual image is always smaller than the object that forms it",
+       "A real image always stands upright in front of the mirror that forms it; a virtual image, formed behind the mirror, is always inverted instead",
+       "A real image can be seen only in photographs taken of it; a virtual image can be seen only in person, never photographed"],
       "The guide limits the distinction to location on the diagram, and that is enough: rays actually converging in front of the mirror make a real image (it could be caught on a screen); rays that must be extrapolated backward to a meeting point behind the mirror make a virtual one. Size and orientation vary independently.",
       {});
   }
@@ -829,9 +829,9 @@ E("s8-u3-delimit", 3, ["SC8.9.4"], 2, "var", varset([
   function () {
     return mcq("A student's investigation question reads: 'Everything about how mirrors work.' Which revision properly defines and delimits it for an investigation?",
       "How does the angle of incidence of a ray on a plane mirror compare with its angle of reflection, for angles between 20 and 60 degrees?",
-      ["How do mirrors work in the universe?",
-       "Why are mirrors interesting?",
-       "What is the complete history of mirrors?"],
+      ["How do mirrors of every kind, plane and curved alike, work, everywhere in the universe and throughout all of history?",
+       "Why are mirrors so interesting to look at for people of all ages, and why do people enjoy playing with them so much?",
+       "What is the complete history of mirrors in human civilization, from the earliest polished metal mirrors to the present day?"],
       "Delimiting narrows a topic to a measurable question with boundaries: one mirror type, two named angles to compare, and a stated range. The original and the other options have no variables and no edges, so no investigation could finish them.",
       {});
   }
@@ -841,9 +841,9 @@ E("s8-u3-delimit-problem", 3, ["SC8.9.4"], 1, "var", varset([
   function () {
     return mcq("A team wants to investigate why the school gymnasium's windows produce glare on the floor during morning classes. Which problem statement is delimited well enough to investigate?",
       "Between 9 and 10 a.m., sunlight reflecting off the gym's east windows creates glare patches on the floor; the team will test which window covering removes the glare while keeping the gym usable",
-      ["The gym is too bright sometimes and something should be done",
-       "Sunlight is a problem for all schools everywhere",
-       "The team will solve glare in every building in the province"],
+      ["The school gymnasium is too bright inside at some times of the day, on some days of the week, and something should really be done about the brightness eventually, by somebody",
+       "Sunlight coming through classroom windows is a problem for all schools, in all places in the country, at all times of the day and in every season of the school year",
+       "The team will take on the job of solving, once and for all, the problem of window glare in every school building in every community in the whole province this year"],
       "A delimited problem names the place, the time, the phenomenon and the test to run. Province-wide and someday statements cannot be investigated by a school team; the first option can be, in a week of mornings.",
       {});
   }
@@ -855,9 +855,9 @@ E("s8-u3-hypothesis", 3, ["SC8.9.5"], 2, "var", varset([
   function () {
     return mcq("Before Core Lab 5-2B, a student must state a hypothesis about reflection. Which statement is a proper hypothesis for the lab?",
       "If a ray strikes a plane mirror at a measured angle of incidence, then the angle of reflection will equal it, because the law of reflection governs every ray at a smooth surface",
-      ["Mirrors are fun to work with and the lab will be interesting",
-       "The angle of reflection might do something when we shine the light",
-       "Reflection was discovered a long time ago by scientists"],
+      ["Mirrors are fun to work with in the laboratory during science class, and everyone in the class expects the reflection lab to be an interesting one to do",
+       "The angle of reflection might perhaps do something or other, we are not sure what, when we shine the light from the ray box onto the surface of the mirror",
+       "The reflection of light off smooth surfaces was discovered a very long time ago by scientists working in the distant past, long before this laboratory was built"],
       "A hypothesis is a testable statement with a reason attached: it predicts the measurable outcome (equal angles) and grounds the prediction (the law). Opinions, vague gestures and history are not hypotheses because the lab cannot test them.",
       {});
   }
@@ -867,9 +867,9 @@ E("s8-u3-prediction", 3, ["SC8.9.5"], 1, "var", varset([
   function () {
     return mcq("A group has measured angles of incidence and reflection of 20 and 20, 35 and 35, and 50 and 50 degrees. Based on the pattern, what is the sound prediction for a new trial at 65 degrees incidence, and what is it based on?",
       "The angle of reflection will be 65 degrees, based on the observed pattern that the two angles are always equal",
-      ["The angle of reflection will be 25 degrees, because the angles must add to 90",
-       "No prediction is possible from only three trials",
-       "The angle of reflection will be 130 degrees, doubling as the trials proceed"],
+      ["The angle of reflection will be 25 degrees, because the two angles in each trial must always add up to 90 degrees",
+       "No prediction of any kind is possible from the results of only three trials of the experiment",
+       "The angle of reflection will be 130 degrees, because the reflection angle doubles each time as the trials proceed"],
       "A prediction extends an observed pattern: three trials all show equality, so the next trial is predicted to show it too. Predictions are only as good as the pattern behind them, which is why the lab collects several angles instead of one.",
       {});
   }
@@ -881,9 +881,9 @@ E("s8-u3-safety", 3, ["SC8.9.6"], 1, "var", varset([
   function () {
     return mcq("Which practice is the safe and correct way to work with the ray box and mirrors in the optics labs?",
       "Never look directly into the ray box beam or shine it toward anyone's eyes, and handle mirrors by their edges to avoid cuts from chipped glass",
-      ["Look along the beam to check it is straight before measuring",
-       "Shine the beam at a partner's mirror to test their reflexes",
-       "Carry mirrors loosely in one hand while moving around the room"],
+      ["Look directly along the beam of the ray box with one eye held close to it to check that the beam is straight before measuring angles",
+       "Shine the beam of the ray box across the room at a partner's mirror on another bench to test how quick their reflexes are in catching it",
+       "Carry the mirrors loosely in one hand, without their cases, while walking around the room from bench to bench during the lab period"],
       "Optics apparatus has two standing hazards: beams aimed at eyes, and glass that can chip or break. The safe habits are to keep beams on the bench and away from eyes, and to handle mirrors carefully by their edges. Bench skill is classroom assessment; this entry carries the safety knowledge.",
       {});
   }
@@ -895,9 +895,9 @@ E("s8-u3-conclusion", 3, ["SC8.9.7"], 2, "var", varset([
   function () {
     return mcq("A group's reflection data read: incidence 15, reflection 15; incidence 30, reflection 29; incidence 45, reflection 46; incidence 60, reflection 60. Which conclusion is properly based on this data?",
       "The angle of reflection equals the angle of incidence, within the small measurement errors expected from protractor work",
-      ["The law of reflection is disproved, because two trials are off by one degree",
-       "The angle of reflection is sometimes larger and sometimes smaller, so no pattern exists",
-       "The group should change the two off values to match the law exactly"],
+      ["The law of reflection is disproved by this data, because two of the four trials are off by a single degree each",
+       "The angle of reflection in the data is sometimes larger and sometimes smaller than the incidence angle, so no pattern exists in it",
+       "The group should simply change the two values that are off by a degree so that all the data match the law exactly"],
       "Conclusions respect both the pattern and the instrument. Three exact matches and two misses of a single degree, the width of a pencil line on a protractor, support the law with measurement error named. Fudging the numbers to perfection would corrupt the data; declaring the law dead over one degree would ignore how measurement works.",
       {});
   }
@@ -907,9 +907,9 @@ E("s8-u3-evidence", 3, ["SC8.9.7"], 2, "var", varset([
   function () {
     return mcq("A student began the refraction unit predicting that light bends toward the normal when it speeds up. After Core Lab 5-1D, her diagrams show rays bending toward the normal as they enter water, where light travels more slowly. Which statement correctly relates her evidence to her initial idea?",
       "The evidence refutes her initial idea: bending toward the normal happens when light slows down entering a denser medium, the opposite of her prediction",
-      ["The evidence supports her idea, because the rays did bend toward the normal as she said",
-       "The evidence is unrelated to her idea, because diagrams are not evidence",
-       "Her idea and the evidence agree, since water is less dense than air"],
+      ["The evidence gathered in the lab supports her original idea, because the rays did bend toward the normal, just as she said they would",
+       "The evidence from the lab is unrelated to her original idea, because ray diagrams drawn on paper are not evidence",
+       "Her original idea and the lab evidence agree with each other, since water is a less dense medium than air is"],
       "Evidence work means comparing the claim with the result on the claim's own terms. She predicted the bend would accompany speeding up; the lab shows the bend toward the normal accompanying slowing down in the denser medium. The direction she named was right and the mechanism she attached to it was wrong, so the idea as stated is refuted and must be revised.",
       {});
   }
@@ -930,9 +930,9 @@ E("s8-u3-fish-question", 3, ["SC8.9.8"], 2, "var", varset([
   function () {
     return mcq("A fisher notices that a trout under the water is never quite where it appears to be. Which question turns this practical problem into an investigation of refraction?",
       "By how much does the apparent depth of an object under water differ from its real depth, and does the difference grow as the viewing angle changes?",
-      ["Why do trout avoid being caught?",
-       "Is fishing better in the morning or the evening?",
-       "Who first noticed that fish look displaced?"],
+      ["Why do the trout living in a pond learn, over a single season, to avoid being caught by the people who come to fish for them there?",
+       "Is fishing for trout in a pond better early in the morning, before the sun is high, or later on in the evening of the same day?",
+       "Who was the first person in recorded history to notice that fish under the water of a pond look displaced from where they really are?"],
       "The practical problem is the displacement. The investigable version measures it (apparent versus real depth) and varies a condition (viewing angle). The bent stick and the fish are the guide's own examples of refraction questions arising from practical problems.",
       {});
   }
@@ -942,9 +942,9 @@ E("s8-u3-coin-question", 3, ["SC8.9.8"], 1, "var", varset([
   function () {
     return mcq("A coin at the bottom of an empty opaque cup is hidden by the cup's rim. When water is poured in, the coin appears, as if it floated up. Which question should the class investigate from this demonstration?",
       "How does the water change the path of light from the coin so that it reaches the eye over the rim?",
-      ["Why did the coin not really float?",
-       "What is the coin made of?",
-       "How much water does the cup hold?"],
+      ["Why did the coin at the bottom of the cup not really float upward when the water was poured in?",
+       "What kind of metal is the coin at the bottom of the cup made of, and where was it minted?",
+       "How much water, in total, does the opaque cup used in the demonstration hold when it is full?"],
       "The demonstration's puzzle is optical: the coin did not move, its light's path did. The investigable question targets the refraction that bends the light at the surface, the same apparent-position effect as the bent stick and the fish.",
       {});
   }
@@ -954,8 +954,8 @@ E("s8-u3-coin-question", 3, ["SC8.9.8"], 1, "var", varset([
 
 E("s8-u3-estimate-bend", 3, ["SC8.9.9"], 2, "gen", function () {
   var cases = [
-    { mode: "toward", q: "The diagram shows a ray passing from air into water. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is smaller: entering the denser medium, the ray bends toward the normal", w: ["The angle of refraction is larger: the ray bends away from the normal", "The angles are equal: refraction never changes the angle", "The angle of refraction is zero: the ray stops at the surface"] },
-    { mode: "away", q: "The diagram shows a ray passing from water into air. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is larger: leaving the denser medium, the ray bends away from the normal", w: ["The angle of refraction is smaller: the ray bends toward the normal", "The angles are equal: the ray continues straight", "The angle of refraction is 90 degrees: the ray runs along the surface"] }
+    { mode: "toward", q: "The diagram shows a ray passing from air into water. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is smaller: entering the denser medium, the ray bends toward the normal", w: ["The angle of refraction is the larger one: the ray bends away from the normal as it enters the water", "The two angles are equal to each other: refraction at a surface never changes the angle of a ray at all", "The angle of refraction is zero degrees: the ray stops at the surface and goes no farther into the water"] },
+    { mode: "away", q: "The diagram shows a ray passing from water into air. Which estimate of the angle of refraction, compared with the angle of incidence, is correct?", k: "The angle of refraction is larger: leaving the denser medium, the ray bends away from the normal", w: ["The angle of refraction is the smaller one: the ray bends toward the normal as it leaves the water", "The two angles are equal to each other: the ray continues perfectly straight across the boundary", "The angle of refraction is 90 degrees: on leaving the water, the ray runs along the surface itself"] }
   ];
   var c = pick(cases);
   var q = mcq(c.q, c.k, c.w,
@@ -969,9 +969,9 @@ E("s8-u3-estimate-compare", 3, ["SC8.9.9"], 3, "var", varset([
   function () {
     return mcq("Two rays strike a water surface from the air, one at 20 degrees incidence and one at 55 degrees. A student estimates both refraction angles. Which estimate pattern is sound?",
       "Both refraction angles are smaller than their incidence angles, and the 55 degree ray bends by more degrees than the 20 degree ray",
-      ["Both refraction angles are larger than their incidence angles",
-       "The 20 degree ray bends more than the 55 degree ray, because shallow rays bend most",
-       "Neither ray bends, because both start in air"],
+      ["Both of the refraction angles estimated are larger than the incidence angles they started from",
+       "The ray at 20 degrees bends by more degrees than the ray at 55 degrees, because rays arriving at shallow angles bend the most",
+       "Neither of the two rays bends at the surface at all, because both of them start out travelling in air"],
       "Entering water, every ray bends toward the normal, so every refraction angle is smaller than its incidence angle. The amount of bending grows with the incidence angle: a ray arriving nearly along the normal barely bends, and a steep ray bends the most, which the core lab's changing-angle observations show.",
       {});
   }
@@ -992,9 +992,9 @@ E("s8-u3-conduct", 3, ["SC8.9.10"], 2, "var", varset([
   function () {
     return mcq("In Core Lab 5-1D, students trace a refracted ray through a transparent block. Which procedure produces a trustworthy ray path?",
       "Mark two dots in the middle of the incident beam and two in the refracted beam, remove the ray box, and join the dots with a ruler, tracing the block's outline first",
-      ["Draw the ray freehand while the beam shines, estimating where it goes",
-       "Trace the block after measuring, and guess the ray's path from memory",
-       "Mark one dot in each beam and connect them to the corner of the block"],
+      ["Draw the path of the ray freehand on the page while the beam from the ray box is still shining, estimating where the ray goes through the block by eye alone",
+       "Trace the outline of the transparent block on the page only after all the measuring is finished, and guess the ray's path through it from memory afterwards",
+       "Mark a single dot in the middle of each beam on the page and connect those two dots with a line to the nearest corner of the transparent block"],
       "The core lab's method is built for accuracy: the block's outline is traced so it can be replaced exactly, dots mark the beams' centres (two per beam define a line), and a ruler joins them after the apparatus is removed. The guide stresses the process: careful marking is what makes the resulting angles worth measuring.",
       {});
   }
@@ -1004,9 +1004,9 @@ E("s8-u3-method-steps", 3, ["SC8.9.10"], 1, "var", varset([
   function () {
     return mcq("Which sequence correctly orders the steps for describing a refracted ray's path through a transparent medium?",
       "Set up the ray and medium, mark the incident and refracted beams, draw the normal at the boundary point, then measure the angles of incidence and refraction",
-      ["Measure the angles first, then set up the ray to match them",
-       "Draw the normal last, after the angles are recorded",
-       "Remove the medium, guess the path, and check with the ray afterward"],
+      ["Measure the angles of incidence and refraction first, then set up the ray and the medium afterwards to match them",
+       "Draw the normal at the boundary last of all, only after both of the angles have already been measured and recorded",
+       "Remove the transparent medium from the bench, guess the path the ray took through it, and check the guess with the ray afterward"],
       "Method order matters because each step feeds the next: the beams must exist before they can be marked, the normal must be drawn at the true boundary point before angles can be measured from it, and measurement comes last. Angles measured before the normal exists have no reference.",
       {});
   }
@@ -1020,7 +1020,7 @@ E("s8-u3-variables", 3, ["SC8.9.11"], 3, "var", varset([
       "Changed variable: the liquid. Measured variable: the angle of refraction. Kept the same: the angle of incidence, the ray source and the container",
       ["Changed variable: the angle of refraction. Measured variable: the liquid. Kept the same: the container only",
        "Changed variable: the angle of incidence. Measured variable: the liquid. Kept the same: the angle of refraction",
-       "There are no variables to identify, because the liquids are not alive"],
+       "There are no variables of any kind to identify in this experiment, because the liquids being tested are not alive"],
       "Design begins with the variable roles. The group deliberately changes the liquid, measures the refraction angle as the outcome, and holds the incidence angle and apparatus constant so the comparison among liquids is fair. Swapping the changed and measured roles is the classic design error this indicator targets.",
       {});
   }
@@ -1039,9 +1039,9 @@ E("s8-u3-cr-design-refraction", 3, ["SC8.9.11"], 3, "var", varset([
 
 E("s8-u3-bend-rule", 3, ["SC8.9.13"], 1, "gen", function () {
   var cases = [
-    { q: "A light ray travels from air into water at an angle. Which way does it bend?", k: "Toward the normal, because water is denser than air and the light slows down", w: ["Away from the normal, because water is denser than air", "Toward the normal, because the light speeds up in water", "It does not bend, because bending happens only in glass"] },
-    { q: "A light ray travels from glass into air at an angle. Which way does it bend?", k: "Away from the normal, because air is less dense than glass and the light speeds up", w: ["Toward the normal, because air is less dense than glass", "Away from the normal, because the light slows down in air", "Along the normal, because glass always straightens rays"] },
-    { q: "Which statement states the bending rule correctly?", k: "Into a medium of greater density, light bends toward the normal; into a medium of lesser density, it bends away from the normal", w: ["Into a medium of greater density, light bends away from the normal; into a lesser density, toward it", "Light always bends toward the normal, whatever the media", "Light always bends away from the normal, whatever the media"] }
+    { q: "A light ray travels from air into water at an angle. Which way does it bend?", k: "Toward the normal, because water is denser than air and the light slows down", w: ["Away from the normal at the surface, because water is a denser medium than the air above it", "Toward the normal at the surface, because the light speeds up as it enters the water from air", "It does not bend at all at the surface, because bending of light happens only in glass blocks"] },
+    { q: "A light ray travels from glass into air at an angle. Which way does it bend?", k: "Away from the normal, because air is less dense than glass and the light speeds up", w: ["Toward the normal at the surface, because air is a less dense medium than the glass it left", "Away from the normal at the surface, because the light slows down as it leaves the glass for the air", "Straight along the normal itself, because a glass block always straightens out any ray passing through it"] },
+    { q: "Which statement states the bending rule correctly?", k: "Into a medium of greater density, light bends toward the normal; into a medium of lesser density, it bends away from the normal", w: ["Into a medium of greater density, light bends away from the normal; into a lesser density, toward it", "Light always bends toward the normal at a boundary, whatever the two media on either side of it happen to be", "Light always bends away from the normal at a boundary, whatever the two media on either side of it happen to be"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -1092,9 +1092,9 @@ E("s8-u3-bend-two-boundary", 3, ["SC8.9.13"], 3, "var", varset([
   function () {
     return mcq("A ray passes from air into a glass block, travels through it, and exits the parallel opposite face back into air. Which description of the ray's full path is correct?",
       "It bends toward the normal entering the glass, travels straight through, then bends away from the normal leaving, emerging parallel to its original direction but shifted sideways",
-      ["It bends away from the normal entering, then toward the normal leaving, emerging along its original line",
-       "It bends toward the normal at both faces and keeps bending inside the glass",
-       "It does not bend at either face, because the two faces cancel out before the ray arrives"],
+      ["It bends away from the normal as it enters the glass, then toward the normal as it leaves, emerging from the block along exactly its original line",
+       "It bends toward the normal at both faces of the block, and it keeps on bending steadily the whole way through the glass inside",
+       "It does not bend at either face of the block, because the effects of the two parallel faces cancel out before the ray even arrives"],
       "Each boundary applies the rule independently. Entering the denser glass: toward the normal. Leaving for the less dense air: away from the normal, by the same amount, because the faces are parallel. The two bends cancel in direction but not in position: the ray emerges parallel to its start, displaced sideways, the classic block result from the core lab family.",
       {});
   }
@@ -1104,8 +1104,8 @@ E("s8-u3-bend-two-boundary", 3, ["SC8.9.13"], 3, "var", varset([
 
 E("s8-u3-predict-media", 3, ["SC8.9.14"], 2, "gen", function () {
   var cases = [
-    { q: "A ray enters three liquids from air at the same angle of incidence: water, vegetable oil, and a 30 percent sugar solution. Knowing that oil and the sugar solution are denser than water, which prediction is sound?", k: "The ray bends more toward the normal in the oil and the sugar solution than in the water, so their angles of refraction are smaller", w: ["The ray bends most in the water, because it is the least dense", "All three bend identically, because the incidence angle is the same", "The ray bends away from the normal in the denser liquids"] },
-    { q: "A student predicts that a ray entering glycerol (denser than water) from air will have a larger angle of refraction than the same ray entering water. Evaluate the prediction.", k: "It is backwards: the denser medium bends the ray more toward the normal, giving a smaller angle of refraction", w: ["It is correct: denser media always give larger refraction angles", "It cannot be evaluated without knowing the temperature", "It is correct, because glycerol is thicker and pushes the ray wider"] }
+    { q: "A ray enters three liquids from air at the same angle of incidence: water, vegetable oil, and a 30 percent sugar solution. Knowing that oil and the sugar solution are denser than water, which prediction is sound?", k: "The ray bends more toward the normal in the oil and the sugar solution than in the water, so their angles of refraction are smaller", w: ["The ray bends the most in the water of the three liquids, because water is the least dense of them", "All three liquids bend the ray by exactly the same amount, because the angle of incidence is the same for all three", "The ray bends away from the normal as it enters each of the denser liquids from the air above them"] },
+    { q: "A student predicts that a ray entering glycerol (denser than water) from air will have a larger angle of refraction than the same ray entering water. Evaluate the prediction.", k: "It is backwards: the denser medium bends the ray more toward the normal, giving a smaller angle of refraction", w: ["The prediction is correct: media that are denser than water always give larger angles of refraction to a ray", "The student's prediction cannot be evaluated at all without first knowing the temperature of the two liquids", "The prediction is correct as stated, because glycerol is a thicker liquid and pushes the entering ray wider apart"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
