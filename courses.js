@@ -674,7 +674,7 @@ window.COURSES = {
   bankFile: "sci-7.js",
   subject: "Science",
   grade: 7,
-  listed: false,
+  listed: true,
   panels: {},
 
   units: {
@@ -846,7 +846,7 @@ window.COURSES = {
   bankFile: "sci-8.js",
   subject: "Science",
   grade: 8,
-  listed: false,
+  listed: true,
   panels: {},
 
   units: {
@@ -1021,7 +1021,7 @@ window.COURSES = {
   bankFile: "sci-9.js",
   subject: "Science",
   grade: 9,
-  listed: false,
+  listed: true,
   panels: {},
 
   units: {
