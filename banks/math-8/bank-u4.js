@@ -283,7 +283,7 @@ E("u4-sa-rect-prism", 4, ["9.4"], 2, "gen", function(){
   var l=ri(3,14), w=ri(3,12), h=ri(2,10);
   var sa=2*(l*w+l*h+w*h);
   var q=numq("Find the surface area of the right rectangular prism shown, in square centimetres.", sa, 0.01,
-    "Work face by face. The front and back are "+l+" by "+h+", the sides are "+w+" by "+h+", and the top and bottom are "+l+" by "+w+": \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= 2("+fmt(l*w+l*h+w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "Work face by face. The front and back are "+l+" by "+h+", area "+fmt(l*h)+" each; the sides are "+w+" by "+h+", area "+fmt(w*h)+" each; and the top and bottom are "+l+" by "+w+", area "+fmt(l*w)+" each. Double each face area for its matching pair and add: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"rect-sa", l:l, w:w, h:h});
   q.figure=u4boxSVG(l,w,h);
   return q;
@@ -294,17 +294,17 @@ E("u4-sa-tri-prism", 4, ["9.4"], 2, "gen", function(){
   var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,16);
   var sa=a*b+(a+b+c)*L;
   var q=numq("Find the surface area of the right triangular prism shown, in square centimetres.", sa, 0.01,
-    "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"tri-sa", a:a, b:b, c:c, L:L});
   q.figure=u4triSVG(a,b,c,L);
   return q;
-}, ["Split the surface into the two triangular ends and the three rectangles.", "Find the ends first, then multiply the perimeter of one end by the length for the rectangles."]);
+}, ["Split the surface into the two triangular ends and the three rectangles.", "Find the ends first, then work out each of the three rectangles along the length and add them."]);
 
 E("u4-sa-cylinder", 4, ["9.6"], 2, "gen", function(){
   var r=ri(2,9), h=ri(3,14);
   var sa=u4r1(2*3.14*r*(r+h));
   var q=numq("Find the surface area of the right cylinder shown. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.", sa, 0.6,
-    "Two circles plus the curved side, which unrolls into a rectangle: \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3.14)("+r+")("+r+"+"+h+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+    "Two circles plus the curved side, which unrolls into a rectangle. Each circle has area \\(3.14 \\times "+r+" \\times "+r+" = "+fmt(u4r2(3.14*r*r))+"\\). The rectangle has length the circumference, \\(2 \\times 3.14 \\times "+r+" = "+fmt(u4r2(2*3.14*r))+"\\), and width "+h+", so its area is \\("+fmt(u4r2(2*3.14*r))+" \\times "+h+" = "+fmt(u4r2(2*3.14*r*h))+"\\). Add the parts: \\[ \\begin{aligned} SA &= 2("+fmt(u4r2(3.14*r*r))+") + "+fmt(u4r2(2*3.14*r*h))+" \\\\ &= "+fmt(u4r2(2*3.14*r*r+2*3.14*r*h))+" \\\\ &\\approx "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-sa", r:r, h:h});
   q.figure=u4cylSVG(r,h,false);
   return q;
@@ -317,13 +317,13 @@ E("u4-sa-problem-wrap", 4, ["9.5"], 2, "gen", function(){
     var cover=pick([20,25,30,40,50]);
     var cans=Math.ceil(sa/cover-0.0000001);
     var q=numq("A storage box shaped like a right rectangular prism measures "+l+" m long, "+w+" m wide and "+h+" m high. It is painted on all outside faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
-      "Find the surface area first, then divide by the coverage and round up: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] Then \\("+sa+" \\div "+cover+" \\approx "+fmt(u4r2(sa/cover))+"\\), and a part can cannot be bought. The number of cans needed is <b>"+cans+"</b>.",
+      "Find the surface area first: the box's three face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] Then \\("+sa+" \\div "+cover+" \\approx "+fmt(u4r2(sa/cover))+"\\), and a part can cannot be bought. The number of cans needed is <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover}); q.figure=m8BoxLabSVG(l+" m",w+" m",h+" m",false); return q;
   }
   var l2=ri(20,60)/2, w2=ri(16,44)/2, h2=ri(12,36)/2;
   var sa2=2*(l2*w2+l2*h2+w2*h2);
   var q=numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" cm long, "+fmt(w2)+" cm wide and "+fmt(h2)+" cm high. Wrapping paper covers all faces with no overlap. How many square centimetres of paper are needed?", sa2, 0.01,
-    "The paper must cover the whole surface of the box: \\[ \\begin{aligned} SA &= 2("+fmt(l2*w2)+"+"+fmt(l2*h2)+"+"+fmt(w2*h2)+") \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The paper needed is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
+    "The paper must cover the whole surface of the box: its three face areas are "+fmt(l2*w2)+", "+fmt(l2*h2)+" and "+fmt(w2*h2)+", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2("+fmt(l2*w2)+") + 2("+fmt(l2*h2)+") + 2("+fmt(w2*h2)+") \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The paper needed is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
     {mode:"wrap-paper", l:l2, w:w2, h:h2}); q.figure=m8BoxLabSVG(fmt(l2)+" cm",fmt(w2)+" cm",fmt(h2)+" cm",false); return q;
 }, ["Work out the total surface area before using the coverage or finishing the problem.", "Divide the surface area by the coverage per can and round up, since part cans cannot be bought."]);
 
@@ -446,7 +446,7 @@ E("u4-sa-open-tank", 4, ["9.5","9.6"], 3, "gen", function(){
   var r=ri(2,8), h=ri(4,14);
   var sa=u4r1(3.14*r*r+2*3.14*r*h);
   var q=numq("A garden water barrel is shaped like a right cylinder with radius "+r+" m and height "+h+" m. It is open at the top. Metal sheet is used for the bottom and the curved side only. How many square metres of metal are needed? Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", sa, 0.6,
-    "An open top means only one circle is needed, for the bottom, plus the curved side: \\[ \\begin{aligned} SA &= \\pi r^{2}+2\\pi r h \\\\ &= 3.14("+r+")^{2}+2(3.14)("+r+")("+h+") \\\\ &= "+fmt(u4r2(3.14*r*r))+"+"+fmt(u4r1(2*3.14*r*h))+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The metal needed is <b>"+fmt(sa)+" m\\(^{2}\\)</b>.",
+    "An open top means only one circle is needed, for the bottom, plus the curved side. The bottom circle has area \\(3.14 \\times "+r+" \\times "+r+" = "+fmt(u4r2(3.14*r*r))+"\\). The curved side unrolls into a rectangle whose length is the circumference, \\(2 \\times 3.14 \\times "+r+" = "+fmt(u4r2(2*3.14*r))+"\\), and whose height is "+h+", so its area is \\("+fmt(u4r2(2*3.14*r))+" \\times "+h+" = "+fmt(u4r2(2*3.14*r*h))+"\\). Add the two parts: \\[ \\begin{aligned} SA &= "+fmt(u4r2(3.14*r*r))+" + "+fmt(u4r2(2*3.14*r*h))+" \\\\ &\\approx "+fmt(sa)+" \\end{aligned} \\] The metal needed is <b>"+fmt(sa)+" m\\(^{2}\\)</b>.",
     {mode:"open-barrel", r:r, h:h}); q.figure=m8CylLabSVG(r+" m",h+" m",false,true); return q;
 }, ["An open top changes the count of circles: read the problem for which parts are covered.", "Add one circle for the bottom to the curved side area."]);
 
@@ -468,6 +468,6 @@ E("u4-sa-missing-edge", 4, ["9.5"], 3, "gen", function(){
   });
   var q=mcq("A right rectangular prism is "+l+" cm long and "+w+" cm wide, and its total surface area is "+sa+" cm\\(^{2}\\). What is its height, in centimetres?",
     {t:String(h), fb:"Yes: height "+h+" gives exactly the stated surface area."}, opts,
-    "Try the height in the surface area formula and solve. With height \\(h\\): \\[ \\begin{aligned} 2("+fmt(l*w)+") + 2("+l+"+"+w+")h &= "+sa+" \\\\ "+(2*l*w)+" + "+(2*(l+w))+"h &= "+sa+" \\\\ h &= "+h+" \\end{aligned} \\] The height is <b>"+h+" cm</b>.",
+    "Build the surface area from its faces and solve for the height. With height \\(h\\): \\[ \\begin{aligned} 2("+fmt(l*w)+") + 2("+l+"+"+w+")h &= "+sa+" \\\\ "+(2*l*w)+" + "+(2*(l+w))+"h &= "+sa+" \\\\ h &= "+h+" \\end{aligned} \\] The height is <b>"+h+" cm</b>.",
     {mode:"missing-edge", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm","?",false); return q;
-}, ["Put the unknown height into the surface area formula as a letter.", "Work out the known face areas first, then see what is left for the faces that use the height."]);
+}, ["Write the surface area face by face, using a letter for the unknown height.", "Work out the known face areas first, then see what is left for the faces that use the height."]);

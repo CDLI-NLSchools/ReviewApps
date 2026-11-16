@@ -22,26 +22,32 @@ E("u2-sqrt-perfect", 2, ["6.9"], 1, "gen", function(){
     var r=ri(2,20); var n=r*r;
     var ds=u2d3(r,[r+1,r-1,r+2,r*2,r+3]);
     var opts=ds.map(function(d){return {t:String(d), fb:fmt(d)+" squared is "+fmt(d*d)+", not "+n+": try another value."};});
-    return mcq("What is \\(\\sqrt{"+n+"}\\)?", {t:String(r), fb:"Yes: "+r+" times "+r+" equals "+n+"."}, opts,
+    var q = mcq("What is \\(\\sqrt{"+n+"}\\)?", {t:String(r), fb:"Yes: "+r+" times "+r+" equals "+n+"."}, opts,
       "\\("+r+" \\times "+r+" = "+n+"\\), so \\(\\sqrt{"+n+"} = "+r+"\\). The square root is <b>"+r+"</b>.",
       {mode:"whole", n:n});
+    q.figure = solSquare(String(n), "?", "Square with labelled area and unknown side");
+    return q;
   }
   if(mode==="decimal"){
     var k=ri(3,25); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
     var dc=u2d3(rd,[u2r1(rd+0.1),u2r1(rd-0.1),u2r1(rd+1),u2r1(rd*2),u2r1(rd+0.2)]);
     var dopts=dc.map(function(d){return {t:fmt(d), fb:fmt(d)+" squared is "+fmt(u2r2(d*d))+", not "+fmt(nd)+"."};});
-    return mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)?", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
+    var q = mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)?", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
       "\\("+fmt(rd)+" \\times "+fmt(rd)+" = "+fmt(nd)+"\\), so \\(\\sqrt{"+fmt(nd)+"} = "+fmt(rd)+"\\). The square root is <b>"+fmt(rd)+"</b>.",
       {mode:"decimal", n:nd});
+    q.figure = solSquare(fmt(nd), "?", "Square with labelled area and unknown side");
+    return q;
   }
   var p=ri(2,9); var q=ri(3,11); var g=0;
   while(u2gcd(p,q)!==1&&g<40){p=ri(2,9);q=ri(3,11);g++;}
   var fopts=[{t:"\\("+FR(p+1,q)+"\\)", fb:"Squaring it gives the wrong numerator: check both parts."},
              {t:"\\("+FR(p,q+1)+"\\)", fb:"Squaring it gives the wrong denominator: check both parts."},
              {t:"\\("+FR(p-1,q)+"\\)", fb:"Squaring it gives a smaller numerator than the one shown."}];
-  return mcq("What is \\(\\sqrt{"+FR(p*p,q*q)+"}\\)?", {t:"\\("+FR(p,q)+"\\)", fb:"Yes: both parts square to the parts shown."}, fopts,
+  var qq = mcq("What is \\(\\sqrt{"+FR(p*p,q*q)+"}\\)?", {t:"\\("+FR(p,q)+"\\)", fb:"Yes: both parts square to the parts shown."}, fopts,
     "The numerator "+(p*p)+" is "+p+" squared, and the denominator "+(q*q)+" is "+q+" squared. \\[ \\sqrt{"+FR(p*p,q*q)+"} = "+FR(p,q)+" \\] The square root is <b>\\("+FR(p,q)+"\\)</b>.",
     {mode:"fraction", p:p, q:q});
+  qq.figure = solSquare((p*p)+"/"+(q*q), "?", "Square with labelled area and unknown side");
+  return qq;
 }, ["Think of the number that multiplies by itself to give the value under the root sign.", "Work through small squares in order until one of them lands exactly on the number shown."]);
 
 E("u2-square-from-root", 2, ["6.11"], 1, "gen", function(){
@@ -50,26 +56,32 @@ E("u2-square-from-root", 2, ["6.11"], 1, "gen", function(){
     var r=ri(2,30); var n=r*r;
     var ds=u2d3(n,[2*r,n+1,n-1,n+r,n+10,3*r]);
     var opts=ds.map(function(d){return {t:String(d), fb:"That value does not come from squaring "+r+": try "+r+" times "+r+"."};});
-    return mcq("A positive number has square root "+r+". What is the number?", {t:String(n), fb:"Yes: squaring the root gives back the number."}, opts,
+    var q = mcq("A positive number has square root "+r+". What is the number?", {t:String(n), fb:"Yes: squaring the root gives back the number."}, opts,
       "Squaring undoes a square root: \\[ "+r+"^{2} = "+r+" \\times "+r+" = "+n+" \\] The number is <b>"+n+"</b>.",
       {mode:"whole", r:r});
+    q.figure = solSquare("?", String(r), "Square with labelled side and unknown area");
+    return q;
   }
   if(mode==="decimal"){
     var k=ri(2,30); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
     var dc=u2d3(nd,[u2r2(2*rd),u2r2((rd+1)*(rd+1)),u2r2(nd+1),u2r2(nd+0.1),u2r2(nd+2)]);
     var dopts=fmtPairDs(fmt(nd), dc.map(function(d){return {v:d, fb:"That is not "+fmt(rd)+" times "+fmt(rd)+": square the root itself."};}));
-    return mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" squared equals "+fmt(nd)+"."}, dopts,
+    var q = mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" squared equals "+fmt(nd)+"."}, dopts,
       "Squaring undoes a square root: \\[ "+fmt(rd)+"^{2} = "+fmt(rd)+" \\times "+fmt(rd)+" = "+fmt(nd)+" \\] The number is <b>"+fmt(nd)+"</b>.",
       {mode:"decimal", r:rd});
+    q.figure = solSquare("?", fmt(rd), "Square with labelled side and unknown area");
+    return q;
   }
   var p=ri(2,9); var q=ri(3,11); var g=0;
   while(u2gcd(p,q)!==1&&g<40){p=ri(2,9);q=ri(3,11);g++;}
   var fopts=[{t:"\\("+FR(p*p,q)+"\\)", fb:"Only the top was squared: the bottom must be squared too."},
              {t:"\\("+FR(p,q*q)+"\\)", fb:"Only the bottom was squared: the top must be squared too."},
              {t:"\\("+FR(p*p,q*q+q)+"\\)", fb:"Square the bottom part itself: do not add it to itself."}];
-  return mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:"\\("+FR(p*p,q*q)+"\\)", fb:"Yes: square the top and the bottom separately."}, fopts,
+  var qq = mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:"\\("+FR(p*p,q*q)+"\\)", fb:"Yes: square the top and the bottom separately."}, fopts,
     "Square the top and the bottom: \\[ \\left("+FR(p,q)+"\\right)^{2} = "+FR(p*p,q*q)+" \\] The number is <b>\\("+FR(p*p,q*q)+"\\)</b>.",
     {mode:"fraction", p:p, q:q});
+  qq.figure = solSquare("?", p+"/"+q, "Square with labelled side and unknown area");
+  return qq;
 }, ["Squaring and square roots undo each other, so square the given root.", "Multiply the root by itself, squaring the top and bottom separately for a fraction."]);
 
 E("u2-identify-square", 2, ["3.3"], 1, "gen", function(){
@@ -190,7 +202,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
     var l=ri(2,12), w=ri(2,12), h=ri(2,12);
     var sa=2*(l*w+l*h+w*h);
     var q = numq("Find the surface area of a right rectangular prism with length "+l+" cm, width "+w+" cm and height "+h+" cm. Give your answer in square centimetres.", sa, 0.01,
-      "Add the areas of the three different faces, then double: \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= 2("+fmt(l*w+l*h+w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+      "Unfold the prism into its net: three pairs of matching faces. One pair is "+l+" by "+w+", area "+fmt(l*w)+" each; one pair is "+l+" by "+h+", area "+fmt(l*h)+" each; and one pair is "+w+" by "+h+", area "+fmt(w*h)+" each. Double each face area for its matching pair and add: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"rect-prism", l:l, w:w, h:h});
     q.figure = solRectPrism(l, w, h, fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Rectangular prism with labelled dimensions");
     return q;
@@ -200,7 +212,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
     var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,18);
     var sa2=a*b+(a+b+c)*L;
     var q = numq("Find the surface area of a right triangular prism. The triangular end is a right triangle with legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, and the prism is "+L+" cm long. Give your answer in square centimetres.", sa2, 0.01,
-      "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
+      "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
       {mode:"tri-prism", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism with labelled dimensions");
     return q;
@@ -208,7 +220,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
   var r=ri(2,10), hh=ri(3,15);
   var sac=u2r1(2*3.14*r*(r+hh));
   var q = numq("Find the surface area of a right cylinder with radius "+r+" cm and height "+hh+" cm. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.", sac, 0.6,
-    "Two circles plus the curved side, using \\(\\pi = 3.14\\): \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3.14)("+r+")("+r+"+"+hh+") \\\\ &= "+fmt(sac)+" \\end{aligned} \\] The surface area is <b>"+fmt(sac)+" cm\\(^{2}\\)</b>.",
+    "Two circles plus the curved side, using \\(\\pi = 3.14\\). Each circle has area \\(3.14 \\times "+r+" \\times "+r+" = "+fmt(u2r2(3.14*r*r))+"\\). The curved side unrolls into a rectangle whose length is the circumference, \\(2 \\times 3.14 \\times "+r+" = "+fmt(u2r2(2*3.14*r))+"\\), and whose width is "+hh+", so its area is \\("+fmt(u2r2(2*3.14*r))+" \\times "+hh+" = "+fmt(u2r2(2*3.14*r*hh))+"\\). Add the parts: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(3.14*r*r))+") + "+fmt(u2r2(2*3.14*r*hh))+" \\\\ &= "+fmt(u2r2(2*3.14*r*r+2*3.14*r*hh))+" \\\\ &\\approx "+fmt(sac)+" \\end{aligned} \\] The surface area is <b>"+fmt(sac)+" cm\\(^{2}\\)</b>.",
     {mode:"cylinder", r:r, h:hh});
     q.figure = solCylinder(r, hh, fmt(r) + " cm", fmt(hh) + " cm", "Cylinder with labelled dimensions");
     return q;
@@ -221,7 +233,7 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   if(mode==="tent"){
     var sat=a*b+(a+c)*L;
     var q = numq("A lean-to tent is shaped like a right triangular prism. Each triangular end has a vertical side of "+a+" cm, a base of "+b+" cm and a sloped side of "+c+" cm, and the tent is "+L+" cm long. The rectangular face on the ground, "+b+" cm by "+L+" cm, has no material. Find the area of material needed, in square centimetres.", sat, 0.01,
-      "Count two triangular ends and the two covered rectangles, leaving out the ground face: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+c)*L)+" \\\\ &= "+fmt(sat)+" \\end{aligned} \\] The area of material needed is <b>"+fmt(sat)+" cm\\(^{2}\\)</b>.",
+      "Count two triangular ends and the two covered rectangles, leaving out the ground face. Each triangular end has area "+fmt(a*b/2)+", and the covered rectangles have areas "+fmt(a*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sat)+" \\end{aligned} \\] The area of material needed is <b>"+fmt(sat)+" cm\\(^{2}\\)</b>.",
       {mode:"tent-no-floor", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism tent with labelled dimensions");
     return q;
@@ -229,13 +241,13 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   var sa=a*b+(a+b+c)*L;
   if(mode==="ramp"){
     var q = numq("A display ramp is shaped like a right triangular prism and is covered on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the ramp is "+L+" cm long. Find the total surface area of the ramp, in square centimetres.", sa, 0.01,
-      "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+      "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"ramp", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism ramp with labelled dimensions");
     return q;
   }
   var q = numq("A chocolate bar box is shaped like a right triangular prism, closed on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the box is "+L+" cm long. Find the total surface area of the box, in square centimetres.", sa, 0.01,
-    "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+    "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"bar-box", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism box with labelled dimensions");
     return q;
@@ -267,7 +279,7 @@ E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
   var sa1=2*(X*W+X*H1+W*H1), sa2=2*(X2*W+X2*H2+W*H2), contact=X2*W;
   var tot=sa1+sa2-2*contact;
   var q = numq("A step is built from two boxes joined together. The bottom box measures "+X+" cm long, "+W+" cm wide and "+H1+" cm high. The top box measures "+X2+" cm long, "+W+" cm wide and "+H2+" cm high, and it sits on top of the bottom box, flush with the back and the left side. Find the total surface area of the step, in square centimetres.", tot, 0.01,
-    "Find each box on its own, then subtract the touching face twice because it is hidden on both boxes: \\[ \\begin{aligned} SA &= 2("+fmt(X*W)+"+"+fmt(X*H1)+"+"+fmt(W*H1)+") + 2("+fmt(X2*W)+"+"+fmt(X2*H2)+"+"+fmt(W*H2)+") - 2("+contact+") \\\\ &= "+sa1+" + "+sa2+" - "+(2*contact)+" \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
+    "Find each box from its faces, then subtract the touching face twice because it is hidden on both boxes. The bottom box has face areas "+fmt(X*W)+", "+fmt(X*H1)+" and "+fmt(W*H1)+", each twice, giving "+sa1+". The top box has face areas "+fmt(X2*W)+", "+fmt(X2*H2)+" and "+fmt(W*H2)+", each twice, giving "+sa2+". The touching face has area "+contact+": \\[ \\begin{aligned} SA &= "+sa1+" + "+sa2+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
     {mode:"step", X:X, W:W, H1:H1, X2:X2, H2:H2});
     q.figure = solStep(X, W, H1, X2, H2, fmt(X) + " cm", fmt(W) + " cm", fmt(H1) + " cm", fmt(X2) + " cm", fmt(H2) + " cm", "Step built from two boxes with labelled dimensions");
     return q;
@@ -280,7 +292,7 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
     var cover=pick([8,10,12,15,20]);
     var cans=Math.ceil(sa/cover-0.0000001);
     var q = numq("A storage tank shaped like a right rectangular prism measures "+fmt(l)+" m long, "+fmt(w)+" m wide and "+fmt(h)+" m high. It will be painted on the outside, on all faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
-      "Find the surface area first, then divide by the coverage and round up: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] Then \\("+fmt(sa)+" \\div "+cover+" \\approx "+fmt(u2r2(sa/cover))+"\\), so a part can is not enough. The number of cans needed is <b>"+cans+"</b>.",
+      "Find the surface area first: the tank's three face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] Then \\("+fmt(sa)+" \\div "+cover+" \\approx "+fmt(u2r2(sa/cover))+"\\), so a part can is not enough. The number of cans needed is <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
     q.figure = solRectPrism(l, w, h, fmt(l) + " m", fmt(w) + " m", fmt(h) + " m", "Rectangular prism tank with labelled dimensions");
     return q;
@@ -290,7 +302,7 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
   var price=pick([4,5,6,8,9]);
   var cost=u2r2(sa2*price);
   var q = numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" m long, "+fmt(w2)+" m wide and "+fmt(h2)+" m high. It is covered on all faces with fabric that costs $"+price+" per square metre. What is the total cost of the fabric, in dollars, to the nearest cent?", cost, 0.05,
-    "Find the surface area first, then multiply by the price per square metre: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(l2*w2))+"+"+fmt(u2r2(l2*h2))+"+"+fmt(u2r2(w2*h2))+") \\\\ &= "+fmt(u2r2(sa2))+" \\end{aligned} \\] Then \\("+fmt(u2r2(sa2))+" \\times "+price+" = "+fmt(cost)+"\\). The total cost is <b>$"+fmt(cost)+"</b>.",
+    "Find the surface area first: the box's three face areas are "+fmt(u2r2(l2*w2))+", "+fmt(u2r2(l2*h2))+" and "+fmt(u2r2(w2*h2))+", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(l2*w2))+") + 2("+fmt(u2r2(l2*h2))+") + 2("+fmt(u2r2(w2*h2))+") \\\\ &= "+fmt(u2r2(sa2))+" \\end{aligned} \\] Then \\("+fmt(u2r2(sa2))+" \\times "+price+" = "+fmt(cost)+"\\). The total cost is <b>$"+fmt(cost)+"</b>.",
     {mode:"fabric-cost", l:l2, w:w2, h:h2, price:price});
     q.figure = solRectPrism(l2, w2, h2, fmt(l2) + " m", fmt(w2) + " m", fmt(h2) + " m", "Rectangular prism box with labelled dimensions");
     return q;
@@ -333,7 +345,7 @@ E("u2-sa-cyl-on-prism", 2, ["9.3"], 3, "gen", function(){
   var tot=u2r1(prism+side);
   var ctx=pick(["A cylindrical water tank stands on top of a rectangular concrete base","A thick round candle stands on top of a rectangular wooden stand"]);
   var q = numq(ctx+". The cylinder has radius "+r+" cm and height "+hc+" cm, and its base sits fully on the top face of the prism. The prism measures "+l+" cm long, "+w+" cm wide and "+h+" cm high. Find the total exposed surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot, 0.6,
-    "The circle where the cylinder meets the prism is hidden, and the cylinder bottom is not exposed, so those two equal circles cancel out of the total: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") + 2(3.14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmt(side)+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
+    "The circle where the cylinder meets the prism is hidden, and the cylinder bottom is not exposed, so those two equal circles cancel out of the total. The prism's face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", each appearing twice, and the cylinder contributes only its curved side, which unrolls into a rectangle with length the circumference and width "+hc+": \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") + 2(3.14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmt(side)+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-prism", r:r, hc:hc, l:l, w:w, h:h});
     q.figure = solCylOnPrism(r, hc, l, w, h, fmt(r) + " cm", fmt(hc) + " cm", fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Cylinder on a rectangular prism with labelled dimensions");
     return q;
@@ -347,10 +359,12 @@ E("u2-best-estimate-side", 2, ["6.5","6.8"], 3, "gen", function(){
   var opts=vals.slice(0,1).concat(vals.slice(2)).map(function(v){
     return {t:fmt(v), fb:"Square it: "+fmt(v)+" squared is "+fmt(u2r2(v*v))+", not the closest square to "+fmt(A)+"."};
   });
-  return mcq(ctx+" has an area of "+fmt(A)+" square metres. What is the best estimate for its side length, in metres?",
+  var q = mcq(ctx+" has an area of "+fmt(A)+" square metres. What is the best estimate for its side length, in metres?",
     {t:fmt(best), fb:"Yes: "+fmt(best)+" squared is "+fmt(u2r2(best*best))+", closest to "+fmt(A)+"."}, opts,
     "The side length is \\(\\sqrt{"+fmt(A)+"}\\). Since \\("+fmt(best)+"^{2} = "+fmt(u2r2(best*best))+"\\), the square closest to "+fmt(A)+", the best estimate is <b>"+fmt(best)+" m</b>.",
     {mode:"best-estimate", A:A});
+  q.figure = solSquare(fmt(A)+" m²", "?", "Square with labelled area and unknown side");
+  return q;
 }, ["The side length is the square root of the area, so estimate that root.", "Square each nearby one-decimal value and find which square lands closest to the area."]);
 
 E("u2-reasoning-var", 2, ["3.3","6.10"], 3, "var", varset([

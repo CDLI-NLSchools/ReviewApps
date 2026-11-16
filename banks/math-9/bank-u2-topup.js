@@ -19,16 +19,20 @@ E("u2-sqrt-fraction", 2, ["6.9"], 1, "gen", function(){
     ];
     var opts=[], seen={};
     for(var i=0;i<cands.length&&opts.length<3;i++){if(cands[i].t!==correct&&!seen[cands[i].t]){seen[cands[i].t]=1;opts.push(cands[i]);}}
-    return mcq("What is \\(\\sqrt{"+FR(a*a,b*b)+"}\\)? Give the exact value.", {t:correct, fb:"Yes: "+a+" squared is "+(a*a)+" and "+b+" squared is "+(b*b)+"."}, opts,
+    var q = mcq("What is \\(\\sqrt{"+FR(a*a,b*b)+"}\\)? Give the exact value.", {t:correct, fb:"Yes: "+a+" squared is "+(a*a)+" and "+b+" squared is "+(b*b)+"."}, opts,
       "Root the top and the bottom separately: \\[ \\begin{aligned} \\sqrt{"+FR(a*a,b*b)+"} &= "+FR(a,b)+" \\end{aligned} \\] The square root is <b>\\("+FR(a,b)+"\\)</b>.",
       {mode:"fraction", a:a, b:b});
+    q.figure = solSquare((a*a)+"/"+(b*b), "?", "Square with labelled area and unknown side");
+    return q;
   }
   var k=ri(3,39); var rd=u2r1(k/10); var nd=u2r2(rd*rd);
   var dc=u2d3(rd,[u2r1(rd+0.1),u2r1(rd-0.1),u2r1(rd*2),u2r1(rd+0.2),u2r1(rd/2),u2r1(rd+1)]);
   var dopts=fmtPairDs(fmt(rd), dc.map(function(d){return {v:d, fb:fmt(d)+" squared is "+fmt(u2r2(d*d))+", not "+fmt(nd)+": try another tenth."};}));
-  return mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)? Give the exact value.", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
+  var q = mcq("What is \\(\\sqrt{"+fmt(nd)+"}\\)? Give the exact value.", {t:fmt(rd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
     "Find the decimal that multiplies by itself to give "+fmt(nd)+": \\[ \\begin{aligned} "+fmt(rd)+" \\times "+fmt(rd)+" &= "+fmt(nd)+" \\\\ \\sqrt{"+fmt(nd)+"} &= "+fmt(rd)+" \\end{aligned} \\] The square root is <b>"+fmt(rd)+"</b>.",
     {mode:"decimal", n:nd});
+  q.figure = solSquare(fmt(nd), "?", "Square with labelled area and unknown side");
+  return q;
 }, ["For a fraction, root the top and the bottom separately; for a decimal, hunt among the tenths.", "Ask which number, multiplied by itself, gives exactly the value under the root sign."]);
 
 E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
@@ -45,9 +49,11 @@ E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
     ];
     var opts=[], seen={};
     for(var i=0;i<cands.length&&opts.length<3;i++){if(cands[i].t!==correct&&!seen[cands[i].t]){seen[cands[i].t]=1;opts.push(cands[i]);}}
-    return mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:correct, fb:"Yes: square the top and the bottom separately."}, opts,
+    var qq = mcq("A positive number has square root \\("+FR(p,q)+"\\) . What is the number?", {t:correct, fb:"Yes: square the top and the bottom separately."}, opts,
       "Squaring undoes a square root, and both parts are squared: \\[ \\begin{aligned} \\left("+FR(p,q)+"\\right)^{2} &= "+FR(p,q)+" \\times "+FR(p,q)+" \\\\ &= "+FR(p*p,q*q)+" \\end{aligned} \\] The number is <b>\\("+FR(p*p,q*q)+"\\)</b>.",
       {mode:"fraction", p:p, q:q});
+    qq.figure = solSquare("?", p+"/"+q, "Square with labelled side and unknown area");
+    return qq;
   }
   var k=ri(4,29); var g2=0;
   while(k%10===0&&g2<40){k=ri(4,29);g2++;}
@@ -62,9 +68,11 @@ E("u2-number-from-root", 2, ["6.11"], 1, "gen", function(){
   var dopts=[], seen2={};
   for(var j=0;j<cands2.length&&dopts.length<3;j++){var v=cands2[j].v; if(v!==nd&&v>0&&!seen2[v]){seen2[v]=1;dopts.push({v:v, fb:cands2[j].fb});}}
   dopts=fmtPairDs(fmt(nd), dopts);
-  return mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
+  var q = mcq("A positive number has square root "+fmt(rd)+". What is the number?", {t:fmt(nd), fb:"Yes: "+fmt(rd)+" times "+fmt(rd)+" equals "+fmt(nd)+"."}, dopts,
     "Squaring undoes a square root: \\[ \\begin{aligned} "+fmt(rd)+"^{2} &= "+fmt(rd)+" \\times "+fmt(rd)+" \\\\ &= "+fmt(nd)+" \\end{aligned} \\] The number is <b>"+fmt(nd)+"</b>.",
     {mode:"decimal", r:rd});
+  q.figure = solSquare("?", fmt(rd), "Square with labelled side and unknown area");
+  return q;
 }, ["Squaring and square roots undo each other, so square the given root.", "Multiply the root by itself, squaring the top and bottom separately for a fraction."]);
 
 E("u2-calc-root-round", 2, ["6.6"], 1, "gen", function(){
@@ -134,7 +142,7 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
     var contact=a*l;
     var tot=boxSA+triSA-2*contact;
     var q = numq("A model is built by joining two solids face to face. The bottom solid is a right rectangular prism "+l+" cm long, "+w+" cm wide and "+h+" cm high. On top of it sits a right triangular prism, a prism with right triangle ends and rectangular sides. Its triangular ends have legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, the prism is "+l+" cm long, and its bottom face, "+a+" cm by "+l+" cm, exactly covers the top face of the bottom prism. The face where the two solids join is hidden inside the model. Find the total surface area of the model, in square centimetres.", tot, 0.01,
-      "The overlap is the "+a+" cm by "+l+" cm rectangle where the two prisms join. It is a face of each solid, so it is hidden twice and comes off both surface areas: \\[ \\begin{aligned} \\text{overlap} &= "+a+" \\times "+l+" = "+contact+" \\\\ SA &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
+      "Find each solid from its faces first. The bottom prism has face areas "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", each twice, giving "+boxSA+". The triangular prism has two triangular ends of area "+fmt(a*b/2)+" each and three rectangles of areas "+fmt(a*l)+", "+fmt(b*l)+" and "+fmt(c*l)+", giving "+triSA+". The overlap is the "+a+" cm by "+l+" cm rectangle where the two prisms join, area "+contact+". It is a face of each solid, so it is hidden twice and comes off both surface areas: \\[ \\begin{aligned} SA &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
       {mode:"tri-on-rect", a:a, b:b, c:c, l:l, h:h});
     q.figure = solBoxTri(a, b, c, l, a, h, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(l) + " cm", "", fmt(h) + " cm", "Triangular prism on a box with labelled dimensions");
     return q;
@@ -149,7 +157,7 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
   var circ=u2r2(3.14*r*r);
   var tot2=u2r1(triSA2+cylSA-2*circ);
   var q = numq("A right cylinder stands on a right triangular prism, a prism with right triangle ends and rectangular sides. The triangular ends have legs "+a2+" cm and "+b2+" cm and hypotenuse "+c2+" cm, and the prism is "+L+" cm long. The cylinder has radius "+r+" cm and height "+hc+" cm, and it stands on the rectangular face of the prism that measures "+a2+" cm by "+L+" cm, with its whole base on that face. The part where the two solids touch is hidden inside the finished object. Find the total surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot2, 0.6,
-    "The overlap is the circle where the cylinder meets the prism. It is hidden on the prism face and it is the base of the cylinder, so its area comes off twice: \\[ \\begin{aligned} \\text{overlap} &= 3.14 \\times "+r+"^{2} = "+fmt(circ)+" \\\\ SA &= "+triSA2+" + "+fmt(cylSA)+" - 2("+fmt(circ)+") \\\\ &= "+fmt(tot2)+" \\end{aligned} \\] The total surface area is <b>"+fmt(tot2)+" cm\\(^{2}\\)</b>.",
+    "Find each solid from its faces first. The triangular prism has two triangular ends of area "+fmt(a2*b2/2)+" each and three rectangles of areas "+fmt(a2*L)+", "+fmt(b2*L)+" and "+fmt(c2*L)+", giving "+triSA2+". The cylinder has two circles of area "+fmt(circ)+" each and a curved side that unrolls into a rectangle of area "+fmt(u2r2(2*3.14*r*hc))+", giving "+fmt(cylSA)+". The overlap is the circle where the cylinder meets the prism, area "+fmt(circ)+". It is hidden on the prism face and it is the base of the cylinder, so its area comes off twice: \\[ \\begin{aligned} SA &= "+triSA2+" + "+fmt(cylSA)+" - 2("+fmt(circ)+") \\\\ &= "+fmt(tot2)+" \\end{aligned} \\] The total surface area is <b>"+fmt(tot2)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-tri", a:a2, b:b2, c:c2, L:L, r:r, hc:hc});
     q.figure = solCylOnTri(a2, b2, c2, L, r, hc, fmt(a2) + " cm", fmt(b2) + " cm", fmt(c2) + " cm", fmt(L) + " cm", fmt(r) + " cm", fmt(hc) + " cm", "Cylinder on a triangular prism with labelled dimensions");
     return q;

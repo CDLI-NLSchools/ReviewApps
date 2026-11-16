@@ -280,3 +280,15 @@ function solSideLabels(P, labs) {
   }
   return out;
 }
+
+/* Tranche 5 (Nov 2026): the square-area model for the Unit 2 root
+   entries. A square outline with the area labelled inside and a side
+   label under the bottom edge; whichever of the two is unknown is
+   passed as "?", so the figure states the given and never the key. */
+function solSquare(areaLab, sideLab, aria) {
+  var s = '<svg viewBox="0 0 200 172" width="200" height="172" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + aria + '">';
+  s += '<rect x="45" y="14" width="110" height="110" fill="#eceff1" stroke="#37474f" stroke-width="2"/>';
+  s += solT(100, 69, areaLab, 14, true);
+  s += solT(100, 146, sideLab, 13, false);
+  return s + "</svg>";
+}
