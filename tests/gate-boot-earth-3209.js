@@ -107,8 +107,8 @@ const ev = (dom, code) => dom.window.eval(code);
   d = r.dom.window.document;
   ok(ev(r.dom, "window.__NOCOURSE === true") === true, "picker: bare URL shows the course picker");
   const btns = Array.prototype.slice.call(d.querySelectorAll("#courseList button")).map(b => b.textContent);
-  /* Picker pins updated: 26 courses are listed after the Nov 15, 2026 joint junior science listing, so the count, the Science chip set and the reset count in this block pin 26. */
-  ok(btns.length === 26, "picker: 26 listed courses (Earth Systems 3209 listed on completion), saw " + btns.length);
+  /* Picker pins updated: 29 courses are listed after the Nov 16, 2026 French junior science listing, so the count, the Science chip set and the reset count in this block pin 29. */
+  ok(btns.length === 29, "picker: 29 listed courses (Earth Systems 3209 listed on completion), saw " + btns.length);
   ok(btns.some(t => t.includes("Earth Systems")), "picker: Earth Systems 3209 is listed");
   const chipRows = d.querySelectorAll("#pkChips .pkrow");
   const visBtns = () => Array.prototype.slice.call(d.querySelectorAll("#courseList button")).filter(b => b.style.display !== "none").map(b => b.textContent);
@@ -118,7 +118,7 @@ const ev = (dom, code) => dom.window.eval(code);
   clickChip(1, "Grade 12");
   ok(visBtns().join() === "Biology 3201,Chemistry 3202,Physics 3204,Earth Systems 3209", "picker: Science plus Grade 12 leaves four courses, saw " + visBtns().join(", "));
   clickChip(0, "All"); clickChip(1, "All");
-  ok(visBtns().length === 26, "picker: resetting both chips restores all 26");
+  ok(visBtns().length === 29, "picker: resetting both chips restores all 29");
   ok(r.errors.length === 0, "picker: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
   r.dom.window.close();
 

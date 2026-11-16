@@ -3,7 +3,7 @@
      node tests/gate-boot-math-3208.js   (NODE_PATH set to the 2204 node_modules)
    - ?course=math-3208: Math 3208 title and header, eight unit
      checkboxes with the right names, both preset labels, the All
-     preset sweeping all eight units (pool 169), the course default
+     preset sweeping all eight units (pool 174), the course default
      mix 20/60/20 in force, the mid preset over Units 1 to 4 XX
      74) with the face scope worded "Mid-course review: Units 1 to
      4", the final preset over Units 5 to 8 (pool 60) with the face
@@ -47,7 +47,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Math 3208 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 3208 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 169, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 174, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 103, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 8, "course: eight unit checkboxes, saw " + labels.length);
@@ -61,7 +61,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is the course default 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("169 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("174 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetMid').click()");
   ok((d.getElementById("poolInfo").textContent || "").includes("93 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: mid preset mix 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
@@ -69,7 +69,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("faceScope").textContent === "Mid-course review: Units 1 to 4",
      "course: face scope for the mid scope in the standalone's wording, saw: " + d.getElementById("faceScope").textContent);
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("76 question templates"), "course: pool after Final preset is Units 5 to 8, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("81 question templates"), "course: pool after Final preset is Units 5 to 8, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: final preset mix 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "End-of-course review: Units 5 to 8",
@@ -103,16 +103,16 @@ const ev = (dom, code) => dom.window.eval(code);
   d = r.dom.window.document;
   ok(ev(r.dom, "window.__NOCOURSE === true") === true, "picker: bare URL shows the course picker");
   const heads = Array.prototype.slice.call(d.querySelectorAll("#courseList h3")).map(h => h.textContent);
-  ok(heads.length === 3 && heads[0] === "Mathematics" && heads[1] === "Science" && heads[2] === "Mathématiques", "picker: groups are Mathematics, Science, Mathématiques, saw " + heads.join(", "));
+  ok(heads.length === 4 && heads[0] === "Mathematics" && heads[1] === "Science" && heads[2] === "Mathématiques" && heads[3] === "Sciences", "picker: groups are Mathematics, Science, Mathématiques, Sciences, saw " + heads.join(", "));
   const btns = Array.prototype.slice.call(d.querySelectorAll("#courseList button")).map(b => b.textContent);
-  /* Picker pins updated: 26 courses are listed after the Nov 15, 2026 joint junior science listing, so the exact list, the Science chip set, the Grade 11 subset and the reset count in this block pin 26. */
-  const expect = ["Math 3200", "Math 3201", "Math 3202", "Math 3208", "Math 2200", "Math 2201", "Math 2202", "Math 1201", "Math 1202", "Math 9", "Math 8", "Math 7", "Biology 3201", "Chemistry 3202", "Physics 3204", "Earth Systems 3209", "Biology 2201", "Chemistry 2202", "Physics 2204", "Science 1206", "Science 9", "Science 8", "Science 7", "Mathématiques 9", "Mathématiques 8", "Mathématiques 7"];
-  ok(btns.length === expect.length && btns.every((t, i) => t === expect[i]), "picker: the 26 listed courses in the ruled order, saw " + btns.join(" | "));
-  ok(btns[btns.length - 1] === "Mathématiques 7", "picker: Math 7 FR is listed, last, under Mathématiques");
+  /* Picker pins updated: 29 courses are listed after the Nov 16, 2026 French junior science listing, so the exact list, the Science chip set, the Grade 11 subset and the reset count in this block pin 29. */
+  const expect = ["Math 3200", "Math 3201", "Math 3202", "Math 3208", "Math 2200", "Math 2201", "Math 2202", "Math 1201", "Math 1202", "Math 9", "Math 8", "Math 7", "Biology 3201", "Chemistry 3202", "Physics 3204", "Earth Systems 3209", "Biology 2201", "Chemistry 2202", "Physics 2204", "Science 1206", "Science 9", "Science 8", "Science 7", "Mathématiques 9", "Mathématiques 8", "Mathématiques 7", "Sciences 9", "Sciences 8", "Sciences 7"];
+  ok(btns.length === expect.length && btns.every((t, i) => t === expect[i]), "picker: the 29 listed courses in the ruled order, saw " + btns.join(" | "));
+  ok(btns[btns.length - 4] === "Mathématiques 7" && btns[btns.length - 1] === "Sciences 7", "picker: Math 7 FR ends the Mathématiques group and Sciences 7 FR is listed, last, under Sciences");
   const chipRows = d.querySelectorAll("#pkChips .pkrow");
   ok(chipRows.length === 2, "picker: two filter chip rows render, saw " + chipRows.length);
   const subjChips = Array.prototype.slice.call(chipRows[0].querySelectorAll("button")).map(b => b.textContent);
-  ok(subjChips.join() === "All,Mathematics,Science,Mathématiques", "picker: subject chips are All, Mathematics, Science, Mathématiques, saw " + subjChips.join(", "));
+  ok(subjChips.join() === "All,Mathematics,Science,Mathématiques,Sciences", "picker: subject chips are All, Mathematics, Science, Mathématiques, Sciences, saw " + subjChips.join(", "));
   const gradeChips = Array.prototype.slice.call(chipRows[1].querySelectorAll("button")).map(b => b.textContent);
   ok(gradeChips.join() === "All,Grade 12,Grade 11,Grade 10,Grade 9,Grade 8,Grade 7", "picker: grade chips descend 12 to 7, saw " + gradeChips.join(", "));
   const visBtns = () => Array.prototype.slice.call(d.querySelectorAll("#courseList button")).filter(b => b.style.display !== "none").map(b => b.textContent);
@@ -122,7 +122,7 @@ const ev = (dom, code) => dom.window.eval(code);
   clickChip(1, "Grade 11");
   ok(visBtns().join() === "Biology 2201,Chemistry 2202,Physics 2204", "picker: Science plus Grade 11 leaves three courses, saw " + visBtns().join(", "));
   clickChip(0, "All"); clickChip(1, "All");
-  ok(visBtns().length === 26, "picker: resetting both chips restores all 26");
+  ok(visBtns().length === 29, "picker: resetting both chips restores all 29");
   ok(d.title === "Review Apps", "picker: page title is Review Apps, saw " + d.title);
   const pkH1 = d.querySelector("#coursePicker h1");
   ok(!!pkH1 && pkH1.textContent === "Review Apps", "picker: the heading reads Review Apps");

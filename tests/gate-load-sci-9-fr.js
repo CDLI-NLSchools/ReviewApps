@@ -3,7 +3,7 @@
      node tests/gate-load-sci-9-fr.js
    Expectations are the French authoring spec (Nov 16, 2026):
    - courses.js registers sci-9-fr (Sciences, grade 9,
-     listed: false, curriculum NL, language fr). The French bank
+     listed: true, curriculum NL, language fr). The French bank
      is its own build keyed to the French guide, not a translation
      of the English bank.
    - Census pins below are the spec census, measured from the
@@ -20,7 +20,7 @@ global.window = {};
 eval(fs.readFileSync(ROOT + "/courses.js", "utf8"));
 const C = window.COURSES["sci-9-fr"];
 ok(!!C, "courses.js registers sci-9-fr");
-ok(C.listed === false, "sci-9-fr is unlisted");
+ok(C.listed === true, "sci-9-fr is listed");
 ok(C.curriculum === "NL" && C.subject === "Sciences" && C.grade === 9 && C.language === "fr", "curriculum NL, Sciences, grade 9, language fr");
 ok(typeof C.units[1] === "string" && C.units[1].length > 0, "Unit 1 name registered");
 ok(typeof C.units[2] === "string" && C.units[2].length > 0, "Unit 2 name registered");
