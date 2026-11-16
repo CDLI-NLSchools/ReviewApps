@@ -4,8 +4,9 @@
    - ?course=math-1202: Math 1202 title and header, seven unit
      checkboxes with the standalone's names, the single "All
      units" preset (Mid and Final hidden: this course has no
-     such presets), the All pool at 236 (182 plus the PK
-     tranche's 54 flagged entries, November 16, 2026), the face card listing
+     such presets), the All pool at 238 (182 plus the PK
+     tranche's 54 flagged entries and the bridge follow-up's 2,
+     November 16, 2026), the face card listing
      all seven units in the standalone's wording and promising
      "a hint, a worked example and a full worked solution", and
      reference panels for all seven units (no always-on panel).
@@ -52,7 +53,7 @@ const FACE_SCOPE = "Unit 1: Consumerism and Travel; Unit 2: Measuring Length; Un
   ok(d.title === "Math 1202 Review: Practice Question Bank", "course: page title, saw " + d.title);
   ok(d.querySelector("#app h1").textContent === "Math 1202 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 236, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 238, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 56, "course: CR_MARKS wired from the bank module");
   ok(ev(r.dom, "BANK.every(function(e){return !!e.hint1 && !!e.hint2;})") === true, "course: every bank entry carries both hint stages in the shell");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
@@ -65,7 +66,7 @@ const FACE_SCOPE = "Unit 1: Consumerism and Travel; Unit 2: Measuring Length; Un
   ok(d.getElementById("presetFinal").style.display === "none", "course: Final preset button hidden (Math 1202 has no final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("236 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("238 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === FACE_SCOPE,
      "course: face scope lists all seven units in the standalone's wording, saw: " + d.getElementById("faceScope").textContent);

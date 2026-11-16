@@ -4,9 +4,10 @@
    - courses.js carries a math-1202 entry (Mathematics, grade 10,
      listed:false) beside the untouched chem-2202 entry.
    - The bank module registers exactly the standalone's 182
-     entries in the standalone's per-unit counts (236 entries
+     entries in the standalone's per-unit counts (238 entries
      since the November 16, 2026 PK tranche added 54 flagged
-     prior knowledge entries: per-unit 36/35/33/30/36/30/36),
+     prior knowledge entries and the same day's bridge follow-up
+     added 2 bridge entries in Unit 2: per-unit 36/37/33/30/36/30/36),
      and its
      CR_MARKS manifest equals the standalone bank source's own
      CR_MARKS literal (56 keys; per unit six Level 2 entries at
@@ -68,10 +69,10 @@ ok(C.units[7] === "Trigonometry", "Unit 7 is Trigonometry, saw " + C.units[7]);
 const placements = Object.values(C.unitInd).reduce((n, a) => n + a.length, 0);
 ok(placements === 116, "UNIT_IND has 116 placements, saw " + placements);
 
-ok(BANK.length === 236, "bank registers 236 entries (182 plus the PK tranche's 54), saw " + BANK.length);
+ok(BANK.length === 238, "bank registers 238 entries (182 plus the PK tranche's 54 plus the bridge follow-up's 2), saw " + BANK.length);
 const perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-const wantPerUnit = { 1: 36, 2: 35, 3: 33, 4: 30, 5: 36, 6: 30, 7: 36 }; /* PK tranche Nov 16, 2026: +10/+9/+8/+6/+7/+7/+7 flagged entries */
+const wantPerUnit = { 1: 36, 2: 37, 3: 33, 4: 30, 5: 36, 6: 30, 7: 36 }; /* PK tranche Nov 16, 2026: +10/+9/+8/+6/+7/+7/+7 flagged entries; bridge follow-up Nov 16, 2026: +2 in Unit 2 */
 Object.keys(wantPerUnit).forEach(u =>
   ok(perUnit[u] === wantPerUnit[u], "Unit " + u + " has " + wantPerUnit[u] + " entries, saw " + perUnit[u]));
 

@@ -1822,6 +1822,10 @@ rep(' "ratio-rates":["Ratios and rates","Rapports et taux"],',
 rep(' "linear-equations":["Solving linear equations","Résoudre des équations linéaires"],',
     ' "linear-equations":["Solving linear equations","Résoudre des équations linéaires"],\n "listing-outcomes":["Listing outcomes and multiplying counts","Dénombrer les résultats et multiplier les comptes"],', count=1)  # Band 2 Math 3201 label (Nov 16, 2026)
 
+# ---------- Math 1202 bridge follow-up group label (Nov 16, 2026) ----------
+rep(' "scale":["Scale diagrams","Dessins à l\'échelle"],',
+    ' "scale":["Scale diagrams","Dessins à l\'échelle"],\n "scale-reading-bridge":["Getting started with reading scales","Débuter la lecture d\'échelles"],', count=1)  # Math 1202 bridge follow-up label (Nov 16, 2026)
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

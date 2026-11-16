@@ -63,12 +63,13 @@ for (const n of ["isPK", "poolFor", "scopeCap", "levelTargets", "canonQ", "probe
 ok(typeof composeExam === "function", "built shell carries composeExam");
 
 /* Pool shapes the config implies. Practice pools carry the PK
-   tranche's flagged entries (November 16, 2026); composed papers
+   tranche's flagged entries (November 16, 2026) and the bridge
+   follow-up's 2 Unit 2 bridge entries (same day); composed papers
    exclude them under pkPracticeOnly, which the trials below
    exercise. */
-ok(poolFor([1, 2, 3, 4, 5, 6, 7], [], {}).length === 236,
-   "All-units pool is the whole bank (236), saw " + poolFor([1, 2, 3, 4, 5, 6, 7], [], {}).length);
-const wantPool = { 1: 36, 2: 35, 3: 33, 4: 30, 5: 36, 6: 30, 7: 36 };
+ok(poolFor([1, 2, 3, 4, 5, 6, 7], [], {}).length === 238,
+   "All-units pool is the whole bank (238), saw " + poolFor([1, 2, 3, 4, 5, 6, 7], [], {}).length);
+const wantPool = { 1: 36, 2: 37, 3: 33, 4: 30, 5: 36, 6: 30, 7: 36 };
 for (let u = 1; u <= 7; u++) {
   const n = poolFor([u], [], {}).length;
   ok(n === wantPool[u], "Unit " + u + " pool is " + wantPool[u] + ", saw " + n);

@@ -3,7 +3,9 @@
    Part 1 (bank level, vm sandbox over the real shell functions):
    the flagged pool is exactly the tranche's 54 entries (52 borrowed
    from the Mathematics 7, 8 and 9 banks and 2 authored against
-   elementary outcomes, all in banks/math-1202/bank-pk.js), every
+   elementary outcomes, all in banks/math-1202/bank-pk.js) plus the
+   bridge follow-up's 2 authored entries (November 16, 2026: Cluster 9
+   scale reading, stocked as bridge items on Jason's ruling), every
    flagged entry carries pkSrc, pkFor and pkGroup metadata, a pkonly
    draw (PKONLY_DRAW, the flag the shell sets for a ?pkonly=1 set)
    deals only flagged entries, samples every pkGroup in the pool,
@@ -20,6 +22,10 @@
    for a single selected unit, and the end-of-check group retry
    (Practice what I missed) deals a group-keyed check set whose
    summary names skills in plain language.
+   Part 3 (bridge reporting, rollout plan Section 7; the follow-up's
+   two Unit 2 scale-reading bridge entries): a missed bridge group is
+   reported as a starting point for the unit, offers no retry on its
+   own, and a mixed retry set excludes bridge entries.
    Run: NODE_PATH=<jsdom node_modules> node tests/gate-pkcheck-math-1202.js
    (--bankonly skips the jsdom part.) */
 const fs = require("fs");
@@ -66,18 +72,20 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-1202.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 10, 2: 9, 3: 8, 4: 6, 5: 7, 6: 7, 7: 7 };
+const POOLS = { 1: 10, 2: 11, 3: 8, 4: 6, 5: 7, 6: 7, 7: 7 };
 const POOL_IDS = {
   1: ["u1-pk-express-rate", "u1-pk-identify-rate", "u1-pk-rate-problem", "u1-pk-better-buy", "u1-pk-percent-of", "u1-pk-percent-convert", "u1-pk-money-decimals", "u1-pk-ratio-problem", "u1-pk-evaluate-power", "u1-pk-fraction-convert"],
-  2: ["u2-pk-divide-fractions", "u2-pk-referent", "u2-pk-circ-approx", "u2-pk-pi-ratio", "u2-pk-circumference", "u2-pk-between-two", "u2-pk-ooo-evaluate", "u2-pk-ooo-first-error", "u2-pk-solve-two-step"],
+  2: ["u2-pk-divide-fractions", "u2-pk-referent", "u2-pk-circ-approx", "u2-pk-pi-ratio", "u2-pk-circumference", "u2-pk-between-two", "u2-pk-ooo-evaluate", "u2-pk-ooo-first-error", "u2-pk-solve-two-step", "u2-bridge-ruler-mm", "u2-bridge-ruler-inch"],
   3: ["u3-pk-para-from-rect", "u3-pk-area-triangle", "u3-pk-area-parallelogram", "u3-pk-area-circle", "u3-pk-sa-from-net", "u3-pk-sa-rect-prism", "u3-pk-sa-cylinder", "u3-pk-ooo-calculator"],
   4: ["u4-pk-mult-decimals", "u4-pk-ooo-brackets", "u4-pk-find-whole", "u4-pk-percent-of-percent", "u4-pk-discount-then-tax", "u4-pk-total-change"],
   5: ["u5-pk-protractor-read", "u5-pk-angle-classify", "u5-pk-bisector-env", "u5-pk-bisector-reason", "u5-pk-parallel-perp", "u5-pk-env-examples", "u5-pk-angle-chain"],
   6: ["u6-pk-pythag-model", "u6-pk-hypotenuse", "u6-pk-missing-leg", "u6-pk-is-right", "u6-pk-triple-find", "u6-pk-sqrt-perfect", "u6-pk-estimate-between"],
   7: ["u7-pk-similar-verdict", "u7-pk-draw-similar", "u7-pk-similar-context", "u7-pk-scale-factor", "u7-pk-two-term-ratio", "u7-pk-meaning-of-ratio", "u7-pk-indirect-measure"]
 };
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 54,
-   "bank carries 54 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 56,
+   "bank carries 56 flagged entries (54 tranche plus the bridge follow-up's 2), saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkBridge;}).map(function(e){return e.id;}).sort().join(',')") === "u2-bridge-ruler-inch,u2-bridge-ruler-mm",
+   "bridge: exactly the two follow-up entries carry the bridge flag, saw " + run("BANK.filter(function(e){return e.pkBridge;}).map(function(e){return e.id;}).join(',')"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-1202 config sets pkPracticeOnly");
 for (let u = 1; u <= 7; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");
@@ -498,6 +506,66 @@ function answerFirst(d) {
      "regression: the ordinary retry keys on the missed indicator (" + target.ind + "), saw " + JSON.stringify(ev(d, "settings().inds")));
   ok(ev(d, "current.length>0&&current.every(function(q){var inds=settings().inds;return q._entry.indicators.some(function(c){return inds.indexOf(c)>=0;});})") === true,
      "regression: the ordinary retry set draws only questions carrying a missed indicator");
+  d.window.close();
+
+  /* ===== Part 3: bridge reporting on the Unit 2 check ===== */
+  function answerAllGroups(d, groups) {
+    ev(d, `(function(groups){
+      for(var i=0;i<current.length;i++){
+        var q=current[i];
+        var miss=groups.indexOf(pkGroupOf(q._entry))>=0;
+        if(q.type==="mc"){
+          var v=miss?((q.correct+1)%q.options.length):q.correct;
+          var r=document.querySelector('input[name="opt'+i+'"][value="'+v+'"]');
+          if(r){r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}
+        }else if(q.type==="num"){
+          var inp=document.getElementById("ans"+i);
+          if(inp){inp.value=String(miss?(q.answer+3):q.answer);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}
+        }else{
+          var inp2=document.getElementById("ans"+i);
+          if(inp2){inp2.value=miss?"zzz not the answer":q.answers[0];inp2.dispatchEvent(new window.Event("input",{bubbles:true}));}
+        }
+        var cb=document.querySelector('[data-check="'+i+'"]');if(cb)cb.click();
+        var sr=document.getElementById("sr"+i);
+        if(sr&&!sr.hidden){var b=sr.querySelector('[data-rate="'+(miss?"missed":"got")+'"]');if(b)b.click();}
+      }
+    })(${JSON.stringify(groups)})`);
+  }
+
+  d = await boot("course=math-1202&unit=2&pkonly=1&seed=br1&count=8", {});
+  ok(ev(d, "current ? current.length : 0") === 8, "bridge: the Unit 2 pkonly link deals 8 questions from the pool of 11");
+  ok(ev(d, "current.some(function(q){return q._entry.pkBridge;})") === true, "bridge: the dealt Unit 2 check includes a bridge entry");
+  answerAllGroups(d, ["scale-reading-bridge"]);
+  {
+    const t = d.window.document.getElementById("setSummary").textContent;
+    ok(t.includes("Getting started with reading scales") && t.includes("a starting point for this unit"),
+       "bridge: a missed bridge group is reported as a starting point for the unit, saw: " + t.replace(/\s+/g, " ").slice(0, 240));
+    ok(!t.includes("needs more practice"), "bridge: nothing on a bridge-only miss is reported as needing more practice");
+  }
+  ok(!d.window.document.getElementById("retryMissedBtn"), "bridge: a bridge-only miss offers no Practice what I missed button");
+  d.window.close();
+
+  d = await boot("course=math-1202&unit=2&pkonly=1&seed=br2&count=8", {});
+  answerAllGroups(d, ["scale-reading-bridge", "circle-measure"]);
+  ok(!!d.window.document.getElementById("retryMissedBtn"), "bridge: a mixed miss (bridge plus a borrowed group) offers the retry");
+  {
+    const t = d.window.document.getElementById("setSummary").textContent;
+    ok(t.includes("a starting point for this unit") && t.includes("needs more practice"),
+       "bridge: the mixed summary reports the bridge group as a starting point and the borrowed group as needing practice");
+  }
+  ev(d, `document.getElementById("retryMissedBtn").click()`);
+  await sleep(300);
+  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return pkGroupOf(q._entry)==='circle-measure' && !q._entry.pkBridge;})") === true,
+     "bridge: the mixed retry set deals only the non-bridge missed group");
+  d.window.close();
+
+  d = await boot("course=math-1202&unit=2&pkonly=1&seed=br3&count=8", {});
+  answerAllGroups(d, []);
+  {
+    const t = d.window.document.getElementById("setSummary").textContent;
+    ok(t.includes("Getting started with reading scales") && t.includes("solid"), "bridge: a fully correct bridge group reads solid");
+  }
+  ok(!d.window.document.getElementById("retryMissedBtn"), "bridge: a fully correct Unit 2 check offers no retry button");
   d.window.close();
 
   console.log("GATE-PKCHECK-MATH-1202: " + pass + " passed, " + fail + " failed");

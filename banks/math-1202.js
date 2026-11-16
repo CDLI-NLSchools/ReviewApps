@@ -6400,6 +6400,112 @@ E("u5-pk-angle-classify", 5, ["3.44"], 1, "gen", function(){
     {a:a});
 }, ["Compare the measure with 90 degrees first, then with 180 degrees.", "The names run acute, right, obtuse, straight, reflex as the measure grows."]);
 
+/* Bridge follow-up (November 16, 2026): two authored bridge entries for
+   Cluster 9 sub-skill (c), reading a ruler or tape measure to the nearest
+   millimetre and to the nearest fraction of an inch. The tranche settled
+   this sub-skill at zero (no outcome on file codes scale reading); Jason's
+   ruling of November 16, 2026 stocks it as bridge items instead: attempted
+   before teaching, reported as a starting point for the unit, never as
+   practice owed (rollout plan Section 7). The grounding and the superseded
+   settlement are recorded in the addendum to the tranche spec. Every draw
+   renders its own scale as an SVG figure in the bank's figure idiom: the
+   measured object is drawn against the scale with its ends aligned to
+   ticks and dashed guides dropping from its ends to the scale, and the
+   keyed reading is the reading the drawing shows. */
+function u2mmRulerSVG(startMm, endMm, cmRange) {
+  var pxCm = 34, x0 = 30, top = 64;
+  function X(mm) { return x0 + mm * pxCm / 10; }
+  var W = Math.ceil(X(cmRange * 10)) + 18;
+  var fig = '<svg viewBox="0 0 ' + W + ' 128" width="' + W + '" height="128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A strip of card measured against a ruler marked in centimetres and millimetres">';
+  fig += '<rect x="' + fmt(X(startMm), 1) + '" y="26" width="' + fmt(X(endMm) - X(startMm), 1) + '" height="18" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  fig += '<line x1="' + fmt(X(startMm), 1) + '" y1="44" x2="' + fmt(X(startMm), 1) + '" y2="' + top + '" stroke="' + FIG_INK + '" stroke-width="1.1" stroke-dasharray="4 3"/>';
+  fig += '<line x1="' + fmt(X(endMm), 1) + '" y1="44" x2="' + fmt(X(endMm), 1) + '" y2="' + top + '" stroke="' + FIG_ALT + '" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  fig += '<rect x="' + fmt(X(0) - 6, 1) + '" y="' + top + '" width="' + fmt(X(cmRange * 10) - X(0) + 12, 1) + '" height="28" fill="none" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  for (var i = 0; i <= cmRange * 10; i++) {
+    var len = (i % 10 === 0) ? 16 : (i % 5 === 0 ? 11 : 7);
+    fig += '<line x1="' + fmt(X(i), 1) + '" y1="' + top + '" x2="' + fmt(X(i), 1) + '" y2="' + (top + len) + '" stroke="' + FIG_INK + '" stroke-width="' + (i % 10 === 0 ? 1.5 : 0.9) + '"/>';
+    if (i % 10 === 0) fig += _txt(X(i), top + 42, String(i / 10), 12, false);
+  }
+  return fig + '</svg>';
+}
+E("u2-bridge-ruler-mm", 2, ["3.15"], 1, "gen", function(){
+  var offset = pick([false, true]);
+  var W = ri(3, 7), M = ri(1, 9);
+  var R = 10 * W + M;
+  var S = offset ? ri(1, 2) : 0;
+  var startMm = 10 * S, endMm = startMm + R;
+  var cmRange = Math.ceil(endMm / 10) + 1;
+  var fig = u2mmRulerSVG(startMm, endMm, cmRange);
+  var key, ds, sol;
+  if (offset) {
+    key = { t: R + " mm", fb: "Yes: the left end lines up at " + startMm + " mm and the right end at " + endMm + " mm, and the distance between them is " + R + " mm." };
+    ds = [
+      { t: (R - 1) + " mm", fb: "That is one millimetre tick short of the distance between the ends. Count the small ticks between the two end marks again." },
+      { t: (R + 1) + " mm", fb: "That is one millimetre tick more than the distance between the ends. The right end lines up with a tick; count up to that tick, not past it." },
+      { t: endMm + " mm", fb: "That is the mark the right end of the strip lines up with, not the length of the strip. The strip starts at the " + S + " cm mark, so the start reading has to come off the end reading." }
+    ];
+    sol = "Both ends have to be read, because the strip does not start at 0. The left end lines up with the " + S + " cm mark, which is " + startMm + " mm. The right end lines up " + M + " small ticks past the " + (S + W) + " cm mark, which is " + endMm + " mm. The length of the strip is the distance between its ends: " + endMm + " - " + startMm + " = <b>" + R + " mm</b>.";
+  } else {
+    key = { t: R + " mm", fb: "Yes: " + W + " whole centimetres and " + M + " millimetre ticks past the " + W + " cm mark." };
+    ds = [
+      { t: (R - 1) + " mm", fb: "That stops one millimetre tick short of the end of the strip. Count the small ticks past the " + W + " cm mark as well." },
+      { t: (R + 1) + " mm", fb: "That goes one millimetre tick past the end of the strip. The end lines up with a tick; count the ticks up to that one." },
+      { t: (R + 10) + " mm", fb: "That adds a whole extra centimetre. Read the whole centimetres first, then count only the small ticks after that centimetre mark." }
+    ];
+    sol = "Read the scale from the 0 end. The end of the strip lines up with the tick " + M + " small ticks past the " + W + " cm mark. Each centimetre is split into 10 millimetre ticks, so the length is " + W + " × 10 + " + M + " = <b>" + R + " mm</b>.";
+  }
+  var q = mcq(offset
+      ? "A strip of card is placed against a ruler as shown. The ruler is marked in centimetres and millimetres. What is the length of the strip, to the nearest millimetre?"
+      : "A strip of card is measured with a ruler marked in centimetres and millimetres, as shown. What is the length of the strip, to the nearest millimetre?",
+    key, ds, sol, { W: W, M: M, S: S });
+  q.figure = fig;
+  return q;
+}, ["Find the marks the two ends of the strip line up with, then work out the distance between them.", "Each centimetre is split into 10 millimetre ticks."]);
+function u2inTapeSVG(endSix, inRange) {
+  var pxIn = 84, x0 = 30, top = 64;
+  function X(six) { return x0 + six * pxIn / 16; }
+  var W = Math.ceil(X(inRange * 16)) + 18;
+  var fig = '<svg viewBox="0 0 ' + W + ' 136" width="' + W + '" height="136" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A ribbon measured against a tape marked in inches and sixteenths of an inch">';
+  fig += '<rect x="' + fmt(X(0), 1) + '" y="26" width="' + fmt(X(endSix) - X(0), 1) + '" height="18" fill="' + FIG_SHADE + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  fig += '<line x1="' + fmt(X(endSix), 1) + '" y1="44" x2="' + fmt(X(endSix), 1) + '" y2="' + top + '" stroke="' + FIG_ALT + '" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  fig += '<rect x="' + fmt(X(0) - 6, 1) + '" y="' + top + '" width="' + fmt(X(inRange * 16) - X(0) + 12, 1) + '" height="34" fill="none" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  for (var i = 0; i <= inRange * 16; i++) {
+    var len = (i % 16 === 0) ? 20 : (i % 8 === 0 ? 15 : (i % 4 === 0 ? 12 : (i % 2 === 0 ? 9 : 6)));
+    fig += '<line x1="' + fmt(X(i), 1) + '" y1="' + top + '" x2="' + fmt(X(i), 1) + '" y2="' + (top + len) + '" stroke="' + FIG_INK + '" stroke-width="' + (i % 16 === 0 ? 1.5 : 0.9) + '"/>';
+    if (i % 16 === 0) fig += _txt(X(i), top + 50, String(i / 16), 12, false);
+  }
+  return fig + '</svg>';
+}
+function u2inFmt(totalSix) {
+  var w = Math.floor(totalSix / 16), k = totalSix % 16;
+  if (k === 0) return "\\(" + w + "\\) in.";
+  var g = u5gcd(k, 16);
+  return "\\(" + (w > 0 ? w : "") + FR(k / g, 16 / g) + "\\) in.";
+}
+E("u2-bridge-ruler-inch", 2, ["3.15"], 2, "gen", function(){
+  var W = ri(1, 3), K = ri(1, 15);
+  var T = 16 * W + K;
+  var fig = u2inTapeSVG(T, W + 2);
+  var eighths = K > 1;
+  var T3 = eighths ? (16 * W + 2 * K) : (16 * (W + 1) + K);
+  var key = { t: u2inFmt(T), fb: "Yes: the end of the ribbon is " + K + " small ticks past the " + W + " inch mark." };
+  var ds = [
+    { t: u2inFmt(T - 1), fb: "That stops one tick short of the end of the ribbon. Count every small tick past the " + W + " inch mark." },
+    { t: u2inFmt(T + 1), fb: "That goes one tick past the end of the ribbon. The end lines up with a tick; count the ticks up to that one." },
+    eighths
+      ? { t: u2inFmt(T3), fb: "That counts each small tick as one eighth of an inch. The ticks split each inch into 16 equal parts, so each tick is one sixteenth of an inch." }
+      : { t: u2inFmt(T3), fb: "That reads one whole inch too many. The end of the ribbon is past the " + W + " inch mark, not past the " + (W + 1) + " inch mark." }
+  ];
+  var g = u5gcd(K, 16);
+  var sol = "Read the tape from the 0 end. The end of the ribbon lines up " + K + " small ticks past the " + W + " inch mark. The ticks split each inch into 16 equal parts, so each tick is \\(\\frac{1}{16}\\) of an inch, and the part past the inch mark is \\(" + FR(K, 16) + "\\) of an inch"
+    + (g > 1 ? ", which simplifies to \\(\\frac{" + (K / g) + "}{" + (16 / g) + "}\\) of an inch" : "")
+    + ". The length is <b>" + u2inFmt(T) + "</b>.";
+  var q = mcq("A ribbon is measured with a tape marked in inches, as shown. What is the length of the ribbon?",
+    key, ds, sol, { W: W, K: K });
+  q.figure = fig;
+  return q;
+}, ["Find the last whole inch mark the end of the ribbon has passed, then count the small ticks after it.", "Each inch is split into 16 equal ticks, so each tick is one sixteenth of an inch."]);
+
 var PK1202_FOR_C1=["1.1","1.2","1.3"];
 var PK1202_FOR_C2=["1.4"];
 var PK1202_FOR_C3=["1.5","1.6","1.7","1.8"];
@@ -6430,6 +6536,8 @@ var PKT1202={
   "u1-pk-fraction-convert":{src:"Math 8 indicator 3.7",group:"conversion",for:PK1202_FOR_C8},
   "u2-pk-divide-fractions":{src:"Math 8 indicator 6.12",group:"fraction-operations",for:PK1202_FOR_C9},
   "u2-pk-referent":{src:"Mathematics 5 outcomes MA5.9.8, MA5.9.9 and MA5.9.10 (authored for this tranche; no banked source exists)",group:"estimation",for:PK1202_FOR_C9},
+  "u2-bridge-ruler-mm":{src:"Mathematics 5 indicators MA5.9.1 to MA5.9.3 and the guide's measuring in millimetres lessons evidence the sub-skill without coding scale reading (authored bridge item on Jason's ruling of November 16, 2026; no banked source exists)",group:"scale-reading-bridge",for:PK1202_FOR_C9,bridge:true},
+  "u2-bridge-ruler-inch":{src:"No outcome on file names reading a scale in fractions of an inch (authored bridge item on Jason's ruling of November 16, 2026; no banked source exists)",group:"scale-reading-bridge",for:PK1202_FOR_C9,bridge:true},
   "u2-pk-circ-approx":{src:"Math 7 indicator 9.7",group:"circle-measure",for:PK1202_FOR_C10},
   "u2-pk-pi-ratio":{src:"Math 7 indicator 9.8",group:"circle-measure",for:PK1202_FOR_C10},
   "u2-pk-circumference":{src:"Math 7 indicators 9.8 and 9.10",group:"circle-measure",for:PK1202_FOR_C10},
