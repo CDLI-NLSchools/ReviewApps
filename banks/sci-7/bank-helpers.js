@@ -566,3 +566,90 @@ function s7AbsorbGraphSVG(times, dark, light) {
   s += '</svg>';
   return s;
 }
+
+/* ================= Unit 3 (Mixtures and Solutions) figure families ====
+   M1: solubility curves with lines of best fit, from the item's data.
+   M2: particle panel, pure substance against mixtures, drawn once.
+   M3: concentration vessels with stated amounts, from the item's data. */
+
+// M1: solubility (g per 100 mL of water) against temperature for two
+// solutes. Points are plotted; the line drawn is the least-squares line
+// of best fit through each solute's points.
+function s7SolubilitySVG(series, yMax) {
+  var W = 460, H = 300, x0 = 62, x1 = 428, y0 = 252, y1 = 34;
+  function X(t) { return (x0 + (x1 - x0) * t / 100).toFixed(1); }
+  function Y(v) { return (y0 - (y0 - y1) * v / yMax).toFixed(1); }
+  function fit(pts) {
+    var n = pts.length, sx = 0, sy = 0, sxx = 0, sxy = 0;
+    pts.forEach(function (p) { sx += p[0]; sy += p[1]; sxx += p[0] * p[0]; sxy += p[0] * p[1]; });
+    var m = (n * sxy - sx * sy) / (n * sxx - sx * sx), b = (sy - m * sx) / n;
+    return [m, b];
+  }
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="460" height="300" role="img" aria-label="Solubility curves for two solutes" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x1 + '" y2="' + y0 + '" stroke="#33424e" stroke-width="1.5"/>';
+  s += '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + y1 + '" stroke="#33424e" stroke-width="1.5"/>';
+  for (var v = 0; v <= yMax; v += 20) {
+    s += '<text x="' + (x0 - 8) + '" y="' + (Y(v) + 4) + '" font-size="11" text-anchor="end" fill="#1c2b33">' + v + '</text>';
+    s += '<line x1="' + x0 + '" y1="' + Y(v) + '" x2="' + x1 + '" y2="' + Y(v) + '" stroke="#e3eaee" stroke-width="1"/>';
+  }
+  for (var t = 0; t <= 100; t += 20) {
+    s += '<text x="' + X(t) + '" y="' + (y0 + 18) + '" font-size="11" text-anchor="middle" fill="#1c2b33">' + t + '</text>';
+  }
+  series.forEach(function (sr) {
+    var fb = fit(sr.pts), m = fb[0], b = fb[1];
+    var ta = Math.max(0, sr.pts[0][0] - 4), tb = Math.min(100, sr.pts[sr.pts.length - 1][0] + 10);
+    s += '<line x1="' + X(ta) + '" y1="' + Y(m * ta + b) + '" x2="' + X(tb) + '" y2="' + Y(m * tb + b) + '" stroke="' + sr.color + '" stroke-width="2.2"/>';
+    sr.pts.forEach(function (p) { s += '<circle cx="' + X(p[0]) + '" cy="' + Y(p[1]) + '" r="3.5" fill="' + sr.color + '"/>'; });
+  });
+  var lx = x1 - 150, ly = y1 + 4;
+  s += '<rect x="' + lx + '" y="' + ly + '" width="146" height="' + (series.length * 18 + 8) + '" fill="#ffffff" stroke="#c9d4da"/>';
+  series.forEach(function (sr, i) {
+    s += '<line x1="' + (lx + 8) + '" y1="' + (ly + 13 + i * 18) + '" x2="' + (lx + 32) + '" y2="' + (ly + 13 + i * 18) + '" stroke="' + sr.color + '" stroke-width="2.5"/>';
+    s += '<text x="' + (lx + 38) + '" y="' + (ly + 17 + i * 18) + '" font-size="11" fill="#1c2b33">' + sr.name + '</text>';
+  });
+  s += '<text x="' + ((x0 + x1) / 2) + '" y="' + (H - 6) + '" font-size="12" text-anchor="middle" fill="#1c2b33">Temperature (°C)</text>';
+  s += '<text x="16" y="' + ((y0 + y1) / 2) + '" font-size="12" text-anchor="middle" fill="#1c2b33" transform="rotate(-90 16 ' + ((y0 + y1) / 2) + ')">Solubility (g per 100 mL of water)</text>';
+  s += '</svg>';
+  return s;
+}
+
+// M2: three containers of particles. Container 1: one kind throughout.
+// Container 2: two kinds mixed evenly. Container 3: two kinds in layers.
+function s7MixturePanelSVG() {
+  function container(x, label, kind) {
+    var s = '<rect x="' + x + '" y="30" width="118" height="120" fill="#f4f7fb" stroke="#33424e" stroke-width="1.2"/>';
+    s += '<text x="' + (x + 59) + '" y="172" font-size="12" text-anchor="middle" fill="#1c2b33">' + label + '</text>';
+    var pts = [];
+    for (var r = 0; r < 5; r++) for (var c = 0; c < 4; c++) pts.push([x + 20 + c * 26 + (r % 2) * 6, 52 + r * 20]);
+    pts.forEach(function (p, i) {
+      var fill = "#2e6f8e";
+      if (kind === "mixed") fill = (i % 2 === 0) ? "#2e6f8e" : "#b3541e";
+      if (kind === "layered") fill = (p[1] < 100) ? "#2e6f8e" : "#b3541e";
+      s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="6" fill="' + fill + '"/>';
+    });
+    return s;
+  }
+  var s = '<svg viewBox="0 0 460 190" width="460" height="190" role="img" aria-label="Particles in three containers" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="460" height="190" fill="#ffffff"/>';
+  s += container(28, "Container 1", "pure") + container(171, "Container 2", "mixed") + container(314, "Container 3", "layered");
+  s += '</svg>';
+  return s;
+}
+
+// M3: vessels with stated amounts of solute and water.
+function s7ConcentrationSVG(vessels) {
+  var W = 460, H = 210;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="460" height="210" role="img" aria-label="Three vessels with stated amounts of solute and water" style="max-width:100%;height:auto">';
+  s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>';
+  vessels.forEach(function (v, i) {
+    var x = 36 + i * 148;
+    var fillH = 20 + 70 * (v.vol / 200);
+    s += '<path d="M ' + x + ' 30 L ' + (x + 14) + ' ' + (30 + 110) + ' L ' + (x + 86) + ' ' + (30 + 110) + ' L ' + (x + 100) + ' 30" fill="none" stroke="#33424e" stroke-width="1.6"/>';
+    s += '<rect x="' + (x + 8) + '" y="' + (140 - fillH) + '" width="84" height="' + fillH + '" fill="#bcd6e4" opacity="0.75"/>';
+    s += '<text x="' + (x + 50) + '" y="162" font-size="12" text-anchor="middle" fill="#1c2b33">' + v.label + '</text>';
+    s += '<text x="' + (x + 50) + '" y="182" font-size="11" text-anchor="middle" fill="#1c2b33">' + v.solute + ' g in ' + v.vol + ' mL</text>';
+  });
+  s += '</svg>';
+  return s;
+}

@@ -680,13 +680,14 @@ window.COURSES = {
   units: {
     1: "Interactions Within Ecosystems",
     2: "Heat",
+    3: "Mixtures and Solutions",
     4: "Earth's Crust"
   },
 
-  /* Unit 1, Unit 2 and Unit 4 indicators from the eNLightenED Units
+  /* All four units' indicators from the eNLightenED Units
      and Indicators spreadsheet for the current guide (Version
-     2023.001.010), in spreadsheet order. The course is built strand
-     by strand; Unit 3 registers when its build lands. SC7.3.5
+     2023.001.010), in spreadsheet order. The course was built strand
+     by strand; all four strands are now registered. SC7.3.5
      (work cooperatively with team members) is registered for
      completeness but carries no entries: an individual practice app
      cannot assess cooperation, and the gap is recorded, not papered
@@ -745,6 +746,27 @@ window.COURSES = {
     "SC7.6.7": "Use apparatus and materials safely",
     "SC7.6.8": "Organize and display data using tables and graphs",
     "SC7.6.9": "State a conclusion from data; supports or refutes",
+    "SC7.7.1": "Pure substances and mixtures (particle theory)",
+    "SC7.7.2": "Heterogeneous and homogeneous mixtures",
+    "SC7.7.3": "Dissolving; solute and solvent",
+    "SC7.7.4": "Concentrations of solutions, qualitative and quantitative",
+    "SC7.7.5": "Factors that affect the solubility of solids and gases",
+    "SC7.7.6": "Identify and separate the components of mixtures",
+    "SC7.7.7": "Common separation techniques in daily life",
+    "SC7.8.1": "Science of a distillation apparatus",
+    "SC7.8.2": "How refining and separation techniques have evolved",
+    "SC7.8.3": "How mixtures and solutions science affects our lives",
+    "SC7.8.4": "Positive and negative effects of salt on highways",
+    "SC7.8.5": "Understanding solutions and better deicing technologies",
+    "SC7.8.6": "Informed decision: road salt as the main de-icing chemical",
+    "SC7.9.1": "State a hypothesis from background information",
+    "SC7.9.2": "Identify and delimit questions and problems",
+    "SC7.9.3": "Line of best fit; interpolate and extrapolate",
+    "SC7.9.4": "Develop a testable hypothesis: temperature and solubility",
+    "SC7.9.5": "Carry out procedures controlling variables (solubility)",
+    "SC7.9.6": "Carry out procedures controlling variables (separation)",
+    "SC7.9.7": "Use tools and instruments safely and accurately",
+    "SC7.9.8": "Answer new questions from the separation activities",
     "SC7.10.1": "Classify minerals by physical properties",
     "SC7.10.2": "Classify rocks by characteristics and formation",
     "SC7.10.3": "Earth's crust characteristics and technologies for studying geological features",
@@ -781,6 +803,9 @@ window.COURSES = {
         "SC7.5.1", "SC7.5.2", "SC7.5.3", "SC7.5.4", "SC7.5.5", "SC7.5.6", "SC7.5.7", "SC7.5.8",
         "SC7.5.9", "SC7.5.10", "SC7.6.1", "SC7.6.2", "SC7.6.3", "SC7.6.4", "SC7.6.5", "SC7.6.6",
         "SC7.6.7", "SC7.6.8", "SC7.6.9"],
+    3: ["SC7.7.1", "SC7.7.2", "SC7.7.3", "SC7.7.4", "SC7.7.5", "SC7.7.6", "SC7.7.7",
+        "SC7.8.1", "SC7.8.2", "SC7.8.3", "SC7.8.4", "SC7.8.5", "SC7.8.6", "SC7.9.1",
+        "SC7.9.2", "SC7.9.3", "SC7.9.4", "SC7.9.5", "SC7.9.6", "SC7.9.7", "SC7.9.8"],
     4: ["SC7.10.1", "SC7.10.2", "SC7.10.3", "SC7.10.4", "SC7.10.5", "SC7.10.6", "SC7.10.7", "SC7.10.8",
         "SC7.10.9", "SC7.11.1", "SC7.11.2", "SC7.11.3", "SC7.11.4", "SC7.11.5", "SC7.11.6", "SC7.11.7",
         "SC7.12.1", "SC7.12.2", "SC7.12.3", "SC7.12.4", "SC7.12.5", "SC7.12.6", "SC7.12.7", "SC7.12.8",

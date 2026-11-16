@@ -62,7 +62,7 @@ COURSES = {
     # Science 7 is built strand by strand (Unit 1 Ecosystems first,
     # Nov 15, 2026); later unit builds extend this list in unit order.
     "sci-7": ("Science 7",
-              ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u4.js"]),
+              ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
     "math-3200": ("Math 3200",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js",
                    "bank-u4.js", "bank-u5.js", "bank-u6.js",
