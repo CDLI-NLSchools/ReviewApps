@@ -1991,7 +1991,7 @@ E("u4-sa-rect-prism", 4, ["9.4"], 2, "gen", function(){
   var l=ri(3,14), w=ri(3,12), h=ri(2,10);
   var sa=2*(l*w+l*h+w*h);
   var q=numq("Trouve l'aire totale du prisme droit à base rectangulaire montré, en centimètres carrés.", sa, 0.01,
-    "Travaille face par face. Le devant et le dos mesurent "+l+" sur "+h+", les côtés mesurent "+w+" sur "+h+", et le dessus et le dessous mesurent "+l+" sur "+w+" : \\[ \\begin{aligned} AT &= 2(lw+lh+wh) \\\\ &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= 2("+fmtD(l*w+l*h+w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] L'aire totale est <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "Travaille face par face. Le devant et le dos mesurent "+l+" sur "+h+", d'aire "+fmtD(l*h)+" chacun ; les côtés mesurent "+w+" sur "+h+", d'aire "+fmtD(w*h)+" chacun ; et le dessus et le dessous mesurent "+l+" sur "+w+", d'aire "+fmtD(l*w)+" chacun. Double l'aire de chaque face pour sa paire et additionne : \\[ \\begin{aligned} AT &= 2("+fmtD(l*w)+") + 2("+fmtD(l*h)+") + 2("+fmtD(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] L'aire totale est <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"rect-sa", l:l, w:w, h:h});
   q.figure=u4boxSVG(l,w,h);
   return q;
@@ -2002,17 +2002,17 @@ E("u4-sa-tri-prism", 4, ["9.4"], 2, "gen", function(){
   var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,16);
   var sa=a*b+(a+b+c)*L;
   var q=numq("Trouve l'aire totale du prisme droit à base triangulaire montré, en centimètres carrés.", sa, 0.01,
-    "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} AT &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+sa+" \\end{aligned} \\] L'aire totale est <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "Deux extrémités triangulaires plus trois rectangles le long de la longueur. Chaque extrémité triangulaire a une aire de "+fmtD(a*b/2)+", et les trois rectangles ont des aires de "+fmtD(a*L)+", "+fmtD(b*L)+" et "+fmtD(c*L)+" : \\[ \\begin{aligned} AT &= 2("+fmtD(a*b/2)+") + "+fmtD(a*L)+" + "+fmtD(b*L)+" + "+fmtD(c*L)+" \\\\ &= "+sa+" \\end{aligned} \\] L'aire totale est <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"tri-sa", a:a, b:b, c:c, L:L});
   q.figure=u4triSVG(a,b,c,L);
   return q;
-}, ["Divise la surface en deux extrémités triangulaires et trois rectangles.", "Trouve d'abord les extrémités, puis multiplie le périmètre d'une extrémité par la longueur pour les rectangles."]);
+}, ["Divise la surface en deux extrémités triangulaires et trois rectangles.", "Trouve d'abord les extrémités, puis calcule chacun des trois rectangles le long de la longueur et additionne-les."]);
 
 E("u4-sa-cylinder", 4, ["9.6"], 2, "gen", function(){
   var r=ri(2,9), h=ri(3,14);
   var sa=u4r1(2*3.14*r*(r+h));
   var q=numq("Trouve l'aire totale du cylindre droit montré. Utilise \\(\\pi = 3,14\\) et donne ta réponse en centimètres carrés, avec une décimale.", sa, 0.6,
-    "Deux cercles plus le côté courbé, qui se déroule en un rectangle : \\[ \\begin{aligned} AT &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3,14)("+r+")("+r+"+"+h+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire totale est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
+    "Deux cercles plus le côté courbé, qui se déroule en un rectangle. Chaque cercle a une aire de \\(3,14 \\times "+r+" \\times "+r+" = "+fmtD(u4r2(3.14*r*r))+"\\). Le rectangle a pour longueur la circonférence, \\(2 \\times 3,14 \\times "+r+" = "+fmtD(u4r2(2*3.14*r))+"\\), et pour largeur "+h+", donc son aire est \\("+fmtD(u4r2(2*3.14*r))+" \\times "+h+" = "+fmtD(u4r2(2*3.14*r*h))+"\\). Additionne les parties : \\[ \\begin{aligned} AT &= 2("+fmtD(u4r2(3.14*r*r))+") + "+fmtD(u4r2(2*3.14*r*h))+" \\\\ &= "+fmtD(u4r2(2*3.14*r*r+2*3.14*r*h))+" \\\\ &\\approx "+fmtD(sa)+" \\end{aligned} \\] L'aire totale est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-sa", r:r, h:h});
   q.figure=u4cylSVG(r,h,false);
   return q;
@@ -2025,13 +2025,13 @@ E("u4-sa-problem-wrap", 4, ["9.5"], 2, "gen", function(){
     var cover=pick([20,25,30,40,50]);
     var cans=Math.ceil(sa/cover-0.0000001);
     var q=numq("Une boîte de rangement en forme de prisme droit à base rectangulaire mesure "+l+" m de long, "+w+" m de large et "+h+" m de haut. Elle est peinte sur toutes ses faces extérieures. Un pot de peinture couvre "+cover+" mètres carrés. Combien de pots de peinture sont nécessaires ?", cans, 0.01,
-      "Trouve d'abord l'aire totale, puis divise par la surface couverte et arrondis vers le haut : \\[ \\begin{aligned} AT &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] Puis \\("+sa+" \\div "+cover+" \\approx "+fmtD(u4r2(sa/cover))+"\\), et on ne peut pas acheter un pot partiel. Le nombre de pots nécessaires est <b>"+cans+"</b>.",
+      "Trouve d'abord l'aire totale : les trois faces de la boîte ont des aires de "+fmtD(l*w)+", "+fmtD(l*h)+" et "+fmtD(w*h)+", et chaque face a une face opposée identique : \\[ \\begin{aligned} AT &= 2("+fmtD(l*w)+") + 2("+fmtD(l*h)+") + 2("+fmtD(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] Puis \\("+sa+" \\div "+cover+" \\approx "+fmtD(u4r2(sa/cover))+"\\), et on ne peut pas acheter un pot partiel. Le nombre de pots nécessaires est <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover}); q.figure=m8BoxLabSVG(l+" m",w+" m",h+" m",false); return q;
   }
   var l2=ri(20,60)/2, w2=ri(16,44)/2, h2=ri(12,36)/2;
   var sa2=2*(l2*w2+l2*h2+w2*h2);
   var q=numq("Une boîte-cadeau en forme de prisme droit à base rectangulaire mesure "+fmtD(l2)+" cm de long, "+fmtD(w2)+" cm de large et "+fmtD(h2)+" cm de haut. Le papier d'emballage couvre toutes les faces sans chevauchement. Combien de centimètres carrés de papier sont nécessaires ?", sa2, 0.01,
-    "Le papier doit couvrir toute la surface de la boîte : \\[ \\begin{aligned} AT &= 2("+fmtD(l2*w2)+"+"+fmtD(l2*h2)+"+"+fmtD(w2*h2)+") \\\\ &= "+fmtD(sa2)+" \\end{aligned} \\] Le papier nécessaire est <b>"+fmtD(sa2)+" cm\\(^{2}\\)</b>.",
+    "Le papier doit couvrir toute la surface de la boîte : ses trois faces ont des aires de "+fmtD(l2*w2)+", "+fmtD(l2*h2)+" et "+fmtD(w2*h2)+", et chaque face a une face opposée identique : \\[ \\begin{aligned} AT &= 2("+fmtD(l2*w2)+") + 2("+fmtD(l2*h2)+") + 2("+fmtD(w2*h2)+") \\\\ &= "+fmtD(sa2)+" \\end{aligned} \\] Le papier nécessaire est <b>"+fmtD(sa2)+" cm\\(^{2}\\)</b>.",
     {mode:"wrap-paper", l:l2, w:w2, h:h2}); q.figure=m8BoxLabSVG(fmtD(l2)+" cm",fmtD(w2)+" cm",fmtD(h2)+" cm",false); return q;
 }, ["Calcule l'aire totale avant d'utiliser la surface couverte ou de finir le problème.", "Divise l'aire totale par la surface couverte par pot et arrondis vers le haut, car on ne peut pas acheter un pot partiel."]);
 
@@ -2154,7 +2154,7 @@ E("u4-sa-open-tank", 4, ["9.5","9.6"], 3, "gen", function(){
   var r=ri(2,8), h=ri(4,14);
   var sa=u4r1(3.14*r*r+2*3.14*r*h);
   var q=numq("Un baril d'eau de jardin a la forme d'un cylindre droit de rayon "+r+" m et de hauteur "+h+" m. Il est ouvert en haut. Une feuille de métal est utilisée pour le fond et le côté courbé seulement. Combien de mètres carrés de métal sont nécessaires ? Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", sa, 0.6,
-    "Un dessus ouvert signifie qu'un seul cercle est nécessaire, pour le fond, plus le côté courbé : \\[ \\begin{aligned} AT &= \\pi r^{2}+2\\pi r h \\\\ &= 3,14("+r+")^{2}+2(3,14)("+r+")("+h+") \\\\ &= "+fmtD(u4r2(3.14*r*r))+"+"+fmtD(u4r1(2*3.14*r*h))+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] Le métal nécessaire est <b>"+fmtD(sa)+" m\\(^{2}\\)</b>.",
+    "Un dessus ouvert signifie qu'un seul cercle est nécessaire, pour le fond, plus le côté courbé. Le cercle du fond a une aire de \\(3,14 \\times "+r+" \\times "+r+" = "+fmtD(u4r2(3.14*r*r))+"\\). Le côté courbé se déroule en un rectangle dont la longueur est la circonférence, \\(2 \\times 3,14 \\times "+r+" = "+fmtD(u4r2(2*3.14*r))+"\\), et la hauteur est "+h+", donc son aire est \\("+fmtD(u4r2(2*3.14*r))+" \\times "+h+" = "+fmtD(u4r2(2*3.14*r*h))+"\\). Additionne les deux parties : \\[ \\begin{aligned} AT &= "+fmtD(u4r2(3.14*r*r))+" + "+fmtD(u4r2(2*3.14*r*h))+" \\\\ &\\approx "+fmtD(sa)+" \\end{aligned} \\] Le métal nécessaire est <b>"+fmtD(sa)+" m\\(^{2}\\)</b>.",
     {mode:"open-barrel", r:r, h:h}); q.figure=m8CylLabSVG(r+" m",h+" m",false,true); return q;
 }, ["Un dessus ouvert change le nombre de cercles : lis le problème pour voir quelles parties sont couvertes.", "Additionne un cercle pour le fond à l'aire du côté courbé."]);
 
@@ -2176,9 +2176,9 @@ E("u4-sa-missing-edge", 4, ["9.5"], 3, "gen", function(){
   });
   var q=mcq("Un prisme droit à base rectangulaire mesure "+l+" cm de long et "+w+" cm de large, et son aire totale est "+sa+" cm\\(^{2}\\). Quelle est sa hauteur, en centimètres ?",
     {t:String(h), fb:"Oui : une hauteur de "+h+" donne exactement l'aire totale donnée."}, opts,
-    "Essaie la hauteur dans la formule de l'aire totale et résous. Avec une hauteur \\(h\\) : \\[ \\begin{aligned} 2("+fmtD(l*w)+") + 2("+l+"+"+w+")h &= "+sa+" \\\\ "+(2*l*w)+" + "+(2*(l+w))+"h &= "+sa+" \\\\ h &= "+h+" \\end{aligned} \\] La hauteur est <b>"+h+" cm</b>.",
+    "Construis l'aire totale à partir de ses faces et résous pour la hauteur. Avec une hauteur \\(h\\) : \\[ \\begin{aligned} 2("+fmtD(l*w)+") + 2("+l+"+"+w+")h &= "+sa+" \\\\ "+(2*l*w)+" + "+(2*(l+w))+"h &= "+sa+" \\\\ h &= "+h+" \\end{aligned} \\] La hauteur est <b>"+h+" cm</b>.",
     {mode:"missing-edge", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm","?",false); return q;
-}, ["Mets la hauteur inconnue dans la formule de l'aire totale sous forme de lettre.", "Calcule d'abord les aires des faces connues, puis vois ce qui reste pour les faces qui utilisent la hauteur."]);
+}, ["Écris l'aire totale face par face, avec une lettre pour la hauteur inconnue.", "Calcule d'abord les aires des faces connues, puis vois ce qui reste pour les faces qui utilisent la hauteur."]);
 
 /* ----- bank-u5.js ----- */
 // Math 8 (French) Unit 5 Percent, Ratio and Rate question bank
@@ -5104,7 +5104,7 @@ E("u4-open-box-sa-gap", 4, ["9.3", "10.3"], 2, "gen", function(){
   var l=ri(4,14), w=ri(3,11), h=ri(2,9);
   var sa=l*w+2*l*h+2*w*h;
   var q=numq("Une boîte de rangement ouverte sur le dessus a la forme d'un prisme droit à base rectangulaire. Elle mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut, et elle n'a pas de couvercle. Le carton est utilisé pour le fond et les quatre côtés seulement. Combien de centimètres carrés de carton faut-il ?", sa, 0.01,
-    "Un dessus ouvert signifie que la face du dessus est absente, alors compte le fond et les quatre faces de côté : \\[ \\begin{aligned} AT &= lw + 2lh + 2wh \\\\ &= "+(l*w)+" + "+(2*l*h)+" + "+(2*w*h)+" \\\\ &= "+sa+" \\end{aligned} \\] La réponse est <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "Un dessus ouvert signifie que la face du dessus est absente, alors compte le fond et les quatre faces de côté. Le fond mesure "+l+" sur "+w+", d'aire "+(l*w)+" ; le devant et le dos mesurent "+l+" sur "+h+", d'aire "+(l*h)+" chacun ; et les deux côtés mesurent "+w+" sur "+h+", d'aire "+(w*h)+" chacun : \\[ \\begin{aligned} AT &= "+(l*w)+" + 2("+(l*h)+") + 2("+(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] La réponse est <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"open-box-sa", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm",h+" cm",true); return q;
 }, ["Un dessus ouvert change quelles faces existent, alors liste les faces avant de calculer.", "Trouve d'abord l'aire du fond, puis additionne les deux paires de faces de côté."]);
 

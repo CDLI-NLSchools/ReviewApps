@@ -3540,6 +3540,12 @@ E("u6-unit-price-mc",6,["6.16"],1,"gen",function(){
    - u6-pk-scale-draw: copied from math-9 u7-scale-draw-num, indicator 10.16.
    - u6-pk-scale-factor: copied from math-9 u7-scale-factor-num, indicator 10.17.
    - u6-pk-sa-basic: copied from math-1201 u1-sa-basic, indicators 5.1, 5.2.
+     DEVIATION (surface area sweep, Nov 15, 2026): this copy's worked
+     solutions were reworked to the net method on Jason's curriculum
+     instruction (outside Math 1201, surface area is taught through
+     the net), so its solution text differs from math-1201
+     u1-sa-basic, which is unchanged. Numbers, key and options are
+     unchanged.
    - u6-pk-vol-basic: copied from math-1201 u1-vol-basic, indicator 5.4.
    - u6-pk-convert-multistep: copied from math-1201 u1-convert-multistep, indicator 6.2.
    - u6-pk-rate-of-change: copied from math-1201 u4-rate-of-change, indicator 4.19.
@@ -3610,14 +3616,14 @@ E("u6-pk-sa-basic", 6, ["6.10"], 2, "gen",function(){
       "A closed cylindrical paint can has radius "+r+" cm and height "+h+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed cylinder is a rectangle joined to two congruent circles. The circles have radius "+r+" cm, and the rectangle has height "+h+" cm and length equal to the circumference of a circle. Sketch the net in words and determine the total surface area of the cylinder. Give your answer to the nearest tenth, in square centimetres.";
     var q=numq(prompt,ans,0.11,
-      "The surface area of a closed cylinder is the two circles plus the curved rectangle: \\[ \\begin{aligned} SA &= 2\\pi r^2 + 2\\pi r h \\\\ &= 2\\pi("+r+")^2 + 2\\pi("+r+")("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h});
+      "Build the surface from the net: two circles plus the curved rectangle. The two circles together have area \\(2\\pi("+r+")^2 \\approx "+fmt(u1r1(2*Math.PI*r*r))+"\\), and the rectangle is the circumference by the height, \\(2\\pi("+r+")("+h+") \\approx "+fmt(u1r1(2*Math.PI*r*h))+"\\). Add the parts: \\[ \\begin{aligned} SA &\\approx "+fmt(u1r1(2*Math.PI*r*r))+" + "+fmt(u1r1(2*Math.PI*r*h))+" \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h});
     q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
     return q;
   }
   if(mode===3){
     var r3=ri(3,9),l3=r3+ri(2,7),ans3=u1r1(Math.PI*r3*(r3+l3));
     var q=numq("A solid cone ornament has radius "+r3+" cm and slant height "+l3+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
-      "The surface area of a cone is the circular base plus the lateral area: \\[ \\begin{aligned} SA &= \\pi r^2 + \\pi r l \\\\ &= \\pi("+r3+")^2 + \\pi("+r3+")("+l3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,l:l3});
+      "Build the surface from the net: the circular base plus the sloped side opened flat. The base has area \\(\\pi("+r3+")^2 \\approx "+fmt(u1r1(Math.PI*r3*r3))+"\\), and the sloped side has area \\(\\pi("+r3+")("+l3+") \\approx "+fmt(u1r1(Math.PI*r3*l3))+"\\). Add the parts: \\[ \\begin{aligned} SA &\\approx "+fmt(u1r1(Math.PI*r3*r3))+" + "+fmt(u1r1(Math.PI*r3*l3))+" \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,l:l3});
     q.figure=u1figCone(r3,Math.sqrt(Math.max(l3*l3-r3*r3,0.25)),{rLab:fmt(r3)+" cm",lLab:fmt(l3)+" cm"});
     return q;
   }
@@ -3627,13 +3633,13 @@ E("u6-pk-sa-basic", 6, ["6.10"], 2, "gen",function(){
       "A closed rectangular storage box has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed rectangular prism is six rectangles in three congruent pairs, with dimensions "+a+" cm by "+b+" cm, "+a+" cm by "+c+" cm, and "+b+" cm by "+c+" cm. Sketch the net in words and determine the total surface area of the prism. Give your answer to the nearest tenth, in square centimetres.";
     var q=numq(prompt4,ans4,0.11,
-      "Add the areas of the three pairs of congruent faces: \\[ \\begin{aligned} SA &= 2(lw + lh + wh) \\\\ &= 2("+a+"\\times"+b+" + "+a+"\\times"+c+" + "+b+"\\times"+c+") \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c});
+      "Add the areas of the three pairs of congruent faces. One pair measures "+a+" cm by "+b+" cm, area "+(a*b)+" each; one pair measures "+a+" cm by "+c+" cm, area "+(a*c)+" each; and one pair measures "+b+" cm by "+c+" cm, area "+(b*c)+" each: \\[ \\begin{aligned} SA &= 2("+(a*b)+") + 2("+(a*c)+") + 2("+(b*c)+") \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c});
     q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm",fmt(c)+" cm");
     return q;
   }
   var s=ri(4,12),l6=s+ri(2,8),ans6=s*s+2*s*l6;
   var q=numq("A square based pyramid paperweight has base side "+s+" cm and slant height "+l6+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans6,0.11,
-    "The surface area is the square base plus four congruent triangular faces: \\[ \\begin{aligned} SA &= s^2 + 2sl \\\\ &= "+s+"^2 + 2("+s+")("+l6+") \\\\ &= "+ans6+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans6)+" square centimetres</b>.",{mode:mode,s:s,l:l6});
+    "Build the surface from its faces: the square base plus four congruent triangular faces. The base has area \\("+s+" \\times "+s+" = "+(s*s)+"\\). One triangular face has area \\(\\tfrac{1}{2} \\times "+s+" \\times "+l6+" = "+fmt(s*l6/2)+"\\), so the four faces together have area \\(4 \\times "+fmt(s*l6/2)+" = "+(2*s*l6)+"\\). Add the parts: \\[ \\begin{aligned} SA &= "+(s*s)+" + "+(2*s*l6)+" \\\\ &= "+ans6+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans6)+" square centimetres</b>.",{mode:mode,s:s,l:l6});
   q.figure=u1figPyr(s,Math.sqrt(Math.max(l6*l6-(s/2)*(s/2),0.25)),{sLab:fmt(s)+" cm",lLab:fmt(l6)+" cm"});
   return q;
 });

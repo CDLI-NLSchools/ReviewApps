@@ -1297,11 +1297,11 @@ E("u2-prism-basic", 2, ["3.3","2.1"], 1, "gen", function(){
       {t: fmt(l*w*h) + " cm³", fb: "That multiplies the three dimensions, which gives volume in cubic units, not surface area."},
       {t: fmt(2*l*w + 2*l*h) + " cm²", fb: "That doubles the top and front faces but leaves out the two side faces of area " + (w*h) + " each."}
     ],
-    "Use the formula sheet form \\(SA = 2lw + 2lh + 2wh\\): \\[ \\begin{aligned} SA &= 2(" + l + ")(" + w + ") + 2(" + l + ")(" + h + ") + 2(" + w + ")(" + h + ") \\\\ &= " + (2*l*w) + " + " + (2*l*h) + " + " + (2*w*h) + " \\\\ &= " + SA + " \\end{aligned} \\] The surface area is <b>" + SA + " cm²</b>.",
+    "Unfold the box into its net: three pairs of matching faces. The top and bottom are " + l + " by " + w + ", area " + (l*w) + " each; the front and back are " + l + " by " + h + ", area " + (l*h) + " each; and the two sides are " + w + " by " + h + ", area " + (w*h) + " each. Double each face area for its matching pair and add: \\[ \\begin{aligned} SA &= 2(" + (l*w) + ") + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + (2*l*w) + " + " + (2*l*h) + " + " + (2*w*h) + " \\\\ &= " + SA + " \\end{aligned} \\] The surface area is <b>" + SA + " cm²</b>. Written as one line, this face total is the formula sheet form \\(SA = 2lw + 2lh + 2wh\\).",
     {l: l, w: w, h: h});
   q.figure = u2PrismFig(l, w, h, "cm");
   return q;
-}, ["Use the prism formula from the formula sheet and count two of each face.", "Find the areas of the three different faces first: length by width, length by height, width by height."]);
+}, ["Picture the box unfolded into its net: three pairs of matching faces.", "Find the areas of the three different faces first: length by width, length by height, width by height."]);
 
 E("u2-round-basic", 2, ["3.3"], 1, "gen", function(){
   var nm = pick(u2Names);
@@ -1331,11 +1331,11 @@ E("u2-round-basic", 2, ["3.3"], 1, "gen", function(){
       {t: fmt(e2) + " cm²", fb: "That is only the circular base, pi r squared. The slanted side must be added."},
       {t: fmt(e3) + " cm²", fb: "That counts the base twice. The cone has one base, so pi r squared appears once."}
     ],
-    "Use the formula sheet form \\(SA = \\pi r^2 + \\pi rs\\): \\[ \\begin{aligned} SA &= \\pi (" + rc + ")^2 + \\pi (" + rc + ")(" + sl + ") \\\\ &\\approx " + fmt(Math.round(Math.PI*rc*rc)) + " + " + fmt(Math.round(Math.PI*rc*sl)) + " \\\\ &\\approx " + SAc + " \\end{aligned} \\] The surface area is <b>about " + SAc + " cm²</b>.",
+    "Unfold the cone: its net is the circular base plus the curved side opened flat. The base is a circle of radius " + rc + ", with area \\(\\pi (" + rc + ")^2 \\approx " + fmt(Math.round(Math.PI*rc*rc)) + "\\). The curved side has area \\(\\pi (" + rc + ")(" + sl + ") \\approx " + fmt(Math.round(Math.PI*rc*sl)) + "\\). Add the two parts of the net: \\[ \\begin{aligned} SA &\\approx " + fmt(Math.round(Math.PI*rc*rc)) + " + " + fmt(Math.round(Math.PI*rc*sl)) + " \\\\ &\\approx " + SAc + " \\end{aligned} \\] The surface area is <b>about " + SAc + " cm²</b>.",
     {mode: "cone", r: rc, s: sl});
   q2.figure = u2ConeFig(rc, sl, "cm");
   return q2;
-}, ["Pick the formula sheet form that matches the solid: sphere or cone.", "For a cone, work out the base and the slanted side separately, then add."]);
+}, ["Picture each solid opened flat where that is possible: a cone unrolls into a circle and a curved side, while a sphere cannot be unrolled, so its surface area comes from its radius relation.", "For a cone, work out the base and the slanted side separately, then add."]);
 
 E("u2-unit-choice", 2, ["4.10"], 1, "gen", function(){
   var nm = pick(u2Names);
@@ -1388,7 +1388,7 @@ E("u2-cylinder-sa", 2, ["3.3","2.1"], 2, "gen", function(){
       {t: fmt(S) + " cm²", fb: "That is only the curved side, 2 pi r h. The circular base area must be added."},
       {t: fmt(open ? Math.round(Math.PI*r*r + Math.PI*r*h) : Math.round(2*Math.PI*r*r + Math.PI*r*h)) + " cm²", fb: open ? "That replaces the curved side 2 pi r h with pi r h, which halves the side area." : "That keeps both circular bases but halves the curved side. The side term is 2 pi r h, not pi r h."}
     ],
-    "Use the formula sheet form \\(SA = 2\\pi r^2 + 2\\pi rh\\)" + (open ? ", with one base removed for the open top" : "") + ": \\[ \\begin{aligned} SA &= " + (open ? "\\pi (" + r + ")^2 + 2\\pi (" + r + ")(" + h + ")" : "2\\pi (" + r + ")^2 + 2\\pi (" + r + ")(" + h + ")") + " \\\\ &\\approx " + A + " \\end{aligned} \\] The painted area is <b>about " + A + " cm²</b>.",
+    "Build the painted area from the parts of the net. The curved side unrolls into a rectangle whose length is the circumference of the base, \\(2\\pi (" + r + ")\\), and whose width is the height, " + h + ", so its area is \\(2\\pi (" + r + ")(" + h + ") \\approx " + fmtF(2*Math.PI*r*h,1) + "\\). " + (open ? "The drum has one circular base, of area \\(\\pi (" + r + ")^2 \\approx " + fmtF(Math.PI*r*r,1) + "\\)." : "Each circular base has area \\(\\pi (" + r + ")^2 \\approx " + fmtF(Math.PI*r*r,1) + "\\), and a closed container has two bases, about " + fmtF(2*Math.PI*r*r,1) + " together.") + " Add the parts: \\[ \\begin{aligned} SA &\\approx " + fmtF(2*Math.PI*r*h,1) + " + " + (open ? fmtF(Math.PI*r*r,1) : fmtF(2*Math.PI*r*r,1)) + " \\\\ &\\approx " + A + " \\end{aligned} \\] The painted area is <b>about " + A + " cm²</b>. Written as one line, this total is the formula sheet form \\(SA = 2\\pi r^2 + 2\\pi rh\\)" + (open ? ", with one base removed for the open top" : "") + ".",
     {r: r, h: h, open: open});
   q.figure = u2CylFig(r, h, "cm");
   return q;
@@ -1407,7 +1407,7 @@ E("u2-pyramid-sa", 2, ["3.3"], 2, "gen", function(){
       {t: fmt(2*b*sl) + " m²", fb: "That is the four triangular sides only. The square base must be added."},
       {t: fmt(b*b + 4*b*sl) + " m²", fb: "That treats each triangle as a full b by slant rectangle. Each triangle has area one half b times slant."}
     ],
-    "Use the formula sheet form: base plus 4 triangular sides. \\[ \\begin{aligned} SA &= b^2 + 4\\left(\\tfrac{1}{2} b s\\right) \\\\ &= " + b + "^2 + 2(" + b + ")(" + sl + ") \\\\ &= " + (b*b) + " + " + (2*b*sl) + " \\\\ &= " + SA + " \\end{aligned} \\] The surface area is <b>" + SA + " m²</b>.",
+    "Build the surface from its net: one square base and four matching triangular sides. The base has area \\(" + b + " \\times " + b + " = " + (b*b) + "\\). One triangular side has area \\(\\tfrac{1}{2} \\times " + b + " \\times " + sl + " = " + fmt(b*sl/2) + "\\), so the four sides together have area \\(4 \\times " + fmt(b*sl/2) + " = " + (2*b*sl) + "\\). Add the parts: \\[ \\begin{aligned} SA &= " + (b*b) + " + " + (2*b*sl) + " \\\\ &= " + SA + " \\end{aligned} \\] The surface area is <b>" + SA + " m²</b>.",
     {b: b, s: sl});
   q.figure = u2PyrFig(b, sl, "m");
   return q;
@@ -1425,7 +1425,7 @@ E("u2-net-area", 2, ["3.1"], 2, "gen", function(){
       {t: fmt(l*w*h) + " cm³", fb: "That multiplies the three dimensions, which gives the volume of the folded box, not the area of its net."},
       {t: fmt(2*l*w + 2*l*h + w*h) + " cm²", fb: "That leaves one side face single instead of doubled. Every face size appears twice in the net."}
     ],
-    "A net is the surface laid flat, so its area is the surface area. Add all six faces: \\[ \\begin{aligned} SA &= 2lw + 2lh + 2wh \\\\ &= 2(" + l + ")(" + w + ") + 2(" + l + ")(" + h + ") + 2(" + w + ")(" + h + ") \\\\ &= " + SA + " \\end{aligned} \\] The area of the net is <b>" + SA + " cm²</b>.",
+    "A net is the surface laid flat, so its area is the surface area. The net has six faces in three matching pairs: two of " + l + " by " + w + ", area " + (l*w) + " each; two of " + l + " by " + h + ", area " + (l*h) + " each; and two of " + w + " by " + h + ", area " + (w*h) + " each. Add all six faces: \\[ \\begin{aligned} SA &= 2(" + (l*w) + ") + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + SA + " \\end{aligned} \\] The area of the net is <b>" + SA + " cm²</b>.",
     {l: l, w: w, h: h});
   q.figure = u2NetFig(l, w, h, "cm");
   return q;
@@ -1458,7 +1458,7 @@ E("u2-dim-change", 2, ["3.5"], 2, "gen", function(){
       {t: fmt(4 * SA0) + " cm²", fb: "That is the effect of doubling every dimension. Here only the length changed."},
       {t: fmt(SA0 + 2*l*w) + " cm²", fb: "That adds only the growth of the top and bottom. The front and back faces also grow when the length doubles."}
     ],
-    "Faces that use the length get a factor of 2; the two end faces (width by height) do not change: \\[ \\begin{aligned} SA &= 2(2 \\times " + l + ")(" + w + ") + 2(2 \\times " + l + ")(" + h + ") + 2(" + w + ")(" + h + ") \\\\ &= " + SA1 + " \\end{aligned} \\] The new surface area is <b>" + SA1 + " cm²</b>.",
+    "Work face by face. The top and bottom faces use the length, so each one doubles: together they give \\(2 \\times (2 \\times " + l + ") \\times " + w + " = " + (2*(2*l)*w) + "\\). The front and back faces also use the length: \\(2 \\times (2 \\times " + l + ") \\times " + h + " = " + (2*(2*l)*h) + "\\). The two end faces, " + w + " by " + h + ", do not change: \\(2 \\times " + w + " \\times " + h + " = " + (2*w*h) + "\\). Add the three groups: \\[ \\begin{aligned} SA &= " + (2*(2*l)*w) + " + " + (2*(2*l)*h) + " + " + (2*w*h) + " \\\\ &= " + SA1 + " \\end{aligned} \\] The new surface area is <b>" + SA1 + " cm²</b>.",
     {mode: "one-dim", l: l, w: w, h: h});
 }, ["Ask which dimensions changed, then decide how each face is affected.", "Scaling every dimension squares the scale factor for area; changing one dimension changes only the faces that use it."]);
 
@@ -1475,7 +1475,7 @@ E("u2-trades-formula", 2, ["2.3"], 2, "var", varset([
     [{t: "About 4.02 m²", fb: "That adds both circular ends. An open duct has no ends to wrap."},
      {t: "About 0.38 m²", fb: "That is one circular end, pi r squared. The wrap covers the long curved side."},
      {t: "About 1.26 m²", fb: "That uses the diameter in place of the full side: it drops the factor from the radius and length product."}],
-    "\\[ \\begin{aligned} SA &= 2\\pi r h \\\\ &= 2\\pi (0.2)(3) \\\\ &\\approx 3.77 \\end{aligned} \\] The worker orders material for <b>about 3.77 m²</b>.",
+    "The duct is open at both ends, so the only surface is the curved side. Unrolled flat, that side is a rectangle: its length is the circumference of the duct, \\(2\\pi (0.2)\\), and its width is the duct length, 3 m: \\[ \\begin{aligned} A &= 2\\pi (0.2) \\times 3 \\\\ &\\approx 3.77 \\end{aligned} \\] The worker orders material for <b>about 3.77 m²</b>.",
     {trade: "sheet-metal"}); },
   function(){ return mcq("A pool installer lines the inside bottom and walls of a rectangular pool. Which set of faces does the installer measure for the liner?",
     {t: "The bottom plus the four walls, with no top face.", fb: "Yes. A pool is open at the top, so the liner covers the bottom and the four inside walls only."},
@@ -1519,7 +1519,7 @@ E("u2-error-id", 2, ["2.5"], 2, "gen", function(){
       [{t: fmt(wrongV) + " cm³", fb: "That keeps the original error: multiplying the three dimensions gives volume."},
        {t: fmt(half) + " cm²", fb: "That adds each face once. Each face size appears twice on a closed box."},
        {t: fmt(2*l*w + 2*l*h) + " cm²", fb: "That doubles two face sizes but leaves out the side faces."}],
-      "The written step multiplies the three dimensions, which is the volume. Surface area adds the doubled face areas: \\[ \\begin{aligned} SA &= 2lw + 2lh + 2wh \\\\ &= " + SA + " \\end{aligned} \\] The corrected surface area is <b>" + SA + " cm²</b>.",
+      "The written step multiplies the three dimensions, which is the volume. Surface area adds the areas of the faces: the box has faces of " + (l*w) + ", " + (l*h) + " and " + (w*h) + ", and each size appears twice: \\[ \\begin{aligned} SA &= 2(" + (l*w) + ") + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + SA + " \\end{aligned} \\] The corrected surface area is <b>" + SA + " cm²</b>.",
       {mode: "volume-error", l: l, w: w, h: h});
   }
   if (mode === 1) {
@@ -1532,7 +1532,7 @@ E("u2-error-id", 2, ["2.5"], 2, "gen", function(){
       [{t: fmt(wrongR) + " cm²", fb: "That keeps the original error: the diameter was used as the radius."},
        {t: fmt(sideOnly) + " cm²", fb: "That drops the two circular bases. A closed cylinder includes both ends."},
        {t: fmt(Math.round(Math.PI*r*r + 2*Math.PI*r*hh)) + " cm²", fb: "That fixes the radius but counts only one base. The cylinder is closed, so it has two."}],
-      "First correct the radius: \\(r = " + d + " \\div 2 = " + r + "\\). Then \\[ \\begin{aligned} SA &= 2\\pi r^2 + 2\\pi r h \\\\ &= 2\\pi (" + r + ")^2 + 2\\pi (" + r + ")(" + hh + ") \\\\ &\\approx " + SA2 + " \\end{aligned} \\] The corrected surface area is <b>about " + SA2 + " cm²</b>.",
+      "First correct the radius: \\(r = " + d + " \\div 2 = " + r + "\\). Then build the surface from its parts: the two circular ends together have area \\(2\\pi (" + r + ")^2 \\approx " + fmtF(2*Math.PI*r*r,1) + "\\), and the curved side unrolls into a rectangle of area \\(2\\pi (" + r + ")(" + hh + ") \\approx " + fmtF(2*Math.PI*r*hh,1) + "\\). Add the parts: \\[ \\begin{aligned} SA &\\approx " + fmtF(2*Math.PI*r*r,1) + " + " + fmtF(2*Math.PI*r*hh,1) + " \\\\ &\\approx " + SA2 + " \\end{aligned} \\] The corrected surface area is <b>about " + SA2 + " cm²</b>.",
       {mode: "diameter-error", d: d, h: hh});
   }
   var b, sl, t2 = 0;
@@ -1666,9 +1666,9 @@ E("u2-cr-prism", 2, ["3.3","2.1"], 2, "gen", function(){
   var obj = pick(["wooden crate","shipping box","storage chest","metal toolbox","planter box"]);
   return numq(nm + " is painting the outside of a closed " + obj + " that is " + l + " cm long, " + w + " cm wide and " + h + " cm high. Find the surface area to be painted, in square centimetres. Show your work.",
     SA, 1,
-    "Use the formula sheet form \\(SA = 2lw + 2lh + 2wh\\): \\[ \\begin{aligned} SA &= 2(" + l + ")(" + w + ") + 2(" + l + ")(" + h + ") + 2(" + w + ")(" + h + ") \\\\ &= " + (2*l*w) + " + " + (2*l*h) + " + " + (2*w*h) + " \\\\ &= " + SA + " \\end{aligned} \\] The surface area is <b>" + SA + " cm²</b>.",
+    "Unfold the " + obj + " into its net: three pairs of matching faces. The top and bottom have area " + (l*w) + " each, the front and back have area " + (l*h) + " each, and the two sides have area " + (w*h) + " each. Double each face area for its matching pair and add: \\[ \\begin{aligned} SA &= 2(" + (l*w) + ") + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + (2*l*w) + " + " + (2*l*h) + " + " + (2*w*h) + " \\\\ &= " + SA + " \\end{aligned} \\] The surface area is <b>" + SA + " cm²</b>. Written as one line, this face total is the formula sheet form \\(SA = 2lw + 2lh + 2wh\\).",
     {l: l, w: w, h: h});
-}, ["Use the prism formula from the formula sheet and count two of each face.", "Find the three different face areas first, double each one, then add."]);
+}, ["Picture the solid unfolded into its net: three pairs of matching faces.", "Find the three different face areas first, double each one, then add."]);
 
 E("u2-cr-cylinder", 2, ["3.3"], 2, "gen", function(){
   var nm = pick(u2Names);
@@ -1677,9 +1677,9 @@ E("u2-cr-cylinder", 2, ["3.3"], 2, "gen", function(){
   var obj = pick(["closed water tank","sealed metal drum","closed storage canister","cylindrical silo section"]);
   return numq(nm + " is coating a " + obj + " with radius " + r + " m and height " + h + " m. The coating covers the whole outside, including both ends. Find the surface area to be coated, to the nearest square metre. Show your work.",
     Math.round(SA), 2,
-    "Use the formula sheet form \\(SA = 2\\pi r^2 + 2\\pi rh\\): \\[ \\begin{aligned} SA &= 2\\pi (" + r + ")^2 + 2\\pi (" + r + ")(" + h + ") \\\\ &= " + fmtF(2*Math.PI*r*r,1) + " + " + fmtF(2*Math.PI*r*h,1) + " \\\\ &\\approx " + Math.round(SA) + " \\end{aligned} \\] The surface area is <b>about " + Math.round(SA) + " m²</b>.",
+    "Build the surface from the parts of its net. The two circular ends together have area \\(2\\pi (" + r + ")^2 = " + fmtF(2*Math.PI*r*r,1) + "\\). The curved side unrolls into a rectangle whose length is the circumference and whose width is the height: \\(2\\pi (" + r + ")(" + h + ") = " + fmtF(2*Math.PI*r*h,1) + "\\). Add the parts: \\[ \\begin{aligned} SA &= " + fmtF(2*Math.PI*r*r,1) + " + " + fmtF(2*Math.PI*r*h,1) + " \\\\ &\\approx " + Math.round(SA) + " \\end{aligned} \\] The surface area is <b>about " + Math.round(SA) + " m²</b>.",
     {r: r, h: h});
-}, ["Use the cylinder formula from the formula sheet: two circular bases plus the curved side.", "Work out the two bases and the curved side as separate terms, then add."]);
+}, ["Picture the cylinder unfolded: two circular ends plus the curved side opened flat into a rectangle.", "Work out the two bases and the curved side as separate terms, then add."]);
 
 E("u2-cr-sphere-radius", 2, ["3.4","2.2"], 2, "gen", function(){
   var nm = pick(u2Names);
@@ -1711,7 +1711,7 @@ E("u2-cr-paint-trade", 2, ["2.4","4.10","2.3"], 2, "gen", function(){
   var cost = cans * price;
   return numq(nm + ", a painter, is painting a storage shed that is " + l + " m long, " + w + " m wide and " + h + " m high. The painter paints the roof and the four walls, but not the floor. One can of paint covers " + cover + " m² and costs " + u2Dol(price) + ". Find the total cost of the paint, in dollars. Show your work.",
     cost, 0.01,
-    "The painted area is the four walls plus the roof (the top face), with no floor: \\[ \\begin{aligned} A &= 2lh + 2wh + lw \\\\ &= 2(" + l + ")(" + h + ") + 2(" + w + ")(" + h + ") + (" + l + ")(" + w + ") \\\\ &= " + area + " \\text{ m}^2 \\end{aligned} \\] Unit analysis: cans needed \\(= " + area + " \\div " + cover + " = " + fmtF(area/cover,2) + "\\), so the painter must buy " + cans + " whole cans. Cost \\(= " + cans + " \\times " + u2DolM(price) + " = " + u2DolM(cost) + "\\). The total cost is <b>" + u2Dol(cost) + "</b>.",
+    "Build the painted area from the faces that are painted: the roof (the top face), " + l + " by " + w + ", has area " + (l*w) + "; the front and back walls, " + l + " by " + h + ", have area " + (l*h) + " each; and the two side walls, " + w + " by " + h + ", have area " + (w*h) + " each. There is no floor: \\[ \\begin{aligned} A &= " + (l*w) + " + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + area + " \\text{ m}^2 \\end{aligned} \\] Unit analysis: cans needed \\(= " + area + " \\div " + cover + " = " + fmtF(area/cover,2) + "\\), so the painter must buy " + cans + " whole cans. Cost \\(= " + cans + " \\times " + u2DolM(price) + " = " + u2DolM(cost) + "\\). The total cost is <b>" + u2Dol(cost) + "</b>.",
     {l: l, w: w, h: h, cover: cover, price: price});
 }, ["Build the painted area from the faces that are actually painted, then use the coverage rate to get cans.", "Leave the floor out of the area. Paint is sold in whole cans, so round the can count up."]);
 
@@ -1722,7 +1722,7 @@ E("u2-cr-convert", 2, ["4.11","3.3"], 2, "gen", function(){
   var m2 = SA / 10000;
   return numq("A metal sign panel box is " + l + " cm long, " + w + " cm wide and " + h + " cm high. " + nm + " finds its surface area in square centimetres, then must report it in square metres for a supplier form. Find the surface area in square metres, to the nearest hundredth. Show your work.",
     Math.round(m2 * 100) / 100, 0.02,
-    "First the surface area in cm²: \\[ \\begin{aligned} SA &= 2lw + 2lh + 2wh \\\\ &= 2(" + l + ")(" + w + ") + 2(" + l + ")(" + h + ") + 2(" + w + ")(" + h + ") \\\\ &= " + fmt(SA) + " \\text{ cm}^2 \\end{aligned} \\] Convert with the area factor \\(1 \\text{ m}^2 = 10\\,000 \\text{ cm}^2\\): \\(" + fmt(SA) + " \\div 10\\,000 = " + fmtF(m2,2) + "\\). The surface area is <b>about " + fmtF(m2,2) + " m²</b>.",
+    "First the surface area in cm², face by face: the three face areas are " + (l*w) + ", " + (l*h) + " and " + (w*h) + ", and each appears twice on the box: \\[ \\begin{aligned} SA &= 2(" + (l*w) + ") + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + fmt(SA) + " \\text{ cm}^2 \\end{aligned} \\] Convert with the area factor \\(1 \\text{ m}^2 = 10\\,000 \\text{ cm}^2\\): \\(" + fmt(SA) + " \\div 10\\,000 = " + fmtF(m2,2) + "\\). The surface area is <b>about " + fmtF(m2,2) + " m²</b>.",
     {l: l, w: w, h: h});
 }, ["Find the surface area in the given unit first, then convert the finished area.", "Square metres and square centimetres differ by a factor of 10 000, not 100."]);
 
@@ -1740,7 +1740,7 @@ E("u2-composite-sa", 2, ["3.3","2.4"], 3, "gen", function(){
       [{t: fmt(2*l*w + 2*l*h + 2*w*h) + " cm²", fb: "That is the closed box total. The missing top face must be removed."},
        {t: fmt(2*l*h + 2*w*h) + " cm²", fb: "That counts the four sides but drops the bottom face, which is painted on the outside."},
        {t: fmt(l*w + l*h + w*h) + " cm²", fb: "That counts one of each face size. The side faces come in pairs."}],
-      "An open-top box keeps the base and both pairs of sides, and drops one top face: \\[ \\begin{aligned} SA &= lw + 2lh + 2wh \\\\ &= " + (l*w) + " + " + (2*l*h) + " + " + (2*w*h) + " \\\\ &= " + SA + " \\end{aligned} \\] The painted area is <b>" + SA + " cm²</b>.",
+      "An open-top box keeps the base and both pairs of sides, and drops the top face. The base is " + l + " by " + w + ", area " + (l*w) + "; the front and back are " + l + " by " + h + ", area " + (l*h) + " each; and the two sides are " + w + " by " + h + ", area " + (w*h) + " each: \\[ \\begin{aligned} SA &= " + (l*w) + " + 2(" + (l*h) + ") + 2(" + (w*h) + ") \\\\ &= " + SA + " \\end{aligned} \\] The painted area is <b>" + SA + " cm²</b>.",
       {mode: "open-box", l: l, w: w, h: h});
   }
   if (mode === 1) {
@@ -1751,7 +1751,7 @@ E("u2-composite-sa", 2, ["3.3","2.4"], 3, "gen", function(){
       [{t: fmt(Math.round(2*Math.PI*r*hh + 4*Math.PI*r*r)) + " m²", fb: "That uses a full sphere for the roof. The roof is only a half-sphere."},
        {t: fmt(Math.round(2*Math.PI*r*hh)) + " m²", fb: "That is the curved wall only. The dome roof is painted too."},
        {t: fmt(Math.round(2*Math.PI*r*hh + 2*Math.PI*r*r + Math.PI*r*r)) + " m²", fb: "That adds the circular bottom, which sits on the ground and is not painted."}],
-      "The painted surface is the cylinder wall plus a hemisphere: \\[ \\begin{aligned} SA &= 2\\pi r h + \\tfrac{1}{2}\\left(4\\pi r^2\\right) \\\\ &= 2\\pi (" + r + ")(" + hh + ") + 2\\pi (" + r + ")^2 \\\\ &\\approx " + SAt + " \\end{aligned} \\] The painted area is <b>about " + SAt + " m²</b>.",
+      "Build the painted surface from its two parts. The cylinder wall unrolls into a rectangle with length the circumference and width the height: \\(2\\pi (" + r + ")(" + hh + ") \\approx " + fmtF(2*Math.PI*r*hh,1) + "\\). The dome is half of a sphere surface: \\(\\tfrac{1}{2}\\left(4\\pi (" + r + ")^2\\right) \\approx " + fmtF(2*Math.PI*r*r,1) + "\\). Add the parts: \\[ \\begin{aligned} SA &\\approx " + fmtF(2*Math.PI*r*hh,1) + " + " + fmtF(2*Math.PI*r*r,1) + " \\\\ &\\approx " + SAt + " \\end{aligned} \\] The painted area is <b>about " + SAt + " m²</b>.",
       {mode: "tank-dome", r: r, h: hh});
   }
   var L, W, H, l2, w2, h2, ts = 0;
@@ -1765,7 +1765,7 @@ E("u2-composite-sa", 2, ["3.3","2.4"], 3, "gen", function(){
     [{t: fmt(SA1 + SA2) + " cm²", fb: "That paints the touching faces too. The contact rectangle is hidden on both boxes."},
      {t: fmt(SA1 + SA2 - contact) + " cm²", fb: "That removes the contact area once, but it is hidden on the top of one box and the bottom of the other, so remove it twice."},
      {t: fmt(SA1 + SA2 - 2 * l2 * h2) + " cm²", fb: "That removes the wrong rectangle. The boxes touch on the smaller box's base, length by width."}],
-    "Add the two closed-box totals, then subtract the hidden contact area from both boxes: \\[ \\begin{aligned} SA &= " + SA1 + " + " + SA2 + " - 2(" + l2 + ")(" + w2 + ") \\\\ &= " + SAs + " \\end{aligned} \\] The painted area is <b>" + SAs + " cm²</b>.",
+    "Find each box from its faces first. The bottom box has face areas " + (L*W) + ", " + (L*H) + " and " + (W*H) + ", each appearing twice, for a total of " + SA1 + ". The top box has face areas " + (l2*w2) + ", " + (l2*h2) + " and " + (w2*h2) + ", each appearing twice, for a total of " + SA2 + ". The boxes touch over a " + l2 + " by " + w2 + " rectangle of area " + contact + ", which is hidden on both boxes: \\[ \\begin{aligned} SA &= " + SA1 + " + " + SA2 + " - 2(" + contact + ") \\\\ &= " + SAs + " \\end{aligned} \\] The painted area is <b>" + SAs + " cm²</b>.",
     {mode: "stacked", L: L, W: W, H: H, l2: l2, w2: w2, h2: h2});
 }, ["Break the object into its pieces, then adjust for faces that are missing or hidden where pieces join.", "A joined face is hidden on both pieces, so its area comes off twice."]);
 
@@ -1834,7 +1834,7 @@ E("u2-cr-tank-dome", 2, ["3.3"], 3, "gen", function(){
   var SA = 2*Math.PI*r*h + 2*Math.PI*r*r;
   return numq("A fuel tank is a cylinder of radius " + r + " m and height " + h + " m topped with a half-sphere dome of the same radius. The tank sits on the ground. " + nm + " paints the outside of the curved wall and the dome. Find the painted area, to the nearest square metre. Show your work.",
     Math.round(SA), 2,
-    "The painted surface is the cylinder wall plus half of a sphere surface: \\[ \\begin{aligned} SA &= 2\\pi r h + \\tfrac{1}{2}\\left(4\\pi r^2\\right) \\\\ &= 2\\pi (" + r + ")(" + h + ") + 2\\pi (" + r + ")^2 \\\\ &\\approx " + Math.round(SA) + " \\end{aligned} \\] The painted area is <b>about " + Math.round(SA) + " m²</b>.",
+    "Build the painted surface from its two parts. The cylinder wall unrolls into a rectangle with length the circumference and width the height: \\(2\\pi (" + r + ")(" + h + ") = " + fmtF(2*Math.PI*r*h,1) + "\\). The dome is half of a sphere surface: \\(\\tfrac{1}{2}\\left(4\\pi (" + r + ")^2\\right) = " + fmtF(2*Math.PI*r*r,1) + "\\). Add the parts: \\[ \\begin{aligned} SA &= " + fmtF(2*Math.PI*r*h,1) + " + " + fmtF(2*Math.PI*r*r,1) + " \\\\ &\\approx " + Math.round(SA) + " \\end{aligned} \\] The painted area is <b>about " + Math.round(SA) + " m²</b>.",
     {r: r, h: h});
 }, ["Split the surface into the cylinder wall and the dome, and use half of the sphere formula for the dome.", "The bottom is on the ground, so leave it out; start with the curved wall term 2 pi r h."]);
 
@@ -1861,18 +1861,18 @@ E("u2-pk-surface-prism", 2, ["3.3"], 2, "gen", function(){
     [{t:fmt(vol)+" \\(\\text{cm}^2\\)", fb:"That multiplies all three dimensions, which gives volume, not surface area."},
      {t:fmt(half)+" \\(\\text{cm}^2\\)", fb:"That adds only one face from each pair. Each face has a matching opposite face."},
      {t:fmt(sumEdges)+" \\(\\text{cm}^2\\)", fb:"That adds edge lengths. Surface area adds the areas of the faces."}],
-    "Add the three face areas, then double for the matching opposite faces. \\[ \\begin{aligned} S &= 2(lw + lh + wh) \\\\ &= 2("+fmt(l*w)+" + "+fmt(l*h)+" + "+fmt(w*h)+") \\\\ &= "+fmt(SA)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(SA)+" square centimetres</b>.",
+    "Unfold the box into its net. The faces come in three matching pairs: "+l+" cm by "+w+" cm, area "+fmt(l*w)+"; "+l+" cm by "+h+" cm, area "+fmt(l*h)+"; and "+w+" cm by "+h+" cm, area "+fmt(w*h)+". Double each face area for its matching opposite face and add: \\[ \\begin{aligned} S &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+fmt(SA)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(SA)+" square centimetres</b>.",
     {l:l,w:w,h:h});
   q.figure=u3BoxFig(l,w,h,"cm");
   return q;
-}, ["Surface area is the total area of all the faces.", "Find the three different face areas first, then double their sum."]);
+}, ["Surface area is the total area of all the faces.", "Find the three different face areas first, double each one for its matching opposite face, then add."]);
 
 E("u2-pk-cylinder-sa", 2, ["3.3"], 2, "gen", function(){
   var ctxs=["a closed water tank","a closed storage can","a closed paint drum"];
   var ctx=pick(ctxs), r=ri(2,6), h=ri(4,12), sa=2*Math.PI*r*h+2*Math.PI*r*r, ans=Math.round(sa*10)/10;
   var q=numq("Find the surface area, in square centimetres, of "+ctx+" shaped like a closed right cylinder with radius "+r+" cm and height "+h+" cm, as shown in the figure. Give your answer to the nearest tenth. Show your work on paper, then enter the surface area.",
     ans, 0.4,
-    "Add the curved side and the two circular ends. \\[ \\begin{aligned} S &= 2\\pi r h + 2\\pi r^2 \\\\ &= 2\\pi ("+r+")("+h+") + 2\\pi ("+r+")^2 \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
+    "Unfold the closed cylinder into its net: the curved side unrolls into a rectangle, and the two ends are circles. The rectangle has length the circumference, \\(2\\pi ("+r+")\\), and width "+h+", so its area is \\(2\\pi ("+r+")("+h+") \\approx "+fmtF(2*Math.PI*r*h,1)+"\\). The two circular ends together have area \\(2\\pi ("+r+")^2 \\approx "+fmtF(2*Math.PI*r*r,1)+"\\). Add the parts of the net: \\[ \\begin{aligned} S &\\approx "+fmtF(2*Math.PI*r*h,1)+" + "+fmtF(2*Math.PI*r*r,1)+" \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
     {r:r,h:h});
   q.figure=u3CylFig(r,h,"cm");
   return q;
@@ -1972,7 +1972,7 @@ E("u2-pk-error-analysis", 2, ["2.5"], 2, "var", varset([
     [{t:"150.8 \\(\\text{cm}^2\\)", fb:"That is the student's value, the curved side only."},
      {t:"179.1 \\(\\text{cm}^2\\)", fb:"That adds only one circular end. A closed cylinder has two ends."},
      {t:"226.2 \\(\\text{cm}^2\\)", fb:"That uses the diameter in the side area, which inflates the total."}],
-    "Add the curved side and both ends. \\[ \\begin{aligned} S &= 2\\pi (3)(8) + 2\\pi (3)^2 \\\\ &= 150.8 + 56.5 \\\\ &\\approx 207.3\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>207.3 square centimetres</b>.", {}); }
+    "Unfold the closed cylinder: the curved side unrolls into a rectangle with area \\(2\\pi (3)(8) = 150.8\\ \\text{cm}^2\\), and the two circular ends together have area \\(2\\pi (3)^2 = 56.5\\ \\text{cm}^2\\). Add the parts of the net: \\[ \\begin{aligned} S &= 150.8 + 56.5 \\\\ &\\approx 207.3\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>207.3 square centimetres</b>.", {}); }
 ]), ["Read the student's working and find the step that went wrong.", "Name the error first, then redo the calculation with the fix in place."]);
 
 E("u2-pk-si-imp-convert", 2, ["4.11"], 2, "gen", function(){

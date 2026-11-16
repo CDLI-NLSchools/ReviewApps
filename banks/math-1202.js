@@ -2063,7 +2063,7 @@ E("u3-error-analysis", 3, ["2.5","3.32"], 2, "var", varset([
     [{t:"150.8 \\(\\text{cm}^2\\)", fb:"That is the student's value, the curved side only."},
      {t:"179.1 \\(\\text{cm}^2\\)", fb:"That adds only one circular end. A closed cylinder has two ends."},
      {t:"226.2 \\(\\text{cm}^2\\)", fb:"That uses the diameter in the side area, which inflates the total."}],
-    "Add the curved side and both ends. \\[ \\begin{aligned} S &= 2\\pi (3)(8) + 2\\pi (3)^2 \\\\ &= 150.8 + 56.5 \\\\ &\\approx 207.3\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>207.3 square centimetres</b>.", {}); }
+    "Unfold the closed cylinder: the curved side unrolls into a rectangle with area \\(2\\pi (3)(8) = 150.8\\ \\text{cm}^2\\), and the two circular ends together have area \\(2\\pi (3)^2 = 56.5\\ \\text{cm}^2\\). Add the parts of the net: \\[ \\begin{aligned} S &= 150.8 + 56.5 \\\\ &\\approx 207.3\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>207.3 square centimetres</b>.", {}); }
 ]), ["Read the student's working and find the step that went wrong.", "Name the error first, then redo the calculation with the fix in place."]);
 
 E("u3-dimension-effect", 3, ["3.33"], 2, "gen", function(){
@@ -2096,11 +2096,11 @@ E("u3-surface-prism", 3, ["3.34","2.3"], 2, "gen", function(){
     [{t:fmt(vol)+" \\(\\text{cm}^2\\)", fb:"That multiplies all three dimensions, which gives volume, not surface area."},
      {t:fmt(half)+" \\(\\text{cm}^2\\)", fb:"That adds only one face from each pair. Each face has a matching opposite face."},
      {t:fmt(sumEdges)+" \\(\\text{cm}^2\\)", fb:"That adds edge lengths. Surface area adds the areas of the faces."}],
-    "Add the three face areas, then double for the matching opposite faces. \\[ \\begin{aligned} S &= 2(lw + lh + wh) \\\\ &= 2("+fmt(l*w)+" + "+fmt(l*h)+" + "+fmt(w*h)+") \\\\ &= "+fmt(SA)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(SA)+" square centimetres</b>.",
+    "Unfold the box into its net. The faces come in three matching pairs: "+l+" cm by "+w+" cm, area "+fmt(l*w)+"; "+l+" cm by "+h+" cm, area "+fmt(l*h)+"; and "+w+" cm by "+h+" cm, area "+fmt(w*h)+". Double each face area for its matching opposite face and add: \\[ \\begin{aligned} S &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+fmt(SA)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmt(SA)+" square centimetres</b>.",
     {l:l,w:w,h:h});
   q.figure=u3BoxFig(l,w,h,"cm");
   return q;
-}, ["Surface area is the total area of all the faces.", "Find the three different face areas first, then double their sum."]);
+}, ["Surface area is the total area of all the faces.", "Find the three different face areas first, double each one for its matching opposite face, then add."]);
 
 E("u3-convert-advanced", 3, ["3.29","3.30"], 2, "gen", function(){
   var mode=pick(["m2cmD","cm2mD","yd2in","in2ft"]);
@@ -2167,7 +2167,7 @@ E("u3-cr-cylinder-sa", 3, ["3.34"], 2, "gen", function(){
   var ctx=pick(ctxs), r=ri(2,6), h=ri(4,12), sa=2*Math.PI*r*h+2*Math.PI*r*r, ans=Math.round(sa*10)/10;
   var q=numq("Find the surface area, in square centimetres, of "+ctx+" shaped like a closed right cylinder with radius "+r+" cm and height "+h+" cm, as shown in the figure. Give your answer to the nearest tenth. Show your work on paper, then enter the surface area.",
     ans, 0.4,
-    "Add the curved side and the two circular ends. \\[ \\begin{aligned} S &= 2\\pi r h + 2\\pi r^2 \\\\ &= 2\\pi ("+r+")("+h+") + 2\\pi ("+r+")^2 \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
+    "Unfold the closed cylinder into its net: the curved side unrolls into a rectangle, and the two ends are circles. The rectangle has length the circumference, \\(2\\pi ("+r+")\\), and width "+h+", so its area is \\(2\\pi ("+r+")("+h+") \\approx "+fmtF(2*Math.PI*r*h,1)+"\\). The two circular ends together have area \\(2\\pi ("+r+")^2 \\approx "+fmtF(2*Math.PI*r*r,1)+"\\). Add the parts of the net: \\[ \\begin{aligned} S &\\approx "+fmtF(2*Math.PI*r*h,1)+" + "+fmtF(2*Math.PI*r*r,1)+" \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
     {r:r,h:h});
   q.figure=u3CylFig(r,h,"cm");
   return q;
@@ -2178,7 +2178,7 @@ E("u3-cr-cone-sa", 3, ["3.34"], 2, "gen", function(){
   var ctx=pick(ctxs), r=ri(2,7), sl=r+ri(2,6), sa=Math.PI*r*sl+Math.PI*r*r, ans=Math.round(sa*10)/10;
   var q=numq("Find the surface area, in square centimetres, of "+ctx+" shaped like a right cone with radius "+r+" cm and slant height "+sl+" cm, as shown in the figure. The slant height is the distance from the tip down the sloped side to the rim. Give your answer to the nearest tenth. Show your work on paper, then enter the surface area.",
     ans, 0.4,
-    "Add the sloped side and the circular base. \\[ \\begin{aligned} S &= \\pi r s + \\pi r^2 \\\\ &= \\pi ("+r+")("+sl+") + \\pi ("+r+")^2 \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
+    "Unfold the cone: the sloped side opens flat and the base is a circle. The sloped side has area \\(\\pi ("+r+")("+sl+") \\approx "+fmtF(Math.PI*r*sl,1)+"\\), and the circular base has area \\(\\pi ("+r+")^2 \\approx "+fmtF(Math.PI*r*r,1)+"\\). Add the two parts of the net: \\[ \\begin{aligned} S &\\approx "+fmtF(Math.PI*r*sl,1)+" + "+fmtF(Math.PI*r*r,1)+" \\\\ &\\approx "+fmtF(sa,1)+"\\ \\text{cm}^2 \\end{aligned} \\] The answer is <b>"+fmtF(ans,1)+" square centimetres</b>.",
     {r:r,sl:sl});
   q.figure=u3ConeFig(r,sl,"cm");
   return q;

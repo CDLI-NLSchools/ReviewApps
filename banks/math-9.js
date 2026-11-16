@@ -818,7 +818,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
     var l=ri(2,12), w=ri(2,12), h=ri(2,12);
     var sa=2*(l*w+l*h+w*h);
     var q = numq("Find the surface area of a right rectangular prism with length "+l+" cm, width "+w+" cm and height "+h+" cm. Give your answer in square centimetres.", sa, 0.01,
-      "Add the areas of the three different faces, then double: \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= 2("+fmt(l*w+l*h+w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+      "Unfold the prism into its net: three pairs of matching faces. One pair is "+l+" by "+w+", area "+fmt(l*w)+" each; one pair is "+l+" by "+h+", area "+fmt(l*h)+" each; and one pair is "+w+" by "+h+", area "+fmt(w*h)+" each. Double each face area for its matching pair and add: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"rect-prism", l:l, w:w, h:h});
     q.figure = solRectPrism(l, w, h, fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Rectangular prism with labelled dimensions");
     return q;
@@ -828,7 +828,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
     var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,18);
     var sa2=a*b+(a+b+c)*L;
     var q = numq("Find the surface area of a right triangular prism. The triangular end is a right triangle with legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, and the prism is "+L+" cm long. Give your answer in square centimetres.", sa2, 0.01,
-      "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
+      "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sa2)+" \\end{aligned} \\] The surface area is <b>"+fmt(sa2)+" cm\\(^{2}\\)</b>.",
       {mode:"tri-prism", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism with labelled dimensions");
     return q;
@@ -836,7 +836,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
   var r=ri(2,10), hh=ri(3,15);
   var sac=u2r1(2*3.14*r*(r+hh));
   var q = numq("Find the surface area of a right cylinder with radius "+r+" cm and height "+hh+" cm. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.", sac, 0.6,
-    "Two circles plus the curved side, using \\(\\pi = 3.14\\): \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3.14)("+r+")("+r+"+"+hh+") \\\\ &= "+fmt(sac)+" \\end{aligned} \\] The surface area is <b>"+fmt(sac)+" cm\\(^{2}\\)</b>.",
+    "Two circles plus the curved side, using \\(\\pi = 3.14\\). Each circle has area \\(3.14 \\times "+r+" \\times "+r+" = "+fmt(u2r2(3.14*r*r))+"\\). The curved side unrolls into a rectangle whose length is the circumference, \\(2 \\times 3.14 \\times "+r+" = "+fmt(u2r2(2*3.14*r))+"\\), and whose width is "+hh+", so its area is \\("+fmt(u2r2(2*3.14*r))+" \\times "+hh+" = "+fmt(u2r2(2*3.14*r*hh))+"\\). Add the parts: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(3.14*r*r))+") + "+fmt(u2r2(2*3.14*r*hh))+" \\\\ &= "+fmt(u2r2(2*3.14*r*r+2*3.14*r*hh))+" \\\\ &\\approx "+fmt(sac)+" \\end{aligned} \\] The surface area is <b>"+fmt(sac)+" cm\\(^{2}\\)</b>.",
     {mode:"cylinder", r:r, h:hh});
     q.figure = solCylinder(r, hh, fmt(r) + " cm", fmt(hh) + " cm", "Cylinder with labelled dimensions");
     return q;
@@ -849,7 +849,7 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   if(mode==="tent"){
     var sat=a*b+(a+c)*L;
     var q = numq("A lean-to tent is shaped like a right triangular prism. Each triangular end has a vertical side of "+a+" cm, a base of "+b+" cm and a sloped side of "+c+" cm, and the tent is "+L+" cm long. The rectangular face on the ground, "+b+" cm by "+L+" cm, has no material. Find the area of material needed, in square centimetres.", sat, 0.01,
-      "Count two triangular ends and the two covered rectangles, leaving out the ground face: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+c)*L)+" \\\\ &= "+fmt(sat)+" \\end{aligned} \\] The area of material needed is <b>"+fmt(sat)+" cm\\(^{2}\\)</b>.",
+      "Count two triangular ends and the two covered rectangles, leaving out the ground face. Each triangular end has area "+fmt(a*b/2)+", and the covered rectangles have areas "+fmt(a*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sat)+" \\end{aligned} \\] The area of material needed is <b>"+fmt(sat)+" cm\\(^{2}\\)</b>.",
       {mode:"tent-no-floor", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism tent with labelled dimensions");
     return q;
@@ -857,13 +857,13 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   var sa=a*b+(a+b+c)*L;
   if(mode==="ramp"){
     var q = numq("A display ramp is shaped like a right triangular prism and is covered on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the ramp is "+L+" cm long. Find the total surface area of the ramp, in square centimetres.", sa, 0.01,
-      "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+      "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"ramp", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism ramp with labelled dimensions");
     return q;
   }
   var q = numq("A chocolate bar box is shaped like a right triangular prism, closed on all faces. Each triangular end has sides of "+a+" cm, "+b+" cm and "+c+" cm, forming a right triangle, and the box is "+L+" cm long. Find the total surface area of the box, in square centimetres.", sa, 0.01,
-    "Two triangular ends plus three rectangles along the length: \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmt(a*b)+"+"+fmt((a+b+c)*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
+    "Two triangular ends plus three rectangles along the length. Each triangular end has area "+fmt(a*b/2)+", and the three rectangles have areas "+fmt(a*L)+", "+fmt(b*L)+" and "+fmt(c*L)+": \\[ \\begin{aligned} SA &= 2("+fmt(a*b/2)+") + "+fmt(a*L)+" + "+fmt(b*L)+" + "+fmt(c*L)+" \\\\ &= "+fmt(sa)+" \\end{aligned} \\] The total surface area is <b>"+fmt(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"bar-box", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(L) + " cm", "Triangular prism box with labelled dimensions");
     return q;
@@ -895,7 +895,7 @@ E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
   var sa1=2*(X*W+X*H1+W*H1), sa2=2*(X2*W+X2*H2+W*H2), contact=X2*W;
   var tot=sa1+sa2-2*contact;
   var q = numq("A step is built from two boxes joined together. The bottom box measures "+X+" cm long, "+W+" cm wide and "+H1+" cm high. The top box measures "+X2+" cm long, "+W+" cm wide and "+H2+" cm high, and it sits on top of the bottom box, flush with the back and the left side. Find the total surface area of the step, in square centimetres.", tot, 0.01,
-    "Find each box on its own, then subtract the touching face twice because it is hidden on both boxes: \\[ \\begin{aligned} SA &= 2("+fmt(X*W)+"+"+fmt(X*H1)+"+"+fmt(W*H1)+") + 2("+fmt(X2*W)+"+"+fmt(X2*H2)+"+"+fmt(W*H2)+") - 2("+contact+") \\\\ &= "+sa1+" + "+sa2+" - "+(2*contact)+" \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
+    "Find each box from its faces, then subtract the touching face twice because it is hidden on both boxes. The bottom box has face areas "+fmt(X*W)+", "+fmt(X*H1)+" and "+fmt(W*H1)+", each twice, giving "+sa1+". The top box has face areas "+fmt(X2*W)+", "+fmt(X2*H2)+" and "+fmt(W*H2)+", each twice, giving "+sa2+". The touching face has area "+contact+": \\[ \\begin{aligned} SA &= "+sa1+" + "+sa2+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
     {mode:"step", X:X, W:W, H1:H1, X2:X2, H2:H2});
     q.figure = solStep(X, W, H1, X2, H2, fmt(X) + " cm", fmt(W) + " cm", fmt(H1) + " cm", fmt(X2) + " cm", fmt(H2) + " cm", "Step built from two boxes with labelled dimensions");
     return q;
@@ -908,7 +908,7 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
     var cover=pick([8,10,12,15,20]);
     var cans=Math.ceil(sa/cover-0.0000001);
     var q = numq("A storage tank shaped like a right rectangular prism measures "+fmt(l)+" m long, "+fmt(w)+" m wide and "+fmt(h)+" m high. It will be painted on the outside, on all faces. One can of paint covers "+cover+" square metres. How many cans of paint are needed?", cans, 0.01,
-      "Find the surface area first, then divide by the coverage and round up: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] Then \\("+fmt(sa)+" \\div "+cover+" \\approx "+fmt(u2r2(sa/cover))+"\\), so a part can is not enough. The number of cans needed is <b>"+cans+"</b>.",
+      "Find the surface area first: the tank's three face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") \\\\ &= "+fmt(sa)+" \\end{aligned} \\] Then \\("+fmt(sa)+" \\div "+cover+" \\approx "+fmt(u2r2(sa/cover))+"\\), so a part can is not enough. The number of cans needed is <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
     q.figure = solRectPrism(l, w, h, fmt(l) + " m", fmt(w) + " m", fmt(h) + " m", "Rectangular prism tank with labelled dimensions");
     return q;
@@ -918,7 +918,7 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
   var price=pick([4,5,6,8,9]);
   var cost=u2r2(sa2*price);
   var q = numq("A gift box shaped like a right rectangular prism measures "+fmt(l2)+" m long, "+fmt(w2)+" m wide and "+fmt(h2)+" m high. It is covered on all faces with fabric that costs $"+price+" per square metre. What is the total cost of the fabric, in dollars, to the nearest cent?", cost, 0.05,
-    "Find the surface area first, then multiply by the price per square metre: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(l2*w2))+"+"+fmt(u2r2(l2*h2))+"+"+fmt(u2r2(w2*h2))+") \\\\ &= "+fmt(u2r2(sa2))+" \\end{aligned} \\] Then \\("+fmt(u2r2(sa2))+" \\times "+price+" = "+fmt(cost)+"\\). The total cost is <b>$"+fmt(cost)+"</b>.",
+    "Find the surface area first: the box's three face areas are "+fmt(u2r2(l2*w2))+", "+fmt(u2r2(l2*h2))+" and "+fmt(u2r2(w2*h2))+", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2("+fmt(u2r2(l2*w2))+") + 2("+fmt(u2r2(l2*h2))+") + 2("+fmt(u2r2(w2*h2))+") \\\\ &= "+fmt(u2r2(sa2))+" \\end{aligned} \\] Then \\("+fmt(u2r2(sa2))+" \\times "+price+" = "+fmt(cost)+"\\). The total cost is <b>$"+fmt(cost)+"</b>.",
     {mode:"fabric-cost", l:l2, w:w2, h:h2, price:price});
     q.figure = solRectPrism(l2, w2, h2, fmt(l2) + " m", fmt(w2) + " m", fmt(h2) + " m", "Rectangular prism box with labelled dimensions");
     return q;
@@ -961,7 +961,7 @@ E("u2-sa-cyl-on-prism", 2, ["9.3"], 3, "gen", function(){
   var tot=u2r1(prism+side);
   var ctx=pick(["A cylindrical water tank stands on top of a rectangular concrete base","A thick round candle stands on top of a rectangular wooden stand"]);
   var q = numq(ctx+". The cylinder has radius "+r+" cm and height "+hc+" cm, and its base sits fully on the top face of the prism. The prism measures "+l+" cm long, "+w+" cm wide and "+h+" cm high. Find the total exposed surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot, 0.6,
-    "The circle where the cylinder meets the prism is hidden, and the cylinder bottom is not exposed, so those two equal circles cancel out of the total: \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") + 2(3.14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmt(side)+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
+    "The circle where the cylinder meets the prism is hidden, and the cylinder bottom is not exposed, so those two equal circles cancel out of the total. The prism's face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", each appearing twice, and the cylinder contributes only its curved side, which unrolls into a rectangle with length the circumference and width "+hc+": \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") + 2(3.14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmt(side)+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-prism", r:r, hc:hc, l:l, w:w, h:h});
     q.figure = solCylOnPrism(r, hc, l, w, h, fmt(r) + " cm", fmt(hc) + " cm", fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Cylinder on a rectangular prism with labelled dimensions");
     return q;
@@ -2207,7 +2207,7 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
     var contact=a*l;
     var tot=boxSA+triSA-2*contact;
     var q = numq("A model is built by joining two solids face to face. The bottom solid is a right rectangular prism "+l+" cm long, "+w+" cm wide and "+h+" cm high. On top of it sits a right triangular prism, a prism with right triangle ends and rectangular sides. Its triangular ends have legs "+a+" cm and "+b+" cm and hypotenuse "+c+" cm, the prism is "+l+" cm long, and its bottom face, "+a+" cm by "+l+" cm, exactly covers the top face of the bottom prism. The face where the two solids join is hidden inside the model. Find the total surface area of the model, in square centimetres.", tot, 0.01,
-      "The overlap is the "+a+" cm by "+l+" cm rectangle where the two prisms join. It is a face of each solid, so it is hidden twice and comes off both surface areas: \\[ \\begin{aligned} \\text{overlap} &= "+a+" \\times "+l+" = "+contact+" \\\\ SA &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
+      "Find each solid from its faces first. The bottom prism has face areas "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", each twice, giving "+boxSA+". The triangular prism has two triangular ends of area "+fmt(a*b/2)+" each and three rectangles of areas "+fmt(a*l)+", "+fmt(b*l)+" and "+fmt(c*l)+", giving "+triSA+". The overlap is the "+a+" cm by "+l+" cm rectangle where the two prisms join, area "+contact+". It is a face of each solid, so it is hidden twice and comes off both surface areas: \\[ \\begin{aligned} SA &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] The total surface area is <b>"+tot+" cm\\(^{2}\\)</b>.",
       {mode:"tri-on-rect", a:a, b:b, c:c, l:l, h:h});
     q.figure = solBoxTri(a, b, c, l, a, h, fmt(a) + " cm", fmt(b) + " cm", fmt(c) + " cm", fmt(l) + " cm", "", fmt(h) + " cm", "Triangular prism on a box with labelled dimensions");
     return q;
@@ -2222,7 +2222,7 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
   var circ=u2r2(3.14*r*r);
   var tot2=u2r1(triSA2+cylSA-2*circ);
   var q = numq("A right cylinder stands on a right triangular prism, a prism with right triangle ends and rectangular sides. The triangular ends have legs "+a2+" cm and "+b2+" cm and hypotenuse "+c2+" cm, and the prism is "+L+" cm long. The cylinder has radius "+r+" cm and height "+hc+" cm, and it stands on the rectangular face of the prism that measures "+a2+" cm by "+L+" cm, with its whole base on that face. The part where the two solids touch is hidden inside the finished object. Find the total surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot2, 0.6,
-    "The overlap is the circle where the cylinder meets the prism. It is hidden on the prism face and it is the base of the cylinder, so its area comes off twice: \\[ \\begin{aligned} \\text{overlap} &= 3.14 \\times "+r+"^{2} = "+fmt(circ)+" \\\\ SA &= "+triSA2+" + "+fmt(cylSA)+" - 2("+fmt(circ)+") \\\\ &= "+fmt(tot2)+" \\end{aligned} \\] The total surface area is <b>"+fmt(tot2)+" cm\\(^{2}\\)</b>.",
+    "Find each solid from its faces first. The triangular prism has two triangular ends of area "+fmt(a2*b2/2)+" each and three rectangles of areas "+fmt(a2*L)+", "+fmt(b2*L)+" and "+fmt(c2*L)+", giving "+triSA2+". The cylinder has two circles of area "+fmt(circ)+" each and a curved side that unrolls into a rectangle of area "+fmt(u2r2(2*3.14*r*hc))+", giving "+fmt(cylSA)+". The overlap is the circle where the cylinder meets the prism, area "+fmt(circ)+". It is hidden on the prism face and it is the base of the cylinder, so its area comes off twice: \\[ \\begin{aligned} SA &= "+triSA2+" + "+fmt(cylSA)+" - 2("+fmt(circ)+") \\\\ &= "+fmt(tot2)+" \\end{aligned} \\] The total surface area is <b>"+fmt(tot2)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-tri", a:a2, b:b2, c:c2, L:L, r:r, hc:hc});
     q.figure = solCylOnTri(a2, b2, c2, L, r, hc, fmt(a2) + " cm", fmt(b2) + " cm", fmt(c2) + " cm", fmt(L) + " cm", fmt(r) + " cm", fmt(hc) + " cm", "Cylinder on a triangular prism with labelled dimensions");
     return q;
@@ -6451,7 +6451,7 @@ E("u2-gap-pyramid-slant-cr", 2, ["9.3"], 2, "gen", function () {
   var prompt = thing === "tent"
     ? "A tent is shaped like a square pyramid. Its base has side length " + base + " cm and its vertical height is " + height + " cm. Find the total surface area of the tent, in square centimetres."
     : "A square " + thing + " has a base with side length " + base + " cm and a vertical height of " + height + " cm. Find the total surface area of the " + thing + ", in square centimetres.";
-  var sol = "The slant height is not given, so find it with the Pythagorean theorem using half the base and the height: \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{slant} &= " + slant + " \\\\ SA &= " + base + "^{2} + 4\\left(" + FR(1, 2) + " \\times " + base + " \\times " + slant + "\\right) = " + (base * base) + " + " + (2 * base * slant) + " = " + sa + " \\end{aligned} \\] The answer is <b>" + sa + " cm\\(^{2}\\)</b>.";
+  var sol = "The slant height is not given, so find it with the Pythagorean theorem using half the base and the height: \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{slant} &= " + slant + " \\end{aligned} \\] Now build the surface from its faces: the square base has area " + (base * base) + ", and each of the four triangular faces has area " + (base * slant / 2) + " (half of " + base + " times " + slant + "): \\[ \\begin{aligned} SA &= " + (base * base) + " + 4(" + (base * slant / 2) + ") \\\\ &= " + sa + " \\end{aligned} \\] The answer is <b>" + sa + " cm\\(^{2}\\)</b>.";
   var q = numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
   q.figure = solPyramid(base, height, fmt(base) + " cm", fmt(height) + " cm", "?", "Square pyramid with base side and height labelled and slant height unknown");
   return q;
@@ -6468,7 +6468,7 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var contact = a * L;
   var tot = saBox + saPrism - 2 * contact;
   var prompt = "A display stand is made from a box and a right triangular prism joined together. The box measures " + L + " cm long, " + W + " cm wide and " + H + " cm high. The prism is " + L + " cm long, and each triangular end is a right triangle with legs " + a + " cm and " + b + " cm and hypotenuse " + c + " cm. The prism sits on top of the box, and the two solids touch over a rectangle " + a + " cm by " + L + " cm. What is the total surface area of the stand, in square centimetres?";
-  var sol = "Find each solid on its own, then subtract the touching rectangle twice because it is hidden on both solids: \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] The answer is <b>" + tot + " cm\\(^{2}\\)</b>.";
+  var sol = "Find each solid from its faces, then subtract the touching rectangle twice because it is hidden on both solids. The box has face areas " + (L * W) + ", " + (L * H) + " and " + (W * H) + ", each twice, giving " + saBox + ". The prism has two triangular ends of area " + (a * b / 2) + " each and three rectangles of areas " + (a * L) + ", " + (b * L) + " and " + (c * L) + ", giving " + saPrism + ": \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] The answer is <b>" + tot + " cm\\(^{2}\\)</b>.";
   var q = mcq(prompt,
     { t: fmt(tot), fb: "Correct: both solids are counted, and the hidden touching rectangle is removed from each one." },
     [{ t: fmt(saBox + saPrism), fb: "That adds the two solids but leaves the hidden touching faces counted on both solids." },

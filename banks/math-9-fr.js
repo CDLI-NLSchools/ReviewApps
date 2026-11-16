@@ -881,7 +881,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
     var l=ri(2,12), w=ri(2,12), h=ri(2,12);
     var sa=2*(l*w+l*h+w*h);
     var q = numq("Trouve l'aire de la surface d'un prisme droit à base rectangulaire de longueur "+l+" cm, de largeur "+w+" cm et de hauteur "+h+" cm. Donne ta réponse en centimètres carrés.", sa, 0.01,
-      "Additionne les aires des trois faces différentes, puis double : \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= 2("+fmtD(l*w+l*h+w*h)+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
+      "Déplie le prisme en son développement : trois paires de faces identiques. Une paire mesure "+l+" sur "+w+", d'aire "+fmtD(l*w)+" chacune ; une paire mesure "+l+" sur "+h+", d'aire "+fmtD(l*h)+" chacune ; et une paire mesure "+w+" sur "+h+", d'aire "+fmtD(w*h)+" chacune. Double l'aire de chaque face pour sa paire et additionne : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+") + 2("+fmtD(l*h)+") + 2("+fmtD(w*h)+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"rect-prism", l:l, w:w, h:h});
     q.figure = solRectPrism(l, w, h, fmtD(l) + " cm", fmtD(w) + " cm", fmtD(h) + " cm", "Prisme rectangulaire avec des dimensions étiquetées");
     return q;
@@ -891,7 +891,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
     var a=tr[0], b=tr[1], c=tr[2]; var L=ri(4,18);
     var sa2=a*b+(a+b+c)*L;
     var q = numq("Trouve l'aire de la surface d'un prisme droit à base triangulaire. L'extrémité triangulaire est un triangle rectangle avec des cathètes de "+a+" cm et "+b+" cm et une hypoténuse de "+c+" cm, et le prisme mesure "+L+" cm de long. Donne ta réponse en centimètres carrés.", sa2, 0.01,
-      "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+fmtD(sa2)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa2)+" cm\\(^{2}\\)</b>.",
+      "Deux extrémités triangulaires plus trois rectangles le long de la longueur. Chaque extrémité triangulaire a une aire de "+fmtD(a*b/2)+", et les trois rectangles ont des aires de "+fmtD(a*L)+", "+fmtD(b*L)+" et "+fmtD(c*L)+" : \\[ \\begin{aligned} SA &= 2("+fmtD(a*b/2)+") + "+fmtD(a*L)+" + "+fmtD(b*L)+" + "+fmtD(c*L)+" \\\\ &= "+fmtD(sa2)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa2)+" cm\\(^{2}\\)</b>.",
       {mode:"tri-prism", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Prisme triangulaire avec des dimensions étiquetées");
     return q;
@@ -899,7 +899,7 @@ E("u2-sa-single", 2, ["9.2"], 2, "gen", function(){
   var r=ri(2,10), hh=ri(3,15);
   var sac=u2r1(2*3.14*r*(r+hh));
   var q = numq("Trouve l'aire de la surface d'un cylindre droit de rayon "+r+" cm et de hauteur "+hh+" cm. Utilise \\(\\pi = 3,14\\) et donne ta réponse en centimètres carrés, avec une décimale.", sac, 0.6,
-    "Deux cercles plus la face courbe, avec \\(\\pi = 3,14\\) : \\[ \\begin{aligned} SA &= 2\\pi r^{2}+2\\pi r h \\\\ &= 2(3,14)("+r+")("+r+"+"+hh+") \\\\ &= "+fmtD(sac)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sac)+" cm\\(^{2}\\)</b>.",
+    "Deux cercles plus la face courbe, avec \\(\\pi = 3,14\\). Chaque cercle a une aire de \\(3,14 \\times "+r+" \\times "+r+" = "+fmtD(u2r2(3.14*r*r))+"\\). La face courbe se déroule en un rectangle dont la longueur est la circonférence, \\(2 \\times 3,14 \\times "+r+" = "+fmtD(u2r2(2*3.14*r))+"\\), et la largeur est "+hh+", donc son aire est \\("+fmtD(u2r2(2*3.14*r))+" \\times "+hh+" = "+fmtD(u2r2(2*3.14*r*hh))+"\\). Additionne les parties : \\[ \\begin{aligned} SA &= 2("+fmtD(u2r2(3.14*r*r))+") + "+fmtD(u2r2(2*3.14*r*hh))+" \\\\ &= "+fmtD(u2r2(2*3.14*r*r+2*3.14*r*hh))+" \\\\ &\\approx "+fmtD(sac)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sac)+" cm\\(^{2}\\)</b>.",
     {mode:"cylinder", r:r, h:hh});
     q.figure = solCylinder(r, hh, fmtD(r) + " cm", fmtD(hh) + " cm", "Cylindre avec des dimensions étiquetées");
     return q;
@@ -912,7 +912,7 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   if(mode==="tent"){
     var sat=a*b+(a+c)*L;
     var q = numq("Une tente adossée a la forme d'un prisme droit à base triangulaire. Chaque extrémité triangulaire a un côté vertical de "+a+" cm, une base de "+b+" cm et un côté incliné de "+c+" cm, et la tente mesure "+L+" cm de long. La face rectangulaire au sol, "+b+" cm sur "+L+" cm, n'a pas de matériau. Trouve l'aire de matériau nécessaire, en centimètres carrés.", sat, 0.01,
-      "Compte deux extrémités triangulaires et les deux rectangles couverts, sans la face au sol : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+c)*L)+" \\\\ &= "+fmtD(sat)+" \\end{aligned} \\] L'aire de matériau nécessaire est <b>"+fmtD(sat)+" cm\\(^{2}\\)</b>.",
+      "Compte deux extrémités triangulaires et les deux rectangles couverts, sans la face au sol. Chaque extrémité triangulaire a une aire de "+fmtD(a*b/2)+", et les rectangles couverts ont des aires de "+fmtD(a*L)+" et "+fmtD(c*L)+" : \\[ \\begin{aligned} SA &= 2("+fmtD(a*b/2)+") + "+fmtD(a*L)+" + "+fmtD(c*L)+" \\\\ &= "+fmtD(sat)+" \\end{aligned} \\] L'aire de matériau nécessaire est <b>"+fmtD(sat)+" cm\\(^{2}\\)</b>.",
       {mode:"tent-no-floor", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Tente en prisme triangulaire avec des dimensions étiquetées");
     return q;
@@ -920,13 +920,13 @@ E("u2-sa-tri-context", 2, ["9.2"], 2, "gen", function(){
   var sa=a*b+(a+b+c)*L;
   if(mode==="ramp"){
     var q = numq("Une rampe d'exposition a la forme d'un prisme droit à base triangulaire et est couverte sur toutes ses faces. Chaque extrémité triangulaire a des côtés de "+a+" cm, "+b+" cm et "+c+" cm, qui forment un triangle rectangle, et la rampe mesure "+L+" cm de long. Trouve l'aire de la surface de la rampe, en centimètres carrés.", sa, 0.01,
-      "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
+      "Deux extrémités triangulaires plus trois rectangles le long de la longueur. Chaque extrémité triangulaire a une aire de "+fmtD(a*b/2)+", et les trois rectangles ont des aires de "+fmtD(a*L)+", "+fmtD(b*L)+" et "+fmtD(c*L)+" : \\[ \\begin{aligned} SA &= 2("+fmtD(a*b/2)+") + "+fmtD(a*L)+" + "+fmtD(b*L)+" + "+fmtD(c*L)+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
       {mode:"ramp", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Rampe en prisme triangulaire avec des dimensions étiquetées");
     return q;
   }
   var q = numq("Une boîte de barre de chocolat a la forme d'un prisme droit à base triangulaire, fermée sur toutes ses faces. Chaque extrémité triangulaire a des côtés de "+a+" cm, "+b+" cm et "+c+" cm, qui forment un triangle rectangle, et la boîte mesure "+L+" cm de long. Trouve l'aire de la surface de la boîte, en centimètres carrés.", sa, 0.01,
-    "Deux extrémités triangulaires plus trois rectangles le long de la longueur : \\[ \\begin{aligned} SA &= 2\\left("+FR(1,2)+"\\times "+a+"\\times "+b+"\\right)+("+a+"+"+b+"+"+c+")\\times "+L+" \\\\ &= "+fmtD(a*b)+"+"+fmtD((a+b+c)*L)+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
+    "Deux extrémités triangulaires plus trois rectangles le long de la longueur. Chaque extrémité triangulaire a une aire de "+fmtD(a*b/2)+", et les trois rectangles ont des aires de "+fmtD(a*L)+", "+fmtD(b*L)+" et "+fmtD(c*L)+" : \\[ \\begin{aligned} SA &= 2("+fmtD(a*b/2)+") + "+fmtD(a*L)+" + "+fmtD(b*L)+" + "+fmtD(c*L)+" \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(sa)+" cm\\(^{2}\\)</b>.",
     {mode:"bar-box", a:a, b:b, c:c, L:L});
     q.figure = solTriPrism(a, b, c, L, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(L) + " cm", "Boîte en prisme triangulaire avec des dimensions étiquetées");
     return q;
@@ -958,7 +958,7 @@ E("u2-sa-composite-rect", 2, ["9.2"], 2, "gen", function(){
   var sa1=2*(X*W+X*H1+W*H1), sa2=2*(X2*W+X2*H2+W*H2), contact=X2*W;
   var tot=sa1+sa2-2*contact;
   var q = numq("Une marche est faite de deux boîtes jointes. La boîte du bas mesure "+X+" cm de long, "+W+" cm de large et "+H1+" cm de haut. La boîte du haut mesure "+X2+" cm de long, "+W+" cm de large et "+H2+" cm de haut, et elle est posée sur la boîte du bas, alignée avec le dos et le côté gauche. Trouve l'aire de la surface de la marche, en centimètres carrés.", tot, 0.01,
-    "Trouve chaque boîte séparément, puis soustrais la face de contact deux fois car elle est cachée sur les deux boîtes : \\[ \\begin{aligned} SA &= 2("+fmtD(X*W)+"+"+fmtD(X*H1)+"+"+fmtD(W*H1)+") + 2("+fmtD(X2*W)+"+"+fmtD(X2*H2)+"+"+fmtD(W*H2)+") - 2("+contact+") \\\\ &= "+sa1+" + "+sa2+" - "+(2*contact)+" \\\\ &= "+tot+" \\end{aligned} \\] L'aire de la surface est <b>"+tot+" cm\\(^{2}\\)</b>.",
+    "Trouve chaque boîte à partir de ses faces, puis soustrais la face de contact deux fois car elle est cachée sur les deux boîtes. La boîte du bas a des faces d'aires "+fmtD(X*W)+", "+fmtD(X*H1)+" et "+fmtD(W*H1)+", chacune deux fois, ce qui donne "+sa1+". La boîte du haut a des faces d'aires "+fmtD(X2*W)+", "+fmtD(X2*H2)+" et "+fmtD(W*H2)+", chacune deux fois, ce qui donne "+sa2+". La face de contact a une aire de "+contact+" : \\[ \\begin{aligned} SA &= "+sa1+" + "+sa2+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] L'aire de la surface est <b>"+tot+" cm\\(^{2}\\)</b>.",
     {mode:"step", X:X, W:W, H1:H1, X2:X2, H2:H2});
     q.figure = solStep(X, W, H1, X2, H2, fmtD(X) + " cm", fmtD(W) + " cm", fmtD(H1) + " cm", fmtD(X2) + " cm", fmtD(H2) + " cm", "Marche formée de deux boîtes avec des dimensions étiquetées");
     return q;
@@ -971,7 +971,7 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
     var cover=pick([8,10,12,15,20]);
     var cans=Math.ceil(sa/cover-0.0000001);
     var q = numq("Un réservoir en forme de prisme droit à base rectangulaire mesure "+fmtD(l)+" m de long, "+fmtD(w)+" m de large et "+fmtD(h)+" m de haut. On le peint à l'extérieur, sur toutes ses faces. Un pot de peinture couvre "+cover+" mètres carrés. Combien de pots de peinture faut-il ?", cans, 0.01,
-      "Trouve d'abord l'aire de la surface, puis divise par la couverture et arrondis vers le haut : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] Alors \\("+fmtD(sa)+" \\div "+cover+" \\approx "+fmtD(u2r2(sa/cover))+"\\), donc un pot partiel ne suffit pas. Le nombre de pots nécessaire est <b>"+cans+"</b>.",
+      "Trouve d'abord l'aire de la surface : les trois faces du réservoir ont des aires de "+fmtD(l*w)+", "+fmtD(l*h)+" et "+fmtD(w*h)+", et chaque face a une face opposée identique : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+") + 2("+fmtD(l*h)+") + 2("+fmtD(w*h)+") \\\\ &= "+fmtD(sa)+" \\end{aligned} \\] Alors \\("+fmtD(sa)+" \\div "+cover+" \\approx "+fmtD(u2r2(sa/cover))+"\\), donc un pot partiel ne suffit pas. Le nombre de pots nécessaire est <b>"+cans+"</b>.",
       {mode:"paint-cans", l:l, w:w, h:h, cover:cover});
     q.figure = solRectPrism(l, w, h, fmtD(l) + " m", fmtD(w) + " m", fmtD(h) + " m", "Réservoir en prisme rectangulaire avec des dimensions étiquetées");
     return q;
@@ -981,7 +981,7 @@ E("u2-sa-problem", 2, ["9.3"], 2, "gen", function(){
   var price=pick([4,5,6,8,9]);
   var cost=u2r2(sa2*price);
   var q = numq("Une boîte-cadeau en forme de prisme droit à base rectangulaire mesure "+fmtD(l2)+" m de long, "+fmtD(w2)+" m de large et "+fmtD(h2)+" m de haut. Elle est couverte sur toutes ses faces d'un tissu qui coûte "+price+" $ par mètre carré. Quel est le coût total du tissu, en dollars, au cent près ?", cost, 0.05,
-    "Trouve d'abord l'aire de la surface, puis multiplie par le prix par mètre carré : \\[ \\begin{aligned} SA &= 2("+fmtD(u2r2(l2*w2))+"+"+fmtD(u2r2(l2*h2))+"+"+fmtD(u2r2(w2*h2))+") \\\\ &= "+fmtD(u2r2(sa2))+" \\end{aligned} \\] Alors \\("+fmtD(u2r2(sa2))+" \\times "+price+" = "+fmtDF(cost, 2)+"\\). Le coût total est <b>"+fmtDF(cost, 2)+" $</b>.",
+    "Trouve d'abord l'aire de la surface : les trois faces de la boîte ont des aires de "+fmtD(u2r2(l2*w2))+", "+fmtD(u2r2(l2*h2))+" et "+fmtD(u2r2(w2*h2))+", et chaque face a une face opposée identique : \\[ \\begin{aligned} SA &= 2("+fmtD(u2r2(l2*w2))+") + 2("+fmtD(u2r2(l2*h2))+") + 2("+fmtD(u2r2(w2*h2))+") \\\\ &= "+fmtD(u2r2(sa2))+" \\end{aligned} \\] Alors \\("+fmtD(u2r2(sa2))+" \\times "+price+" = "+fmtDF(cost, 2)+"\\). Le coût total est <b>"+fmtDF(cost, 2)+" $</b>.",
     {mode:"fabric-cost", l:l2, w:w2, h:h2, price:price});
     q.figure = solRectPrism(l2, w2, h2, fmtD(l2) + " m", fmtD(w2) + " m", fmtD(h2) + " m", "Boîte en prisme rectangulaire avec des dimensions étiquetées");
     return q;
@@ -1024,7 +1024,7 @@ E("u2-sa-cyl-on-prism", 2, ["9.3"], 3, "gen", function(){
   var tot=u2r1(prism+side);
   var ctx=pick(["Un réservoir d'eau cylindrique est posé sur une base rectangulaire en béton","Une grosse bougie ronde est posée sur un support rectangulaire en bois"]);
   var q = numq(ctx+". Le cylindre a un rayon de "+r+" cm et une hauteur de "+hc+" cm, et sa base repose entièrement sur la face du haut du prisme. Le prisme mesure "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut. Trouve l'aire de la surface exposée, en centimètres carrés. Utilise \\(\\pi = 3,14\\) et donne ta réponse avec une décimale.", tot, 0.6,
-    "Le cercle où le cylindre rencontre le prisme est caché, et le bas du cylindre n'est pas exposé, donc ces deux cercles égaux s'annulent dans le total : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+"+"+fmtD(l*h)+"+"+fmtD(w*h)+") + 2(3,14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmtD(side)+" \\\\ &= "+fmtD(tot)+" \\end{aligned} \\] L'aire de la surface exposée est <b>"+fmtD(tot)+" cm\\(^{2}\\)</b>.",
+    "Le cercle où le cylindre rencontre le prisme est caché, et le bas du cylindre n'est pas exposé, donc ces deux cercles égaux s'annulent dans le total. Les faces du prisme ont des aires de "+fmtD(l*w)+", "+fmtD(l*h)+" et "+fmtD(w*h)+", chacune deux fois, et le cylindre ne contribue que par sa face courbe, qui se déroule en un rectangle dont la longueur est la circonférence et la largeur est "+hc+" : \\[ \\begin{aligned} SA &= 2("+fmtD(l*w)+") + 2("+fmtD(l*h)+") + 2("+fmtD(w*h)+") + 2(3,14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmtD(side)+" \\\\ &= "+fmtD(tot)+" \\end{aligned} \\] L'aire de la surface exposée est <b>"+fmtD(tot)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-prism", r:r, hc:hc, l:l, w:w, h:h});
     q.figure = solCylOnPrism(r, hc, l, w, h, fmtD(r) + " cm", fmtD(hc) + " cm", fmtD(l) + " cm", fmtD(w) + " cm", fmtD(h) + " cm", "Cylindre sur un prisme rectangulaire avec des dimensions étiquetées");
     return q;
@@ -2332,7 +2332,7 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
     var contact=a*l;
     var tot=boxSA+triSA-2*contact;
     var q = numq("Un modèle est bâti en joignant deux solides face à face. Le solide du bas est un prisme rectangulaire droit de "+l+" cm de long, "+w+" cm de large et "+h+" cm de haut. Au-dessus se trouve un prisme triangulaire droit, un prisme avec des bouts en triangle rectangle et des côtés rectangulaires. Ses bouts triangulaires ont des cathètes de "+a+" cm et "+b+" cm et une hypoténuse de "+c+" cm ; le prisme mesure "+l+" cm de long, et sa face du bas, "+a+" cm sur "+l+" cm, couvre exactement la face du haut du prisme du bas. La face où les deux solides se joignent est cachée dans le modèle. Trouve l'aire de la surface du modèle, en centimètres carrés.", tot, 0.01,
-      "Le chevauchement est le rectangle de "+a+" cm sur "+l+" cm où les deux prismes se joignent. C'est une face de chaque solide, donc elle est cachée deux fois et elle s'enlève des deux aires totales : \\[ \\begin{aligned} \\text{chevauchement} &= "+a+" \\times "+l+" = "+contact+" \\\\ AS &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] L'aire de la surface est <b>"+tot+" cm\\(^{2}\\)</b>.",
+      "Trouve d'abord chaque solide à partir de ses faces. Le prisme du bas a des faces d'aires "+fmtD(l*w)+", "+fmtD(l*h)+" et "+fmtD(w*h)+", chacune deux fois, ce qui donne "+boxSA+". Le prisme triangulaire a deux extrémités triangulaires d'aire "+fmtD(a*b/2)+" chacune et trois rectangles d'aires "+fmtD(a*l)+", "+fmtD(b*l)+" et "+fmtD(c*l)+", ce qui donne "+triSA+". Le chevauchement est le rectangle de "+a+" cm sur "+l+" cm où les deux prismes se joignent, d'aire "+contact+". C'est une face de chaque solide, donc elle est cachée deux fois et elle s'enlève des deux aires totales : \\[ \\begin{aligned} AS &= "+boxSA+" + "+triSA+" - 2("+contact+") \\\\ &= "+tot+" \\end{aligned} \\] L'aire de la surface est <b>"+tot+" cm\\(^{2}\\)</b>.",
       {mode:"tri-on-rect", a:a, b:b, c:c, l:l, h:h});
     q.figure = solBoxTri(a, b, c, l, a, h, fmtD(a) + " cm", fmtD(b) + " cm", fmtD(c) + " cm", fmtD(l) + " cm", "", fmtD(h) + " cm", "Prisme triangulaire sur une boîte avec des dimensions étiquetées");
     return q;
@@ -2347,7 +2347,7 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
   var circ=u2r2(3.14*r*r);
   var tot2=u2r1(triSA2+cylSA-2*circ);
   var q = numq("Un cylindre droit se trouve sur un prisme triangulaire droit, un prisme avec des bouts en triangle rectangle et des côtés rectangulaires. Les bouts triangulaires ont des cathètes de "+a2+" cm et "+b2+" cm et une hypoténuse de "+c2+" cm, et le prisme mesure "+L+" cm de long. Le cylindre a un rayon de "+r+" cm et une hauteur de "+hc+" cm, et il se trouve sur la face rectangulaire du prisme qui mesure "+a2+" cm sur "+L+" cm, avec toute sa base sur cette face. La partie où les deux solides se touchent est cachée dans l'objet fini. Trouve l'aire de la surface, en centimètres carrés. Utilise \\(\\pi = 3,14\\) et donne ta réponse à une décimale.", tot2, 0.6,
-    "Le chevauchement est le cercle où le cylindre rencontre le prisme. Il est caché sur la face du prisme et c'est la base du cylindre, donc son aire s'enlève deux fois : \\[ \\begin{aligned} \\text{chevauchement} &= 3,14 \\times "+r+"^{2} = "+fmtD(circ)+" \\\\ AS &= "+triSA2+" + "+fmtD(cylSA)+" - 2("+fmtD(circ)+") \\\\ &= "+fmtD(tot2)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(tot2)+" cm\\(^{2}\\)</b>.",
+    "Trouve d'abord chaque solide à partir de ses faces. Le prisme triangulaire a deux extrémités triangulaires d'aire "+fmtD(a2*b2/2)+" chacune et trois rectangles d'aires "+fmtD(a2*L)+", "+fmtD(b2*L)+" et "+fmtD(c2*L)+", ce qui donne "+triSA2+". Le cylindre a deux cercles d'aire "+fmtD(circ)+" chacun et une face courbe qui se déroule en un rectangle d'aire "+fmtD(u2r2(2*3.14*r*hc))+", ce qui donne "+fmtD(cylSA)+". Le chevauchement est le cercle où le cylindre rencontre le prisme, d'aire "+fmtD(circ)+". Il est caché sur la face du prisme et c'est la base du cylindre, donc son aire s'enlève deux fois : \\[ \\begin{aligned} AS &= "+triSA2+" + "+fmtD(cylSA)+" - 2("+fmtD(circ)+") \\\\ &= "+fmtD(tot2)+" \\end{aligned} \\] L'aire de la surface est <b>"+fmtD(tot2)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-tri", a:a2, b:b2, c:c2, L:L, r:r, hc:hc});
     q.figure = solCylOnTri(a2, b2, c2, L, r, hc, fmtD(a2) + " cm", fmtD(b2) + " cm", fmtD(c2) + " cm", fmtD(L) + " cm", fmtD(r) + " cm", fmtD(hc) + " cm", "Cylindre sur un prisme triangulaire avec des dimensions étiquetées");
     return q;
@@ -6743,7 +6743,7 @@ E("u2-gap-pyramid-slant-cr", 2, ["9.3"], 2, "gen", function () {
   var prompt = thing === "tente"
     ? "Une tente a la forme d'une pyramide à base carrée. Sa base a un côté de " + base + " cm et sa hauteur verticale est de " + height + " cm. Trouve l'aire de la surface totale de la tente, en centimètres carrés."
     : "Une " + (thing === "pyramide" ? "pyramide à base carrée" : "pyramide à base carrée en forme de monument") + " a une base dont le côté mesure " + base + " cm et une hauteur verticale de " + height + " cm. Trouve l'aire de la surface totale, en centimètres carrés.";
-  var sol = "L'apothème n'est pas donné, alors trouve-le avec le théorème de Pythagore en utilisant la moitié de la base et la hauteur : \\[ \\begin{aligned} \\text{apothème}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{apothème} &= " + slant + " \\\\ SA &= " + base + "^{2} + 4\\left(" + FR(1, 2) + " \\times " + base + " \\times " + slant + "\\right) = " + (base * base) + " + " + (2 * base * slant) + " = " + sa + " \\end{aligned} \\] La réponse est <b>" + sa + " cm\\(^{2}\\)</b>.";
+  var sol = "L'apothème n'est pas donné, alors trouve-le avec le théorème de Pythagore en utilisant la moitié de la base et la hauteur : \\[ \\begin{aligned} \\text{apothème}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{apothème} &= " + slant + " \\end{aligned} \\] Construis ensuite la surface à partir de ses faces : la base carrée a une aire de " + (base * base) + ", et chacune des quatre faces triangulaires a une aire de " + (base * slant / 2) + " (la moitié de " + base + " fois " + slant + ") : \\[ \\begin{aligned} SA &= " + (base * base) + " + 4(" + (base * slant / 2) + ") \\\\ &= " + sa + " \\end{aligned} \\] La réponse est <b>" + sa + " cm\\(^{2}\\)</b>.";
   var q = numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
   q.figure = solPyramid(base, height, fmtD(base) + " cm", fmtD(height) + " cm", "?", "Pyramide à base carrée avec le côté de la base et la hauteur étiquetés et la hauteur oblique inconnue");
   return q;
@@ -6760,7 +6760,7 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var contact = a * L;
   var tot = saBox + saPrism - 2 * contact;
   var prompt = "Un présentoir est fait d'une boîte et d'un prisme droit à base triangulaire joints ensemble. La boîte mesure " + L + " cm de long, " + W + " cm de large et " + H + " cm de haut. Le prisme mesure " + L + " cm de long, et chaque extrémité triangulaire est un triangle rectangle avec des cathètes de " + a + " cm et " + b + " cm et une hypoténuse de " + c + " cm. Le prisme repose sur la boîte, et les deux solides se touchent sur un rectangle de " + a + " cm sur " + L + " cm. Quelle est l'aire de la surface totale du présentoir, en centimètres carrés ?";
-  var sol = "Trouve d'abord chaque solide séparément, puis soustrais le rectangle de contact deux fois parce qu'il est caché sur les deux solides : \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] La réponse est <b>" + tot + " cm\\(^{2}\\)</b>.";
+  var sol = "Trouve chaque solide à partir de ses faces, puis soustrais le rectangle de contact deux fois parce qu'il est caché sur les deux solides. La boîte a des faces d'aires " + (L * W) + ", " + (L * H) + " et " + (W * H) + ", chacune deux fois, ce qui donne " + saBox + ". Le prisme a deux extrémités triangulaires d'aire " + (a * b / 2) + " chacune et trois rectangles d'aires " + (a * L) + ", " + (b * L) + " et " + (c * L) + ", ce qui donne " + saPrism + " : \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] La réponse est <b>" + tot + " cm\\(^{2}\\)</b>.";
   var q = mcq(prompt,
     { t: fmtD(tot), fb: "Exact : les deux solides sont comptés, et le rectangle de contact caché est enlevé de chacun des deux." },
     [{ t: fmtD(saBox + saPrism), fb: "Cela additionne les deux solides mais laisse les faces de contact cachées comptées sur les deux solides." },
