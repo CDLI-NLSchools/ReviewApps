@@ -1010,6 +1010,211 @@ window.COURSES = {
   unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
 },
 
+"sci-9": {
+  id: "sci-9",
+  curriculum: "NL",
+  title: "Science 9 Review: Practice Question Bank",
+  shortName: "Science 9",
+  storagePrefix: "sci9",
+  reportName: "Science 9 Review",
+  language: "en",
+  bankFile: "sci-9.js",
+  subject: "Science",
+  grade: 9,
+  listed: false,
+  panels: {},
+
+  units: {
+    1: "Space",
+    2: "Atoms, Elements, and Compounds",
+    3: "Electricity",
+    4: "Reproduction"
+  },
+
+  /* Indicators from the eNLightenED Units and Indicators
+     spreadsheet for the current guide (Version 2023.001.013), in
+     spreadsheet order. All four strands are built (Nov 15, 2026).
+     The course stays unlisted: the junior high science English
+     courses release together (Jason, Nov 15, 2026). Three
+     indicators are registered with no entries, recorded openly
+     as NONE on the SC7.3.5 and SC8.9.12 precedent (work
+     cooperatively): SC9.3.6, SC9.9.11 and SC9.12.9. */
+  indicators: {
+    "SC9.1.1": "Apparent motion of celestial bodies",
+    "SC9.1.2": "Theories on the formation of the solar system",
+    "SC9.1.3": "Components of the solar system: sun, planets, moons, comets, asteroids",
+    "SC9.1.4": "Effects of solar phenomena on Earth",
+    "SC9.1.5": "Theories on the origin and evolution of the universe",
+    "SC9.1.6": "Past and present theories of solar system formation",
+    "SC9.1.7": "Major components of the universe, classified",
+    "SC9.2.1": "How space science connects to personal activities and endeavours",
+    "SC9.2.2": "Science underlying space exploration technologies",
+    "SC9.2.3": "Canadian Government and Space Agency involvement in space research",
+    "SC9.2.4": "Technologies designed to explore space",
+    "SC9.2.5": "The need for new evidence to test theories of the universe",
+    "SC9.2.6": "Units for measuring distances in space: AU and light year",
+    "SC9.2.7": "Careers in Canada associated with space exploration",
+    "SC9.2.8": "Defending a position on societal support for space exploration",
+    "SC9.3.1": "Selecting methods and tools for collecting data",
+    "SC9.3.2": "Using instruments effectively and accurately",
+    "SC9.3.3": "Organizing data in an appropriate format",
+    "SC9.3.4": "Evaluating designs and prototypes: function, reliability, materials",
+    "SC9.3.5": "Receiving and acting on the ideas of others",
+    "SC9.3.6": "Working cooperatively with team members",
+    "SC9.3.7": "Proposing alternative solutions and developing a plan",
+    "SC9.3.8": "Evaluating individual and group processes",
+    "SC9.4.1": "Physical and chemical properties of materials",
+    "SC9.4.2": "Models of the structure and components of atoms",
+    "SC9.4.3": "Chemical symbols for common elements",
+    "SC9.4.4": "Grouping of elements in the periodic table",
+    "SC9.4.5": "Characteristics and atomic structure of common elements",
+    "SC9.4.6": "Chemical formulas of common compounds",
+    "SC9.4.7": "Changes in properties from common chemical reactions",
+    "SC9.5.1": "Earlier and current conceptions of the structure of matter",
+    "SC9.5.2": "The terms law and theory in science",
+    "SC9.5.3": "Major changes in atomic theory to the Bohr model",
+    "SC9.5.4": "Rutherford's experiment as a test of Thomson's model",
+    "SC9.5.5": "Settings for work on atomic structure, individual and group",
+    "SC9.5.6": "Using scientifically appropriate words",
+    "SC9.5.7": "Evidence and relationships in developing the periodic table",
+    "SC9.5.8": "Chemistry knowledge in commercial materials",
+    "SC9.5.9": "Society's needs leading to developments in chemistry",
+    "SC9.5.10": "Analysing a technology's design and its daily impact",
+    "SC9.5.11": "Informed decisions about applications of chemistry",
+    "SC9.6.1": "WHMIS standards for handling and disposing of lab material",
+    "SC9.6.2": "Stating a prediction and a hypothesis",
+    "SC9.6.3": "Compiling and displaying data on properties of materials",
+    "SC9.6.4": "Organizing data in an appropriate format",
+    "SC9.6.5": "Stating a conclusion based on experimental data",
+    "SC9.6.6": "New questions arising from the periodic table",
+    "SC9.6.7": "Interpreting patterns and trends among variables",
+    "SC9.6.8": "Using tools and apparatus safely",
+    "SC9.6.9": "New questions about physical and chemical changes",
+    "SC9.6.10": "Deciding physical or chemical change from experimental data",
+    "SC9.7.1": "Production of static electrical charges",
+    "SC9.7.2": "Properties of static electrical charges",
+    "SC9.7.3": "Static electricity compared with electric current",
+    "SC9.7.4": "Flow of charge in an electric circuit, in precise language",
+    "SC9.7.5": "Series and parallel circuits: resistance and voltage",
+    "SC9.7.6": "Electrical energy and domestic power consumption costs",
+    "SC9.7.7": "Precise language in evaluating electrical energy costs",
+    "SC9.7.8": "Efficiency of an electrical appliance, quantitatively",
+    "SC9.7.9": "Transfer and conversion of energy from station to home",
+    "SC9.8.1": "Static electricity knowledge in new technologies",
+    "SC9.8.2": "Careers related to electricity",
+    "SC9.8.3": "Uses of series and parallel connections of resistors",
+    "SC9.8.4": "Uses of series and parallel connections of cells",
+    "SC9.8.5": "Design and impact of electrical safety technologies",
+    "SC9.8.6": "Pros and cons of series and parallel cell connections",
+    "SC9.8.7": "Evaluating electrical device design for efficiency",
+    "SC9.8.8": "Past and current technologies using current electricity",
+    "SC9.8.9": "Reducing the consumption of electrical energy",
+    "SC9.8.10": "Approaches to questions, problems and decisions",
+    "SC9.8.11": "Analysing a technology against identified criteria",
+    "SC9.8.12": "Informed decisions about applications of electricity",
+    "SC9.8.13": "Alternative sources of electrical energy",
+    "SC9.8.14": "Constraints on the development of alternative energy",
+    "SC9.9.1": "Organizing information on current electricity",
+    "SC9.9.2": "Stating a prediction and a hypothesis",
+    "SC9.9.3": "New questions on voltage, current and resistance",
+    "SC9.9.4": "Measuring current and voltage with an ammeter and voltmeter",
+    "SC9.9.5": "Sources of error in meter readings",
+    "SC9.9.6": "Explaining discrepancies in meter data",
+    "SC9.9.7": "Graphing voltage, current and resistance data, line of best fit",
+    "SC9.9.8": "Carrying out procedures controlling the major variables",
+    "SC9.9.9": "Using instruments effectively and accurately",
+    "SC9.9.10": "Using tools and apparatus safely",
+    "SC9.9.11": "Working cooperatively with team members",
+    "SC9.9.12": "Rephrasing questions in a testable form",
+    "SC9.9.13": "Evaluating potential applications of findings",
+    "SC9.9.14": "Criteria for environmental problems of energy production",
+    "SC9.10.1": "The nucleus, genetic information and cellular processes",
+    "SC9.10.2": "Factors that may change a cell's genetic information",
+    "SC9.10.3": "Cell division processes: mitosis",
+    "SC9.10.4": "Sexual and asexual reproduction in representative organisms",
+    "SC9.10.5": "Cell division processes: meiosis",
+    "SC9.10.6": "Advantages and disadvantages of sexual and asexual reproduction",
+    "SC9.11.1": "Using the terms gene and chromosome properly",
+    "SC9.11.2": "Knowledge of cellular functions in new technologies",
+    "SC9.11.3": "Genetic conditions that cannot yet be cured",
+    "SC9.11.4": "Major shifts in the understanding of genetics",
+    "SC9.11.5": "Canadian contributions to heredity and genetic engineering",
+    "SC9.12.1": "Selecting and integrating sources to examine chromosomes",
+    "SC9.12.2": "Graphing theoretical population growth of cells",
+    "SC9.12.3": "Investigating yeast growth safely and accurately",
+    "SC9.12.4": "Interpreting trends and relationships in data",
+    "SC9.12.5": "Communicating the results of a yeast investigation",
+    "SC9.12.6": "Organizing data in an appropriate format",
+    "SC9.12.7": "Compiling and displaying data in a variety of formats",
+    "SC9.12.8": "Receiving, understanding and acting on the ideas of others",
+    "SC9.12.9": "Working cooperatively with team members",
+    "SC9.12.10": "Evaluating information on genetics and genetic engineering"
+  },
+
+  unitInd: {
+    1: [
+        "SC9.1.1", "SC9.1.2", "SC9.1.3",
+        "SC9.1.4", "SC9.1.5", "SC9.1.6",
+        "SC9.1.7", "SC9.2.1", "SC9.2.2",
+        "SC9.2.3", "SC9.2.4", "SC9.2.5",
+        "SC9.2.6", "SC9.2.7", "SC9.2.8",
+        "SC9.3.1", "SC9.3.2", "SC9.3.3",
+        "SC9.3.4", "SC9.3.5", "SC9.3.6",
+        "SC9.3.7", "SC9.3.8"],
+    2: [
+        "SC9.4.1", "SC9.4.2", "SC9.4.3",
+        "SC9.4.4", "SC9.4.5", "SC9.4.6",
+        "SC9.4.7", "SC9.5.1", "SC9.5.2",
+        "SC9.5.3", "SC9.5.4", "SC9.5.5",
+        "SC9.5.6", "SC9.5.7", "SC9.5.8",
+        "SC9.5.9", "SC9.5.10", "SC9.5.11",
+        "SC9.6.1", "SC9.6.2", "SC9.6.3",
+        "SC9.6.4", "SC9.6.5", "SC9.6.6",
+        "SC9.6.7", "SC9.6.8", "SC9.6.9",
+        "SC9.6.10"],
+    3: [
+        "SC9.7.1", "SC9.7.2", "SC9.7.3",
+        "SC9.7.4", "SC9.7.5", "SC9.7.6",
+        "SC9.7.7", "SC9.7.8", "SC9.7.9",
+        "SC9.8.1", "SC9.8.2", "SC9.8.3",
+        "SC9.8.4", "SC9.8.5", "SC9.8.6",
+        "SC9.8.7", "SC9.8.8", "SC9.8.9",
+        "SC9.8.10", "SC9.8.11", "SC9.8.12",
+        "SC9.8.13", "SC9.8.14", "SC9.9.1",
+        "SC9.9.2", "SC9.9.3", "SC9.9.4",
+        "SC9.9.5", "SC9.9.6", "SC9.9.7",
+        "SC9.9.8", "SC9.9.9", "SC9.9.10",
+        "SC9.9.11", "SC9.9.12", "SC9.9.13",
+        "SC9.9.14"],
+    4: [
+        "SC9.10.1", "SC9.10.2", "SC9.10.3",
+        "SC9.10.4", "SC9.10.5", "SC9.10.6",
+        "SC9.11.1", "SC9.11.2", "SC9.11.3",
+        "SC9.11.4", "SC9.11.5", "SC9.12.1",
+        "SC9.12.2", "SC9.12.3", "SC9.12.4",
+        "SC9.12.5", "SC9.12.6", "SC9.12.7",
+        "SC9.12.8", "SC9.12.9", "SC9.12.10"]
+  },
+
+  /* No exam presets: there is no common examination at this
+     level. The empty object is required: the shell reads
+     course.presets.mid during setup and throws when the property
+     itself is absent. */
+  presets: {},
+
+  /* Staged hints: bank entries carry two hint stages each. */
+  hints: true,
+
+  /* Unit test convention (carried from the Science 7 scoping,
+     Nov 15, 2026, labelled as convention: there is no common
+     examination at this level): per unit, 20 selected response
+     at 1 mark plus 2 constructed response at 3 marks, 26 marks.
+     Composer options: indCap 2 keeps any one indicator to at
+     most two items on a composed unit test, and crPref [3, 3]
+     names the preferred constructed response split. */
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+},
+
 "chem-3202": {
   id: "chem-3202",
   curriculum: "NL",
@@ -5316,6 +5521,12 @@ window.COURSES = {
   storagePrefix: "m8",
   bankFile: "math-8.js",
   defaultCheckMode: "each",
+
+  /* PK tranche (November 15, 2026): flagged prior knowledge
+     entries stay out of composed papers by default; they are
+     reached through the prerequisite checks and ordinary
+     practice. Mirrors the Math 2200 flag. */
+  pkPracticeOnly: true,
 
   /* Unit names verbatim from the standalone app (UNITS at
      line 652). */

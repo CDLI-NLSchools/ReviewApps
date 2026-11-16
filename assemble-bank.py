@@ -65,6 +65,10 @@ COURSES = {
               ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
     "sci-8": ("Science 8",
               ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
+    # Science 9 unit files define their figure builders locally
+    # (s9u1 to s9u4 prefixes), so there is no shared helpers file.
+    "sci-9": ("Science 9",
+              ["bank-u1.js", "bank-u2.js", "bank-u3.js", "bank-u4.js"]),
     "math-3200": ("Math 3200",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js", "bank-u3.js",
                    "bank-u4.js", "bank-u5.js", "bank-u6.js",
@@ -156,7 +160,7 @@ COURSES = {
                ["bank-helpers.js", "bank-u1.js", "bank-u2.js",
                 "bank-u3.js", "bank-u4.js", "bank-u5.js",
                 "bank-u6.js", "bank-u7.js", "bank-u8.js",
-                "bank-fix.js"]),
+                "bank-fix.js", "bank-pk.js"]),
     # Build order is the standalone bank source's own: helpers,
     # then Units 1 to 8 (bank-src.js unit banners), then the
     # November 9, 2026 pool-gap fill additions (bank-fix.js);
