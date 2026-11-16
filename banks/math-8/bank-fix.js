@@ -28,6 +28,7 @@
 // CRMARKS: u7-two-colours-twice-gap=3
 // CRMARKS: u7-survey-scale-gap=3
 // CRMARKS: u7-combined-mean-gap=3
+// CRMARKS: u7-critique-the-claim=3
 // CRMARKS: u8-hidden-cubes-gap=2
 // CRMARKS: u8-rotated-side-view-gap=3
 // CRMARKS: u8-tiles-at-point-gap=3
@@ -273,7 +274,7 @@ E("u4-open-box-sa-gap", 4, ["9.3", "10.3"], 2, "gen", function(){
   var l=ri(4,14), w=ri(3,11), h=ri(2,9);
   var sa=l*w+2*l*h+2*w*h;
   var q=numq("An open-top storage box is shaped like a right rectangular prism. It is "+l+" cm long, "+w+" cm wide and "+h+" cm high, and it has no lid. Cardboard is used for the bottom and the four sides only. How many square centimetres of cardboard are needed?", sa, 0.01,
-    "An open top means the top face is missing, so count the bottom and the four side faces: \\[ \\begin{aligned} SA &= lw + 2lh + 2wh \\\\ &= "+(l*w)+" + "+(2*l*h)+" + "+(2*w*h)+" \\\\ &= "+sa+" \\end{aligned} \\] The answer is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "An open top means the top face is missing, so count the bottom and the four side faces. The bottom is "+l+" by "+w+", area "+(l*w)+"; the front and back are "+l+" by "+h+", area "+(l*h)+" each; and the two sides are "+w+" by "+h+", area "+(w*h)+" each: \\[ \\begin{aligned} SA &= "+(l*w)+" + 2("+(l*h)+") + 2("+(w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] The answer is <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"open-box-sa", l:l, w:w, h:h}); q.figure=m8BoxLabSVG(l+" cm",w+" cm",h+" cm",true); return q;
 }, ["An open top changes which faces exist, so list the faces before calculating.", "Find the area of the bottom first, then add the two pairs of side faces."]);
 
@@ -460,6 +461,35 @@ E("u7-two-events-mc-gap", 7, ["12.3", "12.4"], 2, "gen", function(){
     {mode:"two-events-mc", S1:S1, F1:F1, S2:S2, F2:F2});
 }, ["Two spins do not affect each other, so this is a product of two single probabilities.", "Write the probability for each spinner first, then multiply them and write the result as a percent."]);
 
+/* Option 1 addition (November 15, 2026): one ordinary constructed
+   response entry for Unit 7, authored under Jason's Option 1 ruling
+   on the Math 8 prior knowledge tranche. Setting pkPracticeOnly on
+   math-8 took the three flagged mean entries (8 marks) out of this
+   unit's exam-eligible constructed response pool, leaving 13 marks
+   against the 14-mark unit test target; this entry brings the pool
+   to 16 marks. It is ordinary stock: no pk flag and no pk metadata,
+   and it changes no prior knowledge count. */
+E("u7-critique-the-claim", 7, ["11.6", "11.4"], 2, "var", varset([
+  function(){
+    return textq("A bike shop advert uses a bar graph with its vertical axis starting at 50. The graph shows 58 bikes sold in May and 64 bikes sold in June, and the advert claims that sales more than doubled in June. Write a critique of the advert. Name the formatting choice that misrepresents the data, and use the values to judge the claim.",
+      ["the axis starts at 50 instead of zero, and 64 is only slightly more than 58, not more than double"],
+      "<b>Model answer:</b> The vertical axis starts at 50 instead of zero, so the bar heights are measured from 50: the May bar rises 8 units and the June bar rises 14 units, which makes June look far ahead of May. The values tell a different story: 64 bikes is only slightly more than 58 bikes, and more than double 58 would be more than 116 bikes. The claim misrepresents the data.<br><br><b>Marking points (3 marks):</b> 1 mark for naming the formatting choice (a truncated axis, an axis that does not start at zero). 1 mark for using the values (64 against 58, or double 58 is 116). 1 mark for the judgement that the claim misrepresents the data.",
+      {mode:"critique-bikes"});
+  },
+  function(){
+    return textq("A cafeteria poster says most students chose the new lunch menu. The results are shown in a 3-D circle graph: 46% of students chose the new menu, 34% chose the old menu and 20% had no preference. Write a critique of the poster. Name the formatting choice that misrepresents the data, and use the values to judge the claim.",
+      ["the 3-d effect makes the front slices look bigger than their shares, and 46% is the largest share but not most, because most means more than half"],
+      "<b>Model answer:</b> The 3-D effect tilts the circle graph, so the slices at the front look bigger than slices with the same share at the back. The values tell a different story: 46% is the largest share, but most means more than half, and 46% is less than 50%. The claim misrepresents the data.<br><br><b>Marking points (3 marks):</b> 1 mark for naming the formatting choice (the 3-D effect). 1 mark for using the values (46% is under half, so it is not most). 1 mark for the judgement that the claim misrepresents the data.",
+      {mode:"critique-menu"});
+  },
+  function(){
+    return textq("A poster about pets in a neighbourhood uses a pictograph in which the dog symbols are drawn much larger than the cat symbols, although one symbol stands for 10 pets in each row. The counts are 50 dogs and 40 cats, and the poster claims there are twice as many dogs as cats. Write a critique of the poster. Name the formatting choice that misrepresents the data, and use the values to judge the claim.",
+      ["the dog symbols are drawn larger than the cat symbols, and 50 is not twice 40"],
+      "<b>Model answer:</b> The pictograph uses symbols of different sizes: each symbol still stands for 10 pets, but the larger dog symbols cover far more area, which exaggerates how many more dogs there are. The values tell a different story: twice 40 cats would be 80, and 50 dogs is not twice 40 cats. The claim misrepresents the data.<br><br><b>Marking points (3 marks):</b> 1 mark for naming the formatting choice (symbols of different sizes). 1 mark for using the values (twice 40 is 80, not 50). 1 mark for the judgement that the claim misrepresents the data.",
+      {mode:"critique-pets"});
+  }
+]), ["A complete critique checks two things: how the graph is built, and whether the words match the numbers.", "Name the formatting choice first, then test the claim with the actual values given."]);
+
 /* Unit 8: Geometry */
 E("u8-hidden-cubes-gap", 8, ["10.9", "10.17"], 2, "gen", function(){
   var hm=u8RandHM(3, 3, 3, 10, 20);
@@ -533,3 +563,16 @@ E("u8-changed-side-view-gap", 8, ["10.15", "10.9"], 2, "gen", function(){
   q.figure=fig;
   return q;
 }, ["The added cubes change one stack before the side view is read, so update the map first.", "Add the new cubes to the named stack, then take the tallest stack in each row and add them."]);
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 7 outcomes (working with the mean of a data set, Math 7 indicators 11.6 and 11.9), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-8.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u7-missing-mean-value-gap","u7-mean-difference-gap","u7-combined-mean-gap"].indexOf(e.id)>=0)e.pkFlag=true;});

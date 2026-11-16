@@ -1947,6 +1947,8 @@ var PKT9={
   "u3-pk-annex-zeros":{src:"Mathematics 5 indicator MA5.5.18 (authored for this tranche; no banked source exists)",group:"repeated-multiplication",for:PK9_FOR_C4},
   "u9-gap-freq-mean-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:["11.9"]},
   "u9-gap-freq-mean-mc":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:["11.9"]},
-  "u9-gap-mean-diff-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:["11.9"]}
+  "u9-gap-mean-diff-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:["11.9"]},
+  "u9-gap-expected-freq-cr":{src:"Math 7 indicators 12.6 and 12.7",group:"expected-count",for:["12.4"]},
+  "u9-gap-win-points-cr":{src:"Math 7 indicators 12.6 and 12.7",group:"expected-count",for:["12.4"]}
 };
 BANK.forEach(function(e){var t=PKT9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});

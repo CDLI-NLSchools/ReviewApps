@@ -1,9 +1,12 @@
 "use strict";
 /* Gate: Math 9 PK tranche (November 15, 2026).
    Part 1 (bank level, vm sandbox over the real shell functions):
-   the flagged pool is exactly the tranche's 76 entries (73 new in
+   the flagged pool is exactly the tranche's 78 entries (73 new in
    banks/math-9/bank-pk.js plus the three Unit 9 entries flagged on
-   November 13, 2026, whose metadata this tranche completes), every
+   November 13, 2026, whose metadata this tranche completes, plus
+   the two Unit 9 expected-count entries flagged on November 15,
+   2026 in the Math 8 tranche's settlement, Math-8 spec Section 3),
+   every
    flagged entry carries pkSrc, pkFor and pkGroup metadata, a pkonly
    draw (PKONLY_DRAW, the flag the shell sets for a ?pkonly=1 set)
    deals only flagged entries, samples every pkGroup in the pool,
@@ -65,7 +68,7 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-9.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 11, 2: 9, 3: 8, 4: 6, 5: 7, 6: 8, 7: 8, 8: 6, 9: 13 };
+const POOLS = { 1: 11, 2: 9, 3: 8, 4: 6, 5: 7, 6: 8, 7: 8, 8: 6, 9: 15 };
 const POOL_IDS = {
   1: ["u1-pk-ooo-evaluate", "u1-pk-identify-operation", "u1-pk-add-context", "u1-pk-add-unlike", "u1-pk-sub-unlike", "u1-pk-multiply-fractions", "u1-pk-divide-fractions", "u1-pk-ooo-fractions", "u1-pk-add-sub-decimals", "u1-pk-mult-decimals", "u1-pk-order-mixed"],
   2: ["u2-pk-sqrt-perfect", "u2-pk-square-of-number", "u2-pk-estimate-between", "u2-pk-root-between", "u2-pk-calc-approx", "u2-pk-sa-rect-prism", "u2-pk-sa-tri-prism", "u2-pk-sa-cylinder", "u2-pk-sa-problem"],
@@ -75,10 +78,10 @@ const POOL_IDS = {
   6: ["u6-pk-pattern-expression", "u6-pk-two-points-evaluate", "u6-pk-table-missing", "u6-pk-missing-pair", "u6-pk-construct-graph", "u6-pk-describe-graph", "u6-pk-solve-div-plus", "u6-pk-solve-context"],
   7: ["u7-pk-two-term-ratio", "u7-pk-ratio-simplest", "u7-pk-ratio-problem", "u7-pk-rate-problem", "u7-pk-translate", "u7-pk-reflect-point", "u7-pk-transform-describe", "u7-pk-tess-transform"],
   8: ["u8-pk-central-angles", "u8-pk-radius-diameter", "u8-pk-pi-ratio", "u8-pk-circumference", "u8-pk-parallel-perp", "u8-pk-angle-chain"],
-  9: ["u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr", "u9-pk-mean-basic", "u9-pk-median-mode", "u9-pk-two-graphs", "u9-pk-misleading-format", "u9-pk-false-conclusion", "u9-pk-circle-graph", "u9-pk-prob-basic", "u9-pk-two-draws", "u9-pk-product-rule", "u9-pk-exp-vs-theor"]
+  9: ["u9-gap-expected-freq-cr", "u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr", "u9-gap-win-points-cr", "u9-pk-mean-basic", "u9-pk-median-mode", "u9-pk-two-graphs", "u9-pk-misleading-format", "u9-pk-false-conclusion", "u9-pk-circle-graph", "u9-pk-prob-basic", "u9-pk-two-draws", "u9-pk-product-rule", "u9-pk-exp-vs-theor"]
 };
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 76,
-   "bank carries 76 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 78,
+   "bank carries 78 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-9 config sets pkPracticeOnly");
 for (let u = 1; u <= 9; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");

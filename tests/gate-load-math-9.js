@@ -8,9 +8,16 @@
      the standalone's per-unit counts (18/25/33/29/32/19/26/16/23)
      plus the Math 9 PK tranche's 73 entries (November 15, 2026;
      banks/math-9/bank-pk.js), for 294 entries in per-unit counts
-     29/34/41/35/39/27/34/22/33, and its CR_MARKS manifest
-     equals the standalone bank source's own CR_MARKS literal
-     (109 keys; 45 at 2 marks and 64 at 3).
+     29/34/41/35/39/27/34/22/33, plus two ordinary Unit 9 entries
+     (u9-gap-fix-the-survey-cr and u9-gap-decision-evidence-cr)
+     added the same day under Jason's Option 1 ruling on the
+     Math 8 PK tranche, because flagging the two expected count
+     entries left Unit 9's exam-eligible CR pool short of its
+     unit test target: 296 entries in per-unit counts
+     29/34/41/35/39/27/34/22/35. Its CR_MARKS manifest equals
+     the standalone bank source's own CR_MARKS literal plus the
+     two Option 1 additions (111 keys; 45 at 2 marks and 66
+     at 3).
    - Every entry carries both staged hints (the bank's E is
      called with the hint pair; the shell's E stores them as
      hint1/hint2, as the standalone's does).
@@ -79,19 +86,19 @@ ok(C.units[9] === "Probability and Statistics", "Unit 9 is Probability and Stati
 const placements = Object.values(C.unitInd).reduce((n, a) => n + a.length, 0);
 ok(placements === 108, "UNIT_IND has 108 placements, saw " + placements);
 
-ok(BANK.length === 294, "bank registers 294 entries, saw " + BANK.length);
+ok(BANK.length === 296, "bank registers 296 entries, saw " + BANK.length);
 const perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-const wantPerUnit = { 1: 29, 2: 34, 3: 41, 4: 35, 5: 39, 6: 27, 7: 34, 8: 22, 9: 33 };
+const wantPerUnit = { 1: 29, 2: 34, 3: 41, 4: 35, 5: 39, 6: 27, 7: 34, 8: 22, 9: 35 };
 Object.keys(wantPerUnit).forEach(u =>
   ok(perUnit[u] === wantPerUnit[u], "Unit " + u + " has " + wantPerUnit[u] + " entries, saw " + perUnit[u]));
 
-ok(Object.keys(CR).length === 109, "CR_MARKS manifest has 109 keys, saw " + Object.keys(CR).length);
+ok(Object.keys(CR).length === 111, "CR_MARKS manifest has 111 keys, saw " + Object.keys(CR).length);
 const ids = new Set(BANK.map(e => e.id));
 ok(Object.keys(CR).every(k => ids.has(k)), "every CR key is a bank entry id");
 const at2 = Object.values(CR).filter(v => v === 2).length;
 const at3 = Object.values(CR).filter(v => v === 3).length;
-ok(at2 === 45 && at3 === 64, "CR marks split 45 at 2 and 64 at 3 (the standalone literal's own split), saw " + at2 + "/" + at3);
+ok(at2 === 45 && at3 === 66, "CR marks split 45 at 2 and 66 at 3 (the standalone literal's own split plus the Option 1 pair at 3 each), saw " + at2 + "/" + at3);
 
 const noHint = BANK.filter(e => !e.hint1 || e.hint1.length <= 3 || !e.hint2 || e.hint2.length <= 3).length;
 ok(noHint === 0, "every entry carries a non-empty hint1 and hint2, saw " + noHint + " without");

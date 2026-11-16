@@ -6337,6 +6337,8 @@ E("u9-self-assessment", 9, ["11.10"], 1, "var", varset([
 // CRMARKS: u9-gap-mean-diff-cr=3
 // CRMARKS: u9-gap-sample-scale-cr=3
 // CRMARKS: u9-gap-win-points-cr=3
+// CRMARKS: u9-gap-fix-the-survey-cr=3
+// CRMARKS: u9-gap-decision-evidence-cr=3
 /* Pool-gap fill, November 9, 2026: new Level 2 entries closing the unit-test
    and exam composition gaps found after the level calibration. CR entries
    always return numq; SR entries always return mcq and stay out of CR_MARKS. */
@@ -7028,6 +7030,47 @@ E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
     sol, { mode: "gap-freq-mean-mc", S: S, N: N });
 }, ["A frequency table mean weights each value by how often it occurs, then divides by the total count.", "Multiply each pet count by its number of households as the first step."]);
 
+/* Option 1 additions (November 15, 2026): two ordinary constructed
+   response entries for Unit 9, authored under Jason's Option 1 ruling
+   on the Math 8 prior knowledge tranche. Flagging the two expected
+   count entries above (5 marks) took this unit's exam-eligible
+   constructed response pool from 16 marks to 11 against the 14-mark
+   unit test target; these two entries bring the pool to 17 marks.
+   They are ordinary stock: no pk flags and no pk metadata, and they
+   change no prior knowledge count. */
+
+// PG. L2, 11.1, CR 3: name two influences in a flawed data collection and a fix for each.
+E("u9-gap-fix-the-survey-cr", 9, ["11.1"], 2, "var", varset([
+  function(){
+    return textq("A student wants to learn whether students across her whole school support a longer lunch break. She asks only her friends at her own lunch table, and her question is: \"You think lunch should be longer so everyone can relax properly, don't you?\" (a) Identify TWO problems with this data collection. (b) For each problem, state one change that would fix it.",
+      ["bias, because only her friends at one lunch table were asked, and use of language, because the question pushes students to agree"],
+      "<b>Model answer:</b> The first problem is bias: only her friends at one lunch table are asked, and one group of friends cannot represent the whole school. The fix is to ask a random sample of students drawn from every grade. The second problem is use of language: the wording praises one answer and pushes students to agree before they think. The fix is a neutral question, such as: \"Should the lunch break be longer, shorter, or stay the same?\"<br><br><b>Marking points (3 marks):</b> 1 mark for bias, identified with its reason (the group asked does not represent the school). 1 mark for use of language, identified with its reason (the wording pushes one answer). 1 mark for fixes that address both problems (a representative sample, and neutral wording).",
+      {mode:"fix-survey-lunch"});
+  },
+  function(){
+    return textq("A town wants to learn whether its residents support building a new skate park. A survey is posted only on the skate park association's own page, and it asks: \"Don't you agree our town needs a modern skate park for its young people?\" (a) Identify TWO problems with this data collection. (b) For each problem, state one change that would fix it.",
+      ["bias, because only people who follow the skate park page were asked, and use of language, because the question pushes residents to agree"],
+      "<b>Model answer:</b> The first problem is bias: the survey reaches only people who follow the skate park association's page, and they already favour the park, so they cannot represent all residents. The fix is to survey a random sample of residents from across the town. The second problem is use of language: \"Don't you agree\" and the praise in the question push residents toward one answer. The fix is a neutral question, such as: \"Do you support, oppose, or have no opinion on building a new skate park?\"<br><br><b>Marking points (3 marks):</b> 1 mark for bias, identified with its reason (the group reached does not represent the town). 1 mark for use of language, identified with its reason (the wording pushes one answer). 1 mark for fixes that address both problems (a representative sample, and neutral wording).",
+      {mode:"fix-survey-skatepark"});
+  }
+]), ["Two different influences are at work in each plan: look at who gets asked, and at how the question is worded.", "Name each influence and why it bends the results first; then match each fix to its own problem."]);
+
+// PG. L2, 12.4, CR 3: classify theoretical, experimental and subjective evidence, then decide and justify.
+E("u9-gap-decision-evidence-cr", 9, ["12.4"], 2, "var", varset([
+  function(){
+    return textq("An organizer must decide whether to move an outdoor concert indoors. She has three pieces of evidence: a weather model gives a 70% chance of rain by evening; at the last 10 outdoor concerts at this site, rain interrupted 3 of them; and she feels the clouds over the site are starting to clear. (a) Classify each piece of evidence as theoretical probability, experimental probability or subjective judgement. (b) State a decision, and justify it using at least two of the three pieces of evidence.",
+      ["the weather model is theoretical probability, the past concerts are experimental probability, and her feeling about the clouds is subjective judgement"],
+      "<b>Model answer:</b> The weather model's 70% chance is theoretical probability, because it comes from a model rather than from trials. The last 10 concerts are experimental probability, because they are results from trials that actually happened: rain interrupted 3 of 10, or 30%. Her feeling that the clouds are clearing is subjective judgement, because it rests on personal feel. A justified decision: move the concert indoors, because the model gives rain a 70% chance and the site's own record shows rain interrupting 3 of the last 10 concerts, even though the sky feels as if it is clearing. (Staying outdoors also earns the decision marks when it is justified from the evidence, for example by weighing the 30% interruption record and the clearing sky against the model.)<br><br><b>Marking points (3 marks):</b> 1 mark for all three classifications correct. 1 mark for a clear decision. 1 mark for a justification that uses at least two pieces of the evidence accurately.",
+      {mode:"decision-concert"});
+  },
+  function(){
+    return textq("A coach must decide whether her team should hold its practice outdoors. She has three pieces of evidence: a weather model gives a 20% chance of lightning during practice; in the team's last 20 practices, lightning stopped play once; and she judges that the sky to the west looks dark and threatening. (a) Classify each piece of evidence as theoretical probability, experimental probability or subjective judgement. (b) State a decision, and justify it using at least two of the three pieces of evidence.",
+      ["the weather model is theoretical probability, the past practices are experimental probability, and her judgement of the sky is subjective judgement"],
+      "<b>Model answer:</b> The weather model's 20% chance is theoretical probability, because it comes from a model rather than from trials. The last 20 practices are experimental probability, because they are results from trials that actually happened: lightning stopped play once in 20, or 5%. Her reading of the dark sky is subjective judgement, because it rests on personal feel. A justified decision: move practice indoors, because lightning is dangerous even at a 20% model chance, and the threatening sky backs the model up, even though the team's own record shows only one stoppage in 20 practices. (Staying outdoors also earns the decision marks when it is justified from the evidence, for example by weighing the low model chance and the 1 in 20 record, with a plan to stop if the sky worsens.)<br><br><b>Marking points (3 marks):</b> 1 mark for all three classifications correct. 1 mark for a clear decision. 1 mark for a justification that uses at least two pieces of the evidence accurately.",
+      {mode:"decision-practice"});
+  }
+]), ["Sort the evidence into three kinds: a model estimate, results from trials that happened, and a personal feeling.", "Classify all three pieces first; then let the decision lean on at least two of them by name."]);
+
 
 /* Prior knowledge flags (Nov 13, 2026): the entries named
    below assess Math 7 outcomes (the mean of a data set, Math 7 indicators 11.6 and 11.9), and nothing on this
@@ -7040,7 +7083,15 @@ E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
    stay in practice pools by default and leave them only
    when a teacher turns prior knowledge off in Advanced
    tools. */
-BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap-freq-mean-mc"].indexOf(e.id)>=0)e.pkFlag=true;});
+/* Follow-on (November 15, 2026, Math 8 tranche): the expected
+   count pair below is flagged on the same standard. Both entries
+   assess a single-event probability and an expected count,
+   Mathematics 7 content (indicators 12.6 and 12.7); no indicator
+   on this course's list names probability computation (12.1 to
+   12.4 here are probability in society). The Math 8 spec
+   (Math-8-PK-Tranche-Spec-2026-11-15.md, Section 3) records the
+   item-by-item test for both courses' expected-count families. */
+BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap-freq-mean-mc","u9-gap-expected-freq-cr","u9-gap-win-points-cr"].indexOf(e.id)>=0)e.pkFlag=true;});
 
 /* ----- bank-pk.js ----- */
 /* Math 9 PK tranche (November 15, 2026). Prior knowledge check entries
@@ -8992,11 +9043,13 @@ var PKT9={
   "u3-pk-annex-zeros":{src:"Mathematics 5 indicator MA5.5.18 (authored for this tranche; no banked source exists)",group:"repeated-multiplication",for:PK9_FOR_C4},
   "u9-gap-freq-mean-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:["11.9"]},
   "u9-gap-freq-mean-mc":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:["11.9"]},
-  "u9-gap-mean-diff-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:["11.9"]}
+  "u9-gap-mean-diff-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:["11.9"]},
+  "u9-gap-expected-freq-cr":{src:"Math 7 indicators 12.6 and 12.7",group:"expected-count",for:["12.4"]},
+  "u9-gap-win-points-cr":{src:"Math 7 indicators 12.6 and 12.7",group:"expected-count",for:["12.4"]}
 };
 BANK.forEach(function(e){var t=PKT9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-calculator":2,"u1-ooo-evaluate-mc":3,"u1-ooo-first-error":2,"u1-ordering-reasoning-var":2,"u2-best-estimate-side":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-overlap":2,"u2-overlap-hidden":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u3-difference-of-powers":2,"u3-find-the-error":2,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-law-then-sum-difference":2,"u3-power-of-product-quotient":3,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u4-add":3,"u4-area-monomial":2,"u4-divide-monomial":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-multiply-monomial":3,"u4-subtract":3,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-list-satisfies":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-two-step":3,"u5-verify-error":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-interpolate-graph":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-complete-half":2,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-scale-draw-num":3,"u7-similar-context-num":3,"u7-similar-two-step-num":3,"u7-translation-rule":2,"u8-chord-length":3,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-freq-mean-cr":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-critique":2,"u9-match-influence":3,"u9-plan-element":2,"u9-rubric-missing-part":2};
+window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-calculator":2,"u1-ooo-evaluate-mc":3,"u1-ooo-first-error":2,"u1-ordering-reasoning-var":2,"u2-best-estimate-side":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-overlap":2,"u2-overlap-hidden":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u3-difference-of-powers":2,"u3-find-the-error":2,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-law-then-sum-difference":2,"u3-power-of-product-quotient":3,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u4-add":3,"u4-area-monomial":2,"u4-divide-monomial":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-multiply-monomial":3,"u4-subtract":3,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-list-satisfies":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-two-step":3,"u5-verify-error":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-interpolate-graph":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-complete-half":2,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-scale-draw-num":3,"u7-similar-context-num":3,"u7-similar-two-step-num":3,"u7-translation-rule":2,"u8-chord-length":3,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-decision-evidence-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-fix-the-survey-cr":3,"u9-gap-freq-mean-cr":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-critique":2,"u9-match-influence":3,"u9-plan-element":2,"u9-rubric-missing-part":2};

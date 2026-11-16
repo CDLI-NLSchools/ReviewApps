@@ -46,6 +46,8 @@
 // CRMARKS: u9-gap-mean-diff-cr=3
 // CRMARKS: u9-gap-sample-scale-cr=3
 // CRMARKS: u9-gap-win-points-cr=3
+// CRMARKS: u9-gap-fix-the-survey-cr=3
+// CRMARKS: u9-gap-decision-evidence-cr=3
 /* Pool-gap fill, November 9, 2026: new Level 2 entries closing the unit-test
    and exam composition gaps found after the level calibration. CR entries
    always return numq; SR entries always return mcq and stay out of CR_MARKS. */
@@ -160,7 +162,7 @@ E("u2-gap-pyramid-slant-cr", 2, ["9.3"], 2, "gen", function () {
   var prompt = thing === "tent"
     ? "A tent is shaped like a square pyramid. Its base has side length " + base + " cm and its vertical height is " + height + " cm. Find the total surface area of the tent, in square centimetres."
     : "A square " + thing + " has a base with side length " + base + " cm and a vertical height of " + height + " cm. Find the total surface area of the " + thing + ", in square centimetres.";
-  var sol = "The slant height is not given, so find it with the Pythagorean theorem using half the base and the height: \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{slant} &= " + slant + " \\\\ SA &= " + base + "^{2} + 4\\left(" + FR(1, 2) + " \\times " + base + " \\times " + slant + "\\right) = " + (base * base) + " + " + (2 * base * slant) + " = " + sa + " \\end{aligned} \\] The answer is <b>" + sa + " cm\\(^{2}\\)</b>.";
+  var sol = "The slant height is not given, so find it with the Pythagorean theorem using half the base and the height: \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + height + "^{2} = " + (half * half + height * height) + " \\\\ \\text{slant} &= " + slant + " \\end{aligned} \\] Now build the surface from its faces: the square base has area " + (base * base) + ", and each of the four triangular faces has area " + (base * slant / 2) + " (half of " + base + " times " + slant + "): \\[ \\begin{aligned} SA &= " + (base * base) + " + 4(" + (base * slant / 2) + ") \\\\ &= " + sa + " \\end{aligned} \\] The answer is <b>" + sa + " cm\\(^{2}\\)</b>.";
   var q = numq(prompt, sa, 0.01, sol, { mode: "gap-pyramid-slant", base: base, height: height, slant: slant });
   q.figure = solPyramid(base, height, fmt(base) + " cm", fmt(height) + " cm", "?", "Square pyramid with base side and height labelled and slant height unknown");
   return q;
@@ -171,12 +173,13 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
   var tr = pick([[3, 4, 5], [5, 12, 13], [6, 8, 10], [8, 15, 17]]);
   var a = tr[0], b = tr[1], c = tr[2];
   var L = ri(5, 12), W = ri(4, 9), H = ri(3, 8);
+  if (a > W) W = ri(a, 9);
   var saBox = 2 * (L * W + L * H + W * H);
   var saPrism = a * b + (a + b + c) * L;
   var contact = a * L;
   var tot = saBox + saPrism - 2 * contact;
   var prompt = "A display stand is made from a box and a right triangular prism joined together. The box measures " + L + " cm long, " + W + " cm wide and " + H + " cm high. The prism is " + L + " cm long, and each triangular end is a right triangle with legs " + a + " cm and " + b + " cm and hypotenuse " + c + " cm. The prism sits on top of the box, and the two solids touch over a rectangle " + a + " cm by " + L + " cm. What is the total surface area of the stand, in square centimetres?";
-  var sol = "Find each solid on its own, then subtract the touching rectangle twice because it is hidden on both solids: \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] The answer is <b>" + tot + " cm\\(^{2}\\)</b>.";
+  var sol = "Find each solid from its faces, then subtract the touching rectangle twice because it is hidden on both solids. The box has face areas " + (L * W) + ", " + (L * H) + " and " + (W * H) + ", each twice, giving " + saBox + ". The prism has two triangular ends of area " + (a * b / 2) + " each and three rectangles of areas " + (a * L) + ", " + (b * L) + " and " + (c * L) + ", giving " + saPrism + ": \\[ \\begin{aligned} SA &= " + saBox + " + " + saPrism + " - 2(" + contact + ") \\\\ &= " + tot + " \\end{aligned} \\] The answer is <b>" + tot + " cm\\(^{2}\\)</b>.";
   var q = mcq(prompt,
     { t: fmt(tot), fb: "Correct: both solids are counted, and the hidden touching rectangle is removed from each one." },
     [{ t: fmt(saBox + saPrism), fb: "That adds the two solids but leaves the hidden touching faces counted on both solids." },
@@ -736,3 +739,65 @@ E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
     sol, { mode: "gap-freq-mean-mc", S: S, N: N });
 }, ["A frequency table mean weights each value by how often it occurs, then divides by the total count.", "Multiply each pet count by its number of households as the first step."]);
 
+/* Option 1 additions (November 15, 2026): two ordinary constructed
+   response entries for Unit 9, authored under Jason's Option 1 ruling
+   on the Math 8 prior knowledge tranche. Flagging the two expected
+   count entries above (5 marks) took this unit's exam-eligible
+   constructed response pool from 16 marks to 11 against the 14-mark
+   unit test target; these two entries bring the pool to 17 marks.
+   They are ordinary stock: no pk flags and no pk metadata, and they
+   change no prior knowledge count. */
+
+// PG. L2, 11.1, CR 3: name two influences in a flawed data collection and a fix for each.
+E("u9-gap-fix-the-survey-cr", 9, ["11.1"], 2, "var", varset([
+  function(){
+    return textq("A student wants to learn whether students across her whole school support a longer lunch break. She asks only her friends at her own lunch table, and her question is: \"You think lunch should be longer so everyone can relax properly, don't you?\" (a) Identify TWO problems with this data collection. (b) For each problem, state one change that would fix it.",
+      ["bias, because only her friends at one lunch table were asked, and use of language, because the question pushes students to agree"],
+      "<b>Model answer:</b> The first problem is bias: only her friends at one lunch table are asked, and one group of friends cannot represent the whole school. The fix is to ask a random sample of students drawn from every grade. The second problem is use of language: the wording praises one answer and pushes students to agree before they think. The fix is a neutral question, such as: \"Should the lunch break be longer, shorter, or stay the same?\"<br><br><b>Marking points (3 marks):</b> 1 mark for bias, identified with its reason (the group asked does not represent the school). 1 mark for use of language, identified with its reason (the wording pushes one answer). 1 mark for fixes that address both problems (a representative sample, and neutral wording).",
+      {mode:"fix-survey-lunch"});
+  },
+  function(){
+    return textq("A town wants to learn whether its residents support building a new skate park. A survey is posted only on the skate park association's own page, and it asks: \"Don't you agree our town needs a modern skate park for its young people?\" (a) Identify TWO problems with this data collection. (b) For each problem, state one change that would fix it.",
+      ["bias, because only people who follow the skate park page were asked, and use of language, because the question pushes residents to agree"],
+      "<b>Model answer:</b> The first problem is bias: the survey reaches only people who follow the skate park association's page, and they already favour the park, so they cannot represent all residents. The fix is to survey a random sample of residents from across the town. The second problem is use of language: \"Don't you agree\" and the praise in the question push residents toward one answer. The fix is a neutral question, such as: \"Do you support, oppose, or have no opinion on building a new skate park?\"<br><br><b>Marking points (3 marks):</b> 1 mark for bias, identified with its reason (the group reached does not represent the town). 1 mark for use of language, identified with its reason (the wording pushes one answer). 1 mark for fixes that address both problems (a representative sample, and neutral wording).",
+      {mode:"fix-survey-skatepark"});
+  }
+]), ["Two different influences are at work in each plan: look at who gets asked, and at how the question is worded.", "Name each influence and why it bends the results first; then match each fix to its own problem."]);
+
+// PG. L2, 12.4, CR 3: classify theoretical, experimental and subjective evidence, then decide and justify.
+E("u9-gap-decision-evidence-cr", 9, ["12.4"], 2, "var", varset([
+  function(){
+    return textq("An organizer must decide whether to move an outdoor concert indoors. She has three pieces of evidence: a weather model gives a 70% chance of rain by evening; at the last 10 outdoor concerts at this site, rain interrupted 3 of them; and she feels the clouds over the site are starting to clear. (a) Classify each piece of evidence as theoretical probability, experimental probability or subjective judgement. (b) State a decision, and justify it using at least two of the three pieces of evidence.",
+      ["the weather model is theoretical probability, the past concerts are experimental probability, and her feeling about the clouds is subjective judgement"],
+      "<b>Model answer:</b> The weather model's 70% chance is theoretical probability, because it comes from a model rather than from trials. The last 10 concerts are experimental probability, because they are results from trials that actually happened: rain interrupted 3 of 10, or 30%. Her feeling that the clouds are clearing is subjective judgement, because it rests on personal feel. A justified decision: move the concert indoors, because the model gives rain a 70% chance and the site's own record shows rain interrupting 3 of the last 10 concerts, even though the sky feels as if it is clearing. (Staying outdoors also earns the decision marks when it is justified from the evidence, for example by weighing the 30% interruption record and the clearing sky against the model.)<br><br><b>Marking points (3 marks):</b> 1 mark for all three classifications correct. 1 mark for a clear decision. 1 mark for a justification that uses at least two pieces of the evidence accurately.",
+      {mode:"decision-concert"});
+  },
+  function(){
+    return textq("A coach must decide whether her team should hold its practice outdoors. She has three pieces of evidence: a weather model gives a 20% chance of lightning during practice; in the team's last 20 practices, lightning stopped play once; and she judges that the sky to the west looks dark and threatening. (a) Classify each piece of evidence as theoretical probability, experimental probability or subjective judgement. (b) State a decision, and justify it using at least two of the three pieces of evidence.",
+      ["the weather model is theoretical probability, the past practices are experimental probability, and her judgement of the sky is subjective judgement"],
+      "<b>Model answer:</b> The weather model's 20% chance is theoretical probability, because it comes from a model rather than from trials. The last 20 practices are experimental probability, because they are results from trials that actually happened: lightning stopped play once in 20, or 5%. Her reading of the dark sky is subjective judgement, because it rests on personal feel. A justified decision: move practice indoors, because lightning is dangerous even at a 20% model chance, and the threatening sky backs the model up, even though the team's own record shows only one stoppage in 20 practices. (Staying outdoors also earns the decision marks when it is justified from the evidence, for example by weighing the low model chance and the 1 in 20 record, with a plan to stop if the sky worsens.)<br><br><b>Marking points (3 marks):</b> 1 mark for all three classifications correct. 1 mark for a clear decision. 1 mark for a justification that uses at least two pieces of the evidence accurately.",
+      {mode:"decision-practice"});
+  }
+]), ["Sort the evidence into three kinds: a model estimate, results from trials that happened, and a personal feeling.", "Classify all three pieces first; then let the decision lean on at least two of them by name."]);
+
+
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess Math 7 outcomes (the mean of a data set, Math 7 indicators 11.6 and 11.9), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/math-9.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+/* Follow-on (November 15, 2026, Math 8 tranche): the expected
+   count pair below is flagged on the same standard. Both entries
+   assess a single-event probability and an expected count,
+   Mathematics 7 content (indicators 12.6 and 12.7); no indicator
+   on this course's list names probability computation (12.1 to
+   12.4 here are probability in society). The Math 8 spec
+   (Math-8-PK-Tranche-Spec-2026-11-15.md, Section 3) records the
+   item-by-item test for both courses' expected-count families. */
+BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap-freq-mean-mc","u9-gap-expected-freq-cr","u9-gap-win-points-cr"].indexOf(e.id)>=0)e.pkFlag=true;});
