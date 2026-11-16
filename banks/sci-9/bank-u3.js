@@ -17,14 +17,16 @@
 // CRMARKS: s9-u3-cr-applications=3
 // Science 9 Unit 3 bank: Electricity (SC9.7.1 to SC9.9.14, 37
 // indicators), built Nov 15, 2026 to the Electricity authoring
-// spec. All entries are original, mined for type from the ESD
-// Grade 9 Unit 3 Electricity set (unit plan, student outline and
-// the Electricity Conservation STSE document; the remaining ESD
-// material is SMART Notebook and gallery files, listed in the
-// catalogue and not mined), the MHR ExamView English Chapters 7,
-// 8 and 9, and the core laboratories (CORE LAB 8-3D, CORE LAB
-// 9-1F and the CORE STSE Electricity Conservation: The New
-// Trend), and rewritten throughout (mine-and-rewrite).
+// spec. All entries are original and were written new for this
+// app. Existing tests and question banks, including the ESD
+// Grade 9 Unit 3 Electricity set (unit plan, student outline
+// and the Electricity Conservation STSE document; the remaining
+// ESD material is SMART Notebook and gallery files, listed in
+// the catalogue and not reviewed), the MHR ExamView English
+// Chapters 7, 8 and 9, and the core laboratories (CORE LAB
+// 8-3D, CORE LAB 9-1F and the CORE STSE Electricity
+// Conservation: The New Trend), were reviewed only to gauge
+// the expected depth and range of treatment.
 // Guide discipline: Ohm's law assessments involve a single
 // resistance only; total resistance is keyed qualitatively
 // (series raises it, parallel lowers it) and is never calculated;

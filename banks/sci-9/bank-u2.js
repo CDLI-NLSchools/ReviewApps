@@ -15,13 +15,14 @@
 // CRMARKS: s9-u2-cr-classify-change=3
 // Science 9 Unit 2 bank: Atoms, Elements, and Compounds
 // (SC9.4.1 to SC9.6.10), built Nov 15, 2026 to the Atoms
-// authoring spec. All entries are original, mined for type
-// from the harvested teacher masters (Selected Response items
-// 36 to 70 and the Constructed Response chemistry set), the
-// ESD Grade 9 Unit 2 Chemistry folder, the MHR ExamView
-// Chapters 1 to 3, and the strand Core Labs, and rewritten
-// throughout (mine-and-rewrite): no source scenario, values
-// or wording is carried verbatim.
+// authoring spec. All entries are original and were written
+// new for this app. Existing tests and question banks,
+// including teacher masters (Selected Response items 36 to 70
+// and the Constructed Response chemistry set), the ESD Grade 9
+// Unit 2 Chemistry folder, the MHR ExamView Chapters 1 to 3
+// and the strand Core Labs, were reviewed only to gauge the
+// expected depth and range of treatment: no source scenario,
+// values or wording is carried verbatim.
 // Guide discipline: Bohr-Rutherford diagrams cover elements
 // 1 to 18 only, with energy levels drawn as levels, not as
 // electron paths, and the octet rule is not taught; isotopes

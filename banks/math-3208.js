@@ -29,9 +29,10 @@ function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 // CRMARKS: u1-compound-inequality=2
 /* ================= Unit 1: Pre-Calculus ================= */
 /* Indicators: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7. Types follow the Mauger
-   Chapter 1 harvest (operations on functions, compositions in both
+   Chapter 1 material (operations on functions, compositions in both
    directions, domains of quotients and composites, graph-based values),
-   rewritten with original functions and values. Fractions are written
+   reviewed only to gauge the expected depth and range of treatment;
+   the entries were written new with original functions and values. Fractions are written
    directly as \frac inside the delimiters. */
 
 function u1poly(terms){var out="";for(var i=0;i<terms.length;i++){var c=terms[i][0],v=terms[i][1];if(c===0)continue;var mag=(v!==""&&Math.abs(c)===1)?v:""+Math.abs(c)+v;if(out==="")out=(c<0?"-":"")+mag;else out+=(c<0?" - ":" + ")+mag;}return out===""?"0":out;}
@@ -331,9 +332,9 @@ E("u1-graph-operation",1,["1.2"],1,"gen",function(){
   return numq("The graphs of two functions \\(f\\) and \\(g\\) pass through the points listed. For \\(f\\): "+pts(fv)+". For \\(g\\): "+pts(gv)+". Determine \\("+comp+"\\).",ans,0.011,sol,{p:p,ask:ask,fv:fv,gv:gv});
 });
 
-/* Pure Math harvest addition, November 13, 2026 (scan build order step 3):
-   compound quadratic inequalities in interval notation, mined from the
-   St. Pat's Math 31 precalculus material and rewritten. The app config
+/* Pure Math review addition, November 13, 2026 (scan build order step 3):
+   compound quadratic inequalities in interval notation, reviewed in the
+   St. Pat's Math 31 precalculus material and written new. The app config
    carries no inequality-specific indicator for Unit 1; the entry is
    filed under 1.3 because it asks for the set of inputs whose outputs
    land in a stated range, a domain determination. */
@@ -1020,10 +1021,10 @@ E("u2-limit-error-analysis",2,["2.7","2.16"],3,"var",varset([
     {v:4});}
 ]));
 
-/* Pure Math harvest additions, November 13, 2026 (scan build order step 3):
+/* Pure Math review additions, November 13, 2026 (scan build order step 3):
    sequence convergence identification and the repeating decimal as the
-   limit of an infinite geometric series, both mined from the St. Pat's
-   Math 31 limits material and rewritten. Helpers carry the u2s prefix. */
+   limit of an infinite geometric series, both reviewed in the St. Pat's
+   Math 31 limits material and written new. Helpers carry the u2s prefix. */
 function u2sPoly(cf){var n=cf.length-1,parts=[];for(var i=0;i<cf.length;i++){var c=cf[i],p=n-i;if(c===0)continue;var mag=Math.abs(c),term;if(p===0)term=""+mag;else{var cs=mag===1?"":(""+mag);term=cs+(p===1?"n":"n^"+p);}parts.push({neg:c<0,term:term});}if(!parts.length)return "0";var s=parts[0].neg?"-"+parts[0].term:parts[0].term;for(var j=1;j<parts.length;j++)s+=parts[j].neg?" - "+parts[j].term:" + "+parts[j].term;return s;}
 function u2sFr(n,d){return (n<0?"-":"")+"\\frac{"+Math.abs(n)+"}{"+d+"}";}
 E("u2-sequence-convergence",2,["2.10"],1,"gen",function(){

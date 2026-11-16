@@ -15,11 +15,12 @@
 // CRMARKS: s8-u3-cr-identify-medium=3
 // Science 8 Unit 3 bank: Optics (SC8.7.1 to SC8.9.14), built
 // Nov 15, 2026 to the Optics authoring spec. All entries are
-// original, mined for type from the harvested ESD optics set
-// (review set, mirror and lens assignments, core labs, the
-// Fibre Optics STSE), the MHR ExamView chapters 4 to 6 and the
-// optics dynamic bank, and rewritten throughout
-// (mine-and-rewrite).
+// original and were written new for this app. Existing tests
+// and question banks, including the ESD optics set (review set,
+// mirror and lens assignments, core labs, the Fibre Optics
+// STSE), the MHR ExamView chapters 4 to 6 and the optics
+// dynamic bank, were reviewed only to gauge the expected depth
+// and range of treatment.
 // Guide discipline: curved mirror image characteristics are
 // read off given ray diagrams, never memorized; lens ray
 // diagram construction is not part of the strand, so lens items

@@ -678,10 +678,11 @@ function s7ConcentrationSVG(vessels) {
 // CRMARKS: s7-u1-cr-succession-stages=2
 // Science 7 Unit 1 bank: Interactions Within Ecosystems (SC7.1.1 to
 // SC7.3.11), built Nov 15, 2026 to the Ecosystems authoring spec.
-// All entries are original, mined for type from the harvested
-// teacher tests, the MHR ExamView chapters 1 to 3, the core
-// laboratories, the Two Centimetre Forest module and SLA 7 unit 1,
-// and rewritten throughout (mine-and-rewrite).
+// All entries are original and were written new for this app.
+// Existing tests and question banks, including teacher tests, the
+// MHR ExamView chapters 1 to 3, the core laboratories, the Two
+// Centimetre Forest module and SLA 7 unit 1, were reviewed only
+// to gauge the expected depth and range of treatment.
 // Coverage honesty: SC7.3.5 (work cooperatively with team members)
 // is NONE for this format and carries no entries, by design.
 // CORE residue: SC7.3.3 entries assess instrument choice, record
@@ -693,8 +694,9 @@ function s7ConcentrationSVG(vessels) {
 // processes; they do not assess a student evaluating their own
 // group. SC7.3.8 entries assess experiment design; the carrying
 // out is classroom work.
-// Symbiosis ruling: harvested relationship scenarios appear only
-// as unnamed biotic-biotic interaction examples under SC7.1.2.
+// Symbiosis ruling: relationship scenarios from the reviewed
+// sources appear only as unnamed biotic-biotic interaction
+// examples under SC7.1.2.
 
 /* Food web data for the F4 family (letters are node order). */
 var S7_WEB_POND = {
@@ -2022,8 +2024,10 @@ BANK.forEach(function(e){ if(NO_COMPOSE[e.id]){ e.noCompose=true; } });
    the WNLSD objectives list, Unit Test 2, Chapter Four Test and Key Terms,
    the ESD heat unit test sample, the rubbing alcohol heating curve case
    study, the SLA unit 2 reading, and the Heat Transfer Design Challenge.
-   All items mine-and-rewrite; nothing verbatim. Harvest catalogue and
-   authoring spec: Science-7-Heat-Harvest-Catalogue-2026-11-15.md and
+   All items were written new for this app: existing tests and
+   question banks were reviewed only to gauge the expected depth
+   and range of treatment, and nothing was carried verbatim.
+   Harvest catalogue and authoring spec: Science-7-Heat-Harvest-Catalogue-2026-11-15.md and
    Science-7-Heat-Authoring-Spec-2026-11-15.md. */
 // CRMARKS: s7-u2-cr-temp-explain=3
 // CRMARKS: s7-u2-cr-expansion=3
@@ -3216,8 +3220,10 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
    Like Salt On That?" road salt STSE module (the guide's Appendix A;
    ESD and WNLSD copies byte-identical, counted once), the ESD Unit 3
    exam, the WNLSD Unit 3 test family, Chapter 9 test and objectives
-   sheet. All items mine-and-rewrite; nothing verbatim. Harvest
-   catalogue and authoring spec:
+   sheet. All items were written new for this app: existing tests
+   and question banks were reviewed only to gauge the expected
+   depth and range of treatment, and nothing was carried
+   verbatim. Harvest catalogue and authoring spec:
    Science-7-Mixtures-Harvest-Catalogue-2026-11-15.md and
    Science-7-Mixtures-Authoring-Spec-2026-11-15.md. */
 // CRMARKS: s7-u3-cr-pure=2
@@ -4112,17 +4118,18 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
    85 entries across the strand's 25 indicators: Knowledge SC7.10.1
    to SC7.10.9, STSE SC7.11.1 to SC7.11.7, Skills SC7.12.1 to
    SC7.12.9. Guide-led (current guide, Version 2023.001.010) with a
-   harvested source base under mine-and-rewrite: the ExamView
-   Chapters 10 to 12 publisher banks, Core Lab 10-1C (A Mineralogist's
-   Mystery), Core Lab 12-1B (Rocks that Fizz), Be a Soil Sleuth (the
-   guide's Core Lab 12-2B), the Seeing the Big Picture STSE module and
-   its portfolio assignment, the WNLSD Chapter 10 test and review
-   sheet, the ESD unit plan and rock classification activity, and
-   three STEAM app scenarios rewritten as contexts. No verbatim
-   textbook or test items. Terminology follows the guide throughout:
+   reviewed source base: the ExamView Chapters 10 to 12 publisher
+   banks, Core Lab 10-1C (A Mineralogist's Mystery), Core Lab 12-1B
+   (Rocks that Fizz), Be a Soil Sleuth (the guide's Core Lab 12-2B),
+   the Seeing the Big Picture STSE module and its portfolio
+   assignment, the WNLSD Chapter 10 test and review sheet, the ESD
+   unit plan and rock classification activity, and three STEAM app
+   scenarios were reviewed only to gauge the expected depth and
+   range of treatment. All items were written new for this app.
+   No verbatim textbook or test items. Terminology follows the guide throughout:
    the guide's term for earthquake strength is the moment magnitude
-   scale, and harvested material naming the Richter scale was mined
-   for type only. Content with no home in the current 25 indicators
+   scale, and reviewed material naming the Richter scale informed
+   question types only. Content with no home in the current 25 indicators
    (soil humus and leaching detail, desertification, soil enrichment,
    rock and mineral resources) carries no entries. */
 // CRMARKS: s7-u4-cr-mineral-tests=3

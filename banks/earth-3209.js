@@ -17,7 +17,9 @@
 // Earth Systems 3209, Unit 1: Introduction to Earth Science.
 // Sources: NL public exams June/August 2006-2009 and the Dr Dean sample final
 // (items carried verbatim, house fixes only); the Woodland workbook Unit 1
-// (mined and rewritten); fresh items authored to the curriculum guide
+// (reviewed only to gauge the expected depth and range of treatment;
+// all items written new for this app); fresh items authored to the
+// curriculum guide
 // elaborations for indicators the exams reach thinly (EA12.6.2, EA12.1.4) or
 // not at all. Unit 1 is mid-course scope only: no postMid or preFinal flags.
 
@@ -252,8 +254,10 @@ E("es-u1-cr-q10",1,["EA12.1.5","EA12.5.6"],2,"var",varset([function(){return tex
 // Earth Systems 3209, Unit 2: Historical Geology.
 // Sources: NL public exams June/August 2006-2009 and the Dr Dean sample final
 // (items carried verbatim, house fixes only); Dr Dean Chapter 8 test and the
-// Woodland workbook Unit 2b (mined and rewritten); fresh items authored to
-// the curriculum guide elaborations for indicators the exams do not reach.
+// Woodland workbook Unit 2b (reviewed only to gauge the expected depth
+// and range of treatment; all items written new for this app); fresh
+// items authored to the curriculum guide elaborations for indicators
+// the exams do not reach.
 // Every Unit 2 entry sits inside the mid-course scope, so no preset scope
 // flags (postMid / preFinal) apply anywhere in this file.
 
@@ -498,8 +502,10 @@ E("es-u2-cr-q25",2,["EA12.2.12"],2,"var",varset([function(){return textq("Marine
 // CRMARKS: es-u3-cr-q19=2
 // Earth Systems 3209, Unit 3: Earth Materials.
 // Sources: NL public exams June/August 2006-2009 and the Dr Dean sample final
-// (items carried verbatim, house fixes only); Dr Dean chapter tests (mined and
-// rewritten); fresh top-ups authored to the curriculum guide elaborations.
+// (items carried verbatim, house fixes only); Dr Dean chapter tests
+// (reviewed only to gauge the expected depth and range of treatment;
+// all items written new for this app); fresh top-ups authored to the
+// curriculum guide elaborations.
 
 
 /* ----- EA12.3.1: Define mineral chemistry terms ----- */
@@ -809,8 +815,10 @@ BANK.forEach(function(e){if(e.unit===3&&e.indicators.some(function(c){return ["E
 // Earth Systems 3209, Unit 4: The Forces within Earth.
 // Sources: NL public exams June/August 2006-2009, the Dr Dean sample final and
 // sample midterm (items carried verbatim, house fixes only); Dr Dean Chapter
-// 15 and 16 tests and the Woodland workbook Unit 4 material (mined and
-// rewritten); fresh items authored to the curriculum guide elaborations for
+// 15 and 16 tests and the Woodland workbook Unit 4 material (reviewed
+// only to gauge the expected depth and range of treatment; all items
+// written new for this app); fresh items authored to the curriculum
+// guide elaborations for
 // indicators the exams do not reach (EA12.9.4, EA12.4.10, EA12.4.13,
 // EA12.4.21, EA12.4.22 and support items for other thin indicators).
 // Unit 4 is final-exam scope only, so no preset scope flags (postMid /
@@ -1109,8 +1117,10 @@ E("es-u4-42-q09",4,["EA12.4.2"],3,"var",varset([function(){return mcq("Along one
 // Earth Systems 3209, Unit 5: Earth Resources: Real Life Applications.
 // Sources: NL public exams June/August 2006-2009 and the Dr Dean sample final
 // (items carried verbatim, house fixes only, keys re-verified against the
-// grading standards and marked copies); the Woodland workbook Unit 5 (mined
-// and rewritten); fresh items authored to the curriculum guide elaborations
+// grading standards and marked copies); the Woodland workbook Unit 5
+// (reviewed only to gauge the expected depth and range of treatment;
+// all items written new for this app); fresh items authored to the
+// curriculum guide elaborations
 // for the indicators the exams reach thinly or not at all (EA12.5.2, EA12.5.3,
 // EA12.5.11, EA12.5.12) and for EA12.10.1, a class C indicator with no
 // item-shaped source. EA12.5.6 is served by dual-tagged Unit 1 spheres

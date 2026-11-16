@@ -13,14 +13,15 @@
 // CRMARKS: s9-u1-cr-design-mission=4
 // CRMARKS: s9-u1-cr-process=3
 // Science 9 Unit 1 bank: Space (SC9.1.1 to SC9.3.8), built Nov 15, 2026
-// to the Space authoring spec. All entries are original, mined for
-// type from the harvested teacher masters (Space portions), the ESD
-// Grade 9 Unit 1 Space set including the Celestial Navigation STSE,
-// the MHR ExamView Chapters 10, 11 and 12 (mined for question types
-// only), the core laboratories (Strolling Through the Solar System,
-// Designing a Space Station) and the DesignYourOwnPlanet STEAM
-// context, and rewritten throughout (mine-and-rewrite). No verbatim
-// source text, values or scenarios are carried.
+// to the Space authoring spec. All entries are original and were
+// written new for this app. Existing tests and question banks,
+// including teacher masters (Space portions), the ESD Grade 9
+// Unit 1 Space set including the Celestial Navigation STSE, the
+// MHR ExamView Chapters 10, 11 and 12, the core laboratories
+// (Strolling Through the Solar System, Designing a Space Station)
+// and the DesignYourOwnPlanet STEAM context, were reviewed only
+// to gauge the expected depth and range of treatment. No
+// verbatim source text, values or scenarios are carried.
 // Guide discipline: Kepler's Laws of Planetary Motion are not
 // assessed (the guide states students do not need to know them);
 // distances between planets and stars are compared and converted by
@@ -28,7 +29,7 @@
 // calculate distances between planets and stars); the Sun is limited
 // to sunspots, solar flares and solar prominences; nebula types are
 // not detailed; religious based accounts of origins are outside the
-// course and are not assessed; the harvested SR master item 2 key
+// course and are not assessed; the reviewed SR master item 2 key
 // was not carried (see the harvest catalogue for the judgement).
 // CORE residue: SC9.3.5 carries one entry judging a described case
 // of a team member receiving, understanding and acting on another's

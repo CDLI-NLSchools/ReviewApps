@@ -2,17 +2,18 @@
    85 entries across the strand's 25 indicators: Knowledge SC7.10.1
    to SC7.10.9, STSE SC7.11.1 to SC7.11.7, Skills SC7.12.1 to
    SC7.12.9. Guide-led (current guide, Version 2023.001.010) with a
-   harvested source base under mine-and-rewrite: the ExamView
-   Chapters 10 to 12 publisher banks, Core Lab 10-1C (A Mineralogist's
-   Mystery), Core Lab 12-1B (Rocks that Fizz), Be a Soil Sleuth (the
-   guide's Core Lab 12-2B), the Seeing the Big Picture STSE module and
-   its portfolio assignment, the WNLSD Chapter 10 test and review
-   sheet, the ESD unit plan and rock classification activity, and
-   three STEAM app scenarios rewritten as contexts. No verbatim
-   textbook or test items. Terminology follows the guide throughout:
+   reviewed source base: the ExamView Chapters 10 to 12 publisher
+   banks, Core Lab 10-1C (A Mineralogist's Mystery), Core Lab 12-1B
+   (Rocks that Fizz), Be a Soil Sleuth (the guide's Core Lab 12-2B),
+   the Seeing the Big Picture STSE module and its portfolio
+   assignment, the WNLSD Chapter 10 test and review sheet, the ESD
+   unit plan and rock classification activity, and three STEAM app
+   scenarios were reviewed only to gauge the expected depth and
+   range of treatment. All items were written new for this app.
+   No verbatim textbook or test items. Terminology follows the guide throughout:
    the guide's term for earthquake strength is the moment magnitude
-   scale, and harvested material naming the Richter scale was mined
-   for type only. Content with no home in the current 25 indicators
+   scale, and reviewed material naming the Richter scale informed
+   question types only. Content with no home in the current 25 indicators
    (soil humus and leaching detail, desertification, soil enrichment,
    rock and mineral resources) carries no entries. */
 // CRMARKS: s7-u4-cr-mineral-tests=3

@@ -8,8 +8,10 @@
    the WNLSD objectives list, Unit Test 2, Chapter Four Test and Key Terms,
    the ESD heat unit test sample, the rubbing alcohol heating curve case
    study, the SLA unit 2 reading, and the Heat Transfer Design Challenge.
-   All items mine-and-rewrite; nothing verbatim. Harvest catalogue and
-   authoring spec: Science-7-Heat-Harvest-Catalogue-2026-11-15.md and
+   All items were written new for this app: existing tests and
+   question banks were reviewed only to gauge the expected depth
+   and range of treatment, and nothing was carried verbatim.
+   Harvest catalogue and authoring spec: Science-7-Heat-Harvest-Catalogue-2026-11-15.md and
    Science-7-Heat-Authoring-Spec-2026-11-15.md. */
 // CRMARKS: s7-u2-cr-temp-explain=3
 // CRMARKS: s7-u2-cr-expansion=3

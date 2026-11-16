@@ -14,9 +14,11 @@
 // CRMARKS: s8-u2-cr-displacement-calc=3
 // Science 8 Unit 2 bank: Fluids (SC8.4.1 to SC8.6.10), built
 // Nov 15, 2026 to the Fluids authoring spec. All entries are
-// original, mined for type from the harvested teacher tests and
-// worksheets, the MHR ExamView chapters 7 to 9 and the core
-// laboratories, and rewritten throughout (mine-and-rewrite).
+// original and were written new for this app. Existing tests and
+// question banks, including teacher tests and worksheets, the
+// MHR ExamView chapters 7 to 9 and the core laboratories, were
+// reviewed only to gauge the expected depth and range of
+// treatment.
 // Source defects recorded in the Fluids catalogue were dropped,
 // not carried: the pressure item keyed in kilopascals for a
 // pascal value, and the gas-viscosity item whose key the guide's

@@ -15,10 +15,11 @@
 // CRMARKS: s7-u1-cr-succession-stages=2
 // Science 7 Unit 1 bank: Interactions Within Ecosystems (SC7.1.1 to
 // SC7.3.11), built Nov 15, 2026 to the Ecosystems authoring spec.
-// All entries are original, mined for type from the harvested
-// teacher tests, the MHR ExamView chapters 1 to 3, the core
-// laboratories, the Two Centimetre Forest module and SLA 7 unit 1,
-// and rewritten throughout (mine-and-rewrite).
+// All entries are original and were written new for this app.
+// Existing tests and question banks, including teacher tests, the
+// MHR ExamView chapters 1 to 3, the core laboratories, the Two
+// Centimetre Forest module and SLA 7 unit 1, were reviewed only
+// to gauge the expected depth and range of treatment.
 // Coverage honesty: SC7.3.5 (work cooperatively with team members)
 // is NONE for this format and carries no entries, by design.
 // CORE residue: SC7.3.3 entries assess instrument choice, record
@@ -30,8 +31,9 @@
 // processes; they do not assess a student evaluating their own
 // group. SC7.3.8 entries assess experiment design; the carrying
 // out is classroom work.
-// Symbiosis ruling: harvested relationship scenarios appear only
-// as unnamed biotic-biotic interaction examples under SC7.1.2.
+// Symbiosis ruling: relationship scenarios from the reviewed
+// sources appear only as unnamed biotic-biotic interaction
+// examples under SC7.1.2.
 
 /* Food web data for the F4 family (letters are node order). */
 var S7_WEB_POND = {

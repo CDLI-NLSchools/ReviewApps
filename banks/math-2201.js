@@ -4899,7 +4899,7 @@ var PKT_U8={
 BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U8_FOR.slice();e.pkGroup=t.group;}});
 
 /* ----- bank-fix.js ----- */
-// Math 2201 Tranche 3 to 8 additions (Units 1 to 4 depth, the QE RHS harvest, and the October 2026 finish-line passes) question bank
+// Math 2201 Tranche 3 to 8 additions (Units 1 to 4 depth, the QE RHS review, and the October 2026 finish-line passes) question bank
 // Cut verbatim from the standalone app's served file
 // (math-2201-review/Math2201Review.html, lines 2142 to
 // 3852, the Tranche 3 to 8 blocks at the head of its main
@@ -5005,9 +5005,11 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-false-pattern=2
 // CRMARKS: u7-figure-pattern=1
 /* ============ Tranche 3 (Oct 26): Units 1-4 depth ============
-   Templates reworked from the Holy Spirit sample tests/reviews and the
-   NL Schools topic lists (see harvest/newsites-inventory.md); every item
-   re-created with new numbers and contexts, nothing copied verbatim.
+   Existing tests and question banks, including the Holy Spirit sample
+   tests and reviews and the NL Schools topic lists (see
+   harvest/newsites-inventory.md), were reviewed only to gauge the
+   expected depth and range of treatment; every item was written new
+   with new numbers and contexts, nothing copied verbatim.
    Also repairs two indicator tags from the original build: u4-order was
    tagged 1.3 but it orders radicals (1.4), and u4-multiply was tagged
    1.4 but it multiplies radicals (an operation, 1.6). */
@@ -5429,10 +5431,12 @@ E("u4-model-evaluate",4,["1.12"],1,"gen",function(){
   }
 });
 
-/* ============ Tranche 4 (Oct 26): QE RHS harvest — Units 4, 3, 8 ============
-   Templates reworked from the QE RHS radicals / quadratic equations / angles
-   tests and reviews (see harvest/qerhs-inventory.md); every item re-created
-   with new numbers and contexts, nothing copied verbatim. */
+/* ============ Tranche 4 (Oct 26): QE RHS review: Units 4, 3, 8 ============
+   Existing tests and question banks, including the QE RHS radicals /
+   quadratic equations / angles tests and reviews (see
+   harvest/qerhs-inventory.md), were reviewed only to gauge the expected
+   depth and range of treatment; every item was written new with new
+   numbers and contexts, nothing copied verbatim. */
 
 /* --- Unit 4: Radicals --- */
 E("u4-cube-mixed",4,["1.2"],1,"gen",function(){

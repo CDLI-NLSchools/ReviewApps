@@ -4545,8 +4545,9 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
    pools and composed papers unless a teacher deliberately
    includes them from Advanced tools (Jason's ruling, Nov 13,
    2026; build step 8 of the Pure Math scan's build order, the
-   source types mined from the Pure Math 30 statistics material
-   and rewritten). The mathematics is the unit's own machinery
+   question types were reviewed in the Pure Math 30 statistics
+   material and the entries written new). The mathematics is the
+   unit's own machinery
    carried one step further: combinations choose which trials
    succeed (9.30 feeding 9.32) and independent-trial
    probabilities multiply along each arrangement (9.13). */

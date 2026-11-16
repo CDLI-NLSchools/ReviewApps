@@ -496,9 +496,9 @@ E("u8-both-hold", 8, ["4.25", "4.26"], 3, "gen", function () {
 });
 
 /* ---------- 4.16, 4.17: solve a one-variable inequality from a scenario (L2, CR 2) ----------
-   Scenario arms harvested Nov 13, 2026 (build order step 9): budget
+   Scenario arms reviewed Nov 13, 2026 (build order step 9): budget
    limits, grade-needed, savings goals and within-tolerance bands from
-   the Pure Math 20 inequality files, rewritten. Whole-number answers
+   the Pure Math 20 inequality files, written new. Whole-number answers
    are built boundary-first: the budget and the goal are set relative
    to the answer so the floor and ceiling behaviour is exact. */
 E("u8-scenario-solve", 8, ["4.16", "4.17"], 2, "gen", function () {

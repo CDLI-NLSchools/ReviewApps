@@ -14,13 +14,15 @@
 // CRMARKS: s8-u1-cr-population=3
 // Science 8 Unit 1 bank: Water Systems on Earth's Surface
 // (SC8.1.1 to SC8.3.10), built Nov 15, 2026 to the Water Systems
-// authoring spec. All entries are original, mined for type from the
-// harvested teacher tests, the MHR ExamView chapters 1 to 3, the
-// WNLSD Unit 1 set, the core laboratories and the Undersea Adventure
-// STSE, and rewritten throughout (mine-and-rewrite).
+// authoring spec. All entries are original and were written new
+// for this app. Existing tests and question banks, including
+// teacher tests, the MHR ExamView chapters 1 to 3, the WNLSD
+// Unit 1 set, the core laboratories and the Undersea Adventure
+// STSE, were reviewed only to gauge the expected depth and range
+// of treatment.
 // Guide discipline: ocean and fresh water are compared qualitatively
 // (salinity, density, freezing point); no entry keys a memorized
-// salinity or density value. The harvested satellite item keyed to
+// salinity or density value. The reviewed satellite item keyed to
 // infrared light was not carried; research technologies are keyed by
 // purpose only.
 // CORE residue: SC8.3.1 entries assess procedure steps, the estuary

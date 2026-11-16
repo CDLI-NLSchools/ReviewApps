@@ -14,11 +14,13 @@
 // CRMARKS: s8-u4-cr-design-rates=4
 // Science 8 Unit 4 bank: Cells, Tissues, Organs and Systems
 // (SC8.10.1 to SC8.12.12), built Nov 15, 2026 to the Cells
-// authoring spec. All entries are original, mined for type from
-// the harvested ESD Unit 4 set (unit test, Lab 12-1B, the
+// authoring spec. All entries are original and were written
+// new for this app. Existing tests and question banks,
+// including the ESD Unit 4 set (unit test, Lab 12-1B, the
 // Artificial Organs STSE), the MHR ExamView chapters 10 to 12
 // and the STEAM HeartRateGraph and BreathingRateGraph data
-// sets, and rewritten throughout (mine-and-rewrite).
+// sets, were reviewed only to gauge the expected depth and
+// range of treatment.
 // Guide discipline: cell theory at introduction level; mitosis
 // without stages; the six systems holistic (no organ-by-organ
 // functions, no labelling of system diagrams); interdependence

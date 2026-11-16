@@ -513,13 +513,15 @@ function s8BarSVG(labels, values, yLabel){
 // CRMARKS: s8-u1-cr-population=3
 // Science 8 Unit 1 bank: Water Systems on Earth's Surface
 // (SC8.1.1 to SC8.3.10), built Nov 15, 2026 to the Water Systems
-// authoring spec. All entries are original, mined for type from the
-// harvested teacher tests, the MHR ExamView chapters 1 to 3, the
-// WNLSD Unit 1 set, the core laboratories and the Undersea Adventure
-// STSE, and rewritten throughout (mine-and-rewrite).
+// authoring spec. All entries are original and were written new
+// for this app. Existing tests and question banks, including
+// teacher tests, the MHR ExamView chapters 1 to 3, the WNLSD
+// Unit 1 set, the core laboratories and the Undersea Adventure
+// STSE, were reviewed only to gauge the expected depth and range
+// of treatment.
 // Guide discipline: ocean and fresh water are compared qualitatively
 // (salinity, density, freezing point); no entry keys a memorized
-// salinity or density value. The harvested satellite item keyed to
+// salinity or density value. The reviewed satellite item keyed to
 // infrared light was not carried; research technologies are keyed by
 // purpose only.
 // CORE residue: SC8.3.1 entries assess procedure steps, the estuary
@@ -1643,9 +1645,11 @@ BANK.forEach(function (e) { if (NO_COMPOSE[e.id]) { e.noCompose = true; } });
 // CRMARKS: s8-u2-cr-displacement-calc=3
 // Science 8 Unit 2 bank: Fluids (SC8.4.1 to SC8.6.10), built
 // Nov 15, 2026 to the Fluids authoring spec. All entries are
-// original, mined for type from the harvested teacher tests and
-// worksheets, the MHR ExamView chapters 7 to 9 and the core
-// laboratories, and rewritten throughout (mine-and-rewrite).
+// original and were written new for this app. Existing tests and
+// question banks, including teacher tests and worksheets, the
+// MHR ExamView chapters 7 to 9 and the core laboratories, were
+// reviewed only to gauge the expected depth and range of
+// treatment.
 // Source defects recorded in the Fluids catalogue were dropped,
 // not carried: the pressure item keyed in kilopascals for a
 // pascal value, and the gas-viscosity item whose key the guide's
@@ -2724,11 +2728,12 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 // CRMARKS: s8-u3-cr-identify-medium=3
 // Science 8 Unit 3 bank: Optics (SC8.7.1 to SC8.9.14), built
 // Nov 15, 2026 to the Optics authoring spec. All entries are
-// original, mined for type from the harvested ESD optics set
-// (review set, mirror and lens assignments, core labs, the
-// Fibre Optics STSE), the MHR ExamView chapters 4 to 6 and the
-// optics dynamic bank, and rewritten throughout
-// (mine-and-rewrite).
+// original and were written new for this app. Existing tests
+// and question banks, including the ESD optics set (review set,
+// mirror and lens assignments, core labs, the Fibre Optics
+// STSE), the MHR ExamView chapters 4 to 6 and the optics
+// dynamic bank, were reviewed only to gauge the expected depth
+// and range of treatment.
 // Guide discipline: curved mirror image characteristics are
 // read off given ray diagrams, never memorized; lens ray
 // diagram construction is not part of the strand, so lens items
@@ -3866,11 +3871,13 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 // CRMARKS: s8-u4-cr-design-rates=4
 // Science 8 Unit 4 bank: Cells, Tissues, Organs and Systems
 // (SC8.10.1 to SC8.12.12), built Nov 15, 2026 to the Cells
-// authoring spec. All entries are original, mined for type from
-// the harvested ESD Unit 4 set (unit test, Lab 12-1B, the
+// authoring spec. All entries are original and were written
+// new for this app. Existing tests and question banks,
+// including the ESD Unit 4 set (unit test, Lab 12-1B, the
 // Artificial Organs STSE), the MHR ExamView chapters 10 to 12
 // and the STEAM HeartRateGraph and BreathingRateGraph data
-// sets, and rewritten throughout (mine-and-rewrite).
+// sets, were reviewed only to gauge the expected depth and
+// range of treatment.
 // Guide discipline: cell theory at introduction level; mitosis
 // without stages; the six systems holistic (no organ-by-organ
 // functions, no labelling of system diagrams); interdependence

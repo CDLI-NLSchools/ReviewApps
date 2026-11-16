@@ -19,14 +19,15 @@
 // CRMARKS: s9-u1-cr-design-mission=4
 // CRMARKS: s9-u1-cr-process=3
 // Science 9 Unit 1 bank: Space (SC9.1.1 to SC9.3.8), built Nov 15, 2026
-// to the Space authoring spec. All entries are original, mined for
-// type from the harvested teacher masters (Space portions), the ESD
-// Grade 9 Unit 1 Space set including the Celestial Navigation STSE,
-// the MHR ExamView Chapters 10, 11 and 12 (mined for question types
-// only), the core laboratories (Strolling Through the Solar System,
-// Designing a Space Station) and the DesignYourOwnPlanet STEAM
-// context, and rewritten throughout (mine-and-rewrite). No verbatim
-// source text, values or scenarios are carried.
+// to the Space authoring spec. All entries are original and were
+// written new for this app. Existing tests and question banks,
+// including teacher masters (Space portions), the ESD Grade 9
+// Unit 1 Space set including the Celestial Navigation STSE, the
+// MHR ExamView Chapters 10, 11 and 12, the core laboratories
+// (Strolling Through the Solar System, Designing a Space Station)
+// and the DesignYourOwnPlanet STEAM context, were reviewed only
+// to gauge the expected depth and range of treatment. No
+// verbatim source text, values or scenarios are carried.
 // Guide discipline: Kepler's Laws of Planetary Motion are not
 // assessed (the guide states students do not need to know them);
 // distances between planets and stars are compared and converted by
@@ -34,7 +35,7 @@
 // calculate distances between planets and stars); the Sun is limited
 // to sunspots, solar flares and solar prominences; nebula types are
 // not detailed; religious based accounts of origins are outside the
-// course and are not assessed; the harvested SR master item 2 key
+// course and are not assessed; the reviewed SR master item 2 key
 // was not carried (see the harvest catalogue for the judgement).
 // CORE residue: SC9.3.5 carries one entry judging a described case
 // of a team member receiving, understanding and acting on another's
@@ -912,13 +913,14 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
 // CRMARKS: s9-u2-cr-classify-change=3
 // Science 9 Unit 2 bank: Atoms, Elements, and Compounds
 // (SC9.4.1 to SC9.6.10), built Nov 15, 2026 to the Atoms
-// authoring spec. All entries are original, mined for type
-// from the harvested teacher masters (Selected Response items
-// 36 to 70 and the Constructed Response chemistry set), the
-// ESD Grade 9 Unit 2 Chemistry folder, the MHR ExamView
-// Chapters 1 to 3, and the strand Core Labs, and rewritten
-// throughout (mine-and-rewrite): no source scenario, values
-// or wording is carried verbatim.
+// authoring spec. All entries are original and were written
+// new for this app. Existing tests and question banks,
+// including teacher masters (Selected Response items 36 to 70
+// and the Constructed Response chemistry set), the ESD Grade 9
+// Unit 2 Chemistry folder, the MHR ExamView Chapters 1 to 3
+// and the strand Core Labs, were reviewed only to gauge the
+// expected depth and range of treatment: no source scenario,
+// values or wording is carried verbatim.
 // Guide discipline: Bohr-Rutherford diagrams cover elements
 // 1 to 18 only, with energy levels drawn as levels, not as
 // electron paths, and the octet rule is not taught; isotopes
@@ -2003,14 +2005,16 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 // CRMARKS: s9-u3-cr-applications=3
 // Science 9 Unit 3 bank: Electricity (SC9.7.1 to SC9.9.14, 37
 // indicators), built Nov 15, 2026 to the Electricity authoring
-// spec. All entries are original, mined for type from the ESD
-// Grade 9 Unit 3 Electricity set (unit plan, student outline and
-// the Electricity Conservation STSE document; the remaining ESD
-// material is SMART Notebook and gallery files, listed in the
-// catalogue and not mined), the MHR ExamView English Chapters 7,
-// 8 and 9, and the core laboratories (CORE LAB 8-3D, CORE LAB
-// 9-1F and the CORE STSE Electricity Conservation: The New
-// Trend), and rewritten throughout (mine-and-rewrite).
+// spec. All entries are original and were written new for this
+// app. Existing tests and question banks, including the ESD
+// Grade 9 Unit 3 Electricity set (unit plan, student outline
+// and the Electricity Conservation STSE document; the remaining
+// ESD material is SMART Notebook and gallery files, listed in
+// the catalogue and not reviewed), the MHR ExamView English
+// Chapters 7, 8 and 9, and the core laboratories (CORE LAB
+// 8-3D, CORE LAB 9-1F and the CORE STSE Electricity
+// Conservation: The New Trend), were reviewed only to gauge
+// the expected depth and range of treatment.
 // Guide discipline: Ohm's law assessments involve a single
 // resistance only; total resistance is keyed qualitatively
 // (series raises it, parallel lowers it) and is never calculated;
@@ -3250,14 +3254,15 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 // CRMARKS: s9-u4-cr-communicate=3
 // CRMARKS: s9-u4-cr-evaluate=3
 // Science 9 Unit 4 bank: Reproduction (SC9.10.1 to SC9.12.10),
-// built Nov 15, 2026 to the Reproduction authoring spec. Sources:
-// the current Science 9 guide sections for the strand, the ESD
-// Grade 9 Unit 4 Reproduction set (unit plan, student outline,
-// Appendix A STSE Genetic Engineering), ExamView Chapters 4, 5
-// and 6 mined for question types only, and the STEAM MapOfMe
-// not-a-trait selection shape and CreateAMutant question shapes.
-// All entries are original under mine-and-rewrite: no source
-// text, values or scenarios are used verbatim.
+// built Nov 15, 2026 to the Reproduction authoring spec. Sources
+// reviewed: the current Science 9 guide sections for the strand,
+// the ESD Grade 9 Unit 4 Reproduction set (unit plan, student
+// outline, Appendix A STSE Genetic Engineering), ExamView
+// Chapters 4, 5 and 6, and the STEAM MapOfMe and CreateAMutant
+// activities. Existing tests and question banks were reviewed
+// only to gauge the expected depth and range of treatment. All
+// entries are original and were written new for this app: no
+// source text, values or scenarios are used verbatim.
 // Guide discipline: no DNA composition (nucleotides) and no DNA
 // replication detail; gene mutation limited to a change in the
 // order of chemicals in a portion of a gene, with mutation types

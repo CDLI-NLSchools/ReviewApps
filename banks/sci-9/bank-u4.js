@@ -12,14 +12,15 @@
 // CRMARKS: s9-u4-cr-communicate=3
 // CRMARKS: s9-u4-cr-evaluate=3
 // Science 9 Unit 4 bank: Reproduction (SC9.10.1 to SC9.12.10),
-// built Nov 15, 2026 to the Reproduction authoring spec. Sources:
-// the current Science 9 guide sections for the strand, the ESD
-// Grade 9 Unit 4 Reproduction set (unit plan, student outline,
-// Appendix A STSE Genetic Engineering), ExamView Chapters 4, 5
-// and 6 mined for question types only, and the STEAM MapOfMe
-// not-a-trait selection shape and CreateAMutant question shapes.
-// All entries are original under mine-and-rewrite: no source
-// text, values or scenarios are used verbatim.
+// built Nov 15, 2026 to the Reproduction authoring spec. Sources
+// reviewed: the current Science 9 guide sections for the strand,
+// the ESD Grade 9 Unit 4 Reproduction set (unit plan, student
+// outline, Appendix A STSE Genetic Engineering), ExamView
+// Chapters 4, 5 and 6, and the STEAM MapOfMe and CreateAMutant
+// activities. Existing tests and question banks were reviewed
+// only to gauge the expected depth and range of treatment. All
+// entries are original and were written new for this app: no
+// source text, values or scenarios are used verbatim.
 // Guide discipline: no DNA composition (nucleotides) and no DNA
 // replication detail; gene mutation limited to a change in the
 // order of chemicals in a portion of a gene, with mutation types

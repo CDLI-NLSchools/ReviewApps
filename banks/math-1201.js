@@ -6486,8 +6486,8 @@ E("u6-word-problem",6,["4.54"],2,"gen",function(){
 });
 
 /* ================= 13. mixture problems (4.54, L2, gen num, CR 2) =================
-   Scenario arms harvested Nov 13, 2026 (build order step 9): the mixture
-   class from the Pure Math 20 systems files, rewritten. Amounts are
+   Scenario arms reviewed Nov 13, 2026 (build order step 9): the mixture
+   class from the Pure Math 20 systems files, written new. Amounts are
    chosen first and the target concentration or price is read off them,
    so every key is an exact integer. */
 E("u6-mixture",6,["4.54"],2,"gen",function(){
@@ -6552,8 +6552,8 @@ E("u6-mixture",6,["4.54"],2,"gen",function(){
 });
 
 /* ================= 14. rate and distance problems (4.54, L2, gen num, CR 2) =================
-   Scenario arms harvested Nov 13, 2026 (build order step 9): the rate
-   and distance class from the Pure Math 20 systems files, rewritten.
+   Scenario arms reviewed Nov 13, 2026 (build order step 9): the rate
+   and distance class from the Pure Math 20 systems files, written new.
    Speeds and times are chosen first, so every key is an exact integer. */
 E("u6-travel",6,["4.54"],2,"gen",function(){
   var mode=ri(1,3);

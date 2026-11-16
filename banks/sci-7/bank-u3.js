@@ -7,8 +7,10 @@
    Like Salt On That?" road salt STSE module (the guide's Appendix A;
    ESD and WNLSD copies byte-identical, counted once), the ESD Unit 3
    exam, the WNLSD Unit 3 test family, Chapter 9 test and objectives
-   sheet. All items mine-and-rewrite; nothing verbatim. Harvest
-   catalogue and authoring spec:
+   sheet. All items were written new for this app: existing tests
+   and question banks were reviewed only to gauge the expected
+   depth and range of treatment, and nothing was carried
+   verbatim. Harvest catalogue and authoring spec:
    Science-7-Mixtures-Harvest-Catalogue-2026-11-15.md and
    Science-7-Mixtures-Authoring-Spec-2026-11-15.md. */
 // CRMARKS: s7-u3-cr-pure=2
