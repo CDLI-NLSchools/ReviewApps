@@ -9049,6 +9049,749 @@ var PKT9={
 };
 BANK.forEach(function(e){var t=PKT9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
 
+
+/* =====================================================================
+   BAND 3 PIECE 1: THE FLUENCY STRAND (November 16, 2026)
+   =====================================================================
+   Thirty copied entries, appended after the Band 1 and 2 tables above
+   and flagged by the PKT9S table at the end of this section. Every
+   generator below is a verbatim copy of its source entry, retagged
+   with a u{unit}-pkf- id, the housing unit and the host indicator of
+   its group; only the entry header and the tranche metadata differ.
+   Provenance is recorded three ways, as the specification requires:
+   the pkSrc on each entry (what the item assesses, in code style),
+   this comment block, and the build report's source-to-host table.
+
+   LADDER COPIES FROM THE MATHEMATICS 7 FLUENCY CORE (housed Unit 1,
+   pkFor 3.1, 3.2, 6.1 to 6.4). The core entries are themselves
+   grounded in the elementary guides; the copy's pkSrc keeps that
+   grounding.
+     multiplication-facts (3): u1-pkf-fact-recall and
+       u1-pkf-fact-division copy u1-pk-fact-recall and
+       u1-pk-fact-division (Mathematics 5, MA5.5.19); u1-pkf-fact-
+       halving copies u1-pk-fact-halving (MA5.5.17).
+     ordering-numbers (3): u1-pkf-order-place copies u2-pk-order-place
+       (Mathematics 4, MA4.1.1); u1-pkf-order-line copies
+       u2-pk-order-line (MA4.1.2); u1-pkf-order-below copies
+       u2-pk-order-below (Mathematics 6, MA6.1.2).
+   ESSENTIALS COPIED FROM THE MATHEMATICS 8 BANK (the assessed-content
+   generators the Mathematics 9 course assumes).
+     integer-operations (6, Unit 1; pkFor adds 3.4 to 3.15):
+       u1-pkf-mult-model-chips (8 bank 6.17), u1-pkf-product-sign-
+       apply (6.18), u1-pkf-mult-problem (6.20), u1-pkf-quotient-sign-
+       apply (6.22), u1-pkf-div-2by1 (6.24), u1-pkf-ooo-num (6.27).
+     fraction-operations (6, Unit 1): u1-pkf-model-frac-times-whole
+       (6.4), u1-pkf-area-model-product (6.5), u1-pkf-estimate-
+       product-benchmark (6.7), u1-pkf-model-whole-div-frac (6.9),
+       u1-pkf-model-division-bar (6.10), u1-pkf-context-divide-
+       expression (6.14).
+     equation-solving (5, Unit 5; pkFor 8.17 to 8.23):
+       u5-pkf-solve-one-step (8.4), u5-pkf-visual-step (8.2),
+       u5-pkf-solve-distributive (8.5), u5-pkf-solve-div-plus (8.4),
+       u5-pkf-solve-context-problem (8.7).
+   ESSENTIALS COPIED FROM THE MATHEMATICS 7 BANK.
+     decimal-operations (4 added, Unit 1; the group's Band 1 core
+       already holds u1-pk-add-sub-decimals, u1-pk-mult-decimals and
+       u1-pk-order-mixed): u1-pkf-div-decimals (7 bank 6.8),
+       u1-pkf-frontend-sum (6.1), u1-pkf-frontend-prod-quot (6.2),
+       u1-pkf-reasonableness (6.4).
+     centre-measures (3 added, Unit 9; pkFor 11.9; the group's core is
+       the three flags set on November 13, 2026): u9-pkf-mean-basic
+       and u9-pkf-median-mode copy the Mathematics 7 bank's
+       u7-mean-basic and u7-median-mode (7 bank 11.6);
+       u9-pkf-range-basic copies u7-range-basic (7 bank 11.7, the
+       range indicator inside the same centre cluster).
+   The strand's designated groups repeated-multiplication and
+   sign-rules (Unit 3) gain no entries in this piece: their existing
+   flags already carry them, as the specification records.
+   Ported helpers below: pk7uniq, pk7fill and pk7line verbatim from
+   banks/math-7/bank-pk.js (the ladder copies call them); u3plain,
+   u3areaSVG and u3barSVG verbatim from banks/math-8/bank-u3.js (the
+   fraction copies call them). The remaining helpers the copies call
+   (FR, precPair, u2sg, u2dist, u3disp, u3red, u3gcd, u6pick3,
+   u7mean, u7median, u7numOpts) already live in this bank. */
+
+function pk7uniq(ans, list) {
+  var out = [], seen = {};
+  seen[String(ans)] = 1;
+  list.forEach(function (v) { var k = String(v); if (!seen[k]) { seen[k] = 1; out.push(v); } });
+  return out;
+}
+
+/* Pad a numeric distractor list to at least three distinct values
+   with plain offsets, for the draws where an entry's error-based
+   candidates collapse onto each other (small facts especially). */
+function pk7fill(ans, ds) {
+  var out = ds.slice(), offs = [7, -7, 13, -13, 3, -3, 21, -21];
+  for (var i = 0; i < offs.length && out.length < 3; i++) {
+    var v = ans + offs[i];
+    if (v !== ans && out.indexOf(v) < 0) out.push(v);
+  }
+  return out;
+}
+
+/* Number line figure drawn from the item's own values: integer
+   ticks from lo to hi, a marker at each value in marks, and the
+   tick at missing labelled "?" instead of its value (missing null
+   for none). */
+function pk7line(lo, hi, marks, missing) {
+  var W = 340, H = 76, x0 = 28, x1 = 312, y = 34;
+  function X(v) { return x0 + (v - lo) / (hi - lo) * (x1 - x0); }
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Number line from ' + lo + ' to ' + hi + '">';
+  out += '<line x1="' + (x0 - 8) + '" y1="' + y + '" x2="' + (x1 + 8) + '" y2="' + y + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  for (var v = lo; v <= hi; v++) {
+    out += '<line x1="' + X(v) + '" y1="' + (y - 6) + '" x2="' + X(v) + '" y2="' + (y + 6) + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+    out += _txt(X(v), y + 24, (v === missing ? "?" : String(v)), 12, false);
+  }
+  (marks || []).forEach(function (m) {
+    out += '<circle cx="' + X(m) + '" cy="' + y + '" r="5" fill="' + FIG_ACC + '" stroke="' + FIG_INK + '" stroke-width="1.4"/>';
+    out += '<polygon points="' + (X(m) - 4.5) + ',' + (y - 16) + ' ' + (X(m) + 4.5) + ',' + (y - 16) + ' ' + X(m) + ',' + (y - 8) + '" fill="' + FIG_ACC + '"/>';
+  });
+  return out + '</svg>';
+}
+
+/* Stepped number line: ticks at the given values, equally spaced;
+   the tick at index missingIdx is labelled "?" (or -1 for none);
+   a marker sits over the tick at index markIdx (or -1 for none). */
+function u3plain(n, d) { var r = u3red(n, d); n = r[0]; d = r[1]; if (d === 1) return "" + n; if (n < d) return n + "/" + d; var w = Math.floor(n / d), rem = n % d; if (rem === 0) return "" + w; return w + " " + rem + "/" + d; }
+function u3areaSVG(n1, d1, n2, d2) {
+  var W = 252, H = 144, cw = W / d2, ch = H / d1, cells = "";
+  for (var r = 0; r < d1; r++) for (var c = 0; c < d2; c++) {
+    var fill = "none";
+    if (c < n2 && r < n1) fill = FIG_ACC; else if (c < n2) fill = FIG_SHADE;
+    cells += "<rect x='" + (c * cw) + "' y='" + (r * ch) + "' width='" + cw + "' height='" + ch + "' fill='" + fill + "' fill-opacity='" + (fill === FIG_ACC ? "0.55" : "1") + "' stroke='" + FIG_INK + "' stroke-width='1'/>";
+  }
+  return "<svg viewBox='0 0 252 144' width='252' height='144' xmlns='http://www.w3.org/2000/svg'>" + cells + "<rect x='0' y='0' width='252' height='144' fill='none' stroke='" + FIG_INK + "' stroke-width='2.5'/></svg>";
+}
+function u3barSVG(total, shaded, group) {
+  var W = 280, H = 46, cw = W / total, cells = "";
+  for (var i = 0; i < total; i++) {
+    var fill = i < shaded ? FIG_SHADE : "none";
+    var sw = (i % group === 0 || i === total - 1) ? 2.5 : 1;
+    cells += "<rect x='" + (i * cw) + "' y='4' width='" + cw + "' height='38' fill='" + fill + "' stroke='" + FIG_INK + "' stroke-width='1'/>";
+    if (i % group === 0) cells += "<line x1='" + (i * cw) + "' y1='2' x2='" + (i * cw) + "' y2='44' stroke='" + FIG_INK + "' stroke-width='" + sw + "'/>";
+  }
+  cells += "<line x1='280' y1='2' x2='280' y2='44' stroke='" + FIG_INK + "' stroke-width='2.5'/>";
+  return "<svg viewBox='0 0 280 50' width='280' height='50' xmlns='http://www.w3.org/2000/svg'>" + cells + "</svg>";
+}
+
+E("u1-pkf-fact-recall", 1, ["3.1"], 1, "gen", function () {
+  var a = ri(3, 9), b = ri(3, 9), ans = a * b;
+  var ds = pk7fill(ans, pk7uniq(ans, [(a - 1) * b, (a + 1) * b, a * (b - 1), a * (b + 1), ans - a, ans + b])).slice(0, 3);
+  return mcq("What is \\(" + a + " \\times " + b + "\\)?",
+    { t: String(ans), fb: "Correct: \\(" + a + " \\times " + b + " = " + ans + "\\)." },
+    ds.map(function (d) { return { t: String(d), fb: "That is the product of a nearby fact. Say the fact for \\(" + a + " \\times " + b + "\\) itself." }; }),
+    "The multiplication facts to \\(9 \\times 9\\) are recalled directly: \\(" + a + " \\times " + b + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Say the fact out loud before you look at the choices.","If the fact will not come, count up by one factor: groups of the other."]);
+
+E("u1-pkf-fact-division", 1, ["3.1"], 1, "gen", function () {
+  var a = ri(3, 9), b = ri(4, 9), p = a * b;
+  var ds = pk7uniq(b, [b - 1, b + 1, b + 2, b - 2]).slice(0, 3);
+  return mcq("What is \\(" + p + " \\div " + a + "\\)?",
+    { t: String(b), fb: "Correct: \\(" + a + " \\times " + b + " = " + p + "\\), so \\(" + p + " \\div " + a + " = " + b + "\\)." },
+    ds.map(function (d) { return { t: String(d), fb: "Check with multiplication: \\(" + a + " \\times " + d + "\\) is not " + p + "." }; }),
+    "Division facts come from the matching multiplication fact: \\(" + a + " \\times " + b + " = " + p + "\\), so \\(" + p + " \\div " + a + " = " + b + "\\). The answer is <b>" + b + "</b>.",
+    { a: a, b: b });
+}, ["Think of the multiplication fact with the same numbers.","Ask: the divisor times what gives the number being divided?"]);
+
+E("u1-pkf-fact-halving", 1, ["3.1"], 1, "gen", function () {
+  var a = ri(2, 4), b = ri(3, 9), known = 2 * a * b, ans = a * b;
+  var ds = pk7fill(ans, pk7uniq(ans, [known - b, ans + b, known - 2 * b, ans - b])).slice(0, 3);
+  return mcq("You know that \\(" + (2 * a) + " \\times " + b + " = " + known + "\\). What is \\(" + a + " \\times " + b + "\\)?",
+    { t: String(ans), fb: "Correct: " + a + " is half of " + (2 * a) + ", so the product halves too: " + known + " halved is " + ans + "." },
+    ds.map(function (d) { return { t: String(d), fb: "Halving one factor halves the product; subtracting a group does something else." }; }),
+    "\\(" + a + "\\) is half of \\(" + (2 * a) + "\\), so \\(" + a + " \\times " + b + "\\) is half of \\(" + known + "\\): \\(" + known + " \\div 2 = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Compare the first factors of the two facts.","When one factor is halved, what happens to the product?"]);
+
+E("u1-pkf-order-place", 1, ["3.1"], 1, "gen", function () {
+  var base = ri(200000, 900000);
+  var vals = pk7uniq(-1, [base, base + ri(100, 900), base - ri(100, 900), base + ri(1000, 9000)]).slice(0, 4);
+  while (vals.length < 4) { var v = base + ri(10000, 90000); if (vals.indexOf(v) < 0) vals.push(v); }
+  var greatest = ri(0, 1) === 1, key = greatest ? Math.max.apply(null, vals) : Math.min.apply(null, vals);
+  var ds = vals.filter(function (v) { return v !== key; });
+  return mcq("Which of these numbers is the " + (greatest ? "greatest" : "smallest") + "?",
+    { t: String(key), fb: "Correct: compare the digits place by place from the left." },
+    ds.map(function (d) { return { t: String(d), fb: "Compare from the leftmost digit: the first place where two numbers differ decides which is bigger." }; }),
+    "All four numbers have six digits, so compare place by place from the left. The " + (greatest ? "greatest" : "smallest") + " is <b>" + key + "</b>.",
+    { vals: vals });
+}, ["Compare the numbers from the leftmost digit.","The first place where the digits differ settles it."]);
+
+E("u1-pkf-order-line", 1, ["3.1"], 1, "gen", function () {
+  var lo = ri(0, 40), mark = lo + ri(2, 8);
+  var ds = pk7uniq(mark, [mark - 1, mark + 1, mark + 2]).slice(0, 3);
+  var q = mcq("Which number does the marker show on this number line?",
+    { t: String(mark), fb: "Correct: count along the ticks from " + lo + "." },
+    ds.map(function (d) { return { t: String(d), fb: "Count the ticks one at a time from the labelled start." }; }),
+    "Each tick is one more than the tick before it. Counting from " + lo + ", the marker sits at <b>" + mark + "</b>.",
+    { lo: lo, mark: mark });
+  q.figure = pk7line(lo, lo + 10, [mark], null);
+  return q;
+}, ["Start at the labelled number on the left.","Count one tick at a time up to the marker."]);
+
+E("u1-pkf-order-below", 1, ["3.1"], 2, "gen", function () {
+  var mark = ri(-5, -1);
+  var ds = pk7uniq(mark, [-mark, mark - 1, mark + 1]).slice(0, 3);
+  var q = mcq("Which number does the marker show on this number line?",
+    { t: String(mark), fb: "Correct: the marker is " + Math.abs(mark) + " tick(s) to the left of 0." },
+    ds.map(function (d) { return { t: String(d), fb: d === -mark ? "That is the same distance from zero but on the positive side; the marker is on the negative side." : "Count the ticks from 0, and note which side of 0 the marker is on." }; }),
+    "The marker is " + Math.abs(mark) + " tick(s) to the left of 0, so it shows <b>" + mark + "</b>.",
+    { mark: mark });
+  q.figure = pk7line(-6, 6, [mark], null);
+  return q;
+}, ["Find 0 first, then count the ticks to the marker.","Numbers to the left of 0 are negative."]);
+
+E("u1-pkf-mult-model-chips", 1, ["3.1"], 1, "gen", function () {
+  var g = ri(2, 6), m = ri(2, 7);
+  if (Math.random() < 0.5) {
+    var val = g * (-m);
+    var prompt = "A chip model shows " + g + " equal groups. Each group holds " + m + " red chips, and each red chip stands for \\(-1\\). What product and value does the model show?";
+    var solution = "There are " + g + " groups of \\(-" + m + "\\): \\[ \\begin{aligned} " + g + " \\times (-" + m + ") &= " + val + " \\end{aligned} \\] So the model shows the product <b>\\(" + g + " \\times (-" + m + ") = " + val + "\\)</b>.";
+    return mcq(prompt,
+      { t: fmt(val), fb: "Correct. The model shows " + g + " groups of negative " + m + "." },
+      u2dist(val, [
+        { v: -val, fb: "The sign is wrong. Groups of red (negative) chips give a negative total." },
+        { v: g - m, fb: "That subtracts the group size from the number of groups instead of multiplying." },
+        { v: -(g + m), fb: "That adds the two numbers instead of multiplying them." }
+      ]),
+      solution, { mode: "chips-groups", g: g, m: m });
+  }
+  var val2 = g * m;
+  var prompt2 = "Starting from zero pairs, a student takes away " + g + " groups of " + m + " red chips, where each red chip stands for \\(-1\\). Taking away red chips is recorded as multiplying by \\(-" + g + "\\). What is the value of the model?";
+  var solution2 = "Taking away " + g + " groups of \\(-" + m + "\\) is the product \\((-" + g + ") \\times (-" + m + ")\\). Two negatives give a positive: \\[ \\begin{aligned} (-" + g + ") \\times (-" + m + ") &= " + val2 + " \\end{aligned} \\] So the value of the model is <b>" + val2 + "</b>.";
+  return mcq(prompt2,
+    { t: fmt(val2), fb: "Correct. Removing groups of negative chips raises the value." },
+    u2dist(val2, [
+      { v: -val2, fb: "The sign is wrong. A negative times a negative gives a positive." },
+      { v: m - g, fb: "That subtracts the numbers of groups instead of multiplying." },
+      { v: g + m, fb: "That adds the two numbers instead of multiplying them." }
+    ]),
+    solution2, { mode: "chips-removal", g: g, m: m });
+}, ["Count the groups first, then the value in each group.","Red chips stand for negatives, and taking groups away is also a negative action."]);
+
+E("u1-pkf-product-sign-apply", 1, ["3.1"], 1, "gen", function () {
+  var a = 0, b = 0;
+  while (a === 0) a = ri(-9, 9);
+  while (b === 0) b = ri(-9, 9);
+  var val = a * b;
+  var prompt = "Evaluate: \\(" + u2sg(a) + " \\times " + u2sg(b) + "\\)";
+  var signNote = (a < 0 && b < 0) ? "The signs are the same, so the product is positive."
+    : (a < 0 || b < 0) ? "The signs are different, so the product is negative."
+    : "Both factors are positive, so the product is positive.";
+  var solution = signNote + " Multiply the sizes: \\[ \\begin{aligned} " + u2sg(a) + " \\times " + u2sg(b) + " &= " + val + " \\end{aligned} \\] So the product is <b>" + val + "</b>.";
+  return mcq(prompt,
+    { t: fmt(val), fb: "Correct. " + signNote },
+    u2dist(val, [
+      { v: -val, fb: "The size is right but the sign is wrong. Check whether the signs are the same or different." },
+      { v: a + b, fb: "That adds the two numbers instead of multiplying them." },
+      { v: a - b, fb: "That subtracts the two numbers instead of multiplying them." }
+    ]),
+    solution, { mode: "product-sign", a: a, b: b });
+}, ["Decide the sign first: same signs give a positive, different signs give a negative.","Multiply the sizes of the two numbers, then attach the sign."]);
+
+E("u1-pkf-mult-problem", 1, ["3.1"], 1, "gen", function () {
+  var mode = ri(0, 2);
+  if (mode === 0) {
+    var start = ri(-6, 8), r = ri(2, 6), h = ri(3, 7);
+    var ans = start - r * h;
+    var prompt = "At supper time the temperature in Corner Brook is " + start + " degrees. It then falls " + r + " degrees each hour for " + h + " hours. What is the temperature after " + h + " hours, in degrees?";
+    var solution = "The total fall is a product, then subtract it from the start: \\[ \\begin{aligned} " + start + " + (-" + r + ") \\times " + h + " &= " + start + " - " + (r * h) + " \\\\ &= " + ans + " \\end{aligned} \\] So the temperature is <b>" + ans + " degrees</b>.";
+    return numq(prompt, ans, 0.01, solution, { mode: "temp-fall", start: start, r: r, h: h });
+  }
+  if (mode === 1) {
+    var bal = ri(60, 240), w = ri(6, 20), k = ri(3, 8);
+    var ansB = bal - w * k;
+    var promptB = "A bank account holds $" + bal + ". The owner withdraws $" + w + " each week for " + k + " weeks, with no other activity. What is the balance after " + k + " weeks, in dollars?";
+    var solutionB = "The total withdrawn is a product, then subtract it from the opening balance: \\[ \\begin{aligned} " + bal + " + (-" + w + ") \\times " + k + " &= " + bal + " - " + (w * k) + " \\\\ &= " + ansB + " \\end{aligned} \\] So the balance is <b>$" + ansB + "</b>.";
+    return numq(promptB, ansB, 0.01, solutionB, { mode: "bank-withdraw", bal: bal, w: w, k: k });
+  }
+  var depth = ri(10, 60), rate = ri(3, 9), mins = ri(3, 8);
+  var ansD = -(depth + rate * mins);
+  var promptD = "A small submersible is " + depth + " m below the surface. It descends a further " + rate + " m each minute for " + mins + " minutes. Using negative numbers for positions below the surface, what is its position after " + mins + " minutes, in metres?";
+  var solutionD = "The extra descent is a product, added to the starting depth: \\[ \\begin{aligned} -" + depth + " + (-" + rate + ") \\times " + mins + " &= -" + depth + " - " + (rate * mins) + " \\\\ &= " + ansD + " \\end{aligned} \\] So its position is <b>" + ansD + " m</b>.";
+  return numq(promptD, ansD, 0.01, solutionD, { mode: "sub-descend", depth: depth, rate: rate, mins: mins });
+}, ["Find the total repeated change first: that part is a multiplication.","Multiply the change per step by the number of steps, then combine it with the starting value."]);
+
+E("u1-pkf-quotient-sign-apply", 1, ["3.1"], 1, "gen", function () {
+  var d = 0;
+  while (d === 0 || Math.abs(d) < 2) d = ri(-9, 9);
+  var q = 0;
+  while (q === 0 || Math.abs(q) < 2) q = ri(-9, 9);
+  var dvd = d * q;
+  var prompt = "Evaluate: \\(" + dvd + " \\div " + u2sg(d) + "\\)";
+  var signNote = (dvd < 0 && d < 0) || (dvd > 0 && d > 0) ? "The signs are the same, so the quotient is positive." : "The signs are different, so the quotient is negative.";
+  var solution = signNote + " Divide the sizes: \\[ \\begin{aligned} " + dvd + " \\div " + u2sg(d) + " &= " + q + " \\end{aligned} \\] So the quotient is <b>" + q + "</b>.";
+  return mcq(prompt,
+    { t: fmt(q), fb: "Correct. " + signNote },
+    u2dist(q, [
+      { v: -q, fb: "The size is right but the sign is wrong. Check whether the signs are the same or different." },
+      { v: dvd - d, fb: "That subtracts the divisor instead of dividing." },
+      { v: d, fb: "That just repeats the divisor. The quotient tells how many groups of the divisor fit." }
+    ]),
+    solution, { mode: "quotient-sign", d: d, q: q });
+}, ["Decide the sign first: same signs give a positive, different signs give a negative.","Divide the size of the first number by the size of the second, then attach the sign."]);
+
+E("u1-pkf-div-2by1", 1, ["3.1"], 1, "gen", function () {
+  var P = null;
+  for (var tries = 0; tries < 300 && !P; tries++) {
+    var d = ri(2, 9);
+    var q = ri(3, 12) * (Math.random() < 0.5 ? -1 : 1);
+    var dvd = d * q;
+    if (Math.abs(dvd) < 10 || Math.abs(dvd) > 99) continue;
+    P = { d: d, q: q, dvd: dvd };
+  }
+  if (!P) P = { d: 6, q: -7, dvd: -42 };
+  var prompt = "A tide gauge shows the water level changed by a total of " + P.dvd + " cm, made up of " + P.d + " equal hourly changes. What was the change in each hour, in centimetres?";
+  var solution = "Split the total change into " + P.d + " equal parts, then use the sign rule: \\[ \\begin{aligned} " + P.dvd + " \\div " + P.d + " &= " + P.q + " \\end{aligned} \\] So the change in each hour was <b>" + P.q + " cm</b>.";
+  return numq(prompt, P.q, 0.01, solution, { mode: "div-2by1", d: P.d, q: P.q });
+}, ["The dividend has two digits and the divisor has one digit.","Divide the sizes first, then use the sign rule for the quotient."]);
+
+E("u1-pkf-ooo-num", 1, ["3.1"], 2, "gen", function () {
+  var s = pick([2, 3, 4, 5, 6]) * (Math.random() < 0.5 ? -1 : 1);
+  var qq = ri(2, 9) * (Math.random() < 0.5 ? -1 : 1);
+  var r = s * qq;
+  var p = 0, q = 0;
+  while (p === 0) p = ri(-8, 8);
+  while (q === 0) q = ri(-8, 8);
+  var val = p * q - qq;
+  var prompt = "Evaluate: \\(" + u2sg(p) + " \\times " + u2sg(q) + " - " + r + " \\div " + u2sg(s) + "\\)";
+  var solution = "Do the multiplication and the division before the subtraction: \\[ \\begin{aligned} " + u2sg(p) + " \\times " + u2sg(q) + " - " + r + " \\div " + u2sg(s) + " &= " + (p * q) + " - " + qq + " \\\\ &= " + val + " \\end{aligned} \\] So the value is <b>" + val + "</b>.";
+  return numq(prompt, val, 0.01, solution, { mode: "ooo-num", p: p, q: q, s: s });
+}, ["Multiplication and division are done before addition and subtraction.","Work out the product and the quotient separately, then combine them."]);
+
+E("u1-pkf-model-frac-times-whole", 1, ["3.1"], 1, "gen", function () {
+  var P = null;
+  for (var t = 0; t < 200 && !P; t++) {
+    var d = ri(3, 8), n = ri(1, d - 1), w = ri(2, 6);
+    var vals = [u3disp(w * n, d), u3disp(n + w, d), u3disp(n, d), u3disp(w, d)];
+    if (new Set(vals).size < 4) continue;
+    P = { d: d, n: n, w: w, vals: vals };
+  }
+  if (!P) P = { d: 4, n: 3, w: 3, vals: [u3disp(9, 4), u3disp(6, 4), u3disp(3, 4), u3disp(3, 4)] };
+  var prompt = "A model shows \\(" + P.w + "\\) equal groups. In each group, " + u3disp(P.n, P.d) + " is shaded. What is the total amount shaded?";
+  var adds = []; for (var i = 0; i < P.w; i++) adds.push(FR(P.n, P.d));
+  var solution = "Add the same fraction once for each group, which is multiplication: \\[ \\begin{aligned} " + adds.join(" + ") + " &= " + P.w + " \\times " + FR(P.n, P.d) + " \\\\ &= " + FR(P.w * P.n, P.d) + " \\\\ &= " + u3plain(P.w * P.n, P.d) + " \\end{aligned} \\] So the total shaded is <b>" + u3disp(P.w * P.n, P.d) + "</b>.";
+  return mcq(prompt,
+    { t: P.vals[0], fb: "Correct. Each of the " + P.w + " groups contributes the same fraction." },
+    [
+      { t: P.vals[1], fb: "This adds the whole number to the numerator, but the model repeats the fraction instead." },
+      { t: P.vals[2], fb: "That is the amount shaded in just one group." },
+      { t: P.vals[3], fb: "This uses the whole number as a numerator over the same denominator, which is not repeated addition." }
+    ],
+    solution, { mode: "model-times-whole", n: P.n, d: P.d, w: P.w });
+}, ["Multiplication by a whole number means adding the fraction the same number of times.","First write the total as a repeated addition of the fraction."]);
+
+E("u1-pkf-area-model-product", 1, ["3.1"], 1, "gen", function () {
+  var P = null;
+  for (var t = 0; t < 200 && !P; t++) {
+    var d1 = ri(3, 5), n1 = ri(1, d1 - 1), d2 = ri(3, 6), n2 = ri(1, d2 - 1);
+    var vals = [u3disp(n1 * n2, d1 * d2), u3disp(n1, d1), u3disp(n2, d2), u3disp(n1 + n2, d1 + d2)];
+    if (new Set(vals).size < 4) continue;
+    P = { n1: n1, d1: d1, n2: n2, d2: d2, vals: vals };
+  }
+  if (!P) P = { n1: 2, d1: 3, n2: 3, d2: 4, vals: [u3disp(6, 12), u3disp(2, 3), u3disp(3, 4), u3disp(5, 7)] };
+  var prompt = "A rectangle is split into \\(" + P.d1 + "\\) equal rows and \\(" + P.d2 + "\\) equal columns. " + P.n1 + " of the rows and " + P.n2 + " of the columns are shaded, modelling " + u3disp(P.n1, P.d1) + " \\(\\times\\) " + u3disp(P.n2, P.d2) + ". What fraction of the whole rectangle is shaded both ways, in the overlap?";
+  var solution = "The overlap covers \\(" + (P.n1 * P.n2) + "\\) of the \\(" + (P.d1 * P.d2) + "\\) small cells: \\[ \\begin{aligned} " + FR(P.n1, P.d1) + " \\times " + FR(P.n2, P.d2) + " &= " + FR(P.n1 * P.n2, P.d1 * P.d2) + " \\\\ &= " + FR(u3red(P.n1 * P.n2, P.d1 * P.d2)[0], u3red(P.n1 * P.n2, P.d1 * P.d2)[1]) + " \\end{aligned} \\] So the overlap is <b>" + P.vals[0] + "</b> of the rectangle.";
+  var q = mcq(prompt,
+    { t: P.vals[0], fb: "Correct. The overlap is the product of the two shaded fractions." },
+    [
+      { t: P.vals[1], fb: "That is only the fraction of rows shaded, ignoring the columns." },
+      { t: P.vals[2], fb: "That is only the fraction of columns shaded, ignoring the rows." },
+      { t: P.vals[3], fb: "This adds the shaded parts instead of finding their overlap." }
+    ],
+    solution, { mode: "area-model", n1: P.n1, d1: P.d1, n2: P.n2, d2: P.d2 });
+  q.figure = u3areaSVG(P.n1, P.d1, P.n2, P.d2);
+  return q;
+}, ["The overlap is where the row shading and the column shading cross.","Count the overlap cells, then count all the cells in the rectangle."]);
+
+E("u1-pkf-estimate-product-benchmark", 1, ["3.1"], 2, "gen", function () {
+  var P = null;
+  for (var t = 0; t < 300 && !P; t++) {
+    var d1 = ri(3, 10), n1 = ri(1, d1 - 1), d2 = ri(3, 10), n2 = ri(1, d2 - 1);
+    var p = (n1 / d1) * (n2 / d2);
+    var bench = [0, 0.5, 1], bi = 0, best = 9;
+    bench.forEach(function (b, i) { var dd = Math.abs(p - b); if (dd < best) { best = dd; bi = i; } });
+    if (best > 0.18) continue;
+    var second = 9; bench.forEach(function (b, i) { if (i !== bi) second = Math.min(second, Math.abs(p - b)); });
+    if (second - best < 0.12) continue;
+    P = { n1: n1, d1: d1, n2: n2, d2: d2, p: p, bi: bi };
+  }
+  if (!P) P = { n1: 3, d1: 4, n2: 2, d2: 3, p: 0.5, bi: 1 };
+  var labels = ["0", "\\(" + FR(1, 2) + "\\)", "\\(" + FR(2, 2) + "\\)", "2"];
+  var correct = labels[P.bi];
+  var distractors = labels.filter(function (l, i) { return i !== P.bi; }).map(function (l) {
+    var fb = l === "2" ? "A product of two fractions less than 1 is less than 1, so it cannot be near 2." : "Compare each factor with \\(" + FR(1, 2) + "\\) first: the product lands nearer a different benchmark.";
+    return { t: l, fb: fb };
+  });
+  var prompt = "The product " + u3disp(P.n1, P.d1) + " \\(\\times\\) " + u3disp(P.n2, P.d2) + " is closest to which benchmark?";
+  var solution = "Estimate each factor: \\(" + FR(P.n1, P.d1) + "\\) is about \\(" + fmt(Math.round(P.n1 / P.d1 * 2) / 2) + "\\) and \\(" + FR(P.n2, P.d2) + "\\) is about \\(" + fmt(Math.round(P.n2 / P.d2 * 2) / 2) + "\\), and the exact product is \\(" + fmt(Math.round(P.p * 1000) / 1000) + "\\). So the product is closest to <b>" + correct + "</b>.";
+  return mcq(prompt, { t: correct, fb: "Correct. Estimating each factor first puts the product nearest this benchmark." }, distractors, solution, { mode: "est-product", bi: P.bi });
+}, ["Compare each fraction with one half before you multiply.","Ask whether each factor is small, near one half, or near one."]);
+
+E("u1-pkf-model-whole-div-frac", 1, ["3.1"], 1, "gen", function () {
+  var w = ri(2, 6), d = ri(3, 10);
+  var ans = w * d;
+  var thing = pick(["wholes", "pizzas", "ribbons", "litres of juice"]);
+  var prompt = "A diagram shows \\(" + w + "\\) " + (thing === "wholes" ? "wholes" : "whole " + thing) + ". Each whole is split into \\(" + d + "\\) equal parts, modelling \\(" + w + " \\div " + FR(1, d) + "\\). How many parts are there in all?";
+  var solution = "Each whole contributes \\(" + d + "\\) parts: \\[ \\begin{aligned} " + w + " \\div " + FR(1, d) + " &= " + w + " \\times " + d + " \\\\ &= " + ans + " \\end{aligned} \\] So there are <b>" + ans + " parts</b> in all.";
+  return mcq(prompt,
+    { t: "" + ans, fb: "Correct. Multiply the number of wholes by the parts in each whole." },
+    [
+      { t: "" + (w + d), fb: "This adds the two numbers, but each whole holds several parts." },
+      { t: "" + d, fb: "That counts the parts in only one whole." },
+      { t: "" + (w * (d + 1)), fb: "This counts one extra part in every whole." }
+    ],
+    solution, { mode: "model-whole-div", w: w, d: d });
+}, ["Count the parts inside one whole first, then scale up to all the wholes.","Division by a unit fraction asks how many of those parts fit."]);
+
+E("u1-pkf-model-division-bar", 1, ["3.1"], 1, "gen", function () {
+  var P = null;
+  for (var t = 0; t < 400 && !P; t++) {
+    var d1 = pick([2, 3, 4, 5, 6, 8]), n1 = ri(1, d1 - 1), d2 = pick([2, 3, 4, 5, 6, 8]);
+    var L = (d1 * d2) / u3gcd(d1, d2);
+    if (L > 20) continue;
+    var shaded = n1 * (L / d1), grp = L / d2;
+    if (shaded % grp !== 0) continue;
+    var cnt = shaded / grp;
+    if (cnt < 2) continue;
+    P = { n1: n1, d1: d1, d2: d2, L: L, shaded: shaded, grp: grp, cnt: cnt };
+  }
+  if (!P) P = { n1: 2, d1: 3, d2: 6, L: 6, shaded: 4, grp: 1, cnt: 4 };
+  var item = pick(["strip", "ribbon", "rope", "board"]);
+  var prompt = "A bar model shows " + u3disp(P.n1, P.d1) + " of a " + item + " shaded. The " + item + " is split into \\(" + P.L + "\\) equal small parts, and the bold marks group the parts into servings of " + u3disp(1, P.d2) + " of a " + item + " each. How many servings are in the shaded part?";
+  var solution = "Use the common split of \\(" + P.L + "\\) parts: \\[ \\begin{aligned} " + FR(P.n1, P.d1) + " &= " + FR(P.shaded, P.L) + " \\\\ " + FR(1, P.d2) + " &= " + FR(P.grp, P.L) + " \\\\ " + P.shaded + " \\div " + P.grp + " &= " + P.cnt + " \\end{aligned} \\] So there are <b>" + P.cnt + " servings</b> in the shaded part.";
+  var q = numq(prompt, P.cnt, 0, solution, { mode: "model-div-bar", n1: P.n1, d1: P.d1, d2: P.d2 });
+  q.figure = u3barSVG(P.L, P.shaded, P.grp);
+  return q;
+}, ["Rewrite both fractions using the small parts shown on the bar.","Count the shaded small parts, then divide by the parts in one serving."]);
+
+E("u1-pkf-context-divide-expression", 1, ["3.1"], 1, "gen", function () {
+  var tmpls = [
+    function (a, b) { return "A ribbon " + a + " m long is cut into pieces that are each " + b + " m long. Which expression gives the number of pieces?"; },
+    function (a, b) { return "A jug holds " + a + " L of juice. It is poured equally into bottles that each hold " + b + " L. Which expression gives the number of bottles filled?"; },
+    function (a, b) { return "A trail crew has " + a + " kg of gravel to spread in loads of " + b + " kg each. Which expression gives the number of loads?"; },
+    function (a, b) { return "A tank holds " + a + " L of water. Each watering can takes " + b + " L. Which expression gives the number of cans that can be filled?"; }
+  ];
+  var d1 = ri(3, 9), n1 = ri(1, d1 - 1), d2 = ri(3, 9), n2 = ri(1, d2 - 1);
+  if (u3plain(n1, d1) === u3plain(n2, d2)) { n2 = n2 % (d2 - 1) + 1; if (u3plain(n1, d1) === u3plain(n2, d2)) n1 = n1 % (d1 - 1) + 1; }
+  var A = u3disp(n1, d1), B = u3disp(n2, d2);
+  var prompt = pick(tmpls)(A, B);
+  var div = "\\(" + FR(n1, d1) + " \\div " + FR(n2, d2) + "\\)";
+  var solution = "The context asks how many groups of one size fit into a total, which is division with the total first: \\[ \\begin{aligned} " + FR(n1, d1) + " \\div " + FR(n2, d2) + " \\end{aligned} \\] So the expression is <b>" + div + "</b>.";
+  return mcq(prompt,
+    { t: div, fb: "Correct. The total is divided by the size of each group." },
+    [
+      { t: "\\(" + FR(n2, d2) + " \\div " + FR(n1, d1) + "\\)", fb: "This puts the group size first, but division starts from the total amount." },
+      { t: "\\(" + FR(n1, d1) + " \\times " + FR(n2, d2) + "\\)", fb: "Multiplication takes a part of a part, but this context counts how many groups fit." },
+      { t: "\\(" + FR(n1, d1) + " - " + FR(n2, d2) + "\\)", fb: "Subtraction finds what is left after one removal, not the number of groups." }
+    ],
+    solution, { mode: "ctx-div-expr", n1: n1, d1: d1, n2: n2, d2: d2 });
+}, ["Ask whether the context counts groups that fit into a total.","In a division expression, the total amount comes first."]);
+
+E("u1-pkf-div-decimals", 1, ["3.1"], 1, "gen", function(){
+  var ctxs=[
+    {s:"A rope %D m long is cut into %V equal pieces. How long is each piece, in metres?"},
+    {s:"A group pays $%D for a van rental, split equally among %V friends. How much does each friend pay?"},
+    {s:"A jug holds %D L of juice, poured equally into %V bottles. How many litres are in each bottle?"}
+  ];
+  var useDecDiv=ri(0,1)===0;
+  var dv=useDecDiv?ri(3,9)/10:ri(3,9);
+  var q=ri(125,2400)/100;
+  var dvd=q*dv;
+  var c=pick(ctxs);
+  var prompt=c.s.replace("%D",fmt(dvd,3)).replace("%V",fmt(dv,1));
+  var money=c.s.indexOf("$")>=0;
+  var pool=[q*10,q/10,q+dv,q- dv];
+  var seen={}; seen[fmt(q,3)]=1; var ds=[];
+  for(var i=0;i<pool.length&&ds.length<3;i++){
+    if(!(pool[i]>0))continue;
+    var k=fmt(pool[i],3);
+    if(seen[k])continue; seen[k]=1;
+    ds.push({t:(money?"$":"")+k, fb:"Check by multiplying your answer by the divisor: it should return the starting amount."});
+  }
+  var corT=(money?"$":"")+fmt(q,3);
+  ds.forEach(function(o){if(money&&o.t.indexOf("$")!==0)o.t="$"+o.t;});
+  ds=precPair(corT,ds);
+  return mcq(prompt,
+    {t:corT, fb:"Yes: "+fmt(q,3)+" times "+fmt(dv,1)+" gives back "+fmt(dvd,3)+"."},
+    ds,
+    "\\[ \\begin{aligned} "+fmt(dvd,3)+" \\div "+fmt(dv,1)+" &= "+fmt(q,3)+" \\end{aligned} \\] Check: \\("+fmt(q,3)+" \\times "+fmt(dv,1)+" = "+fmt(dvd,3)+"\\). The answer is <b>"+corT+"</b>.",
+    {dv:dv, q:q});
+}, ["Division undoes multiplication: answer times divisor should give the starting amount.","Start by estimating: how many groups of the divisor fit into the starting amount?"]);
+
+E("u1-pkf-frontend-sum", 1, ["3.1"], 2, "gen", function(){
+  var A=ri(2,9)+ri(1,9)/10;
+  var B=ri(1,9)/10+ri(1,99)/100;
+  var C=ri(120,480)+ri(1,999)/1000;
+  var isSum=ri(0,1)===0;
+  var val=isSum?A+B+C:C-A;
+  var milli=Math.round(val*1000), digits=String(milli);
+  var decPos=digits.length-3;
+  function place(pos){
+    if(pos<=0)return "0."+("000".slice(0,-pos))+digits;
+    if(pos>=digits.length)return digits+("000".slice(0,pos-digits.length));
+    return digits.slice(0,pos)+"."+digits.slice(pos);
+  }
+  var posns=[decPos,decPos-1,decPos+1,decPos-2,decPos+2];
+  var seen={}; var ds=[];
+  var corStr=place(decPos); seen[corStr]=1;
+  for(var i=1;i<posns.length&&ds.length<3;i++){
+    var s2=place(posns[i]);
+    if(seen[s2])continue; seen[s2]=1;
+    ds.push({t:s2, fb:"Front-end estimation puts the value near "+fmt(Math.round(val))+", so that decimal placement is the wrong size."});
+  }
+  ds=precPair(corStr,ds);
+  var expr=isSum?(fmt(A,1)+" + "+fmt(B,2)+" + "+fmt(C,3)):(fmt(C,3)+" - "+fmt(A,1));
+  var fe=isSum?("the front ends are about "+Math.floor(A)+" + 0 + "+Math.floor(C)):("the front ends are about "+Math.floor(C)+" - "+Math.floor(A));
+  return mcq("The digits of the answer to "+expr+" are "+digits+". Using front-end estimation, where does the decimal point belong?",
+    {t:corStr, fb:"Yes: "+fe+", which matches this placement."},
+    ds,
+    "Front-end estimation: "+fe+", so the answer is in the "+(val>=100?"hundreds":val>=10?"tens":"ones")+" range. Placing the decimal point to give "+corStr+" matches. The answer is <b>"+corStr+"</b>.",
+    {mode:isSum?"sum":"diff"});
+}, ["Front-end estimation uses the leading digits to judge the size of the answer.","Start by adding or subtracting just the whole-number front ends."]);
+
+E("u1-pkf-frontend-prod-quot", 1, ["3.1"], 2, "gen", function(){
+  var isProd=ri(0,1)===0;
+  var digits, decPos, prompt, feText, val;
+  if(isProd){
+    var P=ri(205,1999)/100, M=ri(21,49)/10;
+    val=P*M;
+    var milli=Math.round(val*1000); digits=String(milli); decPos=digits.length-3;
+    prompt="The digits of the product $"+fmtF(P,2)+" x "+fmt(M,1)+" are "+digits+". Using front-end estimation, where does the decimal point belong in the product?";
+    feText="the front ends give about $"+Math.floor(P)+" x "+Math.floor(M)+" = $"+(Math.floor(P)*Math.floor(M));
+  } else {
+    var q=ri(15,35)+ri(1,9)/10, dv=ri(21,49)/10, dvd=q*dv;
+    val=q;
+    digits=String(Math.round(q*10)); decPos=digits.length-1;
+    prompt="The digits of the quotient "+fmt(dvd,2)+" / "+fmt(dv,1)+" are "+digits+". Using front-end estimation, where does the decimal point belong in the quotient?";
+    feText="the front ends give about "+fmt(Math.round(dvd))+" / "+Math.floor(dv)+", roughly "+fmt(Math.round(dvd)/Math.floor(dv),0);
+  }
+  function place(pos){
+    if(pos<=0)return "0."+("000".slice(0,-pos))+digits;
+    if(pos>=digits.length)return digits+("000".slice(0,pos-digits.length));
+    return digits.slice(0,pos)+"."+digits.slice(pos);
+  }
+  var corStr=place(decPos);
+  var posns=[decPos-1,decPos+1,decPos-2,decPos+2];
+  var seen={}; seen[corStr]=1; var ds=[];
+  for(var i=0;i<posns.length&&ds.length<3;i++){
+    var s2=place(posns[i]);
+    if(seen[s2])continue; seen[s2]=1;
+    ds.push({t:s2, fb:"Front-end estimation gives a different size: "+feText+"."});
+  }
+  ds=precPair(corStr,ds);
+  return mcq(prompt,
+    {t:corStr, fb:"Yes: "+feText+", which matches this placement."},
+    ds,
+    "Front-end estimation: "+feText+", so the answer must be that size. Only "+corStr+" fits. The answer is <b>"+corStr+"</b>.",
+    {mode:isProd?"prod":"quot"});
+}, ["Front-end estimation uses the leading digits to judge the size of the answer.","Start by multiplying or dividing just the front-end whole numbers."]);
+
+E("u1-pkf-reasonableness", 1, ["3.1"], 1, "gen", function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var a=ri(32,68), b=ri(3,9), cor=a*b, given=cor/10, est=Math.round(a/10)*10*b;
+    return mcq("Kofi calculates "+a+" x "+b+" = "+fmt(given,1)+". Which check shows whether his answer is reasonable?",
+      {t:"Estimate "+Math.round(a/10)*10+" x "+b+" = "+est+"; the answer should be near "+est+", so "+fmt(given,1)+" is too small", fb:"Yes: the estimate exposes a misplaced decimal point."},
+      [{t:"The answer is reasonable because "+a+" x "+b+" has no decimal points in it", fb:"Whole-number factors can still give an answer of the wrong size: estimate to check."},
+       {t:"Estimate "+Math.round(a/10)*10+" x "+b+" = "+est+"; since "+fmt(given,1)+" is a whole number it must be right", fb:"The estimate says the product should be near "+est+", far from the given value."},
+       {t:"Add "+a+" + "+b+" = "+(a+b)+" to check the multiplication, using the same two numbers", fb:"Adding does not check a product: use a rounded multiplication estimate."}],
+      "Estimate with rounded numbers: "+Math.round(a/10)*10+" x "+b+" = "+est+". The true product is "+cor+", so "+fmt(given,1)+" is far too small. The answer is <b>the estimate check</b>.",
+      {mode:"mult"});
+  }
+  if(mode===1){
+    var x=ri(210,480)+ri(1,99)/100, y=ri(110,290)+ri(1,99)/100, s=x+y, giv=Math.round(s)+100;
+    var est2=Math.round(x)+Math.round(y);
+    return mcq("Aisha calculates "+fmt(x,2)+" + "+fmt(y,2)+" = "+fmt(giv,2)+". Which check shows whether her answer is reasonable?",
+      {t:"Estimate "+Math.round(x)+" + "+Math.round(y)+" = "+est2+"; the answer should be near "+est2+", so "+fmt(giv,2)+" is too large", fb:"Yes: rounding each addend exposes the error."},
+      [{t:"The answer is reasonable because the cents digits add up correctly", fb:"Correct cents do not guarantee the whole-number part: estimate the full size."},
+       {t:"Estimate "+Math.round(x)+" + "+Math.round(y)+" = "+est2+"; since the given answer ends in .00 it must be right", fb:"The estimate says the sum should be near "+est2+", far from the given value."},
+       {t:"Multiply the two numbers to check the addition, with the same two numbers", fb:"Multiplication does not check an addition: use a rounded addition estimate."}],
+      "Estimate with rounded numbers: "+Math.round(x)+" + "+Math.round(y)+" = "+est2+". The true sum is "+fmt(s,2)+", so "+fmt(giv,2)+" is too large. The answer is <b>the estimate check</b>.",
+      {mode:"add"});
+  }
+  var T=ri(120,360), n=ri(4,8), per=T/n, giv2=per*10, est3=Math.round(T/10)*10/n;
+  return mcq("Ravi calculates "+T+" / "+n+" = "+fmt(giv2,1)+". Which check shows whether his answer is reasonable?",
+    {t:"Estimate "+Math.round(T/10)*10+" / "+n+" = "+fmt(est3,1)+"; the answer should be near "+fmt(est3,1)+", so "+fmt(giv2,1)+" is too large", fb:"Yes: the estimate exposes a misplaced decimal point."},
+    [{t:"The answer is reasonable because "+n+" is a small divisor for a division question", fb:"A small divisor does not guarantee the size: estimate to check."},
+     {t:"Estimate "+Math.round(T/10)*10+" / "+n+" = "+fmt(est3,1)+"; since "+fmt(giv2,1)+" beats a tenth of "+T+" it must be right", fb:"The estimate says the quotient should be near "+fmt(est3,1)+", far from the given value."},
+     {t:"Subtract "+n+" from "+T+" to check the division, rather than estimating the quotient", fb:"Subtraction does not check a quotient: use a rounded division estimate."}],
+    "Estimate with rounded numbers: "+Math.round(T/10)*10+" / "+n+" = "+fmt(est3,1)+". The true quotient is "+fmt(per,2)+", so "+fmt(giv2,1)+" is too large. The answer is <b>the estimate check</b>.",
+    {mode:"div"});
+}, ["A quick estimate with rounded numbers tells you the size the answer should be.","Start by rounding each number to a friendly value and redoing the operation."]);
+
+E("u5-pkf-solve-one-step", 5, ["8.17"], 1, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var form = pick(["ax", "xa"]);
+    var a = ri(2, 9), x = ri(2, 12), b = form === "ax" ? a * x : x;
+    if (form === "xa") { b = x; x = a * b; } // equation x/a = b, solution x = a*b
+    var solX = form === "ax" ? b / a : a * b;
+    var eq = form === "ax" ? fmt(a) + "x = " + fmt(b) : "\\frac{x}{" + a + "} = " + fmt(b);
+    var wrong = form === "ax" ? [b * a, b - a, b + a] : [b / a, b - a, b + a];
+    var corr = fmt(solX);
+    var dpA = (fmt(wrong[0]).split(".")[1] || "").length;
+    var cands = wrong.map(function (w, wi) {
+      return { t: (form === "xa" && wi === 1 && dpA > 0) ? fmtF(w, dpA) : fmt(w), fb: form === "ax" ? "That uses the wrong operation. To undo multiplying by " + a + ", divide both sides by " + a + "." : "That uses the wrong operation. To undo dividing by " + a + ", multiply both sides by " + a + "." };
+    });
+    var ds = u6pick3(corr, cands);
+    if (!ds) continue;
+    var steps = form === "ax"
+      ? "\\begin{aligned} " + fmt(a) + "x &= " + fmt(b) + " \\\\ x &= " + fmt(b) + " \\div " + fmt(a) + " \\\\ x &= " + fmt(solX) + " \\end{aligned}"
+      : "\\begin{aligned} \\frac{x}{" + a + "} &= " + fmt(b) + " \\\\ x &= " + fmt(b) + " \\times " + fmt(a) + " \\\\ x &= " + fmt(solX) + " \\end{aligned}";
+    var sol = "Use the inverse operation on both sides: \\[ " + steps + " \\] So the solution is <b>\\(x = " + fmt(solX) + "\\)</b>.";
+    return mcq("Solve the equation \\(" + eq + "\\). What is the value of \\(x\\)?",
+      { t: corr, fb: "Correct. The inverse operation isolates x." }, ds, sol,
+      { mode: "solve-one-step", form: form, a: a, b: b });
+  }
+  return mcq("Solve the equation \\(3x = 12\\). What is the value of \\(x\\)?",
+    { t: "4", fb: "Correct. Divide both sides by 3." },
+    [{ t: "36", fb: "That multiplies instead of dividing." }, { t: "9", fb: "That subtracts 3 instead of dividing by 3." }, { t: "15", fb: "That adds 3 instead of dividing by 3." }],
+    "Divide both sides by 3: \\[ \\begin{aligned} 3x &= 12 \\\\ x &= 4 \\end{aligned} \\] So the solution is <b>\\(x = 4\\)</b>.", { mode: "solve-one-step-fallback" });
+}, ["Think about what is being done to x, then use the opposite operation.","For ax = b divide both sides by a; for x/a = b multiply both sides by a."]);
+
+E("u5-pkf-visual-step", 5, ["8.17"], 1, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var a = ri(2, 6), b = ri(2, 12), x = ri(2, 11), c = a * x + b;
+    var step = pick(["remove", "split"]);
+    if (step === "remove") {
+      var corr = "\\(" + fmt(a) + "x = " + fmt(c - b) + "\\)";
+      var ds = u6pick3(corr, [
+        { t: "\\(" + fmt(a) + "x + " + fmt(b) + " = " + fmt(c - b) + "\\)", fb: "That removes the unit tiles from one side only. A balance stays level only when the same tiles leave both sides." },
+        { t: "\\(" + fmt(a) + "x = " + fmt(c + b) + "\\)", fb: "That adds tiles to the right side. The picture removes " + fmt(b) + " unit tiles from each side." },
+        { t: "\\(x = " + fmt(c - b) + "\\)", fb: "That skips a step. The bags are still closed at this stage, so the left side is still " + fmt(a) + "x." }
+      ]);
+      if (!ds) continue;
+      var sol = "Removing " + fmt(b) + " unit tiles from both sides keeps the balance level: \\[ \\begin{aligned} " + fmt(a) + "x + " + fmt(b) + " &= " + fmt(c) + " \\\\ " + fmt(a) + "x &= " + fmt(c) + " - " + fmt(b) + " \\\\ " + fmt(a) + "x &= " + fmt(c - b) + " \\end{aligned} \\] So the picture after this step shows <b>" + corr + "</b>.";
+      return mcq("A balance model shows " + fmt(a) + " closed bags (each holding x counters) and " + fmt(b) + " loose counters on the left pan, balanced by " + fmt(c) + " counters on the right pan. The next picture removes " + fmt(b) + " loose counters from each pan. Which equation does the next picture show?",
+        { t: corr, fb: "Correct. The same removal on both sides gives " + fmt(a) + "x = " + fmt(c - b) + "." }, ds, sol,
+        { mode: "visual-remove", a: a, b: b });
+    }
+    var tot = a * x, per = x;
+    var corrS = "\\(x = " + fmt(x) + "\\)";
+    var dsS = u6pick3(corrS, [
+      { t: "\\(x = " + fmt(per + 1) + "\\)", fb: "Count again: " + fmt(tot) + " counters split into " + fmt(a) + " equal groups gives " + fmt(per) + " in each group." },
+      { t: "\\(" + fmt(a) + "x = " + fmt(tot) + "\\)", fb: "That is the picture before splitting. After the split, each single bag stands alone." },
+      { t: "\\(x = " + fmt(tot) + "\\)", fb: "That gives one bag all " + fmt(tot) + " counters. The counters are shared equally among " + fmt(a) + " bags." }
+    ]);
+    if (!dsS) continue;
+    var solS = "The model splits " + fmt(tot) + " counters into " + fmt(a) + " equal groups, one group for each bag: \\[ \\begin{aligned} x &= " + fmt(tot) + " \\div " + fmt(a) + " \\\\ x &= " + fmt(x) + " \\end{aligned} \\] So the final picture shows <b>" + corrS + "</b>.";
+    return mcq("A balance model shows " + fmt(a) + " closed bags (each holding x counters) balanced by " + fmt(tot) + " counters. The final picture splits the counters into " + fmt(a) + " equal groups and matches one group with one bag. Which equation does the final picture show?",
+      { t: corrS, fb: "Correct. Each bag matches one equal group of " + fmt(per) + " counters." }, dsS, solS,
+      { mode: "visual-split", a: a, c: tot });
+  }
+  return mcq("A balance model shows 3 closed bags (each holding x counters) and 4 loose counters on the left pan, balanced by 19 counters on the right pan. The next picture removes 4 loose counters from each pan. Which equation does the next picture show?",
+    { t: "\\(3x = 15\\)", fb: "Correct. The same removal on both sides gives 3x = 15." },
+    [{ t: "\\(3x + 4 = 15\\)", fb: "That removes counters from one side only." }, { t: "\\(3x = 23\\)", fb: "That adds counters instead of removing them." }, { t: "\\(x = 15\\)", fb: "The bags are still closed, so the left side is still 3x." }],
+    "Removing 4 from both sides: \\[ \\begin{aligned} 3x + 4 &= 19 \\\\ 3x &= 15 \\end{aligned} \\] So the picture shows <b>\\(3x = 15\\)</b>.", { mode: "visual-remove-fallback" });
+}, ["A balance picture changes the equation only when the same change is made on both sides.","Match each part of the picture to a term: bags are x terms, loose counters are numbers."]);
+
+E("u5-pkf-solve-distributive", 5, ["8.17"], 2, "gen", function () {
+  var a = ri(2, 7), b = ri(1, 10), x = ri(2, 13), c = a * (x + b);
+  var sol = "Apply the distributive property first, then solve: \\[ \\begin{aligned} " + fmt(a) + "(x + " + fmt(b) + ") &= " + fmt(c) + " \\\\ " + fmt(a) + "x + " + fmt(a * b) + " &= " + fmt(c) + " \\\\ " + fmt(a) + "x &= " + fmt(c) + " - " + fmt(a * b) + " \\\\ " + fmt(a) + "x &= " + fmt(a * x) + " \\\\ x &= " + fmt(x) + " \\end{aligned} \\] Check: \\(" + fmt(a) + "(" + fmt(x) + " + " + fmt(b) + ") = " + fmt(a) + "(" + fmt(x + b) + ") = " + fmt(c) + "\\). So the solution is <b>\\(x = " + fmt(x) + "\\)</b>.";
+  return numq("Solve the equation \\(" + fmt(a) + "(x + " + fmt(b) + ") = " + fmt(c) + "\\). What is the value of x?", x, 0.01, sol,
+    { mode: "solve-distributive", a: a, b: b });
+}, ["The number outside the brackets multiplies every term inside the brackets.","Expand the brackets first, then subtract and divide as usual."]);
+
+E("u5-pkf-solve-div-plus", 5, ["8.17"], 2, "gen", function () {
+  var a = ri(2, 8), b = ri(1, 12), d = ri(2, 11), x = a * d, c = d + b;
+  var sol = "Subtract first, then undo the division by multiplying: \\[ \\begin{aligned} \\frac{x}{" + a + "} + " + fmt(b) + " &= " + fmt(c) + " \\\\ \\frac{x}{" + a + "} &= " + fmt(c) + " - " + fmt(b) + " \\\\ \\frac{x}{" + a + "} &= " + fmt(d) + " \\\\ x &= " + fmt(d) + " \\times " + fmt(a) + " \\\\ x &= " + fmt(x) + " \\end{aligned} \\] Check: \\(\\frac{" + fmt(x) + "}{" + a + "} + " + fmt(b) + " = " + fmt(d) + " + " + fmt(b) + " = " + fmt(c) + "\\). So the solution is <b>\\(x = " + fmt(x) + "\\)</b>.";
+  return numq("Solve the equation \\(\\frac{x}{" + a + "} + " + fmt(b) + " = " + fmt(c) + "\\). What is the value of x?", x, 0.01, sol,
+    { mode: "solve-div-plus", a: a, b: b, d: d });
+}, ["Work in reverse order: deal with the added number before the division.","Subtract the constant from both sides, then multiply both sides by the divisor."]);
+
+E("u5-pkf-solve-context-problem", 5, ["8.17"], 2, "gen", function () {
+  var a = ri(2, 9), b = ri(4, 25), x = ri(3, 14), c = a * x + b;
+  var ctx = pick([
+    { q: "A school rents a bus for a field trip. The rental costs a $" + b + " booking fee plus $" + a + " for each kilometre driven. The total bill was $" + c + ". How many kilometres did the bus drive?", unit: "kilometres" },
+    { q: "A community hall charges a $" + b + " setup fee plus $" + a + " for each table rented. A group paid $" + c + " in total. How many tables did the group rent?", unit: "tables" },
+    { q: "A bike shop charges a $" + b + " service fee plus $" + a + " for each gear adjusted. A customer paid $" + c + " in total. How many gears were adjusted?", unit: "gears" }
+  ]);
+  var sol = "Let \\(x\\) be the number of " + ctx.unit + ". The fee is paid once and the $" + a + " charge is paid \\(x\\) times: \\[ \\begin{aligned} " + fmt(a) + "x + " + fmt(b) + " &= " + fmt(c) + " \\\\ " + fmt(a) + "x &= " + fmt(c - b) + " \\\\ x &= " + fmt(x) + " \\end{aligned} \\] So the answer is <b>" + fmt(x) + " " + ctx.unit + "</b>.";
+  return numq(ctx.q, x, 0.01, sol, { mode: "solve-context-problem", a: a, b: b, c: c, unit: ctx.unit });
+}, ["Write an equation first: one-time fee plus per-unit charge times the unknown, equal to the total.","Subtract the fee from the total, then divide what is left by the per-unit charge."]);
+
+E("u9-pkf-mean-basic", 9, ["11.9"], 1, "gen", function(){
+  var ctx=pick(["quiz scores","laps swum each day","pages read each day","points scored each game","seedlings sprouting each day"]);
+  var n=pick([5,5,6]);var vals=[];for(var i=0;i<n;i++)vals.push(ri(2,14));
+  var m=u7mean(vals);var ms=fmt(m);
+  var cand=u7numOpts(m,[fmt(m+1),fmt(m-1),fmt(u7median(vals)),fmt(m+2),fmt(Math.max.apply(null,vals))]).map(function(v){return String(v);});
+  var seen={};var ds=[];cand.forEach(function(v){if(v!==ms&&!seen[v]){seen[v]=1;ds.push({t:v,fb:"That value does not equal the total divided by "+n+". Add all the values first, then divide by how many there are."});}});
+  while(ds.length<3){var v=fmt(m+ds.length+2);if(v!==ms&&!seen[v]){seen[v]=1;ds.push({t:v,fb:"Add all the values first, then divide by "+n+"."});}}
+  ds=precPair(ms,ds);
+  var q=mcq("A student's "+ctx+" are: "+vals.join(", ")+". What is the mean?",
+    {t:ms,fb:"Yes: the total is "+fmt(u7mean(vals)*n)+" and "+fmt(u7mean(vals)*n)+" divided by "+n+" is "+ms+"."},ds.slice(0,3),
+    "Add the values, then divide by how many there are. \\[ \\begin{aligned} \\text{total} &= "+vals.join(" + ")+" = "+fmt(m*n)+" \\\\ \\text{mean} &= "+fmt(m*n)+" \\div "+n+" = "+ms+" \\end{aligned} \\] The mean is <b>"+ms+"</b>.",
+    {mode:"mean",n:n});
+  return q;
+}, ["The mean is the total of all the values divided by how many values there are.","Start by adding all the values together."]);
+
+E("u9-pkf-median-mode", 9, ["11.9"], 1, "gen", function(){
+  var askMode=Math.random()<0.5;
+  var base=ri(3,9);var vals;
+  if(askMode){var modeV=ri(2,12);var others=[];while(others.length<4){var v=ri(1,15);if(v!==modeV&&others.indexOf(v)<0)others.push(v);}vals=shuffle([modeV,modeV,modeV].concat(others.slice(0,3)));
+    var correct=String(modeV);
+    var cand=u7numOpts(modeV,[others[0],others[1],Math.round(u7mean(vals))]).map(String);
+    var ds=cand.filter(function(v){return v!==correct;}).slice(0,3).map(function(v){return {t:v,fb:"Count how often each value appears. The mode is the value that appears most often."};});
+    while(ds.length<3){var v=String(modeV+ds.length+3);ds.push({t:v,fb:"Count how often each value appears."});}
+    return mcq("Data set: "+vals.join(", ")+". What is the mode?",{t:correct,fb:"Yes: "+modeV+" appears three times, more often than any other value."},ds,
+      "Count the frequency of each value. The value "+modeV+" appears 3 times, more than any other value. The mode is <b>"+modeV+"</b>.",{mode:"mode"});
+  }
+  var n=pick([5,7]);vals=[];for(var i=0;i<n;i++)vals.push(ri(1,16));
+  var med=u7median(vals);var srt=vals.slice().sort(function(a,b){return a-b;});
+  var cand2=u7numOpts(med,[fmt(u7mean(vals)),srt[0],srt[srt.length-1],med+1]).map(function(v){return String(v);});
+  var ds2=cand2.filter(function(v){return v!==fmt(med);}).slice(0,3).map(function(v){return {t:v,fb:"Order the values first. The median is the middle value of the ordered list."};});
+  while(ds2.length<3){var w=fmt(med+ds2.length+2);ds2.push({t:w,fb:"Order the values first, then take the middle one."});}
+  ds2=precPair(fmt(med),ds2);
+  return mcq("Data set: "+vals.join(", ")+". What is the median?",{t:fmt(med),fb:"Yes: ordered, the list is "+srt.join(", ")+", and the middle value is "+fmt(med)+"."},ds2,
+    "Order the values: "+srt.join(", ")+". With "+n+" values, the middle position holds <b>"+fmt(med)+"</b>.",{mode:"median"});
+}, ["Order the values first for the median; count frequencies for the mode.","Start by rewriting the data set in increasing order."]);
+
+E("u9-pkf-range-basic", 9, ["11.9"], 1, "gen", function(){
+  var ctx=pick(["daily high temperatures in degrees","heights of plants in centimetres","race times in seconds","numbers of pets per household","goals scored each week"]);
+  var lo=ri(2,10),hi=lo+ri(4,14);var vals=[lo,hi];var n=ri(4,6);for(var i=0;i<n;i++)vals.push(ri(lo,hi));vals=shuffle(vals);
+  var r=hi-lo;
+  var cand=u7numOpts(r,[hi,lo,r+2,Math.max(r-2,0),hi+lo]);
+  var ds=cand.map(function(v){return {t:String(v),fb:v===hi?"That is the largest value alone. The range subtracts the smallest value from the largest.":"The range is largest minus smallest: "+hi+" minus "+lo+"."};});
+  return mcq("A set of "+ctx+" is: "+vals.join(", ")+". What is the range?",{t:String(r),fb:"Yes: "+hi+" minus "+lo+" equals "+r+"."},ds,
+    "The largest value is "+hi+" and the smallest is "+lo+". \\[ \\begin{aligned} \\text{range} &= "+hi+" - "+lo+" \\\\ &= "+r+" \\end{aligned} \\] The range is <b>"+r+"</b>.",{mode:"range"});
+}, ["The range measures spread: largest value minus smallest value.","Start by finding the largest and smallest values in the set."]);
+
+var PK9S_FOR_INT=["3.1","3.2","6.1","6.2","6.3","6.4","3.4","3.5","3.6","3.7","3.8","3.9","3.10","3.11","3.12","3.13","3.14","3.15"];
+var PKT9S={
+  "u1-pkf-fact-recall":{src:"math-5:MA5.5.19",group:"multiplication-facts",for:PK9_FOR_C1},
+  "u1-pkf-fact-division":{src:"math-5:MA5.5.19",group:"multiplication-facts",for:PK9_FOR_C1},
+  "u1-pkf-fact-halving":{src:"math-5:MA5.5.17",group:"multiplication-facts",for:PK9_FOR_C1},
+  "u1-pkf-order-place":{src:"math-4:MA4.1.1",group:"ordering-numbers",for:PK9_FOR_C1},
+  "u1-pkf-order-line":{src:"math-4:MA4.1.2",group:"ordering-numbers",for:PK9_FOR_C1},
+  "u1-pkf-order-below":{src:"math-6:MA6.1.2",group:"ordering-numbers",for:PK9_FOR_C1},
+  "u1-pkf-mult-model-chips":{src:"math-8:6.17",group:"integer-operations",for:PK9S_FOR_INT},
+  "u1-pkf-product-sign-apply":{src:"math-8:6.18",group:"integer-operations",for:PK9S_FOR_INT},
+  "u1-pkf-mult-problem":{src:"math-8:6.20",group:"integer-operations",for:PK9S_FOR_INT},
+  "u1-pkf-quotient-sign-apply":{src:"math-8:6.22",group:"integer-operations",for:PK9S_FOR_INT},
+  "u1-pkf-div-2by1":{src:"math-8:6.24",group:"integer-operations",for:PK9S_FOR_INT},
+  "u1-pkf-ooo-num":{src:"math-8:6.27",group:"integer-operations",for:PK9S_FOR_INT},
+  "u1-pkf-model-frac-times-whole":{src:"math-8:6.4",group:"fraction-operations",for:PK9_FOR_C1},
+  "u1-pkf-area-model-product":{src:"math-8:6.5",group:"fraction-operations",for:PK9_FOR_C1},
+  "u1-pkf-estimate-product-benchmark":{src:"math-8:6.7",group:"fraction-operations",for:PK9_FOR_C1},
+  "u1-pkf-model-whole-div-frac":{src:"math-8:6.9",group:"fraction-operations",for:PK9_FOR_C1},
+  "u1-pkf-model-division-bar":{src:"math-8:6.10",group:"fraction-operations",for:PK9_FOR_C1},
+  "u1-pkf-context-divide-expression":{src:"math-8:6.14",group:"fraction-operations",for:PK9_FOR_C1},
+  "u1-pkf-div-decimals":{src:"math-7:6.8",group:"decimal-operations",for:PK9_FOR_C1},
+  "u1-pkf-frontend-sum":{src:"math-7:6.1",group:"decimal-operations",for:PK9_FOR_C1},
+  "u1-pkf-frontend-prod-quot":{src:"math-7:6.2",group:"decimal-operations",for:PK9_FOR_C1},
+  "u1-pkf-reasonableness":{src:"math-7:6.4",group:"decimal-operations",for:PK9_FOR_C1},
+  "u5-pkf-solve-one-step":{src:"math-8:8.4",group:"equation-solving",for:PK9_FOR_C6},
+  "u5-pkf-visual-step":{src:"math-8:8.2",group:"equation-solving",for:PK9_FOR_C6},
+  "u5-pkf-solve-distributive":{src:"math-8:8.5",group:"equation-solving",for:PK9_FOR_C6},
+  "u5-pkf-solve-div-plus":{src:"math-8:8.4",group:"equation-solving",for:PK9_FOR_C6},
+  "u5-pkf-solve-context-problem":{src:"math-8:8.7",group:"equation-solving",for:PK9_FOR_C6},
+  "u9-pkf-mean-basic":{src:"math-7:11.6",group:"centre-measures",for:["11.9"]},
+  "u9-pkf-median-mode":{src:"math-7:11.6",group:"centre-measures",for:["11.9"]},
+  "u9-pkf-range-basic":{src:"math-7:11.7",group:"centre-measures",for:["11.9"]}
+};
+BANK.forEach(function(e){var t=PKT9S[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */

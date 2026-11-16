@@ -14,7 +14,11 @@
      Math 8 PK tranche, because flagging the two expected count
      entries left Unit 9's exam-eligible CR pool short of its
      unit test target: 296 entries in per-unit counts
-     29/34/41/35/39/27/34/22/35. Its CR_MARKS manifest equals
+     29/34/41/35/39/27/34/22/35. The Band 3 Piece 1 fluency
+     strand (November 16, 2026) adds 30 copied entries in the
+     strand section of bank-pk.js (Unit 1 +22, Unit 5 +5,
+     Unit 9 +3): 326 entries in per-unit counts
+     51/34/41/35/44/27/34/22/38. Its CR_MARKS manifest equals
      the standalone bank source's own CR_MARKS literal plus the
      two Option 1 additions (111 keys; 45 at 2 marks and 66
      at 3).
@@ -86,10 +90,10 @@ ok(C.units[9] === "Probability and Statistics", "Unit 9 is Probability and Stati
 const placements = Object.values(C.unitInd).reduce((n, a) => n + a.length, 0);
 ok(placements === 108, "UNIT_IND has 108 placements, saw " + placements);
 
-ok(BANK.length === 296, "bank registers 296 entries, saw " + BANK.length);
+ok(BANK.length === 326, "bank registers 326 entries, saw " + BANK.length);
 const perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-const wantPerUnit = { 1: 29, 2: 34, 3: 41, 4: 35, 5: 39, 6: 27, 7: 34, 8: 22, 9: 35 };
+const wantPerUnit = { 1: 51, 2: 34, 3: 41, 4: 35, 5: 44, 6: 27, 7: 34, 8: 22, 9: 38 };
 Object.keys(wantPerUnit).forEach(u =>
   ok(perUnit[u] === wantPerUnit[u], "Unit " + u + " has " + wantPerUnit[u] + " entries, saw " + perUnit[u]));
 

@@ -6,7 +6,10 @@
    November 13, 2026, whose metadata this tranche completes, plus
    the two Unit 9 expected-count entries flagged on November 15,
    2026 in the Math 8 tranche's settlement, Math-8 spec Section 3),
-   every
+   extended on November 16, 2026 by the Band 3 Piece 1 fluency
+   strand: 30 copied entries (u{unit}-pkf- ids in the strand
+   section of bank-pk.js), taking the flagged total to 108 and the
+   Unit 1, 5 and 9 pools to 33, 12 and 18. Every
    flagged entry carries pkSrc, pkFor and pkGroup metadata, a pkonly
    draw (PKONLY_DRAW, the flag the shell sets for a ?pkonly=1 set)
    deals only flagged entries, samples every pkGroup in the pool,
@@ -68,20 +71,20 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-9.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 11, 2: 9, 3: 8, 4: 6, 5: 7, 6: 8, 7: 8, 8: 6, 9: 15 };
+const POOLS = { 1: 33, 2: 9, 3: 8, 4: 6, 5: 12, 6: 8, 7: 8, 8: 6, 9: 18 };
 const POOL_IDS = {
-  1: ["u1-pk-ooo-evaluate", "u1-pk-identify-operation", "u1-pk-add-context", "u1-pk-add-unlike", "u1-pk-sub-unlike", "u1-pk-multiply-fractions", "u1-pk-divide-fractions", "u1-pk-ooo-fractions", "u1-pk-add-sub-decimals", "u1-pk-mult-decimals", "u1-pk-order-mixed"],
+  1: ["u1-pk-ooo-evaluate", "u1-pk-identify-operation", "u1-pk-add-context", "u1-pk-add-unlike", "u1-pk-sub-unlike", "u1-pk-multiply-fractions", "u1-pk-divide-fractions", "u1-pk-ooo-fractions", "u1-pk-add-sub-decimals", "u1-pk-mult-decimals", "u1-pk-order-mixed", "u1-pkf-fact-recall", "u1-pkf-fact-division", "u1-pkf-fact-halving", "u1-pkf-order-place", "u1-pkf-order-line", "u1-pkf-order-below", "u1-pkf-mult-model-chips", "u1-pkf-product-sign-apply", "u1-pkf-mult-problem", "u1-pkf-quotient-sign-apply", "u1-pkf-div-2by1", "u1-pkf-ooo-num", "u1-pkf-model-frac-times-whole", "u1-pkf-area-model-product", "u1-pkf-estimate-product-benchmark", "u1-pkf-model-whole-div-frac", "u1-pkf-model-division-bar", "u1-pkf-context-divide-expression", "u1-pkf-div-decimals", "u1-pkf-frontend-sum", "u1-pkf-frontend-prod-quot", "u1-pkf-reasonableness"],
   2: ["u2-pk-sqrt-perfect", "u2-pk-square-of-number", "u2-pk-estimate-between", "u2-pk-root-between", "u2-pk-calc-approx", "u2-pk-sa-rect-prism", "u2-pk-sa-tri-prism", "u2-pk-sa-cylinder", "u2-pk-sa-problem"],
   3: ["u3-pk-repeated-product", "u3-pk-repeated-write", "u3-pk-related-division", "u3-pk-doubling-step", "u3-pk-annex-zeros", "u3-pk-product-sign", "u3-pk-quotient-sign", "u3-pk-missing-factor"],
   4: ["u4-pk-identify-parts", "u4-pk-variable-meaning", "u4-pk-expression-or-equation", "u4-pk-solve-one-step", "u4-pk-solve-two-step", "u4-pk-solve-distributive"],
-  5: ["u5-pk-model-equation", "u5-pk-solve-two-step", "u5-pk-verify-solution", "u5-pk-identify-error", "u5-pk-between", "u5-pk-numberline-place", "u5-pk-misplaced"],
+  5: ["u5-pk-model-equation", "u5-pk-solve-two-step", "u5-pk-verify-solution", "u5-pk-identify-error", "u5-pk-between", "u5-pk-numberline-place", "u5-pk-misplaced", "u5-pkf-solve-one-step", "u5-pkf-visual-step", "u5-pkf-solve-distributive", "u5-pkf-solve-div-plus", "u5-pkf-solve-context-problem"],
   6: ["u6-pk-pattern-expression", "u6-pk-two-points-evaluate", "u6-pk-table-missing", "u6-pk-missing-pair", "u6-pk-construct-graph", "u6-pk-describe-graph", "u6-pk-solve-div-plus", "u6-pk-solve-context"],
   7: ["u7-pk-two-term-ratio", "u7-pk-ratio-simplest", "u7-pk-ratio-problem", "u7-pk-rate-problem", "u7-pk-translate", "u7-pk-reflect-point", "u7-pk-transform-describe", "u7-pk-tess-transform"],
   8: ["u8-pk-central-angles", "u8-pk-radius-diameter", "u8-pk-pi-ratio", "u8-pk-circumference", "u8-pk-parallel-perp", "u8-pk-angle-chain"],
-  9: ["u9-gap-expected-freq-cr", "u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr", "u9-gap-win-points-cr", "u9-pk-mean-basic", "u9-pk-median-mode", "u9-pk-two-graphs", "u9-pk-misleading-format", "u9-pk-false-conclusion", "u9-pk-circle-graph", "u9-pk-prob-basic", "u9-pk-two-draws", "u9-pk-product-rule", "u9-pk-exp-vs-theor"]
+  9: ["u9-gap-expected-freq-cr", "u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr", "u9-gap-win-points-cr", "u9-pk-mean-basic", "u9-pk-median-mode", "u9-pk-two-graphs", "u9-pk-misleading-format", "u9-pk-false-conclusion", "u9-pk-circle-graph", "u9-pk-prob-basic", "u9-pk-two-draws", "u9-pk-product-rule", "u9-pk-exp-vs-theor", "u9-pkf-mean-basic", "u9-pkf-median-mode", "u9-pkf-range-basic"]
 };
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 78,
-   "bank carries 78 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 108,
+   "bank carries 108 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-9 config sets pkPracticeOnly");
 for (let u = 1; u <= 9; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");
@@ -164,8 +167,8 @@ function retryDraw(unit, groups, seed) {
 }
 {
   const r = retryDraw(1, ["decimal-operations"], 99);
-  ok(r.n === 8 && r.l3 === 0 && r.distinct === 3 && r.groups.every((g) => g === "decimal-operations"),
-     "retry u1: the decimal-operations retry fills 8 from the group's three entries, saw n=" + r.n + " distinct=" + r.distinct);
+  ok(r.n === 8 && r.l3 === 0 && r.distinct === 7 && r.groups.every((g) => g === "decimal-operations"),
+     "retry u1: the decimal-operations retry fills 8 from the group's seven entries (three Band 1 plus four Piece 1 practice-depth copies), saw n=" + r.n + " distinct=" + r.distinct);
   const p = retryDraw(9, ["graphing-data"], 99);
   ok(p.n === 8 && p.l3 === 0 && p.distinct === 1 && p.groups.every((g) => g === "graphing-data"),
      "retry u9: the single-entry graphing-data group fills its retry to 8 from its one entry under the relaxation, saw n=" + p.n + " distinct=" + p.distinct);
