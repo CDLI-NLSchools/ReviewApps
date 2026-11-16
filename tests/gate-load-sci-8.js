@@ -1,0 +1,140 @@
+#!/usr/bin/env node
+/* Gate (load + census + draw) for the Science 8 build:
+     node tests/gate-load-sci-8.js
+   Expectations are the strand authoring specs (Nov 15, 2026):
+   - courses.js registers sci-8 (Science, grade 8, listed:false,
+     curriculum NL). The course stays unlisted: the junior high
+     science English courses release together.
+   - Unit 1 (Water Systems on Earth's Surface): exactly 80 entries,
+     66 SR + 14 CR, levels 32/32/16, per-indicator counts equal to
+     the Water Systems spec, CR marks sum 44, twelve entries at
+     exactly 3 marks and two at 4 marks (the SC8.2.6 decision CR
+     and the SC8.3.1 design CR, the latter carrying noCompose).
+   - Terminology sweeps (Unit 1, guide discipline): no
+     student-facing text keys a numeric salinity or density value
+     (the guide directs qualitative comparison), and no text
+     carries the harvested satellite mechanism claim (infrared).
+   - Every entry draws clean questions; SR draws carry exactly 4
+     options with exactly one correct; figure entries carry a
+     figure on at least one draw. */
+const fs = require("fs");
+const ROOT = process.env.HOME + "/workspace/review-app-unified";
+let pass = 0, fail = 0;
+function ok(cond, name) { if (cond) { pass++; } else { fail++; console.log("FAIL: " + name); } }
+
+global.window = {};
+eval(fs.readFileSync(ROOT + "/courses.js", "utf8"));
+const C = window.COURSES["sci-8"];
+ok(!!C, "courses.js registers sci-8");
+ok(C.listed === false, "sci-8 is unlisted");
+ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 8, "curriculum NL, Science, grade 8");
+ok(C.units[1] === "Water Systems on Earth's Surface", "Unit 1 registered");
+ok(Object.keys(C.indicators).length === 25, "25 indicators registered so far, saw " + Object.keys(C.indicators).length);
+ok(C.unitTest && C.unitTest.total === 26 && C.unitTest.sr === 20 && C.unitTest.cr === 6 && C.unitTest.indCap === 2 && JSON.stringify(C.unitTest.crPref) === "[3,3]", "unit test convention 20 SR + 2 CR at 3 = 26, indCap 2, crPref [3,3]");
+
+const built = fs.readFileSync(ROOT + "/index.html", "utf8");
+const blocks = [...built.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+const helperBlock = blocks.find(b => b.includes("function mcq"));
+ok(!!helperBlock, "helpers block found in built shell");
+eval(helperBlock.replace(/"use strict";/g, ""));
+ok(typeof mcq === "function" && typeof textq === "function", "mcq/textq defined");
+
+var BANK = [];
+function E(id, unit, indicators, level, kind, gen, hints) {
+  var e = { id, unit, indicators, level, kind, gen };
+  if (hints) { e.hint1 = hints[0] || ""; e.hint2 = hints[1] || ""; }
+  BANK.push(e);
+}
+eval(fs.readFileSync(ROOT + "/banks/sci-8.js", "utf8"));
+const CR = window.__BANK_CRMARKS || {};
+
+const U1 = BANK.filter(e => e.unit === 1);
+ok(BANK.length === 80, "bank registers 80 entries, saw " + BANK.length);
+ok(U1.length === 80, "all 80 entries are Unit 1, saw " + U1.length);
+const ids = new Set(BANK.map(e => e.id));
+ok(ids.size === 80, "all entry ids unique");
+
+const SPEC_COUNT = {
+  "SC8.1.1": 6, "SC8.1.2": 3, "SC8.1.3": 5, "SC8.1.4": 4, "SC8.1.5": 4, "SC8.1.6": 6, "SC8.1.7": 5,
+  "SC8.1.8": 4, "SC8.1.9": 3, "SC8.2.1": 2, "SC8.2.2": 3, "SC8.2.3": 2, "SC8.2.4": 3, "SC8.2.5": 5,
+  "SC8.2.6": 2, "SC8.3.1": 3, "SC8.3.2": 1, "SC8.3.3": 2, "SC8.3.4": 2, "SC8.3.5": 2, "SC8.3.6": 2,
+  "SC8.3.7": 2, "SC8.3.8": 3, "SC8.3.9": 4, "SC8.3.10": 2
+};
+function primaryCounts(list) {
+  const p = {};
+  list.forEach(e => { p[e.indicators[0]] = (p[e.indicators[0]] || 0) + 1; });
+  return p;
+}
+const p1 = primaryCounts(U1);
+for (const tag of Object.keys(SPEC_COUNT)) {
+  ok((p1[tag] || 0) === SPEC_COUNT[tag], "U1 primary count " + tag + " = " + SPEC_COUNT[tag] + ", saw " + (p1[tag] || 0));
+}
+ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the registered indicators");
+
+const crU1 = U1.filter(e => CR[e.id] !== undefined);
+ok(crU1.length === 14, "14 CR entries in the marks manifest, saw " + crU1.length);
+const markSum = list => list.reduce((a, e) => a + CR[e.id], 0);
+ok(markSum(crU1) === 44, "U1 CR marks sum to 44, saw " + markSum(crU1));
+ok(crU1.filter(e => CR[e.id] === 3).length === 12, "twelve U1 CR entries at exactly 3 marks, saw " + crU1.filter(e => CR[e.id] === 3).length);
+ok(CR["s8-u1-cr-decision"] === 4 && CR["s8-u1-cr-design-salinity"] === 4, "the decision CR and the design CR carry 4 marks");
+ok(U1.filter(e => CR[e.id] === undefined).length === 66, "66 SR entries, saw " + U1.filter(e => CR[e.id] === undefined).length);
+function levels(list) { const lv = [0, 0, 0]; list.forEach(e => { lv[e.level - 1]++; }); return JSON.stringify(lv); }
+ok(levels(U1) === "[32,32,16]", "U1 levels 32/32/16, saw " + levels(U1));
+ok(U1.filter(e => e.kind === "gen").length === 14, "14 U1 generator entries, saw " + U1.filter(e => e.kind === "gen").length);
+const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
+ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity"]),
+  "exactly the design CR carries noCompose, saw " + noComp.join(","));
+
+const FIG_ENTRIES = ["s8-u1-profile-figure", "s8-u1-landform-figure", "s8-u1-wave-energy",
+  "s8-u1-health-figure", "s8-u1-pop-interpolate", "s8-u1-pop-extrapolate", "s8-u1-cr-population"];
+
+let badDraws = [];
+BANK.forEach(e => {
+  const draws = e.kind === "gen" ? 2000 : 300;
+  let figSeen = 0;
+  for (let i = 0; i < draws; i++) {
+    let q;
+    try { q = e.gen(); } catch (err) { badDraws.push(e.id + " threw: " + err.message); break; }
+    if (!q || typeof q.prompt !== "string" || !q.prompt || /undefined|NaN/.test(q.prompt)) { badDraws.push(e.id + " bad prompt"); break; }
+    if (CR[e.id] !== undefined) {
+      if (!Array.isArray(q.answers) || !q.answers.length || typeof q.solution !== "string" || !q.solution) { badDraws.push(e.id + " CR shape"); break; }
+    } else {
+      if (q.type !== "mc" || !Array.isArray(q.options) || q.options.length !== 4) { badDraws.push(e.id + " option count " + (q.options || []).length); break; }
+      if (typeof q.correct !== "number" || q.correct < 0 || q.correct > 3) { badDraws.push(e.id + " bad correct index " + q.correct); break; }
+      if (new Set(q.options).size !== 4) { badDraws.push(e.id + " duplicate options"); break; }
+      if (q.options.some(t => /undefined|NaN/.test(t))) { badDraws.push(e.id + " bad option text"); break; }
+    }
+    if (q.figure) figSeen++;
+    if (i === draws - 1 && FIG_ENTRIES.includes(e.id) && figSeen === 0) badDraws.push(e.id + " never produced a figure");
+  }
+});
+ok(badDraws.length === 0, "all entries draw clean (2000 draws per generator, 300 per varset): " + badDraws.slice(0, 5).join("; "));
+
+/* Guide-discipline sweeps over Unit 1 student-facing text: no
+   numeric salinity or density value may be presented as content to
+   memorize (comparisons are qualitative), and the harvested
+   satellite-by-infrared claim was not carried. Water health units
+   (mg/L, micrograms per litre) are guide content and are not
+   salinity or density values. */
+let vHits = [];
+U1.forEach(e => {
+  for (let i = 0; i < 40; i++) {
+    const q = e.gen();
+    const text = [q.prompt, q.solution].concat(q.options || [], q.answers || []).join(" ");
+    if (/1\.027|kg\/L|\d\s?g\/L|infrared/i.test(text)) { vHits.push(e.id); break; }
+  }
+});
+ok(vHits.length === 0, "qualitative-comparison sweep clean, hits: " + vHits.join(","));
+
+/* Negative stems, listed for judgement (spec audit). */
+const NEG = [];
+BANK.forEach(e => {
+  for (let i = 0; i < 30; i++) {
+    const q = e.gen();
+    if (/\bNOT\b|\bEXCEPT\b/.test(q.prompt)) { NEG.push(e.id + ": " + q.prompt.slice(0, 60)); break; }
+  }
+});
+console.log("Negative-stem draws (for the audit list): " + (NEG.length ? NEG.join(" | ") : "none"));
+
+console.log("GATE-LOAD-SCI-8: " + pass + " passed, " + fail + " failed");
+process.exit(fail ? 1 : 0);

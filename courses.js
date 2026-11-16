@@ -835,6 +835,85 @@ window.COURSES = {
   unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
 },
 
+"sci-8": {
+  id: "sci-8",
+  curriculum: "NL",
+  title: "Science 8 Review: Practice Question Bank",
+  shortName: "Science 8",
+  storagePrefix: "sci8",
+  reportName: "Science 8 Review",
+  language: "en",
+  bankFile: "sci-8.js",
+  subject: "Science",
+  grade: 8,
+  listed: false,
+  panels: {},
+
+  units: {
+    1: "Water Systems on Earth's Surface"
+  },
+
+  /* Indicators from the eNLightenED Units and Indicators
+     spreadsheet for the current guide (Version 2023.001.009), in
+     spreadsheet order. The course is built strand by strand in
+     guide order; Unit 1 is registered here and the remaining
+     strands are added as they are built. The course stays
+     unlisted: the junior high science English courses release
+     together (Jason's decision, Nov 15, 2026). */
+  indicators: {
+    "SC8.1.1": "Interactions among the hydrosphere, lithosphere, and atmosphere",
+    "SC8.1.2": "Climate change, glaciers, and effects on the environment",
+    "SC8.1.3": "Factors affecting productivity and species distribution",
+    "SC8.1.4": "Effects of abiotic factors on species distribution",
+    "SC8.1.5": "Development of ocean basins and drainage systems",
+    "SC8.1.6": "Ocean currents, winds, and regional climates",
+    "SC8.1.7": "How waves and tides are generated",
+    "SC8.1.8": "Erosion and deposition at shorelines",
+    "SC8.1.9": "Landforms from erosion and deposition",
+    "SC8.2.1": "Canadian institutions supporting ocean research",
+    "SC8.2.2": "Technologies for researching ocean basins",
+    "SC8.2.3": "How ocean floor technologies have improved over time",
+    "SC8.2.4": "Technologies that contain wave and tide damage",
+    "SC8.2.5": "Effects of marine technologies on ocean species",
+    "SC8.2.6": "Limits of science in resolving ocean problems",
+    "SC8.3.1": "Investigating how salinity affects density",
+    "SC8.3.2": "Using tools and apparatus safely",
+    "SC8.3.3": "Interpreting trends in data and relationships among variables",
+    "SC8.3.4": "Communicating questions and results",
+    "SC8.3.5": "Stating a conclusion about salinity and density",
+    "SC8.3.6": "Selecting appropriate methods and tools",
+    "SC8.3.7": "Interpreting patterns and inferring relationships",
+    "SC8.3.8": "Reporting on abiotic factors; evaluating processes",
+    "SC8.3.9": "Population trends from graphs: interpolate and extrapolate",
+    "SC8.3.10": "Strengths and weaknesses of ocean floor technologies"
+  },
+
+  unitInd: {
+    1: ["SC8.1.1", "SC8.1.2", "SC8.1.3", "SC8.1.4", "SC8.1.5", "SC8.1.6", "SC8.1.7", "SC8.1.8",
+        "SC8.1.9", "SC8.2.1", "SC8.2.2", "SC8.2.3", "SC8.2.4", "SC8.2.5", "SC8.2.6",
+        "SC8.3.1", "SC8.3.2", "SC8.3.3", "SC8.3.4", "SC8.3.5", "SC8.3.6", "SC8.3.7", "SC8.3.8",
+        "SC8.3.9", "SC8.3.10"]
+  },
+
+  /* No exam presets: there is no common examination at this
+     level. The empty object is required: the shell reads
+     course.presets.mid during setup and throws when the property
+     itself is absent. */
+  presets: {},
+
+  /* Staged hints: bank entries carry two hint stages each. */
+  hints: true,
+
+  /* Unit test convention (carried from the Science 7 scoping,
+     Nov 15, 2026, labelled as convention: there is no common
+     examination at this level): per unit, 20 selected response
+     at 1 mark plus 2 constructed response at 3 marks, 26 marks.
+     Composer options: indCap 2 keeps any one indicator to at
+     most two items on a composed unit test, and crPref [3, 3]
+     names the preferred constructed response split. */
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+},
+
 "chem-3202": {
   id: "chem-3202",
   curriculum: "NL",
