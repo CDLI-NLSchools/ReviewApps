@@ -1818,6 +1818,10 @@ rep(' "radical-forms":["Mixed and entire radicals","Radicaux mixtes et entiers"]
 rep(' "ratio-rates":["Ratios and rates","Rapports et taux"],',
     ' "ratio-rates":["Ratios and rates","Rapports et taux"],\n "rational-expressions":["Simplifying rational expressions","Simplifier des expressions rationnelles"],', count=1)  # Band 2 Math 3200 labels (Nov 16, 2026)
 
+# ---------- Band 2 Math 3201 group label (Nov 16, 2026) ----------
+rep(' "linear-equations":["Solving linear equations","Résoudre des équations linéaires"],',
+    ' "linear-equations":["Solving linear equations","Résoudre des équations linéaires"],\n "listing-outcomes":["Listing outcomes and multiplying counts","Dénombrer les résultats et multiplier les comptes"],', count=1)  # Band 2 Math 3201 label (Nov 16, 2026)
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

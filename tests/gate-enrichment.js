@@ -149,14 +149,19 @@ ok(COURSE_IDS.every(id => id === "math-2201" || id === "math-3201" || (flaggedBy
    November 16, 2026 for the Math 3200 PK tranche (the second Band 2
    course): Math 3200's set is the tranche's 49 flagged entries (45
    borrowed and 4 authored counting bridge items), and the programme
-   total to 605, recorded in that tranche's build report. */
+   total to 605, recorded in that tranche's build report. Extended again
+   November 16, 2026 for the Math 3201 PK tranche (the third Band 2
+   course): Math 3201's set grows from the one audit-flagged entry to
+   the tranche's 41 flagged entries (37 borrowed and 4 already in the
+   bank carrying tranche metadata), and the programme total to 645,
+   recorded in that tranche's build report. */
 const PK_PIN = {
   "math-2201": ["u1-pk-find-angle", "u1-pk-find-side", "u1-pk-label-sides", "u1-pk-pythagoras", "u1-pk-ramp-run", "u1-pk-ratio-def", "u1-pk-rope-angle", "u1-pk-solve-triangle", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-eval-function", "u2-pk-graph-data", "u2-pk-graph-form", "u2-pk-graph-strategy", "u2-pk-intercepts", "u2-pk-solve-input", "u3-factor-difference", "u3-factor-monic", "u3-factor-nonmonic", "u3-pk-binom-tri-expand", "u3-pk-gcf", "u3-pk-radical-mixed", "u3-pk-solve-two-step", "u4-pk-defined", "u4-pk-evaluate-exp", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-which-is-solution", "u5-centre-mean", "u5-centre-median", "u5-centre-mode", "u5-choosing-measure", "u5-pk-freq-mean", "u5-pk-generalization-critique", "u5-pk-sample-or-population", "u5-pk-sample-scale", "u5-pk-supported-conclusion", "u6-pk-convert-multistep", "u6-pk-rate-of-change", "u6-pk-sa-basic", "u6-pk-scale-draw", "u6-pk-scale-factor", "u6-pk-solve-input", "u6-pk-unit-rate", "u6-pk-vol-basic", "u7-pk-angle-justify", "u7-pk-conjecture", "u7-pk-counterexample", "u7-pk-inductive-limit", "u7-pk-pattern-figure", "u7-pk-pattern-word", "u7-pk-proof-error", "u7-pk-table-equation", "u7-pk-valid-chain", "u8-pk-angle-measure", "u8-pk-comp-supp", "u8-pk-parallel-decision", "u8-pk-polygon-sum", "u8-pk-solve-two-step", "u8-pk-transversal-measure", "u8-pk-transversal-pairs", "u8-pk-triangle-sum", "u8-pk-word-two-step"],
   "math-9": ["u1-pk-add-context", "u1-pk-add-sub-decimals", "u1-pk-add-unlike", "u1-pk-divide-fractions", "u1-pk-identify-operation", "u1-pk-mult-decimals", "u1-pk-multiply-fractions", "u1-pk-ooo-evaluate", "u1-pk-ooo-fractions", "u1-pk-order-mixed", "u1-pk-sub-unlike", "u2-pk-calc-approx", "u2-pk-estimate-between", "u2-pk-root-between", "u2-pk-sa-cylinder", "u2-pk-sa-problem", "u2-pk-sa-rect-prism", "u2-pk-sa-tri-prism", "u2-pk-sqrt-perfect", "u2-pk-square-of-number", "u3-pk-annex-zeros", "u3-pk-doubling-step", "u3-pk-missing-factor", "u3-pk-product-sign", "u3-pk-quotient-sign", "u3-pk-related-division", "u3-pk-repeated-product", "u3-pk-repeated-write", "u4-pk-expression-or-equation", "u4-pk-identify-parts", "u4-pk-solve-distributive", "u4-pk-solve-one-step", "u4-pk-solve-two-step", "u4-pk-variable-meaning", "u5-pk-between", "u5-pk-identify-error", "u5-pk-misplaced", "u5-pk-model-equation", "u5-pk-numberline-place", "u5-pk-solve-two-step", "u5-pk-verify-solution", "u6-pk-construct-graph", "u6-pk-describe-graph", "u6-pk-missing-pair", "u6-pk-pattern-expression", "u6-pk-solve-context", "u6-pk-solve-div-plus", "u6-pk-table-missing", "u6-pk-two-points-evaluate", "u7-pk-rate-problem", "u7-pk-ratio-problem", "u7-pk-ratio-simplest", "u7-pk-reflect-point", "u7-pk-tess-transform", "u7-pk-transform-describe", "u7-pk-translate", "u7-pk-two-term-ratio", "u8-pk-angle-chain", "u8-pk-central-angles", "u8-pk-circumference", "u8-pk-parallel-perp", "u8-pk-pi-ratio", "u8-pk-radius-diameter", "u9-gap-expected-freq-cr", "u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr", "u9-gap-win-points-cr", "u9-pk-circle-graph", "u9-pk-exp-vs-theor", "u9-pk-false-conclusion", "u9-pk-mean-basic", "u9-pk-median-mode", "u9-pk-misleading-format", "u9-pk-prob-basic", "u9-pk-product-rule", "u9-pk-two-draws", "u9-pk-two-graphs"],
   "math-9-fr": ["u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr"],
   "math-8": ["u1-pk-carroll-cell", "u1-pk-divisibility-why", "u1-pk-divisible-by", "u1-pk-factor-list", "u1-pk-factors-count", "u1-pk-square-area", "u2-pk-add-basic", "u2-pk-add-context", "u2-pk-missing-start", "u2-pk-mixed-chain", "u2-pk-order-ops-dec", "u2-pk-sub-basic", "u3-pk-add-mixed", "u3-pk-add-unlike", "u3-pk-common-denominator", "u3-pk-problem-add", "u3-pk-simplify-fraction", "u3-pk-sub-mixed", "u3-pk-sub-unlike", "u4-pk-add-sub-decimals", "u4-pk-area-circle", "u4-pk-area-diameter", "u4-pk-area-mix", "u4-pk-area-parallelogram", "u4-pk-area-triangle", "u4-pk-mult-decimals", "u5-pk-discount-total", "u5-pk-div-decimals", "u5-pk-frac-to-decimal", "u5-pk-percent-convert", "u5-pk-percent-of", "u5-pk-simplify-fraction", "u5-pk-simplify-solution", "u6-pk-evaluate-expression", "u6-pk-graph-relation", "u6-pk-inspection-trial", "u6-pk-read-point", "u6-pk-solve-other-forms", "u6-pk-solve-two-step", "u6-pk-table-missing", "u6-pk-verify-two-step", "u7-combined-mean-gap", "u7-mean-difference-gap", "u7-missing-mean-value-gap", "u7-pk-exp-vs-theor", "u7-pk-expected-pct", "u7-pk-graph-quantities", "u7-pk-outlier-find", "u7-pk-range-basic", "u7-pk-sample-space", "u7-pk-two-event-pct", "u8-pk-angle-chain", "u8-pk-protractor-read", "u8-pk-quadrilateral-angle", "u8-pk-reflect-point", "u8-pk-rotate", "u8-pk-transform-describe", "u8-pk-translate", "u8-pk-triangle-third-angle"],
   "math-8-fr": ["u7-combined-mean-gap", "u7-mean-difference-gap", "u7-missing-mean-value-gap"],
-  "math-3201": ["u4-express-as-power"],
+  "math-3201": ["u1-pk-add-unlike", "u1-pk-diff-squares", "u1-pk-factor-monic", "u1-pk-frac-context", "u1-pk-gcf", "u1-pk-multiply-fractions", "u2-pk-axis-from-intercepts", "u2-pk-domain-range", "u2-pk-graph-description", "u2-pk-vertex-form-params", "u2-pk-which-quadratic", "u3-pk-find-side", "u3-pk-label-sides", "u3-pk-params-characteristics", "u3-pk-ratio-def", "u3-pk-solve-triangle", "u4-express-as-power", "u4-pk-laws-integral", "u4-pk-rational-pattern", "u4-pk-repeated-mult", "u4-pk-two-laws", "u5-pk-evaluate-exp", "u5-pk-laws-rational", "u5-pk-negative-exp", "u5-pk-rational-exp", "u6-pk-discount-then-tax", "u6-pk-find-whole", "u6-pk-percent-change", "u6-pk-percent-convert", "u6-pk-percent-of", "u7-pk-sort-numbers", "u7-pk-subsets", "u8-pk-product-rule", "u8-pk-sample-space", "u8-pk-two-draws", "u9-context-prob", "u9-decisions", "u9-pk-combined-decision", "u9-pk-exp-vs-theor-b", "u9-pk-prob-basic-b", "u9-prob-basics"],
   "math-3202": ["u1-pk-diameter-fig", "u1-pk-estimate-ref", "u1-pk-measure-read", "u1-pk-reasonable", "u1-pk-referent", "u1-pk-rounding", "u1-pk-tolerance-arithmetic", "u10-pk-classify-probability", "u10-pk-combined-decision", "u10-pk-expected-freq", "u10-pk-prob-basic", "u10-pk-prob-in-media", "u10-pk-two-events", "u2-pk-balance-model", "u2-pk-error-slope", "u2-pk-point-on-graph", "u2-pk-rate-of-change", "u2-pk-rise-run", "u2-pk-slope-ramp", "u2-pk-slope-two-points", "u2-pk-table-equation", "u3-pk-choose-graph", "u3-pk-histogram-read", "u3-pk-interpolate", "u3-pk-misleading-axis", "u3-pk-read-value", "u3-pk-scatter-trend", "u3-pk-trend-basic", "u3-pk-two-conclusions", "u4-pk-central-problem", "u4-pk-mean-basic", "u4-pk-median-mode", "u4-pk-median-range", "u4-pk-median-range-2", "u4-pk-missing-mean", "u4-pk-missing-value", "u5-pk-budget-totals", "u5-pk-card-vs-loan", "u5-pk-credit-interest", "u5-pk-modify-for-goal", "u5-pk-operating-cost", "u5-pk-percent-change", "u5-pk-percent-of-income", "u5-pk-rent-compare", "u6-pk-balance-model", "u6-pk-both-sides", "u6-pk-budget-totals", "u6-pk-deduction-calc", "u6-pk-net-from-deductions", "u6-pk-profit-loss", "u6-pk-week-spending", "u7-pk-adjacent-describe", "u7-pk-comp-supp", "u7-pk-context-transversal", "u7-pk-pair-names", "u7-pk-trans-algebra", "u7-pk-trans-find", "u7-pk-trans-relationships", "u8-pk-corresponding-sides", "u8-pk-reflect-point", "u8-pk-related-shapes", "u8-pk-rotate-vertex", "u8-pk-scale-actual", "u8-pk-scale-read", "u8-pk-similar-check", "u8-pk-similar-missing-side", "u8-pk-transformation-symmetry", "u8-pk-translation-rule", "u9-pk-choose-ratio", "u9-pk-unknown-angle", "u9r-elevation-depression", "u9r-find-angle", "u9r-find-side", "u9r-find-side-workplace", "u9r-ratio-value", "u9r-reasonable-result"],
   "math-2200": ["u1-pk-find-angle", "u1-pk-find-side", "u1-pk-grid-distance", "u1-pk-label-sides", "u1-pk-pythagoras", "u1-pk-ramp-run", "u1-pk-ratio-def", "u1-pk-ratio-similar", "u1-pk-rope-angle", "u1-pk-solve-triangle", "u2-pk-binom-expand", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-eval-function", "u2-pk-factor-monic", "u2-pk-graph-data", "u2-pk-intercepts", "u2-pk-intercepts-solve", "u3-pk-diff-squares", "u3-pk-factor-monic", "u3-pk-gcf", "u3-pk-graph-form", "u3-pk-graph-strategy", "u3-pk-monomial-expand", "u3-pk-solve-input", "u3-pk-sqrt-eval", "u4-pk-approx", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-sort-numbers", "u4-pk-subsets", "u4-pk-which-is-solution", "u5-pk-equiv-fractions", "u5-pk-factor-product", "u5-pk-frac-context", "u5-pk-frac-div-add", "u5-pk-gcf", "u5-pk-multistep-rational", "u5-pk-npv-numerical", "u5-pk-solve-two-step", "u6-pk-approx", "u6-pk-domain-range", "u6-pk-eval-function", "u6-pk-fn-notation", "u6-pk-graph-data", "u6-pk-number-line-distance", "u6-pk-reciprocal-values", "u6-pk-sort-numbers", "u7-pk-intersection", "u7-pk-relate", "u7-pk-solve-algebra", "u7-pk-solve-by-factoring", "u7-pk-solve-elimination", "u7-pk-solve-graph", "u7-pk-strategy", "u7-pk-verify", "u8-numberline-read", "u8-pk-context-graph", "u8-pk-graph-boundary", "u8-pk-graph-to-ineq", "u8-pk-solve-ineq-pos-div", "u8-pk-solve-ineq-two-step", "u8-solve-linear-basic", "u8-solve-linear-flip", "u9-pk-context-equation", "u9-pk-fn-notation", "u9-pk-growth", "u9-pk-laws-integral", "u9-pk-pattern-figure", "u9-pk-pattern-word", "u9-pk-solve-input", "u9-pk-table-equation"],
   "math-2202": ["u1-pk-rotate-front", "u1-pk-rotate-predict", "u1-pk-rotated-side-view", "u1-pk-scale-draw", "u1-pk-scale-factor", "u2-pk-circle-area", "u2-pk-composite-area", "u2-pk-cylinder-sa", "u2-pk-error-analysis", "u2-pk-formula-manip", "u2-pk-imp-si-convert", "u2-pk-perimeter", "u2-pk-si-convert", "u2-pk-si-imp-convert", "u2-pk-surface-prism", "u3-pk-area-convert-adv", "u3-pk-area-imp-convert", "u3-pk-area-si-convert", "u3-pk-circumference", "u3-pk-find-leg", "u3-pk-holds-most", "u3-pk-tank-litres", "u3-pk-vol-base-height", "u3-pk-vol-cylinder", "u3-pk-vol-tri-prism", "u4-cr-percent-change", "u4-misleading-actual", "u4-pk-graph-describe", "u4-pk-graph-quantities", "u4-pk-graph-read", "u4-pk-interpolate", "u4-pk-line-graph", "u4-pk-missing-coord", "u4-pk-point-on-graph", "u5-pk-cpp-ei-tax", "u5-pk-deduction-calc", "u5-pk-gross-overtime", "u5-pk-gross-tips", "u5-pk-hours-total", "u5-pk-net-pay", "u5-pk-percent-of-amount", "u6-pk-commission", "u6-pk-evaluate-power", "u6-pk-find-the-whole", "u6-pk-percent-change", "u6-pk-percent-change-cr", "u6-pk-percent-of-amount", "u6-pk-product-law", "u6-pk-two-laws", "u7-pk-corresponding-sides", "u7-pk-express-rate", "u7-pk-identify-rate", "u7-pk-rate-problem", "u7-pk-scale-apply", "u7-pk-similar-check", "u7-pk-similar-missing-side", "u7-pk-unit-rate-cost", "u8-choose-ratio-equation", "u8-cr-find-angle", "u8-pk-choose-ratio", "u8-pk-find-angle-num", "u8-pk-hypotenuse-rearrange", "u8-pk-reasonable", "u8-pk-sine-ratio-constant", "u8-pk-unknown-angle"],
@@ -167,12 +172,12 @@ const PK_PIN = {
   "physics-2204": ["u1-51-convert-speed", "u3-713-nuclear-notation"],
   "chem-3202": ["u2-61-properties"]
 };
-ok(totalPk === 605, "programme carries exactly 605 prior knowledge entries (66 in Math 2201: 7 PK-coded plus the 59 tranche-flagged; 539 pkFlag instances in the other courses, 76 of them in Math 3202, 78 in Math 9, 75 in Math 2200, 72 in Math 1201, 65 in Math 2202, 59 in Math 8, 54 in Math 1202, 49 in Math 3200, 3 each in math-9-fr and math-8-fr, 2 in Physics 2204, and 1 each in Chemistry 3202, Math 3201 and Math 3208), saw " + totalPk + " in " + JSON.stringify(pkByCourse));
+ok(totalPk === 645, "programme carries exactly 645 prior knowledge entries (66 in Math 2201: 7 PK-coded plus the 59 tranche-flagged; 579 pkFlag instances in the other courses, 76 of them in Math 3202, 78 in Math 9, 75 in Math 2200, 72 in Math 1201, 65 in Math 2202, 59 in Math 8, 54 in Math 1202, 49 in Math 3200, 41 in Math 3201, 3 each in math-9-fr and math-8-fr, 2 in Physics 2204, and 1 each in Chemistry 3202 and Math 3208), saw " + totalPk + " in " + JSON.stringify(pkByCourse));
 for (const id of Object.keys(PK_PIN)) ok(JSON.stringify(pkIdsByCourse[id] || []) === JSON.stringify(PK_PIN[id]), id + ": prior knowledge set is the pinned set, saw " + JSON.stringify(pkIdsByCourse[id]));
 ok(COURSE_IDS.every(id => PK_PIN[id] || (pkIdsByCourse[id] || []).length === 0), "no course outside the pinned set carries a prior knowledge entry");
 
 /* -------- Part A: the flagging pass courses, switch driven -------- */
-for (const id of ["math-9", "math-9-fr", "math-8", "math-8-fr", "math-3202", "math-2200", "math-2202", "math-1201", "math-1202", "math-3200", "math-3208", "physics-2204", "chem-3202"]) {
+for (const id of ["math-9", "math-9-fr", "math-8", "math-8-fr", "math-3202", "math-2200", "math-2202", "math-1201", "math-1202", "math-3200", "math-3201", "math-3208", "physics-2204", "chem-3202"]) {
   const sb = loadCourse(id);
   const cfg = sb.window.COURSES[id];
   const ALLU = Object.keys(cfg.units).map(Number);
@@ -263,24 +268,25 @@ for (const id of ["math-9", "math-9-fr", "math-8", "math-8-fr", "math-3202", "ma
   run(sb, 'var __ENR=false,__PK=true; function enrichIncluded(){return __ENR;} function pkIncluded(){return __PK;}');
   run(sb, 'function __reseed(n){var s=n>>>0; Math.random=function(){s|=0;s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}');
 
-  ok(run(sb, "poolFor([9],[])").length === 24, "3201 toggle off: Unit 9 practice pool is 24");
+  ok(run(sb, "poolFor([9],[])").length === 27, "3201 toggle off: Unit 9 practice pool is 27");
   run(sb, "__ENR=true;");
   const u9on = run(sb, "poolFor([9],[])");
-  ok(u9on.length === 27 && BINOMIAL.every(id => u9on.some(e => e.id === id)),
+  ok(u9on.length === 30 && BINOMIAL.every(id => u9on.some(e => e.id === id)),
      "3201 toggle on: the three binomial entries appear in the Unit 9 practice pool (pool " + u9on.length + ")");
-  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 212, "3201 toggle on: whole-bank pool is 212");
+  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 249, "3201 toggle on: whole-bank pool is 249");
   run(sb, "__ENR=false;");
-  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 209, "3201 toggle off again: whole-bank pool is 209");
+  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 246, "3201 toggle off again: whole-bank pool is 246");
 
   // practice draws through drawSet; the PK switch drops the
-  // course's one flagged prior knowledge entry.
+  // course's 41 flagged prior knowledge entries (one audit flag
+  // before the November 16, 2026 tranche, 41 after it).
   const drawPool = (enr, pk) => { run(sb, "__ENR=" + enr + ";__PK=" + pk + ";"); return run(sb, "drawSet(" + JSON.stringify(ALL) + ",[],10,[20,60,20],'unit',false)"); };
   let r = drawPool(false, true);
-  ok(r.pool === 209, "3201 draws, enrichment off: draw pool 209, saw " + r.pool);
+  ok(r.pool === 246, "3201 draws, enrichment off: draw pool 246, saw " + r.pool);
   r = drawPool(true, true);
-  ok(r.pool === 212, "3201 draws, enrichment on: draw pool 212, saw " + r.pool);
+  ok(r.pool === 249, "3201 draws, enrichment on: draw pool 249, saw " + r.pool);
   r = drawPool(false, false);
-  ok(r.pool === 208, "3201 draws, PK switch off: draw pool drops the one flagged prior knowledge entry (u4-express-as-power) to 208, saw " + r.pool);
+  ok(r.pool === 205, "3201 draws, PK switch off: draw pool drops the 41 flagged prior knowledge entries to 205, saw " + r.pool);
   let enrLeak = 0;
   for (let i = 0; i < 25; i++) {
     const rr = drawPool(false, true);
@@ -401,10 +407,10 @@ const ev = (dom, code) => dom.window.eval(code);
   d = r.dom.window.document;
   ev(r.dom, "startOnline()");
   ok(!!d.querySelector("#enrChk"), "visibility: Math 3201 teacher bar renders the enrichment toggle");
-  ok(!!d.querySelector("#pkInChk"), "visibility: Math 3201 (one flagged prior knowledge entry) renders the prior knowledge switch");
+  ok(!!d.querySelector("#pkInChk"), "visibility: Math 3201 (41 flagged prior knowledge entries) renders the prior knowledge switch");
   ok(d.querySelector("#pkInChk") && d.querySelector("#pkInChk").checked, "visibility: Math 3201 prior knowledge switch starts checked (default in)");
   ok(d.querySelector("#enrChk") && !d.querySelector("#enrChk").checked, "visibility: Math 3201 enrichment toggle starts unchecked (default out)");
-  ok(ev(r.dom, "BANK.length") === 212 && ev(r.dom, "poolFor([9],[]).length") === 24, "live shell: Math 3201 bank 212, default Unit 9 pool 24");
+  ok(ev(r.dom, "BANK.length") === 249 && ev(r.dom, "poolFor([9],[]).length") === 27, "live shell: Math 3201 bank 249, default Unit 9 pool 27");
   ok(ev(r.dom, "current.every(function(q){return !q._entry.enrich;})"), "live shell: the auto-started Math 3201 default set holds no enrichment question");
   ok(ev(r.dom, "tags({ _entry: BANK.find(function(e){return e.enrich;}) })").includes("Enrichment"), "marking: a drawn Math 3201 enrichment question's card tags carry the word Enrichment");
   r.dom.window.close();
@@ -413,7 +419,7 @@ const ev = (dom, code) => dom.window.eval(code);
   d = r.dom.window.document;
   ev(r.dom, "startOnline()");
   ok(ev(r.dom, "settings().enr") === true && ev(r.dom, "enrichIncluded()") === true, "link state: enr=1 lands in Math 3201 settings and the accessor");
-  ok(ev(r.dom, "poolFor([9],[]).length") === 27, "link state: enr=1 opens the Math 3201 Unit 9 pool to 27");
+  ok(ev(r.dom, "poolFor([9],[]).length") === 30, "link state: enr=1 opens the Math 3201 Unit 9 pool to 30");
   ok(d.querySelector("#enrChk") && d.querySelector("#enrChk").checked, "visibility: with enr=1 the rendered Math 3201 toggle is checked");
   r.dom.window.close();
 

@@ -2592,6 +2592,17 @@ window.COURSES = {
      inputs ship at 20/62/18, the mid-course blueprint mix). */
   defaultMix: [20, 62, 18],
 
+  /* Prior knowledge tranche (November 16, 2026, Band 2): the 41
+     flagged entries recorded in bank-pk.js (37 borrowed from the
+     Math 1201, Math 2201, Math 9 and Math 8 banks, and 4 entries
+     already in this bank carrying tranche metadata: u4-express-as-power
+     and the Unit 9 seed entries u9-prob-basics, u9-context-prob and
+     u9-decisions) stay out of practice tests and exams unless the
+     teacher ticks the include-prior-knowledge override. Ordinary
+     practice sets and the pkonly prerequisite checks keep them.
+     Mirrors the Band 1 flags. */
+  pkPracticeOnly: true,
+
   /* Exam blueprint, translated from the standalone app's composer
      (math-3201-review/index.html, composeExam, lines 5849 to 5907;
      the function is byte-identical to the Math 3200 standalone's

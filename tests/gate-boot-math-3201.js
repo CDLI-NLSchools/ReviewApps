@@ -3,7 +3,7 @@
      node tests/gate-boot-math-3201.js   (NODE_PATH set to the 2204 node_modules)
    - ?course=math-3201: Math 3201 title and header, nine unit
      checkboxes with the right names, both preset labels, the All
-     preset sweeping all nine units (default pool 209; the bank
+     preset sweeping all nine units (default pool 246; the bank
      carries 212 entries since Nov 13, 2026, the three extra
      being the Unit 9 binomial enrichment entries, which stay
      out of default pools), the course default
@@ -47,7 +47,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Math 3201 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 3201 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 212, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 249, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 177, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 9, "course: nine unit checkboxes, saw " + labels.length);
@@ -60,12 +60,12 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,62,18", "course: default level mix is the course default 20/62/18, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("209 question templates"), "course: pool after All preset is the whole default pool (bank 212 minus the 3 enrichment entries), saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("246 question templates"), "course: pool after All preset is the whole default pool (bank 249 minus the 3 enrichment entries), saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("89 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("109 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,62,18", "course: mid preset mix 20/62/18, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("120 question templates"), "course: pool after Final preset is Units 5 to 9, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("137 question templates"), "course: pool after Final preset is Units 5 to 9, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: final preset mix switches to 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ok(ev(r.dom, "Object.keys(REF_HTML).length") === 6, "course: per-unit reference panels for Units 4 to 9 only, saw " + ev(r.dom, "Object.keys(REF_HTML).length"));
   ok(ev(r.dom, "refPanelsHtml([1])").includes("Quadratic Formula") && !ev(r.dom, "refPanelsHtml([1])").includes("Formulas and facts"),
