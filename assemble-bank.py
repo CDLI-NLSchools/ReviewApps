@@ -124,7 +124,7 @@ COURSES = {
     "math-1202": ("Math 1202",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js",
                    "bank-u3.js", "bank-u4.js", "bank-u5.js",
-                   "bank-u6.js", "bank-u7.js"]),
+                   "bank-u6.js", "bank-u7.js", "bank-pk.js"]),
     # Build order is the standalone bank source's own: helpers,
     # then Units 1 to 4, then the November 7, 2026 top-up tranche
     # for Units 1 to 4, then the final-scope tranche (Units 5 to

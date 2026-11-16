@@ -3947,6 +3947,12 @@ window.COURSES = {
   grade: 10,
   listed: true,
 
+  /* PK tranche (November 16, 2026): flagged prior knowledge
+     entries stay out of composed papers by default; they are
+     reached through the prerequisite checks and ordinary
+     practice. Mirrors the Math 2200 flag. */
+  pkPracticeOnly: true,
+
   units: {
     "1": "Consumerism and Travel",
     "2": "Measuring Length",
