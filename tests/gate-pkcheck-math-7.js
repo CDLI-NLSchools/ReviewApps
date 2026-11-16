@@ -7,13 +7,18 @@
    in banks/math-7/bank-pk.js plus the 2 shared ordering-numbers
    copies housed in Unit 7), extended the same day by Band 3
    Piece 2 (the Unit 4 area and measurement piece, 25 more authored
-   entries in the same file, for 70 flagged of 279), every flagged entry carries pkSrc,
+   entries in the same file, for 70 flagged of 279), and by Band 3
+   Piece 3 (the remaining clusters: 82 authored entries, 13 shared
+   copies and 18 in-place support flags in the same file, for 183
+   flagged of 374, with a check pool in every unit), every flagged entry carries pkSrc,
    pkFor and pkGroup metadata and an explicit group label, a pkonly
    draw (PKONLY_DRAW, the flag the shell sets for a ?pkonly=1 set)
    deals only flagged entries, deals min(8, pool) with no repeated
-   entry, samples every group housed in the unit, and admits no
+   entry, samples min(8, groups housed) distinct groups (every
+   group when the unit houses at most 8; Unit 1 houses 9 since
+   Piece 3), and admits no
    Level 3 entry (no strand pool carries one; the specification's
-   cap is one); units housing no strand group deal an empty check;
+   cap is one); since Piece 3 every unit houses a pool;
    pkonly overrides the practice PK switch and any indicator
    parameters; group-keyed retry draws fill from the named groups
    only; sheets and exams ignore pkonly entirely.
@@ -71,16 +76,20 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-7.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 24, 2: 14, 3: 0, 4: 25, 5: 0, 6: 0, 7: 7, 8: 0 };
+const POOLS = { 1: 43, 2: 14, 3: 33, 4: 32, 5: 13, 6: 10, 7: 19, 8: 19 };
 const POOL_IDS = {
-  1: ["u1-pk-div-2digit", "u1-pk-div-exact", "u1-pk-div-related", "u1-pk-div-remainder", "u1-pk-div-zeros", "u1-pk-fact-division", "u1-pk-fact-halving", "u1-pk-fact-onemore", "u1-pk-fact-recall", "u1-pk-fact-skip", "u1-pk-mult-2by1", "u1-pk-mult-2by2", "u1-pk-mult-3by1", "u1-pk-mult-3by2", "u1-pk-mult-zeros", "u1-pk-multiples-common", "u1-pk-multiples-first", "u1-pk-multiples-identify", "u1-pk-multiples-problem", "u1-pk-ooo-basic", "u1-pk-ooo-brackets", "u1-pk-ooo-chain", "u1-pk-ooo-division", "u1-pk-ooo-why"],
+  1: ["u1-pk-div-2digit", "u1-pk-div-exact", "u1-pk-div-related", "u1-pk-div-remainder", "u1-pk-div-zeros", "u1-pk-fact-division", "u1-pk-fact-halving", "u1-pk-fact-onemore", "u1-pk-fact-recall", "u1-pk-fact-skip", "u1-pk-fq-between", "u1-pk-fq-coord", "u1-pk-fq-move", "u1-pk-fq-read", "u1-pk-fq-which", "u1-pk-mult-2by1", "u1-pk-mult-2by2", "u1-pk-mult-3by1", "u1-pk-mult-3by2", "u1-pk-mult-zeros", "u1-pk-multiples-common", "u1-pk-multiples-first", "u1-pk-multiples-identify", "u1-pk-multiples-problem", "u1-pk-ooo-basic", "u1-pk-ooo-brackets", "u1-pk-ooo-chain", "u1-pk-ooo-division", "u1-pk-ooo-why", "u1-pk-pattern-grow", "u1-pk-pattern-machine", "u1-pk-pattern-missing", "u1-pk-pattern-next", "u1-pk-pattern-rule", "u1-pk-sort-carroll-read", "u1-pk-sort-carroll-total", "u1-pk-sort-venn-place", "u1-pk-sort-venn-read", "u1-pk-tg-bar", "u1-pk-tg-compare", "u1-pk-tg-line", "u1-pk-tg-picto", "u1-pk-tg-table"],
   2: ["u2-pk-add-regroup", "u2-pk-add-three", "u2-pk-addsub-large", "u2-pk-below-compare", "u2-pk-below-debt", "u2-pk-below-line", "u2-pk-below-temp", "u2-pk-order-below", "u2-pk-order-decimals", "u2-pk-order-line", "u2-pk-order-missing", "u2-pk-order-place", "u2-pk-sub-line", "u2-pk-sub-regroup"],
-  4: ["u4-pk-circle-centre", "u4-pk-circle-diameter", "u4-pk-circle-pick", "u4-pk-circle-radius", "u4-pk-dec-mult-near3", "u4-pk-dec-mult-whole", "u4-pk-dec-square-decimal", "u4-pk-dec-square-whole", "u4-pk-perim-missing-polygon", "u4-pk-perim-missing-side", "u4-pk-perim-pentagon", "u4-pk-perim-rect", "u4-pk-perim-square", "u4-pk-rect-area", "u4-pk-rect-area-context", "u4-pk-rect-decimals", "u4-pk-rect-missing-side", "u4-pk-rect-square", "u4-pk-rect-square-decimal", "u4-pk-ruler-cm", "u4-pk-ruler-cm-decimal", "u4-pk-ruler-difference", "u4-pk-ruler-half", "u4-pk-ruler-mm", "u4-pk-ruler-unit-choice"],
-  7: ["u7-pk-average-decimals", "u7-pk-average-money", "u7-pk-average-set", "u7-pk-average-small", "u7-pk-average-whole", "u7-pk-order-below", "u7-pk-order-line"]
+  3: ["u3-add-sub-decimals", "u3-cr-add-sub", "u3-cr-div", "u3-cr-mult", "u3-div-decimals", "u3-mult-decimals", "u3-pk-dpv-digit-value", "u3-pk-dpv-expanded", "u3-pk-dpv-place-name", "u3-pk-dpv-round-hundredth", "u3-pk-dpv-round-tenth", "u3-pk-equiv-divide", "u3-pk-equiv-missing", "u3-pk-equiv-not", "u3-pk-equiv-recognize", "u3-pk-equiv-target", "u3-pk-est-add", "u3-pk-est-difference", "u3-pk-est-money", "u3-pk-est-product", "u3-pk-fad-line", "u3-pk-fad-match", "u3-pk-fad-to-decimal", "u3-pk-fad-to-fraction", "u3-pk-fracrep-bar", "u3-pk-fracrep-circle", "u3-pk-fracrep-line", "u3-pk-fracrep-pick", "u3-pk-fracrep-set", "u3-pk-pct-decimal", "u3-pk-pct-fraction", "u3-pk-pct-grid", "u3-pk-pct-pick"],
+  4: ["u4-pk-angle-full-turn", "u4-pk-angle-right-count", "u4-pk-circle-centre", "u4-pk-circle-diameter", "u4-pk-circle-pick", "u4-pk-circle-radius", "u4-pk-dec-mult-near3", "u4-pk-dec-mult-whole", "u4-pk-dec-square-decimal", "u4-pk-dec-square-whole", "u4-pk-perim-missing-polygon", "u4-pk-perim-missing-side", "u4-pk-perim-pentagon", "u4-pk-perim-rect", "u4-pk-perim-square", "u4-pk-protractor-acute", "u4-pk-protractor-five", "u4-pk-protractor-left", "u4-pk-protractor-obtuse", "u4-pk-protractor-supplement", "u4-pk-rect-area", "u4-pk-rect-area-context", "u4-pk-rect-decimals", "u4-pk-rect-missing-side", "u4-pk-rect-square", "u4-pk-rect-square-decimal", "u4-pk-ruler-cm", "u4-pk-ruler-cm-decimal", "u4-pk-ruler-difference", "u4-pk-ruler-half", "u4-pk-ruler-mm", "u4-pk-ruler-unit-choice"],
+  5: ["u5-add-like", "u5-common-denominator", "u5-model-add-figure", "u5-pk-equiv-divide", "u5-pk-equiv-recognize", "u5-pk-equiv-target", "u5-pk-mixed-from-improper", "u5-pk-mixed-slices", "u5-pk-mixed-to-improper", "u5-pk-mixed-which", "u5-simplify-fraction", "u5-simplify-solution", "u5-sub-like"],
+  6: ["u6-inspection-trial", "u6-one-step-balance", "u6-one-step-problem", "u6-one-step-problem-cr", "u6-pk-balance-change", "u6-pk-balance-equivalent", "u6-pk-balance-value", "u6-pk-subst-brackets", "u6-pk-subst-simple", "u6-pk-subst-table"],
+  7: ["u7-pk-average-decimals", "u7-pk-average-money", "u7-pk-average-set", "u7-pk-average-small", "u7-pk-average-whole", "u7-pk-list-count", "u7-pk-list-missing", "u7-pk-list-outfits", "u7-pk-order-below", "u7-pk-order-line", "u7-pk-prob-bag", "u7-pk-prob-die", "u7-pk-prob-percent-bag", "u7-pk-prob-spinner", "u7-pk-prob-words", "u7-pk-tg-bar", "u7-pk-tg-line", "u7-pk-tg-table", "u7-prob-basic"],
+  8: ["u8-axes-origin", "u8-pk-angle-benchmark", "u8-pk-angle-classify", "u8-pk-angle-complementary", "u8-pk-angle-supplementary", "u8-pk-axes-name", "u8-pk-axes-on-axis", "u8-pk-axes-origin-point", "u8-pk-fq-coord", "u8-pk-fq-move", "u8-pk-fq-read", "u8-pk-fq-which", "u8-pk-protractor-acute", "u8-pk-protractor-five", "u8-pk-protractor-obtuse", "u8-pk-trans-describe", "u8-pk-trans-identify-flip", "u8-pk-trans-identify-slide", "u8-pk-trans-identify-turn"]
 };
-ok(run("BANK.length") === 279, "bank carries 279 entries (209 + 70 strand), saw " + run("BANK.length"));
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 70,
-   "bank carries 70 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.length") === 374, "bank carries 374 entries (the Piece 1 and 2 state's 279 plus Piece 3's 95 new entries; 183 flagged, 191 assessed), saw " + run("BANK.length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 183,
+   "bank carries 183 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-7 config sets pkPracticeOnly");
 for (let u = 1; u <= 8; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");
@@ -117,14 +126,18 @@ function poolGroups(unit) {
   return run("(function(){var s={};poolFor([" + unit + "],[],false).filter(isPK).forEach(function(e){s[pkGroupOf(e)]=1;});return Object.keys(s).sort();})()");
 }
 run("PKONLY_DRAW=true;");
-for (const u of [1, 2, 4, 7]) {
+for (const u of [1, 2, 3, 4, 5, 6, 7, 8]) {
   for (const seed of [11, 99, 424242, 7, 2026]) {
     const r = checkDraw(u, [], seed);
     ok(r.pool === POOLS[u], "unit " + u + " seed " + seed + ": pkonly pool is " + POOLS[u] + ", saw " + r.pool);
     ok(r.allPk, "unit " + u + " seed " + seed + ": every dealt question is a prior knowledge entry");
     ok(r.n === Math.min(8, r.pool), "unit " + u + " seed " + seed + ": deals min(8, pool) questions, saw " + r.n);
     ok(new Set(r.ids).size === r.ids.length, "unit " + u + " seed " + seed + ": no entry repeats");
-    ok(JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(u)), "unit " + u + " seed " + seed + ": every pkGroup housed in the unit is sampled");
+    /* Stratification samples every group housed in the unit when
+       the unit houses at most 8 groups; Unit 1 houses 9 since
+       Piece 3, so its check samples 8 of the 9, rotating by seed. */
+    ok([...new Set(r.groups)].every((g) => poolGroups(u).includes(g)) && new Set(r.groups).size === Math.min(8, poolGroups(u).length),
+       "unit " + u + " seed " + seed + ": the check samples min(8, groups housed) distinct pkGroups, all housed in the unit, saw " + JSON.stringify([...new Set(r.groups)].sort()));
     ok(r.l3 === 0, "unit " + u + " seed " + seed + ": no Level 3 question is dealt (the specification allows at most one; the strand carries none), saw " + r.l3);
     const dup = new Set(r.canon).size !== r.canon.length;
     ok(r.thin === (dup || r.n < Math.min(8, r.pool)), "unit " + u + " seed " + seed + ": thin reports exactly the genuine duplicate/shortfall state");
@@ -133,21 +146,17 @@ for (const u of [1, 2, 4, 7]) {
   ok(JSON.stringify(a.ids) === JSON.stringify(b.ids) && JSON.stringify(a.canon) === JSON.stringify(b.canon),
      "unit " + u + ": the same seed redraws the identical check (ids and canonical questions)");
 }
-for (const u of [3, 5, 6, 8]) {
-  const r = checkDraw(u, [], 99);
-  ok(r.pool === 0 && r.n === 0, "unit " + u + ": no strand group is housed here, so the pkonly pool and the check are empty, saw pool=" + r.pool + " n=" + r.n);
-}
 /* pkonly overrides the practice PK switch */
 run("__PK=false;");
 {
   const r = checkDraw(1, [], 99);
-  ok(r.allPk && r.n === 8 && r.pool === 24, "precedence: with pkin=0 the Unit 1 check still deals its 8 prior knowledge questions");
+  ok(r.allPk && r.n === 8 && r.pool === 43, "precedence: with pkin=0 the Unit 1 check still deals its 8 prior knowledge questions");
 }
 run("__PK=true;");
 /* pkonly bypasses indicator filtering carried on a link */
 {
   const r = checkDraw(1, ["5.1"], 99);
-  ok(r.allPk && r.n === 8 && JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(1)),
+  ok(r.allPk && r.n === 8 && [...new Set(r.groups)].every((g) => poolGroups(1).includes(g)) && new Set(r.groups).size === Math.min(8, poolGroups(1).length),
      "precedence: a pkonly draw carrying indicator parameters still deals the full stratified Unit 1 check");
 }
 /* group-keyed retry draws (the PKONLY_GROUPS branch of drawSet) */
@@ -191,6 +200,22 @@ function retryDraw(unit, groups, seed) {
   ok(m.n === 8 && m.l3 === 0 && m.groups.every((g) => five.includes(g)) && JSON.stringify([...new Set(m.groups)].sort()) === JSON.stringify(five.slice().sort()),
      "grp u4: a draw keyed to the five Piece 2 groups deals only those groups and samples all five, saw " + JSON.stringify(m.groups));
 }
+/* Piece 3: group-keyed draws over the new groups */
+{
+  const r = retryDraw(3, ["decimal-place-value"], 99);
+  ok(r.n === 8 && r.l3 === 0 && r.distinct === 5 && r.groups.every((g) => g === "decimal-place-value"),
+     "retry u3: the decimal-place-value retry fills 8 from the group's five entries with no Level 3, saw n=" + r.n + " l3=" + r.l3 + " distinct=" + r.distinct);
+  const m = retryDraw(5, ["mixed-improper"], 99);
+  ok(m.n === 8 && m.l3 === 0 && m.distinct === 4 && m.groups.every((g) => g === "mixed-improper"),
+     "retry u5: the mixed-improper retry fills 8 from the group's four entries, saw n=" + m.n + " distinct=" + m.distinct);
+  const t = retryDraw(8, ["transformations"], 99);
+  ok(t.n === 8 && t.l3 === 0 && t.distinct === 4 && t.groups.every((g) => g === "transformations"),
+     "retry u8: the transformations retry fills 8 from the group's four entries, saw n=" + t.n + " distinct=" + t.distinct);
+  const two = retryDraw(6, ["equality-balance", "substitution"], 424242);
+  ok(two.n === 8 && two.l3 === 0 && two.groups.every((g) => g === "equality-balance" || g === "substitution")
+     && two.groups.includes("equality-balance") && two.groups.includes("substitution"),
+     "retry u6: a two-group retry over the 7-C4 top-up groups deals mixed across both and nothing else, saw " + JSON.stringify(two.groups));
+}
 /* sheets and exams ignore pkonly, even with the flag set */
 {
   const sheetIds = (flag) => run("(function(){PKONLY_DRAW=" + flag + ";__reseed(99);"
@@ -202,7 +227,7 @@ function retryDraw(unit, groups, seed) {
      "sheets: drawSheetSet under a set PKONLY_DRAW flag is identical to the ordinary sheet draw");
   run("__PK=false;");
   const sheetNoPk = sheetIds(false);
-  ok(sheetNoPk.length > 0 && sheetNoPk.every((id) => !POOL_IDS[1].includes(id) && !POOL_IDS[2].includes(id) && !POOL_IDS[4].includes(id) && !POOL_IDS[7].includes(id)),
+  ok(sheetNoPk.length > 0 && sheetNoPk.every((id) => ![1, 2, 3, 4, 5, 6, 7, 8].some((u) => POOL_IDS[u].includes(id))),
      "sheets: with the prior knowledge switch off (the default for sheets and tests), the sheet draw contains no flagged entry");
   run("__PK=true;");
   const paper = run("(function(){PKONLY_DRAW=true;var p=composeExam([1],[],undefined);return p.srItems.concat(p.crItems).filter(function(it){return isPK(it.q._entry);}).length;})()");
@@ -338,7 +363,7 @@ function answerFirst(d) {
   ok(ev(d, "current.every(function(q){return isPK(q._entry);})") === true, "link: every question on the pkonly set is a prior knowledge entry");
   ok(ev(d, "settings().pkOnly") === true, "link: settings carry pkOnly from the pkonly=1 parameter");
   ok(ev(d, "settingsToURL()").includes("pkonly=1"), "link: the set's own link keeps pkonly=1");
-  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 1: 24 questions",
+  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 1: 43 questions",
      "link: the pool line reads as a prerequisite check pool, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
   ok(ev(d, "!!document.getElementById('pkCheckBtn') && document.getElementById('pkCheckBtn').hidden") === true,
      "visibility: a student opening a pkonly link does not see the Advanced tools action");
@@ -428,9 +453,9 @@ function answerFirst(d) {
   ok(!!resumeKey(sharedR), "retry: progress on the retry set is saved like any check set");
   d.window.close();
 
-  /* a fully correct check offers no retry (Unit 7: the pool deals whole at 7) */
+  /* a fully correct check offers no retry (Unit 7: pool of 19 since Piece 3, deals 8) */
   d = await boot("course=math-7&unit=7&pkonly=1&seed=retry2&count=8", {});
-  ok(ev(d, "current.length") === 7, "link: the Unit 7 check deals its whole pool of 7, saw " + ev(d, "current.length"));
+  ok(ev(d, "current.length") === 8, "link: the Unit 7 check deals 8 from its pool of 19, saw " + ev(d, "current.length"));
   answerAll(d, null);
   ok(!d.window.document.getElementById("retryMissedBtn"), "retry: a fully correct check offers no retry button");
   ok(d.window.document.getElementById("setSummary").textContent.includes("Every skill in this check"),
@@ -504,12 +529,33 @@ function answerFirst(d) {
   ok(ev(d, "current ? current.length : 0") === 8, "link u4: the Unit 4 pkonly link deals 8 questions");
   ok(ev(d, "current.every(function(q){return isPK(q._entry) && q._entry.unit===4;})") === true,
      "link u4: every question on the Unit 4 check is a flagged Unit 4 entry");
-  ok(ev(d, "[...new Set(current.map(function(q){return pkGroupOf(q._entry);}))].length") === 5,
-     "link u4: the check samples all five Piece 2 groups");
-  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 4: 25 questions",
-     "link u4: the pool line reads as a prerequisite check pool of 25, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
+  ok(ev(d, "[...new Set(current.map(function(q){return pkGroupOf(q._entry);}))].length") === 7,
+     "link u4: the check samples all seven groups now housed in Unit 4 (the five Piece 2 groups plus protractor and angle-facts)");
+  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 4: 32 questions",
+     "link u4: the pool line reads as a prerequisite check pool of 32, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
   ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
      "panel u4: the Unit 4 check render contains no refpanel markup");
+  d.window.close();
+
+  /* ===== Piece 3: student pkonly links deal the Unit 3 and Unit 8 checks ===== */
+  d = await boot("course=math-7&unit=3&pkonly=1&seed=pkc3&count=8", {});
+  ok(ev(d, "current ? current.length : 0") === 8, "link u3: the Unit 3 pkonly link deals 8 questions");
+  ok(ev(d, "current.every(function(q){return isPK(q._entry) && q._entry.unit===3;})") === true,
+     "link u3: every question on the Unit 3 check is a flagged Unit 3 entry");
+  ok(ev(d, "[...new Set(current.map(function(q){return pkGroupOf(q._entry);}))].length") === 7,
+     "link u3: the check samples all seven groups housed in Unit 3");
+  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 3: 33 questions",
+     "link u3: the pool line reads as a prerequisite check pool of 33, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
+  ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
+     "panel u3: the Unit 3 check render contains no refpanel markup");
+  d.window.close();
+
+  d = await boot("course=math-7&unit=8&pkonly=1&seed=pkc8&count=8", {});
+  ok(ev(d, "current ? current.length : 0") === 8, "link u8: the Unit 8 pkonly link deals 8 questions");
+  ok(ev(d, "current.every(function(q){return isPK(q._entry) && q._entry.unit===8;})") === true,
+     "link u8: every question on the Unit 8 check is a flagged Unit 8 entry");
+  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 8: 19 questions",
+     "link u8: the pool line reads as a prerequisite check pool of 19, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
   d.window.close();
 
   /* ===== ordinary sets keep the indicator retry (regression) ===== */

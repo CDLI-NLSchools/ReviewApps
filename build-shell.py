@@ -1854,6 +1854,28 @@ rep(' "repeated-multiplication":["Multiplication facts and repeated multiplicati
 rep(' "sample-population":["Samples and populations","Échantillons et populations"],',
     ' "ruler-measurement":["Reading a ruler","Lire une règle"],\n "sample-population":["Samples and populations","Échantillons et populations"],', count=1)  # Band 3 Piece 2 labels (Nov 16, 2026)
 
+# ---------- Band 3 Piece 3 group labels (Nov 16, 2026) ----------
+rep(' "below-zero":["Integers in context","Entiers en contexte"],',
+    ' "axes-origin":["Axes and the origin","Les axes et l\'origine"],\n "below-zero":["Integers in context","Entiers en contexte"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "decimal-operations":["Decimal operations and ordering","Opérations sur les décimales et ordre"],',
+    ' "decimal-operations":["Decimal operations and ordering","Opérations sur les décimales et ordre"],\n "decimal-place-value":["Decimal place value","Valeur de position des décimales"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "equation-solving":["Solving equations","Résoudre des équations"],',
+    ' "equality-balance":["Equality as balance","L\'égalité comme balance"],\n "equation-solving":["Solving equations","Résoudre des équations"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "fraction-operations":["Operations with fractions","Opérations sur les fractions"],',
+    ' "first-quadrant":["Points in the first quadrant","Points dans le premier quadrant"],\n "fraction-as-decimal":["Fractions as decimals","Fractions en décimales"],\n "fraction-operations":["Operations with fractions","Opérations sur les fractions"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "freq-table":["Frequency tables and the mean","Tableaux de fréquences et la moyenne"],',
+    ' "fraction-representation":["Representing fractions","Représenter des fractions"],\n "freq-table":["Frequency tables and the mean","Tableaux de fréquences et la moyenne"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "multiples":["Multiples","Multiples"],',
+    ' "mixed-improper":["Mixed numbers and improper fractions","Nombres fractionnaires et fractions impropres"],\n "multiples":["Multiples","Multiples"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "percent-change":["Percent change","Variation en pourcentage"],',
+    ' "percent-base":["Percent as part of 100","Le pourcentage comme partie de 100"],\n "percent-change":["Percent change","Variation en pourcentage"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "proof-error":["Spotting errors in a proof","Repérer les erreurs dans une preuve"],',
+    ' "protractor":["Measuring angles with a protractor","Mesurer des angles avec un rapporteur"],\n "proof-error":["Spotting errors in a proof","Repérer les erreurs dans une preuve"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "slope":["Slope","Pente"],',
+    ' "single-event-probability":["Probability of a single event","Probabilité d\'un événement simple"],\n "slope":["Slope","Pente"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+rep(' "square-roots":["Squares and square roots","Carrés et racines carrées"],',
+    ' "sorting-diagrams":["Venn and Carroll diagrams","Diagrammes de Venn et de Carroll"],\n "square-roots":["Squares and square roots","Carrés et racines carrées"],', count=1)  # Band 3 Piece 3 labels (Nov 16, 2026)
+
 # ---------- Band 3 Piece 1 grp link parameter (Nov 16, 2026) ----------
 rep('pk:false,enr:false,pkIn:true,pkOnly:false};',
     'pk:false,enr:false,pkIn:true,pkOnly:false,pkGroups:null};', count=1)  # grp: hidCtl stash (Nov 16, 2026)
