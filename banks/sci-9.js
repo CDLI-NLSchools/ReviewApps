@@ -370,7 +370,7 @@ E("s9-u1-oscillating", 1, ["SC9.1.5"], 2, "var", varset([
   function () {
     return mcq("How does the Oscillating Theory differ from the Big Bang Theory in its account of the universe's future?",
       "The Oscillating Theory has expansion eventually reversing under gravity into contraction (a Big Crunch) followed by another expansion; the Big Bang account has expansion continuing",
-      ["The Oscillating Theory says the universe will shrink without ever having expanded", "The Big Bang Theory has the universe contracting now; the Oscillating Theory has it expanding now", "The two theories differ only in the age they give for the universe"],
+      ["The Oscillating Theory says the universe will shrink steadily toward a final collapse without ever having expanded; the Big Bang account describes the same one-way shrinking throughout", "The Big Bang Theory has the universe contracting now toward an eventual Big Crunch; the Oscillating Theory has it expanding now and continuing to expand at a steady rate forever", "The two theories differ only in the age they give for the universe, the Big Bang account placing its beginning much earlier; on the universe's future the two accounts agree completely"],
       "Both theories start from an expanding universe. They part on the future. In the Oscillating Theory, gravitational attraction among stars and galaxies eventually halts the expansion and pulls the universe back into contraction, ending in a Big Crunch that may be followed by another Big Bang, in cycles. The Big Bang account as presented has the expansion continuing.",
       {});
   }
