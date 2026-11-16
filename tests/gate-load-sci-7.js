@@ -2,7 +2,7 @@
 /* Gate (load + census + draw) for the Science 7 build, all four units:
      node tests/gate-load-sci-7.js
    Expectations are the four authoring specs (Nov 15, 2026):
-   - courses.js registers sci-7 (Science, grade 7, listed:false,
+   - courses.js registers sci-7 (Science, grade 7, listed:true,
      curriculum NL), Units 1 to 4, 99 indicators.
    - Unit 1 (Ecosystems): exactly 80 entries, 65 SR + 15 CR, levels
      32/32/16, per-indicator counts equal to the Ecosystems spec
@@ -33,7 +33,8 @@ global.window = {};
 eval(fs.readFileSync(ROOT + "/courses.js", "utf8"));
 const C = window.COURSES["sci-7"];
 ok(!!C, "courses.js registers sci-7");
-ok(C.listed === false, "sci-7 is unlisted");
+/* Pin updated: sci-7 was listed on Nov 15, 2026 in the joint junior science listing, so this pin now expects listed: true. */
+ok(C.listed === true, "sci-7 is listed");
 ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 7, "curriculum NL, Science, grade 7");
 ok(C.units[1] === "Interactions Within Ecosystems" && C.units[2] === "Heat" && C.units[3] === "Mixtures and Solutions" && C.units[4] === "Earth's Crust" && Object.keys(C.units).length === 4, "all four units registered");
 ok(Object.keys(C.indicators).length === 99, "99 indicators registered, saw " + Object.keys(C.indicators).length);

@@ -2,9 +2,9 @@
 /* Gate (load + census + draw) for the Science 9 build:
      node tests/gate-load-sci-9.js
    Expectations are the strand authoring specs (Nov 15, 2026):
-   - courses.js registers sci-9 (Science, grade 9, listed:false,
-     curriculum NL). The course stays unlisted: the junior high
-     science English courses release together.
+   - courses.js registers sci-9 (Science, grade 9, listed:true,
+     curriculum NL). The junior high science English courses
+     released together on Nov 15, 2026.
    - Unit 1 (Space): exactly 75 entries, 61 SR + 14 CR, levels
      30/30/15, per-indicator counts equal to the Space spec, CR
      marks sum 44, twelve entries at exactly 3 marks and two at
@@ -50,7 +50,8 @@ global.window = {};
 eval(fs.readFileSync(ROOT + "/courses.js", "utf8"));
 const C = window.COURSES["sci-9"];
 ok(!!C, "courses.js registers sci-9");
-ok(C.listed === false, "sci-9 is unlisted");
+/* Pin updated: sci-9 was listed on Nov 15, 2026 in the joint junior science listing, so this pin now expects listed: true. */
+ok(C.listed === true, "sci-9 is listed");
 ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 9, "curriculum NL, Science, grade 9");
 ok(C.units[1] === "Space", "Unit 1 registered");
 ok(C.units[2] === "Atoms, Elements, and Compounds", "Unit 2 registered");

@@ -2,9 +2,9 @@
 /* Gate (load + census + draw) for the Science 8 build:
      node tests/gate-load-sci-8.js
    Expectations are the strand authoring specs (Nov 15, 2026):
-   - courses.js registers sci-8 (Science, grade 8, listed:false,
-     curriculum NL). The course stays unlisted: the junior high
-     science English courses release together.
+   - courses.js registers sci-8 (Science, grade 8, listed:true,
+     curriculum NL). The junior high science English courses
+     released together on Nov 15, 2026.
    - Unit 1 (Water Systems on Earth's Surface): exactly 80 entries,
      66 SR + 14 CR, levels 32/32/16, per-indicator counts equal to
      the Water Systems spec, CR marks sum 44, twelve entries at
@@ -47,7 +47,8 @@ global.window = {};
 eval(fs.readFileSync(ROOT + "/courses.js", "utf8"));
 const C = window.COURSES["sci-8"];
 ok(!!C, "courses.js registers sci-8");
-ok(C.listed === false, "sci-8 is unlisted");
+/* Pin updated: sci-8 was listed on Nov 15, 2026 in the joint junior science listing, so this pin now expects listed: true. */
+ok(C.listed === true, "sci-8 is listed");
 ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 8, "curriculum NL, Science, grade 8");
 ok(C.units[1] === "Water Systems on Earth's Surface", "Unit 1 registered");
 ok(C.units[2] === "Fluids", "Unit 2 registered");

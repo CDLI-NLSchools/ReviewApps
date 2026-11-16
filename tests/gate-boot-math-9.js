@@ -249,8 +249,9 @@ function checkFeedback(dom, d, tag) {
   const heads = Array.prototype.slice.call(d.querySelectorAll("#courseList h3")).map(h => h.textContent);
   ok(heads.length === 3 && heads[0] === "Mathematics" && heads[1] === "Science" && heads[2] === "Mathématiques", "picker: groups are Mathematics, Science, Mathématiques, saw " + heads.join(", "));
   const btns = Array.prototype.slice.call(d.querySelectorAll("#courseList button")).map(b => b.textContent);
-  const expect = ["Math 3200", "Math 3201", "Math 3202", "Math 3208", "Math 2200", "Math 2201", "Math 2202", "Math 1201", "Math 1202", "Math 9", "Math 8", "Math 7", "Chemistry 3202", "Physics 3204", "Chemistry 2202", "Physics 2204", "Mathématiques 9", "Mathématiques 8", "Mathématiques 7"];
-  ok(btns.length === expect.length && btns.every((t, i) => t === expect[i]), "picker: the 19 listed courses in the ruled order, saw " + btns.join(" | "));
+  /* Picker pins updated: 26 courses are listed after the Nov 15, 2026 joint junior science listing, so the exact list, the Science chip set, the Grade 11 subset and the reset count in this block pin 26. */
+  const expect = ["Math 3200", "Math 3201", "Math 3202", "Math 3208", "Math 2200", "Math 2201", "Math 2202", "Math 1201", "Math 1202", "Math 9", "Math 8", "Math 7", "Biology 3201", "Chemistry 3202", "Physics 3204", "Earth Systems 3209", "Biology 2201", "Chemistry 2202", "Physics 2204", "Science 1206", "Science 9", "Science 8", "Science 7", "Mathématiques 9", "Mathématiques 8", "Mathématiques 7"];
+  ok(btns.length === expect.length && btns.every((t, i) => t === expect[i]), "picker: the 26 listed courses in the ruled order, saw " + btns.join(" | "));
   ok(btns[btns.length - 1] === "Mathématiques 7", "picker: Math 7 FR is listed, last, under Mathématiques");
   const chipRows = d.querySelectorAll("#pkChips .pkrow");
   ok(chipRows.length === 2, "picker: two filter chip rows render, saw " + chipRows.length);
@@ -261,11 +262,11 @@ function checkFeedback(dom, d, tag) {
   const visBtns = () => Array.prototype.slice.call(d.querySelectorAll("#courseList button")).filter(b => b.style.display !== "none").map(b => b.textContent);
   const clickChip = (row, text) => { const bs = chipRows[row].querySelectorAll("button"); for (const b of bs) if (b.textContent === text) { b.click(); return; } };
   clickChip(0, "Science");
-  ok(visBtns().join() === "Chemistry 3202,Physics 3204,Chemistry 2202,Physics 2204", "picker: the Science chip leaves the four science courses, saw " + visBtns().join(", "));
+  ok(visBtns().join() === "Biology 3201,Chemistry 3202,Physics 3204,Earth Systems 3209,Biology 2201,Chemistry 2202,Physics 2204,Science 1206,Science 9,Science 8,Science 7", "picker: the Science chip leaves the eleven science courses, saw " + visBtns().join(", "));
   clickChip(1, "Grade 11");
-  ok(visBtns().join() === "Chemistry 2202,Physics 2204", "picker: Science plus Grade 11 leaves two courses, saw " + visBtns().join(", "));
+  ok(visBtns().join() === "Biology 2201,Chemistry 2202,Physics 2204", "picker: Science plus Grade 11 leaves three courses, saw " + visBtns().join(", "));
   clickChip(0, "All"); clickChip(1, "All");
-  ok(visBtns().length === 19, "picker: resetting both chips restores all 19");
+  ok(visBtns().length === 26, "picker: resetting both chips restores all 26");
   ok(d.title === "Review Apps", "picker: page title is Review Apps, saw " + d.title);
   const pkH1 = d.querySelector("#coursePicker h1");
   ok(!!pkH1 && pkH1.textContent === "Review Apps", "picker: the heading reads Review Apps");
