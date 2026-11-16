@@ -4,10 +4,12 @@
    - courses.js carries a math-8 entry (Mathematics, grade 8,
      listed:false, longName "Mathematics 8") beside the untouched
      math-9 entry.
-   - The bank module registers 250 entries in per-unit counts
-     33/27/30/30/41/27/30/32: the standalone's 193
+   - The bank module registers 284 entries in per-unit counts
+     40/45/33/30/41/33/30/32: the standalone's 193
      (27/21/23/23/34/19/22/24) plus the Math 8 PK tranche's 56
      flagged entries (November 15, 2026; banks/math-8/bank-pk.js)
+     plus the Band 3 Piece 1 fluency strand's 34 flagged entries
+     (November 16, 2026; the strand section of the same file)
      plus one ordinary Unit 7 entry (u7-critique-the-claim) added
      the same day under Jason's Option 1 ruling on the tranche,
      because pkPracticeOnly left Unit 7's exam-eligible CR pool
@@ -83,10 +85,10 @@ ok(C.units[8] === "Geometry", "Unit 8 is Geometry, saw " + C.units[8]);
 const placements = Object.values(C.unitInd).reduce((n, a) => n + a.length, 0);
 ok(placements === 109, "UNIT_IND has 109 placements, saw " + placements);
 
-ok(BANK.length === 250, "bank registers 250 entries, saw " + BANK.length);
+ok(BANK.length === 284, "bank registers 284 entries, saw " + BANK.length);
 const perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-const wantPerUnit = { 1: 33, 2: 27, 3: 30, 4: 30, 5: 41, 6: 27, 7: 30, 8: 32 };
+const wantPerUnit = { 1: 40, 2: 45, 3: 33, 4: 30, 5: 41, 6: 33, 7: 30, 8: 32 };
 Object.keys(wantPerUnit).forEach(u =>
   ok(perUnit[u] === wantPerUnit[u], "Unit " + u + " has " + wantPerUnit[u] + " entries, saw " + perUnit[u]));
 

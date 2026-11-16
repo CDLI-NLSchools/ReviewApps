@@ -6369,6 +6369,597 @@ var PKT8={
 };
 BANK.forEach(function(e){var t=PKT8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
 
+
+/* =====================================================================
+   BAND 3 PIECE 1: THE FLUENCY STRAND, MATHEMATICS 8 ADAPTATION
+   (November 16, 2026)
+   =====================================================================
+   Thirty-four entries, appended after the Band 1 table above and
+   flagged by the PKT8S table at the end of this section. Twenty-seven
+   are verbatim copies of Mathematics 7 generators (only the entry id,
+   unit, host indicator tag and tranche metadata differ); seven are
+   authored for this adaptation. Provenance is recorded three ways, as
+   the specification requires: the pkSrc on each entry, this comment
+   block, and the build report's source-to-host table.
+
+   LADDER COPIES FROM THE MATHEMATICS 7 FLUENCY CORE (Section 3.2 of
+   the Band 3 specification), three per group at reduced depth, the
+   full-depth versions living in the Mathematics 7 app. Housed Unit 2
+   (pkFor 6.17 to 6.27), except number line ordering, housed Unit 1
+   (pkFor 3.19, 3.20, 5.1 to 5.3, 6.30 to 6.33). The core entries are
+   grounded in the elementary guides; each copy's pkSrc keeps that
+   grounding. Selection within each core group spans the group's
+   grounding codes:
+     multiplication-facts: fact-recall (MA5.5.19), fact-skip
+       (MA5.5.16), fact-halving (MA5.5.17).
+     multiplication-fluency: mult-2by1 (MA4.5.12), mult-2by2
+       (MA5.5.4), mult-zeros (MA5.5.18).
+     division-fluency: div-exact (MA5.5.8), div-remainder (MA5.5.9),
+       div-2digit (MA5.5.x).
+     addition-subtraction: add-regroup (MA4.4.4), sub-regroup
+       (MA4.4.5), add-three (MA4.4.6).
+     order-of-operations: ooo-basic, ooo-brackets, ooo-chain
+       (MA6.5.9, MA6.5.10).
+     below-zero: below-temp (MA6.1.4), below-line (MA6.1.2),
+       below-compare (MA6.1.4).
+     ordering-numbers: order-place (MA4.1.1), order-line (MA4.1.2),
+       order-below (MA6.1.2).
+
+   SQUARING AND SQUARE NUMBERS (squares, Unit 1, 4 entries): authored
+   at the Mathematics 7 pitch, as Section 4 directs: multiply a whole
+   number by itself, recognize square numbers to 15 x 15, the skill
+   cluster 8-C1 names first. No elementary outcome on file names
+   squaring; the entries assess it as a product of two equal factors,
+   inside the evidenced multiplication.
+
+   EQUIVALENT FRACTIONS (equivalent-fractions, Unit 3, 3 entries):
+   authored for this adaptation under Jason's Decision 6 (November
+   16, 2026), to the Band 3 specification's Section 8 design for
+   cluster 7-C6: produce and recognize equivalent fractions by
+   multiplying or dividing numerator and denominator by the same
+   whole number, including finding an equivalent fraction with a
+   given denominator. Grounding: MA5.3.1, MA5.3.2, MA5.3.9, MA5.3.10.
+   The entries live in this bank only; the Mathematics 7 bank is
+   untouched. When Piece 3 builds cluster 7-C6 in Mathematics 7,
+   these entries stand as the authored source of record for the
+   design, and Piece 3's report reconciles the direction of the copy.
+
+   EQUATION FLUENCY (equation-solving and verify-solution, Unit 6,
+   6 entries): verbatim copies of Mathematics 7 bank generators under
+   8.12 to 8.17 (whole number equation forms, solving, and verifying
+   by substitution), pkFor 8.1 to 8.7.
+
+   NOT IN THIS SECTION: four groups named in Section 4 of the
+   specification (factors-multiples, integer-operations,
+   fraction-operations, percent-of-amount) are held, with nothing
+   shipped for them. Their named sources are Mathematics 7 generators
+   the Band 1 tranche above already borrowed into the same groups
+   (factors-multiples and integer-operations at the specification's
+   full pool depth; fraction-operations and percent-of-amount in
+   part, with the unborrowed remainder too small, or Level 3 only,
+   to fill the specified pools). Whether the Band 1 entries count
+   toward the strand pools, the pools are filled by duplicating
+   generators already in this bank, or the shortfall is authored,
+   is a ruling the specification does not make; the groups await
+   Jason's ruling. See the build report.
+
+   Ported helpers: pk7uniq, pk7fill and pk7line are ported verbatim
+   from banks/math-7/bank-pk.js, as the ladder copies call them and
+   neither the shell nor this bank defines them. pk8eqf is new in
+   this section: it renders a fraction unreduced, which the
+   equivalent-fraction items need (u5M reduces before rendering). */
+
+function pk7uniq(ans, list) {
+  var out = [], seen = {};
+  seen[String(ans)] = 1;
+  list.forEach(function (v) { var k = String(v); if (!seen[k]) { seen[k] = 1; out.push(v); } });
+  return out;
+}
+
+/* Pad a numeric distractor list to at least three distinct values
+   with plain offsets, for the draws where an entry's error-based
+   candidates collapse onto each other (small facts especially). */
+
+function pk7fill(ans, ds) {
+  var out = ds.slice(), offs = [7, -7, 13, -13, 3, -3, 21, -21];
+  for (var i = 0; i < offs.length && out.length < 3; i++) {
+    var v = ans + offs[i];
+    if (v !== ans && out.indexOf(v) < 0) out.push(v);
+  }
+  return out;
+}
+
+/* Number line figure drawn from the item's own values: integer
+   ticks from lo to hi, a marker at each value in marks, and the
+   tick at missing labelled "?" instead of its value (missing null
+   for none). */
+
+function pk7line(lo, hi, marks, missing) {
+  var W = 340, H = 76, x0 = 28, x1 = 312, y = 34;
+  function X(v) { return x0 + (v - lo) / (hi - lo) * (x1 - x0); }
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Number line from ' + lo + ' to ' + hi + '">';
+  out += '<line x1="' + (x0 - 8) + '" y1="' + y + '" x2="' + (x1 + 8) + '" y2="' + y + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  for (var v = lo; v <= hi; v++) {
+    out += '<line x1="' + X(v) + '" y1="' + (y - 6) + '" x2="' + X(v) + '" y2="' + (y + 6) + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+    out += _txt(X(v), y + 24, (v === missing ? "?" : String(v)), 12, false);
+  }
+  (marks || []).forEach(function (m) {
+    out += '<circle cx="' + X(m) + '" cy="' + y + '" r="5" fill="' + FIG_ACC + '" stroke="' + FIG_INK + '" stroke-width="1.4"/>';
+    out += '<polygon points="' + (X(m) - 4.5) + ',' + (y - 16) + ' ' + (X(m) + 4.5) + ',' + (y - 16) + ' ' + X(m) + ',' + (y - 8) + '" fill="' + FIG_ACC + '"/>';
+  });
+  return out + '</svg>';
+}
+
+/* Stepped number line: ticks at the given values, equally spaced;
+   the tick at index missingIdx is labelled "?" (or -1 for none);
+   a marker sits over the tick at index markIdx (or -1 for none). */
+function pk7lineSteps(values, markIdx, missingIdx) {
+  var W = 340, H = 76, x0 = 34, x1 = 306, y = 34, n = values.length;
+  function X(i) { return x0 + i / (n - 1) * (x1 - x0); }
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Number line">';
+  out += '<line x1="' + (x0 - 8) + '" y1="' + y + '" x2="' + (x1 + 8) + '" y2="' + y + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  for (var i = 0; i < n; i++) {
+    out += '<line x1="' + X(i) + '" y1="' + (y - 6) + '" x2="' + X(i) + '" y2="' + (y + 6) + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+    out += _txt(X(i), y + 24, (i === missingIdx ? "?" : String(values[i])), 12, false);
+    if (i === markIdx) {
+      out += '<circle cx="' + X(i) + '" cy="' + y + '" r="5" fill="' + FIG_ACC + '" stroke="' + FIG_INK + '" stroke-width="1.4"/>';
+      out += '<polygon points="' + (X(i) - 4.5) + ',' + (y - 16) + ' ' + (X(i) + 4.5) + ',' + (y - 16) + ' ' + X(i) + ',' + (y - 8) + '" fill="' + FIG_ACC + '"/>';
+    }
+  }
+  return out + '</svg>';
+}
+
+/* ================= Multiplication facts (multiplication-facts) =================
+   Grounding: MA5.5.19 (recall of multiplication facts to 9 x 9 and
+   related division facts), MA5.5.16 (mental strategies for the same
+   facts), MA5.5.17 (the doubling and halving strategy), MA4.5.19
+   beneath (recall to 7 x 7). Supports host indicators 5.1 to 5.4. */
+
+E("u2-pkf-fact-recall", 2, ["6.17"], 1, "gen", function () {
+  var a = ri(3, 9), b = ri(3, 9), ans = a * b;
+  var ds = pk7fill(ans, pk7uniq(ans, [(a - 1) * b, (a + 1) * b, a * (b - 1), a * (b + 1), ans - a, ans + b])).slice(0, 3);
+  return mcq("What is \\(" + a + " \\times " + b + "\\)?",
+    { t: String(ans), fb: "Correct: \\(" + a + " \\times " + b + " = " + ans + "\\)." },
+    ds.map(function (d) { return { t: String(d), fb: "That is the product of a nearby fact. Say the fact for \\(" + a + " \\times " + b + "\\) itself." }; }),
+    "The multiplication facts to \\(9 \\times 9\\) are recalled directly: \\(" + a + " \\times " + b + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Say the fact out loud before you look at the choices.","If the fact will not come, count up by one factor: groups of the other."]);
+
+E("u2-pkf-fact-skip", 2, ["6.17"], 1, "gen", function () {
+  var n = ri(3, 9), ans = 5 * n;
+  var ds = pk7uniq(ans, [4 * n + (n - 1), 4 * n + (n + 1), 6 * n, 4 * n + 1]).slice(0, 3);
+  return mcq("Counting by " + n + "s: \\(" + n + ", " + (2 * n) + ", " + (3 * n) + ", " + (4 * n) + ", \\ldots\\) What number comes next?",
+    { t: String(ans), fb: "Correct: add one more " + n + " to " + (4 * n) + "." },
+    ds.map(function (d) { return { t: String(d), fb: "Each step adds exactly " + n + "." }; }),
+    "Skip counting by " + n + "s adds " + n + " each time: \\(" + (4 * n) + " + " + n + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { n: n });
+}, ["What is added at each step of the count?","Say the count out loud and keep going one more step."]);
+
+E("u2-pkf-fact-halving", 2, ["6.17"], 1, "gen", function () {
+  var a = ri(2, 4), b = ri(3, 9), known = 2 * a * b, ans = a * b;
+  var ds = pk7fill(ans, pk7uniq(ans, [known - b, ans + b, known - 2 * b, ans - b])).slice(0, 3);
+  return mcq("You know that \\(" + (2 * a) + " \\times " + b + " = " + known + "\\). What is \\(" + a + " \\times " + b + "\\)?",
+    { t: String(ans), fb: "Correct: " + a + " is half of " + (2 * a) + ", so the product halves too: " + known + " halved is " + ans + "." },
+    ds.map(function (d) { return { t: String(d), fb: "Halving one factor halves the product; subtracting a group does something else." }; }),
+    "\\(" + a + "\\) is half of \\(" + (2 * a) + "\\), so \\(" + a + " \\times " + b + "\\) is half of \\(" + known + "\\): \\(" + known + " \\div 2 = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Compare the first factors of the two facts.","When one factor is halved, what happens to the product?"]);
+
+E("u2-pkf-mult-2by1", 2, ["6.17"], 1, "gen", function () {
+  var a = ri(23, 98), b = ri(3, 9), ans = a * b;
+  var tens = Math.floor(a / 10) * 10, ones = a % 10;
+  var ds = pk7uniq(ans, [tens * b + ones, ones * b + tens, ans + b, ans - b]).slice(0, 3);
+  return mcq("What is \\(" + a + " \\times " + b + "\\)?",
+    { t: String(ans), fb: "Correct: \\(" + tens + " \\times " + b + " = " + (tens * b) + "\\) and \\(" + ones + " \\times " + b + " = " + (ones * b) + "\\), and " + (tens * b) + " + " + (ones * b) + " = " + ans + "." },
+    ds.map(function (d) { return { t: String(d), fb: d === tens * b + ones ? "That multiplies the tens by " + b + " but leaves the ones unmultiplied." : (d === ones * b + tens ? "That multiplies the ones by " + b + " but leaves the tens unmultiplied." : "Multiply both parts of " + a + " by " + b + " and add the parts.") }; }),
+    "Split \\(" + a + "\\) into \\(" + tens + " + " + ones + "\\): \\(" + tens + " \\times " + b + " = " + (tens * b) + "\\) and \\(" + ones + " \\times " + b + " = " + (ones * b) + "\\). Adding, \\(" + (tens * b) + " + " + (ones * b) + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Split the bigger number into tens and ones.","Multiply each part by the single digit, then add."]);
+
+E("u2-pkf-mult-2by2", 2, ["6.17"], 2, "gen", function () {
+  var a = ri(13, 49), b = ri(12, 39); if (b % 10 === 0) b += 1; if (a % 10 === 0) a += 1;
+  var ans = a * b;
+  var at = Math.floor(a / 10) * 10, ao = a % 10, bt = Math.floor(b / 10) * 10, bo = b % 10;
+  var ds = pk7fill(ans, pk7uniq(ans, [a * bt + ao * bo, at * bt + ao * bo, ans + a, a * bt])).slice(0, 3);
+  return mcq("What is \\(" + a + " \\times " + b + "\\)?",
+    { t: String(ans), fb: "Correct: \\(" + a + " \\times " + bt + " = " + (a * bt) + "\\) and \\(" + a + " \\times " + bo + " = " + (a * bo) + "\\), and " + (a * bt) + " + " + (a * bo) + " = " + ans + "." },
+    ds.map(function (d) { return { t: String(d), fb: d === a * bt ? "That is only the first part, \\(" + a + " \\times " + bt + "\\); the \\(" + a + " \\times " + bo + "\\) part is still missing." : "Both parts of " + b + " must multiply all of " + a + "." }; }),
+    "Split \\(" + b + "\\) into \\(" + bt + " + " + bo + "\\): \\(" + a + " \\times " + bt + " = " + (a * bt) + "\\) and \\(" + a + " \\times " + bo + " = " + (a * bo) + "\\). Adding, \\(" + (a * bt) + " + " + (a * bo) + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Split one of the numbers into tens and ones.","There are two partial products to add."]);
+
+E("u2-pkf-mult-zeros", 2, ["6.17"], 1, "gen", function () {
+  var form = ri(0, 1), a = ri(2, 9), b = ri(2, 9), x, y, ans, base;
+  if (form === 0) { x = a * 100; y = b; base = a * b; }
+  else { x = a * 10; y = b * 10; base = a * b; }
+  ans = x * y;
+  var ds = pk7uniq(ans, [ans / 10, ans * 10, (a + 1) * b * (ans / base), (a - 1) * b * (ans / base)]).slice(0, 3);
+  return mcq("What is \\(" + x + " \\times " + y + "\\)?",
+    { t: String(ans), fb: "Correct: \\(" + a + " \\times " + b + " = " + base + "\\), and the zeros in the factors give " + ans + "." },
+    ds.map(function (d) { return { t: String(d), fb: d === (a + 1) * b * (ans / base) || d === (a - 1) * b * (ans / base) ? "The fact \\(" + a + " \\times " + b + " = " + base + "\\) comes first; then count the zeros." : "Count the zeros: the factors together carry " + (String(x).match(/0*$/) [0].length + String(y).match(/0*$/)[0].length) + " trailing zero(s) onto the fact \\(" + a + " \\times " + b + "\\)." }; }),
+    "Start with the fact \\(" + a + " \\times " + b + " = " + base + "\\), then apply the zeros from both factors: \\(" + x + " \\times " + y + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b, form: form });
+}, ["Do the basic fact first, ignoring the zeros.","Then put back one zero for each zero in the factors."]);
+
+E("u2-pkf-div-exact", 2, ["6.17"], 1, "gen", function () {
+  var d = ri(3, 9), q = ri(31, 99), n = d * q;
+  var ds = pk7uniq(q, [q - 1, q + 1, q + 10, q - 10]).slice(0, 3);
+  return mcq("What is \\(" + n + " \\div " + d + "\\)?",
+    { t: String(q), fb: "Correct: \\(" + d + " \\times " + q + " = " + n + "\\)." },
+    ds.map(function (x) { return { t: String(x), fb: "Check by multiplying: \\(" + d + " \\times " + x + "\\) is not " + n + "." }; }),
+    "Use the matching multiplication: \\(" + d + " \\times " + q + " = " + n + "\\), so \\(" + n + " \\div " + d + " = " + q + "\\). The answer is <b>" + q + "</b>.",
+    { d: d, q: q });
+}, ["Check a possible answer by multiplying it by the divisor.","The multiplication fact with the same numbers settles it."]);
+
+E("u2-pkf-div-remainder", 2, ["6.17"], 1, "gen", function () {
+  var d = ri(4, 9), q = ri(21, 89), r = ri(1, d - 2), n = d * q + r;
+  function lab(qq, rr) { return qq + " remainder " + rr; }
+  var ds = pk7uniq(lab(q, r), [lab(q + 1, r), lab(q, r + 1), lab(q - 1, r)]);
+  return mcq("What is \\(" + n + " \\div " + d + "\\)?",
+    { t: lab(q, r), fb: "Correct: \\(" + d + " \\times " + q + " = " + (d * q) + "\\), which leaves " + r + " over." },
+    ds.map(function (x) { return { t: x, fb: "Multiply the quotient by " + d + " and add the remainder: it must give back " + n + ", and a remainder must be smaller than " + d + "." }; }),
+    "\\(" + d + " \\times " + q + " = " + (d * q) + "\\), and \\(" + n + " - " + (d * q) + " = " + r + "\\), so \\(" + n + " \\div " + d + " = " + q + "\\) remainder \\(" + r + "\\). The answer is <b>" + lab(q, r) + "</b>.",
+    { d: d, q: q, r: r });
+}, ["Find the largest multiple of the divisor that fits.","What is left over must be smaller than the divisor."]);
+
+E("u2-pkf-div-2digit", 2, ["6.17"], 2, "gen", function () {
+  var d = ri(12, 29); if (d % 10 === 0) d += 1;
+  var qmax = Math.floor(999 / d), q = ri(11, qmax), n = d * q;
+  var ds = pk7uniq(q, [q - 1, q + 1, q + 2, q - 2]).slice(0, 3);
+  return mcq("What is \\(" + n + " \\div " + d + "\\)?",
+    { t: String(q), fb: "Correct: \\(" + d + " \\times " + q + " = " + n + "\\)." },
+    ds.map(function (x) { return { t: String(x), fb: "Check by multiplying: \\(" + d + " \\times " + x + "\\) is not " + n + "." }; }),
+    "Estimate first: \\(" + d + " \\times " + q + " = " + n + "\\) exactly, so \\(" + n + " \\div " + d + " = " + q + "\\). The answer is <b>" + q + "</b>.",
+    { d: d, q: q });
+}, ["Estimate with a round multiple of the divisor first.","Check the answer by multiplying it by the divisor."]);
+
+E("u2-pkf-add-regroup", 2, ["6.17"], 1, "gen", function () {
+  var a = 0, b = 0, g = 0;
+  while (g++ < 300) {
+    a = ri(1250, 9899); b = ri(1250, 9899);
+    if ((a % 10) + (b % 10) >= 10 || (Math.floor(a / 10) % 10) + (Math.floor(b / 10) % 10) >= 10) break;
+  }
+  var ans = a + b;
+  function noCarry(x, y) { var s = "", p = 1; for (var i = 0; i < 4; i++) { var dx = Math.floor(x / p) % 10, dy = Math.floor(y / p) % 10; s = String((dx + dy) % 10) + s; p *= 10; } return parseInt(s, 10); }
+  var ds = pk7fill(ans, pk7uniq(ans, [noCarry(a, b), ans - 100, ans + 10, ans - 10])).slice(0, 3);
+  return mcq("What is \\(" + a + " + " + b + "\\)?",
+    { t: String(ans), fb: "Correct: add place by place, regrouping whenever a place reaches 10." },
+    ds.map(function (d) { return { t: String(d), fb: d === noCarry(a, b) ? "That adds each place but never regroups: when a place reaches 10, carry into the next place." : "Work place by place from the right, regrouping as you go." }; }),
+    "Adding place by place with regrouping, \\(" + a + " + " + b + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Start from the ones place and work left.","Whenever a place totals 10 or more, regroup into the next place."]);
+
+E("u2-pkf-sub-regroup", 2, ["6.17"], 1, "gen", function () {
+  var a = ri(3, 9) * 1000 + ri(0, 9), b = ri(1123, a - 1000), ans = a - b;
+  function smallFromLarge(x, y) { var s = "", p = 1; for (var i = 0; i < 4; i++) { var dx = Math.floor(x / p) % 10, dy = Math.floor(y / p) % 10; s = String(Math.abs(dx - dy)) + s; p *= 10; } return parseInt(s, 10); }
+  var ds = pk7fill(ans, pk7uniq(ans, [smallFromLarge(a, b), ans - 10, ans + 10, ans + 100])).slice(0, 3);
+  return mcq("What is \\(" + a + " - " + b + "\\)?",
+    { t: String(ans), fb: "Correct: regroup across the zeros before subtracting each place." },
+    ds.map(function (d) { return { t: String(d), fb: d === smallFromLarge(a, b) ? "That subtracts the smaller digit from the larger in each place; instead, regroup so each top digit is big enough." : "Regroup from the thousands through the hundreds and tens so the zeros do not block you." }; }),
+    "The zeros in \\(" + a + "\\) mean regrouping more than once: borrow from the thousands, then the hundreds, then the tens, and subtract place by place: \\(" + a + " - " + b + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b });
+}, ["Look at the zeros: they mean regrouping more than once.","Regroup step by step from the left until each place can be subtracted."]);
+
+E("u2-pkf-add-three", 2, ["6.17"], 2, "gen", function () {
+  var a = ri(148, 989), b = ri(148, 989), c = ri(148, 989), ans = a + b + c;
+  var ds = pk7fill(ans, pk7uniq(ans, [a + b, ans - 10, ans + 100, a + c])).slice(0, 3);
+  return mcq("What is \\(" + a + " + " + b + " + " + c + "\\)?",
+    { t: String(ans), fb: "Correct: all three numbers are added." },
+    ds.map(function (d) { return { t: String(d), fb: (d === a + b || d === a + c) ? "That adds only two of the three numbers." : "Add the first two, then add the third to that total." }; }),
+    "Add in stages: \\(" + a + " + " + b + " = " + (a + b) + "\\), then \\(" + (a + b) + " + " + c + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b, c: c });
+}, ["Add two of the numbers first.","Then add the third number to that total."]);
+
+E("u2-pkf-ooo-basic", 2, ["6.17"], 1, "gen", function () {
+  var a = ri(2, 20), b = ri(2, 9), c = ri(2, 9), ans = a + b * c;
+  var ds = pk7fill(ans, pk7uniq(ans, [(a + b) * c, a * b + c, ans + b])).slice(0, 3);
+  return mcq("What is \\(" + a + " + " + b + " \\times " + c + "\\)?",
+    { t: String(ans), fb: "Correct: multiply first, \\(" + b + " \\times " + c + " = " + (b * c) + "\\), then add." },
+    ds.map(function (d) { return { t: String(d), fb: d === (a + b) * c ? "That works left to right; multiplication is done before addition." : "Multiplication comes before addition in the standard order." }; }),
+    "Multiplication first: \\(" + b + " \\times " + c + " = " + (b * c) + "\\). Then \\(" + a + " + " + (b * c) + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b, c: c });
+}, ["Look for multiplication or division first.","Addition is done after the multiplication here."]);
+
+E("u2-pkf-ooo-brackets", 2, ["6.17"], 1, "gen", function () {
+  var a = ri(2, 15), b = ri(2, 15), c = ri(2, 9), ans = (a + b) * c;
+  var cand = pk7uniq(ans, [a + b * c, (a + b) + c, a * b + c, (a + b) * (c + 1)]);
+  if (ans >= 100) cand = cand.filter(function (v) { return v !== a * b + c; });
+  var ds = pk7fill(ans, cand).slice(0, 3);
+  return mcq("What is \\((" + a + " + " + b + ") \\times " + c + "\\)?",
+    { t: String(ans), fb: "Correct: the brackets are done first, \\(" + a + " + " + b + " = " + (a + b) + "\\), then multiply by " + c + "." },
+    ds.map(function (d) { return { t: String(d), fb: d === a + b * c ? "That ignores the brackets; brackets are always done first." : "Brackets come before everything else in the standard order." }; }),
+    "Brackets first: \\(" + a + " + " + b + " = " + (a + b) + "\\). Then \\(" + (a + b) + " \\times " + c + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b, c: c });
+}, ["Look for brackets: they are done first.","Then finish the operations outside the brackets."]);
+
+E("u2-pkf-ooo-chain", 2, ["6.17"], 2, "gen", function () {
+  var a = ri(2, 9), b = ri(2, 9), c = ri(2, 6), d = ri(2, 6), g = 0;
+  while (g++ < 200 && a * b - c * d < 10) { a = ri(3, 9); b = ri(3, 9); c = ri(2, 6); d = ri(2, 6); }
+  var ans = a * b - c * d;
+  var ds = pk7fill(ans, pk7uniq(ans, [(a * b - c) * d, a * (b - c) * d, a * b - c + d])).slice(0, 3);
+  return mcq("What is \\(" + a + " \\times " + b + " - " + c + " \\times " + d + "\\)?",
+    { t: String(ans), fb: "Correct: both multiplications first, \\(" + (a * b) + " - " + (c * d) + "\\), then subtract." },
+    ds.map(function (x) { return { t: String(x), fb: "Do both multiplications before any subtraction." }; }),
+    "Multiplications first: \\(" + a + " \\times " + b + " = " + (a * b) + "\\) and \\(" + c + " \\times " + d + " = " + (c * d) + "\\). Then \\(" + (a * b) + " - " + (c * d) + " = " + ans + "\\). The answer is <b>" + ans + "</b>.",
+    { a: a, b: b, c: c, d: d });
+}, ["There are two multiplications; do both of them first.","Only then subtract."]);
+
+E("u2-pkf-below-temp", 2, ["6.17"], 1, "gen", function () {
+  var T = ri(2, 15);
+  var ds = pk7uniq("-" + T + " °C", [T + " °C", "0 °C", "-" + (T + 1) + " °C"]);
+  return mcq("The temperature is " + T + " degrees below zero. Which temperature is this?",
+    { t: "-" + T + " °C", fb: "Correct: below zero is written with a negative sign." },
+    ds.map(function (d) { return { t: d, fb: d === T + " °C" ? "That is " + T + " degrees above zero; below zero takes a negative sign." : "Below zero means a negative number of degrees." }; }),
+    "Temperatures below zero are negative: " + T + " degrees below zero is <b>-" + T + " °C</b>.",
+    { T: T });
+}, ["Below zero is the negative side of the scale.","The number of degrees stays the same; the sign changes."]);
+
+E("u2-pkf-below-line", 2, ["6.17"], 1, "gen", function () {
+  var mark = ri(-4, -1);
+  var ds = pk7uniq(mark, [-mark, mark - 1, mark + 1]).slice(0, 3);
+  var q = mcq("Which integer does the marker show on this number line?",
+    { t: String(mark), fb: "Correct: the marker is " + Math.abs(mark) + " tick(s) to the left of 0." },
+    ds.map(function (d) { return { t: String(d), fb: d === -mark ? "That is the same distance from zero but on the positive side." : "Count the ticks from 0 and note the side." }; }),
+    "The marker is " + Math.abs(mark) + " tick(s) to the left of 0, so it shows <b>" + mark + "</b>.",
+    { mark: mark });
+  q.figure = pk7line(-5, 5, [mark], null);
+  return q;
+}, ["Find 0 first, then count the ticks to the marker.","Numbers to the left of 0 are negative."]);
+
+E("u2-pkf-below-compare", 2, ["6.17"], 1, "gen", function () {
+  var cold = ri(11, 15), mild = ri(10, cold - 1), warm = ri(1, 5);
+  var key = "-" + cold + " °C";
+  var ds = pk7uniq(key, ["-" + mild + " °C", warm + " °C", "0 °C"]);
+  return mcq("Which of these temperatures is the coldest?",
+    { t: key, fb: "Correct: -" + cold + " °C is furthest below zero." },
+    ds.map(function (d) { return { t: d, fb: "The further a temperature is below zero, the colder it is; a bigger number after the negative sign means colder, not warmer." }; }),
+    "Below zero, the larger the number after the negative sign, the colder the temperature. The coldest is <b>-" + cold + " °C</b>.",
+    { cold: cold, mild: mild, warm: warm });
+}, ["Picture the temperatures on a number line.","The coldest temperature is the furthest to the left."]);
+
+E("u1-pkf-order-place", 1, ["3.19"], 1, "gen", function () {
+  var base = ri(200000, 900000);
+  var vals = pk7uniq(-1, [base, base + ri(100, 900), base - ri(100, 900), base + ri(1000, 9000)]).slice(0, 4);
+  while (vals.length < 4) { var v = base + ri(10000, 90000); if (vals.indexOf(v) < 0) vals.push(v); }
+  var greatest = ri(0, 1) === 1, key = greatest ? Math.max.apply(null, vals) : Math.min.apply(null, vals);
+  var ds = vals.filter(function (v) { return v !== key; });
+  return mcq("Which of these numbers is the " + (greatest ? "greatest" : "smallest") + "?",
+    { t: String(key), fb: "Correct: compare the digits place by place from the left." },
+    ds.map(function (d) { return { t: String(d), fb: "Compare from the leftmost digit: the first place where two numbers differ decides which is bigger." }; }),
+    "All four numbers have six digits, so compare place by place from the left. The " + (greatest ? "greatest" : "smallest") + " is <b>" + key + "</b>.",
+    { vals: vals });
+}, ["Compare the numbers from the leftmost digit.","The first place where the digits differ settles it."]);
+
+E("u1-pkf-order-line", 1, ["3.19"], 1, "gen", function () {
+  var lo = ri(0, 40), mark = lo + ri(2, 8);
+  var ds = pk7uniq(mark, [mark - 1, mark + 1, mark + 2]).slice(0, 3);
+  var q = mcq("Which number does the marker show on this number line?",
+    { t: String(mark), fb: "Correct: count along the ticks from " + lo + "." },
+    ds.map(function (d) { return { t: String(d), fb: "Count the ticks one at a time from the labelled start." }; }),
+    "Each tick is one more than the tick before it. Counting from " + lo + ", the marker sits at <b>" + mark + "</b>.",
+    { lo: lo, mark: mark });
+  q.figure = pk7line(lo, lo + 10, [mark], null);
+  return q;
+}, ["Start at the labelled number on the left.","Count one tick at a time up to the marker."]);
+
+E("u1-pkf-order-below", 1, ["3.19"], 2, "gen", function () {
+  var mark = ri(-5, -1);
+  var ds = pk7uniq(mark, [-mark, mark - 1, mark + 1]).slice(0, 3);
+  var q = mcq("Which number does the marker show on this number line?",
+    { t: String(mark), fb: "Correct: the marker is " + Math.abs(mark) + " tick(s) to the left of 0." },
+    ds.map(function (d) { return { t: String(d), fb: d === -mark ? "That is the same distance from zero but on the positive side; the marker is on the negative side." : "Count the ticks from 0, and note which side of 0 the marker is on." }; }),
+    "The marker is " + Math.abs(mark) + " tick(s) to the left of 0, so it shows <b>" + mark + "</b>.",
+    { mark: mark });
+  q.figure = pk7line(-6, 6, [mark], null);
+  return q;
+}, ["Find 0 first, then count the ticks to the marker.","Numbers to the left of 0 are negative."]);
+
+E("u6-pkf-model-problem", 6, ["8.1"], 2, "gen", function(){
+  var a=ri(2,9),b=ri(2,15);var cnt=0;while(a===b&&cnt<20){b=ri(2,15);cnt++;}
+  if(a===b)b=a+3;
+  var x=ri(3,12),c=a*x+b;
+  var tpl=pick([
+    {p:"A taxi ride costs a pickup fee of $"+b+" plus $"+a+" per kilometre. A ride costs $"+c+" in total. Let \\(x\\) be the number of kilometres.",u:"kilometres"},
+    {p:"A gardener charges a call-out fee of $"+b+" plus $"+a+" per planter. A job costs $"+c+" in total. Let \\(x\\) be the number of planters.",u:"planters"},
+    {p:"A streaming plan costs $"+b+" to join plus $"+a+" per movie rental. A member pays $"+c+" in total. Let \\(x\\) be the number of rentals.",u:"rentals"},
+    {p:"A school prints programs for $"+b+" in setup costs plus $"+a+" per program. The total cost is $"+c+". Let \\(x\\) be the number of programs.",u:"programs"}
+  ]);
+  var prompt=tpl.p+" Which equation models this problem?";
+  var sol="The total is the fixed fee plus the per-unit cost times the number of units.\\[ \\begin{aligned} "+a+"x + "+b+" &= "+c+" \\end{aligned} \\] The modelling equation is <b>\\("+a+"x + "+b+" = "+c+"\\)</b>.";
+  return mcq(prompt,
+    {t:"\\("+a+"x + "+b+" = "+c+"\\)",fb:"Yes: the per-unit cost "+a+" is multiplied by x, the fixed fee "+b+" is added, and the total is "+c+"."},
+    [{t:"\\("+a+"x - "+b+" = "+c+"\\)",fb:"That subtracts the fixed fee. The fee is part of the total cost, so it is added."},
+     {t:"\\("+b+"x + "+a+" = "+c+"\\)",fb:"That swaps the two numbers: the fixed fee "+b+" would be charged per unit, which does not match the problem."},
+     {t:"\\(\\frac{x}{"+a+"} + "+b+" = "+c+"\\)",fb:"That divides x by the per-unit cost. The cost grows by "+a+" for each unit, so x is multiplied by "+a+"."}],
+    sol,{mode:"model-problem",a:a,b:b});
+}, ["Split the total into a fixed part and a part that grows with the unknown.","Start by asking which amount is charged once and which amount is charged per unit."]);
+
+E("u6-pkf-problem-two-step", 6, ["8.1"], 2, "gen", function(){
+  var a=ri(2,9),b=ri(3,18),x=ri(3,14),c=a*x+b;
+  var tpl=pick([
+    {p:"A plumber charges a call-out fee of $"+b+" plus $"+a+" per hour of work. A repair costs $"+c+" in total. How many hours did the repair take?",u:"hours"},
+    {p:"A bike shop charges $"+b+" for a tune-up inspection plus $"+a+" per part replaced. A bill comes to $"+c+". How many parts were replaced?",u:"parts"},
+    {p:"A coach rents a bus for $"+b+" plus $"+a+" per student for tickets. The total cost is $"+c+". How many students went on the trip?",u:"students"},
+    {p:"A photo studio charges a sitting fee of $"+b+" plus $"+a+" per print. A customer pays $"+c+" in total. How many prints did the customer order?",u:"prints"}
+  ]);
+  var sol="Let \\(x\\) be the number of "+tpl.u+". The total is the fixed fee plus the per-unit cost, which gives the equation, and solving it records the process.\\[ \\begin{aligned} "+a+"x + "+b+" &= "+c+" \\\\ "+a+"x &= "+(c-b)+" \\\\ x &= "+x+" \\end{aligned} \\] The answer is <b>"+x+" "+tpl.u+"</b>. Check: "+a+"("+x+") + "+b+" = "+c+".";
+  return numq(tpl.p+" Give your answer as a number of "+tpl.u+".",x,0,sol,{mode:"problem-two-step",a:a,b:b});
+}, ["Model the problem with an equation: a fixed amount plus a per-unit amount equals the total.","Start by writing the equation, then undo the added fee on both sides."]);
+
+E("u6-pkf-gap-two-step", 6, ["8.1"], 2, "gen", function(){
+  var a=ri(3,9), x=ri(4,15), b=ri(3,20), c=a*x+b;
+  return numq("A student buys notebooks at $"+a+" each and pays a delivery fee of $"+b+". The total cost is $"+c+". The cost is modelled by \\("+a+"x + "+b+" = "+c+"\\), where \\(x\\) is the number of notebooks. Solve the equation to find \\(x\\). Show your solving steps.", x, 0,
+    "Undo the addition first, then undo the multiplication. \\[ \\begin{aligned} "+a+"x + "+b+" &= "+c+" \\\\ "+a+"x &= "+(c-b)+" \\\\ x &= "+x+" \\end{aligned} \\] The answer is <b>"+x+"</b>.",
+    {a:a,b:b,x:x});
+}, ["Undo the operations in reverse order: undo the addition before the multiplication.","Start by subtracting the constant from both sides."]);
+
+E("u6-pkf-divide-form", 6, ["8.1"], 2, "gen", function(){
+  var a=ri(3,8), k=ri(6,15), b=ri(2,Math.min(10,k-2)), c=k-b, x=a*k;
+  return numq("Solve \\(\\frac{x}{"+a+"} - "+b+" = "+c+"\\). Show your solving steps.", x, 0,
+    "Undo the subtraction first, then undo the division by multiplying. \\[ \\begin{aligned} \\frac{x}{"+a+"} - "+b+" &= "+c+" \\\\ \\frac{x}{"+a+"} &= "+k+" \\\\ x &= "+a+" \\times "+k+" = "+x+" \\end{aligned} \\] The answer is <b>"+x+"</b>.",
+    {a:a,k:k,b:b});
+}, ["Undo the operations in reverse order: undo the subtraction before undoing the division.","Start by adding the constant to both sides."]);
+
+E("u6-pkf-substitute-check", 6, ["8.1"], 1, "gen", function(){
+  var v=pick(["x","n","m","y"]);
+  var mode=pick(["plus","twostep"]);
+  var prompt,sol,corr,errs,lhs;
+  if(mode==="plus"){
+    var a=ri(2,14),b=ri(6,24),x=b-a;var cand=(pick([true,false])?x:x+pick([1,2,-1]));
+    if(cand<0)cand=x+1;
+    lhs=cand+a;
+    prompt="Substitute \\("+v+" = "+cand+"\\) into the equation \\("+v+" + "+a+" = "+b+"\\). What is the value of the left side?";
+    corr={t:String(lhs),fb:"Yes: replacing "+v+" with "+cand+" gives "+cand+" + "+a+" = "+lhs+"." };
+    errs=[{v:cand-a,fb:"That subtracts "+a+". The equation adds "+a+" to the variable, so add."},{v:b,fb:"That is the right side of the equation. The question asks for the value of the left side after substituting."},{v:cand*a,fb:"That multiplies by "+a+". The equation adds "+a+" to the variable, so add."}];
+    sol="Substitution means replacing the variable with the given value wherever it appears.\\[ \\begin{aligned} "+v+" + "+a+" &= "+cand+" + "+a+" \\\\ &= "+lhs+" \\end{aligned} \\] The left side is <b>"+lhs+"</b>, so "+cand+" is "+(lhs===b?"":"not ")+"a solution of the equation.";
+    return mcq(prompt,corr,u6iopts(lhs,errs),sol,{mode:mode,cand:cand});
+  }
+  var a2=ri(2,6),b2=ri(1,10),x2=ri(2,10),c2=a2*x2+b2;var cand2=(pick([true,false])?x2:x2+pick([1,2]));
+  lhs=a2*cand2+b2;
+  prompt="Substitute \\("+v+" = "+cand2+"\\) into the equation \\("+a2+v+" + "+b2+" = "+c2+"\\). What is the value of the left side?";
+  corr={t:String(lhs),fb:"Yes: replacing "+v+" with "+cand2+" gives "+a2+"("+cand2+") + "+b2+" = "+lhs+"." };
+  errs=[{v:a2*cand2-b2,fb:"That subtracts "+b2+" at the end. The equation adds "+b2+", so add it."},{v:(a2+b2)*cand2,fb:"That adds the coefficient and the constant first. Multiply "+a2+" by "+cand2+" first, then add "+b2+"."},{v:c2,fb:"That is the right side of the equation. The question asks for the value of the left side after substituting."}];
+  sol="Substitution means replacing the variable with the given value wherever it appears, then following the order of operations.\\[ \\begin{aligned} "+a2+v+" + "+b2+" &= "+a2+"("+cand2+") + "+b2+" \\\\ &= "+(a2*cand2)+" + "+b2+" \\\\ &= "+lhs+" \\end{aligned} \\] The left side is <b>"+lhs+"</b>, so "+cand2+" is "+(lhs===c2?"":"not ")+"a solution of the equation.";
+  return mcq(prompt,corr,u6iopts(lhs,errs),sol,{mode:mode,cand:cand2});
+}, ["Substitution means replacing the variable with the given value everywhere it appears.","Start by rewriting the left side with the given value in place of the variable."]);
+
+E("u6-pkf-check-diff", 6, ["8.1"], 2, "gen", function(){
+  var a=ri(3,8), b=ri(2,15), xt=ri(4,12), c=a*xt+b;
+  var delta=pick([2,3,-2,-3]); if(xt+delta<1) delta=-delta;
+  var x0=xt+delta, lhs=a*x0+b, ans=lhs-c;
+  return numq("A student claims that \\(x = "+x0+"\\) solves \\("+a+"x + "+b+" = "+c+"\\). Evaluate the left side at \\(x = "+x0+"\\), then give the value of left side minus right side. Show your work.", ans, 0,
+    "Substitute the claimed value into the left side, then compare it with the right side. \\[ \\begin{aligned} \\text{left side} &= "+a+" \\times "+x0+" + "+b+" = "+lhs+" \\\\ \\text{left} - \\text{right} &= "+lhs+" - "+c+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
+    {a:a,b:b,x0:x0});
+}, ["Verification means substituting the claimed value and evaluating, then comparing the two sides.","Start by replacing x with the claimed value in the left side."]);
+
+/* Render a fraction exactly as given, unreduced: the equivalent
+   fraction items ask about a specific written form, where u5M's
+   reducing display would hide the form being asked about. */
+function pk8eqf(n, d) { return "\\(\\frac{" + n + "}{" + d + "}\\)"; }
+
+E("u1-pkf-square-compute", 1, ["3.19"], 1, "gen", function () {
+  var n = ri(3, 15), ans = n * n;
+  return numq("What is \\(" + n + "^2\\)? Show your work.", ans, 0,
+    "Squaring a number means multiplying it by itself: \\[ " + n + "^2 = " + n + " \\times " + n + " = " + ans + " \\] The answer is <b>" + ans + "</b>.",
+    { n: n });
+}, ["Squaring a number means multiplying it by itself, not multiplying by 2.", "Write the multiplication out in full, then work it out."]);
+
+E("u1-pkf-square-recognize", 1, ["3.19"], 1, "gen", function () {
+  var k = ri(4, 12), s = k * k;
+  var ds = pk7uniq(s, [s - 1, s + 1, s + 2, s - 2]).slice(0, 3);
+  return mcq("Which of these numbers is a square number?",
+    { t: String(s), fb: "Correct: \\(" + k + " \\times " + k + " = " + s + "\\), so " + s + " is the square of " + k + "." },
+    ds.map(function (d) { return { t: String(d), fb: "That number is not a whole number multiplied by itself." }; }),
+    "A square number is a whole number multiplied by itself: \\(" + k + " \\times " + k + " = " + s + "\\). None of the other choices is a product of a whole number with itself. The answer is <b>" + s + "</b>.",
+    { k: k });
+}, ["Run through the square numbers you know: 1, 4, 9, 16, 25 and so on.", "Check whether any whole number multiplied by itself gives one of the choices."]);
+
+E("u1-pkf-square-side", 1, ["3.19"], 2, "gen", function () {
+  var k = ri(4, 15), s = k * k;
+  return numq("A whole number multiplied by itself gives \\(" + s + "\\). What is the number? Show your work.", k, 0,
+    "Work up through the square numbers: \\(" + (k - 1) + "^2 = " + ((k - 1) * (k - 1)) + "\\) and \\(" + k + "^2 = " + s + "\\), so the number multiplied by itself is " + k + ". The answer is <b>" + k + "</b>.",
+    { k: k });
+}, ["List the square numbers in order until you reach the given number.", "The number you want is the one whose square matches the given number exactly."]);
+
+E("u1-pkf-square-between", 1, ["3.19"], 2, "gen", function () {
+  var k = ri(5, 11), s = (k + 1) * (k + 1);
+  var lo = k * k + ri(2, 8), hi = (k + 2) * (k + 2) - ri(2, 8);
+  var loSq = k * k, hiSq = (k + 2) * (k + 2), mid = s + 1;
+  return mcq("Which square number lies between \\(" + lo + "\\) and \\(" + hi + "\\)?",
+    { t: String(s), fb: "Correct: \\(" + (k + 1) + " \\times " + (k + 1) + " = " + s + "\\), and " + s + " lies between " + lo + " and " + hi + "." },
+    [{ t: String(loSq), fb: "That is a square number, but it is not greater than " + lo + "." },
+     { t: String(hiSq), fb: "That is a square number, but it is not less than " + hi + "." },
+     { t: String(mid), fb: "That number does lie between " + lo + " and " + hi + ", but it is not a square number." }],
+    "List the square numbers near the range: \\(" + k + "^2 = " + loSq + "\\), \\(" + (k + 1) + "^2 = " + s + "\\), \\(" + (k + 2) + "^2 = " + hiSq + "\\). Only \\(" + s + "\\) is a square number between " + lo + " and " + hi + ". The answer is <b>" + s + "</b>.",
+    { k: k });
+}, ["List the square numbers in order and find the ones near the range.", "Check each choice twice: is it a square number, and is it between the two values?"]);
+
+E("u3-pkf-equiv-recognize", 3, ["6.4"], 1, "gen", function () {
+  var q = ri(4, 9), p = ri(1, q - 1), g0 = 0;
+  while (u5gcd(p, q) !== 1 && g0++ < 60) { p = ri(1, q - 1); }
+  if (u5gcd(p, q) !== 1) { p = 1; }
+  var k = ri(2, 4), N = p * k, D = q * k;
+  return mcq("Which fraction is equivalent to " + u5M(p, q) + "?",
+    { t: pk8eqf(N, D), fb: "Correct: multiplying the numerator and the denominator of " + u5M(p, q) + " by " + k + " gives " + pk8eqf(N, D) + "." },
+    [{ t: pk8eqf(N, q), fb: "That multiplies only the numerator by " + k + ". The denominator must be multiplied by " + k + " as well." },
+     { t: pk8eqf(p, D), fb: "That multiplies only the denominator by " + k + ". The numerator must be multiplied by " + k + " as well." },
+     { t: pk8eqf(p + 1, q + 1), fb: "That adds 1 to the numerator and the denominator. Adding the same number to both parts changes the value; multiply both by the same number instead." }],
+    "Equivalent fractions come from multiplying the numerator and the denominator by the same whole number: \\[ " + FR(p, q) + " = " + FR(N, D) + " \\] The answer is <b>" + pk8eqf(N, D) + "</b>.",
+    { p: p, q: q, k: k });
+}, ["Look for the choice made by multiplying the top and the bottom by the same number.", "Adding the same number to the top and the bottom does not make an equivalent fraction."]);
+
+E("u3-pkf-equiv-target", 3, ["6.4"], 2, "gen", function () {
+  var q = ri(5, 9), p = ri(2, q - 2), g0 = 0;
+  while (u5gcd(p, q) !== 1 && g0++ < 60) { p = ri(2, q - 2); }
+  if (u5gcd(p, q) !== 1) { p = 2; }
+  var k = ri(2, 4), D = q * k, N = p * k;
+  var dB = (k > 2) ? p * (k - 1) : N + 1;
+  return mcq(u5M(p, q) + " is equivalent to a fraction with denominator \\(" + D + "\\). What is that fraction?",
+    { t: pk8eqf(N, D), fb: "Correct: the denominator is multiplied by " + k + ", so the numerator is multiplied by " + k + " too: " + p + " becomes " + N + "." },
+    [{ t: pk8eqf(p, D), fb: "That keeps the numerator at " + p + ". When the denominator is multiplied by " + k + ", the numerator must be multiplied by " + k + " as well." },
+     { t: pk8eqf(dB, D), fb: (k > 2) ? "That multiplies the numerator by " + (k - 1) + " while the denominator is multiplied by " + k + ". Both parts must be multiplied by the same number." : "That is one more than the numerator you get by scaling. Multiply " + p + " by " + k + " exactly." },
+     { t: pk8eqf((p + 1) * k, D), fb: "That scales " + (p + 1) + " instead of " + p + ". Work from the given fraction: multiply its numerator by " + k + "." }],
+    "The denominator " + q + " is multiplied by " + k + " to give " + D + ", so the numerator is multiplied by " + k + " as well: \\[ " + FR(p, q) + " = " + FR(N, D) + " \\] The answer is <b>" + pk8eqf(N, D) + "</b>.",
+    { p: p, q: q, k: k });
+}, ["Find what the denominator was multiplied by to reach the target denominator.", "Multiply the numerator by that same number."]);
+
+E("u3-pkf-equiv-divide", 3, ["6.4"], 2, "gen", function () {
+  var q = ri(4, 9), p = ri(2, q - 1), g0 = 0;
+  while (u5gcd(p, q) !== 1 && g0++ < 60) { p = ri(2, q - 1); }
+  if (u5gcd(p, q) !== 1) { p = 2; }
+  var k = ri(2, 4), N = p * k, D = q * k;
+  return mcq("Divide the numerator and the denominator of " + pk8eqf(N, D) + " by \\(" + k + "\\). What fraction do you get?",
+    { t: pk8eqf(p, q), fb: "Correct: " + N + " divided by " + k + " is " + p + ", and " + D + " divided by " + k + " is " + q + "." },
+    [{ t: pk8eqf(p, D), fb: "That divides only the numerator by " + k + ". The denominator must be divided by " + k + " as well." },
+     { t: pk8eqf(N, q), fb: "That divides only the denominator by " + k + ". The numerator must be divided by " + k + " as well." },
+     { t: pk8eqf(N - k, D - k), fb: "That subtracts " + k + " from the numerator and the denominator. Subtracting changes the value; dividing both by " + k + " keeps it." }],
+    "Dividing the numerator and the denominator by the same whole number keeps the value of the fraction: \\[ " + FR(N, D) + " = " + FR(p, q) + " \\] The answer is <b>" + pk8eqf(p, q) + "</b>.",
+    { p: p, q: q, k: k });
+}, ["Do the same division to the top and the bottom.", "Dividing both parts by the same number keeps the fraction's value."]);
+
+
+var PK8S_FOR_LADDER = ["6.17", "6.18", "6.19", "6.20", "6.21", "6.22", "6.23", "6.24", "6.25", "6.26", "6.27"];
+var PK8S_FOR_U1 = ["3.19", "3.20", "5.1", "5.2", "5.3", "6.30", "6.31", "6.32", "6.33"];
+var PK8S_FOR_EQFR = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15", "3.16", "3.17", "3.18", "6.28", "6.29"];
+var PK8S_FOR_EQ = ["8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7"];
+var PKT8S = {
+  "u2-pkf-fact-recall": { src: "math-5:MA5.5.19", group: "multiplication-facts", for: PK8S_FOR_LADDER },
+  "u2-pkf-fact-skip": { src: "math-5:MA5.5.16", group: "multiplication-facts", for: PK8S_FOR_LADDER },
+  "u2-pkf-fact-halving": { src: "math-5:MA5.5.17", group: "multiplication-facts", for: PK8S_FOR_LADDER },
+  "u2-pkf-mult-2by1": { src: "math-4:MA4.5.12", group: "multiplication-fluency", for: PK8S_FOR_LADDER },
+  "u2-pkf-mult-2by2": { src: "math-5:MA5.5.4", group: "multiplication-fluency", for: PK8S_FOR_LADDER },
+  "u2-pkf-mult-zeros": { src: "math-5:MA5.5.18", group: "multiplication-fluency", for: PK8S_FOR_LADDER },
+  "u2-pkf-div-exact": { src: "math-5:MA5.5.8", group: "division-fluency", for: PK8S_FOR_LADDER },
+  "u2-pkf-div-remainder": { src: "math-5:MA5.5.9", group: "division-fluency", for: PK8S_FOR_LADDER },
+  "u2-pkf-div-2digit": { src: "math-5:MA5.5.x", group: "division-fluency", for: PK8S_FOR_LADDER },
+  "u2-pkf-add-regroup": { src: "math-4:MA4.4.4", group: "addition-subtraction", for: PK8S_FOR_LADDER },
+  "u2-pkf-sub-regroup": { src: "math-4:MA4.4.5", group: "addition-subtraction", for: PK8S_FOR_LADDER },
+  "u2-pkf-add-three": { src: "math-4:MA4.4.6", group: "addition-subtraction", for: PK8S_FOR_LADDER },
+  "u2-pkf-ooo-basic": { src: "math-6:MA6.5.9", group: "order-of-operations", for: PK8S_FOR_LADDER },
+  "u2-pkf-ooo-brackets": { src: "math-6:MA6.5.9", group: "order-of-operations", for: PK8S_FOR_LADDER },
+  "u2-pkf-ooo-chain": { src: "math-6:MA6.5.9", group: "order-of-operations", for: PK8S_FOR_LADDER },
+  "u2-pkf-below-temp": { src: "math-6:MA6.1.4", group: "below-zero", for: PK8S_FOR_LADDER },
+  "u2-pkf-below-line": { src: "math-6:MA6.1.2", group: "below-zero", for: PK8S_FOR_LADDER },
+  "u2-pkf-below-compare": { src: "math-6:MA6.1.4", group: "below-zero", for: PK8S_FOR_LADDER },
+  "u1-pkf-order-place": { src: "math-4:MA4.1.1", group: "ordering-numbers", for: PK8S_FOR_U1 },
+  "u1-pkf-order-line": { src: "math-4:MA4.1.2", group: "ordering-numbers", for: PK8S_FOR_U1 },
+  "u1-pkf-order-below": { src: "math-6:MA6.1.2", group: "ordering-numbers", for: PK8S_FOR_U1 },
+  "u1-pkf-square-compute": { src: "authored:square numbers to 15 x 15 (a whole number multiplied by itself), placement per the Band 3 specification, Section 4", group: "squares", for: PK8S_FOR_U1 },
+  "u1-pkf-square-recognize": { src: "authored:square numbers to 15 x 15 (a whole number multiplied by itself), placement per the Band 3 specification, Section 4", group: "squares", for: PK8S_FOR_U1 },
+  "u1-pkf-square-side": { src: "authored:square numbers to 15 x 15 (a whole number multiplied by itself), placement per the Band 3 specification, Section 4", group: "squares", for: PK8S_FOR_U1 },
+  "u1-pkf-square-between": { src: "authored:square numbers to 15 x 15 (a whole number multiplied by itself), placement per the Band 3 specification, Section 4", group: "squares", for: PK8S_FOR_U1 },
+  "u3-pkf-equiv-recognize": { src: "authored:equivalent fractions, authored for this adaptation to the 7-C6 design, placement per the specification (MA5.3.1, MA5.3.2, MA5.3.9, MA5.3.10)", group: "equivalent-fractions", for: PK8S_FOR_EQFR },
+  "u3-pkf-equiv-target": { src: "authored:equivalent fractions, authored for this adaptation to the 7-C6 design, placement per the specification (MA5.3.1, MA5.3.2, MA5.3.9, MA5.3.10)", group: "equivalent-fractions", for: PK8S_FOR_EQFR },
+  "u3-pkf-equiv-divide": { src: "authored:equivalent fractions, authored for this adaptation to the 7-C6 design, placement per the specification (MA5.3.1, MA5.3.2, MA5.3.9, MA5.3.10)", group: "equivalent-fractions", for: PK8S_FOR_EQFR },
+  "u6-pkf-model-problem": { src: "math-7:8.12", group: "equation-solving", for: PK8S_FOR_EQ },
+  "u6-pkf-problem-two-step": { src: "math-7:8.12,8.15", group: "equation-solving", for: PK8S_FOR_EQ },
+  "u6-pkf-gap-two-step": { src: "math-7:8.14", group: "equation-solving", for: PK8S_FOR_EQ },
+  "u6-pkf-divide-form": { src: "math-7:8.14", group: "equation-solving", for: PK8S_FOR_EQ },
+  "u6-pkf-substitute-check": { src: "math-7:8.17", group: "verify-solution", for: PK8S_FOR_EQ },
+  "u6-pkf-check-diff": { src: "math-7:8.17", group: "verify-solution", for: PK8S_FOR_EQ }
+};
+BANK.forEach(function (e) { var t = PKT8S[e.id]; if (t) { e.pkFlag = true; e.pkSrc = t.src; e.pkFor = t.for.slice(); e.pkGroup = t.group; } });
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */

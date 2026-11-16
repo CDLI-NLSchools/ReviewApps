@@ -3,7 +3,11 @@
    Part 1 (bank level, vm sandbox over the real shell functions):
    the flagged pool is exactly the tranche's 59 entries (56 new in
    banks/math-8/bank-pk.js plus the three Unit 7 entries flagged on
-   November 13, 2026, whose metadata this tranche completes), every
+   November 13, 2026, whose metadata this tranche completes) plus
+   the Band 3 Piece 1 fluency strand's 34 entries (November 16,
+   2026; 27 copied from the Mathematics 7 bank and 7 authored, in
+   the strand section of the same file), 93 flagged entries in all,
+   every
    flagged entry carries pkSrc, pkFor and pkGroup metadata, a pkonly
    draw (PKONLY_DRAW, the flag the shell sets for a ?pkonly=1 set)
    deals only flagged entries, samples every pkGroup in the pool,
@@ -66,19 +70,19 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-8.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 6, 2: 6, 3: 7, 4: 7, 5: 7, 6: 8, 7: 10, 8: 8 };
+const POOLS = { 1: 13, 2: 24, 3: 10, 4: 7, 5: 7, 6: 14, 7: 10, 8: 8 };
 const POOL_IDS = {
-  1: ["u1-pk-carroll-cell", "u1-pk-divisibility-why", "u1-pk-divisible-by", "u1-pk-factor-list", "u1-pk-factors-count", "u1-pk-square-area"],
-  2: ["u2-pk-add-basic", "u2-pk-add-context", "u2-pk-missing-start", "u2-pk-mixed-chain", "u2-pk-order-ops-dec", "u2-pk-sub-basic"],
-  3: ["u3-pk-add-mixed", "u3-pk-add-unlike", "u3-pk-common-denominator", "u3-pk-problem-add", "u3-pk-simplify-fraction", "u3-pk-sub-mixed", "u3-pk-sub-unlike"],
+  1: ["u1-pk-carroll-cell", "u1-pk-divisibility-why", "u1-pk-divisible-by", "u1-pk-factor-list", "u1-pk-factors-count", "u1-pk-square-area", "u1-pkf-order-below", "u1-pkf-order-line", "u1-pkf-order-place", "u1-pkf-square-between", "u1-pkf-square-compute", "u1-pkf-square-recognize", "u1-pkf-square-side"],
+  2: ["u2-pk-add-basic", "u2-pk-add-context", "u2-pk-missing-start", "u2-pk-mixed-chain", "u2-pk-order-ops-dec", "u2-pk-sub-basic", "u2-pkf-add-regroup", "u2-pkf-add-three", "u2-pkf-below-compare", "u2-pkf-below-line", "u2-pkf-below-temp", "u2-pkf-div-2digit", "u2-pkf-div-exact", "u2-pkf-div-remainder", "u2-pkf-fact-halving", "u2-pkf-fact-recall", "u2-pkf-fact-skip", "u2-pkf-mult-2by1", "u2-pkf-mult-2by2", "u2-pkf-mult-zeros", "u2-pkf-ooo-basic", "u2-pkf-ooo-brackets", "u2-pkf-ooo-chain", "u2-pkf-sub-regroup"],
+  3: ["u3-pk-add-mixed", "u3-pk-add-unlike", "u3-pk-common-denominator", "u3-pk-problem-add", "u3-pk-simplify-fraction", "u3-pk-sub-mixed", "u3-pk-sub-unlike", "u3-pkf-equiv-divide", "u3-pkf-equiv-recognize", "u3-pkf-equiv-target"],
   4: ["u4-pk-add-sub-decimals", "u4-pk-area-circle", "u4-pk-area-diameter", "u4-pk-area-mix", "u4-pk-area-parallelogram", "u4-pk-area-triangle", "u4-pk-mult-decimals"],
   5: ["u5-pk-discount-total", "u5-pk-div-decimals", "u5-pk-frac-to-decimal", "u5-pk-percent-convert", "u5-pk-percent-of", "u5-pk-simplify-fraction", "u5-pk-simplify-solution"],
-  6: ["u6-pk-evaluate-expression", "u6-pk-graph-relation", "u6-pk-inspection-trial", "u6-pk-read-point", "u6-pk-solve-other-forms", "u6-pk-solve-two-step", "u6-pk-table-missing", "u6-pk-verify-two-step"],
+  6: ["u6-pk-evaluate-expression", "u6-pk-graph-relation", "u6-pk-inspection-trial", "u6-pk-read-point", "u6-pk-solve-other-forms", "u6-pk-solve-two-step", "u6-pk-table-missing", "u6-pk-verify-two-step", "u6-pkf-check-diff", "u6-pkf-divide-form", "u6-pkf-gap-two-step", "u6-pkf-model-problem", "u6-pkf-problem-two-step", "u6-pkf-substitute-check"],
   7: ["u7-combined-mean-gap", "u7-mean-difference-gap", "u7-missing-mean-value-gap", "u7-pk-expected-pct", "u7-pk-exp-vs-theor", "u7-pk-graph-quantities", "u7-pk-outlier-find", "u7-pk-range-basic", "u7-pk-sample-space", "u7-pk-two-event-pct"],
   8: ["u8-pk-angle-chain", "u8-pk-protractor-read", "u8-pk-quadrilateral-angle", "u8-pk-reflect-point", "u8-pk-rotate", "u8-pk-transform-describe", "u8-pk-translate", "u8-pk-triangle-third-angle"]
 };
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 59,
-   "bank carries 59 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 93,
+   "bank carries 93 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-8 config sets pkPracticeOnly");
 for (let u = 1; u <= 8; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");
@@ -135,7 +139,7 @@ for (let u = 1; u <= 8; u++) {
 run("__PK=false;");
 {
   const r = checkDraw(6, [], 99);
-  ok(r.allPk && r.n === 8 && r.pool === 8, "precedence: with pkin=0 the Unit 6 check still deals its 8 prior knowledge questions");
+  ok(r.allPk && r.n === 8 && r.pool === 14, "precedence: with pkin=0 the Unit 6 check still deals 8 questions from its pool of 14 prior knowledge entries");
 }
 run("__PK=true;");
 /* pkonly bypasses indicator filtering carried on a link */
@@ -315,7 +319,7 @@ function answerFirst(d) {
   ok(ev(d, "current.every(function(q){return isPK(q._entry);})") === true, "link: every question on the pkonly set is a prior knowledge entry");
   ok(ev(d, "settings().pkOnly") === true, "link: settings carry pkOnly from the pkonly=1 parameter");
   ok(ev(d, "settingsToURL()").includes("pkonly=1"), "link: the set's own link keeps pkonly=1");
-  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 6: 8 questions",
+  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 6: 14 questions",
      "link: the pool line reads as a prerequisite check pool, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
   ok(ev(d, "!!document.getElementById('pkCheckBtn') && document.getElementById('pkCheckBtn').hidden") === true,
      "visibility: a student opening a pkonly link does not see the Advanced tools action");
