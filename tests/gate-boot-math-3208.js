@@ -3,7 +3,7 @@
      node tests/gate-boot-math-3208.js   (NODE_PATH set to the 2204 node_modules)
    - ?course=math-3208: Math 3208 title and header, eight unit
      checkboxes with the right names, both preset labels, the All
-     preset sweeping all eight units (pool 134), the course default
+     preset sweeping all eight units (pool 169), the course default
      mix 20/60/20 in force, the mid preset over Units 1 to 4 XX
      74) with the face scope worded "Mid-course review: Units 1 to
      4", the final preset over Units 5 to 8 (pool 60) with the face
@@ -47,7 +47,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Math 3208 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 3208 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 134, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 169, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 103, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 8, "course: eight unit checkboxes, saw " + labels.length);
@@ -61,15 +61,15 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is the course default 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("134 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("169 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("74 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("93 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: mid preset mix 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "Mid-course review: Units 1 to 4",
      "course: face scope for the mid scope in the standalone's wording, saw: " + d.getElementById("faceScope").textContent);
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("60 question templates"), "course: pool after Final preset is Units 5 to 8, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("76 question templates"), "course: pool after Final preset is Units 5 to 8, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: final preset mix 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "End-of-course review: Units 5 to 8",

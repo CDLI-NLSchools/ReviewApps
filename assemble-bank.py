@@ -97,7 +97,7 @@ COURSES = {
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js",
                    "bank-u3.js", "bank-u4.js", "bank-u5.js",
                    "bank-u6.js", "bank-u7.js", "bank-u8.js",
-                   "bank-fix.js"]),
+                   "bank-fix.js", "bank-pk.js"]),
     "math-2200": ("Math 2200",
                   ["bank-helpers.js", "bank-u1.js", "bank-u2.js",
                    "bank-u3.js", "bank-u4.js", "bank-u5.js",
