@@ -262,7 +262,7 @@ E("s9-u2-case-rule", 2, ["SC9.4.3"], 1, "var", varset([
   function () {
     return mcq("A student writes the symbol for cobalt as CO. Why is that writing wrong?",
       "CO is the formula for carbon monoxide, a compound; cobalt is written Co, with a capital C and a lower case o",
-      ["Cobalt must be written with two capital letters because it is a metal", "CO is wrong only because carbon comes first in the alphabet", "Symbols are never allowed to contain the letter O"],
+      ["Cobalt must be written with two capital letters because it is a metal, and metals take two capitals", "CO is wrong only because carbon comes before cobalt in the alphabet, so the order of the letters is the fault", "Symbols are never allowed to contain the letter O, because O is reserved for writing out full compound names"],
       "Capitalization carries meaning in chemistry. Co, one capital letter followed by a lower case letter, is the single element cobalt. CO, two capital letters, reads as two elements, carbon and oxygen, joined as the compound carbon monoxide.",
       {});
   }
@@ -377,7 +377,7 @@ E("s9-u2-bohr-levels", 2, ["SC9.4.5"], 2, "var", varset([
   function () {
     return mcq("For the first 18 elements, which statement about energy levels in a Bohr-Rutherford diagram is correct?",
       "The first level holds at most 2 electrons, the second at most 8, and the third at most 8 in the diagrams used in this course",
-      ["Every level holds at most 8 electrons, including the first", "The first level holds at most 8 electrons and the second at most 2", "Electrons are drawn on circles showing the exact paths they follow"],
+      ["Every level holds at most 8 electrons, including the first level, and a level must be completely full before the next begins", "The first level holds at most 8 electrons and the second at most 2, with the third holding whatever electrons remain", "Electrons are drawn on circles showing the exact curved paths they follow as they travel around the nucleus"],
       "In the Bohr-Rutherford diagrams used for elements 1 to 18, the first energy level holds a maximum of 2 electrons and the second and third levels hold a maximum of 8 each at this level of the course. The diagrams show electrons arranged in levels drawn as horizontal lines; they do not claim electrons travel in circular paths.",
       {});
   }
@@ -387,7 +387,7 @@ E("s9-u2-noble-full", 2, ["SC9.4.5"], 2, "var", varset([
   function () {
     return mcq("Why are the noble gases so unreactive compared with other elements?",
       "Their outer energy level is full, so they neither gain, lose nor share electrons readily",
-      ["They have no electrons in any energy level", "They have the largest atoms of any family", "Their nuclei contain no neutrons to react with"],
+      ["They have no electrons in any energy level, so there is nothing for another atom to attract", "They have the largest atoms of any family in the table, too large for other atoms to approach", "Their nuclei contain no neutrons for other atoms to react with in any reaction"],
       "Chemical reactivity is driven by the outer (valence) energy level. Noble gases have a full outer level, the stable arrangement other atoms move toward when they react, so noble gases have no tendency to gain, lose or share electrons and stay unreactive.",
       {});
   }
@@ -397,7 +397,7 @@ E("s9-u2-same-family-why", 2, ["SC9.4.5"], 3, "var", varset([
   function () {
     return mcq("Sodium and potassium behave very similarly in reactions, while sodium and magnesium behave quite differently. What explains this pattern?",
       "Sodium and potassium are in the same family and share the same number of valence electrons, while magnesium has a different number",
-      ["Sodium and potassium have nearly the same atomic mass", "Sodium and magnesium are in the same period, which forces different behaviour", "Potassium and magnesium have identical energy level diagrams"],
+      ["Sodium and potassium have nearly the same atomic mass, and elements of similar mass always behave alike in reactions", "Sodium and magnesium are in the same period of the table, and sharing a period is what forces their behaviour to differ", "Potassium and magnesium have identical energy level diagrams, and sodium matches magnesium in exactly the same way"],
       "Elements in the same family share the same number of electrons in their outer energy level, and that number governs how an atom reacts. Sodium and potassium each have one valence electron, so their chemistry matches; magnesium has two, so its chemistry differs.",
       {});
   }
@@ -407,7 +407,7 @@ E("s9-u2-energy-level-def", 2, ["SC9.4.5"], 3, "var", varset([
   function () {
     return mcq("Which statement correctly uses the terms energy level and valence?",
       "The valence energy level is the outermost level holding electrons, and its electrons are the valence electrons",
-      ["The valence energy level is the level closest to the nucleus", "Valence electrons are the electrons found inside the nucleus", "An energy level is the exact circular path of one electron"],
+      ["The valence energy level is the level closest to the nucleus, and its electrons are the valence electrons", "Valence electrons are the electrons found inside the nucleus, packed among the protons and neutrons there", "An energy level is the exact circular path that one electron follows as it travels around the nucleus"],
       "Energy levels are the spaces around the nucleus where electrons may be found. The level furthest from the nucleus that holds electrons is the valence energy level, and the electrons in it, the valence electrons, are the ones involved in chemical reactions.",
       {});
   }
@@ -435,7 +435,7 @@ E("s9-u2-ionic-or-molecular", 2, ["SC9.4.6"], 1, "var", varset([
   function () {
     return mcq("Which pairing of compound and type is correct?",
       "Calcium chloride, formed from a metal and a non-metal, is ionic; carbon dioxide, formed from non-metals only, is molecular",
-      ["Calcium chloride, formed from a metal and a non-metal, is molecular; carbon dioxide is ionic", "Water, formed from non-metals only, is ionic; sodium chloride is molecular", "Methane, formed from non-metals only, is ionic; calcium chloride is molecular"],
+      ["Calcium chloride, formed from a metal and a non-metal, is molecular; carbon dioxide, formed from non-metals only, is ionic", "Water, formed from non-metals only, is ionic; sodium chloride, formed from a metal and a non-metal, is molecular", "Methane, formed from non-metals only, is ionic; calcium chloride, formed from a metal and a non-metal, is molecular"],
       "The quick test at this level is who is joining whom. Ionic compounds typically form between a metal and a non-metal, as calcium (metal) joins chlorine (non-metal). Molecular (covalent) compounds form between non-metals only, as in carbon dioxide, water and methane.",
       {});
   }
@@ -532,7 +532,7 @@ E("s9-u2-particle-view", 2, ["SC9.5.1"], 2, "var", varset([
   function () {
     var q = mcq("The particle diagrams show the same substance in three states. Which statement correctly reads the diagrams?",
       "The particles are closest and most ordered in the solid, further apart and freer in the liquid, and far apart and fast-moving in the gas",
-      ["The particles themselves grow larger as the substance changes from solid to gas", "The gas particles have stopped moving, which is why the gas spreads out", "The liquid particles are arranged in a fixed pattern like the solid particles"],
+      ["The particles themselves grow larger as the substance changes from solid to gas, swelling as they take in heat from the surroundings", "The gas particles have stopped moving altogether, which is why the gas spreads out evenly to fill its whole container", "The liquid particles are arranged in a fixed, repeating pattern exactly like the solid particles in the diagram"],
       "Changing state changes the spacing, order and motion of the particles, never the particles themselves. Solids hold particles in a tight, ordered arrangement; liquids keep them close but able to slide past one another; gases separate them widely with rapid motion.",
       {});
     q.figure = s9u2Fig_particles();
@@ -544,7 +544,7 @@ E("s9-u2-earlier-ideas", 2, ["SC9.5.1"], 3, "var", varset([
   function () {
     return mcq("How does the early Greek idea of matter differ most importantly from the modern view?",
       "The Greek four-element idea (earth, air, fire and water) rested on reasoning alone, while the modern view rests on experimental evidence",
-      ["The Greeks believed matter could be divided forever, and modern science agrees completely", "The modern view still lists earth, air, fire and water as the four elements", "The Greek idea was based on microscope observations of atoms"],
+      ["The Greeks believed matter could be divided forever without limit, and modern science agrees completely with that view today", "The modern view still lists earth, air, fire and water as the four true elements, and every substance is a mixture of those four", "The Greek idea was based on microscope observations of atoms moving in samples of earth, air, fire and water taken at the time"],
       "Empedocles and Aristotle taught that all matter was made of earth, air, fire and water, an idea accepted for about 2000 years without experimental testing. Modern atomic ideas were built and revised through experiments, which is why they changed as evidence accumulated.",
       {});
   }
@@ -557,7 +557,7 @@ E("s9-u2-law-theory", 2, ["SC9.5.2"], 1, "var", varset([
   function () {
     return mcq("Which statement best distinguishes a scientific law from a scientific theory, as this course presents them?",
       "A law is supported by robust, repeated experimental evidence describing what happens; a theory is an explanation that is less fully supported and open to further testing",
-      ["A theory is simply a guess, and a law is a theory that scientists voted to accept", "A law explains why something happens, and a theory only describes measurements", "Laws and theories mean exactly the same thing in every science"],
+      ["A theory is simply a guess with nothing behind it, and a law is a theory that scientists voted to accept after debating it at a meeting of the profession", "A law explains why something happens in nature, and a theory only describes the measurements taken of it, offering no explanation of its own at all for anyone", "Laws and theories mean exactly the same thing in every science, and the two words are used interchangeably in every textbook and laboratory without distinction"],
       "In this course's treatment, the words signal confidence in the evidence. Laws rest on different and robust experimental support and describe regular patterns. Theories explain, but with less complete support, so further evidence can revise them; neither word means a guess.",
       {});
   }
@@ -567,7 +567,7 @@ E("s9-u2-confidence", 2, ["SC9.5.2"], 2, "var", varset([
   function () {
     return mcq("A classmate says, 'It is only a theory, so scientists are just guessing.' Which reply is most accurate?",
       "A theory is a supported explanation built from evidence; it is called a theory because the supporting evidence is not yet as complete and robust as the evidence behind a law",
-      ["The classmate is right: theories are guesses with no evidence behind them", "A theory becomes a law automatically after one hundred years", "Theories apply only to biology, never to chemistry or physics"],
+      ["The classmate is right: theories are guesses with no evidence behind them at all, and scientists use the word theory for any idea they have not yet tested in any way", "A theory becomes a law automatically after one hundred years have passed, whatever evidence has or has not been gathered for it in that time, by the calendar alone", "Theories apply only to biology, the study of living things, and never to chemistry or physics, where every accepted explanation is called a law instead, without exception"],
       "Theories, such as the particle theory of matter, organize a great deal of evidence into an explanation. The law and theory labels reflect how complete and robust that support is, not whether any support exists. Guessing plays no part in either label.",
       {});
   }
@@ -590,7 +590,7 @@ E("s9-u2-scientist-match", 2, ["SC9.5.3"], 2, "var", varset([
   function () {
     return mcq("Which scientist and contribution pairing is correct?",
       "Rutherford: showed that an atom's mass is concentrated in a small, positive nucleus",
-      ["Dalton: discovered the electron inside the atom", "Thomson: proposed that electrons orbit in fixed energy levels", "Bohr: argued that matter is made of earth, air, fire and water"],
+      ["Dalton: discovered the electron inside the atom with his cathode ray work", "Thomson: proposed that electrons orbit the nucleus in fixed energy levels", "Bohr: argued that all matter is made of earth, air, fire and water combined"],
       "Rutherford's experiments replaced the spread-out positive sphere with a tiny, dense, positive nucleus. Dalton proposed the solid sphere atom, Thomson discovered the electron and proposed the raisin bun model, and Bohr added the energy levels.",
       {});
   }
@@ -600,7 +600,7 @@ E("s9-u2-model-change-why", 2, ["SC9.5.3"], 3, "var", varset([
   function () {
     return mcq("Why did the atomic model keep changing between Dalton's time and Bohr's?",
       "Each new model was forced by new experimental evidence that the previous model could not explain",
-      ["Scientists changed the model each generation to keep textbooks current", "Atoms themselves changed structure over those two centuries", "Each scientist worked alone and never saw the earlier models"],
+      ["Scientists changed the model each generation simply to keep the textbooks looking current", "Atoms themselves changed their structure over those two centuries of study, growing more complex", "Each scientist worked entirely alone and never saw or read about the earlier models at all"],
       "The atom did not change; the evidence did. Cathode ray work forced electrons into the model, the gold foil experiment forced in the nucleus, and energy level evidence shaped Bohr's version. Models are revised, and sometimes discarded, as new data arrive.",
       {});
   }
@@ -622,7 +622,7 @@ E("s9-u2-foil-result", 2, ["SC9.5.4"], 1, "var", varset([
   function () {
     return mcq("In Rutherford's gold foil experiment, most alpha particles passed straight through the foil, but a few bounced back at large angles. What did the bounce-back show?",
       "Atoms contain a tiny, dense, positively charged nucleus that can repel a close-passing alpha particle",
-      ["Atoms are solid spheres with no empty space inside", "Electrons are spread evenly through a positive sphere", "Gold atoms are much larger than all other atoms"],
+      ["Atoms are solid spheres with no empty space inside, filled completely from centre to surface", "Electrons are spread evenly through a positive sphere, and that sphere is the whole atom", "Gold atoms are much larger than all other atoms, which is why the foil blocked the particles"],
       "If positive charge were spread thinly through the whole atom, as Thomson proposed, nothing could turn a fast alpha particle around. The rare sharp bounce-backs require a concentrated positive charge in a very small volume: the nucleus. The many straight passes show the rest of the atom is mostly empty space.",
       {});
   }
@@ -632,7 +632,7 @@ E("s9-u2-foil-inference", 2, ["SC9.5.4"], 2, "var", varset([
   function () {
     return mcq("Why could Rutherford perform his experiment when Dalton, a century earlier, could not have?",
       "Rutherford had technology Dalton lacked, including sources of alpha particles and vacuum equipment, which made probing inside the atom possible",
-      ["Dalton was not interested in the inside of the atom at all", "Gold foil had not been invented in Dalton's time", "Rutherford worked in a larger laboratory building than Dalton"],
+      ["Dalton was not interested in the inside of the atom at all, and never attempted any experiment that might have revealed it to anyone", "Gold foil had not been invented in Dalton's time, and no thin metal sheet of any kind could be made with the tools then available", "Rutherford worked in a larger laboratory building than Dalton had, and the extra room is what allowed the experiment to be set up"],
       "Scientific reach follows available technology. The equipment behind the gold foil work, such as particle sources and vacuum tubes, did not exist for earlier scientists, and today's particle accelerators let scientists collect data Rutherford could not. Each generation's questions are limited by its tools.",
       {});
   }
@@ -662,9 +662,9 @@ E("s9-u2-settings", 2, ["SC9.5.5"], 1, "var", varset([
 
 E("s9-u2-settings-cases", 2, ["SC9.5.5"], 2, "gen", function () {
   var cases = [
-    { q: "Which setting is the best example of group scientific work on atomic structure?", k: "A university research group whose members build on each other's published results", w: ["A student sketching an atom alone for homework", "A cook adjusting a recipe alone at home", "One technician reading a meter alone on a night shift"], s: "Group settings are defined by collaboration: the university group members use and extend each other's discoveries, as Crookes, Thomson and Rutherford did. The other examples are individual work, valuable but not group work." },
-    { q: "Which setting is the best example of individual scientific work related to chemistry?", k: "A student testing soil samples from their own garden with a home kit", w: ["A hospital laboratory team running blood tests together", "A class of thirty sharing one set of flame test results", "A national research council operating a particle accelerator"], s: "The garden soil testing is one person working alone with chemical tests. Teams in hospitals and classes, and national facilities with large staffs, are group settings." },
-    { q: "A pharmaceutical company assigns a whole department to develop a new medicine. Which statement about this setting is correct?", k: "It is a group setting, and it still depends on earlier work done by other scientists elsewhere", w: ["It is an individual setting because the company has one name", "It is not scientific work because it happens in a company", "It owes nothing to earlier scientists because it is modern"], s: "Scientific and technological work on atomic structure and chemistry happens in companies as well as universities, and group work there, like group work anywhere, builds on discoveries made by others. Setting and dependence on prior work are separate questions." }
+    { q: "Which setting is the best example of group scientific work on atomic structure?", k: "A university research group whose members build on each other's published results", w: ["A student sketching an atom alone for homework at the kitchen table after school", "A cook adjusting a recipe alone at home, working without any partner or team", "One technician reading a meter alone on a night shift in an empty plant room"], s: "Group settings are defined by collaboration: the university group members use and extend each other's discoveries, as Crookes, Thomson and Rutherford did. The other examples are individual work, valuable but not group work." },
+    { q: "Which setting is the best example of individual scientific work related to chemistry?", k: "A student testing soil samples from their own garden with a home kit", w: ["A hospital laboratory team running blood tests together on a shared bench", "A class of thirty students sharing one set of flame test results together", "A national research council operating a particle accelerator with a large staff"], s: "The garden soil testing is one person working alone with chemical tests. Teams in hospitals and classes, and national facilities with large staffs, are group settings." },
+    { q: "A pharmaceutical company assigns a whole department to develop a new medicine. Which statement about this setting is correct?", k: "It is a group setting, and it still depends on earlier work done by other scientists elsewhere", w: ["It is an individual setting because the company has one name on the building outside", "It is not scientific work at all because it happens inside a company rather than a university", "It owes nothing to earlier scientists because it is modern work done with modern equipment"], s: "Scientific and technological work on atomic structure and chemistry happens in companies as well as universities, and group work there, like group work anywhere, builds on discoveries made by others. Setting and dependence on prior work are separate questions." }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w, c.s, {});
@@ -677,7 +677,7 @@ E("s9-u2-precise-word", 2, ["SC9.5.6"], 1, "var", varset([
   function () {
     return mcq("Why does it matter in science that the word element has one agreed meaning?",
       "So that scientists everywhere mean the same thing, a substance made of only one kind of atom, and can compare results without confusion",
-      ["So that students can be marked wrong for using everyday words", "Because everyday words are banned from science classrooms", "So that element can also mean a heating coil without confusion"],
+      ["So that students can be marked wrong whenever they use an everyday word in place of the proper scientific one in a report", "Because everyday words are banned from science classrooms, and students may use only the agreed scientific terms in their work", "So that element can also mean a heating coil, a part or an ingredient without any confusion arising between readers of a report"],
       "Scientifically appropriate words carry one precise meaning shared by everyone who uses them. Element means a substance consisting of only one kind of atom; using it loosely, for any ingredient or part, would make reports and comparisons unreliable.",
       {});
   }
@@ -700,7 +700,7 @@ E("s9-u2-mendeleev", 2, ["SC9.5.7"], 2, "var", varset([
   function () {
     return mcq("What were Mendeleev's two main contributions to the development of the periodic table?",
       "He organized the known elements by their properties and chemical behaviour, and he left gaps for elements that had not yet been discovered",
-      ["He discovered all of the elements known in his time, and he numbered them by mass", "He arranged the elements alphabetically, and he predicted the noble gases exactly", "He built the first table alone, and no other scientist worked on organizing elements"],
+      ["He discovered all of the elements known in his time by his own experiments, and he numbered them in order by mass in his laboratory", "He arranged the elements alphabetically by name, and he predicted the noble gases exactly, one by one, in advance of their discovery", "He built the first table entirely alone, and no other scientist of his time worked on organizing the elements at all in any way"],
       "Mendeleev's first contribution was ordering the known elements so that similar properties lined up in families. His second, and most important, was trusting that order enough to leave empty spaces and predict that undiscovered elements would fill them, which they did. Other scientists also worked on tables; his evidence-based gaps set his apart.",
       {});
   }
@@ -742,7 +742,7 @@ E("s9-u2-household-chem", 2, ["SC9.5.8"], 2, "var", varset([
   function () {
     return mcq("Why must bleach and some toilet bowl cleaners never be mixed, and what does the warning illustrate?",
       "Mixing them can produce poisonous chlorine gas; it illustrates that everyday products involve real chemical reactions with real hazards",
-      ["Mixing them makes both cleaners stop working; it illustrates that cleaners are expensive", "Mixing them produces a stronger cleaner; it illustrates efficient chemistry", "Mixing them changes only the colour; it illustrates chemical properties are harmless"],
+      ["Mixing them makes both cleaners stop working at once; it illustrates that cleaners are expensive and should never be wasted", "Mixing them produces a stronger, faster cleaner than either alone; it illustrates efficient chemistry at work under the sink", "Mixing them changes only the colour of the cleaners; it illustrates that chemical properties are harmless in daily use"],
       "Some household chemicals react together to form chlorine gas, which is poisonous. The warning is a daily-life reminder that the substances under the sink are chemicals whose reactions, useful or dangerous, follow from their properties, which is why labels and WHMIS information matter.",
       {});
   }
@@ -764,7 +764,7 @@ E("s9-u2-need-drives", 2, ["SC9.5.9"], 2, "var", varset([
   function () {
     return mcq("Hospitals needed a reliable heart medicine, and a chemical found in the foxglove plant, digitoxin, was developed into one. What does this example show?",
       "A need in society can drive chemical research that turns a natural substance into a useful product",
-      ["Plants are always safer than laboratory-made chemicals", "Society's needs have no effect on what scientists study", "Heart medicine was developed with no testing of the plant chemical"],
+      ["Plants are always safer than laboratory-made chemicals, whatever the plant and whatever the dose", "Society's needs have no effect at all on what scientists choose to study or develop in their work", "Heart medicine was developed with no testing of the plant chemical at any stage of the work"],
       "The foxglove example, drawn from Newfoundland and Labrador's own flora, shows demand guiding development: a medical need led researchers to isolate and standardize a plant chemical into a medicine. Needs such as health, food production and materials repeatedly steer chemistry in this way.",
       {});
   }
@@ -774,7 +774,7 @@ E("s9-u2-plastics-need", 2, ["SC9.5.9"], 3, "var", varset([
   function () {
     return mcq("Plastics were developed and spread rapidly during the twentieth century. Which explanation best fits the STSE pattern in this unit?",
       "Society needed cheap, light, mouldable materials for countless products, and chemistry supplied them from petroleum",
-      ["Plastics spread because they are natural materials that need no processing", "Plastics were developed before any use for them existed", "Society resisted plastics, so governments forced their adoption"],
+      ["Plastics spread because they are natural materials gathered ready-made, needing no processing of any kind", "Plastics were developed before any use for them existed, and manufacturers had to search for products to make from them", "Society resisted plastics from the start, so governments had to force their adoption on an unwilling public"],
       "The core STSE of this strand, Plastics and Modern Life, follows the pattern of need meeting chemistry: demand for inexpensive, versatile materials drove the development of plastics from petroleum chemicals. Their spread then created new questions about waste and environment that the same pattern must answer.",
       {});
   }
@@ -787,7 +787,7 @@ E("s9-u2-tech-analysis", 2, ["SC9.5.10"], 1, "var", varset([
   function () {
     return mcq("A plastic kayak is light, does not rust, and can be moulded in one piece, but it becomes brittle after years of sunlight. Analyzing this technology means weighing which pairing?",
       "How its material properties make it work well for its purpose, against the limits those same properties impose over its lifetime",
-      ["Its price against the price of a wooden kayak only", "Its colour against the colours offered by other makers", "Its weight in kilograms against its length in metres only"],
+      ["Its price against the price of a wooden kayak only, with no attention to how either boat actually performs in use", "Its colour against the range of colours offered by other makers of similar kayaks for sale, this season and last", "Its weight in kilograms against its length in metres only, as if two measurements could settle the whole analysis of the design"],
       "Analyzing a technology's design means connecting how it functions to its impact in daily life. The kayak's plastic gives lightness, corrosion resistance and one-piece moulding, real advantages for paddlers, while sunlight brittleness is a genuine lifetime cost. Both sides come from the material's properties.",
       {});
   }
@@ -797,7 +797,7 @@ E("s9-u2-design-impact", 2, ["SC9.5.10"], 2, "var", varset([
   function () {
     return mcq("Insulated plastic foam cups keep drinks hot and are cheap, but they persist in landfills for a very long time. Which statement is a fair analysis?",
       "The same trapped-air structure that insulates also makes the foam slow to break down, so the design trades daily convenience against a long environmental cost",
-      ["The cups are a poor design because they keep drinks too hot", "The landfill problem is unrelated to the cups' design", "Foam cups prove that insulation does not work in practice"],
+      ["The cups are a poor design simply because they keep drinks too hot for too long, and a cup that insulates this well has failed at its real job of serving drinks", "The landfill problem is unrelated to the cups' design in any way, since waste and disposal have nothing to do with how a product is designed or made at all", "Foam cups prove that insulation does not work in practice, since drinks in them eventually cool to room temperature like drinks in any other cup at all"],
       "Good analysis ties the benefit and the drawback to the design itself. Trapped air pockets insulate the drink and also make the material resistant to breaking down, so convenience today and persistence in the environment are two faces of one design choice.",
       {});
   }
@@ -807,7 +807,7 @@ E("s9-u2-function-basis", 2, ["SC9.5.10"], 3, "var", varset([
   function () {
     return mcq("A smoke detector uses a tiny amount of a radioactive element whose particles ionize air inside a chamber. Which basis of its functioning is being described?",
       "Its operation rests on a property of an element's atoms, applied to a daily-life safety task",
-      ["Its operation rests on the colour of its plastic case", "Its operation rests on the price of its battery", "Its operation rests on the shape of the room it hangs in"],
+      ["Its operation rests on the colour of the plastic case it is sold in, chosen by the maker", "Its operation rests on the price of the battery fitted inside it at the factory that year", "Its operation rests on the shape and size of the room in which it happens to hang on the wall"],
       "Some everyday technologies work because of atomic-level properties. The detector's sensing depends on what the element's atoms do to the air in its chamber; the case, battery and room are supporting details, not the scientific basis of the device.",
       {});
   }
@@ -820,7 +820,7 @@ E("s9-u2-decision-balance", 2, ["SC9.5.11"], 2, "var", varset([
   function () {
     return mcq("A town must choose a material for new water bottles for its arena canteen. Which approach makes the decision an informed one?",
       "Compare the environmental and social advantages and disadvantages of each material, then choose and be able to defend the choice",
-      ["Choose the cheapest material, since cost is the only real factor", "Choose the newest material, since new means better", "Let one person decide without examining any evidence"],
+      ["Choose the cheapest material on offer, since cost is the only real factor that a decision like this ever needs to weigh", "Choose the newest material on the market, since new always means better and older materials need no consideration at all", "Let one person decide the matter alone, quickly, without examining any evidence about any of the materials on offer"],
       "Informed decisions about applications of science weigh advantages and disadvantages on more than one side: environmental effects such as waste and recycling, and social effects such as cost, health and convenience. A defensible choice shows that weighing, even when no option wins on every count.",
       {});
   }
@@ -830,7 +830,7 @@ E("s9-u2-plastics-tradeoff", 2, ["SC9.5.11"], 3, "var", varset([
   function () {
     return mcq("Which statement about plastics best models a balanced STSE judgement?",
       "Plastics give light, durable, inexpensive products and medical and food-safety benefits, while their persistence as waste and their petroleum source are real costs that decisions must manage",
-      ["Plastics are entirely beneficial and should never be questioned", "Plastics are entirely harmful and have no legitimate uses", "Plastics have advantages only for manufacturers, never for users"],
+      ["Plastics are entirely beneficial in every use and should never be questioned, since their advantages settle every decision about them in advance, whatever the waste involved", "Plastics are entirely harmful in every use and have no legitimate uses at all, so every plastic product should be withdrawn from daily life at once, without exception or replacement", "Plastics have advantages only for the manufacturers who sell them, and never for the users who buy them, whose interests play no part in any decision about plastics at all"],
       "A balanced judgement holds both sides at once. Plastics serve medicine, food safety and everyday convenience because of their properties, and those same properties make discarded plastic persist, while production draws on petroleum. Decisions about plastics manage that trade-off rather than denying either side.",
       {});
   }
@@ -852,7 +852,7 @@ E("s9-u2-whmis-action", 2, ["SC9.6.1"], 1, "var", varset([
   function () {
     return mcq("Before using a lab chemical, a student checks its safety data sheet and finds the spill procedure and first aid information. What is the student demonstrating?",
       "Knowledge of WHMIS standards applied to handling that material safely",
-      ["A physical property of the chemical", "A delay that should be skipped to save lab time", "The chemical's position on the periodic table"],
+      ["A physical property of the chemical being used in the laboratory", "A delay in starting the work that should be skipped to save lab time", "The chemical's position on the periodic table of the elements chart"],
       "WHMIS practice includes using the safety data sheet (the MSDS) for a chemical before work begins: it gives the safety precautions, spill procedures and first aid requirements for that material. Checking it first is the standard applied, not wasted time.",
       {});
   }
@@ -862,7 +862,7 @@ E("s9-u2-msds-use", 2, ["SC9.6.1"], 1, "var", varset([
   function () {
     return mcq("A small amount of a chemical splashes near a student's hand. Which response follows proper WHMIS-based technique?",
       "Stop, tell the teacher, and follow the spill and first aid steps given for that chemical on its safety data sheet",
-      ["Wipe it up quickly with a paper towel and say nothing", "Pour water over the whole bench to dilute everything at once", "Move the chemical bottle to another bench and continue working"],
+      ["Wipe it up quickly with a paper towel, throw the towel in the bin, and say nothing to anyone about it at all", "Pour water over the whole bench and the floor around it to dilute everything at once, then carry on with the lab", "Move the chemical bottle to another bench, wipe the sleeve dry, and continue working as if nothing had happened"],
       "Proper technique is specific, not improvised: the teacher is informed and the chemical's own data sheet directs the spill procedure and any first aid. Guessing with water or hiding the spill ignores the information WHMIS provides for exactly this moment.",
       {});
   }
@@ -875,7 +875,7 @@ E("s9-u2-hypothesis-form", 2, ["SC9.6.2"], 1, "var", varset([
   function () {
     return mcq("Which statement is a proper hypothesis for an investigation of whether heating changes how a metal sample reacts with vinegar?",
       "If the metal sample is heated before the vinegar is added, then it will produce bubbles faster, because heating increases how vigorously substances react",
-      ["Metals and vinegar are interesting to study", "The metal will do something when the vinegar is added", "Heating is part of the procedure we will follow on Friday"],
+      ["Metals and vinegar are interesting to study together, and the class expects the investigation of the two to be enjoyable on Friday afternoon", "The metal will do something noticeable when the vinegar is added to it in the beaker, though nothing more specific can be said in advance about it", "Heating is part of the procedure we will follow on Friday afternoon, when the class carries out the investigation in the laboratory together"],
       "A hypothesis is a testable statement linking a change to an expected result, with a reason: if the sample is heated, then bubbling will be faster, because heating affects reaction vigour. It grows out of background information and an observed pattern, and the investigation can support or refute it.",
       {});
   }
@@ -909,7 +909,7 @@ E("s9-u2-display-choice", 2, ["SC9.6.3"], 1, "var", varset([
   function () {
     return mcq("A group has recorded the melting points of six substances in a list. Which next step best compiles and displays their data?",
       "Build a labelled table (or bar graph) with substance names in one column and melting points, with units, in the other, so values can be compared at a glance",
-      ["Rewrite the list in neater handwriting in the same order", "Memorize the six values and discard the list", "Draw a picture of each substance beside its name"],
+      ["Rewrite the list in neater handwriting in the same order as before, taking care only that every value can be read more clearly by the teacher", "Memorize the six values as a set of numbers and discard the list they were written on, keeping the results in memory only for the report", "Draw a careful picture of each substance beside its name in the list, coloured to show how each one looked during the test, and nothing more"],
       "Compiling and displaying data means organizing it so patterns can be seen: a table or bar graph with clear labels and units lets a reader compare all six melting points at once. A neater copy of a list keeps the data just as hard to compare.",
       {});
   }
@@ -931,7 +931,7 @@ E("s9-u2-organize-format", 2, ["SC9.6.4"], 1, "var", varset([
   function () {
     return mcq("Which format is most appropriate for recording the results of testing eight materials for conductivity, lustre and reaction with vinegar?",
       "A table with one row per material and one column per test, using consistent symbols or words in every cell",
-      ["A paragraph describing the materials in the order they were tested", "A sketch of the bench showing where each material sat", "A list of the materials ranked by personal preference"],
+      ["A paragraph describing the materials one by one in the order they happened to be tested on the bench", "A sketch of the bench showing where each material sat while its turn for testing came around in the lab", "A list of the materials ranked by the personal preference of the student doing the testing that day"],
       "A row-and-column table matches the structure of the task: the same set of tests applied to every material. Consistent entries make missing results obvious and comparisons direct, which a paragraph or sketch cannot do.",
       {});
   }
@@ -941,7 +941,7 @@ E("s9-u2-units-heading", 2, ["SC9.6.4"], 1, "var", varset([
   function () {
     return mcq("A student's data table lists temperatures as 20, 35, 50 with no other information in the heading. What is missing for the data to be properly organized?",
       "The quantity name and its unit in the column heading, such as Temperature (degrees C)",
-      ["A title page for the lab report", "The names of the student's lab partners", "A conclusion paragraph under the table"],
+      ["A title page prepared for the front of the lab report submitted as a whole", "The names of the student's lab partners written at the top of the page neatly", "A conclusion paragraph written under the table at the end of the report itself"],
       "Organized data must be readable by someone who was not there. A column heading naming the quantity and its unit, Temperature (degrees C), makes every number in the column interpretable; bare numbers could be any quantity in any unit.",
       {});
   }
@@ -954,7 +954,7 @@ E("s9-u2-conclusion-match", 2, ["SC9.6.5"], 1, "var", varset([
   function () {
     return mcq("A student predicted that a shiny metal strip would not react with vinegar. After a day in vinegar the strip is dull and the vinegar has turned slightly blue. Which conclusion is correct?",
       "The evidence refutes the prediction: the strip reacted, shown by the colour change in the vinegar and the changed surface",
-      ["The evidence supports the prediction, because the strip is still in one piece", "No conclusion is possible, because the test lasted a whole day", "The prediction was about a different strip, so it still stands"],
+      ["The evidence supports the prediction, because the strip is still in one piece and a reacted strip would have dissolved away entirely", "No conclusion is possible from this test, because the test lasted a whole day and long tests cannot settle anything", "The prediction was about a different strip from the one tested, so it still stands untouched by this result entirely"],
       "A conclusion compares the evidence with the initial idea. Dullness on the strip and a new colour in the vinegar are signs of a chemical reaction, so the prediction of no reaction is refuted, and the conclusion must say so plainly.",
       {});
   }
@@ -976,7 +976,7 @@ E("s9-u2-new-question-pt", 2, ["SC9.6.6"], 1, "var", varset([
   function () {
     return mcq("After learning that elements in a family share properties, which question is a genuine new question raised by the periodic table?",
       "Would an undiscovered element in the halogen family also be a reactive non-metal, and how could that prediction be checked?",
-      ["What is the chemical symbol for chlorine?", "How many periods are drawn on our classroom table?", "Who first organized the periodic table?"],
+      ["What is the chemical symbol for chlorine as printed in the table on the classroom wall, to copy down?", "How many periods are drawn on the periodic table hanging on our classroom wall, counting them one by one?", "Who first organized the periodic table into the arrangement of rows and columns used in schools and textbooks?"],
       "Using the table to identify new questions means pushing past facts it already states. Predicting an unknown family member's behaviour from the family pattern, and asking how to check it, is a new question the learning itself creates; symbols, counts and history are already answered on or behind the table.",
       {});
   }
@@ -989,7 +989,7 @@ E("s9-u2-trend-graph", 2, ["SC9.6.7"], 1, "var", varset([
   function () {
     var q = mcq("The graph shows how the temperature of a reacting mixture changed over five minutes. Which statement correctly interprets the trend?",
       "The temperature rose quickly at first and then levelled off, showing the reaction was most vigorous at the start and slowed as it proceeded",
-      ["The temperature fell steadily for the whole five minutes", "The temperature stayed exactly constant, so no reaction occurred", "The temperature rose and fell in a repeating cycle each minute"],
+      ["The temperature fell steadily downward for the whole five minutes of the test, from its first reading to its last, without pause", "The temperature stayed exactly constant at its starting value, so no reaction of any kind occurred in the mixture at all", "The temperature rose and fell in a repeating cycle, climbing and dropping once in each minute of the five minutes in turn"],
       "Reading a trend means describing the shape in words and tying it to the process. A steep early rise that flattens out means energy was released fastest at the start and the reaction slowed over time, a common pattern as reacting materials are used up.",
       {});
     q.figure = s9u2Fig_trend();
@@ -1001,7 +1001,7 @@ E("s9-u2-valence-trend", 2, ["SC9.6.7"], 2, "var", varset([
   function () {
     return mcq("Across Period 3, the number of valence electrons rises steadily from sodium to argon. What does this trend explain?",
       "Why properties change in a regular way across the period, with reactivity patterns repeating in the next period when the count restarts",
-      ["Why every element in Period 3 has the same properties", "Why atomic mass decreases across the period", "Why Period 3 elements are all metals"],
+      ["Why every element in Period 3 has exactly the same properties, reacting in the same way in every test in the laboratory", "Why atomic mass decreases steadily across the period from the first element to the last one listed in the row of the table", "Why the elements of Period 3 are all metals, every one of them, from the first element of the row to the last in the period"],
       "Patterns in the table are patterns in electron arrangement. As valence electrons increase across a period, properties shift in a regular sequence; when a new period restarts the count, the sequence of properties repeats, which is the periodic pattern Mendeleev's table first exposed.",
       {});
   }
@@ -1023,7 +1023,7 @@ E("s9-u2-flame-safety", 2, ["SC9.6.8"], 1, "var", varset([
   function () {
     return mcq("During a flame test, how should the wooden splint be used to work safely and get a readable result?",
       "Hold the splint in the flame for only two or three seconds and observe the colour immediately, so the wood itself does not catch fire and mask the colour",
-      ["Leave the splint in the flame until the wood is burning well, then read the colour", "Hold the splint with bare fingers close to the flame for better control", "Wave the burning splint over the bench to spread the colour"],
+      ["Leave the splint in the flame until the wood itself is burning well and brightly, and only then read the colour the flame has taken at that point", "Hold the splint with bare fingers as close to the flame as possible for better control of its position throughout the test each time", "Wave the burning splint back and forth over the bench to spread the colour across a wider area for the class to see from their seats"],
       "Safe flame test technique is brief and deliberate: two or three seconds in the flame shows the ion's colour before the wood catches fire and its own flame hides the result. Longer burning is both a hazard and bad observation; known samples are tested first to build a colour standard for comparison.",
       {});
   }
@@ -1036,7 +1036,7 @@ E("s9-u2-new-question-change", 2, ["SC9.6.9"], 1, "var", varset([
   function () {
     return mcq("After watching magnesium burn brightly in air, which question is a new question arising from the investigation?",
       "Does magnesium burn the same way in pure oxygen as in air, and what would that show about what burning needs?",
-      ["What colour was the magnesium flame we just saw?", "What is the chemical symbol for magnesium?", "Who demonstrated the burning magnesium today?"],
+      ["What colour was the magnesium flame that the class just saw during the demonstration this morning?", "What is the chemical symbol for magnesium as it appears in the classroom periodic table chart?", "Who demonstrated the burning magnesium to the class during the lesson in the laboratory this morning?"],
       "New questions grow out of results. The bright burning raises a testable follow-up about the role of oxygen in burning, which the original investigation did not answer. The other options ask for observations or facts already in hand.",
       {});
   }
@@ -1046,7 +1046,7 @@ E("s9-u2-follow-up-q", 2, ["SC9.6.9"], 2, "var", varset([
   function () {
     return mcq("A group finds that one metal fizzes in vinegar while another does not. Which follow-up question best arises from their investigation of physical and chemical changes?",
       "Would warming the vinegar change which metals fizz, and would that change be evidence about reaction conditions rather than the metals alone?",
-      ["What were the names of the two metals we tested?", "Did everyone in the group see the fizzing happen?", "What page of the textbook describes vinegar?"],
+      ["What were the names of the two metals the group tested during the investigation earlier in the lesson, written in the notebook?", "Did everyone in the group see the fizzing happen with their own eyes while the test was being carried out at the bench this afternoon?", "What page of the textbook describes vinegar and its uses in the chapter on acids and everyday chemicals at the back of the book?"],
       "Strong follow-up questions test the conditions behind a result. Asking whether temperature changes the outcome separates a property of the metals from a condition of the test, which is exactly the kind of question an investigation should generate.",
       {});
   }

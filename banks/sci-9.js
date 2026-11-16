@@ -130,7 +130,7 @@ E("s9-u1-moon-motion", 1, ["SC9.1.1"], 3, "var", varset([
   function () {
     return mcq("Over one month, an observer records the Moon rising later each night and changing shape in a repeating cycle, while the background stars stay in the same patterns. Which explanation fits all of these observations together?",
       "The Moon revolves around Earth while Earth rotates, so its position and lit face change night by night",
-      ["The stars revolve around the Moon, so their patterns should change nightly", "The Moon rotates in place without revolving, which changes its lit face", "Earth revolves around the Moon once a month, carrying the observer past it"],
+      ["The stars revolve around the Moon once a month, so their patterns should change steadily night by night", "The Moon rotates in place without revolving around Earth, and that spinning alone changes the lit face we see", "Earth revolves around the Moon once a month, carrying the observer past it and shifting the lit face we see"],
       "The Moon revolves around Earth in about a month. Earth's rotation carries the observer around each day, and the Moon's steady revolution shifts where and when it appears, while the changing Sun, Earth and Moon geometry changes the lit part we see. The distant stars are not carried around the Moon, so their patterns stay fixed.",
       {});
   }
@@ -158,9 +158,9 @@ E("s9-u1-wander", 1, ["SC9.1.1"], 2, "gen", function () {
   var c = pick(cases);
   return mcq("Observers track " + c.p + ", which " + c.d + ". Why do planets show this kind of motion when stars do not?",
     "Earth and the planets all move in their own orbits around the Sun, so our viewpoint on a planet keeps changing",
-    ["Planets are pulled around Earth in circles while stars stay fixed to Earth",
-     "Planets reflect sunlight unevenly, which makes them look as if they move",
-     "Stars move in exactly the same way but are too bright to track"],
+    ["Planets are pulled around Earth in large circles while the stars stay fixed to Earth and never shift",
+     "Planets reflect sunlight unevenly as they spin, which makes them look as if they move against the stars",
+     "Stars move in exactly the same way as planets, but they shine too brightly for their motion to be tracked"],
     "The word planet comes from a word meaning wanderer. Stars are so distant that their pattern stays fixed over human timescales, but the planets are fellow travellers around the Sun: as Earth and a planet move in their separate orbits, the planet's direction as seen from Earth shifts against the star background, and an outer planet can even appear to loop backward when Earth overtakes it.",
     {});
 }, ["Stars hold their pattern; planets do not. What is different about planets?", "Both Earth and the planet are moving. The viewpoint is moving too."]);
@@ -208,7 +208,7 @@ E("s9-u1-models-judgement", 1, ["SC9.1.2"], 3, "var", varset([
   function () {
     return mcq("A student argues that the geocentric description should still be taught as equally supported because it can be drawn to match where planets appear in the sky. Which response best applies how scientific descriptions are judged?",
       "A description earns support by matching new and precise observations; telescopic evidence such as Jupiter's moons and the phases of Venus fits the Sun-centred description and strains the Earth-centred one",
-      ["Any description that can be drawn is equally supported, so both should be kept", "The older description should be kept because it was accepted for longer", "The Sun-centred description wins only because Copernicus published first"],
+      ["Any description that can be drawn to match where planets appear is equally supported, so both should be kept and taught as equals, and telescopic evidence should not change that judgement", "The older description should be kept as equally supported because it was accepted for far longer, and a description trusted for so many centuries should not be set aside for new observations", "The Sun-centred description wins only because Copernicus published his version first, and whichever description appears first in print keeps its standing regardless of later evidence"],
       "Descriptions are judged against evidence. Moons seen orbiting Jupiter show that Earth is not the centre of all motion, and the full set of phases of Venus fits a Sun-centred arrangement. Long acceptance and neat drawings do not outweigh observations that a description cannot explain naturally.",
       {});
   }
@@ -259,7 +259,7 @@ E("s9-u1-dwarf-pluto", 1, ["SC9.1.3"], 1, "var", varset([
   function () {
     return mcq("Why is Pluto classified as a dwarf planet rather than a planet?",
       "It is small and shares its orbital neighbourhood with many other icy bodies instead of dominating it",
-      ["It has no moons, while every planet has at least one moon", "It is made of gas, while every planet is made of rock", "It does not orbit the Sun, while every planet orbits the Sun"],
+      ["It has no moons of its own, while every planet has at least one moon travelling with it", "It is made of gas throughout, while every planet is made of rock throughout, with no gas at all", "It does not orbit the Sun at all, while every planet follows a regular orbit around the Sun"],
       "Pluto orbits the Sun and is round under its own gravity, but it is small and its orbital zone is shared with many other icy bodies of the Kuiper region; it does not dominate its neighbourhood the way the eight planets do. That is why astronomers reclassified it as a dwarf planet. Pluto does have moons, so that option fails on fact.",
       {});
   }
@@ -289,7 +289,7 @@ E("s9-u1-comet-period", 1, ["SC9.1.3"], 3, "var", varset([
   function () {
     return mcq("Halley's Comet returns about every 76 years and its return was the first to be predicted, while another comet is not expected back for thousands of years. Which statement correctly uses periodicity for these comets?",
       "Halley's is a short period comet and the other is a long period comet; periodicity is the regular interval between a comet's returns",
-      ["Both are short period comets, because both eventually return", "Halley's is a long period comet because 76 years is a long human lifetime", "Periodicity describes how bright a comet is at its closest approach"],
+      ["Both are short period comets, because both eventually return to the inner solar system on a regular cycle that observers can record", "Halley's is a long period comet because 76 years is a long human lifetime, and the categories are set by how the interval feels to people", "Periodicity describes how bright a comet becomes at its closest approach to the Sun, when its tail is at its longest and brightest"],
       "Periodicity is the repeating pattern in a comet's passage by the Sun and Earth. Comets are separated into short period and long period categories on that interval, which also reflects their origin and composition. A return measured in decades is short on the comet scale; one measured in thousands of years is long.",
       {});
   }
@@ -331,7 +331,7 @@ E("s9-u1-aurora", 1, ["SC9.1.4"], 2, "var", varset([
   function () {
     return mcq("On a night of strong solar activity, observers in Newfoundland see shimmering curtains of light high in the sky. What is this phenomenon and what produces it?",
       "An aurora (the aurora borealis in the north), produced when charged particles from the Sun interact with gases in Earth's upper atmosphere",
-      ["An aurora, produced when moonlight reflects off ice crystals in clouds", "A solar prominence, produced when gas loops off the Sun's surface", "A meteor shower, produced when debris burns up over a wide area"],
+      ["An aurora, produced when moonlight reflects off ice crystals in high clouds and spreads into curtains of colour", "A solar prominence, produced when great loops of glowing gas rise off the Sun's surface and hang in space above it", "A meteor shower, produced when debris from a comet burns up high in the atmosphere over a wide area on a single night"],
       "Auroras are the northern lights (aurora borealis) and southern lights (aurora australis). Charged particles carried by the solar wind are channelled by Earth's magnetic field toward the poles, where they interact with gases high in the atmosphere and make them glow. Stronger solar activity makes auroras stronger and visible farther from the poles.",
       {});
   }
@@ -341,7 +341,7 @@ E("s9-u1-comms-effect", 1, ["SC9.1.4"], 3, "var", varset([
   function () {
     return mcq("A period of intense sunspot and flare activity is followed by radio interference, satellite problems and a bright aurora. A student claims the events must be coincidence because the Sun is too far away to affect technology. Which evaluation is correct?",
       "The claim is wrong: solar activity affects Earth systems, disturbing radio communications and satellites and driving auroras, as the guide describes",
-      ["The claim is right: the Sun affects Earth only through light and heat", "The claim is wrong only about auroras; communications cannot be affected", "The claim is right, because sunspots are cooler patches and cooler means weaker"],
+      ["The claim is right: the Sun affects Earth only through the light and heat that reach us, and nothing else the Sun does can touch systems on Earth", "The claim is wrong only about auroras, which solar activity can produce, while radio communications and satellites are far too well shielded to be affected", "The claim is right, because sunspots are cooler patches on the Sun, and a cooler patch means a weaker Sun whose activity cannot reach as far as Earth"],
       "The Sun influences almost all natural phenomena on Earth and reaches technology as well. Solar flares and the solar wind disturb electromagnetic conditions around Earth, which interferes with radio and television signals and with satellites, and the same activity drives auroras. Sunspots mark an active Sun, and their roughly 11 year cycle of activity is part of the pattern.",
       {});
   }
@@ -360,7 +360,7 @@ E("s9-u1-bigbang", 1, ["SC9.1.5"], 1, "var", varset([
   function () {
     return mcq("Which statement describes the Big Bang Theory as the guide presents it?",
       "About 13.7 billion years ago all the matter of the universe was compressed into a hot, dense mass, which then expanded, and the universe is still expanding",
-      ["The universe has always existed at its present size and is not changing", "The universe expands to a maximum size and then contracts into a Big Crunch", "Galaxies formed first and then exploded outward from a single galaxy"],
+      ["The universe has always existed at exactly its present size and is not changing in any way, with the same matter spread through the same space forever", "The universe expands from a cool, thin beginning to a maximum size and then contracts again into a hot Big Crunch, after which nothing remains", "Galaxies formed first, fully made, and then exploded outward in every direction from a single central galaxy, with the universe beginning at that explosion"],
       "The Big Bang Theory rests on evidence for an expanding universe: if galaxies are moving apart now, the universe must have been more compact earlier. Scientists estimate the present matter of the universe was compressed into a hot, dense mass about 13.7 billion years ago and began moving outward, and the expansion continues today.",
       {});
   }
@@ -380,7 +380,7 @@ E("s9-u1-expansion-evidence", 1, ["SC9.1.5"], 3, "var", varset([
   function () {
     return mcq("A teacher inflates a balloon dotted with marker spots and asks what the model shows and where it misleads. Which answer is best?",
       "It shows galaxies (the spots) moving apart as the universe expands; it misleads if students think the universe expands into the room around the balloon, since the model only represents the surface",
-      ["It shows galaxies growing larger as the universe expands; the spots themselves stretch", "It shows the universe expanding from the balloon's centre point in the room", "It misleads in every respect and should not be used as a model at all"],
+      ["It shows galaxies growing larger as the universe expands; the spots themselves stretch and swell, and it misleads only if students think real galaxies stay the same size as they move apart", "It shows the universe expanding outward from the balloon's centre point into the room around it, and it misleads only about how fast the expansion happens, not about its pattern of galaxies moving apart", "It misleads in every respect, because a real universe has no surface and no centre, so the model should not be used in teaching at all and students should rely on diagrams of galaxies instead"],
       "In the balloon model the spots stand for galaxies and the stretching surface stands for expanding space: every spot moves away from every other as inflation proceeds, matching the evidence that galaxies recede from one another. The model misleads about a centre and about expanding into something outside; in the theory the expansion is of the universe itself, and the spots should not grow, only their separations do.",
       {});
   }
@@ -399,7 +399,7 @@ E("s9-u1-nebular", 1, ["SC9.1.6"], 1, "var", varset([
   function () {
     return mcq("Which statement describes the Nebular Hypothesis for the formation of the solar system?",
       "The solar system formed from a great cloud of gas and dust (a nebula) that contracted under gravity, spun, flattened, and formed the Sun and planets",
-      ["The solar system formed when a passing star pulled material out of the Sun", "The solar system formed when two stars collided and their debris became planets", "The planets formed first and then captured the Sun as it passed by"],
+      ["The solar system formed when a passing star pulled a stream of hot material out of the Sun, and that material cooled into the planets", "The solar system formed when two stars collided head on, and the debris from the collision settled into orbit as the Sun and planets", "The planets formed first, wandering alone in space, and then captured the Sun as it passed by and settled into orbit around it together"],
       "The Nebular Hypothesis is the present leading account: a nebula of gas and dust contracted under its own gravity, spun faster as it shrank, flattened into a disc, and formed the Sun at the centre with the planets forming from the disc material around it. The collision accounts are the older alternatives.",
       {});
   }
@@ -429,7 +429,7 @@ E("s9-u1-theories-change", 1, ["SC9.1.6"], 3, "var", varset([
   function () {
     return mcq("The Stellar Collision Theory was once seriously considered and is now set aside in favour of the Nebular Hypothesis. Which statement best explains what that change shows about scientific theories?",
       "Theories are reworked or abandoned when new observations cannot be fitted into them, and kept while they explain the evidence well",
-      ["Theories are abandoned whenever a newer one is proposed, regardless of evidence", "The change proves the earlier scientists were careless in their work", "Once a theory is printed in a textbook it can no longer be changed"],
+      ["Theories are abandoned whenever a newer one is proposed by a respected scientist, regardless of how the evidence compares", "The change proves the earlier scientists were careless in their work and that their observations were never worth trusting", "Once a theory is printed in a textbook it can no longer be changed, because printing fixes it as settled knowledge for good"],
       "Theories about the origin of the solar system change and evolve as evidence accumulates. Observations are checked for accuracy; if new information can be incorporated, the theory is reworked, and if it cannot, the theory is abandoned for one that explains both the old and the new observations. Being replaced is how science corrects itself, not evidence of carelessness.",
       {});
   }
@@ -449,7 +449,7 @@ E("s9-u1-galaxy-types", 1, ["SC9.1.7"], 1, "var", varset([
   function () {
     return mcq("Which pairing of galaxy type with its description is correct?",
       "Spiral galaxy: a flat rotating disc with arms extending from a central bulge, like the Milky Way; elliptical galaxy: a smooth oval collection of stars without spiral arms",
-      ["Elliptical galaxy: a flat disc with spiral arms; spiral galaxy: a smooth oval without arms", "Spiral galaxy: a single star surrounded by planets; elliptical galaxy: a cloud of gas and dust", "Both types are identical except for the colour of their stars"],
+      ["Elliptical galaxy: a flat rotating disc with arms extending from a central bulge; spiral galaxy: a smooth oval collection of stars without spiral arms, spread evenly throughout", "Spiral galaxy: a single large star surrounded by a family of planets; elliptical galaxy: a loose cloud of gas and dust from which stars have yet to form", "Both types are identical in shape and structure, built the same way throughout, except for the colour of their stars and the age of those stars"],
       "Galaxies are massive collections of stars, gas and dust held together by gravity. Spiral galaxies, including our Milky Way, have a central bulge and arms winding out through a flat disc. Elliptical galaxies are smooth, oval systems without arms and typically hold older stars.",
       {});
   }
@@ -459,7 +459,7 @@ E("s9-u1-quasar", 1, ["SC9.1.7"], 3, "var", varset([
   function () {
     var q = mcq("The table lists objects by relative size and energy output. One entry is galaxy sized in its surroundings yet outshines its whole galaxy from a tiny central region. Which component of the universe fits that entry, and why?",
       "A quasar: an extremely bright, distant object powered by a supermassive black hole at a galaxy's centre",
-      ["A low mass star: a small star that outshines its galaxy from its centre", "A nebula: a gas cloud that outshines its galaxy as it collapses", "An intermediate mass star: a Sun like star at a galaxy's centre"],
+      ["A low mass star: a small, long lived star that outshines its whole galaxy from its position at the centre", "A nebula: a vast gas cloud that outshines its whole galaxy as it collapses inward under gravity", "An intermediate mass star: a Sun like star sitting at a galaxy's centre and outshining everything around it"],
       "Quasars are among the most powerful objects in the universe: tiny central regions, powered by supermassive black holes, that emit enormous amounts of energy and can outshine the entire galaxy around them. No single ordinary star, of any mass class, outshines a galaxy, and a nebula is a dim cloud by comparison. The table's combination of small size and extreme output is the quasar signature.",
       {});
     q.figure = s9u1StarTableSVG();
@@ -471,7 +471,7 @@ E("s9-u1-star-life", 1, ["SC9.1.7"], 3, "var", varset([
   function () {
     return mcq("Star A has many times the Sun's mass and burns through its fuel quickly. Star B has less mass than the Sun and burns its fuel very slowly. Which futures fit the two stars?",
       "A ends in a supernova and may leave a black hole; B lives for billions of years and ends quietly as a white dwarf",
-      ["A ends quietly as a white dwarf; B ends in a supernova and may leave a black hole", "Both end in supernovae, because all stars end the same way", "Both become quasars, because quasars are the end stage of every star"],
+      ["A ends quietly as a white dwarf after a long life; B ends in a supernova and may leave a black hole", "Both end in supernovae, because all stars end in exactly the same way whatever their mass or fuel supply", "Both become quasars, because quasars are the end stage that every star of every mass eventually reaches"],
       "Mass decides a star's life. High mass stars burn fuel fast, live short lives, and end in supernova explosions, potentially leaving black holes. Low mass stars burn slowly, live for billions of years, and end as white dwarfs. Intermediate mass stars like the Sun also end as white dwarfs after shedding their outer layers. The futures swap if the masses swap, which is the error in the reversed option.",
       {});
   }
@@ -503,7 +503,7 @@ E("s9-u1-nav-personal", 1, ["SC9.2.1"], 1, "var", varset([
   function () {
     return mcq("For centuries, sailors crossing the Atlantic used the positions of stars to find their direction and latitude. Which statement best relates that endeavour to everyday life today?",
       "Celestial navigation is the same knowledge of celestial motion that modern travellers still rely on through satellite positioning, which is fixed by reference to objects beyond Earth",
-      ["Celestial navigation ended completely and has no connection to any present activity", "Star positions are now used only by astronomers and by no one else", "Modern navigation uses only land based signals, with no reference to space"],
+      ["Celestial navigation ended completely with the age of sail and has no connection to any present activity, since modern travellers find their way without any reference to the sky", "Star positions are now used only by astronomers studying the sky and by no one else at all, since ordinary travellers have no reason to look beyond Earth for finding their way", "Modern navigation uses only land based signals from towers and stations, with no reference to space at all, so the old star knowledge plays no part in it today for travellers"],
       "The Core STSE on celestial navigation connects a personal and practical activity, finding your way, to a scientific endeavour built on the apparent motion of celestial bodies. Satellite positioning is its direct descendant: the same need, met by space based technology whose positions are known relative to the wider sky. The endeavour did not vanish; it changed instruments.",
       {});
   }
@@ -513,7 +513,7 @@ E("s9-u1-endeavour-link", 1, ["SC9.2.1"], 2, "var", varset([
   function () {
     return mcq("A student checks a weather forecast before a fishing trip, glances at a satellite image of an approaching storm, and later uses a positioning app to return to a favourite fishing mark. Which statement best describes these activities?",
       "Each activity depends on a space based scientific or technological endeavour: weather satellites supply the images and positioning satellites supply the location",
-      ["Only the positioning app counts, because forecasts come from local weather offices alone", "None of them counts, because the student never left the ground", "Each activity depends only on the student's own observations of the sky"],
+      ["Only the positioning app counts, because forecasts and storm images come from local weather offices alone, working from their own ground observations", "None of them counts as using a space endeavour, because the student never left the ground and handled no space technology during the trip at all", "Each activity depends only on the student's own observations of the sky and the weather, gathered from the shore with no instruments in space involved"],
       "Relating personal activities to scientific and technological endeavours means tracing the hidden space contribution. The forecast's storm image comes from weather satellites, and the positioning fix comes from navigation satellites. Ground offices distribute the products, but the data originate in space based systems the student uses without thinking about them.",
       {});
   }
@@ -523,7 +523,7 @@ E("s9-u1-telescope-science", 1, ["SC9.2.2"], 1, "var", varset([
   function () {
     return mcq("Which statement describes the science underlying a reflecting telescope?",
       "Mirrors gather light and bring it to a focus, using the properties of light, so faint and distant objects can be observed",
-      ["Lenses bend radio waves to a focus, using sound properties, so silent objects can be heard", "Mirrors gather heat and store it, using chemical reactions, so cold objects warm up", "A motor spins the tube so that gravity focuses the light from distant objects"],
+      ["Lenses bend radio waves to a focus, using the properties of sound, so silent objects in space can be heard", "Mirrors gather heat from the object and store it, using chemical reactions, so cold objects slowly warm up", "A motor spins the tube steadily so that gravity itself focuses the light arriving from distant objects"],
       "Telescopes rest on the science of light. A reflecting telescope uses a curved mirror to gather light from a faint object and bring it to a focus; a refracting telescope does the same job with lenses. Radio telescopes apply the same gathering idea to radio waves, a different part of the electromagnetic radiation family. Each technology is an application of the properties of light and radiation.",
       {});
   }
@@ -533,7 +533,7 @@ E("s9-u1-propulsion-science", 1, ["SC9.2.2"], 3, "var", varset([
   function () {
     return mcq("A rocket rises because hot gases are expelled downward at high speed. Which statement best describes the science underlying rocket propulsion, drawing on the disciplines the guide names?",
       "Chemistry supplies the energetic reaction that produces the gas, and physics (forces) explains the thrust that pushes the rocket opposite to the exhaust",
-      ["Biology supplies the fuel organisms, and optics explains the thrust", "Chemistry explains the thrust directly, and no forces are involved", "Physics produces the exhaust gas, and chemistry explains the rocket's direction"],
+      ["Biology supplies the organisms that produce the fuel, and optics, the science of light, explains the thrust that lifts the rocket off the pad", "Chemistry explains the thrust directly through its reactions alone, and no forces of any kind are involved in lifting the rocket off the ground", "Physics produces the exhaust gas in the combustion chamber, and chemistry explains the direction the rocket travels as it rises into the sky"],
       "Rocket propulsion is the guide's example of disciplines combining. The propellant's chemical reaction releases energy and produces a large volume of hot gas; the physics of forces does the rest, as the exhaust is forced downward and the rocket is pushed upward. Neither discipline alone accounts for the whole technology.",
       {});
   }
@@ -552,7 +552,7 @@ E("s9-u1-canadarm", 1, ["SC9.2.3"], 1, "var", varset([
   function () {
     return mcq("Which set names Canadian contributions to space research and exploration?",
       "Canadarm, Canadarm2 (the Space Station Remote Manipulator System) and Dextre (the Special Purpose Dexterous Manipulator)",
-      ["The Hubble Space Telescope, the Apollo lunar module and the Voyager probes", "Canadarm, the Apollo lunar module and Dextre", "The International Space Station alone, built and operated by Canada by itself"],
+      ["The Hubble Space Telescope, the Apollo lunar module and the Voyager probes that left the solar system for deep space", "Canadarm, the Apollo lunar module flown to the Moon, and Dextre, the station's dexterous manipulator in orbit", "The International Space Station alone, designed, built and operated by Canada entirely by itself, with no partners"],
       "Canada's signature contributions are robotic: Canadarm flew on the space shuttles, Canadarm2 is the Space Station Remote Manipulator System that assembled and services the International Space Station, and Dextre is the station's dexterous manipulator, sometimes called Canadahand. The station itself is an international partnership, not a Canadian solo project.",
       {});
   }
@@ -562,7 +562,7 @@ E("s9-u1-astronauts", 1, ["SC9.2.3"], 2, "var", varset([
   function () {
     return mcq("A poster claims Canada's role in space is minor because Canada has never launched its own crewed spacecraft. Which response best corrects the poster using this indicator's examples?",
       "Canada contributes through partnership: Canadian astronauts such as Roberta Bondar, Marc Garneau and Chris Hadfield have flown, and Canadian robotics are essential to the International Space Station",
-      ["The poster is correct, because partnership work does not count as involvement", "Canada's role is major because it operates the International Space Station alone", "The poster is wrong because Canada launches crewed spacecraft every year"],
+      ["The poster is correct, because partnership work does not count as real involvement in space, and only countries that launch their own crewed spacecraft play a genuine role in exploration", "Canada's role is major because it operates the International Space Station alone, supplying its crew, its funding and all of its robotics without any partner countries taking part", "The poster is wrong because Canada launches its own crewed spacecraft every year from its own spaceport, sending Canadian crews into orbit on Canadian rockets on regular missions"],
       "Participating in space exploration does not require launching your own crewed missions. Canada, through the Canadian Space Agency, is a partner in the International Space Station, supplies its robotics, and has sent astronauts including Roberta Bondar (the first Canadian woman in space), Marc Garneau (the first Canadian in space) and Chris Hadfield. Partnership is the form Canada's major role takes.",
       {});
   }
@@ -582,7 +582,7 @@ E("s9-u1-suit", 1, ["SC9.2.4"], 2, "var", varset([
   function () {
     return mcq("Why must a space suit be pressurised, insulated and supplied with oxygen as a single sealed system?",
       "Because space has no breathable air, no air pressure and extreme temperatures, so the suit must carry the astronaut's life support with it",
-      ["Because gravity in space would otherwise pull the astronaut apart", "Because sunlight in space is too dim for an astronaut to work without a lamp system", "Because a suit's only job is protection from micrometeorites, and the rest is padding"],
+      ["Because gravity in space would otherwise pull the astronaut apart piece by piece during a long spacewalk outside the station", "Because sunlight in space is too dim for an astronaut to work safely without a sealed lamp and heating system built into the suit", "Because a suit's only job is protection from micrometeorites striking it, and everything else in its design is padding for comfort"],
       "A space suit is a personal spacecraft. Outside a station there is no air to breathe, no pressure to keep body fluids in their normal state, and temperatures swing between extremes in sunlight and shadow. The suit therefore supplies oxygen, holds pressure and insulates, all in one sealed system, which is why suit design draws on several sciences at once.",
       {});
   }
@@ -605,7 +605,7 @@ E("s9-u1-remote-data", 1, ["SC9.2.5"], 1, "var", varset([
   function () {
     return mcq("Why do astronomical theories depend so heavily on new evidence from better instruments?",
       "Because astronomical data are collected remotely, from light and other radiation that reaches us, so better instruments literally supply new information about distant objects",
-      ["Because astronomers are not permitted to state a theory until a new telescope is built", "Because distant objects change completely every few years and must be remeasured", "Because theories about the universe are guesses that do not rest on data at all"],
+      ["Because astronomers are not permitted to state a theory about distant objects until a new and better telescope has been built to check it first, by rule of the profession", "Because distant objects change completely every few years, so every measurement ever taken of them must be discarded and the objects remeasured from the start", "Because theories about the universe are guesses that do not rest on data at all, and a new instrument simply gives astronomers a chance to guess again"],
       "Unlike bench sciences, astronomy cannot bring its objects into a lab. Its theories rest on data collected remotely, mainly the light and other radiation that arrives from distant objects. A better telescope, on Earth or in space, gathers more and sharper data, and that new evidence is what continually tests and revises theories about the composition and origin of the universe.",
       {});
   }
@@ -624,7 +624,7 @@ E("s9-u1-distance-chart-figure", 1, ["SC9.2.6"], 3, "var", varset([
   function () {
     var q = mcq("The chart places three distances on a common scale: Earth to the Moon (a small fraction of an AU), Earth to the Sun (1 AU), and Earth to the nearest star beyond the Sun (about 4.2 light years, roughly 270,000 AU). A student concludes that light years are only needed for science fiction, since AU worked for the first two distances. Which evaluation is correct?",
       "The conclusion fails at the third distance: expressing star distances in AU needs numbers in the hundreds of thousands, which is why the light year, the distance light travels in one year, is the practical unit beyond the solar system",
-      ["The conclusion is correct, because AU and light years measure different quantities", "The conclusion fails because the Moon distance should be measured in light years instead", "The conclusion is correct, because the nearest star is only a few AU away"],
+      ["The conclusion is correct, because AU and light years measure entirely different quantities, the AU measuring time and the light year measuring brightness, so the two can never be compared on one chart like this", "The conclusion fails because the Moon distance should be measured in light years instead of AU, since light years are the proper unit for every distance beyond Earth itself, including the nearest ones in space", "The conclusion is correct, because the nearest star is only a few AU away from Earth, well within the range where AU gives small, readable numbers, so no larger unit is ever needed for it or for any star"],
       "Both units measure distance. Within the solar system the AU, the average Earth to Sun distance, keeps numbers manageable. Beyond it, AU counts explode into the hundreds of thousands, so astronomers switch to the light year. The chart's third bar is the counterexample to the student's claim: the unit must fit the scale of the distance.",
       {});
     q.figure = s9u1DistanceSVG();
@@ -683,7 +683,7 @@ E("s9-u1-career-path", 1, ["SC9.2.7"], 2, "var", varset([
   function () {
     return mcq("A student who loves building and testing mechanical systems asks which space career preparation fits best. Which advice is soundest?",
       "Aim at engineering or technician training, since missions need people who design, build and maintain the hardware, and check the specific program requirements",
-      ["Only astronaut training matters, since astronauts do all the technical work on a mission", "Careers in space require no specific preparation beyond a general science credit", "Lens making is the only technical route into space work"],
+      ["Only astronaut training matters, since astronauts do all the technical work on a mission themselves, from repairs to experiments, with no support team behind them", "Careers in space require no specific preparation beyond a general science credit earned at school, since every space job trains its workers from the beginning", "Lens making is the only technical route into space work, because every space mission depends above all on the lenses ground for its telescopes and cameras"],
       "Most space workers are not astronauts. Engineers and technicians design, build, test and maintain rockets, rovers, arms and instruments, and each route has its own educational requirements, which is why the guide has students research the background a chosen career requires. Matching the student's interest in mechanical systems to engineering or technician preparation is the sound advice.",
       {});
   }
@@ -693,7 +693,7 @@ E("s9-u1-benefits-risks", 1, ["SC9.2.8"], 1, "var", varset([
   function () {
     return mcq("Which pairing gives a genuine benefit and a genuine risk of space exploration, as this indicator frames them?",
       "Benefit: satellite monitoring of weather and environment; risk: the hazards of launch and space travel to crews",
-      ["Benefit: satellite monitoring of weather; risk: telescopes becoming more powerful", "Benefit: space travel becoming routine; risk: satellite monitoring of weather", "Benefit: lower launch costs; risk: new medical knowledge from space research"],
+      ["Benefit: satellite monitoring of weather and environment; risk: telescopes becoming steadily more powerful", "Benefit: space travel becoming routine and safe; risk: satellite monitoring of weather and environment", "Benefit: lower launch costs for every mission; risk: new medical knowledge gained from space research"],
       "Defending a position on space exploration starts from an honest ledger. Benefits named in the guide include medical, industrial, agricultural and meteorological gains, such as weather and environmental monitoring by satellite. Risks include the real hazards of launch, radiation and travel for crews. A benefit cannot be entered as a risk, or the ledger argues with itself.",
       {});
   }
@@ -703,7 +703,7 @@ E("s9-u1-stakeholder", 1, ["SC9.2.8"], 2, "var", varset([
   function () {
     return mcq("A town hall debates funding a Canadian space partnership. One speaker counts only the launch cost; another counts launch cost, the medical and weather spinoffs, the jobs, and the risk to crews. Which speaker is evaluating the issue as this indicator requires?",
       "The second speaker, because a defensible position weighs benefits and negative consequences across scientific and social perspectives, not cost alone",
-      ["The first speaker, because cost is the only factor a citizen may consider", "Both equally, because any single factor is enough to defend a position", "Neither, because positions on space exploration cannot be defended with reasons"],
+      ["The first speaker, because cost is the only factor a citizen may properly consider when a town debates spending public money on space", "Both equally, because any single factor, considered on its own, is enough to defend a position on a question of public funding like this one", "Neither, because positions on space exploration cannot be defended with reasons at all and must be settled by a simple vote of the town hall"],
       "This indicator asks students to defend a position on societal support for space exploration, viewing it as Canadian citizens and as world citizens. That requires the full ledger the second speaker uses: scientific and social benefits (medical, industrial, agricultural, meteorological), negative consequences, and the risks of exploration, set against the costs. Cost alone cannot carry a defended position.",
       {});
   }
@@ -741,7 +741,7 @@ E("s9-u1-instrument-use", 1, ["SC9.3.2"], 1, "var", varset([
   function () {
     return mcq("During the solar system stroll lab, a group's trundle wheel clicks every metre, but the group counts clicks while walking a curved path between markers. What is the instrument error and the fix?",
       "The curved path measures longer than the straight line distance; the fix is to measure along a straight line between markers",
-      ["There is no error, because the wheel counts metres wherever it rolls", "The wheel undercounts on curves; the fix is to walk faster", "The error is in the scale; the fix is to choose a different planet order"],
+      ["There is no error at all, because the wheel counts metres accurately wherever it happens to roll, curve or straight", "The wheel undercounts whenever it rolls on curves; the fix is to walk the path faster so the clicks keep up", "The error is in the scale the group chose; the fix is to choose a different planet order for the markers along the field"],
       "Using an instrument effectively means measuring what the plan defines. The lab's distances are straight line distances from the Sun marker. A curved roll adds extra metres the model does not intend, so the planets land too far out. Measuring along a straight line restores the intended distances.",
       {});
   }
@@ -803,7 +803,7 @@ E("s9-u1-prototype", 1, ["SC9.3.4"], 1, "var", varset([
   function () {
     return mcq("A prototype Mars rover keeps tipping on steep test slopes. In evaluating the design, which judgement is properly about function, reliability and materials?",
       "The wheelbase is too narrow for the slopes (function), the axle joints loosen after repeated runs (reliability), and a lighter frame material would lower the centre of mass (materials)",
-      ["The rover is the wrong colour for Mars (function), and its name is hard to pronounce (reliability)", "The rover tipped once, so the whole design should be discarded without testing", "The tipping is a materials problem only, so only the frame should change"],
+      ["The rover is the wrong colour for Mars (function), its name is hard to pronounce (reliability), and its frame paint adds weight that a lighter colour would avoid (materials)", "The rover tipped once on a test slope, so the whole design should be discarded without any further testing and the team should start again from nothing, whatever the cause", "The tipping is a materials problem only, so only the frame material should change, and neither the wheelbase nor the loosening joints need any attention from the team"],
       "Evaluating a design separates three questions. Function: does it do its job, here staying upright on slopes, which the narrow wheelbase fails. Reliability: does it keep working, which loosening joints fail. Materials: are the materials suited, here frame weight and centre of mass. Colour and naming are not evaluation criteria under this indicator.",
       {});
   }
@@ -813,7 +813,7 @@ E("s9-u1-design-judge", 1, ["SC9.3.4"], 3, "var", varset([
   function () {
     return mcq("Two probe lander designs are tested. Design A lands successfully in 9 of 10 drops but its sample arm jams in cold tests. Design B lands in 6 of 10 drops and its arm works in all conditions. A mission can tolerate a jammed arm (samples are a bonus) but not a failed landing. Which evaluation and choice is best supported?",
       "Choose A: landing is the mission critical function, A is far more reliable at it, and the arm weakness should be recorded and improved in the next prototype round",
-      ["Choose B: a design that fails 4 landings in 10 is acceptable if its arm is perfect", "Choose neither: any weakness in any part disqualifies a design entirely", "Choose A only if its materials are cheaper than B's"],
+      ["Choose B: a design that fails 4 landings in 10 is acceptable as long as its sample arm is perfect, because the arm is what the mission is really for", "Choose neither: any weakness in any part of a design, however minor, disqualifies that design entirely, so both must be rejected and the tests begun again", "Choose A only if its materials happen to be cheaper than B's materials, since cost of materials is the deciding test for a lander design like this"],
       "Evaluation weighs criteria by what the task demands. The mission states its priority plainly: landing failure ends everything, an arm jam only loses a bonus. A wins the critical function decisively (9 of 10 against 6 of 10), so A is chosen, with the cold weather arm fault recorded as the target for the next prototype round. Perfection in a secondary system cannot rescue failure in the primary one.",
       {});
   }
@@ -821,9 +821,9 @@ E("s9-u1-design-judge", 1, ["SC9.3.4"], 3, "var", varset([
 
 E("s9-u1-materials-gen", 1, ["SC9.3.4"], 2, "gen", function () {
   var cases = [
-    { d: "a lander leg made of a foam that crushes on landing and cannot be reused for a second test drop", k: "A reliability limit: the material does its job once, so the evaluation should require either a stronger material or spare legs for retesting", w: ["A function success with no limits, because the leg worked once", "A colour problem, because crushed foam looks untidy", "No evaluation is possible until the leg is flown to Mars"] },
-    { d: "a rover wheel made of a plastic that turns brittle at the lowest night temperature in the test chamber", k: "A materials failure for the intended conditions: the evaluation should reject this plastic for wheels or require insulation", w: ["A reliability strength, because brittle wheels are lighter", "A function success, because the wheel is round", "No evaluation is possible, because temperature is not a material property"] },
-    { d: "a habitat panel made of a material that blocks radiation well but is so heavy that the launch mass limit is exceeded", k: "A materials trade off: protection is strong, but the mass fails a design requirement, so a lighter shielding arrangement must be found", w: ["A clear success, because radiation protection is the only criterion", "A clear failure with no trade off, because heavy materials are always wrong", "An evaluation error, because launch mass is not part of design evaluation"] }
+    { d: "a lander leg made of a foam that crushes on landing and cannot be reused for a second test drop", k: "A reliability limit: the material does its job once, so the evaluation should require either a stronger material or spare legs for retesting", w: ["A function success with no limits worth recording, because the leg worked once and a single success settles the evaluation", "A colour problem, because crushed foam looks untidy after a landing and a tidier leg would present the design better to judges", "No evaluation is possible until the leg has actually been flown to Mars and tested in a real landing there first, whatever the tests show"] },
+    { d: "a rover wheel made of a plastic that turns brittle at the lowest night temperature in the test chamber", k: "A materials failure for the intended conditions: the evaluation should reject this plastic for wheels or require insulation", w: ["A reliability strength, because brittle wheels are lighter and lighter wheels always serve a rover better", "A function success, because the wheel is round and rolls smoothly in the warm test chamber at the start", "No evaluation is possible here, because temperature is not a material property and cannot enter a materials judgement"] },
+    { d: "a habitat panel made of a material that blocks radiation well but is so heavy that the launch mass limit is exceeded", k: "A materials trade off: protection is strong, but the mass fails a design requirement, so a lighter shielding arrangement must be found", w: ["A clear success, because radiation protection is the only criterion that a habitat panel should ever be judged against", "A clear failure with no trade off to weigh, because heavy materials are always the wrong choice for any part of a spacecraft", "An evaluation error, because launch mass is not part of design evaluation and should never be raised against a material"] }
   ];
   var c = pick(cases);
   return mcq("Evaluate this design detail: " + c.d + ". Which evaluation is correct?",
@@ -846,7 +846,7 @@ E("s9-u1-alternatives", 1, ["SC9.3.7"], 1, "var", varset([
   function () {
     return mcq("A habitat design team must keep drinking water supplied if the main recycling unit fails. Which response proposes genuine alternative solutions, as this indicator requires?",
       "Carry stored reserve water, add a smaller backup recycling unit, and plan resupply drops, then compare the three",
-      ["Use the main recycling unit, but check it more often", "Hope the main unit does not fail, since it is new", "Recycle water, recycle water carefully, and recycle water daily"],
+      ["Use the main recycling unit as the only supply, but check it more often than the schedule requires each week", "Hope the main unit does not fail during the mission, since it is new and newly tested equipment rarely breaks down", "Recycle water, recycle water more carefully than usual, and recycle water every day without fail on board"],
       "Alternative solutions must be genuinely different routes to the same goal. Stored reserves, a backup unit and resupply are three distinct plans with different costs and risks, ready to be compared and chosen among. Checking the same unit more often, or restating one plan three ways, offers no alternative at all.",
       {});
   }
@@ -856,7 +856,7 @@ E("s9-u1-plan-steps", 1, ["SC9.3.7"], 2, "var", varset([
   function () {
     return mcq("A team selects stored reserve water as its backup plan. Which set turns that selection into a developed plan?",
       "Decide how many days the reserve must cover, calculate the volume, choose sealed containers, set a rotation schedule so stored water stays fresh, and assign who checks it",
-      ["Write 'keep extra water' at the top of the plan and move on", "Buy the largest tank available and fill it once", "Store water in any open containers near the habitat door"],
+      ["Write 'keep extra water' at the top of the plan in large letters and move on to the next design problem without working out any amounts or responsibilities", "Buy the largest tank available, fill it once before launch, and treat that single filling as the complete reserve plan, with no schedule for checking or replacing the water", "Store the reserve water in any open containers that come to hand, set near the habitat door where the crew passes most often, and top them up when noticed by anyone"],
       "Developing a plan means working the chosen solution into steps that can be carried out: a quantity derived from a stated need, suitable containers, freshness maintained by rotation, and a named responsibility for checks. A slogan, an oversized single purchase and open containers each leave the plan undeveloped or unsafe.",
       {});
   }
@@ -875,7 +875,7 @@ E("s9-u1-process-eval", 1, ["SC9.3.8"], 1, "var", varset([
   function () {
     return mcq("After finishing a space station model, a group notes: 'We spent two meetings arguing about the colour scheme and ran out of time to test the airlock, which then failed.' Which evaluation of their process is most accurate?",
       "Their planning process was weak: time went to a low priority decision while a critical test was left undone",
-      ["Their process was strong, because they identified the failure afterwards", "Their only problem was the airlock design, not their process", "Groups should never evaluate their process after a task"],
+      ["Their process was strong throughout, because they identified the failure honestly once the task was over", "Their only problem was the airlock design itself, and nothing about how their group planned or used its time", "Groups should never evaluate their process after a task, since only the finished product can be judged"],
       "Evaluating individual and group processes means judging how the work was planned and carried out, not only the product. The group's own note shows the process fault: decision time was spent on appearance while testing a critical system was crowded out. Naming the failure afterwards is the start of evaluation, but it does not make the process that produced it strong.",
       {});
   }
@@ -1160,7 +1160,7 @@ E("s9-u2-case-rule", 2, ["SC9.4.3"], 1, "var", varset([
   function () {
     return mcq("A student writes the symbol for cobalt as CO. Why is that writing wrong?",
       "CO is the formula for carbon monoxide, a compound; cobalt is written Co, with a capital C and a lower case o",
-      ["Cobalt must be written with two capital letters because it is a metal", "CO is wrong only because carbon comes first in the alphabet", "Symbols are never allowed to contain the letter O"],
+      ["Cobalt must be written with two capital letters because it is a metal, and metals take two capitals", "CO is wrong only because carbon comes before cobalt in the alphabet, so the order of the letters is the fault", "Symbols are never allowed to contain the letter O, because O is reserved for writing out full compound names"],
       "Capitalization carries meaning in chemistry. Co, one capital letter followed by a lower case letter, is the single element cobalt. CO, two capital letters, reads as two elements, carbon and oxygen, joined as the compound carbon monoxide.",
       {});
   }
@@ -1275,7 +1275,7 @@ E("s9-u2-bohr-levels", 2, ["SC9.4.5"], 2, "var", varset([
   function () {
     return mcq("For the first 18 elements, which statement about energy levels in a Bohr-Rutherford diagram is correct?",
       "The first level holds at most 2 electrons, the second at most 8, and the third at most 8 in the diagrams used in this course",
-      ["Every level holds at most 8 electrons, including the first", "The first level holds at most 8 electrons and the second at most 2", "Electrons are drawn on circles showing the exact paths they follow"],
+      ["Every level holds at most 8 electrons, including the first level, and a level must be completely full before the next begins", "The first level holds at most 8 electrons and the second at most 2, with the third holding whatever electrons remain", "Electrons are drawn on circles showing the exact curved paths they follow as they travel around the nucleus"],
       "In the Bohr-Rutherford diagrams used for elements 1 to 18, the first energy level holds a maximum of 2 electrons and the second and third levels hold a maximum of 8 each at this level of the course. The diagrams show electrons arranged in levels drawn as horizontal lines; they do not claim electrons travel in circular paths.",
       {});
   }
@@ -1285,7 +1285,7 @@ E("s9-u2-noble-full", 2, ["SC9.4.5"], 2, "var", varset([
   function () {
     return mcq("Why are the noble gases so unreactive compared with other elements?",
       "Their outer energy level is full, so they neither gain, lose nor share electrons readily",
-      ["They have no electrons in any energy level", "They have the largest atoms of any family", "Their nuclei contain no neutrons to react with"],
+      ["They have no electrons in any energy level, so there is nothing for another atom to attract", "They have the largest atoms of any family in the table, too large for other atoms to approach", "Their nuclei contain no neutrons for other atoms to react with in any reaction"],
       "Chemical reactivity is driven by the outer (valence) energy level. Noble gases have a full outer level, the stable arrangement other atoms move toward when they react, so noble gases have no tendency to gain, lose or share electrons and stay unreactive.",
       {});
   }
@@ -1295,7 +1295,7 @@ E("s9-u2-same-family-why", 2, ["SC9.4.5"], 3, "var", varset([
   function () {
     return mcq("Sodium and potassium behave very similarly in reactions, while sodium and magnesium behave quite differently. What explains this pattern?",
       "Sodium and potassium are in the same family and share the same number of valence electrons, while magnesium has a different number",
-      ["Sodium and potassium have nearly the same atomic mass", "Sodium and magnesium are in the same period, which forces different behaviour", "Potassium and magnesium have identical energy level diagrams"],
+      ["Sodium and potassium have nearly the same atomic mass, and elements of similar mass always behave alike in reactions", "Sodium and magnesium are in the same period of the table, and sharing a period is what forces their behaviour to differ", "Potassium and magnesium have identical energy level diagrams, and sodium matches magnesium in exactly the same way"],
       "Elements in the same family share the same number of electrons in their outer energy level, and that number governs how an atom reacts. Sodium and potassium each have one valence electron, so their chemistry matches; magnesium has two, so its chemistry differs.",
       {});
   }
@@ -1305,7 +1305,7 @@ E("s9-u2-energy-level-def", 2, ["SC9.4.5"], 3, "var", varset([
   function () {
     return mcq("Which statement correctly uses the terms energy level and valence?",
       "The valence energy level is the outermost level holding electrons, and its electrons are the valence electrons",
-      ["The valence energy level is the level closest to the nucleus", "Valence electrons are the electrons found inside the nucleus", "An energy level is the exact circular path of one electron"],
+      ["The valence energy level is the level closest to the nucleus, and its electrons are the valence electrons", "Valence electrons are the electrons found inside the nucleus, packed among the protons and neutrons there", "An energy level is the exact circular path that one electron follows as it travels around the nucleus"],
       "Energy levels are the spaces around the nucleus where electrons may be found. The level furthest from the nucleus that holds electrons is the valence energy level, and the electrons in it, the valence electrons, are the ones involved in chemical reactions.",
       {});
   }
@@ -1333,7 +1333,7 @@ E("s9-u2-ionic-or-molecular", 2, ["SC9.4.6"], 1, "var", varset([
   function () {
     return mcq("Which pairing of compound and type is correct?",
       "Calcium chloride, formed from a metal and a non-metal, is ionic; carbon dioxide, formed from non-metals only, is molecular",
-      ["Calcium chloride, formed from a metal and a non-metal, is molecular; carbon dioxide is ionic", "Water, formed from non-metals only, is ionic; sodium chloride is molecular", "Methane, formed from non-metals only, is ionic; calcium chloride is molecular"],
+      ["Calcium chloride, formed from a metal and a non-metal, is molecular; carbon dioxide, formed from non-metals only, is ionic", "Water, formed from non-metals only, is ionic; sodium chloride, formed from a metal and a non-metal, is molecular", "Methane, formed from non-metals only, is ionic; calcium chloride, formed from a metal and a non-metal, is molecular"],
       "The quick test at this level is who is joining whom. Ionic compounds typically form between a metal and a non-metal, as calcium (metal) joins chlorine (non-metal). Molecular (covalent) compounds form between non-metals only, as in carbon dioxide, water and methane.",
       {});
   }
@@ -1430,7 +1430,7 @@ E("s9-u2-particle-view", 2, ["SC9.5.1"], 2, "var", varset([
   function () {
     var q = mcq("The particle diagrams show the same substance in three states. Which statement correctly reads the diagrams?",
       "The particles are closest and most ordered in the solid, further apart and freer in the liquid, and far apart and fast-moving in the gas",
-      ["The particles themselves grow larger as the substance changes from solid to gas", "The gas particles have stopped moving, which is why the gas spreads out", "The liquid particles are arranged in a fixed pattern like the solid particles"],
+      ["The particles themselves grow larger as the substance changes from solid to gas, swelling as they take in heat from the surroundings", "The gas particles have stopped moving altogether, which is why the gas spreads out evenly to fill its whole container", "The liquid particles are arranged in a fixed, repeating pattern exactly like the solid particles in the diagram"],
       "Changing state changes the spacing, order and motion of the particles, never the particles themselves. Solids hold particles in a tight, ordered arrangement; liquids keep them close but able to slide past one another; gases separate them widely with rapid motion.",
       {});
     q.figure = s9u2Fig_particles();
@@ -1442,7 +1442,7 @@ E("s9-u2-earlier-ideas", 2, ["SC9.5.1"], 3, "var", varset([
   function () {
     return mcq("How does the early Greek idea of matter differ most importantly from the modern view?",
       "The Greek four-element idea (earth, air, fire and water) rested on reasoning alone, while the modern view rests on experimental evidence",
-      ["The Greeks believed matter could be divided forever, and modern science agrees completely", "The modern view still lists earth, air, fire and water as the four elements", "The Greek idea was based on microscope observations of atoms"],
+      ["The Greeks believed matter could be divided forever without limit, and modern science agrees completely with that view today", "The modern view still lists earth, air, fire and water as the four true elements, and every substance is a mixture of those four", "The Greek idea was based on microscope observations of atoms moving in samples of earth, air, fire and water taken at the time"],
       "Empedocles and Aristotle taught that all matter was made of earth, air, fire and water, an idea accepted for about 2000 years without experimental testing. Modern atomic ideas were built and revised through experiments, which is why they changed as evidence accumulated.",
       {});
   }
@@ -1455,7 +1455,7 @@ E("s9-u2-law-theory", 2, ["SC9.5.2"], 1, "var", varset([
   function () {
     return mcq("Which statement best distinguishes a scientific law from a scientific theory, as this course presents them?",
       "A law is supported by robust, repeated experimental evidence describing what happens; a theory is an explanation that is less fully supported and open to further testing",
-      ["A theory is simply a guess, and a law is a theory that scientists voted to accept", "A law explains why something happens, and a theory only describes measurements", "Laws and theories mean exactly the same thing in every science"],
+      ["A theory is simply a guess with nothing behind it, and a law is a theory that scientists voted to accept after debating it at a meeting of the profession", "A law explains why something happens in nature, and a theory only describes the measurements taken of it, offering no explanation of its own at all for anyone", "Laws and theories mean exactly the same thing in every science, and the two words are used interchangeably in every textbook and laboratory without distinction"],
       "In this course's treatment, the words signal confidence in the evidence. Laws rest on different and robust experimental support and describe regular patterns. Theories explain, but with less complete support, so further evidence can revise them; neither word means a guess.",
       {});
   }
@@ -1465,7 +1465,7 @@ E("s9-u2-confidence", 2, ["SC9.5.2"], 2, "var", varset([
   function () {
     return mcq("A classmate says, 'It is only a theory, so scientists are just guessing.' Which reply is most accurate?",
       "A theory is a supported explanation built from evidence; it is called a theory because the supporting evidence is not yet as complete and robust as the evidence behind a law",
-      ["The classmate is right: theories are guesses with no evidence behind them", "A theory becomes a law automatically after one hundred years", "Theories apply only to biology, never to chemistry or physics"],
+      ["The classmate is right: theories are guesses with no evidence behind them at all, and scientists use the word theory for any idea they have not yet tested in any way", "A theory becomes a law automatically after one hundred years have passed, whatever evidence has or has not been gathered for it in that time, by the calendar alone", "Theories apply only to biology, the study of living things, and never to chemistry or physics, where every accepted explanation is called a law instead, without exception"],
       "Theories, such as the particle theory of matter, organize a great deal of evidence into an explanation. The law and theory labels reflect how complete and robust that support is, not whether any support exists. Guessing plays no part in either label.",
       {});
   }
@@ -1488,7 +1488,7 @@ E("s9-u2-scientist-match", 2, ["SC9.5.3"], 2, "var", varset([
   function () {
     return mcq("Which scientist and contribution pairing is correct?",
       "Rutherford: showed that an atom's mass is concentrated in a small, positive nucleus",
-      ["Dalton: discovered the electron inside the atom", "Thomson: proposed that electrons orbit in fixed energy levels", "Bohr: argued that matter is made of earth, air, fire and water"],
+      ["Dalton: discovered the electron inside the atom with his cathode ray work", "Thomson: proposed that electrons orbit the nucleus in fixed energy levels", "Bohr: argued that all matter is made of earth, air, fire and water combined"],
       "Rutherford's experiments replaced the spread-out positive sphere with a tiny, dense, positive nucleus. Dalton proposed the solid sphere atom, Thomson discovered the electron and proposed the raisin bun model, and Bohr added the energy levels.",
       {});
   }
@@ -1498,7 +1498,7 @@ E("s9-u2-model-change-why", 2, ["SC9.5.3"], 3, "var", varset([
   function () {
     return mcq("Why did the atomic model keep changing between Dalton's time and Bohr's?",
       "Each new model was forced by new experimental evidence that the previous model could not explain",
-      ["Scientists changed the model each generation to keep textbooks current", "Atoms themselves changed structure over those two centuries", "Each scientist worked alone and never saw the earlier models"],
+      ["Scientists changed the model each generation simply to keep the textbooks looking current", "Atoms themselves changed their structure over those two centuries of study, growing more complex", "Each scientist worked entirely alone and never saw or read about the earlier models at all"],
       "The atom did not change; the evidence did. Cathode ray work forced electrons into the model, the gold foil experiment forced in the nucleus, and energy level evidence shaped Bohr's version. Models are revised, and sometimes discarded, as new data arrive.",
       {});
   }
@@ -1520,7 +1520,7 @@ E("s9-u2-foil-result", 2, ["SC9.5.4"], 1, "var", varset([
   function () {
     return mcq("In Rutherford's gold foil experiment, most alpha particles passed straight through the foil, but a few bounced back at large angles. What did the bounce-back show?",
       "Atoms contain a tiny, dense, positively charged nucleus that can repel a close-passing alpha particle",
-      ["Atoms are solid spheres with no empty space inside", "Electrons are spread evenly through a positive sphere", "Gold atoms are much larger than all other atoms"],
+      ["Atoms are solid spheres with no empty space inside, filled completely from centre to surface", "Electrons are spread evenly through a positive sphere, and that sphere is the whole atom", "Gold atoms are much larger than all other atoms, which is why the foil blocked the particles"],
       "If positive charge were spread thinly through the whole atom, as Thomson proposed, nothing could turn a fast alpha particle around. The rare sharp bounce-backs require a concentrated positive charge in a very small volume: the nucleus. The many straight passes show the rest of the atom is mostly empty space.",
       {});
   }
@@ -1530,7 +1530,7 @@ E("s9-u2-foil-inference", 2, ["SC9.5.4"], 2, "var", varset([
   function () {
     return mcq("Why could Rutherford perform his experiment when Dalton, a century earlier, could not have?",
       "Rutherford had technology Dalton lacked, including sources of alpha particles and vacuum equipment, which made probing inside the atom possible",
-      ["Dalton was not interested in the inside of the atom at all", "Gold foil had not been invented in Dalton's time", "Rutherford worked in a larger laboratory building than Dalton"],
+      ["Dalton was not interested in the inside of the atom at all, and never attempted any experiment that might have revealed it to anyone", "Gold foil had not been invented in Dalton's time, and no thin metal sheet of any kind could be made with the tools then available", "Rutherford worked in a larger laboratory building than Dalton had, and the extra room is what allowed the experiment to be set up"],
       "Scientific reach follows available technology. The equipment behind the gold foil work, such as particle sources and vacuum tubes, did not exist for earlier scientists, and today's particle accelerators let scientists collect data Rutherford could not. Each generation's questions are limited by its tools.",
       {});
   }
@@ -1560,9 +1560,9 @@ E("s9-u2-settings", 2, ["SC9.5.5"], 1, "var", varset([
 
 E("s9-u2-settings-cases", 2, ["SC9.5.5"], 2, "gen", function () {
   var cases = [
-    { q: "Which setting is the best example of group scientific work on atomic structure?", k: "A university research group whose members build on each other's published results", w: ["A student sketching an atom alone for homework", "A cook adjusting a recipe alone at home", "One technician reading a meter alone on a night shift"], s: "Group settings are defined by collaboration: the university group members use and extend each other's discoveries, as Crookes, Thomson and Rutherford did. The other examples are individual work, valuable but not group work." },
-    { q: "Which setting is the best example of individual scientific work related to chemistry?", k: "A student testing soil samples from their own garden with a home kit", w: ["A hospital laboratory team running blood tests together", "A class of thirty sharing one set of flame test results", "A national research council operating a particle accelerator"], s: "The garden soil testing is one person working alone with chemical tests. Teams in hospitals and classes, and national facilities with large staffs, are group settings." },
-    { q: "A pharmaceutical company assigns a whole department to develop a new medicine. Which statement about this setting is correct?", k: "It is a group setting, and it still depends on earlier work done by other scientists elsewhere", w: ["It is an individual setting because the company has one name", "It is not scientific work because it happens in a company", "It owes nothing to earlier scientists because it is modern"], s: "Scientific and technological work on atomic structure and chemistry happens in companies as well as universities, and group work there, like group work anywhere, builds on discoveries made by others. Setting and dependence on prior work are separate questions." }
+    { q: "Which setting is the best example of group scientific work on atomic structure?", k: "A university research group whose members build on each other's published results", w: ["A student sketching an atom alone for homework at the kitchen table after school", "A cook adjusting a recipe alone at home, working without any partner or team", "One technician reading a meter alone on a night shift in an empty plant room"], s: "Group settings are defined by collaboration: the university group members use and extend each other's discoveries, as Crookes, Thomson and Rutherford did. The other examples are individual work, valuable but not group work." },
+    { q: "Which setting is the best example of individual scientific work related to chemistry?", k: "A student testing soil samples from their own garden with a home kit", w: ["A hospital laboratory team running blood tests together on a shared bench", "A class of thirty students sharing one set of flame test results together", "A national research council operating a particle accelerator with a large staff"], s: "The garden soil testing is one person working alone with chemical tests. Teams in hospitals and classes, and national facilities with large staffs, are group settings." },
+    { q: "A pharmaceutical company assigns a whole department to develop a new medicine. Which statement about this setting is correct?", k: "It is a group setting, and it still depends on earlier work done by other scientists elsewhere", w: ["It is an individual setting because the company has one name on the building outside", "It is not scientific work at all because it happens inside a company rather than a university", "It owes nothing to earlier scientists because it is modern work done with modern equipment"], s: "Scientific and technological work on atomic structure and chemistry happens in companies as well as universities, and group work there, like group work anywhere, builds on discoveries made by others. Setting and dependence on prior work are separate questions." }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w, c.s, {});
@@ -1575,7 +1575,7 @@ E("s9-u2-precise-word", 2, ["SC9.5.6"], 1, "var", varset([
   function () {
     return mcq("Why does it matter in science that the word element has one agreed meaning?",
       "So that scientists everywhere mean the same thing, a substance made of only one kind of atom, and can compare results without confusion",
-      ["So that students can be marked wrong for using everyday words", "Because everyday words are banned from science classrooms", "So that element can also mean a heating coil without confusion"],
+      ["So that students can be marked wrong whenever they use an everyday word in place of the proper scientific one in a report", "Because everyday words are banned from science classrooms, and students may use only the agreed scientific terms in their work", "So that element can also mean a heating coil, a part or an ingredient without any confusion arising between readers of a report"],
       "Scientifically appropriate words carry one precise meaning shared by everyone who uses them. Element means a substance consisting of only one kind of atom; using it loosely, for any ingredient or part, would make reports and comparisons unreliable.",
       {});
   }
@@ -1598,7 +1598,7 @@ E("s9-u2-mendeleev", 2, ["SC9.5.7"], 2, "var", varset([
   function () {
     return mcq("What were Mendeleev's two main contributions to the development of the periodic table?",
       "He organized the known elements by their properties and chemical behaviour, and he left gaps for elements that had not yet been discovered",
-      ["He discovered all of the elements known in his time, and he numbered them by mass", "He arranged the elements alphabetically, and he predicted the noble gases exactly", "He built the first table alone, and no other scientist worked on organizing elements"],
+      ["He discovered all of the elements known in his time by his own experiments, and he numbered them in order by mass in his laboratory", "He arranged the elements alphabetically by name, and he predicted the noble gases exactly, one by one, in advance of their discovery", "He built the first table entirely alone, and no other scientist of his time worked on organizing the elements at all in any way"],
       "Mendeleev's first contribution was ordering the known elements so that similar properties lined up in families. His second, and most important, was trusting that order enough to leave empty spaces and predict that undiscovered elements would fill them, which they did. Other scientists also worked on tables; his evidence-based gaps set his apart.",
       {});
   }
@@ -1640,7 +1640,7 @@ E("s9-u2-household-chem", 2, ["SC9.5.8"], 2, "var", varset([
   function () {
     return mcq("Why must bleach and some toilet bowl cleaners never be mixed, and what does the warning illustrate?",
       "Mixing them can produce poisonous chlorine gas; it illustrates that everyday products involve real chemical reactions with real hazards",
-      ["Mixing them makes both cleaners stop working; it illustrates that cleaners are expensive", "Mixing them produces a stronger cleaner; it illustrates efficient chemistry", "Mixing them changes only the colour; it illustrates chemical properties are harmless"],
+      ["Mixing them makes both cleaners stop working at once; it illustrates that cleaners are expensive and should never be wasted", "Mixing them produces a stronger, faster cleaner than either alone; it illustrates efficient chemistry at work under the sink", "Mixing them changes only the colour of the cleaners; it illustrates that chemical properties are harmless in daily use"],
       "Some household chemicals react together to form chlorine gas, which is poisonous. The warning is a daily-life reminder that the substances under the sink are chemicals whose reactions, useful or dangerous, follow from their properties, which is why labels and WHMIS information matter.",
       {});
   }
@@ -1662,7 +1662,7 @@ E("s9-u2-need-drives", 2, ["SC9.5.9"], 2, "var", varset([
   function () {
     return mcq("Hospitals needed a reliable heart medicine, and a chemical found in the foxglove plant, digitoxin, was developed into one. What does this example show?",
       "A need in society can drive chemical research that turns a natural substance into a useful product",
-      ["Plants are always safer than laboratory-made chemicals", "Society's needs have no effect on what scientists study", "Heart medicine was developed with no testing of the plant chemical"],
+      ["Plants are always safer than laboratory-made chemicals, whatever the plant and whatever the dose", "Society's needs have no effect at all on what scientists choose to study or develop in their work", "Heart medicine was developed with no testing of the plant chemical at any stage of the work"],
       "The foxglove example, drawn from Newfoundland and Labrador's own flora, shows demand guiding development: a medical need led researchers to isolate and standardize a plant chemical into a medicine. Needs such as health, food production and materials repeatedly steer chemistry in this way.",
       {});
   }
@@ -1672,7 +1672,7 @@ E("s9-u2-plastics-need", 2, ["SC9.5.9"], 3, "var", varset([
   function () {
     return mcq("Plastics were developed and spread rapidly during the twentieth century. Which explanation best fits the STSE pattern in this unit?",
       "Society needed cheap, light, mouldable materials for countless products, and chemistry supplied them from petroleum",
-      ["Plastics spread because they are natural materials that need no processing", "Plastics were developed before any use for them existed", "Society resisted plastics, so governments forced their adoption"],
+      ["Plastics spread because they are natural materials gathered ready-made, needing no processing of any kind", "Plastics were developed before any use for them existed, and manufacturers had to search for products to make from them", "Society resisted plastics from the start, so governments had to force their adoption on an unwilling public"],
       "The core STSE of this strand, Plastics and Modern Life, follows the pattern of need meeting chemistry: demand for inexpensive, versatile materials drove the development of plastics from petroleum chemicals. Their spread then created new questions about waste and environment that the same pattern must answer.",
       {});
   }
@@ -1685,7 +1685,7 @@ E("s9-u2-tech-analysis", 2, ["SC9.5.10"], 1, "var", varset([
   function () {
     return mcq("A plastic kayak is light, does not rust, and can be moulded in one piece, but it becomes brittle after years of sunlight. Analyzing this technology means weighing which pairing?",
       "How its material properties make it work well for its purpose, against the limits those same properties impose over its lifetime",
-      ["Its price against the price of a wooden kayak only", "Its colour against the colours offered by other makers", "Its weight in kilograms against its length in metres only"],
+      ["Its price against the price of a wooden kayak only, with no attention to how either boat actually performs in use", "Its colour against the range of colours offered by other makers of similar kayaks for sale, this season and last", "Its weight in kilograms against its length in metres only, as if two measurements could settle the whole analysis of the design"],
       "Analyzing a technology's design means connecting how it functions to its impact in daily life. The kayak's plastic gives lightness, corrosion resistance and one-piece moulding, real advantages for paddlers, while sunlight brittleness is a genuine lifetime cost. Both sides come from the material's properties.",
       {});
   }
@@ -1695,7 +1695,7 @@ E("s9-u2-design-impact", 2, ["SC9.5.10"], 2, "var", varset([
   function () {
     return mcq("Insulated plastic foam cups keep drinks hot and are cheap, but they persist in landfills for a very long time. Which statement is a fair analysis?",
       "The same trapped-air structure that insulates also makes the foam slow to break down, so the design trades daily convenience against a long environmental cost",
-      ["The cups are a poor design because they keep drinks too hot", "The landfill problem is unrelated to the cups' design", "Foam cups prove that insulation does not work in practice"],
+      ["The cups are a poor design simply because they keep drinks too hot for too long, and a cup that insulates this well has failed at its real job of serving drinks", "The landfill problem is unrelated to the cups' design in any way, since waste and disposal have nothing to do with how a product is designed or made at all", "Foam cups prove that insulation does not work in practice, since drinks in them eventually cool to room temperature like drinks in any other cup at all"],
       "Good analysis ties the benefit and the drawback to the design itself. Trapped air pockets insulate the drink and also make the material resistant to breaking down, so convenience today and persistence in the environment are two faces of one design choice.",
       {});
   }
@@ -1705,7 +1705,7 @@ E("s9-u2-function-basis", 2, ["SC9.5.10"], 3, "var", varset([
   function () {
     return mcq("A smoke detector uses a tiny amount of a radioactive element whose particles ionize air inside a chamber. Which basis of its functioning is being described?",
       "Its operation rests on a property of an element's atoms, applied to a daily-life safety task",
-      ["Its operation rests on the colour of its plastic case", "Its operation rests on the price of its battery", "Its operation rests on the shape of the room it hangs in"],
+      ["Its operation rests on the colour of the plastic case it is sold in, chosen by the maker", "Its operation rests on the price of the battery fitted inside it at the factory that year", "Its operation rests on the shape and size of the room in which it happens to hang on the wall"],
       "Some everyday technologies work because of atomic-level properties. The detector's sensing depends on what the element's atoms do to the air in its chamber; the case, battery and room are supporting details, not the scientific basis of the device.",
       {});
   }
@@ -1718,7 +1718,7 @@ E("s9-u2-decision-balance", 2, ["SC9.5.11"], 2, "var", varset([
   function () {
     return mcq("A town must choose a material for new water bottles for its arena canteen. Which approach makes the decision an informed one?",
       "Compare the environmental and social advantages and disadvantages of each material, then choose and be able to defend the choice",
-      ["Choose the cheapest material, since cost is the only real factor", "Choose the newest material, since new means better", "Let one person decide without examining any evidence"],
+      ["Choose the cheapest material on offer, since cost is the only real factor that a decision like this ever needs to weigh", "Choose the newest material on the market, since new always means better and older materials need no consideration at all", "Let one person decide the matter alone, quickly, without examining any evidence about any of the materials on offer"],
       "Informed decisions about applications of science weigh advantages and disadvantages on more than one side: environmental effects such as waste and recycling, and social effects such as cost, health and convenience. A defensible choice shows that weighing, even when no option wins on every count.",
       {});
   }
@@ -1728,7 +1728,7 @@ E("s9-u2-plastics-tradeoff", 2, ["SC9.5.11"], 3, "var", varset([
   function () {
     return mcq("Which statement about plastics best models a balanced STSE judgement?",
       "Plastics give light, durable, inexpensive products and medical and food-safety benefits, while their persistence as waste and their petroleum source are real costs that decisions must manage",
-      ["Plastics are entirely beneficial and should never be questioned", "Plastics are entirely harmful and have no legitimate uses", "Plastics have advantages only for manufacturers, never for users"],
+      ["Plastics are entirely beneficial in every use and should never be questioned, since their advantages settle every decision about them in advance, whatever the waste involved", "Plastics are entirely harmful in every use and have no legitimate uses at all, so every plastic product should be withdrawn from daily life at once, without exception or replacement", "Plastics have advantages only for the manufacturers who sell them, and never for the users who buy them, whose interests play no part in any decision about plastics at all"],
       "A balanced judgement holds both sides at once. Plastics serve medicine, food safety and everyday convenience because of their properties, and those same properties make discarded plastic persist, while production draws on petroleum. Decisions about plastics manage that trade-off rather than denying either side.",
       {});
   }
@@ -1750,7 +1750,7 @@ E("s9-u2-whmis-action", 2, ["SC9.6.1"], 1, "var", varset([
   function () {
     return mcq("Before using a lab chemical, a student checks its safety data sheet and finds the spill procedure and first aid information. What is the student demonstrating?",
       "Knowledge of WHMIS standards applied to handling that material safely",
-      ["A physical property of the chemical", "A delay that should be skipped to save lab time", "The chemical's position on the periodic table"],
+      ["A physical property of the chemical being used in the laboratory", "A delay in starting the work that should be skipped to save lab time", "The chemical's position on the periodic table of the elements chart"],
       "WHMIS practice includes using the safety data sheet (the MSDS) for a chemical before work begins: it gives the safety precautions, spill procedures and first aid requirements for that material. Checking it first is the standard applied, not wasted time.",
       {});
   }
@@ -1760,7 +1760,7 @@ E("s9-u2-msds-use", 2, ["SC9.6.1"], 1, "var", varset([
   function () {
     return mcq("A small amount of a chemical splashes near a student's hand. Which response follows proper WHMIS-based technique?",
       "Stop, tell the teacher, and follow the spill and first aid steps given for that chemical on its safety data sheet",
-      ["Wipe it up quickly with a paper towel and say nothing", "Pour water over the whole bench to dilute everything at once", "Move the chemical bottle to another bench and continue working"],
+      ["Wipe it up quickly with a paper towel, throw the towel in the bin, and say nothing to anyone about it at all", "Pour water over the whole bench and the floor around it to dilute everything at once, then carry on with the lab", "Move the chemical bottle to another bench, wipe the sleeve dry, and continue working as if nothing had happened"],
       "Proper technique is specific, not improvised: the teacher is informed and the chemical's own data sheet directs the spill procedure and any first aid. Guessing with water or hiding the spill ignores the information WHMIS provides for exactly this moment.",
       {});
   }
@@ -1773,7 +1773,7 @@ E("s9-u2-hypothesis-form", 2, ["SC9.6.2"], 1, "var", varset([
   function () {
     return mcq("Which statement is a proper hypothesis for an investigation of whether heating changes how a metal sample reacts with vinegar?",
       "If the metal sample is heated before the vinegar is added, then it will produce bubbles faster, because heating increases how vigorously substances react",
-      ["Metals and vinegar are interesting to study", "The metal will do something when the vinegar is added", "Heating is part of the procedure we will follow on Friday"],
+      ["Metals and vinegar are interesting to study together, and the class expects the investigation of the two to be enjoyable on Friday afternoon", "The metal will do something noticeable when the vinegar is added to it in the beaker, though nothing more specific can be said in advance about it", "Heating is part of the procedure we will follow on Friday afternoon, when the class carries out the investigation in the laboratory together"],
       "A hypothesis is a testable statement linking a change to an expected result, with a reason: if the sample is heated, then bubbling will be faster, because heating affects reaction vigour. It grows out of background information and an observed pattern, and the investigation can support or refute it.",
       {});
   }
@@ -1807,7 +1807,7 @@ E("s9-u2-display-choice", 2, ["SC9.6.3"], 1, "var", varset([
   function () {
     return mcq("A group has recorded the melting points of six substances in a list. Which next step best compiles and displays their data?",
       "Build a labelled table (or bar graph) with substance names in one column and melting points, with units, in the other, so values can be compared at a glance",
-      ["Rewrite the list in neater handwriting in the same order", "Memorize the six values and discard the list", "Draw a picture of each substance beside its name"],
+      ["Rewrite the list in neater handwriting in the same order as before, taking care only that every value can be read more clearly by the teacher", "Memorize the six values as a set of numbers and discard the list they were written on, keeping the results in memory only for the report", "Draw a careful picture of each substance beside its name in the list, coloured to show how each one looked during the test, and nothing more"],
       "Compiling and displaying data means organizing it so patterns can be seen: a table or bar graph with clear labels and units lets a reader compare all six melting points at once. A neater copy of a list keeps the data just as hard to compare.",
       {});
   }
@@ -1829,7 +1829,7 @@ E("s9-u2-organize-format", 2, ["SC9.6.4"], 1, "var", varset([
   function () {
     return mcq("Which format is most appropriate for recording the results of testing eight materials for conductivity, lustre and reaction with vinegar?",
       "A table with one row per material and one column per test, using consistent symbols or words in every cell",
-      ["A paragraph describing the materials in the order they were tested", "A sketch of the bench showing where each material sat", "A list of the materials ranked by personal preference"],
+      ["A paragraph describing the materials one by one in the order they happened to be tested on the bench", "A sketch of the bench showing where each material sat while its turn for testing came around in the lab", "A list of the materials ranked by the personal preference of the student doing the testing that day"],
       "A row-and-column table matches the structure of the task: the same set of tests applied to every material. Consistent entries make missing results obvious and comparisons direct, which a paragraph or sketch cannot do.",
       {});
   }
@@ -1839,7 +1839,7 @@ E("s9-u2-units-heading", 2, ["SC9.6.4"], 1, "var", varset([
   function () {
     return mcq("A student's data table lists temperatures as 20, 35, 50 with no other information in the heading. What is missing for the data to be properly organized?",
       "The quantity name and its unit in the column heading, such as Temperature (degrees C)",
-      ["A title page for the lab report", "The names of the student's lab partners", "A conclusion paragraph under the table"],
+      ["A title page prepared for the front of the lab report submitted as a whole", "The names of the student's lab partners written at the top of the page neatly", "A conclusion paragraph written under the table at the end of the report itself"],
       "Organized data must be readable by someone who was not there. A column heading naming the quantity and its unit, Temperature (degrees C), makes every number in the column interpretable; bare numbers could be any quantity in any unit.",
       {});
   }
@@ -1852,7 +1852,7 @@ E("s9-u2-conclusion-match", 2, ["SC9.6.5"], 1, "var", varset([
   function () {
     return mcq("A student predicted that a shiny metal strip would not react with vinegar. After a day in vinegar the strip is dull and the vinegar has turned slightly blue. Which conclusion is correct?",
       "The evidence refutes the prediction: the strip reacted, shown by the colour change in the vinegar and the changed surface",
-      ["The evidence supports the prediction, because the strip is still in one piece", "No conclusion is possible, because the test lasted a whole day", "The prediction was about a different strip, so it still stands"],
+      ["The evidence supports the prediction, because the strip is still in one piece and a reacted strip would have dissolved away entirely", "No conclusion is possible from this test, because the test lasted a whole day and long tests cannot settle anything", "The prediction was about a different strip from the one tested, so it still stands untouched by this result entirely"],
       "A conclusion compares the evidence with the initial idea. Dullness on the strip and a new colour in the vinegar are signs of a chemical reaction, so the prediction of no reaction is refuted, and the conclusion must say so plainly.",
       {});
   }
@@ -1874,7 +1874,7 @@ E("s9-u2-new-question-pt", 2, ["SC9.6.6"], 1, "var", varset([
   function () {
     return mcq("After learning that elements in a family share properties, which question is a genuine new question raised by the periodic table?",
       "Would an undiscovered element in the halogen family also be a reactive non-metal, and how could that prediction be checked?",
-      ["What is the chemical symbol for chlorine?", "How many periods are drawn on our classroom table?", "Who first organized the periodic table?"],
+      ["What is the chemical symbol for chlorine as printed in the table on the classroom wall, to copy down?", "How many periods are drawn on the periodic table hanging on our classroom wall, counting them one by one?", "Who first organized the periodic table into the arrangement of rows and columns used in schools and textbooks?"],
       "Using the table to identify new questions means pushing past facts it already states. Predicting an unknown family member's behaviour from the family pattern, and asking how to check it, is a new question the learning itself creates; symbols, counts and history are already answered on or behind the table.",
       {});
   }
@@ -1887,7 +1887,7 @@ E("s9-u2-trend-graph", 2, ["SC9.6.7"], 1, "var", varset([
   function () {
     var q = mcq("The graph shows how the temperature of a reacting mixture changed over five minutes. Which statement correctly interprets the trend?",
       "The temperature rose quickly at first and then levelled off, showing the reaction was most vigorous at the start and slowed as it proceeded",
-      ["The temperature fell steadily for the whole five minutes", "The temperature stayed exactly constant, so no reaction occurred", "The temperature rose and fell in a repeating cycle each minute"],
+      ["The temperature fell steadily downward for the whole five minutes of the test, from its first reading to its last, without pause", "The temperature stayed exactly constant at its starting value, so no reaction of any kind occurred in the mixture at all", "The temperature rose and fell in a repeating cycle, climbing and dropping once in each minute of the five minutes in turn"],
       "Reading a trend means describing the shape in words and tying it to the process. A steep early rise that flattens out means energy was released fastest at the start and the reaction slowed over time, a common pattern as reacting materials are used up.",
       {});
     q.figure = s9u2Fig_trend();
@@ -1899,7 +1899,7 @@ E("s9-u2-valence-trend", 2, ["SC9.6.7"], 2, "var", varset([
   function () {
     return mcq("Across Period 3, the number of valence electrons rises steadily from sodium to argon. What does this trend explain?",
       "Why properties change in a regular way across the period, with reactivity patterns repeating in the next period when the count restarts",
-      ["Why every element in Period 3 has the same properties", "Why atomic mass decreases across the period", "Why Period 3 elements are all metals"],
+      ["Why every element in Period 3 has exactly the same properties, reacting in the same way in every test in the laboratory", "Why atomic mass decreases steadily across the period from the first element to the last one listed in the row of the table", "Why the elements of Period 3 are all metals, every one of them, from the first element of the row to the last in the period"],
       "Patterns in the table are patterns in electron arrangement. As valence electrons increase across a period, properties shift in a regular sequence; when a new period restarts the count, the sequence of properties repeats, which is the periodic pattern Mendeleev's table first exposed.",
       {});
   }
@@ -1921,7 +1921,7 @@ E("s9-u2-flame-safety", 2, ["SC9.6.8"], 1, "var", varset([
   function () {
     return mcq("During a flame test, how should the wooden splint be used to work safely and get a readable result?",
       "Hold the splint in the flame for only two or three seconds and observe the colour immediately, so the wood itself does not catch fire and mask the colour",
-      ["Leave the splint in the flame until the wood is burning well, then read the colour", "Hold the splint with bare fingers close to the flame for better control", "Wave the burning splint over the bench to spread the colour"],
+      ["Leave the splint in the flame until the wood itself is burning well and brightly, and only then read the colour the flame has taken at that point", "Hold the splint with bare fingers as close to the flame as possible for better control of its position throughout the test each time", "Wave the burning splint back and forth over the bench to spread the colour across a wider area for the class to see from their seats"],
       "Safe flame test technique is brief and deliberate: two or three seconds in the flame shows the ion's colour before the wood catches fire and its own flame hides the result. Longer burning is both a hazard and bad observation; known samples are tested first to build a colour standard for comparison.",
       {});
   }
@@ -1934,7 +1934,7 @@ E("s9-u2-new-question-change", 2, ["SC9.6.9"], 1, "var", varset([
   function () {
     return mcq("After watching magnesium burn brightly in air, which question is a new question arising from the investigation?",
       "Does magnesium burn the same way in pure oxygen as in air, and what would that show about what burning needs?",
-      ["What colour was the magnesium flame we just saw?", "What is the chemical symbol for magnesium?", "Who demonstrated the burning magnesium today?"],
+      ["What colour was the magnesium flame that the class just saw during the demonstration this morning?", "What is the chemical symbol for magnesium as it appears in the classroom periodic table chart?", "Who demonstrated the burning magnesium to the class during the lesson in the laboratory this morning?"],
       "New questions grow out of results. The bright burning raises a testable follow-up about the role of oxygen in burning, which the original investigation did not answer. The other options ask for observations or facts already in hand.",
       {});
   }
@@ -1944,7 +1944,7 @@ E("s9-u2-follow-up-q", 2, ["SC9.6.9"], 2, "var", varset([
   function () {
     return mcq("A group finds that one metal fizzes in vinegar while another does not. Which follow-up question best arises from their investigation of physical and chemical changes?",
       "Would warming the vinegar change which metals fizz, and would that change be evidence about reaction conditions rather than the metals alone?",
-      ["What were the names of the two metals we tested?", "Did everyone in the group see the fizzing happen?", "What page of the textbook describes vinegar?"],
+      ["What were the names of the two metals the group tested during the investigation earlier in the lesson, written in the notebook?", "Did everyone in the group see the fizzing happen with their own eyes while the test was being carried out at the bench this afternoon?", "What page of the textbook describes vinegar and its uses in the chapter on acids and everyday chemicals at the back of the book?"],
       "Strong follow-up questions test the conditions behind a result. Asking whether temperature changes the outcome separates a property of the metals from a condition of the test, which is exactly the kind of question an investigation should generate.",
       {});
   }
@@ -2162,7 +2162,7 @@ E("s9-u3-static-def", 3, ["SC9.7.1"], 1, "var", varset([
   function () {
     return mcq("What is static electricity?",
       "A build-up of electric charge on the surface of an object, where the charge stays in place until it is discharged",
-      ["Electric current flowing steadily through a wire to power a device", "The magnetism produced when a coil of wire spins near a magnet", "The energy stored inside a chemical cell before it is connected"],
+      ["Electric current flowing steadily through the wires of a closed circuit to power a connected device", "The magnetism produced when a coil of wire spins rapidly near a magnet inside a generator at a station", "The energy stored inside a chemical cell before it is connected into a complete circuit and switched on"],
       "Static electricity is charge at rest: electrons build up on a material's surface and stay there. It is different from current electricity, where charge flows continuously through a circuit. The charge stays put until a discharge removes it.",
       {});
   }
@@ -2172,7 +2172,7 @@ E("s9-u3-friction-transfer", 3, ["SC9.7.1"], 1, "var", varset([
   function () {
     return mcq("A rubber rod is rubbed with a piece of fur. Afterwards the rod carries a negative charge. What actually moved during the rubbing?",
       "Electrons transferred from the fur onto the rod, leaving the rod with extra electrons and the fur with fewer",
-      ["Protons transferred from the fur onto the rod, making the rod negative", "Electrons transferred from the rod onto the fur, leaving the rod negative", "Neutral particles split in half, creating new positive and negative charges"],
+      ["Protons transferred from the fur onto the rod during the rubbing, making the rod negative in charge", "Electrons transferred from the rod onto the fur during the rubbing, leaving the rod negative overall", "Neutral particles split in half during the rubbing, creating new positive and negative charges from nothing"],
       "Only electrons move between materials. Protons sit in the nucleus, are far more massive, and do not transfer. The rod ended up negative, so it must have gained electrons; the fur lost those same electrons and became positive. Charge is transferred, never created.",
       {});
   }
@@ -2192,7 +2192,7 @@ E("s9-u3-electroscope-detect", 3, ["SC9.7.1"], 3, "var", varset([
   function () {
     var q = mcq("A student touches a charged rod to the knob of an uncharged metal leaf electroscope and the two leaves spread apart, as shown in the diagram (A marks the rod, B the knob and C the leaves). What does the spreading show, and what can the student conclude about the sign of the rod's charge from this test alone?",
       "The spreading shows the rod carried a charge, because charge spread onto both leaves and like charges repel; the test alone does not identify the sign",
-      ["The spreading shows the rod was positive, because only positive charge can spread onto metal leaves", "The spreading shows the rod was neutral, because neutral objects attract the leaves apart", "The spreading shows the exact amount of charge, measured by the angle of the leaves in coulombs"],
+      ["The spreading shows the rod was positive, because only positive charge can spread through metal onto the leaves and push them apart like this", "The spreading shows the rod was neutral, because neutral objects attract the leaves of an electroscope and pull them apart from each other", "The spreading shows the exact amount of charge on the rod, measured in coulombs from the angle of the leaves, and identifies its sign as well"],
       "An electroscope detects the presence of charge. Charge from the rod spreads through the metal onto both leaves; both leaves carry the same sign of charge, and like charges repel, so the leaves separate. Either sign of charge produces the same spreading, so identifying the sign takes further testing, exactly the caution the guide gives.",
       {});
     q.figure = s9u3StaticSVG();
@@ -2204,7 +2204,7 @@ E("s9-u3-discharge", 3, ["SC9.7.1"], 2, "var", varset([
   function () {
     var q = mcq("After shuffling across a carpet in dry weather, a student reaches for a metal doorknob and feels a small shock just before touching it. Which term and explanation fit the shock?",
       "Electric discharge: the charge built up on the student is suddenly removed as electrons jump between the student and the knob",
-      ["Electric current: a steady flow of charge begins circulating through the student's body", "Charging by friction: the doorknob rubs charge onto the student's hand", "Neutralization by protons: protons flow from the knob and cancel the student's charge"],
+      ["Electric current: a steady, controlled flow of charge begins circulating through the student's body and the knob", "Charging by friction: the doorknob rubs against the student's hand as it turns and rubs charge onto the skin directly", "Neutralization by protons: protons flow out of the metal knob into the hand and cancel the student's charge exactly"],
       "Electric discharge is the removal of electric charge from an object. The carpet built up a static charge on the student; near the conducting knob, that charge is suddenly released in one quick jump, felt as a shock. Lightning is the same event on a far larger scale. No steady circuit current is involved.",
       {});
     return q;
@@ -2247,7 +2247,7 @@ E("s9-u3-attract-repel-test", 3, ["SC9.7.2"], 2, "var", varset([
   function () {
     return mcq("A student wants to find out whether an unknown charged strip carries a positive or a negative charge. She already has a strip known to be negative. Which test gives her the answer, and why is simple attraction not enough on its own?",
       "Bring the known negative strip near the unknown: repulsion proves the unknown is also negative, because only like charges repel; attraction alone could mean an unlike charge or a neutral object",
-      ["Attraction to the known strip proves the unknown is positive, because attraction only happens between opposite charges", "If the unknown strip is attracted to a neutral object, it must be positive", "Repulsion from the known strip proves the unknown is positive, because positives push negatives away"],
+      ["Attraction to the known strip proves the unknown is positive, because attraction only ever happens between opposite charges, and a neutral object could not be attracted at all", "If the unknown strip is attracted to a neutral object it must be positive, because neutral objects are attracted only by positive charges and never by negative ones in any test", "Repulsion from the known strip proves the unknown is positive, because positive charges push negative charges away from themselves whenever the two are brought near each other"],
       "Repulsion is the decisive test: it happens only between like charges, so if the unknown strip is repelled by a known negative strip, it is negative for certain. Attraction is ambiguous, because a charged object attracts both an oppositely charged object and some neutral objects, so attraction alone cannot identify the sign.",
       {});
   }
@@ -2267,7 +2267,7 @@ E("s9-u3-static-vs-current", 3, ["SC9.7.3"], 1, "var", varset([
   function () {
     return mcq("Which comparison of static electricity and electric current is correct?",
       "Static electricity is charge built up in one place and released in a sudden discharge; electric current is a continuous, controlled flow of charge through a circuit",
-      ["Static electricity flows continuously through wires; electric current builds up on surfaces and discharges suddenly", "Static electricity can power household devices for hours; electric current lasts only a fraction of a second", "Static electricity involves moving protons; electric current involves moving electrons"],
+      ["Static electricity flows continuously through wires; electric current builds up on surfaces and discharges suddenly in a single spark, exactly like lightning", "Static electricity can power household devices for hours at a time; electric current lasts only a fraction of a second before it is gone and cannot be restarted", "Static electricity involves protons moving between objects; electric current involves electrons flowing, and the two charges move in the two kinds of electricity"],
       "The contrast is about control and duration. A static charge sits on a surface and leaves in one uncontrolled discharge, like the doorknob shock or lightning. Electric current is charge flowing steadily through a conductor in a circuit, which is what makes it useful for running devices. In both cases the moving charge is electrons.",
       {});
   }
@@ -2277,7 +2277,7 @@ E("s9-u3-static-not-harnessed", 3, ["SC9.7.3"], 1, "var", varset([
   function () {
     return mcq("A student asks why the static shock from a doorknob cannot be used to run a flashlight, even though the shock clearly involves moving electrons. Which answer is correct?",
       "The discharge is over almost instantly and cannot be controlled or sustained, so it cannot supply the continuous flow of charge a device needs",
-      ["Static shocks involve protons rather than electrons, and devices run only on electrons", "The shock's electrons move too slowly to carry any energy to a device", "Static electricity is not real electricity, so it can never interact with a device"],
+      ["Static shocks involve protons moving rather than electrons, and flashlights and other devices run only on electrons in motion through wires", "The shock's electrons move far too slowly through the air to carry any useful energy across to a device like a flashlight switched on", "Static electricity is not real electricity at all, so it can never interact with a device or with the charges inside one in any way"],
       "Static electricity is real electricity, but it is a one-moment event: the built-up charge escapes in a single rapid discharge and then it is gone. A flashlight needs charge flowing continuously through its circuit for as long as it is switched on. That is why static electricity cannot be harnessed as a useful energy source, while current electricity can.",
       {});
   }
@@ -2297,7 +2297,7 @@ E("s9-u3-voltage-def", 3, ["SC9.7.4"], 1, "var", varset([
   function () {
     return mcq("Which pairing of term, definition and unit is correct?",
       "Electric potential difference (voltage): the difference in electric potential energy per unit of charge between two points, measured in volts (V)",
-      ["Electric current: the difference in potential energy between two points, measured in volts (V)", "Electric charge: the flow of electrons past a point each second, measured in coulombs (C)", "Electric potential difference: the amount of charge stored in a cell, measured in coulombs (C)"],
+      ["Electric current: the difference in electric potential energy between two points in a circuit, measured in volts (V) like voltage", "Electric charge: the flow of electrons past a point each second through a wire in a circuit at any moment, measured in coulombs (C)", "Electric potential difference: the total amount of charge stored inside a chemical cell, measured in coulombs (C) before use"],
       "Voltage is electric potential difference: how much potential energy each unit of charge gains at the source or loses at a load, and its unit is the volt. Current is a flow rate, measured in amperes, and charge itself is measured in coulombs. Keeping the three quantities and their units separate is the precise language this indicator requires.",
       {});
   }
@@ -2317,7 +2317,7 @@ E("s9-u3-cell-how", 3, ["SC9.7.4"], 2, "var", varset([
   function () {
     return mcq("How does an electrochemical cell supply electric charge to a circuit?",
       "Two electrodes of different materials sit in an electrolyte, and chemical reactions at the electrodes separate charge, producing a potential difference between the terminals",
-      ["A magnet spins inside the cell, generating charge that collects on the terminals", "The cell stores loose electrons in a tank, and they pour out when a wire is attached", "Friction between the two electrodes rubs electrons from one onto the other"],
+      ["A magnet spins inside the cell on a tiny shaft, generating charge by its motion, and the charge collects on the two terminals for use in a circuit connected outside", "The cell stores loose electrons in a small tank inside it, and they pour out through the terminals as soon as a wire is attached to the circuit by the user", "Friction between the two electrodes, as the electrolyte flows past them, rubs electrons from one electrode onto the other inside the cell continuously while it works"],
       "An electrochemical cell needs two electrodes made of different materials and an electrolyte, the conducting substance they sit in. Chemical reactions involving the electrodes and the electrolyte drive electrons toward one terminal and away from the other, so a potential difference appears across the cell. It is a conversion of chemical energy to electrical energy, not stored loose electrons and not a generator.",
       {});
   }
@@ -2358,7 +2358,7 @@ E("s9-u3-parallel-identify", 3, ["SC9.7.5"], 1, "var", varset([
   function () {
     var q = mcq("The diagram shows a battery with two bulbs, each bulb on its own branch so charge can reach either bulb without passing through the other. One bulb burns out. What happens to the other bulb, and why?",
       "It stays lit at the same brightness, because its own branch is still a complete path across the battery",
-      ["It goes out, because the burnt bulb breaks the circuit's only path", "It becomes brighter, because all the battery's voltage now goes to one bulb", "It becomes dimmer, because the broken branch drains charge from the battery"],
+      ["It goes out at once, because the burnt bulb breaks the circuit's only complete path to the battery", "It becomes brighter than before, because all the battery's voltage now goes to the one remaining bulb", "It becomes dimmer than before, because the broken branch keeps draining charge from the battery steadily"],
       "In a parallel circuit each branch is a complete circuit across the source on its own. Each branch receives the full source voltage, so a bulb on an intact branch is unaffected when another branch opens. That independence is exactly why household lights are wired in parallel.",
       {});
     q.figure = s9u3ParallelSVG();
@@ -2368,9 +2368,9 @@ E("s9-u3-parallel-identify", 3, ["SC9.7.5"], 1, "var", varset([
 
 E("s9-u3-series-current-rule", 3, ["SC9.7.5"], 1, "gen", function () {
   var cases = [
-    { q: "An ammeter is moved to three different positions in a series circuit containing a battery and two bulbs. What will the three readings show?", k: "The same current at every position, because charge has only one path and the same flow passes every point", w: ["A smaller current after each bulb, because each bulb uses up part of the current", "A larger current near the battery and zero at the far end of the circuit", "Different currents that add up to the current leaving the battery"] },
+    { q: "An ammeter is moved to three different positions in a series circuit containing a battery and two bulbs. What will the three readings show?", k: "The same current at every position, because charge has only one path and the same flow passes every point", w: ["A smaller current after each bulb, because each bulb uses up part of the current to make its light and heat", "A larger current near the battery, falling steadily to zero at the far end of the circuit loop and back", "Different currents at the three positions that add up together to the current leaving the battery"] },
     { q: "In a series circuit the ammeter next to the battery reads 0.40 A. A second ammeter is placed on the far side of the second bulb. What does it read?", k: "0.40 A, because the current is the same everywhere in a series circuit", w: ["Less than 0.40 A, because the two bulbs have used some of the current", "0.80 A, because the currents through the two bulbs add together", "0 A, because the current is finished once it has passed both bulbs"] },
-    { q: "A student claims the current entering a bulb in a series circuit is larger than the current leaving it, because the bulb uses current to make light. Which correction is right?", k: "The currents are equal: the bulb converts electrical energy to light and heat, but charge itself flows through unchanged in amount", w: ["The claim is right: light is made out of the current that disappears", "The leaving current is larger, because the bulb adds energy to the charge", "Both currents are zero until the bulb warms up"] }
+    { q: "A student claims the current entering a bulb in a series circuit is larger than the current leaving it, because the bulb uses current to make light. Which correction is right?", k: "The currents are equal: the bulb converts electrical energy to light and heat, but charge itself flows through unchanged in amount", w: ["The claim is right: light is made out of the current itself, which disappears into the bulb as it shines each second", "The leaving current is larger than the entering current, because the bulb adds its own energy to the charge passing through", "Both currents are zero until the bulb has warmed up fully, and only then does any charge begin to flow through it"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -2414,7 +2414,7 @@ E("s9-u3-parallel-voltage-rule", 3, ["SC9.7.5"], 3, "var", varset([
   function () {
     return mcq("A 9 V battery powers two different bulbs connected in parallel. Bulb P is rated to draw a larger current than bulb Q. Which statement about the voltages is correct?",
       "Both bulbs have 9 V across them; the different currents come from their different resistances, not from different voltages",
-      ["Bulb P has more than 9 V across it, because it draws the larger current", "The 9 V is shared between the bulbs in proportion to their currents", "Bulb Q has 9 V across it and bulb P has less, because P uses its voltage up faster"],
+      ["Bulb P has more than 9 V across it, because it draws the larger current of the two bulbs in the circuit shown", "The 9 V of the battery is shared out between the two bulbs in proportion to the currents each one draws from it", "Bulb Q has the full 9 V across it and bulb P has less, because P uses its voltage up faster than Q does in the circuit"],
       "Each parallel branch connects directly across the source, so every branch has the full source voltage across it, 9 V here, whatever its resistance. The bulbs differ in resistance, so by Ohm's law they draw different currents at that same voltage. Sharing out the voltage is the series behaviour, not the parallel behaviour.",
       {});
   }
@@ -2442,7 +2442,7 @@ E("s9-u3-energy-def", 3, ["SC9.7.6"], 1, "var", varset([
   function () {
     return mcq("Which set of definitions and units is correct?",
       "Electrical energy is the energy transferred by moving charge, measured in joules (J); electrical power is the rate at which that energy is transferred, measured in watts (W)",
-      ["Electrical energy is measured in watts (W); electrical power is measured in joules (J)", "Electrical energy and electrical power are the same quantity, both measured in joules (J)", "Electrical power is the total energy a device will ever use, measured in kilowatt-hours"],
+      ["Electrical energy is measured in watts (W), the rate unit; electrical power is measured in joules (J), the amount unit, in every case without exception in the guide's usage", "Electrical energy and electrical power are the same quantity under two names, and both are measured in joules (J) whenever they are reported in this course and in the guide", "Electrical power is the total energy a device will ever use in its lifetime, measured in kilowatt-hours, the unit printed on energy labels for appliances"],
       "Energy and power are related but different. Energy is the amount transferred, and its unit is the joule. Power is how fast the transfer happens, energy per unit time, and its unit is the watt: 1 W = 1 J/s. A kilowatt-hour is a larger unit of energy, not of power.",
       {});
   }
@@ -2462,7 +2462,7 @@ E("s9-u3-power-meaning", 3, ["SC9.7.6"], 2, "var", varset([
   function () {
     return mcq("Two kettles are plugged into the same 120 V supply. Kettle A is rated 1500 W and kettle B is rated 900 W. Both are used to heat the same amount of water. Which statement is correct?",
       "Kettle A transfers electrical energy faster, so it does the same heating job in less time; run for the same time, it would use more energy",
-      ["Kettle B transfers energy faster, because a lower wattage means less resistance to energy flow", "Both kettles transfer energy at the same rate, because they share the same voltage", "Kettle A uses less total energy for the job because it finishes sooner, whatever the time difference"],
+      ["Kettle B transfers energy faster than kettle A, because a lower wattage means less resistance to the flow of energy through it", "Both kettles transfer energy at exactly the same rate, because they are plugged into the same 120 V supply in the kitchen at home", "Kettle A uses less total energy for the whole job because it finishes sooner, whatever the exact time difference between them may be"],
       "Power is a rate: the 1500 W kettle converts about 1500 joules every second, the 900 W kettle about 900 joules every second, so the higher-rated kettle heats the same water faster. Energy used is power multiplied by time, so the faster kettle's shorter run and the slower kettle's longer run must both be counted before total energies can be compared; the rating alone settles the rate, not the total.",
       {});
   }
@@ -2533,7 +2533,7 @@ E("s9-u3-efficiency-meaning", 3, ["SC9.7.8"], 2, "var", varset([
   function () {
     return mcq("A heater is described as 100 percent efficient at converting electrical energy to heat in a room, while a lamp is described as 6 percent efficient at producing light. A student says the lamp figure must be wrong because 'no device wastes 94 percent of its energy.' Which response is correct?",
       "The lamp figure is reasonable: the other 94 percent of its input energy is converted to heat, which is wasted for a device whose job is making light, while the heater's job is exactly that heat",
-      ["The student is right: efficiency below 50 percent is impossible for an electrical device", "The lamp figure is wrong because the lamp's heat counts as useful output for a lamp", "The heater figure is wrong because no device can convert energy at 100 percent"],
+      ["The student is right: an efficiency below 50 percent is impossible for any electrical device, because at least half of every input must always reach the useful form of energy in the end", "The lamp figure is wrong because the lamp's heat counts as useful output for a lamp, exactly as a heater's heat does, so the lamp is nearly fully efficient as well in its room", "The heater figure is wrong because no device of any kind can convert energy at 100 percent, and every device wastes at least a small share of its input as sound or vibration instead"],
       "Efficiency measures the share of input energy converted to the useful form for the device's purpose. An incandescent lamp turns most of its input into heat and only about 6 percent into light, so as a lamp it is inefficient, even though the energy is not destroyed, just converted to the wrong form. A room heater wants heat, so nearly all of its input counts as useful. The guide's own comparison makes the same point with incandescent and compact fluorescent lamps.",
       {});
   }
@@ -2543,7 +2543,7 @@ E("s9-u3-efficiency-heat-loss", 3, ["SC9.7.8"], 2, "var", varset([
   function () {
     return mcq("A kettle takes in 0.30 kW-h of electrical energy to boil water, and 0.24 kW-h of that energy ends up as heat in the water. Which statement accounts for the full 0.30 kW-h?",
       "0.24 kW-h heated the water and the remaining 0.06 kW-h heated the kettle and the surrounding air and produced sound, so the kettle's efficiency for heating water is 80 percent",
-      ["0.24 kW-h heated the water and the remaining 0.06 kW-h was destroyed, so the efficiency is 80 percent", "0.24 kW-h heated the water and the remaining 0.06 kW-h stayed stored as electricity in the kettle", "The efficiency is 125 percent, because 0.30 divided by 0.24 is greater than one"],
+      ["0.24 kW-h heated the water and the remaining 0.06 kW-h was destroyed in the boiling, leaving only the 0.24 kW-h in existence afterwards, so the efficiency is 80 percent", "0.24 kW-h heated the water and the remaining 0.06 kW-h stayed stored as electricity in the kettle, unused, until the kettle is switched on again at a later time", "The efficiency is 125 percent, because the input is divided by the output, 0.30 divided by 0.24, and that quotient is greater than one, as efficiencies are meant to be"],
       "Energy is converted, never destroyed. Efficiency = output / input x 100% = 0.24 / 0.30 x 100% = 80%. The other 0.06 kW-h did not vanish: it heated the kettle body and the air around it and made the sounds of boiling, all conversions to forms that were not the job at hand.",
       {});
   }
@@ -2603,7 +2603,7 @@ E("s9-u3-static-tech", 3, ["SC9.8.1"], 1, "var", varset([
   function () {
     return mcq("Which technology works by putting static electricity to deliberate use?",
       "An electrostatic air cleaner, which charges airborne particles so they are attracted to collecting plates and removed from the air",
-      ["A circuit breaker, which uses static charge to detect overloaded circuits", "A transformer, which uses static charge to step voltage up and down", "A hydroelectric turbine, which uses static charge to turn its generator"],
+      ["A circuit breaker, which uses built-up static charge on its contacts to detect overloaded circuits in a home and trip", "A transformer, which uses static charge stored in its coils to step voltage up and down for transmission over distance", "A hydroelectric turbine, which uses static charge gathered from the falling water to turn its generator at the station"],
       "Knowledge of static electricity has been turned into working technologies: electrostatic air cleaners and precipitators charge dust and smoke particles so they collect on plates, photocopiers use static charge to place toner where the image belongs, and lightning rods give a static discharge a safe path. Breakers, transformers and turbines work on current electricity, not static charge.",
       {});
   }
@@ -2613,7 +2613,7 @@ E("s9-u3-lightning-rod", 3, ["SC9.8.1"], 1, "var", varset([
   function () {
     return mcq("What is the purpose of a lightning rod on a building?",
       "To give a lightning discharge a controlled, conducting path to the ground so the building is protected",
-      ["To repel lightning by charging the roof with the opposite charge", "To store lightning's energy in the building's wiring for later use", "To attract extra lightning so nearby buildings are hit instead"],
+      ["To repel lightning away from the building by charging the whole roof with the opposite charge to its own", "To store lightning's energy in the building's wiring so the household can use it later for free", "To attract extra lightning to the neighbourhood so nearby buildings are hit instead of this one"],
       "A lightning rod does not repel lightning or store it. It provides a deliberate metal path from the top of the building to the ground, so when a discharge does occur, the charge travels down the conductor instead of through the building's structure, where it would cause fire and damage. It is applied knowledge of electric discharge.",
       {});
   }
@@ -2623,7 +2623,7 @@ E("s9-u3-photocopier", 3, ["SC9.8.1"], 2, "var", varset([
   function () {
     return mcq("A photocopier makes copies using static electricity. Which part of the copying process depends on static charge?",
       "A charged drum attracts toner particles to the places that form the image, and the toner is then transferred to paper",
-      ["Static charge heats the paper so ink soaks into it evenly", "Static charge powers the lamp that scans the original page", "Static charge holds the finished copies in a neat stack by magnetism"],
+      ["Static charge heats the paper as it passes through, so the ink soaks into it evenly on every copy made", "Static charge powers the bright lamp that scans the original page at the start of the process each time", "Static charge holds the finished copies in a neat stack on the tray by magnetism between the sheets of paper"],
       "In a photocopier, the image is first formed as a pattern of static charge on a drum. Fine toner particles are attracted to the charged parts of that pattern, exactly the charged-attracts-other-material behaviour from the static electricity work, and the toner is then transferred and fixed to the paper. The scanning lamp and the stacking need no static charge.",
       {});
   }
@@ -2633,7 +2633,7 @@ E("s9-u3-careers-match", 3, ["SC9.8.2"], 1, "var", varset([
   function () {
     return mcq("Which pairing of worker and electricity-related job is correct for a Newfoundland and Labrador community?",
       "A linesperson employed by the provincial utility, maintaining the distribution lines that carry electricity to homes",
-      ["A photocopier technician, whose job is generating electricity at a hydroelectric station", "An electrician, whose job is designing wind turbines for offshore sites only", "A meter reader, whose job is manufacturing electrochemical cells"],
+      ["A photocopier technician, whose job is generating electricity at a hydroelectric station in the province for the grid", "An electrician, whose job is designing wind turbines for offshore sites only, and nothing on land at all", "A meter reader, whose job is manufacturing electrochemical cells in a factory for the utility company"],
       "Electricity careers in a community span production, delivery, installation and service: utility linespeople maintain the lines, electricians install and repair wiring in buildings, and photocopier technicians service one of the static electricity technologies. Each distractor hands a real worker the wrong job.",
       {});
   }
@@ -2643,7 +2643,7 @@ E("s9-u3-careers-range", 3, ["SC9.8.2"], 3, "var", varset([
   function () {
     return mcq("A student says the only electricity career is 'electrician.' Which response best corrects the claim using this strand's content?",
       "Electricity supports many careers: generation station operators, utility linespeople, electricians, electrical engineers and service technicians for devices such as photocopiers, among others",
-      ["The student is right: every other electricity job is a kind of electrician", "The only other electricity career is the engineer who designs generating stations", "Careers in electricity ended once the provincial grid was built"],
+      ["The student is right: every other electricity job, from the generating station to the photocopier, is simply a kind of electrician working under a different title in the community", "The only other electricity career besides electrician is the engineer who designs generating stations, and every other worker in the system is support staff for those two roles alone", "Careers in electricity ended completely once the provincial grid was built and connected, since a finished grid needs no workers to run, repair or extend it anywhere in the province"],
       "The strand follows electricity from the generating station to the device on the desk, and people work at every stage: producing it, transmitting it, installing it safely in buildings, designing the systems, and servicing the technologies that use it, down to the photocopier technician named in the guide. One job title cannot cover that range.",
       {});
   }
@@ -2653,7 +2653,7 @@ E("s9-u3-lights-uses", 3, ["SC9.8.3"], 1, "var", varset([
   function () {
     return mcq("Household lights are wired in parallel, while an older string of decorative lights goes dark entirely when one bulb fails. Which conclusion follows?",
       "The household lights use parallel connections so each light works independently; the decorative string uses a series connection, so one failure opens the whole string",
-      ["Both use series connections, and the household lights stay on because their bulbs are stronger", "Both use parallel connections, and the decorative string fails because its bulbs are older", "The household lights use series connections, which is why they can be switched independently"],
+      ["Both use series connections throughout, and the household lights stay on when one fails only because their bulbs are stronger than the decorative bulbs in the string", "Both use parallel connections throughout, and the decorative string fails all at once only because its bulbs are older and weaker than the household bulbs", "The household lights use series connections along a single path, which is why each one can be switched on and off independently of all the others in the house"],
       "The failure test identifies the wiring. Independent operation, each light with its own path and full voltage, is parallel wiring, the household choice. A whole string dying with one bulb is the series signature: one path, opened by the failed bulb. The guide gives exactly this pair of examples.",
       {});
   }
@@ -2663,7 +2663,7 @@ E("s9-u3-series-use-case", 3, ["SC9.8.3"], 1, "var", varset([
   function () {
     return mcq("In which situation is a series connection of resistors the deliberate, useful choice?",
       "A string of small decorative bulbs designed so that each bulb takes only a share of the supply voltage, letting low-voltage bulbs run on a higher-voltage supply",
-      ["Wiring the lights in different rooms of a house so each can fail without affecting the others", "Connecting a home's outlets so a device keeps working when another is unplugged", "Wiring a flashlight's spare bulb so it lights when the main bulb fails"],
+      ["Wiring the lights in the different rooms of a house along one shared path so that each light can fail without affecting any of the others in the house", "Connecting a home's outlets in one long chain so a device keeps working at full power when another device on the chain is unplugged or fails at any point", "Wiring a flashlight's spare bulb into the same single path so it lights automatically at full brightness when the main bulb fails on a trip outdoors"],
       "Series connections share the source voltage between the loads, and that sharing is sometimes the point: a series string lets many low-voltage bulbs divide a larger supply voltage between them. The other situations all need the opposite property, independent branches, which is parallel wiring.",
       {});
   }
@@ -2673,7 +2673,7 @@ E("s9-u3-parallel-use-case", 3, ["SC9.8.3"], 2, "var", varset([
   function () {
     return mcq("A school adds a second heater to a classroom circuit wired in parallel with the first. A student predicts the first heater will now get less voltage 'because it has to share.' Which evaluation is correct?",
       "The prediction is wrong: in parallel each heater keeps the full supply voltage; what increases is the total current drawn from the supply",
-      ["The prediction is right: parallel loads share the voltage just as series loads do", "The prediction is wrong because the first heater's voltage doubles when a branch is added", "The prediction is right, and the total current stays the same as well"],
+      ["The prediction is right: parallel loads share out the supply voltage between them just as series loads do in their circuits", "The prediction is wrong because the first heater's voltage doubles as soon as the second branch is added beside it in parallel", "The prediction is right about the voltage, and the total current drawn from the supply stays exactly the same as well as before"],
       "Parallel branches each connect directly across the source, so each keeps the full voltage regardless of the other branches. Adding a branch adds another current path: the branch currents add, so the main line current rises, which is why adding too many parallel loads can overload a circuit and trip its breaker. Sharing voltage is the series pattern.",
       {});
   }
@@ -2715,7 +2715,7 @@ E("s9-u3-grounding-prong", 3, ["SC9.8.5"], 2, "var", varset([
   function () {
     return mcq("Many plugs have a third, round prong, and the appliance's metal case is connected to it. What protection does that grounding terminal provide?",
       "If a fault connects the case to the live wiring, the ground connection gives the current a low-resistance path to earth instead of a path through a person touching the case",
-      ["The third prong supplies extra voltage so the appliance runs at full power", "The third prong stores static charge from the appliance so it cannot build up", "The third prong balances the plug so it cannot fall out of the outlet"],
+      ["The third prong supplies extra voltage from the outlet to the appliance so that it can run at its full rated power at all times without dropping under load", "The third prong stores the static charge that builds up on the appliance during use, holding it safely so it cannot build up to a shock for the user at the case", "The third prong balances the plug in the outlet so it cannot work loose or fall out while the appliance is running in the kitchen or workshop at home"],
       "Grounding is a safety design. A fault inside an appliance can make its metal case live; without a ground, the next path for that current could be the body of whoever touches it. The grounding terminal connects the case to earth through the wiring, giving fault current a deliberate, low-resistance route away and usually tripping the breaker. It is not about power, storage or plug balance.",
       {});
   }
@@ -2749,7 +2749,7 @@ E("s9-u3-cells-tradeoff", 3, ["SC9.8.6"], 2, "var", varset([
   function () {
     var q = mcq("The diagram sketches the two ways cells can be combined, without labels. Which statement gives the trade-off between series and parallel connections of cells correctly?",
       "Series raises the effective voltage but the battery life is no longer than a single cell's; parallel keeps the voltage at one cell's value but lengthens the battery life",
-      ["Series raises the voltage and lengthens the life; parallel lowers the voltage below one cell's value", "Series and parallel both raise the voltage; they differ only in how the cells are drawn", "Parallel raises the voltage but shortens the life; series keeps the voltage and lengthens the life"],
+      ["Series raises the voltage and lengthens the life; parallel lowers the voltage below one cell's value, giving the worst of both arrangements to the device using it", "Series and parallel connections both raise the effective voltage of the pack; they differ only in how the cells are drawn on the diagram of the circuit", "Parallel raises the voltage but shortens the life; series keeps the voltage and lengthens the life; each connection does the opposite of the other in every respect"],
       "Each connection buys one thing and gives up the other. Series cells add their voltages, which is what a device needing more voltage requires, but every cell carries the full current, so the pack lasts no longer than one cell would. Parallel cells share the current, so the pack lasts longer, but the voltage stays at a single cell's 1.5 V. Neither arrangement gives both advantages at once.",
       {});
     q.figure = s9u3CellsSVG();
@@ -2761,7 +2761,7 @@ E("s9-u3-lighting-evaluate", 3, ["SC9.8.7"], 1, "var", varset([
   function () {
     return mcq("A homeowner replaces incandescent bulbs with compact fluorescent bulbs that give the same light. Judged on efficiency, which evaluation is correct?",
       "The change is an improvement: the fluorescent bulbs convert a larger share of their input energy to light (about 20 percent against about 6 percent), so the same lighting job uses far less electrical energy",
-      ["The change makes no difference: all bulbs convert the same share of energy to light", "The change is a step backwards: incandescent bulbs are the more efficient lighting technology", "Efficiency cannot be compared for lighting, because light is not a form of energy"],
+      ["The change makes no difference to the home's energy use: all bulbs, whatever their design, convert exactly the same share of their input energy to light and the rest to heat in the room", "The change is a step backwards for the home: incandescent bulbs are the more efficient lighting technology, and the fluorescent bulbs waste more of their input as heat every hour", "Efficiency cannot be compared for lighting at all, because light is not a form of energy and so no share of input can ever be assigned to it in any comparison of bulbs like this one"],
       "The guide's worked comparison gives the incandescent lamp about 6 percent efficiency for light and the compact fluorescent about 20 percent, with the rest converted mainly to heat in both cases. Same useful output, much smaller input: that is what a better efficiency means, and it is why the replacement lowers both energy use and operating cost.",
       {});
   }
@@ -2771,7 +2771,7 @@ E("s9-u3-efficiency-design", 3, ["SC9.8.7"], 2, "var", varset([
   function () {
     return mcq("Two space heaters both draw 1500 W. Heater A warms a room's air noticeably faster than heater B, while heater B's casing becomes much hotter to touch. Which design judgement is best supported?",
       "Heater A is the better design for its purpose: more of its input energy is delivered as heat to the room's air, while more of heater B's input is spent heating its own casing",
-      ["Heater B is the better design, because a hot casing proves it produces more heat overall", "Both heaters are equally efficient in every respect, because both draw 1500 W", "Neither judgement is possible, because efficiency applies only to lighting devices"],
+      ["Heater B is the better design for the room, because a casing too hot to touch proves it produces more heat overall than heater A can manage in the same time", "Both heaters are equally efficient in every respect that matters, because both draw exactly 1500 W from the supply for every second they run in the room being heated", "Neither judgement is possible from these observations, because efficiency applies only to lighting devices and never to heaters or other appliances in a home"],
       "Equal input power does not mean equal useful output. The heater's job is warming the room, so energy spent heating the casing is energy diverted from the job. Heater A delivers more of the same 1500 W input to the room air, which is the efficiency judgement this indicator asks for: designs are evaluated by how much of the input reaches the intended use.",
       {});
   }
@@ -2790,7 +2790,7 @@ E("s9-u3-past-current", 3, ["SC9.8.8"], 1, "var", varset([
   function () {
     return mcq("Which comparison of past and current technology for the same need is accurate?",
       "Early electric irons were heavy, heated unevenly and had no temperature control; modern irons heat evenly, hold a set temperature and shut off automatically, doing the same job with better control and safety",
-      ["Early electric toasters used more electricity because they ran on static charge; modern toasters run on current", "Past technologies used no electricity at all; every heated appliance is a current invention", "Modern appliances always use more energy than the models they replaced, because they have more features"],
+      ["Early electric toasters used more electricity than modern ones because they ran on static charge stored in their elements; modern toasters run on electric current from the outlet in the wall", "Past technologies used no electricity at all in the home; every heated appliance in use today, from the iron to the toaster, is a current invention of this generation of designers", "Modern appliances always use more energy than the models they replaced, in every case, because they have more features and larger motors than the older models ever had in the past"],
       "The comparison this indicator asks for holds the need constant and compares how the technology met it. Irons and toasters are the guide's examples: the same heating job done across generations, with modern designs adding even heating, thermostatic control and automatic shut-off. Efficiency comparisons belong with those design changes, and modern models are often, not always, the more efficient ones, which is what Energuide labels help buyers check.",
       {});
   }
@@ -2800,7 +2800,7 @@ E("s9-u3-energuide-purpose", 3, ["SC9.8.8"], 2, "var", varset([
   function () {
     return mcq("What is the purpose of the Energuide label on a new appliance?",
       "To tell the buyer how much energy the appliance is expected to use in a year, so models meeting the same need can be compared before purchase",
-      ["To guarantee that the appliance will never need repair", "To state the voltage of the home the appliance was manufactured in", "To certify that the appliance is the cheapest model in its category"],
+      ["To guarantee that the appliance will never need any repair during the whole of its working life in the home of its buyer", "To state the voltage of the home, and the country, in which the appliance was manufactured for sale to buyers in that market", "To certify that the appliance is the cheapest model in its whole category at every store in the province that sells it to the public"],
       "An Energuide label reports the appliance's estimated yearly energy consumption in kilowatt-hours, measured under standard conditions. That lets a buyer compare two models that do the same job and fold the running cost into the decision, instead of judging by purchase price alone. It guarantees nothing about repairs or price; it informs the energy comparison.",
       {});
   }
@@ -2820,7 +2820,7 @@ E("s9-u3-bill-compare", 3, ["SC9.8.9"], 2, "var", varset([
   function () {
     return mcq("Two similar homes on the same street have very different winter electricity bills. Home P heats with electric baseboard heaters and leaves its windows unsealed; home Q heats with the same heaters but has sealed windows and added insulation. Which explanation of the difference is best supported?",
       "Home Q loses less heat to the outside, so its heaters run less to hold the same indoor temperature, and it uses fewer kilowatt-hours",
-      ["Home P's heaters must be more efficient, because they use more energy each month", "The difference must be an error, because identical heaters always use identical energy", "Home Q's bill is lower because insulation lowers the voltage supplied to its heaters"],
+      ["Home P's heaters must be the more efficient ones, because they use more energy each month to heat the home through the winter", "The difference must be a billing error, because identical heaters in identical homes always use identical energy every month of winter", "Home Q's bill is lower because its added insulation lowers the voltage supplied to its baseboard heaters by the utility each day"],
       "The heaters convert electrical energy to heat at the same rate in both homes; what differs is how fast the home loses that heat. Sealing and insulation slow the loss, so home Q's heaters cycle on for less time to maintain the same temperature, and energy, being power multiplied by time, falls. Improving the insulating factor of electrically heated homes is one of the guide's named reduction strategies.",
       {});
   }
@@ -2839,7 +2839,7 @@ E("s9-u3-approaches", 3, ["SC9.8.10"], 3, "var", varset([
   function () {
     return mcq("A town must decide how to cut its electricity use. Group 1 surveys households and graphs their energy use. Group 2 builds a model home display showing insulation options. Group 3 interviews the utility about peak demand times. What does this situation illustrate?",
       "Different approaches can be taken to answer questions, solve problems and make decisions about the same issue",
-      ["Only one group is doing science, because only one approach can be correct", "The groups are wasting effort, because a decision needs a single investigation", "The survey group must finish before the other approaches are allowed to start"],
+      ["Only one of the three groups is doing science, because only one approach to a problem can ever be the correct one", "The three groups are wasting their effort, because a sound decision needs a single investigation carried out one way only", "The survey group must finish all of its work before the other approaches are allowed to start on theirs at all"],
       "The Core STSE on electricity conservation is built on this point: the same problem can be approached by gathering usage data, by demonstrating and testing design options, and by consulting the people who run the system. The approaches produce different kinds of evidence, and a sound decision can draw on all of them. There is no rule that one approach must be the only correct one.",
       {});
   }
@@ -2849,7 +2849,7 @@ E("s9-u3-approach-fit", 3, ["SC9.8.10"], 2, "var", varset([
   function () {
     return mcq("A student team asks: 'Which of three insulation materials keeps a model house warmest for the longest time?' Which approach fits the question, and why do the other approaches fit less well?",
       "A controlled test: build identical model houses differing only in insulation material, heat them equally, and compare how their temperatures fall",
-      ["A survey of homeowners about which material they prefer, because opinions settle performance questions", "An interview with a utility spokesperson, because authority settles performance questions", "A poster of the three materials, because displaying them compares their performance"],
+      ["A survey of homeowners about which material they prefer for their own houses, because opinions gathered widely settle performance questions like this one", "An interview with a utility spokesperson about the materials, because an authority's word settles performance questions without any testing", "A poster of the three materials pinned up in the classroom, because displaying them side by side compares their performance for the class"],
       "The question asks for a measured comparison of performance, so the approach must produce measurements under controlled conditions: same houses, same heating, only the material changed, temperatures compared over time. Surveys gather opinions and interviews gather testimony; neither measures how the materials perform. Matching the approach to the kind of question is the skill this indicator names.",
       {});
   }
@@ -2859,7 +2859,7 @@ E("s9-u3-criteria-analysis", 3, ["SC9.8.11"], 1, "var", varset([
   function () {
     return mcq("A class analyses a proposal to replace a school's lighting. Which set of criteria fits an analysis of the technology's design and function on the basis of cost and impact?",
       "Purchase and running cost, effect on the school's daily routine during installation, and the change in the school's energy use for the surrounding community's generating load",
-      ["The colour of the new light fixtures, the installer's favourite brand, and the age of the old fixtures", "Cost alone, because a technology analysis considers only money", "The number of letters in the technology's name and its country of manufacture"],
+      ["The colour of the new light fixtures, the installer's favourite brand of fixture, and the age and condition of the old fixtures being replaced in the school", "Cost alone, in dollars, because a proper technology analysis considers only money and nothing about the people who use the building each day or the community", "The number of letters in the technology's name, the country it was manufactured in, and the year its maker was founded as a company in business long ago"],
       "Analysing a technology against identified criteria means judging its design and function by named measures: what it costs to buy and to run, how it affects daily life for the people using the building, and its wider impact, such as the generating load it removes from the community's supply. The guide names cost and impact on daily life and the community as the example criteria. Preferences and trivia are not criteria.",
       {});
   }
@@ -2869,7 +2869,7 @@ E("s9-u3-criteria-apply", 3, ["SC9.8.11"], 3, "var", varset([
   function () {
     return mcq("Judged against the criterion of running cost alone, a heat pump costs a homeowner less per winter than baseboard heaters. Judged against the criterion of purchase and installation cost, the baseboard heaters are cheaper. What does this show about analysing a technology?",
       "A technology can score differently against different criteria, so the criteria must be named and weighed before a conclusion is drawn",
-      ["One of the two judgements must be an error, because a technology is simply good or bad overall", "Running cost is the only legitimate criterion, so the heat pump wins automatically", "Criteria should be chosen after the conclusion, to support whichever technology is preferred"],
+      ["One of the two judgements must be an error in the analysis, because a technology is simply good or bad overall in every respect", "Running cost is the only legitimate criterion in any analysis, so the heat pump wins the comparison automatically every time", "Criteria should be chosen after the conclusion is reached, to support whichever technology the analyst already preferred from the start"],
       "Criterion-based analysis separates the judgements on purpose. The heat pump genuinely wins on running cost and genuinely loses on upfront cost; neither judgement cancels the other. A sound analysis states its criteria first, reports the technology's standing on each, and only then weighs them into a recommendation. Choosing criteria afterwards to fit a preferred answer reverses the process.",
       {});
   }
@@ -2888,7 +2888,7 @@ E("s9-u3-decision-balance", 3, ["SC9.8.12"], 1, "var", varset([
   function () {
     return mcq("A community is choosing between expanding a hydroelectric site and building a new thermal plant. Which approach counts as making an informed decision in this strand's sense?",
       "Weighing the environmental and social advantages and disadvantages of both options against evidence before choosing",
-      ["Choosing whichever option the loudest group at the meeting supports", "Choosing the option with the lower construction cost and considering nothing else", "Refusing to decide until one option has no disadvantages at all"],
+      ["Choosing whichever option the loudest group at the public meeting supports most strongly that evening in town", "Choosing the option with the lower construction cost and considering nothing else about either option at all", "Refusing to decide the question until one of the options has no disadvantages of any kind at all remaining"],
       "An informed decision in the STSE sense weighs advantages and disadvantages on more than one side of the ledger: environmental effects and social effects, not cost alone and not volume of support. Every real option carries some disadvantages, so waiting for a disadvantage-free option is a refusal to decide, not a standard of care.",
       {});
   }
@@ -2898,7 +2898,7 @@ E("s9-u3-decision-evidence", 3, ["SC9.8.12"], 2, "var", varset([
   function () {
     return mcq("A student supports wind generation for her town and writes only about its advantages. Her teacher asks her to strengthen the work before it can count as an informed decision. What is missing?",
       "The disadvantages of wind generation and the advantages of the alternatives, so the choice is weighed rather than promoted",
-      ["A larger title and more pictures of turbines", "A statement that wind generation has no disadvantages worth mentioning", "The names of companies that sell wind turbines"],
+      ["A larger title on the first page and more pictures of turbines turning in the wind at sunset, across the report", "A firm statement that wind generation has no disadvantages worth mentioning in the work at any point or anywhere", "The names and addresses of the companies that sell wind turbines to towns like hers in the province and beyond"],
       "Promoting one side is advocacy, not decision making. An informed decision sets the chosen option's disadvantages honestly beside its advantages, and does the same for the realistic alternatives, because the decision is between options, not between an option and nothing. Presentation and supplier lists add no weighing.",
       {});
   }
@@ -2927,7 +2927,7 @@ E("s9-u3-source-region", 3, ["SC9.8.13"], 2, "var", varset([
   function () {
     return mcq("A windy coastal community with modest sunlight considers solar panels and a wind generator for its community hall. Which reasoning is sound?",
       "The wind generator fits the region's reliable resource; the availability of the energy resource in a region usually decides which sources make sense there",
-      ["Solar panels are always the better choice, because the sun shines everywhere equally", "Neither can work, because alternative sources cannot generate real electricity", "The community should choose by which device is larger, since size decides output everywhere"],
+      ["Solar panels are always the better choice in every region, because the sun shines everywhere on Earth with exactly equal strength all year", "Neither device can work for the hall, because alternative sources cannot generate real electricity of the kind a building can use each day", "The community should choose by which device is larger in size, since the size of a device decides its output everywhere it is installed in the world"],
       "Alternative sources are not interchangeable: each depends on a local resource. A windy coast offers the wind generator a strong, frequent input, while modest sunlight limits what solar panels can collect there. The guide's generalization is that the availability of energy resources in a region usually dictates the types of energy used in that region.",
       {});
   }
@@ -2957,7 +2957,7 @@ E("s9-u3-constraint-evaluate", 3, ["SC9.8.14"], 3, "var", varset([
   function () {
     return mcq("A fuel cell supplier argues: 'Our cells are proven and clean, so every community should adopt them immediately; cost is no objection because the technology works.' Which evaluation best applies the guide's account of how alternative sources develop?",
       "The argument ignores the guide's constraints: development is limited by cost, by availability of materials and by materials' properties, so a working technology can still spread slowly and unevenly",
-      ["The supplier is right: once a technology works, no factor can legitimately slow its adoption", "The supplier is wrong only because fuel cells are not a real alternative source", "The argument fails because public support, the sole constraint, has not been measured"],
+      ["The supplier is right in full: once a technology has been shown to work, no factor of any kind can legitimately slow its adoption by any community anywhere in the province or beyond it", "The supplier is wrong only on one point: fuel cells are not a real alternative source of electrical energy at all, and so the whole argument fails on that ground alone in the guide", "The argument fails only because public support for fuel cells, the sole constraint on any new source, has not yet been measured in the communities named by the supplier or anyone else"],
       "A technology working in a demonstration settles the science, not the development. The guide's account is that alternative sources develop under constraint: what they cost, whether the materials can be had, and whether the materials perform as the design needs. Fuel cells are one of the guide's own alternative sources, so the source is not the problem; the claim that no constraint applies is.",
       {});
   }
@@ -2977,7 +2977,7 @@ E("s9-u3-resistance-factors", 3, ["SC9.9.1"], 2, "var", varset([
   function () {
     return mcq("Four wires are tested. Wire 1 is long and thin, wire 2 is short and thin, wire 3 is short and thick, and all are the same material at the same temperature. Which ordering of resistance, greatest to least, is correct?",
       "Wire 1, then wire 2, then wire 3: length adds resistance, and a thicker wire offers less resistance",
-      ["Wire 3, then wire 2, then wire 1: thicker wires always resist more", "Wire 2, then wire 1, then wire 3: shorter wires resist more", "All three are equal, because resistance depends only on the material"],
+      ["Wire 3, then wire 2, then wire 1: thicker wires always resist the flow of charge more than thin ones", "Wire 2, then wire 1, then wire 3: shorter wires always resist more than longer ones of the same thickness", "All three wires are equal in resistance, because resistance depends only on the material the wire is made of"],
       "Resistance in a wire depends on four factors: length, diameter, type of material and temperature. With material and temperature held the same here, length and thickness decide: a longer wire gives the charge more material to push through (more resistance), and a thicker wire gives it more room (less resistance). So the long thin wire resists most and the short thick wire least. The ohm is the unit of resistance.",
       {});
   }
@@ -3026,7 +3026,7 @@ E("s9-u3-meter-placement", 3, ["SC9.9.4"], 1, "var", varset([
   function () {
     var q = mcq("The diagram shows a battery, a bulb, and two meters. Meter A is connected in the main line of the circuit and meter V is connected directly across the bulb. Which statement about the meters is correct?",
       "Meter A is the ammeter, correctly in series to measure the current through the bulb; meter V is the voltmeter, correctly in parallel across the bulb to measure its voltage drop",
-      ["Meter A is the voltmeter, correctly in series; meter V is the ammeter, correctly across the bulb", "Both meters are ammeters, and either connection would measure current correctly", "Both meters should be connected across the bulb, because all measurements are made in parallel"],
+      ["Meter A is the voltmeter, correctly connected in series in the main line; meter V is the ammeter, correctly connected across the bulb to read its current directly", "Both meters are ammeters of different ranges, and either connection shown would measure the current through the bulb correctly in this circuit as drawn", "Both meters should be connected directly across the bulb, one on each side, because all electrical measurements are properly made in parallel in a circuit"],
       "The two meters connect in opposite ways because they measure different things. An ammeter measures the current flowing through a component, so it must sit in the path, in series, where all the charge passes through it. A voltmeter measures the potential difference between two points, so it connects across the component, in parallel. Swapping them is the classic circuit error.",
       {});
     q.figure = s9u3MeterSVG();
@@ -3058,7 +3058,7 @@ E("s9-u3-error-sources", 3, ["SC9.9.5"], 1, "var", varset([
   function () {
     return mcq("Two students measure the same bulb voltage and record 1.12 V and 1.13 V. Which account of the difference is correct?",
       "Small reading differences like this are expected random error in reading a meter; taking several readings and averaging them reduces the effect",
-      ["One student must have connected the voltmeter wrongly, because correct meters never disagree", "The difference proves the bulb's voltage changed between the two readings", "The readings should be reported to more decimal places until they agree"],
+      ["One student must have connected the voltmeter wrongly to the circuit, because correctly connected meters never disagree by any amount at all", "The difference proves the bulb's voltage itself changed between the two readings, rising or falling in the time between them by that amount", "The readings should both be reported to more and more decimal places, estimated beyond the scale, until the two values agree exactly"],
       "The guide names this exact case: one student records 1.12 V, another 1.13 V, for the same measurement. Reading a scale involves judgement about where the needle sits, so small variations are normal random error, not misconduct or equipment failure. The standard response is repeated readings and an average, not inventing extra decimal places.",
       {});
   }
@@ -3068,7 +3068,7 @@ E("s9-u3-error-meters-change", 3, ["SC9.9.5"], 3, "var", varset([
   function () {
     return mcq("After a voltmeter is added across a bulb, a class notices the circuit's current drops very slightly. Which statement best identifies this as a source of error to be aware of?",
       "Adding a meter changes the circuit slightly, because the meter itself has resistance, so the measured circuit is not quite the original circuit",
-      ["The current dropped because the voltmeter used up some of the current permanently", "The drop proves the ammeter was faulty and its readings should be discarded", "Meters never affect circuits, so the drop must be a coincidence to ignore"],
+      ["The current dropped because the voltmeter used up some of the circuit's current permanently, consuming it as it measured the voltage", "The drop proves the ammeter in the circuit was faulty, and all of its readings from the whole investigation should be discarded at once", "Meters never affect the circuits they measure in any way, so the drop must be a coincidence that the class should ignore entirely"],
       "Meters are components too. Adding a voltmeter across the bulb adds its resistance to the circuit, so the total resistance and the current shift slightly from the unmeasured circuit's values. The guide flags this effect and notes its full treatment is beyond this course; what is expected here is recognizing it as a potential source of error when readings are compared, not discarding sound data.",
       {});
   }
@@ -3078,7 +3078,7 @@ E("s9-u3-discrepancy-cause", 3, ["SC9.9.6"], 3, "var", varset([
   function () {
     return mcq("A group's Ohm's law data gives resistances of 10.1, 9.8 and 10.3 ohms for the same resistor, but one trial gives 14.6 ohms. Which first response is scientifically sound?",
       "Treat the three close values as the pattern and investigate the one trial: check that trial's connections and readings for a loose contact, a misread meter or a changed setting before accepting it",
-      ["Average all four values, because every measurement counts equally whatever happened", "Discard the three close values, because the unusual result is the discovery", "Report 14.6 ohms, because the last kind of trial is the most careful one"],
+      ["Average all four values together into one result, because every measurement ever taken counts equally whatever happened during its trial in the lab that day, without exception", "Discard the three close values as faulty, because the single unusual result is the real discovery of the investigation and the others must be mistaken readings by the group", "Report 14.6 ohms as the resistance, because the last trial of any set is always the most careful one and its value overrides all the trials before it in the set of readings"],
       "Three trials agreeing closely describe the resistor; one trial far away describes something that happened in that trial. Sound practice investigates the discrepancy first: a loose connection adds resistance, a misread scale inflates a value, a range change alters precision. Averaging a faulty trial into good ones corrupts the result, and a single outlier is not a discovery until it survives checking.",
       {});
   }
@@ -3112,7 +3112,7 @@ E("s9-u3-best-fit", 3, ["SC9.9.7"], 1, "var", varset([
   function () {
     var q = mcq("A student's voltage and current points for a resistor, shown in the graph, scatter slightly around a straight line through the origin. Which treatment of the graph is correct?",
       "Draw a line of best fit through the scatter, passing through the origin, and use the line (not any single point) to state the relationship",
-      ["Connect the points dot to dot in order, because the line must touch every measurement", "Discard the points farthest from a straight line and plot only the ones that fit", "Draw the line wherever it makes the resistance come out to a whole number"],
+      ["Connect the points dot to dot in the order they were plotted, because a proper line must touch every single measurement on the graph", "Discard the points that fall farthest from a straight line and plot only the remaining ones, the ones that fit the pattern neatly", "Draw the line wherever on the page it makes the calculated resistance come out to a neat whole number of ohms for the report"],
       "Real meter data always scatter a little, from the reading variations this strand discusses. A line of best fit represents the pattern of all the points at once: for an ohmic resistor it is straight and passes through the origin, showing current directly proportional to voltage. Connecting dot to dot would draw the errors into the result, and deleting awkward points falsifies the data.",
       {});
     q.figure = s9u3VIGraphSVG([2,4,6,8],[0.2,0.4,0.6,0.8]);
@@ -3152,7 +3152,7 @@ E("s9-u3-instrument-use", 3, ["SC9.9.9"], 2, "var", varset([
   function () {
     var q = mcq("A student is taking readings from the bulb circuit shown in the diagram. Which practice shows the meter being used effectively and accurately in this strand's lab work?",
       "Selecting the suitable range before reading, reading the scale squarely at eye level, and repeating the reading to check it agrees with itself",
-      ["Reading the scale from an angle while the circuit is being rebuilt, and recording the first value seen", "Using the highest range for every measurement so the needle barely moves, for safety", "Recording readings to as many decimal places as the student can invent, for precision"],
+      ["Reading the scale from a sharp angle while the circuit is being rebuilt on the bench, and recording the first value seen each time", "Using the highest available range for every measurement taken, so the needle barely moves on the scale, in the name of safety", "Recording every reading to as many decimal places as the student can invent on the spot, in the name of precision in the lab"],
       "Accurate instrument use is a technique, not a hope: choose the range that puts the reading well up the scale without over-ranging, read at eye level to avoid parallax error, and repeat readings so random variation shows itself and can be averaged. A barely moving needle wastes the scale's precision, and invented decimal places are not precision at all. The bench handling itself is assessed in the classroom; this entry assesses the judgement behind it.",
       {});
     q.figure = s9u3MeterSVG();
@@ -3164,7 +3164,7 @@ E("s9-u3-safe-practice", 3, ["SC9.9.10"], 1, "var", varset([
   function () {
     return mcq("Which set of practices is the safe way to work with the circuits and apparatus of this strand?",
       "Build and change circuits with the supply switched off or disconnected, check connections before switching on, and report damaged wires or hot components instead of continuing",
-      ["Change connections while the circuit is live so the effect of each change is seen immediately", "Hold a resistor that has become hot to check whether it is still working", "Bypass a breaker that keeps tripping so the investigation can continue"],
+      ["Change the connections while the circuit is still live and powered, so the effect of each change can be seen immediately as it is made by the student", "Hold a resistor that has become hot during the investigation in the bare hand to check whether it is still working properly or not in the circuit", "Bypass a breaker that keeps tripping during the work so the investigation can continue without interruption to its end in the laboratory with the class"],
       "Low-voltage school circuits are forgiving, but the habits are the real curriculum: work on a dead circuit, inspect before energizing, and treat heat, damage or a repeatedly tripping protection device as a stop signal, not an obstacle to defeat. Each distractor normalizes exactly the habit that causes injuries with larger apparatus later. Safe handling at the bench is classroom assessed; this entry assesses recognizing the safe practice.",
       {});
   }
@@ -3174,7 +3174,7 @@ E("s9-u3-testable-rephrase", 3, ["SC9.9.12"], 1, "var", varset([
   function () {
     return mcq("Which rephrasing turns a loose wondering into a testable question about cells in series and parallel?",
       "Loose: 'Are batteries better in a row or side by side?' Testable: 'With identical cells and the same bulb, does connecting two cells in series or in parallel produce the greater voltage across the bulb?'",
-      ["Loose: 'Do batteries last?' Testable: 'Why do batteries exist?'", "Loose: 'Which battery is best?' Testable: 'Which battery do most students like?'", "Loose: 'How do cells work?' Testable: 'What is the history of the cell?'"],
+      ["Loose: 'Do batteries last a long time in toys?' Testable: 'Why do batteries exist in the world at all, and who first thought of making them for devices like these?'", "Loose: 'Which battery is best for a flashlight?' Testable: 'Which battery do most students in the class like best for their own flashlights at home, and why?'", "Loose: 'How do cells work inside a flashlight?' Testable: 'What is the history of the electric cell, from its first invention to the present day in detail?'"],
       "A testable question names what will be changed, what will be measured, and what will be held the same, in a form an investigation can answer. The correct rephrasing changes only the connection (series against parallel), measures the voltage across the same bulb, and holds the cells identical. Preferences and history questions cannot be settled by a circuit measurement.",
       {});
   }
@@ -3184,7 +3184,7 @@ E("s9-u3-testable-judge", 3, ["SC9.9.12"], 2, "var", varset([
   function () {
     return mcq("A student proposes three questions for a cells investigation: (1) 'Do series cells make a bulb brighter than parallel cells with the same cells?' (2) 'Who invented the first cell?' (3) 'Is series or parallel more popular in toys?' Which judgement is correct?",
       "Only question 1 is testable in this investigation: it compares a measurable outcome between the two connections with the cells held the same; questions 2 and 3 are answered by research and surveys, not by circuit measurements",
-      ["All three are testable, because all three can be investigated somehow", "Only question 3 is testable, because popularity can be counted", "None are testable, because brightness cannot be measured"],
+      ["All three questions are testable in this investigation, because all three can be investigated somehow by someone, in some way, using the equipment in the room and the library down the hall", "Only question 3 is testable in this investigation, because the popularity of a connection can be counted in a survey of toy owners carried out by the class this term at school", "None of the three questions is testable here, because the brightness of a bulb cannot be measured or compared in any way with the equipment available to the class in this lab"],
       "Testable in this context means answerable by the circuit investigation at hand. Question 1 sets up a fair measurement: same cells, two connections, brightness compared (and it can be backed by meter readings). Question 2 is historical research and question 3 is a survey; both are legitimate questions, but neither is a testable question for a series and parallel cells experiment, which is the distinction this indicator targets.",
       {});
   }
@@ -3194,7 +3194,7 @@ E("s9-u3-applications", 3, ["SC9.9.13"], 3, "var", varset([
   function () {
     return mcq("A class finds that in their model circuits, bulbs in parallel stay bright when one is removed, while series bulbs share voltage. Which statement correctly identifies an application of that finding?",
       "Homes are wired in parallel so each light and outlet works independently at full supply voltage, which is the finding applied at building scale",
-      ["The finding applies only inside the classroom, because real buildings use a different kind of electricity", "The finding shows series wiring should be used for homes, since sharing voltage saves energy", "The finding has no application until the class repeats it with larger bulbs"],
+      ["The finding applies only inside the classroom where it was found, because real buildings use a completely different kind of electricity from school circuits", "The finding shows series wiring should be used for homes instead, since sharing the voltage between lights saves energy in every room", "The finding has no application anywhere until the class repeats the whole investigation with larger bulbs and a larger supply in the lab"],
       "Findings earn their keep in applications. The parallel result, independent branches at full voltage, is exactly the property a home needs, and it is why household wiring is parallel. The classroom circuit runs on the same electricity as the building around it; scale changes the components, not the principles.",
       {});
   }
@@ -3223,7 +3223,7 @@ E("s9-u3-env-apply", 3, ["SC9.9.14"], 2, "var", varset([
   function () {
     return mcq("A proposed generating project is cheap to build and run, and its design meets all safety standards, but it would flood a large area of forest and a community's traditional hunting land. Applying this indicator's criteria, which evaluation is complete?",
       "The project scores well on cost of production and safety, but poorly on degree of environmental impact, and a complete evaluation reports all three standings rather than a single verdict",
-      ["The project is acceptable, because meeting safety standards settles the environmental question", "The project is acceptable, because low cost outweighs every other criterion automatically", "The project must be rejected on cost grounds, because flooding land is a production cost"],
+      ["The project is acceptable as proposed, because meeting every safety standard in its design settles the environmental question completely, with nothing left to report", "The project is acceptable as proposed, because its low cost outweighs every other criterion in the evaluation automatically, whatever the other standings show in detail", "The project must be rejected on cost grounds alone, because flooding the land counts as a production cost and cost is the criterion that decides every evaluation of this kind"],
       "Criteria are applied one at a time and reported honestly. Cost: favourable. Safety: favourable. Degree of environmental impact: unfavourable, since flooding forest and hunting land is a major impact. Collapsing that into 'acceptable because it is safe and cheap' abandons the third criterion, which exists precisely for projects whose costs are paid by the environment and the community rather than the builder.",
       {});
   }
@@ -3359,7 +3359,7 @@ function s9u4TableSVG() {
 }
 
 E("s9-u4-nucleus-role", 4, ["SC9.10.1"], 1, "var", varset([
-  function () { return mcq("What is the main role of the nucleus in a cell?", "It contains the genetic information and controls the processes of the cell", ["It stores water and dissolved food for the cell", "It makes food by photosynthesis", "It holds the cell in a fixed, rigid shape"], "The nucleus contains the genetic information of the cell. From that information it directs the processes of the cell, including growth and cell division.", {}); }
+  function () { return mcq("What is the main role of the nucleus in a cell?", "It contains the genetic information and controls the processes of the cell", ["It stores water and dissolved food for the cell in a large sap-filled space", "It makes food for the cell by photosynthesis in the light of the sun", "It holds the whole cell in a fixed, rigid shape at all times in the body"], "The nucleus contains the genetic information of the cell. From that information it directs the processes of the cell, including growth and cell division.", {}); }
 ]), ["Think about what is stored inside the nucleus.", "It directs, not digests or feeds."]);
 
 E("s9-u4-traits-heredity", 4, ["SC9.10.1"], 1, "var", varset([
@@ -3367,7 +3367,7 @@ E("s9-u4-traits-heredity", 4, ["SC9.10.1"], 1, "var", varset([
 ]), ["Think parents to offspring.", "It is about passing information on."]);
 
 E("s9-u4-trait-example", 4, ["SC9.10.1"], 1, "var", varset([
-  function () { return mcq("A student lists four features. Which one is a trait carried in genetic information?", "Eye colour", ["A scar from a fall", "The length of a haircut", "A suntan gained in summer"], "Eye colour is a trait determined by genetic information in the nucleus. A scar, a haircut and a suntan are acquired during life and are not carried in the genetic information. This item is rewritten from the MapOfMe not-a-trait selection shape.", {}); }
+  function () { return mcq("A student lists four features. Which one is a trait carried in genetic information?", "Eye colour", ["A deep scar", "A haircut", "A suntan"], "Eye colour is a trait determined by genetic information in the nucleus. A scar, a haircut and a suntan are acquired during life and are not carried in the genetic information. This item is rewritten from the MapOfMe not-a-trait selection shape.", {}); }
 ]), ["Ask which feature was present from the start.", "Inherited, not acquired."]);
 
 E("s9-u4-nucleus-division", 4, ["SC9.10.1"], 1, "var", varset([
@@ -3375,11 +3375,11 @@ E("s9-u4-nucleus-division", 4, ["SC9.10.1"], 1, "var", varset([
 ]), ["Which structure holds the instructions?", "Division is directed from inside."]);
 
 E("s9-u4-mutagen-define", 4, ["SC9.10.2"], 1, "var", varset([
-  function () { return mcq("What is a mutagen?", "A factor that can cause a change in genetic information", ["A gene that has already changed", "A cell produced by meiosis", "A protein made by a chromosome"], "A mutagen is a factor that can cause a change in a cell's genetic information. A change in the genetic information itself is called a gene mutation.", {}); }
+  function () { return mcq("What is a mutagen?", "A factor that can cause a change in genetic information", ["A gene that has already changed its chemical order once", "A cell produced by meiosis during reproduction in the body", "A protein made by a chromosome inside the cell nucleus"], "A mutagen is a factor that can cause a change in a cell's genetic information. A change in the genetic information itself is called a gene mutation.", {}); }
 ]), ["One word names the cause, the other the change.", "Cause first: mutagen."]);
 
 E("s9-u4-mutation-define", 4, ["SC9.10.2"], 1, "var", varset([
-  function () { return mcq("A gene mutation is best described as", "a change in the order of chemicals that make up a portion of a gene", ["a doubling of every chromosome in the nucleus", "the movement of a gene to a different cell", "the division of one cell into two cells"], "In this course a gene mutation is a change in the order of chemicals that make up a portion of a gene. It is a change within the gene, not a change in chromosome number or cell number.", {}); }
+  function () { return mcq("A gene mutation is best described as", "a change in the order of chemicals that make up a portion of a gene", ["a doubling of every chromosome in the nucleus of the cell at once", "the movement of a whole gene from one cell to a different cell", "the division of one parent cell into two new daughter cells by mitosis"], "In this course a gene mutation is a change in the order of chemicals that make up a portion of a gene. It is a change within the gene, not a change in chromosome number or cell number.", {}); }
 ]), ["Stay inside the gene.", "A change in order, in a portion of one gene."]);
 
 E("s9-u4-mutagen-sources", 4, ["SC9.10.2"], 1, "var", varset([
@@ -3387,7 +3387,7 @@ E("s9-u4-mutagen-sources", 4, ["SC9.10.2"], 1, "var", varset([
 ]), ["Sort causes of change from ordinary needs.", "Radiation and chemicals appear in the key."]);
 
 E("s9-u4-cell-cycle", 4, ["SC9.10.3"], 1, "var", varset([
-  function () { return mcq("What is the cell cycle?", "The repeating sequence of growth and division in the life of a cell", ["The movement of a cell from one tissue to another", "The path of a chromosome around the nucleus", "The full life span of a whole organism"], "The cell cycle is the repeating sequence a cell follows as it grows and then divides. Mitosis and cytokinesis are the dividing part of that cycle.", {}); }
+  function () { return mcq("What is the cell cycle?", "The repeating sequence of growth and division in the life of a cell", ["The movement of a cell from one tissue of the body to another tissue", "The path of a chromosome as it moves around the inside of the nucleus", "The full life span of a whole organism, from birth to death in years"], "The cell cycle is the repeating sequence a cell follows as it grows and then divides. Mitosis and cytokinesis are the dividing part of that cycle.", {}); }
 ]), ["Think of a repeating sequence, not a journey.", "Growth, then division, then repeat."]);
 
 E("s9-u4-mitosis-result", 4, ["SC9.10.3"], 1, "var", varset([
@@ -3399,7 +3399,7 @@ E("s9-u4-metaphase", 4, ["SC9.10.3"], 1, "var", varset([
 ]), ["Find the cell with chromosomes in a line.", "Meta: think middle."]);
 
 E("s9-u4-cytokinesis", 4, ["SC9.10.3"], 1, "var", varset([
-  function () { return mcq("What happens during cytokinesis?", "The cell itself divides into two, after the nucleus has divided", ["The chromosomes line up across the middle", "The nuclear membrane fades away", "Homologous chromosomes pair up"], "Cytokinesis is the division of the cell itself, following mitosis, so that each new nucleus ends up in its own cell. It completes the production of two daughter cells.", {}); }
+  function () { return mcq("What happens during cytokinesis?", "The cell itself divides into two, after the nucleus has divided", ["The chromosomes line up in a row across the middle of the cell", "The nuclear membrane around the nucleus fades away completely", "Homologous chromosomes pair up side by side in the cell first"], "Cytokinesis is the division of the cell itself, following mitosis, so that each new nucleus ends up in its own cell. It completes the production of two daughter cells.", {}); }
 ]), ["It follows the nuclear division.", "The cell splits; the nucleus already divided."]);
 
 E("s9-u4-asex-define", 4, ["SC9.10.4"], 1, "var", varset([
@@ -3407,11 +3407,11 @@ E("s9-u4-asex-define", 4, ["SC9.10.4"], 1, "var", varset([
 ]), ["Count the parents.", "One parent, identical offspring."]);
 
 E("s9-u4-vegetative", 4, ["SC9.10.4"], 1, "var", varset([
-  function () { var q = mcq("The table compares three ways organisms reproduce. Which row describes a sexual method?", "Seed after pollination", ["Budding", "Runners", "All three rows"], "Only the seed row involves two parents contributing gametes, so only it is sexual. Budding and runners each involve one parent and produce identical offspring, so both are asexual.", {}); q.figure = s9u4TableSVG(); return q; }
+  function () { var q = mcq("The table compares three ways organisms reproduce. Which row describes a sexual method?", "Seed after pollination", ["Budding", "Runners", "All three rows in the table"], "Only the seed row involves two parents contributing gametes, so only it is sexual. Budding and runners each involve one parent and produce identical offspring, so both are asexual.", {}); q.figure = s9u4TableSVG(); return q; }
 ]), ["Look for two parents and gametes.", "Identical offspring means asexual here."]);
 
 E("s9-u4-moss-water", 4, ["SC9.10.4"], 1, "var", varset([
-  function () { return mcq("Why does sexual reproduction in moss require water?", "The gametes must be able to reach each other through water for fertilization to occur", ["Moss flowers must be pollinated under water", "Moss seeds can only germinate under water", "The spores dissolve if they dry out"], "For moss, the guide limits the discussion to three points: sexual reproduction needs water so the gametes can meet, moss can also reproduce asexually by spores, and the moss plant has specific male and female parts. Moss has no flowers or seeds.", {}); }
+  function () { return mcq("Why does sexual reproduction in moss require water?", "The gametes must be able to reach each other through water for fertilization to occur", ["Moss flowers must be pollinated under water whenever the plant reproduces sexually", "Moss seeds can only germinate and begin to grow when they are under water in a pond", "The spores of the moss dissolve at once if they are allowed to dry out in the air"], "For moss, the guide limits the discussion to three points: sexual reproduction needs water so the gametes can meet, moss can also reproduce asexually by spores, and the moss plant has specific male and female parts. Moss has no flowers or seeds.", {}); }
 ]), ["Keep to the guide's three moss points.", "Gametes meeting is the key step."]);
 
 E("s9-u4-metamorphosis", 4, ["SC9.10.4"], 1, "var", varset([
@@ -3423,7 +3423,7 @@ E("s9-u4-gamete-define", 4, ["SC9.10.5"], 1, "var", varset([
 ]), ["Egg and sperm are the examples.", "Half the genetic content."]);
 
 E("s9-u4-meiosis-result", 4, ["SC9.10.5"], 1, "var", varset([
-  function () { return mcq("Meiosis produces", "four daughter cells, each with half the genetic material of the parent cell", ["two daughter cells identical to the parent cell", "one daughter cell with double the genetic material", "four daughter cells identical to the parent cell"], "Meiosis is the division that produces sex cells. It produces four daughter cells, and each one contains half the number of chromosomes, half the genetic material, of the parent cell.", {}); }
+  function () { return mcq("Meiosis produces", "four daughter cells, each with half the genetic material of the parent cell", ["two daughter cells, each genetically identical to the parent cell in full", "one daughter cell containing double the genetic material of the parent", "four daughter cells, each identical in every way to the parent cell itself"], "Meiosis is the division that produces sex cells. It produces four daughter cells, and each one contains half the number of chromosomes, half the genetic material, of the parent cell.", {}); }
 ]), ["Four cells, half the material.", "Compare with mitosis: two and full."]);
 
 E("s9-u4-diploid-haploid", 4, ["SC9.10.5"], 1, "var", varset([
@@ -3435,7 +3435,7 @@ E("s9-u4-interkinesis", 4, ["SC9.10.5"], 1, "var", varset([
 ]), ["Between the two divisions.", "Growth and protein making, in between."]);
 
 E("s9-u4-compare-division", 4, ["SC9.10.5"], 1, "var", varset([
-  function () { return mcq("Which comparison of mitosis and meiosis is correct?", "Mitosis produces two identical daughter cells for growth and replacement; meiosis produces four haploid gametes for sexual reproduction", ["Mitosis produces gametes; meiosis produces body cells for repair", "Both produce four haploid daughter cells", "Both produce two identical daughter cells"], "The guide's comparison rests on three points: the types of cells involved, the number of daughter cells produced (two in mitosis, four in meiosis), and the amount of genetic material in each daughter cell (full and identical in mitosis, half in meiosis).", {}); }
+  function () { return mcq("Which comparison of mitosis and meiosis is correct?", "Mitosis produces two identical daughter cells for growth and replacement; meiosis produces four haploid gametes for sexual reproduction", ["Mitosis produces the gametes used in reproduction; meiosis produces body cells used for growth and repair of tissues", "Both processes produce four haploid daughter cells from each parent cell that divides, whatever the cell type", "Both processes produce two identical daughter cells from each parent cell that divides, whatever the cell type involved"], "The guide's comparison rests on three points: the types of cells involved, the number of daughter cells produced (two in mitosis, four in meiosis), and the amount of genetic material in each daughter cell (full and identical in mitosis, half in meiosis).", {}); }
 ]), ["Use the guide's three comparison points.", "Cells, number, amount of material."]);
 
 E("s9-u4-variation-compare", 4, ["SC9.10.6"], 1, "var", varset([
@@ -3443,7 +3443,7 @@ E("s9-u4-variation-compare", 4, ["SC9.10.6"], 1, "var", varset([
 ]), ["Two parents mix information.", "Variety follows the mixing."]);
 
 E("s9-u4-asex-advantage", 4, ["SC9.10.6"], 1, "var", varset([
-  function () { return mcq("A plant population lives in a stable pond environment that rarely changes. Reproducing asexually is an advantage here mainly because", "it requires only one parent and less energy, and the offspring are already well suited to the unchanged environment", ["it guarantees every offspring a new combination of traits", "it requires two parents to find each other", "it produces the greatest possible genetic variety"], "Asexual reproduction needs one parent and less energy, and it passes on a combination that already works in a stable environment. Its cost, low variety, matters most when conditions change. Sexual reproduction is the mode that mixes traits.", {}); }
+  function () { return mcq("A plant population lives in a stable pond environment that rarely changes. Reproducing asexually is an advantage here mainly because", "it requires only one parent and less energy, and the offspring are already well suited to the unchanged environment", ["it guarantees every offspring a brand new combination of traits from two parents, in every generation", "it requires two parents to find each other and come together before any offspring can be produced at all", "it produces the greatest possible genetic variety among all the offspring in the population over time"], "Asexual reproduction needs one parent and less energy, and it passes on a combination that already works in a stable environment. Its cost, low variety, matters most when conditions change. Sexual reproduction is the mode that mixes traits.", {}); }
 ]), ["Match the mode to the environment.", "Stable conditions favour the proven copy."]);
 
 E("s9-u4-sex-cost", 4, ["SC9.10.6"], 1, "var", varset([
@@ -3459,11 +3459,11 @@ E("s9-u4-levels-order", 4, ["SC9.11.1"], 1, "var", varset([
 ]), ["Work from largest to smallest.", "End inside the nucleus."]);
 
 E("s9-u4-gene-protein", 4, ["SC9.11.1"], 1, "var", varset([
-  function () { return mcq("What does a gene instruct the nucleus to do?", "Produce a specific protein, and the proteins produced determine traits", ["Divide the cell into four gametes", "Build a complete chromosome from scratch", "Move the nucleus to the edge of the cell"], "A gene instructs the nucleus to produce a specific protein. The types of proteins produced determine the traits that appear in the individual, whether structural traits such as eye colour or process traits such as growth rate.", {}); }
+  function () { return mcq("What does a gene instruct the nucleus to do?", "Produce a specific protein, and the proteins produced determine traits", ["Divide the whole cell into four gametes ready for reproduction at once", "Build a complete new chromosome from scratch inside the nucleus of the cell", "Move the nucleus from the centre to the edge of the cell and hold it there"], "A gene instructs the nucleus to produce a specific protein. The types of proteins produced determine the traits that appear in the individual, whether structural traits such as eye colour or process traits such as growth rate.", {}); }
 ]), ["Gene to protein to trait.", "The instruction is for one protein."]);
 
 E("s9-u4-tech-example", 4, ["SC9.11.2"], 3, "var", varset([
-  function () { return mcq("Which is an example of knowledge of cellular functions leading to a technology?", "Developing new wheat and potato varieties through breeding and genetic work", ["Building a taller office tower", "Designing a faster snowmobile", "Charting a new shipping route"], "Work on heredity and cell function has produced new crop varieties, including wheat and potato varieties, along with livestock breeding programs. The other choices do not grow out of knowledge of cellular functions.", {}); }
+  function () { return mcq("Which is an example of knowledge of cellular functions leading to a technology?", "Developing new wheat and potato varieties through breeding and genetic work", ["Building a taller office tower in the centre of a large city downtown", "Designing a faster snowmobile for winter travel across the snow and ice", "Charting a new shipping route for cargo ships across the ocean to port"], "Work on heredity and cell function has produced new crop varieties, including wheat and potato varieties, along with livestock breeding programs. The other choices do not grow out of knowledge of cellular functions.", {}); }
 ]), ["Look for heredity applied.", "Crops and livestock are the guide contexts."]);
 
 E("s9-u4-tech-medicine", 4, ["SC9.11.2"], 3, "var", varset([
@@ -3475,55 +3475,55 @@ E("s9-u4-condition-examples", 4, ["SC9.11.3"], 3, "var", varset([
 ]), ["All three are genetic conditions.", "One is a Newfoundland and Labrador example."]);
 
 E("s9-u4-allderdice", 4, ["SC9.11.3"], 3, "var", varset([
-  function () { return mcq("Allderdice Syndrome was first identified in a geographically isolated community in Newfoundland and Labrador. Why do isolated populations help genetic researchers?", "A small, isolated population shares ancestry, so genetic conditions and their patterns stand out more clearly for study", ["Isolated populations have no genetic conditions", "Isolation removes all mutations from a population", "Researchers can cure conditions more easily there"], "Newfoundland and Labrador populations descended from small founding groups share ancestry, so a genetic condition appears in recognizable patterns across families. That clarity is why researchers consider the province a good population for studying genetic conditions. Allderdice Syndrome, caused by an inverted insertion of a chromosome, was identified this way.", {}); }
+  function () { return mcq("Allderdice Syndrome was first identified in a geographically isolated community in Newfoundland and Labrador. Why do isolated populations help genetic researchers?", "A small, isolated population shares ancestry, so genetic conditions and their patterns stand out more clearly for study", ["Isolated populations have no genetic conditions at all, because isolation protects them from every inherited disorder", "Isolation removes all mutations from a population over time, leaving its genetic information completely unchanged for good", "Researchers can cure genetic conditions far more easily in such places than anywhere else in the province or country"], "Newfoundland and Labrador populations descended from small founding groups share ancestry, so a genetic condition appears in recognizable patterns across families. That clarity is why researchers consider the province a good population for studying genetic conditions. Allderdice Syndrome, caused by an inverted insertion of a chromosome, was identified this way.", {}); }
 ]), ["Shared ancestry makes patterns visible.", "Founder populations clarify inheritance."]);
 
 E("s9-u4-mendel-shift", 4, ["SC9.11.4"], 3, "var", varset([
-  function () { return mcq("What shift in understanding came from Mendel's experiments?", "They gave a scientific explanation for heredity, suggesting that dominant and recessive factors pass traits from one generation to the next", ["They showed the double helix structure of DNA", "They mapped every gene in the human genome", "They proved traits are never passed between generations"], "Mendel's experiments provided a scientific explanation for heredity and suggested the involvement of dominant and recessive factors in transmitting traits. The double helix model came from Watson and Crick, and mapping the genome was the Human Genome Project, both much later.", {}); }
+  function () { return mcq("What shift in understanding came from Mendel's experiments?", "They gave a scientific explanation for heredity, suggesting that dominant and recessive factors pass traits from one generation to the next", ["They showed the double helix structure of DNA and explained how its chemical order carries genetic information in every cell of the body", "They mapped every gene in the human genome and published the complete sequence for researchers everywhere, in full detail", "They proved that traits are never passed from one generation to the next, and that offspring resemble their parents by chance alone"], "Mendel's experiments provided a scientific explanation for heredity and suggested the involvement of dominant and recessive factors in transmitting traits. The double helix model came from Watson and Crick, and mapping the genome was the Human Genome Project, both much later.", {}); }
 ]), ["Earliest of the guide's shifts.", "Pea plants and factors."]);
 
 E("s9-u4-hgp-shift", 4, ["SC9.11.4"], 3, "var", varset([
-  function () { return mcq("What did the Human Genome Project add to the understanding of genetics?", "Greater insight into how and why certain medical conditions occur and how they might be treated", ["Proof that genes do not affect medical conditions", "The first observation of a chromosome", "A method for cloning whole organisms in the classroom"], "The Human Genome Project provided greater insights into how and why certain medical conditions occur and how to treat them. It also raised concerns about the potential of genetically engineering people.", {}); }
+  function () { return mcq("What did the Human Genome Project add to the understanding of genetics?", "Greater insight into how and why certain medical conditions occur and how they might be treated", ["Proof that genes do not affect medical conditions in any person, whatever their family history", "The first observation of a chromosome under a microscope in a dividing cell of any kind", "A method for cloning whole organisms quickly and safely in the school classroom lab for students"], "The Human Genome Project provided greater insights into how and why certain medical conditions occur and how to treat them. It also raised concerns about the potential of genetically engineering people.", {}); }
 ]), ["Genome mapped, conditions understood better.", "Insight, plus new concerns."]);
 
 E("s9-u4-canadian-apple", 4, ["SC9.11.5"], 2, "var", varset([
-  function () { return mcq("The McIntosh apple, developed in Canada and now grown worldwide from grafted cuttings of the original tree, is an example of", "a Canadian contribution to heredity and plant breeding", ["a genetic condition that cannot be cured", "a stage in the cell cycle", "a human-made mutagen"], "The guide names the development of the McIntosh apple among Canadian contributions connected to heredity, alongside wheat and potato varieties and livestock breeding programs. Every McIntosh tree is a vegetative copy of the original, which is why the fruit stays true to type.", {}); }
+  function () { return mcq("The McIntosh apple, developed in Canada and now grown worldwide from grafted cuttings of the original tree, is an example of", "a Canadian contribution to heredity and plant breeding", ["a genetic condition that cannot be cured at present", "a stage in the cell cycle of an apple tree cell dividing", "a human-made mutagen acting on the trees in orchards"], "The guide names the development of the McIntosh apple among Canadian contributions connected to heredity, alongside wheat and potato varieties and livestock breeding programs. Every McIntosh tree is a vegetative copy of the original, which is why the fruit stays true to type.", {}); }
 ]), ["A named Canadian variety.", "Breeding and vegetative copying."]);
 
 E("s9-u4-source-select", 4, ["SC9.12.1"], 2, "var", varset([
-  function () { return mcq("A student is examining chromosomes for a report and finds one website with no author or date, a current textbook section and a recent article from a science magazine. Which approach best fits this indicator?", "Select information from the textbook and the magazine article, check that they agree, and integrate both rather than relying on the undated site alone", ["Use only the website because it was found first", "Copy the longest source word for word", "Use whichever source is shortest"], "This indicator asks students to select and integrate information from various print and electronic sources. Comparing sources, favouring identified and current ones, and combining what agrees is the selecting and integrating the indicator names.", {}); }
+  function () { return mcq("A student is examining chromosomes for a report and finds one website with no author or date, a current textbook section and a recent article from a science magazine. Which approach best fits this indicator?", "Select information from the textbook and the magazine article, check that they agree, and integrate both rather than relying on the undated site alone", ["Use only the website with no author or date, because it was the first source the search turned up, and ignore the other two entirely", "Copy the longest of the three sources word for word into the report, without checking it against either of the other two before submitting", "Use whichever of the three sources happens to be shortest, because a short source is quicker to read and easier to copy into the report"], "This indicator asks students to select and integrate information from various print and electronic sources. Comparing sources, favouring identified and current ones, and combining what agrees is the selecting and integrating the indicator names.", {}); }
 ]), ["Various sources, checked against each other.", "Integrate, do not just copy."]);
 
 E("s9-u4-chromosome-visible", 4, ["SC9.12.1"], 2, "var", varset([
-  function () { return mcq("Chromosomes are not normally visible under a light microscope. When can they be observed?", "When the cell being observed is in the process of dividing", ["At any time in any resting cell", "Only after the cell has died and dried out", "Only in gametes, never in body cells"], "The guide notes that chromosomes become visible when a cell is dividing, which is why prepared slides of dividing cells, such as onion root tips, are used to observe them in each stage of mitosis.", {}); }
+  function () { return mcq("Chromosomes are not normally visible under a light microscope. When can they be observed?", "When the cell being observed is in the process of dividing", ["At any time in any resting cell of the body, under the microscope", "Only after the cell being observed has died and dried out completely", "Only in gametes, and never in the body cells of the organism"], "The guide notes that chromosomes become visible when a cell is dividing, which is why prepared slides of dividing cells, such as onion root tips, are used to observe them in each stage of mitosis.", {}); }
 ]), ["Division makes them visible.", "Look at dividing cells, such as root tips."]);
 
 E("s9-u4-yeast-safety", 4, ["SC9.12.3"], 2, "var", varset([
-  function () { return mcq("Before a yeast investigation, a group lays out its apparatus. Which practice fits using tools and apparatus safely and accurately?", "Check glassware for cracks, measure volumes carefully and follow the lab safety procedures for heating and handling cultures", ["Heat the culture directly over the flame to save time", "Estimate volumes by eye to finish faster", "Share one thermometer between groups without cleaning it"], "Safe and accurate bench work means sound apparatus, careful measurement and the lab's safety procedures. The investigation itself, growing the yeast cultures, is hands-on work assessed in the classroom; this item carries its safety and accuracy decisions.", {}); }
+  function () { return mcq("Before a yeast investigation, a group lays out its apparatus. Which practice fits using tools and apparatus safely and accurately?", "Check glassware for cracks, measure volumes carefully and follow the lab safety procedures for heating and handling cultures", ["Heat the culture directly over the open flame of the burner to save time during the investigation in class", "Estimate all the volumes by eye instead of measuring them, to finish the setup faster and save time in the lab", "Share one thermometer between all the groups in the room without cleaning it between cultures at the bench"], "Safe and accurate bench work means sound apparatus, careful measurement and the lab's safety procedures. The investigation itself, growing the yeast cultures, is hands-on work assessed in the classroom; this item carries its safety and accuracy decisions.", {}); }
 ]), ["Safety and accuracy together.", "Check, measure, follow procedure."]);
 
 E("s9-u4-communicate-result", 4, ["SC9.12.5"], 2, "var", varset([
-  function () { return mcq("A yeast investigation finds the warm, fed culture grew most. Which communication of the result is complete?", "A statement of the conclusion naming the best condition, supported by the measured growth values for every condition tested", ["A statement that the experiment worked well", "The raw notebook numbers with no conclusion drawn", "A conclusion naming a condition that was never tested"], "Communicating results means stating what was found and supporting it with the investigation's own data: the best condition, named, with the measured values for all conditions so the claim can be checked.", {}); }
+  function () { return mcq("A yeast investigation finds the warm, fed culture grew most. Which communication of the result is complete?", "A statement of the conclusion naming the best condition, supported by the measured growth values for every condition tested", ["A brief statement that the experiment worked well and that the group was pleased with how it went in class", "The raw numbers from the notebook page, copied out neatly, with no conclusion drawn from them at all by the group", "A conclusion naming as best a condition that was never tested during the investigation at any point in the lab"], "Communicating results means stating what was found and supporting it with the investigation's own data: the best condition, named, with the measured values for all conditions so the claim can be checked.", {}); }
 ]), ["Conclusion plus supporting data.", "Every condition, with values."]);
 
 E("s9-u4-organize-choice", 4, ["SC9.12.6"], 2, "var", varset([
-  function () { return mcq("A group has final chromosome counts for mitosis and meiosis: cells produced, and genetic content per cell. Which format best organizes this data for comparison?", "A comparison table with a row for each process and columns for cells produced and genetic content", ["A flow chart of the yeast lab steps", "A scatter plot of unrelated measurements", "A paragraph with the numbers in the order they were written down"], "Organizing data in a format appropriate to the task means matching the format to the comparison: a table with rows for the two processes and columns for the two compared features. The guide's own mitosis and meiosis comparison is organized exactly this way.", {}); }
+  function () { return mcq("A group has final chromosome counts for mitosis and meiosis: cells produced, and genetic content per cell. Which format best organizes this data for comparison?", "A comparison table with a row for each process and columns for cells produced and genetic content", ["A flow chart showing the steps of the yeast investigation in order from start to finish", "A scatter plot of unrelated measurements taken from other investigations in the course", "A paragraph of writing with the numbers included in the order they were written down in the notebook"], "Organizing data in a format appropriate to the task means matching the format to the comparison: a table with rows for the two processes and columns for the two compared features. The guide's own mitosis and meiosis comparison is organized exactly this way.", {}); }
 ]), ["Comparison calls for a table.", "Rows: processes. Columns: features."]);
 
 E("s9-u4-organize-flow", 4, ["SC9.12.6"], 2, "var", varset([
-  function () { return mcq("Which data is best organized as a flow chart rather than a table or graph?", "The sequence of stages in meiosis I followed by meiosis II", ["Final yeast counts under four conditions", "Resting measurements from three trials", "The sizes of five different cells"], "A flow chart displays a sequence of steps or stages, so the ordered stages of meiosis fit it. Counts and measurements for comparison belong in tables or graphs.", {}); }
+  function () { return mcq("Which data is best organized as a flow chart rather than a table or graph?", "The sequence of stages in meiosis I followed by meiosis II", ["Final yeast counts measured under four different conditions", "Resting measurements recorded across three separate trials", "The measured sizes of five different cells under the microscope"], "A flow chart displays a sequence of steps or stages, so the ordered stages of meiosis fit it. Counts and measurements for comparison belong in tables or graphs.", {}); }
 ]), ["Sequence: flow chart.", "Stages happen in order."]);
 
 E("s9-u4-team-idea", 4, ["SC9.12.8"], 2, "var", varset([
-  function () { return mcq("During a mitosis and meiosis comparison lab, one team member suggests sketching meiosis II beside mitosis because the two are easy to confuse. Her partner listens, checks the idea against the task, adds the paired sketches to their poster and credits the suggestion when they present. What does the partner's response show?", "Receiving, understanding and acting on the idea of another person", ["Working alone to avoid disagreement", "Copying another team's finished poster", "Rejecting an idea without hearing it"], "The partner received the idea, understood it well enough to check it against the task, and acted on it by building it into the team's work. That is the full receive, understand and act sequence this indicator names. The cooperative poster work itself happens in the classroom; this scenario carries the judgement of the response.", {}); }
+  function () { return mcq("During a mitosis and meiosis comparison lab, one team member suggests sketching meiosis II beside mitosis because the two are easy to confuse. Her partner listens, checks the idea against the task, adds the paired sketches to their poster and credits the suggestion when they present. What does the partner's response show?", "Receiving, understanding and acting on the idea of another person", ["Working alone on a separate poster to avoid any disagreement", "Copying another team's finished poster without their knowledge", "Rejecting a partner's idea at once without hearing it out fully"], "The partner received the idea, understood it well enough to check it against the task, and acted on it by building it into the team's work. That is the full receive, understand and act sequence this indicator names. The cooperative poster work itself happens in the classroom; this scenario carries the judgement of the response.", {}); }
 ]), ["Three steps: receive, understand, act.", "The idea changed the team's work."]);
 
 E("s9-u4-evaluate-claim", 4, ["SC9.12.10"], 2, "var", varset([
-  function () { return mcq("A website claims a genetically engineered food is completely safe because one company study found no problems. Which evaluation is strongest?", "The evidence is weak on its own: check the date, the intended audience and the author's intent, and look for independent studies before deciding", ["Accept the claim because it appears on a website", "Reject all genetic engineering claims automatically", "Accept the claim because the study agrees with the headline"], "Evaluating information on genetics and genetic engineering means weighing date, audience and author intent, and testing one interested study against independent evidence. Neither automatic acceptance nor automatic rejection is evaluation.", {}); }
+  function () { return mcq("A website claims a genetically engineered food is completely safe because one company study found no problems. Which evaluation is strongest?", "The evidence is weak on its own: check the date, the intended audience and the author's intent, and look for independent studies before deciding", ["Accept the claim at face value because it appears on a website, and ask no questions about who wrote the page or why it was posted online", "Reject all genetic engineering claims automatically, whatever evidence any of them offers, without examining a single one of them in detail", "Accept the claim because the one study agrees with the website's headline, and treat that agreement as all the checking the claim needs"], "Evaluating information on genetics and genetic engineering means weighing date, audience and author intent, and testing one interested study against independent evidence. Neither automatic acceptance nor automatic rejection is evaluation.", {}); }
 ]), ["Who wrote it, when, and for whom?", "One interested study is not enough."]);
 
 E("s9-u4-evaluate-sources", 4, ["SC9.12.10"], 2, "var", varset([
-  function () { return mcq("Two articles argue opposite positions on labelling genetically modified foods. Article A is a recent government review summarizing many studies. Article B is an undated advocacy pamphlet citing no studies. For a class position paper, the best use of the pair is to", "rely mainly on Article A for evidence, and use Article B as an example of a position held, noting its lack of cited evidence", ["average the two articles and treat both as equally strong evidence", "use only Article B because it is shorter and clearer", "discard both because they disagree"], "Evaluation weighs the evidence behind each source: a recent review summarizing many studies carries more weight than an undated pamphlet citing none. The pamphlet still documents that a position exists, which is a legitimate, limited use.", {}); }
+  function () { return mcq("Two articles argue opposite positions on labelling genetically modified foods. Article A is a recent government review summarizing many studies. Article B is an undated advocacy pamphlet citing no studies. For a class position paper, the best use of the pair is to", "rely mainly on Article A for evidence, and use Article B as an example of a position held, noting its lack of cited evidence", ["average the two articles' positions and treat both articles as equally strong evidence for the paper being written", "use only Article B for the paper because it is shorter and clearer to read than Article A for students", "discard both articles entirely because the two of them disagree with each other on the question of labelling"], "Evaluation weighs the evidence behind each source: a recent review summarizing many studies carries more weight than an undated pamphlet citing none. The pamphlet still documents that a position exists, which is a legitimate, limited use.", {}); }
 ]), ["Weigh evidence, not just positions.", "Recent, sourced review outweighs a pamphlet."]);
 
 E("s9-u4-gen-division-count", 4, ["SC9.10.3"], 2, "gen", function () {
@@ -3607,11 +3607,11 @@ E("s9-u4-display-diagram", 4, ["SC9.12.7"], 2, "var", varset([
 ]), ["The data is positions, not just numbers.", "Draw what the chromosomes are doing."]);
 
 E("s9-u4-trend-reading", 4, ["SC9.12.4"], 2, "var", varset([
-  function () { return mcq("A yeast culture kept cold grows slowly all week, while an identical culture kept warm grows quickly for three days and then levels off when its food runs out. Which statement correctly interprets the trend?", "Warmth sped growth while food lasted; growth levelled off when food became the limiting condition", ["Temperature had no effect on growth", "The cold culture grew faster because it used less food", "Levelling off proves the yeast had all died"], "The warm culture's faster rise shows the temperature effect, and its levelling off when food ran out shows food limiting growth. Trends are interpreted by matching changes in the data to changes in the variables.", {}); }
+  function () { return mcq("A yeast culture kept cold grows slowly all week, while an identical culture kept warm grows quickly for three days and then levels off when its food runs out. Which statement correctly interprets the trend?", "Warmth sped growth while food lasted; growth levelled off when food became the limiting condition", ["Temperature had no effect of any kind on the growth of either culture during the week observed", "The cold culture grew faster than the warm one because it used up less of its food each day", "Levelling off in the warm culture proves the yeast in it had all died by the third day of the week"], "The warm culture's faster rise shows the temperature effect, and its levelling off when food ran out shows food limiting growth. Trends are interpreted by matching changes in the data to changes in the variables.", {}); }
 ]), ["Match each change to a variable.", "Rise: warmth. Plateau: food gone."]);
 
 E("s9-u4-graph-purpose", 4, ["SC9.12.2"], 2, "var", varset([
-  function () { return mcq("Why do students graph the theoretical growth of a cell population instead of only listing the numbers?", "The graph makes the doubling pattern visible and lets them interpolate and extrapolate populations", ["Graphs are required because tables are not allowed", "The graph changes the population values", "Listing numbers hides the starting value"], "A graph displays the exponential doubling pattern as a curve, and from it students can read values between plotted points (interpolation) and predict values beyond them (extrapolation), which is the work of this indicator.", {}); }
+  function () { return mcq("Why do students graph the theoretical growth of a cell population instead of only listing the numbers?", "The graph makes the doubling pattern visible and lets them interpolate and extrapolate populations", ["Graphs are required in the course because tables of numbers are not allowed in student work at all", "The graph itself changes the population values as they are plotted on the page by the student", "Listing the numbers in a column hides the starting value of the population from the reader entirely"], "A graph displays the exponential doubling pattern as a curve, and from it students can read values between plotted points (interpolation) and predict values beyond them (extrapolation), which is the work of this indicator.", {}); }
 ]), ["Pattern visible, values readable.", "Between points and beyond points."]);
 
 E("s9-u4-cr-mutation", 4, ["SC9.10.2"], 2, "var", varset([

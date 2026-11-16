@@ -124,7 +124,7 @@ E("s9-u1-moon-motion", 1, ["SC9.1.1"], 3, "var", varset([
   function () {
     return mcq("Over one month, an observer records the Moon rising later each night and changing shape in a repeating cycle, while the background stars stay in the same patterns. Which explanation fits all of these observations together?",
       "The Moon revolves around Earth while Earth rotates, so its position and lit face change night by night",
-      ["The stars revolve around the Moon, so their patterns should change nightly", "The Moon rotates in place without revolving, which changes its lit face", "Earth revolves around the Moon once a month, carrying the observer past it"],
+      ["The stars revolve around the Moon once a month, so their patterns should change steadily night by night", "The Moon rotates in place without revolving around Earth, and that spinning alone changes the lit face we see", "Earth revolves around the Moon once a month, carrying the observer past it and shifting the lit face we see"],
       "The Moon revolves around Earth in about a month. Earth's rotation carries the observer around each day, and the Moon's steady revolution shifts where and when it appears, while the changing Sun, Earth and Moon geometry changes the lit part we see. The distant stars are not carried around the Moon, so their patterns stay fixed.",
       {});
   }
@@ -152,9 +152,9 @@ E("s9-u1-wander", 1, ["SC9.1.1"], 2, "gen", function () {
   var c = pick(cases);
   return mcq("Observers track " + c.p + ", which " + c.d + ". Why do planets show this kind of motion when stars do not?",
     "Earth and the planets all move in their own orbits around the Sun, so our viewpoint on a planet keeps changing",
-    ["Planets are pulled around Earth in circles while stars stay fixed to Earth",
-     "Planets reflect sunlight unevenly, which makes them look as if they move",
-     "Stars move in exactly the same way but are too bright to track"],
+    ["Planets are pulled around Earth in large circles while the stars stay fixed to Earth and never shift",
+     "Planets reflect sunlight unevenly as they spin, which makes them look as if they move against the stars",
+     "Stars move in exactly the same way as planets, but they shine too brightly for their motion to be tracked"],
     "The word planet comes from a word meaning wanderer. Stars are so distant that their pattern stays fixed over human timescales, but the planets are fellow travellers around the Sun: as Earth and a planet move in their separate orbits, the planet's direction as seen from Earth shifts against the star background, and an outer planet can even appear to loop backward when Earth overtakes it.",
     {});
 }, ["Stars hold their pattern; planets do not. What is different about planets?", "Both Earth and the planet are moving. The viewpoint is moving too."]);
@@ -202,7 +202,7 @@ E("s9-u1-models-judgement", 1, ["SC9.1.2"], 3, "var", varset([
   function () {
     return mcq("A student argues that the geocentric description should still be taught as equally supported because it can be drawn to match where planets appear in the sky. Which response best applies how scientific descriptions are judged?",
       "A description earns support by matching new and precise observations; telescopic evidence such as Jupiter's moons and the phases of Venus fits the Sun-centred description and strains the Earth-centred one",
-      ["Any description that can be drawn is equally supported, so both should be kept", "The older description should be kept because it was accepted for longer", "The Sun-centred description wins only because Copernicus published first"],
+      ["Any description that can be drawn to match where planets appear is equally supported, so both should be kept and taught as equals, and telescopic evidence should not change that judgement", "The older description should be kept as equally supported because it was accepted for far longer, and a description trusted for so many centuries should not be set aside for new observations", "The Sun-centred description wins only because Copernicus published his version first, and whichever description appears first in print keeps its standing regardless of later evidence"],
       "Descriptions are judged against evidence. Moons seen orbiting Jupiter show that Earth is not the centre of all motion, and the full set of phases of Venus fits a Sun-centred arrangement. Long acceptance and neat drawings do not outweigh observations that a description cannot explain naturally.",
       {});
   }
@@ -253,7 +253,7 @@ E("s9-u1-dwarf-pluto", 1, ["SC9.1.3"], 1, "var", varset([
   function () {
     return mcq("Why is Pluto classified as a dwarf planet rather than a planet?",
       "It is small and shares its orbital neighbourhood with many other icy bodies instead of dominating it",
-      ["It has no moons, while every planet has at least one moon", "It is made of gas, while every planet is made of rock", "It does not orbit the Sun, while every planet orbits the Sun"],
+      ["It has no moons of its own, while every planet has at least one moon travelling with it", "It is made of gas throughout, while every planet is made of rock throughout, with no gas at all", "It does not orbit the Sun at all, while every planet follows a regular orbit around the Sun"],
       "Pluto orbits the Sun and is round under its own gravity, but it is small and its orbital zone is shared with many other icy bodies of the Kuiper region; it does not dominate its neighbourhood the way the eight planets do. That is why astronomers reclassified it as a dwarf planet. Pluto does have moons, so that option fails on fact.",
       {});
   }
@@ -283,7 +283,7 @@ E("s9-u1-comet-period", 1, ["SC9.1.3"], 3, "var", varset([
   function () {
     return mcq("Halley's Comet returns about every 76 years and its return was the first to be predicted, while another comet is not expected back for thousands of years. Which statement correctly uses periodicity for these comets?",
       "Halley's is a short period comet and the other is a long period comet; periodicity is the regular interval between a comet's returns",
-      ["Both are short period comets, because both eventually return", "Halley's is a long period comet because 76 years is a long human lifetime", "Periodicity describes how bright a comet is at its closest approach"],
+      ["Both are short period comets, because both eventually return to the inner solar system on a regular cycle that observers can record", "Halley's is a long period comet because 76 years is a long human lifetime, and the categories are set by how the interval feels to people", "Periodicity describes how bright a comet becomes at its closest approach to the Sun, when its tail is at its longest and brightest"],
       "Periodicity is the repeating pattern in a comet's passage by the Sun and Earth. Comets are separated into short period and long period categories on that interval, which also reflects their origin and composition. A return measured in decades is short on the comet scale; one measured in thousands of years is long.",
       {});
   }
@@ -325,7 +325,7 @@ E("s9-u1-aurora", 1, ["SC9.1.4"], 2, "var", varset([
   function () {
     return mcq("On a night of strong solar activity, observers in Newfoundland see shimmering curtains of light high in the sky. What is this phenomenon and what produces it?",
       "An aurora (the aurora borealis in the north), produced when charged particles from the Sun interact with gases in Earth's upper atmosphere",
-      ["An aurora, produced when moonlight reflects off ice crystals in clouds", "A solar prominence, produced when gas loops off the Sun's surface", "A meteor shower, produced when debris burns up over a wide area"],
+      ["An aurora, produced when moonlight reflects off ice crystals in high clouds and spreads into curtains of colour", "A solar prominence, produced when great loops of glowing gas rise off the Sun's surface and hang in space above it", "A meteor shower, produced when debris from a comet burns up high in the atmosphere over a wide area on a single night"],
       "Auroras are the northern lights (aurora borealis) and southern lights (aurora australis). Charged particles carried by the solar wind are channelled by Earth's magnetic field toward the poles, where they interact with gases high in the atmosphere and make them glow. Stronger solar activity makes auroras stronger and visible farther from the poles.",
       {});
   }
@@ -335,7 +335,7 @@ E("s9-u1-comms-effect", 1, ["SC9.1.4"], 3, "var", varset([
   function () {
     return mcq("A period of intense sunspot and flare activity is followed by radio interference, satellite problems and a bright aurora. A student claims the events must be coincidence because the Sun is too far away to affect technology. Which evaluation is correct?",
       "The claim is wrong: solar activity affects Earth systems, disturbing radio communications and satellites and driving auroras, as the guide describes",
-      ["The claim is right: the Sun affects Earth only through light and heat", "The claim is wrong only about auroras; communications cannot be affected", "The claim is right, because sunspots are cooler patches and cooler means weaker"],
+      ["The claim is right: the Sun affects Earth only through the light and heat that reach us, and nothing else the Sun does can touch systems on Earth", "The claim is wrong only about auroras, which solar activity can produce, while radio communications and satellites are far too well shielded to be affected", "The claim is right, because sunspots are cooler patches on the Sun, and a cooler patch means a weaker Sun whose activity cannot reach as far as Earth"],
       "The Sun influences almost all natural phenomena on Earth and reaches technology as well. Solar flares and the solar wind disturb electromagnetic conditions around Earth, which interferes with radio and television signals and with satellites, and the same activity drives auroras. Sunspots mark an active Sun, and their roughly 11 year cycle of activity is part of the pattern.",
       {});
   }
@@ -354,7 +354,7 @@ E("s9-u1-bigbang", 1, ["SC9.1.5"], 1, "var", varset([
   function () {
     return mcq("Which statement describes the Big Bang Theory as the guide presents it?",
       "About 13.7 billion years ago all the matter of the universe was compressed into a hot, dense mass, which then expanded, and the universe is still expanding",
-      ["The universe has always existed at its present size and is not changing", "The universe expands to a maximum size and then contracts into a Big Crunch", "Galaxies formed first and then exploded outward from a single galaxy"],
+      ["The universe has always existed at exactly its present size and is not changing in any way, with the same matter spread through the same space forever", "The universe expands from a cool, thin beginning to a maximum size and then contracts again into a hot Big Crunch, after which nothing remains", "Galaxies formed first, fully made, and then exploded outward in every direction from a single central galaxy, with the universe beginning at that explosion"],
       "The Big Bang Theory rests on evidence for an expanding universe: if galaxies are moving apart now, the universe must have been more compact earlier. Scientists estimate the present matter of the universe was compressed into a hot, dense mass about 13.7 billion years ago and began moving outward, and the expansion continues today.",
       {});
   }
@@ -374,7 +374,7 @@ E("s9-u1-expansion-evidence", 1, ["SC9.1.5"], 3, "var", varset([
   function () {
     return mcq("A teacher inflates a balloon dotted with marker spots and asks what the model shows and where it misleads. Which answer is best?",
       "It shows galaxies (the spots) moving apart as the universe expands; it misleads if students think the universe expands into the room around the balloon, since the model only represents the surface",
-      ["It shows galaxies growing larger as the universe expands; the spots themselves stretch", "It shows the universe expanding from the balloon's centre point in the room", "It misleads in every respect and should not be used as a model at all"],
+      ["It shows galaxies growing larger as the universe expands; the spots themselves stretch and swell, and it misleads only if students think real galaxies stay the same size as they move apart", "It shows the universe expanding outward from the balloon's centre point into the room around it, and it misleads only about how fast the expansion happens, not about its pattern of galaxies moving apart", "It misleads in every respect, because a real universe has no surface and no centre, so the model should not be used in teaching at all and students should rely on diagrams of galaxies instead"],
       "In the balloon model the spots stand for galaxies and the stretching surface stands for expanding space: every spot moves away from every other as inflation proceeds, matching the evidence that galaxies recede from one another. The model misleads about a centre and about expanding into something outside; in the theory the expansion is of the universe itself, and the spots should not grow, only their separations do.",
       {});
   }
@@ -393,7 +393,7 @@ E("s9-u1-nebular", 1, ["SC9.1.6"], 1, "var", varset([
   function () {
     return mcq("Which statement describes the Nebular Hypothesis for the formation of the solar system?",
       "The solar system formed from a great cloud of gas and dust (a nebula) that contracted under gravity, spun, flattened, and formed the Sun and planets",
-      ["The solar system formed when a passing star pulled material out of the Sun", "The solar system formed when two stars collided and their debris became planets", "The planets formed first and then captured the Sun as it passed by"],
+      ["The solar system formed when a passing star pulled a stream of hot material out of the Sun, and that material cooled into the planets", "The solar system formed when two stars collided head on, and the debris from the collision settled into orbit as the Sun and planets", "The planets formed first, wandering alone in space, and then captured the Sun as it passed by and settled into orbit around it together"],
       "The Nebular Hypothesis is the present leading account: a nebula of gas and dust contracted under its own gravity, spun faster as it shrank, flattened into a disc, and formed the Sun at the centre with the planets forming from the disc material around it. The collision accounts are the older alternatives.",
       {});
   }
@@ -423,7 +423,7 @@ E("s9-u1-theories-change", 1, ["SC9.1.6"], 3, "var", varset([
   function () {
     return mcq("The Stellar Collision Theory was once seriously considered and is now set aside in favour of the Nebular Hypothesis. Which statement best explains what that change shows about scientific theories?",
       "Theories are reworked or abandoned when new observations cannot be fitted into them, and kept while they explain the evidence well",
-      ["Theories are abandoned whenever a newer one is proposed, regardless of evidence", "The change proves the earlier scientists were careless in their work", "Once a theory is printed in a textbook it can no longer be changed"],
+      ["Theories are abandoned whenever a newer one is proposed by a respected scientist, regardless of how the evidence compares", "The change proves the earlier scientists were careless in their work and that their observations were never worth trusting", "Once a theory is printed in a textbook it can no longer be changed, because printing fixes it as settled knowledge for good"],
       "Theories about the origin of the solar system change and evolve as evidence accumulates. Observations are checked for accuracy; if new information can be incorporated, the theory is reworked, and if it cannot, the theory is abandoned for one that explains both the old and the new observations. Being replaced is how science corrects itself, not evidence of carelessness.",
       {});
   }
@@ -443,7 +443,7 @@ E("s9-u1-galaxy-types", 1, ["SC9.1.7"], 1, "var", varset([
   function () {
     return mcq("Which pairing of galaxy type with its description is correct?",
       "Spiral galaxy: a flat rotating disc with arms extending from a central bulge, like the Milky Way; elliptical galaxy: a smooth oval collection of stars without spiral arms",
-      ["Elliptical galaxy: a flat disc with spiral arms; spiral galaxy: a smooth oval without arms", "Spiral galaxy: a single star surrounded by planets; elliptical galaxy: a cloud of gas and dust", "Both types are identical except for the colour of their stars"],
+      ["Elliptical galaxy: a flat rotating disc with arms extending from a central bulge; spiral galaxy: a smooth oval collection of stars without spiral arms, spread evenly throughout", "Spiral galaxy: a single large star surrounded by a family of planets; elliptical galaxy: a loose cloud of gas and dust from which stars have yet to form", "Both types are identical in shape and structure, built the same way throughout, except for the colour of their stars and the age of those stars"],
       "Galaxies are massive collections of stars, gas and dust held together by gravity. Spiral galaxies, including our Milky Way, have a central bulge and arms winding out through a flat disc. Elliptical galaxies are smooth, oval systems without arms and typically hold older stars.",
       {});
   }
@@ -453,7 +453,7 @@ E("s9-u1-quasar", 1, ["SC9.1.7"], 3, "var", varset([
   function () {
     var q = mcq("The table lists objects by relative size and energy output. One entry is galaxy sized in its surroundings yet outshines its whole galaxy from a tiny central region. Which component of the universe fits that entry, and why?",
       "A quasar: an extremely bright, distant object powered by a supermassive black hole at a galaxy's centre",
-      ["A low mass star: a small star that outshines its galaxy from its centre", "A nebula: a gas cloud that outshines its galaxy as it collapses", "An intermediate mass star: a Sun like star at a galaxy's centre"],
+      ["A low mass star: a small, long lived star that outshines its whole galaxy from its position at the centre", "A nebula: a vast gas cloud that outshines its whole galaxy as it collapses inward under gravity", "An intermediate mass star: a Sun like star sitting at a galaxy's centre and outshining everything around it"],
       "Quasars are among the most powerful objects in the universe: tiny central regions, powered by supermassive black holes, that emit enormous amounts of energy and can outshine the entire galaxy around them. No single ordinary star, of any mass class, outshines a galaxy, and a nebula is a dim cloud by comparison. The table's combination of small size and extreme output is the quasar signature.",
       {});
     q.figure = s9u1StarTableSVG();
@@ -465,7 +465,7 @@ E("s9-u1-star-life", 1, ["SC9.1.7"], 3, "var", varset([
   function () {
     return mcq("Star A has many times the Sun's mass and burns through its fuel quickly. Star B has less mass than the Sun and burns its fuel very slowly. Which futures fit the two stars?",
       "A ends in a supernova and may leave a black hole; B lives for billions of years and ends quietly as a white dwarf",
-      ["A ends quietly as a white dwarf; B ends in a supernova and may leave a black hole", "Both end in supernovae, because all stars end the same way", "Both become quasars, because quasars are the end stage of every star"],
+      ["A ends quietly as a white dwarf after a long life; B ends in a supernova and may leave a black hole", "Both end in supernovae, because all stars end in exactly the same way whatever their mass or fuel supply", "Both become quasars, because quasars are the end stage that every star of every mass eventually reaches"],
       "Mass decides a star's life. High mass stars burn fuel fast, live short lives, and end in supernova explosions, potentially leaving black holes. Low mass stars burn slowly, live for billions of years, and end as white dwarfs. Intermediate mass stars like the Sun also end as white dwarfs after shedding their outer layers. The futures swap if the masses swap, which is the error in the reversed option.",
       {});
   }
@@ -497,7 +497,7 @@ E("s9-u1-nav-personal", 1, ["SC9.2.1"], 1, "var", varset([
   function () {
     return mcq("For centuries, sailors crossing the Atlantic used the positions of stars to find their direction and latitude. Which statement best relates that endeavour to everyday life today?",
       "Celestial navigation is the same knowledge of celestial motion that modern travellers still rely on through satellite positioning, which is fixed by reference to objects beyond Earth",
-      ["Celestial navigation ended completely and has no connection to any present activity", "Star positions are now used only by astronomers and by no one else", "Modern navigation uses only land based signals, with no reference to space"],
+      ["Celestial navigation ended completely with the age of sail and has no connection to any present activity, since modern travellers find their way without any reference to the sky", "Star positions are now used only by astronomers studying the sky and by no one else at all, since ordinary travellers have no reason to look beyond Earth for finding their way", "Modern navigation uses only land based signals from towers and stations, with no reference to space at all, so the old star knowledge plays no part in it today for travellers"],
       "The Core STSE on celestial navigation connects a personal and practical activity, finding your way, to a scientific endeavour built on the apparent motion of celestial bodies. Satellite positioning is its direct descendant: the same need, met by space based technology whose positions are known relative to the wider sky. The endeavour did not vanish; it changed instruments.",
       {});
   }
@@ -507,7 +507,7 @@ E("s9-u1-endeavour-link", 1, ["SC9.2.1"], 2, "var", varset([
   function () {
     return mcq("A student checks a weather forecast before a fishing trip, glances at a satellite image of an approaching storm, and later uses a positioning app to return to a favourite fishing mark. Which statement best describes these activities?",
       "Each activity depends on a space based scientific or technological endeavour: weather satellites supply the images and positioning satellites supply the location",
-      ["Only the positioning app counts, because forecasts come from local weather offices alone", "None of them counts, because the student never left the ground", "Each activity depends only on the student's own observations of the sky"],
+      ["Only the positioning app counts, because forecasts and storm images come from local weather offices alone, working from their own ground observations", "None of them counts as using a space endeavour, because the student never left the ground and handled no space technology during the trip at all", "Each activity depends only on the student's own observations of the sky and the weather, gathered from the shore with no instruments in space involved"],
       "Relating personal activities to scientific and technological endeavours means tracing the hidden space contribution. The forecast's storm image comes from weather satellites, and the positioning fix comes from navigation satellites. Ground offices distribute the products, but the data originate in space based systems the student uses without thinking about them.",
       {});
   }
@@ -517,7 +517,7 @@ E("s9-u1-telescope-science", 1, ["SC9.2.2"], 1, "var", varset([
   function () {
     return mcq("Which statement describes the science underlying a reflecting telescope?",
       "Mirrors gather light and bring it to a focus, using the properties of light, so faint and distant objects can be observed",
-      ["Lenses bend radio waves to a focus, using sound properties, so silent objects can be heard", "Mirrors gather heat and store it, using chemical reactions, so cold objects warm up", "A motor spins the tube so that gravity focuses the light from distant objects"],
+      ["Lenses bend radio waves to a focus, using the properties of sound, so silent objects in space can be heard", "Mirrors gather heat from the object and store it, using chemical reactions, so cold objects slowly warm up", "A motor spins the tube steadily so that gravity itself focuses the light arriving from distant objects"],
       "Telescopes rest on the science of light. A reflecting telescope uses a curved mirror to gather light from a faint object and bring it to a focus; a refracting telescope does the same job with lenses. Radio telescopes apply the same gathering idea to radio waves, a different part of the electromagnetic radiation family. Each technology is an application of the properties of light and radiation.",
       {});
   }
@@ -527,7 +527,7 @@ E("s9-u1-propulsion-science", 1, ["SC9.2.2"], 3, "var", varset([
   function () {
     return mcq("A rocket rises because hot gases are expelled downward at high speed. Which statement best describes the science underlying rocket propulsion, drawing on the disciplines the guide names?",
       "Chemistry supplies the energetic reaction that produces the gas, and physics (forces) explains the thrust that pushes the rocket opposite to the exhaust",
-      ["Biology supplies the fuel organisms, and optics explains the thrust", "Chemistry explains the thrust directly, and no forces are involved", "Physics produces the exhaust gas, and chemistry explains the rocket's direction"],
+      ["Biology supplies the organisms that produce the fuel, and optics, the science of light, explains the thrust that lifts the rocket off the pad", "Chemistry explains the thrust directly through its reactions alone, and no forces of any kind are involved in lifting the rocket off the ground", "Physics produces the exhaust gas in the combustion chamber, and chemistry explains the direction the rocket travels as it rises into the sky"],
       "Rocket propulsion is the guide's example of disciplines combining. The propellant's chemical reaction releases energy and produces a large volume of hot gas; the physics of forces does the rest, as the exhaust is forced downward and the rocket is pushed upward. Neither discipline alone accounts for the whole technology.",
       {});
   }
@@ -546,7 +546,7 @@ E("s9-u1-canadarm", 1, ["SC9.2.3"], 1, "var", varset([
   function () {
     return mcq("Which set names Canadian contributions to space research and exploration?",
       "Canadarm, Canadarm2 (the Space Station Remote Manipulator System) and Dextre (the Special Purpose Dexterous Manipulator)",
-      ["The Hubble Space Telescope, the Apollo lunar module and the Voyager probes", "Canadarm, the Apollo lunar module and Dextre", "The International Space Station alone, built and operated by Canada by itself"],
+      ["The Hubble Space Telescope, the Apollo lunar module and the Voyager probes that left the solar system for deep space", "Canadarm, the Apollo lunar module flown to the Moon, and Dextre, the station's dexterous manipulator in orbit", "The International Space Station alone, designed, built and operated by Canada entirely by itself, with no partners"],
       "Canada's signature contributions are robotic: Canadarm flew on the space shuttles, Canadarm2 is the Space Station Remote Manipulator System that assembled and services the International Space Station, and Dextre is the station's dexterous manipulator, sometimes called Canadahand. The station itself is an international partnership, not a Canadian solo project.",
       {});
   }
@@ -556,7 +556,7 @@ E("s9-u1-astronauts", 1, ["SC9.2.3"], 2, "var", varset([
   function () {
     return mcq("A poster claims Canada's role in space is minor because Canada has never launched its own crewed spacecraft. Which response best corrects the poster using this indicator's examples?",
       "Canada contributes through partnership: Canadian astronauts such as Roberta Bondar, Marc Garneau and Chris Hadfield have flown, and Canadian robotics are essential to the International Space Station",
-      ["The poster is correct, because partnership work does not count as involvement", "Canada's role is major because it operates the International Space Station alone", "The poster is wrong because Canada launches crewed spacecraft every year"],
+      ["The poster is correct, because partnership work does not count as real involvement in space, and only countries that launch their own crewed spacecraft play a genuine role in exploration", "Canada's role is major because it operates the International Space Station alone, supplying its crew, its funding and all of its robotics without any partner countries taking part", "The poster is wrong because Canada launches its own crewed spacecraft every year from its own spaceport, sending Canadian crews into orbit on Canadian rockets on regular missions"],
       "Participating in space exploration does not require launching your own crewed missions. Canada, through the Canadian Space Agency, is a partner in the International Space Station, supplies its robotics, and has sent astronauts including Roberta Bondar (the first Canadian woman in space), Marc Garneau (the first Canadian in space) and Chris Hadfield. Partnership is the form Canada's major role takes.",
       {});
   }
@@ -576,7 +576,7 @@ E("s9-u1-suit", 1, ["SC9.2.4"], 2, "var", varset([
   function () {
     return mcq("Why must a space suit be pressurised, insulated and supplied with oxygen as a single sealed system?",
       "Because space has no breathable air, no air pressure and extreme temperatures, so the suit must carry the astronaut's life support with it",
-      ["Because gravity in space would otherwise pull the astronaut apart", "Because sunlight in space is too dim for an astronaut to work without a lamp system", "Because a suit's only job is protection from micrometeorites, and the rest is padding"],
+      ["Because gravity in space would otherwise pull the astronaut apart piece by piece during a long spacewalk outside the station", "Because sunlight in space is too dim for an astronaut to work safely without a sealed lamp and heating system built into the suit", "Because a suit's only job is protection from micrometeorites striking it, and everything else in its design is padding for comfort"],
       "A space suit is a personal spacecraft. Outside a station there is no air to breathe, no pressure to keep body fluids in their normal state, and temperatures swing between extremes in sunlight and shadow. The suit therefore supplies oxygen, holds pressure and insulates, all in one sealed system, which is why suit design draws on several sciences at once.",
       {});
   }
@@ -599,7 +599,7 @@ E("s9-u1-remote-data", 1, ["SC9.2.5"], 1, "var", varset([
   function () {
     return mcq("Why do astronomical theories depend so heavily on new evidence from better instruments?",
       "Because astronomical data are collected remotely, from light and other radiation that reaches us, so better instruments literally supply new information about distant objects",
-      ["Because astronomers are not permitted to state a theory until a new telescope is built", "Because distant objects change completely every few years and must be remeasured", "Because theories about the universe are guesses that do not rest on data at all"],
+      ["Because astronomers are not permitted to state a theory about distant objects until a new and better telescope has been built to check it first, by rule of the profession", "Because distant objects change completely every few years, so every measurement ever taken of them must be discarded and the objects remeasured from the start", "Because theories about the universe are guesses that do not rest on data at all, and a new instrument simply gives astronomers a chance to guess again"],
       "Unlike bench sciences, astronomy cannot bring its objects into a lab. Its theories rest on data collected remotely, mainly the light and other radiation that arrives from distant objects. A better telescope, on Earth or in space, gathers more and sharper data, and that new evidence is what continually tests and revises theories about the composition and origin of the universe.",
       {});
   }
@@ -618,7 +618,7 @@ E("s9-u1-distance-chart-figure", 1, ["SC9.2.6"], 3, "var", varset([
   function () {
     var q = mcq("The chart places three distances on a common scale: Earth to the Moon (a small fraction of an AU), Earth to the Sun (1 AU), and Earth to the nearest star beyond the Sun (about 4.2 light years, roughly 270,000 AU). A student concludes that light years are only needed for science fiction, since AU worked for the first two distances. Which evaluation is correct?",
       "The conclusion fails at the third distance: expressing star distances in AU needs numbers in the hundreds of thousands, which is why the light year, the distance light travels in one year, is the practical unit beyond the solar system",
-      ["The conclusion is correct, because AU and light years measure different quantities", "The conclusion fails because the Moon distance should be measured in light years instead", "The conclusion is correct, because the nearest star is only a few AU away"],
+      ["The conclusion is correct, because AU and light years measure entirely different quantities, the AU measuring time and the light year measuring brightness, so the two can never be compared on one chart like this", "The conclusion fails because the Moon distance should be measured in light years instead of AU, since light years are the proper unit for every distance beyond Earth itself, including the nearest ones in space", "The conclusion is correct, because the nearest star is only a few AU away from Earth, well within the range where AU gives small, readable numbers, so no larger unit is ever needed for it or for any star"],
       "Both units measure distance. Within the solar system the AU, the average Earth to Sun distance, keeps numbers manageable. Beyond it, AU counts explode into the hundreds of thousands, so astronomers switch to the light year. The chart's third bar is the counterexample to the student's claim: the unit must fit the scale of the distance.",
       {});
     q.figure = s9u1DistanceSVG();
@@ -677,7 +677,7 @@ E("s9-u1-career-path", 1, ["SC9.2.7"], 2, "var", varset([
   function () {
     return mcq("A student who loves building and testing mechanical systems asks which space career preparation fits best. Which advice is soundest?",
       "Aim at engineering or technician training, since missions need people who design, build and maintain the hardware, and check the specific program requirements",
-      ["Only astronaut training matters, since astronauts do all the technical work on a mission", "Careers in space require no specific preparation beyond a general science credit", "Lens making is the only technical route into space work"],
+      ["Only astronaut training matters, since astronauts do all the technical work on a mission themselves, from repairs to experiments, with no support team behind them", "Careers in space require no specific preparation beyond a general science credit earned at school, since every space job trains its workers from the beginning", "Lens making is the only technical route into space work, because every space mission depends above all on the lenses ground for its telescopes and cameras"],
       "Most space workers are not astronauts. Engineers and technicians design, build, test and maintain rockets, rovers, arms and instruments, and each route has its own educational requirements, which is why the guide has students research the background a chosen career requires. Matching the student's interest in mechanical systems to engineering or technician preparation is the sound advice.",
       {});
   }
@@ -687,7 +687,7 @@ E("s9-u1-benefits-risks", 1, ["SC9.2.8"], 1, "var", varset([
   function () {
     return mcq("Which pairing gives a genuine benefit and a genuine risk of space exploration, as this indicator frames them?",
       "Benefit: satellite monitoring of weather and environment; risk: the hazards of launch and space travel to crews",
-      ["Benefit: satellite monitoring of weather; risk: telescopes becoming more powerful", "Benefit: space travel becoming routine; risk: satellite monitoring of weather", "Benefit: lower launch costs; risk: new medical knowledge from space research"],
+      ["Benefit: satellite monitoring of weather and environment; risk: telescopes becoming steadily more powerful", "Benefit: space travel becoming routine and safe; risk: satellite monitoring of weather and environment", "Benefit: lower launch costs for every mission; risk: new medical knowledge gained from space research"],
       "Defending a position on space exploration starts from an honest ledger. Benefits named in the guide include medical, industrial, agricultural and meteorological gains, such as weather and environmental monitoring by satellite. Risks include the real hazards of launch, radiation and travel for crews. A benefit cannot be entered as a risk, or the ledger argues with itself.",
       {});
   }
@@ -697,7 +697,7 @@ E("s9-u1-stakeholder", 1, ["SC9.2.8"], 2, "var", varset([
   function () {
     return mcq("A town hall debates funding a Canadian space partnership. One speaker counts only the launch cost; another counts launch cost, the medical and weather spinoffs, the jobs, and the risk to crews. Which speaker is evaluating the issue as this indicator requires?",
       "The second speaker, because a defensible position weighs benefits and negative consequences across scientific and social perspectives, not cost alone",
-      ["The first speaker, because cost is the only factor a citizen may consider", "Both equally, because any single factor is enough to defend a position", "Neither, because positions on space exploration cannot be defended with reasons"],
+      ["The first speaker, because cost is the only factor a citizen may properly consider when a town debates spending public money on space", "Both equally, because any single factor, considered on its own, is enough to defend a position on a question of public funding like this one", "Neither, because positions on space exploration cannot be defended with reasons at all and must be settled by a simple vote of the town hall"],
       "This indicator asks students to defend a position on societal support for space exploration, viewing it as Canadian citizens and as world citizens. That requires the full ledger the second speaker uses: scientific and social benefits (medical, industrial, agricultural, meteorological), negative consequences, and the risks of exploration, set against the costs. Cost alone cannot carry a defended position.",
       {});
   }
@@ -735,7 +735,7 @@ E("s9-u1-instrument-use", 1, ["SC9.3.2"], 1, "var", varset([
   function () {
     return mcq("During the solar system stroll lab, a group's trundle wheel clicks every metre, but the group counts clicks while walking a curved path between markers. What is the instrument error and the fix?",
       "The curved path measures longer than the straight line distance; the fix is to measure along a straight line between markers",
-      ["There is no error, because the wheel counts metres wherever it rolls", "The wheel undercounts on curves; the fix is to walk faster", "The error is in the scale; the fix is to choose a different planet order"],
+      ["There is no error at all, because the wheel counts metres accurately wherever it happens to roll, curve or straight", "The wheel undercounts whenever it rolls on curves; the fix is to walk the path faster so the clicks keep up", "The error is in the scale the group chose; the fix is to choose a different planet order for the markers along the field"],
       "Using an instrument effectively means measuring what the plan defines. The lab's distances are straight line distances from the Sun marker. A curved roll adds extra metres the model does not intend, so the planets land too far out. Measuring along a straight line restores the intended distances.",
       {});
   }
@@ -797,7 +797,7 @@ E("s9-u1-prototype", 1, ["SC9.3.4"], 1, "var", varset([
   function () {
     return mcq("A prototype Mars rover keeps tipping on steep test slopes. In evaluating the design, which judgement is properly about function, reliability and materials?",
       "The wheelbase is too narrow for the slopes (function), the axle joints loosen after repeated runs (reliability), and a lighter frame material would lower the centre of mass (materials)",
-      ["The rover is the wrong colour for Mars (function), and its name is hard to pronounce (reliability)", "The rover tipped once, so the whole design should be discarded without testing", "The tipping is a materials problem only, so only the frame should change"],
+      ["The rover is the wrong colour for Mars (function), its name is hard to pronounce (reliability), and its frame paint adds weight that a lighter colour would avoid (materials)", "The rover tipped once on a test slope, so the whole design should be discarded without any further testing and the team should start again from nothing, whatever the cause", "The tipping is a materials problem only, so only the frame material should change, and neither the wheelbase nor the loosening joints need any attention from the team"],
       "Evaluating a design separates three questions. Function: does it do its job, here staying upright on slopes, which the narrow wheelbase fails. Reliability: does it keep working, which loosening joints fail. Materials: are the materials suited, here frame weight and centre of mass. Colour and naming are not evaluation criteria under this indicator.",
       {});
   }
@@ -807,7 +807,7 @@ E("s9-u1-design-judge", 1, ["SC9.3.4"], 3, "var", varset([
   function () {
     return mcq("Two probe lander designs are tested. Design A lands successfully in 9 of 10 drops but its sample arm jams in cold tests. Design B lands in 6 of 10 drops and its arm works in all conditions. A mission can tolerate a jammed arm (samples are a bonus) but not a failed landing. Which evaluation and choice is best supported?",
       "Choose A: landing is the mission critical function, A is far more reliable at it, and the arm weakness should be recorded and improved in the next prototype round",
-      ["Choose B: a design that fails 4 landings in 10 is acceptable if its arm is perfect", "Choose neither: any weakness in any part disqualifies a design entirely", "Choose A only if its materials are cheaper than B's"],
+      ["Choose B: a design that fails 4 landings in 10 is acceptable as long as its sample arm is perfect, because the arm is what the mission is really for", "Choose neither: any weakness in any part of a design, however minor, disqualifies that design entirely, so both must be rejected and the tests begun again", "Choose A only if its materials happen to be cheaper than B's materials, since cost of materials is the deciding test for a lander design like this"],
       "Evaluation weighs criteria by what the task demands. The mission states its priority plainly: landing failure ends everything, an arm jam only loses a bonus. A wins the critical function decisively (9 of 10 against 6 of 10), so A is chosen, with the cold weather arm fault recorded as the target for the next prototype round. Perfection in a secondary system cannot rescue failure in the primary one.",
       {});
   }
@@ -815,9 +815,9 @@ E("s9-u1-design-judge", 1, ["SC9.3.4"], 3, "var", varset([
 
 E("s9-u1-materials-gen", 1, ["SC9.3.4"], 2, "gen", function () {
   var cases = [
-    { d: "a lander leg made of a foam that crushes on landing and cannot be reused for a second test drop", k: "A reliability limit: the material does its job once, so the evaluation should require either a stronger material or spare legs for retesting", w: ["A function success with no limits, because the leg worked once", "A colour problem, because crushed foam looks untidy", "No evaluation is possible until the leg is flown to Mars"] },
-    { d: "a rover wheel made of a plastic that turns brittle at the lowest night temperature in the test chamber", k: "A materials failure for the intended conditions: the evaluation should reject this plastic for wheels or require insulation", w: ["A reliability strength, because brittle wheels are lighter", "A function success, because the wheel is round", "No evaluation is possible, because temperature is not a material property"] },
-    { d: "a habitat panel made of a material that blocks radiation well but is so heavy that the launch mass limit is exceeded", k: "A materials trade off: protection is strong, but the mass fails a design requirement, so a lighter shielding arrangement must be found", w: ["A clear success, because radiation protection is the only criterion", "A clear failure with no trade off, because heavy materials are always wrong", "An evaluation error, because launch mass is not part of design evaluation"] }
+    { d: "a lander leg made of a foam that crushes on landing and cannot be reused for a second test drop", k: "A reliability limit: the material does its job once, so the evaluation should require either a stronger material or spare legs for retesting", w: ["A function success with no limits worth recording, because the leg worked once and a single success settles the evaluation", "A colour problem, because crushed foam looks untidy after a landing and a tidier leg would present the design better to judges", "No evaluation is possible until the leg has actually been flown to Mars and tested in a real landing there first, whatever the tests show"] },
+    { d: "a rover wheel made of a plastic that turns brittle at the lowest night temperature in the test chamber", k: "A materials failure for the intended conditions: the evaluation should reject this plastic for wheels or require insulation", w: ["A reliability strength, because brittle wheels are lighter and lighter wheels always serve a rover better", "A function success, because the wheel is round and rolls smoothly in the warm test chamber at the start", "No evaluation is possible here, because temperature is not a material property and cannot enter a materials judgement"] },
+    { d: "a habitat panel made of a material that blocks radiation well but is so heavy that the launch mass limit is exceeded", k: "A materials trade off: protection is strong, but the mass fails a design requirement, so a lighter shielding arrangement must be found", w: ["A clear success, because radiation protection is the only criterion that a habitat panel should ever be judged against", "A clear failure with no trade off to weigh, because heavy materials are always the wrong choice for any part of a spacecraft", "An evaluation error, because launch mass is not part of design evaluation and should never be raised against a material"] }
   ];
   var c = pick(cases);
   return mcq("Evaluate this design detail: " + c.d + ". Which evaluation is correct?",
@@ -840,7 +840,7 @@ E("s9-u1-alternatives", 1, ["SC9.3.7"], 1, "var", varset([
   function () {
     return mcq("A habitat design team must keep drinking water supplied if the main recycling unit fails. Which response proposes genuine alternative solutions, as this indicator requires?",
       "Carry stored reserve water, add a smaller backup recycling unit, and plan resupply drops, then compare the three",
-      ["Use the main recycling unit, but check it more often", "Hope the main unit does not fail, since it is new", "Recycle water, recycle water carefully, and recycle water daily"],
+      ["Use the main recycling unit as the only supply, but check it more often than the schedule requires each week", "Hope the main unit does not fail during the mission, since it is new and newly tested equipment rarely breaks down", "Recycle water, recycle water more carefully than usual, and recycle water every day without fail on board"],
       "Alternative solutions must be genuinely different routes to the same goal. Stored reserves, a backup unit and resupply are three distinct plans with different costs and risks, ready to be compared and chosen among. Checking the same unit more often, or restating one plan three ways, offers no alternative at all.",
       {});
   }
@@ -850,7 +850,7 @@ E("s9-u1-plan-steps", 1, ["SC9.3.7"], 2, "var", varset([
   function () {
     return mcq("A team selects stored reserve water as its backup plan. Which set turns that selection into a developed plan?",
       "Decide how many days the reserve must cover, calculate the volume, choose sealed containers, set a rotation schedule so stored water stays fresh, and assign who checks it",
-      ["Write 'keep extra water' at the top of the plan and move on", "Buy the largest tank available and fill it once", "Store water in any open containers near the habitat door"],
+      ["Write 'keep extra water' at the top of the plan in large letters and move on to the next design problem without working out any amounts or responsibilities", "Buy the largest tank available, fill it once before launch, and treat that single filling as the complete reserve plan, with no schedule for checking or replacing the water", "Store the reserve water in any open containers that come to hand, set near the habitat door where the crew passes most often, and top them up when noticed by anyone"],
       "Developing a plan means working the chosen solution into steps that can be carried out: a quantity derived from a stated need, suitable containers, freshness maintained by rotation, and a named responsibility for checks. A slogan, an oversized single purchase and open containers each leave the plan undeveloped or unsafe.",
       {});
   }
@@ -869,7 +869,7 @@ E("s9-u1-process-eval", 1, ["SC9.3.8"], 1, "var", varset([
   function () {
     return mcq("After finishing a space station model, a group notes: 'We spent two meetings arguing about the colour scheme and ran out of time to test the airlock, which then failed.' Which evaluation of their process is most accurate?",
       "Their planning process was weak: time went to a low priority decision while a critical test was left undone",
-      ["Their process was strong, because they identified the failure afterwards", "Their only problem was the airlock design, not their process", "Groups should never evaluate their process after a task"],
+      ["Their process was strong throughout, because they identified the failure honestly once the task was over", "Their only problem was the airlock design itself, and nothing about how their group planned or used its time", "Groups should never evaluate their process after a task, since only the finished product can be judged"],
       "Evaluating individual and group processes means judging how the work was planned and carried out, not only the product. The group's own note shows the process fault: decision time was spent on appearance while testing a critical system was crowded out. Naming the failure afterwards is the start of evaluation, but it does not make the process that produced it strong.",
       {});
   }

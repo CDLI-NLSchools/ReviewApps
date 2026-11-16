@@ -174,7 +174,7 @@ E("s9-u3-static-def", 3, ["SC9.7.1"], 1, "var", varset([
   function () {
     return mcq("What is static electricity?",
       "A build-up of electric charge on the surface of an object, where the charge stays in place until it is discharged",
-      ["Electric current flowing steadily through a wire to power a device", "The magnetism produced when a coil of wire spins near a magnet", "The energy stored inside a chemical cell before it is connected"],
+      ["Electric current flowing steadily through the wires of a closed circuit to power a connected device", "The magnetism produced when a coil of wire spins rapidly near a magnet inside a generator at a station", "The energy stored inside a chemical cell before it is connected into a complete circuit and switched on"],
       "Static electricity is charge at rest: electrons build up on a material's surface and stay there. It is different from current electricity, where charge flows continuously through a circuit. The charge stays put until a discharge removes it.",
       {});
   }
@@ -184,7 +184,7 @@ E("s9-u3-friction-transfer", 3, ["SC9.7.1"], 1, "var", varset([
   function () {
     return mcq("A rubber rod is rubbed with a piece of fur. Afterwards the rod carries a negative charge. What actually moved during the rubbing?",
       "Electrons transferred from the fur onto the rod, leaving the rod with extra electrons and the fur with fewer",
-      ["Protons transferred from the fur onto the rod, making the rod negative", "Electrons transferred from the rod onto the fur, leaving the rod negative", "Neutral particles split in half, creating new positive and negative charges"],
+      ["Protons transferred from the fur onto the rod during the rubbing, making the rod negative in charge", "Electrons transferred from the rod onto the fur during the rubbing, leaving the rod negative overall", "Neutral particles split in half during the rubbing, creating new positive and negative charges from nothing"],
       "Only electrons move between materials. Protons sit in the nucleus, are far more massive, and do not transfer. The rod ended up negative, so it must have gained electrons; the fur lost those same electrons and became positive. Charge is transferred, never created.",
       {});
   }
@@ -204,7 +204,7 @@ E("s9-u3-electroscope-detect", 3, ["SC9.7.1"], 3, "var", varset([
   function () {
     var q = mcq("A student touches a charged rod to the knob of an uncharged metal leaf electroscope and the two leaves spread apart, as shown in the diagram (A marks the rod, B the knob and C the leaves). What does the spreading show, and what can the student conclude about the sign of the rod's charge from this test alone?",
       "The spreading shows the rod carried a charge, because charge spread onto both leaves and like charges repel; the test alone does not identify the sign",
-      ["The spreading shows the rod was positive, because only positive charge can spread onto metal leaves", "The spreading shows the rod was neutral, because neutral objects attract the leaves apart", "The spreading shows the exact amount of charge, measured by the angle of the leaves in coulombs"],
+      ["The spreading shows the rod was positive, because only positive charge can spread through metal onto the leaves and push them apart like this", "The spreading shows the rod was neutral, because neutral objects attract the leaves of an electroscope and pull them apart from each other", "The spreading shows the exact amount of charge on the rod, measured in coulombs from the angle of the leaves, and identifies its sign as well"],
       "An electroscope detects the presence of charge. Charge from the rod spreads through the metal onto both leaves; both leaves carry the same sign of charge, and like charges repel, so the leaves separate. Either sign of charge produces the same spreading, so identifying the sign takes further testing, exactly the caution the guide gives.",
       {});
     q.figure = s9u3StaticSVG();
@@ -216,7 +216,7 @@ E("s9-u3-discharge", 3, ["SC9.7.1"], 2, "var", varset([
   function () {
     var q = mcq("After shuffling across a carpet in dry weather, a student reaches for a metal doorknob and feels a small shock just before touching it. Which term and explanation fit the shock?",
       "Electric discharge: the charge built up on the student is suddenly removed as electrons jump between the student and the knob",
-      ["Electric current: a steady flow of charge begins circulating through the student's body", "Charging by friction: the doorknob rubs charge onto the student's hand", "Neutralization by protons: protons flow from the knob and cancel the student's charge"],
+      ["Electric current: a steady, controlled flow of charge begins circulating through the student's body and the knob", "Charging by friction: the doorknob rubs against the student's hand as it turns and rubs charge onto the skin directly", "Neutralization by protons: protons flow out of the metal knob into the hand and cancel the student's charge exactly"],
       "Electric discharge is the removal of electric charge from an object. The carpet built up a static charge on the student; near the conducting knob, that charge is suddenly released in one quick jump, felt as a shock. Lightning is the same event on a far larger scale. No steady circuit current is involved.",
       {});
     return q;
@@ -259,7 +259,7 @@ E("s9-u3-attract-repel-test", 3, ["SC9.7.2"], 2, "var", varset([
   function () {
     return mcq("A student wants to find out whether an unknown charged strip carries a positive or a negative charge. She already has a strip known to be negative. Which test gives her the answer, and why is simple attraction not enough on its own?",
       "Bring the known negative strip near the unknown: repulsion proves the unknown is also negative, because only like charges repel; attraction alone could mean an unlike charge or a neutral object",
-      ["Attraction to the known strip proves the unknown is positive, because attraction only happens between opposite charges", "If the unknown strip is attracted to a neutral object, it must be positive", "Repulsion from the known strip proves the unknown is positive, because positives push negatives away"],
+      ["Attraction to the known strip proves the unknown is positive, because attraction only ever happens between opposite charges, and a neutral object could not be attracted at all", "If the unknown strip is attracted to a neutral object it must be positive, because neutral objects are attracted only by positive charges and never by negative ones in any test", "Repulsion from the known strip proves the unknown is positive, because positive charges push negative charges away from themselves whenever the two are brought near each other"],
       "Repulsion is the decisive test: it happens only between like charges, so if the unknown strip is repelled by a known negative strip, it is negative for certain. Attraction is ambiguous, because a charged object attracts both an oppositely charged object and some neutral objects, so attraction alone cannot identify the sign.",
       {});
   }
@@ -279,7 +279,7 @@ E("s9-u3-static-vs-current", 3, ["SC9.7.3"], 1, "var", varset([
   function () {
     return mcq("Which comparison of static electricity and electric current is correct?",
       "Static electricity is charge built up in one place and released in a sudden discharge; electric current is a continuous, controlled flow of charge through a circuit",
-      ["Static electricity flows continuously through wires; electric current builds up on surfaces and discharges suddenly", "Static electricity can power household devices for hours; electric current lasts only a fraction of a second", "Static electricity involves moving protons; electric current involves moving electrons"],
+      ["Static electricity flows continuously through wires; electric current builds up on surfaces and discharges suddenly in a single spark, exactly like lightning", "Static electricity can power household devices for hours at a time; electric current lasts only a fraction of a second before it is gone and cannot be restarted", "Static electricity involves protons moving between objects; electric current involves electrons flowing, and the two charges move in the two kinds of electricity"],
       "The contrast is about control and duration. A static charge sits on a surface and leaves in one uncontrolled discharge, like the doorknob shock or lightning. Electric current is charge flowing steadily through a conductor in a circuit, which is what makes it useful for running devices. In both cases the moving charge is electrons.",
       {});
   }
@@ -289,7 +289,7 @@ E("s9-u3-static-not-harnessed", 3, ["SC9.7.3"], 1, "var", varset([
   function () {
     return mcq("A student asks why the static shock from a doorknob cannot be used to run a flashlight, even though the shock clearly involves moving electrons. Which answer is correct?",
       "The discharge is over almost instantly and cannot be controlled or sustained, so it cannot supply the continuous flow of charge a device needs",
-      ["Static shocks involve protons rather than electrons, and devices run only on electrons", "The shock's electrons move too slowly to carry any energy to a device", "Static electricity is not real electricity, so it can never interact with a device"],
+      ["Static shocks involve protons moving rather than electrons, and flashlights and other devices run only on electrons in motion through wires", "The shock's electrons move far too slowly through the air to carry any useful energy across to a device like a flashlight switched on", "Static electricity is not real electricity at all, so it can never interact with a device or with the charges inside one in any way"],
       "Static electricity is real electricity, but it is a one-moment event: the built-up charge escapes in a single rapid discharge and then it is gone. A flashlight needs charge flowing continuously through its circuit for as long as it is switched on. That is why static electricity cannot be harnessed as a useful energy source, while current electricity can.",
       {});
   }
@@ -309,7 +309,7 @@ E("s9-u3-voltage-def", 3, ["SC9.7.4"], 1, "var", varset([
   function () {
     return mcq("Which pairing of term, definition and unit is correct?",
       "Electric potential difference (voltage): the difference in electric potential energy per unit of charge between two points, measured in volts (V)",
-      ["Electric current: the difference in potential energy between two points, measured in volts (V)", "Electric charge: the flow of electrons past a point each second, measured in coulombs (C)", "Electric potential difference: the amount of charge stored in a cell, measured in coulombs (C)"],
+      ["Electric current: the difference in electric potential energy between two points in a circuit, measured in volts (V) like voltage", "Electric charge: the flow of electrons past a point each second through a wire in a circuit at any moment, measured in coulombs (C)", "Electric potential difference: the total amount of charge stored inside a chemical cell, measured in coulombs (C) before use"],
       "Voltage is electric potential difference: how much potential energy each unit of charge gains at the source or loses at a load, and its unit is the volt. Current is a flow rate, measured in amperes, and charge itself is measured in coulombs. Keeping the three quantities and their units separate is the precise language this indicator requires.",
       {});
   }
@@ -329,7 +329,7 @@ E("s9-u3-cell-how", 3, ["SC9.7.4"], 2, "var", varset([
   function () {
     return mcq("How does an electrochemical cell supply electric charge to a circuit?",
       "Two electrodes of different materials sit in an electrolyte, and chemical reactions at the electrodes separate charge, producing a potential difference between the terminals",
-      ["A magnet spins inside the cell, generating charge that collects on the terminals", "The cell stores loose electrons in a tank, and they pour out when a wire is attached", "Friction between the two electrodes rubs electrons from one onto the other"],
+      ["A magnet spins inside the cell on a tiny shaft, generating charge by its motion, and the charge collects on the two terminals for use in a circuit connected outside", "The cell stores loose electrons in a small tank inside it, and they pour out through the terminals as soon as a wire is attached to the circuit by the user", "Friction between the two electrodes, as the electrolyte flows past them, rubs electrons from one electrode onto the other inside the cell continuously while it works"],
       "An electrochemical cell needs two electrodes made of different materials and an electrolyte, the conducting substance they sit in. Chemical reactions involving the electrodes and the electrolyte drive electrons toward one terminal and away from the other, so a potential difference appears across the cell. It is a conversion of chemical energy to electrical energy, not stored loose electrons and not a generator.",
       {});
   }
@@ -370,7 +370,7 @@ E("s9-u3-parallel-identify", 3, ["SC9.7.5"], 1, "var", varset([
   function () {
     var q = mcq("The diagram shows a battery with two bulbs, each bulb on its own branch so charge can reach either bulb without passing through the other. One bulb burns out. What happens to the other bulb, and why?",
       "It stays lit at the same brightness, because its own branch is still a complete path across the battery",
-      ["It goes out, because the burnt bulb breaks the circuit's only path", "It becomes brighter, because all the battery's voltage now goes to one bulb", "It becomes dimmer, because the broken branch drains charge from the battery"],
+      ["It goes out at once, because the burnt bulb breaks the circuit's only complete path to the battery", "It becomes brighter than before, because all the battery's voltage now goes to the one remaining bulb", "It becomes dimmer than before, because the broken branch keeps draining charge from the battery steadily"],
       "In a parallel circuit each branch is a complete circuit across the source on its own. Each branch receives the full source voltage, so a bulb on an intact branch is unaffected when another branch opens. That independence is exactly why household lights are wired in parallel.",
       {});
     q.figure = s9u3ParallelSVG();
@@ -380,9 +380,9 @@ E("s9-u3-parallel-identify", 3, ["SC9.7.5"], 1, "var", varset([
 
 E("s9-u3-series-current-rule", 3, ["SC9.7.5"], 1, "gen", function () {
   var cases = [
-    { q: "An ammeter is moved to three different positions in a series circuit containing a battery and two bulbs. What will the three readings show?", k: "The same current at every position, because charge has only one path and the same flow passes every point", w: ["A smaller current after each bulb, because each bulb uses up part of the current", "A larger current near the battery and zero at the far end of the circuit", "Different currents that add up to the current leaving the battery"] },
+    { q: "An ammeter is moved to three different positions in a series circuit containing a battery and two bulbs. What will the three readings show?", k: "The same current at every position, because charge has only one path and the same flow passes every point", w: ["A smaller current after each bulb, because each bulb uses up part of the current to make its light and heat", "A larger current near the battery, falling steadily to zero at the far end of the circuit loop and back", "Different currents at the three positions that add up together to the current leaving the battery"] },
     { q: "In a series circuit the ammeter next to the battery reads 0.40 A. A second ammeter is placed on the far side of the second bulb. What does it read?", k: "0.40 A, because the current is the same everywhere in a series circuit", w: ["Less than 0.40 A, because the two bulbs have used some of the current", "0.80 A, because the currents through the two bulbs add together", "0 A, because the current is finished once it has passed both bulbs"] },
-    { q: "A student claims the current entering a bulb in a series circuit is larger than the current leaving it, because the bulb uses current to make light. Which correction is right?", k: "The currents are equal: the bulb converts electrical energy to light and heat, but charge itself flows through unchanged in amount", w: ["The claim is right: light is made out of the current that disappears", "The leaving current is larger, because the bulb adds energy to the charge", "Both currents are zero until the bulb warms up"] }
+    { q: "A student claims the current entering a bulb in a series circuit is larger than the current leaving it, because the bulb uses current to make light. Which correction is right?", k: "The currents are equal: the bulb converts electrical energy to light and heat, but charge itself flows through unchanged in amount", w: ["The claim is right: light is made out of the current itself, which disappears into the bulb as it shines each second", "The leaving current is larger than the entering current, because the bulb adds its own energy to the charge passing through", "Both currents are zero until the bulb has warmed up fully, and only then does any charge begin to flow through it"] }
   ];
   var c = pick(cases);
   return mcq(c.q, c.k, c.w,
@@ -426,7 +426,7 @@ E("s9-u3-parallel-voltage-rule", 3, ["SC9.7.5"], 3, "var", varset([
   function () {
     return mcq("A 9 V battery powers two different bulbs connected in parallel. Bulb P is rated to draw a larger current than bulb Q. Which statement about the voltages is correct?",
       "Both bulbs have 9 V across them; the different currents come from their different resistances, not from different voltages",
-      ["Bulb P has more than 9 V across it, because it draws the larger current", "The 9 V is shared between the bulbs in proportion to their currents", "Bulb Q has 9 V across it and bulb P has less, because P uses its voltage up faster"],
+      ["Bulb P has more than 9 V across it, because it draws the larger current of the two bulbs in the circuit shown", "The 9 V of the battery is shared out between the two bulbs in proportion to the currents each one draws from it", "Bulb Q has the full 9 V across it and bulb P has less, because P uses its voltage up faster than Q does in the circuit"],
       "Each parallel branch connects directly across the source, so every branch has the full source voltage across it, 9 V here, whatever its resistance. The bulbs differ in resistance, so by Ohm's law they draw different currents at that same voltage. Sharing out the voltage is the series behaviour, not the parallel behaviour.",
       {});
   }
@@ -454,7 +454,7 @@ E("s9-u3-energy-def", 3, ["SC9.7.6"], 1, "var", varset([
   function () {
     return mcq("Which set of definitions and units is correct?",
       "Electrical energy is the energy transferred by moving charge, measured in joules (J); electrical power is the rate at which that energy is transferred, measured in watts (W)",
-      ["Electrical energy is measured in watts (W); electrical power is measured in joules (J)", "Electrical energy and electrical power are the same quantity, both measured in joules (J)", "Electrical power is the total energy a device will ever use, measured in kilowatt-hours"],
+      ["Electrical energy is measured in watts (W), the rate unit; electrical power is measured in joules (J), the amount unit, in every case without exception in the guide's usage", "Electrical energy and electrical power are the same quantity under two names, and both are measured in joules (J) whenever they are reported in this course and in the guide", "Electrical power is the total energy a device will ever use in its lifetime, measured in kilowatt-hours, the unit printed on energy labels for appliances"],
       "Energy and power are related but different. Energy is the amount transferred, and its unit is the joule. Power is how fast the transfer happens, energy per unit time, and its unit is the watt: 1 W = 1 J/s. A kilowatt-hour is a larger unit of energy, not of power.",
       {});
   }
@@ -474,7 +474,7 @@ E("s9-u3-power-meaning", 3, ["SC9.7.6"], 2, "var", varset([
   function () {
     return mcq("Two kettles are plugged into the same 120 V supply. Kettle A is rated 1500 W and kettle B is rated 900 W. Both are used to heat the same amount of water. Which statement is correct?",
       "Kettle A transfers electrical energy faster, so it does the same heating job in less time; run for the same time, it would use more energy",
-      ["Kettle B transfers energy faster, because a lower wattage means less resistance to energy flow", "Both kettles transfer energy at the same rate, because they share the same voltage", "Kettle A uses less total energy for the job because it finishes sooner, whatever the time difference"],
+      ["Kettle B transfers energy faster than kettle A, because a lower wattage means less resistance to the flow of energy through it", "Both kettles transfer energy at exactly the same rate, because they are plugged into the same 120 V supply in the kitchen at home", "Kettle A uses less total energy for the whole job because it finishes sooner, whatever the exact time difference between them may be"],
       "Power is a rate: the 1500 W kettle converts about 1500 joules every second, the 900 W kettle about 900 joules every second, so the higher-rated kettle heats the same water faster. Energy used is power multiplied by time, so the faster kettle's shorter run and the slower kettle's longer run must both be counted before total energies can be compared; the rating alone settles the rate, not the total.",
       {});
   }
@@ -545,7 +545,7 @@ E("s9-u3-efficiency-meaning", 3, ["SC9.7.8"], 2, "var", varset([
   function () {
     return mcq("A heater is described as 100 percent efficient at converting electrical energy to heat in a room, while a lamp is described as 6 percent efficient at producing light. A student says the lamp figure must be wrong because 'no device wastes 94 percent of its energy.' Which response is correct?",
       "The lamp figure is reasonable: the other 94 percent of its input energy is converted to heat, which is wasted for a device whose job is making light, while the heater's job is exactly that heat",
-      ["The student is right: efficiency below 50 percent is impossible for an electrical device", "The lamp figure is wrong because the lamp's heat counts as useful output for a lamp", "The heater figure is wrong because no device can convert energy at 100 percent"],
+      ["The student is right: an efficiency below 50 percent is impossible for any electrical device, because at least half of every input must always reach the useful form of energy in the end", "The lamp figure is wrong because the lamp's heat counts as useful output for a lamp, exactly as a heater's heat does, so the lamp is nearly fully efficient as well in its room", "The heater figure is wrong because no device of any kind can convert energy at 100 percent, and every device wastes at least a small share of its input as sound or vibration instead"],
       "Efficiency measures the share of input energy converted to the useful form for the device's purpose. An incandescent lamp turns most of its input into heat and only about 6 percent into light, so as a lamp it is inefficient, even though the energy is not destroyed, just converted to the wrong form. A room heater wants heat, so nearly all of its input counts as useful. The guide's own comparison makes the same point with incandescent and compact fluorescent lamps.",
       {});
   }
@@ -555,7 +555,7 @@ E("s9-u3-efficiency-heat-loss", 3, ["SC9.7.8"], 2, "var", varset([
   function () {
     return mcq("A kettle takes in 0.30 kW-h of electrical energy to boil water, and 0.24 kW-h of that energy ends up as heat in the water. Which statement accounts for the full 0.30 kW-h?",
       "0.24 kW-h heated the water and the remaining 0.06 kW-h heated the kettle and the surrounding air and produced sound, so the kettle's efficiency for heating water is 80 percent",
-      ["0.24 kW-h heated the water and the remaining 0.06 kW-h was destroyed, so the efficiency is 80 percent", "0.24 kW-h heated the water and the remaining 0.06 kW-h stayed stored as electricity in the kettle", "The efficiency is 125 percent, because 0.30 divided by 0.24 is greater than one"],
+      ["0.24 kW-h heated the water and the remaining 0.06 kW-h was destroyed in the boiling, leaving only the 0.24 kW-h in existence afterwards, so the efficiency is 80 percent", "0.24 kW-h heated the water and the remaining 0.06 kW-h stayed stored as electricity in the kettle, unused, until the kettle is switched on again at a later time", "The efficiency is 125 percent, because the input is divided by the output, 0.30 divided by 0.24, and that quotient is greater than one, as efficiencies are meant to be"],
       "Energy is converted, never destroyed. Efficiency = output / input x 100% = 0.24 / 0.30 x 100% = 80%. The other 0.06 kW-h did not vanish: it heated the kettle body and the air around it and made the sounds of boiling, all conversions to forms that were not the job at hand.",
       {});
   }
@@ -615,7 +615,7 @@ E("s9-u3-static-tech", 3, ["SC9.8.1"], 1, "var", varset([
   function () {
     return mcq("Which technology works by putting static electricity to deliberate use?",
       "An electrostatic air cleaner, which charges airborne particles so they are attracted to collecting plates and removed from the air",
-      ["A circuit breaker, which uses static charge to detect overloaded circuits", "A transformer, which uses static charge to step voltage up and down", "A hydroelectric turbine, which uses static charge to turn its generator"],
+      ["A circuit breaker, which uses built-up static charge on its contacts to detect overloaded circuits in a home and trip", "A transformer, which uses static charge stored in its coils to step voltage up and down for transmission over distance", "A hydroelectric turbine, which uses static charge gathered from the falling water to turn its generator at the station"],
       "Knowledge of static electricity has been turned into working technologies: electrostatic air cleaners and precipitators charge dust and smoke particles so they collect on plates, photocopiers use static charge to place toner where the image belongs, and lightning rods give a static discharge a safe path. Breakers, transformers and turbines work on current electricity, not static charge.",
       {});
   }
@@ -625,7 +625,7 @@ E("s9-u3-lightning-rod", 3, ["SC9.8.1"], 1, "var", varset([
   function () {
     return mcq("What is the purpose of a lightning rod on a building?",
       "To give a lightning discharge a controlled, conducting path to the ground so the building is protected",
-      ["To repel lightning by charging the roof with the opposite charge", "To store lightning's energy in the building's wiring for later use", "To attract extra lightning so nearby buildings are hit instead"],
+      ["To repel lightning away from the building by charging the whole roof with the opposite charge to its own", "To store lightning's energy in the building's wiring so the household can use it later for free", "To attract extra lightning to the neighbourhood so nearby buildings are hit instead of this one"],
       "A lightning rod does not repel lightning or store it. It provides a deliberate metal path from the top of the building to the ground, so when a discharge does occur, the charge travels down the conductor instead of through the building's structure, where it would cause fire and damage. It is applied knowledge of electric discharge.",
       {});
   }
@@ -635,7 +635,7 @@ E("s9-u3-photocopier", 3, ["SC9.8.1"], 2, "var", varset([
   function () {
     return mcq("A photocopier makes copies using static electricity. Which part of the copying process depends on static charge?",
       "A charged drum attracts toner particles to the places that form the image, and the toner is then transferred to paper",
-      ["Static charge heats the paper so ink soaks into it evenly", "Static charge powers the lamp that scans the original page", "Static charge holds the finished copies in a neat stack by magnetism"],
+      ["Static charge heats the paper as it passes through, so the ink soaks into it evenly on every copy made", "Static charge powers the bright lamp that scans the original page at the start of the process each time", "Static charge holds the finished copies in a neat stack on the tray by magnetism between the sheets of paper"],
       "In a photocopier, the image is first formed as a pattern of static charge on a drum. Fine toner particles are attracted to the charged parts of that pattern, exactly the charged-attracts-other-material behaviour from the static electricity work, and the toner is then transferred and fixed to the paper. The scanning lamp and the stacking need no static charge.",
       {});
   }
@@ -645,7 +645,7 @@ E("s9-u3-careers-match", 3, ["SC9.8.2"], 1, "var", varset([
   function () {
     return mcq("Which pairing of worker and electricity-related job is correct for a Newfoundland and Labrador community?",
       "A linesperson employed by the provincial utility, maintaining the distribution lines that carry electricity to homes",
-      ["A photocopier technician, whose job is generating electricity at a hydroelectric station", "An electrician, whose job is designing wind turbines for offshore sites only", "A meter reader, whose job is manufacturing electrochemical cells"],
+      ["A photocopier technician, whose job is generating electricity at a hydroelectric station in the province for the grid", "An electrician, whose job is designing wind turbines for offshore sites only, and nothing on land at all", "A meter reader, whose job is manufacturing electrochemical cells in a factory for the utility company"],
       "Electricity careers in a community span production, delivery, installation and service: utility linespeople maintain the lines, electricians install and repair wiring in buildings, and photocopier technicians service one of the static electricity technologies. Each distractor hands a real worker the wrong job.",
       {});
   }
@@ -655,7 +655,7 @@ E("s9-u3-careers-range", 3, ["SC9.8.2"], 3, "var", varset([
   function () {
     return mcq("A student says the only electricity career is 'electrician.' Which response best corrects the claim using this strand's content?",
       "Electricity supports many careers: generation station operators, utility linespeople, electricians, electrical engineers and service technicians for devices such as photocopiers, among others",
-      ["The student is right: every other electricity job is a kind of electrician", "The only other electricity career is the engineer who designs generating stations", "Careers in electricity ended once the provincial grid was built"],
+      ["The student is right: every other electricity job, from the generating station to the photocopier, is simply a kind of electrician working under a different title in the community", "The only other electricity career besides electrician is the engineer who designs generating stations, and every other worker in the system is support staff for those two roles alone", "Careers in electricity ended completely once the provincial grid was built and connected, since a finished grid needs no workers to run, repair or extend it anywhere in the province"],
       "The strand follows electricity from the generating station to the device on the desk, and people work at every stage: producing it, transmitting it, installing it safely in buildings, designing the systems, and servicing the technologies that use it, down to the photocopier technician named in the guide. One job title cannot cover that range.",
       {});
   }
@@ -665,7 +665,7 @@ E("s9-u3-lights-uses", 3, ["SC9.8.3"], 1, "var", varset([
   function () {
     return mcq("Household lights are wired in parallel, while an older string of decorative lights goes dark entirely when one bulb fails. Which conclusion follows?",
       "The household lights use parallel connections so each light works independently; the decorative string uses a series connection, so one failure opens the whole string",
-      ["Both use series connections, and the household lights stay on because their bulbs are stronger", "Both use parallel connections, and the decorative string fails because its bulbs are older", "The household lights use series connections, which is why they can be switched independently"],
+      ["Both use series connections throughout, and the household lights stay on when one fails only because their bulbs are stronger than the decorative bulbs in the string", "Both use parallel connections throughout, and the decorative string fails all at once only because its bulbs are older and weaker than the household bulbs", "The household lights use series connections along a single path, which is why each one can be switched on and off independently of all the others in the house"],
       "The failure test identifies the wiring. Independent operation, each light with its own path and full voltage, is parallel wiring, the household choice. A whole string dying with one bulb is the series signature: one path, opened by the failed bulb. The guide gives exactly this pair of examples.",
       {});
   }
@@ -675,7 +675,7 @@ E("s9-u3-series-use-case", 3, ["SC9.8.3"], 1, "var", varset([
   function () {
     return mcq("In which situation is a series connection of resistors the deliberate, useful choice?",
       "A string of small decorative bulbs designed so that each bulb takes only a share of the supply voltage, letting low-voltage bulbs run on a higher-voltage supply",
-      ["Wiring the lights in different rooms of a house so each can fail without affecting the others", "Connecting a home's outlets so a device keeps working when another is unplugged", "Wiring a flashlight's spare bulb so it lights when the main bulb fails"],
+      ["Wiring the lights in the different rooms of a house along one shared path so that each light can fail without affecting any of the others in the house", "Connecting a home's outlets in one long chain so a device keeps working at full power when another device on the chain is unplugged or fails at any point", "Wiring a flashlight's spare bulb into the same single path so it lights automatically at full brightness when the main bulb fails on a trip outdoors"],
       "Series connections share the source voltage between the loads, and that sharing is sometimes the point: a series string lets many low-voltage bulbs divide a larger supply voltage between them. The other situations all need the opposite property, independent branches, which is parallel wiring.",
       {});
   }
@@ -685,7 +685,7 @@ E("s9-u3-parallel-use-case", 3, ["SC9.8.3"], 2, "var", varset([
   function () {
     return mcq("A school adds a second heater to a classroom circuit wired in parallel with the first. A student predicts the first heater will now get less voltage 'because it has to share.' Which evaluation is correct?",
       "The prediction is wrong: in parallel each heater keeps the full supply voltage; what increases is the total current drawn from the supply",
-      ["The prediction is right: parallel loads share the voltage just as series loads do", "The prediction is wrong because the first heater's voltage doubles when a branch is added", "The prediction is right, and the total current stays the same as well"],
+      ["The prediction is right: parallel loads share out the supply voltage between them just as series loads do in their circuits", "The prediction is wrong because the first heater's voltage doubles as soon as the second branch is added beside it in parallel", "The prediction is right about the voltage, and the total current drawn from the supply stays exactly the same as well as before"],
       "Parallel branches each connect directly across the source, so each keeps the full voltage regardless of the other branches. Adding a branch adds another current path: the branch currents add, so the main line current rises, which is why adding too many parallel loads can overload a circuit and trip its breaker. Sharing voltage is the series pattern.",
       {});
   }
@@ -727,7 +727,7 @@ E("s9-u3-grounding-prong", 3, ["SC9.8.5"], 2, "var", varset([
   function () {
     return mcq("Many plugs have a third, round prong, and the appliance's metal case is connected to it. What protection does that grounding terminal provide?",
       "If a fault connects the case to the live wiring, the ground connection gives the current a low-resistance path to earth instead of a path through a person touching the case",
-      ["The third prong supplies extra voltage so the appliance runs at full power", "The third prong stores static charge from the appliance so it cannot build up", "The third prong balances the plug so it cannot fall out of the outlet"],
+      ["The third prong supplies extra voltage from the outlet to the appliance so that it can run at its full rated power at all times without dropping under load", "The third prong stores the static charge that builds up on the appliance during use, holding it safely so it cannot build up to a shock for the user at the case", "The third prong balances the plug in the outlet so it cannot work loose or fall out while the appliance is running in the kitchen or workshop at home"],
       "Grounding is a safety design. A fault inside an appliance can make its metal case live; without a ground, the next path for that current could be the body of whoever touches it. The grounding terminal connects the case to earth through the wiring, giving fault current a deliberate, low-resistance route away and usually tripping the breaker. It is not about power, storage or plug balance.",
       {});
   }
@@ -761,7 +761,7 @@ E("s9-u3-cells-tradeoff", 3, ["SC9.8.6"], 2, "var", varset([
   function () {
     var q = mcq("The diagram sketches the two ways cells can be combined, without labels. Which statement gives the trade-off between series and parallel connections of cells correctly?",
       "Series raises the effective voltage but the battery life is no longer than a single cell's; parallel keeps the voltage at one cell's value but lengthens the battery life",
-      ["Series raises the voltage and lengthens the life; parallel lowers the voltage below one cell's value", "Series and parallel both raise the voltage; they differ only in how the cells are drawn", "Parallel raises the voltage but shortens the life; series keeps the voltage and lengthens the life"],
+      ["Series raises the voltage and lengthens the life; parallel lowers the voltage below one cell's value, giving the worst of both arrangements to the device using it", "Series and parallel connections both raise the effective voltage of the pack; they differ only in how the cells are drawn on the diagram of the circuit", "Parallel raises the voltage but shortens the life; series keeps the voltage and lengthens the life; each connection does the opposite of the other in every respect"],
       "Each connection buys one thing and gives up the other. Series cells add their voltages, which is what a device needing more voltage requires, but every cell carries the full current, so the pack lasts no longer than one cell would. Parallel cells share the current, so the pack lasts longer, but the voltage stays at a single cell's 1.5 V. Neither arrangement gives both advantages at once.",
       {});
     q.figure = s9u3CellsSVG();
@@ -773,7 +773,7 @@ E("s9-u3-lighting-evaluate", 3, ["SC9.8.7"], 1, "var", varset([
   function () {
     return mcq("A homeowner replaces incandescent bulbs with compact fluorescent bulbs that give the same light. Judged on efficiency, which evaluation is correct?",
       "The change is an improvement: the fluorescent bulbs convert a larger share of their input energy to light (about 20 percent against about 6 percent), so the same lighting job uses far less electrical energy",
-      ["The change makes no difference: all bulbs convert the same share of energy to light", "The change is a step backwards: incandescent bulbs are the more efficient lighting technology", "Efficiency cannot be compared for lighting, because light is not a form of energy"],
+      ["The change makes no difference to the home's energy use: all bulbs, whatever their design, convert exactly the same share of their input energy to light and the rest to heat in the room", "The change is a step backwards for the home: incandescent bulbs are the more efficient lighting technology, and the fluorescent bulbs waste more of their input as heat every hour", "Efficiency cannot be compared for lighting at all, because light is not a form of energy and so no share of input can ever be assigned to it in any comparison of bulbs like this one"],
       "The guide's worked comparison gives the incandescent lamp about 6 percent efficiency for light and the compact fluorescent about 20 percent, with the rest converted mainly to heat in both cases. Same useful output, much smaller input: that is what a better efficiency means, and it is why the replacement lowers both energy use and operating cost.",
       {});
   }
@@ -783,7 +783,7 @@ E("s9-u3-efficiency-design", 3, ["SC9.8.7"], 2, "var", varset([
   function () {
     return mcq("Two space heaters both draw 1500 W. Heater A warms a room's air noticeably faster than heater B, while heater B's casing becomes much hotter to touch. Which design judgement is best supported?",
       "Heater A is the better design for its purpose: more of its input energy is delivered as heat to the room's air, while more of heater B's input is spent heating its own casing",
-      ["Heater B is the better design, because a hot casing proves it produces more heat overall", "Both heaters are equally efficient in every respect, because both draw 1500 W", "Neither judgement is possible, because efficiency applies only to lighting devices"],
+      ["Heater B is the better design for the room, because a casing too hot to touch proves it produces more heat overall than heater A can manage in the same time", "Both heaters are equally efficient in every respect that matters, because both draw exactly 1500 W from the supply for every second they run in the room being heated", "Neither judgement is possible from these observations, because efficiency applies only to lighting devices and never to heaters or other appliances in a home"],
       "Equal input power does not mean equal useful output. The heater's job is warming the room, so energy spent heating the casing is energy diverted from the job. Heater A delivers more of the same 1500 W input to the room air, which is the efficiency judgement this indicator asks for: designs are evaluated by how much of the input reaches the intended use.",
       {});
   }
@@ -802,7 +802,7 @@ E("s9-u3-past-current", 3, ["SC9.8.8"], 1, "var", varset([
   function () {
     return mcq("Which comparison of past and current technology for the same need is accurate?",
       "Early electric irons were heavy, heated unevenly and had no temperature control; modern irons heat evenly, hold a set temperature and shut off automatically, doing the same job with better control and safety",
-      ["Early electric toasters used more electricity because they ran on static charge; modern toasters run on current", "Past technologies used no electricity at all; every heated appliance is a current invention", "Modern appliances always use more energy than the models they replaced, because they have more features"],
+      ["Early electric toasters used more electricity than modern ones because they ran on static charge stored in their elements; modern toasters run on electric current from the outlet in the wall", "Past technologies used no electricity at all in the home; every heated appliance in use today, from the iron to the toaster, is a current invention of this generation of designers", "Modern appliances always use more energy than the models they replaced, in every case, because they have more features and larger motors than the older models ever had in the past"],
       "The comparison this indicator asks for holds the need constant and compares how the technology met it. Irons and toasters are the guide's examples: the same heating job done across generations, with modern designs adding even heating, thermostatic control and automatic shut-off. Efficiency comparisons belong with those design changes, and modern models are often, not always, the more efficient ones, which is what Energuide labels help buyers check.",
       {});
   }
@@ -812,7 +812,7 @@ E("s9-u3-energuide-purpose", 3, ["SC9.8.8"], 2, "var", varset([
   function () {
     return mcq("What is the purpose of the Energuide label on a new appliance?",
       "To tell the buyer how much energy the appliance is expected to use in a year, so models meeting the same need can be compared before purchase",
-      ["To guarantee that the appliance will never need repair", "To state the voltage of the home the appliance was manufactured in", "To certify that the appliance is the cheapest model in its category"],
+      ["To guarantee that the appliance will never need any repair during the whole of its working life in the home of its buyer", "To state the voltage of the home, and the country, in which the appliance was manufactured for sale to buyers in that market", "To certify that the appliance is the cheapest model in its whole category at every store in the province that sells it to the public"],
       "An Energuide label reports the appliance's estimated yearly energy consumption in kilowatt-hours, measured under standard conditions. That lets a buyer compare two models that do the same job and fold the running cost into the decision, instead of judging by purchase price alone. It guarantees nothing about repairs or price; it informs the energy comparison.",
       {});
   }
@@ -832,7 +832,7 @@ E("s9-u3-bill-compare", 3, ["SC9.8.9"], 2, "var", varset([
   function () {
     return mcq("Two similar homes on the same street have very different winter electricity bills. Home P heats with electric baseboard heaters and leaves its windows unsealed; home Q heats with the same heaters but has sealed windows and added insulation. Which explanation of the difference is best supported?",
       "Home Q loses less heat to the outside, so its heaters run less to hold the same indoor temperature, and it uses fewer kilowatt-hours",
-      ["Home P's heaters must be more efficient, because they use more energy each month", "The difference must be an error, because identical heaters always use identical energy", "Home Q's bill is lower because insulation lowers the voltage supplied to its heaters"],
+      ["Home P's heaters must be the more efficient ones, because they use more energy each month to heat the home through the winter", "The difference must be a billing error, because identical heaters in identical homes always use identical energy every month of winter", "Home Q's bill is lower because its added insulation lowers the voltage supplied to its baseboard heaters by the utility each day"],
       "The heaters convert electrical energy to heat at the same rate in both homes; what differs is how fast the home loses that heat. Sealing and insulation slow the loss, so home Q's heaters cycle on for less time to maintain the same temperature, and energy, being power multiplied by time, falls. Improving the insulating factor of electrically heated homes is one of the guide's named reduction strategies.",
       {});
   }
@@ -851,7 +851,7 @@ E("s9-u3-approaches", 3, ["SC9.8.10"], 3, "var", varset([
   function () {
     return mcq("A town must decide how to cut its electricity use. Group 1 surveys households and graphs their energy use. Group 2 builds a model home display showing insulation options. Group 3 interviews the utility about peak demand times. What does this situation illustrate?",
       "Different approaches can be taken to answer questions, solve problems and make decisions about the same issue",
-      ["Only one group is doing science, because only one approach can be correct", "The groups are wasting effort, because a decision needs a single investigation", "The survey group must finish before the other approaches are allowed to start"],
+      ["Only one of the three groups is doing science, because only one approach to a problem can ever be the correct one", "The three groups are wasting their effort, because a sound decision needs a single investigation carried out one way only", "The survey group must finish all of its work before the other approaches are allowed to start on theirs at all"],
       "The Core STSE on electricity conservation is built on this point: the same problem can be approached by gathering usage data, by demonstrating and testing design options, and by consulting the people who run the system. The approaches produce different kinds of evidence, and a sound decision can draw on all of them. There is no rule that one approach must be the only correct one.",
       {});
   }
@@ -861,7 +861,7 @@ E("s9-u3-approach-fit", 3, ["SC9.8.10"], 2, "var", varset([
   function () {
     return mcq("A student team asks: 'Which of three insulation materials keeps a model house warmest for the longest time?' Which approach fits the question, and why do the other approaches fit less well?",
       "A controlled test: build identical model houses differing only in insulation material, heat them equally, and compare how their temperatures fall",
-      ["A survey of homeowners about which material they prefer, because opinions settle performance questions", "An interview with a utility spokesperson, because authority settles performance questions", "A poster of the three materials, because displaying them compares their performance"],
+      ["A survey of homeowners about which material they prefer for their own houses, because opinions gathered widely settle performance questions like this one", "An interview with a utility spokesperson about the materials, because an authority's word settles performance questions without any testing", "A poster of the three materials pinned up in the classroom, because displaying them side by side compares their performance for the class"],
       "The question asks for a measured comparison of performance, so the approach must produce measurements under controlled conditions: same houses, same heating, only the material changed, temperatures compared over time. Surveys gather opinions and interviews gather testimony; neither measures how the materials perform. Matching the approach to the kind of question is the skill this indicator names.",
       {});
   }
@@ -871,7 +871,7 @@ E("s9-u3-criteria-analysis", 3, ["SC9.8.11"], 1, "var", varset([
   function () {
     return mcq("A class analyses a proposal to replace a school's lighting. Which set of criteria fits an analysis of the technology's design and function on the basis of cost and impact?",
       "Purchase and running cost, effect on the school's daily routine during installation, and the change in the school's energy use for the surrounding community's generating load",
-      ["The colour of the new light fixtures, the installer's favourite brand, and the age of the old fixtures", "Cost alone, because a technology analysis considers only money", "The number of letters in the technology's name and its country of manufacture"],
+      ["The colour of the new light fixtures, the installer's favourite brand of fixture, and the age and condition of the old fixtures being replaced in the school", "Cost alone, in dollars, because a proper technology analysis considers only money and nothing about the people who use the building each day or the community", "The number of letters in the technology's name, the country it was manufactured in, and the year its maker was founded as a company in business long ago"],
       "Analysing a technology against identified criteria means judging its design and function by named measures: what it costs to buy and to run, how it affects daily life for the people using the building, and its wider impact, such as the generating load it removes from the community's supply. The guide names cost and impact on daily life and the community as the example criteria. Preferences and trivia are not criteria.",
       {});
   }
@@ -881,7 +881,7 @@ E("s9-u3-criteria-apply", 3, ["SC9.8.11"], 3, "var", varset([
   function () {
     return mcq("Judged against the criterion of running cost alone, a heat pump costs a homeowner less per winter than baseboard heaters. Judged against the criterion of purchase and installation cost, the baseboard heaters are cheaper. What does this show about analysing a technology?",
       "A technology can score differently against different criteria, so the criteria must be named and weighed before a conclusion is drawn",
-      ["One of the two judgements must be an error, because a technology is simply good or bad overall", "Running cost is the only legitimate criterion, so the heat pump wins automatically", "Criteria should be chosen after the conclusion, to support whichever technology is preferred"],
+      ["One of the two judgements must be an error in the analysis, because a technology is simply good or bad overall in every respect", "Running cost is the only legitimate criterion in any analysis, so the heat pump wins the comparison automatically every time", "Criteria should be chosen after the conclusion is reached, to support whichever technology the analyst already preferred from the start"],
       "Criterion-based analysis separates the judgements on purpose. The heat pump genuinely wins on running cost and genuinely loses on upfront cost; neither judgement cancels the other. A sound analysis states its criteria first, reports the technology's standing on each, and only then weighs them into a recommendation. Choosing criteria afterwards to fit a preferred answer reverses the process.",
       {});
   }
@@ -900,7 +900,7 @@ E("s9-u3-decision-balance", 3, ["SC9.8.12"], 1, "var", varset([
   function () {
     return mcq("A community is choosing between expanding a hydroelectric site and building a new thermal plant. Which approach counts as making an informed decision in this strand's sense?",
       "Weighing the environmental and social advantages and disadvantages of both options against evidence before choosing",
-      ["Choosing whichever option the loudest group at the meeting supports", "Choosing the option with the lower construction cost and considering nothing else", "Refusing to decide until one option has no disadvantages at all"],
+      ["Choosing whichever option the loudest group at the public meeting supports most strongly that evening in town", "Choosing the option with the lower construction cost and considering nothing else about either option at all", "Refusing to decide the question until one of the options has no disadvantages of any kind at all remaining"],
       "An informed decision in the STSE sense weighs advantages and disadvantages on more than one side of the ledger: environmental effects and social effects, not cost alone and not volume of support. Every real option carries some disadvantages, so waiting for a disadvantage-free option is a refusal to decide, not a standard of care.",
       {});
   }
@@ -910,7 +910,7 @@ E("s9-u3-decision-evidence", 3, ["SC9.8.12"], 2, "var", varset([
   function () {
     return mcq("A student supports wind generation for her town and writes only about its advantages. Her teacher asks her to strengthen the work before it can count as an informed decision. What is missing?",
       "The disadvantages of wind generation and the advantages of the alternatives, so the choice is weighed rather than promoted",
-      ["A larger title and more pictures of turbines", "A statement that wind generation has no disadvantages worth mentioning", "The names of companies that sell wind turbines"],
+      ["A larger title on the first page and more pictures of turbines turning in the wind at sunset, across the report", "A firm statement that wind generation has no disadvantages worth mentioning in the work at any point or anywhere", "The names and addresses of the companies that sell wind turbines to towns like hers in the province and beyond"],
       "Promoting one side is advocacy, not decision making. An informed decision sets the chosen option's disadvantages honestly beside its advantages, and does the same for the realistic alternatives, because the decision is between options, not between an option and nothing. Presentation and supplier lists add no weighing.",
       {});
   }
@@ -939,7 +939,7 @@ E("s9-u3-source-region", 3, ["SC9.8.13"], 2, "var", varset([
   function () {
     return mcq("A windy coastal community with modest sunlight considers solar panels and a wind generator for its community hall. Which reasoning is sound?",
       "The wind generator fits the region's reliable resource; the availability of the energy resource in a region usually decides which sources make sense there",
-      ["Solar panels are always the better choice, because the sun shines everywhere equally", "Neither can work, because alternative sources cannot generate real electricity", "The community should choose by which device is larger, since size decides output everywhere"],
+      ["Solar panels are always the better choice in every region, because the sun shines everywhere on Earth with exactly equal strength all year", "Neither device can work for the hall, because alternative sources cannot generate real electricity of the kind a building can use each day", "The community should choose by which device is larger in size, since the size of a device decides its output everywhere it is installed in the world"],
       "Alternative sources are not interchangeable: each depends on a local resource. A windy coast offers the wind generator a strong, frequent input, while modest sunlight limits what solar panels can collect there. The guide's generalization is that the availability of energy resources in a region usually dictates the types of energy used in that region.",
       {});
   }
@@ -969,7 +969,7 @@ E("s9-u3-constraint-evaluate", 3, ["SC9.8.14"], 3, "var", varset([
   function () {
     return mcq("A fuel cell supplier argues: 'Our cells are proven and clean, so every community should adopt them immediately; cost is no objection because the technology works.' Which evaluation best applies the guide's account of how alternative sources develop?",
       "The argument ignores the guide's constraints: development is limited by cost, by availability of materials and by materials' properties, so a working technology can still spread slowly and unevenly",
-      ["The supplier is right: once a technology works, no factor can legitimately slow its adoption", "The supplier is wrong only because fuel cells are not a real alternative source", "The argument fails because public support, the sole constraint, has not been measured"],
+      ["The supplier is right in full: once a technology has been shown to work, no factor of any kind can legitimately slow its adoption by any community anywhere in the province or beyond it", "The supplier is wrong only on one point: fuel cells are not a real alternative source of electrical energy at all, and so the whole argument fails on that ground alone in the guide", "The argument fails only because public support for fuel cells, the sole constraint on any new source, has not yet been measured in the communities named by the supplier or anyone else"],
       "A technology working in a demonstration settles the science, not the development. The guide's account is that alternative sources develop under constraint: what they cost, whether the materials can be had, and whether the materials perform as the design needs. Fuel cells are one of the guide's own alternative sources, so the source is not the problem; the claim that no constraint applies is.",
       {});
   }
@@ -989,7 +989,7 @@ E("s9-u3-resistance-factors", 3, ["SC9.9.1"], 2, "var", varset([
   function () {
     return mcq("Four wires are tested. Wire 1 is long and thin, wire 2 is short and thin, wire 3 is short and thick, and all are the same material at the same temperature. Which ordering of resistance, greatest to least, is correct?",
       "Wire 1, then wire 2, then wire 3: length adds resistance, and a thicker wire offers less resistance",
-      ["Wire 3, then wire 2, then wire 1: thicker wires always resist more", "Wire 2, then wire 1, then wire 3: shorter wires resist more", "All three are equal, because resistance depends only on the material"],
+      ["Wire 3, then wire 2, then wire 1: thicker wires always resist the flow of charge more than thin ones", "Wire 2, then wire 1, then wire 3: shorter wires always resist more than longer ones of the same thickness", "All three wires are equal in resistance, because resistance depends only on the material the wire is made of"],
       "Resistance in a wire depends on four factors: length, diameter, type of material and temperature. With material and temperature held the same here, length and thickness decide: a longer wire gives the charge more material to push through (more resistance), and a thicker wire gives it more room (less resistance). So the long thin wire resists most and the short thick wire least. The ohm is the unit of resistance.",
       {});
   }
@@ -1038,7 +1038,7 @@ E("s9-u3-meter-placement", 3, ["SC9.9.4"], 1, "var", varset([
   function () {
     var q = mcq("The diagram shows a battery, a bulb, and two meters. Meter A is connected in the main line of the circuit and meter V is connected directly across the bulb. Which statement about the meters is correct?",
       "Meter A is the ammeter, correctly in series to measure the current through the bulb; meter V is the voltmeter, correctly in parallel across the bulb to measure its voltage drop",
-      ["Meter A is the voltmeter, correctly in series; meter V is the ammeter, correctly across the bulb", "Both meters are ammeters, and either connection would measure current correctly", "Both meters should be connected across the bulb, because all measurements are made in parallel"],
+      ["Meter A is the voltmeter, correctly connected in series in the main line; meter V is the ammeter, correctly connected across the bulb to read its current directly", "Both meters are ammeters of different ranges, and either connection shown would measure the current through the bulb correctly in this circuit as drawn", "Both meters should be connected directly across the bulb, one on each side, because all electrical measurements are properly made in parallel in a circuit"],
       "The two meters connect in opposite ways because they measure different things. An ammeter measures the current flowing through a component, so it must sit in the path, in series, where all the charge passes through it. A voltmeter measures the potential difference between two points, so it connects across the component, in parallel. Swapping them is the classic circuit error.",
       {});
     q.figure = s9u3MeterSVG();
@@ -1070,7 +1070,7 @@ E("s9-u3-error-sources", 3, ["SC9.9.5"], 1, "var", varset([
   function () {
     return mcq("Two students measure the same bulb voltage and record 1.12 V and 1.13 V. Which account of the difference is correct?",
       "Small reading differences like this are expected random error in reading a meter; taking several readings and averaging them reduces the effect",
-      ["One student must have connected the voltmeter wrongly, because correct meters never disagree", "The difference proves the bulb's voltage changed between the two readings", "The readings should be reported to more decimal places until they agree"],
+      ["One student must have connected the voltmeter wrongly to the circuit, because correctly connected meters never disagree by any amount at all", "The difference proves the bulb's voltage itself changed between the two readings, rising or falling in the time between them by that amount", "The readings should both be reported to more and more decimal places, estimated beyond the scale, until the two values agree exactly"],
       "The guide names this exact case: one student records 1.12 V, another 1.13 V, for the same measurement. Reading a scale involves judgement about where the needle sits, so small variations are normal random error, not misconduct or equipment failure. The standard response is repeated readings and an average, not inventing extra decimal places.",
       {});
   }
@@ -1080,7 +1080,7 @@ E("s9-u3-error-meters-change", 3, ["SC9.9.5"], 3, "var", varset([
   function () {
     return mcq("After a voltmeter is added across a bulb, a class notices the circuit's current drops very slightly. Which statement best identifies this as a source of error to be aware of?",
       "Adding a meter changes the circuit slightly, because the meter itself has resistance, so the measured circuit is not quite the original circuit",
-      ["The current dropped because the voltmeter used up some of the current permanently", "The drop proves the ammeter was faulty and its readings should be discarded", "Meters never affect circuits, so the drop must be a coincidence to ignore"],
+      ["The current dropped because the voltmeter used up some of the circuit's current permanently, consuming it as it measured the voltage", "The drop proves the ammeter in the circuit was faulty, and all of its readings from the whole investigation should be discarded at once", "Meters never affect the circuits they measure in any way, so the drop must be a coincidence that the class should ignore entirely"],
       "Meters are components too. Adding a voltmeter across the bulb adds its resistance to the circuit, so the total resistance and the current shift slightly from the unmeasured circuit's values. The guide flags this effect and notes its full treatment is beyond this course; what is expected here is recognizing it as a potential source of error when readings are compared, not discarding sound data.",
       {});
   }
@@ -1090,7 +1090,7 @@ E("s9-u3-discrepancy-cause", 3, ["SC9.9.6"], 3, "var", varset([
   function () {
     return mcq("A group's Ohm's law data gives resistances of 10.1, 9.8 and 10.3 ohms for the same resistor, but one trial gives 14.6 ohms. Which first response is scientifically sound?",
       "Treat the three close values as the pattern and investigate the one trial: check that trial's connections and readings for a loose contact, a misread meter or a changed setting before accepting it",
-      ["Average all four values, because every measurement counts equally whatever happened", "Discard the three close values, because the unusual result is the discovery", "Report 14.6 ohms, because the last kind of trial is the most careful one"],
+      ["Average all four values together into one result, because every measurement ever taken counts equally whatever happened during its trial in the lab that day, without exception", "Discard the three close values as faulty, because the single unusual result is the real discovery of the investigation and the others must be mistaken readings by the group", "Report 14.6 ohms as the resistance, because the last trial of any set is always the most careful one and its value overrides all the trials before it in the set of readings"],
       "Three trials agreeing closely describe the resistor; one trial far away describes something that happened in that trial. Sound practice investigates the discrepancy first: a loose connection adds resistance, a misread scale inflates a value, a range change alters precision. Averaging a faulty trial into good ones corrupts the result, and a single outlier is not a discovery until it survives checking.",
       {});
   }
@@ -1124,7 +1124,7 @@ E("s9-u3-best-fit", 3, ["SC9.9.7"], 1, "var", varset([
   function () {
     var q = mcq("A student's voltage and current points for a resistor, shown in the graph, scatter slightly around a straight line through the origin. Which treatment of the graph is correct?",
       "Draw a line of best fit through the scatter, passing through the origin, and use the line (not any single point) to state the relationship",
-      ["Connect the points dot to dot in order, because the line must touch every measurement", "Discard the points farthest from a straight line and plot only the ones that fit", "Draw the line wherever it makes the resistance come out to a whole number"],
+      ["Connect the points dot to dot in the order they were plotted, because a proper line must touch every single measurement on the graph", "Discard the points that fall farthest from a straight line and plot only the remaining ones, the ones that fit the pattern neatly", "Draw the line wherever on the page it makes the calculated resistance come out to a neat whole number of ohms for the report"],
       "Real meter data always scatter a little, from the reading variations this strand discusses. A line of best fit represents the pattern of all the points at once: for an ohmic resistor it is straight and passes through the origin, showing current directly proportional to voltage. Connecting dot to dot would draw the errors into the result, and deleting awkward points falsifies the data.",
       {});
     q.figure = s9u3VIGraphSVG([2,4,6,8],[0.2,0.4,0.6,0.8]);
@@ -1164,7 +1164,7 @@ E("s9-u3-instrument-use", 3, ["SC9.9.9"], 2, "var", varset([
   function () {
     var q = mcq("A student is taking readings from the bulb circuit shown in the diagram. Which practice shows the meter being used effectively and accurately in this strand's lab work?",
       "Selecting the suitable range before reading, reading the scale squarely at eye level, and repeating the reading to check it agrees with itself",
-      ["Reading the scale from an angle while the circuit is being rebuilt, and recording the first value seen", "Using the highest range for every measurement so the needle barely moves, for safety", "Recording readings to as many decimal places as the student can invent, for precision"],
+      ["Reading the scale from a sharp angle while the circuit is being rebuilt on the bench, and recording the first value seen each time", "Using the highest available range for every measurement taken, so the needle barely moves on the scale, in the name of safety", "Recording every reading to as many decimal places as the student can invent on the spot, in the name of precision in the lab"],
       "Accurate instrument use is a technique, not a hope: choose the range that puts the reading well up the scale without over-ranging, read at eye level to avoid parallax error, and repeat readings so random variation shows itself and can be averaged. A barely moving needle wastes the scale's precision, and invented decimal places are not precision at all. The bench handling itself is assessed in the classroom; this entry assesses the judgement behind it.",
       {});
     q.figure = s9u3MeterSVG();
@@ -1176,7 +1176,7 @@ E("s9-u3-safe-practice", 3, ["SC9.9.10"], 1, "var", varset([
   function () {
     return mcq("Which set of practices is the safe way to work with the circuits and apparatus of this strand?",
       "Build and change circuits with the supply switched off or disconnected, check connections before switching on, and report damaged wires or hot components instead of continuing",
-      ["Change connections while the circuit is live so the effect of each change is seen immediately", "Hold a resistor that has become hot to check whether it is still working", "Bypass a breaker that keeps tripping so the investigation can continue"],
+      ["Change the connections while the circuit is still live and powered, so the effect of each change can be seen immediately as it is made by the student", "Hold a resistor that has become hot during the investigation in the bare hand to check whether it is still working properly or not in the circuit", "Bypass a breaker that keeps tripping during the work so the investigation can continue without interruption to its end in the laboratory with the class"],
       "Low-voltage school circuits are forgiving, but the habits are the real curriculum: work on a dead circuit, inspect before energizing, and treat heat, damage or a repeatedly tripping protection device as a stop signal, not an obstacle to defeat. Each distractor normalizes exactly the habit that causes injuries with larger apparatus later. Safe handling at the bench is classroom assessed; this entry assesses recognizing the safe practice.",
       {});
   }
@@ -1186,7 +1186,7 @@ E("s9-u3-testable-rephrase", 3, ["SC9.9.12"], 1, "var", varset([
   function () {
     return mcq("Which rephrasing turns a loose wondering into a testable question about cells in series and parallel?",
       "Loose: 'Are batteries better in a row or side by side?' Testable: 'With identical cells and the same bulb, does connecting two cells in series or in parallel produce the greater voltage across the bulb?'",
-      ["Loose: 'Do batteries last?' Testable: 'Why do batteries exist?'", "Loose: 'Which battery is best?' Testable: 'Which battery do most students like?'", "Loose: 'How do cells work?' Testable: 'What is the history of the cell?'"],
+      ["Loose: 'Do batteries last a long time in toys?' Testable: 'Why do batteries exist in the world at all, and who first thought of making them for devices like these?'", "Loose: 'Which battery is best for a flashlight?' Testable: 'Which battery do most students in the class like best for their own flashlights at home, and why?'", "Loose: 'How do cells work inside a flashlight?' Testable: 'What is the history of the electric cell, from its first invention to the present day in detail?'"],
       "A testable question names what will be changed, what will be measured, and what will be held the same, in a form an investigation can answer. The correct rephrasing changes only the connection (series against parallel), measures the voltage across the same bulb, and holds the cells identical. Preferences and history questions cannot be settled by a circuit measurement.",
       {});
   }
@@ -1196,7 +1196,7 @@ E("s9-u3-testable-judge", 3, ["SC9.9.12"], 2, "var", varset([
   function () {
     return mcq("A student proposes three questions for a cells investigation: (1) 'Do series cells make a bulb brighter than parallel cells with the same cells?' (2) 'Who invented the first cell?' (3) 'Is series or parallel more popular in toys?' Which judgement is correct?",
       "Only question 1 is testable in this investigation: it compares a measurable outcome between the two connections with the cells held the same; questions 2 and 3 are answered by research and surveys, not by circuit measurements",
-      ["All three are testable, because all three can be investigated somehow", "Only question 3 is testable, because popularity can be counted", "None are testable, because brightness cannot be measured"],
+      ["All three questions are testable in this investigation, because all three can be investigated somehow by someone, in some way, using the equipment in the room and the library down the hall", "Only question 3 is testable in this investigation, because the popularity of a connection can be counted in a survey of toy owners carried out by the class this term at school", "None of the three questions is testable here, because the brightness of a bulb cannot be measured or compared in any way with the equipment available to the class in this lab"],
       "Testable in this context means answerable by the circuit investigation at hand. Question 1 sets up a fair measurement: same cells, two connections, brightness compared (and it can be backed by meter readings). Question 2 is historical research and question 3 is a survey; both are legitimate questions, but neither is a testable question for a series and parallel cells experiment, which is the distinction this indicator targets.",
       {});
   }
@@ -1206,7 +1206,7 @@ E("s9-u3-applications", 3, ["SC9.9.13"], 3, "var", varset([
   function () {
     return mcq("A class finds that in their model circuits, bulbs in parallel stay bright when one is removed, while series bulbs share voltage. Which statement correctly identifies an application of that finding?",
       "Homes are wired in parallel so each light and outlet works independently at full supply voltage, which is the finding applied at building scale",
-      ["The finding applies only inside the classroom, because real buildings use a different kind of electricity", "The finding shows series wiring should be used for homes, since sharing voltage saves energy", "The finding has no application until the class repeats it with larger bulbs"],
+      ["The finding applies only inside the classroom where it was found, because real buildings use a completely different kind of electricity from school circuits", "The finding shows series wiring should be used for homes instead, since sharing the voltage between lights saves energy in every room", "The finding has no application anywhere until the class repeats the whole investigation with larger bulbs and a larger supply in the lab"],
       "Findings earn their keep in applications. The parallel result, independent branches at full voltage, is exactly the property a home needs, and it is why household wiring is parallel. The classroom circuit runs on the same electricity as the building around it; scale changes the components, not the principles.",
       {});
   }
@@ -1235,7 +1235,7 @@ E("s9-u3-env-apply", 3, ["SC9.9.14"], 2, "var", varset([
   function () {
     return mcq("A proposed generating project is cheap to build and run, and its design meets all safety standards, but it would flood a large area of forest and a community's traditional hunting land. Applying this indicator's criteria, which evaluation is complete?",
       "The project scores well on cost of production and safety, but poorly on degree of environmental impact, and a complete evaluation reports all three standings rather than a single verdict",
-      ["The project is acceptable, because meeting safety standards settles the environmental question", "The project is acceptable, because low cost outweighs every other criterion automatically", "The project must be rejected on cost grounds, because flooding land is a production cost"],
+      ["The project is acceptable as proposed, because meeting every safety standard in its design settles the environmental question completely, with nothing left to report", "The project is acceptable as proposed, because its low cost outweighs every other criterion in the evaluation automatically, whatever the other standings show in detail", "The project must be rejected on cost grounds alone, because flooding the land counts as a production cost and cost is the criterion that decides every evaluation of this kind"],
       "Criteria are applied one at a time and reported honestly. Cost: favourable. Safety: favourable. Degree of environmental impact: unfavourable, since flooding forest and hunting land is a major impact. Collapsing that into 'acceptable because it is safe and cheap' abandons the third criterion, which exists precisely for projects whose costs are paid by the environment and the community rather than the builder.",
       {});
   }
