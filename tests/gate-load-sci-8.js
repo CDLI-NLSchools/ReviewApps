@@ -10,10 +10,19 @@
      the Water Systems spec, CR marks sum 44, twelve entries at
      exactly 3 marks and two at 4 marks (the SC8.2.6 decision CR
      and the SC8.3.1 design CR, the latter carrying noCompose).
-   - Terminology sweeps (Unit 1, guide discipline): no
+   - Unit 2 (Fluids): exactly 80 entries, 66 SR + 14 CR, levels
+     32/32/16, per-indicator counts equal to the Fluids spec, CR
+     marks sum 44 (twelve at 3, two at 4: the SC8.5.2 cleaning
+     claim CR and the SC8.6.5 design CR, the latter noCompose).
+     Course-wide after Unit 2: 160 entries, 28 CR, 88 CR marks,
+     exactly two noCompose design CRs.
+   - Terminology sweeps (guide discipline): Unit 1, no
      student-facing text keys a numeric salinity or density value
      (the guide directs qualitative comparison), and no text
      carries the harvested satellite mechanism claim (infrared).
+     Unit 2, the terms cohesion and adhesion are never keyed or
+     used (guide: students are not responsible for them), and the
+     harvested kilopascal defect value never appears.
    - Every entry draws clean questions; SR draws carry exactly 4
      options with exactly one correct; figure entries carry a
      figure on at least one draw. */
@@ -29,7 +38,8 @@ ok(!!C, "courses.js registers sci-8");
 ok(C.listed === false, "sci-8 is unlisted");
 ok(C.curriculum === "NL" && C.subject === "Science" && C.grade === 8, "curriculum NL, Science, grade 8");
 ok(C.units[1] === "Water Systems on Earth's Surface", "Unit 1 registered");
-ok(Object.keys(C.indicators).length === 25, "25 indicators registered so far, saw " + Object.keys(C.indicators).length);
+ok(C.units[2] === "Fluids", "Unit 2 registered");
+ok(Object.keys(C.indicators).length === 53, "53 indicators registered so far, saw " + Object.keys(C.indicators).length);
 ok(C.unitTest && C.unitTest.total === 26 && C.unitTest.sr === 20 && C.unitTest.cr === 6 && C.unitTest.indCap === 2 && JSON.stringify(C.unitTest.crPref) === "[3,3]", "unit test convention 20 SR + 2 CR at 3 = 26, indCap 2, crPref [3,3]");
 
 const built = fs.readFileSync(ROOT + "/index.html", "utf8");
@@ -49,10 +59,12 @@ eval(fs.readFileSync(ROOT + "/banks/sci-8.js", "utf8"));
 const CR = window.__BANK_CRMARKS || {};
 
 const U1 = BANK.filter(e => e.unit === 1);
-ok(BANK.length === 80, "bank registers 80 entries, saw " + BANK.length);
-ok(U1.length === 80, "all 80 entries are Unit 1, saw " + U1.length);
+const U2 = BANK.filter(e => e.unit === 2);
+ok(BANK.length === 160, "bank registers 160 entries, saw " + BANK.length);
+ok(U1.length === 80, "80 entries are Unit 1, saw " + U1.length);
+ok(U2.length === 80, "80 entries are Unit 2, saw " + U2.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 80, "all entry ids unique");
+ok(ids.size === 160, "all entry ids unique");
 
 const SPEC_COUNT = {
   "SC8.1.1": 6, "SC8.1.2": 3, "SC8.1.3": 5, "SC8.1.4": 4, "SC8.1.5": 4, "SC8.1.6": 6, "SC8.1.7": 5,
@@ -69,6 +81,16 @@ const p1 = primaryCounts(U1);
 for (const tag of Object.keys(SPEC_COUNT)) {
   ok((p1[tag] || 0) === SPEC_COUNT[tag], "U1 primary count " + tag + " = " + SPEC_COUNT[tag] + ", saw " + (p1[tag] || 0));
 }
+const SPEC_COUNT_U2 = {
+  "SC8.4.1": 5, "SC8.4.2": 4, "SC8.4.3": 4, "SC8.4.4": 6, "SC8.4.5": 4, "SC8.4.6": 3, "SC8.4.7": 3,
+  "SC8.4.8": 3, "SC8.4.9": 4, "SC8.4.10": 5, "SC8.4.11": 3, "SC8.5.1": 2, "SC8.5.2": 3, "SC8.5.3": 2,
+  "SC8.5.4": 2, "SC8.5.5": 1, "SC8.5.6": 3, "SC8.5.7": 3, "SC8.6.1": 2, "SC8.6.2": 2, "SC8.6.3": 1,
+  "SC8.6.4": 2, "SC8.6.5": 2, "SC8.6.6": 2, "SC8.6.7": 1, "SC8.6.8": 3, "SC8.6.9": 1, "SC8.6.10": 4
+};
+const p2 = primaryCounts(U2);
+for (const tag of Object.keys(SPEC_COUNT_U2)) {
+  ok((p2[tag] || 0) === SPEC_COUNT_U2[tag], "U2 primary count " + tag + " = " + SPEC_COUNT_U2[tag] + ", saw " + (p2[tag] || 0));
+}
 ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the registered indicators");
 
 const crU1 = U1.filter(e => CR[e.id] !== undefined);
@@ -81,12 +103,22 @@ ok(U1.filter(e => CR[e.id] === undefined).length === 66, "66 SR entries, saw " +
 function levels(list) { const lv = [0, 0, 0]; list.forEach(e => { lv[e.level - 1]++; }); return JSON.stringify(lv); }
 ok(levels(U1) === "[32,32,16]", "U1 levels 32/32/16, saw " + levels(U1));
 ok(U1.filter(e => e.kind === "gen").length === 14, "14 U1 generator entries, saw " + U1.filter(e => e.kind === "gen").length);
+const crU2 = U2.filter(e => CR[e.id] !== undefined);
+ok(crU2.length === 14, "14 CR entries in Unit 2, saw " + crU2.length);
+ok(markSum(crU2) === 44, "U2 CR marks sum to 44, saw " + markSum(crU2));
+ok(crU2.filter(e => CR[e.id] === 3).length === 12, "twelve U2 CR entries at exactly 3 marks, saw " + crU2.filter(e => CR[e.id] === 3).length);
+ok(CR["s8-u2-cr-cleaning-claim"] === 4 && CR["s8-u2-cr-design-viscosity"] === 4, "the cleaning claim CR and the design CR carry 4 marks");
+ok(U2.filter(e => CR[e.id] === undefined).length === 66, "66 SR entries in Unit 2, saw " + U2.filter(e => CR[e.id] === undefined).length);
+ok(levels(U2) === "[32,32,16]", "U2 levels 32/32/16, saw " + levels(U2));
+ok(U2.filter(e => e.kind === "gen").length === 24, "24 U2 generator entries, saw " + U2.filter(e => e.kind === "gen").length);
+ok(crU1.length + crU2.length === 28 && markSum(crU1) + markSum(crU2) === 88, "course-wide CR manifest is 28 entries and 88 marks");
 const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
-ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity"]),
-  "exactly the design CR carries noCompose, saw " + noComp.join(","));
+ok(JSON.stringify(noComp) === JSON.stringify(["s8-u1-cr-design-salinity", "s8-u2-cr-design-viscosity"]),
+  "exactly the two design CRs carry noCompose, saw " + noComp.join(","));
 
 const FIG_ENTRIES = ["s8-u1-profile-figure", "s8-u1-landform-figure", "s8-u1-wave-energy",
-  "s8-u1-health-figure", "s8-u1-pop-interpolate", "s8-u1-pop-extrapolate", "s8-u1-cr-population"];
+  "s8-u1-health-figure", "s8-u1-pop-interpolate", "s8-u1-pop-extrapolate", "s8-u1-cr-population",
+  "s8-u2-flow-lab", "s8-u2-identify-substance", "s8-u2-force-figure", "s8-u2-bargraph", "s8-u2-pattern"];
 
 let badDraws = [];
 BANK.forEach(e => {
@@ -125,6 +157,19 @@ U1.forEach(e => {
   }
 });
 ok(vHits.length === 0, "qualitative-comparison sweep clean, hits: " + vHits.join(","));
+
+/* Unit 2 sweeps: cohesion and adhesion are never used (the guide
+   excludes the terms from what students are responsible for), and
+   the harvested pressure defect value never appears. */
+let fHits = [];
+U2.forEach(e => {
+  for (let i = 0; i < 40; i++) {
+    const q = e.gen();
+    const text = [q.prompt, q.solution].concat(q.options || [], q.answers || []).join(" ");
+    if (/cohesion|adhesion|1541/i.test(text)) { fHits.push(e.id); break; }
+  }
+});
+ok(fHits.length === 0, "fluids terminology sweep clean, hits: " + fHits.join(","));
 
 /* Negative stems, listed for judgement (spec audit). */
 const NEG = [];

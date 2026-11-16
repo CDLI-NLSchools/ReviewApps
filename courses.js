@@ -850,7 +850,8 @@ window.COURSES = {
   panels: {},
 
   units: {
-    1: "Water Systems on Earth's Surface"
+    1: "Water Systems on Earth's Surface",
+    2: "Fluids"
   },
 
   /* Indicators from the eNLightenED Units and Indicators
@@ -885,14 +886,46 @@ window.COURSES = {
     "SC8.3.7": "Interpreting patterns and inferring relationships",
     "SC8.3.8": "Reporting on abiotic factors; evaluating processes",
     "SC8.3.9": "Population trends from graphs: interpolate and extrapolate",
-    "SC8.3.10": "Strengths and weaknesses of ocean floor technologies"
+    "SC8.3.10": "Strengths and weaknesses of ocean floor technologies",
+    "SC8.4.1": "Comparing the viscosity of various liquids",
+    "SC8.4.2": "Factors that modify a liquid's viscosity",
+    "SC8.4.3": "Mass, volume and density, through the particle theory",
+    "SC8.4.4": "Density analyzed quantitatively",
+    "SC8.4.5": "Temperature effects on density, through the particle theory",
+    "SC8.4.6": "Density changes in everyday life",
+    "SC8.4.7": "Balanced and unbalanced forces",
+    "SC8.4.8": "Mass and weight compared",
+    "SC8.4.9": "Weight, buoyancy, sinking and floating",
+    "SC8.4.10": "Force, area and pressure, quantitatively",
+    "SC8.4.11": "Pressure, volume and temperature in compressed or heated fluids",
+    "SC8.5.1": "Personal activities and applications of fluid dynamics",
+    "SC8.5.2": "Products developed from our understanding of viscosity",
+    "SC8.5.3": "How science and technology affect our lives and community",
+    "SC8.5.4": "The science underlying particular technologies",
+    "SC8.5.5": "Personal activities related to science disciplines",
+    "SC8.5.6": "Technologies from our understanding of density and buoyancy",
+    "SC8.5.7": "The science underlying hydraulic technologies",
+    "SC8.6.1": "Questions arising from practical problems involving fluids",
+    "SC8.6.2": "Testable questions and clearly defined practical problems",
+    "SC8.6.3": "Explanations for discrepancies in data",
+    "SC8.6.4": "Compiling and displaying data in a bar graph",
+    "SC8.6.5": "Carrying out procedures controlling the major variables",
+    "SC8.6.6": "Patterns and trends in data; relationships among variables",
+    "SC8.6.7": "Using instruments effectively and accurately",
+    "SC8.6.8": "Volume of irregular objects by water displacement",
+    "SC8.6.9": "Explanations for discrepancies in data, evaluated",
+    "SC8.6.10": "Calculating the density of various objects"
   },
 
   unitInd: {
     1: ["SC8.1.1", "SC8.1.2", "SC8.1.3", "SC8.1.4", "SC8.1.5", "SC8.1.6", "SC8.1.7", "SC8.1.8",
         "SC8.1.9", "SC8.2.1", "SC8.2.2", "SC8.2.3", "SC8.2.4", "SC8.2.5", "SC8.2.6",
         "SC8.3.1", "SC8.3.2", "SC8.3.3", "SC8.3.4", "SC8.3.5", "SC8.3.6", "SC8.3.7", "SC8.3.8",
-        "SC8.3.9", "SC8.3.10"]
+        "SC8.3.9", "SC8.3.10"],
+    2: ["SC8.4.1", "SC8.4.2", "SC8.4.3", "SC8.4.4", "SC8.4.5", "SC8.4.6", "SC8.4.7", "SC8.4.8",
+        "SC8.4.9", "SC8.4.10", "SC8.4.11", "SC8.5.1", "SC8.5.2", "SC8.5.3", "SC8.5.4",
+        "SC8.5.5", "SC8.5.6", "SC8.5.7", "SC8.6.1", "SC8.6.2", "SC8.6.3", "SC8.6.4",
+        "SC8.6.5", "SC8.6.6", "SC8.6.7", "SC8.6.8", "SC8.6.9", "SC8.6.10"]
   },
 
   /* No exam presets: there is no common examination at this

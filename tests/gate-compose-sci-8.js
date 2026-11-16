@@ -107,6 +107,7 @@ function runUnit(unit, designCR, designInd) {
 }
 
 const passU1 = runUnit(1, "s8-u1-cr-design-salinity", "SC8.3.1");
-const pass = passU1;
+const passU2 = runUnit(2, "s8-u2-cr-design-viscosity", "SC8.6.5");
+const pass = passU1 && passU2;
 console.log(pass ? "GATE-COMPOSE-SCI-8: PASS" : "GATE-COMPOSE-SCI-8: FAIL");
 process.exit(pass ? 0 : 1);

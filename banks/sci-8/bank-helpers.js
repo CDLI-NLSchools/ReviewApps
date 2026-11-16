@@ -123,3 +123,87 @@ function s8HealthSVG(samples, measure, unit, threshold) {
   s += "</svg>";
   return s;
 }
+
+/* ================= Unit 2 (Fluids) figure families =================
+   F1: density table panel (HTML figure), a subset of the guide's
+   Table 8.1. F2: force arrow diagrams (the two arrows are sized by
+   relative force; the item text names which arrow is which).
+   F3: generic line graph with caller-supplied axis labels. */
+
+/* F1: approximate densities of common substances, from the guide's
+   Table 8.1. Reference data for compute-and-match items; the table
+   itself answers nothing until the student calculates. */
+function s8DensityTableFigure() {
+  var fluids = [["Ethyl alcohol", "0.79"], ["Machine oil", "0.90"], ["Water", "1.00"], ["Seawater", "1.03"], ["Glycerol", "1.26"], ["Mercury", "13.55"]];
+  var solids = [["Cork", "0.24"], ["Oak", "0.70"], ["Sugar", "1.59"], ["Salt", "2.16"], ["Aluminum", "2.70"], ["Iron", "7.87"], ["Lead", "11.34"], ["Gold", "19.32"]];
+  function rows(list) {
+    return list.map(function (r) { return "<tr><td style=\"padding:2px 10px\">" + r[0] + "</td><td style=\"padding:2px 10px;text-align:right\">" + r[1] + "</td></tr>"; }).join("");
+  }
+  var h = "<div style=\"border:1px solid #999;border-radius:6px;padding:10px 14px;background:#fdfdf5;max-width:560px\">";
+  h += "<b>Approximate densities of common substances</b>";
+  h += "<table style=\"border-collapse:collapse;margin-top:6px\"><tr><th style=\"padding:2px 10px;text-align:left\">Fluid</th><th style=\"padding:2px 10px\">Density (g/mL)</th><th style=\"padding:2px 10px;text-align:left\">Solid</th><th style=\"padding:2px 10px\">Density (g/cm3)</th></tr>";
+  for (var i = 0; i < fluids.length; i++) {
+    h += "<tr><td style=\"padding:2px 10px\">" + fluids[i][0] + "</td><td style=\"padding:2px 10px;text-align:right\">" + fluids[i][1] + "</td><td style=\"padding:2px 10px\">" + solids[i][0] + "</td><td style=\"padding:2px 10px;text-align:right\">" + solids[i][1] + "</td></tr>";
+  }
+  h += "<tr><td style=\"padding:2px 10px\">" + "" + "</td><td></td><td style=\"padding:2px 10px\">" + solids[6][0] + "</td><td style=\"padding:2px 10px;text-align:right\">" + solids[6][1] + "</td></tr>";
+  h += "<tr><td></td><td></td><td style=\"padding:2px 10px\">" + solids[7][0] + "</td><td style=\"padding:2px 10px;text-align:right\">" + solids[7][1] + "</td></tr>";
+  h += "</table></div>";
+  return h;
+}
+
+/* F2: force arrows on an object in water. kind: "sink" (down arrow
+   longer), "rise" (up arrow longer), "float" (arrows equal). The
+   object art differs by kind (rock, balloon, boat). The figure does
+   not name the forces; the item text does. */
+function s8ForceSVG(kind) {
+  var W = 360, H = 250;
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:360px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<rect x=\"0\" y=\"60\" width=\"" + W + "\" height=\"190\" fill=\"#dceef7\"/>";
+  s += "<line x1=\"0\" y1=\"60\" x2=\"" + W + "\" y2=\"60\" stroke=\"#5b8db8\" stroke-width=\"2\"/>";
+  var cx = 180, cy = 150;
+  if (kind === "sink") {
+    s += "<path d=\"M150 138 L206 132 L216 156 L196 172 L156 168 L144 154 Z\" fill=\"#8d877c\" stroke=\"#5d594f\"/>";
+  } else if (kind === "rise") {
+    s += "<ellipse cx=\"" + cx + "\" cy=\"128\" rx=\"30\" ry=\"36\" fill=\"#e8a04c\" stroke=\"#a3540d\"/>";
+    s += "<path d=\"M180 164 q4 18 -2 34\" stroke=\"#a3540d\" stroke-width=\"2\" fill=\"none\"/>";
+    cy = 128;
+  } else {
+    s += "<path d=\"M128 150 L232 150 L216 178 L144 178 Z\" fill=\"#b06f28\" stroke=\"#7d4d16\"/>";
+    s += "<rect x=\"168\" y=\"128\" width=\"24\" height=\"22\" fill=\"#efe3cb\" stroke=\"#7d4d16\"/>";
+    cy = 152;
+  }
+  var upLen = kind === "sink" ? 34 : kind === "rise" ? 74 : 54;
+  var dnLen = kind === "sink" ? 74 : kind === "rise" ? 34 : 54;
+  s += "<line x1=\"" + (cx - 52) + "\" y1=\"" + cy + "\" x2=\"" + (cx - 52) + "\" y2=\"" + (cy - upLen) + "\" stroke=\"#1a6f8f\" stroke-width=\"3\"/>";
+  s += "<polygon points=\"" + (cx - 52) + "," + (cy - upLen - 8) + " " + (cx - 59) + "," + (cy - upLen + 3) + " " + (cx - 45) + "," + (cy - upLen + 3) + "\" fill=\"#1a6f8f\"/>";
+  s += "<line x1=\"" + (cx + 52) + "\" y1=\"" + cy + "\" x2=\"" + (cx + 52) + "\" y2=\"" + (cy + dnLen) + "\" stroke=\"#b3541e\" stroke-width=\"3\"/>";
+  s += "<polygon points=\"" + (cx + 52) + "," + (cy + dnLen + 8) + " " + (cx + 45) + "," + (cy + dnLen - 3) + " " + (cx + 59) + "," + (cy + dnLen - 3) + "\" fill=\"#b3541e\"/>";
+  s += "</svg>";
+  return s;
+}
+
+/* F3: line graph with caller-supplied data and axis labels. */
+function s8LineGraphSVG(xs, ys, xLabel, yLabel) {
+  var W = 540, H = 280, base = 232, left = 58, right = W - 25, top = 28;
+  var maxX = Math.max.apply(null, xs), maxY = Math.max.apply(null, ys) * 1.15;
+  function X(v) { return left + v / maxX * (right - left); }
+  function Y(v) { return base - v / maxY * (base - top); }
+  var pts = xs.map(function (x, i) { return X(x).toFixed(1) + "," + Y(ys[i]).toFixed(1); });
+  var s = "<svg viewBox=\"0 0 " + W + " " + H + "\" width=\"100%\" style=\"max-width:540px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"12\">";
+  s += "<line x1=\"" + left + "\" y1=\"" + base + "\" x2=\"" + right + "\" y2=\"" + base + "\" stroke=\"#666\"/>";
+  s += "<line x1=\"" + left + "\" y1=\"" + base + "\" x2=\"" + left + "\" y2=\"" + top + "\" stroke=\"#666\"/>";
+  for (var g = 0; g <= 4; g++) {
+    var gv = maxY * g / 4;
+    s += "<line x1=\"" + left + "\" y1=\"" + Y(gv) + "\" x2=\"" + right + "\" y2=\"" + Y(gv) + "\" stroke=\"#e3eaee\"/>";
+    s += "<text x=\"" + (left - 6) + "\" y=\"" + (Y(gv) + 4) + "\" text-anchor=\"end\">" + Math.round(gv) + "</text>";
+  }
+  s += "<polyline fill=\"none\" stroke=\"#1a6f8f\" stroke-width=\"2.5\" points=\"" + pts.join(" ") + "\"/>";
+  xs.forEach(function (x, i) {
+    s += "<circle cx=\"" + X(x) + "\" cy=\"" + Y(ys[i]) + "\" r=\"3.5\" fill=\"#1a6f8f\"/>";
+    s += "<text x=\"" + X(x) + "\" y=\"" + (base + 18) + "\" text-anchor=\"middle\">" + x + "</text>";
+  });
+  s += "<text x=\"" + (W / 2) + "\" y=\"" + (H - 4) + "\" text-anchor=\"middle\">" + s8Esc(xLabel) + "</text>";
+  s += "<text x=\"15\" y=\"" + (H / 2) + "\" text-anchor=\"middle\" transform=\"rotate(-90 15 " + (H / 2) + ")\">" + s8Esc(yLabel) + "</text>";
+  s += "</svg>";
+  return s;
+}
