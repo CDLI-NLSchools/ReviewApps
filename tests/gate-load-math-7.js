@@ -11,7 +11,11 @@
      banks/math-7/bank-pk.js (Unit 1 +24, Unit 2 +14, Unit 7 +7,
      for 254 entries in per-unit counts 54/35/33/26/22/24/32/28;
      the pin change is deliberate and recorded in the Piece 1
-     build report), and its CR_MARKS manifest
+     build report), plus, since November 16, 2026, the Band 3
+     Piece 2 Unit 4 area and measurement piece's 25 flagged
+     entries in the same file (Unit 4 +25, for 279 entries in
+     per-unit counts 54/35/33/51/22/24/32/28; the pin change is
+     deliberate and recorded in the Piece 2 build report), and its CR_MARKS manifest
      equals the standalone bank source's own CR_MARKS literal
      (74 keys; 25 at 2 marks and 49 at 3).
    - Every entry carries both staged hints (the bank's E is
@@ -82,21 +86,22 @@ ok(C.units[8] === "Geometry", "Unit 8 is Geometry, saw " + C.units[8]);
 const placements = Object.values(C.unitInd).reduce((n, a) => n + a.length, 0);
 ok(placements === 130, "UNIT_IND has 130 placements, saw " + placements);
 
-ok(BANK.length === 254, "bank registers 254 entries (209 + the Piece 1 strand's 45), saw " + BANK.length);
+ok(BANK.length === 279, "bank registers 279 entries (209 + the Piece 1 strand's 45 + Piece 2's 25), saw " + BANK.length);
 const perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-const wantPerUnit = { 1: 54, 2: 35, 3: 33, 4: 26, 5: 22, 6: 24, 7: 32, 8: 28 };
+const wantPerUnit = { 1: 54, 2: 35, 3: 33, 4: 51, 5: 22, 6: 24, 7: 32, 8: 28 };
 Object.keys(wantPerUnit).forEach(u =>
   ok(perUnit[u] === wantPerUnit[u], "Unit " + u + " has " + wantPerUnit[u] + " entries, saw " + perUnit[u]));
 
-/* The pinned flagged set (Band 3 Piece 1, November 16, 2026):
-   the fluency strand's 45 entries, pinned deliberately; the
-   strand entries are all selected response, so the CR_MARKS
+/* The pinned flagged set (Band 3 Piece 1, November 16, 2026;
+   extended by Piece 2 the same day): the fluency strand's 45
+   entries plus Piece 2's 25 Unit 4 entries, pinned deliberately;
+   the strand entries are all selected response, so the CR_MARKS
    manifest below is untouched by the tranche. */
-const PK_PIN_7 = ["u1-pk-div-2digit", "u1-pk-div-exact", "u1-pk-div-related", "u1-pk-div-remainder", "u1-pk-div-zeros", "u1-pk-fact-division", "u1-pk-fact-halving", "u1-pk-fact-onemore", "u1-pk-fact-recall", "u1-pk-fact-skip", "u1-pk-mult-2by1", "u1-pk-mult-2by2", "u1-pk-mult-3by1", "u1-pk-mult-3by2", "u1-pk-mult-zeros", "u1-pk-multiples-common", "u1-pk-multiples-first", "u1-pk-multiples-identify", "u1-pk-multiples-problem", "u1-pk-ooo-basic", "u1-pk-ooo-brackets", "u1-pk-ooo-chain", "u1-pk-ooo-division", "u1-pk-ooo-why", "u2-pk-add-regroup", "u2-pk-add-three", "u2-pk-addsub-large", "u2-pk-below-compare", "u2-pk-below-debt", "u2-pk-below-line", "u2-pk-below-temp", "u2-pk-order-below", "u2-pk-order-decimals", "u2-pk-order-line", "u2-pk-order-missing", "u2-pk-order-place", "u2-pk-sub-line", "u2-pk-sub-regroup", "u7-pk-average-decimals", "u7-pk-average-money", "u7-pk-average-set", "u7-pk-average-small", "u7-pk-average-whole", "u7-pk-order-below", "u7-pk-order-line"];
+const PK_PIN_7 = ["u1-pk-div-2digit", "u1-pk-div-exact", "u1-pk-div-related", "u1-pk-div-remainder", "u1-pk-div-zeros", "u1-pk-fact-division", "u1-pk-fact-halving", "u1-pk-fact-onemore", "u1-pk-fact-recall", "u1-pk-fact-skip", "u1-pk-mult-2by1", "u1-pk-mult-2by2", "u1-pk-mult-3by1", "u1-pk-mult-3by2", "u1-pk-mult-zeros", "u1-pk-multiples-common", "u1-pk-multiples-first", "u1-pk-multiples-identify", "u1-pk-multiples-problem", "u1-pk-ooo-basic", "u1-pk-ooo-brackets", "u1-pk-ooo-chain", "u1-pk-ooo-division", "u1-pk-ooo-why", "u2-pk-add-regroup", "u2-pk-add-three", "u2-pk-addsub-large", "u2-pk-below-compare", "u2-pk-below-debt", "u2-pk-below-line", "u2-pk-below-temp", "u2-pk-order-below", "u2-pk-order-decimals", "u2-pk-order-line", "u2-pk-order-missing", "u2-pk-order-place", "u2-pk-sub-line", "u2-pk-sub-regroup", "u4-pk-circle-centre", "u4-pk-circle-diameter", "u4-pk-circle-pick", "u4-pk-circle-radius", "u4-pk-dec-mult-near3", "u4-pk-dec-mult-whole", "u4-pk-dec-square-decimal", "u4-pk-dec-square-whole", "u4-pk-perim-missing-polygon", "u4-pk-perim-missing-side", "u4-pk-perim-pentagon", "u4-pk-perim-rect", "u4-pk-perim-square", "u4-pk-rect-area", "u4-pk-rect-area-context", "u4-pk-rect-decimals", "u4-pk-rect-missing-side", "u4-pk-rect-square", "u4-pk-rect-square-decimal", "u4-pk-ruler-cm", "u4-pk-ruler-cm-decimal", "u4-pk-ruler-difference", "u4-pk-ruler-half", "u4-pk-ruler-mm", "u4-pk-ruler-unit-choice", "u7-pk-average-decimals", "u7-pk-average-money", "u7-pk-average-set", "u7-pk-average-small", "u7-pk-average-whole", "u7-pk-order-below", "u7-pk-order-line"];
 const flagged7 = BANK.filter(e => e.pkFlag).map(e => e.id).sort();
 ok(JSON.stringify(flagged7) === JSON.stringify(PK_PIN_7.slice().sort()),
-   "the flagged set is exactly the Piece 1 strand's pinned 45 entries, saw " + JSON.stringify(flagged7));
+   "the flagged set is exactly the pinned 70 entries (Piece 1's 45 plus Piece 2's 25), saw " + JSON.stringify(flagged7));
 
 ok(Object.keys(CR).length === 74, "CR_MARKS manifest has 74 keys, saw " + Object.keys(CR).length);
 const ids = new Set(BANK.map(e => e.id));

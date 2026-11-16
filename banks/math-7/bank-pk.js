@@ -737,3 +737,634 @@ var PKT7 = {
   "u7-pk-average-small": { src: "authored:averaging a set of numbers, placement unevidenced", group: "averaging", for: PK7_FOR_AVG }
 };
 BANK.forEach(function (e) { var t = PKT7[e.id]; if (t) { e.pkFlag = true; e.pkSrc = t.src; e.pkFor = t.for.slice(); e.pkGroup = t.group; } });
+
+/* ================================================================
+   Band 3 Piece 2 (November 16, 2026): area of a rectangle and the
+   measurement base, all housed in Unit 4, per
+   Math-7-PK-Band-3-Specification-2026-11-16.md Section 7. 25
+   entries, all authored new, in five groups: rectangle-area and
+   perimeter (cluster 7-C9), ruler-measurement, circle-measure and
+   decimal-multiplication (cluster 7-C8). Percent of a quantity is
+   excluded from this unit's check (specification Section 13,
+   Decision 1): no percent group is built here. Provenance is
+   recorded three ways, in agreement: the comment block at the head
+   of each group section below, the pkSrc property each entry gains
+   from the PKT7_P2 table at the end of this file, and the build
+   report's source-to-host table. Each entry's indicators array
+   carries the first code of its group's Supports column; pkFor
+   carries the full list. Figure-bearing items draw the figure from
+   the item's own values on every draw (a rectangle scaled to its
+   labelled sides, a ruler whose object ends exactly on the tick
+   for its stated length, a circle part drawn to the part named),
+   and no figure hands over the key: side labels state lengths,
+   never the area or perimeter asked for. */
+
+/* Rectangle drawn to scale from its own side lengths, labelled
+   underneath (length) and at the left (width). shade is true for
+   the area group (the surface is the quantity) and false for the
+   perimeter group (the boundary is the quantity). */
+function pk7rect(l, w, lText, wText, shade) {
+  var sc = Math.min(225 / l, 115 / w), rw = l * sc, rh = w * sc;
+  var x0 = (320 - rw) / 2, y0 = (185 - rh) / 2 - 8;
+  var out = '<svg viewBox="0 0 320 185" width="320" height="185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rectangle">';
+  out += '<rect x="' + fmt(x0, 1) + '" y="' + fmt(y0, 1) + '" width="' + fmt(rw, 1) + '" height="' + fmt(rh, 1) + '" fill="' + (shade ? FIG_SHADE : "none") + '" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += _txt(x0 + rw / 2, y0 + rh + 18, lText, 12.5, false);
+  out += _txt(x0 - 8, y0 + rh / 2 + 4, wText, 12, false, "end");
+  return out + '</svg>';
+}
+
+/* House-shaped pentagon drawn to scale: base 2a, walls h, roof
+   slopes s with the rise r = sqrt(s^2 - a^2) an integer for every
+   (a, s) pair the entry draws, so the drawn slope length is the
+   labelled s exactly. Labels: base underneath, walls at the right,
+   slopes outside the roof lines. */
+function pk7house(a, h, s) {
+  var r = Math.round(Math.sqrt(s * s - a * a)), W = 2 * a, H = h + r;
+  var sc = Math.min(230 / W, 118 / H), x0 = (320 - W * sc) / 2, yB = (185 + H * sc) / 2 - 8;
+  function X(x) { return x0 + x * sc; }
+  function Y(y) { return yB - y * sc; }
+  var out = '<svg viewBox="0 0 320 185" width="320" height="185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pentagon shaped like a house">';
+  out += '<polygon points="' + fmt(X(0), 1) + ',' + fmt(Y(0), 1) + ' ' + fmt(X(W), 1) + ',' + fmt(Y(0), 1) + ' ' + fmt(X(W), 1) + ',' + fmt(Y(h), 1) + ' ' + fmt(X(a), 1) + ',' + fmt(Y(H), 1) + ' ' + fmt(X(0), 1) + ',' + fmt(Y(h), 1) + '" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += _txt(X(a), Y(0) + 18, W + " cm", 12.5, false);
+  out += _txt(X(W) + 8, Y(h / 2) + 4, h + " cm", 12, false, "start");
+  out += _txt(X(a) - a * sc / 2 - 5, Y(h + r / 2) - 2, s + " cm", 12, false, "end");
+  out += _txt(X(a) + a * sc / 2 + 5, Y(h + r / 2) - 2, s + " cm", 12, false, "start");
+  return out + '</svg>';
+}
+
+/* L-shaped rectilinear hexagon drawn to scale: outer W by H with
+   the top-right notch cut to (w2, h1). Side labels sit outside the
+   boundary, or inside the notch void for the two inner sides.
+   labels is [bottom, right, notch, inner, top, left]. */
+function pk7Lshape(W, H, w2, h1, labels) {
+  var sc = Math.min(230 / W, 118 / H), x0 = (320 - W * sc) / 2, yB = (185 + H * sc) / 2 - 8;
+  function X(x) { return x0 + x * sc; }
+  function Y(y) { return yB - y * sc; }
+  var pts = [[0, 0], [W, 0], [W, h1], [w2, h1], [w2, H], [0, H]];
+  var out = '<svg viewBox="0 0 320 185" width="320" height="185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="L-shaped polygon">';
+  out += '<polygon points="' + pts.map(function (p) { return fmt(X(p[0]), 1) + ',' + fmt(Y(p[1]), 1); }).join(" ") + '" fill="none" stroke="' + FIG_INK + '" stroke-width="2"/>';
+  out += _txt(X(W / 2), Y(0) + 18, labels[0], 12, false);
+  out += _txt(X(W) + 7, Y(h1 / 2) + 4, labels[1], 12, false, "start");
+  out += _txt(X((w2 + W) / 2), Y(h1) - 7, labels[2], 12.5, labels[2] === "?");
+  out += _txt(X(w2) + 7, Y((h1 + H) / 2) + 4, labels[3], 12, false, "start");
+  out += _txt(X(w2 / 2), Y(H) - 7, labels[4], 12, false);
+  out += _txt(X(0) - 7, Y(H / 2) + 4, labels[5], 12, false, "end");
+  return out + '</svg>';
+}
+
+/* Ruler drawn to the measurement itself: 2 px per millimetre,
+   ticks at every millimetre (longer at 5 mm and at each
+   centimetre, centimetres numbered below), and the measured
+   object as a bar starting at the 0 mark and ending exactly on
+   the tick for lenMM. maxCm is the last numbered centimetre. */
+function pk7ruler(lenMM, maxCm) {
+  var pxmm = 2, x0 = 24, W = x0 + maxCm * 10 * pxmm + 16, H = 104;
+  function X(mm) { return x0 + mm * pxmm; }
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ruler with an object measured from the zero mark">';
+  out += '<rect x="' + fmt(X(0), 1) + '" y="14" width="' + fmt(lenMM * pxmm, 1) + '" height="17" fill="' + FIG_ACC + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  out += '<rect x="' + x0 + '" y="42" width="' + (maxCm * 10 * pxmm) + '" height="34" fill="' + FIG_SHADE + '" fill-opacity="0.35" stroke="' + FIG_INK + '" stroke-width="1.8"/>';
+  for (var mm = 0; mm <= maxCm * 10; mm++) {
+    var tl = mm % 10 === 0 ? 13 : (mm % 5 === 0 ? 9 : 5.5);
+    out += '<line x1="' + fmt(X(mm), 1) + '" y1="42" x2="' + fmt(X(mm), 1) + '" y2="' + (42 + tl) + '" stroke="' + FIG_INK + '" stroke-width="' + (mm % 10 === 0 ? 1.5 : 1) + '"/>';
+    if (mm % 10 === 0) out += _txt(X(mm), 93, String(mm / 10), 11.5, false);
+  }
+  return out + '</svg>';
+}
+
+/* Two objects on one ruler, for the difference entry: both bars
+   start at the 0 mark, names sit in the left margin. */
+function pk7ruler2(aMM, bMM, maxCm, nameA, nameB) {
+  var pxmm = 2, x0 = 74, W = x0 + maxCm * 10 * pxmm + 16, H = 118;
+  function X(mm) { return x0 + mm * pxmm; }
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ruler with two objects measured from the zero mark">';
+  out += _txt(x0 - 6, 24, nameA, 11, false, "end");
+  out += '<rect x="' + x0 + '" y="14" width="' + fmt(aMM * pxmm, 1) + '" height="15" fill="' + FIG_ACC + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  out += _txt(x0 - 6, 47, nameB, 11, false, "end");
+  out += '<rect x="' + x0 + '" y="37" width="' + fmt(bMM * pxmm, 1) + '" height="15" fill="' + FIG_ALT + '" stroke="' + FIG_INK + '" stroke-width="1.6"/>';
+  out += '<rect x="' + x0 + '" y="60" width="' + (maxCm * 10 * pxmm) + '" height="32" fill="' + FIG_SHADE + '" fill-opacity="0.35" stroke="' + FIG_INK + '" stroke-width="1.8"/>';
+  for (var mm = 0; mm <= maxCm * 10; mm++) {
+    var tl = mm % 10 === 0 ? 12 : (mm % 5 === 0 ? 8.5 : 5);
+    out += '<line x1="' + fmt(X(mm), 1) + '" y1="60" x2="' + fmt(X(mm), 1) + '" y2="' + (60 + tl) + '" stroke="' + FIG_INK + '" stroke-width="' + (mm % 10 === 0 ? 1.5 : 1) + '"/>';
+    if (mm % 10 === 0) out += _txt(X(mm), 107, String(mm / 10), 11.5, false);
+  }
+  return out + '</svg>';
+}
+
+/* One circle with a single part shown in green: the radius (a
+   segment from the centre to the circle), the diameter (a segment
+   through the centre touching the circle at both ends), the
+   centre (the point in the middle) or the circumference (the
+   circle itself, drawn heavier). Vocabulary only: no lengths are
+   labelled and no relationship is asked about. */
+function pk7circlePart(cx, cy, r, mode) {
+  var out = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + (mode === "circumference" ? FIG_ACC : FIG_INK) + '" stroke-width="' + (mode === "circumference" ? 4 : 2) + '"/>';
+  if (mode === "radius") out += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + r) + '" y2="' + cy + '" stroke="' + FIG_ACC + '" stroke-width="2.6"/>';
+  if (mode === "diameter") {
+    out += '<line x1="' + (cx - r) + '" y1="' + cy + '" x2="' + (cx + r) + '" y2="' + cy + '" stroke="' + FIG_ACC + '" stroke-width="2.6"/>';
+    out += '<circle cx="' + (cx - r) + '" cy="' + cy + '" r="2.6" fill="' + FIG_INK + '"/><circle cx="' + (cx + r) + '" cy="' + cy + '" r="2.6" fill="' + FIG_INK + '"/>';
+  }
+  out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (mode === "centre" ? 5.5 : 3) + '" fill="' + (mode === "centre" ? FIG_ACC : FIG_INK) + '"/>';
+  return out;
+}
+function pk7circleFig(mode) {
+  return '<svg viewBox="0 0 220 190" width="220" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circle with one part shown in green">'
+    + pk7circlePart(110, 95, 72, mode) + '</svg>';
+}
+function pk7circlePickFig(modes) {
+  var out = '<svg viewBox="0 0 250 240" width="250" height="240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four circles, each with a different part shown in green">';
+  var letters = ["A", "B", "C", "D"];
+  for (var i = 0; i < 4; i++) {
+    var cx = 62 + (i % 2) * 126, cy = 56 + Math.floor(i / 2) * 118;
+    out += pk7circlePart(cx, cy, 36, modes[i]);
+    out += _txt(cx, cy + 56, letters[i], 13, true);
+  }
+  return out + '</svg>';
+}
+
+/* ================= Area of a rectangle (rectangle-area) =================
+   Grounding: MA6.9.6 (generalize a rule for the area of
+   rectangles), MA6.9.7 (solve a problem involving the area of
+   rectangles), MA6.9.5 beneath (how the area of a rectangle is
+   determined); MA4.9.9, MA4.9.10 beneath those. Squaring appears
+   inside the square entries as a product of two equal factors
+   (placement table row 25). Supports host indicators 9.1 to 9.6
+   and 9.9. */
+
+E("u4-pk-rect-area", 4, ["9.1"], 1, "gen", function () {
+  var l = ri(4, 12), w = ri(3, 9);
+  if (l === w) w = w + 1;
+  var ans = l * w, per = 2 * (l + w);
+  var ds = pk7fill(ans, pk7uniq(ans, [per, l + w, l * (w + 1)])).slice(0, 3);
+  var q = mcq("What is the area of the rectangle?",
+    { t: ans + " cm²", fb: "Yes: area is length times width, \\(" + l + " \\times " + w + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm²", fb: d === per ? "That is the perimeter: the distance around the rectangle. Area counts the square units inside it." : (d === l + w ? "That adds the length and the width. Area multiplies them." : "Multiply the length by the width: \\(" + l + " \\times " + w + "\\).") };
+    }),
+    "\\[ \\begin{aligned} A &= l \\times w \\\\ &= " + l + " \\times " + w + " \\\\ &= " + ans + " \\text{ cm}^2 \\end{aligned} \\] The answer is <b>" + ans + " cm²</b>.",
+    { l: l, w: w });
+  q.figure = pk7rect(l, w, l + " cm", w + " cm", true);
+  return q;
+}, ["Area is the number of square units that cover the rectangle.", "Multiply the length by the width."]);
+
+E("u4-pk-rect-area-context", 4, ["9.1"], 1, "gen", function () {
+  var ctxs = [
+    { thing: "rectangular garden bed", unit: "m", prep: "is" },
+    { thing: "rectangular rug", unit: "m", prep: "is" },
+    { thing: "rectangular poster", unit: "cm", prep: "is" },
+    { thing: "rectangular page of a book", unit: "cm", prep: "is" }
+  ];
+  var c = pick(ctxs), l = ri(5, 15), w = ri(2, 9);
+  if (l === w) l = l + 2;
+  var ans = l * w, per = 2 * (l + w), u2 = c.unit + "²";
+  var ds = pk7fill(ans, pk7uniq(ans, [per, l + w, ans + w])).slice(0, 3);
+  var q = mcq("A " + c.thing + " " + c.prep + " " + l + " " + c.unit + " long and " + w + " " + c.unit + " wide. What is its area?",
+    { t: ans + " " + u2, fb: "Yes: area is length times width, \\(" + l + " \\times " + w + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " " + u2, fb: d === per ? "That is the perimeter: the distance around the shape. Area counts the square units inside it." : (d === l + w ? "That adds the length and the width. Area multiplies them." : "Multiply the length by the width: \\(" + l + " \\times " + w + "\\).") };
+    }),
+    "\\[ \\begin{aligned} A &= l \\times w \\\\ &= " + l + " \\times " + w + " \\\\ &= " + ans + " \\text{ " + c.unit + "}^2 \\end{aligned} \\] The answer is <b>" + ans + " " + u2 + "</b>.",
+    { l: l, w: w });
+  q.figure = pk7rect(l, w, l + " " + c.unit, w + " " + c.unit, true);
+  return q;
+}, ["The area of a rectangle comes from its length and width.", "Multiply the length by the width."]);
+
+E("u4-pk-rect-square", 4, ["9.1"], 1, "gen", function () {
+  var s = pick([3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+  var ans = s * s;
+  var ds = pk7fill(ans, pk7uniq(ans, [s * (s + 1), 4 * s, 2 * s, s * (s - 1)])).slice(0, 3);
+  var q = mcq("A square has sides of " + s + " cm. What is its area?",
+    { t: ans + " cm²", fb: "Yes: a square is a rectangle with equal sides, so its area is \\(" + s + " \\times " + s + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm²", fb: d === 4 * s ? "That is the perimeter of the square: the distance around it. Area multiplies the side by itself." : "Area is side times side: \\(" + s + " \\times " + s + "\\). A square is a rectangle whose length and width are equal." };
+    }),
+    "\\[ \\begin{aligned} A &= s \\times s \\\\ &= " + s + " \\times " + s + " \\\\ &= " + ans + " \\text{ cm}^2 \\end{aligned} \\] The answer is <b>" + ans + " cm²</b>.",
+    { s: s });
+  q.figure = pk7rect(s, s, s + " cm", s + " cm", true);
+  return q;
+}, ["A square is a rectangle with all sides equal.", "Multiply the side length by itself."]);
+
+E("u4-pk-rect-missing-side", 4, ["9.1"], 2, "gen", function () {
+  var w = ri(3, 9), l = ri(4, 12), area = l * w;
+  var ds = pk7fill(l, pk7uniq(l, [area - w, l - 1, l + 2])).slice(0, 3);
+  var q = mcq("A rectangle has an area of " + area + " cm². One side is " + w + " cm long. What is the length of the other side?",
+    { t: l + " cm", fb: "Yes: the other side is the area divided by the known side, \\(" + area + " \\div " + w + " = " + l + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: d === area - w ? "That subtracts the side from the area. Area is a product, so undo it with division." : "The area is the known side times the missing side, so divide the area by the known side." };
+    }),
+    "\\[ \\begin{aligned} \\text{other side} &= A \\div w \\\\ &= " + area + " \\div " + w + " \\\\ &= " + l + " \\text{ cm} \\end{aligned} \\] Check: \\(" + l + " \\times " + w + " = " + area + "\\). The answer is <b>" + l + " cm</b>.",
+    { l: l, w: w, area: area });
+  q.figure = pk7rect(l, w, "?", w + " cm", true);
+  return q;
+}, ["Area is length times width, so one side comes from the area and the other side.", "Divide the area by the side you know."]);
+
+E("u4-pk-rect-decimals", 4, ["9.1"], 2, "gen", function () {
+  var l10 = pick([25, 35, 45, 55, 65, 75, 85, 95, 28, 48, 68, 88]), w = ri(2, 6);
+  var l = l10 / 10, ans = l * w;
+  var cand = [(l10 - 5) * w / 10, (l10 + 5) * w / 10, l + w];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === l + w ? "That adds the length and the width. Area multiplies them." : "Keep the length as drawn: area is \\(" + fmt(l) + " \\times " + w + "\\)." };
+  });
+  ds = precPair(fmt(ans), ds);
+  var q = mcq("What is the area, in square centimetres, of the rectangle?",
+    { t: fmt(ans), fb: "Yes: \\(" + fmt(l) + " \\times " + w + " = " + fmt(ans) + "\\)." },
+    ds,
+    "\\[ \\begin{aligned} A &= l \\times w \\\\ &= " + fmt(l) + " \\times " + w + " \\\\ &= " + fmt(ans) + " \\text{ cm}^2 \\end{aligned} \\] The answer is <b>" + fmt(ans) + " cm²</b>.",
+    { l10: l10, w: w });
+  q.figure = pk7rect(l, w, fmt(l) + " cm", w + " cm", true);
+  return q;
+}, ["Area is length times width, with decimals just as with whole numbers.", "Multiply the two side lengths."]);
+
+E("u4-pk-rect-square-decimal", 4, ["9.1"], 2, "gen", function () {
+  var s10 = pick([5, 12, 15, 24, 25, 35, 45, 55]), s = s10 / 10, ans = s * s;
+  var cand = [4 * s, 2 * s, ans * 10];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === 4 * s ? "That is the perimeter of the square. Area multiplies the side by itself." : (v === 2 * s ? "That doubles the side. Area is side times side." : "That answer is ten times too large: check the decimal point when you multiply.") };
+  });
+  ds = precPair(fmt(ans), ds);
+  var q = mcq("A square tile has sides of " + fmt(s) + " m. What is the area of the tile, in square metres?",
+    { t: fmt(ans), fb: "Yes: \\(" + fmt(s) + " \\times " + fmt(s) + " = " + fmt(ans) + "\\)." },
+    ds,
+    "\\[ \\begin{aligned} A &= s \\times s \\\\ &= " + fmt(s) + " \\times " + fmt(s) + " \\\\ &= " + fmt(ans) + " \\text{ m}^2 \\end{aligned} \\] The answer is <b>" + fmt(ans) + " m²</b>.",
+    { s10: s10 });
+  q.figure = pk7rect(s, s, fmt(s) + " m", fmt(s) + " m", true);
+  return q;
+}, ["A square is a rectangle with all sides equal.", "Multiply the side length by itself, and place the decimal point by estimating."]);
+
+/* ================= Perimeter (perimeter) =================
+   Grounding: MA6.9.3 (how the perimeter of any polygon can be
+   determined: add the side lengths), MA6.9.4 (generalize a rule
+   for the perimeter of polygons, including rectangles and
+   squares), MA6.9.7 (solve a problem involving the perimeter of
+   polygons). Supports host indicators 9.1 to 9.6 and 9.9. */
+
+E("u4-pk-perim-rect", 4, ["9.1"], 1, "gen", function () {
+  var l = ri(5, 14), w = ri(3, 9);
+  if (l === w) l = l + 1;
+  var ans = 2 * (l + w);
+  var ds = pk7fill(ans, pk7uniq(ans, [l * w, l + w, 2 * l + w])).slice(0, 3);
+  var q = mcq("What is the perimeter of the rectangle?",
+    { t: ans + " cm", fb: "Yes: add the sides all the way around: \\(" + l + " + " + w + " + " + l + " + " + w + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: d === l * w ? "That multiplies the sides, which gives the area. Perimeter adds the sides." : (d === l + w ? "That adds one length and one width, which is only halfway around." : "Go all the way around: two lengths and two widths.") };
+    }),
+    "\\[ \\begin{aligned} P &= l + w + l + w \\\\ &= " + l + " + " + w + " + " + l + " + " + w + " \\\\ &= " + ans + " \\text{ cm} \\end{aligned} \\] The answer is <b>" + ans + " cm</b>.",
+    { l: l, w: w });
+  q.figure = pk7rect(l, w, l + " cm", w + " cm", false);
+  return q;
+}, ["Perimeter is the distance all the way around a shape.", "Add every side length, counting each side once."]);
+
+E("u4-pk-perim-square", 4, ["9.1"], 1, "gen", function () {
+  var s = pick([3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+  var ans = 4 * s;
+  var ds = pk7uniq(ans, [s * s, 2 * s, 4 * (s + 1)]).slice(0, 3);
+  var q = mcq("What is the perimeter of the square?",
+    { t: ans + " cm", fb: "Yes: a square has four equal sides, so the perimeter is \\(4 \\times " + s + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: d === s * s ? "That multiplies the side by itself, which gives the area. Perimeter adds the four sides." : "Add the side length four times, once for each side of the square." };
+    }),
+    "\\[ \\begin{aligned} P &= 4 \\times s \\\\ &= 4 \\times " + s + " \\\\ &= " + ans + " \\text{ cm} \\end{aligned} \\] The answer is <b>" + ans + " cm</b>.",
+    { s: s });
+  q.figure = pk7rect(s, s, s + " cm", s + " cm", false);
+  return q;
+}, ["All four sides of a square are the same length.", "Add the side length four times."]);
+
+E("u4-pk-perim-pentagon", 4, ["9.1"], 2, "gen", function () {
+  var pair = pick([[3, 5], [4, 5], [5, 13], [6, 10], [8, 10], [12, 13]]);
+  var a = pair[0], s = pair[1], h = ri(3, 8), W = 2 * a;
+  var ans = W + 2 * h + 2 * s;
+  var ds = pk7fill(ans, pk7uniq(ans, [ans - s, ans - 2 * h, W * h])).slice(0, 3);
+  var q = mcq("What is the perimeter of the shape?",
+    { t: ans + " cm", fb: "Yes: add all five sides: \\(" + W + " + " + h + " + " + s + " + " + s + " + " + h + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: d === W * h ? "That multiplies the base by the wall height. Perimeter adds the side lengths." : "Count every side once: the base, the two walls and the two roof sides." };
+    }),
+    "\\[ \\begin{aligned} P &= " + W + " + " + h + " + " + s + " + " + s + " + " + h + " \\\\ &= " + ans + " \\text{ cm} \\end{aligned} \\] The answer is <b>" + ans + " cm</b>.",
+    { a: a, s: s, h: h });
+  q.figure = pk7house(a, h, s);
+  return q;
+}, ["Perimeter is the distance all the way around a shape.", "Add every side length, counting each side once."]);
+
+E("u4-pk-perim-missing-side", 4, ["9.1"], 2, "gen", function () {
+  var l = ri(5, 12), w = ri(3, 9);
+  if (l === w) l = l + 1;
+  var per = 2 * (l + w);
+  var ds = pk7uniq(l, [per / 2, 2 * l, l + 2]).slice(0, 3);
+  var q = mcq("A rectangle has a perimeter of " + per + " cm. One side is " + w + " cm long. What is the length of the side next to it?",
+    { t: l + " cm", fb: "Yes: half the perimeter is \\(" + per + " \\div 2 = " + (per / 2) + "\\), and \\(" + (per / 2) + " - " + w + " = " + l + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: d === per / 2 ? "That is half the perimeter, which is one length plus one width together. Subtract the known side as well." : (d === 2 * l ? "That takes the two known sides off the perimeter but does not split what is left between the two equal sides." : "Work backwards: halve the perimeter, then subtract the known side.") };
+    }),
+    "\\[ \\begin{aligned} \\text{side} &= P \\div 2 - w \\\\ &= " + per + " \\div 2 - " + w + " \\\\ &= " + l + " \\text{ cm} \\end{aligned} \\] The answer is <b>" + l + " cm</b>.",
+    { l: l, w: w, per: per });
+  q.figure = pk7rect(l, w, "?", w + " cm", false);
+  return q;
+}, ["A rectangle's perimeter is two lengths and two widths.", "Halve the perimeter to get one length plus one width, then subtract."]);
+
+E("u4-pk-perim-missing-polygon", 4, ["9.1"], 2, "gen", function () {
+  var W = ri(9, 14), H = ri(6, 9), w2 = ri(3, W - 5), h1 = ri(2, H - 3);
+  var notch = W - w2, inner = H - h1, per = 2 * (W + H);
+  var known = W + h1 + inner + w2 + H;
+  var ds = pk7fill(notch, pk7uniq(notch, [w2, inner, notch + 2])).slice(0, 3);
+  var q = mcq("The perimeter of the shape is " + per + " cm. What is the length of the side marked ?",
+    { t: notch + " cm", fb: "Yes: the labelled sides add to " + known + ", and \\(" + per + " - " + known + " = " + notch + "\\)." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: d === w2 ? "That is the length of the top side. The missing side is what the perimeter leaves after the labelled sides are added." : "Add the labelled sides, then subtract their total from the perimeter." };
+    }),
+    "\\[ \\begin{aligned} \\text{labelled sides} &= " + W + " + " + h1 + " + " + inner + " + " + w2 + " + " + H + " = " + known + " \\\\ \\text{missing side} &= " + per + " - " + known + " \\\\ &= " + notch + " \\text{ cm} \\end{aligned} \\] The answer is <b>" + notch + " cm</b>.",
+    { W: W, H: H, w2: w2, h1: h1 });
+  q.figure = pk7Lshape(W, H, w2, h1, [W + " cm", h1 + " cm", "?", inner + " cm", w2 + " cm", H + " cm"]);
+  return q;
+}, ["The perimeter is the total of all the side lengths.", "Add the sides you know, then subtract from the perimeter."]);
+
+/* ================= Reading a ruler (ruler-measurement) =================
+   Grounding: MA5.9.1 (how an object is measured using a ruler: it
+   is placed at the 0 mark, and a centimetre is 10 millimetres),
+   MA5.9.3 (real-world uses of millimetre and centimetre measures),
+   with MA5.9.7 to MA5.9.9 beneath (measuring attributes with
+   appropriate tools and units). Every figure is drawn from the
+   drawn length itself: the object starts at the 0 mark and ends
+   exactly on the tick for its stated length. Supports host
+   indicators 9.7, 9.8, 9.10, 9.11, 9.12. */
+
+E("u4-pk-ruler-cm", 4, ["9.7"], 1, "gen", function () {
+  var cm = ri(3, 12), maxCm = cm + ri(1, 2);
+  var ds = pk7uniq(cm, [cm - 1, cm + 1, cm + 2]).slice(0, 3);
+  var q = mcq("The green bar starts at the 0 mark of the ruler. How long is the bar?",
+    { t: cm + " cm", fb: "Yes: the bar ends at the " + cm + " mark, so it is " + cm + " cm long." },
+    ds.map(function (d) {
+      return { t: d + " cm", fb: "Follow the bar to the mark where it ends, then read that number." };
+    }),
+    "The bar starts at the 0 mark and ends at the " + cm + " mark on the ruler. The answer is <b>" + cm + " cm</b>.",
+    { cm: cm });
+  q.figure = pk7ruler(cm * 10, maxCm);
+  return q;
+}, ["Line the object up with the 0 mark before you read anything.", "Read the number where the object ends."]);
+
+E("u4-pk-ruler-mm", 4, ["9.7"], 1, "gen", function () {
+  var lo = ri(2, 9), extra = pick([3, 4, 6, 7, 8]);
+  var mm = lo * 10 + extra, maxCm = lo + 2;
+  var ds = pk7uniq(mm, [lo * 10, (lo + 1) * 10, mm + 10]).slice(0, 3);
+  var q = mcq("The green bar starts at the 0 mark of the ruler. How long is the bar, in millimetres?",
+    { t: mm + " mm", fb: "Yes: the bar ends " + extra + " small ticks past the " + lo + " mark, and each small tick is 1 mm, so the length is " + mm + " mm." },
+    ds.map(function (d) {
+      return { t: d + " mm", fb: d === lo * 10 ? "That stops at the " + lo + " mark, but the bar runs past it. Count the small ticks beyond the mark as well." : "Count every small tick from 0: each one is 1 millimetre." };
+    }),
+    "The bar ends " + extra + " small ticks past the " + lo + " mark. Each centimetre is 10 millimetres, so the length is \\(" + lo + " \\times 10 + " + extra + " = " + mm + "\\) mm. The answer is <b>" + mm + " mm</b>.",
+    { mm: mm });
+  q.figure = pk7ruler(mm, maxCm);
+  return q;
+}, ["Each small tick on the ruler is 1 millimetre.", "10 millimetres make 1 centimetre."]);
+
+E("u4-pk-ruler-cm-decimal", 4, ["9.7"], 2, "gen", function () {
+  var lo = ri(2, 9), extra = pick([2, 3, 4, 6, 7, 8, 9]);
+  var mm = lo * 10 + extra, maxCm = lo + 2, ans = mm / 10;
+  var cand = [lo, lo + 1, ans + 1];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === lo ? "That stops at the " + lo + " mark, but the bar runs past it. The small ticks past the mark are tenths of a centimetre." : "Read the centimetre mark first, then count the small ticks as tenths." };
+  });
+  ds = precPair(fmt(ans), ds);
+  var q = mcq("The green bar starts at the 0 mark of the ruler. How long is the bar, in centimetres?",
+    { t: fmt(ans), fb: "Yes: the bar ends at " + mm + " mm, and " + mm + " mm is " + fmt(ans) + " cm." },
+    ds,
+    "The bar ends " + extra + " small ticks past the " + lo + " mark, at " + mm + " mm. Since 10 mm = 1 cm, the length is \\(" + mm + " \\div 10 = " + fmt(ans) + "\\) cm. The answer is <b>" + fmt(ans) + " cm</b>.",
+    { mm: mm });
+  q.figure = pk7ruler(mm, maxCm);
+  return q;
+}, ["10 millimetres make 1 centimetre.", "Each small tick past a centimetre mark is one tenth of a centimetre."]);
+
+E("u4-pk-ruler-half", 4, ["9.7"], 1, "gen", function () {
+  var lo = ri(3, 10), mm = lo * 10 + 5, maxCm = lo + 2, ans = lo + 0.5;
+  var cand = [lo, lo + 1, lo + 1.5];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v) + " cm", fb: v === lo + 1.5 ? "That reads past the end of the bar. The bar stops halfway between two centimetre marks." : "The bar ends halfway between the " + lo + " mark and the " + (lo + 1) + " mark." };
+  });
+  var q = mcq("The green bar starts at the 0 mark of the ruler. How long is the bar?",
+    { t: fmt(ans) + " cm", fb: "Yes: the bar ends at the long middle tick between " + lo + " and " + (lo + 1) + ", which is " + fmt(ans) + " cm." },
+    ds,
+    "The bar ends at the long tick halfway between the " + lo + " mark and the " + (lo + 1) + " mark. Halfway between " + lo + " cm and " + (lo + 1) + " cm is " + fmt(ans) + " cm. The answer is <b>" + fmt(ans) + " cm</b>.",
+    { mm: mm });
+  q.figure = pk7ruler(mm, maxCm);
+  return q;
+}, ["The longer tick between two centimetre marks is the halfway mark.", "Halfway between two whole numbers is a half."]);
+
+E("u4-pk-ruler-unit-choice", 4, ["9.7"], 1, "gen", function () {
+  var objs = [
+    { thing: "the thickness of a credit card", len: "about 1 mm", wrong: ["about 1 cm", "about 10 cm", "about 1 m"] },
+    { thing: "the width of a fingernail", len: "about 1 cm", wrong: ["about 1 mm", "about 10 mm", "about 1 m"] },
+    { thing: "the length of a paper clip", len: "about 3 cm", wrong: ["about 3 mm", "about 30 cm", "about 3 m"] },
+    { thing: "the length of an ant", len: "about 5 mm", wrong: ["about 5 cm", "about 50 cm", "about 5 m"] },
+    { thing: "the thickness of a coin", len: "about 2 mm", wrong: ["about 2 cm", "about 20 cm", "about 2 m"] }
+  ];
+  var o = pick(objs);
+  return mcq("Which measure best fits " + o.thing + "?",
+    { t: o.len, fb: "Yes: " + o.thing + " is best measured in " + (o.len.indexOf("mm") >= 0 ? "millimetres" : "centimetres") + ", and " + o.len + " is the right size." },
+    o.wrong.map(function (t) {
+      return { t: t, fb: "Picture the object: " + o.thing + " is far smaller than that, or far larger. Millimetres suit very small lengths, centimetres suit small ones." };
+    }),
+    "The thickness of a credit card and the width of a fingernail are the classic small measures: a credit card is about 1 mm thick and a fingernail about 1 cm wide. For this object, the best fit is <b>" + o.len + "</b>.",
+    { thing: o.thing });
+}, ["Millimetres are for very small lengths, like the thickness of a card.", "Centimetres are for small lengths, like the width of a fingernail."]);
+
+E("u4-pk-ruler-difference", 4, ["9.7"], 2, "gen", function () {
+  var a = ri(6, 11), b = ri(2, a - 2), maxCm = a + 2;
+  var diff = a - b;
+  var cand = [diff + 1, diff - 1, a];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === a ? "That is the length of the longer object by itself. The question asks how much longer it is than the shorter one." : "Read both lengths from the ruler, then subtract the shorter from the longer." };
+  });
+  ds = precPair(fmt(diff), ds);
+  var q = mcq("Two objects are measured on the ruler. How many centimetres longer is the green object than the orange object?",
+    { t: fmt(diff), fb: "Yes: the green object is " + a + " cm and the orange object is " + b + " cm, and \\(" + a + " - " + b + " = " + diff + "\\)." },
+    ds,
+    "The green object ends at the " + a + " mark, so it is " + a + " cm long. The orange object ends at the " + b + " mark, so it is " + b + " cm long. \\(" + a + " - " + b + " = " + diff + "\\), so the green object is <b>" + fmt(diff) + " cm</b> longer.",
+    { a: a, b: b });
+  q.figure = pk7ruler2(a * 10, b * 10, maxCm, "Green", "Orange");
+  return q;
+}, ["Read each object's length from the ruler first.", "How much longer means subtract the shorter length from the longer one."]);
+
+/* ================= Circle parts and measures (circle-measure) =================
+   Placement table row 22: vocabulary only. The parts are named
+   and recognized; the relationships among them (radius and
+   diameter) are new content taught inside Mathematics 7 itself,
+   so no relationship is assessed here. Placement unevidenced: no
+   elementary guide outcome names the parts of a circle, so these
+   four are authored to the naming itself. Supports host
+   indicators 9.7, 9.8, 9.11, 9.12. Note for the build report:
+   "circumference" is inherently the longest of the four option
+   words; that is a property of the vocabulary construct itself,
+   not option padding, and the key rotates across all four words
+   so no single word is favoured. */
+
+E("u4-pk-circle-radius", 4, ["9.7"], 1, "gen", function () {
+  var q = mcq("What is the name of the part of the circle shown in green?",
+    { t: "radius", fb: "Yes: the segment runs from the centre to the circle itself, which is a radius." },
+    [{ t: "centre", fb: "The centre is the point in the middle of the circle. The green part is a segment, not a point." },
+     { t: "circumference", fb: "The circumference is the distance around the outside of the circle. The green part is a straight segment." },
+     { t: "diameter", fb: "A diameter runs all the way across the circle through the centre. The green segment stops at the centre." }],
+    "The green segment starts at the centre and ends on the circle. A segment from the centre to the circle is a <b>radius</b>.",
+    { mode: "radius" });
+  q.figure = pk7circleFig("radius");
+  return q;
+}, ["Look at where the green part starts and ends.", "A radius joins the centre to the circle."]);
+
+E("u4-pk-circle-diameter", 4, ["9.7"], 1, "gen", function () {
+  var q = mcq("What is the name of the part of the circle shown in green?",
+    { t: "diameter", fb: "Yes: the segment runs straight across the circle through the centre, which is a diameter." },
+    [{ t: "centre", fb: "The centre is the point in the middle of the circle. The green part is a segment, not a point." },
+     { t: "circumference", fb: "The circumference is the distance around the outside of the circle. The green part is a straight segment." },
+     { t: "radius", fb: "A radius runs from the centre to the circle and stops there. The green segment keeps going across the whole circle." }],
+    "The green segment touches the circle at both ends and passes through the centre. A segment across the whole circle through the centre is a <b>diameter</b>.",
+    { mode: "diameter" });
+  q.figure = pk7circleFig("diameter");
+  return q;
+}, ["Look at where the green part starts and ends.", "A diameter crosses the whole circle through the centre."]);
+
+E("u4-pk-circle-centre", 4, ["9.7"], 1, "gen", function () {
+  var mode = pick(["centre", "circumference"]);
+  var key, sol;
+  var ds;
+  if (mode === "centre") {
+    key = { t: "centre", fb: "Yes: the green part is the point in the middle of the circle, which is its centre." };
+    ds = [{ t: "circumference", fb: "The circumference is the distance around the outside of the circle. The green part is a point in the middle." },
+          { t: "diameter", fb: "A diameter is a segment across the whole circle. The green part is a point, not a segment." },
+          { t: "radius", fb: "A radius is a segment from the centre to the circle. The green part is the point itself." }];
+    sol = "The green part is the point in the very middle of the circle. That point is the <b>centre</b>.";
+  } else {
+    key = { t: "circumference", fb: "Yes: the green part is the circle itself, the distance all the way around it, which is its circumference." };
+    ds = [{ t: "centre", fb: "The centre is the point in the middle of the circle. The green part goes around the outside." },
+          { t: "diameter", fb: "A diameter is a straight segment across the circle. The green part follows the circle itself." },
+          { t: "radius", fb: "A radius is a straight segment from the centre to the circle. The green part follows the circle itself." }];
+    sol = "The green part is the circle itself: the distance all the way around the outside. That distance is the <b>circumference</b>.";
+  }
+  var q = mcq("What is the name of the part of the circle shown in green?", key, ds, sol, { mode: mode });
+  q.figure = pk7circleFig(mode);
+  return q;
+}, ["Look at what the green part is: a point, a segment, or the circle itself.", "The centre is the point in the middle; the circumference is the distance around the outside."]);
+
+E("u4-pk-circle-pick", 4, ["9.7"], 1, "gen", function () {
+  var parts = ["radius", "diameter", "circumference"];
+  var target = pick(parts);
+  var others = parts.filter(function (p) { return p !== target; });
+  var modes = [target, others[0], others[1], pick(others)];
+  for (var i = modes.length - 1; i > 0; i--) { var j = ri(0, i), tmp = modes[i]; modes[i] = modes[j]; modes[j] = tmp; }
+  var idx = modes.indexOf(target), letter = "ABCD"[idx];
+  var desc = target === "radius" ? "a segment from the centre to the circle" : (target === "diameter" ? "a segment across the whole circle through the centre" : "the circle itself, the distance around the outside");
+  var q = mcq("Which diagram shows the " + target + " of a circle in green?",
+    { t: "Diagram " + letter, fb: "Yes: diagram " + letter + " shows " + desc + "." },
+    ["A", "B", "C", "D"].filter(function (L) { return L !== letter; }).map(function (L) {
+      var m = modes["ABCD".indexOf(L)];
+      return { t: "Diagram " + L, fb: "Diagram " + L + " shows " + (m === "radius" ? "a radius: a segment from the centre to the circle" : (m === "diameter" ? "a diameter: a segment across the whole circle" : "the circumference: the circle itself")) + ". The question asks for the " + target + "." };
+    }),
+    "A " + target + " is " + desc + ". Only diagram " + letter + " shows that part in green. The answer is <b>Diagram " + letter + "</b>.",
+    { target: target, idx: idx });
+  q.figure = pk7circlePickFig(modes);
+  return q;
+}, ["Name the green part in each diagram before you choose.", "A radius stops at the centre; a diameter crosses the whole circle."]);
+
+/* ================= Multiplying decimals (decimal-multiplication) =================
+   Grounding: MA6.6.2 (place the decimal point in a product by
+   using estimation), MA6.6.5 (solve a problem involving the
+   multiplication of decimals). Squaring is authored inside this
+   group as a product of two equal factors (placement table row
+   25): whole-number squares grounded in MA5.5.4 (products and
+   facts), decimal squares in MA6.6.2. Options are bare numbers
+   with the unit named in the stem, and precPair keeps no option
+   alone at a decimal precision. Supports host indicators 9.10,
+   9.6, 9.9. */
+
+E("u4-pk-dec-mult-whole", 4, ["9.10"], 1, "gen", function () {
+  var ctxs = [
+    { thing: "bottle of water", holds: "holds", unit: "litres", of: "of water" },
+    { thing: "piece of ribbon", holds: "is", unit: "metres", of: "long" }
+  ];
+  var c = pick(ctxs), d10 = pick([12, 15, 18, 25, 35, 45, 75]), n = ri(3, 6);
+  var d = d10 / 10, ans = d * n;
+  var cand = [ans / 10, d * (n + 1), Math.floor(d) * n];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === Math.floor(d) * n ? "That multiplies only the whole-number part of " + fmt(d) + " and drops the decimal part. The question asks for " + n + " lots of the full " + fmt(d) + "." : (v === d * (n + 1) ? "That counts one group too many: there are " + n + " of them, not " + (n + 1) + "." : "Estimate first: " + fmt(d) + " is between whole numbers, so " + n + " lots of it lands near " + fmt(Math.round(d) * n) + ", not at " + fmt(v) + ".") };
+  });
+  ds = precPair(fmt(ans), ds);
+  return mcq("One " + c.thing + " " + c.holds + " " + fmt(d) + " " + c.unit + " " + c.of + ". How many " + c.unit + " is that in " + n + " of them, in total?",
+    { t: fmt(ans), fb: "Yes: \\(" + fmt(d) + " \\times " + n + " = " + fmt(ans) + "\\), and the estimate agrees." },
+    ds,
+    "Estimate first: " + fmt(d) + " is close to " + Math.round(d) + ", and \\(" + Math.round(d) + " \\times " + n + " = " + (Math.round(d) * n) + "\\), so the answer is near " + (Math.round(d) * n) + ". \\[ " + fmt(d) + " \\times " + n + " = " + fmt(ans) + " \\] The answer is <b>" + fmt(ans) + " " + c.unit + "</b>.",
+    { d10: d10, n: n });
+}, ["Multiplying by a whole number means equal groups of the decimal.", "Estimate with the nearest whole number to place the decimal point."]);
+
+E("u4-pk-dec-mult-near3", 4, ["9.10"], 2, "gen", function () {
+  var d10 = pick([24, 35, 42, 55, 65]), m10 = pick([28, 29, 31, 32]);
+  var d = d10 / 10, m = m10 / 10, ans = d * m;
+  var cand = [ans / 10, ans * 10, d + m];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === d + m ? "That adds the two numbers. One length is " + fmt(m) + " times the other, which is a multiplication." : "Estimate first: " + fmt(d) + " times about 3 is about " + fmt(3 * d) + ", which places the decimal point." };
+  });
+  ds = precPair(fmt(ans), ds);
+  return mcq("A rope is " + fmt(d) + " m long. A second rope is " + fmt(m) + " times as long. How long is the second rope, in metres?",
+    { t: fmt(ans), fb: "Yes: \\(" + fmt(d) + " \\times " + fmt(m) + " = " + fmt(ans) + "\\), matching the estimate of about " + fmt(3 * d) + "." },
+    ds,
+    "Estimate first: " + fmt(m) + " is close to 3, and \\(" + fmt(d) + " \\times 3 = " + fmt(3 * d) + "\\), so the answer is near " + fmt(3 * d) + ". \\[ " + fmt(d) + " \\times " + fmt(m) + " = " + fmt(ans) + " \\] The answer is <b>" + fmt(ans) + " m</b>.",
+    { d10: d10, m10: m10 });
+}, ["Times as long means multiply.", "Estimate with a whole number first to place the decimal point."]);
+
+E("u4-pk-dec-square-whole", 4, ["9.10"], 1, "gen", function () {
+  var n = pick([6, 7, 8, 9, 11, 12, 13, 14, 15, 20]);
+  var ans = n * n;
+  var ds = pk7uniq(ans, [2 * n, n * (n + 1), ans + 10]).slice(0, 3);
+  return mcq("What is " + n + " × " + n + "?",
+    { t: String(ans), fb: "Yes: \\(" + n + " \\times " + n + " = " + ans + "\\)." },
+    ds.map(function (d) {
+      return { t: String(d), fb: d === 2 * n ? "That doubles " + n + ". Here " + n + " is multiplied by itself, not by 2." : "Multiply " + n + " by itself: \\(" + n + " \\times " + n + "\\)." };
+    }),
+    "\\[ " + n + " \\times " + n + " = " + ans + " \\] The answer is <b>" + ans + "</b>.",
+    { n: n });
+}, ["The two factors are the same number.", "Multiply the number by itself."]);
+
+E("u4-pk-dec-square-decimal", 4, ["9.10"], 2, "gen", function () {
+  var s10 = pick([5, 6, 12, 15, 24, 25, 35, 45, 55]), s = s10 / 10, ans = s * s;
+  var cand = [2 * s, ans * 10, ans / 10];
+  var ds = cand.map(function (v) {
+    return { t: fmt(v), fb: v === 2 * s ? "That doubles " + fmt(s) + ". Here " + fmt(s) + " is multiplied by itself." : "Estimate first: " + fmt(s) + " is near " + Math.round(s) + ", so the product is near " + (Math.round(s) * Math.round(s)) + ", which places the decimal point." };
+  });
+  ds = precPair(fmt(ans), ds);
+  return mcq("What is " + fmt(s) + " × " + fmt(s) + "?",
+    { t: fmt(ans), fb: "Yes: \\(" + fmt(s) + " \\times " + fmt(s) + " = " + fmt(ans) + "\\)." },
+    ds,
+    "Estimate first: " + fmt(s) + " is close to " + Math.round(s) + ", and \\(" + Math.round(s) + " \\times " + Math.round(s) + " = " + (Math.round(s) * Math.round(s)) + "\\), so the answer is near " + (Math.round(s) * Math.round(s)) + ". \\[ " + fmt(s) + " \\times " + fmt(s) + " = " + fmt(ans) + " \\] The answer is <b>" + fmt(ans) + "</b>.",
+    { s10: s10 });
+}, ["The two factors are the same number.", "Estimate with the nearest whole number to place the decimal point."]);
+
+/* Piece 2 metadata: grounding source, full Supports list and
+   group for each of the 25 entries above. Applied separately from
+   the Piece 1 table so the two pieces stay independently
+   auditable. */
+var PK7_FOR_AREA = ["9.1", "9.2", "9.3", "9.4", "9.5", "9.6", "9.9"];
+var PK7_FOR_MEASURE = ["9.7", "9.8", "9.10", "9.11", "9.12"];
+var PK7_FOR_DECMULT = ["9.10", "9.6", "9.9"];
+var PKT7_P2 = {
+  "u4-pk-rect-area": { src: "math-6:MA6.9.6", group: "rectangle-area", for: PK7_FOR_AREA },
+  "u4-pk-rect-area-context": { src: "math-6:MA6.9.7", group: "rectangle-area", for: PK7_FOR_AREA },
+  "u4-pk-rect-square": { src: "math-6:MA6.9.6", group: "rectangle-area", for: PK7_FOR_AREA },
+  "u4-pk-rect-missing-side": { src: "math-6:MA6.9.7", group: "rectangle-area", for: PK7_FOR_AREA },
+  "u4-pk-rect-decimals": { src: "math-6:MA6.9.7", group: "rectangle-area", for: PK7_FOR_AREA },
+  "u4-pk-rect-square-decimal": { src: "math-6:MA6.9.7", group: "rectangle-area", for: PK7_FOR_AREA },
+  "u4-pk-perim-rect": { src: "math-6:MA6.9.4", group: "perimeter", for: PK7_FOR_AREA },
+  "u4-pk-perim-square": { src: "math-6:MA6.9.4", group: "perimeter", for: PK7_FOR_AREA },
+  "u4-pk-perim-pentagon": { src: "math-6:MA6.9.3", group: "perimeter", for: PK7_FOR_AREA },
+  "u4-pk-perim-missing-side": { src: "math-6:MA6.9.7", group: "perimeter", for: PK7_FOR_AREA },
+  "u4-pk-perim-missing-polygon": { src: "math-6:MA6.9.7", group: "perimeter", for: PK7_FOR_AREA },
+  "u4-pk-ruler-cm": { src: "math-5:MA5.9.1", group: "ruler-measurement", for: PK7_FOR_MEASURE },
+  "u4-pk-ruler-mm": { src: "math-5:MA5.9.1", group: "ruler-measurement", for: PK7_FOR_MEASURE },
+  "u4-pk-ruler-cm-decimal": { src: "math-5:MA5.9.1", group: "ruler-measurement", for: PK7_FOR_MEASURE },
+  "u4-pk-ruler-half": { src: "math-5:MA5.9.1", group: "ruler-measurement", for: PK7_FOR_MEASURE },
+  "u4-pk-ruler-unit-choice": { src: "math-5:MA5.9.3", group: "ruler-measurement", for: PK7_FOR_MEASURE },
+  "u4-pk-ruler-difference": { src: "math-5:MA5.9.1", group: "ruler-measurement", for: PK7_FOR_MEASURE },
+  "u4-pk-circle-radius": { src: "authored:naming the parts of a circle, placement unevidenced", group: "circle-measure", for: PK7_FOR_MEASURE },
+  "u4-pk-circle-diameter": { src: "authored:naming the parts of a circle, placement unevidenced", group: "circle-measure", for: PK7_FOR_MEASURE },
+  "u4-pk-circle-centre": { src: "authored:naming the parts of a circle, placement unevidenced", group: "circle-measure", for: PK7_FOR_MEASURE },
+  "u4-pk-circle-pick": { src: "authored:naming the parts of a circle, placement unevidenced", group: "circle-measure", for: PK7_FOR_MEASURE },
+  "u4-pk-dec-mult-whole": { src: "math-6:MA6.6.5", group: "decimal-multiplication", for: PK7_FOR_DECMULT },
+  "u4-pk-dec-mult-near3": { src: "math-6:MA6.6.2", group: "decimal-multiplication", for: PK7_FOR_DECMULT },
+  "u4-pk-dec-square-whole": { src: "math-5:MA5.5.4", group: "decimal-multiplication", for: PK7_FOR_DECMULT },
+  "u4-pk-dec-square-decimal": { src: "math-6:MA6.6.2", group: "decimal-multiplication", for: PK7_FOR_DECMULT }
+};
+BANK.forEach(function (e) { var t = PKT7_P2[e.id]; if (t) { e.pkFlag = true; e.pkSrc = t.src; e.pkFor = t.for.slice(); e.pkGroup = t.group; } });

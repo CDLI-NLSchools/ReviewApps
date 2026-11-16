@@ -1844,6 +1844,16 @@ rep(' "ordering-numbers":["Ordering numbers on a number line","Ordonner des nomb
 rep(' "substitution":["Evaluating expressions by substitution","Évaluer des expressions par substitution"],',
     ' "squares":["Squaring numbers","Élever un nombre au carré"],\n "substitution":["Evaluating expressions by substitution","Évaluer des expressions par substitution"],', count=1)  # Band 3 Piece 1 labels (Nov 16, 2026)
 
+# ---------- Band 3 Piece 2 Unit 4 group labels (Nov 16, 2026) ----------
+rep(' "decimal-operations":["Decimal operations and ordering","Opérations sur les décimales et ordre"],',
+    ' "decimal-multiplication":["Multiplying decimals","Multiplier des nombres décimaux"],\n "decimal-operations":["Decimal operations and ordering","Opérations sur les décimales et ordre"],', count=1)  # Band 3 Piece 2 labels (Nov 16, 2026)
+rep(' "polygon-angles":["Angle sums in polygons","Sommes des angles dans les polygones"],',
+    ' "perimeter":["Perimeter","Périmètre"],\n "polygon-angles":["Angle sums in polygons","Sommes des angles dans les polygones"],', count=1)  # Band 3 Piece 2 labels (Nov 16, 2026)
+rep(' "repeated-multiplication":["Multiplication facts and repeated multiplication","Faits de multiplication et multiplication répétée"],',
+    ' "rectangle-area":["Area of a rectangle","Aire d\'un rectangle"],\n "repeated-multiplication":["Multiplication facts and repeated multiplication","Faits de multiplication et multiplication répétée"],', count=1)  # Band 3 Piece 2 labels (Nov 16, 2026)
+rep(' "sample-population":["Samples and populations","Échantillons et populations"],',
+    ' "ruler-measurement":["Reading a ruler","Lire une règle"],\n "sample-population":["Samples and populations","Échantillons et populations"],', count=1)  # Band 3 Piece 2 labels (Nov 16, 2026)
+
 # ---------- Band 3 Piece 1 grp link parameter (Nov 16, 2026) ----------
 rep('pk:false,enr:false,pkIn:true,pkOnly:false};',
     'pk:false,enr:false,pkIn:true,pkOnly:false,pkGroups:null};', count=1)  # grp: hidCtl stash (Nov 16, 2026)
