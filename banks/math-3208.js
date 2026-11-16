@@ -5688,6 +5688,303 @@ E("u7-pk-evaluate-exp",7,["3.41"],1,"gen",function(){
     " The value is <b>\\("+ans4+"\\)</b>.",
     {mode:mode,a:a4,p:p4,q:q4,ans:ans4});
 });
+/* Log follow-up (November 16, 2026): five entries borrowed verbatim
+   from the Mathematics 3200 bank's Unit 8 (Logarithmic Functions),
+   stocking the Unit 7 pool's exponential and logarithm readiness,
+   which the tranche settled at zero under flagged settlement 1
+   because Mathematics 3200 is a parallel course. Jason's ruling of
+   November 16, 2026 supersedes the settlement: students need the
+   Mathematics 3200 logarithm skills to be successful in this unit,
+   so they are stocked as ordinary prior knowledge (pkFlag, not
+   bridge). Only the id, the unit and the host indicator tag differ
+   from the feeder entries. The feeder helpers the generators call
+   (u8L, u8pow, u8frac, u8logFig, u8invSVG, and the shared plotter
+   fnPathD and fnPlotSVG from the Mathematics 3200 helper file) are
+   ported verbatim below; none of those names exists in this bank.
+   No CRMARKS lines are carried over. The settlement and the
+   candidate verdicts are recorded in the addendum to the tranche
+   spec. */
+function u8L(b, arg){ return "\\log_{" + b + "} " + arg; }
+function u8pow(b, e){ return (b < 0 ? "(" + b + ")" : "" + b) + "^{" + e + "}"; }
+function u8frac(n, d){ return "\\frac{" + n + "}{" + d + "}"; }
+function fnPathD(fn,X,Y,x0,x1,y0,y1,N){
+  N=N||240;var d="",pen=false,py=0,i,x,y;
+  for(i=0;i<=N;i++){
+    x=x0+(x1-x0)*i/N;
+    try{y=fn(x);}catch(e){y=NaN;}
+    if(typeof y!=="number"||!isFinite(y)||y<y0||y>y1){pen=false;continue;}
+    if(pen&&Math.abs(y-py)>0.75*(y1-y0)){pen=false;}
+    d+=(pen?"L ":"M ")+fmt(X(x),1)+" "+fmt(Y(y),1)+" ";
+    pen=true;py=y;
+  }
+  return d;
+}
+function fnPlotSVG(fn,x0,x1,y0,y1,o){
+  o=o||{};
+  var i,x,y;
+  if(y0===undefined||y1===undefined){
+    var lo=Infinity,hi=-Infinity;
+    for(i=0;i<=400;i++){
+      x=x0+(x1-x0)*i/400;
+      try{y=fn(x);}catch(e){y=NaN;}
+      if(typeof y==="number"&&isFinite(y)){if(y<lo)lo=y;if(y>hi)hi=y;}
+    }
+    if(!isFinite(lo)){lo=-1;hi=1;}
+    if(o.asymY!==undefined){lo=Math.min(lo,o.asymY);hi=Math.max(hi,o.asymY);}
+    var padY=(hi-lo)*0.15+0.5;
+    if(y0===undefined)y0=Math.floor((lo-padY)*2)/2;
+    if(y1===undefined)y1=Math.ceil((hi+padY)*2)/2;
+    if(y1-y0<1)y1=y0+1;
+  }
+  var W=440,H=250,padL=30,padR=12,padT=10,padB=24;
+  var X=function(x){return padL+(x-x0)/(x1-x0)*(W-padL-padR);};
+  var Y=function(y){return H-padB-(y-y0)/(y1-y0)*(H-padT-padB);};
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
+  function labFmt(v,labels){
+    if(labels){for(var j=0;j<labels.length;j++){if(Math.abs(labels[j][0]-v)<1e-6)return labels[j][1];}}
+    return fmt(v);
+  }
+  var gx=o.gx||1,gy=o.gy||1,g,idx;
+  if((x1-x0)/gx<=220){
+    idx=0;
+    for(g=Math.ceil(x0/gx)*gx;g<=x1+1e-9;g+=gx,idx++){
+      out+='<line x1="'+fmt(X(g),1)+'" y1="'+padT+'" x2="'+fmt(X(g),1)+'" y2="'+(H-padB)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(o.labelX&&(!o.labelEvery||idx%o.labelEvery===0))
+        out+='<text x="'+fmt(X(g),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+labFmt(g,o.xLabels)+'</text>';
+    }
+  }
+  if((y1-y0)/gy<=220){
+    for(g=Math.ceil(y0/gy)*gy;g<=y1+1e-9;g+=gy){
+      out+='<line x1="'+padL+'" y1="'+fmt(Y(g),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(g),1)+'" stroke="#eae5d6" stroke-width="1"/>';
+      if(o.labelY&&!(g===0&&o.labelX))
+        out+='<text x="'+(padL-4)+'" y="'+fmt(Y(g)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+labFmt(g,o.yLabels)+'</text>';
+    }
+  }
+  if(y0<0&&y1>0)out+='<line x1="'+padL+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(0),1)+'" stroke="'+FIG_INK+'" stroke-width="1.3"/>';
+  if(x0<0&&x1>0)out+='<line x1="'+fmt(X(0),1)+'" y1="'+padT+'" x2="'+fmt(X(0),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_INK+'" stroke-width="1.3"/>';
+  var xLabY=(y0<0&&y1>0)?Y(0):(H-padB);
+  out+='<text x="'+(W-padR-2)+'" y="'+fmt(xLabY-6,1)+'" font-size="12" fill="'+FIG_INK+'" text-anchor="end">x</text>';
+  var yLabX=(x0<0&&x1>0)?X(0):padL;
+  out+='<text x="'+fmt(yLabX+6,1)+'" y="'+(padT+10)+'" font-size="12" fill="'+FIG_INK+'">y</text>';
+  if(o.asymY!==undefined&&o.asymY>y0&&o.asymY<y1){
+    out+='<line x1="'+padL+'" y1="'+fmt(Y(o.asymY),1)+'" x2="'+(W-padR)+'" y2="'+fmt(Y(o.asymY),1)+'" stroke="'+FIG_ALT+'" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+(W-padR-4)+'" y="'+fmt(Y(o.asymY)-5,1)+'" font-size="10" fill="'+FIG_ALT+'" text-anchor="end">y = '+fmt(o.asymY)+'</text>';
+  }
+  if(o.asymX!==undefined&&o.asymX>=x0&&o.asymX<=x1){
+    out+='<line x1="'+fmt(X(o.asymX),1)+'" y1="'+padT+'" x2="'+fmt(X(o.asymX),1)+'" y2="'+(H-padB)+'" stroke="'+FIG_ALT+'" stroke-width="1.4" stroke-dasharray="6 4"/>';
+    out+='<text x="'+fmt(X(o.asymX)+5,1)+'" y="'+(padT+24)+'" font-size="10" fill="'+FIG_ALT+'">x = '+fmt(o.asymX)+'</text>';
+  }
+  if(fn){
+    var d=fnPathD(fn,X,Y,x0,x1,y0,y1,o.N);
+    if(d)out+='<path d="'+d+'" fill="none" stroke="'+(o.color||FIG_ACC)+'" stroke-width="2.2"/>';
+  }
+  (o.extraFns||[]).forEach(function(ef){
+    var dd=fnPathD(ef.fn,X,Y,x0,x1,y0,y1,o.N);
+    if(dd)out+='<path d="'+dd+'" fill="none" stroke="'+(ef.color||FIG_ALT)+'" stroke-width="2"/>';
+  });
+  (o.points||[]).forEach(function(p,i){
+    out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="'+FIG_ALT+'"/>';
+    if(o.pointLabels&&o.pointLabels[i])out+='<text x="'+fmt(X(p[0])+7,1)+'" y="'+fmt(Y(p[1])-7,1)+'" font-size="10" fill="'+FIG_INK+'">'+o.pointLabels[i]+'</text>';
+  });
+  return out+'</svg>';
+}
+function u8logFig(bv){ /* graph of y = log base bv of x, landmarks (1, 0) and (bv, 1) marked (Tranche 4) */
+  var x1=Math.max(Math.pow(bv,2),Math.pow(bv,-2))+1;
+  var gx=x1>60?10:x1>20?5:x1>8?2:1;
+  return fnPlotSVG(function(x){return Math.log(x)/Math.log(bv);},0,x1,-2.4,2.4,{gx:gx,gy:1,labelX:true,labelY:true,asymX:0,points:[[1,0],[bv,1]]});
+}
+function u8invSVG(c){
+  var ox = 70, oy = 135, u = 20, tmax = c === 2 ? 2.3 : 1.6;
+  function PX(x){ return (ox + x * u).toFixed(1); }
+  function PY(y){ return (oy - y * u).toFixed(1); }
+  var exp = [], log = [], t;
+  for (t = -2; t <= tmax + 0.001; t += 0.2){ exp.push(PX(t) + "," + PY(Math.pow(c, t))); log.push(PX(Math.pow(c, t)) + "," + PY(t)); }
+  var s = "<svg width=\"240\" height=\"195\" viewBox=\"0 0 240 195\" xmlns=\"http://www.w3.org/2000/svg\">";
+  s += "<line x1=\"8\" y1=\"" + oy + "\" x2=\"232\" y2=\"" + oy + "\" stroke=\"#666\" stroke-width=\"1\"/>";
+  s += "<line x1=\"" + ox + "\" y1=\"8\" x2=\"" + ox + "\" y2=\"186\" stroke=\"#666\" stroke-width=\"1\"/>";
+  s += "<line x1=\"" + PX(-2.6) + "\" y1=\"" + PY(-2.6) + "\" x2=\"" + PX(2.6) + "\" y2=\"" + PY(2.6) + "\" stroke=\"#888\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/>";
+  s += "<polyline points=\"" + exp.join(" ") + "\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\"/>";
+  s += "<polyline points=\"" + log.join(" ") + "\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2\"/>";
+  s += "<text x=\"" + PX(tmax) + "\" y=\"" + (PY(Math.pow(c, tmax)) - 4) + "\" font-size=\"11\" fill=\"#2563eb\">y = " + c + "^x</text>";
+  s += "<text x=\"" + (PX(Math.pow(c, tmax)) - 62) + "\" y=\"" + (PY(tmax) + 14) + "\" font-size=\"11\" fill=\"#dc2626\">y = log x</text>";
+  s += "<text x=\"" + (PX(2.6) - 26) + "\" y=\"" + (PY(2.6) - 4) + "\" font-size=\"11\" fill=\"#555\">y = x</text>";
+  s += "</svg>";
+  return s;
+}
+E("u7-pk-convert-form",7,["3.41"],1,"gen",function(){
+  var neg = Math.random() < 0.3;
+  var mode = neg ? pick(["toExp","toLog"]) : pick(["toExp","toLog","meaning"]);
+  var b, e, A, Astr;
+  if (neg){ b = ri(2,7); var m = ri(1,3); e = -m; A = Math.pow(b, m); Astr = u8frac(1, A); }
+  else { b = ri(2,7); e = pick([2,3,4]); var guard = 0; while (e === b && guard++ < 10) e = pick([2,3,4]); A = Math.pow(b, e); Astr = "" + A; }
+  var logEq = u8L(b, Astr) + " = " + e;
+  var expEq = u8pow(b, e) + " = " + Astr;
+  var sol = "A logarithm is an exponent: \\(" + logEq + "\\) exactly when \\(" + expEq + "\\). The base stays the base, the logarithm itself is the exponent, and the argument is the resulting power.";
+  if (mode === "meaning"){
+    var corr = "\\(" + b + "\\) raised to the power \\(" + e + "\\) gives \\(" + A + "\\)";
+    return mcq("The statement \\(" + logEq + "\\) means that",
+      corr,
+      ["\\(" + e + "\\) raised to the power \\(" + b + "\\) gives \\(" + A + "\\)",
+       "\\(" + b + "\\) raised to the power \\(" + A + "\\) gives \\(" + e + "\\)",
+       "\\(" + A + "\\) raised to the power \\(" + b + "\\) gives \\(" + e + "\\)"],
+      sol, {mode:mode, b:b, e:e});
+  }
+  if (mode === "toExp"){
+    var dis = neg
+      ? ["\\(" + u8pow(b, -e) + " = " + Astr + "\\)",
+         "\\(" + u8pow(b, e) + " = " + A + "\\)",
+         "\\(" + u8pow(-e, b) + " = " + A + "\\)"]
+      : ["\\(" + u8pow(e, b) + " = " + Astr + "\\)",
+         "\\(" + u8pow(b, A) + " = " + e + "\\)",
+         "\\(" + u8pow(A, b) + " = " + e + "\\)"];
+    return mcq("Write \\(" + logEq + "\\) in exponential form.", "\\(" + expEq + "\\)", dis, sol, {mode:mode, b:b, e:e});
+  }
+  var dis2 = neg
+    ? ["\\(" + u8L(b, Astr) + " = " + (-e) + "\\)",
+       "\\(" + u8L(b, "" + A) + " = " + e + "\\)",
+       "\\(" + u8L(b, "" + A) + " = " + b + "\\)"]
+    : ["\\(" + u8L(e, Astr) + " = " + b + "\\)",
+       "\\(" + u8L(b, "" + e) + " = " + A + "\\)",
+       "\\(" + u8L(A, "" + b) + " = " + e + "\\)"];
+  return mcq("Write \\(" + expEq + "\\) in logarithmic form.", "\\(" + logEq + "\\)", dis2, sol, {mode:mode, b:b, e:e});
+});
+E("u7-pk-exact-value",7,["3.41"],1,"gen",function(){
+  var b, Astr, ans, steps;
+  if (Math.random() < 0.4){
+    var r = pick([2,3,4,5]); b = r * r;
+    var k = pick([-5,-3,-1,1,3,5]);
+    Astr = k > 0 ? "" + Math.pow(r, k) : u8frac(1, Math.pow(r, -k));
+    ans = k / 2;
+    steps = "\\(" + b + "^{" + u8frac(k, 2) + "} = \\left(" + r + "^2\\right)^{" + u8frac(k, 2) + "} = " + r + "^{" + k + "} = " + Astr + "\\), so the logarithm is \\(" + u8frac(k, 2) + "\\).";
+  } else {
+    b = ri(2,10);
+    var e = pick([-3,-2,-1,2,3,4]);
+    Astr = e > 0 ? "" + Math.pow(b, e) : u8frac(1, Math.pow(b, -e));
+    ans = e;
+    steps = "\\(" + u8pow(b, e) + " = " + Astr + "\\), so the logarithm, which is the exponent, is \\(" + e + "\\).";
+  }
+  return numq("Determine the exact value of \\(" + u8L(b, Astr) + "\\).", ans, 0.01,
+    "Look for the exponent that produces the argument from the base. " + steps, {b:b, ans:ans});
+});
+E("u7-pk-sketch-log",7,["3.41"],1,"gen",function(){
+  var bases = [{v:2,s:"2"},{v:3,s:"3"},{v:4,s:"4"},{v:5,s:"5"},{v:6,s:"6"},{v:7,s:"7"},{v:10,s:"10"},
+               {v:0.5,s:u8frac(1,2)},{v:1/3,s:u8frac(1,3)},{v:0.2,s:u8frac(1,5)}];
+  var C = pick(bases), cs = C.s;
+  var fn = "y = " + u8L(cs, "x");
+  var ask = pick(["xint","asym","valc","val1","domain","range","dir"]);
+  if (ask === "xint"){ q=mcq("What is the \\(x\\)-intercept of the graph of \\(" + fn + "\\)?",
+    "\\(1\\)", ["\\(0\\)", "\\(" + cs + "\\)", "\\(-1\\)"],
+    "The graph crosses the \\(x\\)-axis where \\(" + u8L(cs, "x") + " = 0\\). Since \\(" + cs + "^0 = 1\\), this happens at \\(x = 1\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "asym"){ q=mcq("What is the vertical asymptote of the graph of \\(" + fn + "\\)?",
+    "\\(x = 0\\)", ["\\(y = 0\\)", "\\(x = 1\\)", "\\(x = " + cs + "\\)"],
+    "The argument \\(x\\) must stay positive, and as \\(x\\) approaches \\(0\\) the values drop without bound, so the graph approaches the line \\(x = 0\\) but never touches it.", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "valc"){ q=mcq("What is the value of \\(" + fn + "\\) at \\(x = " + cs + "\\)?",
+    "\\(1\\)", ["\\(0\\)", "\\(" + cs + "\\)", "\\(-1\\)"],
+    "A logarithm gives the exponent on its base: \\(" + u8L(cs, cs) + " = 1\\) because \\(" + cs + "^1 = " + cs + "\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "val1"){ q=mcq("What is the value of \\(" + fn + "\\) at \\(x = 1\\)?",
+    "\\(0\\)", ["\\(1\\)", "\\(" + cs + "\\)", "undefined"],
+    "Since \\(" + cs + "^0 = 1\\), the exponent is \\(0\\): \\(" + u8L(cs, "1") + " = 0\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "domain"){ q=mcq("What is the domain of \\(" + fn + "\\)?",
+    "\\(x > 0\\)", ["\\(x \\ge 0\\)", "\\(x < 0\\)", "all real numbers"],
+    "A logarithm is defined only for positive arguments, so \\(x > 0\\).", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  if (ask === "range"){ q=mcq("What is the range of \\(" + fn + "\\)?",
+    "all real numbers", ["\\(y > 0\\)", "\\(y \\ge 0\\)", "\\(y < 0\\)"],
+    "As \\(x\\) grows, the logarithm grows without bound, and as \\(x\\) approaches \\(0\\) it falls without bound, so every real value occurs.", {ask:ask, c:cs});q.figure=u8logFig(C.v);return q; }
+  var inc = C.v > 1;
+  var q=mcq("As \\(x\\) increases, the values of \\(" + fn + "\\)",
+    inc ? "increase" : "decrease",
+    [inc ? "decrease" : "increase", "stay the same", "increase, then decrease"],
+    (inc ? "The base \\(" + cs + "\\) is greater than \\(1\\), so larger inputs need larger exponents: the graph rises." : "The base \\(" + cs + "\\) is between \\(0\\) and \\(1\\), so larger inputs need smaller exponents: the graph falls."), {ask:ask, c:cs});q.figure=u8logFig(C.v);return q;
+});
+E("u7-pk-laws-equivalent",7,["3.41"],2,"gen",function(){
+  var b = pick([2,3,5,10]);
+  var VS = pick([["x","y","z"],["m","n","p"],["a","b","c"],["p","q","r"]]);
+  var X = VS[0], Y = VS[1], Z = VS[2];
+  var E1 = ri(2,4), E2 = ri(2,4), E3 = ri(2,4);
+  var single = "\\(" + u8L(b, "\\left(" + u8frac(X + "^{" + E1 + "} " + Y + "^{" + E2 + "}", Z + "^{" + E3 + "}") + "\\right)") + "\\)";
+  var expanded = "\\(" + E1 + u8L(b, X) + " + " + E2 + u8L(b, Y) + " - " + E3 + u8L(b, Z) + "\\)";
+  var steps = "\\[ \\begin{aligned} " + u8L(b, "\\left(" + u8frac(X + "^{" + E1 + "} " + Y + "^{" + E2 + "}", Z + "^{" + E3 + "}") + "\\right)") + " &= " + u8L(b, "\\left(" + X + "^{" + E1 + "} " + Y + "^{" + E2 + "}\\right)") + " - " + u8L(b, "\\left(" + Z + "^{" + E3 + "}\\right)") + " \\\\ &= " + E1 + u8L(b, X) + " + " + E2 + u8L(b, Y) + " - " + E3 + u8L(b, Z) + " \\end{aligned} \\]";
+  if (Math.random() < 0.5){
+    return mcq("Which expression is equivalent to " + single + "?",
+      expanded,
+      ["\\(" + E1 + u8L(b, X) + " + " + E2 + u8L(b, Y) + " + " + E3 + u8L(b, Z) + "\\)",
+       "\\(" + u8L(b, X) + " + " + u8L(b, Y) + " - " + u8L(b, Z) + "\\)",
+       "\\(" + E1 + u8L(b, X) + " - " + E2 + u8L(b, Y) + " - " + E3 + u8L(b, Z) + "\\)"],
+      "Apply the quotient law, then the product law, then the power law: " + steps + " The quotient contributes the subtraction, and each exponent becomes a coefficient.",
+      {mode:"expand", b:b});
+  }
+  return mcq("Which single logarithm is equivalent to " + expanded + "?",
+    single,
+    ["\\(" + u8L(b, "\\left(" + X + "^{" + E1 + "} " + Y + "^{" + E2 + "} " + Z + "^{" + E3 + "}\\right)") + "\\)",
+     "\\(" + u8L(b, "\\left(" + u8frac(Z + "^{" + E3 + "}", X + "^{" + E1 + "} " + Y + "^{" + E2 + "}") + "\\right)") + "\\)",
+     "\\(" + u8L(b, "\\left(" + u8frac("(" + E1 + X + ")(" + E2 + Y + ")", "(" + E3 + Z + ")") + "\\right)") + "\\)"],
+    "Reverse the laws: each coefficient becomes an exponent (power law), the sum becomes a product (product law), and the subtracted term goes to the denominator (quotient law): " + steps,
+    {mode:"condense", b:b});
+});
+E("u7-pk-inverse-graph",7,["3.41"],3,"gen",function(){
+  var mode = pick(["exp2log","log2exp","reflect","swap","intercepts"]);
+  if (mode === "reflect"){
+    var c = pick([2,3]);
+    var q = mcq("The graphs of \\(y = " + c + "^{x}\\) and \\(y = " + u8L(c, "x") + "\\) are shown. The two graphs are reflections of each other in which line?",
+      "\\(y = x\\)",
+      ["\\(y = -x\\)", "the \\(x\\)-axis", "the \\(y\\)-axis"],
+      "The two functions are inverses, so each point \\((a, b)\\) on one graph corresponds to the point \\((b, a)\\) on the other. Swapping the coordinates of every point is a reflection in the line \\(y = x\\).",
+      {mode:mode, c:c});
+    q.figure = u8invSVG(c); return q;
+  }
+  if (mode === "swap"){
+    var c2 = pick([2,3,5,10]);
+    if (Math.random() < 0.5){
+      var q=mcq("The domain of \\(y = " + u8L(c2, "x") + "\\) is the same as which feature of \\(y = " + c2 + "^{x}\\)?",
+        "its range",
+        ["its domain", "its \\(x\\)-intercept", "its asymptote"],
+        "Inverse functions swap domain and range: \\(y = " + u8L(c2, "x") + "\\) has domain \\(x > 0\\), and \\(y = " + c2 + "^{x}\\) has range \\(y > 0\\). The domains are different: the exponential function is defined for every real \\(x\\).",
+        {mode:mode, c:c2});if(c2<=3)q.figure=u8invSVG(c2);return q;
+    }
+    var q=mcq("The range of \\(y = " + c2 + "^{x}\\) is the same as which feature of \\(y = " + u8L(c2, "x") + "\\)?",
+      "its domain",
+      ["its range", "its \\(y\\)-intercept", "its asymptote"],
+      "Inverse functions swap domain and range: \\(y = " + c2 + "^{x}\\) has range \\(y > 0\\), and \\(y = " + u8L(c2, "x") + "\\) has domain \\(x > 0\\).",
+      {mode:mode, c:c2});if(c2<=3)q.figure=u8invSVG(c2);return q;
+  }
+  if (mode === "intercepts"){
+    var c3 = pick([2,3,5,10]);
+    return mcq("Which statement is true for the functions \\(y = " + c3 + "^{x}\\) and \\(y = " + u8L(c3, "x") + "\\)?",
+      "The point \\((1, 0)\\) is on the graph of \\(y = " + u8L(c3, "x") + "\\) and the point \\((0, 1)\\) is on the graph of \\(y = " + c3 + "^{x}\\)",
+      ["The point \\((0, 1)\\) is on the graph of \\(y = " + u8L(c3, "x") + "\\) and the point \\((1, 0)\\) is on the graph of \\(y = " + c3 + "^{x}\\)",
+       "Both graphs pass through the point \\((0, 0)\\)",
+       "Both graphs pass through the point \\((1, 1)\\)"],
+      "The logarithm is \\(0\\) when its argument is \\(1\\), so \\((1, 0)\\) is on the logarithmic graph. The exponential function has value \\(1\\) at \\(x = 0\\), so \\((0, 1)\\) is on its graph. The two points are the image of each other under the swap \\((a, b) \\to (b, a)\\).",
+      {mode:mode, c:c3});
+  }
+  var c4, p;
+  if (mode === "exp2log"){
+    c4 = pick([2,3,5,10]);
+    var ps = c4 === 2 ? [-3,-2,-1,1,2,3] : (c4 === 3 ? [-2,-1,1,2,3] : (c4 === 5 ? [-1,1,2] : [-2,-1,1,2,3]));
+    p = pick(ps);
+    var val = Math.pow(c4, p);
+    var vs = p < 0 ? u8frac(1, Math.pow(c4, -p)) : "" + val;
+    var q=mcq("The point \\(\\left(" + p + ", " + vs + "\\right)\\) lies on the graph of \\(y = " + c4 + "^{x}\\). Which point lies on the graph of \\(y = " + u8L(c4, "x") + "\\)?",
+      "\\(\\left(" + vs + ", " + p + "\\right)\\)",
+      ["\\(\\left(" + p + ", " + vs + "\\right)\\)",
+       "\\(\\left(" + vs + ", " + (-p) + "\\right)\\)",
+       "\\(\\left(" + (-p) + ", " + vs + "\\right)\\)"],
+      "Inverse functions swap coordinates: the point \\(\\left(" + p + ", " + vs + "\\right)\\) on \\(y = " + c4 + "^{x}\\) corresponds to \\(\\left(" + vs + ", " + p + "\\right)\\) on \\(y = " + u8L(c4, "x") + "\\), since \\(" + u8L(c4, vs) + " = " + p + "\\).",
+      {mode:mode, c:c4, p:p});if(c4<=3)q.figure=u8invSVG(c4);return q;
+  }
+  c4 = pick([2,3,5,10]);
+  var ps2 = c4 === 2 ? [-3,-2,-1,1,2,3] : (c4 === 3 ? [-2,-1,1,2,3] : (c4 === 5 ? [-1,1,2] : [-2,-1,1,2,3]));
+  p = pick(ps2);
+  var val2 = Math.pow(c4, p);
+  var vs2 = p < 0 ? u8frac(1, Math.pow(c4, -p)) : "" + val2;
+  var q=mcq("The point \\(\\left(" + vs2 + ", " + p + "\\right)\\) lies on the graph of \\(y = " + u8L(c4, "x") + "\\). Which point lies on the graph of \\(y = " + c4 + "^{x}\\)?",
+    "\\(\\left(" + p + ", " + vs2 + "\\right)\\)",
+    ["\\(\\left(" + vs2 + ", " + p + "\\right)\\)",
+     "\\(\\left(" + (-p) + ", " + vs2 + "\\right)\\)",
+     "\\(\\left(" + vs2 + ", " + (-p) + "\\right)\\)"],
+    "Inverse functions swap coordinates: the point \\(\\left(" + vs2 + ", " + p + "\\right)\\) on \\(y = " + u8L(c4, "x") + "\\) corresponds to \\(\\left(" + p + ", " + vs2 + "\\right)\\) on \\(y = " + c4 + "^{x}\\), since \\(" + c4 + "^{" + p + "} = " + vs2 + "\\).",
+    {mode:mode, c:c4, p:p});if(c4<=3)q.figure=u8invSVG(c4);return q;
+});
 E("u8-pk-area-triangle",8,["4.1"], 1, "gen", function(){
   var b=ri(6,16), h=ri(4,12), A=b*h/2;
   var fig='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Triangle with base and height labelled">'
@@ -5811,6 +6108,11 @@ var PKT3208={
   "u7-pk-product-law":{src:"Mathematics 1201 indicator 1.6",group:"exponent-laws",for:PKFOR3208__C7},
   "u7-pk-two-laws":{src:"Mathematics 1201 indicator 1.6",group:"exponent-laws",for:PKFOR3208__C7},
   "u7-pk-evaluate-exp":{src:"Mathematics 1201 indicator 1.6",group:"exponent-laws",for:PKFOR3208__C7},
+  "u7-pk-convert-form":{src:"Mathematics 3200 indicator 1.1",group:"log-functions",for:PKFOR3208__C7},
+  "u7-pk-exact-value":{src:"Mathematics 3200 indicator 1.3",group:"log-functions",for:PKFOR3208__C7},
+  "u7-pk-sketch-log":{src:"Mathematics 3200 indicator 4.38",group:"log-functions",for:PKFOR3208__C7},
+  "u7-pk-laws-equivalent":{src:"Mathematics 3200 indicator 1.7",group:"log-laws",for:PKFOR3208__C7},
+  "u7-pk-inverse-graph":{src:"Mathematics 3200 indicator 4.37",group:"log-functions",for:PKFOR3208__C7},
   "u8-pk-area-triangle":{src:"Mathematics 8, area of triangles (Mathematics 6 outcome MA6.9.10)",group:"area",for:PKFOR3208__C8},
   "u8-pk-area-parallelogram":{src:"Mathematics 8, area of parallelograms (Mathematics 6 outcome MA6.9.10)",group:"area",for:PKFOR3208__C8},
   "u8-pk-sa-rect-prism":{src:"Mathematics 9 indicator surface area from a net",group:"measurement",for:PKFOR3208__C8},

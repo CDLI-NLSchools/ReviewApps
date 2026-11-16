@@ -1,11 +1,14 @@
 "use strict";
 /* Gate: Math 3208 PK tranche (November 16, 2026).
    Part 1 (bank level, vm sandbox over the real shell functions):
-   the flagged pool is exactly the tranche's 36 entries (35 borrowed
+   the flagged pool is exactly 41 entries (the tranche's 36: 35 borrowed
    from the Mathematics 2200, Mathematics 1201, Mathematics 9 and
    Mathematics 8 banks, and 1 entry already in this bank carrying
    tranche metadata from banks/math-3208/bank-pk.js:
-   u2-repeating-decimal), every flagged entry carries pkSrc, pkFor
+   u2-repeating-decimal; plus the log follow-up's 5 entries borrowed
+   from the Mathematics 3200 bank for Unit 7, stocked as ordinary
+   prior knowledge on Jason's ruling of November 16, 2026), every
+   flagged entry carries pkSrc, pkFor
    and pkGroup metadata, a pkonly draw (PKONLY_DRAW, the flag the shell
    sets for a ?pkonly=1 set) deals only flagged entries, samples
    every pkGroup in the pool, and deals a pool's single Level 3
@@ -67,7 +70,7 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-3208.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 4, 7: 3, 8: 4 };
+const POOLS = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 4, 7: 8, 8: 4 };
 const POOL_IDS = {
   1: ["u1-pk-simplify-basic", "u1-pk-npv-basic", "u1-pk-defined-values", "u1-pk-eval-function", "u1-pk-solve-input"],
   2: ["u2-repeating-decimal", "u2-pk-simplify-trinomial", "u2-pk-geo-ratio", "u2-pk-converge-check", "u2-pk-infinite-sum"],
@@ -75,11 +78,11 @@ const POOL_IDS = {
   4: ["u4-pk-slope-rise-run", "u4-pk-rate-of-change", "u4-pk-eq-slope-point", "u4-pk-eq-two-points", "u4-pk-factor-common"],
   5: ["u5-pk-characteristics", "u5-pk-sa-rect-prism", "u5-pk-vol-cylinder", "u5-pk-similar-context", "u5-pk-indirect-measure"],
   6: ["u6-pk-exact-values", "u6-pk-solve-equation", "u6-pk-point-ratios", "u6-pk-reflection-points"],
-  7: ["u7-pk-product-law", "u7-pk-two-laws", "u7-pk-evaluate-exp"],
+  7: ["u7-pk-product-law", "u7-pk-two-laws", "u7-pk-evaluate-exp", "u7-pk-convert-form", "u7-pk-exact-value", "u7-pk-sketch-log", "u7-pk-laws-equivalent", "u7-pk-inverse-graph"],
   8: ["u8-pk-area-triangle", "u8-pk-area-parallelogram", "u8-pk-sa-rect-prism", "u8-pk-multiply-monomial"]
 };
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 36,
-   "bank carries 36 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 41,
+   "bank carries 41 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-3208 config sets pkPracticeOnly");
 for (let u = 1; u <= 8; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");
@@ -122,7 +125,7 @@ for (let u = 1; u <= 8; u++) {
     ok(r.n === Math.min(8, r.pool), "unit " + u + " seed " + seed + ": deals min(8, pool) questions, saw " + r.n);
     ok(new Set(r.ids).size === r.ids.length, "unit " + u + " seed " + seed + ": no entry repeats");
     ok(JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(u)), "unit " + u + " seed " + seed + ": every pkGroup is sampled");
-    ok(r.l3 === (u === 5 || u === 6 ? 1 : 0), "unit " + u + " seed " + seed + ": Level 3 discipline holds (a pool's single Level 3 entry is dealt only as filler when its Level 1 and 2 entries cannot fill the check), saw " + r.l3);
+    ok(r.l3 === (u === 5 || u === 6 || u === 7 ? 1 : 0), "unit " + u + " seed " + seed + ": Level 3 discipline holds (a pool's single Level 3 entry is dealt only as filler when its Level 1 and 2 entries cannot fill the check), saw " + r.l3);
     const dup = new Set(r.canon).size !== r.canon.length;
     ok(r.thin === (dup || r.n < Math.min(8, r.pool)), "unit " + u + " seed " + seed + ": thin reports exactly the genuine duplicate/shortfall state");
   }

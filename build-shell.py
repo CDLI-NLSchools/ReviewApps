@@ -1826,6 +1826,10 @@ rep(' "linear-equations":["Solving linear equations","Résoudre des équations l
 rep(' "scale":["Scale diagrams","Dessins à l\'échelle"],',
     ' "scale":["Scale diagrams","Dessins à l\'échelle"],\n "scale-reading-bridge":["Getting started with reading scales","Débuter la lecture d\'échelles"],', count=1)  # Math 1202 bridge follow-up label (Nov 16, 2026)
 
+# ---------- Math 3208 log follow-up group labels (Nov 16, 2026) ----------
+rep(' \"listing-outcomes\":[\"Listing outcomes and multiplying counts\",\"D\u00e9nombrer les r\u00e9sultats et multiplier les comptes\"],',
+    ' \"listing-outcomes\":[\"Listing outcomes and multiplying counts\",\"D\u00e9nombrer les r\u00e9sultats et multiplier les comptes\"],\n \"log-functions\":[\"Logarithmic functions\",\"Fonctions logarithmiques\"],\n \"log-laws\":[\"Laws of logarithms\",\"Lois des logarithmes\"],', count=1)  # Math 3208 log follow-up labels (Nov 16, 2026)
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,
