@@ -71,7 +71,7 @@ run('var __PK=true; function pkIncluded(){return __PK;} function enrichIncluded(
 run('var PKONLY_DRAW=false;');
 run('function __reseed(n){var s=n>>>0; Math.random=function(){s|=0;s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}');
 
-const POOL_SIZES = { 1: 8, 2: 8, 3: 7, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 };
+const POOL_SIZES = { 1: 41, 2: 8, 3: 7, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). */
 function checkDraw(unit, inds, seed) {
   run("__reseed(" + seed + ");");
   return run("(function(){var r=drawSet([" + unit + "]," + JSON.stringify(inds) + ",8,[20,60,20],'unit',false);"
@@ -156,8 +156,12 @@ for (const seed of [11, 99, 424242, 7, 2026]) {
 }
 {
   const r = retryDraw(1, ["trig-ratios"], 7);
-  ok(r.n === 8 && r.distinct === 3 && r.reused === 5 && r.groups.every((g) => g === "trig-ratios"),
-     "retry u1: the three trig-ratios entries repeat as fresh instances to fill 8 (reused 5), saw distinct=" + r.distinct + " reused=" + r.reused);
+  /* Amended Nov 17, 2026: the enrichment build took the Unit 1
+     trig-ratios group from 3 entries to 12, so the retry now fills
+     with distinct templates and nothing repeats. Before the build
+     this asserted distinct 3, reused 5. */
+  ok(r.n === 8 && r.distinct === 8 && r.reused === 0 && r.groups.every((g) => g === "trig-ratios"),
+     "retry u1: the twelve trig-ratios entries fill the retry with distinct templates (reused 0), saw distinct=" + r.distinct + " reused=" + r.reused);
 }
 {
   /* Unit 5 data-claims is the tranche's only Level 3 only

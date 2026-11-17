@@ -61,18 +61,18 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/math-2201.js", "utf8"));
 
-ok(BANK.length === 295, "BANK has 295 entries, saw " + BANK.length);
+ok(BANK.length === 384, "BANK has 384 entries, saw " + BANK.length);
 const cr = window.__BANK_CRMARKS || {};
 const crKeys = Object.keys(cr);
-ok(crKeys.length === 186, "__BANK_CRMARKS has 186 keys, saw " + crKeys.length);
+ok(crKeys.length === 218, "__BANK_CRMARKS has 218 keys, saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
 ok(crKeys.every(k => bankIds.has(k)), "every CR key is a bank entry id");
 ok(bankIds.size === BANK.length, "entry ids are unique");
 const denom = {};
 let crSum = 0;
 crKeys.forEach(k => { denom[cr[k]] = (denom[cr[k]] || 0) + 1; crSum += cr[k]; });
-ok(JSON.stringify(denom) === JSON.stringify({ 1: 63, 2: 92, 3: 25, 4: 6 }), "CR denominations match the standalone map (1x63, 2x92, 3x25, 4x6), saw " + JSON.stringify(denom));
-ok(crSum === 346, "CR marks sum to 346, saw " + crSum);
+ok(JSON.stringify(denom) === JSON.stringify({ 1: 63, 2: 103, 3: 42, 4: 10 }), "CR denominations (the standalone map 1x63, 2x92, 3x25, 4x6, plus the November 17, 2026 Unit 1 enrichment adding 2x11, 3x17, 4x4), saw " + JSON.stringify(denom));
+ok(crSum === 435, "CR marks sum to 435, saw " + crSum);
 ok(cr["u1-two-triangles"] === 4 && cr["u5-media"] === 4 && cr["u5-sd-decisions"] === 4 && cr["u4-extraneous"] === 3 && cr["u4-rationalize"] === 1 && cr["u5-centre-mean"] === 1 && cr["u3-factor-monic"] === 2 && cr["u8-regular-sides-from-angle"] === 3,
    "CR spot values match the standalone map (u1-two-triangles 4, u5-media 4, u5-sd-decisions 4, u4-extraneous 3, u4-rationalize 1, u5-centre-mean 1, u3-factor-monic 2, u8-regular-sides-from-angle 3)");
 
@@ -103,24 +103,26 @@ function extractFn(src, name) {
 eval(extractFn(html, "poolFor"));
 eval(extractFn(html, "isPK"));
 const defPool = poolFor([1, 2, 3, 4, 5, 6, 7, 8], []);
-ok(defPool.length === 293, "default practice pool has 293 entries (bank 295 minus the 2 enrichment entries), saw " + defPool.length);
+ok(defPool.length === 382, "default practice pool has 382 entries (bank 384 minus the 2 enrichment entries), saw " + defPool.length);
 ok(!defPool.some(e => e.enrich), "default practice pool holds no enrichment entry");
 ok(poolFor([7], []).length === 33, "default Unit 7 pool has 33 entries (35 in the bank minus the 2 enrichment entries), saw " + poolFor([7], []).length);
 /* Prior knowledge, amended November 15, 2026 for the PK tranche:
    the pin is the full isPK set (the shell's own flag-or-code
-   definition), 66 entries: the 7 coded entries (PK.1 in Unit 5,
-   PK.2 in Unit 3) plus the 59 tranche entries flagged pkFlag.
+   definition), 99 entries: the 7 coded entries (PK.1 in Unit 5,
+   PK.2 in Unit 3), the 59 tranche entries flagged pkFlag, and
+   the 33 Unit 1 entries authored in the November 17, 2026
+   enrichment build and flagged through PKT_U1.
    The set is pinned exactly so a future bank edit cannot drift
    it silently; changing it is a deliberate act recorded in the
    amending pass's report. */
 const pk = BANK.filter(e => isPK(e)).map(e => e.id).sort();
-ok(JSON.stringify(pk) === JSON.stringify(["u1-pk-find-angle", "u1-pk-find-side", "u1-pk-label-sides", "u1-pk-pythagoras", "u1-pk-ramp-run", "u1-pk-ratio-def", "u1-pk-rope-angle", "u1-pk-solve-triangle", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-eval-function", "u2-pk-graph-data", "u2-pk-graph-form", "u2-pk-graph-strategy", "u2-pk-intercepts", "u2-pk-solve-input", "u3-factor-difference", "u3-factor-monic", "u3-factor-nonmonic", "u3-pk-binom-tri-expand", "u3-pk-gcf", "u3-pk-radical-mixed", "u3-pk-solve-two-step", "u4-pk-defined", "u4-pk-evaluate-exp", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-which-is-solution", "u5-centre-mean", "u5-centre-median", "u5-centre-mode", "u5-choosing-measure", "u5-pk-freq-mean", "u5-pk-generalization-critique", "u5-pk-sample-or-population", "u5-pk-sample-scale", "u5-pk-supported-conclusion", "u6-pk-convert-multistep", "u6-pk-rate-of-change", "u6-pk-sa-basic", "u6-pk-scale-draw", "u6-pk-scale-factor", "u6-pk-solve-input", "u6-pk-unit-rate", "u6-pk-vol-basic", "u7-pk-angle-justify", "u7-pk-conjecture", "u7-pk-counterexample", "u7-pk-inductive-limit", "u7-pk-pattern-figure", "u7-pk-pattern-word", "u7-pk-proof-error", "u7-pk-table-equation", "u7-pk-valid-chain", "u8-pk-angle-measure", "u8-pk-comp-supp", "u8-pk-parallel-decision", "u8-pk-polygon-sum", "u8-pk-solve-two-step", "u8-pk-transversal-measure", "u8-pk-transversal-pairs", "u8-pk-triangle-sum", "u8-pk-word-two-step"]),
-   "prior-knowledge set is exactly the pinned 66 (7 coded + 59 tranche), saw " + pk.length + " (" + pk.join(", ") + ")");
+ok(JSON.stringify(pk) === JSON.stringify(["u1-pk-angle-from-legs", "u1-pk-angle-from-value", "u1-pk-depression-distance", "u1-pk-diag-num", "u1-pk-elevation-height", "u1-pk-find-angle", "u1-pk-find-hypotenuse", "u1-pk-find-side", "u1-pk-hypotenuse-pick", "u1-pk-label-sides", "u1-pk-ladder-reach", "u1-pk-leg-num", "u1-pk-opposite-read", "u1-pk-other-angle-ratio", "u1-pk-point-distance", "u1-pk-pythagoras", "u1-pk-ramp-length", "u1-pk-ramp-run", "u1-pk-ratio-decimal", "u1-pk-ratio-def", "u1-pk-ratio-equation", "u1-pk-ratio-from-figure", "u1-pk-ratio-letters", "u1-pk-ratio-unreduced", "u1-pk-right-check", "u1-pk-role-from-diagram", "u1-pk-role-value", "u1-pk-role-words", "u1-pk-rope-angle", "u1-pk-screen-size", "u1-pk-shadow-angle", "u1-pk-shortcut-saving", "u1-pk-slide-angle", "u1-pk-solve-isosceles", "u1-pk-solve-perimeter", "u1-pk-solve-scene", "u1-pk-solve-second-leg", "u1-pk-solve-triangle", "u1-pk-tree-distance", "u1-pk-two-angles-roles", "u1-pk-wire-length", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-eval-function", "u2-pk-graph-data", "u2-pk-graph-form", "u2-pk-graph-strategy", "u2-pk-intercepts", "u2-pk-solve-input", "u3-factor-difference", "u3-factor-monic", "u3-factor-nonmonic", "u3-pk-binom-tri-expand", "u3-pk-gcf", "u3-pk-radical-mixed", "u3-pk-solve-two-step", "u4-pk-defined", "u4-pk-evaluate-exp", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-which-is-solution", "u5-centre-mean", "u5-centre-median", "u5-centre-mode", "u5-choosing-measure", "u5-pk-freq-mean", "u5-pk-generalization-critique", "u5-pk-sample-or-population", "u5-pk-sample-scale", "u5-pk-supported-conclusion", "u6-pk-convert-multistep", "u6-pk-rate-of-change", "u6-pk-sa-basic", "u6-pk-scale-draw", "u6-pk-scale-factor", "u6-pk-solve-input", "u6-pk-unit-rate", "u6-pk-vol-basic", "u7-pk-angle-justify", "u7-pk-conjecture", "u7-pk-counterexample", "u7-pk-inductive-limit", "u7-pk-pattern-figure", "u7-pk-pattern-word", "u7-pk-proof-error", "u7-pk-table-equation", "u7-pk-valid-chain", "u8-pk-angle-measure", "u8-pk-comp-supp", "u8-pk-parallel-decision", "u8-pk-polygon-sum", "u8-pk-solve-two-step", "u8-pk-transversal-measure", "u8-pk-transversal-pairs", "u8-pk-triangle-sum", "u8-pk-word-two-step"]),
+   "prior-knowledge set is exactly the pinned 99 (7 coded + 59 tranche + 33 authored in the November 17, 2026 Unit 1 enrichment), saw " + pk.length + " (" + pk.join(", ") + ")");
 
 const census = {}, perUnit = {}, kinds = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; kinds[e.kind] = (kinds[e.kind] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 27, 2: 39, 3: 34, 4: 42, 5: 52, 6: 30, 7: 35, 8: 36 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 116, 2: 39, 3: 34, 4: 42, 5: 52, 6: 30, 7: 35, 8: 36 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1), saw " + JSON.stringify(perUnit));
 /* Kind counts amended November 12, 2026, on Jason's ruling: six
    entries (u2-vertex-x, u2-vertex-value, u2-vertex-shift,
    u2-xintercepts, u2-xintercepts-factored, u3-discriminant) were
@@ -134,8 +136,10 @@ ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (th
    Amended Nov 13, 2026 for the two Unit 7 enrichment entries
    (both generators): 185 gen, 51 var. Amended Nov 15, 2026 for
    the PK tranche: its 59 entries are 47 generators and 12 variant
-   sets, taking the bank to 232 gen, 63 var. */
-ok(kinds.gen === 232 && kinds.var === 63, "entry kinds (232 gen, 63 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
+   sets, taking the bank to 232 gen, 63 var. Amended Nov 17, 2026
+   for the Unit 1 enrichment: its 89 entries are 73 generators and
+   16 variant sets, taking the bank to 305 gen, 79 var. */
+ok(kinds.gen === 305 && kinds.var === 79, "entry kinds (305 gen, 79 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);
 ok(empty.length === 0, "indicators with no entries: " + empty.join(", "));
