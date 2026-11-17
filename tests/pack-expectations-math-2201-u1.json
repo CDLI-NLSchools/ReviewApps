@@ -1,0 +1,174 @@
+{
+ "pack": "math-2201 unit 1",
+ "bankSha256": "ae19ebe93718c0ca283a2b54ff01d58d9bbbf31bb9ca1f2ca070beb976d8a0a0",
+ "sets": {
+  "THX2JE": {
+   "id": "pk-check",
+   "view": "p",
+   "canons": [
+    "Triangle PQR is a right triangle with the right angle at R. Angle Q is marked. Which statement correctly identifies the hypotenuse ? || MC:PQ is the hypotenuse, and PR is opposite angle Q",
+    "Triangle EGH is a right triangle with the right angle at H. Side EH is \\(24\\) cm, side GH is \\(32\\) cm, and side EG is \\(40\\) cm. What is the value of \\(\\cos G\\)? || MC:\\(\\frac{4}{5}\\)",
+    "A right triangle ABC has the right angle at C. In the triangle, the side opposite angle B, AC, is \\(20\\) cm and the hypotenuse, AB, is \\(31\\) cm. Give the measure of angle B, in degrees, to the nearest degree. || NUM:40",
+    "A right triangle ABC has the right angle at C and angle A is \\(52^\\circ\\). In the triangle, the hypotenuse, AB, is \\(47\\) cm. Find the length of side BC, in centimetres, to the nearest tenth. || NUM:37",
+    "A rectangular playing field is \\(12\\) m long and \\(9\\) m wide. A player runs in a straight line from one corner of the field to the diagonally opposite corner. How far, in metres, does the player run? || MC:15",
+    "A right triangle ABC has the right angle at C. In the triangle, the hypotenuse AB is \\(42\\) cm and angle A is \\(48^\\circ\\). Find the measure of angle B, in degrees, to the nearest degree. || NUM:42",
+    "A playground slide runs in a straight line from the top of a platform down to level ground. The slide is \\(7.5\\) m long, and its foot is \\(4.5\\) m horizontally from the base of the platform. Find the angle the slide makes with the ground, in degrees, to the nearest degree. || TXT:53|53 degrees|53°",
+    "A conveyor belt carries gravel in a straight line up to the top of a storage bin \\(7.5\\) m above level ground. The belt makes an angle of \\(35^\\circ\\) with the ground. How far, in metres, is the foot of the belt from the point on the ground directly below the top of the bin? Give your answer to the nearest tenth. || TXT:10.7"
+   ]
+  },
+  "QNYCMT": {
+   "id": "pk-repair-trig-sides",
+   "view": "p",
+   "canons": [
+    "In right triangle CDE, the right angle is at E and angle D is marked. Which statement correctly identifies the side adjacent to angle D? || MC:DE is adjacent to angle D, and CE is opposite angle D",
+    "In right triangle MPR, the right angle is at R and angle P is marked. Which statement correctly identifies the side opposite angle P? || MC:MR is opposite angle P, and PR is adjacent to angle P",
+    "In right triangle UVW, the right angle is at W and angle V is marked. Which statement correctly identifies the hypotenuse ? || MC:UV is the hypotenuse, and UW is opposite angle V"
+   ]
+  },
+  "NSHHTQ": {
+   "id": "pk-repair-trig-ratios",
+   "view": "p",
+   "canons": [
+    "Triangle JKL is a right triangle with the right angle at L. Side JL is \\(80\\) cm, side KL is \\(18\\) cm, and side JK is \\(82\\) cm. What is the value of \\(\\cos J\\)? || MC:\\(\\frac{40}{41}\\)",
+    "A right triangle ABC has the right angle at C. In the triangle, the side adjacent to angle A, AC, is \\(19\\) cm and the hypotenuse, AB, is \\(30\\) cm. Give the measure of angle A, in degrees, to the nearest degree. || NUM:51",
+    "A right triangle ABC has the right angle at C and angle A is \\(32^\\circ\\). In the triangle, the side opposite angle A, BC, is \\(28\\) cm. Find the length of side AC, in centimetres, to the nearest tenth. || NUM:44.8",
+    "Triangle RTV is a right triangle with the right angle at V. Side RV is \\(45\\) cm, side TV is \\(24\\) cm, and side RT is \\(51\\) cm. What is the value of \\(\\cos R\\)? || MC:\\(\\frac{15}{17}\\)"
+   ]
+  },
+  "9QYM8C": {
+   "id": "pk-repair-pythagoras",
+   "view": "p",
+   "canons": [
+    "A guy wire \\(10\\) m long runs from the top of a vertical pole to a ground anchor. The wire is attached \\(8\\) m up the pole. How far, in metres, is the anchor from the base of the pole? || MC:6",
+    "A rectangular building lot is \\(40\\) m long and \\(9\\) m wide. A survey line runs straight from one corner of the lot to the opposite corner. How long, in metres, is the survey line? || MC:41",
+    "A guy wire \\(7.5\\) m long runs from the top of a vertical pole to a ground anchor. The wire is attached \\(4.5\\) m up the pole. How far, in metres, is the anchor from the base of the pole? || MC:6"
+   ]
+  },
+  "XH7EWJ": {
+   "id": "pk-repair-solve-triangle",
+   "view": "p",
+   "canons": [
+    "A right triangle ABC has the right angle at C. In the triangle, the hypotenuse AB is \\(13\\) cm and side BC is \\(5\\) cm. Find the measure of angle A, in degrees, to the nearest degree. || NUM:23",
+    "A right triangle ABC has the right angle at C. In the triangle, side AC, adjacent to angle A, is \\(32\\) cm and angle A is \\(40^\\circ\\). Find the length of side BC, in centimetres, to the nearest tenth. || NUM:26.9",
+    "A right triangle ABC has the right angle at C. In the triangle, the hypotenuse AB is \\(39\\) cm and angle A is \\(62^\\circ\\). Find the measure of angle B, in degrees, to the nearest degree. || NUM:28"
+   ]
+  },
+  "D6KPCZ": {
+   "id": "pk-repair-trig-context",
+   "view": "p",
+   "canons": [
+    "A tent guy rope runs in a straight line from the top of a tent pole to a peg in level ground. The rope is \\(7.5\\) m long, and the peg is \\(4.5\\) m from the base of the pole. Find the angle the rope makes with the ground, in degrees, to the nearest degree. || TXT:53|53 degrees|53°",
+    "An escalator rises \\(5.4\\) m from one floor to the next, running in a straight line at an angle of \\(28^\\circ\\) to the horizontal. How far, in metres, does the escalator carry a passenger horizontally? Give your answer to the nearest tenth. || TXT:10.2",
+    "A tent guy rope runs in a straight line from the top of a tent pole to a peg in level ground. The rope is \\(5\\) m long, and the peg is \\(4\\) m from the base of the pole. Find the angle the rope makes with the ground, in degrees, to the nearest degree. || TXT:37|37 degrees|37°",
+    "A conveyor belt carries gravel in a straight line up to the top of a storage bin \\(3.5\\) m above level ground. The belt makes an angle of \\(28^\\circ\\) with the ground. How far, in metres, is the foot of the belt from the point on the ground directly below the top of the bin? Give your answer to the nearest tenth. || TXT:6.6"
+   ]
+  },
+  "S5T64Y": {
+   "id": "ind-71",
+   "view": "p",
+   "canons": [
+    "In triangle PQR you know two sides and the angle between them, and you need the third side. Which law do you use? || MC:The cosine law — it is built for the side-angle-side case",
+    "The three sides of a triangle measure \\(7\\text{ km}\\), \\(10\\text{ km}\\) and \\(13\\text{ km}\\). Which law gives one of its angles directly? || MC:Cosine law",
+    "All three sides of a triangle are known. To find angle \\(C\\) first, \\(\\cos C\\) equals… || MC:\\(\\frac{a^2 + b^2 - c^2}{2ab}\\)",
+    "You know two sides of a triangle and an angle opposite one of them, and you need another angle. Which law starts the solution, and what must you watch for? || MC:The sine law — and the angle it gives might not be the only possibility: an angle and its supplement both have the same sine, so the diagram has to rule one out",
+    "In \\(\\triangle PQR\\), \\(\\angle P = 39^\\circ\\), \\(\\angle Q = 84^\\circ\\), and the side opposite \\(\\angle Q\\) is \\(15\\text{ m}\\). Which law gives the side opposite \\(\\angle P\\) directly? || MC:Sine law",
+    "In \\(\\triangle ABC\\), the sine law states \\(\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}\\). According to the sine law, side \\(a\\) equals… || MC:\\(\\frac{c \\sin A}{\\sin C}\\)",
+    "In triangle ABC, a diagram marks side \\(a = 9\\text{ cm}\\) (opposite angle \\(A\\)), side \\(b = 7\\text{ cm}\\), and angle \\(A = 35^\\circ\\). Which set-up finds angle B? || MC:\\(\\frac{\\sin B}{7} = \\frac{\\sin 35^\\circ}{9}\\) — each angle is paired with the side opposite it",
+    "A triangle has angles of \\(47^\\circ\\) and \\(71^\\circ\\) and a side of \\(12\\text{ m}\\) opposite the \\(47^\\circ\\) angle. Which law gives another side directly? || MC:Sine law"
+   ]
+  },
+  "N37QX7": {
+   "id": "ind-72",
+   "view": "p",
+   "canons": [
+    "In \\(\\triangle ABC\\), \\(\\angle A = 35^\\circ\\), \\(\\angle B = 70^\\circ\\), and side \\(a = 11\\text{ cm}\\) (opposite \\(\\angle A\\)). Find side \\(b\\), to one decimal place, in cm. || NUM:18",
+    "In \\(\\triangle DEF\\), \\(\\angle D = 60^\\circ\\), side \\(d = 10\\text{ m}\\) (opposite \\(\\angle D\\)), and side \\(e = 11.4\\text{ m}\\). Find \\(\\angle E\\), to the nearest degree. || NUM:81",
+    "In \\(\\triangle PQR\\), sides \\(p = 6\\text{ km}\\) and \\(q = 7\\text{ km}\\) meet at \\(\\angle R = 60^\\circ\\) between them. Find the side opposite \\(\\angle R\\), to one decimal place, in km. || NUM:6.6",
+    "A triangle has sides \\(7.9, 11, 9\\). Find the angle opposite the side of length \\(7.9\\), to the nearest degree. || NUM:45",
+    "Two straight roads leave an intersection. A gas station is 10 km along one road and a school is 22 km along the other, with an angle of \\(41^\\circ\\) between the roads. The distance between the gas station and the school is measured straight across. How far apart are the two endpoints, to one decimal place, in km? || NUM:15.9",
+    "According to the cosine law, \\(c^2\\) equals… || MC:\\(a^2 + b^2 - 2ab\\cos C\\)",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 49^\\circ\\), \\(\\angle B = 77^\\circ\\), and side \\(a = 15\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:19.4",
+    "A triangle has sides 13.7 cm, 13 cm and 7 cm. What is the angle opposite the side of length 13.7 cm, in degrees? || MC:80",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 48^\\circ\\), \\(\\angle B = 45^\\circ\\), and the side opposite \\(\\angle A\\) is \\(23\\text{ cm}\\). Find the length of the side opposite \\(\\angle C\\), to one decimal place, in cm. || NUM:30.9",
+    "A triangle has sides of \\(6\\text{ cm}\\), \\(10\\text{ cm}\\) and \\(13\\text{ cm}\\). Find the measure of the SMALLEST angle, to the nearest degree. || NUM:26",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 30^\\circ\\), side \\(b = 10\\text{ cm}\\) and side \\(a = 5\\text{ cm}\\) (\\(a\\) is opposite \\(\\angle A\\)). How many different triangles fit this information? || MC:Exactly one triangle (a right triangle)",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 50^\\circ\\), side \\(b = 9\\text{ cm}\\) and side \\(a = 11\\text{ cm}\\) (\\(a\\) is opposite \\(\\angle A\\)). How many different triangles fit this information? || MC:Exactly one triangle"
+   ]
+  },
+  "TZQZJJ": {
+   "id": "mixed-a",
+   "view": "p",
+   "canons": [
+    "A rectangular meadow is \\(6\\) m long and \\(8\\) m wide. A hiker walks in a straight line from one corner of the meadow to the diagonally opposite corner. How far, in metres, does the hiker walk? || MC:10",
+    "A triangle has sides of \\(9\\text{ cm}\\) and \\(14\\text{ cm}\\) with the angle of \\(58^\\circ\\) between them. Which law gives the third side directly? || MC:Cosine law",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 25^\\circ\\), side \\(a = 8\\text{ cm}\\) (opposite \\(\\angle A\\)), and side \\(b = 17.8\\text{ cm}\\). Find \\(\\angle B\\), to the nearest degree. || NUM:70",
+    "Triangle BDF is a right triangle with the right angle at F. Side BF is \\(48\\) cm, side DF is \\(20\\) cm, and side BD is \\(52\\) cm. What is the value of \\(\\tan B\\)? || MC:\\(\\frac{5}{12}\\)",
+    "In triangle ABC you know two angles and the side between them. Which law starts the solution? || MC:The sine law — an angle and its opposite side form a complete pair",
+    "Two airplanes leave the same airport at the same time. One travels at 400 km/h and the other at 520 km/h, each in a straight line. After 0.5 h they are 157 km apart. Find the angle between their paths, to the nearest degree. || NUM:37",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 34^\\circ\\), \\(\\angle B = 57^\\circ\\), and the side opposite \\(\\angle A\\) is \\(28\\text{ cm}\\). Find the length of the side opposite \\(\\angle C\\), to one decimal place, in cm. || NUM:50.1"
+   ]
+  },
+  "7729KQ": {
+   "id": "ind-73",
+   "view": "p",
+   "canons": [
+    "Two points \\(P\\) and \\(Q\\) on one shore of a lake are 66 m apart. A buoy \\(R\\) floats on the lake. From \\(P\\), the angle between the line to \\(Q\\) and the line to the buoy is \\(41^\\circ\\); from \\(Q\\), the angle between the line to \\(P\\) and the line to the buoy is \\(63^\\circ\\). How far is the buoy from \\(P\\), in m? || MC:60.6",
+    "From a point on level ground, the angle of elevation to the top of a lighthouse is \\(23^\\circ\\). Moving 40 m closer to it, the angle of elevation is \\(35^\\circ\\). Find its height, to one decimal place, in m. || NUM:43.1",
+    "A radio tower stands vertically between two ground anchors 76.3 m apart. From the anchor on the left, the angle of elevation to the top of the tower is \\(64^\\circ\\); from the anchor on the right, it is \\(48^\\circ\\). Find the length of the LONGER support wire, to one decimal place, in m. || NUM:74",
+    "Two points \\(P\\) and \\(Q\\) on one shore of a lake are 67 m apart. A buoy \\(R\\) floats on the lake. From \\(P\\), the angle between the line to \\(Q\\) and the line to the buoy is \\(60^\\circ\\); from \\(Q\\), the angle between the line to \\(P\\) and the line to the buoy is \\(52^\\circ\\). How far is the buoy from \\(P\\), in m? || MC:56.9",
+    "From a point on level ground, the angle of elevation to the top of a lighthouse is \\(36^\\circ\\). Moving 20 m closer to it, the angle of elevation is \\(63^\\circ\\). Find its height, to one decimal place, in m. || NUM:23.1",
+    "A surveyor maps two fields that share the diagonal \\(AC\\). In \\(\\triangle ABC\\), \\(AB = 11\\text{ m}\\), \\(BC = 8\\text{ m}\\) and \\(\\angle B = 60^\\circ\\). In the second field, \\(\\triangle ACD\\), \\(\\angle DAC = 50^\\circ\\) and \\(\\angle D = 65^\\circ\\). Find the length of \\(CD\\), to one decimal place, in m. || NUM:8.3",
+    "A triangular garden plot has two sides of 19 m and 13 m meeting at a corner with an angle of \\(45^\\circ\\) between them. A path runs from that corner to the midpoint of the opposite side. How long is the path, to one decimal place, in metres? || NUM:14.8",
+    "A surveyor maps two fields that share the diagonal \\(AC\\). In \\(\\triangle ABC\\), \\(AB = 11\\text{ m}\\), \\(BC = 8\\text{ m}\\) and \\(\\angle B = 70^\\circ\\). In the second field, \\(\\triangle ACD\\), \\(\\angle DAC = 55^\\circ\\) and \\(\\angle D = 65^\\circ\\). Find the length of \\(CD\\), to one decimal place, in m. || NUM:10.1"
+   ]
+  },
+  "KYH577": {
+   "id": "mixed-b",
+   "view": "p",
+   "canons": [
+    "Two hikers leave a trailhead at the same time. One walks 10 km and the other walks 29 km, with an angle of \\(67^\\circ\\) between their paths. How far apart are the two endpoints, to one decimal place, in km? || NUM:26.7",
+    "A right triangle ABC has the right angle at C and angle B is \\(60^\\circ\\). In the triangle, the side opposite angle B, AC, is \\(19\\) cm. Find the length of side BC, in centimetres, to the nearest tenth. || NUM:11",
+    "A radio tower stands vertically between two ground anchors 34.7 m apart. From the anchor on the left, the angle of elevation to the top of the tower is \\(44^\\circ\\); from the anchor on the right, it is \\(55^\\circ\\). Find the length of the LONGER support wire, to one decimal place, in m. || NUM:28.8",
+    "A kite string is tied to a stake in level ground and pulled taut in a straight line to the kite. The string is \\(30\\) m long, and the kite is \\(24\\) m horizontally from the stake. Find the angle of elevation of the string, in degrees, to the nearest degree. || TXT:37|37 degrees|37°",
+    "A triangle has sides of \\(6\\text{ cm}\\), \\(10\\text{ cm}\\) and \\(12\\text{ cm}\\). Find the measure of the SMALLEST angle, to the nearest degree. || NUM:30",
+    "A triangular garden plot has two sides of 19 m and 16 m meeting at a corner with an angle of \\(46^\\circ\\) between them. A path runs from that corner to the midpoint of the opposite side. How long is the path, to one decimal place, in metres? || NUM:16.1",
+    "A surveyor maps two fields that share the diagonal \\(AC\\). In \\(\\triangle ABC\\), \\(AB = 13\\text{ m}\\), \\(BC = 10\\text{ m}\\) and \\(\\angle B = 80^\\circ\\). In the second field, \\(\\triangle ACD\\), \\(\\angle DAC = 50^\\circ\\) and \\(\\angle D = 60^\\circ\\). Find the length of \\(CD\\), to one decimal place, in m. || NUM:13.2"
+   ]
+  },
+  "564SXM": {
+   "id": "mixed-c",
+   "view": "p",
+   "canons": [
+    "In right triangle JKL, the right angle is at L and angle J is marked. Which statement correctly identifies the side opposite angle J? || MC:KL is opposite angle J, and JL is adjacent to angle J",
+    "In triangle PQR you know two sides and the angle between them, and you need the third side. Which law do you use? || MC:The cosine law — it is built for the side-angle-side case",
+    "A triangle has sides \\(11.1, 6, 11\\). Find the angle opposite the side of length \\(11.1\\), to the nearest degree. || NUM:75",
+    "A loading ramp rises to a dock \\(1.2\\) m above level ground. The ramp runs in a straight line and makes an angle of \\(35^\\circ\\) with the ground. How far, in metres, is the foot of the ramp from the base of the dock? Give your answer to the nearest tenth. || TXT:1.7",
+    "A radio tower stands vertically between two ground anchors 26.5 m apart. From the anchor on the left, the angle of elevation to the top of the tower is \\(50^\\circ\\); from the anchor on the right, it is \\(61^\\circ\\). Find the length of the LONGER support wire, to one decimal place, in m. || NUM:24.8",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 51^\\circ\\), \\(\\angle B = 71^\\circ\\), and side \\(a = 24\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:29.2",
+    "A triangular lot has two sides of 19 m and 14 m meeting at a corner with an angle of \\(115^\\circ\\) between them. A path runs from that corner to the midpoint of the opposite side. How long is the path, to one decimal place, in metres? || NUM:9.1",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 40^\\circ\\), side \\(b = 10\\text{ cm}\\) and side \\(a = 5\\text{ cm}\\) (\\(a\\) is opposite \\(\\angle A\\)). How many different triangles fit this information? || MC:No triangle is possible"
+   ]
+  },
+  "J3RQAU": {
+   "id": "review",
+   "view": "e",
+   "canons": [
+    "In \\(\\triangle ABC\\), the sine law states \\(\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}\\). According to the sine law, side \\(b\\) equals… || MC:\\(\\frac{a \\sin B}{\\sin A}\\)",
+    "The three sides of a triangle measure \\(7\\text{ km}\\), \\(10\\text{ km}\\) and \\(13\\text{ km}\\). Which law gives one of its angles directly? || MC:Cosine law",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 34^\\circ\\), \\(\\angle B = 75^\\circ\\), and side \\(a = 23\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:39.7",
+    "A triangle has sides 6.6 cm, 9 cm and 10 cm. What is the angle opposite the side of length 6.6 cm, in degrees? || MC:40",
+    "A triangle has sides 6.6 cm, 8 cm and 9 cm. What is the angle opposite the side of length 6.6 cm, in degrees? || MC:45",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 48^\\circ\\), \\(\\angle B = 68^\\circ\\), and side \\(a = 10\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:12.5",
+    "Two points \\(P\\) and \\(Q\\) on one shore of a lake are 87 m apart. A buoy \\(R\\) floats on the lake. From \\(P\\), the angle between the line to \\(Q\\) and the line to the buoy is \\(66^\\circ\\); from \\(Q\\), the angle between the line to \\(P\\) and the line to the buoy is \\(63^\\circ\\). How far is the buoy from \\(P\\), in m? || MC:99.7",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 36^\\circ\\), \\(\\angle B = 73^\\circ\\), and side \\(a = 17\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:27.7",
+    "Two points \\(P\\) and \\(Q\\) on one shore of a lake are 119 m apart. A buoy \\(R\\) floats on the lake. From \\(P\\), the angle between the line to \\(Q\\) and the line to the buoy is \\(39^\\circ\\); from \\(Q\\), the angle between the line to \\(P\\) and the line to the buoy is \\(65^\\circ\\). How far is the buoy from \\(P\\), in m? || MC:111.2",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 40^\\circ\\), side \\(b = 10\\text{ cm}\\) and side \\(a = 8\\text{ cm}\\) (\\(a\\) is opposite \\(\\angle A\\)). How many different triangles fit this information? || MC:Two different triangles",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 30^\\circ\\), side \\(b = 10\\text{ cm}\\) and side \\(a = 5\\text{ cm}\\) (\\(a\\) is opposite \\(\\angle A\\)). How many different triangles fit this information? || MC:Exactly one triangle (a right triangle)",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 29^\\circ\\), \\(\\angle B = 56^\\circ\\), and the side opposite \\(\\angle A\\) is \\(23\\text{ cm}\\). Find the length of the side opposite \\(\\angle C\\), to one decimal place, in cm. || NUM:47.3",
+    "From a point on level ground, the angle of elevation to the top of a tower is \\(20^\\circ\\). Moving 50 m closer to it, the angle of elevation is \\(38^\\circ\\). Find its height, to one decimal place, in m. || NUM:34.1",
+    "Two boats leave the same dock at the same time. One travels at 440 km/h and the other at 360 km/h, each in a straight line. After 1.5 h they are 546 km apart. Find the angle between their paths, to the nearest degree. || NUM:53",
+    "A surveyor maps two fields that share the diagonal \\(AC\\). In \\(\\triangle ABC\\), \\(AB = 11\\text{ m}\\), \\(BC = 10\\text{ m}\\) and \\(\\angle B = 60^\\circ\\). In the second field, \\(\\triangle ACD\\), \\(\\angle DAC = 55^\\circ\\) and \\(\\angle D = 65^\\circ\\). Find the length of \\(CD\\), to one decimal place, in m. || NUM:9.5"
+   ]
+  }
+ }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudyMate Practice Packs · CDLI Review Apps</title>
+<link rel="icon" href="favicon.jpg">
+<style>
+  :root{--ink:#1c2b33;--accent:#0f766e;--accent2:#b45309;--bg:#f7f5f0;--card:#ffffff;--line:#d8d2c4;}
+  *{box-sizing:border-box;}
+  body,button,input,select,textarea{font-family:Verdana,Geneva,sans-serif;}
+  body{margin:0;background:var(--bg);color:var(--ink);}
+  .wrap{max-width:920px;margin:0 auto;padding:20px 16px 40px;}
+  .logo{height:54px;width:auto;display:block;margin:0 0 16px;}
+  .logo-d{display:none}
+  h1{font-size:1.35rem;margin:0 0 4px;}
+  .sub{opacity:.85;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+  .card h2{margin-top:0;font-size:1.1rem;}
+  .packrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:10px 0 2px;}
+  .packrow:first-of-type{border-top:none;}
+  .packname{font-weight:600;}
+  .packmeta{font-size:.85rem;opacity:.8;}
+  a.dl{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:8px 16px;border-radius:999px;font-size:.9rem;}
+  a.dl:hover{text-decoration:underline;}
+  .back{font-size:.9rem;}
+  .back a{color:var(--accent);text-decoration:none;}
+  .back a:hover{text-decoration:underline;}
+  html[data-a11y-theme='dark'] body{background:#0e1418;color:#e8eef0;}
+  html[data-a11y-theme='dark'] .card{background:#16202a;border-color:#33424e;}
+  html[data-a11y-theme='dark'] .logo-l{display:none}
+  html[data-a11y-theme='dark'] .logo-d{display:block}
+</style>
+<script>
+  /* Match the review apps' saved theme choice, so the page does not
+     flash light for a student who reads in dark mode. */
+  try{var g=JSON.parse(localStorage.getItem("app-a11y-v1")||"{}");if(g&&g.theme==="dark")document.documentElement.setAttribute("data-a11y-theme","dark");}catch(e){}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo logo-l" src="cdli-logo.svg" alt="CDLI">
+  <img class="logo logo-d" src="cdli-logo-white.svg" alt="CDLI">
+  <h1>StudyMate Practice Packs</h1>
+  <p class="sub">Printable practice packs for the CDLI Review Apps. One pack covers one unit, in full: a prerequisite check with repair sets first, then a section for every indicator in the unit, mixed sets that bring earlier work back, and a unit review composed the way the unit test is composed.</p>
+  <div class="card">
+    <h2>How a pack works</h2>
+    <p>Work on paper, in order. Every set in a pack carries a six-character code at its top. To check a set online, open the <a href="./">Review Apps home page</a>, type the code into the pack code box, and the exact set opens, question for question. At home, the QR code beside the set code does the same job with a phone or tablet camera. Answer keys are at the back of every pack.</p>
+    <p>In the practice sets, questions whose answer is a value or an expression print without their answer choices, on purpose: work each one out in full, then find your answer among the choices when you check online. The unit review prints every choice, the way the test does.</p>
+  </div>
+  <div class="card">
+    <h2>Mathematics 2201</h2>
+    <div class="packrow">
+      <div>
+        <div class="packname">Unit 1 · Acute Triangle Trigonometry</div>
+        <div class="packmeta">13 sets · 90 questions · Bank version ae19ebe93718 · Generated November 16, 2026</div>
+      </div>
+      <a class="dl" href="packs/math-2201-unit-1.pdf">Download the Unit 1 pack (PDF)</a>
+    </div>
+    <p class="packmeta">Packs for Units 2 to 8 and the mid-course and final exam packs are in preparation and will appear here as they are published.</p>
+  </div>
+  <p class="back"><a href="./">Back to the course picker</a></p>
+  <p class="sub" style="font-size:.8rem;">Anonymous usage counts help us see which courses and features are used. No student information is collected.</p>
+</div>
+<script data-goatcounter="https://cdli.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

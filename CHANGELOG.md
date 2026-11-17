@@ -2,6 +2,13 @@
 
 All notable changes to the CDLI Review Apps are listed here, newest first. The notes are written for teachers and students who use the apps.
 
+## Unreleased
+
+### Added
+
+- The course picker now has a pack code box. A student with a printed StudyMate practice pack can type the six-character code from the top of a set to open that exact set in the app, the same questions in the same order.
+- StudyMate practice packs have their own page, linked from the picker. A pack is a printable PDF for one unit: a prerequisite check with repair sets, practice for every indicator in the unit with a worked example for each, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
+
 ## v1.2.0 - 2026-11-15
 
 ### Added
