@@ -179,7 +179,8 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   ok(!!logo && logo.getAttribute("src") === "cdli-logo.svg" && logo.getAttribute("alt") === "CDLI", "picker: the CDLI logo sits at the head of the page");
   const faqHeads = Array.prototype.slice.call(d.querySelectorAll(".pkfaq summary")).map(x => x.textContent);
   ok(faqHeads.join() === ["What are the Review Apps?", "Who are they for?", "When should I use them?", "Where can I use them?", "Why does practice work?", "How should I practise?"].join(), "picker: the About card carries the five Ws plus How, saw " + faqHeads.join(" | "));
-  ok((d.querySelector("#coursePicker .card h2") || { textContent: "" }).textContent === "Choose your course", "picker: the courses card heads Choose your course");
+  const coursesCard = d.getElementById("courseList") ? d.getElementById("courseList").closest(".card") : null;
+  ok(!!coursesCard && (coursesCard.querySelector("h2") || { textContent: "" }).textContent === "Choose your course", "picker: the courses card heads Choose your course");
   ok(r.errors.length === 0, "picker: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
   r.dom.window.close();
 
