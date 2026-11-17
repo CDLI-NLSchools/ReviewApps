@@ -797,6 +797,66 @@ E("u1-diagram-ambiguous-fit",1,["7.1","7.2"],2,"gen",function(){
   q.figure=triRotSVG(a,b,cval,{L:["A","B","C"],ang:[A+"°","?",null],side:[fmt(a,1)+" cm",""+b+" cm",null],rot:pick([9,12,15,-10,-14])});
   return q;
 });
+E("u1-diagram-read-value",1,["7.1","7.2"],1,"gen",function(){
+  /* Authored November 17, 2026 for the StudyMate pack strip audit:
+     the 7.1/7.2 pool at Level 1 held only law/statement selection
+     items, none of which can stand with its options stripped, so the
+     mixed-a returns slot had no lawful occupant. This entry is the
+     diagram-representation species (the problem drawn, the unknown
+     marked ?) with a producible value for an answer, so it prints
+     stripped and stays answerable. */
+  var mode=pick(["ASA","SAS"]),tries=0,ok=false;
+  var A=0,B=0,C=0,s=0,p=0,q=0,G=0,key="",d1="",d2="",d3="",frame="",obj="",sol="",fig=null,meta={};
+  while(!ok&&tries<800){tries++;
+    if(mode==="ASA"){
+      A=ri(38,62);B=ri(38,62);C=180-A-B;
+      if(C<45||C>95)continue;
+      s=ri(24,60);
+      var aSide=s*Math.sin(A*Math.PI/180)/Math.sin(C*Math.PI/180);
+      var bSide=s*Math.sin(B*Math.PI/180)/Math.sin(C*Math.PI/180);
+      key=fmt(aSide,1);
+      d1=fmt(bSide,1);
+      d2=fmt(s*Math.sin(A*Math.PI/180)/Math.sin(B*Math.PI/180),1);
+      d3=fmt(s*Math.sin(A*Math.PI/180),1);
+      var os=[key,d1,d2,d3];
+      if(os.filter(function(v,i){return os.indexOf(v)===i;}).length!==4)continue;
+      var fr=pick([
+        {o:"tree",f:"Two markers, A and B, stand "+s+" m apart on one bank of a river. A tree stands on the far bank at point C. From A, the angle between the line to B and the line to the tree is "+A+"°. From B, the angle between the line to A and the line to the tree is "+B+"°. The diagram shows the problem, with the distance from B to the tree marked ?."},
+        {o:"swimmer",f:"Two lifeguard chairs, A and B, stand "+s+" m apart along a beach. A swimmer is at point C in the water. From A, the angle between the line to B and the line to the swimmer is "+A+"°. From B, the angle between the line to A and the line to the swimmer is "+B+"°. The diagram shows the problem, with the distance from B to the swimmer marked ?."}
+      ]);
+      obj=fr.o;frame=fr.f;
+      sol="The third angle is \\(\\angle C = 180^\\circ - "+A+"^\\circ - "+B+"^\\circ = "+C+"^\\circ\\). The known "+s+" m side sits opposite \\(\\angle C\\), so the sine law pairs it with the unknown side opposite \\(\\angle A\\): \\(\\frac{x}{\\sin "+A+"^\\circ} = \\frac{"+s+"}{\\sin "+C+"^\\circ}\\), giving \\(x = \\frac{"+s+" \\sin "+A+"^\\circ}{\\sin "+C+"^\\circ} \\approx \\)<b>\\("+key+"\\text{ m}\\)</b>.";
+      fig=triRotSVG(aSide,bSide,s,{L:["A","B","C"],ang:[A+"°",B+"°",null],side:["?",null,s+" m"],rot:pick([9,12,15,-10,-14])});
+      meta={mode:mode,A:A,B:B,C:C,s:s};
+      ok=true;
+    }else{
+      p=ri(9,26);q=ri(9,26);G=pick([52,58,64,70,76,84,96,104]);
+      if(p===q)continue;
+      var aVal=Math.sqrt(p*p+q*q-2*p*q*Math.cos(G*Math.PI/180));
+      key=fmt(aVal,1);
+      d1=fmt(Math.sqrt(p*p+q*q),1);
+      d2=fmt(Math.sqrt(p*p+q*q+2*p*q*Math.cos(G*Math.PI/180)),1);
+      d3=fmt(Math.sqrt(p*p+q*q-2*p*q*Math.sin(G*Math.PI/180)),1);
+      var os2=[key,d1,d2,d3];
+      if(os2.filter(function(v,i){return os2.indexOf(v)===i;}).length!==4)continue;
+      frame=pick([
+        "Two straight trails leave a trailhead at A. One runs "+p+" m to a lookout at B, and the other runs "+q+" m to a falls at C. The angle between the trails at the trailhead is "+G+"°. The diagram shows the problem, with the direct distance from the lookout to the falls marked ?.",
+        "Two straight paths leave a picnic shelter at A. One runs "+p+" m to a playground at B, and the other runs "+q+" m to a garden at C. The angle between the paths at the shelter is "+G+"°. The diagram shows the problem, with the direct distance from the playground to the garden marked ?."
+      ]);
+      obj="point";
+      sol="The unknown side sits opposite the "+G+"° angle, between the two known sides of "+p+" m and "+q+" m, so the cosine law applies: \\(x^2 = "+p+"^2 + "+q+"^2 - 2("+p+")("+q+")\\cos "+G+"^\\circ = "+fmt(p*p+q*q-2*p*q*Math.cos(G*Math.PI/180),1)+"\\), giving \\(x \\approx \\)<b>\\("+key+"\\text{ m}\\)</b>.";
+      fig=triRotSVG(aVal,q,p,{L:["A","B","C"],ang:[G+"°",null,null],side:["?",q+" m",p+" m"],rot:pick([9,12,15,-10,-14])});
+      meta={mode:mode,p:p,q:q,G:G};
+      ok=true;
+    }
+  }
+  var prompt="";
+  if(mode==="ASA") prompt=frame+" How far is the "+obj+" from B, in metres, to one decimal place?";
+  else prompt=frame+" How far is it from the "+(frame.indexOf("lookout")>=0?"lookout to the falls":"playground to the garden")+", in metres, to one decimal place?";
+  var qq=mcq(prompt,key,[d1,d2,d3],sol,meta);
+  qq.figure=fig;
+  return qq;
+});
 E("u1-sketch-values",1,["7.1","7.2"],2,"gen",function(){
   var mode=pick(["SAS","ASA"]),tries=0,ok=false;
   var p=0,qq=0,G=0,G1=0,G2=0,C=0,s=0,unit="m",frame="",key="",t1="",t2="",t3="",sol="",fig=null;
