@@ -9,19 +9,23 @@
    regenerates both files in the same pass.
    Also gated: the codes use only the unambiguous pack alphabet,
    every registry entry targets its course with a well-formed set
-   token, and the code box lives on both pages that take a code:
-   the Review Apps home page (index.html, the canonical home the
-   printed packs name) and the StudyMate page (studymate.html).
-   Both pages must carry the form, load the same registry, and
-   carry identical wiring (the resolution IIFE is compared text
-   for text), and a jsdom boot of each page shows the code box,
-   answers an unknown code with the not-recognized message, and
-   attempts navigation (jsdom's not-implemented navigation
-   error) for a known code typed lowercase with its space.
+   token, and the code box lives on the StudyMate page
+   (studymate.html) only. That page must carry the form, load the
+   registry and carry the resolution wiring, and a jsdom boot of
+   it shows the code box, answers an unknown code with the
+   not-recognized message, and attempts navigation (jsdom's
+   not-implemented navigation error) for a known code typed
+   lowercase with its space. The Review Apps home page
+   (index.html) must carry no trace of the box: no form, no
+   input, no heading, no registry script and no wiring, in the
+   markup or at jsdom run time, while its course picker still
+   boots and shows.
    (History: the box launched on the picker on Nov 16, 2026, was
    moved to the StudyMate page the same day for testing, and was
-   restored to the picker on Nov 17, 2026 on Jason's placement
-   ruling, so it now lives on both pages.)
+   briefly restored to the picker on Nov 17, 2026 under a
+   misreading of Jason's placement instruction; he corrected it
+   the same day, the box is not ready to be live on the home page
+   yet, and it now lives on the StudyMate page only.)
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pack-codes.js */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
@@ -94,7 +98,7 @@ for (const code of regCodes) {
      (firstBad >= 0 ? " (first mismatch at question " + (firstBad + 1) + ")" : ""));
 }
 
-/* ---------------- Part 2: the code box on both pages, jsdom boots ---------------- */
+/* ---------------- Part 2: the code box on the StudyMate page only ---------------- */
 const smHtml = fs.readFileSync(ROOT + "/studymate.html", "utf8");
 function boxWiring(text) {
   const blocks = [...text.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
@@ -104,14 +108,13 @@ function boxWiring(text) {
   const b = blk.indexOf("})();", a);
   return (a < 0 || b < 0) ? null : blk.slice(a, b + 5);
 }
-for (const [page, text] of [["picker (index.html)", html], ["StudyMate page (studymate.html)", smHtml]]) {
-  ok(text.includes('id="pkCodeForm"'), page + " carries the pack code form");
-  ok(text.includes('id="pkCodeIn"'), page + " carries the pack code input");
-  ok(text.includes('src="pack-codes.js"'), page + " loads pack-codes.js");
-  ok(text.includes("window.PACK_CODES"), page + " wiring reads the registry");
+for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'src="pack-codes.js"', "window.PACK_CODES"]) {
+  ok(smHtml.includes(probe), "StudyMate page (studymate.html) carries " + probe);
 }
-ok(boxWiring(html) !== null && boxWiring(html) === boxWiring(smHtml),
-   "both pages carry identical code-box wiring, so a code resolves the same way on either page");
+for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'id="pkCodeHead"', 'src="pack-codes.js"', "PACK_CODES"]) {
+  ok(!html.includes(probe), "picker (index.html) carries no " + probe);
+}
+ok(boxWiring(smHtml) !== null, "StudyMate page carries the code-box resolution wiring");
 
 async function bootBox(file, pageName, extra) {
   const { JSDOM } = require("jsdom");
@@ -151,16 +154,40 @@ async function bootBox(file, pageName, extra) {
   dom.window.close();
 }
 
+async function bootNoBox(file, pageName) {
+  const { JSDOM } = require("jsdom");
+  const { VirtualConsole } = require("jsdom");
+  const vc = new VirtualConsole();
+  vc.on("jsdomError", () => {});
+  const text = fs.readFileSync(ROOT + "/" + file, "utf8");
+  const dom = new JSDOM(text, {
+    url: "file://" + ROOT + "/" + file,
+    runScripts: "dangerously", resources: "usable", pretendToBeVisual: true,
+    virtualConsole: vc,
+    beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; }
+  });
+  for (let i = 0; i < 40; i++) {
+    const pk = dom.window.document.getElementById("coursePicker");
+    if (pk && pk.hidden === false) break;
+    await new Promise(r => setTimeout(r, 250));
+  }
+  await new Promise(r => setTimeout(r, 500));
+  const d = dom.window.document;
+  ok(!d.getElementById("pkCodeForm"), "jsdom " + pageName + " boot: no code form on the page");
+  ok(!d.getElementById("pkCodeIn"), "jsdom " + pageName + " boot: no code input on the page");
+  ok(typeof dom.window.PACK_CODES === "undefined", "jsdom " + pageName + " boot: pack code registry is not loaded");
+  ok(!!d.getElementById("courseList"), "jsdom " + pageName + " boot: course list still present");
+  ok(d.getElementById("coursePicker") && d.getElementById("coursePicker").hidden === false,
+     "jsdom " + pageName + " boot: the picker is the page that shows");
+  dom.window.close();
+}
+
 async function part2() {
   await bootBox("studymate.html", "StudyMate page", d => {
     const dl = d.querySelector('a[href="packs/math-2201-unit-1.pdf"]');
     ok(!!dl, "jsdom StudyMate boot: Unit 1 pack download still listed");
   });
-  await bootBox("index.html", "picker", d => {
-    ok(!!d.getElementById("courseList"), "jsdom picker boot: course list still present beside the code box");
-    ok(d.getElementById("coursePicker") && d.getElementById("coursePicker").hidden === false,
-       "jsdom picker boot: the picker (and its code box) is the page that shows");
-  });
+  await bootNoBox("index.html", "picker");
   console.log("gate-pack-codes: " + pass + " pass, " + fail + " fail");
   process.exit(fail ? 1 : 0);
 }

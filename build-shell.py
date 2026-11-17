@@ -93,12 +93,6 @@ picker = ('<div class="wrap" id="coursePicker" hidden>\n'
           '  <h1>Review Apps</h1>\n'
           '  <div class="pkheadrow"><p class="sub pktag">Online or Printable Practice Exercises</p><span class="pkheadright"><a id="pkWhatsNew" class="pkwn" href="https://github.com/CDLI-NLSchools/ReviewApps/releases" target="_blank" rel="noopener">What\'s new</a><button type="button" id="pkTheme" class="pkthemebtn">Dark mode</button></span></div>\n  <p class="sub pkprivacy" id="pkPrivacy">Anonymous usage counts help us see which courses and features are used. No student information is collected.</p>\n'
           '  <div class="card">\n'
-          '    <h2 style="margin-top:0;" id="pkCodeHead">Have a printed StudyMate pack?</h2>\n'
-          '    <p class="sub" id="pkCodePrompt">Type the six-character code from the top of a set in your pack to open that exact set here.</p>\n'
-          '    <form id="pkCodeForm" class="pkcodeform"><input id="pkCodeIn" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="7" placeholder="ABC DEF" aria-label="Set code"><button type="submit" class="open" id="pkCodeBtn">Open set</button></form>\n'
-          '    <p class="sub" id="pkCodeMsg" role="status"></p>\n'
-          '  </div>\n'
-          '  <div class="card">\n'
           '    <h2 style="margin-top:0;">Choose your course</h2>\n'
           '    <div id="courseList"></div>\n'
           '  </div>\n'
@@ -614,7 +608,7 @@ picker_script = ('<script>\n'
                  '  var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;\n'
                  '  var list=document.getElementById("courseList");if(!list)return;\n'
                  '  var style=document.createElement("style");\n'
-                 '  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme=\'dark\'] .pklogo-l{display:none}html[data-a11y-theme=\'dark\'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme=\'dark\'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme=\'dark\'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme=\'dark\'] .pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#5eead4;color:#fff}.pkcodeform{display:flex;gap:8px;flex-wrap:wrap;align-items:center}#pkCodeIn{font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;padding:7px 10px;max-width:210px;border:1px solid #d8d2c4;border-radius:6px;background:#fff;color:inherit}#pkCodeMsg{margin:6px 0 0;min-height:1em}#pkCodeBtn{background:#0f766e;color:#fff;border:none;padding:8px 16px;border-radius:999px;font-size:.9rem;cursor:pointer}#pkCodeBtn:hover{text-decoration:underline}html[data-a11y-theme=\'dark\'] #pkCodeIn{background:#16202a;border-color:#33424e}";\n'
+                 '  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme=\'dark\'] .pklogo-l{display:none}html[data-a11y-theme=\'dark\'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme=\'dark\'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme=\'dark\'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme=\'dark\'] .pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#5eead4;color:#fff}";\n'
                  '  pk.appendChild(style);\n'
                  '  var pkThemeBtn=document.getElementById("pkTheme");\n'
                  '  if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.textContent=document.documentElement.getAttribute("data-a11y-theme")==="dark"?"Light mode":"Dark mode";};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}\n'
@@ -670,37 +664,16 @@ picker_script = ('<script>\n'
 
 rep('</body>', picker_script + '</body>', count=1)
 
-# ---------- StudyMate pack code box on the picker (restored Nov 17, 2026) ----------
-# Jason's placement ruling (Nov 17, 2026): the Review Apps home page is
-# the canonical home of the code box and is what printed packs name;
-# the box also lives on the StudyMate page, where it was tested from
-# Nov 16. The wiring below is the StudyMate page's, verbatim: same
-# registry (pack-codes.js), same normalization (case-insensitive, the
-# space optional), same messages, same navigation to the exact set.
-# tests/gate-pack-codes.js asserts the two wirings are identical and
-# that both pages resolve a known code and reject an unknown one.
-codebox_script = ('<script src="pack-codes.js"></script>\n'
-                  '<script>\n'
-                  '  (function(){\n'
-                  '    var form=document.getElementById("pkCodeForm");\n'
-                  '    if(!form)return;\n'
-                  '    var input=document.getElementById("pkCodeIn"),msg=document.getElementById("pkCodeMsg");\n'
-                  '    form.addEventListener("submit",function(ev){\n'
-                  '      ev.preventDefault();\n'
-                  '      var code=(input.value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");\n'
-                  '      var reg=(typeof window!=="undefined"&&window.PACK_CODES)?window.PACK_CODES:null;\n'
-                  '      if(!reg){msg.textContent="Pack codes are not available right now. Pick a course on the Review Apps home page, or scan the QR code on your pack.";return;}\n'
-                  '      var hit=reg[code];\n'
-                  '      if(hit&&hit.q){\n'
-                  '        try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"pack_code_open",event:true});}catch(e){}\n'
-                  '        var base=location.pathname.substring(0,location.pathname.lastIndexOf("/")+1);\n'
-                  '        location.href=base+"?"+hit.q;return;\n'
-                  '      }\n'
-                  '      msg.textContent="That code was not recognized. Check the six characters on your pack and try again.";\n'
-                  '    });\n'
-                  '  })();\n'
-                  '</script>\n')
-rep('</body>', codebox_script + '</body>', count=1)
+# ---------- StudyMate pack code box: NOT on the picker ----------
+# The pack code box lives on the StudyMate page only (studymate.html,
+# a standalone file this builder does not emit). It launched on the
+# picker on Nov 16, 2026, moved to the StudyMate page the same day,
+# and a brief restoration to the picker on Nov 17, 2026 was reversed
+# the same day at Jason's direction: the box is not ready to be live
+# on the home page yet. Do not re-add the picker card, its CSS or
+# its wiring here without his say-so. tests/gate-pack-codes.js
+# asserts the box is present and working on studymate.html and
+# absent from this page.
 
 # ---------- branding and identifiers (run time, from the active course) ----------
 # Nothing course-specific is baked into the shell: every string the chassis
