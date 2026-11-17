@@ -127,7 +127,7 @@ E("u1-compose-value",1,["1.4"],2,"gen",function(){
   var mm=u1nz(-3,3),bb=ri(-6,6),aa=ri(-4,4),gvv=mm*aa+bb,h=ri(-6,6);
   if(h===gvv)h=gvv+3;
   var dd=gvv-h,mlt=u1nz(-6,6),cc=mlt*dd;
-  return numq("Let \\(f(x) = \\)"+u1frac(""+cc,u1lin(1,-h))+"\\) and \\(g(x) = "+u1lin(mm,bb)+"\\). Evaluate \\((f \\circ g)("+aa+")\\).",mlt,0.011,
+  return numq("Let \\(f(x) = \\)"+u1frac(""+cc,u1lin(1,-h))+" and \\(g(x) = "+u1lin(mm,bb)+"\\). Evaluate \\((f \\circ g)("+aa+")\\).",mlt,0.011,
     "Work from the inside out: \\[ \\begin{aligned} g("+aa+") &= "+u1mult(mm,aa)+u1sgnT(bb)+" = "+gvv+" \\\\ f("+gvv+") &= \\frac{"+cc+"}{"+gvv+u1sgnT(-h)+"} = \\frac{"+cc+"}{"+dd+"} = "+mlt+" \\end{aligned} \\] So \\((f \\circ g)("+aa+") = \\) <b>"+mlt+"</b>.",
     {mm:mm,bb:bb,aa:aa,h:h,cc:cc,shape:shape});
 });
