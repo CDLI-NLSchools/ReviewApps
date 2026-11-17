@@ -9,6 +9,10 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - StudyMate practice packs have their own page. A pack is a printable PDF for one unit: a prerequisite check with repair sets, practice for every indicator in the unit with a worked example for each, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
 - The StudyMate page has a pack code box, being tested there before it is considered for the course picker. A student with a printed pack can type the six-character code from the top of a set to open that exact set in the app, the same questions in the same order.
 
+### Changed
+
+- The Math 2201 Unit 1 StudyMate pack was regenerated with print refinements from classroom review: working space is now plain white space with no ruled lines, diagrams sit at the left margin so the space beside them can be worked in, examples are headed "Example" and print without answer choices, and no question ever splits across a page. In a digital copy of the pack, each set's printed code and QR code are clickable links to that set. One Math 2201 question's wording was also clarified ("Which law should you use, and why?").
+
 ## v1.2.0 - 2026-11-15
 
 ### Added

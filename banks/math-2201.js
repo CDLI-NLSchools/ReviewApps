@@ -2019,7 +2019,7 @@ E("u1-law-choice",1,["7.1","7.2"],1,"var",varset([
     "The cosine law \u2014 it is built for the side-angle-side case",
     ["The sine law \u2014 it only needs the two sides and no other information","The sine law, after splitting the triangle in two parts","The Pythagorean theorem, because two sides are known and that is enough here"],
     "With no angle-opposite-side pair, the sine law has nothing to anchor to. The cosine law, \\(c^2 = a^2 + b^2 - 2ab\\cos C\\), handles SAS directly.",{});},
-  function(){return mcq("You know all three sides of an acute triangle and need its largest angle. Which law, and why?",
+  function(){return mcq("You know all three sides of an acute triangle and need its largest angle. Which law should you use, and why?",
     "The cosine law, rearranged \u2014 it is the only one that uses three sides to give an angle",
     ["The sine law, because three sides give three ratios to set equal for the angle","The tangent ratio, using the two longest sides as the opposite and adjacent pair","No law is needed — the largest angle is always \\(90^\\circ\\) in a triangle with three known sides"],
     "\\(\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}\\) uses exactly the three sides. The largest angle sits opposite the longest side.",{});}
