@@ -9,11 +9,14 @@
    regenerates both files in the same pass.
    Also gated: the codes use only the unambiguous pack alphabet,
    every registry entry targets its course with a well-formed set
-   token, the picker markup and wiring are present in the built
-   shell, and a jsdom boot of the picker shows the code box, answers
-   an unknown code with the not-recognized message, and attempts
-   navigation (jsdom's not-implemented navigation error) for a
-   known code typed lowercase with its space.
+   token, the code box markup and wiring are present on the
+   StudyMate page (studymate.html) and absent from the picker
+   (the box was moved off the picker on Nov 16, 2026, so the new
+   build can be tested in one place while the picker stays
+   clean), and a jsdom boot of the StudyMate page shows the code
+   box, answers an unknown code with the not-recognized message,
+   and attempts navigation (jsdom's not-implemented navigation
+   error) for a known code typed lowercase with its space.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pack-codes.js */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
@@ -86,11 +89,13 @@ for (const code of regCodes) {
      (firstBad >= 0 ? " (first mismatch at question " + (firstBad + 1) + ")" : ""));
 }
 
-/* ---------------- Part 2: picker markup, wiring, jsdom boot ---------------- */
-ok(html.includes('id="pkCodeForm"'), "built shell carries the pack code form");
-ok(html.includes('id="pkCodeIn"'), "built shell carries the pack code input");
-ok(html.includes('src="pack-codes.js"'), "built shell loads pack-codes.js");
-ok(html.includes("window.PACK_CODES"), "picker wiring reads the registry");
+/* ---------------- Part 2: code box on studymate.html, jsdom boot ---------------- */
+const smHtml = fs.readFileSync(ROOT + "/studymate.html", "utf8");
+ok(!html.includes('id="pkCodeForm"'), "picker no longer carries the pack code form");
+ok(smHtml.includes('id="pkCodeForm"'), "StudyMate page carries the pack code form");
+ok(smHtml.includes('id="pkCodeIn"'), "StudyMate page carries the pack code input");
+ok(smHtml.includes('src="pack-codes.js"'), "StudyMate page loads pack-codes.js");
+ok(smHtml.includes("window.PACK_CODES"), "StudyMate page wiring reads the registry");
 
 async function part2() {
   const { JSDOM } = require("jsdom");
@@ -98,8 +103,8 @@ async function part2() {
   const { VirtualConsole } = require("jsdom");
   const vc = new VirtualConsole();
   vc.on("jsdomError", e => { if (/Not implemented: navigation/.test(e.message)) navErrors.push(e.message); });
-  const dom = new JSDOM(html, {
-    url: "file:///home/hatch/workspace/review-app-unified/index.html",
+  const dom = new JSDOM(smHtml, {
+    url: "file:///home/hatch/workspace/review-app-unified/studymate.html",
     runScripts: "dangerously", resources: "usable", pretendToBeVisual: true,
     virtualConsole: vc,
     beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; }
@@ -107,9 +112,9 @@ async function part2() {
   await new Promise(r => setTimeout(r, 2500));
   const d = dom.window.document;
   const form = d.getElementById("pkCodeForm");
-  ok(!!form, "jsdom picker boot: code form present");
-  const picker = d.getElementById("coursePicker");
-  ok(picker && !picker.hidden, "jsdom picker boot: picker visible with no course");
+  ok(!!form, "jsdom StudyMate boot: code form present");
+  const dl = d.querySelector('a[href="packs/math-2201-unit-1.pdf"]');
+  ok(!!dl, "jsdom StudyMate boot: Unit 1 pack download still listed");
   const input = d.getElementById("pkCodeIn");
   const msg = d.getElementById("pkCodeMsg");
   /* unknown code: the not-recognized message, no navigation */
