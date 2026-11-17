@@ -6,7 +6,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
-- StudyMate practice packs have their own page. A pack is a printable PDF for one unit: a prerequisite check with repair sets, practice for every indicator in the unit with a worked example for each, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
+- StudyMate practice packs have their own page. A pack is a printable PDF for one unit: a prerequisite check with repair sets, practice for every indicator in the unit, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
 - The StudyMate page has a pack code box, being tested there before it is considered for the course picker. A student with a printed pack can type the six-character code from the top of a set to open that exact set in the app, the same questions in the same order.
 - The pack code box stays on the StudyMate page only for now. It was briefly added to the Review Apps home page as well and has been taken off that page again while it is still being tested.
 
@@ -16,6 +16,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - The Math 2201 Unit 1 StudyMate pack's set pages were tidied: the line under each set title is now a short description of the set rather than instructions, and each set's questions now start at the top of the page, flowing around the set code and QR code at the top right instead of leaving that space empty (a worked example that carries a diagram still starts below the code block, at full width).
 - The Math 2201 Unit 1 StudyMate pack's working space now adapts to the question: a written-answer question that prints with a diagram gets less blank working space (the diagram already shows the setup), and one without a diagram gets more, since the student draws the setup as well as solving.
 - The same adaptation now covers the Math 2201 Unit 1 StudyMate pack's questions whose answer choices are withheld: one that prints with a diagram gets less blank working space, and one without a diagram gets more.
+- The Math 2201 Unit 1 StudyMate pack no longer prints a worked example at the head of each indicator section: the examples read as a short set of notes rather than practice. The full worked solution for every question is in the online set, as the pack's answer keys already direct. No set's questions, order or codes changed.
 - Fixed a Math 3208 Unit 1 question on evaluating a composite function where the second function printed as plain text instead of math notation, with a stray symbol after the first function. The question and its answer are unchanged; it now displays in full math notation.
 - Fixed five Math 2200 Unit 4 solutions (converting radicals between entire and mixed form, simplifying radicals with operations, and rationalizing denominators) where a stray symbol printed after the final answer. The questions and their answers are unchanged; the solutions now display cleanly.
 
