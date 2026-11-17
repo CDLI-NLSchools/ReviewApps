@@ -17,6 +17,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - The Math 2201 Unit 1 StudyMate pack's working space now adapts to the question: a written-answer question that prints with a diagram gets less blank working space (the diagram already shows the setup), and one without a diagram gets more, since the student draws the setup as well as solving.
 - The same adaptation now covers the Math 2201 Unit 1 StudyMate pack's questions whose answer choices are withheld: one that prints with a diagram gets less blank working space, and one without a diagram gets more.
 - Fixed a Math 3208 Unit 1 question on evaluating a composite function where the second function printed as plain text instead of math notation, with a stray symbol after the first function. The question and its answer are unchanged; it now displays in full math notation.
+- Fixed five Math 2200 Unit 4 solutions (converting radicals between entire and mixed form, simplifying radicals with operations, and rationalizing denominators) where a stray symbol printed after the final answer. The questions and their answers are unchanged; the solutions now display cleanly.
 
 ## v1.2.0 - 2026-11-15
 

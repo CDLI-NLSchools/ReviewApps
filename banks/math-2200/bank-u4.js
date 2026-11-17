@@ -127,7 +127,7 @@ E("u4-var-to-entire",4,["1.4"],2,"gen",function(){
   var cands=[rad(p*r,E),rad(R,q===0?2*s:q+s),rad(p*p*r*r,E),rad((p+1)*(p+1)*r,E),rad(R,E+1),rad(p*p,E)];
   return mcq("Express \\("+outside+"\\sqrt{"+inside+"}\\) as an entire radical.",
     u4wrap(cor),u4dis(cor,cands,3).map(u4wrap),
-    "The outside factor moves inside by squaring it, variable part included: \\[ \\begin{aligned} "+outside+"\\sqrt{"+inside+"} &= \\sqrt{"+(p*p)+u4vp(v,2*q)+"} \\times \\sqrt{"+inside+"} \\\\ &= \\sqrt{"+R+u4vp(v,E)+"} \\end{aligned} \\] So the entire radical is <b>"+u4wrap(cor)+"</b>\\).",
+    "The outside factor moves inside by squaring it, variable part included: \\[ \\begin{aligned} "+outside+"\\sqrt{"+inside+"} &= \\sqrt{"+(p*p)+u4vp(v,2*q)+"} \\times \\sqrt{"+inside+"} \\\\ &= \\sqrt{"+R+u4vp(v,E)+"} \\end{aligned} \\] So the entire radical is <b>"+u4wrap(cor)+"</b>.",
     {p:p,q:q,r:r,s:s,v:v});
 });
 
@@ -156,7 +156,7 @@ E("u4-var-to-mixed",4,["1.3"],2,"gen",function(){
     var insideB=(b===1?"":b)+u4vp("x",g);
     return mcq("Express \\(\\sqrt{"+c+u4vp("x",e)+"}\\) as a mixed radical in simplest form. Assume \\(x \\geq 0\\).",
       u4wrap(cor),u4dis(cor,cands,3).map(u4wrap),
-      "Factor out the largest perfect square, \\("+a+"^2 x^{"+(2*f)+"} = "+(a*a)+u4vp("x",2*f)+"\\): \\[ \\begin{aligned} \\sqrt{"+c+u4vp("x",e)+"} &= \\sqrt{"+(a*a)+u4vp("x",2*f)+" \\times "+insideB+"} \\\\ &= "+cor+" \\end{aligned} \\] So the mixed radical is <b>"+u4wrap(cor)+"</b>\\).",
+      "Factor out the largest perfect square, \\("+a+"^2 x^{"+(2*f)+"} = "+(a*a)+u4vp("x",2*f)+"\\): \\[ \\begin{aligned} \\sqrt{"+c+u4vp("x",e)+"} &= \\sqrt{"+(a*a)+u4vp("x",2*f)+" \\times "+insideB+"} \\\\ &= "+cor+" \\end{aligned} \\] So the mixed radical is <b>"+u4wrap(cor)+"</b>.",
       {a:a,b:b,e:e,shape:shape});
   }
   var a2=ri(2,5),b2=pick([1,2,3,5,6]),ex=ri(1,6),ey=ri(1,6);
@@ -167,7 +167,7 @@ E("u4-var-to-mixed",4,["1.3"],2,"gen",function(){
   var cands2=[u4twoVarStr(1,fx,0,c2,gx,ey),u4twoVarStr(1,0,fy,c2,ex,gy),u4twoVarStr(a2,fx,fy,b2,0,0),u4twoVarStr(1,fx,fy,c2,gx,gy)];
   return mcq("Express \\(\\sqrt{"+c2+u4vp("x",ex)+u4vp("y",ey)+"}\\) as a mixed radical in simplest form. Assume \\(x, y \\geq 0\\).",
     u4wrap(cor2),u4dis(cor2,cands2,3).map(u4wrap),
-    "Factor out the largest perfect square, \\("+(a2*a2)+u4vp("x",2*fx)+u4vp("y",2*fy)+"\\), which is the square of \\("+a2+u4vp("x",fx)+u4vp("y",fy)+"\\): \\[ \\begin{aligned} \\sqrt{"+c2+u4vp("x",ex)+u4vp("y",ey)+"} &= \\sqrt{"+(a2*a2)+u4vp("x",2*fx)+u4vp("y",2*fy)+" \\times "+((b2===1?"":b2)+u4vp("x",gx)+u4vp("y",gy))+"} \\\\ &= "+cor2+" \\end{aligned} \\] So the mixed radical is <b>"+u4wrap(cor2)+"</b>\\).",
+    "Factor out the largest perfect square, \\("+(a2*a2)+u4vp("x",2*fx)+u4vp("y",2*fy)+"\\), which is the square of \\("+a2+u4vp("x",fx)+u4vp("y",fy)+"\\): \\[ \\begin{aligned} \\sqrt{"+c2+u4vp("x",ex)+u4vp("y",ey)+"} &= \\sqrt{"+(a2*a2)+u4vp("x",2*fx)+u4vp("y",2*fy)+" \\times "+((b2===1?"":b2)+u4vp("x",gx)+u4vp("y",gy))+"} \\\\ &= "+cor2+" \\end{aligned} \\] So the mixed radical is <b>"+u4wrap(cor2)+"</b>.",
     {a:a2,b:b2,ex:ex,ey:ey,shape:shape});
 });
 
@@ -304,7 +304,7 @@ E("u4-simplify-ops",4,["1.13"],2,"gen",function(){
     var cands=[u4mixS(a1*a2,b,2),sumOpt,u4mixS(Math.abs(a1-a2),b,2),u4mixS(a1+a2+1,b,2)];
     return mcq("Simplify \\(\\sqrt{"+N1+"} + \\sqrt{"+N2+"}\\).",
       u4wrap(cor),u4dis(cor,cands,3).map(u4wrap),
-      "Simplify each radical first, then add the like radicals: \\[ \\begin{aligned} \\sqrt{"+N1+"} + \\sqrt{"+N2+"} &= "+u4mixS(a1,b,2)+" + "+u4mixS(a2,b,2)+" \\\\ &= "+cor+" \\end{aligned} \\] Radicals cannot be added by adding their radicands. The simplified sum is <b>"+u4wrap(cor)+"</b>\\).",
+      "Simplify each radical first, then add the like radicals: \\[ \\begin{aligned} \\sqrt{"+N1+"} + \\sqrt{"+N2+"} &= "+u4mixS(a1,b,2)+" + "+u4mixS(a2,b,2)+" \\\\ &= "+cor+" \\end{aligned} \\] Radicals cannot be added by adding their radicands. The simplified sum is <b>"+u4wrap(cor)+"</b>.",
       {a1:a1,a2:a2,b:b,shape:shape});
   }
   if(shape==="product"){
@@ -317,7 +317,7 @@ E("u4-simplify-ops",4,["1.13"],2,"gen",function(){
     var stepsB="\\[ \\begin{aligned} "+a+"\\sqrt{"+m+"} \\times "+bb+"\\sqrt{"+n+"} &= "+(a*bb)+"\\sqrt{"+(m*n)+"} \\\\ &= "+corB+" \\end{aligned} \\]";
     return mcq("Simplify \\("+a+"\\sqrt{"+m+"} \\times "+bb+"\\sqrt{"+n+"}\\). Give the answer in simplest form.",
       u4wrap(corB),u4dis(corB,candsB,3).map(u4wrap),
-      "Multiply the coefficients together and the radicands together, then simplify the result: "+stepsB+" So the product is <b>"+u4wrap(corB)+"</b>\\).",
+      "Multiply the coefficients together and the radicands together, then simplify the result: "+stepsB+" So the product is <b>"+u4wrap(corB)+"</b>.",
       {a:a,bb:bb,m:m,n:n,shape:shape});
   }
   if(shape==="conjugate"){
@@ -334,7 +334,7 @@ E("u4-simplify-ops",4,["1.13"],2,"gen",function(){
     var candsC=[""+(p*p+q),""+(p*p+q)+" + "+p+"\\sqrt{"+q+"}",""+(p*p)+" + "+(2*p)+"\\sqrt{"+q+"}",""+(p*p+q)+" + "+(2*p)+"\\sqrt{"+(q+2)+"}"];
     return mcq("Expand and simplify \\(("+p+" + \\sqrt{"+q+"})^2\\).",
       u4wrap(corC),u4dis(corC,candsC,3).map(u4wrap),
-      "Squaring a binomial produces a middle term; the expression is not squared term by term: \\[ \\begin{aligned} ("+p+" + \\sqrt{"+q+"})^2 &= "+p+"^2 + 2 \\times "+p+" \\times \\sqrt{"+q+"} + (\\sqrt{"+q+"})^2 \\\\ &= "+(p*p)+" + "+(2*p)+"\\sqrt{"+q+"} + "+q+" \\\\ &= "+corC+" \\end{aligned} \\] So the expansion is <b>"+u4wrap(corC)+"</b>\\).",
+      "Squaring a binomial produces a middle term; the expression is not squared term by term: \\[ \\begin{aligned} ("+p+" + \\sqrt{"+q+"})^2 &= "+p+"^2 + 2 \\times "+p+" \\times \\sqrt{"+q+"} + (\\sqrt{"+q+"})^2 \\\\ &= "+(p*p)+" + "+(2*p)+"\\sqrt{"+q+"} + "+q+" \\\\ &= "+corC+" \\end{aligned} \\] So the expansion is <b>"+u4wrap(corC)+"</b>.",
       {p:p,q:q,shape:shape});
   }
   var bD=pick([2,3,5,6]),d1=ri(2,5),d2=ri(2,5),t3=0;
@@ -344,7 +344,7 @@ E("u4-simplify-ops",4,["1.13"],2,"gen",function(){
   var candsD=[(d1*d2)+"\\sqrt{"+bD+"x}",(d1+d2)+"\\sqrt{"+bD+"}",Math.abs(d1-d2)+"\\sqrt{"+bD+"x}",(d1+d2)+"\\sqrt{"+(bD+1)+"x}"];
   return mcq("Simplify \\(\\sqrt{"+c1+"x} + \\sqrt{"+c2+"x}\\). Assume \\(x \\geq 0\\).",
     u4wrap(corD),u4dis(corD,candsD,3).map(u4wrap),
-    "Simplify each radical first: \\(\\sqrt{"+c1+"x} = "+d1+"\\sqrt{"+bD+"x}\\) and \\(\\sqrt{"+c2+"x} = "+d2+"\\sqrt{"+bD+"x}\\). These are like radicals, so their coefficients add: \\[ \\begin{aligned} \\sqrt{"+c1+"x} + \\sqrt{"+c2+"x} &= "+d1+"\\sqrt{"+bD+"x} + "+d2+"\\sqrt{"+bD+"x} \\\\ &= "+corD+" \\end{aligned} \\] The simplified sum is <b>"+u4wrap(corD)+"</b>\\).",
+    "Simplify each radical first: \\(\\sqrt{"+c1+"x} = "+d1+"\\sqrt{"+bD+"x}\\) and \\(\\sqrt{"+c2+"x} = "+d2+"\\sqrt{"+bD+"x}\\). These are like radicals, so their coefficients add: \\[ \\begin{aligned} \\sqrt{"+c1+"x} + \\sqrt{"+c2+"x} &= "+d1+"\\sqrt{"+bD+"x} + "+d2+"\\sqrt{"+bD+"x} \\\\ &= "+corD+" \\end{aligned} \\] The simplified sum is <b>"+u4wrap(corD)+"</b>.",
     {d1:d1,d2:d2,b:bD,shape:shape});
 });
 
@@ -360,7 +360,7 @@ E("u4-rationalize-mono",4,["1.14"],1,"gen",function(){
     var cands=["\\frac{"+n+"\\sqrt{"+m+"}}{"+(D*m)+"}","\\frac{\\sqrt{"+(n*m)+"}}{"+D+"}","\\frac{"+n+"}{"+D+"}","\\frac{"+(n+1)+"\\sqrt{"+m+"}}{"+D+"}"];
     return mcq("Rationalize the denominator of \\(\\frac{"+n+"}{"+den+"}\\) and simplify.",
       u4wrap(cor),u4dis(cor,cands,3).map(u4wrap),
-      "Multiply the numerator and denominator by \\(\\sqrt{"+m+"}\\), which makes the denominator rational: \\[ \\begin{aligned} \\frac{"+n+"}{"+den+"} &= \\frac{"+n+"\\sqrt{"+m+"}}{"+D+"} \\\\ &= "+cor+" \\end{aligned} \\] So the rationalized form is <b>"+u4wrap(cor)+"</b>\\).",
+      "Multiply the numerator and denominator by \\(\\sqrt{"+m+"}\\), which makes the denominator rational: \\[ \\begin{aligned} \\frac{"+n+"}{"+den+"} &= \\frac{"+n+"\\sqrt{"+m+"}}{"+D+"} \\\\ &= "+cor+" \\end{aligned} \\] So the rationalized form is <b>"+u4wrap(cor)+"</b>.",
       {n:n,m:m,a:a,shape:shape});
   }
 });
@@ -380,7 +380,7 @@ E("u4-rationalize-binomial",4,["1.14"],2,"gen",function(){
       "\\frac{"+npre+numCore+"}{"+(D2*D2)+"}"];
     return mcq("Rationalize the denominator of \\(\\frac{"+n2+"}{"+a2+" + \\sqrt{"+b2+"}}\\) and simplify.",
       u4wrap(cor2),u4dis(cor2,cands2,3).map(u4wrap),
-      "Multiply the numerator and denominator by the conjugate \\("+a2+" - \\sqrt{"+b2+"}\\). The denominator becomes a difference of squares: \\[ \\begin{aligned} \\frac{"+n2+"}{"+a2+" + \\sqrt{"+b2+"}} &= \\frac{"+n2+numCore+"}{("+a2+")^2 - (\\sqrt{"+b2+"})^2} \\\\ &= \\frac{"+n2+numCore+"}{"+D2+"} \\\\ &= "+cor2+" \\end{aligned} \\] So the rationalized form is <b>"+u4wrap(cor2)+"</b>\\).",
+      "Multiply the numerator and denominator by the conjugate \\("+a2+" - \\sqrt{"+b2+"}\\). The denominator becomes a difference of squares: \\[ \\begin{aligned} \\frac{"+n2+"}{"+a2+" + \\sqrt{"+b2+"}} &= \\frac{"+n2+numCore+"}{("+a2+")^2 - (\\sqrt{"+b2+"})^2} \\\\ &= \\frac{"+n2+numCore+"}{"+D2+"} \\\\ &= "+cor2+" \\end{aligned} \\] So the rationalized form is <b>"+u4wrap(cor2)+"</b>.",
       {a:a2,b:b2,n:n2,shape:shape});
   }
   var A=pick([5,6,7,10,11,13,14,15]),B=pick([2,3,5,6,7,10].filter(function(z){return z<A;})),n3=ri(1,6);
@@ -394,7 +394,7 @@ E("u4-rationalize-binomial",4,["1.14"],2,"gen",function(){
     "\\frac{"+npre3+"(\\sqrt{"+A+"} - \\sqrt{"+B+"})}{"+(A+B)+"}"];
   return mcq("Rationalize the denominator of \\(\\frac{"+n3+"}{\\sqrt{"+A+"} - \\sqrt{"+B+"}}\\) and simplify.",
     u4wrap(cor3),u4dis(cor3,cands3,3).map(u4wrap),
-    "Multiply the numerator and denominator by the conjugate \\(\\sqrt{"+A+"} + \\sqrt{"+B+"}\\). The denominator becomes a difference of squares: \\[ \\begin{aligned} \\frac{"+n3+"}{\\sqrt{"+A+"} - \\sqrt{"+B+"}} &= \\frac{"+n3+numC+"}{(\\sqrt{"+A+"})^2 - (\\sqrt{"+B+"})^2} \\\\ &= \\frac{"+n3+numC+"}{"+D3+"} \\\\ &= "+cor3+" \\end{aligned} \\] So the rationalized form is <b>"+u4wrap(cor3)+"</b>\\).",
+    "Multiply the numerator and denominator by the conjugate \\(\\sqrt{"+A+"} + \\sqrt{"+B+"}\\). The denominator becomes a difference of squares: \\[ \\begin{aligned} \\frac{"+n3+"}{\\sqrt{"+A+"} - \\sqrt{"+B+"}} &= \\frac{"+n3+numC+"}{(\\sqrt{"+A+"})^2 - (\\sqrt{"+B+"})^2} \\\\ &= \\frac{"+n3+numC+"}{"+D3+"} \\\\ &= "+cor3+" \\end{aligned} \\] So the rationalized form is <b>"+u4wrap(cor3)+"</b>.",
     {A:A,B:B,n:n3,shape:shape});
 });
 
