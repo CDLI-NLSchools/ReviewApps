@@ -6,11 +6,15 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
-- StudyMate practice packs have their own page. A pack is a printable PDF for one unit: a prerequisite check with repair sets, practice for every indicator in the unit, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
+- StudyMate practice packs have their own page. A pack is a printable PDF for one unit: a prerequisite check with revisit sets, practice for every indicator in the unit, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
+- The Math 2201 Unit 1 pack now comes in pieces as well as whole: a one-page index listing every set and its code, a separate PDF for each set with questions only, and a separate answer keys PDF for teachers, alongside the full pack. A teacher can share just the index page, on paper or digitally, and students open each set online with its code.
 - The StudyMate page has a pack code box, being tested there before it is considered for the course picker. A student with a printed pack can type the six-character code from the top of a set to open that exact set in the app, the same questions in the same order.
 - The pack code box stays on the StudyMate page only for now. It was briefly added to the Review Apps home page as well and has been taken off that page again while it is still being tested.
 
 ### Changed
+
+- The Math 2201 Unit 1 question bank grew by 89 question templates: diagram questions for Indicator 7.1 (including its first harder questions), more problem types for Indicators 7.2 and 7.3, and a deeper bench of prerequisite questions. The Unit 1 pack was regenerated from the enlarged bank: no question template appears more than twice in the pack, and most questions are the first appearance of their template. The sets, their codes and the pack's shape are unchanged.
+- The follow-on sets after a pack's prerequisite check are now called Revisit sets (they were Repair sets).
 
 - The Math 2201 Unit 1 StudyMate pack was regenerated with print refinements from classroom review: working space is now plain white space with no ruled lines, diagrams sit at the left margin so the space beside them can be worked in, examples are headed "Example" and print without answer choices, and no question ever splits across a page. In a digital copy of the pack, each set's printed code and QR code are clickable links to that set. One Math 2201 question's wording was also clarified ("Which law should you use, and why?").
 - The Math 2201 Unit 1 StudyMate pack's set pages were tidied: the line under each set title is now a short description of the set rather than instructions, and each set's questions now start at the top of the page, flowing around the set code and QR code at the top right instead of leaving that space empty (a worked example that carries a diagram still starts below the code block, at full width).
