@@ -2,12 +2,12 @@
 /* Boot gate (jsdom) for Earth Systems 3209 in the unified shell:
      node tests/gate-boot-earth-3209.js   (NODE_PATH set to the 2204 node_modules)
    Slice state (Nov 14, 2026): all five units are built (Unit 1
-   Introduction to Earth Science, 63 entries; Unit 2 Historical
-   Geology, 101; Unit 3 Earth Materials, 147; Unit 4 The Forces within
-   Earth, 135; Unit 5 Earth Resources: Real Life Applications, 82),
-   so BANK.length is 528 and the mid preset pool is 244 (all of Units
-   1 and 2 plus the Unit 3 mid segment of 80); the final preset pool
-   is 284 (the Unit 3 final segment of 67 plus all of Units 4 and 5,
+   Introduction to Earth Science, 65 entries; Unit 2 Historical
+   Geology, 108; Unit 3 Earth Materials, 151; Unit 4 The Forces within
+   Earth, 137; Unit 5 Earth Resources: Real Life Applications, 85),
+   so BANK.length is 546 and the mid preset pool is 257 (all of Units
+   1 and 2 plus the Unit 3 mid segment of 84); the final preset pool
+   is 289 (the Unit 3 final segment of 67 plus all of Units 4 and 5,
    which are final-scope only). The course was listed in the finishing
    pass rerun (Nov 14, 2026) once the whole-preset gate passed, and
    appears in the picker as the fourth Grade 12 science course. */
@@ -42,16 +42,16 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Earth Systems 3209 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Earth Systems 3209 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (the course boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 528, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 97, "course: CR_MARKS wired from the bank module, saw " + ev(r.dom, "Object.keys(CR_MARKS).length"));
-  ok(ev(r.dom, "BANK.filter(e=>e.unit===1).length") === 63, "course: slice bank carries 63 Unit 1 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===1).length"));
-  ok(ev(r.dom, "BANK.filter(e=>e.unit===2).length") === 101, "course: slice bank carries 101 Unit 2 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===2).length"));
-  ok(ev(r.dom, "BANK.filter(e=>e.unit===3).length") === 147, "course: slice bank carries 147 Unit 3 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===3).length"));
-  ok(ev(r.dom, "BANK.filter(e=>e.unit===4).length") === 135, "course: slice bank carries 135 Unit 4 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===4).length"));
-  ok(ev(r.dom, "BANK.filter(e=>e.unit===5).length") === 82, "course: slice bank carries 82 Unit 5 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===5).length"));
+  ok(ev(r.dom, "BANK.length") === 546, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 98, "course: CR_MARKS wired from the bank module, saw " + ev(r.dom, "Object.keys(CR_MARKS).length"));
+  ok(ev(r.dom, "BANK.filter(e=>e.unit===1).length") === 65, "course: slice bank carries 65 Unit 1 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===1).length"));
+  ok(ev(r.dom, "BANK.filter(e=>e.unit===2).length") === 108, "course: slice bank carries 108 Unit 2 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===2).length"));
+  ok(ev(r.dom, "BANK.filter(e=>e.unit===3).length") === 151, "course: slice bank carries 151 Unit 3 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===3).length"));
+  ok(ev(r.dom, "BANK.filter(e=>e.unit===4).length") === 137, "course: slice bank carries 137 Unit 4 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===4).length"));
+  ok(ev(r.dom, "BANK.filter(e=>e.unit===5).length") === 85, "course: slice bank carries 85 Unit 5 entries, saw " + ev(r.dom, "BANK.filter(e=>e.unit===5).length"));
   ok(ev(r.dom, "BANK.filter(e=>e.unit!==1&&e.unit!==2&&e.unit!==3&&e.unit!==4&&e.unit!==5).length") === 0, "course: slice bank carries Units 1 to 5 entries only");
   ok(ev(r.dom, "BANK.filter(e=>e.postMid).length") === 67, "course: postMid segment (EA12.3.20 onward) = 67, saw " + ev(r.dom, "BANK.filter(e=>e.postMid).length"));
-  ok(ev(r.dom, "BANK.filter(e=>e.preFinal).length") === 80, "course: preFinal segment (through EA12.3.19) = 80, saw " + ev(r.dom, "BANK.filter(e=>e.preFinal).length"));
+  ok(ev(r.dom, "BANK.filter(e=>e.preFinal).length") === 84, "course: preFinal segment (through EA12.3.19) = 84, saw " + ev(r.dom, "BANK.filter(e=>e.preFinal).length"));
   ok(ev(r.dom, "BANK.filter(e=>e.postMid&&e.preFinal).length") === 0, "course: no entry carries both scope flags");
   const figCheck = ev(r.dom, `(function(){
     var n = 0, bad = [];
@@ -66,7 +66,7 @@ const ev = (dom, code) => dom.window.eval(code);
     });
     return { n: n, bad: bad };
   })()`);
-  ok(figCheck.n === 91 && figCheck.bad.length === 0, "course: 91 figure entries render figure HTML with bank asset paths and alt text" + (figCheck.bad.length ? " | " + figCheck.bad.join(" ;; ") : "") + ", saw " + figCheck.n);
+  ok(figCheck.n === 93 && figCheck.bad.length === 0, "course: 93 figure entries render figure HTML with bank asset paths and alt text" + (figCheck.bad.length ? " | " + figCheck.bad.join(" ;; ") : "") + ", saw " + figCheck.n);
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 5, "course: five unit checkboxes, saw " + labels.length);
   ["Introduction to Earth Science", "Historical Geology", "Earth Materials", "The Forces within Earth", "Earth Resources: Real Life Applications"].forEach(n =>
@@ -76,20 +76,20 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ev(r.dom, "document.getElementById('presetMid').click()");
   ok(d.getElementById("faceScope").textContent === "Mid-course review: Units 1 to 3", "course: face scope for the mid preset, saw " + d.getElementById("faceScope").textContent);
-  ok((d.getElementById("poolInfo").textContent || "").includes("244 question templates"), "course: pool after Mid preset is all of Units 1 and 2 plus the Unit 3 mid segment, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("257 question templates"), "course: pool after Mid preset is all of Units 1 and 2 plus the Unit 3 mid segment, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetFinal').click()");
   ok(d.getElementById("faceScope").textContent === "Final review: Units 3 to 5", "course: face scope for the final preset, saw " + d.getElementById("faceScope").textContent);
-  ok((d.getElementById("poolInfo").textContent || "").includes("284 question templates"), "course: pool after Final preset is the Unit 3 final segment plus all of Units 4 and 5, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("289 question templates"), "course: pool after Final preset is the Unit 3 final segment plus all of Units 4 and 5, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([4])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("135 question templates"), "course: pool with Unit 4 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("137 question templates"), "course: pool with Unit 4 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([3])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("147 question templates"), "course: pool with Unit 3 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("151 question templates"), "course: pool with Unit 3 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([2])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("101 question templates"), "course: pool with Unit 2 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("108 question templates"), "course: pool with Unit 2 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([1])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("63 question templates"), "course: pool with Unit 1 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("65 question templates"), "course: pool with Unit 1 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([5])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("82 question templates"), "course: pool with Unit 5 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("85 question templates"), "course: pool with Unit 5 alone, uncapped, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(d.getElementById("advToolsBtn") && !d.getElementById("advToolsBtn").hidden, "course (student): Advanced tools button visible beside Copy link at the builder's foot");
   ok(r.errors.length === 0, "course: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
   r.dom.window.close();
