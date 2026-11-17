@@ -13,7 +13,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 ### Changed
 
 - The Math 2201 Unit 1 StudyMate pack was regenerated with print refinements from classroom review: working space is now plain white space with no ruled lines, diagrams sit at the left margin so the space beside them can be worked in, examples are headed "Example" and print without answer choices, and no question ever splits across a page. In a digital copy of the pack, each set's printed code and QR code are clickable links to that set. One Math 2201 question's wording was also clarified ("Which law should you use, and why?").
-- The Math 2201 Unit 1 StudyMate pack's set pages were tidied: the line under each set title is now a short description of the set rather than instructions, and the first question of every set starts below the set header, at full width under the title, code and QR code.
+- The Math 2201 Unit 1 StudyMate pack's set pages were tidied: the line under each set title is now a short description of the set rather than instructions, and each set's questions now start at the top of the page, flowing around the set code and QR code at the top right instead of leaving that space empty (a worked example that carries a diagram still starts below the code block, at full width).
 
 ## v1.2.0 - 2026-11-15
 
