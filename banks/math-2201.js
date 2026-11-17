@@ -4609,6 +4609,198 @@ E("u1-pk-slide-angle", 1, ["7.2"], 2, "gen", function(){
   q.figure=u7triSceneSVG({vert:hLeg,ground:ground,slant:hyp,vertLabel:u7trim(hLeg)+" m",slantLabel:u7trim(hyp)+" m",angle:"?"});
   return q;
 });
+// Math 2201 Unit 1 sequence rebuild batch D (November 17, 2026):
+// phase enrichment for the StudyMate sequence split. Splitting the old
+// Indicator 7.2 set at the teaching joints (sine law set, then cosine
+// law set) pushed the sine and cosine phase draws past the composer's
+// 80 percent depth cap, so this batch adds 3 sine-law, 5 cosine-law and
+// 2 either-law entries in the standing style. Diagram entries are
+// slanted via triRotSVG per Jason's November 17, 2026 orientation rule.
+// CRMARKS: u1-sine-side-diagram=2
+// CRMARKS: u1-sine-supplement-side=2
+// CRMARKS: u1-cosine-side-diagram=2
+// CRMARKS: u1-cosine-angle-diagram=2
+// CRMARKS: u1-cosine-largest-angle=2
+// CRMARKS: u1-cosine-bridge-span=2
+E("u1-sine-side-diagram",1,["7.2"],1,"gen",function(){
+  var A=pick([45,50,55,60]),B=pick([48,55,62,70]);var C=180-A-B;var c=ri(15,32);
+  var a=c*Math.sin(A*Math.PI/180)/Math.sin(C*Math.PI/180);
+  var b=c*Math.sin(B*Math.PI/180)/Math.sin(C*Math.PI/180);
+  var rot=pick([9,12,15,-10,-14]);
+  var q=numq("The diagram shows \\(\\triangle ABC\\) with \\(\\angle A = "+A+"^\\circ\\) and \\(\\angle B = "+B+"^\\circ\\) marked, and the side between them, \\(c = "+c+"\\text{ m}\\), marked. Side \\(a\\) is marked ?. Find side \\(a\\), to one decimal place, in m.",
+    Math.round(a*10)/10,0.06,
+    "The marked side sits between the two marked angles, so first get the third angle from the angle sum: \\(\\angle C = 180^\\circ - "+A+"^\\circ - "+B+"^\\circ = "+C+"^\\circ\\). Side \\(c\\) is opposite \\(\\angle C\\), a complete pair, so the sine law gives side \\(a\\): \\(\\frac{a}{\\sin "+A+"^\\circ} = \\frac{"+c+"}{\\sin "+C+"^\\circ}\\), so \\(a = \\frac{"+c+" \\sin "+A+"^\\circ}{\\sin "+C+"^\\circ} \\approx \\)<b>\\("+fmt(a,1)+"\\text{ m}\\)</b>.",
+    {A:A,B:B,C:C,c:c,rot:rot});
+  q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:[A+"°",B+"°",null],side:["?",null,c+" m"],rot:rot});
+  return q;
+});
+E("u1-sine-angle-mc",1,["7.2"],2,"gen",function(){
+  var tri=pick([{n:"DEF",u:"m"},{n:"ABC",u:"cm"},{n:"PQR",u:"km"}]);
+  var A=pick([30,35,40,45,50,55]),a=pick([9,10,11,12,13,14,15,16]);
+  var bts=[55,60,65,70,75,80].filter(function(x){return x>A+15&&A+x<172;});
+  var Btar=pick(bts);
+  var bTrue=a*Math.sin(Btar*Math.PI/180)/Math.sin(A*Math.PI/180);
+  var b=Math.round(bTrue*10)/10;
+  var Brev=Math.asin(b*Math.sin(A*Math.PI/180)/a)*180/Math.PI;
+  var sup=180-Math.round(Brev);
+  var flip=Math.round(Math.asin(a*Math.sin(A*Math.PI/180)/bTrue)*180/Math.PI);
+  var L1=tri.n.charAt(0),L2=tri.n.charAt(1),l1=L1.toLowerCase(),l2=L2.toLowerCase();
+  return mcq("In \\(\\triangle "+tri.n+"\\), \\(\\angle "+L1+" = "+A+"^\\circ\\), side \\("+l1+" = "+a+"\\text{ "+tri.u+"}\\) (opposite \\(\\angle "+L1+"\\)) and side \\("+l2+" = "+fmt(b,1)+"\\text{ "+tri.u+"}\\). What is \\(\\angle "+L2+"\\), to the nearest degree?",
+    Math.round(Brev)+"°",[sup+"°",flip+"°",A+"°"],
+    "Side \\("+l1+"\\) and \\(\\angle "+L1+"\\) form a complete pair, so the sine law applies: \\(\\frac{\\sin "+L2+"}{"+fmt(b,1)+"} = \\frac{\\sin "+A+"^\\circ}{"+a+"}\\), giving \\(\\sin "+L2+" = \\frac{"+fmt(b,1)+" \\sin "+A+"^\\circ}{"+a+"} \\approx "+fmt(Math.sin(Brev*Math.PI/180),3)+"\\). Undoing with the inverse sine, \\(\\angle "+L2+" \\approx \\)<b>\\("+Math.round(Brev)+"^\\circ\\)</b>.",
+    {A:A,a:a,b:b,Brev:Brev});
+});
+E("u1-sine-supplement-side",1,["7.2"],2,"gen",function(){
+  var A=0,E=0,s=0,PR=0,tries=0,ok=false;
+  while(!ok&&tries<200){tries++;
+    A=ri(30,48);E=ri(105,128);s=ri(40,90);
+    var Qint=180-E,R=E-A;
+    PR=s*Math.sin(Qint*Math.PI/180)/Math.sin(R*Math.PI/180);
+    ok=R>=50&&R<=88&&isFinite(PR);
+  }
+  var Qint=180-E,R=E-A;
+  return numq("A straight canal path runs past a mooring buoy. Two markers, P and Q, stand on the path \\("+s+"\\text{ m}\\) apart, with Q further along the path than P. From P, the angle between the path and the line of sight to the buoy is \\("+A+"^\\circ\\). From Q, the angle between the path continued straight ahead, past Q, and the line of sight to the buoy is \\("+E+"^\\circ\\). Find the distance from P to the buoy, to one decimal place, in m.",
+    Math.round(PR*10)/10,0.06,
+    "The sight lines and the path form one triangle. At Q the path is a straight line, so the angle inside the triangle is supplementary to the marked one: \\(180^\\circ - "+E+"^\\circ = "+Qint+"^\\circ\\). The angle at the buoy is then \\(180^\\circ - "+A+"^\\circ - "+Qint+"^\\circ = "+R+"^\\circ\\). The marked path length \\("+s+"\\text{ m}\\) is opposite the buoy angle, a complete pair, so the sine law gives the distance from P: \\(\\frac{PR}{\\sin "+Qint+"^\\circ} = \\frac{"+s+"}{\\sin "+R+"^\\circ}\\), so \\(PR = \\frac{"+s+" \\sin "+Qint+"^\\circ}{\\sin "+R+"^\\circ} \\approx \\)<b>\\("+fmt(PR,1)+"\\text{ m}\\)</b>.",
+    {A:A,E:E,s:s,Qint:Qint,R:R});
+});
+E("u1-cosine-side-diagram",1,["7.2"],1,"gen",function(){
+  var A=pick([52,58,64,71,78]);var b=ri(9,18),c=ri(9,18);
+  var a=Math.sqrt(b*b+c*c-2*b*c*Math.cos(A*Math.PI/180));
+  var rot=pick([9,12,15,-10,-14]);
+  var q=numq("The diagram shows \\(\\triangle ABC\\) with sides \\(b = "+b+"\\text{ m}\\) and \\(c = "+c+"\\text{ m}\\) marked and the angle between them, \\(\\angle A = "+A+"^\\circ\\), marked. Side \\(a\\), opposite \\(\\angle A\\), is marked ?. Find side \\(a\\), to one decimal place, in m.",
+    Math.round(a*10)/10,0.06,
+    "The unknown side sits opposite the marked angle, and the two marked sides form that angle, so the cosine law applies: \\(a^2 = b^2 + c^2 - 2bc \\cos A = "+(b*b)+" + "+(c*c)+" - 2("+b+")("+c+") \\cos "+A+"^\\circ \\approx "+fmt(a*a,1)+"\\). Taking the square root, \\(a \\approx \\)<b>\\("+fmt(a,1)+"\\text{ m}\\)</b>.",
+    {A:A,b:b,c:c,rot:rot});
+  q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:[A+"°",null,null],side:["?",b+" m",c+" m"],rot:rot});
+  return q;
+});
+E("u1-cosine-angle-diagram",1,["7.2"],2,"gen",function(){
+  var Atar=pick([48,56,64,72]);var b=ri(7,13),c=ri(7,13);
+  var aTrue=Math.sqrt(b*b+c*c-2*b*c*Math.cos(Atar*Math.PI/180));
+  var a=Math.round(aTrue*10)/10;
+  var cosA=(b*b+c*c-a*a)/(2*b*c);var Arev=Math.round(Math.acos(cosA)*180/Math.PI);
+  var rot=pick([9,12,15,-10,-14]);
+  var q=numq("The diagram shows \\(\\triangle ABC\\) with all three sides marked: \\(a = "+fmt(a,1)+"\\text{ m}\\), \\(b = "+b+"\\text{ m}\\) and \\(c = "+c+"\\text{ m}\\). The angle opposite side \\(a\\) is marked ?. Find that angle, to the nearest degree.",
+    Arev,1.1,
+    "All three sides are known and the angle sits opposite side \\(a\\), so use the cosine law rearranged: \\(\\cos A = \\frac{b^2 + c^2 - a^2}{2bc} = \\frac{"+(b*b)+" + "+(c*c)+" - "+fmt(a*a,2)+"}{"+(2*b*c)+"} \\approx "+fmt(cosA,4)+"\\). So the marked angle is \\(A \\approx \\)<b>\\("+Arev+"^\\circ\\)</b>.",
+    {b:b,c:c,Arev:Arev,a:a,rot:rot});
+  q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["?",null,null],side:[fmt(a,1)+" m",b+" m",c+" m"],rot:rot});
+  return q;
+});
+E("u1-cosine-largest-angle",1,["7.2"],2,"gen",function(){
+  var x=0,y=0,z=0,Z=0,tries=0,ok=false;
+  while(!ok&&tries<300){tries++;
+    x=ri(7,12);y=ri(8,14);z=Math.max(x,y)+ri(2,5);
+    Z=Math.acos((x*x+y*y-z*z)/(2*x*y))*180/Math.PI;
+    ok=z<x+y&&isFinite(Z)&&Z>=58&&Z<=112;
+  }
+  var rot=pick([9,12,15,-10,-14]);
+  var q=numq("A triangular garden plot has sides of \\("+x+"\\text{ m}\\), \\("+y+"\\text{ m}\\) and \\("+z+"\\text{ m}\\). Find the largest angle of the plot, to the nearest degree.",
+    Math.round(Z),1.1,
+    "The largest angle of a triangle sits opposite its longest side, here the \\("+z+"\\text{ m}\\) side. With all three sides known, the cosine law rearranged gives that angle: \\(\\cos Z = \\frac{"+(x*x)+" + "+(y*y)+" - "+(z*z)+"}{2("+x+")("+y+")} = \\frac{"+(x*x+y*y-z*z)+"}{"+(2*x*y)+"} \\approx "+fmt(Math.cos(Z*Math.PI/180),4)+"\\), so \\(Z \\approx \\)<b>\\("+Math.round(Z)+"^\\circ\\)</b>.",
+    {x:x,y:y,z:z,rot:rot});
+  q.figure=triRotSVG(z,x,y,{L:["A","B","C"],ang:[null,null,null],side:[z+" m",x+" m",y+" m"],rot:rot});
+  return q;
+});
+E("u1-cosine-bridge-span",1,["7.2"],1,"gen",function(){
+  var T=pick([64,72,80,88]);var u=ri(18,30),v=ri(22,34);
+  var span=Math.sqrt(u*u+v*v-2*u*v*Math.cos(T*Math.PI/180));
+  var rot=pick([9,12,15,-10,-14]);
+  var q=numq("Two cables run from the top of a bridge tower down to two anchors on the deck. One cable is \\("+u+"\\text{ m}\\) long and the other is \\("+v+"\\text{ m}\\) long, and the angle between the cables at the top of the tower is \\("+T+"^\\circ\\). How far apart are the two anchors, to one decimal place, in m?",
+    Math.round(span*10)/10,0.06,
+    "The two cables and the deck segment between the anchors form a triangle, and the anchor distance sits opposite the marked angle between the cables, so the cosine law applies: \\(d^2 = "+u+"^2 + "+v+"^2 - 2("+u+")("+v+") \\cos "+T+"^\\circ = "+(u*u)+" + "+(v*v)+" - "+(2*u*v)+" \\cos "+T+"^\\circ \\approx "+fmt(span*span,1)+"\\). Taking the square root, the anchors are <b>\\("+fmt(span,1)+"\\text{ m}\\)</b> apart.",
+    {T:T,u:u,v:v,rot:rot});
+  q.figure=triRotSVG(span,v,u,{L:["T","P","Q"],ang:[T+"°",null,null],side:["?",v+" m",u+" m"],rot:rot});
+  return q;
+});
+E("u1-cosine-side-mc",1,["7.2"],2,"gen",function(){
+  function rd(d){return d*Math.PI/180;}
+  var s1=0,s2=0,th=0,key=0,d1=0,d2=0,d3=0,tries=0,ok=false;
+  while(!ok&&tries<400){tries++;
+    s1=pick([2.4,3.0,3.6,4.2,4.8,5.4]);s2=pick([2.4,3.0,3.6,4.2,4.8,5.4]);th=ri(55,105);
+    key=Math.sqrt(s1*s1+s2*s2-2*s1*s2*Math.cos(rd(th)));
+    d1=Math.sqrt(s1*s1+s2*s2+2*s1*s2*Math.cos(rd(th)));
+    d2=Math.sqrt(s1*s1+s2*s2-2*s1*s2*Math.sin(rd(th)));
+    d3=key*key;
+    var os=[fmt(key,1),fmt(d1,1),fmt(d2,1),fmt(d3,1)];
+    ok=os.filter(function(v,i){return os.indexOf(v)===i;}).length===4;
+  }
+  return mcq("A triangular shade sail has two edges of "+fmt(s1,1)+" m and "+fmt(s2,1)+" m that meet at a corner with an angle of \\("+th+"^\\circ\\) between them. How long is the third edge, opposite that corner, in m?",
+    fmt(key,1),[fmt(d1,1),fmt(d2,1),fmt(d3,1)],
+    "The third edge sits opposite the angle between the two known edges, so the cosine law applies: \\(d^2 = "+fmt(s1,1)+"^2 + "+fmt(s2,1)+"^2 - 2("+fmt(s1,1)+")("+fmt(s2,1)+") \\cos "+th+"^\\circ \\approx "+fmt(key*key,1)+"\\). Taking the square root, the third edge is <b>\\("+fmt(key,1)+"\\text{ m}\\)</b>. (Adding the cosine term instead of subtracting it is a sign error, and using sine in place of cosine does not fit the angle between the sides.)",
+    {s1:s1,s2:s2,th:th});
+});
+E("u1-diagram-law-pair",1,["7.1","7.2"],1,"var",varset([
+  function(){var A=52,B=68,C=180-A-B,c=21;
+    var a=c*Math.sin(A*Math.PI/180)/Math.sin(C*Math.PI/180),b=c*Math.sin(B*Math.PI/180)/Math.sin(C*Math.PI/180);
+    var q=mcq("The diagram marks two angles, \\(52^\\circ\\) and \\(68^\\circ\\), and the \\(21\\text{ m}\\) side between them, with another side marked ?. Which statement about finding the ? side is correct?",
+      "Use the sine law: the angle sum gives the third angle, and the marked side then pairs with the angle opposite it",
+      ["Use the cosine law: two sides and the angle between them are marked, so the ? side follows in one step",
+       "Use the sine law with the two marked angles alone: no third angle and no marked side are needed",
+       "Neither law can find it: a second side length must be marked before any law can start"],
+      "The third angle is \\(180^\\circ - 52^\\circ - 68^\\circ = 60^\\circ\\), and the \\(21\\text{ m}\\) side sits opposite it: a complete pair. The sine law then finds the ? side. Only one side is marked, so the cosine law has no starting point. The correct statement is: <b>use the sine law, once the angle sum completes the pair</b>.",
+      {});
+    q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["52°","68°",null],side:["?",null,"21 m"],rot:12});
+    return q;},
+  function(){var A=59,b=13,c=10;
+    var a=Math.sqrt(b*b+c*c-2*b*c*Math.cos(A*Math.PI/180));
+    var q=mcq("The diagram marks sides of \\(13\\text{ m}\\) and \\(10\\text{ m}\\) and the \\(59^\\circ\\) angle between them, with the side opposite that angle marked ?. Which statement about finding the ? side is correct?",
+      "Use the cosine law: the marked angle sits between the two marked sides, and the ? side is opposite it",
+      ["Use the sine law: a marked side pairs with the angle opposite it, so the ? side follows from the proportion",
+       "Use the sine law after the cosine law: the ? side must be found before either law can start",
+       "Neither law can find it: the marked angle would have to sit opposite a marked side"],
+      "No marked side sits opposite a marked angle, so the sine law has no complete pair to start from. The marked angle is contained by the two marked sides, which is exactly the cosine law's input, and the ? side is the side it produces. The correct statement is: <b>use the cosine law</b>.",
+      {});
+    q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["59°",null,null],side:["?", "13 m","10 m"],rot:-10});
+    return q;},
+  function(){var a=16,b=13,c=10;
+    var q=mcq("The diagram marks all three sides of a triangle, \\(16\\text{ m}\\), \\(13\\text{ m}\\) and \\(10\\text{ m}\\), with the angle opposite the \\(16\\text{ m}\\) side marked ?. Which statement about finding the ? angle is correct?",
+      "Use the cosine law rearranged: with all three sides known, it solves directly for the marked angle",
+      ["Use the sine law: a marked side pairs with its opposite angle, so the proportion gives the ? angle",
+       "Use the angle sum alone: the other two angles come from the marked sides first",
+       "Neither law can find it: at least one angle must be marked before any law can start"],
+      "The sine law needs a side paired with its opposite angle, and no angle is marked at all. The cosine law rearranged, \\(\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}\\), takes the three marked sides and returns the angle opposite the \\(16\\text{ m}\\) side. The correct statement is: <b>use the cosine law rearranged</b>.",
+      {});
+    q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["?",null,null],side:["16 m","13 m","10 m"],rot:15});
+    return q;}
+]));
+E("u1-diagram-missing-mark",1,["7.1","7.2"],2,"var",varset([
+  function(){var A=47,B=59,C=180-A-B,c=20;
+    var a=c*Math.sin(A*Math.PI/180)/Math.sin(C*Math.PI/180),b=c*Math.sin(B*Math.PI/180)/Math.sin(C*Math.PI/180);
+    var q=mcq("The diagram marks two angles of a triangle, \\(47^\\circ\\) and \\(59^\\circ\\), but no side length, and marks the side between the two marked angles with ?. Which ONE additional mark would make the ? side findable with a law?",
+      "Mark the length of one of the other sides",
+      ["Mark the third angle as well",
+       "Mark the altitude from the third vertex down to the ? side",
+       "Mark the ? side as the longest side of the triangle"],
+      "Both laws are proportions built from lengths: with no side length marked at all, there is nothing to anchor them, whatever the angles are. The third angle is already fixed by the angle sum, so marking it adds nothing, and an altitude or a longest-side note is not an input to either law. Marking <b>the length of one of the other sides</b> completes a pair and the sine law then gives the ? side.",
+      {});
+    q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["47°","59°",null],side:[null,null,"?"],rot:9});
+    return q;},
+  function(){var A=61,B=43,C=180-A-B,a=18;
+    var b=a*Math.sin(B*Math.PI/180)/Math.sin(A*Math.PI/180),c=a*Math.sin(C*Math.PI/180)/Math.sin(A*Math.PI/180);
+    var q=mcq("The diagram marks side \\(a = 18\\text{ m}\\) and angle \\(B = 43^\\circ\\), which are not opposite each other, and marks angle \\(A\\) with ?. Which ONE additional mark would make angle \\(A\\) findable with a law?",
+      "Mark side b, the side opposite the marked angle B",
+      ["Mark the altitude from B down to side b",
+       "Mark the median from A to the midpoint of side a",
+       "Mark side a as the longest side of the triangle"],
+      "The sine law starts from a complete pair, a side together with its opposite angle. Side \\(a\\) is marked but its opposite angle is the unknown, and angle \\(B\\) is marked but its opposite side is not, so neither law can start. Marking <b>side b</b> completes the pair at \\(B\\), and the sine law then gives \\(\\sin A\\). An altitude, a median or a longest-side note is not an input to either law.",
+      {});
+    q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["?","43°",null],side:["18 m",null,null],rot:-14});
+    return q;},
+  function(){var A=38,B=57,C=180-A-B,b=15;
+    var a=b*Math.sin(A*Math.PI/180)/Math.sin(B*Math.PI/180),c=b*Math.sin(C*Math.PI/180)/Math.sin(B*Math.PI/180);
+    var q=mcq("The diagram marks side \\(b = 15\\text{ m}\\) and angle \\(A = 38^\\circ\\), which are not opposite each other, and marks side \\(a\\) with ?. Which ONE additional mark would make side \\(a\\) findable with a law?",
+      "Mark angle B, the angle opposite the marked side b",
+      ["Mark the altitude from A down to side a",
+       "Mark the median from B to the midpoint of side b",
+       "Mark side b as the shortest side of the triangle"],
+      "The sine law starts from a complete pair, a side together with its opposite angle. Side \\(b\\) is marked but its opposite angle is not, and angle \\(A\\) is marked but its opposite side is the unknown, so neither law can start. Marking <b>angle B</b> completes the pair at \\(b\\), and the sine law then gives side \\(a\\). An altitude, a median or a shortest-side note is not an input to either law.",
+      {});
+    q.figure=triRotSVG(a,b,c,{L:["A","B","C"],ang:["38°",null,null],side:["?","15 m",null],rot:12});
+    return q;}
+]));
+
 /* PK tranche pass for Unit 1. pkFor is Cluster 1's dependent
    indicator list from the prior knowledge map. */
 var PKT_U1_FOR=["7.1","7.2","7.3"];
@@ -9000,4 +9192,4 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-context":2,"u1-cosine-side":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-mirror-point":1,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-vertex-form-eval":1,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-mixed":2,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-mirror-point":1,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-vertex-form-eval":1,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-mixed":2,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};

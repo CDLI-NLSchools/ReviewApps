@@ -1,6 +1,6 @@
 {
  "pack": "math-2201 unit 1",
- "bankSha256": "05c7739f4232d5933e995529f267461299b2efc88d2b2e8dddddd6b8951a0bc2",
+ "bankSha256": "59c099e54fd7bd16b6e682bf867ab75a3e83d5b7fc5bba53e9a1b1efceb69faf",
  "sets": {
   "THX2JE": {
    "id": "pk-check",
@@ -40,7 +40,7 @@
    "view": "p",
    "canons": [
     "A staircase stringer 13 m long rises 5 m vertically from floor to landing. How long, in metres, is the horizontal run of the staircase? Give your answer to the nearest tenth. || NUM:12",
-    "Which set of side lengths, in centimetres, forms a right triangle? || MC:5, 12, 13",
+    "A computer monitor screen is 24 cm wide and 18 cm tall. Screens are sized by the length of their diagonal. What is the screen size, in centimetres? || NUM:30",
     "A rectangular field is 20 m long and 21 m wide. Walking from one corner along two edges to the opposite corner covers 41 m. A straight path across the diagonal of the field is shorter. How many metres does the diagonal path save? Give your answer to the nearest tenth. || NUM:12"
    ]
   },
@@ -63,6 +63,34 @@
     "A tree is 10 m tall. From a point on level ground, the angle of elevation to the top of the tree is 48°. How far, in metres, is the point from the base of the tree? Give your answer to the nearest tenth. || TXT:9|9.0"
    ]
   },
+  "HN2GHA": {
+   "id": "ind-72-sine",
+   "view": "p",
+   "canons": [
+    "In \\(\\triangle ABC\\), \\(\\angle A = 35^\\circ\\), \\(\\angle B = 70^\\circ\\), and side \\(a = 11\\text{ cm}\\) (opposite \\(\\angle A\\)). Find side \\(b\\), to one decimal place, in cm. || NUM:18",
+    "In \\(\\triangle DEF\\), \\(\\angle D = 60^\\circ\\), side \\(d = 10\\text{ m}\\) (opposite \\(\\angle D\\)), and side \\(e = 11.4\\text{ m}\\). Find \\(\\angle E\\), to the nearest degree. || NUM:81",
+    "A triangular sail has corners \\(A\\), \\(B\\) and \\(C\\). The edge opposite \\(\\angle A\\) measures \\(13\\text{ m}\\) and \\(\\angle A = 35^\\circ\\). The edge opposite \\(\\angle B\\) measures \\(16\\text{ m}\\). Find \\(\\angle B\\), to the nearest degree. || NUM:45",
+    "The diagram shows \\(\\triangle ABC\\) with \\(\\angle A = 50^\\circ\\) and \\(\\angle B = 55^\\circ\\) marked, and the side between them, \\(c = 16\\text{ m}\\), marked. Side \\(a\\) is marked ?. Find side \\(a\\), to one decimal place, in m. || NUM:12.7",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 49^\\circ\\), \\(\\angle B = 77^\\circ\\), and side \\(a = 15\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:19.4",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 48^\\circ\\), \\(\\angle B = 45^\\circ\\), and the side opposite \\(\\angle A\\) is \\(23\\text{ cm}\\). Find the length of the side opposite \\(\\angle C\\), to one decimal place, in cm. || NUM:30.9",
+    "A harbour triangle \\(ABC\\) has \\(\\angle A = 46^\\circ\\), \\(\\angle B = 38^\\circ\\) and side \\(a = 36\\text{ m}\\) opposite \\(\\angle A\\). Find side \\(c\\), to one decimal place, in m. || NUM:49.8",
+    "In a regatta course triangle \\(ABC\\), \\(\\angle A = 40^\\circ\\), side \\(b = 16\\text{ m}\\) and side \\(a = 11.6\\text{ m}\\) (side \\(a\\) is opposite \\(\\angle A\\)). Two positions for the mark at \\(B\\) fit these measurements. The course is set so that \\(\\angle B\\) is the smaller of the two possible values. Find side \\(c\\) for the course as set, to one decimal place, in m. || NUM:17.6"
+   ]
+  },
+  "NB23V4": {
+   "id": "ind-72-cosine",
+   "view": "p",
+   "canons": [
+    "In \\(\\triangle PQR\\), sides \\(p = 6\\text{ km}\\) and \\(q = 7\\text{ km}\\) meet at \\(\\angle R = 60^\\circ\\) between them. Find the side opposite \\(\\angle R\\), to one decimal place, in km. || NUM:6.6",
+    "A triangle has sides \\(7.9, 11, 9\\). Find the angle opposite the side of length \\(7.9\\), to the nearest degree. || NUM:45",
+    "Two ferries leave the same terminal at the same time. One travels at 21 km/h and the other at 21 km/h, with an angle of \\(105^\\circ\\) between their routes. After 1.5 h, how far apart are the ferries, to one decimal place, in km? || NUM:50",
+    "The diagram shows \\(\\triangle ABC\\) with sides \\(b = 13\\text{ m}\\) and \\(c = 14\\text{ m}\\) marked and the angle between them, \\(\\angle A = 64^\\circ\\), marked. Side \\(a\\), opposite \\(\\angle A\\), is marked ?. Find side \\(a\\), to one decimal place, in m. || NUM:14.3",
+    "A triangle has sides 13.7 cm, 13 cm and 7 cm. What is the angle opposite the side of length 13.7 cm, in degrees? || MC:80",
+    "A roof truss has two rafters of \\(4\\text{ m}\\) and \\(8\\text{ m}\\) meeting at the apex with an angle of \\(81^\\circ\\) between them. Find the span across the bottom of the truss, to one decimal place, in m. || NUM:8.4",
+    "A triangle has sides of \\(6\\text{ cm}\\), \\(10\\text{ cm}\\) and \\(13\\text{ cm}\\). Find the measure of the SMALLEST angle, to the nearest degree. || NUM:26",
+    "Two airplanes leave the same airport at the same time. One travels at 400 km/h and the other at 520 km/h, each in a straight line. After 0.5 h they are 157 km apart. Find the angle between their paths, to the nearest degree. || NUM:37"
+   ]
+  },
   "S5T64Y": {
    "id": "ind-71",
    "view": "p",
@@ -72,27 +100,9 @@
     "All three sides of a triangle are known. To find angle \\(C\\) first, \\(\\cos C\\) equals… || MC:\\(\\frac{a^2 + b^2 - c^2}{2ab}\\)",
     "A triangular garden bed has sides of \\(8\\text{ m}\\) and \\(11\\text{ m}\\) that meet at a corner, with an angle of \\(74^\\circ\\) between them at that corner. A diagram is drawn to find the length of the third side. Which description matches the diagram? || MC:The \\(8\\text{ m}\\) and \\(11\\text{ m}\\) sides are marked known, the \\(74^\\circ\\) angle between them is marked known, and the third side is marked ?",
     "In the diagram of \\(\\triangle ABC\\), \\(\\angle A = 53^\\circ\\), \\(\\angle B = 49^\\circ\\) and side \\(c = 22\\text{ m}\\). Side \\(a\\) and \\(\\angle C\\) are both marked ?. Which plan finds both marked unknowns, in a workable order? || MC:First find \\(\\angle C\\) with the angle sum, then use the sine law with side \\(c\\) and its opposite angle to find side \\(a\\)",
-    "Two straight roads leave a junction, one running \\(120\\text{ m}\\) to a store and the other \\(85\\text{ m}\\) to a school, with an angle of \\(96^\\circ\\) between the roads at the junction. Let x be the direct distance from the store to the school. Which equation is the correct first step? || MC:\\(x^2 = 120^2 + 85^2 - 2(120)(85)\\cos 96^\\circ\\)",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 49^\\circ\\), side \\(a = 15\\text{ cm}\\) (opposite \\(\\angle A\\)) and side \\(b = 18\\text{ cm}\\). The diagram shows the one triangle that fits these measurements, with \\(\\angle B\\) marked ?. What is \\(\\angle B\\), in degrees? || MC:65",
     "In \\(\\triangle PQR\\), the sides from vertex P measure \\(10\\text{ m}\\) and \\(15\\text{ m}\\), and the angle between them at P is \\(68^\\circ\\). The task is to find the side opposite P. A student's diagram labels the two sides from P as \\(10\\text{ m}\\) and \\(15\\text{ m}\\) and the side opposite P as ?, but marks the \\(68^\\circ\\) angle at vertex Q, between the \\(15\\text{ m}\\) side and the side marked ?. What is the one error in the student's diagram? || MC:The \\(68^\\circ\\) angle is marked at vertex Q instead of at vertex P, where the two given sides meet",
     "Two triangular lots share a driveway edge AC. In the first lot, \\(\\triangle ABC\\), \\(\\angle A = 45^\\circ\\), side \\(a = 60\\text{ m}\\) opposite \\(\\angle A\\), and side \\(c = 52\\text{ m}\\). In the second lot, \\(\\triangle ACD\\), the angles at C and D are \\(64^\\circ\\) and \\(51^\\circ\\). The task is to find CD. Which representation plan is correct? || MC:Draw AC as the unknown in the first lot, find it with the sine law from the \\(45^\\circ\\) angle and its opposite \\(60\\text{ m}\\) side, checking the diagram for the ambiguous case, then work in the second lot"
-   ]
-  },
-  "N37QX7": {
-   "id": "ind-72",
-   "view": "p",
-   "canons": [
-    "In \\(\\triangle ABC\\), \\(\\angle A = 35^\\circ\\), \\(\\angle B = 70^\\circ\\), and side \\(a = 11\\text{ cm}\\) (opposite \\(\\angle A\\)). Find side \\(b\\), to one decimal place, in cm. || NUM:18",
-    "In \\(\\triangle PQR\\), sides \\(p = 6\\text{ km}\\) and \\(q = 7\\text{ km}\\) meet at \\(\\angle R = 60^\\circ\\) between them. Find the side opposite \\(\\angle R\\), to one decimal place, in km. || NUM:6.6",
-    "Two ferries leave the same terminal at the same time. One travels at 21 km/h and the other at 21 km/h, with an angle of \\(105^\\circ\\) between their routes. After 1.5 h, how far apart are the ferries, to one decimal place, in km? || NUM:50",
-    "Three fence lengths of \\(19\\text{ m}\\), \\(10\\text{ m}\\) and \\(19\\text{ m}\\) form a triangular pen. Find the angle at the corner opposite the \\(19\\text{ m}\\) side, to the nearest degree. || NUM:75",
-    "In \\(\\triangle ABC\\), \\(\\angle A = 49^\\circ\\), \\(\\angle B = 77^\\circ\\), and side \\(a = 15\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:19.4",
-    "A triangle has sides 13.7 cm, 13 cm and 7 cm. What is the angle opposite the side of length 13.7 cm, in degrees? || MC:80",
-    "In \\(\\triangle ABC\\), \\(\\angle A = 48^\\circ\\), \\(\\angle B = 45^\\circ\\), and the side opposite \\(\\angle A\\) is \\(23\\text{ cm}\\). Find the length of the side opposite \\(\\angle C\\), to one decimal place, in cm. || NUM:30.9",
-    "A triangle has sides of \\(6\\text{ cm}\\), \\(10\\text{ cm}\\) and \\(13\\text{ cm}\\). Find the measure of the SMALLEST angle, to the nearest degree. || NUM:26",
-    "Two airplanes leave the same airport at the same time. One travels at 400 km/h and the other at 520 km/h, each in a straight line. After 0.5 h they are 157 km apart. Find the angle between their paths, to the nearest degree. || NUM:37",
-    "A pipeline runs in two straight sections of \\(81\\text{ m}\\) and \\(66\\text{ m}\\). At the joint, the direction of the pipe turns through \\(62^\\circ\\) away from the straight-ahead direction. Find the straight-line distance between the two ends of the pipeline, to one decimal place, in m. || NUM:126.2",
-    "In \\(\\triangle ABC\\), \\(\\angle A = 30^\\circ\\), side \\(b = 10\\text{ cm}\\) and side \\(a = 5\\text{ cm}\\) (\\(a\\) is opposite \\(\\angle A\\)). How many different triangles fit this information? || MC:Exactly one triangle (a right triangle)",
-    "In a regatta course triangle \\(ABC\\), \\(\\angle A = 40^\\circ\\), side \\(b = 16\\text{ m}\\) and side \\(a = 11.6\\text{ m}\\) (side \\(a\\) is opposite \\(\\angle A\\)). Two positions for the mark at \\(B\\) fit these measurements. The course is set so that \\(\\angle B\\) is the smaller of the two possible values. Find side \\(c\\) for the course as set, to one decimal place, in m. || NUM:17.6"
    ]
   },
   "TZQZJJ": {
@@ -100,7 +110,7 @@
    "view": "p",
    "canons": [
     "Three corners A, B and C of a triangular garden plot form a triangle, with C the corner by the gate. The distance from C to A is \\(33\\text{ m}\\), the distance from C to B is \\(22\\text{ m}\\), and the angle at C between those two sides is \\(71^\\circ\\). In the diagram the side AB is marked ?. What does the ? stand for? || MC:The straight-line distance between corners A and B of the plot",
-    "In \\(\\triangle PQR\\), \\(\\angle P = 50^\\circ\\), \\(\\angle Q = 73^\\circ\\), and side \\(p = 19\\text{ cm}\\) (opposite \\(\\angle P\\)), as marked in the diagram. Which equation finds side \\(q\\)? || MC:\\(\\frac{q}{\\sin 73^\\circ} = \\frac{19}{\\sin 50^\\circ}\\)",
+    "Two straight paths leave a picnic shelter at A. One runs 21 m to a playground at B, and the other runs 26 m to a garden at C. The angle between the paths at the shelter is 84°. The diagram shows the problem, with the direct distance from the playground to the garden marked ?. How far is it from the playground to the garden, in metres, to one decimal place? || MC:31.7",
     "Triangle PQR is a right triangle with the right angle at R, as shown. Which fraction equals \\(\\cos Q\\)? || MC:\\(\\frac{QR}{PQ}\\)",
     "From a point on level ground 55 m from the base of a tree, the angle of elevation to the top of the tree is 62°. Find the height of the tree, in metres, to the nearest tenth. || TXT:103.4",
     "A triangular solar panel has two edges of \\(2\\text{ m}\\) and \\(5\\text{ m}\\) with an angle of \\(80^\\circ\\) between them. Find the perimeter of the panel, to one decimal place, in m. || NUM:12.1",
@@ -130,7 +140,7 @@
     "Two straight roads leave an intersection. A gas station is 10 km along one road and a school is 22 km along the other, with an angle of \\(41^\\circ\\) between the roads. The distance between the gas station and the school is measured straight across. How far apart are the two endpoints, to one decimal place, in km? || NUM:15.9",
     "A picture frame is 12 cm wide and 16 cm tall. A wire runs diagonally across the back of the frame from one corner to the opposite corner. How long, in centimetres, is the wire? Give your answer to the nearest tenth. || NUM:20",
     "From a point on level ground, the angle of elevation to the top of a lighthouse is \\(23^\\circ\\). Moving 40 m closer to it, the angle of elevation is \\(35^\\circ\\). Find its height, to one decimal place, in m. || NUM:43.1",
-    "A harbour triangle \\(ABC\\) has \\(\\angle A = 46^\\circ\\), \\(\\angle B = 38^\\circ\\) and side \\(a = 36\\text{ m}\\) opposite \\(\\angle A\\). Find side \\(c\\), to one decimal place, in m. || NUM:49.8",
+    "A triangular meadow is modelled by \\(\\triangle ABC\\) in the diagram, where \\(\\angle A = 30^\\circ\\), side \\(a = 20.2\\text{ m}\\) (opposite \\(\\angle A\\)) and side \\(b = 38\\text{ m}\\). Find \\(\\angle B\\), to the nearest degree. || NUM:70",
     "A guy wire is attached to a pole 11 m above level ground and runs to an anchor in the ground, where it makes an angle of 60° with the ground. Find the length of the wire, in metres, to the nearest tenth. || TXT:12.7",
     "A quadrilateral plot \\(ABCD\\) is split by the diagonal \\(AC\\). In \\(\\triangle ABC\\), \\(AB = 21\\text{ m}\\), \\(BC = 18\\text{ m}\\) and \\(\\angle B = 60^\\circ\\). In \\(\\triangle ACD\\), \\(\\angle DAC = 50^\\circ\\) and \\(\\angle D = 64^\\circ\\). Find the perimeter of the quadrilateral, to one decimal place, in m. || NUM:75.8"
    ]
@@ -140,8 +150,8 @@
    "view": "p",
    "canons": [
     "The diagram shows right triangle RTV with the right angle at V and one acute angle marked. What is the length of the side opposite the marked angle? || MC:30 m",
-    "A triangular sail has corners \\(A\\), \\(B\\) and \\(C\\). The edge opposite \\(\\angle A\\) measures \\(13\\text{ m}\\) and \\(\\angle A = 35^\\circ\\). The edge opposite \\(\\angle B\\) measures \\(16\\text{ m}\\). Find \\(\\angle B\\), to the nearest degree. || NUM:45",
-    "In \\(\\triangle DEF\\), \\(\\angle D = 60^\\circ\\), side \\(d = 10\\text{ m}\\) (opposite \\(\\angle D\\)), and side \\(e = 11.4\\text{ m}\\). Find \\(\\angle E\\), to the nearest degree. || NUM:81",
+    "Two corners \\(A\\) and \\(B\\) of an orchard are \\(48\\text{ m}\\) apart. From corner \\(A\\), the angle between the line to corner \\(B\\) and the line to a lone tree is \\(40^\\circ\\); from corner \\(B\\), the angle between the line to corner \\(A\\) and the line to the tree is \\(54^\\circ\\). How far is the tree from corner \\(B\\), to one decimal place, in m? || NUM:30.9",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 25^\\circ\\), side \\(a = 8\\text{ cm}\\) (opposite \\(\\angle A\\)), and side \\(b = 17.8\\text{ cm}\\). Find \\(\\angle B\\), to the nearest degree. || NUM:70",
     "Two canal lock gates swing from opposite walls and meet partway across the channel. The gates are \\(4.8\\text{ m}\\) and \\(5.4\\text{ m}\\) long, and the angle between them where they meet is \\(68^\\circ\\). Find the distance between the free ends of the gates at the walls, to one decimal place, in m. || NUM:5.7",
     "A radio tower stands vertically between two ground anchors 34.7 m apart. From the anchor on the left, the angle of elevation to the top of the tower is \\(44^\\circ\\); from the anchor on the right, it is \\(55^\\circ\\). Find the length of the LONGER support wire, to one decimal place, in m. || NUM:28.8",
     "A scaffold bay forms \\(\\triangle ABC\\). A diagonal brace is side \\(a = 7.1\\text{ m}\\), opposite \\(\\angle A = 65^\\circ\\), and side \\(b = 6\\text{ m}\\). Find side \\(c\\), to one decimal place, in m. || NUM:7.1",
@@ -153,21 +163,22 @@
    "id": "review",
    "view": "e",
    "canons": [
+    "The diagram marks sides of \\(13\\text{ m}\\) and \\(10\\text{ m}\\) and the \\(59^\\circ\\) angle between them, with the side opposite that angle marked ?. Which statement about finding the ? side is correct? || MC:Use the cosine law: the marked angle sits between the two marked sides, and the ? side is opposite it",
     "Two straps run from a single crane hook down to two attachment points on a load. The straps are 9 m and 7 m long, and the angle between them at the hook is \\(110^\\circ\\). What is the distance between the two attachment points, in m? || MC:13.2",
-    "Two roads leave a junction in different directions: one runs \\(7\\text{ km}\\) to a first village and the other runs \\(9\\text{ km}\\) to a second village. The direct distance between the two villages has not been measured. The angle at the junction is \\(63^\\circ\\). In a labelled diagram, where does the \\(63^\\circ\\) angle sit relative to the side with no length given? || MC:Opposite the side with no length given, across the triangle from it",
-    "A triangle has sides 6.6 cm, 9 cm and 10 cm. What is the angle opposite the side of length 6.6 cm, in degrees? || MC:40",
     "A triangular gate brace is formed by two sides of 1.8 m and 1.2 m with an angle of \\(91^\\circ\\) between them. How long is the diagonal brace that joins their far ends, in m? || MC:2.2",
-    "In the diagram of \\(\\triangle ABC\\), \\(\\angle A = 55^\\circ\\), \\(\\angle B = 45^\\circ\\) and side \\(c = 23\\text{ m}\\). Side \\(a\\) and \\(\\angle C\\) are both marked ?. Which plan finds both marked unknowns, in a workable order? || MC:First find \\(\\angle C\\) with the angle sum, then use the sine law with side \\(c\\) and its opposite angle to find side \\(a\\)",
-    "In \\(\\triangle ABC\\), \\(\\angle A = 49^\\circ\\), side \\(a = 15\\text{ cm}\\) (opposite \\(\\angle A\\)) and side \\(b = 18\\text{ cm}\\). The diagram shows the one triangle that fits these measurements, with \\(\\angle B\\) marked ?. What is \\(\\angle B\\), in degrees? || MC:65",
-    "Two points M and N are \\(95\\text{ m}\\) apart on a straight road, and a tower T stands off the road. Inside the triangle, the angle at M is \\(38^\\circ\\). At N, the road continues straight past N, and the angle between that extension and the line from N to the tower is \\(67^\\circ\\). Which first step is correct for finding the distance from N to the tower? || MC:Use \\(180^\\circ - 67^\\circ = 113^\\circ\\) as the angle at N inside the triangle, then apply the sine law",
+    "Two lifeguard chairs stand 37 m apart along a beach. From one chair, the angle between the line to the other chair and the line to a swimmer is 57°; from the other chair, the corresponding angle is 53°. A student sketches the triangle and has to place the three given numbers on it. Which statement assigns the three given numbers to the right positions in the sketch? || MC:The 37 m side sits between the 57° angle and the 53° angle, and the third angle has no measure given",
     "One triangular half of a kite has frame lengths of 0.6 m and 0.9 m with an angle of \\(71^\\circ\\) between them. How long is the cross-spar that joins their far ends, in m? || MC:0.9",
-    "A triangular property lot has sides of 22.2 m, 12 m and 29 m. What is the angle at the corner opposite the side of length 22.2 m, in degrees? || MC:45",
-    "Two triangular fields share a fence line AC. In the first field, \\(\\triangle ABC\\), the outside fences are \\(AB = 90\\text{ m}\\) and \\(BC = 70\\text{ m}\\) with the angle at B equal to \\(80^\\circ\\). In the second field, \\(\\triangle ACD\\), the angles at A and D are \\(55^\\circ\\) and \\(65^\\circ\\). The task is to find CD. Which representation plan is correct? || MC:Draw AC as the unknown in the first triangle, find it with the cosine law from the \\(90\\text{ m}\\) and \\(70\\text{ m}\\) sides and their included angle, then work in the second triangle",
-    "A triangular shelf bracket is specified by \\(\\angle A = 30^\\circ\\), side \\(b = 10\\text{ cm}\\) and side \\(a = 5\\text{ cm}\\) (side \\(a\\) is opposite \\(\\angle A\\)). How many different brackets fit this specification? || MC:Exactly one bracket fits, and it is a right triangle",
-    "From a point on level ground, the angle of elevation to the top of a lighthouse is \\(36^\\circ\\). Moving 20 m closer to it, the angle of elevation is \\(63^\\circ\\). Find its height, to one decimal place, in m. || NUM:23.1",
-    "A drone survey marks a triangular field \\(ABC\\) with a marker \\(D\\) on side \\(BC\\). From \\(A\\), the two parts of the angle are \\(\\angle BAD = 36^\\circ\\) and \\(\\angle DAC = 34^\\circ\\). Side \\(AB = 35\\text{ m}\\) and \\(\\angle B = 50^\\circ\\). Find the distance \\(DC\\) along the boundary, to one decimal place, in m. || NUM:17.4",
-    "A post \\(D\\) stands on side \\(BC\\) of a triangular plot \\(ABC\\). The plot has \\(AB = 13\\text{ m}\\), \\(BC = 27\\text{ m}\\) and \\(\\angle B = 60^\\circ\\). The post divides the side with \\(BD = 10\\text{ m}\\) and \\(DC = 17\\text{ m}\\). Find \\(\\angle DAC\\), to the nearest degree. || NUM:44",
-    "In a regatta, \\(A\\) is the start boat, \\(B\\) is a first marker, \\(C\\) is a second marker and \\(D\\) is the finish marker. In \\(\\triangle ABC\\), \\(\\angle BAC = 42^\\circ\\), \\(AB = 22\\text{ m}\\) and \\(BC = 18\\text{ m}\\). The second marker lies beyond the first, so \\(AC\\) is the longer of the two distances that fit this data. In \\(\\triangle ACD\\), \\(AD = 29\\text{ m}\\) and \\(\\angle DAC = 56^\\circ\\). Find the distance \\(CD\\) from the second marker to the finish, to one decimal place, in m. || NUM:26.2"
+    "Two farm fields share a lane along the diagonal \\(AC\\). In the first field, \\(\\triangle ABC\\), a lane \\(AB = 23\\text{ m}\\), \\(\\angle BAC = 46^\\circ\\) and \\(\\angle B = 56^\\circ\\). In the second field, \\(\\triangle ACD\\), a lane \\(AD = 20\\text{ m}\\) meets the diagonal at \\(\\angle DAC = 54^\\circ\\). A culvert is to run along \\(CD\\). How long is the culvert, to one decimal place, in m? || MC:17.9 m",
+    "Two points M and N are \\(95\\text{ m}\\) apart on a straight road, and a tower T stands off the road. Inside the triangle, the angle at M is \\(38^\\circ\\). At N, the road continues straight past N, and the angle between that extension and the line from N to the tower is \\(67^\\circ\\). Which first step is correct for finding the distance from N to the tower? || MC:Use \\(180^\\circ - 67^\\circ = 113^\\circ\\) as the angle at N inside the triangle, then apply the sine law",
+    "In \\(\\triangle ABC\\), \\(\\angle A = 51^\\circ\\), \\(\\angle B = 71^\\circ\\), and side \\(a = 24\\text{ cm}\\) (the side opposite \\(\\angle A\\)). What is the length of side \\(b\\), in cm? || MC:29.2",
+    "In the diagram of \\(\\triangle ABC\\), \\(\\angle A = 55^\\circ\\), \\(\\angle B = 45^\\circ\\) and side \\(c = 23\\text{ m}\\). Side \\(a\\) and \\(\\angle C\\) are both marked ?. Which plan finds both marked unknowns, in a workable order? || MC:First find \\(\\angle C\\) with the angle sum, then use the sine law with side \\(c\\) and its opposite angle to find side \\(a\\)",
+    "A triangle is drawn from an angle of \\(43^\\circ\\), the side opposite it, \\(10\\text{ cm}\\), and another side, \\(13\\text{ cm}\\). Which statement about starting this problem is correct? || MC:The sine law can start, because the \\(43^\\circ\\) angle and its opposite \\(10\\text{ cm}\\) side form a complete pair, but the angle it gives must be checked against the diagram since its supplement has the same sine; the cosine law cannot start here",
+    "A harbour chain is surveyed in two triangles that share the side \\(AC\\). In \\(\\triangle ABC\\), \\(A\\) is the harbour entrance, \\(B\\) is a beacon \\(57\\text{ m}\\) from the entrance, \\(\\angle BAC = 40^\\circ\\) and \\(\\angle B = 74^\\circ\\). In \\(\\triangle ACD\\), \\(D\\) is a lighthouse, \\(AD = 36\\text{ m}\\) and \\(\\angle DAC = 56^\\circ\\). What is the distance \\(CD\\) from the pier point \\(C\\) to the lighthouse, to one decimal place, in m? || MC:49.8 m",
+    "Two ships are \\(9\\text{ km}\\) and \\(12\\text{ km}\\) from a lighthouse, and the ships are \\(12.3\\text{ km}\\) apart. Find the angle at the lighthouse between the lines to the two ships, to the nearest degree. || NUM:70",
+    "A triangular meadow is modelled by \\(\\triangle ABC\\) in the diagram, where \\(\\angle A = 30^\\circ\\), side \\(a = 23.1\\text{ m}\\) (opposite \\(\\angle A\\)) and side \\(b = 40\\text{ m}\\). Find \\(\\angle B\\), to the nearest degree. || NUM:60",
+    "In the diagram, \\(A\\) is a harbour, \\(B\\) is a beacon, \\(C\\) is a first island and \\(D\\) is a second island. The beacon is \\(117\\text{ m}\\) from the harbour. In \\(\\triangle ABC\\), \\(\\angle BAC = 52^\\circ\\) and \\(\\angle B = 62^\\circ\\). In \\(\\triangle ACD\\), the harbour is \\(90\\text{ m}\\) from the second island and \\(\\angle DAC = 54^\\circ\\). Find the distance \\(CD\\) between the two islands, to one decimal place, in m. || NUM:94.5",
+    "Two boats leave the same dock at the same time. One travels at 440 km/h and the other at 360 km/h, each in a straight line. After 1.5 h they are 546 km apart. Find the angle between their paths, to the nearest degree. || NUM:53",
+    "A quadrilateral plot \\(ABCD\\) is split by the diagonal \\(AC\\). In \\(\\triangle ABC\\), \\(AB = 19\\text{ m}\\), \\(BC = 21\\text{ m}\\) and \\(\\angle B = 60^\\circ\\). In \\(\\triangle ACD\\), \\(\\angle DAC = 42^\\circ\\) and \\(\\angle D = 64^\\circ\\). Find the perimeter of the quadrilateral, to one decimal place, in m. || NUM:76.4"
    ]
   }
  }
