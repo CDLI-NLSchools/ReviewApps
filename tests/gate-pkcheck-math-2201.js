@@ -71,7 +71,7 @@ run('var __PK=true; function pkIncluded(){return __PK;} function enrichIncluded(
 run('var PKONLY_DRAW=false;');
 run('function __reseed(n){var s=n>>>0; Math.random=function(){s|=0;s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}');
 
-const POOL_SIZES = { 1: 41, 2: 14, 3: 7, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). Unit 2 amended Nov 18, 2026: the Unit 2 expansion took its PK pool from 8 to 14 (6 authored entries added). */
+const POOL_SIZES = { 1: 41, 2: 14, 3: 11, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). Unit 2 amended Nov 18, 2026: the Unit 2 expansion took its PK pool from 8 to 14 (6 authored entries added). Unit 3 amended Nov 18, 2026: the Unit 3 expansion took its PK pool from 7 to 11 (4 authored entries added, one per borrowed skill group), so the Unit 3 check now deals 8 questions from 11 entries and its polynomial-multiply and radicals groups hold two entries each; the assertions below that pinned the old single-entry groups and the 7-question deal are amended in the same pass. */
 function checkDraw(unit, inds, seed) {
   run("__reseed(" + seed + ");");
   return run("(function(){var r=drawSet([" + unit + "]," + JSON.stringify(inds) + ",8,[20,60,20],'unit',false);"
@@ -103,13 +103,13 @@ for (let u = 1; u <= 8; u++) {
 run("__PK=false;");
 {
   const r = checkDraw(3, [], 99);
-  ok(r.allPk && r.n === 7 && r.pool === 7, "precedence: with pkin=0 the Unit 3 check still deals its 7 prior knowledge questions");
+  ok(r.allPk && r.n === 8 && r.pool === 11, "precedence: with pkin=0 the Unit 3 check still deals 8 questions from its 11-entry prior knowledge pool");
 }
 run("__PK=true;");
 /* pkonly bypasses indicator filtering carried on a link */
 {
   const r = checkDraw(3, ["4.3"], 99);
-  ok(r.allPk && r.n === 7 && JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(3)),
+  ok(r.allPk && r.n === 8 && JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(3)),
      "precedence: a pkonly draw carrying indicator parameters still deals the full stratified Unit 3 check");
 }
 /* a seeded pkonly link redraws the identical set */
@@ -136,9 +136,9 @@ function retryDraw(unit, groups, seed, n) {
 }
 for (const seed of [11, 99, 424242, 7, 2026]) {
   const r = retryDraw(3, ["polynomial-multiply"], seed);
-  ok(r.n === 8 && r.pool === 1, "retry u3 seed " + seed + ": one missed group deals the full retry size of 8 from its single entry, saw n=" + r.n + " pool=" + r.pool);
-  ok(r.groups.every((g) => g === "polynomial-multiply") && r.ids.every((id) => id === "u3-pk-binom-tri-expand"),
-     "retry u3 seed " + seed + ": every retry question is from the missed group only");
+  ok(r.n === 8 && r.pool === 2, "retry u3 seed " + seed + ": one missed group deals the full retry size of 8 from its two entries, saw n=" + r.n + " pool=" + r.pool);
+  ok(r.groups.every((g) => g === "polynomial-multiply") && r.ids.every((id) => id === "u3-pk-binom-tri-expand" || id === "u3-pk-expand-square"),
+     "retry u3 seed " + seed + ": every retry question is from the missed group only (either of its two entries)");
   ok(r.l3 === 0, "retry u3 seed " + seed + ": no Level 3 question in the polynomial retry");
 }
 {
@@ -188,7 +188,7 @@ for (const seed of [11, 99, 424242, 7, 2026]) {
 }
 {
   const r = retryDraw(3, null, 99);
-  ok(r.n === 7 && JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(3)),
+  ok(r.n === 8 && JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(3)),
      "retry: with no group restriction the pkonly draw is the ordinary full check");
 }
 /* sheets and exams ignore pkonly, even with the flag fraudulently
@@ -338,11 +338,11 @@ function answerAllEnd(d, missSpec) {
   /* ===== a student pkonly link deals the check ===== */
   const shared = {};
   let d = await boot("course=math-2201&unit=3&pkonly=1&seed=pkc1&count=8", shared);
-  ok(ev(d, "current ? current.length : 0") === 7, "link: the Unit 3 pkonly link deals 7 questions");
+  ok(ev(d, "current ? current.length : 0") === 8, "link: the Unit 3 pkonly link deals 8 questions");
   ok(ev(d, "current.every(function(q){return isPK(q._entry);})") === true, "link: every question on the pkonly set is a prior knowledge entry");
   ok(ev(d, "settings().pkOnly") === true, "link: settings carry pkOnly from the pkonly=1 parameter");
   ok(ev(d, "settingsToURL()").includes("pkonly=1"), "link: the set's own link keeps pkonly=1");
-  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 3: 7 questions",
+  ok(ev(d, "document.getElementById('poolInfo').textContent") === "Prerequisite check pool for Unit 3: 11 questions",
      "link: the pool line reads as a prerequisite check pool, saw: " + ev(d, "document.getElementById('poolInfo').textContent"));
   ok(ev(d, "!!document.getElementById('pkCheckBtn') && document.getElementById('pkCheckBtn').hidden") === true,
      "visibility: a student opening a pkonly link does not see the Advanced tools action");
@@ -407,7 +407,7 @@ function answerAllEnd(d, missSpec) {
      "visibility: teacher mode with one unit selected shows Start prerequisite check");
   ev(d, `document.getElementById("pkCheckBtn").click()`);
   await sleep(300);
-  ok(ev(d, "settings().pkOnly") === true && ev(d, "current.length") === 7 && ev(d, "current.every(function(q){return isPK(q._entry);})") === true,
+  ok(ev(d, "settings().pkOnly") === true && ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return isPK(q._entry);})") === true,
      "action: clicking Start prerequisite check deals the Unit 3 check");
   ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
      "panel: the check dealt by the Advanced tools action also renders with no refpanel markup");
@@ -441,8 +441,8 @@ function answerAllEnd(d, missSpec) {
   ok(ev(d, "current.length") === 8, "retry: the retry set deals the check size of 8, saw " + ev(d, "current.length"));
   ok(ev(d, "current.every(function(q){return pkGroupOf(q._entry)==='polynomial-multiply';})") === true,
      "retry: every retry question comes from the missed group");
-  ok(ev(d, "current.every(function(q){return q._entry.id==='u3-pk-binom-tri-expand';})") === true,
-     "retry: no mastered-group entry appears in the retry set");
+  ok(ev(d, "current.every(function(q){return q._entry.id==='u3-pk-binom-tri-expand'||q._entry.id==='u3-pk-expand-square';})") === true,
+     "retry: no mastered-group entry appears in the retry set (the missed group deals its two entries as fresh instances)");
   ok(ev(d, "settings().pkOnly") === true && ev(d, "settingsToURL()").includes("pkonly=1"),
      "retry: the retry set is itself a check set and its link keeps pkonly=1");
   ok(!d.window.document.getElementById("session").innerHTML.includes("refpanel"),
@@ -470,8 +470,8 @@ function answerAllEnd(d, missSpec) {
   answerAll(d, { group: "radicals" });
   ev(d, `document.getElementById("retryMissedBtn").click()`);
   await sleep(300);
-  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-radical-mixed';})") === true,
-     "retry: missing radicals on another seed deals only radical questions (8 fresh instances)");
+  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-radical-mixed'||q._entry.id==='u3-pk-radical-coefficient';})") === true,
+     "retry: missing radicals on another seed deals only radical questions (8 fresh instances of the group's two entries)");
   d.window.close();
 
   /* ===== retry checking mode: an end-mode check retries as-you-go =====
@@ -524,7 +524,7 @@ function answerAllEnd(d, missSpec) {
   ev(d, `document.getElementById("retryMissedBtn").click()`);
   await sleep(300);
   ok(ev(d, "checkMode") === "end", "retry mode (keep): the retry keeps check-at-the-end, saw " + ev(d, "checkMode"));
-  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-binom-tri-expand';})") === true,
+  ok(ev(d, "current.length") === 8 && ev(d, "current.every(function(q){return q._entry.id==='u3-pk-binom-tri-expand'||q._entry.id==='u3-pk-expand-square';})") === true,
      "retry mode (keep): the kept retry is still group-keyed (8 questions, missed group only)");
   ok(d.window.document.querySelectorAll("[data-ex]").length === 0,
      "retry mode (keep): the kept end-mode retry defers worked examples until grading (scaffold composition)");
