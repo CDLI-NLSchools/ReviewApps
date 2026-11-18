@@ -31,6 +31,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - Fixed a Math 3208 Unit 1 question on evaluating a composite function where the second function printed as plain text instead of math notation, with a stray symbol after the first function. The question and its answer are unchanged; it now displays in full math notation.
 - Fixed five Math 2200 Unit 4 solutions (converting radicals between entire and mixed form, simplifying radicals with operations, and rationalizing denominators) where a stray symbol printed after the final answer. The questions and their answers are unchanged; the solutions now display cleanly.
 - Fixed the printed set code block not appearing on practice sheets and exams printed the ordinary way. The block (set code, QR code and the line explaining it) was only added for sets built in the advanced tools view, so a sheet or exam made the ordinary way printed with no code at all. It now appears on every printed sheet and exam with the option on, whichever way the set was made, and a set built from a seed word prints the same code every time it is opened.
+- Fixed diagrams and photos going missing from downloaded Word files. A practice sheet or exam downloaded as a Word file now carries every diagram and photo from the set, at the size it appears in the app and rendered sharply for print. Before, the Word file held the words and equations only, and the pictures had to be copied over by hand.
 
 ## v1.2.0 - 2026-11-15
 

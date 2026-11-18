@@ -614,13 +614,23 @@ rep('  if(p.get("key")==="0")$("keyChk").checked=false;',
     '  if(p.get("scode")==="0"&&$("codeChk"))$("codeChk").checked=false;', count=1)
 # The code block leads the first page of the exam paper and of the
 # practice sheet, ahead of the title, so the floated block reserves
-# its height and the content wraps beside it.
+# its height and the content wraps beside it. Each render passes its
+# view ("exam" or "sheet"): the block freezes the printed set itself
+# and must not depend on the Advanced tools context, which ordinary
+# print runs do not have (fix, Nov 18, 2026; see printcode.js.txt).
 rep("  paper+='<h1 style=\"font-size:1.3rem;\">'+title+'</h1>",
-    "  paper+=tPrintCodeBlock();\n"
+    "  paper+=tPrintCodeBlock(\"exam\");\n"
     "  paper+='<h1 style=\"font-size:1.3rem;\">'+title+'</h1>", count=1)
 rep('  html+=\'<h1 style="font-size:1.3rem;">\'+"Math 2201: Practice Sheet"+\'</h1>',
-    '  html+=tPrintCodeBlock();\n'
+    '  html+=tPrintCodeBlock("sheet");\n'
     '  html+=\'<h1 style="font-size:1.3rem;">\'+"Math 2201: Practice Sheet"+\'</h1>', count=1)
+# An ordinary (non Advanced tools) sheet or exam freezes for its code
+# block where the set is made, at the end of startSheet and startExam,
+# after the option shuffle so the frozen slots are the printed ones.
+rep('  if(!TEACHER&&SHUFFLE_OPTS)sheetState.items=sheetState.items.map(shufQ);\n  renderSheet();',
+    '  if(!TEACHER&&SHUFFLE_OPTS)sheetState.items=sheetState.items.map(shufQ);\n  tPrintFreezeStart("sheet");\n  renderSheet();', count=1)
+rep('  if(!TEACHER&&SHUFFLE_OPTS){ex.srItems.forEach(function(it){it.q=shufQ(it.q);});ex.crItems.forEach(function(it){it.q=shufQ(it.q);});}\n  renderExam();',
+    '  if(!TEACHER&&SHUFFLE_OPTS){ex.srItems.forEach(function(it){it.q=shufQ(it.q);});ex.crItems.forEach(function(it){it.q=shufQ(it.q);});}\n  tPrintFreezeStart("exam");\n  renderExam();', count=1)
 # Set file names (Nov 18, 2026, Jason's addition): a rendered sheet
 # or exam names its files (course, kind, scope, and the set code
 # when one was minted for this exact set) through document.title,
@@ -2098,6 +2108,238 @@ rep('$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;start
     '$("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;hidCtl.pkGroups=null;startOnline();});', count=1)  # grp: ordinary practice clears the stash (Nov 16, 2026)
 rep('b.addEventListener("click",function(){\n  hidCtl.pkOnly=true;',
     'b.addEventListener("click",function(){\n  hidCtl.pkOnly=true;hidCtl.pkGroups=null;', count=1)  # grp: the check action deals the full check (Nov 16, 2026)
+
+# ---------- Word (.docx) images (Nov 18, 2026) ----------
+# The Word export's walker skipped SVG outright and had no IMG
+# handling, so downloaded Word files dropped every diagram and photo
+# (teacher report through Report a Problem, verified on a Math 2201
+# set). The export now rasterizes each SVG and IMG in the preview to
+# a PNG before the walk (docxPrepareMedia), the walker emits a Word
+# drawing at the node's position (docxImagePara), makeWordDocx packs
+# the PNGs as media parts with image relationships, and
+# downloadWordFile runs the async builder. Long JS blocks ride in raw
+# triple-quoted strings so their escapes survive byte for byte.
+rep(r'''    var tag=dTag(n);
+    if(tag==="SCRIPT"||tag==="STYLE"||tag==="SVG"||tag==="INPUT"||tag==="BUTTON"||tag==="TEXTAREA"||tag==="SELECT")return;
+    if(dHas(n,"wshandle"))return;''',
+    r'''    var tag=dTag(n);
+    if(tag==="SCRIPT"||tag==="STYLE"||tag==="INPUT"||tag==="BUTTON"||tag==="TEXTAREA"||tag==="SELECT")return;
+    if(dHas(n,"wshandle"))return;
+    if(tag==="SVG"||tag==="IMG"){
+      var md=st&&st.mediaByNode?st.mediaByNode.get(n):null;
+      if(md)pushBlock(docxImagePara(md,st));
+      else fb(st,tag==="SVG"?"svg-noimg":"img-noimg");
+      return;
+    }''', count=1)  # Word images: walker takes SVG and IMG (Nov 18, 2026)
+rep('<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>',
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/>', count=1)  # Word images: png content type (Nov 18, 2026)
+rep('xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>',
+    'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>', count=1)  # Word images: drawing namespaces (Nov 18, 2026)
+rep(r'''function makeWordDocx(rootEl,st){
+  var body=docxBodyXml(rootEl,st);
+  var enc=new TextEncoder();
+  return zipStore([
+    {name:"[Content_Types].xml",data:enc.encode(DOCX_CT)},
+    {name:"_rels/.rels",data:enc.encode(DOCX_RELS)},
+    {name:"word/document.xml",data:enc.encode(docxDocumentXml(body))},
+    {name:"word/styles.xml",data:enc.encode(DOCX_STYLES)}
+  ]);
+}''',
+    r'''/* ---- Diagram and photo images in the Word file (Nov 18, 2026) ----
+   Question diagrams are inline SVG in the preview and photos are
+   <img> elements; the walker used to skip both outright, so the Word
+   file carried a question's words and equations but never its
+   picture (teacher report through Report a Problem, verified on a
+   Math 2201 set the same day). Before the walk, docxPrepareMedia
+   rasterizes every SVG and IMG in the preview to a PNG: an SVG is
+   redrawn from its vector source at DOCX_IMG_SCALE times its display
+   size so it stays sharp in print, and a photo is taken at up to the
+   same scale from its natural pixels. The walker emits a Word
+   drawing at the node's own position, sized to its display size,
+   and makeWordDocx packs the PNGs as media parts with matching
+   relationships. An image the browser cannot rasterize (a
+   cross-origin photo served without CORS headers taints the canvas;
+   a broken image never finishes loading) is left out and counted in
+   st.fb as svg-noimg or img-noimg instead of failing the export. */
+var DOCX_IMG_SCALE=3,DOCX_MAXW=672;
+function docxNodeSize(n){
+  var w=0,h=0;
+  try{var r=n.getBoundingClientRect?n.getBoundingClientRect():null;if(r&&r.width>0&&r.height>0){w=r.width;h=r.height;}}catch(e){}
+  if(!(w>0&&h>0)){
+    var aw=parseFloat(n.getAttribute?n.getAttribute("width"):null),ah=parseFloat(n.getAttribute?n.getAttribute("height"):null);
+    if(aw>0&&ah>0){w=aw;h=ah;}
+  }
+  if(!(w>0&&h>0)&&dTag(n)==="SVG"){
+    var vb=((n.getAttribute?n.getAttribute("viewBox"):null)||"").split(/[\s,]+/).map(parseFloat);
+    if(vb.length===4&&vb[2]>0&&vb[3]>0){w=vb[2];h=vb[3];}
+  }
+  if(!(w>0&&h>0)&&dTag(n)==="IMG"){
+    var nw=n.naturalWidth||0,nh=n.naturalHeight||0;
+    if(nw>0&&nh>0){w=Math.min(nw,DOCX_MAXW);h=nh*(w/nw);}
+  }
+  if(!(w>0)||!(h>0)){w=480;h=300;}
+  if(w>DOCX_MAXW){h=h*DOCX_MAXW/w;w=DOCX_MAXW;}
+  return {w:Math.max(1,Math.round(w)),h:Math.max(1,Math.round(h))};
+}
+function docxRasterizeSvgNode(n,w,h){
+  return new Promise(function(resolve){
+    try{
+      var txt=new XMLSerializer().serializeToString(n),head=txt.slice(0,txt.indexOf(">")+1);
+      if(head.indexOf("xmlns=")<0)txt=txt.replace(/<svg/,'<svg xmlns="http://www.w3.org/2000/svg"');
+      if(!/\swidth=/.test(head))txt=txt.replace(/<svg/,'<svg width="'+w+'" height="'+h+'"');
+      if(head.indexOf("font-family")<0)txt=txt.replace(/<svg/,'<svg font-family="Arial, Helvetica, sans-serif"');
+      var url=URL.createObjectURL(new Blob([txt],{type:"image/svg+xml;charset=utf-8"}));
+      var img=new Image();
+      img.onload=function(){
+        try{
+          var c=document.createElement("canvas");
+          c.width=Math.max(1,Math.round(w*DOCX_IMG_SCALE));c.height=Math.max(1,Math.round(h*DOCX_IMG_SCALE));
+          var g=c.getContext("2d");
+          g.fillStyle="#ffffff";g.fillRect(0,0,c.width,c.height);
+          g.drawImage(img,0,0,c.width,c.height);
+          URL.revokeObjectURL(url);
+          c.toBlob(function(b){
+            if(!b){resolve(null);return;}
+            b.arrayBuffer().then(function(ab){resolve(new Uint8Array(ab));},function(){resolve(null);});
+          },"image/png");
+        }catch(e){resolve(null);}
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);resolve(null);};
+      img.src=url;
+    }catch(e){resolve(null);}
+  });
+}
+function docxRasterizeImgNode(n,w,h){
+  return new Promise(function(resolve){
+    var src=n.getAttribute?n.getAttribute("src"):null;
+    if(!src){resolve(null);return;}
+    try{
+      var img=new Image(),done=false;
+      var timer=setTimeout(function(){if(!done){done=true;resolve(null);}},8000);
+      img.onload=function(){
+        if(done)return;done=true;clearTimeout(timer);
+        try{
+          var nw=img.naturalWidth||0,nh=img.naturalHeight||0;
+          if(!(nw>0&&nh>0)){resolve(null);return;}
+          var scale=Math.min(1,(w*DOCX_IMG_SCALE)/nw);
+          var c=document.createElement("canvas");
+          c.width=Math.max(1,Math.round(nw*scale));c.height=Math.max(1,Math.round(nh*scale));
+          var g=c.getContext("2d");
+          if(/\.svg($|\?)/i.test(src)){g.fillStyle="#ffffff";g.fillRect(0,0,c.width,c.height);}
+          g.drawImage(img,0,0,c.width,c.height);
+          c.toBlob(function(b){
+            if(!b){resolve(null);return;}
+            b.arrayBuffer().then(function(ab){resolve(new Uint8Array(ab));},function(){resolve(null);});
+          },"image/png");
+        }catch(e){resolve(null);}
+      };
+      img.onerror=function(){if(!done){done=true;clearTimeout(timer);resolve(null);}};
+      img.src=src;
+    }catch(e){resolve(null);}
+  });
+}
+function docxConvertNode(n){
+  var sz=docxNodeSize(n);
+  var p=dTag(n)==="SVG"?docxRasterizeSvgNode(n,sz.w,sz.h):docxRasterizeImgNode(n,sz.w,sz.h);
+  return p.then(function(bytes){
+    if(!bytes)return null;
+    return {bytes:bytes,cx:Math.round(sz.w*9525),cy:Math.round(sz.h*9525)};
+  });
+}
+function docxPrepareMedia(rootEl,st){
+  st.mediaByNode=new Map();st.mediaOut=[];
+  var nodes=[];
+  (function scan(n){
+    if(!n||n.nodeType!==1)return;
+    var t=dTag(n);
+    if(t==="SVG"||t==="IMG")nodes.push(n);
+    nKids(n).forEach(scan);
+  })(rootEl);
+  var chain=Promise.resolve();
+  nodes.forEach(function(n){
+    chain=chain.then(function(){
+      return docxConvertNode(n).then(function(m){if(m)st.mediaByNode.set(n,m);});
+    });
+  });
+  return chain.then(function(){return st;});
+}
+function docxImagePara(m,st){
+  if(!st.mediaOut)st.mediaOut=[];
+  st.mediaOut.push(m);
+  var idx=st.mediaOut.length,rid="rIdImg"+idx;
+  return '<w:p><w:pPr><w:spacing w:before="60" w:after="60"/></w:pPr><w:r><w:drawing>'
+    +'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="'+m.cx+'" cy="'+m.cy+'"/>'
+    +'<wp:effectExtent l="0" t="0" r="0" b="0"/><wp:docPr id="'+idx+'" name="Image '+idx+'"/>'
+    +'<wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr>'
+    +'<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+    +'<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="image'+idx+'.png"/><pic:cNvPicPr/></pic:nvPicPr>'
+    +'<pic:blipFill><a:blip r:embed="'+rid+'"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+    +'<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="'+m.cx+'" cy="'+m.cy+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr>'
+    +'</pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>';
+}
+function makeWordDocxAsync(rootEl){
+  var st={fb:{}};
+  return docxPrepareMedia(rootEl,st).then(function(){return makeWordDocx(rootEl,st);});
+}
+function makeWordDocx(rootEl,st){
+  st=st||{fb:{}};
+  var body=docxBodyXml(rootEl,st);
+  var enc=new TextEncoder();
+  var files=[
+    {name:"[Content_Types].xml",data:enc.encode(DOCX_CT)},
+    {name:"_rels/.rels",data:enc.encode(DOCX_RELS)},
+    {name:"word/document.xml",data:enc.encode(docxDocumentXml(body))},
+    {name:"word/styles.xml",data:enc.encode(DOCX_STYLES)}
+  ];
+  var media=st.mediaOut||[];
+  if(media.length){
+    var rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
+    media.forEach(function(m,i){
+      rels+='<Relationship Id="rIdImg'+(i+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/image'+(i+1)+'.png"/>';
+    });
+    rels+="</Relationships>";
+    files.push({name:"word/_rels/document.xml.rels",data:enc.encode(rels)});
+    media.forEach(function(m,i){files.push({name:"word/media/image"+(i+1)+".png",data:m.bytes});});
+  }
+  return zipStore(files);
+}''', count=1)  # Word images: rasterizer, walker drawing and media parts (Nov 18, 2026)
+rep(r'''function downloadWordFile(statusEl){
+  var prev=$("sheetPrev");
+  if(!prev)return;
+  var fn=tSetFileName();if(fn)wordName=fn+".docx";
+  try{
+    var bytes=makeWordDocx(prev);
+    var blob=new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement("a");
+    a.href=url;a.download=wordName;
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){if(a.parentNode)a.parentNode.removeChild(a);URL.revokeObjectURL(url);},400);
+    if(statusEl)statusEl.textContent=L9("Word file downloaded (","Fichier Word téléchargé (")+wordName+L9("). Open it in Word: every equation in it is a native Word equation, ready to edit or print.","). Ouvre-le dans Word : chaque équation est une équation Word native, prête à modifier ou à imprimer.");
+  }catch(e){
+    if(statusEl)statusEl.textContent=L9("The Word file could not be built in this browser. You can still edit the sheet here and print it.","Le fichier Word n'a pas pu être créé dans ce navigateur. Tu peux quand même modifier la feuille ici et l'imprimer.");
+  }
+}''',
+    r'''function downloadWordFile(statusEl){
+  var prev=$("sheetPrev");
+  if(!prev)return;
+  var fn=tSetFileName();if(fn)wordName=fn+".docx";
+  makeWordDocxAsync(prev).then(function(bytes){
+    try{
+      var blob=new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement("a");
+      a.href=url;a.download=wordName;
+      document.body.appendChild(a);a.click();
+      setTimeout(function(){if(a.parentNode)a.parentNode.removeChild(a);URL.revokeObjectURL(url);},400);
+      if(statusEl)statusEl.textContent=L9("Word file downloaded (","Fichier Word téléchargé (")+wordName+L9("). Open it in Word: every equation in it is a native Word equation, ready to edit or print.","). Ouvre-le dans Word : chaque équation est une équation Word native, prête à modifier ou à imprimer.");
+    }catch(e){
+      if(statusEl)statusEl.textContent=L9("The Word file could not be built in this browser. You can still edit the sheet here and print it.","Le fichier Word n'a pas pu être créé dans ce navigateur. Tu peux quand même modifier la feuille ici et l'imprimer.");
+    }
+  },function(){
+    if(statusEl)statusEl.textContent=L9("The Word file could not be built in this browser. You can still edit the sheet here and print it.","Le fichier Word n'a pas pu être créé dans ce navigateur. Tu peux quand même modifier la feuille ici et l'imprimer.");
+  });
+}''', count=1)  # Word images: download runs the async builder (Nov 18, 2026)
 
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
