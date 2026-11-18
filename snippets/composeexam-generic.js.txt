@@ -376,6 +376,13 @@ function composeExam(units,inds,includePK){
       if(pmarks!==part.cr)short=true;
       partCR.forEach(function(it){crItems.push(it);});
     });
+    /* Section A reads unit by unit like Section B (Nov 18, 2026):
+       the SR draw above runs level band by level band across the
+       part's whole pool, so without this sort a pooled multi-unit
+       paper interleaves its units. Same items, same counts; only
+       the order changes. The sort is stable, so items sharing a
+       unit and level keep their draw order. */
+    srItems.sort(function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;});
     crItems.sort(function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;});
     var crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
     var l3Marks=crItems.filter(function(it){return it.q._entry.level===3;}).reduce(function(a,it){return a+it.marks;},0);

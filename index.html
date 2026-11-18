@@ -241,12 +241,23 @@
   html[data-a11y-theme="dark"] details#builderBox>summary,html[data-a11y-theme="dark"] details#a11yBox>summary{background:var(--card);border-color:var(--line);}
   html[data-a11y-theme="dark"] input,html[data-a11y-theme="dark"] select,html[data-a11y-theme="dark"] textarea{background:#222e35;color:var(--ink);border-color:var(--line);}
   html[data-a11y-theme="dark"] :focus-visible{outline-color:#ffd166;}
+  /* Figure plate (Nov 18, 2026): question figures are inline SVGs drawn
+     with a fixed dark ink (FIG_INK, #17352a) chosen for white paper, so
+     in dark mode they sit at near-zero contrast on the dark card and
+     effectively vanish, while pale gridlines survive. In dark mode
+     only, every figure sits on a light plate so the SVG renders
+     exactly as authored. Paper surfaces are excluded: the sheet
+     preview is already white, and the print block below resets the
+     plate, so printed sheets and exams stay exactly as they are. */
+  html[data-a11y-theme="dark"] .fig{background:#f7f5ef;padding:10px 12px;border-radius:10px;}
+  html[data-a11y-theme="dark"] .sheetPrev .fig{background:transparent;padding:0;border-radius:0;}
   /* Print safety: whatever the screen settings, paper gets the standard
      palette and font. (!important and the repeated attribute selectors
      keep these ahead of the screen rules above in the print cascade.) */
   @media print{
     html[data-a11y-theme="dark"]{--ink:#1c2b33 !important;--bg:#ffffff !important;--card:#ffffff !important;--line:#d8d2c4 !important;--good:#15803d !important;--bad:#b91c1c !important;}
     html[data-a11y-font="reading"] body{font-family:Verdana,Geneva,sans-serif !important;}
+    html[data-a11y-theme="dark"] .fig{background:transparent !important;padding:0 !important;border-radius:0 !important;}
   }
 </style>
 <link rel="stylesheet" href="katex/katex.min.css">
@@ -6165,6 +6176,13 @@ function composeExam(units,inds,includePK){
       if(pmarks!==part.cr)short=true;
       partCR.forEach(function(it){crItems.push(it);});
     });
+    /* Section A reads unit by unit like Section B (Nov 18, 2026):
+       the SR draw above runs level band by level band across the
+       part's whole pool, so without this sort a pooled multi-unit
+       paper interleaves its units. Same items, same counts; only
+       the order changes. The sort is stable, so items sharing a
+       unit and level keep their draw order. */
+    srItems.sort(function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;});
     crItems.sort(function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;});
     var crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
     var l3Marks=crItems.filter(function(it){return it.q._entry.level===3;}).reduce(function(a,it){return a+it.marks;},0);
