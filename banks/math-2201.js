@@ -2436,6 +2436,265 @@ E("u5-ci-infer-mean",5,["8.19"],2,"gen",function(){
     {ctx:ctx,mu:mu,moe:moe});
 });
 
+/* ============ External drafting redraft tranche (November 18, 2026) ============
+   Five entries from the redraft of the ten Unit 5 entries rejected in
+   the first external drafting tranche: drafted externally (Gemini)
+   under the External Authoring Pack, version 2, against the redraft
+   sheet of November 18, 2026, and integrated after the redraft intake
+   sweep (3,000 draws per entry, every key recomputed independently
+   from the dealt parameters, the distractor length scan and the bank
+   overlap check; Intake-Report-Math-2201-Unit-5-Redraft-2026-11-18,
+   review apps goal files). Each of the five carries intake repairs of
+   format or deal class, listed in the intake report. Five redraft
+   entries were rejected at intake (u5-sd-transform, u5-sd-decision-gen,
+   u5-sd-overflow, u5-ci-significance-gen and u5-media-position).
+   u5-ci-significance is integrated on Jason's ruling of November 18,
+   2026: in its fourth variant the key is the uniquely shortest option
+   by a margin of exactly one character, the profile disclosed in the
+   intake report, accepted under the same one-character margin standard
+   as the disclosed generator profiles in this tranche. */
+
+E("u5-normal-statements",5,["8.11"],1,"gen",function(){
+  var propIdx = ri(0, 3);
+  var ctx = ri(0, 2);
+  var mu, sd, subj, unit, intro;
+  if (ctx === 0) {
+    mu = ri(162, 178);
+    sd = ri(5, 9);
+    subj = "adult heights";
+    unit = "cm";
+    intro = "The heights of adults in a large group are normally distributed with a mean of \\("+(mu)+"\\) cm and a standard deviation of \\("+(sd)+"\\) cm.";
+  } else if (ctx === 1) {
+    mu = ri(48, 64);
+    sd = ri(4, 8);
+    subj = "race finishing times";
+    unit = "minutes";
+    intro = "The finishing times for a community 10 km race are normally distributed with a mean of \\("+(mu)+"\\) minutes and a standard deviation of \\("+(sd)+"\\) minutes.";
+  } else {
+    mu = ri(495, 510);
+    sd = ri(6, 12);
+    subj = "cereal box masses";
+    unit = "grams";
+    intro = "The masses of cereal boxes filled on a packaging line are normally distributed with a mean of \\("+(mu)+"\\) grams and a standard deviation of \\("+(sd)+"\\) grams.";
+  }
+  var key, distractors, explanation;
+  if (propIdx === 0) {
+    key = "The normal curve is symmetric on either side of the mean of \\("+(mu)+"\\) "+(unit)+".";
+    distractors = [
+      "The normal curve is skewed to the right of the mean of \\("+(mu)+"\\) "+(unit)+".",
+      "The normal curve is symmetric on either side of the value \\("+(mu + sd)+"\\) "+(unit)+".",
+      "The normal curve is flatter on the left side of the mean of \\("+(mu)+"\\) "+(unit)+"."
+    ];
+    explanation = "A normal distribution curve is bell-shaped and symmetric about its mean of \\("+(mu)+"\\) "+(unit)+".";
+  } else if (propIdx === 1) {
+    key = "The median of the "+(subj)+" is equal to the mean of \\("+(mu)+"\\) "+(unit)+".";
+    distractors = [
+      "The median of the "+(subj)+" sits above the mean at \\("+(mu + sd)+"\\) "+(unit)+".",
+      "The median of the "+(subj)+" sits below the mean at \\("+(mu - sd)+"\\) "+(unit)+".",
+      "The median of the "+(subj)+" is twice the mean at \\("+(2 * mu)+"\\) "+(unit)+"."
+    ];
+    explanation = "In a normal distribution, the mean, median, and mode are all equal at \\("+(mu)+"\\) "+(unit)+".";
+  } else if (propIdx === 2) {
+    key = "The highest point of the normal curve sits directly above \\("+(mu)+"\\) "+(unit)+".";
+    distractors = [
+      "The highest point of the normal curve sits directly above \\("+(mu + sd)+"\\) "+(unit)+".",
+      "The highest point of the normal curve sits directly above \\("+(mu - sd)+"\\) "+(unit)+".",
+      "The highest point of the normal curve sits directly above \\("+(mu + 2 * sd)+"\\) "+(unit)+"."
+    ];
+    explanation = "The peak (mode) of a normal curve occurs at the mean of \\("+(mu)+"\\) "+(unit)+".";
+  } else {
+    key = "Exactly half of the "+(subj)+" lie below the mean of \\("+(mu)+"\\) "+(unit)+".";
+    distractors = [
+      "Exactly two-thirds of the "+(subj)+" lie below the mean of \\("+(mu)+"\\) "+(unit)+".",
+      "Nearly all of the "+(subj)+" lie below the mean of \\("+(mu)+"\\) "+(unit)+".",
+      "About one-quarter of the "+(subj)+" lie below the mean of \\("+(mu)+"\\) "+(unit)+"."
+    ];
+    explanation = "Because a normal distribution is symmetric about its mean of \\("+(mu)+"\\) "+(unit)+", 50% (half) of the values lie below the mean.";
+  }
+  return mcq(
+    (intro)+" Which statement about this distribution is true?",
+    key,
+    distractors,
+    (explanation)+" <b>"+(key)+"</b>",
+    {propIdx:propIdx,ctx:ctx,mu:mu,sd:sd,key:key}
+  );
+});
+
+E("u5-isnormal-context",5,["8.12"],2,"var",varset([
+  function(){return mcq(
+    "Which of the following data sets would NOT be expected to approximate a normal distribution?",
+    "The number of siblings of each student in a school, where most values are 0, 1, or 2.",
+    [
+      "The heights of 500 grade 11 students measured to the nearest tenth of a centimetre.",
+      "The masses of 400 apples harvested from the same orchard during the autumn picking season.",
+      "The finishing times of 350 runners who completed a local 10 km community road race."
+    ],
+    "Continuous biological and physical measurements such as heights, masses, and race times typically cluster symmetrically around a central mean, whereas sibling counts are discrete and right-skewed at 0, 1, and 2. <b>The number of siblings of each student in a school, where most values are 0, 1, or 2.</b>",
+    { variant: 1, key: "The number of siblings of each student in a school, where most values are 0, 1, or 2." });},
+  function(){return mcq(
+    "A large data set has a mean of 74 and a median of 58. What does this difference suggest about the shape of the distribution?",
+    "It is right-skewed rather than normal, because high outliers pull the mean above the median.",
+    [
+      "It is approximately normal, because both the mean and median are large positive whole numbers.",
+      "It is left-skewed rather than normal, because low outliers pull the median far below the mean.",
+      "It is symmetric and bell-shaped, because a normal distribution always has mean above median."
+    ],
+    "In a normal distribution, the mean and median are approximately equal. Having a mean of 74 noticeably higher than the median of 58 indicates a tail of high values pulling the mean upward. <b>It is right-skewed rather than normal, because high outliers pull the mean above the median.</b>",
+    { variant: 2, mean: 74, median: 58, key: "It is right-skewed rather than normal, because high outliers pull the mean above the median." });},
+  function(){return mcq(
+    "A histogram of 300 randomly generated digits from 0 to 9 is roughly symmetric around 4.5, but its bars have nearly the same height across the entire range with no central peak. Should this distribution be modelled as normal?",
+    "No, because it is flat across its range instead of peaking in the middle and tapering at the tails.",
+    [
+      "Yes, because any histogram that is symmetric around its vertical centre line is approximately normal.",
+      "Yes, because a sample of 300 random digits is large enough to guarantee a normal distribution shape.",
+      "No, because a normal distribution must have taller bars at both outer ends than in the middle peak."
+    ],
+    "Symmetry alone is not enough for normality; a uniform distribution is flat across its range rather than bell-shaped with a single central peak and tapering tails. <b>No, because it is flat across its range instead of peaking in the middle and tapering at the tails.</b>",
+    { variant: 3, n: 300, key: "No, because it is flat across its range instead of peaking in the middle and tapering at the tails." });},
+  function(){return mcq(
+    "Distribution P is symmetric around 50 with a single central peak and tapering tails. Distribution Q is also symmetric around 50, but has two separate peaks at 35 and 65 with a dip at 50. Which distribution is closer to normal?",
+    "Distribution P, because a normal distribution has one central peak rather than two separate humps.",
+    [
+      "Distribution Q, because having two peaks spreads the values evenly across the entire horizontal range.",
+      "Both equally, because both distributions share the exact same centre of symmetry at the value 50.",
+      "Neither one, because a normal distribution cannot be symmetric about a positive whole number."
+    ],
+    "A normal distribution is unimodal (single-peaked) and bell-shaped, matching Distribution P rather than bimodal Distribution Q. <b>Distribution P, because a normal distribution has one central peak rather than two separate humps.</b>",
+    { variant: 4, center: 50, key: "Distribution P, because a normal distribution has one central peak rather than two separate humps." });}
+]));
+
+E("u5-ci-significance",5,["8.17"],2,"var",varset([
+  function(){return mcq(
+    "A town poll reports that 58% of residents support extending library hours, with a margin of error of \\(\\pm 4\\) percentage points. What does the margin of error signify?",
+    "The sample percentage is expected to be within 4 percentage points of the true population percentage.",
+    [
+      "Exactly 4 percent of the town residents who were contacted gave an inaccurate response to the survey.",
+      "Only 4 percent of all eligible adult residents in the town were included in the random survey sample.",
+      "The true population percentage is guaranteed to equal either 54 percent or 62 percent after the poll."
+    ],
+    "The margin of error measures expected random sampling variation around the sample statistic, meaning the true population support is plausibly within 4 percentage points of 58%. <b>The sample percentage is expected to be within 4 percentage points of the true population percentage.</b>",
+    { variant: 1, pct: 58, moe: 4, key: "The sample percentage is expected to be within 4 percentage points of the true population percentage." });},
+  function(){return mcq(
+    "A survey reports a 95% confidence interval of 46% to 54% for support of a new bike lane, rather than only the single estimate of 50%. What does the interval tell a reader that the single percent alone does not?",
+    "The interval shows the range of plausible population values that account for sampling variability.",
+    [
+      "The interval proves that every subgroup in the town had support between 46 percent and 54 percent.",
+      "The interval removes all bias caused by poorly worded questions or non-response in the sample.",
+      "The interval guarantees that 50 percent of the population will never change its opinion over time."
+    ],
+    "A single sample percentage gives only a point estimate, whereas a confidence interval communicates the precision of that estimate by bounding plausible population values. <b>The interval shows the range of plausible population values that account for sampling variability.</b>",
+    { variant: 2, lo: 46, hi: 54, key: "The interval shows the range of plausible population values that account for sampling variability." });},
+  function(){return mcq(
+    "Two polls estimate support for a new transit pass at the 95% confidence level. Poll A reports an interval from 51% to 57%, while Poll B reports an interval from 44% to 64%. What does Poll B's much wider interval signify?",
+    "Poll B's estimate has a larger margin of error and less precision than Poll A's estimate.",
+    [
+      "Poll B surveyed a much larger number of residents than Poll A did across the municipality.",
+      "Poll B is more certain to capture the true population support than Poll A is at 95%.",
+      "Poll B proves that public opinion shifted by 20 percentage points while the poll ran."
+    ],
+    "Poll A has a margin of error of \\(\\pm 3\\%\\) while Poll B has a margin of error of \\(\\pm 10\\%\\); a wider interval at the same confidence level indicates lower precision. <b>Poll B's estimate has a larger margin of error and less precision than Poll A's estimate.</b>",
+    { variant: 3, key: "Poll B's estimate has a larger margin of error and less precision than Poll A's estimate." });},
+  function(){return mcq(
+    "A student council poll states: \"We are 95% confident that between 62% and 68% of students favour a fall spirit week.\" What do the words \"95% confident\" add to the reported interval?",
+    "The sampling method used produces intervals that capture the true population percent 95% of the time.",
+    [
+      "Ninety-five percent of all students enrolled in the school completed and returned the survey form today.",
+      "Ninety-five percent of the surveyed students reported a satisfaction rating between 62% and 68% overall.",
+      "There is a 95 percent probability that next year's survey will produce the exact same interval bounds."
+    ],
+    "The confidence level describes the long-run reliability of the sampling procedure across repeated random samples. <b>The sampling method used produces intervals that capture the true population percent 95% of the time.</b>",
+    { variant: 4, conf: 95, lo: 62, hi: 68, key: "The sampling method used produces intervals that capture the true population percent 95% of the time." });}
+]));
+
+E("u5-media-ratio-claim",5,["8.20"],3,"gen",function(){
+  var mult = Math.random() < 0.5 ? 2 : 3;
+  var word = mult === 2 ? "doubled" : "tripled";
+  var supported = Math.random() < 0.5;
+  var ctx = ri(0, 2);
+  var p1, p2;
+  if (supported) {
+    p1 = mult === 2 ? ri(18, 34) : ri(14, 24);
+    p2 = p1 * mult + ri(0, 4);
+  } else {
+    p1 = mult === 2 ? ri(28, 42) : ri(22, 32);
+    p2 = p1 * mult - ri(6, 12);
+  }
+  var diff = p2 - p1;
+  var target = p1 * mult;
+  var issue = ctx === 0
+    ? "a downtown pedestrian-only street"
+    : ctx === 1
+      ? "a curbside composting program"
+      : "year-round weekend bus service";
+  var key, distractors, explanation;
+  if (supported) {
+    key = "Supported, because "+(p2)+"% is at least "+(mult)+" times the initial "+(p1)+"% ("+(target)+"%).";
+    distractors = [
+      "Not supported, because "+(p2)+"% is below "+(mult)+" times the initial "+(p1)+"% ("+(target)+"%).",
+      "Supported, because "+(p2)+"% exceeds "+(p1)+"% by a gain of "+(diff)+" percentage points.",
+      "Not supported, because "+(p2)+"% fails to reach the "+(target + 10)+"% benchmark needed."
+    ];
+    explanation = "To have "+(word)+", support must reach at least \\("+(mult)+" \\times "+(p1)+"\\% = "+(target)+"\\%\\); since \\("+(p2)+"\\% \\ge "+(target)+"\\%\\), the claim is supported.";
+  } else {
+    key = "Not supported, because "+(p2)+"% is below "+(mult)+" times the initial "+(p1)+"% ("+(target)+"%).";
+    distractors = [
+      "Supported, because "+(p2)+"% is at least "+(mult)+" times the initial "+(p1)+"% ("+(target)+"%).",
+      "Supported, because "+(p2)+"% exceeds "+(p1)+"% by a gain of "+(diff)+" percentage points.",
+      "Not supported, because "+(p2)+"% fails to reach the "+(target - 15)+"% benchmark needed."
+    ];
+    explanation = "To have "+(word)+", support must reach at least \\("+(mult)+" \\times "+(p1)+"\\% = "+(target)+"\\%\\); since \\("+(p2)+"\\% < "+(target)+"\\%\\), the claim is not supported.";
+  }
+  return mcq(
+    "A news headline claims that public support for "+(issue)+" has \""+(word)+"\" over the past year. Two comparable polls show support rose from "+(p1)+"% last year to "+(p2)+"% this year. Is the headline's claim supported by the data?",
+    key,
+    distractors,
+    (explanation)+" <b>"+(key)+"</b>",
+    {mult:mult,supported:supported,ctx:ctx,p1:p1,p2:p2,target:target,key:key}
+  );
+});
+
+E("u5-position-argument",5,["8.22"],3,"gen",function(){
+  var isSupport = Math.random() < 0.5;
+  var justified = Math.random() < 0.5;
+  var ctx = ri(0, 2);
+  var moe = ri(3, 5);
+  var pct = justified ? 50 + moe + ri(2, 7) : 50 + ri(1, moe - 1);
+  var lo = pct - moe;
+  var hi = pct + moe;
+  var n = pick([400, 600, 800, 1000]);
+  var stance = isSupport ? "support" : "oppose";
+  var topic = ctx === 0
+    ? "a new waterfront boardwalk"
+    : ctx === 1
+      ? "a ban on single-use plastic bags"
+      : "extending Sunday transit service";
+  var key, distractors, explanation;
+  if (justified) {
+    key = "The claim is justified, because the interval from "+(lo)+"% to "+(hi)+"% lies entirely above 50%.";
+    distractors = [
+      "The claim is not justified, because the interval from "+(lo)+"% to "+(hi)+"% lies partly below 50%.",
+      "The claim is justified, because surveying "+(n)+" residents is large enough to prove a majority.",
+      "The claim is not justified, because a margin of error of "+(moe)+"% means "+(moe)+"% answered wrongly."
+    ];
+    explanation = "With "+(pct)+"% and a margin of error of \\(\\pm "+(moe)+"\\%\\), the confidence interval is "+(lo)+"% to "+(hi)+"%; because the entire interval exceeds 50%, a majority is supported.";
+  } else {
+    key = "The claim is not justified, because the interval from "+(lo)+"% to "+(hi)+"% lies partly below 50%.";
+    distractors = [
+      "The claim is justified, because the interval from "+(lo)+"% to "+(hi)+"% lies entirely above 50%.",
+      "The claim is justified, because the sample result of "+(pct)+"% lies well above the 50% threshold.",
+      "The claim is not justified, because surveying "+(n)+" residents is too small to measure a majority."
+    ];
+    explanation = "With "+(pct)+"% and a margin of error of \\(\\pm "+(moe)+"\\%\\), the confidence interval is "+(lo)+"% to "+(hi)+"%; because values at or below 50% remain plausible, a majority is not confirmed.";
+  }
+  return mcq(
+    "A council member claims that a majority of residents "+(stance)+" "+(topic)+", citing a poll of "+(n)+" residents in which "+(pct)+"% said they "+(stance)+" it (margin of error \\(\\pm "+(moe)+"\\%\\) at the 95% confidence level). Which argument best evaluates this claim?",
+    key,
+    distractors,
+    (explanation)+" <b>"+(key)+"</b>",
+    {isSupport:isSupport,justified:justified,ctx:ctx,pct:pct,moe:moe,lo:lo,hi:hi,n:n,key:key}
+  );
+});
+
 /* PK tranche pass for Unit 5: flags and accounting properties for
    the five borrowed entries above (the same forEach mechanism as
    the postMid and enrich passes). pkFor is Cluster 5's dependent

@@ -253,7 +253,17 @@ ok(COURSE_IDS.every(id => id === "math-2201" || id === "math-3201" || (flaggedBy
    total to 988. The Math 3201 pool pins move by the same four
    (whole-bank 249 to 253, default pool 246 to 250); the
    PK-off draw pool is unchanged at 205 because the additions
-   are themselves prior knowledge entries. */
+   are themselves prior knowledge entries. Extended again
+   November 18, 2026 for the Math 2201 Unit 5 external
+   drafting redraft tranche: the bank grows by the tranche's
+   5 entries to 510; the tranche carries no prior knowledge
+   or enrichment entries, so the PK pin and the programme
+   total are unchanged, and the Math 2201 pool pins move by
+   the same 5 (whole-bank 505 to 510, default pool 503 to
+   508, PK-off draws 393 to 398, enrichment-on PK-off draws
+   395 to 400, the Unit 5 poolFor fence 65 to 70 and its
+   PK-off draws 55 to 60), recorded in the redraft tranche
+   intake report. */
 const PK_PIN = {
   "math-2201": ["u1-pk-angle-from-legs", "u1-pk-angle-from-value", "u1-pk-depression-distance", "u1-pk-diag-num", "u1-pk-elevation-height", "u1-pk-find-angle", "u1-pk-find-hypotenuse", "u1-pk-find-side", "u1-pk-hypotenuse-pick", "u1-pk-label-sides", "u1-pk-ladder-reach", "u1-pk-leg-num", "u1-pk-opposite-read", "u1-pk-other-angle-ratio", "u1-pk-point-distance", "u1-pk-pythagoras", "u1-pk-ramp-length", "u1-pk-ramp-run", "u1-pk-ratio-decimal", "u1-pk-ratio-def", "u1-pk-ratio-equation", "u1-pk-ratio-from-figure", "u1-pk-ratio-letters", "u1-pk-ratio-unreduced", "u1-pk-right-check", "u1-pk-role-from-diagram", "u1-pk-role-value", "u1-pk-role-words", "u1-pk-rope-angle", "u1-pk-screen-size", "u1-pk-shadow-angle", "u1-pk-shortcut-saving", "u1-pk-slide-angle", "u1-pk-solve-isosceles", "u1-pk-solve-perimeter", "u1-pk-solve-scene", "u1-pk-solve-second-leg", "u1-pk-solve-triangle", "u1-pk-tree-distance", "u1-pk-two-angles-roles", "u1-pk-wire-length", "u2-pk-domain-range", "u2-pk-dr-linear", "u2-pk-dr-segment-graph", "u2-pk-eval-function", "u2-pk-eval-quad", "u2-pk-graph-data", "u2-pk-graph-form", "u2-pk-graph-strategy", "u2-pk-intercepts", "u2-pk-line-equation-from-graph", "u2-pk-line-x-intercept-graph", "u2-pk-scatter-dr", "u2-pk-solve-input", "u2-pk-table-value", "u3-factor-difference", "u3-factor-monic", "u3-factor-nonmonic", "u3-pk-binom-tri-expand", "u3-pk-expand-square", "u3-pk-gcf", "u3-pk-gcf-binomial", "u3-pk-radical-coefficient", "u3-pk-radical-mixed", "u3-pk-solve-brackets", "u3-pk-solve-two-step", "u4-pk-defined", "u4-pk-evaluate-exp", "u4-pk-laws-integral", "u4-pk-laws-rational", "u4-pk-radical-entire", "u4-pk-radical-mixed", "u4-pk-solve-two-step", "u4-pk-which-is-solution", "u5-centre-mean", "u5-centre-mean-missing", "u5-centre-median", "u5-centre-mode", "u5-choosing-measure", "u5-pk-freq-mean", "u5-pk-generalization-critique", "u5-pk-sample-or-population", "u5-pk-sample-scale", "u5-pk-supported-conclusion", "u6-pk-convert-multistep", "u6-pk-rate-of-change", "u6-pk-sa-basic", "u6-pk-scale-draw", "u6-pk-scale-factor", "u6-pk-solve-input", "u6-pk-unit-rate", "u6-pk-vol-basic", "u7-pk-angle-justify", "u7-pk-conjecture", "u7-pk-counterexample", "u7-pk-inductive-limit", "u7-pk-pattern-figure", "u7-pk-pattern-word", "u7-pk-proof-error", "u7-pk-table-equation", "u7-pk-valid-chain", "u8-pk-angle-measure", "u8-pk-comp-supp", "u8-pk-parallel-decision", "u8-pk-polygon-sum", "u8-pk-solve-two-step", "u8-pk-transversal-measure", "u8-pk-transversal-pairs", "u8-pk-triangle-sum", "u8-pk-word-two-step"],
   "math-9": ["u1-pk-add-context", "u1-pk-add-sub-decimals", "u1-pk-add-unlike", "u1-pk-divide-fractions", "u1-pk-identify-operation", "u1-pk-mult-decimals", "u1-pk-multiply-fractions", "u1-pk-ooo-evaluate", "u1-pk-ooo-fractions", "u1-pk-order-mixed", "u1-pk-sub-unlike", "u1-pkf-area-model-product", "u1-pkf-context-divide-expression", "u1-pkf-div-2by1", "u1-pkf-div-decimals", "u1-pkf-estimate-product-benchmark", "u1-pkf-fact-division", "u1-pkf-fact-halving", "u1-pkf-fact-recall", "u1-pkf-frontend-prod-quot", "u1-pkf-frontend-sum", "u1-pkf-model-division-bar", "u1-pkf-model-frac-times-whole", "u1-pkf-model-whole-div-frac", "u1-pkf-mult-model-chips", "u1-pkf-mult-problem", "u1-pkf-ooo-num", "u1-pkf-order-below", "u1-pkf-order-line", "u1-pkf-order-place", "u1-pkf-product-sign-apply", "u1-pkf-quotient-sign-apply", "u1-pkf-reasonableness", "u2-pk-calc-approx", "u2-pk-estimate-between", "u2-pk-root-between", "u2-pk-sa-cylinder", "u2-pk-sa-problem", "u2-pk-sa-rect-prism", "u2-pk-sa-tri-prism", "u2-pk-sqrt-perfect", "u2-pk-square-of-number", "u3-pk-annex-zeros", "u3-pk-doubling-step", "u3-pk-missing-factor", "u3-pk-product-sign", "u3-pk-quotient-sign", "u3-pk-related-division", "u3-pk-repeated-product", "u3-pk-repeated-write", "u4-pk-expression-or-equation", "u4-pk-identify-parts", "u4-pk-solve-distributive", "u4-pk-solve-one-step", "u4-pk-solve-two-step", "u4-pk-variable-meaning", "u5-pk-between", "u5-pk-identify-error", "u5-pk-misplaced", "u5-pk-model-equation", "u5-pk-numberline-place", "u5-pk-solve-two-step", "u5-pk-verify-solution", "u5-pkf-solve-context-problem", "u5-pkf-solve-distributive", "u5-pkf-solve-div-plus", "u5-pkf-solve-one-step", "u5-pkf-visual-step", "u6-pk-construct-graph", "u6-pk-describe-graph", "u6-pk-missing-pair", "u6-pk-pattern-expression", "u6-pk-solve-context", "u6-pk-solve-div-plus", "u6-pk-table-missing", "u6-pk-two-points-evaluate", "u7-pk-rate-problem", "u7-pk-ratio-problem", "u7-pk-ratio-simplest", "u7-pk-reflect-point", "u7-pk-tess-transform", "u7-pk-transform-describe", "u7-pk-translate", "u7-pk-two-term-ratio", "u8-pk-angle-chain", "u8-pk-central-angles", "u8-pk-circumference", "u8-pk-parallel-perp", "u8-pk-pi-ratio", "u8-pk-radius-diameter", "u9-gap-expected-freq-cr", "u9-gap-freq-mean-cr", "u9-gap-freq-mean-mc", "u9-gap-mean-diff-cr", "u9-gap-win-points-cr", "u9-pk-circle-graph", "u9-pk-exp-vs-theor", "u9-pk-false-conclusion", "u9-pk-mean-basic", "u9-pk-median-mode", "u9-pk-misleading-format", "u9-pk-prob-basic", "u9-pk-product-rule", "u9-pk-two-draws", "u9-pk-two-graphs", "u9-pkf-mean-basic", "u9-pkf-median-mode", "u9-pkf-range-basic"],
@@ -305,16 +315,16 @@ for (const id of ["math-9", "math-9-fr", "math-8", "math-8-fr", "math-3202", "ma
   const u7on = run(sb, "poolFor([7],[])");
   ok(u7on.length === 35 && u7on.some(e => e.id === "u7-converse-contrapositive") && u7on.some(e => e.id === "u7-converse-truth"),
      "toggle on: both enrichment entries appear in the Unit 7 practice pool (pool " + u7on.length + ")");
-  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 505, "toggle on: whole-bank pool is 505");
+  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 510, "toggle on: whole-bank pool is 510");
   run(sb, "__ENR=false;");
-  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 503, "toggle off again: whole-bank pool is 503");
+  ok(run(sb, "poolFor(" + JSON.stringify(ALL) + ",[])").length === 508, "toggle off again: whole-bank pool is 508");
 
   // practice draws through drawSet: PK switch
   const drawPool = (enr, pk) => { run(sb, "__ENR=" + enr + ";__PK=" + pk + ";"); return run(sb, "drawSet(" + JSON.stringify(ALL) + ",[],10,[20,60,20],'unit',false)"); };
   let r = drawPool(false, true);
-  ok(r.pool === 503, "draws, enrichment off and PK on: draw pool 503, saw " + r.pool);
+  ok(r.pool === 508, "draws, enrichment off and PK on: draw pool 508, saw " + r.pool);
   r = drawPool(false, false);
-  ok(r.pool === 393, "draws, PK off: draw pool drops by the 110 PK entries to 393, saw " + r.pool);
+  ok(r.pool === 398, "draws, PK off: draw pool drops by the 110 PK entries to 398, saw " + r.pool);
   let pkLeak = 0, enrLeak = 0;
   for (let i = 0; i < 25; i++) {
     const rr = drawPool(false, false);
@@ -323,9 +333,9 @@ for (const id of ["math-9", "math-9-fr", "math-8", "math-8-fr", "math-3202", "ma
   ok(pkLeak === 0, "draws, PK off: zero PK entries in 25 drawn sets, saw " + pkLeak);
   ok(enrLeak === 0, "draws, enrichment off: zero enrichment entries in 25 drawn sets, saw " + enrLeak);
   r = drawPool(true, false);
-  ok(r.pool === 395, "draws, enrichment on and PK off: draw pool 395, saw " + r.pool);
+  ok(r.pool === 400, "draws, enrichment on and PK off: draw pool 400, saw " + r.pool);
   r = drawPool(true, true);
-  ok(r.pool === 505, "draws, both on: draw pool 505, saw " + r.pool);
+  ok(r.pool === 510, "draws, both on: draw pool 510, saw " + r.pool);
 
   // composed papers: identical across every toggle combination.
   // Each measured compose is preceded by a discarded warm-up
@@ -460,7 +470,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.querySelector("#enrChk") && !d.querySelector("#enrChk").checked, "visibility: enrichment toggle starts unchecked (default out)");
   ok(d.querySelector("#pkInChk") && !d.querySelector("#pkInChk").checked, "visibility: prior knowledge switch starts unchecked (default off since Nov 18, 2026)");
   ok(ev(r.dom, "settings().enr") === false && ev(r.dom, "settings().pkIn") === false, "link state: defaults read enr off, pkIn off (Nov 18, 2026)");
-  ok(ev(r.dom, "BANK.length") === 505 && ev(r.dom, "poolFor([7],[]).length") === 33, "live shell: bank 505, default Unit 7 pool 33");
+  ok(ev(r.dom, "BANK.length") === 510 && ev(r.dom, "poolFor([7],[]).length") === 33, "live shell: bank 510, default Unit 7 pool 33");
   ok(ev(r.dom, "current.every(function(q){return !q._entry.enrich;})"), "live shell: the auto-started default set holds no enrichment question");
   ok(ev(r.dom, "tags({ _entry: BANK.find(function(e){return e.enrich;}) })").includes("Enrichment"), "marking: a drawn enrichment question's card tags carry the word Enrichment");
   ok(ev(r.dom, "tScopePool().length") === 35 && ev(r.dom, "tScopePool().some(function(e){return e.enrich;})"), "picker: the pick from bank pool for the Unit 7 scope includes the enrichment entries (35)");
@@ -480,8 +490,8 @@ const ev = (dom, code) => dom.window.eval(code);
   d = r.dom.window.document;
   ev(r.dom, "startOnline()");
   ok(ev(r.dom, "settings().pkIn") === false && ev(r.dom, "pkIncluded()") === false, "link state: pkin=0 lands in settings and the accessor");
-  ok(ev(r.dom, "poolFor([5],[]).length") === 65, "composition fence: poolFor for Unit 5 is untouched by the PK switch (65)");
-  ok(ev(r.dom, "drawSet([5],[],5,[20,60,20],'unit',false).pool") === 55, "draws: with pkin=0 the Unit 5 draw pool drops the 10 PK entries (55)");
+  ok(ev(r.dom, "poolFor([5],[]).length") === 70, "composition fence: poolFor for Unit 5 is untouched by the PK switch (70)");
+  ok(ev(r.dom, "drawSet([5],[],5,[20,60,20],'unit',false).pool") === 60, "draws: with pkin=0 the Unit 5 draw pool drops the 10 PK entries (60)");
   ok(d.querySelector("#pkInChk") && !d.querySelector("#pkInChk").checked, "visibility: with pkin=0 the rendered switch is unchecked");
   r.dom.window.close();
 

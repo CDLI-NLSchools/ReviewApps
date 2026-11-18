@@ -61,7 +61,7 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/math-2201.js", "utf8"));
 
-ok(BANK.length === 505, "BANK has 505 entries, saw " + BANK.length);
+ok(BANK.length === 510, "BANK has 510 entries, saw " + BANK.length);
 const cr = window.__BANK_CRMARKS || {};
 const crKeys = Object.keys(cr);
 ok(crKeys.length === 265, "__BANK_CRMARKS has 265 keys, saw " + crKeys.length);
@@ -103,7 +103,7 @@ function extractFn(src, name) {
 eval(extractFn(html, "poolFor"));
 eval(extractFn(html, "isPK"));
 const defPool = poolFor([1, 2, 3, 4, 5, 6, 7, 8], []);
-ok(defPool.length === 503, "default practice pool has 503 entries (bank 505 minus the 2 enrichment entries), saw " + defPool.length);
+ok(defPool.length === 508, "default practice pool has 508 entries (bank 510 minus the 2 enrichment entries), saw " + defPool.length);
 ok(!defPool.some(e => e.enrich), "default practice pool holds no enrichment entry");
 ok(poolFor([7], []).length === 33, "default Unit 7 pool has 33 entries (35 in the bank minus the 2 enrichment entries), saw " + poolFor([7], []).length);
 /* Prior knowledge, amended November 15, 2026 for the PK tranche:
@@ -128,8 +128,8 @@ ok(JSON.stringify(pk) === JSON.stringify(["u1-pk-angle-from-legs", "u1-pk-angle-
 
 const census = {}, perUnit = {}, kinds = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; kinds[e.kind] = (kinds[e.kind] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 127, 2: 99, 3: 50, 4: 63, 5: 65, 6: 30, 7: 35, 8: 36 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1, plus one further Unit 1 generator added the same day under the StudyMate pack strip-audit ruling, plus 10 further Unit 1 entries added the same day as sequence-rebuild batch D, plus the November 18, 2026 Unit 2 expansion adding 60 to Unit 2, plus the November 18, 2026 Unit 3 expansion adding 16 to Unit 3, plus the November 18, 2026 Unit 4 external drafting tranche adding 21 to Unit 4, plus the November 18, 2026 Unit 5 external drafting tranche adding 13 to Unit 5), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 127, 2: 99, 3: 50, 4: 63, 5: 70, 6: 30, 7: 35, 8: 36 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1, plus one further Unit 1 generator added the same day under the StudyMate pack strip-audit ruling, plus 10 further Unit 1 entries added the same day as sequence-rebuild batch D, plus the November 18, 2026 Unit 2 expansion adding 60 to Unit 2, plus the November 18, 2026 Unit 3 expansion adding 16 to Unit 3, plus the November 18, 2026 Unit 4 external drafting tranche adding 21 to Unit 4, plus the November 18, 2026 Unit 5 external drafting tranche adding 13 to Unit 5, plus the November 18, 2026 Unit 5 external drafting redraft tranche adding 5 to Unit 5), saw " + JSON.stringify(perUnit));
 /* Kind counts amended November 12, 2026, on Jason's ruling: six
    entries (u2-vertex-x, u2-vertex-value, u2-vertex-shift,
    u2-xintercepts, u2-xintercepts-factored, u3-discriminant) were
@@ -160,8 +160,11 @@ ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (th
    variant sets, taking the bank to 409 gen, 83 var. Amended
    again Nov 18, 2026 for the Unit 5 external drafting tranche:
    its 13 entries are all generators, taking the bank to
-   422 gen, 83 var. */
-ok(kinds.gen === 422 && kinds.var === 83, "entry kinds (422 gen, 83 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
+   422 gen, 83 var. Amended again Nov 18, 2026 for the Unit 5
+   external drafting redraft tranche: its 5 entries are 3
+   generators and 2 variant sets, taking the bank to 425 gen,
+   85 var. */
+ok(kinds.gen === 425 && kinds.var === 85, "entry kinds (425 gen, 85 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);
 ok(empty.length === 0, "indicators with no entries: " + empty.join(", "));
