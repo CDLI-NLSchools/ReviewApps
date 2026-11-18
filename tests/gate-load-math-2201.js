@@ -61,18 +61,18 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/math-2201.js", "utf8"));
 
-ok(BANK.length === 471, "BANK has 471 entries, saw " + BANK.length);
+ok(BANK.length === 492, "BANK has 492 entries, saw " + BANK.length);
 const cr = window.__BANK_CRMARKS || {};
 const crKeys = Object.keys(cr);
-ok(crKeys.length === 253, "__BANK_CRMARKS has 253 keys, saw " + crKeys.length);
+ok(crKeys.length === 259, "__BANK_CRMARKS has 259 keys, saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
 ok(crKeys.every(k => bankIds.has(k)), "every CR key is a bank entry id");
 ok(bankIds.size === BANK.length, "entry ids are unique");
 const denom = {};
 let crSum = 0;
 crKeys.forEach(k => { denom[cr[k]] = (denom[cr[k]] || 0) + 1; crSum += cr[k]; });
-ok(JSON.stringify(denom) === JSON.stringify({ 1: 67, 2: 131, 3: 45, 4: 10 }), "CR denominations (the standalone map 1x63, 2x92, 3x25, 4x6, plus the November 17, 2026 Unit 1 enrichment adding 2x11, 3x17, 4x4, plus the November 17, 2026 sequence-rebuild batch D adding 2x6, plus the November 18, 2026 Unit 2 expansion adding 1x2, 2x15, 3x3 after its level calibration pass, plus the November 18, 2026 Unit 3 expansion adding 1x2, 2x7), saw " + JSON.stringify(denom));
-ok(crSum === 504, "CR marks sum to 504, saw " + crSum);
+ok(JSON.stringify(denom) === JSON.stringify({ 1: 70, 2: 134, 3: 45, 4: 10 }), "CR denominations (the standalone map 1x63, 2x92, 3x25, 4x6, plus the November 17, 2026 Unit 1 enrichment adding 2x11, 3x17, 4x4, plus the November 17, 2026 sequence-rebuild batch D adding 2x6, plus the November 18, 2026 Unit 2 expansion adding 1x2, 2x15, 3x3 after its level calibration pass, plus the November 18, 2026 Unit 3 expansion adding 1x2, 2x7, plus the November 18, 2026 Unit 4 external drafting tranche adding 1x3, 2x3), saw " + JSON.stringify(denom));
+ok(crSum === 513, "CR marks sum to 513, saw " + crSum);
 ok(cr["u1-two-triangles"] === 4 && cr["u5-media"] === 4 && cr["u5-sd-decisions"] === 4 && cr["u4-extraneous"] === 3 && cr["u4-rationalize"] === 1 && cr["u5-centre-mean"] === 1 && cr["u3-factor-monic"] === 2 && cr["u8-regular-sides-from-angle"] === 3,
    "CR spot values match the standalone map (u1-two-triangles 4, u5-media 4, u5-sd-decisions 4, u4-extraneous 3, u4-rationalize 1, u5-centre-mean 1, u3-factor-monic 2, u8-regular-sides-from-angle 3)");
 
@@ -103,7 +103,7 @@ function extractFn(src, name) {
 eval(extractFn(html, "poolFor"));
 eval(extractFn(html, "isPK"));
 const defPool = poolFor([1, 2, 3, 4, 5, 6, 7, 8], []);
-ok(defPool.length === 469, "default practice pool has 469 entries (bank 471 minus the 2 enrichment entries), saw " + defPool.length);
+ok(defPool.length === 490, "default practice pool has 490 entries (bank 492 minus the 2 enrichment entries), saw " + defPool.length);
 ok(!defPool.some(e => e.enrich), "default practice pool holds no enrichment entry");
 ok(poolFor([7], []).length === 33, "default Unit 7 pool has 33 entries (35 in the bank minus the 2 enrichment entries), saw " + poolFor([7], []).length);
 /* Prior knowledge, amended November 15, 2026 for the PK tranche:
@@ -126,8 +126,8 @@ ok(JSON.stringify(pk) === JSON.stringify(["u1-pk-angle-from-legs", "u1-pk-angle-
 
 const census = {}, perUnit = {}, kinds = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; kinds[e.kind] = (kinds[e.kind] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 127, 2: 99, 3: 50, 4: 42, 5: 52, 6: 30, 7: 35, 8: 36 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1, plus one further Unit 1 generator added the same day under the StudyMate pack strip-audit ruling, plus 10 further Unit 1 entries added the same day as sequence-rebuild batch D, plus the November 18, 2026 Unit 2 expansion adding 60 to Unit 2, plus the November 18, 2026 Unit 3 expansion adding 16 to Unit 3), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 127, 2: 99, 3: 50, 4: 63, 5: 52, 6: 30, 7: 35, 8: 36 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1, plus one further Unit 1 generator added the same day under the StudyMate pack strip-audit ruling, plus 10 further Unit 1 entries added the same day as sequence-rebuild batch D, plus the November 18, 2026 Unit 2 expansion adding 60 to Unit 2, plus the November 18, 2026 Unit 3 expansion adding 16 to Unit 3, plus the November 18, 2026 Unit 4 external drafting tranche adding 21 to Unit 4), saw " + JSON.stringify(perUnit));
 /* Kind counts amended November 12, 2026, on Jason's ruling: six
    entries (u2-vertex-x, u2-vertex-value, u2-vertex-shift,
    u2-xintercepts, u2-xintercepts-factored, u3-discriminant) were
@@ -153,8 +153,10 @@ ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (th
    are all generators, taking the bank to 374 gen, 81 var.
    Amended again Nov 18, 2026 for the Unit 3 expansion: its 16
    entries are all generators, taking the bank to 390 gen,
-   81 var. */
-ok(kinds.gen === 390 && kinds.var === 81, "entry kinds (390 gen, 81 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
+   81 var. Amended again Nov 18, 2026 for the Unit 4 external
+   drafting tranche: its 21 entries are 19 generators and 2
+   variant sets, taking the bank to 409 gen, 83 var. */
+ok(kinds.gen === 409 && kinds.var === 83, "entry kinds (409 gen, 83 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);
 ok(empty.length === 0, "indicators with no entries: " + empty.join(", "));

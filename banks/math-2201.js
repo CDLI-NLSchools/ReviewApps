@@ -6391,6 +6391,12 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-defined-count=3
 // CRMARKS: u4-repair-simplify=2
 // CRMARKS: u4-order=2
+// CRMARKS: u4-variable-evaluate=1
+// CRMARKS: u4-defined-boundary=1
+// CRMARKS: u4-restriction-boundary=1
+// CRMARKS: u4-cube-equation-shifted=2
+// CRMARKS: u4-extraneous-valid-root=2
+// CRMARKS: u4-model-solve-variable=2
 /* ============ Unit 4: Radicals ============ */
 function radStr(a,b){return (a===1?"":a)+"\u221A"+b;}
 function radT(a,b){return "\\("+(a===1?"":a)+"\\sqrt{"+b+"}\\)";}
@@ -6766,6 +6772,525 @@ E("u4-pk-defined", 4, ["1.5"], 1, "gen", function () {
     "A square root of a negative number is not a real number, so \\(\\sqrt{-" + neg + "}\\) has no real value. The others all name real numbers: square roots of positive numbers and of zero are real, and a cube root of a negative number is real (a negative one). The expression that is not a real number is <b>\\(\\sqrt{-" + neg + "}\\)</b>.",
     { mode: "pk-defined", neg: neg });
 });
+/* ============ External drafting tranche (November 18, 2026) ============
+   Twenty-one entries drafted externally (Gemini) under the External
+   Authoring Pack against the Math 2201 Unit 4 assignment, and
+   integrated after the intake sweep: 3,000 draws per entry with every
+   key recomputed independently from the dealt parameters, plus the
+   distractor length scan and the bank overlap check. Five entries
+   carry intake repairs, each listed in the intake report
+   (Intake-Report-Math-2201-Unit-4-Gemini-2026-11-18, review apps goal
+   files). Two assigned entries were rejected from this tranche at
+   intake (u4-equation-restriction-two and u4-extraneous-why). */
+
+E("u4-mixed-to-entire-fraction",4,["1.1"],2,"gen",function(){
+  function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var t=y;y=x%y;x=t;}return x||1;}
+  var p,q,r,tries=0,key,ds;
+  do{
+    p=ri(2,5);q=ri(p+1,7);r=pick([2,3,5,6,7,10,11,13]);tries++;
+    if(gcd(p,q)!==1){ds=null;continue;}
+    var n0=p*p*r,d0=q*q,g0=gcd(n0,d0);
+    var kn=n0/g0,kd=d0/g0;
+    key="\\(\\sqrt{"+frB(kn,kd)+"}\\)";
+    var n1=p*r,d1=q,g1=gcd(n1,d1);
+    var c1="\\(\\sqrt{"+frB(n1/g1,d1/g1)+"}\\)";
+    var n2=p*p*p*r,d2=q*q,g2=gcd(n2,d2);
+    var c2="\\(\\sqrt{"+frB(n2/g2,d2/g2)+"}\\)";
+    var n3=p*r,d3=q*q,g3=gcd(n3,d3);
+    var c3="\\(\\sqrt{"+frB(n3/g3,d3/g3)+"}\\)";
+    var cands=[c1,c2,c3];
+    ds=[];
+    for(var i=0;i<cands.length;i++){if(cands[i]!==key&&ds.indexOf(cands[i])<0)ds.push(cands[i]);}
+    if(ds.length<3)ds=null;
+  }while(!ds&&tries<80);
+  var knStr=frB(p*p*r/gcd(p*p*r,q*q),(q*q)/gcd(p*p*r,q*q));
+  return mcq("Express \\("+frB(p,q)+"\\sqrt{"+r+"}\\) as an entire radical in simplest form.",
+    key,ds,
+    "Square the fractional coefficient before bringing it under the radical: \\(\\left("+frB(p,q)+"\\right)^2 = "+frB(p*p,q*q)+"\\). Multiply inside the square root: \\(\\sqrt{"+frB(p*p,q*q)+" \\times "+r+"} = \\sqrt{"+frB(p*p*r,q*q)+"}\\)"+(gcd(p*p*r,q*q)>1?", which reduces to \\(\\sqrt{"+knStr+"}\\)":"")+". The entire radical is <b>"+key+"</b>.",
+    {p:p,q:q,r:r});
+});
+
+E("u4-mixed-to-entire-mistake",4,["1.1"],2,"var",varset([
+  function(){
+    return mcq("A student converts \\(4\\sqrt{3}\\) to an entire radical.<br>Line 1: \\(4\\sqrt{3}\\)<br>Line 2: \\(= \\sqrt{4 \\times 3}\\)<br>Line 3: \\(= \\sqrt{12}\\)<br>Line 4: The entire radical is \\(\\sqrt{12}\\).<br>In which line is the FIRST mistake?",
+      "Line 2",["Line 1","Line 3","Line 4"],
+      "Line 1 restates the given expression correctly. In Line 2, the coefficient \\(4\\) was brought inside the radical without being squared first; it should be \\(\\sqrt{4^2 \\times 3} = \\sqrt{16 \\times 3} = \\sqrt{48}\\). The first mistake is in <b>Line 2</b>.",
+      {variant:1,mistakeLine:2});
+  },
+  function(){
+    return mcq("A student converts \\(3\\sqrt{5}\\) to an entire radical.<br>Line 1: \\(3\\sqrt{5}\\)<br>Line 2: \\(= \\sqrt{3^2 \\times 5^2}\\)<br>Line 3: \\(= \\sqrt{9 \\times 25}\\)<br>Line 4: \\(= \\sqrt{225}\\)<br>In which line is the FIRST mistake?",
+      "Line 2",["Line 1","Line 3","Line 4"],
+      "Line 1 restates the given expression correctly. In Line 2, the student squared both the coefficient and the radicand, whereas only the coefficient moving inside the radical should be squared: \\(\\sqrt{3^2 \\times 5} = \\sqrt{45}\\). The first mistake is in <b>Line 2</b>.",
+      {variant:2,mistakeLine:2});
+  },
+  function(){
+    return mcq("A student converts \\(5\\sqrt{2}\\) to an entire radical.<br>Line 1: \\(5\\sqrt{2}\\)<br>Line 2: \\(= \\sqrt{5^2} \\cdot \\sqrt{2}\\)<br>Line 3: \\(= \\sqrt{25 + 2}\\)<br>Line 4: \\(= \\sqrt{27}\\)<br>In which line is the FIRST mistake?",
+      "Line 3",["Line 1","Line 2","Line 4"],
+      "Line 1 and Line 2 rewrite \\(5\\) as \\(\\sqrt{5^2}\\) properly. In Line 3, the student added the radicands instead of multiplying them (\\(\\sqrt{25 \\times 2} = \\sqrt{50}\\)). The first mistake is in <b>Line 3</b>.",
+      {variant:3,mistakeLine:3});
+  },
+  function(){
+    return mcq("A student converts \\(2\\sqrt{7}\\) to an entire radical.<br>Line 1: \\(2\\sqrt{7}\\)<br>Line 2: \\(= \\sqrt{2^2} \\cdot \\sqrt{7}\\)<br>Line 3: \\(= \\sqrt{4 \\times 7}\\)<br>Line 4: \\(= \\sqrt{11}\\)<br>In which line is the FIRST mistake?",
+      "Line 4",["Line 1","Line 2","Line 3"],
+      "Lines 1 through 3 set up \\(\\sqrt{4 \\times 7}\\) properly. In Line 4, the student added \\(4 + 7 = 11\\) instead of multiplying \\(4 \\times 7 = 28\\). The first mistake is in <b>Line 4</b>.",
+      {variant:4,mistakeLine:4});
+  }
+]));
+
+E("u4-simplify-fraction-radicand",4,["1.2","1.7"],2,"gen",function(){
+  var a,b,d,key,ds,tries=0;
+  do{
+    a=pick([2,3,4,5]);b=pick([2,3,5,6,7]);d=pick([3,4,5,6,7,8,9]);tries++;
+    var num=a*a*b,den=d*d;
+    if(num>=den)continue;
+    function gcd(x,y){while(y){var t=y;y=x%y;x=t;}return x||1;}
+    if(gcd(num,den)!==1)continue;
+    key="\\(\\frac{"+radStr(a,b)+"}{"+d+"}\\)";
+    var d1="\\(\\frac{"+radStr(a,b)+"}{\\sqrt{"+den+"}}\\)";
+    var badA=a===2?3:2;
+    var d2="\\(\\frac{"+radStr(badA,b)+"}{"+d+"}\\)";
+    var d3="\\(\\frac{"+d+"}{"+radStr(a,b)+"}\\)";
+    ds=[d1,d2,d3];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<100);
+  var num=a*a*b,den=d*d;
+  return mcq("Express \\(\\sqrt{"+frB(num,den)+"}\\) in simplest form.",
+    key,ds,
+    "Split the radical across numerator and denominator: \\(\\frac{\\sqrt{"+num+"}}{\\sqrt{"+den+"}}\\). Factor the perfect square in the numerator: \\(\\sqrt{"+num+"} = \\sqrt{"+(a*a)+" \\times "+b+"} = "+radStr(a,b)+"\\), and evaluate the denominator: \\(\\sqrt{"+den+"} = "+d+"\\). In simplest form, the expression is <b>"+key+"</b>.",
+    {a:a,b:b,d:d});
+});
+
+E("u4-variable-entire",4,["1.3"],2,"gen",function(){
+  var c,e,r,form,key,ds,tries=0;
+  do{
+    c=ri(2,6);e=ri(1,4);r=pick([2,3,5,6,7]);form=ri(0,1);tries++;
+    var vPart=e===1?"x":"x^{"+e+"}";
+    var vSq=(2*e)===1?"x":"x^{"+(2*e)+"}";
+    var vUnch=e===1?"x":"x^{"+e+"}";
+    if(form===0){
+      // c x^e \sqrt{r} -> \sqrt{c^2 r x^{2e}}
+      key="\\(\\sqrt{"+(c*c*r)+vSq+"}\\)";
+      var d1="\\(\\sqrt{"+(c*c*r)+vUnch+"}\\)";
+      var d2="\\(\\sqrt{"+(c*r)+vSq+"}\\)";
+      var d3="\\(\\sqrt{"+(c*r)+vUnch+"}\\)";
+      ds=[d1,d2,d3];
+    }else{
+      // c x^e \sqrt{r x} -> \sqrt{c^2 r x^{2e+1}}
+      var vSqP="x^{"+(2*e+1)+"}";
+      var vUnchP="x^{"+(e+1)+"}";
+      key="\\(\\sqrt{"+(c*c*r)+vSqP+"}\\)";
+      var d1="\\(\\sqrt{"+(c*c*r)+vUnchP+"}\\)";
+      var d2="\\(\\sqrt{"+(c*r)+vSqP+"}\\)";
+      var d3="\\(\\sqrt{"+(c*r)+vUnchP+"}\\)";
+      ds=[d1,d2,d3];
+    }
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<80);
+  var vDisp=e===1?"x":"x^{"+e+"}";
+  var radDisp=form===0?sqrtT(r):"\\(\\sqrt{"+r+"x}\\)";
+  return mcq("Assuming \\(x \\ge 0\\), express \\("+c+vDisp+"\\)"+radDisp+" as an entire radical.",
+    key,ds,
+    "Square the entire outside factor \\("+c+vDisp+"\\) to move it inside the square root: \\(("+c+vDisp+")^2 = "+(c*c)+"x^{"+(2*e)+"}\\). Multiply by the existing radicand \\("+(form===0?r:r+"x")+"\\) to get <b>"+key+"</b>.",
+    {c:c,e:e,r:r,form:form});
+});
+
+E("u4-variable-evaluate",4,["1.3"],1,"gen",function(){
+  var coeff=ri(2,6);
+  var m=ri(2,5);
+  var k=ri(3,9);
+  var shift=ri(1,10);
+  var sign=pick([-1,1]);
+  // rad = m*x + sign*shift = k^2 => m*x = k^2 - sign*shift
+  var x,tries=0;
+  do{
+    m=ri(2,5);k=ri(3,9);shift=ri(1,12);sign=pick([-1,1]);tries++;
+    var rhs=k*k-sign*shift;
+    if(rhs>0&&rhs%m===0){x=rhs/m;break;}
+  }while(tries<100);
+  if(!x){m=2;k=4;shift=2;sign=1;x=7;}
+  var ans=coeff*k;
+  var radStrExpr=m+"x "+(sign>0?"+ "+shift:"- "+shift);
+  return numq("Evaluate \\("+coeff+"\\sqrt{"+radStrExpr+"}\\) when \\(x = "+x+"\\).",
+    ans,0.011,
+    "Substitute \\(x = "+x+"\\) into the expression: \\("+coeff+"\\sqrt{"+m+"("+x+") "+(sign>0?"+ "+shift:"- "+shift)+"} = "+coeff+"\\sqrt{"+(k*k)+"} = "+coeff+"("+k+") = "+ans+"\\). The value is <b>\\("+ans+"\\)</b>.",
+    {coeff:coeff,m:m,shift:shift,sign:sign,x:x,k:k});
+});
+
+E("u4-variable-cube",4,["1.3"],2,"gen",function(){
+  var a,b,q,rem,key,ds,tries=0;
+  do{
+    a=pick([2,3,4]);b=pick([2,3,5]);q=ri(1,3);rem=pick([1,2]);tries++;
+    var n=a*a*a*b;
+    var exp=3*q+rem;
+    var outVar=q===1?"x":"x^{"+q+"}";
+    var inVar=rem===1?"x":"x^{"+rem+"}";
+    key="\\("+a+outVar+"\\sqrt[3]{"+b+inVar+"}\\)";
+    // Distractor 1: square root exponent habit (halve exp)
+    var q2=Math.floor(exp/2),rem2=exp%2;
+    var outV2=q2===1?"x":"x^{"+q2+"}";
+    var inV2=rem2===0?"":(rem2===1?"x":"x^{"+rem2+"}");
+    var d1="\\("+a+outV2+"\\sqrt[3]{"+b+inV2+"}\\)";
+    // Distractor 2: variable brought out with exponent unchanged
+    var d2="\\("+a+"x^{"+exp+"}\\sqrt[3]{"+b+"}\\)";
+    // Distractor 3: numerical cube root mishandled (a^2 or wrong coeff)
+    var badA=a===2?4:2;
+    var d3="\\("+badA+outVar+"\\sqrt[3]{"+b+inVar+"}\\)";
+    ds=[d1,d2,d3];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<100);
+  var n=a*a*a*b,exp=3*q+rem;
+  var outVar=q===1?"x":"x^{"+q+"}";
+  var inVar=rem===1?"x":"x^{"+rem+"}";
+  return mcq("Simplify \\(\\sqrt[3]{"+n+"x^{"+exp+"}}\\) completely.",
+    key,ds,
+    "Factor the radicand into perfect cubes and leftovers: \\("+n+"x^{"+exp+"} = "+a+"^3 \\cdot "+b+" \\cdot (x^{"+q+"})^3 \\cdot "+inVar+"\\). Taking the cube root of the perfect cube factors gives \\("+a+outVar+"\\), leaving \\("+b+inVar+"\\) inside the cube root. The simplified form is <b>"+key+"</b>.",
+    {a:a,b:b,q:q,rem:rem});
+});
+
+E("u4-order-mixed-index",4,["1.4"],2,"gen",function(){
+  var pool=[
+    {tex:"\\(\\sqrt{5}\\)",val:Math.sqrt(5)},
+    {tex:"\\(\\sqrt{7}\\)",val:Math.sqrt(7)},
+    {tex:"\\(\\sqrt{10}\\)",val:Math.sqrt(10)},
+    {tex:"\\(\\sqrt{12}\\)",val:Math.sqrt(12)},
+    {tex:"\\(\\sqrt{15}\\)",val:Math.sqrt(15)},
+    {tex:"\\(2\\sqrt{2}\\)",val:2*Math.sqrt(2)},
+    {tex:"\\(2\\sqrt{3}\\)",val:2*Math.sqrt(3)},
+    {tex:"\\(\\sqrt[3]{10}\\)",val:Math.cbrt(10)},
+    {tex:"\\(\\sqrt[3]{20}\\)",val:Math.cbrt(20)},
+    {tex:"\\(\\sqrt[3]{30}\\)",val:Math.cbrt(30)},
+    {tex:"\\(\\sqrt[3]{50}\\)",val:Math.cbrt(50)},
+    {tex:"\\(2\\sqrt[3]{3}\\)",val:2*Math.cbrt(3)}
+  ];
+  var chosen,tries=0,key,ds;
+  do{
+    tries++;
+    var idx=[];
+    while(idx.length<4){var r=ri(0,pool.length-1);if(idx.indexOf(r)<0)idx.push(r);}
+    chosen=idx.map(function(i){return pool[i];});
+    var dealt=chosen.slice();
+    chosen.sort(function(x,y){return x.val-y.val;});
+    var ok=true;
+    for(var i=0;i<3;i++){if(chosen[i+1].val-chosen[i].val<0.12)ok=false;}
+    if(!ok){ds=null;continue;}
+    function fmtList(arr){return arr.map(function(x){return x.tex;}).join(", ");}
+    key=fmtList(chosen);
+    var s1=[chosen[1],chosen[0],chosen[2],chosen[3]];
+    var s2=[chosen[0],chosen[1],chosen[3],chosen[2]];
+    var rev=[chosen[3],chosen[2],chosen[1],chosen[0]];
+    ds=[fmtList(s1),fmtList(s2),fmtList(rev)];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<120);
+  var approx=chosen.map(function(x){return x.tex+" \\(\\approx "+fmt(x.val,2)+"\\)";}).join(", ");
+  return mcq("Order the following radicals from least to greatest: "+dealt.map(function(x){return x.tex;}).join(", ")+".",
+    key,ds,
+    "Convert each radical to an approximate decimal (or raise all to the 6th power to compare): "+approx+". Arranged from least to greatest, the order is <b>"+key+"</b>.",
+    {items:dealt.map(function(x){return x.tex;})});
+});
+
+E("u4-closest-integer",4,["1.4"],1,"gen",function(){
+  var k,n,tries=0;
+  do{
+    k=ri(3,11);
+    n=ri(k*k+1,(k+1)*(k+1)-1);
+    tries++;
+    var sq=Math.sqrt(n);
+    var distLow=sq-k,distHigh=(k+1)-sq;
+    if(Math.abs(distLow-distHigh)>=0.12)break;
+  }while(tries<100);
+  var closest=Math.sqrt(n)-k<(k+1)-Math.sqrt(n)?k:(k+1);
+  var otherBound=closest===k?(k+1):k;
+  var key=String(closest);
+  var ds=[String(k-1),String(otherBound),String(k+2)];
+  return mcq("Which whole number is closest to \\(\\sqrt{"+n+"}\\)?",
+    key,ds,
+    "Note that \\("+k+"^2 = "+(k*k)+"\\) and \\("+(k+1)+"^2 = "+((k+1)*(k+1))+"\\), so \\(\\sqrt{"+n+"}\\) lies between \\("+k+"\\) and \\("+(k+1)+"\\). Since \\("+n+"\\) is closer to \\("+(closest*closest)+"\\) (and \\(\\sqrt{"+n+"} \\approx "+fmt(Math.sqrt(n),2)+"\\)), the closest whole number is <b>"+key+"</b>.",
+    {k:k,n:n,closest:closest});
+});
+
+E("u4-defined-two-radicals",4,["1.5"],2,"gen",function(){
+  var a,b,key,ds,tries=0;
+  do{
+    a=ri(-6,3);b=ri(a+2,9);tries++;
+    // \sqrt{x - a} + \sqrt{b - x} => a <= x <= b
+    var cond1="\\(x \\ge "+a+"\\)";
+    var cond2="\\(x \\le "+b+"\\)";
+    key="\\("+a+" \\le x \\le "+b+"\\)";
+    var d3="\\(x \\le "+a+"\\) or \\(x \\ge "+b+"\\)";
+    ds=[cond1,cond2,d3];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<80);
+  var t1=a===0?"x":(a>0?"x - "+a:"x + "+(-a));
+  var t2=b===0?"-x":(b>0?b+" - x":b+" - x");
+  var op=pick(["+","-"]);
+  return mcq("For which values of \\(x\\) is the expression \\(\\sqrt{"+t1+"} "+op+" \\sqrt{"+t2+"}\\) defined as a real number?",
+    key,ds,
+    "Both radicands must be non-negative simultaneously. From \\("+t1+" \\ge 0\\), we get \\(x \\ge "+a+"\\); from \\("+t2+" \\ge 0\\), we get \\(x \\le "+b+"\\). Combining both conditions gives <b>"+key+"</b>.",
+    {a:a,b:b,op:op});
+});
+
+E("u4-defined-boundary",4,["1.5"],2,"gen",function(){
+  var m,b,x0,tries=0;
+  do{
+    m=pick([-5,-4,-3,-2,2,3,4,5]);
+    x0=ri(-8,8);
+    b=-m*x0;
+    tries++;
+  }while(b===0&&tries<50);
+  var expr=m+"x "+(b>0?"+ "+b:"- "+(-b));
+  return numq("The radical expression \\(\\sqrt{"+expr+"}\\) is defined for \\(x "+(m>0?"\\ge":"\\le")+" k\\). What is the boundary value \\(k\\)?",
+    x0,0.011,
+    "Set the radicand equal to zero to find the endpoint of the domain: \\("+expr+" = 0\\), so \\("+m+"x = "+(-b)+"\\) and \\(x = "+x0+"\\). The boundary value is <b>\\("+x0+"\\)</b>.",
+    {m:m,b:b,x0:x0});
+});
+
+E("u4-rationalize-binomial",4,["1.7"],2,"gen",function(){
+  var num,a,b,den,key,ds,tries=0;
+  do{
+    num=pick([2,3,4,5,6]);
+    a=ri(2,5);
+    b=pick([2,3,5,6,7]);
+    den=a*a-b;
+    tries++;
+    if(den<=1||num%den===0)continue;
+    function gcd(x,y){while(y){var t=y;y=x%y;x=t;}return x||1;}
+    if(gcd(num,den)!==1)continue;
+    // num / (a + \sqrt{b}) => num(a - \sqrt{b}) / (a^2 - b)
+    key="\\(\\frac{"+(num*a)+" - "+num+"\\sqrt{"+b+"}}{"+den+"}\\)";
+    // Distractor 1: multiplied by same binomial (a + \sqrt{b}) instead of conjugate => num(a + \sqrt{b}) / (a^2 + b + 2a\sqrt{b})
+    var d1="\\(\\frac{"+(num*a)+" + "+num+"\\sqrt{"+b+"}}{"+(a*a+b)+" + "+(2*a)+"\\sqrt{"+b+"}}\\)";
+    // Distractor 2: conjugate used, denominator difference of squares botched as a^2 + b
+    var d2="\\(\\frac{"+(num*a)+" - "+num+"\\sqrt{"+b+"}}{"+(a*a+b)+"}\\)";
+    // Distractor 3: conjugate applied to denominator only, numerator unmultiplied
+    var d3="\\(\\frac{"+num+"}{"+den+"}\\)";
+    ds=[d1,d2,d3];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<120);
+  return mcq("Rationalize the denominator: \\(\\frac{"+num+"}{"+a+" + \\sqrt{"+b+"}}\\).",
+    key,ds,
+    "Multiply numerator and denominator by the conjugate \\("+a+" - \\sqrt{"+b+"}\\): \\(\\frac{"+num+"("+a+" - \\sqrt{"+b+"})}{("+a+" + \\sqrt{"+b+"})("+a+" - \\sqrt{"+b+"})} = \\frac{"+(num*a)+" - "+num+"\\sqrt{"+b+"}}{"+(a*a)+" - "+b+"}\\). Simplifying the denominator gives <b>"+key+"</b>.",
+    {num:num,a:a,b:b,den:den});
+});
+
+E("u4-rationalize-cube-root",4,["1.7"],2,"gen",function(){
+  var num,b,key,ds,tries=0;
+  do{
+    num=pick([2,3,4,5,7]);
+    b=pick([2,3,4,5,6,7]);
+    tries++;
+    if(num%b===0)continue;
+    var bSq=b*b;
+    // Check if bSq has a cube factor (e.g., b=4 => bSq=16=8*2, avoid so \sqrt[3]{b^2} is already simplest)
+    if(b===4||b===6)continue;
+    key="\\(\\frac{"+num+"\\sqrt[3]{"+bSq+"}}{"+b+"}\\)";
+    // Distractor 1: multiplied by \sqrt[3]{b} (square root habit) => num\sqrt[3]{b} / \sqrt[3]{b^2}
+    var d1="\\(\\frac{"+num+"\\sqrt[3]{"+b+"}}{\\sqrt[3]{"+bSq+"}}\\)";
+    // Distractor 2: correct multiplier on denominator, numerator left unmultiplied
+    var d2="\\(\\frac{"+num+"}{"+b+"}\\)";
+    // Distractor 3: denominator's cube computed incorrectly as b^2
+    var d3="\\(\\frac{"+num+"\\sqrt[3]{"+bSq+"}}{"+bSq+"}\\)";
+    ds=[d1,d2,d3];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<100);
+  return mcq("Rationalize the denominator: \\(\\frac{"+num+"}{\\sqrt[3]{"+b+"}}\\).",
+    key,ds,
+    "To form a perfect cube \\("+b+"^3\\) under the cube root, multiply numerator and denominator by \\(\\sqrt[3]{"+b+"^2} = \\sqrt[3]{"+(b*b)+"}\\): \\(\\frac{"+num+"\\sqrt[3]{"+(b*b)+"}}{\\sqrt[3]{"+(b*b*b)+"}}\\). Simplifying \\(\\sqrt[3]{"+(b*b*b)+"} = "+b+"\\) gives <b>"+key+"</b>.",
+    {num:num,b:b});
+});
+
+E("u4-restriction-boundary",4,["1.8"],1,"gen",function(){
+  var a,x0,b,rhs,tries=0;
+  do{
+    a=ri(2,5);x0=ri(-6,7);b=-a*x0;rhs=ri(2,7);tries++;
+  }while(b===0&&tries<50);
+  var expr=a+"x "+(b>0?"+ "+b:"- "+(-b));
+  return numq("For the radical equation \\(\\sqrt{"+expr+"} = "+rhs+"\\), the restriction on \\(x\\) is \\(x \\ge k\\). What is the value of \\(k\\)?",
+    x0,0.011,
+    "The radicand must be non-negative: \\("+expr+" \\ge 0\\), so \\("+a+"x \\ge "+(-b)+"\\) and \\(x \\ge "+x0+"\\). The smallest permitted value is <b>\\("+x0+"\\)</b>.",
+    {a:a,b:b,rhs:rhs,x0:x0});
+});
+
+E("u4-equation-both-sides",4,["1.9"],2,"gen",function(){
+  var a,b,c,d,sol,key,ds,tries=0;
+  do{
+    a=ri(3,6);c=ri(1,a-1);
+    sol=ri(1,8);
+    b=a*pick([-1,1])*ri(1,Math.floor(6/a));
+    d=(a-c)*sol+b;
+    tries++;
+    if(b===0||d===0)continue;
+    if(a*sol+b<0||c*sol+d<0)continue;
+    key="\\(x = "+sol+"\\)";
+    // Distractor 1: coefficients added instead of subtracted => (a+c)x = d - b
+    var bad1=(d-b)/(a+c);
+    // Distractor 2: constant sign flipped in collection => (a-c)x = d + b
+    var bad2=(d+b)/(a-c);
+    // Distractor 3: restriction boundary from left radicand => -b/a
+    var bad3=-b/a;
+    if(!Number.isInteger(bad1)||!Number.isInteger(bad2)||!Number.isInteger(bad3)){ds=null;continue;}
+    ds=["\\(x = "+bad1+"\\)","\\(x = "+bad2+"\\)","\\(x = "+bad3+"\\)"];
+    if(ds.indexOf(key)>=0||ds[0]===ds[1]||ds[0]===ds[2]||ds[1]===ds[2])ds=null;
+  }while(!ds&&tries<150);
+  var lhs=a+"x "+(b>0?"+ "+b:"- "+(-b));
+  var rhs=(c===1?"x":c+"x")+" "+(d>0?"+ "+d:"- "+(-d));
+  return mcq("Solve for \\(x\\): \\(\\sqrt{"+lhs+"} = \\sqrt{"+rhs+"}\\).",
+    key,ds,
+    "Square both sides to equate the radicands: \\("+lhs+" = "+rhs+"\\). Subtract \\("+(c===1?"x":c+"x")+"\\) from both sides to get \\("+(a-c)+"x = "+(d-b)+"\\), so \\(x = "+sol+"\\). Checking in both radicands confirms both equal \\("+(a*sol+b)+" \\ge 0\\). The solution is <b>"+key+"</b>.",
+    {a:a,b:b,c:c,d:d,sol:sol});
+});
+
+E("u4-cube-equation-shifted",4,["1.9"],2,"gen",function(){
+  var a,b,sol,k,c,rhs,tries=0;
+  do{
+    a=ri(2,4);sol=ri(-5,7);k=pick([-3,-2,2,3]);
+    b=k*k*k-a*sol;
+    c=ri(2,8);
+    var sign=pick([-1,1]);
+    rhs=k+sign*c;
+    tries++;
+    if(b===0)continue;
+    var expr=a+"x "+(b>0?"+ "+b:"- "+(-b));
+    var shiftStr=sign>0?"+ "+c:"- "+c;
+    return numq("Solve for \\(x\\): \\(\\sqrt[3]{"+expr+"} "+shiftStr+" = "+rhs+"\\).",
+      sol,0.011,
+      "Isolate the cube root first by "+(sign>0?"subtracting "+c:"adding "+c)+" on both sides: \\(\\sqrt[3]{"+expr+"} = "+k+"\\). Cube both sides: \\("+expr+" = "+k+"^3 = "+(k*k*k)+"\\). Subtract "+(b>0?b:"("+b+")")+" to get \\("+a+"x = "+(a*sol)+"\\), so \\(x = "+sol+"\\). The root is <b>\\("+sol+"\\)</b>.",
+      {a:a,b:b,c:c,sign:sign,rhs:rhs,sol:sol});
+  }while(tries<50);
+});
+
+E("u4-verify-which-root",4,["1.10"],2,"gen",function(){
+  var sol,negCand,flipCand,a,b,c,tries=0,key,ds;
+  do{
+    // Equation: \sqrt{x + a} = x - c, with sol > c so sol - c > 0
+    sol=ri(3,9);
+    var k=ri(2,4);
+    c=sol-k;
+    a=k*k-sol;
+    // Equation is \sqrt{x + a} = x - c
+    // Candidate 2 (negative radicand): x < -a
+    negCand=-a-ri(2,5);
+    // Candidate 3 (satisfies sign-flipped RHS, i.e., \sqrt{x + a} = c - x, where c - x > 0 so x < c):
+    // Try to find integer flipCand < c with flipCand + a = (c - flipCand)^2
+    flipCand=null;
+    for(var cand=c-1;cand>=-a;cand--){
+      if(cand+a===(c-cand)*(c-cand)){flipCand=cand;break;}
+    }
+    tries++;
+    if(flipCand===null||flipCand===sol||flipCand===negCand||negCand===sol)continue;
+    key="\\(x = "+sol+"\\)";
+    var d1="\\(x = "+negCand+"\\)";
+    var d2="\\(x = "+flipCand+"\\)";
+    var d3="None of these values";
+    ds=[d1,d2,d3];
+  }while(!ds&&tries<200);
+  var radStr=a===0?"x":(a>0?"x + "+a:"x - "+(-a));
+  var rhsStr=c===0?"x":(c>0?"x - "+c:"x + "+(-c));
+  return mcq("Which of the following values is a root of \\(\\sqrt{"+radStr+"} = "+rhsStr+"\\)?",
+    key,ds,
+    "Substitute each candidate into \\(\\sqrt{"+radStr+"} = "+rhsStr+"\\). At \\(x = "+negCand+"\\), the radicand is \\("+(negCand+a)+" < 0\\) (not real). At \\(x = "+flipCand+"\\), the left side is \\(\\sqrt{"+(flipCand+a)+"} = "+(c-flipCand)+"\\) while the right side is \\("+(flipCand-c)+"\\). At \\(x = "+sol+"\\), \\(\\sqrt{"+(sol+a)+"} = "+(sol-c)+"\\) and the right side is \\("+(sol-c)+"\\). The valid root is <b>"+key+"</b>.",
+    {a:a,c:c,sol:sol,negCand:negCand,flipCand:flipCand});
+});
+
+E("u4-verify-first-mistake",4,["1.10"],2,"var",varset([
+  function(){
+    return mcq("A student checks whether \\(x = 6\\) is a root of \\(\\sqrt{2x + 4} = x - 2\\).<br>Line 1: Substitute \\(x = 6\\): \\(\\sqrt{2(6) + 4} = 6 - 2\\)<br>Line 2: Simplify inside the root: \\(\\sqrt{12 + 4} = 4\\)<br>Line 3: Evaluate: \\(\\sqrt{16} = 8\\), so \\(8 = 4\\)<br>Line 4: Since \\(8 \\ne 4\\), \\(x = 6\\) is not a root.<br>In which line is the FIRST mistake?",
+      "Line 3",["Line 1","Line 2","Line 4"],
+      "Lines 1 and 2 substitute \\(x = 6\\) and simplify the radicand to \\(16\\) correctly. In Line 3, the student evaluated \\(\\sqrt{16}\\) as \\(8\\) (halving instead of taking the square root); \\(\\sqrt{16} = 4\\), which matches the right side. The first mistake is in <b>Line 3</b>.",
+      {variant:1,mistakeLine:3});
+  },
+  function(){
+    return mcq("A student checks whether \\(x = 1\\) is a root of \\(\\sqrt{x + 8} = x - 4\\).<br>Line 1: Substitute \\(x = 1\\): \\(\\sqrt{1 + 8} = 1 - 4\\)<br>Line 2: Simplify both sides: \\(\\sqrt{9} = -3\\)<br>Line 3: Evaluate the principal root: \\(3 = -3\\)<br>Line 4: Both sides have magnitude \\(3\\), so \\(x = 1\\) is a root.<br>In which line is the FIRST mistake?",
+      "Line 4",["Line 1","Line 2","Line 3"],
+      "Lines 1, 2, and 3 evaluate both sides accurately, arriving at \\(3 = -3\\). In Line 4, the student concludes \\(x = 1\\) is a root even though \\(3 \\ne -3\\) (an extraneous root). The first mistake is in <b>Line 4</b>.",
+      {variant:2,mistakeLine:4});
+  },
+  function(){
+    return mcq("A student checks whether \\(x = 5\\) is a root of \\(\\sqrt{3x + 1} - 1 = 3\\).<br>Line 1: Substitute \\(x = 5\\): \\(\\sqrt{3(5) + 1} - 1 = 3\\)<br>Line 2: Simplify inside the root: \\(\\sqrt{15 + 1} - 1 = 3\\)<br>Line 3: Evaluate: \\(\\sqrt{16} - 1 = 3 \\implies 4 - 1 = 3\\)<br>Line 4: Since \\(3 = 3\\), \\(x = 5\\) is extraneous.<br>In which line is the FIRST mistake?",
+      "Line 4",["Line 1","Line 2","Line 3"],
+      "Lines 1 through 3 evaluate the left side properly to \\(3\\), matching the right side. In Line 4, the student calls a verified solution extraneous instead of valid. The first mistake is in <b>Line 4</b>.",
+      {variant:3,mistakeLine:4});
+  },
+  function(){
+    return mcq("A student checks whether \\(x = -3\\) is a root of \\(\\sqrt{1 - 5x} = 1 - x\\).<br>Line 1: Substitute \\(x = -3\\): \\(\\sqrt{1 - 5(-3)} = 1 - (-3)\\)<br>Line 2: Simplify: \\(\\sqrt{1 - 15} = 4\\)<br>Line 3: Evaluate: \\(\\sqrt{-14} = 4\\)<br>Line 4: Since \\(\\sqrt{-14}\\) is not real, \\(x = -3\\) is not a root.<br>In which line is the FIRST mistake?",
+      "Line 2",["Line 1","Line 3","Line 4"],
+      "Line 1 substitutes \\(x = -3\\) correctly. In Line 2, \\(-5(-3) = +15\\), so the radicand is \\(1 + 15 = 16\\), not \\(1 - 15 = -14\\) (\\(x = -3\\) is actually a valid root since \\(\\sqrt{16} = 4\\)). The first mistake is in <b>Line 2</b>.",
+      {variant:4,mistakeLine:2});
+  }
+]));
+
+E("u4-extraneous-valid-root",4,["1.11"],2,"gen",function(){
+  // Build \sqrt{x + a} = x - c with two distinct integer roots r1 < c < r2 of (x - c)^2 = x + a
+  // Let k1 = c - r1 > 0 (extraneous) and k2 = r2 - c > 0 (valid), with k1 !== k2
+  // Quadratic: x^2 - (2c + 1)x + (c^2 - a) = 0 => r1 + r2 = 2c + 1 => r2 - c = c - r1 + 1 => k2 = k1 + 1
+  var k1=ri(1,4);
+  var k2=k1+1;
+  var c=ri(0,5);
+  var r1=c-k1;
+  var r2=c+k2;
+  var a=k2*k2-r2;
+  var radStr=a===0?"x":(a>0?"x + "+a:"x - "+(-a));
+  var rhsStr=c===0?"x":(c>0?"x - "+c:"x + "+(-c));
+  var bQuad=-(2*c+1),cQuad=c*c-a;
+  return numq("Solve \\(\\sqrt{"+radStr+"} = "+rhsStr+"\\) and state the valid root.",
+    r2,0.011,
+    "Square both sides: \\("+radStr+" = ("+rhsStr+")^2\\), which rearranges to \\(x^2 "+(bQuad>=0?"+ "+bQuad:"- "+(-bQuad))+"x "+(cQuad>=0?"+ "+cQuad:"- "+(-cQuad))+" = 0\\). Factoring gives \\((x "+(r1>=0?"- "+r1:"+ "+(-r1))+")(x "+(r2>=0?"- "+r2:"+ "+(-r2))+") = 0\\), so \\(x = "+r1+"\\) or \\(x = "+r2+"\\). Check \\(x = "+r1+"\\): \\(\\sqrt{"+(r1+a)+"} = "+k1+"\\) while \\("+rhsStr+" = "+(r1-c)+"\\) (extraneous). Check \\(x = "+r2+"\\): \\(\\sqrt{"+(r2+a)+"} = "+k2+"\\) and \\("+rhsStr+" = "+(r2-c)+"\\). The valid root is <b>\\("+r2+"\\)</b>.",
+    {a:a,c:c,r1:r1,r2:r2});
+});
+
+E("u4-no-solution-equation",4,["1.11"],3,"gen",function(){
+  var a=ri(1,5);
+  var k=ri(2,6);
+  var r=k*k-a;
+  // \sqrt{x + a} = -k => squaring gives x = k^2 - a = r; boundary is -a
+  var radStr="x + "+a;
+  var key="No solution";
+  var ds=[
+    "\\(x = "+r+"\\)",
+    "\\(x = "+(-a)+"\\)",
+    "\\(x = "+(-a)+"\\) and \\(x = "+r+"\\)"
+  ];
+  return mcq("Determine the solution to the equation \\(\\sqrt{"+radStr+"} = -"+k+"\\).",
+    key,ds,
+    "The principal square root \\(\\sqrt{"+radStr+"}\\) is always greater than or equal to \\(0\\) for all real values in its domain, so it can never equal the negative number \\(-"+k+"\\) (squaring gives the extraneous candidate \\(x = "+r+"\\)). Therefore, there is <b>No solution</b>.",
+    {a:a,k:k,r:r});
+});
+
+E("u4-model-solve-variable",4,["1.12"],2,"gen",function(){
+  var ctx=ri(0,1);
+  if(ctx===0){
+    // Distance to horizon d = 3.5 \sqrt{h}, pick h as a clean integer so d = 3.5 * k
+    var k=ri(3,9);
+    var h=k*k;
+    var d=3.5*k;
+    return numq("The distance \\(d\\) (in kilometres) to the horizon from an observation deck at height \\(h\\) (in metres) is modelled by \\(d = 3.5\\sqrt{h}\\). If a ferry is visible on the horizon at \\(d = "+fmt(d,1)+"\\text{ km}\\), find the height \\(h\\) of the deck in metres.",
+      h,0.011,
+      "Substitute \\(d = "+fmt(d,1)+"\\) into the formula: \\("+fmt(d,1)+" = 3.5\\sqrt{h}\\). Divide both sides by \\(3.5\\) to isolate the radical: \\(\\sqrt{h} = "+k+"\\). Square both sides to get \\(h = "+k+"^2 = "+h+"\\). The height is <b>\\("+h+"\\)</b>.",
+      {ctx:0,k:k,h:h,d:d});
+  }else{
+    // Free-fall time t = \sqrt{d / 4.9}, pick t as integer so d = 4.9 * t^2
+    var t=ri(2,6);
+    var d=4.9*t*t;
+    return numq("The time \\(t\\) (in seconds) for a stone to fall a distance \\(d\\) (in metres) is modelled by \\(t = \\sqrt{\\frac{d}{4.9}}\\). If the stone takes \\(t = "+t+"\\text{ s}\\) to reach the water below, find the distance \\(d\\) in metres.",
+      d,0.011,
+      "Substitute \\(t = "+t+"\\) into the formula: \\("+t+" = \\sqrt{\\frac{d}{4.9}}\\). Square both sides: \\("+(t*t)+" = \\frac{d}{4.9}\\). Multiply by \\(4.9\\) to get \\(d = "+(t*t)+" \\times 4.9 = "+fmt(d,1)+"\\). The distance is <b>\\("+fmt(d,1)+"\\)</b>.",
+      {ctx:1,t:t,d:d});
+  }
+});
+
+E("u4-model-equation-two-step",4,["1.12"],2,"gen",function(){
+  var fixed=ri(4,15);
+  var coeff=ri(2,6);
+  var total=fixed+coeff*ri(3,7);
+  var key="\\("+fixed+" + "+coeff+"\\sqrt{x} = "+total+"\\)";
+  var d1="\\("+coeff+"\\sqrt{"+fixed+" + x} = "+total+"\\)";
+  var d2="\\(\\sqrt{"+fixed+" + "+coeff+"x} = "+total+"\\)";
+  var d3="\\("+fixed+" + "+coeff+"x^2 = "+total+"\\)";
+  return mcq("A walkway consists of a fixed \\("+fixed+"\\text{ m}\\) wooden ramp connected to a stone path whose length (in metres) is \\("+coeff+"\\) times the square root of its width \\(x\\) (in metres). If the total length of the walkway is \\("+total+"\\text{ m}\\), which equation models this situation?",
+    key,[d1,d2,d3],
+    "The total length is the sum of the fixed \\("+fixed+"\\text{ m}\\) ramp and the stone path's length \\("+coeff+"\\sqrt{x}\\). Setting this sum equal to \\("+total+"\\) gives <b>"+key+"</b>.",
+    {fixed:fixed,coeff:coeff,total:total});
+});
+
 /* PK tranche pass for Unit 4. pkFor is Cluster 4's dependent
    indicator list from the prior knowledge map. */
 var PKT_U4_FOR=["1.1","1.2","1.4","1.5","1.6","1.7","1.9","1.11"];
@@ -10204,4 +10729,4 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-mixed":2,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
