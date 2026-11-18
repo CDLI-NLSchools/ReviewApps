@@ -2428,6 +2428,133 @@ rep(r'''function downloadWordFile(statusEl){
   });
 }''', count=1)  # Word images: download runs the async builder (Nov 18, 2026)
 
+# ---------- prior knowledge switch in the builder, default off (Nov 18, 2026) ----------
+# Jason's ruling, Nov 18, 2026: prior knowledge entries leave ordinary
+# practice draws unless the user asks for them. The Nov 13 switch lived
+# in the teacher tools bar, where students never saw it, and its
+# default was on, so a plain unit selection dealt prior knowledge
+# questions unasked (a Math 3201 Unit 3 practice set dealt the
+# right-triangle items). The switch now sits in the main builder
+# beside the unit and indicator pickers, starts off, and shows only
+# when the selected units carry prior knowledge entries:
+# - pkInChk renders exactly once, in the builder (the pkInRow row
+#   after the indicator box), unchecked in the markup; the teacher
+#   bar copy is removed, so one control governs the setting, and
+#   tGateStudentUI no longer strips it for students. Its boot
+#   capture into the hidCtl stash stays.
+# - refreshPkToggle() runs inside updatePoolInfo beside
+#   refreshPkCheckBtn and hides the row unless the selected units'
+#   pool holds a prior knowledge entry; pkIncluded() reads a hidden
+#   row as off, so an invisible control never silently includes
+#   prior knowledge, and its no-control fallback is off as well.
+#   The #pkInRow[hidden] CSS rule keeps the flex .adv row hidden:
+#   the .adv display rule would otherwise beat the hidden attribute.
+# - hidCtl.pkIn defaults to false.
+# - The link form flips with the default: settingsToURL writes
+#   pkin=1 only when the switch is on, and applyURL honours pkin=1
+#   and pkin=0. A link with no pkin now means off (before, it meant
+#   on); prerequisite check links (pkonly, grp) are untouched.
+# - updatePoolInfo counts the pool the switch leaves: with the
+#   switch off, the displayed template count and level split exclude
+#   prior knowledge entries, so the number matches what a draw can
+#   deal. Sheet draws already pass through drawSet's filter, so
+#   sheets follow the same switch with no change needed there.
+# - The French static table gains the switch label (fr-static
+#   snippet, edited alongside this section).
+rep('  .adv{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-top:10px;}',
+    '  .adv{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-top:10px;}\n'
+    '  #pkInRow[hidden]{display:none;}', count=1)  # PK toggle row hidden rule
+rep('    <div class="indbox" id="indBox"></div>\n'
+    '    <div class="adv">',
+    '    <div class="indbox" id="indBox"></div>\n'
+    '    <div class="adv" id="pkInRow" hidden>\n'
+    '      <label><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>\n'
+    '    </div>\n'
+    '    <div class="adv">', count=1)  # PK toggle row in the builder
+rep('''+(BANK.some(function(e){return isPK(e);})?'<label><input type="checkbox" id="pkInChk"'+(settings().pkIn?" checked":"")+'> Include prior knowledge questions (practice draws only; tests and exams treat prior knowledge separately)</label>':"")''',
+    '', count=1)  # teacher bar loses its PK switch copy
+rep('/* Prior knowledge in practice (Nov 13, 2026): PK-coded entries\n'
+    '   sit in practice pools by default, the mirror image of\n'
+    '   enrichment. pkIncluded() reports the Advanced tools switch\n'
+    '   (the checkbox pkInChk when it is on the page, else the\n'
+    '   hidCtl stash), defaulting to included: the behaviour the\n'
+    '   apps have always had. drawSet filters PK entries out of\n'
+    '   the practice pool when the switch is deliberately off;\n'
+    '   poolFor is shared with exam composition, whose includePK\n'
+    '   scope rule is separate and untouched, so the filter lives\n'
+    '   in drawSet, the practice draw funnel, and nowhere else. */',
+    '/* Prior knowledge in practice (Nov 13, 2026; moved into the\n'
+    '   builder and defaulted off Nov 18, 2026): pkIncluded()\n'
+    '   reports the builder switch (the checkbox pkInChk in the\n'
+    '   practice builder, else the hidCtl stash), defaulting to\n'
+    '   excluded: a practice draw leaves prior knowledge entries\n'
+    '   out unless the switch is deliberately on. A switch row\n'
+    '   hidden for the current selection reads as off, so an\n'
+    '   invisible control never silently includes prior knowledge.\n'
+    '   drawSet filters PK entries out of the practice pool when\n'
+    '   the switch is off; poolFor is shared with exam composition,\n'
+    '   whose includePK scope rule is separate and untouched, so\n'
+    '   the filter lives in drawSet, the practice draw funnel, and\n'
+    '   nowhere else. */', count=1)  # pkIncluded comment
+rep('function pkIncluded(){\n'
+    '  var el=null;\n'
+    '  try{el=document.getElementById("pkInChk");}catch(err){}\n'
+    '  if(el)return !!el.checked;\n'
+    '  return (typeof hidCtl!=="undefined"&&hidCtl)?hidCtl.pkIn!==false:true;\n'
+    '}',
+    'function pkIncluded(){\n'
+    '  var el=null;\n'
+    '  try{el=document.getElementById("pkInChk");}catch(err){}\n'
+    '  if(el){var row=null;try{row=document.getElementById("pkInRow");}catch(err){}\n'
+    '    if(row&&row.hidden)return false;\n'
+    '    return !!el.checked;}\n'
+    '  return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.pkIn:false;\n'
+    '}', count=1)  # pkIncluded default off, hidden row reads off
+rep('  if(show)b.textContent=L9("Start prerequisite check","Commencer la vérification des préalables");\n'
+    '}\n'
+    'function updatePoolInfo(){refreshFace();refreshPkCheckBtn();',
+    '  if(show)b.textContent=L9("Start prerequisite check","Commencer la vérification des préalables");\n'
+    '}\n'
+    'function refreshPkToggle(){\n'
+    '  var row=document.getElementById("pkInRow");\n'
+    '  if(!row)return;\n'
+    '  var show=poolFor(state.units,[],false).some(function(e){return typeof isPK==="function"&&isPK(e);});\n'
+    '  row.hidden=!show;\n'
+    '}\n'
+    'function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();', count=1)  # PK toggle visibility refresh
+rep('  var p=poolFor(state.units,state.inds,state.finalCap?"final":state.midCap);\n'
+    '  var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});',
+    '  var p=poolFor(state.units,state.inds,state.finalCap?"final":state.midCap);\n'
+    '  if(!(typeof pkIncluded==="function"&&pkIncluded()))p=p.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});\n'
+    '  var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});', count=1)  # pool count respects the PK switch
+rep('/* Teacher-mode UI split (Nov 10, 2026): the level percentage fields,\n'
+    '   the paper count fields and the prior knowledge checkbox render only\n'
+    '   in teacher mode. Their values are captured at boot, after the URL\n'
+    '   parameters have been applied (tGateStudentUI), so settings still\n'
+    '   resolve when the controls are absent from the DOM: hiding a control\n'
+    '   never disables the setting behind it, and a link a teacher built\n'
+    '   composes the identical set for a student. */\n'
+    'var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:true,pkOnly:false,pkGroups:null};',
+    '/* Teacher-mode UI split (Nov 10, 2026): the level percentage fields\n'
+    '   and the paper count fields render only in teacher mode. Their\n'
+    '   values are captured at boot, after the URL parameters have been\n'
+    '   applied (tGateStudentUI), so settings still resolve when the\n'
+    '   controls are absent from the DOM: hiding a control never disables\n'
+    '   the setting behind it, and a link a teacher built composes the\n'
+    '   identical set for a student. The prior knowledge switch left\n'
+    '   this group on Nov 18, 2026: it renders in the main builder for\n'
+    '   everyone (see refreshPkToggle), and its stash default is off. */\n'
+    'var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null};', count=1)  # hidCtl pkIn default off
+rep('["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","pkInChk"]',
+    '["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk"]', count=1)  # student UI keeps the builder PK switch
+rep('  if(!s.pkIn)p.set("pkin","0");\n'
+    '  if(s.pkOnly)p.set("pkonly","1");',
+    '  if(s.pkIn)p.set("pkin","1");\n'
+    '  if(s.pkOnly)p.set("pkonly","1");', count=1)  # settingsToURL writes pkin=1 when on
+rep('  if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").checked=false;}',
+    '  if(p.get("pkin")==="1"){hidCtl.pkIn=true;if($("pkInChk"))$("pkInChk").checked=true;}\n'
+    '  if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").checked=false;}', count=1)  # applyURL honours pkin=1
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

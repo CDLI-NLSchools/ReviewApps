@@ -73,13 +73,19 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is the chassis default 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("490 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  // Pool figures amended Nov 18, 2026: the prior knowledge switch moved
+  // into the builder, defaults off, and the pool line counts the pool
+  // the switch leaves, so each figure in this file drops the
+  // selection's prior knowledge entries (109 across the bank: 74 in
+  // Units 1 to 4, 35 in Units 5 to 8). With the switch on the figures
+  // are the earlier ones: 490, 334, 151, 339 and 334.
+  ok((d.getElementById("poolInfo").textContent || "").includes("381 question templates"), "course: pool after All preset is the whole bank with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: All preset leaves the mid-course cap off");
 
   // mid preset: cap on, capped pool, the note, preset serialization
   ev(r.dom, "document.getElementById('presetMid').click()");
   ok(ev(r.dom, "settings().midCap") === true, "course: Mid preset switches the mid-course cap on");
-  ok((d.getElementById("poolInfo").textContent || "").includes("334 question templates"), "course: pool after Mid preset is Units 1 to 4 minus the five held-out entries, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("260 question templates"), "course: pool after Mid preset is Units 1 to 4 minus the five held-out entries, with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok((d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "course: pool line carries the standalone's held-out note while the cap is on");
   ok(ev(r.dom, "settingsToURL()").includes("preset=mid"), "course: settings link serializes preset=mid while the cap is on, saw " + ev(r.dom, "settingsToURL()"));
   ev(r.dom, "refreshFace()");
@@ -88,7 +94,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
 
   // final preset
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("151 question templates"), "course: pool after Final preset is Units 5 to 8, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("116 question templates"), "course: pool after Final preset is Units 5 to 8 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: Final preset leaves the cap off");
   ok(!(d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "course: the held-out note is gone once the cap is off");
   ev(r.dom, "refreshFace()");
@@ -118,7 +124,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   d = r.dom.window.document;
   ev(r.dom, "updatePoolInfo()");
   ok(ev(r.dom, "settings().midCap") === false, "manual: a unit=1,2,3,4 link boots uncapped");
-  ok((d.getElementById("poolInfo").textContent || "").includes("339 question templates"), "manual: pool is all of Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("265 question templates"), "manual: pool is all of Units 1 to 4 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(!(d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "manual: no held-out note while uncapped");
   ok(!ev(r.dom, "settingsToURL()").includes("preset=mid") && ev(r.dom, "settingsToURL()").includes("unit=1%2C2%2C3%2C4"),
      "manual: settings link serializes plain units, not preset=mid, saw " + ev(r.dom, "settingsToURL()"));
@@ -130,7 +136,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   d = r.dom.window.document;
   ev(r.dom, "updatePoolInfo()");
   ok(ev(r.dom, "settings().midCap") === true, "preset link: a preset=mid link boots with the cap on");
-  ok((d.getElementById("poolInfo").textContent || "").includes("334 question templates"), "preset link: capped pool, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("260 question templates"), "preset link: capped pool with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(r.errors.length === 0, "preset link: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
   r.dom.window.close();
 

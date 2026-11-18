@@ -60,12 +60,18 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,62,18", "course: default level mix is the course default 20/62/18, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("246 question templates"), "course: pool after All preset is the whole default pool (bank 249 minus the 3 enrichment entries), saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  // Pool figures amended Nov 18, 2026: the prior knowledge switch moved
+  // into the builder, defaults off, and the pool line counts the pool
+  // the switch leaves, so each figure drops the selection's prior
+  // knowledge entries (41 across the bank: 21 in Units 1 to 4, 20 in
+  // Units 5 to 9). With the switch on the figures are the earlier
+  // ones: 246, 109 and 137.
+  ok((d.getElementById("poolInfo").textContent || "").includes("205 question templates"), "course: pool after All preset is the whole default pool with the PK switch off (bank 249 minus the 3 enrichment entries and the 41 prior knowledge entries), saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("109 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("88 question templates"), "course: pool after Mid preset is Units 1 to 4 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,62,18", "course: mid preset mix 20/62/18, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("137 question templates"), "course: pool after Final preset is Units 5 to 9, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("117 question templates"), "course: pool after Final preset is Units 5 to 9 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: final preset mix switches to 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ok(ev(r.dom, "Object.keys(REF_HTML).length") === 6, "course: per-unit reference panels for Units 4 to 9 only, saw " + ev(r.dom, "Object.keys(REF_HTML).length"));
   ok(ev(r.dom, "refPanelsHtml([1])").includes("Quadratic Formula") && !ev(r.dom, "refPanelsHtml([1])").includes("Formulas and facts"),

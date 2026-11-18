@@ -11,6 +11,14 @@
    Advanced tools switch can keep them out of practice draws;
    its filter lives in drawSet, so poolFor and exam composition
    are untouched by it.
+   Amendment, Nov 18, 2026: the prior knowledge switch moved out
+   of the teacher tools bar into the main builder (beside the
+   unit and indicator pickers) and its default flipped to off,
+   so Part B's default-state assertions now read the switch
+   unchecked and settings().pkIn false, and the switch is found
+   in the builder rather than the teacher bar. The link form
+   flipped with the default: pkin=1 is the on form, pkin=0 still
+   lands off, and a link with no pkin now means off.
    Part A (per-course vm sandboxes, the shell's own functions
    extracted from index.html): with no toggle state anywhere,
    every course's poolFor pool is exactly its bank filtered by
@@ -28,12 +36,13 @@
    toggle combinations and free of the flagged entries. A
    generic block then drives the practice switch for each of
    the ten other courses flagged in the Nov 13 pass.
-   Part B (jsdom, the real page): the two Advanced tools controls
-   render for Math 2201 and Math 3201 (the courses carrying
-   both kinds); Physics 2204 renders the prior knowledge switch
-   but no enrichment toggle; every other newly flagged course
-   renders the prior knowledge switch; a course with neither
-   kind renders neither;
+   Part B (jsdom, the real page): the enrichment toggle renders
+   in the teacher bar and the prior knowledge switch in the
+   builder (moved there Nov 18, 2026) for Math 2201 and Math
+   3201 (the courses carrying both kinds); Physics 2204 renders
+   the prior knowledge switch but no enrichment toggle; every
+   other newly flagged course renders the prior knowledge
+   switch; a course with neither kind renders neither;
    the link forms enr=1 and pkin=0 land in settings; an
    enrichment question's card tag and its pick from bank list
    entry carry the word Enrichment.
@@ -426,10 +435,10 @@ const ev = (dom, code) => dom.window.eval(code);
   let d = r.dom.window.document;
   ev(r.dom, "startOnline()");
   ok(!!d.querySelector("#enrChk"), "visibility: Math 2201 teacher bar renders the enrichment toggle");
-  ok(!!d.querySelector("#pkInChk"), "visibility: Math 2201 teacher bar renders the prior knowledge switch");
+  ok(!!d.querySelector("#pkInChk"), "visibility: Math 2201 builder renders the prior knowledge switch");
   ok(d.querySelector("#enrChk") && !d.querySelector("#enrChk").checked, "visibility: enrichment toggle starts unchecked (default out)");
-  ok(d.querySelector("#pkInChk") && d.querySelector("#pkInChk").checked, "visibility: prior knowledge switch starts checked (default in)");
-  ok(ev(r.dom, "settings().enr") === false && ev(r.dom, "settings().pkIn") === true, "link state: defaults read enr off, pkIn on");
+  ok(d.querySelector("#pkInChk") && !d.querySelector("#pkInChk").checked, "visibility: prior knowledge switch starts unchecked (default off since Nov 18, 2026)");
+  ok(ev(r.dom, "settings().enr") === false && ev(r.dom, "settings().pkIn") === false, "link state: defaults read enr off, pkIn off (Nov 18, 2026)");
   ok(ev(r.dom, "BANK.length") === 492 && ev(r.dom, "poolFor([7],[]).length") === 33, "live shell: bank 492, default Unit 7 pool 33");
   ok(ev(r.dom, "current.every(function(q){return !q._entry.enrich;})"), "live shell: the auto-started default set holds no enrichment question");
   ok(ev(r.dom, "tags({ _entry: BANK.find(function(e){return e.enrich;}) })").includes("Enrichment"), "marking: a drawn enrichment question's card tags carry the word Enrichment");
@@ -461,8 +470,8 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(!!d.querySelector(".tbar"), "visibility: Physics 2204 teacher bar renders");
   ok(!d.querySelector("#enrChk"), "visibility: Physics 2204 (no enrichment entries) shows no enrichment toggle");
   ok(!!d.querySelector("#pkInChk"), "visibility: Physics 2204 (two flagged prior knowledge entries) renders the prior knowledge switch");
-  ok(d.querySelector("#pkInChk") && d.querySelector("#pkInChk").checked, "visibility: Physics 2204 prior knowledge switch starts checked (default in)");
-  ok(ev(r.dom, "settings().enr") === false && ev(r.dom, "settings().pkIn") === true, "link state: Physics 2204 keeps the harmless defaults");
+  ok(d.querySelector("#pkInChk") && !d.querySelector("#pkInChk").checked, "visibility: Physics 2204 prior knowledge switch starts unchecked (default off since Nov 18, 2026)");
+  ok(ev(r.dom, "settings().enr") === false && ev(r.dom, "settings().pkIn") === false, "link state: Physics 2204 defaults read enr off, pkIn off (Nov 18, 2026)");
   r.dom.window.close();
 
   r = await boot("course=physics-2204&teacher=1&unit=1&count=5&pkin=0");
@@ -478,7 +487,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ev(r.dom, "startOnline()");
   ok(!!d.querySelector("#enrChk"), "visibility: Math 3201 teacher bar renders the enrichment toggle");
   ok(!!d.querySelector("#pkInChk"), "visibility: Math 3201 (41 flagged prior knowledge entries) renders the prior knowledge switch");
-  ok(d.querySelector("#pkInChk") && d.querySelector("#pkInChk").checked, "visibility: Math 3201 prior knowledge switch starts checked (default in)");
+  ok(d.querySelector("#pkInChk") && !d.querySelector("#pkInChk").checked, "visibility: Math 3201 prior knowledge switch starts unchecked (default off since Nov 18, 2026)");
   ok(d.querySelector("#enrChk") && !d.querySelector("#enrChk").checked, "visibility: Math 3201 enrichment toggle starts unchecked (default out)");
   ok(ev(r.dom, "BANK.length") === 249 && ev(r.dom, "poolFor([9],[]).length") === 27, "live shell: Math 3201 bank 249, default Unit 9 pool 27");
   ok(ev(r.dom, "current.every(function(q){return !q._entry.enrich;})"), "live shell: the auto-started Math 3201 default set holds no enrichment question");
@@ -494,14 +503,14 @@ const ev = (dom, code) => dom.window.eval(code);
   r.dom.window.close();
 
   // the remaining newly flagged courses of the Nov 13 pass:
-  // each renders the prior knowledge switch (checked by
-  // default) and no enrichment toggle.
+  // each renders the prior knowledge switch (unchecked by
+  // default since Nov 18, 2026) and no enrichment toggle.
   for (const cid of ["math-9", "math-9-fr", "math-8", "math-8-fr", "math-3202", "math-2200", "math-2202", "math-3208", "chem-3202"]) {
     r = await boot("course=" + cid + "&teacher=1&unit=1&count=3");
     d = r.dom.window.document;
     ev(r.dom, "startOnline()");
     ok(!!d.querySelector("#pkInChk"), "visibility: " + cid + " (flagged prior knowledge entries) renders the prior knowledge switch");
-    ok(d.querySelector("#pkInChk") && d.querySelector("#pkInChk").checked, "visibility: " + cid + " prior knowledge switch starts checked (default in)");
+    ok(d.querySelector("#pkInChk") && !d.querySelector("#pkInChk").checked, "visibility: " + cid + " prior knowledge switch starts unchecked (default off since Nov 18, 2026)");
     ok(!d.querySelector("#enrChk"), "visibility: " + cid + " (no enrichment entries) shows no enrichment toggle");
     r.dom.window.close();
   }
