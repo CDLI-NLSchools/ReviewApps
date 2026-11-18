@@ -586,7 +586,8 @@ rep('  .nameline{display:flex;gap:30px;font-size:.95rem;margin-bottom:14px;}',
     '  .codebox .code a{color:inherit;text-decoration:none;}\n'
     '  .codebox .qr{display:block;background:#fff;padding:2mm;}\n'
     '  .codebox .qr svg{width:46mm;height:46mm;display:block;margin:0 auto;}\n'
-    '  .codebox .codehint{font-size:.78rem;color:#444;line-height:1.35;margin-top:4px;}', count=1)
+    '  .codebox .codehint{font-size:.78rem;color:#444;line-height:1.35;margin-top:4px;}\n'
+    '  .codeteach{margin:0 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#f4f7fb;font-size:.95rem;}', count=1)
 rep('    .pq{page-break-inside:avoid;margin-bottom:14px;}\n'
     '    .solp{page-break-inside:avoid;}',
     '    .pq{page-break-inside:avoid;margin-bottom:14px;}\n'
@@ -673,6 +674,24 @@ rep('if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){',
     '     but the mode. */\n'
     '}\n'
     'else if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){', count=1)
+# Code entry routing (Nov 18, 2026, Jason's ruling: one code, one
+# behaviour): a set link carrying via=code or via=qr opens the
+# practice view of the set even when its set value names the sheet
+# or the exam; tRebuildFromURL diverts to tCodePracticeFromSet
+# (in printcode.js.txt) ahead of its view branches. A seed-derived
+# code lands through the settings dispatch with its print mode
+# moved aside to tmode, so it draws as practice on its own. One
+# teacher bar call after the whole boot dispatch covers every
+# landing (set-valued, seeded, or a carried-across restore); the
+# bar itself (also in printcode.js.txt) no-ops unless the arrival
+# really was by code and a practice set is on screen. The anchor
+# keeps the else{startOnline();} substring intact: the boot guard
+# section below indexes on it.
+rep('  var view=vtag.charAt(0),edited=vtag.indexOf("*")>=0;\n  var s=settings();\n  if(view==="p"){',
+    '  var view=vtag.charAt(0),edited=vtag.indexOf("*")>=0;\n  var s=settings();\n  if(tCodeVia()&&view!=="p")return tCodePracticeFromSet(view,salt,body,edited,s);\n  if(view==="p"){', count=1)
+# (The bar call itself is added with the resume reps further down:
+# that section rewrites this same dispatch tail, so the call can
+# only be anchored after its rewrite, on the final text.)
 
 # ---------- boot guard for picker mode ----------
 boot_anchor = '(function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();'
@@ -831,7 +850,15 @@ codebox_script = ('<script>\n'
                   '   a pack code to its full set parameters, and the box\n'
                   '   navigates to the app root in this directory with\n'
                   '   those parameters, so the student lands on the exact\n'
-                  '   printed set. Teacher-minted codes resolve through\n'
+                  '   printed set. Code entry always lands on the online\n'
+                  '   practice view of the set (Nov 18, 2026, Jason\'s\n'
+                  '   ruling: one code, one behaviour): openSet marks\n'
+                  '   the navigation via=code and sets the print mode\n'
+                  '   aside (a set value keeps its frozen set; a seed\n'
+                  '   address moves its mode to tmode), and the course\n'
+                  '   side honours the flag in tRebuildFromURL and the\n'
+                  '   settings dispatch, with the teacher route one\n'
+                  '   click deep on the practice view itself. Teacher-minted codes resolve through\n'
                   '   the living sheet registry: the shell\'s\n'
                   '   fetchSheetCodes (see the printed set codes section\n'
                   '   of the main script) reads it once per session. If\n'
@@ -853,7 +880,11 @@ codebox_script = ('<script>\n'
                   '  function openSet(q,teacher){\n'
                   '    try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:teacher?"teacher_code_open":"pack_code_open",event:true});}catch(e){}\n'
                   '    var base=location.pathname.substring(0,location.pathname.lastIndexOf("/")+1);\n'
-                  '    location.href=base+"?"+q;\n'
+                  '    var p=new URLSearchParams(q);\n'
+                  '    p.set("via","code");\n'
+                  '    if(p.get("set")){p.delete("mode");}\n'
+                  '    else if(p.get("seed")){var m=p.get("mode");if(m==="sheet"||m==="exam")p.set("tmode",m);p.delete("mode");}\n'
+                  '    location.href=base+"?"+p.toString();\n'
                   '  }\n'
                   '  form.addEventListener("submit",function(ev){\n'
                   '    ev.preventDefault();\n'
@@ -887,7 +918,12 @@ rep('</body>', picker_script + codebox_script + '</body>', count=1)
 # a redirect to the home page. tests/gate-pack-codes.js asserts the
 # box is present and working on index.html, resolves a known pack
 # code and a sheet-registry code, rejects an unknown one, and that
-# studymate.html carries the redirect and no pack listing.
+# studymate.html carries the redirect and no pack listing. Since
+# the code entry routing change of Nov 18, 2026 it also asserts
+# the resolver marks every code family's navigation via=code with
+# the print mode set aside, and that code arrivals land on the
+# practice view with the teacher route present, opening the same
+# frozen set in its teacher view.
 
 # ---------- branding and identifiers (run time, from the active course) ----------
 # Nothing course-specific is baked into the shell: every string the chassis
@@ -1686,6 +1722,13 @@ rep('    renderExam();\n    return true;\n  }\n  return false;\n}',
     '    renderExam();\n    _resumeAppliedSig=_resumeLiveSig;resumeSaveNow();\n    return true;\n  }\n  return false;\n}', count=1)
 rep('else{startOnline();}\n}\n}\n</script>',
     'else{startOnline();}\n}\nresumeBootCheck();\n}\n</script>', count=1)
+# Code entry routing, continued (see the printcode section): the
+# teacher bar call lands here, after the whole boot dispatch and
+# its resume check, because this rep's rewrite of the dispatch
+# tail is the last one the tail receives. It no-ops unless the
+# arrival was by code and a practice set is on screen.
+rep('else{startOnline();}\n}\nresumeBootCheck();\n}\n</script>',
+    'else{startOnline();}\n}\ntCodeTeacherBar();\nresumeBootCheck();\n}\n</script>', count=1)
 rep('paper+=\'<div class="pq"><p><b>\'+n+\'.</b></p><div class="prompt">\'+stepHTML(q.prompt)+\'</div>\';',
     'paper+=\'<div class="pq"><div class="qline"><b>\'+n+\'.</b> <span class="prompt">\'+stepHTML(q.prompt)+\'</span></div>\';', count=1)
 rep('paper+=\'<div class="pq"><p><b>\'+n+\'.</b> <span style="font-size:.85rem;color:#555;">(\'+it.marks+L9(" marks"," points")+\'</span></p><div class="prompt">\'+stepHTML(q.prompt)+\'</div>\';',

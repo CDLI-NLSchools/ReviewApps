@@ -143,7 +143,21 @@ const ev = (d, code) => d.window.eval(code);
        label + ": QR module size at the 46 mm print size is at least 0.33 mm (saw " +
        (modules > 0 ? (46 / modules).toFixed(3) + " mm over " + modules + " modules" : "no viewBox") + ")");
     const qrLink = box.querySelector(".qr") ? box.querySelector(".qr").closest("a") : null;
-    ok(!!qrLink && (qrLink.getAttribute("href") || "") === href, label + ": QR link target matches the code link target");
+    /* The QR target is the code link's set address with the
+       practice-view flag (Nov 18, 2026): via=qr set, mode removed,
+       the set or seed value itself unchanged, so a scan lands on
+       the online practice view while the printed code keeps
+       resolving through the registries to the same set. */
+    let qrOk = false;
+    if (qrLink && href) {
+      const cp = new URLSearchParams(href.split("?")[1] || "");
+      const qp = new URLSearchParams((qrLink.getAttribute("href") || "").split("?")[1] || "");
+      qrOk = qp.get("via") === "qr" && !qp.get("mode")
+        && (qp.get("set") || "") === (cp.get("set") || "")
+        && (qp.get("seed") || "") === (cp.get("seed") || "")
+        && (qp.get("course") || "") === (cp.get("course") || "");
+    }
+    ok(qrOk, label + ": QR link target is the set address with via=qr and no mode");
     const hint = box.querySelector(".codehint");
     ok(!!hint && hint.textContent.includes("Type the code on the Review Apps home page"),
        label + ": hint line present in the print output");

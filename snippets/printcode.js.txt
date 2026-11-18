@@ -1,0 +1,373 @@
+/* ============ printed set codes: minting and the code block (Nov 18, 2026) ============
+   A teacher print (practice sheet or exam paper) can carry a set code
+   block at the top right of its first page: a six-character code, a QR
+   code and a hint, laid out the way the StudyMate pack renderer lays
+   its block out (floated block, content wraps beside it). The code is
+   an alias for the set's own share URL: the QR code and the code's
+   hyperlink carry the full URL and need no registry, while a typed
+   code resolves through the registry pair: the static pack registry
+   (window.PACK_CODES, pack-codes.js) first, then the living sheet
+   registry in CODE_REGISTRY below, read over the sheet's gviz JSON
+   feed by fetchSheetCodes (fetched once per session, cached here and
+   shared with the home page code box in the picker script).
+   Minting: at the first render of a printed set with the print option
+   on, the app draws a random code from the unambiguous alphabet (the
+   pack alphabet: no 0/O, 1/I/L), checks it best-effort against both
+   registries (the sheet side uses whatever the session fetch has
+   landed so far), then posts the mint to the mint form with a silent
+   no-cors form POST, the write pattern the Report a Problem form
+   config suggests. The post is fire-and-forget: the printed code and
+   QR stand even if it fails, and the home page resolver calls a
+   teacher code unavailable rather than wrong when the sheet cannot
+   be read. Editing the set after a mint changes the set token, so
+   the next render mints a fresh code for the edited set; the earlier
+   code keeps resolving to the set as first printed.
+   Config: CODE_REGISTRY is the single config point in the shell; the
+   same values are noted in pack-codes.js's header comment.
+   File names: a rendered sheet or exam also names the set's files.
+   tApplySetTitle (called at the end of each sheet and exam render)
+   composes course, kind, scope and, when a code was minted for this
+   exact set, the code, and puts it in document.title, which is the
+   name the print dialog suggests for Save as PDF; downloadWordFile
+   recomputes the same name through tSetFileName for the Word file.
+   tRestoreTitle (called when a new online set starts, and at the
+   head of the sheet and exam starts) puts the course title back, so
+   the picker and practice views keep their usual title. */
+var CODE_REGISTRY={
+  sheetId:"1O1B-_vodjxbgZLKI4DnqiX9anYEcufDWbrSEC8coHDY",
+  sheetTab:"Form Responses 1",
+  formUrl:"https://docs.google.com/forms/d/e/1FAIpQLScAk1PB72xGr-Zn3KcCQ8Rngw_lstpQyGSEmeCgGUsVXDVOIg/formResponse",
+  codeEntry:"entry.1857900599",
+  paramsEntry:"entry.1573845683",
+  courseEntry:"entry.1903227092",
+  dateEntry:"entry.478786540"
+};
+var CODE_ALPHABET="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+var _sheetCodesPromise=null,_sheetCodesCache=null,_printCode=null;
+function fetchSheetCodes(){
+  if(_sheetCodesPromise)return _sheetCodesPromise;
+  var url="https://docs.google.com/spreadsheets/d/"+CODE_REGISTRY.sheetId+"/gviz/tq?tqx=out:json&sheet="+encodeURIComponent(CODE_REGISTRY.sheetTab);
+  var attempt;
+  try{
+    if(typeof fetch!=="function")throw new Error("no fetch");
+    attempt=fetch(url).then(function(r){return r.text();}).then(function(txt){
+      var a=txt.indexOf("{"),b=txt.lastIndexOf("}");
+      if(a<0||b<=a)throw new Error("registry response not understood");
+      var data=JSON.parse(txt.slice(a,b+1));
+      var rows=(data.table&&data.table.rows)||[],codes={},n=0;
+      rows.forEach(function(row){
+        var c=row.c||[];
+        var code=c[1]&&c[1].v?String(c[1].v).toUpperCase().replace(/[^A-Z0-9]/g,""):"";
+        var q=c[2]&&c[2].v?String(c[2].v):"";
+        if(/^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(code)&&q.indexOf("course=")>=0&&q.indexOf("set=")>=0){codes[code]=q;n++;}
+      });
+      return {ok:true,codes:codes,rows:n};
+    });
+  }catch(e){attempt=Promise.reject(e);}
+  _sheetCodesPromise=attempt.then(function(res){if(res&&res.ok)_sheetCodesCache=res.codes;return res;},function(){return {ok:false,codes:{},rows:0};});
+  return _sheetCodesPromise;
+}
+function tCodeRandom(){
+  var s="";for(var i=0;i<6;i++)s+=CODE_ALPHABET.charAt(Math.floor(Math.random()*CODE_ALPHABET.length));return s;
+}
+function tCodeTaken(code){
+  if(window.PACK_CODES&&window.PACK_CODES[code])return true;
+  if(_sheetCodesCache&&_sheetCodesCache[code])return true;
+  return false;
+}
+function tMintPost(code,q){
+  try{
+    var body=new URLSearchParams();
+    body.set(CODE_REGISTRY.codeEntry,code);
+    body.set(CODE_REGISTRY.paramsEntry,q);
+    body.set(CODE_REGISTRY.courseEntry,window.__COURSE?window.__COURSE.id:"");
+    body.set(CODE_REGISTRY.dateEntry,new Date().toISOString().slice(0,10));
+    fetch(CODE_REGISTRY.formUrl,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body.toString()}).catch(function(){});
+  }catch(e){}
+}
+function tQrSvg(url){
+  try{
+    if(typeof qrcode==="undefined")return "";
+    if(qrcode.stringToBytesFuncs&&qrcode.stringToBytesFuncs["UTF-8"])qrcode.stringToBytes=qrcode.stringToBytesFuncs["UTF-8"];
+    var levels=["M","L"],i;
+    for(i=0;i<levels.length;i++){
+      try{var qr=qrcode(0,levels[i]);qr.addData(url,"Byte");qr.make();return qr.createSvgTag({cellSize:2,margin:0,scalable:true});}catch(e){}
+    }
+  }catch(e){}
+  return "";
+}
+/* ---- print freeze for ordinary renders (fix, Nov 18, 2026) ----
+   The first version of tPrintCodeBlock required the Advanced tools
+   context (T), which exists only when the page carries teacher=1.
+   The print panel and its code toggle sit in the ordinary builder,
+   so a sheet or exam made the ordinary way rendered no block at
+   all: no code, no QR code, no hint, and no mint (Jason's report,
+   Nov 18, 2026, from the live site; reproduced headlessly the same
+   day: the block appeared only with teacher=1). The block now
+   freezes the printed set itself, whichever way the set was made.
+   In Advanced tools the existing context (T) still rules, so an
+   edited set re-mints exactly as before. On an ordinary run the
+   freeze happens where the set is made: tPrintFreezeStart (called
+   from startSheet and startExam through the shell builder) freezes
+   an unseeded ordinary set the way an unseeded Advanced tools set
+   is frozen (tFreezeSlot under a per-set salt), so the printed
+   questions are the frozen ones and their set tokens stay short
+   enough for the QR code to encode; a seeded ordinary set instead
+   aliases its settings plus seed URL, which redraws the identical
+   set and is short enough to encode, and its code is derived from
+   that set value (tCodeForSeed) rather than drawn at random, so
+   every opening of the same seed link prints the same code. A set that reaches the render
+   another way (a resumed exam, a restored set) is never redrawn at
+   render time: any question still carrying no frozen slot is
+   adopted raw (tAdoptDrawn), which stamps the question exactly as
+   it stands. The per-set salt rides on the sheet or exam state, so
+   re-renders of the same set keep the same code instead of minting
+   a new one each time. */
+function tPrintFreezeStart(view){
+  if(TEACHER)return;
+  var s=settings();if(!s.wantCode)return;
+  if(typeof sessionSeed!=="undefined"&&sessionSeed)return;
+  var salt=tSalt(),av={};
+  var freeze=function(q,wantType){
+    if(!q)return q;
+    if(q._ts){av[canonQ(q)]=1;return q;}
+    return tFreezeSlot(q._entry,wantType,av,salt);
+  };
+  if(view==="sheet"&&sheetState&&sheetState.items){
+    sheetState._pctx={salt:salt};
+    sheetState.items.forEach(function(q,i){sheetState.items[i]=freeze(q,q?q.type:null);});
+  }
+  if(view==="exam"&&examState&&examState.ex){
+    examState._pctx={salt:salt};
+    examState.ex.srItems.forEach(function(it){it.q=freeze(it.q,"mc");});
+    examState.ex.crItems.forEach(function(it){it.q=freeze(it.q,it.q?it.q.type:null);});
+  }
+}
+function tPrintItems(view){
+  if(view==="exam"&&examState&&examState.ex)return examState.ex.srItems.map(function(it){return it.q;}).concat(examState.ex.crItems.map(function(it){return it.q;}));
+  if(view==="sheet"&&sheetState&&sheetState.items)return sheetState.items.slice();
+  return null;
+}
+function tPrintSalt(view){
+  var st=view==="exam"?examState:sheetState;
+  if(!st)return "";
+  if(!st._pctx)st._pctx={salt:tSalt()};
+  return st._pctx.salt;
+}
+function tPrintSetValue(view,salt){
+  if(view==="exam"&&examState&&examState.ex){
+    var sr=examState.ex.srItems.map(function(it){return tTok(it.q);}).join(",");
+    var cr=examState.ex.crItems.map(function(it){return tTok(it.q);}).join(",");
+    return "e:"+salt+":"+sr+";"+cr;
+  }
+  if(view==="sheet"&&sheetState&&sheetState.items)return "s:"+salt+":"+sheetState.items.map(tTok).join(",");
+  return "";
+}
+function tPrintShareURL(view,sv){
+  var p=new URLSearchParams(settingsToURL().split("?")[1]||"");
+  p.delete("teacher");p.delete("seed");p.delete("shuf");p.delete("nohint");p.delete("noex");p.delete("rkeep");
+  if(sv)p.set("set",sv);
+  p.set("mode",view==="exam"?"exam":"sheet");
+  return location.origin+location.pathname+"?"+p.toString();
+}
+function tCodeForSeed(sv){
+  /* Deterministic code for a seeded set: the same seed link opened
+     twice must print the same code (a seeded set is one set, shared
+     by the whole class), so the code is derived from the set value
+     rather than drawn at random. */
+  var h=hashSeedStr(sv),code="",i;
+  for(i=0;i<6;i++){code+=CODE_ALPHABET.charAt(Math.floor(h%CODE_ALPHABET.length));h=Math.floor(h/CODE_ALPHABET.length);}
+  return code;
+}
+function tSeedCodeTaken(code,query){
+  /* For a seeded set, its own earlier mint is not a collision: the
+     derived code stays stable across openings of the same seed link.
+     Only a code already naming a different set counts as taken. */
+  if(window.PACK_CODES&&window.PACK_CODES[code]){
+    var pc=window.PACK_CODES[code];
+    return pc.set!==query&&pc.q!==query;
+  }
+  if(_sheetCodesCache&&_sheetCodesCache[code])return _sheetCodesCache[code]!==query;
+  return false;
+}
+function tPrintCodeBlock(view){
+  if(view!=="sheet"&&view!=="exam"){
+    if(T&&(T.view==="sheet"||T.view==="exam"))view=T.view;else return "";
+  }
+  var s=settings();
+  if(!s.wantCode)return "";
+  var salt,sv,url,seedDerive="";
+  if(T&&T.view===view){
+    salt=T.salt;sv=tSetValue();if(!sv)return "";
+    url=tShareURL(false);
+  }else{
+    var items=tPrintItems(view);if(!items||!items.length)return "";
+    salt=tPrintSalt(view);if(!salt)return "";
+    var seeded=(typeof sessionSeed!=="undefined"&&!!sessionSeed);
+    if(seeded){
+      /* A seeded set redraws identically from its settings plus
+         seed, so the code can alias that short URL instead of a
+         raw set token too long for a QR code to carry. */
+      var p2=new URLSearchParams(settingsToURL().split("?")[1]||"");
+      p2.delete("teacher");p2.delete("shuf");p2.delete("nohint");p2.delete("noex");p2.delete("rkeep");
+      p2.set("mode",view);
+      url=location.origin+location.pathname+"?"+p2.toString();
+      sv="seed:"+p2.toString();seedDerive=sv;
+    }else{
+      /* Sets made through startSheet or startExam arrive already
+         frozen by tPrintFreezeStart. Anything else (a resumed or
+         restored set) is adopted raw, never redrawn, so the printed
+         questions stay exactly the questions on screen. */
+      var av={};
+      items.forEach(function(q){if(!q)return;if(q._ts)av[canonQ(q)]=1;else tAdoptDrawn(q,av);});
+      sv=tPrintSetValue(view,salt);if(!sv)return "";
+      url=tPrintShareURL(view,sv);
+    }
+  }
+  var key=view+"|"+salt+"|"+sv;
+  if(_printCode&&_printCode.key===key)return _printCode.html;
+  fetchSheetCodes();
+  var q=url.split("?")[1]||"";
+  if(!q)return "";
+  var code,guard=0,taken;
+  if(seedDerive){
+    code=tCodeForSeed(seedDerive);
+    taken=function(){return tSeedCodeTaken(code,q);};
+    while(taken()&&guard<12){guard++;code=tCodeForSeed(seedDerive+"#"+guard);}
+  }else{
+    code=tCodeRandom();
+    taken=function(){return tCodeTaken(code);};
+    while(taken()&&guard<12){code=tCodeRandom();guard++;}
+  }
+  if(taken())return "";
+  /* The QR code carries the same set address with a via=qr flag
+     and no mode (Nov 18, 2026): scanning it lands on the online
+     practice view of the set, because the printed sheet is the
+     paper bridge and it is in students' hands. The code's own
+     link and the registry entry keep the canonical address, and
+     the set address format itself is untouched. */
+  var qp=new URLSearchParams(url.split("?")[1]||"");
+  qp.delete("mode");qp.set("via","qr");
+  var qrUrl=url.split("?")[0]+"?"+qp.toString();
+  var qr=tQrSvg(qrUrl);
+  var href=url.replace(/&/g,"&amp;");
+  var qrHref=qrUrl.replace(/&/g,"&amp;");
+  var html='<div class="codebox"><div class="codelabel">'+L9("Set code","Code de l'ensemble")+'</div>'
+    +'<div class="code"><a href="'+href+'">'+code.slice(0,3)+' '+code.slice(3)+'</a></div>'
+    +(qr?('<a href="'+qrHref+'"><span class="qr">'+qr+'</span></a>'):"")
+    +'<div class="codehint">'+L9("Type the code on the Review Apps home page, or scan the QR code.","Tapez le code sur la page d'accueil des Review Apps, ou balayez le code QR.")+'</div></div>';
+  _printCode={key:key,code:code,url:url,html:html,view:view,salt:salt};
+  tMintPost(code,q);
+  countEvent("set_code_mint",[analyticsCourse()]);
+  return html;
+}
+/* ---- code entry routing: the practice view is the front door
+   (Nov 18, 2026) ----
+   A set code is the paper bridge, and the paper is in students'
+   hands, so arriving by code lands on the online practice view
+   of the set, for every code family: pack codes (their set
+   values already name the practice view), teacher-minted and
+   ordinary frozen codes (sheet and exam set values, converted
+   below), and seed-derived codes (a settings plus seed address;
+   the home page resolver moves its print mode aside to tmode
+   before landing, so the settings dispatch draws the seeded set
+   as practice). The QR code on a printed set carries via=qr and
+   lands the same way. Shared set links carry no via flag and
+   keep the view their set value names, exactly as before.
+   The practice view of a code-arrived set carries one teacher
+   route (tCodeTeacherBar): a link opening the same frozen set
+   in its teacher view, where printing and editing behave as
+   they always have. An edited set re-mints when it is printed;
+   the printed code keeps pointing at the original set, which is
+   why the editable view sits one click deep rather than at the
+   code's front door. */
+function tCodeVia(){
+  try{var v=new URLSearchParams(location.search).get("via");return v==="code"||v==="qr";}catch(e){return false;}
+}
+function tCodePracticeFromSet(view,salt,body,edited,s){
+  /* The practice render of a sheet or exam set value: the same
+     tokens the sheet and exam branches of tRebuildFromURL build,
+     in the same order (for an exam, selected response first, then
+     constructed response), carried into the practice state the
+     "p" branch sets up. */
+  var avoid={},items=[];
+  var push=function(tok){if(tok){var q=tBuildTok(tok,avoid,salt);if(q)items.push(q);}};
+  if(view==="s"){body.split(",").forEach(push);}
+  else if(view==="e"){var segs=body.split(";");(segs[0]?segs[0].split(","):[]).forEach(push);(segs[1]?segs[1].split(","):[]).forEach(push);}
+  else return false;
+  if(!items.length)return false;
+  stopExamTimer();
+  current=items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};helpUsed={};sessionSeed="";
+  lastSettings=s;onlineThin=false;T=null;
+  if(TEACHER)T={view:"online",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:edited,state:{},endGraded:false,picker:null};
+  if(!TEACHER&&SHUFFLE_OPTS)current=current.map(shufQ);
+  renderOnline(false);
+  $("session").scrollIntoView({behavior:scrollBehavior()});
+  return true;
+}
+function tCodeTeacherURL(){
+  var p=new URLSearchParams(location.search);
+  var tmode=p.get("tmode")||"";
+  var set=p.get("set");
+  if(set){var vt=set.split(":")[0].charAt(0);tmode=(vt==="s")?"sheet":((vt==="e")?"exam":"");}
+  p.delete("via");p.delete("tmode");p.set("teacher","1");
+  if(tmode)p.set("mode",tmode);else p.delete("mode");
+  return location.pathname+"?"+p.toString();
+}
+function tCodeTeacherBar(){
+  if(!tCodeVia()||TEACHER)return;
+  var sess=$("session");if(!sess)return;
+  if(!current||!current.length)return;
+  if(!document.getElementById("againBtn"))return;
+  if(sess.querySelector(".codeteach"))return;
+  var bar=document.createElement("div");bar.className="codeteach";
+  var a=document.createElement("a");a.href=tCodeTeacherURL();
+  a.textContent=L9("Teacher: print or edit this set","Enseignant : imprimer ou modifier cet ensemble");
+  bar.appendChild(a);
+  sess.insertBefore(bar,sess.firstChild);
+}
+/* ---- set file names: course, kind, scope, code (Nov 18, 2026) ---- */
+var _fileKind=null,_fileBase="";
+function tFileSafe(s){
+  return String(s).replace(/[\\\/:*?"<>|]/g,"-").replace(/\u00B7/g,"-").replace(/,/g,"").replace(/\u2013/g,"-").replace(/\s+/g," ").replace(/^[\s.]+|[\s.]+$/g,"").slice(0,120);
+}
+function tScopeLabel(s){
+  var units=(s&&s.units)?s.units.slice().sort(function(a,b){return a-b;}):[];
+  if(!units.length)return "";
+  var c=window.__COURSE;
+  if(c&&c.presets){
+    var same=function(p){return p&&p.units&&p.units.slice().sort(function(a,b){return a-b;}).join()===units.join();};
+    if(same(c.presets.mid))return String(c.presets.mid.label||"").split("(")[0].trim();
+    if(same(c.presets.final))return String(c.presets.final.label||"").split("(")[0].trim();
+  }
+  if(units.length===1)return L9("Unit ","Unité ")+units[0];
+  var contig=units.every(function(u,i){return i===0||u===units[i-1]+1;});
+  if(contig)return L9("Units ","Unités ")+units[0]+"-"+units[units.length-1];
+  return L9("Units ","Unités ")+units.join("+");
+}
+function tMintedCode(){
+  if(!_printCode)return "";
+  var sv=(T&&T.view===_printCode.view)?tSetValue():tPrintSetValue(_printCode.view,_printCode.salt);
+  if(!sv)return "";
+  return _printCode.key===(_printCode.view+"|"+_printCode.salt+"|"+sv)?_printCode.code:"";
+}
+function tSetFileName(){
+  if(!_fileKind||!_fileBase)return "";
+  var code=tMintedCode();
+  return tFileSafe(_fileBase+(code?(" - "+code):""));
+}
+function tApplySetTitle(kind){
+  _fileKind=kind;
+  var s=settings();
+  var SN=(window.__COURSE?window.__COURSE.shortName:"Course");
+  var kindName={sheet:L9("Practice Sheet","Feuille de pratique"),test:L9("Practice Unit Test","Test de pratique"),exam:L9("Practice Exam","Examen de pratique")}[kind]||"";
+  _fileBase=FR9?(SN+" - "+kindName):(SN+" "+kindName);
+  var scope=tScopeLabel(s);
+  if(scope)_fileBase+=" - "+scope;
+  var n=tSetFileName();
+  if(n)document.title=n;
+}
+function tRestoreTitle(){
+  _fileKind=null;_fileBase="";
+  document.title=(window.__COURSE&&window.__COURSE.title)?window.__COURSE.title:"Review Apps";
+}

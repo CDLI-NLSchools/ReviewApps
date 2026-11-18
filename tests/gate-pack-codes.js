@@ -31,6 +31,17 @@
    pivot build: the box moved to the home page for good, pack
    codes and teacher-minted codes share it, and the StudyMate
    page became a redirect.)
+   Code entry routing (Nov 18, 2026, later the same day): a code
+   must land on the online practice view for every code family,
+   with the teacher route one click deep on that view. Part 2b
+   runs the box wiring in a vm and asserts the exact navigation
+   it attempts for each family (via=code set, print mode removed
+   or set aside as tmode, the frozen set or seed carried
+   unchanged). Part 3 boots the app on the produced addresses
+   and asserts the practice landing, the identical question set,
+   the teacher route bar and its target, the teacher view it
+   opens, and that the same addresses without via keep their
+   established views.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pack-codes.js */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
@@ -282,11 +293,194 @@ async function bootBoxSheetDownFr() {
   dom.window.close();
 }
 
+/* ---------------- Part 2b: the resolver marks code entry (Nov 18, 2026) ----------------
+   One code, one behaviour: whatever family a code belongs to, the
+   navigation the box attempts carries via=code and lands on the
+   online practice view. The wiring is run in a vm with a stubbed
+   document and a location whose href setter captures the target,
+   so the exact navigation is asserted, not just its occurrence. */
+const vm = require("vm");
+function resolverTarget(q) {
+  const wiring = boxWiring(html);
+  if (!wiring) return null;
+  let href = null;
+  const input = { value: "" };
+  const msg = { textContent: "" };
+  const form = { _h: null, addEventListener(ev, fn) { if (ev === "submit") this._h = fn; } };
+  const documentStub = { getElementById: (id) => id === "pkCodeForm" ? form : id === "pkCodeIn" ? input : id === "pkCodeMsg" ? msg : null };
+  const locationStub = { pathname: "/ReviewApps/index.html" };
+  Object.defineProperty(locationStub, "href", { set(v) { href = v; }, get() { return href; } });
+  const windowStub = {
+    PACK_CODES: { "ABCDEF": { q } },
+    fetchSheetCodes: () => Promise.resolve({ ok: true, codes: {}, rows: 0 }),
+    __PKFR: false
+  };
+  const ctx = { window: windowStub, document: documentStub, location: locationStub, URLSearchParams, console };
+  vm.createContext(ctx);
+  vm.runInContext(wiring, ctx);
+  input.value = "ABCDEF";
+  form._h({ preventDefault() {} });
+  return href;
+}
+function checkResolver(label, q, want) {
+  const href = resolverTarget(q);
+  ok(!!href, label + ": the box attempts a navigation");
+  if (!href) return;
+  const p = new URLSearchParams(href.split("?")[1] || "");
+  ok(p.get("via") === "code", label + ": the navigation is marked via=code");
+  ok(!p.get("mode"), label + ": the navigation carries no print mode");
+  if (want.set !== undefined) ok(p.get("set") === want.set, label + ": the frozen set value is carried unchanged");
+  if (want.seed !== undefined) ok(p.get("seed") === want.seed, label + ": the seed is carried unchanged");
+  if (want.tmode !== undefined) ok(p.get("tmode") === want.tmode, label + ": the print mode is set aside as tmode=" + want.tmode);
+  if (want.noTmode) ok(!p.get("tmode"), label + ": no tmode is set aside");
+}
+function part2b() {
+  const pSet = new URLSearchParams(REG["THX2JE"].q).get("set");
+  checkResolver("resolver, pack practice code", REG["THX2JE"].q, { set: pSet, noTmode: true });
+  const eSet = new URLSearchParams(REG["J3RQAU"].q).get("set");
+  checkResolver("resolver, pack exam code", REG["J3RQAU"].q, { set: eSet, noTmode: true });
+  const sSet = "s" + pSet.slice(1);
+  const sheetQ = "course=math-2201&unit=1&count=8&order=random&set=" + encodeURIComponent(sSet) + "&mode=sheet";
+  checkResolver("resolver, minted sheet code", sheetQ, { set: sSet, noTmode: true });
+  checkResolver("resolver, seed-derived code", "course=math-2201&unit=1&count=10&order=unit&seed=apple&mode=exam",
+                { seed: "apple", tmode: "exam" });
+}
+
+/* ---------------- Part 3: code arrivals land on the practice view ----------------
+   Full app boots on the URLs the resolver produces: a set-valued
+   code opens the practice view (never the sheet or exam view),
+   with the teacher route bar on top, and the bar's link opens
+   the same frozen set in its teacher view. The same addresses
+   without the via flag keep their established views. The settle
+   helper mirrors the shipped boot dispatch (including its
+   teacher bar call) for the jsdom script-ordering reason given
+   in tests/print-smoke.js. */
+function codeEntryQuery(q) {
+  const p = new URLSearchParams(q);
+  p.set("via", "code");
+  if (p.get("set")) p.delete("mode");
+  else if (p.get("seed")) { const m = p.get("mode"); if (m === "sheet" || m === "exam") p.set("tmode", m); p.delete("mode"); }
+  return p.toString();
+}
+function bootCourse(qs) {
+  const { JSDOM } = require("jsdom");
+  return new Promise((resolve) => {
+    const dom = new JSDOM(html, {
+      url: "file://" + ROOT + "/index.html?" + qs,
+      runScripts: "dangerously", resources: "usable", pretendToBeVisual: true,
+      beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; }
+    });
+    setTimeout(() => settleCourse(dom).then(() => resolve(dom)), 2000);
+  });
+}
+function settleCourse(dom) {
+  return new Promise((res) => {
+    let waited = 0;
+    const iv = setInterval(() => {
+      waited += 50;
+      let ready = false;
+      try { ready = dom.window.eval("typeof BANK !== 'undefined' && BANK.length > 0"); } catch (e) {}
+      if (ready || waited >= 4000) {
+        clearInterval(iv);
+        try {
+          dom.window.eval("(function(){"
+            + "var p=new URLSearchParams(location.search);"
+            + "if(!window.__COURSE)return;"
+            + "var landed=false;"
+            + "try{landed=((typeof current!=='undefined'&&current&&current.length>0)"
+            + "||(typeof examState!=='undefined'&&examState&&examState.ex&&(examState.ex.srItems.length+examState.ex.crItems.length)>0)"
+            + "||(typeof sheetState!=='undefined'&&sheetState&&sheetState.items&&sheetState.items.length>0));}catch(e){}"
+            + "if(landed)return;"
+            + "if(p.get('set')){if(tRebuildFromURL())tCodeTeacherBar();return;}"
+            + "if(!(p.get('unit')||p.get('preset')||p.get('indicator')))return;"
+            + "var m=p.get('mode');"
+            + "if(m==='sheet'||m==='worksheet'){startSheet();}"
+            + "else if(m==='exam'){startExam();}"
+            + "else{startOnline();tCodeTeacherBar();}"
+            + "})()");
+        } catch (e) {}
+        setTimeout(() => res(dom), 120);
+      }
+    }, 50);
+  });
+}
+const cev = (d, code) => d.window.eval(code);
+function teacherHrefOf(d) {
+  const a = d.window.document.querySelector(".codeteach a");
+  return a ? a.getAttribute("href") || "" : "";
+}
+async function part3() {
+  /* pack exam code (an "e" set value with mode=exam in the registry) */
+  let d = await bootCourse(codeEntryQuery(REG["J3RQAU"].q));
+  ok(cev(d, "!!examState") === false && cev(d, "!!sheetState") === false,
+     "code arrival, pack exam code: no exam or sheet view opens");
+  ok(cev(d, "current.length") === EXP.sets["J3RQAU"].canons.length,
+     "code arrival, pack exam code: the practice view carries all " + EXP.sets["J3RQAU"].canons.length + " questions");
+  const canons = JSON.parse(cev(d, "JSON.stringify(current.map(function(q){return canonQ(q);}))"));
+  ok(JSON.stringify(canons) === JSON.stringify(EXP.sets["J3RQAU"].canons),
+     "code arrival, pack exam code: the practice set is the printed set, question for question, in order");
+  let href = teacherHrefOf(d);
+  ok(!!href, "code arrival, pack exam code: the teacher route bar is present");
+  let hp = new URLSearchParams(href.split("?")[1] || "");
+  ok(hp.get("teacher") === "1" && hp.get("mode") === "exam" && hp.get("set") === new URLSearchParams(REG["J3RQAU"].q).get("set"),
+     "code arrival, pack exam code: the teacher route names the same frozen set, teacher view, exam mode");
+  ok((d.window.document.querySelector(".codeteach") || { textContent: "" }).textContent.includes("Teacher: print or edit this set"),
+     "code arrival, pack exam code: the teacher route is labelled for teachers");
+  const teacherQs = href.split("?")[1];
+  d.window.close();
+  d = await bootCourse(teacherQs);
+  ok(cev(d, "typeof TEACHER!=='undefined'&&TEACHER") === true, "teacher route, pack exam code: the teacher view opens");
+  ok(cev(d, "!!examState&&!!examState.ex") && cev(d, "examState.ex.srItems.length+examState.ex.crItems.length") === EXP.sets["J3RQAU"].canons.length,
+     "teacher route, pack exam code: the same frozen set is on the exam paper");
+  ok(!d.window.document.querySelector(".codeteach"), "teacher route, pack exam code: no student-facing teacher bar in the teacher view");
+  d.window.close();
+  /* the same pack exam address without the via flag keeps the exam view */
+  d = await bootCourse(REG["J3RQAU"].q);
+  ok(cev(d, "!!examState&&!!examState.ex") && cev(d, "examState.ex.srItems.length+examState.ex.crItems.length") === EXP.sets["J3RQAU"].canons.length,
+     "shared link control, pack exam address: the exam view still opens without via");
+  ok(!d.window.document.querySelector(".codeteach"), "shared link control, pack exam address: no teacher bar without via");
+  d.window.close();
+  /* a sheet-valued code (the teacher-minted shape) */
+  const pSet = new URLSearchParams(REG["THX2JE"].q).get("set");
+  const sSet = "s" + pSet.slice(1);
+  const sheetQ = "course=math-2201&unit=1&count=8&order=random&set=" + encodeURIComponent(sSet) + "&mode=sheet";
+  d = await bootCourse(codeEntryQuery(sheetQ));
+  ok(cev(d, "!!sheetState") === false && cev(d, "current.length") === 8,
+     "code arrival, sheet code: the practice view carries the 8 questions, not the sheet");
+  href = teacherHrefOf(d);
+  hp = new URLSearchParams(href.split("?")[1] || "");
+  ok(hp.get("teacher") === "1" && hp.get("mode") === "sheet" && hp.get("set") === sSet,
+     "code arrival, sheet code: the teacher route names the same frozen set, teacher view, sheet mode");
+  d.window.close();
+  d = await bootCourse(sheetQ);
+  ok(cev(d, "!!sheetState&&sheetState.items.length===8"), "shared link control, sheet address: the sheet view still opens without via");
+  d.window.close();
+  /* a pack practice code (a "p" set value) and its teacher route */
+  d = await bootCourse(codeEntryQuery(REG["THX2JE"].q));
+  ok(cev(d, "current.length") === 8, "code arrival, pack practice code: the practice view carries the 8 questions");
+  href = teacherHrefOf(d);
+  hp = new URLSearchParams(href.split("?")[1] || "");
+  ok(hp.get("teacher") === "1" && !hp.get("mode") && hp.get("set") === pSet,
+     "code arrival, pack practice code: the teacher route names the same frozen set with no print mode");
+  d.window.close();
+  /* a seed-derived code: the seeded set drawn as practice */
+  d = await bootCourse("course=math-2201&unit=1&mc=4&nc=2&seed=apple&via=code&tmode=sheet");
+  ok(cev(d, "!!sheetState") === false && cev(d, "current.length") >= 1,
+     "code arrival, seed code: the seeded set opens as practice, not as a sheet");
+  href = teacherHrefOf(d);
+  hp = new URLSearchParams(href.split("?")[1] || "");
+  ok(hp.get("teacher") === "1" && hp.get("mode") === "sheet" && hp.get("seed") === "apple",
+     "code arrival, seed code: the teacher route restores the sheet mode the code was printed from");
+  d.window.close();
+}
+
 async function part2() {
   await bootBoxLive();
   await bootBoxSheetDown();
   await bootBoxLiveFr();
   await bootBoxSheetDownFr();
+  part2b();
+  await part3();
   console.log("gate-pack-codes: " + pass + " pass, " + fail + " fail");
   process.exit(fail ? 1 : 0);
 }

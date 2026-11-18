@@ -129,6 +129,7 @@
   .codebox .qr{display:block;background:#fff;padding:2mm;}
   .codebox .qr svg{width:46mm;height:46mm;display:block;margin:0 auto;}
   .codebox .codehint{font-size:.78rem;color:#444;line-height:1.35;margin-top:4px;}
+  .codeteach{margin:0 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#f4f7fb;font-size:.95rem;}
   .nameline span{border-bottom:1px solid #444;padding:0 90px 2px 6px;}
   @media print{
     #app{display:none !important;}
@@ -4478,16 +4479,91 @@ function tPrintCodeBlock(view){
     while(taken()&&guard<12){code=tCodeRandom();guard++;}
   }
   if(taken())return "";
-  var qr=tQrSvg(url);
+  /* The QR code carries the same set address with a via=qr flag
+     and no mode (Nov 18, 2026): scanning it lands on the online
+     practice view of the set, because the printed sheet is the
+     paper bridge and it is in students' hands. The code's own
+     link and the registry entry keep the canonical address, and
+     the set address format itself is untouched. */
+  var qp=new URLSearchParams(url.split("?")[1]||"");
+  qp.delete("mode");qp.set("via","qr");
+  var qrUrl=url.split("?")[0]+"?"+qp.toString();
+  var qr=tQrSvg(qrUrl);
   var href=url.replace(/&/g,"&amp;");
+  var qrHref=qrUrl.replace(/&/g,"&amp;");
   var html='<div class="codebox"><div class="codelabel">'+L9("Set code","Code de l'ensemble")+'</div>'
     +'<div class="code"><a href="'+href+'">'+code.slice(0,3)+' '+code.slice(3)+'</a></div>'
-    +(qr?('<a href="'+href+'"><span class="qr">'+qr+'</span></a>'):"")
+    +(qr?('<a href="'+qrHref+'"><span class="qr">'+qr+'</span></a>'):"")
     +'<div class="codehint">'+L9("Type the code on the Review Apps home page, or scan the QR code.","Tapez le code sur la page d'accueil des Review Apps, ou balayez le code QR.")+'</div></div>';
   _printCode={key:key,code:code,url:url,html:html,view:view,salt:salt};
   tMintPost(code,q);
   countEvent("set_code_mint",[analyticsCourse()]);
   return html;
+}
+/* ---- code entry routing: the practice view is the front door
+   (Nov 18, 2026) ----
+   A set code is the paper bridge, and the paper is in students'
+   hands, so arriving by code lands on the online practice view
+   of the set, for every code family: pack codes (their set
+   values already name the practice view), teacher-minted and
+   ordinary frozen codes (sheet and exam set values, converted
+   below), and seed-derived codes (a settings plus seed address;
+   the home page resolver moves its print mode aside to tmode
+   before landing, so the settings dispatch draws the seeded set
+   as practice). The QR code on a printed set carries via=qr and
+   lands the same way. Shared set links carry no via flag and
+   keep the view their set value names, exactly as before.
+   The practice view of a code-arrived set carries one teacher
+   route (tCodeTeacherBar): a link opening the same frozen set
+   in its teacher view, where printing and editing behave as
+   they always have. An edited set re-mints when it is printed;
+   the printed code keeps pointing at the original set, which is
+   why the editable view sits one click deep rather than at the
+   code's front door. */
+function tCodeVia(){
+  try{var v=new URLSearchParams(location.search).get("via");return v==="code"||v==="qr";}catch(e){return false;}
+}
+function tCodePracticeFromSet(view,salt,body,edited,s){
+  /* The practice render of a sheet or exam set value: the same
+     tokens the sheet and exam branches of tRebuildFromURL build,
+     in the same order (for an exam, selected response first, then
+     constructed response), carried into the practice state the
+     "p" branch sets up. */
+  var avoid={},items=[];
+  var push=function(tok){if(tok){var q=tBuildTok(tok,avoid,salt);if(q)items.push(q);}};
+  if(view==="s"){body.split(",").forEach(push);}
+  else if(view==="e"){var segs=body.split(";");(segs[0]?segs[0].split(","):[]).forEach(push);(segs[1]?segs[1].split(","):[]).forEach(push);}
+  else return false;
+  if(!items.length)return false;
+  stopExamTimer();
+  current=items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";endGraded=false;setResults={};helpUsed={};sessionSeed="";
+  lastSettings=s;onlineThin=false;T=null;
+  if(TEACHER)T={view:"online",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:edited,state:{},endGraded:false,picker:null};
+  if(!TEACHER&&SHUFFLE_OPTS)current=current.map(shufQ);
+  renderOnline(false);
+  $("session").scrollIntoView({behavior:scrollBehavior()});
+  return true;
+}
+function tCodeTeacherURL(){
+  var p=new URLSearchParams(location.search);
+  var tmode=p.get("tmode")||"";
+  var set=p.get("set");
+  if(set){var vt=set.split(":")[0].charAt(0);tmode=(vt==="s")?"sheet":((vt==="e")?"exam":"");}
+  p.delete("via");p.delete("tmode");p.set("teacher","1");
+  if(tmode)p.set("mode",tmode);else p.delete("mode");
+  return location.pathname+"?"+p.toString();
+}
+function tCodeTeacherBar(){
+  if(!tCodeVia()||TEACHER)return;
+  var sess=$("session");if(!sess)return;
+  if(!current||!current.length)return;
+  if(!document.getElementById("againBtn"))return;
+  if(sess.querySelector(".codeteach"))return;
+  var bar=document.createElement("div");bar.className="codeteach";
+  var a=document.createElement("a");a.href=tCodeTeacherURL();
+  a.textContent=L9("Teacher: print or edit this set","Enseignant : imprimer ou modifier cet ensemble");
+  bar.appendChild(a);
+  sess.insertBefore(bar,sess.firstChild);
 }
 /* ---- set file names: course, kind, scope, code (Nov 18, 2026) ---- */
 var _fileKind=null,_fileBase="";
@@ -5075,6 +5151,7 @@ function tRebuildFromURL(){
   var vtag=parts[0],salt=parts[1],body=parts.slice(2).join(":");
   var view=vtag.charAt(0),edited=vtag.indexOf("*")>=0;
   var s=settings();
+  if(tCodeVia()&&view!=="p")return tCodePracticeFromSet(view,salt,body,edited,s);
   if(view==="p"){
     var avoid={},items=[];
     body.split(",").forEach(function(tok){if(tok){var q=tBuildTok(tok,avoid,salt);if(q)items.push(q);}});
@@ -7517,6 +7594,7 @@ else if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
 else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
   var _m=(new URLSearchParams(location.search).get("mode"));if(_m==="sheet"||_m==="worksheet"){startSheet();}else if(_m==="exam"){startExam();}else{startOnline();}
 }
+tCodeTeacherBar();
 resumeBootCheck();
 }
 </script>
@@ -7650,7 +7728,15 @@ if(window.__NOCOURSE){(function(){
    a pack code to its full set parameters, and the box
    navigates to the app root in this directory with
    those parameters, so the student lands on the exact
-   printed set. Teacher-minted codes resolve through
+   printed set. Code entry always lands on the online
+   practice view of the set (Nov 18, 2026, Jason's
+   ruling: one code, one behaviour): openSet marks
+   the navigation via=code and sets the print mode
+   aside (a set value keeps its frozen set; a seed
+   address moves its mode to tmode), and the course
+   side honours the flag in tRebuildFromURL and the
+   settings dispatch, with the teacher route one
+   click deep on the practice view itself. Teacher-minted codes resolve through
    the living sheet registry: the shell's
    fetchSheetCodes (see the printed set codes section
    of the main script) reads it once per session. If
@@ -7674,7 +7760,11 @@ if(window.__NOCOURSE){(function(){
   function openSet(q,teacher){
     try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:teacher?"teacher_code_open":"pack_code_open",event:true});}catch(e){}
     var base=location.pathname.substring(0,location.pathname.lastIndexOf("/")+1);
-    location.href=base+"?"+q;
+    var p=new URLSearchParams(q);
+    p.set("via","code");
+    if(p.get("set")){p.delete("mode");}
+    else if(p.get("seed")){var m=p.get("mode");if(m==="sheet"||m==="exam")p.set("tmode",m);p.delete("mode");}
+    location.href=base+"?"+p.toString();
   }
   form.addEventListener("submit",function(ev){
     ev.preventDefault();
