@@ -122,11 +122,12 @@
   .solAppendix{columns:2;column-gap:30px;font-size:.85rem;line-height:1.45;}
   .solAppendix .solp{break-inside:avoid;margin:0 0 9px;}
   .nameline{display:flex;gap:30px;font-size:.95rem;margin-bottom:14px;}
-  .codebox{float:right;text-align:center;width:38mm;margin:0 0 10px 14px;}
+  .codebox{float:right;text-align:center;width:54mm;margin:0 0 4mm 5mm;padding:2mm;background:#fff;}
   .codebox .codelabel{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:#555;}
   .codebox .code{font-size:1.35rem;font-weight:700;letter-spacing:2px;}
   .codebox .code a{color:inherit;text-decoration:none;}
-  .codebox .qr svg{width:29mm;height:29mm;display:block;margin:2px auto 0;}
+  .codebox .qr{display:block;background:#fff;padding:2mm;}
+  .codebox .qr svg{width:46mm;height:46mm;display:block;margin:0 auto;}
   .codebox .codehint{font-size:.78rem;color:#444;line-height:1.35;margin-top:4px;}
   .nameline span{border-bottom:1px solid #444;padding:0 90px 2px 6px;}
   @media print{
@@ -6126,8 +6127,7 @@ function renderExam(){
   stopExamTimer();
   var ex=examState.ex,s=examState.s,single=examState.single,wsCrF=examState.wsCrF,scope=examState.scope,title=examState.title;
   var lv=examLive(ex);
-  var paper='<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
-  paper+=tPrintCodeBlock("exam");
+  var paper=tPrintCodeBlock("exam")+'<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
   paper+='<h1 style="font-size:1.3rem;">'+title+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
   paper+='<p style="font-size:.92rem;">'+L9("Answer all questions. In Section A, choose the best answer for each question and record it on the answer record at the end of Section A. In Section B, show all workings in the space provided; marks are shown beside each question.","Réponds à toutes les questions. Dans la section A, choisis la meilleure réponse pour chaque question et inscris-la dans le relevé de réponses à la fin de la section A. Dans la section B, montre tout ton travail dans l'espace fourni; les points sont indiqués à côté de chaque question.")+'</p>';
   var n=0;
@@ -6203,10 +6203,9 @@ function renderSheet(){
   var s=sheetState.s;var res={items:sheetState.items,thin:sheetState.thin};
   var unitNames=s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
   wordName=(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Sheet.docx"," - Feuille de pratique.docx");
-  var html='<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
+  var html=tPrintCodeBlock("sheet")+'<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
   var wsMcF=(typeof s.wsMc==="number"&&!isNaN(s.wsMc))?s.wsMc:0;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
-  html+=tPrintCodeBlock("sheet");
   html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+L9(": Practice Sheet"," : Feuille de pratique")+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 "+L9("Indicators: ","Notions : ")+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[0])||'Show all workings in the space provided.'):((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[1])||'Show all workings on your own paper.'))+'</p>';
   res.items.forEach(function(q,i){
     var h=Math.round((q._entry.level===3?170:(q.type==="mc"?120:150))*((q.type==="mc")?wsMcF:wsCrF));

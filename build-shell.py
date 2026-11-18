@@ -580,11 +580,12 @@ printcode = (ROOT / "snippets" / "printcode.js.txt").read_text(encoding="utf-8")
 rep('function tSetValue(){', printcode + '\nfunction tSetValue(){', count=1)
 rep('  .nameline{display:flex;gap:30px;font-size:.95rem;margin-bottom:14px;}',
     '  .nameline{display:flex;gap:30px;font-size:.95rem;margin-bottom:14px;}\n'
-    '  .codebox{float:right;text-align:center;width:38mm;margin:0 0 10px 14px;}\n'
+    '  .codebox{float:right;text-align:center;width:54mm;margin:0 0 4mm 5mm;padding:2mm;background:#fff;}\n'
     '  .codebox .codelabel{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:#555;}\n'
     '  .codebox .code{font-size:1.35rem;font-weight:700;letter-spacing:2px;}\n'
     '  .codebox .code a{color:inherit;text-decoration:none;}\n'
-    '  .codebox .qr svg{width:29mm;height:29mm;display:block;margin:2px auto 0;}\n'
+    '  .codebox .qr{display:block;background:#fff;padding:2mm;}\n'
+    '  .codebox .qr svg{width:46mm;height:46mm;display:block;margin:0 auto;}\n'
     '  .codebox .codehint{font-size:.78rem;color:#444;line-height:1.35;margin-top:4px;}', count=1)
 rep('    .pq{page-break-inside:avoid;margin-bottom:14px;}\n'
     '    .solp{page-break-inside:avoid;}',
@@ -612,18 +613,29 @@ rep('  if(!s.wantKey)p.set("key","0");',
 rep('  if(p.get("key")==="0")$("keyChk").checked=false;',
     '  if(p.get("key")==="0")$("keyChk").checked=false;\n'
     '  if(p.get("scode")==="0"&&$("codeChk"))$("codeChk").checked=false;', count=1)
-# The code block leads the first page of the exam paper and of the
-# practice sheet, ahead of the title, so the floated block reserves
-# its height and the content wraps beside it. Each render passes its
-# view ("exam" or "sheet"): the block freezes the printed set itself
-# and must not depend on the Advanced tools context, which ordinary
-# print runs do not have (fix, Nov 18, 2026; see printcode.js.txt).
-rep("  paper+='<h1 style=\"font-size:1.3rem;\">'+title+'</h1>",
-    "  paper+=tPrintCodeBlock(\"exam\");\n"
-    "  paper+='<h1 style=\"font-size:1.3rem;\">'+title+'</h1>", count=1)
-rep('  html+=\'<h1 style="font-size:1.3rem;">\'+"Math 2201: Practice Sheet"+\'</h1>',
-    '  html+=tPrintCodeBlock("sheet");\n'
-    '  html+=\'<h1 style="font-size:1.3rem;">\'+"Math 2201: Practice Sheet"+\'</h1>', count=1)
+# The code block opens the first page of the exam paper and of the
+# practice sheet, ahead of the brand and the name line, so the
+# floated block sits at the very top right and the header, the
+# title and the first questions all wrap beside it (Jason's
+# direction, Nov 18, 2026, matching the StudyMate pack pages; the
+# first version inserted the block after the name line, ahead of
+# the title only). The QR code prints at 46 mm: a full exam set
+# encodes to QR version 28 at error correction level M (129 modules
+# across), which at the old 29 mm gave 0.22 mm modules and would
+# not scan; 46 mm gives 0.36 mm modules, and the white padding
+# around the symbol (the .qr span and the box) guarantees the
+# quiet zone the encoder does not draw (it builds with margin 0).
+# Each render passes its view ("exam" or "sheet"): the block
+# freezes the printed set itself and must not depend on the
+# Advanced tools context, which ordinary print runs do not have
+# (fix, Nov 18, 2026; see printcode.js.txt). The anchors are the
+# chassis header lines, which still begin with the name line at
+# this point in the build; the sheetbrand rep further down
+# prepends the brand div inside the same string, after the block.
+rep("var paper='<div class=\"nameline\">",
+    "var paper=tPrintCodeBlock(\"exam\")+'<div class=\"nameline\">", count=1)
+rep("var html='<div class=\"nameline\">",
+    "var html=tPrintCodeBlock(\"sheet\")+'<div class=\"nameline\">", count=1)
 # An ordinary (non Advanced tools) sheet or exam freezes for its code
 # block where the set is made, at the end of startSheet and startExam,
 # after the option shuffle so the frozen slots are the printed ones.
