@@ -9,23 +9,28 @@
    regenerates both files in the same pass.
    Also gated: the codes use only the unambiguous pack alphabet,
    every registry entry targets its course with a well-formed set
-   token, and the code box lives on the StudyMate page
-   (studymate.html) only. That page must carry the form, load the
-   registry and carry the resolution wiring, and a jsdom boot of
-   it shows the code box, answers an unknown code with the
+   token, and the code box lives on the Review Apps home page
+   (index.html). That page must carry the form, load the registry
+   and carry the resolution wiring, and a jsdom boot of it shows
+   the code box on the picker, answers an unknown code with the
    not-recognized message, and attempts navigation (jsdom's
-   not-implemented navigation error) for a known code typed
-   lowercase with its space. The Review Apps home page
-   (index.html) must carry no trace of the box: no form, no
-   input, no heading, no registry script and no wiring, in the
-   markup or at jsdom run time, while its course picker still
-   boots and shows.
+   not-implemented navigation error) for a known pack code typed
+   lowercase with its space. The same boot, with the living sheet
+   registry stubbed in, also resolves a teacher-minted code from
+   the sheet; with the sheet fetch failing, a teacher code gets
+   the registry-unavailable message (never the not-recognized
+   one) while a pack code still resolves. The StudyMate page
+   (studymate.html) is retired: it must carry the redirect to the
+   home page and no trace of the catalogue (no code form, no
+   registry load, no pack download links).
    (History: the box launched on the picker on Nov 16, 2026, was
    moved to the StudyMate page the same day for testing, and was
    briefly restored to the picker on Nov 17, 2026 under a
    misreading of Jason's placement instruction; he corrected it
-   the same day, the box is not ready to be live on the home page
-   yet, and it now lives on the StudyMate page only.)
+   the same day. On Nov 18, 2026 Jason approved the StudyMate
+   pivot build: the box moved to the home page for good, pack
+   codes and teacher-minted codes share it, and the StudyMate
+   page became a redirect.)
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pack-codes.js */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
@@ -98,7 +103,7 @@ for (const code of regCodes) {
      (firstBad >= 0 ? " (first mismatch at question " + (firstBad + 1) + ")" : ""));
 }
 
-/* ---------------- Part 2: the code box on the StudyMate page only ---------------- */
+/* ---------------- Part 2: the code box on the home page; the StudyMate page redirects ---------------- */
 const smHtml = fs.readFileSync(ROOT + "/studymate.html", "utf8");
 function boxWiring(text) {
   const blocks = [...text.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
@@ -108,86 +113,121 @@ function boxWiring(text) {
   const b = blk.indexOf("})();", a);
   return (a < 0 || b < 0) ? null : blk.slice(a, b + 5);
 }
-for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'src="pack-codes.js"', "window.PACK_CODES"]) {
-  ok(smHtml.includes(probe), "StudyMate page (studymate.html) carries " + probe);
+ok(/<meta http-equiv="refresh" content="0; url=\.\/"/.test(smHtml) || smHtml.includes('location.replace("./")'),
+   "StudyMate page (studymate.html) redirects to the home page");
+for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'src="pack-codes.js"', "packs/math-2201-unit-1.pdf", "window.PACK_CODES"]) {
+  ok(!smHtml.includes(probe), "StudyMate page carries no " + probe + " (retired catalogue)");
 }
-for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'id="pkCodeHead"', 'src="pack-codes.js"', "PACK_CODES"]) {
-  ok(!html.includes(probe), "picker (index.html) carries no " + probe);
+for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'id="pkCodeHead"', 'src="pack-codes.js"', "window.PACK_CODES", "Have a code from a printed sheet?"]) {
+  ok(html.includes(probe), "home page (index.html) carries " + probe);
 }
-ok(boxWiring(smHtml) !== null, "StudyMate page carries the code-box resolution wiring");
+ok(boxWiring(html) !== null, "home page carries the code-box resolution wiring");
 
-async function bootBox(file, pageName, extra) {
+const TEACHER_CODE = "TES7CD";
+function fakeGviz(q) {
+  return "/*O_o*/\ngoogle.visualization.Query.setResponse({\"version\":\"0.6\",\"reqId\":\"0\",\"status\":\"ok\",\"table\":{\"cols\":["
+    + "{\"id\":\"A\",\"label\":\"Timestamp\",\"type\":\"datetime\"},{\"id\":\"B\",\"label\":\"Code\",\"type\":\"string\"},"
+    + "{\"id\":\"C\",\"label\":\"Set parameters\",\"type\":\"string\"},{\"id\":\"D\",\"label\":\"Course\",\"type\":\"string\"},"
+    + "{\"id\":\"E\",\"label\":\"Date\",\"type\":\"string\"}],\"rows\":[{\"c\":[{\"v\":\"Date(2026,10,18,6,33,0)\"},{\"v\":\""
+    + TEACHER_CODE + "\"},{\"v\":" + JSON.stringify(q) + "},{\"v\":\"math-2201\"},{\"v\":\"2026-11-18\"}]}]}});";
+}
+
+async function bootHome(sheetMode) {
   const { JSDOM } = require("jsdom");
   const navErrors = [];
   const { VirtualConsole } = require("jsdom");
   const vc = new VirtualConsole();
   vc.on("jsdomError", e => { if (/Not implemented: navigation/.test(e.message)) navErrors.push(e.message); });
-  const text = fs.readFileSync(ROOT + "/" + file, "utf8");
+  const text = fs.readFileSync(ROOT + "/index.html", "utf8");
+  const teacherQ = (REG[regCodes[0]] || {}).q || "";
   const dom = new JSDOM(text, {
-    url: "file://" + ROOT + "/" + file,
+    url: "file://" + ROOT + "/index.html",
     runScripts: "dangerously", resources: "usable", pretendToBeVisual: true,
     virtualConsole: vc,
-    beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; }
+    beforeParse(w) {
+      w.HTMLElement.prototype.scrollIntoView = function () {};
+      w.fetch = function (url) {
+        const u = String(url);
+        if (u.includes("docs.google.com/spreadsheets")) {
+          if (sheetMode === "up") return Promise.resolve({ text: () => Promise.resolve(fakeGviz(teacherQ)) });
+          return Promise.reject(new Error("network down"));
+        }
+        return Promise.reject(new Error("unstubbed fetch"));
+      };
+    }
   });
   for (let i = 0; i < 40; i++) {
     if (dom.window.document.getElementById("pkCodeForm") && dom.window.PACK_CODES) break;
     await new Promise(r => setTimeout(r, 250));
   }
   await new Promise(r => setTimeout(r, 500));
-  const d = dom.window.document;
-  const form = d.getElementById("pkCodeForm");
-  ok(!!form, "jsdom " + pageName + " boot: code form present");
-  if (extra) extra(d);
-  const input = d.getElementById("pkCodeIn");
-  const msg = d.getElementById("pkCodeMsg");
-  /* unknown code: the not-recognized message, no navigation */
-  input.value = "ZZZ ZZZ";
-  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
-  ok(/not recognized/.test(msg.textContent), pageName + ": unknown code gets the not-recognized message");
-  ok(navErrors.length === 0, pageName + ": unknown code attempts no navigation");
-  /* known code, typed lowercase with its space: navigation attempted */
-  const known = regCodes[0];
-  input.value = (known.slice(0, 3) + " " + known.slice(3)).toLowerCase();
-  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
-  ok(navErrors.length === 1, pageName + ": known code typed lowercase with a space attempts navigation to its set");
-  ok(!/not recognized/.test(msg.textContent) || navErrors.length === 1, pageName + ": known code is not rejected");
-  dom.window.close();
+  return { dom, navErrors };
 }
 
-async function bootNoBox(file, pageName) {
-  const { JSDOM } = require("jsdom");
-  const { VirtualConsole } = require("jsdom");
-  const vc = new VirtualConsole();
-  vc.on("jsdomError", () => {});
-  const text = fs.readFileSync(ROOT + "/" + file, "utf8");
-  const dom = new JSDOM(text, {
-    url: "file://" + ROOT + "/" + file,
-    runScripts: "dangerously", resources: "usable", pretendToBeVisual: true,
-    virtualConsole: vc,
-    beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; }
-  });
-  for (let i = 0; i < 40; i++) {
-    const pk = dom.window.document.getElementById("coursePicker");
-    if (pk && pk.hidden === false) break;
-    await new Promise(r => setTimeout(r, 250));
+async function settleMsg(dom, msg) {
+  for (let i = 0; i < 60; i++) {
+    if (!/Checking the teacher code registry/.test(msg.textContent)) return;
+    await new Promise(r => setTimeout(r, 100));
   }
-  await new Promise(r => setTimeout(r, 500));
+}
+
+async function bootBoxLive() {
+  const { dom, navErrors } = await bootHome("up");
   const d = dom.window.document;
-  ok(!d.getElementById("pkCodeForm"), "jsdom " + pageName + " boot: no code form on the page");
-  ok(!d.getElementById("pkCodeIn"), "jsdom " + pageName + " boot: no code input on the page");
-  ok(typeof dom.window.PACK_CODES === "undefined", "jsdom " + pageName + " boot: pack code registry is not loaded");
+  const pageName = "home page (sheet up)";
+  const form = d.getElementById("pkCodeForm");
+  ok(!!form, "jsdom " + pageName + " boot: code form present");
   ok(!!d.getElementById("courseList"), "jsdom " + pageName + " boot: course list still present");
   ok(d.getElementById("coursePicker") && d.getElementById("coursePicker").hidden === false,
      "jsdom " + pageName + " boot: the picker is the page that shows");
+  const input = d.getElementById("pkCodeIn");
+  const msg = d.getElementById("pkCodeMsg");
+  /* unknown code: sheet answers, code absent: the not-recognized message, no navigation */
+  input.value = "ZZZ ZZZ";
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  await settleMsg(dom, msg);
+  ok(/not recognized/.test(msg.textContent), pageName + ": unknown code gets the not-recognized message");
+  ok(navErrors.length === 0, pageName + ": unknown code attempts no navigation");
+  /* teacher code from the sheet registry, typed lowercase with its space: navigation attempted */
+  input.value = (TEACHER_CODE.slice(0, 3) + " " + TEACHER_CODE.slice(3)).toLowerCase();
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  await settleMsg(dom, msg);
+  ok(navErrors.length === 1, pageName + ": teacher code from the sheet registry attempts navigation to its set");
+  /* known pack code, typed lowercase with its space: navigation attempted */
+  const known = regCodes[0];
+  input.value = (known.slice(0, 3) + " " + known.slice(3)).toLowerCase();
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  ok(navErrors.length === 2, pageName + ": known pack code typed lowercase with a space attempts navigation to its set");
+  ok(!/not recognized/.test(msg.textContent) || navErrors.length === 2, pageName + ": known pack code is not rejected");
+  dom.window.close();
+}
+
+async function bootBoxSheetDown() {
+  const { dom, navErrors } = await bootHome("down");
+  const d = dom.window.document;
+  const pageName = "home page (sheet down)";
+  const form = d.getElementById("pkCodeForm");
+  ok(!!form, "jsdom " + pageName + " boot: code form present");
+  const input = d.getElementById("pkCodeIn");
+  const msg = d.getElementById("pkCodeMsg");
+  /* teacher code with the sheet unreachable: unavailable, never not-recognized, no navigation */
+  input.value = TEACHER_CODE;
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  await settleMsg(dom, msg);
+  ok(/not available right now/.test(msg.textContent), pageName + ": teacher code with the sheet down gets the unavailable message");
+  ok(!/not recognized/.test(msg.textContent), pageName + ": teacher code with the sheet down is not called wrong");
+  ok(navErrors.length === 0, pageName + ": teacher code with the sheet down attempts no navigation");
+  /* pack code still resolves from the static registry alone */
+  const known = regCodes[0];
+  input.value = (known.slice(0, 3) + " " + known.slice(3)).toLowerCase();
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  ok(navErrors.length === 1, pageName + ": pack code still resolves with the sheet down");
   dom.window.close();
 }
 
 async function part2() {
-  await bootBox("studymate.html", "StudyMate page", d => {
-    const dl = d.querySelector('a[href="packs/math-2201-unit-1.pdf"]');
-    ok(!!dl, "jsdom StudyMate boot: Unit 1 pack download still listed");
-  });
-  await bootNoBox("index.html", "picker");
+  await bootBoxLive();
+  await bootBoxSheetDown();
   console.log("gate-pack-codes: " + pass + " pass, " + fail + " fail");
   process.exit(fail ? 1 : 0);
 }

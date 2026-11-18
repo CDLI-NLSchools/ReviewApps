@@ -82,8 +82,11 @@ boot = ('<script src="courses.js"></script>\n'
         '  else{window.__COURSE=null;window.__NOCOURSE=true;document.title="Review Apps";}\n'
         '}catch(e){window.__COURSE=null;window.__NOCOURSE=true;}})();\n'
         '</script>\n')
+qrcode_lib = (ROOT / "snippets" / "qrcode.js.txt").read_text(encoding="utf-8").rstrip("\n")
 rep('<script src="katex/contrib/auto-render.min.js"></script>\n',
-    '<script src="katex/contrib/auto-render.min.js"></script>\n' + boot, count=1)
+    '<script src="katex/contrib/auto-render.min.js"></script>\n' + boot
+    + '<script src="pack-codes.js"></script>\n'
+    + '<script>\n' + qrcode_lib + '\n</script>\n', count=1)
 
 # ---------- course picker markup (the only new UI) ----------
 faq = (ROOT / "snippets" / "picker-faq.html.txt").read_text(encoding="utf-8").rstrip("\n")
@@ -95,6 +98,14 @@ picker = ('<div class="wrap" id="coursePicker" hidden>\n'
           '  <div class="card">\n'
           '    <h2 style="margin-top:0;">Choose your course</h2>\n'
           '    <div id="courseList"></div>\n'
+          '  </div>\n'
+          '  <div class="card">\n'
+          '    <h2 style="margin-top:0;" id="pkCodeHead">Have a code from a printed sheet?</h2>\n'
+          '    <p class="sub pkcodefr" lang="fr">Vous avez un code d\u2019une feuille imprimée ?</p>\n'
+          '    <p class="sub" id="pkCodePrompt">Type the six-character code from the top of a printed set to open that exact set here.</p>\n'
+          '    <p class="sub pkcodefr" lang="fr">Tapez le code de six caractères en haut d\u2019un ensemble imprimé pour ouvrir exactement cet ensemble ici.</p>\n'
+          '    <form id="pkCodeForm" class="pkcodeform"><input id="pkCodeIn" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="7" placeholder="ABC DEF" aria-label="Set code"><button type="submit" class="open" id="pkCodeBtn">Open set</button></form>\n'
+          '    <p class="sub" id="pkCodeMsg" role="status"></p>\n'
           '  </div>\n'
           + faq + '\n'
           '</div>\n')
@@ -549,6 +560,87 @@ rep('else if(urlTouched&&(new URLSearchParams(location.search).get("unit")',
 # to it, leaving the set-link and settings branches untouched.
 advset = (ROOT / "snippets" / "advset.js.txt").read_text(encoding="utf-8").rstrip("\n")
 rep('function tRebuildFromURL(){', advset + '\nfunction tRebuildFromURL(){', count=1)
+
+# ---------- printed set codes and print hygiene (Nov 18, 2026) ----------
+# The StudyMate pivot build: the printed set codes module
+# (snippets/printcode.js.txt: CODE_REGISTRY config, the sheet
+# registry fetch, minting, the QR encoder hook and tPrintCodeBlock)
+# is inserted ahead of tSetValue, which it calls. The code block
+# styles ride the sheet CSS beside .nameline. Print hygiene: the
+# audit found item keep-together (.pq and .solp page-break-inside)
+# already in the print block, no per-question Answer line after
+# printed multiple choice choices in either render, and figures
+# already at the left margin; the missing piece was a part header
+# ending a page, so the print block gains a keep-with-next rule for
+# print headings and an explicit left alignment for figures.
+printcode = (ROOT / "snippets" / "printcode.js.txt").read_text(encoding="utf-8").rstrip("\n")
+rep('function tSetValue(){', printcode + '\nfunction tSetValue(){', count=1)
+rep('  .nameline{display:flex;gap:30px;font-size:.95rem;margin-bottom:14px;}',
+    '  .nameline{display:flex;gap:30px;font-size:.95rem;margin-bottom:14px;}\n'
+    '  .codebox{float:right;text-align:center;width:38mm;margin:0 0 10px 14px;}\n'
+    '  .codebox .codelabel{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:#555;}\n'
+    '  .codebox .code{font-size:1.35rem;font-weight:700;letter-spacing:2px;}\n'
+    '  .codebox .code a{color:inherit;text-decoration:none;}\n'
+    '  .codebox .qr svg{width:29mm;height:29mm;display:block;margin:2px auto 0;}\n'
+    '  .codebox .codehint{font-size:.78rem;color:#444;line-height:1.35;margin-top:4px;}', count=1)
+rep('    .pq{page-break-inside:avoid;margin-bottom:14px;}\n'
+    '    .solp{page-break-inside:avoid;}',
+    '    .pq{page-break-inside:avoid;margin-bottom:14px;}\n'
+    '    .solp{page-break-inside:avoid;}\n'
+    '    #printArea h1,#printArea h2{page-break-after:avoid;break-after:avoid;}\n'
+    '    #printArea .fig{text-align:left;}', count=1)
+# The seed help line gains its clarifying sentence (students never
+# type the seed word); the French static table in
+# snippets/fr-static.js.txt carries the matching new key.
+rep('<p class="hint">Set a seed, then use Copy link below: every student who opens the link gets the exact same questions in the same order. Leave it blank and each student gets a fresh set.</p>',
+    '<p class="hint">Set a seed, then use Copy link below: every student who opens the link gets the exact same questions in the same order. Leave it blank and each student gets a fresh set. Students never type the seed word; it only shapes the link the teacher copies.</p>', count=1)
+# The print panel gains the set code toggle beside the answer key
+# toggle, default on, riding settings and settings links the same
+# way (scode=0 when off).
+rep('        <label><input type="checkbox" id="keyChk" checked> Include answer key</label>',
+    '        <label><input type="checkbox" id="keyChk" checked> Include answer key</label>\n'
+    '        <label><input type="checkbox" id="codeChk" checked> Include set code and QR</label>', count=1)
+rep('    wantKey:!($("keyChk")&&$("keyChk").checked===false),',
+    '    wantKey:!($("keyChk")&&$("keyChk").checked===false),\n'
+    '    wantCode:!($("codeChk")&&$("codeChk").checked===false),', count=1)
+rep('  if(!s.wantKey)p.set("key","0");',
+    '  if(!s.wantKey)p.set("key","0");\n'
+    '  if(!s.wantCode)p.set("scode","0");', count=1)
+rep('  if(p.get("key")==="0")$("keyChk").checked=false;',
+    '  if(p.get("key")==="0")$("keyChk").checked=false;\n'
+    '  if(p.get("scode")==="0"&&$("codeChk"))$("codeChk").checked=false;', count=1)
+# The code block leads the first page of the exam paper and of the
+# practice sheet, ahead of the title, so the floated block reserves
+# its height and the content wraps beside it.
+rep("  paper+='<h1 style=\"font-size:1.3rem;\">'+title+'</h1>",
+    "  paper+=tPrintCodeBlock();\n"
+    "  paper+='<h1 style=\"font-size:1.3rem;\">'+title+'</h1>", count=1)
+rep('  html+=\'<h1 style="font-size:1.3rem;">\'+"Math 2201: Practice Sheet"+\'</h1>',
+    '  html+=tPrintCodeBlock();\n'
+    '  html+=\'<h1 style="font-size:1.3rem;">\'+"Math 2201: Practice Sheet"+\'</h1>', count=1)
+# Set file names (Nov 18, 2026, Jason's addition): a rendered sheet
+# or exam names its files (course, kind, scope, and the set code
+# when one was minted for this exact set) through document.title,
+# which the print dialog suggests for Save as PDF, and through the
+# Word download name, recomputed at download time. The title is
+# applied at the end of each sheet and exam render and restored
+# when an online set starts or a sheet or exam start begins, so
+# the picker and practice views keep the course title.
+rep('function startOnline(){\n  stopExamTimer();',
+    'function startOnline(){\n  tRestoreTitle();\n  stopExamTimer();', count=1)
+rep('function startSheet(){\n  stopExamTimer();',
+    'function startSheet(){\n  tRestoreTitle();\n  stopExamTimer();', count=1)
+rep('function startExam(){\n  stopExamTimer();',
+    'function startExam(){\n  tRestoreTitle();\n  stopExamTimer();', count=1)
+rep('  $("printBtn").addEventListener("click",function(){$("printArea").innerHTML=$("sheetPrev").innerHTML;window.print();});',
+    '  $("printBtn").addEventListener("click",function(){$("printArea").innerHTML=$("sheetPrev").innerHTML;window.print();});\n'
+    '  tApplySetTitle("sheet");', count=1)
+rep('  $("printKeyBtn").addEventListener("click",function(){var pp=previewParts();if(pp){$("printArea").innerHTML=pp.key;}else{$("printArea").innerHTML=key;typesetMath($("printArea"));}window.print();});',
+    '  $("printKeyBtn").addEventListener("click",function(){var pp=previewParts();if(pp){$("printArea").innerHTML=pp.key;}else{$("printArea").innerHTML=key;typesetMath($("printArea"));}window.print();});\n'
+    '  tApplySetTitle(single?"test":"exam");', count=1)
+rep('function downloadWordFile(statusEl){\n  var prev=$("sheetPrev");\n  if(!prev)return;',
+    'function downloadWordFile(statusEl){\n  var prev=$("sheetPrev");\n  if(!prev)return;\n'
+    '  var fn=tSetFileName();if(fn)wordName=fn+".docx";', count=1)
 rep('if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){',
     'if(advSetRestore()){\n'
     '  /* A set carried across an Advanced tools switch was restored\n'
@@ -608,7 +700,7 @@ picker_script = ('<script>\n'
                  '  var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;\n'
                  '  var list=document.getElementById("courseList");if(!list)return;\n'
                  '  var style=document.createElement("style");\n'
-                 '  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme=\'dark\'] .pklogo-l{display:none}html[data-a11y-theme=\'dark\'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme=\'dark\'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme=\'dark\'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme=\'dark\'] .pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#5eead4;color:#fff}";\n'
+                 '  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme=\'dark\'] .pklogo-l{display:none}html[data-a11y-theme=\'dark\'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme=\'dark\'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme=\'dark\'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme=\'dark\'] .pkchip[aria-pressed=\'true\']{background:#1f4e79;border-color:#5eead4;color:#fff}.pkcodeform{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.pkcodeform input{font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;padding:7px 10px;max-width:210px;border:1px solid #d8d2c4;border-radius:6px;background:transparent;color:inherit}.pkcodeform button.open{background:#0f766e;color:#fff;border:none;padding:8px 16px;border-radius:999px;font-size:.9rem;cursor:pointer}.pkcodeform button.open:hover{text-decoration:underline}#pkCodeMsg{margin:6px 0 0;min-height:1em}.pkcodefr{margin-top:2px}";\n'
                  '  pk.appendChild(style);\n'
                  '  var pkThemeBtn=document.getElementById("pkTheme");\n'
                  '  if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.textContent=document.documentElement.getAttribute("data-a11y-theme")==="dark"?"Light mode":"Dark mode";};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}\n'
@@ -662,18 +754,72 @@ picker_script = ('<script>\n'
                  '}\n'
                  '</script>\n')
 
-rep('</body>', picker_script + '</body>', count=1)
+codebox_script = ('<script>\n'
+                  '/* Set code box (moved to the Review Apps home page on\n'
+                  '   Nov 18, 2026, at Jason\'s direction, as part of the\n'
+                  '   StudyMate pivot: one code box, one code format, one\n'
+                  '   registry pair). A code is six characters from the\n'
+                  '   unambiguous pack alphabet; the static registry in\n'
+                  '   pack-codes.js (generated by the pack composer) maps\n'
+                  '   a pack code to its full set parameters, and the box\n'
+                  '   navigates to the app root in this directory with\n'
+                  '   those parameters, so the student lands on the exact\n'
+                  '   printed set. Teacher-minted codes resolve through\n'
+                  '   the living sheet registry: the shell\'s\n'
+                  '   fetchSheetCodes (see the printed set codes section\n'
+                  '   of the main script) reads it once per session. If\n'
+                  '   the sheet cannot be read, a teacher code is called\n'
+                  '   unavailable rather than wrong. Codes are\n'
+                  '   case-insensitive and may be typed with or without\n'
+                  '   the space. History: the box launched on the picker\n'
+                  '   on Nov 16, 2026, moved to the StudyMate page the\n'
+                  '   same day for testing, a brief restoration to the\n'
+                  '   picker on Nov 17, 2026 was reversed the same day,\n'
+                  '   and the approved pivot build of Nov 18, 2026 moved\n'
+                  '   it here for good and retired the StudyMate page to\n'
+                  '   a redirect. */\n'
+                  '(function(){\n'
+                  '  var form=document.getElementById("pkCodeForm");\n'
+                  '  if(!form)return;\n'
+                  '  var input=document.getElementById("pkCodeIn"),msg=document.getElementById("pkCodeMsg");\n'
+                  '  function openSet(q,teacher){\n'
+                  '    try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:teacher?"teacher_code_open":"pack_code_open",event:true});}catch(e){}\n'
+                  '    var base=location.pathname.substring(0,location.pathname.lastIndexOf("/")+1);\n'
+                  '    location.href=base+"?"+q;\n'
+                  '  }\n'
+                  '  form.addEventListener("submit",function(ev){\n'
+                  '    ev.preventDefault();\n'
+                  '    var code=(input.value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");\n'
+                  '    var reg=(typeof window!=="undefined"&&window.PACK_CODES)?window.PACK_CODES:null;\n'
+                  '    if(!reg){msg.textContent="Pack codes are not available right now. Pick a course on the Review Apps home page, or scan the QR code on your pack.";return;}\n'
+                  '    var hit=reg[code];\n'
+                  '    if(hit&&hit.q){openSet(hit.q,false);return;}\n'
+                  '    msg.textContent="Checking the teacher code registry\\u2026 / V\\u00e9rification du registre des codes des enseignants\\u2026";\n'
+                  '    var fetched=(typeof window.fetchSheetCodes==="function")?window.fetchSheetCodes():Promise.resolve({ok:false,codes:{},rows:0});\n'
+                  '    fetched.then(function(res){\n'
+                  '      var tq=res&&res.codes?res.codes[code]:null;\n'
+                  '      if(tq){openSet(tq,true);return;}\n'
+                  '      if(!res||!res.ok||!res.rows){msg.textContent="That code is not in the printed pack list, and the teacher code registry is not available right now. Try again in a moment, or scan the QR code on your sheet. / Ce code n\\u2019est pas dans la liste des ensembles imprim\\u00e9s, et le registre des codes des enseignants n\\u2019est pas disponible en ce moment. R\\u00e9essayez dans un instant, ou balayez le code QR sur votre feuille.";return;}\n'
+                  '      msg.textContent="That code was not recognized. Check the six characters on your pack and try again.";\n'
+                  '    });\n'
+                  '  });\n'
+                  '})();\n'
+                  '</script>\n')
 
-# ---------- StudyMate pack code box: NOT on the picker ----------
-# The pack code box lives on the StudyMate page only (studymate.html,
-# a standalone file this builder does not emit). It launched on the
-# picker on Nov 16, 2026, moved to the StudyMate page the same day,
-# and a brief restoration to the picker on Nov 17, 2026 was reversed
-# the same day at Jason's direction: the box is not ready to be live
-# on the home page yet. Do not re-add the picker card, its CSS or
-# its wiring here without his say-so. tests/gate-pack-codes.js
-# asserts the box is present and working on studymate.html and
-# absent from this page.
+rep('</body>', picker_script + codebox_script + '</body>', count=1)
+
+# ---------- set code box: on the home page (Nov 18, 2026) ----------
+# The set code box lives on the Review Apps home page (the picker
+# markup above, the wiring in codebox_script). It launched on the
+# picker on Nov 16, 2026, moved to the StudyMate page the same day
+# for testing, a brief restoration to the picker on Nov 17, 2026 was
+# reversed the same day, and Jason's approved StudyMate pivot build
+# of Nov 18, 2026 moved it here for good: pack codes and
+# teacher-minted codes share this one box, and studymate.html is now
+# a redirect to the home page. tests/gate-pack-codes.js asserts the
+# box is present and working on index.html, resolves a known pack
+# code and a sheet-registry code, rejects an unknown one, and that
+# studymate.html carries the redirect and no pack listing.
 
 # ---------- branding and identifiers (run time, from the active course) ----------
 # Nothing course-specific is baked into the shell: every string the chassis

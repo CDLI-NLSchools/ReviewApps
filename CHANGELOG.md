@@ -6,12 +6,16 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
-- StudyMate practice packs have their own page. A pack is a printable PDF for one unit: a prerequisite check with revisit sets, practice for every indicator in the unit, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
+- StudyMate practice packs. A pack is a printable PDF for one unit: a prerequisite check with revisit sets, practice for every indicator in the unit, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
 - The Math 2201 Unit 1 pack now comes in pieces as well as whole: a one-page index listing every set and its code, a separate PDF for each set with questions only, and a separate answer keys PDF for teachers, alongside the full pack. A teacher can share just the index page, on paper or digitally, and students open each set online with its code.
-- The StudyMate page has a pack code box, being tested there before it is considered for the course picker. A student with a printed pack can type the six-character code from the top of a set to open that exact set in the app, the same questions in the same order.
-- The pack code box stays on the StudyMate page only for now. It was briefly added to the Review Apps home page as well and has been taken off that page again while it is still being tested.
+- Teachers can put a set code on their own printed sets. The print panel has an "Include set code and QR" option, on by default: a printed practice sheet or exam then carries a six-character code and a QR code at the top right of its first page. A student types the code into the code box on the Review Apps home page, or scans the QR code, to open that exact set.
+- Saved files are named for their set: the course, whether it is a practice sheet, a unit test or an exam, the units it covers, and its set code when it has one. That name is used for Word downloads and is the suggested name when you save a print as a PDF.
 
 ### Changed
+
+- The set code box now lives on the Review Apps home page. A student with a printed set can type the six-character code from the top of the set to open that exact set in the app, the same questions in the same order. The StudyMate page now sends you to the home page, where the box lives. Codes printed on the Math 2201 Unit 1 pack keep working exactly as before.
+- Printed practice sheets and exams now keep a section heading with the first question of its section, so a heading never sits alone at the bottom of a page. Questions already printed whole on one page, with diagrams at the left margin and no answer line after multiple choice choices.
+- The seed word note in the builder now says plainly that students never type the seed word; it only shapes the link the teacher copies.
 
 - The Math 2201 Unit 1 question bank grew by 89 question templates: diagram questions for Indicator 7.1 (including its first harder questions), more problem types for Indicators 7.2 and 7.3, and a deeper bench of prerequisite questions. The Unit 1 pack was regenerated from the enlarged bank: no question template appears more than twice in the pack, and most questions are the first appearance of their template. The sets, their codes and the pack's shape are unchanged.
 - The follow-on sets after a pack's prerequisite check are now called Revisit sets (they were Repair sets).
