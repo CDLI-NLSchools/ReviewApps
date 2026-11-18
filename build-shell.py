@@ -1039,6 +1039,11 @@ rep("\"No questions match that selection yet \\u2014 try adding a unit or cleari
     "L9(\"No questions match that selection yet, try adding a unit or clearing the indicator filter.\",\"Aucune question ne correspond encore à cette sélection, essaie d'ajouter une unité ou d'effacer le filtre des indicateurs.\")", count=1)
 rep("'<span class=\"tag\">Unit '+e.unit+'</span> <span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> <span class=\"tag lvl\">Level '+e.level+'</span>'",
     "'<span class=\"tag\">'+L9(\"Unit \",\"Unité \")+e.unit+'</span> <span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> <span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>'", count=1)
+# Indicator display cut 1 (Jason's ruling, Nov 18, 2026): the
+# indicator code pill on the online question card renders only
+# in teacher mode; students see the Unit and Level pills only.
+rep("'<span class=\"tag\">'+L9(\"Unit \",\"Unité \")+e.unit+'</span> <span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> <span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>'",
+    "'<span class=\"tag\">'+L9(\"Unit \",\"Unité \")+e.unit+'</span> '+(TEACHER?'<span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> ':\"\")+'<span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>'", count=1)
 rep("'<details class=\"refpanel\"><summary>Formulas and facts for Unit '+u+\": \"+UNITS[u]+'</summary>",
     "'<details class=\"refpanel\"><summary>'+L9(\"Formulas and facts for Unit \",\"Formules et notions pour l'unité \")+u+L9(\": \",\" : \")+UNITS[u]+'</summary>", count=1)
 rep("$(\"poolInfo\").textContent=\"Link copied (or copy it from the address bar): \"+url;",
@@ -1264,6 +1269,11 @@ rep("(\" \\u00B7 Indicators: \"+s.inds.join(\", \"))",
     "(\" \\u00B7 \"+L9(\"Indicators: \",\"Notions : \")+s.inds.join(\", \"))", count=1)
 rep("(Unit '+q._entry.unit+' \\u00B7 '+q._entry.indicators.join(\", \")+' \\u00B7 Level '+q._entry.level+')",
     "('+L9(\"Unit \",\"Unité \")+q._entry.unit+' \\u00B7 '+q._entry.indicators.join(\", \")+' \\u00B7 '+L9(\"Level \",\"Niveau \")+q._entry.level+')", count=1)
+# Indicator display cut 2 (Jason's ruling, Nov 18, 2026): the
+# printed practice sheet's per-question line keeps Unit and
+# Level and drops the indicator codes.
+rep("('+L9(\"Unit \",\"Unité \")+q._entry.unit+' \\u00B7 '+q._entry.indicators.join(\", \")+' \\u00B7 '+L9(\"Level \",\"Niveau \")+q._entry.level+')",
+    "('+L9(\"Unit \",\"Unité \")+q._entry.unit+' \\u00B7 '+L9(\"Level \",\"Niveau \")+q._entry.level+')", count=1)
 rep("'<p style=\"font-size:.85rem;color:#555;\">Spotted a problem with a question on this sheet? Write down its unit and question number and let your teacher know.</p>'",
     "'<p style=\"font-size:.85rem;color:#555;\">'+L9(\"Spotted a problem with a question on this sheet? Write down its unit and question number and let your teacher know.\",\"Tu as repéré un problème dans une question de cette feuille ? Note son unité et son numéro de question et dis-le à ton enseignant.\")+'</p>'", count=1)
 rep("'<div class=\"keybreak\"><h1 style=\"font-size:1.3rem;\">Answer Key, with worked solutions</h1>'",
@@ -1502,8 +1512,8 @@ rep('["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk"]',
 rep('    timer:($("timerChk")?$("timerChk").checked:false),',
     '    timer:($("timerChk")?$("timerChk").checked:false),\n'
     '    enr:enrichIncluded(),', count=1)
-rep("  return '<span class=\"tag\">'+L9(\"Unit \",\"Unit\u00e9 \")+e.unit+'</span> <span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> <span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>';",
-    "  return '<span class=\"tag\">'+L9(\"Unit \",\"Unit\u00e9 \")+e.unit+'</span> <span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> <span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>'+(e.enrich?' <span class=\"tag enr\">Enrichment</span>':\"\");", count=1)
+rep("  return '<span class=\"tag\">'+L9(\"Unit \",\"Unit\u00e9 \")+e.unit+'</span> '+(TEACHER?'<span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> ':\"\")+'<span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>';",
+    "  return '<span class=\"tag\">'+L9(\"Unit \",\"Unit\u00e9 \")+e.unit+'</span> '+(TEACHER?'<span class=\"tag ind\">'+e.indicators.join(\", \")+'</span> ':\"\")+'<span class=\"tag lvl\">'+L9(\"Level \",\"Niveau \")+e.level+'</span>'+(e.enrich?' <span class=\"tag enr\">Enrichment</span>':\"\");", count=1)
 rep('function tScopePool(){\n'
     '  if(!T)return [];\n'
     '  if(T.view==="exam")return poolFor(T.scope.units,T.scope.inds,T.scope.examCap,function(e){return T.scope.includePK||!isPK(e);});\n'
@@ -1744,8 +1754,8 @@ rep('paper+=\'<div class="pq"><p><b>\'+n+\'.</b></p><div class="prompt">\'+stepH
     'paper+=\'<div class="pq"><div class="qline"><b>\'+n+\'.</b> <span class="prompt">\'+stepHTML(q.prompt)+\'</span></div>\';', count=1)
 rep('paper+=\'<div class="pq"><p><b>\'+n+\'.</b> <span style="font-size:.85rem;color:#555;">(\'+it.marks+L9(" marks"," points")+\'</span></p><div class="prompt">\'+stepHTML(q.prompt)+\'</div>\';',
     'paper+=\'<div class="pq"><div class="qline"><b>\'+n+\'.</b> <span style="font-size:.85rem;color:#555;">(\'+it.marks+L9(" marks"," points")+\'</span> <span class="prompt">\'+stepHTML(q.prompt)+\'</span></div>\';', count=1)
-rep('html+=\'<div class="pq"><p><b>\'+(i+1)+\'.</b> <span style="font-size:.8rem;color:#555;">(\'+L9("Unit ","Unité ")+q._entry.unit+\' \\u00B7 \'+q._entry.indicators.join(", ")+\' \\u00B7 \'+L9("Level ","Niveau ")+q._entry.level+\')</span></p><div class="prompt">\'+stepHTML(q.prompt)+\'</div>\';',
-    'html+=\'<div class="pq"><div class="qline"><b>\'+(i+1)+\'.</b> <span style="font-size:.8rem;color:#555;">(\'+L9("Unit ","Unité ")+q._entry.unit+\' \\u00B7 \'+q._entry.indicators.join(", ")+\' \\u00B7 \'+L9("Level ","Niveau ")+q._entry.level+\')</span> <span class="prompt">\'+stepHTML(q.prompt)+\'</span></div>\';', count=1)
+rep('html+=\'<div class="pq"><p><b>\'+(i+1)+\'.</b> <span style="font-size:.8rem;color:#555;">(\'+L9("Unit ","Unité ")+q._entry.unit+\' \\u00B7 \'+L9("Level ","Niveau ")+q._entry.level+\')</span></p><div class="prompt">\'+stepHTML(q.prompt)+\'</div>\';',
+    'html+=\'<div class="pq"><div class="qline"><b>\'+(i+1)+\'.</b> <span style="font-size:.8rem;color:#555;">(\'+L9("Unit ","Unité ")+q._entry.unit+\' \\u00B7 \'+L9("Level ","Niveau ")+q._entry.level+\')</span> <span class="prompt">\'+stepHTML(q.prompt)+\'</span></div>\';', count=1)
 rep('key+=\'<div class="solp"><p><b>\'+(ix+1)+\'.</b> <b>(\'+"ABCD"[q.correct]+\')</b></p><div>\'+stepHTML(q.solution)+\'</div></div>\';',
     'key+=\'<div class="solp"><div class="qline"><b>\'+(ix+1)+\'.</b> <b>(\'+"ABCD"[q.correct]+\')</b> \'+stepHTML(q.solution)+\'</div></div>\';', count=1)
 

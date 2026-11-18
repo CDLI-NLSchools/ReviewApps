@@ -3790,7 +3790,7 @@ function settings(){
 }
 function tags(q){
   var e=q._entry;
-  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> <span class="tag ind">'+e.indicators.join(", ")+'</span> <span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"");
+  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"");
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
@@ -6340,7 +6340,7 @@ function renderSheet(){
   html+='<h1 style="font-size:1.3rem;">'+(window.__COURSE?window.__COURSE.shortName:"Course")+L9(": Practice Sheet"," : Feuille de pratique")+'</h1><p>'+unitNames+(s.inds.length?(" \u00B7 "+L9("Indicators: ","Notions : ")+s.inds.join(", ")):"")+' \u00B7 '+res.items.length+' questions \u00B7 '+((wsMcF>0||wsCrF>0)?((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[0])||'Show all workings in the space provided.'):((window.__COURSE&&window.__COURSE.sheetWork&&window.__COURSE.sheetWork[1])||'Show all workings on your own paper.'))+'</p>';
   res.items.forEach(function(q,i){
     var h=Math.round((q._entry.level===3?170:(q.type==="mc"?120:150))*((q.type==="mc")?wsMcF:wsCrF));
-    html+='<div class="pq"><div class="qline"><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">('+L9("Unit ","Unité ")+q._entry.unit+' \u00B7 '+q._entry.indicators.join(", ")+' \u00B7 '+L9("Level ","Niveau ")+q._entry.level+')</span> <span class="prompt">'+stepHTML(q.prompt)+'</span></div>';
+    html+='<div class="pq"><div class="qline"><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">('+L9("Unit ","Unité ")+q._entry.unit+' \u00B7 '+L9("Level ","Niveau ")+q._entry.level+')</span> <span class="prompt">'+stepHTML(q.prompt)+'</span></div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc"){html+='<div class="opts">'+q.options.map(function(o){return '<label style="display:block;margin:4px 0;">\u25CB '+o+'</label>';}).join("")+'</div>';}
     html+=wsBox(h);
