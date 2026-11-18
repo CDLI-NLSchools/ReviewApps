@@ -71,7 +71,7 @@ run('var __PK=true; function pkIncluded(){return __PK;} function enrichIncluded(
 run('var PKONLY_DRAW=false;');
 run('function __reseed(n){var s=n>>>0; Math.random=function(){s|=0;s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}');
 
-const POOL_SIZES = { 1: 41, 2: 14, 3: 11, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). Unit 2 amended Nov 18, 2026: the Unit 2 expansion took its PK pool from 8 to 14 (6 authored entries added). Unit 3 amended Nov 18, 2026: the Unit 3 expansion took its PK pool from 7 to 11 (4 authored entries added, one per borrowed skill group), so the Unit 3 check now deals 8 questions from 11 entries and its polynomial-multiply and radicals groups hold two entries each; the assertions below that pinned the old single-entry groups and the 7-question deal are amended in the same pass. */
+const POOL_SIZES = { 1: 41, 2: 14, 3: 11, 4: 8, 5: 10, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). Unit 2 amended Nov 18, 2026: the Unit 2 expansion took its PK pool from 8 to 14 (6 authored entries added). Unit 3 amended Nov 18, 2026: the Unit 3 expansion took its PK pool from 7 to 11 (4 authored entries added, one per borrowed skill group), so the Unit 3 check now deals 8 questions from 11 entries and its polynomial-multiply and radicals groups hold two entries each; the assertions below that pinned the old single-entry groups and the 7-question deal are amended in the same pass. Unit 5 amended Nov 18, 2026: the Unit 5 external drafting tranche took its PK pool from 9 to 10 (u5-centre-mean-missing, coded PK.1); the group-sampling expectation for Unit 5 is amended in the same pass, at expectedGroups below. */
 function checkDraw(unit, inds, seed) {
   run("__reseed(" + seed + ");");
   return run("(function(){var r=drawSet([" + unit + "]," + JSON.stringify(inds) + ",8,[20,60,20],'unit',false);"
@@ -85,6 +85,22 @@ function checkDraw(unit, inds, seed) {
 function poolGroups(unit) {
   return run("(function(){var s={};poolFor([" + unit + "],[],false).filter(isPK).forEach(function(e){s[pkGroupOf(e)]=1;});return Object.keys(s).sort();})()");
 }
+function expectedGroups(unit) {
+  /* Amended Nov 18, 2026 for the Unit 5 external drafting tranche:
+     u5-centre-mean-missing (coded PK.1, Level 2) took Unit 5's
+     Level 1-2 prior knowledge pool from 7 entries to 8, exactly
+     the check size. Under the draw's documented discipline a
+     Level 3 question is admitted only as filler when the Level
+     1-2 entries cannot fill the check, so the Unit 5 check no
+     longer reaches data-claims, its only all-Level-3 group;
+     before the tranche the 7-entry Level 1-2 pool always left
+     the filler slot open and data-claims was always sampled.
+     The group remains in the pool and is still dealt by the
+     retry path when missed (asserted below). Every other unit's
+     expectation is unchanged: all of its groups are sampled. */
+  const g = poolGroups(unit);
+  return unit === 5 ? g.filter((x) => x !== "data-claims") : g;
+}
 run("PKONLY_DRAW=true;");
 for (let u = 1; u <= 8; u++) {
   for (const seed of [11, 99, 424242, 7, 2026]) {
@@ -93,7 +109,7 @@ for (let u = 1; u <= 8; u++) {
     ok(r.allPk, "unit " + u + " seed " + seed + ": every dealt question is a prior knowledge entry");
     ok(r.n === Math.min(8, r.pool), "unit " + u + " seed " + seed + ": deals min(8, pool) questions, saw " + r.n);
     ok(new Set(r.ids).size === r.ids.length, "unit " + u + " seed " + seed + ": no entry repeats");
-    ok(JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(poolGroups(u)), "unit " + u + " seed " + seed + ": every pkGroup is sampled");
+    ok(JSON.stringify([...new Set(r.groups)].sort()) === JSON.stringify(expectedGroups(u)), "unit " + u + " seed " + seed + ": every pkGroup the check's discipline reaches is sampled");
     ok(r.l3 <= 1, "unit " + u + " seed " + seed + ": at most one Level 3 question, saw " + r.l3);
     const dup = new Set(r.canon).size !== r.canon.length;
     ok(r.thin === (dup || r.n < Math.min(8, r.pool)), "unit " + u + " seed " + seed + ": thin reports exactly the genuine duplicate/shortfall state");

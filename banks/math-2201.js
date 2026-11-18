@@ -1392,6 +1392,12 @@ function chainTriSVG(AB, BC, angB, AC, CD, AD, angDAC, angD, o) {
 // CRMARKS: u5-ci-count=2
 // CRMARKS: u5-ci-majority=3
 // CRMARKS: u5-media=4
+// CRMARKS: u5-centre-mean-missing=1
+// CRMARKS: u5-range-missing=1
+// CRMARKS: u5-variance-from-sd=1
+// CRMARKS: u5-sd-calc-small=2
+// CRMARKS: u5-empirical-tail=2
+// CRMARKS: u5-normal-count-between=2
 /* ============ THE BANK — Unit 5: Statistical Reasoning ============ */
 /* ============ BANK ADMISSION RULE (adopted Oct 26, 2026, from the bank duplication audit) ============
    A "gen" entry must produce at least 50 unique canonical questions (normalized prompt
@@ -2080,6 +2086,356 @@ E("u5-pk-supported-conclusion", 5, ["8.22"], 3, "var", varset([
       {mode:"conclusion-temp"});
   }
 ]), ["A supported conclusion says only what the numbers show, for the group and the time actually studied.", "Check each option against the numbers in the stem, and drop any option that reaches past them."]);
+/* ============ External drafting tranche (November 18, 2026) ============
+   Thirteen entries drafted externally (Gemini) under the External
+   Authoring Pack, version 2, against the Math 2201 Unit 5 assignment,
+   and integrated after the intake sweep: 3,000 draws per entry with
+   every key recomputed independently from the dealt parameters, plus
+   the distractor length scan and the bank overlap check. One entry
+   carries an intake repair (u5-sd-calc-small), listed in the intake
+   report (Intake-Report-Math-2201-Unit-5-Gemini-2026-11-18, review
+   apps goal files). Ten assigned entries were rejected from this
+   tranche at intake (u5-sd-transform, u5-normal-statements,
+   u5-isnormal-context, u5-sd-decision-gen, u5-sd-overflow,
+   u5-ci-significance, u5-ci-significance-gen, u5-media-ratio-claim,
+   u5-media-position and u5-position-argument). */
+
+E("u5-centre-mean-missing",5,["PK.1"],2,"gen",function(){
+  var ctx=ri(0,2);
+  var n=ri(4,6);
+  var vals,m,tries=0;
+  do{
+    vals=[];
+    for(var i=0;i<n;i++){
+      if(ctx===0)vals.push(ri(10,20));
+      else if(ctx===1)vals.push(ri(8,26));
+      else vals.push(ri(15,45));
+    }
+    m=mean(vals);
+    tries++;
+    if(Math.abs(m*10-Math.round(m*10))<1e-9)break;
+  }while(tries<120);
+  var missIdx=ri(0,n-1);
+  var ans=vals[missIdx];
+  var shown=vals.map(function(v,idx){return idx===missIdx?"\\square":String(v);});
+  var known=vals.filter(function(_,idx){return idx!==missIdx;});
+  var knownSum=sum(known);
+  var total=Math.round(m*n);
+  var mStr=fmt(m,1);
+  var prompt;
+  if(ctx===0)prompt="A student's "+n+" quiz marks (out of 20) are <b>\\(\\{ "+shown.join(", ")+" \\}\\)</b>, with one mark missing. If the mean of all "+n+" marks is \\("+mStr+"\\), find the missing mark.";
+  else if(ctx===1)prompt="The daily high temperatures (in \\(^\\circ\\text{C}\\)) over "+n+" days were <b>\\(\\{ "+shown.join(", ")+" \\}\\)</b>, with one reading missing. If the mean high temperature was \\("+mStr+"^\\circ\\text{C}\\), find the missing temperature.";
+  else prompt="The numbers of pages read over "+n+" evenings were <b>\\(\\{ "+shown.join(", ")+" \\}\\)</b>, with one value missing. If the mean number of pages read was \\("+mStr+"\\), find the missing value.";
+  return numq(prompt,ans,0.011,
+    "Multiply the mean by the count of values to find the complete total: \\("+mStr+" \\times "+n+" = "+total+"\\). Add the known values: \\("+known.join(" + ")+" = "+knownSum+"\\). Subtract to find the missing value: \\("+total+" - "+knownSum+" = "+ans+"\\). The missing value is <b>\\("+ans+"\\)</b>.",
+    {ctx:ctx,vals:vals,missIdx:missIdx,m:m});
+});
+
+E("u5-two-set-describe",5,["8.6"],2,"gen",function(){
+  var ctx=ri(0,2);
+  var sameDir=Math.random()<0.5;
+  var names=ctx===0?["Team A","Team B"]:(ctx===1?["Route A","Route B"]:["Shop A","Shop B"]);
+  var unit=ctx===0?" points":(ctx===1?" min":" dollars");
+  var hiMean=ri(55,85),loMean=hiMean-ri(6,18);
+  var hiRng=ri(22,38),loRng=hiRng-ri(8,16);
+  var hiIdx=ri(0,1),loIdx=1-hiIdx;
+  var means=[0,0],rngs=[0,0];
+  means[hiIdx]=hiMean;means[loIdx]=loMean;
+  if(sameDir){rngs[hiIdx]=hiRng;rngs[loIdx]=loRng;}
+  else{rngs[hiIdx]=loRng;rngs[loIdx]=hiRng;}
+  var cName=names[hiIdx],cOther=names[loIdx];
+  var sName=sameDir?names[hiIdx]:names[loIdx];
+  var sOther=sameDir?names[loIdx]:names[hiIdx];
+  var key=cName+" has the higher centre, and "+sName+" is more spread out.";
+  var d1=cOther+" has the higher centre, and "+sName+" is more spread out.";
+  var d2=cName+" has the higher centre, and "+sOther+" is more spread out.";
+  var d3=cOther+" has the higher centre, and "+sOther+" is more spread out.";
+  var stem=ctx===0?"Over a season, "+names[0]+" has a mean of \\("+means[0]+unit+"\\) and a range of \\("+rngs[0]+unit+"\\), while "+names[1]+" has a mean of \\("+means[1]+unit+"\\) and a range of \\("+rngs[1]+unit+"\\).":
+           (ctx===1?"Over a month, "+names[0]+" has a mean commute of \\("+means[0]+unit+"\\) and a range of \\("+rngs[0]+unit+"\\), while "+names[1]+" has a mean of \\("+means[1]+unit+"\\) and a range of \\("+rngs[1]+unit+"\\).":
+           "Over two weeks, "+names[0]+" has mean daily sales of \\("+means[0]+unit+"\\) with a range of \\("+rngs[0]+unit+"\\), while "+names[1]+" has a mean of \\("+means[1]+unit+"\\) with a range of \\("+rngs[1]+unit+"\\).");
+  return mcq(stem+" Which statement accurately describes both sets?",
+    key,[d1,d2,d3],
+    "The mean measures centre: "+cName+" has the larger mean (\\("+Math.max(means[0],means[1])+" > "+Math.min(means[0],means[1])+"\\)), so "+cName+" has the higher centre. The range measures spread: "+sName+" has the larger range (\\("+Math.max(rngs[0],rngs[1])+" > "+Math.min(rngs[0],rngs[1])+"\\)), so "+sName+" is more spread out. Therefore, <b>"+key+"</b>",
+    {ctx:ctx,sameDir:sameDir,hiIdx:hiIdx,means:means,rngs:rngs});
+});
+
+E("u5-range-missing",5,["8.6"],1,"gen",function(){
+  var askHigh=Math.random()<0.5;
+  var ctx=ri(0,2);
+  var lo=ri(12,48),rng=ri(14,36),hi=lo+rng;
+  var ans=askHigh?hi:lo;
+  var subj=ctx===0?"a set of biology test scores":(ctx===1?"daily wind speeds (in km/h)":"a set of parcel masses (in kg)");
+  var prompt=askHigh?
+    "For "+subj+", the lowest value is \\("+lo+"\\) and the range is \\("+rng+"\\). What is the highest value?":
+    "For "+subj+", the highest value is \\("+hi+"\\) and the range is \\("+rng+"\\). What is the lowest value?";
+  var sol=askHigh?
+    "Since \\(\\text{range} = \\text{highest} - \\text{lowest}\\), add the range to the lowest value: \\("+lo+" + "+rng+" = "+hi+"\\). The highest value is <b>\\("+hi+"\\)</b>.":
+    "Since \\(\\text{range} = \\text{highest} - \\text{lowest}\\), subtract the range from the highest value: \\("+hi+" - "+rng+" = "+lo+"\\). The lowest value is <b>\\("+lo+"\\)</b>.";
+  return numq(prompt,ans,0.011,sol,{askHigh:askHigh,ctx:ctx,lo:lo,hi:hi,rng:rng});
+});
+
+E("u5-sd-calc-small",5,["8.9"],2,"gen",function(){
+  var ctx=ri(0,2);
+  var mu=ri(25,75);
+  var devs,vals,sd,tries=0;
+  do{
+    var a=ri(1,6),b=ri(2,9),c=ri(1,5);
+    var d5=a+b-c;
+    devs=[-a,-b,c,0,d5];
+    // Ensure not all zero and reasonable spread
+    vals=devs.map(function(d){return mu+d;});
+    sd=psd(vals);
+    tries++;
+    if(sd>1.2&&sd<12&&Math.abs(sd*100-Math.round(sd*100))>0.02)break;
+  }while(tries<80);
+  vals=shuffle(vals);
+  var ans=Number(fmtF(sd,2));
+  var sqDevs=vals.map(function(v){return (v-mu)*(v-mu);});
+  var sqSum=sum(sqDevs);
+  var vStr=fmt(pvar(vals),2);
+  var label=ctx===0?"resting heart rates (in bpm)":(ctx===1?"daily commute distances (in km)":"sample masses (in g)");
+  return numq("Calculate the population standard deviation (to two decimal places) of the following "+label+": <b>\\(\\{ "+vals.join(", ")+" \\}\\)</b>.",
+    ans,0.011,
+    "First find the mean: \\(\\mu = \\frac{"+vals.join(" + ")+"}{5} = "+mu+"\\). Find each squared deviation from \\("+mu+"\\): \\("+sqDevs.join(", ")+"\\), whose sum is \\("+sqSum+"\\). Divide by \\(5\\) to get the population variance \\(\\sigma^2 = \\frac{"+sqSum+"}{5} = "+vStr+"\\), then take the square root: \\(\\sigma = \\sqrt{"+vStr+"} \\approx "+fmtF(sd,2)+"\\). The population standard deviation is <b>\\("+fmtF(sd,2)+"\\)</b>.",
+    {ctx:ctx,vals:vals,mu:mu});
+});
+
+E("u5-variance-from-sd",5,["8.9"],1,"gen",function(){
+  var ctx=ri(0,2);
+  var sd=ri(1,24)*0.5;
+  var ans=sd*sd;
+  var unit=ctx===0?"points":(ctx===1?"cm":"min");
+  var unitSq=ctx===0?"\\(\\text{points}^2\\)":(ctx===1?"\\(\\text{cm}^2\\)":"\\(\\text{min}^2\\)");
+  var desc=ctx===0?"a set of physics exam scores":(ctx===1?"the heights of greenhouse seedlings":"customer waiting times at a clinic");
+  return numq("The population standard deviation of "+desc+" is \\("+fmt(sd,1)+"\\text{ "+unit+"}\\). What is the population variance?",
+    ans,0.011,
+    "The population variance is the square of the population standard deviation: \\(\\sigma^2 = ("+fmt(sd,1)+")^2 = "+fmt(ans,2)+"\\) "+unitSq+". The population variance is <b>\\("+fmt(ans,2)+"\\)</b>.",
+    {ctx:ctx,sd:sd});
+});
+
+E("u5-sd-interpret-context",5,["8.10"],2,"gen",function(){
+  var ctx=ri(0,3);
+  var mu,sd,item,unit;
+  if(ctx===0){mu=ri(68,82);sd=ri(4,9);item="math test marks";unit="points";}
+  else if(ctx===1){mu=ri(25,42);sd=ri(3,7);item="pizza delivery times";unit="minutes";}
+  else if(ctx===2){mu=ri(30,55);sd=ri(3,8);item="sunflower heights";unit="centimetres";}
+  else{mu=ri(10,18);sd=ri(2,4);item="tablet battery runtimes";unit="hours";}
+  var key="The "+item+" typically lie within about \\("+sd+"\\) "+unit+" of the mean of \\("+mu+"\\) "+unit+".";
+  var d1="The difference between the longest and shortest "+item+" is exactly \\("+sd+"\\) "+unit+".";
+  var d2="Every single one of the "+item+" is guaranteed to fall within \\("+sd+"\\) "+unit+" of \\("+mu+"\\) "+unit+".";
+  var d3="The "+item+" typically lie within about \\("+sd+"\\) "+unit+" of the smallest value in the set.";
+  return mcq("A data set of "+item+" has a mean of \\("+mu+"\\) "+unit+" and a population standard deviation of \\("+sd+"\\) "+unit+". What does this standard deviation tell you about the data?",
+    key,[d1,d2,d3],
+    "Standard deviation measures the typical distance of observations from the mean, expressed in the same units as the data. Here, <b>"+key+"</b>",
+    {ctx:ctx,mu:mu,sd:sd});
+});
+
+E("u5-sd-match-set",5,["8.10"],2,"gen",function(){
+  var useFive=Math.random()<0.5;
+  var mu=ri(12,28);
+  var sd,baseDevs;
+  if(!useFive){
+    // 4 values: deviations [-d, -d, d, d] => variance = d^2 => sd = d
+    sd=ri(2,6);
+    baseDevs=[-sd,-sd,sd,sd];
+  }else{
+    // 5 values: deviations [-2d, -d, 0, d, 2d] => sum sq = 10 d^2 => var = 2 d^2 (not integer);
+    // instead use [-d, -d, 0, d, d] -> sum sq = 4 d^2 -> var = 0.8 d^2 (not integer);
+    // use 4 values with [-a, -b, b, a] where (a^2 + b^2)/2 = sd^2, e.g., a=1,b=7 -> 25 -> sd=5; a=2,b=6 -> 20; a=1,b=3 -> 5;
+    // or 5 values with [-5, 0, 0, 0, 5] -> sum sq = 50 -> var = 10; [-3,-4,0,4,3] -> 50 -> var=10;
+    // [-2,-4,0,4,2] -> 40 -> var=8; [-3,-6,0,6,3] -> 90 -> var=18; [-4,-3,0,3,4]*k -> var = 10 k^2;
+    // [-2,-1,0,1,2] -> 10 -> var=2; [-6,-3,0,3,6] -> 90 -> var=18;
+    // Use 5 values with [-a, -b, 0, b, a] where 2(a^2+b^2)=5*sd^2 => sd=2: 2(a^2+b^2)=20 => a^2+b^2=10 => a=3, b=1!
+    // Or sd=4 => a=6, b=2! Or sd=6 => a=9, b=3!
+    var mult=ri(1,3);
+    sd=2*mult;
+    baseDevs=[-3*mult,-1*mult,0,1*mult,3*mult];
+  }
+  var keyArr=sorted(baseDevs.map(function(d){return mu+d;}));
+  // Distractor 1: same mean, wider spread (double deviations)
+  var d1Arr=sorted(baseDevs.map(function(d){return mu+2*d;}));
+  // Distractor 2: same spread, shifted mean (+sd)
+  var shift=sd+1;
+  var d2Arr=sorted(baseDevs.map(function(d){return mu+shift+d;}));
+  // Distractor 3: shifted mean and different spread
+  var d3Arr=sorted(baseDevs.map(function(d){return mu-shift+2*d;}));
+  function fmtSet(arr){return "<b>\\(\\{ "+arr.join(", ")+" \\}\\)</b>";}
+  var key=fmtSet(keyArr);
+  var ds=[fmtSet(d1Arr),fmtSet(d2Arr),fmtSet(d3Arr)];
+  return mcq("A quality-control target requires a sample with a mean of \\("+mu+"\\) and a population standard deviation of \\("+sd+"\\). Which data set meets both targets?",
+    key,ds,
+    "Check the mean and population standard deviation of each set. For "+key+", the mean is \\(\\frac{"+keyArr.join(" + ")+"}{"+keyArr.length+"} = "+mu+"\\) and the population standard deviation is \\(\\sqrt{\\frac{"+baseDevs.map(function(d){return d*d;}).join(" + ")+"}{"+keyArr.length+"}} = \\sqrt{"+(sd*sd)+"} = "+sd+"\\). The matching set is "+key+".",
+    {useFive:useFive,mu:mu,sd:sd,keyArr:keyArr});
+});
+
+E("u5-normal-centre-facts",5,["8.11"],1,"gen",function(){
+  var frame=ri(0,3);
+  var mu=ri(40,90);
+  var sd=ri(4,12);
+  if(frame===0||frame===3){
+    var dir=frame===0?"below":"above";
+    var key="\\(50\\%\\)";
+    var ds=["\\(34\\%\\)","\\(68\\%\\)","\\(95\\%\\)"];
+    return mcq("A normal distribution has a mean of \\("+mu+"\\) and a standard deviation of \\("+sd+"\\). What percent of the data lies "+dir+" the mean?",
+      key,ds,
+      "Because a normal curve is symmetric about its mean of \\("+mu+"\\), half of the data lies on each side. Thus, <b>"+key+"</b> of the data lies "+dir+" the mean.",
+      {frame:frame,mu:mu,sd:sd});
+  }else{
+    var stat=frame===1?"median":"mode";
+    var key="\\("+mu+"\\)";
+    var ds=["\\("+(mu-sd)+"\\)","\\("+(mu+sd)+"\\)","\\("+(mu+2*sd)+"\\)"];
+    return mcq("A normal distribution has a mean of \\("+mu+"\\) and a standard deviation of \\("+sd+"\\). What is the "+stat+" of the distribution?",
+      key,ds,
+      "In a normal distribution, the mean, median, and mode are all equal at the centre of symmetry. Therefore, the "+stat+" is <b>"+key+"</b>.",
+      {frame:frame,mu:mu,sd:sd});
+  }
+});
+
+E("u5-isnormal-data",5,["8.12"],2,"gen",function(){
+  var fam=ri(0,2);
+  var base=ri(20,50);
+  var vals,key,d1,d2,d3;
+  if(fam===0){
+    // Symmetric around base+10: 11 values
+    var c=base+10;
+    vals=[c-8,c-5,c-3,c-2,c-1,c,c+1,c+2,c+3,c+5,c+8];
+    key="Yes, because the values cluster near a central peak and taper symmetrically toward both ends.";
+    d1="No, because the values cluster near a central peak and taper symmetrically toward both ends.";
+    d2="Yes, because any data set containing more than ten observations is approximately normal.";
+    d3="No, because the values form two separate clusters with an empty gap in the middle.";
+  }else if(fam===1){
+    // Right-skewed: clustered near base, long upper tail
+    vals=[base,base+1,base+1,base+2,base+2,base+3,base+5,base+9,base+15,base+22,base+30];
+    key="No, because the values pile up at one end with a long tail stretching toward the other end.";
+    d1="Yes, because the values pile up at one end with a long tail stretching toward the other end.";
+    d2="Yes, because any data set containing more than ten observations is approximately normal.";
+    d3="No, because the values form two separate clusters with an empty gap in the middle.";
+  }else{
+    // Bimodal: two clusters separated by gap
+    vals=[base,base+1,base+1,base+2,base+3,base+16,base+17,base+18,base+18,base+19,base+20];
+    key="No, because the values form two separate clusters with an empty gap in the middle.";
+    d1="Yes, because the values form two separate clusters with an empty gap in the middle.";
+    d2="Yes, because any data set containing more than ten observations is approximately normal.";
+    d3="No, because the values pile up at one end with a long tail stretching toward the other end.";
+  }
+  var dealt=shuffle(vals);
+  return mcq("Consider the following sample of 11 measurements: <b>\\(\\{ "+dealt.join(", ")+" \\}\\)</b>. Does this data set appear to approximate a normal distribution, and why?",
+    key,[d1,d2,d3],
+    "Ordering the data gives <b>\\(\\{ "+vals.join(", ")+" \\}\\)</b>. A normal distribution is unimodal and symmetric around a central peak. Here, <b>"+key+"</b>",
+    {fam:fam,vals:vals});
+});
+
+E("u5-compare-normal-shift",5,["8.13"],2,"gen",function(){
+  var ctx=ri(0,2);
+  var sameDir=Math.random()<0.5;
+  var names=ctx===0?["Orchard A","Orchard B"]:(ctx===1?["Shift A","Shift B"]:["Lake A","Lake B"]);
+  var unit=ctx===0?" g":(ctx===1?" s":" cm");
+  var hiMu=ri(120,180),loMu=hiMu-ri(12,28);
+  var hiSd=ri(11,18),loSd=hiSd-ri(4,7);
+  var hiIdx=ri(0,1),loIdx=1-hiIdx;
+  var mus=[0,0],sds=[0,0];
+  mus[hiIdx]=hiMu;mus[loIdx]=loMu;
+  if(sameDir){sds[hiIdx]=hiSd;sds[loIdx]=loSd;}
+  else{sds[hiIdx]=loSd;sds[loIdx]=hiSd;}
+  var cName=names[hiIdx],cOther=names[loIdx];
+  var sName=sameDir?names[hiIdx]:names[loIdx];
+  var sOther=sameDir?names[loIdx]:names[hiIdx];
+  var key=cName+" is centred higher, and "+sName+" is more spread out.";
+  var d1=cOther+" is centred higher, and "+sName+" is more spread out.";
+  var d2=cName+" is centred higher, and "+sOther+" is more spread out.";
+  var d3=cOther+" is centred higher, and "+sOther+" is more spread out.";
+  var subj=ctx===0?"Apple masses":(ctx===1?"Packaging times":"Trout lengths");
+  return mcq(subj+" in "+names[0]+" are normally distributed with mean \\("+mus[0]+unit+"\\) and standard deviation \\("+sds[0]+unit+"\\), while those in "+names[1]+" are normally distributed with mean \\("+mus[1]+unit+"\\) and standard deviation \\("+sds[1]+unit+"\\). Which comparison is correct?",
+    key,[d1,d2,d3],
+    "The mean locates the centre of the normal curve: "+cName+" has the larger mean (\\("+Math.max(mus[0],mus[1])+" > "+Math.min(mus[0],mus[1])+"\\)), so "+cName+" is centred higher. The standard deviation controls spread: "+sName+" has the larger standard deviation (\\("+Math.max(sds[0],sds[1])+" > "+Math.min(sds[0],sds[1])+"\\)), so "+sName+" is more spread out. Thus, <b>"+key+"</b>",
+    {ctx:ctx,sameDir:sameDir,hiIdx:hiIdx,mus:mus,sds:sds});
+});
+
+E("u5-empirical-tail",5,["8.14"],2,"gen",function(){
+  var frame=ri(0,5);
+  var ctx=ri(0,2);
+  var mu,sd,subj,unit;
+  if(ctx===0){mu=ri(70,80);sd=ri(4,8);subj="exam scores";unit="points";}
+  else if(ctx===1){mu=ri(50,65);sd=ri(3,6);subj="commute times";unit="minutes";}
+  else{mu=ri(150,175);sd=ri(5,9);subj="student heights";unit="cm";}
+  var ans,qText,sol;
+  if(frame===0){
+    ans=16;
+    qText="greater than \\("+(mu+sd)+"\\) "+unit;
+    sol="Note that \\("+(mu+sd)+" = "+mu+" + "+sd+" = \\mu + \\sigma\\). By the empirical rule, \\(68\\%\\) of data lies within \\(1\\) standard deviation of the mean, leaving \\(100\\% - 68\\% = 32\\%\\) outside. By symmetry, half lies in the upper tail: \\(\\frac{32\\%}{2} = 16\\%\\). The percentage is <b>\\(16\\)</b>.";
+  }else if(frame===1){
+    ans=16;
+    qText="less than \\("+(mu-sd)+"\\) "+unit;
+    sol="Note that \\("+(mu-sd)+" = "+mu+" - "+sd+" = \\mu - \\sigma\\). By the empirical rule, \\(68\\%\\) of data lies within \\(1\\) standard deviation of the mean, leaving \\(100\\% - 68\\% = 32\\%\\) outside. By symmetry, half lies in the lower tail: \\(\\frac{32\\%}{2} = 16\\%\\). The percentage is <b>\\(16\\)</b>.";
+  }else if(frame===2){
+    ans=2.5;
+    qText="greater than \\("+(mu+2*sd)+"\\) "+unit;
+    sol="Note that \\("+(mu+2*sd)+" = "+mu+" + 2("+sd+") = \\mu + 2\\sigma\\). By the empirical rule, \\(95\\%\\) of data lies within \\(2\\) standard deviations of the mean, leaving \\(100\\% - 95\\% = 5\\%\\) outside. By symmetry, half lies in the upper tail: \\(\\frac{5\\%}{2} = 2.5\\%\\). The percentage is <b>\\(2.5\\)</b>.";
+  }else if(frame===3){
+    ans=2.5;
+    qText="less than \\("+(mu-2*sd)+"\\) "+unit;
+    sol="Note that \\("+(mu-2*sd)+" = "+mu+" - 2("+sd+") = \\mu - 2\\sigma\\). By the empirical rule, \\(95\\%\\) of data lies within \\(2\\) standard deviations of the mean, leaving \\(100\\% - 95\\% = 5\\%\\) outside. By symmetry, half lies in the lower tail: \\(\\frac{5\\%}{2} = 2.5\\%\\). The percentage is <b>\\(2.5\\)</b>.";
+  }else if(frame===4){
+    ans=32;
+    qText="either less than \\("+(mu-sd)+"\\) "+unit+" or greater than \\("+(mu+sd)+"\\) "+unit;
+    sol="The bounds \\("+(mu-sd)+"\\) and \\("+(mu+sd)+"\\) are \\(\\mu - \\sigma\\) and \\(\\mu + \\sigma\\). By the empirical rule, \\(68\\%\\) of data lies between them, so \\(100\\% - 68\\% = 32\\%\\) lies outside. The percentage is <b>\\(32\\)</b>.";
+  }else{
+    ans=5;
+    qText="either less than \\("+(mu-2*sd)+"\\) "+unit+" or greater than \\("+(mu+2*sd)+"\\) "+unit;
+    sol="The bounds \\("+(mu-2*sd)+"\\) and \\("+(mu+2*sd)+"\\) are \\(\\mu - 2\\sigma\\) and \\(\\mu + 2\\sigma\\). By the empirical rule, \\(95\\%\\) of data lies between them, so \\(100\\% - 95\\% = 5\\%\\) lies outside. The percentage is <b>\\(5\\)</b>.";
+  }
+  return numq("A normal distribution of "+subj+" has a mean of \\("+mu+"\\) "+unit+" and a standard deviation of \\("+sd+"\\) "+unit+". Using the empirical rule, what percent of the "+subj+" are "+qText+"?",
+    ans,0.011,sol,{frame:frame,ctx:ctx,mu:mu,sd:sd});
+});
+
+E("u5-normal-count-between",5,["8.14"],2,"gen",function(){
+  // Band shares between consecutive landmarks [-2, -1, 0, 1, 2]: [13.5, 34, 34, 13.5]
+  var shares=[13.5,34,34,13.5];
+  var pairs=[];
+  for(var i=-2;i<=1;i++){
+    for(var j=i+1;j<=2;j++){
+      if(i===-2&&j===2)continue;
+      pairs.push([i,j]);
+    }
+  }
+  var pair=pick(pairs);
+  var loK=pair[0],hiK=pair[1];
+  var pct=0;
+  for(var idx=loK+2;idx<hiK+2;idx++)pct+=shares[idx];
+  // Choose N as a multiple of 200 so pct% of N is an exact integer
+  var n=ri(1,10)*200;
+  var ans=Math.round(n*pct/100);
+  var ctx=ri(0,2);
+  var mu,sd,subj,unit;
+  if(ctx===0){mu=ri(500,520);sd=ri(8,15);subj="bottles of juice";unit="mL";}
+  else if(ctx===1){mu=ri(68,78);sd=ri(4,7);subj="test papers";unit="points";}
+  else{mu=ri(35,50);sd=ri(3,6);subj="fish caught";unit="cm";}
+  var loVal=mu+loK*sd,hiVal=mu+hiK*sd;
+  var bandList=[];
+  for(var idx2=loK+2;idx2<hiK+2;idx2++)bandList.push(fmt(shares[idx2],1)+"\\%");
+  return numq("In a batch of \\("+n+"\\) "+subj+", the measurements are normally distributed with a mean of \\("+mu+"\\) "+unit+" and a standard deviation of \\("+sd+"\\) "+unit+". Using the empirical rule, about how many "+subj+" measure between \\("+loVal+"\\) "+unit+" and \\("+hiVal+"\\) "+unit+"?",
+    ans,0.011,
+    "Convert the bounds to standard deviations from the mean: \\("+loVal+" = \\mu "+(loK>=0?"+ "+loK:"- "+(-loK))+"\\sigma\\) and \\("+hiVal+" = \\mu "+(hiK>=0?"+ "+hiK:"- "+(-hiK))+"\\sigma\\). Adding the empirical rule band percentages between them gives \\("+bandList.join(" + ")+" = "+fmt(pct,1)+"\\%\\). Multiply by the total count: \\("+fmt(pct/100,3)+" \\times "+n+" = "+ans+"\\). About <b>\\("+ans+"\\)</b> "+subj+" lie in this interval.",
+    {loK:loK,hiK:hiK,n:n,ctx:ctx,mu:mu,sd:sd});
+});
+
+E("u5-ci-infer-mean",5,["8.19"],2,"gen",function(){
+  var ctx=ri(0,2);
+  var mu,moe,subj,unit;
+  if(ctx===0){mu=ri(12,24);moe=ri(1,3);subj="laptop battery life";unit="hours";}
+  else if(ctx===1){mu=ri(4,9);moe=1;subj="marketable Atlantic cod mass";unit="kg";}
+  else{mu=ri(75,110);moe=ri(6,14);subj="June rainfall";unit="mm";}
+  var lo=mu-moe,hi=mu+moe;
+  var key="The true mean "+subj+" for the entire population is plausibly between "+lo+" "+unit+" and "+hi+" "+unit+".";
+  var d1="Every individual measurement of "+subj+" in the population lies between "+lo+" "+unit+" and "+hi+" "+unit+".";
+  var d2="The true mean "+subj+" for the entire population is guaranteed to equal exactly "+mu+" "+unit+".";
+  var d3="Exactly 95 percent of all individual values of "+subj+" in the population fall between "+lo+" "+unit+" and "+hi+" "+unit+".";
+  return mcq("A random sample yields a mean "+subj+" of \\("+mu+"\\) "+unit+" with a 95% confidence interval from \\("+lo+"\\) "+unit+" to \\("+hi+"\\) "+unit+". What can be inferred about the population?",
+    key,[d1,d2,d3],
+    "A confidence interval for a mean estimates the population parameter \\(\\mu\\), not the spread of individual population members. Thus, <b>"+key+"</b>",
+    {ctx:ctx,mu:mu,moe:moe});
+});
+
 /* PK tranche pass for Unit 5: flags and accounting properties for
    the five borrowed entries above (the same forEach mechanism as
    the postMid and enrich passes). pkFor is Cluster 5's dependent
@@ -10729,4 +11085,4 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-normal-count-between":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};

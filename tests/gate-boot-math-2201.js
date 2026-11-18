@@ -60,8 +60,8 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   ok(r.dom.window.document.title === "Math 2201 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 2201 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 492, "course: bank loaded via the loader (492 since the Unit 4 external drafting tranche, Nov 18, 2026; 471 since the Unit 3 expansion, Nov 18, 2026; 455 since the Unit 2 expansion, Nov 18, 2026; 395 since sequence-rebuild batch D, Nov 17, 2026; 385 since the strip-audit entry, Nov 17, 2026; 384 since the Unit 1 enrichment, Nov 17, 2026; 295 since the PK tranche, Nov 15, 2026; 236 before it), BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 259, "course: CR_MARKS wired from the bank module (259 since the Unit 4 external drafting tranche, Nov 18, 2026; 253 since the Unit 3 expansion, Nov 18, 2026; 244 since the Unit 2 expansion, Nov 18, 2026; 224 since sequence-rebuild batch D, Nov 17, 2026; 218 before it)");
+  ok(ev(r.dom, "BANK.length") === 505, "course: bank loaded via the loader (505 since the Unit 5 external drafting tranche, Nov 18, 2026; 492 since the Unit 4 external drafting tranche, Nov 18, 2026; 471 since the Unit 3 expansion, Nov 18, 2026; 455 since the Unit 2 expansion, Nov 18, 2026; 395 since sequence-rebuild batch D, Nov 17, 2026; 385 since the strip-audit entry, Nov 17, 2026; 384 since the Unit 1 enrichment, Nov 17, 2026; 295 since the PK tranche, Nov 15, 2026; 236 before it), BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 265, "course: CR_MARKS wired from the bank module (265 since the Unit 5 external drafting tranche, Nov 18, 2026; 259 since the Unit 4 external drafting tranche, Nov 18, 2026; 253 since the Unit 3 expansion, Nov 18, 2026; 244 since the Unit 2 expansion, Nov 18, 2026; 224 since sequence-rebuild batch D, Nov 17, 2026; 218 before it)");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 8, "course: eight unit checkboxes, saw " + labels.length);
   ["Acute Triangle Trigonometry", "Quadratic Functions", "Quadratic Equations",
@@ -79,7 +79,13 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   // selection's prior knowledge entries (109 across the bank: 74 in
   // Units 1 to 4, 35 in Units 5 to 8). With the switch on the figures
   // are the earlier ones: 490, 334, 151, 339 and 334.
-  ok((d.getElementById("poolInfo").textContent || "").includes("381 question templates"), "course: pool after All preset is the whole bank with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  // Pool figures amended again Nov 18, 2026 for the Unit 5 external
+  // drafting tranche: 13 entries added to Unit 5, 12 of them outside
+  // the PK set and one (u5-centre-mean-missing) coded PK.1, taking
+  // the bank's PK entries to 110 (74 in Units 1 to 4, 36 in Units 5
+  // to 8). The All figure rises to 393 and the Final figure to 128;
+  // with the switch on they are 503 and 164.
+  ok((d.getElementById("poolInfo").textContent || "").includes("393 question templates"), "course: pool after All preset is the whole bank with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: All preset leaves the mid-course cap off");
 
   // mid preset: cap on, capped pool, the note, preset serialization
@@ -94,7 +100,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
 
   // final preset
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("116 question templates"), "course: pool after Final preset is Units 5 to 8 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("128 question templates"), "course: pool after Final preset is Units 5 to 8 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: Final preset leaves the cap off");
   ok(!(d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "course: the held-out note is gone once the cap is off");
   ev(r.dom, "refreshFace()");
