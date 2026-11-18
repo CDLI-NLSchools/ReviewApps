@@ -23,9 +23,9 @@ function plotSVG(fn,x0,x1,y0,y1,o){
   var X=function(x){return pad+(x-x0)/(x1-x0)*(W-2*pad);};
   var Y=function(y){return H-pad-(y-y0)/(y1-y0)*(H-2*pad);};
   var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
-  var gsx=o.gx||1,gsy=o.gy||1,gx,gy;
-  for(gx=Math.ceil(x0/gsx)*gsx;gx<=x1;gx+=gsx){out+='<line x1="'+fmt(X(gx),1)+'" y1="'+pad+'" x2="'+fmt(X(gx),1)+'" y2="'+(H-pad)+'" stroke="#eae5d6" stroke-width="1"/>';
-    if(o.labelX)out+='<text x="'+fmt(X(gx),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+fmt(gx)+'</text>';}
+  var gsx=o.gx||1,gsy=o.gy||1,gx,gy,xidx=0;
+  for(gx=Math.ceil(x0/gsx)*gsx;gx<=x1;gx+=gsx,xidx++){out+='<line x1="'+fmt(X(gx),1)+'" y1="'+pad+'" x2="'+fmt(X(gx),1)+'" y2="'+(H-pad)+'" stroke="#eae5d6" stroke-width="1"/>';
+    if(o.labelX&&(!o.labelEvery||xidx%o.labelEvery===0))out+='<text x="'+fmt(X(gx),1)+'" y="'+(H-6)+'" font-size="9" fill="#5a5344" text-anchor="middle">'+fmt(gx)+'</text>';}
   for(gy=Math.ceil(y0/gsy)*gsy;gy<=y1;gy+=gsy){out+='<line x1="'+pad+'" y1="'+fmt(Y(gy),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(gy),1)+'" stroke="#eae5d6" stroke-width="1"/>';
     if(o.labelY&&gy!==0)out+='<text x="'+(pad-4)+'" y="'+fmt(Y(gy)+3,1)+'" font-size="9" fill="#5a5344" text-anchor="end">'+fmt(gy)+'</text>';}
   if(y0<0&&y1>0)out+='<line x1="'+pad+'" y1="'+fmt(Y(0),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(0),1)+'" stroke="#17352a" stroke-width="1.3"/>';
@@ -1205,7 +1205,7 @@ E("u3-graph-full-equation",3,["7.2","7.5"],3,"gen",function(){
     ["\\("+sinS(a,"sin",1,-c,d)+"\\)","\\("+sinS(a,"cos",1,c,d)+"\\)","\\("+sinS(a,"sin",1,c,-d)+"\\)"],
     "Extract all four values from the graph: the maximum "+(a+d)+" and minimum "+(d-a)+" give amplitude "+a+" and midline \\(y = "+d+"\\); one cycle spans 360°, so \\(b = 1\\); and the rising midline crossing is shifted "+c+"° right of the origin, so the phase shift is \\(c = "+c+"^\\circ\\) in a sine model. Only the correct option gets all four right.",
     {a:a,c:c,d:d});
-  q.figure=plotSVG(fn,0,720,-(a+Math.abs(d)+2),a+Math.abs(d)+2,{gx:30,gy:1,labelX:true,labelY:true});
+  q.figure=plotSVG(fn,0,720,-(a+Math.abs(d)+2),a+Math.abs(d)+2,{gx:30,gy:1,labelX:true,labelY:true,labelEvery:3});
   return q;
 });
 E("u3-data-fit-params",3,["7.6"],1,"gen",function(){
