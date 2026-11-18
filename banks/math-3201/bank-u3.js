@@ -349,9 +349,10 @@ E("u3-first-max-time-cr",3,["7.3"],2,"gen",function(){
   var b=pick([15,30,45]), a=pick([2,3,4]), h=pick([0,1,2]), k=pick([6,8,10,12]);
   var t=h+90/b;
   var arg=h===0?"t":"(t - "+h+")";
+  var steps=(h===0)? b+"t &= 90 \\\\ t &= "+(90/b) : b+"(t - "+h+") &= 90 \\\\ t - "+h+" &= "+(90/b)+" \\\\ t &= "+fmt(t,2);
   return numq("The depth of water at a dock, in metres, is modelled by \\(D(t) = "+a+"\\sin "+b+arg+" + "+k+"\\), where \\(t\\) is the time in hours after midnight and the angles are in degrees. Determine the <b>first</b> time, in hours after midnight, at which the depth reaches its maximum.",
     t,0.01,
-    "The depth is greatest when the sine factor first equals 1, which happens when its argument first reaches \\(90^\\circ\\). Solve \\("+b+arg+" = 90\\): \\(t = "+h+" + \\frac{90}{"+b+"} = <b>"+fmt(t,2)+"</b>\\) hours after midnight.",
+    "The depth is greatest when the sine factor first equals 1, which happens when its argument first reaches \\(90^\\circ\\). Set the argument equal to \\(90^\\circ\\) and solve: \\[ \\begin{aligned} "+steps+" \\end{aligned} \\] The depth first reaches its maximum at <b>"+fmt(t,2)+"</b> hours after midnight.",
     {b:b,h:h});
 });
 E("u3-characteristics-combo-cr",3,["7.2"],2,"gen",function(){
