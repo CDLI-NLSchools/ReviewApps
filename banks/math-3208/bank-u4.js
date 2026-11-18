@@ -529,9 +529,10 @@ E("u4-chain-values",4,["3.16"],3,"gen",function(){
    distractor length scan and the bank overlap check. Four entries
    carry intake repairs, each listed in the pilot intake report
    (Pilot-Intake-Report-Math-3208-Gemini-2026-11-18, review apps goal
-   files). Three assigned entries were rejected at intake and are not
-   here: u4-product-rule-derive, u4-differentiability-point and
-   u4-motion-direction. */
+   files). Three assigned entries were rejected from this tranche at
+   intake (u4-product-rule-derive, u4-differentiability-point and
+   u4-motion-direction); they appear at the end of this file in the
+   swap tranche of November 18, 2026, in their ChatGPT versions. */
 
 E("u4-average-rate-secant-slope",4,["3.2"],1,"gen",function(){
   function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var u=y;y=x%y;x=u;}return x||1;}
@@ -959,4 +960,122 @@ E("u4-implicit-second-hyperbola",4,["3.20"],3,"gen",function(){
     ans,0.011,
     "Differentiate \\(x^2 - y^2 = "+k+"\\) implicitly with respect to \\(x\\):\\[2x - 2y\\frac{dy}{dx} = 0 \\implies \\frac{dy}{dx} = \\frac{x}{y}.\\]Differentiate a second time using the Quotient Rule:\\[\\frac{d^2y}{dx^2} = \\frac{y(1) - x\\frac{dy}{dx}}{y^2} = \\frac{y - x\\left(\\frac{x}{y}\\right)}{y^2} = \\frac{y^2 - x^2}{y^3} = \\frac{-"+k+"}{y^3}.\\]At \\(("+x0+", "+y0+")\\), \\(\\frac{d^2y}{dx^2} = \\frac{-"+k+"}{("+y0+")^3} = "+fmt(ans,4)+"\\). The second derivative is <b>\\("+fmt(ans,4)+"\\)</b>.",
     {x0:x0,y0:y0,k:k});
+});
+
+/* ============ External drafting pilot swap tranche (November 18, 2026) ============
+   Three entries drafted externally (ChatGPT) under the same External
+   Authoring Pack and Math 3208 Unit 4 pilot assignment, completing the
+   pilot unit at the full 22 assigned entries. These are the three
+   entries rejected from the Gemini tranche above; the ChatGPT versions
+   passed the comparison intake sweep (3,000 draws per entry, keys
+   recomputed independently, zero defects), and Jason approved the
+   swap on November 18, 2026. Two mechanical integration repairs: the
+   restated key is wrapped in bold at the end of the two generator
+   solutions (the variant set keeps the pack worked example's
+   unwrapped style), and u4-motion-direction's option wording is
+   aligned to its prompt (forward and backward). Intake report:
+   Pilot-Intake-Report-Math-3208-ChatGPT-2026-11-18 (review apps goal
+   files). */
+
+E("u4-differentiability-point", 4, ["3.8"], 2, "gen", function () {
+  const a = pick([-4, -3, -2, 1, 2, 3, 4]), y = ri(2, 9), leftSlope = ri(2, 5);
+  const A = pick([-3, -2, 2, 3]), mode = pick(["smooth", "corner", "jump"]);
+  const rightSlope = mode === "corner" ? leftSlope + ri(1, 3) : leftSlope;
+  const rightValue = mode === "jump" ? y + ri(1, 3) : y;
+  const shifted = "(x" + (a < 0 ? "+" : "-") + Math.abs(a) + ")";
+  function P(A, B, C) { return (A ? A + shifted + "^2+" : "") + B + shifted + "+" + C; }
+  const options = [
+    "Yes. The branches meet at the join and have equal slopes there.",
+    "No. The branches meet at the join but have unequal slopes there.",
+    "No. The branches approach different values at their join point.",
+    "Yes. The two branches approach different values at the join point."
+  ];
+  const index = { smooth: 0, corner: 1, jump: 2 }[mode];
+  return mcq(
+    "Is \\(f\\) differentiable at \\(x=" + a + "\\), and why? " +
+      "\\[f(x)=\\begin{cases}" + P(0, leftSlope, y) + ",&x\\lt " + a + "\\\\" +
+      P(A, rightSlope, rightValue) + ",&x\\ge " + a + ".\\end{cases}\\]",
+    options[index], options.filter((_, i) => i !== index),
+    "At \\(x=" + a + "\\), the left-hand limit is \\(" + y + "\\), and the right-hand limit and \\(f(" + a +
+      ")\\) equal \\(" + rightValue + "\\). " +
+      (mode === "jump" ? "The limits differ, so \\(f\\) is discontinuous there. Differentiability requires continuity. " :
+        "The limits agree with the function value, so \\(f\\) is continuous. The left branch has slope \\(" +
+        leftSlope + "\\). The derivative of the right branch is \\(" + 2 * A + shifted + "+" + rightSlope +
+        "\\), which gives a right-hand slope of \\(" + rightSlope + "\\) at the join. ") + "<b>" + options[index] + "</b>",
+    { a, y, leftSlope, A, rightSlope, rightValue, mode }
+  );
+});
+
+E("u4-product-rule-derive", 4, ["3.13"], 2, "var", varset([
+  function () {
+    return mcq(
+      "Let \\(u=x^3+2\\) and \\(v=x^2+4\\). Using \\(u'\\) and \\(v'\\) for their derivatives, " +
+        "which expression gives \\((uv)'\\) before substitution or simplification?",
+      "\\((u')v+u(v')\\)",
+      ["\\((u')(v')\\)", "\\((u')+(v')\\)", "\\((u')v-u(v')\\)"],
+      "Differentiate the first factor and keep the second to get \\((u')v\\). Keep the first factor and " +
+        "differentiate the second to get \\(u(v')\\). Add the two terms. The unsimplified rule is \\((u')v+u(v')\\).",
+      { variant: "unsimplified", uCoefficients: [1, 0, 0, 2], vCoefficients: [1, 0, 4] }
+    );
+  },
+  function () {
+    const key = "\\(U_h\\frac{V_h-V}{h}+V\\frac{U_h-U}{h}\\)";
+    return mcq(
+      "For differentiable functions \\(u\\) and \\(v\\), write \\(U=u(x)\\), \\(V=v(x)\\), \\(U_h=u(x+h)\\), " +
+        "and \\(V_h=v(x+h)\\). The product-rule derivation starts with \\(\\lim_{h\\to0}\\frac{U_hV_h-UV}{h}\\). " +
+        "Insert \\(-U_hV+U_hV\\) in the numerator. Which expression is the next line inside the limit after regrouping?",
+      key,
+      ["\\(\\frac{U_h-U}{h}\\cdot\\frac{V_h-V}{h}\\)", "\\(\\frac{U_h-U}{h}+\\frac{V_h-V}{h}\\)",
+        "\\(U_h\\frac{V_h-V}{h}-V\\frac{U_h+U}{h}\\)"],
+      "Group the numerator as \\((U_hV_h-U_hV)+(U_hV-UV)\\). Factor \\(U_h\\) from the first group " +
+        "and \\(V\\) from the second, then divide each group by \\(h\\). The next line inside the limit is " + key + ".",
+      { variant: "insert-u-shifted-v", insertedTerm: "U_h V" }
+    );
+  },
+  function () {
+    const key = "\\(V_h\\frac{U_h-P}{h}+P\\frac{V_h-Q}{h}\\)";
+    return mcq(
+      "Suppose \\(p\\) and \\(q\\) are differentiable at \\(x=a\\). Write \\(P=p(a)\\), \\(Q=q(a)\\), " +
+        "\\(U_h=p(a+h)\\), and \\(V_h=q(a+h)\\). To derive \\((pq)'(a)\\), start with " +
+        "\\(\\lim_{h\\to0}\\frac{U_hV_h-PQ}{h}\\) and split the numerator into two groups using \\(PV_h\\). " +
+        "Which expression goes inside the limit after factoring each group?",
+      key,
+      ["\\(\\frac{U_h-P}{h}\\cdot\\frac{V_h-Q}{h}\\)", "\\(\\frac{U_h-P}{h}+\\frac{V_h-Q}{h}\\)",
+        "\\(V_h\\frac{U_h-P}{h}-P\\frac{V_h+Q}{h}\\)"],
+      "Subtract \\(PV_h\\) in the first group and add it back in the second. This gives " +
+        "\\((U_hV_h-PV_h)+(PV_h-PQ)\\). Factoring the first group by \\(V_h\\) and the second by \\(P\\), " +
+        "then dividing by \\(h\\), gives \\(V_h\\frac{U_h-P}{h}+P\\frac{V_h-Q}{h}\\).",
+      { variant: "insert-p-q-shifted-at-a", insertedTerm: "P V_h" }
+    );
+  }
+]));
+
+E("u4-motion-direction", 4, ["3.17"], 2, "gen", function () {
+  const a = ri(2, 5), A = pick([-3, -2, 2, 3]);
+  const mode = pick(["forward", "backward", "rest"]);
+  const targetVelocity = mode === "forward" ? ri(2, 8) : mode === "backward" ? ri(-8, -2) : 0;
+  const targetPosition = mode === "forward" ? ri(-9, -2) : mode === "backward" ? ri(10, 19) : ri(2, 9);
+  const B = targetVelocity - 2 * A * a, C = targetPosition - A * a ** 2 - B * a;
+  function term(value, variable) {
+    return value === 0 ? "" : (value < 0 ? "-" : "+") + Math.abs(value) + variable;
+  }
+  function P() { return A + "t^2" + term(B, "t") + term(C, ""); }
+  function option(value, direction) {
+    const motion = { forward: "moving forward", backward: "moving backward", rest: "momentarily at rest" };
+    return "\\(v(" + a + ")=" + value + "\\), so the particle is " + motion[direction] + ".";
+  }
+  const velocity = 2 * A * a + B, position = A * a ** 2 + B * a + C;
+  const key = option(velocity, mode);
+  return mcq(
+    "A particle moves on a straight line. Its position is \\(s(t)=" + P() + "\\) metres, where \\(t\\) is in seconds " +
+      "and the positive direction is forward. Which statement gives its velocity in metres per second and describes its " +
+      "motion at \\(t=" + a + "\\)?",
+    key,
+    [option(velocity, mode === "forward" ? "rest" : "forward"), option(position, "forward"), option(position, "backward")],
+    "Velocity is the derivative of position, so \\(v(t)=s'(t)=" + 2 * A + "t" + term(B, "") +
+      "\\). At \\(t=" + a + "\\), \\(v(" + a + ")=" + "(" + 2 * A + ")(" + a + ")" + term(B, "") +
+      "=" + velocity + "\\). A positive velocity means forward, a negative velocity means backward, and zero velocity " +
+      "means instantaneous rest. Here <b>" + key + "</b>",
+    { A, B, C, a, mode, targetVelocity, targetPosition }
+  );
 });

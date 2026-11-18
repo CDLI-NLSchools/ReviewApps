@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* Gate 1 (load) for Math 3208: chassis helpers + courses.js + the
-   assembled Math 3208 bank module evaluate cleanly; BANK has 193
-   entries (per unit 23/26/19/44/26/19/20/16, including the two
+   assembled Math 3208 bank module evaluate cleanly; BANK has 196
+   entries (per unit 23/26/19/47/26/19/20/16, including the two
    Unit 3 items authored under ruling 48 on November 13, 2026, the
    three Pure Math harvest items of build order step 3 the same
    day: one Unit 1 and two Unit 2 entries, and the step 9 tiered
@@ -10,7 +10,10 @@
    borrowed from the Mathematics 3200 bank; the external drafting
    pilot tranche of November 18, 2026 adds nineteen Unit 4 entries,
    seven of them constructed response, integrated after the intake
-   sweep);
+   sweep; the swap tranche of November 18, 2026 adds the remaining
+   three Unit 4 entries in their ChatGPT versions, completing the
+   pilot assignment at the full 22 entries, none of them constructed
+   response, so the CR pins below are unchanged);
    window.__BANK_CRMARKS has 110 keys (carried as manifest comments,
    denominations 1x17, 2x63, 3x28, 4x2, marks summing to 235);
    every registered indicator has entries and no
@@ -43,7 +46,7 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/math-3208.js", "utf8"));
 
-ok(BANK.length === 193, "BANK has 193 entries, saw " + BANK.length);
+ok(BANK.length === 196, "BANK has 196 entries, saw " + BANK.length);
 const cr = window.__BANK_CRMARKS || {};
 const crKeys = Object.keys(cr);
 ok(crKeys.length === 110, "__BANK_CRMARKS has 110 keys, saw " + crKeys.length);
@@ -60,8 +63,8 @@ ok(cr["u1-evaluate-operation"] === 1 && cr["u5-rr-ladder"] === 3 && cr["u8-gener
 
 const census = {}, perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 23, 2: 26, 3: 19, 4: 44, 5: 26, 6: 19, 7: 20, 8: 16 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts match the bank (23/26/19/44/26/19/20/16), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 23, 2: 26, 3: 19, 4: 47, 5: 26, 6: 19, 7: 20, 8: 16 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts match the bank (23/26/19/47/26/19/20/16), saw " + JSON.stringify(perUnit));
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);
 ok(empty.length === 0, "indicators with no entries: " + empty.join(", "));
