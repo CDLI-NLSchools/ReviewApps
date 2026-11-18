@@ -468,7 +468,7 @@ E("u9-same-colour-cr",9,["9.14","9.15"],2,"gen",function(){
   var den=(r+b)*(r+b-1), n1=r*(r-1), n2=b*(b-1), num=n1+n2, p=num/den;
   return numq("A "+cx.place+" contains "+r+" "+cx.c1+" "+cx.item+" and "+b+" "+cx.c2+" "+cx.item+". Two "+cx.item+" are drawn at random without replacement. What is the probability that both are the same colour? Give your answer as a decimal (to three decimal places).",
     Math.round(p*1000)/1000,0.002,
-    "Add the two matching cases. Both "+cx.c1+": \\(\\frac{"+r+"}{"+(r+b)+"} \\times \\frac{"+(r-1)+"}{"+(r+b-1)+"} = \\frac{"+n1+"}{"+den+"}\\). Both "+cx.c2+": \\(\\frac{"+b+"}{"+(r+b)+"} \\times \\frac{"+(b-1)+"}{"+(r+b-1)+"} = \\frac{"+n2+"}{"+den+"}\\). Together: \\(\\frac{"+num+"}{"+den+"} \\approx <b>"+fmt(p,3)+"</b>\\).",
+    "Add the two matching cases. Both "+cx.c1+": \\(\\frac{"+r+"}{"+(r+b)+"} \\times \\frac{"+(r-1)+"}{"+(r+b-1)+"} = \\frac{"+n1+"}{"+den+"}\\). Both "+cx.c2+": \\(\\frac{"+b+"}{"+(r+b)+"} \\times \\frac{"+(b-1)+"}{"+(r+b-1)+"} = \\frac{"+n2+"}{"+den+"}\\). Together: \\(\\frac{"+num+"}{"+den+"} \\approx \\)<b>"+fmt(p,3)+"</b>.",
     {r:r,b:b});
 });
 E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
@@ -477,7 +477,7 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
     var p=R/S/2;
     return numq("A spinner is divided into "+S+" equal sectors, of which "+R+" are red. The spinner is spun once and a fair coin is tossed once. What is the probability that the spinner lands on red and the coin lands on heads? Give your answer as a decimal (to three decimal places).",
       Math.round(p*1000)/1000,0.002,
-      "The two events are independent, so multiply: \\(P(\\text{red}) \\times P(\\text{heads}) = \\frac{"+R+"}{"+S+"} \\times \\frac{1}{2} = \\frac{"+R+"}{"+(2*S)+"} \\approx <b>"+fmt(p,3)+"</b>\\).",
+      "The two events are independent, so multiply: \\(P(\\text{red}) \\times P(\\text{heads}) = \\frac{"+R+"}{"+S+"} \\times \\frac{1}{2} = \\frac{"+R+"}{"+(2*S)+"} \\approx \\)<b>"+fmt(p,3)+"</b>.",
       {sc:"spinner-coin"});
   },
   function(){
@@ -485,7 +485,7 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
     var p=(R/S)*(2/6);
     return numq("A spinner is divided into "+S+" equal sectors, of which "+R+" are red. The spinner is spun once and a fair die is rolled once. What is the probability that the spinner lands on red and the die shows a number greater than 4? Give your answer as a decimal (to three decimal places).",
       Math.round(p*1000)/1000,0.002,
-      "The two events are independent, so multiply: \\(P(\\text{red}) \\times P(\\text{greater than 4}) = \\frac{"+R+"}{"+S+"} \\times \\frac{2}{6} \\approx <b>"+fmt(p,3)+"</b>\\).",
+      "The two events are independent, so multiply: \\(P(\\text{red}) \\times P(\\text{greater than 4}) = \\frac{"+R+"}{"+S+"} \\times \\frac{2}{6} \\approx \\)<b>"+fmt(p,3)+"</b>.",
       {sc:"spinner-die"});
   },
   function(){
@@ -493,7 +493,7 @@ E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
     var p=(R1/S1)*(R2/S2);
     return numq("One spinner is divided into "+S1+" equal sectors, of which "+R1+" are red. A second spinner is divided into "+S2+" equal sectors, of which "+R2+" are blue. Both spinners are spun once. What is the probability that the first lands on red and the second lands on blue? Give your answer as a decimal (to three decimal places).",
       Math.round(p*1000)/1000,0.002,
-      "The two spins are independent, so multiply: \\(P(\\text{red}) \\times P(\\text{blue}) = \\frac{"+R1+"}{"+S1+"} \\times \\frac{"+R2+"}{"+S2+"} \\approx <b>"+fmt(p,3)+"</b>\\).",
+      "The two spins are independent, so multiply: \\(P(\\text{red}) \\times P(\\text{blue}) = \\frac{"+R1+"}{"+S1+"} \\times \\frac{"+R2+"}{"+S2+"} \\approx \\)<b>"+fmt(p,3)+"</b>.",
       {sc:"two-spinners"});
   }
 ]));

@@ -342,7 +342,7 @@ E("u3-evaluate-equation-cr",3,["7.4"],2,"gen",function(){
   var t=c+phase/b, ans=a*sv+d;
   return numq("Given \\("+sinS(a,"sin",b,c,d)+"\\), determine the value of \\(y\\) when \\(x = "+t+"^\\circ\\).",
     ans,0.01,
-    "Substitute \\(x = "+t+"^\\circ\\): the angle inside the sine is \\("+b+"("+t+" - "+c+")^\\circ = "+phase+"^\\circ\\), and \\(\\sin "+phase+"^\\circ = "+sv+"\\). So \\(y = "+a+" \\times "+sv+(d===0?"":" + ("+d+")")+" = <b>"+fmt(ans,2)+"</b>\\).",
+    "Substitute \\(x = "+t+"^\\circ\\): the angle inside the sine is \\("+b+"("+t+" - "+c+")^\\circ = "+phase+"^\\circ\\), and \\(\\sin "+phase+"^\\circ = "+sv+"\\). So \\(y = "+a+" \\times "+sv+(d===0?"":" + ("+d+")")+" = \\)<b>"+fmt(ans,2)+"</b>.",
     {b:b,phase:phase,c:c,t:t});
 });
 E("u3-first-max-time-cr",3,["7.3"],2,"gen",function(){
