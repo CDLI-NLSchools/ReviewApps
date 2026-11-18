@@ -3,10 +3,10 @@
      node tests/gate-boot-math-3208.js   (NODE_PATH set to the 2204 node_modules)
    - ?course=math-3208: Math 3208 title and header, eight unit
      checkboxes with the right names, both preset labels, the All
-     preset sweeping all eight units (pool 174), the course default
-     mix 20/60/20 in force, the mid preset over Units 1 to 4 XX
-     74) with the face scope worded "Mid-course review: Units 1 to
-     4", the final preset over Units 5 to 8 (pool 60) with the face
+     preset sweeping all eight units (pool 193), the course default
+     mix 20/60/20 in force, the mid preset over Units 1 to 4 (pool
+     112) with the face scope worded "Mid-course review: Units 1 to
+     4", the final preset over Units 5 to 8 (pool 81) with the face
      scope worded "End-of-course review: Units 5 to 8" as the
      standalone words it, and reference panels: the three always-on
      panels (Quadratic Formula, Trigonometry, Double Angle
@@ -15,7 +15,13 @@
    - bare URL: the canonical picker (Nov 12, 2026):
      Mathematics first, Science second, filter chips;
      this course is listed.
-   - ?course=math-3208&teacher=1: teacher mode on. */
+   - ?course=math-3208&teacher=1: teacher mode on.
+   Pins amended November 18, 2026 for the external drafting pilot
+   tranche (nineteen Unit 4 entries integrated after intake):
+   BANK.length 174 to 193, CR_MARKS keys 103 to 110, the All pool
+   text 174 to 193 and the Mid pool text 93 to 112. The Final pool
+   is unchanged at 81; the header figure of 60 was stale and is
+   corrected in the same pass. */
 const fs = require("fs");
 const { JSDOM } = require("jsdom");
 const FILE = process.env.HOME + "/workspace/review-app-unified/index.html";
@@ -47,8 +53,8 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Math 3208 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 3208 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 174, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 103, "course: CR_MARKS wired from the bank module");
+  ok(ev(r.dom, "BANK.length") === 193, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 110, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 8, "course: eight unit checkboxes, saw " + labels.length);
   ["Pre-Calculus", "Limits and Continuity", "Rational Functions", "Derivatives",
@@ -61,9 +67,9 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is the course default 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("174 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("193 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("93 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("112 question templates"), "course: pool after Mid preset is Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: mid preset mix 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "Mid-course review: Units 1 to 4",

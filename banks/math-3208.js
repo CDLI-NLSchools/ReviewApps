@@ -1596,6 +1596,13 @@ E("u3-inequality-integers",3,["1.10"],2,"var",varset([
 // CRMARKS: u4-implicit-second=3
 // CRMARKS: u4-tangent-parameter=3
 // CRMARKS: u4-chain-values=2
+// CRMARKS: u4-average-rate-context=1
+// CRMARKS: u4-definition-h-form=2
+// CRMARKS: u4-tangent-point-slope=2
+// CRMARKS: u4-derivative-zero-points=1
+// CRMARKS: u4-derivative-extremum-x=2
+// CRMARKS: u4-basic-derivatives-value=1
+// CRMARKS: u4-implicit-second-hyperbola=3
 /* Math 3208 Review, Unit 4 (Derivatives), tranche 1 entries.
    Format per brief-common.md. Fractions are written as literal \frac strings
    (this chassis does not define an FR helper). */
@@ -2095,6 +2102,446 @@ E("u4-chain-values",4,["3.16"],3,"gen",function(){
   var prompt="Values of two differentiable functions and their derivatives are given: "+values+". If \\( h(x) = g(f(x)) \\), find \\( h'("+a0+") \\).";
   var sol="By the chain rule, \\( h'(x) = g'(f(x)) \\cdot f'(x) \\). Read off the needed values: \\( f("+a0+") = "+w+" \\), so \\( g'(f("+a0+")) = g'("+w+") = "+gpW+" \\), and \\( f'("+a0+") = "+fpA+" \\). \\[ \\begin{aligned} h'("+a0+") &= "+gpW+" \\cdot "+fpA+" \\\\ &= "+ans+" \\end{aligned} \\] The value is <b>\\( h'("+a0+") = "+ans+" \\)</b>.";
   return numq(prompt, ans, 0.011, sol, {mode:"gof"});
+});
+
+/* ============ External drafting pilot tranche (November 18, 2026) ============
+   Nineteen entries drafted externally (Gemini) under the External
+   Authoring Pack against the Math 3208 Unit 4 pilot assignment, and
+   integrated after the intake sweep: 3,000 draws per entry with every
+   key recomputed independently from the dealt parameters, plus the
+   distractor length scan and the bank overlap check. Four entries
+   carry intake repairs, each listed in the pilot intake report
+   (Pilot-Intake-Report-Math-3208-Gemini-2026-11-18, review apps goal
+   files). Three assigned entries were rejected at intake and are not
+   here: u4-product-rule-derive, u4-differentiability-point and
+   u4-motion-direction. */
+
+E("u4-average-rate-secant-slope",4,["3.2"],1,"gen",function(){
+  function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var u=y;y=x%y;x=u;}return x||1;}
+  function fr(n,d){if(d<0){n=-n;d=-d;}var g=gcd(n,d);n/=g;d/=g;return d===1?""+n:"\\frac{"+n+"}{"+d+"}";}
+  var a,b,c,xs,ys,i1,i2,x1,x2,y1,y2,dy,dx,key,ds,tries=0;
+  do{
+    tries++;
+    a=pick([-2,-1,1,2]);b=ri(-3,3);c=ri(-4,6);
+    var start=ri(-2,1);
+    xs=[start,start+1,start+2,start+3,start+4];
+    ys=xs.map(function(x){return a*x*x+b*x+c;});
+    i1=ri(0,2);i2=ri(i1+1,4);
+    x1=xs[i1];x2=xs[i2];y1=ys[i1];y2=ys[i2];
+    dy=y2-y1;dx=x2-x1;
+    if(dy===0||Math.abs(dy)===dx){ds=null;continue;}
+    key="\\("+fr(dy,dx)+"\\)";
+    var cands=["\\("+fr(-dy,dx)+"\\)","\\("+fr(dx,dy)+"\\)","\\("+dy+"\\)","\\("+fr(-dx,dy)+"\\)"];
+    ds=[];
+    for(var i=0;i<cands.length&&ds.length<3;i++){if(cands[i]!==key&&ds.indexOf(cands[i])<0)ds.push(cands[i]);}
+    if(ds.length<3)ds=null;
+  }while(!ds&&tries<80);
+  var rowX="\\(x\\): "+xs.map(function(v){return "\\("+v+"\\)";}).join(", ");
+  var rowY="\\(f(x)\\): "+ys.map(function(v){return "\\("+v+"\\)";}).join(", ");
+  return mcq("A table of values for a function \\(f\\) is given below:<br>"+rowX+"<br>"+rowY+"<br>Find the average rate of change of \\(f\\) over the interval \\(["+x1+", "+x2+"]\\).",
+    key,ds,
+    "The average rate of change over \\(["+x1+", "+x2+"]\\) is \\[\\frac{f("+x2+") - f("+x1+")}{"+x2+" - ("+x1+")} = \\frac{"+y2+" - ("+y1+")}{"+dx+"} = "+fr(dy,dx)+".\\]The average rate of change is <b>"+key+"</b>.",
+    {a:a,b:b,c:c,x1:x1,x2:x2,y1:y1,y2:y2});
+});
+
+E("u4-average-rate-context",4,["3.2"],2,"gen",function(){
+  var ctx=ri(0,2);
+  var t1,t2,v1,v2,ans,prompt,sol,params;
+  if(ctx===0){
+    var v0=pick([16,20,24,28]),h0=ri(1,5);
+    t1=ri(0,1);t2=t1+ri(1,2);
+    v1=-5*t1*t1+v0*t1+h0;v2=-5*t2*t2+v0*t2+h0;
+    ans=(v2-v1)/(t2-t1);
+    prompt="The height \\(h\\) (in metres) of a ball thrown upward after \\(t\\) seconds is given by \\(h(t) = -5t^2 + "+v0+"t + "+h0+"\\). Find the average velocity of the ball, in \\(\\text{m/s}\\), from \\(t = "+t1+"\\) to \\(t = "+t2+"\\).";
+    sol="Evaluate \\(h(t)\\) at the endpoints: \\(h("+t1+") = "+v1+"\\) and \\(h("+t2+") = "+v2+"\\). The average velocity is \\[\\frac{h("+t2+") - h("+t1+")}{"+t2+" - "+t1+"} = \\frac{"+v2+" - "+v1+"}{"+(t2-t1)+"} = "+ans+"\\text{ m/s}.\\]The average velocity is <b>\\("+ans+"\\)</b> \\(\\text{m/s}\\).";
+    params={ctx:ctx,v0:v0,h0:h0,t1:t1,t2:t2};
+  }else if(ctx===1){
+    var a=pick([-1,1]),b=ri(2,6),c=ri(4,12);
+    t1=ri(0,2);t2=t1+ri(2,4);
+    v1=a*t1*t1+b*t1+c;v2=a*t2*t2+b*t2+c;
+    ans=(v2-v1)/(t2-t1);
+    var quad=(a===1?"t^2":"-t^2")+" + "+b+"t + "+c;
+    prompt="The air temperature \\(T\\) (in \\(^\\circ\\text{C}\\)) \\(t\\) hours after sunrise is modelled by \\(T(t) = "+quad+"\\). Find the average rate of change of temperature, in \\(^\\circ\\text{C/h}\\), from \\(t = "+t1+"\\) to \\(t = "+t2+"\\).";
+    sol="Evaluate \\(T(t)\\) at the endpoints: \\(T("+t1+") = "+v1+"\\) and \\(T("+t2+") = "+v2+"\\). The average rate of change is \\[\\frac{T("+t2+") - T("+t1+")}{"+t2+" - "+t1+"} = \\frac{"+v2+" - "+v1+"}{"+(t2-t1)+"} = "+ans+"^\\circ\\text{C/h}.\\]The average rate of change is <b>\\("+ans+"\\)</b> \\(^\\circ\\text{C/h}\\).";
+    params={ctx:ctx,a:a,b:b,c:c,t1:t1,t2:t2};
+  }else{
+    var a2=pick([-2,-1]),b2=ri(8,14),c2=ri(10,25);
+    t1=ri(0,1);t2=t1+ri(1,3);
+    v1=a2*t1*t1+b2*t1+c2;v2=a2*t2*t2+b2*t2+c2;
+    ans=(v2-v1)/(t2-t1);
+    prompt="The depth \\(d\\) (in centimetres) of water in a tank \\(t\\) minutes after a valve opens is given by \\(d(t) = "+a2+"t^2 + "+b2+"t + "+c2+"\\). Find the average rate of change of the water depth, in \\(\\text{cm/min}\\), over \\(["+t1+", "+t2+"]\\).";
+    sol="Evaluate \\(d(t)\\) at the endpoints: \\(d("+t1+") = "+v1+"\\) and \\(d("+t2+") = "+v2+"\\). The average rate of change is \\[\\frac{d("+t2+") - d("+t1+")}{"+t2+" - "+t1+"} = \\frac{"+v2+" - "+v1+"}{"+(t2-t1)+"} = "+ans+"\\text{ cm/min}.\\]The average rate of change is <b>\\("+ans+"\\)</b> \\(\\text{cm/min}\\).";
+    params={ctx:ctx,a:a2,b:b2,c:c2,t1:t1,t2:t2};
+  }
+  return numq(prompt,ans,0.011,sol,params);
+});
+
+E("u4-instantaneous-estimate",4,["3.3"],2,"gen",function(){
+  var a=ri(-3,4);
+  var k=pick([-4,-3,-2,2,3,4,5]);
+  var L=pick([-12,-9,-6,-4,-3,3,4,6,8,9,12,15]);
+  var r1=L+k,r2=L+0.1*k,r3=L+0.01*k;
+  var mean=Math.round(((r1+r2+r3)/3)*100)/100;
+  var over=L-k;
+  var key="\\("+L+"\\)";
+  var ds=["\\("+fmt(r1,2)+"\\)","\\("+fmt(mean,2)+"\\)","\\("+over+"\\)"];
+  return mcq("For a function \\(f\\), the average rates of change over intervals \\(["+a+", "+a+" + h]\\) are recorded as \\(h\\) approaches \\(0\\):<br>\\(h = 1\\): \\("+fmt(r1,2)+"\\)<br>\\(h = 0.1\\): \\("+fmt(r2,2)+"\\)<br>\\(h = 0.01\\): \\("+fmt(r3,2)+"\\)<br>Based on this trend, estimate the instantaneous rate of change of \\(f\\) at \\(x = "+a+"\\).",
+    key,ds,
+    "As \\(h\\) shrinks toward \\(0\\) through \\(1, 0.1, 0.01\\), the average rates \\("+fmt(r1,2)+", "+fmt(r2,2)+", "+fmt(r3,2)+"\\) approach \\("+L+"\\). The instantaneous rate of change at \\(x = "+a+"\\) is the limiting value of these average rates, which is <b>"+key+"</b>.",
+    {a:a,k:k,L:L,r1:r1,r2:r2,r3:r3});
+});
+
+E("u4-instantaneous-meaning",4,["3.3"],1,"gen",function(){
+  var mode=ri(0,2);
+  var t0,rate,key,ds,prompt,sol;
+  if(mode===0){
+    t0=ri(2,8);rate=ri(4,15);
+    prompt="Water flows into a storage tank so that \\(V(t)\\) gives the volume in litres after \\(t\\) minutes. If the instantaneous rate of change at \\(t = "+t0+"\\) is \\("+rate+"\\), what does this value represent?";
+    key="The tank is filling at \\("+rate+"\\text{ L/min}\\) at \\(t = "+t0+"\\text{ min}\\)";
+    ds=[
+      "The tank is filling at \\("+rate+"\\text{ min/L}\\) at \\(t = "+t0+"\\text{ min}\\)",
+      "The tank contains a total of \\("+rate+"\\text{ L}\\) at \\(t = "+t0+"\\text{ min}\\)",
+      "The tank filled at an average of \\("+rate+"\\text{ L/min}\\) over \\("+t0+"\\text{ min}\\)"
+    ];
+    sol="The derivative \\(V'("+t0+") = "+rate+"\\) measures the instantaneous rate of change of volume with respect to time at the single moment \\(t = "+t0+"\\), with units \\(\\text{L/min}\\). Thus, <b>"+key+"</b>.";
+  }else if(mode===1){
+    t0=ri(1,5);rate=ri(50,95);
+    prompt="A car travels along a highway so that \\(s(t)\\) gives its distance in kilometres after \\(t\\) hours. If the instantaneous rate of change at \\(t = "+t0+"\\) is \\("+rate+"\\), what does this value represent?";
+    key="The car is travelling at \\("+rate+"\\text{ km/h}\\) at \\(t = "+t0+"\\text{ h}\\)";
+    ds=[
+      "The car is travelling at \\("+rate+"\\text{ h/km}\\) at \\(t = "+t0+"\\text{ h}\\)",
+      "The car has travelled a total of \\("+rate+"\\text{ km}\\) at \\(t = "+t0+"\\text{ h}\\)",
+      "The car averaged \\("+rate+"\\text{ km/h}\\) over the first \\("+t0+"\\text{ h}\\)"
+    ];
+    sol="The derivative \\(s'("+t0+") = "+rate+"\\) measures the instantaneous speed at the exact moment \\(t = "+t0+"\\), with units \\(\\text{km/h}\\). Thus, <b>"+key+"</b>.";
+  }else{
+    t0=ri(3,10);rate=ri(2,9);
+    prompt="A bakery produces loaves of bread where \\(C(x)\\) is the total cost in dollars of baking \\(x\\) hundred loaves. If the instantaneous rate of change at \\(x = "+t0+"\\) is \\("+rate+"\\), what does this value represent?";
+    key="Cost is rising at \\(\\$"+rate+"\\) per hundred loaves at \\(x = "+t0+"\\)";
+    ds=[
+      "Output is rising at \\("+rate+"\\) hundred loaves per dollar at \\(x = "+t0+"\\)",
+      "The total cost of baking \\("+t0+"\\) hundred loaves is \\(\\$"+rate+"\\)",
+      "The average cost across all \\("+t0+"\\) hundred loaves is \\(\\$"+rate+"\\)"
+    ];
+    sol="The derivative \\(C'("+t0+") = "+rate+"\\) gives the instantaneous rate of change of cost per unit of output at \\(x = "+t0+"\\). Thus, <b>"+key+"</b>.";
+  }
+  return mcq(prompt,key,ds,sol,{mode:mode,t0:t0,rate:rate});
+});
+
+E("u4-definition-h-form",4,["3.4"],2,"gen",function(){
+  function P(a,b,c){
+    var s="";
+    if(a!==0)s+=(a===1?"":a===-1?"-":a)+"x^2";
+    if(b!==0)s+=(s?(b>0?" + ":" - "):(b<0?"-":""))+(Math.abs(b)===1?"":Math.abs(b))+"x";
+    if(c!==0)s+=(s?(c>0?" + ":" - "):(c<0?"-":""))+Math.abs(c);
+    return s||"0";
+  }
+  var a=pick([-3,-2,-1,1,2,3]),b=ri(-5,5),c=ri(-6,6),x0=ri(-3,3);
+  var ans=2*a*x0+b;
+  var fx0=a*x0*x0+b*x0+c;
+  var lin=2*a*x0+b;
+  var numClean=lin===0?(""+a+"h^2"):((lin===1?"":lin===-1?"-":lin)+"h")+(a>0?" + "+a+"h^2":" - "+Math.abs(a)+"h^2");
+  var factored=lin===0?("h("+a+"h)"):("h("+lin+(a>0?" + "+a+"h":" - "+Math.abs(a)+"h")+")");
+  return numq("Use the limit definition \\(f'("+x0+") = \\lim_{h \\to 0} \\frac{f("+x0+" + h) - f("+x0+")}{h}\\) to find \\(f'("+x0+")\\) for \\(f(x) = "+P(a,b,c)+"\\).",
+    ans,0.011,
+    "First find \\(f("+x0+") = "+fx0+"\\) and expand \\(f("+x0+" + h)\\):\\[\\begin{aligned}f("+x0+" + h) &= "+a+"("+x0+" + h)^2"+(b>=0?" + "+b:" - "+Math.abs(b))+"("+x0+" + h)"+(c>=0?" + "+c:" - "+Math.abs(c))+" \\\\ &= "+fx0+(lin>=0?" + "+lin:" - "+Math.abs(lin))+"h"+(a>0?" + "+a:" - "+Math.abs(a))+"h^2.\\end{aligned}\\]Substitute into the limit definition and cancel \\(h\\):\\[\\begin{aligned}f'("+x0+") &= \\lim_{h \\to 0} \\frac{("+fx0+(lin>=0?" + "+lin:" - "+Math.abs(lin))+"h"+(a>0?" + "+a:" - "+Math.abs(a))+"h^2) - ("+fx0+")}{h} \\\\ &= \\lim_{h \\to 0} \\frac{"+numClean+"}{h} = \\lim_{h \\to 0} \\frac{"+factored+"}{h} = \\lim_{h \\to 0} ("+lin+(a>0?" + "+a:" - "+Math.abs(a))+"h) = "+ans+".\\end{aligned}\\]Therefore, \\(f'("+x0+") = \\) <b>\\("+ans+"\\)</b>.",
+    {a:a,b:b,c:c,x0:x0});
+});
+
+E("u4-definition-identify",4,["3.4"],2,"gen",function(){
+  var a,b,x0,fx0,der,expr,key,ds,tries=0;
+  do{
+    tries++;
+    a=pick([2,3,4]);b=pick([-5,-4,-3,-2,2,3,4,5]);x0=pick([-3,-2,-1,1,2,3]);
+    fx0=a*x0*x0+b*x0;
+    der=2*a*x0+b;
+    if(x0===der||x0===-x0){ds=null;continue;}
+    var bStr=b>0?" + "+b+"x":" - "+Math.abs(b)+"x";
+    var bAlt=b>0?" - "+b+"x":" + "+Math.abs(b)+"x";
+    var fx0Str=fx0>=0?" - "+fx0:" + "+Math.abs(fx0);
+    expr="\\lim_{h \\to 0} \\frac{"+a+"("+x0+" + h)^2"+(b>0?" + "+b:" - "+Math.abs(b))+"("+x0+" + h)"+fx0Str+"}{h}";
+    key="\\(f(x) = "+a+"x^2"+bStr+"\\) at \\(x = "+x0+"\\)";
+    var cands=[
+      "\\(f(x) = "+a+"x^2"+bStr+"\\) at \\(x = "+(-x0)+"\\)",
+      "\\(f(x) = "+a+"x^2"+bStr+"\\) at \\(x = "+der+"\\)",
+      "\\(f(x) = "+b+"x^2 + "+a+"x\\) at \\(x = "+x0+"\\)",
+      "\\(f(x) = "+a+"x^2"+bAlt+"\\) at \\(x = "+x0+"\\)"
+    ];
+    ds=[];
+    for(var i=0;i<cands.length&&ds.length<3;i++){if(cands[i]!==key&&ds.indexOf(cands[i])<0)ds.push(cands[i]);}
+    if(ds.length<3)ds=null;
+  }while(!ds&&tries<80);
+  var bStr2=b>0?" + "+b+"x":" - "+Math.abs(b)+"x";
+  return mcq("The limit expression \\["+expr+"\\] represents \\(f'(a)\\) for which function \\(f\\) and value \\(x = a\\)?",
+    key,ds,
+    "Compare the numerator with \\(f(a + h) - f(a)\\). Replacing \\("+x0+" + h\\) with \\(x\\) in the first two terms gives \\(f(x) = "+a+"x^2"+bStr2+"\\), and checking \\(f("+x0+") = "+a+"("+x0+")^2"+(b>0?" + "+b:" - "+Math.abs(b))+"("+x0+") = "+fx0+"\\) confirms \\(a = "+x0+"\\). The limit represents <b>"+key+"</b>.",
+    {a:a,b:b,x0:x0});
+});
+
+E("u4-tangent-point-slope",4,["3.5"],2,"gen",function(){
+  function P(a,b,c,d){
+    var s="";
+    if(a!==0)s+=(a===1?"":a===-1?"-":a)+"x^3";
+    if(b!==0)s+=(s?(b>0?" + ":" - "):(b<0?"-":""))+(Math.abs(b)===1?"":Math.abs(b))+"x^2";
+    if(c!==0)s+=(s?(c>0?" + ":" - "):(c<0?"-":""))+(Math.abs(c)===1?"":Math.abs(c))+"x";
+    if(d!==0)s+=(s?(d>0?" + ":" - "):(d<0?"-":""))+Math.abs(d);
+    return s||"0";
+  }
+  var a,b,c,d,x0,y0,m,ans,tries=0;
+  var isNormal=Math.random()<0.5;
+  do{
+    tries++;
+    a=pick([-1,1]);b=ri(-3,3);c=ri(-4,4);d=ri(-5,5);
+    x0=pick([-2,-1,1,2]);
+    y0=a*x0*x0*x0+b*x0*x0+c*x0+d;
+    m=3*a*x0*x0+2*b*x0+c;
+    if(isNormal&&(m===0||x0%m!==0))continue;
+    ans=isNormal?(y0+x0/m):(y0-m*x0);
+    break;
+  }while(tries<120);
+  var lineType=isNormal?"normal line":"tangent line";
+  var mLine=isNormal?(-1/m):m;
+  var mStr=isNormal?(m>0?"-\\frac{1}{"+m+"}":"\\frac{1}{"+(-m)+"}"):""+m;
+  return numq("Find the \\(y\\)-intercept of the "+lineType+" to the graph of \\(f(x) = "+P(a,b,c,d)+"\\) at \\(x = "+x0+"\\).",
+    ans,0.011,
+    "First find the point on the curve: \\(f("+x0+") = "+y0+"\\), giving \\(("+x0+", "+y0+")\\). Differentiate to find the tangent slope:\\[f'(x) = "+(3*a)+"x^2"+(2*b>=0?" + "+(2*b):" - "+Math.abs(2*b))+"x"+(c>=0?" + "+c:" - "+Math.abs(c))+",\\quad f'("+x0+") = "+m+".\\]"+(isNormal?"The normal slope is the negative reciprocal, \\(m_{\\perp} = "+mStr+"\\). ":"")+"Using point-slope form \\(y - ("+y0+") = "+mStr+"(x - ("+x0+"))\\) and setting \\(x = 0\\) gives \\(y = "+y0+" - ("+mLine+")("+x0+") = "+ans+"\\). The \\(y\\)-intercept is <b>\\("+ans+"\\)</b>.",
+    {a:a,b:b,c:c,d:d,x0:x0,isNormal:isNormal});
+});
+
+E("u4-first-principles-setup",4,["3.6"],2,"gen",function(){
+  var a=pick([2,3,4,5]),b=pick([2,3,4,5,6]),c=pick([1,2,3,4,5]);
+  var x0=pick([1,2,3]);
+  var bStr=" + "+b+"x",cStr=" + "+c;
+  var key="\\(\\lim_{h \\to 0} \\frac{"+a+"(x + h)^2 + "+b+"(x + h) + "+c+" - ("+a+"x^2 + "+b+"x + "+c+")}{h}\\)";
+  var ds=[
+    "\\(\\lim_{h \\to 0} \\frac{"+a+"(x + h)^2 + "+b+"(x + h) + "+c+" - "+a+"x^2 + "+b+"x + "+c+"}{h}\\)",
+    "\\(\\lim_{h \\to 0} \\frac{"+a+"("+x0+" + h)^2 + "+b+"("+x0+" + h) + "+c+" - ("+a+"("+x0+")^2 + "+b+"("+x0+") + "+c+")}{h}\\)",
+    "\\(\\lim_{h \\to 0} \\frac{"+a+"x^2 + "+b+"x + "+c+" + h - ("+a+"x^2 + "+b+"x + "+c+")}{h}\\)"
+  ];
+  return mcq("Which limit expression correctly sets up the derivative \\(f'(x)\\) from first principles for \\(f(x) = "+a+"x^2"+bStr+cStr+"\\) before expanding?",
+    key,ds,
+    "By definition, \\(f'(x) = \\lim_{h \\to 0} \\frac{f(x + h) - f(x)}{h}\\). Substituting \\(x + h\\) into every \\(x\\) in \\(f(x)\\) gives \\("+a+"(x + h)^2 + "+b+"(x + h) + "+c+"\\), and subtracting the entire function \\(f(x)\\) requires brackets around \\(("+a+"x^2 + "+b+"x + "+c+")\\). The correct setup is <b>"+key+"</b>.",
+    {a:a,b:b,c:c,x0:x0});
+});
+
+E("u4-notation-convert",4,["3.7"],1,"gen",function(){
+  var x0=ri(-3,5),m=pick([-6,-4,-3,-2,2,3,4,5,7]);
+  if(m===x0)m=7;
+  var mode=ri(0,2);
+  var prompt,key,ds,sol;
+  if(mode===0){
+    prompt="The slope of the tangent line to the curve \\(y = f(x)\\) at \\(x = "+x0+"\\) is \\("+m+"\\). Which statement expresses this in Leibniz notation?";
+    key="\\(\\left.\\frac{dy}{dx}\\right|_{x="+x0+"} = "+m+"\\)";
+    ds=[
+      "\\(\\left.\\frac{d^2y}{dx^2}\\right|_{x="+x0+"} = "+m+"\\)",
+      "\\(\\left.\\frac{dx}{dy}\\right|_{x="+x0+"} = "+m+"\\)",
+      "\\(\\left.y(x)\\right|_{x="+x0+"} = "+m+"\\)"
+    ];
+    sol="The derivative \\(\\frac{dy}{dx}\\) evaluated at \\(x = "+x0+"\\) gives the tangent slope at that point, written \\(\\left.\\frac{dy}{dx}\\right|_{x="+x0+"} = "+m+"\\). The equivalent statement is <b>"+key+"</b>.";
+  }else if(mode===1){
+    prompt="Given \\(\\left.\\frac{dy}{dx}\\right|_{x="+x0+"} = "+m+"\\) for \\(y = f(x)\\), which statement is equivalent in prime notation?";
+    key="\\(f'("+x0+") = "+m+"\\)";
+    ds=[
+      "\\(f("+x0+") = "+m+"\\)",
+      "\\(f''("+x0+") = "+m+"\\)",
+      "\\(f'("+m+") = "+x0+"\\)"
+    ];
+    sol="Leibniz notation \\(\\left.\\frac{dy}{dx}\\right|_{x="+x0+"}\\) and Lagrange prime notation \\(f'("+x0+")\\) both denote the first derivative of \\(f\\) at \\(x = "+x0+"\\). The equivalent statement is <b>"+key+"</b>.";
+  }else{
+    prompt="Which limit statement is equivalent to \\(f'("+x0+") = "+m+"\\)?";
+    key="\\(\\lim_{h \\to 0} \\frac{f("+x0+" + h) - f("+x0+")}{h} = "+m+"\\)";
+    ds=[
+      "\\(\\lim_{h \\to 0} \\frac{f("+x0+" + h) + f("+x0+")}{h} = "+m+"\\)",
+      "\\(\\lim_{h \\to 0} \\frac{f("+m+" + h) - f("+m+")}{h} = "+x0+"\\)",
+      "\\(\\lim_{x \\to "+x0+"} f(x) = "+m+"\\)"
+    ];
+    sol="By the limit definition of the derivative at a point, \\(f'(a) = \\lim_{h \\to 0} \\frac{f(a + h) - f(a)}{h}\\). With \\(a = "+x0+"\\), this gives <b>"+key+"</b>.";
+  }
+  return mcq(prompt,key,ds,sol,{mode:mode,x0:x0,m:m});
+});
+
+
+E("u4-differentiable-values",4,["3.10"],2,"gen",function(){
+  var a=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  var k=pick([1,2,3]);
+  var b=pick([-4,-3,-2,2,3,4]);
+  var c=ri(-6,6);
+  var other=pick([-5,-4,-3,-2,-1,1,2,3,4,5].filter(function(v){return v!==a;}));
+  var absInner=a>0?"x - "+a:"x + "+(-a);
+  var fStr="|"+absInner+"| + "+(k===1?"":k)+"x^2"+(b>0?" + "+b:" - "+Math.abs(b))+"x"+(c>=0?" + "+c:" - "+Math.abs(c));
+  var key="All real numbers except \\(x = "+a+"\\)";
+  var ds=[
+    "All real numbers \\(\\mathbb{R}\\)",
+    "All real numbers except \\(x = "+a+"\\) and \\(x = "+other+"\\)",
+    "Only \\(x = "+a+"\\)"
+  ];
+  return mcq("For which values of \\(x\\) is the function \\(f(x) = "+fStr+"\\) differentiable?",
+    key,ds,
+    "The polynomial part \\("+(k===1?"":k)+"x^2"+(b>0?" + "+b:" - "+Math.abs(b))+"x"+(c>=0?" + "+c:" - "+Math.abs(c))+"\\) is differentiable for all real numbers. The absolute value term \\(|"+absInner+"|\\) is differentiable everywhere except at its corner where \\("+absInner+" = 0\\), namely \\(x = "+a+"\\). Thus, \\(f\\) is differentiable for <b>"+key+"</b>.",
+    {a:a,k:k,b:b,c:c,other:other});
+});
+
+E("u4-derivative-zero-points",4,["3.10"],2,"gen",function(){
+  var a=pick([-3,-2,-1,1,2,3]);
+  var x0=ri(-6,6);
+  var b=-2*a*x0;
+  var c=ri(-9,9);
+  var fStr=(a===1?"":a===-1?"-":a)+"x^2"+(b===0?"":(b>0?" + "+b:" - "+Math.abs(b))+"x")+(c===0?"":(c>0?" + "+c:" - "+Math.abs(c)));
+  return numq("Find the value of \\(x\\) at which the derivative of \\(f(x) = "+fStr+"\\) is equal to zero.",
+    x0,0.011,
+    "Differentiate term by term: \\(f'(x) = "+(2*a)+"x"+(b===0?"":(b>0?" + "+b:" - "+Math.abs(b)))+"\\). Setting \\(f'(x) = 0\\) gives \\("+(2*a)+"x = "+(-b)+"\\), so \\(x = "+x0+"\\). The derivative is zero at \\(x = \\) <b>\\("+x0+"\\)</b>.",
+    {a:a,b:b,c:c,x0:x0});
+});
+
+E("u4-derivative-extremum-x",4,["3.12"],3,"gen",function(){
+  var r1=ri(-5,3);
+  var r2=ri(r1+2,6);
+  var lead=pick([-3,-2,-1,1,2,3]);
+  var ans=lead>0?r2:r1;
+  var f1="(x "+(r1>0?"- "+r1:r1<0?"+ "+(-r1):"+ 0")+")";
+  if(r1===0)f1="x";
+  var f2="(x "+(r2>0?"- "+r2:r2<0?"+ "+(-r2):"+ 0")+")";
+  if(r2===0)f2="x";
+  var leadStr=lead===1?"":lead===-1?"-":""+lead;
+  var signLeft=lead>0?"+":"-";
+  var signMid=lead>0?"-":"+";
+  var signRight=lead>0?"+":"-";
+  return numq("The derivative of a function \\(f\\) is \\(f'(x) = "+leadStr+f1+f2+"\\). Find the \\(x\\)-coordinate of the local minimum of \\(f\\).",
+    ans,0.011,
+    "Setting \\(f'(x) = 0\\) gives critical numbers \\(x = "+r1+"\\) and \\(x = "+r2+"\\). Test the sign of \\(f'(x)\\) on each interval:<br>&bull; For \\(x < "+r1+"\\): \\(f'(x)\\) has sign \\("+signLeft+"\\).<br>&bull; For \\("+r1+" < x < "+r2+"\\): \\(f'(x)\\) has sign \\("+signMid+"\\).<br>&bull; For \\(x > "+r2+"\\): \\(f'(x)\\) has sign \\("+signRight+"\\).<br>A local minimum occurs where \\(f'(x)\\) changes from negative to positive, which happens at \\(x = "+ans+"\\). The \\(x\\)-coordinate of the local minimum is <b>\\("+ans+"\\)</b>.",
+    {lead:lead,r1:r1,r2:r2});
+});
+
+
+E("u4-quotient-rule-setup",4,["3.13"],2,"gen",function(){
+  var a=pick([2,3,4,5]),b=pick([1,2,3,4,5]),c=pick([2,3,4]),d=pick([1,2,3,4,5]);
+  var u="("+a+"x^2 + "+b+")";
+  var du="("+(2*a)+"x)";
+  var v="("+c+"x - "+d+")";
+  var dv="("+c+")";
+  var key="\\(\\frac{"+du+v+" - "+u+dv+"}{"+v+"^2}\\)";
+  var ds=[
+    "\\(\\frac{"+u+dv+" - "+du+v+"}{"+v+"^2}\\)",
+    "\\(\\frac{"+du+v+" - "+u+dv+"}{"+v+"}\\)",
+    "\\(\\frac{"+du+v+" + "+u+dv+"}{"+v+"^2}\\)"
+  ];
+  return mcq("Which expression correctly sets up \\(f'(x)\\) using the Quotient Rule for \\(f(x) = \\frac{"+a+"x^2 + "+b+"}{"+c+"x - "+d+"}\\) before simplifying?",
+    key,ds,
+    "With numerator \\(u(x) = "+a+"x^2 + "+b+"\\) (\\(u'(x) = "+(2*a)+"x\\)) and denominator \\(v(x) = "+c+"x - "+d+"\\) (\\(v'(x) = "+c+"\\)), the Quotient Rule \\(\\frac{u'(x)v(x) - u(x)v'(x)}{[v(x)]^2}\\) gives <b>"+key+"</b>.",
+    {a:a,b:b,c:c,d:d});
+});
+
+E("u4-basic-derivatives-value",4,["3.14"],2,"gen",function(){
+  function P(a,b,c,d,e){
+    var s="";
+    if(a!==0)s+=(a===1?"":a===-1?"-":a)+"x^4";
+    if(b!==0)s+=(s?(b>0?" + ":" - "):(b<0?"-":""))+(Math.abs(b)===1?"":Math.abs(b))+"x^3";
+    if(c!==0)s+=(s?(c>0?" + ":" - "):(c<0?"-":""))+(Math.abs(c)===1?"":Math.abs(c))+"x^2";
+    if(d!==0)s+=(s?(d>0?" + ":" - "):(d<0?"-":""))+(Math.abs(d)===1?"":Math.abs(d))+"x";
+    if(e!==0)s+=(s?(e>0?" + ":" - "):(e<0?"-":""))+Math.abs(e);
+    return s||"0";
+  }
+  var a=pick([-1,0,1,2]),b=pick([-2,-1,1,2,3]),c=ri(-4,4),d=ri(-5,5),e=ri(-6,6);
+  var x0=pick([-2,-1,1,2]);
+  var ans=4*a*x0*x0*x0+3*b*x0*x0+2*c*x0+d;
+  var dp=P(0,4*a,3*b,2*c,d);
+  return numq("Find \\(f'("+x0+")\\) for \\(f(x) = "+P(a,b,c,d,e)+"\\).",
+    ans,0.011,
+    "Apply the Power, Constant Multiple, and Sum/Difference Rules term by term:\\[f'(x) = "+dp+".\\]Substitute \\(x = "+x0+"\\):\\[f'("+x0+") = "+(4*a)+"("+x0+")^3 + ("+(3*b)+")("+x0+")^2 + ("+(2*c)+")("+x0+") + ("+d+") = "+ans+".\\]Thus, \\(f'("+x0+") = \\) <b>\\("+ans+"\\)</b>.",
+    {a:a,b:b,c:c,d:d,e:e,x0:x0});
+});
+
+E("u4-derivative-roots-form",4,["3.14"],2,"gen",function(){
+  var a=pick([2,4,6,8]),b=pick([3,6,9]),c=pick([2,3,4,5]);
+  var ha=a/2,tb=b/3;
+  var key="\\("+ha+"x^{-1/2} + "+tb+"x^{-2/3} - "+c+"x^{-2}\\)";
+  var ds=[
+    "\\("+ha+"x^{1/2} + "+tb+"x^{2/3} - "+c+"x^{-2}\\)",
+    "\\("+a+"x^{-1/2} + "+b+"x^{-2/3} - "+c+"x^{-2}\\)",
+    "\\("+ha+" + "+tb+" - "+c+"x^{-2}\\)"
+  ];
+  return mcq("Differentiate \\(f(x) = "+a+"\\sqrt{x} + "+b+"\\sqrt[3]{x} + \\frac{"+c+"}{x}\\).",
+    key,ds,
+    "Rewrite each term using rational and negative exponents: \\(f(x) = "+a+"x^{1/2} + "+b+"x^{1/3} + "+c+"x^{-1}\\). Applying the Power Rule to each term gives\\[f'(x) = "+a+"\\left(\\frac{1}{2}\\right)x^{-1/2} + "+b+"\\left(\\frac{1}{3}\\right)x^{-2/3} + "+c+"(-1)x^{-2} = "+ha+"x^{-1/2} + "+tb+"x^{-2/3} - "+c+"x^{-2}.\\]The derivative is <b>"+key+"</b>.",
+    {a:a,b:b,c:c});
+});
+
+E("u4-higher-derivative-expression",4,["3.15"],2,"gen",function(){
+  function P(a,b,c,d,e){
+    var s="";
+    if(a!==0)s+=(a===1?"":a===-1?"-":a)+"x^4";
+    if(b!==0)s+=(s?(b>0?" + ":" - "):(b<0?"-":""))+(Math.abs(b)===1?"":Math.abs(b))+"x^3";
+    if(c!==0)s+=(s?(c>0?" + ":" - "):(c<0?"-":""))+(Math.abs(c)===1?"":Math.abs(c))+"x^2";
+    if(d!==0)s+=(s?(d>0?" + ":" - "):(d<0?"-":""))+(Math.abs(d)===1?"":Math.abs(d))+"x";
+    if(e!==0)s+=(s?(e>0?" + ":" - "):(e<0?"-":""))+Math.abs(e);
+    return s||"0";
+  }
+  var a=pick([1,2,3]),b=pick([-3,-2,-1,1,2,3]),c=pick([-5,-4,-3,-2,2,3,4,5]),d=ri(-6,6),e=ri(-6,6);
+  var key="\\("+P(0,0,12*a,6*b,2*c)+"\\)";
+  var ds=[
+    "\\("+P(0,4*a,3*b,2*c,d)+"\\)",
+    "\\("+P(0,0,0,24*a,6*b)+"\\)",
+    "\\("+P(0,0,12*a,6*b,c)+"\\)"
+  ];
+  return mcq("Find the second derivative \\(f''(x)\\) of \\(f(x) = "+P(a,b,c,d,e)+"\\).",
+    key,ds,
+    "First differentiate \\(f(x)\\) to find \\(f'(x)\\):\\[f'(x) = "+P(0,4*a,3*b,2*c,d)+".\\]Differentiate \\(f'(x)\\) once more to obtain \\(f''(x)\\):\\[f''(x) = "+P(0,0,12*a,6*b,2*c)+".\\]Therefore, \\(f''(x) = \\) <b>"+key+"</b>.",
+    {a:a,b:b,c:c,d:d,e:e});
+});
+
+E("u4-chain-rule-power-fraction",4,["3.16"],2,"gen",function(){
+  var a=pick([2,3,4,5]),b=pick([1,2,3,4,5,7]);
+  var mode=ri(0,1);
+  var inner=a+"x + "+b;
+  var prompt,key,ds,sol;
+  if(mode===0){
+    var mult=a%2===0?"\\frac{"+(a/2)+"}{\\sqrt{"+inner+"}}":"\\frac{"+a+"}{2\\sqrt{"+inner+"}}";
+    var noChain=a%2===0?"\\frac{1}{2\\sqrt{"+inner+"}}":"\\frac{1}{2\\sqrt{"+inner+"}}";
+    var noDrop=a%2===0?"\\frac{"+(a/2)+"}{("+inner+")^{3/2}}":"\\frac{"+a+"}{2("+inner+")^{3/2}}";
+    var twice=a%2===0?"\\frac{"+(a*a/2)+"}{\\sqrt{"+inner+"}}":"\\frac{"+(a*a)+"}{2\\sqrt{"+inner+"}}";
+    prompt="Differentiate \\(f(x) = \\sqrt{"+inner+"}\\).";
+    key="\\("+mult+"\\)";
+    ds=["\\("+noChain+"\\)","\\("+noDrop+"\\)","\\("+twice+"\\)"];
+    sol="Write \\(f(x) = ("+inner+")^{1/2}\\). By the Power and Chain Rules, \\[f'(x) = \\frac{1}{2}("+inner+")^{-1/2} \\cdot "+a+" = "+mult+".\\]The derivative is <b>"+key+"</b>.";
+  }else{
+    var coef=a%2===0?(3*(a/2))+"("+inner+")^{1/2}":"\\frac{"+(3*a)+"}{2}("+inner+")^{1/2}";
+    var noChain2="\\frac{3}{2}("+inner+")^{1/2}";
+    var noDrop2=a%2===0?(3*(a/2))+"("+inner+")^{3/2}":"\\frac{"+(3*a)+"}{2}("+inner+")^{3/2}";
+    var twice2=a%2===0?(3*(a*a/2))+"("+inner+")^{1/2}":"\\frac{"+(3*a*a)+"}{2}("+inner+")^{1/2}";
+    prompt="Differentiate \\(f(x) = ("+inner+")^{3/2}\\).";
+    key="\\("+coef+"\\)";
+    ds=["\\("+noChain2+"\\)","\\("+noDrop2+"\\)","\\("+twice2+"\\)"];
+    sol="Applying the Power and Chain Rules gives \\[f'(x) = \\frac{3}{2}("+inner+")^{1/2} \\cdot "+a+" = "+coef+".\\]The derivative is <b>"+key+"</b>.";
+  }
+  return mcq(prompt,key,ds,sol,{mode:mode,a:a,b:b});
+});
+
+
+E("u4-implicit-expression",4,["3.18"],3,"gen",function(){
+  var a=pick([2,3,4,5]),b=pick([2,3,4,5]),c=pick([2,3,4]),k=ri(5,20);
+  var key="\\(\\frac{dy}{dx} = \\frac{-"+(2*a)+"x - "+b+"y}{"+b+"x + "+(2*c)+"y}\\)";
+  var ds=[
+    "\\(\\frac{dy}{dx} = \\frac{"+(2*a)+"x + "+b+"y}{"+b+"x + "+(2*c)+"y}\\)",
+    "\\(\\frac{dy}{dx} = \\frac{-"+(2*a)+"x - "+b+"}{"+(2*c)+"y}\\)",
+    "\\(\\frac{dy}{dx} = -"+(2*a)+"x - "+b+"y - "+b+"x\\frac{dy}{dx} - "+(2*c)+"y\\)"
+  ];
+  return mcq("Use implicit differentiation to find \\(\\frac{dy}{dx}\\) for the relation \\("+a+"x^2 + "+b+"xy + "+c+"y^2 = "+k+"\\).",
+    key,ds,
+    "Differentiate both sides with respect to \\(x\\), applying the Product Rule to \\("+b+"xy\\) and the Chain Rule to \\("+c+"y^2\\):\\[\\begin{aligned}"+(2*a)+"x + "+b+"y + "+b+"x\\frac{dy}{dx} + "+(2*c)+"y\\frac{dy}{dx} &= 0 \\\\ ("+b+"x + "+(2*c)+"y)\\frac{dy}{dx} &= -"+(2*a)+"x - "+b+"y \\\\ \\frac{dy}{dx} &= \\frac{-"+(2*a)+"x - "+b+"y}{"+b+"x + "+(2*c)+"y}.\\end{aligned}\\]Therefore, <b>"+key+"</b>.",
+    {a:a,b:b,c:c,k:k});
+});
+
+E("u4-implicit-second-hyperbola",4,["3.20"],3,"gen",function(){
+  var triples=[[5,3,4],[5,4,3],[10,6,8],[10,8,6],[13,5,12],[13,12,5]];
+  var tr=pick(triples);
+  var x0=tr[0]*(Math.random()<0.5?1:-1);
+  var y0=tr[1]*(Math.random()<0.5?1:-1);
+  var k=tr[2]*tr[2];
+  var ans=Math.round((-k/(y0*y0*y0))*10000)/10000;
+  return numq("Consider the hyperbola \\(x^2 - y^2 = "+k+"\\). Use implicit differentiation to find \\(\\frac{d^2y}{dx^2}\\) at the point \\(("+x0+", "+y0+")\\). Round your answer to two decimal places if necessary.",
+    ans,0.011,
+    "Differentiate \\(x^2 - y^2 = "+k+"\\) implicitly with respect to \\(x\\):\\[2x - 2y\\frac{dy}{dx} = 0 \\implies \\frac{dy}{dx} = \\frac{x}{y}.\\]Differentiate a second time using the Quotient Rule:\\[\\frac{d^2y}{dx^2} = \\frac{y(1) - x\\frac{dy}{dx}}{y^2} = \\frac{y - x\\left(\\frac{x}{y}\\right)}{y^2} = \\frac{y^2 - x^2}{y^3} = \\frac{-"+k+"}{y^3}.\\]At \\(("+x0+", "+y0+")\\), \\(\\frac{d^2y}{dx^2} = \\frac{-"+k+"}{("+y0+")^3} = "+fmt(ans,4)+"\\). The second derivative is <b>\\("+fmt(ans,4)+"\\)</b>.",
+    {x0:x0,y0:y0,k:k});
 });
 
 /* ----- bank-u5.js ----- */
@@ -6123,4 +6570,4 @@ BANK.forEach(function(e){var t=PKT3208[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-basic-derivatives":2,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-point":2,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u5-given-deriv":3,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-zero-points":1,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-given-deriv":3,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
