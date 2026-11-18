@@ -41,7 +41,12 @@
    and asserts the practice landing, the identical question set,
    the teacher route bar and its target, the teacher view it
    opens, and that the same addresses without via keep their
-   established views.
+   established views. Part 4 covers the registry snapshot read
+   layer added later the same day: resolution order pack,
+   snapshot, sheet, proven with stubbed fetchers and call
+   counters, plus the shipped fetchSnapshotCodes validation,
+   the snapshot generator against a gviz fixture, and the
+   seeded snapshot file committed in the repo.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-pack-codes.js */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
@@ -474,6 +479,146 @@ async function part3() {
   d.window.close();
 }
 
+/* ---------------- Part 4: the registry snapshot read layer (Nov 18, 2026) ----
+   Resolution order is pack registry, then the published snapshot of
+   the sheet registry (code-registry.json, refreshed from the sheet
+   by tools/sync-code-registry.py under a GitHub Actions workflow),
+   then the live sheet only for a code too fresh for the snapshot.
+   The cases below stub both fetchers with call counters and assert
+   which reads a lookup actually makes; the real fetchSnapshotCodes
+   is then run against canned snapshot JSON to prove its row
+   validation; the generator script is run against a gviz fixture;
+   and the seeded snapshot committed in the repo is validated. */
+function snapResolver(code, opts) {
+  const wiring = boxWiring(html);
+  let href = null;
+  const input = { value: "" };
+  const msg = { textContent: "" };
+  const form = { _h: null, addEventListener(ev, fn) { if (ev === "submit") this._h = fn; } };
+  const documentStub = { getElementById: (id) => id === "pkCodeForm" ? form : id === "pkCodeIn" ? input : id === "pkCodeMsg" ? msg : null };
+  const locationStub = { pathname: "/ReviewApps/index.html" };
+  Object.defineProperty(locationStub, "href", { set(v) { href = v; }, get() { return href; } });
+  const calls = { snap: 0, sheet: 0 };
+  const windowStub = {
+    PACK_CODES: opts.pack || {},
+    fetchSnapshotCodes: () => { calls.snap++; return Promise.resolve(opts.snap); },
+    fetchSheetCodes: () => { calls.sheet++; return Promise.resolve(opts.sheet); },
+    __PKFR: false
+  };
+  const ctx = { window: windowStub, document: documentStub, location: locationStub, URLSearchParams, console };
+  vm.createContext(ctx);
+  vm.runInContext(wiring, ctx);
+  input.value = code;
+  form._h({ preventDefault() {} });
+  return new Promise((resolve) => setTimeout(() => resolve({ href, msg: msg.textContent, calls }), 30));
+}
+async function part4() {
+  const Q = "course=math-2201&unit=1&count=8&order=random&mode=sheet&set=" +
+            encodeURIComponent("s:sm2201u1:u1-pk-hypotenuse-pick.0.0M");
+  /* a code only in the snapshot resolves with no sheet read at all */
+  let r = await snapResolver("SNAP22", {
+    snap: { ok: true, codes: { "SNAP22": Q }, rows: 1 },
+    sheet: { ok: true, codes: { "SNAP22": "course=math-2201&set=p%3Aother" }, rows: 9 }
+  });
+  ok(!!r.href, "snapshot layer, snapshot-only code: the box navigates");
+  ok(r.href && new URLSearchParams(r.href.split("?")[1]).get("set") === "s:sm2201u1:u1-pk-hypotenuse-pick.0.0M",
+     "snapshot layer, snapshot-only code: it navigates to the snapshot's set");
+  ok(r.calls.snap === 1 && r.calls.sheet === 0,
+     "snapshot layer, snapshot-only code: the sheet is never read");
+  /* a code missing from the snapshot but in the sheet falls back */
+  r = await snapResolver("SNAP22", {
+    snap: { ok: true, codes: {}, rows: 4 },
+    sheet: { ok: true, codes: { "SNAP22": Q }, rows: 5 }
+  });
+  ok(!!r.href && r.calls.snap === 1 && r.calls.sheet === 1,
+     "snapshot layer, fresh code: the sheet fallback resolves it after a snapshot miss");
+  /* a failed snapshot read degrades to the sheet path */
+  r = await snapResolver("SNAP22", {
+    snap: { ok: false, codes: {}, rows: 0 },
+    sheet: { ok: true, codes: { "SNAP22": Q }, rows: 5 }
+  });
+  ok(!!r.href && r.calls.sheet === 1,
+     "snapshot layer, snapshot read failure: resolution degrades to the sheet");
+  /* a pack code still resolves first, with neither registry read */
+  r = await snapResolver("THX2JE", {
+    pack: REG,
+    snap: { ok: true, codes: { "THX2JE": "course=math-2201&set=p%3Awrong" }, rows: 1 },
+    sheet: { ok: true, codes: { "THX2JE": "course=math-2201&set=p%3Awrong" }, rows: 1 }
+  });
+  ok(!!r.href && r.calls.snap === 0 && r.calls.sheet === 0,
+     "snapshot layer, ordering: a pack code resolves before snapshot and sheet");
+  ok(r.href && new URLSearchParams(r.href.split("?")[1]).get("set") === new URLSearchParams(REG["THX2JE"].q).get("set"),
+     "snapshot layer, ordering: the pack set is the one that opens");
+  /* a code in none of them, with both reads healthy, is not recognized */
+  r = await snapResolver("SNAP22", {
+    snap: { ok: true, codes: {}, rows: 4 },
+    sheet: { ok: true, codes: {}, rows: 5 }
+  });
+  ok(!r.href && /not recognized/.test(r.msg),
+     "snapshot layer, unknown code: not recognized when both reads succeeded");
+  /* a code in neither, with the sheet unreadable, is unavailable, not wrong */
+  r = await snapResolver("SNAP22", {
+    snap: { ok: true, codes: {}, rows: 4 },
+    sheet: { ok: false, codes: {}, rows: 0 }
+  });
+  ok(!r.href && /not available right now/.test(r.msg),
+     "snapshot layer, sheet down and snapshot miss: unavailable rather than wrong");
+
+  /* the shipped fetchSnapshotCodes applies the registry validation */
+  const regMatch = html.match(/var CODE_REGISTRY=(\{[\s\S]*?\});/);
+  ok(!!regMatch, "snapshot layer: CODE_REGISTRY is present in the shell");
+  ok(regMatch && regMatch[1].indexOf("code-registry.json") >= 0,
+     "snapshot layer: the registry config names the snapshot file");
+  const snapFn = extractFn(html, "fetchSnapshotCodes");
+  function runSnapFetch(fetchImpl) {
+    const ctx = { URLSearchParams, console, fetch: fetchImpl };
+    vm.createContext(ctx);
+    vm.runInContext("var CODE_REGISTRY=" + regMatch[1] + ";\n" +
+                    "var _snapshotCodesPromise=null,_snapshotCodesCache=null;\n" + snapFn +
+                    "\nthis.__p=fetchSnapshotCodes();", ctx);
+    return ctx.__p;
+  }
+  const canned = { v: 1, codes: {
+    "ABC234": "course=math-2201&set=s%3Aabc",
+    "BAD0O1": "course=math-2201&set=s%3Aabc",
+    "SHORT": "course=math-2201&set=s%3Aabc",
+    "NOSET2": "course=math-2201&unit=1"
+  } };
+  let res = await runSnapFetch(() => Promise.resolve({ ok: true, json: () => Promise.resolve(canned) }));
+  ok(res.ok === true && res.rows === 1 && Object.keys(res.codes).join(",") === "ABC234",
+     "snapshot layer: fetchSnapshotCodes keeps only codes passing the registry validation");
+  res = await runSnapFetch(() => Promise.resolve({ ok: false, json: () => Promise.resolve({}) }));
+  ok(res.ok === false, "snapshot layer: a failed snapshot fetch reports not ok, so callers fall back");
+
+  /* the generator script applies the same validation to a gviz feed */
+  const { execFileSync } = require("child_process");
+  const os = require("os"), path = require("path");
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "regsync-"));
+  const fixture = "google.visualization.Query.setResponse({\"version\":\"0.6\",\"reqId\":\"0\",\"status\":\"ok\",\"table\":{\"cols\":[{\"label\":\"Timestamp\"},{\"label\":\"Code\"},{\"label\":\"Params\"}],\"rows\":[" +
+    "{\"c\":[{\"v\":\"2026-11-18 10:00:00\"},{\"v\":\"XYZ234\"},{\"v\":\"course=math-2201&unit=1&set=s%3Aabc\"}]}," +
+    "{\"c\":[{\"v\":\"2026-11-18 10:01:00\"},{\"v\":\"BAD 01\"},{\"v\":\"course=math-2201&set=s%3Aabc\"}]}," +
+    "{\"c\":[{\"v\":\"2026-11-18 10:02:00\"},{\"v\":\"NOSET2\"},{\"v\":\"course=math-2201&unit=1\"}]}," +
+    "{\"c\":[{\"v\":\"2026-11-18 10:03:00\"},{\"v\":\"ABC234\"},{\"v\":\"course=sci-9&set=e%3Axyz\"}]}" +
+    "]}});";
+  fs.writeFileSync(path.join(tmp, "fixture.txt"), fixture);
+  execFileSync("python3", [ROOT + "/tools/sync-code-registry.py", "--source", path.join(tmp, "fixture.txt"),
+                           "--out", path.join(tmp, "out.json")], { stdio: "pipe" });
+  const gen = JSON.parse(fs.readFileSync(path.join(tmp, "out.json"), "utf8"));
+  ok(gen.v === 1 && Object.keys(gen.codes).join(",") === "ABC234,XYZ234",
+     "snapshot layer: the generator keeps exactly the valid rows, keys sorted");
+  ok(gen.codes["XYZ234"] === "course=math-2201&unit=1&set=s%3Aabc",
+     "snapshot layer: the generator carries the set parameters unchanged");
+
+  /* the seeded snapshot committed in the repo is well formed */
+  const seeded = JSON.parse(fs.readFileSync(ROOT + "/code-registry.json", "utf8"));
+  const codes = seeded.codes || {};
+  const keys = Object.keys(codes);
+  ok(seeded.v === 1 && keys.length > 0, "snapshot layer: the seeded snapshot exists and is not empty");
+  ok(keys.every(k => /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(k) &&
+                     String(codes[k]).indexOf("course=") >= 0 && String(codes[k]).indexOf("set=") >= 0),
+     "snapshot layer: every seeded entry passes the registry validation");
+}
+
 async function part2() {
   await bootBoxLive();
   await bootBoxSheetDown();
@@ -481,6 +626,7 @@ async function part2() {
   await bootBoxSheetDownFr();
   part2b();
   await part3();
+  await part4();
   console.log("gate-pack-codes: " + pass + " pass, " + fail + " fail");
   process.exit(fail ? 1 : 0);
 }

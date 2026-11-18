@@ -1,0 +1,37 @@
+name: Sync set code registry snapshot
+
+# Publishes a compact snapshot of the living set code registry (a
+# Google Sheet, written by the mint form at print time) as
+# code-registry.json beside the app, so typed set codes resolve
+# against the Pages CDN instead of the sheet on every lookup. The
+# app falls back to the live sheet for a code too fresh to be in
+# the snapshot yet, so a just-printed code still resolves at once.
+# The sheet is anyone-with-link readable, so the sync needs no
+# credentials beyond the workflow's own token for the commit.
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regenerate the snapshot from the registry sheet
+        run: python3 tools/sync-code-registry.py --out code-registry.json
+      - name: Commit only when the snapshot changed
+        run: |
+          if git diff --quiet -- code-registry.json; then
+            echo "Snapshot unchanged; nothing to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add code-registry.json
+            git commit -m "Sync set code registry snapshot"
+            git push
+          fi

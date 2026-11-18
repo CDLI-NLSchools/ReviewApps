@@ -4249,6 +4249,18 @@ function tTok(q){
    registry in CODE_REGISTRY below, read over the sheet's gviz JSON
    feed by fetchSheetCodes (fetched once per session, cached here and
    shared with the home page code box in the picker script).
+   Snapshot read layer (Nov 18, 2026): between the pack registry and
+   the sheet, the resolver now checks a compact snapshot of the
+   sheet registry, code-registry.json, published in this repo and
+   served beside the app. A GitHub Actions workflow regenerates it
+   from the sheet every few minutes with tools/sync-code-registry.py
+   (same row validation as fetchSheetCodes), so nearly all typed
+   lookups ride the Pages CDN and the sheet is read only for a code
+   too fresh to be in the snapshot yet. fetchSnapshotCodes mirrors
+   the sheet fetch (once per session, cached). If the snapshot read
+   fails, resolution falls back to the sheet exactly as before; the
+   sheet stays the authority for the not-recognized answer, and a
+   failed sheet read still answers unavailable rather than wrong.
    Minting: at the first render of a printed set with the print option
    on, the app draws a random code from the unambiguous alphabet (the
    pack alphabet: no 0/O, 1/I/L), checks it best-effort against both
@@ -4275,6 +4287,7 @@ function tTok(q){
 var CODE_REGISTRY={
   sheetId:"1O1B-_vodjxbgZLKI4DnqiX9anYEcufDWbrSEC8coHDY",
   sheetTab:"Form Responses 1",
+  snapshotUrl:"code-registry.json",
   formUrl:"https://docs.google.com/forms/d/e/1FAIpQLScAk1PB72xGr-Zn3KcCQ8Rngw_lstpQyGSEmeCgGUsVXDVOIg/formResponse",
   codeEntry:"entry.1857900599",
   paramsEntry:"entry.1573845683",
@@ -4306,11 +4319,33 @@ function fetchSheetCodes(){
   _sheetCodesPromise=attempt.then(function(res){if(res&&res.ok)_sheetCodesCache=res.codes;return res;},function(){return {ok:false,codes:{},rows:0};});
   return _sheetCodesPromise;
 }
+var _snapshotCodesPromise=null,_snapshotCodesCache=null;
+function fetchSnapshotCodes(){
+  if(_snapshotCodesPromise)return _snapshotCodesPromise;
+  var attempt;
+  try{
+    if(typeof fetch!=="function")throw new Error("no fetch");
+    attempt=fetch(CODE_REGISTRY.snapshotUrl).then(function(r){
+      if(!r.ok)throw new Error("snapshot read failed");
+      return r.json();
+    }).then(function(data){
+      var src=(data&&data.codes)||{},codes={},n=0;
+      Object.keys(src).forEach(function(code){
+        var q=String(src[code]);
+        if(/^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(code)&&q.indexOf("course=")>=0&&q.indexOf("set=")>=0){codes[code]=q;n++;}
+      });
+      return {ok:true,codes:codes,rows:n};
+    });
+  }catch(e){attempt=Promise.reject(e);}
+  _snapshotCodesPromise=attempt.then(function(res){if(res&&res.ok)_snapshotCodesCache=res.codes;return res;},function(){return {ok:false,codes:{},rows:0};});
+  return _snapshotCodesPromise;
+}
 function tCodeRandom(){
   var s="";for(var i=0;i<6;i++)s+=CODE_ALPHABET.charAt(Math.floor(Math.random()*CODE_ALPHABET.length));return s;
 }
 function tCodeTaken(code){
   if(window.PACK_CODES&&window.PACK_CODES[code])return true;
+  if(_snapshotCodesCache&&_snapshotCodesCache[code])return true;
   if(_sheetCodesCache&&_sheetCodesCache[code])return true;
   return false;
 }
@@ -4466,6 +4501,7 @@ function tPrintCodeBlock(view){
   var key=view+"|"+salt+"|"+sv;
   if(_printCode&&_printCode.key===key)return _printCode.html;
   fetchSheetCodes();
+  fetchSnapshotCodes();
   var q=url.split("?")[1]||"";
   if(!q)return "";
   var code,guard=0,taken;
@@ -7739,9 +7775,15 @@ if(window.__NOCOURSE){(function(){
    click deep on the practice view itself. Teacher-minted codes resolve through
    the living sheet registry: the shell's
    fetchSheetCodes (see the printed set codes section
-   of the main script) reads it once per session. If
-   the sheet cannot be read, a teacher code is called
-   unavailable rather than wrong. Codes are
+   of the main script) reads it once per session. A
+   snapshot of that registry, code-registry.json in
+   this repo, is checked first through
+   fetchSnapshotCodes (refreshed from the sheet every
+   few minutes by the registry sync workflow), and
+   the sheet itself is read only for a code too fresh
+   to be in the snapshot yet. If the sheet cannot be
+   read, a teacher code is called unavailable rather
+   than wrong. Codes are
    case-insensitive and may be typed with or without
    the space. History: the box launched on the picker
    on Nov 16, 2026, moved to the StudyMate page the
@@ -7774,12 +7816,17 @@ if(window.__NOCOURSE){(function(){
     var hit=reg[code];
     if(hit&&hit.q){openSet(hit.q,false);return;}
     msg.textContent=pkMsg("Checking the teacher code registry\u2026","V\u00e9rification du registre des codes des enseignants\u2026");
+    var snapP=(typeof window.fetchSnapshotCodes==="function")?window.fetchSnapshotCodes():Promise.resolve({ok:false,codes:{},rows:0});
+    snapP.then(function(snap){
+      var sq=snap&&snap.codes?snap.codes[code]:null;
+      if(sq){openSet(sq,true);return;}
     var fetched=(typeof window.fetchSheetCodes==="function")?window.fetchSheetCodes():Promise.resolve({ok:false,codes:{},rows:0});
     fetched.then(function(res){
       var tq=res&&res.codes?res.codes[code]:null;
       if(tq){openSet(tq,true);return;}
       if(!res||!res.ok||!res.rows){msg.textContent=pkMsg("That code is not in the printed pack list, and the teacher code registry is not available right now. Try again in a moment, or scan the QR code on your sheet.","Ce code n\u2019est pas dans la liste des ensembles imprim\u00e9s, et le registre des codes des enseignants n\u2019est pas disponible en ce moment. R\u00e9essayez dans un instant, ou balayez le code QR sur votre feuille.");return;}
       msg.textContent=pkMsg("That code was not recognized. Check the six characters on your pack and try again.","Ce code n’a pas été reconnu. Vérifiez les six caractères sur votre ensemble et réessayez.");
+    });
     });
   });
 })();
