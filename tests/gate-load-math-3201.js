@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* Gate 1 (load) for Math 3201: chassis helpers + courses.js + the
-   assembled Math 3201 bank module evaluate cleanly; BANK has 249
+   assembled Math 3201 bank module evaluate cleanly; BANK has 253
    entries (the standalone app's count, per unit 28/18/21/22/23/20/
    24/29/27; Unit 8 gained the grid-pathway CR entries u8-pathways and
    u8-pathways-context on Nov 13, 2026, split across Levels 2 and 3 by
@@ -16,7 +16,13 @@
    authority); every
    registered indicator has entries and no entry uses an unregistered
    code; every entry generates a prompt in this shell and every
-   multiple choice generation has exactly four options. */
+   multiple choice generation has exactly four options.
+   Amended November 18, 2026: BANK is 253 entries (Unit 3 at 30) and the
+   default practice pool is 250, after four authored Unit 3 prior
+   knowledge entries (u3-pk-sine-law-side, u3-pk-sine-law-angle,
+   u3-pk-cosine-law-side, u3-pk-cosine-law-angle) closed the sine law
+   and cosine law gap named in the guide's Focus for Learning for
+   indicator 7.1. CR keys stay 177: PK entries carry no CR marks. */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
 const fails = [];
@@ -43,7 +49,7 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/math-3201.js", "utf8"));
 
-ok(BANK.length === 249, "BANK has 249 entries, saw " + BANK.length);
+ok(BANK.length === 253, "BANK has 253 entries, saw " + BANK.length);
 const crKeys = Object.keys(window.__BANK_CRMARKS || {});
 ok(crKeys.length === 177, "__BANK_CRMARKS has 177 keys, saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
@@ -52,8 +58,8 @@ ok(bankIds.size === BANK.length, "entry ids are unique");
 
 const census = {}, perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 34, 2: 23, 3: 26, 4: 26, 5: 27, 6: 25, 7: 26, 8: 32, 9: 30 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (34/23/26/26/27/25/26/32/30) after the PK tranche of November 16, 2026 added 37 borrowed entries across all nine units (Unit 9 at 30: 27 plus 3 borrowed; its 3 flagged seed entries were already in the bank), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 34, 2: 23, 3: 30, 4: 26, 5: 27, 6: 25, 7: 26, 8: 32, 9: 30 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (34/23/30/26/27/25/26/32/30) after the PK tranche of November 16, 2026 added 37 borrowed entries across all nine units (Unit 9 at 30: 27 plus 3 borrowed; its 3 flagged seed entries were already in the bank; Unit 3 at 30 since November 18, 2026, 26 plus the four authored sine law and cosine law PK entries), saw " + JSON.stringify(perUnit));
 
 /* Enrichment (Nov 13, 2026, Jason's ruling): content beyond the
    named indicators is flagged enrich on the entry and stays out
@@ -78,7 +84,7 @@ function extractFn(src, name) {
 }
 eval(extractFn(html, "poolFor"));
 const defPool = poolFor([1, 2, 3, 4, 5, 6, 7, 8, 9], []);
-ok(defPool.length === 246, "default practice pool has 246 entries (bank 249 minus the 3 enrichment entries), saw " + defPool.length);
+ok(defPool.length === 250, "default practice pool has 250 entries (bank 253 minus the 3 enrichment entries), saw " + defPool.length);
 ok(!defPool.some(e => e.enrich), "default practice pool holds no enrichment entry");
 ok(poolFor([9], []).length === 27, "default Unit 9 pool has 27 entries (30 in the bank minus the 3 enrichment entries), saw " + poolFor([9], []).length);
 const codes = Object.keys(window.__COURSE.indicators);

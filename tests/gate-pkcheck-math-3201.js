@@ -1,12 +1,15 @@
 "use strict";
 /* Gate: Math 3201 PK tranche (November 16, 2026).
    Part 1 (bank level, vm sandbox over the real shell functions):
-   the flagged pool is exactly the tranche's 41 entries (37 borrowed
+   the flagged pool is exactly the tranche's 45 entries (37 borrowed
    from the Mathematics 1201, Mathematics 2201, Mathematics 9 and
    Mathematics 8 banks, and 4 entries already in this bank carrying
    tranche metadata from banks/math-3201/bank-pk.js: u4-express-as-power
    and the Unit 9 seed entries u9-prob-basics, u9-context-prob and
-   u9-decisions), every flagged entry carries pkSrc, pkFor and
+   u9-decisions; plus, since November 18, 2026, four entries authored
+   for this bank in bank-pk.js: u3-pk-sine-law-side, u3-pk-sine-law-angle,
+   u3-pk-cosine-law-side and u3-pk-cosine-law-angle, which take the
+   Unit 3 flagged pool from 5 to 9), every flagged entry carries pkSrc, pkFor and
    pkGroup metadata, a pkonly draw (PKONLY_DRAW, the flag the shell
    sets for a ?pkonly=1 set) deals only flagged entries, samples
    every pkGroup in the pool, and deals a pool's single Level 3
@@ -68,11 +71,11 @@ function makeSandbox(bankFile) {
 }
 const sb = makeSandbox(ROOT + "/banks/math-3201.js");
 const run = (code) => vm.runInContext(code, sb);
-const POOLS = { 1: 6, 2: 5, 3: 5, 4: 5, 5: 4, 6: 5, 7: 2, 8: 3, 9: 6 };
+const POOLS = { 1: 6, 2: 5, 3: 9, 4: 5, 5: 4, 6: 5, 7: 2, 8: 3, 9: 6 };
 const POOL_IDS = {
   1: ["u1-pk-frac-context", "u1-pk-add-unlike", "u1-pk-multiply-fractions", "u1-pk-gcf", "u1-pk-factor-monic", "u1-pk-diff-squares"],
   2: ["u2-pk-domain-range", "u2-pk-vertex-form-params", "u2-pk-axis-from-intercepts", "u2-pk-graph-description", "u2-pk-which-quadratic"],
-  3: ["u3-pk-label-sides", "u3-pk-ratio-def", "u3-pk-find-side", "u3-pk-solve-triangle", "u3-pk-params-characteristics"],
+  3: ["u3-pk-label-sides", "u3-pk-ratio-def", "u3-pk-find-side", "u3-pk-solve-triangle", "u3-pk-params-characteristics", "u3-pk-sine-law-side", "u3-pk-sine-law-angle", "u3-pk-cosine-law-side", "u3-pk-cosine-law-angle"],
   4: ["u4-express-as-power", "u4-pk-repeated-mult", "u4-pk-two-laws", "u4-pk-laws-integral", "u4-pk-rational-pattern"],
   5: ["u5-pk-laws-rational", "u5-pk-negative-exp", "u5-pk-evaluate-exp", "u5-pk-rational-exp"],
   6: ["u6-pk-percent-of", "u6-pk-percent-convert", "u6-pk-find-whole", "u6-pk-discount-then-tax", "u6-pk-percent-change"],
@@ -80,8 +83,8 @@ const POOL_IDS = {
   8: ["u8-pk-sample-space", "u8-pk-product-rule", "u8-pk-two-draws"],
   9: ["u9-prob-basics", "u9-context-prob", "u9-decisions", "u9-pk-prob-basic-b", "u9-pk-exp-vs-theor-b", "u9-pk-combined-decision"]
 };
-ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 41,
-   "bank carries 41 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
+ok(run("BANK.filter(function(e){return e.pkFlag;}).length") === 45,
+   "bank carries 45 flagged entries, saw " + run("BANK.filter(function(e){return e.pkFlag;}).length"));
 ok(run("window.__COURSE.pkPracticeOnly===true"), "math-3201 config sets pkPracticeOnly");
 for (let u = 1; u <= 9; u++) {
   const ids = run("BANK.filter(function(e){return e.unit===" + u + "&&isPK(e);}).map(function(e){return e.id;}).sort()");
@@ -136,7 +139,7 @@ for (let u = 1; u <= 9; u++) {
 run("__PK=false;");
 {
   const r = checkDraw(3, [], 99);
-  ok(r.allPk && r.n === Math.min(8, r.pool) && r.pool === 5, "precedence: with pkin=0 the Unit 6 check still deals its full prior knowledge check (pool 5 at check size 8)");
+  ok(r.allPk && r.n === Math.min(8, r.pool) && r.pool === 9, "precedence: with pkin=0 the Unit 3 check still deals its full prior knowledge check (pool 9 at check size 8; message corrected November 18, 2026: this draw is Unit 3, not Unit 6 as the old text said, and its pool grew from 5 to 9 with the sine law and cosine law entries)");
 }
 run("__PK=true;");
 /* pkonly bypasses indicator filtering carried on a link */

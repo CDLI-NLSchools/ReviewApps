@@ -5395,6 +5395,98 @@ E("u3-pk-solve-triangle",3,["7.1"],2,"gen",function(){
   q.figure=fig;
   return q;
 });
+/* Sine law and cosine law PK (November 18, 2026): the Math 3201 guide's
+   Focus for Learning for indicator 7.1 names sine law and cosine law
+   problems from Math 2201 as prior learning for Unit 3, alongside the
+   right triangle strand above. Written fresh for this bank in the u3-pk
+   idiom, scoped to calculator-level work: labelled diagrams, one law per
+   item, sides and angles only. No ambiguous case (see the guard inside
+   u3-pk-sine-law-angle) and no multi-step problems. No CR marks, on the
+   sibling entries' convention. */
+E("u3-pk-sine-law-side",3,["7.1"],1,"gen",function(){
+  var mode=ri(1,2),A=0,B=0,given=0,raw=0,C=0,aLen=0,bLen=0,cLen=0,tries=0;
+  function deal(){
+    C=180-A-B;
+    if(mode===1){raw=given*u7sinD(B)/u7sinD(A);aLen=given;bLen=raw;cLen=given*u7sinD(C)/u7sinD(A);}
+    else{raw=given*u7sinD(A)/u7sinD(C);cLen=given;aLen=raw;bLen=given*u7sinD(B)/u7sinD(C);}
+  }
+  do{
+    A=pick([30,35,40,45,50,55,60,65]);
+    B=pick(U7_ANGLES.filter(function(x){return x>=25&&x<=70&&A+x<=155;}));
+    given=(mode===1?ri(10,45):ri(12,48));
+    deal();tries++;
+  }while((raw<5||raw>60)&&tries<60);
+  if(raw<5||raw>60){mode=1;A=45;B=60;given=20;deal();}
+  var ans=u7r1(raw);
+  var prompt,sol,fig;
+  if(mode===1){
+    prompt="In triangle ABC, angle A is \\("+A+"^\\circ\\) and angle B is \\("+B+"^\\circ\\). Side BC, opposite angle A, is \\("+given+"\\) cm. Find the length of side AC, in centimetres, to the nearest tenth.";
+    sol="Side AC is opposite angle B and side BC is opposite angle A, so the sine law pairs them: \\[ \\begin{aligned} "+FR("x","\\sin "+B+"^\\circ")+" &= "+FR(given,"\\sin "+A+"^\\circ")+" \\\\ x &= "+FR(given+" \\sin "+B+"^\\circ","\\sin "+A+"^\\circ")+" \\\\ &\\approx "+u7f1(raw)+" \\end{aligned} \\] The length of side AC is <b>\\("+u7f1(ans)+"\\) cm</b>.";
+    fig=triSVG(aLen,bLen,cLen,{L:["A","B","C"],ang:[A+"°",B+"°",null],side:[given+" cm","?",null]});
+  }else{
+    prompt="In triangle ABC, angle A is \\("+A+"^\\circ\\) and angle B is \\("+B+"^\\circ\\). Side AB, opposite angle C, is \\("+given+"\\) cm. Find the length of side BC, in centimetres, to the nearest tenth.";
+    sol="Angle C comes from the angle sum first; then the sine law pairs side BC with angle A and side AB with angle C: \\[ \\begin{aligned} C &= 180^\\circ - "+A+"^\\circ - "+B+"^\\circ \\\\ &= "+C+"^\\circ \\\\ "+FR("x","\\sin "+A+"^\\circ")+" &= "+FR(given,"\\sin "+C+"^\\circ")+" \\\\ x &= "+FR(given+" \\sin "+A+"^\\circ","\\sin "+C+"^\\circ")+" \\\\ &\\approx "+u7f1(raw)+" \\end{aligned} \\] The length of side BC is <b>\\("+u7f1(ans)+"\\) cm</b>.";
+    fig=triSVG(aLen,bLen,cLen,{L:["A","B","C"],ang:[A+"°",B+"°",null],side:["?",null,given+" cm"]});
+  }
+  var q=numq(prompt,ans,0.06,sol,{mode:mode,A:A,B:B,given:given,ans:ans});
+  q.figure=fig;
+  return q;
+});
+E("u3-pk-sine-law-angle",3,["7.1"],2,"gen",function(){
+  /* Ambiguous-case guard: the target angle is dealt at least 8 degrees
+     below the given angle A, so side b (opposite the target) stays below
+     side a (opposite A). Then sin B = b sin A / a gives B below A, hence
+     acute, and the supplement of B can never pair with A to form a
+     triangle. The configuration is never ambiguous. */
+  var A=pick([40,45,50,55,60,65]);
+  var Btar=pick([20,25,28,30,32,35,38,40,45,50,55].filter(function(x){return x<=A-8;}));
+  var a=ri(15,50);
+  var b=u7r1(a*u7sinD(Btar)/u7sinD(A));
+  var sVal=b*u7sinD(A)/a;
+  var Bact=u7asinD(sVal);
+  var ans=Math.round(Bact);
+  var cLen=a*u7sinD(180-A-Bact)/u7sinD(A);
+  var q=numq("In triangle ABC, angle A is \\("+A+"^\\circ\\), side BC, opposite angle A, is \\("+a+"\\) cm, and side AC, opposite angle B, is \\("+u7f1(b)+"\\) cm. Find the measure of angle B, in degrees, to the nearest degree.",
+    ans,0.51,
+    "Side AC is opposite angle B and side BC is opposite angle A, so the sine law pairs them: \\[ \\begin{aligned} \\sin x &= "+FR(u7f1(b)+" \\sin "+A+"^\\circ",a)+" \\\\ &\\approx "+fmt(sVal,4)+" \\\\ x &= \\sin^{-1}("+fmt(sVal,4)+") \\\\ &\\approx "+ans+"^\\circ \\end{aligned} \\] The measure of angle B is <b>\\("+ans+"^\\circ\\)</b>.",
+    {A:A,a:a,b:b,ans:ans});
+  q.figure=triSVG(a,b,cLen,{L:["A","B","C"],ang:[A+"°","?",null],side:[a+" cm",u7f1(b)+" cm",null]});
+  return q;
+});
+E("u3-pk-cosine-law-side",3,["7.1"],1,"gen",function(){
+  var a=0,b=0,C=0,raw=0,tries=0;
+  do{
+    a=ri(8,45);b=ri(8,45);C=pick([40,50,60,70,80,90,100,110,120]);
+    raw=Math.sqrt(a*a+b*b-2*a*b*u7cosD(C));
+    tries++;
+  }while((raw<5||raw>60)&&tries<60);
+  if(raw<5||raw>60){a=20;b=26;C=70;raw=Math.sqrt(a*a+b*b-2*a*b*u7cosD(C));}
+  var ans=u7r1(raw);
+  var q=numq("In triangle ABC, side BC is \\("+a+"\\) cm and side AC is \\("+b+"\\) cm, and the angle between them, angle C, is \\("+C+"^\\circ\\). Find the length of side AB, in centimetres, to the nearest tenth.",
+    ans,0.06,
+    "Side AB sits opposite the angle between the two known sides, so the cosine law applies directly: \\[ \\begin{aligned} x^2 &= "+a+"^2 + "+b+"^2 - 2("+a+")("+b+")\\cos "+C+"^\\circ \\\\ &= "+(a*a)+" + "+(b*b)+" - "+(2*a*b)+"\\cos "+C+"^\\circ \\\\ &\\approx "+fmt(raw*raw,1)+" \\\\ x &\\approx "+u7f1(raw)+" \\end{aligned} \\] The length of side AB is <b>\\("+u7f1(ans)+"\\) cm</b>.",
+    {a:a,b:b,C:C,ans:ans});
+  q.figure=triSVG(a,b,raw,{L:["A","B","C"],ang:[null,null,C+"°"],side:[a+" cm",b+" cm","?"]});
+  return q;
+});
+E("u3-pk-cosine-law-angle",3,["7.1"],2,"gen",function(){
+  var Atar=0,b=0,c=0,a=0,tries=0;
+  do{
+    Atar=pick([25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115]);
+    b=ri(10,35);c=ri(10,35);
+    a=u7r1(Math.sqrt(b*b+c*c-2*b*c*u7cosD(Atar)));
+    tries++;
+  }while((a<5||a>60)&&tries<60);
+  if(a<5||a>60){b=14;c=19;Atar=50;a=u7r1(Math.sqrt(b*b+c*c-2*b*c*u7cosD(Atar)));}
+  var cosA=(b*b+c*c-a*a)/(2*b*c);
+  var ans=Math.round(Math.acos(cosA)*180/Math.PI);
+  var q=numq("Triangle ABC has side BC of length \\("+u7f1(a)+"\\) cm, side AC of length \\("+b+"\\) cm and side AB of length \\("+c+"\\) cm. Find the measure of angle A, in degrees, to the nearest degree.",
+    ans,0.51,
+    "Angle A is opposite side BC, so rearrange the cosine law to solve for the angle: \\[ \\begin{aligned} \\cos A &= "+FR(b+"^2 + "+c+"^2 - "+u7f1(a)+"^2","2("+b+")("+c+")")+" \\\\ &= "+FR((b*b)+" + "+(c*c)+" - "+fmt(a*a,1),(2*b*c))+" \\\\ &\\approx "+fmt(cosA,4)+" \\\\ A &\\approx "+ans+"^\\circ \\end{aligned} \\] The measure of angle A is <b>\\("+ans+"^\\circ\\)</b>.",
+    {a:a,b:b,c:c,ans:ans});
+  q.figure=triSVG(a,b,c,{L:["A","B","C"],ang:["?",null,null],side:[u7f1(a)+" cm",b+" cm",c+" cm"]});
+  return q;
+});
 E("u3-pk-params-characteristics",3,["7.1"],1,"gen",function(){
   var mode=ri(0,2),a=pick([-3,-2,-1,1,2,3]),b=ri(-8,8)||3,c=ri(-9,9)||4;
   var eq="\\(y = "+(a<0?"-"+Math.abs(a):a)+"x^2"+(b>0?" + "+b+"x":" - "+Math.abs(b)+"x")+(c>0?" + "+c:" - "+Math.abs(c))+"\\)";
@@ -6144,6 +6236,10 @@ var PKT3201={
   "u3-pk-ratio-def":{src:"Math 2201 indicator 7.2",group:"trig-ratios",for:PK3201_FOR_C3},
   "u3-pk-find-side":{src:"Math 1201 indicator 7.4",group:"find-side",for:PK3201_FOR_C3},
   "u3-pk-solve-triangle":{src:"Math 1201 indicator 7.6",group:"solve-triangle",for:PK3201_FOR_C3},
+  "u3-pk-sine-law-side":{src:"Math 2201 Unit 1, sine law",group:"sine-law",for:PK3201_FOR_C3},
+  "u3-pk-sine-law-angle":{src:"Math 2201 Unit 1, sine law",group:"sine-law",for:PK3201_FOR_C3},
+  "u3-pk-cosine-law-side":{src:"Math 2201 Unit 1, cosine law",group:"cosine-law",for:PK3201_FOR_C3},
+  "u3-pk-cosine-law-angle":{src:"Math 2201 Unit 1, cosine law",group:"cosine-law",for:PK3201_FOR_C3},
   "u3-pk-params-characteristics":{src:"Math 2201 indicator 4.10",group:"graph-reading",for:PK3201_FOR_C3},
   "u4-express-as-power":{src:"Math 9 indicators 3.6, 3.7 and 3.10 (seed entry, flagged by the November 13, 2026 audit; metadata completed by this tranche)",group:"powers",for:PK3201_FOR_C4},
   "u4-pk-repeated-mult":{src:"Math 1201 indicator 1.3",group:"repeated-multiplication",for:PK3201_FOR_C4},

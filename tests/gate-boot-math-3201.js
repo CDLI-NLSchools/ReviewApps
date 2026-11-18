@@ -47,7 +47,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Math 3201 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 3201 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 249, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 253, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 177, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 9, "course: nine unit checkboxes, saw " + labels.length);
@@ -66,7 +66,7 @@ const ev = (dom, code) => dom.window.eval(code);
   // knowledge entries (41 across the bank: 21 in Units 1 to 4, 20 in
   // Units 5 to 9). With the switch on the figures are the earlier
   // ones: 246, 109 and 137.
-  ok((d.getElementById("poolInfo").textContent || "").includes("205 question templates"), "course: pool after All preset is the whole default pool with the PK switch off (bank 249 minus the 3 enrichment entries and the 41 prior knowledge entries), saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("205 question templates"), "course: pool after All preset is the whole default pool with the PK switch off (bank 253 minus the 3 enrichment entries and the 45 prior knowledge entries; the pinned 205 stands because the November 18, 2026 Unit 3 additions raised the bank total and the PK count by the same four), saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "document.getElementById('presetMid').click()");
   ok((d.getElementById("poolInfo").textContent || "").includes("88 question templates"), "course: pool after Mid preset is Units 1 to 4 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().mix.join()") === "20,62,18", "course: mid preset mix 20/62/18, saw " + ev(r.dom, "settings().mix.join()"));
