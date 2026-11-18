@@ -60,8 +60,8 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   ok(r.dom.window.document.title === "Math 2201 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 2201 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 395, "course: bank loaded via the loader (395 since sequence-rebuild batch D, Nov 17, 2026; 385 since the strip-audit entry, Nov 17, 2026; 384 since the Unit 1 enrichment, Nov 17, 2026; 295 since the PK tranche, Nov 15, 2026; 236 before it), BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 224, "course: CR_MARKS wired from the bank module (224 since sequence-rebuild batch D, Nov 17, 2026; 218 before it)");
+  ok(ev(r.dom, "BANK.length") === 455, "course: bank loaded via the loader (455 since the Unit 2 expansion, Nov 18, 2026; 395 since sequence-rebuild batch D, Nov 17, 2026; 385 since the strip-audit entry, Nov 17, 2026; 384 since the Unit 1 enrichment, Nov 17, 2026; 295 since the PK tranche, Nov 15, 2026; 236 before it), BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 244, "course: CR_MARKS wired from the bank module (244 since the Unit 2 expansion, Nov 18, 2026; 224 since sequence-rebuild batch D, Nov 17, 2026; 218 before it)");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 8, "course: eight unit checkboxes, saw " + labels.length);
   ["Acute Triangle Trigonometry", "Quadratic Functions", "Quadratic Equations",
@@ -73,13 +73,13 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   ok(d.getElementById("presetFinal").style.display !== "none", "course: Final preset button visible (this course has a final preset)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is the chassis default 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("393 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("453 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: All preset leaves the mid-course cap off");
 
   // mid preset: cap on, capped pool, the note, preset serialization
   ev(r.dom, "document.getElementById('presetMid').click()");
   ok(ev(r.dom, "settings().midCap") === true, "course: Mid preset switches the mid-course cap on");
-  ok((d.getElementById("poolInfo").textContent || "").includes("237 question templates"), "course: pool after Mid preset is Units 1 to 4 minus the five held-out entries, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("297 question templates"), "course: pool after Mid preset is Units 1 to 4 minus the five held-out entries, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok((d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "course: pool line carries the standalone's held-out note while the cap is on");
   ok(ev(r.dom, "settingsToURL()").includes("preset=mid"), "course: settings link serializes preset=mid while the cap is on, saw " + ev(r.dom, "settingsToURL()"));
   ev(r.dom, "refreshFace()");
@@ -118,7 +118,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   d = r.dom.window.document;
   ev(r.dom, "updatePoolInfo()");
   ok(ev(r.dom, "settings().midCap") === false, "manual: a unit=1,2,3,4 link boots uncapped");
-  ok((d.getElementById("poolInfo").textContent || "").includes("242 question templates"), "manual: pool is all of Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("302 question templates"), "manual: pool is all of Units 1 to 4, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(!(d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "manual: no held-out note while uncapped");
   ok(!ev(r.dom, "settingsToURL()").includes("preset=mid") && ev(r.dom, "settingsToURL()").includes("unit=1%2C2%2C3%2C4"),
      "manual: settings link serializes plain units, not preset=mid, saw " + ev(r.dom, "settingsToURL()"));
@@ -130,7 +130,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   d = r.dom.window.document;
   ev(r.dom, "updatePoolInfo()");
   ok(ev(r.dom, "settings().midCap") === true, "preset link: a preset=mid link boots with the cap on");
-  ok((d.getElementById("poolInfo").textContent || "").includes("237 question templates"), "preset link: capped pool, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("297 question templates"), "preset link: capped pool, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(r.errors.length === 0, "preset link: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
   r.dom.window.close();
 

@@ -71,7 +71,7 @@ run('var __PK=true; function pkIncluded(){return __PK;} function enrichIncluded(
 run('var PKONLY_DRAW=false;');
 run('function __reseed(n){var s=n>>>0; Math.random=function(){s|=0;s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}');
 
-const POOL_SIZES = { 1: 41, 2: 8, 3: 7, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). */
+const POOL_SIZES = { 1: 41, 2: 14, 3: 7, 4: 8, 5: 9, 6: 8, 7: 9, 8: 9 }; /* Unit 1 amended Nov 17, 2026: the enrichment build took its PK pool from 8 to 41 (33 authored entries added to the 8 borrowed ones). Unit 2 amended Nov 18, 2026: the Unit 2 expansion took its PK pool from 8 to 14 (6 authored entries added). */
 function checkDraw(unit, inds, seed) {
   run("__reseed(" + seed + ");");
   return run("(function(){var r=drawSet([" + unit + "]," + JSON.stringify(inds) + ",8,[20,60,20],'unit',false);"
