@@ -30,6 +30,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - The Math 2201 Unit 1 StudyMate pack no longer prints a worked example at the head of each indicator section: the examples read as a short set of notes rather than practice. The full worked solution for every question is in the online set, as the pack's answer keys already direct. No set's questions, order or codes changed.
 - Fixed a Math 3208 Unit 1 question on evaluating a composite function where the second function printed as plain text instead of math notation, with a stray symbol after the first function. The question and its answer are unchanged; it now displays in full math notation.
 - Fixed five Math 2200 Unit 4 solutions (converting radicals between entire and mixed form, simplifying radicals with operations, and rationalizing denominators) where a stray symbol printed after the final answer. The questions and their answers are unchanged; the solutions now display cleanly.
+- Fixed the printed set code block not appearing on practice sheets and exams printed the ordinary way. The block (set code, QR code and the line explaining it) was only added for sets built in the advanced tools view, so a sheet or exam made the ordinary way printed with no code at all. It now appears on every printed sheet and exam with the option on, whichever way the set was made, and a set built from a seed word prints the same code every time it is opened.
 
 ## v1.2.0 - 2026-11-15
 
