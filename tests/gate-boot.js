@@ -16,7 +16,7 @@ const html = fs.readFileSync(FILE, "utf8");
 let pass = 0, fail = 0;
 function ok(cond, name) { if (cond) { pass++; } else { fail++; console.log("FAIL: " + name); } }
 
-function boot(qs) {
+function boot(qs, langPreset) {
   return new Promise((resolve) => {
     const errors = [];
     const { VirtualConsole } = require("jsdom");
@@ -26,7 +26,7 @@ function boot(qs) {
       url: "file:///home/hatch/workspace/review-app-unified/index.html?" + qs,
       runScripts: "dangerously", resources: "usable", pretendToBeVisual: true,
       virtualConsole: vc,
-      beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; }
+      beforeParse(w) { w.HTMLElement.prototype.scrollIntoView = function () {}; if (langPreset) { Object.defineProperty(w.navigator, "language", { value: langPreset, configurable: true }); Object.defineProperty(w.navigator, "languages", { value: [langPreset], configurable: true }); } }
     });
     setTimeout(() => resolve({ dom, errors }), 2000);
   });
@@ -108,7 +108,44 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(faqHeads.join() === ["What are the Review Apps?", "Who are they for?", "When should I use them?", "Where can I use them?", "Why does practice work?", "How should I practise?"].join(), "picker: the About card carries the five Ws plus How, saw " + faqHeads.join(" | "));
   const coursesCard = d.getElementById("courseList") ? d.getElementById("courseList").closest(".card") : null;
   ok(!!coursesCard && (coursesCard.querySelector("h2") || { textContent: "" }).textContent === "Choose your course", "picker: the courses card heads Choose your course");
+
+  // --- home page language toggle (Nov 18, 2026): every home string renders once, in the active language ---
+  const langBtn = d.getElementById("pkLang");
+  ok(!!langBtn && langBtn.textContent === "Français", "picker lang: the toggle sits beside the theme toggle and offers Français in English mode, saw " + (langBtn && langBtn.textContent));
+  ok(d.documentElement.lang === "en", "picker lang: the page language is en in English mode, saw " + d.documentElement.lang);
+  langBtn.click();
+  ok(d.documentElement.lang === "fr", "picker lang: the page language follows the toggle to fr, saw " + d.documentElement.lang);
+  ok(langBtn.textContent === "English", "picker lang: the toggle offers English in French mode, saw " + langBtn.textContent);
+  ok((d.querySelector("#coursePicker .pktag") || { textContent: "" }).textContent === "Exercices de pratique en ligne ou à imprimer", "picker lang: the tagline renders in French");
+  ok((d.getElementById("pkWhatsNew") || { textContent: "" }).textContent === "Nouveautés", "picker lang: What's new renders in French");
+  ok((d.getElementById("pkTheme") || { textContent: "" }).textContent === "Mode sombre", "picker lang: the theme toggle label renders in French, saw " + (d.getElementById("pkTheme") || {}).textContent);
+  ok((coursesCard.querySelector("h2") || { textContent: "" }).textContent === "Choisissez votre cours", "picker lang: the courses card heads Choisissez votre cours");
+  const codeCardFr = d.getElementById("pkCodeForm") ? d.getElementById("pkCodeForm").closest(".card") : null;
+  ok(!!codeCardFr && codeCardFr.textContent.indexOf("Vous avez un code d’une feuille imprimée ?") >= 0 && codeCardFr.textContent.indexOf("Have a code from a printed sheet?") < 0, "picker lang: the code card renders its heading once, in French");
+  ok((d.getElementById("pkCodeBtn") || { textContent: "" }).textContent === "Ouvrir l’ensemble", "picker lang: the Open set button renders in French");
+  ok((d.getElementById("pkCodeIn") || { getAttribute: () => "" }).getAttribute("aria-label") === "Code de l’ensemble", "picker lang: the code input label renders in French");
+  const faqHeadsFr = Array.prototype.slice.call(d.querySelectorAll(".pkfaq summary")).map(x => x.textContent);
+  ok(faqHeadsFr.join() === ["Que sont les Review Apps ?", "À qui s’adressent-elles ?", "Quand devrais-je les utiliser ?", "Où puis-je les utiliser ?", "Pourquoi la pratique fonctionne-t-elle ?", "Comment devrais-je pratiquer ?"].join(), "picker lang: the About card renders its six sections in French, saw " + faqHeadsFr.join(" | "));
+  const chipRowsFr = d.querySelectorAll("#pkChips .pkrow");
+  ok((chipRowsFr[0].querySelector(".pkLab") || { textContent: "" }).textContent === "Matière :", "picker lang: the subject row label renders in French");
+  ok((chipRowsFr[1].querySelector(".pkLab") || { textContent: "" }).textContent === "Niveau :", "picker lang: the grade row label renders in French");
+  ok(Array.prototype.slice.call(chipRowsFr[0].querySelectorAll("button")).map(b => b.textContent).join() === "Toutes,Mathematics,Science,Mathématiques,Sciences", "picker lang: subject chips keep the collection names, All becomes Toutes");
+  ok(Array.prototype.slice.call(chipRowsFr[1].querySelectorAll("button")).map(b => b.textContent).join() === "Tous,12e année,11e année,10e année,9e année,8e année,7e année", "picker lang: grade chips render as years in French");
+  const headsFr = Array.prototype.slice.call(d.querySelectorAll("#courseList h3")).map(h => h.textContent);
+  ok(headsFr.join() === heads.join(), "picker lang: course group headings stay as the registered collection names");
+  langBtn.click();
+  ok(d.documentElement.lang === "en" && (d.querySelector("#coursePicker .pktag") || { textContent: "" }).textContent === "Online or Printable Practice Exercises" && (d.getElementById("pkCodeHead") || { textContent: "" }).textContent === "Have a code from a printed sheet?", "picker lang: toggling back restores English everywhere");
   ok(r.errors.length === 0, "picker: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
+  r.dom.window.close();
+
+  // --- French browser language: the home page defaults to French on first visit ---
+  r = await boot("", "fr-CA");
+  d = r.dom.window.document;
+  ok(d.documentElement.lang === "fr", "picker lang default: a French browser language lands on French, saw " + d.documentElement.lang);
+  ok((d.querySelector("#coursePicker .pktag") || { textContent: "" }).textContent === "Exercices de pratique en ligne ou à imprimer", "picker lang default: the tagline renders in French by default");
+  ok((d.getElementById("pkCodeHead") || { textContent: "" }).textContent === "Vous avez un code d’une feuille imprimée ?", "picker lang default: the code card renders in French by default");
+  ok((d.getElementById("pkLang") || { textContent: "" }).textContent === "English", "picker lang default: the toggle offers English");
+  ok(r.errors.length === 0, "picker lang default: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));
   r.dom.window.close();
 
   console.log("GATE-BOOT: " + pass + " passed, " + fail + " failed");

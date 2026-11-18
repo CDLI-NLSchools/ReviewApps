@@ -6,6 +6,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
+- The Review Apps home page now has a language toggle beside the dark mode toggle. Everything on the home page, including the set code box and the About card, shows in one language at a time, English or French, and the choice is remembered on the device. A first visit follows the browser's language. Pages inside a course keep the language of that course, as before.
 - StudyMate practice packs. A pack is a printable PDF for one unit: a prerequisite check with revisit sets, practice for every indicator in the unit, mixed sets that bring earlier work back, and a unit review in the shape of the unit test. Math 2201 Unit 1 (Acute Triangle Trigonometry) is the first pack.
 - The Math 2201 Unit 1 pack now comes in pieces as well as whole: a one-page index listing every set and its code, a separate PDF for each set with questions only, and a separate answer keys PDF for teachers, alongside the full pack. A teacher can share just the index page, on paper or digitally, and students open each set online with its code.
 - Teachers can put a set code on their own printed sets. The print panel has an "Include set code and QR" option, on by default: a printed practice sheet or exam then carries a six-character code and a QR code at the top right of its first page. A student types the code into the code box on the Review Apps home page, or scans the QR code, to open that exact set.

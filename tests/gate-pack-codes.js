@@ -122,6 +122,10 @@ for (const probe of ['id="pkCodeForm"', 'id="pkCodeIn"', 'id="pkCodeHead"', 'src
   ok(html.includes(probe), "home page (index.html) carries " + probe);
 }
 ok(boxWiring(html) !== null, "home page carries the code-box resolution wiring");
+/* Nov 18, 2026: the stacked bilingual rendering is gone; the home page
+   language toggle governs the box and its messages instead. */
+ok(!html.includes("pkcodefr"), "home page carries no stacked bilingual rendering (the pkcodefr helper is gone)");
+ok(html.includes('id="pkLang"'), "home page carries the language toggle");
 
 const TEACHER_CODE = "TES7CD";
 function fakeGviz(q) {
@@ -166,7 +170,7 @@ async function bootHome(sheetMode) {
 
 async function settleMsg(dom, msg) {
   for (let i = 0; i < 60; i++) {
-    if (!/Checking the teacher code registry/.test(msg.textContent)) return;
+    if (!/Checking the teacher code registry|Vérification du registre/.test(msg.textContent)) return;
     await new Promise(r => setTimeout(r, 100));
   }
 }
@@ -225,9 +229,64 @@ async function bootBoxSheetDown() {
   dom.window.close();
 }
 
+/* Nov 18, 2026: the same box in French mode. The toggle is clicked
+   first, so the resolver runs with window.__PKFR set; a pack code and
+   a sheet code must both resolve, and every message must come out in
+   French only. */
+async function bootBoxLiveFr() {
+  const { dom, navErrors } = await bootHome("up");
+  const d = dom.window.document;
+  const pageName = "home page, French mode (sheet up)";
+  d.getElementById("pkLang").click();
+  ok(dom.window.__PKFR === true, pageName + ": the toggle puts the box in French mode");
+  ok((d.getElementById("pkCodeHead") || { textContent: "" }).textContent === "Vous avez un code d’une feuille imprimée ?", pageName + ": the code card heading renders in French");
+  const form = d.getElementById("pkCodeForm");
+  const input = d.getElementById("pkCodeIn");
+  const msg = d.getElementById("pkCodeMsg");
+  input.value = "ZZZ ZZZ";
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  await settleMsg(dom, msg);
+  ok(/pas été reconnu/.test(msg.textContent), pageName + ": unknown code gets the French not-recognized message, saw " + msg.textContent);
+  ok(!/not recognized/.test(msg.textContent), pageName + ": unknown code gets no English message");
+  ok(navErrors.length === 0, pageName + ": unknown code attempts no navigation");
+  input.value = (TEACHER_CODE.slice(0, 3) + " " + TEACHER_CODE.slice(3)).toLowerCase();
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  await settleMsg(dom, msg);
+  ok(navErrors.length === 1, pageName + ": teacher code from the sheet registry attempts navigation to its set");
+  const known = regCodes[0];
+  input.value = (known.slice(0, 3) + " " + known.slice(3)).toLowerCase();
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  ok(navErrors.length === 2, pageName + ": known pack code attempts navigation to its set");
+  dom.window.close();
+}
+
+async function bootBoxSheetDownFr() {
+  const { dom, navErrors } = await bootHome("down");
+  const d = dom.window.document;
+  const pageName = "home page, French mode (sheet down)";
+  d.getElementById("pkLang").click();
+  ok(dom.window.__PKFR === true, pageName + ": the toggle puts the box in French mode");
+  const form = d.getElementById("pkCodeForm");
+  const input = d.getElementById("pkCodeIn");
+  const msg = d.getElementById("pkCodeMsg");
+  input.value = TEACHER_CODE;
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  await settleMsg(dom, msg);
+  ok(/n’est pas disponible en ce moment/.test(msg.textContent), pageName + ": teacher code with the sheet down gets the French unavailable message, saw " + msg.textContent);
+  ok(!/not available right now/.test(msg.textContent), pageName + ": teacher code with the sheet down gets no English message");
+  ok(navErrors.length === 0, pageName + ": teacher code with the sheet down attempts no navigation");
+  const known = regCodes[0];
+  input.value = (known.slice(0, 3) + " " + known.slice(3)).toLowerCase();
+  form.dispatchEvent(new dom.window.Event("submit", { cancelable: true, bubbles: true }));
+  ok(navErrors.length === 1, pageName + ": pack code still resolves with the sheet down");
+  dom.window.close();
+}
+
 async function part2() {
   await bootBoxLive();
   await bootBoxSheetDown();
+  await bootBoxLiveFr();
+  await bootBoxSheetDownFr();
   console.log("gate-pack-codes: " + pass + " pass, " + fail + " fail");
   process.exit(fail ? 1 : 0);
 }

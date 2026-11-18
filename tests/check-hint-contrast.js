@@ -150,5 +150,29 @@ if (rootVars && darkVars) {
   });
 }
 
+/* Home page header buttons (Nov 18, 2026): the EN/FR language
+   toggle (#pkLang) shares the dark mode toggle's .pkthemebtn
+   styling, so both buttons must exist in the picker markup with
+   that class, and the class pairings must clear 4.5:1 in both
+   themes. The picker CSS ships inside the picker script's style
+   string, so these rules are read from the whole file rather than
+   the head style block. Light: the button is transparent, so its
+   text sits on the page background (--bg). Dark: the button fills
+   with its own background colour. */
+const pkBtn = ruleBody(/\.pkthemebtn\{([^}]*)\}/);
+const pkBtnDark = ruleBody(/html\[data-a11y-theme='dark'\] \.pkthemebtn\{([^}]*)\}/);
+ok(!!pkBtn && !!pkBtn.color, "picker buttons: base .pkthemebtn rule with a text colour found");
+ok(!!pkBtnDark && !!pkBtnDark.color && !!pkBtnDark.background, "picker buttons: dark .pkthemebtn rule with text and fill found");
+ok(/<button type="button" id="pkTheme" class="pkthemebtn">/.test(css), "picker buttons: the theme toggle carries .pkthemebtn");
+ok(/<button type="button" id="pkLang" class="pkthemebtn">/.test(css), "picker buttons: the language toggle carries .pkthemebtn");
+if (rootVars && pkBtn && pkBtnDark) {
+  const pkLight = contrast(pkBtn.color, rootVars["--bg"]);
+  const pkDark = contrast(pkBtnDark.color, pkBtnDark.background);
+  console.log("picker button light: " + pkBtn.color + " on " + rootVars["--bg"] + " = " + pkLight.toFixed(2) + ":1");
+  console.log("picker button dark:  " + pkBtnDark.color + " on " + pkBtnDark.background + " = " + pkDark.toFixed(2) + ":1");
+  ok(pkLight >= 4.5, "picker buttons: light mode contrast at least 4.5:1 (" + pkLight.toFixed(2) + ":1)");
+  ok(pkDark >= 4.5, "picker buttons: dark mode contrast at least 4.5:1 (" + pkDark.toFixed(2) + ":1)");
+}
+
 console.log(fail ? "HINT CONTRAST CHECK FAIL (" + fail + ")" : "HINT CONTRAST CHECK PASS: " + pass + " assertions");
 process.exit(fail ? 1 : 0);

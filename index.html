@@ -2597,21 +2597,19 @@ var qrcode = function() {
   <img class="pklogo pklogo-l" src="cdli-logo.svg" alt="CDLI">
   <img class="pklogo pklogo-d" src="cdli-logo-white.svg" alt="CDLI">
   <h1>Review Apps</h1>
-  <div class="pkheadrow"><p class="sub pktag">Online or Printable Practice Exercises</p><span class="pkheadright"><a id="pkWhatsNew" class="pkwn" href="https://github.com/CDLI-NLSchools/ReviewApps/releases" target="_blank" rel="noopener">What's new</a><button type="button" id="pkTheme" class="pkthemebtn">Dark mode</button></span></div>
+  <div class="pkheadrow"><p class="sub pktag" id="pkTag">Online or Printable Practice Exercises</p><span class="pkheadright"><a id="pkWhatsNew" class="pkwn" href="https://github.com/CDLI-NLSchools/ReviewApps/releases" target="_blank" rel="noopener">What's new</a><button type="button" id="pkLang" class="pkthemebtn">Français</button><button type="button" id="pkTheme" class="pkthemebtn">Dark mode</button></span></div>
   <p class="sub pkprivacy" id="pkPrivacy">Anonymous usage counts help us see which courses and features are used. No student information is collected.</p>
   <div class="card">
-    <h2 style="margin-top:0;">Choose your course</h2>
+    <h2 style="margin-top:0;" id="pkChoose">Choose your course</h2>
     <div id="courseList"></div>
   </div>
   <div class="card">
     <h2 style="margin-top:0;" id="pkCodeHead">Have a code from a printed sheet?</h2>
-    <p class="sub pkcodefr" lang="fr">Vous avez un code d’une feuille imprimée ?</p>
     <p class="sub" id="pkCodePrompt">Type the six-character code from the top of a printed set to open that exact set here.</p>
-    <p class="sub pkcodefr" lang="fr">Tapez le code de six caractères en haut d’un ensemble imprimé pour ouvrir exactement cet ensemble ici.</p>
     <form id="pkCodeForm" class="pkcodeform"><input id="pkCodeIn" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="7" placeholder="ABC DEF" aria-label="Set code"><button type="submit" class="open" id="pkCodeBtn">Open set</button></form>
     <p class="sub" id="pkCodeMsg" role="status"></p>
   </div>
-  <div class="card pkfaq">
+  <div class="card pkfaq" id="pkFaq">
     <h2 style="margin-top:0;">About the Review Apps</h2>
     <details>
       <summary>What are the Review Apps?</summary>
@@ -7250,13 +7248,53 @@ resumeBootCheck();
    passes (Jason, Nov 12, 2026). */
 if(window.__NOCOURSE){(function(){
   var app=document.getElementById("app");if(app)app.style.display="none";
-  var pk=document.getElementById("coursePicker");if(!pk)return;pk.hidden=false;
+  var pk=document.getElementById("coursePicker");if(!pk)return;
   var list=document.getElementById("courseList");if(!list)return;
+  /* Home page language (Nov 18, 2026): an EN/FR toggle beside the
+     theme toggle, at Jason's direction after the set code card
+     shipped with its strings stacked in both languages. The picker
+     is the only surface with its own language state: the choice
+     persists on this device (localStorage key app-lang-v1), the
+     first visit defaults from the browser language, and it governs
+     the home page only. Entering a course applies that course's
+     language exactly as before (FR9 and L9 are untouched); coming
+     back here restores this choice. window.__PKFR lets the set
+     code box script below word its messages in the active
+     language. */
+  var pkLang=null;
+  try{pkLang=window.localStorage.getItem("app-lang-v1");}catch(e){}
+  if(pkLang!=="fr"&&pkLang!=="en"){var bl=((navigator.languages&&navigator.languages[0])||navigator.language||"en").toLowerCase();pkLang=bl.indexOf("fr")===0?"fr":"en";}
+  window.__PKFR=(pkLang==="fr");
+  function PK9(en,fr){return pkLang==="fr"?fr:en;}
+  var pkI18n=[];
+  function pkReg(el,en,fr){pkI18n.push({el:el,en:en,fr:fr});}
   var style=document.createElement("style");
-  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme='dark'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme='dark'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme='dark'] .pkchip[aria-pressed='true']{background:#1f4e79;border-color:#5eead4;color:#fff}.pkcodeform{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.pkcodeform input{font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;padding:7px 10px;max-width:210px;border:1px solid #d8d2c4;border-radius:6px;background:transparent;color:inherit}.pkcodeform button.open{background:#0f766e;color:#fff;border:none;padding:8px 16px;border-radius:999px;font-size:.9rem;cursor:pointer}.pkcodeform button.open:hover{text-decoration:underline}#pkCodeMsg{margin:6px 0 0;min-height:1em}.pkcodefr{margin-top:2px}";
+  style.textContent=".pkrow{margin:0 0 8px}.pkLab{display:inline-block;min-width:64px;font-weight:600}.pkchip{margin:0 4px 4px 0}.pkchip[aria-pressed='true']{background:#1f4e79;border-color:#1f4e79;color:#fff}.pklogo{height:54px;width:auto;display:block;margin:0 0 16px}.pklogo-d{display:none}html[data-a11y-theme='dark'] .pklogo-l{display:none}html[data-a11y-theme='dark'] .pklogo-d{display:block}.pktag{font-size:17px}.pkheadrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.pkheadright{display:flex;align-items:center;gap:14px}.pkwn{font-size:.85rem;color:#1f4e79;text-decoration:none}.pkwn:hover{text-decoration:underline}.pkprivacy{font-size:.8rem;opacity:.78;margin:6px 0 0}html[data-a11y-theme='dark'] .pkwn{color:#5eead4}.pkfaq details{margin:0 0 6px}.pkfaq summary{cursor:pointer;font-weight:600;padding:4px 0}.pkfaq p{margin:4px 0 10px}.pkfaq ol{margin:4px 0 10px;padding-left:22px}.pkfaq li{margin:0 0 4px}.pkthemebtn{flex:none;font:inherit;font-size:.85rem;padding:5px 14px;border-radius:999px;border:1px solid #1f4e79;background:transparent;color:#1f4e79;cursor:pointer}html[data-a11y-theme='dark'] .pkthemebtn{background:#5eead4;border-color:#5eead4;color:#0e1418}html[data-a11y-theme='dark'] .pkchip[aria-pressed='true']{background:#1f4e79;border-color:#5eead4;color:#fff}.pkcodeform{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.pkcodeform input{font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;padding:7px 10px;max-width:210px;border:1px solid #d8d2c4;border-radius:6px;background:transparent;color:inherit}.pkcodeform button.open{background:#0f766e;color:#fff;border:none;padding:8px 16px;border-radius:999px;font-size:.9rem;cursor:pointer}.pkcodeform button.open:hover{text-decoration:underline}#pkCodeMsg{margin:6px 0 0;min-height:1em}";
   pk.appendChild(style);
   var pkThemeBtn=document.getElementById("pkTheme");
-  if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.textContent=document.documentElement.getAttribute("data-a11y-theme")==="dark"?"Light mode":"Dark mode";};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}
+  if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.textContent=document.documentElement.getAttribute("data-a11y-theme")==="dark"?PK9("Light mode","Mode clair"):PK9("Dark mode","Mode sombre");};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}
+  var pkFaqEl=document.getElementById("pkFaq");
+  var PK_FAQ_EN=pkFaqEl?pkFaqEl.innerHTML:"";
+  var PK_FAQ_FR="<h2 style=\"margin-top:0;\">\u00c0 propos des Review Apps</h2>\n    <details>\n      <summary>Que sont les Review Apps ?</summary>\n      <p>Des banques de questions d\u2019entra\u00eenement pour les cours ci-dessus. Choisissez votre cours, puis pratiquez par unit\u00e9 ou par indicateur du programme d\u2019\u00e9tudes. La plupart des questions sont g\u00e9n\u00e9r\u00e9es \u00e0 neuf chaque fois, alors vous pouvez pratiquer la m\u00eame habilet\u00e9 de nouveau et obtenir une question diff\u00e9rente. Vous pouvez travailler en ligne, imprimer une feuille de pratique ou cr\u00e9er un examen de pratique.</p>\n    </details>\n    <details>\n      <summary>\u00c0 qui s\u2019adressent-elles ?</summary>\n      <p>Aux \u00e9l\u00e8ves de n\u2019importe lequel des cours ci-dessus : que vous suiviez le rythme de la classe, que vous rattrapiez un sujet ou que vous vous pr\u00e9pariez \u00e0 un test ou \u00e0 un examen. Les enseignants peuvent aussi cr\u00e9er des ensembles de pratique et des feuilles \u00e0 imprimer pour leurs classes, et exporter des versions enti\u00e8rement modifiables dans Word ou Brightspace.</p>\n    </details>\n    <details>\n      <summary>Quand devrais-je les utiliser ?</summary>\n      <p>Un peu \u00e0 la fois, souvent. Essayez un court ensemble apr\u00e8s une le\u00e7on, quelques questions dans le cadre des devoirs, et un peu de r\u00e9vision m\u00e9lang\u00e9e dans les jours qui pr\u00e9c\u00e8dent un test. De courtes s\u00e9ances r\u00e9parties sur plusieurs jours donnent de meilleurs r\u00e9sultats qu\u2019une longue s\u00e9ance la veille.</p>\n    </details>\n    <details>\n      <summary>O\u00f9 puis-je les utiliser ?</summary>\n      <p>Partout o\u00f9 vous avez un navigateur : \u00e0 l\u2019\u00e9cole, \u00e0 la maison ou en d\u00e9placement. Les applications fonctionnent sur les Chromebook, les ordinateurs portables, les tablettes et les ordinateurs de bureau, et vous pouvez aussi imprimer des feuilles de pratique pour travailler hors ligne.</p>\n    </details>\n    <details>\n      <summary>Pourquoi la pratique fonctionne-t-elle ?</summary>\n      <p>Essayer de se rappeler une r\u00e9ponse, au lieu de la chercher, est l\u2019une des fa\u00e7ons les plus efficaces d\u2019apprendre. Chaque fois que vous tirez une r\u00e9ponse de votre propre m\u00e9moire, ce souvenir se renforce et dure plus longtemps. V\u00e9rifier votre travail tout de suite, avec une solution d\u00e9taill\u00e9e \u00e0 laquelle le comparer, aide aussi \u00e0 corriger les erreurs avant qu\u2019elles ne deviennent des habitudes.</p>\n    </details>\n    <details>\n      <summary>Comment devrais-je pratiquer ?</summary>\n      <ol>\n        <li>Choisissez une unit\u00e9 ou un indicateur et commencez un ensemble.</li>\n        <li>Essayez chaque question par vous-m\u00eame d\u2019abord, et \u00e9crivez votre d\u00e9marche. Cela semble plus difficile que de jeter un coup d\u2019\u0153il \u00e0 l\u2019exemple, mais c\u2019est cet effort qui construit la m\u00e9moire.</li>\n        <li>Bloqu\u00e9 ? Utilisez d\u2019abord l\u2019indice, puis l\u2019exemple travaill\u00e9, puis essayez la question de nouveau.</li>\n        <li>V\u00e9rifiez chaque r\u00e9ponse au fur et \u00e0 mesure et lisez la solution compl\u00e8te, m\u00eame quand vous avez raison. Remarquez l\u2019\u00e9tape que vous feriez diff\u00e9remment la prochaine fois.</li>\n        <li>Revenez dans un jour ou deux et pratiquez la m\u00eame habilet\u00e9 de nouveau. C\u2019est l\u2019espacement de la pratique qui la fait passer dans la m\u00e9moire \u00e0 long terme.</li>\n      </ol>\n    </details>";
+  function pkApplyLang(){
+    window.__PKFR=(pkLang==="fr");
+    document.documentElement.lang=pkLang;
+    var t;
+    if(t=document.getElementById("pkTag"))t.textContent=PK9("Online or Printable Practice Exercises","Exercices de pratique en ligne ou à imprimer");
+    if(t=document.getElementById("pkWhatsNew"))t.textContent=PK9("What's new","Nouveautés");
+    if(t=document.getElementById("pkPrivacy"))t.textContent=PK9("Anonymous usage counts help us see which courses and features are used. No student information is collected.","Des comptes d'utilisation anonymes nous aident à voir quels cours et quelles fonctions sont utilisés. Aucun renseignement sur les élèves n'est recueilli.");
+    if(t=document.getElementById("pkChoose"))t.textContent=PK9("Choose your course","Choisissez votre cours");
+    if(t=document.getElementById("pkCodeHead"))t.textContent=PK9("Have a code from a printed sheet?","Vous avez un code d’une feuille imprimée ?");
+    if(t=document.getElementById("pkCodePrompt"))t.textContent=PK9("Type the six-character code from the top of a printed set to open that exact set here.","Tapez le code de six caractères en haut d’un ensemble imprimé pour ouvrir exactement cet ensemble ici.");
+    if(t=document.getElementById("pkCodeBtn"))t.textContent=PK9("Open set","Ouvrir l’ensemble");
+    var inp=document.getElementById("pkCodeIn");if(inp)inp.setAttribute("aria-label",PK9("Set code","Code de l’ensemble"));
+    var fq=document.getElementById("pkFaq");if(fq)fq.innerHTML=(pkLang==="fr")?PK_FAQ_FR:PK_FAQ_EN;
+    pkI18n.forEach(function(x){x.el.textContent=PK9(x.en,x.fr);});
+    var lb=document.getElementById("pkLang");if(lb)lb.textContent=(pkLang==="fr")?"English":"Français";
+    if(typeof pkSyncTheme==="function")pkSyncTheme();
+  }
+  var pkLangBtn=document.getElementById("pkLang");
+  if(pkLangBtn){pkLangBtn.addEventListener("click",function(){pkLang=(pkLang==="fr")?"en":"fr";try{window.localStorage.setItem("app-lang-v1",pkLang);}catch(e){}pkApplyLang();});}
   var pkWn=document.getElementById("pkWhatsNew");
   if(pkWn){pkWn.textContent=L9("What's new","Nouveautés");pkWn.addEventListener("click",function(){countEvent("whatsnew_click",[]);});}
   var pkPv=document.getElementById("pkPrivacy");
@@ -7275,13 +7313,13 @@ if(window.__NOCOURSE){(function(){
   subjects.forEach(function(s){groups[s].forEach(function(p){var g=p[1].grade||0;if(grades.indexOf(g)<0)grades.push(g);});});
   grades.sort(function(a,b){return b-a;});
   var fSubj="All",fGrade="All",chipBtns=[];
-  function mkRow(label){var r=document.createElement("div");r.className="pkrow";var l=document.createElement("span");l.className="pkLab";l.textContent=label;r.appendChild(l);return r;}
+  function mkRow(en,fr){var r=document.createElement("div");r.className="pkrow";var l=document.createElement("span");l.className="pkLab";l.textContent=en;pkReg(l,en,fr);r.appendChild(l);return r;}
   function syncChips(){chipBtns.forEach(function(x){x.b.setAttribute("aria-pressed",((x.kind==="s"?fSubj:fGrade)===x.val)?"true":"false");});}
-  function mkChip(row,text,val,kind){var b=document.createElement("button");b.type="button";b.className="alt pkchip";b.textContent=text;b.setAttribute("aria-pressed",((kind==="s"?fSubj:fGrade)===val)?"true":"false");b.addEventListener("click",function(){if(kind==="s")fSubj=val;else fGrade=val;syncChips();applyFilter();});row.appendChild(b);chipBtns.push({b:b,kind:kind,val:val});}
+  function mkChip(row,en,fr,val,kind){var b=document.createElement("button");b.type="button";b.className="alt pkchip";b.textContent=en;pkReg(b,en,fr);b.setAttribute("aria-pressed",((kind==="s"?fSubj:fGrade)===val)?"true":"false");b.addEventListener("click",function(){if(kind==="s")fSubj=val;else fGrade=val;syncChips();applyFilter();});row.appendChild(b);chipBtns.push({b:b,kind:kind,val:val});}
   var chips=document.createElement("div");chips.id="pkChips";
-  var rowS=mkRow("Subject:"),rowG=mkRow("Grade:");
-  mkChip(rowS,"All","All","s");subjects.forEach(function(s){mkChip(rowS,s,s,"s");});
-  mkChip(rowG,"All","All","g");grades.forEach(function(g){mkChip(rowG,"Grade "+g,String(g),"g");});
+  var rowS=mkRow("Subject:","Matière :"),rowG=mkRow("Grade:","Niveau :");
+  mkChip(rowS,"All","Toutes","All","s");subjects.forEach(function(s){mkChip(rowS,s,s,s,"s");});
+  mkChip(rowG,"All","Tous","All","g");grades.forEach(function(g){mkChip(rowG,"Grade "+g,g+"e année",String(g),"g");});
   chips.appendChild(rowS);chips.appendChild(rowG);list.parentNode.insertBefore(chips,list);
   var rendered=[];
   subjects.forEach(function(s){
@@ -7297,7 +7335,7 @@ if(window.__NOCOURSE){(function(){
     });
     rendered.push({s:s,h:h,row:row,btns:btns});
   });
-  var none=document.createElement("p");none.textContent="No courses match that combination.";none.hidden=true;list.appendChild(none);
+  var none=document.createElement("p");none.textContent="No courses match that combination.";pkReg(none,"No courses match that combination.","Aucun cours ne correspond à cette combinaison.");none.hidden=true;list.appendChild(none);
   function applyFilter(){
     var any=false;
     rendered.forEach(function(g){
@@ -7308,6 +7346,8 @@ if(window.__NOCOURSE){(function(){
     none.hidden=any;
   }
   applyFilter();
+  pkApplyLang();
+  pk.hidden=false;
 })();
 }
 </script>
@@ -7334,11 +7374,14 @@ if(window.__NOCOURSE){(function(){
    picker on Nov 17, 2026 was reversed the same day,
    and the approved pivot build of Nov 18, 2026 moved
    it here for good and retired the StudyMate page to
-   a redirect. */
+   a redirect. Its strings follow the home page language
+   toggle (window.__PKFR, set by the picker script above);
+   before that toggle they were stacked in both languages. */
 (function(){
   var form=document.getElementById("pkCodeForm");
   if(!form)return;
   var input=document.getElementById("pkCodeIn"),msg=document.getElementById("pkCodeMsg");
+  function pkMsg(en,fr){return window.__PKFR?fr:en;}
   function openSet(q,teacher){
     try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:teacher?"teacher_code_open":"pack_code_open",event:true});}catch(e){}
     var base=location.pathname.substring(0,location.pathname.lastIndexOf("/")+1);
@@ -7348,16 +7391,16 @@ if(window.__NOCOURSE){(function(){
     ev.preventDefault();
     var code=(input.value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
     var reg=(typeof window!=="undefined"&&window.PACK_CODES)?window.PACK_CODES:null;
-    if(!reg){msg.textContent="Pack codes are not available right now. Pick a course on the Review Apps home page, or scan the QR code on your pack.";return;}
+    if(!reg){msg.textContent=pkMsg("Pack codes are not available right now. Pick a course on the Review Apps home page, or scan the QR code on your pack.","Les codes des ensembles imprimés ne sont pas disponibles en ce moment. Choisissez un cours sur la page d’accueil des Review Apps, ou balayez le code QR sur votre ensemble.");return;}
     var hit=reg[code];
     if(hit&&hit.q){openSet(hit.q,false);return;}
-    msg.textContent="Checking the teacher code registry\u2026 / V\u00e9rification du registre des codes des enseignants\u2026";
+    msg.textContent=pkMsg("Checking the teacher code registry\u2026","V\u00e9rification du registre des codes des enseignants\u2026");
     var fetched=(typeof window.fetchSheetCodes==="function")?window.fetchSheetCodes():Promise.resolve({ok:false,codes:{},rows:0});
     fetched.then(function(res){
       var tq=res&&res.codes?res.codes[code]:null;
       if(tq){openSet(tq,true);return;}
-      if(!res||!res.ok||!res.rows){msg.textContent="That code is not in the printed pack list, and the teacher code registry is not available right now. Try again in a moment, or scan the QR code on your sheet. / Ce code n\u2019est pas dans la liste des ensembles imprim\u00e9s, et le registre des codes des enseignants n\u2019est pas disponible en ce moment. R\u00e9essayez dans un instant, ou balayez le code QR sur votre feuille.";return;}
-      msg.textContent="That code was not recognized. Check the six characters on your pack and try again.";
+      if(!res||!res.ok||!res.rows){msg.textContent=pkMsg("That code is not in the printed pack list, and the teacher code registry is not available right now. Try again in a moment, or scan the QR code on your sheet.","Ce code n\u2019est pas dans la liste des ensembles imprim\u00e9s, et le registre des codes des enseignants n\u2019est pas disponible en ce moment. R\u00e9essayez dans un instant, ou balayez le code QR sur votre feuille.");return;}
+      msg.textContent=pkMsg("That code was not recognized. Check the six characters on your pack and try again.","Ce code n’a pas été reconnu. Vérifiez les six caractères sur votre ensemble et réessayez.");
     });
   });
 })();
