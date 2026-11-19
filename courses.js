@@ -554,28 +554,44 @@ window.COURSES = {
 
   /* The 25 Knowledge indicators from the supplied indicator list
      (Science_1206_Units_Indicators.xlsx), tagged with their full
-     SC10 codes. The 27 STSE indicators in the same list are a named
-     later tranche and are not registered at launch (Jason's ruling,
-     Nov 12, 2026). Tagging follows the spreadsheet's unit
-     assignment, not the number series: the 8.x Knowledge series is
-     shared, 8.1 to 8.6 in Unit 2 (Chemical Reactions) and 8.7 to
-     8.12 in Unit 3 (Motion). One gap is on record: the guide's
-     numbering contains an SC10.9.2 (cross-referenced once inside
-     SC10.9.1's elaboration) with no stated wording in the guide or
-     the spreadsheet; it is an STSE code, so it falls in the later
-     tranche, and no wording has been invented for it. */
+     SC10 codes. The 27 STSE indicators in the same list were a named
+     later tranche at launch (Jason's ruling, Nov 12, 2026). Eight of
+     them were registered on Nov 19, 2026, with six bank entries each,
+     because the test blueprint (Test_Cut-Offs_for_CDLI_Review_Apps)
+     assigns them to Weather Dynamics Test 2 and Chemical Reactions
+     Tests 1 and 2, and the owner's sequencing ruling of the same day
+     is that a test's items are built before its test-shaped practice
+     option ships: SC10.5.1, SC10.5.3, SC10.5.4, SC10.5.5 and
+     SC10.5.6 (Unit 1) and SC10.7.1, SC10.7.2 and SC10.7.3 (Unit 2).
+     The remaining 19 STSE codes stay a later tranche. Tagging follows
+     the spreadsheet's unit assignment, not the number series: the
+     8.x Knowledge series is shared, 8.1 to 8.6 in Unit 2 (Chemical
+     Reactions) and 8.7 to 8.12 in Unit 3 (Motion). One gap is on
+     record: the guide's numbering contains an SC10.9.2
+     (cross-referenced once inside SC10.9.1's elaboration) with no
+     stated wording in the guide or the spreadsheet; it is an STSE
+     code, so it falls in the later tranche, and no wording has been
+     invented for it. */
   indicators: {
     "SC10.6.1": "Heat Sinks: the Hydrosphere and Atmosphere",
     "SC10.6.2": "Heat Transfer in the Water Cycle",
     "SC10.6.3": "Heat Transfer and Currents",
     "SC10.6.4": "Weather Systems: Development, Severity and Movement",
     "SC10.6.5": "Analyzing Meteorological Data and Predicting Weather",
+    "SC10.5.1": "How Science Explains Natural Phenomena",
+    "SC10.5.3": "Technology Enhancing and Revising Understanding",
+    "SC10.5.4": "Canadian Contributions to Science and Technology",
+    "SC10.5.5": "How Scientific Knowledge Evolves",
+    "SC10.5.6": "Relating Activities to Science Disciplines",
     "SC10.8.1": "Naming and Writing Formulas for Compounds",
     "SC10.8.2": "Balanced Equations and Conservation of Mass",
     "SC10.8.3": "Classifying Chemical Reactions",
     "SC10.8.4": "Acids, Bases and Salts",
     "SC10.8.5": "Neutralization",
     "SC10.8.6": "Factors Affecting Reaction Rate",
+    "SC10.7.1": "Science and Technology in Daily Life and Community",
+    "SC10.7.2": "Usefulness of Scientific Nomenclature Systems",
+    "SC10.7.3": "How Domestic and Industrial Technologies Work",
     "SC10.8.7": "Motion Variables, Quantitatively",
     "SC10.8.8": "Displacement, Velocity and Time: Mathematics",
     "SC10.8.9": "Graphing Uniform Motion",
@@ -593,8 +609,8 @@ window.COURSES = {
   },
 
   unitInd: {
-    1: ["SC10.6.1", "SC10.6.2", "SC10.6.3", "SC10.6.4", "SC10.6.5"],
-    2: ["SC10.8.1", "SC10.8.2", "SC10.8.3", "SC10.8.4", "SC10.8.5", "SC10.8.6"],
+    1: ["SC10.6.1", "SC10.6.2", "SC10.6.3", "SC10.6.4", "SC10.6.5", "SC10.5.1", "SC10.5.3", "SC10.5.4", "SC10.5.5", "SC10.5.6"],
+    2: ["SC10.8.1", "SC10.8.2", "SC10.8.3", "SC10.8.4", "SC10.8.5", "SC10.8.6", "SC10.7.1", "SC10.7.2", "SC10.7.3"],
     3: ["SC10.8.7", "SC10.8.8", "SC10.8.9", "SC10.8.10", "SC10.8.11", "SC10.8.12"],
     4: ["SC10.10.1", "SC10.10.2", "SC10.10.3", "SC10.10.4", "SC10.10.5", "SC10.10.6", "SC10.10.7", "SC10.10.8"]
   },

@@ -1,7 +1,9 @@
 // CRMARKS: sci-u2-cr-naming=4
 // CRMARKS: sci-u2-cr-balance=3
 // CRMARKS: sci-u2-cr-rates=3
-// Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6).
+// Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6, plus
+// the SC10.7.1 to 7.3 STSE tranche added Nov 19, 2026 at the end of
+// this file).
 // Original entries written for this app from the question types in
 // the source analysis. Chemistry is the course's generator showcase:
 // naming, formulas, balancing and classification are generated from
@@ -113,25 +115,25 @@ E("sci-u2-naming-rules", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("In the name of a binary ionic compound, the negative ion's name is changed to end in",
       "-ide (chlorine becomes chloride, oxygen becomes oxide)",
-      ["-ite (chlorine becomes chlorite)", "-ate (oxygen becomes oxate)", "-ium (oxygen becomes oxium)"],
+      ["-ite (chlorine becomes chlorite, oxygen becomes oxite)", "-ate (oxygen becomes oxate, chlorine becomes chlorate)", "-ium (oxygen becomes oxium, chlorine becomes chlorium)"],
       "Binary compounds (two elements) use -ide for the anion: chloride, oxide, sulfide, nitride. The -ite and -ate endings belong to polyatomic ions containing oxygen (sulfite, sulfate), not to single elements.", {});
   },
   function () {
     return mcq("A Roman numeral appears in the name iron(III) chloride because",
       "iron forms ions with more than one possible charge, and the numeral states which one this compound contains",
-      ["there are three iron atoms in the formula", "iron is in group 3 of the periodic table", "the compound contains three chlorine atoms"],
+      ["there are three iron atoms in the formula, and the numeral counts the iron atoms present", "iron is in group 3 of the periodic table, and the numeral copies the group number into the name", "the compound contains three chlorine atoms, and the numeral counts the chlorine atoms present"],
       "Multivalent metals need the numeral to give the ion's charge: iron(III) is Fe with a 3+ charge. The numeral says nothing about atom counts, which the formula's subscripts handle.", {});
   },
   function () {
     return mcq("Why does the name sodium chloride need no Roman numeral and no prefixes?",
       "Sodium forms only one ion (Na with a 1+ charge), and ionic compounds are named without prefixes because the charges fix the ratio",
-      ["Sodium is not a metal", "The compound is molecular, so prefixes are optional", "Roman numerals are only used for compounds containing oxygen"],
+      ["Sodium is not a metal, so its compounds are named with the molecular prefix system rather than with ion charges", "The compound is molecular, so prefixes are optional in its name and the charges play no part in naming it", "Roman numerals are only used for compounds containing oxygen, and sodium chloride contains no oxygen at all"],
       "One possible charge means no ambiguity to resolve. Prefixes belong to the molecular naming system; in ionic compounds the neutral-charge requirement determines the subscripts on its own.", {});
   },
   function () {
     return mcq("The polyatomic ion SO4 with a 2- charge is named sulfate. In the compound CaSO4, the correct name is",
       "calcium sulfate (the polyatomic ion keeps its own name as a unit)",
-      ["calcium sulfite", "calcium sulfur oxide", "calcium sulfide"],
+      ["calcium sulfite (the polyatomic ion is renamed with an -ite ending here)", "calcium sulfur oxide (the elements in the group are named one by one)", "calcium sulfide (the whole sulfate group is treated as a sulfide ion)"],
       "Polyatomic ions are named as units and keep their names inside compounds: sulfate stays sulfate. Sulfide is the single sulfur ion (S, 2-), and sulfite is SO3 with a 2- charge, a different ion.", {});
   }
 ]), ["Three systems, three signal features: -ide for binary anions, Roman numerals for multivalent metals, prefixes for molecules."]);
@@ -140,19 +142,19 @@ E("sci-u2-ionic-molecular", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("A compound is made of a metal and a nonmetal. It conducts electricity when melted but not as a solid. The compound is",
       "ionic: its ions are locked in place in the solid but move freely when melted",
-      ["molecular: its molecules break apart when melted", "a metal alloy", "an acid"],
+      ["molecular: its neutral molecules carry the current once the solid has melted", "a metal alloy: its free electrons carry the current in both the solid and the liquid", "an acid: it releases hydrogen ions in the solid that move freely once it melts"],
       "Conductivity that switches on when a solid melts is the ionic signature: the charged particles exist in the solid but cannot move until the lattice breaks down. Molecular compounds do not conduct in either state.", {});
   },
   function () {
     return mcq("Which compound is molecular (covalent) rather than ionic?",
       "Carbon dioxide, CO2: two nonmetals sharing electrons",
-      ["Sodium chloride, NaCl", "Magnesium oxide, MgO", "Calcium fluoride, CaF2"],
+      ["Sodium chloride, NaCl: metal plus nonmetal ions", "Magnesium oxide, MgO: metal plus nonmetal ions", "Calcium fluoride, CaF2: metal plus nonmetal ions"],
       "Metal plus nonmetal means ionic in this course's compounds. Carbon and oxygen are both nonmetals, so CO2 is molecular, named with prefixes and existing as separate molecules.", {});
   },
   function () {
     return mcq("Which property set belongs to ionic compounds?",
       "High melting points, brittle crystals, conduct when molten or dissolved",
-      ["Low melting points, soft, never conduct in any state", "Gases at room temperature, conduct as solids", "High melting points, malleable like metals"],
+      ["Low melting points, soft crystals, never conduct electricity in any state", "Gases at room temperature, soft, and able to conduct electricity as solids", "High melting points, malleable like metals, conduct electricity as solids"],
       "The strong attraction throughout an ionic lattice gives high melting points and brittleness, and the ions conduct once they can move (molten or in solution). Malleability is a metal property, not an ionic one.", {});
   }
 ]), ["Metal plus nonmetal, think ionic. Then let the conductivity behaviour confirm it."]);
@@ -341,13 +343,13 @@ E("sci-u2-conservation-why", 2, ["SC10.8.2"], 2, "var", varset([
   function () {
     return mcq("A log burns down to a small pile of ash weighing far less than the log. This does not break the conservation of mass because",
       "most of the log's mass left as carbon dioxide and water vapour in the smoke and gases",
-      ["burning destroys the mass of the wood", "the ash absorbed the missing mass as heat", "conservation of mass does not apply to burning"],
+      ["burning destroys the mass of the wood, turning most of it into heat and light", "the ash absorbed the missing mass as heat, so the mass is stored inside the ash", "conservation of mass does not apply to burning, because burning is not a chemical change"],
       "The ash is only the part that stayed. The gases carried the rest away; weigh the log, the oxygen it consumed, and all the products (ash plus gases) and the totals match.", {});
   },
   function () {
     return mcq("Which change would let a student prove conservation of mass for a fizzing antacid tablet reaction?",
       "Run the reaction in a sealed container (or trap the gas in a balloon) so no product escapes before weighing",
-      ["Use a bigger beaker", "Weigh the products while they are still fizzing", "Repeat the reaction three times and average"],
+      ["Use a much bigger beaker so the fizzing gas has far more room to spread out before weighing", "Weigh the products while they are still fizzing, before any of the gas can leave the beaker", "Repeat the reaction three times and average the three results to cancel out the lost gas"],
       "The apparent mass loss is gas escaping. Sealing the system keeps every product in the weighing, and then the totals match. Bigger glassware and averaging do nothing about the escaping gas.", {});
   }
 ]), ["Atoms are neither created nor destroyed in chemistry. If the scale disagrees, hunt for what crossed the container's boundary."]);
@@ -377,19 +379,19 @@ E("sci-u2-reaction-evidence", 2, ["SC10.8.3"], 1, "var", varset([
   function () {
     return mcq("Which observation is the strongest evidence that a chemical reaction (not just a physical change) has occurred?",
       "A new substance with different properties has formed, such as a precipitate appearing when two clear solutions mix",
-      ["The mixture became warmer while it was stirred over a flame", "A solid dissolved and the solution changed colour slightly", "Bubbles appeared while a liquid boiled"],
+      ["The mixture became warmer while it was stirred over a flame for several minutes beforehand", "A solid dissolved in a liquid and the solution changed colour slightly as it spread evenly through it", "Bubbles appeared throughout a liquid while it was boiling on a stove at a steady temperature"],
       "A chemical reaction makes new substances. A precipitate from two clear solutions is a new solid that was not there before. Dissolving, boiling and warming over a flame can all happen with no new substance at all.", {});
   },
   function () {
     return mcq("Fizzing is observed in four situations. In which one is the gas certainly from a chemical reaction?",
       "An antacid tablet in water producing gas while the tablet's material is used up and the water's acidity falls",
-      ["Soda water releasing bubbles when the bottle is opened", "Water boiling on a stove", "Dry ice producing fog in warm air"],
+      ["Soda water releasing bubbles of dissolved gas when the bottle is opened and the pressure drops", "Water boiling on a stove, with bubbles of water vapour forming throughout the hot liquid", "Dry ice producing a white fog in warm air as it turns directly from a solid into a gas"],
       "The antacid's fizz comes from a reaction between the tablet and the acid, consuming reactants and changing the solution. The others are physical: released dissolved gas, a change of state, and condensing vapour.", {});
   },
   function () {
     return mcq("Which list contains only reliable signs that a chemical change may have occurred?",
       "Formation of a precipitate, production of a gas in a mixture at room temperature, a permanent colour change, an unexpected temperature change",
-      ["Melting, dissolving, breaking, evaporating", "A change of shape, a change of state, a change of size", "Boiling, condensing, freezing, dissolving"],
+      ["Melting, dissolving, breaking, evaporating, stretching, crushing, bending and mixing substances together without reacting", "A change of shape, a change of state, a change of size, a change of position and a change of temperature from heating", "Boiling, condensing, freezing, dissolving, filtering, separating mixtures and cutting materials into smaller pieces"],
       "Each item in the correct list points to a new substance forming. The other lists are physical changes, where the substance itself stays the same.", {});
   }
 ]), ["The test is always the same: is a NEW substance there at the end?"]);
@@ -536,13 +538,13 @@ E("sci-u2-ph-compare", 2, ["SC10.8.4"], 2, "var", varset([
   function () {
     return mcq("Solution A has pH 3 and Solution B has pH 5. How do their acidities compare?",
       "A is 100 times as acidic as B: each pH step is a factor of 10, and the solutions differ by 2 steps",
-      ["A is twice as acidic as B", "A is 2 times as acidic as B because 5 - 3 = 2", "B is 100 times as acidic as A"],
+      ["A is twice as acidic as B, because its pH reading sits two places lower on the scale", "A is 2 times as acidic as B, because the pH values differ by 2 and each unit counts once", "B is 100 times as acidic as A: each pH step is a factor of 10, read in the other direction"],
       "The pH scale is logarithmic: one unit means ten times the hydrogen ion concentration. Two units of difference means 10 x 10 = 100 times. Subtracting the pH values directly is the classic error.", {});
   },
   function () {
     return mcq("Adding water to dilute an acid with pH 2 will move its pH",
       "upward toward 7, because the hydrogen ions are spread through more water (lower concentration)",
-      ["downward toward 0", "past 7 into the basic range", "nowhere: dilution does not change pH"],
+      ["downward toward 0, because adding water makes the acid more concentrated overall", "past 7 into the basic range, because enough added water turns any acid into a base", "nowhere: dilution does not change pH, because only the volume and not the acidity changes"],
       "Dilution lowers the ion concentration, so the pH of an acid rises toward 7, but dilution alone can never carry it past neutral into basic territory.", {});
   },
   function () {
@@ -557,7 +559,7 @@ E("sci-u2-indicators", 2, ["SC10.8.4"], 2, "var", varset([
   function () {
     return mcq("Phenolphthalein is colourless in an unknown solution and turns pink when a few drops of sodium hydroxide solution are added. The colour change shows that",
       "the mixture has become basic: phenolphthalein is colourless in acids and neutral solutions and pink in bases",
-      ["the mixture has become acidic", "the unknown was a strong acid all along", "phenolphthalein reacts with water to make pink dye"],
+      ["the mixture has become acidic: phenolphthalein turns pink only when a solution becomes acidic", "the unknown was a strong acid all along, and the pink colour proves the acid was present", "phenolphthalein reacts with water to make a pink dye, whether the solution is acidic or basic"],
       "Phenolphthalein's job is to signal the acid-base state: colourless at and below neutral, pink in base. The pink appears because the added base carried the mixture past neutral.", {});
   },
   function () {
@@ -569,7 +571,7 @@ E("sci-u2-indicators", 2, ["SC10.8.4"], 2, "var", varset([
   function () {
     return mcq("Red cabbage juice turns red-pink in vinegar, purple in tap water and green in a baking soda solution. Cabbage juice is useful here because it is",
       "a natural indicator: a substance whose colour depends on whether the solution is acidic, neutral or basic",
-      ["an acid that reacts with all three solutions", "a base that neutralizes the other solutions", "a salt that precipitates in vinegar"],
+      ["an acid that reacts with all three solutions and is used up while changing their colours", "a base that neutralizes the other solutions, raising the pH of each one toward neutral", "a salt that precipitates in vinegar, settles in tap water and dissolves in baking soda"],
       "An indicator reports the solution's character through its own colour change without taking part as a reactant in any important way. Plant pigments like cabbage juice do this across a range of colours.", {});
   }
 ]), ["An indicator is a reporter, not a player: its colour tells you which side of neutral the solution is on."]);
@@ -643,25 +645,25 @@ E("sci-u2-neut-apps", 2, ["SC10.8.5"], 2, "var", varset([
   function () {
     return mcq("Antacid tablets contain bases such as magnesium hydroxide. They relieve heartburn by",
       "neutralizing some of the excess hydrochloric acid in the stomach, raising its pH toward a comfortable level",
-      ["coating the stomach so acid cannot touch it", "stopping the stomach from producing acid permanently", "diluting the acid with the water in the tablet"],
+      ["coating the stomach lining with a protective layer so the acid cannot touch it at all", "stopping the stomach from producing any more acid, permanently shutting down acid production", "diluting the acid with the small amount of water that is taken along with the antacid tablet"],
       "Heartburn is excess stomach acid reaching the esophagus. The antacid base reacts with the acid (neutralization), consuming hydrogen ions and lifting the pH. It treats the excess, not the acid production itself.", {});
   },
   function () {
     return mcq("Farmers spread crushed limestone (calcium carbonate) on fields with acidic soil. The limestone helps because it",
       "reacts with and neutralizes some of the soil's acidity, moving the pH toward neutral where crops grow best",
-      ["adds acid to balance the soil", "kills all organisms in the soil", "changes the soil's colour so it absorbs more sunlight"],
+      ["adds extra acid to the soil, balancing the soil by matching its low pH exactly in every part of the field", "kills all of the organisms living in the soil, removing the original source of the acidity there", "changes the colour of the soil so the darker surface absorbs more sunlight and warms up"],
       "Limestone is a base in this context (a carbonate that consumes hydrogen ions). Liming is an industrial-scale neutralization, the same chemistry as the antacid, applied to a field.", {});
   },
   function () {
     return mcq("A factory must treat acidic wastewater before releasing it into a river. The correct treatment is to",
       "add a base in controlled amounts until the wastewater is near neutral (pH around 7)",
-      ["add more acid so the river cannot change it further", "heat the wastewater until the acid evaporates", "release it at night when fewer organisms are active"],
+      ["add more acid so the river water cannot change the wastewater any further", "heat the wastewater until all of the acid in it has evaporated into the air", "release it at night, when fewer organisms in the river are active and awake"],
       "Neutralization is the only option that removes the acidity itself: base plus acid gives a salt plus water. Dilution and timing do not change the total acid load the river receives.", {});
   },
   function () {
     return mcq("Bee stings inject a mild acid, and a traditional remedy applies baking soda paste. Wasp stings are alkaline, and vinegar is applied. The logic in both cases is",
       "neutralization: apply the opposite character (a mild base for the acid sting, a mild acid for the alkaline sting)",
-      ["the paste smothers the sting so air cannot reach it", "both remedies work by cooling the skin", "the remedies dissolve the sting under the skin"],
+      ["the paste smothers the sting so that air cannot reach it, and the sting then fades on its own", "both remedies work by cooling the skin around the sting until the injected chemical breaks down", "the remedies dissolve the sting structure under the skin so the body can absorb it harmlessly"],
       "Acid sting plus mild base, alkaline sting plus mild acid: each remedy is a small neutralization chosen to oppose the sting's chemistry.", {});
   }
 ]), ["Every application is the same reaction in different clothes: acid plus base, chosen to oppose the problem's character."]);
@@ -670,19 +672,19 @@ E("sci-u2-neut-reason", 2, ["SC10.8.5"], 3, "var", varset([
   function () {
     return mcq("Acid rain (pH about 4.5) falls on a limestone lake bed and the lake's pH stays near 6.5, while a nearby granite-bed lake falls to pH 5.0. The limestone lake is protected because",
       "the carbonate in the limestone neutralizes incoming acid, consuming hydrogen ions before they can lower the lake's pH much",
-      ["limestone reflects the rain back into the clouds", "granite produces extra acid that adds to the rain", "the limestone lake is deeper, and depth alone sets pH"],
+      ["limestone reflects the acid rain back into the clouds before it can mix into the lake water at all", "granite produces extra acid of its own that adds to the rain falling on the granite-bed lake nearby", "the limestone lake is deeper, and depth alone sets the pH of a lake regardless of the bedrock beneath it"],
       "This is buffering by neutralization: CaCO3 reacts with the acid (producing a calcium salt, water and carbon dioxide), spending the acid on the rock instead of on the lake. Granite has no such chemistry to offer.", {});
   },
   function () {
     return mcq("A student neutralizes 25 mL of an acid with a base and reports the products are 'just water'. The report is wrong because",
       "a salt is also formed and remains dissolved in the water; evaporating the water would leave it behind",
-      ["neutralization produces no water at all", "the acid disappears completely from the universe", "the base is still present unchanged at the end"],
+      ["neutralization produces no water at all, and the liquid left is the original solvent only", "the acid disappears completely from the universe once the base has been added to it", "the base is still present unchanged at the end, dissolved alongside the product water"],
       "Acid plus base gives salt plus water, always both. The salt is invisible only because it is dissolved; evaporation reveals it. Matter is conserved, so the acid's anion and the base's cation must be somewhere: they are the salt.", {});
   },
   function () {
     return mcq("Equal volumes of two acids are tested: Acid X at pH 1 and Acid Y at pH 3. Equal volumes of the same base are added to each. Which result is expected?",
       "Acid X needs roughly 100 times as much base to neutralize, so the added base will neutralize Y but leave X still strongly acidic",
-      ["Both are neutralized, because equal volumes of base neutralize equal volumes of any acid", "Acid Y needs more base because weaker acids resist neutralization", "Neither can be predicted from pH at all"],
+      ["Both are neutralized, because equal volumes of base always neutralize equal volumes of any acid, whatever its pH", "Acid Y needs more base because weaker acids resist neutralization and hold on to their hydrogen ions longer", "Neither result can be predicted from pH at all, because pH says nothing about how much acid is present"],
       "pH 1 versus pH 3 is a hundredfold difference in hydrogen ion concentration (two logarithmic steps). The base supply that handles Y is nowhere near enough for X. Equal volumes do not mean equal amounts of acid.", {});
   }
 ]), ["Neutralization is quantitative: count the hydrogen ions and the hydroxides, and remember the salt in the beaker."]);
@@ -693,19 +695,19 @@ E("sci-u2-rates-factors", 2, ["SC10.8.6"], 1, "var", varset([
   function () {
     return mcq("Which change would make a reaction between a solid and a liquid proceed FASTER?",
       "Crush the solid into a powder, increasing its surface area",
-      ["Use one large lump of the solid", "Cool the mixture in ice", "Dilute the liquid with extra water"],
+      ["Use one large lump of the solid with a smooth surface", "Cool the mixture in ice to slow the particles down", "Dilute the liquid with extra water before mixing it"],
       "Powder exposes far more surface for collisions per second. A lump hides most of its particles inside, cooling slows particles down, and diluting spreads the liquid's particles thinner: all three slow the reaction.", {});
   },
   function () {
     return mcq("The five factors that change reaction rate studied in this course are",
       "temperature, surface area, concentration, catalyst and the nature of the reactants (including light for some reactions)",
-      ["mass, volume, colour, density and pressure only", "the size of the container and the brand of chemicals", "stirring speed alone"],
+      ["mass, volume, colour, density and pressure only, along with the shape and size of the container used", "the size of the container, the brand of chemicals, the mass of solid used and the volume of liquid", "stirring speed alone, together with the volume of the container and the mass of the solid used"],
       "Rate is controlled by anything that changes how often and how effectively particles collide: hotter (faster particles), more surface, more concentrated, a catalyst's lower-energy pathway, and the reactants' own nature.", {});
   },
   function () {
     return mcq("Milk sours faster on a warm counter than in a refrigerator. The best explanation is",
       "higher temperature: the particles move faster, collide more often and collide with more energy, so the souring reactions run faster",
-      ["the refrigerator's darkness stops all chemistry", "cold milk has fewer bacteria because cold kills instantly at 4 °C", "warm air pushes the milk particles apart"],
+      ["the darkness inside the refrigerator stops all chemistry, so no souring reactions can take place in the cold and dark", "cold milk has fewer bacteria because the cold kills the bacteria instantly at 4 °C, leaving the milk sterile", "warm air pushes the milk particles farther apart, and the extra space lets the souring reactions run faster"],
       "Temperature is the rate factor at work. Refrigeration does not stop reactions or sterilize the milk; it slows particle motion enough that the same reactions take much longer.", {});
   }
 ]), ["Rate rises with anything that makes collisions more frequent or more effective."]);
@@ -714,19 +716,19 @@ E("sci-u2-collision", 2, ["SC10.8.6"], 2, "var", varset([
   function () {
     return mcq("According to collision theory, a reaction happens when particles",
       "collide with enough energy and the right orientation to break and rearrange bonds",
-      ["touch each other gently at any speed", "collide any number of times, regardless of energy", "are heated until they melt"],
+      ["touch each other gently at any speed, provided they stay in contact long enough", "collide any number of times, regardless of their energy or their orientation", "are heated until they melt, and the reaction happens as the liquid forms"],
       "Most collisions do nothing: the particles bounce off unchanged. Only collisions with energy at or above the activation energy, and a workable orientation, rearrange bonds into products.", {});
   },
   function () {
     return mcq("Raising the concentration of a reactant speeds a reaction because",
       "with more particles in the same volume, collisions happen more frequently",
-      ["each particle gains extra energy from its neighbours", "the activation energy of the reaction drops", "the particles become smaller"],
+      ["each particle gains extra energy from its neighbours as the mixture gets crowded", "the activation energy of the reaction drops as more reactant is added", "the particles become smaller, so they can move and collide much more easily"],
       "Concentration works through collision frequency alone: same energy per particle, same activation energy, but more encounters per second means more successful reactions per second.", {});
   },
   function () {
     return mcq("A catalyst speeds up a reaction by",
       "providing an alternative pathway with a lower activation energy, and it is not used up in the reaction",
-      ["being consumed and turning into extra product", "raising the temperature of the mixture automatically", "increasing the concentration of the reactants permanently"],
+      ["being consumed as it turns into extra product, so more catalyst always means more product", "raising the temperature of the whole mixture automatically as soon as it is added to it", "increasing the concentration of the reactants permanently, packing more particles into the volume"],
       "The catalyst opens an easier route over a lower energy barrier, so a bigger fraction of collisions succeed. It emerges unchanged at the end, which is why a small amount can process a lot of reactant.", {});
   }
 ]), ["Collisions are the currency: rate factors all work by changing collision frequency, collision energy, or the energy a collision needs."]);
@@ -736,22 +738,22 @@ E("sci-u2-rate-scenarios", 2, ["SC10.8.6"], 2, "gen", function () {
     { setup: "Two identical antacid tablets are dropped into equal volumes of water. One tablet is whole; the other is crushed to powder first. Both fizz until they disappear.",
       ask: "Which tablet finishes first, and why?",
       key: "The crushed tablet: powdering hugely increases surface area, so far more particles are exposed to collisions each second",
-      dis: ["The whole tablet: its particles are packed tighter, which speeds reactions", "They finish together: the masses are equal, so the rates must be equal", "The whole tablet: powder particles dissolve into the water and are lost"],
+      dis: ["The whole tablet: its particles are packed tighter together, and tighter packing is what speeds reactions up", "They finish together: the masses of the two tablets are equal, so their reaction rates must also be equal", "The whole tablet: the powder particles dissolve into the water and are lost before they can react at all"],
       why: "Equal masses can react at very different rates. Surface area decides how many solid particles are available at the surface for collisions, and the powder wins by a wide margin despite identical mass and temperature." },
     { setup: "Zinc reacts with hydrochloric acid, producing hydrogen gas. Trial 1 uses acid labelled 1.0 mol/L; Trial 2 uses acid labelled 3.0 mol/L, with everything else identical.",
       ask: "Which trial bubbles faster at the start?",
       key: "Trial 2: the more concentrated acid packs three times as many acid particles into each volume, so collisions with the zinc are far more frequent",
-      dis: ["Trial 1: dilute acid soaks into the metal better", "Both start equally: the zinc amount is the same in each", "Trial 1: concentrated acid particles crowd each other and cannot move"],
+      dis: ["Trial 1: the dilute acid soaks into the metal better, reaching fresh zinc surfaces deep inside the sample more quickly", "Both start equally: the zinc amount is the same in each trial, and the zinc alone decides the starting rate in both", "Trial 1: concentrated acid particles crowd each other and cannot move, so the dilute acid reaches the zinc first"],
       why: "Concentration is collision frequency. Triple the particles per litre means roughly triple the collision rate at the metal surface, so hydrogen forms faster from the first seconds." },
     { setup: "Hydrogen peroxide decomposes slowly in a dark bottle, releasing oxygen. The rate is much slower in the dark than on a sunny windowsill, even at the same temperature.",
       ask: "What factor explains the difference?",
       key: "Light: for this reaction, light energy helps particles clear the activation energy, so decomposition speeds up in sunlight",
-      dis: ["Concentration: sunlight concentrates the peroxide", "A catalyst: the glass bottle catalyzes the reaction in light", "Surface area: the windowsill exposes more of the bottle"],
+      dis: ["Concentration: sunlight shining on the bottle concentrates the peroxide near the surface of the liquid", "A catalyst: the glass of the bottle acts as a catalyst for the reaction whenever light shines on it", "Surface area: the sunny windowsill exposes more of the bottle and its contents to the open air above it"],
       why: "Some reactions are light-sensitive: photons supply activation energy. That is why peroxide is sold in dark bottles. Temperature, concentration and amount are all unchanged between the two spots." },
     { setup: "A glow stick glows brightly in warm water and dimly in ice water.",
       ask: "What does this show about temperature and reaction rate?",
       key: "The reaction inside runs faster when warm: brighter glow means product (and light) forming faster, matching collision theory's prediction for hotter, faster particles",
-      dis: ["Warm water melts the chemicals so they can finally mix", "Cold water absorbs the light before it can escape", "The glow chemicals evaporate in warm water and glow in the air"],
+      dis: ["Warm water melts the glow chemicals so they can finally mix, and the unmelted chemicals in ice water cannot react at all during the test", "Cold water absorbs the light before it can escape the stick, so the same reaction only appears dimmer while it sits in the ice water bath", "The glow chemicals evaporate in warm water and glow in the air above the stick, while in ice water they stay trapped inside the plastic"],
       why: "Brightness tracks the rate of the light-producing reaction. Warmth speeds the particles, raising both collision frequency and collision energy; ice water slows both, and the glow fades accordingly." }
   ];
   var it = s6pick(sc);
@@ -814,12 +816,12 @@ E("sci-u2-catalyst-curve", 2, ["SC10.8.6"], 3, "gen", function () {
   if (mode === "barrier") {
     q = mcq("The diagram shows the energy pathway of a reaction with and without a catalyst. The catalyst works because the dashed pathway",
       "has a lower hump (lower activation energy), so more collisions have enough energy to succeed",
-      ["starts from higher-energy reactants", "ends at lower-energy products", "removes the hump completely so no energy is needed"],
+      ["starts from higher-energy reactants than the uncatalyzed pathway starts from", "ends at lower-energy products than the products of the uncatalyzed pathway", "removes the hump completely, so no collision energy is needed for the reaction at all"],
       "A catalyst changes the route, not the endpoints: reactants and products sit at the same energies on both curves. Only the barrier between them drops, letting a larger fraction of collisions succeed.", { mode: mode });
   } else {
     q = mcq("On the energy diagram, the reactants and products sit at exactly the same heights on both the solid and dashed curves. This shows that a catalyst",
       "does not change the overall energy change of the reaction, only how fast equilibrium amounts are reached",
-      ["makes the reaction release more energy overall", "turns an endothermic reaction into an exothermic one", "stores the saved energy inside itself permanently"],
+      ["makes the reaction release more energy overall than it would release without a catalyst", "turns an endothermic reaction into an exothermic one by supplying the missing energy itself", "stores the saved energy inside itself permanently, holding it for the rest of the reaction"],
       "Endpoints identical means the energy difference between reactants and products is identical. The catalyst is a shortcut over the hill, not a change of destination, and it is regenerated unchanged.", { mode: mode });
   }
   q.figure = s;
@@ -836,7 +838,7 @@ E("sci-u2-rates-experiment", 2, ["SC10.8.6"], 3, "var", varset([
   function () {
     return mcq("Enzymes in the human body are catalysts. A high fever is dangerous partly because",
       "at temperatures well above 37 °C, enzyme molecules lose their shape and stop catalyzing, so essential reactions slow drastically",
-      ["enzymes evaporate from the blood", "all reactions stop instantly at 40 °C", "the body runs out of activation energy"],
+      ["enzymes evaporate from the blood as the temperature rises, leaving too few behind to run the reactions", "all chemical reactions in the body stop instantly at 40 °C, including the ones that release energy for cells", "the body runs out of activation energy, so no reaction can clear its energy barrier at all any more"],
       "Biological catalysts are proteins folded into precise shapes; the pathway they offer depends on that shape. Excess heat unfolds (denatures) them, removing the low-energy route for reactions the body cannot do without. Rate and catalyst shape are the same story told twice.", {});
   }
 ]), ["Design questions are variable questions: find the pair of trials that differ in exactly one factor."]);
@@ -847,25 +849,25 @@ E("sci-u2-whmis-symbols", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("A container in the lab carries a WHMIS pictogram showing a flame. The hazard is that the contents are",
       "flammable: they can catch fire easily and must be kept away from heat and sparks",
-      ["corrosive to skin and metal", "a health hazard affecting the lungs over time", "compressed gas under pressure"],
+      ["corrosive to skin and metal: it eats into materials and burns skin on contact", "a health hazard affecting the lungs over time with repeated exposure to it", "compressed gas under pressure: it is stored in a cylinder that may burst if heated"],
       "The flame pictogram means flammable (gases, liquids or solids, and materials that can ignite in air). Each WHMIS pictogram is a picture of its hazard: flame for fire, test tubes dripping for corrosion, a cylinder for compressed gas.", {});
   },
   function () {
     return mcq("The WHMIS pictogram showing a picture of a skull and crossbones means",
       "acute toxicity: the substance can cause death or serious harm from a small exposure",
-      ["the substance is explosive", "the substance is harmful only to fish and aquatic life", "the substance is a mild skin irritant only"],
+      ["the substance is explosive: it can detonate or burst violently when it is heated", "the substance is harmful only to fish and aquatic life, and is safe for people to handle", "the substance is a mild skin irritant only, causing redness that fades within a day"],
       "Skull and crossbones is the most serious immediate-health warning in the system: fatal or toxic if swallowed, inhaled or absorbed through skin. It demands the strictest handling in the room.", {});
   },
   function () {
     return mcq("A pictogram shows liquid dripping from test tubes onto a hand and a surface, eating into both. This warns that the substance is",
       "corrosive: it can burn skin and eyes and damage materials on contact",
-      ["flammable", "an oxidizer that feeds fires", "radioactive"],
+      ["flammable: it catches fire easily near heat, sparks or open flames", "an oxidizer that feeds fires, releasing oxygen as it burns", "radioactive: it gives off invisible radiation that damages body cells"],
       "The corrosion pictogram shows the damage itself: drips eating into skin and metal. Corrosives like strong acids and bases carry it, which ties straight back to the acids and bases work in this unit.", {});
   },
   function () {
     return mcq("The exclamation mark pictogram on a lab container indicates",
       "a less severe health hazard, such as skin or eye irritation or skin sensitization",
-      ["an explosive material", "a gas under pressure", "a substance fatal in small doses"],
+      ["an explosive material that can detonate if it is dropped, heated or struck", "a gas under pressure, stored in a heavy cylinder that must never be heated", "a substance fatal in small doses if it is swallowed, inhaled or absorbed"],
       "The exclamation mark flags the lower-severity health hazards: irritation, allergic skin reaction, drowsiness. It still means read the label and handle with care, but it is a step below the skull and crossbones.", {});
   }
 ]), ["Read the picture literally: each WHMIS pictogram draws its own hazard."]);
@@ -874,13 +876,13 @@ E("sci-u2-whmis-safety", 2, ["SC10.8.1"], 1, "var", varset([
   function () {
     return mcq("Before using any chemical in the lab, the first safety step is to",
       "read its label (and SDS when needed) for the WHMIS pictograms, hazard statements and precautions",
-      ["smell it cautiously to identify it", "mix a small amount with water to see what happens", "check its colour against a wall chart"],
+      ["smell it cautiously to identify it, comparing its odour with odours you already know", "mix a small amount with water to see what happens before you use the full amount", "check its colour against a wall chart of common chemicals posted beside the bench"],
       "The label is the contract: pictograms, signal word, hazard and precautionary statements tell you the risks and the handling before you open the container. Never identify a chemical by smell or taste, and never test-react an unknown.", {});
   },
   function () {
     return mcq("A student gets a splash of a corrosive liquid on their skin. The correct immediate action is to",
       "flush the skin with plenty of water at the safety station right away and tell the teacher",
-      ["wipe it off with a paper towel and continue working", "apply a neutralizing chemical from the shelf to the skin", "wait until the end of class to mention it"],
+      ["wipe it off carefully with a paper towel and then continue working as if nothing happened", "apply a neutralizing chemical taken from the shelf directly onto the affected skin", "wait until the end of class to mention it to anyone, so the lesson is not interrupted"],
       "Water, immediately and in quantity, dilutes and carries the corrosive away; seconds matter with burns. Neutralizers are for benches and spills under teacher direction, never for skin, and delay makes chemical burns worse.", {});
   }
 ]), ["Label first, water first: the two reflexes that prevent most lab injuries."]);
@@ -1002,7 +1004,7 @@ E("sci-u2-identify", 2, ["SC10.8.1"], 2, "var", varset([
   function () {
     return mcq("An unknown white solid does not conduct electricity as a solid OR when dissolved in water, and it melts at a low temperature. The compound is most likely",
       "a molecular compound (such as sugar): its neutral molecules carry no charge in any state",
-      ["an ionic compound: its ions are locked in place until it melts", "a metal: its electrons are shared in a lattice", "an acid: it must produce hydrogen ions in water"],
+      ["an ionic compound: its ions are locked in place in the solid and stay locked when dissolved", "a metal: its electrons are shared in a lattice that carries charge only when it is solid", "an acid: it must produce hydrogen ions in water, which then stay bound and cannot move"],
       "No conduction in either state rules out ions entirely: ionic compounds conduct once their ions are free (molten or dissolved). Charge-free molecules explain both observations and the low melting point fits weak intermolecular forces.", {});
   },
   function () {
@@ -1014,7 +1016,7 @@ E("sci-u2-identify", 2, ["SC10.8.1"], 2, "var", varset([
   function () {
     return mcq("Two unlabelled bottles hold white powders: sodium chloride and glucose (a molecular compound). The safest distinguishing test is to",
       "dissolve each in distilled water and test the solutions with a conductivity tester: the salt solution conducts, the glucose solution does not",
-      ["taste a tiny amount of each", "heat both until they decompose and compare the smells", "add acid to both and watch for fizzing"],
+      ["taste a tiny amount of each powder in turn and compare the flavours, since salt and sugar taste very different indeed", "heat both powders strongly until they decompose and compare the smells given off as each one breaks down completely", "add acid to both powders and watch closely for fizzing, since only one of them will produce any gas at all"],
       "Ionic versus molecular shows up cleanly in solution conductivity: NaCl releases ions, glucose stays as neutral molecules. Tasting unknown chemicals is never an option, and both powders survive gentle tests without telling you anything as clear.", {});
   }
 ]), ["Let the properties vote: conduction sorts ionic from molecular, litmus sorts acid from base from neutral."]);
@@ -1025,13 +1027,13 @@ E("sci-u2-symbolic-read", 2, ["SC10.8.2"], 2, "var", varset([
   function () {
     return mcq("The equation 2 H2 + O2 → 2 H2O is read aloud correctly as",
       "'Two molecules of hydrogen react with one molecule of oxygen to produce two molecules of water'",
-      ["'Two atoms of hydrogen react with oxygen to produce water'", "'Hydrogen and oxygen produce hydrogen peroxide'", "'Two grams of hydrogen react with one gram of oxygen'"],
+      ["'Two atoms of hydrogen react with one atom of oxygen to produce two atoms of water'", "'Hydrogen and oxygen react together in equal amounts to produce hydrogen peroxide'", "'Two grams of hydrogen react with one gram of oxygen to produce two grams of water'"],
       "Coefficients count molecules (or moles) of each substance, not atoms and not grams: the 2 in front of H2 doubles the whole H2 molecule. Subscripts belong to the formulas and are never read as quantities reacting.", {});
   },
   function () {
     return mcq("In the equation CH4 + 2 O2 → CO2 + 2 H2O, the coefficient 2 in front of O2 means",
       "two molecules of oxygen take part for every one molecule of methane burned",
-      ["each oxygen molecule contains two atoms", "two grams of oxygen are needed", "the oxygen is twice as reactive as the methane"],
+      ["each methane molecule needs two oxygen atoms, taken from a single oxygen molecule", "two grams of oxygen are needed for every gram of methane that is burned", "the oxygen is twice as reactive as the methane, so it reacts twice as fast"],
       "Coefficients are the recipe ratio between substances. The subscript in O2 (the 2 inside the formula) is the one that says two atoms per molecule; the coefficient outside multiplies whole molecules.", {});
   }
 ]), ["Coefficients count whole molecules in the recipe; subscripts live inside a formula and describe its makeup."]);
@@ -1040,13 +1042,13 @@ E("sci-u2-states", 2, ["SC10.8.2"], 1, "var", varset([
   function () {
     return mcq("In the equation AgNO3(aq) + NaCl(aq) → AgCl(s) + NaNO3(aq), the state symbols tell you that",
       "the silver chloride forms as a solid precipitate, while the other substances are dissolved in water (aqueous)",
-      ["all four substances are gases", "the (s) substance is a solution", "the (aq) substances are pure liquids"],
+      ["all four substances are gases, and the equation describes a reaction between gases in air", "the (s) substance is a solution, while the other substances are all undissolved solids", "the (aq) substances are pure liquids, measured out without any water acting as a solvent"],
       "(aq) means aqueous: dissolved in water. (s) is solid, and a solid appearing from two clear solutions is a precipitate, the visual evidence of this double replacement reaction.", {});
   },
   function () {
     return mcq("Which state symbol set is written correctly?",
       "H2O(l) for liquid water, CO2(g) for carbon dioxide gas, NaCl(s) for solid salt, NaCl(aq) for salt solution",
-      ["H2O(g) for the water in a beaker", "CO2(s) for the gas in a soda", "NaCl(aq) for dry table salt in a shaker"],
+      ["H2O(g) for liquid water, CO2(g) for carbon dioxide gas, NaCl(s) for solid salt, NaCl(aq) for salt solution", "H2O(l) for liquid water, CO2(s) for carbon dioxide gas, NaCl(s) for solid salt, NaCl(aq) for salt solution", "H2O(l) for liquid water, CO2(g) for carbon dioxide gas, NaCl(aq) for solid salt, NaCl(s) for salt solution"],
       "(s), (l), (g) and (aq) describe the physical state in the reaction as written: beaker water is liquid, soda bubbles are gas, shaker salt is a dry solid, and (aq) requires actual water as the solvent.", {});
   }
 ]), ["State symbols: (s) solid, (l) liquid, (g) gas, (aq) dissolved in water."]);
@@ -1055,13 +1057,13 @@ E("sci-u2-acid-rain", 2, ["SC10.8.5"], 3, "var", varset([
   function () {
     return mcq("Acid rain forms when sulfur dioxide and nitrogen oxides from burning fossil fuels react with water in the atmosphere to make sulfuric and nitric acids. In Newfoundland and Labrador the damage is worse than the emissions alone would suggest because",
       "much of the province's bedrock is granite with little carbonate, so soils and lakes have almost no natural base to neutralize the incoming acid",
-      ["the province receives more rain than anywhere else on Earth", "the acids become stronger in cold climates", "local lakes contain no organisms to absorb the acid"],
+      ["the province receives more rain than anywhere else on Earth, so its lakes collect far more acid than lakes in other regions", "the acids in the rain become stronger in cold climates, gaining strength as the rain falls through cold northern air", "local lakes contain no organisms able to absorb the acid, so every bit of acid stays dissolved in the lake water there"],
       "Neutralization capacity (buffering) is geology: limestone country spends the acid on rock, granite country cannot. The same deposition that a limestone lake shrugs off acidifies a granite-bed lake, which is why monitoring here watches lake pH closely.", {});
   },
   function () {
     return mcq("A lake's pH has fallen from 6.5 to 5.0 over twenty years of acid deposition. The hydrogen ion concentration has",
       "increased by a factor of about 30 (1.5 pH units of change, at tenfold per unit)",
-      ["increased by a factor of 1.5", "decreased by a factor of 30", "stayed the same: only the reading changed"],
+      ["increased by a factor of 1.5, matching the size of the pH change itself", "decreased by a factor of about 30, because a falling pH means falling acidity", "stayed the same: only the pH reading changed, not the chemistry of the water"],
       "Each pH unit is a tenfold step: 1 unit is x10, and the extra half unit multiplies by about 3 more, giving roughly x30. Small-looking pH changes are large chemistry changes, which is why a drop of 1.5 units transforms a lake's biology.", {});
   }
 ]), ["Acid rain is a neutralization problem written across a whole landscape: the damage depends on what base the land can offer."]);
@@ -1080,3 +1082,396 @@ E("sci-u2-ion-count", 2, ["SC10.8.1"], 2, "gen", function () {
     String(it.n), s6numDist(it.n, [it.n + 1, it.n + 2, Math.max(1, it.n - 1)], ""),
     it.why + " Bracket subscripts multiply everything inside the brackets; plain subscripts multiply only their own element or ion.", { f: it.f, n: it.n });
 }, ["Read brackets as packages: the outside subscript counts whole packages."]);
+
+/* ---------- STSE tranche (Nov 19, 2026): SC10.7.1, 7.2, 7.3 ----------
+   Registered so the unit's blueprint tests (Chemical Reactions Tests
+   1 and 2 of the test-shaped practice map) carry their full indicator
+   coverage. Content follows the guide's Focus for Learning for each
+   outcome: everyday and community chemistry for 7.1, IUPAC and
+   trivial names for 7.2, and neutralization technologies (antacids,
+   liming, pH control) for 7.3. The remaining STSE codes stay a later
+   tranche. */
+
+/* ---------- SC10.7.1 Science and technology in daily life and community ---------- */
+
+E("sci-u2-stse-everyday-chemistry", 2, ["SC10.7.1"], 1, "var", varset([
+  function () {
+    return mcq("Which morning routine relies most directly on chemistry?",
+      "Brushing your teeth with toothpaste, whose fluoride and mild abrasives are formulated chemicals",
+      ["Brushing your hair with a brush, whose bristles are arranged to smooth and untangle each strand", "Tying your shoes with laces, whose knots hold by friction between the fibres of the two loops", "Checking the time on a clock, whose hands are driven around the dial by a small electric motor"],
+      "Toothpaste is applied chemistry: fluoride compounds for the enamel and abrasives chosen for cleaning are in it because of what they do chemically. The other routines are mechanical or electrical. <b>Brushing your teeth with toothpaste, whose fluoride and mild abrasives are formulated chemicals</b>.", {});
+  },
+  function () {
+    return mcq("A student lists products used before school: shampoo, soap, toothpaste, and a granola bar. These are examples of science and technology in daily life because they are",
+      "materials developed and manufactured by applying chemical knowledge",
+      ["materials that occur naturally and are used exactly as they are found", "materials whose ingredients are kept secret so no one can study them", "materials that would work exactly the same if their chemistry changed"],
+      "Each product was formulated: ingredients chosen and combined for what they do, from detergents in shampoo to the processed ingredients of the bar. Change the chemistry and the products stop working as intended. <b>materials developed and manufactured by applying chemical knowledge</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is the clearest example of chemistry as an integral part of a student's life?",
+      "The battery in a phone storing and releasing energy through chemical reactions",
+      ["The colour of a phone case matching the colour of a favourite sports team's jersey", "The shape of a phone's screen fitting the shape of the pocket it is carried in daily", "The price of a phone plan depending on the amount of data the student uses monthly"],
+      "A battery is a chemical device: it stores energy in reactants and releases it as electricity through reactions that reverse when it charges. Colours, shapes, and prices involve no chemistry. <b>The battery in a phone storing and releasing energy through chemical reactions</b>.", {});
+  }
+]), ["Look for the option where a chemical reaction or a formulated material does the work."]);
+
+E("sci-u2-stse-community", 2, ["SC10.7.1"], 1, "var", varset([
+  function () {
+    return mcq("Which community service depends most directly on chemistry?",
+      "Treating the town's drinking water to make it safe",
+      ["Painting lines on the town's hockey rink each fall", "Plowing the town's roads after a winter snowstorm", "Planting flowers in the town's parks each spring"],
+      "Water treatment is chemistry at work for a whole town: substances are added and reactions used to remove or kill what makes water unsafe. The other services are valuable but mechanical. <b>Treating the town's drinking water to make it safe</b>.", {});
+  },
+  function () {
+    return mcq("A community collects leftover paint, solvents, and old batteries at a hazardous waste depot. The depot exists because these materials",
+      "contain chemicals that can harm people and the environment if they are dumped or burned",
+      ["contain chemicals that become completely harmless as soon as they are a few years old", "are worth a great deal of money, and the community sells them to collectors each year", "are too heavy for regular garbage trucks, so a special building is needed to store them"],
+      "Household hazardous waste is a chemistry problem: solvents, paints, and battery contents can poison water and soil. The depot routes them to handling that matches their hazards. Age does not make them harmless. <b>contain chemicals that can harm people and the environment if they are dumped or burned</b>.", {});
+  },
+  function () {
+    return mcq("Road salt spread on icy sidewalks in a Newfoundland town is an example of science in the community because",
+      "salt lowers the freezing point of water, so ice melts at temperatures below 0 °C",
+      ["salt raises the freezing point of water, so ice forms at temperatures below 0 °C", "salt heats the ice from within, so the sidewalk warms up several degrees at once", "salt colours the ice dark, so the sun's rays melt it faster than white ice melts"],
+      "Dissolved salt disrupts ice formation, so salty water stays liquid below 0 °C and the ice in contact with it melts. The salt does not heat the ice or work by colour. <b>salt lowers the freezing point of water, so ice melts at temperatures below 0 °C</b>.", {});
+  }
+]), ["Community chemistry is the chemistry a whole town relies on: water, waste, and winter roads."]);
+
+E("sci-u2-stse-product-categories", 2, ["SC10.7.1"], 2, "var", varset([
+  function () {
+    return mcq("The guide for this unit lists cosmetics, batteries, foods, fuels, cleaning products, medicines, and plastics as places chemistry appears in daily life. What do these examples have in common?",
+      "Each is a material or product whose making and behaviour rest on chemical knowledge",
+      ["Each is a material or product that is manufactured without any chemical processes", "Each is a material or product whose ingredients are elements in their pure form", "Each is a material or product that was invented in Canada in the twentieth century"],
+      "The list spans a whole day, but the thread is one: substances designed, made, and used by applying chemistry. None of them is a pure element, and they were not all invented in one country or century. <b>Each is a material or product whose making and behaviour rest on chemical knowledge</b>.", {});
+  },
+  function () {
+    return mcq("A pharmacy's shelves hold pain relievers, antacids, and vitamins. Their presence in daily life illustrates that",
+      "chemical knowledge is used to design substances that act on the body in planned ways",
+      ["chemical knowledge is used to design substances that act on the body in random ways", "medicines work by tradition and habit rather than by any chemical action in the body", "medicines are natural products that reach the shelf with no testing or manufacture"],
+      "A medicine is a designed substance: its molecules were selected for a planned effect on the body's chemistry, then tested and manufactured to a standard. <b>chemical knowledge is used to design substances that act on the body in planned ways</b>.", {});
+  },
+  function () {
+    return mcq("Plastics are named in this unit as chemistry in everyday life because a plastic's properties",
+      "are designed by choosing and joining molecules to get the strength, flexibility, or heat resistance wanted",
+      ["are decided entirely by the colour added at the factory, which determines what the plastic can be used for", "cannot be changed once the plastic is made, which is why all plastics behave in exactly the same way always", "come from the mould it is poured into, since the material itself has no properties until it is shaped"],
+      "Plastics are polymers built molecule by molecule; chain length and structure set the properties, which is why one family of materials can be both a squeeze bottle and a hockey visor. <b>are designed by choosing and joining molecules to get the strength, flexibility, or heat resistance wanted</b>.", {});
+  }
+]), ["The common thread is applied chemical knowledge: substances made and used on purpose."]);
+
+E("sci-u2-stse-without-reaction", 2, ["SC10.7.1"], 2, "var", varset([
+  function () {
+    return mcq("How would daily life change if the combustion of fuels suddenly became impossible?",
+      "Vehicles, furnaces, and stoves that burn fuel would stop working, removing most heating and transport",
+      ["Vehicles, furnaces, and stoves that burn fuel would run more cleanly, removing most air pollution at once", "Only campfires and candles would be affected, since modern engines and furnaces do not burn anything", "Nothing important would change, because combustion is a laboratory reaction with no role in daily life"],
+      "Combustion is the reaction daily life runs on: engines, oil furnaces, and wood stoves all burn fuel. Remove it and heating and transport stop together, which is what 'integral' means. <b>Vehicles, furnaces, and stoves that burn fuel would stop working, removing most heating and transport</b>.", {});
+  },
+  function () {
+    return mcq("Baking a cake uses chemistry in daily life because",
+      "baking soda or powder reacts with acidic ingredients to release the gas that makes the cake rise",
+      ["baking soda or powder reacts with the oven's heat to turn the batter a golden brown colour only", "the heat of the oven melts the batter, and melting is the only change that happens during baking", "the cake rises because the eggs expand as they warm, and no chemical change takes place at all"],
+      "The rise is a reaction: the leavening agent meets acidic ingredients and releases carbon dioxide, and the gas bubbles lift the batter. Melting happens too, but it cannot explain the rise. <b>baking soda or powder reacts with acidic ingredients to release the gas that makes the cake rise</b>.", {});
+  },
+  function () {
+    return mcq("A student says chemistry is 'only in labs.' The strongest counterexample from community life is",
+      "the town water plant, where chemical treatment makes everyone's drinking water safe every day",
+      ["the town water plant, where water is stored in large tanks until it is needed by households", "the school science room, where students wear goggles and follow a written procedure carefully", "the pharmacy downtown, where medicines are kept on shelves behind the counter for customers"],
+      "The water plant runs chemical processes continuously for the whole community; it is chemistry as public infrastructure, not as a school subject. Storage, shelving, and lab procedure do not make the point. <b>the town water plant, where chemical treatment makes everyone's drinking water safe every day</b>.", {});
+  }
+]), ["Pick the example where a chemical process, not just a place or an object, does the work."]);
+
+E("sci-u2-stse-hazard-symbols", 2, ["SC10.7.1"], 2, "var", varset([
+  function () {
+    return mcq("Hazardous Household Product Symbols appear on cleaners and solvents at home so that users",
+      "can recognize dangers such as 'flammable' or 'corrosive' and handle the product safely",
+      ["can recognize the brand of the product quickly when shopping for a replacement bottle", "can tell which products are made in Canada and which are imported from other countries", "can compare the prices of similar products without reading the rest of the label at all"],
+      "The symbols are a safety language in pictures: flame, corrosion, and poison warnings that a user can read at a glance, whatever their reading language. <b>can recognize dangers such as 'flammable' or 'corrosive' and handle the product safely</b>.", {});
+  },
+  function () {
+    return mcq("WHMIS symbols and safety data sheets in workplaces and school labs serve the same purpose as household hazard symbols: they",
+      "communicate a chemical's hazards and safe handling before anyone uses the substance",
+      ["communicate a chemical's price and supplier before anyone orders the substance anew", "guarantee that a chemical can never cause harm once its symbol has been read carefully", "replace the need for goggles, gloves, and ventilation when handling hazardous chemicals"],
+      "WHMIS is the workplace version of the same idea: know the hazard and the handling before the container is opened. Symbols inform precautions; they never replace them or guarantee safety. <b>communicate a chemical's hazards and safe handling before anyone uses the substance</b>.", {});
+  },
+  function () {
+    return mcq("A bottle under a kitchen sink carries a flame symbol in a red border. The symbol tells the user that the contents",
+      "can catch fire easily and must be kept away from heat and open flames",
+      ["can explode without warning and must be returned to the store at once", "are meant for use on a stove and will improve the burning of its gas", "are hot to the touch and should be allowed to cool before being used"],
+      "The flame pictogram means flammable: the contents can ignite easily. It is a handling instruction, keep away from heat and flame, not a claim that the bottle is hot or explosive. <b>can catch fire easily and must be kept away from heat and open flames</b>.", {});
+  }
+]), ["The symbols are a safety language: they warn before a substance is used, not after."]);
+
+E("sci-u2-stse-integral-judge", 2, ["SC10.7.1"], 3, "var", varset([
+  function () {
+    return mcq("A town debates closing its water treatment plant and pumping untreated lake water instead. The strongest science-based argument against the proposal is that",
+      "treatment uses chemical processes to remove or kill what makes water unsafe, and untreated water carries disease and contaminants",
+      ["treatment uses chemical processes that make the water taste better, and residents prefer the taste of treated water in surveys", "lake water is always unsafe in every town, no matter its source or surroundings, so no town could ever use it without treatment", "the plant employs many people, and closing any workplace is always wrong regardless of the science involved in its operation"],
+      "The argument that carries the science is the treatment itself: disinfection and removal of contaminants are chemical processes standing between a community and waterborne disease. Taste and jobs are real considerations, but they are not the science-based argument. <b>treatment uses chemical processes to remove or kill what makes water unsafe, and untreated water carries disease and contaminants</b>.", {});
+  },
+  function () {
+    return mcq("Which claim about science and technology in a community is best supported by the examples in this unit?",
+      "They are woven into ordinary life: in its water, food, medicines, fuels, and waste handling",
+      ["They are woven into special events: in its festivals, ceremonies, and annual celebrations", "They belong to laboratories and factories, and reach ordinary life only in emergencies", "They matter mostly to scientists, whose work rarely touches the lives of other residents"],
+      "The unit's examples are all ordinary: drinking water, meals, medicines, heating fuel, and garbage. Science and technology show up in a community's daily systems, not mainly in its laboratories or festivals. <b>They are woven into ordinary life: in its water, food, medicines, fuels, and waste handling</b>.", {});
+  },
+  function () {
+    return mcq("A student must show that chemistry is integral to their own life, not just present in it. The best evidence would be to",
+      "trace one ordinary day and show which activities would fail or change without the chemistry behind them",
+      ["trace one ordinary day and list every object touched, whether or not chemistry has anything to do with it", "memorize the names of twenty chemicals and recite them, whether or not they appear in the student's life", "visit a chemical plant on a field trip and describe its size, whether or not its products reach the town"],
+      "'Integral' means the day depends on it. Tracing consequences, what stops working without the chemistry, is evidence; lists, recitations, and visits only show presence. <b>trace one ordinary day and show which activities would fail or change without the chemistry behind them</b>.", {});
+  }
+]), ["'Integral' means life would change without it: look for consequences, not just presence."]);
+
+/* ---------- SC10.7.2 Usefulness of scientific nomenclature systems ---------- */
+
+E("sci-u2-stse-nomenclature", 2, ["SC10.7.2"], 1, "var", varset([
+  function () {
+    return mcq("A scientific nomenclature system is",
+      "a set of agreed rules for naming substances so that each name identifies one substance",
+      ["a set of agreed rules for pricing substances so that each price identifies one substance", "a list of the substances a laboratory is required to keep in stock at all times of year", "a list of the scientists who discovered each substance, arranged by the year of discovery"],
+      "Nomenclature is naming under rules: given the name, any chemist can identify the substance, and given the substance, the rules produce its name. <b>a set of agreed rules for naming substances so that each name identifies one substance</b>.", {});
+  },
+  function () {
+    return mcq("IUPAC's role in chemical naming is to",
+      "create and uphold the rules by which elements and compounds are named worldwide",
+      ["create and uphold the rules by which laboratory glassware is manufactured worldwide", "test and approve every chemical sold, by tasting and handling samples of each product", "publish the prices of elements and compounds so that laboratories pay the same amounts"],
+      "IUPAC, the International Union of Pure and Applied Chemistry, maintains the naming rules so that a name written in one country means the same substance in every other. <b>create and uphold the rules by which elements and compounds are named worldwide</b>.", {});
+  },
+  function () {
+    return mcq("Before systematic naming, the substance NH3 was known by names based on its source and smell. The move to systematic names was driven by the need for names that",
+      "tell the reader what a substance is made of, not just where it was found or how it smells",
+      ["tell the reader who discovered a substance, not just where it was found or how it smells", "are shorter than the old names in every case, even when the substance is complicated", "sound impressive in Latin, which was the language of the scientists who named them"],
+      "A systematic name encodes composition: 'nitrogen trihydride' states what NH3 contains. Source-and-smell names cannot do that, and shortness was never the point. <b>tell the reader what a substance is made of, not just where it was found or how it smells</b>.", {});
+  }
+]), ["A nomenclature is a naming system: its job is that a name identifies exactly one substance."]);
+
+E("sci-u2-stse-trivial-names", 2, ["SC10.7.2"], 1, "var", varset([
+  function () {
+    return mcq("'Baking soda', 'laughing gas', and 'limestone' are called trivial names because they",
+      "grew out of a substance's use, appearance, or source rather than its chemical composition",
+      ["grew out of a substance's chemical formula rather than its use, appearance, or source", "are the official IUPAC names for those substances in the current naming rule books", "are used only by children, while scientists use them too but pretend not to know them"],
+      "Trivial names are historical nicknames: baking soda names a use, laughing gas an effect, limestone a rock. None of them states what the substance contains. <b>grew out of a substance's use, appearance, or source rather than its chemical composition</b>.", {});
+  },
+  function () {
+    return mcq("The main weakness of trivial names is that they",
+      "do not reveal a substance's composition, and one substance may collect several of them",
+      ["do not reveal a substance's price, and one substance may collect several different prices", "are too easy to pronounce, and scientific names are supposed to be difficult for students", "change every year, because a committee renames common substances on a regular schedule"],
+      "From 'laughing gas' alone, nothing follows about N2O. And because trivial names grow locally, the same substance can carry different nicknames in different places and trades, which invites error. <b>do not reveal a substance's composition, and one substance may collect several of them</b>.", {});
+  },
+  function () {
+    return mcq("Two suppliers list 'caustic soda' and 'sodium hydroxide' in their catalogues. A buyer using systematic nomenclature knows that",
+      "these are two names for the same substance, NaOH, one trivial and one systematic",
+      ["these are two names for different substances, since each name must mean a new chemical", "the systematic name is the one in the older catalogue, since systematic names came first", "the buyer must order both, because a reaction calling for one will not work with the other"],
+      "Caustic soda is the trivial name; sodium hydroxide is the systematic one. Nomenclature knowledge is what lets the buyer see one substance, NaOH, behind both listings. <b>these are two names for the same substance, NaOH, one trivial and one systematic</b>.", {});
+  }
+]), ["Trivial names describe where a substance was found or what it does, not what it contains."]);
+
+E("sci-u2-stse-name-formula", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return mcq("A systematic name is useful for writing formulas because",
+      "its parts name the elements and their proportions, so the formula can be built from the name",
+      ["its parts name the discoverers and their countries, so the formula can be built from the name", "it is always written in the same colour ink, so the formula can be built from the name quickly", "it rhymes with the formula, so the formula can be built from the name by remembering the rhyme"],
+      "Prefixes and ion names carry the recipe: 'di-' gives the 2, the cation and anion names give the parts, and the charges give the ratio. That is the working usefulness of the system in this unit. <b>its parts name the elements and their proportions, so the formula can be built from the name</b>.", {});
+  },
+  function () {
+    return mcq("The name 'carbon dioxide' tells a chemist the formula CO2 because the name states",
+      "the element carbon and that two oxygen atoms are joined to each carbon atom",
+      ["the element carbon and that the gas was first collected over water in a trough", "that the compound is a gas at room temperature and is produced by burning fuels", "that the compound is harmless in small amounts and dangerous only in large ones"],
+      "'Di-' is the proportion and 'oxide' names oxygen: the name is a compressed formula. How the gas is collected, and how harmful it is, are not in the name. <b>the element carbon and that two oxygen atoms are joined to each carbon atom</b>.", {});
+  },
+  function () {
+    return mcq("The ending '-ide' in a name such as sodium chloride signals that",
+      "the compound is a binary compound whose second element is named as an ion",
+      ["the compound is a binary compound whose first element is named as an ion", "the compound contains oxygen as one of its elements in every single case", "the compound was discovered in Sweden and named under Swedish naming rules"],
+      "In a binary compound, the second element's name is changed to the -ide form: chlor- becomes chloride. The first element keeps its plain name. <b>the compound is a binary compound whose second element is named as an ion</b>.", {});
+  }
+]), ["A good name is a compressed formula: elements and proportions are inside it."]);
+
+E("sci-u2-stse-predict-properties", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return mcq("Names help predict properties: a substance named as an acid, such as hydrochloric acid, can be expected to",
+      "turn blue litmus red and react with bases in a neutralization reaction",
+      ["turn red litmus blue and react with bases in a neutralization reaction", "have a pH above 7 and feel slippery when its solution touches the skin", "contain hydroxide ions as its main ion and conduct electricity weakly"],
+      "The word 'acid' in the name is a prediction: acids turn blue litmus red, taste sour, and neutralize bases. The other options describe bases or reverse the litmus result. <b>turn blue litmus red and react with bases in a neutralization reaction</b>.", {});
+  },
+  function () {
+    return mcq("A chemist reads the name 'copper(II) sulfate' on a bottle never seen before. The name alone tells the chemist that",
+      "the compound contains copper ions with a 2+ charge together with sulfate ions",
+      ["the compound contains copper ions with a 1+ charge together with sulfate ions", "the compound contains two copper atoms joined directly to one sulfur atom", "the compound is a mixture of copper metal and sulfur powder in equal parts"],
+      "The Roman numeral is part of the name's information: (II) states the copper ion's 2+ charge, and 'sulfate' names the polyatomic ion. The formula CuSO4 follows from the name alone. <b>the compound contains copper ions with a 2+ charge together with sulfate ions</b>.", {});
+  },
+  function () {
+    return mcq("Systematic names let scientists predict how an unfamiliar compound will behave because",
+      "the name places the compound in a family whose members share characteristic reactions",
+      ["the name places the compound in a family whose members share characteristic colours", "every compound's behaviour is fully described in a table printed beside its name", "unfamiliar compounds always behave exactly like the first compound in their family"],
+      "Naming is classification: an '-ate' salt, an acid, a dioxide each belong to a family with known behaviour, so the name carries predictions. Families share reactions, not necessarily colours, and members are similar, not identical. <b>the name places the compound in a family whose members share characteristic reactions</b>.", {});
+  }
+]), ["A name assigns a family, and family membership predicts behaviour."]);
+
+E("sci-u2-stse-one-name", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return mcq("A safety data sheet written in one country can be used in another mainly because",
+      "systematic names identify the same substance everywhere, so the hazards attach to the right chemical",
+      ["systematic names identify the same substance everywhere, so the prices attach to the right chemical", "safety data sheets are printed in every language on a single page, so no translation is ever needed", "chemicals behave identically in every country, so the local name on the bottle makes no difference"],
+      "A data sheet protects only if it is matched to the right substance. Systematic names make that match across borders and languages, which trivial names, varying from place to place, cannot guarantee. <b>systematic names identify the same substance everywhere, so the hazards attach to the right chemical</b>.", {});
+  },
+  function () {
+    return mcq("In an emergency, a poison control centre asks for the exact name of a swallowed cleaner. A systematic name helps because it",
+      "identifies the substance exactly, so the right treatment information can be found without delay",
+      ["identifies the substance exactly, so the caller's bill for the call can be calculated without delay", "sounds more professional than a household name, so the centre takes the call more seriously at once", "is required by law to be memorized by every caller before the centre is allowed to give any advice"],
+      "Treatment depends on the substance. An exact, systematic identification points to the right entry at once; a nickname shared by several products could point to the wrong one. <b>identifies the substance exactly, so the right treatment information can be found without delay</b>.", {});
+  },
+  function () {
+    return mcq("Trade between countries in chemicals depends on nomenclature because",
+      "buyers and sellers must be certain they are naming the same substance in contracts and shipping papers",
+      ["buyers and sellers must be certain they are naming the same substance in advertisements and catalogues", "each country taxes chemicals by the length of their names, so a shared system keeps the taxes fair", "ships are not allowed to carry a chemical whose name the captain cannot pronounce correctly at sea"],
+      "A contract or a shipping manifest has legal and safety consequences; both sides must be naming the same substance. Advertisements matter less, and taxes and pronunciation are not the issue. <b>buyers and sellers must be certain they are naming the same substance in contracts and shipping papers</b>.", {});
+  }
+]), ["One substance, one name, everywhere: that is what makes records, trade, and treatment safe."]);
+
+E("sci-u2-stse-nomenclature-case", 2, ["SC10.7.2"], 3, "var", varset([
+  function () {
+    return mcq("A lab technician finds two old bottles labelled 'muriatic acid' and 'hydrochloric acid' and treats them as different chemicals, doubling an order. The error happened because",
+      "one substance carried both a trivial and a systematic name, and the technician did not recognize them as the same",
+      ["one substance carried both a liquid and a solid form, and the technician did not recognize them as the same", "the labels were printed in two different colours, and the technician sorted the bottles by label colour instead", "the two bottles were different sizes, and the technician assumed that different sizes must hold different acids"],
+      "Muriatic acid is the old trivial name for hydrochloric acid. The failure is exactly the weakness nomenclature exists to fix: two names, one substance, and a decision made on the wrong assumption. <b>one substance carried both a trivial and a systematic name, and the technician did not recognize them as the same</b>.", {});
+  },
+  function () {
+    return mcq("A recipe for cleaning a masonry wall calls for 'muriatic acid'. A hardware clerk hands over hydrochloric acid. The clerk is correct because",
+      "the trivial and systematic names refer to the same substance, which is what nomenclature knowledge establishes",
+      ["the trivial and systematic names refer to similar substances, which is close enough for cleaning masonry walls", "all acids are interchangeable for cleaning, which is what a knowledge of chemical safety establishes firmly", "the store is allowed to substitute any acid for another, which is what the sales regulations establish firmly"],
+      "The clerk is not substituting: muriatic acid IS hydrochloric acid under its older name. Acids are not interchangeable in general, which is why knowing the names matter. <b>the trivial and systematic names refer to the same substance, which is what nomenclature knowledge establishes</b>.", {});
+  },
+  function () {
+    return mcq("The strongest argument for teaching systematic naming alongside the naming rules of this unit is that",
+      "a substance's systematic name carries its composition, so formulas and properties follow from the name itself",
+      ["a substance's systematic name carries its history, so the story of its discovery follows from the name itself", "systematic names are always shorter than trivial names, so formulas and properties are quicker to write down", "systematic names never change once assigned, so students will never need to learn another name for anything"],
+      "The payoff of the system is information: composition in the name means formulas can be written and properties predicted from the name alone. History, brevity, and permanence are not what the system is for. <b>a substance's systematic name carries its composition, so formulas and properties follow from the name itself</b>.", {});
+  }
+]), ["Follow the failure: two names, one substance, and a decision made on the wrong assumption."]);
+
+/* ---------- SC10.7.3 Functioning of domestic and industrial technologies ---------- */
+
+E("sci-u2-stse-antacid", 2, ["SC10.7.3"], 1, "var", varset([
+  function () {
+    return mcq("An antacid tablet relieves heartburn because it",
+      "contains a base that neutralizes some of the excess acid in the stomach",
+      ["contains an acid that neutralizes some of the excess base in the stomach", "coats the stomach with a layer of oil that acid cannot pass through at all", "removes the stomach's acid entirely, so digestion stops until more is made"],
+      "Heartburn is excess stomach acid causing pain. The tablet supplies a base; acid and base neutralize each other, and the excess is reduced, not eliminated. <b>contains a base that neutralizes some of the excess acid in the stomach</b>.", {});
+  },
+  function () {
+    return mcq("Heartburn is the burning feeling caused by stomach acid reaching the esophagus. An antacid works on the cause by",
+      "reacting with the acid in a neutralization reaction, lowering its effect",
+      ["reacting with the acid in a combustion reaction, lowering its temperature", "diluting the acid with a large volume of water carried inside the tablet", "numbing the esophagus so the acid is still there but cannot be felt at all"],
+      "The tablet treats the chemistry, not just the sensation: its base consumes hydrogen ions from the acid in a neutralization reaction. A tablet carries no large volume of water, and numbing would leave the acid untouched. <b>reacting with the acid in a neutralization reaction, lowering its effect</b>.", {});
+  },
+  function () {
+    return mcq("Calcium carbonate is the active ingredient in some antacids because it",
+      "is a base that reacts with hydrochloric acid in the stomach",
+      ["is an acid that reacts with hydrochloric acid in the stomach", "is a salt that dissolves the food blocking the stomach's exit", "is a metal that lines the stomach wall against further acid"],
+      "Calcium carbonate is a base (a carbonate), and stomach acid is hydrochloric acid. Their reaction is the neutralization the tablet is sold for. <b>is a base that reacts with hydrochloric acid in the stomach</b>.", {});
+  }
+]), ["Heartburn is an acid problem; the tablet brings the opposite kind of substance."]);
+
+E("sci-u2-stse-everyday-neutralization", 2, ["SC10.7.3"], 2, "var", varset([
+  function () {
+    return mcq("Lemon juice is rubbed on fish to reduce its odour. This works because",
+      "the acid in the juice neutralizes the basic compounds that cause the fishy smell",
+      ["the acid in the juice covers the basic compounds that cause the fishy smell with a stronger scent", "the base in the juice neutralizes the acidic compounds that cause the fishy smell completely", "the water in the juice washes the basic compounds that cause the fishy smell off the fish"],
+      "The fishy-smelling compounds are bases (amines). Lemon juice is acidic, and the acid converts them to salts that do not evaporate into the air, so the smell itself is removed, not masked. <b>the acid in the juice neutralizes the basic compounds that cause the fishy smell</b>.", {});
+  },
+  function () {
+    return mcq("Baking soda kept in a refrigerator absorbs odours because it",
+      "neutralizes the acidic gases given off by spoiling food",
+      ["neutralizes the basic gases given off by spoiling food", "perfumes the air inside the refrigerator with its own scent", "cools the air inside the refrigerator below the odour point"],
+      "Baking soda is a mild base, and many spoilage odours are acidic gases. Neutralizing them removes the odour chemically; the soda has no scent of its own and no cooling effect. <b>neutralizes the acidic gases given off by spoiling food</b>.", {});
+  },
+  function () {
+    return mcq("Toothpaste helps protect teeth during the day because it",
+      "is mildly basic, so it neutralizes acids produced by bacteria feeding on sugars",
+      ["is mildly acidic, so it neutralizes acids produced by bacteria feeding on sugars", "is mildly basic, so it dissolves the enamel that bacteria are feeding on at the time", "is mildly basic, so it sweetens the breath and bacteria stop feeding on the sugars"],
+      "Mouth bacteria turn sugars into acids that attack enamel. A mildly basic toothpaste neutralizes those acids where they form. Dissolving enamel would be damage, not protection. <b>is mildly basic, so it neutralizes acids produced by bacteria feeding on sugars</b>.", {});
+  }
+]), ["Each case pairs an acid with a base: find which substance plays which role."]);
+
+E("sci-u2-stse-liming", 2, ["SC10.7.3"], 2, "var", varset([
+  function () {
+    return mcq("Farmers spread lime (calcium carbonate) on acidic soil because the lime",
+      "neutralizes excess acid in the soil, raising its pH toward what crops need",
+      ["neutralizes excess base in the soil, lowering its pH toward what crops need", "adds acid to the soil in a slow-release form, feeding the crops as it dissolves", "kills the bacteria in the soil, which are the source of the soil's acidity"],
+      "Lime is a base applied by the tonne. It reacts with the soil's excess acid, and the pH rises toward the range crops grow in. It does not work by killing bacteria. <b>neutralizes excess acid in the soil, raising its pH toward what crops need</b>.", {});
+  },
+  function () {
+    return mcq("Lakes damaged by acid precipitation are sometimes treated by adding crushed limestone. The treatment works because the limestone",
+      "reacts with the acid in the water, raising the lake's pH back toward neutral",
+      ["reacts with the base in the water, lowering the lake's pH back toward neutral", "sinks to the bottom and seals the lake bed, so no more acid can enter the water", "feeds the fish directly, so their populations recover before the water changes"],
+      "Limestone is calcium carbonate, a base. Spread through an acidic lake it neutralizes the acid in place, and the pH recovers. It neither seals the lake bed nor feeds the fish. <b>reacts with the acid in the water, raising the lake's pH back toward neutral</b>.", {});
+  },
+  function () {
+    return mcq("Acid precipitation forms when sulfur and nitrogen oxides from burning fuels mix with water in the air. Liming an affected lake treats the",
+      "effect, by neutralizing acid already in the lake, rather than the cause at the fuel source",
+      ["effect, by neutralizing base already in the lake, rather than the cause at the fuel source", "cause, by stopping fuels from being burned anywhere in the region around the lake at all", "cause, by removing the sulfur from fuels before they are burned in power plants nearby"],
+      "Liming is a remedy at the receiving end: the acid is neutralized where it landed. The cause, emissions at the source, is untouched by anything added to the lake. <b>effect, by neutralizing acid already in the lake, rather than the cause at the fuel source</b>.", {});
+  }
+]), ["Lime is a base delivered by the truckload: it treats acidity where the acid already sits."]);
+
+E("sci-u2-stse-ph-control", 2, ["SC10.7.3"], 2, "var", varset([
+  function () {
+    return mcq("A swimming pool's water is tested and a chemical is added to bring the pH into the safe range. This is an application of neutralization because",
+      "an acid or a base is added in small amounts to counter the water's drift away from the target pH",
+      ["an acid or a base is added in large amounts to drive the water's pH as far as possible from neutral", "chlorine is added to kill bacteria, and bacteria are the only reason a pool's pH ever changes at all", "the water is drained and replaced whenever the pH drifts, so no chemical adjustment is ever needed"],
+      "Pool care is neutralization as routine maintenance: test, then add the opposite kind of substance in a measured amount to bring the pH back to its target range. <b>an acid or a base is added in small amounts to counter the water's drift away from the target pH</b>.", {});
+  },
+  function () {
+    return mcq("Hydroponic growers monitor the pH of their nutrient solution closely because",
+      "plants absorb nutrients properly only within a certain pH range, which acids and bases are used to hold",
+      ["plants absorb nutrients properly only within a certain pH range, which sunlight alone is used to hold", "the nutrient solution evaporates faster at the wrong pH, which acids and bases are used to prevent", "the roots of the plants produce the pH themselves, which acids and bases are used to measure only"],
+      "Nutrient ions are available to roots only in a certain pH window. Growers hold the solution in that window by adding acid or base as it drifts, neutralization used as a control. <b>plants absorb nutrients properly only within a certain pH range, which acids and bases are used to hold</b>.", {});
+  },
+  function () {
+    return mcq("An aquarium keeper adds a small amount of a base after finding the water too acidic for the fish. The keeper is applying the principle that",
+      "a base added in controlled amounts neutralizes excess acid and moves the pH upward",
+      ["a base added in controlled amounts neutralizes excess acid and moves the pH downward", "any amount of base is safe to add at once, since bases cannot overshoot the target pH", "the pH of aquarium water corrects itself within a day, so the addition was unnecessary"],
+      "The dose is small on purpose: neutralize the excess acid and stop near the target. Overshooting is a real risk, which is why the additions are controlled and retested. <b>a base added in controlled amounts neutralizes excess acid and moves the pH upward</b>.", {});
+  }
+]), ["Holding a pH is neutralization in small doses: counter the drift, in the right direction."]);
+
+E("sci-u2-stse-oven-cleaner", 2, ["SC10.7.3"], 3, "var", varset([
+  function () {
+    return mcq("An oven cleaner has a pH of 13. After cleaning, the oven's inside is wiped with vinegar (acetic acid). The vinegar improves the result because it",
+      "neutralizes the strongly basic cleaner left on the surface, bringing residues toward a safer pH",
+      ["neutralizes the strongly acidic cleaner left on the surface, bringing residues toward a safer pH", "dissolves the metal of the oven's interior slightly, so the cleaner can be rinsed away more easily", "reacts with the cleaner to produce a stronger cleaning agent that finishes the job the cleaner began"],
+      "pH 13 is strongly basic, and a basic residue left where food cooks is a hazard. Vinegar's acetic acid neutralizes the residue toward a safer pH. This is the guide's own example of neutralization as a household technology. <b>neutralizes the strongly basic cleaner left on the surface, bringing residues toward a safer pH</b>.", {});
+  },
+  function () {
+    return mcq("A cleaner with pH 13 is wiped up carelessly and the residue is left on a countertop where food is prepared. The chemistry concern is that the residue",
+      "is strongly basic and corrosive, and it remains so until it is neutralized or removed",
+      ["is strongly acidic and corrosive, and it remains so until it is neutralized or removed", "becomes harmless the moment it dries, because dryness neutralizes bases on any surface", "turns into table salt on contact with air, because carbon dioxide neutralizes all bases"],
+      "Drying does not neutralize a base; the residue stays corrosive on the dry surface. Only neutralizing it or physically removing it ends the hazard. <b>is strongly basic and corrosive, and it remains so until it is neutralized or removed</b>.", {});
+  },
+  function () {
+    return mcq("Why is vinegar, a weak acid, a sensible choice for wiping down an oven cleaned with a pH 13 cleaner, rather than a strong acid?",
+      "It neutralizes the basic residue gently, without adding the hazards of a strong acid to the surface",
+      ["It neutralizes the basic residue completely and instantly, which a strong acid could not do at all", "It leaves the surface slightly basic, which is the condition recommended for cooking food safely", "It reacts with the residue to form a protective coating that prevents the oven from rusting later"],
+      "The job is to tame a residue, not to attack it. A weak acid does the neutralization controllably and is itself food-safe; a strong acid would trade one corrosive residue for another. <b>It neutralizes the basic residue gently, without adding the hazards of a strong acid to the surface</b>.", {});
+  }
+]), ["Start from the pH: 13 is strongly basic, so the wipe-down must supply the opposite, gently."]);
+
+E("sci-u2-stse-antacid-equation", 2, ["SC10.7.3"], 3, "var", varset([
+  function () {
+    return mcq("An antacid's active ingredient reacts as CaCO3(s) + 2HCl(aq) → CaCl2(aq) + H2O(l) + CO2(g). In the stomach, this reaction relieves heartburn because",
+      "the carbonate consumes hydrogen ions from the stomach acid, producing water and carbon dioxide",
+      ["the carbonate consumes hydroxide ions from the stomach acid, producing water and carbon dioxide", "the calcium chloride produced coats the stomach lining, producing a barrier against the acid", "the carbon dioxide produced dilutes the stomach acid, producing relief by simple mixing alone"],
+      "Read the equation as the mechanism: carbonate takes the acid's hydrogen ions, and they end up in water, while the carbon leaves as CO2 gas. Stomach acid contains hydrogen ions, not hydroxide ions. <b>the carbonate consumes hydrogen ions from the stomach acid, producing water and carbon dioxide</b>.", {});
+  },
+  function () {
+    return mcq("In the reaction CaCO3(s) + 2HCl(aq) → CaCl2(aq) + H2O(l) + CO2(g), the '2' in front of HCl is there because",
+      "two chloride ions are needed to balance the 2+ charge of the calcium ion in CaCl2",
+      ["two chloride ions are needed to balance the 1+ charge of the calcium ion in CaCl2", "two hydrogen ions are needed to supply the oxygen atoms in the carbon dioxide formed", "the equation is balanced by doubling every substance that appears on the left side"],
+      "Calcium is Ca2+, so its chloride needs two Cl- ions, hence 2HCl. The same 2 also balances the hydrogens for the water formed. Oxygen in the CO2 comes from the carbonate, not from the acid. <b>two chloride ions are needed to balance the 2+ charge of the calcium ion in CaCl2</b>.", {});
+  },
+  function () {
+    return mcq("A student takes two antacid tablets and feels a need to burp afterward. The burping is explained by the reaction because",
+      "carbon dioxide gas is a product of the neutralization, and the gas collects in the stomach",
+      ["carbon dioxide gas is a reactant of the neutralization, and the gas collects in the stomach", "oxygen gas is a product of the neutralization, and the gas collects in the stomach after eating", "the tablets dissolve without reacting, and the gas collects in the stomach from swallowed air"],
+      "The equation's right side includes CO2(g): the neutralization itself generates the gas, which is why antacids can cause burping. The tablets certainly react; that is their purpose. <b>carbon dioxide gas is a product of the neutralization, and the gas collects in the stomach</b>.", {});
+  }
+]), ["Read the equation as the mechanism: the carbonate takes the acid's hydrogen ions, and a gas leaves."]);

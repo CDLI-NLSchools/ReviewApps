@@ -26,7 +26,7 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 }
 eval(fs.readFileSync(ROOT + "/banks/sci-1206.js", "utf8"));
 const CRMARKS = window.__BANK_CRMARKS || {};
-ok(Object.keys(CRMARKS).length === 12, "12 CR marks registered, saw " + Object.keys(CRMARKS).length);
+ok(Object.keys(CRMARKS).length === 14, "14 CR marks registered, saw " + Object.keys(CRMARKS).length);
 
 const BAD = /undefined|\bNaN\b|\bnull\b|\[object/;
 function checkQ(e, q, tag) {
@@ -37,7 +37,12 @@ function checkQ(e, q, tag) {
   ok(typeof q.solution === "string" && q.solution.length > 10, e.id + " " + tag + ": solution missing/short");
   if (q.solution) ok(!BAD.test(q.solution), e.id + " " + tag + ": solution bad token: " + q.solution.slice(0, 90));
   if (q.figure) {
-    ok(q.figure.indexOf("<svg") === 0 && /<\/svg>$/.test(q.figure), e.id + " " + tag + ": figure not a complete svg");
+    var isSvg = q.figure.indexOf("<svg") === 0 && /<\/svg>$/.test(q.figure);
+    var imgMatch = q.figure.match(/^<img src="(banks\/sci-1206\/assets\/[^"]+)" alt="[^"]+" style="max-width:100%;height:auto">$/);
+    // Figures are generated SVG, or, for the Unit 4 ecosystem scenes
+    // (Nov 12, 2026), a raster illustration whose asset must exist.
+    ok(isSvg || !!imgMatch, e.id + " " + tag + ": figure is neither a complete svg nor a well-formed scene img");
+    if (imgMatch) ok(fs.existsSync(ROOT + "/" + imgMatch[1]), e.id + " " + tag + ": scene asset missing on disk: " + imgMatch[1]);
     ok(!BAD.test(q.figure), e.id + " " + tag + ": figure has bad token");
   }
   if (q.type === "text") {
@@ -145,7 +150,7 @@ BANK.forEach(e => {
   (e.indicators || []).forEach(c => { indUse[c] = (indUse[c] || 0) + 1; });
 });
 const cfgInd = Object.keys(window.__COURSE.indicators || {});
-ok(cfgInd.length === 25, "config carries 25 Knowledge indicators, saw " + cfgInd.length);
+ok(cfgInd.length === 33, "config carries 33 indicators (25 Knowledge + 8 STSE registered Nov 19, 2026), saw " + cfgInd.length);
 cfgInd.forEach(c => ok((indUse[c] || 0) >= 1, "indicator never used by any entry: " + c));
 BANK.forEach(e => (e.indicators || []).forEach(c => ok(cfgInd.includes(c), e.id + " uses indicator outside config: " + c)));
 ok(new Set(BANK.map(e => e.id)).size === BANK.length, "duplicate entry ids");

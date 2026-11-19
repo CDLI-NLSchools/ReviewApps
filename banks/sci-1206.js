@@ -415,7 +415,8 @@ function s6StoryPanelsSVG(panels) {
 // CRMARKS: sci-u1-cr-climate=4
 // CRMARKS: sci-u1-cr-frontpass=3
 // CRMARKS: sci-u1-cr-forecast=3
-// Science 1206 Unit 1 bank: Weather Dynamics (SC10.6.1 to 6.5).
+// Science 1206 Unit 1 bank: Weather Dynamics (SC10.6.1 to 6.5, plus
+// the SC10.5 STSE tranche added Nov 19, 2026 at the end of this file).
 // Original entries written for this app from the question types in
 // the source analysis (heat sinks, heat transfer, currents, weather
 // systems, meteorological data). Synoptic map reading items live in
@@ -1448,6 +1449,655 @@ E("sci-u1-weather-lore", 1, ["SC10.6.5"], 1, "var", varset([
   }
 ]), ["Lore is local experience in rhyme: respect the mechanism, verify with the instruments."]);
 
+/* ---------- STSE tranche (Nov 19, 2026): SC10.5.1, 5.3, 5.4, 5.5, 5.6 ----------
+   Registered so the unit's blueprint tests (Weather Dynamics Tests 1
+   and 2 of the test-shaped practice map) carry their full indicator
+   coverage. Content follows the guide's Focus for Learning for each
+   outcome: extreme weather for 5.1, instruments, radar, satellites
+   and models for 5.3, the named Canadian contributions for 5.4,
+   climate change evidence for 5.5, and the discipline pairings for
+   5.6. The remaining STSE codes stay a later tranche. */
+
+/* ---------- SC10.5.1 How science explains natural phenomena ---------- */
+
+E("sci-u1-stse-explanation", 1, ["SC10.5.1"], 1, "var", varset([
+  function () {
+    return mcq("A scientific explanation of a natural phenomenon, such as a hurricane, is best described as",
+      "an account of how and why it happens, built from observations and evidence and open to testing",
+      ["a description of what it looks like, written down the first time anyone observes it happen", "a rule that forecasters follow when they name storms and issue warnings to the public", "a story passed down in a community that tells people how to act when the phenomenon comes"],
+      "An explanation does more than describe: it gives the mechanism, the how and the why, and it rests on observations that others can check. A description, a warning rule, or a traditional story may all be useful, but none of them explains. <b>an account of how and why it happens, built from observations and evidence and open to testing</b>.", {});
+  },
+  function () {
+    return mcq("When meteorologists explain a thunderstorm, the explanation is expected to",
+      "account for the observations, such as rising moist air cooling and condensing into cloud",
+      ["describe the storm using the oldest weather lore available for the region where it forms", "predict the exact minute the storm will begin, the streets it will flood, and when it ends", "list the damage the storm is likely to cause to farms, roads, and buildings in its path"],
+      "A scientific explanation accounts for what is observed: the rising air, the cooling, the condensation. It does not promise impossible precision about minutes and streets, and damage lists and lore are records, not explanations. <b>account for the observations, such as rising moist air cooling and condensing into cloud</b>.", {});
+  },
+  function () {
+    return mcq("Science attempts to explain natural phenomena by",
+      "gathering evidence about them and building explanations that the evidence supports",
+      ["assigning each phenomenon a name and a category so that it can be filed and reported", "recording them carefully and leaving the reasons behind them to individual opinion", "waiting until every scientist agrees before saying anything about how they happen"],
+      "Naming and recording are part of science, but the explaining is done by evidence-based accounts of the process behind the phenomenon, offered as soon as the evidence supports them and revised when it does not. <b>gathering evidence about them and building explanations that the evidence supports</b>.", {});
+  }
+]), ["An explanation has to say how and why, and it has to rest on evidence."]);
+
+E("sci-u1-stse-models", 1, ["SC10.5.1"], 1, "var", varset([
+  function () {
+    return mcq("A computer model that simulates a hurricane's track is a scientific tool because it",
+      "puts an explanation of how hurricanes move into a form whose predictions can be checked",
+      ["guarantees the storm will follow the exact path shown on the screen at every moment", "replaces the need to observe real storms with instruments, aircraft, and satellites", "shows the public colourful pictures of the storm so that warnings are taken seriously"],
+      "A model is an explanation made runnable: it takes the current understanding of how storms move and produces a track that real observations can then confirm or correct. It guarantees nothing, and it feeds on observations rather than replacing them. <b>puts an explanation of how hurricanes move into a form whose predictions can be checked</b>.", {});
+  },
+  function () {
+    return mcq("In science, a model of a natural phenomenon is",
+      "a simplified representation built to explain observations and make testable predictions",
+      ["an exact copy of the phenomenon, matching it in every detail at full size and speed", "a drawing made for textbooks, meant to be looked at rather than used to test ideas", "the final accepted account of the phenomenon, which later evidence cannot change"],
+      "Models simplify on purpose: they keep the parts of a process that matter for the explanation and leave the rest out, so their predictions can be tested against the real phenomenon. <b>a simplified representation built to explain observations and make testable predictions</b>.", {});
+  },
+  function () {
+    return mcq("A class builds a model in which warm, moist air rises, cools, and forms cloud to explain thunderstorms. The model is useful scientifically because it",
+      "connects the steps of the process so the class can predict what happens when one step changes",
+      ["proves that every real thunderstorm forms in exactly the same way and at the same rate as the model", "lets the class make rain indoors, which is the same thing as explaining rain outdoors in the sky", "removes the need to compare the model with real storms, since a working model is always correct"],
+      "The value of the model is the chain it lays out: change the moisture or the cooling and the outcome changes in a way the class can state in advance and then check. A model that is never compared with real storms explains nothing. <b>connects the steps of the process so the class can predict what happens when one step changes</b>.", {});
+  }
+]), ["A model is an explanation you can run: it should predict, and its predictions can be checked."]);
+
+E("sci-u1-stse-hurricane", 1, ["SC10.5.1"], 2, "var", varset([
+  function () {
+    return mcq("Meteorologists explain hurricane formation by pointing to warm ocean water (above about 26.5 °C), moist air, and weak upper winds. This explanation is scientific because it",
+      "identifies the conditions that supply the storm's energy and predicts where and when storms can form",
+      ["names the ocean regions where hurricanes are given personal names by the World Meteorological Organization", "describes the damage a hurricane causes once it reaches land and the flooding that follows in its wake", "records how many hurricanes have formed each season since records began in the nineteenth century"],
+      "The explanation names the energy source (warm ocean water) and the conditions that let a storm organize, so it predicts the seasons and regions where hurricanes are possible. Names, damage, and counts are records about storms, not explanations of them. <b>identifies the conditions that supply the storm's energy and predicts where and when storms can form</b>.", {});
+  },
+  function () {
+    return mcq("A nor'easter deepens rapidly as it moves up the Atlantic coast. The scientific explanation focuses on",
+      "the contrast between cold continental air and warm, moist air over the ocean feeding the storm's growth",
+      ["the storm's name, which comes from the direction of its strongest winds along the New England coastline", "the time of year, because nor'easters are defined as storms that occur only between November and March", "the damage reports from coastal towns, which are used to decide how strong the storm officially was"],
+      "A nor'easter grows because two very different air masses meet over the coast: cold, dry continental air and warm, moist ocean air. The temperature contrast is the fuel. The name, the season, and the damage describe the storm; the contrast explains it. <b>the contrast between cold continental air and warm, moist air over the ocean feeding the storm's growth</b>.", {});
+  },
+  function () {
+    return mcq("El Niño is an explanation built around a warming of surface water in the eastern Pacific. Scientists treat it as an explanation rather than just a description because it",
+      "links the warm water to shifted rainfall and weather patterns observed on several continents",
+      ["gives the warm water a memorable Spanish name that fishing crews have used for many generations", "states the average temperature of the Pacific Ocean in a normal year to two decimal places", "lists the years in which the warm water appeared, in order, from the earliest records onward"],
+      "El Niño earns its place as an explanation by connecting a cause (unusually warm surface water) to effects far away (shifted rainfall and storm tracks), in a way that can be checked each time the warm water appears. <b>links the warm water to shifted rainfall and weather patterns observed on several continents</b>.", {});
+  }
+]), ["Look for the option that gives the mechanism: the energy source and the conditions, not the name or the damage."]);
+
+E("sci-u1-stse-evidence-test", 1, ["SC10.5.1"], 2, "var", varset([
+  function () {
+    return mcq("An explanation of lake-effect snow says that cold air crossing a warm lake picks up moisture and drops it as snow on the far shore. The strongest test of this explanation is to check whether",
+      "snowfall is heavy on the far shore when the air is much colder than the lake, and light when it is not",
+      ["the explanation is printed in a textbook, because textbooks only publish explanations that are fully proven", "residents near the lake agree that the explanation sounds right, based on the winters they remember most", "the lake is large, because a large lake always produces heavy snow no matter what the air temperature is"],
+      "The explanation makes a prediction: snow should depend on the temperature contrast between air and lake. Checking that prediction against many events, including the quiet ones, is the test. Print, memory, and lake size alone settle nothing. <b>snowfall is heavy on the far shore when the air is much colder than the lake, and light when it is not</b>.", {});
+  },
+  function () {
+    return mcq("A student explains a tornado outbreak by pointing to warm, moist air at the surface under cold, dry air aloft, with winds changing direction with height. To test the explanation, the student should",
+      "compare outbreak days with similar-looking days that produced no tornadoes, and look for what differed",
+      ["ask classmates whether the explanation sounds convincing, and accept it if most of the class agrees with it", "find one outbreak that matches the explanation perfectly, and treat that single match as complete proof", "wait for the next outbreak and check whether it is stronger than the last one, since stronger means truer"],
+      "A real test looks for the cases the explanation might fail: days with similar conditions but no outbreak. If the named conditions appear on both kinds of days, something is missing from the explanation. One matching case, or a class vote, proves nothing. <b>compare outbreak days with similar-looking days that produced no tornadoes, and look for what differed</b>.", {});
+  },
+  function () {
+    return mcq("Scientific explanations of extreme weather are strengthened most when they",
+      "successfully predict features of new events that were not used in building the explanation",
+      ["are repeated by many media outlets in the days after a major storm has caused damage somewhere", "have been in use for a long time, since an explanation's age is the best measure of its accuracy", "are written in technical language that only specialists in the field are able to understand fully"],
+      "An explanation grows stronger by surviving tests it was not designed for: predicting features of new storms correctly. Repetition, age, and technical wording are not tests. <b>successfully predict features of new events that were not used in building the explanation</b>.", {});
+  }
+]), ["A test compares the explanation's predictions with what actually happens, including the cases where nothing happens."]);
+
+E("sci-u1-stse-explain-build", 1, ["SC10.5.1"], 2, "var", varset([
+  function () {
+    return mcq("A class investigates why one side of a mountain range is much wetter than the other. The explanation they build should be based mainly on",
+      "measurements and observations of the air as it rises, cools, and sinks on either side of the range",
+      ["the opinions of people who live on each side, collected in a survey about which side feels wetter", "the age of the mountains, because older ranges have had more time to sort wet air from dry air", "a single storm's rainfall totals, since one good storm shows everything about a place's climate"],
+      "The wet side and the dry side are produced by what the air does at the range: rising and cooling on one side, sinking and warming on the other. Measuring that process builds the explanation; opinions and single storms cannot. <b>measurements and observations of the air as it rises, cools, and sinks on either side of the range</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is an explanation, rather than a description, of a thunderstorm?",
+      "Rising moist air cools, its vapour condenses and releases heat, and the released heat drives the air higher",
+      ["The storm produced 40 mm of rain in one hour, with frequent lightning and a brief period of pea-sized hail", "The storm began at 3:40 in the afternoon, moved northeast at 30 km/h, and weakened after sunset that day", "The storm was the third severe thunderstorm recorded in the region during the month of July this year"],
+      "Only the key gives a mechanism: rising, cooling, condensation, and the released heat driving further rising. The others report amounts, times, and counts, which describe the storm without explaining it. <b>Rising moist air cools, its vapour condenses and releases heat, and the released heat drives the air higher</b>.", {});
+  },
+  function () {
+    return mcq("Scientists explaining the jet stream point to the temperature contrast between polar and tropical air. This is an explanation because it",
+      "gives a cause that also accounts for why the jet stream is stronger in winter than in summer",
+      ["tells pilots the altitude at which the jet stream is usually found on transatlantic flights", "describes the jet stream's wavy path across a weather map in the greatest possible detail", "names the scientist who first identified the jet stream during the Second World War"],
+      "The temperature contrast does explanatory work: the contrast is greatest in winter, which is exactly when the jet stream runs strongest. Altitude, path descriptions, and history are facts about the jet stream, not causes of it. <b>gives a cause that also accounts for why the jet stream is stronger in winter than in summer</b>.", {});
+  }
+]), ["Descriptions say what happened; explanations say why, in terms of a mechanism."]);
+
+E("sci-u1-stse-explain-judge", 1, ["SC10.5.1"], 3, "var", varset([
+  function () {
+    return mcq("Two explanations are offered for a town's increasing number of floods. Explanation A blames the town's growth: pavement and roofs now cover fields that used to absorb rain. Explanation B says the river has 'always flooded and always will.' A scientist would judge A the better explanation mainly because A",
+      "names a mechanism that can be checked, for example by comparing runoff before and after the town grew",
+      ["is the newer of the two explanations, and in science the most recent explanation is usually the best one", "matches what most residents believe about the floods, and majority opinion is a strong form of evidence", "is stated in fewer words than B, and the simplest wording is what makes an explanation scientific"],
+      "Explanation A points to a process, runoff from paved surfaces, that can be measured and compared across time. Explanation B explains nothing; it just restates that floods happen. Newness, popularity, and brevity are not scientific merits. <b>names a mechanism that can be checked, for example by comparing runoff before and after the town grew</b>.", {});
+  },
+  function () {
+    return mcq("A fishing crew says the fog off the Grand Banks forms 'because the sea is cold.' A meteorologist's fuller explanation is that warm, moist air from the south moves over the cold Labrador Current and is chilled to its dew point. The meteorologist's version is the stronger scientific explanation because it",
+      "identifies the air, the current, and the process (cooling to the dew point) in a way that predicts where fog forms",
+      ["uses more technical terms than the crew's version, and technical language is what makes an explanation scientific", "comes from a person with a university degree, and explanations from credentialed people outrank all others", "is longer than the crew's version, and a longer explanation always contains more science than a shorter one"],
+      "The crew's statement is true but thin. The fuller version names the moving air, the cold current, and the process, cooling to the dew point, so it predicts where and when fog will form. Length, credentials, and vocabulary do not make an explanation stronger. <b>identifies the air, the current, and the process (cooling to the dew point) in a way that predicts where fog forms</b>.", {});
+  },
+  function () {
+    return mcq("A proposed explanation for a record-hot summer says only that 'the Sun was stronger that year.' Solar measurements for the year were normal. The explanation should be set aside mainly because it",
+      "is contradicted by the evidence and offers no other mechanism that could account for the heat",
+      ["was proposed by a single researcher rather than a large team working at a national laboratory", "is too short to be a real explanation, since genuine explanations fill at least a full page", "disagrees with what most people felt that summer, and public experience outranks measurements"],
+      "An explanation that the measurements directly contradict cannot stand, whatever its source or length. Public impressions do not outrank instrument records. <b>is contradicted by the evidence and offers no other mechanism that could account for the heat</b>.", {});
+  }
+]), ["Judge an explanation by its mechanism and its evidence, not by who said it or how it is worded."]);
+
+/* ---------- SC10.5.3 Technology enhancing or revising understanding ---------- */
+
+E("sci-u1-stse-instruments", 1, ["SC10.5.3"], 1, "var", varset([
+  function () {
+    return mcq("Before weather instruments were invented, weather knowledge came from watching the sky and passing on lore. The invention of instruments such as the thermometer and barometer changed weather science mainly by",
+      "making weather measurable, so records could be kept, compared, and searched for patterns",
+      ["making weather predictable with complete accuracy for the first time in human history", "allowing sailors to control the weather they met on long voyages across the open ocean", "proving that weather lore and sky watching had been wrong about everything all along"],
+      "Instruments turned impressions into numbers. Numbers can be recorded, compared between places, and searched for patterns, and that record-keeping is what let weather knowledge grow into a science. Instruments never gave complete accuracy or control. <b>making weather measurable, so records could be kept, compared, and searched for patterns</b>.", {});
+  },
+  function () {
+    return mcq("Quantitative weather records, kept over many years with standard instruments, improved scientific understanding because they",
+      "let scientists find patterns, such as seasonal cycles and storm tracks, that memory alone cannot hold",
+      ["meant that every town's weather could be known in advance for the whole of the following year", "showed that weather follows a fixed calendar, with the same conditions returning on the same dates", "allowed governments to fine forecasters whose predictions turned out to be wrong the next day"],
+      "A single observer's memory holds a few striking storms. Decades of standard records hold the patterns: when storms usually come, where they travel, and how conditions vary with the seasons. The records did not make weather follow a fixed calendar. <b>let scientists find patterns, such as seasonal cycles and storm tracks, that memory alone cannot hold</b>.", {});
+  },
+  function () {
+    return mcq("A barometer in a school hallway is read and recorded every day for a school year. The scientific value of doing this is that it",
+      "builds a measured record in which patterns, like pressure falls ahead of storms, can be identified",
+      ["trains students to predict the weather a full month ahead from a single instrument's readings alone", "proves that pressure is the only weather variable worth measuring, ahead of wind and temperature", "lets the school announce the next day's weather with the same accuracy as a national weather service"],
+      "The value is the record itself: a year of daily readings shows the pressure falls that precede storms and the rises that follow them, the same pattern-finding that instruments first made possible. One instrument alone does not make a forecast service. <b>builds a measured record in which patterns, like pressure falls ahead of storms, can be identified</b>.", {});
+  }
+]), ["Instruments turn impressions into numbers, and numbers kept over time reveal patterns."]);
+
+E("sci-u1-stse-radar", 1, ["SC10.5.3"], 1, "var", varset([
+  function () {
+    return mcq("Weather radar improved the understanding of storms mainly because it",
+      "shows where precipitation is falling and how it is moving, over a whole region at once",
+      ["stops storms from strengthening by bouncing radio waves off the rain inside the clouds", "measures the temperature of the ground under a storm more accurately than thermometers", "lets forecasters name storms earlier in the season than was possible before it existed"],
+      "Radar's gift is the regional picture: precipitation mapped continuously, so a storm's structure and movement can be watched as they happen. Radar does not weaken storms or measure ground temperature. <b>shows where precipitation is falling and how it is moving, over a whole region at once</b>.", {});
+  },
+  function () {
+    return mcq("Before radar, a line of thunderstorms approaching a town at night could only be tracked by scattered reports. Radar changed this by",
+      "revealing the line's position, direction, and speed continuously as it approached",
+      ["warning each household individually by telephone as the line of storms drew closer", "weakening the line of storms by heating the rain inside it with pulses of radio energy", "showing which houses the storms would strike, street by street, hours before arrival"],
+      "With radar, the line of storms is on the screen the whole time: where it is, which way it moves, and how fast. That continuous tracking replaced guesswork between scattered reports. <b>revealing the line's position, direction, and speed continuously as it approached</b>.", {});
+  },
+  function () {
+    return mcq("Doppler radar added something plain radar could not give: it",
+      "measures motion toward or away from the radar, revealing rotation inside a storm",
+      ["measures the exact size of every raindrop inside a storm cloud as the rain falls", "photographs the tops of storm clouds from above, in colour, every few minutes", "predicts the weather for the same date next year by replaying this year's storms"],
+      "The Doppler effect shifts the returning signal when precipitation moves toward or away from the radar. That motion data exposes rotation inside a storm, an early sign of tornado development that plain radar cannot show. <b>measures motion toward or away from the radar, revealing rotation inside a storm</b>.", {});
+  }
+]), ["Ask what the tool lets scientists see that they could not see before."]);
+
+E("sci-u1-stse-satellites", 1, ["SC10.5.3"], 2, "var", varset([
+  function () {
+    return mcq("Weather satellites changed the understanding of hurricanes mainly because they",
+      "watch storms form and move over the whole ocean, including regions with no ships or stations",
+      ["photograph storms only after they reach land, where their damage can be assessed by officials", "steer storms away from populated coasts by reflecting sunlight onto the ocean surface below", "replace surface measurements entirely, since a picture from space shows everything needed"],
+      "Most of a hurricane's life is spent over open ocean where nobody is watching. Satellites watch the whole ocean continuously, so storms are now seen forming, not just arriving. Surface measurements are still needed; satellites complement them. <b>watch storms form and move over the whole ocean, including regions with no ships or stations</b>.", {});
+  },
+  function () {
+    return mcq("A forecaster in 1950 and a forecaster today both track a hurricane in the mid-Atlantic. The modern forecaster's understanding is deeper mainly because satellites provide",
+      "continuous views of the storm's structure and motion, instead of occasional reports from ships",
+      ["the storm's official name several weeks earlier than forecasters used to receive storm names", "a guarantee that the forecast track will not change as the storm approaches the coastline", "pictures in higher resolution than any photograph taken from an aircraft inside the storm"],
+      "In 1950 a mid-ocean storm was known only when a ship happened to meet it. Satellites show its structure and motion hour by hour, which is a different depth of understanding, not just a sharper picture. <b>continuous views of the storm's structure and motion, instead of occasional reports from ships</b>.", {});
+  },
+  function () {
+    return mcq("Satellite instruments that sense water vapour and temperature through the depth of the atmosphere improved forecasts because they",
+      "supply data from the whole atmosphere over oceans and remote regions, where few other measurements exist",
+      ["measure the depth of the ocean and the height of its waves, which are the main controls on the weather above it", "photograph cloud tops in colour, which is the only information forecast models are able to use as input", "count the ships and aircraft in each region, which tells forecasters where reports will come from that day"],
+      "Forecast models need the atmosphere's state everywhere, including high above oceans with no weather stations. Satellite soundings supply temperature and moisture through the atmosphere's depth in exactly those gaps. <b>supply data from the whole atmosphere over oceans and remote regions, where few other measurements exist</b>.", {});
+  }
+]), ["Satellites filled in the map: continuous coverage where there were no observers."]);
+
+E("sci-u1-stse-computers", 1, ["SC10.5.3"], 2, "var", varset([
+  function () {
+    return mcq("Computer models improved weather understanding and forecasting mainly because they",
+      "apply the physics of the atmosphere to huge amounts of data faster than any human calculation",
+      ["store old weather maps so that forecasters can look up what happened on the same date last year", "print weather maps in colour, which makes high and low pressure systems easier for the public to see", "remove the need for observations, since the equations alone describe the atmosphere completely"],
+      "The equations of atmospheric physics were known long before they could be used: working them forward for a whole country by hand would take longer than the weather itself. Computers made the calculation faster than the weather. Models still begin from observations. <b>apply the physics of the atmosphere to huge amounts of data faster than any human calculation</b>.", {});
+  },
+  function () {
+    return mcq("As computers grew faster and data from satellites and radar were fed into models, forecast accuracy improved. The main reason is that",
+      "the models start closer to the atmosphere's real state and can follow its changes in finer detail",
+      ["the models now run on the same computers that control the satellites, so the data arrive pre-sorted", "faster computers repeat the same calculation many times, and repetition by itself removes all error", "the public checks model output online, and errors are corrected by the readers who spot them first"],
+      "A forecast can only be as good as its starting picture and its detail. More observations give a truer start; faster machines allow finer detail. Repetition alone fixes nothing, and the public does not correct models. <b>the models start closer to the atmosphere's real state and can follow its changes in finer detail</b>.", {});
+  },
+  function () {
+    return mcq("A forecast model is rerun every six hours with fresh observations. Understanding of a developing storm grows between runs mainly because",
+      "each run tests the previous forecast against new measurements and corrects the picture of the storm",
+      ["each run adds the storm's name and category to a growing list that the public can follow in real time", "the storm weakens a little every six hours, so later runs have a simpler storm to describe accurately", "the computers rest between runs, and rested computers make fewer mistakes than ones that run steadily"],
+      "Each new run is a check on the last: where the forecast and the fresh observations disagree, the starting picture is corrected. That cycle of predict, measure, and correct is how understanding of the storm sharpens. <b>each run tests the previous forecast against new measurements and corrects the picture of the storm</b>.", {});
+  }
+]), ["Models combine physics with fresh data; speed matters because the atmosphere will not wait."]);
+
+E("sci-u1-stse-tech-revises", 1, ["SC10.5.3"], 2, "var", varset([
+  function () {
+    return mcq("Instruments carried on spacecraft have measured winds and temperatures in the atmospheres of other planets. This has revised scientific understanding mainly by",
+      "showing which parts of our weather explanations are general physics and which are special to Earth",
+      ["proving that the weather on other planets is identical to Earth's weather in every important detail", "allowing forecasters to issue weather forecasts for other planets that settlers will use next year", "demonstrating that Earth's atmosphere is the only one in the solar system that has moving air"],
+      "Measuring another planet's atmosphere tests our explanations: the parts that also work there are general physics, and the parts that fail mark what is special about Earth. Other planets plainly have moving air of their own. <b>showing which parts of our weather explanations are general physics and which are special to Earth</b>.", {});
+  },
+  function () {
+    return mcq("When weather balloons began carrying instruments high into the atmosphere, scientists revised their picture of the atmosphere because the balloons",
+      "revealed a layer above the troposphere where temperature stops falling and begins to rise",
+      ["proved that the troposphere is the only layer of the atmosphere that contains any weather", "showed that temperature falls steadily all the way to the top of the atmosphere without pause", "carried the first passengers, whose reports described the upper air better than instruments"],
+      "Ground-based reasoning assumed temperature kept falling with height. Balloon instruments found the stratosphere, where temperature levels off and rises. A new instrument reached a new region and the picture had to be redrawn. <b>revealed a layer above the troposphere where temperature stops falling and begins to rise</b>.", {});
+  },
+  function () {
+    return mcq("Automated weather buoys now report conditions from the middle of the Atlantic every hour. Understanding of ocean storms improved because the buoys",
+      "provide steady measurements from a region that ships cross only occasionally and report at all hours",
+      ["provide photographs of waves that artists use when painting seascapes of storms for weather offices", "frighten storms into changing course, since a storm weakens when it passes over a line of steel buoys", "measure the depth of the ocean floor, which is the main factor deciding where hurricanes will travel"],
+      "A storm's strength depends on the ocean surface it crosses, and that surface was mostly unmeasured between shipping lanes. Hourly buoy reports turned a blank region into data. <b>provide steady measurements from a region that ships cross only occasionally and report at all hours</b>.", {});
+  }
+]), ["New instruments often do not just add detail; they show that the old picture was incomplete."]);
+
+E("sci-u1-stse-tech-judge", 1, ["SC10.5.3"], 3, "var", varset([
+  function () {
+    return mcq("A town's flood records go back 80 years, but a new river gauge with radar rainfall estimates suggests the worst historical flood was probably larger than the records say. The best scientific response is to",
+      "revise the estimate of the old flood using the new evidence, and note that older records carry more uncertainty",
+      ["keep the old record exactly as written, because changing historical records is not permitted in science", "discard all 80 years of records, because one doubtful entry means none of the old measurements can be trusted", "average the old and new estimates and report that figure, because the truth usually lies between two sources"],
+      "New measurement technology can reach back: radar rainfall estimates let scientists re-estimate an old flood more accurately. The record is revised openly, with the older figure's uncertainty stated, not frozen, discarded whole, or averaged away. <b>revise the estimate of the old flood using the new evidence, and note that older records carry more uncertainty</b>.", {});
+  },
+  function () {
+    return mcq("Forecasters once judged a hurricane's strength mainly by the pressure at its centre measured by ships. Satellite estimates and aircraft data later showed some storms were stronger than the old method suggested. This episode best illustrates that",
+      "a new measuring technology can revise what earlier measurements seemed to establish about a phenomenon",
+      ["earlier scientists were careless, and their measurements should never have been trusted in the first place", "the strongest hurricane is always the most recent one, because storms have grown stronger every single year", "pressure is a useless measurement for hurricanes, and it should be dropped from forecasting altogether"],
+      "The ship-based measurements were careful work with limited tools. Better tools reached the storm's centre more often and revised the estimates. That is technology revising understanding, not carelessness being exposed. <b>a new measuring technology can revise what earlier measurements seemed to establish about a phenomenon</b>.", {});
+  },
+  function () {
+    return mcq("A school weather station's rain gauge is replaced by an electronic gauge that catches wind-blown rain better. The new gauge reports about 10 percent more rain in storms. The class should conclude that",
+      "the old gauge likely under-measured storm rainfall, so long-term comparisons must account for the change of instrument",
+      ["storms have suddenly become 10 percent wetter in the schoolyard, starting exactly when the new gauge was installed", "the new gauge must be faulty, because a replacement instrument should always agree exactly with the one before it", "rainfall records are pointless, since changing an instrument changes the numbers and no comparison is possible"],
+      "Instruments are part of every record. A better gauge catching more wind-blown rain means the old figures ran low, and any long-term comparison has to note the change. The weather did not jump the day the gauge did. <b>the old gauge likely under-measured storm rainfall, so long-term comparisons must account for the change of instrument</b>.", {});
+  }
+]), ["When the tool changes, ask what that does to the comparison between old and new measurements."]);
+
+/* ---------- SC10.5.4 Canadian contributions to science and technology ---------- */
+
+E("sci-u1-stse-canada-anemometer", 1, ["SC10.5.4"], 1, "var", varset([
+  function () {
+    return mcq("The three-cup anemometer, the standard instrument for measuring wind speed at weather stations worldwide, took its modern form through the work of",
+      "John Patterson, a Canadian meteorologist who redesigned it for the Meteorological Service of Canada",
+      ["André Robert, a Canadian meteorologist who first simulated weather patterns on a computer in Canada", "the Canadian Space Agency, whose engineers built it for the meteorological station carried to Mars", "Environment Canada forecasters, who adopted it from ships' logs during the Second World War at sea"],
+      "John Patterson of the Meteorological Service of Canada redesigned the cup anemometer into the three-cup form that became the world standard for wind measurement. The other names belong to other Canadian contributions in this unit. <b>John Patterson, a Canadian meteorologist who redesigned it for the Meteorological Service of Canada</b>.", {});
+  },
+  function () {
+    return mcq("An anemometer at a weather station measures",
+      "wind speed, from the rate at which the wind spins its cups",
+      ["wind direction, from the vane that points into the wind", "air pressure, from the height of a column of mercury", "humidity, from the difference between two thermometers"],
+      "The cups catch the wind and spin; the faster they turn, the faster the wind. Direction is the vane's job, pressure the barometer's, and humidity the psychrometer's. <b>wind speed, from the rate at which the wind spins its cups</b>.", {});
+  },
+  function () {
+    return mcq("The three-cup anemometer is given as a Canadian contribution to weather science because",
+      "its standard design was developed in Canada and adopted by weather services around the world",
+      ["the first weather station ever built was in Canada and every later station copied its instruments", "Canada is the windiest country in the world, so its scientists had the most reason to measure wind", "cups for measuring wind were unknown anywhere else until Canadian stations exported them abroad"],
+      "A contribution counts when the work was done in Canada and taken up elsewhere: Patterson's redesign became the standard instrument worldwide. <b>its standard design was developed in Canada and adopted by weather services around the world</b>.", {});
+  }
+]), ["Think of the instrument that spins in the wind at the top of a station mast."]);
+
+E("sci-u1-stse-canada-humidex", 1, ["SC10.5.4"], 1, "var", varset([
+  function () {
+    return mcq("The humidex, used in Canadian weather reports all summer, is",
+      "a scale developed in Canada that combines air temperature and humidity to describe how hot it feels",
+      ["a scale developed in Canada that combines air pressure and wind speed to describe how cold it feels", "an instrument carried on weather balloons that measures humidity high in the atmosphere over Canada", "a unit for measuring rainfall, used in Canada in place of millimetres during the summer season"],
+      "The humidex joins temperature and humidity into one 'feels like' number, so a humid 30 °C day can be reported as feeling like 38. It was developed by Canadian meteorologists for exactly this public warning job. <b>a scale developed in Canada that combines air temperature and humidity to describe how hot it feels</b>.", {});
+  },
+  function () {
+    return mcq("On a day when the temperature is 30 °C and the humidex is 38, the humidex is telling the public that",
+      "the humidity makes the air feel as hot as 38 °C would feel in drier air",
+      ["the temperature will rise to 38 °C later in the day as the sun gets higher", "the temperature is really 30 °C but the thermometer is reading 8 degrees low", "the wind will make the air feel 8 degrees cooler than the thermometer shows"],
+      "Sweat cools the body by evaporating; humid air slows that evaporation, so the body feels hotter than the thermometer reads. The humidex reports that felt temperature, not a forecast or an instrument error. <b>the humidity makes the air feel as hot as 38 °C would feel in drier air</b>.", {});
+  },
+  function () {
+    return mcq("The humidex is a Canadian contribution to science and technology because it was",
+      "created by Canadian meteorologists to communicate the health risk of hot, humid weather",
+      ["created by Canadian engineers to measure the humidity inside greenhouses and cold storage", "imported into Canada from a warmer country and renamed for use in Canadian weather reports", "required by law in Canada before any other country was allowed to report how heat feels"],
+      "Canadian meteorologists created the humidex so that heat warnings could speak plainly about risk: high humidex values mean the body cannot cool itself well. <b>created by Canadian meteorologists to communicate the health risk of hot, humid weather</b>.", {});
+  }
+]), ["Humidex joins two measurements, temperature and humidity, into one 'feels like' number."]);
+
+E("sci-u1-stse-canada-uv", 1, ["SC10.5.4"], 1, "var", varset([
+  function () {
+    return mcq("The UV index, now reported worldwide with sun safety advice, began as",
+      "a Canadian invention, introduced by Environment Canada to report the strength of ultraviolet radiation",
+      ["a Canadian invention, introduced by Environment Canada to report the depth of the ozone layer overhead", "an American invention, introduced by the Weather Service to report the strength of ultraviolet radiation", "a European invention, introduced by the World Health Organization to rate sunscreens sold in pharmacies"],
+      "Environment Canada introduced the UV index in 1992, the first scale of its kind, and it was later adopted internationally. It reports the strength of ultraviolet radiation at the surface, not the ozone layer's depth. <b>a Canadian invention, introduced by Environment Canada to report the strength of ultraviolet radiation</b>.", {});
+  },
+  function () {
+    return mcq("A UV index of 8 means that",
+      "ultraviolet radiation is very strong and unprotected skin can burn quickly",
+      ["ultraviolet radiation is very weak and unprotected skin is safe all day", "the temperature will reach 8 degrees above the seasonal average that day", "eight hours of sunshine are expected before the first clouds arrive"],
+      "The index runs from low to extreme; 8 sits in the 'very high' band, where sunburn can occur in well under an hour. It says nothing about temperature or hours of sunshine. <b>ultraviolet radiation is very strong and unprotected skin can burn quickly</b>.", {});
+  },
+  function () {
+    return mcq("The UV index is an example of a Canadian contribution to science and technology because Canadian scientists",
+      "developed the scale and the public reporting system that other countries later adopted",
+      ["developed the sunscreen lotions that the scale recommends to the public on high-index days", "receive the most ultraviolet radiation in the world at their latitude in the summer months", "banned outdoor work on days when the index is high, a law other countries later copied"],
+      "The contribution is the scale itself: a simple number that turns ultraviolet measurements into public health guidance, first reported in Canada and now used around the world. <b>developed the scale and the public reporting system that other countries later adopted</b>.", {});
+  }
+]), ["The index rates the Sun's burning rays, and it started in Canadian forecasts."]);
+
+E("sci-u1-stse-canada-mars", 1, ["SC10.5.4"], 2, "var", varset([
+  function () {
+    return mcq("Canada's contribution to the Mars Phoenix lander was a meteorological station whose lidar instrument",
+      "fired laser pulses into the Martian sky and detected snow falling from clouds above the lander",
+      ["fired laser pulses into the Martian soil and measured the depth of ice buried beneath the surface", "photographed the Martian landscape in colour so that maps of the landing region could be drawn", "drilled into the Martian soil and baked samples in an oven to search for the chemicals of life"],
+      "The Canadian Space Agency's meteorological station (MET) carried a lidar that aimed laser pulses upward; the reflections revealed snow falling from Martian clouds, a first. The digging and baking were other instruments' work. <b>fired laser pulses into the Martian sky and detected snow falling from clouds above the lander</b>.", {});
+  },
+  function () {
+    return mcq("The Phoenix lander's Canadian weather station matters to weather science on Earth because it",
+      "showed that instruments built for Earth's atmosphere could measure another planet's atmosphere and test our understanding",
+      ["showed that Mars has the same weather systems as Earth, including hurricanes, fronts, and nor'easters in its seasons", "allowed Canadian forecasters to add Mars to the list of regions covered by the daily weather forecast for the public", "proved that the Canadian GEM model can forecast weather on any planet once it is given enough satellite pictures"],
+      "A weather station working on Mars is a test of atmospheric science itself: the same physics of pressure, temperature, and airborne particles applies there, and the measurements checked that understanding. Mars does not have Earth's weather systems. <b>showed that instruments built for Earth's atmosphere could measure another planet's atmosphere and test our understanding</b>.", {});
+  },
+  function () {
+    return mcq("Lidar, used in the Phoenix meteorological package and in atmospheric research on Earth, works by",
+      "timing pulses of laser light reflected from particles in the air to locate clouds and measure winds",
+      ["timing pulses of radio waves reflected from raindrops to measure how fast a storm is moving inland", "measuring the temperature of the air directly with a thermometer carried aloft by a small balloon", "collecting samples of air in bottles at different heights and analysing them later in a laboratory"],
+      "Lidar is radar's optical cousin: it times laser pulses bouncing off particles in the air. The return times locate cloud layers and falling snow, on Mars and on Earth. Radio pulses describe radar instead. <b>timing pulses of laser light reflected from particles in the air to locate clouds and measure winds</b>.", {});
+  }
+]), ["Phoenix carried Canadian weather instruments to Mars: remember the laser that watched snow fall."]);
+
+E("sci-u1-stse-canada-models", 1, ["SC10.5.4"], 2, "var", varset([
+  function () {
+    return mcq("André Robert's contribution to Canadian weather science was to",
+      "produce the first computer-based simulations of weather patterns and forecasts in Canada",
+      ["produce the first printed weather maps used by Canadian newspapers in the nineteenth century", "design the three-cup anemometer in the form that weather stations around the world still use", "lead the Canadian Space Agency's meteorological package aboard the Mars Phoenix lander"],
+      "André Robert pioneered numerical weather prediction in Canada, running the atmosphere's equations on the early computers. The anemometer was Patterson's work and the Phoenix package came decades later. <b>produce the first computer-based simulations of weather patterns and forecasts in Canada</b>.", {});
+  },
+  function () {
+    return mcq("The GEM model named in Canadian forecasts is",
+      "Canada's operational computer model, the Global Environmental Multiscale model, used to produce forecasts",
+      ["Canada's operational weather satellite, the Global Environmental Multiscale satellite, used to photograph storms", "a global exchange program in which Canadian forecasters trade places with forecasters in other countries yearly", "a gemstone-based instrument once used in Canada to judge humidity from the colour change of a cobalt salt"],
+      "GEM, the Global Environmental Multiscale model, is the Canadian computer model whose runs produce the country's forecasts. It is software, not a satellite, a program, or an instrument. <b>Canada's operational computer model, the Global Environmental Multiscale model, used to produce forecasts</b>.", {});
+  },
+  function () {
+    return mcq("Computer weather modelling is listed among Canada's contributions because",
+      "Canadian researchers were pioneers in simulating the atmosphere by computer, work that continues in the GEM model",
+      ["Canadian researchers own the company that builds most of the world's weather computers for national services", "computers were invented in Canada, and every forecast model since has been written by Canadian programmers", "Canada's cold climate forced its scientists to abandon observations and rely on computers earlier than others"],
+      "The contribution is the pioneering work itself, from André Robert's first simulations to today's GEM model. Computers were not invented in Canada, and Canadian forecasting never abandoned observations. <b>Canadian researchers were pioneers in simulating the atmosphere by computer, work that continues in the GEM model</b>.", {});
+  }
+]), ["One name to remember is André Robert; the model to remember is GEM."]);
+
+E("sci-u1-stse-canada-purpose", 1, ["SC10.5.4"], 2, "var", varset([
+  function () {
+    return mcq("Which pairing of a Canadian contribution with its purpose is correct?",
+      "Humidex: reporting how hot humid air feels, so people can judge the health risk of heat",
+      ["Humidex: reporting how cold windy air feels, so people can judge the risk of frostbite", "UV index: reporting the depth of snow that ultraviolet light has melted on a ski slope", "UV index: reporting the air pressure at the top of the atmosphere for balloon launches"],
+      "The humidex is about heat stress in humid air. The cold-and-wind pairing describes the wind chill idea instead, and the UV index reports radiation strength, not snow or pressure. <b>Humidex: reporting how hot humid air feels, so people can judge the health risk of heat</b>.", {});
+  },
+  function () {
+    return mcq("A student writing about Canadian contributions to weather science should include the Mars Phoenix meteorological station because it",
+      "carried Canadian-built weather instruments, including a lidar, that measured the atmosphere of another planet",
+      ["carried Canadian-built drilling equipment, including a robotic arm, that dug for signs of life in Martian soil", "was the first spacecraft to land in Canada, where its instruments were tested in Arctic conditions before launch", "proved that Canadian weather instruments are the only ones that can survive the cold of a Martian winter night"],
+      "The Phoenix station was Canada's weather contribution to the mission: pressure, temperature, wind, and the lidar that detected Martian snowfall. The lander touched down on Mars, not in Canada. <b>carried Canadian-built weather instruments, including a lidar, that measured the atmosphere of another planet</b>.", {});
+  },
+  function () {
+    return mcq("The three-cup anemometer, the humidex, and the UV index are grouped together in this unit because they are all",
+      "Canadian contributions to weather science and technology that are now used around the world",
+      ["Canadian contributions to weather science and technology that are used only within Canada's borders", "instruments that must be present at every Canadian weather station before a forecast can be issued", "scales that combine two weather measurements into a single number reported to the general public"],
+      "One is an instrument and two are public scales; what joins them is their Canadian origin and their worldwide adoption. The anemometer is not a scale, and the scales are not station instruments. <b>Canadian contributions to weather science and technology that are now used around the world</b>.", {});
+  }
+]), ["Each of these began in Canada: an instrument, and two scales the public uses."]);
+
+/* ---------- SC10.5.5 How scientific knowledge evolves ---------- */
+
+E("sci-u1-stse-tentative", 1, ["SC10.5.5"], 1, "var", varset([
+  function () {
+    return mcq("To say that scientific knowledge is 'tentative' means that it",
+      "is reliable and well supported, yet can change when new evidence or a better interpretation appears",
+      ["is only a guess, no more trustworthy than any opinion a person might hold about the same question", "changes completely every few years, so nothing learned in science class stays true for very long", "is kept secret by scientists until they are completely certain, which usually takes many decades"],
+      "Tentative is not a weakness. Scientific knowledge is the most reliable knowledge we have precisely because it is tested, and it stays open to revision when stronger evidence arrives. <b>is reliable and well supported, yet can change when new evidence or a better interpretation appears</b>.", {});
+  },
+  function () {
+    return mcq("Scientific knowledge is best described as",
+      "durable but open to revision: it lasts because it is tested, and it changes when evidence demands",
+      ["final and unchangeable: once a result is published, later evidence is not allowed to overturn it", "temporary and unreliable: it lasts only until the next study is published, which replaces it fully", "a matter of opinion: it lasts as long as most scientists vote to keep believing that it is correct"],
+      "The two halves belong together: durability, because tested knowledge holds up, and openness, because new evidence can still revise it. Neither finality nor voting describes science. <b>durable but open to revision: it lasts because it is tested, and it changes when evidence demands</b>.", {});
+  },
+  function () {
+    return mcq("When new evidence conflicts with an accepted scientific explanation, scientists usually",
+      "check the evidence carefully and revise the explanation if the evidence holds up",
+      ["ignore the evidence, because an accepted explanation cannot be changed once printed", "abandon the whole subject area and move on to a different field of science instead", "vote on which to keep, with the explanation preferred by senior scientists winning"],
+      "The first move is scrutiny: is the new evidence sound? If it is, the explanation changes to fit it. That is the normal working of science, not a crisis in it. <b>check the evidence carefully and revise the explanation if the evidence holds up</b>.", {});
+  }
+]), ["Tentative does not mean weak; it means evidence is allowed to change the conclusion."]);
+
+E("sci-u1-stse-past-climate", 1, ["SC10.5.5"], 2, "var", varset([
+  function () {
+    return mcq("Ice cores, tree rings, and fossils are used as evidence that Earth's climate has changed naturally in the past because they",
+      "preserve records of past conditions, such as temperatures and air composition, from before instruments existed",
+      ["preserve the written weather diaries of people who lived thousands of years ago in many parts of the world", "show that the climate has never actually changed, since the records in all three agree with today's climate", "allow scientists to control the climate of the past in a laboratory and rerun it under different conditions"],
+      "These are proxy records: nature stored the data. Ice holds ancient air, rings record growing conditions year by year, and fossils mark where warmth-loving species once lived. Together they show climates very different from today's. <b>preserve records of past conditions, such as temperatures and air composition, from before instruments existed</b>.", {});
+  },
+  function () {
+    return mcq("Air bubbles trapped in old ice are especially valuable evidence because they",
+      "are samples of the ancient atmosphere itself, so its gases can be measured directly",
+      ["are samples of ancient seawater, so the salt content of old oceans can be measured", "contain pollen from ancient plants, so the species living then can be identified", "contain tiny thermometers left by the climate, so past temperatures read directly"],
+      "The bubbles are the past atmosphere, sealed in the ice as it formed. Melting a dated layer releases air from that year, and its carbon dioxide can be measured directly rather than inferred. <b>are samples of the ancient atmosphere itself, so its gases can be measured directly</b>.", {});
+  },
+  function () {
+    return mcq("Tree rings provide evidence about past climate because",
+      "wide and narrow rings record years of good and poor growing conditions, building a dated climate record",
+      ["wide and narrow rings record the age of the forest, which is the same thing as a record of the climate", "each ring contains a sample of the air from its year, which can be analysed like the air in ice cores", "rings grow only in warm years, so counting them counts the warm years in a region's climate history"],
+      "Trees add one ring a year, and the ring's width tracks the growing conditions of that year. Matching patterns across many trees builds a dated record centuries long. The air samples belong to ice cores, not rings. <b>wide and narrow rings record years of good and poor growing conditions, building a dated climate record</b>.", {});
+  }
+]), ["These are proxy records: nature kept the data before anyone was measuring."]);
+
+E("sci-u1-stse-co2-evidence", 1, ["SC10.5.5"], 2, "var", varset([
+  function () {
+    return mcq("Graphs of atmospheric carbon dioxide and of Earth's surface temperature over the past century show the two rising together. The scientific importance of this pattern is that it",
+      "matches what the greenhouse explanation predicts, adding evidence that the added gases are warming the planet",
+      ["matches the predictions of every explanation equally well, so it adds no evidence for one over the others", "proves by itself, with no other evidence needed, exactly how much of the warming each gas is responsible for", "shows that temperature causes carbon dioxide to rise, which settles the direction of the relationship fully"],
+      "Evidence supports an explanation when the explanation predicted the pattern in advance. The greenhouse account predicted that adding these gases would warm the surface, and the paired rise is one of several lines of evidence, not a stand-alone proof of each gas's share. <b>matches what the greenhouse explanation predicts, adding evidence that the added gases are warming the planet</b>.", {});
+  },
+  function () {
+    return mcq("Weather and climate are different, and the difference matters when judging climate evidence because",
+      "climate is the long-term pattern, so one cold winter does not overturn decades of temperature records",
+      ["climate is the long-term pattern, so one cold winter proves that the warming trend has ended for good", "weather is the long-term pattern, so one hot summer is enough to establish a new climate for a region", "weather and climate are two names for the same thing, so daily records and century records are equal"],
+      "Weather is the day-to-day state; climate is the pattern over decades. A single cold winter is weather, fully compatible with a warming climate trend, just as one hot summer cannot establish a climate by itself. <b>climate is the long-term pattern, so one cold winter does not overturn decades of temperature records</b>.", {});
+  },
+  function () {
+    return mcq("Measurements since 1880 show Earth's surface warming, with the recent rate faster than in earlier warming periods. Scientists connect the faster rate to human activity mainly because",
+      "the timing matches the rise in human-produced greenhouse gases, and the gases' warming effect is well understood",
+      ["the timing matches the growth of cities, and pavement alone is known to raise the temperature of the whole planet", "earlier warming periods were not measured by satellites, so their rates are assumed to have been slower than now", "human activity is the only possible cause of any warming, since natural causes of warming stopped long ago"],
+      "Two things line up: the warming accelerated as human-produced greenhouse gases accumulated, and the physics of how those gases trap heat is established. Natural causes still operate; they do not explain the recent rate. <b>the timing matches the rise in human-produced greenhouse gases, and the gases' warming effect is well understood</b>.", {});
+  }
+]), ["Match the evidence to the prediction: what would the greenhouse explanation lead you to expect?"]);
+
+E("sci-u1-stse-revision-examples", 1, ["SC10.5.5"], 2, "var", varset([
+  function () {
+    return mcq("Louis Pasteur's swan-neck flask experiments changed scientific knowledge because they",
+      "provided evidence against the accepted idea that microbes generate spontaneously from broth",
+      ["provided the first microscope powerful enough to see the microbes living in the broth itself", "proved that microbes can never grow in broth under any conditions, sterile or not, ever again", "showed that broth is the natural home of microbes, which is where all microbes originate"],
+      "Broth stayed sterile in the swan-neck flasks until the neck was broken and microbes could enter. The accepted idea, spontaneous generation, could not survive that evidence, and it was replaced. <b>provided evidence against the accepted idea that microbes generate spontaneously from broth</b>.", {});
+  },
+  function () {
+    return mcq("Alfred Wegener proposed that continents drift, but his idea was not accepted for decades. It became accepted knowledge mainly when",
+      "new evidence, from the ocean floor and from magnetism recorded in rocks, corroborated the drifting",
+      ["new generations of scientists simply became more willing to believe unusual ideas than earlier ones", "Wegener's supporters won a famous debate against his critics at a large scientific meeting in Europe", "satellites photographed the continents in motion, moving several centimetres during a single year"],
+      "Wegener lacked a mechanism, and his evidence was thin. Seafloor spreading and magnetic stripes in ocean rocks supplied the corroboration in the 1960s, and drifting continents became plate tectonics. The change was driven by evidence, not by debate or fashion. <b>new evidence, from the ocean floor and from magnetism recorded in rocks, corroborated the drifting</b>.", {});
+  },
+  function () {
+    return mcq("The Mars Phoenix lander dug into Martian soil and found ice that scientists had hypothesized was there. The finding illustrates knowledge evolving because",
+      "a prediction drawn from earlier evidence was tested by new evidence gathered on the spot",
+      ["a prediction drawn from earlier evidence was replaced by a guess that happened to be lucky", "scientists finally agreed to stop testing the idea and accept it on the word of the mission", "the ice proved that every earlier statement about Mars had been completely wrong all along"],
+      "Orbital evidence had suggested ice below the surface; Phoenix dug and confirmed it. Knowledge evolved in the ordinary scientific way: a supported prediction met a direct test. <b>a prediction drawn from earlier evidence was tested by new evidence gathered on the spot</b>.", {});
+  }
+]), ["In each story, the turning point is new evidence, not a vote or a debate."]);
+
+E("sci-u1-stse-greenhouse-evidence", 1, ["SC10.5.5"], 2, "var", varset([
+  function () {
+    return mcq("Human-produced greenhouse gases contribute to the enhanced greenhouse effect because they",
+      "absorb heat radiated from Earth's surface and slow its escape to space, warming the lower atmosphere",
+      ["absorb sunlight before it reaches Earth's surface and reflect most of it back into space unused", "form a solid layer high in the atmosphere that works like the glass roof of a garden greenhouse", "increase the amount of energy the Sun produces, so more sunlight arrives at the top of the atmosphere"],
+      "The gases act on the outgoing side: the surface radiates heat upward, greenhouse gases absorb much of it and return part of it, so the lower atmosphere warms. There is no solid layer, and the Sun's output is not changed by our gases. <b>absorb heat radiated from Earth's surface and slow its escape to space, warming the lower atmosphere</b>.", {});
+  },
+  function () {
+    return mcq("As evidence of an enhanced greenhouse effect accumulated, scientific statements about climate change were revised to",
+      "state more firmly, and in more detail, that human activity is warming the climate",
+      ["state more firmly, and in more detail, that human activity is cooling the climate", "remove the role of evidence entirely and rest only on computer model projections", "assign the whole change to the Sun, whose output was found to be rising quickly"],
+      "Revision here meant strengthening: more evidence, from surface records, oceans, ice, and the upper atmosphere, made the human role clearer and the statements more confident and specific. <b>state more firmly, and in more detail, that human activity is warming the climate</b>.", {});
+  },
+  function () {
+    return mcq("A graph shows carbon dioxide rising steadily while temperature rises in a jagged line with the same upward trend. The jaggedness of the temperature line is best explained by",
+      "year-to-year weather variability layered on top of the long-term climate trend",
+      ["year-to-year errors in the thermometers layered on top of the long-term climate trend", "carbon dioxide falling in the years when temperature dips, then rising again after", "the graph being drawn from too few years, since temperature records began only recently"],
+      "Individual years bounce with weather: volcanic eruptions, ocean cycles, and ordinary variation. The trend underneath is the climate signal. The dips are not thermometer failures, and carbon dioxide does not fall in the dip years. <b>year-to-year weather variability layered on top of the long-term climate trend</b>.", {});
+  }
+]), ["The gases trap outgoing heat; the evidence trend is long-term, with weather noise on top."]);
+
+E("sci-u1-stse-new-evidence", 1, ["SC10.5.5"], 3, "var", varset([
+  function () {
+    return mcq("A coastal community's tide gauge, installed in 1960, showed sea level rising 2 mm per year. Satellite measurements since 1993 show the local rate is now 4 mm per year. The most scientific conclusion is that",
+      "the rate of sea level rise has increased, and the earlier figure should be updated using the fuller record",
+      ["the rate of sea level rise has decreased, and the satellite figure should be discarded as an instrument error", "one of the instruments must be entirely wrong, since two measurements of the same thing can never differ", "sea level science should report the average of the two rates, because averaging is what scientists always do"],
+      "The two instruments measured different periods. Read together, they show the rate itself grew: the honest move is to update the figure with the fuller record, not to discard a measurement or split the difference. <b>the rate of sea level rise has increased, and the earlier figure should be updated using the fuller record</b>.", {});
+  },
+  function () {
+    return mcq("New fossil evidence shows that a region believed to have been ice-covered 15,000 years ago was actually ice-free then. The best response for a textbook author is to",
+      "revise the account of the region's past climate, since the new evidence changes what the record supports",
+      ["revise nothing, since a textbook's account of the past should stay fixed once it has been published", "discard the fossil evidence, since a single fossil find is never allowed to change an accepted account", "mention both versions without judging, since scientific accounts are not supposed to prefer evidence"],
+      "A textbook's duty is to the evidence. One well-established fossil find can outweigh an older inference, and the account should change to say what the record now supports. <b>revise the account of the region's past climate, since the new evidence changes what the record supports</b>.", {});
+  },
+  function () {
+    return mcq("A student says, 'Scientists changed their minds about this, so science cannot be trusted.' The strongest reply is that",
+      "changing conclusions in response to new evidence is exactly how science corrects itself and earns trust",
+      ["changing conclusions in response to new evidence is exactly how science admits that its methods failed", "scientists never actually change their minds; the student has misunderstood how textbooks are written", "trust in science rests on scientists being right the first time, so changes of mind should be hidden"],
+      "A system that never changed its conclusions would be the untrustworthy one. Science earns trust by tying its conclusions to evidence, including when that means revising them. <b>changing conclusions in response to new evidence is exactly how science corrects itself and earns trust</b>.", {});
+  }
+]), ["Ask what the new evidence does to the old conclusion: update, not average and not ignore."]);
+
+/* ---------- SC10.5.6 Relating activities to science disciplines ---------- */
+
+E("sci-u1-stse-disciplines", 1, ["SC10.5.6"], 1, "var", varset([
+  function () {
+    return mcq("The study of weather and its forecasting is the discipline called",
+      "meteorology",
+      ["hydrology", "oceanography", "climatology"],
+      "Meteorology is the study of the atmosphere and weather. The neighbouring fields study water, oceans, and long-term climate instead. <b>meteorology</b>.", {});
+  },
+  function () {
+    return mcq("The study of ocean currents and the oceans' movement is",
+      "oceanography",
+      ["meteorology", "hydrology", "climatology"],
+      "Oceanography covers the oceans: their currents, their coasts, and their water. Weather, fresh water, and climate patterns belong to the other fields named. <b>oceanography</b>.", {});
+  },
+  function () {
+    return mcq("The study of long-term climate patterns and how they change is",
+      "climatology",
+      ["meteorology", "oceanography", "hydrology"],
+      "Climatology works at the scale of decades and longer: the patterns we call climate and how they shift. Day-to-day weather is meteorology's scale. <b>climatology</b>.", {});
+  }
+]), ["Match the thing studied to the field that studies it: air, ocean, or climate."]);
+
+E("sci-u1-stse-disciplines-more", 1, ["SC10.5.6"], 1, "var", varset([
+  function () {
+    return mcq("Analyzing atmospheric pressure, a property of forces and fluids, draws most directly on",
+      "physics, the study of forces, fluids, and energy transfers",
+      ["chemistry, the study of substances and how they react", "biology, the study of living organisms and their processes", "geology, the study of rocks and the solid Earth's structure"],
+      "Pressure is force spread over an area, a core physics idea, and the guide pairs atmospheric pressure analysis with physics for exactly that reason. <b>physics, the study of forces, fluids, and energy transfers</b>.", {});
+  },
+  function () {
+    return mcq("Investigating how the material a surface is made of affects its albedo draws most directly on",
+      "chemistry, the study of substances and their properties",
+      ["physics, the study of forces and energy in the world", "biology, the study of living things and their habitats", "geology, the study of rocks and the Earth's deep structure"],
+      "The guide pairs albedo investigations with chemistry: how a material's composition and surface properties decide whether it absorbs or reflects energy. <b>chemistry, the study of substances and their properties</b>.", {});
+  },
+  function () {
+    return mcq("Studying the water cycle, the movement of water through land, lakes, and air, is the work of",
+      "hydrology, the study of water moving through the environment",
+      ["meteorology, the study of weather and the atmosphere's behaviour", "oceanography, the study of the oceans and their currents and coasts", "climatology, the study of long-term climate patterns and their change"],
+      "Hydrology follows water through the environment: evaporation, rivers, groundwater, and lakes. The water cycle is its home ground. <b>hydrology, the study of water moving through the environment</b>.", {});
+  }
+]), ["The guide pairs pressure with physics, surface materials with chemistry, and the water cycle with hydrology."]);
+
+E("sci-u1-stse-personal-activities", 1, ["SC10.5.6"], 2, "var", varset([
+  function () {
+    return mcq("A student checks a weather app, chooses a jacket, and notes the wind for an afternoon sail. Relating these activities to science disciplines, the wind check for sailing draws most on",
+      "meteorology, the study of weather and the atmosphere's behaviour",
+      ["climatology, the study of long-term climate patterns and change", "hydrology, the study of water's movement through land and lakes", "geology, the study of rocks and the structure of the solid Earth"],
+      "This afternoon's wind is weather, and weather is meteorology's subject. Climate patterns, fresh water, and rocks are other fields' subjects. <b>meteorology, the study of weather and the atmosphere's behaviour</b>.", {});
+  },
+  function () {
+    return mcq("A farmer studies soil moisture and stream flow before irrigating a field. These activities relate most directly to",
+      "hydrology, the study of water in the environment and its movement",
+      ["meteorology, the study of weather and the atmosphere's behaviour", "oceanography, the study of the oceans and their currents and life", "climatology, the study of long-term climate patterns and change"],
+      "Soil moisture and stream flow are water moving through the land, which is hydrology's territory, even though the farmer's purpose is practical. <b>hydrology, the study of water in the environment and its movement</b>.", {});
+  },
+  function () {
+    return mcq("A harbour master predicts how a storm surge will move through a bay. The prediction draws most directly on",
+      "oceanography, the study of the oceans, their currents, and their coasts",
+      ["meteorology, the study of weather and the atmosphere's behaviour alone", "hydrology, the study of water's movement through rivers and groundwater", "geology, the study of rocks and the structure of the solid Earth itself"],
+      "A surge is ocean water piling against a coast: oceanography's ground, even though the storm driving it is weather. The question asks for the most direct field. <b>oceanography, the study of the oceans, their currents, and their coasts</b>.", {});
+  }
+]), ["Name what is being studied: air, fresh water, or ocean, then pick the matching field."]);
+
+E("sci-u1-stse-interdisciplinary", 1, ["SC10.5.6"], 2, "var", varset([
+  function () {
+    return mcq("Modern weather prediction is an interdisciplinary study because it combines",
+      "meteorology with mathematics, statistics, and computer modelling",
+      ["meteorology with the folklore and weather lore of coastal communities", "meteorology with astrology and the reading of signs in animal behaviour", "meteorology with geography alone, since maps are its only other tool"],
+      "A forecast is meteorology computed: the atmosphere's physics, handled with mathematics and statistics, run on computers. Lore and signs are not part of the method, and maps are only its display. <b>meteorology with mathematics, statistics, and computer modelling</b>.", {});
+  },
+  function () {
+    return mcq("Analyzing an ice core to reconstruct past climate is interdisciplinary because it draws on",
+      "chemistry for the trapped gases, paleontology for fossil evidence, and climatology for the climate record",
+      ["chemistry for the trapped gases, and no other field, since the ice itself holds all the needed evidence", "geography for the drilling location, and no other field, since the location decides what the ice can show", "history for the age of the ice, and no other field, since dating the layers is the whole of the analysis"],
+      "The guide's own example: gases need chemistry, the living remains need paleontology, and the pattern they build is climatology. No single field carries the whole analysis. <b>chemistry for the trapped gases, paleontology for fossil evidence, and climatology for the climate record</b>.", {});
+  },
+  function () {
+    return mcq("Studying the effect of ocean acidification on cold-water corals is interdisciplinary because it involves",
+      "biology, chemistry, ecology, and oceanography working on one problem together",
+      ["biology alone, since corals are living things and the rest is background detail", "chemistry alone, since acidity is a chemical property and the rest is description", "oceanography alone, since the corals live in the ocean and the rest is commentary"],
+      "The corals are biology, the acidification is chemistry, the community effects are ecology, and the setting is oceanography. The problem sits across all four, which is what makes the study interdisciplinary. <b>biology, chemistry, ecology, and oceanography working on one problem together</b>.", {});
+  }
+]), ["Interdisciplinary means two or more fields genuinely needed, not one field with decorations."]);
+
+E("sci-u1-stse-discipline-apply", 1, ["SC10.5.6"], 2, "var", varset([
+  function () {
+    return mcq("A research team measures how fast a glacier's meltwater stream carries sediment downhill. The team's work relates most directly to",
+      "hydrology, through the movement of water across the land",
+      ["climatology, through the movement of water across the land", "meteorology, through the movement of water across the land", "oceanography, through the movement of water across the land"],
+      "A meltwater stream is water moving across the land, and following water through the environment is hydrology's work, whatever the stream's source. <b>hydrology, through the movement of water across the land</b>.", {});
+  },
+  function () {
+    return mcq("A scientist studies how the Labrador Current affects spring temperatures in coastal Labrador. The work relates most directly to",
+      "oceanography, through the movement of ocean water and its stored heat",
+      ["hydrology, through the movement of ocean water and its stored heat", "meteorology, through the movement of ocean water and its stored heat", "climatology, through the movement of ocean water and its stored heat"],
+      "A current is the ocean in motion, carrying stored heat with it. Studying that movement and its effects is oceanography. <b>oceanography, through the movement of ocean water and its stored heat</b>.", {});
+  },
+  function () {
+    return mcq("A student investigates whether darker pavement makes city blocks hotter than grassy ones. The investigation relates most directly to",
+      "chemistry and physics, through how materials absorb and reflect energy",
+      ["biology and ecology, through how materials absorb and reflect energy", "geology and hydrology, through how materials absorb and reflect energy", "astronomy and geology, through how materials absorb and reflect energy"],
+      "The question is about materials and energy: what a surface is made of (chemistry's side of albedo) and how it takes in or reflects energy (physics). The living and rock fields are not the direct route here. <b>chemistry and physics, through how materials absorb and reflect energy</b>.", {});
+  }
+]), ["Follow the water, the air, or the material: the thing studied names the field."]);
+
+E("sci-u1-stse-interdisciplinary-why", 1, ["SC10.5.6"], 3, "var", varset([
+  function () {
+    return mcq("Emerging problems such as ocean acidification increasingly require interdisciplinary teams mainly because",
+      "the problems cross the boundaries of single disciplines, so no one field holds all the needed methods and knowledge",
+      ["the problems are too large for one scientist's lifetime, so teams are needed simply to finish the work in time", "governments require every funded project to list several disciplines, whether or not the problem needs them", "scientists in single disciplines have stopped making discoveries, so combining fields is the only way forward"],
+      "Acidification is at once chemistry, biology, ecology, and oceanography. The team exists because the problem does not respect the boundaries, not because of funding rules or a failure of single fields. <b>the problems cross the boundaries of single disciplines, so no one field holds all the needed methods and knowledge</b>.", {});
+  },
+  function () {
+    return mcq("A university advertises a program in hydrometeorology, joining the study of water and weather. The strongest reason such combined fields exist is that",
+      "water and weather continually affect each other, so studying them together answers questions neither field settles alone",
+      ["water and weather are the same subject, so the two older fields were merged to save universities the cost of both", "students prefer shorter program names, and combining fields produces the shortest names for university calendars", "the older fields ran out of questions to study, so their scientists combined them to keep their departments open"],
+      "Rain is weather becoming water; evaporation is water becoming weather. Where two systems drive each other, a combined field answers questions that fall between the two parents. <b>water and weather continually affect each other, so studying them together answers questions neither field settles alone</b>.", {});
+  },
+  function () {
+    return mcq("A climatologist, a chemist, and a marine biologist study the same melting sea ice. Their collaboration is interdisciplinary in the useful sense because",
+      "each contributes methods and knowledge the others do not have, and the combined picture explains more than any one view",
+      ["each contributes the same methods and knowledge as the others, and agreement among three fields settles the question", "three scientists always produce a better answer than one, whatever their fields, since more people means more truth", "their three fields are traditionally rivals, and collaboration is valued chiefly because it ends the rivalry"],
+      "The test of a real interdisciplinary team is difference put to work: the chemist's gas analysis, the biologist's organisms, the climatologist's long record. Three identical viewpoints would add nothing. <b>each contributes methods and knowledge the others do not have, and the combined picture explains more than any one view</b>.", {});
+  }
+]), ["The test of a real interdisciplinary team: does each field supply something the others lack?"]);
+
 /* ----- bank-u1-maps.js ----- */
 // CRMARKS: sci-u1-cr-mapdescribe=4
 // CRMARKS: sci-u1-cr-airmass=3
@@ -1941,7 +2591,9 @@ E("sci-u1-cr-airmass", 1, ["SC10.6.4"], 3, "var", varset([
 // CRMARKS: sci-u2-cr-naming=4
 // CRMARKS: sci-u2-cr-balance=3
 // CRMARKS: sci-u2-cr-rates=3
-// Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6).
+// Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6, plus
+// the SC10.7.1 to 7.3 STSE tranche added Nov 19, 2026 at the end of
+// this file).
 // Original entries written for this app from the question types in
 // the source analysis. Chemistry is the course's generator showcase:
 // naming, formulas, balancing and classification are generated from
@@ -3020,6 +3672,399 @@ E("sci-u2-ion-count", 2, ["SC10.8.1"], 2, "gen", function () {
     String(it.n), s6numDist(it.n, [it.n + 1, it.n + 2, Math.max(1, it.n - 1)], ""),
     it.why + " Bracket subscripts multiply everything inside the brackets; plain subscripts multiply only their own element or ion.", { f: it.f, n: it.n });
 }, ["Read brackets as packages: the outside subscript counts whole packages."]);
+
+/* ---------- STSE tranche (Nov 19, 2026): SC10.7.1, 7.2, 7.3 ----------
+   Registered so the unit's blueprint tests (Chemical Reactions Tests
+   1 and 2 of the test-shaped practice map) carry their full indicator
+   coverage. Content follows the guide's Focus for Learning for each
+   outcome: everyday and community chemistry for 7.1, IUPAC and
+   trivial names for 7.2, and neutralization technologies (antacids,
+   liming, pH control) for 7.3. The remaining STSE codes stay a later
+   tranche. */
+
+/* ---------- SC10.7.1 Science and technology in daily life and community ---------- */
+
+E("sci-u2-stse-everyday-chemistry", 2, ["SC10.7.1"], 1, "var", varset([
+  function () {
+    return mcq("Which morning routine relies most directly on chemistry?",
+      "Brushing your teeth with toothpaste, whose fluoride and mild abrasives are formulated chemicals",
+      ["Brushing your hair with a brush, whose bristles are arranged to smooth and untangle each strand", "Tying your shoes with laces, whose knots hold by friction between the fibres of the two loops", "Checking the time on a clock, whose hands are driven around the dial by a small electric motor"],
+      "Toothpaste is applied chemistry: fluoride compounds for the enamel and abrasives chosen for cleaning are in it because of what they do chemically. The other routines are mechanical or electrical. <b>Brushing your teeth with toothpaste, whose fluoride and mild abrasives are formulated chemicals</b>.", {});
+  },
+  function () {
+    return mcq("A student lists products used before school: shampoo, soap, toothpaste, and a granola bar. These are examples of science and technology in daily life because they are",
+      "materials developed and manufactured by applying chemical knowledge",
+      ["materials that occur naturally and are used exactly as they are found", "materials whose ingredients are kept secret so no one can study them", "materials that would work exactly the same if their chemistry changed"],
+      "Each product was formulated: ingredients chosen and combined for what they do, from detergents in shampoo to the processed ingredients of the bar. Change the chemistry and the products stop working as intended. <b>materials developed and manufactured by applying chemical knowledge</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is the clearest example of chemistry as an integral part of a student's life?",
+      "The battery in a phone storing and releasing energy through chemical reactions",
+      ["The colour of a phone case matching the colour of a favourite sports team's jersey", "The shape of a phone's screen fitting the shape of the pocket it is carried in daily", "The price of a phone plan depending on the amount of data the student uses monthly"],
+      "A battery is a chemical device: it stores energy in reactants and releases it as electricity through reactions that reverse when it charges. Colours, shapes, and prices involve no chemistry. <b>The battery in a phone storing and releasing energy through chemical reactions</b>.", {});
+  }
+]), ["Look for the option where a chemical reaction or a formulated material does the work."]);
+
+E("sci-u2-stse-community", 2, ["SC10.7.1"], 1, "var", varset([
+  function () {
+    return mcq("Which community service depends most directly on chemistry?",
+      "Treating the town's drinking water to make it safe",
+      ["Painting lines on the town's hockey rink each fall", "Plowing the town's roads after a winter snowstorm", "Planting flowers in the town's parks each spring"],
+      "Water treatment is chemistry at work for a whole town: substances are added and reactions used to remove or kill what makes water unsafe. The other services are valuable but mechanical. <b>Treating the town's drinking water to make it safe</b>.", {});
+  },
+  function () {
+    return mcq("A community collects leftover paint, solvents, and old batteries at a hazardous waste depot. The depot exists because these materials",
+      "contain chemicals that can harm people and the environment if they are dumped or burned",
+      ["contain chemicals that become completely harmless as soon as they are a few years old", "are worth a great deal of money, and the community sells them to collectors each year", "are too heavy for regular garbage trucks, so a special building is needed to store them"],
+      "Household hazardous waste is a chemistry problem: solvents, paints, and battery contents can poison water and soil. The depot routes them to handling that matches their hazards. Age does not make them harmless. <b>contain chemicals that can harm people and the environment if they are dumped or burned</b>.", {});
+  },
+  function () {
+    return mcq("Road salt spread on icy sidewalks in a Newfoundland town is an example of science in the community because",
+      "salt lowers the freezing point of water, so ice melts at temperatures below 0 °C",
+      ["salt raises the freezing point of water, so ice forms at temperatures below 0 °C", "salt heats the ice from within, so the sidewalk warms up several degrees at once", "salt colours the ice dark, so the sun's rays melt it faster than white ice melts"],
+      "Dissolved salt disrupts ice formation, so salty water stays liquid below 0 °C and the ice in contact with it melts. The salt does not heat the ice or work by colour. <b>salt lowers the freezing point of water, so ice melts at temperatures below 0 °C</b>.", {});
+  }
+]), ["Community chemistry is the chemistry a whole town relies on: water, waste, and winter roads."]);
+
+E("sci-u2-stse-product-categories", 2, ["SC10.7.1"], 2, "var", varset([
+  function () {
+    return mcq("The guide for this unit lists cosmetics, batteries, foods, fuels, cleaning products, medicines, and plastics as places chemistry appears in daily life. What do these examples have in common?",
+      "Each is a material or product whose making and behaviour rest on chemical knowledge",
+      ["Each is a material or product that is manufactured without any chemical processes", "Each is a material or product whose ingredients are elements in their pure form", "Each is a material or product that was invented in Canada in the twentieth century"],
+      "The list spans a whole day, but the thread is one: substances designed, made, and used by applying chemistry. None of them is a pure element, and they were not all invented in one country or century. <b>Each is a material or product whose making and behaviour rest on chemical knowledge</b>.", {});
+  },
+  function () {
+    return mcq("A pharmacy's shelves hold pain relievers, antacids, and vitamins. Their presence in daily life illustrates that",
+      "chemical knowledge is used to design substances that act on the body in planned ways",
+      ["chemical knowledge is used to design substances that act on the body in random ways", "medicines work by tradition and habit rather than by any chemical action in the body", "medicines are natural products that reach the shelf with no testing or manufacture"],
+      "A medicine is a designed substance: its molecules were selected for a planned effect on the body's chemistry, then tested and manufactured to a standard. <b>chemical knowledge is used to design substances that act on the body in planned ways</b>.", {});
+  },
+  function () {
+    return mcq("Plastics are named in this unit as chemistry in everyday life because a plastic's properties",
+      "are designed by choosing and joining molecules to get the strength, flexibility, or heat resistance wanted",
+      ["are decided entirely by the colour added at the factory, which determines what the plastic can be used for", "cannot be changed once the plastic is made, which is why all plastics behave in exactly the same way always", "come from the mould it is poured into, since the material itself has no properties until it is shaped"],
+      "Plastics are polymers built molecule by molecule; chain length and structure set the properties, which is why one family of materials can be both a squeeze bottle and a hockey visor. <b>are designed by choosing and joining molecules to get the strength, flexibility, or heat resistance wanted</b>.", {});
+  }
+]), ["The common thread is applied chemical knowledge: substances made and used on purpose."]);
+
+E("sci-u2-stse-without-reaction", 2, ["SC10.7.1"], 2, "var", varset([
+  function () {
+    return mcq("How would daily life change if the combustion of fuels suddenly became impossible?",
+      "Vehicles, furnaces, and stoves that burn fuel would stop working, removing most heating and transport",
+      ["Vehicles, furnaces, and stoves that burn fuel would run more cleanly, removing most air pollution at once", "Only campfires and candles would be affected, since modern engines and furnaces do not burn anything", "Nothing important would change, because combustion is a laboratory reaction with no role in daily life"],
+      "Combustion is the reaction daily life runs on: engines, oil furnaces, and wood stoves all burn fuel. Remove it and heating and transport stop together, which is what 'integral' means. <b>Vehicles, furnaces, and stoves that burn fuel would stop working, removing most heating and transport</b>.", {});
+  },
+  function () {
+    return mcq("Baking a cake uses chemistry in daily life because",
+      "baking soda or powder reacts with acidic ingredients to release the gas that makes the cake rise",
+      ["baking soda or powder reacts with the oven's heat to turn the batter a golden brown colour only", "the heat of the oven melts the batter, and melting is the only change that happens during baking", "the cake rises because the eggs expand as they warm, and no chemical change takes place at all"],
+      "The rise is a reaction: the leavening agent meets acidic ingredients and releases carbon dioxide, and the gas bubbles lift the batter. Melting happens too, but it cannot explain the rise. <b>baking soda or powder reacts with acidic ingredients to release the gas that makes the cake rise</b>.", {});
+  },
+  function () {
+    return mcq("A student says chemistry is 'only in labs.' The strongest counterexample from community life is",
+      "the town water plant, where chemical treatment makes everyone's drinking water safe every day",
+      ["the town water plant, where water is stored in large tanks until it is needed by households", "the school science room, where students wear goggles and follow a written procedure carefully", "the pharmacy downtown, where medicines are kept on shelves behind the counter for customers"],
+      "The water plant runs chemical processes continuously for the whole community; it is chemistry as public infrastructure, not as a school subject. Storage, shelving, and lab procedure do not make the point. <b>the town water plant, where chemical treatment makes everyone's drinking water safe every day</b>.", {});
+  }
+]), ["Pick the example where a chemical process, not just a place or an object, does the work."]);
+
+E("sci-u2-stse-hazard-symbols", 2, ["SC10.7.1"], 2, "var", varset([
+  function () {
+    return mcq("Hazardous Household Product Symbols appear on cleaners and solvents at home so that users",
+      "can recognize dangers such as 'flammable' or 'corrosive' and handle the product safely",
+      ["can recognize the brand of the product quickly when shopping for a replacement bottle", "can tell which products are made in Canada and which are imported from other countries", "can compare the prices of similar products without reading the rest of the label at all"],
+      "The symbols are a safety language in pictures: flame, corrosion, and poison warnings that a user can read at a glance, whatever their reading language. <b>can recognize dangers such as 'flammable' or 'corrosive' and handle the product safely</b>.", {});
+  },
+  function () {
+    return mcq("WHMIS symbols and safety data sheets in workplaces and school labs serve the same purpose as household hazard symbols: they",
+      "communicate a chemical's hazards and safe handling before anyone uses the substance",
+      ["communicate a chemical's price and supplier before anyone orders the substance anew", "guarantee that a chemical can never cause harm once its symbol has been read carefully", "replace the need for goggles, gloves, and ventilation when handling hazardous chemicals"],
+      "WHMIS is the workplace version of the same idea: know the hazard and the handling before the container is opened. Symbols inform precautions; they never replace them or guarantee safety. <b>communicate a chemical's hazards and safe handling before anyone uses the substance</b>.", {});
+  },
+  function () {
+    return mcq("A bottle under a kitchen sink carries a flame symbol in a red border. The symbol tells the user that the contents",
+      "can catch fire easily and must be kept away from heat and open flames",
+      ["can explode without warning and must be returned to the store at once", "are meant for use on a stove and will improve the burning of its gas", "are hot to the touch and should be allowed to cool before being used"],
+      "The flame pictogram means flammable: the contents can ignite easily. It is a handling instruction, keep away from heat and flame, not a claim that the bottle is hot or explosive. <b>can catch fire easily and must be kept away from heat and open flames</b>.", {});
+  }
+]), ["The symbols are a safety language: they warn before a substance is used, not after."]);
+
+E("sci-u2-stse-integral-judge", 2, ["SC10.7.1"], 3, "var", varset([
+  function () {
+    return mcq("A town debates closing its water treatment plant and pumping untreated lake water instead. The strongest science-based argument against the proposal is that",
+      "treatment uses chemical processes to remove or kill what makes water unsafe, and untreated water carries disease and contaminants",
+      ["treatment uses chemical processes that make the water taste better, and residents prefer the taste of treated water in surveys", "lake water is always unsafe in every town, no matter its source or surroundings, so no town could ever use it without treatment", "the plant employs many people, and closing any workplace is always wrong regardless of the science involved in its operation"],
+      "The argument that carries the science is the treatment itself: disinfection and removal of contaminants are chemical processes standing between a community and waterborne disease. Taste and jobs are real considerations, but they are not the science-based argument. <b>treatment uses chemical processes to remove or kill what makes water unsafe, and untreated water carries disease and contaminants</b>.", {});
+  },
+  function () {
+    return mcq("Which claim about science and technology in a community is best supported by the examples in this unit?",
+      "They are woven into ordinary life: in its water, food, medicines, fuels, and waste handling",
+      ["They are woven into special events: in its festivals, ceremonies, and annual celebrations", "They belong to laboratories and factories, and reach ordinary life only in emergencies", "They matter mostly to scientists, whose work rarely touches the lives of other residents"],
+      "The unit's examples are all ordinary: drinking water, meals, medicines, heating fuel, and garbage. Science and technology show up in a community's daily systems, not mainly in its laboratories or festivals. <b>They are woven into ordinary life: in its water, food, medicines, fuels, and waste handling</b>.", {});
+  },
+  function () {
+    return mcq("A student must show that chemistry is integral to their own life, not just present in it. The best evidence would be to",
+      "trace one ordinary day and show which activities would fail or change without the chemistry behind them",
+      ["trace one ordinary day and list every object touched, whether or not chemistry has anything to do with it", "memorize the names of twenty chemicals and recite them, whether or not they appear in the student's life", "visit a chemical plant on a field trip and describe its size, whether or not its products reach the town"],
+      "'Integral' means the day depends on it. Tracing consequences, what stops working without the chemistry, is evidence; lists, recitations, and visits only show presence. <b>trace one ordinary day and show which activities would fail or change without the chemistry behind them</b>.", {});
+  }
+]), ["'Integral' means life would change without it: look for consequences, not just presence."]);
+
+/* ---------- SC10.7.2 Usefulness of scientific nomenclature systems ---------- */
+
+E("sci-u2-stse-nomenclature", 2, ["SC10.7.2"], 1, "var", varset([
+  function () {
+    return mcq("A scientific nomenclature system is",
+      "a set of agreed rules for naming substances so that each name identifies one substance",
+      ["a set of agreed rules for pricing substances so that each price identifies one substance", "a list of the substances a laboratory is required to keep in stock at all times of year", "a list of the scientists who discovered each substance, arranged by the year of discovery"],
+      "Nomenclature is naming under rules: given the name, any chemist can identify the substance, and given the substance, the rules produce its name. <b>a set of agreed rules for naming substances so that each name identifies one substance</b>.", {});
+  },
+  function () {
+    return mcq("IUPAC's role in chemical naming is to",
+      "create and uphold the rules by which elements and compounds are named worldwide",
+      ["create and uphold the rules by which laboratory glassware is manufactured worldwide", "test and approve every chemical sold, by tasting and handling samples of each product", "publish the prices of elements and compounds so that laboratories pay the same amounts"],
+      "IUPAC, the International Union of Pure and Applied Chemistry, maintains the naming rules so that a name written in one country means the same substance in every other. <b>create and uphold the rules by which elements and compounds are named worldwide</b>.", {});
+  },
+  function () {
+    return mcq("Before systematic naming, the substance NH3 was known by names based on its source and smell. The move to systematic names was driven by the need for names that",
+      "tell the reader what a substance is made of, not just where it was found or how it smells",
+      ["tell the reader who discovered a substance, not just where it was found or how it smells", "are shorter than the old names in every case, even when the substance is complicated", "sound impressive in Latin, which was the language of the scientists who named them"],
+      "A systematic name encodes composition: 'nitrogen trihydride' states what NH3 contains. Source-and-smell names cannot do that, and shortness was never the point. <b>tell the reader what a substance is made of, not just where it was found or how it smells</b>.", {});
+  }
+]), ["A nomenclature is a naming system: its job is that a name identifies exactly one substance."]);
+
+E("sci-u2-stse-trivial-names", 2, ["SC10.7.2"], 1, "var", varset([
+  function () {
+    return mcq("'Baking soda', 'laughing gas', and 'limestone' are called trivial names because they",
+      "grew out of a substance's use, appearance, or source rather than its chemical composition",
+      ["grew out of a substance's chemical formula rather than its use, appearance, or source", "are the official IUPAC names for those substances in the current naming rule books", "are used only by children, while scientists use them too but pretend not to know them"],
+      "Trivial names are historical nicknames: baking soda names a use, laughing gas an effect, limestone a rock. None of them states what the substance contains. <b>grew out of a substance's use, appearance, or source rather than its chemical composition</b>.", {});
+  },
+  function () {
+    return mcq("The main weakness of trivial names is that they",
+      "do not reveal a substance's composition, and one substance may collect several of them",
+      ["do not reveal a substance's price, and one substance may collect several different prices", "are too easy to pronounce, and scientific names are supposed to be difficult for students", "change every year, because a committee renames common substances on a regular schedule"],
+      "From 'laughing gas' alone, nothing follows about N2O. And because trivial names grow locally, the same substance can carry different nicknames in different places and trades, which invites error. <b>do not reveal a substance's composition, and one substance may collect several of them</b>.", {});
+  },
+  function () {
+    return mcq("Two suppliers list 'caustic soda' and 'sodium hydroxide' in their catalogues. A buyer using systematic nomenclature knows that",
+      "these are two names for the same substance, NaOH, one trivial and one systematic",
+      ["these are two names for different substances, since each name must mean a new chemical", "the systematic name is the one in the older catalogue, since systematic names came first", "the buyer must order both, because a reaction calling for one will not work with the other"],
+      "Caustic soda is the trivial name; sodium hydroxide is the systematic one. Nomenclature knowledge is what lets the buyer see one substance, NaOH, behind both listings. <b>these are two names for the same substance, NaOH, one trivial and one systematic</b>.", {});
+  }
+]), ["Trivial names describe where a substance was found or what it does, not what it contains."]);
+
+E("sci-u2-stse-name-formula", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return mcq("A systematic name is useful for writing formulas because",
+      "its parts name the elements and their proportions, so the formula can be built from the name",
+      ["its parts name the discoverers and their countries, so the formula can be built from the name", "it is always written in the same colour ink, so the formula can be built from the name quickly", "it rhymes with the formula, so the formula can be built from the name by remembering the rhyme"],
+      "Prefixes and ion names carry the recipe: 'di-' gives the 2, the cation and anion names give the parts, and the charges give the ratio. That is the working usefulness of the system in this unit. <b>its parts name the elements and their proportions, so the formula can be built from the name</b>.", {});
+  },
+  function () {
+    return mcq("The name 'carbon dioxide' tells a chemist the formula CO2 because the name states",
+      "the element carbon and that two oxygen atoms are joined to each carbon atom",
+      ["the element carbon and that the gas was first collected over water in a trough", "that the compound is a gas at room temperature and is produced by burning fuels", "that the compound is harmless in small amounts and dangerous only in large ones"],
+      "'Di-' is the proportion and 'oxide' names oxygen: the name is a compressed formula. How the gas is collected, and how harmful it is, are not in the name. <b>the element carbon and that two oxygen atoms are joined to each carbon atom</b>.", {});
+  },
+  function () {
+    return mcq("The ending '-ide' in a name such as sodium chloride signals that",
+      "the compound is a binary compound whose second element is named as an ion",
+      ["the compound is a binary compound whose first element is named as an ion", "the compound contains oxygen as one of its elements in every single case", "the compound was discovered in Sweden and named under Swedish naming rules"],
+      "In a binary compound, the second element's name is changed to the -ide form: chlor- becomes chloride. The first element keeps its plain name. <b>the compound is a binary compound whose second element is named as an ion</b>.", {});
+  }
+]), ["A good name is a compressed formula: elements and proportions are inside it."]);
+
+E("sci-u2-stse-predict-properties", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return mcq("Names help predict properties: a substance named as an acid, such as hydrochloric acid, can be expected to",
+      "turn blue litmus red and react with bases in a neutralization reaction",
+      ["turn red litmus blue and react with bases in a neutralization reaction", "have a pH above 7 and feel slippery when its solution touches the skin", "contain hydroxide ions as its main ion and conduct electricity weakly"],
+      "The word 'acid' in the name is a prediction: acids turn blue litmus red, taste sour, and neutralize bases. The other options describe bases or reverse the litmus result. <b>turn blue litmus red and react with bases in a neutralization reaction</b>.", {});
+  },
+  function () {
+    return mcq("A chemist reads the name 'copper(II) sulfate' on a bottle never seen before. The name alone tells the chemist that",
+      "the compound contains copper ions with a 2+ charge together with sulfate ions",
+      ["the compound contains copper ions with a 1+ charge together with sulfate ions", "the compound contains two copper atoms joined directly to one sulfur atom", "the compound is a mixture of copper metal and sulfur powder in equal parts"],
+      "The Roman numeral is part of the name's information: (II) states the copper ion's 2+ charge, and 'sulfate' names the polyatomic ion. The formula CuSO4 follows from the name alone. <b>the compound contains copper ions with a 2+ charge together with sulfate ions</b>.", {});
+  },
+  function () {
+    return mcq("Systematic names let scientists predict how an unfamiliar compound will behave because",
+      "the name places the compound in a family whose members share characteristic reactions",
+      ["the name places the compound in a family whose members share characteristic colours", "every compound's behaviour is fully described in a table printed beside its name", "unfamiliar compounds always behave exactly like the first compound in their family"],
+      "Naming is classification: an '-ate' salt, an acid, a dioxide each belong to a family with known behaviour, so the name carries predictions. Families share reactions, not necessarily colours, and members are similar, not identical. <b>the name places the compound in a family whose members share characteristic reactions</b>.", {});
+  }
+]), ["A name assigns a family, and family membership predicts behaviour."]);
+
+E("sci-u2-stse-one-name", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return mcq("A safety data sheet written in one country can be used in another mainly because",
+      "systematic names identify the same substance everywhere, so the hazards attach to the right chemical",
+      ["systematic names identify the same substance everywhere, so the prices attach to the right chemical", "safety data sheets are printed in every language on a single page, so no translation is ever needed", "chemicals behave identically in every country, so the local name on the bottle makes no difference"],
+      "A data sheet protects only if it is matched to the right substance. Systematic names make that match across borders and languages, which trivial names, varying from place to place, cannot guarantee. <b>systematic names identify the same substance everywhere, so the hazards attach to the right chemical</b>.", {});
+  },
+  function () {
+    return mcq("In an emergency, a poison control centre asks for the exact name of a swallowed cleaner. A systematic name helps because it",
+      "identifies the substance exactly, so the right treatment information can be found without delay",
+      ["identifies the substance exactly, so the caller's bill for the call can be calculated without delay", "sounds more professional than a household name, so the centre takes the call more seriously at once", "is required by law to be memorized by every caller before the centre is allowed to give any advice"],
+      "Treatment depends on the substance. An exact, systematic identification points to the right entry at once; a nickname shared by several products could point to the wrong one. <b>identifies the substance exactly, so the right treatment information can be found without delay</b>.", {});
+  },
+  function () {
+    return mcq("Trade between countries in chemicals depends on nomenclature because",
+      "buyers and sellers must be certain they are naming the same substance in contracts and shipping papers",
+      ["buyers and sellers must be certain they are naming the same substance in advertisements and catalogues", "each country taxes chemicals by the length of their names, so a shared system keeps the taxes fair", "ships are not allowed to carry a chemical whose name the captain cannot pronounce correctly at sea"],
+      "A contract or a shipping manifest has legal and safety consequences; both sides must be naming the same substance. Advertisements matter less, and taxes and pronunciation are not the issue. <b>buyers and sellers must be certain they are naming the same substance in contracts and shipping papers</b>.", {});
+  }
+]), ["One substance, one name, everywhere: that is what makes records, trade, and treatment safe."]);
+
+E("sci-u2-stse-nomenclature-case", 2, ["SC10.7.2"], 3, "var", varset([
+  function () {
+    return mcq("A lab technician finds two old bottles labelled 'muriatic acid' and 'hydrochloric acid' and treats them as different chemicals, doubling an order. The error happened because",
+      "one substance carried both a trivial and a systematic name, and the technician did not recognize them as the same",
+      ["one substance carried both a liquid and a solid form, and the technician did not recognize them as the same", "the labels were printed in two different colours, and the technician sorted the bottles by label colour instead", "the two bottles were different sizes, and the technician assumed that different sizes must hold different acids"],
+      "Muriatic acid is the old trivial name for hydrochloric acid. The failure is exactly the weakness nomenclature exists to fix: two names, one substance, and a decision made on the wrong assumption. <b>one substance carried both a trivial and a systematic name, and the technician did not recognize them as the same</b>.", {});
+  },
+  function () {
+    return mcq("A recipe for cleaning a masonry wall calls for 'muriatic acid'. A hardware clerk hands over hydrochloric acid. The clerk is correct because",
+      "the trivial and systematic names refer to the same substance, which is what nomenclature knowledge establishes",
+      ["the trivial and systematic names refer to similar substances, which is close enough for cleaning masonry walls", "all acids are interchangeable for cleaning, which is what a knowledge of chemical safety establishes firmly", "the store is allowed to substitute any acid for another, which is what the sales regulations establish firmly"],
+      "The clerk is not substituting: muriatic acid IS hydrochloric acid under its older name. Acids are not interchangeable in general, which is why knowing the names matter. <b>the trivial and systematic names refer to the same substance, which is what nomenclature knowledge establishes</b>.", {});
+  },
+  function () {
+    return mcq("The strongest argument for teaching systematic naming alongside the naming rules of this unit is that",
+      "a substance's systematic name carries its composition, so formulas and properties follow from the name itself",
+      ["a substance's systematic name carries its history, so the story of its discovery follows from the name itself", "systematic names are always shorter than trivial names, so formulas and properties are quicker to write down", "systematic names never change once assigned, so students will never need to learn another name for anything"],
+      "The payoff of the system is information: composition in the name means formulas can be written and properties predicted from the name alone. History, brevity, and permanence are not what the system is for. <b>a substance's systematic name carries its composition, so formulas and properties follow from the name itself</b>.", {});
+  }
+]), ["Follow the failure: two names, one substance, and a decision made on the wrong assumption."]);
+
+/* ---------- SC10.7.3 Functioning of domestic and industrial technologies ---------- */
+
+E("sci-u2-stse-antacid", 2, ["SC10.7.3"], 1, "var", varset([
+  function () {
+    return mcq("An antacid tablet relieves heartburn because it",
+      "contains a base that neutralizes some of the excess acid in the stomach",
+      ["contains an acid that neutralizes some of the excess base in the stomach", "coats the stomach with a layer of oil that acid cannot pass through at all", "removes the stomach's acid entirely, so digestion stops until more is made"],
+      "Heartburn is excess stomach acid causing pain. The tablet supplies a base; acid and base neutralize each other, and the excess is reduced, not eliminated. <b>contains a base that neutralizes some of the excess acid in the stomach</b>.", {});
+  },
+  function () {
+    return mcq("Heartburn is the burning feeling caused by stomach acid reaching the esophagus. An antacid works on the cause by",
+      "reacting with the acid in a neutralization reaction, lowering its effect",
+      ["reacting with the acid in a combustion reaction, lowering its temperature", "diluting the acid with a large volume of water carried inside the tablet", "numbing the esophagus so the acid is still there but cannot be felt at all"],
+      "The tablet treats the chemistry, not just the sensation: its base consumes hydrogen ions from the acid in a neutralization reaction. A tablet carries no large volume of water, and numbing would leave the acid untouched. <b>reacting with the acid in a neutralization reaction, lowering its effect</b>.", {});
+  },
+  function () {
+    return mcq("Calcium carbonate is the active ingredient in some antacids because it",
+      "is a base that reacts with hydrochloric acid in the stomach",
+      ["is an acid that reacts with hydrochloric acid in the stomach", "is a salt that dissolves the food blocking the stomach's exit", "is a metal that lines the stomach wall against further acid"],
+      "Calcium carbonate is a base (a carbonate), and stomach acid is hydrochloric acid. Their reaction is the neutralization the tablet is sold for. <b>is a base that reacts with hydrochloric acid in the stomach</b>.", {});
+  }
+]), ["Heartburn is an acid problem; the tablet brings the opposite kind of substance."]);
+
+E("sci-u2-stse-everyday-neutralization", 2, ["SC10.7.3"], 2, "var", varset([
+  function () {
+    return mcq("Lemon juice is rubbed on fish to reduce its odour. This works because",
+      "the acid in the juice neutralizes the basic compounds that cause the fishy smell",
+      ["the acid in the juice covers the basic compounds that cause the fishy smell with a stronger scent", "the base in the juice neutralizes the acidic compounds that cause the fishy smell completely", "the water in the juice washes the basic compounds that cause the fishy smell off the fish"],
+      "The fishy-smelling compounds are bases (amines). Lemon juice is acidic, and the acid converts them to salts that do not evaporate into the air, so the smell itself is removed, not masked. <b>the acid in the juice neutralizes the basic compounds that cause the fishy smell</b>.", {});
+  },
+  function () {
+    return mcq("Baking soda kept in a refrigerator absorbs odours because it",
+      "neutralizes the acidic gases given off by spoiling food",
+      ["neutralizes the basic gases given off by spoiling food", "perfumes the air inside the refrigerator with its own scent", "cools the air inside the refrigerator below the odour point"],
+      "Baking soda is a mild base, and many spoilage odours are acidic gases. Neutralizing them removes the odour chemically; the soda has no scent of its own and no cooling effect. <b>neutralizes the acidic gases given off by spoiling food</b>.", {});
+  },
+  function () {
+    return mcq("Toothpaste helps protect teeth during the day because it",
+      "is mildly basic, so it neutralizes acids produced by bacteria feeding on sugars",
+      ["is mildly acidic, so it neutralizes acids produced by bacteria feeding on sugars", "is mildly basic, so it dissolves the enamel that bacteria are feeding on at the time", "is mildly basic, so it sweetens the breath and bacteria stop feeding on the sugars"],
+      "Mouth bacteria turn sugars into acids that attack enamel. A mildly basic toothpaste neutralizes those acids where they form. Dissolving enamel would be damage, not protection. <b>is mildly basic, so it neutralizes acids produced by bacteria feeding on sugars</b>.", {});
+  }
+]), ["Each case pairs an acid with a base: find which substance plays which role."]);
+
+E("sci-u2-stse-liming", 2, ["SC10.7.3"], 2, "var", varset([
+  function () {
+    return mcq("Farmers spread lime (calcium carbonate) on acidic soil because the lime",
+      "neutralizes excess acid in the soil, raising its pH toward what crops need",
+      ["neutralizes excess base in the soil, lowering its pH toward what crops need", "adds acid to the soil in a slow-release form, feeding the crops as it dissolves", "kills the bacteria in the soil, which are the source of the soil's acidity"],
+      "Lime is a base applied by the tonne. It reacts with the soil's excess acid, and the pH rises toward the range crops grow in. It does not work by killing bacteria. <b>neutralizes excess acid in the soil, raising its pH toward what crops need</b>.", {});
+  },
+  function () {
+    return mcq("Lakes damaged by acid precipitation are sometimes treated by adding crushed limestone. The treatment works because the limestone",
+      "reacts with the acid in the water, raising the lake's pH back toward neutral",
+      ["reacts with the base in the water, lowering the lake's pH back toward neutral", "sinks to the bottom and seals the lake bed, so no more acid can enter the water", "feeds the fish directly, so their populations recover before the water changes"],
+      "Limestone is calcium carbonate, a base. Spread through an acidic lake it neutralizes the acid in place, and the pH recovers. It neither seals the lake bed nor feeds the fish. <b>reacts with the acid in the water, raising the lake's pH back toward neutral</b>.", {});
+  },
+  function () {
+    return mcq("Acid precipitation forms when sulfur and nitrogen oxides from burning fuels mix with water in the air. Liming an affected lake treats the",
+      "effect, by neutralizing acid already in the lake, rather than the cause at the fuel source",
+      ["effect, by neutralizing base already in the lake, rather than the cause at the fuel source", "cause, by stopping fuels from being burned anywhere in the region around the lake at all", "cause, by removing the sulfur from fuels before they are burned in power plants nearby"],
+      "Liming is a remedy at the receiving end: the acid is neutralized where it landed. The cause, emissions at the source, is untouched by anything added to the lake. <b>effect, by neutralizing acid already in the lake, rather than the cause at the fuel source</b>.", {});
+  }
+]), ["Lime is a base delivered by the truckload: it treats acidity where the acid already sits."]);
+
+E("sci-u2-stse-ph-control", 2, ["SC10.7.3"], 2, "var", varset([
+  function () {
+    return mcq("A swimming pool's water is tested and a chemical is added to bring the pH into the safe range. This is an application of neutralization because",
+      "an acid or a base is added in small amounts to counter the water's drift away from the target pH",
+      ["an acid or a base is added in large amounts to drive the water's pH as far as possible from neutral", "chlorine is added to kill bacteria, and bacteria are the only reason a pool's pH ever changes at all", "the water is drained and replaced whenever the pH drifts, so no chemical adjustment is ever needed"],
+      "Pool care is neutralization as routine maintenance: test, then add the opposite kind of substance in a measured amount to bring the pH back to its target range. <b>an acid or a base is added in small amounts to counter the water's drift away from the target pH</b>.", {});
+  },
+  function () {
+    return mcq("Hydroponic growers monitor the pH of their nutrient solution closely because",
+      "plants absorb nutrients properly only within a certain pH range, which acids and bases are used to hold",
+      ["plants absorb nutrients properly only within a certain pH range, which sunlight alone is used to hold", "the nutrient solution evaporates faster at the wrong pH, which acids and bases are used to prevent", "the roots of the plants produce the pH themselves, which acids and bases are used to measure only"],
+      "Nutrient ions are available to roots only in a certain pH window. Growers hold the solution in that window by adding acid or base as it drifts, neutralization used as a control. <b>plants absorb nutrients properly only within a certain pH range, which acids and bases are used to hold</b>.", {});
+  },
+  function () {
+    return mcq("An aquarium keeper adds a small amount of a base after finding the water too acidic for the fish. The keeper is applying the principle that",
+      "a base added in controlled amounts neutralizes excess acid and moves the pH upward",
+      ["a base added in controlled amounts neutralizes excess acid and moves the pH downward", "any amount of base is safe to add at once, since bases cannot overshoot the target pH", "the pH of aquarium water corrects itself within a day, so the addition was unnecessary"],
+      "The dose is small on purpose: neutralize the excess acid and stop near the target. Overshooting is a real risk, which is why the additions are controlled and retested. <b>a base added in controlled amounts neutralizes excess acid and moves the pH upward</b>.", {});
+  }
+]), ["Holding a pH is neutralization in small doses: counter the drift, in the right direction."]);
+
+E("sci-u2-stse-oven-cleaner", 2, ["SC10.7.3"], 3, "var", varset([
+  function () {
+    return mcq("An oven cleaner has a pH of 13. After cleaning, the oven's inside is wiped with vinegar (acetic acid). The vinegar improves the result because it",
+      "neutralizes the strongly basic cleaner left on the surface, bringing residues toward a safer pH",
+      ["neutralizes the strongly acidic cleaner left on the surface, bringing residues toward a safer pH", "dissolves the metal of the oven's interior slightly, so the cleaner can be rinsed away more easily", "reacts with the cleaner to produce a stronger cleaning agent that finishes the job the cleaner began"],
+      "pH 13 is strongly basic, and a basic residue left where food cooks is a hazard. Vinegar's acetic acid neutralizes the residue toward a safer pH. This is the guide's own example of neutralization as a household technology. <b>neutralizes the strongly basic cleaner left on the surface, bringing residues toward a safer pH</b>.", {});
+  },
+  function () {
+    return mcq("A cleaner with pH 13 is wiped up carelessly and the residue is left on a countertop where food is prepared. The chemistry concern is that the residue",
+      "is strongly basic and corrosive, and it remains so until it is neutralized or removed",
+      ["is strongly acidic and corrosive, and it remains so until it is neutralized or removed", "becomes harmless the moment it dries, because dryness neutralizes bases on any surface", "turns into table salt on contact with air, because carbon dioxide neutralizes all bases"],
+      "Drying does not neutralize a base; the residue stays corrosive on the dry surface. Only neutralizing it or physically removing it ends the hazard. <b>is strongly basic and corrosive, and it remains so until it is neutralized or removed</b>.", {});
+  },
+  function () {
+    return mcq("Why is vinegar, a weak acid, a sensible choice for wiping down an oven cleaned with a pH 13 cleaner, rather than a strong acid?",
+      "It neutralizes the basic residue gently, without adding the hazards of a strong acid to the surface",
+      ["It neutralizes the basic residue completely and instantly, which a strong acid could not do at all", "It leaves the surface slightly basic, which is the condition recommended for cooking food safely", "It reacts with the residue to form a protective coating that prevents the oven from rusting later"],
+      "The job is to tame a residue, not to attack it. A weak acid does the neutralization controllably and is itself food-safe; a strong acid would trade one corrosive residue for another. <b>It neutralizes the basic residue gently, without adding the hazards of a strong acid to the surface</b>.", {});
+  }
+]), ["Start from the pH: 13 is strongly basic, so the wipe-down must supply the opposite, gently."]);
+
+E("sci-u2-stse-antacid-equation", 2, ["SC10.7.3"], 3, "var", varset([
+  function () {
+    return mcq("An antacid's active ingredient reacts as CaCO3(s) + 2HCl(aq) → CaCl2(aq) + H2O(l) + CO2(g). In the stomach, this reaction relieves heartburn because",
+      "the carbonate consumes hydrogen ions from the stomach acid, producing water and carbon dioxide",
+      ["the carbonate consumes hydroxide ions from the stomach acid, producing water and carbon dioxide", "the calcium chloride produced coats the stomach lining, producing a barrier against the acid", "the carbon dioxide produced dilutes the stomach acid, producing relief by simple mixing alone"],
+      "Read the equation as the mechanism: carbonate takes the acid's hydrogen ions, and they end up in water, while the carbon leaves as CO2 gas. Stomach acid contains hydrogen ions, not hydroxide ions. <b>the carbonate consumes hydrogen ions from the stomach acid, producing water and carbon dioxide</b>.", {});
+  },
+  function () {
+    return mcq("In the reaction CaCO3(s) + 2HCl(aq) → CaCl2(aq) + H2O(l) + CO2(g), the '2' in front of HCl is there because",
+      "two chloride ions are needed to balance the 2+ charge of the calcium ion in CaCl2",
+      ["two chloride ions are needed to balance the 1+ charge of the calcium ion in CaCl2", "two hydrogen ions are needed to supply the oxygen atoms in the carbon dioxide formed", "the equation is balanced by doubling every substance that appears on the left side"],
+      "Calcium is Ca2+, so its chloride needs two Cl- ions, hence 2HCl. The same 2 also balances the hydrogens for the water formed. Oxygen in the CO2 comes from the carbonate, not from the acid. <b>two chloride ions are needed to balance the 2+ charge of the calcium ion in CaCl2</b>.", {});
+  },
+  function () {
+    return mcq("A student takes two antacid tablets and feels a need to burp afterward. The burping is explained by the reaction because",
+      "carbon dioxide gas is a product of the neutralization, and the gas collects in the stomach",
+      ["carbon dioxide gas is a reactant of the neutralization, and the gas collects in the stomach", "oxygen gas is a product of the neutralization, and the gas collects in the stomach after eating", "the tablets dissolve without reacting, and the gas collects in the stomach from swallowed air"],
+      "The equation's right side includes CO2(g): the neutralization itself generates the gas, which is why antacids can cause burping. The tablets certainly react; that is their purpose. <b>carbon dioxide gas is a product of the neutralization, and the gas collects in the stomach</b>.", {});
+  }
+]), ["Read the equation as the mechanism: the carbonate takes the acid's hydrogen ions, and a gas leaves."]);
 
 /* ----- bank-u3.js ----- */
 // CRMARKS: sci-u3-cr-trip=4
