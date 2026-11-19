@@ -15,6 +15,7 @@
 // CRMARKS: s9f-u3-cr-graph-interpret=3
 // CRMARKS: s9f-u3-cr-design-circuit=4
 // CRMARKS: s9f-u3-cr-applications=3
+// CRMARKS: s9f-u3-cr-charge-explain=3
 // Sciences 9, Unité 3 : L'électricité (SC9.7.1 à SC9.9.13), banque
 // construite le Nov 16, 2026, selon la spécification d'auteur de
 // l'unité Électricité. Toutes les questions sont originales et ont
@@ -75,6 +76,26 @@ E("s9f-u3-electroscope-detect", 3, ["SC9.7.1"], 3, "var", varset([
 E("s9f-u3-discharge", 3, ["SC9.7.1"], 2, "var", varset([
   function () { return mcq("En descendant d'une voiture par temps sec, on reçoit une petite décharge au contact de la portière. Quelle en est la cause?", "La charge accumulée par le frottement des vêtements sur le siège s'écoule d'un coup vers la portière métallique", ["La charge accumulée par le frottement des pneus sur la chaussée s'écoule d'un coup vers la portière métallique", "Le courant de la batterie de la voiture s'écoule d'un coup vers la portière métallique au moment du contact", "La portière métallique produit sa propre charge au moment exact où la main s'en approche lentement"], "En glissant sur le siège, les vêtements frottent et accumulent une charge statique sur le corps. Au contact de la portière métallique, cette charge s'écoule brusquement vers la masse : c'est la petite décharge ressentie. Le circuit de la voiture n'est pas en cause.", {}); }
 ]), ["La décharge est brève et unique : c'est de l'électricité statique.", "Le frottement des vêtements est la source de la charge."]);
+/* Ajout du 19 novembre 2026 : comble l’écart de dénomination des
+   réponses construites du Test 1 de l’unité 3 dans le plan d’épreuves.
+   Le test porte sur SC9.7.1 à SC9.7.3, sans aucune réponse construite
+   dans son étendue, contre une cible de 3 points; cette entrée est
+   attribuée à SC9.7.1. Entrée jumelle de s9-u3-cr-charge-explain
+   (même question, même niveau, même nombre de points). Voir
+   Spec-French-Test-Map-2026-11-19.md, section 4. */
+E("s9f-u3-cr-charge-explain", 3, ["SC9.7.1"], 2, "var", varset([
+  function () { return textq("Une élève touche le bouton d’un électroscope non chargé avec une tige chargée négativement; les feuilles s’écartent et restent écartées après le retrait de la tige. L’élève touche ensuite le bouton avec un doigt, et les feuilles retombent l’une contre l’autre. Explique les trois observations par le mouvement des électrons. (3 points)",
+    ["Le contact avec la tige négative transfère des électrons à l’électroscope, donc les deux feuilles portent des électrons supplémentaires.",
+     "Les charges de même signe se repoussent, donc les feuilles s’écartent, et la charge reste sur le métal après le retrait de la tige.",
+     "Le doigt offre un chemin aux électrons supplémentaires, qui s’écoulent par le corps vers le sol : l’électroscope se décharge, les feuilles redeviennent neutres et retombent."],
+    "<b>Réponse modèle :</b> La tige est négative : elle porte des électrons supplémentaires. Au contact du bouton, des électrons passent de la tige au métal de l’électroscope et se répartissent sur les deux feuilles. Les deux feuilles portent alors la même charge (négative), et les charges de même signe se repoussent : les feuilles s’écartent. Le métal conserve la charge transférée après le retrait de la tige, donc les feuilles restent écartées. Quand l’élève touche le bouton, les électrons supplémentaires trouvent un chemin de sortie par son corps jusqu’au sol : l’électroscope se décharge, les feuilles redeviennent neutres et, sans répulsion, retombent l’une contre l’autre.<br><br><b>Points d’attribution :</b> 1 point pour le transfert d’électrons de la tige à l’électroscope par contact. 1 point pour les deux feuilles chargées de même signe qui se repoussent, la charge demeurant après le retrait de la tige. 1 point pour le doigt qui offre un chemin de sortie aux électrons (décharge vers le sol), les feuilles redevenant neutres.", {}); },
+  function () { return textq("Une élève frotte un ballon contre ses cheveux. Le ballon colle ensuite à un mur peint, mais après quelques minutes, il se détache et tombe. Explique chaque étape par les charges électriques : comment le ballon s’est chargé, pourquoi il colle au mur neutre, et pourquoi il finit par tomber. (3 points)",
+    ["Le frottement transfère des électrons des cheveux au ballon, qui devient chargé négativement.",
+     "Le ballon chargé attire le mur neutre, car un objet chargé attire certains objets neutres.",
+     "Avec le temps, les électrons supplémentaires du ballon s’échappent vers l’air et le mur : le ballon se décharge, l’attraction faiblit et il tombe."],
+    "<b>Réponse modèle :</b> Le frottement est une charge par frottement : des électrons passent des cheveux au ballon, qui reçoit des électrons supplémentaires et devient négatif (les cheveux, en déficit d’électrons, deviennent positifs). Le mur est neutre, mais un objet chargé attire certains objets neutres : la charge du ballon attire les charges contraires de la surface du mur et repousse les charges de même signe, de sorte que la surface proche du mur attire le ballon assez fort pour le retenir. Le ballon ne garde pas sa charge indéfiniment : ses électrons supplémentaires s’échappent peu à peu vers l’air et le mur, le ballon se décharge vers la neutralité, l’attraction faiblit et la gravité le fait tomber.<br><br><b>Points d’attribution :</b> 1 point pour le transfert d’électrons des cheveux au ballon par frottement, le ballon devenant négatif. 1 point pour l’attraction du mur neutre par le ballon chargé. 1 point pour la perte graduelle de la charge (décharge), qui met fin à l’attraction.", {}); }
+]), ["Seuls les électrons se déplacent. Suis leur chemin à chaque étape.", "Des feuilles qui s’écartent et un ballon qui colle : c’est la répulsion et l’attraction à l’oeuvre."]);
+
 E("s9f-u3-laws-charges", 3, ["SC9.7.2"], 1, "gen", function () {
   var c = pick([
     { p: "Deux ballons frottés de la même façon sont suspendus côte à côte et s'éloignent l'un de l'autre. Quelle loi des charges l'explique?", k: "Les charges de même signe se repoussent, et les deux ballons portent la même charge après le même frottement", d: ["Les charges de signes contraires se repoussent, et les deux ballons portent la même charge après le frottement", "Les charges de même signe s'attirent, et les deux ballons portent la même charge après le même frottement", "Les charges neutres se repoussent, et les deux ballons portent la même charge après le même frottement"], s: "La loi des charges énonce que les charges de même signe se repoussent et que les charges de signes contraires s'attirent. Frottés de la même façon, les deux ballons portent la même charge : ils se repoussent donc visiblement." },
