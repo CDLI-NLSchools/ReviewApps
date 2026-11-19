@@ -11,6 +11,7 @@
 // CRMARKS: s9-u4-cr-trends=3
 // CRMARKS: s9-u4-cr-communicate=3
 // CRMARKS: s9-u4-cr-evaluate=3
+// CRMARKS: s9-u4-cr-meiosis-explain=3
 // Science 9 Unit 4 bank: Reproduction (SC9.10.1 to SC9.12.10),
 // built Nov 15, 2026 to the Reproduction authoring spec. Sources
 // reviewed: the current Science 9 guide sections for the strand,
@@ -302,6 +303,20 @@ E("s9-u4-gen-gamete-number", 4, ["SC9.10.5"], 2, "gen", function () {
     hap + "", dis.map(String),
     "Meiosis produces haploid gametes with half the genetic content of the diploid body cell. Half of " + dip + " is " + hap + " chromosomes.", {});
 }, ["Gametes are haploid.", "Take half the body cell number."]);
+
+/* Added November 19, 2026: closes the Unit 4 Test 3 CR denomination
+   gap in the test blueprint. The test's only CR entry was a single
+   4-mark entry, which cannot make the 3-mark target; this 3-mark
+   entry is attributed to SC9.10.5, which held no CR entry. See
+   Junior-Science-Blueprint-Depth-Queue-2026-11-19.md. */
+E("s9-u4-cr-meiosis-explain", 4, ["SC9.10.5"], 2, "var", varset([
+  function () { return textq("A body cell of a dog contains 78 chromosomes. (a) How many chromosomes does a sperm cell from a male dog contain, and why? (b) Describe how meiosis produces cells with that number. (c) Explain why a puppy is not identical to either parent even though half its chromosomes come from each. (3 marks)",
+    ["A sperm cell contains 39 chromosomes, half of 78, because meiosis halves the number so that fertilization restores the full number. In meiosis, the original cell divides twice to produce four cells, each carrying half the chromosomes, one from each pair. A puppy receives one set of 39 chromosomes from its father through the sperm and one set of 39 from its mother through the egg; this new combination of two parents' chromosomes makes it genetically different from either parent."],
+    "<b>Model answer:</b> (a) A sperm cell contains 39 chromosomes. Gametes are produced by meiosis, which halves the chromosome number, so each sperm carries one chromosome from each of the 39 pairs in a body cell. (b) In meiosis, a cell with the full number of chromosomes divides twice in succession, producing four cells. Each of the four cells ends up with half the original number of chromosomes, 39, and each is a gamete. (c) At fertilization, the sperm's 39 chromosomes join the egg's 39, restoring 78 in the zygote. Because the puppy's chromosomes are a combination drawn from two different parents, the puppy is genetically different from both of them.<br><br><b>Marking points:</b> 1 mark for 39 chromosomes, tied to meiosis halving the number. 1 mark for two divisions producing four cells with half the number. 1 mark for the new combination of two parents' chromosomes at fertilization.", {}); },
+  function () { return textq("A body cell of a horse contains 64 chromosomes. (a) How many chromosomes does an egg cell from a mare contain, and why? (b) Describe how meiosis produces cells with that number. (c) Explain why a foal is not identical to either parent even though half its chromosomes come from each. (3 marks)",
+    ["An egg cell contains 32 chromosomes, half of 64, because meiosis halves the number so that fertilization restores the full number. In meiosis, the original cell divides twice to produce four cells, each carrying half the chromosomes, one from each pair. A foal receives one set of 32 chromosomes from its mother through the egg and one set of 32 from its father through the sperm; this new combination of two parents' chromosomes makes it genetically different from either parent."],
+    "<b>Model answer:</b> (a) An egg cell contains 32 chromosomes. Gametes are produced by meiosis, which halves the chromosome number, so each egg carries one chromosome from each of the 32 pairs in a body cell. (b) In meiosis, a cell with the full number of chromosomes divides twice in succession, producing four cells. Each of the four cells ends up with half the original number of chromosomes, 32, and each is a gamete. (c) At fertilization, the egg's 32 chromosomes join the sperm's 32, restoring 64 in the zygote. Because the foal's chromosomes are a combination drawn from two different parents, the foal is genetically different from both of them.<br><br><b>Marking points:</b> 1 mark for 32 chromosomes, tied to meiosis halving the number. 1 mark for two divisions producing four cells with half the number. 1 mark for the new combination of two parents' chromosomes at fertilization.", {}); }
+]), ["Halve the body-cell number for any gamete; fertilization puts the halves back together.", "Two divisions, four cells, half the chromosomes in each."]);
 
 E("s9-u4-gen-population", 4, ["SC9.12.2"], 2, "gen", function () {
   var start = pick([2, 4, 5]);

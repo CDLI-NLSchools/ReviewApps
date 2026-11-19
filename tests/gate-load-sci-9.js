@@ -76,17 +76,26 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 eval(fs.readFileSync(ROOT + "/banks/sci-9.js", "utf8"));
 const CR = window.__BANK_CRMARKS || {};
 
+/* Pin update, November 19, 2026: two CR entries added to close the
+   test-blueprint CR denomination gaps (s9-u3-cr-charge-explain,
+   3 marks at SC9.7.1, and s9-u4-cr-meiosis-explain, 3 marks at
+   SC9.10.5; see Junior-Science-Blueprint-Depth-Queue-2026-11-19.md).
+   Census pins below are updated accordingly: bank 332, U3 106 entries
+   and U4 66, CR manifest 61 entries and 191 marks, U3 marks 56 with
+   sixteen entries at exactly 3, U4 marks 44 with twelve at exactly 3,
+   U3 levels 42/43/21, U4 levels 26/27/13, course levels 132/134/66.
+   SR counts are unchanged (88 in U3, 52 in U4). */
 const U1 = BANK.filter(e => e.unit === 1);
 const U2 = BANK.filter(e => e.unit === 2);
 const U3 = BANK.filter(e => e.unit === 3);
 const U4 = BANK.filter(e => e.unit === 4);
-ok(BANK.length === 330, "bank registers 330 entries, saw " + BANK.length);
+ok(BANK.length === 332, "bank registers 332 entries, saw " + BANK.length);
 ok(U1.length === 75, "75 entries are Unit 1, saw " + U1.length);
 ok(U2.length === 85, "85 entries are Unit 2, saw " + U2.length);
-ok(U3.length === 105, "105 entries are Unit 3, saw " + U3.length);
-ok(U4.length === 65, "65 entries are Unit 4, saw " + U4.length);
+ok(U3.length === 106, "106 entries are Unit 3, saw " + U3.length);
+ok(U4.length === 66, "66 entries are Unit 4, saw " + U4.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 330, "all entry ids unique");
+ok(ids.size === 332, "all entry ids unique");
 ok(BANK.every(e => e.hint1 && e.hint2), "every entry carries two hint stages");
 
 function primaryCounts(list) {
@@ -116,7 +125,7 @@ for (const tag of Object.keys(SPEC_COUNT_U2)) {
   ok((p2[tag] || 0) === SPEC_COUNT_U2[tag], "U2 primary count " + tag + " = " + SPEC_COUNT_U2[tag] + ", saw " + (p2[tag] || 0));
 }
 const SPEC_COUNT_U3 = {
-  "SC9.7.1": 5, "SC9.7.2": 5, "SC9.7.3": 3, "SC9.7.4": 5, "SC9.7.5": 9, "SC9.7.6": 5, "SC9.7.7": 3,
+  "SC9.7.1": 6, "SC9.7.2": 5, "SC9.7.3": 3, "SC9.7.4": 5, "SC9.7.5": 9, "SC9.7.6": 5, "SC9.7.7": 3,
   "SC9.7.8": 4, "SC9.7.9": 4, "SC9.8.1": 3, "SC9.8.2": 2, "SC9.8.3": 3, "SC9.8.4": 2, "SC9.8.5": 3,
   "SC9.8.6": 2, "SC9.8.7": 3, "SC9.8.8": 2, "SC9.8.9": 3, "SC9.8.10": 2, "SC9.8.11": 3,
   "SC9.8.12": 3, "SC9.8.13": 2, "SC9.8.14": 3, "SC9.9.1": 2, "SC9.9.2": 2, "SC9.9.3": 2,
@@ -128,7 +137,7 @@ for (const tag of Object.keys(SPEC_COUNT_U3)) {
   ok((p3[tag] || 0) === SPEC_COUNT_U3[tag], "U3 primary count " + tag + " = " + SPEC_COUNT_U3[tag] + ", saw " + (p3[tag] || 0));
 }
 const SPEC_COUNT_U4 = {
-  "SC9.10.1": 4, "SC9.10.2": 4, "SC9.10.3": 6, "SC9.10.4": 5, "SC9.10.5": 6, "SC9.10.6": 4,
+  "SC9.10.1": 4, "SC9.10.2": 4, "SC9.10.3": 6, "SC9.10.4": 5, "SC9.10.5": 7, "SC9.10.6": 4,
   "SC9.11.1": 3, "SC9.11.2": 3, "SC9.11.3": 3, "SC9.11.4": 3, "SC9.11.5": 2, "SC9.12.1": 2,
   "SC9.12.2": 4, "SC9.12.3": 2, "SC9.12.4": 3, "SC9.12.5": 2, "SC9.12.6": 2, "SC9.12.7": 3,
   "SC9.12.8": 1, "SC9.12.10": 3
@@ -165,25 +174,25 @@ ok(levels(U2) === "[34,34,17]", "U2 levels 34/34/17, saw " + levels(U2));
 ok(U2.filter(e => e.kind === "gen").length === 10, "10 U2 generator entries, saw " + U2.filter(e => e.kind === "gen").length);
 
 const crU3 = U3.filter(e => CR[e.id] !== undefined);
-ok(crU3.length === 17, "17 CR entries in Unit 3, saw " + crU3.length);
-ok(markSum(crU3) === 53, "U3 CR marks sum to 53, saw " + markSum(crU3));
-ok(crU3.filter(e => CR[e.id] === 3).length === 15, "fifteen U3 CR entries at exactly 3 marks, saw " + crU3.filter(e => CR[e.id] === 3).length);
+ok(crU3.length === 18, "18 CR entries in Unit 3, saw " + crU3.length);
+ok(markSum(crU3) === 56, "U3 CR marks sum to 56, saw " + markSum(crU3));
+ok(crU3.filter(e => CR[e.id] === 3).length === 16, "sixteen U3 CR entries at exactly 3 marks, saw " + crU3.filter(e => CR[e.id] === 3).length);
 ok(CR["s9-u3-cr-energy-decision"] === 4 && CR["s9-u3-cr-design-circuit"] === 4, "the energy decision CR and the design CR carry 4 marks");
 ok(U3.filter(e => CR[e.id] === undefined).length === 88, "88 SR entries in Unit 3, saw " + U3.filter(e => CR[e.id] === undefined).length);
-ok(levels(U3) === "[42,42,21]", "U3 levels 42/42/21, saw " + levels(U3));
+ok(levels(U3) === "[42,43,21]", "U3 levels 42/43/21, saw " + levels(U3));
 ok(U3.filter(e => e.kind === "gen").length === 15, "15 U3 generator entries, saw " + U3.filter(e => e.kind === "gen").length);
 
 const crU4 = U4.filter(e => CR[e.id] !== undefined);
-ok(crU4.length === 13, "13 CR entries in Unit 4, saw " + crU4.length);
-ok(markSum(crU4) === 41, "U4 CR marks sum to 41, saw " + markSum(crU4));
-ok(crU4.filter(e => CR[e.id] === 3).length === 11, "eleven U4 CR entries at exactly 3 marks, saw " + crU4.filter(e => CR[e.id] === 3).length);
+ok(crU4.length === 14, "14 CR entries in Unit 4, saw " + crU4.length);
+ok(markSum(crU4) === 44, "U4 CR marks sum to 44, saw " + markSum(crU4));
+ok(crU4.filter(e => CR[e.id] === 3).length === 12, "twelve U4 CR entries at exactly 3 marks, saw " + crU4.filter(e => CR[e.id] === 3).length);
 ok(CR["s9-u4-cr-reproduction-choice"] === 4 && CR["s9-u4-cr-design-yeast"] === 4, "the reproduction choice CR and the design CR carry 4 marks");
 ok(U4.filter(e => CR[e.id] === undefined).length === 52, "52 SR entries in Unit 4, saw " + U4.filter(e => CR[e.id] === undefined).length);
-ok(levels(U4) === "[26,26,13]", "U4 levels 26/26/13, saw " + levels(U4));
+ok(levels(U4) === "[26,27,13]", "U4 levels 26/27/13, saw " + levels(U4));
 ok(U4.filter(e => e.kind === "gen").length === 6, "6 U4 generator entries, saw " + U4.filter(e => e.kind === "gen").length);
 
-ok(crU1.length + crU2.length + crU3.length + crU4.length === 59 && markSum(crU1) + markSum(crU2) + markSum(crU3) + markSum(crU4) === 185, "course-wide CR manifest is 59 entries and 185 marks");
-ok(levels(BANK) === "[132,132,66]", "course levels 132/132/66, saw " + levels(BANK));
+ok(crU1.length + crU2.length + crU3.length + crU4.length === 61 && markSum(crU1) + markSum(crU2) + markSum(crU3) + markSum(crU4) === 191, "course-wide CR manifest is 61 entries and 191 marks");
+ok(levels(BANK) === "[132,134,66]", "course levels 132/134/66, saw " + levels(BANK));
 const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
 ok(JSON.stringify(noComp) === JSON.stringify(["s9-u1-cr-design-mission", "s9-u2-cr-design-change", "s9-u3-cr-design-circuit", "s9-u4-cr-design-yeast"]),
   "exactly the four design CRs carry noCompose, saw " + noComp.join(","));

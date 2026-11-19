@@ -15,6 +15,7 @@
 // CRMARKS: s9-u3-cr-graph-interpret=3
 // CRMARKS: s9-u3-cr-design-circuit=4
 // CRMARKS: s9-u3-cr-applications=3
+// CRMARKS: s9-u3-cr-charge-explain=3
 // Science 9 Unit 3 bank: Electricity (SC9.7.1 to SC9.9.14, 37
 // indicators), built Nov 15, 2026 to the Electricity authoring
 // spec. All entries are original and were written new for this
@@ -222,6 +223,20 @@ E("s9-u3-discharge", 3, ["SC9.7.1"], 2, "var", varset([
     return q;
   }
 ]), ["The charge leaves all at once, not in a steady flow. There is a single word for that removal.", "Discharge means the built-up charge is removed suddenly."]);
+
+/* Added November 19, 2026: closes the Unit 3 Test 1 CR denomination
+   gap in the test blueprint. The test's three indicators (SC9.7.1,
+   SC9.7.2, SC9.7.3) held no CR entries between them against a 3-mark
+   target; this entry is attributed to SC9.7.1. See
+   Junior-Science-Blueprint-Depth-Queue-2026-11-19.md. */
+E("s9-u3-cr-charge-explain", 3, ["SC9.7.1"], 2, "var", varset([
+  function () { return textq("A student touches the knob of an uncharged electroscope with a negatively charged rod, and the leaves spread apart and stay apart after the rod is taken away. The student then touches the knob with a finger, and the leaves fall back together. Explain all three observations in terms of the movement of electrons. (3 marks)",
+    ["Touching the knob with the negative rod transfers electrons onto the electroscope, so both leaves carry extra electrons; like charges repel, so the leaves spread. The charge stays on the metal after the rod leaves, so the leaves stay apart. Touching the knob with a finger lets the extra electrons flow away through the student's body to the ground, so the leaves become neutral and fall together."],
+    "<b>Model answer:</b> The rod is negative, so it carries extra electrons. When it touches the knob, electrons transfer by contact onto the metal of the electroscope and spread onto both leaves. Both leaves now carry the same (negative) charge, and like charges repel, so the leaves push apart. Metal holds the transferred charge after the rod is removed, so the leaves stay apart. When the student touches the knob, the extra electrons have a path away through the student's body to the ground: the electroscope is discharged, the leaves are neutral again, and with no repulsion they fall back together.<br><br><b>Marking points:</b> 1 mark for electrons transferring from the rod onto the electroscope by contact. 1 mark for both leaves carrying like charge and repelling, and the charge remaining after the rod is removed. 1 mark for the finger providing a path for the electrons to leave (discharging, or grounding), so the leaves become neutral and fall.", {}); },
+  function () { return textq("A student rubs a balloon against her hair. The balloon then sticks to a painted wall, but after several minutes it falls off. Explain each part of this in terms of electric charge: how the balloon became charged, why it sticks to the neutral wall, and why it eventually falls. (3 marks)",
+    ["Rubbing transfers electrons from the hair onto the balloon, so the balloon becomes negatively charged. The charged balloon attracts the neutral wall, because a charged object attracts some neutral objects. Over time the balloon's extra electrons leak away into the air and the wall, so the balloon discharges, the attraction fades and the balloon falls."],
+    "<b>Model answer:</b> Rubbing is charging by friction: electrons transfer from the hair onto the balloon, leaving the balloon with extra electrons, so it is negatively charged (and the hair, short of electrons, is positive). The wall is neutral, but a charged object attracts some neutral objects: the balloon's charge draws the opposite charges in the wall's surface closer and pushes the like charges back, so the near surface of the wall attracts the balloon strongly enough to hold it. The balloon does not keep its charge forever: the extra electrons gradually leak away to the air and the wall, the balloon discharges toward neutral, the attraction weakens, and gravity pulls the balloon down.<br><br><b>Marking points:</b> 1 mark for electrons transferring from hair to balloon by friction, making the balloon negative. 1 mark for the charged balloon attracting the neutral wall. 1 mark for the charge leaking away over time (discharge), ending the attraction.", {}); }
+]), ["Only electrons move. Track where they go at each step.", "Spreading leaves and a sticking balloon are both repulsion and attraction doing their work."]);
 
 E("s9-u3-laws-charges", 3, ["SC9.7.2"], 1, "gen", function () {
   var cases = [
