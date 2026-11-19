@@ -26,7 +26,7 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 }
 eval(fs.readFileSync(ROOT + "/banks/sci-1206.js", "utf8"));
 const CRMARKS = window.__BANK_CRMARKS || {};
-ok(Object.keys(CRMARKS).length === 14, "14 CR marks registered, saw " + Object.keys(CRMARKS).length);
+ok(Object.keys(CRMARKS).length === 18, "18 CR marks registered, saw " + Object.keys(CRMARKS).length);
 
 const BAD = /undefined|\bNaN\b|\bnull\b|\[object/;
 function checkQ(e, q, tag) {

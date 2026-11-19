@@ -15,11 +15,14 @@
    evidence only); the exam blueprint applies the school finals'
    per-unit pattern (10 SR + 10 CR marks per unit, level totals
    [3, 9, 8] by judgement, no Table of Specifications exists); both
-   reference panels are present; the bank holds 205 entries with 14
-   constructed-response entries. Units 2 to 4 pools sum to exactly
-   the 10 marks a paper needs; Unit 1's pool sums to 17 since the
-   two map CR entries were added (Nov 12, 2026), and composition
-   selects a 10-mark subset, as gate-compose proves. */
+   reference panels are present; the bank holds 209 entries with 18
+   constructed-response entries. Unit 3's CR pool sums to exactly
+   the 10 marks a paper needs; the other units' pools sum higher
+   (Unit 1 to 17 since the two map CR entries were added on Nov 12,
+   2026; Units 2 and 4 to 16 and 14 since the blueprint CR pass of
+   Nov 19, 2026 added the mark denominations their test partitions
+   were missing), and composition selects a 10-mark subset, as
+   gate-compose proves. */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
 const fails = [];
@@ -69,14 +72,20 @@ eval(fs.readFileSync(ROOT + "/banks/sci-1206.js", "utf8"));
    sci-u3-dt-story (story-to-graph matching). The bank therefore held
    157 entries and Unit 3 holds 33. STSE amendment (Nov 19, 2026):
    48 entries for the eight blueprint-assigned STSE indicators (30 in
-   Unit 1, 18 in Unit 2, six per indicator) take the bank to 205. */
-ok(BANK.length === 205, "BANK has 205 entries, saw " + BANK.length);
+   Unit 1, 18 in Unit 2, six per indicator) take the bank to 205.
+   Blueprint CR amendment (Nov 19, 2026): four constructed-response
+   entries (sci-u2-cr-nomenclature and sci-u2-cr-neutral in Unit 2,
+   sci-u4-cr-soil and sci-u4-cr-biodiv in Unit 4) close the mark
+   denomination gaps the pool-depth audit found in the Chemical
+   Reactions and Sustainability test partitions, taking the bank
+   to 209. */
+ok(BANK.length === 209, "BANK has 209 entries, saw " + BANK.length);
 const perUnit = { 1: 0, 2: 0, 3: 0, 4: 0 };
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-ok(perUnit[1] === 83 && perUnit[2] === 64 && perUnit[3] === 33 && perUnit[4] === 25, "per-unit entries 83/64/33/25, saw " + perUnit[1] + "/" + perUnit[2] + "/" + perUnit[3] + "/" + perUnit[4]);
+ok(perUnit[1] === 83 && perUnit[2] === 66 && perUnit[3] === 33 && perUnit[4] === 27, "per-unit entries 83/66/33/27, saw " + perUnit[1] + "/" + perUnit[2] + "/" + perUnit[3] + "/" + perUnit[4]);
 ok(new Set(BANK.map(e => e.id)).size === BANK.length, "entry ids are unique");
 const CRMARKS = window.__BANK_CRMARKS || {};
-ok(Object.keys(CRMARKS).length === 14, "CRMARKS has 14 entries, saw " + Object.keys(CRMARKS).length);
+ok(Object.keys(CRMARKS).length === 18, "CRMARKS has 18 entries, saw " + Object.keys(CRMARKS).length);
 const crPerUnit = { 1: 0, 2: 0, 3: 0, 4: 0 };
 BANK.forEach(e => { if (CRMARKS[e.id]) crPerUnit[e.unit] += CRMARKS[e.id]; });
 ok(crPerUnit[1] >= 10 && crPerUnit[2] >= 10 && crPerUnit[3] >= 10 && crPerUnit[4] >= 10, "CR marks pool covers 10 per unit, saw " + JSON.stringify(crPerUnit));
@@ -89,4 +98,4 @@ BANK.forEach(e => {
 });
 
 if (fails.length) { console.log("GATE LOAD sci-1206: FAIL (" + fails.length + ")"); fails.forEach(f => console.log(" - " + f)); process.exit(1); }
-console.log("GATE LOAD sci-1206: PASS (205 entries, 83/64/33/25 per unit, 14 CR entries, 25 Knowledge + 8 STSE indicators)");
+console.log("GATE LOAD sci-1206: PASS (209 entries, 83/66/33/27 per unit, 18 CR entries, 25 Knowledge + 8 STSE indicators)");

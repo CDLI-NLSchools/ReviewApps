@@ -1,6 +1,8 @@
 // CRMARKS: sci-u2-cr-naming=4
 // CRMARKS: sci-u2-cr-balance=3
 // CRMARKS: sci-u2-cr-rates=3
+// CRMARKS: sci-u2-cr-nomenclature=2
+// CRMARKS: sci-u2-cr-neutral=4
 // Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6, plus
 // the SC10.7.1 to 7.3 STSE tranche added Nov 19, 2026 at the end of
 // this file).
@@ -933,6 +935,39 @@ E("sci-u2-cr-rates", 2, ["SC10.8.6"], 3, "var", varset([
       {});
   }
 ]), ["Every rate explanation needs the collision story: frequency, energy, or the activation energy barrier."]);
+
+/* Blueprint CR additions (Nov 19, 2026): the pool-depth audit of the
+   test blueprint found Chemical Reactions Test 1 unable to reach its
+   6 CR marks from {4, 3} and Test 2 holding a single 3-mark entry
+   against a 4-mark target. The 2-mark nomenclature entry (Test 1's
+   codes) and the 4-mark neutralization entry (Test 2's codes) close
+   both partitions. */
+
+E("sci-u2-cr-nomenclature", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return textq("Why names have rules (2 marks)\nA hardware store sells a drain cleaner labelled only 'the strong stuff'. A chemistry supplier sells the same chemical as 'sodium hydroxide, NaOH'.\n(a) State one problem with identifying a chemical by an informal name like 'the strong stuff'. (1)\n(b) Explain how the systematic name and formula prevent that problem. (1)", ["(a) An informal name does not identify the substance: the same nickname can be used for different chemicals, and the same chemical can carry several nicknames, so nobody can be sure what is in the container, what its hazards are, or how much to use."],
+      "(a) An informal name does not identify the substance: the same nickname can be used for different chemicals, and the same chemical can carry several nicknames, so nobody can be sure what is in the container, what its hazards are, or how much to use. (b) The systematic name and formula are unique and the same everywhere: NaOH names exactly one substance, of known composition, so its hazards, properties and reactions can be looked up and passed on accurately in any lab, country or language.",
+      {});
+  },
+  function () {
+    return textq("One substance, one name (2 marks)\nThe acid in vinegar appears in old wood-distilling records under names like 'pyroligneous acid'. Its systematic name is ethanoic acid and its formula is CH3COOH.\n(a) Give one advantage of a single systematic naming system over local or historical names. (1)\n(b) Explain what information the formula CH3COOH carries that the name alone does not state. (1)", ["(a) One agreed name identifies the same substance for everyone: research results, safety information and trade records stay usable across places, languages and centuries instead of breaking down over local custom."],
+      "(a) One agreed name identifies the same substance for everyone: research results, safety information and trade records stay usable across places, languages and centuries instead of breaking down over local custom. (b) The formula states the composition: which elements are present and in what ratio, here 2 carbon, 4 hydrogen and 2 oxygen atoms per molecule. That is the information needed to work out amounts and predict reactions, and the name by itself does not spell it out.",
+      {});
+  }
+]), ["A systematic name is an address: one substance, one name, findable everywhere."]);
+
+E("sci-u2-cr-neutral", 2, ["SC10.8.5"], 3, "var", varset([
+  function () {
+    return textq("Neutralizing an acid spill (4 marks)\nA technician spills dilute hydrochloric acid on a bench and adds sodium bicarbonate (baking soda) a little at a time. The mixture fizzes until the fizzing stops.\n(a) Write the word equation for the reaction. (1)\n(b) Explain, in terms of ions, what happens to the hydrogen ions during the reaction. (1)\n(c) Explain why the fizzing is a useful sign, and what its stopping tells the technician. (1)\n(d) The cleaned area is tested with universal indicator and reads pH 7. State what the indicator would show if too much acid remained, and what should be done. (1)", ["(a) Hydrochloric acid + sodium bicarbonate → sodium chloride + water + carbon dioxide."],
+      "(a) Hydrochloric acid + sodium bicarbonate → sodium chloride + water + carbon dioxide. (b) The hydrogen ions from the acid react with the bicarbonate ions to form water and carbon dioxide: the H+ ions are removed from the solution, so the acidity falls toward neutral. (c) The fizzing is carbon dioxide forming, visible evidence that neutralization is still happening; when it stops, added bicarbonate finds no acid left to react with, so enough has been added. (d) It would show an acid colour (red to orange, pH below 7); add more bicarbonate a little at a time and retest until the reading is neutral.",
+      {});
+  },
+  function () {
+    return textq("Antacid chemistry (4 marks)\nStomach acid is dilute hydrochloric acid. An antacid tablet contains magnesium hydroxide, a base that is safe to swallow in small doses.\n(a) Write the word equation for the reaction in the stomach. (1)\n(b) Explain why the pH of the stomach contents rises after the tablet dissolves. (1)\n(c) A different tablet uses sodium bicarbonate instead. Explain why it also relieves indigestion, and name the gas it produces. (1)\n(d) Explain, in terms of the stomach's chemistry, why taking far more antacid than directed can itself cause problems. (1)", ["(a) Hydrochloric acid + magnesium hydroxide → magnesium chloride + water."],
+      "(a) Hydrochloric acid + magnesium hydroxide → magnesium chloride + water. (b) The hydroxide ions from the base combine with the acid's hydrogen ions to form water. Removing H+ from the solution lowers the acidity, so the pH rises toward 7. (c) Bicarbonate is also a base: it reacts with hydrogen ions to form water and carbon dioxide gas, removing acid in the same way (the gas is the fizz, and often a burp). (d) The stomach needs its acid to digest food and to kill microbes in it. Neutralizing far past the excess leaves the contents near neutral or basic, digestion slows, and excess bicarbonate adds gas: the dose is meant to trim the surplus acid, not remove the acid altogether.",
+      {});
+  }
+]), ["Neutralization is hydrogen ions meeting their match: track the ions and the pH follows."]);
 
 /* ---------- Inventory additions: WHMIS pictogram images, predicting products, identifying unknowns ---------- */
 

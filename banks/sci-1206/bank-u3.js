@@ -60,27 +60,29 @@ E("sci-u3-sigfigs-calc", 3, ["SC10.8.7"], 2, "gen", function () {
 
 E("sci-u3-accuracy", 3, ["SC10.8.7"], 1, "var", varset([
   function () {
-    return mcq("A set of darts all land in a tight cluster, but the cluster is well to the left of the bullseye. The throws are",
+    var q = mcq("A set of darts all land in a tight cluster, but the cluster is well to the left of the bullseye. The throws are",
       "precise but not accurate: they agree with each other but miss the true target",
-      ["accurate but not precise", "both accurate and precise", "neither: a tight cluster is always accurate"],
+      ["accurate but not precise: the tight cluster proves the aim was true and steady", "both accurate and precise: a tight cluster is what careful throwing always produces", "neither accurate nor precise: the cluster misses, so the throws count as neither one"],
       "Accuracy is closeness to the true value; precision is closeness of results to each other. A tight cluster off target is the textbook picture of precision without accuracy, usually a systematic error (aim or equipment) behind it.", {});
+    q.figure = s6TargetSVG(-2.3, 0.3, 0.45);
+    return q;
   },
   function () {
     return mcq("Four students time the same pendulum swing as 1.48 s, 1.50 s, 1.49 s and 1.49 s. The teacher's photogate reads 1.49 s. Their results are",
       "both accurate (centred on the true value) and precise (tightly clustered)",
-      ["precise but not accurate", "accurate in spread but imprecise", "neither accurate nor precise"],
+      ["precise but not accurate, because hand timing can never match a photogate", "accurate in spread but imprecise: the readings are too far apart to be precise", "neither accurate nor precise: readings that differ cannot show either quality"],
       "The readings cluster tightly (precision) around the accepted value (accuracy). Both qualities can be judged from the same data set: compare the spread for precision, compare the centre to the true value for accuracy.", {});
   },
   function () {
     return mcq("A balance reads 0.3 g with nothing on the pan, and every mass measured afterward is 0.3 g too heavy. This is",
       "a systematic error: it shifts every reading the same way and destroys accuracy while precision can stay high",
-      ["a random error: it scatters readings unpredictably", "a parallax error caused by viewing angle", "not an error at all if the readings are consistent"],
+      ["a random error: it scatters readings unpredictably, higher one time and lower the next, with no fixed pattern", "a parallax error: it comes from viewing a scale from an angle instead of straight on, at eye level", "not an error at all if the readings are consistent, even though the balance was never re-zeroed first"],
       "A zero error repeats identically, which is the mark of a systematic error. Re-zeroing (taring) the balance removes it. Random errors scatter both ways and cannot be corrected by a single adjustment.", {});
   },
   function () {
     return mcq("Reading a liquid level in a graduated cylinder from an angle, instead of at eye level with the meniscus, produces",
       "a parallax error, which can be avoided by always reading at eye level",
-      ["a zero error in the cylinder's scale", "no error, because the angle cancels out", "a change in the liquid's actual volume"],
+      ["a zero error in the cylinder's scale, printed into the glass at the factory", "no error, because the viewing angle cancels out if you read it the same way", "a change in the liquid's actual volume caused by the viewing angle"],
       "Parallax is the apparent shift from viewing position: the meniscus lines up against different scale marks from different heights. Eye level, bottom of the meniscus, every time, removes the error at its source.", {});
   }
 ]), ["Accuracy is about the truth; precision is about agreement. Both are judged differently, and each error type has its own fix."]);
@@ -95,7 +97,7 @@ E("sci-u3-units", 3, ["SC10.8.7"], 1, "var", varset([
   function () {
     return mcq("A measurement is recorded as '12.5' with no unit. The record is incomplete because",
       "a measurement is a number plus a unit: 12.5 m, 12.5 s and 12.5 m/s are entirely different quantities",
-      ["numbers over 10 require two units", "the teacher prefers fractions", "12.5 has too many significant figures"],
+      ["numbers over 10 require two units, one for the tens place and one for the ones place in the value", "the teacher prefers fractions, so a decimal value like this one is not an acceptable record", "12.5 has too many significant figures, so the record fails for that reason alone, unit or no unit"],
       "Values and units travel together. Dropping the unit destroys the information: nobody downstream can tell a distance from a time from a speed, and any calculation using it is meaningless.", {});
   }
 ]), ["Never let a number travel without its unit."]);
@@ -167,19 +169,19 @@ E("sci-u3-scalar-vector", 3, ["SC10.8.8"], 1, "var", varset([
   function () {
     return mcq("Which list contains only vector quantities?",
       "Displacement, velocity, acceleration: each needs a magnitude and a direction",
-      ["Distance, speed, time", "Displacement, speed, mass", "Velocity, distance, temperature"],
+      ["Distance, speed, time: each is a motion quantity measured along the path taken", "Displacement, speed, mass: displacement alone carries the direction this list requires", "Velocity, distance, temperature: velocity and distance both describe the motion itself"],
       "Vectors carry direction: 5 m [east] is a displacement, while 5 m alone is a distance (scalar). Speed is the scalar partner of velocity; distance pairs with displacement; time, mass and temperature are scalars.", {});
   },
   function () {
     return mcq("A student records a measurement as '24 m/s [north]'. Because it includes a direction, this quantity is the",
       "velocity (a vector), not the speed",
-      ["speed (a scalar)", "distance travelled", "acceleration"],
+      ["speed (a scalar), not a vector", "distance travelled along the route", "acceleration for the whole trip"],
       "The bracketed direction is the giveaway: speed plus direction is velocity. The same value without the direction (24 m/s) would be reported as speed.", {});
   },
   function () {
     return mcq("Which measurement is a scalar quantity?",
       "A temperature of -4 °C: it has size but no direction",
-      ["A displacement of 300 m [west]", "A velocity of 12 m/s [downstream]", "An acceleration of 2.0 m/s² [south]"],
+      ["A displacement of 300 m [west] from the start", "A velocity of 12 m/s [downstream] in the river", "An acceleration of 2.0 m/s² [south] at the start"],
       "Negative is not a direction: -4 °C is a position on a temperature scale, not a heading in space. The other three each state a direction explicitly, which makes them vectors. (In one-dimensional motion a sign can stand in for direction, but a temperature sign is just above or below zero.)", {});
   }
 ]), ["Direction present means vector. Learn the pairs: distance/displacement, speed/velocity."]);
@@ -191,21 +193,28 @@ E("sci-u3-dist-disp", 3, ["SC10.8.8"], 2, "gen", function () {
     var back = s6pick([40, 50, 60, 80, 90]);
     var dist = out + back, disp = out - back;
     var ask = s6pick(["distance", "displacement"]);
+    var figD = s6PathLineSVG([{ len: out, dir: 1, label: out + " m east" }, { len: back, dir: -1, label: back + " m west" }]);
     if (ask === "distance") {
-      return mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What total distance did the dog travel?",
+      var q1 = mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What total distance did the dog travel?",
         dist + " m", [disp + " m", out + " m", (dist + 20) + " m"],
         "Distance adds every leg, direction ignored: " + out + " + " + back + " = " + dist + " m. The " + disp + " m option is the displacement, a different quantity.", { mode: mode, ask: ask });
+      q1.figure = figD;
+      return q1;
     }
-    return mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What is the dog's displacement?",
+    var q2 = mcq("A dog runs " + out + " m east along a beach, then turns and runs " + back + " m back west. What is the dog's displacement?",
       disp + " m [east]", [dist + " m [east]", back + " m [west]", disp + " m"],
       "Displacement is finish minus start, with direction: " + out + " east - " + back + " west = " + disp + " m [east]. Total path length (" + dist + " m) is the distance, and a displacement answer without a direction is incomplete.", { mode: mode, ask: ask });
+    q2.figure = figD;
+    return q2;
   }
   var tri = s6pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [9, 12, 15]]);
   var k = s6pick([10, 20, 25]);
   var a = tri[0] * k, b = tri[1] * k, c = tri[2] * k;
-  return mcq("A hiker walks " + a + " m north, then " + b + " m east. What is the magnitude of the hiker's displacement from the start?",
+  var q3 = mcq("A hiker walks " + a + " m north, then " + b + " m east. What is the magnitude of the hiker's displacement from the start?",
     c + " m", [(a + b) + " m", Math.abs(a - b) + " m", (c + k) + " m"],
     "The two legs are perpendicular, so the displacement is the hypotenuse: sqrt(" + a + "² + " + b + "²) = sqrt(" + (a * a + b * b) + ") = " + c + " m. Adding the legs (" + (a + b) + " m) gives the distance walked, not the straight-line displacement.", { a: a, b: b, c: c });
+  q3.figure = s6PathPerpSVG(a, b, a + " m north", b + " m east");
+  return q3;
 }, ["Distance counts the path; displacement measures the gap between start and finish, direction included."]);
 
 E("sci-u3-avgvelocity", 3, ["SC10.8.8"], 3, "gen", function () {
@@ -216,9 +225,11 @@ E("sci-u3-avgvelocity", 3, ["SC10.8.8"], 3, "gen", function () {
   var keyV = s6sf(disp / tTot, 2);
   var avgSpd = s6sf(dist / tTot, 2);
   var legAvg = s6sf((300 / 60 + 100 / 50) / 2, 2);
-  return mcq("A delivery driver goes 300 m east in 60 s, then 100 m west in 50 s. What is the driver's average velocity for the whole trip?",
+  var q = mcq("A delivery driver goes 300 m east in 60 s, then 100 m west in 50 s. What is the driver's average velocity for the whole trip?",
     keyV + " m/s [east]", [avgSpd + " m/s [east]", legAvg + " m/s [east]", s6sf(disp / 60, 2) + " m/s [east]"],
     "Average velocity = total displacement / total time. Displacement = 300 - 100 = 200 m [east]; time = 110 s; 200/110 = " + keyV + " m/s [east]. The " + avgSpd + " option is the average speed (uses the 400 m path), and averaging the two leg velocities ignores that the legs took different times.", { keyV: keyV });
+  q.figure = s6PathLineSVG([{ len: legs[0].d, dir: 1, label: legs[0].d + " m east" }, { len: legs[1].d, dir: -1, label: legs[1].d + " m west" }]);
+  return q;
 }, ["Average velocity divides total displacement by total time. Never average the leg velocities directly."]);
 
 E("sci-u3-disp-scenarios", 3, ["SC10.8.8"], 2, "var", varset([
@@ -230,13 +241,13 @@ E("sci-u3-disp-scenarios", 3, ["SC10.8.8"], 2, "var", varset([
   function () {
     return mcq("A swimmer completes a full lap in a 50 m pool and finishes at the starting wall. Her displacement for the lap is",
       "0 m: she ends where she started",
-      ["100 m", "50 m", "200 m"],
+      ["100 m: the full distance she swam", "50 m: one length of the pool", "200 m: two laps' worth of distance"],
       "Out 50 m and back 50 m returns her to the start, so displacement is zero even though she swam 100 m of distance. Zero displacement with nonzero distance is the signature of any closed loop.", {});
   },
   function () {
     return mcq("A car travels around a roundabout and exits on the same street it entered, heading back the way it came. At the moment it completes the circle, its displacement from entry is",
       "zero, because it is back at its starting position (its distance travelled is the circumference)",
-      ["equal to the circumference of the roundabout", "equal to the diameter of the roundabout", "impossible to state without the car's speed"],
+      ["equal to the circumference of the roundabout, because the car travelled that full distance around", "equal to the diameter of the roundabout, because the car ends up across the circle from its entry", "impossible to state without the car's speed, because displacement is calculated from speed and time"],
       "Displacement depends only on start and end positions. Same position means zero displacement, however long and curvy the path between them was.", {});
   }
 ]), ["If the finish is the start, the displacement is zero, whatever the odometer says."]);
@@ -262,7 +273,7 @@ E("sci-u3-dt-read", 3, ["SC10.8.9"], 2, "gen", function () {
   if (mode === "stopped") {
     q = mcq("The graph shows a cyclist's position over 30 s. Between 10 s and 20 s the cyclist is",
       "stopped: the position stays at 30 m, so the slope (velocity) is zero",
-      ["moving at a constant 3.0 m/s", "returning toward the start", "speeding up steadily"],
+      ["moving at a constant 3.0 m/s, the same speed as the first section of the ride", "returning toward the start at the same steady speed as the ride out", "speeding up steadily as the line continues across the graph"],
       "A flat section on a position-time graph means position is not changing: velocity is the slope, and the slope here is 0. The cyclist rides out for 10 s, rests for 10 s, then rides partway back.", { mode: mode });
   } else if (mode === "speed1") {
     q = mcq("Using the graph, the cyclist's velocity during the first 10 s is",
@@ -271,7 +282,7 @@ E("sci-u3-dt-read", 3, ["SC10.8.9"], 2, "gen", function () {
   } else {
     q = mcq("During the last 10 s of the graph, the cyclist's velocity is",
       "-2.0 m/s: the position falls from 30 m to 10 m, and the negative sign shows motion back toward the start",
-      ["2.0 m/s", "-20 m/s", "0 m/s"],
+      ["2.0 m/s: the speed value is right but the direction back toward the start is ignored, so the sign is lost", "-20 m/s: the total drop in position is used as the velocity, without dividing by the 10 s it took", "0 m/s: the cyclist is treated as stopped because this section follows the flat middle section"],
       "Slope = (10 - 30) / 10 = -2.0 m/s. On a position-time graph the sign of the slope is the direction of travel: negative here means heading back toward the reference point.", { mode: mode });
   }
   q.figure = fig;
@@ -323,19 +334,99 @@ E("sci-u3-dt-slope", 3, ["SC10.8.9"], 3, "gen", function () {
   return q;
 }, ["Pick two points on the line, subtract in the same order top and bottom, then divide."]);
 
+/* Tranche 5 (Nov 2026): story-to-graph matching. Four position-time
+   panels, one per option; the distractors are plausible wrong graphs
+   (wrong slope direction, a flat segment that is not in the story, a
+   return that stops short or goes too far). */
+/* The scenarios are dealt as fixed variants with fixed panel layouts
+   (Nov 19, 2026 fix). As a generator re-rolling four stories with
+   shuffled panels, the same story could be dealt twice on one paper
+   under a different key letter: the composer's duplicate check reads
+   prompt plus correct answer, and the letter changed with the shuffle
+   while the prompt did not. A fixed variant re-deals identically in
+   prompt, figure and answer, so it cannot repeat on a paper. Two
+   scenarios (ferry, elevator) were added with the fix, taking the
+   set to six. */
+var S6_STORY_SCENARIOS = [
+  { name: "mailbox", keyIdx: 1,
+    story: "Leah walks from her house to the community mailbox at a steady pace, stops to chat with a neighbour for a while, then walks back home at the same steady pace.",
+    panels: [
+      [[0, 0], [4, 8], [7, 8], [11, 3]],
+      [[0, 0], [4, 8], [7, 8], [11, 0]],
+      [[0, 0], [4, 8], [7, 8], [11, 10]],
+      [[0, 0], [1, 0.7], [2, 2.1], [3, 4.3], [4, 8], [7, 8], [11, 0]]
+    ],
+    explain: "The position rises steadily (a steady pace away from home), stays flat while she chats (her position is not changing), then falls steadily back to zero (home again, at the same pace). A graph that rises after the flat part has her walking farther away instead of turning home; one whose fall stops above zero has her not getting home; a curved first part has her speeding up instead of keeping a steady pace." },
+  { name: "cyclist", keyIdx: 2,
+    story: "A cyclist rides away from the trailhead quickly, then turns around and rides back to the trailhead more slowly.",
+    panels: [
+      [[0, 0], [8, 9], [11, 0]],
+      [[0, 0], [3, 9], [6, 9], [11, 0]],
+      [[0, 0], [3, 9], [11, 0]],
+      [[0, 0], [5.5, 9], [11, 0]]
+    ],
+    explain: "The steep rise is the fast ride out, and the longer, gentler fall is the slower ride back to position zero, the trailhead. A graph with a flat top adds a rest stop that never happens; one with equal slopes makes the two speeds the same; one with a gentle rise and a steep fall swaps the fast and slow legs." },
+  { name: "bus", keyIdx: 0,
+    story: "A Metrobus leaves the depot, drives at a steady speed, stops at a bus stop, then drives on at a steady speed in the same direction.",
+    panels: [
+      [[0, 0], [4, 6], [6, 6], [11, 10]],
+      [[0, 0], [4, 6], [6, 6], [11, 0]],
+      [[0, 0], [11, 9]],
+      [[0, 4], [5, 8], [7, 8], [11, 10]]
+    ],
+    explain: "The graph rises, goes flat for the stop, then rises again: the bus keeps going the same way. A graph that falls after the flat part brings the bus back toward the depot; a single straight rise has no stop at all; a graph that starts above zero has the bus starting partway along its route instead of at the depot." },
+  { name: "lunch", keyIdx: 3,
+    story: "Noah walks away from home toward school at a steady pace, realizes he forgot his lunch, walks partway back, then turns and walks on to school.",
+    panels: [
+      [[0, 0], [4, 7], [7, 0], [11, 10]],
+      [[0, 0], [4, 7], [6, 7], [11, 10]],
+      [[0, 0], [4, 7], [11, 10]],
+      [[0, 0], [4, 7], [6, 4], [11, 10]]
+    ],
+    explain: "The graph rises (walking away), falls partway (coming back for the lunch, but not all the way home), then rises again to the finish (on to school). A graph that falls to zero has him going all the way home first; a flat middle has him stopping instead of turning back; a graph that only rises leaves out the trip back entirely." },
+  { name: "ferry", keyIdx: 1,
+    story: "A ferry leaves the dock and crosses to an island at a steady speed, waits at the island while passengers board, then returns to the dock at a slower steady speed.",
+    panels: [
+      [[0, 0], [5, 10], [7, 10], [10, 0]],
+      [[0, 0], [5, 10], [7, 10], [12, 0]],
+      [[0, 0], [5, 10], [12, 0]],
+      [[0, 0], [5, 10], [7, 10], [12, 4]]
+    ],
+    explain: "The graph rises steadily (the crossing), stays flat while passengers board (the ferry is not moving), then falls steadily but more gently back to zero (the slower return to the dock). A steeper fall has the ferry coming back faster than it crossed; a graph with no flat part leaves out the wait at the island; a fall that stops above zero has the ferry failing to reach the dock." },
+  { name: "elevator", keyIdx: 2,
+    story: "An elevator starts at the ground floor of a building, rises at a steady speed to the top floor, pauses there, then descends at a steady speed and stops partway down, at a middle floor.",
+    panels: [
+      [[0, 0], [4, 9], [6, 9], [10, 0]],
+      [[0, 0], [2, 3], [4, 9], [6, 9], [9, 5]],
+      [[0, 0], [4, 9], [6, 9], [9, 5]],
+      [[0, 0], [4, 9], [9, 5]]
+    ],
+    explain: "The graph rises steadily (the ride up), goes flat for the pause at the top, then falls steadily and levels off above zero, because the elevator stops at a middle floor, not at the ground floor. A fall to zero has it returning to the ground floor; an uneven rise has it changing speed on the way up; a graph with no flat part leaves out the pause." }
+];
+function s6storyQ(sc) {
+  var letter = "ABCD"[sc.keyIdx];
+  var ds = ["A", "B", "C", "D"].filter(function (L) { return L !== letter; }).map(function (L) { return "Graph " + L; });
+  var q = mcq(sc.story + " Which graph shows this trip?", "Graph " + letter, ds, sc.explain, { sc: sc.name });
+  q.figure = s6StoryPanelsSVG(sc.panels.map(function (pts) { return { pts: pts }; }));
+  return q;
+}
+E("sci-u3-dt-story", 3, ["SC10.8.9"], 2, "var", varset(S6_STORY_SCENARIOS.map(function (sc) {
+  return function () { return s6storyQ(sc); };
+})), ["Read the story in pieces: each piece of the trip is one segment of the graph."]);
+
 /* ---------- SC10.8.10 Instantaneous vs average ---------- */
 
 E("sci-u3-inst-avg", 3, ["SC10.8.10"], 2, "var", varset([
   function () {
     return mcq("A car's speedometer reads 62 km/h at the instant it passes a sign. That reading is the car's",
       "instantaneous speed: its speed at that one moment",
-      ["average speed for the whole trip", "average velocity for the whole trip", "acceleration at the sign"],
+      ["average speed for the whole trip up to that sign", "average velocity for the whole trip up to that sign", "acceleration at the sign as the car passes it"],
       "A speedometer reports the moment-by-moment speed, not any trip average. Average values are computed afterward from totals (total distance over total time) and can differ a lot from what the needle showed at any instant.", {});
   },
   function () {
     return mcq("A bus completes a route with an average velocity of 8.0 m/s [east]. Which statement must be true?",
       "Its displacement divided by its travel time equals 8.0 m/s [east]; its speedometer may have read many different values along the way",
-      ["Its speedometer read exactly 8.0 m/s at every moment", "It never stopped during the route", "Its instantaneous velocity was 8.0 m/s [east] at the midpoint"],
+      ["Its speedometer read exactly 8.0 m/s at every moment, because an average velocity must hold at each instant", "It never stopped during the route, because any stop would make an average velocity in one direction impossible", "Its instantaneous velocity was 8.0 m/s [east] at the midpoint, because the average must equal the value halfway"],
       "An average is a totals statement, not a moment-by-moment claim: stops, starts and speed changes all fold into it. Only the ratio of total displacement to total time is fixed by the average.", {});
   },
   function () {
@@ -346,6 +437,12 @@ E("sci-u3-inst-avg", 3, ["SC10.8.10"], 2, "var", varset([
   }
 ]), ["Instantaneous is a moment; average is a summary. The speedometer shows the first, the trip totals give the second."]);
 
+/* The prompt states the tangent point's position as well as its time
+   (Nov 19, 2026 fix): with t0 alone in the text, two draws sharing
+   t0 but not a repeated the prompt word for word under different
+   keys, and both could be dealt onto one paper. Every (a, t0) pair
+   gives a different position, so stating it makes each draw's prompt
+   distinct. */
 E("sci-u3-dt-instant", 3, ["SC10.8.10"], 3, "gen", function () {
   var a = s6pick([0.40, 0.50, 0.60, 0.80]);
   var t0 = s6pick([4, 6]);
@@ -364,7 +461,8 @@ E("sci-u3-dt-instant", 3, ["SC10.8.10"], 3, "gen", function () {
   var key = s6sf(slope, 2);
   var avg = s6sf(dmax / T, 2);
   var half = s6sf(slope / 2, 2);
-  var q = mcq("A cart accelerating from rest follows the curved position-time graph shown. The straight line is the tangent at t = " + t0 + " s. The cart's instantaneous velocity at t = " + t0 + " s is",
+  var d0txt = (Math.round(d0 * 10) / 10).toFixed(1);
+  var q = mcq("A cart accelerating from rest follows the curved position-time graph shown. The straight line is the tangent at t = " + t0 + " s, where the cart's position is " + d0txt + " m. The cart's instantaneous velocity at t = " + t0 + " s is",
     key + " m/s", s6dis(key, [avg, half, s6sf(d0, 2), s6sf(slope * 1.5, 2)], 3).map(function (x) { return x + " m/s"; }),
     "Instantaneous velocity is the tangent's slope. The tangent rises " + s6sf(slope * 5, 2) + " m over its 5 s span, giving " + key + " m/s. The " + avg + " m/s option is the average velocity over the whole 10 s, and " + half + " m/s comes from d/t at the point itself, neither of which is the tangent slope.",
     { a: a, t0: t0, key: key });
@@ -395,17 +493,17 @@ E("sci-u3-vt-read", 3, ["SC10.8.11"], 2, "gen", function () {
   if (mode === "const") {
     q = mcq("The velocity-time graph shows a scooter trip. Between 5 s and 10 s the scooter is",
       "travelling at a constant velocity of 6 m/s (zero acceleration)",
-      ["stopped", "speeding up steadily", "slowing down steadily"],
+      ["stopped, because a flat line on any motion graph means rest", "speeding up steadily as time passes across this section", "slowing down steadily as time passes across this section"],
       "The line is flat at 6 m/s across that stretch: velocity is not changing, so acceleration is zero. Flat on a velocity graph means steady motion, not rest (flat at zero would be rest).", { mode: mode });
   } else if (mode === "decel") {
     q = mcq("Between 10 s and 13 s, the scooter's motion is",
       "slowing down at a steady rate until it stops",
-      ["speeding up", "moving backwards", "stopped for the whole segment"],
+      ["speeding up as it leaves the flat section behind", "moving backwards for the whole segment shown here", "stopped for the whole segment from its start onward"],
       "The velocity falls steadily from 6 m/s to 0: steady deceleration to a stop. It reaches zero only at the final instant, so 'stopped throughout' misreads the graph; and a falling positive velocity is slowing, not reversing.", { mode: mode });
   } else {
     q = mcq("At t = 2 s, the scooter's velocity is",
       "about 2.4 m/s: the line rises steadily from 0 to 6 m/s over the first 5 s",
-      ["6 m/s", "0 m/s", "about 12 m/s"],
+      ["6 m/s: the top value of the rising section, read as if it applied from the start", "0 m/s: the starting value, read as if the scooter had not yet begun to move at 2 s", "about 12 m/s: twice the graph's top value, from adding rise and run"],
       "Read the value off the rising line: it gains 6 m/s in 5 s (1.2 m/s each second), so at 2 s it reads about 2.4 m/s. The peak value (6) is not reached until 5 s.", { mode: mode });
   }
   q.figure = fig;
@@ -429,12 +527,12 @@ E("sci-u3-vt-accel", 3, ["SC10.8.11", "SC10.8.12"], 3, "gen", function () {
   if (mode === "up") {
     q = mcq("From the velocity-time graph, the scooter's acceleration during the first 5 s is",
       "1.2 m/s²: the slope of the rising section, (6 - 0) / 5",
-      ["6 m/s²", "30 m/s²", "0.83 m/s²"],
+      ["6 m/s²: the final velocity, used without dividing by time", "30 m/s²: velocity multiplied by time instead of divided", "0.83 m/s²: the division is inverted, time over velocity"],
       "Acceleration is the slope of a velocity-time graph: rise 6 m/s over run 5 s gives 1.2 m/s². The inverted division (5/6) and the product are the standard traps.", { mode: mode });
   } else {
     q = mcq("From the velocity-time graph, the scooter's acceleration during the final 3 s is",
       "-2.0 m/s²: the slope of the falling section, (0 - 6) / 3",
-      ["2.0 m/s²", "-6 m/s²", "-0.5 m/s²"],
+      ["2.0 m/s²: the size is right but the negative sign is dropped", "-6 m/s²: the velocity change is used without dividing by the 3 s", "-0.5 m/s²: the division is inverted, time over change"],
       "Slope of the falling section: change in velocity -6 m/s over 3 s = -2.0 m/s². The negative sign carries the meaning: velocity shrinking in the positive direction. Dropping the sign erases the physics.", { mode: mode });
   }
   q.figure = fig;
@@ -516,13 +614,13 @@ E("sci-u3-accel-concept", 3, ["SC10.8.12"], 2, "var", varset([
   function () {
     return mcq("Which object is definitely accelerating?",
       "A car rounding a curve at a steady 50 km/h: its direction changes, and velocity includes direction",
-      ["A car parked with the engine off", "A train moving in a straight line at a constant 80 km/h", "A book sitting on a desk"],
+      ["A car parked with the engine off, because its weight acts downward on the ground below", "A train moving in a straight line at a constant 80 km/h, because it is travelling very fast indeed", "A book sitting on a desk, because gravity pulls on it the whole time it rests there"],
       "Velocity is speed with direction, so changing direction at constant speed is still a velocity change, which is acceleration. Only the curve qualifies; the others have constant (or zero) velocity.", {});
   },
   function () {
     return mcq("An acceleration of -3.0 m/s² for an object moving in the positive direction means",
       "each second, its velocity drops by 3.0 m/s",
-      ["it moves backwards at 3.0 m/s", "it travels 3.0 m every second", "its velocity is -3.0 m/s"],
+      ["it moves backwards at a steady 3.0 m/s", "it travels 3.0 m every second it moves", "its velocity is -3.0 m/s at every moment"],
       "Acceleration is measured in velocity change per second: -3.0 m/s² subtracts 3.0 m/s from the velocity every second while the sign convention holds. It says nothing directly about the current velocity, which could still be large and positive.", {});
   }
 ]), ["Acceleration is about change: speeding up, slowing down, or turning all count."]);
@@ -531,14 +629,18 @@ E("sci-u3-accel-concept", 3, ["SC10.8.12"], 2, "var", varset([
 
 E("sci-u3-cr-trip", 3, ["SC10.8.8"], 2, "var", varset([
   function () {
-    return textq("A trip in two legs (4 marks)\nA student walks 240 m east to a store in 200 s, then walks 60 m back west toward home in 75 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the student's displacement for the whole trip, with direction. (1)\n(c) Calculate the average speed for the whole trip. (1)\n(d) Calculate the average velocity for the whole trip. (1)", ["(a) Distance = 240 + 60 = 300 m."], 
-      "(a) Distance = 240 + 60 = 300 m. (b) Displacement = 240 - 60 = 180 m [east]. (c) Average speed = 300 m / 275 s = 1.1 m/s. (d) Average velocity = 180 m [east] / 275 s = 0.65 m/s [east]. (Total time 200 + 75 = 275 s; answers to 2 significant figures as the data warrant.)", 
+    var q = textq("A trip in two legs (4 marks)\nA student walks 240 m east to a store in 200 s, then walks 60 m back west toward home in 75 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the student's displacement for the whole trip, with direction. (1)\n(c) Calculate the average speed for the whole trip. (1)\n(d) Calculate the average velocity for the whole trip. (1)", ["(a) Distance = 240 + 60 = 300 m."], 
+      "(a) Distance = 240 + 60 = 300 m. (b) Displacement = 240 - 60 = 180 m [east]. (c) Average speed = 300 m / 275 s = 1.1 m/s. (d) Average velocity = 180 m [east] / 275 s = 0.65 m/s [east]. (Total time 200 + 75 = 275 s; answers to 2 significant figures as the data warrant.)",
       {});
+    q.figure = s6PathLineSVG([{ len: 240, dir: 1, label: "240 m east" }, { len: 60, dir: -1, label: "60 m west" }]);
+    return q;
   },
   function () {
-    return textq("Training laps (4 marks)\nA runner on a straight out-and-back course runs 400 m north in 100 s, turns, and runs 400 m south in 125 s, finishing exactly at the start.\n(a) Calculate the total distance run. (1)\n(b) State the runner's displacement for the full run, and explain the value. (1)\n(c) Calculate the average speed for the full run. (1)\n(d) State the average velocity for the full run, and explain why it differs from the average speed. (1)", ["(a) Distance = 400 + 400 = 800 m."], 
-      "(a) Distance = 400 + 400 = 800 m. (b) Displacement = 0 m: the finish is the start, so the straight-line change in position is zero. (c) Average speed = 800 m / 225 s = 3.6 m/s. (d) Average velocity = 0 m / 225 s = 0 m/s. It differs because average velocity divides displacement (zero here), while average speed divides distance (800 m); the two quantities agree only for straight-line motion with no reversal.", 
+    var q = textq("Training laps (4 marks)\nA runner on a straight out-and-back course runs 400 m north in 100 s, turns, and runs 400 m south in 125 s, finishing exactly at the start.\n(a) Calculate the total distance run. (1)\n(b) State the runner's displacement for the full run, and explain the value. (1)\n(c) Calculate the average speed for the full run. (1)\n(d) State the average velocity for the full run, and explain why it differs from the average speed. (1)", ["(a) Distance = 400 + 400 = 800 m."], 
+      "(a) Distance = 400 + 400 = 800 m. (b) Displacement = 0 m: the finish is the start, so the straight-line change in position is zero. (c) Average speed = 800 m / 225 s = 3.6 m/s. (d) Average velocity = 0 m / 225 s = 0 m/s. It differs because average velocity divides displacement (zero here), while average speed divides distance (800 m); the two quantities agree only for straight-line motion with no reversal.",
       {});
+    q.figure = s6PathLineSVG([{ len: 400, dir: 1, label: "400 m north" }, { len: 400, dir: -1, label: "400 m south" }]);
+    return q;
   },
   function () {
     return textq("Comparing two drivers (4 marks)\nMaya drives for 2.00 hours at a steady 68.0 km/h. Tomas drives for 120 minutes at a steady 19.0 m/s.\n(a) Convert Tomas's speed to kilometres per hour. (1)\n(b) Who is travelling faster, and by how much? (1)\n(c) Calculate the distance Maya travels. (1)\n(d) Calculate the distance Tomas travels in his 120 minutes. (1)",
@@ -547,10 +649,12 @@ E("sci-u3-cr-trip", 3, ["SC10.8.8"], 2, "var", varset([
       {});
   },
   function () {
-    return textq("A warden's patrol (4 marks)\nA park warden walks 350 m north in 250 s, then 150 m south in 100 s, then 100 m north in 80 s.\n(a) Calculate the total distance walked. (1)\n(b) Calculate the warden's displacement for the whole patrol. (1)\n(c) Calculate the average speed for the patrol. (1)\n(d) Calculate the average velocity for the patrol. (1)",
+    var q = textq("A warden's patrol (4 marks)\nA park warden walks 350 m north in 250 s, then 150 m south in 100 s, then 100 m north in 80 s.\n(a) Calculate the total distance walked. (1)\n(b) Calculate the warden's displacement for the whole patrol. (1)\n(c) Calculate the average speed for the patrol. (1)\n(d) Calculate the average velocity for the patrol. (1)",
       ["(a) 600 m. (b) 300 m [north]. (c) 1.4 m/s. (d) 0.70 m/s [north]"],
       "(a) Distance = 350 + 150 + 100 = 600 m. (b) Displacement = 350 - 150 + 100 = 300 m [north] (north taken as positive). (c) Total time = 250 + 100 + 80 = 430 s; average speed = 600 / 430 = 1.4 m/s. (d) Average velocity = 300 m [north] / 430 s = 0.70 m/s [north]. The southward leg cancels part of the northward progress, so the average velocity comes out well below the average speed even though the warden's walking pace was steady throughout.",
       {});
+    q.figure = s6PathLineSVG([{ len: 350, dir: 1, label: "350 m north" }, { len: 150, dir: -1, label: "150 m south" }, { len: 100, dir: 1, label: "100 m north" }]);
+    return q;
   }
 ]), ["Show the formula, the substitution and the unit in every part; direction is part of any displacement or velocity answer."]);
 
@@ -614,13 +718,13 @@ E("sci-u3-motion-vocab", 3, ["SC10.8.8"], 1, "var", varset([
   function () {
     return mcq("In motion studies, a position measurement is always made relative to",
       "a reference point: the fixed place chosen as 'zero' that all positions are measured from",
-      ["the moving object itself", "the North Pole in every problem", "wherever the object stops"],
+      ["the moving object itself, because its position is measured from wherever it happens to be", "the North Pole in every problem, because all positions on Earth are measured from that one point", "wherever the object stops, because the final position is the one every measurement builds on"],
       "Position has no meaning without an origin: '3 m' only locates something when you know 3 m from what, and in which direction. Changing the reference point changes every position value but no distances travelled.", {});
   },
   function () {
     return mcq("An object is in motion when",
       "its position changes relative to a reference point as time passes",
-      ["it makes a sound", "its engine is running", "it feels like it is moving to a passenger"],
+      ["it makes a sound that a nearby observer can hear while it travels", "its engine is running, whether or not it is going anywhere yet", "it feels like it is moving to a passenger riding on it at the time"],
       "Motion is defined by changing position, full stop. A parked car with the engine running is not in motion; a passenger on a smooth train may feel still while their position changes rapidly. Feelings and engines are not part of the definition.", {});
   }
 ]), ["Position needs a reference point the way a price needs a currency."]);
@@ -638,13 +742,13 @@ E("sci-u3-dt-shapes", 3, ["SC10.8.9"], 1, "var", varset([
   function () {
     return mcq("On a position-time graph, a straight diagonal line (constant slope) tells you the object is",
       "moving at a constant velocity: equal distances in equal times",
-      ["speeding up", "slowing down", "stopped"],
+      ["speeding up steadily from rest as the line climbs upward", "slowing down steadily from its fastest speed at the start", "stopped, because a straight line shows no change at all"],
       "Constant slope means constant velocity, since slope IS velocity on this graph. A curve bending upward means speeding up; bending toward flat means slowing down; a flat line is stopped.", {});
   },
   function () {
     return mcq("A position-time graph curves upward, getting steeper and steeper. The object is",
       "speeding up: the slope (velocity) grows as time passes",
-      ["moving at constant velocity", "slowing down", "returning to its start"],
+      ["moving at constant velocity the whole time shown", "slowing down as the slope gets steeper and steeper", "returning toward its start as the graph goes on"],
       "Steepening slope is growing velocity. Read any curve by asking what the slope is doing: rising slope, speeding up; falling slope, slowing down; steady slope, steady speed.", {});
   }
 ]), ["Slope behaviour is the whole reading: steady, steepening, flattening or flat."]);
@@ -659,7 +763,7 @@ E("sci-u3-accel-plain", 3, ["SC10.8.12"], 1, "var", varset([
   function () {
     return mcq("A motion described as 'uniform' (constant velocity) has an acceleration of",
       "zero: the velocity is not changing at all",
-      ["9.8 m/s², like gravity", "whatever the velocity is", "one, by definition"],
+      ["9.8 m/s², like gravity near Earth's surface", "whatever the velocity is at that moment", "one, by definition of the word uniform"],
       "Acceleration measures change: no change in speed and no change in direction means no acceleration, however fast the object travels. A cruising airliner at 900 km/h in a straight line has zero acceleration.", {});
   }
 ]), ["Big acceleration means velocity changing fast, not velocity being big."]);
@@ -673,8 +777,10 @@ E("sci-u3-round-trip", 3, ["SC10.8.8"], 3, "gen", function () {
   var avg = 2 * d / tTot;
   var key = s6sf(avg, 2);
   var naive = s6sf((vOut + vBack) / 2, 2);
-  return mcq("A kayaker paddles 120 m across a pond at " + vOut + " m/s and returns the same 120 m at " + vBack + " m/s. The average speed for the round trip is",
+  var q = mcq("A kayaker paddles 120 m across a pond at " + vOut + " m/s and returns the same 120 m at " + vBack + " m/s. The average speed for the round trip is",
     key + " m/s", [naive + " m/s", s6sf(vOut, 2) + " m/s", s6sf(2 * d / (d / vOut), 2) + " m/s"],
     "Average speed is total distance over total time: time out = 120/" + vOut + " = " + s6sf(d / vOut, 3) + " s; time back = 120/" + vBack + " = " + s6sf(d / vBack, 3) + " s; average = 240 / " + s6sf(tTot, 3) + " = " + key + " m/s. Simply averaging the two speeds (" + naive + ") is wrong because more time is spent at the slower speed.",
     { avg: avg, key: key });
+  q.figure = s6PathLineSVG([{ len: d, dir: 1, label: d + " m at " + vOut + " m/s" }, { len: d, dir: -1, label: d + " m at " + vBack + " m/s" }]);
+  return q;
 }, ["Round trips punish the naive average: you spend longer at the slow speed, so it counts for more."]);

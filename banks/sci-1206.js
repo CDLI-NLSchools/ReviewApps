@@ -2591,6 +2591,8 @@ E("sci-u1-cr-airmass", 1, ["SC10.6.4"], 3, "var", varset([
 // CRMARKS: sci-u2-cr-naming=4
 // CRMARKS: sci-u2-cr-balance=3
 // CRMARKS: sci-u2-cr-rates=3
+// CRMARKS: sci-u2-cr-nomenclature=2
+// CRMARKS: sci-u2-cr-neutral=4
 // Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6, plus
 // the SC10.7.1 to 7.3 STSE tranche added Nov 19, 2026 at the end of
 // this file).
@@ -3524,6 +3526,39 @@ E("sci-u2-cr-rates", 2, ["SC10.8.6"], 3, "var", varset([
   }
 ]), ["Every rate explanation needs the collision story: frequency, energy, or the activation energy barrier."]);
 
+/* Blueprint CR additions (Nov 19, 2026): the pool-depth audit of the
+   test blueprint found Chemical Reactions Test 1 unable to reach its
+   6 CR marks from {4, 3} and Test 2 holding a single 3-mark entry
+   against a 4-mark target. The 2-mark nomenclature entry (Test 1's
+   codes) and the 4-mark neutralization entry (Test 2's codes) close
+   both partitions. */
+
+E("sci-u2-cr-nomenclature", 2, ["SC10.7.2"], 2, "var", varset([
+  function () {
+    return textq("Why names have rules (2 marks)\nA hardware store sells a drain cleaner labelled only 'the strong stuff'. A chemistry supplier sells the same chemical as 'sodium hydroxide, NaOH'.\n(a) State one problem with identifying a chemical by an informal name like 'the strong stuff'. (1)\n(b) Explain how the systematic name and formula prevent that problem. (1)", ["(a) An informal name does not identify the substance: the same nickname can be used for different chemicals, and the same chemical can carry several nicknames, so nobody can be sure what is in the container, what its hazards are, or how much to use."],
+      "(a) An informal name does not identify the substance: the same nickname can be used for different chemicals, and the same chemical can carry several nicknames, so nobody can be sure what is in the container, what its hazards are, or how much to use. (b) The systematic name and formula are unique and the same everywhere: NaOH names exactly one substance, of known composition, so its hazards, properties and reactions can be looked up and passed on accurately in any lab, country or language.",
+      {});
+  },
+  function () {
+    return textq("One substance, one name (2 marks)\nThe acid in vinegar appears in old wood-distilling records under names like 'pyroligneous acid'. Its systematic name is ethanoic acid and its formula is CH3COOH.\n(a) Give one advantage of a single systematic naming system over local or historical names. (1)\n(b) Explain what information the formula CH3COOH carries that the name alone does not state. (1)", ["(a) One agreed name identifies the same substance for everyone: research results, safety information and trade records stay usable across places, languages and centuries instead of breaking down over local custom."],
+      "(a) One agreed name identifies the same substance for everyone: research results, safety information and trade records stay usable across places, languages and centuries instead of breaking down over local custom. (b) The formula states the composition: which elements are present and in what ratio, here 2 carbon, 4 hydrogen and 2 oxygen atoms per molecule. That is the information needed to work out amounts and predict reactions, and the name by itself does not spell it out.",
+      {});
+  }
+]), ["A systematic name is an address: one substance, one name, findable everywhere."]);
+
+E("sci-u2-cr-neutral", 2, ["SC10.8.5"], 3, "var", varset([
+  function () {
+    return textq("Neutralizing an acid spill (4 marks)\nA technician spills dilute hydrochloric acid on a bench and adds sodium bicarbonate (baking soda) a little at a time. The mixture fizzes until the fizzing stops.\n(a) Write the word equation for the reaction. (1)\n(b) Explain, in terms of ions, what happens to the hydrogen ions during the reaction. (1)\n(c) Explain why the fizzing is a useful sign, and what its stopping tells the technician. (1)\n(d) The cleaned area is tested with universal indicator and reads pH 7. State what the indicator would show if too much acid remained, and what should be done. (1)", ["(a) Hydrochloric acid + sodium bicarbonate → sodium chloride + water + carbon dioxide."],
+      "(a) Hydrochloric acid + sodium bicarbonate → sodium chloride + water + carbon dioxide. (b) The hydrogen ions from the acid react with the bicarbonate ions to form water and carbon dioxide: the H+ ions are removed from the solution, so the acidity falls toward neutral. (c) The fizzing is carbon dioxide forming, visible evidence that neutralization is still happening; when it stops, added bicarbonate finds no acid left to react with, so enough has been added. (d) It would show an acid colour (red to orange, pH below 7); add more bicarbonate a little at a time and retest until the reading is neutral.",
+      {});
+  },
+  function () {
+    return textq("Antacid chemistry (4 marks)\nStomach acid is dilute hydrochloric acid. An antacid tablet contains magnesium hydroxide, a base that is safe to swallow in small doses.\n(a) Write the word equation for the reaction in the stomach. (1)\n(b) Explain why the pH of the stomach contents rises after the tablet dissolves. (1)\n(c) A different tablet uses sodium bicarbonate instead. Explain why it also relieves indigestion, and name the gas it produces. (1)\n(d) Explain, in terms of the stomach's chemistry, why taking far more antacid than directed can itself cause problems. (1)", ["(a) Hydrochloric acid + magnesium hydroxide → magnesium chloride + water."],
+      "(a) Hydrochloric acid + magnesium hydroxide → magnesium chloride + water. (b) The hydroxide ions from the base combine with the acid's hydrogen ions to form water. Removing H+ from the solution lowers the acidity, so the pH rises toward 7. (c) Bicarbonate is also a base: it reacts with hydrogen ions to form water and carbon dioxide gas, removing acid in the same way (the gas is the fizz, and often a burp). (d) The stomach needs its acid to digest food and to kill microbes in it. Neutralizing far past the excess leaves the contents near neutral or basic, digestion slows, and excess bicarbonate adds gas: the dose is meant to trim the surplus acid, not remove the acid altogether.",
+      {});
+  }
+]), ["Neutralization is hydrogen ions meeting their match: track the ions and the pH follows."]);
+
 /* ---------- Inventory additions: WHMIS pictogram images, predicting products, identifying unknowns ---------- */
 
 function s6WhmisSVG(kind) {
@@ -4407,54 +4442,81 @@ E("sci-u3-dt-slope", 3, ["SC10.8.9"], 3, "gen", function () {
    panels, one per option; the distractors are plausible wrong graphs
    (wrong slope direction, a flat segment that is not in the story, a
    return that stops short or goes too far). */
-E("sci-u3-dt-story", 3, ["SC10.8.9"], 2, "gen", function () {
-  var scs = [
-    { name: "mailbox",
-      story: "Leah walks from her house to the community mailbox at a steady pace, stops to chat with a neighbour for a while, then walks back home at the same steady pace.",
-      key: [[0, 0], [4, 8], [7, 8], [11, 0]],
-      wrong: [
-        [[0, 0], [4, 8], [7, 8], [11, 10]],
-        [[0, 0], [4, 8], [7, 8], [11, 3]],
-        [[0, 0], [1, 0.7], [2, 2.1], [3, 4.3], [4, 8], [7, 8], [11, 0]]
-      ],
-      explain: "The position rises steadily (a steady pace away from home), stays flat while she chats (her position is not changing), then falls steadily back to zero (home again, at the same pace). A graph that rises after the flat part has her walking farther away instead of turning home; one whose fall stops above zero has her not getting home; a curved first part has her speeding up instead of keeping a steady pace." },
-    { name: "cyclist",
-      story: "A cyclist rides away from the trailhead quickly, then turns around and rides back to the trailhead more slowly.",
-      key: [[0, 0], [3, 9], [11, 0]],
-      wrong: [
-        [[0, 0], [8, 9], [11, 0]],
-        [[0, 0], [3, 9], [6, 9], [11, 0]],
-        [[0, 0], [5.5, 9], [11, 0]]
-      ],
-      explain: "The steep rise is the fast ride out, and the longer, gentler fall is the slower ride back to position zero, the trailhead. A graph with a flat top adds a rest stop that never happens; one with equal slopes makes the two speeds the same; one with a gentle rise and a steep fall swaps the fast and slow legs." },
-    { name: "bus",
-      story: "A Metrobus leaves the depot, drives at a steady speed, stops at a bus stop, then drives on at a steady speed in the same direction.",
-      key: [[0, 0], [4, 6], [6, 6], [11, 10]],
-      wrong: [
-        [[0, 0], [4, 6], [6, 6], [11, 0]],
-        [[0, 0], [11, 9]],
-        [[0, 4], [5, 8], [7, 8], [11, 10]]
-      ],
-      explain: "The graph rises, goes flat for the stop, then rises again: the bus keeps going the same way. A graph that falls after the flat part brings the bus back toward the depot; a single straight rise has no stop at all; a graph that starts above zero has the bus starting partway along its route instead of at the depot." },
-    { name: "lunch",
-      story: "Noah walks away from home toward school at a steady pace, realizes he forgot his lunch, walks partway back, then turns and walks on to school.",
-      key: [[0, 0], [4, 7], [6, 4], [11, 10]],
-      wrong: [
-        [[0, 0], [4, 7], [7, 0], [11, 10]],
-        [[0, 0], [4, 7], [6, 7], [11, 10]],
-        [[0, 0], [4, 7], [11, 10]]
-      ],
-      explain: "The graph rises (walking away), falls partway (coming back for the lunch, but not all the way home), then rises again to the finish (on to school). A graph that falls to zero has him going all the way home first; a flat middle has him stopping instead of turning back; a graph that only rises leaves out the trip back entirely." }
-  ];
-  var sc = s6pick(scs);
-  var shapes = s6shuf([{ pts: sc.key, isKey: true }].concat(sc.wrong.map(function (w) { return { pts: w, isKey: false }; })));
-  var ki = shapes.findIndex(function (s) { return s.isKey; });
-  var letter = "ABCD"[ki];
+/* The scenarios are dealt as fixed variants with fixed panel layouts
+   (Nov 19, 2026 fix). As a generator re-rolling four stories with
+   shuffled panels, the same story could be dealt twice on one paper
+   under a different key letter: the composer's duplicate check reads
+   prompt plus correct answer, and the letter changed with the shuffle
+   while the prompt did not. A fixed variant re-deals identically in
+   prompt, figure and answer, so it cannot repeat on a paper. Two
+   scenarios (ferry, elevator) were added with the fix, taking the
+   set to six. */
+var S6_STORY_SCENARIOS = [
+  { name: "mailbox", keyIdx: 1,
+    story: "Leah walks from her house to the community mailbox at a steady pace, stops to chat with a neighbour for a while, then walks back home at the same steady pace.",
+    panels: [
+      [[0, 0], [4, 8], [7, 8], [11, 3]],
+      [[0, 0], [4, 8], [7, 8], [11, 0]],
+      [[0, 0], [4, 8], [7, 8], [11, 10]],
+      [[0, 0], [1, 0.7], [2, 2.1], [3, 4.3], [4, 8], [7, 8], [11, 0]]
+    ],
+    explain: "The position rises steadily (a steady pace away from home), stays flat while she chats (her position is not changing), then falls steadily back to zero (home again, at the same pace). A graph that rises after the flat part has her walking farther away instead of turning home; one whose fall stops above zero has her not getting home; a curved first part has her speeding up instead of keeping a steady pace." },
+  { name: "cyclist", keyIdx: 2,
+    story: "A cyclist rides away from the trailhead quickly, then turns around and rides back to the trailhead more slowly.",
+    panels: [
+      [[0, 0], [8, 9], [11, 0]],
+      [[0, 0], [3, 9], [6, 9], [11, 0]],
+      [[0, 0], [3, 9], [11, 0]],
+      [[0, 0], [5.5, 9], [11, 0]]
+    ],
+    explain: "The steep rise is the fast ride out, and the longer, gentler fall is the slower ride back to position zero, the trailhead. A graph with a flat top adds a rest stop that never happens; one with equal slopes makes the two speeds the same; one with a gentle rise and a steep fall swaps the fast and slow legs." },
+  { name: "bus", keyIdx: 0,
+    story: "A Metrobus leaves the depot, drives at a steady speed, stops at a bus stop, then drives on at a steady speed in the same direction.",
+    panels: [
+      [[0, 0], [4, 6], [6, 6], [11, 10]],
+      [[0, 0], [4, 6], [6, 6], [11, 0]],
+      [[0, 0], [11, 9]],
+      [[0, 4], [5, 8], [7, 8], [11, 10]]
+    ],
+    explain: "The graph rises, goes flat for the stop, then rises again: the bus keeps going the same way. A graph that falls after the flat part brings the bus back toward the depot; a single straight rise has no stop at all; a graph that starts above zero has the bus starting partway along its route instead of at the depot." },
+  { name: "lunch", keyIdx: 3,
+    story: "Noah walks away from home toward school at a steady pace, realizes he forgot his lunch, walks partway back, then turns and walks on to school.",
+    panels: [
+      [[0, 0], [4, 7], [7, 0], [11, 10]],
+      [[0, 0], [4, 7], [6, 7], [11, 10]],
+      [[0, 0], [4, 7], [11, 10]],
+      [[0, 0], [4, 7], [6, 4], [11, 10]]
+    ],
+    explain: "The graph rises (walking away), falls partway (coming back for the lunch, but not all the way home), then rises again to the finish (on to school). A graph that falls to zero has him going all the way home first; a flat middle has him stopping instead of turning back; a graph that only rises leaves out the trip back entirely." },
+  { name: "ferry", keyIdx: 1,
+    story: "A ferry leaves the dock and crosses to an island at a steady speed, waits at the island while passengers board, then returns to the dock at a slower steady speed.",
+    panels: [
+      [[0, 0], [5, 10], [7, 10], [10, 0]],
+      [[0, 0], [5, 10], [7, 10], [12, 0]],
+      [[0, 0], [5, 10], [12, 0]],
+      [[0, 0], [5, 10], [7, 10], [12, 4]]
+    ],
+    explain: "The graph rises steadily (the crossing), stays flat while passengers board (the ferry is not moving), then falls steadily but more gently back to zero (the slower return to the dock). A steeper fall has the ferry coming back faster than it crossed; a graph with no flat part leaves out the wait at the island; a fall that stops above zero has the ferry failing to reach the dock." },
+  { name: "elevator", keyIdx: 2,
+    story: "An elevator starts at the ground floor of a building, rises at a steady speed to the top floor, pauses there, then descends at a steady speed and stops partway down, at a middle floor.",
+    panels: [
+      [[0, 0], [4, 9], [6, 9], [10, 0]],
+      [[0, 0], [2, 3], [4, 9], [6, 9], [9, 5]],
+      [[0, 0], [4, 9], [6, 9], [9, 5]],
+      [[0, 0], [4, 9], [9, 5]]
+    ],
+    explain: "The graph rises steadily (the ride up), goes flat for the pause at the top, then falls steadily and levels off above zero, because the elevator stops at a middle floor, not at the ground floor. A fall to zero has it returning to the ground floor; an uneven rise has it changing speed on the way up; a graph with no flat part leaves out the pause." }
+];
+function s6storyQ(sc) {
+  var letter = "ABCD"[sc.keyIdx];
   var ds = ["A", "B", "C", "D"].filter(function (L) { return L !== letter; }).map(function (L) { return "Graph " + L; });
   var q = mcq(sc.story + " Which graph shows this trip?", "Graph " + letter, ds, sc.explain, { sc: sc.name });
-  q.figure = s6StoryPanelsSVG(shapes);
+  q.figure = s6StoryPanelsSVG(sc.panels.map(function (pts) { return { pts: pts }; }));
   return q;
-}, ["Read the story in pieces: each piece of the trip is one segment of the graph."]);
+}
+E("sci-u3-dt-story", 3, ["SC10.8.9"], 2, "var", varset(S6_STORY_SCENARIOS.map(function (sc) {
+  return function () { return s6storyQ(sc); };
+})), ["Read the story in pieces: each piece of the trip is one segment of the graph."]);
 
 /* ---------- SC10.8.10 Instantaneous vs average ---------- */
 
@@ -4479,6 +4541,12 @@ E("sci-u3-inst-avg", 3, ["SC10.8.10"], 2, "var", varset([
   }
 ]), ["Instantaneous is a moment; average is a summary. The speedometer shows the first, the trip totals give the second."]);
 
+/* The prompt states the tangent point's position as well as its time
+   (Nov 19, 2026 fix): with t0 alone in the text, two draws sharing
+   t0 but not a repeated the prompt word for word under different
+   keys, and both could be dealt onto one paper. Every (a, t0) pair
+   gives a different position, so stating it makes each draw's prompt
+   distinct. */
 E("sci-u3-dt-instant", 3, ["SC10.8.10"], 3, "gen", function () {
   var a = s6pick([0.40, 0.50, 0.60, 0.80]);
   var t0 = s6pick([4, 6]);
@@ -4497,7 +4565,8 @@ E("sci-u3-dt-instant", 3, ["SC10.8.10"], 3, "gen", function () {
   var key = s6sf(slope, 2);
   var avg = s6sf(dmax / T, 2);
   var half = s6sf(slope / 2, 2);
-  var q = mcq("A cart accelerating from rest follows the curved position-time graph shown. The straight line is the tangent at t = " + t0 + " s. The cart's instantaneous velocity at t = " + t0 + " s is",
+  var d0txt = (Math.round(d0 * 10) / 10).toFixed(1);
+  var q = mcq("A cart accelerating from rest follows the curved position-time graph shown. The straight line is the tangent at t = " + t0 + " s, where the cart's position is " + d0txt + " m. The cart's instantaneous velocity at t = " + t0 + " s is",
     key + " m/s", s6dis(key, [avg, half, s6sf(d0, 2), s6sf(slope * 1.5, 2)], 3).map(function (x) { return x + " m/s"; }),
     "Instantaneous velocity is the tangent's slope. The tangent rises " + s6sf(slope * 5, 2) + " m over its 5 s span, giving " + key + " m/s. The " + avg + " m/s option is the average velocity over the whole 10 s, and " + half + " m/s comes from d/t at the point itself, neither of which is the tangent slope.",
     { a: a, t0: t0, key: key });
@@ -4824,6 +4893,8 @@ E("sci-u3-round-trip", 3, ["SC10.8.8"], 3, "gen", function () {
 // CRMARKS: sci-u4-cr-cycle=4
 // CRMARKS: sci-u4-cr-bioaccum=3
 // CRMARKS: sci-u4-cr-scene=3
+// CRMARKS: sci-u4-cr-soil=2
+// CRMARKS: sci-u4-cr-biodiv=2
 /* Science 1206 Unit 4: Sustainability of Ecosystems (SC10.10.1 to 10.8). */
 
 /* ---------- SC10.10.1 Ecological organization, biotic and abiotic ---------- */
@@ -5294,6 +5365,38 @@ E("sci-u4-cr-scene", 4, ["SC10.10.1", "SC10.10.2"], 3, "var", varset([
   }
 ]), ["Answer from the scene you are given: name the actual organisms and factors pictured, then apply the definitions."]);
 
+/* Blueprint CR additions (Nov 19, 2026): the pool-depth audit of the
+   test blueprint found both Sustainability tests unable to reach
+   their 5 CR marks (Test 1 held {4, 3}; Test 2 a single 3). One
+   2-mark entry in each half of the unit closes both partitions:
+   3 + 2 in each case. */
+
+E("sci-u4-cr-soil", 4, ["SC10.10.4"], 2, "var", varset([
+  function () {
+    return textq("Two fields, two soils (2 marks)\nField A is mostly sand with very little humus. Field B is a loam rich in humus. In a dry summer, Field B's crops keep growing while Field A's crops wilt.\n(a) State one way humus improves a soil for plant growth. (1)\n(b) Explain why Field A dries out faster than Field B after the same rain. (1)", ["(a) Any one: humus holds water and dissolved nutrients in the soil within reach of roots; it feeds the decomposers that release nutrients from dead matter; it binds loose particles into a structure that roots and air can move through."],
+      "(a) Any one: humus holds water and dissolved nutrients in the soil within reach of roots; it feeds the decomposers that release nutrients from dead matter; it binds loose particles into a structure that roots and air can move through. (b) Sand grains are large with wide gaps between them, so rain drains straight through and little water is stored. Field B's humus works like a sponge, holding water in the soil (and its finer particles drain slowly), so moisture stays available to the roots long after the rain has stopped.",
+      {});
+  },
+  function () {
+    return textq("Reading a soil pit (2 marks)\nA soil pit shows a dark top layer full of roots and earthworms, above a pale lower layer of mostly clay.\n(a) Explain why the dark top layer is the most fertile part of the soil. (1)\n(b) A gardener mixes compost into a clay garden bed. State the change this makes to the soil, and one benefit it gives the plants. (1)", ["(a) The top layer is the topsoil: it holds the humus, the decayed matter whose nutrients the decomposers living there are releasing, so it carries the available minerals that roots take up."],
+      "(a) The top layer is the topsoil: it holds the humus, the decayed matter whose nutrients the decomposers living there are releasing, so it carries the available minerals that roots take up. The pale clay below has almost no organic matter and few nutrients to offer. (b) The compost adds organic matter (humus) to the clay. Benefit (any one): the tight clay structure opens up, so water drains and air reaches roots instead of waterlogging; or the compost's nutrients are released as it decays, feeding the plants.",
+      {});
+  }
+]), ["Humus is the soil's savings account: water and nutrients held where roots can reach them."]);
+
+E("sci-u4-cr-biodiv", 4, ["SC10.10.7"], 2, "var", varset([
+  function () {
+    return textq("One variety or many (2 marks)\nOne farm valley plants a single variety of potato in every field. A neighbouring valley plants several potato varieties alongside other crops.\n(a) State what biodiversity means in this setting. (1)\n(b) Explain why the single-variety valley is at greater risk if a potato disease arrives. (1)", ["(a) The variety of living things in the area: here, the genetic variety within the potato crop and the variety of species grown and living alongside it."],
+      "(a) The variety of living things in the area: here, the genetic variety within the potato crop and the variety of species grown and living alongside it. (b) Every plant in the single-variety valley shares the same resistance, so a disease that can attack one plant can attack them all and the whole crop can fail at once. In the mixed valley the varieties differ, so some resist the disease, and the other species present support predators and pollinators that buffer the loss: diversity spreads the risk.",
+      {});
+  },
+  function () {
+    return textq("The hedgerow's quiet work (2 marks)\nA farmer removes the hedgerows between fields to plant more wheat. Within a few years, outbreaks of aphids in the wheat grow noticeably worse.\n(a) State one way the hedgerows added to the farm's biodiversity. (1)\n(b) Explain the connection between removing the hedgerows and the worse aphid outbreaks. (1)", ["(a) Any one: the hedgerows were habitat, food, shelter and breeding sites, for birds, insects and other species beyond the crop itself, so they raised the number of species living on the farm."],
+      "(a) Any one: the hedgerows were habitat, food, shelter and breeding sites, for birds, insects and other species beyond the crop itself, so they raised the number of species living on the farm. (b) The hedgerows housed the aphids' predators, such as ladybirds, spiders and birds. Removing them removed the predators' habitat, so aphid numbers were no longer held in check and outbreaks grew: the farm had been getting a pest-control service from its biodiversity without noticing it.",
+      {});
+  }
+]), ["Variety is insurance: the more kinds of life, the fewer single points of failure."]);
+
 /* ---------- Unit 4 depth additions ---------- */
 
 E("sci-u4-biomes", 4, ["SC10.10.1"], 1, "var", varset([
@@ -5371,4 +5474,4 @@ E("sci-u4-species-risk", 4, ["SC10.10.8"], 2, "var", varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"sci-u1-cr-airmass":3,"sci-u1-cr-climate":4,"sci-u1-cr-forecast":3,"sci-u1-cr-frontpass":3,"sci-u1-cr-mapdescribe":4,"sci-u2-cr-balance":3,"sci-u2-cr-naming":4,"sci-u2-cr-rates":3,"sci-u3-cr-dtgraph":3,"sci-u3-cr-trip":4,"sci-u3-cr-vtgraph":3,"sci-u4-cr-bioaccum":3,"sci-u4-cr-cycle":4,"sci-u4-cr-scene":3};
+window.__BANK_CRMARKS={"sci-u1-cr-airmass":3,"sci-u1-cr-climate":4,"sci-u1-cr-forecast":3,"sci-u1-cr-frontpass":3,"sci-u1-cr-mapdescribe":4,"sci-u2-cr-balance":3,"sci-u2-cr-naming":4,"sci-u2-cr-neutral":4,"sci-u2-cr-nomenclature":2,"sci-u2-cr-rates":3,"sci-u3-cr-dtgraph":3,"sci-u3-cr-trip":4,"sci-u3-cr-vtgraph":3,"sci-u4-cr-bioaccum":3,"sci-u4-cr-biodiv":2,"sci-u4-cr-cycle":4,"sci-u4-cr-scene":3,"sci-u4-cr-soil":2};
