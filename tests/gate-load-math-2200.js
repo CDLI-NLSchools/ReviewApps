@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* Gate 1 (load) for Math 2200: chassis helpers + courses.js + the
-   assembled Math 2200 bank module evaluate cleanly; BANK has 214
+   assembled Math 2200 bank module evaluate cleanly; BANK has 259
    entries (the standalone app's count, per unit 19/17/13/15/19/16/
    12/15/16 with the November 9, 2026 pool fix additions counted in
    Units 1, 7 and 8, the November 13, 2026 ruling 8 splits counted
@@ -8,14 +8,17 @@
    authored November 13, 2026 in the step 9 scenario harvest; plus
    the November 15, 2026 prior knowledge tranche's 72 flagged
    entries, per unit 10/8/8/9/8/8/8/5/8 on top of those counts,
-   taking the per-unit totals to 29/25/21/24/27/24/20/20/24 and
+   taking the per-unit totals to 29/25/66/24/27/24/20/20/24 and
    the flagged set, with the three entries flagged November 13,
-   2026, to the pinned 75 below);
-   window.__BANK_CRMARKS has 127 keys (the
+   2026, to the pinned 75 below; plus the November 19, 2026 Bank
+   Strengthening Programme pass 5 additions, 45 entries all in
+   Unit 3, counted in the Unit 3 total of 66 above);
+   window.__BANK_CRMARKS has 172 keys (the
    standalone bank source's own CR_MARKS map at the end of
    bank-src.js, carried as manifest comments derived from that map
-   itself, denominations 1x24, 2x68, 3x31, 4x4, marks summing to
-   269); every registered indicator has entries and no entry uses
+   itself, plus the 45 pass 5 manifest lines in bank-u3.js,
+   denominations 1x29, 2x89, 3x50, 4x4, marks summing to
+   373); every registered indicator has entries and no entry uses
    an unregistered code; every entry generates a prompt in this
    shell and every multiple choice generation has exactly four
    options. The bank sources were cut from the standalone's
@@ -47,25 +50,25 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/math-2200.js", "utf8"));
 
-ok(BANK.length === 214, "BANK has 214 entries, saw " + BANK.length);
+ok(BANK.length === 259, "BANK has 259 entries, saw " + BANK.length);
 const cr = window.__BANK_CRMARKS || {};
 const crKeys = Object.keys(cr);
-ok(crKeys.length === 127, "__BANK_CRMARKS has 127 keys, saw " + crKeys.length);
+ok(crKeys.length === 172, "__BANK_CRMARKS has 172 keys, saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
 ok(crKeys.every(k => bankIds.has(k)), "every CR key is a bank entry id");
 ok(bankIds.size === BANK.length, "entry ids are unique");
 const denom = {};
 let crSum = 0;
 crKeys.forEach(k => { denom[cr[k]] = (denom[cr[k]] || 0) + 1; crSum += cr[k]; });
-ok(JSON.stringify(denom) === JSON.stringify({ 1: 24, 2: 68, 3: 31, 4: 4 }), "CR denominations match the standalone map (1x24, 2x68, 3x31, 4x4), saw " + JSON.stringify(denom));
-ok(crSum === 269, "CR marks sum to 269, saw " + crSum);
+ok(JSON.stringify(denom) === JSON.stringify({ 1: 29, 2: 89, 3: 50, 4: 4 }), "CR denominations (the standalone map 1x24, 2x68, 3x31, 4x4, plus the November 19, 2026 pass 5 additions 1x5, 2x21, 3x19), saw " + JSON.stringify(denom));
+ok(crSum === 373, "CR marks sum to 373, saw " + crSum);
 ok(cr["u1-quadrant"] === 1 && cr["u2-evaluate-claim"] === 4 && cr["u3-derive-formula"] === 4 && cr["u7-tangent-param"] === 4 && cr["u9-derive-formulas"] === 4 && cr["u8-inequality-design"] === 3 && cr["u1-terminal-point-cr"] === 3 && cr["u4-rationalize-binomial"] === 3,
    "CR spot values match the standalone map (u1-quadrant 1, u2-evaluate-claim 4, u3-derive-formula 4, u7-tangent-param 4, u9-derive-formulas 4, u8-inequality-design 3, u1-terminal-point-cr 3, u4-rationalize-binomial 3)");
 
 const census = {}, perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 29, 2: 25, 3: 21, 4: 24, 5: 27, 6: 24, 7: 20, 8: 20, 9: 24 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts match the standalone plus the PK tranche (29/25/21/24/27/24/20/20/24), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 29, 2: 25, 3: 66, 4: 24, 5: 27, 6: 24, 7: 20, 8: 20, 9: 24 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts match the standalone plus the PK tranche and the November 19, 2026 pass 5 additions (29/25/66/24/27/24/20/20/24), saw " + JSON.stringify(perUnit));
 
 /* The prior knowledge pin (Nov 15, 2026, the PK tranche): the
    flagged set is exactly these 75 entries (the 72 tranche entries
