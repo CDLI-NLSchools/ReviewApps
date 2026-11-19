@@ -4,12 +4,13 @@
    - ?course=physics-2204: Physics 2204 title and header, five unit
      checkboxes with the right names (including the Science 1206 review
      unit), preset labels from the 2204 config, the All preset sweeping
-     only the four course units (pool 200 as displayed), all five units
-     by hand giving 208 as displayed. The displayed pools exclude the
-     course's 2 prior knowledge entries by default (the PK toggle), so
-     they read 200 and 208 both before and after the November 19, 2026
-     Bank Strengthening Programme pass 4, which took BANK.length from
-     208 to 210 and CR_MARKS from 24 to 25 keys.
+     only the four course units (pool 223 as displayed), all five units
+     by hand giving 231 as displayed. The displayed pools exclude the
+     course's 2 prior knowledge entries by default (the PK toggle).
+     Before the November 19, 2026 Bank Strengthening Programme pass 7
+     they read 200 and 208; pass 7 added 23 Unit 3 entries, all in a
+     course unit, so both displayed pools rose by 23, and pass 7 took
+     BANK.length from 210 to 233 and CR_MARKS from 25 to 30 keys.
    - bare URL: the canonical picker (Nov 12, 2026):
      Mathematics first, Science second, filter chips;
      this course is listed.
@@ -45,8 +46,8 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Physics 2204 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Physics 2204 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off");
-  ok(ev(r.dom, "BANK.length") === 210, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length") + " (208 before the November 19, 2026 pass 4)");
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 25, "course: CR_MARKS wired from the bank module (24 keys before pass 4 registered u2-64-landing-force)");
+  ok(ev(r.dom, "BANK.length") === 233, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length") + " (210 before the November 19, 2026 pass 7)");
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 30, "course: CR_MARKS wired from the bank module (25 keys before pass 7 registered the five new Unit 3 constructed response entries)");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 5, "course: five unit checkboxes, saw " + labels.length);
   ["Kinematics", "Dynamics", "Work and Energy", "Waves", "Science 1206 Review (prior learning)"].forEach(n =>
@@ -54,9 +55,9 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetMid").textContent === "Mid-course review (Units 1 and 2)", "course: mid preset label, saw " + d.getElementById("presetMid").textContent);
   ok(d.getElementById("presetFinal").textContent === "Final review (Units 3 and 4)", "course: final preset label, saw " + d.getElementById("presetFinal").textContent);
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("200 question templates"), "course: pool after All preset excludes bridging, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("223 question templates"), "course: pool after All preset excludes bridging, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([1,2,3,4,5])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("208 question templates"), "course: pool with all five units, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("231 question templates"), "course: pool with all five units, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(d.getElementById("advToolsBtn") && !d.getElementById("advToolsBtn").hidden, "course (student): Advanced tools button visible beside Copy link at the builder's foot");
   ok(!d.getElementById("advBox") && !d.getElementById("lv1") && !d.getElementById("timerChk"), "course (student): no Advanced options section or level/timer inputs in the builder");
   ok(d.getElementById("mcCountIn") === null, "course (student): teacher-gated controls removed by tGateStudentUI");

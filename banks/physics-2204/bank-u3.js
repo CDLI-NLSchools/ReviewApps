@@ -1,10 +1,16 @@
 // Diagram figures (Phase C, Nov 2026): spring graphs and scenes, half life decay curve, pendulum and slope scenes added where the source types carried diagrams; see bank-helpers.js p22 helpers.
+// Tranche 6 (Nov 2026): energy bar charts (p22Bars), ramp diagrams (p22Ramp), the angled pull scene and further spring scenes added attach-only. u3-76-friction-cr originally carried its ramp only on draws whose slope length exceeded the height; a guard in that entry (Nov 2026) now draws the slope length above the height on every draw, so the ramp attaches on all draws.
 // CRMARKS: u3-75-energy-cr=5
 // CRMARKS: u3-711-shm-energy-cr=4
 // CRMARKS: u3-76-friction-cr=4
 // CRMARKS: u3-73-workenergy-cr=3
 // CRMARKS: u3-78-power-cr=3
 // CRMARKS: u3-712-classify-cr=2
+// CRMARKS: u3-71-net-work-cr=3
+// CRMARKS: u3-77-efficiency-cr=3
+// CRMARKS: u3-79-spring-launch-cr=3
+// CRMARKS: u3-710-period-cr=2
+// CRMARKS: u3-715-defect-energy-cr=3
 // Physics 2204 Unit 3 Work and Energy question bank
 // Constants used as literals: g = 9.8 m/s^2, c = 3.00 x 10^8 m/s.
 // (The shared constants PHYS_G and PHYS_C are defined only in the built
@@ -23,10 +29,11 @@ E("u3-71-work-parallel",3,["PH11.7.1"],2,"gen",function(){
 E("u3-71-work-angle",3,["PH11.7.1"],2,"gen",function(){
   var F=sfR(rf(30,90),3),d=sfR(rf(3,12),3),ang=pick([25,30,35,40,50,55,60]);
   var rad=ang*Math.PI/180,Fp=sfR(F*Math.cos(rad),4),W=sfR(Fp*d,3);
-  return mcq("A rope pulls a sled with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal. The sled moves "+gF(d)+" m across the snow. How much work does the rope do?",
+  var q=mcq("A rope pulls a sled with a force of "+gF(F)+" N at an angle of "+ang+" degrees above the horizontal. The sled moves "+gF(d)+" m across the snow. How much work does the rope do?",
     F3(W)+" J",
     [F3(F*d)+" J",F3(F*d*Math.sin(rad))+" J",F3(W/2)+" J"],
     "Only the component of the force along the motion does work. That component is "+iF(Fp)+" N. Then "+iF(Fp)+" N × "+gF(d)+" m = "+F3(W)+" J. The rope does "+F3(W)+" J of work.",{F:F,d:d,ang:ang});
+  q.figure=p22AngScene(gF(F)+" N",ang,"pull",null);return q;
 });
 
 E("u3-71-work-opposing",3,["PH11.7.1"],1,"var",varset([
@@ -80,6 +87,31 @@ E("u3-71-total-work",3,["PH11.7.1"],3,"gen",function(){
     "Work each force separately. The push does "+gF(F)+" N × "+gF(d)+" m = "+F3(Wapp)+" J. Friction does "+gF(f)+" N × "+gF(d)+" m = "+F3(Wfric)+" J, and it is negative because friction opposes the motion. The total work is "+F3(Wapp)+" J - "+F3(Wfric)+" J = "+F3(Wtot)+" J.",{F:F,f:f,d:d});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-71-net-work-cr added to bring this pool to 6.
+// LEVEL: 2 - Multi-step calculation chaining horizontal force component, net force with friction, and net work.
+// LENGTHS: key=4
+E("u3-71-net-work-cr",3,["PH11.7.1"],2,"gen",function(){
+  var F=sfR(rf(30,90),3);
+  var ang=pick([25,30,35,40,50,55,60]);
+  var rad=ang*Math.PI/180;
+  var Fx=sfR(F*Math.cos(rad),4);
+  var ff,tries=0;
+  do{
+    ff=sfR(rf(5,25),3);
+    tries++;
+  }while(ff>=Fx-2&&tries<80);
+  if(ff>=Fx-2){ff=sfR(Fx*0.5,3);}
+  var d=sfR(rf(3,12),3);
+  var Fnet=sfR(Fx-ff,4);
+  var Wnet=sfR(Fnet*d,3);
+  var Wrope=sfR(Fx*d,4);
+  var Wfric=sfR(ff*d,4);
+  return numq("A crate is pulled "+gF(d)+" m across a level floor by a rope angled at "+ang+" degrees above the horizontal with a tension of "+gF(F)+" N. A constant kinetic friction force of "+gF(ff)+" N opposes the motion. What is the net work done on the crate? Give your answer in J.",
+    Wnet,Math.max(0.02*Math.abs(Wnet),1e-9),
+    "First find the horizontal component of the pulling force: F_horizontal = "+gF(F)+" N × cos("+ang+" degrees) = "+iF(Fx)+" N. The rope does positive work W_rope = "+iF(Fx)+" N × "+gF(d)+" m = "+iF(Wrope)+" J, while friction does negative work W_friction = -"+gF(ff)+" N × "+gF(d)+" m = -"+iF(Wfric)+" J. Equivalently, the net horizontal force is "+iF(Fx)+" N - "+gF(ff)+" N = "+iF(Fnet)+" N, so the net work is "+iF(Fnet)+" N × "+gF(d)+" m = "+F3(Wnet)+" J. The net work done on the crate is "+F3(Wnet)+" J.",
+    {F:F,ang:ang,ff:ff,d:d});
+});
 /* ---------- 7.2 Mass, height and speed using energy ---------- */
 
 E("u3-72-ke-basic",3,["PH11.7.2"],2,"gen",function(){
@@ -146,6 +178,61 @@ E("u3-72-eg-mcq",3,["PH11.7.2"],2,"gen",function(){
     "Gravitational potential energy is Eg = m g h. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N. Then "+iF(w)+" N × "+gF(h)+" m = "+F3(eg)+" J. The gravitational potential energy is "+F3(eg)+" J.",{m:m,h:h});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-72-change-effect added to bring this pool to 6.
+// LEVEL: 3 - Analysis of how kinetic energy scales nonlinearly when mass and speed are varied together.
+// VARIANTS: four distinct (mass multiplier, speed multiplier) pairs chosen without replacement from eight scaling cases
+// LENGTHS: key=44, distractors=46,45,45
+E("u3-72-change-effect",3,["PH11.7.2"],3,"gen",function(){
+  var pool=[
+    {mm:2,vm:1,txt:"Double the mass and keep the speed the same"},
+    {mm:1,vm:2,txt:"Keep the mass the same and double the speed"},
+    {mm:2,vm:2,txt:"Double the mass and double the speed"},
+    {mm:0.5,vm:2,txt:"Halve the mass and double the speed"},
+    {mm:3,vm:1,txt:"Triple the mass and keep the speed the same"},
+    {mm:1,vm:3,txt:"Keep the mass the same and triple the speed"},
+    {mm:2,vm:0.5,txt:"Double the mass and halve the speed"},
+    {mm:0.5,vm:3,txt:"Halve the mass and triple the speed"}
+  ];
+  var chosen,ratios,ok=false,tries=0;
+  while(!ok&&tries<80){
+    tries++;
+    var s=shuffle(pool);
+    chosen=[s[0],s[1],s[2],s[3]];
+    ratios=[];
+    ok=true;
+    for(var i=0;i<4;i++){
+      var r=chosen[i].mm*chosen[i].vm*chosen[i].vm;
+      for(var j=0;j<ratios.length;j++){
+        if(Math.abs(r-ratios[j])<1e-6){ok=false;}
+      }
+      ratios.push(r);
+    }
+  }
+  var bestIdx=0;
+  for(var k=1;k<4;k++){
+    if(ratios[k]>ratios[bestIdx]){bestIdx=k;}
+  }
+  var m=sfR(rf(0.5,20),3);
+  var v=sfR(rf(2,15),3);
+  var Ek0=sfR(0.5*m*v*v,4);
+  var key=chosen[bestIdx].txt;
+  var ds=[];
+  for(var n=0;n<4;n++){
+    if(n!==bestIdx){ds.push(chosen[n].txt);}
+  }
+  var lines=[];
+  for(var p=0;p<4;p++){
+    var mNew=sfR(m*chosen[p].mm,4);
+    var vNew=sfR(v*chosen[p].vm,4);
+    var ekNew=sfR(0.5*mNew*vNew*vNew,4);
+    lines.push(chosen[p].txt+": Ek = 0.5 × "+iF(mNew)+" kg × ("+iF(vNew)+" m/s)^2 = "+F3(ekNew)+" J");
+  }
+  return mcq("An object of mass "+gF(m)+" kg moves at "+gF(v)+" m/s. Which change gives the object the greatest kinetic energy?",
+    key,ds,
+    "The initial kinetic energy is Ek = 0.5 × "+gF(m)+" kg × ("+gF(v)+" m/s)^2 = "+iF(Ek0)+" J. Computing the new kinetic energy for each change: "+lines.join("; ")+". Because kinetic energy depends on speed squared, speed multipliers have a larger effect than equal mass multipliers. The change that gives the greatest kinetic energy is: "+key+".",
+    {m:m,v:v,c0:[chosen[0].mm,chosen[0].vm],c1:[chosen[1].mm,chosen[1].vm],c2:[chosen[2].mm,chosen[2].vm],c3:[chosen[3].mm,chosen[3].vm]});
+});
 /* ---------- 7.3 Work-energy theorem (kinetic energy only) ---------- */
 
 E("u3-73-workenergy-cr",3,["PH11.7.3"],2,"gen",function(){
@@ -183,12 +270,82 @@ E("u3-73-friction-stop",3,["PH11.7.3"],3,"gen",function(){
   "The object ends at rest, so its final kinetic energy is zero and the work done by friction is the whole change in kinetic energy. The speed squared is "+gF(vi)+" m/s × "+gF(vi)+" m/s = "+iF(v2i)+" m^2/s^2. Half the mass is 0.500 × "+gF(m)+" kg = "+iF(hm)+" kg. The initial kinetic energy is "+iF(hm)+" kg × "+iF(v2i)+" m^2/s^2 = "+F3(eki)+" J. Friction removes all of it, so the work done by friction is "+F3(W)+" J. The negative sign shows that friction points opposite the motion.",{m:m,vi:vi,d:d});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-73-sign-of-work, u3-73-start-speed added to bring this pool to 6.
+// LEVEL: 1 - Direct recognition of the sign of net work or kinetic energy change from a described motion.
+// VARIANTS: four variants (accelerating car, slowing sliding box, constant-speed cart, rising thrown ball) at equal mix
+// LENGTHS: key=26, distractors=26,22,42
+E("u3-73-sign-of-work",3,["PH11.7.3"],1,"var",varset([
+  function(){
+    var key="The net work is positive";
+    var ds=["The net work is negative","The net work is zero","The net work cannot be found without mass"];
+    return mcq("A car speeds up from rest along a straight, level road. What does the work-energy theorem tell you about the net work done on the car?",
+      key,ds,
+      "By the work-energy theorem, the net work done on an object equals its change in kinetic energy (W_net = ΔEk). Because the car speeds up, its kinetic energy increases and ΔEk is positive. "+key+".",
+      {scenario:"car_speeding_up"});
+  },
+  function(){
+    var key="The net work is negative";
+    var ds=["The net work is positive","The net work is zero","The net work cannot be found without mass"];
+    return mcq("A wooden box slides across a rough level floor and slows to a stop. What does the work-energy theorem tell you about the net work done on the box?",
+      key,ds,
+      "By the work-energy theorem, the net work done on an object equals its change in kinetic energy (W_net = ΔEk). Because the box slows to a stop, its kinetic energy decreases and ΔEk is negative. "+key+".",
+      {scenario:"box_slowing_down"});
+  },
+  function(){
+    var key="The net work done is zero";
+    var ds=["The net work is positive","The net work is negative","The net work cannot be found without mass"];
+    return mcq("A dynamics cart rolls at a constant speed along a straight, level track. What does the work-energy theorem tell you about the net work done on the cart?",
+      key,ds,
+      "By the work-energy theorem, the net work done on an object equals its change in kinetic energy (W_net = ΔEk). Because the cart moves at constant speed, its kinetic energy does not change and ΔEk is zero. "+key+".",
+      {scenario:"cart_constant_speed"});
+  },
+  function(){
+    var key="The kinetic energy is decreasing";
+    var ds=["The kinetic energy is increasing","The kinetic energy is unchanged","The kinetic energy is constant and zero"];
+    return mcq("A ball is thrown straight upward and is still rising toward its highest point. What happens to the ball's kinetic energy as it rises?",
+      key,ds,
+      "As the ball rises, gravity does negative net work on it. By the work-energy theorem (W_net = ΔEk), negative net work means the ball's kinetic energy drops as it slows down. "+key+".",
+      {scenario:"ball_rising"});
+  }
+]));
+
+// LEVEL: 2 - Multi-step inverse application of the work-energy theorem to solve for initial speed.
+// LENGTHS: key=4
+E("u3-73-start-speed",3,["PH11.7.3"],2,"gen",function(){
+  var m,vi,vf,Wmag,Wsigned,viCheck,tries=0;
+  do{
+    tries++;
+    m=sfR(rf(0.5,50),3);
+    vi=sfR(rf(2,20),3);
+    vf=sfR(rf(2,25),3);
+    if(Math.abs(vf-vi)<1.5){continue;}
+    var rawW=0.5*m*(vf*vf-vi*vi);
+    Wmag=sfR(Math.abs(rawW),3);
+    Wsigned=rawW>=0?Wmag:-Wmag;
+    var viSq=vf*vf-(2*Wsigned)/m;
+    if(viSq<=0){viCheck=-1;continue;}
+    viCheck=sfR(Math.sqrt(viSq),3);
+  }while(viCheck!==vi&&tries<120);
+  var Ekf=sfR(0.5*m*vf*vf,4);
+  var Eki=sfR(Ekf-Wsigned,4);
+  var promptTxt,solTxt;
+  if(Wsigned>=0){
+    promptTxt="A "+gF(m)+" kg object speeds up while "+gF(Wmag)+" J of net work is done on it, reaching a final speed of "+gF(vf)+" m/s. What was the object's initial speed? Give your answer in m/s.";
+    solTxt="The final kinetic energy is Ek_f = 0.5 × "+gF(m)+" kg × ("+gF(vf)+" m/s)^2 = "+iF(Ekf)+" J. By the work-energy theorem, W_net = Ek_f - Ek_i, so Ek_i = "+iF(Ekf)+" J - "+gF(Wmag)+" J = "+iF(Eki)+" J. Solving 0.5 × "+gF(m)+" kg × v_i^2 = "+iF(Eki)+" J gives v_i = sqrt(2 × "+iF(Eki)+" J / "+gF(m)+" kg) = "+F3(vi)+" m/s. The initial speed was "+F3(vi)+" m/s.";
+  }else{
+    promptTxt="A "+gF(m)+" kg object slows down as "+gF(Wmag)+" J of net work is done against its motion, reaching a final speed of "+gF(vf)+" m/s. What was the object's initial speed? Give your answer in m/s.";
+    solTxt="The final kinetic energy is Ek_f = 0.5 × "+gF(m)+" kg × ("+gF(vf)+" m/s)^2 = "+iF(Ekf)+" J. Because work is done against the motion, W_net = -"+gF(Wmag)+" J. By the work-energy theorem, Ek_i = Ek_f - W_net = "+iF(Ekf)+" J - (-"+gF(Wmag)+" J) = "+iF(Eki)+" J. Solving 0.5 × "+gF(m)+" kg × v_i^2 = "+iF(Eki)+" J gives v_i = sqrt(2 × "+iF(Eki)+" J / "+gF(m)+" kg) = "+F3(vi)+" m/s. The initial speed was "+F3(vi)+" m/s.";
+  }
+  return numq(promptTxt,vi,Math.max(0.02*Math.abs(vi),1e-9),solTxt,{m:m,vi:vi,vf:vf,W:Wsigned});
+});
 /* ---------- 7.4 Mechanical energy ---------- */
 
 E("u3-74-mechanical-sum",3,["PH11.7.4"],1,"gen",function(){
   var ek=sfR(rf(20,300),3),eg=sfR(rf(20,300),3),em=sfR(ek+eg,3);
-  return numq("At one point in its motion an object has a kinetic energy of "+gF(ek)+" J and a gravitational potential energy of "+gF(eg)+" J, measured from the stated reference level. What is its mechanical energy at that point? Give your answer in J.",em,Math.max(0.02*Math.abs(em),1e-9),
+  var q=numq("At one point in its motion an object has a kinetic energy of "+gF(ek)+" J and a gravitational potential energy of "+gF(eg)+" J, measured from the stated reference level. What is its mechanical energy at that point? Give your answer in J.",em,Math.max(0.02*Math.abs(em),1e-9),
   "Mechanical energy is the sum of the kinetic and potential energies: Em = Ek + Eg. "+gF(ek)+" J + "+gF(eg)+" J = "+F3(em)+" J. The mechanical energy is "+F3(em)+" J.",{ek:ek,eg:eg});
+  q.figure=p22Bars([{t:"kinetic",v:ek,vl:F3(ek)+" J"},{t:"gravitational",v:eg,vl:F3(eg)+" J"}]);return q;
 });
 
 E("u3-74-mechanical-concept",3,["PH11.7.4"],1,"var",varset([
@@ -227,8 +384,9 @@ E("u3-74-mechanical-concept",3,["PH11.7.4"],1,"var",varset([
 
 E("u3-74-find-ek",3,["PH11.7.4"],2,"gen",function(){
   var eg=sfR(rf(50,200),3),em=sfR(eg+rf(50,250),3),ek=sfR(em-eg,3);
-  return numq("An object has a mechanical energy of "+gF(em)+" J. At the point of interest its gravitational potential energy, measured from the stated reference level, is "+gF(eg)+" J. What is its kinetic energy at that point? Give your answer in J.",ek,Math.max(0.02*Math.abs(ek),1e-9),
+  var q=numq("An object has a mechanical energy of "+gF(em)+" J. At the point of interest its gravitational potential energy, measured from the stated reference level, is "+gF(eg)+" J. What is its kinetic energy at that point? Give your answer in J.",ek,Math.max(0.02*Math.abs(ek),1e-9),
   "Mechanical energy is the sum: Em = Ek + Eg, so Ek = Em - Eg. "+gF(em)+" J - "+gF(eg)+" J = "+F3(ek)+" J. The kinetic energy is "+F3(ek)+" J.",{em:em,eg:eg});
+  q.figure=p22Bars([{t:"mechanical",v:em,vl:F3(em)+" J"},{t:"gravitational",v:eg,vl:F3(eg)+" J"}]);return q;
 });
 
 E("u3-74-find-height",3,["PH11.7.4"],3,"gen",function(){
@@ -239,6 +397,41 @@ E("u3-74-find-height",3,["PH11.7.4"],3,"gen",function(){
   "First find the kinetic energy. The speed squared is "+gF(v)+" m/s × "+gF(v)+" m/s = "+iF(v2)+" m^2/s^2. Half the mass is 0.500 × "+gF(m)+" kg = "+iF(hm)+" kg. The kinetic energy is "+iF(hm)+" kg × "+iF(v2)+" m^2/s^2 = "+F3(ek)+" J. The rest of the mechanical energy is gravitational: "+gF(em)+" J - "+F3(ek)+" J = "+F3(eg)+" J. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N. The height is "+F3(eg)+" J / "+iF(w)+" N = "+F3(h)+" m. The object is "+F3(h)+" m above the reference level.",{m:m,v:v,em:em});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-74-total-from-motion, u3-74-zero-point-shift added to bring this pool to 6.
+// LEVEL: 2 - Multi-step calculation computing kinetic energy and gravitational potential energy separately before summing them.
+// LENGTHS: key=4
+E("u3-74-total-from-motion",3,["PH11.7.4"],2,"gen",function(){
+  var m=sfR(rf(0.5,30),3);
+  var v=sfR(rf(1,20),3);
+  var h=sfR(rf(0.5,25),3);
+  var Ek=sfR(0.5*m*v*v,4);
+  var Ep=sfR(m*9.8*h,4);
+  var E=sfR(Ek+Ep,3);
+  return numq("A "+gF(m)+" kg object moves at "+gF(v)+" m/s at a height of "+gF(h)+" m above the chosen reference level. What is its total mechanical energy? Give your answer in J.",
+    E,Math.max(0.02*Math.abs(E),1e-9),
+    "First calculate the kinetic energy: Ek = 0.5 × "+gF(m)+" kg × ("+gF(v)+" m/s)^2 = "+iF(Ek)+" J. Next calculate the gravitational potential energy: Ep = "+gF(m)+" kg × 9.8 m/s^2 × "+gF(h)+" m = "+iF(Ep)+" J. Total mechanical energy is the sum: E = "+iF(Ek)+" J + "+iF(Ep)+" J = "+F3(E)+" J. The total mechanical energy is "+F3(E)+" J.",
+    {m:m,v:v,h:h});
+});
+
+// LEVEL: 3 - Analysis of how shifting the gravitational reference level changes potential energy and total mechanical energy while leaving kinetic energy unchanged.
+// VARIANTS: raising the reference level by a dealt vertical shift (100% of draws, parameterized over mass and shift)
+// LENGTHS: key=71, distractors=69,64,71
+E("u3-74-zero-point-shift",3,["PH11.7.4"],3,"gen",function(){
+  var dir="decrease";
+  var m=sfR(rf(1,20),3);
+  var dh=sfR(rf(0.3,2),3);
+  var dE=sfR(m*9.8*dh,4);
+  var dEStr=F3(dE);
+  var key="Ep decreases by "+dEStr+" J and mechanical energy decreases by "+dEStr+" J";
+  var d1="Ep decreases by "+dEStr+" J and mechanical energy remains unchanged";
+  var d2="Ep increases by "+dEStr+" J and mechanical energy increases by "+dEStr+" J";
+  var d3="Ep remains unchanged and kinetic energy decreases by "+dEStr+" J";
+  return mcq("A "+gF(m)+" kg object is moving across a shelf above a laboratory floor. If the zero-potential-energy reference level is raised from the floor to a tabletop "+gF(dh)+" m higher, what happens to the object's gravitational potential energy (Ep) and total mechanical energy?",
+    key,[d1,d2,d3],
+    "Raising the reference level by "+gF(dh)+" m reduces the object's height above the reference level by "+gF(dh)+" m. Therefore, Ep decreases by ΔEp = "+gF(m)+" kg × 9.8 m/s^2 × "+gF(dh)+" m = "+iF(dE)+" J (or "+dEStr+" J). Because kinetic energy depends only on mass and speed, it does not change when the reference level moves. Since mechanical energy is E = Ek + Ep, mechanical energy decreases by the exact same amount. "+key+".",
+    {dir:dir,m:m,dh:dh,dE:sfR(dE,3)});
+});
 /* ---------- 7.5 Kinematics and dynamics using mechanical energy ---------- */
 
 E("u3-75-energy-cr",3,["PH11.7.5"],3,"gen",function(){
@@ -247,13 +440,15 @@ E("u3-75-energy-cr",3,["PH11.7.5"],3,"gen",function(){
     var h1=sfR(rf(6,14),3),h2=sfR(rf(1,Math.max(2,h1-4)),3);
     var dh=sfR(h1-h2,3),v2=sfR(19.6*dh,4),v=sfR(Math.sqrt(v2),3);
     var ctx=pick(["A skier starts from rest at the top of a slope","A toboggan starts from rest at the top of a hill","A cart starts from rest at the top of a ramp"]);
-    return numq(ctx+" "+gF(h1)+" m above the bottom, taken as the reference level, and reaches a point "+gF(h2)+" m above the bottom. Friction is ignored. What is its speed at the lower point? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+    var q=numq(ctx+" "+gF(h1)+" m above the bottom, taken as the reference level, and reaches a point "+gF(h2)+" m above the bottom. Friction is ignored. What is its speed at the lower point? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
     "Mechanical energy is conserved when friction is ignored, and gravitational and kinetic changes are the only ones here. The drop in height is "+gF(h1)+" m - "+gF(h2)+" m = "+F3(dh)+" m. The lost gravitational potential energy becomes kinetic energy, so the speed squared is 19.6 m/s^2 × "+F3(dh)+" m = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{h1:h1,h2:h2});
+    q.figure=p22Ramp({h:h1,h2:h2,hLabel:gF(h1)+" m",h2Label:gF(h2)+" m",ref:true});return q;
   }
   var v=sfR(rf(4,12),3),v2=sfR(v*v,4),h=sfR(v2/19.6,3);
   var ctx2=pick(["A skier starts from rest and wants to reach the bottom of a slope","A sled starts from rest and wants to reach the foot of a hill","A cart starts from rest and wants to reach the bottom of a ramp"]);
-  return numq(ctx2+" travelling at "+gF(v)+" m/s. Friction is ignored and the bottom is the reference level. From what height above the bottom must it start? Give your answer in m.",h,Math.max(0.02*Math.abs(h),1e-9),
+  var q2=numq(ctx2+" travelling at "+gF(v)+" m/s. Friction is ignored and the bottom is the reference level. From what height above the bottom must it start? Give your answer in m.",h,Math.max(0.02*Math.abs(h),1e-9),
   "Mechanical energy is conserved when friction is ignored. At the bottom all the starting gravitational potential energy has become kinetic energy, so the height is the speed squared divided by 19.6 m/s^2. The speed squared is "+gF(v)+" m/s × "+gF(v)+" m/s = "+iF(v2)+" m^2/s^2. Then "+iF(v2)+" m^2/s^2 / 19.6 m/s^2 = "+F3(h)+" m. It must start "+F3(h)+" m above the bottom.",{v:v});
+  q2.figure=p22Ramp({hLabel:"?",ref:true});return q2;
 });
 
 E("u3-75-drop-speed",3,["PH11.7.5"],2,"gen",function(){
@@ -285,14 +480,41 @@ E("u3-75-pendulum",3,["PH11.7.5"],3,"gen",function(){
     q.figure=p22Pendulum(gF(dh)+" m",gF(m)+" kg");return q;
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-75-two-point-speed added to bring this pool to 6.
+// LEVEL: 2 - Multi-step conservation of mechanical energy between two nonzero heights with nonzero initial speed.
+// LENGTHS: key=4
+E("u3-75-two-point-speed",3,["PH11.7.5"],2,"gen",function(){
+  var hA=sfR(rf(5,30),3);
+  var vA=sfR(rf(2,12),3);
+  var eA=sfR(0.5*vA*vA+9.8*hA,4);
+  var hB,tries=0;
+  do{
+    hB=sfR(rf(1,25),3);
+    tries++;
+  }while((9.8*hB>=eA-2||Math.abs(hB-hA)<1)&&tries<80);
+  if(9.8*hB>=eA-2){hB=sfR(Math.max(1,(eA-4)/9.8),3);}
+  var halfVbSq=sfR(eA-9.8*hB,4);
+  var vB=sfR(Math.sqrt(2*halfVbSq),3);
+  return numq("A roller coaster car passes point A at a height of "+gF(hA)+" m moving at "+gF(vA)+" m/s along a frictionless track. What is its speed when it reaches point B at a height of "+gF(hB)+" m? Give your answer in m/s.",
+    vB,Math.max(0.02*Math.abs(vB),1e-9),
+    "With friction neglected, mechanical energy is conserved: 0.5 v_A^2 + g h_A = 0.5 v_B^2 + g h_B (mass cancels). At point A, 0.5 × ("+gF(vA)+" m/s)^2 + 9.8 m/s^2 × "+gF(hA)+" m = "+iF(eA)+" J/kg. Subtracting g h_B at point B gives 0.5 v_B^2 = "+iF(eA)+" J/kg - (9.8 m/s^2 × "+gF(hB)+" m) = "+iF(halfVbSq)+" J/kg. Solving for speed gives v_B = sqrt(2 × "+iF(halfVbSq)+" J/kg) = "+F3(vB)+" m/s. The speed at point B is "+F3(vB)+" m/s.",
+    {hA:hA,vA:vA,hB:hB});
+});
 /* ---------- 7.6 Conservation of energy with heat ---------- */
 
 E("u3-76-friction-cr",3,["PH11.7.6"],2,"gen",function(){
   var m=sfR(rf(3,8),3),h=sfR(rf(3,7),3),w=sfR(m*9.8,4),eg=sfR(w*h,3);
-  var f=sfR(rf(10,25),3),s=sfR(rf(3,6),3),Q=sfR(f*s,3);
+  var f=sfR(rf(10,25),3),s=sfR(rf(3,6),3);
+  // Guard (Nov 2026): a slope length at or below the height cannot exist, so redraw it above the height; if that would make friction heat reach the starting potential energy, cap it just below that bound instead.
+  if(s<=h){s=sfR(h+rf(0.5,3),3);if(f*s>=0.98*eg)s=sfR(0.95*eg/f,3);}
+  // Extension (Nov 2026, Jason's commission): apply the same energy margin on every draw, not only on redrawn slopes. Friction is a plain given, so redraw it below the 95 percent bound when the bound leaves a range above its 10 N floor; if that range is empty, cap the slope length just below the bound instead.
+  if(f*s>=0.98*eg){var fLimit=0.95*eg/s;if(fLimit>10.01){f=sfR(rf(10,0.999*fLimit),3);}else{s=sfR(0.95*eg/f,3);}}
+  var Q=sfR(f*s,3);
   var ekf=sfR(eg-Q,3),twoEk=sfR(2*ekf,4),v2=sfR(twoEk/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg block starts from rest at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. As it slides down a slope of length "+gF(s)+" m, friction of "+gF(f)+" N acts on it. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg block starts from rest at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. As it slides down a slope of length "+gF(s)+" m, friction of "+gF(f)+" N acts on it. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Use conservation of energy with a heat term. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N. The starting gravitational potential energy is "+iF(w)+" N × "+gF(h)+" m = "+F3(eg)+" J. Friction produces heat of "+gF(f)+" N × "+gF(s)+" m = "+F3(Q)+" J. The kinetic energy at the bottom is "+F3(eg)+" J - "+F3(Q)+" J = "+F3(ekf)+" J, so the account balances: potential energy at the top equals kinetic energy at the bottom plus heat. Twice the final kinetic energy is 2 × "+F3(ekf)+" J = "+iF(twoEk)+" J. Then "+iF(twoEk)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,h:h,f:f,s:s});
+  if(s>h)q.figure=p22Ramp({h:h,s:s,hLabel:gF(h)+" m",sLabel:gF(s)+" m",ref:true});return q;
 });
 
 E("u3-76-heat-friction",3,["PH11.7.6"],2,"gen",function(){
@@ -342,19 +564,41 @@ E("u3-76-final-speed-heat",3,["PH11.7.6"],3,"gen",function(){
   var w=sfR(m*9.8,4),eg=sfR(w*h,3);
   var hm=sfR(0.5*m,4),v2i=sfR(vi*vi,4),eki=sfR(hm*v2i,3);
   var etot=sfR(eki+eg,3),ekf=sfR(etot-Q,3),twoEk=sfR(2*ekf,4),v2=sfR(twoEk/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg cart is moving at "+gF(vi)+" m/s at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. It slides to the bottom, and friction produces "+gF(Q)+" J of heat during the slide. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg cart is moving at "+gF(vi)+" m/s at the top of a slope "+gF(h)+" m above the bottom, taken as the reference level. It slides to the bottom, and friction produces "+gF(Q)+" J of heat during the slide. What is its speed at the bottom? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Start with the total energy at the top. The weight is "+gF(m)+" kg × 9.8 m/s^2 = "+iF(w)+" N, so the gravitational potential energy is "+iF(w)+" N × "+gF(h)+" m = "+F3(eg)+" J. Half the mass is 0.500 × "+gF(m)+" kg = "+iF(hm)+" kg. The initial speed squared is "+gF(vi)+" m/s × "+gF(vi)+" m/s = "+iF(v2i)+" m^2/s^2, so the initial kinetic energy is "+iF(hm)+" kg × "+iF(v2i)+" m^2/s^2 = "+F3(eki)+" J. The total at the top is "+F3(eki)+" J + "+F3(eg)+" J = "+F3(etot)+" J. After the heat loss, the kinetic energy at the bottom is "+F3(etot)+" J - "+gF(Q)+" J = "+F3(ekf)+" J. Twice that is 2 × "+F3(ekf)+" J = "+iF(twoEk)+" J. Then "+iF(twoEk)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,vi:vi,h:h,Q:Q});
+  q.figure=p22Ramp({h:h,hLabel:gF(h)+" m",ref:true});return q;
 });
 
 E("u3-76-energy-account",3,["PH11.7.6"],3,"gen",function(){
   var ef=sfR(rf(90,200),3),Q0=sfR(rf(30,70),3),ei=sfR(ef+Q0,3),Q=sfR(ei-ef,3);
   var ctx=pick(["A block slides down a slope and friction acts.","A sled comes down a hill and friction acts.","A cart rolls down a ramp and friction acts."]);
-  return mcq(ctx+" The total mechanical energy at the top is "+gF(ei)+" J and the kinetic energy at the bottom is "+gF(ef)+" J. How much heat was produced by friction?",
+  var q=mcq(ctx+" The total mechanical energy at the top is "+gF(ei)+" J and the kinetic energy at the bottom is "+gF(ef)+" J. How much heat was produced by friction?",
     F3(Q)+" J",
     [F3(ef)+" J",F3(ei)+" J",F3(ei+ef)+" J"],
     "The energy account must balance. The starting total is split between the kinetic energy at the bottom and the heat produced, so the heat is "+gF(ei)+" J - "+gF(ef)+" J = "+F3(Q)+" J.",{ei:ei,ef:ef});
+  q.figure=p22Bars([{t:"total at top",v:ei,vl:F3(ei)+" J"},{t:"kinetic at bottom",v:ef,vl:F3(ef)+" J"}]);return q;
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-76-friction-force added to bring this pool to 6.
+// LEVEL: 2 - Multi-step conservation of energy with heat, working backwards from thermal loss to average friction force.
+// LENGTHS: key=4
+E("u3-76-friction-force",3,["PH11.7.6"],2,"gen",function(){
+  var m=sfR(rf(1,20),3);
+  var h=sfR(rf(1,10),3);
+  var d=sfR(rf(h+1,3*h),3);
+  var vMax=Math.sqrt(2*9.8*h);
+  var vf=sfR(rf(2,0.9*vMax),3);
+  if(vf>=0.95*vMax){vf=sfR(0.7*vMax,3);}
+  var Ep=sfR(m*9.8*h,4);
+  var Ek=sfR(0.5*m*vf*vf,4);
+  var Eheat=sfR(Ep-Ek,4);
+  var ff=sfR(Eheat/d,3);
+  return numq("A "+gF(m)+" kg block starts from rest at the top of a rough ramp "+gF(d)+" m long and slides down through a vertical drop of "+gF(h)+" m, reaching the bottom at "+gF(vf)+" m/s. What is the magnitude of the average friction force acting on the block? Give your answer in N.",
+    ff,Math.max(0.02*Math.abs(ff),1e-9),
+    "The gravitational potential energy lost is Ep = "+gF(m)+" kg × 9.8 m/s^2 × "+gF(h)+" m = "+iF(Ep)+" J. The kinetic energy gained is Ek = 0.5 × "+gF(m)+" kg × ("+gF(vf)+" m/s)^2 = "+iF(Ek)+" J. By conservation of energy, the energy converted to heat is E_heat = "+iF(Ep)+" J - "+iF(Ek)+" J = "+iF(Eheat)+" J. Since E_heat = F_f × d, the average friction force is F_f = "+iF(Eheat)+" J / "+gF(d)+" m = "+F3(ff)+" N. The average friction force is "+F3(ff)+" N.",
+    {m:m,h:h,d:d,vf:vf});
+});
 /* ---------- 7.7 Efficiency ---------- */
 
 E("u3-77-efficiency-basic",3,["PH11.7.7"],2,"gen",function(){
@@ -388,6 +632,72 @@ E("u3-77-input-needed",3,["PH11.7.7"],2,"gen",function(){
   "The efficiency as a decimal is "+effp+" / 100 = "+iF(dec)+". The input is the required output divided by that decimal: "+gF(use)+" J / "+iF(dec)+" = "+F3(tot)+" J. It needs "+F3(tot)+" J of input energy.",{use:use,effp:effp});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-77-efficiency-cr, u3-77-compare-devices added to bring this pool to 6.
+// LEVEL: 2 - Two-step calculation deriving useful gravitational potential energy output before computing percent efficiency.
+// LENGTHS: key=4
+E("u3-77-efficiency-cr",3,["PH11.7.7"],2,"gen",function(){
+  var m=sfR(rf(5,40),3);
+  var h=sfR(rf(2,10),3);
+  var Eout=sfR(m*9.8*h,4);
+  var targetEff=sfR(rf(35,85),3);
+  var Ein=sfR(Eout/(targetEff/100),3);
+  var eff=sfR((Eout/Ein)*100,3);
+  return numq("An electric hoist lifts a "+gF(m)+" kg crate vertically through "+gF(h)+" m while drawing "+gF(Ein)+" J of electrical energy. What is the percent efficiency of the hoist? Give your answer in %.",
+    eff,Math.max(0.02*Math.abs(eff),1e-9),
+    "The useful energy output is the gain in gravitational potential energy: E_out = "+gF(m)+" kg × 9.8 m/s^2 × "+gF(h)+" m = "+iF(Eout)+" J. Percent efficiency is useful output divided by total input times 100%: efficiency = ("+iF(Eout)+" J / "+gF(Ein)+" J) × 100% = "+F3(eff)+"%. The percent efficiency of the hoist is "+F3(eff)+"%.",
+    {m:m,h:h,Ein:Ein});
+});
+
+// LEVEL: 3 - Comparative quantitative analysis of two devices' efficiencies, resisting the larger-useful-output trap.
+// VARIANTS: Device A more efficient (50%) vs Device B more efficient (50%)
+// LENGTHS: key=55, distractors=55,55,58
+E("u3-77-compare-devices",3,["PH11.7.7"],3,"gen",function(){
+  var winner=pick(["A","B"]);
+  var ctx=pick(["motors","heaters","lamps"]);
+  var labelA=ctx==="motors"?"Motor A":(ctx==="heaters"?"Heater A":"Lamp A");
+  var labelB=ctx==="motors"?"Motor B":(ctx==="heaters"?"Heater B":"Lamp B");
+  var loserLabel=winner==="A"?labelB:labelA;
+  var winnerLabel=winner==="A"?labelA:labelB;
+  var inA,outA,inB,outB,effA,effB,diff,tries=0;
+  var wantTrap=(Math.random()<0.6);
+  do{
+    tries++;
+    inA=sfR(rf(100,2000),3);
+    outA=sfR(rf(50,0.92*inA),3);
+    inB=sfR(rf(100,2000),3);
+    outB=sfR(rf(50,0.92*inB),3);
+    effA=sfR((outA/inA)*100,3);
+    effB=sfR((outB/inB)*100,3);
+    if(effA>95||effB>95||effA<10||effB<10){diff=-1;continue;}
+    if(winner==="A"&&effA-effB<5){diff=-1;continue;}
+    if(winner==="B"&&effB-effA<5){diff=-1;continue;}
+    if(wantTrap&&tries<60){
+      if(winner==="A"&&outA>=outB){diff=-1;continue;}
+      if(winner==="B"&&outB>=outA){diff=-1;continue;}
+    }
+    diff=sfR(Math.abs(effA-effB),3);
+    var winEffTmp=winner==="A"?effA:effB;
+    if(Math.abs(sfR(100-winEffTmp,3)-diff)<1e-9){diff=-1;}
+  }while(diff<5&&tries<100);
+  if(diff<5){
+    if(winner==="A"){inA=500;outA=400;inB=1000;outB=550;}
+    else{inA=1000;outA=550;inB=500;outB=400;}
+    effA=sfR((outA/inA)*100,3);
+    effB=sfR((outB/inB)*100,3);
+    diff=sfR(Math.abs(effA-effB),3);
+  }
+  var winEff=winner==="A"?effA:effB;
+  var wrongDiff=sfR(100-winEff,3);
+  var key=winnerLabel+" is more efficient by "+F3(diff)+" percentage points";
+  var d1=loserLabel+" is more efficient by "+F3(diff)+" percentage points";
+  var d2=winnerLabel+" is more efficient by "+F3(wrongDiff)+" percentage points";
+  var d3="Both "+ctx+" are equally efficient because both waste heat";
+  return mcq(labelA+" uses "+gF(inA)+" J of input energy to produce "+gF(outA)+" J of useful output energy, while "+labelB+" uses "+gF(inB)+" J of input energy to produce "+gF(outB)+" J of useful output energy. Which device is more efficient, and by how much?",
+    key,[d1,d2,d3],
+    "Calculate each efficiency: "+labelA+" has efficiency ("+gF(outA)+" J / "+gF(inA)+" J) × 100% = "+F3(effA)+"%, and "+labelB+" has efficiency ("+gF(outB)+" J / "+gF(inB)+" J) × 100% = "+F3(effB)+"%. Comparing the two efficiencies gives a difference of |"+F3(effA)+"% - "+F3(effB)+"%| = "+F3(diff)+" percentage points. "+key+".",
+    {winner:winner,inA:inA,outA:outA,inB:inB,outB:outB,effA:effA,effB:effB});
+});
 /* ---------- 7.8 Work, time and power ---------- */
 
 E("u3-78-power-cr",3,["PH11.7.8"],2,"gen",function(){
@@ -424,6 +734,86 @@ E("u3-78-time-work",3,["PH11.7.8"],2,"gen",function(){
     "Power is work divided by time, so time is work divided by power. "+gF(W)+" J / "+gF(P)+" W = "+F3(t)+" s. It takes "+F3(t)+" s.",{P:P,W:W});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-78-rank-power, u3-78-ke-rate added to bring this pool to 6.
+// LEVEL: 3 - Multi-case quantitative comparison ranking power across three machines while resisting the largest-work trap.
+// VARIANTS: Machine A highest power (33%), Machine B highest power (33%), Machine C highest power (33%)
+// LENGTHS: key=37, distractors=37,37,43
+E("u3-78-rank-power",3,["PH11.7.8"],3,"gen",function(){
+  var winIdx=ri(0,2);
+  var ctx=pick(["motors","pumps","winches"]);
+  var names=ctx==="motors"?["Motor A","Motor B","Motor C"]:(ctx==="pumps"?["Pump A","Pump B","Pump C"]:["Winch A","Winch B","Winch C"]);
+  var wArr=[0,0,0],tArr=[0,0,0],pArr=[0,0,0],ok=false,tries=0;
+  var wantTrap=(Math.random()<0.65);
+  while(!ok&&tries<120){
+    tries++;
+    ok=true;
+    for(var i=0;i<3;i++){
+      wArr[i]=sfR(rf(200,5000),3);
+      tArr[i]=sfR(rf(2,60),3);
+      pArr[i]=sfR(wArr[i]/tArr[i],3);
+    }
+    for(var j=0;j<3;j++){
+      if(j!==winIdx){
+        if(pArr[winIdx]<1.2*pArr[j]){ok=false;}
+      }
+    }
+    if(Math.abs(pArr[0]-pArr[1])<1||Math.abs(pArr[1]-pArr[2])<1||Math.abs(pArr[0]-pArr[2])<1){ok=false;}
+    if(ok&&wantTrap&&tries<80){
+      var maxW=Math.max(wArr[0],wArr[1],wArr[2]);
+      if(wArr[winIdx]===maxW){ok=false;}
+    }
+  }
+  if(!ok){
+    wArr=[1200,3000,1500];
+    tArr=[4.00,25.0,15.0];
+    if(winIdx===1){wArr=[3000,1200,1500];tArr=[25.0,4.00,15.0];}
+    if(winIdx===2){wArr=[1500,3000,1200];tArr=[15.0,25.0,4.00];}
+    for(var k=0;k<3;k++){pArr[k]=sfR(wArr[k]/tArr[k],3);}
+  }
+  var key=names[winIdx]+" delivers the greatest power";
+  var ds=[];
+  for(var n=0;n<3;n++){
+    if(n!==winIdx){ds.push(names[n]+" delivers the greatest power");}
+  }
+  ds.push("All three "+ctx+" deliver the same power");
+  var tableRows=names[0]+": work = "+gF(wArr[0])+" J, time = "+gF(tArr[0])+" s<br>"+names[1]+": work = "+gF(wArr[1])+" J, time = "+gF(tArr[1])+" s<br>"+names[2]+": work = "+gF(wArr[2])+" J, time = "+gF(tArr[2])+" s";
+  return mcq("Three "+ctx+" perform the amounts of work in the times listed below:<br>"+tableRows+"<br>Which device delivers the greatest average power?",
+    key,ds,
+    "Power is work divided by time (P = W / Δt). Computing each power: "+names[0]+" delivers "+gF(wArr[0])+" J / "+gF(tArr[0])+" s = "+F3(pArr[0])+" W; "+names[1]+" delivers "+gF(wArr[1])+" J / "+gF(tArr[1])+" s = "+F3(pArr[1])+" W; "+names[2]+" delivers "+gF(wArr[2])+" J / "+gF(tArr[2])+" s = "+F3(pArr[2])+" W. "+key+".",
+    {winIdx:winIdx,w0:wArr[0],t0:tArr[0],w1:wArr[1],t1:tArr[1],w2:wArr[2],t2:tArr[2],p0:pArr[0],p1:pArr[1],p2:pArr[2]});
+});
+
+// LEVEL: 2 - Multi-step calculation chaining kinetic energy change and elapsed time to find average power.
+// VARIANTS: accelerating vehicle (50%) vs braking vehicle (50%)
+// LENGTHS: key=4
+E("u3-78-ke-rate",3,["PH11.7.8"],2,"gen",function(){
+  var speedingUp=(Math.random()<0.5);
+  var vehicle=pick(["car","snowmobile","ferry"]);
+  var m=vehicle==="ferry"?sfR(rf(800,1500),3):(vehicle==="car"?sfR(rf(800,1500),3):sfR(rf(150,350),3));
+  var vi,vf,tries=0;
+  do{
+    vi=sfR(rf(2,25),3);
+    vf=sfR(rf(2,30),3);
+    tries++;
+  }while((speedingUp?vf-vi<4:vi-vf<4)&&tries<80);
+  if(speedingUp&&vf-vi<4){vi=5.00;vf=18.0;}
+  if(!speedingUp&&vi-vf<4){vi=20.0;vf=6.00;}
+  var t=sfR(rf(2,20),3);
+  var Eki=sfR(0.5*m*vi*vi,4);
+  var Ekf=sfR(0.5*m*vf*vf,4);
+  var dEk=sfR(Math.abs(Ekf-Eki),4);
+  var P=sfR(dEk/t,3);
+  var promptTxt,solTxt;
+  if(speedingUp){
+    promptTxt="A "+gF(m)+" kg "+vehicle+" accelerates from "+gF(vi)+" m/s to "+gF(vf)+" m/s in "+gF(t)+" s. What is the average power delivered by the net force during this change? Give your answer in W.";
+    solTxt="The initial kinetic energy is Ek_i = 0.5 × "+gF(m)+" kg × ("+gF(vi)+" m/s)^2 = "+iF(Eki)+" J, and the final kinetic energy is Ek_f = 0.5 × "+gF(m)+" kg × ("+gF(vf)+" m/s)^2 = "+iF(Ekf)+" J. The net work equals the kinetic energy gained: ΔEk = "+iF(Ekf)+" J - "+iF(Eki)+" J = "+iF(dEk)+" J. Dividing by time gives average power: P = "+iF(dEk)+" J / "+gF(t)+" s = "+F3(P)+" W. The average power delivered is "+F3(P)+" W.";
+  }else{
+    promptTxt="A "+gF(m)+" kg "+vehicle+" slows down from "+gF(vi)+" m/s to "+gF(vf)+" m/s in "+gF(t)+" s. Taking the energy dissipated as positive, what is the average power absorbed by the brakes during this stop? Give your answer in W.";
+    solTxt="The initial kinetic energy is Ek_i = 0.5 × "+gF(m)+" kg × ("+gF(vi)+" m/s)^2 = "+iF(Eki)+" J, and the final kinetic energy is Ek_f = 0.5 × "+gF(m)+" kg × ("+gF(vf)+" m/s)^2 = "+iF(Ekf)+" J. Reporting the energy dissipated as a positive amount, ΔEk = "+iF(Eki)+" J - "+iF(Ekf)+" J = "+iF(dEk)+" J. Dividing by time gives average power: P = "+iF(dEk)+" J / "+gF(t)+" s = "+F3(P)+" W. The average power absorbed is "+F3(P)+" W.";
+  }
+  return numq(promptTxt,P,Math.max(0.02*Math.abs(P),1e-9),solTxt,{m:m,vi:vi,vf:vf,t:t});
+});
 /* ---------- 7.9 Hooke's law ---------- */
 
 E("u3-79-hooke-force",3,["PH11.7.9"],2,"gen",function(){
@@ -467,6 +857,21 @@ E("u3-79-spring-mcq",3,["PH11.7.9"],2,"gen",function(){
     q.figure=p22Spring(gF(x)+" m","force = ?");return q;
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-79-spring-launch-cr added to bring this pool to 6.
+// LEVEL: 2 - Two-step energy conservation transfer converting elastic potential energy in a compressed spring to kinetic energy of a launched ball.
+// LENGTHS: key=4
+E("u3-79-spring-launch-cr",3,["PH11.7.9"],2,"gen",function(){
+  var k=sfR(rf(50,400),3);
+  var x=sfR(rf(0.05,0.3),3);
+  var m=sfR(rf(0.02,0.5),3);
+  var Es=sfR(0.5*k*x*x,4);
+  var v=sfR(Math.sqrt((2*Es)/m),3);
+  return numq("A spring launcher with a spring constant of "+gF(k)+" N/m is compressed by "+gF(x)+" m and used to launch a "+gF(m)+" kg ball along a level frictionless track. What is the launch speed of the ball as it leaves the spring? Give your answer in m/s.",
+    v,Math.max(0.02*Math.abs(v),1e-9),
+    "First calculate the elastic potential energy stored in the compressed spring: Es = 0.5 × "+gF(k)+" N/m × ("+gF(x)+" m)^2 = "+iF(Es)+" J. With friction neglected, all of this stored energy becomes the ball's kinetic energy: Ek = 0.5 × "+gF(m)+" kg × v^2 = "+iF(Es)+" J. Solving for speed gives v = sqrt(2 × "+iF(Es)+" J / "+gF(m)+" kg) = "+F3(v)+" m/s. The launch speed of the ball is "+F3(v)+" m/s.",
+    {k:k,x:x,m:m});
+});
 /* ---------- 7.10 Simple harmonic motion, horizontal spring ---------- */
 
 E("u3-710-accel-magnitude",3,["PH11.7.10"],2,"gen",function(){
@@ -558,6 +963,59 @@ E("u3-710-accel-judgement",3,["PH11.7.10"],3,"gen",function(){
     q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-710-period-cr, u3-710-motion-describe added to bring this pool to 6.
+// LEVEL: 2 - Two-step calculation finding the period of a mass-spring oscillator and scaling by an exact cycle count.
+// LENGTHS: key=4
+E("u3-710-period-cr",3,["PH11.7.10"],2,"gen",function(){
+  var m=sfR(rf(0.1,2),3);
+  var k=sfR(rf(10,200),3);
+  var n=ri(5,20);
+  var T=sfR(2*Math.PI*Math.sqrt(m/k),4);
+  var tTotal=sfR(T*n,3);
+  return numq("A "+gF(m)+" kg block attached to a horizontal spring with a spring constant of "+gF(k)+" N/m oscillates in simple harmonic motion on a frictionless surface. How much time does the block take to complete "+n+" full oscillations? Give your answer in s.",
+    tTotal,Math.max(0.02*Math.abs(tTotal),1e-9),
+    "The period of a mass oscillating on a spring is T = 2π sqrt(m / k). Substituting the given values gives T = 2π × sqrt("+gF(m)+" kg / "+gF(k)+" N/m) = "+iF(T)+" s. For "+n+" full oscillations, the total elapsed time is t = "+n+" × "+iF(T)+" s = "+F3(tTotal)+" s. The block takes "+F3(tTotal)+" s.",
+    {m:m,k:k,n:n});
+});
+
+// LEVEL: 2 - Multi-position cycle analysis tracing how velocity and speed behave across four instants of simple harmonic motion.
+// VARIANTS: four instants (at extreme, passing equilibrium, moving toward extreme, moving toward equilibrium) at equal mix
+// LENGTHS: key=42, distractors=46,35,35
+E("u3-710-motion-describe",3,["PH11.7.10"],2,"var",varset([
+  function(){
+    var key="Its velocity is momentarily equal to zero";
+    var ds=["Its speed is at its greatest possible value","Its speed is increasing toward the center","Its speed is decreasing toward the center"];
+    return mcq("A mass oscillating on a horizontal frictionless spring reaches its maximum displacement at one extreme of its motion. Which statement accurately describes the mass's velocity at that instant?",
+      key,ds,
+      "At either extreme of simple harmonic motion, the mass stops reversing direction before heading back toward equilibrium. At that turnaround instant, its motion pauses completely. "+key+".",
+      {instant:"at_extreme"});
+  },
+  function(){
+    var key="Its speed is at its greatest possible value";
+    var ds=["Its velocity is momentarily equal to zero","Its speed is decreasing toward the center","Its speed is increasing toward the extreme"];
+    return mcq("A mass oscillating on a horizontal frictionless spring passes right through its equilibrium position. Which statement accurately describes the mass's velocity at that instant?",
+      key,ds,
+      "As the mass moves from an extreme toward equilibrium, the spring pulls it faster and faster until it reaches equilibrium, where the spring force drops to zero and the mass begins slowing on the other side. "+key+".",
+      {instant:"at_equilibrium"});
+  },
+  function(){
+    var key="Its speed is decreasing as it moves outward";
+    var ds=["Its speed is increasing as it moves outward","Its velocity is constant until it hits the end","Its velocity is momentarily equal to zero"];
+    return mcq("A mass oscillating on a horizontal frictionless spring has passed equilibrium and is moving outward toward the right extreme. Which statement accurately describes the mass's velocity during this part of the cycle?",
+      key,ds,
+      "Once the mass passes equilibrium, the spring stretches and pulls backward toward equilibrium, opposing the outward motion and slowing the mass down until it stops at the extreme. "+key+".",
+      {instant:"toward_extreme"});
+  },
+  function(){
+    var key="Its speed is increasing as it moves inward";
+    var ds=["Its speed is decreasing as it moves inward","Its velocity is constant until it hits the end","Its velocity is momentarily equal to zero"];
+    return mcq("A mass oscillating on a horizontal frictionless spring is released from rest at the left extreme and is moving inward toward equilibrium. Which statement accurately describes the mass's velocity during this part of the cycle?",
+      key,ds,
+      "As the mass moves inward from an extreme toward equilibrium, the restoring spring force pulls in the same direction as the motion, causing the mass to accelerate until it reaches equilibrium. "+key+".",
+      {instant:"toward_equilibrium"});
+  }
+]));
 /* ---------- 7.11 Energies in simple harmonic motion ---------- */
 
 E("u3-711-shm-energy-cr",3,["PH11.7.11"],3,"gen",function(){
@@ -566,22 +1024,25 @@ E("u3-711-shm-energy-cr",3,["PH11.7.11"],3,"gen",function(){
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),x2=sfR(x*x,4);
   var etot=sfR(halfk*A2,3),es=sfR(halfk*x2,3),ke=sfR(etot-es,3);
   var where=branch==="table"?"on a frictionless table":"on a smooth horizontal track";
-  return numq("A mass oscillates "+where+" on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its kinetic energy when it is "+gF(x)+" m from equilibrium? Give your answer in J.",ke,Math.max(0.02*Math.abs(ke),1e-9),
+  var q=numq("A mass oscillates "+where+" on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its kinetic energy when it is "+gF(x)+" m from equilibrium? Give your answer in J.",ke,Math.max(0.02*Math.abs(ke),1e-9),
   "The total energy is set by the amplitude, where all the energy is elastic potential energy. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The amplitude squared is "+gF(A)+" m × "+gF(A)+" m = "+iF(A2)+" m^2, so the total energy is "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J. At the stated displacement, the displacement squared is "+gF(x)+" m × "+gF(x)+" m = "+iF(x2)+" m^2, so the elastic potential energy is "+iF(halfk)+" N/m × "+iF(x2)+" m^2 = "+F3(es)+" J. The rest is kinetic: "+F3(etot)+" J - "+F3(es)+" J = "+F3(ke)+" J. The kinetic energy is "+F3(ke)+" J.",{k:k,A:A,x:x});
+  q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
 E("u3-711-elastic-pe",3,["PH11.7.11"],2,"gen",function(){
   var k=sfR(rf(20,150),3),x=sfR(rf(0.05,0.35),3);
   var halfk=sfR(0.5*k,4),x2=sfR(x*x,4),es=sfR(halfk*x2,3);
-  return numq("A spring with spring constant "+gF(k)+" N/m is stretched by "+gF(x)+" m. What is the elastic potential energy stored in the spring? Give your answer in J.",es,Math.max(0.02*Math.abs(es),1e-9),
+  var q=numq("A spring with spring constant "+gF(k)+" N/m is stretched by "+gF(x)+" m. What is the elastic potential energy stored in the spring? Give your answer in J.",es,Math.max(0.02*Math.abs(es),1e-9),
   "Elastic potential energy is Es = 1/2 k x^2. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The stretch squared is "+gF(x)+" m × "+gF(x)+" m = "+iF(x2)+" m^2. Then "+iF(halfk)+" N/m × "+iF(x2)+" m^2 = "+F3(es)+" J. The elastic potential energy is "+F3(es)+" J.",{k:k,x:x});
+  q.figure=p22Spring(gF(x)+" m",null);return q;
 });
 
 E("u3-711-total-energy",3,["PH11.7.11"],2,"gen",function(){
   var k=sfR(rf(20,150),3),A=sfR(rf(0.08,0.35),3);
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),etot=sfR(halfk*A2,3);
-  return numq("A mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is the total mechanical energy of the system? Give your answer in J.",etot,Math.max(0.02*Math.abs(etot),1e-9),
+  var q=numq("A mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is the total mechanical energy of the system? Give your answer in J.",etot,Math.max(0.02*Math.abs(etot),1e-9),
   "At the amplitude the mass is momentarily at rest, so all the energy is elastic potential energy and that amount is the total. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The amplitude squared is "+gF(A)+" m × "+gF(A)+" m = "+iF(A2)+" m^2. Then "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J. The total mechanical energy is "+F3(etot)+" J.",{k:k,A:A});
+  q.figure=p22Spring("amplitude "+gF(A)+" m",null);return q;
 });
 
 E("u3-711-speed-at-x",3,["PH11.7.11"],3,"gen",function(){
@@ -589,18 +1050,37 @@ E("u3-711-speed-at-x",3,["PH11.7.11"],3,"gen",function(){
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),x2=sfR(x*x,4);
   var etot=sfR(halfk*A2,3),es=sfR(halfk*x2,3),ke=sfR(etot-es,3);
   var twoKe=sfR(2*ke,4),v2=sfR(twoKe/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed when it is "+gF(x)+" m from equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed when it is "+gF(x)+" m from equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "Find the kinetic energy at that displacement first. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The total energy, from the amplitude, is "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J, using the amplitude squared, "+iF(A2)+" m^2. The elastic potential energy at the displacement is "+iF(halfk)+" N/m × "+iF(x2)+" m^2 = "+F3(es)+" J, using the displacement squared, "+iF(x2)+" m^2. The kinetic energy is "+F3(etot)+" J - "+F3(es)+" J = "+F3(ke)+" J. Twice the kinetic energy is 2 × "+F3(ke)+" J = "+iF(twoKe)+" J. Then "+iF(twoKe)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,k:k,A:A,x:x});
+  q.figure=p22Spring("displacement "+gF(x)+" m",null);return q;
 });
 
 E("u3-711-speed-equilibrium",3,["PH11.7.11"],3,"gen",function(){
   var m=sfR(rf(0.5,3),3),k=sfR(rf(20,100),3),A=sfR(rf(0.10,0.35),3);
   var halfk=sfR(0.5*k,4),A2=sfR(A*A,4),etot=sfR(halfk*A2,3);
   var twoE=sfR(2*etot,4),v2=sfR(twoE/m,4),v=sfR(Math.sqrt(v2),3);
-  return numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed as it passes through equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
+  var q=numq("A "+gF(m)+" kg mass oscillates on a horizontal spring with spring constant "+gF(k)+" N/m and amplitude "+gF(A)+" m. What is its speed as it passes through equilibrium? Give your answer in m/s.",v,Math.max(0.02*Math.abs(v),1e-9),
   "At equilibrium the elastic potential energy is zero, so all the total energy is kinetic there. Half the spring constant is 0.500 × "+gF(k)+" N/m = "+iF(halfk)+" N/m. The amplitude squared is "+gF(A)+" m × "+gF(A)+" m = "+iF(A2)+" m^2, so the total energy is "+iF(halfk)+" N/m × "+iF(A2)+" m^2 = "+F3(etot)+" J. Twice the total energy is 2 × "+F3(etot)+" J = "+iF(twoE)+" J. Then "+iF(twoE)+" J / "+gF(m)+" kg = "+iF(v2)+" m^2/s^2. The speed is the square root of "+iF(v2)+" m^2/s^2, which is "+F3(v)+" m/s.",{m:m,k:k,A:A});
+  q.figure=p22Spring("amplitude "+gF(A)+" m",null);return q;
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-711-ke-at-x added to bring this pool to 6.
+// LEVEL: 2 - Two-step conservation of energy calculation in simple harmonic motion subtracting elastic potential energy from total mechanical energy.
+// LENGTHS: key=4
+E("u3-711-ke-at-x",3,["PH11.7.11"],2,"gen",function(){
+  var k=sfR(rf(20,300),3);
+  var A=sfR(rf(0.05,0.4),3);
+  var frac=sfR(rf(0.3,0.8),3);
+  var x=sfR(A*frac,3);
+  var Etot=sfR(0.5*k*A*A,4);
+  var Es=sfR(0.5*k*x*x,4);
+  var Ek=sfR(Etot-Es,3);
+  return numq("A mass attached to a horizontal spring of spring constant "+gF(k)+" N/m oscillates on a frictionless surface with an amplitude of "+gF(A)+" m. What is the kinetic energy of the mass when its displacement from equilibrium is "+gF(x)+" m? Give your answer in J.",
+    Ek,Math.max(0.02*Math.abs(Ek),1e-9),
+    "First calculate the total mechanical energy from the amplitude: E_total = 0.5 × "+gF(k)+" N/m × ("+gF(A)+" m)^2 = "+iF(Etot)+" J. Next calculate the elastic potential energy at x = "+gF(x)+" m: Es = 0.5 × "+gF(k)+" N/m × ("+gF(x)+" m)^2 = "+iF(Es)+" J. Since E_total = Ek + Es, the kinetic energy is Ek = "+iF(Etot)+" J - "+iF(Es)+" J = "+F3(Ek)+" J. The kinetic energy of the mass is "+F3(Ek)+" J.",
+    {k:k,A:A,x:x});
+});
 /* ---------- 7.12 Elastic and inelastic collisions ---------- */
 
 E("u3-712-classify-cr",3,["PH11.7.12"],2,"gen",function(){
@@ -639,8 +1119,9 @@ E("u3-712-classify-mcq",3,["PH11.7.12"],3,"gen",function(){
 
 E("u3-712-ke-lost",3,["PH11.7.12"],2,"gen",function(){
   var kei=sfR(rf(150,600),3),kef=sfR(kei*rf(0.3,0.7),3),lost=sfR(kei-kef,3);
-  return numq("In a collision, the total kinetic energy of the objects is "+gF(kei)+" J before the collision and "+gF(kef)+" J after the collision. How much kinetic energy is lost in the collision? Give your answer in J.",lost,Math.max(0.02*Math.abs(lost),1e-9),
+  var q=numq("In a collision, the total kinetic energy of the objects is "+gF(kei)+" J before the collision and "+gF(kef)+" J after the collision. How much kinetic energy is lost in the collision? Give your answer in J.",lost,Math.max(0.02*Math.abs(lost),1e-9),
   "The kinetic energy lost is the drop in kinetic energy. "+gF(kei)+" J - "+gF(kef)+" J = "+F3(lost)+" J. The collision loses "+F3(lost)+" J of kinetic energy, so it is not elastic.",{kei:kei,kef:kef});
+  q.figure=p22Bars([{t:"before",v:kei,vl:F3(kei)+" J"},{t:"after",v:kef,vl:F3(kef)+" J"}]);return q;
 });
 
 E("u3-712-which-law",3,["PH11.7.12"],1,"var",varset([
@@ -678,6 +1159,122 @@ E("u3-712-which-law",3,["PH11.7.12"],1,"var",varset([
   }
 ]));
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-712-elastic-check, u3-712-best-method added to bring this pool to 6.
+// LEVEL: 2 - Quantitative collision verification comparing total kinetic energy before and after impact against the momentum-conservation trap.
+// VARIANTS: elastic collision (50%) vs inelastic collision (50%)
+// LENGTHS: key=71, distractors=73,71,72
+E("u3-712-elastic-check",3,["PH11.7.12"],2,"gen",function(){
+  var isElastic=(Math.random()<0.5);
+  var m1,m2,v1i,v2i=0,v1f,v2f,Eki,Ekf,tries=0;
+  if(isElastic){
+    var sameMass=(Math.random()<0.5);
+    if(sameMass){
+      m1=sfR(rf(0.5,5),3);
+      m2=m1;
+      v1i=sfR(rf(2,6),3);
+      v1f=0;
+      v2f=v1i;
+    }else{
+      var found=false;
+      while(!found&&tries<100){
+        tries++;
+        var u1=ri(2,5),u2=ri(1,5);
+        if(u1<=u2){continue;}
+        var s1=ri(2,6);
+        var candV1f=((u1-u2)/(u1+u2))*s1;
+        var candV2f=((2*u1)/(u1+u2))*s1;
+        if(Math.abs(candV1f-sfR(candV1f,3))<1e-9&&Math.abs(candV2f-sfR(candV2f,3))<1e-9&&candV1f>=0.5){
+          m1=sfR(u1*0.5,3);
+          m2=sfR(u2*0.5,3);
+          v1i=sfR(s1,3);
+          v1f=sfR(candV1f,3);
+          v2f=sfR(candV2f,3);
+          found=true;
+        }
+      }
+      if(!found){
+        m1=3.00;m2=1.00;v1i=4.00;v1f=2.00;v2f=6.00;
+      }
+    }
+  }else{
+    var okInel=false;
+    while(!okInel&&tries<120){
+      tries++;
+      m1=sfR(rf(0.5,5),3);
+      m2=sfR(rf(0.5,5),3);
+      v1i=sfR(rf(3,8),3);
+      v1f=sfR(v1i*rf(0.05,0.55),3);
+      v2f=sfR(m1*(v1i-v1f)/m2,3);
+      var keI=0.5*m1*v1i*v1i;
+      var keF=0.5*m1*v1f*v1f+0.5*m2*v2f*v2f;
+      if(v2f>=0.3&&v2f<=7&&keF<=0.85*keI&&keF>=0.1*keI){okInel=true;}
+    }
+    if(!okInel){m1=2.00;m2=2.00;v1i=6.00;v1f=1.00;v2f=5.00;}
+  }
+  Eki=sfR(0.5*m1*v1i*v1i+0.5*m2*v2i*v2i,4);
+  Ekf=sfR(0.5*m1*v1f*v1f+0.5*m2*v2f*v2f,4);
+  var e1Str=F3(Eki),e2Str=F3(Ekf);
+  var key,d1,d2,d3;
+  if(isElastic){
+    key="The collision is elastic: total kinetic energy stays at "+e1Str+" J before and "+e2Str+" J after";
+    d1="The collision is inelastic: total kinetic energy stays at "+e1Str+" J before and "+e2Str+" J after";
+    d2="The collision is elastic: total kinetic energy drops from "+e1Str+" J to "+sfR(Eki*0.5,3)+" J after";
+    d3="The collision is inelastic because the two carts bounce apart after impact";
+  }else{
+    key="The collision is inelastic: total kinetic energy drops from "+e1Str+" J to "+e2Str+" J";
+    d1="The collision is elastic: total kinetic energy drops from "+e1Str+" J to "+e2Str+" J";
+    d2="The collision is inelastic: total kinetic energy rises from "+e2Str+" J to "+e1Str+" J";
+    d3="The collision is elastic because total momentum is conserved during impact";
+  }
+  var v1fDesc=v1f===0?"comes to rest":("moves at "+gF(v1f)+" m/s");
+  return mcq("On a level frictionless track, Cart 1 ("+gF(m1)+" kg) moving at "+gF(v1i)+" m/s strikes stationary Cart 2 ("+gF(m2)+" kg). After the collision, Cart 1 "+v1fDesc+" and Cart 2 moves at "+gF(v2f)+" m/s. Based on kinetic energy, is this collision elastic or inelastic?",
+    key,[d1,d2,d3],
+    "Compute the total kinetic energy before the collision: Ek_i = 0.5 \u00d7 "+gF(m1)+" kg \u00d7 ("+gF(v1i)+" m/s)^2 + 0 J = "+iF(Eki)+" J ("+e1Str+" J). Compute the total kinetic energy after the collision: Ek_f = 0.5 \u00d7 "+gF(m1)+" kg \u00d7 ("+gF(v1f)+" m/s)^2 + 0.5 \u00d7 "+gF(m2)+" kg \u00d7 ("+gF(v2f)+" m/s)^2 = "+iF(Ekf)+" J ("+e2Str+" J). "+key+".",
+    {isElastic:isElastic,m1:m1,m2:m2,v1i:v1i,v2i:v2i,v1f:v1f,v2f:v2f,Eki:sfR(Eki,3),Ekf:sfR(Ekf,3)});
+});
+
+// LEVEL: 3 - Analysis of multi-stage collision-and-motion problems to assign the valid conservation law to each stage.
+// VARIANTS: three two-stage scenarios (hit-and-stick then rough slide; explosion then vertical rise; elastic bounce then ramp climb) at equal mix
+// LENGTHS: key=71, distractors=71,69,68
+E("u3-712-best-method",3,["PH11.7.12"],3,"var",varset([
+  function(){
+    var key="Stage 1: conservation of momentum; Stage 2: work-energy with friction";
+    var ds=[
+      "Stage 1: work-energy with friction; Stage 2: conservation of momentum",
+      "Stage 1: conservation of kinetic energy; Stage 2: conservation of momentum",
+      "Stage 1: conservation of mechanical energy; Stage 2: mechanical energy only"
+    ];
+    return mcq("A moving puck strikes and sticks to a stationary puck on a rough ice surface (Stage 1), and the combined pair then slides to a stop against kinetic friction (Stage 2). Which laws are best used to find the stopping distance?",
+      key,ds,
+      "During Stage 1 (the inelastic hit-and-stick impact), kinetic energy is lost to deformation and heat, so only conservation of momentum applies to find the speed right after impact. During Stage 2 (the rough slide), an external friction force acts over a distance, so conservation of energy with heat (or the work-energy theorem with friction) gives the stopping distance. "+key+".",
+      {scenario:"stick_then_slide"});
+  },
+  function(){
+    var key="Stage 1: conservation of momentum; Stage 2: mechanical energy conservation";
+    var ds=[
+      "Stage 1: mechanical energy conservation; Stage 2: conservation of momentum",
+      "Stage 1: conservation of kinetic energy; Stage 2: conservation of momentum",
+      "Stage 1: mechanical energy conservation; Stage 2: mechanical energy conservation"
+    ];
+    return mcq("A stationary firecracker explodes into two unequal fragments (Stage 1), and one fragment shoots straight upward to a maximum height with air resistance neglected (Stage 2). Which laws are best used to find that maximum height?",
+      key,ds,
+      "During Stage 1 (the explosion), chemical potential energy converts into kinetic energy so mechanical energy is not conserved, whereas internal forces cancel and momentum is conserved to link the fragment speeds. During Stage 2 (the frictionless vertical rise), only gravity acts, so conservation of mechanical energy converts kinetic energy into gravitational potential energy. "+key+".",
+      {scenario:"explosion_then_rise"});
+  },
+  function(){
+    var key="Stage 1: mechanical energy conservation; Stage 2: momentum and kinetic energy";
+    var ds=[
+      "Stage 1: momentum and kinetic energy; Stage 2: mechanical energy conservation",
+      "Stage 1: conservation of momentum; Stage 2: conservation of momentum only",
+      "Stage 1: mechanical energy conservation; Stage 2: kinetic energy conservation only"
+    ];
+    return mcq("Two carts undergo a head-on elastic collision on a frictionless track, and after the bounce one cart climbs a smooth ramp to a known maximum height. Working backwards from that height (Stage 1) to the collision itself (Stage 2), which laws are best used to find the carts' speeds before impact?",
+      key,ds,
+      "In Stage 1 (working back down the frictionless ramp), conservation of mechanical energy finds the cart's speed just after the collision from its maximum height. In Stage 2 (the elastic collision), both momentum and kinetic energy are conserved, giving two equations to solve for the pre-collision speeds. "+key+".",
+      {scenario:"ramp_back_to_elastic"});
+  }
+]));
 /* ---------- 7.13 Radioactive decay ---------- */
 
 E("u3-713-alpha-properties",3,["PH11.7.13"],1,"var",varset([
@@ -903,6 +1500,31 @@ E("u3-714-elapsed-time",3,["PH11.7.14"],2,"gen",function(){
   "First count the half-lives: going from "+init+" g down to "+fin+" g is "+n+" halvings. Each half-life lasts "+T+" "+unit+", so the elapsed time is "+n+" half-lives at "+T+" "+unit+" each, which is "+elapsed+" "+unit+". Both counts here are exact.",{T:T,n:n,unit:unit});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-714-initial-amount added to bring this pool to 6.
+// LEVEL: 2 - Multi-step inverse half-life calculation counting elapsed half-lives and doubling backward to find the initial sample mass.
+// LENGTHS: key=4
+E("u3-714-initial-amount",3,["PH11.7.14"],2,"gen",function(){
+  var ctx=pick(["medical","dating","waste"]);
+  var tUnit=ctx==="medical"?"hours":(ctx==="dating"?"years":"days");
+  var mUnit=ctx==="medical"?"mg":"g";
+  var halfLife=sfR(rf(2,30),3);
+  var n=ri(1,6);
+  var tElapsed=sfR(halfLife*n,3);
+  var rem=sfR(rf(0.1,500),3);
+  var initAmt=sfR(rem*Math.pow(2,n),3);
+  var steps=[];
+  var cur=rem;
+  for(var i=1;i<=n;i++){
+    cur=sfR(cur*2,4);
+    steps.push("after "+i+" doubling"+(i>1?"s":"")+": "+iF(cur)+" "+mUnit);
+  }
+  var stem=ctx==="medical"?("A hospital technologist measures "+gF(rem)+" "+mUnit+" of a medical radioisotope remaining "+gF(tElapsed)+" "+tUnit+" after preparation."):(ctx==="dating"?("A laboratory sample contains "+gF(rem)+" "+mUnit+" of a radioactive isotope after "+gF(tElapsed)+" "+tUnit+" of decay."):("A storage container holds "+gF(rem)+" "+mUnit+" of a radioactive isotope after "+gF(tElapsed)+" "+tUnit+"."));
+  return numq(stem+" If the isotope's half-life is "+gF(halfLife)+" "+tUnit+", how much of the isotope was present initially? Give your answer in "+mUnit+".",
+    initAmt,Math.max(0.02*Math.abs(initAmt),1e-9),
+    "First find the number of half-lives elapsed: n = "+gF(tElapsed)+" "+tUnit+" / "+gF(halfLife)+" "+tUnit+" = "+n+" half-lives. Working backward from the remaining "+gF(rem)+" "+mUnit+", double the amount "+n+" time"+(n>1?"s":"")+" ("+steps.join("; ")+"), which gives N_0 = "+gF(rem)+" "+mUnit+" × 2^"+n+" = "+F3(initAmt)+" "+mUnit+". The initial amount of the isotope was "+F3(initAmt)+" "+mUnit+".",
+    {halfLife:halfLife,n:n,rem:rem,tUnit:tUnit,mUnit:mUnit});
+});
 /* ---------- 7.15 Mass-energy equivalence ---------- */
 
 E("u3-715-mass-energy",3,["PH11.7.15"],2,"gen",function(){
@@ -947,6 +1569,43 @@ E("u3-715-claim-judge",3,["PH11.7.15"],3,"gen",function(){
     "Check the claim with E = m c^2. The speed of light squared is 9.00 × 10¹⁶ m^2/s^2, and multiplying the mass, "+F3(coeff)+" × 10⁻⁶ kg, by that value gives "+F3(E)+" J. Comparing that with the claimed "+claimStr+" settles the judgement: "+correct+".",{coeff:coeff,casePick:casePick});
 });
 
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-715-defect-energy-cr, u3-715-sun-rate added to bring this pool to 6.
+// LEVEL: 2 - Two-step mass-energy calculation subtracting product mass from reactant mass to obtain mass defect before applying E = mc^2.
+// LENGTHS: key=11
+E("u3-715-defect-energy-cr",3,["PH11.7.15"],2,"gen",function(){
+  var kind=pick(["fission","fusion"]);
+  var mProd=sfR(rf(3,9)*1e-25,3);
+  var dm=sfR(rf(0.5,5)*1e-27,3);
+  var mReact=sfR(mProd+dm,4);
+  dm=sfR(mReact-mProd,3);
+  var c=3.00e8;
+  var E=sfR(dm*c*c,3);
+  var sci=function(x){var e=Math.floor(Math.log10(Math.abs(x)));return F3(x/Math.pow(10,e))+" × 10"+sfSup(e);};
+  var desc=kind==="fission"?"In a single nuclear fission reaction":"In a single nuclear fusion reaction";
+  return numq(desc+", the total mass of the reactants is "+sci(mReact)+" kg and the total mass of the products is "+sci(mProd)+" kg. How much energy is released by this reaction? Give your answer in J.",
+    E,Math.max(0.02*Math.abs(E),1e-9),
+    "First find the mass defect by subtracting the product mass from the reactant mass: Δm = "+sci(mReact)+" kg - "+sci(mProd)+" kg = "+sci(dm)+" kg. Next apply mass-energy equivalence using c = 3.00 × 10^8 m/s: E = Δm c^2 = "+sci(dm)+" kg × (3.00 × 10^8 m/s)^2 = "+sci(E)+" J. The energy released by the reaction is "+sci(E)+" J.",
+    {mReact:mReact,mProd:mProd,dm:dm});
+});
+// LEVEL: 3 - Multi-step transfer chaining radiated power over converted time intervals into mass-energy equivalence for a star.
+// LENGTHS: key=11
+E("u3-715-sun-rate",3,["PH11.7.15"],3,"gen",function(){
+  var isSun=(Math.random()<0.5);
+  var P=isSun?3.85e26:sfR(rf(1,500)*1e24,3);
+  var tUnit=pick(["hours","days"]);
+  var tCount=ri(1,30);
+  var secPerUnit=tUnit==="hours"?3600:86400;
+  var tSec=sfR(tCount*secPerUnit,4);
+  var E=sfR(P*tSec,4);
+  var c=3.00e8;
+  var m=sfR(E/(c*c),3);
+  var subject=isSun?("The Sun radiates energy at a power of "+gF(P)+" W."):("A distant star radiates energy at a steady power of "+gF(P)+" W.");
+  return numq(subject+" How much mass does the star convert into energy over "+tCount+" "+tUnit+"? Give your answer in kg.",
+    m,Math.max(0.02*Math.abs(m),1e-9),
+    "First convert the time into seconds: Δt = "+tCount+" "+tUnit+" × "+secPerUnit+" s/"+(tUnit==="hours"?"hour":"day")+" = "+iF(tSec)+" s. Next find the total energy radiated: E = P × Δt = "+gF(P)+" W × "+iF(tSec)+" s = "+iF(E)+" J. Finally use E = m c^2 with c = 3.00 × 10^8 m/s to find the mass converted: m = "+iF(E)+" J / (3.00 × 10^8 m/s)^2 = "+F3(m)+" kg. The mass converted into energy is "+F3(m)+" kg.",
+    {P:P,tCount:tCount,tUnit:tUnit});
+});
 /* ---------- 7.16 Fission and fusion ---------- */
 
 E("u3-716-fission",3,["PH11.7.16"],1,"var",varset([
@@ -1067,3 +1726,102 @@ E("u3-716-energy-compare",3,["PH11.7.16"],3,"gen",function(){
      bigName+" releases more energy in total, by a factor of about "+F3(rat*10)],
     "Compare the two totals directly. Dividing the larger total by the smaller total gives a factor of about "+F3(rat)+". So "+bigName.toLowerCase()+" releases more energy in total, by a factor of about "+F3(rat)+".",{ratio:ratio,smallCoeff:smallCoeff,bigIsFission:bigIsFission});
 });
+
+// Bank Strengthening Programme pass 7 (November 19, 2026): u3-716-chain-reaction, u3-716-per-nucleon added to bring this pool to 6.
+// LEVEL: 2 - Conceptual application of nuclear fission mechanisms to sustaining and controlling a chain reaction in a reactor.
+// VARIANTS: four variants (sustaining chain reaction, control rods role, moderator role, supercritical multiplication factor) at equal mix
+// LENGTHS: key=69, distractors=69,68,69
+E("u3-716-chain-reaction",3,["PH11.7.16"],2,"var",varset([
+  function(){
+    var key="Each fission releases two or three neutrons that can split more nuclei";
+    var ds=[
+      "Each fission releases two or three protons that fuse lighter nuclei",
+      "Each fission absorbs two or three electrons that heat the fuel rods",
+      "Each fission releases gamma photons that split neighbouring fuel atoms"
+    ];
+    return mcq("Why can a single nuclear fission event in a uranium fuel rod trigger a self-sustaining chain reaction?",
+      key,ds,
+      "When a heavy nucleus splits, it emits two or three free neutrons. If at least one of those neutrons strikes another fissile nucleus and causes it to split, the reaction continues on its own. "+key+".",
+      {topic:"chain_cause"});
+  },
+  function(){
+    var key="They absorb excess neutrons so fewer remain to cause further fissions";
+    var ds=[
+      "They slow down fast neutrons so the neutrons split nuclei more easily",
+      "They release extra neutrons so the fission rate increases more rapidly",
+      "They reflect escaping protons back into the reactor core to sustain heat"
+    ];
+    return mcq("What is the role of control rods when they are lowered deeper into the core of a nuclear fission reactor?",
+      key,ds,
+      "Control rods are made of neutron-absorbing materials such as cadmium or boron. Lowering them removes neutrons from the chain so the fission rate drops or stays steady. "+key+".",
+      {topic:"control_rods"});
+  },
+  function(){
+    var key="It slows fast neutrons down so they are more likely to cause fission";
+    var ds=[
+      "It absorbs excess neutrons so the reaction rate drops to a safe level",
+      "It speeds neutrons up so they overcome electrical repulsion in nuclei",
+      "It converts beta particles into gamma rays to carry heat to turbines"
+    ];
+    return mcq("What is the purpose of a moderator (such as heavy water or graphite) inside a thermal nuclear fission reactor?",
+      key,ds,
+      "Fission emits fast-moving neutrons that often pass right by fissile nuclei without being captured. Collisions with moderator atoms slow the neutrons down, raising the probability of fission. "+key+".",
+      {topic:"moderator"});
+  },
+  function(){
+    var key="The number of fissions grows rapidly from one generation to the next";
+    var ds=[
+      "The number of fissions drops steadily until the reaction shuts itself down",
+      "The number of fissions stays constant at the exact same rate every second",
+      "The reactor switches from nuclear fission to nuclear fusion automatically"
+    ];
+    return mcq("What happens inside a fission reactor if, on average, more than one neutron from each fission goes on to trigger another fission?",
+      key,ds,
+      "When each generation produces more fissions than the previous generation, the reaction multiplies exponentially (a supercritical state) unless control rods are inserted to absorb extra neutrons. "+key+".",
+      {topic:"supercritical"});
+  }
+]));
+
+// LEVEL: 3 - Quantitative comparison normalizing reaction energy release per participating nucleon to contrast fission and fusion.
+// VARIANTS: fusion releasing more energy per nucleon than fission across dealt physical-scale mass defects (100% of draws)
+// LENGTHS: key=89, distractors=90,89,84
+E("u3-716-per-nucleon",3,["PH11.7.16"],3,"gen",function(){
+  var nFiss=236;
+  var nFus=5;
+  var dmFiss,dmFus,eFiss,eFus,perFiss,perFus,tries=0;
+  var c=3.00e8;
+  do{
+    tries++;
+    dmFiss=sfR(rf(2.5,3.5)*1e-28,3);
+    dmFus=sfR(rf(2.5,4)*1e-29,3);
+    eFiss=sfR(dmFiss*c*c,4);
+    eFus=sfR(dmFus*c*c,4);
+    perFiss=sfR(eFiss/nFiss,3);
+    perFus=sfR(eFus/nFus,3);
+  }while(perFus<1.3*perFiss&&tries<80);
+  var sci=function(x){var e=Math.floor(Math.log10(Math.abs(x)));return F3(x/Math.pow(10,e))+" × 10"+sfSup(e);};
+  var fusStr=sci(perFus);
+  var fissStr=sci(perFiss);
+  var key="Fusion releases more energy per nucleon ("+fusStr+" J/nucleon versus "+fissStr+" J/nucleon)";
+  var d1="Fission releases more energy per nucleon ("+fusStr+" J/nucleon versus "+fissStr+" J/nucleon)";
+  var d2="Fusion releases more energy per nucleon ("+fissStr+" J/nucleon versus "+fusStr+" J/nucleon)";
+  var d3="Both processes release equal energy per nucleon because both convert mass into energy";
+  return mcq("A single uranium fission involving "+nFiss+" nucleons converts "+sci(dmFiss)+" kg of mass into energy, while a single deuterium-tritium fusion involving "+nFus+" nucleons converts "+sci(dmFus)+" kg of mass into energy. Which process releases more energy per nucleon?",
+    key,[d1,d2,d3],
+    "First find the energy released per event using E = Δm c^2 with c = 3.00 × 10^8 m/s. For fission: E_fission = "+sci(dmFiss)+" kg × (3.00 × 10^8 m/s)^2 = "+sci(eFiss)+" J, which across "+nFiss+" nucleons gives "+sci(eFiss)+" J / "+nFiss+" = "+fissStr+" J/nucleon. For fusion: E_fusion = "+sci(dmFus)+" kg × (3.00 × 10^8 m/s)^2 = "+sci(eFus)+" J, which across "+nFus+" nucleons gives "+sci(eFus)+" J / "+nFus+" = "+fusStr+" J/nucleon. "+key+".",
+    {dmFiss:dmFiss,nFiss:nFiss,dmFus:dmFus,nFus:nFus,perFiss:perFiss,perFus:perFus});
+});
+/* Prior knowledge flags (Nov 13, 2026): the entries named
+   below assess junior science atomic structure outcomes (counting subatomic particles), and nothing on this
+   course's indicator list (Jason's assessed-target standard;
+   see the prior knowledge audit and its re-test). The pkFlag
+   property is set here in the bank module the way the enrich
+   flags are set in Math 2201's bank-u7.js; assembly carries
+   it into banks/physics-2204.js verbatim, and the shell's isPK
+   reads it alongside PK-coded indicators. Flagged entries
+   stay in practice pools by default and leave them only
+   when a teacher turns prior knowledge off in Advanced
+   tools. */
+BANK.forEach(function(e){if(["u3-713-nuclear-notation"].indexOf(e.id)>=0)e.pkFlag=true;});
+
+
