@@ -122,7 +122,11 @@ var S7_POND_SVG = "<svg viewBox=\"0 0 640 400\" width=\"100%\" style=\"max-width
 
 /* F5: general nutrient cycle (drawn once, redrawn from the guide's
    treatment). Arrows lettered: A soil to plants, B plants to animals,
-   C organisms to decomposers, D decomposers to soil. */
+   C organisms to decomposers, D decomposers to soil. Label placement:
+   B sits on the horizontal shaft midway between the Plants box and
+   the crossing; D sits beside the vertical shaft, midway between the
+   crossing and the soil box, so the two labels never cluster at the
+   crossing (fixed Nov 19, 2026). */
 var S7_NUTRIENT_SVG = "<svg viewBox=\"0 0 560 330\" width=\"100%\" style=\"max-width:560px\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"sans-serif\" font-size=\"13\">"
   + "<defs><marker id=\"s7na\" markerWidth=\"8\" markerHeight=\"8\" refX=\"7\" refY=\"3\" orient=\"auto\"><polygon points=\"0,0 8,3 0,6\" fill=\"#555\"/></marker></defs>"
   + "<rect x=\"200\" y=\"262\" width=\"160\" height=\"42\" rx=\"7\" fill=\"#efe3cb\" stroke=\"#8a6b45\"/><text x=\"280\" y=\"288\" text-anchor=\"middle\">Nutrients in soil</text>"
@@ -134,9 +138,9 @@ var S7_NUTRIENT_SVG = "<svg viewBox=\"0 0 560 330\" width=\"100%\" style=\"max-w
   + "<path d=\"M450 124 Q400 70 340 62 M110 124 Q160 70 220 62\" fill=\"none\" stroke=\"#555\" stroke-width=\"2\" marker-end=\"url(#s7na)\"/>"
   + "<path d=\"M300 66 L292 256\" fill=\"none\" stroke=\"#555\" stroke-width=\"2\" marker-end=\"url(#s7na)\"/>"
   + "<g font-weight=\"bold\"><circle cx=\"128\" cy=\"222\" r=\"10\" fill=\"#fff\" stroke=\"#333\"/><text x=\"128\" y=\"227\" text-anchor=\"middle\">A</text>"
-  + "<circle cx=\"280\" cy=\"138\" r=\"10\" fill=\"#fff\" stroke=\"#333\"/><text x=\"280\" y=\"143\" text-anchor=\"middle\">B</text>"
+  + "<circle cx=\"240\" cy=\"151\" r=\"10\" fill=\"#fff\" stroke=\"#333\"/><text x=\"240\" y=\"156\" text-anchor=\"middle\">B</text>"
   + "<circle cx=\"404\" cy=\"88\" r=\"10\" fill=\"#fff\" stroke=\"#333\"/><text x=\"404\" y=\"93\" text-anchor=\"middle\">C</text>"
-  + "<circle cx=\"322\" cy=\"160\" r=\"10\" fill=\"#fff\" stroke=\"#333\"/><text x=\"322\" y=\"165\" text-anchor=\"middle\">D</text></g>"
+  + "<circle cx=\"316\" cy=\"206\" r=\"10\" fill=\"#fff\" stroke=\"#333\"/><text x=\"316\" y=\"211\" text-anchor=\"middle\">D</text></g>"
   + "</svg>";
 
 /* F6: organization panels (drawn once): one bog setting shown four
