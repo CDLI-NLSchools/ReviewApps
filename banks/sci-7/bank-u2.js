@@ -27,6 +27,7 @@
 // CRMARKS: s7-u2-cr-display=3
 // CRMARKS: s7-u2-cr-design-test=4
 // CRMARKS: s7-u2-cr-conclusion=3
+// CRMARKS: s7-u2-cr-instrument-jobs=3
 
 /* ---------- SC7.4.1 Instruments used to measure temperature ---------- */
 E("s7-u2-instrument-match", 2, ["SC7.4.1"], 1, "gen", function () {
@@ -115,6 +116,27 @@ E("s7-u2-instrument-choose", 2, ["SC7.4.1"], 3, "var", varset([
       {});
   }
 ]), ["Two jobs, two different demands. Test each instrument against both.", "Contact is the problem in one job and extreme heat in the other; automatic switching needs an instrument that moves."]);
+
+/* Added November 19, 2026: closes the Unit 2 Test 1 CR denomination
+   gap in the test blueprint. The test covers SC7.4.1 alone against a
+   3-mark CR target, and the indicator held no CR entry. See
+   Junior-Science-Blueprint-Depth-Queue-2026-11-19.md. */
+E("s7-u2-cr-instrument-jobs", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Three temperature jobs (3 marks)\n(a) A lifeguard must check whether the metal surface of a playground slide is too hot for children to touch, without touching it herself. (1)\n(b) A potter must know the temperature inside a kiln while it is firing, far above the boiling point of water. (1)\n(c) A greenhouse owner wants the heater to switch itself on when the air cools and off when it warms, with nobody present. (1)\nFor each job, name the instrument that fits and state why it fits.",
+      ["(a) An infrared thermometer: it reads the radiation from the surface, so no contact is needed.",
+       "(b) A thermocouple thermometer: it is built to withstand and measure temperatures far beyond the range of a glass thermometer.",
+       "(c) A bimetallic strip thermostat: the strip bends as the temperature changes and can work the switch by itself."],
+      "<b>Model answer:</b> (a) An infrared thermometer: it measures the invisible radiation the hot surface gives off, so the lifeguard gets the reading from a distance without touching the slide. (b) A thermocouple thermometer: its joined wires of two different metals survive the extreme heat inside a firing kiln and turn the temperature into an electrical signal, where a liquid-in-glass thermometer would break. (c) A bimetallic strip thermostat: its two joined metals expand by different amounts as the temperature changes, so the strip bends, and the bending can open and close the heater's switch by itself.<br><br><b>Marking points:</b> 1 mark for each job: the fitting instrument named, with the reason it fits that job's conditions.", {});
+  },
+  function () {
+    return textq("Three temperature jobs (3 marks)\n(a) A weather station records the air temperature day and night and sends each reading along wires to a display inside a building. (1)\n(b) A student measures the temperature of warm water in a beaker during a class investigation. (1)\n(c) A heat alarm must trigger a switch by itself if the air in a storage room rises above a set temperature. (1)\nFor each job, name the instrument that fits and state why it fits.",
+      ["(a) A resistance thermometer: its probe's electrical resistance changes with temperature and the signal travels along wires to the display.",
+       "(b) A liquid-in-glass thermometer: the everyday instrument for a liquid in a lab, read directly from the column's height.",
+       "(c) A bimetallic strip: it bends as the temperature rises and can trip the alarm switch by itself."],
+      "<b>Model answer:</b> (a) A resistance thermometer: the resistance of its probe changes with temperature, and that electrical signal can be sent along wires to a display and recorded, which is what a weather station needs. (b) A liquid-in-glass thermometer: it is the standard tool for measuring a liquid in a lab; the liquid expands as it warms and the height of the column gives the reading directly. (c) A bimetallic strip: two joined metals expand by different amounts, the strip bends as the room warms, and at the set temperature the bending trips the switch, so the alarm works with nobody watching it.<br><br><b>Marking points:</b> 1 mark for each job: the fitting instrument named, with the reason it fits that job's conditions.", {});
+  }
+]), ["Each job has one condition that rules most instruments out: no contact, extreme heat, automatic switching, a wired signal, an ordinary liquid.", "Name the instrument and the condition it satisfies, one job at a time."]);
 
 /* ---------- SC7.4.2 Define temperature (particle theory) ---------- */
 E("s7-u2-temp-define", 2, ["SC7.4.2"], 1, "var", varset([

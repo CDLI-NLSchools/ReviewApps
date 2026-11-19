@@ -676,6 +676,7 @@ function s7ConcentrationSVG(vessels) {
 // CRMARKS: s7-u1-cr-data-display=3
 // CRMARKS: s7-u1-cr-defend-position=3
 // CRMARKS: s7-u1-cr-succession-stages=2
+// CRMARKS: s7-u1-cr-niche-roles=2
 // Science 7 Unit 1 bank: Interactions Within Ecosystems (SC7.1.1 to
 // SC7.3.11), built Nov 15, 2026 to the Ecosystems authoring spec.
 // All entries are original and were written new for this app.
@@ -937,6 +938,25 @@ E("s7-u1-niche-reason", 1, ["SC7.1.3"], 2, "gen", function () {
      "the habitat contains unlimited food, so competition between species never happens there"],
     "A niche is the role an organism plays, including how and where it gets its food. These two species take the same kind of food in different places or at different times, so their niches differ and direct competition is avoided. Neither species is a producer, and no habitat has unlimited food.", {});
 }, ["The two species eat similar food. What differs between them: place, time, or method?", "That difference is exactly what the word niche names."]);
+
+/* Added November 19, 2026: closes the Unit 1 Test 2 CR denomination
+   gap in the test blueprint. The test's CR pool was {3, 3, 2} against
+   a 4-mark target; this second 2-mark entry at SC7.1.3 makes 2 + 2.
+   See Junior-Science-Blueprint-Depth-Queue-2026-11-19.md. */
+E("s7-u1-cr-niche-roles", 1, ["SC7.1.3"], 2, "var", varset([
+  function () {
+    return textq("A beaver eats the bark and twigs of the trees it cuts down. It also builds a dam across a stream, and the pond that forms behind the dam becomes home to fish, frogs and ducks. (a) State the beaver's role in this ecosystem, and give the evidence from the description. (b) A niche includes more than what an organism eats. Describe one other part of the beaver's niche shown in the description.",
+      ["The beaver is a consumer (a herbivore): it eats other organisms, the bark and twigs of trees.",
+       "The beaver also shapes its habitat: by building a dam it creates the pond that other organisms live in."],
+      "<b>Model answer:</b> (a) The beaver is a consumer, specifically a herbivore, because it gets its food by eating other organisms: the bark and twigs of the trees it cuts down. (b) The beaver's niche also includes changing its habitat: its dam floods the stream valley and creates the pond that fish, frogs and ducks then live in, so the beaver's activities provide the habitat conditions other species depend on.<br><br><b>Marking points:</b> 1 mark for the role (consumer or herbivore) supported by the eating evidence. 1 mark for another part of the niche beyond food, such as the dam building that creates pond habitat for other species.", {});
+  },
+  function () {
+    return textq("A fallen spruce log lies on the forest floor. Fungi grow through the dead wood, and over several years the wood softens and crumbles away. A woodpecker visits the same log to eat the insects living inside it. (a) State the fungi's role in this ecosystem, and give the evidence from the description. (b) Explain how the fungi's niche differs from the woodpecker's niche, even though both depend on the same log.",
+      ["The fungi are decomposers: they feed by breaking down the dead wood itself.",
+       "The fungi break down the dead wood and absorb its nutrients, while the woodpecker is a consumer that eats living insects in the log, so the two get their food in different ways."],
+      "<b>Model answer:</b> (a) The fungi are decomposers. They feed by breaking down dead material, and the evidence is the wood softening and crumbling as the fungi grow through it. (b) The woodpecker is a consumer: it eats living insects it finds in the log, and it does not break down the wood itself. So although both organisms depend on the same log, they use it in different ways and get their food differently, which means their niches are different.<br><br><b>Marking points:</b> 1 mark for the fungi as decomposers, with the breakdown of the wood as evidence. 1 mark for the contrast: the woodpecker eats living insects (a consumer) while the fungi break down the wood itself.", {});
+  }
+]), ["Sort each organism by how it gets its food first.", "A niche is the whole job description: food, home, and effects on other organisms."]);
 
 /* ---------- SC7.1.4 Classifying organisms ---------- */
 
@@ -2043,6 +2063,7 @@ BANK.forEach(function(e){ if(NO_COMPOSE[e.id]){ e.noCompose=true; } });
 // CRMARKS: s7-u2-cr-display=3
 // CRMARKS: s7-u2-cr-design-test=4
 // CRMARKS: s7-u2-cr-conclusion=3
+// CRMARKS: s7-u2-cr-instrument-jobs=3
 
 /* ---------- SC7.4.1 Instruments used to measure temperature ---------- */
 E("s7-u2-instrument-match", 2, ["SC7.4.1"], 1, "gen", function () {
@@ -2131,6 +2152,27 @@ E("s7-u2-instrument-choose", 2, ["SC7.4.1"], 3, "var", varset([
       {});
   }
 ]), ["Two jobs, two different demands. Test each instrument against both.", "Contact is the problem in one job and extreme heat in the other; automatic switching needs an instrument that moves."]);
+
+/* Added November 19, 2026: closes the Unit 2 Test 1 CR denomination
+   gap in the test blueprint. The test covers SC7.4.1 alone against a
+   3-mark CR target, and the indicator held no CR entry. See
+   Junior-Science-Blueprint-Depth-Queue-2026-11-19.md. */
+E("s7-u2-cr-instrument-jobs", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Three temperature jobs (3 marks)\n(a) A lifeguard must check whether the metal surface of a playground slide is too hot for children to touch, without touching it herself. (1)\n(b) A potter must know the temperature inside a kiln while it is firing, far above the boiling point of water. (1)\n(c) A greenhouse owner wants the heater to switch itself on when the air cools and off when it warms, with nobody present. (1)\nFor each job, name the instrument that fits and state why it fits.",
+      ["(a) An infrared thermometer: it reads the radiation from the surface, so no contact is needed.",
+       "(b) A thermocouple thermometer: it is built to withstand and measure temperatures far beyond the range of a glass thermometer.",
+       "(c) A bimetallic strip thermostat: the strip bends as the temperature changes and can work the switch by itself."],
+      "<b>Model answer:</b> (a) An infrared thermometer: it measures the invisible radiation the hot surface gives off, so the lifeguard gets the reading from a distance without touching the slide. (b) A thermocouple thermometer: its joined wires of two different metals survive the extreme heat inside a firing kiln and turn the temperature into an electrical signal, where a liquid-in-glass thermometer would break. (c) A bimetallic strip thermostat: its two joined metals expand by different amounts as the temperature changes, so the strip bends, and the bending can open and close the heater's switch by itself.<br><br><b>Marking points:</b> 1 mark for each job: the fitting instrument named, with the reason it fits that job's conditions.", {});
+  },
+  function () {
+    return textq("Three temperature jobs (3 marks)\n(a) A weather station records the air temperature day and night and sends each reading along wires to a display inside a building. (1)\n(b) A student measures the temperature of warm water in a beaker during a class investigation. (1)\n(c) A heat alarm must trigger a switch by itself if the air in a storage room rises above a set temperature. (1)\nFor each job, name the instrument that fits and state why it fits.",
+      ["(a) A resistance thermometer: its probe's electrical resistance changes with temperature and the signal travels along wires to the display.",
+       "(b) A liquid-in-glass thermometer: the everyday instrument for a liquid in a lab, read directly from the column's height.",
+       "(c) A bimetallic strip: it bends as the temperature rises and can trip the alarm switch by itself."],
+      "<b>Model answer:</b> (a) A resistance thermometer: the resistance of its probe changes with temperature, and that electrical signal can be sent along wires to a display and recorded, which is what a weather station needs. (b) A liquid-in-glass thermometer: it is the standard tool for measuring a liquid in a lab; the liquid expands as it warms and the height of the column gives the reading directly. (c) A bimetallic strip: two joined metals expand by different amounts, the strip bends as the room warms, and at the set temperature the bending trips the switch, so the alarm works with nobody watching it.<br><br><b>Marking points:</b> 1 mark for each job: the fitting instrument named, with the reason it fits that job's conditions.", {});
+  }
+]), ["Each job has one condition that rules most instruments out: no contact, extreme heat, automatic switching, a wired signal, an ordinary liquid.", "Name the instrument and the condition it satisfies, one job at a time."]);
 
 /* ---------- SC7.4.2 Define temperature (particle theory) ---------- */
 E("s7-u2-temp-define", 2, ["SC7.4.2"], 1, "var", varset([
@@ -5658,4 +5700,4 @@ BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s7-u1-cr-boreal-example":3,"s7-u1-cr-data-display":3,"s7-u1-cr-defend-position":3,"s7-u1-cr-design-experiment":4,"s7-u1-cr-energy-flow":3,"s7-u1-cr-factor-effect":2,"s7-u1-cr-habitat-defence":3,"s7-u1-cr-harvest-decision":3,"s7-u1-cr-recycling":2,"s7-u1-cr-silviculture":2,"s7-u1-cr-succession-compare":2,"s7-u1-cr-succession-stages":2,"s7-u1-cr-three-interactions":3,"s7-u1-cr-web-change":3,"s7-u1-cr-web-interpret":3,"s7-u2-cr-absorb":2,"s7-u2-cr-conclusion":3,"s7-u2-cr-design-test":4,"s7-u2-cr-display":3,"s7-u2-cr-expansion":3,"s7-u2-cr-heating-decision":3,"s7-u2-cr-heating-example":2,"s7-u2-cr-improvement":2,"s7-u2-cr-inquiry":3,"s7-u2-cr-plateau":3,"s7-u2-cr-pump-chain":3,"s7-u2-cr-temp-explain":3,"s7-u2-cr-thermometer-display":2,"s7-u2-cr-transfer-explain":3,"s7-u3-cr-best-fit":3,"s7-u3-cr-classify":3,"s7-u3-cr-concentration":3,"s7-u3-cr-design-solubility":4,"s7-u3-cr-dissolving":3,"s7-u3-cr-distill":2,"s7-u3-cr-new-question":2,"s7-u3-cr-pure":2,"s7-u3-cr-salt-decision":3,"s7-u3-cr-separate":3,"s7-u3-cr-solubility":2,"s7-u3-cr-three-part":3,"s7-u4-cr-big-picture":3,"s7-u4-cr-change-explain":3,"s7-u4-cr-conclusion":3,"s7-u4-cr-design-investigation":4,"s7-u4-cr-distribution":3,"s7-u4-cr-event-compare":3,"s7-u4-cr-mineral-id":2,"s7-u4-cr-mineral-tests":3,"s7-u4-cr-mountain-explain":2,"s7-u4-cr-past-theory":2,"s7-u4-cr-pattern":3,"s7-u4-cr-rock-journey":3,"s7-u4-cr-soil-case":2,"s7-u4-cr-table-display":2,"s7-u4-cr-theory-evolved":3,"s7-u4-cr-timeline":2,"s7-u4-cr-weathering":3};
+window.__BANK_CRMARKS={"s7-u1-cr-boreal-example":3,"s7-u1-cr-data-display":3,"s7-u1-cr-defend-position":3,"s7-u1-cr-design-experiment":4,"s7-u1-cr-energy-flow":3,"s7-u1-cr-factor-effect":2,"s7-u1-cr-habitat-defence":3,"s7-u1-cr-harvest-decision":3,"s7-u1-cr-niche-roles":2,"s7-u1-cr-recycling":2,"s7-u1-cr-silviculture":2,"s7-u1-cr-succession-compare":2,"s7-u1-cr-succession-stages":2,"s7-u1-cr-three-interactions":3,"s7-u1-cr-web-change":3,"s7-u1-cr-web-interpret":3,"s7-u2-cr-absorb":2,"s7-u2-cr-conclusion":3,"s7-u2-cr-design-test":4,"s7-u2-cr-display":3,"s7-u2-cr-expansion":3,"s7-u2-cr-heating-decision":3,"s7-u2-cr-heating-example":2,"s7-u2-cr-improvement":2,"s7-u2-cr-inquiry":3,"s7-u2-cr-instrument-jobs":3,"s7-u2-cr-plateau":3,"s7-u2-cr-pump-chain":3,"s7-u2-cr-temp-explain":3,"s7-u2-cr-thermometer-display":2,"s7-u2-cr-transfer-explain":3,"s7-u3-cr-best-fit":3,"s7-u3-cr-classify":3,"s7-u3-cr-concentration":3,"s7-u3-cr-design-solubility":4,"s7-u3-cr-dissolving":3,"s7-u3-cr-distill":2,"s7-u3-cr-new-question":2,"s7-u3-cr-pure":2,"s7-u3-cr-salt-decision":3,"s7-u3-cr-separate":3,"s7-u3-cr-solubility":2,"s7-u3-cr-three-part":3,"s7-u4-cr-big-picture":3,"s7-u4-cr-change-explain":3,"s7-u4-cr-conclusion":3,"s7-u4-cr-design-investigation":4,"s7-u4-cr-distribution":3,"s7-u4-cr-event-compare":3,"s7-u4-cr-mineral-id":2,"s7-u4-cr-mineral-tests":3,"s7-u4-cr-mountain-explain":2,"s7-u4-cr-past-theory":2,"s7-u4-cr-pattern":3,"s7-u4-cr-rock-journey":3,"s7-u4-cr-soil-case":2,"s7-u4-cr-table-display":2,"s7-u4-cr-theory-evolved":3,"s7-u4-cr-timeline":2,"s7-u4-cr-weathering":3};

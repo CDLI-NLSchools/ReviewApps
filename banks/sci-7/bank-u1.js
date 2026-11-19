@@ -13,6 +13,7 @@
 // CRMARKS: s7-u1-cr-data-display=3
 // CRMARKS: s7-u1-cr-defend-position=3
 // CRMARKS: s7-u1-cr-succession-stages=2
+// CRMARKS: s7-u1-cr-niche-roles=2
 // Science 7 Unit 1 bank: Interactions Within Ecosystems (SC7.1.1 to
 // SC7.3.11), built Nov 15, 2026 to the Ecosystems authoring spec.
 // All entries are original and were written new for this app.
@@ -274,6 +275,25 @@ E("s7-u1-niche-reason", 1, ["SC7.1.3"], 2, "gen", function () {
      "the habitat contains unlimited food, so competition between species never happens there"],
     "A niche is the role an organism plays, including how and where it gets its food. These two species take the same kind of food in different places or at different times, so their niches differ and direct competition is avoided. Neither species is a producer, and no habitat has unlimited food.", {});
 }, ["The two species eat similar food. What differs between them: place, time, or method?", "That difference is exactly what the word niche names."]);
+
+/* Added November 19, 2026: closes the Unit 1 Test 2 CR denomination
+   gap in the test blueprint. The test's CR pool was {3, 3, 2} against
+   a 4-mark target; this second 2-mark entry at SC7.1.3 makes 2 + 2.
+   See Junior-Science-Blueprint-Depth-Queue-2026-11-19.md. */
+E("s7-u1-cr-niche-roles", 1, ["SC7.1.3"], 2, "var", varset([
+  function () {
+    return textq("A beaver eats the bark and twigs of the trees it cuts down. It also builds a dam across a stream, and the pond that forms behind the dam becomes home to fish, frogs and ducks. (a) State the beaver's role in this ecosystem, and give the evidence from the description. (b) A niche includes more than what an organism eats. Describe one other part of the beaver's niche shown in the description.",
+      ["The beaver is a consumer (a herbivore): it eats other organisms, the bark and twigs of trees.",
+       "The beaver also shapes its habitat: by building a dam it creates the pond that other organisms live in."],
+      "<b>Model answer:</b> (a) The beaver is a consumer, specifically a herbivore, because it gets its food by eating other organisms: the bark and twigs of the trees it cuts down. (b) The beaver's niche also includes changing its habitat: its dam floods the stream valley and creates the pond that fish, frogs and ducks then live in, so the beaver's activities provide the habitat conditions other species depend on.<br><br><b>Marking points:</b> 1 mark for the role (consumer or herbivore) supported by the eating evidence. 1 mark for another part of the niche beyond food, such as the dam building that creates pond habitat for other species.", {});
+  },
+  function () {
+    return textq("A fallen spruce log lies on the forest floor. Fungi grow through the dead wood, and over several years the wood softens and crumbles away. A woodpecker visits the same log to eat the insects living inside it. (a) State the fungi's role in this ecosystem, and give the evidence from the description. (b) Explain how the fungi's niche differs from the woodpecker's niche, even though both depend on the same log.",
+      ["The fungi are decomposers: they feed by breaking down the dead wood itself.",
+       "The fungi break down the dead wood and absorb its nutrients, while the woodpecker is a consumer that eats living insects in the log, so the two get their food in different ways."],
+      "<b>Model answer:</b> (a) The fungi are decomposers. They feed by breaking down dead material, and the evidence is the wood softening and crumbling as the fungi grow through it. (b) The woodpecker is a consumer: it eats living insects it finds in the log, and it does not break down the wood itself. So although both organisms depend on the same log, they use it in different ways and get their food differently, which means their niches are different.<br><br><b>Marking points:</b> 1 mark for the fungi as decomposers, with the breakdown of the wood as evidence. 1 mark for the contrast: the woodpecker eats living insects (a consumer) while the fungi break down the wood itself.", {});
+  }
+]), ["Sort each organism by how it gets its food first.", "A niche is the whole job description: food, home, and effects on other organisms."]);
 
 /* ---------- SC7.1.4 Classifying organisms ---------- */
 
