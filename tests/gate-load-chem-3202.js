@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 /* Gate 1 (load) for Chemistry 3202: chassis helpers + courses.js + the
-   assembled Chemistry 3202 bank module evaluate cleanly; BANK has 217
-   entries (209 content + 8 Chemistry 2202 bridging); window.__BANK_CRMARKS
+   assembled Chemistry 3202 bank module evaluate cleanly; BANK has 218
+   entries (210 content + 8 Chemistry 2202 bridging); window.__BANK_CRMARKS
    has 51 keys; every registered indicator has entries, no entry uses an
    unregistered code, no entry carries an Integrated Skills code, and
    entry ids are unique.
    Counts updated Nov 19, 2026 at the joint landing (guide-code recode
    plus the Unit 2 and Unit 3 Gemini tranches: bank 172 to 217, CR keys
-   41 to 51, unit counts 36/44/46/38 to 36/58/77/38). */
+   41 to 51, unit counts 36/44/46/38 to 36/58/77/38), and again Nov 19,
+   2026 at the scaled-amount re-draft landing (u3-711-scaled-amount:
+   bank 217 to 218, Unit 3 77 to 78, CR keys unchanged). */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
 const fails = [];
@@ -32,7 +34,7 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/chem-3202.js", "utf8"));
 
-ok(BANK.length === 217, "BANK has 217 entries, saw " + BANK.length);
+ok(BANK.length === 218, "BANK has 218 entries, saw " + BANK.length);
 const crKeys = Object.keys(window.__BANK_CRMARKS || {});
 ok(crKeys.length === 51, "__BANK_CRMARKS has 51 keys, saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
@@ -41,7 +43,7 @@ ok(bankIds.size === BANK.length, "entry ids are unique");
 
 const census = {}, perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-ok(perUnit[1] === 36 && perUnit[2] === 58 && perUnit[3] === 77 && perUnit[4] === 38, "content unit counts 36/58/77/38, saw " + JSON.stringify(perUnit));
+ok(perUnit[1] === 36 && perUnit[2] === 58 && perUnit[3] === 78 && perUnit[4] === 38, "content unit counts 36/58/78/38, saw " + JSON.stringify(perUnit));
 ok(perUnit[5] === 8, "bridging unit has 8 entries, saw " + perUnit[5]);
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);

@@ -5,13 +5,15 @@
      checkboxes with the right names (including the Chemistry 2202
      review unit), the provincial preset label from the chem config,
      the Final preset button hidden (the course has no final preset),
-     the All preset sweeping only the four content units (pool 208),
-     all five units by hand giving the full 216.
+     the All preset sweeping only the four content units (pool 209),
+     all five units by hand giving the full 217.
      Pool pins updated Nov 19, 2026 at the Chemistry 3202 joint
      landing (recode + Unit 2 and Unit 3 tranches, bank 217): the
      pools sit one below the unit sums because the pkFlagged
      u2-61-properties (Nov 18, 2026 PK switch) sits outside the
      default pool; the earlier 164/172 pins predated that switch.
+     Pins updated again Nov 19, 2026 at the scaled-amount re-draft
+     landing (bank 218): pools 209 and 217.
    - bare URL: the canonical picker (Nov 12, 2026):
      Mathematics first, Science second, filter chips;
      this course is listed.
@@ -47,7 +49,7 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Chemistry 3202 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Chemistry 3202 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 217, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 218, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 51, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 5, "course: five unit checkboxes, saw " + labels.length);
@@ -56,9 +58,9 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.getElementById("presetMid").textContent === "Provincial exam review (all units)", "course: provincial preset label, saw " + d.getElementById("presetMid").textContent);
   ok(d.getElementById("presetFinal") && d.getElementById("presetFinal").style.display === "none", "course: Final preset button hidden (no final preset in this course)");
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("208 question templates"), "course: pool after All preset excludes bridging, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("209 question templates"), "course: pool after All preset excludes bridging, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([1,2,3,4,5])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("216 question templates"), "course: pool with all five units, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("217 question templates"), "course: pool with all five units, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(d.getElementById("advToolsBtn") && !d.getElementById("advToolsBtn").hidden, "course (student): Advanced tools button visible beside Copy link at the builder's foot");
   ok(!d.getElementById("advBox") && !d.getElementById("lv1") && !d.getElementById("timerChk"), "course (student): no Advanced options section or level/timer inputs in the builder");
   ok(d.getElementById("mcCountIn") === null, "course (student): teacher-gated controls removed by tGateStudentUI");

@@ -8,6 +8,13 @@
 // of 6: u3-711-scaled-amount was rejected at intake (its
 // no-coefficient distractor equals the key on coefficient-1 draws)
 // and awaits a design ruling before re-drafting.
+// Re-draft landing (Nov 19, 2026): the owner ruled the dealt species
+// be restricted to coefficient 2 or more; the re-draft passed intake
+// (6,000 focused draws, four distinct options on every draw) and
+// u3-711-scaled-amount landed as pool 7.11's sixth template. Unit 3
+// stands at 78 templates, every pool at target. Intake report:
+// Intake-Report-Chemistry-3202-Unit-3-Scaled-Amount-2026-11-19.md
+// in the programme goal files.
 // Phase C diagram figures (Nov 2026): u3-76-diagram-language now draws the
 // enthalpy diagram from its own values, and u3-77-curve-read draws the
 // standard heating curve (no plateau temperatures are given by that entry,
@@ -2071,6 +2078,64 @@ E("u3-711-per-mole-basis",3,["7.11"],3,"gen",function(){
     c.key,c.ds,
     "Multiply every stoichiometric coefficient and the energy term by "+c.factor+" so the equation remains balanced and proportional to the new basis. This gives <b>"+c.key+"</b>.",
     {orig:c.orig,target:c.target,factor:c.factor,keyQ:c.keyQ});
+});
+
+// LEVEL: 3 - Quantitative application scaling a thermochemical equation's energy term by stoichiometric mole ratios to a dealt amount of a reactant or product.
+// VARIANTS: eligible coefficient-2 species only (H₂ and H₂O from 2 H₂(g) + O₂(g) → 2 H₂O(l) + 572 kJ; O₂ and H₂O from CH₄(g) + 2 O₂(g) → CO₂(g) + 2 H₂O(l) + 890 kJ; CaCO₃ equation excluded because all coefficients are 1)
+// LENGTHS: key=18, distractors=18,18,18
+E("u3-711-scaled-amount",3,["7.11"],3,"gen",function(){
+  var eligible=[
+    {eq:"2 H₂(g) + O₂(g) → 2 H₂O(l) + 572 kJ",q:572,dir:"released",species:"H₂",coeff:2,role:"reacts"},
+    {eq:"2 H₂(g) + O₂(g) → 2 H₂O(l) + 572 kJ",q:572,dir:"released",species:"H₂O",coeff:2,role:"forms"},
+    {eq:"CH₄(g) + 2 O₂(g) → CO₂(g) + 2 H₂O(l) + 890 kJ",q:890,dir:"released",species:"O₂",coeff:2,role:"reacts"},
+    {eq:"CH₄(g) + 2 O₂(g) → CO₂(g) + 2 H₂O(l) + 890 kJ",q:890,dir:"released",species:"H₂O",coeff:2,role:"forms"}
+  ];
+  var item=pick(eligible);
+  var q=item.q;
+  var c=item.coeff;
+  var n,ans,dUnscaled,dNoCoeff,dRecip,key,ds,tries=0;
+  do{
+    tries++;
+    n=sfR(ri(25,500)/100,3);
+    if(Math.abs(n-c)<1e-6||Math.abs(n-1)<1e-6||Math.abs(n*n-c)<1e-4){
+      ds=null;
+      continue;
+    }
+    ans=sfR(q*(n/c),3);
+    dUnscaled=sfR(q,3);
+    dNoCoeff=sfR(q*n,3);
+    dRecip=sfR(q*(c/n),3);
+    key=F3(ans)+" kJ is "+item.dir;
+    var cands=[
+      F3(dUnscaled)+" kJ is "+item.dir,
+      F3(dNoCoeff)+" kJ is "+item.dir,
+      F3(dRecip)+" kJ is "+item.dir
+    ];
+    ds=[];
+    for(var i=0;i<cands.length;i++){
+      if(cands[i]!==key&&ds.indexOf(cands[i])<0){
+        ds.push(cands[i]);
+      }
+    }
+    if(ds.length<3){ds=null;}
+  }while(!ds&&tries<200);
+  if(!ds){
+    n=3.50;
+    ans=sfR(q*(n/c),3);
+    dUnscaled=sfR(q,3);
+    dNoCoeff=sfR(q*n,3);
+    dRecip=sfR(q*(c/n),3);
+    key=F3(ans)+" kJ is "+item.dir;
+    ds=[
+      F3(dUnscaled)+" kJ is "+item.dir,
+      F3(dNoCoeff)+" kJ is "+item.dir,
+      F3(dRecip)+" kJ is "+item.dir
+    ];
+  }
+  return mcq("Consider the thermochemical equation: "+item.eq+". How much energy is "+item.dir+" when "+gF(n)+" mol of "+item.species+" "+item.role+"?",
+    key,ds,
+    "From the balanced thermochemical equation, "+F3(q)+" kJ of energy is "+item.dir+" per "+c+" mol of "+item.species+". Scaling to "+gF(n)+" mol gives q = "+F3(q)+" kJ × ("+gF(n)+" mol / "+c+" mol) = "+F3(ans)+" kJ. Therefore, <b>"+key+"</b>.",
+    {eq:item.eq,q:q,dir:item.dir,species:item.species,coeff:c,n:n,ans:ans});
 });
 
 /* ---------- 7.12 Calculate the changes in energy of various chemical reactions using bond energy, heats of formation, and Hess's law ---------- */
