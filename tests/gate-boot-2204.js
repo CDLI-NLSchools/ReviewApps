@@ -4,8 +4,12 @@
    - ?course=physics-2204: Physics 2204 title and header, five unit
      checkboxes with the right names (including the Science 1206 review
      unit), preset labels from the 2204 config, the All preset sweeping
-     only the four course units (pool 200), all five units by hand
-     giving the full 208.
+     only the four course units (pool 200 as displayed), all five units
+     by hand giving 208 as displayed. The displayed pools exclude the
+     course's 2 prior knowledge entries by default (the PK toggle), so
+     they read 200 and 208 both before and after the November 19, 2026
+     Bank Strengthening Programme pass 4, which took BANK.length from
+     208 to 210 and CR_MARKS from 24 to 25 keys.
    - bare URL: the canonical picker (Nov 12, 2026):
      Mathematics first, Science second, filter chips;
      this course is listed.
@@ -41,8 +45,8 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Physics 2204 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Physics 2204 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off");
-  ok(ev(r.dom, "BANK.length") === 208, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 24, "course: CR_MARKS wired from the bank module");
+  ok(ev(r.dom, "BANK.length") === 210, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length") + " (208 before the November 19, 2026 pass 4)");
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 25, "course: CR_MARKS wired from the bank module (24 keys before pass 4 registered u2-64-landing-force)");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 5, "course: five unit checkboxes, saw " + labels.length);
   ["Kinematics", "Dynamics", "Work and Energy", "Waves", "Science 1206 Review (prior learning)"].forEach(n =>

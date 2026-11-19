@@ -5,6 +5,7 @@
 // CRMARKS: u2-63-impulse-cr=4
 // CRMARKS: u2-61-netforce-cr=3
 // CRMARKS: u2-62-friction-cr=3
+// CRMARKS: u2-64-landing-force=3
 // CRMARKS: u2-65-stick-cr=2
 
 /* ---------- PH11.6.1 Vectors for force and acceleration ---------- */
@@ -826,6 +827,54 @@ E("u2-64-tradeoff",2,["PH11.6.4"],3,"var",varset([
   }
 ]));
 
+
+/* ============ Bank Strengthening Programme pass 4 (November 19, 2026) ============
+   Entries u2-64-landing-force and u2-64-meets-limit: 2 entries bringing the
+   PH11.6.4 pool from 4 to depth 6, the unit's only pool below target.
+   Drafted Muse-side (the course owner took the pass in-house rather than
+   sending its assignment sheet to Gemini), swept over 20,000 draws with no
+   failures, and integrated on the mechanical gates; every entry remains
+   SME-flagged for the Physics 2204 specialist pass (the judgement list is
+   in the pass report). */
+
+// LEVEL: 2 - multi-step application: the landing speed from the drop height, then the average force from the momentum change and the stopping time
+// LENGTHS: key=4
+E("u2-64-landing-force",2,["PH11.6.4"],2,"gen",function(){
+  var m=sfR(rf(0.0500,0.0700),3), h=sfR(rf(1.80,5.20),3), t=sfR(rf(0.0300,0.120),3);
+  var v=sfR(Math.sqrt(2*9.8*h),4), p=sfR(m*v,4), F=sfR(p/t,4), ans=sfR(F,3);
+  return numq("A team's capsule carries an egg of mass "+gF(m)+" kg and is dropped from a height of "+gF(h)+" m. The capsule brings the egg to rest in "+gF(t)+" s, measured from the moment of landing. What is the average force on the egg during the stop? Give your answer in N.",
+    ans, Math.max(0.02*Math.abs(ans),1e-9),
+    "Find the landing speed first. The egg starts from rest, so v = sqrt(2 × 9.8 × "+gF(h)+") = "+iF(v)+" m/s. The momentum at landing is "+gF(m)+" × "+iF(v)+" = "+iF(p)+" kg·m/s, and because the egg ends at rest, that is also the size of the momentum change. The average force is the change in momentum divided by the stopping time: "+iF(p)+" / "+gF(t)+" = "+iF(F)+" N. So a capsule that stops the egg in "+gF(t)+" s holds the average force on the egg during the stop to "+F3(ans)+" N.",
+    {m:m,h:h,t:t});
+});
+
+// LEVEL: 3 - the full force calculation run twice, with both results judged against a design criterion
+// VARIANTS: four verdict frames (only design A meets the limit / only design B meets the limit / both designs meet the limit / neither design meets the limit), dealt at roughly equal mix, one in four each; the stopping times are dealt at clear margins on the sides of the threshold time the dealt verdict requires
+// LENGTHS: key=57, distractors=60,59,59
+E("u2-64-meets-limit",2,["PH11.6.4"],3,"gen",function(){
+  var verdict=ri(0,3);
+  var m=sfR(rf(0.0500,0.0700),3), h=sfR(rf(1.80,5.20),3);
+  var v=sfR(Math.sqrt(2*9.8*h),4), p=sfR(m*v,4);
+  var ttT=rf(Math.max(0.034,p/20.0),Math.min(0.062,p/8.00)), L=sfR(p/ttT,3), tt=p/L;
+  var passA=(verdict===0||verdict===2), passB=(verdict===1||verdict===2);
+  var tA,tB,tries=0;
+  do {
+    tries++;
+    tA=sfR(tt*(passA?rf(1.25,2.20):rf(0.45,0.80)),3);
+    tB=sfR(tt*(passB?rf(1.25,2.20):rf(0.45,0.80)),3);
+  } while(Math.abs(tA-tB)<0.0015&&tries<200);
+  var FA=sfR(p/tA,4), FB=sfR(p/tB,4), tt4=sfR(tt,4);
+  var opts=["Only design A keeps the average force at or below the limit",
+            "Only design B keeps the average force at or below the limit",
+            "Both designs keep the average force at or below the limit",
+            "Neither design keeps the average force at or below the limit"];
+  var key=opts[verdict];
+  var distractors=opts.filter(function(o,i){return i!==verdict;});
+  return mcq("Two capsule designs are tested with the same egg, of mass "+gF(m)+" kg, dropped from the same height of "+gF(h)+" m. The egg's shell cracks if the average force on it during the stop exceeds "+gF(L)+" N. Design A stops the egg in "+gF(tA)+" s, and design B stops the egg in "+gF(tB)+" s. Which designs keep the average force at or below the limit?",
+    key, distractors,
+    "The landing speed is the same for both designs: v = sqrt(2 × 9.8 × "+gF(h)+") = "+iF(v)+" m/s, so the momentum at landing is "+gF(m)+" × "+iF(v)+" = "+iF(p)+" kg·m/s for each design. A design meets the limit only if it stops the egg in at least "+iF(p)+" / "+gF(L)+" = "+iF(tt4)+" s. Design A's average force is "+iF(p)+" / "+gF(tA)+" = "+iF(FA)+" N, which is "+(passA?"at or below":"above")+" the limit of "+gF(L)+" N. Design B's average force is "+iF(p)+" / "+gF(tB)+" = "+iF(FB)+" N, which is "+(passB?"at or below":"above")+" the limit. "+key+".",
+    {m:m,h:h,limit:L,tA:tA,tB:tB,verdict:["onlyA","onlyB","both","neither"][verdict]});
+});
 
 /* ---------- PH11.6.5 Conservation of momentum ---------- */
 
