@@ -2708,6 +2708,133 @@ var PKT_U5={
  "u5-pk-supported-conclusion":{src:"math-9:11.9",group:"data-claims"}};
 BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=PKT_U5_FOR.slice();e.pkGroup=t.group;}});
 
+/* ============ External drafting threshold tranche (November 19, 2026) ============
+   Three entries from the redraft round of November 18, 2026 that were
+   rejected at the redraft intake on the key-length class alone
+   (u5-sd-transform's scale frame, u5-ci-significance-gen and
+   u5-media-position's second variant), integrated under Jason's
+   ruling of November 19, 2026: pack rule C1 carries a 15 percent
+   materiality threshold, and the three measured gaps (about 2.4, 4
+   and 6.4 percent) fall inside it. The entries carry the redraft
+   intake's format repairs (apostrophe escaping, bold restatement,
+   varset shape), and a pre-integration sweep of 3,000 draws per entry
+   with every key recomputed independently from the dealt parameters
+   ran clean. The two other redraft rejections (u5-sd-decision-gen,
+   u5-sd-overflow) stay out: their stated standard-deviation distances
+   are false on a large share of draws, a ground the threshold does
+   not touch; they are queued for a Muse-side rebuild. */
+
+E("u5-sd-transform",5,["8.8"],2,"gen",function(){
+  var mode = Math.random() < 0.5 ? 0 : 1;
+  var sd = ri(3, 12);
+  if (mode === 0) {
+    var c = ri(4, 15);
+    var key = "The new standard deviation is \\("+(sd)+"\\), because adding a constant shifts all values equally without changing spread.";
+    var distractors = [
+      "The new standard deviation is \\("+(sd + c)+"\\), because adding \\("+(c)+"\\) to every value shifts the spread upward by that exact amount.",
+      "The new standard deviation is \\("+(sd * c)+"\\), because shifting every value by \\("+(c)+"\\) multiplies the overall spread by that factor.",
+      "The new standard deviation is \\("+(fmt(sd / 2, 1))+"\\), because adding a constant pulls every value closer toward the group mean."
+    ];
+    return mcq(
+      "A data set has a standard deviation of \\("+(sd)+"\\). If \\("+(c)+"\\) is added to every value in the data set, what is the new standard deviation?",
+      key,
+      distractors,
+      "Adding a constant \\("+(c)+"\\) to every value shifts the mean by \\("+(c)+"\\) without changing how spread out the values are around the mean, so the standard deviation remains \\("+(sd)+"\\). <b>"+(key)+"</b>",
+      {mode:mode,sd:sd,c:c,key:key}
+    );
+  } else {
+    var k = ri(2, 5);
+    var key = "The new standard deviation is \\("+(sd * k)+"\\), because multiplying every value by \\("+(k)+"\\) scales all distances from the mean by \\("+(k)+"\\).";
+    var distractors = [
+      "The new standard deviation is \\("+(sd + k)+"\\), because multiplying every value by \\("+(k)+"\\) increases all distances from the mean by \\("+(k)+"\\).",
+      "The new standard deviation is \\("+(sd)+"\\), because scaling every value together leaves all distances from the mean completely unchanged.",
+      "The new standard deviation is \\("+(fmt(sd / k, 2))+"\\), because multiplying every value by \\("+(k)+"\\) divides all distances from the mean by \\("+(k)+"\\)."
+    ];
+    return mcq(
+      "A data set has a standard deviation of \\("+(sd)+"\\). If every value in the data set is multiplied by \\("+(k)+"\\), what is the new standard deviation?",
+      key,
+      distractors,
+      "Multiplying every value in a data set by a positive constant \\("+(k)+"\\) multiplies the standard deviation by \\("+(k)+"\\): \\("+(sd)+" \\times "+(k)+" = "+(sd * k)+"\\). <b>"+(key)+"</b>",
+      {mode:mode,sd:sd,k:k,key:key}
+    );
+  }
+});
+
+E("u5-ci-significance-gen",5,["8.17"],2,"gen",function(){
+  var ctx = ri(0, 2);
+  var pct = ri(44, 68);
+  var moe = ri(3, 6);
+  var lo = pct - moe;
+  var hi = pct + moe;
+  var topic, prompt;
+  if (ctx === 0) {
+    topic = "building a new community rink";
+    prompt = "A municipal survey finds that "+(pct)+"% of residents support building a new community rink, with a margin of error of \\(\\pm "+(moe)+"\\%\\) at the 95% confidence level. Which statement best interprets this result?";
+  } else if (ctx === 1) {
+    topic = "moving to a later high-school start time";
+    prompt = "A district survey finds that "+(pct)+"% of parents support moving to a later high-school start time, with a margin of error of \\(\\pm "+(moe)+"\\%\\) at the 95% confidence level. Which statement best interprets this result?";
+  } else {
+    topic = "adding an evening ferry sailing";
+    prompt = "A regional poll finds that "+(pct)+"% of commuters support adding an evening ferry sailing, with a margin of error of \\(\\pm "+(moe)+"\\%\\) at the 95% confidence level. Which statement best interprets this result?";
+  }
+  var key = "True support for "+(topic)+" is plausibly between "+(lo)+"% and "+(hi)+"%, because the sample result may reasonably vary by "+(moe)+" percentage points.";
+  var distractors = [
+    "True support for "+(topic)+" lies outside "+(lo)+"% and "+(hi)+"%, because the sample result is off by exactly "+(moe)+" percentage points.",
+    "True support for "+(topic)+" is fixed between "+(lo)+"% and "+(hi)+"%, because "+(moe)+"% of the surveyed residents were completely undecided.",
+    "True support for "+(topic)+" is guaranteed between "+(lo)+"% and "+(hi)+"%, because a 95% interval contains the true value with certainty."
+  ];
+  return mcq(
+    prompt,
+    key,
+    distractors,
+    "Subtracting and adding the margin of error gives \\("+(pct)+"\\% - "+(moe)+"\\% = "+(lo)+"\\%\\) and \\("+(pct)+"\\% + "+(moe)+"\\% = "+(hi)+"\\%\\), forming the plausible range for true support. <b>"+(key)+"</b>",
+    {ctx:ctx,pct:pct,moe:moe,lo:lo,hi:hi,key:key}
+  );
+});
+
+E("u5-media-position",5,["8.22"],3,"var",varset([
+  function(){return mcq(
+    "A campus poster warns: \"Bike thefts jumped by 50% last month!\" A check of security logs shows there were 2 bike thefts two months ago and 3 bike thefts last month. Which position is best supported by the data?",
+    "The 50% figure exaggerates a change of a single incident because the starting count of 2 is tiny.",
+    [
+      "Bike thefts are rising at an alarming rate that will double every month across the entire campus.",
+      "The 50% increase proves that campus security patrols were completely absent during the whole month.",
+      "No increase occurred at all, because percentage changes cannot be computed from whole-number counts."
+    ],
+    "While \\(\\frac{3 - 2}{2} = 50\\%\\) is arithmetically true, quoting a large percentage change on a baseline of 2 incidents exaggerates a difference of 1 bike. <b>The 50% figure exaggerates a change of a single incident because the starting count of 2 is tiny.</b>",
+    { variant: 1, before: 2, after: 3, key: "The 50% figure exaggerates a change of a single incident because the starting count of 2 is tiny." });},
+  function(){return mcq(
+    "A real estate brochure claims: \"The average household income in our town is $92,000!\" Municipal tax records show the mean income is $92,000 while the median income is $48,000. Which position is best supported by the data?",
+    "The brochure's mean is pulled upward by a few very high incomes, so \\(\\$48\\,000\\) better reflects a typical resident.",
+    [
+      "Most residents earn close to \\(\\$92\\,000\\), because the mean is always a better measure than the median.",
+      "Half of the town's residents earn above \\(\\$92\\,000\\) while the other half earn below \\(\\$48\\,000\\) each year.",
+      "The municipal tax records must contain an error because the mean and median income should always match."
+    ],
+    "Income distributions are typically right-skewed; high outliers inflate the mean to \\(\\$92\\,000\\), whereas the median of \\(\\$48\\,000\\) represents the middle household. <b>The brochure's mean is pulled upward by a few very high incomes, so \\(\\$48\\,000\\) better reflects a typical resident.</b>",
+    { variant: 2, mean: 92000, median: 48000, key: "The brochure's mean is pulled upward by a few very high incomes, so \\(\\$48\\,000\\) better reflects a typical resident." });},
+  function(){return mcq(
+    "An editorial states: \"A clear majority of voters backs the new highway bypass,\" citing a poll with 52% support and a margin of error of \\(\\pm 4\\%\\). Which position is best supported by the data?",
+    "A majority is not confirmed, because the interval from 48% to 56% includes values below 50%.",
+    [
+      "A majority is confirmed, because the reported sample figure of 52% sits above the 50% mark.",
+      "A majority is impossible, because any poll with a 4% margin of error is statistically invalid.",
+      "Exactly 52 percent of all eligible voters in the region favour building the proposed bypass."
+    ],
+    "Applying the \\(\\pm 4\\%\\) margin of error to 52% yields an interval from 48% to 56%, which extends below 50%, so a majority is not confirmed. <b>A majority is not confirmed, because the interval from 48% to 56% includes values below 50%.</b>",
+    { variant: 3, pct: 52, moe: 4, key: "A majority is not confirmed, because the interval from 48% to 56% includes values below 50%." });},
+  function(){return mcq(
+    "A commentator claims support for a transit tax surged from 48% in Poll 1 (\\(n = 1\\,200\\), margin of error \\(\\pm 3\\%\\)) to 60% in Poll 2 (\\(n = 40\\), margin of error \\(\\pm 15\\%\\)). Which position is best supported by the data?",
+    "Poll 2's tiny sample carries a \\(\\pm 15\\%\\) margin of error, so its interval overlaps Poll 1 and shows no clear shift.",
+    [
+      "Public support rose by a confirmed 12 percentage points because Poll 2's 60% result is higher than Poll 1's 48%.",
+      "Poll 2 (\\(n = 40\\)) is more reliable than Poll 1 (\\(n = 1\\,200\\)) because a smaller sample captures recent shifts faster.",
+      "Poll 1's \\(\\pm 3\\%\\) margin of error is too narrow to trust, whereas Poll 2's \\(\\pm 15\\%\\) interval covers the true support."
+    ],
+    "Poll 1 spans 45% to 51%, while Poll 2 (\\(n = 40\\)) spans 45% to 75%; because the intervals overlap heavily, no genuine surge is established. <b>Poll 2's tiny sample carries a \\(\\pm 15\\%\\) margin of error, so its interval overlaps Poll 1 and shows no clear shift.</b>",
+    { variant: 4, n1: 1200, n2: 40, key: "Poll 2's tiny sample carries a \\(\\pm 15\\%\\) margin of error, so its interval overlaps Poll 1 and shows no clear shift." });}
+]));
+
 /* ----- bank-u1.js ----- */
 // Math 2201 Unit 1: Acute Triangle Trigonometry question bank
 // Cut verbatim from the standalone app's served file
