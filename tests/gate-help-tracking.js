@@ -212,12 +212,18 @@ function helpState(d) {
      group is helped through the worked solution, the same tracking
      mechanism the hint exercises elsewhere. */
   d = await boot("course=math-2201&unit=3&pkonly=1&seed=pkc1&count=8", {});
-  ok(ev(d, "current ? current.length : 0") === 7, "G: the Unit 3 check deals 7 questions");
+  /* Pin amended November 19, 2026: the check now deals the full 8
+     requested. The pin read 7 from when Unit 3's PK pool ran one
+     short of the check size; the November 18, 2026 Unit 3 expansion
+     deepened the pool, so the seeded draw fills all 8. Noted during
+     the Chemistry 2202 pass 2 gate battery, which is where the stale
+     pin surfaced. */
+  ok(ev(d, "current ? current.length : 0") === 8, "G: the Unit 3 check deals 8 questions");
   const g0 = ev(d, "pkGroupOf(current[0]._entry)"), g0label = ev(d, "pkGroupLabel(pkGroupOf(current[0]._entry))");
   ev(d, `document.querySelector('[data-sol="0"]').click()`);
   ok(ev(d, `document.getElementById("sol0").classList.contains("show")`) === true, "G: the worked solution opens on the target question");
   answerAll(d, -1);
-  ok(ev(d, "correctCount") === 7, "G: the helped correct answer still scores (7 of 7)");
+  ok(ev(d, "correctCount") === 8, "G: the helped correct answer still scores (8 of 8)");
   ok(sumText(d).includes(g0label + ": needs more practice"),
      "G: the helped group reads as needing more practice, summary saw: " + sumText(d).slice(0, 200));
   ok(sumText(d).includes(HELP_LINE), "G: the summary carries the help line");

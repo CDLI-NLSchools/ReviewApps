@@ -6,8 +6,9 @@
      unit), the mid and final preset labels from the config, the Final
      preset button visible (this course has one), the face scope
      wording for both presets matching the standalone's scope strings,
-     the All preset sweeping only the three content units (pool 152),
-     all four units by hand giving the full 160.
+     the All preset sweeping only the three content units (pool 169;
+     152 before the November 19, 2026 Bank Strengthening Programme
+     pass 2), all four units by hand giving the full 177 (was 160).
    - bare URL: the canonical picker (Nov 12, 2026):
      Mathematics first, Science second, filter chips;
      this course is listed.
@@ -43,8 +44,8 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(r.dom.window.document.title === "Chemistry 2202 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Chemistry 2202 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 160, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 50, "course: CR_MARKS wired from the bank module");
+  ok(ev(r.dom, "BANK.length") === 177, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 53, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 4, "course: four unit checkboxes, saw " + labels.length);
   ["Stoichiometry", "From Structures to Properties", "Organic Chemistry", "Science 1206 Review (prior learning)"].forEach(n =>
@@ -57,9 +58,9 @@ const ev = (dom, code) => dom.window.eval(code);
   ev(r.dom, "document.getElementById('presetFinal').click()");
   ok(d.getElementById("faceScope").textContent === "Final review: Unit 3", "course: face scope for the final preset, saw " + d.getElementById("faceScope").textContent);
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("152 question templates"), "course: pool after All preset excludes bridging, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("169 question templates"), "course: pool after All preset excludes bridging, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "setPreset([1,2,3,4])");
-  ok((d.getElementById("poolInfo").textContent || "").includes("160 question templates"), "course: pool with all four units, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("177 question templates"), "course: pool with all four units, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(d.getElementById("advToolsBtn") && !d.getElementById("advToolsBtn").hidden, "course (student): Advanced tools button visible beside Copy link at the builder's foot");
   ok(!d.getElementById("advBox") && !d.getElementById("lv1") && !d.getElementById("timerChk"), "course (student): no Advanced options section or level/timer inputs in the builder");
   ok(d.getElementById("mcCountIn") === null, "course (student): teacher-gated controls removed by tGateStudentUI");

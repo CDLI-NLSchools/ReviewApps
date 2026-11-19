@@ -1128,6 +1128,9 @@ E("u1-510-application-reasoning",1,["5.10"],2,"var",varset([
 // CRMARKS: u2-51=2
 // CRMARKS: u2-52=2
 // CRMARKS: u2-53=3
+// CRMARKS: u2-72=2
+// CRMARKS: u2-73=2
+// CRMARKS: u2-74=2
 
 // 6.1 Formation of covalent bonds
 E("u2-01", 2, ["6.1"], 1, "gen", function () {
@@ -2635,6 +2638,489 @@ E("u2-61", 2, ["6.13"], 3, "gen", function () {
   return mcq(prompt, correct, ds, "Classify each sample separately using its conductivity pattern. Sample A shows the pattern of a " + A + " substance (solid conductivity: " + pa.cs + "; molten or solution conductivity: " + pa.cm + "). Sample B shows the pattern of a " + B + " substance (solid conductivity: " + pb.cs + "; molten or solution conductivity: " + pb.cm + "). Combining the two results gives the correct option.", { a: A, b: B });
 });
 
+/* ============ Bank Strengthening Programme pass 2 (November 19, 2026) ============
+   Entries u2-62 to u2-78: 17 generator entries bringing every Unit 2
+   indicator pool to depth 6 (6.2 +1, 6.3 +1, 6.4 +1, 6.6 +1, 6.7 +2,
+   6.8 +1, 6.9 +2, 6.10 +1, 6.11 +3, 6.12 +3, 6.13 +1). Drafted Muse-side,
+   swept over 51,000 draws with no failures, and integrated on the
+   mechanical gates under the November 19, 2026 chemistry ruling; every
+   entry remains SME-flagged for the specialist pass (the judgement list
+   is in the pass report). */
+
+// LEVEL: 2 - the count is summed over every atom of a Lewis structure the student builds; u2-07 counts only the central atom
+// VARIANTS: three asks dealt per draw - total lone pairs in one molecule, total lone pair electrons in one molecule, or total lone pairs in k molecules (k from 2 to 5)
+// LENGTHS: key=1
+E("u2-62", 2, ["6.2"], 2, "gen", function () {
+  var ms = [
+    { f: "H₂O", lp: 2 }, { f: "NH₃", lp: 1 }, { f: "CH₄", lp: 0 }, { f: "CO₂", lp: 4 },
+    { f: "HF", lp: 3 }, { f: "HCl", lp: 3 }, { f: "F₂", lp: 6 }, { f: "Cl₂", lp: 6 },
+    { f: "O₂", lp: 4 }, { f: "N₂", lp: 2 }, { f: "H₂S", lp: 2 }, { f: "NF₃", lp: 10 },
+    { f: "PCl₃", lp: 10 }, { f: "CCl₄", lp: 12 }, { f: "CH₂O", lp: 2 }, { f: "BF₃", lp: 9 },
+    { f: "H₂O₂", lp: 4 }, { f: "HCN", lp: 1 }, { f: "CO", lp: 2 }
+  ];
+  var m = pick(ms), ask = pick([0, 1, 2]), k = ri(2, 5);
+  var ans = ask === 0 ? m.lp : (ask === 1 ? 2 * m.lp : m.lp * k);
+  var prompt = ask === 0
+    ? "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pairs on every atom in the molecule, not just the central atom, how many lone pairs does one molecule of " + m.f + " have in total?"
+    : (ask === 1
+      ? "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pair electrons on every atom in the molecule, not just the central atom, how many lone pair electrons does one molecule of " + m.f + " have in total?"
+      : "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pairs on every atom in each molecule, not just the central atom, how many lone pairs are there in total in " + k + " molecules of " + m.f + "?");
+  return numq(prompt, ans, 0.1,
+    "Work through the Lewis structure of " + m.f + " atom by atom, adding the lone pairs wherever they sit, on the terminal atoms as well as on the central atom. One molecule of " + m.f + " has " + m.lp + " lone pair or pairs in total, which is " + (2 * m.lp) + " lone pair electrons, and " + k + " molecules have " + k + " x " + m.lp + " = " + (k * m.lp) + " lone pairs in total. The value asked for is <b>" + ans + "</b>.",
+    { mol: m.f, ask: ask, k: k });
+});
+
+// LEVEL: 2 - both substances must be classified (dispersion acts everywhere; hydrogen bonding needs hydrogen on nitrogen, oxygen or fluorine) and the two classifications combined
+// VARIANTS: three dealt pairings - polar with nonpolar, hydrogen bonding with polar, hydrogen bonding with nonpolar; the key lists the force set of each substance
+// LENGTHS: correct=181, others 163/181/204
+E("u2-63", 2, ["6.3"], 2, "gen", function () {
+  var hb = ["H₂O", "NH₃", "HF", "CH₃OH", "CH₃CH₂OH", "CH₃NH₂", "H₂O₂"];
+  var pol = ["HCl", "H₂S", "CH₃Cl", "CH₃F", "SO₂", "CH₃OCH₃", "CHCl₃", "PH₃"];
+  var non = ["CH₄", "CO₂", "CCl₄", "O₂", "N₂", "C₂H₆", "C₃H₈", "BF₃", "SiH₄"];
+  var sets = {
+    d: "dispersion forces only",
+    dd: "dispersion forces and dipole to dipole forces",
+    ddh: "dispersion forces, dipole to dipole forces and hydrogen bonding"
+  };
+  var down = { ddh: "dd", dd: "d", d: "d" }, up = { d: "dd", dd: "ddh", ddh: "ddh" };
+  var mode = pick([0, 1, 2]), x, y, xs, ys;
+  if (mode === 0) { x = pick(pol); y = pick(non); xs = "dd"; ys = "d"; }
+  else if (mode === 1) { x = pick(hb); y = pick(pol); xs = "ddh"; ys = "dd"; }
+  else { x = pick(hb); y = pick(non); xs = "ddh"; ys = "d"; }
+  function stmt(a, b) {
+    return "Substance X is held by " + sets[a] + " between its molecules, and substance Y is held by " + sets[b] + " between its molecules";
+  }
+  var correct = stmt(xs, ys);
+  var ds = [stmt(ys, xs), stmt(down[xs], ys), stmt(xs, up[ys])];
+  return mcq("Substance X is " + x + " and substance Y is " + y + ". Which statement correctly lists the attractions acting between the molecules of each substance?",
+    correct, ds,
+    "Dispersion forces act between the molecules of every substance. Substance X, " + x + ", belongs to the group whose molecules are held by " + sets[xs] + ": any hydrogen bonding needs a hydrogen atom bonded to nitrogen, oxygen or fluorine, and dipole to dipole forces need a polar molecule. Substance Y, " + y + ", is held by " + sets[ys] + ". The correct statement is <b>" + correct + "</b>.",
+    { x: x, y: y, mode: mode });
+});
+
+// LEVEL: 3 - two separate models (intermolecular forces for boiling point, like dissolves like for solubility) must be transferred to structurally described substances and combined into one prediction; neither leg is stated in the stem
+// VARIANTS: six structure pairs; the hydrogen bonding substance is labelled A in four pairs and B in two, and the key is always the matching combined prediction
+// LENGTHS: correct=92, others 92/92/92
+E("u2-64", 2, ["6.4"], 3, "gen", function () {
+  var pairs = [
+    { a: "HOCH₂CH₂OH, which has a hydrogen atom bonded to each of its two oxygen atoms", b: "CH₃CH₂CH₂CH₃, a chain of carbon and hydrogen atoms only", pol: "A" },
+    { a: "CH₃CH₂CH₂CH₂CH₃, a chain of carbon and hydrogen atoms only", b: "CH₃CH₂OH, which has a hydrogen atom bonded to its oxygen atom", pol: "B" },
+    { a: "HOCH₂CH₂CH₂OH, which has a hydrogen atom bonded to each of its two oxygen atoms", b: "CH₃CH₂CH₂CH₂CH₃, a chain of carbon and hydrogen atoms only", pol: "A" },
+    { a: "CH₃OH, which has a hydrogen atom bonded to its oxygen atom", b: "CH₃CH₂CH₃, a chain of carbon and hydrogen atoms only", pol: "A" },
+    { a: "CH₃CH₂CH₂OH, which has a hydrogen atom bonded to its oxygen atom", b: "CH₃CH₂CH₂CH₂CH₂CH₃, a chain of carbon and hydrogen atoms only", pol: "A" },
+    { a: "CH₃CH₂CH₂CH₂CH₂CH₃, a chain of carbon and hydrogen atoms only", b: "HOCH₂CH(OH)CH₂OH, which has a hydrogen atom bonded to each of its three oxygen atoms", pol: "B" }
+  ];
+  var p = pick(pairs), L = p.pol, M = L === "A" ? "B" : "A";
+  var correct = "Substance " + L + " has the higher boiling point, and substance " + L + " is the one that dissolves in water";
+  var ds = [
+    "Substance " + L + " has the higher boiling point, and substance " + M + " is the one that dissolves in water",
+    "Substance " + M + " has the higher boiling point, and substance " + L + " is the one that dissolves in water",
+    "Substance " + M + " has the higher boiling point, and substance " + M + " is the one that dissolves in water"
+  ];
+  return mcq("Two molecular substances are described by their structures. Substance A is " + p.a + ". Substance B is " + p.b + ". Which combined prediction is correct?",
+    correct, ds,
+    "Substance " + L + " has hydrogen bonded to oxygen, so its molecules hydrogen bond to each other: those strong attractions give it the higher boiling point, and because its molecules can form attractions with water, it dissolves in water. Substance " + M + " is a hydrocarbon, so its molecules attract each other only by weak dispersion forces and it cannot replace the attractions between water molecules: it boils lower and does not dissolve. The combined prediction is <b>" + correct + "</b>.",
+    { pair: pairs.indexOf(p), pol: L });
+});
+
+// LEVEL: 2 - electrons lost per atom must be read from the ion the atom forms, then scaled by the coefficient in the equation as written
+// VARIANTS: two asks dealt per draw - electrons lost by the metal in total, or electrons gained by the other reactant in total (the two totals are equal)
+// LENGTHS: correct=1, others 1/1/1
+E("u2-65", 2, ["6.6"], 2, "gen", function () {
+  var rxns = [
+    { eq: "2Na + Cl₂ → 2NaCl", metal: "sodium", gain: "chlorine", per: 1, coeff: 2 },
+    { eq: "2Mg + O₂ → 2MgO", metal: "magnesium", gain: "oxygen", per: 2, coeff: 2 },
+    { eq: "4Al + 3O₂ → 2Al₂O₃", metal: "aluminium", gain: "oxygen", per: 3, coeff: 4 },
+    { eq: "Ca + Cl₂ → CaCl₂", metal: "calcium", gain: "chlorine", per: 2, coeff: 1 },
+    { eq: "2K + Br₂ → 2KBr", metal: "potassium", gain: "bromine", per: 1, coeff: 2 },
+    { eq: "4Li + O₂ → 2Li₂O", metal: "lithium", gain: "oxygen", per: 1, coeff: 4 },
+    { eq: "2Al + 3Cl₂ → 2AlCl₃", metal: "aluminium", gain: "chlorine", per: 3, coeff: 2 },
+    { eq: "Mg + S → MgS", metal: "magnesium", gain: "sulfur", per: 2, coeff: 1 },
+    { eq: "Zn + Cl₂ → ZnCl₂", metal: "zinc", gain: "chlorine", per: 2, coeff: 1 },
+    { eq: "2Ca + O₂ → 2CaO", metal: "calcium", gain: "oxygen", per: 2, coeff: 2 },
+    { eq: "2Zn + O₂ → 2ZnO", metal: "zinc", gain: "oxygen", per: 2, coeff: 2 },
+    { eq: "4Fe + 3O₂ → 2Fe₂O₃", metal: "iron", gain: "oxygen", per: 3, coeff: 4 },
+    { eq: "2Cu + O₂ → 2CuO", metal: "copper", gain: "oxygen", per: 2, coeff: 2 },
+    { eq: "Sn + Cl₂ → SnCl₂", metal: "tin", gain: "chlorine", per: 2, coeff: 1 },
+    { eq: "4Na + O₂ → 2Na₂O", metal: "sodium", gain: "oxygen", per: 1, coeff: 4 },
+    { eq: "Ni + Cl₂ → NiCl₂", metal: "nickel", gain: "chlorine", per: 2, coeff: 1 }
+  ];
+  var r = pick(rxns), ask = pick([0, 1]), total = r.per * r.coeff;
+  var cand = [r.per, r.coeff, total + r.per, total * 2, total + 1, total + 2, total - 1, 2 * r.per, r.per + r.coeff];
+  var ds = [], ci = 0;
+  while (ds.length < 3 && ci < cand.length) { var v = cand[ci++]; if (v > 0 && v !== total && ds.indexOf(String(v)) < 0) ds.push(String(v)); }
+  var offs = [3, -2, 4, 5], oi = 0;
+  while (ds.length < 3 && oi < offs.length) { var w = total + offs[oi++]; if (w > 0 && ds.indexOf(String(w)) < 0) ds.push(String(w)); }
+  var prompt = ask === 0
+    ? "In the reaction " + r.eq + ", electrons are transferred from the " + r.metal + " atoms to the other reactant as the ionic compound forms. For the reaction exactly as written, how many electrons are transferred in total?"
+    : "In the reaction " + r.eq + ", electrons are transferred from the " + r.metal + " atoms to the " + r.gain + " as the ionic compound forms. For the reaction exactly as written, how many electrons are gained by the " + r.gain + " in total?";
+  return mcq(prompt, String(total), ds,
+    "Each " + r.metal + " atom loses " + r.per + " electron or electrons when it forms its ion, and the equation as written contains " + r.coeff + " " + r.metal + " atom or atoms, so " + r.coeff + " x " + r.per + " = " + total + " electrons are lost in total. Electrons lost and electrons gained must balance, so the value asked for is <b>" + total + "</b>.",
+    { rxn: r.eq, per: r.per, coeff: r.coeff, ask: ask });
+});
+
+// LEVEL: 2 - bracket subscripts must be distributed and each polyatomic ion counted as a single ion; u2-34 counts only unbracketed formulas
+// VARIANTS: three asks dealt per draw - total ions per formula unit, anion ions per formula unit, or cation ions per formula unit (the cation ask is omitted for the two iron(III) formulas)
+// LENGTHS: correct=1, others 1/1/1
+E("u2-66", 2, ["6.7"], 2, "gen", function () {
+  var fs = [
+    { f: "Ca(OH)₂", cat: 1, an: 2, atoms: 5, undist: 2, catN: "calcium", anN: "hydroxide", catAsk: true },
+    { f: "Mg(OH)₂", cat: 1, an: 2, atoms: 5, undist: 2, catN: "magnesium", anN: "hydroxide", catAsk: true },
+    { f: "Mg(NO₃)₂", cat: 1, an: 2, atoms: 9, undist: 2, catN: "magnesium", anN: "nitrate", catAsk: true },
+    { f: "Al₂(SO₄)₃", cat: 2, an: 3, atoms: 17, undist: 3, catN: "aluminium", anN: "sulfate", catAsk: true },
+    { f: "Fe₂(SO₄)₃", cat: 2, an: 3, atoms: 17, undist: 3, catN: "iron(III)", anN: "sulfate", catAsk: false },
+    { f: "(NH₄)₂SO₄", cat: 2, an: 1, atoms: 15, undist: 2, catN: "ammonium", anN: "sulfate", catAsk: true },
+    { f: "Ca₃(PO₄)₂", cat: 3, an: 2, atoms: 13, undist: 4, catN: "calcium", anN: "phosphate", catAsk: true },
+    { f: "(NH₄)₃PO₄", cat: 3, an: 1, atoms: 20, undist: 2, catN: "ammonium", anN: "phosphate", catAsk: true },
+    { f: "NH₄NO₃", cat: 1, an: 1, atoms: 9, undist: 2, catN: "ammonium", anN: "nitrate", catAsk: true },
+    { f: "K₂SO₄", cat: 2, an: 1, atoms: 7, undist: 3, catN: "potassium", anN: "sulfate", catAsk: true },
+    { f: "Ba(OH)₂", cat: 1, an: 2, atoms: 5, undist: 2, catN: "barium", anN: "hydroxide", catAsk: true },
+    { f: "ZnSO₄", cat: 1, an: 1, atoms: 6, undist: 2, catN: "zinc", anN: "sulfate", catAsk: true },
+    { f: "FeCl₃", cat: 1, an: 3, atoms: 4, undist: 4, catN: "iron(III)", anN: "chloride", catAsk: false },
+    { f: "AlCl₃", cat: 1, an: 3, atoms: 4, undist: 4, catN: "aluminium", anN: "chloride", catAsk: true },
+    { f: "(NH₄)₂CO₃", cat: 2, an: 1, atoms: 14, undist: 2, catN: "ammonium", anN: "carbonate", catAsk: true },
+    { f: "Mg₃(PO₄)₂", cat: 3, an: 2, atoms: 13, undist: 4, catN: "magnesium", anN: "phosphate", catAsk: true },
+    { f: "Na₃PO₄", cat: 3, an: 1, atoms: 8, undist: 4, catN: "sodium", anN: "phosphate", catAsk: true },
+    { f: "Ba(NO₃)₂", cat: 1, an: 2, atoms: 9, undist: 2, catN: "barium", anN: "nitrate", catAsk: true },
+    { f: "K₃PO₄", cat: 3, an: 1, atoms: 8, undist: 4, catN: "potassium", anN: "phosphate", catAsk: true }
+  ];
+  var c = pick(fs);
+  var ask = pick(c.catAsk ? [0, 1, 2] : [0, 1]);
+  var total = c.cat + c.an;
+  var key = ask === 0 ? total : (ask === 1 ? c.an : c.cat);
+  var cand = [c.atoms, c.undist, key + 1, key + 2, key - 1, total, c.an, c.cat];
+  var ds = [], ci = 0;
+  while (ds.length < 3 && ci < cand.length) { var v = cand[ci++]; if (v > 0 && v !== key && ds.indexOf(String(v)) < 0) ds.push(String(v)); }
+  var offs = [3, -2, 4], oi = 0;
+  while (ds.length < 3 && oi < offs.length) { var w = key + offs[oi++]; if (w > 0 && ds.indexOf(String(w)) < 0) ds.push(String(w)); }
+  var prompt = ask === 0
+    ? "How many ions in total are counted in one formula unit of " + c.f + "? Count each polyatomic ion as one ion."
+    : (ask === 1
+      ? "How many " + c.anN + " ions are counted in one formula unit of " + c.f + "?"
+      : "How many " + c.catN + " ions are counted in one formula unit of " + c.f + "?");
+  return mcq(prompt, String(key), ds,
+    "A subscript outside a set of brackets multiplies every ion inside the brackets, and each polyatomic ion counts as one ion, not as its separate atoms. One formula unit of " + c.f + " contains " + c.cat + " cation or cations and " + c.an + " anion or anions, which is " + total + " ions in total. The value asked for is <b>" + key + "</b>.",
+    { formula: c.f, ask: ask });
+});
+
+// LEVEL: 3 - a stated structural model must be judged against the lattice model and its fault identified, a diagnosis rather than a recall of the model
+// LENGTHS: correct=183, others 161/184/173
+E("u2-67", 2, ["6.7"], 3, "gen", function () {
+  var comps = [
+    { f: "NaCl", cat: "Na⁺", an: "Cl⁻" }, { f: "MgO", cat: "Mg²⁺", an: "O²⁻" },
+    { f: "CaCl₂", cat: "Ca²⁺", an: "Cl⁻" }, { f: "KBr", cat: "K⁺", an: "Br⁻" },
+    { f: "NaF", cat: "Na⁺", an: "F⁻" }, { f: "MgCl₂", cat: "Mg²⁺", an: "Cl⁻" },
+    { f: "CaO", cat: "Ca²⁺", an: "O²⁻" }, { f: "KCl", cat: "K⁺", an: "Cl⁻" },
+    { f: "BaO", cat: "Ba²⁺", an: "O²⁻" }, { f: "ZnS", cat: "Zn²⁺", an: "S²⁻" },
+    { f: "LiCl", cat: "Li⁺", an: "Cl⁻" }, { f: "SrCl₂", cat: "Sr²⁺", an: "Cl⁻" }
+  ];
+  var c = pick(comps);
+  var correct = "The model is wrong: the solid contains no separate molecules, because each " + c.cat + " ion is surrounded by several " + c.an + " ions, and each " + c.an + " ion by several " + c.cat + " ions, in one continuous lattice";
+  var ds = [
+    "The model is right: the solid is built from separate " + c.f + " molecules, because each " + c.cat + " ion is paired with one " + c.an + " ion and those pairs pack together in the solid",
+    "The model is wrong: the solid contains no ions at all, because its particles are neutral atoms joined in one continuous network of shared electron pairs running through the whole solid",
+    "The model is wrong: the solid is built from separate molecules after all, because each molecule holds several " + c.cat + " and " + c.an + " ions joined by shared pairs of electrons inside it"
+  ];
+  return mcq("A student draws the structure of solid " + c.f + " as separate molecules, each molecule a small fixed group of " + c.cat + " and " + c.an + " ions, with only weak attractions between the molecules. Which statement correctly judges this model?",
+    correct, ds,
+    "An ionic solid is not built from molecules. Its ions form one continuous lattice in which every ion is held by attractions to several neighbours of the opposite charge, and the formula " + c.f + " gives the ratio of the ions, not the contents of a molecule. The correct judgement is <b>" + correct + "</b>.",
+    { compound: c.f });
+});
+
+// LEVEL: 2 - ion charges must be derived or compared, and the charge to attraction to melting point chain applied to the pair
+// VARIANTS: two modes dealt per draw - explain a given melting point pair by ion charge, or predict the higher melting point of a pair from the formulas alone; the high-charge partner is dealt from four compounds and the low-charge partner from eight, all melting points from u2-37
+// LENGTHS: correct=87, others 98/86/73
+E("u2-68", 2, ["6.8"], 2, "gen", function () {
+  var his = [
+    { f: "MgO", n: "magnesium oxide", mp: 2852, cC: "2+", cA: "2-", cat: "Mg²⁺", an: "O²⁻" },
+    { f: "CaO", n: "calcium oxide", mp: 2613, cC: "2+", cA: "2-", cat: "Ca²⁺", an: "O²⁻" },
+    { f: "Al₂O₃", n: "aluminium oxide", mp: 2072, cC: "3+", cA: "2-", cat: "Al³⁺", an: "O²⁻" },
+    { f: "BaO", n: "barium oxide", mp: 1923, cC: "2+", cA: "2-", cat: "Ba²⁺", an: "O²⁻" }
+  ];
+  var los = [
+    { f: "NaCl", n: "sodium chloride", mp: 801, cC: "1+", cA: "1-", cat: "Na⁺", an: "Cl⁻" },
+    { f: "KBr", n: "potassium bromide", mp: 734, cC: "1+", cA: "1-", cat: "K⁺", an: "Br⁻" },
+    { f: "NaF", n: "sodium fluoride", mp: 993, cC: "1+", cA: "1-", cat: "Na⁺", an: "F⁻" },
+    { f: "CaCl₂", n: "calcium chloride", mp: 772, cC: "2+", cA: "1-", cat: "Ca²⁺", an: "Cl⁻" },
+    { f: "KI", n: "potassium iodide", mp: 681, cC: "1+", cA: "1-", cat: "K⁺", an: "I⁻" },
+    { f: "LiCl", n: "lithium chloride", mp: 605, cC: "1+", cA: "1-", cat: "Li⁺", an: "Cl⁻" },
+    { f: "NaBr", n: "sodium bromide", mp: 747, cC: "1+", cA: "1-", cat: "Na⁺", an: "Br⁻" },
+    { f: "MgCl₂", n: "magnesium chloride", mp: 714, cC: "2+", cA: "1-", cat: "Mg²⁺", an: "Cl⁻" }
+  ];
+  var hi = pick(his), lo = pick(los), mode = pick([0, 1]);
+  if (mode === 0) {
+    var correct = "Its ions carry charges of " + hi.cC + " and " + hi.cA + ", larger than the " + lo.cC + " and " + lo.cA + " charges in " + lo.f + ", so its ions attract more strongly and its lattice takes more energy to break up";
+    var ds = [
+      "Its particles are separate molecules joined by covalent bonds, and covalent bonds inside molecules are stronger than any of the attractions between the ions in " + lo.f,
+      "Its atoms are heavier than the atoms in " + lo.f + ", and heavier atoms always need more energy to melt, whatever charges their ions carry or how the solid is held together",
+      "Its lattice contains electrons moving between the ions of " + hi.f + ", and those electrons hold the lattice together up to a much higher temperature than in " + lo.f
+    ];
+    return mcq(hi.f + " melts at " + hi.mp + " °C and " + lo.f + " melts at " + lo.mp + " °C. Both are ionic compounds. Which statement explains why " + hi.f + " melts at a much higher temperature than " + lo.f + "?",
+      correct, ds,
+      "Melting an ionic compound means breaking up its lattice, and the energy needed depends on how strongly its ions attract each other. The ions in " + hi.f + " are " + hi.cat + " and " + hi.an + ", while the ions in " + lo.f + " are " + lo.cat + " and " + lo.an + ". The larger charges in " + hi.f + " attract more strongly, so its lattice takes far more energy to break up. The explanation is <b>" + correct + "</b>.",
+      { hi: hi.f, lo: lo.f, mode: mode });
+  }
+  var correctB = hi.n + " has the higher melting point, because its ions carry the larger charges";
+  var dsB = [
+    lo.n + " has the higher melting point, because its ions carry the larger charges",
+    "They melt at about the same temperature, because both are ionic compounds",
+    lo.n + " has the higher melting point, because it has more ions in each of its formula units"
+  ];
+  return mcq(hi.n + " (" + hi.f + ") and " + lo.n + " (" + lo.f + ") are both ionic compounds, but their melting points are not given. Which prediction is correct?",
+    correctB, dsB,
+    "From their formulas, the ions in " + hi.f + " are " + hi.cat + " and " + hi.an + ", carrying charges of " + hi.cC + " and " + hi.cA + ", while the ions in " + lo.f + " are " + lo.cat + " and " + lo.an + ", carrying " + lo.cC + " and " + lo.cA + ". Larger ion charges attract more strongly in the lattice, and a lattice that is held more strongly needs more energy to break up on melting. The correct prediction is <b>" + correctB + "</b>.",
+    { hi: hi.f, lo: lo.f, mode: mode });
+});
+
+// LEVEL: 2 - two conduction models, the metal and the ionic solution, must be coordinated inside one statement
+// LENGTHS: correct=143, others 153/151/141
+E("u2-69", 2, ["6.9"], 2, "gen", function () {
+  var metal = pick(["copper", "iron", "aluminium", "zinc", "silver", "nickel", "gold", "tin"]);
+  var salt = pick(["sodium chloride", "potassium nitrate", "calcium chloride", "magnesium sulfate", "potassium chloride", "sodium nitrate", "magnesium chloride", "sodium sulfate", "calcium nitrate", "ammonium chloride"]);
+  function stmt(a, b) {
+    return "In the " + metal + " wire the current is carried by " + a + ", and in the " + salt + " solution the current is carried by " + b;
+  }
+  var correct = stmt("delocalized electrons", "moving ions");
+  var ds = [
+    stmt("positive metal ions", "delocalized electrons"),
+    stmt("delocalized electrons", "delocalized electrons"),
+    stmt("positive metal ions", "moving ions")
+  ];
+  return mcq("A circuit contains a " + metal + " wire and, in a separate part of the apparatus, a beaker of " + salt + " solution fitted with two electrodes. Both parts conduct electricity. Which statement correctly identifies the particles that carry the current in each part?",
+    correct, ds,
+    "In the solid " + metal + ", the positive ions are locked in the lattice and the delocalized electrons are the particles free to move, so they carry the current. The " + salt + " solution contains no electron sea: its ions are free to move through the liquid, and their movement carries the current. The correct statement is <b>" + correct + "</b>.",
+    { metal: metal, salt: salt });
+});
+
+// LEVEL: 3 - the electron sea model must be extended to compare the strength of metallic bonding between metals, using the electrons released per atom, a comparison the pool never rehearses
+// LENGTHS: correct=153, others 160/153/147
+E("u2-70", 2, ["6.9"], 3, "gen", function () {
+  var pairs = [
+    { a: "sodium", aMp: 98, b: "magnesium", bMp: 650, e: 2, ch: "2+" },
+    { a: "potassium", aMp: 63, b: "calcium", bMp: 842, e: 2, ch: "2+" },
+    { a: "sodium", aMp: 98, b: "aluminium", bMp: 660, e: 3, ch: "3+" },
+    { a: "potassium", aMp: 63, b: "aluminium", bMp: 660, e: 3, ch: "3+" },
+    { a: "lithium", aMp: 180, b: "magnesium", bMp: 650, e: 2, ch: "2+" },
+    { a: "lithium", aMp: 180, b: "calcium", bMp: 842, e: 2, ch: "2+" },
+    { a: "lithium", aMp: 180, b: "aluminium", bMp: 660, e: 3, ch: "3+" },
+    { a: "sodium", aMp: 98, b: "calcium", bMp: 842, e: 2, ch: "2+" },
+    { a: "potassium", aMp: 63, b: "magnesium", bMp: 650, e: 2, ch: "2+" }
+  ];
+  var p = pick(pairs);
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var correct = "Each " + p.b + " atom releases " + p.e + " electrons into the sea, forming a " + p.ch + " ion, so its ions are attracted to the sea more strongly overall than the ions in " + p.a;
+  var ds = [
+    "The atoms of " + p.b + " are joined by ionic bonds between positive and negative ions, which are stronger than the electron sea bonding found in " + p.a,
+    cap(p.a) + " is not a true metal, because its atoms share electrons in separate molecules instead of releasing them into an electron sea shared across the whole solid",
+    "The atoms of " + p.b + " are heavier than the atoms of " + p.a + ", and a metal made of heavier atoms is always the harder metal and melts at a higher temperature"
+  ];
+  return mcq(cap(p.a) + " is a soft metal that melts at " + p.aMp + " °C, while " + p.b + " is a much harder metal that melts at " + p.bMp + " °C. Both are described by the electron sea model of metallic bonding. Which statement best explains the difference?",
+    correct, ds,
+    "In the electron sea model, the strength of the metallic bonding depends on how strongly the positive ions are attracted to the electron sea. Each " + p.a + " atom releases only one electron and forms a 1+ ion. Each " + p.b + " atom releases " + p.e + " electrons and forms a " + p.ch + " ion, so its ions are attracted to the sea more strongly, giving a harder solid with a higher melting point. The best explanation is <b>" + correct + "</b>.",
+    { pair: pairs.indexOf(p) });
+});
+
+// LEVEL: 2 - the two energy steps of dissolving must be weighed against each other to explain a net temperature change, not just named
+// VARIANTS: two directions dealt per draw - the solution cools (ammonium nitrate, potassium nitrate, ammonium chloride, sodium nitrate, urea) or the solution warms (calcium chloride, sodium hydroxide, magnesium sulfate, lithium chloride, sodium carbonate)
+// LENGTHS: correct=152, others 152/143/133
+E("u2-71", 2, ["6.10"], 2, "gen", function () {
+  var cases = [
+    { s: "ammonium nitrate", dir: "cools", ctx: "is dissolved in water inside an instant cold pack, and the pack feels cold to the touch" },
+    { s: "potassium nitrate", dir: "cools", ctx: "is dissolved in water in a beaker, and the temperature of the solution falls" },
+    { s: "calcium chloride", dir: "warms", ctx: "is dissolved in water inside a reusable hot pack, and the pack feels warm to the touch" },
+    { s: "sodium hydroxide", dir: "warms", ctx: "pellets are stirred into water in a beaker, and the temperature of the solution rises" },
+    { s: "ammonium chloride", dir: "cools", ctx: "is dissolved in water in a beaker, and the temperature of the solution falls" },
+    { s: "sodium nitrate", dir: "cools", ctx: "is dissolved in water in a beaker, and the temperature of the solution falls" },
+    { s: "urea", dir: "cools", ctx: "is dissolved in water inside a cold pack, and the pack feels cold to the touch" },
+    { s: "magnesium sulfate", dir: "warms", ctx: "is dissolved in water in a beaker, and the temperature of the solution rises" },
+    { s: "lithium chloride", dir: "warms", ctx: "is dissolved in water in a beaker, and the temperature of the solution rises" },
+    { s: "sodium carbonate", dir: "warms", ctx: "is dissolved in water in a beaker, and the temperature of the solution rises" }
+  ];
+  var c = pick(cases);
+  var W = "Forming the new attractions between the solute and the water releases more energy than breaking the original attractions takes in, so the solution warms";
+  var C = "Breaking the original attractions in the solute and in the solvent takes in more energy than forming the new attractions releases, so the solution cools";
+  var correct = c.dir === "warms" ? W : C;
+  var ds = [
+    c.dir === "warms" ? C : W,
+    "The solute reacts chemically with the water to form a new compound, and that reaction is what changes the temperature of the solution",
+    "Dissolving always releases energy as new attractions form, so any temperature change must be caused by heat leaking through the container walls"
+  ];
+  function capS(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  return mcq(capS(c.s) + " " + c.ctx + ". Which statement explains the temperature change in terms of the attractions broken and formed as it dissolves?",
+    correct, ds,
+    "Dissolving has two energy steps working against each other: energy is taken in to break the attractions in the solute and in the water, and energy is released when the new attractions between the solute particles and the water form. " + (c.dir === "warms"
+      ? "Here the forming step releases more than the breaking step takes in, and the extra energy warms the solution."
+      : "Here the breaking step takes in more than the forming step releases, and the extra energy is taken from the solution itself, so it cools.") + " The explanation is <b>" + correct + "</b>.",
+    { solute: c.s, dir: c.dir });
+});
+
+// LEVEL: 1 - one division with both values given and no scaling step (contrast the per 100 mL mode of u2-51 and the two-step u2-52)
+// LENGTHS: key=11
+E("u2-72", 2, ["6.11"], 1, "gen", function () {
+  var salts = [
+    { f: "NaCl", c: [["Na", 1], ["Cl", 1]] }, { f: "KCl", c: [["K", 1], ["Cl", 1]] },
+    { f: "KBr", c: [["K", 1], ["Br", 1]] }, { f: "NaBr", c: [["Na", 1], ["Br", 1]] },
+    { f: "NaNO₃", c: [["Na", 1], ["N", 1], ["O", 3]] }, { f: "KNO₃", c: [["K", 1], ["N", 1], ["O", 3]] },
+    { f: "AgNO₃", c: [["Ag", 1], ["N", 1], ["O", 3]] }, { f: "CaCl₂", c: [["Ca", 1], ["Cl", 2]] },
+    { f: "MgCl₂", c: [["Mg", 1], ["Cl", 2]] }, { f: "Na₂SO₄", c: [["Na", 2], ["S", 1], ["O", 4]] },
+    { f: "Ca(NO₃)₂", c: [["Ca", 1], ["N", 2], ["O", 6]] }, { f: "NH₄Cl", c: [["N", 1], ["H", 4], ["Cl", 1]] }
+  ];
+  var s = pick(salts);
+  var M = 0; s.c.forEach(function (p) { M += CHEM_AM[p[0]] * p[1]; });
+  var target = pick([0.05, 0.10, 0.20, 0.25, 0.40, 0.50, 0.80, 1.20]);
+  var gL = target * M, temp = pick([20, 25]);
+  return numq("A saturated solution of " + s.f + " at " + temp + " °C contains " + iF(gL) + " g of the salt in each litre of solution. The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. What is the molar solubility of " + s.f + ", in mol/L?",
+    target, Math.max(0.01, target * 0.02),
+    "Molar solubility is the concentration of a saturated solution. Divide the mass per litre by the molar mass: " + iF(gL) + " g/L / " + fmtF(M, 2) + " g/mol = <b>" + F3(target) + " mol/L</b>.",
+    { salt: s.f, M: fmtF(M, 2), temp: temp });
+});
+
+// LEVEL: 2 - the 6.11 conversion run in reverse: multiply the molar solubility by the molar mass, then scale from a litre down to 100 mL
+// LENGTHS: key=17
+E("u2-73", 2, ["6.11"], 2, "gen", function () {
+  var salts = [
+    { f: "LiCl", c: [["Li", 1], ["Cl", 1]] }, { f: "NaF", c: [["Na", 1], ["F", 1]] },
+    { f: "KI", c: [["K", 1], ["I", 1]] }, { f: "MgSO₄", c: [["Mg", 1], ["S", 1], ["O", 4]] },
+    { f: "CaBr₂", c: [["Ca", 1], ["Br", 2]] }, { f: "ZnCl₂", c: [["Zn", 1], ["Cl", 2]] },
+    { f: "FeCl₂", c: [["Fe", 1], ["Cl", 2]] }, { f: "CuSO₄", c: [["Cu", 1], ["S", 1], ["O", 4]] },
+    { f: "BaCl₂", c: [["Ba", 1], ["Cl", 2]] }, { f: "Na₂CO₃", c: [["Na", 2], ["C", 1], ["O", 3]] }
+  ];
+  var s = pick(salts);
+  var M = 0; s.c.forEach(function (p) { M += CHEM_AM[p[0]] * p[1]; });
+  var target = s.f === "NaF" ? pick([0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.75]) : pick([0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.75, 1.20]);
+  var gL = target * M, g100 = gL / 10, ans = sfR(g100, 3), temp = pick([20, 25, 30]);
+  return numq("The molar solubility of " + s.f + " at " + temp + " °C is " + F3(target) + " mol/L. The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. Calculate the solubility of " + s.f + " in grams per 100 mL of solution.",
+    ans, Math.max(0.05, ans * 0.02),
+    "First change the amount per litre into a mass per litre by multiplying by the molar mass: " + F3(target) + " mol/L x " + fmtF(M, 2) + " g/mol = " + iF(gL) + " g/L. One hundred millilitres is one tenth of a litre, so the mass dissolved in 100 mL is " + iF(gL) + " g / 10 = <b>" + F3(ans) + " g per 100 mL</b>.",
+    { salt: s.f, S: target, M: fmtF(M, 2), temp: temp });
+});
+
+// LEVEL: 2 - two chained steps: amount from the molar solubility and the volume in litres, then mass from the amount and the molar mass
+// LENGTHS: key=6
+E("u2-74", 2, ["6.11"], 2, "gen", function () {
+  var salts = [
+    { f: "NaCl", c: [["Na", 1], ["Cl", 1]] }, { f: "KNO₃", c: [["K", 1], ["N", 1], ["O", 3]] },
+    { f: "CuSO₄", c: [["Cu", 1], ["S", 1], ["O", 4]] }, { f: "MgSO₄", c: [["Mg", 1], ["S", 1], ["O", 4]] },
+    { f: "CaCl₂", c: [["Ca", 1], ["Cl", 2]] }, { f: "KI", c: [["K", 1], ["I", 1]] },
+    { f: "Na₂SO₄", c: [["Na", 2], ["S", 1], ["O", 4]] }, { f: "BaCl₂", c: [["Ba", 1], ["Cl", 2]] },
+    { f: "AgNO₃", c: [["Ag", 1], ["N", 1], ["O", 3]] }, { f: "ZnCl₂", c: [["Zn", 1], ["Cl", 2]] }
+  ];
+  var s = pick(salts);
+  var M = 0; s.c.forEach(function (p) { M += CHEM_AM[p[0]] * p[1]; });
+  var target = pick([0.20, 0.25, 0.40, 0.50, 0.80, 1.20]);
+  var vol = pick([200, 250, 400, 500]);
+  var moles = target * vol / 1000, mass = moles * M, ans = sfR(mass, 3);
+  return numq("The molar solubility of " + s.f + " is " + F3(target) + " mol/L at the stated temperature, and its molar mass is " + fmtF(M, 2) + " g/mol. What mass of " + s.f + ", in grams, is dissolved in " + vol + " mL of a saturated solution?",
+    ans, Math.max(0.05, ans * 0.02),
+    "First find the amount dissolved: molar solubility times the volume in litres gives " + F3(target) + " mol/L x " + F3(vol / 1000) + " L = " + iF(moles) + " mol. Then change the amount into a mass with the molar mass: " + iF(moles) + " mol x " + fmtF(M, 2) + " g/mol = <b>" + F3(ans) + " g</b>.",
+    { salt: s.f, S: target, vol: vol, M: fmtF(M, 2) });
+});
+
+// LEVEL: 1 - one rehearsed idea (more dissolved particles means a lower melting point) read off two concentrations of the same solute
+// LENGTHS: correct=123, others 96/123/123
+E("u2-75", 2, ["6.12"], 1, "gen", function () {
+  var s = pick(["sugar", "glucose", "sodium chloride", "potassium chloride", "calcium chloride", "magnesium chloride", "sodium sulfate"]);
+  var cc = shuffle([0.50, 1.5]), cA = cc[0], cB = cc[1];
+  var W = cA > cB ? "A" : "B", L = W === "A" ? "B" : "A";
+  var correct = "Solution " + W + ", because it has the greater concentration of dissolved particles, which lowers the melting point of the ice more";
+  var ds = [
+    "Solution " + L + ", because it has the greater concentration of dissolved particles, which lowers the melting point of the ice more",
+    "Solution " + W + ", because it has the greater concentration of dissolved particles, which raises the melting point of the ice more",
+    "Neither, because the melting point of ice is 0 °C in every solution, whatever is dissolved in it"
+  ];
+  return mcq("Solution A contains " + F3(cA) + " mol/L of " + s + " and solution B contains " + F3(cB) + " mol/L of " + s + ". Equal pieces of ice are placed in the two solutions. In which solution does the ice melt at the lower temperature, and why?",
+    correct, ds,
+    "Dissolved particles interfere with water molecules joining the ice crystal, so a solution melts ice below 0 °C, and the more dissolved particles there are per litre, the lower the melting temperature. Solution " + W + " has the greater concentration of the same solute, so it has more dissolved particles per litre. The answer is <b>" + correct + "</b>.",
+    { solute: s, cA: cA, cB: cB });
+});
+
+// LEVEL: 2 - the particle concentration (concentration times particles released per formula unit) must be worked out for three solutions and both extremes identified
+// LENGTHS: correct=88, others 88/88/88
+E("u2-76", 2, ["6.12"], 2, "gen", function () {
+  var solutes = [
+    { f: "sugar", p: 1 }, { f: "glucose", p: 1 }, { f: "sodium chloride", p: 2 }, { f: "potassium chloride", p: 2 },
+    { f: "calcium chloride", p: 3 }, { f: "magnesium chloride", p: 3 }, { f: "sodium sulfate", p: 3 }
+  ];
+  var concs = [0.5, 1.0, 1.5, 2.0];
+  function deal() { var s = pick(solutes); return { f: s.f, p: s.p, c: pick(concs) }; }
+  var A = deal(), B = deal(), C = deal(), tries = 0;
+  while (tries < 60 && (A.p * A.c === B.p * B.c || A.p * A.c === C.p * C.c || B.p * B.c === C.p * C.c)) { A = deal(); B = deal(); C = deal(); tries++; }
+  if (A.p * A.c === B.p * B.c || A.p * A.c === C.p * C.c || B.p * B.c === C.p * C.c) {
+    A = { f: "sugar", p: 1, c: 2.0 }; B = { f: "sodium chloride", p: 2, c: 1.5 }; C = { f: "calcium chloride", p: 3, c: 0.5 };
+  }
+  var rows = [{ L: "A", d: A }, { L: "B", d: B }, { L: "C", d: C }];
+  var sorted = rows.slice().sort(function (r1, r2) { return r1.d.p * r1.d.c - r2.d.p * r2.d.c; });
+  var lo = sorted[0].L, mid = sorted[1].L, hi = sorted[2].L;
+  function stmt(x, y) { return "Solution " + x + " gives the lowest melting point and solution " + y + " gives the highest melting point"; }
+  var correct = stmt(lo, hi);
+  var ds = [stmt(hi, lo), stmt(lo, mid), stmt(mid, hi)];
+  return mcq("Three solutions are prepared. Solution A is " + F3(A.c) + " mol/L of " + A.f + ". Solution B is " + F3(B.c) + " mol/L of " + B.f + ". Solution C is " + F3(C.c) + " mol/L of " + C.f + ". Equal samples of ice are placed in each solution. Which statement correctly identifies the solutions in which the ice melts at the lowest and the highest temperature?",
+    correct, ds,
+    "What matters is the total concentration of dissolved particles, the concentration multiplied by the number of particles each formula unit releases. Solution A: " + F3(A.c) + " x " + A.p + " = " + F3(A.p * A.c) + " mol/L of particles. Solution B: " + F3(B.c) + " x " + B.p + " = " + F3(B.p * B.c) + " mol/L of particles. Solution C: " + F3(C.c) + " x " + C.p + " = " + F3(C.p * C.c) + " mol/L of particles. The greatest particle concentration lowers the melting point most, and the smallest lowers it least. The correct statement is <b>" + correct + "</b>.",
+    { a: A.f, ca: A.c, b: B.f, cb: B.c, c: C.f, cc: C.c });
+});
+
+// LEVEL: 2 - the particle explanation of melting point lowering must be transferred to contexts outside the road salt and ice cream settings of u2-54 to u2-56
+// VARIANTS: five scenarios dealt per draw - seawater, antifreeze coolant, slush mixture, aircraft de-icing fluid, windshield washer fluid; each carries the same four explanations with its own solute named
+// LENGTHS: correct=121, others 121/120/116
+E("u2-77", 2, ["6.12"], 2, "gen", function () {
+  var sc = [
+    { name: "seawater", stem: "Seawater freezes at about -2 °C, while fresh water from a river freezes at 0 °C. Which statement explains why seawater stays liquid below 0 °C?", solute: "salts" },
+    { name: "antifreeze", stem: "Ethylene glycol antifreeze is mixed with the water in a car radiator, and the coolant stays liquid on a night well below 0 °C. Which statement explains why the coolant does not freeze?", solute: "ethylene glycol" },
+    { name: "slush mixture", stem: "In a slush drink machine, a sweetened water mixture stays liquid at -3 °C. Which statement explains why the mixture stays liquid below 0 °C?", solute: "sugar" },
+    { name: "aircraft de-icing", stem: "Before takeoff in winter, a glycol based fluid is sprayed over an aircraft wing, and the frost on the wing melts even though the air is at -8 °C. Which statement explains why the frost melts?", solute: "glycol" },
+    { name: "washer fluid", stem: "Windshield washer fluid is methanol mixed with water, and it stays liquid in the reservoir on a night well below 0 °C. Which statement explains why the fluid does not freeze?", solute: "methanol" }
+  ];
+  var c = pick(sc);
+  var correct = "The dissolved " + c.solute + " particles lower the temperature at which the water can freeze, so the mixture stays liquid below 0 °C";
+  var ds = [
+    "The dissolved " + c.solute + " particles raise the temperature at which the water can freeze, so the mixture stays liquid below 0 °C",
+    "The " + c.solute + " takes heat out of the water as it dissolves, and that loss of heat is what keeps the mixture from freezing",
+    "The " + c.solute + " forms a coating on each ice crystal as it forms, insulating the crystal and stopping it from joining the solid"
+  ];
+  return mcq(c.stem, correct, ds,
+    "The particles of " + c.solute + " dissolved in the water get in the way as water molecules try to join the regular pattern of an ice crystal. Freezing is held back until a lower temperature, so the mixture stays liquid below 0 °C. The explanation is <b>" + correct + "</b>.",
+    { scenario: c.name });
+});
+
+// LEVEL: 1 - one decisive observation matched to a class; the other 6.13 entries in the pool all present full property tables
+// VARIANTS: twelve single-observation cues dealt per draw, four for each of the metallic, ionic and molecular classes
+// LENGTHS: correct=43, others 24/43/37
+E("u2-78", 2, ["6.13"], 1, "gen", function () {
+  var cues = [
+    { t: "A sample is tested and found to conduct electricity while it is still a solid", cls: "metallic" },
+    { t: "A sample does not conduct electricity as a solid, but it conducts strongly once it has melted", cls: "ionic" },
+    { t: "A sample does not conduct electricity as a solid, as a liquid, or when dissolved in water", cls: "molecular" },
+    { t: "A sample melts at 801 °C and conducts electricity only when molten or in aqueous solution", cls: "ionic" },
+    { t: "A sample is a shiny solid that conducts electricity and can be bent without shattering", cls: "metallic" },
+    { t: "A sample melts at a low temperature and does not conduct electricity in any state", cls: "molecular" },
+    { t: "A sample conducts electricity as a solid and can be drawn out into a thin wire", cls: "metallic" },
+    { t: "A sample is a hard, brittle solid that does not conduct electricity until it is melted", cls: "ionic" },
+    { t: "A sample does not conduct as a solid, but its melt and its aqueous solution both conduct", cls: "ionic" },
+    { t: "A sample is a gas at room temperature and does not conduct electricity", cls: "molecular" },
+    { t: "A sample is a shiny solid that conducts heat quickly and bends instead of breaking", cls: "metallic" },
+    { t: "A sample is a soft solid that melts at 45 °C and does not conduct electricity as a solid or as a liquid", cls: "molecular" }
+  ];
+  var opts = {
+    ionic: "ionic: a lattice of oppositely charged ions",
+    molecular: "molecular: separate neutral molecules",
+    metallic: "metallic: positive ions in the electron sea",
+    network: "a covalent network solid"
+  };
+  var c = pick(cues);
+  var correct = opts[c.cls];
+  var ds = Object.keys(opts).filter(function (k) { return opts[k] !== correct; }).map(function (k) { return opts[k]; });
+  var why = c.cls === "metallic"
+    ? "Only a metal conducts while solid: its positive ions sit in a sea of delocalized electrons that are free to move through the solid."
+    : (c.cls === "ionic"
+      ? "An ionic solid cannot conduct because its ions are locked in the lattice, but when it melts or dissolves the ions are free to move and carry the current."
+      : "A molecular substance has no ions and no delocalized electrons in any state, so it never conducts, and its weak intermolecular attractions give it a low melting point.");
+  return mcq(c.t + ". How should this sample be classified?",
+    correct, ds,
+    why + " The classification is <b>" + correct + "</b>.",
+    { cue: cues.indexOf(c), cls: c.cls });
+});
+
 /* ----- bank-u3.js ----- */
 // Chemistry 2202 Review, Unit 3: Organic Chemistry. Fragment file: E(...) registrations only.
 // Tranche 7 (Nov 2026): condensed structure figures (chemCondensedFigure and
@@ -3826,4 +4312,4 @@ E("br-b3-molecular-poly", 4, ["B.3"], 2, "gen", function () {
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
+window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
