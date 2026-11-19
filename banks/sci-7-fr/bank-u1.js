@@ -13,6 +13,7 @@
 // CRMARKS: s7f-u1-cr-data-display=3
 // CRMARKS: s7f-u1-cr-defend-position=3
 // CRMARKS: s7f-u1-cr-succession-stages=2
+// CRMARKS: s7f-u1-cr-succession-signs=3
 // Sciences 7, Unité 1 : Les interactions au sein des écosystèmes
 // (SC7.1.1 à SC7.3.13), banque construite le Nov 16, 2026.
 // Existing tests and question banks were reviewed only to gauge the expected depth and range of treatment. All items in this bank were written new for this app.
@@ -312,6 +313,28 @@ E("s7f-u1-cr-succession-compare", 1, ["SC7.1.10"], 2, "var", varset([
     return textq("Un terrain A est une carrière de roche abandonnée, sans sol. Un terrain B est une forêt rasée par le feu, dont le sol est intact. Compare la succession qui se déroulera sur chaque terrain : dis quel type de succession aura lieu sur chacun et pourquoi l’un des terrains atteindra l’étape forestière beaucoup plus vite que l’autre. (2 points)", ["terrain A : succession primaire, car il n’y a pas de sol; la formation du sol prend très longtemps", "terrain B : succession secondaire, car le sol survit; la repousse est beaucoup plus rapide"], "<b>Réponse modèle :</b> Sur le terrain A, la succession est primaire : elle commence sur la roche nue, sans sol, et les organismes pionniers doivent d’abord contribuer à former un sol, ce qui prend très longtemps avant que des arbustes et des arbres puissent s’installer. Sur le terrain B, la succession est secondaire : le sol, avec ses nutriments et ses graines, a survécu au feu, donc les plantes repoussent vite et l’étape forestière revient beaucoup plus rapidement.<br><br><b>Points d’attribution :</b> 1 point pour le terrain A : succession primaire, liée à l’absence de sol. 1 point pour le terrain B : succession secondaire, liée au sol intact et à la repousse plus rapide.", {});
   }
 ]), ["Applique le même test aux deux terrains : le sol est-il présent au départ?", "La vitesse de la succession dépend surtout du travail de formation du sol déjà fait ou non."]);
+
+/* Ajout du 19 novembre 2026 : comble l’écart de dénomination des
+   réponses construites du Test 3 de l’unité 1 dans le plan d’épreuves.
+   Le test ne porte que sur SC7.1.10, dont le bassin ne contenait qu’une
+   réponse construite de 2 points contre une cible de 3 points. Voir
+   Spec-French-Test-Map-2026-11-19.md, section 4. */
+E("s7f-u1-cr-succession-signs", 1, ["SC7.1.10"], 2, "var", varset([
+  function () {
+    return textq("Sur une dune de sable nouvellement formée au bord de la mer, on observe d’abord quelques herbes éparses. Des années plus tard, des arbustes y poussent, et plus tard encore, de petits arbres apparaissent du côté abrité du vent. (a) Nomme le type de succession en cours et justifie ta réponse. (b) Explique comment les herbes rendent possible l’arrivée des arbustes. (c) Explique pourquoi les arbres apparaissent seulement à la fin. (3 points)",
+      ["(a) Succession primaire : la dune est une surface neuve, sans sol au départ.",
+       "(b) Les herbes retiennent le sable, et leurs racines et leurs restes morts commencent à former un sol qui garde l’eau et les nutriments dont les arbustes ont besoin.",
+       "(c) Les arbres exigent un sol plus profond et plus riche; il faut le temps que les étapes précédentes le construisent."],
+      "<b>Réponse modèle :</b> (a) C’est une succession primaire : la dune est une surface nouvellement formée, sans sol; la vie doit s’y installer à partir du sable nu. (b) Les herbes sont les organismes pionniers de la dune : leurs racines retiennent le sable et empêchent le vent de tout emporter, et leurs restes morts, en se décomposant, commencent à former un sol qui retient l’eau et les nutriments. C’est ce début de sol qui permet aux arbustes de s’enraciner. (c) Les arbres demandent un sol plus profond, plus riche et plus stable que le sable des débuts. Ce sol n’existe qu’après des années de travail des herbes puis des arbustes, donc les arbres ne peuvent apparaître qu’à la fin de la séquence.<br><br><b>Points d’attribution :</b> 1 point pour la succession primaire, justifiée par l’absence de sol au départ. 1 point pour le rôle des herbes : retenir le sable et amorcer la formation du sol. 1 point pour les arbres en dernier, liés au sol profond et riche construit par les étapes précédentes.", {});
+  },
+  function () {
+    return textq("Un glacier recule lentement et laisse derrière lui une surface de roche nue. Près du glacier, on ne trouve que des lichens et des mousses; un peu plus loin, des herbes et des arbustes; et encore plus loin, une jeune forêt. (a) Nomme le type de succession en cours et justifie ta réponse. (b) Explique pourquoi les organismes changent ainsi avec la distance au glacier. (c) Explique le rôle des lichens dans l’apparition éventuelle de la forêt. (3 points)",
+      ["(a) Succession primaire : la roche laissée par le glacier est une surface sans sol.",
+       "(b) La roche loin du glacier est exposée depuis plus longtemps : son sol est plus développé, donc des espèces plus exigeantes peuvent y vivre; la distance au glacier reflète le temps écoulé depuis le début de la succession.",
+       "(c) Les lichens, organismes pionniers, colonisent la roche nue et contribuent à la désagréger et à former le premier sol, sans lequel ni les herbes, ni les arbustes, ni la forêt ne peuvent s’installer."],
+      "<b>Réponse modèle :</b> (a) C’est une succession primaire : le glacier laisse une surface de roche nue, sans aucun sol, et la colonisation recommence à zéro. (b) Plus on s’éloigne du glacier, plus la surface est exposée depuis longtemps. Le sol y est donc plus épais et plus riche, formé par les étapes déjà franchies, ce qui permet à des espèces plus exigeantes, herbes, arbustes puis arbres, de s’y installer. La distance au glacier est en fait une échelle de temps. (c) Les lichens sont les pionniers : ils vivent sur la roche nue, la désagrègent peu à peu et, en mourant, fournissent la matière des premiers sols. Sans ce premier sol, aucune des étapes suivantes, jusqu’à la forêt, ne serait possible.<br><br><b>Points d’attribution :</b> 1 point pour la succession primaire, justifiée par la roche sans sol. 1 point pour le lien entre la distance, le temps d’exposition et le développement du sol. 1 point pour le rôle des lichens pionniers dans la formation du premier sol.", {});
+  }
+]), ["Une seule question décide du type : y a-t-il un sol au départ?", "Chaque étape prépare le sol dont la suivante a besoin."]);
 
 /* ---------- SC7.2.1 Termes scientifiques pertinents ---------- */
 E("s7f-u1-term-context", 1, ["SC7.2.1"], 1, "var", varset([

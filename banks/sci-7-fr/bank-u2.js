@@ -12,6 +12,7 @@
 // CRMARKS: s7f-u2-cr-display=3
 // CRMARKS: s7f-u2-cr-design-test=4
 // CRMARKS: s7f-u2-cr-conclusion=3
+// CRMARKS: s7f-u2-cr-instrument-jobs=3
 // Sciences 7, Unite 2 : La chaleur (SC7.4.1 a SC7.6.9), banque
 // construite le Nov 16, 2026.
 // Existing tests and question banks were reviewed only to gauge the expected depth and range of treatment. All items in this bank were written new for this app.
@@ -53,6 +54,29 @@ E("s7f-u2-instrument-choose", 2, ["SC7.4.1"], 3, "var", varset([
     return mcq("Il faut surveiller la température à l’intérieur d’un four industriel très chaud et enregistrer les valeurs à distance, sans ouvrir le four. Quel instrument convient le mieux?", "Un thermocouple relié à un enregistreur, conçu pour les températures très élevées", ["Un thermomètre à liquide en verre, glissé par la porte entrouverte du four chaud", "Un thermomètre à bilame domestique, fixé à la poignée extérieure du four chaud", "Un thermomètre à infrarouge de cuisine, pointé une fois sur la porte du four"], "Le thermocouple supporte de très hautes températures et produit un signal électrique qu’on peut enregistrer à distance. Le thermomètre à liquide en verre se briserait et n’enregistre rien.", {});
   }
 ]), ["Énumère les exigences : chaleur extrême, mesure continue, distance.", "L’instrument gagnant satisfait les trois exigences à la fois."]);
+
+/* Ajout du 19 novembre 2026 : comble l’écart de dénomination des
+   réponses construites du Test 1 de l’unité 2 dans le plan d’épreuves.
+   Le test ne porte que sur SC7.4.1, qui ne contenait aucune réponse
+   construite, contre une cible de 3 points. Entrée jumelle de
+   s7-u2-cr-instrument-jobs (même question, même niveau, même nombre
+   de points). Voir Spec-French-Test-Map-2026-11-19.md, section 4. */
+E("s7f-u2-cr-instrument-jobs", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Trois tâches de mesure de la température (3 points)\n(a) Une sauveteuse doit vérifier si la surface métallique d’une glissoire est trop chaude pour les enfants, sans la toucher elle-même. (1)\n(b) Un potier doit connaître la température à l’intérieur d’un four de cuisson en marche, bien au-delà du point d’ébullition de l’eau. (1)\n(c) Le propriétaire d’une serre veut que le chauffage se mette en marche et s’arrête tout seul selon la température de l’air, sans personne sur place. (1)\nPour chaque tâche, nomme l’instrument qui convient et dis pourquoi il convient.",
+      ["(a) Un thermomètre à infrarouge : il lit le rayonnement émis par la surface, donc aucun contact n’est nécessaire.",
+       "(b) Un thermocouple : il est conçu pour supporter et mesurer des températures bien au-delà de la portée d’un thermomètre en verre.",
+       "(c) Un thermostat à bilame : la lame se courbe quand la température change et peut actionner l’interrupteur toute seule."],
+      "<b>Réponse modèle :</b> (a) Un thermomètre à infrarouge : il mesure le rayonnement invisible émis par la surface chaude, donc la sauveteuse obtient la lecture à distance, sans toucher la glissoire. (b) Un thermocouple : ses fils soudés de deux métaux différents supportent la chaleur extrême d’un four en marche et transforment la température en signal électrique, là où un thermomètre à liquide en verre se briserait. (c) Un thermostat à bilame : ses deux métaux soudés se dilatent inégalement, la lame se courbe quand la température change, et cette courbure peut ouvrir et fermer l’interrupteur du chauffage toute seule.<br><br><b>Points d’attribution :</b> 1 point par tâche : l’instrument qui convient, nommé, avec la raison pour laquelle il répond aux conditions de la tâche.", {});
+  },
+  function () {
+    return textq("Trois tâches de mesure de la température (3 points)\n(a) Une station météorologique enregistre la température de l’air jour et nuit et envoie chaque lecture par des fils jusqu’à un affichage situé dans un bâtiment. (1)\n(b) Une élève mesure la température d’une eau tiède dans un bécher pendant une expérience en classe. (1)\n(c) Une alarme de chaleur doit déclencher un interrupteur toute seule si l’air d’une salle d’entreposage dépasse une température réglée. (1)\nPour chaque tâche, nomme l’instrument qui convient et dis pourquoi il convient.",
+      ["(a) Un thermomètre à résistance : la résistance électrique de sa sonde varie avec la température et le signal voyage par les fils jusqu’à l’affichage.",
+       "(b) Un thermomètre à liquide en verre : l’instrument courant pour un liquide en laboratoire, lu directement selon la hauteur de la colonne.",
+       "(c) Un bilame : il se courbe quand la température monte et peut déclencher l’interrupteur de l’alarme tout seul."],
+      "<b>Réponse modèle :</b> (a) Un thermomètre à résistance : la résistance de sa sonde varie avec la température, et ce signal électrique peut être envoyé par des fils jusqu’à un affichage et enregistré, ce qu’exige une station météorologique. (b) Un thermomètre à liquide en verre : c’est l’outil habituel pour mesurer un liquide en laboratoire; le liquide se dilate en chauffant et la hauteur de la colonne donne directement la lecture. (c) Un bilame : deux métaux soudés se dilatent inégalement, la lame se courbe à mesure que la salle se réchauffe, et à la température réglée, la courbure déclenche l’interrupteur, donc l’alarme fonctionne sans surveillance.<br><br><b>Points d’attribution :</b> 1 point par tâche : l’instrument qui convient, nommé, avec la raison pour laquelle il répond aux conditions de la tâche.", {});
+  }
+]), ["Chaque tâche a une condition qui élimine la plupart des instruments : aucun contact, chaleur extrême, déclenchement automatique, signal par fils, liquide ordinaire.", "Nomme l’instrument et la condition qu’il satisfait, une tâche à la fois."]);
 
 /* ---------- SC7.4.2 La temperature et le modele particulaire ---------- */
 E("s7f-u2-temp-define", 2, ["SC7.4.2"], 1, "var", varset([

@@ -43,29 +43,37 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 eval(fs.readFileSync(ROOT + "/banks/sci-7-fr.js", "utf8"));
 const CR = window.__BANK_CRMARKS || {};
 
-ok(BANK.length === 300, "bank registers 300 entries, saw " + BANK.length);
+/* Pin update, November 19, 2026: two CR entries added to close the
+   French test-blueprint CR denomination gaps (s7f-u1-cr-succession-signs,
+   3 marks at SC7.1.10, and s7f-u2-cr-instrument-jobs, 3 marks at
+   SC7.4.1; see Spec-French-Test-Map-2026-11-19.md, Section 4). Census
+   pins below are updated accordingly: bank 302, U1 81 entries and
+   U2 76, CR manifest 60 entries and 165 marks, U1 CR 16 entries and
+   44 marks, U2 CR 15 entries and 42 marks, U1 levels 32/33/16,
+   U2 levels 30/31/15. */
+ok(BANK.length === 302, "bank registers 302 entries, saw " + BANK.length);
 const U1 = BANK.filter(e => e.unit === 1);
-ok(U1.length === 80, "80 entries are Unit 1, saw " + U1.length);
+ok(U1.length === 81, "81 entries are Unit 1, saw " + U1.length);
 const U2 = BANK.filter(e => e.unit === 2);
-ok(U2.length === 75, "75 entries are Unit 2, saw " + U2.length);
+ok(U2.length === 76, "76 entries are Unit 2, saw " + U2.length);
 const U3 = BANK.filter(e => e.unit === 3);
 ok(U3.length === 60, "60 entries are Unit 3, saw " + U3.length);
 const U4 = BANK.filter(e => e.unit === 4);
 ok(U4.length === 85, "85 entries are Unit 4, saw " + U4.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 300, "all entry ids unique");
+ok(ids.size === 302, "all entry ids unique");
 ok(BANK.every(e => e.hint1 && e.hint2), "every entry carries two hint stages");
 
-const SPEC_U1 = { "SC7.1.1": 4, "SC7.1.2": 3, "SC7.1.3": 2, "SC7.1.4": 3, "SC7.1.5": 3, "SC7.1.6": 3, "SC7.1.7": 3, "SC7.1.8": 3, "SC7.1.9": 3, "SC7.1.10": 3, "SC7.2.1": 2, "SC7.2.2": 3, "SC7.2.3": 3, "SC7.2.4": 3, "SC7.2.5": 3, "SC7.2.6": 2, "SC7.2.7": 3, "SC7.2.8": 2, "SC7.3.1": 3, "SC7.3.2": 2, "SC7.3.3": 3, "SC7.3.4": 2, "SC7.3.6": 2, "SC7.3.7": 3, "SC7.3.8": 3, "SC7.3.9": 3, "SC7.3.10": 2, "SC7.3.11": 2, "SC7.3.12": 2, "SC7.3.13": 2 };
+const SPEC_U1 = { "SC7.1.1": 4, "SC7.1.2": 3, "SC7.1.3": 2, "SC7.1.4": 3, "SC7.1.5": 3, "SC7.1.6": 3, "SC7.1.7": 3, "SC7.1.8": 3, "SC7.1.9": 3, "SC7.1.10": 4, "SC7.2.1": 2, "SC7.2.2": 3, "SC7.2.3": 3, "SC7.2.4": 3, "SC7.2.5": 3, "SC7.2.6": 2, "SC7.2.7": 3, "SC7.2.8": 2, "SC7.3.1": 3, "SC7.3.2": 2, "SC7.3.3": 3, "SC7.3.4": 2, "SC7.3.6": 2, "SC7.3.7": 3, "SC7.3.8": 3, "SC7.3.9": 3, "SC7.3.10": 2, "SC7.3.11": 2, "SC7.3.12": 2, "SC7.3.13": 2 };
 const p1 = {}; U1.forEach(e => { p1[e.indicators[0]] = (p1[e.indicators[0]] || 0) + 1; });
 for (const tag of Object.keys(SPEC_U1)) ok((p1[tag] || 0) === SPEC_U1[tag], "U1 primary count " + tag + " = " + SPEC_U1[tag] + ", saw " + (p1[tag] || 0));
-ok(U1.filter(e => e.level === 1).length === 32 && U1.filter(e => e.level === 2).length === 32 && U1.filter(e => e.level === 3).length === 16, "U1 levels 32/32/16");
-ok(U1.filter(e => CR[e.id]).length === 15 && U1.reduce((s, e) => s + (CR[e.id] || 0), 0) === 41, "U1 CR 15 entries, 41 marks");
-const SPEC_U2 = { "SC7.4.1": 4, "SC7.4.2": 4, "SC7.4.3": 4, "SC7.4.4": 4, "SC7.4.5": 5, "SC7.4.6": 3, "SC7.4.7": 3, "SC7.5.1": 2, "SC7.5.2": 3, "SC7.5.3": 2, "SC7.5.4": 2, "SC7.5.5": 3, "SC7.5.6": 2, "SC7.5.7": 3, "SC7.5.8": 3, "SC7.5.9": 2, "SC7.5.10": 2, "SC7.6.1": 3, "SC7.6.2": 2, "SC7.6.3": 4, "SC7.6.4": 2, "SC7.6.5": 3, "SC7.6.6": 3, "SC7.6.7": 2, "SC7.6.8": 2, "SC7.6.9": 3 };
+ok(U1.filter(e => e.level === 1).length === 32 && U1.filter(e => e.level === 2).length === 33 && U1.filter(e => e.level === 3).length === 16, "U1 levels 32/33/16");
+ok(U1.filter(e => CR[e.id]).length === 16 && U1.reduce((s, e) => s + (CR[e.id] || 0), 0) === 44, "U1 CR 16 entries, 44 marks");
+const SPEC_U2 = { "SC7.4.1": 5, "SC7.4.2": 4, "SC7.4.3": 4, "SC7.4.4": 4, "SC7.4.5": 5, "SC7.4.6": 3, "SC7.4.7": 3, "SC7.5.1": 2, "SC7.5.2": 3, "SC7.5.3": 2, "SC7.5.4": 2, "SC7.5.5": 3, "SC7.5.6": 2, "SC7.5.7": 3, "SC7.5.8": 3, "SC7.5.9": 2, "SC7.5.10": 2, "SC7.6.1": 3, "SC7.6.2": 2, "SC7.6.3": 4, "SC7.6.4": 2, "SC7.6.5": 3, "SC7.6.6": 3, "SC7.6.7": 2, "SC7.6.8": 2, "SC7.6.9": 3 };
 const p2 = {}; U2.forEach(e => { p2[e.indicators[0]] = (p2[e.indicators[0]] || 0) + 1; });
 for (const tag of Object.keys(SPEC_U2)) ok((p2[tag] || 0) === SPEC_U2[tag], "U2 primary count " + tag + " = " + SPEC_U2[tag] + ", saw " + (p2[tag] || 0));
-ok(U2.filter(e => e.level === 1).length === 30 && U2.filter(e => e.level === 2).length === 30 && U2.filter(e => e.level === 3).length === 15, "U2 levels 30/30/15");
-ok(U2.filter(e => CR[e.id]).length === 14 && U2.reduce((s, e) => s + (CR[e.id] || 0), 0) === 39, "U2 CR 14 entries, 39 marks");
+ok(U2.filter(e => e.level === 1).length === 30 && U2.filter(e => e.level === 2).length === 31 && U2.filter(e => e.level === 3).length === 15, "U2 levels 30/31/15");
+ok(U2.filter(e => CR[e.id]).length === 15 && U2.reduce((s, e) => s + (CR[e.id] || 0), 0) === 42, "U2 CR 15 entries, 42 marks");
 const SPEC_U3 = { "SC7.7.1": 4, "SC7.7.2": 4, "SC7.7.3": 4, "SC7.7.4": 4, "SC7.7.5": 3, "SC7.7.6": 3, "SC7.7.7": 3, "SC7.8.1": 3, "SC7.8.2": 2, "SC7.8.3": 2, "SC7.8.4": 3, "SC7.8.5": 3, "SC7.8.6": 2, "SC7.9.1": 3, "SC7.9.2": 2, "SC7.9.3": 4, "SC7.9.4": 2, "SC7.9.5": 3, "SC7.9.6": 2, "SC7.9.7": 2, "SC7.9.8": 2 };
 const p3 = {}; U3.forEach(e => { p3[e.indicators[0]] = (p3[e.indicators[0]] || 0) + 1; });
 for (const tag of Object.keys(SPEC_U3)) ok((p3[tag] || 0) === SPEC_U3[tag], "U3 primary count " + tag + " = " + SPEC_U3[tag] + ", saw " + (p3[tag] || 0));
@@ -76,7 +84,7 @@ const p4 = {}; U4.forEach(e => { p4[e.indicators[0]] = (p4[e.indicators[0]] || 0
 for (const tag of Object.keys(SPEC_U4)) ok((p4[tag] || 0) === SPEC_U4[tag], "U4 primary count " + tag + " = " + SPEC_U4[tag] + ", saw " + (p4[tag] || 0));
 ok(U4.filter(e => e.level === 1).length === 34 && U4.filter(e => e.level === 2).length === 34 && U4.filter(e => e.level === 3).length === 17, "U4 levels 34/34/17");
 ok(U4.filter(e => CR[e.id]).length === 17 && U4.reduce((s, e) => s + (CR[e.id] || 0), 0) === 46, "U4 CR 17 entries, 46 marks");
-ok(Object.keys(CR).length === 58 && Object.values(CR).reduce((a, b) => a + b, 0) === 159, "course CR manifest 58 entries, 159 marks");
+ok(Object.keys(CR).length === 60 && Object.values(CR).reduce((a, b) => a + b, 0) === 165, "course CR manifest 60 entries, 165 marks");
 ok((BANK.find(e => e.id === "s7f-u1-cr-design-experiment") || {}).noCompose === true, "design CR s7f-u1-cr-design-experiment carries noCompose");
 ok((BANK.find(e => e.id === "s7f-u2-cr-design-test") || {}).noCompose === true, "design CR s7f-u2-cr-design-test carries noCompose");
 ok((BANK.find(e => e.id === "s7f-u3-cr-design-solubility") || {}).noCompose === true, "design CR s7f-u3-cr-design-solubility carries noCompose");
