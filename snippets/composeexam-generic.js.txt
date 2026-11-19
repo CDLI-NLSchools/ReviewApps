@@ -86,6 +86,22 @@ function composeExam(units,inds,includePK){
          preferred over any other exact subset; otherwise the
          composer falls back to any combination reaching the
          required total, exactly as before.
+       - Per-entry dealing limit (Nov 19, 2026): within one paper
+         an entry is dealt once while undealt candidate entries
+         remain. The selected-response draw (each level band in
+         turn, then the any-level top-up) tracks every appearance
+         on the paper, across parts and across sections: the
+         entries the paper's chosen constructed-response options
+         will deal count as claimed from the start, so an entry
+         dealt in one section is not dealt again in another while
+         alternatives remain. Only when a band cannot fill from
+         undealt entries does the draw re-deal, choosing the
+         least-dealt entries first; a band that still cannot fill
+         flags the paper short exactly as before. The fixed-shape
+         sibling branch (pairCr, trioCr, sextetCr) follows the
+         same rule within its own draw: its Section A prefers
+         undealt entries, and its Section B selection prefers
+         entries Section A has not dealt.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -118,20 +134,33 @@ function composeExam(units,inds,includePK){
     var seenA={};
     function genFromA(e){var q=e.gen();q._entry=e;return q;}
     var srA=[];
+    /* Per-entry dealing limit (Nov 19, 2026): pickFreshA picks
+       among the least-dealt candidates (least tried within this
+       call first), so an entry is dealt once while undealt
+       candidates remain and re-dealt only as the last resort. */
+    var dealtA={};
+    function pickFreshA(cands,tried){
+      var minS=null;for(var fi=0;fi<cands.length;fi++){var fs=dealtA[cands[fi].id]||0;if(minS===null||fs<minS)minS=fs;}
+      var tier=cands.filter(function(e){return (dealtA[e.id]||0)===minS;});
+      var minT=null;for(var ti=0;ti<tier.length;ti++){var ft=tried[tier[ti].id]||0;if(minT===null||ft<minT)minT=ft;}
+      tier=tier.filter(function(e){return (tried[e.id]||0)===minT;});
+      return pick(tier);
+    }
     function takeSRA(level,count){
       var cands=pool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
-      var guard=0;
+      var triedA={},guard=0;
       while(count>0&&guard++<600&&cands.length){
-        var q=genFromA(pick(cands));var c=canonQ(q);
-        if(q.type!=="mc"||seenA[c])continue;seenA[c]=1;srA.push({q:q,marks:1});count--;
+        var eA=pickFreshA(cands,triedA);triedA[eA.id]=(triedA[eA.id]||0)+1;
+        var q=genFromA(eA);var c=canonQ(q);
+        if(q.type!=="mc"||seenA[c])continue;seenA[c]=1;srA.push({q:q,marks:1});dealtA[eA.id]=(dealtA[eA.id]||0)+1;count--;
       }
       return count;
     }
     var srTP=ut.srLevels||[2,5,1];
     var missA=0;for(var LA=1;LA<=3;LA++){missA+=takeSRA(LA,srTP[LA-1]);}
     if(missA>0){
-      var extraA=pool.filter(function(e){return probeType(e)==="mc";});var g2A=0;
-      while(missA>0&&g2A++<600&&extraA.length){var qA=genFromA(pick(extraA));var cA=canonQ(qA);if(qA.type!=="mc"||seenA[cA])continue;seenA[cA]=1;srA.push({q:qA,marks:1});missA--;}
+      var extraA=pool.filter(function(e){return probeType(e)==="mc";});var triedB={},g2A=0;
+      while(missA>0&&g2A++<600&&extraA.length){var eB2=pickFreshA(extraA,triedB);triedB[eB2.id]=(triedB[eB2.id]||0)+1;var qA=genFromA(eB2);var cA=canonQ(qA);if(qA.type!=="mc"||seenA[cA])continue;seenA[cA]=1;srA.push({q:qA,marks:1});dealtA[eB2.id]=(dealtA[eB2.id]||0)+1;missA--;}
     }
     var chosenA=null,crWantA=2,crTargetA=targetP;
     if(ut.pairCr){
@@ -140,7 +169,13 @@ function composeExam(units,inds,includePK){
     for(var iA=0;iA<crPoolA.length;iA++)for(var jA=iA+1;jA<crPoolA.length;jA++){if(crPoolA[iA].marks+crPoolA[jA].marks===targetP)pairsA.push([crPoolA[iA],crPoolA[jA]]);}
     pairsA=shuffle(pairsA);
     var withL3A=pairsA.filter(function(p){return p[0].e.level===3||p[1].e.level===3;});
-    chosenA=withL3A.length?withL3A[0]:(pairsA.length?pairsA[0]:null);
+    /* Per-entry limit across sections (Nov 19, 2026): a pair
+       whose entries Section A already dealt is taken only when
+       no fresh pair (or no fresh Level 3 pair) exists. */
+    var freshPairA=function(p){return !dealtA[p[0].e.id]&&!dealtA[p[1].e.id];};
+    var freshL3A=withL3A.filter(freshPairA);
+    var freshPairsA=pairsA.filter(freshPairA);
+    chosenA=freshL3A.length?freshL3A[0]:(withL3A.length?withL3A[0]:(freshPairsA.length?freshPairsA[0]:(pairsA.length?pairsA[0]:null)));
     } else if(ut.sextetCr){
       /* Math 1202's Section B, from its standalone composer
          (TEST_CR_COUNT 6, TEST_CR_TARGET 15): three 2-mark and
@@ -153,11 +188,19 @@ function composeExam(units,inds,includePK){
       var threesS=crPoolS.filter(function(x){return x.marks===3;});
       crWantA=6;crTargetA=ut.cr;
       if(twosS.length>=3&&threesS.length>=3){
+        var l3SelS=null;
         for(var atS=0;atS<500&&!chosenA;atS++){
           var selS=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
-          if(selS.some(function(x){return x.e.level===3;}))chosenA=selS;
+          if(selS.some(function(x){return x.e.level===3;})){
+            if(!l3SelS)l3SelS=selS;
+            /* Per-entry limit across sections (Nov 19, 2026):
+               prefer a Level 3 sextet whose entries Section A
+               has not dealt; the first Level 3 sextet found is
+               the fallback, exactly as before. */
+            if(selS.every(function(x){return !dealtA[x.e.id];}))chosenA=selS;
+          }
         }
-        if(!chosenA)chosenA=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
+        if(!chosenA)chosenA=l3SelS||shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
       }
     } else {
       /* Math 2202's Section B, from its standalone composer
@@ -171,11 +214,19 @@ function composeExam(units,inds,includePK){
       var threesT=crPoolT.filter(function(x){return x.marks===3;});
       crWantA=3;crTargetA=ut.cr;
       if(twosT.length>=1&&threesT.length>=2){
+        var l3SelT=null;
         for(var atT=0;atT<500&&!chosenA;atT++){
           var selT=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
-          if(selT.some(function(x){return x.e.level===3;}))chosenA=selT;
+          if(selT.some(function(x){return x.e.level===3;})){
+            if(!l3SelT)l3SelT=selT;
+            /* Per-entry limit across sections (Nov 19, 2026):
+               prefer a Level 3 trio whose entries Section A
+               has not dealt; the first Level 3 trio found is
+               the fallback, exactly as before. */
+            if(selT.every(function(x){return !dealtA[x.e.id];}))chosenA=selT;
+          }
         }
-        if(!chosenA)chosenA=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
+        if(!chosenA)chosenA=l3SelT||shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
       }
     }
     var crA=[],crMarksA=0,l3A=0,shortA=missA>0;
@@ -319,6 +370,26 @@ function composeExam(units,inds,includePK){
     var indCount={},reservedCR={};
     function indTake(e){var k=indKeyOf(e);if(k)indCount[k]=(indCount[k]||0)+1;}
     function indRoom(part,e){if(!part.indCap)return true;var k=indKeyOf(e);if(!k)return true;return (indCount[k]||0)<part.indCap;}
+    /* Per-entry dealing limit (Nov 19, 2026): dealtCount tracks
+       every appearance on this paper, across parts and across
+       sections; claimedCR holds the entries the paper's chosen
+       CR options will deal, so the SR draw counts those
+       appearances in advance and an entry is re-dealt only when
+       no less-dealt candidate remains. A claim is released when
+       its CR item actually draws (the appearance then sits in
+       dealtCount). pickFresh picks among the least-dealt
+       candidates, least tried within the call first. */
+    var dealtCount={},claimedCR={};
+    combo.opts.forEach(function(o){o.items.forEach(function(x){claimedCR[x.e.id]=1;});});
+    function useScore(e){return (dealtCount[e.id]||0)+(claimedCR[e.id]?1:0);}
+    function noteDealt(e){if(claimedCR[e.id])delete claimedCR[e.id];dealtCount[e.id]=(dealtCount[e.id]||0)+1;}
+    function pickFresh(cands,tried){
+      var minS=null;for(var fi=0;fi<cands.length;fi++){var fs=useScore(cands[fi]);if(minS===null||fs<minS)minS=fs;}
+      var tier=cands.filter(function(e){return useScore(e)===minS;});
+      var minT=null;for(var ti=0;ti<tier.length;ti++){var ft=tried[tier[ti].id]||0;if(minT===null||ft<minT)minT=ft;}
+      tier=tier.filter(function(e){return (tried[e.id]||0)===minT;});
+      return pick(tier);
+    }
     parts.forEach(function(part,pi){
       var ppool=pool.filter(function(e){return part.units.indexOf(e.unit)>=0;});
       var plan=combo.plans[pi];
@@ -330,19 +401,20 @@ function composeExam(units,inds,includePK){
       if(part.indCap)combo.opts[pi].items.forEach(function(x){reservedCR[x.e.id]=1;indTake(x.e);});
       function takeSR(level,count){
         var cands=ppool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
-        var guard=0;
+        var tried={},guard=0;
         while(count>0&&guard++<600&&cands.length){
-          var eSR=pick(cands);
-          if(!indRoom(part,eSR)){cands.splice(cands.indexOf(eSR),1);continue;}
+          cands=cands.filter(function(e){return indRoom(part,e);});
+          if(!cands.length)break;
+          var eSR=pickFresh(cands,tried);tried[eSR.id]=(tried[eSR.id]||0)+1;
           var q=genFrom(eSR);var c=canonQ(q);
-          if(q.type!=="mc"||seen[c])continue;seen[c]=1;srItems.push({q:q,marks:1});indTake(eSR);count--;
+          if(q.type!=="mc"||seen[c])continue;seen[c]=1;srItems.push({q:q,marks:1});indTake(eSR);noteDealt(eSR);count--;
         }
         return count;
       }
       var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}
       if(miss>0){
-        var allC=ppool.filter(function(e){return probeType(e)==="mc";});var guard2=0;
-        while(miss>0&&guard2++<900&&allC.length){var eB=pick(allC);if(!indRoom(part,eB)){allC.splice(allC.indexOf(eB),1);continue;}var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);miss--;}
+        var allC=ppool.filter(function(e){return probeType(e)==="mc";});var triedT={},guard2=0;
+        while(miss>0&&guard2++<900&&allC.length){allC=allC.filter(function(e){return indRoom(part,e);});if(!allC.length)break;var eB=pickFresh(allC,triedT);triedT[eB.id]=(triedT[eB.id]||0)+1;var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);noteDealt(eB);miss--;}
       }
       if(miss>0)short=true;
       var cp=crPoolFor(part);
@@ -352,6 +424,10 @@ function composeExam(units,inds,includePK){
         do{q=genFrom(x.e);c=canonQ(q);tries++;}while(seen[c]&&tries<25);
         if(seen[c]){
           var subs=cp.filter(function(y){return y.e.level===x.e.level&&y.marks===x.marks&&y.e!==x.e&&(!part.indCap||indKeyOf(y.e)===indKeyOf(x.e)||(indCount[indKeyOf(y.e)]||0)<part.indCap);});
+          /* Per-entry limit (Nov 19, 2026): substitutes are tried
+             least-dealt first, so a collision moves the item to
+             an entry the paper has not used yet when it can. */
+          subs.sort(function(a,b){return useScore(a.e)-useScore(b.e);});
           for(var si=0;si<subs.length&&seen[c];si++){var q2=null,c2=null,t2=0;do{q2=genFrom(subs[si].e);c2=canonQ(q2);t2++;}while(seen[c2]&&t2<25);if(!seen[c2]){q=q2;c=c2;
             /* A substitute on a different primary indicator takes
                over the reserved item's cap slot: release the
@@ -360,7 +436,7 @@ function composeExam(units,inds,includePK){
           }}
         }
         if(seen[c])return false;
-        seen[c]=1;partCR.push({q:q,marks:x.marks});return true;
+        seen[c]=1;partCR.push({q:q,marks:x.marks});noteDealt(q._entry);return true;
       }
       var bShort=false;
       combo.opts[pi].items.forEach(function(x){if(!drawCR(x))bShort=true;});

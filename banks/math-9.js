@@ -6482,6 +6482,196 @@ E("u2-gap-composite-sa-mc", 2, ["9.2"], 2, "gen", function () {
 }, ["Treat the stand as two separate solids first, then adjust for the join.", "Add the two surface areas, then subtract the touching rectangle twice since it is hidden on both solids."]);
 
 
+// Repeat-fix tranche (Nov 19, 2026): eight Level 2 multiple-choice
+// entries for Unit 2, authored after set G6N4MM dealt the unit's two
+// Level 2 MC generators (u2-spot-error, u2-gap-composite-sa-mc) seven
+// times between them to fill the unit test's 7-item Level 2 band.
+// Each entry below covers an indicator that had no Level 2 MC entry;
+// together with the two existing entries the unit's Level 2 MC pool
+// stands at 10 distinct entries against the 7-item band.
+
+// PG. L2, 6.5, SR: best one-decimal estimate of a square root, judged
+// by squaring the neighbouring tenths (the MC companion to the
+// u2-gap-estimate-gap-cr written entry on the same indicator).
+E("u2-gap-estimate-best-mc", 2, ["6.5"], 2, "gen", function () {
+  var n = u2nonSquare(12, 399);
+  var lo = Math.floor(Math.sqrt(n)), hi = lo + 1;
+  var est = u2r1(Math.sqrt(n));
+  var sq = function (x) { return Math.round(x * x * 100) / 100; };
+  var cands = [u2r1(est - 0.2), u2r1(est + 0.2), lo, hi, u2r1(est - 0.5), u2r1(est + 0.5)];
+  var ds = [];
+  for (var i = 0; i < cands.length && ds.length < 3; i++) {
+    var v = cands[i];
+    if (v > 0 && v !== est && !ds.some(function (d) { return d.v === v; })) {
+      ds.push({ v: v, fb: "Square it: " + fmt(v) + " squared is " + fmt(sq(v)) + ", which is farther from " + n + " than " + fmt(sq(est)) + " is." });
+    }
+  }
+  var prompt = "What is the best estimate for \\(\\sqrt{" + n + "}\\), to one decimal place?";
+  var sol = "The perfect squares near " + n + " are \\(" + lo + "^{2} = " + (lo * lo) + "\\) and \\(" + hi + "^{2} = " + (hi * hi) + "\\), so the root lies between " + lo + " and " + hi + ". Squaring the tenths around the root: \\[ \\begin{aligned} " + fmt(u2r1(est - 0.1), 1) + "^{2} &= " + fmt(sq(u2r1(est - 0.1)), 2) + " \\\\ " + fmt(est, 1) + "^{2} &= " + fmt(sq(est), 2) + " \\\\ " + fmt(u2r1(est + 0.1), 1) + "^{2} &= " + fmt(sq(u2r1(est + 0.1)), 2) + " \\end{aligned} \\] " + fmt(sq(est), 2) + " is the closest of these to " + n + ", so the best estimate is <b>" + fmt(est, 1) + "</b>.";
+  return mcq(prompt, { t: fmt(est), fb: "Yes: " + fmt(est) + " squared is " + fmt(sq(est)) + ", the closest square to " + n + "." }, fmtPairDs(fmt(est), ds), sol, { mode: "gap-estimate-best", n: n });
+}, ["Find the perfect squares just below and just above the number.", "Square the one-decimal values near the root and see which square lands closest to the number."]);
+
+// PG. L2, 6.7, SR: why a calculator root is an approximation, with the
+// value and its display drawn fresh each time (the generator form of
+// the Level 1 u2-why-approx varset's fixed displays).
+E("u2-gap-why-approx-mc", 2, ["6.7"], 2, "gen", function () {
+  var n = u2nonSquare(5, 99);
+  var disp = Math.sqrt(n).toFixed(7);
+  var prompt = "A calculator shows \\(\\sqrt{" + n + "} \\approx " + disp + "\\). A student writes \\(\\sqrt{" + n + "} = " + disp + "\\) and says the value is exact. Which statement is correct?";
+  var sol = "Squaring the screen value gives " + (parseFloat(disp) * parseFloat(disp)).toFixed(7) + ", close to " + n + " but not equal to it, because the true decimal continues past the digits the screen can hold. The screen value is <b>an approximation, not the exact value</b>.";
+  return mcq(prompt,
+    { t: "It is rounded: the root's decimal digits continue forever, so the screen shows only the first few of them", fb: "Right: the display is cut off and rounded, so its square misses " + n + " slightly." },
+    [{ t: "It is exact: a value with seven decimal places has no more digits after the ones the screen is showing", fb: "Many places still means rounded: the digits continue beyond the ones shown." },
+     { t: "The calculator made an arithmetic error: a correctly working calculator would show the root in full", fb: "The calculator works properly: the limit is how many digits the screen can hold." },
+     { t: "The root of " + n + " is a whole number, so a screen value with decimals in it cannot be the right value", fb: n + " is not a perfect square, so its root is not a whole number." }],
+    sol, { mode: "gap-why-approx", n: n });
+}, ["Ask whether squaring the shown value gives back the starting number exactly.", "Think about whether the decimal digits of the root ever come to an end."]);
+
+// PG. L2, 6.8, SR: a number whose root lies between two decimal
+// endpoints (the Level 1 u2-root-between uses whole-number endpoints;
+// decimal endpoints make the squaring, not the rooting, the work).
+E("u2-gap-between-decimals-mc", 2, ["6.8"], 2, "gen", function () {
+  var a = ri(21, 89) / 10;
+  var b = u2r1(a + pick([0.8, 0.9, 1.0, 1.1, 1.2]));
+  var a2 = u2r2(a * a), b2 = u2r2(b * b);
+  var m = u2r2(a2 + (b2 - a2) * pick([0.3, 0.4, 0.5, 0.6, 0.7]));
+  var above = u2r2(b2 + ri(2, 9));
+  var prompt = "Which number has a square root between " + fmt(a) + " and " + fmt(b) + "?";
+  var sol = "Square the endpoints: \\(" + fmt(a) + "^{2} = " + fmt(a2) + "\\) and \\(" + fmt(b) + "^{2} = " + fmt(b2) + "\\). Only " + fmt(m) + " lies between those squares, so the number is <b>" + fmt(m) + "</b>.";
+  return mcq(prompt, { t: fmt(m), fb: "Yes: " + fmt(m) + " lies between " + fmt(a2) + " and " + fmt(b2) + "." },
+    fmtPairDs(fmt(m), [
+      { v: a2, fb: "Its square root is exactly " + fmt(a) + ", which is an endpoint, not between." },
+      { v: b2, fb: "Its square root is exactly " + fmt(b) + ", which is an endpoint, not between." },
+      { v: above, fb: "Its square root is more than " + fmt(b) + ": square the endpoints to check." }]),
+    sol, { mode: "gap-between-decimals", a: a, b: b });
+}, ["Square the two given numbers to turn the question into a range for the number itself.", "Check which candidate falls between the two squares you just found."]);
+
+// PG. L2, 6.11, SR: recover the number from its root, with improper
+// fraction roots and decimal roots beyond the Level 1 entry's ranges
+// (u2-square-from-root is the Level 1 form of the same indicator).
+E("u2-gap-number-from-root-mc", 2, ["6.11"], 2, "gen", function () {
+  if (pick(["fraction", "decimal"]) === "fraction") {
+    var p = ri(4, 12), q = ri(2, 11), g = 0;
+    while ((p <= q || u2gcd(p, q) !== 1) && g < 80) { p = ri(4, 12); q = ri(2, 11); g++; }
+    var ans = "\\(" + FR(p * p, q * q) + "\\)";
+    var fopts = [{ t: "\\(" + FR(p * p, q) + "\\)", fb: "Only the top was squared: the bottom must be squared too." },
+                 { t: "\\(" + FR(p, q * q) + "\\)", fb: "Only the bottom was squared: the top must be squared too." },
+                 { t: "\\(" + FR(2 * p, q) + "\\)", fb: "That doubles the root: squaring means multiplying the root by itself." }];
+    return mcq("A positive number has square root \\(" + FR(p, q) + "\\). What is the number?", { t: ans, fb: "Yes: square the top and the bottom separately." }, fopts,
+      "Squaring undoes a square root, and a fraction is squared top and bottom: \\[ \\left(" + FR(p, q) + "\\right)^{2} = " + FR(p * p, q * q) + " \\] The number is <b>" + ans + "</b>.",
+      { mode: "gap-from-root-fraction", p: p, q: q });
+  }
+  var k = ri(11, 49); if (k % 10 === 0) k++;
+  var rd = k / 10, nd = u2r2(rd * rd);
+  var dcands = [{ v: u2r2(2 * rd), fb: "That is " + fmt(rd) + " doubled, not squared: squaring means " + fmt(rd) + " times " + fmt(rd) + "." }];
+  u2d3(nd, [u2r2(nd + 1), u2r2(nd - 1), u2r2(nd + rd), u2r2(rd * rd + 2)]).forEach(function (d) {
+    dcands.push({ v: d, fb: "That value does not come from squaring " + fmt(rd) + ": try " + fmt(rd) + " times " + fmt(rd) + "." });
+  });
+  return mcq("A positive number has square root " + fmt(rd) + ". What is the number?", { t: fmt(nd), fb: "Yes: " + fmt(rd) + " squared equals " + fmt(nd) + "." }, fmtPairDs(fmt(nd), dcands.slice(0, 3)),
+    "Squaring undoes a square root: \\[ " + fmt(rd) + "^{2} = " + fmt(rd) + " \\times " + fmt(rd) + " = " + fmt(nd) + " \\] The number is <b>" + fmt(nd) + "</b>.",
+    { mode: "gap-from-root-decimal", r: rd });
+}, ["Squaring and square roots undo each other, so square the given root.", "For a fraction, square the top and the bottom separately; for a decimal, multiply it by itself."]);
+
+// PG. L2, 3.3, SR: judge perfect squares in decimal and fraction form
+// with near-miss distractors (the Level 1 u2-identify-square uses
+// neighbouring values; here each distractor fails the square test in
+// a different part, so the test itself has to be carried out).
+E("u2-gap-perfect-square-mc", 2, ["3.3"], 2, "gen", function () {
+  function isSqInt(x) { var s = Math.round(Math.sqrt(x)); return s * s === x; }
+  if (pick(["decimal", "fraction"]) === "decimal") {
+    var k = ri(13, 39); if (k % 10 === 0) k++;
+    var rd = k / 10, nd = u2r2(rd * rd);
+    var offs = [0.11, -0.09, 0.21, -0.19, 0.31, 1.01, -0.29];
+    var ds = [];
+    for (var i = 0; i < offs.length && ds.length < 3; i++) {
+      var v = u2r2(nd + offs[i]);
+      if (v > 0 && v !== nd && !isSqInt(Math.round(v * 100) * 100) && !ds.some(function (d) { return d.v === v; })) {
+        ds.push({ v: v, fb: "No number times itself gives " + fmt(v) + ": test the nearby tenths." });
+      }
+    }
+    return mcq("Which number is a perfect square?", { t: fmt(nd), fb: "Yes: " + fmt(rd) + " times " + fmt(rd) + " equals " + fmt(nd) + "." }, fmtPairDs(fmt(nd), ds),
+      "Only one value is a number times itself: \\(" + fmt(rd) + " \\times " + fmt(rd) + " = " + fmt(nd) + "\\). The perfect square is <b>" + fmt(nd) + "</b>.",
+      { mode: "gap-perfect-decimal", n: nd });
+  }
+  var p = ri(2, 9), q = ri(3, 11), g = 0;
+  while (u2gcd(p, q) !== 1 && g < 60) { p = ri(2, 9); q = ri(3, 11); g++; }
+  var fopts = [{ t: "\\(" + FR(p * p + 1, q * q) + "\\)", fb: "The top part is not a square number, so the fraction is not one." },
+               { t: "\\(" + FR(p * p, q * q + 1) + "\\)", fb: "The bottom part is not a square number, so the fraction is not one." },
+               { t: "\\(" + FR(p * p + 2, q * q) + "\\)", fb: "The top part sits between two squares, so it is not a square." }];
+  return mcq("Which number is a perfect square?", { t: "\\(" + FR(p * p, q * q) + "\\)", fb: "Yes: the top and bottom are both perfect squares." }, fopts,
+    "A fraction is a perfect square when its top and bottom are both perfect squares: \\(\\left(" + FR(p, q) + "\\right)^{2} = " + FR(p * p, q * q) + "\\). The perfect square is <b>\\(" + FR(p * p, q * q) + "\\)</b>.",
+    { mode: "gap-perfect-fraction", p: p, q: q });
+}, ["A perfect square is a number multiplied by itself, in whole, decimal or fraction form.", "For a fraction, check the top and the bottom separately; for a decimal, test the nearby tenths."]);
+
+// PG. L2, 9.1, SR: the hidden area at a join, as a choice among the
+// named miscounts (u2-overlap-hidden asks the same thing as a written
+// entry; this is its multiple-choice companion on the indicator).
+E("u2-gap-hidden-area-mc", 2, ["9.1"], 2, "gen", function () {
+  var p = ri(2, 11), q = ri(2, 10);
+  var ctx = pick([
+    "A small box sits on top of a larger box. The two boxes touch over a rectangle that measures ",
+    "A right triangular prism sits on top of a box. The prism and the box touch over a rectangle that measures ",
+    "Two boxes are joined face to face over a rectangle that measures "]);
+  var prompt = ctx + p + " cm by " + q + " cm. How much surface area is hidden in total where the two solids touch, in square centimetres?";
+  var sol = "The touching rectangle has area \\(" + p + " \\times " + q + " = " + (p * q) + "\\). It hides one face on each solid, so it is hidden twice: \\[ \\begin{aligned} \\text{hidden} &= 2 \\times " + (p * q) + " \\\\ &= " + (2 * p * q) + " \\end{aligned} \\] The total hidden surface area is <b>" + (2 * p * q) + " cm\\(^{2}\\)</b>.";
+  return mcq(prompt, { t: String(2 * p * q), fb: "Correct: the touching rectangle hides one face on each solid, so it is hidden twice." },
+    [{ t: String(p * q), fb: "That counts the touching rectangle once, but it hides a face on each of the two solids." },
+     { t: String(3 * p * q), fb: "That counts the touching rectangle three times; it hides exactly two faces, one on each solid." },
+     { t: String(4 * p * q), fb: "That counts the touching rectangle four times; only two faces are hidden at the join." }],
+    sol, { mode: "gap-hidden-area", p: p, q: q });
+}, ["The touching rectangle is hidden on both solids, not just on one of them.", "Find the area of the touching rectangle first, then double it."]);
+
+// PG. L2, 9.2, SR: cylinder surface area as a choice among the named
+// omissions (u2-sa-single's cylinder mode is a written entry; this is
+// the multiple-choice form, distractors built by leaving parts out).
+E("u2-gap-cylinder-sa-mc", 2, ["9.2"], 2, "gen", function () {
+  var r = 0, hh = 0, T = 0, e1 = 0, e2 = 0, e3 = 0, tries = 0;
+  do {
+    r = ri(2, 9); hh = ri(3, 14);
+    T = u2r1(2 * 3.14 * r * (r + hh));
+    e1 = u2r1(3.14 * r * r + 2 * 3.14 * r * hh);
+    e2 = u2r1(2 * 3.14 * r * hh);
+    e3 = u2r1(2 * 3.14 * r * r);
+    tries++;
+  } while (new Set([T, e1, e2, e3]).size < 4 && tries < 80);
+  var prompt = "Find the surface area of a right cylinder with radius " + r + " cm and height " + hh + " cm. Use \\(\\pi = 3.14\\) and give your answer in square centimetres, to one decimal place.";
+  var sol = "Two circles plus the curved side, using \\(\\pi = 3.14\\). Each circle has area \\(3.14 \\times " + r + " \\times " + r + " = " + fmt(u2r2(3.14 * r * r)) + "\\). The curved side unrolls into a rectangle whose length is the circumference, \\(2 \\times 3.14 \\times " + r + " = " + fmt(u2r2(2 * 3.14 * r)) + "\\), and whose width is " + hh + ", so its area is \\(" + fmt(u2r2(2 * 3.14 * r)) + " \\times " + hh + " = " + fmt(u2r2(2 * 3.14 * r * hh)) + "\\). Add the parts: \\[ \\begin{aligned} SA &= 2(" + fmt(u2r2(3.14 * r * r)) + ") + " + fmt(u2r2(2 * 3.14 * r * hh)) + " \\\\ &= " + fmt(T) + " \\end{aligned} \\] The surface area is <b>" + fmt(T) + " cm\\(^{2}\\)</b>.";
+  var qq = mcq(prompt, { t: fmt(T), fb: "Correct: both circular ends and the curved side are counted." },
+    fmtPairDs(fmt(T), [
+      { v: e1, fb: "That counts only one circular end: a closed cylinder has two ends." },
+      { v: e2, fb: "That is only the curved side: the two circular ends are missing." },
+      { v: e3, fb: "That is only the two circular ends: the curved side is missing." }]),
+    sol, { mode: "gap-cylinder-sa", r: r, h: hh });
+  qq.figure = solCylinder(r, hh, fmt(r) + " cm", fmt(hh) + " cm", "Cylinder with labelled dimensions");
+  return qq;
+}, ["Picture the net of the cylinder: two circles and one rectangle.", "The rectangle's length is the circumference of the circle, and its width is the height."]);
+
+// PG. L2, 9.3, SR: a surface-area problem carried through to a count
+// of cans (u2-sa-problem's cans mode is a written entry; here the
+// rounding and face-count errors are the choices offered).
+E("u2-gap-sa-cans-mc", 2, ["9.3"], 2, "gen", function () {
+  var l = 0, w = 0, h = 0, sa = 0, cover = 0, cans = 0, ds = [], tries = 0;
+  do {
+    l = ri(4, 11) / 2; w = ri(3, 9) / 2; h = ri(3, 8) / 2;
+    sa = 2 * (l * w + l * h + w * h);
+    cover = pick([8, 10, 12, 15, 20]);
+    cans = Math.ceil(sa / cover - 1e-9);
+    ds = [];
+    var fl = Math.floor(sa / cover + 1e-9);
+    if (fl >= 1 && fl !== cans) ds.push({ t: String(fl), fb: "That rounds the division down: the last part of the tank would be left unpainted." });
+    var c5 = Math.ceil((sa - l * w) / cover - 1e-9);
+    if (c5 >= 1 && c5 !== cans && !ds.some(function (d) { return d.t === String(c5); })) ds.push({ t: String(c5), fb: "That leaves out one face of the tank before dividing: every face is painted." });
+    if (!ds.some(function (d) { return d.t === String(cans + 1); })) ds.push({ t: String(cans + 1), fb: "That is one can more than the division requires: the quotient already rounds up to the answer." });
+    tries++;
+  } while (ds.length < 3 && tries < 60);
+  var prompt = "A storage tank shaped like a right rectangular prism measures " + fmt(l) + " m long, " + fmt(w) + " m wide and " + fmt(h) + " m high. It will be painted on the outside, on all faces. One can of paint covers " + cover + " square metres. How many cans of paint are needed?";
+  var sol = "Find the surface area first: the tank's three face areas are " + fmt(l * w) + ", " + fmt(l * h) + " and " + fmt(w * h) + ", and each face has a matching opposite face: \\[ \\begin{aligned} SA &= 2(" + fmt(l * w) + ") + 2(" + fmt(l * h) + ") + 2(" + fmt(w * h) + ") \\\\ &= " + fmt(sa) + " \\end{aligned} \\] Then \\(" + fmt(sa) + " \\div " + cover + " \\approx " + fmt(u2r2(sa / cover)) + "\\), so a part can is not enough and the count rounds up. The number of cans needed is <b>" + cans + "</b>.";
+  var qq = mcq(prompt, { t: String(cans), fb: "Correct: the surface area divided by the coverage, rounded up." }, ds.slice(0, 3), sol, { mode: "gap-sa-cans", l: l, w: w, h: h, cover: cover });
+  qq.figure = solRectPrism(l, w, h, fmt(l) + " m", fmt(w) + " m", fmt(h) + " m", "Rectangular prism tank with labelled dimensions");
+  return qq;
+}, ["Work out the total surface area before you think about cans.", "Divide the surface area by the coverage per can, and remember a part can is not enough."]);
+
+
 /* Unit 3: Powers and Exponent Laws */
 
 // PG. L2, 3.12, CR 2: product law and quotient law chained, then evaluate.

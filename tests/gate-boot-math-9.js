@@ -13,7 +13,15 @@
      ruling on the Math 8 PK tranche), and pools 161 (mid) /
      165 (final) / 326 (all) since the Band 3 Piece 1 fluency
      strand of November 16, 2026 (Unit 1 +22, Unit 5 +5,
-     Unit 9 +3 copied entries), face scopes "Mid-course review:
+     Unit 9 +3 copied entries). The pool line has counted the
+     prior-knowledge-off pool since the PK toggle landed (the
+     whole-bank figures above predate it; the gate's pool
+     assertions were corrected to the PK-off counts on
+     November 19, 2026): pools 113 (mid) / 113 (final) / 226
+     (all) since the repeat-fix tranche of November 19, 2026
+     (eight Level 2 multiple-choice entries added to Unit 2,
+     all of them in the mid scope), face
+     scopes "Mid-course review:
      Units 1 to 4" and "End-of-course review: Units 5 to 9"
      (refreshFace, lines 7458 to 7459), the face card promising
      "a hint, a worked example and a full worked solution", and
@@ -102,7 +110,7 @@ function checkFeedback(dom, d, tag) {
   ok(d.getElementById("faceTitle").textContent === "Mathematics 9 Review",
      "course: face card heading uses the long name (ruling 5), saw " + d.getElementById("faceTitle").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 326, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 334, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 111, "course: CR_MARKS wired from the bank module (111 keys since the Option 1 Unit 9 additions of November 15, 2026)");
   ok(ev(r.dom, "BANK.every(function(e){return !!e.hint1 && !!e.hint2;})") === true, "course: every bank entry carries both hint stages in the shell");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
@@ -118,19 +126,19 @@ function checkFeedback(dom, d, tag) {
      "course: Mid and Final preset buttons both visible (Math 9 has both presets)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("161 question templates"), "course: pool after Mid preset is 161, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("113 question templates"), "course: pool after Mid preset is 113, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "Mid-course review: Units 1 to 4",
      "course: face scope for the mid selection matches the standalone, saw: " + d.getElementById("faceScope").textContent);
   ok(d.getElementById("faceDesc").textContent.includes("a hint, a worked example and a full worked solution."),
      "course: face card promises the hint, saw: " + d.getElementById("faceDesc").textContent);
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("165 question templates"), "course: pool after Final preset is 165, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("113 question templates"), "course: pool after Final preset is 113, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "End-of-course review: Units 5 to 9",
      "course: face scope for the final selection matches the standalone, saw: " + d.getElementById("faceScope").textContent);
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("326 question templates"), "course: pool after All preset is the whole bank, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("226 question templates"), "course: pool after All preset is 226 with prior knowledge off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "Object.keys(REF_HTML).length") === 9, "course: per-unit reference panels for all nine units, saw " + ev(r.dom, "Object.keys(REF_HTML).length"));
   ok(ev(r.dom, "refPanelsHtml([1])").includes("Formulas and facts for Unit 1: Rational Numbers") && ev(r.dom, "refPanelsHtml([1])").includes("can be written as a fraction"),
      "course: a Unit 1 selection shows its panel with the standalone's content");
