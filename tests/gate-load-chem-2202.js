@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 /* Gate 1 (load) for Chemistry 2202: chassis helpers + courses.js + the
-   assembled Chemistry 2202 bank module evaluate cleanly; BANK has 177
-   entries (169 content + 8 Science 1206 bridging; the standalone app's
+   assembled Chemistry 2202 bank module evaluate cleanly; BANK has 190
+   entries (182 content + 8 Science 1206 bridging; the standalone app's
    counts were 160/152, amended November 19, 2026 for the Bank
    Strengthening Programme pass 2 adding 17 Unit 2 entries, u2-62 to
-   u2-78); window.__BANK_CRMARKS has 53 keys (the standalone bank
-   source's own CR manifest: 26 + 11 + 10 + 3 across its four bank
-   files, matching the CR_MARKS table in the built standalone, plus 3
-   for the pass 2 numeric entries u2-72 to u2-74 at 2 marks each);
+   u2-78, and pass 1 adding 13 Unit 1 entries); window.__BANK_CRMARKS
+   has 57 keys (the standalone bank source's own CR manifest: 26 + 11
+   + 10 + 3 across its four bank files, matching the CR_MARKS table in
+   the built standalone, plus 3 for the pass 2 numeric entries u2-72 to
+   u2-74 at 2 marks each and 4 for the pass 1 entries
+   u1-51-write-acid-formula=2, u1-59-actual-from-percent=2,
+   u1-510-limestone-lime=3 and u1-510-peroxide-oxygen=3);
    every registered indicator has entries, no entry uses an
    unregistered code, no entry carries a skills code, and entry ids
    are unique. */
@@ -35,16 +38,16 @@ var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
 eval(fs.readFileSync(ROOT + "/banks/chem-2202.js", "utf8"));
 
-ok(BANK.length === 177, "BANK has 177 entries (160 standalone, plus the November 19, 2026 Bank Strengthening Programme pass 2 adding 17 Unit 2 entries), saw " + BANK.length);
+ok(BANK.length === 190, "BANK has 190 entries (160 standalone, plus the November 19, 2026 Bank Strengthening Programme pass 2 adding 17 Unit 2 entries and pass 1 adding 13 Unit 1 entries), saw " + BANK.length);
 const crKeys = Object.keys(window.__BANK_CRMARKS || {});
-ok(crKeys.length === 53, "__BANK_CRMARKS has 53 keys (50 standalone, plus u2-72 to u2-74 from the November 19, 2026 pass 2), saw " + crKeys.length);
+ok(crKeys.length === 57, "__BANK_CRMARKS has 57 keys (50 standalone, plus u2-72 to u2-74 from the November 19, 2026 pass 2 and the four pass 1 CR entries), saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
 ok(crKeys.every(k => bankIds.has(k)), "every CR key is a bank entry id");
 ok(bankIds.size === BANK.length, "entry ids are unique");
 
 const census = {}, perUnit = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-ok(perUnit[1] === 47 && perUnit[2] === 78 && perUnit[3] === 44, "content unit counts 47/78/44 (Unit 2 was 61 before the November 19, 2026 pass 2), saw " + JSON.stringify(perUnit));
+ok(perUnit[1] === 60 && perUnit[2] === 78 && perUnit[3] === 44, "content unit counts 60/78/44 (Unit 1 was 47 before the November 19, 2026 pass 1; Unit 2 was 61 before the November 19, 2026 pass 2), saw " + JSON.stringify(perUnit));
 ok(perUnit[4] === 8, "bridging unit has 8 entries, saw " + perUnit[4]);
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);

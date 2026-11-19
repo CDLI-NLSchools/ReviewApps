@@ -389,6 +389,10 @@ function chemCondensedInfo(src){
 // CRMARKS: u1-59-percent-yield-from-reaction=3
 // CRMARKS: u1-510-antacid-calculation=3
 // CRMARKS: u1-510-airbag-and-fertilizer=3
+// CRMARKS: u1-51-write-acid-formula=2
+// CRMARKS: u1-59-actual-from-percent=2
+// CRMARKS: u1-510-limestone-lime=3
+// CRMARKS: u1-510-peroxide-oxygen=3
 
 /* ============ Units and significant figures discipline (Nov 2026 pass) ============
    Givens print at 3 significant figures minimum (data sheet constants such
@@ -1106,6 +1110,554 @@ E("u1-510-application-reasoning",1,["5.10"],2,"var",varset([
     return mcq("A bakery scales a muffin recipe from a small test batch to a "+batch+" muffin production run. The baking soda amount is scaled in direct proportion to the other ingredients. Why does this work?","The gas produced scales with the amount of baking soda, keeping the gas per muffin the same",["Proportional scaling changes the mole ratio of the reaction","Large batches need no gas to rise","The oven produces the gas, not the baking soda"],"Each muffin needs the same amount of carbon dioxide. Because gas produced is proportional to baking soda used, scaling all ingredients by the same factor keeps the gas per muffin constant.",{batch:batch});
   }
 ]));
+
+/* ============ Bank Strengthening Programme pass 1 (November 19, 2026) ============
+   Entries u1-51-write-acid-formula to u1-510-peroxide-oxygen: 13 entries
+   bringing every Unit 1 indicator pool to depth 6 (5.1 +1, 5.3 +2, 5.4 +2,
+   5.5 +2, 5.6 +1, 5.7 +1, 5.9 +2, 5.10 +2). Drafted by Gemini against
+   Assignment-Chemistry-2202-Unit-1.md under External Authoring Pack v2 and
+   intake-gated (39,000 draws, zero wrong keys). Four entries first rejected
+   on the absolute key-length rule were accepted as written under Jason's
+   November 19, 2026 ruling that pack rule C1 carries a 15 percent
+   materiality threshold (their worst measured gap is 7.5 percent), and the
+   one-character length flag on u1-56-precipitate-ions dissolved under the
+   same ruling. Every entry remains SME-flagged for the specialist pass
+   (the judgement list is in the pass report). */
+
+// LEVEL: 2 - Reverses the acid naming rules to write the chemical formula with aqueous state symbol from the acid name.
+// LENGTHS: key=9
+E("u1-51-write-acid-formula", 1, ["5.1"], 2, "gen", function() {
+  var acids = [
+    { name: "hydrochloric acid", sub: "HCl(aq)", plain: "HCl(aq)", anion: "chloride", rule: "the hydro-...-ic prefix and ending indicate a binary acid from the chloride ion (Cl⁻), balanced by one H⁺ ion" },
+    { name: "hydrobromic acid", sub: "HBr(aq)", plain: "HBr(aq)", anion: "bromide", rule: "the hydro-...-ic prefix and ending indicate a binary acid from the bromide ion (Br⁻), balanced by one H⁺ ion" },
+    { name: "hydrofluoric acid", sub: "HF(aq)", plain: "HF(aq)", anion: "fluoride", rule: "the hydro-...-ic prefix and ending indicate a binary acid from the fluoride ion (F⁻), balanced by one H⁺ ion" },
+    { name: "nitric acid", sub: "HNO₃(aq)", plain: "HNO3(aq)", anion: "nitrate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the nitrate ion (NO₃⁻), balanced by one H⁺ ion" },
+    { name: "nitrous acid", sub: "HNO₂(aq)", plain: "HNO2(aq)", anion: "nitrite", rule: "the -ous ending indicates an oxyacid from the nitrite ion (NO₂⁻), balanced by one H⁺ ion" },
+    { name: "sulfuric acid", sub: "H₂SO₄(aq)", plain: "H2SO4(aq)", anion: "sulfate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the sulfate ion (SO₄²⁻), balanced by two H⁺ ions" },
+    { name: "sulfurous acid", sub: "H₂SO₃(aq)", plain: "H2SO3(aq)", anion: "sulfite", rule: "the -ous ending indicates an oxyacid from the sulfite ion (SO₃²⁻), balanced by two H⁺ ions" },
+    { name: "phosphoric acid", sub: "H₃PO₄(aq)", plain: "H3PO4(aq)", anion: "phosphate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the phosphate ion (PO₄³⁻), balanced by three H⁺ ions" },
+    { name: "phosphorous acid", sub: "H₃PO₃(aq)", plain: "H3PO3(aq)", anion: "phosphite", rule: "the -ous ending indicates an oxyacid from the phosphite ion (PO₃³⁻), balanced by three H⁺ ions" },
+    { name: "carbonic acid", sub: "H₂CO₃(aq)", plain: "H2CO3(aq)", anion: "carbonate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the carbonate ion (CO₃²⁻), balanced by two H⁺ ions" },
+    { name: "acetic acid", sub: "CH₃COOH(aq)", plain: "CH3COOH(aq)", anion: "acetate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the acetate ion (CH₃COO⁻), balanced by one H⁺ ion" }
+  ];
+  var item = pick(acids);
+  var accepted = item.sub === item.plain ? [item.sub] : [item.sub, item.plain];
+  if (item.name === "acetic acid") {
+    accepted = ["CH₃COOH(aq)", "CH3COOH(aq)", "HC₂H₃O₂(aq)", "HC2H3O2(aq)"];
+  }
+  return textq(
+    "Write the chemical formula, including the state symbol (aq), for " + item.name + ".",
+    accepted,
+    "For " + item.name + ", " + item.rule + ", giving the aqueous formula <b>" + item.sub + "</b>.",
+    { acidName: item.name, anion: item.anion, formula: item.sub }
+  );
+});
+
+// LEVEL: 2 - Applies dynamic solubility equilibrium to solvent evaporation at constant temperature.
+// LENGTHS: key=104, distractors=109,106,102
+E("u1-53-evaporation", 1, ["5.3"], 2, "gen", function() {
+  var solutes = ["potassium nitrate", "sodium chloride", "copper(II) sulfate", "potassium chloride", "sodium nitrate"];
+  var solute = pick(solutes);
+  var temp = pick([20, 22, 25, 30]);
+  var key = "The mass of undissolved solid increases as solute crystallizes, and the solution concentration stays constant.";
+  var distractors = [
+    "The mass of undissolved solid stays unchanged as water leaves, and the solution concentration increases steadily.",
+    "The mass of undissolved solid decreases as more solute dissolves, and the solution concentration stays constant.",
+    "The mass of undissolved solid increases as solute crystallizes, and the solution concentration increases steadily."
+  ];
+  return mcq(
+    "A saturated aqueous solution of " + solute + " sits over excess undissolved solid in an open beaker at a constant temperature of " + gF(temp) + " °C. Over several days, some of the water evaporates while the temperature remains at " + gF(temp) + " °C. What happens to the mass of undissolved solid and the concentration of the solution?",
+    key,
+    distractors,
+    "At a constant temperature of " + gF(temp) + " °C, the solubility of " + solute + " does not change, so the saturated solution keeps the same concentration; as water evaporates, dissolved ions crystallize out onto the excess solid until equilibrium is restored. <b>" + key + "</b>",
+    { solute: solute, temp: temp }
+  );
+});
+
+// LEVEL: 2 - Distinguishes saturated, unsaturated, supersaturated, and insoluble mixtures from dealt solubility data.
+// VARIANTS: four beaker states compared in one draw (saturated with excess solid, unsaturated, supersaturated, insoluble mixture)
+// LENGTHS: key=113, distractors=115,113,108
+E("u1-53-choose-saturated", 1, ["5.3"], 2, "gen", function() {
+  var solutes = [
+    { name: "potassium nitrate", sol: 38.0, temp: 25 },
+    { name: "sodium nitrate", sol: 88.0, temp: 20 },
+    { name: "potassium chloride", sol: 34.0, temp: 20 },
+    { name: "ammonium chloride", sol: 37.0, temp: 20 },
+    { name: "copper(II) sulfate", sol: 32.0, temp: 20 }
+  ];
+  var insolubles = ["calcium carbonate", "barium sulfate", "silver chloride", "silicon dioxide"];
+  var s = pick(solutes);
+  var insol = pick(insolubles);
+  var maxG = s.sol;
+  var unsatG = sfR(maxG * pick([0.45, 0.55, 0.65]), 3);
+  var satAddedG = sfR(maxG + pick([6.0, 8.0, 10.0]), 3);
+  var superG = sfR(maxG * pick([1.25, 1.35, 1.45]), 3);
+  var insolG = sfR(maxG * 0.5, 3);
+  var key = "The beaker with " + gF(satAddedG) + " g of " + s.name + " stirred at " + gF(s.temp) + " °C until undissolved solid remains at the bottom.";
+  var distractors = [
+    "The beaker with " + gF(unsatG) + " g of " + s.name + " stirred at " + gF(s.temp) + " °C until all of the crystals dissolve completely.",
+    "The beaker with " + gF(superG) + " g of " + s.name + " dissolved hot and cooled carefully to " + gF(s.temp) + " °C with no crystals.",
+    "The beaker with " + gF(insolG) + " g of " + insol + " stirred in water at " + gF(s.temp) + " °C with all solid sitting unchanged."
+  ];
+  return mcq(
+    "At " + gF(s.temp) + " °C, the solubility of " + s.name + " in water is " + gF(maxG) + " g per 100 mL of water, whereas " + insol + " is insoluble in water. Four beakers each contain 100 mL of water at " + gF(s.temp) + " °C. Which beaker contains a saturated solution?",
+    key,
+    distractors,
+    "Because the solubility limit at " + gF(s.temp) + " °C is " + gF(maxG) + " g per 100 mL, adding " + gF(satAddedG) + " g dissolves " + gF(maxG) + " g and leaves excess solid in equilibrium with the solution; " + gF(unsatG) + " g forms an unsaturated solution, " + gF(superG) + " g dissolved without crystals is supersaturated, and " + insol + " does not dissolve. <b>" + key + "</b>",
+    { solute: s.name, insoluble: insol, temp: s.temp, maxG: maxG, unsatG: unsatG, satAddedG: satAddedG, superG: superG, insolG: insolG }
+  );
+});
+
+// LEVEL: 2 - Assembles the macroscopic conditions required for dynamic solubility equilibrium.
+// LENGTHS: key=108, distractors=106,113,104
+E("u1-54-equilibrium-conditions", 1, ["5.4"], 2, "gen", function() {
+  var solutes = ["sodium chloride", "potassium bromide", "copper(II) sulfate", "ammonium nitrate", "calcium hydroxide"];
+  var solute = pick(solutes);
+  var key = "A closed container held at constant temperature, containing a saturated solution with some undissolved solid present.";
+  var distractors = [
+    "An open container held at constant temperature, containing a saturated solution with some undissolved solid present.",
+    "A closed container held at constant temperature, containing an unsaturated solution with no undissolved solid present.",
+    "A closed container heated at a steady rate, containing a saturated solution with some undissolved solid present."
+  ];
+  return mcq(
+    "An aqueous solution of " + solute + " is at dynamic solubility equilibrium. Which set of conditions must hold for this system?",
+    key,
+    distractors,
+    "Dynamic solubility equilibrium requires a closed system so solvent cannot escape, a constant temperature so solubility stays fixed, and both dissolved solute at saturation and undissolved solid present so dissolving and crystallization occur at equal rates. <b>" + key + "</b>",
+    { solute: solute }
+  );
+});
+
+// LEVEL: 3 - Tracks sequential disturbances (reversible vs sustained) on a saturated solution at equilibrium.
+// VARIANTS: four two-step sequences: (a) add water then evaporate same water (25%), (b) heat then cool back (25%), (c) heat and keep hot (25%), (d) cool and keep cold (25%)
+// LENGTHS: key=102, distractors=103,102,104
+E("u1-54-two-changes", 1, ["5.4"], 3, "gen", function() {
+  var frame = ri(0, 3);
+  var solutes = ["potassium nitrate", "sodium nitrate", "ammonium chloride"];
+  var solute = pick(solutes);
+  var changeDesc, key, explanation;
+  var optSame = "The mass of undissolved solid is equal to the starting mass, and the solution concentration is equal to the start.";
+  var optLessMore = "The mass of undissolved solid is smaller than the starting mass, and the solution concentration is higher.";
+  var optMoreLess = "The mass of undissolved solid is larger than the starting mass, and the solution concentration is lower.";
+  var optMoreMore = "The mass of undissolved solid is larger than the starting mass, and the solution concentration is higher.";
+  if (frame === 0) {
+    changeDesc = "First, pure water is added and stirred until some excess solid dissolves; second, that exact same volume of water is evaporated off at the starting temperature.";
+    key = optSame;
+    explanation = "Adding water dissolves more solid to keep the solution saturated, and evaporating the exact same volume of water at the original temperature forces that same mass of solute to recrystallize, returning both the solid mass and the saturated concentration to their starting values.";
+  } else if (frame === 1) {
+    changeDesc = "First, the mixture is warmed until more solid dissolves; second, the closed container is cooled back to the exact starting temperature and allowed to settle.";
+    key = optSame;
+    explanation = "Because solubility depends only on temperature in a closed system, cooling back to the exact starting temperature restores the original solubility, recrystallizing the extra dissolved solute so both solid mass and concentration match the start.";
+  } else if (frame === 2) {
+    changeDesc = "First, the closed container is warmed to a higher temperature; second, it is held at that higher temperature until equilibrium is re-established.";
+    key = optLessMore;
+    explanation = "Because the solubility of " + solute + " increases with temperature, warming dissolves more of the excess solid (leaving a smaller mass of undissolved solid) and produces a saturated solution with a higher concentration.";
+  } else {
+    changeDesc = "First, the closed container is cooled to a lower temperature; second, it is held at that lower temperature until equilibrium is re-established.";
+    key = optMoreLess;
+    explanation = "Because the solubility of " + solute + " decreases as temperature drops, solute crystallizes out of solution (leaving a larger mass of undissolved solid) and produces a saturated solution with a lower concentration.";
+  }
+  var allOpts = [optSame, optLessMore, optMoreLess, optMoreMore];
+  var distractors = [];
+  for (var i = 0; i < allOpts.length; i++) {
+    if (allOpts[i] !== key) distractors.push(allOpts[i]);
+  }
+  return mcq(
+    "A closed beaker holds a saturated aqueous solution of " + solute + " over excess undissolved solid at equilibrium. The solubility of " + solute + " in water increases as temperature rises. Two changes are applied in sequence: " + changeDesc + " How do the final mass of undissolved solid and the final solution concentration compare with the start?",
+    key,
+    distractors,
+    explanation + " <b>" + key + "</b>",
+    { solute: solute, frame: frame }
+  );
+});
+
+// LEVEL: 2 - Reads comparative solubility values and identifies either the extreme solubility or the solute that fails to dissolve completely.
+// VARIANTS: ask 0 = most/least soluble (50%), ask 1 = which fails to dissolve completely for a dealt added mass (50%)
+// LENGTHS: key=18, distractors=18,18,18
+E("u1-55-compare-solubility-data", 1, ["5.5"], 2, "gen", function() {
+  var askType = ri(0, 1);
+  var temp = pick([20, 25, 30]);
+  var pool = [
+    "potassium chlorate",
+    "copper(II) sulfate",
+    "potassium chromate",
+    "magnesium chloride",
+    "strontium chloride",
+    "potassium fluoride"
+  ];
+  var chosen = shuffle(pool).slice(0, 4);
+  var bands = [
+    ri(80, 130) / 10,
+    ri(220, 310) / 10,
+    ri(380, 520) / 10,
+    ri(650, 880) / 10
+  ];
+  var perm = shuffle([0, 1, 2, 3]);
+  var rows = [];
+  var items = [];
+  for (var i = 0; i < 4; i++) {
+    var val = bands[perm[i]];
+    items.push({ name: chosen[i], sol: val });
+    rows.push(chosen[i] + ": " + fmtF(val, 1) + " g / 100 mL water");
+  }
+  var tableText = rows.join("<br>");
+  var sorted = items.slice().sort(function(a, b) { return a.sol - b.sol; });
+  var lowest = sorted[0];
+  var secondLowest = sorted[1];
+  var highest = sorted[3];
+  if (askType === 0) {
+    var askMost = Math.random() < 0.5;
+    var key = askMost ? highest.name : lowest.name;
+    var distractors = [];
+    for (var j = 0; j < chosen.length; j++) {
+      if (chosen[j] !== key) distractors.push(chosen[j]);
+    }
+    var reason = askMost
+      ? highest.name + " dissolves the largest mass per 100 mL of water (" + fmtF(highest.sol, 1) + " g), making it the most soluble"
+      : lowest.name + " dissolves the smallest mass per 100 mL of water (" + fmtF(lowest.sol, 1) + " g), making it the least soluble";
+    return mcq(
+      "The table below gives the solubility of four substances in water at " + gF(temp) + " °C:<br>" + tableText + "<br>Which substance is the " + (askMost ? "most" : "least") + " soluble in water at " + gF(temp) + " °C?",
+      key,
+      distractors,
+      "Comparing the maximum mass that dissolves in 100 mL of water at " + gF(temp) + " °C shows that " + reason + ". <b>" + key + "</b>",
+      { askType: 0, askMost: askMost, temp: temp, items: items }
+    );
+  } else {
+    var loInt = Math.ceil(lowest.sol + 1.0);
+    var hiInt = Math.floor(secondLowest.sol - 1.0);
+    var addedMass = hiInt >= loInt ? ri(loInt, hiInt) : Math.round((lowest.sol + secondLowest.sol) * 5) / 10;
+    var key = lowest.name;
+    var distractors = [];
+    for (var k = 0; k < chosen.length; k++) {
+      if (chosen[k] !== key) distractors.push(chosen[k]);
+    }
+    return mcq(
+      "The table below gives the solubility of four substances in water at " + gF(temp) + " °C:<br>" + tableText + "<br>Suppose " + gF(addedMass) + " g of each substance is added to a separate 100 mL sample of water at " + gF(temp) + " °C and stirred thoroughly. Which substance will NOT dissolve completely?",
+      key,
+      distractors,
+      "For a substance to dissolve completely in 100 mL of water, its solubility must be at least " + gF(addedMass) + " g; only " + lowest.name + " has a solubility below " + gF(addedMass) + " g (" + fmtF(lowest.sol, 1) + " g per 100 mL), so excess solid remains. <b>" + key + "</b>",
+      { askType: 1, temp: temp, items: items, addedMass: addedMass }
+    );
+  }
+});
+
+// LEVEL: 2 - Explains solubility differences between solute-solvent pairs using intermolecular forces and polarity.
+// VARIANTS: four solute-solvent contrast pairs: (a) iodine in hexane vs water, (b) NaCl in water vs hexane, (c) sugar vs wax in water, (d) ethanol vs cooking oil in water
+// LENGTHS: key=130, distractors=131,126,133
+// LENGTHS: key=125, distractors=127,128,121
+// LENGTHS: key=126, distractors=122,129,124
+// LENGTHS: key=128, distractors=131,121,129
+E("u1-55-explain-variation", 1, ["5.5"], 2, "var", varset([
+  function() {
+    var key = "Iodine is nonpolar and attracts nonpolar hexane, whereas polar water molecules attract one another much more strongly than iodine.";
+    var distractors = [
+      "Iodine molecules are much larger than water molecules, so they cannot fit into the small spaces between liquid water molecules.",
+      "Iodine reacts chemically with liquid hexane to form a new soluble compound, whereas iodine cannot react with liquid water.",
+      "Iodine has a much higher density than liquid water, so gravity pulls solid iodine crystals to the bottom before they dissolve."
+    ];
+    return mcq(
+      "Solid iodine (I₂) dissolves readily in liquid hexane (C₆H₁₄) to form a purple solution, but dissolves only slightly in water. Why does iodine dissolve much better in hexane than in water?",
+      key,
+      distractors,
+      "Both I₂ and C₆H₁₄ are nonpolar molecules that experience similar dispersion forces, whereas polar H₂O molecules form strong hydrogen bonds with each other that nonpolar I₂ cannot disrupt. <b>" + key + "</b>",
+      { variant: 1, solute: "I₂", solventA: "hexane", solventB: "water" }
+    );
+  },
+  function() {
+    var key = "Polar water molecules attract and pull apart the charged ions, whereas nonpolar hexane molecules cannot attract ions strongly.";
+    var distractors = [
+      "Sodium chloride has a very low melting point in water, whereas sodium chloride stays too rigid to melt inside liquid hexane.",
+      "Sodium chloride molecules are small enough to slip between water molecules, whereas hexane molecules are packed too tightly.",
+      "Sodium chloride reacts with water to produce dissolved gases, whereas sodium chloride is completely unreactive in hexane."
+    ];
+    return mcq(
+      "Table salt (sodium chloride, NaCl) dissolves readily in water, but does not dissolve in nonpolar hexane (C₆H₁₄). Why does NaCl dissolve in water but not in hexane?",
+      key,
+      distractors,
+      "Water is strongly polar, so the partial negative oxygen ends attract Na⁺ and the partial positive hydrogen ends attract Cl⁻ to overcome the ionic lattice, while nonpolar hexane lacks charge separation to stabilize free ions. <b>" + key + "</b>",
+      { variant: 2, solute: "NaCl", solventA: "water", solventB: "hexane" }
+    );
+  },
+  function() {
+    var key = "Sugar molecules have many polar -OH groups that hydrogen-bond with water, whereas wax consists of nonpolar hydrocarbon chains.";
+    var distractors = [
+      "Sugar has a lower density than water and floats while dissolving, whereas wax is too heavy for water molecules to support.",
+      "Sugar crystals break apart because sugar melts at room temperature in water, whereas wax remains a solid below its boiling point.",
+      "Sugar molecules are smaller than single water molecules, whereas wax molecules are too massive to enter any liquid solvent."
+    ];
+    return mcq(
+      "Table sugar (sucrose) dissolves readily in water, whereas paraffin candle wax does not dissolve in water at all. Why do these two molecular solids behave so differently in water?",
+      key,
+      distractors,
+      "Sucrose carries multiple polar hydroxyl (-OH) groups that form strong hydrogen bonds with water molecules, whereas paraffin wax is made of nonpolar carbon-hydrogen chains that cannot form favorable attractions with water. <b>" + key + "</b>",
+      { variant: 3, soluteA: "sugar", soluteB: "wax", solvent: "water" }
+    );
+  },
+  function() {
+    var key = "Ethanol is polar and forms hydrogen bonds with water, whereas cooking oil is nonpolar and cannot mix with polar water molecules.";
+    var distractors = [
+      "Ethanol has a lower density than water so it blends evenly, whereas cooking oil is much denser than water and sinks below it.",
+      "Ethanol reacts chemically with water to form a single new liquid, whereas cooking oil cannot undergo a reaction with water.",
+      "Ethanol molecules are tiny enough to fit between water molecules, whereas cooking oil molecules are too wide to pass between them."
+    ];
+    return mcq(
+      "Liquid ethanol mixes with water in all proportions, whereas liquid cooking oil separates into a distinct layer when mixed with water. Why does ethanol mix with water while cooking oil does not?",
+      key,
+      distractors,
+      "Ethanol has a polar -OH group capable of hydrogen-bonding with water, whereas cooking oil consists of nonpolar triglyceride molecules that are excluded as water molecules hydrogen-bond with one another. <b>" + key + "</b>",
+      { variant: 4, soluteA: "ethanol", soluteB: "cooking oil", solvent: "water" }
+    );
+  }
+]));
+
+// LEVEL: 2 - Identifies the specific cation-anion pair that combines to form an insoluble precipitate upon mixing two aqueous solutions.
+// LENGTHS: key=29, distractors=28,28,29
+E("u1-56-precipitate-ions", 1, ["5.6"], 2, "gen", function() {
+  var reactions = [
+    { solA: "silver nitrate", solB: "sodium chloride", pptCat: "silver ions", pptAn: "chloride ions", solCat: "sodium ions", solAn: "nitrate ions", pptFormula: "AgCl(s)" },
+    { solA: "barium chloride", solB: "sodium sulfate", pptCat: "barium ions", pptAn: "sulfate ions", solCat: "sodium ions", solAn: "chloride ions", pptFormula: "BaSO₄(s)" },
+    { solA: "lead(II) nitrate", solB: "potassium iodide", pptCat: "lead(II) ions", pptAn: "iodide ions", solCat: "potassium ions", solAn: "nitrate ions", pptFormula: "PbI₂(s)" },
+    { solA: "calcium chloride", solB: "sodium carbonate", pptCat: "calcium ions", pptAn: "carbonate ions", solCat: "sodium ions", solAn: "chloride ions", pptFormula: "CaCO₃(s)" },
+    { solA: "iron(III) chloride", solB: "sodium hydroxide", pptCat: "iron(III) ions", pptAn: "hydroxide ions", solCat: "sodium ions", solAn: "chloride ions", pptFormula: "Fe(OH)₃(s)" },
+    { solA: "copper(II) sulfate", solB: "sodium sulfide", pptCat: "copper(II) ions", pptAn: "sulfide ions", solCat: "sodium ions", solAn: "sulfate ions", pptFormula: "CuS(s)" }
+  ];
+  var rxn = pick(reactions);
+  var key = rxn.pptCat + " and " + rxn.pptAn;
+  var distractors = [
+    rxn.solCat + " and " + rxn.solAn,
+    rxn.pptCat + " and " + rxn.solAn,
+    rxn.solCat + " and " + rxn.pptAn
+  ];
+  return mcq(
+    "When aqueous solutions of " + rxn.solA + " and " + rxn.solB + " are mixed together, an insoluble precipitate forms. Which pair of ions combined to form this precipitate?",
+    key,
+    distractors,
+    "Mixing aqueous " + rxn.solA + " and " + rxn.solB + " brings four ions into contact; by the solubility generalizations, " + rxn.pptCat + " and " + rxn.pptAn + " form the insoluble solid " + rxn.pptFormula + ", while " + rxn.solCat + " and " + rxn.solAn + " remain dissolved as spectator ions. <b>" + key + "</b>",
+    { solA: rxn.solA, solB: rxn.solB, pptFormula: rxn.pptFormula }
+  );
+});
+
+// LEVEL: 3 - Balances an unbalanced chemical equation before extracting the required mole ratio between two named species.
+// LENGTHS: key=5, distractors=5,5,5
+E("u1-57-balance-then-ratio", 1, ["5.7"], 3, "gen", function() {
+  var rxns = [
+    {
+      unbal: "Mg + O₂ → MgO",
+      bal: "2Mg + O₂ → 2MgO",
+      pairs: [
+        { spA: "Mg", spB: "O₂", cA: 2, cB: 1 },
+        { spA: "O₂", spB: "MgO", cA: 1, cB: 2 }
+      ]
+    },
+    {
+      unbal: "H₂ + O₂ → H₂O",
+      bal: "2H₂ + O₂ → 2H₂O",
+      pairs: [
+        { spA: "H₂", spB: "O₂", cA: 2, cB: 1 },
+        { spA: "O₂", spB: "H₂O", cA: 1, cB: 2 }
+      ]
+    },
+    {
+      unbal: "Al + O₂ → Al₂O₃",
+      bal: "4Al + 3O₂ → 2Al₂O₃",
+      pairs: [
+        { spA: "Al", spB: "O₂", cA: 4, cB: 3 },
+        { spA: "Al", spB: "Al₂O₃", cA: 4, cB: 2 },
+        { spA: "O₂", spB: "Al₂O₃", cA: 3, cB: 2 }
+      ]
+    },
+    {
+      unbal: "KClO₃ → KCl + O₂",
+      bal: "2KClO₃ → 2KCl + 3O₂",
+      pairs: [
+        { spA: "KClO₃", spB: "O₂", cA: 2, cB: 3 },
+        { spA: "KCl", spB: "O₂", cA: 2, cB: 3 }
+      ]
+    },
+    {
+      unbal: "Na + H₂O → NaOH + H₂",
+      bal: "2Na + 2H₂O → 2NaOH + H₂",
+      pairs: [
+        { spA: "Na", spB: "H₂", cA: 2, cB: 1 },
+        { spA: "H₂O", spB: "H₂", cA: 2, cB: 1 }
+      ]
+    },
+    {
+      unbal: "CH₄ + O₂ → CO₂ + H₂O",
+      bal: "CH₄ + 2O₂ → CO₂ + 2H₂O",
+      pairs: [
+        { spA: "CH₄", spB: "O₂", cA: 1, cB: 2 },
+        { spA: "O₂", spB: "CO₂", cA: 2, cB: 1 }
+      ]
+    },
+    {
+      unbal: "H₂O₂ → H₂O + O₂",
+      bal: "2H₂O₂ → 2H₂O + O₂",
+      pairs: [
+        { spA: "H₂O₂", spB: "O₂", cA: 2, cB: 1 },
+        { spA: "H₂O", spB: "O₂", cA: 2, cB: 1 }
+      ]
+    }
+  ];
+  var rxn = pick(rxns);
+  var pr = pick(rxn.pairs);
+  var key = pr.cA + " : " + pr.cB;
+  var cands = [
+    "1 : 1",
+    pr.cB + " : " + pr.cA,
+    (pr.cA + 1) + " : " + pr.cB,
+    pr.cA + " : " + (pr.cB + 1)
+  ];
+  var distractors = [];
+  for (var i = 0; i < cands.length && distractors.length < 3; i++) {
+    if (cands[i] !== key && distractors.indexOf(cands[i]) < 0) {
+      distractors.push(cands[i]);
+    }
+  }
+  return mcq(
+    "Consider the unbalanced chemical equation: " + rxn.unbal + ". After balancing the equation with the smallest whole-number coefficients, what is the mole ratio of " + pr.spA + " to " + pr.spB + "?",
+    key,
+    distractors,
+    "Balancing atoms on both sides gives " + rxn.bal + ". Reading the coefficients of " + pr.spA + " and " + pr.spB + " from the balanced equation gives the mole ratio <b>" + key + "</b>.",
+    { unbal: rxn.unbal, bal: rxn.bal, spA: pr.spA, spB: pr.spB, cA: pr.cA, cB: pr.cB }
+  );
+});
+
+// LEVEL: 2 - Rearranges the percent yield relation to compute actual yield from theoretical yield and percent yield.
+// LENGTHS: key=4
+E("u1-59-actual-from-percent", 1, ["5.9"], 2, "gen", function() {
+  var products = ["aspirin", "ammonia", "methanol", "ethanol", "calcium oxide", "sodium hydroxide", "ibuprofen", "copper metal"];
+  var product = pick(products);
+  var theo = ri(120, 650) / 10;
+  var pct = ri(550, 980) / 10;
+  var rawActual = theo * (pct / 100);
+  var ans = sfR(rawActual, 3);
+  var tol = Math.max(0.05, ans * 0.02);
+  return numq(
+    "In a laboratory synthesis of " + product + ", the theoretical yield is " + F3(theo) + " g and the percent yield is " + F3(pct) + "%. What is the actual yield of " + product + ", in grams?",
+    ans,
+    tol,
+    "Rearranging Percent Yield = (Actual Yield / Theoretical Yield) × 100% gives Actual Yield = (" + F3(pct) + "% / 100%) × " + F3(theo) + " g = " + iF(rawActual) + " g, which rounds to <b>" + F3(ans) + " g</b>.",
+    { product: product, theo: theo, pct: pct, ans: ans }
+  );
+});
+
+// LEVEL: 3 - Diagnoses experimental errors that produce an apparent percent yield greater than 100%.
+// VARIANTS: four contamination/mass-inflation causes: (a) wet crystals, (b) unreacted starting material, (c) unevaporated liquid solvent, (d) side-reaction precipitate
+// LENGTHS: key=124, distractors=127,125,119
+// LENGTHS: key=121, distractors=120,122,115
+// LENGTHS: key=109, distractors=113,108,112
+// LENGTHS: key=121, distractors=115,123,115
+E("u1-59-over-100-diagnosis", 1, ["5.9"], 3, "var", varset([
+  function() {
+    var key = "The weighed solid still contains trapped liquid solvent, so the recorded mass includes solvent in addition to the product.";
+    var distractors = [
+      "The reaction created extra product beyond the limiting reactant limit because the mixture was stirred for a longer time.",
+      "Percent yields between 105% and 130% are normal whenever a solid product is isolated by gravity filtration from solution.",
+      "Small amounts of solid product left behind on the filter paper increased the calculated percentage yield above 100%."
+    ];
+    return mcq(
+      "A student isolates crystals by filtration, weighs them immediately while they are still damp with solvent, and calculates a percent yield of 114%. Which explanation best accounts for this result?",
+      key,
+      distractors,
+      "By conservation of mass, actual yield cannot exceed theoretical yield; weighing damp crystals adds the mass of unevaporated solvent to the product mass. <b>" + key + "</b>",
+      { variant: 1, pctYield: 114 }
+    );
+  },
+  function() {
+    var key = "Unreacted starting material remained mixed with the crude solid, inflating the weighed mass above the true product mass.";
+    var distractors = [
+      "Excess reactant converted completely into extra product once the limiting reactant had been used up in the flask.",
+      "Percent yields above 100% are expected whenever a synthesis uses a large excess of one of the starting reactants.",
+      "Spilling a small fraction of the crude solid during transfer to the balance raised the calculated percent yield."
+    ];
+    return mcq(
+      "After running a synthesis, a student weighs an unpurified crude solid that is still contaminated with unreacted starting material and obtains a percent yield of 121%. Which explanation best accounts for this result?",
+      key,
+      distractors,
+      "The theoretical yield counts only pure product; leftover starting material mixed into the weighed sample artificially increases the apparent actual yield. <b>" + key + "</b>",
+      { variant: 2, pctYield: 121 }
+    );
+  },
+  function() {
+    var key = "Residual volatile solvent remained dissolved in the liquid product, adding extra mass to the weighed sample.";
+    var distractors = [
+      "Warming the liquid product caused its mass to expand above the theoretical limit set by the limiting reactant.",
+      "Percent yields slightly above 100% occur normally whenever a liquid product is collected by simple distillation.",
+      "Evaporating part of the liquid product before weighing concentrated the sample and raised the percent yield."
+    ];
+    return mcq(
+      "A student collects a liquid product from a reaction mixture and weighs it before all of the extraction solvent has evaporated, reporting a percent yield of 108%. Which explanation best accounts for this result?",
+      key,
+      distractors,
+      "Any extraction solvent still mixed with the liquid product is weighed on the balance as if it were product, inflating the actual yield above 100%. <b>" + key + "</b>",
+      { variant: 3, pctYield: 108 }
+    );
+  },
+  function() {
+    var key = "A competing side reaction formed a second insoluble solid that co-precipitated and added mass to the collected sample.";
+    var distractors = [
+      "The main precipitation reaction produced more moles of solid than the limiting reactant stoichiometrically allowed.",
+      "Percent yields above 100% are standard whenever two aqueous ionic solutions are mixed rapidly at room temperature.",
+      "Washing the collected precipitate with distilled water dissolved part of the solid and raised the percent yield."
+    ];
+    return mcq(
+      "During a precipitation experiment, a student filters and dries the solid completely but calculates a percent yield of 126%. Which explanation best accounts for this result?",
+      key,
+      distractors,
+      "Even when completely dry, a precipitate contaminated by a second insoluble byproduct has a total mass greater than the pure target compound alone. <b>" + key + "</b>",
+      { variant: 4, pctYield: 126 }
+    );
+  }
+]));
+
+// LEVEL: 2 - Discounts an impure limestone sample by its mass percent purity before running a mass-to-mass stoichiometric conversion.
+// LENGTHS: key=4
+E("u1-510-limestone-lime", 1, ["5.10"], 2, "gen", function() {
+  var sampleKg = ri(50, 500);
+  var purityPct = ri(820, 980) / 10;
+  var mCaCO3 = sampleKg * (purityPct / 100);
+  var M_CaCO3 = CHEM_AM.Ca + CHEM_AM.C + 3 * CHEM_AM.O;
+  var M_CaO = CHEM_AM.Ca + CHEM_AM.O;
+  var molCaCO3 = (mCaCO3 * 1000) / M_CaCO3;
+  var molCaO = molCaCO3;
+  var rawKgCaO = (molCaO * M_CaO) / 1000;
+  var ans = sfR(rawKgCaO, 3);
+  var tol = Math.max(0.05, ans * 0.02);
+  return numq(
+    "In quicklime production for steelmaking and construction, calcium carbonate decomposes when heated: CaCO₃ → CaO + CO₂. A " + gF(sampleKg) + " kg sample of crushed limestone contains " + F3(purityPct) + "% CaCO₃ by mass, with inert impurities. What mass of quicklime (CaO), in kilograms, can be produced from this sample?",
+    ans,
+    tol,
+    "First find the mass of pure CaCO₃: " + gF(sampleKg) + " kg × " + F3(purityPct) + "% = " + iF(mCaCO3) + " kg. Using molar masses M(CaCO₃) = " + iF(M_CaCO3) + " g/mol and M(CaO) = " + iF(M_CaO) + " g/mol with a 1 : 1 mole ratio gives (" + iF(mCaCO3) + " kg / " + iF(M_CaCO3) + " g/mol) × " + iF(M_CaO) + " g/mol = " + iF(rawKgCaO) + " kg, which rounds to <b>" + F3(ans) + " kg</b>.",
+    { sampleKg: sampleKg, purityPct: purityPct, ans: ans }
+  );
+});
+
+// LEVEL: 2 - Enters the stoichiometric chain from solution concentration and volume to calculate oxygen gas volume at STP.
+// LENGTHS: key=4
+E("u1-510-peroxide-oxygen", 1, ["5.10"], 2, "gen", function() {
+  var contexts = [
+    "A clinic disinfectant bottle contains",
+    "In a laboratory oxygen preparation, a student decomposes",
+    "A water-treatment test uses"
+  ];
+  var intro = pick(contexts);
+  var volMl = ri(10, 100) * 10;
+  var conc = ri(30, 300) / 100;
+  var volL = volMl / 1000;
+  var molH2O2 = conc * volL;
+  var molO2 = molH2O2 / 2;
+  var rawVolO2 = molO2 * 22.4;
+  var ans = sfR(rawVolO2, 3);
+  var tol = Math.max(0.05, ans * 0.02);
+  return numq(
+    intro + " " + gF(volMl) + " mL of a " + F3(conc) + " mol/L aqueous hydrogen peroxide solution, which decomposes completely according to: 2H₂O₂ → 2H₂O + O₂. What volume of oxygen gas (O₂), in litres, is produced at STP?",
+    ans,
+    tol,
+    "Converting " + gF(volMl) + " mL to " + iF(volL) + " L gives n(H₂O₂) = " + F3(conc) + " mol/L × " + iF(volL) + " L = " + iF(molH2O2) + " mol. By the 2 : 1 mole ratio, n(O₂) = " + iF(molH2O2) + " mol / 2 = " + iF(molO2) + " mol, and multiplying by 22.4 L/mol at STP gives " + iF(rawVolO2) + " L, which rounds to <b>" + F3(ans) + " L</b>.",
+    { volMl: volMl, conc: conc, ans: ans }
+  );
+});
 
 /* ----- bank-u2.js ----- */
 // Chemistry 2202 Unit 2 bank: From Structures to Properties.
@@ -4312,4 +4864,4 @@ E("br-b3-molecular-poly", 4, ["B.3"], 2, "gen", function () {
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
+window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-acid-formula":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-510-limestone-lime":3,"u1-510-peroxide-oxygen":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-actual-from-percent":2,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
