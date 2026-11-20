@@ -579,6 +579,42 @@ function u7gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}retu
 // CRMARKS: u1-cr-mixed-tolerance=5
 // CRMARKS: u1-cr-classify-words=4
 // CRMARKS: u1-cr-assembly-tolerance=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-precision-why=3
+// CRMARKS: u1-accuracy-why=3
+// CRMARKS: u1-precision-vs-accuracy=3
+// CRMARKS: u1-uncertainty-state=4
+// CRMARKS: u1-tolerance-maxmin=4
+// CRMARKS: u1-percent-tolerance=4
+// CRMARKS: u1-compare-instruments=4
+// CRMARKS: u1-data-classify=4
+// CRMARKS: u1-limitations-trade=4
+// CRMARKS: u1-context-analyse=4
+// CRMARKS: u1-pk-referent=3
+// CRMARKS: u1-pk-measure-read=4
+// CRMARKS: u1-pk-estimate-ref=4
+// CRMARKS: u1-pk-reasonable=4
+// CRMARKS: u1-pk-diameter-fig=4
+// CRMARKS: u1-pk-rounding=3
+// CRMARKS: u1-pk-tolerance-arithmetic=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-precision-why=b
+// BIMODAL: u1-accuracy-why=b
+// BIMODAL: u1-precision-vs-accuracy=a
+// BIMODAL: u1-uncertainty-state=a
+// BIMODAL: u1-tolerance-maxmin=a
+// BIMODAL: u1-percent-tolerance=a
+// BIMODAL: u1-compare-instruments=a
+// BIMODAL: u1-data-classify=a
+// BIMODAL: u1-limitations-trade=b
+// BIMODAL: u1-context-analyse=b
+// BIMODAL: u1-pk-referent=b
+// BIMODAL: u1-pk-measure-read=a
+// BIMODAL: u1-pk-estimate-ref=a
+// BIMODAL: u1-pk-reasonable=b
+// BIMODAL: u1-pk-diameter-fig=a
+// BIMODAL: u1-pk-rounding=a
+// BIMODAL: u1-pk-tolerance-arithmetic=a
 /* ===== Unit 1 ===== */
 /* Math 3202 Unit 1: Measurement. Helpers prefixed u1. Codes from ind-unit1.json. */
 function u1Fmt(x){ return fmt(x,3); }
@@ -1233,6 +1269,48 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-cr-solve-input=5
 // CRMARKS: u2-cr-write-equation=4
 // CRMARKS: u2-cr-budget-solve=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-linear-characteristics=3
+// CRMARKS: u2-sort-one=3
+// CRMARKS: u2-connect-points=3
+// CRMARKS: u2-slope-from-graph=4
+// CRMARKS: u2-slope-rate-context=4
+// CRMARKS: u2-direct-partial-equation=4
+// CRMARKS: u2-direct-partial-graph=4
+// CRMARKS: u2-table-missing=4
+// CRMARKS: u2-pattern-differences=4
+// CRMARKS: u2-write-equation-context=4
+// CRMARKS: u2-apply-formula=4
+// CRMARKS: u2-wide-mixed=4
+// CRMARKS: u2-pk-rise-run=3
+// CRMARKS: u2-pk-slope-ramp=4
+// CRMARKS: u2-pk-slope-two-points=4
+// CRMARKS: u2-pk-error-slope=4
+// CRMARKS: u2-pk-rate-of-change=3
+// CRMARKS: u2-pk-table-equation=4
+// CRMARKS: u2-pk-point-on-graph=3
+// CRMARKS: u2-pk-balance-model=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-linear-characteristics=a
+// BIMODAL: u2-sort-one=a
+// BIMODAL: u2-connect-points=b
+// BIMODAL: u2-slope-from-graph=a
+// BIMODAL: u2-slope-rate-context=a
+// BIMODAL: u2-direct-partial-equation=b
+// BIMODAL: u2-direct-partial-graph=b
+// BIMODAL: u2-table-missing=a
+// BIMODAL: u2-pattern-differences=a
+// BIMODAL: u2-write-equation-context=b
+// BIMODAL: u2-apply-formula=a
+// BIMODAL: u2-wide-mixed=a
+// BIMODAL: u2-pk-rise-run=a
+// BIMODAL: u2-pk-slope-ramp=a
+// BIMODAL: u2-pk-slope-two-points=a
+// BIMODAL: u2-pk-error-slope=b
+// BIMODAL: u2-pk-rate-of-change=a
+// BIMODAL: u2-pk-table-equation=a
+// BIMODAL: u2-pk-point-on-graph=a
+// BIMODAL: u2-pk-balance-model=a
 /* ===== Unit 2 ===== */
 /* Math 3202 Unit 2: Linear Relationships. Helpers prefixed u2. Codes from ind-unit2.json. */
 function u2Gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=a%b; a=b; b=t; } return a||1; }
@@ -1955,6 +2033,42 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-graph-reading-cr=5
 // CRMARKS: u3-predict-advanced-cr=4
 // CRMARKS: u3-scale-design-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-trend-describe=3
+// CRMARKS: u3-scatter-classify=3
+// CRMARKS: u3-context-graph-match=3
+// CRMARKS: u3-trend-strength=4
+// CRMARKS: u3-interp-extrap-graph=4
+// CRMARKS: u3-context-match-gen=4
+// CRMARKS: u3-create-scale=4
+// CRMARKS: u3-create-type=4
+// CRMARKS: u3-trend-advanced=4
+// CRMARKS: u3-pk-read-value=3
+// CRMARKS: u3-pk-histogram-read=3
+// CRMARKS: u3-pk-trend-basic=3
+// CRMARKS: u3-pk-scatter-trend=4
+// CRMARKS: u3-pk-choose-graph=3
+// CRMARKS: u3-pk-interpolate=4
+// CRMARKS: u3-pk-misleading-axis=4
+// CRMARKS: u3-pk-two-conclusions=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-trend-describe=a
+// BIMODAL: u3-scatter-classify=a
+// BIMODAL: u3-context-graph-match=b
+// BIMODAL: u3-trend-strength=a
+// BIMODAL: u3-interp-extrap-graph=a
+// BIMODAL: u3-context-match-gen=b
+// BIMODAL: u3-create-scale=a
+// BIMODAL: u3-create-type=a
+// BIMODAL: u3-trend-advanced=a
+// BIMODAL: u3-pk-read-value=a
+// BIMODAL: u3-pk-histogram-read=a
+// BIMODAL: u3-pk-trend-basic=b
+// BIMODAL: u3-pk-scatter-trend=b
+// BIMODAL: u3-pk-choose-graph=b
+// BIMODAL: u3-pk-interpolate=a
+// BIMODAL: u3-pk-misleading-axis=b
+// BIMODAL: u3-pk-two-conclusions=b
 /* ===== Unit 3 ===== */
 /* Math 3202 Unit 3: Graphing Data (6.11-6.15). Helpers prefixed u3. */
 function u3Plot(pts, xMax, yMax, xLab, yLab, line){
@@ -2536,6 +2650,38 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-trimmed-outlier-cr=5
 // CRMARKS: u4-outlier-effect-cr=4
 // CRMARKS: u4-weighted-advanced-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-mean-basic=3
+// CRMARKS: u4-median-basic=3
+// CRMARKS: u4-mode-basic=3
+// CRMARKS: u4-outlier-identify=3
+// CRMARKS: u4-context-problem=4
+// CRMARKS: u4-error-mean=4
+// CRMARKS: u4-error-median-mode=4
+// CRMARKS: u4-advantages-weighting=4
+// CRMARKS: u4-weighted-mean=4
+// CRMARKS: u4-outlier-effect=4
+// CRMARKS: u4-trimmed-mean=4
+// CRMARKS: u4-media-interpret=4
+// CRMARKS: u4-measure-advanced=4
+// CRMARKS: u4-pk-mean-basic=3
+// CRMARKS: u4-pk-median-mode=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-mean-basic=a
+// BIMODAL: u4-median-basic=a
+// BIMODAL: u4-mode-basic=a
+// BIMODAL: u4-outlier-identify=a
+// BIMODAL: u4-context-problem=a
+// BIMODAL: u4-error-mean=a
+// BIMODAL: u4-error-median-mode=a
+// BIMODAL: u4-advantages-weighting=b
+// BIMODAL: u4-weighted-mean=a
+// BIMODAL: u4-outlier-effect=a
+// BIMODAL: u4-trimmed-mean=a
+// BIMODAL: u4-media-interpret=b
+// BIMODAL: u4-measure-advanced=a
+// BIMODAL: u4-pk-mean-basic=a
+// BIMODAL: u4-pk-median-mode=a
 /* ===== Unit 4 ===== */
 /* Math 3202 Unit 4: Working with Data (6.1-6.10). Helpers prefixed u4. No box plots, stem-and-leaf or range. */
 function u4Sum(a){ return a.reduce(function(s,n){return s+n;},0); }
@@ -3074,6 +3220,38 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u5-home-cash-cr=5
 // CRMARKS: u5-rental-term-cr=4
 // CRMARKS: u5-rent-own-province-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-vehicle-options=3
+// CRMARKS: u5-home-costs-identify=3
+// CRMARKS: u5-operating-cost-types=3
+// CRMARKS: u5-justify-vehicle-choice=4
+// CRMARKS: u5-option-match=4
+// CRMARKS: u5-rental-monthly=4
+// CRMARKS: u5-vehicle-deal-compare=4
+// CRMARKS: u5-rent-vs-own=4
+// CRMARKS: u5-mileage-decision=4
+// CRMARKS: u5-pk-budget-totals=4
+// CRMARKS: u5-pk-percent-of-income=4
+// CRMARKS: u5-pk-card-vs-loan=4
+// CRMARKS: u5-pk-percent-change=4
+// CRMARKS: u5-pk-modify-for-goal=4
+// CRMARKS: u5-pk-rent-compare=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-vehicle-options=a
+// BIMODAL: u5-home-costs-identify=b
+// BIMODAL: u5-operating-cost-types=a
+// BIMODAL: u5-justify-vehicle-choice=b
+// BIMODAL: u5-option-match=a
+// BIMODAL: u5-rental-monthly=a
+// BIMODAL: u5-vehicle-deal-compare=a
+// BIMODAL: u5-rent-vs-own=a
+// BIMODAL: u5-mileage-decision=a
+// BIMODAL: u5-pk-budget-totals=a
+// BIMODAL: u5-pk-percent-of-income=a
+// BIMODAL: u5-pk-card-vs-loan=a
+// BIMODAL: u5-pk-percent-change=a
+// BIMODAL: u5-pk-modify-for-goal=a
+// BIMODAL: u5-pk-rent-compare=a
 /* ===== Unit 5 ===== */
 /* Math 3202 Unit 5: Major Financial Purchases (1.1-1.4, 1.10-1.12). Helpers prefixed u5. */
 function u5M(n){ var neg=n<0; var s=Math.abs(Math.round(n*100)/100).toFixed(2); var p=s.split("."); p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,","); return (neg?"-$":"$")+p[0]+"."+p[1]; }
@@ -3663,6 +3841,34 @@ BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-breakeven-cr=5
 // CRMARKS: u6-tax-return-exam-cr=4
 // CRMARKS: u6-target-profit-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-business-expenses=3
+// CRMARKS: u6-why-file=3
+// CRMARKS: u6-tax-forms-docs=3
+// CRMARKS: u6-expense-total=4
+// CRMARKS: u6-profit-factors=4
+// CRMARKS: u6-credit-deduction=4
+// CRMARKS: u6-seasonal-analysis=4
+// CRMARKS: u6-pk-budget-totals=4
+// CRMARKS: u6-pk-week-spending=4
+// CRMARKS: u6-pk-profit-loss=3
+// CRMARKS: u6-pk-balance-model=3
+// CRMARKS: u6-pk-deduction-calc=4
+// CRMARKS: u6-pk-net-from-deductions=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-business-expenses=a
+// BIMODAL: u6-why-file=b
+// BIMODAL: u6-tax-forms-docs=a
+// BIMODAL: u6-expense-total=a
+// BIMODAL: u6-profit-factors=b
+// BIMODAL: u6-credit-deduction=a
+// BIMODAL: u6-seasonal-analysis=a
+// BIMODAL: u6-pk-budget-totals=a
+// BIMODAL: u6-pk-week-spending=a
+// BIMODAL: u6-pk-profit-loss=a
+// BIMODAL: u6-pk-balance-model=a
+// BIMODAL: u6-pk-deduction-calc=a
+// BIMODAL: u6-pk-net-from-deductions=a
 /* ===== Unit 6 ===== */
 /* Math 3202 Unit 6: Businesses and Taxes (1.5-1.9, 1.13-1.15). Helpers prefixed u6. */
 function u6M(n){ var neg=n<0; var s=Math.abs(Math.round(n*100)/100).toFixed(2); var p=s.split("."); p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,","); return (neg?"-$":"$")+p[0]+"."+p[1]; }
@@ -4233,6 +4439,40 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-cr-symmetry-tile=5
 // CRMARKS: u7-cr-third-side-max=4
 // CRMARKS: u7-cr-tri-perimeter=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-tri-third-angle=3
+// CRMARKS: u7-quad-fourth-angle=3
+// CRMARKS: u7-poly-angle-sum=3
+// CRMARKS: u7-iso-angles=4
+// CRMARKS: u7-para-angles=4
+// CRMARKS: u7-poly-each-angle=4
+// CRMARKS: u7-property-applies=4
+// CRMARKS: u7-applications=4
+// CRMARKS: u7-poly-challenge=4
+// CRMARKS: u7-pk-comp-supp=3
+// CRMARKS: u7-pk-pair-names=3
+// CRMARKS: u7-pk-adjacent-describe=4
+// CRMARKS: u7-pk-trans-relationships=4
+// CRMARKS: u7-pk-trans-find=4
+// CRMARKS: u7-pk-context-transversal=4
+// CRMARKS: u7-pk-trans-algebra=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-tri-third-angle=a
+// BIMODAL: u7-quad-fourth-angle=a
+// BIMODAL: u7-poly-angle-sum=a
+// BIMODAL: u7-iso-angles=a
+// BIMODAL: u7-para-angles=a
+// BIMODAL: u7-poly-each-angle=a
+// BIMODAL: u7-property-applies=b
+// BIMODAL: u7-applications=b
+// BIMODAL: u7-poly-challenge=a
+// BIMODAL: u7-pk-comp-supp=a
+// BIMODAL: u7-pk-pair-names=b
+// BIMODAL: u7-pk-adjacent-describe=a
+// BIMODAL: u7-pk-trans-relationships=a
+// BIMODAL: u7-pk-trans-find=a
+// BIMODAL: u7-pk-context-transversal=a
+// BIMODAL: u7-pk-trans-algebra=a
 /* ===== Unit 7 ===== */
 /* Math 3202 Unit 7: Properties of Figures. Helpers prefixed u7. */
 function u7txt(x,y,str,anchor,size,bold){
@@ -4945,6 +5185,50 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u8-cr-design-coords=4
 // CRMARKS: u8-cr-similar-sides=5
 // CRMARKS: u8-cr-triple-transform=6
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-single-point=3
+// CRMARKS: u8-dilation-scale=3
+// CRMARKS: u8-symmetry-count=3
+// CRMARKS: u8-dilation-grid=4
+// CRMARKS: u8-is-dilation=4
+// CRMARKS: u8-applications=4
+// CRMARKS: u8-context-calc=4
+// CRMARKS: u8-identify-one=4
+// CRMARKS: u8-combined-point=4
+// CRMARKS: u8-design-analyse=4
+// CRMARKS: u8-challenge=4
+// CRMARKS: u8-pk-scale-read=3
+// CRMARKS: u8-pk-scale-actual=4
+// CRMARKS: u8-pk-similar-check=3
+// CRMARKS: u8-pk-corresponding-sides=4
+// CRMARKS: u8-pk-similar-missing-side=4
+// CRMARKS: u8-pk-related-shapes=3
+// CRMARKS: u8-pk-transformation-symmetry=3
+// CRMARKS: u8-pk-translation-rule=3
+// CRMARKS: u8-pk-reflect-point=3
+// CRMARKS: u8-pk-rotate-vertex=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-single-point=a
+// BIMODAL: u8-dilation-scale=a
+// BIMODAL: u8-symmetry-count=a
+// BIMODAL: u8-dilation-grid=a
+// BIMODAL: u8-is-dilation=b
+// BIMODAL: u8-applications=a
+// BIMODAL: u8-context-calc=a
+// BIMODAL: u8-identify-one=b
+// BIMODAL: u8-combined-point=a
+// BIMODAL: u8-design-analyse=a
+// BIMODAL: u8-challenge=a
+// BIMODAL: u8-pk-scale-read=a
+// BIMODAL: u8-pk-scale-actual=a
+// BIMODAL: u8-pk-similar-check=b
+// BIMODAL: u8-pk-corresponding-sides=a
+// BIMODAL: u8-pk-similar-missing-side=a
+// BIMODAL: u8-pk-related-shapes=b
+// BIMODAL: u8-pk-transformation-symmetry=a
+// BIMODAL: u8-pk-translation-rule=a
+// BIMODAL: u8-pk-reflect-point=a
+// BIMODAL: u8-pk-rotate-vertex=a
 /* ===== Unit 8 ===== */
 /* Math 3202 Unit 8: Transformations. Helpers prefixed u8. */
 function u8txt(x,y,str,anchor,size,bold){
@@ -5985,6 +6269,42 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u9-mixed-choose-cr=5
 // CRMARKS: u9-two-step-cr=4
 // CRMARKS: u9-survey-application-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u9-sine-side=3
+// CRMARKS: u9-cosine-side=3
+// CRMARKS: u9-choose-law=3
+// CRMARKS: u9-sine-angle=4
+// CRMARKS: u9-cosine-angle=4
+// CRMARKS: u9-sine-context=4
+// CRMARKS: u9-cosine-context=4
+// CRMARKS: u9-applications=4
+// CRMARKS: u9-mixed-wide=4
+// CRMARKS: u9r-ratio-value=3
+// CRMARKS: u9r-find-side=3
+// CRMARKS: u9r-find-side-workplace=4
+// CRMARKS: u9r-find-angle=4
+// CRMARKS: u9r-elevation-depression=4
+// CRMARKS: u9r-reasonable-result=4
+// CRMARKS: u9-pk-choose-ratio=3
+// CRMARKS: u9-pk-unknown-angle=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u9-sine-side=a
+// BIMODAL: u9-cosine-side=a
+// BIMODAL: u9-choose-law=b
+// BIMODAL: u9-sine-angle=a
+// BIMODAL: u9-cosine-angle=a
+// BIMODAL: u9-sine-context=a
+// BIMODAL: u9-cosine-context=a
+// BIMODAL: u9-applications=a
+// BIMODAL: u9-mixed-wide=a
+// BIMODAL: u9r-ratio-value=a
+// BIMODAL: u9r-find-side=a
+// BIMODAL: u9r-find-side-workplace=a
+// BIMODAL: u9r-find-angle=a
+// BIMODAL: u9r-elevation-depression=a
+// BIMODAL: u9r-reasonable-result=b
+// BIMODAL: u9-pk-choose-ratio=a
+// BIMODAL: u9-pk-unknown-angle=a
 /* ===== Unit 9 ===== */
 /* Math 3202 Unit 9: Trigonometry, sine law and cosine law (5.1 to 5.4), plus a
    primary ratio bridging set (ids u9r-, prior learning review, see notes9.md).
@@ -6741,6 +7061,30 @@ BANK.forEach(function(e){var t=PKT_U9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u10-expected-count-cr=5
 // CRMARKS: u10-compare-offers-cr=4
 // CRMARKS: u10-fair-prize-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u10-prob-from-data=3
+// CRMARKS: u10-express-forms=3
+// CRMARKS: u10-prob-from-odds-basic=3
+// CRMARKS: u10-express-context=4
+// CRMARKS: u10-odds-explain=4
+// CRMARKS: u10-decisions=4
+// CRMARKS: u10-applications=4
+// CRMARKS: u10-wide-mixed=4
+// CRMARKS: u10-pk-prob-basic=3
+// CRMARKS: u10-pk-two-events=4
+// CRMARKS: u10-pk-prob-in-media=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u10-prob-from-data=a
+// BIMODAL: u10-express-forms=a
+// BIMODAL: u10-prob-from-odds-basic=a
+// BIMODAL: u10-express-context=a
+// BIMODAL: u10-odds-explain=b
+// BIMODAL: u10-decisions=b
+// BIMODAL: u10-applications=b
+// BIMODAL: u10-wide-mixed=a
+// BIMODAL: u10-pk-prob-basic=a
+// BIMODAL: u10-pk-two-events=a
+// BIMODAL: u10-pk-prob-in-media=b
 /* ===== Unit 10 ===== */
 /* Math 3202 Unit 10: Probability (7.1 to 7.7). Helpers prefixed u10.
    Probabilities are built from data sets, expressed in several forms, and
@@ -7397,4 +7741,10 @@ BANK.forEach(function(e){var t=PKT_U10[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-cr-assembly-tolerance":5,"u1-cr-classify-words":4,"u1-cr-mixed-tolerance":5,"u1-cr-tolerance-limits":4,"u1-cr-uncertainty-interval":3,"u10-compare-offers-cr":4,"u10-expected-count-cr":5,"u10-fair-prize-cr":5,"u10-odds-to-prob-cr":4,"u10-prob-data-cr":3,"u2-cr-budget-solve":5,"u2-cr-slope-rate":4,"u2-cr-solve-input":5,"u2-cr-table-value":3,"u2-cr-write-equation":4,"u3-extrapolate-cr":4,"u3-graph-reading-cr":5,"u3-interpolate-cr":3,"u3-predict-advanced-cr":4,"u3-scale-design-cr":5,"u4-mean-context-cr":3,"u4-outlier-effect-cr":4,"u4-trimmed-outlier-cr":5,"u4-weighted-advanced-cr":5,"u4-weighted-mean-cr":4,"u5-home-cash-cr":5,"u5-lease-total-cr":3,"u5-operating-cost-cr":4,"u5-rent-own-province-cr":5,"u5-rental-term-cr":4,"u6-breakeven-cr":5,"u6-profit-cr":3,"u6-target-profit-cr":5,"u6-tax-return-cr":4,"u6-tax-return-exam-cr":4,"u7-cr-kite-frame":4,"u7-cr-symmetry-tile":5,"u7-cr-third-side-max":4,"u7-cr-tri-exterior":3,"u7-cr-tri-perimeter":5,"u8-cr-blueprint":5,"u8-cr-combined":4,"u8-cr-design-coords":4,"u8-cr-dilation-vertex":3,"u8-cr-similar-sides":5,"u8-cr-triple-transform":6,"u9-cosine-angle-cr":4,"u9-mixed-choose-cr":5,"u9-sine-side-cr":3,"u9-survey-application-cr":5,"u9-two-step-cr":4};
+window.__BANK_CRMARKS={"u1-accuracy-why":3,"u1-compare-instruments":4,"u1-context-analyse":4,"u1-cr-assembly-tolerance":5,"u1-cr-classify-words":4,"u1-cr-mixed-tolerance":5,"u1-cr-tolerance-limits":4,"u1-cr-uncertainty-interval":3,"u1-data-classify":4,"u1-limitations-trade":4,"u1-percent-tolerance":4,"u1-pk-diameter-fig":4,"u1-pk-estimate-ref":4,"u1-pk-measure-read":4,"u1-pk-reasonable":4,"u1-pk-referent":3,"u1-pk-rounding":3,"u1-pk-tolerance-arithmetic":4,"u1-precision-vs-accuracy":3,"u1-precision-why":3,"u1-tolerance-maxmin":4,"u1-uncertainty-state":4,"u10-applications":4,"u10-compare-offers-cr":4,"u10-decisions":4,"u10-expected-count-cr":5,"u10-express-context":4,"u10-express-forms":3,"u10-fair-prize-cr":5,"u10-odds-explain":4,"u10-odds-to-prob-cr":4,"u10-pk-prob-basic":3,"u10-pk-prob-in-media":3,"u10-pk-two-events":4,"u10-prob-data-cr":3,"u10-prob-from-data":3,"u10-prob-from-odds-basic":3,"u10-wide-mixed":4,"u2-apply-formula":4,"u2-connect-points":3,"u2-cr-budget-solve":5,"u2-cr-slope-rate":4,"u2-cr-solve-input":5,"u2-cr-table-value":3,"u2-cr-write-equation":4,"u2-direct-partial-equation":4,"u2-direct-partial-graph":4,"u2-linear-characteristics":3,"u2-pattern-differences":4,"u2-pk-balance-model":3,"u2-pk-error-slope":4,"u2-pk-point-on-graph":3,"u2-pk-rate-of-change":3,"u2-pk-rise-run":3,"u2-pk-slope-ramp":4,"u2-pk-slope-two-points":4,"u2-pk-table-equation":4,"u2-slope-from-graph":4,"u2-slope-rate-context":4,"u2-sort-one":3,"u2-table-missing":4,"u2-wide-mixed":4,"u2-write-equation-context":4,"u3-context-graph-match":3,"u3-context-match-gen":4,"u3-create-scale":4,"u3-create-type":4,"u3-extrapolate-cr":4,"u3-graph-reading-cr":5,"u3-interp-extrap-graph":4,"u3-interpolate-cr":3,"u3-pk-choose-graph":3,"u3-pk-histogram-read":3,"u3-pk-interpolate":4,"u3-pk-misleading-axis":4,"u3-pk-read-value":3,"u3-pk-scatter-trend":4,"u3-pk-trend-basic":3,"u3-pk-two-conclusions":4,"u3-predict-advanced-cr":4,"u3-scale-design-cr":5,"u3-scatter-classify":3,"u3-trend-advanced":4,"u3-trend-describe":3,"u3-trend-strength":4,"u4-advantages-weighting":4,"u4-context-problem":4,"u4-error-mean":4,"u4-error-median-mode":4,"u4-mean-basic":3,"u4-mean-context-cr":3,"u4-measure-advanced":4,"u4-media-interpret":4,"u4-median-basic":3,"u4-mode-basic":3,"u4-outlier-effect":4,"u4-outlier-effect-cr":4,"u4-outlier-identify":3,"u4-pk-mean-basic":3,"u4-pk-median-mode":3,"u4-trimmed-mean":4,"u4-trimmed-outlier-cr":5,"u4-weighted-advanced-cr":5,"u4-weighted-mean":4,"u4-weighted-mean-cr":4,"u5-home-cash-cr":5,"u5-home-costs-identify":3,"u5-justify-vehicle-choice":4,"u5-lease-total-cr":3,"u5-mileage-decision":4,"u5-operating-cost-cr":4,"u5-operating-cost-types":3,"u5-option-match":4,"u5-pk-budget-totals":4,"u5-pk-card-vs-loan":4,"u5-pk-modify-for-goal":4,"u5-pk-percent-change":4,"u5-pk-percent-of-income":4,"u5-pk-rent-compare":4,"u5-rent-own-province-cr":5,"u5-rent-vs-own":4,"u5-rental-monthly":4,"u5-rental-term-cr":4,"u5-vehicle-deal-compare":4,"u5-vehicle-options":3,"u6-breakeven-cr":5,"u6-business-expenses":3,"u6-credit-deduction":4,"u6-expense-total":4,"u6-pk-balance-model":3,"u6-pk-budget-totals":4,"u6-pk-deduction-calc":4,"u6-pk-net-from-deductions":4,"u6-pk-profit-loss":3,"u6-pk-week-spending":4,"u6-profit-cr":3,"u6-profit-factors":4,"u6-seasonal-analysis":4,"u6-target-profit-cr":5,"u6-tax-forms-docs":3,"u6-tax-return-cr":4,"u6-tax-return-exam-cr":4,"u6-why-file":3,"u7-applications":4,"u7-cr-kite-frame":4,"u7-cr-symmetry-tile":5,"u7-cr-third-side-max":4,"u7-cr-tri-exterior":3,"u7-cr-tri-perimeter":5,"u7-iso-angles":4,"u7-para-angles":4,"u7-pk-adjacent-describe":4,"u7-pk-comp-supp":3,"u7-pk-context-transversal":4,"u7-pk-pair-names":3,"u7-pk-trans-algebra":4,"u7-pk-trans-find":4,"u7-pk-trans-relationships":4,"u7-poly-angle-sum":3,"u7-poly-challenge":4,"u7-poly-each-angle":4,"u7-property-applies":4,"u7-quad-fourth-angle":3,"u7-tri-third-angle":3,"u8-applications":4,"u8-challenge":4,"u8-combined-point":4,"u8-context-calc":4,"u8-cr-blueprint":5,"u8-cr-combined":4,"u8-cr-design-coords":4,"u8-cr-dilation-vertex":3,"u8-cr-similar-sides":5,"u8-cr-triple-transform":6,"u8-design-analyse":4,"u8-dilation-grid":4,"u8-dilation-scale":3,"u8-identify-one":4,"u8-is-dilation":4,"u8-pk-corresponding-sides":4,"u8-pk-reflect-point":3,"u8-pk-related-shapes":3,"u8-pk-rotate-vertex":4,"u8-pk-scale-actual":4,"u8-pk-scale-read":3,"u8-pk-similar-check":3,"u8-pk-similar-missing-side":4,"u8-pk-transformation-symmetry":3,"u8-pk-translation-rule":3,"u8-single-point":3,"u8-symmetry-count":3,"u9-applications":4,"u9-choose-law":3,"u9-cosine-angle":4,"u9-cosine-angle-cr":4,"u9-cosine-context":4,"u9-cosine-side":3,"u9-mixed-choose-cr":5,"u9-mixed-wide":4,"u9-pk-choose-ratio":3,"u9-pk-unknown-angle":4,"u9-sine-angle":4,"u9-sine-context":4,"u9-sine-side":3,"u9-sine-side-cr":3,"u9-survey-application-cr":5,"u9-two-step-cr":4,"u9r-elevation-depression":4,"u9r-find-angle":4,"u9r-find-side":3,"u9r-find-side-workplace":4,"u9r-ratio-value":3,"u9r-reasonable-result":4};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-accuracy-why":"b","u1-compare-instruments":"a","u1-context-analyse":"b","u1-data-classify":"a","u1-limitations-trade":"b","u1-percent-tolerance":"a","u1-pk-diameter-fig":"a","u1-pk-estimate-ref":"a","u1-pk-measure-read":"a","u1-pk-reasonable":"b","u1-pk-referent":"b","u1-pk-rounding":"a","u1-pk-tolerance-arithmetic":"a","u1-precision-vs-accuracy":"a","u1-precision-why":"b","u1-tolerance-maxmin":"a","u1-uncertainty-state":"a","u10-applications":"b","u10-decisions":"b","u10-express-context":"a","u10-express-forms":"a","u10-odds-explain":"b","u10-pk-prob-basic":"a","u10-pk-prob-in-media":"b","u10-pk-two-events":"a","u10-prob-from-data":"a","u10-prob-from-odds-basic":"a","u10-wide-mixed":"a","u2-apply-formula":"a","u2-connect-points":"b","u2-direct-partial-equation":"b","u2-direct-partial-graph":"b","u2-linear-characteristics":"a","u2-pattern-differences":"a","u2-pk-balance-model":"a","u2-pk-error-slope":"b","u2-pk-point-on-graph":"a","u2-pk-rate-of-change":"a","u2-pk-rise-run":"a","u2-pk-slope-ramp":"a","u2-pk-slope-two-points":"a","u2-pk-table-equation":"a","u2-slope-from-graph":"a","u2-slope-rate-context":"a","u2-sort-one":"a","u2-table-missing":"a","u2-wide-mixed":"a","u2-write-equation-context":"b","u3-context-graph-match":"b","u3-context-match-gen":"b","u3-create-scale":"a","u3-create-type":"a","u3-interp-extrap-graph":"a","u3-pk-choose-graph":"b","u3-pk-histogram-read":"a","u3-pk-interpolate":"a","u3-pk-misleading-axis":"b","u3-pk-read-value":"a","u3-pk-scatter-trend":"b","u3-pk-trend-basic":"b","u3-pk-two-conclusions":"b","u3-scatter-classify":"a","u3-trend-advanced":"a","u3-trend-describe":"a","u3-trend-strength":"a","u4-advantages-weighting":"b","u4-context-problem":"a","u4-error-mean":"a","u4-error-median-mode":"a","u4-mean-basic":"a","u4-measure-advanced":"a","u4-media-interpret":"b","u4-median-basic":"a","u4-mode-basic":"a","u4-outlier-effect":"a","u4-outlier-identify":"a","u4-pk-mean-basic":"a","u4-pk-median-mode":"a","u4-trimmed-mean":"a","u4-weighted-mean":"a","u5-home-costs-identify":"b","u5-justify-vehicle-choice":"b","u5-mileage-decision":"a","u5-operating-cost-types":"a","u5-option-match":"a","u5-pk-budget-totals":"a","u5-pk-card-vs-loan":"a","u5-pk-modify-for-goal":"a","u5-pk-percent-change":"a","u5-pk-percent-of-income":"a","u5-pk-rent-compare":"a","u5-rent-vs-own":"a","u5-rental-monthly":"a","u5-vehicle-deal-compare":"a","u5-vehicle-options":"a","u6-business-expenses":"a","u6-credit-deduction":"a","u6-expense-total":"a","u6-pk-balance-model":"a","u6-pk-budget-totals":"a","u6-pk-deduction-calc":"a","u6-pk-net-from-deductions":"a","u6-pk-profit-loss":"a","u6-pk-week-spending":"a","u6-profit-factors":"b","u6-seasonal-analysis":"a","u6-tax-forms-docs":"a","u6-why-file":"b","u7-applications":"b","u7-iso-angles":"a","u7-para-angles":"a","u7-pk-adjacent-describe":"a","u7-pk-comp-supp":"a","u7-pk-context-transversal":"a","u7-pk-pair-names":"b","u7-pk-trans-algebra":"a","u7-pk-trans-find":"a","u7-pk-trans-relationships":"a","u7-poly-angle-sum":"a","u7-poly-challenge":"a","u7-poly-each-angle":"a","u7-property-applies":"b","u7-quad-fourth-angle":"a","u7-tri-third-angle":"a","u8-applications":"a","u8-challenge":"a","u8-combined-point":"a","u8-context-calc":"a","u8-design-analyse":"a","u8-dilation-grid":"a","u8-dilation-scale":"a","u8-identify-one":"b","u8-is-dilation":"b","u8-pk-corresponding-sides":"a","u8-pk-reflect-point":"a","u8-pk-related-shapes":"b","u8-pk-rotate-vertex":"a","u8-pk-scale-actual":"a","u8-pk-scale-read":"a","u8-pk-similar-check":"b","u8-pk-similar-missing-side":"a","u8-pk-transformation-symmetry":"a","u8-pk-translation-rule":"a","u8-single-point":"a","u8-symmetry-count":"a","u9-applications":"a","u9-choose-law":"b","u9-cosine-angle":"a","u9-cosine-context":"a","u9-cosine-side":"a","u9-mixed-wide":"a","u9-pk-choose-ratio":"a","u9-pk-unknown-angle":"a","u9-sine-angle":"a","u9-sine-context":"a","u9-sine-side":"a","u9r-elevation-depression":"a","u9r-find-angle":"a","u9r-find-side":"a","u9r-find-side-workplace":"a","u9r-ratio-value":"a","u9r-reasonable-result":"b"};
