@@ -393,6 +393,76 @@ function chemCondensedInfo(src){
 // CRMARKS: u1-59-actual-from-percent=2
 // CRMARKS: u1-510-limestone-lime=3
 // CRMARKS: u1-510-peroxide-oxygen=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-51-name-to-formula=2
+// CRMARKS: u1-51-formula-to-name=2
+// CRMARKS: u1-51-acids-hydrates=2
+// CRMARKS: u1-53-observations=3
+// CRMARKS: u1-53-identify-type=2
+// CRMARKS: u1-54-what-stays-constant=3
+// CRMARKS: u1-54-add-solvent-or-solute=2
+// CRMARKS: u1-55-like-dissolves-like=2
+// CRMARKS: u1-55-polarity-prediction=2
+// CRMARKS: u1-55-temperature-effects=3
+// CRMARKS: u1-56-solubility-rule=2
+// CRMARKS: u1-56-which-mixture-precipitates=2
+// CRMARKS: u1-56-precipitate-or-soluble=2
+// CRMARKS: u1-57-identify-ratio=2
+// CRMARKS: u1-57-moles-mcq=2
+// CRMARKS: u1-59-maximize-yield=3
+// CRMARKS: u1-59-why-yield-is-low=3
+// CRMARKS: u1-510-application-idea=2
+// CRMARKS: u1-510-application-reasoning=3
+// CRMARKS: u1-53-evaporation=3
+// CRMARKS: u1-54-two-changes=3
+// CRMARKS: u1-55-compare-solubility-data=2
+// CRMARKS: u1-55-explain-variation=3
+// CRMARKS: u1-56-precipitate-ions=2
+// CRMARKS: u1-57-balance-then-ratio=3
+// CRMARKS: u1-52-mc-molar-mass=2
+// CRMARKS: u1-52-mc-mass-moles=2
+// CRMARKS: u1-52-mc-moles-particles=2
+// CRMARKS: u1-52-mc-mass-volume-stp=3
+// CRMARKS: u1-58-mc-mole-ratio=2
+// CRMARKS: u1-58-mc-mass-mass=2
+// CRMARKS: u1-58-mc-limiting=3
+// CRMARKS: u1-51-mc-correct-formula=2
+// CRMARKS: u1-510-mc-stoich-use=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-51-name-to-formula=a
+// BIMODAL: u1-51-formula-to-name=a
+// BIMODAL: u1-51-acids-hydrates=a
+// BIMODAL: u1-53-observations=b
+// BIMODAL: u1-53-identify-type=a
+// BIMODAL: u1-54-what-stays-constant=b
+// BIMODAL: u1-54-add-solvent-or-solute=a
+// BIMODAL: u1-55-like-dissolves-like=a
+// BIMODAL: u1-55-polarity-prediction=a
+// BIMODAL: u1-55-temperature-effects=b
+// BIMODAL: u1-56-solubility-rule=a
+// BIMODAL: u1-56-which-mixture-precipitates=a
+// BIMODAL: u1-56-precipitate-or-soluble=a
+// BIMODAL: u1-57-identify-ratio=a
+// BIMODAL: u1-57-moles-mcq=a
+// BIMODAL: u1-59-maximize-yield=b
+// BIMODAL: u1-59-why-yield-is-low=b
+// BIMODAL: u1-510-application-idea=b
+// BIMODAL: u1-510-application-reasoning=b
+// BIMODAL: u1-53-evaporation=b
+// BIMODAL: u1-54-two-changes=b
+// BIMODAL: u1-55-compare-solubility-data=a
+// BIMODAL: u1-55-explain-variation=b
+// BIMODAL: u1-56-precipitate-ions=a
+// BIMODAL: u1-57-balance-then-ratio=a
+// BIMODAL: u1-52-mc-molar-mass=a
+// BIMODAL: u1-52-mc-mass-moles=a
+// BIMODAL: u1-52-mc-moles-particles=a
+// BIMODAL: u1-52-mc-mass-volume-stp=a
+// BIMODAL: u1-58-mc-mole-ratio=a
+// BIMODAL: u1-58-mc-mass-mass=a
+// BIMODAL: u1-58-mc-limiting=a
+// BIMODAL: u1-51-mc-correct-formula=a
+// BIMODAL: u1-510-mc-stoich-use=b
 
 /* ============ Units and significant figures discipline (Nov 2026 pass) ============
    Givens print at 3 significant figures minimum (data sheet constants such
@@ -1868,6 +1938,104 @@ E("u1-510-mc-stoich-use",1,["5.10"],1,"var",varset([
 // CRMARKS: u2-72=2
 // CRMARKS: u2-73=2
 // CRMARKS: u2-74=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-01=2
+// CRMARKS: u2-04=2
+// CRMARKS: u2-06=3
+// CRMARKS: u2-09=2
+// CRMARKS: u2-10=2
+// CRMARKS: u2-11=3
+// CRMARKS: u2-13=2
+// CRMARKS: u2-14=2
+// CRMARKS: u2-15=2
+// CRMARKS: u2-17=2
+// CRMARKS: u2-19=3
+// CRMARKS: u2-20=2
+// CRMARKS: u2-21=2
+// CRMARKS: u2-22=2
+// CRMARKS: u2-24=2
+// CRMARKS: u2-30=2
+// CRMARKS: u2-31=2
+// CRMARKS: u2-32=3
+// CRMARKS: u2-34=2
+// CRMARKS: u2-35=3
+// CRMARKS: u2-36=2
+// CRMARKS: u2-37=2
+// CRMARKS: u2-39=3
+// CRMARKS: u2-40=3
+// CRMARKS: u2-41=3
+// CRMARKS: u2-42=2
+// CRMARKS: u2-43=2
+// CRMARKS: u2-47=2
+// CRMARKS: u2-48=3
+// CRMARKS: u2-49=3
+// CRMARKS: u2-50=3
+// CRMARKS: u2-54=3
+// CRMARKS: u2-55=3
+// CRMARKS: u2-57=2
+// CRMARKS: u2-58=3
+// CRMARKS: u2-59=2
+// CRMARKS: u2-60=3
+// CRMARKS: u2-61=3
+// CRMARKS: u2-64=3
+// CRMARKS: u2-65=2
+// CRMARKS: u2-66=2
+// CRMARKS: u2-67=4
+// CRMARKS: u2-69=3
+// CRMARKS: u2-75=2
+// CRMARKS: u2-76=2
+// CRMARKS: u2-78=2
+// CRMARKS: u2-611-mc-from-mass=2
+// CRMARKS: u2-611-mc-mass-dissolved=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-01=a
+// BIMODAL: u2-04=a
+// BIMODAL: u2-06=a
+// BIMODAL: u2-09=a
+// BIMODAL: u2-10=a
+// BIMODAL: u2-11=a
+// BIMODAL: u2-13=a
+// BIMODAL: u2-14=a
+// BIMODAL: u2-15=a
+// BIMODAL: u2-17=b
+// BIMODAL: u2-19=b
+// BIMODAL: u2-20=a
+// BIMODAL: u2-21=a
+// BIMODAL: u2-22=a
+// BIMODAL: u2-24=a
+// BIMODAL: u2-30=a
+// BIMODAL: u2-31=a
+// BIMODAL: u2-32=a
+// BIMODAL: u2-34=a
+// BIMODAL: u2-35=b
+// BIMODAL: u2-36=a
+// BIMODAL: u2-37=b
+// BIMODAL: u2-39=b
+// BIMODAL: u2-40=b
+// BIMODAL: u2-41=b
+// BIMODAL: u2-42=b
+// BIMODAL: u2-43=a
+// BIMODAL: u2-47=a
+// BIMODAL: u2-48=b
+// BIMODAL: u2-49=b
+// BIMODAL: u2-50=a
+// BIMODAL: u2-54=b
+// BIMODAL: u2-55=b
+// BIMODAL: u2-57=a
+// BIMODAL: u2-58=b
+// BIMODAL: u2-59=a
+// BIMODAL: u2-60=b
+// BIMODAL: u2-61=a
+// BIMODAL: u2-64=a
+// BIMODAL: u2-65=a
+// BIMODAL: u2-66=a
+// BIMODAL: u2-67=b
+// BIMODAL: u2-69=b
+// BIMODAL: u2-75=b
+// BIMODAL: u2-76=a
+// BIMODAL: u2-78=a
+// BIMODAL: u2-611-mc-from-mass=a
+// BIMODAL: u2-611-mc-mass-dissolved=a
 
 // 6.1 Formation of covalent bonds
 E("u2-01", 2, ["6.1"], 1, "gen", function () {
@@ -3923,6 +4091,72 @@ E("u2-611-mc-mass-dissolved",2,["6.11"],2,"gen",function(){
 // CRMARKS: u3-76-formula-from-structure=2
 // CRMARKS: u3-77-combustion-coeff=3
 // CRMARKS: u3-78-monomer-name=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-71-carbon-bonds=2
+// CRMARKS: u3-71-catenation=2
+// CRMARKS: u3-71-bond-types=2
+// CRMARKS: u3-71-why-many-var=3
+// CRMARKS: u3-72-family-from-structure=2
+// CRMARKS: u3-72-family-from-name=2
+// CRMARKS: u3-72-family-from-group=2
+// CRMARKS: u3-72-classify-pair=3
+// CRMARKS: u3-72-saturation=2
+// CRMARKS: u3-72-formula-family=2
+// CRMARKS: u3-73-name-alkane=2
+// CRMARKS: u3-73-name-unsaturated=2
+// CRMARKS: u3-74-def=2
+// CRMARKS: u3-74-which-pair=2
+// CRMARKS: u3-74-evaluate-claim=3
+// CRMARKS: u3-75-benzene-basics=2
+// CRMARKS: u3-75-name-derivative=2
+// CRMARKS: u3-75-aromatic-or-aliphatic=2
+// CRMARKS: u3-75-benzene-compare=3
+// CRMARKS: u3-76-group-id=2
+// CRMARKS: u3-76-name-derivative=2
+// CRMARKS: u3-76-ester-naming=2
+// CRMARKS: u3-77-combustion-equation=2
+// CRMARKS: u3-77-addition-product=2
+// CRMARKS: u3-77-esterification=2
+// CRMARKS: u3-77-cracking=3
+// CRMARKS: u3-77-reaction-analysis=3
+// CRMARKS: u3-78-add-or-cond=2
+// CRMARKS: u3-78-polymer-from-monomer=2
+// CRMARKS: u3-78-natural-or-synthetic=2
+// CRMARKS: u3-78-polymer-uses-var=2
+// CRMARKS: u3-73-mc-name-unsaturated-branch=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-71-carbon-bonds=a
+// BIMODAL: u3-71-catenation=a
+// BIMODAL: u3-71-bond-types=a
+// BIMODAL: u3-71-why-many-var=b
+// BIMODAL: u3-72-family-from-structure=a
+// BIMODAL: u3-72-family-from-name=a
+// BIMODAL: u3-72-family-from-group=a
+// BIMODAL: u3-72-classify-pair=a
+// BIMODAL: u3-72-saturation=a
+// BIMODAL: u3-72-formula-family=a
+// BIMODAL: u3-73-name-alkane=a
+// BIMODAL: u3-73-name-unsaturated=a
+// BIMODAL: u3-74-def=a
+// BIMODAL: u3-74-which-pair=a
+// BIMODAL: u3-74-evaluate-claim=b
+// BIMODAL: u3-75-benzene-basics=a
+// BIMODAL: u3-75-name-derivative=a
+// BIMODAL: u3-75-aromatic-or-aliphatic=a
+// BIMODAL: u3-75-benzene-compare=a
+// BIMODAL: u3-76-group-id=a
+// BIMODAL: u3-76-name-derivative=a
+// BIMODAL: u3-76-ester-naming=a
+// BIMODAL: u3-77-combustion-equation=a
+// BIMODAL: u3-77-addition-product=a
+// BIMODAL: u3-77-esterification=a
+// BIMODAL: u3-77-cracking=a
+// BIMODAL: u3-77-reaction-analysis=a
+// BIMODAL: u3-78-add-or-cond=a
+// BIMODAL: u3-78-polymer-from-monomer=a
+// BIMODAL: u3-78-natural-or-synthetic=a
+// BIMODAL: u3-78-polymer-uses-var=a
+// BIMODAL: u3-73-mc-name-unsaturated-branch=a
 
 /* 7.1 Diversity of organic compounds and the carbon atom */
 E("u3-71-carbon-bonds",3,["7.1"],1,"gen",function(){
@@ -4895,6 +5129,16 @@ E("u3-76-cr-family-identify", 3, ["7.6"], 3, "var", varset([
 // CRMARKS: br-b1-neutrons=2
 // CRMARKS: br-b1-ion-electrons=2
 // CRMARKS: br-b2-avg-mass=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: br-b1-isotopes-def=2
+// CRMARKS: br-b2-why-not-whole=2
+// CRMARKS: br-b3-binary-name=2
+// CRMARKS: br-b3-molecular-poly=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: br-b1-isotopes-def=a
+// BIMODAL: br-b2-why-not-whole=b
+// BIMODAL: br-b3-binary-name=a
+// BIMODAL: br-b3-molecular-poly=a
 
 /* --- B.1: isotopes and subatomic particles --- */
 E("br-b1-neutrons", 4, ["B.1"], 1, "gen", function () {
@@ -5169,10 +5413,10 @@ E("br-b3-molecular-poly", 4, ["B.3"], 2, "gen", function () {
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-acid-formula":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-510-limestone-lime":3,"u1-510-peroxide-oxygen":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-actual-from-percent":2,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-cr-family-identify":2,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
+window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-isotopes-def":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"br-b2-why-not-whole":2,"br-b3-binary-name":2,"br-b3-molecular-poly":2,"u1-51-acids-hydrates":2,"u1-51-formula-to-name":2,"u1-51-mc-correct-formula":2,"u1-51-name-to-formula":2,"u1-51-write-acid-formula":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-510-application-idea":2,"u1-510-application-reasoning":3,"u1-510-limestone-lime":3,"u1-510-mc-stoich-use":2,"u1-510-peroxide-oxygen":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-mc-mass-moles":2,"u1-52-mc-mass-volume-stp":3,"u1-52-mc-molar-mass":2,"u1-52-mc-moles-particles":2,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-evaporation":3,"u1-53-identify-type":2,"u1-53-observations":3,"u1-53-predict-state":2,"u1-54-add-solvent-or-solute":2,"u1-54-rate-comparison":2,"u1-54-two-changes":3,"u1-54-what-stays-constant":3,"u1-55-compare-solubility-data":2,"u1-55-explain-variation":3,"u1-55-like-dissolves-like":2,"u1-55-polarity-prediction":2,"u1-55-temperature-effects":3,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-56-precipitate-ions":2,"u1-56-precipitate-or-soluble":2,"u1-56-solubility-rule":2,"u1-56-which-mixture-precipitates":2,"u1-57-balance-then-ratio":3,"u1-57-identify-ratio":2,"u1-57-moles-direct":2,"u1-57-moles-mcq":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-58-mc-limiting":3,"u1-58-mc-mass-mass":2,"u1-58-mc-mole-ratio":2,"u1-59-actual-from-percent":2,"u1-59-maximize-yield":3,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u1-59-why-yield-is-low":3,"u2-01":2,"u2-02":2,"u2-03":3,"u2-04":2,"u2-06":3,"u2-07":2,"u2-08":2,"u2-09":2,"u2-10":2,"u2-11":3,"u2-13":2,"u2-14":2,"u2-15":2,"u2-17":2,"u2-19":3,"u2-20":2,"u2-21":2,"u2-22":2,"u2-23":2,"u2-24":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-30":2,"u2-31":2,"u2-32":3,"u2-34":2,"u2-35":3,"u2-36":2,"u2-37":2,"u2-39":3,"u2-40":3,"u2-41":3,"u2-42":2,"u2-43":2,"u2-47":2,"u2-48":3,"u2-49":3,"u2-50":3,"u2-51":2,"u2-52":2,"u2-53":3,"u2-54":3,"u2-55":3,"u2-57":2,"u2-58":3,"u2-59":2,"u2-60":3,"u2-61":3,"u2-611-mc-from-mass":2,"u2-611-mc-mass-dissolved":2,"u2-64":3,"u2-65":2,"u2-66":2,"u2-67":4,"u2-69":3,"u2-72":2,"u2-73":2,"u2-74":2,"u2-75":2,"u2-76":2,"u2-78":2,"u3-71-bond-types":2,"u3-71-carbon-bonds":2,"u3-71-catenation":2,"u3-71-why-many-var":3,"u3-72-classify-pair":3,"u3-72-family-from-group":2,"u3-72-family-from-name":2,"u3-72-family-from-structure":2,"u3-72-formula-family":2,"u3-72-saturation":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-mc-name-unsaturated-branch":2,"u3-73-name-alkane":2,"u3-73-name-hard":2,"u3-73-name-unsaturated":2,"u3-74-def":2,"u3-74-evaluate-claim":3,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-74-which-pair":2,"u3-75-aromatic-formula":3,"u3-75-aromatic-or-aliphatic":2,"u3-75-benzene-basics":2,"u3-75-benzene-compare":3,"u3-75-name-derivative":2,"u3-76-cr-family-identify":2,"u3-76-deriv-formula":2,"u3-76-ester-naming":2,"u3-76-formula-from-structure":2,"u3-76-group-id":2,"u3-76-name-derivative":2,"u3-77-addition-product":2,"u3-77-combustion-coeff":3,"u3-77-combustion-equation":2,"u3-77-cracking":3,"u3-77-esterification":2,"u3-77-reaction-analysis":3,"u3-78-add-or-cond":2,"u3-78-monomer-name":2,"u3-78-natural-or-synthetic":2,"u3-78-polymer-from-monomer":2,"u3-78-polymer-uses-var":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={};
+window.__BANK_BIMODAL={"br-b1-isotopes-def":"a","br-b2-why-not-whole":"b","br-b3-binary-name":"a","br-b3-molecular-poly":"a","u1-51-acids-hydrates":"a","u1-51-formula-to-name":"a","u1-51-mc-correct-formula":"a","u1-51-name-to-formula":"a","u1-510-application-idea":"b","u1-510-application-reasoning":"b","u1-510-mc-stoich-use":"b","u1-52-mc-mass-moles":"a","u1-52-mc-mass-volume-stp":"a","u1-52-mc-molar-mass":"a","u1-52-mc-moles-particles":"a","u1-53-evaporation":"b","u1-53-identify-type":"a","u1-53-observations":"b","u1-54-add-solvent-or-solute":"a","u1-54-two-changes":"b","u1-54-what-stays-constant":"b","u1-55-compare-solubility-data":"a","u1-55-explain-variation":"b","u1-55-like-dissolves-like":"a","u1-55-polarity-prediction":"a","u1-55-temperature-effects":"b","u1-56-precipitate-ions":"a","u1-56-precipitate-or-soluble":"a","u1-56-solubility-rule":"a","u1-56-which-mixture-precipitates":"a","u1-57-balance-then-ratio":"a","u1-57-identify-ratio":"a","u1-57-moles-mcq":"a","u1-58-mc-limiting":"a","u1-58-mc-mass-mass":"a","u1-58-mc-mole-ratio":"a","u1-59-maximize-yield":"b","u1-59-why-yield-is-low":"b","u2-01":"a","u2-04":"a","u2-06":"a","u2-09":"a","u2-10":"a","u2-11":"a","u2-13":"a","u2-14":"a","u2-15":"a","u2-17":"b","u2-19":"b","u2-20":"a","u2-21":"a","u2-22":"a","u2-24":"a","u2-30":"a","u2-31":"a","u2-32":"a","u2-34":"a","u2-35":"b","u2-36":"a","u2-37":"b","u2-39":"b","u2-40":"b","u2-41":"b","u2-42":"b","u2-43":"a","u2-47":"a","u2-48":"b","u2-49":"b","u2-50":"a","u2-54":"b","u2-55":"b","u2-57":"a","u2-58":"b","u2-59":"a","u2-60":"b","u2-61":"a","u2-611-mc-from-mass":"a","u2-611-mc-mass-dissolved":"a","u2-64":"a","u2-65":"a","u2-66":"a","u2-67":"b","u2-69":"b","u2-75":"b","u2-76":"a","u2-78":"a","u3-71-bond-types":"a","u3-71-carbon-bonds":"a","u3-71-catenation":"a","u3-71-why-many-var":"b","u3-72-classify-pair":"a","u3-72-family-from-group":"a","u3-72-family-from-name":"a","u3-72-family-from-structure":"a","u3-72-formula-family":"a","u3-72-saturation":"a","u3-73-mc-name-unsaturated-branch":"a","u3-73-name-alkane":"a","u3-73-name-unsaturated":"a","u3-74-def":"a","u3-74-evaluate-claim":"b","u3-74-which-pair":"a","u3-75-aromatic-or-aliphatic":"a","u3-75-benzene-basics":"a","u3-75-benzene-compare":"a","u3-75-name-derivative":"a","u3-76-ester-naming":"a","u3-76-group-id":"a","u3-76-name-derivative":"a","u3-77-addition-product":"a","u3-77-combustion-equation":"a","u3-77-cracking":"a","u3-77-esterification":"a","u3-77-reaction-analysis":"a","u3-78-add-or-cond":"a","u3-78-natural-or-synthetic":"a","u3-78-polymer-from-monomer":"a","u3-78-polymer-uses-var":"a"};
