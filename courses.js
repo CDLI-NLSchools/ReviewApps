@@ -668,6 +668,19 @@ window.COURSES = {
 
   unitTest: { total: 25, sr: 15, cr: 10 },
 
+  /* Test blueprint (owner's workbook, November 19, 2026;
+     Spec-Test-Shaped-Practice-2026-11-19.md Appendix A). */
+  testMap: {
+    1: [ { test: 1, inds: ["SC10.6.1", "SC10.6.2", "SC10.6.3", "SC10.6.4"] },
+      { test: 2, inds: ["SC10.5.1", "SC10.6.5", "SC10.5.3", "SC10.5.4", "SC10.5.5", "SC10.5.6"] } ],
+    2: [ { test: 1, inds: ["SC10.7.1", "SC10.8.1", "SC10.7.2", "SC10.8.2", "SC10.8.3"] },
+      { test: 2, inds: ["SC10.8.4", "SC10.8.5", "SC10.8.6", "SC10.7.3"] } ],
+    3: [ { test: 1, inds: ["SC10.8.7", "SC10.8.8", "SC10.8.9", "SC10.8.10"] },
+      { test: 2, inds: ["SC10.8.11", "SC10.8.12"] } ],
+    4: [ { test: 1, inds: ["SC10.10.1", "SC10.10.2", "SC10.10.3", "SC10.10.4"] },
+      { test: 2, inds: ["SC10.10.5", "SC10.10.6", "SC10.10.7", "SC10.10.8"] } ]
+  },
+
   /* Reference panels matching what the real papers put in students'
      hands: the Chemistry unit writes with the periodic table and a
      list of ions (the Science 1206 Data Tables), and the Motion unit
@@ -848,7 +861,26 @@ window.COURSES = {
      2026): indCap 2 keeps any one indicator to at most two items
      on a composed unit test, and crPref [3, 3] names the preferred
      constructed response split, two items at 3 marks. */
-  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] },
+
+  /* Test blueprint (owner's workbook, November 19, 2026;
+     Spec-Test-Shaped-Practice-2026-11-19.md Appendix A): the
+     indicators each unit test covers, for the single-test
+     practice scope. Codes as registered in this course. */
+  testMap: {
+    1: [ { test: 1, inds: ["SC7.1.1", "SC7.1.2"] },
+      { test: 2, inds: ["SC7.1.3", "SC7.1.4", "SC7.1.5", "SC7.1.6", "SC7.1.7"] },
+      { test: 3, inds: ["SC7.1.8"] } ],
+    2: [ { test: 1, inds: ["SC7.4.1"] },
+      { test: 2, inds: ["SC7.4.2", "SC7.4.3", "SC7.4.4"] },
+      { test: 3, inds: ["SC7.4.5", "SC7.4.6", "SC7.6.7", "SC7.4.7"] } ],
+    3: [ { test: 1, inds: ["SC7.7.1", "SC7.7.2"] },
+      { test: 2, inds: ["SC7.7.3", "SC7.7.4", "SC7.7.5"] },
+      { test: 3, inds: ["SC7.7.6", "SC7.7.7"] } ],
+    4: [ { test: 1, inds: ["SC7.10.1", "SC7.10.2"] },
+      { test: 2, inds: ["SC7.10.3", "SC7.10.4", "SC7.10.5", "SC7.10.6", "SC7.10.7"] },
+      { test: 3, inds: ["SC7.10.8", "SC7.10.9"] } ]
+  }
 },
 
 "sci-7-fr": {
@@ -1006,7 +1038,27 @@ window.COURSES = {
   /* Staged hints: bank entries carry two hint stages each. */
   hints: true,
 
-  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] },
+
+  /* Test blueprint mapped to the French guide by outcome
+     content (Spec-French-Test-Map-2026-11-19.md Appendix A-FR;
+     decisions D-F1 to D-F5, November 19, 2026). Unit 1 is
+     re-partitioned against the English map: the French guide
+     splits and reorders the interactions outcomes. */
+  testMap: {
+    1: [ { test: 1, inds: ["SC7.1.1", "SC7.1.2", "SC7.1.3", "SC7.1.4"] },
+      { test: 2, inds: ["SC7.1.5", "SC7.1.6", "SC7.1.7", "SC7.1.8", "SC7.1.9"] },
+      { test: 3, inds: ["SC7.1.10"] } ],
+    2: [ { test: 1, inds: ["SC7.4.1"] },
+      { test: 2, inds: ["SC7.4.2", "SC7.4.3", "SC7.4.4"] },
+      { test: 3, inds: ["SC7.4.5", "SC7.4.6", "SC7.6.7", "SC7.4.7"] } ],
+    3: [ { test: 1, inds: ["SC7.7.1", "SC7.7.2"] },
+      { test: 2, inds: ["SC7.7.3", "SC7.7.4", "SC7.7.5"] },
+      { test: 3, inds: ["SC7.7.6", "SC7.7.7"] } ],
+    4: [ { test: 1, inds: ["SC7.10.1", "SC7.10.2"] },
+      { test: 2, inds: ["SC7.10.3", "SC7.10.4", "SC7.10.5", "SC7.10.6", "SC7.10.7"] },
+      { test: 3, inds: ["SC7.10.8", "SC7.10.9"] } ]
+  }
 },
 
 "sci-8": {
@@ -1181,7 +1233,24 @@ window.COURSES = {
      Composer options: indCap 2 keeps any one indicator to at
      most two items on a composed unit test, and crPref [3, 3]
      names the preferred constructed response split. */
-  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] },
+
+  /* Test blueprint (owner's workbook, November 19, 2026;
+     Spec-Test-Shaped-Practice-2026-11-19.md Appendix A). */
+  testMap: {
+    1: [ { test: 1, inds: ["SC8.1.1", "SC8.1.2"] },
+      { test: 2, inds: ["SC8.1.5", "SC8.1.6", "SC8.1.7", "SC8.1.8", "SC8.1.9"] },
+      { test: 3, inds: ["SC8.1.3", "SC8.1.4"] } ],
+    2: [ { test: 1, inds: ["SC8.4.1", "SC8.4.2"] },
+      { test: 2, inds: ["SC8.4.3", "SC8.4.4", "SC8.4.5", "SC8.4.6"] },
+      { test: 3, inds: ["SC8.4.7", "SC8.4.8", "SC8.4.9", "SC8.4.10", "SC8.4.11"] } ],
+    3: [ { test: 1, inds: ["SC8.7.1", "SC8.7.2"] },
+      { test: 2, inds: ["SC8.7.3"] },
+      { test: 3, inds: ["SC8.7.4"] } ],
+    4: [ { test: 1, inds: ["SC8.10.1", "SC8.10.2", "SC8.10.3"] },
+      { test: 2, inds: ["SC8.10.4", "SC8.10.5"] },
+      { test: 3, inds: ["SC8.10.6", "SC8.10.7"] } ]
+  }
 },
 
 "sci-8-fr": {
@@ -1344,7 +1413,26 @@ window.COURSES = {
   /* Staged hints: bank entries carry two hint stages each. */
   hints: true,
 
-  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] },
+
+  /* Test blueprint mapped to the French guide by outcome
+     content (Spec-French-Test-Map-2026-11-19.md Appendix A-FR).
+     SC8.1.10 is excluded (decision D-F2): it duplicates
+     SC8.1.6's outcome, whose content Test 2 covers. */
+  testMap: {
+    1: [ { test: 1, inds: ["SC8.1.1", "SC8.1.2"] },
+      { test: 2, inds: ["SC8.1.5", "SC8.1.6", "SC8.1.7", "SC8.1.8", "SC8.1.9"] },
+      { test: 3, inds: ["SC8.1.3", "SC8.1.4"] } ],
+    2: [ { test: 1, inds: ["SC8.4.1", "SC8.4.2"] },
+      { test: 2, inds: ["SC8.4.3", "SC8.4.4", "SC8.4.5", "SC8.4.6"] },
+      { test: 3, inds: ["SC8.4.7", "SC8.4.8", "SC8.4.9", "SC8.4.10", "SC8.4.11"] } ],
+    3: [ { test: 1, inds: ["SC8.7.1", "SC8.7.2"] },
+      { test: 2, inds: ["SC8.7.3"] },
+      { test: 3, inds: ["SC8.7.4"] } ],
+    4: [ { test: 1, inds: ["SC8.10.1", "SC8.10.2", "SC8.10.3"] },
+      { test: 2, inds: ["SC8.10.4", "SC8.10.5"] },
+      { test: 3, inds: ["SC8.10.6", "SC8.10.7"] } ]
+  }
 },
 
 "sci-9": {
@@ -1549,7 +1637,27 @@ window.COURSES = {
      Composer options: indCap 2 keeps any one indicator to at
      most two items on a composed unit test, and crPref [3, 3]
      names the preferred constructed response split. */
-  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] },
+
+  /* Test blueprint (owner's workbook, November 19, 2026;
+     Spec-Test-Shaped-Practice-2026-11-19.md Appendix A). SC9.7.5
+     is split by topic (decision D3): Test 2 takes the Ohm's Law
+     slice, Test 3 the circuits slice; bank entries carry the
+     matching e.topic tags. */
+  testMap: {
+    1: [ { test: 1, inds: ["SC9.1.1", "SC9.1.2"] },
+      { test: 2, inds: ["SC9.1.3", "SC9.1.4", "SC9.1.6"] },
+      { test: 3, inds: ["SC9.1.5", "SC9.1.7"] } ],
+    2: [ { test: 1, inds: ["SC9.4.1", "SC9.4.2", "SC9.5.1", "SC9.5.2", "SC9.5.3", "SC9.5.4"] },
+      { test: 2, inds: ["SC9.4.3", "SC9.4.4", "SC9.4.5", "SC9.5.6", "SC9.5.7"] },
+      { test: 3, inds: ["SC9.4.6", "SC9.4.7"] } ],
+    3: [ { test: 1, inds: ["SC9.7.1", "SC9.7.2", "SC9.7.3"] },
+      { test: 2, inds: ["SC9.7.4", "SC9.7.5"], topics: { "SC9.7.5": "ohm" } },
+      { test: 3, inds: ["SC9.7.5", "SC9.7.6", "SC9.7.7", "SC9.7.8", "SC9.7.9"], topics: { "SC9.7.5": "circuits" } } ],
+    4: [ { test: 1, inds: ["SC9.10.1", "SC9.10.2"] },
+      { test: 2, inds: ["SC9.10.3", "SC9.10.4"] },
+      { test: 3, inds: ["SC9.10.5", "SC9.10.6"] } ]
+  }
 },
 
 "sci-9-fr": {
@@ -1715,7 +1823,27 @@ window.COURSES = {
   /* Staged hints: bank entries carry two hint stages each. */
   hints: true,
 
-  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] }
+  unitTest: { total: 26, sr: 20, cr: 6, indCap: 2, crPref: [3, 3] },
+
+  /* Test blueprint mapped to the French guide by outcome
+     content (Spec-French-Test-Map-2026-11-19.md Appendix A-FR).
+     Two topic splits, on the D3 pattern: SC9.7.5 (ohm on Test 2,
+     circuits on Test 3) and SC9.10.3 (mitose on Test 2, meiose
+     on Test 3); bank entries carry the matching e.topic tags. */
+  testMap: {
+    1: [ { test: 1, inds: ["SC9.1.1", "SC9.1.2"] },
+      { test: 2, inds: ["SC9.1.3", "SC9.1.4", "SC9.1.6"] },
+      { test: 3, inds: ["SC9.1.5", "SC9.1.7"] } ],
+    2: [ { test: 1, inds: ["SC9.4.1", "SC9.4.2", "SC9.5.1", "SC9.5.2", "SC9.5.3", "SC9.5.4"] },
+      { test: 2, inds: ["SC9.4.3", "SC9.4.4", "SC9.4.5", "SC9.5.6", "SC9.5.7"] },
+      { test: 3, inds: ["SC9.4.6", "SC9.4.7"] } ],
+    3: [ { test: 1, inds: ["SC9.7.1", "SC9.7.2", "SC9.7.3"] },
+      { test: 2, inds: ["SC9.7.4", "SC9.7.5"], topics: { "SC9.7.5": "ohm" } },
+      { test: 3, inds: ["SC9.7.5", "SC9.7.6", "SC9.7.7", "SC9.7.8", "SC9.7.9"], topics: { "SC9.7.5": "circuits" } } ],
+    4: [ { test: 1, inds: ["SC9.10.1", "SC9.10.2"] },
+      { test: 2, inds: ["SC9.10.3", "SC9.10.4"], topics: { "SC9.10.3": "mitose" } },
+      { test: 3, inds: ["SC9.10.3", "SC9.10.5"], topics: { "SC9.10.3": "meiose" } } ]
+  }
 },
 "chem-3202": {
   id: "chem-3202",
@@ -1877,6 +2005,20 @@ window.COURSES = {
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Test blueprint (owner's workbook, November 19, 2026;
+     Spec-Test-Shaped-Practice-2026-11-19.md Appendix A); sheet
+     codes carry a CH3202. prefix the registry does not use. */
+  testMap: {
+    1: [ { test: 1, inds: ["5.1", "5.2", "5.3", "5.4"] },
+      { test: 2, inds: ["5.5", "5.6", "5.7"] } ],
+    2: [ { test: 1, inds: ["6.1", "6.2", "6.3", "6.4"] },
+      { test: 2, inds: ["6.5", "6.6", "6.7", "6.8"] } ],
+    3: [ { test: 1, inds: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7"] },
+      { test: 2, inds: ["7.8", "7.9", "7.10", "7.11", "7.12"] } ],
+    4: [ { test: 1, inds: ["8.1", "8.2", "8.3"] },
+      { test: 2, inds: ["8.4", "8.5", "8.6", "8.7", "8.8", "8.9"] } ]
+  },
 
   /* Reference panels carried verbatim from the standalone app (its
      chemistry data sheet content, one panel per unit). */
@@ -2043,6 +2185,19 @@ window.COURSES = {
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Test blueprint (owner's workbook, November 19, 2026;
+     Spec-Test-Shaped-Practice-2026-11-19.md Appendix A); sheet
+     codes carry a CH2202. prefix the registry does not use. */
+  testMap: {
+    1: [ { test: 1, inds: ["5.1", "5.2"] },
+      { test: 2, inds: ["5.3", "5.4", "5.5", "5.6"] },
+      { test: 3, inds: ["5.7", "5.8", "5.9", "5.10"] } ],
+    2: [ { test: 1, inds: ["6.1", "6.2", "6.3", "6.4", "6.5"] },
+      { test: 2, inds: ["6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13"] } ],
+    3: [ { test: 1, inds: ["7.1", "7.2", "7.3", "7.4", "7.5"] },
+      { test: 2, inds: ["7.6", "7.7", "7.8"] } ]
+  },
 
   /* Reference panels carried verbatim from the standalone app (its
      chemistry data sheet content, one panel per unit, from

@@ -137,7 +137,7 @@ function resumeRebuildExam(save){
   var exO={srItems:sr,crItems:cr,single:!!b.single,short:!!b.short};
   var lv=examLive(exO);exO.srMarks=lv.sr;exO.crMarks=lv.cr;exO.l3Marks=lv.l3;exO.total=lv.total;
   examState={ex:exO,s:b.s||settings(),single:!!b.single,wsCrF:(typeof b.wsCrF==="number")?b.wsCrF:2.3,scope:b.scope||"",title:b.title||"",t0:Date.now()-((b.elapsed)||0)};
-  wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
+  wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
   T=null;
   if(TEACHER){T=advTCtx("exam",{T:null},examState.s);sr.concat(cr).forEach(function(it){advAdopt(it.q);});}
   _resumeAppliedSig=save.sig;

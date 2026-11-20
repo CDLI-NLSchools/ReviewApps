@@ -1184,6 +1184,36 @@ E("s9f-u3-env-apply", 3, ["SC9.9.13"], 2, "var", varset([
 var NO_COMPOSE_U3 = { "s9f-u3-cr-design-circuit": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 
+/* Étiquettes de sujet pour SC9.7.5 (19 novembre 2026, sur le
+   modèle de la décision D3 du cahier des charges anglais;
+   spécification française, divergence D-FR-3) : le plan de
+   tests partage SC9.7.5 entre le Test 2 de L'électricité,
+   « loi d'Ohm », et le Test 3, « circuits », alors les
+   questions nommées ici portent e.topic pour que le
+   compositeur de tests limite l'indicateur à sa tranche.
+   « ohm » marque les questions de règles des circuits : la
+   règle du courant en série, le partage de la tension en
+   série, l'addition des courants de branche en parallèle et
+   la règle de la tension en parallèle, dont la solution
+   explique les courants de branche différents par la loi
+   d'Ohm. « circuits » marque les questions qui identifient
+   ou décrivent les circuits en série et en parallèle et
+   leur comportement. s9f-u3-total-resistance suit la
+   décision du propriétaire pour l'entrée anglaise du même
+   nom : « ohm », son sujet gouverne. */
+var TOPIC_U3 = {
+  "s9f-u3-series-current-rule": "ohm",
+  "s9f-u3-gen-series-voltage": "ohm",
+  "s9f-u3-gen-parallel-current": "ohm",
+  "s9f-u3-parallel-voltage-rule": "ohm",
+  "s9f-u3-total-resistance": "ohm",
+  "s9f-u3-series-identify": "circuits",
+  "s9f-u3-parallel-identify": "circuits",
+  "s9f-u3-cr-series-parallel-data": "circuits",
+  "s9f-u3-cr-bulb-removed": "circuits"
+};
+BANK.forEach(function (e) { if (TOPIC_U3[e.id]) { e.topic = TOPIC_U3[e.id]; } });
+
 /* ----- bank-u4.js ----- */
 // CRMARKS: s9f-u4-cr-mutation=3
 // CRMARKS: s9f-u4-cr-mitosis-stages=3
@@ -1510,6 +1540,29 @@ E("s9f-u4-cr-evaluate", 4, ["SC9.12.10"], 3, "var", varset([
    composés. */
 var NO_COMPOSE_U4 = { "s9f-u4-cr-design-yeast": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
+
+/* Étiquettes de sujet pour SC9.10.3 (19 novembre 2026;
+   spécification française, divergence D-FR-4) : le guide
+   français fusionne la mitose et la méiose dans un seul
+   résultat, SC9.10.3, que le plan de tests partage entre
+   le Test 2, « mitose », et le Test 3, « meiose », alors
+   les questions nommées ici portent e.topic pour que le
+   compositeur de tests limite l'indicateur à sa tranche.
+   Les dix questions de SC9.10.3 se classent sans
+   ambiguïté. */
+var TOPIC_U4 = {
+  "s9f-u4-cell-cycle": "mitose",
+  "s9f-u4-mitosis-result": "mitose",
+  "s9f-u4-metaphase": "mitose",
+  "s9f-u4-cytokinesis": "mitose",
+  "s9f-u4-gen-division-count": "mitose",
+  "s9f-u4-cr-mitosis-stages": "mitose",
+  "s9f-u4-gamete-define": "meiose",
+  "s9f-u4-meiosis-result": "meiose",
+  "s9f-u4-diploid-haploid": "meiose",
+  "s9f-u4-gen-gamete-number": "meiose"
+};
+BANK.forEach(function (e) { if (TOPIC_U4[e.id]) { e.topic = TOPIC_U4[e.id]; } });
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of

@@ -370,6 +370,11 @@ function tFileSafe(s){
 function tScopeLabel(s){
   var units=(s&&s.units)?s.units.slice().sort(function(a,b){return a-b;}):[];
   if(!units.length)return "";
+  /* Single-test scope (Nov 19, 2026): the set is named for the
+     test it mirrors, "<Unit name> Test <n>", ahead of every
+     other scope rule. */
+  var _ts=s.testSel?testSelActive(s):null;
+  if(_ts)return testScopeLabel(_ts);
   var c=window.__COURSE;
   if(c&&c.presets){
     var same=function(p){return p&&p.units&&p.units.slice().sort(function(a,b){return a-b;}).join()===units.join();};
@@ -396,7 +401,7 @@ function tApplySetTitle(kind){
   _fileKind=kind;
   var s=settings();
   var SN=(window.__COURSE?window.__COURSE.shortName:"Course");
-  var kindName={sheet:L9("Practice Sheet","Feuille de pratique"),test:L9("Practice Unit Test","Test de pratique"),exam:L9("Practice Exam","Examen de pratique")}[kind]||"";
+  var kindName={sheet:L9("Practice Sheet","Feuille de pratique"),test:L9("Practice Test","Test de pratique"),exam:L9("Practice Exam","Examen de pratique")}[kind]||"";
   _fileBase=FR9?(SN+" - "+kindName):(SN+" "+kindName);
   var scope=tScopeLabel(s);
   if(scope)_fileBase+=" - "+scope;

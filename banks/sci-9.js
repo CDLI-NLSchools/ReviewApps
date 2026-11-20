@@ -3254,6 +3254,33 @@ var NO_COMPOSE_U3 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 
+/* Topic tags for SC9.7.5 (Nov 19, 2026, decision D3 in the
+   test-shaped practice spec): the test blueprint splits SC9.7.5
+   across Electricity Test 2, qualified "Ohm's Law", and Test 3,
+   qualified "circuits", so entries named here carry e.topic for
+   the test-shaped composer to scope the indicator by topic.
+   "ohm" marks the circuit-rules entries: the series current
+   rule, series voltage sharing, parallel branch currents adding,
+   and the parallel voltage rule, whose solution explains the
+   differing branch currents by Ohm's law. "circuits" marks the
+   entries that identify or describe series and parallel circuits
+   and their behaviour. s9-u3-total-resistance was flagged as
+   ambiguous (it judges a total-resistance change qualitatively,
+   applying no circuit law and identifying no circuit); the
+   owner ruled it "ohm" on Nov 19, 2026, its subject governing. */
+var TOPIC_U3 = {
+  "s9-u3-series-current-rule": "ohm",
+  "s9-u3-gen-series-voltage": "ohm",
+  "s9-u3-gen-parallel-current": "ohm",
+  "s9-u3-parallel-voltage-rule": "ohm",
+  "s9-u3-total-resistance": "ohm",
+  "s9-u3-series-identify": "circuits",
+  "s9-u3-parallel-identify": "circuits",
+  "s9-u3-cr-series-parallel-data": "circuits",
+  "s9-u3-cr-bulb-removed": "circuits"
+};
+BANK.forEach(function (e) { if (TOPIC_U3[e.id]) { e.topic = TOPIC_U3[e.id]; } });
+
 /* ----- bank-u4.js ----- */
 // CRMARKS: s9-u4-cr-mutation=3
 // CRMARKS: s9-u4-cr-mitosis-stages=3

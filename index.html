@@ -2706,6 +2706,15 @@ var qrcode = function() {
       <button type="button" id="presetFinal" class="alt">Final review</button>
       <button type="button" id="presetAll" class="alt">All units</button>
     </div>
+    <div class="presetrow" id="testScopeRow" hidden>
+      <label><span id="testScopeLab">A single test</span>
+        <select id="testUnitSel"></select>
+      </label>
+      <label><span id="testNumLab">Test</span>
+        <select id="testNumSel"></select>
+      </label>
+      <span class="hint" id="testScopeNote"></span>
+    </div>
     <div class="grid" id="unitGrid"></div>
     <p class="hint" style="margin:10px 0 4px;">By indicator (optional, leave all unchecked to use every indicator in the units you picked):</p>
     <div class="indbox" id="indBox"></div>
@@ -3665,7 +3674,7 @@ function detexClone(node){
   });
   return c;
 }
-var state={units:[],inds:[],midCap:false,finalCap:false};
+var state={units:[],inds:[],midCap:false,finalCap:false,testSel:null};
 /* Report-a-problem: one Google Form, "CDLI Review Apps: Report a Problem", serves
    every review app. The app name, the unit and indicators, and the full report text
    are pre-filled through the entry IDs below, which are the form's pre-filled-link
@@ -3714,7 +3723,7 @@ function unitCheckboxes(){
     return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> '+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</label>";
   }).join("");
   Array.prototype.forEach.call(document.querySelectorAll(".unitChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;readUnits();renderIndicators();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;state.testSel=null;tTestSelSync();readUnits();renderIndicators();updatePoolInfo();});
   });
 }
 function readUnits(){
@@ -3726,7 +3735,7 @@ function renderIndicators(){
     return '<label><input type="checkbox" class="indChk" value="'+c+'"'+(state.inds.indexOf(c)>=0?" checked":"")+"> <b>"+c+"</b>"+L9(": ",", ")+esc(INDICATORS[c]||"")+"</label>";
   }).join(""):'<span class="hint">'+L9("Pick at least one unit above.","Choisis au moins une unité ci-dessus.")+'</span>';
   Array.prototype.forEach.call(document.querySelectorAll(".indChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;readInds();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;state.testSel=null;tTestSelSync();readInds();updatePoolInfo();});
   });
 }
 function readInds(){
@@ -3756,6 +3765,8 @@ function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();
     return;
   }
   var p=poolFor(state.units,state.inds,state.finalCap?"final":state.midCap);
+  var _tsa=testSelActive({units:state.units,inds:state.inds,testSel:state.testSel});
+  if(_tsa&&_tsa.topics)p=p.filter(function(e){return e.indicators.every(function(c){var t=_tsa.topics[c];return !t||e.topic===t;});});
   if(!(typeof pkIncluded==="function"&&pkIncluded()))p=p.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
   var byL={1:0,2:0,3:0};p.forEach(function(e){byL[e.level]++;});
   $("poolInfo").textContent=p.length?L9("Question bank for this selection: ","Banque de questions pour cette sélection : ")+p.length+L9(" question templates (Level 1: "," modèles de questions (Niveau 1 : ")+byL[1]+L9(", Level 2: ",", Niveau 2 : ")+byL[2]+L9(", Level 3: ",", Niveau 3 : ")+byL[3]+L9("). Generators make a fresh question every draw.","). Les générateurs créent une nouvelle question à chaque tirage.")+(window.__COURSE&&window.__COURSE.finalNote&&state.units.slice().sort(function(a,b){return a-b;}).join()===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none")?" "+window.__COURSE.finalNote:"")+(window.__COURSE&&window.__COURSE.midNote&&state.midCap?" "+window.__COURSE.midNote:""):
@@ -3790,7 +3801,7 @@ function tGateStudentUI(){
 }
 function settings(){
   readUnits();readInds();
-  return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,finalCap:state.finalCap,
+  return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,finalCap:state.finalCap,testSel:state.testSel?{unit:state.testSel.unit,test:state.testSel.test}:null,
     count:Math.max(1,Math.min(60,+$("countIn").value||10)),
     mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),
     ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),
@@ -3845,6 +3856,7 @@ function refreshFace(){
   if(!u.length)scope=L9("No units chosen yet","Aucune unité choisie pour le moment");
   else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.mid?window.__COURSE.presets.mid.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.mid.faceLabel||window.__COURSE.presets.mid.label).replace(" (",L9(": "," : ")).replace(/\)$/,"");
   else if(window.__COURSE&&u.join(",")===(window.__COURSE.presets.final?window.__COURSE.presets.final.units.slice().sort(function(a,b){return a-b;}).join():"none"))scope=(window.__COURSE.presets.final.faceLabel||window.__COURSE.presets.final.label).replace(" (",L9(": "," : ")).replace(/\)$/,"");
+  else if(state.testSel&&testSelActive({units:state.units,inds:state.inds,testSel:state.testSel}))scope=testScopeLabel(state.testSel);
   else scope=u.map(function(x){return L9("Unit ","Unité ")+x+L9(": "," : ")+UNITS[x];}).join("; ");
   if(state.inds.length)scope+=L9(" (indicators: "," (notions : ")+state.inds.join(", ")+")";
   fs.textContent=scope;
@@ -4139,7 +4151,7 @@ function tScopePool(){
      choice. Automatic draws and composition stay fenced. */
   PICKER_SCOPE=true;
   var p;
-  if(T.view==="exam")p=poolFor(T.scope.units,T.scope.inds,T.scope.examCap,function(e){return T.scope.includePK||!isPK(e);});
+  if(T.view==="exam"){p=poolFor(T.scope.units,T.scope.inds,T.scope.examCap,function(e){return T.scope.includePK||!isPK(e);});if(T.scope.test){var _tm=testMapList(window.__COURSE,T.scope.test.unit,T.scope.test.test);if(_tm&&_tm.topics)p=p.filter(function(e){return e.indicators.every(function(c){var t=_tm.topics[c];return !t||e.topic===t;});});}}
   else p=poolFor(T.scope.units,T.scope.inds,T.scope.finalCap?"final":T.scope.midCap);
   PICKER_SCOPE=false;
   return p;
@@ -4640,6 +4652,11 @@ function tFileSafe(s){
 function tScopeLabel(s){
   var units=(s&&s.units)?s.units.slice().sort(function(a,b){return a-b;}):[];
   if(!units.length)return "";
+  /* Single-test scope (Nov 19, 2026): the set is named for the
+     test it mirrors, "<Unit name> Test <n>", ahead of every
+     other scope rule. */
+  var _ts=s.testSel?testSelActive(s):null;
+  if(_ts)return testScopeLabel(_ts);
   var c=window.__COURSE;
   if(c&&c.presets){
     var same=function(p){return p&&p.units&&p.units.slice().sort(function(a,b){return a-b;}).join()===units.join();};
@@ -4666,7 +4683,7 @@ function tApplySetTitle(kind){
   _fileKind=kind;
   var s=settings();
   var SN=(window.__COURSE?window.__COURSE.shortName:"Course");
-  var kindName={sheet:L9("Practice Sheet","Feuille de pratique"),test:L9("Practice Unit Test","Test de pratique"),exam:L9("Practice Exam","Examen de pratique")}[kind]||"";
+  var kindName={sheet:L9("Practice Sheet","Feuille de pratique"),test:L9("Practice Test","Test de pratique"),exam:L9("Practice Exam","Examen de pratique")}[kind]||"";
   _fileBase=FR9?(SN+" - "+kindName):(SN+" "+kindName);
   var scope=tScopeLabel(s);
   if(scope)_fileBase+=" - "+scope;
@@ -4908,7 +4925,7 @@ function advTCtx(view,P,s){
   var old=(P.T&&P.T.view===view)?P.T:null;
   var sc;
   if(old&&old.scope)sc=old.scope;
-  else if(view==="exam")sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),includePK:tPkOn(),examCap:scopeCap(s.units||[])};
+  else if(view==="exam")sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),includePK:tPkOn(),examCap:scopeCap(s.units||[]),test:(s.testSel&&testSelActive(s))?{unit:s.testSel.unit,test:s.testSel.test}:null};
   else sc={units:(s.units||[]).slice(),inds:(s.inds||[]).slice(),midCap:!!s.midCap,finalCap:!!s.finalCap};
   var T2={view:view,salt:old?old.salt:tSalt(),scope:sc,edited:old?!!old.edited:false,picker:null};
   if(view==="online"){T2.state={};T2.endGraded=!!P.endGraded;}
@@ -5018,7 +5035,7 @@ function advSetRestore(){
     var exO={srItems:sr,crItems:cr,single:!!P.single,short:!!P.short};
     var lv=examLive(exO);exO.srMarks=lv.sr;exO.crMarks=lv.cr;exO.l3Marks=lv.l3;exO.total=lv.total;
     examState={ex:exO,s:P.s||s,single:!!P.single,wsCrF:(typeof P.wsCrF==="number")?P.wsCrF:2.3,scope:P.scope||"",title:P.title||"",t0:Date.now()-(P.elapsed||0)};
-    wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
+    wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
     T=null;
     if(TEACHER){T=advTCtx("exam",P,examState.s);sr.concat(cr).forEach(function(it){advAdopt(it.q);});}
     renderExam();
@@ -5168,7 +5185,7 @@ function resumeRebuildExam(save){
   var exO={srItems:sr,crItems:cr,single:!!b.single,short:!!b.short};
   var lv=examLive(exO);exO.srMarks=lv.sr;exO.crMarks=lv.cr;exO.l3Marks=lv.l3;exO.total=lv.total;
   examState={ex:exO,s:b.s||settings(),single:!!b.single,wsCrF:(typeof b.wsCrF==="number")?b.wsCrF:2.3,scope:b.scope||"",title:b.title||"",t0:Date.now()-((b.elapsed)||0)};
-  wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Unit Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
+  wordName=examState.single?((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Test.docx"):((window.__COURSE?window.__COURSE.shortName:"Course")+" Practice Exam.docx");
   T=null;
   if(TEACHER){T=advTCtx("exam",{T:null},examState.s);sr.concat(cr).forEach(function(it){advAdopt(it.q);});}
   _resumeAppliedSig=save.sig;
@@ -5240,8 +5257,8 @@ function tRebuildFromURL(){
     var single=s.units.length===1;
     var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
     var scope=single?(L9("Unit ","Unité ")+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
-    var title=single?(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Test de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test")):(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Examen de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam"));
-    wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Unit Test.docx"," - Test de pratique.docx"):(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Exam.docx"," - Examen de pratique.docx");
+    var title=single?(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Test de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Test")):(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Examen de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam"));
+    wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Test.docx"," - Test de pratique.docx"):(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Exam.docx"," - Examen de pratique.docx");
     var exO={srItems:srItems,crItems:crItems,single:single,short:false};
     exO.srMarks=srItems.length;
     exO.crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
@@ -5818,7 +5835,7 @@ function subsetSumMarks(entries,target){
     for(var k=0;k<keys.length;k++){var s2=keys[k]+m;if(s2<=target&&!dp[s2]){dp[s2]=dp[keys[k]].concat([arr[i]]);if(s2===target)return dp[s2];}}}
   return dp[target]||null;
 }
-function composeExam(units,inds,includePK){
+function composeExam(units,inds,includePK,plan){
   /* Blueprint-driven exam composer for the unified shell. The plan comes
      from the active course configuration:
        - a single unit composes the unit test (config unitTest: SR count
@@ -5906,6 +5923,35 @@ function composeExam(units,inds,includePK){
          preferred over any other exact subset; otherwise the
          composer falls back to any combination reaching the
          required total, exactly as before.
+       - Test-shaped plan (Nov 19, 2026): a caller composing one
+         unit's named test (the registry's testMap) may pass a
+         plan as the fourth argument, {sr, cr, topics}, built by
+         testPlanFor below. The plan's selected-response count
+         and constructed-response marks replace the unit test's
+         for that single part (they are the blueprint-scaled
+         targets of the test-shaped practice spec, Section 3,
+         the SR figure already held to the per-indicator cap by
+         testPlanFor under decision D1), the paper's expected
+         total becomes sr + cr, and the plan's topics map scopes
+         any topic-split indicator to the slice the test takes:
+         an entry carrying a topic-named indicator is dealt only
+         when its e.topic matches. With no plan the composer
+         behaves exactly as before.
+       - Test scope and the cap (owner ruling, later on
+         Nov 19, 2026): within a test-scope paper the
+         per-indicator cap does not bind at all. A test samples
+         too small a set of indicators for a per-indicator cap
+         to govern it; each blueprinted indicator is assessed
+         across the levels its pool supports, and balance is
+         governed at the level of the whole test by the level
+         plan. The plan part below therefore carries indCap
+         null: no constructed-response option is rejected by
+         the cap, no CR reservation is taken against it, and
+         the selected-response draw never closes on it. The
+         plan's SR and CR figures themselves are unchanged
+         (they are the mapped targets testPlanFor returns),
+         and every other scope keeps the cap exactly as the
+         per-indicator cap note above describes.
        - Per-entry dealing limit (Nov 19, 2026): within one paper
          an entry is dealt once while undealt candidate entries
          remain. The selected-response draw (each level band in
@@ -5937,6 +5983,14 @@ function composeExam(units,inds,includePK){
   if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
   pool=pool.filter(function(e){return !e.enrich;});
   pool=pool.filter(function(e){return !e.noCompose;});
+  if(plan&&plan.topics){
+    pool=pool.filter(function(e){
+      return e.indicators.every(function(c){
+        var t=plan.topics[c];
+        return !t||e.topic===t;
+      });
+    });
+  }
   if(!pool.length)return null;
   var ut=C.unitTest||{total:25,sr:11,cr:14};
   if(C.exam&&C.exam.singleOnly&&!single)return null;
@@ -6064,10 +6118,16 @@ function composeExam(units,inds,includePK){
     return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};
   }
   var parts;
-  if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null,indCap:(typeof ut.indCap==="number"?ut.indCap:null),crPref:ut.crPref?ut.crPref.slice():null}];}
+  /* Test scope (owner ruling, Nov 19, 2026): the plan part
+     carries indCap null, so the per-indicator cap does not bind
+     anywhere inside a test-scope paper: crOptions' cap check,
+     the CR reservation in drawAll and the SR draw's room check
+     all read part.indCap and stand down together. */
+  if(single&&plan){parts=[{units:units.slice(),sr:plan.sr,cr:plan.cr,levels:null,indCap:null,crPref:ut.crPref?ut.crPref.slice():null}];}
+  else if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null,indCap:(typeof ut.indCap==="number"?ut.indCap:null),crPref:ut.crPref?ut.crPref.slice():null}];}
   else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null,indCap:(typeof pu.indCap==="number"?pu.indCap:(typeof scope.indCap==="number"?scope.indCap:null)),crPref:pu.crPref?pu.crPref.slice():(scope.crPref?scope.crPref.slice():null)};});}
   else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:fb.levels?fb.levels.slice():null,crL3:fb.crL3?fb.crL3.slice():null,indCap:(typeof fb.indCap==="number"?fb.indCap:null),crPref:fb.crPref?fb.crPref.slice():null}];}
-  var expectedTotal=single?ut.total:(scope?scope.total:((typeof fb!=="undefined"&&fb&&fb.total)||50));
+  var expectedTotal=(single&&plan)?(plan.sr+plan.cr):(single?ut.total:(scope?scope.total:((typeof fb!=="undefined"&&fb&&fb.total)||50)));
   function genFrom(e){var q=e.gen();q._entry=e;return q;}
   function indKeyOf(e){return (e.indicators&&e.indicators.length)?e.indicators[0]:null;}
   function marksKey(items){return items.map(function(x){return x.marks;}).sort(function(a,b){return a-b;}).join("+");}
@@ -6311,6 +6371,58 @@ function composeExam(units,inds,includePK){
   if(best)return best;
   return {srItems:[],crItems:[],srMarks:0,crMarks:0,l3Marks:0,total:0,single:single,short:true,dev:0};
 }
+function testMapList(C,unit,test){
+  var tm=(C&&C.testMap)?C.testMap[unit]:null;
+  if(!tm)return null;
+  for(var i=0;i<tm.length;i++)if(tm[i].test===test)return tm[i];
+  return null;
+}
+function testPlanFor(C,unit,test){
+  /* Scaled composition targets for one mapped test
+     (Spec-Test-Shaped-Practice-2026-11-19.md, Section 3, decision
+     D1): the test's share of its unit's blueprinted indicators
+     scales the unit test's selected-response count and
+     constructed-response marks; the SR target is then held down
+     to what the course's per-indicator cap can deal (indCap
+     times the number of indicators on the test), and the cap is
+     not raised for test scope. A topic-split indicator counts
+     once in the unit's denominator and once on each test that
+     takes a slice of it. Returns null when the course maps no
+     such test. The figures returned here are the test's mapped
+     targets and stand as computed; under the owner's later
+     ruling of November 19, 2026 the cap does not bind inside
+     the composed test paper itself (see the test scope note in
+     composeExam's header): the cap sets this target figure,
+     and nothing more, for test scope. */
+  var e=testMapList(C,unit,test);
+  if(!e)return null;
+  var denom={};
+  (C.testMap[unit]||[]).forEach(function(t){t.inds.forEach(function(c){denom[c]=1;});});
+  var nDen=Object.keys(denom).length;
+  if(!nDen)return null;
+  var ut=C.unitTest||{total:25,sr:11,cr:14};
+  var share=e.inds.length/nDen;
+  var sr=Math.round(ut.sr*share);sr=Math.max(5,Math.min(ut.sr,sr));
+  if(typeof ut.indCap==="number")sr=Math.min(sr,ut.indCap*e.inds.length);
+  var cr=Math.round(ut.cr*share);cr=Math.max(3,Math.min(ut.cr,cr));
+  return {sr:sr,cr:cr,topics:e.topics||null};
+}
+function testSelActive(s){
+  /* The builder's single-test scope, validated against the live
+     settings: the scope counts only while the settings still
+     hold exactly the test's unit and its indicator list, so any
+     later unit or indicator change quietly retires it (last
+     choice wins, as the scope controls behave today) and a
+     stale selection can never mislabel a set. Returns
+     {unit, test, inds, topics} or null. */
+  if(!s||!s.testSel)return null;
+  var e=testMapList(window.__COURSE,s.testSel.unit,s.testSel.test);
+  if(!e)return null;
+  if(!s.units||s.units.length!==1||s.units[0]!==s.testSel.unit)return null;
+  var want=e.inds.slice().sort().join(),got=(s.inds||[]).slice().sort().join();
+  if(want!==got)return null;
+  return {unit:s.testSel.unit,test:s.testSel.test,inds:e.inds.slice(),topics:e.topics||null};
+}
 function recGrid(items,withKey){
   var n=items.length,cols=n<=11?2:3,per=Math.ceil(n/cols);
   var h='<table class="recGrid"><tbody>';
@@ -6328,20 +6440,21 @@ function startExam(){
   stopExamTimer();
   var s=settings();var _sd=activeSeed(s);sessionSeed=_sd;
   var pkOn=tPkOn();
+  var _ts=testSelActive(s);var _plan=_ts?testPlanFor(window.__COURSE,_ts.unit,_ts.test):null;
   if(window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.singleOnly&&s.units.length!==1){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"Practice tests are built one unit at a time, like the unit tests in the course. Choose exactly one unit above, then make the practice test again. To practise across several units, make a practice sheet instead.":"Choose one unit above, then make the practice test.")+'</p></div>';return;}
-  var ex=withSeed(_sd,function(){return composeExam(s.units,s.inds,pkOn);});
+  var ex=withSeed(_sd,function(){return _plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);});
   if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
   countEvent("exam_compose",[analyticsCourse(),examPresetName(s.units)]);
   countEvent("sheet_generate",[analyticsCourse(),"test"]);
   var single=s.units.length===1;
   var wsCrF=(typeof s.wsCr==="number"&&!isNaN(s.wsCr))?s.wsCr:2.3;
-  var scope=single?(L9("Unit ","Unité ")+s.units[0]+" \u00B7 "+UNITS[s.units[0]]):s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
-  var title=single?(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Test de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Unit Test")):(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Examen de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam"));
-  wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Unit Test.docx"," - Test de pratique.docx"):(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Exam.docx"," - Examen de pratique.docx");
+  var scope=single?(L9("Unit ","Unité ")+s.units[0]+" \u00B7 "+UNITS[s.units[0]]+(_ts?(" \u00B7 "+testNameFor(_ts.test)):"")):s.units.map(function(u){return L9("Unit ","Unité ")+u;}).join(", ");
+  var title=single?(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Test de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Test")):(FR9?((window.__COURSE?window.__COURSE.shortName:"Course")+" : Examen de pratique"):((window.__COURSE?window.__COURSE.shortName:"Course")+": Practice Exam"));
+  wordName=single?(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Test.docx"," - Test de pratique.docx"):(window.__COURSE?window.__COURSE.shortName:"Course")+L9(" Practice Exam.docx"," - Examen de pratique.docx");
   T=null;
-  examState={ex:ex,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now()};
+  examState={ex:ex,s:s,single:single,wsCrF:wsCrF,scope:scope,title:title,t0:Date.now(),testScope:_ts?{unit:_ts.unit,test:_ts.test}:null};
   if(TEACHER){
-    T={view:"exam",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:pkOn,examCap:scopeCap(s.units||[])},edited:false,textEdited:false,picker:null};
+    T={view:"exam",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:pkOn,examCap:scopeCap(s.units||[]),test:_ts?{unit:_ts.unit,test:_ts.test}:null},edited:false,textEdited:false,picker:null};
     var _av={};
     ex.srItems.forEach(function(it){it.q=_sd?tAdoptDrawn(it.q,_av):tFreezeSlot(it.q._entry,"mc",_av,T.salt);});
     ex.crItems.forEach(function(it){it.q=_sd?tAdoptDrawn(it.q,_av):tFreezeSlot(it.q._entry,it.q.type,_av,T.salt);});
@@ -6356,6 +6469,7 @@ function renderExam(){
   var lv=examLive(ex);
   var paper=tPrintCodeBlock("exam")+'<div class="sheetbrand"><img src="cdli-logo.svg" alt="CDLI"></div><div class="nameline"><div>'+L9("Name:","Nom :")+'<span></span></div><div>'+L9("Date:","Date :")+'<span></span></div></div>';
   paper+='<h1 style="font-size:1.3rem;">'+title+'</h1><p>'+scope+' \u00B7 '+L9("Total marks: ","Total des points : ")+lv.total+'</p>';
+  if(examState.testScope&&ex.short)paper+='<p style="font-size:.92rem;">'+testShortLine(ex)+'</p>';
   paper+='<p style="font-size:.92rem;">'+L9("Answer all questions. In Section A, choose the best answer for each question and record it on the answer record at the end of Section A. In Section B, show all workings in the space provided; marks are shown beside each question.","Réponds à toutes les questions. Dans la section A, choisis la meilleure réponse pour chaque question et inscris-la dans le relevé de réponses à la fin de la section A. Dans la section B, montre tout ton travail dans l'espace fourni; les points sont indiqués à côté de chaque question.")+'</p>';
   var n=0;
   paper+='<h2 style="font-size:1.05rem;">'+L9("Section A: Selected Response (","Section A : Réponses choisies (")+lv.sr+L9(" marks)"," points)")+'</h2>';
@@ -6384,8 +6498,8 @@ function renderExam(){
   ex.srItems.forEach(function(it,ix){var q=it.q;key+='<div class="solp"><div class="qline"><b>'+(ix+1)+'.</b> <b>('+"ABCD"[q.correct]+')</b> '+stepHTML(q.solution)+'</div></div>';});
   key+='</div>';
   $("printArea").innerHTML=paper;
-  $("session").innerHTML='<div class="card"><p>'+(FR9?("Ton "+(single?"test de pratique":"examen de pratique")+" est prêt : "+ex.srItems.length+" questions à réponses choisies et "+ex.crItems.length+" questions à réponses construites, "+lv.total+" points au total. La copie d'examen et le corrigé s'impriment séparément."):("Your "+(single?"practice unit test":"practice exam")+" is ready: "+ex.srItems.length+" selected-response questions and "+ex.crItems.length+" constructed-response questions, "+lv.total+" marks in total. The exam paper and the answer key print separately."))+'</p>'
-    +((T&&T.edited)?'<p class="thinNote">You edited this paper: it now has '+lv.sr+' selected-response marks and '+lv.cr+' constructed-response marks, '+lv.total+' marks in total. The paper, the answer key and the totals all follow the edited set.</p>':((ex.short||examShortNow(ex))?'<p class="thinNote">'+L9("Heads up: the bank could not fill every exam slot for this selection yet, so this paper runs short of the full blueprint.","Attention : la banque n'a pas encore pu remplir toutes les places de l'examen pour cette sélection, alors cette copie est plus courte que le plan complet.")+'</p>':""))
+  $("session").innerHTML='<div class="card"><p>'+(FR9?("Ton "+(single?"test de pratique":"examen de pratique")+" est prêt : "+ex.srItems.length+" questions à réponses choisies et "+ex.crItems.length+" questions à réponses construites, "+lv.total+" points au total. La copie d'examen et le corrigé s'impriment séparément."):("Your "+(single?"practice test":"practice exam")+" is ready: "+ex.srItems.length+" selected-response questions and "+ex.crItems.length+" constructed-response questions, "+lv.total+" marks in total. The exam paper and the answer key print separately."))+'</p>'
+    +((T&&T.edited)?'<p class="thinNote">You edited this paper: it now has '+lv.sr+' selected-response marks and '+lv.cr+' constructed-response marks, '+lv.total+' marks in total. The paper, the answer key and the totals all follow the edited set.</p>':((examState.testScope?ex.short:(ex.short||examShortNow(ex)))?'<p class="thinNote">'+(examState.testScope?testShortLine(ex):L9("Heads up: the bank could not fill every exam slot for this selection yet, so this paper runs short of the full blueprint.","Attention : la banque n'a pas encore pu remplir toutes les places de l'examen pour cette sélection, alors cette copie est plus courte que le plan complet."))+'</p>':""))
     +tExamPanelHtml()
     +'<div class="row">'+(TEACHER?'<button type="button" id="editExamBtn">Edit the exam</button>':"")+'<button type="button" id="printPaperBtn">'+L9("Print the exam paper","Imprimer la copie d'examen")+'</button><button type="button" id="printKeyBtn" class="sec">'+L9("Print the answer key","Imprimer le corrigé")+'</button><button type="button" id="wordBtn" class="sec">'+L9("Download Word file","Télécharger le fichier Word")+'</button><button type="button" id="copyDocsBtn" class="sec">'+L9("Copy for Google Docs","Copier pour Google Docs")+'</button></div>'
     +'<p class="hint" id="editHint" hidden>Editing is on: click any text in the exam below and type to change it, or delete a question you do not want. Drag the bar at the bottom of a Section B answer box to make that box taller or shorter. What you see is what prints and what copies.</p>'
@@ -7620,7 +7734,7 @@ function applyURL(){
   if(p.get("rkeep")==="1")RETRY_KEEP=true;
   return touched;
 }
-function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;hidCtl.pkGroups=null;unitCheckboxes();renderIndicators();updatePoolInfo();}
+function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;hidCtl.pkGroups=null;state.testSel=null;tTestSelSync();unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=(__c.appName||(__c.shortName+" Review"));var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.appName||((__c.longName||__c.shortName)+" Review"));var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 /* French static markup (student side): when the active course is
@@ -7641,6 +7755,7 @@ if(window.__COURSE&&window.__COURSE.language==="fr"){
     "Build your own practice":"Crée ta propre pratique",
     "1. What do you want to practise?":"1. Que veux-tu pratiquer ?",
     "All units":"Toutes les unités",
+    "A single test":"Un seul test",
     "By indicator (optional, leave all unchecked to use every indicator in the units you picked):":"Par indicateur (facultatif : laisse tout décoché pour utiliser tous les indicateurs des unités choisies) :",
     "Order":"Ordre",
     "Unit order":"Ordre des unités",
@@ -7704,6 +7819,55 @@ function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySe
 (function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
 (function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice(),window.__COURSE.presets.final.cap?"final":undefined);if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
+/* ---- single-test scope wiring (Nov 19, 2026) ----
+   testNameFor and testScopeLabel carry the naming of Section 5
+   of the spec ("<Unit name> Test <n>"; French "Test de
+   pratique", decision D-F3); testShortLine is the thin-pool
+   line of Section 3. tTestSelSync keeps the pickers and the
+   summary note in step with state.testSel; it is called from
+   the unit and indicator change handlers and from setPreset
+   above, which clear the selection, and from the pickers
+   themselves. The row stays hidden in courses with no
+   testMap, absent rather than greyed out (spec Section 4.4). */
+function testNameFor(n){return L9("Test "+n,"Test de pratique "+n);}
+function testScopeLabel(ts){return (UNITS[ts.unit]||"")+" "+testNameFor(ts.test);}
+function testShortLine(ex){var n=ex.srItems.length+ex.crItems.length;return L9("This test's practice bank is still growing, so this set has "+n+" questions.","La banque de pratique de ce test est encore en croissance, alors cette série compte "+n+" questions.");}
+function tTestSelSync(){
+  var row=$("testScopeRow");if(!row)return;
+  var C=window.__COURSE;
+  if(!C||!C.testMap){row.hidden=true;return;}
+  row.hidden=false;
+  var us=$("testUnitSel"),ts=$("testNumSel"),note=$("testScopeNote");
+  var sel=(state.testSel&&testSelActive({units:state.units,inds:state.inds,testSel:state.testSel}))?state.testSel:null;
+  if(us&&ts){
+    if(!us.options.length){
+      us.innerHTML=Object.keys(C.testMap).sort(function(a,b){return a-b;}).map(function(u){return '<option value="'+u+'">'+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</option>";}).join("");
+    }
+    var u=sel?sel.unit:(us.value?+us.value:+Object.keys(C.testMap)[0]);
+    us.value=String(u);
+    var list=C.testMap[u]||[];
+    ts.innerHTML='<option value="">'+L9("Choose a test","Choisis un test")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+"</option>";}).join("");
+    ts.value=sel?String(sel.test):"";
+  }
+  if(note)note.textContent=sel?L9("Practice set for "+testScopeLabel(sel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(sel)+", construite à partir des mêmes notions que couvre ce test."):"";
+}
+(function(){
+  var row=$("testScopeRow");if(!row)return;
+  var C=window.__COURSE;
+  if(!C||!C.testMap)return;
+  var us=$("testUnitSel"),ts=$("testNumSel");
+  if(!us||!ts)return;
+  us.addEventListener("change",function(){state.testSel=null;tTestSelSync();});
+  ts.addEventListener("change",function(){
+    var u=+us.value,n=+ts.value;
+    if(!n){state.testSel=null;tTestSelSync();updatePoolInfo();return;}
+    var e=testMapList(C,u,n);if(!e)return;
+    state.units=[u];state.inds=e.inds.slice();state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;hidCtl.pkGroups=null;
+    state.testSel={unit:u,test:n};
+    unitCheckboxes();renderIndicators();tTestSelSync();updatePoolInfo();
+  });
+  tTestSelSync();
+})();
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});
 $("seedIn").addEventListener("input",refreshFace);

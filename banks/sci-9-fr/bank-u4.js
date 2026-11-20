@@ -323,3 +323,26 @@ E("s9f-u4-cr-evaluate", 4, ["SC9.12.10"], 3, "var", varset([
    composés. */
 var NO_COMPOSE_U4 = { "s9f-u4-cr-design-yeast": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
+
+/* Étiquettes de sujet pour SC9.10.3 (19 novembre 2026;
+   spécification française, divergence D-FR-4) : le guide
+   français fusionne la mitose et la méiose dans un seul
+   résultat, SC9.10.3, que le plan de tests partage entre
+   le Test 2, « mitose », et le Test 3, « meiose », alors
+   les questions nommées ici portent e.topic pour que le
+   compositeur de tests limite l'indicateur à sa tranche.
+   Les dix questions de SC9.10.3 se classent sans
+   ambiguïté. */
+var TOPIC_U4 = {
+  "s9f-u4-cell-cycle": "mitose",
+  "s9f-u4-mitosis-result": "mitose",
+  "s9f-u4-metaphase": "mitose",
+  "s9f-u4-cytokinesis": "mitose",
+  "s9f-u4-gen-division-count": "mitose",
+  "s9f-u4-cr-mitosis-stages": "mitose",
+  "s9f-u4-gamete-define": "meiose",
+  "s9f-u4-meiosis-result": "meiose",
+  "s9f-u4-diploid-haploid": "meiose",
+  "s9f-u4-gen-gamete-number": "meiose"
+};
+BANK.forEach(function (e) { if (TOPIC_U4[e.id]) { e.topic = TOPIC_U4[e.id]; } });
