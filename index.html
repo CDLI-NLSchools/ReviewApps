@@ -6594,33 +6594,31 @@ function testMapList(C,unit,test){
   return null;
 }
 function testPlanFor(C,unit,test){
-  /* Scaled composition targets for one mapped test
-     (Spec-Test-Shaped-Practice-2026-11-19.md, Section 3, decision
-     D1): the test's share of its unit's blueprinted indicators
-     scales the unit test's selected-response count and
-     constructed-response marks; the SR target is then held down
-     to what the course's per-indicator cap can deal (indCap
-     times the number of indicators on the test), and the cap is
-     not raised for test scope. A topic-split indicator counts
-     once in the unit's denominator and once on each test that
-     takes a slice of it. Returns null when the course maps no
-     such test. The figures returned here are the test's mapped
-     targets and stand as computed; under the owner's later
-     ruling of November 19, 2026 the cap does not bind inside
-     the composed test paper itself (see the test scope note in
-     composeExam's header): the cap sets this target figure,
-     and nothing more, for test scope. */
+  /* Composition targets for one mapped test, re-baselined
+     November 20, 2026 (Science-Test-Lengthening-Feasibility-
+     2026-11-20.md, Section 7; amends Spec-Test-Shaped-Practice-
+     2026-11-19.md Section 3 decision D1): the mapped tests as
+     first shipped were too short to read as real tests, so the
+     target is now set by the number of blueprinted indicators
+     on the test, not by the test's share of the unit test.
+     SR = min(max(10, 3n), 4n, 18), where n is the number of
+     indicators on the test (a topic-split indicator counts
+     once on each test that takes a slice of it): about three
+     selected-response items per indicator, floored at 10,
+     capped by what four per indicator gives and by 18 overall.
+     CR follows its band schedule: 10 marks when SR is 8 or
+     fewer, 8 marks when SR is 9 to 14, 6 marks when SR is 15
+     or more. A single-indicator test therefore deals to its
+     14-mark ceiling (SR 4, CR 10); the owner's decision of
+     November 20, 2026 leaves those tests at the ceiling, with
+     no folding, merging or whole-unit option. Returns null
+     when the course maps no such test. */
   var e=testMapList(C,unit,test);
   if(!e)return null;
-  var denom={};
-  (C.testMap[unit]||[]).forEach(function(t){t.inds.forEach(function(c){denom[c]=1;});});
-  var nDen=Object.keys(denom).length;
-  if(!nDen)return null;
-  var ut=C.unitTest||{total:25,sr:11,cr:14};
-  var share=e.inds.length/nDen;
-  var sr=Math.round(ut.sr*share);sr=Math.max(5,Math.min(ut.sr,sr));
-  if(typeof ut.indCap==="number")sr=Math.min(sr,ut.indCap*e.inds.length);
-  var cr=Math.round(ut.cr*share);cr=Math.max(3,Math.min(ut.cr,cr));
+  var n=e.inds.length;
+  if(!n)return null;
+  var sr=Math.min(Math.max(10,3*n),4*n,18);
+  var cr=sr<=8?10:(sr>=15?6:8);
   return {sr:sr,cr:cr,topics:e.topics||null};
 }
 function testSelActive(s){

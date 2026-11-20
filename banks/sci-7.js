@@ -665,6 +665,7 @@ function s7ConcentrationSVG(vessels) {
 }
 
 /* ----- bank-u1.js ----- */
+// CRMARKS: s7-u1-cr-marsh-change=2
 // CRMARKS: s7-u1-cr-factor-effect=2
 // CRMARKS: s7-u1-cr-three-interactions=3
 // CRMARKS: s7-u1-cr-energy-flow=3
@@ -2037,7 +2038,205 @@ var NO_COMPOSE={
 };
 BANK.forEach(function(e){ if(NO_COMPOSE[e.id]){ e.noCompose=true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC7.1.1, SC7.1.2, SC7.1.7, SC7.1.8 and one 2-mark Level 2 CR
+   entry closing Unit 1 Test 1's CR gap. Case-table entries are
+   registered as varsets, the junior banks' standing pattern.
+   SME-flagged. */
+
+E("s7-u1-factor-change-effect", 1, ["SC7.1.1"], 2, "var", varset([
+  function () {
+    return mcq("A dry summer lowers the water level in a pond. Which statement best describes the change itself?",
+      "Abiotic change: the amount of water available in the pond decreased over the summer",
+      ["Biotic change: a new predator species arrived in the pond area during the summer", "Biotic change: the population of one plant species grew larger around the pond", "No factor changed at all; only the behaviour of the pond animals changed"],
+      "The change is to a non-living part of the ecosystem: the amount of water decreased. Living populations respond afterwards, but the change itself is <b>abiotic: the amount of water available in the pond decreased over the summer</b>.", {});
+  },
+  function () {
+    return mcq("A dry summer lowers the water level in a pond. What is the most likely effect on the living community?",
+      "Shore plants die back in the dry zone, and the animals that sheltered in them lose habitat",
+      ["The pond's water becomes warmer in winter, and every fish species grows larger and more active than before", "New species appear from outside the ecosystem all at once in large numbers", "The soil around the pond slowly turns into solid rock over the season"],
+      "A change in an abiotic factor changes the conditions living things depend on, and populations shift in response. Here, <b>shore plants die back in the dry zone, and the animals that sheltered in them lose habitat</b>.", {});
+  },
+  function () {
+    return mcq("A factory warms the water of a river with its cooling outflow. Which statement best describes the change itself?",
+      "Abiotic change: the temperature of the river water increased below the outflow",
+      ["Biotic change: a new species of fish was introduced into the river by workers", "Biotic change: the population of algae in the river grew during the summer", "No factor changed at all; only the speed of the river's current changed"],
+      "The change is to a non-living part of the ecosystem: the water temperature increased. Living populations respond afterwards, but the change itself is <b>abiotic: the temperature of the river water increased below the outflow</b>.", {});
+  },
+  function () {
+    return mcq("A factory warms the water of a river with its cooling outflow. What is the most likely effect on the living community?",
+      "Cold-water fish move away or decline, while warm-water species increase in the warmed stretch",
+      ["The river begins to flow uphill past the factory, carrying all of its fish and plants along with it", "Every fish in the river grows larger within a single week of the change", "The river's banks slowly turn into sand dunes along the warmed stretch"],
+      "A change in an abiotic factor changes the conditions living things depend on. Here, <b>cold-water fish move away or decline, while warm-water species increase in the warmed stretch</b>.", {});
+  },
+  function () {
+    return mcq("Farm fertilizer washes into a lake after heavy rain. What is the most likely effect on the living community?",
+      "Algae multiply quickly in the nutrient-rich water, clouding it and shading the plants below",
+      ["The lake freezes earlier in the autumn than it used to, covering all of its plants in ice for much longer", "The fish stop needing oxygen from the water and breathe air at the surface instead", "The bottom of the lake rises to the surface as the nutrients pile up in it"],
+      "The fertilizer raises the nutrient level of the water, an abiotic change, and the community responds: <b>algae multiply quickly in the nutrient-rich water, clouding it and shading the plants below</b>.", {});
+  },
+  function () {
+    return mcq("A beaver dam floods a section of forest. What is the most likely effect on the living community?",
+      "Trees in the flooded area die, while pond plants and water insects spread into the new habitat",
+      ["The flooded trees grow faster than ever before now that their roots stand in water through the whole season", "Every insect leaves the flooded area for good and none ever returns to it", "The pond water turns to ice and stays frozen through the whole year"],
+      "The dam raises the standing water, an abiotic change, and the community responds: <b>trees in the flooded area die, while pond plants and water insects spread into the new habitat</b>.", {});
+  },
+  function () {
+    return mcq("Shade cloth is put over a school garden bed for the summer. Which statement best describes the change itself?",
+      "Abiotic change: the amount of sunlight reaching the garden plants decreased",
+      ["Biotic change: a new species of insect moved into the garden during the summer", "Biotic change: the population of weeds in the garden bed grew over the season", "No factor changed at all; only the colour of the garden bed's soil changed"],
+      "The change is to a non-living part of the ecosystem: the amount of sunlight decreased. The change itself is <b>abiotic: the amount of sunlight reaching the garden plants decreased</b>.", {});
+  },
+  function () {
+    return mcq("A long winter keeps snow on a meadow until late spring. What is the most likely effect on the living community?",
+      "Plants start growing later in the year, shortening the feeding season for the herbivores",
+      ["Herbivores grow much thicker coats during the summer that follows, in preparation for the next long winter", "The meadow's soil loses all of its nutrients before the plants can use them", "Predators stop hunting completely until the autumn of the following year"],
+      "The longer cold season is an abiotic change, and the community responds: <b>plants start growing later in the year, shortening the feeding season for the herbivores</b>.", {});
+  }
+]), ["Ask what the change does to the other side: more food, less food, more shelter, less shelter?", "Then check the direction: a change that removes food or habitat pushes numbers down."]);
+
+E("s7-u1-interaction-direction", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Earthworms tunnel through garden soil, opening spaces in it. Which statement best classifies this interaction?",
+      "A biotic factor, the worms, changes an abiotic factor, the soil's air and water spaces",
+      ["An abiotic factor changes a biotic factor, and nothing at all happens in return", "Two abiotic factors, the soil and the air, interact with each other in the garden", "Neither factor affects the other in any way at all during the whole gardening season or the seasons after it"],
+      "First decide which side is living (biotic) and which is non-living (abiotic), then follow the direction of the effect. <b>A biotic factor, the worms, changes an abiotic factor, the soil's air and water spaces</b>.", {});
+  },
+  function () {
+    return mcq("A heat wave dries out a shallow pond in July. Which statement best classifies this interaction?",
+      "An abiotic factor, the heat, changes a biotic factor, the pond life that can survive there",
+      ["A biotic factor changes an abiotic factor, and nothing at all happens in return", "Two biotic factors, the pond plants and animals, interact with each other in July", "Neither factor affects the other in any way at all during the whole summer season or the seasons after it"],
+      "First decide which side is living (biotic) and which is non-living (abiotic), then follow the direction of the effect. <b>An abiotic factor, the heat, changes a biotic factor, the pond life that can survive there</b>.", {});
+  },
+  function () {
+    return mcq("Tree roots crack a concrete sidewalk as they grow over the years. Which statement best classifies this interaction?",
+      "A biotic factor, the growing roots, changes an abiotic factor, the concrete surface",
+      ["An abiotic factor changes a biotic factor, and nothing at all happens in return", "Two abiotic factors, the concrete and the soil, interact with each other over time", "Neither factor affects the other in any way at all while the tree is growing there or in later years"],
+      "The roots are living and the concrete is not, and the effect runs from the living side to the non-living side. <b>A biotic factor, the growing roots, changes an abiotic factor, the concrete surface</b>.", {});
+  },
+  function () {
+    return mcq("Drought makes a farmer's crop wilt during a dry August. Which statement best classifies this interaction?",
+      "An abiotic factor, the lack of water, changes a biotic factor, the crop's growth",
+      ["A biotic factor changes an abiotic factor, and nothing at all happens in return", "Two biotic factors, the crop and the weeds, interact with each other in the field", "Neither factor affects the other in any way at all during the whole growing season or the seasons after it"],
+      "Water shortage is non-living and the crop is living, and the effect runs from the non-living side to the living side. <b>An abiotic factor, the lack of water, changes a biotic factor, the crop's growth</b>.", {});
+  },
+  function () {
+    return mcq("Beavers build a dam that raises the water level of a stream. Which statement best classifies this interaction?",
+      "A biotic factor, the beavers, changes an abiotic factor, the stream's water level",
+      ["An abiotic factor changes an abiotic factor only, with no living thing involved at all", "Two biotic factors, the beavers and the fish, interact with each other in the stream", "Neither factor affects the other in any way at all while the dam is standing there or in later years"],
+      "The beavers are living and the water level is not, and the effect runs from the living side to the non-living side. <b>A biotic factor, the beavers, changes an abiotic factor, the stream's water level</b>.", {});
+  },
+  function () {
+    return mcq("Strong sunlight makes the air inside a greenhouse warmer. Which statement best classifies this interaction?",
+      "An abiotic factor, the sunlight, changes an abiotic factor, the air temperature inside",
+      ["A biotic factor changes an abiotic factor, and nothing at all happens in return", "A biotic factor changes another biotic factor somewhere inside the greenhouse", "Neither factor affects the other in any way at all on a bright sunny day or on any other day of the year"],
+      "Both sides here are non-living: sunlight and air temperature are both abiotic factors. <b>An abiotic factor, the sunlight, changes an abiotic factor, the air temperature inside</b>.", {});
+  }
+]), ["Name both sides first: which is living (biotic) and which is not (abiotic)?", "The effect runs from the side that acts to the side that is changed."]);
+
+E("s7-u1-recycling-scenario", 1, ["SC7.1.7"], 2, "var", varset([
+  function () {
+    return mcq("A fallen spruce tree lies on the forest floor for years. How is the matter in it recycled?",
+      "Fungi and bacteria break the wood down, returning its nutrients to the soil for new plants",
+      ["The wood's nutrients vanish completely from the forest forever at the moment the tree dies on the forest floor", "The nutrients stay locked inside the wood forever and are never used by anything again", "Animals carry every bit of the wood's nutrients away from the forest for good"],
+      "Matter is not created or destroyed in an ecosystem; decomposers break dead material down and return its nutrients to the soil or water, where producers can use them again. <b>Fungi and bacteria break the wood down, returning its nutrients to the soil for new plants</b>.", {});
+  },
+  function () {
+    return mcq("Leaves pile up under a maple tree each autumn. How is the matter in them recycled?",
+      "Decomposers in the soil break the leaves down and release their nutrients for the tree's roots",
+      ["The leaves' nutrients are destroyed completely by the fall from the branches down to the ground below them", "The nutrients float away into the air as gases and never return to the soil at all", "The tree reabsorbs the whole leaves back through the bark of its trunk"],
+      "Decomposers break dead material down and return its nutrients to the soil, where producers can use them again. <b>Decomposers in the soil break the leaves down and release their nutrients for the tree's roots</b>.", {});
+  },
+  function () {
+    return mcq("A dead fish washes up on the shore of a lake. How is the matter in it recycled?",
+      "Scavengers and decomposers break the body down, returning nitrogen and other nutrients to the water and soil",
+      ["The fish's nutrients disappear from the ecosystem entirely within a few days of its death on the shore", "The nutrients in the body are converted directly into sunlight by the scavengers", "The body stays completely unchanged at the bottom of the lake forever afterwards"],
+      "Scavengers start the breakdown and decomposers finish it, returning nutrients to the water and soil for producers. <b>Scavengers and decomposers break the body down, returning nitrogen and other nutrients to the water and soil</b>.", {});
+  },
+  function () {
+    return mcq("A farmer spreads composted manure on a field before planting. How is the matter in it recycled?",
+      "Decomposers finish breaking the material down, releasing nutrients that the crop plants can absorb",
+      ["The manure's nutrients pass straight down through the soil and are never used by the crops planted in the field", "The nutrients in the manure turn directly back into fresh manure for the next year", "The crop plants absorb the manure whole through their leaves while it lies on the field"],
+      "Composting starts the breakdown, and soil decomposers finish it, releasing nutrients in a form roots can absorb. <b>Decomposers finish breaking the material down, releasing nutrients that the crop plants can absorb</b>.", {});
+  },
+  function () {
+    return mcq("Grass clippings are left on a lawn after mowing. How is the matter in them recycled?",
+      "Soil decomposers break the clippings down and return their nutrients to the soil for the grass",
+      ["The clippings' nutrients are lost to the ecosystem completely as soon as the grass on the lawn is cut", "The nutrients in the clippings evaporate completely into the air within a day", "The grass roots absorb the clippings whole from the surface of the lawn"],
+      "Decomposers in the soil break the clippings down and return their nutrients, which is why leaving clippings feeds the lawn. <b>Soil decomposers break the clippings down and return their nutrients to the soil for the grass</b>.", {});
+  },
+  function () {
+    return mcq("A whale's body sinks to the deep ocean floor after it dies. How is the matter in it recycled?",
+      "Scavengers and decomposers break the body down over years, recycling its nutrients into the ocean ecosystem",
+      ["The nutrients are removed from the ocean forever once the body reaches the deep ocean floor far below", "The body dissolves into pure water within a single day of sinking to the bottom", "The nutrients rise back to the surface unchanged, still in one solid piece"],
+      "Even in the deep ocean, scavengers and decomposers break the body down and return its nutrients to the ecosystem. <b>Scavengers and decomposers break the body down over years, recycling its nutrients into the ocean ecosystem</b>.", {});
+  }
+]), ["Matter is not created or destroyed in an ecosystem; it cycles.", "Decomposers are the recyclers: they return dead matter's nutrients to the soil."]);
+
+E("s7-u1-succession-next-stage", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return mcq("Succession begins at a new site: a bare rock surface left by a retreating glacier. What is the first stage?",
+      "Lichens and mosses colonize the bare rock and begin breaking its surface into soil",
+      ["Tall spruce trees grow directly on the bare rock within the first few years after the glacier retreats from it", "A mature forest community appears on the rock within a single year of the ice leaving", "Grasses cover the whole rock surface before any soil has formed on it at all"],
+      "Succession starts with pioneer species that can survive the site's harsh conditions and begin changing them; larger plants need the soil and shelter the pioneers create. The first stage is: <b>lichens and mosses colonize the bare rock and begin breaking its surface into soil</b>.", {});
+  },
+  function () {
+    return mcq("Succession begins at a new site: an abandoned farm field in its first year. What is the first stage?",
+      "Fast-growing weeds and grasses move in and cover the soil across the field",
+      ["Shrubs and trees move in and shade out everything else in the field immediately during that first year", "The field returns to a mature forest community within one growing season", "Lichens break the field's soil back down into bare rock over the winter"],
+      "The soil is already present, so the pioneers are fast-growing plants that cover it quickly. The first stage is: <b>fast-growing weeds and grasses move in and cover the soil across the field</b>.", {});
+  },
+  function () {
+    return mcq("Succession begins at a new site: a pond that is slowly filling with sediment and plant growth. What is the first stage?",
+      "Reeds and cattails spread in from the edges of the pond as the water shallows",
+      ["The pond deepens again over time and the large fish return to its open water in greater numbers than before", "A spruce forest grows directly in the open water at the centre of the pond", "The pond dries instantly into bare rock across its whole bottom in one season"],
+      "As sediment shallows the water, marsh plants advance from the edges. The first stage is: <b>reeds and cattails spread in from the edges of the pond as the water shallows</b>.", {});
+  },
+  function () {
+    return mcq("Succession begins at a new site: a new sand dune forming along a coast. What is the first stage?",
+      "Hardy dune grasses take root in the sand and trap still more sand around them",
+      ["Trees take root and anchor the new dune firmly in place within its first month of forming along the coast", "The dune turns into a pond ecosystem behind the beach within a year", "Shrubs cover the whole dune before any grass has grown on it at all"],
+      "Dune grasses tolerate the dry, shifting sand and stabilize it, letting later stages follow. The first stage is: <b>hardy dune grasses take root in the sand and trap still more sand around them</b>.", {});
+  },
+  function () {
+    return mcq("A site has reached the stage where shrubs and young trees dominate, after grasses covered it for years. The site is an abandoned farm field. What happens as succession continues, if the climate stays the same?",
+      "Taller trees gradually shade out the shrubs, and the community moves toward a stable forest",
+      ["The community returns to bare ground every year and starts the whole sequence of succession over again", "Grasses take over the site again and remove the trees that have grown there", "Succession stops permanently at the shrub stage and nothing changes after that"],
+      "Succession continues in a direction: each stage changes the conditions so the next, larger community can move in, until a stable community matching the climate is reached. <b>Taller trees gradually shade out the shrubs, and the community moves toward a stable forest</b>.", {});
+  },
+  function () {
+    return mcq("A forest clearing left after a fire still has its soil intact. What is the first stage of succession there?",
+      "Fireweed and other fast-growing plants colonize the ash-covered soil of the clearing",
+      ["Lichens must first break down bare rock into fresh soil before anything at all can grow in the clearing", "Mature trees regrow to their full height across the clearing in one season", "The clearing stays completely bare of plants for centuries after the fire"],
+      "Because the soil survived the fire, succession restarts with fast-growing plants rather than rock pioneers. The first stage is: <b>fireweed and other fast-growing plants colonize the ash-covered soil of the clearing</b>.", {});
+  }
+]), ["Succession runs in a rough order: pioneers, grasses, shrubs, then trees.", "Pick the stage that comes right after the one described, not the final forest."]);
+
+E("s7-u1-cr-marsh-change", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return textq("A marsh beside a school is drained in the spring so a sports field can be built. By the next year, the frogs that lived in the marsh are gone from the area. Explain TWO effects of draining the marsh: one effect on an abiotic factor and one effect on a biotic factor. (2 marks)",
+      ["Draining removes the standing water, an abiotic factor the marsh community depended on."],
+      "Marking points (2): 1 mark for an abiotic effect (the standing water is removed, so the soil dries out and the area warms and loses its shallow-water habitat). 1 mark for a biotic effect linked to it (frogs lose the water they need for breeding, so their population disappears from the area; marsh plants and the insects and birds depending on them also decline). Model answer: Draining removes the marsh's standing water, drying the soil. Without water to lay eggs in, <b>the frogs cannot reproduce, so the biotic community loses them</b>.", {});
+  },
+  function () {
+    return textq("A farmer plants a strip of trees along a windy field. After several years, the soil in the field stays moist longer after rain. Explain TWO effects of the tree strip: one effect on an abiotic factor and one effect on a biotic factor. (2 marks)",
+      ["The trees slow the wind at ground level, an abiotic factor affecting the field."],
+      "Marking points (2): 1 mark for an abiotic effect (the trees reduce wind speed over the field, so less water evaporates from the soil and the soil stays moist longer; shade also cools the soil surface). 1 mark for a biotic effect linked to it (crops grow better with the moisture, and birds and insects gain shelter and food in the strip). Model answer: The strip slows the wind, so the soil loses less water to evaporation. With moister soil, <b>the crop plants grow more strongly through dry spells</b>.", {});
+  },
+  function () {
+    return textq("Road salt used in winter washes into a small pond each spring. By summer, the pond's snails have mostly disappeared. Explain TWO effects of the salt: one effect on an abiotic factor and one effect on a biotic factor. (2 marks)",
+      ["The salt raises the salt concentration of the pond water, an abiotic factor."],
+      "Marking points (2): 1 mark for an abiotic effect (the dissolved salt changes the chemistry of the water, raising its salt concentration each spring). 1 mark for a biotic effect linked to it (snails and other freshwater organisms cannot tolerate the saltier water, so their populations fall, affecting the animals that feed on them). Model answer: The runoff makes the pond water saltier each spring. Freshwater snails cannot survive the changed water, so <b>their population collapses, and the birds and fish that ate them lose a food source</b>.", {});
+  }
+]), ["One effect must land on a non-living factor and one on a living factor.", "Connect them: the abiotic change is usually what drives the biotic one."]);
+
 /* ----- bank-u2.js ----- */
+// CRMARKS: s7-u2-cr-thermometer-choice=3
+// CRMARKS: s7-u2-cr-radiant-explain=2
 /* Science 7, Unit 2: Heat (SC7.4.1 to SC7.6.9, 26 indicators, 75 entries).
    Sources: the current English guide (Focus for Learning for all 26
    indicators; terminology governs), the outcome spreadsheet (tag set
@@ -3256,7 +3455,142 @@ var NO_COMPOSE_U2 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC7.4.2, SC7.4.6, SC7.6.7, and CR entries closing Unit 2
+   Test 1 (3 marks, Level 2, SC7.4.1) and Unit 2 Test 3 (2 marks,
+   Level 2, SC7.4.6). SME-flagged. */
+
+E("s7-u2-temp-compare-samples", 2, ["SC7.4.2"], 2, "gen", function () {
+  var subs = ["water in a beaker", "sand in a tray", "air in a balloon", "oil in a pan"];
+  var s = pick(subs);
+  var t1 = pick([10, 15, 20, 25]), t2 = t1 + pick([15, 20, 30, 40]);
+  var mode = ri(0, 1);
+  if (mode === 0) {
+    return mcq("Two samples of " + s + " are at " + t1 + " \u00B0C and " + t2 + " \u00B0C. According to the particle theory, how do their particles compare?",
+      "The particles of the " + t2 + " \u00B0C sample have a greater average kinetic energy and move faster on average",
+      ["The particles of the " + t2 + " \u00B0C sample are larger in size than the particles of the other, cooler sample", "The particles of the " + t1 + " \u00B0C sample move faster on average than those of the warmer sample", "Both samples' particles have exactly the same average kinetic energy at the two temperatures"],
+      "Temperature measures the average kinetic energy of the particles. The warmer sample's particles move faster on average; the particles themselves do not change size. <b>The particles of the " + t2 + " \u00B0C sample have a greater average kinetic energy and move faster on average</b>.", { t1: t1, t2: t2 });
+  }
+  return mcq("A sample of " + s + " is cooled from " + t2 + " \u00B0C to " + t1 + " \u00B0C. What happens to its particles, according to the particle theory?",
+    "Their average kinetic energy decreases, so they move more slowly on average than before",
+    ["Their average kinetic energy increases, so they move faster on average than before", "The particles shrink in size until they stop moving completely at the lower temperature", "The particles themselves get steadily smaller and lighter as the sample loses more and more of its heat"],
+    "Cooling lowers the temperature, and temperature is the average kinetic energy of the particles: they move more slowly on average, but they do not shrink or stop. <b>Their average kinetic energy decreases, so they move more slowly on average than before</b>.", { t1: t1, t2: t2 });
+}, ["Temperature compares average particle energy; subtract to find the difference.", "The bigger reading is the warmer sample, and the gap is the second minus the first."]);
+
+E("s7-u2-absorb-predict", 2, ["SC7.4.6"], 2, "var", varset([
+  function () {
+    return mcq("Two identical cans, one painted matte black and one painted shiny silver, are left in the sun with equal amounts of water inside. What is the correct prediction?",
+      "The water in the matte black can warms faster, because dark, dull surfaces absorb radiant heat better",
+      ["The water in the shiny silver can warms faster than the other, because shiny surfaces absorb radiant heat better", "Both cans warm at exactly the same rate all morning, because the two cans are the same size", "Neither can warms at all in the sun, because the paint blocks every bit of radiant heat"],
+      "Dark, dull surfaces absorb radiant heat better than light, shiny surfaces, which reflect more of it. <b>The water in the matte black can warms faster, because dark, dull surfaces absorb radiant heat better</b>.", {});
+  },
+  function () {
+    return mcq("A dark asphalt driveway and a light concrete sidewalk lie side by side on a sunny afternoon. What is the correct prediction?",
+      "The asphalt becomes hotter than the concrete, because its dark surface absorbs more radiant heat",
+      ["The concrete becomes hotter than the asphalt does, because light surfaces absorb more radiant heat than dark ones", "Both surfaces reach exactly the same temperature and stay there all afternoon long", "The asphalt stays cooler than the concrete, because dark surfaces reflect radiant heat away"],
+      "Dark surfaces absorb more radiant heat than light surfaces. <b>The asphalt becomes hotter than the concrete, because its dark surface absorbs more radiant heat</b>.", {});
+  },
+  function () {
+    return mcq("A gardener covers one soil bed with black plastic and another with clear plastic on a sunny morning. What is the correct prediction?",
+      "The soil under the black plastic warms faster, because the black surface absorbs more radiant heat",
+      ["The soil under the clear plastic warms faster than the other bed, because clear surfaces absorb the most radiant heat", "Both beds warm at exactly the same rate, because the two plastics are the same thickness", "Neither bed warms at all that morning, because plastic stops radiant heat completely"],
+      "The black surface absorbs more of the sun's radiant heat and passes the energy to the soil. <b>The soil under the black plastic warms faster, because the black surface absorbs more radiant heat</b>.", {});
+  },
+  function () {
+    return mcq("Two car roofs, one white and one dark blue, are parked in full sun for an hour. What is the correct prediction?",
+      "The dark blue roof becomes hotter, because dark surfaces absorb radiant heat better than light ones",
+      ["The white roof becomes hotter than the dark one, because light surfaces absorb radiant heat better than dark ones", "Both roofs reach exactly the same temperature after an hour in the full sun", "The white roof becomes hotter, because it reflects the heat back onto itself"],
+      "Dark surfaces are the better absorbers of radiant heat. <b>The dark blue roof becomes hotter, because dark surfaces absorb radiant heat better than light ones</b>.", {});
+  },
+  function () {
+    return mcq("A solar water heater panel is painted dull black in one design and polished chrome in another. What is the correct prediction?",
+      "The dull black panel heats its water faster, because dull dark surfaces are the better absorbers of radiant heat",
+      ["The polished chrome panel heats its water faster than the black one, because shiny surfaces absorb radiant heat best", "Both panels heat their water at exactly the same rate, because they are the same size and shape", "Neither panel can heat water at all, because paint and chrome both block radiant heat fully"],
+      "Dull dark surfaces absorb radiant heat best; polished surfaces reflect most of it away. <b>The dull black panel heats its water faster, because dull dark surfaces are the better absorbers of radiant heat</b>.", {});
+  },
+  function () {
+    return mcq("Snow melts sooner around the dark trunk of a tree than on the open white field beside it. What is the correct explanation?",
+      "The dark trunk absorbs more radiant heat than the snow and warms the snow that touches it",
+      ["The white snow absorbs more radiant heat than the trunk does and melts itself from below over the afternoon", "The trunk reflects radiant heat onto the snow from a distance all afternoon long", "Radiant heat has nothing at all to do with the pattern of melting around the tree"],
+      "The dark trunk is the better absorber, so it warms up and melts the snow in contact with it first. <b>The dark trunk absorbs more radiant heat than the snow and warms the snow that touches it</b>.", {});
+  }
+]), ["Dark and dull surfaces absorb more radiation than pale and shiny ones.", "A good absorber is also a good emitter when the object is the hot one."]);
+
+E("s7-u2-safety-scenario", 2, ["SC7.6.7"], 1, "var", varset([
+  function () {
+    return mcq("A student is heating a test tube of water over a Bunsen burner. Which action is safe?",
+      "Pointing the open end of the test tube away from everyone at the bench",
+      ["Pointing the open end toward a partner so they can watch the water boil", "Holding the test tube in a bare hand while it heats over the flame", "Leaning over the flame to smell the contents of the tube as it heats"],
+      "Heated liquid can bump and spray out of the open end, so the opening is always pointed away from people. <b>Pointing the open end of the test tube away from everyone at the bench</b> is the safe action.", {});
+  },
+  function () {
+    return mcq("A student notices a cracked beaker just before a heating activity. What should the student do?",
+      "Tell the teacher and replace the beaker before starting",
+      ["Use it anyway, because a small crack does not matter when heating", "Hide the crack by turning it away from the teacher's view", "Heat it gently over the flame so the crack does not spread"],
+      "Cracked glass can fail completely when heated, spilling hot contents. It is never used: <b>tell the teacher and replace the beaker before starting</b>.", {});
+  },
+  function () {
+    return mcq("A class is using thermometers in a water bath activity. Which practice is safe and correct?",
+      "Using the thermometer only to measure temperature, never as a stirring rod",
+      ["Stirring the water bath with the thermometer to save time during the activity", "Resting the thermometer across the rim of a hot beaker while it is heating", "Shaking the thermometer down hard before taking each new reading in the bath"],
+      "Thermometers are fragile measuring instruments; stirring or shaking can break them and spill their contents. <b>Using the thermometer only to measure temperature, never as a stirring rod</b>, is the safe practice.", {});
+  },
+  function () {
+    return mcq("A student's sleeve keeps dangling near the Bunsen flame during an activity. What is the safest response?",
+      "Roll up the sleeves and tie back loose clothing and hair before lighting the burner",
+      ["Work faster so the activity ends before anything has a chance to catch fire", "Move the burner closer to the edge of the bench so the sleeve hangs clear", "Ask a partner to hold the sleeve back during the whole activity at the bench"],
+      "Loose clothing and hair are fire hazards around a flame and are secured before the burner is lit. <b>Roll up the sleeves and tie back loose clothing and hair before lighting the burner</b>.", {});
+  },
+  function () {
+    return mcq("At the end of a heating activity, a metal tripod still looks hot. What should a student do before putting it away?",
+      "Leave it to cool on the bench and warn others not to touch it",
+      ["Pick it up quickly with bare fingers to test how hot it still is", "Carry it across the room to the storage shelf right away after class", "Cool it instantly by pouring cold water over it at the bench"],
+      "Hot apparatus causes burns and can crack if shocked with cold water. It cools in place, with a warning to others: <b>leave it to cool on the bench and warn others not to touch it</b>.", {});
+  }
+]), ["Think of the standard lab rules for heat, glass and flames before choosing.", "The safe action is the one taken before or immediately after the hazard appears."]);
+
+E("s7-u2-cr-thermometer-choice", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Choosing temperature instruments (3 marks)\nA class must measure three temperatures during a field study: (a) the air temperature in a shaded schoolyard, (b) the temperature inside a compost pile, and (c) whether a metal tray left in the sun has passed 60 \u00B0C. For EACH job, name a suitable instrument from this list: a liquid-in-glass thermometer (\u221230 \u00B0C to 110 \u00B0C), a probe thermometer with a metal spike (\u221250 \u00B0C to 200 \u00B0C), and a temperature strip that changes colour at set temperatures. Give a reason for each choice. (3)",
+      ["(a) The liquid-in-glass thermometer suits the schoolyard air: its range covers outdoor temperatures and it reads the air directly."],
+      "Marking points (3): 1 mark for each well-matched instrument with a reason: (a) liquid-in-glass thermometer, range covers air temperatures and it hangs in the shade; (b) probe thermometer, because the spike pushes into the compost and its range covers compost heat; (c) temperature strip, because the job only needs to know whether a set temperature was passed, which is what the colour change shows. Model answer: (a) liquid-in-glass thermometer, for its suitable range in air. (b) probe thermometer, to reach inside the pile. (c) temperature strip, because <b>only a pass/fail reading at 60 \u00B0C is needed</b>.", {});
+  },
+  function () {
+    return textq("Choosing temperature instruments (3 marks)\nA bakery co-op student must check: (a) the temperature of a freezer that should stay below \u221218 \u00B0C, (b) the exact temperature of bread dough rising at about 27 \u00B0C, and (c) the temperature at the centre of a roast turkey. The available instruments are a liquid-in-glass thermometer (10 \u00B0C to 110 \u00B0C), a dial probe thermometer (\u221230 \u00B0C to 100 \u00B0C) and an oven-safe probe thermometer (up to 300 \u00B0C). For EACH job, name the suitable instrument and give a reason. (3)",
+      ["(a) The dial probe thermometer: the liquid-in-glass thermometer cannot read below 10 \u00B0C, so only the dial probe's range reaches \u221218 \u00B0C."],
+      "Marking points (3): 1 mark for each well-matched instrument with a reason based on range or design: (a) dial probe, the only one whose range goes below 0 \u00B0C; (b) liquid-in-glass thermometer, which reads precisely in its 10 to 110 \u00B0C range where the dough sits; (c) oven-safe probe, because it can be inserted into the roast and withstand oven heat. Model answer: (a) dial probe thermometer. (b) liquid-in-glass thermometer. (c) oven-safe probe thermometer, because <b>it can stay in the roast inside the oven</b>.", {});
+  },
+  function () {
+    return textq("Choosing temperature instruments (3 marks)\nDuring a winter science day, students must measure: (a) the temperature of the air outside at about \u221215 \u00B0C, (b) the temperature of water warming in a solar heater, expected to reach about 45 \u00B0C, and (c) the temperature of the soil 20 cm below the surface. Available instruments: an alcohol thermometer (\u221240 \u00B0C to 50 \u00B0C), a liquid-in-glass thermometer (10 \u00B0C to 110 \u00B0C), and a long probe thermometer (\u221250 \u00B0C to 150 \u00B0C). For EACH job, name the suitable instrument and give a reason. (3)",
+      ["(a) The alcohol thermometer: it is the one whose range extends well below 0 \u00B0C without the liquid freezing."],
+      "Marking points (3): 1 mark for each well-matched instrument with a reason: (a) alcohol thermometer, range reaches \u221215 \u00B0C; (b) liquid-in-glass thermometer, its range covers 45 \u00B0C and it reads water directly (the alcohol thermometer also reaches 45 \u00B0C, accept with a range reason); (c) long probe thermometer, because only a probe can be pushed 20 cm into the soil. Model answer: (a) alcohol thermometer. (b) liquid-in-glass thermometer. (c) long probe thermometer, because <b>it measures below the surface where the others cannot reach</b>.", {});
+  }
+]), ["Match the instrument to the job: what must it do when nobody is watching?", "Name features of the instrument itself, not just that it measures temperature."]);
+
+E("s7-u2-cr-radiant-explain", 2, ["SC7.4.6"], 2, "var", varset([
+  function () {
+    return textq("Explaining an absorption result (2 marks)\nIn an investigation, two identical bottles of water were left in the sun for one hour. The bottle wrapped in black paper reached 34 \u00B0C; the bottle wrapped in white paper reached 27 \u00B0C. Explain the difference in results, using the idea of radiant heat absorption. (2)",
+      ["The black paper absorbed more of the sun's radiant heat than the white paper."],
+      "Marking points (2): 1 mark for identifying that the black surface absorbed more radiant heat while the white surface reflected more of it. 1 mark for linking the extra absorbed energy to the greater temperature rise of the water in the black-wrapped bottle. Model answer: The black wrapping absorbed more radiant heat and passed that energy to the water, while the white wrapping reflected more away. <b>The black-wrapped bottle warmed more because its surface absorbed more radiant heat</b>.", {});
+  },
+  function () {
+    return textq("Explaining an absorption result (2 marks)\nA class places two metal sheets in the sun, one dull and dark, one polished and shiny, each with a thermometer taped to its back. After 20 minutes the dull dark sheet's thermometer reads 41 \u00B0C and the polished sheet's reads 30 \u00B0C. Explain the difference in results, using the idea of radiant heat absorption. (2)",
+      ["The dull dark sheet absorbed more of the sun's radiant heat than the polished shiny sheet."],
+      "Marking points (2): 1 mark for identifying that the dull dark surface absorbed more radiant heat while the polished surface reflected more of it away. 1 mark for linking the extra absorbed energy to the higher temperature measured behind the dull dark sheet. Model answer: The polished sheet reflected much of the radiant heat, while the dull dark sheet absorbed it and warmed up. <b>The dull dark sheet got hotter because dull dark surfaces are better absorbers of radiant heat</b>.", {});
+  },
+  function () {
+    return textq("Explaining an absorption result (2 marks)\nTwo school garden beds are side by side. One is covered with dark mulch and one with pale straw. On a sunny afternoon the soil under the dark mulch is 6 \u00B0C warmer than the soil under the straw. Explain the difference, using the idea of radiant heat absorption. (2)",
+      ["The dark mulch absorbed more radiant heat from the sun than the pale straw."],
+      "Marking points (2): 1 mark for identifying that the dark surface absorbed more radiant heat while the pale surface reflected more. 1 mark for linking the extra absorbed energy to the warmer soil beneath the dark mulch. Model answer: The pale straw reflected more of the sun's radiant heat, while the dark mulch absorbed it and warmed the soil below. <b>The soil under the dark mulch is warmer because the dark surface absorbed more radiant heat</b>.", {});
+  }
+]), ["Start with absorption: which surface takes in more of the Sun's radiation?", "For the change, think of blocking, reflecting or shedding the radiation."]);
+
 /* ----- bank-u3.js ----- */
+// CRMARKS: s7-u3-cr-classify-explain=2
 /* Science 7, Unit 3: Mixtures and Solutions (SC7.7.1 to SC7.9.8, 21
    indicators, 60 entries). Sources: the current English guide (Focus
    for Learning for all 21 indicators; terminology governs; particle,
@@ -4159,7 +4493,165 @@ var NO_COMPOSE_U3 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC7.7.1, SC7.7.2, SC7.7.3, SC7.7.5, SC7.7.6 x2, SC7.7.7 x2,
+   and one 2-mark Level 2 CR entry closing Unit 3 Test 1's CR gap.
+   Case-table entries are registered as varsets. SME-flagged. */
+
+E("s7-u3-particle-diagram-judge", 3, ["SC7.7.1"], 2, "var", varset([
+  { s: "every particle in the diagram is the same single atom, shown separate from the others", key: "A pure substance: an element", d: ["A pure substance: a compound", "A mixture of two elements", "A mixture of an element and a compound"] },
+  { s: "every particle is the same molecule, each made of two different atoms joined together", key: "A pure substance: a compound", d: ["A pure substance: an element", "A mixture of two elements", "A mixture of two compounds"] },
+  { s: "two kinds of single atoms are mixed together, none of them joined to any other", key: "A mixture of two elements", d: ["A pure substance: a compound", "A pure substance: an element", "A mixture of an element and a compound"] },
+  { s: "one kind of molecule (two atoms joined) is mixed with single atoms of another kind", key: "A mixture of an element and a compound", d: ["A pure substance: a compound", "A pure substance: an element", "A mixture of two compounds"] },
+  { s: "two different kinds of molecules are mixed, each kind made of atoms joined in the same way within its kind", key: "A mixture of two compounds", d: ["A pure substance: a compound", "A mixture of two elements", "A pure substance: an element"] },
+  { s: "every particle is the same molecule, each made of three atoms of one kind joined together", key: "A pure substance: an element (its particles are molecules of one atom type)", d: ["A pure substance: a compound made of three elements", "A mixture of two elements shown as molecules", "A mixture of an element and a compound"] }
+].map(function (c) {
+  return function () {
+    return mcq("A particle diagram shows this: " + c.s + ". What does the diagram represent?",
+      c.key, c.d,
+      "A pure substance has only one kind of particle throughout; a mixture has more than one kind. Atoms joined from different elements make a compound. <b>" + c.key + "</b>.", {});
+  };
+})), ["Spacing and movement give the state away: far apart and free means gas.", "Close but sliding means liquid; fixed positions in rows means solid."]);
+
+E("s7-u3-mixture-classify-more", 3, ["SC7.7.2"], 2, "var", varset([
+  { s: "brass, a blend of copper and zinc melted together", key: "Homogeneous: it looks the same throughout and its parts cannot be seen or picked out", d: ["Heterogeneous: its parts can be picked out and separated by hand, one metal at a time, like the parts of a salad", "A pure substance, because it is a metal and metals are always pure substances", "Neither kind: metals cannot be mixtures of any kind under any circumstances"] },
+  { s: "a bowl of trail mix with nuts, raisins and seeds", key: "Heterogeneous: its different parts can be seen and picked out one kind at a time", d: ["Homogeneous: it looks exactly the same throughout in every spoonful once it has been poured into the bowl", "A pure substance, because everything in it is food and food is pure", "Neither kind: mixtures of solids do not count as mixtures at all"] },
+  { s: "salt water from the ocean, filtered to remove the sand", key: "Homogeneous: the dissolved salt is spread evenly through it and cannot be seen", d: ["Heterogeneous: the dissolved salt can still be picked out of it by hand, grain by grain, after filtering", "A pure substance, because it is a clear liquid and clear liquids are pure", "Neither kind: it is an element, because it came from the ocean"] },
+  { s: "granite rock with visible flecks of different minerals", key: "Heterogeneous: its different mineral parts can be seen scattered through the rock", d: ["Homogeneous: rock always looks exactly the same throughout every sample taken from it, wherever it is found", "A pure substance, because it is a single rock taken from one place", "Neither kind: rocks are never described as mixtures of any kind"] },
+  { s: "air in a classroom", key: "Homogeneous: its gases are mixed evenly and cannot be told apart by looking", d: ["Heterogeneous: each of its gases can be seen separately, floating in layers at different heights in the room", "A pure substance, because air is invisible and invisible things are pure", "Neither kind: gases are unable to mix with each other at all"] },
+  { s: "a Caesar salad with leaves, croutons and dressing", key: "Heterogeneous: its parts can be seen clearly and separated from each other", d: ["Homogeneous: it becomes one single uniform substance as soon as it is tossed together in the serving bowl", "A pure substance, because it is served to the table as a single dish", "Neither kind: it is a compound, because its parts are combined in a bowl"] },
+  { s: "milk, which looks uniform but is made of tiny fat droplets spread through water", key: "Heterogeneous at the particle level: the droplets are a separate phase spread through the water", d: ["A pure substance, because it is white all through and pours smoothly and evenly out of the carton every time", "Homogeneous at every level, because it looks the same and pours evenly", "Neither kind: liquids can never be heterogeneous mixtures in any way"] },
+  { s: "lemonade made by stirring lemon juice, sugar and water until it is clear", key: "Homogeneous: everything that dissolved is spread evenly throughout the drink", d: ["Heterogeneous: the sugar in it can still be picked out by hand after the stirring is finished and it clears", "A pure substance, because the finished drink is clear like pure water", "Neither kind: it is an element, because it is made in the kitchen"] }
+].map(function (c) {
+  return function () {
+    return mcq("Classify this mixture: " + c.s + ".",
+      c.key, c.d,
+      "A homogeneous mixture looks the same throughout, with its parts spread evenly and not visible; a heterogeneous mixture has parts that can be seen or separated. <b>" + c.key + "</b>.", {});
+  };
+})), ["Can you see separate parts, unevenly spread? That is a mechanical mixture.", "Uniform all the way through with nothing to distinguish means a solution."]);
+
+E("s7-u3-dissolving-identify", 3, ["SC7.7.3"], 2, "var", varset([
+  { s: "sugar stirred into a cup of tea until it disappears", sol: "the sugar", solv: "the tea (mostly water)" },
+  { s: "salt mixed into a pot of water for cooking pasta", sol: "the salt", solv: "the water" },
+  { s: "powdered drink mix stirred into a jug of water", sol: "the drink powder", solv: "the water" },
+  { s: "carbon dioxide gas pumped into water to make soda water", sol: "the carbon dioxide", solv: "the water" },
+  { s: "iodine dissolved in alcohol to make a tincture for cuts", sol: "the iodine", solv: "the alcohol" },
+  { s: "instant coffee granules stirred into hot water", sol: "the coffee granules", solv: "the hot water" }
+].reduce(function (acc, c) {
+  acc.push(function () {
+    return mcq("In this solution, " + c.s + ". What is the solute?",
+      c.sol, [c.solv + " (named as the solute)", "the container the solution is mixed in", "the part of the solution that evaporates first"],
+      "The solute is the substance that dissolves; the solvent is the substance it dissolves into, usually present in the greater amount. Here the solute is <b>" + c.sol + "</b> and the solvent is " + c.solv + ".", {});
+  });
+  acc.push(function () {
+    return mcq("In this solution, " + c.s + ". What is the solvent?",
+      c.solv, [c.sol + " (named as the solvent)", "the container the solution is mixed in", "the part of the solution that settles out"],
+      "The solvent is the substance that does the dissolving, usually present in the greater amount. Here the solvent is <b>" + c.solv + "</b> and the solute is " + c.sol + ".", {});
+  });
+  return acc;
+}, [])), ["The solute is the substance that gets dissolved; the solvent does the dissolving.", "In drinks, the smaller ingredient is usually the solute."]);
+
+E("s7-u3-solubility-change", 3, ["SC7.7.5"], 2, "var", varset([
+  { s: "A bottle of soda is opened and left uncapped overnight; by morning it tastes flat", key: "Gas escapes because the pressure above the liquid dropped, lowering the gas's solubility in the soda", d: ["The gas dissolved even more deeply as the pressure above it dropped, which is why the taste of the soda changed", "The soda absorbed extra gas from the air overnight, pushing the original gas out", "The temperature of the soda removed all of the dissolved gas by itself overnight"] },
+  { s: "Sugar dissolves faster and in greater amount in hot tea than in iced tea", key: "Raising the temperature increased the solid sugar's solubility in the liquid", d: ["Raising the temperature of the tea decreased the solid sugar's solubility in the liquid it was stirred into", "Temperature has no effect at all on how much of a solid dissolves in a liquid", "The sugar melted in the hot tea, and melting is exactly the same as dissolving"] },
+  { s: "A diver's blood can form dangerous bubbles if the diver surfaces too quickly", key: "Falling pressure lowers the solubility of the gases dissolved in the blood, so they come out as bubbles", d: ["Rising pressure in the blood forces more gas out of it and into bubbles as the diver rises toward the surface", "Pressure has no effect at all on how much gas can stay dissolved in a liquid", "The bubbles form only because the diver's blood gets colder during the ascent"] },
+  { s: "Warm lake water in summer holds less dissolved oxygen than the same water in spring", key: "Raising the temperature lowered the solubility of the oxygen gas in the lake water", d: ["Raising the temperature of the lake raised the solubility of the oxygen gas dissolved in its water in summer", "Oxygen behaves as a solid in water, so its solubility rose with the temperature", "The fish used up the oxygen, which is the only possible cause of the change"] },
+  { s: "A sealed bottle of pop fizzes strongly the moment it is opened", key: "The sudden pressure drop lets dissolved carbon dioxide come out of solution as bubbles", d: ["The pressure rise inside the bottle creates the carbon dioxide gas at the very moment the cap is twisted off", "Opening the bottle lowers its temperature enough to manufacture the gas", "The gas was never dissolved at all; it was trapped in the pop as a solid"] },
+  { s: "Salt keeps dissolving in a heated pan of water long after it stopped dissolving in cold water", key: "Heating the water raised the solubility of the solid salt in the water", d: ["Heating the pan of water lowered the solubility of the solid salt that was being dissolved into it", "The salt dissolved in the hot water only because it melted into it", "The solubility of solids in water never changes with temperature at all"] }
+].map(function (c) {
+  return function () {
+    return mcq(c.s + ". Which explanation is correct?",
+      c.key, c.d,
+      "For solids, solubility in a liquid usually rises with temperature. For gases, solubility falls as temperature rises and falls as pressure drops. <b>" + c.key + "</b>.", {});
+  };
+})), ["Check the factor being changed: temperature, pressure, stirring or particle size.", "Gases behave opposite to solids when temperature rises."]);
+
+E("s7-u3-separation-plan", 3, ["SC7.7.6"], 2, "var", varset([
+  { s: "a mixture of iron filings, sand and salt, when all three are needed separately", key: "Magnetism for the filings, then dissolve the salt in water, filter out the sand, and evaporate the water to recover the salt", d: ["Evaporate the whole dry mixture first in a pan, then try to filter the dry powders apart from each other afterwards", "Filter the dry mixture through paper first, then use a magnet on the liquid that passes through", "Distill the dry mixture until it boils, then screen out the salt from what remains behind"] },
+  { s: "a mixture of sand, small pebbles and water", key: "Screening to remove the pebbles, then filtration to separate the sand from the water", d: ["Evaporation of the whole mixture first in the sun, then magnetism to pull the sand grains out of the pebbles", "Distillation to remove the pebbles, then screening to separate the water from the sand", "Paper chromatography on the mixture, then flotation to lift the sand off the water"] },
+  { s: "muddy water containing dissolved salt", key: "Filtration to remove the mud, then evaporation to recover the salt from the clear water", d: ["Magnetism to remove the mud from the water first, then screening the clear water to catch the dissolved salt in it", "Screening to remove the dissolved salt first, then distillation of the mud that is left", "Flotation to skim the dissolved salt off the surface before filtering out the mud"] },
+  { s: "a mixture of rice grains and fine flour spilled together", key: "Screening: the fine flour passes through the screen while the rice grains stay on top of it", d: ["Filtration with water added to the mixture, then evaporation of all the water to get the rice grains back again", "Magnetism, because dry rice grains are attracted to magnets when mixed with flour", "Distillation, because flour boils at a lower temperature than rice grains do"] },
+  { s: "used cooking oil floating on dishwater in a sink", key: "Let it settle, then skim or pour off the oil layer from the top (flotation and decanting)", d: ["Evaporate the whole mixture in a heated pan and collect the used cooking oil from whatever is left behind in it", "Filter the mixture and expect the oil to stay dissolved evenly in the water", "Hold a magnet over the surface to pull the oil layer off the dishwater"] },
+  { s: "a mixture of salt and pepper shaken together in a jar", key: "Dissolve the salt in water, filter out the pepper, then evaporate the water to recover the salt", d: ["Use a strong magnet on the jar, because salt becomes magnetic whenever it is mixed together with ground pepper", "Screen the mixture, because salt grains are always larger than pepper grains are", "Distill the dry mixture, because the pepper in it boils away before the salt does"] }
+].map(function (c) {
+  return function () {
+    return mcq("A full separation is needed for " + c.s + ". Which plan works?",
+      c.key, c.d,
+      "Plan the steps in order: remove the component with the most distinctive property first (magnetism, particle size), and handle dissolved solids by dissolving, filtering and evaporating. The working plan is: <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Match the tool to the property that differs: magnetism, particle size, dissolving, density.", "Dissolved solids cannot be filtered out; they need evaporation."]);
+
+E("s7-u3-separation-property", 3, ["SC7.7.6"], 3, "var", varset([
+  { s: "separating the pulp from orange juice by pouring it through a strainer", key: "Particle size: the strainer's holes pass the juice but hold back the larger pulp pieces", d: ["Boiling point: the juice boils away completely before the pulp does while the mixture sits in the strainer", "Magnetism: the pulp is attracted to the metal of the strainer as it pours", "Solubility: the pulp dissolves in the juice and is left behind in solution"] },
+  { s: "recovering drinking water from seawater aboard a ship by distillation", key: "Boiling point: the water evaporates and condenses while the dissolved salts stay behind", d: ["Particle size: the particles of salt in the seawater are too large to evaporate along with the water vapour", "Density: the salt floats on top of the vapour as the water boils away", "Magnetism: the salt is drawn out of the vapour by the cold condenser"] },
+  { s: "separating the dyes in a felt-pen ink using a strip of wet filter paper", key: "How far each dye travels in the solvent: the dyes spread out along the paper at different rates", d: ["Particle size alone: the paper blocks the larger dye completely at the starting line and lets the smaller one pass", "Boiling point: each dye boils off the wet paper in turn as it warms up", "Density: the heaviest dye sinks off the bottom of the paper into the solvent"] },
+  { s: "removing steel screws spilled into a box of plastic beads with a magnet", key: "Magnetism: the steel is attracted to the magnet while the plastic beads are not", d: ["Particle size: the screws are larger than the plastic beads, so the magnet is able to sort the two apart by size", "Solubility: the plastic dissolves around the magnet and the steel does not", "Boiling point: the plastic melts away from the steel when the magnet warms it"] },
+  { s: "separating oil and vinegar salad dressing by letting it stand and pouring off the top layer", key: "Density and not mixing: the oil floats on the vinegar because the two liquids do not dissolve in each other", d: ["Boiling point: the oil evaporates slowly off the top of the dressing as it stands on the counter after mixing", "Magnetism: the vinegar is attracted away from the oil by the bottle's cap", "Particle size: the oil's particles are too big to sink through the vinegar"] },
+  { s: "getting salt back from salt water left in a shallow pan in the sun", key: "Evaporation: the water leaves as vapour because it evaporates far more readily than the salt does", d: ["Magnetism: the warmth of the sun in the shallow pan draws the salt out of the water and onto the pan's surface", "Particle size: the salt is filtered out of the water by the bottom of the pan", "Density: the salt sinks and sticks to the pan before any water can evaporate"] }
+].map(function (c) {
+  return function () {
+    return mcq("Which property difference makes this separation work: " + c.s + "?",
+      c.key, c.d,
+      "Every separation method exploits one property difference between the components. Here it is <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Name the property that makes the technique work on this pair of substances.", "If an magnet is used, the property is magnetism; if water is added, think solubility."]);
+
+E("s7-u3-daily-technique-id", 3, ["SC7.7.7"], 1, "var", varset([
+  { s: "a coffee maker drips water through ground coffee held in a paper filter", key: "Filtration", d: ["Distillation", "Magnetism", "Evaporation"] },
+  { s: "a washing machine spins the drum fast to push water out of wet clothes", key: "Centrifuging", d: ["Filtration", "Paper chromatography", "Flotation"] },
+  { s: "a cook pours boiled pasta into a colander to drain it", key: "Screening", d: ["Distillation", "Evaporation", "Magnetism"] },
+  { s: "cream is skimmed from the top of fresh whole milk that has stood overnight", key: "Flotation", d: ["Filtration", "Distillation", "Paper chromatography"] },
+  { s: "a tea bag steeps in hot water and is lifted out, leaving the leaves behind in the bag", key: "Filtration", d: ["Evaporation", "Magnetism", "Centrifuging"] },
+  { s: "a dryer screen catches the lint pulled from tumbling clothes", key: "Screening", d: ["Distillation", "Flotation", "Paper chromatography"] },
+  { s: "a gold panner swirls water in a pan so the lighter sand washes away and the heavy gold stays", key: "Panning (density separation)", d: ["Filtration", "Evaporation", "Magnetism"] },
+  { s: "a water treatment plant lets muddy water sit in settling tanks before further treatment", key: "Sedimentation", d: ["Paper chromatography", "Distillation", "Magnetism"] }
+].map(function (c) {
+  return function () {
+    return mcq("Which separation technique is at work here: " + c.s + "?",
+      c.key, c.d,
+      "Everyday devices use the same separation principles as the lab: filters and screens trap by size, spinning and settling separate by density, and floating components can be skimmed. This one is <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Ask what the device does: holds back a solid, lets a liquid evaporate, or pours a liquid off?", "Holding back solids while liquid passes is filtration."]);
+
+E("s7-u3-daily-technique-choose", 3, ["SC7.7.7"], 2, "var", varset([
+  { s: "a camper needs drinking water from a muddy stream and has a cloth and a pot", key: "Filter the water through the cloth to remove the mud, then boil it before drinking it", d: ["Distill the water by holding the pot lid in the steam over the fire and collecting every drop that condenses on it", "Hold a magnet in the stream water to pull all of the mud out of it at once", "Let the water evaporate completely in the sun and drink whatever is left behind"] },
+  { s: "a cook has oversalted a soup and wants to reduce the saltiness without throwing the soup away", key: "Add more water and ingredients to dilute it; the dissolved salt cannot be filtered out of the soup", d: ["Pour the whole soup through a coffee filter to catch all of the dissolved salt in it before serving it at the table", "Hold a strong magnet over the pot to draw the dissolved salt out of the soup", "Skim the dissolved salt off the surface of the soup with a spoon before serving"] },
+  { s: "a jeweller has spilled tiny steel pins into a tray of gold filings", key: "Pass a magnet over the tray to lift out the steel pins, leaving the gold filings behind", d: ["Wash the tray with water and filter the whole mixture through paper to separate out the gold filings from the pins", "Heat the tray until the steel pins evaporate away from the gold filings completely", "Shake the tray gently so the gold filings float to the top of the steel pins"] },
+  { s: "a homeowner finds sand mixed into a bag of grass seed before planting", key: "Use a screen with holes that pass the sand grains but hold back the larger grass seeds", d: ["Dissolve all of the sand in water in a bucket and then filter the mixture to get the grass seeds back out of it", "Pass a magnet through the bag to remove all of the sand grains from the seed", "Let the mixture settle in water so the grass seeds float off the sand by themselves"] },
+  { s: "a baker needs to remove the lumps from flour before mixing a cake", key: "Sift the flour through a sieve so the lumps are held back or broken up as it passes", d: ["Distill the flour in a sealed pot over heat to separate all of the lumps from the fine powder before baking", "Spin the flour in a bowl so the lumps evaporate out of it completely", "Float the flour on water and skim the lumps off the surface with a spoon"] },
+  { s: "a mechanic drains used engine oil that has fine metal grit suspended in it", key: "Pour the oil through a filter that traps the metal grit while the oil passes through it", d: ["Stir a strong magnet around in the oil to dissolve all of the fine metal grit into the oil completely and evenly", "Evaporate all of the oil away and keep the metal grit as the finished product", "Add water to the oil so the metal grit floats to the top where it can be skimmed"] }
+].map(function (c) {
+  return function () {
+    return mcq("Everyday problem: " + c.s + ". Which approach works?",
+      c.key, c.d,
+      "Match the technique to the property difference available: size for screens and filters, magnetism for steel, and dilution when a dissolved substance cannot be filtered. The working approach is: <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Choose the technique that removes the unwanted part and keeps the wanted part.", "Suspended solids come out by filtration; settled solids by decanting."]);
+
+E("s7-u3-cr-classify-explain", 3, ["SC7.7.2"], 2, "var", varset([
+  function () {
+    return textq("Classifying and explaining mixtures (2 marks)\nA student stirs a spoon of sand into a glass of water and a spoon of salt into another glass of water. After stirring, the sand can still be seen settled at the bottom, but the salt cannot be seen at all. Classify EACH mixture as heterogeneous or homogeneous, and explain the difference using the particle theory. (2)",
+      ["The sand and water form a heterogeneous mixture: the sand particles stay in visible clumps and settle."],
+      "Marking points (2): 1 mark for both classifications (sand and water heterogeneous; salt and water homogeneous). 1 mark for the particle explanation: the salt's particles separate and spread evenly among the water particles so they cannot be seen, while the sand's particles stay together in grains that remain visible and settle. Model answer: Sand in water is heterogeneous and salt in water is homogeneous, because <b>the dissolved salt spreads evenly at the particle level while the sand stays in visible grains</b>.", {});
+  },
+  function () {
+    return textq("Classifying and explaining mixtures (2 marks)\nA jar of mixed nuts and a bottle of well-shaken salad dressing are both mixtures. The nuts can be picked out one kind at a time. The dressing looks the same throughout while it is freshly shaken, but separates into layers if it stands. Classify EACH mixture and explain your reasoning. (2)",
+      ["The mixed nuts are heterogeneous: each kind can be seen and picked out separately."],
+      "Marking points (2): 1 mark for both classifications (nuts heterogeneous; the freshly shaken dressing homogeneous in appearance, becoming heterogeneous as it separates). 1 mark for the reasoning: a mixture is homogeneous only while its parts are spread evenly and cannot be told apart; once the dressing's parts separate into layers they can be told apart, so it is heterogeneous. Model answer: The nuts are heterogeneous, and the dressing is homogeneous only while shaken, because <b>a mixture is homogeneous only as long as its parts stay evenly spread and indistinguishable</b>.", {});
+  },
+  function () {
+    return textq("Classifying and explaining mixtures (2 marks)\nFog and brass are both described as mixtures. Fog is made of tiny water droplets spread through air; brass is made of copper and zinc melted and solidified together. Classify EACH mixture as heterogeneous or homogeneous, and explain each classification. (2)",
+      ["Brass is homogeneous: the copper and zinc are mixed evenly at the particle level, so a sample looks and behaves the same throughout."],
+      "Marking points (2): 1 mark for brass as homogeneous with the particle-level reason. 1 mark for fog as heterogeneous: the droplets are a separate phase spread through the air, visible as cloudiness, and they can settle or evaporate separately. Model answer: Brass is homogeneous and fog is heterogeneous, because <b>brass is mixed evenly at the particle level while fog's droplets remain a separate, visible phase</b>.", {});
+  }
+]), ["Decide the class first, then hunt the description for two observations that prove it.", "Visible separate parts point one way; perfect uniformity points the other."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: s7-u4-cr-soil-choice=2
 /* Science 7, Unit 4: Earth's Crust (built Nov 15, 2026).
    85 entries across the strand's 25 indicators: Knowledge SC7.10.1
    to SC7.10.9, STSE SC7.11.1 to SC7.11.7, Skills SC7.12.1 to
@@ -5701,7 +6193,89 @@ var NO_COMPOSE_U4 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC7.10.6, SC7.10.7, SC7.10.9 and one 2-mark Level 2 CR entry
+   closing Unit 4 Test 3's CR gap. SME-flagged. */
+
+E("s7-u4-mountain-scenario", 4, ["SC7.10.6"], 2, "var", varset([
+  { s: "Two plates push toward each other and the rock layers between them crumple into wavy bends", key: "Folding: compression bends the rock layers into folds, building folded mountains over time", d: ["Faulting: the rock breaks cleanly along a crack and the blocks on either side slide past each other vertically", "Volcanism: lava erupts at the surface and piles up into a cone-shaped mountain", "Erosion: wind and water carve the rock away until only the mountains are left"] },
+  { s: "Rock along a crack breaks, and one block is pushed up while the other drops down", key: "Faulting: the rock breaks along a fault and the blocks move, raising fault-block mountains", d: ["Folding: compression from the moving plates bends the rock layers into smooth waves without breaking them apart", "Volcanism: magma erupts at the surface and builds a cone of lava and ash", "Deposition: sediments settle in layers and harden into rock over a long time"] },
+  { s: "Magma erupts at the surface again and again, and the lava and ash pile up into a cone-shaped peak", key: "Volcanism: erupted material builds up layer by layer into a volcanic mountain", d: ["Folding: the cooling lava bends itself into wavy folded layers as it piles up around the vent over the years", "Faulting: blocks of hardened lava slide past each other to form the cone", "Erosion: the cone is carved out of a solid block of rock by wind and rain"] },
+  { s: "The Appalachian Mountains of eastern Canada show long ridges of bent and tilted sedimentary rock", key: "Folding and uplift from an ancient plate collision bent the layers and raised the whole range", d: ["Recent lava flows from volcanoes built the long ridges layer by layer over the bent sedimentary rock beneath them", "Glaciers stacked the loose rock into ridges during the last winter season", "The ridges are coastal sand dunes that hardened into rock in recent times"] },
+  { s: "A plateau is cut by a crack, and the block on one side rises to form a steep-faced highland", key: "Faulting: movement along the fault raised one block of rock relative to the other block", d: ["Folding: the whole plateau bent slowly upward into a smooth arch over millions of years without any breaking", "Volcanism: lava flooded evenly over the plateau and built it up on one side", "Weathering: the highland was left standing as everything around it dissolved away"] },
+  { s: "Underground magma pushes the rock layers above it upward into a dome, without erupting", key: "Uplift: pressure from the magma below raised the layers into a dome-shaped mountain", d: ["Faulting: the dome of rock dropped down along a crack in the rock beneath it as the pressure under it grew", "Erosion: rivers dug the dome out from below the surrounding rock layers", "Deposition: sediments rained down from above into a dome-shaped pile"] }
+].map(function (c) {
+  return function () {
+    return mcq("Which mountain-forming process is described here: " + c.s + "?",
+      c.key, c.d,
+      "Mountains form by folding (layers bend under compression), faulting (blocks move along breaks), volcanism (erupted material piles up) or uplift. This description matches <b>" + c.key.split(":")[0].toLowerCase() + "</b>.", {});
+  };
+})), ["Is the rock being broken by a force or dissolved by a reaction?", "Ice, roots and rubbing are physical; acids are chemical."]);
+
+E("s7-u4-event-order", 4, ["SC7.10.7"], 2, "gen", function () {
+  var events = [
+    ["The first fish appear in the oceans", 1], ["The first plants grow on land", 2], ["The first forests of tall trees spread", 3],
+    ["Dinosaurs dominate the land", 4], ["The first flowering plants appear", 5], ["Dinosaurs become extinct", 6],
+    ["The Atlantic Ocean begins to open", 7], ["The first humans appear", 8]
+  ];
+  var i = ri(0, events.length - 2), j = ri(i + 1, events.length - 1);
+  var mode = ri(0, 1), A = events[i], B = events[j];
+  if (mode === 0) {
+    return mcq("On the geological time scale, which of these events happened FIRST: \"" + A[0] + "\" or \"" + B[0] + "\"?",
+      A[0],
+      [B[0], "They happened at exactly the same time", "Neither: both happened before the Earth formed"],
+      "The geological time scale orders the major events of Earth's history. Of the two, the earlier event is <b>" + A[0].toLowerCase() + "</b>, which came before \"" + B[0].toLowerCase() + "\".", { a: A[0], b: B[0] });
+  }
+  var mid = events[ri(i, j)];
+  return mcq("Three events from Earth's history are listed. Which list puts them in the correct chronological order, earliest first?",
+    A[0] + " \u2192 " + mid[0] + " \u2192 " + B[0],
+    [B[0] + " \u2192 " + mid[0] + " \u2192 " + A[0], A[0] + " \u2192 " + B[0] + " \u2192 " + mid[0], mid[0] + " \u2192 " + A[0] + " \u2192 " + B[0]].filter(function (w) { return w !== A[0] + " \u2192 " + mid[0] + " \u2192 " + B[0]; }).concat(["All three happened in the same year"]).slice(0, 3),
+    "Chronological order follows the geological time scale: the earliest of the three is \"" + A[0].toLowerCase() + "\", then \"" + mid[0].toLowerCase() + "\", then \"" + B[0].toLowerCase() + "\". The correct order is <b>" + A[0] + " \u2192 " + mid[0] + " \u2192 " + B[0] + "</b>.", { a: A[0], b: B[0] });
+}, ["Find the event that must come first: nothing else can happen before it.", "Then chain the rest: each step makes the next one possible."]);
+
+E("s7-u4-soil-feel-test", 4, ["SC7.10.9"], 2, "var", varset([
+  { s: "The moist soil feels gritty, falls apart when squeezed, and will not form a ribbon", key: "Sandy soil: mostly sand particles, which feel gritty and do not stick together at all", d: ["Clay soil: mostly clay particles, which feel sticky in the hand and hold together in long ribbons when rolled", "Loam: an even mix of particles that holds together in a weak ribbon shape", "Silt soil: feels smooth like flour and forms long ribbons when it is rolled"] },
+  { s: "The moist soil is sticky, stains the hands, and can be rolled into a long thin ribbon", key: "Clay soil: mostly tiny clay particles, which stick together and hold a long ribbon", d: ["Sandy soil: mostly sand particles, which are gritty and never stick together in any shape, wet or dry", "Loam: an even mix of particles that cannot be rolled into a ribbon at all", "Peat soil: mostly decayed plant material, which feels spongy and springy"] },
+  { s: "The moist soil feels smooth like flour, forms a short ribbon, and is not gritty or very sticky", key: "Silt soil: mostly silt particles, which feel smooth and floury to the touch", d: ["Clay soil: forms the longest and strongest ribbons of any soil and is very sticky and heavy to handle", "Sandy soil: gritty in the hand and falls apart the moment it is squeezed", "Gravel soil: mostly stones larger than two millimetres across throughout"] },
+  { s: "The moist soil forms a weak ball that crumbles, feels slightly gritty and slightly smooth, and holds together briefly", key: "Loam: a balanced mix of sand, silt and clay particles in roughly even amounts", d: ["Pure clay: the stickiest soil of all, forming the strongest and longest ribbon of any sample in the test", "Pure sand: no ball shape can be formed from it at all, wet or dry", "Pure silt: feels exactly like dry flour and never forms any ball shape"] },
+  { s: "The dry soil pours through the fingers like beach sand and will not clump even when it is wet", key: "Sandy soil: dominated by large sand particles with big air spaces between them", d: ["Clay soil: dominated by the tiniest particles of any soil, which clump together tightly whenever they are wet", "Loam: the balanced garden soil with a mix of particle sizes throughout", "Silt soil: dominated by floury particles that pack into a smooth mass"] }
+].map(function (c) {
+  return function () {
+    return mcq("A soil sample is tested by hand. " + c.s + ". How is this soil classified?",
+      c.key, c.d,
+      "Texture class follows particle size: sand is gritty and loose, silt is smooth and floury, clay is sticky and holds ribbons, and loam is the balanced mix. <b>" + c.key + "</b>.", {});
+  };
+})), ["Gritty means sand, silky means silt, sticky and mouldable means clay.", "In the jar test, the finest particles settle last and cloud the water longest."]);
+
+E("s7-u4-cr-soil-choice", 4, ["SC7.10.9"], 2, "var", varset([
+  function () {
+    return textq("Choosing a soil for a garden (2 marks)\nA gardener can plant vegetables in one of two beds. Bed A is mostly clay: sticky when wet, hard when dry, and puddles sit on it after rain. Bed B is a loam: it crumbles in the hand, drains after rain, and stays moist for days. State which bed is better for the vegetables, and explain your choice using TWO properties of the soils. (2)",
+      ["Bed B, the loam, is better: its balanced texture drains excess water instead of puddling."],
+      "Marking points (2): 1 mark for choosing the loam. 1 mark for two linked properties (any two of: loam drains while holding moisture, its mix of particle sizes lets roots spread and air reach them, clay puddles and shuts out air when wet and cracks when dry). Model answer: Bed B is better because <b>loam drains freely yet holds moisture, while clay waterlogs when wet and hardens when dry</b>.", {});
+  },
+  function () {
+    return textq("Choosing a soil for a garden (2 marks)\nA farmer's field has two areas. Area A is sandy: water runs through it quickly and it dries out two days after rain. Area B is a clay loam: it holds water for a week but is sticky to work when wet. The farmer wants to grow a crop that needs steady moisture all summer. State which area suits the crop better, and explain your choice using TWO properties of the soils. (2)",
+      ["Area B, the clay loam, suits the crop better: its smaller particles hold water in the soil far longer."],
+      "Marking points (2): 1 mark for choosing the clay loam. 1 mark for two linked properties (any two of: clay loam's fine particles hold water against drainage, sand's large spaces let water escape quickly, the loam also holds nutrients better than sand). Model answer: Area B suits the crop because <b>its fine particles hold water and nutrients through dry spells, while the sandy area drains and dries too fast</b>.", {});
+  },
+  function () {
+    return textq("Choosing a soil for a garden (2 marks)\nA school garden club tests two soils for a new bed. Soil A feels gritty, will not form a ball, and a jar test shows it is 80% sand. Soil B forms a weak ball, feels both gritty and smooth, and the jar test shows a mix of sand, silt and clay. State which soil the club should choose for vegetables, and explain your choice using TWO properties of the soils. (2)",
+      ["Soil B should be chosen: its mixed texture holds a weak ball, showing it has enough fine particles to hold water."],
+      "Marking points (2): 1 mark for choosing Soil B. 1 mark for two linked properties (any two of: the mix drains yet holds moisture, roots can spread in it, Soil A's 80% sand drains too fast and holds few nutrients). Model answer: Soil B is the better choice because <b>its balanced texture drains after rain but still holds the moisture and nutrients vegetables need</b>.", {});
+  }
+]), ["Match the soil to the job: drainage, water holding and firmness all follow texture.", "Give two texture-linked reasons, not just a preference."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s7-u1-cr-boreal-example":3,"s7-u1-cr-data-display":3,"s7-u1-cr-defend-position":3,"s7-u1-cr-design-experiment":4,"s7-u1-cr-energy-flow":3,"s7-u1-cr-factor-effect":2,"s7-u1-cr-habitat-defence":3,"s7-u1-cr-harvest-decision":3,"s7-u1-cr-niche-roles":2,"s7-u1-cr-recycling":2,"s7-u1-cr-silviculture":2,"s7-u1-cr-succession-compare":2,"s7-u1-cr-succession-stages":2,"s7-u1-cr-three-interactions":3,"s7-u1-cr-web-change":3,"s7-u1-cr-web-interpret":3,"s7-u2-cr-absorb":2,"s7-u2-cr-conclusion":3,"s7-u2-cr-design-test":4,"s7-u2-cr-display":3,"s7-u2-cr-expansion":3,"s7-u2-cr-heating-decision":3,"s7-u2-cr-heating-example":2,"s7-u2-cr-improvement":2,"s7-u2-cr-inquiry":3,"s7-u2-cr-instrument-jobs":3,"s7-u2-cr-plateau":3,"s7-u2-cr-pump-chain":3,"s7-u2-cr-temp-explain":3,"s7-u2-cr-thermometer-display":2,"s7-u2-cr-transfer-explain":3,"s7-u3-cr-best-fit":3,"s7-u3-cr-classify":3,"s7-u3-cr-concentration":3,"s7-u3-cr-design-solubility":4,"s7-u3-cr-dissolving":3,"s7-u3-cr-distill":2,"s7-u3-cr-new-question":2,"s7-u3-cr-pure":2,"s7-u3-cr-salt-decision":3,"s7-u3-cr-separate":3,"s7-u3-cr-solubility":2,"s7-u3-cr-three-part":3,"s7-u4-cr-big-picture":3,"s7-u4-cr-change-explain":3,"s7-u4-cr-conclusion":3,"s7-u4-cr-design-investigation":4,"s7-u4-cr-distribution":3,"s7-u4-cr-event-compare":3,"s7-u4-cr-mineral-id":2,"s7-u4-cr-mineral-tests":3,"s7-u4-cr-mountain-explain":2,"s7-u4-cr-past-theory":2,"s7-u4-cr-pattern":3,"s7-u4-cr-rock-journey":3,"s7-u4-cr-soil-case":2,"s7-u4-cr-table-display":2,"s7-u4-cr-theory-evolved":3,"s7-u4-cr-timeline":2,"s7-u4-cr-weathering":3};
+window.__BANK_CRMARKS={"s7-u1-cr-boreal-example":3,"s7-u1-cr-data-display":3,"s7-u1-cr-defend-position":3,"s7-u1-cr-design-experiment":4,"s7-u1-cr-energy-flow":3,"s7-u1-cr-factor-effect":2,"s7-u1-cr-habitat-defence":3,"s7-u1-cr-harvest-decision":3,"s7-u1-cr-marsh-change":2,"s7-u1-cr-niche-roles":2,"s7-u1-cr-recycling":2,"s7-u1-cr-silviculture":2,"s7-u1-cr-succession-compare":2,"s7-u1-cr-succession-stages":2,"s7-u1-cr-three-interactions":3,"s7-u1-cr-web-change":3,"s7-u1-cr-web-interpret":3,"s7-u2-cr-absorb":2,"s7-u2-cr-conclusion":3,"s7-u2-cr-design-test":4,"s7-u2-cr-display":3,"s7-u2-cr-expansion":3,"s7-u2-cr-heating-decision":3,"s7-u2-cr-heating-example":2,"s7-u2-cr-improvement":2,"s7-u2-cr-inquiry":3,"s7-u2-cr-instrument-jobs":3,"s7-u2-cr-plateau":3,"s7-u2-cr-pump-chain":3,"s7-u2-cr-radiant-explain":2,"s7-u2-cr-temp-explain":3,"s7-u2-cr-thermometer-choice":3,"s7-u2-cr-thermometer-display":2,"s7-u2-cr-transfer-explain":3,"s7-u3-cr-best-fit":3,"s7-u3-cr-classify":3,"s7-u3-cr-classify-explain":2,"s7-u3-cr-concentration":3,"s7-u3-cr-design-solubility":4,"s7-u3-cr-dissolving":3,"s7-u3-cr-distill":2,"s7-u3-cr-new-question":2,"s7-u3-cr-pure":2,"s7-u3-cr-salt-decision":3,"s7-u3-cr-separate":3,"s7-u3-cr-solubility":2,"s7-u3-cr-three-part":3,"s7-u4-cr-big-picture":3,"s7-u4-cr-change-explain":3,"s7-u4-cr-conclusion":3,"s7-u4-cr-design-investigation":4,"s7-u4-cr-distribution":3,"s7-u4-cr-event-compare":3,"s7-u4-cr-mineral-id":2,"s7-u4-cr-mineral-tests":3,"s7-u4-cr-mountain-explain":2,"s7-u4-cr-past-theory":2,"s7-u4-cr-pattern":3,"s7-u4-cr-rock-journey":3,"s7-u4-cr-soil-case":2,"s7-u4-cr-soil-choice":2,"s7-u4-cr-table-display":2,"s7-u4-cr-theory-evolved":3,"s7-u4-cr-timeline":2,"s7-u4-cr-weathering":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

@@ -1659,6 +1659,193 @@ E("u1-510-peroxide-oxygen", 1, ["5.10"], 2, "gen", function() {
   );
 });
 
+/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
+   for the indicators the feasibility priced as selected-response short
+   (Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6):
+   5.2 x4, 5.8 x3, 5.1 x1, 5.10 x1. The existing 5.2 and 5.8 entries
+   are numeric-form and are never drawn into Section A; these are the
+   first multiple-choice entries on those indicators. SME-flagged for
+   the specialist pass. */
+function t2sf(x){return sfF(x,3);}
+var T2_CPDS=[
+ ["water","H\u2082O",[["H",2],["O",1]]],
+ ["carbon dioxide","CO\u2082",[["C",1],["O",2]]],
+ ["ammonia","NH\u2083",[["N",1],["H",3]]],
+ ["methane","CH\u2084",[["C",1],["H",4]]],
+ ["sodium chloride","NaCl",[["Na",1],["Cl",1]]],
+ ["calcium carbonate","CaCO\u2083",[["Ca",1],["C",1],["O",3]]],
+ ["glucose","C\u2086H\u2081\u2082O\u2086",[["C",6],["H",12],["O",6]]],
+ ["sodium hydroxide","NaOH",[["Na",1],["O",1],["H",1]]],
+ ["hydrochloric acid","HCl",[["H",1],["Cl",1]]],
+ ["sulfuric acid","H\u2082SO\u2084",[["H",2],["S",1],["O",4]]],
+ ["magnesium hydroxide","Mg(OH)\u2082",[["Mg",1],["O",2],["H",2]]],
+ ["calcium chloride","CaCl\u2082",[["Ca",1],["Cl",2]]],
+ ["potassium nitrate","KNO\u2083",[["K",1],["N",1],["O",3]]],
+ ["iron(III) oxide","Fe\u2082O\u2083",[["Fe",2],["O",3]]],
+ ["propane","C\u2083H\u2088",[["C",3],["H",8]]],
+ ["ammonium nitrate","NH\u2084NO\u2083",[["N",2],["H",4],["O",3]]]
+];
+function t2mm(parts){var s=0;parts.forEach(function(p){s+=CHEM_AM[p[0]]*p[1];});return s;}
+function t2opts(correct,wrongs,unit){
+  var cStr=t2sf(correct)+(unit?" "+unit:""),seen={},out=[];
+  function push(v){var s=t2sf(v)+(unit?" "+unit:"");if(s!==cStr&&!seen[s]){seen[s]=1;out.push(s);}}
+  wrongs.forEach(push);
+  [correct*1.5,correct*0.6,correct*4,correct*0.25,correct*12,correct+1].forEach(function(v){if(out.length<3)push(v);});
+  return {c:cStr,w:out.slice(0,3)};
+}
+
+E("u1-52-mc-molar-mass",1,["5.2"],1,"gen",function(){
+  var c=pick(T2_CPDS),mm=t2mm(c[2]);
+  var drop=c[2].map(function(p){return [p[0],p[1]>1?p[1]-1:1];});
+  var mmDrop=t2mm(drop);
+  var o=t2opts(mm,[mmDrop,mm+CHEM_AM[c[2][0][0]],mm*2],"g/mol");
+  var ctx=pick([""," A student needs the value to convert a measured mass into moles."," The value is needed before a solution can be prepared."," A lab partner asks for it while setting up a calculation."]);
+  return mcq("What is the molar mass of "+c[0]+", "+c[1]+"?"+ctx,
+    o.c,o.w,
+    "Add the atomic masses of every atom in the formula, counting each atom as many times as its subscript shows. For "+c[1]+" the total is <b>"+o.c+"</b>.",{cpd:c[0]});
+});
+
+E("u1-52-mc-mass-moles",1,["5.2"],2,"gen",function(){
+  var c=pick(T2_CPDS),mm=t2mm(c[2]);
+  var mass=pick([5.00,10.0,12.5,20.0,25.0,36.0,40.0,50.0,80.0,100.0]);
+  var n=mass/mm;
+  var o=t2opts(n,[n*10,n/2,n*2],"mol");
+  return mcq("How many moles are in "+t2sf(mass)+" g of "+c[0]+", "+c[1]+"? The molar mass of "+c[1]+" is "+mm.toFixed(2)+" g/mol.",
+    o.c,o.w,
+    "Amount in moles is mass divided by molar mass: n = m / M = "+t2sf(mass)+" g / "+mm.toFixed(2)+" g/mol = <b>"+o.c+"</b>. Multiplying the mass by 10, or halving or doubling the mole value, does not perform that division.",{cpd:c[0],mass:mass});
+});
+
+E("u1-52-mc-moles-particles",1,["5.2"],2,"gen",function(){
+  var kinds=[["water","molecules"],["carbon dioxide","molecules"],["methane","molecules"],["ammonia","molecules"],["glucose","molecules"],["sodium chloride","formula units"],["calcium chloride","formula units"],["helium","atoms"],["iron","atoms"],["aluminum","atoms"]];
+  var k=pick(kinds),n=pick([0.250,0.500,1.50,2.00,2.50,3.00,4.00,5.00]);
+  var ans=n*CHEM_AV;
+  var o=t2opts(ans,[ans/10,ans*10,n/CHEM_AV*1e46],"");
+  o.c=t2sf(ans);o.w=o.w.map(function(s){return s.trim();});
+  return mcq("How many "+k[1]+" are in "+t2sf(n)+" mol of "+k[0]+"?",
+    o.c,o.w,
+    "Multiply the amount in moles by the Avogadro constant, 6.022 \u00D7 10\u00B2\u00B3 particles per mole: "+t2sf(n)+" mol \u00D7 6.022 \u00D7 10\u00B2\u00B3 = <b>"+o.c+"</b> "+k[1]+".",{kind:k[0],n:n});
+});
+
+E("u1-52-mc-mass-volume-stp",1,["5.2"],3,"gen",function(){
+  var gases=[["hydrogen","H\u2082",2.02],["oxygen","O\u2082",32.00],["nitrogen","N\u2082",28.02],["carbon dioxide","CO\u2082",44.01],["methane","CH\u2084",16.05],["ammonia","NH\u2083",17.04]];
+  var g=pick(gases),mass=pick([1.00,2.00,4.00,5.00,8.00,10.0,16.0,20.0,32.0,44.0]);
+  var vol=mass/g[2]*22.4;
+  var o=t2opts(vol,[mass*22.4,g[2]/mass*22.4,vol/10],"L");
+  return mcq("What volume does "+t2sf(mass)+" g of "+g[0]+" gas, "+g[1]+", occupy at STP? The molar mass of "+g[1]+" is "+g[2].toFixed(2)+" g/mol, and one mole of any gas occupies 22.4 L at STP.",
+    o.c,o.w,
+    "First convert mass to moles: n = "+t2sf(mass)+" g / "+g[2].toFixed(2)+" g/mol = "+t2sf(mass/g[2])+" mol. Then multiply by the molar volume at STP: "+t2sf(mass/g[2])+" mol \u00D7 22.4 L/mol = <b>"+o.c+"</b>.",{gas:g[0],mass:mass});
+});
+
+var T2_RXN=[
+ {eq:"2H\u2082 + O\u2082 \u2192 2H\u2082O",sp:[["hydrogen",2,2.02],["oxygen",1,32.00],["water",2,18.02]]},
+ {eq:"N\u2082 + 3H\u2082 \u2192 2NH\u2083",sp:[["nitrogen",1,28.02],["hydrogen",3,2.02],["ammonia",2,17.04]]},
+ {eq:"CH\u2084 + 2O\u2082 \u2192 CO\u2082 + 2H\u2082O",sp:[["methane",1,16.05],["oxygen",2,32.00],["carbon dioxide",1,44.01],["water",2,18.02]]},
+ {eq:"2Mg + O\u2082 \u2192 2MgO",sp:[["magnesium",2,24.31],["oxygen",1,32.00],["magnesium oxide",2,40.31]]},
+ {eq:"CaCO\u2083 \u2192 CaO + CO\u2082",sp:[["calcium carbonate",1,100.09],["calcium oxide",1,56.08],["carbon dioxide",1,44.01]]},
+ {eq:"2KClO\u2083 \u2192 2KCl + 3O\u2082",sp:[["potassium chlorate",2,122.55],["potassium chloride",2,74.55],["oxygen",3,32.00]]}
+];
+
+E("u1-58-mc-mole-ratio",1,["5.8"],2,"gen",function(){
+  var r=pick(T2_RXN);
+  var ai=ri(0,r.sp.length-1),bi=(ai+ri(1,r.sp.length-1))%r.sp.length;
+  var A=r.sp[ai],B=r.sp[bi];
+  var given=pick([1.00,1.50,2.00,2.50,3.00,4.00,5.00,6.00]);
+  var ans=given*B[1]/A[1];
+  var o=t2opts(ans,[given*A[1]/B[1],given*B[1],given+A[1]],"mol");
+  return mcq("According to the equation "+r.eq+", how many moles of "+B[0]+" are involved when "+t2sf(given)+" mol of "+A[0]+" react completely?",
+    o.c,o.w,
+    "The equation gives the mole ratio "+A[0]+" : "+B[0]+" = "+A[1]+" : "+B[1]+". Scale the given amount by that ratio: "+t2sf(given)+" mol \u00D7 "+B[1]+"/"+A[1]+" = <b>"+o.c+"</b>.",{eq:r.eq,given:given});
+});
+
+E("u1-58-mc-mass-mass",1,["5.8"],2,"gen",function(){
+  var r=pick(T2_RXN.slice(2));
+  var A=r.sp[0],B=pick(r.sp.slice(1));
+  var mass=pick([4.00,6.00,8.00,10.0,12.0,16.0,20.0,25.0,30.0,40.0,50.0,60.0]);
+  var ans=mass/A[2]*B[1]/A[1]*B[2];
+  var o=t2opts(ans,[mass/A[2]*B[2],mass/A[2]*A[1]/B[1]*B[2],ans*2],"g");
+  return mcq("According to the equation "+r.eq+", what mass of "+B[0]+" is produced from "+t2sf(mass)+" g of "+A[0]+"?",
+    o.c,o.w,
+    "Convert the given mass to moles: "+t2sf(mass)+" g / "+A[2].toFixed(2)+" g/mol = "+t2sf(mass/A[2])+" mol of "+A[0]+". Use the mole ratio "+A[1]+" : "+B[1]+" to get "+t2sf(mass/A[2]*B[1]/A[1])+" mol of "+B[0]+", then convert back to mass: \u00D7 "+B[2].toFixed(2)+" g/mol = <b>"+o.c+"</b>.",{eq:r.eq,mass:mass});
+});
+
+E("u1-58-mc-limiting",1,["5.8"],3,"gen",function(){
+  var r=pick(T2_RXN.slice(0,4));
+  var A=r.sp[0],B=r.sp[1];
+  var exact=ri(0,9)===0;
+  var a,b;
+  if(exact){var k=ri(1,3);a=A[1]*k;b=B[1]*k;}
+  else{a=ri(1,6);b=ri(1,6);if(a*B[1]===b*A[1]){b=b+1;}}
+  var need=a/A[1],have=b/B[1];
+  var correct=exact?"Both are completely used up":(need>have?B[0]:A[0]);
+  var wrongs=[A[0],B[0],"Both are completely used up",r.sp[r.sp.length-1][0]].filter(function(x){return x!==correct;});
+  var expl=exact?
+    "The amounts are in exactly the ratio of the equation, "+A[1]+" : "+B[1]+", so neither reactant is left over. <b>Both are completely used up</b>.":
+    "Compare the amounts in ratio units: "+t2sf(a)+" mol of "+A[0]+" is "+t2sf(need)+" ratio units ("+A[1]+" mol each), and "+t2sf(b)+" mol of "+B[0]+" is "+t2sf(have)+" ratio units ("+B[1]+" mol each). The reactant with fewer ratio units runs out first, so the limiting reactant is <b>"+correct+"</b>.";
+  return mcq("A mixture contains "+t2sf(a)+" mol of "+A[0]+" and "+t2sf(b)+" mol of "+B[0]+", which react according to the equation "+r.eq+". Which reactant is the limiting reactant?",
+    correct,wrongs.slice(0,3),expl,{eq:r.eq,a:a,b:b});
+});
+
+E("u1-51-mc-correct-formula",1,["5.1"],2,"gen",function(){
+  var subs={"0":"\u2080","1":"\u2081","2":"\u2082","3":"\u2083","4":"\u2084"};
+  function sub(n){return n===1?"":String(n).split("").map(function(d){return subs[d];}).join("");}
+  var cats=[["sodium","Na",1,false],["potassium","K",1,false],["calcium","Ca",2,false],["magnesium","Mg",2,false],["aluminum","Al",3,false],["ammonium","NH\u2084",1,true],["iron(III)","Fe",3,false],["zinc","Zn",2,false],["copper(II)","Cu",2,false],["barium","Ba",2,false]];
+  var ans_=[["chloride","Cl",1,false],["oxide","O",2,false],["sulfide","S",2,false],["nitrate","NO\u2083",1,true],["carbonate","CO\u2083",2,true],["sulfate","SO\u2084",2,true],["hydroxide","OH",1,true],["phosphate","PO\u2084",3,true]];
+  var c=pick(cats),a=pick(ans_);
+  function gcd(x,y){return y?gcd(y,x%y):x;}
+  var g=gcd(c[2],a[2]),nc=a[2]/g,na=c[2]/g;
+  function build(n1,n2,paren){
+    var f=(c[3]&&paren&&n1>1)?"("+c[1]+")"+sub(n1):c[1]+sub(n1);
+    f+=(a[3]&&paren&&n2>1)?"("+a[1]+")"+sub(n2):a[1]+sub(n2);
+    return f;
+  }
+  var correct=build(nc,na,true);
+  function buildForced(n1,n2){
+    var f="("+c[1]+")"+sub(n1)+"("+a[1]+")"+sub(n2);
+    return f;
+  }
+  var pool=[build(na,nc,true),build(1,1,true),build(nc,na,false),build(nc+1,na+1,true),buildForced(nc,na),build(nc+2,na,true),build(nc,na+2,true)];
+  var wrongs=pool.filter(function(w,i){return w!==correct&&pool.indexOf(w)===i;});
+  wrongs.sort(function(x,y){return y.length-x.length;});
+  wrongs=wrongs.slice(0,3);
+  var name=c[0]+" "+a[0];
+  return mcq("What is the correct chemical formula for "+name+"?",
+    correct,wrongs.slice(0,3),
+    "The "+c[0]+" ion has charge "+c[2]+"+ and the "+a[0]+" ion has charge "+a[2]+"\u2212. The subscripts are chosen so the charges balance, using "+nc+" cation(s) for every "+na+" anion(s), with parentheses around a polyatomic ion when more than one is needed. The formula is <b>"+correct+"</b>.",{name:name});
+});
+
+E("u1-510-mc-stoich-use",1,["5.10"],1,"var",varset([
+  function(){
+    return mcq("A car airbag inflates when sodium azide decomposes to produce nitrogen gas. The airbag designer uses stoichiometry to answer which question?",
+      "How much sodium azide is needed to produce the amount of nitrogen gas that fills the bag",
+      ["How quickly the nitrogen gas inflates the bag in the first moments of a serious crash","What colour the nitrogen gas inside the bag will be once it has fully inflated","How hot the nitrogen gas becomes as the bag inflates during the collision"],
+      "Stoichiometry works with amounts: the balanced equation links the amount of sodium azide to the amount of nitrogen produced, so it answers how much reactant is needed for a required amount of product. Speed, colour and temperature are not amount questions. The question stoichiometry answers is <b>how much sodium azide is needed to produce the amount of nitrogen gas that fills the bag</b>.",{});
+  },
+  function(){
+    return mcq("An antacid tablet neutralizes excess stomach acid. The manufacturer uses stoichiometry to answer which question?",
+      "How many tablets are needed to neutralize a given amount of stomach acid",
+      ["How quickly a tablet dissolves and begins to act once it reaches the stomach","Why the tablet tastes chalky","How the tablet changes the colour of the stomach contents"],
+      "Stoichiometry works with amounts: the balanced neutralization equation links the amount of base in a tablet to the amount of acid it neutralizes, so it answers how many tablets a given amount of acid requires. Dissolving speed, taste and colour are not amount questions. The question stoichiometry answers is <b>how many tablets are needed to neutralize a given amount of stomach acid</b>.",{});
+  },
+  function(){
+    return mcq("A fertilizer plant makes ammonia from nitrogen and hydrogen. The plant engineer uses stoichiometry to answer which question?",
+      "How much hydrogen gas is needed to produce one tonne of ammonia",
+      ["How long the ammonia takes to form and collect inside the plant's reactor vessel","What the ammonia smells like at the plant gate","How the reactor's temperature changes during the shift"],
+      "Stoichiometry works with amounts: the balanced equation links the amount of hydrogen to the amount of ammonia produced, so it answers how much reactant a target amount of product requires. Reaction time, smell and temperature change are not amount questions. The question stoichiometry answers is <b>how much hydrogen is needed to produce one tonne of ammonia</b>.",{});
+  },
+  function(){
+    return mcq("Crushed limestone is spread on an acidic lake to neutralize the acid. The conservation officer uses stoichiometry to answer which question?",
+      "How much limestone is needed to neutralize the acid in the lake",
+      ["How quickly the limestone settles through the water to reach the lake bottom","Why the lake turned acidic in the first place","What colour the lake water becomes after treatment"],
+      "Stoichiometry works with amounts: the balanced neutralization equation links the amount of limestone to the amount of acid it neutralizes, so it answers how much limestone a given amount of acid requires. Sinking speed, the cause of the acidity and colour are not amount questions. The question stoichiometry answers is <b>how much limestone is needed to neutralize the acid in the lake</b>.",{});
+  },
+  function(){
+    return mcq("A bakery uses baking soda, which releases carbon dioxide gas when heated, to raise its loaves. The baker uses stoichiometry to answer which question?",
+      "How much baking soda is needed to produce the carbon dioxide that raises a loaf",
+      ["How quickly the loaf browns and forms a firm crust across its top in a hot oven","Why the carbon dioxide has no taste","How the oven temperature rises while the loaf bakes"],
+      "Stoichiometry works with amounts: the balanced decomposition equation links the amount of baking soda to the amount of carbon dioxide released, so it answers how much baking soda a required amount of gas takes. Browning speed, taste and temperature rise are not amount questions. The question stoichiometry answers is <b>how much baking soda is needed to produce enough carbon dioxide to raise a loaf</b>.",{});
+  }
+]));
+
 /* ----- bank-u2.js ----- */
 // Chemistry 2202 Unit 2 bank: From Structures to Properties.
 // Phase C diagram figures (Nov 2026): u2-03 and u2-07 attach an original
@@ -3673,6 +3860,32 @@ E("u2-78", 2, ["6.13"], 1, "gen", function () {
     { cue: cues.indexOf(c), cls: c.cls });
 });
 
+/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
+   for indicator 6.11 (molar solubility), priced at 2 entries in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6.
+   SME-flagged for the specialist pass. */
+var T2_SALTS=[["AgCl",143.32],["BaSO\u2084",233.39],["CaCO\u2083",100.09],["PbCl\u2082",278.11],["CaF\u2082",78.08],["Mg(OH)\u2082",58.33]];
+
+E("u2-611-mc-from-mass",2,["6.11"],2,"gen",function(){
+  var s=pick(T2_SALTS),sol=pick([0.00200,0.00500,0.0100,0.0200,0.0500,0.100,0.200]);
+  var vol=pick([100,250,500]);
+  var mass=sol*(vol/1000)*s[1];
+  var o=t2opts(sol,[sol*10,sol/10,sol*(vol/1000)],"mol/L");
+  return mcq("A saturated solution of "+s[0]+" contains "+t2sf(mass)+" g of the salt in "+vol+" mL of solution. The molar mass of "+s[0]+" is "+s[1].toFixed(2)+" g/mol. What is the molar solubility of "+s[0]+"?",
+    o.c,o.w,
+    "Convert the dissolved mass to moles: "+t2sf(mass)+" g / "+s[1].toFixed(2)+" g/mol = "+t2sf(mass/s[1])+" mol. Molar solubility is that amount per litre of solution: "+t2sf(mass/s[1])+" mol / "+t2sf(vol/1000)+" L = <b>"+o.c+"</b>.",{salt:s[0],vol:vol});
+});
+
+E("u2-611-mc-mass-dissolved",2,["6.11"],2,"gen",function(){
+  var s=pick(T2_SALTS),sol=pick([0.00200,0.00500,0.0100,0.0200,0.0500,0.100,0.200]);
+  var vol=pick([200,250,400,500,1000]);
+  var mass=sol*(vol/1000)*s[1];
+  var o=t2opts(mass,[sol*(vol/1000),sol*s[1],mass*10],"g");
+  return mcq("The molar solubility of "+s[0]+" is "+t2sf(sol)+" mol/L, and its molar mass is "+s[1].toFixed(2)+" g/mol. What mass of "+s[0]+" dissolves in "+vol+" mL of water to make a saturated solution?",
+    o.c,o.w,
+    "Amount dissolved = molar solubility \u00D7 volume in litres: "+t2sf(sol)+" mol/L \u00D7 "+t2sf(vol/1000)+" L = "+t2sf(sol*vol/1000)+" mol. Convert to mass: \u00D7 "+s[1].toFixed(2)+" g/mol = <b>"+o.c+"</b>.",{salt:s[0],vol:vol});
+});
+
 /* ----- bank-u3.js ----- */
 // Chemistry 2202 Review, Unit 3: Organic Chemistry. Fragment file: E(...) registrations only.
 // Tranche 7 (Nov 2026): condensed structure figures (chemCondensedFigure and
@@ -4582,6 +4795,47 @@ E("u3-78-polymer-uses-var",3,["7.8"],1,"var",varset([
     {v:8});}
 ]));
 
+/* Lengthening tranche addition (Nov 20, 2026): one multiple-choice
+   entry on indicator 7.3 (naming aliphatic compounds), priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6.
+   Structures are branched alkenes and alkynes, complementing the
+   existing alkane tables. SME-flagged for the specialist pass. */
+E("u3-73-mc-name-unsaturated-branch",3,["7.3"],2,"gen",function(){
+  var T=[
+    ["CH\u2083CH=CHCH(CH\u2083)CH\u2083","4-methylpent-2-ene"],
+    ["CH\u2082=CHCH(CH\u2083)CH\u2082CH\u2083","3-methylpent-1-ene"],
+    ["CH\u2083CH\u2082C(CH\u2083)=CHCH\u2083","3-methylpent-2-ene"],
+    ["CH\u2083C(CH\u2083)=CHCH\u2083","2-methylbut-2-ene"],
+    ["CH\u2082=C(CH\u2083)CH\u2082CH\u2083","2-methylbut-1-ene"],
+    ["CH\u2083CH=CHCH\u2082CH(CH\u2083)CH\u2083","5-methylhex-2-ene"],
+    ["CH\u2083CH(CH\u2083)CH=CHCH\u2082CH\u2083","2-methylhex-3-ene"],
+    ["CH\u2083C\u2261CCH\u2082CH\u2083","pent-2-yne"],
+    ["HC\u2261CCH(CH\u2083)CH\u2082CH\u2083","3-methylpent-1-yne"],
+    ["CH\u2083CH\u2082C\u2261CCH(CH\u2083)CH\u2083","5-methylhex-2-yne"],
+    ["CH\u2083CH(CH\u2083)C\u2261CH","3-methylbut-1-yne"],
+    ["CH\u2082=CHC(CH\u2083)\u2082CH\u2083","3,3-dimethylbut-1-ene"],
+    ["CH\u2083C\u2261CCH(CH\u2083)CH\u2083","4-methylpent-2-yne"],
+    ["CH\u2082=CHCH\u2082CH(CH\u2083)CH\u2083","4-methylpent-1-ene"]
+  ];
+  var it=pick(T),mode=ri(0,1);
+  var ctx=pick([""," A student is naming compounds from a model kit."," In a fuel sample, the compound is identified from its structure."," A homework set asks for names and structures of hydrocarbons."]);
+  var names=T.map(function(x){return x[1];}),structs=T.map(function(x){return x[0];});
+  if(mode===0){
+    var cand=names.filter(function(n){return n!==it[1];});
+    cand.sort(function(x,y){return y.length-x.length;});
+    var wrongs=shuffle(cand.slice(0,6)).slice(0,3);
+    return mcq("What is the IUPAC name of "+it[0]+"?"+ctx,
+      it[1],wrongs,
+      "Find the longest carbon chain holding the multiple bond, number it so the multiple bond gets the lowest locant, then name any branches with their positions. That gives <b>"+it[1]+"</b>.",{struct:it[0]});
+  }
+  var cand2=structs.filter(function(s){return s!==it[0];});
+  cand2.sort(function(x,y){return y.length-x.length;});
+  var wrongs2=shuffle(cand2.slice(0,6)).slice(0,3);
+  return mcq("Which structure matches the name "+it[1]+"?"+ctx,
+    it[0],wrongs2,
+    "The name "+it[1]+" fixes the parent chain, the position of the multiple bond and the position of each branch; only one structure matches all three. The matching structure is <b>"+it[0]+"</b>.",{name:it[1]});
+});
+
 /* ----- bank-br.js ----- */
 // Bridging bank: Science 1206 prior-learning review for Chemistry 2202.
 // Unit 4 in the app, labelled as prior-learning review. These entries are
@@ -4865,3 +5119,9 @@ E("br-b3-molecular-poly", 4, ["B.3"], 2, "gen", function () {
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
 window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-acid-formula":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-510-limestone-lime":3,"u1-510-peroxide-oxygen":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-actual-from-percent":2,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

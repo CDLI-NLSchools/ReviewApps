@@ -497,6 +497,7 @@ function s8BarSVG(labels, values, yLabel){
 }
 
 /* ----- bank-u1.js ----- */
+// CRMARKS: s8-u1-cr-distribution-shift=3
 // CRMARKS: s8-u1-cr-cycle-role=3
 // CRMARKS: s8-u1-cr-glacier=3
 // CRMARKS: s8-u1-cr-abiotic=3
@@ -1628,7 +1629,127 @@ var NO_COMPOSE = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC8.1.2 x2 and SC8.1.4, and one 3-mark Level 2 CR entry
+   closing Unit 1 Test 3's CR gap. SME-flagged. */
+
+E("s8-u1-climate-glacier-effects", 1, ["SC8.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Northern glaciers and ice sheets are melting faster than they did a century ago. Which is a direct environmental effect of this change?",
+      "Sea level rises as meltwater reaches the oceans, flooding low coastal land",
+      ["Ocean temperatures fall worldwide as the cold meltwater spreads through them and cools every current it meets", "Mountain valleys become drier as the glaciers store more water than before", "Coastal erosion stops completely once the extra water covers the shorelines"],
+      "Melting land ice adds water to the oceans, so sea level rises and low coastal areas flood more often. <b>Sea level rises as meltwater reaches the oceans, flooding low coastal land</b>.", {});
+  },
+  function () {
+    return mcq("During the last ice age, much of Canada lay under ice sheets kilometres thick. Which evidence of that time can still be seen today?",
+      "Scratched and polished bedrock, and boulders dropped far from where their rock type formed",
+      ["Tropical fossils in every northern lake bed, showing that the climate of the ice age was warmer than today", "Deep ocean trenches along the coast, cut by the weight of the moving ice sheets", "Volcanic ash layers in every soil, left behind when the ice sheets finally melted"],
+      "Moving ice scoured the land, leaving scratches and polish on bedrock and dropping carried boulders (erratics) as it melted. <b>Scratched and polished bedrock, and boulders dropped far from where their rock type formed</b>.", {});
+  },
+  function () {
+    return mcq("A coastal town in Newfoundland and Labrador notices its wharves flooding at high tide more often than 30 years ago. Which explanation best fits a warming climate?",
+      "Melting land ice and warming, expanding seawater have raised sea level along the coast",
+      ["The Moon's gravity has grown steadily stronger over the 30 years, pulling higher and higher tides into the harbour", "The town's land has risen quickly, pushing the wharves down toward the water", "Local rainfall alone has filled the harbour higher than it was a generation ago"],
+      "Thermal expansion of warming seawater plus meltwater from land ice raises sea level, so high tides reach further. <b>Melting land ice and warming, expanding seawater have raised sea level along the coast</b>.", {});
+  },
+  function () {
+    return mcq("Shrinking sea ice in the Arctic is a problem for polar bears mainly because",
+      "the bears hunt seals from the ice, so less ice means a shorter hunting season and less food",
+      ["the bears need the ice to drink from, and no other water source exists in the Arctic", "the open water is too cold for the bears to swim in once the ice has melted away", "the seals the bears eat live only under ice that is more than a season old"],
+      "Polar bears hunt from sea ice; a shorter ice season means less hunting time and poorer feeding. <b>The bears hunt seals from the ice, so less ice means a shorter hunting season and less food</b>.", {});
+  },
+  function () {
+    return mcq("Which human activity is the largest driver of the current warming of Earth's climate?",
+      "Burning fossil fuels, which adds carbon dioxide and other greenhouse gases to the air",
+      ["Cutting forests for farmland, which removes the shade that cools the ground below", "Building cities and highways, whose dark pavement absorbs extra heat from the sun all summer long", "Flying aircraft, whose trails reflect sunlight back into the upper atmosphere"],
+      "Fossil fuel burning is the largest source of added greenhouse gases, which trap heat and warm the climate. <b>Burning fossil fuels, which adds carbon dioxide and other greenhouse gases to the air</b>.", {});
+  }
+]), ["A glacier's budget: snow added versus ice melted. Which side wins here?", "A winning accumulation side makes it advance; a winning melt side makes it retreat."]);
+
+E("s8-u1-glacier-formation", 1, ["SC8.1.2"], 1, "var", varset([
+  function () {
+    return mcq("A glacier forms in a mountain valley when",
+      "more snow falls each winter than melts each summer, and the buried snow is compressed into ice",
+      ["a river freezes solid from its surface all the way to its bed during one very cold winter season in the mountains", "rain falls on cold rock and freezes instantly into a thick sheet during a storm", "the valley fills with sea water that freezes during a long polar night in winter"],
+      "Glaciers grow where snowfall accumulates year after year and compresses into ice faster than melting removes it. <b>More snow falls each winter than melts each summer, and the buried snow is compressed into ice</b>.", {});
+  },
+  function () {
+    return mcq("A glacier is best described as",
+      "a large mass of ice, formed from compacted snow, that moves slowly under its own weight",
+      ["any ice that forms on the surface of a lake or river during the winter months", "a frozen waterfall on a cliff face that stays solid through the whole of the following summer and autumn", "a block of sea ice that has broken away from an ice shelf into the ocean"],
+      "A glacier is land ice built from snow over many years, thick enough to flow slowly downhill. <b>A large mass of ice, formed from compacted snow, that moves slowly under its own weight</b>.", {});
+  },
+  function () {
+    return mcq("As a glacier moves down a valley, it changes the valley's shape mainly by",
+      "scraping and plucking rock from the valley floor and sides, widening it into a U shape",
+      ["melting steadily as it goes and washing the valley walls away with the streams of meltwater running beneath it", "pushing loose soil ahead of it and piling the soil into hills across the valley", "freezing the valley walls solid so that no further weathering can change them"],
+      "Glacial ice carrying embedded rock grinds the valley, turning a V-shaped river valley into a U-shaped one. <b>Scraping and plucking rock from the valley floor and sides, widening it into a U shape</b>.", {});
+  },
+  function () {
+    return mcq("When a glacier retreats (melts back), the ridge of rock and debris it leaves across the valley is called",
+      "a moraine",
+      ["an esker, which is a ridge of sand left by a river under the ice", "a drumlin, which is a smooth hill shaped by ice moving over it", "a cirque, which is a bowl carved where the glacier first formed"],
+      "Debris carried at the glacier's edge is dumped as a ridge, a moraine, when the ice melts back. <b>A moraine</b>.", {});
+  }
+]), ["Glaciers are built over many years, not in a single cold snap.", "Snow that survives the summer gets buried and compressed into ice."]);
+
+E("s8-u1-distribution-abiotic", 1, ["SC8.1.4"], 2, "var", varset([
+  function () {
+    return mcq("Cod are found in cold North Atlantic water but not in warm tropical seas. Which factor best explains this distribution?",
+      "Water temperature: cod are adapted to cold water and cannot tolerate warm water for long",
+      ["Water colour: cod avoid clear blue water and gather only where the water looks green and cloudy to them", "Moonlight: cod follow the phases of the Moon and avoid bright tropical nights", "Wave height: cod need the large waves that only cold northern storms produce"],
+      "Species live where the abiotic conditions suit their adaptations; for cod that condition is cold water. <b>Water temperature: cod are adapted to cold water and cannot tolerate warm water for long</b>.", {});
+  },
+  function () {
+    return mcq("Moose are common across Newfoundland's forests but absent from treeless Arctic tundra far to the north. Which abiotic factor most limits them there?",
+      "The short, cold growing season, which cannot produce enough browse (shrubs and trees) to feed them",
+      ["The low oxygen level of the tundra air at that latitude, which is too thin for a large heavy animal to breathe", "The absence of fresh water, because the tundra has no lakes or ponds at all in summer", "The bright summer daylight, which lasts too long for moose to get enough sleep"],
+      "Distribution follows the conditions a species needs; moose need abundant browse, which the tundra's climate cannot grow. <b>The short, cold growing season, which cannot produce enough browse (shrubs and trees) to feed them</b>.", {});
+  },
+  function () {
+    return mcq("Kelp forests grow only in shallow coastal water, never in the deep open ocean. Which abiotic factor sets this limit?",
+      "Light: kelp must photosynthesize, and light fades with depth, so it can live only where light reaches",
+      ["Salt: the deep ocean water is far too salty for kelp, which needs the fresher and calmer water found near shore", "Pressure: the weight of deep water crushes kelp before it can grow to the surface", "Temperature: deep ocean water is too warm for kelp, which needs cold shallow water"],
+      "Kelp is a photosynthetic alga anchored in place; it is limited to the sunlit shallow zone. <b>Light: kelp must photosynthesize, and light fades with depth, so it can live only where light reaches</b>.", {});
+  },
+  function () {
+    return mcq("After a dry summer, a farmer notices earthworms have vanished from the top layer of soil but are still found deeper down. Which abiotic factor drove them deeper?",
+      "Soil moisture: earthworms must keep their skin moist, so they move down to where the soil is still damp",
+      ["Soil colour: earthworms avoid the pale dry topsoil in summer and prefer the darker, richer soil in the layers below it", "Gravity: earthworms slowly sink through loose soil as the summer goes on each year", "Sunlight: earthworms migrate downward each day to follow the warmth of the sun"],
+      "Earthworms breathe through moist skin and die if they dry out, so moisture controls where in the soil they can live. <b>Soil moisture: earthworms must keep their skin moist, so they move down to where the soil is still damp</b>.", {});
+  },
+  function () {
+    return mcq("Salmon fry (young fish) survive in a river only where the water is cool and well oxygenated. A hot, dry August lowers the river and warms it. What is the most likely result?",
+      "Fry die off in the warm, low-oxygen stretches, so the species' distribution in the river shrinks",
+      ["Fry grow much faster in the warm water and spread quickly into every part of the river system that summer", "Fry move onto the riverbanks, where the air holds more oxygen than the water does", "Fry stop needing oxygen until the river cools again in the autumn rains"],
+      "Warm water holds less dissolved oxygen, so an abiotic change (temperature and oxygen) contracts where the fry can survive. <b>Fry die off in the warm, low-oxygen stretches, so the species' distribution in the river shrinks</b>.", {});
+  }
+]), ["Look for the non-living factor that differs between the two places.", "The organism's distribution follows the factor it needs or tolerates."]);
+
+E("s8-u1-cr-distribution-shift", 1, ["SC8.1.4"], 2, "var", varset([
+  function () {
+    return textq("Explaining a distribution shift (3 marks)\nFor many years, a small fish species lived only in the southern half of a lake, where the water is shallow and warm. After ten years of warming summers, the fish are now found throughout the lake, including the deep northern end. Explain this change in the species' distribution. Your answer must name the abiotic factor that changed, explain why it limited the fish before, and explain why the limit no longer holds. (3)",
+      ["The abiotic factor is water temperature: the northern end of the lake used to stay too cold for the fish."],
+      "Marking points (3): 1 mark for naming water temperature as the abiotic factor. 1 mark for explaining the earlier limit (the deep northern water stayed below the temperature the species can tolerate or reproduce in). 1 mark for explaining the change (warming summers raised the northern water into the species' tolerance range, so it could spread). Model answer: The fish were limited by cold water in the deep north end. As summers warmed, <b>the whole lake entered the temperature range the species can live in, so its distribution expanded</b>.", {});
+  },
+  function () {
+    return textq("Explaining a distribution shift (3 marks)\nA wildflower that once grew only on the south-facing slope of a valley is now also found on the north-facing slope, after a series of warmer springs. Explain this change in the plant's distribution. Your answer must name the abiotic factor that changed, explain why it limited the plant before, and explain why the limit no longer holds. (3)",
+      ["The abiotic factor is temperature (with sunlight): the north-facing slope used to be too cold and shaded for the plant."],
+      "Marking points (3): 1 mark for naming temperature/sunlight exposure as the abiotic factor. 1 mark for explaining the earlier limit (the north-facing slope received less sun, so its soil stayed too cold for the plant to germinate or complete its growth). 1 mark for explaining the change (warmer springs raised slope temperatures into the plant's range). Model answer: The north-facing slope was too cold and shaded for the wildflower. Warmer springs have lifted its temperature enough that <b>the plant can now complete its life cycle on both slopes</b>.", {});
+  },
+  function () {
+    return textq("Explaining a distribution shift (3 marks)\nOysters used to live only near the mouth of an estuary, where the water is saltiest. After years of heavier rainfall, oysters are found much further up the estuary, in water that used to be too fresh for them... A student says the oysters moved because the upper estuary got saltier. Correct the student's reasoning and explain the real change. Your answer must name the abiotic factor, state which way it changed, and explain the effect on the oysters. (3)",
+      ["The abiotic factor is salinity, and heavier rainfall would lower it, not raise it, so the student's direction is wrong."],
+      "Marking points (3): 1 mark for naming salinity. 1 mark for correcting the direction (more rainfall dilutes the estuary, lowering salinity upstream, so salinity alone cannot explain oysters spreading into fresher water; accept a reasoned alternative such as warming water temperatures extending the oysters' range, with the salinity change noted as working against it). 1 mark for tying the explanation to the oysters' tolerance limits. Model answer: Rainfall lowers salinity, so that change cannot be the cause; the spread is explained by a different abiotic change, such as warmer water, because <b>a species spreads only where every abiotic factor is inside its tolerance range</b>.", {});
+  }
+]), ["Name the abiotic factor first, then trace the cause and effect.", "Finish with a prediction that follows from the same factor changing further."]);
+
 /* ----- bank-u2.js ----- */
+// CRMARKS: s8-u2-cr-viscosity-test=3
 // CRMARKS: s8-u2-cr-molasses=3
 // CRMARKS: s8-u2-cr-layers=3
 // CRMARKS: s8-u2-cr-density-block=3
@@ -2710,7 +2831,120 @@ var NO_COMPOSE_U2 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC8.4.2, SC8.4.6, SC8.4.8, and one 3-mark Level 2 CR entry
+   closing Unit 2 Test 1's CR gap. SME-flagged. */
+
+E("s8-u2-viscosity-factor-judge", 2, ["SC8.4.2"], 2, "var", varset([
+  function () {
+    return mcq("On a cold morning, a bottle of dish soap pours much more slowly than it did in a warm kitchen the night before. What changed the soap's viscosity?",
+      "The lower temperature raised its viscosity: its particles move more slowly and resist flowing",
+      ["The cold made the soap expand, and a larger volume of liquid always flows more slowly", "The soap absorbed extra water from the cold air in the room overnight, thickening it slowly from the outside in", "The bottle's shape changed in the cold, narrowing the opening the soap pours through"],
+      "Cooling a liquid raises its viscosity because its particles have less energy to slide past each other. <b>The lower temperature raised its viscosity: its particles move more slowly and resist flowing</b>.", {});
+  },
+  function () {
+    return mcq("A cook stirs a spoon of flour into a thin soup and keeps it simmering. The soup gradually becomes noticeably thicker. Which factor raised its viscosity?",
+      "Concentration: adding flour increased the amount of suspended material the liquid carries",
+      ["Temperature alone: simmering on the stove always thickens any soup, no matter what is or is not added to it", "Colour: the soup became paler as it cooked, and paler liquids are more viscous", "Time alone: any liquid left standing in a pot becomes thicker as it ages"],
+      "Adding suspended solids raises a liquid's concentration and with it its viscosity. <b>Concentration: adding flour increased the amount of suspended material the liquid carries</b>.", {});
+  },
+  function () {
+    return mcq("Two samples of the same motor oil are tested. Sample A is at 10 \u00B0C and sample B is at 60 \u00B0C. Which sample has the lower viscosity, and why?",
+      "Sample B: at the higher temperature its particles move faster and slide past each other more easily",
+      ["Sample A: cold oil particles pack tightly and slip past each other without any resistance", "Both samples are exactly equal: temperature changes a liquid's volume and colour but never how easily it flows", "Sample B: heating breaks the oil into a gas, and gases always flow faster than liquids"],
+      "Viscosity falls as temperature rises, because the particles gain energy and move past each other more freely. <b>Sample B: at the higher temperature its particles move faster and slide past each other more easily</b>.", {});
+  },
+  function () {
+    return mcq("A shampoo maker wants a new shampoo to pour more slowly from the bottle without changing its cleaning ingredients. Which change would raise its viscosity?",
+      "Adding a thickener to raise the concentration of dissolved and suspended material in it",
+      ["Warming the shampoo bottle on a sunny shelf so that the shampoo stays permanently thinner while it sits there", "Shaking air bubbles into the shampoo so that it takes up more room in the bottle", "Colouring the shampoo darker, because darker liquids resist flowing more strongly"],
+      "Viscosity can be raised by increasing concentration (a thickener) or by cooling; warming does the opposite. <b>Adding a thickener to raise the concentration of dissolved and suspended material in it</b>.", {});
+  },
+  function () {
+    return mcq("Maple sap collected in early spring flows like water, but the finished maple syrup pours slowly. What is the main reason for the difference?",
+      "Boiling removed most of the water, so the syrup is a far more concentrated sugar solution",
+      ["The finished syrup is colder than the sap was when collected, and cold alone accounts for all of the change in it", "The syrup's sugar particles grew larger during boiling and now jam against each other", "The sap contained air bubbles that made it flow faster while it was in the tree"],
+      "Evaporating water concentrates the sugar, and higher concentration means higher viscosity. <b>Boiling removed most of the water, so the syrup is a far more concentrated sugar solution</b>.", {});
+  }
+]), ["Viscosity is resistance to flow; check what changed between the two trials.", "Warming a liquid lowers its viscosity; concentrating it raises it."]);
+
+E("s8-u2-density-everyday", 2, ["SC8.4.6"], 2, "var", varset([
+  function () {
+    return mcq("In a lava lamp, blobs of wax rise when the lamp warms and sink when they cool near the top. What makes a blob rise?",
+      "Heating lowers the wax's density below that of the surrounding liquid, so it floats upward",
+      ["Heating makes the wax heavier for its size than the liquid around it, so the liquid pushes it up out of the way", "The lamp's light pushes the warm blobs upward by the pressure of its rays on them", "Air bubbles form inside the warm wax and carry it to the top of the lamp"],
+      "A substance floats in a liquid when its density is lower; heating expands the wax and lowers its density. <b>Heating lowers the wax's density below that of the surrounding liquid, so it floats upward</b>.", {});
+  },
+  function () {
+    return mcq("A hot air balloon rises when the burner heats the air inside the envelope. Why does heating the air lift the balloon?",
+      "The heated air expands, so its density drops below the density of the cooler air outside",
+      ["The heated air inside becomes heavier than the outside air around the balloon and pulls the whole balloon upward", "The burner burns away the air's mass, leaving the envelope with nothing inside it", "The flame's upward draft carries the balloon with it as the hot gases escape"],
+      "Expanding lowers the air's density; the balloon rises because the air inside is less dense than the air it displaces. <b>The heated air expands, so its density drops below the density of the cooler air outside</b>.", {});
+  },
+  function () {
+    return mcq("Oil and vinegar salad dressing separates in the bottle, with the oil always on top. What does this show about the two liquids?",
+      "The oil is less dense than the vinegar, so it floats on it, and the two do not mix",
+      ["The oil is more dense than the vinegar, so it is pushed up by the heavier liquid", "The oil layer forms on top because the bottle was filled in that order at the factory", "The vinegar evaporates from the bottom of the bottle, leaving the oil floating on air"],
+      "Liquids that do not mix arrange themselves by density, the least dense on top. <b>The oil is less dense than the vinegar, so it floats on it, and the two do not mix</b>.", {});
+  },
+  function () {
+    return mcq("A hydrometer floats higher in a concentrated salt solution than in pure water. What does the higher floating show?",
+      "The salt solution is denser than pure water, so it buoys the hydrometer up further",
+      ["The salt solution is less dense than pure water, so the hydrometer sinks into it less", "The salt makes the hydrometer itself lighter, so it rests higher in any liquid", "The hydrometer expands in salt water, taking up more room and floating higher"],
+      "A floating object sits higher in a denser liquid; hydrometers use this to measure density. <b>The salt solution is denser than pure water, so it buoys the hydrometer up further</b>.", {});
+  },
+  function () {
+    return mcq("Ice floats on a pond in winter, and the water below stays liquid, letting fish survive. Which property of water makes this possible?",
+      "Ice is less dense than liquid water, a rare case of a solid floating on its own liquid",
+      ["Ice is more dense than the liquid water below it, so it is held up entirely by the pressure of the water beneath it", "The pond's water turns to ice from the bottom up, leaving the top layer liquid", "Fish warm the water below the ice with their bodies through the whole winter"],
+      "Water expands as it freezes, so ice is less dense than the liquid and floats, insulating the water below. <b>Ice is less dense than liquid water, a rare case of a solid floating on its own liquid</b>.", {});
+  }
+]), ["Floating and sinking compare the object's average density with the liquid's.", "If the liquid's density rises past the object's, the object floats."]);
+
+E("s8-u2-mass-weight-places", 2, ["SC8.4.8"], 2, "gen", function () {
+  var places = [["Earth", 9.8], ["the Moon", 1.6], ["Mars", 3.7], ["Jupiter", 24.8]];
+  var m = pick([5.0, 10.0, 12.0, 20.0, 25.0, 40.0, 60.0]);
+  var pi = ri(0, 3), pl = places[pi];
+  var mode = ri(0, 1);
+  function sf(x) { return String(Math.round(x * 10) / 10); }
+  if (mode === 0) {
+    var w = m * pl[1];
+    var wrongs = [sf(m * 9.8), sf(m), sf(w * 2)].filter(function (x) { return x !== sf(w); });
+    while (wrongs.length < 3) wrongs.push(sf(w + wrongs.length * 3 + 1));
+    return mcq("An astronaut's tool kit has a mass of " + sf(m) + " kg. What is its weight on " + pl[0] + ", where the gravitational field strength is " + pl[1] + " N/kg?",
+      sf(w) + " N", wrongs.slice(0, 3).map(function (x) { return x + " N"; }),
+      "Weight = mass \u00D7 gravitational field strength = " + sf(m) + " kg \u00D7 " + pl[1] + " N/kg = <b>" + sf(w) + " N</b>. The mass stays " + sf(m) + " kg everywhere; only the weight changes with the place.", { m: m, place: pl[0] });
+  }
+  return mcq("An astronaut travels from Earth to " + pl[0] + " (gravitational field strength " + pl[1] + " N/kg) with a " + sf(m) + " kg sample case. Which statement is correct?",
+    "Its mass stays " + sf(m) + " kg, but its weight changes because gravity differs there",
+    ["Its mass changes to match the new gravity, but its weight stays exactly the same", "Both its mass and its weight stay exactly the same as they were on Earth", "Its mass becomes zero in space, so the case has no weight anywhere at all"],
+    "Mass is the amount of matter and does not change with location; weight is the gravitational force on that mass and does change. <b>Its mass stays " + sf(m) + " kg, but its weight changes because gravity differs there</b>.", { m: m, place: pl[0] });
+}, ["Mass is the amount of matter and never changes with place.", "Weight is mass times the local gravity; recompute it for the new place."]);
+
+E("s8-u2-cr-viscosity-test", 2, ["SC8.4.2"], 2, "var", varset([
+  function () {
+    return textq("Explaining a viscosity result (3 marks)\nA class times how long steel balls take to fall through three liquids in identical tubes: vegetable oil 4 s, glycerin 11 s, and liquid dish soap 7 s. (a) Rank the liquids from lowest to highest viscosity, and explain what the fall times show. (1) (b) The class repeats the test with the glycerin warmed to 40 \u00B0C and the ball falls in 6 s. Explain why warming changed the result. (1) (c) State ONE variable, other than temperature, that the class had to keep the same for the comparison to be fair, and why. (1)",
+      ["(a) Vegetable oil (lowest), then dish soap, then glycerin (highest): the slower the ball falls, the more the liquid resists flowing around it."],
+      "Marking points (3): (a) 1 mark for the correct order with the reasoning that a slower fall means higher viscosity. (b) 1 mark for the particle explanation: warming gives the glycerin's particles more energy, so they slide past each other and the ball more easily, lowering the viscosity. (c) 1 mark for a controlled variable with a reason (same ball size and mass, same tube, same volume/depth of liquid, same drop method). Model answer: Warming lowered the glycerin's viscosity because <b>its particles gained energy and moved past each other more easily</b>.", {});
+  },
+  function () {
+    return textq("Explaining a viscosity result (3 marks)\nA mechanic pours two engine oils through a funnel at \u221210 \u00B0C. Oil A drains in 30 s; Oil B takes 95 s. At 20 \u00B0C both drain in about 20 s. (a) Which oil has the higher viscosity at \u221210 \u00B0C, and how do the times show it? (1) (b) Explain, using the particle theory, why both oils flow more easily at 20 \u00B0C. (1) (c) Explain why a car owner in a cold climate should care about an oil's viscosity at low temperature. (1)",
+      ["(a) Oil B: it took much longer to drain, so it resisted flowing more at \u221210 \u00B0C."],
+      "Marking points (3): (a) 1 mark for Oil B with the drain-time reasoning. (b) 1 mark for the particle explanation: at higher temperature the particles have more kinetic energy and slide past each other more easily, so viscosity falls. (c) 1 mark for a practical consequence (a very viscous cold oil circulates slowly at startup, so engine parts are poorly lubricated and wear faster; or the starter must work harder). Model answer: Both oils thin as they warm because <b>their particles move faster and slide past each other more easily</b>.", {});
+  },
+  function () {
+    return textq("Explaining a viscosity result (3 marks)\nA student compares honey from the fridge (straight from a 4 \u00B0C shelf) with honey kept in a warm cupboard (22 \u00B0C). The fridge honey takes 48 s to pour off a spoon; the cupboard honey takes 9 s. (a) State which honey has the higher viscosity and the evidence for it. (1) (b) Explain the difference using the particle theory. (1) (c) The student then stirs a spoon of water into a third sample of fridge honey and it pours in 20 s. Name the factor, other than temperature, that changed the viscosity, and explain its effect. (1)",
+      ["(a) The fridge honey: it poured much more slowly, so it resisted flowing more."],
+      "Marking points (3): (a) 1 mark for the fridge honey with the pour-time evidence. (b) 1 mark for the particle explanation (cold particles move slowly and resist sliding; warm particles move faster and slide easily). (c) 1 mark for concentration: diluting the honey lowered the concentration of sugar, so the mixture's viscosity fell. Model answer: The water lowered the honey's viscosity by <b>reducing the concentration of the sugar solution</b>.", {});
+  }
+]), ["A fair test changes one variable and holds the rest identical.", "State the expected result and tie it to how viscosity behaves."]);
+
 /* ----- bank-u3.js ----- */
+// CRMARKS: s8-u3-cr-refraction-explain=3
 // CRMARKS: s8-u3-cr-properties=3
 // CRMARKS: s8-u3-cr-em=3
 // CRMARKS: s8-u3-cr-reflection=3
@@ -3854,7 +4088,32 @@ var NO_COMPOSE_U3 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 
+
+/* Lengthening tranche addition (Nov 20, 2026): one 3-mark Level 2 CR
+   entry on SC8.7.4 closing Unit 3 Test 3's CR gap, priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 7.
+   SME-flagged. */
+
+E("s8-u3-cr-refraction-explain", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("Explaining refraction (3 marks)\nA student puts a straw in a glass of water. From the side, the straw looks broken: the part under the water appears shifted sideways from the part above it. (a) Explain why the straw appears shifted. Your answer must say what happens to the light as it leaves the water. (2) (b) The student pulls the straw out and looks at it again: it looks whole. Explain why the effect disappears. (1)",
+      ["(a) Light from the underwater part of the straw bends (refracts) as it leaves the water and enters the air, because it changes speed at the surface."],
+      "Marking points (3): (a) 2 marks: 1 for identifying that light changes speed crossing from water to air and bends at the surface; 1 for linking the bending to the brain tracing the rays back in straight lines, so the underwater part is seen in the wrong place. (b) 1 mark: with no water-air boundary to cross, the light travels straight, so the straw is seen where it really is. Model answer: The straw only looks broken because <b>light from underwater bends as it leaves the water, and your eyes trace it back along straight lines</b>.", {});
+  },
+  function () {
+    return textq("Explaining refraction (3 marks)\nA coin at the bottom of an empty mug is hidden when a student steps back, but it appears when water is poured into the mug, without the student moving. (a) Explain why the coin becomes visible. Your answer must describe the path of the light from the coin. (2) (b) State what would happen to the effect if the mug were filled with a liquid in which light travels even more slowly than in water. (1)",
+      ["(a) Light from the coin bends as it leaves the water's surface, changing direction enough to reach the student's eye."],
+      "Marking points (3): (a) 2 marks: 1 for the bending at the surface as light speeds up leaving the water; 1 for the result that rays which passed over the mug's rim in a straight line are bent down into the eye, so the coin is seen (raised in apparent position). (b) 1 mark: the light would bend more, so the coin would appear raised even higher (accept: the effect would be stronger). Model answer: The coin appears because <b>light leaving the water bends at the surface, bringing rays from the coin over the rim and into the eye</b>.", {});
+  },
+  function () {
+    return textq("Explaining refraction (3 marks)\nA swimmer wearing a mask sees a fish that looks closer to the surface and nearer than it really is. (a) Explain why the fish appears raised. Your answer must say what happens to light at the water's surface. (2) (b) A spear fisher who knows this aims below the fish they see. Explain why aiming below works. (1)",
+      ["(a) Light from the fish bends away from the normal as it leaves the water and speeds up, entering the swimmer's eyes."],
+      "Marking points (3): (a) 2 marks: 1 for the bending at the surface as light changes speed from water to air; 1 for the eyes tracing the bent rays back straight, placing the fish higher (and nearer) than its real position. (b) 1 mark: the real fish is deeper than its image, so aiming below the seen position aims at the true position. Model answer: The fish looks raised because <b>your eyes trace the refracted light back in straight lines to a false, shallower position</b>.", {});
+  }
+]), ["Light changes speed at the surface, and changing speed bends its direction.", "Your eye assumes light travelled straight, so it rebuilds the object in the wrong place."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: s8-u4-cr-needs-investigation=3
 // CRMARKS: s8-u4-cr-living=3
 // CRMARKS: s8-u4-cr-cell-division=3
 // CRMARKS: s8-u4-cr-levels=3
@@ -4566,7 +4825,138 @@ var NO_COMPOSE_U4 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC8.10.1, SC8.10.4, SC8.10.5, and one 3-mark Level 2 CR entry
+   closing Unit 4 Test 2's CR gap. SME-flagged. */
+
+E("s8-u4-cell-theory-judge", 4, ["SC8.10.1"], 1, "var", varset([
+  function () {
+    return mcq("Which statement is one of the three main ideas of the cell theory?",
+      "All living things are made of one or more cells",
+      ["All cells are the same size and shape in every organism", "Cells can only be seen with the naked eye in large organisms", "New cells form by themselves out of non-living material"],
+      "The cell theory states that all living things are made of cells, the cell is the basic unit of life, and all cells come from pre-existing cells. <b>All living things are made of one or more cells</b>.", {});
+  },
+  function () {
+    return mcq("A scientist watches an amoeba divide into two amoebas under a microscope. Which idea of the cell theory does this directly show?",
+      "All cells come from pre-existing cells",
+      ["All living things are made of one or more cells", "The cell is the smallest unit that can carry on life", "Every cell contains a nucleus with genetic material"],
+      "Division of an existing cell to make new cells is the third idea of the cell theory in action. <b>All cells come from pre-existing cells</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is a characteristic shared by ALL living things?",
+      "They are made of cells and carry out the processes of life",
+      ["They can move from place to place entirely under their own power whenever they need food or shelter", "They make their own food from sunlight and air", "They grow to at least a centimetre in size"],
+      "Movement, photosynthesis and size are not universal; being cellular and carrying out life processes is. <b>They are made of cells and carry out the processes of life</b>.", {});
+  },
+  function () {
+    return mcq("A virus can reproduce only inside a living cell and is not itself made of cells. Why do scientists generally not classify viruses as living?",
+      "They are not made of cells, so they fail a basic requirement of living things",
+      ["They are far too small to be seen, and anything that is truly living must be visible to the naked eye", "They do not contain any chemicals that living things contain", "They can survive outside a host, and living things cannot do that"],
+      "Cell theory sets the standard: living things are cellular. Viruses are not made of cells and cannot carry on life processes alone. <b>They are not made of cells, so they fail a basic requirement of living things</b>.", {});
+  },
+  function () {
+    return mcq("In the 1600s, some scientists believed maggots appeared by themselves in rotting meat. Which idea of the cell theory did later experiments support against this belief?",
+      "Living cells (and organisms) come only from pre-existing living cells",
+      ["All living things are made of exactly one cell each", "Cells are the largest unit of structure and function that exists anywhere inside a living organism", "Meat is made of cells that can turn into maggots"],
+      "Experiments showed life comes from life: maggots came from eggs laid by flies, not from the meat itself. <b>Living cells (and organisms) come only from pre-existing living cells</b>.", {});
+  }
+]), ["Recall the three statements of cell theory before judging each option.", "Anything about cells appearing from non-living matter contradicts it."]);
+
+E("s8-u4-levels-identify", 4, ["SC8.10.4"], 1, "var", varset([
+  function () {
+    return mcq("A single heart muscle fibre, on its own, is an example of which level of organization?",
+      "A cell: it is a single living unit with its own structures",
+      ["A tissue: it is made of many similar fibres all working together as one coordinated group in the heart", "An organ: several tissues combined into one structure", "A system: several organs working toward one function"],
+      "Levels run cell, tissue, organ, system, organism. One fibre is one cell. <b>A cell: it is a single living unit with its own structures</b>.", {});
+  },
+  function () {
+    return mcq("The layer of muscle in the wall of the stomach, made of many similar muscle cells working together, is an example of which level?",
+      "A tissue: a group of similar cells carrying out one job together",
+      ["An organ: it combines several different tissues into a structure", "A cell: it is made of cells, so it must be at the cell level", "A system: it works with other parts to digest food for the body"],
+      "Similar cells working together form a tissue, one level above the cell. <b>A tissue: a group of similar cells carrying out one job together</b>.", {});
+  },
+  function () {
+    return mcq("The stomach itself, made of muscle tissue, nerve tissue and lining tissue working together to churn and digest food, is which level?",
+      "An organ: different tissues combined into one structure with a job",
+      ["A tissue: it is mostly muscle, so it stays at the tissue level", "A system: it is the whole digestive process in a single part", "An organism: it can carry out digestion all on its own"],
+      "An organ combines several tissues into one structure performing a function. <b>An organ: different tissues combined into one structure with a job</b>.", {});
+  },
+  function () {
+    return mcq("The mouth, esophagus, stomach, liver and intestines working together to digest food form which level of organization?",
+      "A system (the digestive system): several organs working toward one overall function",
+      ["An organ: all of the separate parts touch each other somewhere inside the body cavity of the animal", "A tissue: all of the parts are involved in the same single process", "An organism: together they can survive apart from the rest of the body"],
+      "Several organs cooperating on one function form a system. <b>A system (the digestive system): several organs working toward one overall function</b>.", {});
+  },
+  function () {
+    return mcq("Which list puts the levels of organization in the correct order, from simplest to most complex?",
+      "Cell, tissue, organ, system, organism",
+      ["Tissue, cell, organ, organism, system", "Cell, organ, tissue, system, organism", "Organism, system, organ, tissue, cell"],
+      "Each level is built from the one before it: cells make tissues, tissues make organs, organs make systems, systems make the organism. <b>Cell, tissue, organ, system, organism</b>.", {});
+  }
+]), ["Count the organization: one cell, similar cells together, several tissues, several organs.", "Cell, then tissue, then organ, then system, then organism."]);
+
+E("s8-u4-needs-applied", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("A potted plant is kept in a dark closet with plenty of water and air. After two weeks it is pale and weak. Which basic need is it missing?",
+      "Energy from light: without it the plant cannot make food, no matter how much water it has",
+      ["Water: a plant in a closet cannot absorb water through its roots at all", "Space to grow: a plant cannot grow at all unless its roots are free to spread widely through open soil", "Warmth: a closet is always too cold for any plant to stay alive in"],
+      "Plants make their food by photosynthesis, which needs light; water and air alone are not enough. <b>Energy from light: without it the plant cannot make food, no matter how much water it has</b>.", {});
+  },
+  function () {
+    return mcq("Fish in a sealed aquarium die even though the water is full of food flakes. The filter and air pump had stopped working. Which need went unmet?",
+      "Oxygen (gas exchange): the fish used up the dissolved oxygen and none was replaced",
+      ["Food: all of the flakes sank to the bottom, and aquarium fish cannot eat any food that rests on the bottom", "Light: fish need sunlight on their scales to stay alive in a tank", "Space: the fish grew too large for the aquarium in a few days"],
+      "Fish take dissolved oxygen from the water; without the pump replacing it, the oxygen runs out. <b>Oxygen (gas exchange): the fish used up the dissolved oxygen and none was replaced</b>.", {});
+  },
+  function () {
+    return mcq("A Venus flytrap grows in bog soil that is very poor in nitrogen, so it catches and digests insects. Which basic need does this behaviour supply?",
+      "Nutrients: the insects provide nitrogen compounds its roots cannot get from the bog soil",
+      ["Water: the insects carry water into the plant from the surface of the bog", "Energy: the insects it catches replace sunlight entirely as the plant's main source of energy for growing", "Waste removal: the insects carry the plant's wastes away from its leaves"],
+      "The plant still photosynthesizes for energy; the insects supply the nutrients (especially nitrogen) the poor soil lacks. <b>Nutrients: the insects provide nitrogen compounds its roots cannot get from the bog soil</b>.", {});
+  },
+  function () {
+    return mcq("During a winter drought, the grass on a field turns brown and stops growing, but its roots stay alive underground. Which need is in shortest supply?",
+      "Water: without enough of it the grass cannot carry out its life processes or grow in its parts above ground",
+      ["Sunlight: winter days are so short that no plant can photosynthesize at all", "Carbon dioxide: the winter air over the field contains none for the grass", "Soil: the roots have used up all of the soil in the field over the summer"],
+      "The roots survive on stored food while water is scarce; growth stops because water is the missing need. <b>Water: without it the grass cannot carry out its life processes above ground</b>.", {});
+  },
+  function () {
+    return mcq("A germinating seed is kept moist and warm but sealed in a jar with no air exchange. It sprouts, then dies. Which need explains the death?",
+      "Gas exchange: the seedling used the oxygen in the jar for respiration and could not replace it",
+      ["Light: a young seedling dies within a few hours if it does not receive direct bright sunlight on its leaves", "Gravity: a seedling in a sealed jar cannot tell which way to grow its roots", "Soil minerals: a seed contains no food store, so it starves without soil at once"],
+      "Seeds respire using their food store and need oxygen; a sealed jar's oxygen runs out. <b>Gas exchange: the seedling used the oxygen in the jar for respiration and could not replace it</b>.", {});
+  }
+]), ["Test each need against the story: what ran out, or what built up?", "The need whose supply changed is the one that explains the result."]);
+
+E("s8-u4-cr-needs-investigation", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return textq("Investigating a cell's needs (3 marks)\nA student keeps two identical jars of pond water with the same number of a single-celled organism, paramecium. Jar A is left open on a sunny windowsill. Jar B is sealed with an airtight lid and kept in the same light. After three days, the paramecia in Jar B are mostly dead, while Jar A's are thriving. (a) Name the basic need that ran out in Jar B. (1) (b) Explain, at the level of the cell, why running out of that need kills the organisms. (1) (c) The student says Jar B proves the organisms also need light. Explain why the experiment does not show that. (1)",
+      ["(a) Oxygen for respiration (gas exchange): the sealed lid stopped fresh air from reaching the water."],
+      "Marking points (3): (a) 1 mark for oxygen/gas exchange. (b) 1 mark for the cell-level explanation: cells respire to release energy from food for their life processes; without oxygen the cells cannot release enough energy and die. (c) 1 mark for the design reasoning: both jars received the same light, so light was not the variable that differed; only the seal (air supply) differed. Model answer: Jar B ran out of oxygen, and without respiration the cells could not release energy, because <b>a cell's life processes stop when it cannot exchange gases</b>.", {});
+  },
+  function () {
+    return textq("Investigating a cell's needs (3 marks)\nTwo trays of fast-growing duckweed (a small floating plant) are grown for a week. Tray A gets pond water changed daily. Tray B gets the same pond water, never changed, and a clear cover keeps evaporation equal. Tray B's plants yellow and stop multiplying, while Tray A's spread. (a) Name the basic need that ran short in Tray B. (1) (b) Explain why a plant cell needs that supply renewed. (1) (c) State one variable the student kept the same between the trays, and why keeping it the same matters. (1)",
+      ["(a) Nutrients (mineral nutrients such as nitrates): the duckweed used up the nutrients dissolved in Tray B's unchanged water."],
+      "Marking points (3): (a) 1 mark for nutrients/minerals. (b) 1 mark for the cell-level need: cells need nutrients as raw materials to build new cell parts and proteins when they grow and divide. (c) 1 mark for a controlled variable with a fairness reason (same light, same starting number of plants, same water source, evaporation matched). Model answer: Tray B's plants starved for nutrients, because <b>growing cells need a continuing supply of raw materials to build new cells</b>.", {});
+  },
+  function () {
+    return textq("Investigating a cell's needs (3 marks)\nA student places equal numbers of yeast cells in two flasks of sugar solution. Flask A is left open with a loose cotton plug. Flask B is filled to the brim and sealed so no air space remains. Both are kept at the same warm temperature. After a day, Flask A is frothing with new yeast; Flask B shows little growth. (a) Name the basic need that limited Flask B. (1) (b) Explain what the yeast cells use that need for. (1) (c) Explain why keeping both flasks at the same temperature was necessary for a fair test. (1)",
+      ["(a) Oxygen (gas exchange): the sealed, brim-full flask had only the oxygen dissolved at the start."],
+      "Marking points (3): (a) 1 mark for oxygen. (b) 1 mark for respiration: yeast cells use oxygen to release energy from the sugar for growth and reproduction (accept: without oxygen they can ferment, but release far less energy, so growth is much slower). (c) 1 mark for fairness: temperature affects how fast cells grow, so if it differed, the result could be due to temperature instead of air supply. Model answer: Flask B was limited by oxygen, because <b>cells need gas exchange to release the energy their life processes require</b>.", {});
+  }
+]), ["Compare the setups pairwise: which single condition differs?", "The condition that matches the outcome difference is the one the experiment tests."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s8-u1-cr-abiotic":3,"s8-u1-cr-coastal-climate":3,"s8-u1-cr-cycle-role":3,"s8-u1-cr-decision":4,"s8-u1-cr-design-salinity":4,"s8-u1-cr-glacier":3,"s8-u1-cr-headland":3,"s8-u1-cr-indirect":3,"s8-u1-cr-pond-data":3,"s8-u1-cr-population":3,"s8-u1-cr-protect":3,"s8-u1-cr-results-summary":3,"s8-u1-cr-tech-effects":3,"s8-u1-cr-tides":3,"s8-u2-cr-car-lift":3,"s8-u2-cr-cleaning-claim":4,"s8-u2-cr-data-infer":3,"s8-u2-cr-density-block":3,"s8-u2-cr-design-viscosity":4,"s8-u2-cr-displacement-calc":3,"s8-u2-cr-layers":3,"s8-u2-cr-mass-weight":3,"s8-u2-cr-molasses":3,"s8-u2-cr-piggyback":3,"s8-u2-cr-pressure-crate":3,"s8-u2-cr-raise-ship":3,"s8-u2-cr-temp-situations":3,"s8-u2-cr-underlying":3,"s8-u3-cr-conclusion":3,"s8-u3-cr-design-refraction":4,"s8-u3-cr-diffuse":3,"s8-u3-cr-em":3,"s8-u3-cr-estimate":3,"s8-u3-cr-fibre":4,"s8-u3-cr-identify-medium":3,"s8-u3-cr-mirror-lab":3,"s8-u3-cr-predict":3,"s8-u3-cr-properties":3,"s8-u3-cr-reflection":3,"s8-u3-cr-refraction":3,"s8-u3-cr-research":3,"s8-u3-cr-speed":3,"s8-u3-cr-words":3,"s8-u4-cr-artificial":4,"s8-u4-cr-cell-division":3,"s8-u4-cr-community":3,"s8-u4-cr-decision":3,"s8-u4-cr-decision-personal":3,"s8-u4-cr-design-rates":4,"s8-u4-cr-factors":3,"s8-u4-cr-interdependence":3,"s8-u4-cr-levels":3,"s8-u4-cr-living":3,"s8-u4-cr-microscope":3,"s8-u4-cr-model-eval":3,"s8-u4-cr-organelles":3,"s8-u4-cr-propose":3};
+window.__BANK_CRMARKS={"s8-u1-cr-abiotic":3,"s8-u1-cr-coastal-climate":3,"s8-u1-cr-cycle-role":3,"s8-u1-cr-decision":4,"s8-u1-cr-design-salinity":4,"s8-u1-cr-distribution-shift":3,"s8-u1-cr-glacier":3,"s8-u1-cr-headland":3,"s8-u1-cr-indirect":3,"s8-u1-cr-pond-data":3,"s8-u1-cr-population":3,"s8-u1-cr-protect":3,"s8-u1-cr-results-summary":3,"s8-u1-cr-tech-effects":3,"s8-u1-cr-tides":3,"s8-u2-cr-car-lift":3,"s8-u2-cr-cleaning-claim":4,"s8-u2-cr-data-infer":3,"s8-u2-cr-density-block":3,"s8-u2-cr-design-viscosity":4,"s8-u2-cr-displacement-calc":3,"s8-u2-cr-layers":3,"s8-u2-cr-mass-weight":3,"s8-u2-cr-molasses":3,"s8-u2-cr-piggyback":3,"s8-u2-cr-pressure-crate":3,"s8-u2-cr-raise-ship":3,"s8-u2-cr-temp-situations":3,"s8-u2-cr-underlying":3,"s8-u2-cr-viscosity-test":3,"s8-u3-cr-conclusion":3,"s8-u3-cr-design-refraction":4,"s8-u3-cr-diffuse":3,"s8-u3-cr-em":3,"s8-u3-cr-estimate":3,"s8-u3-cr-fibre":4,"s8-u3-cr-identify-medium":3,"s8-u3-cr-mirror-lab":3,"s8-u3-cr-predict":3,"s8-u3-cr-properties":3,"s8-u3-cr-reflection":3,"s8-u3-cr-refraction":3,"s8-u3-cr-refraction-explain":3,"s8-u3-cr-research":3,"s8-u3-cr-speed":3,"s8-u3-cr-words":3,"s8-u4-cr-artificial":4,"s8-u4-cr-cell-division":3,"s8-u4-cr-community":3,"s8-u4-cr-decision":3,"s8-u4-cr-decision-personal":3,"s8-u4-cr-design-rates":4,"s8-u4-cr-factors":3,"s8-u4-cr-interdependence":3,"s8-u4-cr-levels":3,"s8-u4-cr-living":3,"s8-u4-cr-microscope":3,"s8-u4-cr-model-eval":3,"s8-u4-cr-needs-investigation":3,"s8-u4-cr-organelles":3,"s8-u4-cr-propose":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

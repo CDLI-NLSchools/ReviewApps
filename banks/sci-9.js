@@ -895,6 +895,46 @@ var NO_COMPOSE_U1 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche addition (Nov 20, 2026): one SR entry on
+   SC9.1.5 priced in Science-Test-Lengthening-Feasibility-2026-11-20.md,
+   Section 6. SME-flagged. */
+
+E("s9-u1-theory-evidence-match", 1, ["SC9.1.5"], 2, "var", varset([
+  function () {
+    return mcq("Astronomers observe that light from distant galaxies is shifted toward the red end of the spectrum, and the shift is larger for galaxies that are farther away. Which theory of the universe does this evidence support?",
+      "The Big Bang theory: the universe is expanding from an extremely hot, dense beginning",
+      ["The steady state theory: the universe has always existed in much the same form and is not expanding or changing at all", "The oscillating theory in its contracting phase: the universe is shrinking back to a point", "The static theory: the universe is unchanging, and the shift is an error in the instruments"],
+      "Red shift increasing with distance is the signature of expansion, the central prediction of the Big Bang theory. <b>The Big Bang theory: the universe is expanding from an extremely hot, dense beginning</b>.", {});
+  },
+  function () {
+    return mcq("In 1965, scientists detected faint microwave radiation arriving from every direction in space, at a temperature of about 3 K. Which theory does this cosmic background radiation support?",
+      "The Big Bang theory: it is the cooled leftover heat of the hot early universe",
+      ["The steady state theory: it is heat given off by the stars scattered throughout an eternal, unchanging universe", "The oscillating theory: it is radiation released by the previous universe collapsing", "No theory: the radiation is interference produced inside the detecting instruments"],
+      "A hot beginning predicts leftover heat radiation everywhere, cooled by expansion to a few kelvin: exactly what was found. <b>The Big Bang theory: it is the cooled leftover heat of the hot early universe</b>.", {});
+  },
+  function () {
+    return mcq("Which statement correctly describes the oscillating (cyclic) theory of the universe?",
+      "The universe expands, then gravity pulls it back into a collapse, and the cycle may repeat",
+      ["The universe expands forever into the future at a steady rate and its overall density never changes in any way", "The universe began once in an explosion and will expand forever without any change", "The universe has no beginning and no expansion; it simply exists as it is forever"],
+      "The oscillating theory cycles between expansion (a Big Bang) and contraction (a Big Crunch). <b>The universe expands, then gravity pulls it back into a collapse, and the cycle may repeat</b>.", {});
+  },
+  function () {
+    return mcq("The steady state theory was largely abandoned by most astronomers mainly because",
+      "observations (red shift and background radiation) showed the universe changes over time, which the theory denies",
+      ["it predicted that galaxies exist, and telescopes later showed that they do not", "it required the universe to be expanding, and expansion was disproved by red shift", "it was proposed too recently for astronomers to have tested any of its predictions"],
+      "Steady state requires an unchanging universe; evidence of expansion and a hot past contradicts it. <b>Observations showed the universe changes over time, which the theory denies</b>.", {});
+  },
+  function () {
+    return mcq("Measurements show the universe is made of roughly three quarters hydrogen and one quarter helium (by mass), almost everywhere. Why does this support the Big Bang theory?",
+      "A hot, dense beginning would fuse hydrogen into helium in about those proportions everywhere",
+      ["Stars make helium in exactly those proportions inside themselves and spread it evenly through all of space within a year", "Hydrogen and helium are the only elements that can exist, so any theory predicts the same ratio", "The proportions were measured only near Earth, so they say nothing about the early universe"],
+      "The Big Bang theory predicts the hydrogen-helium ratio from the conditions of the first minutes, and it matches everywhere. <b>A hot, dense beginning would fuse hydrogen into helium in about those proportions everywhere</b>.", {});
+  }
+]), ["Match the observation to the theory that predicts it, not just mentions it.", "A steady, unchanging universe cannot explain a leftover glow from a hot beginning."]);
+
 /* ----- bank-u2.js ----- */
 // CRMARKS: s9-u2-cr-properties=3
 // CRMARKS: s9-u2-cr-atom-model=3
@@ -1985,7 +2025,163 @@ var NO_COMPOSE_U2 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 
+
+
+/* Lengthening tranche additions (Nov 20, 2026): SR entries on
+   SC9.4.7, SC9.5.2, SC9.5.4, SC9.5.6 and SC9.5.7, priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6.
+   SME-flagged. */
+
+E("s9-u2-change-evidence", 2, ["SC9.4.7"], 2, "var", varset([
+  function () {
+    return mcq("An iron nail left in damp air forms an orange-brown coating that flakes off. Which observation is the strongest evidence that a chemical change (a new substance) occurred?",
+      "A new substance with different properties (rust) formed, and the change cannot be undone by drying",
+      ["The nail changed colour over the weeks, and any colour change at all always proves that a chemical change happened", "The nail became heavier, and a change in mass always proves a new substance formed", "The nail's surface became rough, and roughness is the defining sign of a chemical change"],
+      "Chemical change means new substances with new properties; rust is a new substance and the change is not reversible by simple means. <b>A new substance with different properties (rust) formed, and the change cannot be undone by drying</b>.", {});
+  },
+  function () {
+    return mcq("When vinegar is poured on baking soda, the mixture fizzes violently and the container feels colder. Which two observations are evidence of a chemical change?",
+      "Gas was produced and there was a temperature change, both signs that a new substance formed",
+      ["The mixture changed in colour and in volume, which are the only two observations accepted as signs of a change", "The baking soda disappeared, and disappearing always means a substance was destroyed", "The mixture made a sound, and sound is the most reliable sign of a chemical reaction"],
+      "Producing a gas and absorbing or releasing energy are classic evidence that bonds were rearranged into new substances. <b>Gas was produced and there was a temperature change, both signs that a new substance formed</b>.", {});
+  },
+  function () {
+    return mcq("A student heats a white powder. It turns black and gives off a gas that turns limewater cloudy. The student concludes a chemical change occurred. Which part of the evidence is weakest?",
+      "None of it is weak: a colour change to a new substance plus a gas produced is strong evidence",
+      ["The colour change is the weakest part: powders always turn black when they are heated, whether or not they react", "The gas: gases given off on heating are always just the powder evaporating away", "The limewater test: limewater turns cloudy whenever any gas at all is bubbled through"],
+      "Both a new coloured substance and a gas (identified as carbon dioxide by limewater) point to new substances forming. <b>None of it is weak: a colour change to a new substance plus a gas produced is strong evidence</b>.", {});
+  },
+  function () {
+    return mcq("Magnesium ribbon burns in air with a bright white flame, leaving a white ash that is a different substance from the metal. Which property change best shows the ash is a new substance?",
+      "The ash is a brittle white powder that does not conduct electricity, unlike the shiny flexible metal",
+      ["The ash weighs a little more than the ribbon did, and a heavier product is always a brand-new substance", "The ash is white, and any change of colour by itself proves a new substance has formed", "The ash takes up less space than the ribbon did, and smaller volume means a new substance"],
+      "A new substance shows new characteristic properties: the ash's brittleness, appearance and non-conduction differ from the metal's. <b>The ash is a brittle white powder that does not conduct electricity, unlike the shiny flexible metal</b>.", {});
+  },
+  function () {
+    return mcq("Which of these changes is a PHYSICAL change, even though it may look dramatic?",
+      "Dry ice (solid carbon dioxide) turning directly into carbon dioxide gas on a stage",
+      ["A sparkler burning down to a short stub, leaving grey ash behind and giving off sparks, light and heat as it burns", "An antacid tablet fizzing in water and settling a stomach's excess acid", "Iron wool burning in oxygen and forming a black, crumbly solid product"],
+      "Dry ice subliming changes only the state: the substance is carbon dioxide before and after. The others form new substances. <b>Dry ice (solid carbon dioxide) turning directly into carbon dioxide gas on a stage</b>.", {});
+  }
+]), ["A chemical change makes a new substance; look for evidence of new properties.", "Colour or bubbles alone can mislead; a new substance with new properties is decisive."]);
+
+E("s9-u2-law-theory-judge", 2, ["SC9.5.2"], 1, "var", varset([
+  function () {
+    return mcq("Which statement correctly describes a scientific LAW?",
+      "A law describes a pattern in nature (often mathematically) without explaining why it happens",
+      ["A law is a theory that has been tested until it was proven completely true, after which it can never be changed again", "A law explains why a phenomenon happens, using a mechanism supported by experiments", "A law is a guess made before any observations or experiments have been carried out"],
+      "Laws describe what happens (patterns, often as equations); theories explain why. A law is not a proven theory. <b>A law describes a pattern in nature (often mathematically) without explaining why it happens</b>.", {});
+  },
+  function () {
+    return mcq("Which statement correctly describes a scientific THEORY?",
+      "A theory is a well-supported explanation of why a phenomenon happens, built from much evidence",
+      ["A theory is an untested early guess that a scientist makes in the hope of turning it into a law one day in the future", "A theory becomes a law once enough scientists vote that they believe it is true", "A theory describes a mathematical pattern but deliberately avoids explaining anything"],
+      "Theories are explanations with deep evidential support; they do not graduate into laws. <b>A theory is a well-supported explanation of why a phenomenon happens, built from much evidence</b>.", {});
+  },
+  function () {
+    return mcq("A student says: \"The theory of evolution will become a law once it is proven.\" What is wrong with this statement?",
+      "Theories and laws are different kinds of knowledge; a theory never turns into a law",
+      ["Nothing at all is wrong with it: every law in science began its life as a theory that was later proven by experiment", "The only error is the word proven; theories become laws once they are tested twice", "The statement is wrong because evolution is a law already, not a theory at all"],
+      "Laws describe patterns; theories explain. One does not become the other, however strong the evidence grows. <b>Theories and laws are different kinds of knowledge; a theory never turns into a law</b>.", {});
+  },
+  function () {
+    return mcq("\"Objects attract each other with a force that depends on their masses and the distance between them, F = Gm\u2081m\u2082/d\u00B2.\" This statement is best classified as",
+      "a law, because it states a mathematical pattern in nature without explaining its cause",
+      ["a theory, because it is written as an equation and equations are always theories", "a hypothesis, because it has not yet been tested by any experiment in space", "an observation, because it was made by watching objects fall to the ground"],
+      "A mathematical description of a pattern is a law (the law of universal gravitation); the explanation of gravity is a separate theory. <b>A law, because it states a mathematical pattern in nature without explaining its cause</b>.", {});
+  }
+]), ["A law describes a pattern; a theory explains it. They are different jobs.", "Theories never graduate into laws, no matter how much evidence they gather."]);
+
+E("s9-u2-foil-scenario", 2, ["SC9.5.4"], 2, "var", varset([
+  function () {
+    return mcq("In Rutherford's gold foil experiment, most alpha particles passed straight through the foil, but a few bounced back at large angles. What did the bounce-back particles show?",
+      "The atom's positive charge and most of its mass are concentrated in a tiny central nucleus",
+      ["The atom is a solid ball of positively charged material with electrons embedded all the way through it, like fruit in a pudding", "Alpha particles are sometimes reflected by the electrons spread through the atom", "The foil was too thick in places, and the particles simply hit the surface and rebounded"],
+      "Only a tiny, dense, positively charged centre could repel an alpha particle backwards. <b>The atom's positive charge and most of its mass are concentrated in a tiny central nucleus</b>.", {});
+  },
+  function () {
+    return mcq("Thomson's model described the atom as a positively charged 'pudding' with electrons embedded in it. What did that model predict for Rutherford's alpha particles?",
+      "All of the particles would pass through with, at most, very small deflections",
+      ["Most of the particles would bounce straight back off the surface of the gold foil as soon as they reached it", "Half of the particles would be absorbed by the pudding and never come out", "The particles would split the atoms apart and release their electrons as sparks"],
+      "In Thomson's model the charge is spread out and weak everywhere, so no strong repulsion could turn a particle around. <b>All of the particles would pass through with, at most, very small deflections</b>.", {});
+  },
+  function () {
+    return mcq("Rutherford concluded that the atom is mostly empty space. Which observation led him to that conclusion?",
+      "The great majority of alpha particles passed through the foil without being deflected at all",
+      ["A few of the alpha particles bounced back from the foil, showing that the atom is completely solid in its middle", "The foil glowed where the particles struck it, showing energy stored in the space", "The particles slowed down in the foil, showing they were pushing through material"],
+      "If atoms were solid throughout, few particles could pass undeflected; nearly all did, so atoms are mostly empty. <b>The great majority of alpha particles passed through the foil without being deflected at all</b>.", {});
+  },
+  function () {
+    return mcq("Why did Rutherford's experiment count as a TEST of Thomson's model rather than just a new observation?",
+      "It checked a specific prediction of the model (no large deflections), and the result contradicted it",
+      ["It used much newer and more powerful equipment than Thomson had used, and newer equipment always replaces older scientific models", "It was performed by a more famous scientist, so its conclusions replaced Thomson's at once", "It produced photographs of atoms, and a photograph is always stronger than a model"],
+      "A test compares a model's prediction with an outcome; the large deflections falsified Thomson's prediction. <b>It checked a specific prediction of the model (no large deflections), and the result contradicted it</b>.", {});
+  }
+]), ["Most particles passed straight through: what does that say about the atom's insides?", "A few bounced back hard: something small, dense and positive must be in the way."]);
+
+E("s9-u2-precise-term", 2, ["SC9.5.6"], 1, "var", varset([
+  function () {
+    return mcq("Which term is used correctly in this sentence? \"Table salt is a ______ made of sodium and chlorine chemically combined.\"",
+      "compound",
+      ["element, because it is a pure substance that can be found in every kitchen and is used every day in cooking", "mixture, because two different substances were combined to make it", "atom, because it is the smallest possible piece of a substance"],
+      "A compound is a pure substance made of two or more elements chemically combined in a fixed ratio. <b>Compound</b>.", {});
+  },
+  function () {
+    return mcq("A student writes: \"Oxygen is an element, and a breath of air is an element too.\" Which correction is scientifically precise?",
+      "Air is a mixture, not an element: it contains several elements and compounds not chemically combined",
+      ["Air is a compound, because all of its gases were chemically combined together by the atmosphere long ago", "Oxygen is a mixture, because each breath contains many oxygen molecules together", "The sentence is already precise, because everything in nature is an element"],
+      "Air's components are physically mixed, not chemically combined, so air is a mixture. <b>Air is a mixture, not an element: it contains several elements and compounds not chemically combined</b>.", {});
+  },
+  function () {
+    return mcq("Which sentence uses the word MOLECULE correctly?",
+      "A molecule of water is made of two hydrogen atoms joined to one oxygen atom",
+      ["A molecule of sodium is the smallest possible piece of the metal that can be found inside a salt crystal", "A molecule is any single atom, whatever element it belongs to in a sample", "A molecule of air contains nitrogen, oxygen and other gases mixed together"],
+      "A molecule is a group of atoms chemically joined; water's is H\u2082O. Single atoms and mixtures are not molecules. <b>A molecule of water is made of two hydrogen atoms joined to one oxygen atom</b>.", {});
+  },
+  function () {
+    return mcq("In a lab report, which phrase is the most scientifically appropriate way to describe what happened when magnesium burned?",
+      "The magnesium reacted with oxygen to form magnesium oxide, a new substance",
+      ["The magnesium in the ribbon disappeared completely into the flame and was turned into bright white light", "The magnesium melted away and its atoms were destroyed by the heat", "The magnesium became ash because burning removes the element from it"],
+      "Precise language names the substances and the change: a reaction forming a new substance, with nothing destroyed. <b>The magnesium reacted with oxygen to form magnesium oxide, a new substance</b>.", {});
+  },
+  function () {
+    return mcq("Which term correctly completes this sentence? \"A ______ is a substance that cannot be broken down into simpler substances by chemical means.\"",
+      "element",
+      ["compound, because compounds are the very simplest substances that exist anywhere in nature and cannot be divided", "mixture, because mixtures keep the properties of everything mixed in them", "solution, because solutions cannot be separated once they have been made"],
+      "By definition, an element cannot be broken down chemically into simpler substances. <b>Element</b>.", {});
+  }
+]), ["Check the definition: one kind of atom is an element; chemically combined elements form a compound.", "Mixed but not chemically combined is a mixture or a solution."]);
+
+E("s9-u2-periodic-evidence", 2, ["SC9.5.7"], 2, "var", varset([
+  function () {
+    return mcq("Mendeleev left gaps in his periodic table for elements that had not yet been discovered. Why was this strong evidence for his table?",
+      "He predicted the missing elements' properties in detail, and the discovered elements matched the predictions",
+      ["The empty gaps made the printed table look neat and balanced, and a balanced-looking table is easier for students to memorize", "Other scientists had also left gaps in their tables, so the practice was already well accepted", "The gaps proved that only a fixed number of elements could ever exist in the universe"],
+      "Successful detailed predictions are powerful evidence that a classification captures a real pattern. <b>He predicted the missing elements' properties in detail, and the discovered elements matched the predictions</b>.", {});
+  },
+  function () {
+    return mcq("When Mendeleev placed elements in order of atomic mass, a few pairs (such as tellurium and iodine) came out in the 'wrong' order for their chemical properties. What did he do, and what did it show?",
+      "He placed them by their properties instead, trusting the pattern of properties over the mass order",
+      ["He removed both of the elements from the table completely until their atomic masses could be measured again more carefully", "He concluded that chemical properties were unimportant and ordered strictly by mass", "He declared the two elements to be the same element with two different names"],
+      "Mendeleev's choice showed he believed the repeating pattern of properties was the deeper organizing principle (later explained by atomic number). <b>He placed them by their properties instead, trusting the pattern of properties over the mass order</b>.", {});
+  },
+  function () {
+    return mcq("Gallium was discovered in 1875, six years after Mendeleev predicted an element he called eka-aluminum. Which match between prediction and discovery most strengthened confidence in the table?",
+      "Gallium's measured density and melting point came out very close to Mendeleev's predicted values",
+      ["Gallium was found in the very country where Mendeleev lived and worked, which confirmed his detailed knowledge of its minerals", "Gallium's name begins with the same letter as the gap it filled in the printed table", "Gallium turned out to be the most abundant element in Earth's crust, as he had suggested"],
+      "Quantitative predictions (density, melting point, oxide formula) matching measurement is the strongest kind of confirmation. <b>Gallium's measured density and melting point came out very close to Mendeleev's predicted values</b>.", {});
+  },
+  function () {
+    return mcq("Elements in the same column of the modern periodic table share similar chemical properties. What is the modern explanation of that relationship?",
+      "Their atoms have the same number of electrons in their outer shell, so they react in similar ways",
+      ["Their atoms all have exactly the same total mass as each other, so they behave identically in every chemical reaction they take part in", "They were discovered in the same decade, and discoverers grouped their own finds together", "They have the same number of neutrons, which is what controls all chemical behaviour"],
+      "Outer-shell electron count governs chemical behaviour, and it repeats down a column. <b>Their atoms have the same number of electrons in their outer shell, so they react in similar ways</b>.", {});
+  }
+]), ["Mendeleev's table is judged by its predictions: gaps and swapped pairs.", "A predicted element found with the predicted properties is strong evidence."]);
+
 /* ----- bank-u3.js ----- */
+// CRMARKS: s9-u3-cr-charge-properties=3
+// CRMARKS: s9-u3-cr-circuit-language=3
 // CRMARKS: s9-u3-cr-flow-language=3
 // CRMARKS: s9-u3-cr-series-parallel-data=3
 // CRMARKS: s9-u3-cr-bulb-removed=3
@@ -3281,7 +3477,83 @@ var TOPIC_U3 = {
 };
 BANK.forEach(function (e) { if (TOPIC_U3[e.id]) { e.topic = TOPIC_U3[e.id]; } });
 
+
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): SR depth on
+   SC9.7.5 in the "circuits" topic slice and CR entries closing
+   Unit 3 Test 1 (SC9.7.2) and Unit 3 Test 2 (SC9.7.4), priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7.
+   SME-flagged. */
+
+E("s9-u3-circuits-behaviour", 3, ["SC9.7.5"], 2, "gen", function () {
+  var V = pick([6, 9, 12, 24]), n = pick([2, 3, 4]), mode = ri(0, 2);
+  var who = pick(["identical bulbs", "identical lamps", "identical resistors"]);
+  if (mode === 0) {
+    return mcq(n + " " + who + " are connected in SERIES across a " + V + " V source. What is the voltage across each one?",
+      (V / n) + " V",
+      [V + " V", (V * n) + " V", (V - n) + " V"],
+      "In series, the source voltage is shared equally among identical components: " + V + " V / " + n + " = <b>" + (V / n) + " V</b> across each.", { V: V, n: n });
+  }
+  if (mode === 1) {
+    return mcq(n + " " + who + " are connected in PARALLEL across a " + V + " V source. What is the voltage across each branch?",
+      V + " V",
+      [(V / n) + " V", (V * n) + " V", (V - n) + " V"],
+      "In parallel, every branch is connected directly across the source, so each branch gets the full source voltage: <b>" + V + " V</b>.", { V: V, n: n });
+  }
+  var series = ri(0, 1) === 0;
+  if (series) {
+    return mcq("One bulb in a SERIES string of " + n + " bulbs (on a " + V + " V source) burns out, leaving an open gap. What happens to the other bulbs?",
+      "They all go out, because the single path for charge is broken",
+      ["They glow more brightly than before, because the remaining bulbs now share the full source voltage between them", "They stay exactly as bright as they were, because each bulb is said to have its own separate path", "Only the bulb immediately next to the burnt-out one goes out along with it, and the rest stay lit"],
+      "A series circuit has only one path; a break anywhere stops the charge flow everywhere. <b>They all go out, because the single path for charge is broken</b>.", { V: V, n: n });
+  }
+  return mcq("One bulb in a PARALLEL set of " + n + " bulbs (on a " + V + " V source) burns out. What happens to the other bulbs?",
+    "They stay lit at the same brightness, because each branch has its own complete path",
+    ["They all go out at the same moment, because the whole circuit is treated as broken everywhere at once", "They glow noticeably more dimly than before, because the source voltage is now shared among the remaining bulbs", "They each glow brighter than before, because the full current from the source now passes through each remaining one"],
+    "Each parallel branch is its own complete circuit across the source, so the other branches are unaffected. <b>They stay lit at the same brightness, because each branch has its own complete path</b>.", { V: V, n: n });
+}, ["Series shares voltage; parallel gives every branch the full voltage.", "A break stops a series circuit everywhere but only its own branch in parallel."]);
+BANK.forEach(function (e) { if (e.id === "s9-u3-circuits-behaviour") { e.topic = "circuits"; } });
+
+E("s9-u3-cr-charge-properties", 3, ["SC9.7.2"], 2, "var", varset([
+  function () {
+    return textq("Properties of static charge (3 marks)\nA student rubs a balloon on a wool sweater and holds it near a wall. The balloon sticks to the wall. (a) State what kind of charge the balloon gained and how rubbing produced it. (1) (b) Explain why the balloon is attracted to the wall even though the wall is neutral overall. (1) (c) On a humid day the same trick fails: the balloon will not stick. Explain why. (1)",
+      ["(a) The balloon gained a negative charge: electrons were transferred from the sweater to the balloon by friction."],
+      "Marking points (3): (a) 1 mark for electrons moving from the sweater to the balloon, leaving the balloon negatively charged (accept the sweater positive). (b) 1 mark for the wall's charges shifting: the balloon's negative charge repels electrons in the wall's surface, leaving the near surface positive, and opposite charges attract. (c) 1 mark for charge leaking away: humid air and moisture conduct the charge off the balloon before it can build up. Model answer: The balloon sticks because <b>its transferred charge pulls the wall's opposite charges closer, and unlike charges attract</b>.", {});
+  },
+  function () {
+    return textq("Properties of static charge (3 marks)\nTwo identical pith balls hang from threads. Both are touched with the same charged rod, and afterwards the balls swing apart and stay separated. (a) Explain why the balls repel each other. (1) (b) A third, neutral pith ball is brought near one of them and is attracted to it. Explain why a charged ball attracts a neutral one. (1) (c) State what would happen to the separation of the first two balls if they were charged twice as strongly. (1)",
+      ["(a) Both balls received the same kind of charge from the rod, and like charges repel."],
+      "Marking points (3): (a) 1 mark for like charges repelling. (b) 1 mark for the neutral ball's charges separating (the near side gains the opposite charge), so attraction to the near side beats repulsion from the far side. (c) 1 mark for a greater separation: stronger like charges repel with a stronger force. Model answer: The balls separate because <b>objects carrying the same kind of charge repel each other</b>.", {});
+  },
+  function () {
+    return textq("Properties of static charge (3 marks)\nA photocopier uses static electricity to place toner (a fine black powder) on paper exactly where the image should be. (a) The drum inside is given a charge in the pattern of the page. Explain how charged toner ends up only on the image areas. (1) (b) State the rule of charges your explanation uses. (1) (c) Explain why the toner does not simply fall off the drum under gravity before the paper arrives. (1)",
+      ["(a) The toner particles are given the opposite charge to the charged image areas on the drum, so they are attracted to those areas only."],
+      "Marking points (3): (a) 1 mark for opposite charging of toner and image areas with attraction between them. (b) 1 mark for the rule: unlike (opposite) charges attract, like charges repel. (c) 1 mark for the electrostatic attraction on the tiny, light toner particles being stronger than gravity's pull on them. Model answer: The toner stays where it belongs because <b>opposite charges attract, and for such light particles that attraction beats gravity</b>.", {});
+  }
+]), ["Only electrons move; like charges repel and opposite charges attract.", "Trace the charge: where it came from, where it sits, and what force follows."]);
+
+E("s9-u3-cr-circuit-language", 3, ["SC9.7.4"], 2, "var", varset([
+  function () {
+    return textq("Describing charge flow precisely (3 marks)\nA student writes: \"The bulb uses up the electricity, so less current comes back to the battery than went out.\" Rewrite the student's idea in scientifically precise language. Your answer must state what actually happens to the charge flowing in the circuit, what the bulb does transform, and why the current is the same all around a series circuit. (3)",
+      ["Charge is not used up: the same amount of charge flows out of the bulb as flows into it, every second."],
+      "Marking points (3): 1 mark for charge conservation (charge is not consumed; current is the same at every point in a series loop). 1 mark for what the bulb transforms: electrical energy into light and heat energy. 1 mark for precise language (current is the rate of flow of charge; the battery supplies energy to the charges, it does not supply the charges themselves). Model answer: The bulb transforms electrical energy, not charge: <b>the current is the same all around the loop because charge is conserved</b>.", {});
+  },
+  function () {
+    return textq("Describing charge flow precisely (3 marks)\nA student writes: \"The battery runs out of electricity because it gives its current to the first bulb, and only a little is left for the second bulb in series.\" Correct this account in scientifically precise language. Your answer must explain what the battery supplies, how the two bulbs share what the battery provides, and what happens to the current at each bulb. (3)",
+      ["The battery supplies energy to the charges in the circuit; it does not parcel out current to the bulbs one at a time."],
+      "Marking points (3): 1 mark for the battery supplying energy (voltage), not a ration of current. 1 mark for the sharing: in series the voltage is shared between the bulbs, which is why each glows dimmer than a single bulb would. 1 mark for the current being the same through both bulbs, since there is one path and charge is conserved. Model answer: Both bulbs carry the same current; what they share is the battery's voltage, because <b>in series the energy per charge is divided among the components</b>.", {});
+  },
+  function () {
+    return textq("Describing charge flow precisely (3 marks)\nA student writes: \"When the switch is opened, the electricity that was on its way to the bulb is stuck in the wire.\" Correct this account in scientifically precise language. Your answer must state what the charges in the wire do when the circuit is broken, and why the bulb goes out everywhere at once rather than gradually. (3)",
+      ["The charges are always present throughout the wire; opening the switch stops their flow everywhere in the loop at the same time."],
+      "Marking points (3): 1 mark for charges existing all through the conductor before the switch is closed (the battery does not send them out one by one). 1 mark for the break stopping the drift of charge around the whole loop. 1 mark for the bulb going out because energy transfer stops when charge flow stops, not because charge 'runs out' or is stranded. Model answer: Nothing is stuck: <b>the charges stop drifting everywhere in the loop the moment the path is broken</b>.", {});
+  }
+]), ["Voltage is energy per charge (volts), current is charge flow (amperes), resistance opposes it (ohms).", "Check the statement against V = IR when numbers are given."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: s9-u4-cr-mutagen-explain=3
 // CRMARKS: s9-u4-cr-mutation=3
 // CRMARKS: s9-u4-cr-mitosis-stages=3
 // CRMARKS: s9-u4-cr-methods=3
@@ -3758,7 +4030,105 @@ var NO_COMPOSE_U4 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
 
+
+
+/* Lengthening tranche additions (Nov 20, 2026): SR entries on
+   SC9.10.2 and SC9.10.6 and one 3-mark Level 2 CR entry on SC9.10.2
+   closing Unit 4 Test 1's CR gap, priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7.
+   SME-flagged. */
+
+E("s9-u4-mutagen-scenario", 4, ["SC9.10.2"], 2, "var", varset([
+  function () {
+    return mcq("A sunbather spends years tanning without protection and develops skin cancer in middle age. Which factor most likely changed the genetic information in the skin cells?",
+      "Ultraviolet radiation from the sun damaged the DNA in the skin cells (a physical mutagen)",
+      ["The heat of the sun on the skin cooked the skin cells until their chromosomes softened and melted together inside them", "Sweat washed the protective DNA out of the skin cells over the years of tanning", "The skin cells ran out of DNA because they divided too many times in the sunlight"],
+      "UV radiation is a physical mutagen: it damages DNA, and unrepaired damage can become a mutation leading to cancer. <b>Ultraviolet radiation from the sun damaged the DNA in the skin cells (a physical mutagen)</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is a CHEMICAL mutagen, a substance that can change a cell's genetic information?",
+      "Components of cigarette smoke that bind to DNA and alter its code",
+      ["X-rays passing through the tissues of the body during a medical scan carried out at a hospital clinic", "Ultraviolet light reaching the skin on a bright day at the beach", "A virus inserting its genes into a host cell's chromosomes"],
+      "Cigarette smoke contains chemicals that react with DNA: chemical mutagens. X-rays and UV are physical; a virus is a biological agent. <b>Components of cigarette smoke that bind to DNA and alter its code</b>.", {});
+  },
+  function () {
+    return mcq("A worker in a nuclear facility is exposed to a burst of radiation. Years later, a cell in their body begins dividing uncontrollably. Which sequence best explains the connection?",
+      "The radiation mutated a gene that controls cell division, and the changed cell passed the mutation to its descendants",
+      ["The radiation from the burst is still stored inside the cell and directly forces it to keep dividing every single day", "The radiation killed the neighbouring cells, so this cell divided to fill the space forever", "The radiation added new chromosomes to the cell, and extra chromosomes always cause division"],
+      "A mutation in a growth-control gene, inherited by the cell's descendants, can lead to uncontrolled division (cancer). <b>The radiation mutated a gene that controls cell division, and the changed cell passed the mutation to its descendants</b>.", {});
+  },
+  function () {
+    return mcq("Most mutations that occur in body (somatic) cells are NOT passed to a person's children. Why not?",
+      "Only mutations in the sex cells (eggs or sperm) can be inherited by the next generation",
+      ["Body cells always repair every one of their mutations completely before the person has any children of their own", "Children receive a fresh copy of DNA made entirely from the mother's cells", "Mutations in body cells are always too small to be copied into new cells"],
+      "Inheritance runs through the gametes; a mutation in a skin or liver cell stays in that person's body. <b>Only mutations in the sex cells (eggs or sperm) can be inherited by the next generation</b>.", {});
+  },
+  function () {
+    return mcq("Which change would count as a change to a cell's genetic information?",
+      "A base in the DNA sequence is replaced by a different base during copying",
+      ["A cell produces many more copies of one of its proteins than usual and keeps doing so for a few hours", "A chromosome is pulled to the wrong side of the cell during division once", "A cell grows larger than normal because it stores extra water and food"],
+      "Genetic information is the DNA sequence itself; changing a base changes the information. The others change amounts or positions, not the code. <b>A base in the DNA sequence is replaced by a different base during copying</b>.", {});
+  }
+]), ["A mutagen changes DNA: think chemicals, radiation, copying errors or viruses.", "Ordinary heat, effort and noise do not rewrite genetic information."]);
+
+E("s9-u4-reproduction-tradeoff", 4, ["SC9.10.6"], 2, "var", varset([
+  function () {
+    return mcq("A bacterial colony reproduces asexually, making exact copies of itself. A new antibiotic is introduced into its environment. What is the colony's greatest weakness?",
+      "All the bacteria are genetically identical, so a drug that kills one can kill them all",
+      ["Asexual reproduction happens far too slowly in bacteria, so the colony cannot replace any of its losses in time", "The bacteria cannot reproduce at all without a mate, so the colony stops growing", "Identical bacteria compete so fiercely that they destroy each other without help"],
+      "No variation means no resistant individuals to survive and rebuild the population. <b>All the bacteria are genetically identical, so a drug that kills one can kill them all</b>.", {});
+  },
+  function () {
+    return mcq("A gardener grows a prizewinning strawberry plant and wants many more plants exactly like it. Which method should the gardener use, and why?",
+      "Take runners (asexual reproduction): the new plants are clones with the same prized traits",
+      ["Plant the seeds it produces (sexual reproduction): every seedling that grows will match the parent plant exactly", "Cross it with a wild strawberry: the offspring will keep only the prized traits", "Graft it onto another species: grafting copies the plant's genes into the host"],
+      "Asexual reproduction (runners) produces clones, preserving the exact combination of traits; seeds would shuffle them. <b>Take runners (asexual reproduction): the new plants are clones with the same prized traits</b>.", {});
+  },
+  function () {
+    return mcq("Which is an advantage of SEXUAL reproduction for a species living in a changing environment?",
+      "Offspring vary genetically, so some may survive new diseases or conditions that kill others",
+      ["It is much faster than asexual reproduction is and needs far less energy and effort from both of the parents", "It guarantees every offspring is identical to the parent that was best adapted", "It allows a single individual to found a new population entirely on its own"],
+      "Variation is the raw material for adaptation; sexual reproduction generates it every generation. <b>Offspring vary genetically, so some may survive new diseases or conditions that kill others</b>.", {});
+  },
+  function () {
+    return mcq("A single aphid arrives on a rose bush in spring and, within weeks, there are thousands of aphids. Which feature of asexual reproduction makes this possible?",
+      "No mate is needed and reproduction is fast, so one individual can start a population explosion",
+      ["Each aphid produces offspring carrying brand-new gene combinations that always grow faster than the parent aphid did", "Asexual offspring are always larger and stronger than sexually produced offspring are", "Aphids lay thousands of eggs at once, which only asexual reproducers are able to do"],
+      "Asexual reproduction needs one parent and is rapid: ideal for exploiting a sudden food supply. <b>No mate is needed and reproduction is fast, so one individual can start a population explosion</b>.", {});
+  },
+  function () {
+    return mcq("Which is a DISADVANTAGE of sexual reproduction compared with asexual reproduction?",
+      "It requires finding a mate and invests energy in structures such as flowers, eggs or courtship",
+      ["It produces offspring that have no genetic variation at all between them, which steadily weakens the whole species", "It can only happen in water, so land organisms cannot reproduce sexually at all", "It always produces very few offspring, never more than two per pair of parents"],
+      "Sexual reproduction costs time, energy and the risk of not finding a mate; its payoff is variation. <b>It requires finding a mate and invests energy in structures such as flowers, eggs or courtship</b>.", {});
+  }
+]), ["Asexual is fast and uniform; sexual is slower and produces variation.", "Uniformity is the risk: one threat can strike every identical descendant."]);
+
+E("s9-u4-cr-mutagen-explain", 4, ["SC9.10.2"], 2, "var", varset([
+  function () {
+    return textq("Explaining a genetic change (3 marks)\nA dermatologist tells a patient that years of sunbathing without protection have damaged the DNA in some of their skin cells. (a) Name the type of agent the sun's ultraviolet rays are, and state what such agents are called in general. (1) (b) Explain how damaged DNA in a skin cell can lead to skin cancer. (1) (c) The patient asks whether their children will inherit the damaged DNA. Answer them, with a reason. (1)",
+      ["(a) Ultraviolet radiation is a physical mutagen; agents that change DNA are called mutagens."],
+      "Marking points (3): (a) 1 mark for physical mutagen / mutagen. (b) 1 mark for the chain: a mutation in a gene controlling cell division, copied into daughter cells, can produce uncontrolled growth (a tumour). (c) 1 mark for no, with the reason that the mutation is in body (somatic) cells, and only mutations in sex cells (gametes) are passed to children. Model answer: The children will not inherit it, because <b>only mutations in the cells that form eggs or sperm can pass to the next generation</b>.", {});
+  },
+  function () {
+    return textq("Explaining a genetic change (3 marks)\nA sign in a hospital X-ray department says the machines are shielded and staff wear protective aprons, even though each X-ray is brief. (a) State why X-rays are a risk to genetic information. (1) (b) Explain why the staff, who are present for hundreds of X-rays a week, are protected more carefully than a patient who has one X-ray a year. (1) (c) State one other source of DNA damage, not from radiation, that people commonly meet. (1)",
+      ["(a) X-rays are ionizing radiation, a physical mutagen that can break or alter DNA in the cells it passes through."],
+      "Marking points (3): (a) 1 mark for X-rays as a mutagen damaging DNA. (b) 1 mark for cumulative exposure: each exposure adds a small chance of a mutation, so repeated exposure multiplies the risk, and shielding lowers the dose. (c) 1 mark for a valid chemical or other mutagen (cigarette smoke chemicals, certain industrial chemicals, some viruses, UV from the sun). Model answer: Protection matters most for staff because <b>mutation risk grows with the total dose of the mutagen over time</b>.", {});
+  },
+  function () {
+    return textq("Explaining a genetic change (3 marks)\nA farmer reads that a weed killer used on the farm is a suspected mutagen. (a) State what it means to call a chemical a mutagen. (1) (b) Explain how a mutagen acting on a weed could, rarely, make the weed problem worse instead of better. (1) (c) Explain why the farmer should still be careful about their own exposure even though most mutations are harmless or repaired. (1)",
+      ["(a) A mutagen is an agent that changes the DNA (genetic information) of cells."],
+      "Marking points (3): (a) 1 mark for the definition. (b) 1 mark for a resistance mutation: a rare mutation could make a weed resistant to the chemical, and that weed's descendants inherit the resistance and spread. (c) 1 mark for the accumulation argument: most mutations are repaired or harmless, but some affect growth-control genes, and repeated exposure raises the chance of a harmful one, including in cells that could become cancerous. Model answer: Care is still needed because <b>a single unrepaired mutation in the wrong gene can be copied into every descendant of that cell</b>.", {});
+  }
+]), ["A cancer starts when mutations switch off a cell's division controls.", "One mutation is rarely enough, and undamaged or repaired cells explain different outcomes."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s9-u1-cr-apparent":3,"s9-u1-cr-classify":3,"s9-u1-cr-components":3,"s9-u1-cr-data":3,"s9-u1-cr-design-mission":4,"s9-u1-cr-distance":3,"s9-u1-cr-evidence":3,"s9-u1-cr-method":3,"s9-u1-cr-process":3,"s9-u1-cr-solar":3,"s9-u1-cr-space-decision":4,"s9-u1-cr-tech-science":3,"s9-u1-cr-thinkers":3,"s9-u1-cr-universe":3,"s9-u2-cr-atom-model":3,"s9-u2-cr-atomic-history":3,"s9-u2-cr-changes":3,"s9-u2-cr-classify-change":3,"s9-u2-cr-commercial-material":3,"s9-u2-cr-conclusion":3,"s9-u2-cr-data-display":3,"s9-u2-cr-design-change":4,"s9-u2-cr-formulas":3,"s9-u2-cr-gold-foil":3,"s9-u2-cr-materials-decision":4,"s9-u2-cr-periodic-evidence":3,"s9-u2-cr-properties":3,"s9-u2-cr-symbols":3,"s9-u2-cr-trends":3,"s9-u3-cr-applications":3,"s9-u3-cr-bulb-removed":3,"s9-u3-cr-charge-explain":3,"s9-u3-cr-conservation-plan":3,"s9-u3-cr-design-circuit":4,"s9-u3-cr-discrepancy":3,"s9-u3-cr-efficiency-compare":3,"s9-u3-cr-efficiency-evaluate":3,"s9-u3-cr-energy-decision":4,"s9-u3-cr-energy-path":3,"s9-u3-cr-flow-language":3,"s9-u3-cr-graph-interpret":3,"s9-u3-cr-hypothesis":3,"s9-u3-cr-meter-use":3,"s9-u3-cr-power-cost":3,"s9-u3-cr-safety-design":3,"s9-u3-cr-series-parallel-data":3,"s9-u3-cr-technology-criteria":3,"s9-u4-cr-canadian":3,"s9-u4-cr-communicate":3,"s9-u4-cr-condition":3,"s9-u4-cr-design-yeast":4,"s9-u4-cr-evaluate":3,"s9-u4-cr-graph-reading":3,"s9-u4-cr-meiosis-explain":3,"s9-u4-cr-methods":3,"s9-u4-cr-mitosis-stages":3,"s9-u4-cr-mutation":3,"s9-u4-cr-reproduction-choice":4,"s9-u4-cr-shifts":3,"s9-u4-cr-technology":3,"s9-u4-cr-trends":3};
+window.__BANK_CRMARKS={"s9-u1-cr-apparent":3,"s9-u1-cr-classify":3,"s9-u1-cr-components":3,"s9-u1-cr-data":3,"s9-u1-cr-design-mission":4,"s9-u1-cr-distance":3,"s9-u1-cr-evidence":3,"s9-u1-cr-method":3,"s9-u1-cr-process":3,"s9-u1-cr-solar":3,"s9-u1-cr-space-decision":4,"s9-u1-cr-tech-science":3,"s9-u1-cr-thinkers":3,"s9-u1-cr-universe":3,"s9-u2-cr-atom-model":3,"s9-u2-cr-atomic-history":3,"s9-u2-cr-changes":3,"s9-u2-cr-classify-change":3,"s9-u2-cr-commercial-material":3,"s9-u2-cr-conclusion":3,"s9-u2-cr-data-display":3,"s9-u2-cr-design-change":4,"s9-u2-cr-formulas":3,"s9-u2-cr-gold-foil":3,"s9-u2-cr-materials-decision":4,"s9-u2-cr-periodic-evidence":3,"s9-u2-cr-properties":3,"s9-u2-cr-symbols":3,"s9-u2-cr-trends":3,"s9-u3-cr-applications":3,"s9-u3-cr-bulb-removed":3,"s9-u3-cr-charge-explain":3,"s9-u3-cr-charge-properties":3,"s9-u3-cr-circuit-language":3,"s9-u3-cr-conservation-plan":3,"s9-u3-cr-design-circuit":4,"s9-u3-cr-discrepancy":3,"s9-u3-cr-efficiency-compare":3,"s9-u3-cr-efficiency-evaluate":3,"s9-u3-cr-energy-decision":4,"s9-u3-cr-energy-path":3,"s9-u3-cr-flow-language":3,"s9-u3-cr-graph-interpret":3,"s9-u3-cr-hypothesis":3,"s9-u3-cr-meter-use":3,"s9-u3-cr-power-cost":3,"s9-u3-cr-safety-design":3,"s9-u3-cr-series-parallel-data":3,"s9-u3-cr-technology-criteria":3,"s9-u4-cr-canadian":3,"s9-u4-cr-communicate":3,"s9-u4-cr-condition":3,"s9-u4-cr-design-yeast":4,"s9-u4-cr-evaluate":3,"s9-u4-cr-graph-reading":3,"s9-u4-cr-meiosis-explain":3,"s9-u4-cr-methods":3,"s9-u4-cr-mitosis-stages":3,"s9-u4-cr-mutagen-explain":3,"s9-u4-cr-mutation":3,"s9-u4-cr-reproduction-choice":4,"s9-u4-cr-shifts":3,"s9-u4-cr-technology":3,"s9-u4-cr-trends":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

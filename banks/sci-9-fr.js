@@ -351,6 +351,40 @@ E("s9f-u1-cr-process", 1, ["SC9.3.8"], 2, "var", varset([
 var NO_COMPOSE_U1 = { "s9f-u1-cr-design-mission": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s9f-u1-theorie-preuves", 1, ["SC9.1.5"], 2, "var", varset([
+  function () {
+    return mcq("Les galaxies lointaines montrent un décalage vers le rouge : leur lumière est étirée vers de plus grandes longueurs d'onde. Quelle conclusion les scientifiques en tirent-ils?",
+      "Les galaxies s'éloignent de nous : l'univers est en expansion, ce qui appuie la théorie du Big Bang",
+      ["Les galaxies lointaines se rapprochent toutes de nous : l'univers entier se contracte rapidement vers un point central unique situé près de notre galaxie", "Les galaxies lointaines sont simplement et naturellement plus rouges que la nôtre, sans qu'il y ait le moindre mouvement réel entre elles dans l'espace", "La lumière vieillit en voyageant, et le décalage ne dit rien du mouvement des galaxies"],
+      "Le décalage vers le rouge des galaxies lointaines est une preuve directe de l'expansion de l'univers. <b>Les galaxies s'éloignent de nous : l'univers est en expansion</b>.", {});
+  },
+  function () {
+    return mcq("Le rayonnement fossile (fond diffus cosmologique) est un faible rayonnement micro-onde qui arrive de toutes les directions du ciel. Pourquoi appuie-t-il la théorie du Big Bang?",
+      "C'est la chaleur résiduelle de l'univers primitif très chaud, refroidie par des milliards d'années d'expansion",
+      ["C'est simplement le rayonnement combiné de toutes les étoiles actuelles de l'univers, additionné ensemble dans toutes les directions du ciel nocturne", "C'est un signal faible produit par l'atmosphère terrestre elle-même, que les instruments mesurent par erreur comme s'il venait de l'espace lointain", "C'est la preuve que l'univers a toujours eu exactement la même température qu'aujourd'hui"],
+      "Un univers né chaud et dense devait laisser un rayonnement résiduel refroidi par l'expansion : c'est ce fond diffus. <b>C'est la chaleur résiduelle de l'univers primitif très chaud</b>.", {});
+  },
+  function () {
+    return mcq("La théorie de l'univers oscillant propose que l'expansion finira par s'inverser en contraction, puis rebondir. Qu'est-ce qui la distingue de la théorie du Big Bang à un seul début?",
+      "Elle propose une suite sans fin de cycles d'expansion et de contraction, plutôt qu'un seul commencement suivi d'expansion continue",
+      ["Elle nie complètement que les galaxies de l'univers s'éloignent les unes des autres à l'heure actuelle, contrairement à toutes les observations des télescopes", "Elle affirme catégoriquement que l'univers actuel n'a ni température de fond mesurable ni aucun rayonnement résiduel d'aucune sorte dans aucune direction", "Elle place la Terre exactement au centre de chaque cycle d'expansion et de contraction"],
+      "L'univers oscillant remplace le commencement unique par des cycles répétés d'expansion et de contraction. <b>Elle propose une suite sans fin de cycles d'expansion et de contraction</b>.", {});
+  },
+  function () {
+    return mcq("La théorie de l'état stationnaire proposait un univers éternel qui crée de la matière en s'étendant. Pourquoi les scientifiques l'ont-ils rejetée?",
+      "Le rayonnement fossile découvert dans le ciel contredit un univers éternel et inchangé : l'univers primitif était différent d'aujourd'hui",
+      ["Parce que les auteurs de la théorie l'ont retirée et abandonnée eux-mêmes dès la toute première observation astronomique qui semblait la contredire un peu", "Parce qu'elle prédisait en détail le décalage vers le rouge des galaxies, un phénomène que les télescopes du monde entier n'ont pourtant jamais observé", "Parce qu'un univers éternel aurait dû être complètement noir et sans aucune étoile visible"],
+      "Un univers éternel et inchangé ne peut pas avoir de rayonnement résiduel d'une époque chaude : la découverte du fond diffus l'a réfutée. <b>Le rayonnement fossile contredit un univers éternel et inchangé</b>.", {});
+  },
+  function () {
+    return mcq("L'univers contient environ 75 % d'hydrogène et 25 % d'hélium en masse, presque partout où on le mesure. Pourquoi ce rapport appuie-t-il la théorie du Big Bang?",
+      "La théorie prédit justement ces proportions à partir des réactions nucléaires de l'univers primitif chaud et dense",
+      ["Parce que les étoiles actuelles de l'univers produisent exactement ce rapport hydrogène-hélium et l'ont imposé à tout l'univers entier en une seule année récente", "Parce que l'hydrogène et l'hélium sont les deux seuls et uniques éléments chimiques qui existent dans tout l'univers connu, sans aucune exception nulle part", "Parce que ce rapport prouve que l'univers n'a jamais été ni plus chaud ni plus dense qu'aujourd'hui"],
+      "Les proportions H/He prédites par les calculs sur l'univers primitif correspondent aux mesures : c'est une confirmation quantitative. <b>La théorie prédit justement ces proportions</b>.", {});
+  }
+]), ["Associe l'observation à la théorie qui la prédit vraiment.", "Un univers éternel et inchangé ne peut pas laisser de chaleur résiduelle d'un début chaud."]);
+
 /* ----- bank-u2.js ----- */
 // CRMARKS: s9f-u2-cr-properties=3
 // CRMARKS: s9f-u2-cr-atom-model=3
@@ -716,7 +750,161 @@ E("s9f-u2-cr-classify-change", 2, ["SC9.6.10"], 2, "var", varset([
 var NO_COMPOSE_U2 = { "s9f-u2-cr-design-change": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s9f-u2-changement-preuves", 2, ["SC9.4.7"], 2, "var", varset([
+  function () {
+    return mcq("Une clou de fer laissé dehors tout l'hiver est retrouvé couvert de rouille orange et friable. Lequel de ces constats est la meilleure preuve qu'un changement chimique a eu lieu?",
+      "La rouille est une substance nouvelle aux propriétés différentes du fer : elle est orange, friable et ne réagit plus comme le fer",
+      ["Le clou a simplement changé de couleur pendant l'hiver, et n'importe quel changement de couleur prouve toujours et automatiquement un changement chimique complet", "Le clou de fer est devenu un peu plus léger avec le temps passé dehors, et les objets qui perdent de la masse ont toujours nécessairement réagi chimiquement", "Le clou est froid au toucher au printemps, et la température prouve le genre de changement survenu"],
+      "Le signe décisif d'un changement chimique est l'apparition d'une substance nouvelle aux propriétés nouvelles. <b>La rouille est une substance nouvelle aux propriétés différentes du fer</b>.", {});
+  },
+  function () {
+    return mcq("On verse du vinaigre sur du bicarbonate de soude : un pétillement vigoureux se produit et le mélange refroidit. Quelle est la meilleure preuve d'un changement chimique?",
+      "Un gaz nouveau se forme et l'énergie du mélange change : des substances nouvelles sont apparues pendant la réaction",
+      ["Le pétillement vigoureux à lui seul, car n'importe quel liquide qui pétille ou qui bouillonne subit nécessairement et toujours un changement chimique complet", "Le changement de volume total du mélange dans le bécher, car les changements chimiques changent toujours et nécessairement le volume mesuré des substances", "L'odeur du vinaigre, qui prouve que le vinaigre a réagi avant même d'être versé sur la poudre"],
+      "Formation d'un gaz nouveau et variation d'énergie : des substances nouvelles se sont formées. <b>Un gaz nouveau se forme et l'énergie du mélange change</b>.", {});
+  },
+  function () {
+    return mcq("Un morceau de bois brûle dans un foyer en laissant des cendres grises. Un élève affirme qu'il s'agit d'un changement physique parce que « le bois est encore là, en plus petit ». Quelle est la meilleure correction?",
+      "La cendre est une substance nouvelle qui ne peut pas redevenir du bois : la combustion est un changement chimique",
+      ["L'élève a entièrement raison dans son affirmation : tout changement quelconque qui rend un objet plus petit qu'avant est par définition un changement physique", "Le changement survenu est un changement physique parce que la fumée produite par le feu contient encore tout le bois d'origine, intact et inchangé", "Le changement est chimique uniquement parce que la flamme était très chaude pendant la combustion"],
+      "Si le produit ne peut pas redevenir la substance de départ, le changement est chimique. <b>La cendre est une substance nouvelle : la combustion est un changement chimique</b>.", {});
+  },
+  function () {
+    return mcq("Du lait tourné dégage une odeur aigre et forme des grumeaux. Lequel de ces constats est la meilleure preuve d'un changement chimique?",
+      "De nouvelles substances acides se sont formées dans le lait, avec une odeur et une texture nouvelles",
+      ["Les grumeaux formés dans le lait à eux seuls, car n'importe quel aliment liquide qui épaissit avec le temps a nécessairement subi un changement chimique complet", "Le lait est tout simplement resté trop longtemps au fond du réfrigérateur, et le seul temps écoulé suffit à prouver hors de tout doute le genre de changement", "Le contenant du lait a changé de place, ce qui accompagne toujours les changements chimiques"],
+      "Odeur aigre et grumeaux signalent des substances nouvelles formées par l'action des bactéries. <b>De nouvelles substances acides se sont formées dans le lait</b>.", {});
+  },
+  function () {
+    return mcq("On chauffe doucement une poudre blanche inconnue : elle noircit et dégage une odeur de brûlé, et le changement ne s'inverse pas au refroidissement. Quelle conclusion est la mieux appuyée?",
+      "Un changement chimique a eu lieu : la couleur, l'odeur et l'irréversibilité indiquent des substances nouvelles",
+      ["Un changement physique seulement a eu lieu dans le tube : le chauffage d'une substance ne produit jamais, en aucune circonstance, que des changements physiques", "Aucun changement réel n'a eu lieu pendant l'essai au laboratoire : la poudre blanche inconnue est simplement devenue un peu chaude pendant le chauffage doux", "Un changement chimique aurait exigé une flamme visible, donc rien ne s'est produit ici"],
+      "Noircissement, odeur nouvelle et irréversibilité : trois indices concordants d'un changement chimique. <b>Un changement chimique a eu lieu</b>.", {});
+  }
+]), ["Un changement chimique produit une substance nouvelle aux propriétés nouvelles.", "La couleur ou les bulles seules peuvent tromper; la substance nouvelle décide."]);
+
+
+E("s9f-u2-loi-theorie-juger", 2, ["SC9.5.2"], 1, "var", varset([
+  function () {
+    return mcq("Un élève écrit : « Une théorie scientifique n'est qu'une supposition sans preuves; quand elle sera prouvée, elle deviendra une loi. » Qu'est-ce qui cloche dans cet énoncé?",
+      "Une théorie est une explication appuyée par beaucoup de preuves, et elle ne « devient » jamais une loi : lois et théories jouent des rôles différents",
+      ["Rien du tout ne cloche dans cet énoncé : toutes les lois scientifiques actuelles ont d'abord été des théories qui ont ensuite été prouvées par les expériences", "Le seul et unique problème de l'énoncé est le choix du mot « supposition » : il aurait simplement fallu écrire le mot « hypothèse » à la place, et tout serait correct", "Les théories deviennent des lois uniquement quand un vote de scientifiques le décide officiellement"],
+      "Une loi décrit un phénomène régulier; une théorie l'explique. L'une ne se transforme pas en l'autre. <b>Une théorie est une explication appuyée par beaucoup de preuves et elle ne devient jamais une loi</b>.", {});
+  },
+  function () {
+    return mcq("La loi des proportions définies énonce qu'un composé donné contient toujours ses éléments dans les mêmes proportions de masse. Quel rôle joue cet énoncé en science?",
+      "C'est une loi : elle décrit une régularité observée dans les composés, sans expliquer pourquoi elle existe",
+      ["C'est une théorie scientifique complète : elle explique en détail et en profondeur pourquoi les atomes des éléments se combinent toujours dans ces proportions précises", "C'est une simple hypothèse de départ : elle n'a pas encore été vérifiée par la moindre expérience de laboratoire, ni même par une seule mesure en deux siècles", "C'est une opinion : les scientifiques peuvent choisir d'autres proportions s'ils le préfèrent"],
+      "Décrire une régularité mesurée, sans l'expliquer : c'est le rôle d'une loi scientifique. <b>C'est une loi : elle décrit une régularité observée</b>.", {});
+  },
+  function () {
+    return mcq("La théorie atomique explique pourquoi les éléments se combinent toujours dans les mêmes proportions. Quel rôle joue-t-elle par rapport à la loi des proportions définies?",
+      "Elle fournit l'explication (des atomes qui se combinent en nombres entiers) derrière la régularité que la loi décrit",
+      ["Elle remplace entièrement la loi des proportions définies, qui doit maintenant être retirée de tous les manuels de chimie parce qu'elle est enfin expliquée", "Elle contredit directement la loi des proportions définies, et les scientifiques du monde entier doivent donc choisir laquelle des deux ils vont conserver", "Elle transforme la loi en théorie, selon l'ordre normal de progression en science"],
+      "La théorie explique la loi; les deux coexistent et se renforcent. <b>Elle fournit l'explication derrière la régularité que la loi décrit</b>.", {});
+  },
+  function () {
+    return mcq("Un élève demande : « Si la théorie de l'évolution est seulement une théorie, pourquoi les scientifiques la prennent-ils au sérieux? » Quelle est la meilleure réponse?",
+      "Parce qu'en science, une théorie est une explication solidement établie, appuyée par une grande quantité de preuves concordantes",
+      ["Parce que les théories scientifiques sont en fait tout simplement des lois complètes qui n'ont pas encore reçu leur nom officiel de la part des académies", "Parce que les scientifiques qui l'enseignent n'ont encore absolument aucune preuve à l'appui, mais ils espèrent sincèrement en trouver un jour dans l'avenir", "Parce qu'une théorie devient automatiquement vraie après cent ans d'existence en science"],
+      "« Théorie » en science ne veut pas dire supposition : c'est le plus haut degré d'explication appuyée par des preuves. <b>Une théorie est une explication solidement établie, appuyée par beaucoup de preuves</b>.", {});
+  }
+]), ["Une loi décrit une régularité; une théorie l'explique. Ce sont deux rôles.", "Les théories ne deviennent jamais des lois, peu importe les preuves accumulées."]);
+
+
+E("s9f-u2-feuille-scenario", 2, ["SC9.5.4"], 2, "var", varset([
+  function () {
+    return mcq("Rutherford bombarde une feuille d'or très mince de particules alpha. La plupart traversent tout droit, mais quelques-unes rebondissent presque directement. Quelle conclusion tire-t-il sur l'atome?",
+      "La masse de l'atome est concentrée dans un minuscule noyau dense et chargé positivement",
+      ["L'atome d'or est une boule solide, dure et parfaitement uniforme qui bloque la plupart des particules alpha lancées contre la feuille mince", "Les petits électrons de l'atome occupent presque tout le volume de l'atome d'or et portent à eux seuls la quasi-totalité de sa masse totale", "L'atome est creux partout, sans aucune structure capable de dévier une particule"],
+      "Seul un minuscule noyau dense et positif peut repousser une particule alpha presque directement. <b>La masse de l'atome est concentrée dans un minuscule noyau dense et chargé positivement</b>.", {});
+  },
+  function () {
+    return mcq("Dans le modèle de l'atome de Thomson (le « pudding aux raisins »), comment les résultats de l'expérience de la feuille d'or auraient-ils dû paraître?",
+      "Presque toutes les particules auraient traversé avec de très faibles déviations, la charge positive étant répartie dans toute la « pâte »",
+      ["La plupart des particules alpha lancées auraient rebondi directement vers la source dès leur arrivée à la surface de la feuille d'or très mince", "Aucune particule alpha n'aurait pu traverser la feuille d'or d'aucune façon, l'atome selon Thomson étant une boule parfaitement solide et pleine", "Les particules auraient été absorbées par les électrons et ne seraient jamais ressorties de la feuille"],
+      "Charge positive diffuse = déviations faibles seulement. Les grands rebonds observés ont réfuté le modèle. <b>Presque toutes les particules auraient traversé avec de très faibles déviations</b>.", {});
+  },
+  function () {
+    return mcq("Pourquoi la grande majorité des particules alpha traversent-elles la feuille d'or sans être déviées, dans le modèle de Rutherford?",
+      "Parce que l'atome est surtout fait d'espace vide : la plupart des particules ne rencontrent rien sur leur chemin",
+      ["Parce que les particules alpha projetées sont beaucoup trop petites et trop rapides pour être « vues » ou dérangées par les atomes d'or sur leur passage", "Parce que la feuille d'or utilisée dans l'expérience est tellement mince et fragile qu'elle ne contient presque pas d'atomes d'or du tout sur le trajet", "Parce que les électrons attirent les particules alpha et les guident en ligne droite à travers la feuille"],
+      "Si l'atome est presque entièrement vide, la plupart des trajectoires ne rencontrent ni noyau ni obstacle. <b>Parce que l'atome est surtout fait d'espace vide</b>.", {});
+  },
+  function () {
+    return mcq("Un élève conclut de l'expérience : « L'expérience prouve que le modèle de Rutherford est définitivement vrai et ne changera plus jamais. » Quelle est la meilleure correction?",
+      "L'expérience appuie fortement le modèle et réfute celui de Thomson, mais les modèles scientifiques restent ouverts aux révisions devant de nouvelles preuves",
+      ["L'élève a entièrement raison dans sa conclusion : une seule expérience réussie et célèbre suffit à rendre un modèle scientifique vrai pour toujours", "L'expérience de la feuille d'or ne prouve absolument rien du tout, car les modèles scientifiques ne peuvent jamais être mis à l'épreuve par l'observation", "Le modèle de Rutherford a été remplacé parce que l'expérience de la feuille d'or l'a réfuté"],
+      "Les preuves appuient ou réfutent; elles ne figent jamais un modèle pour toujours. <b>L'expérience appuie fortement le modèle, mais les modèles restent ouverts aux révisions</b>.", {});
+  }
+]), ["La plupart traversent tout droit : que dit cela de l'intérieur de l'atome?", "Quelques rebonds violents exigent quelque chose de petit, dense et positif."]);
+
+
+E("s9f-u2-terme-precis", 2, ["SC9.5.6"], 1, "var", varset([
+  function () {
+    return mcq("Un élève écrit : « Le sel de table est un élément, car c'est une substance pure de cuisine. » Quel terme corrige cet énoncé?",
+      "Composé : le sel de table (chlorure de sodium) contient deux éléments combinés chimiquement en proportions définies",
+      ["Mélange mécanique : le sel de table ordinaire contient toujours un peu de sable et d'eau mélangés physiquement à ses cristaux blancs dans la salière", "Atome de cuisine : le sel de table est littéralement le plus petit morceau de matière qui existe et qu'on peut trouver dans une cuisine ordinaire", "Molécule de sodium : le sel est formé uniquement de sodium du début à la fin"],
+      "Deux éléments combinés chimiquement en proportions définies forment un composé, pas un élément. Le terme précis est <b>composé</b>.", {});
+  },
+  function () {
+    return mcq("Un élève écrit : « L'air de la classe est un composé, car il contient plusieurs gaz. » Quel terme corrige cet énoncé?",
+      "Solution (un mélange homogène) : les gaz de l'air sont mélangés uniformément sans être combinés chimiquement",
+      ["Élément gazeux : l'air de la classe ne contient en réalité qu'un seul et unique genre d'atomes, répété partout dans la pièce du laboratoire", "Composé gazeux véritable : les différents gaz de l'air de la classe sont liés chimiquement les uns aux autres de façon permanente et définie", "Substance pure : l'air a exactement la même composition partout dans l'univers entier"],
+      "Des gaz mélangés uniformément sans combinaison chimique forment une solution gazeuse, pas un composé. Le terme précis est <b>solution (mélange homogène)</b>.", {});
+  },
+  function () {
+    return mcq("Un élève écrit : « Une molécule d'eau contient un atome d'oxygène et deux atomes d'hydrogène; c'est donc un mélange. » Quel terme corrige cet énoncé?",
+      "Composé : ses atomes sont combinés chimiquement en proportions définies, et non simplement mélangés",
+      ["Élément liquide : l'eau pure ne contient qu'un seul et unique genre d'atomes dans chacune de ses milliards de molécules identiques", "Solution aqueuse : l'hydrogène gazeux est simplement dissous dans l'oxygène liquide exactement comme un sucre se dissout dans un verre d'eau", "Mélange mécanique : on peut séparer ses parties par simple filtration au laboratoire"],
+      "Des atomes combinés chimiquement en proportions fixes forment un composé. Le terme précis est <b>composé</b>.", {});
+  },
+  function () {
+    return mcq("Un élève écrit : « Le fer de ce clou est un composé de métal. » Quel terme corrige cet énoncé?",
+      "Élément : le fer ne contient qu'un seul genre d'atomes, donc ce n'est pas un composé",
+      ["Mélange de métaux : un clou de fer contient toujours et nécessairement plusieurs métaux différents mélangés ensemble sans aucune proportion définie", "Solution solide particulière : le fer du clou est en réalité un gaz dissous dans un autre métal depuis le moment de sa fabrication en usine", "Molécule : chaque morceau de fer est une seule molécule géante de plusieurs éléments"],
+      "Un seul genre d'atomes : c'est la définition d'un élément. Le terme précis est <b>élément</b>.", {});
+  },
+  function () {
+    return mcq("Un élève écrit : « En faisant bouillir de l'eau salée, on sépare le sel par un changement chimique. » Quel terme corrige cet énoncé?",
+      "Changement physique : l'ébullition sépare le mélange sans changer l'identité chimique de l'eau ni du sel",
+      ["Réaction de décomposition chimique : l'eau salée chauffée se décompose entièrement en éléments chimiques nouveaux sous l'effet de la chaleur du brûleur", "Changement chimique complet : toute séparation de substances faite au moyen d'un chauffage, quel qu'il soit, est nécessairement un changement chimique", "Sublimation chimique : le sel devient un gaz nouveau pendant que l'eau bout dans la casserole"],
+      "Séparer un mélange par ébullition ne crée aucune substance nouvelle : changement physique. Le terme précis est <b>changement physique</b>.", {});
+  }
+]), ["Un seul genre d'atomes : élément; éléments combinés chimiquement : composé.", "Mélangés sans combinaison chimique : mélange ou solution."]);
+
+
+E("s9f-u2-periodique-preuves", 2, ["SC9.5.7"], 2, "var", varset([
+  function () {
+    return mcq("Mendeleïev a laissé des cases vides dans son tableau périodique. Pourquoi ce geste était-il scientifiquement audacieux et utile?",
+      "Il prédisait l'existence et les propriétés d'éléments encore inconnus, que les découvertes ultérieures ont confirmées",
+      ["Il trouvait simplement et honnêtement son tableau périodique plus joli et plus équilibré avec des espaces vides répartis un peu partout entre les éléments connus", "Il refusait délibérément d'y inscrire les éléments connus qu'il n'aimait pas personnellement, pour de simples raisons de goût et de préférence esthétique", "Il manquait de données parce que ses cahiers de laboratoire avaient été perdus dans un incendie"],
+      "Des prédictions précises, confirmées ensuite (gallium, germanium), ont validé le tableau. <b>Il prédisait l'existence et les propriétés d'éléments encore inconnus</b>.", {});
+  },
+  function () {
+    return mcq("Mendeleïev a placé le tellure avant l'iode même si le tellure a une masse atomique légèrement plus grande, parce que leurs propriétés chimiques l'exigeaient. Qu'est-ce que ce choix montre?",
+      "Il a fait passer les propriétés chimiques (les familles) avant l'ordre strict des masses quand les deux semblaient se contredire",
+      ["Il a tout simplement commis une erreur d'impression dans la première édition, erreur qui n'a jamais été corrigée dans aucune des éditions suivantes du tableau", "Il ignorait complètement et entièrement les masses atomiques mesurées de ces deux éléments au moment précis où il a publié son tableau périodique célèbre", "Il a prouvé que les masses atomiques n'ont aucune importance dans l'organisation des éléments"],
+      "Le tableau est organisé par propriétés récurrentes; Mendeleïev a privilégié les familles chimiques. <b>Il a fait passer les propriétés chimiques avant l'ordre strict des masses</b>.", {});
+  },
+  function () {
+    return mcq("Le gallium, découvert quelques années après le tableau de Mendeleïev, possédait presque exactement la masse, la densité et le point de fusion prédits pour la case vide sous l'aluminium. Pourquoi cette découverte a-t-elle tant compté?",
+      "Une prédiction quantitative confirmée est une preuve forte qu'un modèle ou un classement saisit une réalité de la nature",
+      ["Parce que le gallium nouvellement découvert était, de loin, l'élément chimique le plus abondant de toute la croûte terrestre jamais découvert par les chimistes", "Parce que cette découverte a prouvé d'un seul coup que tous les autres éléments déjà inscrits dans le tableau étaient eux aussi, à l'origine, des prédictions", "Parce que Mendeleïev avait lui-même découvert le gallium dans son propre laboratoire cette année-là"],
+      "Prédire juste avant de découvrir : c'est la marque d'un modèle qui correspond à la réalité. <b>Une prédiction quantitative confirmée est une preuve forte</b>.", {});
+  },
+  function () {
+    return mcq("Les éléments d'une même colonne du tableau périodique, comme le lithium, le sodium et le potassium, réagissent tous vivement avec l'eau. Quelle conclusion ce motif appuie-t-il?",
+      "Les éléments d'une même famille partagent des propriétés chimiques semblables, qui se répètent périodiquement dans le tableau",
+      ["Ces trois métaux alcalins sont en fait, en réalité, un seul et même élément chimique observé et mesuré à trois températures différentes en laboratoire", "La réaction vive avec l'eau froide est un pur hasard de laboratoire qui ne se répète absolument nulle part ailleurs dans tout le tableau périodique", "Les éléments d'une colonne ont exactement la même masse atomique et la même densité"],
+      "La périodicité des propriétés par famille est le principe organisateur du tableau. <b>Les éléments d'une même famille partagent des propriétés chimiques semblables</b>.", {});
+  }
+]), ["Le tableau de Mendeleïev se juge à ses prédictions : cases vides et paires inversées.", "Un élément prédit puis découvert avec les propriétés prédites est une preuve forte."]);
+
 /* ----- bank-u3.js ----- */
+// CRMARKS: s9f-u3-cr-proprietes-charge=3
+// CRMARKS: s9f-u3-cr-langage-circuit=3
 // CRMARKS: s9f-u3-cr-flow-language=3
 // CRMARKS: s9f-u3-cr-series-parallel-data=3
 // CRMARKS: s9f-u3-cr-bulb-removed=3
@@ -1214,7 +1402,101 @@ var TOPIC_U3 = {
 };
 BANK.forEach(function (e) { if (TOPIC_U3[e.id]) { e.topic = TOPIC_U3[e.id]; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s9f-u3-circuits-comportement", 3, ["SC9.7.5"], 2, "gen", function () {
+  var V = pick([6, 9, 12, 18, 24, 36]), n = pick([2, 3, 4, 6]), mode = ri(0, 3);
+  function fV(x) { return String(Math.round(x * 10) / 10).replace(".", ","); }
+  if (mode === 0) {
+    return mcq(n + " ampoules identiques sont branchées en série sur une source de " + V + " V. Quelle est la tension aux bornes de chaque ampoule?",
+      fV(V / n) + " V : la tension de la source se partage également entre les ampoules branchées en série dans le circuit",
+      [V + " V : chaque ampoule branchée en série reçoit à elle seule la pleine tension totale de la source du circuit",
+       fV(V * n) + " V : la tension totale s'additionne à chaque ampoule ajoutée dans le circuit en série par l'élève",
+       fV(Math.max(V - n, 1)) + " V : chaque ampoule ajoutée fait perdre exactement un volt à la tension de la source du circuit"],
+      "En série, la tension se partage également : " + V + " V ÷ " + n + " ampoules = <b>" + fV(V / n) + " V</b> par ampoule.", { V: V, n: n });
+  }
+  if (mode === 1) {
+    return mcq(n + " ampoules identiques sont branchées en parallèle sur une source de " + V + " V. Quelle est la tension aux bornes de chaque ampoule?",
+      V + " V : chaque branche en parallèle est reliée directement à la source et reçoit sa pleine tension totale",
+      [fV(V / n) + " V : la tension de la source se partage également entre toutes les branches du circuit en parallèle",
+       fV(V * n) + " V : chaque branche du circuit ajoute la pleine tension de la source à celle de toutes les autres branches",
+       fV(Math.max(V - n, 1)) + " V : chaque branche ajoutée fait perdre exactement un volt à la tension disponible dans le circuit"],
+      "En parallèle, chaque branche reçoit la pleine tension de la source : <b>" + V + " V</b> par ampoule, quel que soit leur nombre.", { V: V, n: n });
+  }
+  var series = Math.random() < 0.5;
+  if (mode === 2) {
+    if (series) {
+      return mcq(n + " ampoules identiques sont branchées en série et brillent normalement. L'une d'elles grille. Que se passe-t-il?",
+        "Elles s'éteignent toutes : le seul trajet du courant est coupé, donc le courant cesse partout dans le circuit en série",
+        ["Les autres ampoules brillent plus fort qu'avant, car elles se partagent maintenant toute la tension de la source entre elles seulement",
+         "Les autres ampoules restent exactement aussi brillantes qu'avant, car chacune d'elles possède son propre trajet complet et indépendant",
+         "Seule l'ampoule voisine de l'ampoule grillée s'éteint avec elle, et toutes les autres ampoules du circuit continuent de briller normalement"],
+        "En série, il n'y a qu'un seul trajet : une seule coupure interrompt le courant partout. <b>Elles s'éteignent toutes</b>.", { n: n });
+    }
+    return mcq(n + " ampoules identiques sont branchées en parallèle et brillent normalement. L'une d'elles grille. Que se passe-t-il?",
+      "Les autres restent aussi brillantes : chacune a son propre trajet complet jusqu'à la source et garde la pleine tension",
+      ["Elles s'éteignent toutes en même temps, car le trajet unique du courant dans le circuit est complètement coupé par l'ampoule grillée",
+       "Elles brillent nettement plus faiblement qu'avant, car la tension de la source se partage maintenant entre un plus petit nombre de branches",
+       "Elles brillent nettement plus fort qu'avant, car tout le courant fourni par la source passe maintenant dans les deux branches restantes du circuit"],
+      "En parallèle, chaque branche est indépendante : les autres gardent la pleine tension et la même brillance. <b>Les autres restent aussi brillantes</b>.", { n: n });
+  }
+  if (series) {
+    return mcq("Un circuit en série alimenté par une source de " + V + " V contient " + n + " ampoules identiques. On ajoute une ampoule identique en série. Que devient la brillance de chaque ampoule?",
+      "Chaque ampoule brille moins : la tension de la source se partage entre plus d'ampoules, donc chacune en reçoit moins",
+      ["Chaque ampoule brille exactement autant qu'avant l'ajout : la source du circuit fournit automatiquement plus de tension totale dès qu'on ajoute des ampoules en série",
+       "Chaque ampoule du circuit brille nettement plus fort qu'avant : le courant total qui traverse le circuit augmente automatiquement à chaque ampoule ajoutée en série",
+       "La brillance des ampoules ne dépend que de la source d'alimentation : le nombre d'ampoules branchées en série dans le circuit ne change jamais rien du tout à leur éclat"],
+      "À tension totale fixe, plus d'ampoules en série signifie moins de volts par ampoule : " + V + " V partagés entre " + (n + 1) + " ampoules au lieu de " + n + ". <b>Chaque ampoule brille moins</b>.", { V: V, n: n });
+  }
+  return mcq("Un circuit en parallèle alimenté par une source de " + V + " V contient " + n + " ampoules identiques. On ajoute une ampoule identique en parallèle. Que devient la brillance de chaque ampoule?",
+    "Chaque ampoule brille autant qu'avant : chaque branche reçoit toujours la pleine tension de la source de " + V + " V",
+    ["Chaque ampoule brille moins : la tension de la source se partage maintenant entre un plus grand nombre de branches",
+     "Chaque ampoule brille plus fort : la source fournit plus de courant total, donc chaque branche en reçoit davantage",
+     "Les ampoules d'origine s'éteignent : toute la tension de la source passe dans la nouvelle branche ajoutée"],
+    "En parallèle, ajouter une branche ne change pas la tension des autres : chacune garde les " + V + " V de la source. <b>Chaque ampoule brille autant qu'avant</b>.", { V: V, n: n });
+}, ["En série, la tension se partage; en parallèle, chaque branche reçoit la pleine tension.", "Une coupure arrête tout en série, mais seulement sa branche en parallèle."]);
+
+BANK.forEach(function (e) { if (e.id === "s9f-u3-circuits-comportement") { e.topic = "circuits"; } });
+
+
+E("s9f-u3-cr-proprietes-charge", 3, ["SC9.7.2"], 2, "var", varset([
+  function () {
+    return textq("Deux balles de liège suspendues à des fils sont touchées avec la même tige de plastique frottée, puis elles se repoussent l'une l'autre. Explique ce comportement : dis ce que la tige a transféré aux balles, pourquoi elles se repoussent, et ce qui se passerait si l'une des balles était touchée ensuite avec une tige de verre frottée portant la charge opposée. (3 points)",
+      ["La tige de plastique frottée transfère une charge négative aux deux balles."],
+      "Points de notation (3) : 1 point pour le transfert (le frottement charge la tige, qui transfère le même genre de charge aux deux balles par contact). 1 point pour la répulsion (des charges de même signe se repoussent). 1 point pour la prédiction (la tige de verre porte la charge opposée; la balle touchée perd ou inverse sa charge, donc la répulsion diminue ou devient une attraction). Réponse modèle : Les deux balles reçoivent la même charge de la tige, et les charges de même signe se repoussent. <b>Après le contact avec la tige de verre chargée positivement, la balle touchée serait neutralisée ou chargée positivement, et les deux balles s'attireraient</b>.", {});
+  },
+  function () {
+    return textq("Un électroscope à feuilles d'or est touché par une tige chargée négativement : ses feuilles s'écartent. Explique ce comportement : dis ce qui se déplace dans l'électroscope, pourquoi les feuilles s'écartent, et ce qui se passerait si on approchait ensuite, sans toucher, une tige chargée positivement du bouton de l'électroscope. (3 points)",
+      ["Ce sont les électrons qui se déplacent dans les parties métalliques de l'électroscope."],
+      "Points de notation (3) : 1 point pour le déplacement (les électrons de la tige passent dans l'électroscope et descendent dans les feuilles; seuls les électrons bougent dans un métal). 1 point pour l'écartement (les deux feuilles portent la même charge négative et se repoussent). 1 point pour la prédiction (la tige positive approchée attire les électrons vers le bouton; les feuilles perdent une partie de leur charge et se rapprochent). Réponse modèle : Les électrons descendent dans les feuilles, qui se repoussent parce qu'elles portent la même charge. <b>La tige positive approchée rappelle les électrons vers le haut, et les feuilles se rapprochent</b>.", {});
+  },
+  function () {
+    return textq("Par une journée sèche, une élève reçoit une petite décharge en touchant une poignée de porte métallique après avoir marché sur un tapis en chaussettes. Explique la décharge : dis comment l'élève s'est chargée, pourquoi la charge s'est accumulée sur elle plutôt que de s'écouler, et pourquoi la décharge se produit au moment du contact avec la poignée. (3 points)",
+      ["Le frottement des chaussettes sur le tapis transfère des électrons à l'élève."],
+      "Points de notation (3) : 1 point pour la charge par frottement (les chaussettes sur le tapis transfèrent des électrons; l'élève porte une charge nette). 1 point pour l'accumulation (l'air sec et les semelles isolantes empêchent la charge de s'écouler; le corps la garde). 1 point pour la décharge (la poignée métallique conductrice offre un trajet : la charge s'y déplace d'un coup, ce qui produit l'étincelle et la sensation). Réponse modèle : Chargée par friction et isolée du sol, l'élève garde sa charge jusqu'à ce qu'un conducteur lui offre une voie de sortie. <b>Au contact de la poignée métallique, la charge s'écoule d'un coup : c'est la décharge ressentie</b>.", {});
+  }
+]), ["Seuls les électrons se déplacent; charges semblables se repoussent, contraires s'attirent.", "Suis la charge : d'où elle vient, où elle se trouve, quelle force en résulte."]);
+
+
+E("s9f-u3-cr-langage-circuit", 3, ["SC9.7.4"], 2, "var", varset([
+  function () {
+    return textq("Un élève décrit un circuit ainsi : « La tension du courant est de 6 ampères, et le courant traverse la résistance de 12 volts. » Réécris la description correctement pour une pile de 6 V qui fait passer 0,5 A dans une résistance de 12 Ω, en utilisant chaque terme (tension, courant, résistance) avec sa bonne grandeur et sa bonne unité. Explique en une phrase ce que mesure chacun des trois termes. (3 points)",
+      ["La tension se mesure en volts, le courant en ampères et la résistance en ohms."],
+      "Points de notation (3) : 1 point pour la description réécrite correctement (la pile fournit une tension de 6 V; le courant est de 0,5 A; la résistance est de 12 Ω). 1 point pour deux des trois définitions (la tension est l'énergie fournie à chaque charge; le courant est le débit des charges; la résistance est l'opposition au passage du courant). 1 point pour la troisième définition, et la cohérence avec la loi d'Ohm (6 V ÷ 12 Ω = 0,5 A). Réponse modèle : La pile de 6 V fait passer un courant de 0,5 A dans la résistance de 12 Ω. <b>La tension mesure l'énergie par charge, le courant le débit des charges, et la résistance l'opposition au courant</b>.", {});
+  },
+  function () {
+    return textq("Un élève écrit : « J'ai augmenté la résistance du circuit, donc le voltage du courant a augmenté dans l'ampoule. » À pile inchangée, explique pourquoi cet énoncé est fautif : dis ce qui arrive réellement au courant quand la résistance augmente, ce qui reste fixé par la pile, et la relation qui relie les trois grandeurs. (3 points)",
+      ["À tension fixée par la pile, augmenter la résistance diminue le courant."],
+      "Points de notation (3) : 1 point pour identifier l'erreur (le courant ne possède pas de « voltage »; la tension appartient à la source et aux bornes des éléments). 1 point pour l'effet réel (à tension constante, une résistance plus grande laisse passer un courant plus faible; l'ampoule brille moins). 1 point pour la relation (la loi d'Ohm, V = IR, qui relie tension, courant et résistance). Réponse modèle : La pile fixe la tension; une résistance plus grande réduit le courant qui traverse l'ampoule. <b>La loi d'Ohm, V = IR, montre que si V est constant et R augmente, I doit diminuer</b>.", {});
+  },
+  function () {
+    return textq("Un schéma montre une pile, un interrupteur ouvert et une ampoule, et un élève conclut : « Le courant est prêt à circuler, il attend dans la pile. » Corrige cette image en décrivant correctement ce qui se passe dans le circuit quand on ferme l'interrupteur : parle du trajet complet, du rôle de la pile et de ce que devient l'énergie dans l'ampoule. (3 points)",
+      ["Le courant ne circule que si le circuit forme un trajet fermé et complet."],
+      "Points de notation (3) : 1 point pour le trajet (le courant circule seulement quand l'interrupteur fermé complète une boucle continue de la pile à l'ampoule et retour). 1 point pour le rôle de la pile (elle fournit l'énergie aux charges; elle ne stocke pas un courant « en attente »). 1 point pour l'énergie dans l'ampoule (l'énergie électrique y est transformée en lumière et en chaleur; les charges elles-mêmes ne sont pas consommées). Réponse modèle : Interrupteur fermé, la boucle est complète et les charges circulent partout à la fois. <b>La pile fournit l'énergie et l'ampoule la transforme en lumière et en chaleur, sans consommer les charges</b>.", {});
+  }
+]), ["Tension en volts, courant en ampères, résistance en ohms.", "Vérifie l'énoncé avec la loi d'Ohm, V = IR, quand des nombres sont donnés."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: s9f-u4-cr-mutagene-expliquer=3
 // CRMARKS: s9f-u4-cr-mutation=3
 // CRMARKS: s9f-u4-cr-mitosis-stages=3
 // CRMARKS: s9f-u4-cr-methods=3
@@ -1564,7 +1846,100 @@ var TOPIC_U4 = {
 };
 BANK.forEach(function (e) { if (TOPIC_U4[e.id]) { e.topic = TOPIC_U4[e.id]; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s9f-u4-mutagene-scenario", 4, ["SC9.10.2"], 2, "var", varset([
+  function () {
+    return mcq("Un jardinier qui étale un insecticide sans gants pendant des années développe des cellules de peau anormales aux mains. Quel facteur a pu changer l'information génétique de ces cellules?",
+      "Les produits chimiques de l'insecticide : certains produits sont des mutagènes qui altèrent l'ADN des cellules exposées",
+      ["La chaleur du soleil d'été sur ses mains nues, qui fait lentement fondre et coller ensemble les chromosomes des cellules de la peau exposée", "Le travail physique quotidien lui-même, dont l'effort répété use progressivement les chromosomes des cellules à force de les faire se diviser sans arrêt", "Les gants qu'il ne portait pas, dont l'absence laisse entrer les mutations par la peau directement"],
+      "Les mutagènes chimiques peuvent altérer l'ADN des cellules exposées de façon répétée. <b>Les produits chimiques de l'insecticide</b>.", {});
+  },
+  function () {
+    return mcq("Des techniciens qui travaillaient sans protection près d'anciennes sources radioactives ont présenté, des années plus tard, des taux élevés de cancers. Quel facteur a pu changer l'information génétique de leurs cellules?",
+      "Les rayonnements ionisants, qui peuvent briser l'ADN et modifier les instructions des cellules touchées",
+      ["Le bruit constant des appareils de mesure de l'ancien laboratoire, dont les vibrations continues dérèglent lentement les chromosomes des cellules du corps", "La fatigue physique accumulée au fil des années de travail, qui empêche temporairement les cellules du corps de recopier correctement leur ADN pendant des heures", "Les uniformes de travail, dont les fibres libèrent des substances qui réécrivent l'ADN des cellules"],
+      "Les rayonnements ionisants sont des mutagènes physiques reconnus : ils brisent et altèrent l'ADN. <b>Les rayonnements ionisants, qui peuvent briser l'ADN</b>.", {});
+  },
+  function () {
+    return mcq("Une cellule de peau divise des millions de fois au cours d'une vie. À chaque division, l'ADN est recopié. Quel facteur interne peut changer l'information génétique sans aucun agent extérieur?",
+      "Les erreurs de copie de l'ADN pendant la division cellulaire, quand le mécanisme de correction ne les rattrape pas",
+      ["La respiration cellulaire normale, qui brûle et détruit une petite partie de l'ADN de la cellule à chacune de ses productions d'énergie quotidiennes", "La croissance normale de la cellule avant sa division, qui étire physiquement l'ADN jusqu'à en réorganiser complètement les instructions au hasard", "Le vieillissement des protéines, qui réécrivent les instructions génétiques en se décomposant"],
+      "La copie de l'ADN n'est pas parfaite : les erreurs non corrigées sont une source interne de mutations. <b>Les erreurs de copie de l'ADN pendant la division cellulaire</b>.", {});
+  },
+  function () {
+    return mcq("Certains virus insèrent leur propre matériel génétique dans l'ADN des cellules qu'ils infectent. Pourquoi cette insertion peut-elle changer l'information génétique de la cellule?",
+      "Parce que la séquence insérée modifie les instructions que la cellule lit pour fabriquer ses protéines",
+      ["Parce que le virus envahisseur remplace instantanément et entièrement tout l'ADN original de la cellule infectée par son propre matériel génétique complet", "Parce que la cellule infectée cesse complètement et définitivement de lire son propre ADN dès la première fois qu'un virus quelconque y entre", "Parce que l'insertion fait doubler la taille de tous les chromosomes de la cellule infectée"],
+      "Modifier la séquence d'ADN, c'est modifier les instructions : l'insertion virale est un changement génétique. <b>Parce que la séquence insérée modifie les instructions que la cellule lit</b>.", {});
+  },
+  function () {
+    return mcq("Une baigneuse s'expose au soleil sans protection pendant des années et développe une tache de peau dont les cellules se divisent sans contrôle. Quel facteur a pu changer l'information génétique de ces cellules?",
+      "Les rayons ultraviolets du soleil, qui endommagent l'ADN des cellules de la peau exposées",
+      ["L'eau salée de l'océan dans laquelle elle nage, qui dissout très lentement l'ADN des cellules situées à la surface de sa peau exposée au soleil", "La chaleur intense du sable et de l'air de la plage en été, qui fait lentement fondre les chromosomes des cellules de la peau les plus exposées", "Le sable chaud, dont les grains rayent les cellules et mélangent leurs chromosomes entre eux"],
+      "Les ultraviolets sont des mutagènes physiques qui endommagent l'ADN des cellules de la peau. <b>Les rayons ultraviolets du soleil</b>.", {});
+  }
+]), ["Un mutagène modifie l'ADN : produits chimiques, rayonnements, erreurs de copie, virus.", "La chaleur ordinaire, l'effort et le bruit ne réécrivent pas l'information génétique."]);
+
+
+E("s9f-u4-reproduction-compromis", 4, ["SC9.10.5"], 2, "var", varset([
+  function () {
+    return mcq("Les pissenlits d'une pelouse se reproduisent surtout de façon asexuée à partir de leurs racines. Quel est le principal inconvénient de cette stratégie si un champignon nouveau arrive dans le secteur?",
+      "Les descendants sont génétiquement presque identiques : si le champignon tue un plant, il peut les tuer presque tous",
+      ["La reproduction asexuée des pissenlits est beaucoup trop lente pour produire plus d'un seul descendant par saison entière de croissance dans la pelouse", "Les descendants produits de façon asexuée ne peuvent jamais, plus tard dans leur vie, produire ni fleurs ni graines viables pour la saison suivante", "La reproduction asexuée exige deux parents, qui sont difficiles à trouver dans une pelouse"],
+      "Uniformité génétique = vulnérabilité uniforme : c'est le grand inconvénient de la reproduction asexuée. <b>Les descendants sont génétiquement presque identiques</b>.", {});
+  },
+  function () {
+    return mcq("Un fraisier produit des stolons qui s'enracinent et donnent de nouveaux plants. Quel est le principal avantage de cette reproduction asexuée?",
+      "Elle est rapide et n'exige ni partenaire ni pollinisation : un seul plant peuple vite un espace favorable",
+      ["Elle produit rapidement des descendants tous génétiquement différents les uns des autres, prêts à affronter n'importe quel changement du milieu environnant", "Elle garantit formellement que tous les descendants produits seront plus résistants et plus vigoureux que le plant parent face à toutes les maladies connues", "Elle permet au fraisier de créer de nouvelles espèces à chaque génération de stolons produits"],
+      "Un seul parent, pas de pollinisation, colonisation rapide : les avantages de l'asexuée. <b>Elle est rapide et n'exige ni partenaire ni pollinisation</b>.", {});
+  },
+  function () {
+    return mcq("Les saumons parcourent des centaines de kilomètres et dépensent une énergie énorme pour aller frayer, et la plupart meurent après la reproduction sexuée. Quel avantage compense ce coût?",
+      "La variation génétique des descendants : certains porteront des combinaisons qui conviennent mieux aux conditions changeantes",
+      ["La certitude complète que tous les jeunes descendants produits seront génétiquement identiques au parent le plus résistant et le plus vigoureux des deux", "La rapidité d'exécution : la reproduction sexuée des saumons produit toujours et partout beaucoup plus de descendants vivants que la reproduction asexuée", "L'absence de risque : aucun descendant sexué ne peut être vulnérable aux maladies nouvelles"],
+      "Le coût de la reproduction sexuée s'achète en variation génétique, matière première de l'adaptation. <b>La variation génétique des descendants</b>.", {});
+  },
+  function () {
+    return mcq("Une population de pucerons se reproduit de façon asexuée tout l'été, puis passe à la reproduction sexuée à l'automne. Quelle explication rend compte de ce changement?",
+      "L'asexuée multiplie vite les individus quand les conditions sont bonnes; la sexuée produit la variation utile avant les conditions dures de l'hiver",
+      ["Les pucerons des jardins oublient littéralement comment se reproduire de façon asexuée dès que les jours commencent à raccourcir à l'automne venu", "La reproduction sexuée des pucerons est toujours et partout plus rapide que l'asexuée, donc elle sert simplement à finir la saison en beauté avant l'hiver", "Les prédateurs forcent les pucerons à changer de mode en mangeant les parents asexués"],
+      "Combiner les deux stratégies selon la saison exploite les avantages de chacune. <b>L'asexuée multiplie vite en conditions favorables; la sexuée produit la variation avant l'hiver</b>.", {});
+  },
+  function () {
+    return mcq("Un agriculteur propage ses meilleurs pommiers par greffage (reproduction asexuée) plutôt que par graines. Quel inconvénient doit-il surveiller?",
+      "Tous les arbres greffés partagent le même génome : une maladie qui en tue un peut menacer tout le verger",
+      ["Les pommiers greffés par l'agriculteur ne produisent jamais le moindre fruit comestible, faute d'une pollinisation adéquate des fleurs dans son verger", "Les greffes successives produisent des pommiers génétiquement imprévisibles et différents les uns des autres, d'une année de production à l'autre", "Le greffage est beaucoup plus lent que la croissance d'un pommier à partir d'une graine"],
+      "Le greffage copie un génome gagnant, mais copie aussi ses vulnérabilités. <b>Tous les arbres greffés partagent le même génome</b>.", {});
+  }
+]), ["Asexuée : rapide et uniforme; sexuée : plus coûteuse, mais source de variation.", "L'uniformité est le risque : une seule menace peut frapper tous les descendants identiques."]);
+
+
+E("s9f-u4-cr-mutagene-expliquer", 4, ["SC9.10.2"], 2, "var", varset([
+  function () {
+    return textq("Deux frères travaillent toute leur vie dans le même atelier d'usinage exposé à des solvants chimiques. L'un développe, à 55 ans, un cancer lié à ces solvants; l'autre, jamais. Explique les deux issues : dis comment un solvant peut mener à un cancer, et deux raisons pour lesquelles le second frère peut être épargné malgré la même exposition. (3 points)",
+      ["Les solvants peuvent contenir des mutagènes qui altèrent l'ADN des cellules."],
+      "Points de notation (3) : 1 point pour le mécanisme (les mutagènes des solvants modifient l'ADN; si les changements touchent les gènes qui contrôlent la division, la cellule peut se diviser sans contrôle : c'est un cancer). 1 point pour une première raison d'épargne (les mutations sont aléatoires : les cellules du second frère peuvent avoir subi des dommages réparés, ou dans des gènes sans rôle de contrôle). 1 point pour une deuxième raison distincte (différences d'exposition réelle, de protections utilisées, de capacité de réparation de l'ADN, ou le système immunitaire qui élimine les cellules anormales). Réponse modèle : Le cancer naît quand des mutations désactivent le contrôle de la division dans une cellule. <b>Le hasard des mutations et la réparation de l'ADN expliquent que la même exposition ne produise pas le même résultat chez les deux frères</b>.", {});
+  },
+  function () {
+    return textq("Un dermatologue explique qu'un coup de soleil d'enfance peut mener à un cancer de la peau quarante ans plus tard. Explique ce délai : dis ce que les ultraviolets font à l'ADN, pourquoi le cancer n'apparaît pas tout de suite, et ce qui doit encore arriver pour qu'une tumeur se forme. (3 points)",
+      ["Les ultraviolets endommagent l'ADN des cellules de la peau."],
+      "Points de notation (3) : 1 point pour l'effet des ultraviolets (ils créent des lésions dans l'ADN des cellules de la peau; la plupart sont réparées, mais certaines deviennent des mutations permanentes). 1 point pour le délai (la cellule mutée survit et se divise pendant des années; une seule mutation ne suffit généralement pas). 1 point pour la suite nécessaire (d'autres mutations doivent s'accumuler dans les gènes de contrôle de la division, jusqu'à ce qu'une lignée de cellules échappe au contrôle et forme une tumeur). Réponse modèle : Le coup de soleil inscrit des mutations qui dorment dans des cellules qui se divisent lentement. <b>Il faut l'accumulation d'autres mutations au fil des décennies pour qu'une cellule perde le contrôle de sa division</b>.", {});
+  },
+  function () {
+    return textq("Des chercheurs remarquent que les fumeurs qui cessent de fumer voient leur risque de cancer du poumon diminuer avec les années, sans jamais revenir tout à fait à celui d'un non-fumeur. Explique les deux parties de ce constat : pourquoi le risque diminue après l'arrêt, et pourquoi il ne revient pas complètement à la normale. (3 points)",
+      ["La fumée de cigarette contient des mutagènes qui altèrent l'ADN des cellules des poumons."],
+      "Points de notation (3) : 1 point pour la diminution (l'arrêt met fin à l'apport de nouveaux mutagènes; les cellules endommagées sont remplacées avec le temps et les mécanismes de réparation ne sont plus débordés). 1 point pour la persistance (les mutations déjà inscrites dans certaines cellules demeurent; ces cellules gardent un risque accru de perdre le contrôle de leur division). 1 point pour relier le tout au mécanisme du cancer (le risque dépend des mutations accumulées dans les gènes de contrôle : on peut cesser d'en ajouter, mais pas effacer celles qui existent). Réponse modèle : Cesser de fumer arrête l'accumulation de nouvelles mutations, et le renouvellement cellulaire fait baisser le risque. <b>Les mutations déjà présentes dans certaines cellules pulmonaires ne s'effacent pas, donc un risque résiduel persiste</b>.", {});
+  }
+]), ["Un cancer commence quand des mutations désactivent le contrôle de la division.", "Une seule mutation suffit rarement, et la réparation explique les issues différentes."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s9f-u1-cr-apparent":3,"s9f-u1-cr-classify":3,"s9f-u1-cr-components":3,"s9f-u1-cr-data":3,"s9f-u1-cr-design-mission":4,"s9f-u1-cr-distance":3,"s9f-u1-cr-evidence":3,"s9f-u1-cr-method":3,"s9f-u1-cr-process":3,"s9f-u1-cr-solar":3,"s9f-u1-cr-space-decision":4,"s9f-u1-cr-tech-science":3,"s9f-u1-cr-thinkers":3,"s9f-u1-cr-universe":3,"s9f-u2-cr-atom-model":3,"s9f-u2-cr-atomic-history":3,"s9f-u2-cr-changes":3,"s9f-u2-cr-classify-change":3,"s9f-u2-cr-commercial-material":3,"s9f-u2-cr-conclusion":3,"s9f-u2-cr-data-display":3,"s9f-u2-cr-design-change":4,"s9f-u2-cr-formulas":3,"s9f-u2-cr-gold-foil":3,"s9f-u2-cr-materials-decision":4,"s9f-u2-cr-periodic-evidence":3,"s9f-u2-cr-properties":3,"s9f-u2-cr-symbols":3,"s9f-u2-cr-trends":3,"s9f-u3-cr-applications":3,"s9f-u3-cr-bulb-removed":3,"s9f-u3-cr-charge-explain":3,"s9f-u3-cr-conservation-plan":3,"s9f-u3-cr-design-circuit":4,"s9f-u3-cr-discrepancy":3,"s9f-u3-cr-efficiency-compare":3,"s9f-u3-cr-efficiency-evaluate":3,"s9f-u3-cr-energy-decision":4,"s9f-u3-cr-energy-path":3,"s9f-u3-cr-flow-language":3,"s9f-u3-cr-graph-interpret":3,"s9f-u3-cr-hypothesis":3,"s9f-u3-cr-meter-use":3,"s9f-u3-cr-power-cost":3,"s9f-u3-cr-safety-design":3,"s9f-u3-cr-series-parallel-data":3,"s9f-u3-cr-technology-criteria":3,"s9f-u4-cr-canadian":3,"s9f-u4-cr-communicate":3,"s9f-u4-cr-condition":3,"s9f-u4-cr-design-yeast":4,"s9f-u4-cr-evaluate":3,"s9f-u4-cr-graph-reading":3,"s9f-u4-cr-methods":3,"s9f-u4-cr-mitosis-stages":3,"s9f-u4-cr-mutation":3,"s9f-u4-cr-reproduction-choice":4,"s9f-u4-cr-reproduction-maladie":3,"s9f-u4-cr-shifts":3,"s9f-u4-cr-technology":3,"s9f-u4-cr-trends":3};
+window.__BANK_CRMARKS={"s9f-u1-cr-apparent":3,"s9f-u1-cr-classify":3,"s9f-u1-cr-components":3,"s9f-u1-cr-data":3,"s9f-u1-cr-design-mission":4,"s9f-u1-cr-distance":3,"s9f-u1-cr-evidence":3,"s9f-u1-cr-method":3,"s9f-u1-cr-process":3,"s9f-u1-cr-solar":3,"s9f-u1-cr-space-decision":4,"s9f-u1-cr-tech-science":3,"s9f-u1-cr-thinkers":3,"s9f-u1-cr-universe":3,"s9f-u2-cr-atom-model":3,"s9f-u2-cr-atomic-history":3,"s9f-u2-cr-changes":3,"s9f-u2-cr-classify-change":3,"s9f-u2-cr-commercial-material":3,"s9f-u2-cr-conclusion":3,"s9f-u2-cr-data-display":3,"s9f-u2-cr-design-change":4,"s9f-u2-cr-formulas":3,"s9f-u2-cr-gold-foil":3,"s9f-u2-cr-materials-decision":4,"s9f-u2-cr-periodic-evidence":3,"s9f-u2-cr-properties":3,"s9f-u2-cr-symbols":3,"s9f-u2-cr-trends":3,"s9f-u3-cr-applications":3,"s9f-u3-cr-bulb-removed":3,"s9f-u3-cr-charge-explain":3,"s9f-u3-cr-conservation-plan":3,"s9f-u3-cr-design-circuit":4,"s9f-u3-cr-discrepancy":3,"s9f-u3-cr-efficiency-compare":3,"s9f-u3-cr-efficiency-evaluate":3,"s9f-u3-cr-energy-decision":4,"s9f-u3-cr-energy-path":3,"s9f-u3-cr-flow-language":3,"s9f-u3-cr-graph-interpret":3,"s9f-u3-cr-hypothesis":3,"s9f-u3-cr-langage-circuit":3,"s9f-u3-cr-meter-use":3,"s9f-u3-cr-power-cost":3,"s9f-u3-cr-proprietes-charge":3,"s9f-u3-cr-safety-design":3,"s9f-u3-cr-series-parallel-data":3,"s9f-u3-cr-technology-criteria":3,"s9f-u4-cr-canadian":3,"s9f-u4-cr-communicate":3,"s9f-u4-cr-condition":3,"s9f-u4-cr-design-yeast":4,"s9f-u4-cr-evaluate":3,"s9f-u4-cr-graph-reading":3,"s9f-u4-cr-methods":3,"s9f-u4-cr-mitosis-stages":3,"s9f-u4-cr-mutagene-expliquer":3,"s9f-u4-cr-mutation":3,"s9f-u4-cr-reproduction-choice":4,"s9f-u4-cr-reproduction-maladie":3,"s9f-u4-cr-shifts":3,"s9f-u4-cr-technology":3,"s9f-u4-cr-trends":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

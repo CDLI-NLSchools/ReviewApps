@@ -501,6 +501,7 @@ function s8fBarSVG(labels, values, yLabel){
 }
 
 /* ----- bank-u1.js ----- */
+// CRMARKS: s8f-u1-cr-distribution-deplacement=3
 // CRMARKS: s8f-u1-cr-cycle-role=3
 // CRMARKS: s8f-u1-cr-glacier=3
 // CRMARKS: s8f-u1-cr-abiotic=3
@@ -1643,7 +1644,105 @@ E("s8f-u1-research-judge", 1, ["SC8.3.11"], 3, "var", varset([
 var NO_COMPOSE_U1 = { "s8f-u1-cr-design-salinity": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s8f-u1-climat-effets-glaciers", 1, ["SC8.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Le climat d'une région côtière se refroidit pendant des milliers d'années et la neige d'hiver cesse de fondre entièrement l'été. Quel effet à long terme sur les glaciers s'ensuit?",
+      "Les glaciers avancent et s'épaississent, car il s'accumule plus de neige qu'il ne s'en perd par la fonte",
+      ["Les glaciers reculent très rapidement vers les sommets, car le froid intense empêche la neige fraîche de se transformer en glace compacte", "Les glaciers restent exactement les mêmes, car le climat n'a aucun effet sur leur bilan de masse", "Les glaciers de la région disparaissent complètement en une seule saison chaude, car la neige fraîche accumulée fait fondre toute la vieille glace sous elle"],
+      "Quand l'accumulation dépasse la fonte pendant des millénaires, le bilan est positif et le glacier avance. <b>Les glaciers avancent et s'épaississent</b>.", {});
+  },
+  function () {
+    return mcq("Des étés plus chauds font fondre les glaciers d'une chaîne de montagnes plus vite que les hivers ne les reconstruisent. Quel effet à long terme s'ensuit?",
+      "Les glaciers reculent et s'amincissent, et leurs eaux de fonte alimentent davantage les rivières en été",
+      ["Les glaciers avancent vers les vallées, car la fonte les rend plus légers et plus rapides", "Les glaciers deviennent nettement plus épais et avancent, car toute l'eau de fonte produite en été regèle toujours entièrement à leur surface pendant l'hiver", "Rien ne change du tout dans la vallée, car le niveau et le débit des rivières ne dépendent jamais, en aucune saison, de la fonte des glaciers de montagne"],
+      "Fonte supérieure à l'accumulation : le bilan est négatif, le glacier recule et les rivières reçoivent plus d'eau de fonte. <b>Les glaciers reculent et s'amincissent</b>.", {});
+  },
+  function () {
+    return mcq("À la fin de la dernière période glaciaire, le niveau de la mer était beaucoup plus bas qu'aujourd'hui. Quel lien unit ce fait aux glaciers?",
+      "Une énorme quantité d'eau était emprisonnée dans les glaciers continentaux au lieu d'être dans les océans",
+      ["Les glaciers continentaux flottaient directement sur les océans du monde et les empêchaient physiquement, par leur poids énorme, de monter plus haut qu'aujourd'hui", "L'eau des océans était beaucoup plus froide à cette époque, et l'eau froide occupe toujours un plus grand volume que la même quantité d'eau chaude", "Les glaciers buvaient l'eau de mer par leurs fissures et la gardaient quelques années seulement"],
+      "L'eau des glaciers continentaux vient des océans par le cycle de l'eau; quand elle est stockée en glace sur les continents, le niveau marin baisse. <b>Une énorme quantité d'eau était emprisonnée dans les glaciers continentaux</b>.", {});
+  },
+  function () {
+    return mcq("Un glacier de vallée laisse derrière lui, en reculant, une crête de roches et de gravier appelée moraine. Que révèle cette moraine aux scientifiques?",
+      "La position la plus avancée que le glacier a atteinte avant de commencer à reculer",
+      ["L'âge exact, calculé à l'année près par les scientifiques, auquel le glacier a commencé à se former dans le fond de cette vallée de montagne", "La température moyenne exacte de l'air au-dessus de la vallée pendant chacun des hivers de toute la période glaciaire ancienne", "La profondeur maximale de l'océan qui recouvrait autrefois toute la vallée"],
+      "Un glacier dépose ses débris à son front; la moraine marque donc son avancée maximale. <b>La position la plus avancée que le glacier a atteinte</b>.", {});
+  }
+]), ["Le bilan du glacier : neige ajoutée contre glace fondue. Quel côté gagne?", "Accumulation gagnante = avancée; fonte gagnante = recul."]);
+
+
+E("s8f-u1-formation-glaciers", 1, ["SC8.1.2"], 1, "var", varset([
+  function () {
+    return mcq("Comment un glacier commence-t-il à se former dans une vallée de montagne?",
+      "La neige s'accumule année après année sans fondre complètement, se compacte et se transforme graduellement en glace",
+      ["Un lac de montagne entier gèle d'un seul coup pendant un hiver exceptionnellement froid et devient immédiatement un glacier permanent de la vallée", "La pluie verglaçante des tempêtes forme chaque hiver une couche de glace très épaisse qui ne fond plus jamais par la suite, même pendant les étés chauds", "Le vent pousse la glace de mer dans la vallée, où elle s'empile saison après saison"],
+      "Il faut une accumulation nette de neige sur de nombreuses années, compactée en glace sous son propre poids. <b>La neige s'accumule année après année et se transforme graduellement en glace</b>.", {});
+  },
+  function () {
+    return mcq("Qu'est-ce qui fait avancer lentement un glacier de vallée vers le bas de la pente?",
+      "Son propre poids : la gravité fait s'écouler la masse de glace très lentement, comme un fluide épais",
+      ["Le vent froid qui souffle constamment du sommet de la montagne vers le bas de la vallée et pousse lentement toute la masse de glace devant lui", "Les rivières souterraines cachées sous la montagne qui soulèvent le glacier entier et le font glisser rapidement sur une couche d'eau chaque printemps", "La dilatation de la glace en été, qui pousse le front du glacier un peu plus loin chaque année"],
+      "Un glacier s'écoule sous son propre poids, par déformation interne et glissement à la base. <b>Son propre poids : la gravité fait s'écouler la masse de glace très lentement</b>.", {});
+  },
+  function () {
+    return mcq("Pourquoi trouve-t-on des glaciers seulement dans certaines régions du monde?",
+      "Parce qu'il faut un climat où la neige accumulée en hiver dépasse la fonte de l'été, année après année",
+      ["Parce que les glaciers ne peuvent se former que sur les continents et dans les régions qui ont déjà porté des glaciers pendant les périodes glaciaires anciennes", "Parce que les glaciers exigent absolument un océan voisin immédiat pour fournir, par ses vagues gelées, toute la glace épaisse dont ils sont entièrement faits", "Parce que la glace ne peut exister que dans les régions où il ne fait jamais au-dessus de zéro"],
+      "La condition est un bilan positif durable : plus de neige accumulée que de fonte. <b>Parce qu'il faut un climat où la neige accumulée dépasse la fonte, année après année</b>.", {});
+  }
+]), ["Un glacier se construit sur de nombreuses années, pas en un hiver.", "La neige qui survit à l'été est enfouie et comprimée en glace."]);
+
+
+E("s8f-u1-distribution-abiotique", 1, ["SC8.1.4"], 2, "var", varset([
+  function () {
+    return mcq("Les caribous d'une région se trouvent presque uniquement dans les plaines ouvertes où poussent les lichens, et presque jamais dans la forêt dense voisine. Quel facteur explique le mieux cette distribution?",
+      "Un facteur abiotique indirect : la lumière et le vent des plaines ouvertes permettent aux lichens, leur nourriture, de pousser là",
+      ["Le hasard seul et rien d'autre : les caribous de la région choisissent entièrement au hasard l'endroit où ils vivent, et ce choix change à chaque saison de l'année", "La température de l'air, pourtant exactement identique dans les plaines ouvertes et dans la forêt dense voisine, qui attirerait les caribous vers les plaines par préférence", "La présence de prédateurs dans les plaines, qui y attirent les caribous en grand nombre"],
+      "La distribution suit celle de la ressource, elle-même fixée par les conditions abiotiques du milieu ouvert. <b>Un facteur abiotique indirect : la lumière et le vent des plaines permettent aux lichens de pousser là</b>.", {});
+  },
+  function () {
+    return mcq("Les grenouilles d'un secteur vivent près des étangs peu profonds et sont absentes des collines sèches à quelques kilomètres. Quel facteur explique le mieux cette distribution?",
+      "Un facteur abiotique : l'eau stagnante des étangs, nécessaire à la reproduction et à la survie des grenouilles",
+      ["Un facteur biotique seulement : les autres grenouilles de la population ont collectivement décidé, cette année, de rester près des étangs peu profonds du secteur", "Le hasard pur : les grenouilles du secteur pourraient vivre exactement aussi bien sur les collines sèches et rocheuses, sans qu'aucun changement soit nécessaire pour elles", "La couleur du sol des collines, qui empêche les grenouilles de s'y camoufler contre les prédateurs"],
+      "Sans eau pour pondre et garder la peau humide, les grenouilles ne peuvent pas vivre sur les collines sèches. <b>Un facteur abiotique : l'eau stagnante des étangs</b>.", {});
+  },
+  function () {
+    return mcq("Sur une montagne, les épinettes poussent jusqu'à une certaine altitude, au-delà de laquelle on ne trouve que des plantes basses et rabougries. Quel facteur explique le mieux cette limite?",
+      "Des facteurs abiotiques liés à l'altitude : le froid, le vent et une saison de croissance de plus en plus courte",
+      ["Un facteur biotique direct : les petites plantes basses du sommet empêchent activement et délibérément les jeunes épinettes de pousser plus haut que la limite actuelle", "Le simple hasard de la dispersion naturelle des graines d'épinette, qui ne sont tout simplement jamais parvenues jusqu'au sommet de la montagne depuis des siècles", "La composition du sol du sommet, identique à celle du bas, qui rebute les racines des épinettes"],
+      "En altitude, le froid et le vent raccourcissent la saison de croissance au point où les arbres ne peuvent plus s'établir. <b>Des facteurs abiotiques liés à l'altitude : le froid, le vent et une courte saison de croissance</b>.", {});
+  },
+  function () {
+    return mcq("Les huîtres vivent dans les parties d'un estuaire où l'eau est saumâtre, mais pas dans la rivière d'eau douce en amont ni en pleine mer. Quel facteur explique le mieux cette distribution?",
+      "Un facteur abiotique : la concentration de sel, que les huîtres ne tolèrent que dans une certaine plage",
+      ["Un facteur biotique direct : les poissons prédateurs de l'estuaire gardent activement les huîtres regroupées dans la zone d'eau saumâtre du milieu de l'estuaire", "Le simple hasard des courants de marée, qui dépose les jeunes huîtres complètement au hasard le long de tout l'estuaire, d'une extrémité à l'autre, chaque année", "La profondeur de l'eau, identique partout dans l'estuaire, qui convient aux huîtres à cet endroit"],
+      "Chaque espèce tolère une plage de salinité; les huîtres ne vivent que là où la concentration de sel convient. <b>Un facteur abiotique : la concentration de sel</b>.", {});
+  }
+]), ["Cherche le facteur non vivant qui diffère entre les deux milieux.", "La distribution de l'organisme suit le facteur dont il a besoin."]);
+
+
+E("s8f-u1-cr-distribution-deplacement", 1, ["SC8.1.4"], 2, "var", varset([
+  function () {
+    return textq("Après dix étés plus chauds que la moyenne, les truites d'un lac ont presque disparu des baies peu profondes et se trouvent maintenant surtout près des arrivées d'eau froide au fond du lac. Explique ce déplacement de distribution : nomme le facteur abiotique en cause, explique pourquoi les truites ont quitté les baies, et prédis ce qui arrivera si le réchauffement continue. (3 points)",
+      ["Le facteur abiotique est la température de l'eau des baies peu profondes."],
+      "Points de notation (3) : 1 point pour nommer le facteur abiotique (la température de l'eau, qui monte dans les baies peu profondes). 1 point pour expliquer le départ (l'eau plus chaude dépasse la plage de tolérance des truites et contient moins d'oxygène dissous; elles se déplacent vers l'eau froide qui leur convient). 1 point pour une prédiction raisonnée (si le réchauffement continue, l'habitat convenable rétrécit encore; la population diminue ou disparaît du lac si l'eau froide vient à manquer). Réponse modèle : Les baies peu profondes se réchauffent au-delà de ce que les truites tolèrent, donc elles se réfugient près des arrivées d'eau froide. <b>Si le réchauffement continue, il restera de moins en moins d'habitat froid et la population de truites du lac déclinera</b>.", {});
+  },
+  function () {
+    return textq("Un marais côtier reçoit de moins en moins d'eau douce parce qu'une rivière a été détournée, et son eau devient chaque année plus salée. Les quenouilles, plantes d'eau douce, meurent le long des bords et des herbes tolérant le sel les remplacent. Explique ce changement de distribution : nomme le facteur abiotique en cause, explique pourquoi les quenouilles disparaissent, et prédis la suite si le détournement continue. (3 points)",
+      ["Le facteur abiotique est la concentration de sel (la salinité) de l'eau du marais."],
+      "Points de notation (3) : 1 point pour nommer le facteur abiotique (la salinité croissante de l'eau). 1 point pour expliquer la disparition (les quenouilles sont adaptées à l'eau douce; l'eau plus salée dépasse leur tolérance et elles meurent, tandis que les plantes tolérant le sel prennent la place). 1 point pour une prédiction raisonnée (le marais deviendra un marais salé; les espèces d'eau douce continueront de reculer et la communauté changera entièrement si le détournement persiste). Réponse modèle : Privé d'eau douce, le marais devient trop salé pour les quenouilles, qui meurent; les herbes tolérant le sel, déjà adaptées, les remplacent. <b>Si le détournement continue, tout le marais deviendra un milieu salé et sa communauté d'eau douce disparaîtra</b>.", {});
+  },
+  function () {
+    return textq("Les hivers d'une région deviennent plus doux et presque sans neige pendant plusieurs années. Des insectes ravageurs qui mouraient autrefois chaque hiver survivent maintenant et apparaissent chaque printemps en plus grand nombre dans les forêts. Explique ce changement de distribution et d'abondance : nomme le facteur abiotique en cause, explique pourquoi les insectes survivent maintenant, et prédis un effet sur la forêt. (3 points)",
+      ["Le facteur abiotique est la température hivernale, devenue plus douce."],
+      "Points de notation (3) : 1 point pour nommer le facteur abiotique (la température hivernale plus douce, avec moins de gelées mortelles). 1 point pour expliquer la survie (le froid hivernal tuait la plupart des insectes; sans ce facteur limitant, beaucoup plus survivent jusqu'au printemps et se reproduisent). 1 point pour un effet prédit raisonnable (défoliation accrue, arbres affaiblis ou tués, effets sur les oiseaux et les autres espèces qui dépendent de la forêt). Réponse modèle : Le froid de l'hiver était le facteur qui limitait ces insectes; des hivers doux les laissent survivre en grand nombre. <b>La forêt subira des attaques plus fortes chaque année, et des arbres affaiblis ou tués changeront l'habitat d'autres espèces</b>.", {});
+  }
+]), ["Nomme d'abord le facteur abiotique, puis suis la chaîne de cause à effet.", "Termine par une prédiction qui prolonge le même changement."]);
+
 /* ----- bank-u2.js ----- */
+// CRMARKS: s8f-u2-cr-viscosite-test=3
 // CRMARKS: s8f-u2-cr-molasses=3
 // CRMARKS: s8f-u2-cr-layers=3
 // CRMARKS: s8f-u2-cr-density-block=3
@@ -2718,7 +2817,110 @@ E("s8f-u2-units", 2, ["SC8.6.9"], 1, "var", varset([
 var NO_COMPOSE_U2 = { "s8f-u2-cr-design-viscosity": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s8f-u2-viscosite-facteur", 2, ["SC8.4.2"], 2, "var", varset([
+  function () {
+    return mcq("Une élève fait couler du miel froid du réfrigérateur et du miel tiède dans deux entonnoirs identiques : le miel tiède s'écoule beaucoup plus vite. Quel facteur de la viscosité est mis en évidence?",
+      "La température : réchauffer un liquide diminue sa viscosité et le fait couler plus facilement",
+      ["La pression exercée par le poids : le miel tiède pèserait plus lourd que le miel froid et pousserait donc plus fort dans le col étroit de l'entonnoir pendant l'écoulement", "La grosseur des particules du liquide : le froid du réfrigérateur fait grossir de façon permanente les particules du miel, qui peinent ensuite à traverser l'entonnoir", "La forme du contenant : l'entonnoir du miel tiède était forcément plus large que l'autre"],
+      "Même miel, même entonnoir : seule la température change, et le liquide chaud coule plus vite. <b>La température : réchauffer un liquide diminue sa viscosité</b>.", {});
+  },
+  function () {
+    return mcq("Un mécanicien choisit une huile à moteur plus fluide pour l'hiver et une huile plus épaisse pour l'été. Sur quel principe repose ce choix?",
+      "La viscosité de l'huile diminue quand elle se réchauffe : une huile fluide à froid devient trop mince à chaud si elle n'est pas choisie en conséquence",
+      ["La viscosité d'une huile à moteur augmente toujours quand elle se réchauffe dans le moteur, donc la saison chaude exige l'huile la plus mince et la plus fluide possible", "La température de fonctionnement ne change jamais, en aucune circonstance, la viscosité d'une huile à moteur : le choix entre les grades est une simple question de prix d'achat", "L'huile d'hiver est plus épaisse parce que le froid épaissit toutes les huiles de la même façon"],
+      "Le froid épaissit l'huile et la chaleur l'amincit; le grade est choisi pour garder une viscosité utile à la température de service. <b>La viscosité de l'huile diminue quand elle se réchauffe</b>.", {});
+  },
+  function () {
+    return mcq("On compare le temps d'écoulement d'une bille dans trois liquides à la même température : l'eau (rapide), l'huile végétale (moyen) et le sirop de maïs (très lent). Que compare-t-on?",
+      "La viscosité propre à chaque liquide : le sirop, le plus visqueux, résiste le plus à l'écoulement de la bille",
+      ["La densité des liquides seulement : une bille métallique tombe toujours et nécessairement plus vite dans le liquide le plus dense des trois cylindres, quel qu'il soit", "La température des trois liquides : la vitesse de chute de la bille révèle directement lequel des trois liquides est le plus chaud au moment de l'essai en laboratoire", "La masse de la bille, qui change selon le liquide dans lequel on la laisse tomber"],
+      "À température égale, la résistance à l'écoulement diffère selon le liquide : c'est sa viscosité. <b>La viscosité propre à chaque liquide : le sirop est le plus visqueux</b>.", {});
+  },
+  function () {
+    return mcq("Une sauce tomate trop liquide est mise à mijoter à découvert pour l'épaissir. Pourquoi cette méthode fonctionne-t-elle?",
+      "L'eau s'évapore pendant le mijotage : la sauce devient plus concentrée et sa viscosité augmente",
+      ["La chaleur du mijotage détruit progressivement les particules de tomate de la sauce, qui devient alors épaisse et presque solide, comme une gelée ferme de fruits", "Le mijotage à découvert ajoute de grandes quantités d'air brassé à la sauce tomate, et les sauces fortement aérées sont toujours beaucoup plus épaisses que les autres", "Le sel des tomates se transforme en amidon pendant la cuisson à feu doux prolongée"],
+      "Enlever de l'eau concentre la sauce et augmente sa viscosité. <b>L'eau s'évapore : la sauce devient plus concentrée et plus visqueuse</b>.", {});
+  }
+]), ["La viscosité est la résistance à l'écoulement; repère ce qui a changé.", "Chauffer un liquide diminue sa viscosité; le concentrer l'augmente."]);
+
+
+E("s8f-u2-densite-quotidien", 2, ["SC8.4.6"], 2, "var", varset([
+  function () {
+    return mcq("Une canette de boisson gazeuse ordinaire coule dans un seau d'eau, tandis qu'une canette de la version diète flotte. Les deux canettes ont le même volume. Qu'est-ce qui explique la différence?",
+      "La canette ordinaire a une masse plus grande pour le même volume : sa densité moyenne dépasse celle de l'eau",
+      ["La canette de boisson diète contient un gaz spécial très léger qui la rend plus légère que l'air ambiant autour du seau et la fait flotter à la surface", "La canette de boisson ordinaire est fabriquée d'un métal beaucoup plus épais et plus lourd que le métal mince utilisé pour la canette de boisson diète", "L'eau du seau pousse moins fort sur la canette ordinaire que sur la canette diète"],
+      "À volume égal, flotter ou couler dépend de la densité moyenne : la canette ordinaire, plus massive (sucre dissous), dépasse la densité de l'eau. <b>Sa densité moyenne dépasse celle de l'eau</b>.", {});
+  },
+  function () {
+    return mcq("Un œuf frais coule dans l'eau du robinet, mais flotte quand on dissout beaucoup de sel dans l'eau. Qu'est-ce qui explique ce changement?",
+      "Le sel dissous augmente la densité de l'eau jusqu'à dépasser celle de l'œuf, qui flotte alors",
+      ["Le sel de table dissous rend l'œuf frais plus léger en dissolvant lentement une bonne partie de sa coquille calcaire pendant toute la durée de l'expérience", "Le sel dissous fait lentement grossir l'œuf frais dans le verre, et les objets plus gros et plus volumineux flottent toujours beaucoup mieux que les objets petits", "L'eau salée pousse vers le haut parce qu'elle est plus chaude que l'eau du robinet"],
+      "L'œuf ne change pas; c'est la densité du liquide qui augmente avec le sel dissous, jusqu'à dépasser celle de l'œuf. <b>Le sel dissous augmente la densité de l'eau</b>.", {});
+  },
+  function () {
+    return mcq("Une montgolfière s'élève quand on chauffe l'air de son enveloppe. Qu'est-ce qui explique la montée?",
+      "L'air chauffé se dilate et devient moins dense que l'air extérieur plus froid, donc le ballon monte",
+      ["L'air chauffé par le brûleur devient beaucoup plus dense que l'air extérieur froid qui entoure le ballon, et cette densité plus grande pousse l'enveloppe vers le haut", "Le brûleur de la montgolfière produit un gaz de combustion spécial, plus lourd que l'air, qui s'accumule sous l'enveloppe et la soulève par en dessous", "La chaleur rend l'enveloppe du ballon plus légère en faisant fondre une partie du tissu"],
+      "Chauffer l'air le rend moins dense que l'air ambiant; l'ensemble, moins dense, s'élève. <b>L'air chauffé devient moins dense que l'air extérieur</b>.", {});
+  },
+  function () {
+    return mcq("Dans une vinaigrette non brassée, l'huile se retrouve toujours au-dessus du vinaigre. Qu'est-ce qui explique cet ordre?",
+      "L'huile est moins dense que le vinaigre (une solution aqueuse), donc elle flotte au-dessus",
+      ["L'huile d'olive est beaucoup plus dense que le vinaigre aqueux, et en cuisine les liquides les plus denses montent toujours d'eux-mêmes jusqu'à la surface du mélange", "Le vinaigre acide attire lentement l'huile vers le haut du contenant par une force magnétique faible mais constante qui agit entre les deux liquides non mélangés", "L'huile a été versée en dernier, et le dernier liquide versé reste toujours sur le dessus"],
+      "Les liquides non miscibles se rangent par densité : le moins dense, l'huile, reste au-dessus. <b>L'huile est moins dense que le vinaigre</b>.", {});
+  }
+]), ["Flotter ou couler compare la densité moyenne de l'objet à celle du liquide.", "Si la densité du liquide dépasse celle de l'objet, l'objet flotte."]);
+
+
+E("s8f-u2-masse-poids-lieux", 2, ["SC8.4.8"], 2, "gen", function () {
+  var m = pick([2, 4, 5, 8, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100]);
+  var lieu = pick([
+    { n: "la Lune", g: 1.6, f: "environ le sixième de la gravité terrestre" },
+    { n: "Mars", g: 3.7, f: "un peu plus du tiers de la gravité terrestre" },
+    { n: "Jupiter", g: 24.8, f: "environ deux fois et demie la gravité terrestre" },
+    { n: "la Station spatiale internationale (en orbite)", g: 0, f: "la chute libre continue" }
+  ]);
+  var wT = Math.round(m * 9.8);
+  var wL = Math.round(m * lieu.g);
+  if (lieu.g === 0) {
+    return mcq("Une trousse d'outils de " + m + " kg est apportée dans " + lieu.n + ". Qu'arrive-t-il à sa masse et à son poids?",
+      "Sa masse reste " + m + " kg, mais son poids devient pratiquement nul : en chute libre, elle flotte comme si elle ne pesait rien",
+      ["Sa masse devient nulle elle aussi, en même temps que son poids, parce qu'il n'y a plus aucune gravité pour retenir la matière de la trousse en orbite",
+       "Son poids mesuré reste exactement le même que celui qu'elle avait sur la Terre, parce que le poids d'un objet ne dépend que de sa masse et de rien d'autre",
+       "Sa masse augmente légèrement pendant le voyage, parce que tous les objets gonflent toujours un peu quand ils se trouvent dans le vide de l'espace"],
+      "La masse (la quantité de matière) ne change pas de lieu; le poids dépend de la gravité, et en chute libre orbitale le poids apparent est nul. <b>Sa masse reste " + m + " kg, mais son poids devient pratiquement nul</b>.", { m: m, lieu: lieu.n });
+  }
+  return mcq("Une trousse d'outils de " + m + " kg pèse environ " + wT + " N sur la Terre. On l'apporte sur " + lieu.n + ", où la gravité vaut " + String(lieu.g).replace(".", ",") + " N/kg (" + lieu.f + "). Quels sont sa masse et son poids là-bas?",
+    "Sa masse reste " + m + " kg et son poids devient environ " + wL + " N",
+    ["Sa masse devient environ " + Math.round(m * lieu.g / 9.8) + " kg et son poids reste " + wT + " N",
+     "Sa masse et son poids deviennent tous les deux environ " + wL + " dans leurs unités respectives",
+     "Sa masse reste " + m + " kg et son poids reste exactement " + wT + " N, comme sur la Terre"],
+    "La masse ne change pas de lieu : " + m + " kg partout. Le poids se calcule par masse × gravité du lieu : " + m + " × " + String(lieu.g).replace(".", ",") + " \u2248 <b>" + wL + " N</b>.", { m: m, lieu: lieu.n });
+}, ["La masse est la quantité de matière : elle ne change pas de lieu.", "Le poids vaut masse × gravité du lieu; recalcule-le sur place."]);
+
+
+E("s8f-u2-cr-viscosite-test", 2, ["SC8.4.2"], 2, "var", varset([
+  function () {
+    return textq("Une élève veut vérifier si la température change la viscosité de l'huile végétale. Elle verse la même quantité d'huile, une fois froide du réfrigérateur et une fois tiède, dans deux entonnoirs identiques et chronomètre l'écoulement. Décris ce qu'elle doit garder identique dans les deux essais, ce qu'elle mesure, et le résultat auquel la théorie permet de s'attendre. (3 points)",
+      ["Elle doit utiliser la même quantité d'huile et des entonnoirs identiques dans les deux essais."],
+      "Points de notation (3) : 1 point pour les variables gardées identiques (même huile, même quantité, entonnoirs identiques, même façon de chronométrer; seule la température change). 1 point pour la mesure (le temps d'écoulement complet, répété pour fiabilité). 1 point pour le résultat attendu et son explication (l'huile tiède s'écoule plus vite, car réchauffer un liquide diminue sa viscosité). Réponse modèle : Même huile, même volume, entonnoirs identiques : seule la température diffère. <b>L'huile tiède s'écoulera plus vite, parce que sa viscosité est plus faible que celle de l'huile froide</b>.", {});
+  },
+  function () {
+    return textq("Un élève veut comparer la viscosité de trois liquides (eau, huile végétale, sirop de maïs) en laissant tomber une bille identique dans trois cylindres remplis à la même hauteur, tous à la température ambiante. Décris ce qu'il doit garder identique, ce qu'il mesure, et comment il classera les liquides du moins visqueux au plus visqueux. (3 points)",
+      ["Il doit utiliser des cylindres identiques remplis à la même hauteur et la même bille."],
+      "Points de notation (3) : 1 point pour les variables gardées identiques (même bille, cylindres identiques, même hauteur de liquide, même température, lâcher de la bille de la même façon au centre). 1 point pour la mesure (le temps que la bille met à atteindre le fond, répété pour fiabilité). 1 point pour le classement attendu (eau la moins visqueuse, chute la plus rapide; puis l'huile; le sirop le plus visqueux, chute la plus lente, car un liquide visqueux résiste davantage au mouvement). Réponse modèle : La bille tombe le plus vite dans l'eau et le plus lentement dans le sirop. <b>Le classement est donc : eau (moins visqueuse), huile, sirop de maïs (plus visqueux)</b>.", {});
+  },
+  function () {
+    return textq("Une entreprise veut choisir, pour une machine extérieure utilisée toute l'année, entre une huile A qui coule bien à froid mais devient très mince à chaud, et une huile B qui coule un peu plus lentement à froid mais garde presque la même viscosité à chaud. Explique, à l'aide de la viscosité et de la température, quel choix protège le mieux la machine, et un inconvénient du choix retenu. (3 points)",
+      ["La viscosité d'une huile diminue quand la température augmente."],
+      "Points de notation (3) : 1 point pour rappeler le principe (la viscosité diminue quand la température augmente; une huile trop mince à chaud ne protège plus les pièces, une huile trop épaisse à froid circule mal au démarrage). 1 point pour un choix justifié (l'huile B, dont la viscosité reste assez stable, protège la machine dans les deux saisons; l'huile A deviendrait trop mince en été). 1 point pour un inconvénient du choix retenu (l'huile B coule plus lentement à froid : démarrages un peu moins bien lubrifiés par grand froid, ou coût plus élevé). Réponse modèle : L'huile B garde une viscosité utile été comme hiver, ce qui protège les pièces toute l'année. <b>Son inconvénient : par grand froid, elle circule plus lentement au démarrage que l'huile A</b>.", {});
+  }
+]), ["Un test juste change une seule variable et garde les autres identiques.", "Annonce le résultat attendu et relie-le au comportement de la viscosité."]);
+
 /* ----- bank-u3.js ----- */
+// CRMARKS: s8f-u3-cr-refraction-expliquer=3
 // CRMARKS: s8f-u3-cr-properties=3
 // CRMARKS: s8f-u3-cr-em=3
 // CRMARKS: s8f-u3-cr-reflection=3
@@ -3868,7 +4070,27 @@ var NO_COMPOSE_U3 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s8f-u3-cr-refraction-expliquer", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("Une paille plongée dans un verre d'eau semble brisée à la surface : la partie immergée paraît déplacée par rapport à la partie hors de l'eau. Explique cette apparence à l'aide de la réfraction : dis ce qui arrive à la lumière à la surface, pourquoi l'œil est trompé, et ce qui se passerait si le verre contenait de l'huile végétale, plus réfringente que l'eau. (3 points)",
+      ["La lumière ralentit en passant de l'eau à l'air et change de direction à la surface."],
+      "Points de notation (3) : 1 point pour le mécanisme (la lumière qui sort de l'eau change de vitesse et de direction à la surface : c'est la réfraction; en entrant dans l'air, elle s'écarte de la normale). 1 point pour l'illusion (l'œil suppose que la lumière voyage en ligne droite, donc il prolonge les rayons en ligne droite et voit la partie immergée à une position déplacée et moins profonde). 1 point pour la prédiction (dans l'huile, plus réfringente, la déviation serait plus forte et la paille paraîtrait encore plus déplacée). Réponse modèle : Les rayons venant de la paille immergée se réfractent à la surface; l'œil les prolonge tout droit et voit la paille ailleurs qu'elle n'est. <b>Dans l'huile, la réfraction plus forte accentuerait encore le déplacement apparent</b>.", {});
+  },
+  function () {
+    return textq("Un poisson vu du quai semble toujours plus près de la surface qu'il ne l'est vraiment, et les pêcheurs à la lance visent plus bas que le poisson aperçu. Explique les deux faits à l'aide de la réfraction : dis ce qui arrive à la lumière à la surface et pourquoi la position apparente diffère de la position réelle. (3 points)",
+      ["La lumière venant du poisson change de direction en passant de l'eau à l'air."],
+      "Points de notation (3) : 1 point pour le mécanisme (la lumière venant du poisson s'écarte de la normale en sortant de l'eau, car elle accélère dans l'air). 1 point pour la position apparente (l'œil prolonge les rayons en ligne droite, donc il place le poisson plus haut, c'est-à-dire moins profond, qu'il ne l'est). 1 point pour le conseil de visée (il faut viser sous le poisson aperçu, là où il se trouve réellement). Réponse modèle : Les rayons réfractés à la surface font paraître le poisson moins profond qu'en réalité. <b>Viser plus bas que l'image aperçue compense exactement ce déplacement apparent</b>.", {});
+  },
+  function () {
+    return textq("Le fond d'une piscine semble moins profond vu du bord qu'il ne l'est en réalité, et les lignes peintes au fond paraissent onduler quand l'eau bouge. Explique les deux apparences à l'aide de la réfraction. (3 points)",
+      ["La lumière venant du fond change de direction à la surface de l'eau."],
+      "Points de notation (3) : 1 point pour le mécanisme (la lumière venant du fond s'écarte de la normale en passant de l'eau à l'air). 1 point pour la profondeur apparente (l'œil prolonge les rayons en ligne droite et reconstruit le fond plus près de la surface qu'il ne l'est). 1 point pour les lignes qui ondulent (la surface agitée change sans cesse l'angle des rayons réfractés, donc la position apparente des lignes bouge sans arrêt). Réponse modèle : Le fond paraît relevé parce que les rayons réfractés sont prolongés tout droit par l'œil. <b>Quand la surface bouge, la réfraction change d'un instant à l'autre et les lignes semblent onduler</b>.", {});
+  }
+]), ["La lumière change de vitesse à la surface, et ce changement la dévie.", "L'œil prolonge les rayons en ligne droite et reconstruit l'objet au mauvais endroit."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: s8f-u4-cr-besoins-experience=3
 // CRMARKS: s8f-u4-cr-living=3
 // CRMARKS: s8f-u4-cr-cell-division=3
 // CRMARKS: s8f-u4-cr-levels=3
@@ -4602,7 +4824,116 @@ var NO_COMPOSE_U4 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
 
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s8f-u4-theorie-cellulaire", 4, ["SC8.10.1"], 1, "var", varset([
+  function () {
+    return mcq("Lequel des énoncés fait partie de la théorie cellulaire?",
+      "Toutes les cellules proviennent de cellules déjà existantes, par division",
+      ["Les cellules peuvent apparaître spontanément à partir de matière non vivante", "Un organisme peut être vivant sans contenir aucune cellule en son corps", "Toutes les cellules d'un organisme ont exactement la même forme et la même tâche"],
+      "La théorie cellulaire affirme que les êtres vivants sont faits de cellules, que la cellule est l'unité de base du vivant et que les cellules viennent de cellules. <b>Toutes les cellules proviennent de cellules déjà existantes</b>.", {});
+  },
+  function () {
+    return mcq("Un élève observe une goutte d'eau d'étang au microscope et y découvre un organisme formé d'une seule cellule qui se déplace et se nourrit. Qu'est-ce que cette observation illustre de la théorie cellulaire?",
+      "La cellule est l'unité de base de la vie : un organisme entier peut tenir en une seule cellule",
+      ["Les organismes unicellulaires ne sont pas vraiment vivants, faute d'organes complets", "Toutes les cellules doivent faire partie d'un organisme formé de milliards de cellules", "Un organisme unicellulaire est une cellule défectueuse qui a quitté un plus gros organisme"],
+      "Un organisme complet fait d'une seule cellule montre que la cellule suffit comme unité de base du vivant. <b>La cellule est l'unité de base de la vie</b>.", {});
+  },
+  function () {
+    return mcq("Une égratignure sur la peau guérit en quelques jours parce que les cellules autour se divisent et produisent de nouvelles cellules de peau. Quel principe de la théorie cellulaire cette guérison illustre-t-elle?",
+      "Les nouvelles cellules proviennent de cellules existantes, par division cellulaire",
+      ["Les nouvelles cellules apparaissent spontanément dans le sang qui couvre la plaie", "Le corps fabrique des cellules à partir des aliments sans utiliser de cellules existantes", "Les cellules de peau voisines se transforment en plaie puis redeviennent normales"],
+      "La guérison par division des cellules voisines illustre que toute cellule vient d'une cellule. <b>Les nouvelles cellules proviennent de cellules existantes</b>.", {});
+  },
+  function () {
+    return mcq("Lequel des énoncés contredit la théorie cellulaire?",
+      "Un morceau de liège sans aucune cellule peut être considéré comme un être vivant complet",
+      ["Une bactérie, formée d'une seule cellule, est un être vivant à part entière", "Les plantes et les animaux sont tous formés d'une ou de plusieurs cellules", "Une cellule de feuille et une cellule de racine viennent toutes deux de divisions cellulaires"],
+      "La théorie cellulaire exige que tout être vivant soit fait de cellules; un être « vivant » sans cellules la contredirait. <b>Un morceau de liège sans aucune cellule peut être considéré comme un être vivant complet</b>.", {});
+  }
+]), ["Rappelle les trois énoncés de la théorie cellulaire avant de juger.", "Des cellules nées de matière non vivante contrediraient la théorie."]);
+
+
+E("s8f-u4-niveaux-identifier", 4, ["SC8.10.4"], 1, "var", varset([
+  function () {
+    return mcq("Le cœur humain pompe le sang et il est formé de tissu musculaire, de tissu nerveux et de tissu conjonctif qui travaillent ensemble. À quel niveau d'organisation appartient le cœur?",
+      "Un organe : il combine plusieurs tissus différents qui accomplissent ensemble une fonction",
+      ["Un tissu du corps : il n'est formé que d'un seul et unique genre de cellules, toutes parfaitement identiques entre elles et accomplissant la même tâche", "Un système complet du corps : il comprend plusieurs organes différents répartis dans tout le corps humain et reliés entre eux par de longs vaisseaux", "Un organisme : il accomplit à lui seul toutes les fonctions de la vie humaine"],
+      "Plusieurs tissus différents réunis pour une fonction : c'est la définition d'un organe. <b>Un organe</b>.", {});
+  },
+  function () {
+    return mcq("Dans une feuille, des cellules semblables alignées en couche mince protègent la surface et limitent la perte d'eau. À quel niveau d'organisation appartient cette couche?",
+      "Un tissu : un ensemble de cellules semblables qui accomplissent ensemble la même fonction",
+      ["Un organe complet de la plante : elle combine plusieurs genres de tissus différents qui travaillent ensemble pour accomplir une fonction commune de protection", "Une cellule unique et géante : elle n'est formée que d'une seule unité vivante microscopique qui recouvre toute la surface extérieure de la feuille entière", "Un système : elle relie plusieurs organes de la plante entre eux pour la protéger"],
+      "Des cellules semblables qui travaillent ensemble forment un tissu. <b>Un tissu</b>.", {});
+  },
+  function () {
+    return mcq("La bouche, l'estomac, le foie et les intestins travaillent ensemble à digérer les aliments. À quel niveau d'organisation appartient cet ensemble?",
+      "Un système : plusieurs organes coopèrent pour accomplir une grande fonction du corps",
+      ["Un organe unique et très étendu : c'est un seul et même organe continu qui traverse tout le corps humain de la bouche jusqu'à la fin du tube digestif", "Un tissu spécialisé du corps : c'est un ensemble de cellules toutes semblables entre elles qui digèrent directement les aliments dans tout le corps humain", "Une cellule géante : l'ensemble fonctionne comme une seule unité microscopique"],
+      "Plusieurs organes qui coopèrent pour une fonction forment un système (ici, le système digestif). <b>Un système</b>.", {});
+  },
+  function () {
+    return mcq("Une paramécie est un être vivant microscopique formé d'une seule cellule qui se nourrit, se déplace et se reproduit. À quel niveau d'organisation se situe-t-elle?",
+      "À la fois une cellule et un organisme complet : sa seule cellule accomplit toutes les fonctions de la vie",
+      ["Un tissu microscopique : une seule cellule isolée ne peut jamais, en aucun cas, former à elle seule un organisme vivant complet et indépendant", "Un organe microscopique : sa cellule unique combine plusieurs genres de tissus différents entassés ensemble dans un très petit espace sous le microscope", "Aucun niveau : les êtres microscopiques ne font pas partie de l'organisation du vivant"],
+      "Chez les unicellulaires, la cellule unique est aussi l'organisme entier. <b>À la fois une cellule et un organisme complet</b>.", {});
+  }
+]), ["Compte l'organisation : une cellule, des cellules semblables, plusieurs tissus, plusieurs organes.", "Cellule, tissu, organe, système, organisme."]);
+
+
+E("s8f-u4-besoins-appliques", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("Une culture de levures dans un bocal fermé cesse de produire des bulles après deux jours, bien qu'il reste du liquide. On ajoute un peu de sucre et les bulles repartent. Qu'est-ce qui limitait les levures?",
+      "La nourriture : les levures avaient épuisé le sucre, leur source d'énergie, et la fermentation s'était arrêtée",
+      ["L'espace disponible dans le bocal : le bocal fermé était devenu beaucoup trop petit pour que les levures puissent respirer et continuer leur fermentation normale", "La lumière du jour : les levures cultivées ont absolument besoin de lumière directe pour produire les bulles de gaz carbonique observées au début de la culture", "La température : le liquide du bocal avait gelé complètement pendant les deux jours"],
+      "Le redémarrage dès l'ajout de sucre désigne la nourriture comme le besoin limitant. <b>La nourriture : les levures avaient épuisé le sucre</b>.", {});
+  },
+  function () {
+    return mcq("Des semis poussent bien dans une serre, sauf ceux d'un coin où l'air est stagnant et où ils jaunissent malgré un bon arrosage et une bonne lumière. Quel besoin des cellules est le plus probablement insuffisant dans ce coin?",
+      "Les échanges gazeux : l'air stagnant renouvelle mal l'oxygène et le dioxyde de carbone autour des feuilles",
+      ["L'eau d'arrosage : les semis du coin stagnant reçoivent nettement moins d'eau à chaque arrosage que tous les autres semis de la serre, qui sont bien arrosés", "La nourriture minérale du sol : le sol du coin stagnant de la serre contient beaucoup moins d'engrais et de minéraux dissous que le sol de toutes les autres sections", "L'espace : les semis du coin sont plantés beaucoup plus serrés que partout ailleurs"],
+      "Eau et lumière étant suffisantes, c'est le renouvellement de l'air (échanges gazeux) qui fait défaut dans le coin stagnant. <b>Les échanges gazeux : l'air stagnant renouvelle mal les gaz autour des feuilles</b>.", {});
+  },
+  function () {
+    return mcq("Un aquarium dont le filtre tombe en panne voit ses poissons venir respirer à la surface après quelques heures. Quel besoin cellulaire explique ce comportement?",
+      "L'oxygène dissous : sans circulation ni aération, l'eau s'appauvrit en oxygène et les poissons cherchent l'air à la surface",
+      ["La nourriture des poissons : les poissons de l'aquarium montent vers la surface parce que la nourriture en flocons flotte toujours à la surface de l'eau de l'aquarium", "L'espace au fond de l'aquarium : les poissons montent vers la surface parce que le fond de l'aquarium est devenu beaucoup trop petit et trop encombré pour eux", "L'élimination des déchets : les poissons montent pour rejeter leurs déchets hors de l'eau"],
+      "Le comportement de respiration à la surface signale un manque d'oxygène dissous. <b>L'oxygène dissous : l'eau s'appauvrit en oxygène sans aération</b>.", {});
+  },
+  function () {
+    return mcq("Des bactéries cultivées dans un tube produisent un déchet qui s'accumule; au bout d'un jour, elles cessent de se diviser même s'il reste de la nourriture. Quel besoin n'est plus satisfait?",
+      "L'élimination des déchets : leurs propres déchets accumulés empoisonnent le milieu et arrêtent la division",
+      ["La nourriture du milieu de culture : il reste encore de la nourriture dans le tube, mais elle est devenue complètement invisible et inaccessible aux bactéries cultivées", "L'espace et la chaleur du tube : le petit tube de culture est devenu beaucoup trop chaud pendant la journée pour que les bactéries puissent continuer à y vivre", "L'eau : toute l'eau du tube s'est évaporée pendant la journée de culture entière"],
+      "Nourriture présente, division arrêtée : c'est l'accumulation des déchets qui limite la population. <b>L'élimination des déchets : leurs déchets accumulés empoisonnent le milieu</b>.", {});
+  }
+]), ["Éprouve chaque besoin contre le récit : qu'est-ce qui a manqué ou s'est accumulé?", "Le besoin dont l'apport a changé explique le résultat observé."]);
+
+
+E("s8f-u4-cr-besoins-experience", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return textq("Une élève fait germer des graines de haricot dans quatre plats : (1) humide et à la lumière, (2) humide et dans le noir, (3) sec et à la lumière, (4) sec et dans le noir. Après une semaine, les plats 1 et 2 ont germé, les plats 3 et 4 non. Explique ce que cette expérience démontre : quels besoins la germination exige-t-elle selon les résultats, et pourquoi le plat 2 a-t-il germé malgré l'obscurité? (3 points)",
+      ["Les plats humides ont germé, que la lumière soit présente ou non."],
+      "Points de notation (3) : 1 point pour la comparaison correcte (les deux plats humides germent, les deux plats secs non : la variable qui décide est l'eau). 1 point pour la conclusion sur les besoins (l'eau est nécessaire à la germination; la lumière ne l'est pas à ce stade). 1 point pour expliquer le plat 2 (la graine contient des réserves de nourriture qui alimentent la germination jusqu'à ce que les premières feuilles fassent la photosynthèse). Réponse modèle : Seuls les plats avec de l'eau ont germé : l'eau est donc le besoin décisif, et la lumière n'est pas requise pour germer. <b>Le plat 2 a germé dans le noir parce que la graine vit sur ses réserves jusqu'à l'apparition des feuilles</b>.", {});
+  },
+  function () {
+    return textq("Un élève compare deux aquariums identiques de plantes aquatiques : le premier reçoit un engrais complet, le second aucun engrais; les deux ont la même lumière et la même eau. Après un mois, les plantes du premier sont grandes et vertes, celles du second petites et jaunâtres. Explique ce que démontre cette expérience : quel besoin était limitant, et pourquoi peut-on être sûr que c'est ce besoin-là et pas un autre? (3 points)",
+      ["Les deux aquariums ne diffèrent que par la présence ou l'absence d'engrais."],
+      "Points de notation (3) : 1 point pour identifier le besoin limitant (les nutriments minéraux, la « nourriture » des plantes, fournis par l'engrais). 1 point pour la justification expérimentale (tout le reste — lumière, eau, plantes, contenants — est gardé identique, donc la seule cause possible de l'écart est l'engrais). 1 point pour relier les signes aux besoins cellulaires (le jaunissement et la petite taille montrent des cellules qui ne peuvent ni construire leurs protéines ni se diviser normalement sans minéraux). Réponse modèle : Avec tout le reste identique, seuls les minéraux de l'engrais expliquent l'écart de croissance. <b>Les plantes sans engrais manquaient de nutriments pour fabriquer leurs protéines et leurs nouvelles cellules</b>.", {});
+  },
+  function () {
+    return textq("Une classe cultive des moisissures sur du pain dans trois sacs : pain sec au garde-manger, pain humide au garde-manger, pain humide au réfrigérateur. La moisissure apparaît vite sur le pain humide du garde-manger, lentement sur le pain humide froid, et pas du tout sur le pain sec. Explique ces résultats : nomme DEUX conditions qui influencent la croissance des moisissures et dis le rôle de chacune. (3 points)",
+      ["La moisissure pousse le plus vite sur le pain humide gardé à la température ambiante."],
+      "Points de notation (3) : 1 point pour la première condition (l'eau : le pain sec ne permet aucune croissance, car les cellules des moisissures ont besoin d'eau pour leurs activités). 1 point pour la deuxième condition (la température : le froid du réfrigérateur ralentit les activités cellulaires et la croissance, sans les arrêter complètement). 1 point pour la synthèse (le pain humide et tiède réunit les deux conditions favorables, d'où la croissance la plus rapide). Réponse modèle : Sans eau, aucune croissance; au froid, une croissance lente; humide et tiède, la croissance est rapide. <b>L'eau est indispensable aux moisissures et la chaleur accélère leurs activités cellulaires</b>.", {});
+  }
+]), ["Compare les montages deux à deux : quelle condition diffère?", "La condition qui suit la différence de résultat est celle que l'expérience éprouve."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s8f-u1-cr-abiotic":3,"s8f-u1-cr-coastal-climate":3,"s8f-u1-cr-cycle-role":3,"s8f-u1-cr-decision":4,"s8f-u1-cr-design-salinity":4,"s8f-u1-cr-glacier":3,"s8f-u1-cr-headland":3,"s8f-u1-cr-indirect":3,"s8f-u1-cr-pond-data":3,"s8f-u1-cr-population":3,"s8f-u1-cr-protect":3,"s8f-u1-cr-results-summary":3,"s8f-u1-cr-tech-effects":3,"s8f-u1-cr-tides":3,"s8f-u2-cr-car-lift":3,"s8f-u2-cr-cleaning-claim":4,"s8f-u2-cr-data-infer":3,"s8f-u2-cr-density-block":3,"s8f-u2-cr-design-viscosity":4,"s8f-u2-cr-displacement-calc":3,"s8f-u2-cr-layers":3,"s8f-u2-cr-mass-weight":3,"s8f-u2-cr-molasses":3,"s8f-u2-cr-piggyback":3,"s8f-u2-cr-pressure-crate":3,"s8f-u2-cr-raise-ship":3,"s8f-u2-cr-temp-situations":3,"s8f-u2-cr-underlying":3,"s8f-u3-cr-conclusion":3,"s8f-u3-cr-design-refraction":4,"s8f-u3-cr-diffuse":3,"s8f-u3-cr-em":3,"s8f-u3-cr-estimate":3,"s8f-u3-cr-fibre":4,"s8f-u3-cr-identify-medium":3,"s8f-u3-cr-mirror-lab":3,"s8f-u3-cr-predict":3,"s8f-u3-cr-properties":3,"s8f-u3-cr-reflection":3,"s8f-u3-cr-refraction":3,"s8f-u3-cr-research":3,"s8f-u3-cr-speed":3,"s8f-u3-cr-words":3,"s8f-u4-cr-artificial":4,"s8f-u4-cr-cell-division":3,"s8f-u4-cr-community":3,"s8f-u4-cr-decision":3,"s8f-u4-cr-decision-personal":3,"s8f-u4-cr-design-rates":4,"s8f-u4-cr-factors":3,"s8f-u4-cr-interdependence":3,"s8f-u4-cr-levels":3,"s8f-u4-cr-living":3,"s8f-u4-cr-microscope":3,"s8f-u4-cr-model-eval":3,"s8f-u4-cr-organelles":3,"s8f-u4-cr-propose":3};
+window.__BANK_CRMARKS={"s8f-u1-cr-abiotic":3,"s8f-u1-cr-coastal-climate":3,"s8f-u1-cr-cycle-role":3,"s8f-u1-cr-decision":4,"s8f-u1-cr-design-salinity":4,"s8f-u1-cr-distribution-deplacement":3,"s8f-u1-cr-glacier":3,"s8f-u1-cr-headland":3,"s8f-u1-cr-indirect":3,"s8f-u1-cr-pond-data":3,"s8f-u1-cr-population":3,"s8f-u1-cr-protect":3,"s8f-u1-cr-results-summary":3,"s8f-u1-cr-tech-effects":3,"s8f-u1-cr-tides":3,"s8f-u2-cr-car-lift":3,"s8f-u2-cr-cleaning-claim":4,"s8f-u2-cr-data-infer":3,"s8f-u2-cr-density-block":3,"s8f-u2-cr-design-viscosity":4,"s8f-u2-cr-displacement-calc":3,"s8f-u2-cr-layers":3,"s8f-u2-cr-mass-weight":3,"s8f-u2-cr-molasses":3,"s8f-u2-cr-piggyback":3,"s8f-u2-cr-pressure-crate":3,"s8f-u2-cr-raise-ship":3,"s8f-u2-cr-temp-situations":3,"s8f-u2-cr-underlying":3,"s8f-u2-cr-viscosite-test":3,"s8f-u3-cr-conclusion":3,"s8f-u3-cr-design-refraction":4,"s8f-u3-cr-diffuse":3,"s8f-u3-cr-em":3,"s8f-u3-cr-estimate":3,"s8f-u3-cr-fibre":4,"s8f-u3-cr-identify-medium":3,"s8f-u3-cr-mirror-lab":3,"s8f-u3-cr-predict":3,"s8f-u3-cr-properties":3,"s8f-u3-cr-reflection":3,"s8f-u3-cr-refraction":3,"s8f-u3-cr-refraction-expliquer":3,"s8f-u3-cr-research":3,"s8f-u3-cr-speed":3,"s8f-u3-cr-words":3,"s8f-u4-cr-artificial":4,"s8f-u4-cr-besoins-experience":3,"s8f-u4-cr-cell-division":3,"s8f-u4-cr-community":3,"s8f-u4-cr-decision":3,"s8f-u4-cr-decision-personal":3,"s8f-u4-cr-design-rates":4,"s8f-u4-cr-factors":3,"s8f-u4-cr-interdependence":3,"s8f-u4-cr-levels":3,"s8f-u4-cr-living":3,"s8f-u4-cr-microscope":3,"s8f-u4-cr-model-eval":3,"s8f-u4-cr-organelles":3,"s8f-u4-cr-propose":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

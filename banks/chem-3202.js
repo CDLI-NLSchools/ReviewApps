@@ -3041,6 +3041,51 @@ E("u2-68-aliquot-concentration",2,["6.8"],3,"gen",function(){
 
 BANK.forEach(function(e){if(["u2-61-properties"].indexOf(e.id)>=0)e.pkFlag=true;});
 
+
+
+/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
+   priced in Science-Test-Lengthening-Feasibility-2026-11-20.md,
+   Section 6: 6.4 x1 and 6.8 x1 for Unit 2. SME-flagged for the
+   specialist pass. t3sf/t3opts are shared with the Unit 3 and Unit 4
+   tranche additions in this bank. */
+function t3sf(x){return sfF(x,3);}
+function t3opts(correct,wrongs,unit){
+  var cStr=t3sf(correct)+(unit?" "+unit:""),seen={},out=[];
+  function push(v){var s=t3sf(v)+(unit?" "+unit:"");if(s!==cStr&&!seen[s]){seen[s]=1;out.push(s);}}
+  wrongs.forEach(push);
+  [correct*1.5,correct*0.6,correct*4,correct*0.25,correct*12,correct+2].forEach(function(v){if(out.length<3)push(v);});
+  return {c:cStr,w:out.slice(0,3)};
+}
+
+E("u2-64-mc-ph-two-ways",2,["6.4"],2,"gen",function(){
+  var mode=ri(0,1);
+  var mant=pick([1.00,2.00,5.00]),exp=ri(2,12);
+  var ph=exp-Math.log10(mant);
+  function sci(m,e){return t3sf(m)+" \u00D7 10\u207B"+e;}
+  if(mode===0){
+    var cStr=ph.toFixed(2),seen={},wr=[];
+    [ph+1,ph-1,14-ph,ph+2,ph-2,ph+0.5].forEach(function(v){var s=v.toFixed(2);if(s!==cStr&&!seen[s]){seen[s]=1;wr.push(s);}});
+    return mcq("What is the pH of a solution with [H\u207A] = "+sci(mant,exp)+" mol/L?",
+      cStr,wr.slice(0,3),
+      "pH = \u2212log[H\u207A] = \u2212log("+sci(mant,exp)+") = <b>"+cStr+"</b>.",{exp:exp,mant:mant});
+  }
+  var cStr2=sci(mant,exp),seen2={},wr2=[];
+  [sci(mant,exp-1),sci(mant,exp+1),sci(10-mant,exp),sci(mant*2>9?mant/2:mant*2,exp),sci(1.00,exp)].forEach(function(s){if(s!==cStr2&&!seen2[s]){seen2[s]=1;wr2.push(s);}});
+  return mcq("A solution has a pH of "+ph.toFixed(2)+". What is its [H\u207A] in mol/L?",
+    cStr2,wr2.slice(0,3),
+    "[H\u207A] = 10\u207B\u1D56\u1D34 = 10\u207B"+ph.toFixed(2)+" = <b>"+cStr2+" mol/L</b>.",{ph:ph.toFixed(2)});
+});
+
+E("u2-68-mc-titration-find-conc",2,["6.8"],2,"gen",function(){
+  var va=pick([20.00,25.00]),cb=pick([0.100,0.200,0.500]);
+  var vb=pick([16.40,18.20,19.60,21.30,22.80,24.10,25.00,26.70,28.40,29.90,31.20,33.50]);
+  var ca=cb*vb/va;
+  var o=t3opts(ca,[cb,cb*va/vb,ca*2],"mol/L");
+  return mcq("In a titration, "+t3sf(vb)+" mL of "+t3sf(cb)+" mol/L NaOH(aq) neutralizes "+t3sf(va)+" mL of an HCl(aq) solution. What is the concentration of the HCl(aq)?",
+    o.c,o.w,
+    "At the endpoint the amounts are equal for this 1 : 1 reaction: n(NaOH) = "+t3sf(cb)+" mol/L \u00D7 "+t3sf(vb/1000)+" L = "+t3sf(cb*vb/1000)+" mol, so n(HCl) is the same. Concentration = amount / volume = "+t3sf(cb*vb/1000)+" mol / "+t3sf(va/1000)+" L = <b>"+o.c+"</b>.",{vb:vb,cb:cb,va:va});
+});
+
 /* ----- bank-u3.js ----- */
 // Chemistry 3202 Unit 3 Thermochemistry question bank
 // Recode (Nov 19, 2026): entries re-registered to the curriculum
@@ -5344,6 +5389,99 @@ E("u3-712-formation-solve",3,["7.12"],3,"gen",function(){
   return numq(prompt,ans,tol,sol,{fuel:fuel,dhComb:dhComb,nCO2:nCO2,nH2O:nH2O,ans:ans});
 });
 
+
+
+/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
+   priced in Science-Test-Lengthening-Feasibility-2026-11-20.md,
+   Section 6: 7.4 x2, 7.10 x2, 7.12 x1, 7.8 x1 for Unit 3.
+   SME-flagged for the specialist pass. */
+var T3_SUBS=[["water",4.18],["aluminum",0.897],["copper",0.385],["iron",0.450],["ethanol",2.44],["ice",2.09],["lead",0.128],["silver",0.235]];
+
+E("u3-74-mc-q-of-sample",3,["7.4"],2,"gen",function(){
+  var s=pick(T3_SUBS),m=pick([50.0,100.0,150.0,200.0,250.0,300.0,400.0,500.0]);
+  var dt=pick([5.00,10.0,15.0,20.0,25.0,30.0,40.0,50.0]);
+  var q=m*s[1]*dt/1000;
+  var o=t3opts(q,[m*s[1]/1000,q*2,(m+100)*s[1]*dt/1000],"kJ");
+  return mcq("How much energy, in kilojoules, is needed to raise the temperature of "+t3sf(m)+" g of "+s[0]+" by "+t3sf(dt)+" \u00B0C? The specific heat capacity of "+s[0]+" is "+t3sf(s[1])+" J/(g\u00B7\u00B0C).",
+    o.c,o.w,
+    "q = mc\u0394T = "+t3sf(m)+" g \u00D7 "+t3sf(s[1])+" J/(g\u00B7\u00B0C) \u00D7 "+t3sf(dt)+" \u00B0C = "+t3sf(q*1000)+" J = <b>"+o.c+"</b>.",{sub:s[0],m:m,dt:dt});
+});
+
+E("u3-74-mc-find-mass",3,["7.4"],2,"gen",function(){
+  var s=pick(T3_SUBS),dt=pick([8.00,12.0,18.0,24.0,36.0,45.0]);
+  var m=pick([40.0,60.0,80.0,120.0,160.0,240.0,320.0]);
+  var q=m*s[1]*dt/1000;
+  var o=t3opts(m,[q*1000/s[1],m*2,q*1000/(s[1]*dt)*10],"g");
+  return mcq("A sample of "+s[0]+" absorbs "+t3sf(q)+" kJ of energy and its temperature rises by "+t3sf(dt)+" \u00B0C. The specific heat capacity of "+s[0]+" is "+t3sf(s[1])+" J/(g\u00B7\u00B0C). What is the mass of the sample?",
+    o.c,o.w,
+    "Rearrange q = mc\u0394T to m = q / (c\u0394T) = "+t3sf(q*1000)+" J / ("+t3sf(s[1])+" J/(g\u00B7\u00B0C) \u00D7 "+t3sf(dt)+" \u00B0C) = <b>"+o.c+"</b>.",{sub:s[0],dt:dt,q:q});
+});
+
+var T3_FUELS=[["methane",16.05,890],["propane",44.11,2220],["butane",58.14,2878],["ethanol",46.08,1367],["methanol",32.05,726],["octane",114.26,5471],["hydrogen",2.02,286],["glucose",180.18,2805]];
+
+E("u3-710-mc-per-mole-or-gram",3,["7.10"],3,"gen",function(){
+  var i=ri(0,T3_FUELS.length-1),j=(i+ri(1,T3_FUELS.length-1))%T3_FUELS.length;
+  var A=T3_FUELS[i],B=T3_FUELS[j],mode=ri(0,1);
+  var perGramA=A[2]/A[1],perGramB=B[2]/B[1];
+  var stem="The molar enthalpy of combustion of "+A[0]+" is \u2212"+A[2]+" kJ/mol and that of "+B[0]+" is \u2212"+B[2]+" kJ/mol. The molar mass of "+A[0]+" is "+A[1].toFixed(2)+" g/mol and that of "+B[0]+" is "+B[1].toFixed(2)+" g/mol. ";
+  if(mode===0){
+    var win=A[2]>B[2]?A[0]:B[0];
+    return mcq(stem+"Burning one mole of each fuel, which fuel releases more energy?",
+      win,[A[0]===win?B[0]:A[0],"They release the same amount","It cannot be decided from these data"],
+      "Per mole, the releases are the molar enthalpies themselves: "+A[0]+" releases "+A[2]+" kJ/mol and "+B[0]+" releases "+B[2]+" kJ/mol. The larger molar enthalpy of combustion releases more per mole, so <b>"+win+"</b> releases more.",{a:A[0],b:B[0]});
+  }
+  var win2=perGramA>perGramB?A[0]:B[0];
+  return mcq(stem+"Burning one gram of each fuel, which fuel releases more energy?",
+    win2,[A[0]===win2?B[0]:A[0],"They release the same amount","It cannot be decided from these data"],
+    "Per gram, divide each molar enthalpy by the molar mass: "+A[0]+" releases "+A[2]+" / "+A[1].toFixed(2)+" = "+t3sf(perGramA)+" kJ/g, and "+B[0]+" releases "+B[2]+" / "+B[1].toFixed(2)+" = "+t3sf(perGramB)+" kJ/g. The larger value per gram releases more, so <b>"+win2+"</b> releases more.",{a:A[0],b:B[0]});
+});
+
+E("u3-710-mc-energy-from-mass",3,["7.10"],2,"gen",function(){
+  var f=pick(T3_FUELS),mass=pick([8.00,10.0,16.0,20.0,25.0,40.0,50.0,80.0,100.0,200.0]);
+  var e=mass/f[1]*f[2];
+  var o=t3opts(e,[mass*f[2],e/10,mass/f[1]*f[2]/2],"kJ");
+  return mcq("The molar enthalpy of combustion of "+f[0]+" is \u2212"+f[2]+" kJ/mol, and its molar mass is "+f[1].toFixed(2)+" g/mol. How much energy is released when "+t3sf(mass)+" g of "+f[0]+" burns completely?",
+    o.c,o.w,
+    "Amount burned: n = "+t3sf(mass)+" g / "+f[1].toFixed(2)+" g/mol = "+t3sf(mass/f[1])+" mol. Energy released = n \u00D7 |\u0394H| = "+t3sf(mass/f[1])+" mol \u00D7 "+f[2]+" kJ/mol = <b>"+o.c+"</b>.",{fuel:f[0],mass:mass});
+});
+
+E("u3-712-mc-formation-calc",3,["7.12"],3,"gen",function(){
+  var sets=[
+    {rxn:"CH\u2084(g) + 2O\u2082(g) \u2192 CO\u2082(g) + 2H\u2082O(l)",data:[["CH\u2084(g)",-75],["O\u2082(g)",0],["CO\u2082(g)",-394],["H\u2082O(l)",-286]],prod:[2,3],react:[0,1],coefP:[1,2],coefR:[1,2],ask:"the combustion of methane"},
+    {rxn:"2CO(g) + O\u2082(g) \u2192 2CO\u2082(g)",data:[["CO(g)",-111],["O\u2082(g)",0],["CO\u2082(g)",-394]],prod:[2],react:[0,1],coefP:[2],coefR:[2,1],ask:"the oxidation of carbon monoxide"},
+    {rxn:"N\u2082(g) + 3H\u2082(g) \u2192 2NH\u2083(g)",data:[["N\u2082(g)",0],["H\u2082(g)",0],["NH\u2083(g)",-46]],prod:[2],react:[0,1],coefP:[2],coefR:[1,3],ask:"the synthesis of ammonia"},
+    {rxn:"CaCO\u2083(s) \u2192 CaO(s) + CO\u2082(g)",data:[["CaCO\u2083(s)",-1207],["CaO(s)",-635],["CO\u2082(g)",-394]],prod:[1,2],react:[0],coefP:[1,1],coefR:[1],ask:"the decomposition of calcium carbonate"},
+    {rxn:"2H\u2082O\u2082(l) \u2192 2H\u2082O(l) + O\u2082(g)",data:[["H\u2082O\u2082(l)",-188],["H\u2082O(l)",-286],["O\u2082(g)",0]],prod:[1,2],react:[0],coefP:[2,1],coefR:[2],ask:"the decomposition of hydrogen peroxide"}
+  ];
+  var s=pick(sets),jit=pick([0.95,1.00,1.05]);
+  var vals=s.data.map(function(d){return Math.round(d[1]*jit);});
+  var table=s.data.map(function(d,i){return "\u0394H\u0192\u00B0("+d[0]+") = "+vals[i]+" kJ/mol";}).join("; ")+".";
+  var sumP=0,sumR=0;
+  s.prod.forEach(function(idx,k){sumP+=s.coefP[k]*vals[idx];});
+  s.react.forEach(function(idx,k){sumR+=s.coefR[k]*vals[idx];});
+  var scale=pick([1,2]),rev=ri(0,1)===1;
+  var dh=(sumP-sumR)*scale*(rev?-1:1);
+  var o=t3opts(dh,[(sumR-sumP)*scale*(rev?-1:1),dh+100*scale,dh-100*scale],"kJ");
+  var dirNote=rev?"the reverse of the reaction as written":"the reaction as written";
+  var scaleNote=scale===2?", with every coefficient in the equation doubled":"";
+  return mcq("Standard enthalpies of formation: "+table+" Using these values, what is the enthalpy change for "+dirNote+" ("+s.rxn+")"+scaleNote+"?",
+    o.c,o.w,
+    "\u0394H\u00B0 = \u03A3\u0394H\u0192\u00B0(products) \u2212 \u03A3\u0394H\u0192\u00B0(reactants), with each value multiplied by its coefficient in the balanced equation. Products total "+t3sf(sumP)+" kJ and reactants total "+t3sf(sumR)+" kJ, so \u0394H\u00B0 = "+t3sf(sumP)+" \u2212 ("+t3sf(sumR)+") = "+t3sf(sumP-sumR)+" kJ for the equation as written"+(scale===2?"; doubling every coefficient doubles the enthalpy change":"")+(rev?"; reversing the reaction reverses the sign":"")+". The enthalpy change is <b>"+o.c+"</b> for "+s.ask+".",{rxn:s.rxn});
+});
+
+E("u3-78-mc-molar-enthalpy",3,["7.8"],2,"gen",function(){
+  var sols=[["sodium hydroxide","NaOH",40.01,"exothermic"],["ammonium nitrate","NH\u2084NO\u2083",80.05,"endothermic"],["calcium chloride","CaCl\u2082",110.98,"exothermic"],["potassium nitrate","KNO\u2083",101.11,"endothermic"]];
+  var s=pick(sols),ms=pick([2.00,4.00,5.00,8.00,10.0,20.0]);
+  var mw=pick([100.0,200.0,250.0,500.0]),dt=pick([1.50,2.00,2.50,3.00,4.00,5.00,6.00]);
+  var q=mw*4.18*dt/1000,n=ms/s[2],dh=q/n;
+  var signed=s[3]==="exothermic"?-dh:dh;
+  var o=t3opts(signed,[-signed,q,ms*4.18*dt/1000/(ms)],"kJ/mol");
+  o.w[1]=t3sf(q)+" kJ/mol";
+  return mcq("When "+t3sf(ms)+" g of "+s[0]+", "+s[1]+", dissolves in "+t3sf(mw)+" g of water in a calorimeter, the temperature "+(s[3]==="exothermic"?"rises":"falls")+" by "+t3sf(dt)+" \u00B0C. The molar mass of "+s[1]+" is "+s[2].toFixed(2)+" g/mol. What is the molar enthalpy of solution of "+s[1]+"?",
+    o.c,o.w,
+    "Heat exchanged with the water: q = mc\u0394T = "+t3sf(mw)+" g \u00D7 4.18 J/(g\u00B7\u00B0C) \u00D7 "+t3sf(dt)+" \u00B0C = "+t3sf(q)+" kJ. Amount dissolved: n = "+t3sf(ms)+" g / "+s[2].toFixed(2)+" g/mol = "+t3sf(n)+" mol. Molar enthalpy = q / n = "+t3sf(dh)+" kJ/mol, and because dissolving is "+s[3]+" the sign is "+(s[3]==="exothermic"?"negative":"positive")+": <b>"+o.c+"</b>.",{solute:s[1],ms:ms});
+});
+
 /* ----- bank-u4.js ----- */
 // Chemistry 3202 Unit 4 Electrochemistry question bank
 // Phase C diagram figures (Nov 2026): the 8.4 cell entries and the molten
@@ -6298,6 +6436,71 @@ E("u4-wcr-fuel-cell-response",4,["8.9"],2,"var",varset([
       "Marking points (3): 1 mark for identifying hydrogen as oxidized, justified by its oxidation number rising from 0 to +1; 1 mark for identifying oxygen as reduced, justified by its oxidation number falling from 0 to -2; 1 mark for the correct overall reaction. Model answer: "+model+" The overall reaction is <b>2 H₂(g) + O₂(g) → 2 H₂O(l)</b>.",{});
   }
 ]));
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
+   priced in Science-Test-Lengthening-Feasibility-2026-11-20.md,
+   Section 6: 8.8 x2 and 8.7 x1 for Unit 4. SME-flagged for the
+   specialist pass. Uses ECOUPLES from bank-u4.js. */
+
+E("u4-88-mc-electrolysis-products",4,["8.8"],2,"gen",function(){
+  var cases=[
+    {sys:"molten sodium chloride, NaCl(l)",el:"cathode",prod:"sodium metal",hr:"Na\u207A + e\u207B \u2192 Na",wrongs:["chlorine gas","hydrogen gas","oxygen gas"],whr:["2Cl\u207B \u2192 Cl\u2082 + 2e\u207B","2H\u207A + 2e\u207B \u2192 H\u2082","2O\u00B2\u207B \u2192 O\u2082 + 4e\u207B"]},
+    {sys:"molten sodium chloride, NaCl(l)",el:"anode",prod:"chlorine gas",hr:"2Cl\u207B \u2192 Cl\u2082 + 2e\u207B",wrongs:["sodium metal","hydrogen gas","oxygen gas"],whr:["Na\u207A + e\u207B \u2192 Na","2H\u207A + 2e\u207B \u2192 H\u2082","2O\u00B2\u207B \u2192 O\u2082 + 4e\u207B"]},
+    {sys:"molten magnesium chloride, MgCl\u2082(l)",el:"cathode",prod:"magnesium metal",hr:"Mg\u00B2\u207A + 2e\u207B \u2192 Mg",wrongs:["chlorine gas","hydrogen gas","oxygen gas"],whr:["2Cl\u207B \u2192 Cl\u2082 + 2e\u207B","2H\u207A + 2e\u207B \u2192 H\u2082","2O\u00B2\u207B \u2192 O\u2082 + 4e\u207B"]},
+    {sys:"molten magnesium chloride, MgCl\u2082(l)",el:"anode",prod:"chlorine gas",hr:"2Cl\u207B \u2192 Cl\u2082 + 2e\u207B",wrongs:["magnesium metal","hydrogen gas","sodium metal"],whr:["Mg\u00B2\u207A + 2e\u207B \u2192 Mg","2H\u207A + 2e\u207B \u2192 H\u2082","Na\u207A + e\u207B \u2192 Na"]},
+    {sys:"aqueous copper(II) sulfate, CuSO\u2084(aq), with inert electrodes",el:"cathode",prod:"copper metal",hr:"Cu\u00B2\u207A + 2e\u207B \u2192 Cu",wrongs:["hydrogen gas","oxygen gas","sulfur"],whr:["2H\u207A + 2e\u207B \u2192 H\u2082","2H\u2082O \u2192 O\u2082 + 4H\u207A + 4e\u207B","SO\u2084\u00B2\u207B + 8H\u207A + 6e\u207B \u2192 S + 4H\u2082O"]},
+    {sys:"aqueous copper(II) sulfate, CuSO\u2084(aq), with inert electrodes",el:"anode",prod:"oxygen gas",hr:"2H\u2082O \u2192 O\u2082 + 4H\u207A + 4e\u207B",wrongs:["copper metal","hydrogen gas","chlorine gas"],whr:["Cu\u00B2\u207A + 2e\u207B \u2192 Cu","2H\u207A + 2e\u207B \u2192 H\u2082","2Cl\u207B \u2192 Cl\u2082 + 2e\u207B"]},
+    {sys:"molten aluminum oxide, Al\u2082O\u2083(l), as in the Hall-H\u00e9roult process",el:"cathode",prod:"aluminum metal",hr:"Al\u00B3\u207A + 3e\u207B \u2192 Al",wrongs:["oxygen gas","carbon dioxide gas","hydrogen gas"],whr:["2O\u00B2\u207B \u2192 O\u2082 + 4e\u207B","C + O\u2082 \u2192 CO\u2082","2H\u207A + 2e\u207B \u2192 H\u2082"]},
+    {sys:"molten aluminum oxide, Al\u2082O\u2083(l), as in the Hall-H\u00e9roult process",el:"anode",prod:"oxygen gas",hr:"2O\u00B2\u207B \u2192 O\u2082 + 4e\u207B",wrongs:["aluminum metal","carbon metal","hydrogen gas"],whr:["Al\u00B3\u207A + 3e\u207B \u2192 Al","C + 4e\u207B \u2192 C\u2074\u207B","2H\u207A + 2e\u207B \u2192 H\u2082"]}
+  ];
+  var c=pick(cases),mode=ri(0,1);
+  var ctx=pick([""," The cell runs for several minutes."," A student labels a diagram of the cell."," The electrodes are connected to a DC power supply."]);
+  if(mode===0){
+    return mcq("In the electrolysis of "+c.sys+", what is produced at the "+c.el+"?"+ctx,
+      c.prod,c.wrongs,
+      "At the "+c.el+", "+(c.el==="cathode"?"reduction occurs: the metal ions gain electrons and form the metal":"oxidation occurs: the non-metal ions lose electrons")+". The half-reaction is "+c.hr+", so the product at the "+c.el+" is <b>"+c.prod+"</b>.",{sys:c.sys,el:c.el});
+  }
+  var pool=[];
+  cases.forEach(function(k){if(k.hr!==c.hr)pool.push(k.hr);k.whr.forEach(function(w){if(w!==c.hr)pool.push(w);});});
+  pool=pool.filter(function(w,i){return pool.indexOf(w)===i;});
+  pool.sort(function(x,y){return y.length-x.length;});
+  var wr3=shuffle(pool.slice(0,6)).slice(0,3);
+  return mcq("In the electrolysis of "+c.sys+", which half-reaction occurs at the "+c.el+"?"+ctx,
+    c.hr,wr3,
+    "At the "+c.el+", "+(c.el==="cathode"?"reduction occurs, so ions gain electrons":"oxidation occurs, so ions lose electrons")+". The half-reaction there is <b>"+c.hr+"</b>, producing "+c.prod+".",{sys:c.sys,el:c.el});
+});
+
+E("u4-88-mc-plating-mass",4,["8.8"],3,"gen",function(){
+  var metals=[["silver","Ag\u207A",1,107.87],["copper","Cu\u00B2\u207A",2,63.55],["nickel","Ni\u00B2\u207A",2,58.69],["zinc","Zn\u00B2\u207A",2,65.39],["aluminum","Al\u00B3\u207A",3,26.98],["chromium","Cr\u00B3\u207A",3,52.00]];
+  var m=pick(metals),cur=pick([1.50,2.00,2.50,3.00,4.00,5.00,6.00,8.00]);
+  var mins=pick([10.0,15.0,20.0,30.0,40.0,45.0,60.0]);
+  var mass=cur*(mins*60)/96500*m[3]/m[2];
+  var o=t3opts(mass,[mass*m[2],mass/60,mass*2],"g");
+  return mcq("An electroplating cell passes a current of "+t3sf(cur)+" A for "+t3sf(mins)+" min through a solution containing "+m[1]+" ions. What mass of "+m[0]+" is plated onto the cathode? (F = 9.65 \u00D7 10\u2074 C/mol)",
+    o.c,o.w,
+    "Charge passed: Q = It = "+t3sf(cur)+" A \u00D7 "+t3sf(mins*60)+" s = "+t3sf(cur*mins*60)+" C. Moles of electrons = Q / F = "+t3sf(cur*mins*60/96500)+" mol. Each "+m[1]+" ion takes "+m[2]+" electron(s), so moles of "+m[0]+" = "+t3sf(cur*mins*60/96500/m[2])+" mol, and mass = \u00D7 "+m[3].toFixed(2)+" g/mol = <b>"+o.c+"</b>.",{metal:m[0],cur:cur,mins:mins});
+});
+
+E("u4-87-mc-cell-from-table",4,["8.7"],2,"gen",function(){
+  var i=ri(0,ECOUPLES.length-1),j=(i+ri(1,ECOUPLES.length-1))%ECOUPLES.length;
+  var A=ECOUPLES[i],B=ECOUPLES[j];
+  var cath=A.e>B.e?A:B,an=A.e>B.e?B:A,ecell=cath.e-an.e;
+  var mode=ri(0,1);
+  var table="Standard reduction potentials: "+A.ion+" + "+A.z+"e\u207B \u2192 "+A.metal+", E\u00B0 = "+eF(A.e)+" V; "+B.ion+" + "+B.z+"e\u207B \u2192 "+B.metal+", E\u00B0 = "+eF(B.e)+" V.";
+  if(mode===0){
+    var o=t3opts(ecell,[A.e+B.e,an.e-cath.e,ecell*2],"V");
+    o.c=eF(ecell)+" V";o.w=[eF(A.e+B.e)+" V",eF(an.e-cath.e)+" V",eF(ecell*2)+" V"].filter(function(s){return s!==o.c;});
+    while(o.w.length<3)o.w.push(eF(ecell+0.50)+" V");
+    return mcq(table+" What is the standard potential of a voltaic cell built from these two half-cells?",
+      o.c,o.w.slice(0,3),
+      "The half-cell with the higher reduction potential is the cathode ("+cath.metal+"), and the other is oxidized at the anode ("+an.metal+"). E\u00B0cell = E\u00B0cathode \u2212 E\u00B0anode = "+eF(cath.e)+" \u2212 ("+eF(an.e)+") = <b>"+o.c+"</b>.",{a:A.metal,b:B.metal});
+  }
+  return mcq(table+" In the voltaic cell built from these two half-cells, which metal is oxidized at the anode?",
+    an.metal,[cath.metal,"Both metals are oxidized","Neither metal is oxidized"],
+    "Oxidation happens at the anode, and the anode is the half-cell with the lower reduction potential: "+an.ion+" has E\u00B0 = "+eF(an.e)+" V, below "+cath.ion+" at "+eF(cath.e)+" V. So <b>"+an.metal+"</b> is oxidized.",{a:A.metal,b:B.metal});
+});
 
 /* ----- bank-br.js ----- */
 /* Chemistry 3202: prior-learning bridging bank (Unit 5 slot).

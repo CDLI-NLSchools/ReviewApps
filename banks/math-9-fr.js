@@ -5887,7 +5887,7 @@ E("u8-tangent-central-inscribed", 8, ["9.5"], 3, "gen", function () {
 E("u8-add-angles-meme-arc", 8, ["9.9"], 2, "gen", function () {
   var nm = pick([["A", "B", "C", "D"], ["K", "L", "M", "N"], ["P", "Q", "R", "S"], ["W", "X", "Y", "Z"]]);
   var N1 = nm[0], N2 = nm[1], N3 = nm[2], N4 = nm[3];
-  var v = 2 * ri(22, 42);
+  var v = 2 * ri(22, 42); if (v === 60) v = 56; /* at v = 60 the supplement distractor (180 - v) would equal the double distractor (2v) and the option set would collapse to three; nudged, November 20, 2026 */
   var rot = pick([0, 18, 36, 54, 72, 90]);
   var A = u8P(270 - v + rot), B = u8P(270 + v + rot), C = u8P(90 + rot), D = u8P(150 + rot);
   var pts = {}; pts[N1] = A; pts[N2] = B; pts[N3] = C; pts[N4] = D;

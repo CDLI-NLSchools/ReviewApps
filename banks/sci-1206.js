@@ -4102,6 +4102,7 @@ E("sci-u2-stse-antacid-equation", 2, ["SC10.7.3"], 3, "var", varset([
 ]), ["Read the equation as the mechanism: the carbonate takes the acid's hydrogen ions, and a gas leaves."]);
 
 /* ----- bank-u3.js ----- */
+// CRMARKS: sci-u3-cr-delivery-trip=3
 // CRMARKS: sci-u3-cr-trip=4
 // CRMARKS: sci-u3-cr-dtgraph=3
 // CRMARKS: sci-u3-cr-vtgraph=3
@@ -4889,7 +4890,72 @@ E("sci-u3-round-trip", 3, ["SC10.8.8"], 3, "gen", function () {
   return q;
 }, ["Round trips punish the naive average: you spend longer at the slow speed, so it counts for more."]);
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6 and
+   Section 7: one SR entry on SC10.8.10, one SR entry on SC10.8.11,
+   and one 3-mark Level 2 CR entry closing Unit 3 Test 2's CR gap.
+   SME-flagged for the specialist pass. */
+
+E("sci-u3-avg-velocity-table", 3, ["SC10.8.10"], 2, "gen", function () {
+  var a = s6pick([0.40, 0.50, 0.80, 1.00, 1.20, 1.50, 2.00]);
+  var b = s6pick([2.00, 3.00, 4.00, 5.00, 6.00]);
+  var who = s6pick(["A go-kart", "A sprinter", "A delivery robot", "A cyclist"]);
+  var t1 = s6pick([1, 2]), t2 = s6pick([3, 4, 5]);
+  if (t2 <= t1) t2 = t1 + 2;
+  function pos(t) { return a * t * t + b * t; }
+  var rows = [0, 1, 2, 3, 4, 5].map(function (t) { return "t = " + t + " s: " + s6sf(pos(t), 3) + " m"; }).join("; ");
+  var v = (pos(t2) - pos(t1)) / (t2 - t1);
+  var wrongs = [s6sf(pos(t2) / t2, 3) + " m/s", s6sf((pos(t2) - pos(t1)), 3) + " m/s", s6sf(v * 2, 3) + " m/s"].filter(function (w, i, arr) { return w !== s6sf(v, 3) + " m/s" && arr.indexOf(w) === i; });
+  while (wrongs.length < 3) wrongs.push(s6sf(v + wrongs.length + 1, 3) + " m/s");
+  return mcq(who + " moves along a straight track. Its positions are recorded each second: " + rows + ". What is its average velocity between t = " + t1 + " s and t = " + t2 + " s?",
+    s6sf(v, 3) + " m/s", wrongs.slice(0, 3),
+    "Average velocity is displacement divided by the time interval: v = (d\u2082 \u2212 d\u2081) / (t\u2082 \u2212 t\u2081) = (" + s6sf(pos(t2), 3) + " \u2212 " + s6sf(pos(t1), 3) + ") m / (" + t2 + " \u2212 " + t1 + ") s = <b>" + s6sf(v, 3) + " m/s</b>. It is not the final position divided by the total time, and it is not the displacement alone.", { a: a, b: b, t1: t1, t2: t2 });
+}, ["Average velocity is total displacement divided by total time, start to finish.", "Ignore the stop in the middle: use the first and last rows of the table."]);
+
+E("sci-u3-vt-segments-calc", 3, ["SC10.8.11"], 2, "gen", function () {
+  var mode = s6ri(0, 1);
+  var v1 = s6pick([0, 2, 4]), v2 = s6pick([8, 10, 12, 14, 16, 20]);
+  var dur = s6pick([3, 4, 5, 6, 8, 10]);
+  var who = s6pick(["a bus pulling away from a stop", "a snowmobile starting across a lake", "a train leaving a station", "a boat leaving a wharf"]);
+  if (mode === 0) {
+    var acc = (v2 - v1) / dur;
+    var wrongs = [s6sf(v2 / dur, 3) + " m/s\u00B2", s6sf((v2 - v1) * dur, 3) + " m/s\u00B2", s6sf(acc * 2, 3) + " m/s\u00B2"].filter(function (w, i, arr) { return w !== s6sf(acc, 3) + " m/s\u00B2" && arr.indexOf(w) === i; });
+    var pad0 = 1; while (wrongs.length < 3) { var cand = s6sf(acc + pad0, 3) + " m/s\u00B2"; pad0++; if (cand !== s6sf(acc, 3) + " m/s\u00B2" && wrongs.indexOf(cand) < 0) wrongs.push(cand); }
+    return mcq("On a velocity-time graph, the velocity of " + who + " rises in a straight line from " + v1 + " m/s to " + v2 + " m/s over " + dur + " s. What is its acceleration?",
+      s6sf(acc, 3) + " m/s\u00B2", wrongs.slice(0, 3),
+      "Acceleration is the slope of a velocity-time graph: a = (v\u2082 \u2212 v\u2081) / t = (" + v2 + " \u2212 " + v1 + ") m/s / " + dur + " s = <b>" + s6sf(acc, 3) + " m/s\u00B2</b>.", { v1: v1, v2: v2, dur: dur });
+  }
+  var disp = (v1 + v2) / 2 * dur;
+  var wrongs2 = [s6sf(v2 * dur, 3) + " m", s6sf((v2 - v1) * dur, 3) + " m", s6sf(disp * 2, 3) + " m"].filter(function (w, i, arr) { return w !== s6sf(disp, 3) + " m" && arr.indexOf(w) === i; });
+  var pad1 = 1; while (wrongs2.length < 3) { var cand2 = s6sf(disp + pad1 * 5, 3) + " m"; pad1++; if (cand2 !== s6sf(disp, 3) + " m" && wrongs2.indexOf(cand2) < 0) wrongs2.push(cand2); }
+  return mcq("On a velocity-time graph, the velocity of " + who + " rises in a straight line from " + v1 + " m/s to " + v2 + " m/s over " + dur + " s. What is its displacement during those " + dur + " s?",
+    s6sf(disp, 3) + " m", wrongs2.slice(0, 3),
+    "Displacement is the area under a velocity-time graph. The shape is a trapezoid with average height (v\u2081 + v\u2082) / 2 = (" + v1 + " + " + v2 + ") / 2 = " + s6sf((v1 + v2) / 2, 3) + " m/s, over " + dur + " s: displacement = " + s6sf((v1 + v2) / 2, 3) + " \u00D7 " + dur + " = <b>" + s6sf(disp, 3) + " m</b>. Using the final velocity alone overcounts, because the object spent the interval below " + v2 + " m/s.", { v1: v1, v2: v2, dur: dur });
+}, ["On a velocity-time graph, the slope of a segment is the acceleration on that segment.", "Pick the segment asked about and divide its velocity change by its time change."]);
+
+E("sci-u3-cr-delivery-trip", 3, ["SC10.8.11", "SC10.8.12"], 2, "var", varset([
+  function () {
+    return textq("Analysing a delivery trip (3 marks)\nA delivery van's velocity-time graph is a straight line rising from 0 m/s to 12 m/s over the first 6 s, then a horizontal line at 12 m/s until 16 s.\n(a) Calculate the van's acceleration in the first 6 s. (1)\n(b) Calculate the total displacement of the van over the 16 s. (1)\n(c) A second van covers the same displacement in the same 16 s at a constant velocity. State that velocity, and explain why the two vans can have the same average velocity but different motion. (1)",
+      ["(a) Slope = (12 - 0) m/s / 6 s = 2.0 m/s\u00B2."],
+      "Marking points (3): (a) 1 mark for a = (12 \u2212 0) / 6 = 2.0 m/s\u00B2 from the slope. (b) 1 mark for the area: triangle 0.5 \u00D7 6 \u00D7 12 = 36 m plus rectangle 10 \u00D7 12 = 120 m, total 156 m. (c) 1 mark for the constant velocity 156 m / 16 s = 9.75 m/s and the explanation that average velocity depends only on total displacement and total time, not on how the velocity varied during the trip. Model answer: (a) 2.0 m/s\u00B2. (b) 156 m. (c) 9.75 m/s; <b>the same average velocity, because average velocity is total displacement divided by total time</b>.", {});
+  },
+  function () {
+    return textq("Analysing a ferry crossing (3 marks)\nA ferry's velocity-time graph rises in a straight line from 0 m/s to 8.0 m/s over 10 s, stays at 8.0 m/s until 30 s, then falls in a straight line to 0 m/s at 50 s.\n(a) Calculate the ferry's displacement while it is speeding up. (1)\n(b) Calculate the total displacement of the crossing. (1)\n(c) Explain how the graph shows that the ferry's acceleration while slowing down is smaller in size than while speeding up. (1)",
+      ["(a) Area of the triangle = 0.5 x 10 s x 8.0 m/s = 40 m."],
+      "Marking points (3): (a) 1 mark for the triangle area 0.5 \u00D7 10 \u00D7 8.0 = 40 m. (b) 1 mark for the total area: 40 + rectangle 20 \u00D7 8.0 = 160 + triangle 0.5 \u00D7 20 \u00D7 8.0 = 80, total 280 m. (c) 1 mark for comparing slopes: speeding up, the slope is 8.0 / 10 = 0.80 m/s\u00B2; slowing down, the same 8.0 m/s change is spread over 20 s, so the slope is 8.0 / 20 = 0.40 m/s\u00B2, half as steep. Model answer: (a) 40 m. (b) 280 m. (c) <b>Acceleration is the slope of the graph, and the slowing-down section has the shallower slope</b>.", {});
+  },
+  function () {
+    return textq("Analysing a sprinter's race (3 marks)\nA sprinter's velocity-time graph rises in a straight line from 0 m/s to 10 m/s in the first 4.0 s and then stays at 10 m/s until the finish at 10 s.\n(a) Calculate the sprinter's acceleration in the first 4.0 s. (1)\n(b) Calculate the race distance from the graph. (1)\n(c) Another runner finishes the same distance in the same 10 s with a velocity that rises the whole way. Explain why that runner's top speed must be higher than 10 m/s. (1)",
+      ["(a) Slope = (10 - 0) m/s / 4.0 s = 2.5 m/s\u00B2."],
+      "Marking points (3): (a) 1 mark for a = 10 / 4.0 = 2.5 m/s\u00B2. (b) 1 mark for the area: triangle 0.5 \u00D7 4.0 \u00D7 10 = 20 m plus rectangle 6.0 \u00D7 10 = 60 m, total 80 m. (c) 1 mark for the area argument: the second runner's graph is a triangle with the same area (80 m) and the same base (10 s), so its height must be 2 \u00D7 80 / 10 = 16 m/s, higher than 10 m/s. Model answer: (a) 2.5 m/s\u00B2. (b) 80 m. (c) <b>The triangle under the second graph needs twice the height to hold the same area, so the top speed is higher</b>.", {});
+  }
+]), ["Work segment by segment: each straight piece of the graph is one steady motion.", "Area under a velocity-time segment gives that segment's displacement; add the areas."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: sci-u4-cr-pesticide-chain=2
 // CRMARKS: sci-u4-cr-cycle=4
 // CRMARKS: sci-u4-cr-bioaccum=3
 // CRMARKS: sci-u4-cr-scene=3
@@ -5471,7 +5537,146 @@ E("sci-u4-species-risk", 4, ["SC10.10.8"], 2, "var", varset([
   }
 ]), ["Conservation works on the whole ledger: births, deaths and the habitat that sets both."]);
 
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6 and
+   Section 7: one SR entry each on SC10.10.4, SC10.10.5, SC10.10.6 and
+   SC10.10.7, and one 2-mark Level 2 CR entry closing Unit 4 Test 2's
+   CR gap. SME-flagged for the specialist pass. */
+
+E("sci-u4-soil-texture-judge", 4, ["SC10.10.4"], 2, "gen", function () {
+  var soils = [
+    { t: "70% sand, 20% silt, 10% clay", hold: "poorly, because the large sand particles leave big spaces that water drains through quickly", drain: "very fast, because the large spaces between sand particles let water pass through", improve: "adding compost and organic matter to help it hold water and nutrients" },
+    { t: "20% sand, 30% silt, 50% clay", hold: "very well, because the tiny clay particles leave small spaces that hold water tightly", drain: "very slowly, because the tiny spaces between clay particles barely let water pass", improve: "adding sand and organic matter to open up its structure and improve drainage" },
+    { t: "40% sand, 40% silt, 20% clay", hold: "moderately well, because its mix of particle sizes leaves a balance of large and small spaces", drain: "moderately, because its mix of particle sizes lets some water through while holding some back", improve: "adding a little organic matter each year to maintain its balanced structure" },
+    { t: "85% sand, 10% silt, 5% clay", hold: "very poorly, because it is nearly all large sand particles with wide spaces between them", drain: "fastest of all, because almost every space between its particles is large", improve: "adding compost and organic matter to help it hold water and nutrients" },
+    { t: "10% sand, 40% silt, 50% clay", hold: "very well, because half of it is tiny clay particles whose small spaces hold water tightly", drain: "slowest of all, because its clay particles pack into spaces too small for water to move through", improve: "adding sand and organic matter to open up its structure and improve drainage" },
+    { t: "33% sand, 33% silt, 34% clay", hold: "moderately well, because its even mix of particle sizes holds a fair amount of water", drain: "moderately, because its even mix of particle sizes gives a balance of drainage and holding", improve: "adding a little organic matter each year to maintain its balanced structure" }
+  ];
+  var s = s6pick(soils), mode = s6ri(0, 2);
+  var ctx = s6pick(["A gardener in Newfoundland and Labrador is checking soil before planting.", "A farmer sends a soil sample for analysis.", "A student examines soil from a school garden plot.", "A landscaper tests soil before laying a new lawn.", "A market gardener checks a new field in spring."]);
+  if (mode === 0) {
+    return mcq(ctx + " The soil is " + s.t + ". Compared with other soils, this soil will hold water",
+      s.hold,
+      ["very well in all weathers, because its large sand particles soak up water and hold it tightly like the filling of a sponge", "poorly in every case without exception, because soil texture has absolutely no effect at all on how water is held in a soil", "exactly as well as any other soil anywhere, because every soil holds precisely the same amount of water after a rainfall"],
+      "Water holding follows particle size: sand has the largest particles and the largest spaces, so water drains through and little is held; clay has the tiniest particles and holds water tightly; silt is in between. A soil that is " + s.t + " holds water <b>" + s.hold + "</b>.", { soil: s.t });
+  }
+  if (mode === 1) {
+    return mcq(ctx + " The soil is " + s.t + ". A soil scientist would describe its drainage as",
+      s.drain,
+      ["fastest of all when the clay content is at its highest, because the channels between clay particles carry water straight downward", "completely unaffected by its texture, because drainage is decided only by the slope of the land the soil happens to sit on", "always moderate in every field, because all soils drain at very nearly the same rate when measured over a full day"],
+      "Drainage is the other side of water holding: large sand particles leave large spaces, so water passes through quickly, while clay's tiny spaces slow drainage down. For a soil that is " + s.t + ", drainage is <b>" + s.drain + "</b>.", { soil: s.t });
+  }
+  return mcq(ctx + " The soil is " + s.t + ". Which change would most improve this soil for growing vegetables?",
+    s.improve,
+    ["removing all of its organic matter so that only mineral particles remain in the soil", "compacting it firmly with heavy machinery so that its particles pack tightly together", "replacing the whole topsoil with pure beach sand from the nearest shoreline"],
+    "Soil improvement works on the soil's weakness: a sandy soil's weakness is holding water and nutrients, a clay soil's weakness is drainage and workability, and a balanced loam mainly needs its organic matter maintained. For this soil the best change is <b>" + s.improve + "</b>.", { soil: s.t });
+}, ["Use the percentages: sand drains fast and holds little, clay holds water but compacts.", "The claim fails when the texture's real behaviour contradicts it."]);
+
+E("sci-u4-bioaccum-calc", 4, ["SC10.10.5"], 2, "gen", function () {
+  var base = s6pick([0.002, 0.005, 0.010, 0.020, 0.050]);
+  var factor = s6pick([5, 10, 20]);
+  var lvl = s6pick([2, 3, 4]);
+  var chain = s6pick([
+    ["phytoplankton", "zooplankton", "small fish", "large fish", "osprey"],
+    ["algae", "snails", "sunfish", "bass", "heron"],
+    ["pondweed", "insect larvae", "minnows", "trout", "eagle"]
+  ]);
+  var conc = base * Math.pow(factor, lvl - 1);
+  var wrongs = [s6sf(base * factor * (lvl - 1), 2) + " ppm", s6sf(base * Math.pow(factor, lvl), 2) + " ppm", s6sf(base * lvl, 2) + " ppm"].filter(function (w) { return w !== s6sf(conc, 2) + " ppm"; });
+  while (wrongs.length < 3) wrongs.push(s6sf(conc * (wrongs.length + 2), 2) + " ppm");
+  return mcq("A pesticide enters a pond food chain: " + chain.join(" \u2192 ") + ". The " + chain[0] + " contain " + base + " ppm of the pesticide, and the concentration is multiplied by " + factor + " at each step up the chain because the pesticide is stored in fat and not broken down. What is the concentration in the " + chain[lvl - 1] + ", at trophic level " + lvl + "?",
+    s6sf(conc, 2) + " ppm", wrongs.slice(0, 3),
+    "Each step up multiplies the concentration by " + factor + ". From trophic level 1 to level " + lvl + " there are " + (lvl - 1) + " multiplications: " + base + " \u00D7 " + factor + "^" + (lvl - 1) + " = <b>" + s6sf(conc, 2) + " ppm</b>. This is bioaccumulation (biomagnification): the concentration grows at each trophic level, it does not add the factor each time.", { base: base, factor: factor, lvl: lvl });
+}, ["Bioaccumulation multiplies at each trophic step; count the steps from the water.", "Apply the factor once per step, in order, and keep track of the units."]);
+
+E("sci-u4-external-effects", 4, ["SC10.10.6"], 2, "var", varset([
+  function () {
+    return mcq("A three-year drought lowers the water level of a marsh. Which is the most likely long-term effect on the marsh ecosystem?",
+      "Water plants decrease, and the animals that feed and shelter in them decline as well",
+      ["Every species in the marsh increases, because competition for the remaining water disappears completely", "Nothing else changes, because the ecosystem replaces the lost water entirely on its own within a season", "Only the water level itself changes, because populations are never affected by changes in their habitat"],
+      "An external factor such as drought changes the habitat itself: less water means fewer water plants, and the insects, fish and birds that depend on those plants for food and shelter decline with them. The most likely long-term effect is <b>water plants decrease, and the animals that feed and shelter in them decline as well</b>.", {});
+  },
+  function () {
+    return mcq("A forest fire burns a large area of spruce forest, leaving ash-covered soil. Which sequence best describes what follows?",
+      "Fast-growing plants colonize the ash-rich soil first, and shrubs and young trees follow as the soil deepens",
+      ["The spruce forest returns at its full original height within a single growing season after the fire", "No plants can ever grow there again, because the fire has permanently sterilized the soil beneath the ash", "The animals return first, and the plants come back only after the animals have fully recolonized the area"],
+      "Fire is an external factor that resets the community without removing the soil; ash adds minerals, and succession restarts with fast-growing colonizers before shrubs and trees return. The sequence is <b>fast-growing plants colonize the ash-rich soil first, and shrubs and young trees follow as the soil deepens</b>.", {});
+  },
+  function () {
+    return mcq("A town drains a wetland to build a parking lot. Which effect on the local ecosystem is most direct?",
+      "Species that depended on the wetland lose their habitat, and local biodiversity falls",
+      ["Flooding in the town decreases afterwards, and not a single wetland species is affected by the change", "The wetland species simply move into the parking lot and continue their lives in that habitat instead", "Biodiversity rises across the town, because an entirely new human land use has been added to the area"],
+      "Draining removes the habitat itself, an external change imposed on the ecosystem: wetland species lose the conditions they need, so populations fall or disappear locally. The most direct effect is <b>species that depended on the wetland lose their habitat, and local biodiversity falls</b>.", {});
+  },
+  function () {
+    return mcq("Volcanic ash from an eruption covers farmland in a thick layer, blocking sunlight for a season. Which is the most likely effect on the farm ecosystem that year?",
+      "Crop growth collapses because photosynthesis is blocked, and organisms that feed on the crops decline",
+      ["Crops grow faster than before, because the ash layer blocks every harmful insect from reaching them", "Only the appearance of the fields changes that year, while the crop yields stay exactly the same as usual", "Soil organisms multiply so much in the ash that the crop losses are fully replaced within the same season"],
+      "Ash is an external factor acting through sunlight: with light blocked, photosynthesis and crop growth collapse, and the organisms fed by those crops decline in turn. The most likely effect is <b>crop growth collapses because photosynthesis is blocked, and organisms that feed on the crops decline</b>.", {});
+  },
+  function () {
+    return mcq("An introduced disease kills most of the rabbits in an area within two years. Which is the most likely effect on the rest of the ecosystem?",
+      "Predators that hunted rabbits switch prey or decline, and plants the rabbits grazed grow denser",
+      ["Nothing else in the ecosystem changes, because every species in it lives completely independently of the others", "The grasses decrease across the area, because the rabbits are no longer there to trample and spread them", "The predators increase in number, because there is far less competition for hunting territory without rabbits"],
+      "Disease is an external factor acting on one population, and the effects travel through the food web: rabbit predators lose a food source, and the plants rabbits ate are released from grazing. The most likely effect is <b>predators that hunted rabbits switch prey or decline, and plants the rabbits grazed grow denser</b>.", {});
+  }
+]), ["Sort the options: which ones happen outside the organism's body?", "An effect on one species that lands on another species is external."]);
+
+E("sci-u4-biodiversity-judge", 4, ["SC10.10.7"], 2, "gen", function () {
+  var plots = [
+    { a: ["12 species", "a mix of grasses, shrubs and wildflowers"], b: ["3 species", "almost all one grass species"], richer: "A" },
+    { a: ["4 species", "one wheat variety across the whole field"], b: ["15 species", "many crop and wild plant species"], richer: "B" },
+    { a: ["20 species", "trees, shrubs, mosses and fungi in layers"], b: ["18 species", "a plantation of two tree species with little undergrowth"], richer: "A" },
+    { a: ["6 species", "a garden of a single potato variety"], b: ["9 species", "several vegetable varieties plus flowering borders"], richer: "B" },
+    { a: ["8 species", "a hay meadow with several grasses and legumes"], b: ["5 species", "a lawn of two grass species mowed weekly"], richer: "A" },
+    { a: ["2 species", "a greenhouse holding one tomato variety"], b: ["11 species", "a community garden with many kinds of plants"], richer: "B" },
+    { a: ["25 species", "a mature forest with plants of many ages and sizes"], b: ["7 species", "a replanted stand of one spruce species"], richer: "A" },
+    { a: ["5 species", "a barley field of a single variety"], b: ["14 species", "a mixed farm with crops, hedgerows and a pond"], richer: "B" }
+  ];
+  var p = s6pick(plots), mode = s6ri(0, 1);
+  var ctx = s6pick(["Two plots are surveyed for a science project.", "A conservation group compares two sites.", "Two farms are compared in a study of resilience."]);
+  var eq = s6pick(["They are equal, because both plots cover the same area of land", "They are equal, because biodiversity depends only on the number of individual plants", "They are equal, because any two living communities have the same biodiversity"]);
+  var desc = ctx + " Plot A has " + p.a[0] + ": " + p.a[1] + ". Plot B has " + p.b[0] + ": " + p.b[1] + ".";
+  if (mode === 0) {
+    return mcq(desc + " Which plot has the greater biodiversity?",
+      "Plot " + p.richer,
+      ["Plot " + (p.richer === "A" ? "B" : "A"), eq, "Biodiversity cannot be compared at all without counting every individual organism"],
+      "Biodiversity is the variety of species in a community, not the plot size or the raw count of individuals. Comparing the two descriptions, <b>Plot " + p.richer + "</b> has the greater biodiversity.", {});
+  }
+  return mcq(desc + " A disease arrives that attacks one plant species in each plot. Which plot's plant community is more likely to keep functioning, and why?",
+    "Plot " + p.richer + ", because its other species can take over the roles of the species that is lost",
+    ["Plot " + (p.richer === "A" ? "B" : "A") + ", because a community with fewer species gives the disease fewer hosts to infect", "Both plots equally, because a plant disease affects every community in exactly the same way", "Neither plot, because losing even one species always causes a whole community to collapse"],
+    "A more diverse community has more species able to take over the roles of one that is lost, so it is more resistant to a disturbance such as disease. <b>Plot " + p.richer + ", because its other species can take over the roles of the species that is lost</b>.", {});
+}, ["Biodiversity is about the variety and number of species, not the size of one population.", "A monoculture can be huge and still be low in biodiversity."]);
+
+E("sci-u4-cr-pesticide-chain", 4, ["SC10.10.5"], 2, "var", varset([
+  function () {
+    return textq("Explaining a pesticide's effect (2 marks)\nA farmer sprays a pesticide on a wheat field. Small amounts enter a nearby stream. Explain why fish-eating birds near the stream can be harmed by the pesticide even though they never touch the sprayed field. (2)",
+      ["The pesticide is taken up by organisms at the bottom of the food chain and is stored in fat rather than broken down or excreted."],
+      "Marking points (2): 1 mark for bioaccumulation: each consumer eats many prey over its life, so the stored pesticide concentrates at each trophic level. 1 mark for the conclusion that top consumers such as fish-eating birds end up with the highest concentrations, high enough to cause harm (for example, thin eggshells or poisoning). Model answer: The pesticide passes from the water into algae and small organisms and is stored in their fat. Small fish eat many of them, larger fish eat many small fish, and birds eat many fish, so the concentration grows at every step. <b>The birds receive the highest dose because the pesticide concentrates up the food chain</b>.", {});
+  },
+  function () {
+    return textq("Explaining a pesticide's effect (2 marks)\nMercury from a distant industrial source is found in a lake at extremely low concentrations, yet the lake's largest fish are unsafe to eat often. Explain how the mercury can be so dilute in the water but so concentrated in the large fish. (2)",
+      ["Plankton absorb the mercury from the water and retain it in their tissues."],
+      "Marking points (2): 1 mark for uptake and retention: organisms at the first trophic level take in the mercury and store it rather than excreting it. 1 mark for magnification over the chain: each predator consumes many prey in its lifetime, accumulating their mercury, so the oldest, largest top predators carry the highest concentration. Model answer: The mercury enters plankton from the water and stays in their tissues. Small fish eat huge numbers of plankton, and large fish eat many small fish, adding the stored mercury at every step. <b>The large fish concentrate the mercury from everything below them in the food chain</b>.", {});
+  },
+  function () {
+    return textq("Explaining a pesticide's effect (2 marks)\nA mosquito-control spray is applied to a pond at a dose tested to be harmless to fish. Two summers later, the pond's herons are declining. Give an explanation, based on food chains, for how the spray could be responsible. (2)",
+      ["Insects and other small organisms in the pond take up the spray chemical and keep it in their bodies."],
+      "Marking points (2): 1 mark for the transfer up the chain: fish eat many contaminated insects and store the chemical, reaching concentrations well above the pond water. 1 mark for the herons' exposure: herons eat many fish, accumulating the highest concentration, enough to affect their health or reproduction. Model answer: The chemical is stored in the pond's insects, the fish that eat them build up a much higher concentration, and the herons, eating fish all summer, build up the highest of all. <b>A dose harmless at the bottom of the chain can become harmful at the top</b>.", {});
+  }
+]), ["Follow the chemical: it concentrates as it moves up the food chain.", "The top predator gets the largest dose per meal because it eats many contaminated prey."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"sci-u1-cr-airmass":3,"sci-u1-cr-climate":4,"sci-u1-cr-forecast":3,"sci-u1-cr-frontpass":3,"sci-u1-cr-mapdescribe":4,"sci-u2-cr-balance":3,"sci-u2-cr-naming":4,"sci-u2-cr-neutral":4,"sci-u2-cr-nomenclature":2,"sci-u2-cr-rates":3,"sci-u3-cr-dtgraph":3,"sci-u3-cr-trip":4,"sci-u3-cr-vtgraph":3,"sci-u4-cr-bioaccum":3,"sci-u4-cr-biodiv":2,"sci-u4-cr-cycle":4,"sci-u4-cr-scene":3,"sci-u4-cr-soil":2};
+window.__BANK_CRMARKS={"sci-u1-cr-airmass":3,"sci-u1-cr-climate":4,"sci-u1-cr-forecast":3,"sci-u1-cr-frontpass":3,"sci-u1-cr-mapdescribe":4,"sci-u2-cr-balance":3,"sci-u2-cr-naming":4,"sci-u2-cr-neutral":4,"sci-u2-cr-nomenclature":2,"sci-u2-cr-rates":3,"sci-u3-cr-delivery-trip":3,"sci-u3-cr-dtgraph":3,"sci-u3-cr-trip":4,"sci-u3-cr-vtgraph":3,"sci-u4-cr-bioaccum":3,"sci-u4-cr-biodiv":2,"sci-u4-cr-cycle":4,"sci-u4-cr-pesticide-chain":2,"sci-u4-cr-scene":3,"sci-u4-cr-soil":2};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

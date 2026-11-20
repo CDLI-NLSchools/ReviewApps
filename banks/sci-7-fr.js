@@ -666,6 +666,7 @@ function s7fConcentrationSVG(vessels) {
 }
 
 /* ----- bank-u1.js ----- */
+// CRMARKS: s7f-u1-cr-marais-changement=2
 // CRMARKS: s7f-u1-cr-factor-effect=2
 // CRMARKS: s7f-u1-cr-three-interactions=3
 // CRMARKS: s7f-u1-cr-web-change=3
@@ -1367,7 +1368,227 @@ E("s7f-u1-cr-succession-stages", 1, ["SC7.3.13", "SC7.1.10"], 2, "var", varset([
 var NO_COMPOSE_U1 = { "s7f-u1-cr-design-experiment": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
 
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : profondeur chiffrée dans
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, sections 6-7 :
+   SR sur SC7.1.2, SC7.1.3, SC7.1.7, SC7.1.8, SC7.1.9, SC7.1.10 x2, et
+   une entrée CR de 2 points, niveau 2, qui comble le manque du
+   Test 1 de l'unité 1. Marqué pour la révision SME. */
+
+E("s7f-u1-interaction-classer", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Les castors construisent un barrage qui fait monter le niveau d'un ruisseau. Comment classer cette interaction?",
+      "Un facteur biotique, les castors, modifie un facteur abiotique, le niveau de l'eau du ruisseau",
+      ["Un facteur abiotique modifie un autre facteur abiotique, sans qu'aucun être vivant soit impliqué", "Deux facteurs biotiques, les castors et les poissons, interagissent entre eux dans le ruisseau", "Aucun des deux facteurs n'a d'effet sur l'autre, ni pendant la construction ni après"],
+      "Il faut d'abord décider quel côté est vivant (biotique) et lequel ne l'est pas (abiotique), puis suivre le sens de l'effet. <b>Un facteur biotique, les castors, modifie un facteur abiotique, le niveau de l'eau du ruisseau</b>.", {});
+  },
+  function () {
+    return mcq("Une sécheresse fait baisser le niveau d'un étang et les plantes du bord meurent. Comment classer cette interaction?",
+      "Un facteur abiotique, le manque d'eau, modifie un facteur biotique, les plantes du bord de l'étang",
+      ["Un facteur biotique modifie un facteur abiotique, sans qu'il y ait d'effet en retour", "Deux facteurs biotiques, les plantes et les animaux, interagissent entre eux dans l'étang", "Aucun des deux facteurs n'a d'effet sur l'autre pendant toute la saison sèche"],
+      "Le manque d'eau est non vivant et les plantes sont vivantes; l'effet va du côté non vivant vers le côté vivant. <b>Un facteur abiotique, le manque d'eau, modifie un facteur biotique, les plantes du bord de l'étang</b>.", {});
+  },
+  function () {
+    return mcq("Les vers de terre creusent des galeries qui aèrent le sol d'un jardin. Comment classer cette interaction?",
+      "Un facteur biotique, les vers, modifie un facteur abiotique, les espaces d'air et d'eau dans le sol",
+      ["Un facteur abiotique modifie un facteur biotique, sans qu'il y ait d'effet en retour", "Deux facteurs abiotiques, le sol et l'air, interagissent entre eux dans le jardin", "Aucun des deux facteurs n'a d'effet sur l'autre pendant toute la saison de jardinage"],
+      "Les vers sont vivants et les espaces du sol ne le sont pas; l'effet va du vivant vers le non-vivant. <b>Un facteur biotique, les vers, modifie un facteur abiotique, les espaces d'air et d'eau dans le sol</b>.", {});
+  },
+  function () {
+    return mcq("Le vent fort et froid de l'hiver tue les bourgeons d'un pommier au printemps. Comment classer cette interaction?",
+      "Un facteur abiotique, le gel, modifie un facteur biotique, les bourgeons de l'arbre",
+      ["Un facteur biotique modifie un facteur abiotique, sans qu'il y ait d'effet en retour", "Deux facteurs biotiques, l'arbre et les insectes, interagissent entre eux au printemps", "Aucun des deux facteurs n'a d'effet sur l'autre pendant tout l'hiver qui suit"],
+      "Le gel est non vivant et les bourgeons sont vivants; l'effet va du non-vivant vers le vivant. <b>Un facteur abiotique, le gel, modifie un facteur biotique, les bourgeons de l'arbre</b>.", {});
+  },
+  function () {
+    return mcq("La lumière du soleil réchauffe l'air à l'intérieur d'une serre. Comment classer cette interaction?",
+      "Un facteur abiotique, la lumière du soleil, modifie un facteur abiotique, la température de l'air",
+      ["Un facteur biotique modifie un facteur abiotique, sans qu'il y ait d'effet en retour", "Un facteur biotique modifie un autre facteur biotique quelque part dans la serre", "Aucun des deux facteurs n'a d'effet sur l'autre par une journée ensoleillée"],
+      "Ici, les deux côtés sont non vivants : la lumière et la température sont des facteurs abiotiques. <b>Un facteur abiotique, la lumière du soleil, modifie un facteur abiotique, la température de l'air</b>.", {});
+  },
+  function () {
+    return mcq("Les racines d'un arbre font craquer un trottoir de béton en grandissant. Comment classer cette interaction?",
+      "Un facteur biotique, les racines, modifie un facteur abiotique, la surface de béton",
+      ["Un facteur abiotique modifie un facteur biotique, sans qu'il y ait d'effet en retour", "Deux facteurs abiotiques, le béton et le sol, interagissent entre eux avec le temps", "Aucun des deux facteurs n'a d'effet sur l'autre pendant que l'arbre grandit"],
+      "Les racines sont vivantes et le béton ne l'est pas; l'effet va du vivant vers le non-vivant. <b>Un facteur biotique, les racines, modifie un facteur abiotique, la surface de béton</b>.", {});
+  }
+]), ["Décide d'abord quel côté est vivant (biotique) et lequel ne l'est pas (abiotique).", "Suis ensuite le sens de l'effet : qui modifie quoi?"]);
+
+E("s7f-u1-interaction-precise", 1, ["SC7.1.3"], 2, "var", varset([
+  function () {
+    return mcq("Les lichens qui poussent sur un rocher nu sécrètent des acides faibles qui désagrègent lentement la surface du rocher. Quel énoncé décrit exactement cette interaction?",
+      "Les lichens (biotiques) transforment le rocher (abiotique) en particules qui deviendront du sol",
+      ["Le rocher (abiotique) nourrit les lichens (biotiques) en leur donnant ses minéraux directement", "Les lichens et le rocher sont deux facteurs abiotiques qui réagissent chimiquement ensemble", "Le rocher protège les lichens, et les lichens n'ont absolument aucun effet sur le rocher"],
+      "L'interaction précise va des lichens vers le rocher : leurs acides désagrègent la surface et préparent la formation du sol. <b>Les lichens (biotiques) transforment le rocher (abiotique) en particules qui deviendront du sol</b>.", {});
+  },
+  function () {
+    return mcq("Les plantes d'un marais ralentissent l'eau qui traverse le marais, ce qui laisse déposer les sédiments. Quel énoncé décrit exactement cette interaction?",
+      "Les plantes (biotiques) modifient le courant et les dépôts (abiotiques) de l'eau du marais",
+      ["L'eau du marais (abiotique) décide seule de l'endroit où les plantes (biotiques) peuvent pousser", "Les plantes et les sédiments sont deux facteurs biotiques qui se disputent l'espace du marais", "Les plantes n'ont aucun effet sur l'eau tant que le niveau du marais reste le même"],
+      "L'effet précis décrit va des plantes vers l'eau : elles ralentissent le courant et favorisent le dépôt des sédiments. <b>Les plantes (biotiques) modifient le courant et les dépôts (abiotiques) de l'eau du marais</b>.", {});
+  },
+  function () {
+    return mcq("L'ombre d'un grand érable garde le sol sous l'arbre plus frais et plus humide que le sol au soleil. Quel énoncé décrit exactement cette interaction?",
+      "L'érable (biotique) modifie la température et l'humidité (abiotiques) du sol sous sa couronne",
+      ["Le soleil (abiotique) ordonne à l'érable (biotique) de faire de l'ombre à cet endroit précis", "L'érable et le sol sont deux facteurs biotiques qui échangent de l'énergie entre eux", "Le sol sous l'arbre reste frais uniquement parce qu'aucun rayon ne peut traverser les feuilles"],
+      "L'effet décrit va de l'arbre vers les conditions du sol : son ombre refroidit le sol et garde son humidité. <b>L'érable (biotique) modifie la température et l'humidité (abiotiques) du sol sous sa couronne</b>.", {});
+  },
+  function () {
+    return mcq("Les bactéries dans les racines des pois transforment l'azote de l'air en une forme que la plante peut utiliser, et le sol autour s'enrichit. Quel énoncé décrit exactement cette interaction?",
+      "Les bactéries (biotiques) modifient la teneur en azote (abiotique) du sol autour des racines",
+      ["L'azote de l'air (abiotique) crée les bactéries (biotiques) directement dans les racines des pois", "Les bactéries et la plante sont deux facteurs abiotiques qui réagissent dans le sol ensemble", "Les bactéries n'ont d'effet que sur la plante et ne changent rien du tout dans le sol"],
+      "L'effet précis va des bactéries vers la composition du sol : l'azote devient disponible et le sol s'enrichit. <b>Les bactéries (biotiques) modifient la teneur en azote (abiotique) du sol autour des racines</b>.", {});
+  }
+]), ["Repère l'effet précis décrit dans le scénario, pas un effet inventé.", "L'effet va de l'être vivant vers le facteur non vivant nommé."]);
+
+E("s7f-u1-energie-reseau", 1, ["SC7.1.7"], 2, "var", varset([
+  function () {
+    return mcq("D'où vient presque toute l'énergie qui alimente un réseau alimentaire terrestre?",
+      "Du Soleil, captée par les producteurs (les plantes vertes) grâce à la photosynthèse",
+      ["Des décomposeurs, qui fabriquent de l'énergie entièrement nouvelle à partir des restes des organismes morts de l'écosystème", "Du sol lui-même, dont les minéraux et l'eau fournissent toute l'énergie nécessaire à toutes les plantes qui y poussent", "De la Lune, dont la lumière permet aux plantes de pousser pendant la nuit entière"],
+      "L'énergie entre dans le réseau par les producteurs, qui captent la lumière du Soleil. <b>Du Soleil, captée par les producteurs (les plantes vertes) grâce à la photosynthèse</b>.", {});
+  },
+  function () {
+    return mcq("Dans un réseau alimentaire, que devient la plus grande partie de l'énergie quand elle passe d'un niveau trophique au suivant?",
+      "Elle est perdue pour le réseau, surtout sous forme de chaleur liée aux activités de l'organisme",
+      ["Elle est entièrement transmise au niveau trophique suivant, sans qu'aucune perte ne survienne en cours de route", "Elle retourne directement aux producteurs, qui la réutilisent indéfiniment pour fabriquer encore plus de nourriture", "Elle est emmagasinée dans le sol, où les décomposeurs la transforment en lumière"],
+      "À chaque transfert, environ 90 % de l'énergie se perd, surtout en chaleur; seulement une fraction sert à construire le niveau suivant. <b>Elle est perdue pour le réseau, surtout sous forme de chaleur liée aux activités de l'organisme</b>.", {});
+  },
+  function () {
+    return mcq("Un réseau alimentaire d'un étang commence par des algues microscopiques. Quel rôle jouent les algues dans le transfert d'énergie?",
+      "Ce sont les producteurs : elles captent l'énergie du Soleil et la rendent disponible aux consommateurs",
+      ["Ce sont les décomposeurs de l'étang : elles décomposent les organismes morts qui tombent au fond de l'eau", "Ce sont les consommateurs primaires : elles mangent les petits animaux de l'étang", "Ce sont les prédateurs du sommet : elles fournissent l'énergie en mangeant les poissons"],
+      "Les algues photosynthétiques sont la porte d'entrée de l'énergie dans le réseau de l'étang. <b>Ce sont les producteurs : elles captent l'énergie du Soleil et la rendent disponible aux consommateurs</b>.", {});
+  },
+  function () {
+    return mcq("Pourquoi un réseau alimentaire compte-t-il rarement plus de quatre ou cinq niveaux trophiques?",
+      "Parce que l'énergie diminue à chaque transfert, il n'en reste plus assez pour nourrir un niveau de plus",
+      ["Parce que les prédateurs du sommet de la chaîne refusent catégoriquement de manger les animaux des niveaux inférieurs", "Parce que les producteurs cessent de fournir de l'énergie après le quatrième niveau atteint", "Parce que les décomposeurs consomment toute l'énergie restante avant le cinquième niveau"],
+      "Avec environ 90 % de perte à chaque transfert, l'énergie disponible devient trop faible pour soutenir d'autres niveaux. <b>Parce que l'énergie diminue à chaque transfert, il n'en reste plus assez pour nourrir un niveau de plus</b>.", {});
+  }
+]), ["L'énergie entre dans le réseau par les producteurs, puis se perd à chaque transfert.", "Environ 90 % se perd à chaque niveau, surtout en chaleur."]);
+
+E("s7f-u1-pyramide-calcul", 1, ["SC7.1.8"], 2, "gen", function () {
+  var start = pick([5000, 8000, 10000, 20000, 40000, 50000, 80000, 100000, 200000, 500000]);
+  var lvl = pick([2, 3, 4]);
+  var chain = pick([
+    ["les plantes", "les sauterelles", "les grenouilles", "les couleuvres"],
+    ["le phytoplancton", "le zooplancton", "les petits poissons", "les grands poissons"],
+    ["l'herbe", "les lièvres", "les renards", "les loups"]
+  ]);
+  var e = start;
+  for (var k = 1; k < lvl; k++) e = e / 10;
+  function fmt(x) { return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  var wrongs = [fmt(e * 10) + " kJ", fmt(e / 10) + " kJ", fmt(start - e) + " kJ"].filter(function (w) { return w !== fmt(e) + " kJ"; });
+  while (wrongs.length < 3) wrongs.push(fmt(e * (wrongs.length + 3)) + " kJ");
+  return mcq("Dans une pyramide d'énergie, " + chain[0] + " (les producteurs) reçoivent " + fmt(start) + " kJ d'énergie. À chaque niveau, environ 10 % seulement de l'énergie est transmise au niveau suivant. Combien d'énergie se rend jusqu'à " + chain[lvl - 1] + ", au niveau " + lvl + "?",
+    fmt(e) + " kJ", wrongs.slice(0, 3),
+    "Chaque transfert garde environ 10 % de l'énergie : " + fmt(start) + " kJ \u2192 " + fmt(start / 10) + " kJ \u2192 " + (lvl >= 3 ? fmt(start / 100) + " kJ \u2192 " : "") + (lvl >= 4 ? fmt(start / 1000) + " kJ \u2192 " : "") + "<b>" + fmt(e) + " kJ</b> au niveau " + lvl + ". C'est la règle du 10 % qui dessine la pyramide.", { start: start, lvl: lvl });
+}, ["Applique la règle du 10 % une fois par niveau à franchir.", "Pars de l'énergie des producteurs et divise par 10 à chaque niveau."]);
+
+E("s7f-u1-recyclage-scenario", 1, ["SC7.1.9"], 2, "var", varset([
+  function () {
+    return mcq("Un tronc d'épinette tombé reste des années sur le sol de la forêt. Comment la matière qu'il contient est-elle recyclée?",
+      "Les champignons et les bactéries décomposent le bois et retournent ses nutriments au sol pour les nouvelles plantes",
+      ["Les nutriments contenus dans le bois disparaissent complètement de la forêt au moment précis où l'arbre meurt et tombe au sol", "Les nutriments restent enfermés dans le bois dur pour toujours et ne sont jamais utilisés de nouveau par aucun être vivant de la forêt", "Les animaux transportent tous les nutriments du bois à l'extérieur de la forêt pour de bon"],
+      "La matière n'est ni créée ni détruite : les décomposeurs décomposent les organismes morts et retournent leurs nutriments au sol. <b>Les champignons et les bactéries décomposent le bois et retournent ses nutriments au sol pour les nouvelles plantes</b>.", {});
+  },
+  function () {
+    return mcq("Les feuilles s'accumulent sous un érable chaque automne. Comment la matière qu'elles contiennent est-elle recyclée?",
+      "Les décomposeurs du sol décomposent les feuilles et libèrent leurs nutriments pour les racines de l'arbre",
+      ["Les nutriments des feuilles mortes sont entièrement détruits par leur chute vers le sol pendant l'automne de chaque année", "Les nutriments s'envolent dans l'air sous forme de gaz et ne retournent jamais au sol de la forêt", "L'arbre réabsorbe les feuilles mortes entières à travers l'écorce de son tronc pendant tout l'hiver qui suit leur chute"],
+      "Les décomposeurs du sol décomposent les feuilles mortes et rendent leurs nutriments disponibles aux producteurs. <b>Les décomposeurs du sol décomposent les feuilles et libèrent leurs nutriments pour les racines de l'arbre</b>.", {});
+  },
+  function () {
+    return mcq("Un agriculteur épand du fumier composté sur son champ avant de semer. Comment la matière qu'il contient est-elle recyclée?",
+      "Les décomposeurs achèvent la décomposition du fumier et libèrent des nutriments que les cultures peuvent absorber",
+      ["Les nutriments contenus dans le fumier traversent le sol entier sans jamais être utilisés par les cultures qui poussent dans le champ", "Les nutriments du fumier se retransforment directement en fumier frais pour l'année suivante", "Les plantes des cultures absorbent le fumier entier directement par leurs feuilles pendant qu'il repose encore sur le sol du champ"],
+      "Le compostage commence la décomposition et les décomposeurs du sol la terminent, libérant les nutriments. <b>Les décomposeurs achèvent la décomposition du fumier et libèrent des nutriments que les cultures peuvent absorber</b>.", {});
+  },
+  function () {
+    return mcq("Le corps d'une baleine coule au fond de l'océan après sa mort. Comment la matière qu'il contient est-elle recyclée?",
+      "Les charognards et les décomposeurs décomposent le corps pendant des années et recyclent ses nutriments dans l'écosystème océanique",
+      ["Les nutriments du corps de la baleine sont retirés de l'océan pour toujours dès qu'il atteint le fond profond et froid de la mer", "Le corps entier de la baleine se dissout entièrement dans l'eau de l'océan en une seule journée après avoir coulé au fond", "Les nutriments remontent à la surface sans changer, encore en un seul morceau solide"],
+      "Même au fond de l'océan, charognards et décomposeurs décomposent le corps et retournent ses nutriments à l'écosystème. <b>Les charognards et les décomposeurs décomposent le corps pendant des années et recyclent ses nutriments dans l'écosystème océanique</b>.", {});
+  }
+]), ["La matière n'est ni créée ni détruite : elle est recyclée dans l'écosystème.", "Les décomposeurs retournent les nutriments des organismes morts au sol."]);
+
+E("s7f-u1-succession-signes-id", 1, ["SC7.1.10"], 1, "var", varset([
+  function () {
+    return mcq("Sur un rocher nu laissé par un glacier qui se retire, on voit des croûtes de lichens et de petites mousses dans les fissures. Que montrent ces signes?",
+      "Le début d'une succession primaire : des espèces pionnières commencent à former du sol",
+      ["La fin complète d'une succession écologique : la communauté stable et finale est déjà entièrement installée sur le rocher nu", "Une succession secondaire rapide et complète : toute la forêt repousse après un feu de forêt sur la surface du rocher nu", "Aucune succession : les lichens et les mousses ne font pas partie des écosystèmes"],
+      "Les lichens et les mousses sur rocher nu sont les pionniers classiques de la succession primaire. <b>Le début d'une succession primaire : des espèces pionnières commencent à former du sol</b>.", {});
+  },
+  function () {
+    return mcq("Dans un champ abandonné depuis trois ans, les herbes hautes et les fleurs sauvages couvrent le sol, et de jeunes aulnes commencent à paraître. Que montrent ces signes?",
+      "Une succession secondaire en cours : les arbustes succèdent aux plantes herbacées sur un sol déjà formé",
+      ["Une succession primaire qui commence : les pionniers créent le premier sol du champ", "La fin définitive de toute succession dans ce champ : plus aucun changement ne se produira jamais dans cette communauté à l'avenir", "Une perturbation majeure qui a détruit l'écosystème au complet : le champ ne pourra plus jamais changer ni se rétablir par la suite"],
+      "Le sol existe déjà et les étapes se succèdent (herbes, puis arbustes) : c'est une succession secondaire en cours. <b>Une succession secondaire en cours : les arbustes succèdent aux plantes herbacées sur un sol déjà formé</b>.", {});
+  },
+  function () {
+    return mcq("Le long d'une dune de sable récente, des herbes de dune enracinées retiennent le sable, et le sable s'accumule autour d'elles. Que montrent ces signes?",
+      "Une succession en cours : les plantes pionnières stabilisent la dune et préparent l'arrivée d'autres espèces",
+      ["La fin complète d'une succession : la dune de sable a déjà atteint sa communauté stable, mature et définitive depuis longtemps", "Aucune succession d'aucune sorte : le sable de la dune bouge beaucoup trop pour qu'un écosystème puisse s'y installer un jour", "Une succession primaire terminée : le sol de la dune est déjà profond et riche"],
+      "Les herbes pionnières qui stabilisent un milieu neuf sont un signe de succession en cours. <b>Une succession en cours : les plantes pionnières stabilisent la dune et préparent l'arrivée d'autres espèces</b>.", {});
+  },
+  function () {
+    return mcq("Après un feu de forêt, le sol est couvert de cendres, mais dès l'été suivant, l'épilobe et d'autres plantes à croissance rapide le recouvrent. Que montrent ces signes?",
+      "Le début d'une succession secondaire : le sol a survécu au feu et les plantes pionnières le recolonisent",
+      ["Le début d'une succession primaire : il faudra des siècles avant la moindre plante", "La communauté stable et finale de la succession : ces plantes à croissance rapide resteront dominantes dans le secteur pour toujours", "Aucune succession possible après un feu : un feu de forêt met fin définitivement à tous les changements d'un écosystème forestier"],
+      "Le sol intact après un feu permet une succession secondaire rapide, amorcée par les plantes pionnières. <b>Le début d'une succession secondaire : le sol a survécu au feu et les plantes pionnières le recolonisent</b>.", {});
+  }
+]), ["Rocher nu et lichens : succession primaire. Sol déjà formé : succession secondaire.", "Les pionniers sont les premiers signes; la communauté finale vient en dernier."]);
+
+E("s7f-u1-succession-signes-suite", 1, ["SC7.1.10"], 2, "var", varset([
+  function () {
+    return mcq("Un étang peu profond se comble lentement : les quenouilles avancent des bords vers le centre, année après année. Quel signe annonce l'étape suivante de la succession?",
+      "Des arbustes comme les saules s'installent sur les bords asséchés pendant que l'eau libre diminue",
+      ["Les grands poissons reviennent en nombre dans l'eau de plus en plus profonde de l'étang", "Une forêt d'épinettes pousse directement dans l'eau libre au centre de l'étang dès l'an prochain", "L'étang se transforme instantanément en rocher nu sur tout son fond en une saison"],
+      "À mesure que l'étang se comble, la végétation de marais cède la place aux arbustes des bords asséchés. Le signe est : <b>des arbustes comme les saules s'installent sur les bords asséchés pendant que l'eau libre diminue</b>.", {});
+  },
+  function () {
+    return mcq("Sur une coulée de lave refroidie vieille de dix ans, on trouve des lichens, quelques mousses et une mince couche de particules dans les creux. Quel signe montre que la succession avance?",
+      "La couche de particules s'épaissit et de petites plantes enracinées commencent à pousser dans les creux",
+      ["Des arbres matures de pleine hauteur dominent déjà toute la surface de la coulée de lave", "La lave redevient liquide et recouvre les lichens qui s'y étaient installés au début", "Les lichens disparaissent tous et le rocher redevient exactement comme au premier jour"],
+      "L'épaississement du jeune sol et l'arrivée de plantes enracinées marquent la progression de la succession primaire. <b>La couche de particules s'épaissit et de petites plantes enracinées commencent à pousser dans les creux</b>.", {});
+  },
+  function () {
+    return mcq("Un terrain vague en ville, non entretenu depuis cinq ans, est passé d'un sol nu à des herbes, puis à des arbustes le long des clôtures. Quel signe indiquerait que la succession se poursuit?",
+      "De jeunes arbres grandissent parmi les arbustes et commencent à leur faire de l'ombre",
+      ["Les herbes disparaissent complètement et le sol redevient nu comme au premier été", "Les arbustes cessent de changer et le terrain reste identique pour les siècles à venir", "Le terrain se recouvre de rocher nu à mesure que les arbustes vieillissent et meurent"],
+      "La succession se poursuit quand l'étape suivante (les jeunes arbres) commence à remplacer l'étape des arbustes. <b>De jeunes arbres grandissent parmi les arbustes et commencent à leur faire de l'ombre</b>.", {});
+  },
+  function () {
+    return mcq("Dans un marais salé, la partie la plus haute, rarement inondée, porte maintenant des arbustes bas au lieu des herbes du marais. Que montre ce signe?",
+      "La succession transforme le marais en un milieu plus sec à mesure que les dépôts élèvent le sol",
+      ["Le marais retourne en arrière : il redeviendra un fond marin profond dans quelques années", "Les arbustes prouvent que la succession du marais est terminée pour toujours à cet endroit", "Les herbes du marais ont été remplacées parce que la mer recouvre le site plus souvent qu'avant"],
+      "L'accumulation de dépôts élève le sol, l'inondation diminue, et des plantes de milieu plus sec (les arbustes) remplacent les herbes. <b>La succession transforme le marais en un milieu plus sec à mesure que les dépôts élèvent le sol</b>.", {});
+  }
+]), ["Cherche le signe que l'étape suivante commence à remplacer l'étape actuelle.", "Le sol qui s'épaissit et les plantes plus grandes annoncent la suite."]);
+
+E("s7f-u1-cr-marais-changement", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return textq("Un marais près d'une école est drainé au printemps pour construire un terrain de sport. L'année suivante, les grenouilles qui vivaient dans le marais ont disparu du secteur. Explique DEUX effets du drainage : un effet sur un facteur abiotique et un effet sur un facteur biotique. (2 points)",
+      ["Le drainage enlève l'eau stagnante, un facteur abiotique dont dépendait la communauté du marais."],
+      "Points de notation (2) : 1 point pour un effet abiotique (l'eau stagnante est enlevée, le sol s'assèche et l'habitat d'eau peu profonde disparaît). 1 point pour un effet biotique lié (les grenouilles perdent l'eau nécessaire à leur reproduction et disparaissent; les plantes du marais et les insectes et oiseaux qui en dépendent diminuent aussi). Réponse modèle : Le drainage enlève l'eau stagnante du marais et assèche le sol. Sans eau pour pondre leurs œufs, <b>les grenouilles ne peuvent plus se reproduire, et la communauté biotique les perd</b>.", {});
+  },
+  function () {
+    return textq("Un agriculteur plante une rangée d'arbres le long d'un champ venteux. Après quelques années, le sol du champ reste humide plus longtemps après la pluie. Explique DEUX effets de la rangée d'arbres : un effet sur un facteur abiotique et un effet sur un facteur biotique. (2 points)",
+      ["Les arbres ralentissent le vent au niveau du sol, un facteur abiotique qui agit sur le champ."],
+      "Points de notation (2) : 1 point pour un effet abiotique (les arbres réduisent la vitesse du vent sur le champ, donc moins d'eau s'évapore du sol et le sol reste humide plus longtemps; l'ombre refroidit aussi la surface). 1 point pour un effet biotique lié (les cultures poussent mieux avec l'humidité, et les oiseaux et les insectes trouvent abri et nourriture dans la rangée). Réponse modèle : La rangée ralentit le vent, donc le sol perd moins d'eau par évaporation. Avec un sol plus humide, <b>les plantes cultivées poussent plus vigoureusement pendant les périodes sèches</b>.", {});
+  },
+  function () {
+    return textq("Le sel de voirie utilisé en hiver se lave dans un petit étang chaque printemps. À l'été, les escargots de l'étang ont presque disparu. Explique DEUX effets du sel : un effet sur un facteur abiotique et un effet sur un facteur biotique. (2 points)",
+      ["Le sel augmente la concentration de sel dans l'eau de l'étang, un facteur abiotique."],
+      "Points de notation (2) : 1 point pour un effet abiotique (le sel dissous change la composition chimique de l'eau, dont la concentration de sel augmente chaque printemps). 1 point pour un effet biotique lié (les escargots et d'autres organismes d'eau douce ne tolèrent pas l'eau plus salée; leurs populations chutent, ce qui touche les animaux qui s'en nourrissent). Réponse modèle : Le ruissellement rend l'eau de l'étang plus salée chaque printemps. Les escargots d'eau douce ne survivent pas à ce changement, donc <b>leur population s'effondre, et les oiseaux et les poissons qui les mangeaient perdent une source de nourriture</b>.", {});
+  }
+]), ["Un effet doit toucher un facteur abiotique, l'autre un facteur biotique.", "Relie-les : le changement abiotique explique souvent le changement biotique."]);
+
 /* ----- bank-u2.js ----- */
+// CRMARKS: s7f-u2-cr-thermometre-choix=3
+// CRMARKS: s7f-u2-cr-rayonnement-expliquer=2
 // CRMARKS: s7f-u2-cr-temp-explain=3
 // CRMARKS: s7f-u2-cr-expansion=3
 // CRMARKS: s7f-u2-cr-plateau=3
@@ -1923,7 +2144,119 @@ E("s7f-u2-cr-conclusion", 2, ["SC7.6.9"], 3, "var", varset([
 var NO_COMPOSE_U2 = { "s7f-u2-cr-design-test": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
 
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : SR sur SC7.4.2, SC7.4.6,
+   SC7.6.7, et deux entrées CR (SC7.4.1, 3 points; SC7.4.6, 2 points)
+   qui comblent les manques des Tests 1 et 3 de l'unité 2. Marqué
+   pour la révision SME. */
+
+E("s7f-u2-temperature-comparer", 2, ["SC7.4.2"], 2, "gen", function () {
+  var a = ri(5, 40), d = ri(2, 12), b = a + d;
+  var site = pick(["Deux bols d'eau laissés au soleil", "Deux tasses d'eau chaude laissées sur le comptoir", "Deux thermomètres placés dans une serre"]);
+  var unit = pick(["°C", "°C", "degrés Celsius"]);
+  return mcq(site[0] === "Deux thermomètres placés dans une serre"
+    ? "Dans une serre, un thermomètre à l'ombre indique " + a + " °C et un autre au soleil indique " + b + " °C. Lequel des énoncés est vrai?"
+    : site + " : l'un indique " + a + " " + unit + " et l'autre " + b + " " + unit + ". Lequel des énoncés est vrai?",
+    "Le deuxième est plus chaud que le premier de " + d + " " + unit + " : il contient plus d'énergie thermique en moyenne par particule",
+    ["Le premier est plus chaud que le deuxième de " + d + " " + unit + ", parce qu'il a été mesuré en premier",
+     "Les deux sont à la même température, parce que " + a + " et " + b + " sont des mesures du même genre d'eau",
+     "Le deuxième est plus froid que le premier de " + d + " " + unit + ", parce que les grands nombres sur un thermomètre indiquent le froid"],
+    "La température plus élevée est la plus chaude, et l'écart se calcule par soustraction : " + b + " \u2212 " + a + " = " + d + ". <b>Le deuxième est plus chaud que le premier de " + d + " " + unit + "</b>.", { a: a, b: b, d: d });
+}, ["La température compare l'énergie moyenne des particules; soustrais pour l'écart.", "Le plus grand nombre est le plus chaud; l'écart est le second moins le premier."]);
+
+E("s7f-u2-absorption-prevoir", 2, ["SC7.4.6"], 2, "var", varset([
+  function () {
+    return mcq("Deux plaques de métal identiques, l'une noire et mate, l'autre argentée et brillante, sont placées à la même distance d'une lampe chauffante. Que prévoit-on après dix minutes?",
+      "La plaque noire et mate devient plus chaude, parce que les surfaces sombres et mates absorbent davantage le rayonnement",
+      ["La plaque argentée et brillante devient nettement plus chaude que l'autre, parce que les surfaces brillantes et polies absorbent davantage le rayonnement de la lampe", "Les deux plaques de métal deviennent exactement également chaudes après dix minutes, parce qu'elles reçoivent toutes les deux exactement le même rayonnement de la lampe", "La plaque noire devient plus froide, parce que les surfaces sombres renvoient tout le rayonnement reçu"],
+      "À rayonnement égal, ce sont la couleur et la texture qui décident de l'absorption : sombre et mat absorbe plus. <b>La plaque noire et mate devient plus chaude</b>.", {});
+  },
+  function () {
+    return mcq("Un cycliste porte un chandail blanc un jour d'été ensoleillé, et un chandail noir le lendemain, par le même temps. Que prévoit-on?",
+      "Le chandail noir devient plus chaud au soleil, parce que les tissus sombres absorbent une plus grande part du rayonnement",
+      ["Le chandail blanc devient nettement plus chaud au soleil que le noir, parce que les tissus pâles et clairs absorbent une plus grande part du rayonnement solaire", "Les deux chandails du cycliste deviennent exactement également chauds au soleil, parce que la couleur d'un tissu ne change absolument rien à l'absorption du rayonnement", "Le chandail noir devient plus froid au soleil, parce que les tissus sombres repoussent le rayonnement solaire"],
+      "Les surfaces sombres absorbent une plus grande part du rayonnement solaire que les surfaces pâles. <b>Le chandail noir devient plus chaud au soleil</b>.", {});
+  },
+  function () {
+    return mcq("Deux toits voisins, l'un en bardeaux foncés et l'autre en métal pâle et poli, reçoivent le même soleil de midi. Que prévoit-on pour la température des greniers?",
+      "Le grenier sous les bardeaux foncés devient plus chaud, parce que la surface foncée absorbe plus de rayonnement",
+      ["Le grenier situé sous le toit de métal pâle et poli devient nettement plus chaud, parce que les surfaces polies et brillantes absorbent toujours plus de rayonnement solaire", "Les deux greniers voisins restent exactement à la même température pendant tout l'après-midi, parce que le soleil de midi chauffe tous les toits de la même façon", "Le grenier sous les bardeaux foncés devient plus froid, parce que les surfaces foncées bloquent le rayonnement"],
+      "Bardeaux foncés et mats contre métal pâle et poli : la surface foncée absorbe davantage. <b>Le grenier sous les bardeaux foncés devient plus chaud</b>.", {});
+  },
+  function () {
+    return mcq("On verse de l'eau chaude dans deux tasses identiques, l'une à fini noir mat et l'autre à fini blanc brillant, puis on attend. Que prévoit-on?",
+      "L'eau de la tasse noire mate se refroidit un peu plus vite, parce que les surfaces sombres et mates émettent aussi le rayonnement plus facilement",
+      ["L'eau chaude de la tasse blanche et brillante se refroidit nettement plus vite que l'autre, parce que les surfaces brillantes et polies émettent toujours plus de rayonnement que les surfaces mates", "L'eau chaude des deux tasses identiques se refroidit exactement au même rythme pendant toute l'attente, parce que la couleur de la tasse ne change absolument rien à l'émission de rayonnement", "L'eau de la tasse noire se réchauffe avec le temps, parce que les surfaces sombres créent de la chaleur"],
+      "Un bon absorbeur est aussi un bon émetteur : la surface noire et mate rayonne sa chaleur plus vite. <b>L'eau de la tasse noire mate se refroidit un peu plus vite</b>.", {});
+  }
+]), ["Les surfaces sombres et mates absorbent plus de rayonnement que les pâles et brillantes.", "Un bon absorbeur est aussi un bon émetteur quand l'objet est chaud."]);
+
+E("s7f-u2-securite-scenario", 2, ["SC7.6.7"], 1, "var", varset([
+  function () {
+    return mcq("Pendant un laboratoire sur la chaleur, une élève tient un bécher d'eau chaude à mains nues et se brûle légèrement. Quelle pratique sûre aurait prévenu cette brûlure?",
+      "Utiliser des pinces ou des gants isolants pour manipuler tout contenant chauffé pendant le laboratoire",
+      ["Refroidir le bécher chaud sous l'eau froide du robinet de l'évier avant même de vérifier avec soin s'il était encore chaud au toucher", "Demander à un autre élève de son équipe de tenir le bécher chaud à sa place à mains nues pendant toute la durée de l'activité de laboratoire", "Verser l'eau chaude dans un bécher en plastique avant de commencer l'expérience"],
+      "Les contenants chauffés se manipulent avec des pinces ou des gants isolants, jamais à mains nues. <b>Utiliser des pinces ou des gants isolants pour manipuler tout contenant chauffé</b>.", {});
+  },
+  function () {
+    return mcq("Un élève remarque qu'un thermomètre en verre s'est fissuré pendant un laboratoire. Que doit-il faire?",
+      "Avertir l'enseignante ou l'enseignant tout de suite et ne pas ramasser le verre brisé à mains nues",
+      ["Ramasser soigneusement les morceaux de verre brisé avec ses mains nues et les jeter directement dans la poubelle ordinaire de la classe de sciences", "Cacher discrètement le thermomètre en verre brisé sous la table de laboratoire et continuer l'activité en cours sans rien dire à personne de l'incident", "Rincer les morceaux dans l'évier et les garder pour les réutiliser au prochain laboratoire"],
+      "Le verre brisé et les instruments fissurés se signalent immédiatement à l'enseignant; on ne les ramasse jamais à mains nues. <b>Avertir l'enseignante ou l'enseignant tout de suite</b>.", {});
+  },
+  function () {
+    return mcq("Avant de chauffer une substance inconnue, un groupe d'élèves vérifie la fiche de sécurité et porte des lunettes de protection. Pourquoi ces précautions?",
+      "Parce que chauffer une substance peut libérer des vapeurs ou causer des éclaboussures, et les symboles de danger indiquent les risques à prévoir",
+      ["Parce que les lunettes de protection ne sont exigées que pendant les quelques minutes où l'enseignant regarde directement le groupe travailler à sa table", "Parce que la fiche de sécurité de la substance indique à l'avance la couleur exacte qu'elle prendra quand elle sera chauffée pendant l'expérience", "Parce que les substances inconnues sont toujours inoffensives et que ces gestes ne sont qu'une formalité"],
+      "La fiche de sécurité et les symboles SIMDUT décrivent les dangers réels; chauffer peut projeter ou dégager des vapeurs. <b>Parce que chauffer une substance peut libérer des vapeurs ou causer des éclaboussures</b>.", {});
+  },
+  function () {
+    return mcq("Une élève aux cheveux longs se penche au-dessus d'un brûleur allumé pour lire un thermomètre. Quel danger court-elle?",
+      "Ses cheveux peuvent prendre feu : il faut attacher les cheveux longs et porter des lunettes près d'une flamme",
+      ["Ses longs cheveux peuvent fondre très lentement au-dessus de la flamme du brûleur sans jamais risquer de s'enflammer vraiment pendant le laboratoire", "Aucun danger réel pour elle : la flamme d'un brûleur de laboratoire scolaire ne peut jamais atteindre les cheveux longs d'une élève penchée au-dessus", "Le seul danger est que ses cheveux bloquent sa vue du thermomètre pendant quelques secondes"],
+      "Cheveux longs, vêtements amples et flammes ne vont pas ensemble : on attache les cheveux et on porte des lunettes. <b>Ses cheveux peuvent prendre feu</b>.", {});
+  }
+]), ["Rappelle les règles de sécurité pour la chaleur, le verre et les flammes.", "Le bon geste se fait avant l'accident ou dès que le danger apparaît."]);
+
+E("s7f-u2-cr-thermometre-choix", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Une classe veut suivre la température d'une serre pendant un mois entier, y compris les fins de semaine quand personne n'est à l'école. Explique pourquoi un thermomètre enregistreur (thermographe) convient mieux qu'un thermomètre à alcool ordinaire pour cette tâche. Dans ta réponse, nomme DEUX caractéristiques à l'appui et explique comment chacune aide à accomplir la tâche. (3 points)",
+      ["Un thermographe enregistre les lectures en continu, même quand personne n'est présent pour les lire."],
+      "Points de notation (3) : 1 point pour nommer une caractéristique utile (enregistrement en continu; lectures maximale et minimale conservées; mesures à intervalles réguliers). 1 point pour une deuxième caractéristique distincte. 1 point pour expliquer comment les caractéristiques répondent au besoin d'un mois de données sans observateur. Réponse modèle : Un thermographe enregistre la température en continu, jour et nuit, donc aucune donnée n'est perdue les fins de semaine. Il garde aussi les valeurs maximales et minimales de chaque journée. <b>Un thermomètre à alcool ordinaire n'indique que le moment où quelqu'un le lit, donc le mois resterait presque vide de données</b>.", {});
+  },
+  function () {
+    return textq("Une équipe de sciences doit mesurer la température de l'eau d'un étang à plusieurs profondeurs, d'une surface glacée jusqu'à 3 mètres de fond. Explique pourquoi un thermomètre à sonde électronique convient mieux qu'un thermomètre à alcool ordinaire pour cette tâche. Dans ta réponse, nomme DEUX caractéristiques à l'appui et explique comment chacune aide à accomplir la tâche. (3 points)",
+      ["Une sonde électronique peut être descendue à la profondeur voulue au bout de son câble."],
+      "Points de notation (3) : 1 point pour nommer une caractéristique utile (sonde submersible au bout d'un long câble; lecture numérique lue à la surface; réponse rapide). 1 point pour une deuxième caractéristique distincte. 1 point pour expliquer comment les caractéristiques répondent au besoin de mesures à plusieurs profondeurs sous la glace. Réponse modèle : La sonde descend au bout de son câble jusqu'à la profondeur choisie, et la lecture numérique se lit à la surface sans sortir l'instrument de l'eau. <b>Un thermomètre à alcool devrait être retiré et lu à chaque profondeur, ce qui fausse la mesure et risque de le briser dans la glace</b>.", {});
+  },
+  function () {
+    return textq("Un élève construit un four solaire et veut savoir exactement à quel moment de l'après-midi son four atteint sa température la plus élevée. Explique pourquoi un thermomètre à maximum convient mieux qu'un thermomètre à alcool ordinaire pour cette tâche. Dans ta réponse, nomme DEUX caractéristiques à l'appui et explique comment chacune aide à accomplir la tâche. (3 points)",
+      ["Un thermomètre à maximum garde la lecture la plus élevée atteinte, même après un refroidissement."],
+      "Points de notation (3) : 1 point pour nommer une caractéristique utile (l'indice de maximum reste en place; la lecture peut se faire plus tard; remise à zéro simple). 1 point pour une deuxième caractéristique distincte. 1 point pour expliquer comment les caractéristiques répondent au besoin de connaître le sommet de l'après-midi. Réponse modèle : Le thermomètre à maximum retient la valeur la plus élevée atteinte pendant que l'élève est ailleurs. L'élève peut donc lire le sommet plus tard et le comparer d'une journée à l'autre. <b>Un thermomètre ordinaire n'affiche que la température du moment où on le regarde, donc le sommet de l'après-midi serait manqué</b>.", {});
+  }
+]), ["Choisis l'instrument selon la tâche : que doit-il faire sans observateur?", "Nomme des caractéristiques de l'instrument lui-même, pas seulement sa fonction."]);
+
+E("s7f-u2-cr-rayonnement-expliquer", 2, ["SC7.4.6"], 2, "var", varset([
+  function () {
+    return textq("L'intérieur d'une voiture noire garée au soleil devient beaucoup plus chaud que l'intérieur d'une voiture blanche garée à côté, par la même journée. Explique cet écart à l'aide de l'absorption du rayonnement, puis nomme UN changement, autre que la couleur de la voiture, qui réduirait l'échauffement intérieur de la voiture noire. (2 points)",
+      ["Les surfaces sombres absorbent une plus grande part du rayonnement solaire que les surfaces pâles."],
+      "Points de notation (2) : 1 point pour expliquer que la peinture noire absorbe une plus grande part du rayonnement solaire que la peinture blanche, qui en réfléchit davantage, de sorte que l'intérieur noir reçoit et garde plus d'énergie. 1 point pour un changement valable (pare-soleil réfléchissant sur le pare-brise, vitres teintées, stationnement à l'ombre, housse pâle). Réponse modèle : La peinture noire absorbe la plupart du rayonnement qui la frappe, tandis que la peinture blanche en réfléchit une grande partie; l'intérieur noir se réchauffe donc davantage. <b>Un pare-soleil réfléchissant sur le pare-brise réduirait l'échauffement de la voiture noire</b>.", {});
+  },
+  function () {
+    return textq("Les tuyaux d'un chauffe-eau solaire sur un toit sont peints en noir mat plutôt qu'en argent brillant. Explique ce choix à l'aide de l'absorption du rayonnement, puis nomme UN changement, autre que la couleur des tuyaux, qui augmenterait encore l'énergie captée. (2 points)",
+      ["Les surfaces noires et mates absorbent une plus grande part du rayonnement que les surfaces brillantes."],
+      "Points de notation (2) : 1 point pour expliquer que le noir mat absorbe la plus grande part du rayonnement solaire, tandis que l'argent brillant en réfléchirait la majeure partie, de sorte que l'eau des tuyaux noirs se réchauffe davantage. 1 point pour un changement valable (vitre de couverture qui garde la chaleur, orientation des panneaux vers le soleil, isolation des tuyaux, surface de captage plus grande). Réponse modèle : Peints en noir mat, les tuyaux absorbent presque tout le rayonnement qui les atteint et chauffent l'eau efficacement. <b>Une vitre de couverture au-dessus des tuyaux réduirait les pertes et augmenterait encore l'énergie captée</b>.", {});
+  },
+  function () {
+    return textq("Par une journée froide mais ensoleillée, un randonneur portant un manteau noir foncé a sensiblement plus chaud qu'un compagnon en manteau blanc, alors qu'ils marchent côte à côte. Explique cet écart à l'aide de l'absorption du rayonnement, puis nomme UN changement, autre que la couleur du manteau, qui aiderait le compagnon en blanc à se réchauffer. (2 points)",
+      ["Le manteau noir absorbe une plus grande part du rayonnement solaire que le manteau blanc."],
+      "Points de notation (2) : 1 point pour expliquer que le tissu foncé absorbe la plus grande part du rayonnement solaire et le transforme en chaleur, tandis que le tissu blanc en réfléchit la majeure partie. 1 point pour un changement valable (se placer en plein soleil plutôt qu'à l'ombre, ajouter une couche coupe-vent, marcher plus vite pour produire de la chaleur, porter une couche foncée par-dessus). Réponse modèle : Le manteau noir absorbe le rayonnement du soleil et se réchauffe; le manteau blanc en réfléchit la plus grande partie. <b>Le compagnon se réchaufferait en marchant en plein soleil et en ajoutant une couche coupe-vent</b>.", {});
+  }
+]), ["Commence par l'absorption : quelle surface prend le plus de rayonnement?", "Pour le changement, pense à bloquer, réfléchir ou évacuer le rayonnement."]);
+
 /* ----- bank-u3.js ----- */
+// CRMARKS: s7f-u3-cr-classer-expliquer=2
 // CRMARKS: s7f-u3-cr-pure=2
 // CRMARKS: s7f-u3-cr-classify=3
 // CRMARKS: s7f-u3-cr-dissolving=3
@@ -2330,7 +2663,280 @@ E("s7f-u3-cr-new-question", 3, ["SC7.9.8"], 2, "var", varset([
 var NO_COMPOSE_U3 = { "s7f-u3-cr-design-solubility": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
 
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : SR sur SC7.7.1, SC7.7.2,
+   SC7.7.3, SC7.7.5, SC7.7.6 x2, SC7.7.7 x2, et une entrée CR de
+   2 points sur SC7.7.2. Marqué pour la révision SME. */
+
+E("s7f-u3-modele-particulaire", 3, ["SC7.7.1"], 2, "var", varset([
+  function () {
+    return mcq("Un schéma montre des particules très espacées qui remplissent tout le contenant et se déplacent rapidement dans toutes les directions. Quelle substance le schéma modélise-t-il le mieux?",
+      "Un gaz, dont les particules sont très espacées et se déplacent librement dans tout l'espace disponible",
+      ["Un liquide, dont les particules restent serrées les unes contre les autres au fond du contenant", "Un solide, dont les particules occupent des positions fixes et ne font que vibrer sur place", "Un mélange de solides, dont les particules gardent chacune leur forme propre dans le contenant"],
+      "Selon la théorie particulaire, les particules d'un gaz sont très espacées et libres de remplir le contenant. <b>Un gaz, dont les particules sont très espacées et se déplacent librement</b>.", {});
+  },
+  function () {
+    return mcq("Un schéma montre des particules serrées qui glissent les unes sur les autres et prennent la forme du fond d'un bécher. Quelle substance le schéma modélise-t-il le mieux?",
+      "Un liquide, dont les particules restent proches mais peuvent glisser et s'écouler",
+      ["Un gaz, dont les particules sont très espacées et remplissent tout le contenant offert", "Un solide, dont les particules sont verrouillées en positions fixes dans un motif régulier", "Un solide cristallin, dont les particules forment des rangées parfaitement ordonnées"],
+      "Particules proches mais capables de glisser : c'est le modèle particulaire d'un liquide. <b>Un liquide, dont les particules restent proches mais peuvent glisser et s'écouler</b>.", {});
+  },
+  function () {
+    return mcq("Un schéma montre des particules en rangées ordonnées, chacune vibrant légèrement sans quitter sa place. Quelle substance le schéma modélise-t-il le mieux?",
+      "Un solide, dont les particules occupent des positions fixes et ne font que vibrer",
+      ["Un liquide, dont les particules glissent librement les unes sur les autres en s'écoulant", "Un gaz, dont les particules sont très espacées et se déplacent rapidement partout", "Une solution, dont les particules de deux substances sont réparties également partout"],
+      "Des positions fixes et un motif régulier, avec vibration sur place : c'est le modèle d'un solide. <b>Un solide, dont les particules occupent des positions fixes et ne font que vibrer</b>.", {});
+  },
+  function () {
+    return mcq("On chauffe un solide et il fond. Selon la théorie particulaire, qu'est-il arrivé à ses particules?",
+      "Elles ont gagné de l'énergie et leurs mouvements finissent par vaincre les attractions qui les retenaient en positions fixes",
+      ["Elles se sont transformées en un nouveau genre de particules, plus grosses et plus lourdes qu'avant", "Elles ont cessé d'être attirées les unes par les autres, et cette attraction ne reviendra jamais", "Elles ont rapetissé jusqu'à devenir assez petites pour s'écouler entre les autres particules"],
+      "Le chauffage donne de l'énergie aux particules; à la fusion, leurs mouvements vainquent les attractions qui les fixaient. <b>Elles ont gagné de l'énergie et leurs mouvements finissent par vaincre les attractions</b>.", {});
+  }
+]), ["L'espacement et le mouvement révèlent l'état : espacées et libres, c'est un gaz.", "Serrées mais glissantes : liquide; en rangées fixes : solide."]);
+
+E("s7f-u3-melange-classer-plus", 3, ["SC7.7.2"], 2, "var", varset([
+  function () {
+    return mcq("Une poignée de sable de plage contient des grains noirs, blancs et roses qu'on peut distinguer à la loupe. Comment classer ce sable?",
+      "Un mélange mécanique : ses parties sont visibles et ne sont pas réparties uniformément",
+      ["Une solution : ses parties sont réparties uniformément et impossibles à distinguer", "Une substance pure : elle ne contient qu'un seul genre de particules dans tout l'échantillon", "Un élément : elle ne contient qu'un seul genre d'atomes dans chacun de ses grains"],
+      "Des parties visibles et inégalement réparties définissent un mélange mécanique. <b>Un mélange mécanique</b>.", {});
+  },
+  function () {
+    return mcq("Un verre de jus de pomme clair est doré de la même façon du haut au bas, sans aucun dépôt au fond. Comment classer ce jus?",
+      "Une solution : ses parties sont réparties uniformément et on ne peut pas les distinguer",
+      ["Un mélange mécanique : ses parties sont visibles et inégalement réparties dans le verre", "Une substance pure : elle ne contient qu'un seul genre de particules dans tout le verre", "Un élément : il ne contient qu'un seul genre d'atomes dans chaque goutte du jus"],
+      "Uniforme partout, sans parties distinguables : c'est une solution. <b>Une solution</b>.", {});
+  },
+  function () {
+    return mcq("Une vinaigrette se sépare en couches après quelques minutes au repos : l'huile flotte sur le vinaigre. Comment la classer au repos?",
+      "Un mélange mécanique : ses parties se séparent en couches visibles et inégales",
+      ["Une solution : ses parties restent réparties uniformément même après un long repos", "Une substance pure : elle ne contient qu'un seul genre de particules dans chaque couche", "Un composé : ses parties sont liées chimiquement et ne peuvent jamais se séparer"],
+      "Des couches visibles qui se séparent au repos : c'est un mélange mécanique, pas une solution. <b>Un mélange mécanique</b>.", {});
+  },
+  function () {
+    return mcq("Un échantillon d'eau distillée ne contient que des particules d'eau, toutes identiques. Comment classer cette eau?",
+      "Une substance pure : elle ne contient qu'un seul genre de particules",
+      ["Une solution : deux substances y sont réparties uniformément l'une dans l'autre", "Un mélange mécanique : ses parties sont visibles et inégalement réparties partout", "Un élément métallique : elle ne contient qu'un seul genre d'atomes de métal"],
+      "Un seul genre de particules, identiques : c'est une substance pure. <b>Une substance pure</b>.", {});
+  },
+  function () {
+    return mcq("Le lait au chocolat en poudre, une fois bien brassé, a la même couleur et le même goût dans chaque gorgée. Comment le classer?",
+      "Une solution : la poudre est dissoute et répartie uniformément dans le lait",
+      ["Un mélange mécanique : ses parties sont visibles et inégalement réparties dans le verre", "Une substance pure : il ne contient qu'un seul genre de particules dans tout le verre", "Un élément : il ne contient qu'un seul genre d'atomes dans chaque gorgée bue"],
+      "Une poudre dissoute uniformément dans le lait forme une solution. <b>Une solution</b>.", {});
+  },
+  function () {
+    return mcq("Un bocal de marinades montre des tranches de concombre, des grains d'épices et un liquide, chacun reconnaissable. Comment classer le contenu du bocal?",
+      "Un mélange mécanique : ses parties sont visibles et gardent leur identité propre",
+      ["Une solution : ses parties sont réparties uniformément et impossibles à distinguer", "Une substance pure : elle ne contient qu'un seul genre de particules dans tout le bocal", "Un élément : il ne contient qu'un seul genre d'atomes dans chacune de ses parties"],
+      "Des parties visibles qui gardent leur identité : c'est un mélange mécanique. <b>Un mélange mécanique</b>.", {});
+  }
+]), ["Des parties visibles et inégales indiquent un mélange mécanique.", "Uniforme partout, sans parties distinguables : c'est une solution."]);
+
+function s7fCap(x) { return x.charAt(0).toUpperCase() + x.slice(1); }
+
+E("s7f-u3-dissolution-identifier", 3, ["SC7.7.3"], 2, "var", varset([
+  ["de la limonade", "du sucre", "de l'eau sucrée à saveur de citron"],
+  ["de l'eau salée pour les pâtes", "du sel de table", "de l'eau"],
+  ["un thé glacé sucré", "du sucre", "du thé infusé"],
+  ["une boisson gazeuse", "du dioxyde de carbone", "de l'eau aromatisée"],
+  ["de l'eau vinaigrée pour marinades", "de l'acide acétique", "de l'eau"],
+  ["un sirop contre la toux", "le médicament dissous", "le sirop liquide"]
+].reduce(function (acc, row) {
+  acc.push(function () {
+    return mcq("Pour préparer " + row[0] + ", on dissout " + row[1] + " dans " + row[2] + ". Dans cette solution, qu'est-ce que le soluté?",
+      s7fCap(row[1]) + " : c'est la substance qui est dissoute",
+      [s7fCap(row[2]) + " : c'est la substance qui est dissoute dans l'autre",
+       "La solution entière : soluté et solvant sont deux noms de la même chose",
+       "Le contenant : c'est lui qui reçoit le mélange pendant la préparation"],
+      "Le soluté est la substance dissoute; le solvant est celle qui dissout. Ici, <b>" + row[1] + "</b> est le soluté et <b>" + row[2] + "</b> est le solvant.", {});
+  });
+  acc.push(function () {
+    return mcq("Pour préparer " + row[0] + ", on dissout " + row[1] + " dans " + row[2] + ". Dans cette solution, qu'est-ce que le solvant?",
+      s7fCap(row[2]) + " : c'est la substance qui dissout l'autre",
+      [s7fCap(row[1]) + " : c'est la substance qui dissout l'autre dans le mélange",
+       "La solution entière : solvant et soluté sont deux noms de la même chose",
+       "Le contenant : c'est lui qui dissout pendant toute la préparation"],
+      "Le solvant est la substance qui dissout le soluté. Ici, <b>" + row[2] + "</b> est le solvant et <b>" + row[1] + "</b> est le soluté.", {});
+  });
+  return acc;
+}, [])), ["Le soluté est la substance dissoute; le solvant est celle qui dissout.", "Dans les boissons, l'ingrédient en plus petite quantité est souvent le soluté."]);
+
+E("s7f-u3-solubilite-changement", 3, ["SC7.7.5"], 2, "var", varset([
+  function () {
+    return mcq("Une boisson gazeuse froide, une fois réchauffée sur le comptoir, perd ses bulles beaucoup plus vite. Qu'est-ce qui explique ce changement?",
+      "La solubilité des gaz diminue quand la température monte : le gaz dissous s'échappe de la boisson tiède",
+      ["La solubilité des gaz dissous augmente quand la température du liquide monte : du gaz supplémentaire entre alors dans la boisson et forme toutes les bulles qu'on voit s'échapper", "Le réchauffement de la boisson crée un tout nouveau gaz à l'intérieur de la bouteille scellée dès le moment précis où on l'ouvre sur le comptoir de la cuisine", "Les bulles n'ont aucun lien avec la solubilité : elles viennent uniquement de l'agitation du liquide"],
+      "Pour les gaz, réchauffer le liquide diminue la solubilité : le gaz dissous sort de la solution. <b>La solubilité des gaz diminue quand la température monte</b>.", {});
+  },
+  function () {
+    return mcq("Du sucre en poudre se dissout en quelques secondes dans un thé chaud, tandis qu'un morceau de sucre compact met beaucoup plus longtemps dans le même thé. Qu'est-ce qui explique l'écart?",
+      "La poudre offre une plus grande surface de contact : ses petites particules rencontrent le solvant partout à la fois",
+      ["La poudre de sucre est un tout autre genre de sucre, chimiquement très différent et beaucoup plus soluble par nature que le sucre compact en morceaux dans le même thé chaud", "Le morceau de sucre doit d'abord fondre complètement avant que la dissolution puisse commencer", "La dissolution dépend uniquement de la température, donc les deux formes devraient prendre le même temps"],
+      "À substance égale, la forme en poudre expose plus de surface au solvant et se dissout plus vite. <b>La poudre offre une plus grande surface de contact</b>.", {});
+  },
+  function () {
+    return mcq("Un plongeur qui remonte trop vite d'une plongée profonde peut souffrir parce que l'azote dissous dans son sang forme des bulles. Quel facteur de solubilité est en cause?",
+      "La pression : quand elle diminue pendant la remontée, l'azote dissous devient moins soluble et forme des bulles",
+      ["La température du sang : le sang du plongeur se réchauffe très brusquement pendant sa remontée rapide vers la surface, et c'est cette chaleur qui chasse l'azote dissous", "L'agitation du liquide : les mouvements du plongeur pendant la remontée transforment son sang en une solution fortement brassée, ce qui fait sortir l'azote en bulles", "La grosseur des particules : les particules d'azote grossissent sous la pression profonde"],
+      "Sous la pression profonde, plus d'azote se dissout; à la remontée, la pression chute et le gaz sort de solution en bulles. <b>La pression : quand elle diminue, l'azote dissous devient moins soluble</b>.", {});
+  },
+  function () {
+    return mcq("Pour dissoudre plus de poudre de cacao dans un lait déjà saturé, sans ajouter de lait, que peut-on faire?",
+      "Chauffer le lait : la plupart des solutés solides deviennent plus solubles dans un liquide chaud",
+      ["Refroidir le lait saturé au réfrigérateur pendant une heure : les solutés solides comme le cacao deviennent toujours beaucoup plus solubles dans un liquide bien froid", "Laisser le lait saturé reposer sur le comptoir sans jamais le toucher ni le brasser : le repos prolongé augmente toujours, à lui seul, la solubilité des solutés solides", "Verser le lait dans un verre plus large : la largeur du contenant augmente la solubilité"],
+      "Pour la plupart des solutés solides, chauffer le solvant augmente la quantité qui peut se dissoudre. <b>Chauffer le lait</b>.", {});
+  }
+]), ["Repère le facteur modifié : température, pression, agitation ou grosseur des particules.", "Les gaz se comportent à l'inverse des solides quand la température monte."]);
+
+E("s7f-u3-separation-plan", 3, ["SC7.7.6"], 2, "var", varset([
+  function () {
+    return mcq("Un technicien doit récupérer des copeaux de fer mélangés à du sable sec. Quel plan de séparation convient?",
+      "Passer un aimant au-dessus du mélange à plusieurs reprises : l'aimant attire les copeaux de fer et laisse le sable",
+      ["Verser de l'eau froide dans le mélange sec et filtrer le tout : le fer des copeaux se dissout complètement dans l'eau et traverse le papier filtre avec elle", "Chauffer très fort le mélange sec dans un creuset jusqu'à ce que tout le sable se soit évaporé dans l'air et laisse les copeaux de fer seuls derrière lui", "Laisser reposer le mélange une semaine : le fer finit toujours par flotter au-dessus du sable"],
+      "Le fer est magnétique et le sable ne l'est pas : l'aimant sépare les deux proprement. <b>Passer un aimant au-dessus du mélange</b>.", {});
+  },
+  function () {
+    return mcq("Une classe doit séparer de l'eau boueuse en eau claire et en boue. Quel plan de séparation convient?",
+      "Verser le mélange dans un filtre : l'eau traverse le papier filtre et la boue y reste",
+      ["Ajouter une bonne quantité de savon liquide au mélange et brasser vigoureusement : le savon dissout complètement la boue dans l'eau, qui devient claire d'un coup", "Faire bouillir le mélange entier dans une casserole ouverte : la boue solide disparaît toujours la première, entièrement emportée dans la vapeur qui s'élève", "Attendre que l'eau devienne claire toute seule, sans jamais toucher au mélange"],
+      "La filtration retient les particules solides de la boue et laisse passer l'eau. <b>Verser le mélange dans un filtre</b>.", {});
+  },
+  function () {
+    return mcq("On veut récupérer le sel dissous dans un bassin d'eau de mer peu profond. Quel plan de séparation convient?",
+      "Laisser l'eau s'évaporer au soleil : l'eau part en vapeur et les cristaux de sel restent dans le bassin",
+      ["Filtrer toute l'eau de mer du bassin à travers un papier filtre fin : le papier retiendra soigneusement tout le sel dissous dans l'eau qui le traverse", "Passer un aimant très puissant dans l'eau du bassin à plusieurs reprises : le sel dissous dans l'eau de mer est attiré par les aimants puissants et s'y colle", "Congeler l'eau de mer : le sel sort toujours de la glace en cristaux purs et secs"],
+      "Le sel dissous ne se filtre pas; l'évaporation enlève l'eau et laisse le sel. <b>Laisser l'eau s'évaporer au soleil</b>.", {});
+  },
+  function () {
+    return mcq("Un mélange contient des billes de verre et des billes de liège de la même grosseur. Quel plan de séparation convient?",
+      "Verser le mélange dans l'eau : les billes de liège flottent et les billes de verre coulent, puis on écume le liège",
+      ["Utiliser un aimant puissant passé au-dessus du mélange sec : les billes de verre sont toujours attirées par les aimants forts et se séparent ainsi des billes de liège", "Filtrer le mélange sec à travers un papier filtre ordinaire : les billes de liège, plus légères, traversent le papier filtre en premier et les billes de verre restent", "Chauffer le mélange : le liège s'évapore toujours avant que le verre ne ramollisse"],
+      "Flottation : le liège, moins dense, flotte sur l'eau pendant que le verre coule. <b>Verser le mélange dans l'eau et écumer le liège</b>.", {});
+  },
+  function () {
+    return mcq("Une recette demande de séparer des graines de pavot (très petites) de grains de riz (plus gros). Quel plan de séparation convient?",
+      "Verser le mélange sur un tamis aux mailles intermédiaires : les graines de pavot traversent et le riz reste sur le tamis",
+      ["Verser tout le mélange dans un bol d'eau froide : les petites graines de pavot coulent toujours au fond et les grains de riz flottent toujours à la surface de l'eau", "Passer un aimant de cuisine au-dessus du mélange sec à plusieurs reprises : les grains de riz sont attirés par les aimants et se séparent ainsi des graines de pavot", "Chauffer doucement le mélange : les graines de pavot s'évaporent avant les grains de riz"],
+      "Le tamisage sépare selon la grosseur des particules. <b>Verser le mélange sur un tamis aux mailles intermédiaires</b>.", {});
+  }
+]), ["Associe la technique à la propriété qui diffère : magnétisme, grosseur, solubilité, densité.", "Un solide dissous ne se filtre pas : il faut l'évaporation."]);
+
+E("s7f-u3-separation-propriete", 3, ["SC7.7.6"], 3, "var", varset([
+  function () {
+    return mcq("Un élève sépare de la limaille de fer d'un mélange de sable et de sel en commençant par un aimant. Quelle propriété rend cette première étape possible?",
+      "Le magnétisme : la limaille de fer est attirée par l'aimant, tandis que le sable et le sel ne le sont pas",
+      ["La solubilité dans le métal : la limaille de fer se dissout lentement dans l'aimant pendant que le sable et le sel du mélange restent secs et intacts à côté", "La densité relative : la limaille de fer est de loin la substance la moins dense de tout le mélange, ce qui la fait monter à la surface près de l'aimant", "Le point d'ébullition : la limaille de fer bout à une température plus basse que le sable"],
+      "L'aimant ne fonctionne que parce que le fer est magnétique et que les autres substances ne le sont pas. La propriété est <b>le magnétisme</b>.", {});
+  },
+  function () {
+    return mcq("Pour séparer ensuite le sable du sel dans le même mélange, l'élève ajoute de l'eau, filtre, puis fait évaporer l'eau du filtrat. Quelles propriétés utilise-t-elle?",
+      "La solubilité (le sel se dissout, pas le sable) puis l'évaporation (l'eau part, le sel reste)",
+      ["Le magnétisme utilisé deux fois de suite dans le plan : une première fois pour retirer le sable du mélange, puis une deuxième fois pour retirer le sel dissous de l'eau", "La densité à elle seule : le sable et le sel finissent par se séparer proprement parce que leurs particules flottent à des niveaux différents dans l'eau du bécher", "Le point de fusion : le sel fond dans l'eau chaude pendant que le sable reste solide"],
+      "Le sel se dissout dans l'eau et le sable non : la filtration retient le sable, et l'évaporation récupère le sel du filtrat. Les propriétés sont <b>la solubilité, puis l'évaporation</b>.", {});
+  },
+  function () {
+    return mcq("Un mélange d'eau et d'huile se sépare dans un entonnoir à décantation. Quelle propriété rend cette séparation possible?",
+      "La non-miscibilité et la densité : les deux liquides ne se mélangent pas et l'huile, moins dense, forme la couche du dessus",
+      ["Le magnétisme faible du métal : l'huile de surface est légèrement attirée vers le haut de l'entonnoir à décantation par les parties métalliques de l'appareil", "La solubilité dans l'eau chaude : l'huile versée se dissout d'abord complètement dans l'eau chaude du mélange, puis remonte ensuite lentement à la surface en refroidissant", "Le point d'ébullition : l'huile bout dès qu'elle touche l'eau à température ambiante"],
+      "L'huile et l'eau ne se mélangent pas, et la moins dense flotte : on peut donc laisser couler la couche d'eau. La propriété est <b>la non-miscibilité combinée à la densité</b>.", {});
+  },
+  function () {
+    return mcq("Un fermier sépare les grains de blé de leurs enveloppes légères (la balle) en lançant le mélange au vent. Quelle propriété rend cette séparation possible?",
+      "La masse et la prise au vent : le vent emporte les enveloppes légères pendant que les grains lourds tombent près du fermier",
+      ["Le magnétisme terrestre : les grains de blé lourds sont attirés vers le sol beaucoup plus fort que les enveloppes légères de la balle pendant le vannage au vent", "La solubilité dans l'air : les enveloppes légères de la balle se dissolvent complètement dans l'air humide des journées de récolte pendant qu'elles volent au vent", "La couleur : le vent trie les particules selon leur teinte, les pâles au loin"],
+      "Le vannage repose sur la différence de masse et de prise au vent entre grains lourds et enveloppes légères. La propriété est <b>la masse relative (la densité des particules)</b>.", {});
+  }
+]), ["Nomme la propriété qui rend la technique possible pour ces substances.", "Aimant = magnétisme; ajout d'eau = solubilité; couches = densité."]);
+
+E("s7f-u3-technique-quotidienne-id", 3, ["SC7.7.7"], 1, "var", varset([
+  function () {
+    return mcq("Une cafetière à piston : on pousse un piston muni d'un grillage fin qui retient le marc au fond. Quelle technique de séparation est-ce?",
+      "La filtration : le grillage retient le solide et laisse passer le liquide",
+      ["L'évaporation complète : toute l'eau du café s'en va en vapeur et le café reste concentré au fond de la cafetière à piston après quelques minutes", "La décantation soigneuse : on verse doucement le café liquide dans les tasses en laissant le marc de café déposé derrière, au fond de la cafetière", "La distillation : la vapeur de café est recueillie et condensée"],
+      "Un grillage qui retient le solide pendant que le liquide passe : c'est la filtration. <b>La filtration</b>.", {});
+  },
+  function () {
+    return mcq("On verse les pâtes et leur eau de cuisson dans une passoire : l'eau s'en va et les pâtes restent. Quelle technique de séparation est-ce?",
+      "La filtration (le tamisage) : la passoire retient le solide et laisse passer le liquide",
+      ["L'évaporation rapide : toute l'eau de cuisson des pâtes disparaît en vapeur d'eau au-dessus de la passoire pendant qu'on égoutte les pâtes chaudes", "La distillation complète : l'eau de cuisson est recueillie à l'état pur dans un deuxième contenant placé sous la passoire pendant l'égouttage des pâtes", "La dissolution : les pâtes se dissolvent pendant qu'on les égoutte"],
+      "Une passoire est un filtre grossier : elle retient les pâtes et laisse passer l'eau. <b>La filtration (le tamisage)</b>.", {});
+  },
+  function () {
+    return mcq("Une étendue de linge sèche au soleil : l'eau des vêtements disparaît dans l'air. Quelle technique de séparation est-ce?",
+      "L'évaporation : l'eau liquide devient vapeur et quitte le linge",
+      ["La filtration : l'air filtre l'eau hors des vêtements mouillés", "La décantation : l'eau coule lentement hors des vêtements par gravité", "La distillation : la vapeur d'eau est recueillie et condensée ailleurs"],
+      "Un liquide qui devient vapeur et s'en va : c'est l'évaporation. <b>L'évaporation</b>.", {});
+  },
+  function () {
+    return mcq("Un cuisinier laisse reposer une sauce, puis verse doucement la partie claire en laissant le dépôt au fond du pot. Quelle technique de séparation est-ce?",
+      "La décantation : on verse le liquide en laissant le dépôt solide derrière",
+      ["La filtration fine : le dépôt solide traverse lentement un filtre de papier pendant qu'on verse doucement la partie claire de la sauce dans le plat", "L'évaporation complète : la partie claire de la sauce s'évapore entièrement dans l'air et le dépôt solide reste complètement seul au fond du pot", "Le tamisage : un tamis retient la partie claire de la sauce au passage"],
+      "Verser doucement en laissant le dépôt derrière : c'est la décantation. <b>La décantation</b>.", {});
+  },
+  function () {
+    return mcq("Un four à micro-ondes muni d'un plateau tournant ne sépare rien; mais une essoreuse à salade fait sortir l'eau des feuilles par ses trous. Quelle technique l'essoreuse utilise-t-elle?",
+      "La filtration par force centrifuge : l'eau est projetée à travers les trous et les feuilles restent",
+      ["L'évaporation rapide : l'eau des feuilles devient vapeur pendant la rotation", "La distillation : la vapeur d'eau est condensée sur le couvercle de l'essoreuse", "La dissolution : l'eau dissout les feuilles pendant qu'elle sort par les trous"],
+      "L'essoreuse projette l'eau à travers ses ouvertures et retient les feuilles : filtration (par force centrifuge). <b>La filtration par force centrifuge</b>.", {});
+  },
+  function () {
+    return mcq("Un masque antipoussière porté pendant du sablage empêche la poussière d'entrer dans les poumons du bricoleur. Quelle technique de séparation le masque utilise-t-il?",
+      "La filtration : le matériau du masque retient les particules et laisse passer l'air",
+      ["L'évaporation instantanée : la fine poussière de sablage s'évapore entièrement dans l'air avant même d'atteindre le visage et le masque du bricoleur", "La décantation lente : la poussière de sablage se dépose tranquillement au fond du masque du bricoleur avant de pouvoir être respirée par son nez", "La distillation : l'air est condensé puis revaporisé à travers le masque"],
+      "Retenir les particules et laisser passer le fluide (l'air) : c'est la filtration. <b>La filtration</b>.", {});
+  }
+]), ["Que fait l'appareil : retenir un solide, évaporer un liquide ou verser un liquide?", "Retenir le solide pendant que le liquide passe, c'est la filtration."]);
+
+E("s7f-u3-technique-quotidienne-choix", 3, ["SC7.7.7"], 2, "var", varset([
+  function () {
+    return mcq("Une famille campe près d'un ruisseau et doit rendre l'eau boueuse potable pour la soirée : ils ont un linge propre, une casserole et un feu. Quel plan utilise correctement une technique de séparation?",
+      "Filtrer l'eau à travers le linge pour enlever la boue, puis la faire bouillir dans la casserole pour la rendre potable",
+      ["Faire bouillir l'eau boueuse telle quelle d'abord dans la casserole, puis la verser directement dans les verres une fois qu'elle a refroidi un peu", "Laisser l'eau boueuse reposer une petite minute seulement dans un contenant, puis boire directement la partie du dessus sans aucun autre traitement préalable", "Brasser l'eau avec une branche propre pour que la boue se répartisse également partout"],
+      "La filtration au linge enlève les particules, et l'ébullition rend ensuite l'eau potable : les deux étapes dans le bon ordre. <b>Filtrer l'eau à travers le linge, puis la faire bouillir</b>.", {});
+  },
+  function () {
+    return mcq("Un jus de fruits frais contient de la pulpe que des enfants n'aiment pas. Quelle technique donne un jus clair sans en changer le goût dissous?",
+      "La filtration : verser le jus dans un tamis fin ou un linge qui retient la pulpe",
+      ["L'évaporation au soleil : laisser le jus de fruits frais exposé au soleil pendant des heures jusqu'à ce que toute la pulpe ait complètement disparu du liquide", "La distillation complète du jus : chauffer tout le jus et recueillir uniquement la vapeur condensée qui s'en dégage, goutte à goutte, dans un autre contenant", "La décantation prolongée : attendre que la pulpe se dissolve d'elle-même dans le jus"],
+      "La pulpe est un solide en suspension : la filtration la retient et laisse passer le jus. <b>La filtration</b>.", {});
+  },
+  function () {
+    return mcq("Après avoir lavé du riz, une cuisinière veut jeter l'eau de rinçage trouble sans perdre les grains. Quelle technique utilise-t-elle en inclinant doucement le bol?",
+      "La décantation : elle verse l'eau en retenant les grains déposés au fond du bol",
+      ["La filtration à travers le riz : l'eau de rinçage trouble traverse lentement les grains de riz entassés au fond du bol comme à travers un filtre fin de cuisine", "L'évaporation rapide : toute l'eau de rinçage trouble s'évapore complètement dans l'air pendant les quelques secondes où elle incline doucement le bol", "La distillation : la vapeur de l'eau est recueillie sur le couvercle du bol"],
+      "Verser le liquide en gardant le solide déposé au fond : c'est la décantation. <b>La décantation</b>.", {});
+  },
+  function () {
+    return mcq("Un aquarium a besoin d'un nettoyage : l'eau contient des déchets solides en suspension. Quelle technique l'entretien hebdomadaire utilise-t-il dans le filtre de l'aquarium?",
+      "La filtration : l'eau traverse un matériau qui retient les déchets solides en suspension",
+      ["L'évaporation hebdomadaire : le filtre de l'aquarium fait évaporer une bonne partie de l'eau de l'aquarium chaque semaine pendant son fonctionnement continu", "La décantation mécanique : le filtre de l'aquarium verse doucement l'eau propre d'un côté en laissant les poissons et les déchets derrière lui de l'autre côté", "La dissolution : le filtre dissout les déchets jusqu'à ce qu'ils disparaissent"],
+      "Le filtre d'aquarium retient les particules solides et laisse passer l'eau : filtration. <b>La filtration</b>.", {});
+  }
+]), ["Choisis la technique qui enlève la partie indésirable et garde l'autre.", "Solides en suspension : filtration; dépôt au fond : décantation."]);
+
+E("s7f-u3-cr-classer-expliquer", 3, ["SC7.7.2"], 2, "var", varset([
+  function () {
+    return textq("Un élève examine un verre d'eau pétillante fraîchement versée : des bulles montent partout dans le liquide, qui est clair et de couleur uniforme. Classe ce contenu (solution, mélange mécanique ou substance pure) et justifie ton classement par DEUX observations tirées de la description. (2 points)",
+      ["L'eau pétillante est un mélange mécanique pendant que les bulles sont visibles."],
+      "Points de notation (2) : 1 point pour le bon classement (mélange mécanique tant que les bulles de gaz sont visibles et montent; on accepte aussi « solution » si l'élève parle du gaz dissous avant son dégagement, avec justification cohérente). 1 point pour deux observations à l'appui tirées de la description (bulles visibles qui montent = une partie distincte non uniformément répartie; le liquide clair et uniforme en apparence). Réponse modèle : Les bulles visibles qui montent forment une partie distincte dans le liquide : <b>c'est un mélange mécanique, car ses parties ne sont pas réparties uniformément</b>.", {});
+  },
+  function () {
+    return textq("Un élève examine un échantillon d'air contenu dans une seringue scellée : on ne voit rien, et l'air semble parfaitement uniforme. Classe ce contenu (solution, mélange mécanique ou substance pure) et justifie ton classement par DEUX faits sur la composition de l'air. (2 points)",
+      ["L'air est une solution de gaz : l'azote, l'oxygène et d'autres gaz y sont répartis uniformément."],
+      "Points de notation (2) : 1 point pour le bon classement (solution). 1 point pour deux faits à l'appui (l'air contient plusieurs gaz différents; ils sont mélangés uniformément, sans parties visibles ni couches). Réponse modèle : L'air contient de l'azote, de l'oxygène et d'autres gaz mélangés de façon parfaitement uniforme, sans aucune partie visible : <b>c'est une solution, même si elle est invisible</b>.", {});
+  },
+  function () {
+    return textq("Un élève examine une barre d'or pur fondue puis solidifiée : elle est jaune partout, sans taches ni couches, et ne contient rien d'autre que de l'or. Classe ce contenu (solution, mélange mécanique ou substance pure) et justifie ton classement par DEUX observations tirées de la description. (2 points)",
+      ["La barre d'or pur est une substance pure : elle ne contient qu'un seul genre de particules."],
+      "Points de notation (2) : 1 point pour le bon classement (substance pure). 1 point pour deux observations à l'appui (uniforme partout, sans taches ni couches; ne contient qu'une seule substance, l'or). Réponse modèle : La barre est uniforme partout et ne contient rien d'autre que de l'or : <b>c'est une substance pure, formée d'un seul genre de particules</b>.", {});
+  }
+]), ["Décide d'abord la classe, puis trouve deux observations qui la prouvent.", "Parties visibles d'un côté; uniformité parfaite de l'autre."]);
+
 /* ----- bank-u4.js ----- */
+// CRMARKS: s7f-u4-cr-sol-choix=2
 // CRMARKS: s7f-u4-cr-mineral-tests=3
 // CRMARKS: s7f-u4-cr-rock-journey=3
 // CRMARKS: s7f-u4-cr-event-compare=3
@@ -2873,7 +3479,109 @@ E("s7f-u4-cr-conclusion", 4, ["SC7.12.9"], 3, "var", varset([
 var NO_COMPOSE_U4 = { "s7f-u4-cr-design-investigation": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
 
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : SR sur SC7.10.6, SC7.10.7,
+   SC7.10.9, et une entrée CR de 2 points sur SC7.10.9. Marqué pour
+   la révision SME. */
+
+E("s7f-u4-montagne-scenario", 4, ["SC7.10.6"], 2, "var", varset([
+  function () {
+    return mcq("Les rochers d'une falaise le long de la côte se fendent un peu plus chaque hiver : l'eau entre dans les fissures, gèle la nuit et dégèle le jour. Quel processus est à l'œuvre?",
+      "La météorisation physique par le gel et le dégel : l'eau gelée prend de l'expansion et élargit les fissures",
+      ["La météorisation chimique par l'eau : l'eau de mer dissout complètement tous les minéraux de la falaise chaque nuit pendant la marée haute", "L'érosion par le vent marin : le vent des tempêtes arrache directement les gros rochers de la falaise et les emporte au loin pendant tout l'hiver", "Le dépôt : les sédiments s'accumulent dans les fissures et poussent les rochers vers la mer"],
+      "L'eau qui gèle prend de l'expansion et force les fissures : météorisation physique (gel-dégel). <b>La météorisation physique par le gel et le dégel</b>.", {});
+  },
+  function () {
+    return mcq("Les racines d'un arbre qui pousse sur un affleurement rocheux écartent lentement les plaques de roche les unes des autres. Quel processus est à l'œuvre?",
+      "La météorisation physique (biologique) : la croissance des racines exerce une force qui fend la roche",
+      ["La météorisation chimique par les racines : les racines de l'arbre dissolvent complètement la roche dure avec leurs acides puissants en une seule année de croissance", "L'érosion par les racines : les racines de l'arbre transportent lentement les morceaux de roche loin de l'affleurement rocheux, jusqu'à la vallée située en contrebas", "Le dépôt : les racines déposent de nouvelles couches de roche autour de l'affleurement"],
+      "Une force vivante qui fend la roche sans la dissoudre : météorisation physique par les racines. <b>La météorisation physique (biologique)</b>.", {});
+  },
+  function () {
+    return mcq("Sur un vieux bâtiment, la pierre calcaire près des gouttières est devenue molle et poudreuse après des décennies de pluies acides. Quel processus est à l'œuvre?",
+      "La météorisation chimique : l'acide des pluies réagit avec le calcaire et le désagrège",
+      ["La météorisation physique par le gel et le dégel : l'eau entrée dans la pierre du bâtiment a gelé pendant les nuits froides et l'a fait éclater en morceaux avec le temps", "L'érosion éolienne prolongée : le vent chargé de sable a poli la surface de la pierre calcaire pendant des décennies jusqu'à la rendre molle et poudreuse au toucher", "Le dépôt chimique : les pluies ont déposé une couche de poudre sur la pierre dure"],
+      "Une réaction acide qui désagrège le minéral : météorisation chimique. <b>La météorisation chimique</b>.", {});
+  },
+  function () {
+    return mcq("Un ruisseau de montagne transporte des cailloux qui deviennent de plus en plus ronds et lisses d'année en année. Quel processus arrondit ces cailloux?",
+      "La météorisation physique par abrasion : les cailloux se frottent et s'usent pendant leur transport",
+      ["La météorisation chimique par l'eau : l'eau froide du ruisseau de montagne dissout chimiquement les coins pointus des cailloux, un peu plus chaque année de transport", "Le dépôt de sédiments : le ruisseau en mouvement dépose lentement une couche lisse et polie sur la surface de chaque caillou qu'il transporte dans son lit", "L'érosion glaciaire : les glaciers ont arrondi les cailloux avant de les laisser dans le ruisseau"],
+      "Le frottement répété pendant le transport use et arrondit les cailloux : abrasion, une météorisation physique. <b>La météorisation physique par abrasion</b>.", {});
+  }
+]), ["La roche est-elle brisée par une force ou dissoute par une réaction?", "Gel, racines et frottement sont physiques; les acides sont chimiques."]);
+
+E("s7f-u4-ordre-evenements", 4, ["SC7.10.7"], 2, "var", varset([
+  function () { return s7fOrderQ("la formation d'une chaîne de montagnes sédimentaires plissées", ["une épaisse couche de sédiments se dépose au fond d'une mer ancienne", "les couches sont enfouies et durcissent en roche sédimentaire", "des forces internes plissent et soulèvent les couches", "l'érosion découpe des vallées dans les couches soulevées"]); },
+  function () { return s7fOrderQ("l'effondrement d'un bloc de falaise par le gel", ["une fissure s'ouvre dans une pente rocheuse", "l'eau s'infiltre dans la fissure et gèle pendant la nuit", "la glace force la fissure à s'élargir un peu plus", "un bloc de roche finit par se détacher et tombe au pied de la pente"]); },
+  function () { return s7fOrderQ("l'histoire d'une vallée glaciaire après le retrait des glaces", ["un glacier avance en raclant le fond d'une vallée", "le glacier dépose ses débris en une longue crête de moraine", "le glacier se retire et un lac se forme derrière la moraine", "des sédiments comblent lentement le lac au fil des siècles"]); }
+]), ["Trouve l'événement qui doit arriver en premier : rien d'autre n'est possible avant.", "Enchaîne ensuite : chaque étape rend la suivante possible."]);
+
+function s7fOrderQ(ctx, steps) {
+  var rot = ri(0, 3);
+  var listed = steps.slice(rot).concat(steps.slice(0, rot));
+  var correctStr = "C'est « " + steps[1] + " » qui arrive en deuxième dans l'histoire complète";
+  var wrongs = [steps[0], steps[2], steps[3]].map(function (x) {
+    return "C'est « " + x + " » qui arrive en deuxième dans l'histoire complète";
+  });
+  return mcq("Voici quatre événements de " + ctx + ", présentés dans le désordre : (1) " + listed[0] + " ; (2) " + listed[1] + " ; (3) " + listed[2] + " ; (4) " + listed[3] + ". Lequel arrive EN DEUXIÈME dans l'ordre réel?",
+    correctStr, wrongs,
+    "Ordre correct : (1) " + steps[0] + " ; (2) " + steps[1] + " ; (3) " + steps[2] + " ; (4) " + steps[3] + ". Le deuxième événement est donc <b>« " + steps[1] + " »</b>.", { rot: rot });
+}
+
+E("s7f-u4-sol-texture-test", 4, ["SC7.10.9"], 2, "var", varset([
+  function () {
+    return mcq("Une élève frotte un échantillon de sol humide entre ses doigts : il est granuleux et ne colle pas du tout. Que peut-elle conclure sur sa texture?",
+      "Le sol est riche en sable : les particules grossières donnent cette sensation granuleuse et non collante",
+      ["Le sol est très riche en argile fine : les sols argileux humides sont toujours granuleux, rugueux et complètement secs au toucher entre les doigts d'un élève", "Le sol est très riche en limon fin : les sols limoneux humides se reconnaissent facilement à leurs gros grains rugueux et durs qu'on sent entre les doigts", "Le sol est de l'humus pur : l'humus se reconnaît à ses grains de sable bien visibles"],
+      "Granuleux et non collant au test des doigts = particules grossières, donc sol sableux. <b>Le sol est riche en sable</b>.", {});
+  },
+  function () {
+    return mcq("Un élève roule un échantillon de sol humide entre ses paumes : il forme facilement un long « serpent » flexible qui ne casse pas. Que peut-il conclure sur sa texture?",
+      "Le sol est riche en argile : les particules très fines et collantes permettent de former un serpent flexible",
+      ["Le sol est très riche en sable grossier : les sols sableux humides forment toujours les serpents de sol les plus longs, les plus flexibles et les plus résistants", "Le sol est très riche en gravier grossier : les gros fragments de roche contenus dans le sol roulent facilement entre les paumes humides de l'élève pendant le test", "Le sol est sec et poudreux : seuls les sols secs peuvent être roulés de cette façon"],
+      "Un serpent flexible qui tient = particules fines et plastiques, donc sol argileux. <b>Le sol est riche en argile</b>.", {});
+  },
+  function () {
+    return mcq("Une élève frotte un échantillon de sol humide : il est doux et soyeux comme de la farine, légèrement collant, et il tache les doigts. Que peut-elle conclure sur sa texture?",
+      "Le sol est riche en limon : les particules de taille moyenne donnent cette sensation douce et soyeuse",
+      ["Le sol est très riche en sable fin : les sols sableux humides sont toujours parfaitement doux et soyeux au toucher, exactement comme de la farine tamisée", "Le sol est formé d'argile complètement pure : l'argile pure et sèche a exactement la texture douce et soyeuse de la farine tamisée quand on la frotte", "Le sol est du gravier fin : le gravier tache les doigts d'une poudre soyeuse au frottement"],
+      "Doux, soyeux, légèrement collant : ce sont les particules moyennes du limon. <b>Le sol est riche en limon</b>.", {});
+  },
+  function () {
+    return mcq("Dans un bocal d'eau secoué puis laissé au repos, un sol forme trois couches : une couche grossière au fond en quelques secondes, une couche moyenne en quelques minutes, et l'eau reste trouble pendant des heures. Que montre la couche qui trouble l'eau si longtemps?",
+      "L'argile : ses particules extrêmement fines restent en suspension très longtemps avant de se déposer",
+      ["Le sable grossier du fond : ses grosses et lourdes particules restent en suspension dans l'eau du bocal plus longtemps que toutes les autres particules du sol", "Le gravier grossier de l'échantillon : ses gros fragments de roche restent suspendus dans l'eau trouble du bocal pendant des heures entières avant de se déposer", "Le limon : ses particules moyennes sont les dernières à se déposer dans le bocal"],
+      "Plus les particules sont fines, plus elles mettent de temps à se déposer : la trouble persistant vient de l'argile. <b>L'argile : ses particules extrêmement fines restent en suspension très longtemps</b>.", {});
+  }
+]), ["Granuleux = sable; soyeux = limon; collant et modelable = argile.", "Dans le bocal, les particules les plus fines se déposent en dernier."]);
+
+E("s7f-u4-cr-sol-choix", 4, ["SC7.10.9"], 2, "var", varset([
+  function () {
+    return textq("Un jardinier compare deux sols pour un potager de légumes racines (carottes) : le sol A est sableux et se draine en quelques minutes après la pluie; le sol B est un loam équilibré qui reste humide une journée sans être détrempé. Choisis le meilleur sol pour les carottes et justifie ton choix par DEUX propriétés liées à sa texture. (2 points)",
+      ["Le loam équilibré est le meilleur choix pour les carottes."],
+      "Points de notation (2) : 1 point pour le bon choix (le loam B). 1 point pour deux propriétés à l'appui liées à la texture (le loam garde l'eau assez longtemps pour les racines sans rester détrempé; sa texture meuble laisse les racines droites s'allonger, contrairement au sable qui se draine trop vite et appauvrit les plantes). Réponse modèle : Le loam garde l'humidité une journée entière et reste assez meuble pour que les carottes poussent droites. <b>Le sol sableux se draine en quelques minutes et laisserait les racines au sec</b>.", {});
+  },
+  function () {
+    return textq("Une pépinière compare deux sols pour des semis en pots qui doivent rester uniformément humides : le sol A est très argileux et devient dur et craquelé en séchant; le sol B est un loam riche en matière organique. Choisis le meilleur sol pour les semis et justifie ton choix par DEUX propriétés liées à sa texture. (2 points)",
+      ["Le loam riche en matière organique est le meilleur choix pour les semis."],
+      "Points de notation (2) : 1 point pour le bon choix (le loam B). 1 point pour deux propriétés à l'appui liées à la texture (le loam reste humide de façon uniforme sans se compacter; sa texture fine mais meuble laisse passer les jeunes racines et l'air, contrairement à l'argile qui durcit et craquelle en séchant). Réponse modèle : Le loam garde une humidité uniforme et ne se compacte pas, donc les racines délicates des semis peuvent s'y développer. <b>L'argile pure devient dure et craquelée en séchant, ce qui étouffe les semis</b>.", {});
+  },
+  function () {
+    return textq("Un paysagiste compare deux sols pour un terrain de jeux qui doit rester ferme et sec après la pluie : le sol A est argileux et reste boueux pendant des jours; le sol B est sableux et se draine en moins d'une heure. Choisis le meilleur sol pour le terrain de jeux et justifie ton choix par DEUX propriétés liées à sa texture. (2 points)",
+      ["Le sol sableux est le meilleur choix pour le terrain de jeux."],
+      "Points de notation (2) : 1 point pour le bon choix (le sable B). 1 point pour deux propriétés à l'appui liées à la texture (les grosses particules du sable laissent l'eau s'écouler vite, donc la surface redevient ferme et sèche rapidement; le sable ne devient pas collant ni boueux comme l'argile). Réponse modèle : Le sable se draine en moins d'une heure et sa surface redevient ferme après la pluie. <b>L'argile resterait boueuse et collante pendant des jours, impropre au jeu</b>.", {});
+  }
+]), ["Associe le sol à l'usage : drainage, rétention d'eau et fermeté suivent la texture.", "Donne deux raisons liées à la texture, pas une simple préférence."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s7f-u1-cr-boreal-example":3,"s7f-u1-cr-data-display":3,"s7f-u1-cr-defend-position":3,"s7f-u1-cr-design-experiment":4,"s7f-u1-cr-energy-flow":3,"s7f-u1-cr-factor-effect":2,"s7f-u1-cr-habitat-defence":3,"s7f-u1-cr-harvest-decision":3,"s7f-u1-cr-recycling":2,"s7f-u1-cr-silviculture":2,"s7f-u1-cr-succession-compare":2,"s7f-u1-cr-succession-signs":3,"s7f-u1-cr-succession-stages":2,"s7f-u1-cr-three-interactions":3,"s7f-u1-cr-web-change":3,"s7f-u1-cr-web-interpret":3,"s7f-u2-cr-absorb":2,"s7f-u2-cr-conclusion":3,"s7f-u2-cr-design-test":4,"s7f-u2-cr-display":3,"s7f-u2-cr-expansion":3,"s7f-u2-cr-heating-decision":3,"s7f-u2-cr-heating-example":2,"s7f-u2-cr-improvement":2,"s7f-u2-cr-inquiry":3,"s7f-u2-cr-instrument-jobs":3,"s7f-u2-cr-plateau":3,"s7f-u2-cr-pump-chain":3,"s7f-u2-cr-temp-explain":3,"s7f-u2-cr-thermometer-display":2,"s7f-u2-cr-transfer-explain":3,"s7f-u3-cr-best-fit":3,"s7f-u3-cr-classify":3,"s7f-u3-cr-concentration":3,"s7f-u3-cr-design-solubility":4,"s7f-u3-cr-dissolving":3,"s7f-u3-cr-distill":2,"s7f-u3-cr-new-question":2,"s7f-u3-cr-pure":2,"s7f-u3-cr-salt-decision":3,"s7f-u3-cr-separate":3,"s7f-u3-cr-solubility":2,"s7f-u3-cr-three-part":3,"s7f-u4-cr-big-picture":3,"s7f-u4-cr-change-explain":3,"s7f-u4-cr-conclusion":3,"s7f-u4-cr-design-investigation":4,"s7f-u4-cr-distribution":3,"s7f-u4-cr-event-compare":3,"s7f-u4-cr-mineral-id":2,"s7f-u4-cr-mineral-tests":3,"s7f-u4-cr-mountain-explain":2,"s7f-u4-cr-past-theory":2,"s7f-u4-cr-pattern":3,"s7f-u4-cr-rock-journey":3,"s7f-u4-cr-soil-case":2,"s7f-u4-cr-table-display":2,"s7f-u4-cr-theory-evolved":3,"s7f-u4-cr-timeline":2,"s7f-u4-cr-weathering":3};
+window.__BANK_CRMARKS={"s7f-u1-cr-boreal-example":3,"s7f-u1-cr-data-display":3,"s7f-u1-cr-defend-position":3,"s7f-u1-cr-design-experiment":4,"s7f-u1-cr-energy-flow":3,"s7f-u1-cr-factor-effect":2,"s7f-u1-cr-habitat-defence":3,"s7f-u1-cr-harvest-decision":3,"s7f-u1-cr-marais-changement":2,"s7f-u1-cr-recycling":2,"s7f-u1-cr-silviculture":2,"s7f-u1-cr-succession-compare":2,"s7f-u1-cr-succession-signs":3,"s7f-u1-cr-succession-stages":2,"s7f-u1-cr-three-interactions":3,"s7f-u1-cr-web-change":3,"s7f-u1-cr-web-interpret":3,"s7f-u2-cr-absorb":2,"s7f-u2-cr-conclusion":3,"s7f-u2-cr-design-test":4,"s7f-u2-cr-display":3,"s7f-u2-cr-expansion":3,"s7f-u2-cr-heating-decision":3,"s7f-u2-cr-heating-example":2,"s7f-u2-cr-improvement":2,"s7f-u2-cr-inquiry":3,"s7f-u2-cr-instrument-jobs":3,"s7f-u2-cr-plateau":3,"s7f-u2-cr-pump-chain":3,"s7f-u2-cr-rayonnement-expliquer":2,"s7f-u2-cr-temp-explain":3,"s7f-u2-cr-thermometer-display":2,"s7f-u2-cr-thermometre-choix":3,"s7f-u2-cr-transfer-explain":3,"s7f-u3-cr-best-fit":3,"s7f-u3-cr-classer-expliquer":2,"s7f-u3-cr-classify":3,"s7f-u3-cr-concentration":3,"s7f-u3-cr-design-solubility":4,"s7f-u3-cr-dissolving":3,"s7f-u3-cr-distill":2,"s7f-u3-cr-new-question":2,"s7f-u3-cr-pure":2,"s7f-u3-cr-salt-decision":3,"s7f-u3-cr-separate":3,"s7f-u3-cr-solubility":2,"s7f-u3-cr-three-part":3,"s7f-u4-cr-big-picture":3,"s7f-u4-cr-change-explain":3,"s7f-u4-cr-conclusion":3,"s7f-u4-cr-design-investigation":4,"s7f-u4-cr-distribution":3,"s7f-u4-cr-event-compare":3,"s7f-u4-cr-mineral-id":2,"s7f-u4-cr-mineral-tests":3,"s7f-u4-cr-mountain-explain":2,"s7f-u4-cr-past-theory":2,"s7f-u4-cr-pattern":3,"s7f-u4-cr-rock-journey":3,"s7f-u4-cr-soil-case":2,"s7f-u4-cr-sol-choix":2,"s7f-u4-cr-table-display":2,"s7f-u4-cr-theory-evolved":3,"s7f-u4-cr-timeline":2,"s7f-u4-cr-weathering":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};
