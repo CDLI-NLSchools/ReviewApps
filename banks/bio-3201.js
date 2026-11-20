@@ -7,6 +7,200 @@
 // CRMARKS: bio-u1-cr-q01=4
 // CRMARKS: bio-u1-cr-q02=4
 // CRMARKS: bio-u1-cr-q03=3
+// CRMARKS: bio-u1-51-q01=2
+// CRMARKS: bio-u1-51-q02=2
+// CRMARKS: bio-u1-51-q03=2
+// CRMARKS: bio-u1-51-q04=2
+// CRMARKS: bio-u1-51-q05=3
+// CRMARKS: bio-u1-51-q06=2
+// CRMARKS: bio-u1-51-q07=2
+// CRMARKS: bio-u1-51-q08=2
+// CRMARKS: bio-u1-51-q09=2
+// CRMARKS: bio-u1-51-q11=2
+// CRMARKS: bio-u1-81-q01=2
+// CRMARKS: bio-u1-52-q01=2
+// CRMARKS: bio-u1-52-q02=2
+// CRMARKS: bio-u1-52-q03=3
+// CRMARKS: bio-u1-82-q01=2
+// CRMARKS: bio-u1-82-q02=2
+// CRMARKS: bio-u1-82-q03=2
+// CRMARKS: bio-u1-53-q01=3
+// CRMARKS: bio-u1-54-q01=2
+// CRMARKS: bio-u1-54-q02=3
+// CRMARKS: bio-u1-54-q03=2
+// CRMARKS: bio-u1-54-q04=2
+// CRMARKS: bio-u1-54-q05=2
+// CRMARKS: bio-u1-54-q06=2
+// CRMARKS: bio-u1-54-q08=2
+// CRMARKS: bio-u1-54-q09=2
+// CRMARKS: bio-u1-54-q11=2
+// CRMARKS: bio-u1-54-q12=2
+// CRMARKS: bio-u1-55-q01=2
+// CRMARKS: bio-u1-55-q02=2
+// CRMARKS: bio-u1-55-q03=3
+// CRMARKS: bio-u1-55-q05=2
+// CRMARKS: bio-u1-55-q06=2
+// CRMARKS: bio-u1-55-q07=3
+// CRMARKS: bio-u1-55-q08=3
+// CRMARKS: bio-u1-56-q01=2
+// CRMARKS: bio-u1-56-q02=2
+// CRMARKS: bio-u1-56-q03=2
+// CRMARKS: bio-u1-56-q04=2
+// CRMARKS: bio-u1-56-q05=2
+// CRMARKS: bio-u1-56-q06=2
+// CRMARKS: bio-u1-56-q09=2
+// CRMARKS: bio-u1-56-q12=2
+// CRMARKS: bio-u1-56-q14=2
+// CRMARKS: bio-u1-56-q15=2
+// CRMARKS: bio-u1-56-q18=2
+// CRMARKS: bio-u1-56-q19=2
+// CRMARKS: bio-u1-56-q20=2
+// CRMARKS: bio-u1-56-q21=2
+// CRMARKS: bio-u1-56-q22=2
+// CRMARKS: bio-u1-83-q01=2
+// CRMARKS: bio-u1-57-q01=2
+// CRMARKS: bio-u1-57-q02=2
+// CRMARKS: bio-u1-57-q08=2
+// CRMARKS: bio-u1-57-q09=2
+// CRMARKS: bio-u1-57-q13=3
+// CRMARKS: bio-u1-57-q14=3
+// CRMARKS: bio-u1-57-q15=2
+// CRMARKS: bio-u1-58-q01=2
+// CRMARKS: bio-u1-58-q03=2
+// CRMARKS: bio-u1-58-q04=2
+// CRMARKS: bio-u1-58-q06=3
+// CRMARKS: bio-u1-58-q08=2
+// CRMARKS: bio-u1-58-q09=2
+// CRMARKS: bio-u1-59-q01=2
+// CRMARKS: bio-u1-59-q03=2
+// CRMARKS: bio-u1-59-q04=2
+// CRMARKS: bio-u1-59-q07=2
+// CRMARKS: bio-u1-59-q08=2
+// CRMARKS: bio-u1-59-q09=2
+// CRMARKS: bio-u1-59-q11=2
+// CRMARKS: bio-u1-59-q12=2
+// CRMARKS: bio-u1-59-q13=2
+// CRMARKS: bio-u1-59-q15=2
+// CRMARKS: bio-u1-59-q16=3
+// CRMARKS: bio-u1-59-q18=3
+// CRMARKS: bio-u1-59-q19=2
+// CRMARKS: bio-u1-84-q01=3
+// CRMARKS: bio-u1-84-q02=2
+// CRMARKS: bio-u1-84-q03=2
+// CRMARKS: bio-u1-510-q01=2
+// CRMARKS: bio-u1-510-q02=2
+// CRMARKS: bio-u1-510-q03=2
+// CRMARKS: bio-u1-510-q04=2
+// CRMARKS: bio-u1-510-q05=2
+// CRMARKS: bio-u1-510-q06=2
+// CRMARKS: bio-u1-510-q07=2
+// CRMARKS: bio-u1-510-q08=2
+// CRMARKS: bio-u1-85-q01=2
+// CRMARKS: bio-u1-85-q02=2
+// CRMARKS: bio-u1-85-q03=2
+// CRMARKS: bio-u1-85-q04=2
+// CRMARKS: bio-u1-87-q01=4
+// CRMARKS: bio-u1-86-q02=4
+// CRMARKS: bio-u1-88-q01=2
+// CRMARKS: bio-u1-88-q02=3
+// CRMARKS: bio-u1-88-q03=3
+// BIMODAL: bio-u1-51-q01=a
+// BIMODAL: bio-u1-51-q02=b
+// BIMODAL: bio-u1-51-q03=a
+// BIMODAL: bio-u1-51-q04=a
+// BIMODAL: bio-u1-51-q05=b
+// BIMODAL: bio-u1-51-q06=a
+// BIMODAL: bio-u1-51-q07=a
+// BIMODAL: bio-u1-51-q08=a
+// BIMODAL: bio-u1-51-q09=a
+// BIMODAL: bio-u1-51-q11=a
+// BIMODAL: bio-u1-81-q01=a
+// BIMODAL: bio-u1-52-q01=a
+// BIMODAL: bio-u1-52-q02=a
+// BIMODAL: bio-u1-52-q03=b
+// BIMODAL: bio-u1-82-q01=a
+// BIMODAL: bio-u1-82-q02=a
+// BIMODAL: bio-u1-82-q03=a
+// BIMODAL: bio-u1-53-q01=b
+// BIMODAL: bio-u1-54-q01=a
+// BIMODAL: bio-u1-54-q02=b
+// BIMODAL: bio-u1-54-q03=a
+// BIMODAL: bio-u1-54-q04=a
+// BIMODAL: bio-u1-54-q05=a
+// BIMODAL: bio-u1-54-q06=a
+// BIMODAL: bio-u1-54-q08=a
+// BIMODAL: bio-u1-54-q09=a
+// BIMODAL: bio-u1-54-q11=a
+// BIMODAL: bio-u1-54-q12=a
+// BIMODAL: bio-u1-55-q01=a
+// BIMODAL: bio-u1-55-q02=a
+// BIMODAL: bio-u1-55-q03=b
+// BIMODAL: bio-u1-55-q05=a
+// BIMODAL: bio-u1-55-q06=a
+// BIMODAL: bio-u1-55-q07=b
+// BIMODAL: bio-u1-55-q08=b
+// BIMODAL: bio-u1-56-q01=a
+// BIMODAL: bio-u1-56-q02=a
+// BIMODAL: bio-u1-56-q03=a
+// BIMODAL: bio-u1-56-q04=a
+// BIMODAL: bio-u1-56-q05=a
+// BIMODAL: bio-u1-56-q06=a
+// BIMODAL: bio-u1-56-q09=b
+// BIMODAL: bio-u1-56-q12=a
+// BIMODAL: bio-u1-56-q14=a
+// BIMODAL: bio-u1-56-q15=a
+// BIMODAL: bio-u1-56-q18=a
+// BIMODAL: bio-u1-56-q19=a
+// BIMODAL: bio-u1-56-q20=b
+// BIMODAL: bio-u1-56-q21=b
+// BIMODAL: bio-u1-56-q22=a
+// BIMODAL: bio-u1-83-q01=a
+// BIMODAL: bio-u1-57-q01=a
+// BIMODAL: bio-u1-57-q02=a
+// BIMODAL: bio-u1-57-q08=a
+// BIMODAL: bio-u1-57-q09=a
+// BIMODAL: bio-u1-57-q13=b
+// BIMODAL: bio-u1-57-q14=b
+// BIMODAL: bio-u1-57-q15=a
+// BIMODAL: bio-u1-58-q01=a
+// BIMODAL: bio-u1-58-q03=a
+// BIMODAL: bio-u1-58-q04=a
+// BIMODAL: bio-u1-58-q06=a
+// BIMODAL: bio-u1-58-q08=a
+// BIMODAL: bio-u1-58-q09=a
+// BIMODAL: bio-u1-59-q01=a
+// BIMODAL: bio-u1-59-q03=a
+// BIMODAL: bio-u1-59-q04=a
+// BIMODAL: bio-u1-59-q07=a
+// BIMODAL: bio-u1-59-q08=a
+// BIMODAL: bio-u1-59-q09=a
+// BIMODAL: bio-u1-59-q11=a
+// BIMODAL: bio-u1-59-q12=a
+// BIMODAL: bio-u1-59-q13=b
+// BIMODAL: bio-u1-59-q15=b
+// BIMODAL: bio-u1-59-q16=b
+// BIMODAL: bio-u1-59-q18=b
+// BIMODAL: bio-u1-59-q19=a
+// BIMODAL: bio-u1-84-q01=b
+// BIMODAL: bio-u1-84-q02=a
+// BIMODAL: bio-u1-84-q03=a
+// BIMODAL: bio-u1-510-q01=a
+// BIMODAL: bio-u1-510-q02=a
+// BIMODAL: bio-u1-510-q03=a
+// BIMODAL: bio-u1-510-q04=a
+// BIMODAL: bio-u1-510-q05=a
+// BIMODAL: bio-u1-510-q06=a
+// BIMODAL: bio-u1-510-q07=a
+// BIMODAL: bio-u1-510-q08=a
+// BIMODAL: bio-u1-85-q01=a
+// BIMODAL: bio-u1-85-q02=a
+// BIMODAL: bio-u1-85-q03=a
+// BIMODAL: bio-u1-85-q04=a
+// BIMODAL: bio-u1-87-q01=b
+// BIMODAL: bio-u1-86-q02=b
+// BIMODAL: bio-u1-88-q01=a
+// BIMODAL: bio-u1-88-q02=b
+// BIMODAL: bio-u1-88-q03=a
 // Biology 3201 Unit 1 bank: Cell Reproduction and the Continuity of Life.
 // All 131 selected-response questions and the 3 constructed-response
 // practice items from the Mid-Course Exam Review book for Unit 1
@@ -1317,6 +1511,174 @@ E("bio-u1-cr-q03",1,["8.4"],3,"var",varset([
 /* ----- bank-u2.js ----- */
 // CRMARKS: bio-u2-62-cr1=4
 // CRMARKS: bio-u2-64-cr2=4
+// CRMARKS: bio-u2-61-q01=3
+// CRMARKS: bio-u2-61-q02=2
+// CRMARKS: bio-u2-61-q03=2
+// CRMARKS: bio-u2-61-q04=3
+// CRMARKS: bio-u2-61-q05=2
+// CRMARKS: bio-u2-61-q06=2
+// CRMARKS: bio-u2-61-q08=3
+// CRMARKS: bio-u2-61-q09=2
+// CRMARKS: bio-u2-61-q10=2
+// CRMARKS: bio-u2-61-q11=2
+// CRMARKS: bio-u2-62-q01=2
+// CRMARKS: bio-u2-62-q02=2
+// CRMARKS: bio-u2-62-q03=2
+// CRMARKS: bio-u2-62-q04=2
+// CRMARKS: bio-u2-62-q05=2
+// CRMARKS: bio-u2-62-q06=2
+// CRMARKS: bio-u2-62-q07=2
+// CRMARKS: bio-u2-62-q08=2
+// CRMARKS: bio-u2-62-q09=3
+// CRMARKS: bio-u2-62-q10=2
+// CRMARKS: bio-u2-62-q11=2
+// CRMARKS: bio-u2-62-q13=2
+// CRMARKS: bio-u2-62-q14=2
+// CRMARKS: bio-u2-62-q15=2
+// CRMARKS: bio-u2-62-q16=2
+// CRMARKS: bio-u2-62-q17=2
+// CRMARKS: bio-u2-62-q18=2
+// CRMARKS: bio-u2-62-q19=2
+// CRMARKS: bio-u2-63-q01=2
+// CRMARKS: bio-u2-63-q02=2
+// CRMARKS: bio-u2-63-q03=3
+// CRMARKS: bio-u2-63-q04=2
+// CRMARKS: bio-u2-63-q05=2
+// CRMARKS: bio-u2-63-q07=2
+// CRMARKS: bio-u2-63-q08=3
+// CRMARKS: bio-u2-63-q09=2
+// CRMARKS: bio-u2-63-q10=2
+// CRMARKS: bio-u2-63-q11=2
+// CRMARKS: bio-u2-63-q13=2
+// CRMARKS: bio-u2-63-q14=2
+// CRMARKS: bio-u2-63-q15=3
+// CRMARKS: bio-u2-63-q16=2
+// CRMARKS: bio-u2-63-q17=2
+// CRMARKS: bio-u2-63-q18=3
+// CRMARKS: bio-u2-64-q01=2
+// CRMARKS: bio-u2-64-q02=3
+// CRMARKS: bio-u2-64-q03=3
+// CRMARKS: bio-u2-64-q04=2
+// CRMARKS: bio-u2-64-q05=2
+// CRMARKS: bio-u2-64-q06=3
+// CRMARKS: bio-u2-64-q07=2
+// CRMARKS: bio-u2-65-q03=2
+// CRMARKS: bio-u2-65-q04=2
+// CRMARKS: bio-u2-65-q05=2
+// CRMARKS: bio-u2-65-q06=2
+// CRMARKS: bio-u2-66-q01=2
+// CRMARKS: bio-u2-66-q02=3
+// CRMARKS: bio-u2-66-q03=2
+// CRMARKS: bio-u2-66-q04=2
+// CRMARKS: bio-u2-66-q05=3
+// CRMARKS: bio-u2-67-q01=2
+// CRMARKS: bio-u2-67-q02=2
+// CRMARKS: bio-u2-67-q03=2
+// CRMARKS: bio-u2-67-q04=2
+// CRMARKS: bio-u2-67-q05=2
+// CRMARKS: bio-u2-67-q06=2
+// CRMARKS: bio-u2-67-q07=2
+// CRMARKS: bio-u2-67-q08=2
+// CRMARKS: bio-u2-67-q09=3
+// CRMARKS: bio-u2-68-q01=2
+// CRMARKS: bio-u2-68-q05=2
+// CRMARKS: bio-u2-68-q06=2
+// CRMARKS: bio-u2-68-q07=2
+// CRMARKS: bio-u2-68-q08=2
+// CRMARKS: bio-u2-68-q09=2
+// CRMARKS: bio-u2-68-q10=2
+// CRMARKS: bio-u2-68-q11=2
+// CRMARKS: bio-u2-68-q12=2
+// CRMARKS: bio-u2-69-q01=3
+// CRMARKS: bio-u2-69-q02=2
+// CRMARKS: bio-u2-69-q03=2
+// CRMARKS: bio-u2-69-q04=2
+// CRMARKS: bio-u2-91-q01=2
+// CRMARKS: bio-u2-92-q01=3
+// BIMODAL: bio-u2-61-q01=b
+// BIMODAL: bio-u2-61-q02=a
+// BIMODAL: bio-u2-61-q03=b
+// BIMODAL: bio-u2-61-q04=b
+// BIMODAL: bio-u2-61-q05=b
+// BIMODAL: bio-u2-61-q06=b
+// BIMODAL: bio-u2-61-q08=b
+// BIMODAL: bio-u2-61-q09=a
+// BIMODAL: bio-u2-61-q10=a
+// BIMODAL: bio-u2-61-q11=b
+// BIMODAL: bio-u2-62-q01=a
+// BIMODAL: bio-u2-62-q02=a
+// BIMODAL: bio-u2-62-q03=a
+// BIMODAL: bio-u2-62-q04=a
+// BIMODAL: bio-u2-62-q05=a
+// BIMODAL: bio-u2-62-q06=a
+// BIMODAL: bio-u2-62-q07=a
+// BIMODAL: bio-u2-62-q08=a
+// BIMODAL: bio-u2-62-q09=a
+// BIMODAL: bio-u2-62-q10=a
+// BIMODAL: bio-u2-62-q11=a
+// BIMODAL: bio-u2-62-q13=a
+// BIMODAL: bio-u2-62-q14=a
+// BIMODAL: bio-u2-62-q15=a
+// BIMODAL: bio-u2-62-q16=a
+// BIMODAL: bio-u2-62-q17=a
+// BIMODAL: bio-u2-62-q18=a
+// BIMODAL: bio-u2-62-q19=a
+// BIMODAL: bio-u2-63-q01=a
+// BIMODAL: bio-u2-63-q02=a
+// BIMODAL: bio-u2-63-q03=b
+// BIMODAL: bio-u2-63-q04=a
+// BIMODAL: bio-u2-63-q05=a
+// BIMODAL: bio-u2-63-q07=b
+// BIMODAL: bio-u2-63-q08=a
+// BIMODAL: bio-u2-63-q09=a
+// BIMODAL: bio-u2-63-q10=a
+// BIMODAL: bio-u2-63-q11=a
+// BIMODAL: bio-u2-63-q13=a
+// BIMODAL: bio-u2-63-q14=a
+// BIMODAL: bio-u2-63-q15=a
+// BIMODAL: bio-u2-63-q16=b
+// BIMODAL: bio-u2-63-q17=a
+// BIMODAL: bio-u2-63-q18=a
+// BIMODAL: bio-u2-64-q01=a
+// BIMODAL: bio-u2-64-q02=a
+// BIMODAL: bio-u2-64-q03=a
+// BIMODAL: bio-u2-64-q04=a
+// BIMODAL: bio-u2-64-q05=a
+// BIMODAL: bio-u2-64-q06=a
+// BIMODAL: bio-u2-64-q07=a
+// BIMODAL: bio-u2-65-q03=b
+// BIMODAL: bio-u2-65-q04=b
+// BIMODAL: bio-u2-65-q05=a
+// BIMODAL: bio-u2-65-q06=a
+// BIMODAL: bio-u2-66-q01=b
+// BIMODAL: bio-u2-66-q02=b
+// BIMODAL: bio-u2-66-q03=a
+// BIMODAL: bio-u2-66-q04=b
+// BIMODAL: bio-u2-66-q05=b
+// BIMODAL: bio-u2-67-q01=a
+// BIMODAL: bio-u2-67-q02=a
+// BIMODAL: bio-u2-67-q03=a
+// BIMODAL: bio-u2-67-q04=b
+// BIMODAL: bio-u2-67-q05=a
+// BIMODAL: bio-u2-67-q06=a
+// BIMODAL: bio-u2-67-q07=a
+// BIMODAL: bio-u2-67-q08=a
+// BIMODAL: bio-u2-67-q09=a
+// BIMODAL: bio-u2-68-q01=a
+// BIMODAL: bio-u2-68-q05=a
+// BIMODAL: bio-u2-68-q06=a
+// BIMODAL: bio-u2-68-q07=a
+// BIMODAL: bio-u2-68-q08=a
+// BIMODAL: bio-u2-68-q09=a
+// BIMODAL: bio-u2-68-q10=a
+// BIMODAL: bio-u2-68-q11=a
+// BIMODAL: bio-u2-68-q12=a
+// BIMODAL: bio-u2-69-q01=b
+// BIMODAL: bio-u2-69-q02=a
+// BIMODAL: bio-u2-69-q03=a
+// BIMODAL: bio-u2-69-q04=a
+// BIMODAL: bio-u2-91-q01=b
+// BIMODAL: bio-u2-92-q01=b
 // Biology 3201 Unit 2 bank: Genetic Basis of Heredity
 // Converted from the two Unit 2 review books on nlesd.h5p.com: the
 // Mid-Course book (indicators 6.1 to 6.4, STSE 9.1 and 9.2, and the
@@ -2376,8 +2738,128 @@ BANK.forEach(function(e){if(e.id==="bio-u2-65-q01"||e.id==="bio-u2-65-q02"||e.id
 BANK.forEach(function(e){if(e.unit===2&&e.indicators.some(function(c){return ["6.1","6.2","6.3","6.4","9.1","9.2"].indexOf(c)>=0;}))e.preFinal=true;});
 
 /* ----- bank-u3.js ----- */
+// Bimodal registration, November 20, 2026: the two manifests below register
+// this file's strippable entries from the Biology selected response
+// classification of the same date. The marks manifest carries each
+// entry's written marks; the bimodal manifest carries its
+// checkability class, a (online-checkable) or b (print/self-check).
+// CRMARKS: bio-u3-71-q03=2
+// CRMARKS: bio-u3-71-q04=2
+// CRMARKS: bio-u3-71-q05=3
+// CRMARKS: bio-u3-71-q07=3
+// CRMARKS: bio-u3-71-q08=3
+// CRMARKS: bio-u3-71-q10=2
+// CRMARKS: bio-u3-72-q01=2
+// CRMARKS: bio-u3-72-q02=2
+// CRMARKS: bio-u3-72-q03=2
+// CRMARKS: bio-u3-72-q04=2
+// CRMARKS: bio-u3-72-q05=2
+// CRMARKS: bio-u3-72-q06=2
+// CRMARKS: bio-u3-72-q07=2
+// CRMARKS: bio-u3-72-q08=2
+// CRMARKS: bio-u3-72-q10=2
+// CRMARKS: bio-u3-72-q12=2
+// CRMARKS: bio-u3-73-q01=2
+// CRMARKS: bio-u3-73-q02=2
+// CRMARKS: bio-u3-73-q03=2
+// CRMARKS: bio-u3-73-q04=2
+// CRMARKS: bio-u3-73-q05=2
+// CRMARKS: bio-u3-73-q07=2
+// CRMARKS: bio-u3-75-q01=3
+// CRMARKS: bio-u3-75-q02=2
+// CRMARKS: bio-u3-75-q03=2
+// CRMARKS: bio-u3-75-q04=2
+// CRMARKS: bio-u3-75-q05=2
+// CRMARKS: bio-u3-75-q07=2
+// CRMARKS: bio-u3-75-q08=2
+// CRMARKS: bio-u3-75-q10=2
+// CRMARKS: bio-u3-76-q02=2
+// CRMARKS: bio-u3-76-q04=2
+// CRMARKS: bio-u3-76-q06=2
+// CRMARKS: bio-u3-76-q07=2
+// CRMARKS: bio-u3-76-q08=2
+// CRMARKS: bio-u3-76-q09=2
+// CRMARKS: bio-u3-78-q02=2
+// CRMARKS: bio-u3-78-q03=2
+// CRMARKS: bio-u3-78-q06=2
+// CRMARKS: bio-u3-78-q08=2
+// CRMARKS: bio-u3-78-q09=2
+// CRMARKS: bio-u3-78-q10=2
+// CRMARKS: bio-u3-78-q11=2
+// CRMARKS: bio-u3-78-q12=2
+// CRMARKS: bio-u3-79-q01=2
+// CRMARKS: bio-u3-79-q04=2
+// CRMARKS: bio-u3-79-q05=2
+// CRMARKS: bio-u3-79-q06=2
+// CRMARKS: bio-u3-79-q07=2
+// CRMARKS: bio-u3-79-q08=2
+// CRMARKS: bio-u3-79-q10=2
+// CRMARKS: bio-u3-79-q11=2
+// CRMARKS: bio-u3-710-q02=2
+// CRMARKS: bio-u3-710-q03=2
+// CRMARKS: bio-u3-710-q04=2
+// CRMARKS: bio-u3-710-q06=2
+// CRMARKS: bio-u3-710-q07=2
+// CRMARKS: bio-u3-710-q09=2
+// BIMODAL: bio-u3-71-q03=a
+// BIMODAL: bio-u3-71-q04=a
+// BIMODAL: bio-u3-71-q05=b
+// BIMODAL: bio-u3-71-q07=b
+// BIMODAL: bio-u3-71-q08=b
+// BIMODAL: bio-u3-71-q10=a
+// BIMODAL: bio-u3-72-q01=b
+// BIMODAL: bio-u3-72-q02=a
+// BIMODAL: bio-u3-72-q03=a
+// BIMODAL: bio-u3-72-q04=a
+// BIMODAL: bio-u3-72-q05=a
+// BIMODAL: bio-u3-72-q06=b
+// BIMODAL: bio-u3-72-q07=b
+// BIMODAL: bio-u3-72-q08=a
+// BIMODAL: bio-u3-72-q10=a
+// BIMODAL: bio-u3-72-q12=a
+// BIMODAL: bio-u3-73-q01=b
+// BIMODAL: bio-u3-73-q02=a
+// BIMODAL: bio-u3-73-q03=a
+// BIMODAL: bio-u3-73-q04=a
+// BIMODAL: bio-u3-73-q05=b
+// BIMODAL: bio-u3-73-q07=a
+// BIMODAL: bio-u3-75-q01=b
+// BIMODAL: bio-u3-75-q02=a
+// BIMODAL: bio-u3-75-q03=a
+// BIMODAL: bio-u3-75-q04=a
+// BIMODAL: bio-u3-75-q05=a
+// BIMODAL: bio-u3-75-q07=a
+// BIMODAL: bio-u3-75-q08=a
+// BIMODAL: bio-u3-75-q10=a
+// BIMODAL: bio-u3-76-q02=b
+// BIMODAL: bio-u3-76-q04=a
+// BIMODAL: bio-u3-76-q06=a
+// BIMODAL: bio-u3-76-q07=a
+// BIMODAL: bio-u3-76-q08=a
+// BIMODAL: bio-u3-76-q09=a
+// BIMODAL: bio-u3-78-q02=a
+// BIMODAL: bio-u3-78-q03=a
+// BIMODAL: bio-u3-78-q06=a
+// BIMODAL: bio-u3-78-q08=a
+// BIMODAL: bio-u3-78-q09=a
+// BIMODAL: bio-u3-78-q10=a
+// BIMODAL: bio-u3-78-q11=a
+// BIMODAL: bio-u3-78-q12=a
+// BIMODAL: bio-u3-79-q01=a
+// BIMODAL: bio-u3-79-q04=a
+// BIMODAL: bio-u3-79-q05=b
+// BIMODAL: bio-u3-79-q06=a
+// BIMODAL: bio-u3-79-q07=a
+// BIMODAL: bio-u3-79-q08=a
+// BIMODAL: bio-u3-79-q10=a
+// BIMODAL: bio-u3-79-q11=a
+// BIMODAL: bio-u3-710-q02=a
+// BIMODAL: bio-u3-710-q03=a
+// BIMODAL: bio-u3-710-q04=a
+// BIMODAL: bio-u3-710-q06=a
+// BIMODAL: bio-u3-710-q07=a
+// BIMODAL: bio-u3-710-q09=a
 // Biology 3201 Unit 3 bank: Evolutionary Change and Biodiversity
-// No CRMARKS entries in this file (selected response only).
 
 /* ---------- Conversion notes (Nov 12, 2026) ----------
    The 82 questions of the Final Exam Review book for Unit 3,
@@ -3256,6 +3738,33 @@ E("bio-u3-710-q10",3,["7.10"],3,"var",varset([
 ]),["On a cladogram, species that share a more RECENT branching node are more closely related. Find the node where each pair of species listed diverged from a common ancestor, which pair branches most recently?"]);
 
 /* ----- bank-gen-crosses.js ----- */
+// Bimodal registration, November 20, 2026: the two manifests below register
+// this file's strippable entries from the Biology selected response
+// classification of the same date. The marks manifest carries each
+// entry's written marks; the bimodal manifest carries its
+// checkability class, a (online-checkable) or b (print/self-check).
+// CRMARKS: bio-u2-62-g01=2
+// CRMARKS: bio-u2-62-g02=2
+// CRMARKS: bio-u2-62-g03=2
+// CRMARKS: bio-u2-62-g04=2
+// CRMARKS: bio-u2-63-g01=2
+// CRMARKS: bio-u2-63-g02=2
+// CRMARKS: bio-u2-63-g03=2
+// CRMARKS: bio-u2-63-g04=3
+// CRMARKS: bio-u3-77-g01=2
+// CRMARKS: bio-u3-77-g02=3
+// CRMARKS: bio-u3-77-g03=3
+// BIMODAL: bio-u2-62-g01=a
+// BIMODAL: bio-u2-62-g02=a
+// BIMODAL: bio-u2-62-g03=a
+// BIMODAL: bio-u2-62-g04=a
+// BIMODAL: bio-u2-63-g01=a
+// BIMODAL: bio-u2-63-g02=a
+// BIMODAL: bio-u2-63-g03=a
+// BIMODAL: bio-u2-63-g04=a
+// BIMODAL: bio-u3-77-g01=a
+// BIMODAL: bio-u3-77-g02=a
+// BIMODAL: bio-u3-77-g03=a
 // Biology 3201 generator bank: Mendelian crosses and Hardy-Weinberg
 // Written for the unified review app, Nov 12, 2026. These are
 // parameterized families (kind "gen"), not conversions from the
@@ -3734,6 +4243,27 @@ E("bio-u3-77-g03", 3, ["7.7"], 3, "gen", function () {
 }, ["Find the genotype frequency first (p^2 for homozygous dominant, 2pq for carriers), starting from q^2, then multiply that frequency by the population size."]);
 
 /* ----- bank-gen-seq.js ----- */
+// Bimodal registration, November 20, 2026: the two manifests below register
+// this file's strippable entries from the Biology selected response
+// classification of the same date. The marks manifest carries each
+// entry's written marks; the bimodal manifest carries its
+// checkability class, a (online-checkable) or b (print/self-check).
+// CRMARKS: bio-gen-66-rep=2
+// CRMARKS: bio-gen-66-mrna=2
+// CRMARKS: bio-gen-67-mrna=2
+// CRMARKS: bio-gen-67-aa=2
+// CRMARKS: bio-gen-67-anti=2
+// CRMARKS: bio-gen-68-sub=2
+// CRMARKS: bio-gen-68-indel=3
+// CRMARKS: bio-gen-68-aa=3
+// BIMODAL: bio-gen-66-rep=a
+// BIMODAL: bio-gen-66-mrna=a
+// BIMODAL: bio-gen-67-mrna=a
+// BIMODAL: bio-gen-67-aa=a
+// BIMODAL: bio-gen-67-anti=a
+// BIMODAL: bio-gen-68-sub=a
+// BIMODAL: bio-gen-68-indel=a
+// BIMODAL: bio-gen-68-aa=a
 // Biology 3201 DNA-sequence generator families (indicators 6.6, 6.7,
 // 6.8). Each E entry is one parameterized family in the "gen" idiom:
 // sequences are drawn fresh on every call, so students can practise
@@ -4055,6 +4585,17 @@ BANK.forEach(function (e) {
 });
 
 /* ----- bank-gen-pedigree.js ----- */
+// Bimodal registration, November 20, 2026: the two manifests below register
+// this file's strippable entries from the Biology selected response
+// classification of the same date. The marks manifest carries each
+// entry's written marks; the bimodal manifest carries its
+// checkability class, a (online-checkable) or b (print/self-check).
+// CRMARKS: bio-u2-64-gen-mode=3
+// CRMARKS: bio-u2-64-gen-genotype=3
+// CRMARKS: bio-u2-64-gen-probability=3
+// BIMODAL: bio-u2-64-gen-mode=a
+// BIMODAL: bio-u2-64-gen-genotype=a
+// BIMODAL: bio-u2-64-gen-probability=a
 /* Biology 3201 Unit 2 bank slice: pedigree generator, indicator 6.4.
    One entry per question type: identify the mode of inheritance,
    find a forced genotype, and find a probability for a named couple.
@@ -4874,4 +5415,10 @@ BANK.forEach(function(e){if(e.unit===2&&e.indicators.some(function(c){return ["6
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"bio-u1-cr-q01":4,"bio-u1-cr-q02":4,"bio-u1-cr-q03":3,"bio-u2-62-cr1":4,"bio-u2-64-cr2":4};
+window.__BANK_CRMARKS={"bio-gen-66-mrna":2,"bio-gen-66-rep":2,"bio-gen-67-aa":2,"bio-gen-67-anti":2,"bio-gen-67-mrna":2,"bio-gen-68-aa":3,"bio-gen-68-indel":3,"bio-gen-68-sub":2,"bio-u1-51-q01":2,"bio-u1-51-q02":2,"bio-u1-51-q03":2,"bio-u1-51-q04":2,"bio-u1-51-q05":3,"bio-u1-51-q06":2,"bio-u1-51-q07":2,"bio-u1-51-q08":2,"bio-u1-51-q09":2,"bio-u1-51-q11":2,"bio-u1-510-q01":2,"bio-u1-510-q02":2,"bio-u1-510-q03":2,"bio-u1-510-q04":2,"bio-u1-510-q05":2,"bio-u1-510-q06":2,"bio-u1-510-q07":2,"bio-u1-510-q08":2,"bio-u1-52-q01":2,"bio-u1-52-q02":2,"bio-u1-52-q03":3,"bio-u1-53-q01":3,"bio-u1-54-q01":2,"bio-u1-54-q02":3,"bio-u1-54-q03":2,"bio-u1-54-q04":2,"bio-u1-54-q05":2,"bio-u1-54-q06":2,"bio-u1-54-q08":2,"bio-u1-54-q09":2,"bio-u1-54-q11":2,"bio-u1-54-q12":2,"bio-u1-55-q01":2,"bio-u1-55-q02":2,"bio-u1-55-q03":3,"bio-u1-55-q05":2,"bio-u1-55-q06":2,"bio-u1-55-q07":3,"bio-u1-55-q08":3,"bio-u1-56-q01":2,"bio-u1-56-q02":2,"bio-u1-56-q03":2,"bio-u1-56-q04":2,"bio-u1-56-q05":2,"bio-u1-56-q06":2,"bio-u1-56-q09":2,"bio-u1-56-q12":2,"bio-u1-56-q14":2,"bio-u1-56-q15":2,"bio-u1-56-q18":2,"bio-u1-56-q19":2,"bio-u1-56-q20":2,"bio-u1-56-q21":2,"bio-u1-56-q22":2,"bio-u1-57-q01":2,"bio-u1-57-q02":2,"bio-u1-57-q08":2,"bio-u1-57-q09":2,"bio-u1-57-q13":3,"bio-u1-57-q14":3,"bio-u1-57-q15":2,"bio-u1-58-q01":2,"bio-u1-58-q03":2,"bio-u1-58-q04":2,"bio-u1-58-q06":3,"bio-u1-58-q08":2,"bio-u1-58-q09":2,"bio-u1-59-q01":2,"bio-u1-59-q03":2,"bio-u1-59-q04":2,"bio-u1-59-q07":2,"bio-u1-59-q08":2,"bio-u1-59-q09":2,"bio-u1-59-q11":2,"bio-u1-59-q12":2,"bio-u1-59-q13":2,"bio-u1-59-q15":2,"bio-u1-59-q16":3,"bio-u1-59-q18":3,"bio-u1-59-q19":2,"bio-u1-81-q01":2,"bio-u1-82-q01":2,"bio-u1-82-q02":2,"bio-u1-82-q03":2,"bio-u1-83-q01":2,"bio-u1-84-q01":3,"bio-u1-84-q02":2,"bio-u1-84-q03":2,"bio-u1-85-q01":2,"bio-u1-85-q02":2,"bio-u1-85-q03":2,"bio-u1-85-q04":2,"bio-u1-86-q02":4,"bio-u1-87-q01":4,"bio-u1-88-q01":2,"bio-u1-88-q02":3,"bio-u1-88-q03":3,"bio-u1-cr-q01":4,"bio-u1-cr-q02":4,"bio-u1-cr-q03":3,"bio-u2-61-q01":3,"bio-u2-61-q02":2,"bio-u2-61-q03":2,"bio-u2-61-q04":3,"bio-u2-61-q05":2,"bio-u2-61-q06":2,"bio-u2-61-q08":3,"bio-u2-61-q09":2,"bio-u2-61-q10":2,"bio-u2-61-q11":2,"bio-u2-62-cr1":4,"bio-u2-62-g01":2,"bio-u2-62-g02":2,"bio-u2-62-g03":2,"bio-u2-62-g04":2,"bio-u2-62-q01":2,"bio-u2-62-q02":2,"bio-u2-62-q03":2,"bio-u2-62-q04":2,"bio-u2-62-q05":2,"bio-u2-62-q06":2,"bio-u2-62-q07":2,"bio-u2-62-q08":2,"bio-u2-62-q09":3,"bio-u2-62-q10":2,"bio-u2-62-q11":2,"bio-u2-62-q13":2,"bio-u2-62-q14":2,"bio-u2-62-q15":2,"bio-u2-62-q16":2,"bio-u2-62-q17":2,"bio-u2-62-q18":2,"bio-u2-62-q19":2,"bio-u2-63-g01":2,"bio-u2-63-g02":2,"bio-u2-63-g03":2,"bio-u2-63-g04":3,"bio-u2-63-q01":2,"bio-u2-63-q02":2,"bio-u2-63-q03":3,"bio-u2-63-q04":2,"bio-u2-63-q05":2,"bio-u2-63-q07":2,"bio-u2-63-q08":3,"bio-u2-63-q09":2,"bio-u2-63-q10":2,"bio-u2-63-q11":2,"bio-u2-63-q13":2,"bio-u2-63-q14":2,"bio-u2-63-q15":3,"bio-u2-63-q16":2,"bio-u2-63-q17":2,"bio-u2-63-q18":3,"bio-u2-64-cr2":4,"bio-u2-64-gen-genotype":3,"bio-u2-64-gen-mode":3,"bio-u2-64-gen-probability":3,"bio-u2-64-q01":2,"bio-u2-64-q02":3,"bio-u2-64-q03":3,"bio-u2-64-q04":2,"bio-u2-64-q05":2,"bio-u2-64-q06":3,"bio-u2-64-q07":2,"bio-u2-65-q03":2,"bio-u2-65-q04":2,"bio-u2-65-q05":2,"bio-u2-65-q06":2,"bio-u2-66-q01":2,"bio-u2-66-q02":3,"bio-u2-66-q03":2,"bio-u2-66-q04":2,"bio-u2-66-q05":3,"bio-u2-67-q01":2,"bio-u2-67-q02":2,"bio-u2-67-q03":2,"bio-u2-67-q04":2,"bio-u2-67-q05":2,"bio-u2-67-q06":2,"bio-u2-67-q07":2,"bio-u2-67-q08":2,"bio-u2-67-q09":3,"bio-u2-68-q01":2,"bio-u2-68-q05":2,"bio-u2-68-q06":2,"bio-u2-68-q07":2,"bio-u2-68-q08":2,"bio-u2-68-q09":2,"bio-u2-68-q10":2,"bio-u2-68-q11":2,"bio-u2-68-q12":2,"bio-u2-69-q01":3,"bio-u2-69-q02":2,"bio-u2-69-q03":2,"bio-u2-69-q04":2,"bio-u2-91-q01":2,"bio-u2-92-q01":3,"bio-u3-71-q03":2,"bio-u3-71-q04":2,"bio-u3-71-q05":3,"bio-u3-71-q07":3,"bio-u3-71-q08":3,"bio-u3-71-q10":2,"bio-u3-710-q02":2,"bio-u3-710-q03":2,"bio-u3-710-q04":2,"bio-u3-710-q06":2,"bio-u3-710-q07":2,"bio-u3-710-q09":2,"bio-u3-72-q01":2,"bio-u3-72-q02":2,"bio-u3-72-q03":2,"bio-u3-72-q04":2,"bio-u3-72-q05":2,"bio-u3-72-q06":2,"bio-u3-72-q07":2,"bio-u3-72-q08":2,"bio-u3-72-q10":2,"bio-u3-72-q12":2,"bio-u3-73-q01":2,"bio-u3-73-q02":2,"bio-u3-73-q03":2,"bio-u3-73-q04":2,"bio-u3-73-q05":2,"bio-u3-73-q07":2,"bio-u3-75-q01":3,"bio-u3-75-q02":2,"bio-u3-75-q03":2,"bio-u3-75-q04":2,"bio-u3-75-q05":2,"bio-u3-75-q07":2,"bio-u3-75-q08":2,"bio-u3-75-q10":2,"bio-u3-76-q02":2,"bio-u3-76-q04":2,"bio-u3-76-q06":2,"bio-u3-76-q07":2,"bio-u3-76-q08":2,"bio-u3-76-q09":2,"bio-u3-77-g01":2,"bio-u3-77-g02":3,"bio-u3-77-g03":3,"bio-u3-78-q02":2,"bio-u3-78-q03":2,"bio-u3-78-q06":2,"bio-u3-78-q08":2,"bio-u3-78-q09":2,"bio-u3-78-q10":2,"bio-u3-78-q11":2,"bio-u3-78-q12":2,"bio-u3-79-q01":2,"bio-u3-79-q04":2,"bio-u3-79-q05":2,"bio-u3-79-q06":2,"bio-u3-79-q07":2,"bio-u3-79-q08":2,"bio-u3-79-q10":2,"bio-u3-79-q11":2};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"bio-gen-66-mrna":"a","bio-gen-66-rep":"a","bio-gen-67-aa":"a","bio-gen-67-anti":"a","bio-gen-67-mrna":"a","bio-gen-68-aa":"a","bio-gen-68-indel":"a","bio-gen-68-sub":"a","bio-u1-51-q01":"a","bio-u1-51-q02":"b","bio-u1-51-q03":"a","bio-u1-51-q04":"a","bio-u1-51-q05":"b","bio-u1-51-q06":"a","bio-u1-51-q07":"a","bio-u1-51-q08":"a","bio-u1-51-q09":"a","bio-u1-51-q11":"a","bio-u1-510-q01":"a","bio-u1-510-q02":"a","bio-u1-510-q03":"a","bio-u1-510-q04":"a","bio-u1-510-q05":"a","bio-u1-510-q06":"a","bio-u1-510-q07":"a","bio-u1-510-q08":"a","bio-u1-52-q01":"a","bio-u1-52-q02":"a","bio-u1-52-q03":"b","bio-u1-53-q01":"b","bio-u1-54-q01":"a","bio-u1-54-q02":"b","bio-u1-54-q03":"a","bio-u1-54-q04":"a","bio-u1-54-q05":"a","bio-u1-54-q06":"a","bio-u1-54-q08":"a","bio-u1-54-q09":"a","bio-u1-54-q11":"a","bio-u1-54-q12":"a","bio-u1-55-q01":"a","bio-u1-55-q02":"a","bio-u1-55-q03":"b","bio-u1-55-q05":"a","bio-u1-55-q06":"a","bio-u1-55-q07":"b","bio-u1-55-q08":"b","bio-u1-56-q01":"a","bio-u1-56-q02":"a","bio-u1-56-q03":"a","bio-u1-56-q04":"a","bio-u1-56-q05":"a","bio-u1-56-q06":"a","bio-u1-56-q09":"b","bio-u1-56-q12":"a","bio-u1-56-q14":"a","bio-u1-56-q15":"a","bio-u1-56-q18":"a","bio-u1-56-q19":"a","bio-u1-56-q20":"b","bio-u1-56-q21":"b","bio-u1-56-q22":"a","bio-u1-57-q01":"a","bio-u1-57-q02":"a","bio-u1-57-q08":"a","bio-u1-57-q09":"a","bio-u1-57-q13":"b","bio-u1-57-q14":"b","bio-u1-57-q15":"a","bio-u1-58-q01":"a","bio-u1-58-q03":"a","bio-u1-58-q04":"a","bio-u1-58-q06":"a","bio-u1-58-q08":"a","bio-u1-58-q09":"a","bio-u1-59-q01":"a","bio-u1-59-q03":"a","bio-u1-59-q04":"a","bio-u1-59-q07":"a","bio-u1-59-q08":"a","bio-u1-59-q09":"a","bio-u1-59-q11":"a","bio-u1-59-q12":"a","bio-u1-59-q13":"b","bio-u1-59-q15":"b","bio-u1-59-q16":"b","bio-u1-59-q18":"b","bio-u1-59-q19":"a","bio-u1-81-q01":"a","bio-u1-82-q01":"a","bio-u1-82-q02":"a","bio-u1-82-q03":"a","bio-u1-83-q01":"a","bio-u1-84-q01":"b","bio-u1-84-q02":"a","bio-u1-84-q03":"a","bio-u1-85-q01":"a","bio-u1-85-q02":"a","bio-u1-85-q03":"a","bio-u1-85-q04":"a","bio-u1-86-q02":"b","bio-u1-87-q01":"b","bio-u1-88-q01":"a","bio-u1-88-q02":"b","bio-u1-88-q03":"a","bio-u2-61-q01":"b","bio-u2-61-q02":"a","bio-u2-61-q03":"b","bio-u2-61-q04":"b","bio-u2-61-q05":"b","bio-u2-61-q06":"b","bio-u2-61-q08":"b","bio-u2-61-q09":"a","bio-u2-61-q10":"a","bio-u2-61-q11":"b","bio-u2-62-g01":"a","bio-u2-62-g02":"a","bio-u2-62-g03":"a","bio-u2-62-g04":"a","bio-u2-62-q01":"a","bio-u2-62-q02":"a","bio-u2-62-q03":"a","bio-u2-62-q04":"a","bio-u2-62-q05":"a","bio-u2-62-q06":"a","bio-u2-62-q07":"a","bio-u2-62-q08":"a","bio-u2-62-q09":"a","bio-u2-62-q10":"a","bio-u2-62-q11":"a","bio-u2-62-q13":"a","bio-u2-62-q14":"a","bio-u2-62-q15":"a","bio-u2-62-q16":"a","bio-u2-62-q17":"a","bio-u2-62-q18":"a","bio-u2-62-q19":"a","bio-u2-63-g01":"a","bio-u2-63-g02":"a","bio-u2-63-g03":"a","bio-u2-63-g04":"a","bio-u2-63-q01":"a","bio-u2-63-q02":"a","bio-u2-63-q03":"b","bio-u2-63-q04":"a","bio-u2-63-q05":"a","bio-u2-63-q07":"b","bio-u2-63-q08":"a","bio-u2-63-q09":"a","bio-u2-63-q10":"a","bio-u2-63-q11":"a","bio-u2-63-q13":"a","bio-u2-63-q14":"a","bio-u2-63-q15":"a","bio-u2-63-q16":"b","bio-u2-63-q17":"a","bio-u2-63-q18":"a","bio-u2-64-gen-genotype":"a","bio-u2-64-gen-mode":"a","bio-u2-64-gen-probability":"a","bio-u2-64-q01":"a","bio-u2-64-q02":"a","bio-u2-64-q03":"a","bio-u2-64-q04":"a","bio-u2-64-q05":"a","bio-u2-64-q06":"a","bio-u2-64-q07":"a","bio-u2-65-q03":"b","bio-u2-65-q04":"b","bio-u2-65-q05":"a","bio-u2-65-q06":"a","bio-u2-66-q01":"b","bio-u2-66-q02":"b","bio-u2-66-q03":"a","bio-u2-66-q04":"b","bio-u2-66-q05":"b","bio-u2-67-q01":"a","bio-u2-67-q02":"a","bio-u2-67-q03":"a","bio-u2-67-q04":"b","bio-u2-67-q05":"a","bio-u2-67-q06":"a","bio-u2-67-q07":"a","bio-u2-67-q08":"a","bio-u2-67-q09":"a","bio-u2-68-q01":"a","bio-u2-68-q05":"a","bio-u2-68-q06":"a","bio-u2-68-q07":"a","bio-u2-68-q08":"a","bio-u2-68-q09":"a","bio-u2-68-q10":"a","bio-u2-68-q11":"a","bio-u2-68-q12":"a","bio-u2-69-q01":"b","bio-u2-69-q02":"a","bio-u2-69-q03":"a","bio-u2-69-q04":"a","bio-u2-91-q01":"b","bio-u2-92-q01":"b","bio-u3-71-q03":"a","bio-u3-71-q04":"a","bio-u3-71-q05":"b","bio-u3-71-q07":"b","bio-u3-71-q08":"b","bio-u3-71-q10":"a","bio-u3-710-q02":"a","bio-u3-710-q03":"a","bio-u3-710-q04":"a","bio-u3-710-q06":"a","bio-u3-710-q07":"a","bio-u3-710-q09":"a","bio-u3-72-q01":"b","bio-u3-72-q02":"a","bio-u3-72-q03":"a","bio-u3-72-q04":"a","bio-u3-72-q05":"a","bio-u3-72-q06":"b","bio-u3-72-q07":"b","bio-u3-72-q08":"a","bio-u3-72-q10":"a","bio-u3-72-q12":"a","bio-u3-73-q01":"b","bio-u3-73-q02":"a","bio-u3-73-q03":"a","bio-u3-73-q04":"a","bio-u3-73-q05":"b","bio-u3-73-q07":"a","bio-u3-75-q01":"b","bio-u3-75-q02":"a","bio-u3-75-q03":"a","bio-u3-75-q04":"a","bio-u3-75-q05":"a","bio-u3-75-q07":"a","bio-u3-75-q08":"a","bio-u3-75-q10":"a","bio-u3-76-q02":"b","bio-u3-76-q04":"a","bio-u3-76-q06":"a","bio-u3-76-q07":"a","bio-u3-76-q08":"a","bio-u3-76-q09":"a","bio-u3-77-g01":"a","bio-u3-77-g02":"a","bio-u3-77-g03":"a","bio-u3-78-q02":"a","bio-u3-78-q03":"a","bio-u3-78-q06":"a","bio-u3-78-q08":"a","bio-u3-78-q09":"a","bio-u3-78-q10":"a","bio-u3-78-q11":"a","bio-u3-78-q12":"a","bio-u3-79-q01":"a","bio-u3-79-q04":"a","bio-u3-79-q05":"b","bio-u3-79-q06":"a","bio-u3-79-q07":"a","bio-u3-79-q08":"a","bio-u3-79-q10":"a","bio-u3-79-q11":"a"};
