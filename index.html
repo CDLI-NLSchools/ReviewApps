@@ -6205,13 +6205,16 @@ function composeExam(units,inds,includePK,plan){
     for(var iA=0;iA<crPoolA.length;iA++)for(var jA=iA+1;jA<crPoolA.length;jA++){if(crPoolA[iA].marks+crPoolA[jA].marks===targetP)pairsA.push([crPoolA[iA],crPoolA[jA]]);}
     pairsA=shuffle(pairsA);
     var withL3A=pairsA.filter(function(p){return p[0].e.level===3||p[1].e.level===3;});
-    /* Per-entry limit across sections (Nov 19, 2026): a pair
-       whose entries Section A already dealt is taken only when
-       no fresh pair (or no fresh Level 3 pair) exists. */
+    /* Per-entry exclusion across sections (Nov 19, 2026;
+       made hard Nov 20, 2026): the pair may only contain
+       entries Section A has not dealt, with Level 3 pairs
+       preferred inside that disjoint set. When no disjoint
+       pair exists the paper is flagged short below rather
+       than dealing one entry into both sections. */
     var freshPairA=function(p){return !dealtA[p[0].e.id]&&!dealtA[p[1].e.id];};
     var freshL3A=withL3A.filter(freshPairA);
     var freshPairsA=pairsA.filter(freshPairA);
-    chosenA=freshL3A.length?freshL3A[0]:(withL3A.length?withL3A[0]:(freshPairsA.length?freshPairsA[0]:(pairsA.length?pairsA[0]:null)));
+    chosenA=freshL3A.length?freshL3A[0]:(freshPairsA.length?freshPairsA[0]:null);
     } else if(ut.sextetCr){
       /* Math 1202's Section B, from its standalone composer
          (TEST_CR_COUNT 6, TEST_CR_TARGET 15): three 2-mark and
@@ -6224,19 +6227,19 @@ function composeExam(units,inds,includePK,plan){
       var threesS=crPoolS.filter(function(x){return x.marks===3;});
       crWantA=6;crTargetA=ut.cr;
       if(twosS.length>=3&&threesS.length>=3){
-        var l3SelS=null;
         for(var atS=0;atS<500&&!chosenA;atS++){
           var selS=shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
-          if(selS.some(function(x){return x.e.level===3;})){
-            if(!l3SelS)l3SelS=selS;
-            /* Per-entry limit across sections (Nov 19, 2026):
-               prefer a Level 3 sextet whose entries Section A
-               has not dealt; the first Level 3 sextet found is
-               the fallback, exactly as before. */
-            if(selS.every(function(x){return !dealtA[x.e.id];}))chosenA=selS;
-          }
+          /* Per-entry exclusion across sections (Nov 19, 2026;
+             made hard Nov 20, 2026): only a sextet whose entries
+             Section A has not dealt can be chosen, with the
+             Level 3 preference kept inside that disjoint set. */
+          if(selS.some(function(x){return x.e.level===3;})&&selS.every(function(x){return !dealtA[x.e.id];}))chosenA=selS;
         }
-        if(!chosenA)chosenA=l3SelS||shuffle(twosS.slice()).slice(0,3).concat(shuffle(threesS.slice()).slice(0,3));
+        if(!chosenA){
+          var twosFS=twosS.filter(function(x){return !dealtA[x.e.id];});
+          var threesFS=threesS.filter(function(x){return !dealtA[x.e.id];});
+          if(twosFS.length>=3&&threesFS.length>=3)chosenA=shuffle(twosFS.slice()).slice(0,3).concat(shuffle(threesFS.slice()).slice(0,3));
+        }
       }
     } else {
       /* Math 2202's Section B, from its standalone composer
@@ -6250,19 +6253,19 @@ function composeExam(units,inds,includePK,plan){
       var threesT=crPoolT.filter(function(x){return x.marks===3;});
       crWantA=3;crTargetA=ut.cr;
       if(twosT.length>=1&&threesT.length>=2){
-        var l3SelT=null;
         for(var atT=0;atT<500&&!chosenA;atT++){
           var selT=shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
-          if(selT.some(function(x){return x.e.level===3;})){
-            if(!l3SelT)l3SelT=selT;
-            /* Per-entry limit across sections (Nov 19, 2026):
-               prefer a Level 3 trio whose entries Section A
-               has not dealt; the first Level 3 trio found is
-               the fallback, exactly as before. */
-            if(selT.every(function(x){return !dealtA[x.e.id];}))chosenA=selT;
-          }
+          /* Per-entry exclusion across sections (Nov 19, 2026;
+             made hard Nov 20, 2026): only a trio whose entries
+             Section A has not dealt can be chosen, with the
+             Level 3 preference kept inside that disjoint set. */
+          if(selT.some(function(x){return x.e.level===3;})&&selT.every(function(x){return !dealtA[x.e.id];}))chosenA=selT;
         }
-        if(!chosenA)chosenA=l3SelT||shuffle(twosT.slice()).slice(0,1).concat(shuffle(threesT.slice()).slice(0,2));
+        if(!chosenA){
+          var twosFT=twosT.filter(function(x){return !dealtA[x.e.id];});
+          var threesFT=threesT.filter(function(x){return !dealtA[x.e.id];});
+          if(twosFT.length>=1&&threesFT.length>=2)chosenA=shuffle(twosFT.slice()).slice(0,1).concat(shuffle(threesFT.slice()).slice(0,2));
+        }
       }
     }
     var crA=[],crMarksA=0,l3A=0,shortA=missA>0;
@@ -6544,7 +6547,7 @@ function composeExam(units,inds,includePK,plan){
       combo.opts[pi].items.forEach(function(x){if(!drawCR(x))bShort=true;});
       if(bShort)short=true;
       var pmarks=partCR.reduce(function(a,it){return a+it.marks;},0);
-      if(partCR.length===0&&cp.length){ // greedy fallback for this part, flagged short
+      if(partCR.length===0&&cp.length&&pmarks<part.cr){ // greedy fallback for this part, flagged short; gated on the part still owing written marks (Nov 20, 2026): a zero written target with a legitimately empty chosen set no longer enters the fallback or takes its flag
         var rest=cp.slice().sort(function(a,b){return b.e.level-a.e.level||Math.random()-0.5;});
         var sm=0;
         for(var gi=0;gi<rest.length;gi++){var gx=rest[gi];if(sm+gx.marks>part.cr)continue;if(!indRoom(part,gx))continue;if(drawCR(gx)){sm+=gx.marks;indTake(partCR[partCR.length-1].q._entry);}}
