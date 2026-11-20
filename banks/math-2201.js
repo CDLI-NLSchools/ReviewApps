@@ -1396,11 +1396,45 @@ function chainTriSVG(AB, BC, angB, AC, CD, AD, angDAC, angD, o) {
 // CRMARKS: u5-sd-calc-small=2
 // CRMARKS: u5-empirical-tail=2
 // CRMARKS: u5-normal-count-between=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-sd-meaning=2
+// CRMARKS: u5-sd-interpret=2
+// CRMARKS: u5-isnormal=2
+// CRMARKS: u5-ci-samplesize=2
+// CRMARKS: u5-pk-freq-mean=2
+// CRMARKS: u5-sd-interpret-context=2
+// CRMARKS: u5-sd-match-set=2
+// CRMARKS: u5-normal-centre-facts=2
+// CRMARKS: u5-isnormal-data=2
+// CRMARKS: u5-compare-normal-shift=2
+// CRMARKS: u5-ci-infer-mean=2
+// CRMARKS: u5-ci-significance=2
+// CRMARKS: u5-media-ratio-claim=3
+// CRMARKS: u5-position-argument=3
+// CRMARKS: u5-sd-transform=2
+// CRMARKS: u5-media-position=3
 // BIMODAL: u5-z-compare=b
 // BIMODAL: u5-sd-decisions=b
 // BIMODAL: u5-media=b
 // BIMODAL: u5-ci-majority=b
 // BIMODAL: u5-ad-claim=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-sd-meaning=b
+// BIMODAL: u5-sd-interpret=b
+// BIMODAL: u5-isnormal=b
+// BIMODAL: u5-ci-samplesize=b
+// BIMODAL: u5-pk-freq-mean=a
+// BIMODAL: u5-sd-interpret-context=b
+// BIMODAL: u5-sd-match-set=a
+// BIMODAL: u5-normal-centre-facts=a
+// BIMODAL: u5-isnormal-data=b
+// BIMODAL: u5-compare-normal-shift=b
+// BIMODAL: u5-ci-infer-mean=b
+// BIMODAL: u5-ci-significance=b
+// BIMODAL: u5-media-ratio-claim=b
+// BIMODAL: u5-position-argument=b
+// BIMODAL: u5-sd-transform=b
+// BIMODAL: u5-media-position=b
 /* ============ THE BANK — Unit 5: Statistical Reasoning ============ */
 /* ============ BANK ADMISSION RULE (adopted Oct 26, 2026, from the bank duplication audit) ============
    A "gen" entry must produce at least 50 unique canonical questions (normalized prompt
@@ -5367,6 +5401,102 @@ E("u1-pk-slide-angle", 1, ["7.2"], 2, "gen", function(){
 // CRMARKS: u1-cosine-angle-diagram=2
 // CRMARKS: u1-cosine-largest-angle=2
 // CRMARKS: u1-cosine-bridge-span=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-law-choice=2
+// CRMARKS: u1-pk-label-sides=2
+// CRMARKS: u1-pk-ratio-def=2
+// CRMARKS: u1-pk-pythagoras=2
+// CRMARKS: u1-diagram-match=2
+// CRMARKS: u1-diagram-unknown=2
+// CRMARKS: u1-law-diagram-choice=2
+// CRMARKS: u1-pairing-diagram=2
+// CRMARKS: u1-diagram-givens=2
+// CRMARKS: u1-angle-placement=2
+// CRMARKS: u1-diagram-first-step=2
+// CRMARKS: u1-diagram-two-unknowns=2
+// CRMARKS: u1-mislabeled-diagram=2
+// CRMARKS: u1-diagram-ambiguous-fit=2
+// CRMARKS: u1-diagram-read-value=2
+// CRMARKS: u1-sketch-values=2
+// CRMARKS: u1-diagram-supplement=2
+// CRMARKS: u1-diagram-chain-setup=3
+// CRMARKS: u1-diagram-flaw-hunt=3
+// CRMARKS: u1-diagram-complete-plan=3
+// CRMARKS: u1-diagram-both-laws=3
+// CRMARKS: u1-crane-spread=2
+// CRMARKS: u1-gate-diagonal=2
+// CRMARKS: u1-kite-spar=2
+// CRMARKS: u1-corner-check=2
+// CRMARKS: u1-ambiguous-design=3
+// CRMARKS: u1-double-plot=2
+// CRMARKS: u1-farm-lanes=2
+// CRMARKS: u1-harbour-chain=3
+// CRMARKS: u1-pk-role-from-diagram=2
+// CRMARKS: u1-pk-hypotenuse-pick=2
+// CRMARKS: u1-pk-opposite-read=2
+// CRMARKS: u1-pk-two-angles-roles=2
+// CRMARKS: u1-pk-role-value=2
+// CRMARKS: u1-pk-role-words=2
+// CRMARKS: u1-pk-ratio-from-figure=2
+// CRMARKS: u1-pk-ratio-equation=2
+// CRMARKS: u1-pk-ratio-letters=2
+// CRMARKS: u1-pk-other-angle-ratio=2
+// CRMARKS: u1-pk-ratio-decimal=2
+// CRMARKS: u1-pk-ratio-unreduced=2
+// CRMARKS: u1-pk-right-check=2
+// CRMARKS: u1-pk-solve-scene=2
+// CRMARKS: u1-sine-angle-mc=2
+// CRMARKS: u1-cosine-side-mc=2
+// CRMARKS: u1-diagram-law-pair=2
+// CRMARKS: u1-diagram-missing-mark=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-law-choice=b
+// BIMODAL: u1-pk-label-sides=a
+// BIMODAL: u1-pk-ratio-def=a
+// BIMODAL: u1-pk-pythagoras=a
+// BIMODAL: u1-diagram-match=b
+// BIMODAL: u1-diagram-unknown=b
+// BIMODAL: u1-law-diagram-choice=b
+// BIMODAL: u1-pairing-diagram=b
+// BIMODAL: u1-diagram-givens=b
+// BIMODAL: u1-angle-placement=b
+// BIMODAL: u1-diagram-first-step=b
+// BIMODAL: u1-diagram-two-unknowns=b
+// BIMODAL: u1-mislabeled-diagram=b
+// BIMODAL: u1-diagram-ambiguous-fit=a
+// BIMODAL: u1-diagram-read-value=a
+// BIMODAL: u1-sketch-values=b
+// BIMODAL: u1-diagram-supplement=b
+// BIMODAL: u1-diagram-chain-setup=b
+// BIMODAL: u1-diagram-flaw-hunt=b
+// BIMODAL: u1-diagram-complete-plan=b
+// BIMODAL: u1-diagram-both-laws=b
+// BIMODAL: u1-crane-spread=a
+// BIMODAL: u1-gate-diagonal=a
+// BIMODAL: u1-kite-spar=a
+// BIMODAL: u1-corner-check=a
+// BIMODAL: u1-ambiguous-design=b
+// BIMODAL: u1-double-plot=a
+// BIMODAL: u1-farm-lanes=a
+// BIMODAL: u1-harbour-chain=a
+// BIMODAL: u1-pk-role-from-diagram=a
+// BIMODAL: u1-pk-hypotenuse-pick=a
+// BIMODAL: u1-pk-opposite-read=a
+// BIMODAL: u1-pk-two-angles-roles=a
+// BIMODAL: u1-pk-role-value=b
+// BIMODAL: u1-pk-role-words=a
+// BIMODAL: u1-pk-ratio-from-figure=a
+// BIMODAL: u1-pk-ratio-equation=a
+// BIMODAL: u1-pk-ratio-letters=b
+// BIMODAL: u1-pk-other-angle-ratio=a
+// BIMODAL: u1-pk-ratio-decimal=a
+// BIMODAL: u1-pk-ratio-unreduced=a
+// BIMODAL: u1-pk-right-check=a
+// BIMODAL: u1-pk-solve-scene=a
+// BIMODAL: u1-sine-angle-mc=a
+// BIMODAL: u1-cosine-side-mc=a
+// BIMODAL: u1-diagram-law-pair=b
+// BIMODAL: u1-diagram-missing-mark=b
 E("u1-sine-side-diagram",1,["7.2"],1,"gen",function(){
   var A=pick([45,50,55,60]),B=pick([48,55,62,70]);var C=180-A-B;var c=ri(15,32);
   var a=c*Math.sin(A*Math.PI/180)/Math.sin(C*Math.PI/180);
@@ -5625,6 +5755,90 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-standard-to-vertex-k=2
 // CRMARKS: u2-vertex-to-standard-c=1
 // CRMARKS: u2-a-from-intercepts-point=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-domain-range=2
+// CRMARKS: u2-vertex-form-params=2
+// CRMARKS: u2-dr-from-graph=2
+// CRMARKS: u2-dr-vertex-form=2
+// CRMARKS: u2-dr-standard-form=2
+// CRMARKS: u2-domain-context=2
+// CRMARKS: u2-range-context-mc=2
+// CRMARKS: u2-intercepts-read-graph=2
+// CRMARKS: u2-y-intercept-point=2
+// CRMARKS: u2-intercepts-set=2
+// CRMARKS: u2-factored-with-a=2
+// CRMARKS: u2-factored-from-graph=2
+// CRMARKS: u2-factored-double-root=2
+// CRMARKS: u2-standard-to-factored=2
+// CRMARKS: u2-zeros-from-factored=2
+// CRMARKS: u2-effect-of-c=2
+// CRMARKS: u2-effect-of-a=2
+// CRMARKS: u2-signs-from-graph=2
+// CRMARKS: u2-widest-graph=2
+// CRMARKS: u2-vertex-from-table=2
+// CRMARKS: u2-vertex-interpret=2
+// CRMARKS: u2-vertex-graph-mc=2
+// CRMARKS: u2-axis-standard-mc=2
+// CRMARKS: u2-axis-from-vertex-form=2
+// CRMARKS: u2-axis-from-graph=2
+// CRMARKS: u2-match-graph-standard=2
+// CRMARKS: u2-graph-features=2
+// CRMARKS: u2-sketch-points=2
+// CRMARKS: u2-match-graph-vertex-form=2
+// CRMARKS: u2-point-on-graph=2
+// CRMARKS: u2-vertex-form-from-graph=2
+// CRMARKS: u2-expand-vertex-form=2
+// CRMARKS: u2-equation-from-graph=2
+// CRMARKS: u2-eq-from-characteristics=2
+// CRMARKS: u2-eq-from-table=3
+// CRMARKS: u2-eq-intercepts-standard=2
+// CRMARKS: u2-pk-line-equation-from-graph=2
+// CRMARKS: u2-pk-dr-segment-graph=2
+// CRMARKS: u2-pk-graph-data=2
+// CRMARKS: u2-pk-dr-linear=2
+// CRMARKS: u2-pk-graph-form=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-domain-range=b
+// BIMODAL: u2-vertex-form-params=b
+// BIMODAL: u2-dr-from-graph=b
+// BIMODAL: u2-dr-vertex-form=b
+// BIMODAL: u2-dr-standard-form=b
+// BIMODAL: u2-domain-context=a
+// BIMODAL: u2-range-context-mc=a
+// BIMODAL: u2-intercepts-read-graph=a
+// BIMODAL: u2-y-intercept-point=a
+// BIMODAL: u2-intercepts-set=b
+// BIMODAL: u2-factored-with-a=a
+// BIMODAL: u2-factored-from-graph=a
+// BIMODAL: u2-factored-double-root=a
+// BIMODAL: u2-standard-to-factored=a
+// BIMODAL: u2-zeros-from-factored=a
+// BIMODAL: u2-effect-of-c=b
+// BIMODAL: u2-effect-of-a=a
+// BIMODAL: u2-signs-from-graph=a
+// BIMODAL: u2-widest-graph=a
+// BIMODAL: u2-vertex-from-table=a
+// BIMODAL: u2-vertex-interpret=b
+// BIMODAL: u2-vertex-graph-mc=a
+// BIMODAL: u2-axis-standard-mc=a
+// BIMODAL: u2-axis-from-vertex-form=a
+// BIMODAL: u2-axis-from-graph=a
+// BIMODAL: u2-match-graph-standard=b
+// BIMODAL: u2-graph-features=a
+// BIMODAL: u2-sketch-points=b
+// BIMODAL: u2-match-graph-vertex-form=b
+// BIMODAL: u2-point-on-graph=a
+// BIMODAL: u2-vertex-form-from-graph=a
+// BIMODAL: u2-expand-vertex-form=a
+// BIMODAL: u2-equation-from-graph=a
+// BIMODAL: u2-eq-from-characteristics=a
+// BIMODAL: u2-eq-from-table=a
+// BIMODAL: u2-eq-intercepts-standard=a
+// BIMODAL: u2-pk-line-equation-from-graph=a
+// BIMODAL: u2-pk-dr-segment-graph=b
+// BIMODAL: u2-pk-graph-data=a
+// BIMODAL: u2-pk-dr-linear=a
+// BIMODAL: u2-pk-graph-form=a
 /* ============ Unit 2: Quadratic Functions ============ */
 function quadStr(a,b,c){var s=(a===1?"":a===-1?"\u2212":""+a)+"x\u00B2";if(b!==0)s+=" "+(b>0?"+":"\u2212")+" "+(Math.abs(b)===1?"":Math.abs(b))+"x";if(c!==0)s+=" "+(c>0?"+":"\u2212")+" "+Math.abs(c);return s;}
 function quadB(a,b,c){var s=(a===1?"":a===-1?"-":""+a)+"x^2";if(b!==0)s+=(b>0?" + ":" - ")+(Math.abs(b)===1?"":Math.abs(b))+"x";if(c!==0)s+=(c>0?" + ":" - ")+Math.abs(c);return s;}
@@ -6699,6 +6913,28 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-other-root=1
 // CRMARKS: u3-sum-squares-solve=2
 // CRMARKS: u3-right-triangle-legs=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-discriminant=2
+// CRMARKS: u3-roots-zeros=2
+// CRMARKS: u3-pk-gcf=2
+// CRMARKS: u3-pk-binom-tri-expand=2
+// CRMARKS: u3-pk-radical-mixed=2
+// CRMARKS: u3-vertex-intercepts=2
+// CRMARKS: u3-solve-fraction-roots=2
+// CRMARKS: u3-pk-gcf-binomial=2
+// CRMARKS: u3-pk-expand-square=2
+// CRMARKS: u3-pk-radical-coefficient=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-discriminant=b
+// BIMODAL: u3-roots-zeros=b
+// BIMODAL: u3-pk-gcf=b
+// BIMODAL: u3-pk-binom-tri-expand=b
+// BIMODAL: u3-pk-radical-mixed=a
+// BIMODAL: u3-vertex-intercepts=a
+// BIMODAL: u3-solve-fraction-roots=a
+// BIMODAL: u3-pk-gcf-binomial=b
+// BIMODAL: u3-pk-expand-square=b
+// BIMODAL: u3-pk-radical-coefficient=a
 /* ============ Unit 3: Quadratic Equations ============ */
 E("u3-factor-solve",3,["4.8"],2,"gen",function(){
   var p=ri(-8,-1),q=ri(1,9);var b=-(p+q),c=p*q;var askBig=Math.random()<0.5;
@@ -7142,9 +7378,45 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-cube-equation-shifted=2
 // CRMARKS: u4-extraneous-valid-root=2
 // CRMARKS: u4-model-solve-variable=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-pk-radical-mixed=2
+// CRMARKS: u4-pk-radical-entire=2
+// CRMARKS: u4-pk-laws-integral=2
+// CRMARKS: u4-pk-laws-rational=2
+// CRMARKS: u4-pk-which-is-solution=2
+// CRMARKS: u4-mixed-to-entire-fraction=2
+// CRMARKS: u4-simplify-fraction-radicand=2
+// CRMARKS: u4-variable-entire=2
+// CRMARKS: u4-variable-cube=2
+// CRMARKS: u4-order-mixed-index=2
+// CRMARKS: u4-closest-integer=2
+// CRMARKS: u4-defined-two-radicals=2
+// CRMARKS: u4-rationalize-binomial=2
+// CRMARKS: u4-rationalize-cube-root=2
+// CRMARKS: u4-equation-both-sides=2
+// CRMARKS: u4-no-solution-equation=3
+// CRMARKS: u4-model-equation-two-step=2
 // BIMODAL: u4-simplify-add=a
 // BIMODAL: u4-order=a
 // BIMODAL: u4-extraneous=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-pk-radical-mixed=a
+// BIMODAL: u4-pk-radical-entire=a
+// BIMODAL: u4-pk-laws-integral=b
+// BIMODAL: u4-pk-laws-rational=b
+// BIMODAL: u4-pk-which-is-solution=a
+// BIMODAL: u4-mixed-to-entire-fraction=a
+// BIMODAL: u4-simplify-fraction-radicand=a
+// BIMODAL: u4-variable-entire=a
+// BIMODAL: u4-variable-cube=b
+// BIMODAL: u4-order-mixed-index=b
+// BIMODAL: u4-closest-integer=a
+// BIMODAL: u4-defined-two-radicals=a
+// BIMODAL: u4-rationalize-binomial=b
+// BIMODAL: u4-rationalize-cube-root=a
+// BIMODAL: u4-equation-both-sides=a
+// BIMODAL: u4-no-solution-equation=a
+// BIMODAL: u4-model-equation-two-step=b
 /* ============ Unit 4: Radicals ============ */
 function radStr(a,b){return (a===1?"":a)+"\u221A"+b;}
 function radT(a,b){return "\\("+(a===1?"":a)+"\\sqrt{"+b+"}\\)";}
@@ -8069,7 +8341,23 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-justify-consistency=3
 // CRMARKS: u6-breakeven-plans=2
 // CRMARKS: u6-wcr-better-buy-savings=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-slope-rate=2
+// CRMARKS: u6-sail-scale-mc=3
+// CRMARKS: u6-unit-price-mc=2
+// CRMARKS: u6-add-area-effect=2
+// CRMARKS: u6-add-photo-dimension=2
+// CRMARKS: u6-add-model-height=2
+// CRMARKS: u6-add-slope-rate=2
 // BIMODAL: u6-better-buy=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-slope-rate=b
+// BIMODAL: u6-sail-scale-mc=a
+// BIMODAL: u6-unit-price-mc=a
+// BIMODAL: u6-add-area-effect=a
+// BIMODAL: u6-add-photo-dimension=a
+// BIMODAL: u6-add-model-height=a
+// BIMODAL: u6-add-slope-rate=b
 /* ============ Unit 6: Proportional Reasoning ============ */
 E("u6-scale-factor",6,["6.9"],1,"gen",function(){
   var k=pick([8,9,10,12,15,18,20,24,25,30,40,50,60]);var model=pick([3,4,5,6,7,8,9,10,12,14]);var real=model*k;
@@ -8587,6 +8875,26 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-pattern-next=1
 // CRMARKS: u7-pattern-quad=2
 // CRMARKS: u7-counterexample=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-valid-argument=2
+// CRMARKS: u7-proof-error=3
+// CRMARKS: u7-converse-contrapositive=2
+// CRMARKS: u7-converse-truth=2
+// CRMARKS: u7-pk-pattern-figure=2
+// CRMARKS: u7-pk-table-equation=2
+// CRMARKS: u7-pk-conjecture=2
+// CRMARKS: u7-pk-valid-chain=2
+// CRMARKS: u7-pk-counterexample=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-valid-argument=b
+// BIMODAL: u7-proof-error=b
+// BIMODAL: u7-converse-contrapositive=b
+// BIMODAL: u7-converse-truth=b
+// BIMODAL: u7-pk-pattern-figure=a
+// BIMODAL: u7-pk-table-equation=a
+// BIMODAL: u7-pk-conjecture=b
+// BIMODAL: u7-pk-valid-chain=a
+// BIMODAL: u7-pk-counterexample=b
 /* ============ Unit 7: Inductive and Deductive Reasoning ============ */
 E("u7-pattern-next",7,["2.1"],2,"gen",function(){
   var a=ri(2,6),b=ri(1,9);var terms=[1,2,3,4].map(function(n){return a*n+b;});
@@ -9065,7 +9373,29 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-compare-rates=2
 // CRMARKS: u6-rate-isolate=1
 // CRMARKS: u8-angle-sum-rule=1
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-congruent=2
+// CRMARKS: u8-parallel-check=2
+// CRMARKS: u7-valid-chains=2
+// CRMARKS: u2-params-characteristics=2
+// CRMARKS: u2-graph-description=2
+// CRMARKS: u8-pk-angle-measure=2
+// CRMARKS: u8-pk-parallel-decision=2
+// CRMARKS: u8-pk-transversal-pairs=2
+// CRMARKS: u8-add-gable-angle=2
+// CRMARKS: u8-add-parallel-decision=2
 // BIMODAL: u3-equation-from-roots=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-congruent=b
+// BIMODAL: u8-parallel-check=b
+// BIMODAL: u7-valid-chains=b
+// BIMODAL: u2-params-characteristics=a
+// BIMODAL: u2-graph-description=a
+// BIMODAL: u8-pk-angle-measure=a
+// BIMODAL: u8-pk-parallel-decision=b
+// BIMODAL: u8-pk-transversal-pairs=a
+// BIMODAL: u8-add-gable-angle=a
+// BIMODAL: u8-add-parallel-decision=b
 /* ============ Unit 8: Properties of Angles and Triangles ============ */
 E("u8-triangle-sum",8,["5.3"],1,"gen",function(){
   var a=ri(35,75),b=ri(35,75);while(a+b>160){b=ri(30,60);}
@@ -9862,6 +10192,23 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-chain-conclusion=3
 // CRMARKS: u7-false-pattern=2
 // CRMARKS: u7-figure-pattern=1
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-sine-side-mc=2
+// CRMARKS: u1-cosine-angle-mc=2
+// CRMARKS: u1-crossing-distance=2
+// CRMARKS: u1-law-choice-context=2
+// CRMARKS: u2-which-quadratic=2
+// CRMARKS: u3-formula-repair=3
+// CRMARKS: u3-discriminant-parameter=3
+// CRMARKS: u8-proof-reason=2
+// CRMARKS: u1-law-formula=2
+// CRMARKS: u8-correspondence=3
+// CRMARKS: u2-revenue-build=3
+// CRMARKS: u2-function-from-vertex-point=3
+// CRMARKS: u2-concavity=2
+// CRMARKS: u3-formula-substitution=2
+// CRMARKS: u3-discriminant-nature=2
+// CRMARKS: u7-deductive-chain=2
 // BIMODAL: u3-factor-nonmonic=b
 // BIMODAL: u8-multi-angle=a
 // BIMODAL: u8-angle-chase=a
@@ -9886,6 +10233,23 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // BIMODAL: u3-equation-fraction-roots=b
 // BIMODAL: u2-revenue-model=b
 // BIMODAL: u1-ambiguous-count=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-sine-side-mc=a
+// BIMODAL: u1-cosine-angle-mc=a
+// BIMODAL: u1-crossing-distance=a
+// BIMODAL: u1-law-choice-context=a
+// BIMODAL: u2-which-quadratic=a
+// BIMODAL: u3-formula-repair=a
+// BIMODAL: u3-discriminant-parameter=b
+// BIMODAL: u8-proof-reason=b
+// BIMODAL: u1-law-formula=b
+// BIMODAL: u8-correspondence=a
+// BIMODAL: u2-revenue-build=b
+// BIMODAL: u2-function-from-vertex-point=a
+// BIMODAL: u2-concavity=a
+// BIMODAL: u3-formula-substitution=b
+// BIMODAL: u3-discriminant-nature=b
+// BIMODAL: u7-deductive-chain=a
 /* ============ Tranche 3 (Oct 26): Units 1-4 depth ============
    Existing tests and question banks, including the Holy Spirit sample
    tests and reviews and the NL Schools topic lists (see
@@ -11658,10 +12022,10 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-normal-count-between":2,"u5-polygon-point":1,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-ambiguous-design":3,"u1-angle-between-paths":4,"u1-angle-placement":2,"u1-bisector-post":3,"u1-corner-check":2,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-angle-mc":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-cosine-side-mc":2,"u1-crane-spread":2,"u1-crossing-distance":2,"u1-diagram-ambiguous-fit":2,"u1-diagram-both-laws":3,"u1-diagram-chain-setup":3,"u1-diagram-complete-plan":3,"u1-diagram-first-step":2,"u1-diagram-flaw-hunt":3,"u1-diagram-givens":2,"u1-diagram-law-pair":2,"u1-diagram-match":2,"u1-diagram-missing-mark":2,"u1-diagram-read-value":2,"u1-diagram-supplement":2,"u1-diagram-two-unknowns":2,"u1-diagram-unknown":2,"u1-double-plot":2,"u1-drone-split":3,"u1-farm-lanes":2,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-gate-diagonal":2,"u1-guy-wire":3,"u1-harbour-chain":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-kite-spar":2,"u1-law-choice":2,"u1-law-choice-context":2,"u1-law-diagram-choice":2,"u1-law-formula":2,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-mislabeled-diagram":2,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-pairing-diagram":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-pk-hypotenuse-pick":2,"u1-pk-label-sides":2,"u1-pk-opposite-read":2,"u1-pk-other-angle-ratio":2,"u1-pk-pythagoras":2,"u1-pk-ratio-decimal":2,"u1-pk-ratio-def":2,"u1-pk-ratio-equation":2,"u1-pk-ratio-from-figure":2,"u1-pk-ratio-letters":2,"u1-pk-ratio-unreduced":2,"u1-pk-right-check":2,"u1-pk-role-from-diagram":2,"u1-pk-role-value":2,"u1-pk-role-words":2,"u1-pk-solve-scene":2,"u1-pk-two-angles-roles":2,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-angle-mc":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-side-mc":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-sketch-values":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-graph":2,"u2-axis-from-intercepts":1,"u2-axis-from-vertex-form":2,"u2-axis-standard-mc":2,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-concavity":2,"u2-count-intercepts":1,"u2-domain-context":2,"u2-domain-range":2,"u2-dr-from-graph":2,"u2-dr-standard-form":2,"u2-dr-vertex-form":2,"u2-effect-of-a":2,"u2-effect-of-c":2,"u2-eq-from-characteristics":2,"u2-eq-from-table":3,"u2-eq-from-vertex":2,"u2-eq-intercepts-standard":2,"u2-equation-from-graph":2,"u2-evaluate-f":1,"u2-expand-vertex-form":2,"u2-factored-coeffs":2,"u2-factored-double-root":2,"u2-factored-from-graph":2,"u2-factored-max-height":2,"u2-factored-with-a":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-function-from-vertex-point":3,"u2-graph-description":2,"u2-graph-features":2,"u2-intercepts-read-graph":2,"u2-intercepts-set":2,"u2-match-graph-standard":2,"u2-match-graph-vertex-form":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-params-characteristics":2,"u2-perimeter-max-area":2,"u2-pk-dr-linear":2,"u2-pk-dr-segment-graph":2,"u2-pk-graph-data":2,"u2-pk-graph-form":2,"u2-pk-line-equation-from-graph":2,"u2-point-on-graph":2,"u2-profit-max":2,"u2-range-context-mc":2,"u2-revenue-build":3,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-signs-from-graph":2,"u2-sketch-points":2,"u2-standard-from-factored":2,"u2-standard-to-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-form-from-graph":2,"u2-vertex-form-params":2,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-table":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-graph-mc":2,"u2-vertex-interpret":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-which-quadratic":2,"u2-widest-graph":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u2-y-intercept-point":2,"u2-zeros-from-factored":2,"u3-border":3,"u3-context-area":3,"u3-discriminant":2,"u3-discriminant-nature":2,"u3-discriminant-parameter":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-formula-repair":3,"u3-formula-substitution":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-pk-binom-tri-expand":2,"u3-pk-expand-square":2,"u3-pk-gcf":2,"u3-pk-gcf-binomial":2,"u3-pk-radical-coefficient":2,"u3-pk-radical-mixed":2,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-roots-zeros":2,"u3-setup-equation":1,"u3-solve-fraction-roots":2,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-vertex-intercepts":2,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-closest-integer":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-defined-two-radicals":2,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-both-sides":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-mixed-to-entire-fraction":2,"u4-model-equation":2,"u4-model-equation-two-step":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-no-solution-equation":3,"u4-order":2,"u4-order-mixed-index":2,"u4-pk-laws-integral":2,"u4-pk-laws-rational":2,"u4-pk-radical-entire":2,"u4-pk-radical-mixed":2,"u4-pk-which-is-solution":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-binomial":2,"u4-rationalize-coefficient":2,"u4-rationalize-cube-root":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-simplify-fraction-radicand":2,"u4-triangle-perimeter":2,"u4-variable-cube":2,"u4-variable-entire":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-infer-mean":2,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-samplesize":2,"u5-ci-shrink":2,"u5-ci-significance":2,"u5-compare-normal-shift":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-isnormal":2,"u5-isnormal-data":2,"u5-media":4,"u5-media-position":3,"u5-media-ratio-claim":3,"u5-midpoint":1,"u5-normal-centre-facts":2,"u5-normal-count":2,"u5-normal-count-between":2,"u5-pk-freq-mean":2,"u5-polygon-point":1,"u5-position-argument":3,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-sd-interpret":2,"u5-sd-interpret-context":2,"u5-sd-match-set":2,"u5-sd-meaning":2,"u5-sd-transform":2,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-add-area-effect":2,"u6-add-model-height":2,"u6-add-photo-dimension":2,"u6-add-slope-rate":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-sail-scale-mc":3,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-slope-rate":2,"u6-tile-cost":3,"u6-unit-price-mc":2,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-converse-contrapositive":2,"u7-converse-truth":2,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-deductive-chain":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-pk-conjecture":2,"u7-pk-counterexample":2,"u7-pk-pattern-figure":2,"u7-pk-table-equation":2,"u7-pk-valid-chain":2,"u7-proof-error":3,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u7-valid-argument":2,"u7-valid-chains":2,"u8-add-gable-angle":2,"u8-add-parallel-decision":2,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent":2,"u8-congruent-perimeter":1,"u8-correspondence":3,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-check":2,"u8-parallel-x-value":3,"u8-pk-angle-measure":2,"u8-pk-parallel-decision":2,"u8-pk-transversal-pairs":2,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-proof-reason":2,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u2-revenue-model":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-model-number":"b","u4-add-unlike":"a","u4-binomial-square":"b","u4-combine-multi":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-extraneous":"b","u4-multiply-mixed":"a","u4-order":"a","u4-product-simplify":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-triangle-perimeter":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-majority":"b","u5-media":"b","u5-sd-decisions":"b","u5-z-compare":"b","u6-better-buy":"b","u6-poster-dimensions":"b","u6-rate-difference":"b","u7-pattern-equation":"a","u7-race-order":"a","u8-angle-chase":"a","u8-multi-angle":"a"};
+window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u1-ambiguous-design":"b","u1-angle-placement":"b","u1-corner-check":"a","u1-cosine-angle-mc":"a","u1-cosine-side-mc":"a","u1-crane-spread":"a","u1-crossing-distance":"a","u1-diagram-ambiguous-fit":"a","u1-diagram-both-laws":"b","u1-diagram-chain-setup":"b","u1-diagram-complete-plan":"b","u1-diagram-first-step":"b","u1-diagram-flaw-hunt":"b","u1-diagram-givens":"b","u1-diagram-law-pair":"b","u1-diagram-match":"b","u1-diagram-missing-mark":"b","u1-diagram-read-value":"a","u1-diagram-supplement":"b","u1-diagram-two-unknowns":"b","u1-diagram-unknown":"b","u1-double-plot":"a","u1-farm-lanes":"a","u1-gate-diagonal":"a","u1-harbour-chain":"a","u1-kite-spar":"a","u1-law-choice":"b","u1-law-choice-context":"a","u1-law-diagram-choice":"b","u1-law-formula":"b","u1-mislabeled-diagram":"b","u1-pairing-diagram":"b","u1-pk-hypotenuse-pick":"a","u1-pk-label-sides":"a","u1-pk-opposite-read":"a","u1-pk-other-angle-ratio":"a","u1-pk-pythagoras":"a","u1-pk-ratio-decimal":"a","u1-pk-ratio-def":"a","u1-pk-ratio-equation":"a","u1-pk-ratio-from-figure":"a","u1-pk-ratio-letters":"b","u1-pk-ratio-unreduced":"a","u1-pk-right-check":"a","u1-pk-role-from-diagram":"a","u1-pk-role-value":"b","u1-pk-role-words":"a","u1-pk-solve-scene":"a","u1-pk-two-angles-roles":"a","u1-sine-angle-mc":"a","u1-sine-side-mc":"a","u1-sketch-values":"b","u2-axis-from-graph":"a","u2-axis-from-vertex-form":"a","u2-axis-standard-mc":"a","u2-concavity":"a","u2-domain-context":"a","u2-domain-range":"b","u2-dr-from-graph":"b","u2-dr-standard-form":"b","u2-dr-vertex-form":"b","u2-effect-of-a":"a","u2-effect-of-c":"b","u2-eq-from-characteristics":"a","u2-eq-from-table":"a","u2-eq-intercepts-standard":"a","u2-equation-from-graph":"a","u2-expand-vertex-form":"a","u2-factored-double-root":"a","u2-factored-from-graph":"a","u2-factored-with-a":"a","u2-function-from-vertex-point":"a","u2-graph-description":"a","u2-graph-features":"a","u2-intercepts-read-graph":"a","u2-intercepts-set":"b","u2-match-graph-standard":"b","u2-match-graph-vertex-form":"b","u2-params-characteristics":"a","u2-pk-dr-linear":"a","u2-pk-dr-segment-graph":"b","u2-pk-graph-data":"a","u2-pk-graph-form":"a","u2-pk-line-equation-from-graph":"a","u2-point-on-graph":"a","u2-range-context-mc":"a","u2-revenue-build":"b","u2-revenue-model":"b","u2-signs-from-graph":"a","u2-sketch-points":"b","u2-standard-to-factored":"a","u2-vertex-form-from-graph":"a","u2-vertex-form-params":"b","u2-vertex-from-table":"a","u2-vertex-graph-mc":"a","u2-vertex-interpret":"b","u2-which-quadratic":"a","u2-widest-graph":"a","u2-y-intercept-point":"a","u2-zeros-from-factored":"a","u3-discriminant":"b","u3-discriminant-nature":"b","u3-discriminant-parameter":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-formula-repair":"a","u3-formula-substitution":"b","u3-model-number":"b","u3-pk-binom-tri-expand":"b","u3-pk-expand-square":"b","u3-pk-gcf":"b","u3-pk-gcf-binomial":"b","u3-pk-radical-coefficient":"a","u3-pk-radical-mixed":"a","u3-roots-zeros":"b","u3-solve-fraction-roots":"a","u3-vertex-intercepts":"a","u4-add-unlike":"a","u4-binomial-square":"b","u4-closest-integer":"a","u4-combine-multi":"a","u4-defined-two-radicals":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-equation-both-sides":"a","u4-extraneous":"b","u4-mixed-to-entire-fraction":"a","u4-model-equation-two-step":"b","u4-multiply-mixed":"a","u4-no-solution-equation":"a","u4-order":"a","u4-order-mixed-index":"b","u4-pk-laws-integral":"b","u4-pk-laws-rational":"b","u4-pk-radical-entire":"a","u4-pk-radical-mixed":"a","u4-pk-which-is-solution":"a","u4-product-simplify":"a","u4-rationalize-binomial":"b","u4-rationalize-cube-root":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-simplify-fraction-radicand":"a","u4-triangle-perimeter":"a","u4-variable-cube":"b","u4-variable-entire":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-infer-mean":"b","u5-ci-majority":"b","u5-ci-samplesize":"b","u5-ci-significance":"b","u5-compare-normal-shift":"b","u5-isnormal":"b","u5-isnormal-data":"b","u5-media":"b","u5-media-position":"b","u5-media-ratio-claim":"b","u5-normal-centre-facts":"a","u5-pk-freq-mean":"a","u5-position-argument":"b","u5-sd-decisions":"b","u5-sd-interpret":"b","u5-sd-interpret-context":"b","u5-sd-match-set":"a","u5-sd-meaning":"b","u5-sd-transform":"b","u5-z-compare":"b","u6-add-area-effect":"a","u6-add-model-height":"a","u6-add-photo-dimension":"a","u6-add-slope-rate":"b","u6-better-buy":"b","u6-poster-dimensions":"b","u6-rate-difference":"b","u6-sail-scale-mc":"a","u6-slope-rate":"b","u6-unit-price-mc":"a","u7-converse-contrapositive":"b","u7-converse-truth":"b","u7-deductive-chain":"a","u7-pattern-equation":"a","u7-pk-conjecture":"b","u7-pk-counterexample":"b","u7-pk-pattern-figure":"a","u7-pk-table-equation":"a","u7-pk-valid-chain":"a","u7-proof-error":"b","u7-race-order":"a","u7-valid-argument":"b","u7-valid-chains":"b","u8-add-gable-angle":"a","u8-add-parallel-decision":"b","u8-angle-chase":"a","u8-congruent":"b","u8-correspondence":"a","u8-multi-angle":"a","u8-parallel-check":"b","u8-pk-angle-measure":"a","u8-pk-parallel-decision":"b","u8-pk-transversal-pairs":"a","u8-proof-reason":"b"};
