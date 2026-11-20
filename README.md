@@ -1,14 +1,53 @@
-# ReviewApps
+# CDLI Review Apps
 
-The unified CDLI review app. One shell serves every course; each course
-contributes a bank module under `banks/` and a configuration entry in
-`courses.js`. Teachers pick their course at the app address, or arrive on a
-course link with the course already selected.
+Free practice question banks for Newfoundland and Labrador mathematics and science courses, built and maintained by the Centre for Distance Learning and Innovation (CDLI).
 
-Course links:
+**Use the apps: [cdli-nlschools.github.io/ReviewApps](https://cdli-nlschools.github.io/ReviewApps/)**
 
-- Physics 3204: https://cdli-nlschools.github.io/ReviewApps/?course=physics-3204
-- Physics 2204: https://cdli-nlschools.github.io/ReviewApps/?course=physics-2204
+No account and no sign-in. The apps run in the browser on any device.
 
-The familiar per-course addresses (for example Physics3204Review) forward
-to the matching course link, preserving any settings in the original link.
+## What you can do
+
+- Practise online with instant checking, choosing whole units or individual curriculum indicators
+- Build a printable practice sheet or exam, with an answer key that includes worked solutions
+- In the science courses, choose ready-made practice tests and practice exams shaped like the course's own unit tests
+- Include prior knowledge questions, drawn from the earlier outcomes each unit builds on
+- Turn answer choices on or off for dual-form questions, so the same question can be practised as multiple choice or as a written response
+- Share an exact set with a class using its set code or a course link that carries the selection with it
+- Work in French in the Sciences and Mathématiques courses
+
+## Courses
+
+29 courses are live. Each link opens the app with that course already selected.
+
+**Mathematics:** [Math 7](https://cdli-nlschools.github.io/ReviewApps/?course=math-7), [Math 8](https://cdli-nlschools.github.io/ReviewApps/?course=math-8), [Math 9](https://cdli-nlschools.github.io/ReviewApps/?course=math-9), [Math 1201](https://cdli-nlschools.github.io/ReviewApps/?course=math-1201), [Math 1202](https://cdli-nlschools.github.io/ReviewApps/?course=math-1202), [Math 2200](https://cdli-nlschools.github.io/ReviewApps/?course=math-2200), [Math 2201](https://cdli-nlschools.github.io/ReviewApps/?course=math-2201), [Math 2202](https://cdli-nlschools.github.io/ReviewApps/?course=math-2202), [Math 3200](https://cdli-nlschools.github.io/ReviewApps/?course=math-3200), [Math 3201](https://cdli-nlschools.github.io/ReviewApps/?course=math-3201), [Math 3202](https://cdli-nlschools.github.io/ReviewApps/?course=math-3202), [Math 3208](https://cdli-nlschools.github.io/ReviewApps/?course=math-3208)
+
+**Mathématiques:** [Mathématiques 7](https://cdli-nlschools.github.io/ReviewApps/?course=math-7-fr), [Mathématiques 8](https://cdli-nlschools.github.io/ReviewApps/?course=math-8-fr), [Mathématiques 9](https://cdli-nlschools.github.io/ReviewApps/?course=math-9-fr)
+
+**Science:** [Science 7](https://cdli-nlschools.github.io/ReviewApps/?course=sci-7), [Science 8](https://cdli-nlschools.github.io/ReviewApps/?course=sci-8), [Science 9](https://cdli-nlschools.github.io/ReviewApps/?course=sci-9), [Science 1206](https://cdli-nlschools.github.io/ReviewApps/?course=sci-1206), [Biology 2201](https://cdli-nlschools.github.io/ReviewApps/?course=bio-2201), [Biology 3201](https://cdli-nlschools.github.io/ReviewApps/?course=bio-3201), [Chemistry 2202](https://cdli-nlschools.github.io/ReviewApps/?course=chem-2202), [Chemistry 3202](https://cdli-nlschools.github.io/ReviewApps/?course=chem-3202), [Physics 2204](https://cdli-nlschools.github.io/ReviewApps/?course=physics-2204), [Physics 3204](https://cdli-nlschools.github.io/ReviewApps/?course=physics-3204), [Earth Systems 3209](https://cdli-nlschools.github.io/ReviewApps/?course=earth-3209)
+
+**Sciences:** [Sciences 7](https://cdli-nlschools.github.io/ReviewApps/?course=sci-7-fr), [Sciences 8](https://cdli-nlschools.github.io/ReviewApps/?course=sci-8-fr), [Sciences 9](https://cdli-nlschools.github.io/ReviewApps/?course=sci-9-fr)
+
+The older per-course addresses (for example Physics3204Review) forward to the matching course link, keeping any settings the original link carried.
+
+## How the questions are organised
+
+Each course follows its provincial curriculum guide: units, and under each unit the outcomes with their indicator codes and wording from the guide. Every question in a bank is tagged to a single indicator and a level, and sets are built to a target level mix, mostly Level 2 with Level 1 and Level 3 around it. Many questions are generators, so numbers and contexts change from one set to the next and practice does not repeat itself. Written questions carry worked solutions, shown in the answer key.
+
+## Reporting a problem
+
+Use the Report a Problem link inside the app. It opens a short form with the app and the set you were using already filled in.
+
+## For maintainers
+
+One shell serves every course. The layout of this repository:
+
+- `index.html` is the app shell. It is generated by `build-shell.py` from the sources in `snippets/`; edit the sources and rebuild rather than editing the shell directly.
+- `courses.js` is the course registry: branding, units, indicators, presets and exam blueprints for each course. Registering a course here, together with its bank in `banks/`, is the whole add-a-course operation.
+- `banks/` holds one bank file per course, assembled from its per-unit sources by `assemble-bank.py`.
+- `tests/` holds the gate suite that checks every bank loads, composes and meets the quality rules before a change ships.
+- `CHANGELOG.md` is the teacher-facing record of what has changed in the apps.
+
+## Licence
+
+MIT. See [LICENSE](LICENSE). Copyright The Centre for Distance Learning and Innovation.
