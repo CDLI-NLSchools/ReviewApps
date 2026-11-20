@@ -94,7 +94,7 @@ window.COURSES = {
         4: { sr: 5,  cr: 5,  levels: [2, 6, 2] }
       }
     },
-    fallback: { srCount: 27, crMarks: 23 }
+    fallback: { srCount: 27, crMarks: 23, total: 50 }
   },
 
   /* Shown with the pool information whenever the final scope is selected. */
@@ -419,7 +419,7 @@ window.COURSES = {
         3: { sr: 29, cr: 7, levels: [11, 18, 7] }
       }
     },
-    fallback: { srCount: 48, crMarks: 12 }
+    fallback: { srCount: 48, crMarks: 12, total: 60 }
   },
 
   /* Shown with the pool information whenever the final scope is selected. */
@@ -2415,7 +2415,7 @@ window.COURSES = {
         5: { sr: 11, cr: 3, levels: [5, 6, 3] }
       }
     },
-    fallback: { srCount: 48, crMarks: 12 }
+    fallback: { srCount: 48, crMarks: 12, total: 60 }
   },
 
   /* Shown with the pool information whenever the final scope is selected. */
