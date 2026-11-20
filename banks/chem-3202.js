@@ -21,8 +21,46 @@
 // CRMARKS: u1-56-ice-k=4
 // CRMARKS: u1-57-shift-predict=2
 // CRMARKS: u1-wcr-factor-changes-explain=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-51-collision-conditions=2
+// CRMARKS: u1-51-successful-collision=2
+// CRMARKS: u1-51-catalyst-collision=3
+// CRMARKS: u1-52-factor-effect=2
+// CRMARKS: u1-52-not-a-factor=2
+// CRMARKS: u1-53-diagram-read=2
+// CRMARKS: u1-53-exo-endo=2
+// CRMARKS: u1-53-catalyst-diagram=3
+// CRMARKS: u1-53-activated-complex=2
+// CRMARKS: u1-54-intermediate=2
+// CRMARKS: u1-54-catalyst-identify=2
+// CRMARKS: u1-54-rds=2
+// CRMARKS: u1-54-overall-reaction=2
+// CRMARKS: u1-55-closed-system=2
+// CRMARKS: u1-55-dynamic-meaning=3
+// CRMARKS: u1-56-write-k=2
+// CRMARKS: u1-56-omit-solids=2
+// CRMARKS: u1-57-temperature-k=3
 // BIMODAL: u1-54-mechanism-analysis=b
 // BIMODAL: u1-57-shift-predict=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-51-collision-conditions=b
+// BIMODAL: u1-51-successful-collision=a
+// BIMODAL: u1-51-catalyst-collision=b
+// BIMODAL: u1-52-factor-effect=a
+// BIMODAL: u1-52-not-a-factor=a
+// BIMODAL: u1-53-diagram-read=a
+// BIMODAL: u1-53-exo-endo=b
+// BIMODAL: u1-53-catalyst-diagram=b
+// BIMODAL: u1-53-activated-complex=b
+// BIMODAL: u1-54-intermediate=a
+// BIMODAL: u1-54-catalyst-identify=a
+// BIMODAL: u1-54-rds=a
+// BIMODAL: u1-54-overall-reaction=a
+// BIMODAL: u1-55-closed-system=a
+// BIMODAL: u1-55-dynamic-meaning=b
+// BIMODAL: u1-56-write-k=a
+// BIMODAL: u1-56-omit-solids=a
+// BIMODAL: u1-57-temperature-k=b
 
 /* ============ Units and significant figures discipline (Nov 2026) ============
    Givens print at 3 significant figures minimum (data sheet constants such
@@ -1272,7 +1310,85 @@ E("u1-57-cr-shift-explain", 1, ["5.7"], 2, "var", varset([
 // CRMARKS: u2-68-titration-diprotic=4
 // CRMARKS: u2-68-aliquot-concentration=4
 // CRMARKS: u2-68-average-titre=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-61-arrhenius-ions=2
+// CRMARKS: u2-61-bronsted-role=3
+// CRMARKS: u2-61-properties=2
+// CRMARKS: u2-61-amphiprotic=2
+// CRMARKS: u2-61-conjugate-pair=2
+// CRMARKS: u2-61-identify-roles=2
+// CRMARKS: u2-62-strong-list=2
+// CRMARKS: u2-62-dissociation-eq=2
+// CRMARKS: u2-62-conductivity=3
+// CRMARKS: u2-62-weak-meaning=2
+// CRMARKS: u2-62-equilibrium-judgement=4
+// CRMARKS: u2-62-salt-predict=3
+// CRMARKS: u2-62-hydrolysis-ion=2
+// CRMARKS: u2-62-kw-relation=2
+// CRMARKS: u2-62-equivalence-ph=3
+// CRMARKS: u2-62-curve-equivalence=3
+// CRMARKS: u2-63-spectators=2
+// CRMARKS: u2-63-salt-formed=2
+// CRMARKS: u2-63-predict-products=3
+// CRMARKS: u2-64-scale-compare=2
+// CRMARKS: u2-64-neutral-water=2
+// CRMARKS: u2-65-compare-ph=3
+// CRMARKS: u2-65-approx-validity=3
+// CRMARKS: u2-65-half-equivalence=3
+// CRMARKS: u2-66-indicator-choice=2
+// CRMARKS: u2-66-indicator-colour=2
+// CRMARKS: u2-66-endpoint-equivalence=2
+// CRMARKS: u2-66-which-form=3
+// CRMARKS: u2-66-why-it-fails=3
+// CRMARKS: u2-67-water-equilibrium=2
+// CRMARKS: u2-67-acid-added=2
+// CRMARKS: u2-67-base-added=2
+// CRMARKS: u2-67-neutralize-shift=3
+// CRMARKS: u2-67-temperature-kw=3
+// CRMARKS: u2-68-technique=2
+// CRMARKS: u2-68-standard-solution=2
+// CRMARKS: u2-64-mc-ph-two-ways=2
+// CRMARKS: u2-68-mc-titration-find-conc=2
 // BIMODAL: u2-63-net-equation=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-61-arrhenius-ions=a
+// BIMODAL: u2-61-bronsted-role=b
+// BIMODAL: u2-61-properties=a
+// BIMODAL: u2-61-amphiprotic=a
+// BIMODAL: u2-61-conjugate-pair=a
+// BIMODAL: u2-61-identify-roles=a
+// BIMODAL: u2-62-strong-list=a
+// BIMODAL: u2-62-dissociation-eq=a
+// BIMODAL: u2-62-conductivity=b
+// BIMODAL: u2-62-weak-meaning=b
+// BIMODAL: u2-62-equilibrium-judgement=b
+// BIMODAL: u2-62-salt-predict=b
+// BIMODAL: u2-62-hydrolysis-ion=a
+// BIMODAL: u2-62-kw-relation=a
+// BIMODAL: u2-62-equivalence-ph=b
+// BIMODAL: u2-62-curve-equivalence=b
+// BIMODAL: u2-63-spectators=a
+// BIMODAL: u2-63-salt-formed=a
+// BIMODAL: u2-63-predict-products=b
+// BIMODAL: u2-64-scale-compare=a
+// BIMODAL: u2-64-neutral-water=b
+// BIMODAL: u2-65-compare-ph=b
+// BIMODAL: u2-65-approx-validity=b
+// BIMODAL: u2-65-half-equivalence=a
+// BIMODAL: u2-66-indicator-choice=a
+// BIMODAL: u2-66-indicator-colour=a
+// BIMODAL: u2-66-endpoint-equivalence=b
+// BIMODAL: u2-66-which-form=b
+// BIMODAL: u2-66-why-it-fails=b
+// BIMODAL: u2-67-water-equilibrium=a
+// BIMODAL: u2-67-acid-added=a
+// BIMODAL: u2-67-base-added=a
+// BIMODAL: u2-67-neutralize-shift=b
+// BIMODAL: u2-67-temperature-kw=b
+// BIMODAL: u2-68-technique=b
+// BIMODAL: u2-68-standard-solution=a
+// BIMODAL: u2-64-mc-ph-two-ways=a
+// BIMODAL: u2-68-mc-titration-find-conc=a
 
 /* Scientific-notation formatter at a chosen significant-figure count,
    used wherever a concentration or constant is very small or very large.
@@ -3161,6 +3277,126 @@ E("u2-68-mc-titration-find-conc",2,["6.8"],2,"gen",function(){
 // CRMARKS: u3-712-formation=3
 // CRMARKS: u3-712-hess=5
 // CRMARKS: u3-712-formation-solve=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-71-forms=2
+// CRMARKS: u3-71-conversion=2
+// CRMARKS: u3-71-heat-flow=3
+// CRMARKS: u3-71-stored-or-motion=2
+// CRMARKS: u3-71-chem-chains=2
+// CRMARKS: u3-71-heat-vs-temp=3
+// CRMARKS: u3-72-system-types=2
+// CRMARKS: u3-72-isolated-judgement=3
+// CRMARKS: u3-72-surroundings=2
+// CRMARKS: u3-72-conservation=2
+// CRMARKS: u3-72-boundary-choice=3
+// CRMARKS: u3-72-crossing-judgement=2
+// CRMARKS: u3-73-define-c=2
+// CRMARKS: u3-73-c-units-judge=2
+// CRMARKS: u3-73-larger-c=3
+// CRMARKS: u3-73-c-versus-capacity=2
+// CRMARKS: u3-73-water-moderates=3
+// CRMARKS: u3-73-rank-cooling=2
+// CRMARKS: u3-74-compare-heating=3
+// CRMARKS: u3-75-exo-endo=2
+// CRMARKS: u3-75-temp-direction=2
+// CRMARKS: u3-75-q-vs-dh=3
+// CRMARKS: u3-75-calorimeter-types=3
+// CRMARKS: u3-75-qp-statement=2
+// CRMARKS: u3-75-work-sign=3
+// CRMARKS: u3-75-sign-judgement=2
+// CRMARKS: u3-75-per-mole=2
+// CRMARKS: u3-76-diagram-language=2
+// CRMARKS: u3-76-diagram-parts=2
+// CRMARKS: u3-76-diagram-dh=2
+// CRMARKS: u3-76-diagram-select=2
+// CRMARKS: u3-76-diagram-catalyst=3
+// CRMARKS: u3-76-diagram-two-step=3
+// CRMARKS: u3-77-curve-read=3
+// CRMARKS: u3-77-phase-concept=2
+// CRMARKS: u3-78-compare-release=3
+// CRMARKS: u3-78-dh-value=2
+// CRMARKS: u3-79-assumptions=2
+// CRMARKS: u3-79-device-choice=2
+// CRMARKS: u3-79-insulation-effect=3
+// CRMARKS: u3-79-procedure=3
+// CRMARKS: u3-79-controls=2
+// CRMARKS: u3-79-error-direction=3
+// CRMARKS: u3-79-design-eval=4
+// CRMARKS: u3-79-precision=2
+// CRMARKS: u3-710-combustion-products=2
+// CRMARKS: u3-711-reading-equation=2
+// CRMARKS: u3-711-reversed=2
+// CRMARKS: u3-711-alkane-equation=2
+// CRMARKS: u3-711-per-mole-basis=3
+// CRMARKS: u3-711-scaled-amount=3
+// CRMARKS: u3-712-bond-average=2
+// CRMARKS: u3-712-bond-compare=3
+// CRMARKS: u3-74-mc-q-of-sample=2
+// CRMARKS: u3-74-mc-find-mass=2
+// CRMARKS: u3-710-mc-per-mole-or-gram=3
+// CRMARKS: u3-710-mc-energy-from-mass=2
+// CRMARKS: u3-712-mc-formation-calc=3
+// CRMARKS: u3-78-mc-molar-enthalpy=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-71-forms=a
+// BIMODAL: u3-71-conversion=a
+// BIMODAL: u3-71-heat-flow=b
+// BIMODAL: u3-71-stored-or-motion=b
+// BIMODAL: u3-71-chem-chains=a
+// BIMODAL: u3-71-heat-vs-temp=b
+// BIMODAL: u3-72-system-types=b
+// BIMODAL: u3-72-isolated-judgement=b
+// BIMODAL: u3-72-surroundings=a
+// BIMODAL: u3-72-conservation=a
+// BIMODAL: u3-72-boundary-choice=b
+// BIMODAL: u3-72-crossing-judgement=a
+// BIMODAL: u3-73-define-c=a
+// BIMODAL: u3-73-c-units-judge=a
+// BIMODAL: u3-73-larger-c=b
+// BIMODAL: u3-73-c-versus-capacity=a
+// BIMODAL: u3-73-water-moderates=b
+// BIMODAL: u3-73-rank-cooling=a
+// BIMODAL: u3-74-compare-heating=b
+// BIMODAL: u3-75-exo-endo=b
+// BIMODAL: u3-75-temp-direction=b
+// BIMODAL: u3-75-q-vs-dh=b
+// BIMODAL: u3-75-calorimeter-types=b
+// BIMODAL: u3-75-qp-statement=b
+// BIMODAL: u3-75-work-sign=b
+// BIMODAL: u3-75-sign-judgement=a
+// BIMODAL: u3-75-per-mole=b
+// BIMODAL: u3-76-diagram-language=a
+// BIMODAL: u3-76-diagram-parts=a
+// BIMODAL: u3-76-diagram-dh=a
+// BIMODAL: u3-76-diagram-select=b
+// BIMODAL: u3-76-diagram-catalyst=b
+// BIMODAL: u3-76-diagram-two-step=a
+// BIMODAL: u3-77-curve-read=b
+// BIMODAL: u3-77-phase-concept=b
+// BIMODAL: u3-78-compare-release=b
+// BIMODAL: u3-78-dh-value=a
+// BIMODAL: u3-79-assumptions=a
+// BIMODAL: u3-79-device-choice=a
+// BIMODAL: u3-79-insulation-effect=b
+// BIMODAL: u3-79-procedure=b
+// BIMODAL: u3-79-controls=a
+// BIMODAL: u3-79-error-direction=b
+// BIMODAL: u3-79-design-eval=b
+// BIMODAL: u3-79-precision=b
+// BIMODAL: u3-710-combustion-products=a
+// BIMODAL: u3-711-reading-equation=a
+// BIMODAL: u3-711-reversed=a
+// BIMODAL: u3-711-alkane-equation=a
+// BIMODAL: u3-711-per-mole-basis=a
+// BIMODAL: u3-711-scaled-amount=a
+// BIMODAL: u3-712-bond-average=a
+// BIMODAL: u3-712-bond-compare=b
+// BIMODAL: u3-74-mc-q-of-sample=a
+// BIMODAL: u3-74-mc-find-mass=a
+// BIMODAL: u3-710-mc-per-mole-or-gram=a
+// BIMODAL: u3-710-mc-energy-from-mass=a
+// BIMODAL: u3-712-mc-formation-calc=a
+// BIMODAL: u3-78-mc-molar-enthalpy=a
 
 /* ---------- 7.1 Explain temperature and heat using the concept of kinetic energy and the particle model of matter ---------- */
 
@@ -5532,8 +5768,68 @@ E("u3-78-mc-molar-enthalpy",3,["7.8"],2,"gen",function(){
 // CRMARKS: u4-88-faraday-mass=4
 // CRMARKS: u4-88-faraday-time=4
 // CRMARKS: u4-wcr-fuel-cell-response=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-81-oxidation-number=2
+// CRMARKS: u4-81-rules=2
+// CRMARKS: u4-81-identify-redox=2
+// CRMARKS: u4-81-definition=2
+// CRMARKS: u4-82-concept=2
+// CRMARKS: u4-82-split-equation=2
+// CRMARKS: u4-82-electron-count=2
+// CRMARKS: u4-83-identify-half=2
+// CRMARKS: u4-83-balance-steps=2
+// CRMARKS: u4-83-basic-solution=3
+// CRMARKS: u4-84-label-parts=2
+// CRMARKS: u4-84-electron-flow=2
+// CRMARKS: u4-84-salt-bridge=3
+// CRMARKS: u4-85-compare=3
+// CRMARKS: u4-85-features=2
+// CRMARKS: u4-85-molten-products=2
+// CRMARKS: u4-85-scenario-judgement=3
+// CRMARKS: u4-86-table-reading=2
+// CRMARKS: u4-86-strongest-ranking=2
+// CRMARKS: u4-86-e-not-multiply=3
+// CRMARKS: u4-87-standard-conditions=2
+// CRMARKS: u4-87-voltage-compare=3
+// CRMARKS: u4-88-faraday-concept=2
+// CRMARKS: u4-89-fuel-cell-basics=2
+// CRMARKS: u4-89-fuel-cell-half=3
+// CRMARKS: u4-89-fuel-cell-reasoning=3
+// CRMARKS: u4-88-mc-electrolysis-products=2
+// CRMARKS: u4-88-mc-plating-mass=3
+// CRMARKS: u4-87-mc-cell-from-table=2
 // BIMODAL: u4-86-predict-spontaneous=b
 // BIMODAL: u4-83-net-reaction=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-81-oxidation-number=a
+// BIMODAL: u4-81-rules=b
+// BIMODAL: u4-81-identify-redox=a
+// BIMODAL: u4-81-definition=a
+// BIMODAL: u4-82-concept=b
+// BIMODAL: u4-82-split-equation=a
+// BIMODAL: u4-82-electron-count=a
+// BIMODAL: u4-83-identify-half=a
+// BIMODAL: u4-83-balance-steps=b
+// BIMODAL: u4-83-basic-solution=a
+// BIMODAL: u4-84-label-parts=b
+// BIMODAL: u4-84-electron-flow=b
+// BIMODAL: u4-84-salt-bridge=b
+// BIMODAL: u4-85-compare=b
+// BIMODAL: u4-85-features=b
+// BIMODAL: u4-85-molten-products=a
+// BIMODAL: u4-85-scenario-judgement=b
+// BIMODAL: u4-86-table-reading=a
+// BIMODAL: u4-86-strongest-ranking=a
+// BIMODAL: u4-86-e-not-multiply=b
+// BIMODAL: u4-87-standard-conditions=b
+// BIMODAL: u4-87-voltage-compare=a
+// BIMODAL: u4-88-faraday-concept=a
+// BIMODAL: u4-89-fuel-cell-basics=a
+// BIMODAL: u4-89-fuel-cell-half=b
+// BIMODAL: u4-89-fuel-cell-reasoning=b
+// BIMODAL: u4-88-mc-electrolysis-products=a
+// BIMODAL: u4-88-mc-plating-mass=a
+// BIMODAL: u4-87-mc-cell-from-table=a
 
 /* Standard reduction couples (metal systems), matching the Reference
    Information panel. e is E\u00B0 in volts for ion + electrons \u2192 metal. */
@@ -6537,6 +6833,16 @@ E("u4-87-mc-cell-from-table",4,["8.7"],2,"gen",function(){
 });
 
 /* ----- bank-br.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: br-b1-molar-mass=2
+// CRMARKS: br-b3-mole-ratio=2
+// CRMARKS: br-b4-solubility=2
+// CRMARKS: br-b4-equilibrium-basics=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: br-b1-molar-mass=a
+// BIMODAL: br-b3-mole-ratio=a
+// BIMODAL: br-b4-solubility=a
+// BIMODAL: br-b4-equilibrium-basics=b
 /* Chemistry 3202: prior-learning bridging bank (Unit 5 slot).
    Source course: Chemistry 2202 (mole concept, concentration, stoichiometry,
    solubility and equilibrium foundations). Codes B.1 to B.4. NOT counted
@@ -6667,10 +6973,10 @@ E("br-b4-equilibrium-basics",5,["B.4"],1,"var",varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-53-ea-reverse":3,"u1-54-mechanism-analysis":4,"u1-56-ice-k":4,"u1-56-k-calc":3,"u1-57-cr-shift-explain":2,"u1-57-shift-predict":2,"u1-wcr-factor-changes-explain":4,"u2-63-net-equation":3,"u2-63-write-molecular":3,"u2-63-write-net":4,"u2-64-dilution-ph":3,"u2-64-mix-stoich-ph":4,"u2-64-ph-from-h":2,"u2-65-ka-from-ph":3,"u2-65-kb-calc":2,"u2-65-weak-acid-ph":4,"u2-65-weak-base-ph":4,"u2-68-aliquot-concentration":4,"u2-68-average-titre":3,"u2-68-titration-calc":3,"u2-68-titration-diprotic":4,"u3-710-calorimetry-molar":4,"u3-710-compare-per-gram":3,"u3-710-mass-for-energy":3,"u3-710-molar-combustion":4,"u3-711-write-thermochem":3,"u3-712-bond-energy":3,"u3-712-formation":3,"u3-712-formation-solve":4,"u3-712-hess":5,"u3-74-cup-heat":3,"u3-74-find-delta-t":2,"u3-74-mixture-temp":4,"u3-74-q-temp":3,"u3-77-full-range":5,"u3-77-q-combined":4,"u3-77-q-phase":3,"u3-77-q-release":3,"u3-78-deltah-from-q":3,"u3-78-limiting":3,"u4-83-balance-acidic":5,"u4-83-half-reaction-write":3,"u4-83-net-reaction":4,"u4-86-predict-spontaneous":3,"u4-87-cell-voltage":4,"u4-87-find-e-half":3,"u4-88-faraday-mass":4,"u4-88-faraday-time":4,"u4-wcr-fuel-cell-response":3};
+window.__BANK_CRMARKS={"br-b1-molar-mass":2,"br-b3-mole-ratio":2,"br-b4-equilibrium-basics":2,"br-b4-solubility":2,"u1-51-catalyst-collision":3,"u1-51-collision-conditions":2,"u1-51-successful-collision":2,"u1-52-factor-effect":2,"u1-52-not-a-factor":2,"u1-53-activated-complex":2,"u1-53-catalyst-diagram":3,"u1-53-diagram-read":2,"u1-53-ea-reverse":3,"u1-53-exo-endo":2,"u1-54-catalyst-identify":2,"u1-54-intermediate":2,"u1-54-mechanism-analysis":4,"u1-54-overall-reaction":2,"u1-54-rds":2,"u1-55-closed-system":2,"u1-55-dynamic-meaning":3,"u1-56-ice-k":4,"u1-56-k-calc":3,"u1-56-omit-solids":2,"u1-56-write-k":2,"u1-57-cr-shift-explain":2,"u1-57-shift-predict":2,"u1-57-temperature-k":3,"u1-wcr-factor-changes-explain":4,"u2-61-amphiprotic":2,"u2-61-arrhenius-ions":2,"u2-61-bronsted-role":3,"u2-61-conjugate-pair":2,"u2-61-identify-roles":2,"u2-61-properties":2,"u2-62-conductivity":3,"u2-62-curve-equivalence":3,"u2-62-dissociation-eq":2,"u2-62-equilibrium-judgement":4,"u2-62-equivalence-ph":3,"u2-62-hydrolysis-ion":2,"u2-62-kw-relation":2,"u2-62-salt-predict":3,"u2-62-strong-list":2,"u2-62-weak-meaning":2,"u2-63-net-equation":3,"u2-63-predict-products":3,"u2-63-salt-formed":2,"u2-63-spectators":2,"u2-63-write-molecular":3,"u2-63-write-net":4,"u2-64-dilution-ph":3,"u2-64-mc-ph-two-ways":2,"u2-64-mix-stoich-ph":4,"u2-64-neutral-water":2,"u2-64-ph-from-h":2,"u2-64-scale-compare":2,"u2-65-approx-validity":3,"u2-65-compare-ph":3,"u2-65-half-equivalence":3,"u2-65-ka-from-ph":3,"u2-65-kb-calc":2,"u2-65-weak-acid-ph":4,"u2-65-weak-base-ph":4,"u2-66-endpoint-equivalence":2,"u2-66-indicator-choice":2,"u2-66-indicator-colour":2,"u2-66-which-form":3,"u2-66-why-it-fails":3,"u2-67-acid-added":2,"u2-67-base-added":2,"u2-67-neutralize-shift":3,"u2-67-temperature-kw":3,"u2-67-water-equilibrium":2,"u2-68-aliquot-concentration":4,"u2-68-average-titre":3,"u2-68-mc-titration-find-conc":2,"u2-68-standard-solution":2,"u2-68-technique":2,"u2-68-titration-calc":3,"u2-68-titration-diprotic":4,"u3-71-chem-chains":2,"u3-71-conversion":2,"u3-71-forms":2,"u3-71-heat-flow":3,"u3-71-heat-vs-temp":3,"u3-71-stored-or-motion":2,"u3-710-calorimetry-molar":4,"u3-710-combustion-products":2,"u3-710-compare-per-gram":3,"u3-710-mass-for-energy":3,"u3-710-mc-energy-from-mass":2,"u3-710-mc-per-mole-or-gram":3,"u3-710-molar-combustion":4,"u3-711-alkane-equation":2,"u3-711-per-mole-basis":3,"u3-711-reading-equation":2,"u3-711-reversed":2,"u3-711-scaled-amount":3,"u3-711-write-thermochem":3,"u3-712-bond-average":2,"u3-712-bond-compare":3,"u3-712-bond-energy":3,"u3-712-formation":3,"u3-712-formation-solve":4,"u3-712-hess":5,"u3-712-mc-formation-calc":3,"u3-72-boundary-choice":3,"u3-72-conservation":2,"u3-72-crossing-judgement":2,"u3-72-isolated-judgement":3,"u3-72-surroundings":2,"u3-72-system-types":2,"u3-73-c-units-judge":2,"u3-73-c-versus-capacity":2,"u3-73-define-c":2,"u3-73-larger-c":3,"u3-73-rank-cooling":2,"u3-73-water-moderates":3,"u3-74-compare-heating":3,"u3-74-cup-heat":3,"u3-74-find-delta-t":2,"u3-74-mc-find-mass":2,"u3-74-mc-q-of-sample":2,"u3-74-mixture-temp":4,"u3-74-q-temp":3,"u3-75-calorimeter-types":3,"u3-75-exo-endo":2,"u3-75-per-mole":2,"u3-75-q-vs-dh":3,"u3-75-qp-statement":2,"u3-75-sign-judgement":2,"u3-75-temp-direction":2,"u3-75-work-sign":3,"u3-76-diagram-catalyst":3,"u3-76-diagram-dh":2,"u3-76-diagram-language":2,"u3-76-diagram-parts":2,"u3-76-diagram-select":2,"u3-76-diagram-two-step":3,"u3-77-curve-read":3,"u3-77-full-range":5,"u3-77-phase-concept":2,"u3-77-q-combined":4,"u3-77-q-phase":3,"u3-77-q-release":3,"u3-78-compare-release":3,"u3-78-deltah-from-q":3,"u3-78-dh-value":2,"u3-78-limiting":3,"u3-78-mc-molar-enthalpy":2,"u3-79-assumptions":2,"u3-79-controls":2,"u3-79-design-eval":4,"u3-79-device-choice":2,"u3-79-error-direction":3,"u3-79-insulation-effect":3,"u3-79-precision":2,"u3-79-procedure":3,"u4-81-definition":2,"u4-81-identify-redox":2,"u4-81-oxidation-number":2,"u4-81-rules":2,"u4-82-concept":2,"u4-82-electron-count":2,"u4-82-split-equation":2,"u4-83-balance-acidic":5,"u4-83-balance-steps":2,"u4-83-basic-solution":3,"u4-83-half-reaction-write":3,"u4-83-identify-half":2,"u4-83-net-reaction":4,"u4-84-electron-flow":2,"u4-84-label-parts":2,"u4-84-salt-bridge":3,"u4-85-compare":3,"u4-85-features":2,"u4-85-molten-products":2,"u4-85-scenario-judgement":3,"u4-86-e-not-multiply":3,"u4-86-predict-spontaneous":3,"u4-86-strongest-ranking":2,"u4-86-table-reading":2,"u4-87-cell-voltage":4,"u4-87-find-e-half":3,"u4-87-mc-cell-from-table":2,"u4-87-standard-conditions":2,"u4-87-voltage-compare":3,"u4-88-faraday-concept":2,"u4-88-faraday-mass":4,"u4-88-faraday-time":4,"u4-88-mc-electrolysis-products":2,"u4-88-mc-plating-mass":3,"u4-89-fuel-cell-basics":2,"u4-89-fuel-cell-half":3,"u4-89-fuel-cell-reasoning":3,"u4-wcr-fuel-cell-response":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-54-mechanism-analysis":"b","u1-57-shift-predict":"a","u2-63-net-equation":"b","u4-83-net-reaction":"b","u4-86-predict-spontaneous":"b"};
+window.__BANK_BIMODAL={"br-b1-molar-mass":"a","br-b3-mole-ratio":"a","br-b4-equilibrium-basics":"b","br-b4-solubility":"a","u1-51-catalyst-collision":"b","u1-51-collision-conditions":"b","u1-51-successful-collision":"a","u1-52-factor-effect":"a","u1-52-not-a-factor":"a","u1-53-activated-complex":"b","u1-53-catalyst-diagram":"b","u1-53-diagram-read":"a","u1-53-exo-endo":"b","u1-54-catalyst-identify":"a","u1-54-intermediate":"a","u1-54-mechanism-analysis":"b","u1-54-overall-reaction":"a","u1-54-rds":"a","u1-55-closed-system":"a","u1-55-dynamic-meaning":"b","u1-56-omit-solids":"a","u1-56-write-k":"a","u1-57-shift-predict":"a","u1-57-temperature-k":"b","u2-61-amphiprotic":"a","u2-61-arrhenius-ions":"a","u2-61-bronsted-role":"b","u2-61-conjugate-pair":"a","u2-61-identify-roles":"a","u2-61-properties":"a","u2-62-conductivity":"b","u2-62-curve-equivalence":"b","u2-62-dissociation-eq":"a","u2-62-equilibrium-judgement":"b","u2-62-equivalence-ph":"b","u2-62-hydrolysis-ion":"a","u2-62-kw-relation":"a","u2-62-salt-predict":"b","u2-62-strong-list":"a","u2-62-weak-meaning":"b","u2-63-net-equation":"b","u2-63-predict-products":"b","u2-63-salt-formed":"a","u2-63-spectators":"a","u2-64-mc-ph-two-ways":"a","u2-64-neutral-water":"b","u2-64-scale-compare":"a","u2-65-approx-validity":"b","u2-65-compare-ph":"b","u2-65-half-equivalence":"a","u2-66-endpoint-equivalence":"b","u2-66-indicator-choice":"a","u2-66-indicator-colour":"a","u2-66-which-form":"b","u2-66-why-it-fails":"b","u2-67-acid-added":"a","u2-67-base-added":"a","u2-67-neutralize-shift":"b","u2-67-temperature-kw":"b","u2-67-water-equilibrium":"a","u2-68-mc-titration-find-conc":"a","u2-68-standard-solution":"a","u2-68-technique":"b","u3-71-chem-chains":"a","u3-71-conversion":"a","u3-71-forms":"a","u3-71-heat-flow":"b","u3-71-heat-vs-temp":"b","u3-71-stored-or-motion":"b","u3-710-combustion-products":"a","u3-710-mc-energy-from-mass":"a","u3-710-mc-per-mole-or-gram":"a","u3-711-alkane-equation":"a","u3-711-per-mole-basis":"a","u3-711-reading-equation":"a","u3-711-reversed":"a","u3-711-scaled-amount":"a","u3-712-bond-average":"a","u3-712-bond-compare":"b","u3-712-mc-formation-calc":"a","u3-72-boundary-choice":"b","u3-72-conservation":"a","u3-72-crossing-judgement":"a","u3-72-isolated-judgement":"b","u3-72-surroundings":"a","u3-72-system-types":"b","u3-73-c-units-judge":"a","u3-73-c-versus-capacity":"a","u3-73-define-c":"a","u3-73-larger-c":"b","u3-73-rank-cooling":"a","u3-73-water-moderates":"b","u3-74-compare-heating":"b","u3-74-mc-find-mass":"a","u3-74-mc-q-of-sample":"a","u3-75-calorimeter-types":"b","u3-75-exo-endo":"b","u3-75-per-mole":"b","u3-75-q-vs-dh":"b","u3-75-qp-statement":"b","u3-75-sign-judgement":"a","u3-75-temp-direction":"b","u3-75-work-sign":"b","u3-76-diagram-catalyst":"b","u3-76-diagram-dh":"a","u3-76-diagram-language":"a","u3-76-diagram-parts":"a","u3-76-diagram-select":"b","u3-76-diagram-two-step":"a","u3-77-curve-read":"b","u3-77-phase-concept":"b","u3-78-compare-release":"b","u3-78-dh-value":"a","u3-78-mc-molar-enthalpy":"a","u3-79-assumptions":"a","u3-79-controls":"a","u3-79-design-eval":"b","u3-79-device-choice":"a","u3-79-error-direction":"b","u3-79-insulation-effect":"b","u3-79-precision":"b","u3-79-procedure":"b","u4-81-definition":"a","u4-81-identify-redox":"a","u4-81-oxidation-number":"a","u4-81-rules":"b","u4-82-concept":"b","u4-82-electron-count":"a","u4-82-split-equation":"a","u4-83-balance-steps":"b","u4-83-basic-solution":"a","u4-83-identify-half":"a","u4-83-net-reaction":"b","u4-84-electron-flow":"b","u4-84-label-parts":"b","u4-84-salt-bridge":"b","u4-85-compare":"b","u4-85-features":"b","u4-85-molten-products":"a","u4-85-scenario-judgement":"b","u4-86-e-not-multiply":"b","u4-86-predict-spontaneous":"b","u4-86-strongest-ranking":"a","u4-86-table-reading":"a","u4-87-mc-cell-from-table":"a","u4-87-standard-conditions":"b","u4-87-voltage-compare":"a","u4-88-faraday-concept":"a","u4-88-mc-electrolysis-products":"a","u4-88-mc-plating-mass":"a","u4-89-fuel-cell-basics":"a","u4-89-fuel-cell-half":"b","u4-89-fuel-cell-reasoning":"b"};
