@@ -472,6 +472,42 @@ function p22Decay(M0,T,unit){
 // CRMARKS: u1-51-vectors-cr=3
 // CRMARKS: u1-52-graph-cr=3
 // CRMARKS: u1-53-meet-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-51-distance-vs-disp=2
+// CRMARKS: u1-51-avg-velocity=3
+// CRMARKS: u1-51-convert-speed=2
+// CRMARKS: u1-51-signed-sum-choice=3
+// CRMARKS: u1-51-collinear-combo=4
+// CRMARKS: u1-52-vf-accel=3
+// CRMARKS: u1-52-accel-find=3
+// CRMARKS: u1-52-time-find=3
+// CRMARKS: u1-52-vt-graph-area=3
+// CRMARKS: u1-52-pt-graph=2
+// CRMARKS: u1-52-two-stage=4
+// CRMARKS: u1-52-avgvel-distance=3
+// CRMARKS: u1-53-frame-identify=2
+// CRMARKS: u1-53-relative-concept=2
+// CRMARKS: u1-53-opposite=3
+// CRMARKS: u1-53-boat-speed=3
+// CRMARKS: u1-53-wind-roundtrip=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-51-distance-vs-disp=b
+// BIMODAL: u1-51-avg-velocity=a
+// BIMODAL: u1-51-convert-speed=a
+// BIMODAL: u1-51-signed-sum-choice=a
+// BIMODAL: u1-51-collinear-combo=a
+// BIMODAL: u1-52-vf-accel=a
+// BIMODAL: u1-52-accel-find=a
+// BIMODAL: u1-52-time-find=a
+// BIMODAL: u1-52-vt-graph-area=a
+// BIMODAL: u1-52-pt-graph=a
+// BIMODAL: u1-52-two-stage=a
+// BIMODAL: u1-52-avgvel-distance=a
+// BIMODAL: u1-53-frame-identify=a
+// BIMODAL: u1-53-relative-concept=a
+// BIMODAL: u1-53-opposite=a
+// BIMODAL: u1-53-boat-speed=a
+// BIMODAL: u1-53-wind-roundtrip=a
 
 /* ---------- PH11.5.1 Vectors for displacement, velocity, acceleration ---------- */
 
@@ -899,6 +935,54 @@ BANK.forEach(function(e){if(["u1-51-convert-speed"].indexOf(e.id)>=0)e.pkFlag=tr
 // CRMARKS: u2-62-friction-cr=3
 // CRMARKS: u2-64-landing-force=3
 // CRMARKS: u2-65-stick-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-61-fbd-select=2
+// CRMARKS: u2-61-netforce-components-mc=3
+// CRMARKS: u2-61-accel-diagram=3
+// CRMARKS: u2-61-evaluate-fbd=4
+// CRMARKS: u2-62-law-id=2
+// CRMARKS: u2-62-thirdlaw-pair=2
+// CRMARKS: u2-62-fma-mc=3
+// CRMARKS: u2-62-weight-mass-mc=3
+// CRMARKS: u2-62-friction-mc=3
+// CRMARKS: u2-62-connected-blocks-mc=3
+// CRMARKS: u2-62-elevator-mc=3
+// CRMARKS: u2-62-system-judgement=4
+// CRMARKS: u2-63-impulse-concept=2
+// CRMARKS: u2-63-impulse-force-time-mc=3
+// CRMARKS: u2-63-avg-force-mc=3
+// CRMARKS: u2-63-ft-graph-mc=3
+// CRMARKS: u2-63-stopping-tradeoff=4
+// CRMARKS: u2-64-crumple-why=2
+// CRMARKS: u2-64-meets-limit=4
+// CRMARKS: u2-65-momentum-compare-mc=3
+// CRMARKS: u2-65-stick-velocity-mc=3
+// CRMARKS: u2-65-explosion-recoil-mc=3
+// CRMARKS: u2-65-result-judgement=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-61-fbd-select=a
+// BIMODAL: u2-61-netforce-components-mc=a
+// BIMODAL: u2-61-accel-diagram=a
+// BIMODAL: u2-61-evaluate-fbd=b
+// BIMODAL: u2-62-law-id=a
+// BIMODAL: u2-62-thirdlaw-pair=b
+// BIMODAL: u2-62-fma-mc=a
+// BIMODAL: u2-62-weight-mass-mc=a
+// BIMODAL: u2-62-friction-mc=a
+// BIMODAL: u2-62-connected-blocks-mc=a
+// BIMODAL: u2-62-elevator-mc=a
+// BIMODAL: u2-62-system-judgement=b
+// BIMODAL: u2-63-impulse-concept=b
+// BIMODAL: u2-63-impulse-force-time-mc=a
+// BIMODAL: u2-63-avg-force-mc=a
+// BIMODAL: u2-63-ft-graph-mc=a
+// BIMODAL: u2-63-stopping-tradeoff=b
+// BIMODAL: u2-64-crumple-why=b
+// BIMODAL: u2-64-meets-limit=b
+// BIMODAL: u2-65-momentum-compare-mc=a
+// BIMODAL: u2-65-stick-velocity-mc=a
+// BIMODAL: u2-65-explosion-recoil-mc=a
+// BIMODAL: u2-65-result-judgement=b
 
 /* ---------- PH11.6.1 Vectors for force and acceleration ---------- */
 
@@ -1918,6 +2002,76 @@ E("u2-65-result-judgement",2,["PH11.6.5"],3,"gen",function(){
 // CRMARKS: u3-79-spring-launch-cr=3
 // CRMARKS: u3-710-period-cr=2
 // CRMARKS: u3-715-defect-energy-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-71-work-angle=3
+// CRMARKS: u3-71-total-work=4
+// CRMARKS: u3-72-reference-level=2
+// CRMARKS: u3-72-eg-mcq=3
+// CRMARKS: u3-72-change-effect=4
+// CRMARKS: u3-73-net-work-mcq=3
+// CRMARKS: u3-73-sign-of-work=2
+// CRMARKS: u3-74-mechanical-concept=2
+// CRMARKS: u3-74-zero-point-shift=4
+// CRMARKS: u3-75-slide-speed=4
+// CRMARKS: u3-76-energy-account=4
+// CRMARKS: u3-77-electrical-mcq=3
+// CRMARKS: u3-77-compare-devices=4
+// CRMARKS: u3-78-time-work=3
+// CRMARKS: u3-78-rank-power=4
+// CRMARKS: u3-79-graph-k=3
+// CRMARKS: u3-79-spring-mcq=3
+// CRMARKS: u3-710-direction=2
+// CRMARKS: u3-710-accel-judgement=4
+// CRMARKS: u3-712-classify-mcq=4
+// CRMARKS: u3-712-elastic-check=3
+// CRMARKS: u3-712-best-method=4
+// CRMARKS: u3-713-alpha-properties=2
+// CRMARKS: u3-713-beta-gamma=2
+// CRMARKS: u3-713-alpha-decay=3
+// CRMARKS: u3-713-beta-decay=3
+// CRMARKS: u3-713-radiation-match=3
+// CRMARKS: u3-714-half-life-graph=3
+// CRMARKS: u3-715-mass-change-mcq=3
+// CRMARKS: u3-715-claim-judge=4
+// CRMARKS: u3-716-fission=2
+// CRMARKS: u3-716-fusion=3
+// CRMARKS: u3-716-chain-reaction=3
+// CRMARKS: u3-716-per-nucleon=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-71-work-angle=a
+// BIMODAL: u3-71-total-work=a
+// BIMODAL: u3-72-reference-level=b
+// BIMODAL: u3-72-eg-mcq=a
+// BIMODAL: u3-72-change-effect=a
+// BIMODAL: u3-73-net-work-mcq=a
+// BIMODAL: u3-73-sign-of-work=a
+// BIMODAL: u3-74-mechanical-concept=b
+// BIMODAL: u3-74-zero-point-shift=b
+// BIMODAL: u3-75-slide-speed=a
+// BIMODAL: u3-76-energy-account=a
+// BIMODAL: u3-77-electrical-mcq=a
+// BIMODAL: u3-77-compare-devices=b
+// BIMODAL: u3-78-time-work=a
+// BIMODAL: u3-78-rank-power=a
+// BIMODAL: u3-79-graph-k=a
+// BIMODAL: u3-79-spring-mcq=a
+// BIMODAL: u3-710-direction=b
+// BIMODAL: u3-710-accel-judgement=a
+// BIMODAL: u3-712-classify-mcq=b
+// BIMODAL: u3-712-elastic-check=b
+// BIMODAL: u3-712-best-method=b
+// BIMODAL: u3-713-alpha-properties=b
+// BIMODAL: u3-713-beta-gamma=b
+// BIMODAL: u3-713-alpha-decay=a
+// BIMODAL: u3-713-beta-decay=a
+// BIMODAL: u3-713-radiation-match=b
+// BIMODAL: u3-714-half-life-graph=a
+// BIMODAL: u3-715-mass-change-mcq=a
+// BIMODAL: u3-715-claim-judge=b
+// BIMODAL: u3-716-fission=b
+// BIMODAL: u3-716-fusion=b
+// BIMODAL: u3-716-chain-reaction=b
+// BIMODAL: u3-716-per-nucleon=b
 // Physics 2204 Unit 3 Work and Energy question bank
 // Constants used as literals: g = 9.8 m/s^2, c = 3.00 x 10^8 m/s.
 // (The shared constants PHYS_G and PHYS_C are defined only in the built
@@ -3740,6 +3894,44 @@ BANK.forEach(function(e){if(["u3-713-nuclear-notation"].indexOf(e.id)>=0)e.pkFla
 // CRMARKS: u4-86-doubleslit-cr=3
 // CRMARKS: u4-82-wave-eq-cr=3
 // CRMARKS: u4-84-standing-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-81-anatomy=2
+// CRMARKS: u4-81-period-mc=2
+// CRMARKS: u4-82-frequency-mc=2
+// CRMARKS: u4-82-combined-mc=4
+// CRMARKS: u4-83-production=2
+// CRMARKS: u4-83-medium-speed=2
+// CRMARKS: u4-84-fixed-free=2
+// CRMARKS: u4-84-superposition=3
+// CRMARKS: u4-84-string-mc=3
+// CRMARKS: u4-85-medium-effect=3
+// CRMARKS: u4-85-which-travels=3
+// CRMARKS: u4-86-diffraction=2
+// CRMARKS: u4-86-diffraction-design=4
+// CRMARKS: u4-87-direction=3
+// CRMARKS: u4-87-radar=3
+// CRMARKS: u4-88-bending=3
+// CRMARKS: u4-88-frequency-boundary=3
+// CRMARKS: u4-89-tir=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-81-anatomy=b
+// BIMODAL: u4-81-period-mc=a
+// BIMODAL: u4-82-frequency-mc=a
+// BIMODAL: u4-82-combined-mc=a
+// BIMODAL: u4-83-production=b
+// BIMODAL: u4-83-medium-speed=b
+// BIMODAL: u4-84-fixed-free=b
+// BIMODAL: u4-84-superposition=b
+// BIMODAL: u4-84-string-mc=a
+// BIMODAL: u4-85-medium-effect=b
+// BIMODAL: u4-85-which-travels=b
+// BIMODAL: u4-86-diffraction=b
+// BIMODAL: u4-86-diffraction-design=b
+// BIMODAL: u4-87-direction=b
+// BIMODAL: u4-87-radar=b
+// BIMODAL: u4-88-bending=b
+// BIMODAL: u4-88-frequency-boundary=a
+// BIMODAL: u4-89-tir=b
 
 /* ---------- 8.1 Wave characteristics ---------- */
 
@@ -4778,6 +4970,14 @@ E("u4-89-angle-to-speed",4,["PH11.8.9"],3,"gen",function(){
 });
 
 /* ----- bank-br.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: br-b1-speed-compare=2
+// CRMARKS: br-b2-slope-meaning=2
+// CRMARKS: br-b2-motion-description=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: br-b1-speed-compare=a
+// BIMODAL: br-b2-slope-meaning=a
+// BIMODAL: br-b2-motion-description=b
 // Diagram figures (Phase C, Nov 2026): distance time graphs added for the B.2 motion graph entries; see bank-helpers.js p22 helpers.
 // Physics 2204 Bridging bank: Science 1206 review (speed, motion graphs, scalars and vectors)
 // No CRMARKS entries in this file.
@@ -4941,4 +5141,10 @@ E("br-b3-unit-convert",5,["B.3"],1,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-51-vectors-cr":3,"u1-52-freefall-cr":4,"u1-52-graph-cr":3,"u1-52-stopping-cr":5,"u1-53-meet-cr":2,"u1-53-relative-cr":4,"u2-61-netforce-cr":3,"u2-62-friction-cr":3,"u2-62-multistep-cr":5,"u2-63-impulse-cr":4,"u2-64-landing-force":3,"u2-65-collision-cr":4,"u2-65-stick-cr":2,"u3-71-net-work-cr":3,"u3-710-period-cr":2,"u3-711-shm-energy-cr":4,"u3-712-classify-cr":2,"u3-715-defect-energy-cr":3,"u3-73-workenergy-cr":3,"u3-75-energy-cr":5,"u3-76-friction-cr":4,"u3-77-efficiency-cr":3,"u3-78-power-cr":3,"u3-79-spring-launch-cr":3,"u4-82-wave-eq-cr":3,"u4-84-resonance-cr":5,"u4-84-standing-cr":2,"u4-86-doubleslit-cr":3,"u4-87-doppler-cr":4,"u4-89-snell-cr":4};
+window.__BANK_CRMARKS={"br-b1-speed-compare":2,"br-b2-motion-description":2,"br-b2-slope-meaning":2,"u1-51-avg-velocity":3,"u1-51-collinear-combo":4,"u1-51-convert-speed":2,"u1-51-distance-vs-disp":2,"u1-51-signed-sum-choice":3,"u1-51-vectors-cr":3,"u1-52-accel-find":3,"u1-52-avgvel-distance":3,"u1-52-freefall-cr":4,"u1-52-graph-cr":3,"u1-52-pt-graph":2,"u1-52-stopping-cr":5,"u1-52-time-find":3,"u1-52-two-stage":4,"u1-52-vf-accel":3,"u1-52-vt-graph-area":3,"u1-53-boat-speed":3,"u1-53-frame-identify":2,"u1-53-meet-cr":2,"u1-53-opposite":3,"u1-53-relative-concept":2,"u1-53-relative-cr":4,"u1-53-wind-roundtrip":4,"u2-61-accel-diagram":3,"u2-61-evaluate-fbd":4,"u2-61-fbd-select":2,"u2-61-netforce-components-mc":3,"u2-61-netforce-cr":3,"u2-62-connected-blocks-mc":3,"u2-62-elevator-mc":3,"u2-62-fma-mc":3,"u2-62-friction-cr":3,"u2-62-friction-mc":3,"u2-62-law-id":2,"u2-62-multistep-cr":5,"u2-62-system-judgement":4,"u2-62-thirdlaw-pair":2,"u2-62-weight-mass-mc":3,"u2-63-avg-force-mc":3,"u2-63-ft-graph-mc":3,"u2-63-impulse-concept":2,"u2-63-impulse-cr":4,"u2-63-impulse-force-time-mc":3,"u2-63-stopping-tradeoff":4,"u2-64-crumple-why":2,"u2-64-landing-force":3,"u2-64-meets-limit":4,"u2-65-collision-cr":4,"u2-65-explosion-recoil-mc":3,"u2-65-momentum-compare-mc":3,"u2-65-result-judgement":4,"u2-65-stick-cr":2,"u2-65-stick-velocity-mc":3,"u3-71-net-work-cr":3,"u3-71-total-work":4,"u3-71-work-angle":3,"u3-710-accel-judgement":4,"u3-710-direction":2,"u3-710-period-cr":2,"u3-711-shm-energy-cr":4,"u3-712-best-method":4,"u3-712-classify-cr":2,"u3-712-classify-mcq":4,"u3-712-elastic-check":3,"u3-713-alpha-decay":3,"u3-713-alpha-properties":2,"u3-713-beta-decay":3,"u3-713-beta-gamma":2,"u3-713-radiation-match":3,"u3-714-half-life-graph":3,"u3-715-claim-judge":4,"u3-715-defect-energy-cr":3,"u3-715-mass-change-mcq":3,"u3-716-chain-reaction":3,"u3-716-fission":2,"u3-716-fusion":3,"u3-716-per-nucleon":4,"u3-72-change-effect":4,"u3-72-eg-mcq":3,"u3-72-reference-level":2,"u3-73-net-work-mcq":3,"u3-73-sign-of-work":2,"u3-73-workenergy-cr":3,"u3-74-mechanical-concept":2,"u3-74-zero-point-shift":4,"u3-75-energy-cr":5,"u3-75-slide-speed":4,"u3-76-energy-account":4,"u3-76-friction-cr":4,"u3-77-compare-devices":4,"u3-77-efficiency-cr":3,"u3-77-electrical-mcq":3,"u3-78-power-cr":3,"u3-78-rank-power":4,"u3-78-time-work":3,"u3-79-graph-k":3,"u3-79-spring-launch-cr":3,"u3-79-spring-mcq":3,"u4-81-anatomy":2,"u4-81-period-mc":2,"u4-82-combined-mc":4,"u4-82-frequency-mc":2,"u4-82-wave-eq-cr":3,"u4-83-medium-speed":2,"u4-83-production":2,"u4-84-fixed-free":2,"u4-84-resonance-cr":5,"u4-84-standing-cr":2,"u4-84-string-mc":3,"u4-84-superposition":3,"u4-85-medium-effect":3,"u4-85-which-travels":3,"u4-86-diffraction":2,"u4-86-diffraction-design":4,"u4-86-doubleslit-cr":3,"u4-87-direction":3,"u4-87-doppler-cr":4,"u4-87-radar":3,"u4-88-bending":3,"u4-88-frequency-boundary":3,"u4-89-snell-cr":4,"u4-89-tir":4};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"br-b1-speed-compare":"a","br-b2-motion-description":"b","br-b2-slope-meaning":"a","u1-51-avg-velocity":"a","u1-51-collinear-combo":"a","u1-51-convert-speed":"a","u1-51-distance-vs-disp":"b","u1-51-signed-sum-choice":"a","u1-52-accel-find":"a","u1-52-avgvel-distance":"a","u1-52-pt-graph":"a","u1-52-time-find":"a","u1-52-two-stage":"a","u1-52-vf-accel":"a","u1-52-vt-graph-area":"a","u1-53-boat-speed":"a","u1-53-frame-identify":"a","u1-53-opposite":"a","u1-53-relative-concept":"a","u1-53-wind-roundtrip":"a","u2-61-accel-diagram":"a","u2-61-evaluate-fbd":"b","u2-61-fbd-select":"a","u2-61-netforce-components-mc":"a","u2-62-connected-blocks-mc":"a","u2-62-elevator-mc":"a","u2-62-fma-mc":"a","u2-62-friction-mc":"a","u2-62-law-id":"a","u2-62-system-judgement":"b","u2-62-thirdlaw-pair":"b","u2-62-weight-mass-mc":"a","u2-63-avg-force-mc":"a","u2-63-ft-graph-mc":"a","u2-63-impulse-concept":"b","u2-63-impulse-force-time-mc":"a","u2-63-stopping-tradeoff":"b","u2-64-crumple-why":"b","u2-64-meets-limit":"b","u2-65-explosion-recoil-mc":"a","u2-65-momentum-compare-mc":"a","u2-65-result-judgement":"b","u2-65-stick-velocity-mc":"a","u3-71-total-work":"a","u3-71-work-angle":"a","u3-710-accel-judgement":"a","u3-710-direction":"b","u3-712-best-method":"b","u3-712-classify-mcq":"b","u3-712-elastic-check":"b","u3-713-alpha-decay":"a","u3-713-alpha-properties":"b","u3-713-beta-decay":"a","u3-713-beta-gamma":"b","u3-713-radiation-match":"b","u3-714-half-life-graph":"a","u3-715-claim-judge":"b","u3-715-mass-change-mcq":"a","u3-716-chain-reaction":"b","u3-716-fission":"b","u3-716-fusion":"b","u3-716-per-nucleon":"b","u3-72-change-effect":"a","u3-72-eg-mcq":"a","u3-72-reference-level":"b","u3-73-net-work-mcq":"a","u3-73-sign-of-work":"a","u3-74-mechanical-concept":"b","u3-74-zero-point-shift":"b","u3-75-slide-speed":"a","u3-76-energy-account":"a","u3-77-compare-devices":"b","u3-77-electrical-mcq":"a","u3-78-rank-power":"a","u3-78-time-work":"a","u3-79-graph-k":"a","u3-79-spring-mcq":"a","u4-81-anatomy":"b","u4-81-period-mc":"a","u4-82-combined-mc":"a","u4-82-frequency-mc":"a","u4-83-medium-speed":"b","u4-83-production":"b","u4-84-fixed-free":"b","u4-84-string-mc":"a","u4-84-superposition":"b","u4-85-medium-effect":"b","u4-85-which-travels":"b","u4-86-diffraction":"b","u4-86-diffraction-design":"b","u4-87-direction":"b","u4-87-radar":"b","u4-88-bending":"b","u4-88-frequency-boundary":"a","u4-89-tir":"b"};
