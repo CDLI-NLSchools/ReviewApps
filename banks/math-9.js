@@ -626,7 +626,19 @@ E("u1-multistep-rational", 1, ["6.1"], 3, "gen", function () {
 // CRMARKS: u2-sa-problem=2
 // CRMARKS: u2-sa-cyl-on-prism=3
 // CRMARKS: u2-best-estimate-side=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-sqrt-perfect=2
+// CRMARKS: u2-square-from-root=2
+// CRMARKS: u2-estimate-between=2
+// CRMARKS: u2-spot-error=3
+// CRMARKS: u2-why-approx=2
 // BIMODAL: u2-best-estimate-side=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-sqrt-perfect=a
+// BIMODAL: u2-square-from-root=a
+// BIMODAL: u2-estimate-between=a
+// BIMODAL: u2-spot-error=b
+// BIMODAL: u2-why-approx=b
 /* Unit 2: Square Roots and Surface Area */
 function u2gcd(a,b){while(b){var t=a%b;a=b;b=t;}return a;}
 function u2r1(x){return Math.round(x*10)/10;}
@@ -1025,6 +1037,26 @@ E("u2-reasoning-var", 2, ["3.3","6.10"], 3, "var", varset([
 // CRMARKS: u3-difference-of-powers=2
 // CRMARKS: u3-three-laws-evaluate=3
 // CRMARKS: u3-law-then-sum-difference=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-repeated-multiplication=2
+// CRMARKS: u3-power-from-repeated=2
+// CRMARKS: u3-interchanged-base-exponent=2
+// CRMARKS: u3-parentheses-sign=2
+// CRMARKS: u3-zero-exponent=2
+// CRMARKS: u3-product-law=2
+// CRMARKS: u3-quotient-law=2
+// CRMARKS: u3-power-of-power-law=2
+// CRMARKS: u3-explanations-var=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-repeated-multiplication=a
+// BIMODAL: u3-power-from-repeated=a
+// BIMODAL: u3-interchanged-base-exponent=a
+// BIMODAL: u3-parentheses-sign=a
+// BIMODAL: u3-zero-exponent=a
+// BIMODAL: u3-product-law=a
+// BIMODAL: u3-quotient-law=a
+// BIMODAL: u3-power-of-power-law=a
+// BIMODAL: u3-explanations-var=b
 /* Unit 3: Powers and Exponent Laws */
 // Unit 3: Powers and Exponent Laws
 
@@ -1490,9 +1522,25 @@ E("u3-explanations-var", 3, ["3.5", "3.8"], 3, "var", varset([
 // CRMARKS: u4-mult-div-mixed=2
 // CRMARKS: u4-missing=3
 // CRMARKS: u4-area-monomial=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-degree=2
+// CRMARKS: u4-parts=2
+// CRMARKS: u4-tiles-to-expr=2
+// CRMARKS: u4-expr-to-tiles=2
+// CRMARKS: u4-equivalent=2
+// CRMARKS: u4-addsub-xy=2
+// CRMARKS: u4-tiles-addsub=2
 // BIMODAL: u4-subtract=b
 // BIMODAL: u4-missing=b
 // BIMODAL: u4-area-monomial=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-degree=a
+// BIMODAL: u4-parts=a
+// BIMODAL: u4-tiles-to-expr=b
+// BIMODAL: u4-expr-to-tiles=a
+// BIMODAL: u4-equivalent=b
+// BIMODAL: u4-addsub-xy=a
+// BIMODAL: u4-tiles-addsub=b
 /* Unit 4: Polynomials */
 function u4expr(terms){var s="",first=true;for(var i=0;i<terms.length;i++){var cf=terms[i][0],v=terms[i][1];if(cf===0)continue;var mag;if(v===""){mag=fmt(Math.abs(cf));}else if(Math.abs(cf)===1){mag=v;}else{mag=fmt(Math.abs(cf))+v;}if(first){s+=(cf<0?"-":"")+mag;first=false;}else{s+=(cf<0?"-":"+")+mag;}}return s===""?"0":s;}
 function u4p(a,b,c){return u4expr([[a,"x^{2}"],[b,"x"],[c,""]]);}
@@ -1871,6 +1919,14 @@ E("u4-error-var", 4, ["8.13","8.10"], 3, "var", varset([
 ]), ["Compare the student result with a careful step by step simplification of your own.", "First redo the first step yourself, watching signs and like terms, then compare."]);
 
 /* ----- bank-u1-topup.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-ooo-brackets-mc=2
+// CRMARKS: u1-ooo-calc-display=2
+// CRMARKS: u1-ooo-error-value=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-ooo-brackets-mc=a
+// BIMODAL: u1-ooo-calc-display=a
+// BIMODAL: u1-ooo-error-value=a
 // Math 9 Unit 1 top-up tranche (November 7, 2026) question bank
 // Cut verbatim from the standalone bank source
 // (math-9-review/bank-src.js, lines 1505 to 1696).
@@ -2067,6 +2123,16 @@ E("u1-ooo-error-value", 1, ["6.4"], 3, "gen", function () {
 }, ["Compare the student's steps with the order of operations to spot where the order went wrong.", "Redo the expression yourself: brackets first, then multiplication and division, then addition and subtraction."]);
 
 /* ----- bank-u2-topup.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-sqrt-fraction=2
+// CRMARKS: u2-number-from-root=2
+// CRMARKS: u2-calc-root-round=2
+// CRMARKS: u2-approx-explain-gen=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-sqrt-fraction=a
+// BIMODAL: u2-number-from-root=a
+// BIMODAL: u2-calc-root-round=a
+// BIMODAL: u2-approx-explain-gen=b
 // Math 9 Unit 2 top-up tranche (November 7, 2026) question bank
 // Cut verbatim from the standalone bank source
 // (math-9-review/bank-src.js, lines 1697 to 1846).
@@ -2233,6 +2299,18 @@ E("u2-overlap-pair", 2, ["9.1"], 3, "gen", function(){
 }, ["Add the surface areas of the two separate solids first, then deal with the join.", "Find the area of the face where the solids touch, and subtract it twice because it is hidden on both solids."]);
 
 /* ----- bank-u3-topup.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-evaluate-power-neg=2
+// CRMARKS: u3-power-model-var=2
+// CRMARKS: u3-zero-pattern=2
+// CRMARKS: u3-paren-powers-set=2
+// CRMARKS: u3-error-two-laws=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-evaluate-power-neg=a
+// BIMODAL: u3-power-model-var=b
+// BIMODAL: u3-zero-pattern=a
+// BIMODAL: u3-paren-powers-set=a
+// BIMODAL: u3-error-two-laws=a
 // Math 9 Unit 3 top-up tranche (November 7, 2026) question bank
 // Cut verbatim from the standalone bank source
 // (math-9-review/bank-src.js, lines 1847 to 2327).
@@ -2718,6 +2796,16 @@ E("u3-error-two-laws", 3, ["3.15"], 3, "gen", function () {
 }, ["Redo the simplification yourself, one law at a time, before you look at the choices.", "Start with the power of a power, then apply the second law to your own result."]);
 
 /* ----- bank-u4-topup.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-tiles-figure-expr=2
+// CRMARKS: u4-tiles-figure-build=2
+// CRMARKS: u4-mult-monomial-area=3
+// CRMARKS: u4-divide-missing-term=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-tiles-figure-expr=b
+// BIMODAL: u4-tiles-figure-build=a
+// BIMODAL: u4-mult-monomial-area=a
+// BIMODAL: u4-divide-missing-term=b
 // Math 9 Unit 4 top-up tranche (November 7, 2026) question bank
 // Cut verbatim from the standalone bank source
 // (math-9-review/bank-src.js, lines 2328 to 2521).
@@ -2927,7 +3015,37 @@ E("u4-divide-missing-term", 4, ["8.9"], 3, "gen", function(){
 // CRMARKS: u5-word-brackets=2
 // CRMARKS: u5-list-satisfies=2
 // CRMARKS: u5-solve-ineq-addsub=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-balance-model=2
+// CRMARKS: u5-inspection-basic=2
+// CRMARKS: u5-trial-table=2
+// CRMARKS: u5-which-is-solution=2
+// CRMARKS: u5-meaning-of-solution=2
+// CRMARKS: u5-translate-inequality=2
+// CRMARKS: u5-graph-to-ineq=2
+// CRMARKS: u5-solve-ineq-pos-div=2
+// CRMARKS: u5-solve-ineq-neg-flip=3
+// CRMARKS: u5-solve-ineq-two-step-choose=2
+// CRMARKS: u5-context-graph=2
+// CRMARKS: u5-ineq-to-words=2
+// CRMARKS: u5-ineq-substitution-check=3
+// CRMARKS: u5-solve-ineq-addsub-choose=2
 // BIMODAL: u5-verify-error=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-balance-model=b
+// BIMODAL: u5-inspection-basic=a
+// BIMODAL: u5-trial-table=a
+// BIMODAL: u5-which-is-solution=a
+// BIMODAL: u5-meaning-of-solution=b
+// BIMODAL: u5-translate-inequality=a
+// BIMODAL: u5-graph-to-ineq=a
+// BIMODAL: u5-solve-ineq-pos-div=a
+// BIMODAL: u5-solve-ineq-neg-flip=a
+// BIMODAL: u5-solve-ineq-two-step-choose=a
+// BIMODAL: u5-context-graph=a
+// BIMODAL: u5-ineq-to-words=a
+// BIMODAL: u5-ineq-substitution-check=b
+// BIMODAL: u5-solve-ineq-addsub-choose=a
 /* Final-scope tranche (Units 5 to 9), November 7, 2026: appended from
    tranche2/unit5.js to unit9.js. CR_MARKS extended to 63 entries. */
 // Unit 5: Linear Equations and Inequalities (Math 9, NL). Entries only; helpers prefixed u5.
@@ -3682,6 +3800,20 @@ function u6stageFig(counts, item) {
 // CRMARKS: u6-two-plans-graph=3
 // CRMARKS: u6-pattern-solve-n=3
 // CRMARKS: u6-pattern-large=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-pattern-figure-expr=3
+// CRMARKS: u6-context-equation=2
+// CRMARKS: u6-table-equation=3
+// CRMARKS: u6-graph-describe=3
+// CRMARKS: u6-graph-equation=3
+// CRMARKS: u6-extrapolate-graph=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-pattern-figure-expr=b
+// BIMODAL: u6-context-equation=b
+// BIMODAL: u6-table-equation=b
+// BIMODAL: u6-graph-describe=b
+// BIMODAL: u6-graph-equation=b
+// BIMODAL: u6-extrapolate-graph=a
 E("u6-pattern-figure-expr", 6, ["7.1"], 2, "gen", function () {
   var item = pick(["tiles", "dots", "blocks", "counters"]);
   var m = ri(2, 6), b = ri(1, 8), att = 0;
@@ -4180,6 +4312,32 @@ function u7Coord(p) { return "(" + fmt(p[0]) + ", " + fmt(p[1]) + ")"; }
 // CRMARKS: u7-indirect-measure-num=2
 // CRMARKS: u7-complete-half=2
 // CRMARKS: u7-translation-rule=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-scale-media-var=2
+// CRMARKS: u7-proportional-check=3
+// CRMARKS: u7-similar-verdict=2
+// CRMARKS: u7-similar-pair=3
+// CRMARKS: u7-lines-symmetry=2
+// CRMARKS: u7-rotation-symmetry-var=2
+// CRMARKS: u7-rotate-vertex=2
+// CRMARKS: u7-tessellation-var=2
+// CRMARKS: u7-artwork-symmetry-var=2
+// CRMARKS: u7-related-shapes=2
+// CRMARKS: u7-transformation-symmetry=2
+// CRMARKS: u7-complete-transformation=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-scale-media-var=b
+// BIMODAL: u7-proportional-check=b
+// BIMODAL: u7-similar-verdict=b
+// BIMODAL: u7-similar-pair=a
+// BIMODAL: u7-lines-symmetry=a
+// BIMODAL: u7-rotation-symmetry-var=a
+// BIMODAL: u7-rotate-vertex=a
+// BIMODAL: u7-tessellation-var=a
+// BIMODAL: u7-artwork-symmetry-var=a
+// BIMODAL: u7-related-shapes=a
+// BIMODAL: u7-transformation-symmetry=a
+// BIMODAL: u7-complete-transformation=b
 E("u7-scale-media-var", 7, ["10.8"], 1, "var", varset([
   function () {
     return mcq("A trail map in a park guide uses the scale 1 cm represents 5 km. What does this scale mean?",
@@ -5245,7 +5403,19 @@ var U8_TRIPLES = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [9, 12, 15], [8, 15, 17]];
 // CRMARKS: u8-same-arc-angles=2
 // CRMARKS: u8-chord-two-step=3
 // CRMARKS: u8-tangent-central-inscribed=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-tangent-right-angle=2
+// CRMARKS: u8-chord-perp-bisects=2
+// CRMARKS: u8-add-semicircle-right-angle=2
+// CRMARKS: u8-add-same-arc-name=2
+// CRMARKS: u8-add-chord-length-mc=2
 // BIMODAL: u8-tangent-central-inscribed=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-tangent-right-angle=a
+// BIMODAL: u8-chord-perp-bisects=a
+// BIMODAL: u8-add-semicircle-right-angle=a
+// BIMODAL: u8-add-same-arc-name=a
+// BIMODAL: u8-add-chord-length-mc=a
 E("u8-tangent-right-angle", 8, ["9.4"], 1, "gen", function () {
   var tAng = pick([160, 175, 190, 205, 220, 235, 250, 265, 280, 295, 310, 325, 340, 355, 10, 25]);
   var r = pick([4, 5, 6, 7, 8, 9, 10, 12]);
@@ -5604,7 +5774,15 @@ E("u8-add-chord-length-mc", 8, ["9.6"], 2, "gen", function () {
 // CRMARKS: u9-rubric-missing-part=2
 // CRMARKS: u9-plan-element=2
 // CRMARKS: u9-generalization-written-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u9-same-number-two-sides=3
+// CRMARKS: u9-population-limitation=2
+// CRMARKS: u9-self-assessment=2
 // BIMODAL: u9-collection-biggest-threat=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u9-same-number-two-sides=b
+// BIMODAL: u9-population-limitation=b
+// BIMODAL: u9-self-assessment=b
 E("u9-prob-in-media", 9, ["12.1"], 1, "var", varset([
   function(){
     return mcq("Four short items appear in a school newsletter. Which item uses probability?",
@@ -6479,6 +6657,30 @@ E("u9-generalization-written-cr", 9, ["11.6"], 3, "var", varset([
 // CRMARKS: u9-gap-win-points-cr=3
 // CRMARKS: u9-gap-fix-the-survey-cr=3
 // CRMARKS: u9-gap-decision-evidence-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-gap-composite-sa-mc=2
+// CRMARKS: u2-gap-estimate-best-mc=2
+// CRMARKS: u2-gap-why-approx-mc=3
+// CRMARKS: u2-gap-number-from-root-mc=2
+// CRMARKS: u2-gap-hidden-area-mc=2
+// CRMARKS: u2-gap-cylinder-sa-mc=2
+// CRMARKS: u2-gap-sa-cans-mc=2
+// CRMARKS: u2-gap-pyramid-roof-mc=3
+// CRMARKS: u3-gap-laws-mc=3
+// CRMARKS: u8-gap-two-theorems-mc=2
+// CRMARKS: u9-gap-freq-mean-mc=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-gap-composite-sa-mc=a
+// BIMODAL: u2-gap-estimate-best-mc=a
+// BIMODAL: u2-gap-why-approx-mc=b
+// BIMODAL: u2-gap-number-from-root-mc=a
+// BIMODAL: u2-gap-hidden-area-mc=a
+// BIMODAL: u2-gap-cylinder-sa-mc=a
+// BIMODAL: u2-gap-sa-cans-mc=a
+// BIMODAL: u2-gap-pyramid-roof-mc=a
+// BIMODAL: u3-gap-laws-mc=b
+// BIMODAL: u8-gap-two-theorems-mc=a
+// BIMODAL: u9-gap-freq-mean-mc=a
 /* Pool-gap fill, November 9, 2026: new Level 2 entries closing the unit-test
    and exam composition gaps found after the level calibration. CR entries
    always return numq; SR entries always return mcq and stay out of CR_MARKS. */
@@ -7466,6 +7668,144 @@ E("u9-gap-decision-evidence-cr", 9, ["12.4"], 2, "var", varset([
 BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap-freq-mean-mc","u9-gap-expected-freq-cr","u9-gap-win-points-cr"].indexOf(e.id)>=0)e.pkFlag=true;});
 
 /* ----- bank-pk.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-pk-ooo-evaluate=2
+// CRMARKS: u1-pk-identify-operation=2
+// CRMARKS: u1-pk-add-context=2
+// CRMARKS: u1-pk-add-unlike=2
+// CRMARKS: u1-pk-sub-unlike=2
+// CRMARKS: u1-pk-multiply-fractions=2
+// CRMARKS: u1-pk-divide-fractions=2
+// CRMARKS: u1-pk-add-sub-decimals=2
+// CRMARKS: u1-pk-mult-decimals=2
+// CRMARKS: u1-pk-order-mixed=2
+// CRMARKS: u2-pk-sqrt-perfect=2
+// CRMARKS: u2-pk-square-of-number=2
+// CRMARKS: u2-pk-estimate-between=2
+// CRMARKS: u3-pk-product-sign=2
+// CRMARKS: u3-pk-quotient-sign=2
+// CRMARKS: u4-pk-identify-parts=2
+// CRMARKS: u4-pk-solve-one-step=2
+// CRMARKS: u5-pk-model-equation=3
+// CRMARKS: u5-pk-verify-solution=2
+// CRMARKS: u5-pk-identify-error=3
+// CRMARKS: u5-pk-numberline-place=2
+// CRMARKS: u5-pk-misplaced=2
+// CRMARKS: u6-pk-pattern-expression=3
+// CRMARKS: u6-pk-construct-graph=2
+// CRMARKS: u6-pk-describe-graph=3
+// CRMARKS: u7-pk-two-term-ratio=2
+// CRMARKS: u7-pk-ratio-simplest=2
+// CRMARKS: u7-pk-reflect-point=2
+// CRMARKS: u7-pk-transform-describe=2
+// CRMARKS: u7-pk-tess-transform=2
+// CRMARKS: u8-pk-central-angles=2
+// CRMARKS: u8-pk-radius-diameter=2
+// CRMARKS: u8-pk-pi-ratio=2
+// CRMARKS: u8-pk-circumference=2
+// CRMARKS: u8-pk-parallel-perp=2
+// CRMARKS: u9-pk-mean-basic=2
+// CRMARKS: u9-pk-median-mode=2
+// CRMARKS: u9-pk-misleading-format=2
+// CRMARKS: u9-pk-circle-graph=2
+// CRMARKS: u9-pk-prob-basic=2
+// CRMARKS: u9-pk-product-rule=2
+// CRMARKS: u9-pk-exp-vs-theor=2
+// CRMARKS: u3-pk-repeated-product=2
+// CRMARKS: u3-pk-repeated-write=2
+// CRMARKS: u3-pk-doubling-step=2
+// CRMARKS: u3-pk-annex-zeros=2
+// CRMARKS: u1-pkf-fact-recall=2
+// CRMARKS: u1-pkf-fact-division=2
+// CRMARKS: u1-pkf-fact-halving=2
+// CRMARKS: u1-pkf-order-line=2
+// CRMARKS: u1-pkf-order-below=2
+// CRMARKS: u1-pkf-mult-model-chips=2
+// CRMARKS: u1-pkf-product-sign-apply=2
+// CRMARKS: u1-pkf-quotient-sign-apply=2
+// CRMARKS: u1-pkf-model-frac-times-whole=2
+// CRMARKS: u1-pkf-area-model-product=2
+// CRMARKS: u1-pkf-estimate-product-benchmark=2
+// CRMARKS: u1-pkf-model-whole-div-frac=2
+// CRMARKS: u1-pkf-context-divide-expression=2
+// CRMARKS: u1-pkf-div-decimals=2
+// CRMARKS: u1-pkf-frontend-sum=2
+// CRMARKS: u1-pkf-frontend-prod-quot=2
+// CRMARKS: u1-pkf-reasonableness=2
+// CRMARKS: u5-pkf-solve-one-step=2
+// CRMARKS: u5-pkf-visual-step=2
+// CRMARKS: u9-pkf-mean-basic=2
+// CRMARKS: u9-pkf-median-mode=2
+// CRMARKS: u9-pkf-range-basic=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-pk-ooo-evaluate=a
+// BIMODAL: u1-pk-identify-operation=a
+// BIMODAL: u1-pk-add-context=a
+// BIMODAL: u1-pk-add-unlike=a
+// BIMODAL: u1-pk-sub-unlike=a
+// BIMODAL: u1-pk-multiply-fractions=a
+// BIMODAL: u1-pk-divide-fractions=a
+// BIMODAL: u1-pk-add-sub-decimals=a
+// BIMODAL: u1-pk-mult-decimals=a
+// BIMODAL: u1-pk-order-mixed=a
+// BIMODAL: u2-pk-sqrt-perfect=a
+// BIMODAL: u2-pk-square-of-number=a
+// BIMODAL: u2-pk-estimate-between=a
+// BIMODAL: u3-pk-product-sign=a
+// BIMODAL: u3-pk-quotient-sign=a
+// BIMODAL: u4-pk-identify-parts=a
+// BIMODAL: u4-pk-solve-one-step=a
+// BIMODAL: u5-pk-model-equation=b
+// BIMODAL: u5-pk-verify-solution=a
+// BIMODAL: u5-pk-identify-error=b
+// BIMODAL: u5-pk-numberline-place=a
+// BIMODAL: u5-pk-misplaced=a
+// BIMODAL: u6-pk-pattern-expression=b
+// BIMODAL: u6-pk-construct-graph=a
+// BIMODAL: u6-pk-describe-graph=b
+// BIMODAL: u7-pk-two-term-ratio=a
+// BIMODAL: u7-pk-ratio-simplest=a
+// BIMODAL: u7-pk-reflect-point=a
+// BIMODAL: u7-pk-transform-describe=a
+// BIMODAL: u7-pk-tess-transform=a
+// BIMODAL: u8-pk-central-angles=a
+// BIMODAL: u8-pk-radius-diameter=a
+// BIMODAL: u8-pk-pi-ratio=a
+// BIMODAL: u8-pk-circumference=a
+// BIMODAL: u8-pk-parallel-perp=a
+// BIMODAL: u9-pk-mean-basic=a
+// BIMODAL: u9-pk-median-mode=a
+// BIMODAL: u9-pk-misleading-format=b
+// BIMODAL: u9-pk-circle-graph=a
+// BIMODAL: u9-pk-prob-basic=a
+// BIMODAL: u9-pk-product-rule=a
+// BIMODAL: u9-pk-exp-vs-theor=a
+// BIMODAL: u3-pk-repeated-product=a
+// BIMODAL: u3-pk-repeated-write=a
+// BIMODAL: u3-pk-doubling-step=a
+// BIMODAL: u3-pk-annex-zeros=a
+// BIMODAL: u1-pkf-fact-recall=a
+// BIMODAL: u1-pkf-fact-division=a
+// BIMODAL: u1-pkf-fact-halving=a
+// BIMODAL: u1-pkf-order-line=a
+// BIMODAL: u1-pkf-order-below=a
+// BIMODAL: u1-pkf-mult-model-chips=a
+// BIMODAL: u1-pkf-product-sign-apply=a
+// BIMODAL: u1-pkf-quotient-sign-apply=a
+// BIMODAL: u1-pkf-model-frac-times-whole=a
+// BIMODAL: u1-pkf-area-model-product=a
+// BIMODAL: u1-pkf-estimate-product-benchmark=a
+// BIMODAL: u1-pkf-model-whole-div-frac=a
+// BIMODAL: u1-pkf-context-divide-expression=a
+// BIMODAL: u1-pkf-div-decimals=a
+// BIMODAL: u1-pkf-frontend-sum=a
+// BIMODAL: u1-pkf-frontend-prod-quot=a
+// BIMODAL: u1-pkf-reasonableness=b
+// BIMODAL: u5-pkf-solve-one-step=a
+// BIMODAL: u5-pkf-visual-step=b
+// BIMODAL: u9-pkf-mean-basic=a
+// BIMODAL: u9-pkf-median-mode=a
+// BIMODAL: u9-pkf-range-basic=a
 /* Math 9 PK tranche (November 15, 2026). Prior knowledge check entries
    for all nine units, per Math-9-PK-Tranche-Spec-2026-11-15.md. Borrowed
    generators are verbatim copies from the Mathematics 8 and Mathematics 7
@@ -10167,10 +10507,10 @@ BANK.forEach(function(e){var t=PKT9S[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.p
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-calculator":2,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u2-best-estimate-side":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-overlap":2,"u2-overlap-hidden":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u3-difference-of-powers":2,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-law-then-sum-difference":2,"u3-power-of-product-quotient":3,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u4-add":3,"u4-area-monomial":2,"u4-divide-monomial":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-multiply-monomial":3,"u4-subtract":3,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-list-satisfies":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-two-step":3,"u5-verify-error":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-interpolate-graph":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-complete-half":2,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-scale-draw-num":3,"u7-similar-context-num":3,"u7-similar-two-step-num":3,"u7-translation-rule":2,"u8-chord-length":3,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-decision-evidence-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-fix-the-survey-cr":3,"u9-gap-freq-mean-cr":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-written-cr":2,"u9-match-influence":3,"u9-plan-element":2,"u9-rubric-missing-part":2};
+window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-brackets-mc":2,"u1-ooo-calc-display":2,"u1-ooo-calculator":2,"u1-ooo-error-value":3,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u1-pk-add-context":2,"u1-pk-add-sub-decimals":2,"u1-pk-add-unlike":2,"u1-pk-divide-fractions":2,"u1-pk-identify-operation":2,"u1-pk-mult-decimals":2,"u1-pk-multiply-fractions":2,"u1-pk-ooo-evaluate":2,"u1-pk-order-mixed":2,"u1-pk-sub-unlike":2,"u1-pkf-area-model-product":2,"u1-pkf-context-divide-expression":2,"u1-pkf-div-decimals":2,"u1-pkf-estimate-product-benchmark":2,"u1-pkf-fact-division":2,"u1-pkf-fact-halving":2,"u1-pkf-fact-recall":2,"u1-pkf-frontend-prod-quot":2,"u1-pkf-frontend-sum":2,"u1-pkf-model-frac-times-whole":2,"u1-pkf-model-whole-div-frac":2,"u1-pkf-mult-model-chips":2,"u1-pkf-order-below":2,"u1-pkf-order-line":2,"u1-pkf-product-sign-apply":2,"u1-pkf-quotient-sign-apply":2,"u1-pkf-reasonableness":2,"u2-approx-explain-gen":2,"u2-best-estimate-side":2,"u2-calc-root-round":2,"u2-estimate-between":2,"u2-gap-composite-sa-mc":2,"u2-gap-cylinder-sa-mc":2,"u2-gap-estimate-best-mc":2,"u2-gap-estimate-gap-cr":2,"u2-gap-hidden-area-mc":2,"u2-gap-number-from-root-mc":2,"u2-gap-pyramid-roof-mc":3,"u2-gap-pyramid-slant-cr":3,"u2-gap-sa-cans-mc":2,"u2-gap-why-approx-mc":3,"u2-number-from-root":2,"u2-overlap":2,"u2-overlap-hidden":2,"u2-pk-estimate-between":2,"u2-pk-sqrt-perfect":2,"u2-pk-square-of-number":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u2-spot-error":3,"u2-sqrt-fraction":2,"u2-sqrt-perfect":2,"u2-square-from-root":2,"u2-why-approx":2,"u3-difference-of-powers":2,"u3-error-two-laws":3,"u3-evaluate-power-neg":2,"u3-explanations-var":3,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-laws-mc":3,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-interchanged-base-exponent":2,"u3-law-then-sum-difference":2,"u3-paren-powers-set":2,"u3-parentheses-sign":2,"u3-pk-annex-zeros":2,"u3-pk-doubling-step":2,"u3-pk-product-sign":2,"u3-pk-quotient-sign":2,"u3-pk-repeated-product":2,"u3-pk-repeated-write":2,"u3-power-from-repeated":2,"u3-power-model-var":2,"u3-power-of-power-law":2,"u3-power-of-product-quotient":3,"u3-product-law":2,"u3-quotient-law":2,"u3-repeated-multiplication":2,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u3-zero-exponent":2,"u3-zero-pattern":2,"u4-add":3,"u4-addsub-xy":2,"u4-area-monomial":2,"u4-degree":2,"u4-divide-missing-term":3,"u4-divide-monomial":2,"u4-equivalent":2,"u4-expr-to-tiles":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-mult-monomial-area":3,"u4-multiply-monomial":3,"u4-parts":2,"u4-pk-identify-parts":2,"u4-pk-solve-one-step":2,"u4-subtract":3,"u4-tiles-addsub":2,"u4-tiles-figure-build":2,"u4-tiles-figure-expr":2,"u4-tiles-to-expr":2,"u5-balance-model":2,"u5-context-graph":2,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-graph-to-ineq":2,"u5-ineq-substitution-check":3,"u5-ineq-to-words":2,"u5-inspection-basic":2,"u5-list-satisfies":2,"u5-meaning-of-solution":2,"u5-pk-identify-error":3,"u5-pk-misplaced":2,"u5-pk-model-equation":3,"u5-pk-numberline-place":2,"u5-pk-verify-solution":2,"u5-pkf-solve-one-step":2,"u5-pkf-visual-step":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-ineq-addsub-choose":2,"u5-solve-ineq-neg-flip":3,"u5-solve-ineq-pos-div":2,"u5-solve-ineq-two-step-choose":2,"u5-solve-two-step":3,"u5-translate-inequality":2,"u5-trial-table":2,"u5-verify-error":2,"u5-which-is-solution":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-context-equation":2,"u6-extrapolate-graph":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-graph-describe":3,"u6-graph-equation":3,"u6-interpolate-graph":3,"u6-pattern-figure-expr":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-pk-construct-graph":2,"u6-pk-describe-graph":3,"u6-pk-pattern-expression":3,"u6-point-on-graph":2,"u6-table-equation":3,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-artwork-symmetry-var":2,"u7-complete-half":2,"u7-complete-transformation":3,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-lines-symmetry":2,"u7-pk-ratio-simplest":2,"u7-pk-reflect-point":2,"u7-pk-tess-transform":2,"u7-pk-transform-describe":2,"u7-pk-two-term-ratio":2,"u7-proportional-check":3,"u7-related-shapes":2,"u7-rotate-vertex":2,"u7-rotation-symmetry-var":2,"u7-scale-draw-num":3,"u7-scale-media-var":2,"u7-similar-context-num":3,"u7-similar-pair":3,"u7-similar-two-step-num":3,"u7-similar-verdict":2,"u7-tessellation-var":2,"u7-transformation-symmetry":2,"u7-translation-rule":2,"u8-add-chord-length-mc":2,"u8-add-same-arc-name":2,"u8-add-semicircle-right-angle":2,"u8-chord-length":3,"u8-chord-perp-bisects":2,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-gap-two-theorems-mc":2,"u8-inscribed-reflex":3,"u8-pk-central-angles":2,"u8-pk-circumference":2,"u8-pk-parallel-perp":2,"u8-pk-pi-ratio":2,"u8-pk-radius-diameter":2,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u8-tangent-right-angle":2,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-decision-evidence-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-fix-the-survey-cr":3,"u9-gap-freq-mean-cr":2,"u9-gap-freq-mean-mc":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-written-cr":2,"u9-match-influence":3,"u9-pk-circle-graph":2,"u9-pk-exp-vs-theor":2,"u9-pk-mean-basic":2,"u9-pk-median-mode":2,"u9-pk-misleading-format":2,"u9-pk-prob-basic":2,"u9-pk-product-rule":2,"u9-pkf-mean-basic":2,"u9-pkf-median-mode":2,"u9-pkf-range-basic":2,"u9-plan-element":2,"u9-population-limitation":2,"u9-rubric-missing-part":2,"u9-same-number-two-sides":3,"u9-self-assessment":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u2-best-estimate-side":"a","u4-area-monomial":"b","u4-missing":"b","u4-subtract":"b","u5-verify-error":"b","u8-tangent-central-inscribed":"a","u9-collection-biggest-threat":"b"};
+window.__BANK_BIMODAL={"u1-ooo-brackets-mc":"a","u1-ooo-calc-display":"a","u1-ooo-error-value":"a","u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u1-pk-add-context":"a","u1-pk-add-sub-decimals":"a","u1-pk-add-unlike":"a","u1-pk-divide-fractions":"a","u1-pk-identify-operation":"a","u1-pk-mult-decimals":"a","u1-pk-multiply-fractions":"a","u1-pk-ooo-evaluate":"a","u1-pk-order-mixed":"a","u1-pk-sub-unlike":"a","u1-pkf-area-model-product":"a","u1-pkf-context-divide-expression":"a","u1-pkf-div-decimals":"a","u1-pkf-estimate-product-benchmark":"a","u1-pkf-fact-division":"a","u1-pkf-fact-halving":"a","u1-pkf-fact-recall":"a","u1-pkf-frontend-prod-quot":"a","u1-pkf-frontend-sum":"a","u1-pkf-model-frac-times-whole":"a","u1-pkf-model-whole-div-frac":"a","u1-pkf-mult-model-chips":"a","u1-pkf-order-below":"a","u1-pkf-order-line":"a","u1-pkf-product-sign-apply":"a","u1-pkf-quotient-sign-apply":"a","u1-pkf-reasonableness":"b","u2-approx-explain-gen":"b","u2-best-estimate-side":"a","u2-calc-root-round":"a","u2-estimate-between":"a","u2-gap-composite-sa-mc":"a","u2-gap-cylinder-sa-mc":"a","u2-gap-estimate-best-mc":"a","u2-gap-hidden-area-mc":"a","u2-gap-number-from-root-mc":"a","u2-gap-pyramid-roof-mc":"a","u2-gap-sa-cans-mc":"a","u2-gap-why-approx-mc":"b","u2-number-from-root":"a","u2-pk-estimate-between":"a","u2-pk-sqrt-perfect":"a","u2-pk-square-of-number":"a","u2-spot-error":"b","u2-sqrt-fraction":"a","u2-sqrt-perfect":"a","u2-square-from-root":"a","u2-why-approx":"b","u3-error-two-laws":"a","u3-evaluate-power-neg":"a","u3-explanations-var":"b","u3-gap-laws-mc":"b","u3-interchanged-base-exponent":"a","u3-paren-powers-set":"a","u3-parentheses-sign":"a","u3-pk-annex-zeros":"a","u3-pk-doubling-step":"a","u3-pk-product-sign":"a","u3-pk-quotient-sign":"a","u3-pk-repeated-product":"a","u3-pk-repeated-write":"a","u3-power-from-repeated":"a","u3-power-model-var":"b","u3-power-of-power-law":"a","u3-product-law":"a","u3-quotient-law":"a","u3-repeated-multiplication":"a","u3-zero-exponent":"a","u3-zero-pattern":"a","u4-addsub-xy":"a","u4-area-monomial":"b","u4-degree":"a","u4-divide-missing-term":"b","u4-equivalent":"b","u4-expr-to-tiles":"a","u4-missing":"b","u4-mult-monomial-area":"a","u4-parts":"a","u4-pk-identify-parts":"a","u4-pk-solve-one-step":"a","u4-subtract":"b","u4-tiles-addsub":"b","u4-tiles-figure-build":"a","u4-tiles-figure-expr":"b","u4-tiles-to-expr":"b","u5-balance-model":"b","u5-context-graph":"a","u5-graph-to-ineq":"a","u5-ineq-substitution-check":"b","u5-ineq-to-words":"a","u5-inspection-basic":"a","u5-meaning-of-solution":"b","u5-pk-identify-error":"b","u5-pk-misplaced":"a","u5-pk-model-equation":"b","u5-pk-numberline-place":"a","u5-pk-verify-solution":"a","u5-pkf-solve-one-step":"a","u5-pkf-visual-step":"b","u5-solve-ineq-addsub-choose":"a","u5-solve-ineq-neg-flip":"a","u5-solve-ineq-pos-div":"a","u5-solve-ineq-two-step-choose":"a","u5-translate-inequality":"a","u5-trial-table":"a","u5-verify-error":"b","u5-which-is-solution":"a","u6-context-equation":"b","u6-extrapolate-graph":"a","u6-graph-describe":"b","u6-graph-equation":"b","u6-pattern-figure-expr":"b","u6-pk-construct-graph":"a","u6-pk-describe-graph":"b","u6-pk-pattern-expression":"b","u6-table-equation":"b","u7-artwork-symmetry-var":"a","u7-complete-transformation":"b","u7-lines-symmetry":"a","u7-pk-ratio-simplest":"a","u7-pk-reflect-point":"a","u7-pk-tess-transform":"a","u7-pk-transform-describe":"a","u7-pk-two-term-ratio":"a","u7-proportional-check":"b","u7-related-shapes":"a","u7-rotate-vertex":"a","u7-rotation-symmetry-var":"a","u7-scale-media-var":"b","u7-similar-pair":"a","u7-similar-verdict":"b","u7-tessellation-var":"a","u7-transformation-symmetry":"a","u8-add-chord-length-mc":"a","u8-add-same-arc-name":"a","u8-add-semicircle-right-angle":"a","u8-chord-perp-bisects":"a","u8-gap-two-theorems-mc":"a","u8-pk-central-angles":"a","u8-pk-circumference":"a","u8-pk-parallel-perp":"a","u8-pk-pi-ratio":"a","u8-pk-radius-diameter":"a","u8-tangent-central-inscribed":"a","u8-tangent-right-angle":"a","u9-collection-biggest-threat":"b","u9-gap-freq-mean-mc":"a","u9-pk-circle-graph":"a","u9-pk-exp-vs-theor":"a","u9-pk-mean-basic":"a","u9-pk-median-mode":"a","u9-pk-misleading-format":"b","u9-pk-prob-basic":"a","u9-pk-product-rule":"a","u9-pkf-mean-basic":"a","u9-pkf-median-mode":"a","u9-pkf-range-basic":"a","u9-population-limitation":"b","u9-same-number-two-sides":"b","u9-self-assessment":"b"};
