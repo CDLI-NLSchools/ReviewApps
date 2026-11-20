@@ -1540,6 +1540,7 @@ E("u2-61", 2, ["6.13"], 3, "gen", function () {
 // LEVEL: 2 - the count is summed over every atom of a Lewis structure the student builds; u2-07 counts only the central atom
 // VARIANTS: three asks dealt per draw - total lone pairs in one molecule, total lone pair electrons in one molecule, or total lone pairs in k molecules (k from 2 to 5)
 // LENGTHS: key=1
+// SME fix, November 20, 2026: the stems ask the counting question directly; the earlier build-in-your-mind framing is gone.
 E("u2-62", 2, ["6.2"], 2, "gen", function () {
   var ms = [
     { f: "H₂O", lp: 2 }, { f: "NH₃", lp: 1 }, { f: "CH₄", lp: 0 }, { f: "CO₂", lp: 4 },
@@ -1551,10 +1552,10 @@ E("u2-62", 2, ["6.2"], 2, "gen", function () {
   var m = pick(ms), ask = pick([0, 1, 2]), k = ri(2, 5);
   var ans = ask === 0 ? m.lp : (ask === 1 ? 2 * m.lp : m.lp * k);
   var prompt = ask === 0
-    ? "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pairs on every atom in the molecule, not just the central atom, how many lone pairs does one molecule of " + m.f + " have in total?"
+    ? "Counting the lone pairs on every atom in the molecule, not just the central atom, how many lone pairs does one molecule of " + m.f + " have in total?"
     : (ask === 1
-      ? "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pair electrons on every atom in the molecule, not just the central atom, how many lone pair electrons does one molecule of " + m.f + " have in total?"
-      : "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pairs on every atom in each molecule, not just the central atom, how many lone pairs are there in total in " + k + " molecules of " + m.f + "?");
+      ? "Counting the lone pair electrons on every atom in the molecule, not just the central atom, how many lone pair electrons does one molecule of " + m.f + " have in total?"
+      : "Counting the lone pairs on every atom in each molecule, not just the central atom, how many lone pairs are there in total in " + k + " molecules of " + m.f + "?");
   return numq(prompt, ans, 0.1,
     "Work through the Lewis structure of " + m.f + " atom by atom, adding the lone pairs wherever they sit, on the terminal atoms as well as on the central atom. One molecule of " + m.f + " has " + m.lp + " lone pair or pairs in total, which is " + (2 * m.lp) + " lone pair electrons, and " + k + " molecules have " + k + " x " + m.lp + " = " + (k * m.lp) + " lone pairs in total. The value asked for is <b>" + ans + "</b>.",
     { mol: m.f, ask: ask, k: k });
@@ -1562,7 +1563,8 @@ E("u2-62", 2, ["6.2"], 2, "gen", function () {
 
 // LEVEL: 2 - both substances must be classified (dispersion acts everywhere; hydrogen bonding needs hydrogen on nitrogen, oxygen or fluorine) and the two classifications combined
 // VARIANTS: three dealt pairings - polar with nonpolar, hydrogen bonding with polar, hydrogen bonding with nonpolar; the key lists the force set of each substance
-// LENGTHS: correct=181, others 163/181/204
+// LENGTHS: correct=197, others 197/179/215 (maxima over 3,000 draws, November 20, 2026, after the compounds were named directly)
+// SME fix, November 20, 2026: the compounds are named directly throughout; the earlier Substance X and Substance Y labels are gone.
 E("u2-63", 2, ["6.3"], 2, "gen", function () {
   var hb = ["H₂O", "NH₃", "HF", "CH₃OH", "CH₃CH₂OH", "CH₃NH₂", "H₂O₂"];
   var pol = ["HCl", "H₂S", "CH₃Cl", "CH₃F", "SO₂", "CH₃OCH₃", "CHCl₃", "PH₃"];
@@ -1578,13 +1580,13 @@ E("u2-63", 2, ["6.3"], 2, "gen", function () {
   else if (mode === 1) { x = pick(hb); y = pick(pol); xs = "ddh"; ys = "dd"; }
   else { x = pick(hb); y = pick(non); xs = "ddh"; ys = "d"; }
   function stmt(a, b) {
-    return "Substance X is held by " + sets[a] + " between its molecules, and substance Y is held by " + sets[b] + " between its molecules";
+    return x + " is held by " + sets[a] + " between its molecules, and " + y + " is held by " + sets[b] + " between its molecules";
   }
   var correct = stmt(xs, ys);
   var ds = [stmt(ys, xs), stmt(down[xs], ys), stmt(xs, up[ys])];
-  return mcq("Substance X is " + x + " and substance Y is " + y + ". Which statement correctly lists the attractions acting between the molecules of each substance?",
+  return mcq("Consider " + x + " and " + y + ". Which statement correctly lists the attractions acting between the molecules of each substance?",
     correct, ds,
-    "Dispersion forces act between the molecules of every substance. Substance X, " + x + ", belongs to the group whose molecules are held by " + sets[xs] + ": any hydrogen bonding needs a hydrogen atom bonded to nitrogen, oxygen or fluorine, and dipole to dipole forces need a polar molecule. Substance Y, " + y + ", is held by " + sets[ys] + ". The correct statement is <b>" + correct + "</b>.",
+    "Dispersion forces act between the molecules of every substance. " + x + " is held by " + sets[xs] + " between its molecules: any hydrogen bonding needs a hydrogen atom bonded to nitrogen, oxygen or fluorine, and dipole to dipole forces need a polar molecule. " + y + " is held by " + sets[ys] + " between its molecules. The correct statement is <b>" + correct + "</b>.",
     { x: x, y: y, mode: mode });
 });
 
@@ -1695,6 +1697,7 @@ E("u2-66", 2, ["6.7"], 2, "gen", function () {
 
 // LEVEL: 3 - a stated structural model must be judged against the lattice model and its fault identified, a diagnosis rather than a recall of the model
 // LENGTHS: correct=183, others 161/184/173
+// SME fix, November 20, 2026: the student's drawing is now shown as a figure, four separate ion groups in the formula ratio with weak attractions between them, drawn from the same compound the stem names.
 E("u2-67", 2, ["6.7"], 3, "gen", function () {
   var comps = [
     { f: "NaCl", cat: "Na⁺", an: "Cl⁻" }, { f: "MgO", cat: "Mg²⁺", an: "O²⁻" },
@@ -1705,16 +1708,36 @@ E("u2-67", 2, ["6.7"], 3, "gen", function () {
     { f: "LiCl", cat: "Li⁺", an: "Cl⁻" }, { f: "SrCl₂", cat: "Sr²⁺", an: "Cl⁻" }
   ];
   var c = pick(comps);
+  function chg67(s) { return s.indexOf("²") >= 0 ? 2 : (s.indexOf("³") >= 0 ? 3 : 1); }
+  var na67 = chg67(c.cat) / chg67(c.an);
+  function ion67(x, y, label, cat) {
+    return '<circle cx="' + x + '" cy="' + y + '" r="15" fill="' + (cat ? "#dcefe2" : "#f7e3d3") + '" stroke="#17352a" stroke-width="1.6"/><text x="' + x + '" y="' + y + '" font-size="12" fill="#17352a" stroke="#ffffff" stroke-width="3" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central" font-weight="bold">' + label + '</text>';
+  }
+  var fig67 = "";
+  var ctr67 = [[82, 56], [238, 56], [82, 134], [238, 134]];
+  fig67 += '<line x1="130" y1="56" x2="190" y2="56" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  fig67 += '<line x1="130" y1="134" x2="190" y2="134" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  fig67 += '<line x1="82" y1="76" x2="82" y2="114" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  fig67 += '<line x1="238" y1="76" x2="238" y2="114" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  for (var gi67 = 0; gi67 < ctr67.length; gi67++) {
+    var gx67 = ctr67[gi67][0], gy67 = ctr67[gi67][1];
+    if (na67 === 2) { fig67 += ion67(gx67 - 30, gy67, c.an, false) + ion67(gx67, gy67, c.cat, true) + ion67(gx67 + 30, gy67, c.an, false); }
+    else { fig67 += ion67(gx67 - 15, gy67, c.cat, true) + ion67(gx67 + 15, gy67, c.an, false); }
+  }
+  fig67 += '<text x="160" y="176" font-size="11.5" fill="#17352a" text-anchor="middle">separate molecules, only weakly attracted</text>';
+  fig67 = '<svg viewBox="0 0 320 190" width="320" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Student drawing of solid ' + c.f + ' as separate molecules: four separate small groups of ions, each group holding ' + (na67 === 2 ? "one " + c.cat + " ion and two " + c.an + " ions" : "one " + c.cat + " ion and one " + c.an + " ion") + ', with only weak attractions between the groups">' + fig67 + '</svg>';
   var correct = "The model is wrong: the solid contains no separate molecules, because each " + c.cat + " ion is surrounded by several " + c.an + " ions, and each " + c.an + " ion by several " + c.cat + " ions, in one continuous lattice";
   var ds = [
     "The model is right: the solid is built from separate " + c.f + " molecules, because each " + c.cat + " ion is paired with one " + c.an + " ion and those pairs pack together in the solid",
     "The model is wrong: the solid contains no ions at all, because its particles are neutral atoms joined in one continuous network of shared electron pairs running through the whole solid",
     "The model is wrong: the solid is built from separate molecules after all, because each molecule holds several " + c.cat + " and " + c.an + " ions joined by shared pairs of electrons inside it"
   ];
-  return mcq("A student draws the structure of solid " + c.f + " as separate molecules, each molecule a small fixed group of " + c.cat + " and " + c.an + " ions, with only weak attractions between the molecules. Which statement correctly judges this model?",
+  var q = mcq("A student draws the structure of solid " + c.f + " as separate molecules, each molecule a small fixed group of " + c.cat + " and " + c.an + " ions, with only weak attractions between the molecules. Which statement correctly judges this model?",
     correct, ds,
     "An ionic solid is not built from molecules. Its ions form one continuous lattice in which every ion is held by attractions to several neighbours of the opposite charge, and the formula " + c.f + " gives the ratio of the ions, not the contents of a molecule. The correct judgement is <b>" + correct + "</b>.",
     { compound: c.f });
+  q.figure = fig67;
+  return q;
 });
 
 // LEVEL: 2 - ion charges must be derived or compared, and the charge to attraction to melting point chain applied to the pair
@@ -2009,4 +2032,30 @@ E("u2-78", 2, ["6.13"], 1, "gen", function () {
     correct, ds,
     why + " The classification is <b>" + correct + "</b>.",
     { cue: cues.indexOf(c), cls: c.cls });
+});
+
+/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
+   for indicator 6.11 (molar solubility), priced at 2 entries in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6.
+   SME-flagged for the specialist pass. */
+var T2_SALTS=[["AgCl",143.32],["BaSO\u2084",233.39],["CaCO\u2083",100.09],["PbCl\u2082",278.11],["CaF\u2082",78.08],["Mg(OH)\u2082",58.33]];
+
+E("u2-611-mc-from-mass",2,["6.11"],2,"gen",function(){
+  var s=pick(T2_SALTS),sol=pick([0.00200,0.00500,0.0100,0.0200,0.0500,0.100,0.200]);
+  var vol=pick([100,250,500]);
+  var mass=sol*(vol/1000)*s[1];
+  var o=t2opts(sol,[sol*10,sol/10,sol*(vol/1000)],"mol/L");
+  return mcq("A saturated solution of "+s[0]+" contains "+t2sf(mass)+" g of the salt in "+vol+" mL of solution. The molar mass of "+s[0]+" is "+s[1].toFixed(2)+" g/mol. What is the molar solubility of "+s[0]+"?",
+    o.c,o.w,
+    "Convert the dissolved mass to moles: "+t2sf(mass)+" g / "+s[1].toFixed(2)+" g/mol = "+t2sf(mass/s[1])+" mol. Molar solubility is that amount per litre of solution: "+t2sf(mass/s[1])+" mol / "+t2sf(vol/1000)+" L = <b>"+o.c+"</b>.",{salt:s[0],vol:vol});
+});
+
+E("u2-611-mc-mass-dissolved",2,["6.11"],2,"gen",function(){
+  var s=pick(T2_SALTS),sol=pick([0.00200,0.00500,0.0100,0.0200,0.0500,0.100,0.200]);
+  var vol=pick([200,250,400,500,1000]);
+  var mass=sol*(vol/1000)*s[1];
+  var o=t2opts(mass,[sol*(vol/1000),sol*s[1],mass*10],"g");
+  return mcq("The molar solubility of "+s[0]+" is "+t2sf(sol)+" mol/L, and its molar mass is "+s[1].toFixed(2)+" g/mol. What mass of "+s[0]+" dissolves in "+vol+" mL of water to make a saturated solution?",
+    o.c,o.w,
+    "Amount dissolved = molar solubility \u00D7 volume in litres: "+t2sf(sol)+" mol/L \u00D7 "+t2sf(vol/1000)+" L = "+t2sf(sol*vol/1000)+" mol. Convert to mass: \u00D7 "+s[1].toFixed(2)+" g/mol = <b>"+o.c+"</b>.",{salt:s[0],vol:vol});
 });

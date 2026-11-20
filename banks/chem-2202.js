@@ -1126,6 +1126,7 @@ E("u1-510-application-reasoning",1,["5.10"],2,"var",varset([
 
 // LEVEL: 2 - Reverses the acid naming rules to write the chemical formula with aqueous state symbol from the acid name.
 // LENGTHS: key=9
+// SME fix, November 20, 2026: acetic acid removed from the acid list on the specialist's ruling; the ten remaining acids keep every naming pattern the entry teaches.
 E("u1-51-write-acid-formula", 1, ["5.1"], 2, "gen", function() {
   var acids = [
     { name: "hydrochloric acid", sub: "HCl(aq)", plain: "HCl(aq)", anion: "chloride", rule: "the hydro-...-ic prefix and ending indicate a binary acid from the chloride ion (Cl⁻), balanced by one H⁺ ion" },
@@ -1137,14 +1138,10 @@ E("u1-51-write-acid-formula", 1, ["5.1"], 2, "gen", function() {
     { name: "sulfurous acid", sub: "H₂SO₃(aq)", plain: "H2SO3(aq)", anion: "sulfite", rule: "the -ous ending indicates an oxyacid from the sulfite ion (SO₃²⁻), balanced by two H⁺ ions" },
     { name: "phosphoric acid", sub: "H₃PO₄(aq)", plain: "H3PO4(aq)", anion: "phosphate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the phosphate ion (PO₄³⁻), balanced by three H⁺ ions" },
     { name: "phosphorous acid", sub: "H₃PO₃(aq)", plain: "H3PO3(aq)", anion: "phosphite", rule: "the -ous ending indicates an oxyacid from the phosphite ion (PO₃³⁻), balanced by three H⁺ ions" },
-    { name: "carbonic acid", sub: "H₂CO₃(aq)", plain: "H2CO3(aq)", anion: "carbonate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the carbonate ion (CO₃²⁻), balanced by two H⁺ ions" },
-    { name: "acetic acid", sub: "CH₃COOH(aq)", plain: "CH3COOH(aq)", anion: "acetate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the acetate ion (CH₃COO⁻), balanced by one H⁺ ion" }
+    { name: "carbonic acid", sub: "H₂CO₃(aq)", plain: "H2CO3(aq)", anion: "carbonate", rule: "the -ic ending with no hydro- prefix indicates an oxyacid from the carbonate ion (CO₃²⁻), balanced by two H⁺ ions" }
   ];
   var item = pick(acids);
   var accepted = item.sub === item.plain ? [item.sub] : [item.sub, item.plain];
-  if (item.name === "acetic acid") {
-    accepted = ["CH₃COOH(aq)", "CH3COOH(aq)", "HC₂H₃O₂(aq)", "HC2H3O2(aq)"];
-  }
   return textq(
     "Write the chemical formula, including the state symbol (aq), for " + item.name + ".",
     accepted,
@@ -1613,6 +1610,7 @@ E("u1-59-over-100-diagnosis", 1, ["5.9"], 3, "var", varset([
 
 // LEVEL: 2 - Discounts an impure limestone sample by its mass percent purity before running a mass-to-mass stoichiometric conversion.
 // LENGTHS: key=4
+// SME fix, November 20, 2026: the worked solution now shows the kilogram to gram conversion before the molar mass step, and the gram to kilogram conversion at the end, as explicit steps.
 E("u1-510-limestone-lime", 1, ["5.10"], 2, "gen", function() {
   var sampleKg = ri(50, 500);
   var purityPct = ri(820, 980) / 10;
@@ -1628,7 +1626,7 @@ E("u1-510-limestone-lime", 1, ["5.10"], 2, "gen", function() {
     "In quicklime production for steelmaking and construction, calcium carbonate decomposes when heated: CaCO₃ → CaO + CO₂. A " + gF(sampleKg) + " kg sample of crushed limestone contains " + F3(purityPct) + "% CaCO₃ by mass, with inert impurities. What mass of quicklime (CaO), in kilograms, can be produced from this sample?",
     ans,
     tol,
-    "First find the mass of pure CaCO₃: " + gF(sampleKg) + " kg × " + F3(purityPct) + "% = " + iF(mCaCO3) + " kg. Using molar masses M(CaCO₃) = " + iF(M_CaCO3) + " g/mol and M(CaO) = " + iF(M_CaO) + " g/mol with a 1 : 1 mole ratio gives (" + iF(mCaCO3) + " kg / " + iF(M_CaCO3) + " g/mol) × " + iF(M_CaO) + " g/mol = " + iF(rawKgCaO) + " kg, which rounds to <b>" + F3(ans) + " kg</b>.",
+    "First find the mass of pure CaCO₃: " + gF(sampleKg) + " kg × " + F3(purityPct) + "% = " + iF(mCaCO3) + " kg. The molar masses are M(CaCO₃) = " + iF(M_CaCO3) + " g/mol and M(CaO) = " + iF(M_CaO) + " g/mol, and the equation ratio is 1 : 1, so the moles of CaO formed equal the moles of CaCO₃ decomposed. Convert the mass of CaCO₃ from kilograms to grams before dividing by the molar mass, and convert the mass of CaO back to kilograms at the end: \\[ \\begin{aligned} m(\\mathrm{CaCO_3}) &= " + iF(mCaCO3) + " \\text{ kg} \\times \\frac{1000 \\text{ g}}{1 \\text{ kg}} = " + fmt(mCaCO3 * 1000, 0) + " \\text{ g} \\\\ n(\\mathrm{CaCO_3}) &= \\frac{" + fmt(mCaCO3 * 1000, 0) + " \\text{ g}}{" + iF(M_CaCO3) + " \\text{ g/mol}} = " + iF(molCaCO3) + " \\text{ mol} \\\\ n(\\mathrm{CaO}) &= " + iF(molCaO) + " \\text{ mol} \\\\ m(\\mathrm{CaO}) &= " + iF(molCaO) + " \\text{ mol} \\times " + iF(M_CaO) + " \\text{ g/mol} = " + fmt(molCaO * M_CaO, 0) + " \\text{ g} \\\\ &= \\frac{" + fmt(molCaO * M_CaO, 0) + " \\text{ g}}{1000 \\text{ g/kg}} = " + iF(rawKgCaO) + " \\text{ kg} \\end{aligned} \\] The mass of quicklime produced is <b>" + F3(ans) + " kg</b>.",
     { sampleKg: sampleKg, purityPct: purityPct, ans: ans }
   );
 });
@@ -3389,6 +3387,7 @@ E("u2-61", 2, ["6.13"], 3, "gen", function () {
 // LEVEL: 2 - the count is summed over every atom of a Lewis structure the student builds; u2-07 counts only the central atom
 // VARIANTS: three asks dealt per draw - total lone pairs in one molecule, total lone pair electrons in one molecule, or total lone pairs in k molecules (k from 2 to 5)
 // LENGTHS: key=1
+// SME fix, November 20, 2026: the stems ask the counting question directly; the earlier build-in-your-mind framing is gone.
 E("u2-62", 2, ["6.2"], 2, "gen", function () {
   var ms = [
     { f: "H₂O", lp: 2 }, { f: "NH₃", lp: 1 }, { f: "CH₄", lp: 0 }, { f: "CO₂", lp: 4 },
@@ -3400,10 +3399,10 @@ E("u2-62", 2, ["6.2"], 2, "gen", function () {
   var m = pick(ms), ask = pick([0, 1, 2]), k = ri(2, 5);
   var ans = ask === 0 ? m.lp : (ask === 1 ? 2 * m.lp : m.lp * k);
   var prompt = ask === 0
-    ? "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pairs on every atom in the molecule, not just the central atom, how many lone pairs does one molecule of " + m.f + " have in total?"
+    ? "Counting the lone pairs on every atom in the molecule, not just the central atom, how many lone pairs does one molecule of " + m.f + " have in total?"
     : (ask === 1
-      ? "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pair electrons on every atom in the molecule, not just the central atom, how many lone pair electrons does one molecule of " + m.f + " have in total?"
-      : "Build the usual Lewis structure of " + m.f + " in your mind. Counting the lone pairs on every atom in each molecule, not just the central atom, how many lone pairs are there in total in " + k + " molecules of " + m.f + "?");
+      ? "Counting the lone pair electrons on every atom in the molecule, not just the central atom, how many lone pair electrons does one molecule of " + m.f + " have in total?"
+      : "Counting the lone pairs on every atom in each molecule, not just the central atom, how many lone pairs are there in total in " + k + " molecules of " + m.f + "?");
   return numq(prompt, ans, 0.1,
     "Work through the Lewis structure of " + m.f + " atom by atom, adding the lone pairs wherever they sit, on the terminal atoms as well as on the central atom. One molecule of " + m.f + " has " + m.lp + " lone pair or pairs in total, which is " + (2 * m.lp) + " lone pair electrons, and " + k + " molecules have " + k + " x " + m.lp + " = " + (k * m.lp) + " lone pairs in total. The value asked for is <b>" + ans + "</b>.",
     { mol: m.f, ask: ask, k: k });
@@ -3411,7 +3410,8 @@ E("u2-62", 2, ["6.2"], 2, "gen", function () {
 
 // LEVEL: 2 - both substances must be classified (dispersion acts everywhere; hydrogen bonding needs hydrogen on nitrogen, oxygen or fluorine) and the two classifications combined
 // VARIANTS: three dealt pairings - polar with nonpolar, hydrogen bonding with polar, hydrogen bonding with nonpolar; the key lists the force set of each substance
-// LENGTHS: correct=181, others 163/181/204
+// LENGTHS: correct=197, others 197/179/215 (maxima over 3,000 draws, November 20, 2026, after the compounds were named directly)
+// SME fix, November 20, 2026: the compounds are named directly throughout; the earlier Substance X and Substance Y labels are gone.
 E("u2-63", 2, ["6.3"], 2, "gen", function () {
   var hb = ["H₂O", "NH₃", "HF", "CH₃OH", "CH₃CH₂OH", "CH₃NH₂", "H₂O₂"];
   var pol = ["HCl", "H₂S", "CH₃Cl", "CH₃F", "SO₂", "CH₃OCH₃", "CHCl₃", "PH₃"];
@@ -3427,13 +3427,13 @@ E("u2-63", 2, ["6.3"], 2, "gen", function () {
   else if (mode === 1) { x = pick(hb); y = pick(pol); xs = "ddh"; ys = "dd"; }
   else { x = pick(hb); y = pick(non); xs = "ddh"; ys = "d"; }
   function stmt(a, b) {
-    return "Substance X is held by " + sets[a] + " between its molecules, and substance Y is held by " + sets[b] + " between its molecules";
+    return x + " is held by " + sets[a] + " between its molecules, and " + y + " is held by " + sets[b] + " between its molecules";
   }
   var correct = stmt(xs, ys);
   var ds = [stmt(ys, xs), stmt(down[xs], ys), stmt(xs, up[ys])];
-  return mcq("Substance X is " + x + " and substance Y is " + y + ". Which statement correctly lists the attractions acting between the molecules of each substance?",
+  return mcq("Consider " + x + " and " + y + ". Which statement correctly lists the attractions acting between the molecules of each substance?",
     correct, ds,
-    "Dispersion forces act between the molecules of every substance. Substance X, " + x + ", belongs to the group whose molecules are held by " + sets[xs] + ": any hydrogen bonding needs a hydrogen atom bonded to nitrogen, oxygen or fluorine, and dipole to dipole forces need a polar molecule. Substance Y, " + y + ", is held by " + sets[ys] + ". The correct statement is <b>" + correct + "</b>.",
+    "Dispersion forces act between the molecules of every substance. " + x + " is held by " + sets[xs] + " between its molecules: any hydrogen bonding needs a hydrogen atom bonded to nitrogen, oxygen or fluorine, and dipole to dipole forces need a polar molecule. " + y + " is held by " + sets[ys] + " between its molecules. The correct statement is <b>" + correct + "</b>.",
     { x: x, y: y, mode: mode });
 });
 
@@ -3544,6 +3544,7 @@ E("u2-66", 2, ["6.7"], 2, "gen", function () {
 
 // LEVEL: 3 - a stated structural model must be judged against the lattice model and its fault identified, a diagnosis rather than a recall of the model
 // LENGTHS: correct=183, others 161/184/173
+// SME fix, November 20, 2026: the student's drawing is now shown as a figure, four separate ion groups in the formula ratio with weak attractions between them, drawn from the same compound the stem names.
 E("u2-67", 2, ["6.7"], 3, "gen", function () {
   var comps = [
     { f: "NaCl", cat: "Na⁺", an: "Cl⁻" }, { f: "MgO", cat: "Mg²⁺", an: "O²⁻" },
@@ -3554,16 +3555,36 @@ E("u2-67", 2, ["6.7"], 3, "gen", function () {
     { f: "LiCl", cat: "Li⁺", an: "Cl⁻" }, { f: "SrCl₂", cat: "Sr²⁺", an: "Cl⁻" }
   ];
   var c = pick(comps);
+  function chg67(s) { return s.indexOf("²") >= 0 ? 2 : (s.indexOf("³") >= 0 ? 3 : 1); }
+  var na67 = chg67(c.cat) / chg67(c.an);
+  function ion67(x, y, label, cat) {
+    return '<circle cx="' + x + '" cy="' + y + '" r="15" fill="' + (cat ? "#dcefe2" : "#f7e3d3") + '" stroke="#17352a" stroke-width="1.6"/><text x="' + x + '" y="' + y + '" font-size="12" fill="#17352a" stroke="#ffffff" stroke-width="3" style="paint-order:stroke" stroke-linejoin="round" text-anchor="middle" dominant-baseline="central" font-weight="bold">' + label + '</text>';
+  }
+  var fig67 = "";
+  var ctr67 = [[82, 56], [238, 56], [82, 134], [238, 134]];
+  fig67 += '<line x1="130" y1="56" x2="190" y2="56" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  fig67 += '<line x1="130" y1="134" x2="190" y2="134" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  fig67 += '<line x1="82" y1="76" x2="82" y2="114" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  fig67 += '<line x1="238" y1="76" x2="238" y2="114" stroke="#17352a" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>';
+  for (var gi67 = 0; gi67 < ctr67.length; gi67++) {
+    var gx67 = ctr67[gi67][0], gy67 = ctr67[gi67][1];
+    if (na67 === 2) { fig67 += ion67(gx67 - 30, gy67, c.an, false) + ion67(gx67, gy67, c.cat, true) + ion67(gx67 + 30, gy67, c.an, false); }
+    else { fig67 += ion67(gx67 - 15, gy67, c.cat, true) + ion67(gx67 + 15, gy67, c.an, false); }
+  }
+  fig67 += '<text x="160" y="176" font-size="11.5" fill="#17352a" text-anchor="middle">separate molecules, only weakly attracted</text>';
+  fig67 = '<svg viewBox="0 0 320 190" width="320" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Student drawing of solid ' + c.f + ' as separate molecules: four separate small groups of ions, each group holding ' + (na67 === 2 ? "one " + c.cat + " ion and two " + c.an + " ions" : "one " + c.cat + " ion and one " + c.an + " ion") + ', with only weak attractions between the groups">' + fig67 + '</svg>';
   var correct = "The model is wrong: the solid contains no separate molecules, because each " + c.cat + " ion is surrounded by several " + c.an + " ions, and each " + c.an + " ion by several " + c.cat + " ions, in one continuous lattice";
   var ds = [
     "The model is right: the solid is built from separate " + c.f + " molecules, because each " + c.cat + " ion is paired with one " + c.an + " ion and those pairs pack together in the solid",
     "The model is wrong: the solid contains no ions at all, because its particles are neutral atoms joined in one continuous network of shared electron pairs running through the whole solid",
     "The model is wrong: the solid is built from separate molecules after all, because each molecule holds several " + c.cat + " and " + c.an + " ions joined by shared pairs of electrons inside it"
   ];
-  return mcq("A student draws the structure of solid " + c.f + " as separate molecules, each molecule a small fixed group of " + c.cat + " and " + c.an + " ions, with only weak attractions between the molecules. Which statement correctly judges this model?",
+  var q = mcq("A student draws the structure of solid " + c.f + " as separate molecules, each molecule a small fixed group of " + c.cat + " and " + c.an + " ions, with only weak attractions between the molecules. Which statement correctly judges this model?",
     correct, ds,
     "An ionic solid is not built from molecules. Its ions form one continuous lattice in which every ion is held by attractions to several neighbours of the opposite charge, and the formula " + c.f + " gives the ratio of the ions, not the contents of a molecule. The correct judgement is <b>" + correct + "</b>.",
     { compound: c.f });
+  q.figure = fig67;
+  return q;
 });
 
 // LEVEL: 2 - ion charges must be derived or compared, and the charge to attraction to melting point chain applied to the pair
