@@ -2801,7 +2801,7 @@ window.COURSES = {
      blueprint, for every multi-unit selection. A single unit
      composes the unit test (see unitTest). */
   exam: {
-    fallback: { srCount: 27, crMarks: 23, levels: [10, 31, 9], crL3: [7, 8, 9] }
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 31, 9], crL3: [7, 8, 9], total: 50 }
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
@@ -3120,7 +3120,7 @@ window.COURSES = {
      postMid flag (the standalone notes this at lines 4675 to
      4679). */
   exam: {
-    fallback: { srCount: 27, crMarks: 23, levels: [10, 31, 9], crL3: [7, 8, 9] }
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 31, 9], crL3: [7, 8, 9], total: 50 }
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
@@ -3715,7 +3715,7 @@ window.COURSES = {
      this course (the standalone's note at lines 4807 to
      4810: no entry carries a post-mid flag). */
   exam: {
-    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7], total: 50 }
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
@@ -3966,7 +3966,7 @@ window.COURSES = {
      standalone's isPK is a shim that is always false here, line
      6624), so neither needs a config key. */
   exam: {
-    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7], total: 50 }
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
@@ -4158,7 +4158,7 @@ window.COURSES = {
      single-unit Level 3 subset-sum targets are 5, then 4, then
      6, inside the generic composer's 4 to 6 window. */
   exam: {
-    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7], total: 50 }
   },
 
   /* The unit test, from the same composer (its single-unit
@@ -4607,7 +4607,7 @@ window.COURSES = {
      steered to 5, then 4, then 6 (line 6975), inside the
      shell composer's standing 4 to 6 window. */
   exam: {
-    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7] }
+    fallback: { srCount: 27, crMarks: 23, levels: [10, 30, 10], crL3: [8, 9, 7], total: 50 }
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
