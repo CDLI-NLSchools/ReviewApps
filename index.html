@@ -13,6 +13,7 @@
   body{margin:0;background:var(--bg);color:var(--ink);overflow-y:scroll;}
   .wrap{max-width:920px;margin:0 auto;padding:20px 16px 40px;}
   h1{font-size:1.55rem;margin:0 0 8px;}
+  #appTitle{margin:30px 0 30px;}
   .allcourses{font-size:.82rem;margin:0 0 20px;}
   .allcourses a{color:var(--accent);text-decoration:none;border:1.5px solid var(--accent);border-radius:8px;padding:9px 16px;font-size:.9rem;}
   .allcourses a:hover,.allcourses a:focus-visible{opacity:.88;}
@@ -42,6 +43,7 @@
   .adv{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-top:10px;}
   #pkInRow[hidden]{display:none;}
   .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}
+  .adv label.chk{flex-direction:row;align-items:center;gap:6px;}
   input[type=number]{width:76px;padding:7px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;}
   input[type=text].ans{width:170px;padding:8px;border:1px solid var(--line);border-radius:6px;font-size:.95rem;}
   textarea.ans{display:block;width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:6px;font-size:.95rem;margin-top:4px;resize:vertical;}
@@ -2724,7 +2726,7 @@ var qrcode = function() {
     <p class="hint" style="margin:10px 0 4px;">By indicator (optional, leave all unchecked to use every indicator in the units you picked):</p>
     <div class="indbox" id="indBox"></div>
     <div class="adv" id="pkInRow" hidden>
-      <label><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>
+      <label class="chk"><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>
     </div>
     <div class="adv">
       <label>Order
@@ -8092,7 +8094,7 @@ function tTestSelSync(){
   });
   tTestSelSync();
 })();
-$("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});
+$("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});
 $("seedIn").addEventListener("input",refreshFace);
 $("countIn").addEventListener("input",refreshFace);
