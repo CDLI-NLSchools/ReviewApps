@@ -27,6 +27,7 @@
   .sub{font-size:.9rem;color:#4b5a61;margin:0 0 16px;line-height:1.45;}
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px;}
   .presetrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  .presetrow[hidden]{display:none;}
   button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:.9rem;cursor:pointer;}
   button.alt{background:#fff;color:var(--accent);border:1.5px solid var(--accent);}
   button.amber{background:var(--accent2);}
@@ -5952,6 +5953,39 @@ function composeExam(units,inds,includePK,plan){
          (they are the mapped targets testPlanFor returns),
          and every other scope keeps the cap exactly as the
          per-indicator cap note above describes.
+       - Whole-paper level balance in test scope (owner
+         ruling, later still on Nov 19, 2026): the level plan
+         holds for the test paper as a whole, marks included,
+         not for the selected-response section alone. The plan
+         part therefore carries whole, the per-level mark
+         targets levelTargets applies to the paper's total
+         marks (SR count plus CR marks) under the course's
+         level plan. The CR set is chosen first, but on the
+         section's own terms (owner steering, same evening):
+         Level 3 questions live primarily in the constructed
+         response, so planFor scores an option first by its
+         character, Level 3 presence where the pool offers
+         it and Level 3 marks near the pool's natural share,
+         and only last by how closely the whole paper's marks
+         (the option's own level marks plus the SR bands it
+         leaves room for) land on the targets. The SR bands
+         then fill the room the chosen option leaves. The
+         balance aim is never served by flattening the CR
+         section toward Level 2 to shave the paper's Level 3
+         share; it works through the SR bands and through
+         reporting. The standing CR Level 3 mark window and
+         the crPref denomination preference stand down inside
+         test scope (the plan part carries no crPref): both
+         were whole-unit designs, and here they would fight
+         the balance they cannot see. The level plan itself
+         is an aim, not a compliance line (owner, same
+         evening): composition works toward it, and the gate
+         reports the dealt balance against it and against
+         what the pool can actually supply. The governing
+         question stays whether each outcome is assessed at
+         the level the guide's indicators and elaborations
+         suggest, which the banks' per-indicator level mixes
+         encode. Every other scope is untouched by this note.
        - Per-entry dealing limit (Nov 19, 2026): within one paper
          an entry is dealt once while undealt candidate entries
          remain. The selected-response draw (each level band in
@@ -6122,8 +6156,11 @@ function composeExam(units,inds,includePK,plan){
      carries indCap null, so the per-indicator cap does not bind
      anywhere inside a test-scope paper: crOptions' cap check,
      the CR reservation in drawAll and the SR draw's room check
-     all read part.indCap and stand down together. */
-  if(single&&plan){parts=[{units:units.slice(),sr:plan.sr,cr:plan.cr,levels:null,indCap:null,crPref:ut.crPref?ut.crPref.slice():null}];}
+     all read part.indCap and stand down together. The part
+     also carries whole, its whole-paper per-level mark
+     targets, and no crPref, per the whole-paper balance note
+     in the header. */
+  if(single&&plan){parts=[{units:units.slice(),sr:plan.sr,cr:plan.cr,levels:null,indCap:null,crPref:null,whole:levelTargets(plan.sr+plan.cr,(C.presets&&C.presets.defaultMix)||[20,60,20])}];}
   else if(single){parts=[{units:units.slice(),sr:ut.sr,cr:ut.cr,levels:null,indCap:(typeof ut.indCap==="number"?ut.indCap:null),crPref:ut.crPref?ut.crPref.slice():null}];}
   else if(scope){parts=scope.units.map(function(u){var pu=scope.perUnit[u];return{units:[u],sr:pu.sr,cr:pu.cr,levels:pu.levels?pu.levels.slice():null,indCap:(typeof pu.indCap==="number"?pu.indCap:(typeof scope.indCap==="number"?scope.indCap:null)),crPref:pu.crPref?pu.crPref.slice():(scope.crPref?scope.crPref.slice():null)};});}
   else{var fb=C.exam&&C.exam.fallback?C.exam.fallback:{srCount:27,crMarks:23};parts=[{units:units.slice(),sr:fb.srCount,cr:fb.crMarks,levels:fb.levels?fb.levels.slice():null,crL3:fb.crL3?fb.crL3.slice():null,indCap:(typeof fb.indCap==="number"?fb.indCap:null),crPref:fb.crPref?fb.crPref.slice():null}];}
@@ -6183,14 +6220,26 @@ function composeExam(units,inds,includePK,plan){
       opts.push({items:got,l2:gl2,l3:gl3,exact:false});
     }
     if(!opts.length)opts.push({items:[],l2:0,l3:0,exact:false});
+    /* The pool's natural CR character, stamped on every option
+       for planFor's test-scope scoring (owner steering,
+       Nov 19, 2026): natL3 is the Level 3 mark count a set of
+       this size carries when it mirrors the pool's own level
+       mix of CR marks; poolL3 records whether any exact option
+       here carries Level 3 at all. Other scopes ignore both. */
+    var cpTot=0,cpL3=0;
+    cp.forEach(function(x){cpTot+=x.marks;if(x.e.level===3)cpL3+=x.marks;});
+    var natL3=cpTot?part.cr*cpL3/cpTot:0;
+    var poolL3=opts.some(function(o){return o.exact&&o.l3>0;});
+    opts.forEach(function(o){o.natL3=natL3;o.poolL3=poolL3;});
     return opts;
   }
   function planFor(opts){
     var plans=[],dev=0,i,L;
     for(i=0;i<parts.length;i++){
       var p=parts[i],o=opts[i];
-      if(p.levels){
-        var plan=[p.levels[0],p.levels[1]-o.l2,p.levels[2]-o.l3];
+      if(p.levels||p.whole){
+        var lv=p.levels||p.whole;
+        var plan=[lv[0],lv[1]-o.l2,lv[2]-o.l3];
         for(L=0;L<3;L++){if(plan[L]<0){var need=-plan[L];plan[L]=0;var best=-1;for(var M=0;M<3;M++){if(M!==L&&(best<0||plan[M]>plan[best]))best=M;}if(best>=0)plan[best]=Math.max(0,plan[best]-need);}}
         var s=plan[0]+plan[1]+plan[2],guard=0;
         while(s>p.sr&&guard++<60){var bi=0;for(var b=1;b<3;b++)if(plan[b]>plan[bi])bi=b;if(plan[bi]<=0)break;plan[bi]--;s--;}
@@ -6224,7 +6273,34 @@ function composeExam(units,inds,includePK,plan){
       for(i=0;i<parts.length;i++){var pp=parts[i],oo=opts[i],pl2=plans[i];
         dev+=Math.abs(pl2[0]+0-pp.levels[0])+Math.abs(pl2[1]+oo.l2-pp.levels[1])+Math.abs(pl2[2]+oo.l3-pp.levels[2]);}
     }else{
-      opts.forEach(function(o){dev+=(o.l3>=4&&o.l3<=6)?Math.abs(o.l3-5):10+Math.abs(o.l3-5);if(!o.exact)dev+=100;});
+      opts.forEach(function(o,i){
+        if(!o.exact)dev+=100;
+        if(parts[i].whole){
+          /* Whole-paper balance in test scope, character first
+             (owner steering, Nov 19, 2026): Level 3 questions
+             live primarily in the constructed response, so a
+             CR option is scored first by the section's own
+             character, an L3-free set is heavily penalised
+             when the pool offers an exact set carrying Level
+             3, and its Level 3 marks are pulled toward the
+             pool's natural share (o.natL3). Only then does
+             the whole paper's fit count, as the last word
+             among sets of like character: the option's level
+             marks plus the SR bands planFor set from the room
+             it leaves, against the part's mark targets. The
+             balance aim is never served by flattening the CR
+             section toward Level 2 to shave the paper's
+             Level 3 share; it works through the SR bands and
+             through the gate's reporting. The Level 3 window
+             below does not apply to a whole-paper part. */
+          var pl=plans[i],wh=parts[i].whole;
+          if(o.poolL3&&o.l3===0)dev+=40;
+          dev+=2*Math.abs(o.l3-(o.natL3||0));
+          dev+=Math.abs(pl[0]-wh[0])+Math.abs(pl[1]+o.l2-wh[1])+Math.abs(pl[2]+o.l3-wh[2]);
+        }else{
+          dev+=(o.l3>=4&&o.l3<=6)?Math.abs(o.l3-5):10+Math.abs(o.l3-5);
+        }
+      });
     }
     parts.forEach(function(p,i){if(p.crL3&&opts[i]){var ix=p.crL3.indexOf(opts[i].l3);dev+=ix<0?40:2*ix;}});
     parts.forEach(function(p,i){if(p.crPref&&opts[i]&&marksKey(opts[i].items)!==prefKey(p.crPref))dev+=40;});

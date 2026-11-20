@@ -2575,6 +2575,15 @@ rep('  if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").ch
 # tScopeLabel in the print code snippet. When a test-shaped set deals
 # short of its target, one plain line says so in the setup summary
 # and on the printed paper.
+# The chassis CSS sets .presetrow{display:flex}, an author rule that
+# overrides the UA stylesheet's [hidden]{display:none}; the single-test
+# row below is hidden by attribute (tTestSelSync) in courses with no
+# testMap, so without this guard the row rendered everywhere, its two
+# dropdowns empty (seen live in Math 2201 and Biology 2201, Nov 19,
+# 2026). Restore the attribute's force for preset rows.
+rep('  .presetrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}',
+    '  .presetrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}\n'
+    '  .presetrow[hidden]{display:none;}', count=1)
 rep('    <div class="presetrow">\n'
     '      <button type="button" id="presetMid" class="alt">Mid-course review</button>\n'
     '      <button type="button" id="presetFinal" class="alt">Final review</button>\n'

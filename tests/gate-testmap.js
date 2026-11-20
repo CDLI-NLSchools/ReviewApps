@@ -21,40 +21,57 @@
         topic slice. A test passes when at least 10 of 12
         compositions land exactly (the composer retries
         internally on every call);
-     5. level balance, under the owner's test-scope ruling of
-        November 19, 2026: within a test paper the
-        per-indicator cap does not bind, and balance is
-        governed at the level of the whole test by the course's
-        level plan (the 20/60/20 mix, or the course's
-        configured defaultMix). The composer expresses that
-        plan as per-level band targets, levelTargets(SR, mix).
-        The check compares the mean dealt SR count at each
-        level over the 12 trials against the achievable band
-        target: the band target, or the test pool's own
-        capacity at that level when the pool holds fewer
-        distinct questions than the band asks for (capacity is
-        sampled mechanically: 60 draws per eligible entry,
-        distinct rendered questions counted; sampling can only
-        understate true capacity, so the adjustment can only
-        ever excuse a shortfall the pool genuinely forces). A
-        level fails when its mean dealt count falls more than
-        0.25 questions below its achievable target: a quarter
-        of a question on a 12-trial mean, against an observed
-        worst shortfall of 0.00 when this check was calibrated.
-        The check runs on counts, not percentage shares, which
-        is what makes it sound on very small tests: on a
-        2-question test the plan's own band targets are
-        [1, 1, 0], whose shares are 50/50/0, so a share-based
-        check would fail the plan itself; the count check asks
-        only that the composer deal the bands the plan sets,
-        as far as the pool allows, which is exactly the
-        governance the ruling describes. Mean SR shares and
-        mean whole-paper mark shares are printed in the table
-        for the record; the whole-paper shares carry no
-        pass/fail, because the CR section's level distribution
-        is set by the course's own standing design (crPref
-        patterns and the Level 3 mark window), not by the
-        level mix;
+     5. level balance, REPORTED, not pass/fail, under the
+        owner's test-scope rulings of November 19, 2026 as
+        clarified later the same evening. Within a test paper
+        the per-indicator cap does not bind, and composition
+        aims at balance for the paper as a whole, marks
+        included: per-level mark targets from the paper's
+        total marks under the course's level plan (the
+        20/60/20 mix, or the course's configured defaultMix),
+        the constructed-response set chosen to bring the
+        paper closest to those targets, and the
+        selected-response bands filling the room it leaves.
+        The level plan is an aim, not a compliance line
+        (owner's clarification): 20/60/20 is aspirational,
+        and the governing question is whether the outcomes
+        are assessed at the levels the guides' indicators
+        and elaborations suggest, which the banks'
+        per-indicator level mixes encode. This section
+        therefore measures and prints, per test: the mean
+        dealt mark share at each level over the 12 trials;
+        the achievable bound at each level (the mark
+        interval the scoped pool can actually deal: SR
+        capacity sampled mechanically, 60 draws per
+        eligible entry with distinct rendered questions
+        counted, which can only understate true capacity;
+        CR capacity exact, from the reachable level splits
+        of the mapped CR total over the pool's CR
+        denominations); the dealt whole-paper deviation
+        from the plan targets, in marks; and the minimum
+        deviation any single paper in the pool can achieve.
+        A test is reported "at the achievable bound" when
+        its dealt deviation sits within BAL_TOL_MARKS of
+        that minimum (half a mark on a 12-trial mean).
+        One deliberate exception: the composer scores the
+        CR section's character ahead of whole-paper fit
+        (owner steering, November 19, 2026: Level 3 lives
+        primarily in the constructed response, and the
+        balance aim is not served by flattening CR toward
+        Level 2), so where the character-preferred CR set
+        is not the balance-optimal one, the dealt deviation
+        sits above the pool minimum by the cost of that
+        preference, and the table reports the gap rather
+        than hiding it. A test whose minimum deviation is above
+        zero is pool-forced: no perfectly balanced paper
+        exists in its pool, and it is named in the summary
+        with the level and section where its pool binds.
+        None of this fails the gate; the figures are the
+        record the build addendum carries. (This measurement
+        supersedes the SR-only pass/fail balance check
+        shipped earlier on November 19, 2026, which held the
+        selected-response bands to the plan and treated the
+        whole-paper shares as information only.)
      6. courses with no map carry no testMap, so the mode's
         absence there is itself checked.
    The per-test table printed at the end is the build-time
@@ -187,9 +204,13 @@ for (const [cid, units] of Object.entries(EXPECTED)) {
   }
 }
 
-/* ---------- checks 4 and 5: composition to the mapped targets,
-   and level balance under the test-scope ruling ---------- */
-const BAL_EPS = 0.25;
+/* ---------- check 4 (pass/fail): composition to the mapped
+   targets. Check 5 (reported only): whole-paper level balance,
+   measured against the plan targets and the achievable bound.
+   See the header. ---------- */
+const BAL_TOL_MARKS = 0.5;
+const forcedRows = [];
+let balTests = 0, balAtBound = 0;
 for (const [cid, units] of Object.entries(EXPECTED)) {
   const C = COURSES[cid];
   if (!C || !C.testMap) continue;
@@ -207,23 +228,68 @@ for (const [cid, units] of Object.entries(EXPECTED)) {
       if (C.pkPracticeOnly) balPool = balPool.filter(e => !isPK(e));
       balPool = balPool.filter(e => !e.enrich && !e.noCompose);
       if (plan.topics) balPool = balPool.filter(e => e.indicators.every(c => { const tp = plan.topics[c]; return !tp || e.topic === tp; }));
-      const capacity = [0, 0, 0];
+      /* Achievable bound, per level, in marks. SR capacity:
+         sampled distinct rendered questions (SR items are one
+         mark each). CR capacity: the exact reachable level
+         splits of the mapped CR total over the pool's CR
+         denominations (CR entries carry 2+ marks, Level 2 or
+         3 only). hi/lo combine the sections: hi is the most
+         marks the level can carry on one paper, lo the fewest
+         the section totals force into it. */
+      const srCap = [0, 0, 0], crCap = [0, 0, 0], crEntries = [];
       for (const e of balPool) {
-        if (probeType(e) !== "mc") continue;
-        const seenQ = new Set();
-        for (let d = 0; d < 60; d++) { const q = e.gen(); if (q && q.type === "mc") seenQ.add(canonQ(q)); }
-        capacity[e.level - 1] += seenQ.size;
+        if (probeType(e) === "mc") {
+          const seenQ = new Set();
+          for (let d = 0; d < 60; d++) { const q = e.gen(); if (q && q.type === "mc") seenQ.add(canonQ(q)); }
+          srCap[e.level - 1] += seenQ.size;
+        }
+        if (typeof CR_MARKS[e.id] === "number" && CR_MARKS[e.id] >= 2 && e.level >= 2) {
+          crCap[e.level - 1] += CR_MARKS[e.id];
+          crEntries.push({ marks: CR_MARKS[e.id], level: e.level });
+        }
       }
-      const bandTargets = levelTargets(plan.sr, mix);
-      const achievable = bandTargets.map((x, L) => Math.min(x, capacity[L]));
+      let splitSet = new Set(["0,0"]);
+      for (const x of crEntries) {
+        const next = new Set(splitSet);
+        for (const s of splitSet) {
+          const ab = s.split(",").map(Number);
+          const na = x.level === 2 ? ab[0] + x.marks : ab[0], nb = x.level === 3 ? ab[1] + x.marks : ab[1];
+          if (na + nb <= plan.cr) next.add(na + "," + nb);
+        }
+        splitSet = next;
+      }
+      const splits = [...splitSet].map(s => s.split(",").map(Number)).filter(ab => ab[0] + ab[1] === plan.cr);
+      const totalMarks = plan.sr + plan.cr;
+      const markTargets = levelTargets(totalMarks, mix);
+      const srCapTot = srCap[0] + srCap[1] + srCap[2];
+      const lo = [0, 0, 0], hi = [0, 0, 0];
+      for (let L = 0; L < 3; L++) {
+        const atL = splits.map(ab => L === 1 ? ab[0] : L === 2 ? ab[1] : 0);
+        hi[L] = Math.min(srCap[L], plan.sr) + (atL.length ? Math.max(...atL) : 0);
+        lo[L] = Math.max(0, plan.sr - (srCapTot - srCap[L])) + (atL.length ? Math.min(...atL) : 0);
+      }
+      /* The minimum whole-paper deviation (marks) any single
+         paper in this pool can achieve, over every reachable
+         CR split and every SR distribution the caps allow. */
+      let minDev = Infinity;
+      for (const ab of (splits.length ? splits : [[0, 0]])) {
+        for (let x = 0; x <= Math.min(srCap[0], plan.sr); x++) {
+          for (let y = 0; y <= Math.min(srCap[1], plan.sr - x); y++) {
+            const z = plan.sr - x - y;
+            if (z < 0 || z > srCap[2]) continue;
+            const dev = Math.abs(x - markTargets[0]) + Math.abs(y + ab[0] - markTargets[1]) + Math.abs(z + ab[1] - markTargets[2]);
+            if (dev < minDev) minDev = dev;
+          }
+        }
+      }
       let good = 0, lastDealt = null, trials = 0;
-      const dealtLvl = [0, 0, 0], markLvl = [0, 0, 0];
+      const markLvl = [0, 0, 0];
       for (let trial = 0; trial < 12; trial++) {
         const res = composeExam([+u], t.inds, false, plan);
         if (!res) continue;
         trials++;
         lastDealt = { sr: res.srItems.length, cr: res.crMarks };
-        res.srItems.forEach(it => { dealtLvl[it.q._entry.level - 1]++; markLvl[it.q._entry.level - 1] += 1; });
+        res.srItems.forEach(it => { markLvl[it.q._entry.level - 1] += 1; });
         res.crItems.forEach(it => { markLvl[it.q._entry.level - 1] += it.marks; });
         let clean = !res.short && res.srItems.length === plan.sr && res.crMarks === plan.cr;
         if (clean) {
@@ -235,27 +301,37 @@ for (const [cid, units] of Object.entries(EXPECTED)) {
         }
         if (clean) good++;
       }
-      const meanLvl = dealtLvl.map(x => trials ? x / trials : 0);
-      const totMarks = markLvl[0] + markLvl[1] + markLvl[2];
-      const srShare = meanLvl.map(x => plan.sr ? (100 * x / plan.sr).toFixed(0) : "0").join("/");
-      const markShare = markLvl.map(x => totMarks ? (100 * x / totMarks).toFixed(0) : "0").join("/");
+      ok(good >= 10, cid + " U" + u + " T" + t.test + ": composes to mapped targets (SR " + plan.sr + ", CR " + plan.cr + ") in " + good + "/12 trials");
+      /* Balance measurement (reported, never pass/fail). */
+      const meanMarks = markLvl.map(x => trials ? x / trials : 0);
+      const markShare = meanMarks.map(x => totalMarks ? (100 * x / totalMarks).toFixed(0) : "0").join("/");
+      const planDev = meanMarks.reduce((s, m, L) => s + Math.abs(m - markTargets[L]), 0);
+      const atBound = planDev <= minDev + BAL_TOL_MARKS;
+      balTests++;
+      if (atBound) balAtBound++;
+      const forcedNotes = [];
+      for (let L = 0; L < 3; L++) {
+        if (markTargets[L] > hi[L]) forcedNotes.push("L" + (L + 1) + " short " + (markTargets[L] - hi[L]) + " mk (SR cap " + srCap[L] + ", CR splits " + splits.map(s => s.join("/")).join(" ") + ")");
+        else if (markTargets[L] < lo[L]) forcedNotes.push("L" + (L + 1) + " forced +" + (lo[L] - markTargets[L]) + " mk (SR cap " + srCap[L] + ", CR splits " + splits.map(s => s.join("/")).join(" ") + ")");
+      }
+      if (minDev > 0) forcedRows.push(cid + " U" + u + " T" + t.test + ": minimum achievable deviation " + minDev + " mk" +
+        (forcedNotes.length ? " | " + forcedNotes.join("; ") : " | levels bind jointly (each level inside its own interval; the totals cannot all land at once)"));
       rows.push(cid + " U" + u + " T" + t.test + ": target SR " + plan.sr + ", CR " + plan.cr +
         " | dealt SR " + (lastDealt ? lastDealt.sr : "-") + ", CR " + (lastDealt ? lastDealt.cr : "-") +
         " | exact " + good + "/12" +
-        " | bands " + bandTargets.join("/") + " achievable " + achievable.join("/") +
-        " mean dealt " + meanLvl.map(x => x.toFixed(2)).join("/") +
-        " | SR shares " + srShare + " | paper mark shares " + markShare);
-      ok(good >= 10, cid + " U" + u + " T" + t.test + ": composes to mapped targets (SR " + plan.sr + ", CR " + plan.cr + ") in " + good + "/12 trials");
-      for (let L = 0; L < 3; L++) {
-        ok(meanLvl[L] >= achievable[L] - BAL_EPS,
-          cid + " U" + u + " T" + t.test + ": level " + (L + 1) + " balance (band target " + bandTargets[L] +
-          ", pool capacity " + capacity[L] + ", achievable " + achievable[L] + ", mean dealt " + meanLvl[L].toFixed(2) + ")");
-      }
+        " | mark targets " + markTargets.join("/") + " achievable " + lo.map((x, L) => x + "-" + hi[L]).join("/") +
+        " mean dealt marks " + meanMarks.map(x => x.toFixed(2)).join("/") +
+        " | paper mark shares " + markShare +
+        " | deviation " + planDev.toFixed(2) + " mk (minimum achievable " + minDev + ")" +
+        (atBound ? " | at the achievable bound" : " | above the pool minimum by " + (planDev - minDev).toFixed(2) + " mk"));
     }
   }
 }
 
 console.log("--- pool-depth and balance record (target vs dealt, per test) ---");
 rows.forEach(r => console.log(r));
+console.log("--- balance summary (reported measurement, not pass/fail) ---");
+console.log("tests measured: " + balTests + " | dealt at the achievable bound: " + balAtBound + " | pool-forced (no perfectly balanced paper exists): " + forcedRows.length);
+forcedRows.forEach(r => console.log("POOL-FORCED: " + r));
 console.log("GATE-TESTMAP: " + pass + " passed, " + fail + " failed");
 process.exit(fail ? 1 : 0);
