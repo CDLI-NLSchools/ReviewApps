@@ -614,6 +614,46 @@ function u7Svg(W, H, body, aria) {
 // CRMARKS: u1-cr-assembled-height=3
 // CRMARKS: u1-cr-level-off=2
 // CRMARKS: u1-cr-scale-area=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-identify-view=2
+// CRMARKS: u1-solid-views=2
+// CRMARKS: u1-vanishing-point-basics=2
+// CRMARKS: u1-exploded-top-part=2
+// CRMARKS: u1-iso-count-easy=2
+// CRMARKS: u1-front-view-dims=2
+// CRMARKS: u1-total-from-top=2
+// CRMARKS: u1-which-object=2
+// CRMARKS: u1-judge-views=2
+// CRMARKS: u1-iso-tallest=2
+// CRMARKS: u1-perspective-match=2
+// CRMARKS: u1-exploded-sequence=2
+// CRMARKS: u1-scale-component-mc=2
+// CRMARKS: u1-exploded-to-front=2
+// CRMARKS: u1-top-footprint=2
+// CRMARKS: u1-judge-complex=3
+// CRMARKS: u1-hidden-cubes=3
+// CRMARKS: u1-persp-vp-position=3
+// CRMARKS: u1-pk-rotate-predict=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-identify-view=a
+// BIMODAL: u1-solid-views=a
+// BIMODAL: u1-vanishing-point-basics=b
+// BIMODAL: u1-exploded-top-part=a
+// BIMODAL: u1-iso-count-easy=a
+// BIMODAL: u1-front-view-dims=b
+// BIMODAL: u1-total-from-top=a
+// BIMODAL: u1-which-object=a
+// BIMODAL: u1-judge-views=b
+// BIMODAL: u1-iso-tallest=a
+// BIMODAL: u1-perspective-match=b
+// BIMODAL: u1-exploded-sequence=b
+// BIMODAL: u1-scale-component-mc=a
+// BIMODAL: u1-exploded-to-front=a
+// BIMODAL: u1-top-footprint=b
+// BIMODAL: u1-judge-complex=b
+// BIMODAL: u1-hidden-cubes=a
+// BIMODAL: u1-persp-vp-position=a
+// BIMODAL: u1-pk-rotate-predict=a
 /* ===== Unit 1 ===== */
 // Unit 1 Drawing and Design (indicators 3.17-3.28)
 function u1T(x,y,s,size,anchor,bold){return '<text x="'+fmt(x,1)+'" y="'+fmt(y,1)+'" font-size="'+(size||12)+'" fill="'+FIG_INK+'" text-anchor="'+(anchor||"middle")+'" dominant-baseline="central"'+(bold?' font-weight="bold"':"")+'>'+s+'</text>';}
@@ -1161,6 +1201,60 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-cr-convert=3
 // CRMARKS: u2-cr-tank-dome=2
 // CRMARKS: u2-cr-correct-error=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-sa-meaning=2
+// CRMARKS: u2-referent-estimate=2
+// CRMARKS: u2-prism-basic=2
+// CRMARKS: u2-round-basic=2
+// CRMARKS: u2-unit-choice=2
+// CRMARKS: u2-cylinder-sa=2
+// CRMARKS: u2-pyramid-sa=2
+// CRMARKS: u2-net-area=2
+// CRMARKS: u2-dim-change=2
+// CRMARKS: u2-trades-formula=2
+// CRMARKS: u2-error-id=2
+// CRMARKS: u2-equiv-forms=2
+// CRMARKS: u2-estimate-apply=2
+// CRMARKS: u2-proportion-convert=2
+// CRMARKS: u2-unit-error=2
+// CRMARKS: u2-composite-sa=3
+// CRMARKS: u2-manip-advanced=3
+// CRMARKS: u2-scaling-compare=3
+// CRMARKS: u2-pk-surface-prism=2
+// CRMARKS: u2-pk-composite-area=2
+// CRMARKS: u2-pk-circle-area=2
+// CRMARKS: u2-pk-perimeter=2
+// CRMARKS: u2-pk-error-analysis=2
+// CRMARKS: u2-pk-si-imp-convert=2
+// CRMARKS: u2-pk-imp-si-convert=2
+// CRMARKS: u2-pk-si-convert=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-sa-meaning=b
+// BIMODAL: u2-referent-estimate=a
+// BIMODAL: u2-prism-basic=a
+// BIMODAL: u2-round-basic=a
+// BIMODAL: u2-unit-choice=b
+// BIMODAL: u2-cylinder-sa=a
+// BIMODAL: u2-pyramid-sa=a
+// BIMODAL: u2-net-area=a
+// BIMODAL: u2-dim-change=a
+// BIMODAL: u2-trades-formula=b
+// BIMODAL: u2-error-id=a
+// BIMODAL: u2-equiv-forms=b
+// BIMODAL: u2-estimate-apply=a
+// BIMODAL: u2-proportion-convert=a
+// BIMODAL: u2-unit-error=a
+// BIMODAL: u2-composite-sa=a
+// BIMODAL: u2-manip-advanced=a
+// BIMODAL: u2-scaling-compare=a
+// BIMODAL: u2-pk-surface-prism=a
+// BIMODAL: u2-pk-composite-area=a
+// BIMODAL: u2-pk-circle-area=a
+// BIMODAL: u2-pk-perimeter=a
+// BIMODAL: u2-pk-error-analysis=a
+// BIMODAL: u2-pk-si-imp-convert=a
+// BIMODAL: u2-pk-imp-si-convert=a
+// BIMODAL: u2-pk-si-convert=a
 /* ===== Unit 2 ===== */
 /* Math 2202 Unit 2 (Surface Area) bank entries. Codes from ind-unit2.json.
    Formula sheet forms used exactly: prism SA = 2lw + 2lh + 2wh;
@@ -2050,6 +2144,58 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-cr-composite=3
 // CRMARKS: u3-cr-capacity-remaining=2
 // CRMARKS: u3-cr-find-base-side=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-vol-vs-capacity=2
+// CRMARKS: u3-referents=2
+// CRMARKS: u3-choose-unit=2
+// CRMARKS: u3-si-cubed=2
+// CRMARKS: u3-imperial-cubed=2
+// CRMARKS: u3-prism-volume=2
+// CRMARKS: u3-estimate-referent=2
+// CRMARKS: u3-cylinder-volume=2
+// CRMARKS: u3-cone-pyramid-volume=2
+// CRMARKS: u3-sphere-volume=2
+// CRMARKS: u3-capacity-tools=2
+// CRMARKS: u3-dimension-change=2
+// CRMARKS: u3-one-third=2
+// CRMARKS: u3-composite-volume=2
+// CRMARKS: u3-trade-formula=2
+// CRMARKS: u3-equivalent-forms=2
+// CRMARKS: u3-create-solve=2
+// CRMARKS: u3-sphere-capacity=3
+// CRMARKS: u3-imperial-context=3
+// CRMARKS: u3-dimension-change-hard=3
+// CRMARKS: u3-estimate-hard=3
+// CRMARKS: u3-pk-holds-most=2
+// CRMARKS: u3-pk-area-si-convert=2
+// CRMARKS: u3-pk-area-imp-convert=2
+// CRMARKS: u3-pk-area-convert-adv=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-vol-vs-capacity=b
+// BIMODAL: u3-referents=b
+// BIMODAL: u3-choose-unit=a
+// BIMODAL: u3-si-cubed=a
+// BIMODAL: u3-imperial-cubed=a
+// BIMODAL: u3-prism-volume=a
+// BIMODAL: u3-estimate-referent=a
+// BIMODAL: u3-cylinder-volume=a
+// BIMODAL: u3-cone-pyramid-volume=a
+// BIMODAL: u3-sphere-volume=a
+// BIMODAL: u3-capacity-tools=a
+// BIMODAL: u3-dimension-change=a
+// BIMODAL: u3-one-third=a
+// BIMODAL: u3-composite-volume=a
+// BIMODAL: u3-trade-formula=b
+// BIMODAL: u3-equivalent-forms=b
+// BIMODAL: u3-create-solve=a
+// BIMODAL: u3-sphere-capacity=a
+// BIMODAL: u3-imperial-context=a
+// BIMODAL: u3-dimension-change-hard=a
+// BIMODAL: u3-estimate-hard=b
+// BIMODAL: u3-pk-holds-most=a
+// BIMODAL: u3-pk-area-si-convert=a
+// BIMODAL: u3-pk-area-imp-convert=a
+// BIMODAL: u3-pk-area-convert-adv=a
 /* ===== Unit 3 ===== */
 /* Unit 3: Volume and Capacity. Helpers prefixed u3v. */
 function u3vUniq(a){ return new Set(a.map(function(x){return String(x);})).size===a.length; }
@@ -2979,6 +3125,38 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-cr-interpolate=3
 // CRMARKS: u4-cr-predict-trend=2
 // CRMARKS: u4-cr-percent-change=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-histogram-read=2
+// CRMARKS: u4-trend-basic=2
+// CRMARKS: u4-read-value=2
+// CRMARKS: u4-histogram-combine=2
+// CRMARKS: u4-interpolate=2
+// CRMARKS: u4-misleading-axis=2
+// CRMARKS: u4-scatter-trend=2
+// CRMARKS: u4-two-conclusions=2
+// CRMARKS: u4-peak-pair=3
+// CRMARKS: u4-misleading-actual=3
+// CRMARKS: u4-pk-graph-describe=2
+// CRMARKS: u4-pk-point-on-graph=2
+// CRMARKS: u4-pk-graph-read=2
+// CRMARKS: u4-pk-graph-quantities=2
+// CRMARKS: u4-pk-line-graph=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-histogram-read=a
+// BIMODAL: u4-trend-basic=b
+// BIMODAL: u4-read-value=a
+// BIMODAL: u4-histogram-combine=a
+// BIMODAL: u4-interpolate=a
+// BIMODAL: u4-misleading-axis=b
+// BIMODAL: u4-scatter-trend=b
+// BIMODAL: u4-two-conclusions=b
+// BIMODAL: u4-peak-pair=b
+// BIMODAL: u4-misleading-actual=a
+// BIMODAL: u4-pk-graph-describe=b
+// BIMODAL: u4-pk-point-on-graph=a
+// BIMODAL: u4-pk-graph-read=a
+// BIMODAL: u4-pk-graph-quantities=a
+// BIMODAL: u4-pk-line-graph=a
 /* ===== Unit 4 ===== */
 /* Unit 4: Interpreting Graphs (indicators 6.1 to 6.7). Figure helpers prefixed u4. */
 function u4X(i, n) { return 58 + i * (258 / Math.max(n - 1, 1)); }
@@ -3750,6 +3928,38 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u5-cr-what-if-balance=3
 // CRMARKS: u5-cr-goal-after-change=2
 // CRMARKS: u5-cr-max-wants-spending=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-classify-item=2
+// CRMARKS: u5-budget-considerations=2
+// CRMARKS: u5-need-or-want=2
+// CRMARKS: u5-budget-totals-mc=2
+// CRMARKS: u5-percent-of-income-mc=2
+// CRMARKS: u5-week-spending-mc=2
+// CRMARKS: u5-modify-for-goal-mc=3
+// CRMARKS: u5-what-if-mc=3
+// CRMARKS: u5-pk-hours-total=2
+// CRMARKS: u5-pk-gross-overtime=2
+// CRMARKS: u5-pk-gross-tips=2
+// CRMARKS: u5-pk-deduction-calc=2
+// CRMARKS: u5-pk-net-pay=2
+// CRMARKS: u5-add-income-total=2
+// CRMARKS: u5-add-slow-month-plan=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-classify-item=a
+// BIMODAL: u5-budget-considerations=b
+// BIMODAL: u5-need-or-want=a
+// BIMODAL: u5-budget-totals-mc=a
+// BIMODAL: u5-percent-of-income-mc=a
+// BIMODAL: u5-week-spending-mc=a
+// BIMODAL: u5-modify-for-goal-mc=a
+// BIMODAL: u5-what-if-mc=a
+// BIMODAL: u5-pk-hours-total=a
+// BIMODAL: u5-pk-gross-overtime=a
+// BIMODAL: u5-pk-gross-tips=a
+// BIMODAL: u5-pk-deduction-calc=a
+// BIMODAL: u5-pk-net-pay=a
+// BIMODAL: u5-add-income-total=a
+// BIMODAL: u5-add-slow-month-plan=b
 /* ===== Unit 5 ===== */
 /* Unit 5 (Budgets) bank for Mathematics 2202 Review. Codes 1.1 to 1.6.
    All money is handled in integer cents so totals are exact to the cent. */
@@ -4403,6 +4613,42 @@ BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-promo-deferred-interest=3
 // CRMARKS: u6-compound-solve-periods=2
 // CRMARKS: u6-credit-plan-savings=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-simple-interest-basic=2
+// CRMARKS: u6-account-types=2
+// CRMARKS: u6-keep-info-secure=2
+// CRMARKS: u6-compounding-periods=2
+// CRMARKS: u6-simple-vs-compound=2
+// CRMARKS: u6-best-account=2
+// CRMARKS: u6-credit-card-offers=2
+// CRMARKS: u6-credit-strategies=2
+// CRMARKS: u6-card-charges-choices=2
+// CRMARKS: u6-card-vs-loan-cost=2
+// CRMARKS: u6-simple-interest-fv=2
+// CRMARKS: u6-compound-growth-figure=3
+// CRMARKS: u6-card-payoff-months=3
+// CRMARKS: u6-promo-vs-loan=3
+// CRMARKS: u6-pk-commission=2
+// CRMARKS: u6-pk-product-law=2
+// CRMARKS: u6-pk-percent-change=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-simple-interest-basic=a
+// BIMODAL: u6-account-types=b
+// BIMODAL: u6-keep-info-secure=b
+// BIMODAL: u6-compounding-periods=a
+// BIMODAL: u6-simple-vs-compound=a
+// BIMODAL: u6-best-account=b
+// BIMODAL: u6-credit-card-offers=a
+// BIMODAL: u6-credit-strategies=b
+// BIMODAL: u6-card-charges-choices=a
+// BIMODAL: u6-card-vs-loan-cost=a
+// BIMODAL: u6-simple-interest-fv=a
+// BIMODAL: u6-compound-growth-figure=a
+// BIMODAL: u6-card-payoff-months=a
+// BIMODAL: u6-promo-vs-loan=a
+// BIMODAL: u6-pk-commission=a
+// BIMODAL: u6-pk-product-law=a
+// BIMODAL: u6-pk-percent-change=a
 /* ===== Unit 6 ===== */
 /* Unit 6 Banking (Math 2202). Helpers prefixed u6. */
 function u6d(x){var s=(Math.round(x*100)/100).toFixed(2);var p=s.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return "$"+p.join(".");}
@@ -5311,6 +5557,60 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-cr-run-find=3
 // CRMARKS: u7-cr-angle-slope=2
 // CRMARKS: u7-cr-create-scale=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-slope-contexts=2
+// CRMARKS: u7-zero-undefined=2
+// CRMARKS: u7-rise-run-intro=2
+// CRMARKS: u7-rate-of-change-intro=2
+// CRMARKS: u7-scale-contexts=2
+// CRMARKS: u7-scale-drawing-read=2
+// CRMARKS: u7-pitch-compare=2
+// CRMARKS: u7-slope-from-ramp=2
+// CRMARKS: u7-constant-slope=2
+// CRMARKS: u7-angle-elevation=2
+// CRMARKS: u7-ramp-safety=2
+// CRMARKS: u7-slope-two-points=2
+// CRMARKS: u7-error-slope=2
+// CRMARKS: u7-equivalent-forms=2
+// CRMARKS: u7-trades-slope=2
+// CRMARKS: u7-scale-actual=2
+// CRMARKS: u7-model-dimensions=2
+// CRMARKS: u7-drawn-length-choice=2
+// CRMARKS: u7-create-solve-slope=3
+// CRMARKS: u7-constant-verify-advanced=3
+// CRMARKS: u7-scale-multi-step=3
+// CRMARKS: u7-pk-express-rate=2
+// CRMARKS: u7-pk-identify-rate=2
+// CRMARKS: u7-pk-similar-check=2
+// CRMARKS: u7-pk-corresponding-sides=2
+// CRMARKS: u7-pk-similar-missing-side=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-slope-contexts=a
+// BIMODAL: u7-zero-undefined=a
+// BIMODAL: u7-rise-run-intro=a
+// BIMODAL: u7-rate-of-change-intro=b
+// BIMODAL: u7-scale-contexts=b
+// BIMODAL: u7-scale-drawing-read=a
+// BIMODAL: u7-pitch-compare=b
+// BIMODAL: u7-slope-from-ramp=a
+// BIMODAL: u7-constant-slope=b
+// BIMODAL: u7-angle-elevation=a
+// BIMODAL: u7-ramp-safety=b
+// BIMODAL: u7-slope-two-points=a
+// BIMODAL: u7-error-slope=b
+// BIMODAL: u7-equivalent-forms=a
+// BIMODAL: u7-trades-slope=b
+// BIMODAL: u7-scale-actual=a
+// BIMODAL: u7-model-dimensions=a
+// BIMODAL: u7-drawn-length-choice=a
+// BIMODAL: u7-create-solve-slope=a
+// BIMODAL: u7-constant-verify-advanced=b
+// BIMODAL: u7-scale-multi-step=a
+// BIMODAL: u7-pk-express-rate=a
+// BIMODAL: u7-pk-identify-rate=b
+// BIMODAL: u7-pk-similar-check=b
+// BIMODAL: u7-pk-corresponding-sides=a
+// BIMODAL: u7-pk-similar-missing-side=a
 /* ===== Unit 7 ===== */
 /* Unit 7 Slope and Scale, Math 2202 Review. Helpers prefixed u7. */
 function u7RampFig(rise, run, title){
@@ -6048,6 +6348,40 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u8-cr-clinometer-two-readings=3
 // CRMARKS: u8-cr-two-depressions=2
 // CRMARKS: u8-cr-baseline-height=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-elev-or-depress=2
+// CRMARKS: u8-choose-ratio-equation=2
+// CRMARKS: u8-count-right-triangles=2
+// CRMARKS: u8-ratio-meaning=2
+// CRMARKS: u8-elevation-height-mc=2
+// CRMARKS: u8-depression-distance-mc=2
+// CRMARKS: u8-two-triangles-gap-mc=2
+// CRMARKS: u8-fix-ratio-error=2
+// CRMARKS: u8-trig-in-trades=2
+// CRMARKS: u8-reasonable-or-not=2
+// CRMARKS: u8-two-stage-target-mc=3
+// CRMARKS: u8-equivalent-forms-mc=3
+// CRMARKS: u8-pk-choose-ratio=2
+// CRMARKS: u8-pk-sine-ratio-constant=2
+// CRMARKS: u8-pk-unknown-angle=2
+// CRMARKS: u8-pk-reasonable=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-elev-or-depress=b
+// BIMODAL: u8-choose-ratio-equation=a
+// BIMODAL: u8-count-right-triangles=a
+// BIMODAL: u8-ratio-meaning=b
+// BIMODAL: u8-elevation-height-mc=a
+// BIMODAL: u8-depression-distance-mc=a
+// BIMODAL: u8-two-triangles-gap-mc=a
+// BIMODAL: u8-fix-ratio-error=b
+// BIMODAL: u8-trig-in-trades=b
+// BIMODAL: u8-reasonable-or-not=b
+// BIMODAL: u8-two-stage-target-mc=a
+// BIMODAL: u8-equivalent-forms-mc=b
+// BIMODAL: u8-pk-choose-ratio=a
+// BIMODAL: u8-pk-sine-ratio-constant=a
+// BIMODAL: u8-pk-unknown-angle=a
+// BIMODAL: u8-pk-reasonable=b
 /* ===== Unit 8 ===== */
 /* Unit 8 Trigonometry, Mathematics 2202 Review. Helpers prefixed u8. */
 var U8R = Math.PI / 180;
@@ -6829,10 +7163,10 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-cr-assembled-height":3,"u1-cr-front-real-height":2,"u1-cr-iso-total":2,"u1-cr-level-off":2,"u1-cr-scale-area":3,"u1-cr-scale-drawn":3,"u1-cr-scale-real":3,"u1-cr-total-cubes":2,"u2-cr-convert":3,"u2-cr-correct-error":3,"u2-cr-cyl-height":3,"u2-cr-cylinder":2,"u2-cr-paint-trade":3,"u2-cr-prism":2,"u2-cr-sphere-radius":2,"u2-cr-tank-dome":2,"u3-cr-capacity-remaining":2,"u3-cr-composite":3,"u3-cr-cone":3,"u3-cr-cylinder":2,"u3-cr-find-base-side":3,"u3-cr-find-height":3,"u3-cr-si-conversion":2,"u3-cr-tank-capacity":2,"u4-cr-bar-total":3,"u4-cr-extrapolate":2,"u4-cr-histogram-range":3,"u4-cr-histogram-total":2,"u4-cr-interpolate":3,"u4-cr-percent-change":3,"u4-cr-predict-trend":2,"u4-cr-read-compare":2,"u5-cr-budget-balance":2,"u5-cr-category-percent":2,"u5-cr-goal-after-change":2,"u5-cr-max-wants-spending":3,"u5-cr-modify-budget":3,"u5-cr-total-expenses":2,"u5-cr-week-record-total":3,"u5-cr-what-if-balance":3,"u6-atm-total-charges":2,"u6-compound-future-value":2,"u6-compound-solve-periods":2,"u6-credit-interest-cost":3,"u6-credit-plan-savings":3,"u6-payday-loan-cost":3,"u6-promo-deferred-interest":3,"u6-simple-interest-solve":2,"u7-cr-angle-slope":2,"u7-cr-create-scale":3,"u7-cr-model-scale":3,"u7-cr-rate-problem":3,"u7-cr-rise-find":2,"u7-cr-run-find":3,"u7-cr-scale-actual":2,"u7-cr-slope-points":2,"u8-cr-baseline-height":3,"u8-cr-clinometer-two-readings":3,"u8-cr-direct-side":2,"u8-cr-elevation-height":2,"u8-cr-find-angle":2,"u8-cr-same-side-gap":3,"u8-cr-shared-side-stage":3,"u8-cr-two-depressions":2};
+window.__BANK_CRMARKS={"u1-cr-assembled-height":3,"u1-cr-front-real-height":2,"u1-cr-iso-total":2,"u1-cr-level-off":2,"u1-cr-scale-area":3,"u1-cr-scale-drawn":3,"u1-cr-scale-real":3,"u1-cr-total-cubes":2,"u1-exploded-sequence":2,"u1-exploded-to-front":2,"u1-exploded-top-part":2,"u1-front-view-dims":2,"u1-hidden-cubes":3,"u1-identify-view":2,"u1-iso-count-easy":2,"u1-iso-tallest":2,"u1-judge-complex":3,"u1-judge-views":2,"u1-persp-vp-position":3,"u1-perspective-match":2,"u1-pk-rotate-predict":2,"u1-scale-component-mc":2,"u1-solid-views":2,"u1-top-footprint":2,"u1-total-from-top":2,"u1-vanishing-point-basics":2,"u1-which-object":2,"u2-composite-sa":3,"u2-cr-convert":3,"u2-cr-correct-error":3,"u2-cr-cyl-height":3,"u2-cr-cylinder":2,"u2-cr-paint-trade":3,"u2-cr-prism":2,"u2-cr-sphere-radius":2,"u2-cr-tank-dome":2,"u2-cylinder-sa":2,"u2-dim-change":2,"u2-equiv-forms":2,"u2-error-id":2,"u2-estimate-apply":2,"u2-manip-advanced":3,"u2-net-area":2,"u2-pk-circle-area":2,"u2-pk-composite-area":2,"u2-pk-error-analysis":2,"u2-pk-imp-si-convert":2,"u2-pk-perimeter":2,"u2-pk-si-convert":2,"u2-pk-si-imp-convert":2,"u2-pk-surface-prism":2,"u2-prism-basic":2,"u2-proportion-convert":2,"u2-pyramid-sa":2,"u2-referent-estimate":2,"u2-round-basic":2,"u2-sa-meaning":2,"u2-scaling-compare":3,"u2-trades-formula":2,"u2-unit-choice":2,"u2-unit-error":2,"u3-capacity-tools":2,"u3-choose-unit":2,"u3-composite-volume":2,"u3-cone-pyramid-volume":2,"u3-cr-capacity-remaining":2,"u3-cr-composite":3,"u3-cr-cone":3,"u3-cr-cylinder":2,"u3-cr-find-base-side":3,"u3-cr-find-height":3,"u3-cr-si-conversion":2,"u3-cr-tank-capacity":2,"u3-create-solve":2,"u3-cylinder-volume":2,"u3-dimension-change":2,"u3-dimension-change-hard":3,"u3-equivalent-forms":2,"u3-estimate-hard":3,"u3-estimate-referent":2,"u3-imperial-context":3,"u3-imperial-cubed":2,"u3-one-third":2,"u3-pk-area-convert-adv":2,"u3-pk-area-imp-convert":2,"u3-pk-area-si-convert":2,"u3-pk-holds-most":2,"u3-prism-volume":2,"u3-referents":2,"u3-si-cubed":2,"u3-sphere-capacity":3,"u3-sphere-volume":2,"u3-trade-formula":2,"u3-vol-vs-capacity":2,"u4-cr-bar-total":3,"u4-cr-extrapolate":2,"u4-cr-histogram-range":3,"u4-cr-histogram-total":2,"u4-cr-interpolate":3,"u4-cr-percent-change":3,"u4-cr-predict-trend":2,"u4-cr-read-compare":2,"u4-histogram-combine":2,"u4-histogram-read":2,"u4-interpolate":2,"u4-misleading-actual":3,"u4-misleading-axis":2,"u4-peak-pair":3,"u4-pk-graph-describe":2,"u4-pk-graph-quantities":2,"u4-pk-graph-read":2,"u4-pk-line-graph":2,"u4-pk-point-on-graph":2,"u4-read-value":2,"u4-scatter-trend":2,"u4-trend-basic":2,"u4-two-conclusions":2,"u5-add-income-total":2,"u5-add-slow-month-plan":2,"u5-budget-considerations":2,"u5-budget-totals-mc":2,"u5-classify-item":2,"u5-cr-budget-balance":2,"u5-cr-category-percent":2,"u5-cr-goal-after-change":2,"u5-cr-max-wants-spending":3,"u5-cr-modify-budget":3,"u5-cr-total-expenses":2,"u5-cr-week-record-total":3,"u5-cr-what-if-balance":3,"u5-modify-for-goal-mc":3,"u5-need-or-want":2,"u5-percent-of-income-mc":2,"u5-pk-deduction-calc":2,"u5-pk-gross-overtime":2,"u5-pk-gross-tips":2,"u5-pk-hours-total":2,"u5-pk-net-pay":2,"u5-week-spending-mc":2,"u5-what-if-mc":3,"u6-account-types":2,"u6-atm-total-charges":2,"u6-best-account":2,"u6-card-charges-choices":2,"u6-card-payoff-months":3,"u6-card-vs-loan-cost":2,"u6-compound-future-value":2,"u6-compound-growth-figure":3,"u6-compound-solve-periods":2,"u6-compounding-periods":2,"u6-credit-card-offers":2,"u6-credit-interest-cost":3,"u6-credit-plan-savings":3,"u6-credit-strategies":2,"u6-keep-info-secure":2,"u6-payday-loan-cost":3,"u6-pk-commission":2,"u6-pk-percent-change":2,"u6-pk-product-law":2,"u6-promo-deferred-interest":3,"u6-promo-vs-loan":3,"u6-simple-interest-basic":2,"u6-simple-interest-fv":2,"u6-simple-interest-solve":2,"u6-simple-vs-compound":2,"u7-angle-elevation":2,"u7-constant-slope":2,"u7-constant-verify-advanced":3,"u7-cr-angle-slope":2,"u7-cr-create-scale":3,"u7-cr-model-scale":3,"u7-cr-rate-problem":3,"u7-cr-rise-find":2,"u7-cr-run-find":3,"u7-cr-scale-actual":2,"u7-cr-slope-points":2,"u7-create-solve-slope":3,"u7-drawn-length-choice":2,"u7-equivalent-forms":2,"u7-error-slope":2,"u7-model-dimensions":2,"u7-pitch-compare":2,"u7-pk-corresponding-sides":2,"u7-pk-express-rate":2,"u7-pk-identify-rate":2,"u7-pk-similar-check":2,"u7-pk-similar-missing-side":2,"u7-ramp-safety":2,"u7-rate-of-change-intro":2,"u7-rise-run-intro":2,"u7-scale-actual":2,"u7-scale-contexts":2,"u7-scale-drawing-read":2,"u7-scale-multi-step":3,"u7-slope-contexts":2,"u7-slope-from-ramp":2,"u7-slope-two-points":2,"u7-trades-slope":2,"u7-zero-undefined":2,"u8-choose-ratio-equation":2,"u8-count-right-triangles":2,"u8-cr-baseline-height":3,"u8-cr-clinometer-two-readings":3,"u8-cr-direct-side":2,"u8-cr-elevation-height":2,"u8-cr-find-angle":2,"u8-cr-same-side-gap":3,"u8-cr-shared-side-stage":3,"u8-cr-two-depressions":2,"u8-depression-distance-mc":2,"u8-elev-or-depress":2,"u8-elevation-height-mc":2,"u8-equivalent-forms-mc":3,"u8-fix-ratio-error":2,"u8-pk-choose-ratio":2,"u8-pk-reasonable":2,"u8-pk-sine-ratio-constant":2,"u8-pk-unknown-angle":2,"u8-ratio-meaning":2,"u8-reasonable-or-not":2,"u8-trig-in-trades":2,"u8-two-stage-target-mc":3,"u8-two-triangles-gap-mc":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={};
+window.__BANK_BIMODAL={"u1-exploded-sequence":"b","u1-exploded-to-front":"a","u1-exploded-top-part":"a","u1-front-view-dims":"b","u1-hidden-cubes":"a","u1-identify-view":"a","u1-iso-count-easy":"a","u1-iso-tallest":"a","u1-judge-complex":"b","u1-judge-views":"b","u1-persp-vp-position":"a","u1-perspective-match":"b","u1-pk-rotate-predict":"a","u1-scale-component-mc":"a","u1-solid-views":"a","u1-top-footprint":"b","u1-total-from-top":"a","u1-vanishing-point-basics":"b","u1-which-object":"a","u2-composite-sa":"a","u2-cylinder-sa":"a","u2-dim-change":"a","u2-equiv-forms":"b","u2-error-id":"a","u2-estimate-apply":"a","u2-manip-advanced":"a","u2-net-area":"a","u2-pk-circle-area":"a","u2-pk-composite-area":"a","u2-pk-error-analysis":"a","u2-pk-imp-si-convert":"a","u2-pk-perimeter":"a","u2-pk-si-convert":"a","u2-pk-si-imp-convert":"a","u2-pk-surface-prism":"a","u2-prism-basic":"a","u2-proportion-convert":"a","u2-pyramid-sa":"a","u2-referent-estimate":"a","u2-round-basic":"a","u2-sa-meaning":"b","u2-scaling-compare":"a","u2-trades-formula":"b","u2-unit-choice":"b","u2-unit-error":"a","u3-capacity-tools":"a","u3-choose-unit":"a","u3-composite-volume":"a","u3-cone-pyramid-volume":"a","u3-create-solve":"a","u3-cylinder-volume":"a","u3-dimension-change":"a","u3-dimension-change-hard":"a","u3-equivalent-forms":"b","u3-estimate-hard":"b","u3-estimate-referent":"a","u3-imperial-context":"a","u3-imperial-cubed":"a","u3-one-third":"a","u3-pk-area-convert-adv":"a","u3-pk-area-imp-convert":"a","u3-pk-area-si-convert":"a","u3-pk-holds-most":"a","u3-prism-volume":"a","u3-referents":"b","u3-si-cubed":"a","u3-sphere-capacity":"a","u3-sphere-volume":"a","u3-trade-formula":"b","u3-vol-vs-capacity":"b","u4-histogram-combine":"a","u4-histogram-read":"a","u4-interpolate":"a","u4-misleading-actual":"a","u4-misleading-axis":"b","u4-peak-pair":"b","u4-pk-graph-describe":"b","u4-pk-graph-quantities":"a","u4-pk-graph-read":"a","u4-pk-line-graph":"a","u4-pk-point-on-graph":"a","u4-read-value":"a","u4-scatter-trend":"b","u4-trend-basic":"b","u4-two-conclusions":"b","u5-add-income-total":"a","u5-add-slow-month-plan":"b","u5-budget-considerations":"b","u5-budget-totals-mc":"a","u5-classify-item":"a","u5-modify-for-goal-mc":"a","u5-need-or-want":"a","u5-percent-of-income-mc":"a","u5-pk-deduction-calc":"a","u5-pk-gross-overtime":"a","u5-pk-gross-tips":"a","u5-pk-hours-total":"a","u5-pk-net-pay":"a","u5-week-spending-mc":"a","u5-what-if-mc":"a","u6-account-types":"b","u6-best-account":"b","u6-card-charges-choices":"a","u6-card-payoff-months":"a","u6-card-vs-loan-cost":"a","u6-compound-growth-figure":"a","u6-compounding-periods":"a","u6-credit-card-offers":"a","u6-credit-strategies":"b","u6-keep-info-secure":"b","u6-pk-commission":"a","u6-pk-percent-change":"a","u6-pk-product-law":"a","u6-promo-vs-loan":"a","u6-simple-interest-basic":"a","u6-simple-interest-fv":"a","u6-simple-vs-compound":"a","u7-angle-elevation":"a","u7-constant-slope":"b","u7-constant-verify-advanced":"b","u7-create-solve-slope":"a","u7-drawn-length-choice":"a","u7-equivalent-forms":"a","u7-error-slope":"b","u7-model-dimensions":"a","u7-pitch-compare":"b","u7-pk-corresponding-sides":"a","u7-pk-express-rate":"a","u7-pk-identify-rate":"b","u7-pk-similar-check":"b","u7-pk-similar-missing-side":"a","u7-ramp-safety":"b","u7-rate-of-change-intro":"b","u7-rise-run-intro":"a","u7-scale-actual":"a","u7-scale-contexts":"b","u7-scale-drawing-read":"a","u7-scale-multi-step":"a","u7-slope-contexts":"a","u7-slope-from-ramp":"a","u7-slope-two-points":"a","u7-trades-slope":"b","u7-zero-undefined":"a","u8-choose-ratio-equation":"a","u8-count-right-triangles":"a","u8-depression-distance-mc":"a","u8-elev-or-depress":"b","u8-elevation-height-mc":"a","u8-equivalent-forms-mc":"b","u8-fix-ratio-error":"b","u8-pk-choose-ratio":"a","u8-pk-reasonable":"b","u8-pk-sine-ratio-constant":"a","u8-pk-unknown-angle":"a","u8-ratio-meaning":"b","u8-reasonable-or-not":"b","u8-trig-in-trades":"b","u8-two-stage-target-mc":"a","u8-two-triangles-gap-mc":"a"};
