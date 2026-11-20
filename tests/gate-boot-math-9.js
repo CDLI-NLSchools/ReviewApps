@@ -20,7 +20,10 @@
      November 19, 2026): pools 113 (mid) / 113 (final) / 226
      (all) since the repeat-fix tranche of November 19, 2026
      (eight Level 2 multiple-choice entries added to Unit 2,
-     all of them in the mid scope), face
+     all of them in the mid scope), and pools 114 (mid) / 113
+     (final) / 227 (all) since the Level 3 follow-up entry of
+     November 19, 2026 (one Level 3 multiple-choice entry
+     added to Unit 2, in the mid scope), face
      scopes "Mid-course review:
      Units 1 to 4" and "End-of-course review: Units 5 to 9"
      (refreshFace, lines 7458 to 7459), the face card promising
@@ -29,7 +32,11 @@
    - Mid and final practice exams render at 35 marks through
      the app's own exam path, with no short-paper heads-up (the
      fallback-total short check); a single-unit test renders
-     at 25.
+     at 25. Its title assertion reads "Math 9: Practice Test"
+     since the D7 naming landed with the test-shaped build
+     (November 19, 2026; the assertion carried the older
+     "Practice Unit Test" wording until the Level 3 follow-up
+     tranche corrected it the same day).
    - A practice set renders a Hint button on every question
      with the staged reveal; the Hint button cycles (a third
      click past the last stage hides the hint, a fourth
@@ -110,7 +117,7 @@ function checkFeedback(dom, d, tag) {
   ok(d.getElementById("faceTitle").textContent === "Mathematics 9 Review",
      "course: face card heading uses the long name (ruling 5), saw " + d.getElementById("faceTitle").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 334, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 335, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
   ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 111, "course: CR_MARKS wired from the bank module (111 keys since the Option 1 Unit 9 additions of November 15, 2026)");
   ok(ev(r.dom, "BANK.every(function(e){return !!e.hint1 && !!e.hint2;})") === true, "course: every bank entry carries both hint stages in the shell");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
@@ -126,7 +133,7 @@ function checkFeedback(dom, d, tag) {
      "course: Mid and Final preset buttons both visible (Math 9 has both presets)");
   ok(ev(r.dom, "settings().mix.join()") === "20,60,20", "course: default level mix is 20/60/20, saw " + ev(r.dom, "settings().mix.join()"));
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("113 question templates"), "course: pool after Mid preset is 113, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("114 question templates"), "course: pool after Mid preset is 114, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "Mid-course review: Units 1 to 4",
      "course: face scope for the mid selection matches the standalone, saw: " + d.getElementById("faceScope").textContent);
@@ -138,7 +145,7 @@ function checkFeedback(dom, d, tag) {
   ok(d.getElementById("faceScope").textContent === "End-of-course review: Units 5 to 9",
      "course: face scope for the final selection matches the standalone, saw: " + d.getElementById("faceScope").textContent);
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("226 question templates"), "course: pool after All preset is 226 with prior knowledge off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("227 question templates"), "course: pool after All preset is 227 with prior knowledge off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "Object.keys(REF_HTML).length") === 9, "course: per-unit reference panels for all nine units, saw " + ev(r.dom, "Object.keys(REF_HTML).length"));
   ok(ev(r.dom, "refPanelsHtml([1])").includes("Formulas and facts for Unit 1: Rational Numbers") && ev(r.dom, "refPanelsHtml([1])").includes("can be written as a fraction"),
      "course: a Unit 1 selection shows its panel with the standalone's content");
@@ -168,7 +175,7 @@ function checkFeedback(dom, d, tag) {
   d = r.dom.window.document;
   ev(r.dom, "startExam()");
   const examText = d.getElementById("session").textContent || "";
-  ok(examText.includes("Math 9: Practice Unit Test"), "exam: single-unit paper renders with its title, saw: " + examText.slice(0, 90));
+  ok(examText.includes("Math 9: Practice Test"), "exam: single-unit paper renders with its title, saw: " + examText.slice(0, 90));
   ok(examText.includes("Total marks: 25"), "exam: the paper totals 25 marks, saw: " + examText.slice(0, 200));
   ok(examText.includes("Section B"), "exam: the paper carries a constructed-response section");
   ok(r.errors.length === 0, "exam: no page errors" + (r.errors.length ? " | " + r.errors.slice(0, 3).join(" ;; ") : ""));

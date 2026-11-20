@@ -6672,6 +6672,48 @@ E("u2-gap-sa-cans-mc", 2, ["9.3"], 2, "gen", function () {
 }, ["Work out the total surface area before you think about cans.", "Divide the surface area by the coverage per can, and remember a part can is not enough."]);
 
 
+// Follow-up tranche (Nov 19, 2026): one Level 3 multiple-choice entry
+// for Unit 2, closing the structural repeat of u2-best-estimate-side
+// left by the repeat-fix tranche above. The unit's Level 3 MC pool
+// rises from 2 entries to 3 against the unit test's 2-item Level 3
+// band, so the selected-response draw no longer has to re-deal the
+// entry the constructed-response section claims. See the addendum in
+// Math-9-Unit-2-Repeat-Fix-Report-2026-11-19.md.
+
+// PG. L3, 9.2, SR: surface area of a box with a square pyramid roof,
+// where the roof's slant height must be derived by the Pythagorean
+// theorem before any face can be counted (the Level 2 composite entry
+// u2-gap-composite-sa-mc is given every dimension it needs; here the
+// slant height is found first, then the exposed faces are counted by
+// the net method with the join hidden on both solids).
+E("u2-gap-pyramid-roof-mc", 2, ["9.2"], 3, "gen", function () {
+  var s = 0, hb = 0, hp = 0, slant = 0, key = 0, d1 = 0, d2 = 0, d3 = 0, tries = 0;
+  do {
+    var tr = pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [9, 12, 15], [8, 15, 17]]);
+    var swap = Math.random() < 0.5;
+    var kk = pick([1, 2]);
+    var half = (swap ? tr[1] : tr[0]) * kk;
+    hp = (swap ? tr[0] : tr[1]) * kk;
+    slant = tr[2] * kk;
+    s = 2 * half;
+    hb = ri(3, 9);
+    key = s * s + 4 * s * hb + 2 * s * slant;
+    d1 = key + 2 * s * s;
+    d2 = key + s * s;
+    d3 = s * s + 4 * s * hb + 2 * s * hp;
+    tries++;
+  } while ((new Set([key, d1, d2, d3]).size < 4 || new Set([String(key).length, String(d1).length, String(d2).length, String(d3).length]).size > 1) && tries < 80);
+  var thing = pick(["model building", "garden shed", "lookout tower"]);
+  var prompt = "A " + thing + " is built from a square box with a square pyramid roof on top. The box measures " + s + " cm long, " + s + " cm wide and " + hb + " cm high. The base of the pyramid exactly covers the top of the box, and the pyramid's vertical height is " + hp + " cm. What is the total surface area of the " + thing + ", in square centimetres?";
+  var sol = "The triangular faces of the roof need the slant height, which is not given. It is the hypotenuse of a right triangle whose legs are half the base side, " + half + ", and the pyramid's height, " + hp + ": \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + hp + "^{2} = " + (half * half + hp * hp) + " \\\\ \\text{slant} &= " + slant + " \\end{aligned} \\] Now count the exposed faces. The box shows its bottom, area " + (s * s) + ", and its four sides, each " + s + " by " + hb + "; its top is covered by the roof. The roof shows four triangular faces, each with base " + s + " and height " + slant + ". The square where the roof sits is hidden on both solids, so it is counted on neither: \\[ \\begin{aligned} SA &= " + (s * s) + " + 4(" + (s * hb) + ") + 4(" + (s * slant / 2) + ") \\\\ &= " + key + " \\end{aligned} \\] The total surface area is <b>" + key + " cm\\(^{2}\\)</b>.";
+  return mcq(prompt, { t: String(key), fb: "Correct: the slant height comes from the Pythagorean theorem, and only the exposed faces are counted." },
+    [{ t: String(d1), fb: "That adds the two solids whole: the square where the roof meets the box is hidden on both solids, so it must come off both." },
+     { t: String(d2), fb: "That takes the hidden square off only once: it is a face of each solid, so it comes off twice." },
+     { t: String(d3), fb: "That uses the pyramid's vertical height as the slant height: the triangular faces need the slant height, found with the Pythagorean theorem." }],
+    sol, { mode: "gap-pyramid-roof", s: s, hb: hb, hp: hp, slant: slant });
+}, ["The roof's triangular faces need the slant height, which the problem does not state directly.", "Halve the base side and use the Pythagorean theorem with the pyramid's height to get the slant height, then count only the exposed faces."]);
+
+
 /* Unit 3: Powers and Exponent Laws */
 
 // PG. L2, 3.12, CR 2: product law and quotient law chained, then evaluate.
