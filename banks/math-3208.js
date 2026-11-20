@@ -27,10 +27,18 @@ function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 // CRMARKS: u1-decompose=2
 // CRMARKS: u1-graph-operation=2
 // CRMARKS: u1-compound-inequality=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-domain-combined=2
+// CRMARKS: u1-compose-domain-range=2
+// CRMARKS: u1-add-graph-sum-point=2
 // BIMODAL: u1-range-product=a
 // BIMODAL: u1-quotient-restrictions=a
 // BIMODAL: u1-compound-inequality=a
 // BIMODAL: u1-compose-equation=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-domain-combined=b
+// BIMODAL: u1-compose-domain-range=b
+// BIMODAL: u1-add-graph-sum-point=a
 /* ================= Unit 1: Pre-Calculus ================= */
 /* Indicators: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7. Types follow the Mauger
    Chapter 1 material (operations on functions, compositions in both
@@ -454,6 +462,10 @@ E("u1-add-graph-sum-point",1,["1.2"],2,"gen",function(){
 // CRMARKS: u2-limit-absvalue=2
 // CRMARKS: u2-sequence-convergence=1
 // CRMARKS: u2-repeating-decimal=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-asymptote-behaviour=2
+// CRMARKS: u2-discontinuity-type=2
+// CRMARKS: u2-continuity-interval=3
 // BIMODAL: u2-repeating-decimal=a
 // BIMODAL: u2-oblique-asymptote=b
 // BIMODAL: u2-limit-graph=a
@@ -461,6 +473,10 @@ E("u1-add-graph-sum-point",1,["1.2"],2,"gen",function(){
 // BIMODAL: u2-limit-conjugate=a
 // BIMODAL: u2-limit-complex-fraction=a
 // BIMODAL: u2-limit-absvalue=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-asymptote-behaviour=a
+// BIMODAL: u2-discontinuity-type=a
+// BIMODAL: u2-continuity-interval=a
 /* Math 3208 Review, Unit 2 (Limits and Continuity) entries. Helpers carry the
    u2q prefix so they cannot collide with other units when files are assembled. */
 function u2qGcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -1155,8 +1171,14 @@ BANK.forEach(function(e){if(["u2-repeating-decimal"].indexOf(e.id)>=0)e.pkFlag=t
 // CRMARKS: u3-inequality-integers=2
 // CRMARKS: u3-behaviour-written-cr=5
 // CRMARKS: u3-rational-application-cr=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-add-intercept-asymptote-pair=2
+// CRMARKS: u3-add-double-factor-classify=2
 // BIMODAL: u3-hole-coordinates=a
 // BIMODAL: u3-asymptote-set=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-add-intercept-asymptote-pair=b
+// BIMODAL: u3-add-double-factor-classify=b
 /* ================= Unit 3: Rational Functions (MA3208.1.8 to 1.10) =================
    Tranche 1, mid scope. All functions, values and statements are original.
    Helpers are prefixed u3; entries register through E(...). */
@@ -1762,11 +1784,55 @@ E("u3-rational-application-cr",3,["1.10"],2,"var",varset([
 // CRMARKS: u4-derivative-extremum-x=2
 // CRMARKS: u4-basic-derivatives-value=1
 // CRMARKS: u4-implicit-second-hyperbola=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-secant-tangent=2
+// CRMARKS: u4-notation=2
+// CRMARKS: u4-first-principles-pick=2
+// CRMARKS: u4-differentiability-why=2
+// CRMARKS: u4-derivative-graph-features=2
+// CRMARKS: u4-sketch-from-derivative=3
+// CRMARKS: u4-average-rate-secant-slope=2
+// CRMARKS: u4-instantaneous-estimate=2
+// CRMARKS: u4-instantaneous-meaning=2
+// CRMARKS: u4-definition-identify=2
+// CRMARKS: u4-first-principles-setup=2
+// CRMARKS: u4-notation-convert=2
+// CRMARKS: u4-differentiable-values=2
+// CRMARKS: u4-quotient-rule-setup=2
+// CRMARKS: u4-derivative-roots-form=2
+// CRMARKS: u4-higher-derivative-expression=2
+// CRMARKS: u4-chain-rule-power-fraction=2
+// CRMARKS: u4-implicit-expression=3
+// CRMARKS: u4-differentiability-point=2
+// CRMARKS: u4-product-rule-derive=2
+// CRMARKS: u4-motion-direction=2
 // BIMODAL: u4-tangent-normal=b
 // BIMODAL: u4-product-quotient=b
 // BIMODAL: u4-first-principles=b
 // BIMODAL: u4-chain-rule=b
 // BIMODAL: u4-basic-derivatives=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-secant-tangent=b
+// BIMODAL: u4-notation=b
+// BIMODAL: u4-first-principles-pick=b
+// BIMODAL: u4-differentiability-why=b
+// BIMODAL: u4-derivative-graph-features=b
+// BIMODAL: u4-sketch-from-derivative=b
+// BIMODAL: u4-average-rate-secant-slope=a
+// BIMODAL: u4-instantaneous-estimate=a
+// BIMODAL: u4-instantaneous-meaning=b
+// BIMODAL: u4-definition-identify=b
+// BIMODAL: u4-first-principles-setup=b
+// BIMODAL: u4-notation-convert=a
+// BIMODAL: u4-differentiable-values=b
+// BIMODAL: u4-quotient-rule-setup=b
+// BIMODAL: u4-derivative-roots-form=b
+// BIMODAL: u4-higher-derivative-expression=b
+// BIMODAL: u4-chain-rule-power-fraction=b
+// BIMODAL: u4-implicit-expression=b
+// BIMODAL: u4-differentiability-point=b
+// BIMODAL: u4-product-rule-derive=b
+// BIMODAL: u4-motion-direction=a
 /* Math 3208 Review, Unit 4 (Derivatives), tranche 1 entries.
    Format per brief-common.md. Fractions are written as literal \frac strings
    (this chassis does not define an FR helper). */
@@ -2839,8 +2905,14 @@ E("u4-motion-direction", 4, ["3.17"], 2, "gen", function () {
 // CRMARKS: u5-opt-solve-b=2
 // CRMARKS: u5-opt-endpoint=4
 // CRMARKS: u5-opt-charter=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-concavity-meaning=2
+// CRMARKS: u5-rr-interpret=2
 // BIMODAL: u5-poly-intervals=a
 // BIMODAL: u5-opt-setup=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-concavity-meaning=b
+// BIMODAL: u5-rr-interpret=b
 /* ================= Unit 5: Applications of Derivatives (MA3208.3.21 to 3.34) =================
    Tranche 2, final scope. */
 
@@ -3550,10 +3622,24 @@ E("u5-opt-charter",5,["3.33"],3,"gen",function(){
 // CRMARKS: u6-angle-rate=2
 // CRMARKS: u6-limit-param=2
 // CRMARKS: u6-wcr-tangent-slope-tan=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-inv-relate=2
+// CRMARKS: u6-std-limits=2
+// CRMARKS: u6-inv-restrict=2
+// CRMARKS: u6-inv-graph=2
+// CRMARKS: u6-deriv-proof=2
+// CRMARKS: u6-invderiv-derive=2
 // BIMODAL: u6-trig-deriv=b
 // BIMODAL: u6-limit-param=a
 // BIMODAL: u6-invderiv=b
 // BIMODAL: u6-inv-compose=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-inv-relate=a
+// BIMODAL: u6-std-limits=b
+// BIMODAL: u6-inv-restrict=b
+// BIMODAL: u6-inv-graph=a
+// BIMODAL: u6-deriv-proof=b
+// BIMODAL: u6-invderiv-derive=b
 /* ================= Unit 6: Calculus of Trigonometry (MA3208.1.12 to 1.15, 2.19 to 2.20, 3.35 to 3.40) =================
    Tranche 2, final scope. */
 
@@ -4204,12 +4290,20 @@ E("u6-wcr-tangent-slope-tan",6,["3.36","3.37"],2,"gen",function(){
 // CRMARKS: u7-interpret-derivative=2
 // CRMARKS: u7-hyperbolic-solve=3
 // CRMARKS: u7-wcr-hyperbolic-derivative-point=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-exp-log-features=2
+// CRMARKS: u7-derivation-next-step=2
+// CRMARKS: u7-add-hyperbolic-definition=2
 // BIMODAL: u7-interpret-derivative=b
 // BIMODAL: u7-hyperbolic-values=a
 // BIMODAL: u7-hyperbolic-solve=a
 // BIMODAL: u7-growth-decay=a
 // BIMODAL: u7-deriv-log=b
 // BIMODAL: u7-deriv-exponential=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-exp-log-features=b
+// BIMODAL: u7-derivation-next-step=b
+// BIMODAL: u7-add-hyperbolic-definition=b
 /* ================= Unit 7: Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions (MA3208.1.11, 2.21, 3.41 to 3.48) =================
    Tranche 2, final scope. */
 
@@ -4612,8 +4706,26 @@ E("u7-add-hyperbolic-definition",7,["3.47"],2,"gen",function(){
 // CRMARKS: u8-area-under=2
 // CRMARKS: u8-area-between=3
 // CRMARKS: u8-wcr-integral-properties-value=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-antiderivative-meaning=2
+// CRMARKS: u8-notation=2
+// CRMARKS: u8-properties=2
+// CRMARKS: u8-add-general-antiderivative-power=2
+// CRMARKS: u8-add-notation-correct-equation=2
+// CRMARKS: u8-add-antiderivative-linear-combination=2
+// CRMARKS: u8-add-particular-constant=2
+// CRMARKS: u8-add-estimate-expression=2
 // BIMODAL: u8-riemann-convert=b
 // BIMODAL: u8-general-antiderivative=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-antiderivative-meaning=b
+// BIMODAL: u8-notation=b
+// BIMODAL: u8-properties=b
+// BIMODAL: u8-add-general-antiderivative-power=b
+// BIMODAL: u8-add-notation-correct-equation=b
+// BIMODAL: u8-add-antiderivative-linear-combination=b
+// BIMODAL: u8-add-particular-constant=b
+// BIMODAL: u8-add-estimate-expression=b
 /* ================= Unit 8: Antidifferentiation and Integration (MA3208.4.1 to 4.12) =================
    Tranche 2, final scope. */
 
@@ -5162,6 +5274,12 @@ E("u8-add-estimate-expression",8,["4.7"],2,"gen",function(){
 // CRMARKS: u3-hole-value-cr=3
 // CRMARKS: u3-asymptote-value-cr=2
 // CRMARKS: u3-rational-equation-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-compose-justify=3
+// CRMARKS: u3-rational-justify=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-compose-justify=b
+// BIMODAL: u3-rational-justify=a
 /* Unit test pool fix additions, November 9, 2026 (additions only).
    Units 1 and 3 had no Level 3 layer at all.
    Unit 1: one Level 3 MC generator; Level 3 CR at 3, 2 and 2 marks;
@@ -5358,6 +5476,62 @@ E("u3-rational-equation-cr",3,["1.8","1.9"],3,"gen",function(){
 });
 
 /* ----- bank-pk.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-pk-simplify-basic=2
+// CRMARKS: u1-pk-npv-basic=2
+// CRMARKS: u1-pk-defined-values=2
+// CRMARKS: u2-pk-simplify-trinomial=2
+// CRMARKS: u2-pk-geo-ratio=2
+// CRMARKS: u2-pk-converge-check=2
+// CRMARKS: u2-pk-infinite-sum=2
+// CRMARKS: u3-pk-npv-quadratic=2
+// CRMARKS: u3-pk-lcd=2
+// CRMARKS: u3-pk-recip-features=2
+// CRMARKS: u4-pk-slope-rise-run=2
+// CRMARKS: u4-pk-eq-slope-point=2
+// CRMARKS: u4-pk-eq-two-points=2
+// CRMARKS: u4-pk-factor-common=2
+// CRMARKS: u5-pk-characteristics=2
+// CRMARKS: u6-pk-exact-values=2
+// CRMARKS: u6-pk-solve-equation=2
+// CRMARKS: u6-pk-point-ratios=2
+// CRMARKS: u6-pk-reflection-points=3
+// CRMARKS: u7-pk-product-law=2
+// CRMARKS: u7-pk-convert-form=2
+// CRMARKS: u7-pk-sketch-log=2
+// CRMARKS: u7-pk-laws-equivalent=2
+// CRMARKS: u7-pk-inverse-graph=3
+// CRMARKS: u8-pk-area-triangle=2
+// CRMARKS: u8-pk-area-parallelogram=2
+// CRMARKS: u8-pk-multiply-monomial=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-pk-simplify-basic=b
+// BIMODAL: u1-pk-npv-basic=b
+// BIMODAL: u1-pk-defined-values=b
+// BIMODAL: u2-pk-simplify-trinomial=b
+// BIMODAL: u2-pk-geo-ratio=a
+// BIMODAL: u2-pk-converge-check=b
+// BIMODAL: u2-pk-infinite-sum=a
+// BIMODAL: u3-pk-npv-quadratic=a
+// BIMODAL: u3-pk-lcd=b
+// BIMODAL: u3-pk-recip-features=b
+// BIMODAL: u4-pk-slope-rise-run=a
+// BIMODAL: u4-pk-eq-slope-point=a
+// BIMODAL: u4-pk-eq-two-points=a
+// BIMODAL: u4-pk-factor-common=b
+// BIMODAL: u5-pk-characteristics=a
+// BIMODAL: u6-pk-exact-values=a
+// BIMODAL: u6-pk-solve-equation=b
+// BIMODAL: u6-pk-point-ratios=a
+// BIMODAL: u6-pk-reflection-points=a
+// BIMODAL: u7-pk-product-law=a
+// BIMODAL: u7-pk-convert-form=b
+// BIMODAL: u7-pk-sketch-log=a
+// BIMODAL: u7-pk-laws-equivalent=b
+// BIMODAL: u7-pk-inverse-graph=a
+// BIMODAL: u8-pk-area-triangle=a
+// BIMODAL: u8-pk-area-parallelogram=a
+// BIMODAL: u8-pk-multiply-monomial=b
 /* ============================================================
    PRIOR KNOWLEDGE TRANCHE (Band 2, November 16, 2026)
    Mathematics 3208 prerequisite checks. Every entry here is
@@ -7007,10 +7181,10 @@ BANK.forEach(function(e){var t=PKT3208[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-written-cr":5,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-application-cr":5,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-zero-points":1,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
+window.__BANK_CRMARKS={"u1-add-graph-sum-point":2,"u1-compose-domain-range":2,"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-justify":3,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-combined":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-pk-defined-values":2,"u1-pk-npv-basic":2,"u1-pk-simplify-basic":2,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-asymptote-behaviour":2,"u2-continuity-definition":3,"u2-continuity-interval":3,"u2-discontinuity-type":2,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-pk-converge-check":2,"u2-pk-geo-ratio":2,"u2-pk-infinite-sum":2,"u2-pk-simplify-trinomial":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-add-double-factor-classify":2,"u3-add-intercept-asymptote-pair":2,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-written-cr":5,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-pk-lcd":2,"u3-pk-npv-quadratic":2,"u3-pk-recip-features":2,"u3-rational-application-cr":5,"u3-rational-equation-cr":2,"u3-rational-justify":3,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-average-rate-secant-slope":2,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-rule-power-fraction":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-identify":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-graph-features":2,"u4-derivative-roots-form":2,"u4-derivative-zero-points":1,"u4-differentiability-point":2,"u4-differentiability-why":2,"u4-differentiable-values":2,"u4-first-principles":2,"u4-first-principles-pick":2,"u4-first-principles-setup":2,"u4-higher-derivative-expression":2,"u4-higher-derivatives":2,"u4-implicit-expression":3,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-instantaneous-estimate":2,"u4-instantaneous-meaning":2,"u4-motion":2,"u4-motion-direction":2,"u4-notation":2,"u4-notation-convert":2,"u4-pk-eq-slope-point":2,"u4-pk-eq-two-points":2,"u4-pk-factor-common":2,"u4-pk-slope-rise-run":2,"u4-product-quotient":3,"u4-product-rule-derive":2,"u4-quotient-rule-setup":2,"u4-secant-tangent":2,"u4-sketch-from-derivative":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-concavity-meaning":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-pk-characteristics":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-interpret":2,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-deriv-proof":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-inv-graph":2,"u6-inv-relate":2,"u6-inv-restrict":2,"u6-invderiv":2,"u6-invderiv-derive":2,"u6-limit-param":2,"u6-pk-exact-values":2,"u6-pk-point-ratios":2,"u6-pk-reflection-points":3,"u6-pk-solve-equation":2,"u6-std-limits":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-add-hyperbolic-definition":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-derivation-next-step":2,"u7-exp-log-features":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-pk-convert-form":2,"u7-pk-inverse-graph":3,"u7-pk-laws-equivalent":2,"u7-pk-product-law":2,"u7-pk-sketch-log":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-add-antiderivative-linear-combination":2,"u8-add-estimate-expression":2,"u8-add-general-antiderivative-power":2,"u8-add-notation-correct-equation":2,"u8-add-particular-constant":2,"u8-antiderivative-meaning":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-notation":2,"u8-particular-solution":2,"u8-pk-area-parallelogram":2,"u8-pk-area-triangle":2,"u8-pk-multiply-monomial":2,"u8-properties":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-compose-equation":"b","u1-compound-inequality":"a","u1-quotient-restrictions":"a","u1-range-product":"a","u2-limit-absvalue":"a","u2-limit-complex-fraction":"a","u2-limit-conjugate":"a","u2-limit-factor-cancel":"a","u2-limit-graph":"a","u2-oblique-asymptote":"b","u2-repeating-decimal":"a","u3-asymptote-set":"a","u3-hole-coordinates":"a","u4-basic-derivatives":"b","u4-chain-rule":"b","u4-first-principles":"b","u4-product-quotient":"b","u4-tangent-normal":"b","u5-opt-setup":"b","u5-poly-intervals":"a","u6-inv-compose":"b","u6-invderiv":"b","u6-limit-param":"a","u6-trig-deriv":"b","u7-deriv-exponential":"b","u7-deriv-log":"b","u7-growth-decay":"a","u7-hyperbolic-solve":"a","u7-hyperbolic-values":"a","u7-interpret-derivative":"b","u8-general-antiderivative":"b","u8-riemann-convert":"b"};
+window.__BANK_BIMODAL={"u1-add-graph-sum-point":"a","u1-compose-domain-range":"b","u1-compose-equation":"b","u1-compose-justify":"b","u1-compound-inequality":"a","u1-domain-combined":"b","u1-pk-defined-values":"b","u1-pk-npv-basic":"b","u1-pk-simplify-basic":"b","u1-quotient-restrictions":"a","u1-range-product":"a","u2-asymptote-behaviour":"a","u2-continuity-interval":"a","u2-discontinuity-type":"a","u2-limit-absvalue":"a","u2-limit-complex-fraction":"a","u2-limit-conjugate":"a","u2-limit-factor-cancel":"a","u2-limit-graph":"a","u2-oblique-asymptote":"b","u2-pk-converge-check":"b","u2-pk-geo-ratio":"a","u2-pk-infinite-sum":"a","u2-pk-simplify-trinomial":"b","u2-repeating-decimal":"a","u3-add-double-factor-classify":"b","u3-add-intercept-asymptote-pair":"b","u3-asymptote-set":"a","u3-hole-coordinates":"a","u3-pk-lcd":"b","u3-pk-npv-quadratic":"a","u3-pk-recip-features":"b","u3-rational-justify":"a","u4-average-rate-secant-slope":"a","u4-basic-derivatives":"b","u4-chain-rule":"b","u4-chain-rule-power-fraction":"b","u4-definition-identify":"b","u4-derivative-graph-features":"b","u4-derivative-roots-form":"b","u4-differentiability-point":"b","u4-differentiability-why":"b","u4-differentiable-values":"b","u4-first-principles":"b","u4-first-principles-pick":"b","u4-first-principles-setup":"b","u4-higher-derivative-expression":"b","u4-implicit-expression":"b","u4-instantaneous-estimate":"a","u4-instantaneous-meaning":"b","u4-motion-direction":"a","u4-notation":"b","u4-notation-convert":"a","u4-pk-eq-slope-point":"a","u4-pk-eq-two-points":"a","u4-pk-factor-common":"b","u4-pk-slope-rise-run":"a","u4-product-quotient":"b","u4-product-rule-derive":"b","u4-quotient-rule-setup":"b","u4-secant-tangent":"b","u4-sketch-from-derivative":"b","u4-tangent-normal":"b","u5-concavity-meaning":"b","u5-opt-setup":"b","u5-pk-characteristics":"a","u5-poly-intervals":"a","u5-rr-interpret":"b","u6-deriv-proof":"b","u6-inv-compose":"b","u6-inv-graph":"a","u6-inv-relate":"a","u6-inv-restrict":"b","u6-invderiv":"b","u6-invderiv-derive":"b","u6-limit-param":"a","u6-pk-exact-values":"a","u6-pk-point-ratios":"a","u6-pk-reflection-points":"a","u6-pk-solve-equation":"b","u6-std-limits":"b","u6-trig-deriv":"b","u7-add-hyperbolic-definition":"b","u7-deriv-exponential":"b","u7-deriv-log":"b","u7-derivation-next-step":"b","u7-exp-log-features":"b","u7-growth-decay":"a","u7-hyperbolic-solve":"a","u7-hyperbolic-values":"a","u7-interpret-derivative":"b","u7-pk-convert-form":"b","u7-pk-inverse-graph":"a","u7-pk-laws-equivalent":"b","u7-pk-product-law":"a","u7-pk-sketch-log":"a","u8-add-antiderivative-linear-combination":"b","u8-add-estimate-expression":"b","u8-add-general-antiderivative-power":"b","u8-add-notation-correct-equation":"b","u8-add-particular-constant":"b","u8-antiderivative-meaning":"b","u8-general-antiderivative":"b","u8-notation":"b","u8-pk-area-parallelogram":"a","u8-pk-area-triangle":"a","u8-pk-multiply-monomial":"b","u8-properties":"b","u8-riemann-convert":"b"};
