@@ -17,6 +17,22 @@
    indicator carries at least one entry; no entry tags outside the
    unit's 42 indicators). When the full course exists, this file is
    superseded by a full gate-compose-earth-3209.js. */
+/* Bimodal aware census, November 20, 2026: the pool census now
+   counts the pools the way the production composer sees them after
+   the reverse bimodal registration (412 entries, 388 class a and
+   24 class b). The SR pool is every entry that can deal as selected
+   response in these preset scopes: entries carrying no CR marks,
+   plus the registered bimodal entries. The CR pool is every entry
+   carrying CR marks, the registered bimodal entries among them at
+   their CR marks, so the CR census numbers grew while the SR census
+   is what it was before registration. The targeted draw now finds
+   its CR subset with the composer's own subset-sum search
+   (subsetSumMarks: shuffle plus dynamic programming) instead of a
+   greedy scan, which could no longer find exact subsets in the
+   deepened pool, and an entry taken by the CR subset is no longer
+   available to the SR fill, the composer's cross-section rule. The
+   composition assertions (exact blueprint sums, at least 99 percent
+   of 300 trials) are unchanged. */
 const fs = require("fs");
 const { JSDOM } = require("jsdom");
 const FILE = process.env.HOME + "/workspace/review-app-unified/index.html";
@@ -49,34 +65,43 @@ function boot(qs) {
   const report = ev(`(function(){
     function segPool(cap){
       var pool = poolFor([3], null, cap);
-      var sr = pool.filter(function(e){ return !(e.id in CR_MARKS); });
+      var sr = pool.filter(function(e){ return !(e.id in CR_MARKS) || (e.id in BIMODAL); });
       var cr = pool.filter(function(e){ return (e.id in CR_MARKS); })
                    .map(function(e){ return { id: e.id, level: e.level, marks: CR_MARKS[e.id] }; });
       var byLevel = {1:0, 2:0, 3:0};
       sr.forEach(function(e){ byLevel[e.level]++; });
       return { sr: sr, cr: cr, byLevel: byLevel };
     }
+    function subsetSum(entries, target){
+      var arr = entries.slice();
+      for (var i = arr.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp; }
+      var dp = {0: []};
+      for (var a = 0; a < arr.length; a++){
+        var m = arr[a].marks;
+        var keys = Object.keys(dp).map(Number).sort(function(x, y){ return y - x; });
+        for (var k = 0; k < keys.length; k++){
+          var s2 = keys[k] + m;
+          if (s2 <= target && !dp[s2]){ dp[s2] = dp[keys[k]].concat([arr[a]]); if (s2 === target) return dp[s2]; }
+        }
+      }
+      return dp[target] || null;
+    }
     function draws(seg, srCount, crTarget, levels, trials){
       var srByLevel = {1:[], 2:[], 3:[]};
       seg.sr.forEach(function(e){ srByLevel[e.level].push(e.id); });
       var okCount = 0;
       for (var t = 0; t < trials; t++){
-        // Like composeExam, search CR subsets summing exactly to crTarget
-        // until one leaves a per-level SR fill the pool can supply.
         var solved = false;
         for (var attempt = 0; attempt < 60 && !solved; attempt++){
-          var shuffled = seg.cr.slice();
-          for (var i = shuffled.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp; }
-          var sum = 0, pick = [];
-          for (var k = 0; k < shuffled.length; k++){
-            if (sum + shuffled[k].marks <= crTarget){ sum += shuffled[k].marks; pick.push(shuffled[k]); if (sum === crTarget) break; }
-          }
-          if (sum !== crTarget) continue;
+          var pick = subsetSum(seg.cr, crTarget);
+          if (!pick) continue;
           var need = {1: levels[0], 2: levels[1], 3: levels[2]};
           pick.forEach(function(c){ need[c.level] -= c.marks; });
           var good = true, drawn = 0;
           for (var L = 1; L <= 3; L++){
-            if (need[L] < 0 || srByLevel[L].length < need[L]) { good = false; break; }
+            var avail = srByLevel[L].length;
+            pick.forEach(function(c){ if (srByLevel[L].indexOf(c.id) >= 0) avail--; });
+            if (need[L] < 0 || avail < need[L]) { good = false; break; }
             drawn += need[L];
           }
           if (good && drawn === srCount) solved = true;
