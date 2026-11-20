@@ -2883,6 +2883,66 @@ E("u5-mixed-multistep", 5, ["6.23","6.21"], 3, "gen", function(){
   return textq(prompt,u5accept(N,d),sol,{mode:"mixed-multistep-"+mode,d:d});
 }, ["This problem has two steps: combine amounts first, or add the amounts used before subtracting.", "Start by deciding which operation the first step of the story calls for."]);
 
+/* Bimodal build additions (Nov 19, 2026): two selected-response generators for Unit 5, on the thinnest indicators 6.13, 6.14, 6.18 and 6.19. SME-flagged for the specialist pass. */
+E("u5-add-model-total", 5, ["6.13","6.14"], 2, "gen", function(){
+  for(var att=0; att<200; att++){
+    var d=pick([6,7,8,9]); var a=ri(2,d-2); var b=ri(1,d-1-a); var s=a+b; var diff=Math.abs(a-b);
+    if(s<3||s+1>=d) continue;
+    if(u5gcd(a,d)!==1||u5gcd(b,d)!==1) continue;
+    if(diff<1||diff===s||diff===s-1||diff===s+1) continue;
+    var ctx=pick(["trail","recipe","jug","garden"]);
+    var prompt;
+    if(ctx==="trail") prompt="A hiker walks "+u5M(a,d)+" of a trail in the morning and "+u5M(b,d)+" of the trail in the afternoon. What fraction of the trail did the hiker walk in all?";
+    else if(ctx==="recipe") prompt="A recipe uses "+u5M(a,d)+" of a cup of oats and then another "+u5M(b,d)+" of a cup of oats. How many cups of oats is that in all?";
+    else if(ctx==="jug") prompt="A jug holds "+u5M(a,d)+" of a litre of juice. Another "+u5M(b,d)+" of a litre is poured in. How much juice is in the jug now?";
+    else prompt="A gardener waters "+u5M(a,d)+" of a garden bed in the morning and "+u5M(b,d)+" of the bed in the afternoon. What fraction of the bed is watered in all?";
+    var sol="Both fractions count parts of the same size, since each whole is split into "+d+" equal parts. Add the numerators and keep the denominator.\\[ \\begin{aligned} "+FR(a,d)+" + "+FR(b,d)+" &= "+FR(s,d);
+    var rr=u5red(s,d); if(rr[0]!==s||rr[1]!==d) sol+=" \\\\ &= "+u5disp(s,d);
+    sol+=" \\end{aligned} \\] The answer is <b>"+u5M(s,d)+"</b>.";
+    return mcq(prompt,
+      {t:u5M(s,d), fb:"Yes: "+a+" parts plus "+b+" parts gives "+s+" parts, and the part size does not change."},
+      [{t:u5M(diff,d), fb:"That subtracts the numerators. The question asks for the total, so the numerators are added."},
+       {t:u5M(s-1,d), fb:"That counts one part too few: "+a+" + "+b+" = "+s+", not "+(s-1)+"."},
+       {t:u5M(s+1,d), fb:"That counts one part too many: "+a+" + "+b+" = "+s+", not "+(s+1)+"."}],
+      sol, {mode:"add-model-total", a:a, b:b, d:d});
+  }
+  return mcq("A hiker walks "+u5M(3,8)+" of a trail in the morning and "+u5M(2,8)+" of the trail in the afternoon. What fraction of the trail did the hiker walk in all?",
+    {t:u5M(5,8), fb:"Yes: 3 parts plus 2 parts gives 5 parts of size 8."},
+    [{t:u5M(1,8), fb:"That subtracts the numerators."}, {t:u5M(4,8), fb:"That counts one part too few."}, {t:u5M(6,8), fb:"That counts one part too many."}],
+    "Add the numerators and keep the denominator.\\[ \\begin{aligned} "+FR(3,8)+" + "+FR(2,8)+" &= "+FR(5,8)+" \\end{aligned} \\] The answer is <b>"+u5M(5,8)+"</b>.",
+    {mode:"add-model-total-fallback"});
+}, ["The denominators match, so the parts are the same size.", "Start by adding the numerators and keeping the denominator the same."]);
+
+E("u5-sub-write-equation", 5, ["6.18","6.19"], 2, "gen", function(){
+  for(var att=0; att<200; att++){
+    var d=pick([6,7,8,9]); var n=ri(4,d-1); var c=ri(1,n-2); var s=n-c;
+    if(n+c>9) continue;
+    if(c===s) continue;
+    var shape=pick(["strip","fraction circle","bar"]);
+    var keyEq="\\("+FR(n,d)+" - "+FR(c,d)+" = "+FR(s,d)+"\\)";
+    var prompt="A "+shape+" is split into "+d+" equal parts. At first "+n+" parts are shaded. Then "+c+" of the shaded parts "+(c===1?"is":"are")+" crossed out. Which equation records this model?";
+    var sol="The shaded parts give the starting amount, \\("+FR(n,d)+"\\). Crossing out "+c+" part"+(c===1?"":"s")+" records taking away \\("+FR(c,d)+"\\), which leaves "+s+" parts. The equation is <b>"+keyEq+"</b>.";
+    var q=mcq(prompt,
+      {t:keyEq, fb:"Yes: the model starts at "+n+"/"+d+", removes "+c+"/"+d+", and leaves "+s+"/"+d+"."},
+      [{t:"\\("+FR(n,d)+" + "+FR(c,d)+" = "+FR(n+c,d)+"\\)", fb:"That adds the crossed out parts. Crossed out parts are taken away, so the model is a subtraction."},
+       {t:"\\("+FR(d,d)+" - "+FR(c,d)+" = "+FR(d-c,d)+"\\)", fb:"That starts from the whole "+shape+". The model starts from the "+n+" shaded parts."},
+       {t:"\\("+FR(n,d)+" - "+FR(s,d)+" = "+FR(c,d)+"\\)", fb:"That subtracts the amount left instead of the amount crossed out."}],
+      sol, {mode:"sub-write-equation", n:n, c:c, d:d});
+    q.figure=u5barsSVG([{n:n, d:d, label:n+"/"+d+" shaded, "+c+" crossed out", cross:c}]);
+    return q;
+  }
+  var keyF="\\("+FR(5,8)+" - "+FR(2,8)+" = "+FR(3,8)+"\\)";
+  var qf=mcq("A strip is split into 8 equal parts. At first 5 parts are shaded. Then 2 of the shaded parts are crossed out. Which equation records this model?",
+    {t:keyF, fb:"Yes: the model starts at 5/8, removes 2/8, and leaves 3/8."},
+    [{t:"\\("+FR(5,8)+" + "+FR(2,8)+" = "+FR(7,8)+"\\)", fb:"That adds the crossed out parts."},
+     {t:"\\("+FR(8,8)+" - "+FR(2,8)+" = "+FR(6,8)+"\\)", fb:"That starts from the whole strip."},
+     {t:"\\("+FR(5,8)+" - "+FR(3,8)+" = "+FR(2,8)+"\\)", fb:"That subtracts the amount left instead of the amount crossed out."}],
+    "The shaded parts give the starting amount, "+u5M(5,8)+". Crossing out 2 parts records taking away "+u5M(2,8)+", which leaves 3 parts. The equation is <b>"+keyF+"</b>.",
+    {mode:"sub-write-equation-fallback"});
+  qf.figure=u5barsSVG([{n:5, d:8, label:"5/8 shaded, 2 crossed out", cross:2}]);
+  return qf;
+}, ["The shaded parts are the starting amount, and the crossed out parts are taken away.", "Start by writing the starting fraction, then subtract the crossed out fraction."]);
+
 /* ----- bank-u6.js ----- */
 // Math 7 Unit 6 Equations question bank
 // Cut verbatim from the standalone bank source
@@ -8428,3 +8488,9 @@ BANK.forEach(function (e) {
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
 window.__BANK_CRMARKS={"u1-evaluate-cr":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-solve-812-cr":3,"u1-table-value-cr":3,"u2-add-cr":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-order-ops-cr":3,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-numberline-cr":3,"u2-problem-cr":3,"u2-sub-cr":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-gap-compare-difference-cr":3,"u3-gap-decimal-fraction-cr":3,"u3-gap-discount-total-cr":2,"u3-gap-tickets-left-cr":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u5-gap-frac-of-frac-cr":3,"u5-gap-grams-cr":3,"u5-gap-recipe-total-cr":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-simplify-solution":3,"u5-three-fractions":3,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-model-solve-cr":3,"u6-one-step-problem-cr":3,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u7-central-problem-cr":3,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-two-event-pct-cr":2,"u8-bisector-cr":3,"u8-distance-cr":3,"u8-gap-angle-chain-cr":2,"u8-gap-grid-area-cr":3,"u8-gap-parallel-angle-cr":3,"u8-gap-pythagoras-cr":2,"u8-gap-rotate-cr":3,"u8-successive-cr":2,"u8-transform-cr":3,"u8-translate-cr":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

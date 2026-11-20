@@ -1152,6 +1152,35 @@ E("u2-context-reasoning-var", 2, ["6.19", "6.23"], 3, "var", varset([
   }
 ]), ["Pour chaque situation, décide si un changement se répète, si un total est partagé, ou si des montants séparés sont combinés.", "Associe aussi les signes à l'opération : le retrait et les jetons rouges sont tous deux négatifs."]);
 
+/* Bimodal build additions (Nov 19, 2026): one selected-response generator for Unit 2, on the thinnest indicator 6.21. SME-flagged for the specialist pass. */
+E("u2-div-partage-changement", 2, ["6.21"], 2, "gen", function () {
+  for (var att = 0; att < 200; att++) {
+    var g = ri(3, 6), v = ri(3, 8), T = g * v;
+    var third = -g;
+    if (third === -v || third === -(v - 1) || third === -(v + 1)) {
+      if (v + 2 <= 9) third = -(v + 2); else continue;
+    }
+    var ctx = pick(["ascenseur", "temperature", "compte", "reservoir"]);
+    var prompt, part;
+    if (ctx === "ascenseur") { prompt = "Un ascenseur descend de " + fmtD(T) + " mètres en tout, en " + g + " étapes égales. Le changement de hauteur est le même à chaque étape. Quel est le changement de hauteur à chaque étape, en mètres ?"; part = "étape"; }
+    else if (ctx === "temperature") { prompt = "Sur " + g + " périodes de temps égales, la température change de -" + fmtD(T) + " degrés en tout, avec le même changement à chaque période. Quel est le changement à chaque période, en degrés ?"; part = "période"; }
+    else if (ctx === "compte") { prompt = "Le solde d'un compte d'épargne change de -" + fmtD(T) + " $ sur " + g + " semaines, avec le même changement de solde chaque semaine. Quel est le changement de solde chaque semaine, en dollars ?"; part = "semaine"; }
+    else { prompt = "Le niveau d'un réservoir d'eau change de -" + fmtD(T) + " centimètres sur " + g + " jours, avec le même changement de niveau chaque jour. Quel est le changement de niveau chaque jour, en centimètres ?"; part = "jour"; }
+    var sol = "Partager un changement total en parts égales est une division. Le changement total est négatif et le nombre de parts est positif, donc chaque part est négative.\\[ \\begin{aligned} (" + (-T) + ") \\div " + g + " &= " + (-v) + " \\end{aligned} \\] Le changement à chaque " + part + " est <b>" + fmtD(-v) + "</b>.";
+    return mcq(prompt,
+      { t: fmtD(-v), fb: "Exact. Le changement total de -" + fmtD(T) + " partagé en " + g + " parts égales donne -" + v + " dans chaque part." },
+      [{ t: fmtD(-(v - 1)), fb: "Cette part est trop petite : " + g + " parts de cette grandeur donneraient -" + fmtD(g * (v - 1)) + " en tout, et non -" + fmtD(T) + "." },
+       { t: fmtD(-(v + 1)), fb: "Cette part est trop grande : " + g + " parts de cette grandeur donneraient -" + fmtD(g * (v + 1)) + " en tout, et non -" + fmtD(T) + "." },
+       { t: fmtD(third), fb: "Cette valeur ne partage pas le total de -" + fmtD(T) + " en " + g + " parts égales." }],
+      sol, { mode: "div-partage-changement", g: g, v: v });
+  }
+  return mcq("Un ascenseur descend de 24 mètres en tout, en 4 étapes égales. Le changement de hauteur est le même à chaque étape. Quel est le changement de hauteur à chaque étape, en mètres ?",
+    { t: "-6", fb: "Exact. -24 partagé en 4 parts égales donne -6 dans chaque part." },
+    [{ t: "-5", fb: "Cette part est trop petite." }, { t: "-7", fb: "Cette part est trop grande." }, { t: "-4", fb: "C'est le nombre d'étapes, pas le changement à chaque étape." }],
+    "Partager un changement total en parts égales est une division.\\[ \\begin{aligned} (-24) \\div 4 &= -6 \\end{aligned} \\] Le changement à chaque étape est <b>-6</b>.",
+    { mode: "div-partage-changement-fallback" });
+}, ["Partager un total en parts égales est une division.", "Écris le changement total divisé par le nombre de parts, puis utilise la règle des signes."]);
+
 /* ----- bank-u3.js ----- */
 // Math 8 (French) Unit 3 Operations with Fractions question bank
 // Cut verbatim from the standalone bank source
@@ -3517,6 +3546,61 @@ E("u6-verify-conclusion", 6, ["8.3"], 3, "gen", function () {
     "Remplace : \\[ \\begin{aligned} 3x + 2 &= 3(5) + 2 \\\\ &= 17 \\\\ 17 &\\ne 14 \\end{aligned} \\] Donc la conclusion correcte est <b>x = 5 n'est pas la solution ; la solution est x = 4</b>.", { mode: "verify-conclusion-fallback" });
 }, ["Une vérification par remplacement compare le côté gauche calculé avec le côté droit.", "Fais le remplacement toi-même d'abord, puis juge chaque conclusion avec tes nombres."]);
 
+/* Bimodal build additions (Nov 19, 2026): two selected-response generators for Unit 6, on the thinnest indicators 8.6 and 7.1. SME-flagged for the specialist pass. */
+E("u6-add-premiere-etape", 6, ["8.6"], 2, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var a = ri(3, 8), b = ri(2, 9), x = ri(4, 9);
+    if (b === a) continue;
+    var ax = a * x, c = ax + b;
+    if (ax < 10 || c + b > 99) continue;
+    var name = pick(["Élise", "Noah", "Chloé", "Hugo", "Léa", "Nathan"]);
+    var keyT = fmtD(a) + "x = " + fmtD(ax);
+    var sol = "La première ligne ajoute " + fmtD(b) + " au côté droit. Pour défaire l'addition de " + fmtD(b) + ", il faut plutôt soustraire " + fmtD(b) + " des deux côtés.\\[ \\begin{aligned} " + fmtD(a) + "x + " + fmtD(b) + " &= " + fmtD(c) + " \\\\ " + fmtD(a) + "x &= " + fmtD(c) + " - " + fmtD(b) + " \\\\ " + fmtD(a) + "x &= " + fmtD(ax) + " \\end{aligned} \\] La première ligne devrait donc être <b>" + keyT + "</b>.";
+    return mcq(name + " résout l'équation \\(" + fmtD(a) + "x + " + fmtD(b) + " = " + fmtD(c) + "\\). La première ligne de son travail est \\(" + fmtD(a) + "x = " + fmtD(c + b) + "\\). Cette ligne est fausse. Quelle équation devrait être la première ligne ?",
+      { t: keyT, fb: "Exact. Soustraire " + fmtD(b) + " des deux côtés donne " + fmtD(c) + " - " + fmtD(b) + " = " + fmtD(ax) + "." },
+      [{ t: fmtD(a) + "x = " + fmtD(c + b), fb: "C'est la ligne qui contient l'erreur. Elle ajoute " + fmtD(b) + " au côté droit au lieu de le soustraire." },
+       { t: fmtD(a) + "x = " + fmtD(c), fb: "Cela laisse le côté droit inchangé. Le " + fmtD(b) + " doit être soustrait des deux côtés, et non ignoré." },
+       { t: fmtD(b) + "x = " + fmtD(ax), fb: "Cela change le coefficient de x. Le coefficient reste " + fmtD(a) + " ; seule la constante se déplace." }],
+      sol, { mode: "premiere-etape", a: a, b: b });
+  }
+  return mcq("Élise résout l'équation \\(3x + 4 = 19\\). La première ligne de son travail est \\(3x = 23\\). Cette ligne est fausse. Quelle équation devrait être la première ligne ?",
+    { t: "3x = 15", fb: "Exact. Soustraire 4 des deux côtés donne 19 - 4 = 15." },
+    [{ t: "3x = 23", fb: "C'est la ligne qui contient l'erreur." }, { t: "3x = 19", fb: "Cela laisse le côté droit inchangé." }, { t: "4x = 15", fb: "Cela change le coefficient de x." }],
+    "Pour défaire l'addition de 4, soustrais 4 des deux côtés.\\[ \\begin{aligned} 3x + 4 &= 19 \\\\ 3x &= 15 \\end{aligned} \\] La première ligne devrait donc être <b>3x = 15</b>.",
+    { mode: "premiere-etape-fallback" });
+}, ["Regarde ce que la première ligne a fait à la constante du côté gauche.", "Défais une addition en soustrayant la même valeur des deux côtés."]);
+
+E("u6-add-tableau-relation", 6, ["7.1"], 2, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var m = ri(2, 6), b = ri(1, 9);
+    if (m === b) continue;
+    var ctx = pick([
+      { xp: "nombre d'heures", yp: "la distance en kilomètres" },
+      { xp: "nombre de caisses", yp: "le nombre de bouteilles" },
+      { xp: "nombre de sacs", yp: "le nombre de billes" },
+      { xp: "nombre de jours", yp: "la hauteur en centimètres" },
+      { xp: "nombre de billets", yp: "le coût total en dollars" }
+    ]);
+    function sent(step, start, verb) { return "Quand le " + ctx.xp + " augmente de 1, " + ctx.yp + " " + verb + " de " + fmtD(step) + ", en partant de " + fmtD(start) + "."; }
+    var keyT = sent(m, b, "augmente");
+    var prompt = "Un tableau montre une relation linéaire. Quand x vaut 0, y vaut " + fmtD(b) + ". Quand x vaut 1, y vaut " + fmtD(b + m) + ". Quand x vaut 2, y vaut " + fmtD(b + 2 * m) + ". Quand x vaut 3, y vaut " + fmtD(b + 3 * m) + ". Les valeurs de x comptent le " + ctx.xp + ", et les valeurs de y donnent " + ctx.yp + ". Quel énoncé décrit la relation ?";
+    var sol = "La valeur à x = 0 est le point de départ, soit " + fmtD(b) + ". Les valeurs voisines de y augmentent de " + fmtD(b + m) + " - " + fmtD(b) + " = " + fmtD(m) + " chaque fois que x augmente de 1. L'énoncé qui décrit la relation est donc <b>" + keyT + "</b>";
+    return mcq(prompt,
+      { t: keyT, fb: "Exact. Le départ est la valeur à x = 0, et le pas est l'augmentation constante de y." },
+      [{ t: sent(b, m, "augmente"), fb: "Cela échange le départ et le pas. Le départ est la valeur à x = 0, soit " + fmtD(b) + "." },
+       { t: sent(m + 1, b, "augmente"), fb: "Ce pas est trop grand. Les valeurs voisines de y augmentent de " + fmtD(m) + ", et non de " + fmtD(m + 1) + "." },
+       { t: sent(m, b, "diminue"), fb: "Les valeurs de y augmentent quand x augmente, donc la relation augmente au lieu de diminuer." }],
+      sol, { mode: "tableau-relation", m: m, b: b });
+  }
+  return mcq("Un tableau montre une relation linéaire. Quand x vaut 0, y vaut 2. Quand x vaut 1, y vaut 5. Quand x vaut 2, y vaut 8. Quand x vaut 3, y vaut 11. Les valeurs de x comptent le nombre d'heures, et les valeurs de y donnent la distance en kilomètres. Quel énoncé décrit la relation ?",
+    { t: "Quand le nombre d'heures augmente de 1, la distance en kilomètres augmente de 3, en partant de 2.", fb: "Exact. Le départ est 2 et le pas est 3." },
+    [{ t: "Quand le nombre d'heures augmente de 1, la distance en kilomètres augmente de 2, en partant de 3.", fb: "Cela échange le départ et le pas." },
+     { t: "Quand le nombre d'heures augmente de 1, la distance en kilomètres augmente de 4, en partant de 2.", fb: "Ce pas est trop grand." },
+     { t: "Quand le nombre d'heures augmente de 1, la distance en kilomètres diminue de 3, en partant de 2.", fb: "Les valeurs de y augmentent, donc la relation augmente." }],
+    "La valeur à x = 0 est le point de départ, soit 2. Les valeurs voisines de y augmentent de 3 chaque fois. L'énoncé qui décrit la relation est donc <b>Quand le nombre d'heures augmente de 1, la distance en kilomètres augmente de 3, en partant de 2.</b>",
+    { mode: "tableau-relation-fallback" });
+}, ["Commence par la valeur où x vaut 0 : c'est la valeur de départ de la relation.", "Compare deux valeurs voisines de y pour trouver de combien y change pour chaque pas de 1 en x."]);
+
 /* ----- bank-u7.js ----- */
 // Math 8 (French) Unit 7 Data Analysis and Probability question bank
 // Cut verbatim from the standalone bank source
@@ -4104,6 +4188,58 @@ E("u7-deep-critique", 7, ["11.6", "11.5"], 3, "var", varset([
       {mode:"deep-pets"});
   }
 ]), ["Une critique complète vérifie deux choses : comment le diagramme est construit, et si les mots correspondent aux nombres.", "Teste d'abord l'affirmation avec les valeurs réelles, puis nomme l'élément de format qui pousse les lecteurs dans la même mauvaise direction."]);
+
+/* Bimodal build additions (Nov 19, 2026): one selected-response generator for Unit 7, on the thinnest indicator 11.3. SME-flagged for the specialist pass. */
+E("u7-add-choisir-diagramme", 7, ["11.3"], 2, "gen", function () {
+  var kinds = [
+    { key: "Diagramme à lignes brisées", reason: "les données montrent comment une valeur relevée à intervalles réguliers évolue au fil du temps pendant toute la période d'observation suivie par la classe",
+      make: function () {
+        var subj = pick(["la température extérieure", "le nombre de passagers d'autobus", "la hauteur d'un tournesol", "le niveau d'eau d'un réservoir"]);
+        var unit = subj === "la température extérieure" ? "chaque heure" : (subj === "le nombre de passagers d'autobus" ? "chaque heure" : (subj === "la hauteur d'un tournesol" ? "chaque semaine" : "chaque jour"));
+        var n = ri(5, 12);
+        return "Une classe note " + subj + " " + unit + " pendant " + n + " périodes de temps de suite et veut montrer comment la valeur a changé.";
+      },
+      job: "Les données recueillies dans le temps sont montrées en reliant les points dans l'ordre du temps, ce qui rend les hausses et les baisses faciles à suivre." },
+    { key: "Diagramme circulaire", reason: "les différentes parties présentées dans le sondage s'additionnent pour former un seul et même tout, dont chaque partie représente une part du total",
+      make: function () {
+        var amt = ri(30, 90);
+        var item = pick(["budget de foire scolaire de " + fmtD(amt) + " $ est réparti entre la nourriture, les jeux, les prix et les fournitures", "commande de dîner de " + fmtD(amt) + " $ est répartie entre les sandwichs, les boissons, les fruits et les desserts", "fonds de voyage de " + fmtD(amt) + " $ est réparti entre l'autobus, les repas, les billets et les collations"]);
+        return "Un conseil d'élèves veut montrer comment un " + item + ".";
+      },
+      job: "Les parties qui forment un seul tout sont montrées en tranches, de sorte que chaque tranche est une part du montant total." },
+    { key: "Diagramme à bandes", reason: "des catégories bien distinctes les unes des autres sont comparées entre elles à l'aide de leurs nombres respectifs relevés pendant le sondage mené par la classe",
+      make: function () {
+        var n = ri(4, 7);
+        var item = pick(["le nombre d'élèves inscrits à chacun de " + n + " clubs du midi", "le nombre de livres empruntés dans chacun de " + n + " genres à la bibliothèque", "le nombre de votes donnés à chacun de " + n + " choix pour une sortie de classe", "le nombre de joueurs inscrits dans chacun de " + n + " groupes d'âge d'une ligue"]);
+        return "Un enseignant veut comparer " + item + ".";
+      },
+      job: "Les nombres de catégories distinctes sont comparés avec une bande par catégorie, lue à l'aide d'une échelle." },
+    { key: "Diagramme à bandes doubles", reason: "deux groupes différents sont comparés l'un à l'autre à l'intérieur de chacune des catégories présentées dans les données recueillies par les élèves de la classe",
+      make: function () {
+        var n = ri(3, 6);
+        var item = pick(["combien d'élèves de 7e année et de 8e année jouent à chacun de " + n + " sports", "combien de garçons et de filles sont inscrits à chacun de " + n + " cours d'art", "combien de membres juniors et de membres seniors appartiennent à chacun de " + n + " clubs communautaires"]);
+        return "Un entraîneur veut comparer " + item + ".";
+      },
+      job: "Deux groupes à l'intérieur de chaque catégorie sont comparés avec des bandes jumelées, de sorte que les deux groupes se trouvent côte à côte." },
+    { key: "Pictogramme", reason: "les quantités destinées à de jeunes enfants sont représentées par des symboles imagés, ce qui rend les grandeurs faciles à saisir d'un seul coup d'oeil par les lecteurs",
+      make: function () {
+        var val = pick([5, 10]);
+        var item = pick(["combien d'albums, de bandes dessinées et de romans sont empruntés par une classe", "combien de pommes, d'oranges et de bananes sont vendues à un kiosque de l'école", "combien d'autos, de camions et d'autobus sont comptés dans une rue"]);
+        return "Une enseignante prépare une affiche pour de jeunes enfants qui montre " + item + ", avec des symboles imagés où un symbole vaut " + val + " objets.";
+      },
+      job: "Les quantités destinées à un jeune public sont montrées avec des symboles imagés, qui donnent une idée rapide et attrayante de la grandeur." }
+  ];
+  var kind = pick(kinds);
+  var prompt = kind.make() + " Quel diagramme est le meilleur choix ?";
+  var others = shuffle(kinds.filter(function (k) { return k.key !== kind.key; })).slice(0, 3);
+  var ds = others.map(function (k) {
+    return { t: k.key + ", parce que " + kind.reason, fb: "Ce diagramme ne convient pas à ce travail. " + kind.job };
+  });
+  var sol = kind.job + " Le meilleur choix est donc le <b>" + kind.key + "</b>.";
+  return mcq(prompt,
+    { t: kind.key + ", parce que " + kind.reason, fb: "Exact : " + kind.job },
+    ds, sol, { mode: "choisir-diagramme-gen", graph: kind.key });
+}, ["Décide d'abord ce que font les données : changer dans le temps, partager un tout, comparer des catégories ou comparer deux groupes.", "Associe ce travail au diagramme construit pour lui : lignes brisées, circulaire, à bandes, à bandes doubles ou pictogramme."]);
 
 /* ----- bank-u8.js ----- */
 // Math 8 (French) Unit 8 Geometry question bank
@@ -5385,3 +5521,9 @@ BANK.forEach(function(e){if(["u7-missing-mean-value-gap","u7-mean-difference-gap
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
 window.__BANK_CRMARKS={"u1-calc-approx":3,"u1-diagonal-square":3,"u1-fence-perimeter-gap":3,"u1-garden-diagonal-gap":2,"u1-grid-distance-gap":2,"u1-hypotenuse":3,"u1-ladder-context":2,"u1-missing-leg":3,"u1-shortcut-saving-gap":3,"u1-square-plot-perimeter":2,"u1-square-side-perimeter-gap":3,"u1-triple-find":2,"u1-two-ladders-gap":3,"u2-chain-negative-divisor-gap":3,"u2-div-2by1":3,"u2-div-2by2":3,"u2-fifth-day-temp-gap":3,"u2-missing-factor-follow-gap":3,"u2-mixed-problem":2,"u2-mult-problem":3,"u2-ooo-brackets-num":3,"u2-ooo-num":2,"u2-sign-product-problem":2,"u2-square-minus-product-gap":2,"u2-two-divers-gap":3,"u3-area-decimal-gap":2,"u3-bottles-roundup-gap":3,"u3-chain-subtract-product-gap":3,"u3-divide-mixed-cr":3,"u3-divide-word-cr":2,"u3-mixed-multistep-cr":3,"u3-model-division-bar":3,"u3-mult-div-chain-cr":2,"u3-multiply-mixed-cr":3,"u3-order-of-ops-fractions":2,"u4-open-box-sa-gap":3,"u4-sa-cylinder":3,"u4-sa-open-tank":3,"u4-sa-problem-wrap":2,"u4-sa-rect-prism":3,"u4-sa-tri-prism":3,"u4-tank-litres-gap":2,"u4-vol-cylinder-diam":2,"u4-vol-tri-prism":2,"u5-discount-then-tax":3,"u5-down-then-up-gap":3,"u5-find-the-whole":3,"u5-percent-change":3,"u5-percent-of-number":3,"u5-percent-of-percent-quantity":2,"u5-rate-problem-solve":2,"u5-ratio-part-percent-gap":3,"u5-ratio-problem-solve":2,"u5-unit-rate-cost-gap":3,"u6-decimal-coefficient-gap":2,"u6-graph-extend-pair":2,"u6-missing-ordered-pair":2,"u6-missing-ordered-pair-backward":2,"u6-solve-context-problem":3,"u6-solve-distributive":3,"u6-solve-div-plus":2,"u6-solve-group-problem":3,"u6-solve-two-step":3,"u6-two-points-evaluate-gap":3,"u7-apparent-height-ratio":2,"u7-apply-rule-percent":2,"u7-combined-mean-gap":3,"u7-expected-count-gap":2,"u7-fix-the-graph":2,"u7-mean-difference-gap":3,"u7-missing-mean-value-gap":2,"u7-name-the-trick":3,"u7-same-colour-twice":3,"u7-survey-scale-gap":3,"u7-two-colours-twice-gap":3,"u7-two-draws-percent":3,"u7-two-spinners-decimal":3,"u8-around-point-num":3,"u8-build-max-num":3,"u8-changed-side-view-gap":3,"u8-cube-volume-gap":3,"u8-cubes-total-num":3,"u8-front-squares-num":3,"u8-hidden-cubes-gap":2,"u8-irregular-angle-num":2,"u8-mixed-point-num":2,"u8-rotate-front-num":2,"u8-rotated-side-view-gap":3,"u8-tiles-at-point-gap":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

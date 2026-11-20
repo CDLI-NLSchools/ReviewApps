@@ -19,6 +19,56 @@
    arrangements without repetition). treeSVG returns null when the
    tree has more leaves than o.maxLeaves (default 120), so callers can
    leave oversized draws unfigured. */
+/* clipCurveSVG (Nov 20, 2026): draw fn clipped to the plot window.
+   The curve stops where it leaves the window, the crossing point
+   interpolated (no clamping shelves along the edges). A clipped end
+   of an unrestricted graph carries a small arrowhead: exits through
+   the window edge, and left/right edge ends whose function is still
+   defined just outside the window. An end where the function is
+   undefined beyond (a domain endpoint) gets no arrowhead. A jump
+   across the whole window within one sample step is treated as an
+   asymptote and left open. */
+function clipCurveSVG(fn,X,Y,x0,x1,y0,y1){
+  var N=240,i,x,y,dx=(x1-x0)/N,segs=[],cur=null,px=0,py=0,ps=-1;
+  function st(v){return (typeof v!=="number"||!isFinite(v))?0:(v>y1?2:(v<y0?3:1));}
+  function cx(xa,ya,xb,yb,bnd){var t=(bnd-ya)/(yb-ya);return [xa+(xb-xa)*t,bnd];}
+  function begin(p,clip){cur={pts:[p],sc:clip,ec:false};}
+  function finish(clip){if(cur){cur.ec=clip;if(cur.pts.length>=2)segs.push(cur);cur=null;}}
+  for(i=0;i<=N;i++){
+    x=x0+dx*i;
+    try{y=fn(x);}catch(e){y=NaN;}
+    var s=st(y);
+    if(s===1){
+      if(ps===1&&cur)cur.pts.push([x,y]);
+      else if(ps===2||ps===3){var c1=cx(px,py,x,y,ps===2?y1:y0);begin(c1,true);cur.pts.push([x,y]);}
+      else begin([x,y],false);
+    }else if(s===2||s===3){
+      if(ps===1&&cur){cur.pts.push(cx(px,py,x,y,s===2?y1:y0));finish(true);}
+      else if((ps===2&&s===3)||(ps===3&&s===2)){
+        if(Math.abs(y-py)<=1.5*(y1-y0))segs.push({pts:[cx(px,py,x,y,ps===2?y1:y0),cx(px,py,x,y,s===2?y1:y0)],sc:true,ec:true});
+      }
+    }else if(ps===1)finish(false);
+    px=x;py=y;ps=s;
+  }
+  if(cur){var cont=false;try{var yv=fn(x1+dx);cont=(typeof yv==="number"&&isFinite(yv));}catch(e){}finish(cont?"edge":false);}
+  if(segs.length&&segs[0].sc===false&&segs[0].pts[0][0]===x0){
+    var cont0=false;try{var yv0=fn(x0-dx);cont0=(typeof yv0==="number"&&isFinite(yv0));}catch(e){}
+    if(cont0)segs[0].sc="edge";
+  }
+  function arrow(p,q){ /* arrowhead at pixel point p, pointing away from pixel point q */
+    var ax=p[0]-q[0],ay=p[1]-q[1],mag=Math.sqrt(ax*ax+ay*ay);if(!mag)return "";
+    var ux=ax/mag,uy=ay/mag,bx=p[0]-ux*8,by=p[1]-uy*8,ox=-uy*3.8,oy=ux*3.8;
+    return '<polygon points="'+fmt(p[0],1)+","+fmt(p[1],1)+" "+fmt(bx+ox,1)+","+fmt(by+oy,1)+" "+fmt(bx-ox,1)+","+fmt(by-oy,1)+'" fill="#0f766e"/>';
+  }
+  var out="",k,seg,pp,pa,pb;
+  for(k=0;k<segs.length;k++){seg=segs[k];
+    pp=seg.pts.map(function(q){return [X(q[0]),Y(q[1])];});
+    out+='<polyline points="'+pp.map(function(q){return fmt(q[0],1)+","+fmt(q[1],1);}).join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+    if(seg.ec){pa=pp[pp.length-1];pb=pp[pp.length-2];out+=arrow(pa,pb);}
+    if(seg.sc){pa=pp[0];pb=pp[1];out+=arrow(pa,pb);}
+  }
+  return out;
+}
 function fnPathD(fn,X,Y,x0,x1,y0,y1,N){
   N=N||240;var d="",pen=false,py=0,i,x,y;
   for(i=0;i<=N;i++){
@@ -188,13 +238,17 @@ function treeSVG(stages,o){
 // CRMARKS: u1-error-synthetic=2
 // CRMARKS: u1-find-coefficient=2
 // CRMARKS: u1-largest-zero-cr=3
-// CRMARKS: u1-modelling=3
 // CRMARKS: u1-multiplicity-graph=1
 // CRMARKS: u1-remainder-point=1
 // CRMARKS: u1-remainder-value=1
 // CRMARKS: u1-tableau-step-cr=2
 // CRMARKS: u1-which-factor=2
 // CRMARKS: u1-zeros-from-factors=1
+// BIMODAL: u1-which-factor=b
+// BIMODAL: u1-error-synthetic=a
+// BIMODAL: u1-equation-from-graph=b
+// BIMODAL: u1-divide-result=b
+// BIMODAL: u1-divide-quotient=b
 /* ================= Unit 1: Polynomial Functions ================= */
 /* ================= Unit 1: Polynomial Functions (MA3200.3.1 to 3.13) =================
    Tranche 1, mid scope. All stems, contexts and values are original.
@@ -265,9 +319,7 @@ function u1Plot(fn,x0,x1,o){ /* axes-and-curve SVG, y-range fitted from samples 
   if(x0<0&&x1>0) out+='<line x1="'+fmt(X(0),1)+'" y1="'+pad+'" x2="'+fmt(X(0),1)+'" y2="'+(H-pad)+'" stroke="#17352a" stroke-width="1.3"/>';
   out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">x</text>';
   out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">y</text>';
-  var pts=[], N=160;
-  for(i=0;i<=N;i++){ x=x0+(x1-x0)*i/N; y=fn(x); if(y<y0)y=y0; if(y>y1)y=y1; pts.push(fmt(X(x),1)+","+fmt(Y(y),1)); }
-  out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+  out+=clipCurveSVG(fn,X,Y,x0,x1,y0,y1);
   (o.points||[]).forEach(function(p){ out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>'; });
   return out+'</svg>';
 }
@@ -760,6 +812,11 @@ E("u1-tableau-step-cr",1,["3.1"],2,"gen",function(){
 // CRMARKS: u2-trans-equation=2
 // CRMARKS: u2-trans-point=1
 // CRMARKS: u2-trans-zeros=3
+// BIMODAL: u2-trans-zeros=a
+// BIMODAL: u2-reflection-equation-cr=b
+// BIMODAL: u2-inv-restrict=a
+// BIMODAL: u2-inv-equation=b
+// BIMODAL: u2-full-equation=b
 /* ================= Unit 2: Function Transformations ================= */
 /* ================= Unit 2: Function Transformations =================
    Bank source chunk for the Math 3200 Review app. Helpers are prefixed u2.
@@ -1379,10 +1436,11 @@ E("u2-reflection-equation-cr",2,["4.43","4.44"],2,"var",varset([
 // CRMARKS: u3-recover-coefficient-cr=3
 // CRMARKS: u3-recover-f-value=3
 // CRMARKS: u3-shift-from-intercept-cr=2
-// CRMARKS: u3-sqrtf-evaluate=2
 // CRMARKS: u3-sqrtx-table=1
 // CRMARKS: u3-start-point=1
 // CRMARKS: u3-transform-domain-range=2
+// BIMODAL: u3-recover-f-value=a
+// BIMODAL: u3-domain-from-quadratic-cr=b
 /* ================= Unit 3: Radical Functions ================= */
 /* ================= Unit 3: Radical Functions ================= */
 /* Indicators: 4.9, 4.10, 4.11, 4.12, 4.25, 4.26. Types follow the Mauger
@@ -1666,6 +1724,48 @@ E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
     {b:b,i:i});
 });
 
+/* Bimodal build additions (Nov 19, 2026): two selected-response entries for Unit 3, placed on the thinnest indicators in the unit (4.10, with one existing entry, and 4.26, with two). SME-flagged for the specialist pass. */
+
+E("u3-add-sqrtx-point-sets",3,["4.10"],2,"gen",function(){
+  var pools=[[4,5,6,7,8,9],[10,11,12,13,14,15],[16,17,18,19,20,21]];
+  var pool=pick(pools);
+  var chosen=[];
+  while(chosen.length<3){var r=pick(pool);if(chosen.indexOf(r)<0)chosen.push(r);}
+  chosen.sort(function(x,y){return x-y;});
+  function setStr(ys){return "\\("+chosen.map(function(r,i){return "("+(r*r)+", "+ys[i]+")";}).join(", ")+"\\)";}
+  var corr=setStr(chosen);
+  var dis=[];
+  for(var j=0;j<3;j++){
+    var ys=chosen.slice();
+    ys[j]=(chosen[j]===pool[pool.length-1])?chosen[j]-1:chosen[j]+1;
+    dis.push(setStr(ys));
+  }
+  return mcq("Which set of points all lie on the graph of \\(y = \\sqrt{x}\\)?",
+    corr,dis,
+    "A point lies on the graph of \\(y = \\sqrt{x}\\) when its y-coordinate is the non-negative square root of its x-coordinate. Here \\(\\sqrt{"+(chosen[0]*chosen[0])+"} = "+chosen[0]+"\\), \\(\\sqrt{"+(chosen[1]*chosen[1])+"} = "+chosen[1]+"\\) and \\(\\sqrt{"+(chosen[2]*chosen[2])+"} = "+chosen[2]+"\\), so all three points in this set satisfy the equation. Each other set changes one y-coordinate to a value that is not the square root of its x-coordinate. The set is <b>"+corr+"</b>.",
+    {roots:chosen});
+});
+
+E("u3-add-graphical-solve-mc",3,["4.26"],2,"gen",function(){
+  var c=pick([4,5,6,7]),form=pick([1,2]),sol;
+  if(form===1)sol=ri(Math.max(11,c*c-9),c*c-1);
+  else sol=ri(c*c+1,c*c+8);
+  var a=(form===1)?(c*c-sol):(sol-c*c);
+  var inn=(form===1)?a:-a;
+  var rad="\\sqrt{"+u3inside(inn)+"}";
+  var chk=(form===1)?(sol+" + "+a):(sol+" - "+a);
+  var cands=[sol-2,sol+2,sol-1,sol+1,c*c,sol+10,sol-10,a+10];
+  var dis=[];
+  for(var i=0;i<cands.length&&dis.length<3;i++){var v=cands[i];if(v>=10&&v<=99&&v!==sol&&dis.indexOf(v)<0)dis.push(v);}
+  var q=mcq("The graphs of \\(y = "+rad+"\\) and \\(y = "+c+"\\) are shown in the diagram. What is the solution of the equation \\("+rad+" = "+c+"\\)?",
+    "\\(x = "+sol+"\\)",
+    dis.map(function(v){return "\\(x = "+v+"\\)";}),
+    "On the graph, the solution is the x-coordinate of the point where the curve meets the line \\(y = "+c+"\\). The dashed line drops from that intersection point to the x-axis at \\("+sol+"\\). Check: \\(\\sqrt{"+chk+"} = \\sqrt{"+(c*c)+"} = "+c+"\\). The solution is <b>\\(x = "+sol+"\\)</b>.",
+    {a:a,c:c,form:form,sol:sol});
+  q.figure=u3svgSolve(form,a,c,sol);
+  return q;
+});
+
 /* ----- bank-u4.js ----- */
 // Math 3200 Unit 4 Trigonometry and the Unit Circle question bank
 // CRMARKS: u4-angle-from-ratio=2
@@ -1682,11 +1782,16 @@ E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
 // CRMARKS: u4-other-ratios=2
 // CRMARKS: u4-point-ratios-angle=2
 // CRMARKS: u4-rad-to-deg=1
-// CRMARKS: u4-ratio-problem=2
 // CRMARKS: u4-repair-solution-cr=3
 // CRMARKS: u4-sketch-standard-position=1
 // CRMARKS: u4-solve-equation-approx=2
 // CRMARKS: u4-solve-equation-exact=2
+// BIMODAL: u4-solve-equation-exact=a
+// BIMODAL: u4-repair-solution-cr=a
+// BIMODAL: u4-point-ratios-angle=a
+// BIMODAL: u4-other-ratios=a
+// BIMODAL: u4-circle-point-reasoning=a
+// BIMODAL: u4-arc-compare=b
 /* ================= Unit 4: Trigonometry and the Unit Circle ================= */
 /* ================= Unit 4: Trigonometry and the Unit Circle =================
    Helpers are prefixed u4; the only other top-level statements are E(...) calls.
@@ -2594,7 +2699,6 @@ E("u4-nr-exact-code", 4, ["7.14"], 2, "gen", function () {
 // CRMARKS: u5-general-solution=2
 // CRMARKS: u5-graph-problem=2
 // CRMARKS: u5-key-points=2
-// CRMARKS: u5-model-build=3
 // CRMARKS: u5-model-conditions=3
 // CRMARKS: u5-period-b=1
 // CRMARKS: u5-phase-h=1
@@ -2603,6 +2707,9 @@ E("u4-nr-exact-code", 4, ["7.14"], 2, "gen", function () {
 // CRMARKS: u5-tan-asymptote-cr=2
 // CRMARKS: u5-tan-features=1
 // CRMARKS: u5-which-solution=1
+// BIMODAL: u5-solve-set=a
+// BIMODAL: u5-model-conditions=b
+// BIMODAL: u5-general-solution=b
 /* ================= Unit 5: Trigonometric Functions and Graphs ================= */
 /* ================= Unit 5: Trigonometric Functions and Graphs ================= */
 /* Helpers are prefixed u5. Angles are in degrees unless a question says radians. */
@@ -2635,9 +2742,7 @@ function u5Plot(fn,x0,x1,y0,y1,o){
   out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">'+(o.xLab||"x")+'</text>';
   out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">'+(o.yLab||"y")+'</text>';
   if(fn){
-    var pts=[],N=160,i,x,y;
-    for(i=0;i<=N;i++){x=x0+(x1-x0)*i/N;y=fn(x);if(y<y0)y=y0;if(y>y1)y=y1;pts.push(fmt(X(x),1)+","+fmt(Y(y),1));}
-    out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+    out+=clipCurveSVG(fn,X,Y,x0,x1,y0,y1);
   }
   (o.points||[]).forEach(function(p){out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>';});
   return out+'</svg>';
@@ -3175,13 +3280,20 @@ E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
 // CRMARKS: u6-nonpermissible-identity=2
 // CRMARKS: u6-numeric-verify=1
 // CRMARKS: u6-proof-direct=3
-// CRMARKS: u6-proof-invalid-step=3
 // CRMARKS: u6-proof-strategy=3
 // CRMARKS: u6-simplify-expression=2
 // CRMARKS: u6-solve-double-angle=2
 // CRMARKS: u6-solve-identity-sub=3
 // CRMARKS: u6-solve-quadratic=2
 // CRMARKS: u6-verify-solution=1
+// BIMODAL: u6-solve-quadratic=a
+// BIMODAL: u6-solve-identity-sub=a
+// BIMODAL: u6-solve-double-angle=a
+// BIMODAL: u6-simplify-expression=b
+// BIMODAL: u6-nonpermissible-identity=a
+// BIMODAL: u6-lost-solutions-cr=a
+// BIMODAL: u6-exact-values=a
+// BIMODAL: u6-coincidence-check-cr=b
 /* ================= Unit 6: Trigonometric Identities ================= */
 /* ================= Unit 6: Trigonometric Identities =================
    Helpers are prefixed u6; the only other top-level statements are E(...) calls.
@@ -4793,11 +4905,17 @@ E("u6-nr-exact-code", 6, ["7.45"], 2, "gen", function () {
 // CRMARKS: u7-growth-decay-amount=1
 // CRMARKS: u7-growth-decay-time=2
 // CRMARKS: u7-model-equation=2
-// CRMARKS: u7-model-from-data=4
 // CRMARKS: u7-sketch-key-points=1
 // CRMARKS: u7-solve-nocommon-base=2
 // CRMARKS: u7-traits-match-cr=2
 // CRMARKS: u7-transformed-graph=2
+// CRMARKS: u7-wcr-log-time=4
+// BIMODAL: u7-transformed-graph=b
+// BIMODAL: u7-traits-match-cr=b
+// BIMODAL: u7-solve-nocommon-base=a
+// BIMODAL: u7-compare-models=a
+// BIMODAL: u7-common-base-radical=a
+// BIMODAL: u7-common-base-linear=a
 /* ================= Unit 7: Exponential Functions ================= */
 /* ================= Unit 7: Exponential Functions ================= */
 /* Helpers are prefixed u7. Every LaTeX fragment built by a helper is only
@@ -4849,9 +4967,7 @@ function u7plot(fn,x0,x1,y0,y1,o){
     out+='<line x1="'+pad+'" y1="'+fmt(Y(o.asymY),1)+'" x2="'+(W-pad)+'" y2="'+fmt(Y(o.asymY),1)+'" stroke="#b3541e" stroke-width="1.4" stroke-dasharray="6 4"/>';
     out+='<text x="'+(W-pad-4)+'" y="'+fmt(Y(o.asymY)-5,1)+'" font-size="10" fill="#b3541e" text-anchor="end">y = '+fmt(o.asymY)+'</text>';}
   if(fn){
-    var pts=[],N=160,i,x,y;
-    for(i=0;i<=N;i++){x=x0+(x1-x0)*i/N;y=fn(x);if(y<y0)y=y0;if(y>y1)y=y1;pts.push(fmt(X(x),1)+","+fmt(Y(y),1));}
-    out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+    out+=clipCurveSVG(fn,X,Y,x0,x1,y0,y1);
   }
   (o.points||[]).forEach(function(p){out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>';});
   return out+'</svg>';
@@ -5489,6 +5605,29 @@ E("u7-graph-point-value-cr",7,["4.35"],2,"gen",function(){
   return q;
 });
 
+/* Bimodal build additions (Nov 19, 2026): one written-form entry for Unit 7 (4 marks), on indicator 4.28, which has thin written coverage in the unit. SME-flagged for the specialist pass. */
+
+E("u7-wcr-log-time",7,["4.28"],2,"gen",function(){
+  var f=0,M=0,N0=0,t=0,tries=0,logM=0,logF=0,ans=0;
+  do{
+    f=pick([1.2,1.25,1.4,1.5,1.6,1.75,2.5,3.5]);
+    M=pick([7,9,11,13,17,19,23,27,29,37,39,43]);
+    N0=pick([50,80,120,200,250,400,500,1000]);
+    t=Math.log(M)/Math.log(f);
+    logM=Math.round(Math.log10(M)*10000)/10000;
+    logF=Math.round(Math.log10(f)*10000)/10000;
+    ans=Math.round((logM/logF)*100)/100;
+    tries++;
+  }while(tries<200&&(t<1.2||t>14||Math.abs(t-Math.round(t))<0.08));
+  var target=N0*M,pct=Math.round((f-1)*100);
+  return numq("A bacteria culture starts with "+N0+" cells. The number of cells increases by "+pct+"% every hour. After how many hours will the culture contain "+target+" cells? Give your answer to two decimal places.",
+    ans,0.02,
+    "The growth factor each hour is \\(1 + "+fmt(f-1,2)+" = "+fmt(f,2)+"\\), and the culture must grow by a factor of \\(\\frac{"+target+"}{"+N0+"} = "+M+"\\). The bases cannot be written as rational powers of one another, so use logarithms:"+
+    "\\[ \\begin{aligned} "+N0+" ("+fmt(f,2)+")^{t} &= "+target+" \\\\ ("+fmt(f,2)+")^{t} &= "+M+" \\\\ t \\log "+fmt(f,2)+" &= \\log "+M+" \\\\ t &= \\frac{\\log "+M+"}{\\log "+fmt(f,2)+"} \\\\ t &\\approx \\frac{"+fmt(logM,4)+"}{"+fmt(logF,4)+"} \\\\ t &\\approx "+fmtF(ans,2)+" \\end{aligned} \\]"+
+    "The culture contains "+target+" cells after about <b>"+fmtF(ans,2)+" hours</b>.",
+    {f:f,M:M,N0:N0});
+});
+
 /* ----- bank-u8.js ----- */
 // Math 3200 Unit 8 Logarithmic Functions question bank
 // CRMARKS: u8-convert-form=1
@@ -5506,6 +5645,11 @@ E("u7-graph-point-value-cr",7,["4.35"],2,"gen",function(){
 // CRMARKS: u8-solve-log-eq=2
 // CRMARKS: u8-transformed-log=1
 // CRMARKS: u8-transformed-log-features=1
+// CRMARKS: u8-wcr-log-difference=5
+// CRMARKS: u8-wcr-laws-evaluate=5
+// BIMODAL: u8-model-log=b
+// BIMODAL: u8-laws-equivalent=b
+// BIMODAL: u8-extraneous=b
 /* ================= Unit 8: Logarithmic Functions ================= */
 /* Unit 8: Logarithmic Functions. All helpers are u8-prefixed. */
 function u8L(b, arg){ return "\\log_{" + b + "} " + arg; }
@@ -6136,12 +6280,88 @@ E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
     {mode:"numeric", b:b2, k:k});
 });
 
+/* Bimodal build additions (Nov 19, 2026): two written-form entries for Unit 8 (5 marks each), on indicators 4.32 and 1.5/1.7, which have thin written coverage in the unit, and one selected-response entry on indicator 1.3, which has a single existing entry. SME-flagged for the specialist pass. */
+
+E("u8-wcr-log-difference",8,["4.32"],2,"gen",function(){
+  var pr=pick([[2,1],[3,1],[2,2],[3,2]]),b=pr[0],k=pr[1],B=Math.pow(b,k);
+  var x0=0,c=0,a=0,tries=0;
+  do{
+    x0=(B===2)?ri(8,20):(B===3)?ri(6,14):(B===4)?ri(6,12):ri(4,7);
+    c=(B===9)?ri(1,2):ri(1,3);
+    a=(B-1)*x0-B*c;
+    tries++;
+  }while(tries<200&&(a<3||a>45));
+  return numq("Solve \\("+u8L(b,"(x + "+a+")")+" - "+u8L(b,"(x - "+c+")")+" = "+k+"\\).",
+    x0,0.01,
+    "Combine the logarithms with the quotient law, then write the result in exponential form and solve:"+
+    "\\[ \\begin{aligned} "+u8L(b,"\\left(\\frac{x + "+a+"}{x - "+c+"}\\right)")+" &= "+k+" \\\\ \\frac{x + "+a+"}{x - "+c+"} &= "+b+"^{"+k+"} = "+B+" \\\\ x + "+a+" &= "+B+"(x - "+c+") \\\\ x + "+a+" &= "+B+"x - "+(B*c)+" \\\\ "+a+" + "+(B*c)+" &= "+(B-1)+"x \\\\ x &= \\frac{"+(a+B*c)+"}{"+(B-1)+"} = "+x0+" \\end{aligned} \\]"+
+    "Check: at \\(x = "+x0+"\\), the arguments are \\("+(x0+a)+"\\) and \\("+(x0-c)+"\\), both positive, and the first is \\("+B+"\\) times the second, so the difference of the logarithms is \\("+u8L(b,""+B)+" = "+k+"\\), as required. The solution is <b>\\(x = "+x0+"\\)</b>.",
+    {b:b,k:k,a:a,c:c});
+});
+
+E("u8-wcr-laws-evaluate",8,["1.5","1.7"],2,"gen",function(){
+  var b=pick([2,3,5,10]);
+  var P=ri(4,32),Q=ri(4,32),R=ri(4,32);
+  var a1=pick([2,3]),a2=pick([2,3]),a3=pick([2,3]);
+  var p=P/10,q=Q/10,r=R/10;
+  var V=(a1*P+a2*Q-a3*R)/10;
+  var expr=u8L(b,"\\left(\\frac{x^{"+a1+"} y^{"+a2+"}}{z^{"+a3+"}}\\right)");
+  return numq("For positive values of \\(x\\), \\(y\\) and \\(z\\), it is given that \\("+u8L(b,"x")+" = "+fmt(p,1)+"\\), \\("+u8L(b,"y")+" = "+fmt(q,1)+"\\) and \\("+u8L(b,"z")+" = "+fmt(r,1)+"\\). Determine the value of \\("+expr+"\\).",
+    V,0.02,
+    "Apply the quotient law, then the product law, then the power law, and substitute the given values:"+
+    "\\[ \\begin{aligned} "+expr+" &= "+u8L(b,"\\left(x^{"+a1+"} y^{"+a2+"}\\right)")+" - "+u8L(b,"\\left(z^{"+a3+"}\\right)")+" \\\\ &= "+a1+" "+u8L(b,"x")+" + "+a2+" "+u8L(b,"y")+" - "+a3+" "+u8L(b,"z")+" \\\\ &= "+a1+"("+fmt(p,1)+") + "+a2+"("+fmt(q,1)+") - "+a3+"("+fmt(r,1)+") \\\\ &= "+fmt(a1*p,1)+" + "+fmt(a2*q,1)+" - "+fmt(a3*r,1)+" \\\\ &= "+fmt(V,1)+" \\end{aligned} \\]"+
+    "The value is <b>"+fmt(V,1)+"</b>.",
+    {b:b,P:P,Q:Q,R:R});
+});
+
+E("u8-add-exact-log-value",8,["1.3"],2,"gen",function(){
+  var fam=pick(["sqPos","sqNeg","cubePos","cubeNeg","intPos","intNeg"]);
+  function opts(inner,disInners){return disInners.map(function(d){return "\\("+d+"\\)";});}
+  if(fam==="sqPos"||fam==="sqNeg"){
+    var r=pick([2,3,4,5]),k=pick([3,5,7]),base=r*r,pow=Math.pow(r,k);
+    var nums=[1,3,5,7,9].filter(function(d){return d!==k;}).slice(0,3);
+    if(fam==="sqPos"){
+      return mcq("Determine the exact value of \\("+u8L(base,""+pow)+"\\).",
+        "\\(\\frac{"+k+"}{2}\\)",opts("",nums.map(function(d){return "\\frac{"+d+"}{2}";})),
+        "Look for the exponent on \\("+base+"\\) that gives \\("+pow+"\\): \\(\\left("+r+"^2\\right)^{\\frac{"+k+"}{2}} = "+r+"^{"+k+"} = "+pow+"\\), and \\("+base+" = "+r+"^2\\), so the exponent is \\(\\frac{"+k+"}{2}\\). The exact value is <b>\\(\\frac{"+k+"}{2}\\)</b>.",
+        {fam:fam,r:r,k:k});
+    }
+    return mcq("Determine the exact value of \\("+u8L(base,u8frac(1,pow))+"\\).",
+      "\\(-\\frac{"+k+"}{2}\\)",opts("",nums.map(function(d){return "-\\frac{"+d+"}{2}";})),
+      "Look for the exponent on \\("+base+"\\) that gives \\("+u8frac(1,pow)+"\\): \\(\\left("+r+"^2\\right)^{-\\frac{"+k+"}{2}} = "+r+"^{-"+k+"} = "+u8frac(1,pow)+"\\), and \\("+base+" = "+r+"^2\\), so the exponent is \\(-\\frac{"+k+"}{2}\\). The exact value is <b>\\(-\\frac{"+k+"}{2}\\)</b>.",
+      {fam:fam,r:r,k:k});
+  }
+  if(fam==="cubePos"||fam==="cubeNeg"){
+    var r2=pick([2,3]),k2=pick([4,5,7,8]),base2=r2*r2*r2,pow2=Math.pow(r2,k2);
+    var nums2=[1,2,4,5,7,8].filter(function(d){return d!==k2;}).slice(0,3);
+    if(fam==="cubePos"){
+      return mcq("Determine the exact value of \\("+u8L(base2,""+pow2)+"\\).",
+        "\\(\\frac{"+k2+"}{3}\\)",opts("",nums2.map(function(d){return "\\frac{"+d+"}{3}";})),
+        "Look for the exponent on \\("+base2+"\\) that gives \\("+pow2+"\\): \\(\\left("+r2+"^3\\right)^{\\frac{"+k2+"}{3}} = "+r2+"^{"+k2+"} = "+pow2+"\\), and \\("+base2+" = "+r2+"^3\\), so the exponent is \\(\\frac{"+k2+"}{3}\\). The exact value is <b>\\(\\frac{"+k2+"}{3}\\)</b>.",
+        {fam:fam,r:r2,k:k2});
+    }
+    return mcq("Determine the exact value of \\("+u8L(base2,u8frac(1,pow2))+"\\).",
+      "\\(-\\frac{"+k2+"}{3}\\)",opts("",nums2.map(function(d){return "-\\frac{"+d+"}{3}";})),
+      "Look for the exponent on \\("+base2+"\\) that gives \\("+u8frac(1,pow2)+"\\): \\(\\left("+r2+"^3\\right)^{-\\frac{"+k2+"}{3}} = "+r2+"^{-"+k2+"} = "+u8frac(1,pow2)+"\\), and \\("+base2+" = "+r2+"^3\\), so the exponent is \\(-\\frac{"+k2+"}{3}\\). The exact value is <b>\\(-\\frac{"+k2+"}{3}\\)</b>.",
+      {fam:fam,r:r2,k:k2});
+  }
+  var bb=ri(2,9),kk=pick([2,3,4]),pow3=Math.pow(bb,kk);
+  var nums3=[1,2,3,4,5].filter(function(d){return d!==kk;}).slice(0,3);
+  if(fam==="intPos"){
+    return mcq("Determine the exact value of \\("+u8L(bb,""+pow3)+"\\).",
+      "\\("+kk+"\\)",opts("",nums3.map(function(d){return ""+d;})),
+      "Look for the exponent on \\("+bb+"\\) that gives \\("+pow3+"\\): \\("+bb+"^{"+kk+"} = "+pow3+"\\), so the exponent is \\("+kk+"\\). The exact value is <b>\\("+kk+"\\)</b>.",
+      {fam:fam,b:bb,k:kk});
+  }
+  return mcq("Determine the exact value of \\("+u8L(bb,u8frac(1,pow3))+"\\).",
+    "\\(-"+kk+"\\)",opts("",nums3.map(function(d){return "-"+d;})),
+    "Look for the exponent on \\("+bb+"\\) that gives \\("+u8frac(1,pow3)+"\\): \\("+bb+"^{-"+kk+"} = "+u8frac(1,pow3)+"\\), so the exponent is \\(-"+kk+"\\). The exact value is <b>\\(-"+kk+"\\)</b>.",
+    {fam:fam,b:bb,k:kk});
+});
+
 /* ----- bank-u9.js ----- */
 // Math 3200 Unit 9 Permutations, Combinations, and the Binomial Theorem question bank
 // CRMARKS: u9-binomial-expand=2
-// CRMARKS: u9-binomial-term=2
-// CRMARKS: u9-comb-basic=2
-// CRMARKS: u9-comb-symmetry-solve=2
 // CRMARKS: u9-counting-organizers=1
 // CRMARKS: u9-factorial-notation=1
 // CRMARKS: u9-fcp-apply=1
@@ -6151,13 +6371,14 @@ E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
 // CRMARKS: u9-pascal-next-row=1
 // CRMARKS: u9-pathways=2
 // CRMARKS: u9-pathways-context=3
-// CRMARKS: u9-patterns-coefficients=2
 // CRMARKS: u9-perm-basic=2
-// CRMARKS: u9-perm-constraints=3
 // CRMARKS: u9-perm-or-comb=2
 // CRMARKS: u9-perm-solve=2
 // CRMARKS: u9-two-group-cr=3
 // CRMARKS: u9-word-arrange-mc=1
+// BIMODAL: u9-perm-solve=a
+// BIMODAL: u9-perm-or-comb=a
+// BIMODAL: u9-binomial-expand=b
 /* ================= Unit 9: Permutations, Combinations, and the Binomial Theorem ================= */
 /* ================= Unit 9: Permutations, Combinations, and the Binomial Theorem =================
    Tranche 2, final scope. Indicators MA3200.3.14 to 3.19 and MA3200.9.1 to 9.15.
@@ -9111,4 +9332,10 @@ BANK.forEach(function(e){var t=PKT3200[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-modelling":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-evaluate":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-ratio-problem":2,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-build":3,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-direct":3,"u6-proof-invalid-step":3,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-model-from-data":4,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u9-binomial-expand":2,"u9-binomial-term":2,"u9-comb-basic":2,"u9-comb-symmetry-solve":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-pathways":2,"u9-pathways-context":3,"u9-patterns-coefficients":2,"u9-perm-basic":2,"u9-perm-constraints":3,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
+window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-direct":3,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u7-wcr-log-time":4,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u8-wcr-laws-evaluate":5,"u8-wcr-log-difference":5,"u9-binomial-expand":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-pathways":2,"u9-pathways-context":3,"u9-perm-basic":2,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-divide-quotient":"b","u1-divide-result":"b","u1-equation-from-graph":"b","u1-error-synthetic":"a","u1-which-factor":"b","u2-full-equation":"b","u2-inv-equation":"b","u2-inv-restrict":"a","u2-reflection-equation-cr":"b","u2-trans-zeros":"a","u3-domain-from-quadratic-cr":"b","u3-recover-f-value":"a","u4-arc-compare":"b","u4-circle-point-reasoning":"a","u4-other-ratios":"a","u4-point-ratios-angle":"a","u4-repair-solution-cr":"a","u4-solve-equation-exact":"a","u5-general-solution":"b","u5-model-conditions":"b","u5-solve-set":"a","u6-coincidence-check-cr":"b","u6-exact-values":"a","u6-lost-solutions-cr":"a","u6-nonpermissible-identity":"a","u6-simplify-expression":"b","u6-solve-double-angle":"a","u6-solve-identity-sub":"a","u6-solve-quadratic":"a","u7-common-base-linear":"a","u7-common-base-radical":"a","u7-compare-models":"a","u7-solve-nocommon-base":"a","u7-traits-match-cr":"b","u7-transformed-graph":"b","u8-extraneous":"b","u8-laws-equivalent":"b","u8-model-log":"b","u9-binomial-expand":"b","u9-perm-or-comb":"a","u9-perm-solve":"a"};

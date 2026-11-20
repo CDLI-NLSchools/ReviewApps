@@ -1868,8 +1868,9 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-laws-integral=3
 // CRMARKS: u2-laws-rational=2
 // CRMARKS: u2-evaluate-exp=2
-// CRMARKS: u2-error=2
 // CRMARKS: u2-problem=3
+// BIMODAL: u2-laws-rational=b
+// BIMODAL: u2-laws-integral=b
 /* Math 1201 Review, Unit 2: Roots and Powers (tranche 1).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u2. Every entry returns the same question type on every draw. */
@@ -3038,6 +3039,15 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-mult-error=2
 // CRMARKS: u3-factor-error=3
 // CRMARKS: u3-factorable-k=3
+// BIMODAL: u3-mult-error=b
+// BIMODAL: u3-gcf=b
+// BIMODAL: u3-factorable-k=a
+// BIMODAL: u3-factor-product=b
+// BIMODAL: u3-factor-hard=b
+// BIMODAL: u3-factor-gcf-first=b
+// BIMODAL: u3-factor-error=b
+// BIMODAL: u3-binomial-expand=b
+// BIMODAL: u3-binom-tri-expand=b
 /* Math 1201 Review, Unit 3 (Factors and Products) bank entries.
    Authored November 2026 from the tranche 1 briefs. All scenarios and
    values are original. Polynomials are rendered by the u3 helpers below:
@@ -4051,10 +4061,9 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-rate-of-change=3
 // CRMARKS: u4-intercepts=2
 // CRMARKS: u4-intercepts-solve=2
-// CRMARKS: u4-context-problem=3
 // CRMARKS: u4-eval-function=2
 // CRMARKS: u4-solve-input=2
-// CRMARKS: u4-domain-decision=2
+// CRMARKS: u4-wcr-context-domain=3
 /* Math 1201 Review, Unit 4: Relations and Functions (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u4. Every entry returns the same question type on every draw. */
@@ -5174,6 +5183,43 @@ E("u4-pk-solve-two-step", 4, ["4.48"], 2, "gen", function () {
   return numq("Solve the equation \\(" + fmt(a3) + "x = " + u5lin(c3, b3) + "\\). What is the value of \\(x\\)?", x2, 0.01, sol3, { mode: "ax=cx+b", a: a3, b: b3, c: c3 });
 }, ["Undo the operations in reverse order: deal with the constant term before the term attached to x.", "First isolate the x term on one side, using the same operation on both sides."]);
 
+/* Bimodal build additions (Nov 19, 2026): one written-form context entry on sensible domain and range for Unit 4. SME-flagged for the specialist pass. */
+/* ================= written: context domain, range and evaluation (4.10, L3, var text) ================= */
+E("u4-wcr-context-domain",4,["4.10"],3,"var",varset([
+  function(){
+    var r=pick([4,5,6,8,10]),tMax=ri(6,15),S=r*tMax;
+    var key=tMax+" minutes";
+    return textq("A water tank holds "+S+" litres of water. It is drained at a steady rate of "+r+" litres per minute, so the volume of water left after \\(t\\) minutes is modelled by \\(V(t) = "+S+" - "+r+"t\\). The model only makes sense while water remains in the tank. State the largest sensible value of \\(t\\), in minutes. Give your answer as a number of minutes, for example 12 minutes.",
+      [""+tMax,key,"t = "+tMax,"t="+tMax],
+      "The volume cannot drop below zero litres, so the model stops applying when the tank is empty. Set the volume equal to zero and solve: \\[ \\begin{aligned} "+S+" - "+r+"t &= 0 \\\\ "+r+"t &= "+S+" \\\\ t &= "+tMax+" \\end{aligned} \\] Values of \\(t\\) past this point would give a negative volume, which is not possible for a tank, so the sensible domain ends here. The largest sensible value is <b>"+key+"</b>.",
+      {variant:"tank",r:r,tMax:tMax,S:S,keyText:key});
+  },
+  function(){
+    var w=pick([12,15,18,20,24]),B=ri(40,120),H=ri(20,35),E=B+w*H;
+    var key=E+" dollars";
+    return textq("A recreation centre pays a worker a base amount of "+B+" dollars per week plus "+w+" dollars for each hour of evening programs the worker leads. The total weekly pay is modelled by \\(P(h) = "+B+" + "+w+"h\\), where \\(h\\) is the number of evening program hours in the week. The centre schedules at most "+H+" evening program hours in any week. State the greatest sensible value of \\(P(h)\\), in dollars. Give your answer as a number of dollars, for example 340 dollars.",
+      [""+E,key,"$"+E],
+      "Pay grows as hours grow, so the greatest sensible pay comes at the greatest sensible number of hours, which is the scheduling cap of \\("+H+"\\) hours. Evaluate the function there: \\[ \\begin{aligned} P("+H+") &= "+B+" + "+w+"("+H+") \\\\ &= "+B+" + "+(w*H)+" \\\\ &= "+E+" \\end{aligned} \\] Hours beyond the cap are never scheduled, so no larger pay value belongs to the range of this model. The greatest sensible value is <b>"+key+"</b>.",
+      {variant:"pay",w:w,B:B,H:H,E:E,keyText:key});
+  },
+  function(){
+    var a=ri(18,30),b=pick([6,7,8,9,11,12]),w0=ri(5,9),H=a+b*w0;
+    var key=H+" cm";
+    return textq("The height of a sunflower is modelled by \\(h(w) = "+a+" + "+b+"w\\) centimetres, where \\(w\\) is the number of weeks since the sunflower was measured first. Use the model to state the height of the sunflower after "+w0+" weeks, in centimetres. Give your answer as a number of centimetres, for example 74 cm.",
+      [""+H,key,H+" centimetres"],
+      "Substitute the given time into the model and evaluate: \\[ \\begin{aligned} h("+w0+") &= "+a+" + "+b+"("+w0+") \\\\ &= "+a+" + "+(b*w0)+" \\\\ &= "+H+" \\end{aligned} \\] This value is the height the model assigns to the sunflower at "+w0+" weeks, so it is read as a height in centimetres at that time. The height after "+w0+" weeks is <b>"+key+"</b>.",
+      {variant:"sunflower",a:a,b:b,w0:w0,H:H,keyText:key});
+  },
+  function(){
+    var d=pick([4,5,10,20,25]),tMax=100/d;
+    var key=tMax+" hours";
+    return textq("A tablet battery starts fully charged. While the tablet is used for schoolwork, its charge falls at a steady rate of "+d+" percent per hour, so the charge left after \\(t\\) hours is modelled by \\(C(t) = 100 - "+d+"t\\) percent. The model only makes sense while some charge remains. State the largest sensible value of \\(t\\), in hours. Give your answer as a number of hours, for example 8 hours.",
+      [""+tMax,key,"t = "+tMax,"t="+tMax],
+      "A battery charge cannot fall below zero percent, so the model stops applying when the charge reaches zero. Set the charge equal to zero and solve: \\[ \\begin{aligned} 100 - "+d+"t &= 0 \\\\ "+d+"t &= 100 \\\\ t &= "+tMax+" \\end{aligned} \\] Values of \\(t\\) past this point would give a negative charge, which a battery cannot have, so the sensible domain ends here. The largest sensible value is <b>"+key+"</b>.",
+      {variant:"battery",d:d,tMax:tMax,keyText:key});
+  }
+]));
+
 /* PK tranche metadata pass for Unit 4. The tranche's own entries are flagged here.  */
 var PKT_U4_FOR=["4.1","4.2","4.3","4.4","4.5","4.6","4.7","4.8","4.9","4.10","4.11","4.12","4.13","4.14","4.15","4.16","4.21","4.45","4.46","4.47","4.48","4.49"];
 var PKT_U4={
@@ -5204,6 +5250,9 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u5-eq-two-points=3
 // CRMARKS: u5-eq-parallel-perp=2
 // CRMARKS: u5-slope-error=2
+// BIMODAL: u5-rewrite-form=b
+// BIMODAL: u5-eq-two-points=b
+// BIMODAL: u5-eq-parallel-perp=b
 /* Math 1201 Review, Unit 5: Linear Functions (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u5. Every entry returns the same question type on every draw.
@@ -6040,6 +6089,8 @@ BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-word-problem=2
 // CRMARKS: u6-mixture=2
 // CRMARKS: u6-travel=2
+// BIMODAL: u6-word-problem=a
+// BIMODAL: u6-solution-count=a
 /* Math 1201 Review, Unit 6: Systems of Linear Equations (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u6. Every entry returns the same question type on every draw.
@@ -6722,6 +6773,102 @@ E("u6-pk-table-equation", 6, ["4.50"], 2, "gen", function () {
     ], sol, { mode: "table-equation", S: S, P: P, x0: x0 });
 }, ["Find the step first: how much does y change when x grows by 1?", "The start value is the y value when x is 0; extend the pattern back if the table starts later."]);
 
+/* Bimodal build additions (Nov 19, 2026): three selected-response entries on the thinnest Unit 6 indicators (4.51, 4.56, 4.57). SME-flagged for the specialist pass. */
+/* ================= add: meaning of one term in a system (4.51, L2, gen mcq) ================= */
+E("u6-add-term-meaning",6,["4.51"],2,"gen",function(){
+  var ctxs=[
+    {place:"A theatre sells tickets for a school play",n1:"adult",n2:"child"},
+    {place:"A concert hall sells tickets for an evening concert",n1:"senior",n2:"junior"},
+    {place:"An arena sells tickets for a hockey game",n1:"adult",n2:"child"},
+    {place:"A museum sells tickets for a special exhibit",n1:"senior",n2:"junior"}
+  ];
+  var ctx=pick(ctxs);
+  var p=ri(11,24),q=ri(5,10),X=ri(20,60),Y=ri(15,50);
+  var T=X+Y,S=p*X+q*Y;
+  var askFirst=Math.random()<0.5;
+  var price=askFirst?p:q,name=askFirst?ctx.n1:ctx.n2,other=askFirst?ctx.n2:ctx.n1,varName=askFirst?"x":"y";
+  var key="The total cost, in dollars, of all the "+name+" tickets sold";
+  var ds=["The total cost, in dollars, of all the "+other+" tickets sold",
+    "The total number of all the "+name+" tickets sold at the venue",
+    "The cost, in dollars, of one single "+name+" ticket that is sold"];
+  return mcq(ctx.place+". Let \\(x\\) be the number of "+ctx.n1+" tickets sold and \\(y\\) be the number of "+ctx.n2+" tickets sold. One "+ctx.n1+" ticket costs "+p+" dollars and one "+ctx.n2+" ticket costs "+q+" dollars. In total, "+T+" tickets are sold for "+S+" dollars, giving the system \\(x + y = "+T+"\\) and \\("+p+"x + "+q+"y = "+S+"\\). What does the term \\("+price+varName+"\\) represent?",
+    key,ds,
+    "The term \\("+price+varName+"\\) multiplies the price of one "+name+" ticket, \\("+price+"\\) dollars, by the number of "+name+" tickets, \\("+varName+"\\). A price times a count gives a total cost for that group. The term represents <b>"+key.toLowerCase()+"</b>.",
+    {ctxPlace:ctx.place,askFirst:askFirst,p:p,q:q,X:X,Y:Y,keyText:key});
+});
+
+/* ================= add: choose a solving strategy (4.56, L2, var mcq) ================= */
+E("u6-add-strategy-choice",6,["4.56"],2,"var",varset([
+  function(){var key="Use substitution, because the second equation already gives x directly in terms of y, so it drops right into the first equation";
+    return mcq("A system consists of \\(5x + 2y = 34\\) and \\(x = 3y - 4\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use elimination, because the first equation has coefficients 5 and 2, and those numbers line up for adding right away here",
+     "Use graphing, because the second equation already gives x directly in terms of y, and a picture is the only way to use that fact",
+     "Use substitution, because the first equation has both variables in it, so the second equation cannot be used anywhere at all"],
+    "Substitution works when one variable is already isolated. Here \\(x\\) is given directly as \\(3y - 4\\), so replacing \\(x\\) in the first equation leaves one equation in \\(y\\) alone. The best fit is <b>substitution, because the second equation already gives x directly in terms of y</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use elimination here, because the y terms are opposites, so adding the two equations removes y in a single step right away";
+    return mcq("A system consists of \\(3x + 4y = 25\\) and \\(5x - 4y = 7\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use substitution, because the y terms are opposites, so one variable must be isolated before anything can be combined here",
+     "Use elimination, because the x terms are opposites, so adding the two equations removes x in a single step right away here",
+     "Use graphing, because the y terms are opposites, so only a picture can show what happens when the equations are combined"],
+    "Elimination works when one pair of terms cancels on adding or subtracting. Here the \\(y\\) terms, \\(4y\\) and \\(-4y\\), are opposites, so adding the equations removes \\(y\\) at once and leaves a single equation in \\(x\\). The best fit is <b>elimination, because the y terms are opposites</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use graphing, because the question asks only for an estimate of where the lines meet, and the graph gives that estimate directly";
+    return mcq("A question gives two lines drawn on a grid and asks for an estimate of the point where the two lines cross. Which strategy fits this task best, and why?",
+    key,
+    ["Use substitution, because the question asks only for an estimate of where the lines meet, and algebra gives exact values only",
+     "Use elimination, because the question asks only for an estimate of where the lines meet, and the coefficients are already lined up",
+     "Use graphing, because the question asks only for an exact algebraic answer, and a graph is the tool that produces exact values"],
+    "When only an estimate is needed and the lines are already drawn, reading the crossing point off the graph is the direct route; algebra would give an exact answer the question did not ask for. The best fit is <b>graphing, because the question asks only for an estimate of where the lines meet</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use substitution, because the first equation already gives y directly in terms of x, so it drops right into the second equation";
+    return mcq("A system begins with the equation \\(y = 2x + 5\\), followed by \\(4x - 3y = -6\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use elimination, because the second equation has coefficients 4 and 3, and those numbers line up for adding right away here",
+     "Use graphing, because the first equation already gives y directly in terms of x, and a picture is the only way to use that fact",
+     "Use substitution, because the second equation has both variables in it, so the first equation cannot be used anywhere at all"],
+    "Substitution works when one variable is already isolated. Here \\(y\\) is given directly as \\(2x + 5\\), so replacing \\(y\\) in the second equation leaves one equation in \\(x\\) alone. The best fit is <b>substitution, because the first equation already gives y directly in terms of x</b>.",
+    {stmt:true,keyText:key});},
+  function(){var key="Use elimination, because doubling the first equation lines the y terms up as opposites, so adding then removes y in one step";
+    return mcq("A system consists of \\(x + 3y = 11\\) and \\(4x - 6y = 10\\). Which strategy fits this system best, and why?",
+    key,
+    ["Use substitution, because doubling the first equation lines the y terms up as opposites, so a variable must be isolated first",
+     "Use elimination, because tripling the first equation lines the y terms up as opposites, so adding then removes y in one step",
+     "Use graphing, because doubling the first equation lines the y terms up as opposites, so only a picture can combine the equations"],
+    "Elimination also works after one equation is multiplied to line up a pair of terms. Doubling the first equation makes its \\(y\\) term \\(6y\\), opposite the \\(-6y\\) in the second equation, so adding removes \\(y\\). The best fit is <b>elimination, because doubling the first equation lines the y terms up as opposites</b>.",
+    {stmt:true,keyText:key});}
+]));
+
+/* ================= add: number of solutions, standard form (4.57, L2, gen mcq) ================= */
+E("u6-add-count-standard",6,["4.57"],2,"gen",function(){
+  var cls=ri(1,3);
+  var a1=ri(1,5),b1=pick([-4,-3,-2,-1,1,2,3,4]),X=ri(-4,6),Y=ri(-4,6);
+  var c1=a1*X+b1*Y,a2,b2,c2,k;
+  if(cls===1){
+    a2=ri(1,5);b2=pick([-4,-3,-2,-1,1,2,3,4]);var t=0;
+    while(a1*b2===a2*b1&&t<60){a2=ri(1,5);b2=pick([-4,-3,-2,-1,1,2,3,4]);t++;}
+    c2=a2*X+b2*Y;
+  }else{
+    k=pick([2,3]);a2=k*a1;b2=k*b1;
+    c2=(cls===3)?k*c1:(k*c1+pick([3,5,7,9]));
+  }
+  var key=(cls===1?"Exactly one solution":(cls===2?"No solution exists here":"Infinitely many solutions"));
+  var allOpts=["Exactly one solution","No solution exists here","Infinitely many solutions","Exactly two solutions"];
+  var ds=allOpts.filter(function(s){return s!==key;});
+  var m1s=FR(-a1,b1),m2s=FR(-a2,b2);
+  var cmp=(cls===1?
+    "The slopes are different, so the lines cross at exactly one point.":
+    (cls===2?
+    "The slopes are the same but the lines are different parallels, since the second equation is not a multiple of the first, so the lines never meet.":
+    "The second equation is exactly "+k+" times the first, so both equations describe the very same line, and every point on it works."));
+  return mcq("How many solutions does this system of equations have? \\[ \\begin{aligned} "+u6std(a1,b1,c1)+" \\\\ "+u6std(a2,b2,c2)+" \\end{aligned} \\]",
+    key,ds,
+    "Write each equation with \\(y\\) as the subject to compare slopes. The first gives slope \\("+m1s+"\\) and the second gives slope \\("+m2s+"\\): \\[ \\begin{aligned} "+u6coefVar(b1,"y")+" &= "+(-a1)+"x + "+c1+" \\\\ "+u6coefVar(b2,"y")+" &= "+(-a2)+"x + "+c2+" \\end{aligned} \\] "+cmp+" The system has <b>"+key.toLowerCase()+"</b>.",
+    {cls:cls,a1:a1,b1:b1,c1:c1,a2:a2,b2:b2,c2:c2,keyText:key});
+});
+
 /* PK tranche metadata pass for Unit 6. The tranche's own entries are flagged here.  */
 var PKT_U6_FOR=["4.50","4.51","4.52","4.53","4.54","4.55","4.56","4.57"];
 var PKT_U6={
@@ -6745,10 +6892,10 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-clinometer=3
 // CRMARKS: u7-solve-triangle=3
 // CRMARKS: u7-two-triangles=2
-// CRMARKS: u7-elevation-decision=2
 // CRMARKS: u7-rope-angle=2
 // CRMARKS: u7-ramp-run=3
 // CRMARKS: u7-brace-leftover=2
+// CRMARKS: u7-wcr-two-observation-height=5
 /* Math 1201 Review, Unit 7: Trigonometry (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u7. Degrees only. Every entry returns the same question
@@ -7817,6 +7964,126 @@ E("u7-pk-draw-similar", 7, ["7.2"], 1, "gen", function () {
   return q;
 }, ["A similar drawing multiplies every side by the same scale factor.", "Take the named side and multiply it by the scale factor."]);
 
+/* Bimodal build additions (Nov 19, 2026): four selected-response entries on the thinnest Unit 7 indicators (7.1, 7.6, 7.3, 7.2). SME-flagged for the specialist pass. */
+/* ================= add: identify a named side (7.1, L1, gen mcq) ================= */
+E("u7-add-identify-side",7,["7.1"],1,"gen",function(){
+  var ns=u7names(),X=ns[0],Y=ns[1],R=ns[2];
+  var marked=pick([X,Y]),other=(marked===X?Y:X);
+  var hyp=u7side(X,Y),oppM=u7side(other,R),adjM=u7side(marked,R);
+  var ask=pick(["hyp","opp","adj"]);
+  var key=(ask==="hyp"?hyp:(ask==="opp"?oppM:adjM));
+  var sides=[hyp,oppM,adjM].filter(function(s){return s!==key;});
+  var ds=["\\("+sides[0]+"\\)","\\("+sides[1]+"\\)","Angle "+marked];
+  var askText=(ask==="hyp"?"the <b>hypotenuse</b>":(ask==="opp"?"the side <b>opposite</b> angle "+marked:"the side <b>adjacent</b> to angle "+marked));
+  var reason=(ask==="hyp"?
+    "The hypotenuse is the side opposite the right angle at "+R+", and it joins "+X+" and "+Y+".":
+    (ask==="opp"?
+    "The side opposite angle "+marked+" does not touch angle "+marked+"; it joins "+other+" and "+R+".":
+    "The side adjacent to angle "+marked+" forms that angle together with the hypotenuse; it joins "+marked+" and "+R+"."));
+  var tri=X+Y+R;
+  var q=mcq("Triangle "+tri+" is a right triangle with the right angle at "+R+". Angle "+marked+" is marked. Which side is "+askText+"?",
+    "\\("+key+"\\)",ds,
+    "In triangle "+tri+" the right angle is at "+R+". "+reason+" The side asked for is <b>\\("+key+"\\)</b>.",
+    {X:X,Y:Y,R:R,marked:marked,ask:ask,keyText:key});
+  var angLab=[null,null,null];angLab[marked===X?0:1]=marked;
+  q.figure=triSVG(4,3,5,{L:[X,Y,R],ang:angLab,side:[Y+R,X+R,X+Y]});
+  return q;
+});
+
+/* ================= add: hypotenuse from the two legs (7.6, L2, gen mcq) ================= */
+E("u7-add-solve-hypotenuse",7,["7.6"],2,"gen",function(){
+  var fams=[[[3,4,5],2,8],[[5,12,13],1,3],[[8,15,17],1,2],[[7,24,25],1,2]];
+  var fam=pick(fams),t=fam[0],k=ri(fam[1],fam[2]);
+  var legA=t[0]*k,legB=t[1]*k,hyp=t[2]*k;
+  if(Math.random()<0.5){var sw=legA;legA=legB;legB=sw;}
+  var unit=pick(["cm","m"]);
+  var key=""+hyp;
+  var ds=u7pickS3(key,[""+(legA+legB),""+(hyp+legA),""+Math.abs(legA-legB),""+(hyp+legB),""+(legA+legB+2)]);
+  var prompt=pick([
+    "A right triangle ABC has the right angle at C. Side AC is \\("+legA+"\\) "+unit+" and side BC is \\("+legB+"\\) "+unit+". What is the length of the hypotenuse AB, in "+(unit==="cm"?"centimetres":"metres")+"?",
+    "In right triangle ABC, the right angle is at C, side AC is \\("+legA+"\\) "+unit+", and side BC is \\("+legB+"\\) "+unit+". Find the length of the hypotenuse AB, in "+(unit==="cm"?"centimetres":"metres")+".",
+    "A right triangle ABC has the right angle at C, with legs AC of \\("+legA+"\\) "+unit+" and BC of \\("+legB+"\\) "+unit+". Give the length of the hypotenuse AB, in "+(unit==="cm"?"centimetres":"metres")+"."
+  ]);
+  return mcq(prompt,key,ds,
+    "Use the Pythagorean theorem with the two legs: \\[ \\begin{aligned} AB^2 &= "+legA+"^2 + "+legB+"^2 \\\\ AB^2 &= "+(legA*legA)+" + "+(legB*legB)+" \\\\ AB^2 &= "+(hyp*hyp)+" \\\\ AB &= "+hyp+" \\end{aligned} \\] The length of the hypotenuse AB is <b>\\("+hyp+"\\) "+unit+"</b>.",
+    {legA:legA,legB:legB,hyp:hyp,unit:unit,keyText:key});
+});
+
+/* ================= add: angle of a ramp from rise and run (7.3, L2, gen mcq) ================= */
+E("u7-add-ramp-angle",7,["7.3"],2,"gen",function(){
+  var ctxs=[
+    {what:"A loading ramp",riseWord:"rises",runWord:"horizontal run"},
+    {what:"A garden path on a slope",riseWord:"climbs",runWord:"horizontal distance"},
+    {what:"A roof section",riseWord:"rises",runWord:"horizontal run"}
+  ];
+  var ctx=pick(ctxs);
+  var R,D,raw,tries=0;
+  do{R=ri(2,9);D=ri(3,12);raw=u7atanD(R/D);tries++;}while((raw<14||raw>68)&&tries<100);
+  var ans=Math.round(raw);
+  var cands=shuffle([90-ans,ans+5,ans-5,ans+8,ans-8,ans+3,ans-3]).filter(function(v){return v>=10&&v<=80&&v!==ans;});
+  var seenD={},dsNums=[];
+  cands.forEach(function(v){if(dsNums.length<3&&!seenD[v]){seenD[v]=1;dsNums.push(v);}});
+  var key="\\("+ans+"^\\circ\\)";
+  var ds=dsNums.map(function(v){return "\\("+v+"^\\circ\\)";});
+  var q=mcq(ctx.what+" "+ctx.riseWord+" "+R+" m over a "+ctx.runWord+" of "+D+" m. What angle, in degrees, does it make with the horizontal, to the nearest degree?",
+    key,ds,
+    "The rise is the side opposite the angle and the run is the side adjacent to it, so use tangent and then the inverse: \\[ \\begin{aligned} \\tan \\theta &= "+FR(R,D)+" \\\\ \\theta &= \\tan^{-1}\\left("+FR(R,D)+"\\right) \\\\ &\\approx "+ans+"^\\circ \\end{aligned} \\] The angle with the horizontal is <b>\\("+ans+"^\\circ\\)</b>.",
+    {ctxWhat:ctx.what,R:R,D:D,ans:ans,keyText:key});
+  q.figure=u7triSceneSVG({vert:R,ground:D,slant:Math.sqrt(R*R+D*D),vertLabel:R+" m",groundLabel:D+" m",slantLabel:"",angle:"?"});
+  return q;
+});
+
+/* ================= add: ratio value in a 3-4-5 family triangle (7.2, L2, gen mcq) ================= */
+E("u7-add-ratio-345",7,["7.2"],2,"gen",function(){
+  var ns=u7names(),X=ns[0],Y=ns[1],R=ns[2];
+  var k=ri(1,6),swap=Math.random()<0.5;
+  var legXR=(swap?4:3)*k,legYR=(swap?3:4)*k,hyp=5*k;
+  var ang=pick([X,Y]);
+  var opp=(ang===X?legYR:legXR), adj=(ang===X?legXR:legYR);
+  var fn=pick(["sin","cos","tan"]);
+  var num,den;
+  if(fn==="sin"){num=opp;den=hyp;}else if(fn==="cos"){num=adj;den=hyp;}else{num=opp;den=adj;}
+  var key="\\("+u7fracS(num,den)+"\\)";
+  var all=[[opp,hyp],[adj,hyp],[opp,adj],[adj,opp],[hyp,opp],[hyp,adj]];
+  var cands=[];
+  all.forEach(function(pr){var s="\\("+u7fracS(pr[0],pr[1])+"\\)";if(s!==key)cands.push(s);});
+  cands=shuffle(cands);
+  var ds=u7pickS3(key,cands);
+  var fnName=(fn==="sin"?"sine":fn==="cos"?"cosine":"tangent");
+  var ratioWord=(fn==="tan"?"opposite over adjacent":fn==="sin"?"opposite over hypotenuse":"adjacent over hypotenuse");
+  var unit=pick(["cm","m"]);
+  var q=mcq("Triangle "+X+Y+R+" is a right triangle with the right angle at "+R+". Side "+X+R+" is \\("+legXR+"\\) "+unit+", side "+Y+R+" is \\("+legYR+"\\) "+unit+", and side "+X+Y+" is \\("+hyp+"\\) "+unit+". What is the value of \\(\\"+fn+" "+ang+"\\)?",
+    key,ds,
+    "The "+fnName+" ratio is "+ratioWord+". For angle "+ang+", the opposite side is \\("+opp+"\\) "+unit+", the adjacent side is \\("+adj+"\\) "+unit+", and the hypotenuse is \\("+hyp+"\\) "+unit+": \\[ \\begin{aligned} \\"+fn+" "+ang+" &= "+FR(num,den)+(u7red(num,den)[1]===1?"":" \\\\ &= "+u7fracS(num,den))+" \\end{aligned} \\] The value of \\(\\"+fn+" "+ang+"\\) is <b>"+key+"</b>.",
+    {ang:ang,fn:fn,opp:opp,adj:adj,hyp:hyp,k:k,keyText:key});
+  q.figure=triSVG(legYR,legXR,hyp,{L:[X,Y,R],side:[legYR+" "+unit,legXR+" "+unit,hyp+" "+unit]});
+  return q;
+});
+
+/* ============ Bimodal build denomination repair (Nov 20, 2026).
+   One written entry whose 5 marks restore an exact 14-mark
+   Section B for the Unit 7 test: once the non-strippable entries
+   left the constructed-response pool, the remaining pool
+   (3, 3, 3, 2, 2, 2) could not sum to 14; 5 + 3 + 3 + 3 can.
+   SME-flagged for the specialist pass. ============ */
+E("u7-wcr-two-observation-height",7,["7.7"],3,"gen",function(){
+  var fam=pick([
+    {obj:"a tower",objD:"the tower",from:"a point on level ground",toward:"straight toward the tower"},
+    {obj:"a communications mast",objD:"the communications mast",from:"a point on level ground",toward:"straight toward the mast"},
+    {obj:"a water tank on a stand",objD:"the water tank",from:"a point on level ground",toward:"straight toward the stand"}
+  ]);
+  var th1=pick(U7_ANGLES.filter(function(a){return a>=25&&a<=40;}));
+  var th2=pick(U7_ANGLES.filter(function(a){return a>=th1+10&&a<=62;}));
+  var d=ri(8,40);
+  var c1=1/u7tanD(th1),c2=1/u7tanD(th2),ans=u7r1(d/(c1-c2));
+  function f4(n){return (Math.round(n*10000)/10000).toFixed(4);}
+  var q=numq("From "+fam.from+", the angle of elevation to the top of "+fam.obj+" is \\("+th1+"^\\circ\\). After walking \\("+d+"\\) m "+fam.toward+", the angle of elevation is \\("+th2+"^\\circ\\). Find the height of "+fam.objD+", in metres, to the nearest tenth. Show your work.",
+    ans,0.06,
+    "Let \\(h\\) be the height and \\(x\\) the distance from the closer point to the base. From the closer point, \\(\\tan "+th2+"^\\circ = \\frac{h}{x}\\), so \\(x = \\frac{h}{\\tan "+th2+"^\\circ}\\). From the farther point, \\(x + "+d+" = \\frac{h}{\\tan "+th1+"^\\circ}\\). Subtracting the two expressions for \\(x\\) removes it: \\[ \\begin{aligned} "+d+" &= h\\left(\\frac{1}{\\tan "+th1+"^\\circ} - \\frac{1}{\\tan "+th2+"^\\circ}\\right) \\\\ &= h\\left("+f4(c1)+" - "+f4(c2)+"\\right) \\\\ &= "+f4(c1-c2)+"h \\\\ h &= \\frac{"+d+"}{"+f4(c1-c2)+"} \\\\ &\\approx "+u7f1(ans)+" \\end{aligned} \\] The height is <b>\\("+u7f1(ans)+"\\) m</b>.",
+    {th1:th1,th2:th2,d:d,ans:ans});
+  return q;
+});
+
 /* PK tranche metadata pass for Unit 7. The tranche's own entries are flagged here.  */
 var PKT_U7_FOR=["7.1","7.2","7.3","7.4","7.5","7.6","7.7"];
 var PKT_U7={
@@ -7837,7 +8104,6 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-square-diagonal=3
 // CRMARKS: u2-entire-radical-cr=3
 // CRMARKS: u2-prime-factor-cr=2
-// CRMARKS: u4-function-repair=3
 // CRMARKS: u4-table-extend-cr=3
 // CRMARKS: u4-graph-read-cr=2
 // CRMARKS: u4-pair-intercept-cr=2
@@ -8105,4 +8371,10 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-error":2,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-context-problem":3,"u4-domain-decision":2,"u4-domain-range":3,"u4-eval-function":2,"u4-function-repair":3,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-mixture":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-travel":2,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-elevation-decision":2,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-domain-range":3,"u4-eval-function":2,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u4-wcr-context-domain":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-mixture":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-travel":2,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2,"u7-wcr-two-observation-height":5};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u2-laws-integral":"b","u2-laws-rational":"b","u3-binom-tri-expand":"b","u3-binomial-expand":"b","u3-factor-error":"b","u3-factor-gcf-first":"b","u3-factor-hard":"b","u3-factor-product":"b","u3-factorable-k":"a","u3-gcf":"b","u3-mult-error":"b","u5-eq-parallel-perp":"b","u5-eq-two-points":"b","u5-rewrite-form":"b","u6-solution-count":"a","u6-word-problem":"a"};

@@ -2767,6 +2767,12 @@ var qrcode = function() {
         <label>Constructed Response
           <input type="number" id="ncCountIn" min="0" max="60" value="5">
         </label>
+        <label>Dual-form questions
+          <select id="bmIn">
+            <option value="on" selected>Answer choices on</option>
+            <option value="off">Answer choices off</option>
+          </select>
+        </label>
         <label><input type="checkbox" id="keyChk" checked> Include answer key</label>
         <label><input type="checkbox" id="codeChk" checked> Include set code and QR</label>
         <label>Working space for multiple choice
@@ -3102,7 +3108,8 @@ var UNIT_IND=window.__COURSE?window.__COURSE.unitInd:{};
    (banks/ in the shell folder), assembled from that course's
    per-unit bank sources. The module registers its entries
    through E below and publishes its constructed-response
-   marks as window.__BANK_CRMARKS. */
+   marks as window.__BANK_CRMARKS and its bimodal manifest
+   as window.__BANK_BIMODAL. */
 var BANK=[];
 function E(id,unit,indicators,level,kind,gen,hints){var e={id:id,unit:unit,indicators:indicators,level:level,kind:kind,gen:gen};if(hints){e.hint1=hints[0]||"";e.hint2=hints[1]||"";}BANK.push(e);}
 </script>
@@ -3113,7 +3120,8 @@ function E(id,unit,indicators,level,kind,gen,hints){var e={id:id,unit:unit,indic
    exact and also works from a local folder, where fetching a
    script file would be blocked. */
 if(window.__COURSE){document.write('<script src="banks/'+window.__COURSE.bankFile+'"><\/script>');
-  document.write('<script>window.CR_MARKS=window.__BANK_CRMARKS||{};<\/script>');}
+  document.write('<script>window.CR_MARKS=window.__BANK_CRMARKS||{};<\/script>');
+  document.write('<script>window.BIMODAL=window.__BANK_BIMODAL||{};<\/script>');}
 </script>
 
 <script>
@@ -3130,6 +3138,20 @@ if(window.__COURSE){document.write('<script src="banks/'+window.__COURSE.bankFil
    browsers run them in order, making this line the one
    that counts there). */
 var CR_MARKS=window.__BANK_CRMARKS||{};
+/* Bimodal manifest (Nov 19, 2026): the entries whose
+   multiple-choice questions may be stripped to
+   constructed response, mapped to their checkability
+   class; see Spec-Bimodal-Questions-2026-11-19.md.
+   bimodalClass and stripQ live with the composer. */
+var BIMODAL=window.__BANK_BIMODAL||{};
+/* Dual-form toggle state (Nov 19, 2026): false (the
+   default) means bimodal entries deal with their
+   answer choices, in selected response; true means
+   they deal stripped, in constructed response.
+   startExam sets it from the set's settings before
+   composing; test scope ignores it, because the
+   blueprint governs there. */
+var BIMODAL_OFF=false;
 /* ============ selection engine ============ */
 /* Exam scopes in the unified shell are the preset unit
    selections in the course configuration. One course
@@ -3782,19 +3804,20 @@ function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();
    identical set for a student. The prior knowledge switch left
    this group on Nov 18, 2026: it renders in the main builder for
    everyone (see refreshPkToggle), and its stash default is off. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on"};
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
-  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk");
+  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn");
   if(mc)hidCtl.mc=mc.value;
   if(nc)hidCtl.nc=nc.value;
   if(l1&&l2&&l3)hidCtl.mix=[l1.value,l2.value,l3.value];
   if(pk)hidCtl.pk=!!pk.checked;
   if(en)hidCtl.enr=!!en.checked;
   if(pi)hidCtl.pkIn=!!pi.checked;
+  if(bm)hidCtl.bm=bm.value;
   if(TEACHER)return;
-  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk"].forEach(function(id){
+  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn"].forEach(function(id){
     var el=$(id);if(!el)return;
     var lab=(el.closest?el.closest("label"):null)||el;
     if(lab.parentNode)lab.parentNode.removeChild(lab);
@@ -3806,6 +3829,7 @@ function settings(){
     count:Math.max(1,Math.min(60,+$("countIn").value||10)),
     mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),
     ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),
+    bimodal:tCtlVal("bmIn",hidCtl.bm)!=="off",
     wantKey:!($("keyChk")&&$("keyChk").checked===false),
     wantCode:!($("codeChk")&&$("codeChk").checked===false),
     order:$("orderIn").value,
@@ -4067,7 +4091,7 @@ function tSalt(){var abc="abcdefghjkmnpqrstuvwxyz23456789",s="";for(var i=0;i<6;
 function tEntryById(id){for(var i=0;i<BANK.length;i++)if(BANK[i].id===id)return BANK[i];return null;}
 function tB64(s){return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
 function tUnB64(s){s=String(s).replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return decodeURIComponent(escape(atob(s)));}
-function tRawQ(q){var r={p:q.prompt,t:q.type,s:q.solution};if(q.type==="mc"){r.o=q.options;r.c=q.correct;}else if(q.type==="num"){r.a=q.answer;r.to=q.tol;}else{r.an=q.answers;}if(q.figure)r.f=q.figure;return r;}
+function tRawQ(q){var r={p:q.prompt,t:q.type,s:q.solution};if(q.type==="mc"){r.o=q.options;r.c=q.correct;}else if(q.type==="num"){r.a=q.answer;r.to=q.tol;}else{r.an=q.answers;}if(q.answerText)r.at=q.answerText;if(q.selfCheck)r.sc=1;if(q.figure)r.f=q.figure;return r;}
 function tScanStream(e,nonce,wantType,avoid,salt){
   /* First acceptable candidate in the slot's seeded stream, returned
      with its absolute index in the stream. The set token stores that
@@ -4077,14 +4101,14 @@ function tScanStream(e,nonce,wantType,avoid,salt){
      before them, and the index keeps the two in agreement. */
   return withSeed("tset|"+salt+"|"+e.id+"|"+nonce,function(){
     var k,cand;
-    for(k=0;k<60;k++){cand=e.gen();cand._entry=e;
+    for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);
       if(wantType&&cand.type!==wantType)continue;
       if(avoid&&avoid[canonQ(cand)])continue;
       return {q:cand,idx:k};}
-    for(k=60;k<120;k++){cand=e.gen();cand._entry=e;
+    for(k=60;k<120;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);
       if(wantType&&cand.type!==wantType)continue;
       return {q:cand,idx:k};}
-    cand=e.gen();cand._entry=e;return {q:cand,idx:120};
+    cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);return {q:cand,idx:120};
   });
 }
 function tStreamDraw(e,nonce,idx,salt){
@@ -4093,12 +4117,12 @@ function tStreamDraw(e,nonce,idx,salt){
     return cand;
   });
 }
-function tCanMake(e,type){for(var k=0;k<8;k++){try{var q=e.gen();if(q&&q.type===type)return true;}catch(err){}}return false;}
+function tCanMake(e,type){if(type&&type!=="mc"&&bimodalClass(e))return true;for(var k=0;k<8;k++){try{var q=e.gen();if(q&&q.type===type)return true;}catch(err){}}return false;}
 function tRawDraw(e,wantType,avoid){
   var best=null,k,cand;
-  for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&cand.type!==wantType)continue;if(avoid&&avoid[canonQ(cand)])continue;best=cand;break;}
-  if(!best){for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&cand.type!==wantType)continue;best=cand;break;}}
-  if(!best){best=e.gen();best._entry=e;}
+  for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);if(wantType&&cand.type!==wantType)continue;if(avoid&&avoid[canonQ(cand)])continue;best=cand;break;}
+  if(!best){for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);if(wantType&&cand.type!==wantType)continue;best=cand;break;}}
+  if(!best){best=e.gen();best._entry=e;if(wantType&&wantType!=="mc"&&best.type==="mc"&&bimodalClass(e))best=stripQ(best);}
   best._entry=e;return best;
 }
 function tFreezeSlot(e,wantType,avoid,salt){
@@ -4114,6 +4138,7 @@ function tFreezeSlot(e,wantType,avoid,salt){
   if(avoid)avoid[canonQ(nq)]=1;
   nq._tuid="u"+(++_tUid);nq._ts={n:0,i:0,t:nq.type,raw:tRawQ(nq)};return nq;
 }
+function tStripSlot(q){if(!q||q.type!=="mc"||!bimodalClass(q._entry))return q;var s2=stripQ(q);if(s2._ts)s2._ts={n:s2._ts.n,i:s2._ts.i,t:s2.type,raw:s2._ts.raw?tRawQ(s2):null};return s2;}
 function tTypeOk(q,wantType){
   if(!q)return false;
   if(!wantType)return true;
@@ -4185,6 +4210,7 @@ function tStreamWalk(e,wantType,salt,visit){
     withSeed("tset|"+salt+"|"+e.id+"|"+nonce,function(){
       for(var k=0;k<=120;k++){
         var cand=e.gen();cand._entry=e;
+        if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);
         if(!tTypeOk(cand,wantType))continue;
         if(visit(cand,nonce,k)===false){stop=true;break;}
       }
@@ -4846,8 +4872,10 @@ function tBuildTok(tok,avoid,salt){
   else{var m=tok.match(/^([a-z0-9-]+)\.(\d+)\.(\d+)([MNT])$/);if(!m)return null;id=m[1];n=+m[2];idx=+m[3];}
   var e=tEntryById(id);if(!e)return null;
   var q;
-  if(raw){q={prompt:raw.p,type:raw.t,solution:raw.s,_entry:e};if(raw.o){q.options=raw.o;q.correct=raw.c;}if(raw.t==="num"){q.answer=raw.a;q.tol=raw.to;}else if(raw.an){q.answers=raw.an;}if(raw.f)q.figure=raw.f;}
+  if(raw){q={prompt:raw.p,type:raw.t,solution:raw.s,_entry:e};if(raw.o){q.options=raw.o;q.correct=raw.c;}if(raw.t==="num"){q.answer=raw.a;q.tol=raw.to;}else if(raw.an){q.answers=raw.an;}if(raw.at)q.answerText=raw.at;if(raw.sc)q.selfCheck=true;if(raw.f)q.figure=raw.f;}
   else{q=tStreamDraw(e,n,idx,salt);}
+  var declT=raw?raw.t:(at<0?(tok.slice(-1)==="N"?"num":(tok.slice(-1)==="T"?"text":"mc")):"mc");
+  if(q.type==="mc"&&declT!=="mc"&&bimodalClass(e))q=stripQ(q);
   if(avoid)avoid[canonQ(q)]=1;
   q._tuid="u"+(++_tUid);q._ts={n:n,i:idx,t:q.type,raw:raw};
   return q;
@@ -5390,7 +5418,7 @@ function tOpOnline(op,i,entryId,pickedQ){
     if(!cands.length){tOnlineStatus("No other question of this kind is available in the current scope to swap in.");return;}
     current[i]=tFreezeSlot(pick(cands),q.type,avoid,T.salt);T.edited=true;tAfterOnlineEdit();return;
   }
-  if(op==="pick"){var e2=tEntryById(entryId);if(!e2)return;current[i]=(pickedQ&&pickedQ._entry===e2&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e2,pickedQ,avoid):tFreezeSlot(e2,null,avoid,T.salt);T.edited=true;tAfterOnlineEdit();return;}
+  if(op==="pick"){var e2=tEntryById(entryId);if(!e2)return;current[i]=(pickedQ&&pickedQ._entry===e2&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e2,pickedQ,avoid):tFreezeSlot(e2,null,avoid,T.salt);if(lastSettings&&lastSettings.bimodal===false)current[i]=tStripSlot(current[i]);T.edited=true;tAfterOnlineEdit();return;}
 }
 function tPickOnline(i){
   tOpenPicker("Replace question "+(i+1)+" from the bank",tScopePool(),function(id,q){tOpOnline("pick",i,id,q);tReturnToPick(String(i));});
@@ -5411,7 +5439,7 @@ function tAddOnlineEntry(id,pickedQ){
   var e=tEntryById(id);if(!e)return;
   tSyncOnline();
   var avoid=tAvoidAll(current);
-  current.push((pickedQ&&pickedQ._entry===e&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e,pickedQ,avoid):tFreezeSlot(e,null,avoid,T.salt));
+  current.push((pickedQ&&pickedQ._entry===e&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e,pickedQ,avoid):tFreezeSlot(e,null,avoid,T.salt));if(lastSettings&&lastSettings.bimodal===false)current[current.length-1]=tStripSlot(current[current.length-1]);
   T.edited=true;tAfterOnlineEdit();
 }
 /* ---- composed practice tests and exams ---- */
@@ -5484,11 +5512,11 @@ function tOpExam(section,op,i,entryId,pickedQ){
     var cands=section==="sr"?tScopePool().filter(function(e){return e.id!==it.q._entry.id&&tCanMake(e,"mc");}):tCrPool().filter(function(e){return e.id!==it.q._entry.id;});
     if(!cands.length){renderExam();var st=$("tExamStatus");if(st)st.textContent="No other question is available in the current scope to swap in.";return;}
     var e2=pick(cands);
-    it.q=tFreezeSlot(e2,section==="sr"?"mc":null,avoid,T.salt);
+    it.q=tFreezeSlot(e2,section==="sr"?"mc":null,avoid,T.salt);if(section==="cr")it.q=tStripSlot(it.q);
     if(section==="cr")it.marks=CR_MARKS[e2.id];
     T.edited=true;renderExam();return;
   }
-  if(op==="pick"){var e3=tEntryById(entryId);if(!e3)return;var useQ=(pickedQ&&pickedQ._entry===e3&&!avoid[canonQ(pickedQ)]&&(section!=="sr"||pickedQ.type==="mc"))?pickedQ:null;it.q=useQ?tAdoptPicked(e3,useQ,avoid):tFreezeSlot(e3,section==="sr"?"mc":null,avoid,T.salt);if(section==="cr")it.marks=CR_MARKS[e3.id];T.edited=true;renderExam();return;}
+  if(op==="pick"){var e3=tEntryById(entryId);if(!e3)return;var useQ=(pickedQ&&pickedQ._entry===e3&&!avoid[canonQ(pickedQ)]&&(section!=="sr"||pickedQ.type==="mc"))?pickedQ:null;it.q=useQ?tAdoptPicked(e3,useQ,avoid):tFreezeSlot(e3,section==="sr"?"mc":null,avoid,T.salt);if(section==="cr")it.q=tStripSlot(it.q);if(section==="cr")it.marks=CR_MARKS[e3.id];T.edited=true;renderExam();return;}
 }
 function tPickExam(section,i){
   var pool=section==="sr"?tScopePool().filter(function(e){return probeType(e)==="mc";}):tCrPool();
@@ -5513,7 +5541,7 @@ function tAddExamEntry(section,id,pickedQ){
   var ex=examState.ex,avoid=tAvoidAll(tExamAllQ());
   var useQ=(pickedQ&&pickedQ._entry===e&&!avoid[canonQ(pickedQ)]&&(section!=="sr"||pickedQ.type==="mc"))?pickedQ:null;
   if(section==="sr")ex.srItems.push({q:useQ?tAdoptPicked(e,useQ,avoid):tFreezeSlot(e,"mc",avoid,T.salt),marks:1});
-  else ex.crItems.push({q:useQ?tAdoptPicked(e,useQ,avoid):tFreezeSlot(e,null,avoid,T.salt),marks:CR_MARKS[e.id]});
+  else{var _aq=useQ?tAdoptPicked(e,useQ,avoid):tFreezeSlot(e,null,avoid,T.salt);ex.crItems.push({q:tStripSlot(_aq),marks:CR_MARKS[e.id]});}
   T.edited=true;renderExam();
 }
 /* ---- practice sheet ---- */
@@ -5601,6 +5629,7 @@ function startOnline(){
   PKONLY_DRAW=false;PKONLY_GROUPS=null;
   current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};helpUsed={};ANALYTICS_FINISHED=false;
   lastSettings=s;onlineThin=res.thin;T=null;
+  if(!s.bimodal)current=current.map(function(q){return (q.type==="mc"&&bimodalClass(q._entry))?stripQ(q):q;});
   if(TEACHER&&current.length){
     T={view:"online",salt:tSalt(),scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:false,state:{},endGraded:false,picker:null};
     var _av={};
@@ -5746,7 +5775,7 @@ function checkQ(i){
    betters the first-check-sticks behaviour of the auto-marked
    types. Short text answers keep the exact-match check above. */
 var PROSE_TEXT_MIN=36;
-function isProseText(q){return !!q&&q.type==="text"&&!!q.answers&&q.answers.length>0&&Math.min.apply(null,q.answers.map(function(a){return String(a).length;}))>PROSE_TEXT_MIN;}
+function isProseText(q){return !!q&&q.type==="text"&&((q.selfCheck===true)||(!!q.answers&&q.answers.length>0&&Math.min.apply(null,q.answers.map(function(a){return String(a).length;}))>PROSE_TEXT_MIN));}
 function proseReveal(i){
   var sol=$("sol"+i);if(sol&&!sol.classList.contains("show")){sol.classList.add("show");setSolLabel(i,true);}
   closeScaffolding(i);
@@ -5814,13 +5843,14 @@ function probeType(e){if(_probeCache[e.id])return _probeCache[e.id];var t="mc",s
    no-choices questions (numerical and text answers print identically, so
    they share one count), each part honouring the level mix on its own pool. */
 function drawSheetSet(s){
-  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)==="mc";});
-  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)!=="mc";});
+  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);});
+  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)!=="mc"||(!s.bimodal&&!!bimodalClass(e));});
   /* A few entries generate more than one answer type, and the probe that
      sorts them into a part catches only one of the types. Enforce each
      part's type on the generated questions themselves: an off-type
      question is redrawn from its own entry until it fits the part. */
   function fixType(q,wantMc){
+    if(!wantMc&&!s.bimodal&&q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);
     var tries=0;
     while((q.type==="mc")!==wantMc&&tries<40){var nq=q._entry.gen();nq._entry=q._entry;q=nq;tries++;}
     return q;
@@ -5835,6 +5865,76 @@ function subsetSumMarks(entries,target){
   for(var i=0;i<arr.length;i++){var m=arr[i].marks;var keys=Object.keys(dp).map(Number).sort(function(a,b){return b-a;});
     for(var k=0;k<keys.length;k++){var s2=keys[k]+m;if(s2<=target&&!dp[s2]){dp[s2]=dp[keys[k]].concat([arr[i]]);if(s2===target)return dp[s2];}}}
   return dp[target]||null;
+}
+function bimodalClass(e){
+  /* Bimodal registration (Spec-Bimodal-Questions-2026-11-19.md):
+     the bank module's BIMODAL manifest maps an entry id to its
+     checkability class, "a" (online-checkable stripped answers)
+     or "b" (print/self-check). Anything else is not bimodal. */
+  if(!e||!e.id)return null;
+  var B=(typeof BIMODAL!=="undefined"&&BIMODAL)||(typeof window!=="undefined"&&window.__BANK_BIMODAL)||{};
+  var c=B[e.id];
+  return (c==="a"||c==="b")?c:null;
+}
+function stripQ(q){
+  /* The stripped form of a bimodal entry's multiple-choice draw:
+     same stem, figure and worked solution, options removed, the
+     answer carried as the correct option's content. Class (a)
+     deals as a numeric question when the answer parses as a pure
+     number (tolerance 0 for integers, 1 percent otherwise) and
+     otherwise as a short text question checked against accepted
+     forms of the answer; class (b) deals as a text question in
+     the prose self-check flow. Non-multiple-choice questions and
+     questions whose entry is not bimodal pass through unchanged. */
+  function plainT(s){
+    return String(s==null?"":s).replace(/<[^>]*>/g," ").replace(/&nbsp;/g," ").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&amp;/g,"&").replace(/\s+/g," ").trim();
+  }
+  function detexT(s){
+    var t=String(s==null?"":s);
+    t=t.replace(/\\\(|\\\)|\\\[|\\\]/g," ").replace(/\$+/g," ");
+    t=t.replace(/\\sqrt\{((?:[^{}]|\{[^{}]*\})*)\}/g,"sqrt($1)");
+    t=t.replace(/\\d?frac\{((?:[^{}]|\{[^{}]*\})*)\}\{((?:[^{}]|\{[^{}]*\})*)\}/g,"$1/$2");
+    t=t.replace(/\\infty/g,"infinity");
+    t=t.replace(/\\pi/g,"pi").replace(/\\theta/g,"theta").replace(/\\alpha/g,"alpha").replace(/\\beta/g,"beta").replace(/\\gamma/g,"gamma").replace(/\\Delta/g,"Delta").replace(/\\delta/g,"delta");
+    t=t.replace(/\\pm/g,"±").replace(/\\times/g,"×").replace(/\\leq/g,"<=").replace(/\\geq/g,">=").replace(/\\neq/g,"≠");
+    t=t.replace(/\\(?:text|mathrm|mathbf|mathit|operatorname)\{([^{}]*)\}/g,"$1");
+    t=t.replace(/\\%/g,"%").replace(/\\,/g,"");
+    t=t.replace(/\\[a-zA-Z]+/g," ").replace(/[{}]/g," ").replace(/\\/g," ");
+    return plainT(t);
+  }
+  if(!q||q.type!=="mc"||!q._entry)return q;
+  var cls=bimodalClass(q._entry);
+  if(!cls)return q;
+  var rawOpt=String(q.options[q.correct]);
+  var out={};
+  for(var k in q){if(k!=="options"&&k!=="correct"&&k!=="fb")out[k]=q[k];}
+  out.stripped=true;
+  out.answerText=rawOpt;
+  var dt=detexT(rawOpt);
+  if(cls==="a"){
+    var numT=dt.replace(/[$,%°]/g,"").replace(/,/g,"").trim();
+    if(/^[-+]?(\d+\.?\d*|\.\d+)$/.test(numT)){
+      var v=parseFloat(numT);
+      out.type="num";out.answer=v;
+      out.tol=(v===Math.round(v))?0:Math.max(Math.abs(v)*0.01,1e-9);
+      delete out.answers;
+      return out;
+    }
+    var vars={},addV=function(s){s=String(s||"").toLowerCase().replace(/\s+/g," ").trim();if(s)vars[s]=1;};
+    addV(dt);addV(plainT(rawOpt));
+    var xm=dt.match(/^x\s*=\s*(.+)$/);if(xm)addV(xm[1]);
+    Object.keys(vars).slice().forEach(function(s){
+      if(s.indexOf("infinity")>=0)addV(s.replace(/infinity/g,"inf"));
+      addV(s.replace(/±/g,"+/-"));addV(s.replace(/×/g,"x"));addV(s.replace(/≠/g,"!="));addV(s.replace(/\bpi\b/g,"π"));
+    });
+    out.type="text";out.answers=Object.keys(vars);
+    if(!out.answers.length){out.answers=[dt.toLowerCase()];out.selfCheck=true;}
+    return out;
+  }
+  out.type="text";
+  out.answers=[dt.toLowerCase()];
+  out.selfCheck=true;
+  return out;
 }
 function composeExam(units,inds,includePK,plan){
   /* Blueprint-driven exam composer for the unified shell. The plan comes
@@ -6002,6 +6102,25 @@ function composeExam(units,inds,includePK,plan){
          same rule within its own draw: its Section A prefers
          undealt entries, and its Section B selection prefers
          entries Section A has not dealt.
+       - Bimodal entries (Nov 19, 2026; Spec-Bimodal-Questions-
+         2026-11-19.md): an entry registered in the bank's
+         BIMODAL manifest generates multiple-choice questions
+         whose choices can be stripped to a genuine constructed
+         response. The global BIMODAL_OFF carries the teacher's
+         dual-form toggle (set by startExam from the set's
+         settings; undefined or false means choices on). Outside
+         test scope: choices on, bimodal entries deal in
+         selected response only and are filtered out of the CR
+         pool; choices off, they deal in constructed response
+         only, stripped by stripQ at the draw. In test scope
+         (a plan is present, or the composition is a single-unit
+         test, whose paper is a unit test under the same rule)
+         the blueprint governs: bimodal
+         entries stay available to the CR pool in stripped form
+         regardless of the toggle, and the disjoint machinery
+         above keeps one entry to one section per paper. The
+         fixed-shape sibling branch always strips a bimodal
+         entry it deals into Section B.
      Constructed response is drawn only from Level 2 and Level 3 entries
      carrying CR_MARKS of 2 or more. Composition retries internally with
      fresh random subsets; when no exact composition is found the best
@@ -6009,6 +6128,9 @@ function composeExam(units,inds,includePK,plan){
      current apps use. */
   var C=window.__COURSE||{};
   var single=units.length===1;
+  /* Test scope for the bimodal rule: a mapped test (plan) or a
+     single-unit composition, which is a unit test paper. */
+  var testScope=!!plan||single;
   var key=units.slice().sort(function(a,b){return a-b;}).join();
   var scope=null;
   if(!single&&C.exam){Object.keys(C.exam).forEach(function(nm){var sc=C.exam[nm];if(sc&&sc.units&&sc.units.slice().sort(function(a,b){return a-b;}).join()===key)scope=sc;});}
@@ -6142,7 +6264,7 @@ function composeExam(units,inds,includePK,plan){
       var seenCA={};srA.forEach(function(it){seenCA[canonQ(it.q)]=1;});
       chosenA.forEach(function(x){
         var q=null,c=null,tries=0;
-        do{q=genFromA(x.e);c=canonQ(q);tries++;}while(seenCA[c]&&tries<25);
+        do{q=genFromA(x.e);if(bimodalClass(x.e))q=stripQ(q);c=canonQ(q);tries++;}while(seenCA[c]&&tries<25);
         if(seenCA[c]){shortA=true;return;}
         seenCA[c]=1;crA.push({q:q,marks:x.marks});crMarksA+=x.marks;if(x.e.level===3)l3A+=x.marks;
       });
@@ -6170,7 +6292,16 @@ function composeExam(units,inds,includePK,plan){
   function marksKey(items){return items.map(function(x){return x.marks;}).sort(function(a,b){return a-b;}).join("+");}
   function prefKey(pref){return pref.slice().sort(function(a,b){return a-b;}).join("+");}
   function crPoolFor(part){
-    return pool.filter(function(e){return part.units.indexOf(e.unit)>=0&&typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+    var base=pool.filter(function(e){return part.units.indexOf(e.unit)>=0&&typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2;}).map(function(e){return{e:e,marks:CR_MARKS[e.id]};});
+    /* Bimodal pool rule (Nov 19, 2026): outside test scope, with
+       the dual-form answer choices on (the default), bimodal
+       entries are dealt in selected response only and stay out
+       of the constructed-response pool. With the choices off,
+       and in test scope where the blueprint governs regardless
+       of the toggle, they are available here and are dealt in
+       stripped form by drawCR below. */
+    if(!testScope&&!(typeof BIMODAL_OFF!=="undefined"&&BIMODAL_OFF))base=base.filter(function(x){return !bimodalClass(x.e);});
+    return base;
   }
   function crOptions(part){
     var cp=crPoolFor(part);var opts=[];var seenK={};var nulls=0;
@@ -6334,9 +6465,18 @@ function composeExam(units,inds,includePK,plan){
        no less-dealt candidate remains. A claim is released when
        its CR item actually draws (the appearance then sits in
        dealtCount). pickFresh picks among the least-dealt
-       candidates, least tried within the call first. */
+       candidates, least tried within the call first. In test
+       scope the claim is a hard exclusion from the SR draw,
+       not a preference: the bimodal disjoint rule (one entry,
+       one section per paper) is an invariant there, and a
+       single-unit pool can be thin enough that the soft
+       preference alone lets a claimed entry through. */
     var dealtCount={},claimedCR={};
     combo.opts.forEach(function(o){o.items.forEach(function(x){claimedCR[x.e.id]=1;});});
+    /* Bimodal SR rule (Nov 19, 2026): outside test scope, with
+       the dual-form choices off, bimodal entries are dealt in
+       constructed response only and the SR draw skips them. */
+    var bmSRoff=!testScope&&(typeof BIMODAL_OFF!=="undefined"&&!!BIMODAL_OFF);
     function useScore(e){return (dealtCount[e.id]||0)+(claimedCR[e.id]?1:0);}
     function noteDealt(e){if(claimedCR[e.id])delete claimedCR[e.id];dealtCount[e.id]=(dealtCount[e.id]||0)+1;}
     function pickFresh(cands,tried){
@@ -6356,7 +6496,7 @@ function composeExam(units,inds,includePK,plan){
          only ever binds tighter within an attempt, never looser. */
       if(part.indCap)combo.opts[pi].items.forEach(function(x){reservedCR[x.e.id]=1;indTake(x.e);});
       function takeSR(level,count){
-        var cands=ppool.filter(function(e){return e.level===level&&probeType(e)==="mc";});
+        var cands=ppool.filter(function(e){return e.level===level&&probeType(e)==="mc"&&(!bmSRoff||!bimodalClass(e))&&(!testScope||!claimedCR[e.id]);});
         var tried={},guard=0;
         while(count>0&&guard++<600&&cands.length){
           cands=cands.filter(function(e){return indRoom(part,e);});
@@ -6369,7 +6509,7 @@ function composeExam(units,inds,includePK,plan){
       }
       var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}
       if(miss>0){
-        var allC=ppool.filter(function(e){return probeType(e)==="mc";});var triedT={},guard2=0;
+        var allC=ppool.filter(function(e){return probeType(e)==="mc"&&(!bmSRoff||!bimodalClass(e))&&(!testScope||!claimedCR[e.id]);});var triedT={},guard2=0;
         while(miss>0&&guard2++<900&&allC.length){allC=allC.filter(function(e){return indRoom(part,e);});if(!allC.length)break;var eB=pickFresh(allC,triedT);triedT[eB.id]=(triedT[eB.id]||0)+1;var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);noteDealt(eB);miss--;}
       }
       if(miss>0)short=true;
@@ -6377,14 +6517,14 @@ function composeExam(units,inds,includePK,plan){
       var partCR=[];
       function drawCR(x){
         var q=null,c=null,tries=0;
-        do{q=genFrom(x.e);c=canonQ(q);tries++;}while(seen[c]&&tries<25);
+        do{q=genFrom(x.e);if(bimodalClass(x.e))q=stripQ(q);c=canonQ(q);tries++;}while(seen[c]&&tries<25);
         if(seen[c]){
           var subs=cp.filter(function(y){return y.e.level===x.e.level&&y.marks===x.marks&&y.e!==x.e&&(!part.indCap||indKeyOf(y.e)===indKeyOf(x.e)||(indCount[indKeyOf(y.e)]||0)<part.indCap);});
           /* Per-entry limit (Nov 19, 2026): substitutes are tried
              least-dealt first, so a collision moves the item to
              an entry the paper has not used yet when it can. */
           subs.sort(function(a,b){return useScore(a.e)-useScore(b.e);});
-          for(var si=0;si<subs.length&&seen[c];si++){var q2=null,c2=null,t2=0;do{q2=genFrom(subs[si].e);c2=canonQ(q2);t2++;}while(seen[c2]&&t2<25);if(!seen[c2]){q=q2;c=c2;
+          for(var si=0;si<subs.length&&seen[c];si++){var q2=null,c2=null,t2=0;do{q2=genFrom(subs[si].e);if(bimodalClass(subs[si].e))q2=stripQ(q2);c2=canonQ(q2);t2++;}while(seen[c2]&&t2<25);if(!seen[c2]){q=q2;c=c2;
             /* A substitute on a different primary indicator takes
                over the reserved item's cap slot: release the
                reservation and count the substitute instead. */
@@ -6518,6 +6658,7 @@ function startExam(){
   var pkOn=tPkOn();
   var _ts=testSelActive(s);var _plan=_ts?testPlanFor(window.__COURSE,_ts.unit,_ts.test):null;
   if(window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.singleOnly&&s.units.length!==1){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"Practice tests are built one unit at a time, like the unit tests in the course. Choose exactly one unit above, then make the practice test again. To practise across several units, make a practice sheet instead.":"Choose one unit above, then make the practice test.")+'</p></div>';return;}
+  BIMODAL_OFF=!s.bimodal;
   var ex=withSeed(_sd,function(){return _plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);});
   if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
   countEvent("exam_compose",[analyticsCourse(),examPresetName(s.units)]);
@@ -6568,7 +6709,7 @@ function renderExam(){
   key+=recGrid(ex.srItems,true);
   key+='<h2 style="font-size:1.05rem;">'+L9("Section B: worked solutions","Section B : solutions détaillées")+'</h2>';
   var m=ex.srItems.length;
-  ex.crItems.forEach(function(it){m++;var q=it.q;var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0]));
+  ex.crItems.forEach(function(it){m++;var q=it.q;var ans=q.answerText?esc(q.answerText):(q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0])));
     key+='<div class="solp"><p><b>'+m+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+ans+'</b> ('+it.marks+L9(" marks"," points")+'</p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';});
   key+='<h2 style="font-size:1.05rem;">'+L9("Appendix: Section A worked solutions","Annexe : solutions détaillées de la section A")+'</h2><div class="solAppendix">';
   ex.srItems.forEach(function(it,ix){var q=it.q;key+='<div class="solp"><div class="qline"><b>'+(ix+1)+'.</b> <b>('+"ABCD"[q.correct]+')</b> '+stepHTML(q.solution)+'</div></div>';});
@@ -6636,7 +6777,7 @@ function renderSheet(){
   if(s.wantKey){
   html+='<div class="keybreak"><h1 style="font-size:1.3rem;">'+L9("Answer Key, with worked solutions","Corrigé, avec solutions détaillées")+'</h1>';
   res.items.forEach(function(q,i){
-    var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0]));
+    var ans=q.answerText?esc(q.answerText):(q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0])));
     html+='<div class="solp"><p><b>'+(i+1)+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+ans+'</b></p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';
   });
   html+='</div>';
@@ -7763,6 +7904,7 @@ function settingsToURL(){
   p.set("count",s.count);p.set("order",s.order);
   if(s.mcCount!==10)p.set("mc",s.mcCount);
   if(s.ncCount!==5)p.set("nc",s.ncCount);
+  if(!s.bimodal)p.set("bm","0");
   if(!s.wantKey)p.set("key","0");
   if(!s.wantCode)p.set("scode","0");
   if(s.wsMc!==0)p.set("wsmc",s.wsMc);
@@ -7786,6 +7928,7 @@ function applyURL(){
   if(p.get("count"))$("countIn").value=p.get("count");
   if(p.get("mc")!==null)$("mcCountIn").value=p.get("mc");
   if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");
+  if(p.get("bm")==="0"){hidCtl.bm="off";if($("bmIn"))$("bmIn").value="off";}
   if(p.get("key")==="0")$("keyChk").checked=false;
   if(p.get("scode")==="0"&&$("codeChk"))$("codeChk").checked=false;
   if(p.get("order"))$("orderIn").value=p.get("order");
@@ -7848,6 +7991,9 @@ if(window.__COURSE&&window.__COURSE.language==="fr"){
     "Print a sheet or exam":"Imprimer une feuille ou un examen",
     "Multiple choice":"Choix multiple",
     "Constructed Response":"Réponse construite",
+    "Dual-form questions":"Questions à double forme",
+    "Answer choices on":"Avec les choix de réponses",
+    "Answer choices off":"Sans les choix de réponses",
     "Include answer key":"Inclure le corrigé",
     "Include prior knowledge questions":"Inclure les questions de connaissances préalables",
     "Include set code and QR":"Inclure le code et le code QR de l'ensemble",

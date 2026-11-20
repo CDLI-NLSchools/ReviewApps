@@ -33,12 +33,60 @@ function plotSVG(fn,x0,x1,y0,y1,o){
   out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">x</text>';
   out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">y</text>';
   if(!o.nocurve&&fn){
-    var pts=[],N=140,i,x,y;
-    for(i=0;i<=N;i++){x=x0+(x1-x0)*i/N;y=fn(x);if(y<y0)y=y0;if(y>y1)y=y1;pts.push(fmt(X(x),1)+","+fmt(Y(y),1));}
-    out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+    out+=clipCurveSVG(fn,X,Y,x0,x1,y0,y1);
   }
   (o.points||[]).forEach(function(p){out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>';});
   return out+'</svg>';
+}
+/* clipCurveSVG (Nov 20, 2026): draw fn clipped to the plot window.
+   The curve stops where it leaves the window, the crossing point
+   interpolated (no clamping shelves along the edges). A clipped end
+   of an unrestricted graph carries a small arrowhead: exits through
+   the window edge, and left/right edge ends whose function is still
+   defined just outside the window. An end where the function is
+   undefined beyond (a domain endpoint) gets no arrowhead. A jump
+   across the whole window within one sample step is treated as an
+   asymptote and left open. */
+function clipCurveSVG(fn,X,Y,x0,x1,y0,y1){
+  var N=240,i,x,y,dx=(x1-x0)/N,segs=[],cur=null,px=0,py=0,ps=-1;
+  function st(v){return (typeof v!=="number"||!isFinite(v))?0:(v>y1?2:(v<y0?3:1));}
+  function cx(xa,ya,xb,yb,bnd){var t=(bnd-ya)/(yb-ya);return [xa+(xb-xa)*t,bnd];}
+  function begin(p,clip){cur={pts:[p],sc:clip,ec:false};}
+  function finish(clip){if(cur){cur.ec=clip;if(cur.pts.length>=2)segs.push(cur);cur=null;}}
+  for(i=0;i<=N;i++){
+    x=x0+dx*i;
+    try{y=fn(x);}catch(e){y=NaN;}
+    var s=st(y);
+    if(s===1){
+      if(ps===1&&cur)cur.pts.push([x,y]);
+      else if(ps===2||ps===3){var c1=cx(px,py,x,y,ps===2?y1:y0);begin(c1,true);cur.pts.push([x,y]);}
+      else begin([x,y],false);
+    }else if(s===2||s===3){
+      if(ps===1&&cur){cur.pts.push(cx(px,py,x,y,s===2?y1:y0));finish(true);}
+      else if((ps===2&&s===3)||(ps===3&&s===2)){
+        if(Math.abs(y-py)<=1.5*(y1-y0))segs.push({pts:[cx(px,py,x,y,ps===2?y1:y0),cx(px,py,x,y,s===2?y1:y0)],sc:true,ec:true});
+      }
+    }else if(ps===1)finish(false);
+    px=x;py=y;ps=s;
+  }
+  if(cur){var cont=false;try{var yv=fn(x1+dx);cont=(typeof yv==="number"&&isFinite(yv));}catch(e){}finish(cont?"edge":false);}
+  if(segs.length&&segs[0].sc===false&&segs[0].pts[0][0]===x0){
+    var cont0=false;try{var yv0=fn(x0-dx);cont0=(typeof yv0==="number"&&isFinite(yv0));}catch(e){}
+    if(cont0)segs[0].sc="edge";
+  }
+  function arrow(p,q){ /* arrowhead at pixel point p, pointing away from pixel point q */
+    var ax=p[0]-q[0],ay=p[1]-q[1],mag=Math.sqrt(ax*ax+ay*ay);if(!mag)return "";
+    var ux=ax/mag,uy=ay/mag,bx=p[0]-ux*8,by=p[1]-uy*8,ox=-uy*3.8,oy=ux*3.8;
+    return '<polygon points="'+fmt(p[0],1)+","+fmt(p[1],1)+" "+fmt(bx+ox,1)+","+fmt(by+oy,1)+" "+fmt(bx-ox,1)+","+fmt(by-oy,1)+'" fill="#0f766e"/>';
+  }
+  var out="",k,seg,pp,pa,pb;
+  for(k=0;k<segs.length;k++){seg=segs[k];
+    pp=seg.pts.map(function(q){return [X(q[0]),Y(q[1])];});
+    out+='<polyline points="'+pp.map(function(q){return fmt(q[0],1)+","+fmt(q[1],1);}).join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+    if(seg.ec){pa=pp[pp.length-1];pb=pp[pp.length-2];out+=arrow(pa,pb);}
+    if(seg.sc){pa=pp[0];pb=pp[1];out+=arrow(pa,pb);}
+  }
+  return out;
 }
 function tblHTML(xs,ys,xh,yh){
   var s='<table><tr><th>'+xh+'</th>';xs.forEach(function(x){s+='<td>'+x+'</td>';});
@@ -244,6 +292,12 @@ function venn3(aO,bO,cO,ab,ac,bc,abc,none,lA,lB,lC){
 // CRMARKS: u1-solve-simple=1
 // CRMARKS: u1-sub-monomial-den=2
 // CRMARKS: u1-two-step-simplify=3
+// BIMODAL: u1-sub-monomial-den=b
+// BIMODAL: u1-solve-quad-eq=a
+// BIMODAL: u1-simplify-quad=b
+// BIMODAL: u1-reverse-restrictions=b
+// BIMODAL: u1-add-same-den=a
+// BIMODAL: u1-add-diff-den=b
 /* ================= Unit 1: Rational Expressions and Equations ================= */
 /* --- non-permissible values and equivalence (3.1, 3.2, 3.3, 3.4, 3.6, 3.7) --- */
 E("u1-npv-linear",1,["3.2"],1,"gen",function(){
@@ -611,12 +665,10 @@ E("u1-two-step-simplify",1,["3.12"],3,"gen",function(){
 
 /* ----- bank-u2.js ----- */
 // Math 3201 Unit 2 Polynomial Functions question bank
-// CRMARKS: u2-correct-the-claim-cr=2
 // CRMARKS: u2-degree-equation=1
 // CRMARKS: u2-end-behaviour=1
 // CRMARKS: u2-fit-value=2
 // CRMARKS: u2-graph-characteristics=1
-// CRMARKS: u2-interpret-model=2
 // CRMARKS: u2-match-equation-graph=2
 // CRMARKS: u2-model-change-cr=2
 // CRMARKS: u2-recover-and-predict-cr=3
@@ -624,6 +676,8 @@ E("u1-two-step-simplify",1,["3.12"],3,"gen",function(){
 // CRMARKS: u2-turning-points-graph=1
 // CRMARKS: u2-y-intercept=1
 // CRMARKS: u2-zeros-and-intercept-cr=3
+// BIMODAL: u2-zeros-and-intercept-cr=b
+// BIMODAL: u2-match-equation-graph=b
 /* ================= Unit 2: Polynomial Functions ================= */
 E("u2-degree-equation",2,["3.18"],1,"gen",function(){
   var choice=ri(1,6),f,deg,why;
@@ -949,6 +1003,11 @@ E("u2-model-change-cr",2,["3.21"],2,"gen",function(){
 // CRMARKS: u3-rad-to-deg=1
 // CRMARKS: u3-temp-model=3
 // CRMARKS: u3-tide-predict=3
+// BIMODAL: u3-match-eq-graph=b
+// BIMODAL: u3-graph-full-equation=b
+// BIMODAL: u3-data-equation=b
+// BIMODAL: u3-characteristics-combo-cr=a
+// BIMODAL: u3-build-equation=b
 /* ================= Unit 3: Sinusoidal Functions ================= */
 function radFrac(deg){var g=gcd2(deg,180);return [deg/g,180/g];}
 function radStr(n,d){if(n===0)return "0";if(d===1)return n===1?"\\pi":(n+"\\pi");if(n===1)return "\\frac{\\pi}{"+d+"}";return "\\frac{"+n+"\\pi}{"+d+"}";}
@@ -1318,6 +1377,9 @@ E("u3-characteristics-combo-cr",3,["7.2"],2,"gen",function(){
 // CRMARKS: u4-solve-isolate=2
 // CRMARKS: u4-solve-rewrite-base=2
 // CRMARKS: u4-solve-two-sided=2
+// BIMODAL: u4-match-graph=b
+// BIMODAL: u4-match-by-description=b
+// BIMODAL: u4-compare-models=a
 /* ================= Unit 4: Exponential Functions ================= */
 function bStr(bn,bd){return bd===1?(""+bn):"\\left(\\frac{"+bn+"}{"+bd+"}\\right)";}
 function expS(a,bn,bd){return (a===1?"":(""+a))+"("+bStr(bn,bd)+")^x";}
@@ -1782,6 +1844,11 @@ BANK.forEach(function(e){if(["u4-express-as-power"].indexOf(e.id)>=0)e.pkFlag=tr
 // CRMARKS: u5-solve-with-logs=2
 // CRMARKS: u5-two-bases=3
 // CRMARKS: u5-which-law=1
+// BIMODAL: u5-two-bases=a
+// BIMODAL: u5-solve-with-logs=a
+// BIMODAL: u5-match-graph=b
+// BIMODAL: u5-expand-log=b
+// BIMODAL: u5-condense-log=b
 /* ================= Unit 5: Logarithmic Functions ================= */
 /* Bank-local helpers for Units 5 to 9. lgS builds a log string with the
    argument as given; dis3 / dis3s build three distractors guaranteed distinct
@@ -2431,11 +2498,9 @@ E("u5-eq-char",5,["4.15"],1,"gen",function(){
 // CRMARKS: u6-amortization-read=1
 // CRMARKS: u6-appreciate-depreciate=1
 // CRMARKS: u6-compare-costs=3
-// CRMARKS: u6-compare-frequency=2
 // CRMARKS: u6-compound-amount=2
 // CRMARKS: u6-cost-benefit=3
 // CRMARKS: u6-credit-fees=2
-// CRMARKS: u6-deferred-offer=3
 // CRMARKS: u6-depreciation-value=2
 // CRMARKS: u6-find-term=2
 // CRMARKS: u6-interest-earned=2
@@ -2445,6 +2510,10 @@ E("u5-eq-char",5,["4.15"],1,"gen",function(){
 // CRMARKS: u6-rent-buy-lease=2
 // CRMARKS: u6-simple-interest=1
 // CRMARKS: u6-total-cost-loan=1
+// CRMARKS: u6-wcr-compound-loan-interest=5
+// BIMODAL: u6-rent-buy-lease=a
+// BIMODAL: u6-credit-fees=a
+// BIMODAL: u6-compare-costs=a
 /* ================= Unit 6: Financial Mathematics ================= */
 /* All instances are hand-solvable with the formulas: rates, terms and
    compounding frequencies are chosen so every power closes by hand. */
@@ -2756,6 +2825,47 @@ E("u6-cost-benefit",6,["1.17"],3,"gen",function(){
     {C:C,S:S,L:L});
 });
 
+/* Bimodal build additions (Nov 19, 2026): one written compound interest entry for the written section and one selected-response renting, leasing and buying entry for Unit 6. SME-flagged for the specialist pass. */
+E("u6-wcr-compound-loan-interest",6,["1.10"],2,"gen",function(){
+  var combos=[
+    {r:6,m:2,fw:"semi-annually",years:[2,3,4,5]},
+    {r:5,m:2,fw:"semi-annually",years:[2,3,4,5]},
+    {r:10,m:2,fw:"semi-annually",years:[2,3,4]},
+    {r:8,m:4,fw:"quarterly",years:[2,3,4,5]},
+    {r:4,m:4,fw:"quarterly",years:[2,3,4,5]},
+    {r:12,m:4,fw:"quarterly",years:[2,3,4]},
+    {r:9,m:12,fw:"monthly",years:[2,3]},
+    {r:3,m:12,fw:"monthly",years:[2,3,4]}];
+  var c=pick(combos),yrs=pick(c.years),P=pick([5000,6500,8000,9500,11000,12500,14000,16000]);
+  var i=c.r/100/c.m,n=c.m*yrs,Ar=Math.round(P*Math.pow(1+i,n)*100)/100,I=Math.round((Ar-P)*100)/100;
+  var loan=Math.random()<0.5;
+  return numq(loan?("A business borrows "+mon(P)+" to buy equipment. The loan charges "+c.r+"% compounded "+c.fw+", and no payments are made until the end of "+yrs+" years, when the loan is settled in one payment. How much interest is charged on the loan, in dollars? Show your work."):("An investor deposits "+mon(P)+" in an account paying "+c.r+"% compounded "+c.fw+". The money is left untouched for "+yrs+" years. How much interest is earned, in dollars? Show your work."),
+    I,0.05,
+    "The periodic rate is \\(i = "+c.r+"\\% \\div "+c.m+" = "+fmt(i*100,2)+"\\%\\) and there are \\(n = "+c.m+" \\times "+yrs+" = "+n+"\\) compounding periods. First find the final amount, then subtract the principal: \\[ \\begin{aligned} A &= P(1 + i)^n \\\\ &= "+P+"("+fmt(1+i,4)+")^{"+n+"} \\\\ &= "+fmtF(Ar,2)+" \\\\ I &= "+fmtF(Ar,2)+" - "+fmtF(P,2)+" \\\\ &= "+fmtF(I,2)+" \\end{aligned} \\] The total interest is <b>"+mon(I)+"</b>.",
+    {P:P,r:c.r,fw:c.fw,yrs:yrs});
+});
+E("u6-add-rent-lease-buy",6,["1.15"],2,"gen",function(){
+  function money0(v){return "$"+String(v).replace(/\B(?=(\d{3})+(?!\d))/g,",");}
+  var L=0,T=0,D=0,P=0,S=0,leaseTotal=0,buyNet=0,diff=0,diffNS=0,tries=0;
+  do{
+    L=pick([385,410,435,460,485,510]); T=pick([36,48]); D=pick([1200,1500,1800,2100,2400]);
+    P=pick([26000,27500,29000,30500,32000,33500]); S=pick([10000,11500,13000,14500,16000]);
+    leaseTotal=D+L*T; buyNet=P-S; diff=Math.abs(leaseTotal-buyNet); diffNS=Math.abs(L*T-buyNet);
+    tries++;
+  }while(tries<200&&!(diff>=1500&&diff<=8800&&diffNS>=1100&&diffNS<=9800&&diffNS!==diff));
+  if(!(diff>=1500&&diff<=8800&&diffNS>=1100&&diffNS<=9800&&diffNS!==diff)){
+    L=485; T=48; D=1500; P=27500; S=11500;
+    leaseTotal=D+L*T; buyNet=P-S; diff=Math.abs(leaseTotal-buyNet); diffNS=Math.abs(L*T-buyNet);
+  }
+  var buyWins=buyNet<leaseTotal,winner=buyWins?"Buying":"Leasing",other=buyWins?"Leasing":"Buying";
+  var key=winner+", by "+money0(diff);
+  return mcq("A driver is choosing between leasing and buying the same car. Leasing costs "+mon(L)+" per month for "+T+" months, with "+mon(D)+" due at signing. Buying costs "+mon(P)+", and after "+T+" months the car can be sold for "+mon(S)+". Ignoring fuel, insurance and interest, which option costs less over the "+T+" months, and by how much?",
+    key,
+    [other+", by "+money0(diff),winner+", by "+money0(diffNS),other+", by "+money0(diff+750)],
+    "Total each option over the same "+T+" months, counting the signing amount once and the resale value once: \\[ \\begin{aligned} \\text{Leasing} &= "+fmtF(D,2)+" + "+L+" \\times "+T+" \\\\ &= "+fmtF(leaseTotal,2)+" \\\\ \\text{Buying (net)} &= "+fmtF(P,2)+" - "+fmtF(S,2)+" \\\\ &= "+fmtF(buyNet,2)+" \\\\ \\text{Difference} &= "+fmtF(Math.max(leaseTotal,buyNet),2)+" - "+fmtF(Math.min(leaseTotal,buyNet),2)+" \\\\ &= "+fmtF(diff,2)+" \\end{aligned} \\] "+(buyWins?"Once the resale value is counted, buying costs less.":"Even with the resale value counted, leasing costs less.")+" The answer is <b>"+key+"</b>.",
+    {L:L,T:T,D:D,P:P,S:S});
+});
+
 /* ----- bank-u7.js ----- */
 // Math 3201 Unit 7 Set Theory question bank
 // CRMARKS: u7-complement-elements=1
@@ -2777,6 +2887,7 @@ E("u6-cost-benefit",6,["1.17"],3,"gen",function(){
 // CRMARKS: u7-venn-missing=2
 // CRMARKS: u7-venn-read=1
 // CRMARKS: u7-venn-three-read=2
+// BIMODAL: u7-operations=a
 /* ================= Unit 7: Set Theory ================= */
 function roster(arr){return arr.length?"{"+arr.join(", ")+"}":"∅";}
 var U7PROPS=[
@@ -3212,7 +3323,6 @@ E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
 // CRMARKS: u8-comb-two-group=2
 // CRMARKS: u8-committee-atleast=3
 // CRMARKS: u8-factorial-equation=2
-// CRMARKS: u8-factorial-fraction=2
 // CRMARKS: u8-factorial-value=1
 // CRMARKS: u8-fcp-cases=3
 // CRMARKS: u8-fcp-context=1
@@ -3227,10 +3337,11 @@ E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
 // CRMARKS: u8-perm-r=1
 // CRMARKS: u8-prob-comb=2
 // CRMARKS: u8-prob-comb-hard=3
-// CRMARKS: u8-reverse-count=2
 // CRMARKS: u8-together-apart=3
 // CRMARKS: u8-tree-diagram=1
 // CRMARKS: u8-tree-outcomes=2
+// BIMODAL: u8-prob-comb-hard=a
+// BIMODAL: u8-prob-comb=a
 /* ================= Unit 8: Counting Methods ================= */
 function fact(n){var f=1;for(var i=2;i<=n;i++)f*=i;return f;}
 function nPr(n,r){return fact(n)/fact(n-r);}
@@ -4058,6 +4169,11 @@ E("u8-reverse-count",8,["9.19"],2,"gen",function(){
 // CRMARKS: u9-prob-perm-context=3
 // CRMARKS: u9-represent-events=2
 // CRMARKS: u9-same-colour-cr=3
+// BIMODAL: u9-represent-events=a
+// BIMODAL: u9-prob-perm-context=a
+// BIMODAL: u9-prob-comb-context=a
+// BIMODAL: u9-create-solve-game=b
+// BIMODAL: u9-compare-games=a
 /* ================= Unit 9: Probability ================= */
 function ratioStr(a,b){var g=gcd2(a,b);return (a/g)+" : "+(b/g);}
 function pick3Frac(corr,pool){
@@ -6272,4 +6388,10 @@ BANK.forEach(function(e){var t=PKT3201[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-correct-the-claim-cr":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-interpret-model":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compare-frequency":2,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-deferred-offer":3,"u6-depreciation-value":2,"u6-find-term":2,"u6-interest-earned":2,"u6-payments-term":1,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-total-cost-loan":1,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-error-correct":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-subset-difference-cr":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-comb-r":1,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-fraction":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-reverse-count":2,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-nonme-prob":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
+window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-depreciation-value":2,"u6-find-term":2,"u6-interest-earned":2,"u6-payments-term":1,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-total-cost-loan":1,"u6-wcr-compound-loan-interest":5,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-error-correct":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-subset-difference-cr":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-comb-r":1,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-nonme-prob":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-add-diff-den":"b","u1-add-same-den":"a","u1-reverse-restrictions":"b","u1-simplify-quad":"b","u1-solve-quad-eq":"a","u1-sub-monomial-den":"b","u2-match-equation-graph":"b","u2-zeros-and-intercept-cr":"b","u3-build-equation":"b","u3-characteristics-combo-cr":"a","u3-data-equation":"b","u3-graph-full-equation":"b","u3-match-eq-graph":"b","u4-compare-models":"a","u4-match-by-description":"b","u4-match-graph":"b","u5-condense-log":"b","u5-expand-log":"b","u5-match-graph":"b","u5-solve-with-logs":"a","u5-two-bases":"a","u6-compare-costs":"a","u6-credit-fees":"a","u6-rent-buy-lease":"a","u7-operations":"a","u8-prob-comb":"a","u8-prob-comb-hard":"a","u9-compare-games":"a","u9-create-solve-game":"b","u9-prob-comb-context":"a","u9-prob-perm-context":"a","u9-represent-events":"a"};

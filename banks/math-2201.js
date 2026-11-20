@@ -1366,7 +1366,6 @@ function chainTriSVG(AB, BC, angB, AC, CD, AD, angDAC, angD, o) {
 // CRMARKS: u5-centre-median=1
 // CRMARKS: u5-centre-mode=1
 // CRMARKS: u5-range=1
-// CRMARKS: u5-outlier-range=2
 // CRMARKS: u5-ad-claim=3
 // CRMARKS: u5-freq-total=1
 // CRMARKS: u5-freq-missing=1
@@ -1378,7 +1377,6 @@ function chainTriSVG(AB, BC, angB, AC, CD, AD, angDAC, angD, o) {
 // CRMARKS: u5-polygon-point=1
 // CRMARKS: u5-sd-calc=2
 // CRMARKS: u5-sd-from-variance=1
-// CRMARKS: u5-sd-compare=2
 // CRMARKS: u5-sd-decisions=4
 // CRMARKS: u5-empirical=2
 // CRMARKS: u5-normal-count=2
@@ -1398,6 +1396,11 @@ function chainTriSVG(AB, BC, angB, AC, CD, AD, angDAC, angD, o) {
 // CRMARKS: u5-sd-calc-small=2
 // CRMARKS: u5-empirical-tail=2
 // CRMARKS: u5-normal-count-between=2
+// BIMODAL: u5-z-compare=b
+// BIMODAL: u5-sd-decisions=b
+// BIMODAL: u5-media=b
+// BIMODAL: u5-ci-majority=b
+// BIMODAL: u5-ad-claim=b
 /* ============ THE BANK — Unit 5: Statistical Reasoning ============ */
 /* ============ BANK ADMISSION RULE (adopted Oct 26, 2026, from the bank duplication audit) ============
    A "gen" entry must produce at least 50 unique canonical questions (normalized prompt
@@ -7139,6 +7142,9 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-cube-equation-shifted=2
 // CRMARKS: u4-extraneous-valid-root=2
 // CRMARKS: u4-model-solve-variable=2
+// BIMODAL: u4-simplify-add=a
+// BIMODAL: u4-order=a
+// BIMODAL: u4-extraneous=b
 /* ============ Unit 4: Radicals ============ */
 function radStr(a,b){return (a===1?"":a)+"\u221A"+b;}
 function radT(a,b){return "\\("+(a===1?"":a)+"\\sqrt{"+b+"}\\)";}
@@ -8062,6 +8068,8 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-work-rate-solo=3
 // CRMARKS: u6-justify-consistency=3
 // CRMARKS: u6-breakeven-plans=2
+// CRMARKS: u6-wcr-better-buy-savings=4
+// BIMODAL: u6-better-buy=b
 /* ============ Unit 6: Proportional Reasoning ============ */
 E("u6-scale-factor",6,["6.9"],1,"gen",function(){
   var k=pick([8,9,10,12,15,18,20,24,25,30,40,50,60]);var model=pick([3,4,5,6,7,8,9,10,12,14]);var real=model*k;
@@ -8466,6 +8474,97 @@ E("u6-pk-unit-rate", 6, ["6.16"], 2, "gen", function () {
     ans3, 0.011,
     "Divide each distance by its time. The car: " + d1 + " km over " + t1 + " hours is " + v1 + " km/h. The bus: " + d2 + " km over " + t2 + " hours is " + v2 + " km/h. Comparing the two unit rates, the lower average speed is <b>" + ans3 + " km/h</b>.",
     { mode: "pk-unit-rate-speed", v1: v1, v2: v2 });
+});
+/* Bimodal build additions (Nov 19, 2026): five Unit 6 entries, one written response on comparing unit rates and four selected response entries placed on the thinnest Unit 6 indicators. SME-flagged for the specialist pass. */
+E("u6-wcr-better-buy-savings",6,["6.16"],2,"gen",function(){
+  var ctx=pick([
+    {thing:"laundry pods",buyer:"A hotel",place:"in a month"},
+    {thing:"juice boxes",buyer:"A school canteen",place:"in a month"},
+    {thing:"granola bars",buyer:"A recreation centre",place:"for a tournament weekend"},
+    {thing:"paper cups",buyer:"A community hall",place:"for a season of events"}]);
+  var sizeA=pick([12,16,20,24,30]);
+  var sizeB=pick([10,15,18,25,36,40]);
+  var rateA=pick([0.55,0.65,0.75,0.85,0.95,1.05,1.15,1.25]);
+  var rateB=rateA;
+  while(rateB===rateA){rateB=pick([0.55,0.65,0.75,0.85,0.95,1.05,1.15,1.25,1.35,1.45]);}
+  var priceA=Math.round(rateA*sizeA*100)/100;
+  var priceB=Math.round(rateB*sizeB*100)/100;
+  var qty=pick([40,50,60,80,90,100,120,150]);
+  var hi=Math.max(rateA,rateB),lo=Math.min(rateA,rateB);
+  var saving=Math.round(qty*(hi-lo)*100)/100;
+  var cheap=(rateA<rateB)?"A":"B";
+  var prompt="Two brands of "+ctx.thing+" are sold in packs. Brand A sells a pack of "+sizeA+" for $"+fmtF(priceA,2)+", and Brand B sells a pack of "+sizeB+" for $"+fmtF(priceB,2)+". "+ctx.buyer+" needs "+qty+" "+ctx.thing+" "+ctx.place+" and can buy them loose at the same price per item as the pack prices. Show your work. How much, in dollars, does the buyer save by choosing the brand with the lower unit rate instead of the brand with the higher unit rate?";
+  var sol="Find the unit rate for each brand first. \\[ \\begin{aligned} \\text{Brand A unit rate} &= "+fmtF(priceA,2)+" \\div "+sizeA+" = "+fmtF(rateA,2)+" \\text{ dollars per item} \\\\ \\text{Brand B unit rate} &= "+fmtF(priceB,2)+" \\div "+sizeB+" = "+fmtF(rateB,2)+" \\text{ dollars per item} \\end{aligned} \\] Brand "+cheap+" has the lower unit rate. The unit rates differ by $"+fmtF(hi-lo,2)+" per item, so the saving on "+qty+" items is \\[ \\begin{aligned} \\text{Saving} &= "+qty+" \\times "+fmtF(hi-lo,2)+" \\\\ &= "+fmtF(saving,2)+" \\end{aligned} \\] The buyer saves <b>$"+fmtF(saving,2)+"</b>.";
+  return numq(prompt,saving,0.011,sol,{sizeA:sizeA,sizeB:sizeB,rateA:rateA,rateB:rateB,qty:qty});
+});
+E("u6-add-area-effect",6,["6.5"],2,"gen",function(){
+  var k=pick([2,3,4,5]);
+  var area=pick([12,15,18,20,24,27,30,32,36,40]);
+  var ctx=pick([
+    {w:"garden plot",u:"square metres"},
+    {w:"kitchen floor",u:"square metres"},
+    {w:"mural design",u:"square centimetres"},
+    {w:"rug pattern",u:"square metres"}]);
+  var key=area*k*k;
+  var d1=area*k,d2=area*k*k*k,d3=key+area;
+  return mcq("A "+ctx.w+" has an area of "+area+" "+ctx.u+". It is enlarged so that every length is multiplied by "+k+". What is the area of the enlarged "+ctx.w+", in "+ctx.u+"?",
+    key+" "+ctx.u,[d1+" "+ctx.u,d2+" "+ctx.u,d3+" "+ctx.u],
+    "Lengths are multiplied by "+k+", but areas are multiplied by the square of the scale factor. \\[ \\begin{aligned} \\text{Area scale factor} &= "+k+"^2 = "+(k*k)+" \\\\ \\text{New area} &= "+area+" \\times "+(k*k)+" \\\\ &= "+key+" \\end{aligned} \\] The enlarged area is <b>"+key+" "+ctx.u+"</b>.",
+    {k:k,area:area});
+});
+E("u6-add-photo-dimension",6,["6.2"],2,"gen",function(){
+  var ok=false,W=0,H=0,s=0,key=0,ds=[],askH=true,thing="",given=0,givenNew=0,other=0,tries=0;
+  while(!ok&&tries<300){tries++;
+    var pair=pick([[8,6],[10,6],[10,8],[12,8],[12,9],[14,10],[15,10],[16,12],[9,6],[8,5],[14,8],[18,12]]);
+    W=pair[0];H=pair[1];s=pick([1.5,2,2.5,3]);
+    thing=pick(["photo","poster","scale drawing of a garden"]);
+    askH=Math.random()<0.5;
+    given=askH?W:H;other=askH?H:W;givenNew=given*s;key=other*s;
+    if(key!==Math.round(key)||givenNew!==Math.round(givenNew))continue;
+    if(key<10||key>60)continue;
+    var cands=[other+(givenNew-given),givenNew-other,key+other,key-other,key+given,givenNew+other];
+    ds=[];var seen={};seen[key]=1;
+    for(var i=0;i<cands.length&&ds.length<3;i++){var c=cands[i];if(c===Math.round(c)&&c>=10&&c<=99&&!seen[c]){seen[c]=1;ds.push(c);}}
+    ok=ds.length===3;
+  }
+  var prompt="A "+thing+" is "+W+" cm wide and "+H+" cm tall. It is enlarged in proportion so that its "+(askH?"width":"height")+" becomes "+givenNew+" cm. What is its new "+(askH?"height":"width")+", in centimetres?";
+  return mcq(prompt,
+    key+" cm",ds.map(function(d){return d+" cm";}),
+    "Similar shapes keep the same ratio, so both dimensions use the same scale factor. \\[ \\begin{aligned} \\text{Scale factor} &= "+givenNew+" \\div "+given+" = "+fmt(s)+" \\\\ \\text{New "+(askH?"height":"width")+"} &= "+other+" \\times "+fmt(s)+" \\\\ &= "+key+" \\end{aligned} \\] The new "+(askH?"height":"width")+" is <b>"+key+" cm</b>.",
+    {W:W,H:H,s:s,askH:askH});
+});
+E("u6-add-model-height",6,["6.9"],2,"gen",function(){
+  var ok=false,obj=null,k=0,m=0,key=0,ds=[],tries=0;
+  while(!ok&&tries<300){tries++;
+    obj=pick([{w:"lighthouse"},{w:"office tower"},{w:"statue"},{w:"water tower"}]);
+    k=pick([100,200,300]);
+    m=pick([12,14,15,16,18,20,21,24,25,27,28,30]);
+    key=m*k/100;
+    if(key<12||key>95)continue;
+    var cands=[key-m,key+m,key+k/100,key-k/100,m+k/100];
+    ds=[];var seen={};seen[key]=1;
+    for(var i=0;i<cands.length&&ds.length<3;i++){var c=cands[i];if(c===Math.round(c)&&c>=10&&c<=99&&!seen[c]){seen[c]=1;ds.push(c);}}
+    ok=ds.length===3;
+  }
+  return mcq("A model of a "+obj.w+" is built to a scale of \\(1 : "+k+"\\). The model is "+m+" cm tall. What is the height of the real "+obj.w+", in metres?",
+    key+" metres",ds.map(function(d){return d+" metres";}),
+    "Multiply the model height by the scale factor, then change centimetres to metres. \\[ \\begin{aligned} \\text{Real height} &= "+m+" \\times "+k+" = "+(m*k)+" \\text{ cm} \\\\ &= "+(m*k)+" \\div 100 = "+key+" \\text{ m} \\end{aligned} \\] The real height is <b>"+key+" metres</b>.",
+    {k:k,m:m});
+});
+E("u6-add-slope-rate",6,["6.19"],2,"gen",function(){
+  var ctx=pick([
+    {y:"distance from home (km)",x:"time (h)",rate:"average speed",unitLong:"kilometres per hour",invLong:"hours per kilometre"},
+    {y:"volume of water in a tank (L)",x:"time (min)",rate:"filling rate",unitLong:"litres per minute",invLong:"minutes per litre"},
+    {y:"total cost (dollars)",x:"number of items",rate:"price per item",unitLong:"dollars per item",invLong:"items per dollar"}]);
+  var t=pick([2,3,4,5,6]);
+  var v=ri(12,84);
+  var d=v*t;
+  var key=v+" "+ctx.unitLong+", the "+ctx.rate;
+  var ds=[v+" "+ctx.invLong+", the "+ctx.rate,(v+1)+" "+ctx.unitLong+", the "+ctx.rate,(v-1)+" "+ctx.unitLong+", the "+ctx.rate];
+  return mcq("A graph shows "+ctx.y+" against "+ctx.x+". The graph is a straight line through \\((0, 0)\\) and \\(("+t+", "+d+")\\). What is the slope of the line, and what does it represent?",
+    key,ds,
+    "The slope is the rise divided by the run, and its units name the rate. \\[ \\begin{aligned} \\text{Slope} &= \\frac{"+d+"}{"+t+"} \\\\ &= "+v+" \\end{aligned} \\] The slope is <b>"+v+" "+ctx.unitLong+", the "+ctx.rate+"</b>.",
+    {t:t,v:v});
 });
 /* PK tranche pass for Unit 6. pkFor is Cluster 6's dependent
    indicator list from the prior knowledge map. */
@@ -8959,7 +9058,6 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-sequence-gap=1
 // CRMARKS: u5-ci-level-from-report=1
 // CRMARKS: u5-ci-shrink=2
-// CRMARKS: u5-poll-position=3
 // CRMARKS: u5-ci-build=1
 // CRMARKS: u5-ci-read-report=2
 // CRMARKS: u3-equation-from-roots=2
@@ -8967,6 +9065,7 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-compare-rates=2
 // CRMARKS: u6-rate-isolate=1
 // CRMARKS: u8-angle-sum-rule=1
+// BIMODAL: u3-equation-from-roots=b
 /* ============ Unit 8: Properties of Angles and Triangles ============ */
 E("u8-triangle-sum",8,["5.3"],1,"gen",function(){
   var a=ri(35,75),b=ri(35,75);while(a+b>160){b=ri(30,60);}
@@ -9578,6 +9677,71 @@ E("u8-pk-transversal-pairs", 8, ["5.1"], 1, "var", varset([
     return q;
   }
 ]));
+/* Bimodal build additions (Nov 19, 2026): two selected response entries for Unit 8, one contextual triangle angle problem and one parallel lines test, placed on the thinnest Unit 8 indicators. SME-flagged for the specialist pass. */
+E("u8-add-gable-angle",8,["5.11"],2,"gen",function(){
+  var ok=false,a=0,b=0,key=0,ds=[],tries=0;
+  while(!ok&&tries<300){tries++;
+    a=ri(22,38);b=ri(22,38);if(a===b)continue;
+    key=180-a-b;
+    var cands=[180-a,180-b,a+b,90+a,90+b];
+    ds=[];var seen={};seen[key]=1;
+    for(var i=0;i<cands.length&&ds.length<3;i++){var c=cands[i];if(c>=20&&c<=170&&!seen[c]){seen[c]=1;ds.push(c);}}
+    ok=ds.length===3;
+  }
+  var ctx=pick([
+    "The end wall of a house forms a triangle. The two angles at the base of the triangle measure \\("+a+"^\\circ\\) and \\("+b+"^\\circ\\). What is the measure of the angle at the peak?",
+    "A tent has a triangular end. The two angles where the end meets the ground measure \\("+a+"^\\circ\\) and \\("+b+"^\\circ\\). What is the measure of the angle at the top of the tent end?",
+    "A triangular garden bed has two corners that measure \\("+a+"^\\circ\\) and \\("+b+"^\\circ\\). What is the measure of the third corner?"]);
+  var q=mcq(ctx,
+    key+" degrees",ds.map(function(d){return d+" degrees";}),
+    "The interior angles of a triangle add to 180 degrees. \\[ \\begin{aligned} \\text{Third angle} &= 180 - "+a+" - "+b+" \\\\ &= "+key+" \\end{aligned} \\] The third angle is <b>"+key+" degrees</b>.",
+    {a:a,b:b});
+  q.figure=triAngSVG(a,b,key,{ang:[a+"°",b+"°","?"]});
+  return q;
+});
+E("u8-add-parallel-decision",8,["5.9"],2,"gen",function(){
+  var mode=pick(["co","alt"]);
+  var parallel=Math.random()<0.5;
+  var x=0,y=0,key="",ds=[],sol="",q=null;
+  if(mode==="co"){
+    x=ri(96,140);
+    y=parallel?180-x:180-x+pick([-16,-12,-8,8,12,16]);
+    if(parallel){
+      key="Yes, the lines are parallel because the co-interior angles add to 180 degrees";
+      ds=["Yes, the lines are parallel because the co-interior angles are equal in measure",
+          "No, the lines are not parallel because co-interior angles must be equal in measure",
+          "No, the lines are not parallel because the co-interior angles add to 180 degrees"];
+    }else{
+      key="No, the lines are not parallel because the co-interior angles do not add to 180 degrees";
+      ds=["No, the lines are not parallel because the co-interior angles are not equal in measure",
+          "Yes, the lines are parallel because the co-interior angles do not add to 180 degrees",
+          "Yes, the lines are parallel because the co-interior angles are fairly close in measure"];
+    }
+    sol="Co-interior angles between parallel lines are supplementary, so they must add to 180 degrees. Here \\("+x+" + "+y+" = "+(x+y)+"\\). "+(parallel?"That is 180 degrees, so <b>yes, the lines are parallel</b>.":"That is not 180 degrees, so <b>no, the lines are not parallel</b>.");
+    q=mcq("Two lines are cut by a transversal. The co-interior angles on the same side of the transversal measure \\("+x+"^\\circ\\) and \\("+y+"^\\circ\\). Are the lines parallel?",
+      key,ds,sol,{mode:mode,parallel:parallel,x:x,y:y});
+    q.figure=transversalSVG("TR",x+"°","BR",y+"°");
+    return q;
+  }
+  x=ri(80,150);
+  y=parallel?x:x+pick([-18,-12,-9,9,12,18]);
+  if(parallel){
+    key="Yes, the lines are parallel because the alternate interior angles are equal in measure";
+    ds=["Yes, the lines are parallel because the alternate interior angles add to 180 degrees",
+        "No, the lines are not parallel because alternate interior angles must add to 180 degrees",
+        "No, the lines are not parallel because the alternate interior angles are equal in measure"];
+  }else{
+    key="No, the lines are not parallel because the alternate interior angles are not equal in measure";
+    ds=["No, the lines are not parallel because the alternate interior angles do not add to 180 degrees",
+        "Yes, the lines are parallel because the alternate interior angles are not equal in measure",
+        "Yes, the lines are parallel because the alternate interior angles are fairly close in measure"];
+  }
+  sol="Alternate interior angles between parallel lines are equal. Here the angles measure \\("+x+"^\\circ\\) and \\("+y+"^\\circ\\). "+(parallel?"They are equal, so <b>yes, the lines are parallel</b>.":"They are not equal, so <b>no, the lines are not parallel</b>.");
+  q=mcq("Two lines are cut by a transversal. The alternate interior angles measure \\("+x+"^\\circ\\) and \\("+y+"^\\circ\\). Are the lines parallel?",
+    key,ds,sol,{mode:mode,parallel:parallel,x:x,y:y});
+  q.figure=transversalSVG("TR",x+"°","BL",y+"°");
+  return q;
+});
 /* PK tranche pass for Unit 8. pkFor is Cluster 8's dependent
    indicator list from the prior knowledge map. */
 var PKT_U8_FOR=["5.1","5.3","5.5","5.6","5.8","5.9","5.11"];
@@ -9685,7 +9849,6 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-evaluate-f=1
 // CRMARKS: u2-vertex-shift=1
 // CRMARKS: u2-factored-max-height=2
-// CRMARKS: u3-formula-exact-roots=2
 // CRMARKS: u3-squares-area=3
 // CRMARKS: u3-number-pair=2
 // CRMARKS: u4-compare-radicals=1
@@ -9699,6 +9862,30 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-chain-conclusion=3
 // CRMARKS: u7-false-pattern=2
 // CRMARKS: u7-figure-pattern=1
+// BIMODAL: u3-factor-nonmonic=b
+// BIMODAL: u8-multi-angle=a
+// BIMODAL: u8-angle-chase=a
+// BIMODAL: u7-race-order=a
+// BIMODAL: u7-pattern-equation=a
+// BIMODAL: u6-rate-difference=b
+// BIMODAL: u6-poster-dimensions=b
+// BIMODAL: u4-width-radical=a
+// BIMODAL: u4-variable-mixed=b
+// BIMODAL: u4-triangle-perimeter=a
+// BIMODAL: u4-reciprocal-sum=a
+// BIMODAL: u4-product-simplify=a
+// BIMODAL: u4-multiply-mixed=a
+// BIMODAL: u4-divide-radicals=a
+// BIMODAL: u4-difference-simplify=a
+// BIMODAL: u4-diagonal-radical=a
+// BIMODAL: u4-combine-multi=a
+// BIMODAL: u4-binomial-square=b
+// BIMODAL: u4-add-unlike=a
+// BIMODAL: u3-model-number=b
+// BIMODAL: u3-exact-roots=b
+// BIMODAL: u3-equation-fraction-roots=b
+// BIMODAL: u2-revenue-model=b
+// BIMODAL: u1-ambiguous-count=a
 /* ============ Tranche 3 (Oct 26): Units 1-4 depth ============
    Existing tests and question banks, including the Holy Spirit sample
    tests and reviews and the NL Schools topic lists (see
@@ -11471,4 +11658,10 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-exact-roots":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-normal-count-between":2,"u5-outlier-range":2,"u5-poll-position":3,"u5-polygon-point":1,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-compare":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-angle-between-paths":4,"u1-bisector-post":3,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-drone-split":3,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-guy-wire":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-intercepts":1,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-count-intercepts":1,"u2-eq-from-vertex":2,"u2-evaluate-f":1,"u2-factored-coeffs":2,"u2-factored-max-height":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-perimeter-max-area":2,"u2-profit-max":2,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-standard-from-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u3-border":3,"u3-context-area":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-setup-equation":1,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-model-equation":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-order":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-coefficient":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-triangle-perimeter":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-shrink":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-media":4,"u5-midpoint":1,"u5-normal-count":2,"u5-normal-count-between":2,"u5-polygon-point":1,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-tile-cost":3,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent-perimeter":1,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-x-value":3,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u2-revenue-model":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-model-number":"b","u4-add-unlike":"a","u4-binomial-square":"b","u4-combine-multi":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-extraneous":"b","u4-multiply-mixed":"a","u4-order":"a","u4-product-simplify":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-triangle-perimeter":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-majority":"b","u5-media":"b","u5-sd-decisions":"b","u5-z-compare":"b","u6-better-buy":"b","u6-poster-dimensions":"b","u6-rate-difference":"b","u7-pattern-equation":"a","u7-race-order":"a","u8-angle-chase":"a","u8-multi-angle":"a"};

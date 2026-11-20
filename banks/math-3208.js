@@ -27,6 +27,10 @@ function FR(n,d){return "\\frac{"+n+"}{"+d+"}";}
 // CRMARKS: u1-decompose=2
 // CRMARKS: u1-graph-operation=2
 // CRMARKS: u1-compound-inequality=2
+// BIMODAL: u1-range-product=a
+// BIMODAL: u1-quotient-restrictions=a
+// BIMODAL: u1-compound-inequality=a
+// BIMODAL: u1-compose-equation=b
 /* ================= Unit 1: Pre-Calculus ================= */
 /* Indicators: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7. Types follow the Mauger
    Chapter 1 material (operations on functions, compositions in both
@@ -409,6 +413,27 @@ E("u1-compound-inequality",1,["1.3"],2,"gen",function(){
   return cand;
 });
 
+
+/* Bimodal build additions (Nov 19, 2026): one selected-response entry for Unit 1 on indicator 1.2, the thinnest indicator in the unit, reading combined values off two graphs. SME-flagged for the specialist pass. */
+E("u1-add-graph-sum-point",1,["1.2"],2,"gen",function(){
+  function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+  function frS(n,d){var g=gcd(n,d);n/=g;d/=g;if(d===1)return ""+n;return "\\frac{"+n+"}{"+d+"}";}
+  var p=ri(-3,4), A=ri(2,7), B=ri(2,6);
+  if(B===A)B=A+1;
+  var ops=[
+    {nm:"(f + g)(x)",sym:"+",vs:""+(A+B),ph:"adding the value of \\(g\\) to the value of \\(f\\)"},
+    {nm:"(f - g)(x)",sym:"-",vs:""+(A-B),ph:"subtracting the value of \\(g\\) from the value of \\(f\\)"},
+    {nm:"(fg)(x)",sym:"\\cdot",vs:""+(A*B),ph:"multiplying the value of \\(f\\) by the value of \\(g\\)"},
+    {nm:"(f/g)(x)",sym:"\\div",vs:frS(A,B),ph:"dividing the value of \\(f\\) by the value of \\(g\\)"}
+  ];
+  var oi=ri(0,3), op=ops[oi];
+  function stmt(o){return "At \\(x = "+p+"\\), the graph of \\(h\\) passes through the point \\(\\left("+p+", "+o.vs+"\\right)\\), found by "+o.ph;}
+  var key=stmt(op);
+  var ds=ops.filter(function(o,j){return j!==oi;}).map(stmt);
+  var sol="Read the two values from the graphs at \\(x = "+p+"\\), then combine them as the definition of \\(h\\) directs: \\[ \\begin{aligned} f("+p+") &= "+A+" \\\\ g("+p+") &= "+B+" \\\\ h("+p+") &= "+A+" "+op.sym+" "+B+" = "+op.vs+" \\end{aligned} \\] The correct statement is <b>"+key+"</b>.";
+  return mcq("The graphs of two functions \\(f\\) and \\(g\\) are given. At \\(x = "+p+"\\), the graph of \\(f\\) passes through \\(\\left("+p+", "+A+"\\right)\\) and the graph of \\(g\\) passes through \\(\\left("+p+", "+B+"\\right)\\). Let \\(h(x) = "+op.nm+"\\). Which statement correctly describes the graph of \\(h\\) at \\(x = "+p+"\\)?",key,ds,sol,{p:p,A:A,B:B,oi:oi});
+});
+
 /* ----- bank-u2.js ----- */
 // Math 3208 Unit 2 Limits and Continuity question bank
 // CRMARKS: u2-limit-table=1
@@ -429,6 +454,13 @@ E("u1-compound-inequality",1,["1.3"],2,"gen",function(){
 // CRMARKS: u2-limit-absvalue=2
 // CRMARKS: u2-sequence-convergence=1
 // CRMARKS: u2-repeating-decimal=2
+// BIMODAL: u2-repeating-decimal=a
+// BIMODAL: u2-oblique-asymptote=b
+// BIMODAL: u2-limit-graph=a
+// BIMODAL: u2-limit-factor-cancel=a
+// BIMODAL: u2-limit-conjugate=a
+// BIMODAL: u2-limit-complex-fraction=a
+// BIMODAL: u2-limit-absvalue=a
 /* Math 3208 Review, Unit 2 (Limits and Continuity) entries. Helpers carry the
    u2q prefix so they cannot collide with other units when files are assembled. */
 function u2qGcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -1119,9 +1151,10 @@ BANK.forEach(function(e){if(["u2-repeating-decimal"].indexOf(e.id)>=0)e.pkFlag=t
 // CRMARKS: u3-features-basic=2
 // CRMARKS: u3-asymptote-set=3
 // CRMARKS: u3-sketch-features=3
-// CRMARKS: u3-behaviour-analysis=2
 // CRMARKS: u3-build-from-features=2
 // CRMARKS: u3-inequality-integers=2
+// BIMODAL: u3-hole-coordinates=a
+// BIMODAL: u3-asymptote-set=a
 /* ================= Unit 3: Rational Functions (MA3208.1.8 to 1.10) =================
    Tranche 1, mid scope. All functions, values and statements are original.
    Helpers are prefixed u3; entries register through E(...). */
@@ -1580,6 +1613,55 @@ E("u3-inequality-integers",3,["1.10"],2,"var",varset([
   function(){ return u3IneqCount("num2"); }
 ]));
 
+/* Bimodal build additions (Nov 19, 2026): two selected-response entries for Unit 3, placed on the thinnest indicators first, 1.10 then 1.9. SME-flagged for the specialist pass. */
+E("u3-add-intercept-asymptote-pair",3,["1.10"],2,"gen",function(){
+  var cand=null,tries=0;
+  while(!cand&&tries++<200){
+    var mode=ri(0,1), a=ri(2,6), b=0, c=ri(2,5), d=ri(-6,6), e=ri(-6,6);
+    do{b=ri(-6,6);}while(b===0);
+    var fS,ha,yi,key,ds,sol;
+    if(mode===0){
+      if(d===0)continue;
+      fS=FR(u3PS([a,b]),u3PS([c,d]));
+      ha=u3FracS(a,c); yi=u3FracS(b,d);
+      key="Horizontal asymptote \\(y = "+ha+"\\); \\(y\\)-intercept \\("+yi+"\\)";
+      ds=["Horizontal asymptote \\(y = "+u3FracS(c,a)+"\\); \\(y\\)-intercept \\("+yi+"\\)",
+          "Horizontal asymptote \\(y = "+ha+"\\); \\(y\\)-intercept \\("+u3FracS(d,b)+"\\)",
+          "Horizontal asymptote \\(y = "+u3FracS(-a,c)+"\\); \\(y\\)-intercept \\("+u3FracS(-b,d)+"\\)"];
+      sol="For a quotient of two linear functions, the horizontal asymptote comes from the ratio of the leading coefficients, and the \\(y\\)-intercept is the value at \\(x = 0\\): \\[ \\begin{aligned} y &= \\frac{"+a+"}{"+c+"} = "+ha+" \\\\ f(0) &= \\frac{"+b+"}{"+d+"} = "+yi+" \\end{aligned} \\] The pair is <b>"+key+"</b>.";
+    } else {
+      if(e===0)continue;
+      fS=FR(u3PS([a,b]),u3PS([c,d,e]));
+      ha="0"; yi=u3FracS(b,e);
+      key="Horizontal asymptote \\(y = 0\\); \\(y\\)-intercept \\("+yi+"\\)";
+      ds=["Horizontal asymptote \\(y = "+u3FracS(a,c)+"\\); \\(y\\)-intercept \\("+yi+"\\)",
+          "Horizontal asymptote \\(y = 0\\); \\(y\\)-intercept \\("+u3FracS(e,b)+"\\)",
+          "Horizontal asymptote \\(y = 0\\); \\(y\\)-intercept \\("+u3FracS(-b,e)+"\\)"];
+      sol="The numerator has degree \\(1\\) and the denominator has degree \\(2\\), so the values shrink toward \\(0\\) at both ends, and the \\(y\\)-intercept is the value at \\(x = 0\\): \\[ \\begin{aligned} y &= 0 \\\\ f(0) &= \\frac{"+b+"}{"+e+"} = "+yi+" \\end{aligned} \\] The pair is <b>"+key+"</b>.";
+    }
+    if(new Set([key].concat(ds)).size===4)cand=mcq("Which pair gives the horizontal asymptote and the \\(y\\)-intercept of \\(f(x) = "+fS+"\\)?",key,ds,sol,{mode:mode,a:a,b:b,c:c,d:d,e:e});
+  }
+  if(!cand){
+    var fk="Horizontal asymptote \\(y = \\frac{1}{2}\\); \\(y\\)-intercept \\(\\frac{3}{5}\\)";
+    cand=mcq("Which pair gives the horizontal asymptote and the \\(y\\)-intercept of \\(f(x) = "+FR("2x + 3","4x + 5")+"\\)?",fk,
+      ["Horizontal asymptote \\(y = 2\\); \\(y\\)-intercept \\(\\frac{3}{5}\\)","Horizontal asymptote \\(y = \\frac{1}{2}\\); \\(y\\)-intercept \\(\\frac{5}{3}\\)","Horizontal asymptote \\(y = -\\frac{1}{2}\\); \\(y\\)-intercept \\(-\\frac{3}{5}\\)"],
+      "For a quotient of two linear functions, the horizontal asymptote comes from the ratio of the leading coefficients, and the \\(y\\)-intercept is the value at \\(x = 0\\): \\[ \\begin{aligned} y &= \\frac{2}{4} = \\frac{1}{2} \\\\ f(0) &= \\frac{3}{5} \\end{aligned} \\] The pair is <b>"+fk+"</b>.",{mode:0,a:2,b:3,c:4,d:5,e:0});
+  }
+  return cand;
+});
+E("u3-add-double-factor-classify",3,["1.9"],2,"gen",function(){
+  var vs=u3Distinct(3,-5,5,true), h=vs[0], b=vs[1], c=vs[2], k=pick([1,2,3]);
+  var numS=(k>1?""+k:"")+u3FacS(b)+u3FacS(h);
+  var denS=u3FacS(h)+"^2"+u3FacS(c);
+  var suffix=", after the factors common to the numerator and the denominator are compared at each of the two values in turn";
+  function st(t1,t2){return "At \\(x = "+h+"\\) the graph has "+t1+", and at \\(x = "+c+"\\) the graph has "+t2+suffix;}
+  var key=st("a vertical asymptote","a vertical asymptote");
+  var ds=[st("a hole","a vertical asymptote"),st("a vertical asymptote","a hole"),st("a hole","a hole")];
+  var red=FR((k>1?""+k:"")+u3FacS(b), u3FacS(h)+u3FacS(c));
+  var sol="Cancel one copy of the common factor and inspect what remains: \\[ \\begin{aligned} f(x) &= "+FR(numS,denS)+" \\\\ &= "+red+", \\quad x \\ne "+h+", "+c+" \\end{aligned} \\] In the reduced form the denominator is still zero at \\(x = "+h+"\\) and at \\(x = "+c+"\\), while the numerator is not zero at either value, so the function values grow without bound near both. The correct statement is <b>"+key+"</b>.";
+  return mcq("Consider \\(f(x) = "+FR(numS,denS)+"\\) What does the graph of \\(f\\) have at \\(x = "+h+"\\) and at \\(x = "+c+"\\)?",key,ds,sol,{h:h,b:b,c:c,k:k});
+});
+
 /* ----- bank-u4.js ----- */
 // Math 3208 Unit 4 Derivatives question bank
 // CRMARKS: u4-average-rate=1
@@ -1592,7 +1674,6 @@ E("u3-inequality-integers",3,["1.10"],2,"var",varset([
 // CRMARKS: u4-chain-rule=2
 // CRMARKS: u4-tangent-normal=2
 // CRMARKS: u4-motion=2
-// CRMARKS: u4-implicit=3
 // CRMARKS: u4-implicit-second=3
 // CRMARKS: u4-tangent-parameter=3
 // CRMARKS: u4-chain-values=2
@@ -1603,6 +1684,11 @@ E("u3-inequality-integers",3,["1.10"],2,"var",varset([
 // CRMARKS: u4-derivative-extremum-x=2
 // CRMARKS: u4-basic-derivatives-value=1
 // CRMARKS: u4-implicit-second-hyperbola=3
+// BIMODAL: u4-tangent-normal=b
+// BIMODAL: u4-product-quotient=b
+// BIMODAL: u4-first-principles=b
+// BIMODAL: u4-chain-rule=b
+// BIMODAL: u4-basic-derivatives=b
 /* Math 3208 Review, Unit 4 (Derivatives), tranche 1 entries.
    Format per brief-common.md. Fractions are written as literal \frac strings
    (this chassis does not define an FR helper). */
@@ -2665,13 +2751,7 @@ E("u4-motion-direction", 4, ["3.17"], 2, "gen", function () {
 
 /* ----- bank-u5.js ----- */
 // Math 3208 Unit 5 Applications of Derivatives question bank
-// CRMARKS: u5-poly-critical=2
 // CRMARKS: u5-poly-intervals=2
-// CRMARKS: u5-poly-second=2
-// CRMARKS: u5-given-deriv=3
-// CRMARKS: u5-rat-critical=2
-// CRMARKS: u5-rat-second=2
-// CRMARKS: u5-rat-arc=4
 // CRMARKS: u5-rr-ladder=3
 // CRMARKS: u5-rr-cone=3
 // CRMARKS: u5-rr-separation=2
@@ -2681,6 +2761,8 @@ E("u4-motion-direction", 4, ["3.17"], 2, "gen", function () {
 // CRMARKS: u5-opt-solve-b=2
 // CRMARKS: u5-opt-endpoint=4
 // CRMARKS: u5-opt-charter=3
+// BIMODAL: u5-poly-intervals=a
+// BIMODAL: u5-opt-setup=b
 /* ================= Unit 5: Applications of Derivatives (MA3208.3.21 to 3.34) =================
    Tranche 2, final scope. */
 
@@ -3386,11 +3468,14 @@ E("u5-opt-charter",5,["3.33"],3,"gen",function(){
 // CRMARKS: u6-inv-compose=2
 // CRMARKS: u6-trig-limit=2
 // CRMARKS: u6-trig-deriv=3
-// CRMARKS: u6-tangent-trig=2
 // CRMARKS: u6-invderiv=2
-// CRMARKS: u6-extrema-trig=3
 // CRMARKS: u6-angle-rate=2
 // CRMARKS: u6-limit-param=2
+// CRMARKS: u6-wcr-tangent-slope-tan=4
+// BIMODAL: u6-trig-deriv=b
+// BIMODAL: u6-limit-param=a
+// BIMODAL: u6-invderiv=b
+// BIMODAL: u6-inv-compose=b
 /* ================= Unit 6: Calculus of Trigonometry (MA3208.1.12 to 1.15, 2.19 to 2.20, 3.35 to 3.40) =================
    Tranche 2, final scope. */
 
@@ -4018,17 +4103,35 @@ E("u6-limit-param",6,["2.20"],3,"gen",function(){
   return mcq(prompt, key, ds, sol, prm);
 });
 
+/* Bimodal build additions (Nov 19, 2026): one written-form entry for Unit 6 on indicators 3.36 and 3.37, which each carry only one written entry, evaluating a trigonometric derivative at a special angle. SME-flagged for the specialist pass. */
+E("u6-wcr-tangent-slope-tan",6,["3.36","3.37"],2,"gen",function(){
+  var c=ri(2,5), a=ri(2,6), d=0;
+  do{d=ri(-6,6);}while(d===0);
+  var th=pick([{s:"0",sec:1},{s:"\\frac{\\pi}{4}",sec:2},{s:"\\frac{\\pi}{3}",sec:4}]);
+  var x0=(th.sec===1?"0":(th.sec===2?"\\frac{\\pi}{"+(4*a)+"}":"\\frac{\\pi}{"+(3*a)+"}"));
+  var ans=c*a*th.sec+d;
+  var dTerm=(d>0?"+ "+d:"- "+(-d));
+  var fS=c+" \\tan "+a+"x "+(d>0?"+ "+d+"x":"- "+(-d)+"x");
+  var sol="Differentiate term by term. The derivative of \\(\\tan "+a+"x\\) is \\("+a+" \\sec^2 "+a+"x\\) by the chain rule, and the derivative of the linear term is its coefficient: \\[ \\begin{aligned} f'(x) &= "+(c*a)+" \\sec^2 "+a+"x "+dTerm+" \\\\ f'\\left("+x0+"\\right) &= "+(c*a)+" \\sec^2\\left("+th.s+"\\right) "+dTerm+" \\\\ &= "+(c*a)+" \\times "+th.sec+" "+dTerm+" = "+ans+" \\end{aligned} \\] The value is <b>"+ans+"</b>.";
+  return numq("Let \\(f(x) = "+fS+"\\). Find \\(f'\\left("+x0+"\\right)\\).",ans,0.011,sol,{c:c,a:a,d:d,sec:th.sec});
+});
+
 /* ----- bank-u7.js ----- */
 // Math 3208 Unit 7 Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions question bank
 // CRMARKS: u7-exponential-limit=1
 // CRMARKS: u7-deriv-exponential=2
 // CRMARKS: u7-deriv-log=2
-// CRMARKS: u7-tangent-extremum=2
 // CRMARKS: u7-growth-decay=2
-// CRMARKS: u7-log-diff-compute=3
 // CRMARKS: u7-hyperbolic-values=2
 // CRMARKS: u7-interpret-derivative=2
 // CRMARKS: u7-hyperbolic-solve=3
+// CRMARKS: u7-wcr-hyperbolic-derivative-point=5
+// BIMODAL: u7-interpret-derivative=b
+// BIMODAL: u7-hyperbolic-values=a
+// BIMODAL: u7-hyperbolic-solve=a
+// BIMODAL: u7-growth-decay=a
+// BIMODAL: u7-deriv-log=b
+// BIMODAL: u7-deriv-exponential=b
 /* ================= Unit 7: Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions (MA3208.1.11, 2.21, 3.41 to 3.48) =================
    Tranche 2, final scope. */
 
@@ -4385,6 +4488,40 @@ E("u7-hyperbolic-solve",7,["3.46"],3,"gen",function(){
   return mcq("If \\( \\tanh x = "+u7fracR(Tv[0],Tv[1])+" \\), what is the exact value of \\( \\cosh x \\)?",key3,ds3,sol3,{mode:3,p:p,q:q});
 });
 
+/* Bimodal build additions (Nov 19, 2026): one written-form entry for Unit 7 on indicator 3.48, which carries only one written entry, and one selected-response entry on indicator 3.47, which carries only one entry in total. SME-flagged for the specialist pass. */
+E("u7-wcr-hyperbolic-derivative-point",7,["3.48"],2,"gen",function(){
+  var fam=pick(["sinh","cosh"]), a=ri(2,5), c=ri(2,4), n=ri(2,9);
+  var isSinh=(fam==="sinh");
+  var derFn=isSinh?"cosh":"sinh";
+  var num=isSinh?(n*n+1):(n*n-1);
+  var den=2*n;
+  var ansNum=c*a*num, ansDen=den;
+  var ans=ansNum/ansDen;
+  var exact=u7fracR(ansNum,ansDen);
+  var valAt=u7fracR(num,den);
+  var fS=c+" \\"+fam+"("+a+"x)";
+  var x0="\\frac{\\ln "+n+"}{"+a+"}";
+  var sol="Differentiate with the chain rule, then use the exponential definition of the hyperbolic function at the point, where \\(e^{\\ln "+n+"} = "+n+"\\) and \\(e^{-\\ln "+n+"} = \\frac{1}{"+n+"}\\), so \\(\\"+derFn+"(\\ln "+n+") = "+valAt+"\\): \\[ \\begin{aligned} f'(x) &= "+(c*a)+" \\"+derFn+"("+a+"x) \\\\ f'\\left("+x0+"\\right) &= "+(c*a)+" \\"+derFn+"\\left(\\ln "+n+"\\right) \\\\ &= "+(c*a)+" \\times "+valAt+" = "+exact+" \\end{aligned} \\] The value, to two decimal places, is <b>"+fmt(ans)+"</b>.";
+  return numq("Let \\(f(x) = "+fS+"\\). Find \\(f'\\left("+x0+"\\right)\\). Give your answer to two decimal places.",ans,0.011,sol,{fam:fam,a:a,c:c,n:n});
+});
+E("u7-add-hyperbolic-definition",7,["3.47"],2,"gen",function(){
+  var v=pick(["x","t","u"]), a=ri(2,9);
+  var arg=a+v;
+  function fr(nn,dd){return "\\frac{"+nn+"}{"+dd+"}";}
+  var exprs={
+    tanh:fr("\\sinh("+arg+")","\\cosh("+arg+")"),
+    coth:fr("\\cosh("+arg+")","\\sinh("+arg+")"),
+    sech:fr("1","\\cosh("+arg+")"),
+    csch:fr("1","\\sinh("+arg+")")
+  };
+  var names={tanh:"\\tanh",coth:"\\operatorname{coth}",sech:"\\operatorname{sech}",csch:"\\operatorname{csch}"};
+  var fn=pick(["tanh","coth","sech","csch"]);
+  var key="\\( "+exprs[fn]+" \\)";
+  var ds=["tanh","coth","sech","csch"].filter(function(z){return z!==fn;}).map(function(z){return "\\( "+exprs[z]+" \\)";});
+  var sol="The remaining hyperbolic functions are defined from \\(\\sinh\\) and \\(\\cosh\\) by ratios and reciprocals: \\[ \\begin{aligned} "+names[fn]+"("+arg+") &= "+exprs[fn]+" \\end{aligned} \\] The expression is <b>"+key+"</b>.";
+  return mcq("By definition, in terms of \\(\\sinh\\) and \\(\\cosh\\), the value of \\("+names[fn]+"("+arg+")\\) is",key,ds,sol,{fn:fn,a:a,v:v});
+});
+
 /* ----- bank-u8.js ----- */
 // Math 3208 Unit 8 Antidifferentiation and Integration question bank
 // CRMARKS: u8-general-antiderivative=3
@@ -4396,6 +4533,9 @@ E("u7-hyperbolic-solve",7,["3.46"],3,"gen",function(){
 // CRMARKS: u8-definite-eval=2
 // CRMARKS: u8-area-under=2
 // CRMARKS: u8-area-between=3
+// CRMARKS: u8-wcr-integral-properties-value=4
+// BIMODAL: u8-riemann-convert=b
+// BIMODAL: u8-general-antiderivative=b
 /* ================= Unit 8: Antidifferentiation and Integration (MA3208.4.1 to 4.12) =================
    Tranche 2, final scope. */
 
@@ -4830,6 +4970,106 @@ E("u8-area-between",8,["4.12"],3,"gen",function(){
   var prompt="Find the area, in square units, of the region enclosed by the graphs of \\( f(x) = "+u8P(fCs)+" \\) and \\( g(x) = "+u8P(gCs)+" \\). Give your answer to two decimal places.";
   var sol="The curves meet where \\( f(x) = g(x) \\), that is, where \\( "+u8P(dCs)+" = 0 \\), giving \\( x = "+r1+" \\) and \\( x = "+r2+" \\). Between those points \\( f \\) lies above \\( g \\), so the area is the integral of the difference. \\[ \\begin{aligned} A &= \\int_{"+r1+"}^{"+r2+"} \\left( "+u8P(dCs)+" \\right) \\, dx \\\\ &= "+fmt(area)+" \\end{aligned} \\] The enclosed area is <b>"+fmt(area)+" square units</b>.";
   return numq(prompt, area, 0.011, sol, {fCs:fCs, gCs:gCs, r1:r1, r2:r2});
+});
+
+/* Bimodal build additions (Nov 19, 2026): one written-form entry for Unit 8 on indicators 4.4 and 4.11, which carry no written entry and one written entry respectively, and five selected-response entries placed one each on the thinnest indicators 4.2, 4.3, 4.4, 4.5 and 4.7. SME-flagged for the specialist pass. */
+E("u8-wcr-integral-properties-value",8,["4.4","4.11"],2,"gen",function(){
+  var a0=ri(-2,1), c0=a0+ri(1,3), b0=c0+ri(1,3);
+  var al=ri(2,5), be=ri(2,5);
+  var F1=ri(-9,12), F2=ri(-9,12), G1=ri(-9,12);
+  var part1=al*(F1-F2), part2=-be*G1, ans=part1+part2;
+  function par(n){return n<0?"\\left("+n+"\\right)":""+n;}
+  var expr="\\int_{"+c0+"}^{"+b0+"} "+al+" f(x) \\, dx + \\int_{"+b0+"}^{"+a0+"} "+be+" g(x) \\, dx";
+  var sol="A constant factor moves outside an integral, an integral splits at an interior point, and reversing the limits changes the sign: \\[ \\begin{aligned} "+expr+" &= "+al+"\\left( "+F1+" - "+par(F2)+" \\right) - "+be+" \\times "+par(G1)+" \\\\ &= "+part1+" + "+par(part2)+" \\\\ &= "+ans+" \\end{aligned} \\] The value is <b>"+ans+"</b>.";
+  return numq("It is given that \\(\\int_{"+a0+"}^{"+b0+"} f(x) \\, dx = "+F1+"\\), \\(\\int_{"+a0+"}^{"+c0+"} f(x) \\, dx = "+F2+"\\), and \\(\\int_{"+a0+"}^{"+b0+"} g(x) \\, dx = "+G1+"\\). Evaluate \\("+expr+"\\).",ans,0.011,sol,{a0:a0,c0:c0,b0:b0,al:al,be:be,F1:F1,F2:F2,G1:G1});
+});
+E("u8-add-general-antiderivative-power",8,["4.2"],2,"gen",function(){
+  var n=pick([2,3,4]), m=0;
+  do{m=ri(-4,5);}while(m===0);
+  var A=(n+1)*m, B=0;
+  do{B=ri(-9,9);}while(B===0);
+  var fT=[{k:'p',c:A,n:n},{k:'p',c:B,n:0}];
+  var keyT=[{k:'p',c:m,n:n+1},{k:'p',c:B,n:1}];
+  var d1T=[{k:'p',c:A*n,n:n-1}];
+  var d2T=[{k:'p',c:-m,n:n+1},{k:'p',c:B,n:1}];
+  var d3T=[{k:'p',c:A,n:n+1},{k:'p',c:B,n:1}];
+  function opt(T){return "\\( "+u8JoinTerms(T,"x")+" + C \\)";}
+  var key=opt(keyT), ds=[opt(d1T),opt(d2T),opt(d3T)];
+  var fS=u8JoinTerms(fT,"x");
+  var bTerm=(B>0?"+ "+B+"x":"- "+(-B)+"x");
+  var sol="Raise each power by \\(1\\) and divide by the new power; a constant term gains a factor of \\(x\\): \\[ \\begin{aligned} \\int \\left( "+fS+" \\right) \\, dx &= \\frac{"+A+"}{"+(n+1)+"}x^{"+(n+1)+"} "+bTerm+" + C \\\\ &= "+u8JoinTerms(keyT,"x")+" + C \\end{aligned} \\] The general antiderivative is <b>"+key+"</b>.";
+  return mcq("Find the general antiderivative of \\(f(x) = "+fS+"\\).",key,ds,sol,{n:n,m:m,B:B});
+});
+E("u8-add-notation-correct-equation",8,["4.3"],2,"gen",function(){
+  var a=pick([3,6,9]), b=pick([-6,-4,-2,2,4,6]), c0=ri(-9,9);
+  var gT=[{k:'p',c:a,n:2},{k:'p',c:b,n:1}];
+  if(c0!==0)gT.push({k:'p',c:c0,n:0});
+  var GT=[{k:'p',c:a/3,n:3},{k:'p',c:b/2,n:2}];
+  if(c0!==0)GT.push({k:'p',c:c0,n:1});
+  var gpT=[{k:'p',c:2*a,n:1},{k:'p',c:b,n:0}];
+  var negGT=GT.map(function(t){return {k:'p',c:-t.c,n:t.n};});
+  var gS=u8JoinTerms(gT,"x"), GS=u8JoinTerms(GT,"x"), gpS=u8JoinTerms(gpT,"x"), negGS=u8JoinTerms(negGT,"x");
+  function eq(rhs){return "\\( \\int \\left( "+gS+" \\right) \\, dx = "+rhs+" \\)";}
+  var key=eq(GS+" + C");
+  var ds=[eq(GS),eq(gpS+" + C"),eq(negGS+" + C")];
+  var sol="Indefinite integral notation must name the whole family of antiderivatives, constant included. Differentiating the stated result returns the integrand: \\[ \\begin{aligned} \\frac{d}{dx} \\left( "+GS+" + C \\right) &= "+gS+" \\end{aligned} \\] The statement that uses the notation correctly is <b>"+key+"</b>.";
+  return mcq("Which statement uses antiderivative notation correctly?",key,ds,sol,{a:a,b:b,c0:c0});
+});
+E("u8-add-antiderivative-linear-combination",8,["4.4"],2,"gen",function(){
+  var v=pick(["x","t","u"]), al=ri(2,6), be=ri(2,6);
+  if(al===be){be=(al===6?al-1:al+1);}
+  var minus=(Math.random()<0.5), sgn=minus?"-":"+";
+  function form(c1,c2,sg){return "\\( "+c1+"F("+v+") "+sg+" "+c2+"G("+v+") + C \\)";}
+  var key=form(al,be,sgn);
+  var ds=[form(al,be,minus?"+":"-"),form(be,al,sgn),"\\( "+FR("F("+v+")",""+al)+" "+sgn+" "+FR("G("+v+")",""+be)+" + C \\)"];
+  var sol="A constant factor passes through antidifferentiation unchanged, and the antiderivative of a sum or difference is the sum or difference of the antiderivatives: \\[ \\begin{aligned} \\int \\left( "+al+" f("+v+") "+sgn+" "+be+" g("+v+") \\right) \\, d"+v+" &= "+al+" \\int f("+v+") \\, d"+v+" "+sgn+" "+be+" \\int g("+v+") \\, d"+v+" \\\\ &= "+al+"F("+v+") "+sgn+" "+be+"G("+v+") + C \\end{aligned} \\] The result is <b>"+key+"</b>.";
+  return mcq("It is given that \\(\\int f("+v+") \\, d"+v+" = F("+v+") + C\\) and \\(\\int g("+v+") \\, d"+v+" = G("+v+") + C\\). What is \\(\\int \\left( "+al+" f("+v+") "+sgn+" "+be+" g("+v+") \\right) \\, d"+v+"\\)?",key,ds,sol,{v:v,al:al,be:be,minus:minus});
+});
+E("u8-add-particular-constant",8,["4.5"],2,"gen",function(){
+  var A=pick([-6,-4,-2,2,4,6]), B=ri(-6,6), x0=pick([-2,-1,1,2,3]), C=0;
+  do{C=ri(-8,8);}while(C===0);
+  function F0(x){return (A/2)*x*x + B*x;}
+  var Bval=F0(x0)+C;
+  var polyT=[{k:'p',c:A/2,n:2}];
+  if(B!==0)polyT.push({k:'p',c:B,n:1});
+  var polyS=u8JoinTerms(polyT,"x");
+  var fT=[{k:'p',c:A,n:1}];
+  if(B!==0)fT.push({k:'p',c:B,n:0});
+  var fS=u8JoinTerms(fT,"x");
+  function optF(cv){var T=polyT.slice();if(cv!==0)T.push({k:'p',c:cv,n:0});return "\\(F(x) = "+u8JoinTerms(T,"x")+" \\)";}
+  var cands=[Bval+F0(x0),Bval-F0(-x0),-C], dsC=[], i, extra=3;
+  for(i=0;i<cands.length;i++){if(cands[i]!==C&&dsC.indexOf(cands[i])<0)dsC.push(cands[i]);}
+  while(dsC.length<3){var cv=C+extra;extra+=4;if(cv!==C&&dsC.indexOf(cv)<0)dsC.push(cv);}
+  var key=optF(C), ds=dsC.map(optF);
+  function par(n){return n<0?"\\left("+n+"\\right)":""+n;}
+  var sol="Antidifferentiate, then use the condition to pin down the constant: \\[ \\begin{aligned} F(x) &= "+polyS+" + C \\\\ F("+x0+") &= "+F0(x0)+" + C = "+Bval+" \\\\ C &= "+Bval+" - "+par(F0(x0))+" = "+C+" \\end{aligned} \\] So the function is <b>"+key+"</b>.";
+  return mcq("A function \\(F\\) is an antiderivative of \\(f(x) = "+fS+"\\), and \\(F("+x0+") = "+Bval+"\\). Which function is \\(F\\)?",key,ds,sol,{A:A,B:B,x0:x0,C:C});
+});
+E("u8-add-estimate-expression",8,["4.7"],2,"gen",function(){
+  var h=pick([1,2]), m=ri(1,3), q=ri(2,6), method=pick(["left","right","trap"]);
+  var vs=[], i;
+  for(i=0;i<=4;i++)vs.push(m*(i*h)+q);
+  function sumStr(list){return list.map(function(z){return ""+z;}).join(" + ");}
+  var paren={
+    left:sumStr(vs.slice(0,4)),
+    right:sumStr(vs.slice(1,5)),
+    trap:"\\frac{"+vs[0]+" + "+vs[4]+"}{2} + "+sumStr(vs.slice(1,4))
+  };
+  var exprs={
+    left:""+h+" \\left( "+paren.left+" \\right)",
+    right:""+h+" \\left( "+paren.right+" \\right)",
+    trap:""+h+" \\left( "+paren.trap+" \\right)"
+  };
+  var sums={left:vs[0]+vs[1]+vs[2]+vs[3],right:vs[1]+vs[2]+vs[3]+vs[4],trap:(vs[0]+vs[4])/2+vs[1]+vs[2]+vs[3]};
+  var ans=h*sums[method];
+  function stmt(e){return "With four subintervals of width \\( "+h+" \\), the area estimate is \\( "+e+" \\) square units";}
+  var key=stmt(exprs[method]);
+  var others=["left","right","trap"].filter(function(z){return z!==method;});
+  var ds=[stmt(exprs[others[0]]),stmt(exprs[others[1]]),stmt(""+(2*h)+" \\left( "+paren[method]+" \\right)")];
+  var mName=(method==="left"?"left-endpoint":(method==="right"?"right-endpoint":"trapezoidal"));
+  var table=vs.map(function(val,j){return "\\(f("+fmt(j*h)+") = "+val+"\\)";}).join(", ");
+  var sol="Each subinterval has width \\(\\Delta x = "+h+"\\). The "+mName+" sum uses the stated function values with that width: \\[ \\begin{aligned} \\Delta x &= "+h+" \\\\ A &\\approx "+exprs[method]+" \\\\ &= "+fmt(ans)+" \\end{aligned} \\] The correct statement is <b>"+key+"</b>.";
+  return mcq("Values of a continuous function \\(f\\) at equally spaced points are given by "+table+". Which statement gives the "+mName+" estimate, using four subintervals, of the area under the graph of \\(f\\) from \\(x = 0\\) to \\(x = "+fmt(4*h)+"\\)?",key,ds,sol,{h:h,m:m,q:q,method:method,vs:vs});
 });
 
 /* ----- bank-fix.js ----- */
@@ -6689,4 +6929,10 @@ BANK.forEach(function(e){var t=PKT3208[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-analysis":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-zero-points":1,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit":3,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-given-deriv":3,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-critical":2,"u5-poly-intervals":2,"u5-poly-second":2,"u5-rat-arc":4,"u5-rat-critical":2,"u5-rat-second":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-extrema-trig":3,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-tangent-trig":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-log-diff-compute":3,"u7-tangent-extremum":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2};
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-zero-points":1,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-compose-equation":"b","u1-compound-inequality":"a","u1-quotient-restrictions":"a","u1-range-product":"a","u2-limit-absvalue":"a","u2-limit-complex-fraction":"a","u2-limit-conjugate":"a","u2-limit-factor-cancel":"a","u2-limit-graph":"a","u2-oblique-asymptote":"b","u2-repeating-decimal":"a","u3-asymptote-set":"a","u3-hole-coordinates":"a","u4-basic-derivatives":"b","u4-chain-rule":"b","u4-first-principles":"b","u4-product-quotient":"b","u4-tangent-normal":"b","u5-opt-setup":"b","u5-poly-intervals":"a","u6-inv-compose":"b","u6-invderiv":"b","u6-limit-param":"a","u6-trig-deriv":"b","u7-deriv-exponential":"b","u7-deriv-log":"b","u7-growth-decay":"a","u7-hyperbolic-solve":"a","u7-hyperbolic-values":"a","u7-interpret-derivative":"b","u8-general-antiderivative":"b","u8-riemann-convert":"b"};

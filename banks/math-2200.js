@@ -796,6 +796,57 @@ function n6stageFig(counts, item) {
   return s + '</svg>';
 }
 
+/* clipCurveSVG (Nov 20, 2026): draw fn clipped to the plot window.
+   The curve stops where it leaves the window, the crossing point
+   interpolated (no clamping shelves along the edges). A clipped end
+   of an unrestricted graph carries a small arrowhead: exits through
+   the window edge, and left/right edge ends whose function is still
+   defined just outside the window. An end where the function is
+   undefined beyond (a domain endpoint) gets no arrowhead. A jump
+   across the whole window within one sample step is treated as an
+   asymptote and left open. */
+function clipCurveSVG(fn,X,Y,x0,x1,y0,y1){
+  var N=240,i,x,y,dx=(x1-x0)/N,segs=[],cur=null,px=0,py=0,ps=-1;
+  function st(v){return (typeof v!=="number"||!isFinite(v))?0:(v>y1?2:(v<y0?3:1));}
+  function cx(xa,ya,xb,yb,bnd){var t=(bnd-ya)/(yb-ya);return [xa+(xb-xa)*t,bnd];}
+  function begin(p,clip){cur={pts:[p],sc:clip,ec:false};}
+  function finish(clip){if(cur){cur.ec=clip;if(cur.pts.length>=2)segs.push(cur);cur=null;}}
+  for(i=0;i<=N;i++){
+    x=x0+dx*i;
+    try{y=fn(x);}catch(e){y=NaN;}
+    var s=st(y);
+    if(s===1){
+      if(ps===1&&cur)cur.pts.push([x,y]);
+      else if(ps===2||ps===3){var c1=cx(px,py,x,y,ps===2?y1:y0);begin(c1,true);cur.pts.push([x,y]);}
+      else begin([x,y],false);
+    }else if(s===2||s===3){
+      if(ps===1&&cur){cur.pts.push(cx(px,py,x,y,s===2?y1:y0));finish(true);}
+      else if((ps===2&&s===3)||(ps===3&&s===2)){
+        if(Math.abs(y-py)<=1.5*(y1-y0))segs.push({pts:[cx(px,py,x,y,ps===2?y1:y0),cx(px,py,x,y,s===2?y1:y0)],sc:true,ec:true});
+      }
+    }else if(ps===1)finish(false);
+    px=x;py=y;ps=s;
+  }
+  if(cur){var cont=false;try{var yv=fn(x1+dx);cont=(typeof yv==="number"&&isFinite(yv));}catch(e){}finish(cont?"edge":false);}
+  if(segs.length&&segs[0].sc===false&&segs[0].pts[0][0]===x0){
+    var cont0=false;try{var yv0=fn(x0-dx);cont0=(typeof yv0==="number"&&isFinite(yv0));}catch(e){}
+    if(cont0)segs[0].sc="edge";
+  }
+  function arrow(p,q){ /* arrowhead at pixel point p, pointing away from pixel point q */
+    var ax=p[0]-q[0],ay=p[1]-q[1],mag=Math.sqrt(ax*ax+ay*ay);if(!mag)return "";
+    var ux=ax/mag,uy=ay/mag,bx=p[0]-ux*8,by=p[1]-uy*8,ox=-uy*3.8,oy=ux*3.8;
+    return '<polygon points="'+fmt(p[0],1)+","+fmt(p[1],1)+" "+fmt(bx+ox,1)+","+fmt(by+oy,1)+" "+fmt(bx-ox,1)+","+fmt(by-oy,1)+'" fill="#0f766e"/>';
+  }
+  var out="",k,seg,pp,pa,pb;
+  for(k=0;k<segs.length;k++){seg=segs[k];
+    pp=seg.pts.map(function(q){return [X(q[0]),Y(q[1])];});
+    out+='<polyline points="'+pp.map(function(q){return fmt(q[0],1)+","+fmt(q[1],1);}).join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+    if(seg.ec){pa=pp[pp.length-1];pb=pp[pp.length-2];out+=arrow(pa,pb);}
+    if(seg.sc){pa=pp[0];pb=pp[1];out+=arrow(pa,pb);}
+  }
+  return out;
+}
+
 /* ----- bank-u1.js ----- */
 // Math 2200 Unit 1 Trigonometry question bank
 // CRMARKS: u1-ambiguous-case=3
@@ -803,7 +854,6 @@ function n6stageFig(counts, item) {
 // CRMARKS: u1-context-distance=3
 // CRMARKS: u1-cosine-law=2
 // CRMARKS: u1-exact-values=2
-// CRMARKS: u1-law-proof-steps=3
 // CRMARKS: u1-point-angle=2
 // CRMARKS: u1-point-distance=2
 // CRMARKS: u1-point-ratios=2
@@ -813,6 +863,10 @@ function n6stageFig(counts, item) {
 // CRMARKS: u1-same-reference=2
 // CRMARKS: u1-sine-law=2
 // CRMARKS: u1-solve-equation=2
+// BIMODAL: u1-solve-equation=a
+// BIMODAL: u1-point-ratios=a
+// BIMODAL: u1-exact-values=a
+// BIMODAL: u1-ambiguous-case=a
 /* ================= Unit 1: Trigonometry ================= */
 /* ================= Unit 1: Trigonometry =================
    Helpers are prefixed u1; the only other top-level statements are E(...) calls.
@@ -1807,7 +1861,6 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-complete-square=2
 // CRMARKS: u2-cts-reasoning=2
 // CRMARKS: u2-error-complete-square=3
-// CRMARKS: u2-evaluate-claim=4
 // CRMARKS: u2-intercepts-count=2
 // CRMARKS: u2-model-situation=3
 // CRMARKS: u2-model-situation-evaluate=3
@@ -1815,8 +1868,13 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-vertex-read=1
 // CRMARKS: u2-vertex-rule=3
 // CRMARKS: u2-vertex-standard=2
-// CRMARKS: u2-why-quadratic=2
 // CRMARKS: u2-write-from-characteristics=3
+// BIMODAL: u2-write-from-characteristics=b
+// BIMODAL: u2-vertex-standard=a
+// BIMODAL: u2-vertex-rule=a
+// BIMODAL: u2-model-situation=b
+// BIMODAL: u2-error-complete-square=b
+// BIMODAL: u2-complete-square=b
 /* ================= Unit 2: Quadratic Functions ================= */
 /* ================= Unit 2: Quadratic Functions (MA2200.4.27 to 4.32, 4.37 to 4.47) =================
    Tranche 1, mid scope. All stems, contexts and values are original.
@@ -1858,9 +1916,7 @@ function u2Plot(fn,x0,x1,o){ /* axes-and-curve SVG, y-range fitted from samples 
   if(x0<0&&x1>0) out+='<line x1="'+fmt(X(0),1)+'" y1="'+pad+'" x2="'+fmt(X(0),1)+'" y2="'+(H-pad)+'" stroke="#17352a" stroke-width="1.3"/>';
   out+='<text x="'+(W-pad-2)+'" y="'+fmt(Y(0)-6,1)+'" font-size="12" fill="#17352a" text-anchor="end">x</text>';
   out+='<text x="'+fmt(X(0)+6,1)+'" y="'+(pad-8)+'" font-size="12" fill="#17352a">y</text>';
-  var pts=[], N=160;
-  for(i=0;i<=N;i++){ x=x0+(x1-x0)*i/N; y=fn(x); if(y<y0)y=y0; if(y>y1)y=y1; pts.push(fmt(X(x),1)+","+fmt(Y(y),1)); }
-  out+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="#0f766e" stroke-width="2.2"/>';
+  out+=clipCurveSVG(fn,X,Y,x0,x1,y0,y1);
   (o.points||[]).forEach(function(p){ out+='<circle cx="'+fmt(X(p[0]),1)+'" cy="'+fmt(Y(p[1]),1)+'" r="3.6" fill="#b3541e"/>'; });
   return out+'</svg>';
 }
@@ -2632,7 +2688,6 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // and that context is in centimetres.
 // CRMARKS: u3-derive-apply=3
 // CRMARKS: u3-derive-cts-number=1
-// CRMARKS: u3-derive-discriminant-origin=3
 // CRMARKS: u3-derive-first-step=2
 // CRMARKS: u3-derive-formula=4
 // CRMARKS: u3-derive-late-steps=3
@@ -2640,13 +2695,7 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-discriminant-k=3
 // CRMARKS: u3-discriminant-param=3
 // CRMARKS: u3-discriminant-range=2
-// CRMARKS: u3-discriminant-statements=2
-// CRMARKS: u3-error-analysis=3
-// CRMARKS: u3-error-cts-nonmonic=3
-// CRMARKS: u3-error-discriminant=3
 // CRMARKS: u3-error-expand=2
-// CRMARKS: u3-error-graph-read=3
-// CRMARKS: u3-error-reduce=3
 // CRMARKS: u3-factor-common=1
 // CRMARKS: u3-factor-completely=2
 // CRMARKS: u3-factor-func-diff=2
@@ -2654,10 +2703,8 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-factor-pst=2
 // CRMARKS: u3-factor-test=2
 // CRMARKS: u3-factor-test-evaluate=1
-// CRMARKS: u3-factor-test-explain=3
 // CRMARKS: u3-factor-test-find-k=2
 // CRMARKS: u3-factor-test-remainder=2
-// CRMARKS: u3-factor-test-which=2
 // CRMARKS: u3-factor-trinomial=2
 // CRMARKS: u3-factor-trinomial-nonmonic=2
 // CRMARKS: u3-factor-trinomial-two-var=2
@@ -2669,9 +2716,6 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-func-diff-simple=2
 // CRMARKS: u3-intercepts-find-a=3
 // CRMARKS: u3-method-choice=3
-// CRMARKS: u3-method-compare=3
-// CRMARKS: u3-method-flawed-why=3
-// CRMARKS: u3-method-graph-approx=2
 // CRMARKS: u3-method-verify-check=2
 // CRMARKS: u3-problem-model=3
 // CRMARKS: u3-problem-path=3
@@ -2685,8 +2729,27 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-solve-fraction-roots=2
 // CRMARKS: u3-solve-nature-roots=2
 // CRMARKS: u3-solve-strategies=2
-// CRMARKS: u3-verify-methods=3
 // CRMARKS: u3-zeros-count=1
+// BIMODAL: u3-solve-strategies=b
+// BIMODAL: u3-solve-nature-roots=a
+// BIMODAL: u3-solve-fraction-roots=a
+// BIMODAL: u3-solve-formula-radical=b
+// BIMODAL: u3-roots-from-graph=a
+// BIMODAL: u3-method-choice=b
+// BIMODAL: u3-func-diff-quad-inner=b
+// BIMODAL: u3-func-diff-functions=b
+// BIMODAL: u3-func-diff-completely=b
+// BIMODAL: u3-factor-two-var=b
+// BIMODAL: u3-factor-trinomial-two-var=b
+// BIMODAL: u3-factor-trinomial-nonmonic=b
+// BIMODAL: u3-factor-pst=b
+// BIMODAL: u3-factor-negative=b
+// BIMODAL: u3-factor-func-diff=b
+// BIMODAL: u3-factor-completely=b
+// BIMODAL: u3-discriminant-range=b
+// BIMODAL: u3-derive-late-steps=b
+// BIMODAL: u3-derive-formula=b
+// BIMODAL: u3-derive-apply=b
 /* ================= Unit 3: Quadratic Equations ================= */
 /* ================= Unit 3: Quadratic Equations (MA2200.3.14 to 3.17, 4.9 to 4.15) =================
    Tranche 1, mid scope. All stems, contexts and values are original.
@@ -5172,7 +5235,6 @@ E("u3-problem-path",3,["4.15"],3,"gen",function(){
 // CRMARKS: u4-convert-numeric=1
 // CRMARKS: u4-defined-values=2
 // CRMARKS: u4-extraneous-why=3
-// CRMARKS: u4-identity-truth=2
 // CRMARKS: u4-model-radical=3
 // CRMARKS: u4-order-radicals=2
 // CRMARKS: u4-rationalize-binomial=3
@@ -5183,6 +5245,12 @@ E("u3-problem-path",3,["4.15"],3,"gen",function(){
 // CRMARKS: u4-var-to-entire=1
 // CRMARKS: u4-var-to-mixed=2
 // CRMARKS: u4-verify-roots=2
+// BIMODAL: u4-var-to-mixed=b
+// BIMODAL: u4-simplify-ops=b
+// BIMODAL: u4-rationalize-binomial=b
+// BIMODAL: u4-order-radicals=a
+// BIMODAL: u4-extraneous-why=b
+// BIMODAL: u4-conjugate-why=b
 /* ================= Unit 4: Radical Expressions and Equations ================= */
 /* ================= Unit 4: Radical Expressions and Equations ================= */
 /* Indicators: 1.1, 1.2, 1.3, 1.4, 1.9, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16,
@@ -6090,9 +6158,15 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u5-simplify-basic=1
 // CRMARKS: u5-simplify-evaluate=2
 // CRMARKS: u5-simplify-trinomial=2
-// CRMARKS: u5-solve-extraneous=3
 // CRMARKS: u5-solve-linear=2
 // CRMARKS: u5-word-problem=3
+// BIMODAL: u5-simplify-trinomial=b
+// BIMODAL: u5-npv-quadratic=a
+// BIMODAL: u5-multiply=b
+// BIMODAL: u5-error-cancel=b
+// BIMODAL: u5-equivalent-restrictions=b
+// BIMODAL: u5-divide=b
+// BIMODAL: u5-add-subtract=b
 /* ================= Unit 5: Rational Expressions and Equations ================= */
 /* ================= Unit 5: Rational Expressions and Equations ================= */
 /* Indicators: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12,
@@ -7061,6 +7135,16 @@ BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-solve-graphical=2
 // CRMARKS: u6-solve-linear=2
 // CRMARKS: u6-solve-quadratic=3
+// CRMARKS: u6-wcr-abs-error-correction=4
+// CRMARKS: u6-wcr-drone-height=5
+// BIMODAL: u6-solve-quadratic=a
+// BIMODAL: u6-solve-linear=a
+// BIMODAL: u6-recip-features=b
+// BIMODAL: u6-piecewise=b
+// BIMODAL: u6-original-from-reciprocal=b
+// BIMODAL: u6-no-solution=a
+// BIMODAL: u6-invariant-points=a
+// BIMODAL: u6-equation-from-graph=b
 /* ================= Unit 6: Absolute Value and Reciprocal Functions ================= */
 /* ================= Unit 6: Absolute Value and Reciprocal Functions (MA2200.1.5 to 1.8, 1.10, 4.1 to 4.8, 4.33 to 4.36) =================
    Tranche 2, final scope. All stems, contexts and values are original.
@@ -7959,6 +8043,34 @@ E("u6-pk-reciprocal-values",6,["4.33"],1,"gen",function(){
     {mode:"fraction",p:p,q:q});
 }, ["The reciprocal flips the number over.", "The sign does not change when you take a reciprocal."]);
 
+/* Bimodal build additions (Nov 19, 2026): two written-form Level 2 entries, an error-correction absolute value equation (4 marks) and an absolute value context problem (5 marks). SME-flagged for the specialist pass. */
+
+/* u6-wcr-abs-error-correction: written form, 4 marks. A student keeps only
+   one case of an absolute value equation; find the missing solution. */
+E("u6-wcr-abs-error-correction",6,["4.7","4.6"],2,"gen",function(){
+  var a=pick([2,4]);
+  var r1=0,r2=0,att=0;
+  do { r1=ri(-8,3); r2=r1+pick([4,6,8]); att++; } while(r2>8 && att<60);
+  var c=a*(r2-r1)/2, b=-a*(r1+r2)/2;
+  var arg=u6Lin(a,b);
+  return numq("A student solves the equation \\("+u6AbsArg(a,b)+" = "+c+"\\). The student writes \\("+arg+" = "+c+"\\), solves to get \\(x = "+r2+"\\), and states that \\("+r2+"\\) is the only solution. The student's answer is incomplete. What is the other solution of the equation?",
+    r1,0.01,
+    "An absolute value equals \\("+c+"\\) when the expression inside the bars equals \\("+c+"\\) or \\(-"+c+"\\). The student used only the first case. The second case gives the missing solution: \\[ \\begin{aligned} "+arg+" &= -"+c+" \\\\ "+a+"x &= "+(-c-b)+" \\\\ x &= "+r1+" \\end{aligned} \\] Checking in the original equation gives \\(\\left|"+(a*r1+b)+"\\right| = "+c+"\\), so it works. The other solution is <b>\\("+r1+"\\)</b>.",
+    {a:a,b:b,c:c,r1:r1,r2:r2});
+});
+
+/* u6-wcr-drone-height: written form, 5 marks. An absolute value model of a
+   drone that climbs then descends; find the later of two times at a height. */
+E("u6-wcr-drone-height",6,["4.5","4.4"],2,"gen",function(){
+  var m=ri(6,10), delta=ri(2,5), a=ri(2,4);
+  var Y=pick([50,60,70,80,90]);
+  var P=Y+a*delta, t2=m+delta, t1=m-delta;
+  return numq("A drone climbs at a constant rate, then descends at the same rate. Its height, in metres, \\(t\\) minutes after takeoff is modelled by \\(h(t) = "+P+" - "+a+"\\left|t - "+m+"\\right|\\). The drone passes a height of "+Y+" metres twice. What is the later of the two times, in minutes, at which the drone is at a height of "+Y+" metres?",
+    t2,0.01,
+    "Set the height equal to \\("+Y+"\\): \\[ \\begin{aligned} "+P+" - "+a+"\\left|t - "+m+"\\right| &= "+Y+" \\\\ -"+a+"\\left|t - "+m+"\\right| &= "+(Y-P)+" \\\\ \\left|t - "+m+"\\right| &= "+delta+" \\end{aligned} \\] The expression inside the bars equals \\("+delta+"\\) or \\(-"+delta+"\\), giving \\(t = "+t1+"\\) or \\(t = "+t2+"\\). The later of the two times is <b>"+t2+" minutes</b>.",
+    {m:m,delta:delta,a:a,Y:Y,P:P,t1:t1,t2:t2});
+});
+
 /* PK tranche pass for Unit 6. pkFor is the cluster's dependent
    indicator list from the prior knowledge map, as registered
    for this unit in courses.js. */
@@ -7987,6 +8099,13 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-solve-linquad=2
 // CRMARKS: u7-solve-quadquad=2
 // CRMARKS: u7-tangent-param=4
+// BIMODAL: u7-tangent-param=a
+// BIMODAL: u7-solve-quadquad=a
+// BIMODAL: u7-solve-linquad=a
+// BIMODAL: u7-model-two-numbers=a
+// BIMODAL: u7-context-projectile=a
+// BIMODAL: u7-context-area=b
+// BIMODAL: u7-classify-algebraic=a
 /* ================= Unit 7: Systems of Equations ================= */
 /* ================= Unit 7: Systems of Equations (MA2200.4.48 to 4.54) =================
    Tranche 2, final scope. All stems, contexts and values are original.
@@ -8654,6 +8773,50 @@ E("u7-pk-solve-by-factoring",7,["4.51"],2,"gen",function(){
     {lo:lo,hi:hi,ans:ans});
 }, ["Find two numbers that multiply to the constant term and add to the middle coefficient.", "Set each factor equal to 0."]);
 
+/* Bimodal build additions (Nov 19, 2026): two selected-response Level 2 entries, on the number of solutions of a linear-quadratic system and on modelling a ticket situation with a system of equations. SME-flagged for the specialist pass. */
+
+/* u7-add-solution-count: how many real solutions a line-parabola system has,
+   decided by the discriminant of the equation formed by setting them equal. */
+E("u7-add-solution-count",7,["4.49"],2,"gen",function(){
+  var mode=pick(["two","one","none"]);
+  var B=0,C=0;
+  if(mode==="two"){ var r1=ri(-6,4), r2=r1+ri(2,5); B=-(r1+r2); C=r1*r2; }
+  else if(mode==="one"){ var r=ri(-5,6); B=-2*r; C=r*r; }
+  else { var h=ri(-4,4), k=pick([1,2,3,5]); B=-2*h; C=h*h+k; }
+  var D=B*B-4*C;
+  var m=ri(-4,5), p=B+m, d0=ri(-6,6), q=C+d0;
+  var key= mode==="two" ? "Two real solutions" : mode==="one" ? "One real solution" : "No real solutions";
+  var dis=["Two real solutions","One real solution","No real solutions","Four real solutions"].filter(function(s){ return s!==key; });
+  var discText= mode==="two" ? "The discriminant is positive, so the equation has two distinct real roots, and the line meets the parabola at two points."
+    : mode==="one" ? "The discriminant is zero, so the equation has one repeated real root, and the line touches the parabola at one point."
+    : "The discriminant is negative, so the equation has no real roots, and the line does not meet the parabola.";
+  return mcq("Consider the system \\(y = "+u7Std(1,p,q)+"\\) and \\(y = "+u7Lin(m,d0)+"\\). How many real solutions does the system have?",
+    key, dis,
+    "Setting the two expressions for \\(y\\) equal gives \\[ \\begin{aligned} "+u7Std(1,p,q)+" &= "+u7Lin(m,d0)+" \\\\ "+u7Std(1,B,C)+" &= 0 \\end{aligned} \\] The discriminant of this quadratic is \\[ \\begin{aligned} b^2 - 4ac &= ("+B+")^2 - 4(1)("+C+") \\\\ &= "+D+" \\end{aligned} \\] "+discText+" The answer is <b>"+key+"</b>.",
+    {mode:mode,B:B,C:C,D:D});
+});
+
+/* u7-add-model-tickets: choose the system that models two ticket orders,
+   where x and y are the adult and child ticket prices. */
+E("u7-add-model-tickets",7,["4.52"],2,"gen",function(){
+  function tm(cf,v){ return cf===1 ? v : cf+v; }
+  var px=ri(8,15), py=ri(4,7);
+  var a1=0,c1=0,a2=0,c2=0,T1=0,T2=0,att=0;
+  do { a1=ri(2,6); c1=ri(1,5); a2=ri(2,6); c2=ri(1,5); T1=a1*px+c1*py; T2=a2*px+c2*py; att++; }
+  while((a1===c1||a2===c2||a1*c2===a2*c1||T1===T2) && att<100);
+  var eq1=tm(a1,"x")+" + "+tm(c1,"y")+" = "+T1, eq2=tm(a2,"x")+" + "+tm(c2,"y")+" = "+T2;
+  var key="\\("+eq1+"\\) and \\("+eq2+"\\)";
+  var dis=[
+    "\\("+tm(a1,"x")+" + "+tm(c1,"y")+" = "+T2+"\\) and \\("+tm(a2,"x")+" + "+tm(c2,"y")+" = "+T1+"\\)",
+    "\\("+tm(c1,"x")+" + "+tm(a1,"y")+" = "+T1+"\\) and \\("+tm(c2,"x")+" + "+tm(a2,"y")+" = "+T2+"\\)",
+    "\\("+eq1+"\\) and \\("+tm(c2,"x")+" + "+tm(a2,"y")+" = "+T2+"\\)"
+  ];
+  return mcq("Adult tickets and child tickets for a school play sell at fixed prices. One family buys "+a1+" adult tickets and "+(c1===1?"1 child ticket":c1+" child tickets")+" and pays $"+T1+". Another family buys "+a2+" adult tickets and "+(c2===1?"1 child ticket":c2+" child tickets")+" and pays $"+T2+". Let \\(x\\) represent the price, in dollars, of one adult ticket and \\(y\\) represent the price, in dollars, of one child ticket. Which system of equations models this situation?",
+    key, dis,
+    "Each adult ticket adds \\(x\\) dollars to a family's total and each child ticket adds \\(y\\) dollars. The first family's total is \\("+eq1.split(" = ")[0]+"\\), which equals \\("+T1+"\\), and the second family's total is \\("+eq2.split(" = ")[0]+"\\), which equals \\("+T2+"\\). The system that models the situation is <b>"+key+"</b>.",
+    {a1:a1,c1:c1,a2:a2,c2:c2,T1:T1,T2:T2});
+});
+
 /* PK tranche pass for Unit 7. pkFor is the cluster's dependent
    indicator list from the prior knowledge map, as registered
    for this unit in courses.js. */
@@ -8682,6 +8845,11 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u8-solve-linear-basic=1
 // CRMARKS: u8-solve-linear-flip=2
 // CRMARKS: u8-scenario-solve=2
+// CRMARKS: u8-wcr-ticket-fundraiser=5
+// BIMODAL: u8-solve-linear-flip=a
+// BIMODAL: u8-quad-solve-inside=a
+// BIMODAL: u8-numberline-quad=b
+// BIMODAL: u8-both-hold=a
 /* ================= Unit 8: Linear and Quadratic Inequalities ================= */
 /* ================= Unit 8: Linear and Quadratic Inequalities =================
    Tranche 2, final scope. All stems, contexts and values are original.
@@ -9331,6 +9499,38 @@ E("u8-pk-context-graph",8,["4.19"], 1, "gen", function () {
   return q;
 }, ["Translate the story into an inequality, then check it against the circle and shading in the graph.", "First find the boundary number in the story; the graph circle sits on that same number."]);
 
+/* Bimodal build additions (Nov 19, 2026): one written-form Level 2 entry (5 marks) solving a two-variable inequality in a fundraising context, and one selected-response Level 2 entry on boundary type and shading for a quadratic inequality. SME-flagged for the specialist pass. */
+
+/* u8-wcr-ticket-fundraiser: written form, 5 marks. Model the amount raised
+   with an inequality, solve for the number of adult tickets, and round up
+   because tickets are sold whole. */
+E("u8-wcr-ticket-fundraiser",8,["4.19"],2,"gen",function(){
+  var A=ri(8,15), S=ri(3,7), y0=ri(20,60), x0=ri(30,80), extra=ri(1,A-1);
+  var T=A*x0+S*y0+extra;
+  var need=T-S*y0, ans=Math.ceil(need/A);
+  return numq("A school council sells adult tickets for $"+A+" each and student tickets for $"+S+" each to raise money for a trip. The council must raise at least $"+T+". The council has already sold "+y0+" student tickets. What is the minimum number of adult tickets the council must sell to reach its goal?",
+    ans,0.01,
+    "Let \\(x\\) be the number of adult tickets sold. The amount raised is \\("+A+"x + "+S+"("+y0+")\\) dollars, and it must be at least \\("+T+"\\): \\[ \\begin{aligned} "+A+"x + "+(S*y0)+" &\\ge "+T+" \\\\ "+A+"x &\\ge "+need+" \\\\ x &\\ge "+fmt(need/A,2)+" \\end{aligned} \\] Tickets are sold whole, so the number of adult tickets must be rounded up to the next whole number. The minimum number of adult tickets is <b>"+ans+"</b>.",
+    {A:A,S:S,y0:y0,T:T,need:need,ans:ans});
+});
+
+/* u8-add-boundary-shading: boundary type (solid or dashed) and shaded side
+   for the graph of a quadratic inequality in two variables. */
+E("u8-add-boundary-shading",8,["4.21","4.22"],2,"gen",function(){
+  var h=ri(-3,3), k=ri(-4,4);
+  if(h===0&&k===0) k=2;
+  var a=pick([1,-1]), sym=pick(["lt","le","gt","ge"]);
+  var dashed=(sym==="lt"||sym==="gt"), above=(sym==="gt"||sym==="ge");
+  var fbody=(a===1?"":"-")+u8sqT(h)+u8sgn(k);
+  function desc(d,ab){ return "A "+(d?"dashed":"solid")+" curve, with the region "+(ab?"above":"below")+" the curve shaded"; }
+  var key=desc(dashed,above);
+  var dis=[desc(!dashed,above), desc(dashed,!above), desc(!dashed,!above)];
+  return mcq("A student is about to sketch the graph of \\(y "+U8SYM[sym]+" "+fbody+"\\). Which description matches the correct graph?",
+    key, dis,
+    "The symbol \\("+U8SYM[sym]+"\\) "+(dashed?"is strict, so points on the parabola itself are not included and the boundary is dashed":"includes equality, so points on the parabola itself are included and the boundary is solid")+". The inequality asks for \\(y\\) values "+(above?"greater than":"less than")+" the values on the parabola, which lie "+(above?"above":"below")+" the curve, so that region is shaded. The correct description is <b>"+key+"</b>.",
+    {h:h,k:k,a:a,sym:sym});
+});
+
 /* PK tranche pass for Unit 8. pkFor is the cluster's dependent
    indicator list from the prior knowledge map, as registered
    for this unit in courses.js. */
@@ -9364,13 +9564,17 @@ BANK.forEach(function(e){var t=PKT_U8_META[e.id];if(t){e.pkSrc=t.src;e.pkFor=PKT
 // CRMARKS: u9-arith-series-context=2
 // CRMARKS: u9-arith-sum-formula=2
 // CRMARKS: u9-crossover=3
-// CRMARKS: u9-derive-formulas=4
 // CRMARKS: u9-evaluate-offers=3
 // CRMARKS: u9-geo-find-index=2
 // CRMARKS: u9-geo-nth-term=2
 // CRMARKS: u9-geo-ratio=1
 // CRMARKS: u9-geo-sum-finite=2
 // CRMARKS: u9-infinite-sum=2
+// CRMARKS: u9-wcr-geo-two-terms=4
+// CRMARKS: u9-wcr-geo-series-views=5
+// BIMODAL: u9-infinite-sum=a
+// BIMODAL: u9-arith-graph-link=b
+// BIMODAL: u9-arith-general-term=b
 /* ================= Unit 9: Sequences and Series ================= */
 /* ================= Unit 9: Sequences and Series =================
    Helpers are prefixed u9; the only other top-level statements are E(...) calls.
@@ -10098,6 +10302,70 @@ E("u9-pk-growth",9,["4.65"],2,"gen",function(){
     {mode:"repeated",s:s,f:f,ans:ans});
 }, ["Growth by a percent is repeated multiplication, not repeated addition.", "Work one year (or one day) at a time."]);
 
+/* Bimodal build additions (Nov 19, 2026): two written-form Level 2 entries (a geometric term from two consecutive terms, 4 marks; a finite geometric series context, 5 marks) and two selected-response entries (identifying a geometric sequence; a bouncing ball total distance, Level 3). SME-flagged for the specialist pass. */
+
+/* u9-wcr-geo-two-terms: written form, 4 marks. Two consecutive terms give
+   the common ratio; the general term rule then gives a later term. */
+E("u9-wcr-geo-two-terms",9,["4.65","4.66"],2,"gen",function(){
+  var t1=ri(2,9), r=pick([2,3,-2,-3]);
+  var A=t1*r*r*r, B=A*r;
+  var n=pick([8,9,10]);
+  var ans=B*Math.pow(r,n-5);
+  return numq("The fourth term of a geometric sequence is "+A+" and the fifth term is "+B+". What is the "+u9ord(n)+" term of the sequence?",
+    ans,0.01,
+    "Consecutive terms give the common ratio, and the general term rule then extends the sequence: \\[ \\begin{aligned} r &= \\frac{"+B+"}{"+A+"} = "+r+" \\\\ t_{"+n+"} &= t_5 \\times r^{"+(n-5)+"} \\\\ &= "+B+" \\times ("+r+")^{"+(n-5)+"} \\\\ &= "+B+" \\times "+Math.pow(r,n-5)+" \\\\ &= "+ans+" \\end{aligned} \\] The "+u9ord(n)+" term is <b>"+ans+"</b>.",
+    {t1:t1,r:r,A:A,B:B,n:n,ans:ans});
+});
+
+/* u9-wcr-geo-series-views: written form, 5 marks. Daily view counts form a
+   finite geometric series; find the total over the first n days. */
+E("u9-wcr-geo-series-views",9,["4.68","4.69"],2,"gen",function(){
+  var r=pick([2,3]);
+  var a= r===2 ? ri(3,30) : 2*ri(2,15);
+  var n=ri(4,7);
+  var Sn= r===2 ? a*(Math.pow(2,n)-1) : a*(Math.pow(3,n)-1)/2;
+  return numq("A video is posted online. On the first day, it gets "+a+" views. Each day after that, the number of views is "+r+" times the number of views on the previous day. What is the total number of views over the first "+n+" days?",
+    Sn,0.01,
+    "The daily view counts form a geometric series with first term \\("+a+"\\), common ratio \\("+r+"\\), and \\("+n+"\\) terms: \\[ \\begin{aligned} S_{"+n+"} &= \\frac{"+a+"\\left("+r+"^{"+n+"} - 1\\right)}{"+(r-1)+"} \\\\ &= \\frac{"+a+" \\times "+(Math.pow(r,n)-1)+"}{"+(r-1)+"} \\\\ &= "+Sn+" \\end{aligned} \\] The total number of views is <b>"+Sn+"</b>.",
+    {a:a,r:r,n:n,Sn:Sn});
+});
+
+/* u9-add-geo-identify: which of four sequences is geometric. The three
+   distractors are built from the same starting value with multiplier
+   patterns whose ratios change, so all four options stay similar in length. */
+E("u9-add-geo-identify",9,["4.64"],2,"gen",function(){
+  var r=pick([2,2,3,-2]);
+  var t= r===3 ? ri(2,6) : ri(2,14);
+  var five=ri(0,1)===1;
+  var keyM,aM,bM,cM;
+  if(r===2){ keyM=[1,2,4,8]; aM=[1,2,3,4]; bM=[1,2,4,7]; cM=[1,3,5,7]; if(five){ keyM.push(16); aM.push(5); bM.push(11); cM.push(9); } }
+  else if(r===3){ keyM=[1,3,9,27]; aM=[1,2,3,4]; bM=[1,3,9,20]; cM=[1,3,5,7]; if(five){ keyM.push(81); aM.push(5); bM.push(41); cM.push(9); } }
+  else { keyM=[1,-2,4,-8]; aM=[1,-2,3,-4]; bM=[1,-2,4,-7]; cM=[1,-3,5,-7]; if(five){ keyM.push(16); aM.push(-5); bM.push(11); cM.push(9); } }
+  function seq(ms){ return "\\("+ms.map(function(mm){ return t*mm; }).join(", ")+"\\)"; }
+  var key=seq(keyM);
+  return mcq("Which of the following sequences is geometric?",
+    key, [seq(aM), seq(bM), seq(cM)],
+    "A geometric sequence has the same ratio between every pair of consecutive terms. In the sequence "+key+", each term is "+r+" times the term before it, so the ratio is constantly "+r+". In each of the other sequences, the ratio changes from one pair of terms to the next. The geometric sequence is <b>"+key+"</b>.",
+    {r:r,t:t,five:five});
+});
+
+/* u9-add-bounce-total: total distance travelled by a ball that rebounds to
+   a fixed fraction of its previous height, as two infinite geometric series. */
+E("u9-add-bounce-total",9,["4.69","4.71"],3,"gen",function(){
+  var fams=[{n:1,d:2},{n:1,d:3},{n:2,d:3},{n:1,d:4}];
+  var f=pick(fams), rn=f.n, rd=f.d;
+  var H=6*ri(2,15);
+  var key=H*(rd+rn)/(rd-rn);
+  var cands=[H*rd/(rd-rn), 2*H*rd/(rd-rn), 2*H*rn/(rd-rn), H*(rd+rn)/rd, key+H];
+  var dis=[];
+  cands.forEach(function(v){ if(Number.isInteger(v) && v!==key && dis.indexOf(v)<0 && dis.length<3) dis.push(v); });
+  var down=H*rd/(rd-rn), up=down-H;
+  return mcq("A ball is dropped from a height of "+H+" m. Each time the ball hits the ground, it rebounds to \\("+u9fr(rn,rd)+"\\) of its previous height. The ball keeps bouncing in this way. What is the total distance, in metres, that the ball travels?",
+    "\\("+key+"\\)", dis.map(function(v){ return "\\("+v+"\\)"; }),
+    "The falling distances form an infinite geometric series with first term \\("+H+"\\) and ratio \\("+u9fr(rn,rd)+"\\), so they add to \\("+down+"\\). The rising distances are the same series without the first drop, so they add to \\("+down+" - "+H+" = "+up+"\\). \\[ \\begin{aligned} \\text{Total distance} &= "+down+" + "+up+" \\\\ &= "+key+" \\end{aligned} \\] The total distance travelled is <b>\\("+key+"\\) m</b>.",
+    {H:H,rn:rn,rd:rd,key:key});
+});
+
 /* PK tranche pass for Unit 9. pkFor is the cluster's dependent
    indicator list from the prior knowledge map, as registered
    for this unit in courses.js. */
@@ -10237,4 +10505,10 @@ E("u7-context-roots-cr",7,["4.53","4.54"],3,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-case":3,"u1-axis-ratios":2,"u1-context-distance":3,"u1-cosine-law":2,"u1-exact-values":2,"u1-law-proof-steps":3,"u1-point-angle":2,"u1-point-distance":2,"u1-point-ratios":2,"u1-quadrant":1,"u1-read-sketch":1,"u1-reference-angle":1,"u1-same-reference":2,"u1-sine-law":2,"u1-solve-equation":2,"u1-terminal-point-cr":3,"u2-analyze-problem":3,"u2-complete-square":2,"u2-cts-reasoning":2,"u2-error-complete-square":3,"u2-evaluate-claim":4,"u2-intercepts-count":2,"u2-model-situation":3,"u2-model-situation-evaluate":3,"u2-translations":1,"u2-vertex-read":1,"u2-vertex-rule":3,"u2-vertex-standard":2,"u2-why-quadratic":2,"u2-write-from-characteristics":3,"u3-derive-apply":3,"u3-derive-cts-number":1,"u3-derive-discriminant-origin":3,"u3-derive-first-step":2,"u3-derive-formula":4,"u3-derive-late-steps":3,"u3-discriminant-compute":1,"u3-discriminant-k":3,"u3-discriminant-param":3,"u3-discriminant-range":2,"u3-discriminant-statements":2,"u3-error-analysis":3,"u3-error-cts-nonmonic":3,"u3-error-discriminant":3,"u3-error-expand":2,"u3-error-graph-read":3,"u3-error-reduce":3,"u3-factor-common":1,"u3-factor-completely":2,"u3-factor-func-diff":2,"u3-factor-negative":2,"u3-factor-pst":2,"u3-factor-test":2,"u3-factor-test-evaluate":1,"u3-factor-test-explain":3,"u3-factor-test-find-k":2,"u3-factor-test-remainder":2,"u3-factor-test-which":2,"u3-factor-trinomial":2,"u3-factor-trinomial-nonmonic":2,"u3-factor-trinomial-two-var":2,"u3-factor-two-var":2,"u3-func-diff-completely":3,"u3-func-diff-expand":1,"u3-func-diff-functions":2,"u3-func-diff-quad-inner":2,"u3-func-diff-simple":2,"u3-intercepts-find-a":3,"u3-method-choice":3,"u3-method-compare":3,"u3-method-flawed-why":3,"u3-method-graph-approx":2,"u3-method-verify-check":2,"u3-problem-model":3,"u3-problem-path":3,"u3-problem-projectile-height":3,"u3-problem-revenue":3,"u3-problem-sum-squares":3,"u3-problem-triangle":3,"u3-roots-from-graph":2,"u3-roots-zeros":1,"u3-solve-formula-radical":2,"u3-solve-fraction-roots":2,"u3-solve-nature-roots":2,"u3-solve-strategies":2,"u3-verify-methods":3,"u3-zeros-count":1,"u4-conjugate-why":3,"u4-convert-numeric":1,"u4-defined-values":2,"u4-extraneous-why":3,"u4-identity-truth":2,"u4-model-radical":3,"u4-order-radicals":2,"u4-rationalize-binomial":3,"u4-rationalize-mono":1,"u4-root-of-square":1,"u4-simplify-ops":2,"u4-solve-radical":2,"u4-var-to-entire":1,"u4-var-to-mixed":2,"u4-verify-roots":2,"u5-add-subtract":2,"u5-complex-fraction":2,"u5-divide":2,"u5-equivalent-form":1,"u5-equivalent-restrictions":2,"u5-error-cancel":2,"u5-lcd":1,"u5-lcd-choose":2,"u5-meeting-problem":3,"u5-multiply":2,"u5-npv-basic":1,"u5-npv-quadratic":2,"u5-simplify-basic":1,"u5-simplify-evaluate":2,"u5-simplify-trinomial":2,"u5-solve-extraneous":3,"u5-solve-linear":2,"u5-word-problem":3,"u6-abs-context":2,"u6-distance":1,"u6-equation-from-graph":2,"u6-evaluate-abs":1,"u6-invariant-points":2,"u6-no-solution":2,"u6-order-abs":1,"u6-original-from-reciprocal":3,"u6-piecewise":2,"u6-recip-features":2,"u6-simplify-expr":2,"u6-solve-graphical":2,"u6-solve-linear":2,"u6-solve-quadratic":3,"u7-classify-algebraic":2,"u7-context-area":2,"u7-context-projectile":3,"u7-context-roots-cr":2,"u7-graph-count":1,"u7-graph-solutions":2,"u7-intersection-meaning":1,"u7-model-two-numbers":3,"u7-solve-linquad":2,"u7-solve-quadquad":2,"u7-tangent-param":4,"u8-both-hold":3,"u8-inequality-design":3,"u8-model-context":3,"u8-numberline-quad":2,"u8-numberline-read":1,"u8-quad-graph-id":2,"u8-quad-solve-inside":2,"u8-quad-solve-special":3,"u8-scenario-solve":2,"u8-sign-analysis-cr":2,"u8-solve-linear-basic":1,"u8-solve-linear-flip":2,"u9-arith-diff":1,"u9-arith-find-missing":2,"u9-arith-general-term":2,"u9-arith-graph-link":2,"u9-arith-nth-count":2,"u9-arith-series-context":2,"u9-arith-sum-formula":2,"u9-crossover":3,"u9-derive-formulas":4,"u9-evaluate-offers":3,"u9-geo-find-index":2,"u9-geo-nth-term":2,"u9-geo-ratio":1,"u9-geo-sum-finite":2,"u9-infinite-sum":2};
+window.__BANK_CRMARKS={"u1-ambiguous-case":3,"u1-axis-ratios":2,"u1-context-distance":3,"u1-cosine-law":2,"u1-exact-values":2,"u1-point-angle":2,"u1-point-distance":2,"u1-point-ratios":2,"u1-quadrant":1,"u1-read-sketch":1,"u1-reference-angle":1,"u1-same-reference":2,"u1-sine-law":2,"u1-solve-equation":2,"u1-terminal-point-cr":3,"u2-analyze-problem":3,"u2-complete-square":2,"u2-cts-reasoning":2,"u2-error-complete-square":3,"u2-intercepts-count":2,"u2-model-situation":3,"u2-model-situation-evaluate":3,"u2-translations":1,"u2-vertex-read":1,"u2-vertex-rule":3,"u2-vertex-standard":2,"u2-write-from-characteristics":3,"u3-derive-apply":3,"u3-derive-cts-number":1,"u3-derive-first-step":2,"u3-derive-formula":4,"u3-derive-late-steps":3,"u3-discriminant-compute":1,"u3-discriminant-k":3,"u3-discriminant-param":3,"u3-discriminant-range":2,"u3-error-expand":2,"u3-factor-common":1,"u3-factor-completely":2,"u3-factor-func-diff":2,"u3-factor-negative":2,"u3-factor-pst":2,"u3-factor-test":2,"u3-factor-test-evaluate":1,"u3-factor-test-find-k":2,"u3-factor-test-remainder":2,"u3-factor-trinomial":2,"u3-factor-trinomial-nonmonic":2,"u3-factor-trinomial-two-var":2,"u3-factor-two-var":2,"u3-func-diff-completely":3,"u3-func-diff-expand":1,"u3-func-diff-functions":2,"u3-func-diff-quad-inner":2,"u3-func-diff-simple":2,"u3-intercepts-find-a":3,"u3-method-choice":3,"u3-method-verify-check":2,"u3-problem-model":3,"u3-problem-path":3,"u3-problem-projectile-height":3,"u3-problem-revenue":3,"u3-problem-sum-squares":3,"u3-problem-triangle":3,"u3-roots-from-graph":2,"u3-roots-zeros":1,"u3-solve-formula-radical":2,"u3-solve-fraction-roots":2,"u3-solve-nature-roots":2,"u3-solve-strategies":2,"u3-zeros-count":1,"u4-conjugate-why":3,"u4-convert-numeric":1,"u4-defined-values":2,"u4-extraneous-why":3,"u4-model-radical":3,"u4-order-radicals":2,"u4-rationalize-binomial":3,"u4-rationalize-mono":1,"u4-root-of-square":1,"u4-simplify-ops":2,"u4-solve-radical":2,"u4-var-to-entire":1,"u4-var-to-mixed":2,"u4-verify-roots":2,"u5-add-subtract":2,"u5-complex-fraction":2,"u5-divide":2,"u5-equivalent-form":1,"u5-equivalent-restrictions":2,"u5-error-cancel":2,"u5-lcd":1,"u5-lcd-choose":2,"u5-meeting-problem":3,"u5-multiply":2,"u5-npv-basic":1,"u5-npv-quadratic":2,"u5-simplify-basic":1,"u5-simplify-evaluate":2,"u5-simplify-trinomial":2,"u5-solve-linear":2,"u5-word-problem":3,"u6-abs-context":2,"u6-distance":1,"u6-equation-from-graph":2,"u6-evaluate-abs":1,"u6-invariant-points":2,"u6-no-solution":2,"u6-order-abs":1,"u6-original-from-reciprocal":3,"u6-piecewise":2,"u6-recip-features":2,"u6-simplify-expr":2,"u6-solve-graphical":2,"u6-solve-linear":2,"u6-solve-quadratic":3,"u6-wcr-abs-error-correction":4,"u6-wcr-drone-height":5,"u7-classify-algebraic":2,"u7-context-area":2,"u7-context-projectile":3,"u7-context-roots-cr":2,"u7-graph-count":1,"u7-graph-solutions":2,"u7-intersection-meaning":1,"u7-model-two-numbers":3,"u7-solve-linquad":2,"u7-solve-quadquad":2,"u7-tangent-param":4,"u8-both-hold":3,"u8-inequality-design":3,"u8-model-context":3,"u8-numberline-quad":2,"u8-numberline-read":1,"u8-quad-graph-id":2,"u8-quad-solve-inside":2,"u8-quad-solve-special":3,"u8-scenario-solve":2,"u8-sign-analysis-cr":2,"u8-solve-linear-basic":1,"u8-solve-linear-flip":2,"u8-wcr-ticket-fundraiser":5,"u9-arith-diff":1,"u9-arith-find-missing":2,"u9-arith-general-term":2,"u9-arith-graph-link":2,"u9-arith-nth-count":2,"u9-arith-series-context":2,"u9-arith-sum-formula":2,"u9-crossover":3,"u9-evaluate-offers":3,"u9-geo-find-index":2,"u9-geo-nth-term":2,"u9-geo-ratio":1,"u9-geo-sum-finite":2,"u9-infinite-sum":2,"u9-wcr-geo-series-views":5,"u9-wcr-geo-two-terms":4};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-ambiguous-case":"a","u1-exact-values":"a","u1-point-ratios":"a","u1-solve-equation":"a","u2-complete-square":"b","u2-error-complete-square":"b","u2-model-situation":"b","u2-vertex-rule":"a","u2-vertex-standard":"a","u2-write-from-characteristics":"b","u3-derive-apply":"b","u3-derive-formula":"b","u3-derive-late-steps":"b","u3-discriminant-range":"b","u3-factor-completely":"b","u3-factor-func-diff":"b","u3-factor-negative":"b","u3-factor-pst":"b","u3-factor-trinomial-nonmonic":"b","u3-factor-trinomial-two-var":"b","u3-factor-two-var":"b","u3-func-diff-completely":"b","u3-func-diff-functions":"b","u3-func-diff-quad-inner":"b","u3-method-choice":"b","u3-roots-from-graph":"a","u3-solve-formula-radical":"b","u3-solve-fraction-roots":"a","u3-solve-nature-roots":"a","u3-solve-strategies":"b","u4-conjugate-why":"b","u4-extraneous-why":"b","u4-order-radicals":"a","u4-rationalize-binomial":"b","u4-simplify-ops":"b","u4-var-to-mixed":"b","u5-add-subtract":"b","u5-divide":"b","u5-equivalent-restrictions":"b","u5-error-cancel":"b","u5-multiply":"b","u5-npv-quadratic":"a","u5-simplify-trinomial":"b","u6-equation-from-graph":"b","u6-invariant-points":"a","u6-no-solution":"a","u6-original-from-reciprocal":"b","u6-piecewise":"b","u6-recip-features":"b","u6-solve-linear":"a","u6-solve-quadratic":"a","u7-classify-algebraic":"a","u7-context-area":"b","u7-context-projectile":"a","u7-model-two-numbers":"a","u7-solve-linquad":"a","u7-solve-quadquad":"a","u7-tangent-param":"a","u8-both-hold":"a","u8-numberline-quad":"b","u8-quad-solve-inside":"a","u8-solve-linear-flip":"a","u9-arith-general-term":"b","u9-arith-graph-link":"b","u9-infinite-sum":"a"};

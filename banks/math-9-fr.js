@@ -370,9 +370,10 @@ function solSquare(areaLab, sideLab, aria) {
 // CRMARKS: u1-money-decimals=3
 // CRMARKS: u1-ooo-evaluate-mc=3
 // CRMARKS: u1-ooo-calculator=2
-// CRMARKS: u1-ooo-first-error=2
 // CRMARKS: u1-ordering-reasoning-var=2
 // CRMARKS: u1-multistep-rational=3
+// BIMODAL: u1-ordering-reasoning-var=a
+// BIMODAL: u1-ooo-evaluate-mc=a
 /* Unit 1: Rational Numbers */
 // Unit 1: Rational Numbers (Math 9, NL). Entries only; helpers prefixed u1.
 function u1gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
@@ -676,6 +677,61 @@ E("u1-multistep-rational", 1, ["6.1"], 3, "gen", function () {
   return numq(promptD, ansD, 0.01, solD, { mode: "distance-3day", a: nA, b: nB, c: nC });
 }, ["Divise le problème en un changement ou une partie à la fois, dans l'ordre.", "Pars de la valeur de départ et applique chaque étape avant de passer à la suivante."]);
 
+/* Bimodal build additions (Nov 19, 2026): selected-response entries for the thinnest Unit 1 indicators in the SR pool (6.1 has no SR entry and 6.3 has one). SME-flagged for the specialist pass. */
+
+// 10. L2, 6.1: account balance after a deposit and a withdrawal, MC.
+E("u1-add-solde-argent", 1, ["6.1"], 2, "gen", function () {
+  var aC = ri(3000, 4499), bC = ri(1200, 1999), cC = ri(400, 999);
+  var a = aC / 100, b = bC / 100, c = cC / 100;
+  var ans = a + b - c, e1 = a + b + c, e2 = a + b, e3 = a + c - b;
+  var prompt = "Un compte contient " + fmtDF(a, 2) + " $. On y dépose " + fmtDF(b, 2) + " $, puis on en retire " + fmtDF(c, 2) + " $. Quel est le solde final du compte, en dollars ?";
+  var solution = "Dépose d'abord le montant, puis retire le montant dépensé : \\[ \\begin{aligned} " + fmtDF(a, 2) + " + " + fmtDF(b, 2) + " - " + fmtDF(c, 2) + " &= " + fmtDF(a + b, 2) + " - " + fmtDF(c, 2) + " \\\\ &= " + fmtDF(ans, 2) + " \\end{aligned} \\] Donc le solde final est <b>" + fmtDF(ans, 2) + " $</b>.";
+  return mcq(prompt,
+    { t: fmtDF(ans, 2) + " $", fb: "Exact. On additionne le dépôt, puis on soustrait le retrait." },
+    [
+      { t: fmtDF(e1, 2) + " $", fb: "Cela additionne le retrait au lieu de le soustraire du solde." },
+      { t: fmtDF(e2, 2) + " $", fb: "Cela oublie le retrait, donc le solde reste trop élevé." },
+      { t: fmtDF(e3, 2) + " $", fb: "Cela échange les deux montants : le dépôt et le retrait sont inversés." }
+    ],
+    solution, { mode: "solde-argent", aC: aC, bC: bC, cC: cC });
+}, ["Un dépôt augmente le solde et un retrait le diminue.", "Pars du montant de départ et applique le dépôt avant le retrait."]);
+
+// 11. L2, 6.3: calculator display value rounded to 2 decimals, MC.
+E("u1-add-calculatrice-arrondi", 1, ["6.3"], 2, "gen", function () {
+  var P = null;
+  for (var tries = 0; tries < 500 && !P; tries++) {
+    var a = ri(150, 400) / 10, b = ri(40, 200) / 10, c = ri(40, 200) / 10;
+    var d = pick([2, 4, 5, 8]), e = ri(2, 4), f = ri(20, 90) / 10;
+    var S = b + c, Q = S / d, V = a + Q * e - f;
+    var EL = ((a + b + c) / d) * e - f;
+    var ED = a + b + (c / d) * e - f;
+    var EM = a + u1round(Q, 1) * e - f;
+    var cand = [V, EL, ED, EM];
+    var ok = true;
+    cand.forEach(function (x) { if (x < 10 || x > 99) ok = false; });
+    if (!ok) continue;
+    var keys = cand.map(function (x) { return fmtDF(u1round(x, 2), 2); });
+    if (new Set(keys).size < 4) continue;
+    P = { a: a, b: b, c: c, d: d, e: e, f: f, S: S, Q: Q, V: V, EL: EL, ED: ED, EM: EM };
+  }
+  if (!P) {
+    P = { a: 20.5, b: 4, c: 6.5, d: 4, e: 3, f: 4.5, S: 10.5, Q: 2.625, V: 23.875, EL: 18.75, ED: 24.875, EM: 23.8 };
+  }
+  var ans = u1round(P.V, 2);
+  var expr = "\\(" + fmtD(P.a) + " + (" + fmtD(P.b) + " + " + fmtD(P.c) + ") \\div " + P.d + " \\times " + P.e + " - " + fmtD(P.f) + "\\)";
+  var prompt = "On entre toute l'expression dans une calculatrice en une seule saisie : " + expr + " Quelle valeur la calculatrice affiche-t-elle, arrondie à 2 décimales ?";
+  var steps = "\\[ \\begin{aligned} " + fmtD(P.a) + " + (" + fmtD(P.b) + " + " + fmtD(P.c) + ") \\div " + P.d + " \\times " + P.e + " - " + fmtD(P.f) + " &= " + fmtD(P.a) + " + " + fmtD(P.S) + " \\div " + P.d + " \\times " + P.e + " - " + fmtD(P.f) + " \\\\ &= " + fmtD(P.a) + " + " + fmtD(P.Q, 4) + " \\times " + P.e + " - " + fmtD(P.f) + " \\\\ &= " + fmtD(P.a) + " + " + fmtD(P.Q * P.e, 4) + " - " + fmtD(P.f) + " \\\\ &= " + fmtD(P.V, 4) + " \\end{aligned} \\]";
+  var solution = "La calculatrice suit la priorité des opérations, les parenthèses d'abord, et garde la pleine précision jusqu'à la fin : " + steps + " Arrondie à 2 décimales, la valeur affichée est <b>" + fmtDF(ans, 2) + "</b>.";
+  return mcq(prompt,
+    { t: fmtDF(ans, 2), fb: "Exact. La calculatrice suit la priorité des opérations et arrondit seulement à la fin." },
+    [
+      { t: fmtDF(u1round(P.EL, 2), 2), fb: "C'est le résultat si on entre les nombres strictement de gauche à droite en ignorant les parenthèses." },
+      { t: fmtDF(u1round(P.ED, 2), 2), fb: "Cela enlève les parenthèses autour de la somme, donc seul le dernier nombre de la somme est divisé." },
+      { t: fmtDF(u1round(P.EM, 2), 2), fb: "Cela arrondit le quotient à 1 décimale avant de multiplier, au lieu d'arrondir seulement la réponse finale." }
+    ],
+    solution, { mode: "calculatrice-arrondi", a: P.a, b: P.b, c: P.c, d: P.d, e: P.e, f: P.f });
+}, ["Une calculatrice suit la priorité des opérations quand on entre toute l'expression en une seule saisie.", "Calcule d'abord la somme entre parenthèses, et garde la pleine précision jusqu'à l'arrondi final."]);
+
 /* ----- bank-u2.js ----- */
 // Math 9 (French) Unit 2 Square Roots and Surface Area question bank
 // Cut verbatim from the standalone bank source
@@ -688,6 +744,7 @@ E("u1-multistep-rational", 1, ["6.1"], 3, "gen", function () {
 // CRMARKS: u2-sa-problem=2
 // CRMARKS: u2-sa-cyl-on-prism=3
 // CRMARKS: u2-best-estimate-side=2
+// BIMODAL: u2-best-estimate-side=a
 /* Unit 2: Square Roots and Surface Area */
 function u2gcd(a,b){while(b){var t=a%b;a=b;b=t;}return a;}
 function u2r1(x){return Math.round(x*10)/10;}
@@ -1111,7 +1168,6 @@ E("u2-reasoning-var", 2, ["3.3","6.10"], 3, "var", varset([
 // CRMARKS: u3-power-of-product-quotient=3
 // CRMARKS: u3-sum-of-powers=3
 // CRMARKS: u3-difference-of-powers=2
-// CRMARKS: u3-find-the-error=2
 // CRMARKS: u3-three-laws-evaluate=3
 // CRMARKS: u3-law-then-sum-difference=2
 /* Unit 3: Powers and Exponent Laws */
@@ -1588,6 +1644,9 @@ E("u3-explanations-var", 3, ["3.5", "3.8"], 3, "var", varset([
 // CRMARKS: u4-mult-div-mixed=2
 // CRMARKS: u4-missing=3
 // CRMARKS: u4-area-monomial=2
+// BIMODAL: u4-subtract=b
+// BIMODAL: u4-missing=b
+// BIMODAL: u4-area-monomial=b
 /* Unit 4: Polynomials */
 function u4expr(terms){var s="",first=true;for(var i=0;i<terms.length;i++){var cf=terms[i][0],v=terms[i][1];if(cf===0)continue;var mag;if(v===""){mag=fmtD(Math.abs(cf));}else if(Math.abs(cf)===1){mag=v;}else{mag=fmtD(Math.abs(cf))+v;}if(first){s+=(cf<0?"-":"")+mag;first=false;}else{s+=(cf<0?"-":"+")+mag;}}return s===""?"0":s;}
 function u4p(a,b,c){return u4expr([[a,"x^{2}"],[b,"x"],[c,""]]);}
@@ -3116,6 +3175,7 @@ E("u4-divide-missing-term", 4, ["8.9"], 3, "gen", function(){
 // CRMARKS: u5-word-brackets=2
 // CRMARKS: u5-list-satisfies=2
 // CRMARKS: u5-solve-ineq-addsub=3
+// BIMODAL: u5-verify-error=b
 /* Final-scope tranche (Units 5 to 9), November 7, 2026: appended from
    tranche2/unit5.js to unit9.js. CR_MARKS extended to 63 entries. */
 // Unit 5: Linear Equations and Inequalities (Math 9, NL). Entries only; helpers prefixed u5.
@@ -4323,6 +4383,59 @@ E("u6-pattern-large", 6, ["8.23"], 3, "gen", function () {
   var solB = "La première valeur est " + fmtD(F) + " et le pas est " + fmtD(step) + ", donc la semaine \\(n\\) a la valeur " + fmtD(F) + " plus le pas pris \\(n - 1\\) fois : \\[ \\begin{aligned} \\text{valeur} &= " + fmtD(F) + " + " + fmtD(step) + "(" + N + " - 1) \\\\ &= " + fmtD(F) + " + " + fmtD(step) + "(" + (N - 1) + ") \\\\ &= " + fmtD(F) + " + " + fmtD(step * (N - 1)) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc la valeur à la semaine " + N + " est <b>" + fmtD(ans) + " " + unit + "</b>.";
   return numq(promptB, ans, 0.01, solB, { mode: "pattern-large-total", Fh: Fh, sh: sh, N: N, unit: unit });
 }, ["Écris la régularité comme une première valeur plus un pas pris une fois pour chaque passage à la semaine suivante.", "Pour trouver la semaine, défais les étapes en sens inverse : soustrais la première valeur, divise par le pas, puis ajoute 1."]);
+/* Bimodal build additions (Nov 19, 2026): selected-response entries for the Unit 6 indicators with no SR entry (7.8 and 7.10). SME-flagged for the specialist pass. */
+
+// 15. L2, 7.8: interpolate on a context graph, MC version.
+E("u6-add-interpolation-choix", 6, ["7.8"], 2, "gen", function () {
+  var ctxs = [
+    { xl: "heures", yl: "km", prompt: "Le graphique montre la distance parcourue par un autobus depuis son départ du dépôt. L'axe des abscisses est le temps en heures et l'axe des ordonnées est la distance en kilomètres.", ask: "Combien de kilomètres l'autobus a-t-il parcourus après XQ heures ?" },
+    { xl: "minutes", yl: "L", prompt: "Le graphique montre l'eau dans un réservoir pendant qu'il se remplit. L'axe des abscisses est le temps en minutes et l'axe des ordonnées est le volume en litres.", ask: "Combien de litres y a-t-il dans le réservoir après XQ minutes ?" },
+    { xl: "photos", yl: "$", prompt: "Le graphique montre le coût de l'impression de photos. L'axe des abscisses est le nombre de photos et l'axe des ordonnées est le coût en dollars.", ask: "Quel est le coût de l'impression de XQ photos, en dollars ?" },
+    { xl: "heures", yl: "cm", prompt: "Le graphique montre l'épaisseur de la neige pendant une tempête. L'axe des abscisses est le temps en heures et l'axe des ordonnées est l'épaisseur de la neige en centimètres.", ask: "Quelle est l'épaisseur de la neige après XQ heures, en centimètres ?" }
+  ];
+  var ctx = pick(ctxs);
+  var b = ri(6, 12), m = ri(2, 5), xmax = 6, xq = ri(2, 5);
+  var ymax = b + m * xmax, ans = b + m * xq;
+  var pts = []; for (var k = 0; k <= xmax; k++) pts.push({ x: k, y: b + m * k });
+  var sol = "Va horizontalement de \\(x = " + xq + "\\) jusqu'à la droite, puis descends jusqu'à l'axe des ordonnées. La régularité commence à " + fmtD(b) + " et avance par pas de " + fmtD(m) + " : \\[ \\begin{aligned} y &= " + b + " + " + fmtD(m) + "(" + xq + ") \\\\ &= " + b + " + " + fmtD(m * xq) + " \\\\ &= " + fmtD(ans) + " \\end{aligned} \\] Donc la valeur à \\(x = " + xq + "\\) est <b>" + fmtD(ans) + "</b>.";
+  var q = mcq(ctx.prompt + " " + ctx.ask.replace("XQ", xq),
+    { t: fmtD(ans), fb: "Exact. À x = " + xq + ", la droite donne cette valeur de y." },
+    [
+      { t: fmtD(ans - m), fb: "C'est la valeur à x = " + (xq - 1) + ", un pas avant le x demandé." },
+      { t: fmtD(ans + m), fb: "C'est la valeur à x = " + (xq + 1) + ", un pas après le x demandé." },
+      { t: fmtD(m * xq), fb: "Cela oublie la valeur de départ de " + fmtD(b) + " et compte seulement les pas." }
+    ], sol, { mode: "interpolation-choix", b: b, m: m, xq: xq, ctx: ctx.xl + "/" + ctx.yl });
+  q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: ctx.xl, ylab: ctx.yl, lines: [{ pts: pts.map(function (p) { return [p.x, p.y]; }) }], points: pts });
+  return q;
+}, ["Va horizontalement de la valeur de x donnée jusqu'à la droite, puis descends tout droit pour lire la valeur de y.", "Tu peux aussi utiliser la régularité : la valeur de départ plus le pas fois x."]);
+
+// 16. L3, 7.10: break-even point of two graphed plans, MC version.
+E("u6-add-seuil-rentabilite", 6, ["7.10"], 3, "gen", function () {
+  var ctxs = [
+    { xl: "Go", yl: "$", unit: "Go", ask: "À combien de Go les deux forfaits coûtent-ils le même prix ?", prompt: "Le graphique montre le coût mensuel de deux forfaits de téléphone pour différentes quantités de données. L'axe des abscisses est les données utilisées en Go et l'axe des ordonnées est le coût en dollars. Le forfait A est la droite pleine et le forfait B est la droite pointillée." },
+    { xl: "jours", yl: "$", unit: "jour", ask: "Après combien de jours les deux forfaits coûtent-ils le même prix ?", prompt: "Le graphique montre le coût de deux offres de location de voiture pour différentes durées de location. L'axe des abscisses est les jours loués et l'axe des ordonnées est le coût en dollars. Le forfait A est la droite pleine et le forfait B est la droite pointillée." },
+    { xl: "heures", yl: "$", unit: "heure", ask: "Après combien d'heures les deux forfaits coûtent-ils le même prix ?", prompt: "Le graphique montre le coût de deux offres de location de vélo pour différents temps de location. L'axe des abscisses est les heures louées et l'axe des ordonnées est le coût en dollars. Le forfait A est la droite pleine et le forfait B est la droite pointillée." }
+  ];
+  var ctx = pick(ctxs);
+  var d = ri(1, 3), xs = ri(3, 6), bA = ri(0, 10), mB = ri(1, 4);
+  var mA = mB + d, bB = bA + d * xs, ystar = bA + mA * xs;
+  var xmax = xs + 3, ymax = bA + mA * xmax + d;
+  var prompt = ctx.prompt + " Le forfait A demande des frais de " + fmtD(bA) + " $, plus " + fmtD(mA) + " $ pour chaque " + ctx.unit + ". Le forfait B demande des frais de " + fmtD(bB) + " $, plus " + fmtD(mB) + " $ pour chaque " + ctx.unit + ". " + ctx.ask;
+  var sol = "Les forfaits coûtent le même prix là où les deux droites se croisent. Égale les deux coûts et résous : \\[ \\begin{aligned} " + bA + " + " + fmtD(mA) + "x &= " + bB + " + " + fmtD(mB) + "x \\\\ " + fmtD(mA) + "x - " + fmtD(mB) + "x &= " + bB + " - " + bA + " \\\\ " + fmtD(d) + "x &= " + fmtD(bB - bA) + " \\\\ x &= " + fmtD(xs) + " \\end{aligned} \\] Donc les deux forfaits coûtent le même prix à <b>" + fmtD(xs) + "</b>.";
+  var q = mcq(prompt,
+    { t: fmtD(xs), fb: "Exact. C'est la valeur de x au point de croisement des deux droites, où le coût commun est de " + fmtD(ystar) + " $." },
+    [
+      { t: fmtD(xs - 1), fb: "À cette valeur, le forfait A coûte encore moins cher que le forfait B, donc les coûts ne sont pas égaux." },
+      { t: fmtD(xs + 1), fb: "À cette valeur, le forfait B est déjà moins cher que le forfait A, donc le point de croisement est déjà passé." },
+      { t: fmtD(xs + 2), fb: "À cette valeur, le forfait B est déjà moins cher que le forfait A, donc le point de croisement est déjà passé." }
+    ], sol, { mode: "seuil-rentabilite", d: d, xs: xs, bA: bA, mA: mA, bB: bB, mB: mB, ctx: ctx.xl });
+  q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: ctx.xl, ylab: ctx.yl, lines: [
+    { pts: [[0, bA], [xmax, bA + mA * xmax]], col: FIG_INK, lab: "Forfait A" },
+    { pts: [[0, bB], [xmax, bB + mB * xmax]], col: FIG_ALT, dash: true, lab: "Forfait B" }
+  ] });
+  return q;
+}, ["Chaque droite est un forfait : son départ est ses frais fixes et son pas est son taux.", "Là où les droites se croisent, les forfaits coûtent le même prix."]);
+
 /* TRANSLATOR NOTES
 - Entries translated: 4 entries in full (entry 1 is a varset of 6 variants; entries 2, 3 and 4 are generators), including every prompt, option, per-answer feedback, worked solution, hint1 and hint2. The source file ends with the comment line for entry 5 and no entry body, so there was nothing further to translate.
 - FMT-GEOM lines left as fmt( (each one carries the comment at the end of its line): the return line of u7T (x and y attributes), the u7Pts line (polygon points), the return line of u7Line (x1, y1, x2, y2), the u7Dot line (cx, cy), and the two grid-line loops in u7Grid.
@@ -5423,6 +5536,7 @@ TRANSLATOR NOTES
 // CRMARKS: u8-same-arc-angles=2
 // CRMARKS: u8-chord-two-step=3
 // CRMARKS: u8-tangent-central-inscribed=2
+// BIMODAL: u8-tangent-central-inscribed=a
 // Unit 8: Circle Geometry (Math 9, NL). Entries only; helpers prefixed u8.
 function u8P(deg) { var a = deg * Math.PI / 180; return [Math.cos(a), Math.sin(a)]; }
 function u8Rot(p, deg) { var a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a); return [p[0] * c - p[1] * s, p[0] * s + p[1] * c]; }
@@ -5767,6 +5881,184 @@ E("u8-tangent-central-inscribed", 8, ["9.5"], 3, "gen", function () {
   return q;
 }, ["Combine deux propriétés : le rayon qui va au point de tangence forme un angle droit avec la tangente, et un angle inscrit vaut la moitié de l'angle au centre sur le même arc.", "Utilise d'abord la somme des angles dans le triangle rectangle OTP pour trouver l'angle au centre TOD."]);
 
+/* Bimodal build additions (Nov 19, 2026): five selected-response entries spread across the Unit 8 circle-geometry indicators, thinnest first (9.9, 9.4, 9.8, 9.6, 9.7; the thickest indicator, 9.5, is skipped). SME-flagged for the specialist pass. */
+
+// 11. 9.9 L2 MC: inscribed angles on the same arc are equal, new point names.
+E("u8-add-angles-meme-arc", 8, ["9.9"], 2, "gen", function () {
+  var nm = pick([["A", "B", "C", "D"], ["K", "L", "M", "N"], ["P", "Q", "R", "S"], ["W", "X", "Y", "Z"]]);
+  var N1 = nm[0], N2 = nm[1], N3 = nm[2], N4 = nm[3];
+  var v = 2 * ri(22, 42);
+  var rot = pick([0, 18, 36, 54, 72, 90]);
+  var A = u8P(270 - v + rot), B = u8P(270 + v + rot), C = u8P(90 + rot), D = u8P(150 + rot);
+  var pts = {}; pts[N1] = A; pts[N2] = B; pts[N3] = C; pts[N4] = D;
+  var fig = u8Fig({
+    pts: pts, segs: [[N3, N1], [N3, N2], [N4, N1], [N4, N2]],
+    angles: [{ v: N3, a1: u8Dir(C, A), a2: u8Dir(C, B), r: 0.3, lr: 0.55, label: fmtD(v) + "°" },
+             { v: N4, a1: u8Dir(D, A), a2: u8Dir(D, B), r: 0.3, lr: 0.55, label: "?" }]
+  });
+  function deg(x) { return "\\(" + fmtD(x) + "^{\\circ}\\)"; }
+  var prompt = "Dans le diagramme, " + N3 + " et " + N4 + " sont des points du même côté de la corde " + N1 + N2 + ", donc les angles inscrits " + N1 + N3 + N2 + " et " + N1 + N4 + N2 + " interceptent tous les deux le même arc " + N1 + N2 + ". L'angle " + N1 + N3 + N2 + " mesure " + deg(v) + ". Quelle est la mesure de l'angle " + N1 + N4 + N2 + " ?";
+  var solution = "Les angles inscrits qui interceptent le même arc sont égaux, donc l'angle " + N1 + N4 + N2 + " a la même mesure que l'angle " + N1 + N3 + N2 + " : <b>" + deg(v) + "</b>.";
+  var q = mcq(prompt,
+    { t: deg(v), fb: "Exact. Les angles inscrits sur le même arc sont égaux." },
+    [
+      { t: deg(v / 2), fb: "On prend la moitié pour comparer un angle au centre à un angle inscrit ; ces deux angles sont tous les deux inscrits sur le même arc." },
+      { t: deg(2 * v), fb: "Doubler donne l'angle au centre sur cet arc, pas un autre angle inscrit." },
+      { t: deg(180 - v), fb: "C'est l'angle supplémentaire de cet angle ; les angles sur le même arc sont égaux, pas supplémentaires." }
+    ],
+    solution, { mode: "angles-meme-arc", v: v, rot: rot, nm: nm.join("") });
+  q.figure = fig;
+  return q;
+}, ["Utilise la propriété du même arc : compare les deux angles inscrits qui interceptent le même arc.", "Les deux angles ont leur sommet sur le cercle et leurs côtés passent par les deux bouts de la corde."]);
+
+// 12. 9.4 L2 MC: tangent right angle, then the third angle of the triangle.
+E("u8-add-tangente-angle-centre", 8, ["9.4"], 2, "gen", function () {
+  var g = 2 * ri(14, 31);
+  var r = pick([5, 6, 7, 8, 9, 10, 11, 12]);
+  var ans = 90 - g;
+  var tAng = pick([205, 225, 245, 290, 310, 330]);
+  var T = u8P(tAng);
+  var sgn = Math.random() < 0.5 ? 1 : -1;
+  var U = u8P(tAng + sgn * ans);
+  var sc = 1 / Math.cos(ans * Math.PI / 180);
+  var P = [U[0] * sc, U[1] * sc];
+  var aOT = u8Dir([0, 0], T), aOP = u8Dir([0, 0], P);
+  var dd = ((aOP - aOT) % 360 + 360) % 360;
+  var arcA1 = aOT, arcA2 = aOP;
+  if (dd > 180) { arcA1 = aOP; arcA2 = aOT; }
+  var fig = u8Fig({
+    pts: { T: T, P: P }, segs: [["O", "T"], ["O", "P"]], tangentSeg: { at: "T", to: "P", beyond: 1.05, back: 0.3 },
+    rightMarks: [{ v: "T", a1: u8Dir(T, [0, 0]), a2: u8Dir(T, P) }],
+    angles: [{ v: "P", a1: u8Dir(P, T), a2: u8Dir(P, [0, 0]), r: 0.3, lr: 0.55, label: fmtD(g) + "°" },
+             { v: "O", a1: arcA1, a2: arcA2, r: 0.3, lr: 0.52, label: "?" }],
+    sideLabs: [{ a: "O", b: "T", text: fmtD(r) + " cm", off: 15 }]
+  });
+  function deg(x) { return "\\(" + fmtD(x) + "^{\\circ}\\)"; }
+  var prompt = "Dans le diagramme, P est un point à l'extérieur du cercle de centre O et de rayon \\(" + fmtD(r) + "\\) cm. La droite qui passe par P et T est une tangente (elle touche le cercle en un seul point, T). L'angle OPT mesure " + deg(g) + ". Trouve la mesure de l'angle TOP, en degrés.";
+  var solution = "Le rayon qui va au point de tangence est perpendiculaire à la tangente, donc le triangle OTP est rectangle en T. La somme des angles du triangle donne : \\[ \\begin{aligned} \\angle TOP &= 180^{\\circ} - 90^{\\circ} - " + fmtD(g) + "^{\\circ} \\\\ &= " + fmtD(ans) + "^{\\circ} \\end{aligned} \\] Donc l'angle TOP mesure <b>" + deg(ans) + "</b>.";
+  var q = mcq(prompt,
+    { t: deg(ans), fb: "Exact. Le triangle OTP est rectangle en T, donc ses deux autres angles totalisent 90 degrés." },
+    [
+      { t: deg(g), fb: "C'est l'angle OPT donné dans le diagramme, pas l'angle au centre demandé." },
+      { t: deg(90), fb: "C'est l'angle droit en T, formé par le rayon et la tangente, pas l'angle TOP." },
+      { t: deg(180 - g), fb: "Cela soustrait l'angle donné de 180 degrés en oubliant l'angle droit en T." }
+    ],
+    solution, { mode: "tangente-angle-centre", g: g, r: r, tAng: tAng });
+  q.figure = fig;
+  return q;
+}, ["Le rayon qui va au point de tangence est perpendiculaire à la tangente, donc le triangle OTP est rectangle en T.", "La somme des angles d'un triangle est de 180 degrés ; soustrais l'angle droit et l'angle donné."]);
+
+// 13. 9.8 L2 MC: angle in a semicircle, MC version.
+E("u8-add-demi-cercle-angle", 8, ["9.8"], 2, "gen", function () {
+  var gam = pick([44, 52, 60, 68, 76, 84, 96, 104, 112, 120, 128, 136]);
+  var rot = pick([0, 14, -14, 28]);
+  var diam = pick([12, 14, 16, 18, 20, 22, 24, 26, 28, 30]);
+  var atA = Math.random() < 0.5;
+  var A = u8Rot([-1, 0], rot), B = u8Rot([1, 0], rot), C = u8Rot(u8P(gam), rot);
+  var angA = gam / 2, angB = 90 - angA;
+  var given = atA ? angA : angB, ans = atA ? angB : angA;
+  var gv = atA ? "A" : "B", ask = atA ? "B" : "A";
+  var gvPt = atA ? A : B, askPt = atA ? B : A;
+  var fig = u8Fig({
+    pts: { A: A, B: B, C: C }, segs: [["A", "B"], ["A", "C"], ["B", "C"]],
+    angles: [{ v: gv, a1: u8Dir(gvPt, C), a2: u8Dir(gvPt, askPt), r: 0.3, lr: 0.55, label: fmtD(given) + "°" },
+             { v: ask, a1: u8Dir(askPt, C), a2: u8Dir(askPt, gvPt), r: 0.3, lr: 0.55, label: "?" }],
+    rightMarks: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B) }]
+  });
+  function deg(x) { return "\\(" + fmtD(x) + "^{\\circ}\\)"; }
+  var prompt = "Dans le diagramme, AB est un diamètre de \\(" + fmtD(diam) + "\\) cm du cercle de centre O, et C est un point sur le cercle. L'angle " + gv + " mesure " + deg(given) + ". Trouve la mesure de l'angle " + ask + ", en degrés.";
+  var solution = "Un angle inscrit dans un demi-cercle est un angle droit, donc l'angle C mesure \\(90^{\\circ}\\). La somme des angles du triangle ABC est \\(180^{\\circ}\\) : \\[ \\begin{aligned} \\angle " + ask + " &= 180^{\\circ} - 90^{\\circ} - " + fmtD(given) + "^{\\circ} \\\\ &= " + fmtD(ans) + "^{\\circ} \\end{aligned} \\] Donc l'angle " + ask + " mesure <b>" + deg(ans) + "</b>.";
+  var q = mcq(prompt,
+    { t: deg(ans), fb: "Exact. L'angle en C est un angle droit, donc les deux autres angles du triangle totalisent 90 degrés." },
+    [
+      { t: deg(given), fb: "C'est l'angle donné dans le diagramme, pas l'angle demandé à l'autre bout du diamètre." },
+      { t: deg(90), fb: "C'est l'angle en C, l'angle inscrit dans le demi-cercle, pas l'angle demandé." },
+      { t: deg(180 - given), fb: "Cela soustrait l'angle donné de 180 degrés en oubliant l'angle droit en C." }
+    ],
+    solution, { mode: "demi-cercle-" + gv, gam: gam, rot: rot, diam: diam });
+  q.figure = fig;
+  return q;
+}, ["Un angle inscrit dans un demi-cercle est un angle droit, donc l'angle C mesure 90 degrés.", "Utilise la somme des angles d'un triangle : soustrais 90 et l'angle donné de 180."]);
+
+// 14. 9.6 L2 MC: chord length from the radius and the distance to the chord, MC version.
+E("u8-add-corde-longueur-choix", 8, ["9.6"], 2, "gen", function () {
+  var triples = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [9, 12, 15], [8, 15, 17], [12, 16, 20], [7, 24, 25], [15, 20, 25], [20, 21, 29]];
+  var d = 6, half = 8, r = 10;
+  for (var tries = 0; tries < 200; tries++) {
+    var tr = pick(triples), k = pick([1, 2]);
+    var dd = tr[0] * k, hh = tr[1] * k, rr = tr[2] * k;
+    if (Math.random() < 0.5) { var tmp = dd; dd = hh; hh = tmp; }
+    if (2 * hh < 10) continue;
+    d = dd; half = hh; r = rr;
+    break;
+  }
+  var chord = 2 * half;
+  var tilt = pick([0, 15, -15, 30, -30]);
+  var frame = pick(["cercle", "fenetre", "poutre"]);
+  var A = u8Rot([-half / r, d / r], tilt), B = u8Rot([half / r, d / r], tilt);
+  var fig = u8Fig({
+    pts: { A: A, B: B }, segs: [["A", "B"], ["O", "A"]], perp: ["A", "B"],
+    sideLabs: [{ a: "O", b: "A", text: fmtD(r) + " cm", off: 15 }, { a: "O", b: "M", text: fmtD(d) + " cm", off: 15 }, { a: "A", b: "B", text: "?", off: 15 }]
+  });
+  var intro;
+  if (frame === "fenetre") intro = "Dans le diagramme, une fenêtre circulaire de centre O a une barre droite AB qui est une corde du cercle. Le rayon mesure \\(" + fmtD(r) + "\\) cm. La perpendiculaire qui part de O rencontre AB en M, et \\(OM = " + fmtD(d) + "\\) cm.";
+  else if (frame === "poutre") intro = "Dans le diagramme, une poutre droite AB est une corde d'un cercle de centre O et de rayon \\(" + fmtD(r) + "\\) cm. La perpendiculaire qui part de O rencontre AB en M, et \\(OM = " + fmtD(d) + "\\) cm.";
+  else intro = "Dans le diagramme, AB est une corde d'un cercle de centre O et de rayon \\(" + fmtD(r) + "\\) cm. La perpendiculaire qui part de O rencontre AB en M, et \\(OM = " + fmtD(d) + "\\) cm.";
+  var prompt = intro + " Trouve la longueur de la corde AB, en centimètres.";
+  var solution = "La perpendiculaire qui va du centre coupe la corde en deux parties égales, donc \\(AM = MB\\). Le triangle OMA est rectangle en M : \\[ \\begin{aligned} AM^{2} &= OA^{2} - OM^{2} \\\\ &= " + fmtD(r) + "^{2} - " + fmtD(d) + "^{2} = " + fmtD(r * r - d * d) + " \\\\ AM &= " + fmtD(half) + " \\\\ AB &= 2 \\times " + fmtD(half) + " = " + fmtD(chord) + " \\end{aligned} \\] Donc la longueur de la corde est <b>" + fmtD(chord) + " cm</b>.";
+  var q = mcq(prompt,
+    { t: fmtD(chord) + " cm", fb: "Exact. La demi-corde vient du théorème de Pythagore, puis elle est doublée." },
+    [
+      { t: fmtD(half) + " cm", fb: "C'est seulement la demi-corde AM ; la perpendiculaire coupe la corde en deux, donc il faut doubler cette valeur." },
+      { t: fmtD(2 * r) + " cm", fb: "C'est le diamètre du cercle, le double du rayon, et non la longueur de cette corde." },
+      { t: fmtD(d + half) + " cm", fb: "Cela additionne la distance OM et la demi-corde, ce qui ne donne pas la longueur de la corde." }
+    ],
+    solution, { mode: "corde-longueur-choix", r: r, d: d, half: half, tilt: tilt, frame: frame });
+  q.figure = fig;
+  return q;
+}, ["La perpendiculaire qui va du centre à une corde coupe la corde en deux parties égales, et elle forme un triangle rectangle avec un rayon.", "Trouve AM avec le théorème de Pythagore dans le triangle OMA, puis double-le pour obtenir toute la corde."]);
+
+// 15. 9.7 L2 MC: central angle and inscribed angle on the same arc, MC version.
+E("u8-add-angle-inscrit-centre-choix", 8, ["9.7"], 2, "gen", function () {
+  var nm = pick([["A", "B", "C"], ["K", "L", "M"], ["P", "Q", "R"], ["W", "X", "Y"]]);
+  var N1 = nm[0], N2 = nm[1], N3 = nm[2];
+  var th = 2 * ri(12, 22), cen = 2 * th;
+  var rot = pick([0, 15, 30, 45, 60, 75, 90, 105]);
+  var dbl = Math.random() < 0.5;
+  var A = u8P(270 - th + rot), B = u8P(270 + th + rot), C = u8P(90 + rot);
+  var pts = {}; pts[N1] = A; pts[N2] = B; pts[N3] = C;
+  var aO = [{ v: "O", a1: u8Dir([0, 0], A), a2: u8Dir([0, 0], B), r: 0.3, lr: 0.52, label: dbl ? "?" : fmtD(cen) + "°" }];
+  var aC = [{ v: N3, a1: u8Dir(C, A), a2: u8Dir(C, B), r: 0.3, lr: 0.52, label: dbl ? fmtD(th) + "°" : "?" }];
+  var fig = u8Fig({ pts: pts, segs: [["O", N1], ["O", N2], [N3, N1], [N3, N2]], angles: aO.concat(aC) });
+  function deg(x) { return "\\(" + fmtD(x) + "^{\\circ}\\)"; }
+  var cenName = N1 + "O" + N2, insName = N1 + N3 + N2;
+  var prompt, solution, keyT, ds;
+  if (!dbl) {
+    prompt = "Dans le diagramme, O est le centre du cercle. L'angle " + cenName + " est un angle au centre (son sommet est au centre) et il mesure " + deg(cen) + ". L'angle " + insName + " est un angle inscrit (son sommet est sur le cercle) qui intercepte le même arc " + N1 + N2 + ". Quelle est la mesure de l'angle " + insName + " ?";
+    solution = "L'angle au centre sur un arc vaut le double de l'angle inscrit sur le même arc : \\[ \\begin{aligned} \\angle " + insName + " &= " + fmtD(cen) + "^{\\circ} \\div 2 \\\\ &= " + fmtD(th) + "^{\\circ} \\end{aligned} \\] Donc l'angle " + insName + " mesure <b>" + deg(th) + "</b>.";
+    keyT = deg(th);
+    ds = [
+      { t: deg(cen), fb: "C'est l'angle au centre donné ; l'angle inscrit sur le même arc vaut la moitié de cette mesure." },
+      { t: deg(th / 2), fb: "Cela prend la moitié une deuxième fois ; une seule division par 2 sépare l'angle au centre de l'angle inscrit." },
+      { t: deg(180 - cen), fb: "C'est l'angle supplémentaire de l'angle au centre, pas la moitié demandée." }
+    ];
+  } else {
+    prompt = "Dans le diagramme, O est le centre du cercle. L'angle " + insName + " est un angle inscrit (son sommet est sur le cercle) et il mesure " + deg(th) + ". L'angle " + cenName + " est un angle au centre (son sommet est au centre) qui intercepte le même arc " + N1 + N2 + ". Quelle est la mesure de l'angle " + cenName + " ?";
+    solution = "L'angle au centre sur un arc vaut le double de l'angle inscrit sur le même arc : \\[ \\begin{aligned} \\angle " + cenName + " &= 2 \\times " + fmtD(th) + "^{\\circ} \\\\ &= " + fmtD(cen) + "^{\\circ} \\end{aligned} \\] Donc l'angle " + cenName + " mesure <b>" + deg(cen) + "</b>.";
+    keyT = deg(cen);
+    ds = [
+      { t: deg(th), fb: "C'est l'angle inscrit donné ; l'angle au centre sur le même arc vaut le double de cette mesure." },
+      { t: deg(th / 2), fb: "Cela prend la moitié de l'angle inscrit, mais l'angle au centre est plus grand que l'angle inscrit, pas plus petit." },
+      { t: deg(180 - th), fb: "C'est l'angle supplémentaire de l'angle inscrit, pas le double demandé." }
+    ];
+  }
+  var q = mcq(prompt,
+    { t: keyT, fb: "Exact. L'angle au centre sur un arc vaut le double de l'angle inscrit sur le même arc." },
+    ds, solution, { mode: dbl ? "inscrit-vers-centre" : "centre-vers-inscrit", th: th, rot: rot, nm: nm.join("") });
+  q.figure = fig;
+  return q;
+}, ["L'angle au centre qui intercepte un arc vaut le double de l'angle inscrit qui intercepte le même arc.", "Décide si l'angle demandé est le double ou la moitié, puis calcule."]);
+
 /*
 TRANSLATOR NOTES
 - Judgement calls (glossary silent): "subjective judgement" = jugement subjectif; "spinner" = roulette; "draw / pick (cards, marbles)" = piger; "self checkout" = caisse libre-service; "odds statement" in hints rendered as cote.
@@ -5784,9 +6076,9 @@ TRANSLATOR NOTES
 // CRMARKS: u9-collection-problem=3
 // CRMARKS: u9-collection-biggest-threat=3
 // CRMARKS: u9-match-influence=3
-// CRMARKS: u9-generalization-critique=2
 // CRMARKS: u9-rubric-missing-part=2
 // CRMARKS: u9-plan-element=2
+// BIMODAL: u9-collection-biggest-threat=b
 // Unit 9: Probability and Statistics (Math 9, NL). Entries only; helpers prefixed u9.
 
 E("u9-prob-in-media", 9, ["12.1"], 1, "var", varset([
@@ -7335,4 +7627,10 @@ BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-calculator":2,"u1-ooo-evaluate-mc":3,"u1-ooo-first-error":2,"u1-ordering-reasoning-var":2,"u2-best-estimate-side":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-overlap":2,"u2-overlap-hidden":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u3-difference-of-powers":2,"u3-find-the-error":2,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-law-then-sum-difference":2,"u3-power-of-product-quotient":3,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u4-add":3,"u4-area-monomial":2,"u4-divide-monomial":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-multiply-monomial":3,"u4-subtract":3,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-list-satisfies":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-two-step":3,"u5-verify-error":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-interpolate-graph":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-complete-half":2,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-scale-draw-num":3,"u7-similar-context-num":3,"u7-similar-two-step-num":3,"u7-translation-rule":2,"u8-chord-length":3,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-freq-mean-cr":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-critique":2,"u9-match-influence":3,"u9-plan-element":2,"u9-rubric-missing-part":2};
+window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-calculator":2,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u2-best-estimate-side":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-overlap":2,"u2-overlap-hidden":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u3-difference-of-powers":2,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-law-then-sum-difference":2,"u3-power-of-product-quotient":3,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u4-add":3,"u4-area-monomial":2,"u4-divide-monomial":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-multiply-monomial":3,"u4-subtract":3,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-list-satisfies":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-two-step":3,"u5-verify-error":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-interpolate-graph":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-complete-half":2,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-scale-draw-num":3,"u7-similar-context-num":3,"u7-similar-two-step-num":3,"u7-translation-rule":2,"u8-chord-length":3,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-freq-mean-cr":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-match-influence":3,"u9-plan-element":2,"u9-rubric-missing-part":2};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u2-best-estimate-side":"a","u4-area-monomial":"b","u4-missing":"b","u4-subtract":"b","u5-verify-error":"b","u8-tangent-central-inscribed":"a","u9-collection-biggest-threat":"b"};

@@ -4346,6 +4346,38 @@ E("u5-pk-percent-of-amount", 5, ["1.5"], 1, "gen", function () {
   return numq(prompt3, ans3, 0.01, sol3, { mode: "pct-of-small", p: pStr3, w: W3 });
 }, ["Turn the percent into a decimal first, then multiply by the whole amount.", "First write the percent as a decimal by dividing it by 100."]);
 
+/* Bimodal build additions (Nov 19, 2026): two selected response entries for Unit 5, one on identifying all income for a budget and one on budget considerations when pay changes from month to month, placed on the thinnest Unit 5 indicators. SME-flagged for the specialist pass. */
+E("u5-add-income-total", 5, ["1.1"], 2, "gen", function(){
+  var name=pick(u5Names);
+  var payC=ri(1650,2850)*100;
+  var sideC=ri(180,640)*100;
+  var tipsC=ri(90,420)*100;
+  var totC=payC+sideC+tipsC;
+  return mcq(name+" is building a monthly budget and listing all income. The monthly income is: pay from a part time job, "+u5M(payC)+"; pay from weekend shifts at a garden centre, "+u5M(sideC)+"; and tips from the part time job, "+u5M(tipsC)+". What total monthly income should "+name+" record in the budget?",
+    {t:u5M(totC), fb:"Yes. Every source of income belongs in the budget, so all three amounts are added."},
+    [{t:u5M(totC-tipsC), fb:"This leaves out the tips. Tips are income and belong in the budget total."},
+     {t:u5M(totC-sideC), fb:"This leaves out the weekend shift pay. It is income and belongs in the budget total."},
+     {t:u5M(totC+tipsC), fb:"This counts the tips twice. Add each income amount once."}],
+    "Add every income amount, in dollars. \\[ \\begin{aligned} \\text{Total income} &= "+fmtF(payC/100,2)+" + "+fmtF(sideC/100,2)+" + "+fmtF(tipsC/100,2)+" \\\\ &= "+fmtF(totC/100,2)+" \\end{aligned} \\] The total monthly income is <b>"+u5M(totC)+"</b>.",
+    {pay:payC, side:sideC, tips:tipsC});
+}, ["Income includes every amount of money coming in, not just the main job pay.", "Look for all three income amounts in the list and add them together."]);
+
+E("u5-add-slow-month-plan", 5, ["1.2"], 2, "gen", function(){
+  var name=pick(u5Names);
+  var slowC=ri(1750,2350)*100;
+  var extraC=ri(250,600)*100;
+  var goodC=slowC+extraC;
+  var billsC=ri(1200,1650)*100;
+  return mcq(name+" works shifts, so the monthly pay changes from month to month. In a slow month the pay is "+u5M(slowC)+", and in a good month it is "+u5M(goodC)+". Regular bills total "+u5M(billsC)+" every month. Which plan follows a sound consideration when building the monthly budget?",
+    {t:"Build the budget on the slow month pay of "+u5M(slowC)+" and move extra pay to savings in good months", fb:"Yes. Basing the plan on the lower month keeps the regular bills covered in every month."},
+    [{t:"Build the budget on the good month pay of "+u5M(goodC)+" and move extra pay to savings in good months", fb:"Spending planned for a good month will not fit in a slow month, when the pay is lower."},
+     {t:"Build the budget on the good month pay of "+u5M(goodC)+" and borrow to cover the bills in slow months", fb:"Planning to borrow each slow month adds debt instead of fitting the budget to the income."},
+     {t:"Leave the regular bills out of the budget and pay them from whatever pay is left over each month", fb:"Regular bills are known costs that must be planned for first, not left to chance."}],
+    "When income changes from month to month, a sound budget is built on the lower amount, so the regular bills stay covered even in a slow month. Extra pay in a good month can then go to savings. The answer is <b>building the budget on the slow month pay</b>.",
+    {slow:slowC, good:goodC, bills:billsC});
+}, ["Think about which month the budget must still work in: the lowest pay month or the highest.", "A budget has to cover the regular bills in every month, including a slow one."]);
+
+
 /* PK tranche metadata pass for Unit 5. The tranche's own entries are flagged here.  */
 var PKT_U5_FOR=["1.1","1.2","1.3","1.4","1.5","1.6"];
 var PKT_U5={
@@ -6798,3 +6830,9 @@ BANK.forEach(function(e){var t=PKT_U8[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
 window.__BANK_CRMARKS={"u1-cr-assembled-height":3,"u1-cr-front-real-height":2,"u1-cr-iso-total":2,"u1-cr-level-off":2,"u1-cr-scale-area":3,"u1-cr-scale-drawn":3,"u1-cr-scale-real":3,"u1-cr-total-cubes":2,"u2-cr-convert":3,"u2-cr-correct-error":3,"u2-cr-cyl-height":3,"u2-cr-cylinder":2,"u2-cr-paint-trade":3,"u2-cr-prism":2,"u2-cr-sphere-radius":2,"u2-cr-tank-dome":2,"u3-cr-capacity-remaining":2,"u3-cr-composite":3,"u3-cr-cone":3,"u3-cr-cylinder":2,"u3-cr-find-base-side":3,"u3-cr-find-height":3,"u3-cr-si-conversion":2,"u3-cr-tank-capacity":2,"u4-cr-bar-total":3,"u4-cr-extrapolate":2,"u4-cr-histogram-range":3,"u4-cr-histogram-total":2,"u4-cr-interpolate":3,"u4-cr-percent-change":3,"u4-cr-predict-trend":2,"u4-cr-read-compare":2,"u5-cr-budget-balance":2,"u5-cr-category-percent":2,"u5-cr-goal-after-change":2,"u5-cr-max-wants-spending":3,"u5-cr-modify-budget":3,"u5-cr-total-expenses":2,"u5-cr-week-record-total":3,"u5-cr-what-if-balance":3,"u6-atm-total-charges":2,"u6-compound-future-value":2,"u6-compound-solve-periods":2,"u6-credit-interest-cost":3,"u6-credit-plan-savings":3,"u6-payday-loan-cost":3,"u6-promo-deferred-interest":3,"u6-simple-interest-solve":2,"u7-cr-angle-slope":2,"u7-cr-create-scale":3,"u7-cr-model-scale":3,"u7-cr-rate-problem":3,"u7-cr-rise-find":2,"u7-cr-run-find":3,"u7-cr-scale-actual":2,"u7-cr-slope-points":2,"u8-cr-baseline-height":3,"u8-cr-clinometer-two-readings":3,"u8-cr-direct-side":2,"u8-cr-elevation-height":2,"u8-cr-find-angle":2,"u8-cr-same-side-gap":3,"u8-cr-shared-side-stage":3,"u8-cr-two-depressions":2};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};

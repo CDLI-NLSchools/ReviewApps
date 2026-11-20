@@ -14,13 +14,14 @@
 // unit, computed and schematic titration curves in Unit 2, an enthalpy
 // level diagram in Unit 3, and cell, beaker, and plating diagrams in
 // Unit 4, all attach-only with no stem, answer, or solution changes.
-// CRMARKS: u1-51-rate-explain=3
-// CRMARKS: u1-52-rate-scenario=2
 // CRMARKS: u1-53-ea-reverse=3
 // CRMARKS: u1-54-mechanism-analysis=4
 // CRMARKS: u1-56-k-calc=3
 // CRMARKS: u1-56-ice-k=4
 // CRMARKS: u1-57-shift-predict=2
+// CRMARKS: u1-wcr-factor-changes-explain=4
+// BIMODAL: u1-54-mechanism-analysis=b
+// BIMODAL: u1-57-shift-predict=a
 
 /* ============ Units and significant figures discipline (Nov 2026) ============
    Givens print at 3 significant figures minimum (data sheet constants such
@@ -1177,6 +1178,39 @@ E("u1-57-pressure-nuance",1,["5.7"],3,"gen",function(){
     "What matters for the equilibrium is the concentrations (partial pressures) of the reacting gases, not the total pressure. At constant volume the argon changes none of them, so there is no shift. A pressure shift requires a volume change. There is no shift.",{fam:fam,vol:vol});
 });
 
+/* Bimodal build additions (Nov 19, 2026): written-form entries closing the Chemistry 3202 Unit 1 Test 1 and Unit 4 Test 2 fillability gaps. SME-flagged for the specialist pass. */
+
+E("u1-wcr-factor-changes-explain",1,["5.2"],3,"var",varset([
+  function(){
+    var c1=pick([0.500,1.00]),c2=c1*2,t1=pick([20,22,25]),t2=t1+pick([15,20,25]);
+    var model="Raising the acid concentration to "+gF(c2)+" mol/L puts twice as many acid particles in each litre, so collisions between the acid particles and the magnesium surface happen more often. Raising the temperature to "+t2+" °C gives the particles more kinetic energy, so a larger fraction of the collisions reach the activation energy. Both changes increase the number of successful collisions per second, so the rate of reaction increases.";
+    return textq("A student reacts magnesium ribbon with "+gF(c1)+" mol/L hydrochloric acid at "+t1+" °C. The experiment is repeated with two changes made together: the acid concentration is raised to "+gF(c2)+" mol/L, and the temperature is raised to "+t2+" °C. Explain, using collision theory, how each change affects the rate of reaction, and state the combined effect on the rate. Write your answer in full sentences.",
+      [model],
+      "Marking points (4): 1 mark for stating that the higher concentration increases the rate; 1 mark for explaining that more acid particles per litre collide with the magnesium more often; 1 mark for stating that the higher temperature increases the rate; 1 mark for explaining that a larger fraction of collisions reach the activation energy, so successful collisions happen more often each second. Model answer: "+model+" The combined effect is <b>a faster rate, because both changes increase the number of successful collisions per second</b>.",{c1:c1,c2:c2,t1:t1,t2:t2});
+  },
+  function(){
+    var m=pick([5,10,20]),c1=pick([0.500,1.00]),c2=c1*2;
+    var model="Crushing the "+m+" g of marble chips into a powder exposes far more calcium carbonate particles at the surface of the solid, so collisions between the solid and the acid happen far more often. Raising the acid concentration to "+gF(c2)+" mol/L puts more acid particles in each litre, so collisions happen more often again. Both changes increase the number of successful collisions per second, so the rate of reaction increases.";
+    return textq("A student adds "+m+" g of marble chips (calcium carbonate) to "+gF(c1)+" mol/L hydrochloric acid. The experiment is repeated with two changes made together: the "+m+" g of marble chips is crushed to a powder first, and the acid concentration is raised to "+gF(c2)+" mol/L. Explain, using collision theory, how each change affects the rate of reaction, and state the combined effect on the rate. Write your answer in full sentences.",
+      [model],
+      "Marking points (4): 1 mark for stating that crushing increases the rate; 1 mark for explaining that only surface particles of the solid can collide with the acid, and the powder exposes far more of them; 1 mark for stating that the higher concentration increases the rate; 1 mark for explaining that more acid particles per litre collide more often, so successful collisions happen more often each second. Model answer: "+model+" The combined effect is <b>a faster rate, because both changes increase the number of successful collisions per second</b>.",{m:m,c1:c1,c2:c2});
+  },
+  function(){
+    var c1=pick([0.400,0.500,1.00]),c2=c1/2,t1=pick([30,35,40]),t2=t1-pick([15,20]);
+    var model="Diluting the solution to "+gF(c2)+" mol/L puts fewer reactant particles in each litre, so collisions between the particles happen less often. Cooling the mixture to "+t2+" °C gives the particles less kinetic energy, so a smaller fraction of the collisions reach the activation energy. Both changes decrease the number of successful collisions per second, so the rate of reaction decreases.";
+    return textq("A reaction between two solutions is carried out at "+t1+" °C, with one reactant at a concentration of "+gF(c1)+" mol/L. The experiment is repeated with two changes made together: that reactant is diluted to "+gF(c2)+" mol/L, and the mixture is cooled to "+t2+" °C. Explain, using collision theory, how each change affects the rate of reaction, and state the combined effect on the rate. Write your answer in full sentences.",
+      [model],
+      "Marking points (4): 1 mark for stating that the dilution decreases the rate; 1 mark for explaining that fewer particles per litre collide less often; 1 mark for stating that the cooling decreases the rate; 1 mark for explaining that a smaller fraction of collisions reach the activation energy, so successful collisions happen less often each second. Model answer: "+model+" The combined effect is <b>a slower rate, because both changes decrease the number of successful collisions per second</b>.",{c1:c1,c2:c2,t1:t1,t2:t2});
+  },
+  function(){
+    var t1=pick([20,22,25]),t2=t1+pick([10,15,20]);
+    var model="The manganese(IV) oxide catalyst provides a different pathway with a lower activation energy, so a larger fraction of the collisions that occur are successful, even though the particles collide at about the same rate. Warming the solution to "+t2+" °C gives the particles more kinetic energy, so a larger fraction of collisions reach the activation energy. Both changes increase the number of successful collisions per second, so the rate of reaction increases.";
+    return textq("Hydrogen peroxide solution decomposes slowly at "+t1+" °C. The experiment is repeated with two changes made together: a manganese(IV) oxide catalyst is added, and the solution is warmed to "+t2+" °C. Explain, using collision theory, how each change affects the rate of reaction, and state the combined effect on the rate. Write your answer in full sentences.",
+      [model],
+      "Marking points (4): 1 mark for stating that the catalyst increases the rate; 1 mark for explaining that it lowers the activation energy, so a larger fraction of collisions succeed without the collision rate changing much; 1 mark for stating that warming increases the rate; 1 mark for explaining that a larger fraction of collisions reach the activation energy, so successful collisions happen more often each second. Model answer: "+model+" The combined effect is <b>a faster rate, because both changes increase the number of successful collisions per second</b>.",{t1:t1,t2:t2});
+  }
+]));
+
 /* ----- bank-u2.js ----- */
 // Chemistry 3202 Unit 2 Acids and Bases question bank
 // Recode (Nov 19, 2026): entries re-registered to the curriculum
@@ -1204,6 +1238,7 @@ E("u1-57-pressure-nuance",1,["5.7"],3,"gen",function(){
 // CRMARKS: u2-68-titration-diprotic=4
 // CRMARKS: u2-68-aliquot-concentration=4
 // CRMARKS: u2-68-average-titre=3
+// BIMODAL: u2-63-net-equation=b
 
 /* Scientific-notation formatter at a chosen significant-figure count,
    used wherever a concentration or constant is very small or very large.
@@ -3028,7 +3063,6 @@ BANK.forEach(function(e){if(["u2-61-properties"].indexOf(e.id)>=0)e.pkFlag=true;
 // enthalpy diagram from its own values, and u3-77-curve-read draws the
 // standard heating curve (no plateau temperatures are given by that entry,
 // so none are labelled). Figure helpers are in bank-u1.js.
-// CRMARKS: u3-79-calorimetry-error=4
 // CRMARKS: u3-710-calorimetry-molar=4
 // CRMARKS: u3-74-find-delta-t=2
 // CRMARKS: u3-74-mixture-temp=4
@@ -5320,13 +5354,14 @@ E("u3-712-formation-solve",3,["7.12"],3,"gen",function(){
 // CRMARKS: u4-83-balance-acidic=5
 // CRMARKS: u4-83-half-reaction-write=3
 // CRMARKS: u4-83-net-reaction=4
-// CRMARKS: u4-84-build-cell=4
-// CRMARKS: u4-84-label-scenario=2
 // CRMARKS: u4-86-predict-spontaneous=3
 // CRMARKS: u4-87-cell-voltage=4
 // CRMARKS: u4-87-find-e-half=3
 // CRMARKS: u4-88-faraday-mass=4
 // CRMARKS: u4-88-faraday-time=4
+// CRMARKS: u4-wcr-fuel-cell-response=3
+// BIMODAL: u4-86-predict-spontaneous=b
+// BIMODAL: u4-83-net-reaction=b
 
 /* Standard reduction couples (metal systems), matching the Reference
    Information panel. e is E\u00B0 in volts for ion + electrons \u2192 metal. */
@@ -6230,6 +6265,40 @@ E("u4-89-fuel-cell-reasoning",4,["8.9"],2,"var",varset(FCCASES.map(function(v){
   };
 })));
 
+/* Bimodal build additions (Nov 19, 2026): written-form entries closing the Chemistry 3202 Unit 1 Test 1 and Unit 4 Test 2 fillability gaps. SME-flagged for the specialist pass. */
+
+E("u4-wcr-fuel-cell-response",4,["8.9"],2,"var",varset([
+  function(){
+    var t=pick([25,40,60,80]);
+    var ctx=pick(["a test bus","a delivery van","a spacecraft","an emergency backup power unit"]);
+    var model="Anode (oxidation): H₂(g) → 2 H⁺(aq) + 2 e⁻. Cathode (reduction): O₂(g) + 4 H⁺(aq) + 4 e⁻ → 2 H₂O(l). Overall: 2 H₂(g) + O₂(g) → 2 H₂O(l).";
+    return textq("A hydrogen fuel cell with an acidic electrolyte powers "+ctx+" at "+t+" °C. Hydrogen gas is fed to the anode and oxygen gas to the cathode. Write the half-reaction that occurs at the anode, the half-reaction that occurs at the cathode, and the overall reaction for the cell.",
+      [model],
+      "Marking points (3): 1 mark for the anode half-reaction, with hydrogen oxidized and the electrons written as products; 1 mark for the cathode half-reaction, with oxygen reduced and the electrons written as reactants; 1 mark for the overall reaction, in which the electrons and the H⁺ ions cancel. Model answer: "+model+" The overall reaction is <b>2 H₂(g) + O₂(g) → 2 H₂O(l)</b>.",{t:t});
+  },
+  function(){
+    var t=pick([25,40,60,80]);
+    var ctx=pick(["a test bus","a delivery van","a spacecraft","an emergency backup power unit"]);
+    var model="Anode (oxidation): H₂(g) + 2 OH⁻(aq) → 2 H₂O(l) + 2 e⁻. Cathode (reduction): O₂(g) + 2 H₂O(l) + 4 e⁻ → 4 OH⁻(aq). Overall: 2 H₂(g) + O₂(g) → 2 H₂O(l).";
+    return textq("A hydrogen fuel cell with an alkaline electrolyte powers "+ctx+" at "+t+" °C. Hydrogen gas is fed to the anode and oxygen gas to the cathode. Write the half-reaction that occurs at the anode, the half-reaction that occurs at the cathode, and the overall reaction for the cell.",
+      [model],
+      "Marking points (3): 1 mark for the anode half-reaction, with hydrogen oxidized in the presence of OH⁻ and the electrons written as products; 1 mark for the cathode half-reaction, with oxygen reduced to OH⁻ and the electrons written as reactants; 1 mark for the overall reaction, in which the electrons, the OH⁻ ions and two of the water molecules cancel. Model answer: "+model+" The overall reaction is <b>2 H₂(g) + O₂(g) → 2 H₂O(l)</b>.",{t:t});
+  },
+  function(){
+    var t=pick([25,40,60,80]);
+    var model="Hydrogen is oxidized at the anode, which releases electrons. The electrons travel through the external circuit, and their flow is the electric current that powers the load, before they arrive at the cathode. At the cathode, oxygen is reduced and combines with H⁺ to form water. Because hydrogen and oxygen are supplied continuously from outside the cell, the cell keeps producing electricity for as long as the supply lasts, and its only product is water.";
+    return textq("A hydrogen fuel cell operates at "+t+" °C in a test vehicle. Explain how the cell produces electrical energy, referring to what happens at each electrode and to the path taken by the electrons. Write your answer in full sentences.",
+      [model],
+      "Marking points (3): 1 mark for stating that hydrogen is oxidized at the anode, releasing electrons; 1 mark for stating that the electrons travel through the external circuit, where their flow is the electric current that does the work; 1 mark for stating that oxygen is reduced at the cathode and water is formed, with the cell running for as long as the reactants are supplied. Model answer: "+model+" The cell produces electrical energy because <b>electrons released by oxidation at the anode flow through the external circuit to the cathode</b>.",{t:t});
+  },
+  function(){
+    var model="Hydrogen is oxidized: its oxidation number rises from 0 in H₂ to +1 in water, so it loses electrons. Oxygen is reduced: its oxidation number falls from 0 in O₂ to -2 in water, so it gains electrons. Overall: 2 H₂(g) + O₂(g) → 2 H₂O(l).";
+    return textq("In a hydrogen fuel cell, hydrogen gas and oxygen gas react to form water, and the energy released is obtained as electrical energy. State which reactant is oxidized and which reactant is reduced, justify each choice using oxidation numbers, and write the overall reaction for the cell.",
+      [model],
+      "Marking points (3): 1 mark for identifying hydrogen as oxidized, justified by its oxidation number rising from 0 to +1; 1 mark for identifying oxygen as reduced, justified by its oxidation number falling from 0 to -2; 1 mark for the correct overall reaction. Model answer: "+model+" The overall reaction is <b>2 H₂(g) + O₂(g) → 2 H₂O(l)</b>.",{});
+  }
+]));
+
 /* ----- bank-br.js ----- */
 /* Chemistry 3202: prior-learning bridging bank (Unit 5 slot).
    Source course: Chemistry 2202 (mole concept, concentration, stoichiometry,
@@ -6361,4 +6430,10 @@ E("br-b4-equilibrium-basics",5,["B.4"],1,"var",varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-51-rate-explain":3,"u1-52-rate-scenario":2,"u1-53-ea-reverse":3,"u1-54-mechanism-analysis":4,"u1-56-ice-k":4,"u1-56-k-calc":3,"u1-57-shift-predict":2,"u2-63-net-equation":3,"u2-63-write-molecular":3,"u2-63-write-net":4,"u2-64-dilution-ph":3,"u2-64-mix-stoich-ph":4,"u2-64-ph-from-h":2,"u2-65-ka-from-ph":3,"u2-65-kb-calc":2,"u2-65-weak-acid-ph":4,"u2-65-weak-base-ph":4,"u2-68-aliquot-concentration":4,"u2-68-average-titre":3,"u2-68-titration-calc":3,"u2-68-titration-diprotic":4,"u3-710-calorimetry-molar":4,"u3-710-compare-per-gram":3,"u3-710-mass-for-energy":3,"u3-710-molar-combustion":4,"u3-711-write-thermochem":3,"u3-712-bond-energy":3,"u3-712-formation":3,"u3-712-formation-solve":4,"u3-712-hess":5,"u3-74-cup-heat":3,"u3-74-find-delta-t":2,"u3-74-mixture-temp":4,"u3-74-q-temp":3,"u3-77-full-range":5,"u3-77-q-combined":4,"u3-77-q-phase":3,"u3-77-q-release":3,"u3-78-deltah-from-q":3,"u3-78-limiting":3,"u3-79-calorimetry-error":4,"u4-83-balance-acidic":5,"u4-83-half-reaction-write":3,"u4-83-net-reaction":4,"u4-84-build-cell":4,"u4-84-label-scenario":2,"u4-86-predict-spontaneous":3,"u4-87-cell-voltage":4,"u4-87-find-e-half":3,"u4-88-faraday-mass":4,"u4-88-faraday-time":4};
+window.__BANK_CRMARKS={"u1-53-ea-reverse":3,"u1-54-mechanism-analysis":4,"u1-56-ice-k":4,"u1-56-k-calc":3,"u1-57-shift-predict":2,"u1-wcr-factor-changes-explain":4,"u2-63-net-equation":3,"u2-63-write-molecular":3,"u2-63-write-net":4,"u2-64-dilution-ph":3,"u2-64-mix-stoich-ph":4,"u2-64-ph-from-h":2,"u2-65-ka-from-ph":3,"u2-65-kb-calc":2,"u2-65-weak-acid-ph":4,"u2-65-weak-base-ph":4,"u2-68-aliquot-concentration":4,"u2-68-average-titre":3,"u2-68-titration-calc":3,"u2-68-titration-diprotic":4,"u3-710-calorimetry-molar":4,"u3-710-compare-per-gram":3,"u3-710-mass-for-energy":3,"u3-710-molar-combustion":4,"u3-711-write-thermochem":3,"u3-712-bond-energy":3,"u3-712-formation":3,"u3-712-formation-solve":4,"u3-712-hess":5,"u3-74-cup-heat":3,"u3-74-find-delta-t":2,"u3-74-mixture-temp":4,"u3-74-q-temp":3,"u3-77-full-range":5,"u3-77-q-combined":4,"u3-77-q-phase":3,"u3-77-q-release":3,"u3-78-deltah-from-q":3,"u3-78-limiting":3,"u4-83-balance-acidic":5,"u4-83-half-reaction-write":3,"u4-83-net-reaction":4,"u4-86-predict-spontaneous":3,"u4-87-cell-voltage":4,"u4-87-find-e-half":3,"u4-88-faraday-mass":4,"u4-88-faraday-time":4,"u4-wcr-fuel-cell-response":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-54-mechanism-analysis":"b","u1-57-shift-predict":"a","u2-63-net-equation":"b","u4-83-net-reaction":"b","u4-86-predict-spontaneous":"b"};

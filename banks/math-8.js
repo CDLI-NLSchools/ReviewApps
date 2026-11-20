@@ -1076,6 +1076,35 @@ E("u2-context-reasoning-var", 2, ["6.19", "6.23"], 3, "var", varset([
   }
 ]), ["For each situation, decide whether a change repeats, a total is split, or single amounts are combined.", "Match the signs as well as the operation: removal and red chips are both negative."]);
 
+/* Bimodal build additions (Nov 19, 2026): one selected-response generator for Unit 2, on the thinnest indicator 6.21. SME-flagged for the specialist pass. */
+E("u2-div-share-change", 2, ["6.21"], 2, "gen", function () {
+  for (var att = 0; att < 200; att++) {
+    var g = ri(3, 6), v = ri(3, 8), T = g * v;
+    var third = -g;
+    if (third === -v || third === -(v - 1) || third === -(v + 1)) {
+      if (v + 2 <= 9) third = -(v + 2); else continue;
+    }
+    var ctx = pick(["lift", "temp", "account", "tank"]);
+    var prompt, part;
+    if (ctx === "lift") { prompt = "An elevator descends " + T + " metres in total, in " + g + " equal stages. The change in height is the same in each stage. What is the change in height in each stage, in metres?"; part = "stage"; }
+    else if (ctx === "temp") { prompt = "Over " + g + " equal time periods, the temperature changes by -" + T + " degrees in total, changing by the same amount in each period. What is the change in each period, in degrees?"; part = "period"; }
+    else if (ctx === "account") { prompt = "A savings account balance changes by -" + T + " dollars over " + g + " weeks, with the same change in the balance each week. What is the change in the balance each week, in dollars?"; part = "week"; }
+    else { prompt = "A water tank level changes by -" + T + " centimetres over " + g + " days, with the same change in the level each day. What is the change in the level each day, in centimetres?"; part = "day"; }
+    var sol = "Sharing a total change equally is a division. The total change is negative, and the number of parts is positive, so each part is negative.\\[ \\begin{aligned} (" + (-T) + ") \\div " + g + " &= " + (-v) + " \\end{aligned} \\] The change in each " + part + " is <b>" + (-v) + "</b>.";
+    return mcq(prompt,
+      { t: fmt(-v), fb: "Correct. The total change of -" + T + " split into " + g + " equal parts gives -" + v + " in each part." },
+      [{ t: fmt(-(v - 1)), fb: "That part is too small: " + g + " parts of that size would total -" + (g * (v - 1)) + ", not -" + T + "." },
+       { t: fmt(-(v + 1)), fb: "That part is too large: " + g + " parts of that size would total -" + (g * (v + 1)) + ", not -" + T + "." },
+       { t: fmt(third), fb: "That value does not split the total of -" + T + " into " + g + " equal parts." }],
+      sol, { mode: "div-share-change", g: g, v: v });
+  }
+  return mcq("An elevator descends 24 metres in total, in 4 equal stages. The change in height is the same in each stage. What is the change in height in each stage, in metres?",
+    { t: "-6", fb: "Correct. -24 split into 4 equal parts gives -6 in each part." },
+    [{ t: "-5", fb: "That part is too small." }, { t: "-7", fb: "That part is too large." }, { t: "-4", fb: "That is the number of stages, not the change in each stage." }],
+    "Sharing a total change equally is a division.\\[ \\begin{aligned} (-24) \\div 4 &= -6 \\end{aligned} \\] The change in each stage is <b>-6</b>.",
+    { mode: "div-share-change-fallback" });
+}, ["Sharing a total into equal parts is division.", "Write the total change divided by the number of parts, then use the sign rule."]);
+
 /* ----- bank-u3.js ----- */
 // Math 8 Unit 3 Operations with Fractions question bank
 // Cut verbatim from the standalone bank source
@@ -3255,6 +3284,61 @@ E("u6-verify-conclusion", 6, ["8.3"], 3, "gen", function () {
     "Substitute: \\[ \\begin{aligned} 3x + 2 &= 3(5) + 2 \\\\ &= 17 \\\\ 17 &\\ne 14 \\end{aligned} \\] So the correct conclusion is <b>x = 5 is not the solution; the solution is x = 4</b>.", { mode: "verify-conclusion-fallback" });
 }, ["A check by substitution compares the worked-out left side with the right side.", "Do the substitution yourself first, then judge each conclusion against your numbers."]);
 
+/* Bimodal build additions (Nov 19, 2026): two selected-response generators for Unit 6, on the thinnest indicators 8.6 and 7.1. SME-flagged for the specialist pass. */
+E("u6-add-correct-first-step", 6, ["8.6"], 2, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var a = ri(3, 8), b = ri(2, 9), x = ri(4, 9);
+    if (b === a) continue;
+    var ax = a * x, c = ax + b;
+    if (ax < 10 || c + b > 99) continue;
+    var name = pick(["Liam", "Noor", "Ethan", "Priya", "Marcus", "Sofia"]);
+    var keyT = fmt(a) + "x = " + fmt(ax);
+    var sol = "The first line adds " + fmt(b) + " to the right side. To undo adding " + fmt(b) + ", subtract " + fmt(b) + " from both sides instead.\\[ \\begin{aligned} " + fmt(a) + "x + " + fmt(b) + " &= " + fmt(c) + " \\\\ " + fmt(a) + "x &= " + fmt(c) + " - " + fmt(b) + " \\\\ " + fmt(a) + "x &= " + fmt(ax) + " \\end{aligned} \\] So the first line should be <b>" + keyT + "</b>.";
+    return mcq(name + " solves the equation \\(" + fmt(a) + "x + " + fmt(b) + " = " + fmt(c) + "\\). The first line of the work is \\(" + fmt(a) + "x = " + fmt(c + b) + "\\). That line is wrong. Which equation should the first line be?",
+      { t: keyT, fb: "Correct. Subtracting " + fmt(b) + " from both sides gives " + fmt(c) + " - " + fmt(b) + " = " + fmt(ax) + "." },
+      [{ t: fmt(a) + "x = " + fmt(c + b), fb: "That is the line with the error. It adds " + fmt(b) + " to the right side instead of subtracting it." },
+       { t: fmt(a) + "x = " + fmt(c), fb: "That leaves the right side unchanged. The " + fmt(b) + " must be subtracted from both sides, not ignored." },
+       { t: fmt(b) + "x = " + fmt(ax), fb: "That changes the coefficient of x. The coefficient stays " + fmt(a) + "; only the constant moves." }],
+      sol, { mode: "correct-first-step", a: a, b: b });
+  }
+  return mcq("Liam solves the equation \\(3x + 4 = 19\\). The first line of the work is \\(3x = 23\\). That line is wrong. Which equation should the first line be?",
+    { t: "3x = 15", fb: "Correct. Subtracting 4 from both sides gives 19 - 4 = 15." },
+    [{ t: "3x = 23", fb: "That is the line with the error." }, { t: "3x = 19", fb: "That leaves the right side unchanged." }, { t: "4x = 15", fb: "That changes the coefficient of x." }],
+    "To undo adding 4, subtract 4 from both sides.\\[ \\begin{aligned} 3x + 4 &= 19 \\\\ 3x &= 15 \\end{aligned} \\] So the first line should be <b>3x = 15</b>.",
+    { mode: "correct-first-step-fallback" });
+}, ["Look at what the first line did to the constant on the left side.", "Undo adding a constant by subtracting it from both sides."]);
+
+E("u6-add-table-describe", 6, ["7.1"], 2, "gen", function () {
+  for (var att = 0; att < 300; att++) {
+    var m = ri(2, 6), b = ri(1, 9);
+    if (m === b) continue;
+    var ctx = pick([
+      { xp: "number of hours", yp: "distance in kilometres" },
+      { xp: "number of crates", yp: "number of bottles" },
+      { xp: "number of bags", yp: "number of marbles" },
+      { xp: "number of days", yp: "height in centimetres" },
+      { xp: "number of tickets", yp: "total cost in dollars" }
+    ]);
+    function sent(step, start, verb) { return "As the " + ctx.xp + " grows by 1, the " + ctx.yp + " " + verb + " by " + fmt(step) + ", starting from " + fmt(start) + "."; }
+    var keyT = sent(m, b, "grows");
+    var prompt = "A table shows a linear relation. When x is 0, y is " + fmt(b) + ". When x is 1, y is " + fmt(b + m) + ". When x is 2, y is " + fmt(b + 2 * m) + ". When x is 3, y is " + fmt(b + 3 * m) + ". The x values count the " + ctx.xp + ", and the y values give the " + ctx.yp + ". Which sentence describes the relationship?";
+    var sol = "The value at x = 0 is the start, which is " + fmt(b) + ". Neighbouring y values rise by " + fmt(b + m) + " - " + fmt(b) + " = " + fmt(m) + " each time x grows by 1. So the sentence that describes the relationship is <b>" + keyT + "</b>";
+    return mcq(prompt,
+      { t: keyT, fb: "Correct. The start is the value at x = 0, and the step is the steady rise in y." },
+      [{ t: sent(b, m, "grows"), fb: "That swaps the start and the step. The start is the value at x = 0, which is " + fmt(b) + "." },
+       { t: sent(m + 1, b, "grows"), fb: "That step is too large. Neighbouring y values rise by " + fmt(m) + ", not " + fmt(m + 1) + "." },
+       { t: sent(m, b, "shrinks"), fb: "The y values rise as x grows, so the relationship grows rather than shrinks." }],
+      sol, { mode: "table-describe", m: m, b: b });
+  }
+  return mcq("A table shows a linear relation. When x is 0, y is 2. When x is 1, y is 5. When x is 2, y is 8. When x is 3, y is 11. The x values count the number of hours, and the y values give the distance in kilometres. Which sentence describes the relationship?",
+    { t: "As the number of hours grows by 1, the distance in kilometres grows by 3, starting from 2.", fb: "Correct. The start is 2 and the step is 3." },
+    [{ t: "As the number of hours grows by 1, the distance in kilometres grows by 2, starting from 3.", fb: "That swaps the start and the step." },
+     { t: "As the number of hours grows by 1, the distance in kilometres grows by 4, starting from 2.", fb: "That step is too large." },
+     { t: "As the number of hours grows by 1, the distance in kilometres shrinks by 3, starting from 2.", fb: "The y values rise, so the relationship grows." }],
+    "The value at x = 0 is the start, which is 2. Neighbouring y values rise by 3 each time. So the sentence that describes the relationship is <b>As the number of hours grows by 1, the distance in kilometres grows by 3, starting from 2.</b>",
+    { mode: "table-describe-fallback" });
+}, ["Start with the value where x is 0: that is the starting value of the relation.", "Compare two neighbouring y values to find how much y changes for each step of 1 in x."]);
+
 /* ----- bank-u7.js ----- */
 // Math 8 Unit 7 Data Analysis and Probability question bank
 // Cut verbatim from the standalone bank source
@@ -3796,6 +3880,58 @@ E("u7-deep-critique", 7, ["11.6", "11.5"], 3, "var", varset([
       {mode:"deep-pets"});
   }
 ]), ["A complete critique checks two things: how the graph is built, and whether the words match the numbers.", "Test the claim with the actual values first, then name the format feature that pushes readers the same wrong way."]);
+
+/* Bimodal build additions (Nov 19, 2026): one selected-response generator for Unit 7, on the thinnest indicator 11.3. SME-flagged for the specialist pass. */
+E("u7-add-choose-graph-gen", 7, ["11.3"], 2, "gen", function () {
+  var kinds = [
+    { key: "Line graph", reason: "the data show how a value changes over time",
+      make: function () {
+        var subj = pick(["outdoor temperature", "number of bus riders", "height of a sunflower", "water level in a tank"]);
+        var unit = subj === "outdoor temperature" ? "every hour" : (subj === "number of bus riders" ? "every hour" : (subj === "height of a sunflower" ? "every week" : "every day"));
+        var n = ri(5, 12);
+        return "A class records the " + subj + " " + unit + " for " + n + " time periods in a row and wants to show how it changed.";
+      },
+      job: "Data recorded over time are shown by joining the points in time order, so rises and falls are easy to follow." },
+    { key: "Circle graph", reason: "the parts add up to one whole amount",
+      make: function () {
+        var amt = ri(30, 90);
+        var item = pick(["school fair budget of " + amt + " dollars is split among food, games, prizes and supplies", "lunch order of " + amt + " dollars is split among sandwiches, drinks, fruit and desserts", "trip fund of " + amt + " dollars is split among the bus, meals, tickets and snacks"]);
+        return "A student council wants to show how a " + item + ".";
+      },
+      job: "Parts that make up one whole are shown as slices, so each slice is a share of the total amount." },
+    { key: "Bar graph", reason: "separate categories are compared by their counts",
+      make: function () {
+        var n = ri(4, 7);
+        var item = pick(["students signed up for each of " + n + " lunch clubs", "books borrowed in each of " + n + " genres at the library", "votes cast for each of " + n + " choices for a class trip", "players registered in each of " + n + " age groups in a league"]);
+        return "A teacher wants to compare the number of " + item + ".";
+      },
+      job: "Counts for separate categories are compared with one bar for each category, read against a scale." },
+    { key: "Double bar graph", reason: "two groups are compared inside each category",
+      make: function () {
+        var n = ri(3, 6);
+        var item = pick(["Grade 7 and Grade 8 students play each of " + n + " sports", "boys and girls signed up for each of " + n + " art classes", "junior and senior members belong to each of " + n + " community clubs"]);
+        return "A coach wants to compare how many " + item + ".";
+      },
+      job: "Two groups inside each category are compared with paired bars, so the two groups sit side by side." },
+    { key: "Pictograph", reason: "amounts for young children are shown with picture symbols",
+      make: function () {
+        var val = pick([5, 10]);
+        var item = pick(["picture books, chapter books and comics were borrowed by a class", "apples, oranges and bananas were sold at a school stand", "cars, trucks and buses were counted on a street"]);
+        return "A teacher makes a poster for young children showing how many " + item + ", using picture symbols where one symbol stands for " + val + " items.";
+      },
+      job: "Amounts for a young audience are shown with picture symbols, which give a quick and friendly sense of size." }
+  ];
+  var kind = pick(kinds);
+  var prompt = kind.make() + " Which graph is the best choice?";
+  var others = shuffle(kinds.filter(function (k) { return k.key !== kind.key; })).slice(0, 3);
+  var ds = others.map(function (k) {
+    return { t: k.key + ", because " + kind.reason, fb: "That graph does not fit this job. " + kind.job };
+  });
+  var sol = kind.job + " So the best choice is <b>" + kind.key + "</b>.";
+  return mcq(prompt,
+    { t: kind.key + ", because " + kind.reason, fb: "Right: " + kind.job },
+    ds, sol, { mode: "choose-graph-gen", graph: kind.key });
+}, ["Decide what the data are doing first: changing over time, splitting a whole, comparing categories, or comparing two groups.", "Match that job to the graph built for it: line, circle, bar, double bar, or pictograph."]);
 
 /* ----- bank-u8.js ----- */
 // Math 8 Unit 8 Geometry question bank
@@ -7126,3 +7262,9 @@ BANK.forEach(function (e) { var t = PKT8D7[e.id]; if (t) { e.pkFlag = true; e.pk
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
 window.__BANK_CRMARKS={"u1-calc-approx":3,"u1-diagonal-square":3,"u1-fence-perimeter-gap":3,"u1-garden-diagonal-gap":2,"u1-grid-distance-gap":2,"u1-hypotenuse":3,"u1-ladder-context":2,"u1-missing-leg":3,"u1-shortcut-saving-gap":3,"u1-square-plot-perimeter":2,"u1-square-side-perimeter-gap":3,"u1-triple-find":2,"u1-two-ladders-gap":3,"u2-chain-negative-divisor-gap":3,"u2-div-2by1":3,"u2-div-2by2":3,"u2-fifth-day-temp-gap":3,"u2-missing-factor-follow-gap":3,"u2-mixed-problem":2,"u2-mult-problem":3,"u2-ooo-brackets-num":3,"u2-ooo-num":2,"u2-sign-product-problem":2,"u2-square-minus-product-gap":2,"u2-two-divers-gap":3,"u3-area-decimal-gap":2,"u3-bottles-roundup-gap":3,"u3-chain-subtract-product-gap":3,"u3-divide-mixed-cr":3,"u3-divide-word-cr":2,"u3-mixed-multistep-cr":3,"u3-model-division-bar":3,"u3-mult-div-chain-cr":2,"u3-multiply-mixed-cr":3,"u3-order-of-ops-fractions":2,"u4-open-box-sa-gap":3,"u4-sa-cylinder":3,"u4-sa-open-tank":3,"u4-sa-problem-wrap":2,"u4-sa-rect-prism":3,"u4-sa-tri-prism":3,"u4-tank-litres-gap":2,"u4-vol-cylinder-diam":2,"u4-vol-tri-prism":2,"u5-discount-then-tax":3,"u5-down-then-up-gap":3,"u5-find-the-whole":3,"u5-percent-change":3,"u5-percent-of-number":3,"u5-percent-of-percent-quantity":2,"u5-rate-problem-solve":2,"u5-ratio-part-percent-gap":3,"u5-ratio-problem-solve":2,"u5-unit-rate-cost-gap":3,"u6-decimal-coefficient-gap":2,"u6-graph-extend-pair":2,"u6-missing-ordered-pair":2,"u6-missing-ordered-pair-backward":2,"u6-solve-context-problem":3,"u6-solve-distributive":3,"u6-solve-div-plus":2,"u6-solve-group-problem":3,"u6-solve-two-step":3,"u6-two-points-evaluate-gap":3,"u7-apparent-height-ratio":2,"u7-apply-rule-percent":2,"u7-combined-mean-gap":3,"u7-critique-the-claim":3,"u7-expected-count-gap":2,"u7-fix-the-graph":2,"u7-mean-difference-gap":3,"u7-missing-mean-value-gap":2,"u7-name-the-trick":3,"u7-same-colour-twice":3,"u7-survey-scale-gap":3,"u7-two-colours-twice-gap":3,"u7-two-draws-percent":3,"u7-two-spinners-decimal":3,"u8-around-point-num":3,"u8-build-max-num":3,"u8-changed-side-view-gap":3,"u8-cube-volume-gap":3,"u8-cubes-total-num":3,"u8-front-squares-num":3,"u8-hidden-cubes-gap":2,"u8-irregular-angle-num":2,"u8-mixed-point-num":2,"u8-rotate-front-num":2,"u8-rotated-side-view-gap":3,"u8-tiles-at-point-gap":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={};
