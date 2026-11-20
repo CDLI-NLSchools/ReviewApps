@@ -229,6 +229,40 @@ function figBisectSupp(halfLabel){
 // CRMARKS: u1-table-value-cr=3
 // CRMARKS: u1-far-term-cr=3
 // CRMARKS: u1-solve-812-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-divisibility-why=2
+// CRMARKS: u1-venn-overlap=2
+// CRMARKS: u1-carroll-cell=2
+// CRMARKS: u1-factor-list=2
+// CRMARKS: u1-identify-parts=2
+// CRMARKS: u1-parts-in-equation=2
+// CRMARKS: u1-pattern-expression=3
+// CRMARKS: u1-evaluate-expression=2
+// CRMARKS: u1-relation-context=3
+// CRMARKS: u1-table-missing=2
+// CRMARKS: u1-graph-relation=3
+// CRMARKS: u1-graph-conclusion=3
+// CRMARKS: u1-describe-graph=3
+// CRMARKS: u1-environment-pattern=3
+// CRMARKS: u1-match-graph-panel=2
+// CRMARKS: u1-pattern-equation=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-divisibility-why=b
+// BIMODAL: u1-venn-overlap=a
+// BIMODAL: u1-carroll-cell=a
+// BIMODAL: u1-factor-list=a
+// BIMODAL: u1-identify-parts=a
+// BIMODAL: u1-parts-in-equation=a
+// BIMODAL: u1-pattern-expression=b
+// BIMODAL: u1-evaluate-expression=a
+// BIMODAL: u1-relation-context=b
+// BIMODAL: u1-table-missing=a
+// BIMODAL: u1-graph-relation=b
+// BIMODAL: u1-graph-conclusion=a
+// BIMODAL: u1-describe-graph=b
+// BIMODAL: u1-environment-pattern=b
+// BIMODAL: u1-match-graph-panel=a
+// BIMODAL: u1-pattern-equation=b
 /* ===== Unit 1 ===== */
 /* Math 7 Unit 1: Patterns and Relations. Helpers prefixed u1. */
 function u1Expr(a,b,v){ v=v||"n"; var s=(a===1?v:a+v); if(b>0)s+=" + "+b; else if(b<0)s+=" - "+(-b); return s; }
@@ -770,6 +804,28 @@ E("u1-solve-812-cr", 1, ["8.12","7.2"], 3, "gen", function(){
 // CRMARKS: u2-numberline-cr=3
 // CRMARKS: u2-problem-cr=3
 // CRMARKS: u2-missing-addend-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-add-basic=2
+// CRMARKS: u2-add-numberline=2
+// CRMARKS: u2-sub-basic=2
+// CRMARKS: u2-opposites-zero=2
+// CRMARKS: u2-add-context=2
+// CRMARKS: u2-sub-numberline=2
+// CRMARKS: u2-subtract-negative=2
+// CRMARKS: u2-mixed-chain=2
+// CRMARKS: u2-error-spot=3
+// CRMARKS: u2-problem-two-step=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-add-basic=a
+// BIMODAL: u2-add-numberline=a
+// BIMODAL: u2-sub-basic=a
+// BIMODAL: u2-opposites-zero=b
+// BIMODAL: u2-add-context=a
+// BIMODAL: u2-sub-numberline=a
+// BIMODAL: u2-subtract-negative=a
+// BIMODAL: u2-mixed-chain=a
+// BIMODAL: u2-error-spot=a
+// BIMODAL: u2-problem-two-step=a
 /* ===== Unit 2 ===== */
 /* Math 7 Unit 2: Integers (addition and subtraction cluster, codes 6.24 to 6.29). Helpers prefixed u2. */
 function u2Sg(n){ return n<0?"("+n+")":""+n; }
@@ -1061,6 +1117,46 @@ E("u2-missing-addend-cr", 2, ["6.25","6.24"], 3, "gen", function(){
 // CRMARKS: u3-cr-repeating-frac=2
 // CRMARKS: u3-cr-percent=3
 // CRMARKS: u3-cr-order-ops=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-order-mixed=2
+// CRMARKS: u3-numberline-place=2
+// CRMARKS: u3-numberline-mixed=2
+// CRMARKS: u3-misplaced=2
+// CRMARKS: u3-percent-convert=2
+// CRMARKS: u3-frac-to-decimal=2
+// CRMARKS: u3-repeating-predict=2
+// CRMARKS: u3-decimal-to-fraction=2
+// CRMARKS: u3-repeating-to-fraction=3
+// CRMARKS: u3-add-sub-decimals=2
+// CRMARKS: u3-frontend-sum=2
+// CRMARKS: u3-mult-decimals=2
+// CRMARKS: u3-frontend-prod-quot=2
+// CRMARKS: u3-div-decimals=2
+// CRMARKS: u3-tech-multdiv=3
+// CRMARKS: u3-order-ops-dec=3
+// CRMARKS: u3-percent-of=2
+// CRMARKS: u3-tax-total=3
+// CRMARKS: u3-reasonableness=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-order-mixed=a
+// BIMODAL: u3-numberline-place=a
+// BIMODAL: u3-numberline-mixed=a
+// BIMODAL: u3-misplaced=a
+// BIMODAL: u3-percent-convert=a
+// BIMODAL: u3-frac-to-decimal=a
+// BIMODAL: u3-repeating-predict=a
+// BIMODAL: u3-decimal-to-fraction=a
+// BIMODAL: u3-repeating-to-fraction=a
+// BIMODAL: u3-add-sub-decimals=a
+// BIMODAL: u3-frontend-sum=a
+// BIMODAL: u3-mult-decimals=a
+// BIMODAL: u3-frontend-prod-quot=a
+// BIMODAL: u3-div-decimals=a
+// BIMODAL: u3-tech-multdiv=a
+// BIMODAL: u3-order-ops-dec=a
+// BIMODAL: u3-percent-of=a
+// BIMODAL: u3-tax-total=a
+// BIMODAL: u3-reasonableness=b
 /* ===== Unit 3 ===== */
 /* Math 7 Unit 3: Fractions, Decimals and Percents. Helpers prefixed u3. */
 function u3gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -1848,6 +1944,44 @@ E("u3-cr-order-ops", 3, ["6.10"], 3, "gen", function(){
 // CRMARKS: u4-cr-graph-quantity=2
 // CRMARKS: u4-cr-area-circle=3
 // CRMARKS: u4-cr-composite=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-radius-diameter=2
+// CRMARKS: u4-draw-circle=2
+// CRMARKS: u4-circ-approx=2
+// CRMARKS: u4-pi-ratio=2
+// CRMARKS: u4-circumference=2
+// CRMARKS: u4-para-from-rect=2
+// CRMARKS: u4-area-parallelogram=2
+// CRMARKS: u4-triangle-from=2
+// CRMARKS: u4-area-triangle=2
+// CRMARKS: u4-estimate-circle-area=2
+// CRMARKS: u4-area-circle=2
+// CRMARKS: u4-central-angles=2
+// CRMARKS: u4-circle-context=3
+// CRMARKS: u4-graph-attributes=2
+// CRMARKS: u4-graph-media=3
+// CRMARKS: u4-graph-read=2
+// CRMARKS: u4-graph-quantities=2
+// CRMARKS: u4-graph-create=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-radius-diameter=a
+// BIMODAL: u4-draw-circle=b
+// BIMODAL: u4-circ-approx=a
+// BIMODAL: u4-pi-ratio=a
+// BIMODAL: u4-circumference=a
+// BIMODAL: u4-para-from-rect=b
+// BIMODAL: u4-area-parallelogram=a
+// BIMODAL: u4-triangle-from=b
+// BIMODAL: u4-area-triangle=a
+// BIMODAL: u4-estimate-circle-area=a
+// BIMODAL: u4-area-circle=a
+// BIMODAL: u4-central-angles=a
+// BIMODAL: u4-circle-context=a
+// BIMODAL: u4-graph-attributes=a
+// BIMODAL: u4-graph-media=b
+// BIMODAL: u4-graph-read=a
+// BIMODAL: u4-graph-quantities=a
+// BIMODAL: u4-graph-create=a
 /* ===== Unit 4 ===== */
 /* Math 7 Unit 4: Circles and Area. Helpers prefixed u4. PI is 3.14 throughout. */
 function u4pt(cx,cy,r,deg){var t=deg*Math.PI/180;return [cx+r*Math.sin(t), cy-r*Math.cos(t)];}
@@ -2483,6 +2617,36 @@ E("u4-cr-composite", 4, ["9.3","9.10"], 3, "gen", function(){
 // CRMARKS: u5-problem-sub-mixed=2
 // CRMARKS: u5-three-fractions=3
 // CRMARKS: u5-mixed-multistep=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-add-like=2
+// CRMARKS: u5-simplify-fraction=2
+// CRMARKS: u5-common-denominator=2
+// CRMARKS: u5-sub-like=2
+// CRMARKS: u5-add-unlike=2
+// CRMARKS: u5-sub-unlike=2
+// CRMARKS: u5-add-mixed=2
+// CRMARKS: u5-sub-mixed=2
+// CRMARKS: u5-model-add-figure=2
+// CRMARKS: u5-model-sub-figure=2
+// CRMARKS: u5-model-sub-equation=2
+// CRMARKS: u5-sub-mixed-borrow=3
+// CRMARKS: u5-add-model-total=2
+// CRMARKS: u5-sub-write-equation=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-add-like=a
+// BIMODAL: u5-simplify-fraction=a
+// BIMODAL: u5-common-denominator=a
+// BIMODAL: u5-sub-like=a
+// BIMODAL: u5-add-unlike=a
+// BIMODAL: u5-sub-unlike=a
+// BIMODAL: u5-add-mixed=a
+// BIMODAL: u5-sub-mixed=a
+// BIMODAL: u5-model-add-figure=a
+// BIMODAL: u5-model-sub-figure=a
+// BIMODAL: u5-model-sub-equation=a
+// BIMODAL: u5-sub-mixed-borrow=a
+// BIMODAL: u5-add-model-total=a
+// BIMODAL: u5-sub-write-equation=a
 /* ===== Unit 5 ===== */
 /* Unit 5: Operations with Fractions (addition and subtraction, codes 6.13-6.23) */
 function u5gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -2952,6 +3116,36 @@ E("u5-sub-write-equation", 5, ["6.18","6.19"], 2, "gen", function(){
 // CRMARKS: u6-preservation-problem-cr=2
 // CRMARKS: u6-model-solve-cr=3
 // CRMARKS: u6-solve-challenge-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-inspection-trial=2
+// CRMARKS: u6-preservation-next=2
+// CRMARKS: u6-one-step-balance=2
+// CRMARKS: u6-substitute-check=2
+// CRMARKS: u6-solve-two-step-plus=2
+// CRMARKS: u6-solve-other-forms=2
+// CRMARKS: u6-balance-figure=2
+// CRMARKS: u6-model-problem=3
+// CRMARKS: u6-one-step-problem=2
+// CRMARKS: u6-verify-two-step=3
+// CRMARKS: u6-visual-steps=2
+// CRMARKS: u6-verify-one-step=3
+// CRMARKS: u6-two-step-context=3
+// CRMARKS: u6-verify-error=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-inspection-trial=a
+// BIMODAL: u6-preservation-next=a
+// BIMODAL: u6-one-step-balance=a
+// BIMODAL: u6-substitute-check=a
+// BIMODAL: u6-solve-two-step-plus=a
+// BIMODAL: u6-solve-other-forms=a
+// BIMODAL: u6-balance-figure=b
+// BIMODAL: u6-model-problem=b
+// BIMODAL: u6-one-step-problem=a
+// BIMODAL: u6-verify-two-step=b
+// BIMODAL: u6-visual-steps=b
+// BIMODAL: u6-verify-one-step=b
+// BIMODAL: u6-two-step-context=a
+// BIMODAL: u6-verify-error=a
 /* ===== Unit 6 ===== */
 /* Unit 6: Equations (codes 8.1-8.17 as placed in the Unit 6 slice) */
 function u6iopts(corr,errs){
@@ -3500,6 +3694,36 @@ E("u6-solve-challenge-cr", 6, ["8.2","8.14"], 3, "gen", function(){
 // CRMARKS: u7-two-event-pct-cr=2
 // CRMARKS: u7-central-problem-cr=3
 // CRMARKS: u7-expected-count-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-mean-basic=2
+// CRMARKS: u7-median-mode=2
+// CRMARKS: u7-range-basic=2
+// CRMARKS: u7-prob-basic=2
+// CRMARKS: u7-bar-graph=2
+// CRMARKS: u7-line-graph=2
+// CRMARKS: u7-circle-graph=2
+// CRMARKS: u7-choose-measure=2
+// CRMARKS: u7-outlier-find=2
+// CRMARKS: u7-sample-space=2
+// CRMARKS: u7-exp-vs-theor=2
+// CRMARKS: u7-two-events-prob=2
+// CRMARKS: u7-outlier-measure-choice=3
+// CRMARKS: u7-outlier-judge=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-mean-basic=a
+// BIMODAL: u7-median-mode=a
+// BIMODAL: u7-range-basic=a
+// BIMODAL: u7-prob-basic=a
+// BIMODAL: u7-bar-graph=a
+// BIMODAL: u7-line-graph=a
+// BIMODAL: u7-circle-graph=a
+// BIMODAL: u7-choose-measure=a
+// BIMODAL: u7-outlier-find=a
+// BIMODAL: u7-sample-space=a
+// BIMODAL: u7-exp-vs-theor=a
+// BIMODAL: u7-two-events-prob=a
+// BIMODAL: u7-outlier-measure-choice=b
+// BIMODAL: u7-outlier-judge=b
 /* ===== Unit 7 ===== */
 /* Math 7 Unit 7: Data Analysis (targets 11 and 12) */
 function u7gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -3987,6 +4211,38 @@ E("u7-zero-one",7,["12.2","12.3"],3,"var",varset([
 // CRMARKS: u8-successive-cr=2
 // CRMARKS: u8-bisector-cr=3
 // CRMARKS: u8-transform-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-parallel-perp-id=2
+// CRMARKS: u8-axes-origin=2
+// CRMARKS: u8-read-point=2
+// CRMARKS: u8-plot-point=2
+// CRMARKS: u8-bisector-env=2
+// CRMARKS: u8-bisector-reason=2
+// CRMARKS: u8-draw-reason=2
+// CRMARKS: u8-shape-vertices=2
+// CRMARKS: u8-move-describe=2
+// CRMARKS: u8-reflect-point=2
+// CRMARKS: u8-complete-shape=2
+// CRMARKS: u8-transform-describe=2
+// CRMARKS: u8-grid-scale=2
+// CRMARKS: u8-transform-image=3
+// CRMARKS: u8-construct-verify=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-parallel-perp-id=a
+// BIMODAL: u8-axes-origin=a
+// BIMODAL: u8-read-point=a
+// BIMODAL: u8-plot-point=a
+// BIMODAL: u8-bisector-env=b
+// BIMODAL: u8-bisector-reason=a
+// BIMODAL: u8-draw-reason=b
+// BIMODAL: u8-shape-vertices=a
+// BIMODAL: u8-move-describe=a
+// BIMODAL: u8-reflect-point=a
+// BIMODAL: u8-complete-shape=a
+// BIMODAL: u8-transform-describe=a
+// BIMODAL: u8-grid-scale=a
+// BIMODAL: u8-transform-image=a
+// BIMODAL: u8-construct-verify=b
 /* ===== Unit 8 ===== */
 /* Math 7 Unit 8: Geometry (target 10: constructions and Cartesian plane) */
 function u8gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
@@ -4524,6 +4780,10 @@ E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
 // CRMARKS: u8-gap-rotate-cr=3
 // CRMARKS: u8-gap-grid-area-cr=3
 // CRMARKS: u8-gap-parallel-angle-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-gap-order-ops-sr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-gap-order-ops-sr=a
 /* ===== Pool-gap fill, November 9, 2026 ===== */
 /* New Level 2 entries added to close the unit-test CR remainder gaps.
    Every CR entry below always returns numq(...). */
@@ -4828,6 +5088,312 @@ E("u8-gap-parallel-angle-cr", 8, ["10.1"], 2, "gen", function(){
 }, ["Use the parallel-line angle relationship first to get the triangle angle, then the triangle angle sum.", "Start by stating the size of the alternate interior angle."]);
 
 /* ----- bank-pk.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-pk-fact-recall=2
+// CRMARKS: u1-pk-fact-division=2
+// CRMARKS: u1-pk-fact-onemore=2
+// CRMARKS: u1-pk-fact-skip=2
+// CRMARKS: u1-pk-fact-halving=2
+// CRMARKS: u1-pk-mult-2by1=2
+// CRMARKS: u1-pk-mult-3by1=2
+// CRMARKS: u1-pk-mult-2by2=2
+// CRMARKS: u1-pk-mult-zeros=2
+// CRMARKS: u1-pk-mult-3by2=2
+// CRMARKS: u1-pk-div-exact=2
+// CRMARKS: u1-pk-div-remainder=2
+// CRMARKS: u1-pk-div-2digit=2
+// CRMARKS: u1-pk-div-related=2
+// CRMARKS: u1-pk-div-zeros=2
+// CRMARKS: u2-pk-add-regroup=2
+// CRMARKS: u2-pk-sub-regroup=2
+// CRMARKS: u2-pk-add-three=2
+// CRMARKS: u2-pk-sub-line=2
+// CRMARKS: u2-pk-addsub-large=2
+// CRMARKS: u2-pk-order-line=2
+// CRMARKS: u2-pk-order-missing=2
+// CRMARKS: u2-pk-order-below=2
+// CRMARKS: u7-pk-order-line=2
+// CRMARKS: u7-pk-order-below=2
+// CRMARKS: u1-pk-multiples-first=2
+// CRMARKS: u1-pk-multiples-problem=2
+// CRMARKS: u1-pk-ooo-basic=2
+// CRMARKS: u1-pk-ooo-brackets=2
+// CRMARKS: u1-pk-ooo-chain=2
+// CRMARKS: u1-pk-ooo-division=2
+// CRMARKS: u1-pk-ooo-why=2
+// CRMARKS: u2-pk-below-temp=2
+// CRMARKS: u2-pk-below-debt=2
+// CRMARKS: u2-pk-below-line=2
+// CRMARKS: u7-pk-average-whole=2
+// CRMARKS: u7-pk-average-set=2
+// CRMARKS: u7-pk-average-money=2
+// CRMARKS: u7-pk-average-decimals=2
+// CRMARKS: u7-pk-average-small=2
+// CRMARKS: u4-pk-rect-area=2
+// CRMARKS: u4-pk-rect-area-context=2
+// CRMARKS: u4-pk-rect-square=2
+// CRMARKS: u4-pk-rect-missing-side=2
+// CRMARKS: u4-pk-rect-decimals=2
+// CRMARKS: u4-pk-rect-square-decimal=2
+// CRMARKS: u4-pk-perim-rect=2
+// CRMARKS: u4-pk-perim-square=2
+// CRMARKS: u4-pk-perim-pentagon=2
+// CRMARKS: u4-pk-perim-missing-side=2
+// CRMARKS: u4-pk-perim-missing-polygon=2
+// CRMARKS: u4-pk-ruler-cm=2
+// CRMARKS: u4-pk-ruler-mm=2
+// CRMARKS: u4-pk-ruler-cm-decimal=2
+// CRMARKS: u4-pk-ruler-half=2
+// CRMARKS: u4-pk-ruler-unit-choice=2
+// CRMARKS: u4-pk-ruler-difference=2
+// CRMARKS: u4-pk-circle-radius=2
+// CRMARKS: u4-pk-circle-diameter=2
+// CRMARKS: u4-pk-circle-centre=2
+// CRMARKS: u4-pk-circle-pick=2
+// CRMARKS: u4-pk-dec-mult-whole=2
+// CRMARKS: u4-pk-dec-mult-near3=2
+// CRMARKS: u4-pk-dec-square-whole=2
+// CRMARKS: u4-pk-dec-square-decimal=2
+// CRMARKS: u1-pk-sort-venn-read=2
+// CRMARKS: u1-pk-sort-venn-place=2
+// CRMARKS: u1-pk-sort-carroll-read=2
+// CRMARKS: u1-pk-sort-carroll-total=2
+// CRMARKS: u1-pk-pattern-rule=2
+// CRMARKS: u1-pk-pattern-missing=2
+// CRMARKS: u1-pk-fq-read=2
+// CRMARKS: u1-pk-fq-which=2
+// CRMARKS: u1-pk-fq-coord=2
+// CRMARKS: u1-pk-fq-move=2
+// CRMARKS: u1-pk-fq-between=2
+// CRMARKS: u1-pk-tg-table=2
+// CRMARKS: u1-pk-tg-picto=2
+// CRMARKS: u1-pk-tg-bar=2
+// CRMARKS: u1-pk-tg-line=2
+// CRMARKS: u1-pk-tg-compare=2
+// CRMARKS: u6-pk-balance-value=2
+// CRMARKS: u6-pk-balance-change=2
+// CRMARKS: u6-pk-subst-simple=2
+// CRMARKS: u6-pk-subst-brackets=2
+// CRMARKS: u6-pk-subst-table=2
+// CRMARKS: u3-pk-fracrep-bar=2
+// CRMARKS: u3-pk-fracrep-circle=2
+// CRMARKS: u3-pk-fracrep-set=2
+// CRMARKS: u3-pk-fracrep-pick=2
+// CRMARKS: u3-pk-fracrep-line=2
+// CRMARKS: u3-pk-equiv-target=2
+// CRMARKS: u3-pk-equiv-divide=2
+// CRMARKS: u3-pk-equiv-missing=2
+// CRMARKS: u3-pk-dpv-digit-value=2
+// CRMARKS: u3-pk-dpv-expanded=2
+// CRMARKS: u3-pk-dpv-round-tenth=2
+// CRMARKS: u3-pk-dpv-round-hundredth=2
+// CRMARKS: u3-pk-dpv-place-name=2
+// CRMARKS: u3-pk-fad-to-decimal=2
+// CRMARKS: u3-pk-fad-to-fraction=2
+// CRMARKS: u3-pk-fad-line=2
+// CRMARKS: u3-pk-est-add=2
+// CRMARKS: u3-pk-est-product=2
+// CRMARKS: u3-pk-est-difference=2
+// CRMARKS: u3-pk-est-money=2
+// CRMARKS: u3-pk-pct-grid=2
+// CRMARKS: u3-pk-pct-pick=2
+// CRMARKS: u3-pk-pct-fraction=2
+// CRMARKS: u3-pk-pct-decimal=2
+// CRMARKS: u4-pk-protractor-acute=2
+// CRMARKS: u4-pk-protractor-obtuse=2
+// CRMARKS: u4-pk-protractor-five=2
+// CRMARKS: u4-pk-protractor-left=2
+// CRMARKS: u4-pk-protractor-supplement=2
+// CRMARKS: u4-pk-angle-full-turn=2
+// CRMARKS: u4-pk-angle-right-count=2
+// CRMARKS: u5-pk-mixed-from-improper=2
+// CRMARKS: u5-pk-mixed-to-improper=2
+// CRMARKS: u5-pk-mixed-slices=2
+// CRMARKS: u5-pk-mixed-which=2
+// CRMARKS: u5-pk-equiv-target=2
+// CRMARKS: u5-pk-equiv-divide=2
+// CRMARKS: u7-pk-prob-bag=2
+// CRMARKS: u7-pk-prob-percent-bag=2
+// CRMARKS: u7-pk-prob-words=2
+// CRMARKS: u7-pk-prob-spinner=2
+// CRMARKS: u7-pk-prob-die=2
+// CRMARKS: u7-pk-list-count=2
+// CRMARKS: u7-pk-list-missing=2
+// CRMARKS: u7-pk-list-outfits=2
+// CRMARKS: u7-pk-tg-table=2
+// CRMARKS: u7-pk-tg-bar=2
+// CRMARKS: u7-pk-tg-line=2
+// CRMARKS: u8-pk-angle-classify=2
+// CRMARKS: u8-pk-angle-benchmark=2
+// CRMARKS: u8-pk-angle-supplementary=2
+// CRMARKS: u8-pk-angle-complementary=2
+// CRMARKS: u8-pk-protractor-acute=2
+// CRMARKS: u8-pk-protractor-obtuse=2
+// CRMARKS: u8-pk-protractor-five=2
+// CRMARKS: u8-pk-axes-origin-point=2
+// CRMARKS: u8-pk-axes-name=2
+// CRMARKS: u8-pk-axes-on-axis=2
+// CRMARKS: u8-pk-trans-identify-slide=2
+// CRMARKS: u8-pk-trans-identify-flip=2
+// CRMARKS: u8-pk-trans-describe=2
+// CRMARKS: u8-pk-trans-identify-turn=2
+// CRMARKS: u8-pk-fq-read=2
+// CRMARKS: u8-pk-fq-which=2
+// CRMARKS: u8-pk-fq-coord=2
+// CRMARKS: u8-pk-fq-move=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-pk-fact-recall=a
+// BIMODAL: u1-pk-fact-division=a
+// BIMODAL: u1-pk-fact-onemore=a
+// BIMODAL: u1-pk-fact-skip=a
+// BIMODAL: u1-pk-fact-halving=a
+// BIMODAL: u1-pk-mult-2by1=a
+// BIMODAL: u1-pk-mult-3by1=a
+// BIMODAL: u1-pk-mult-2by2=a
+// BIMODAL: u1-pk-mult-zeros=a
+// BIMODAL: u1-pk-mult-3by2=a
+// BIMODAL: u1-pk-div-exact=a
+// BIMODAL: u1-pk-div-remainder=a
+// BIMODAL: u1-pk-div-2digit=a
+// BIMODAL: u1-pk-div-related=a
+// BIMODAL: u1-pk-div-zeros=a
+// BIMODAL: u2-pk-add-regroup=a
+// BIMODAL: u2-pk-sub-regroup=a
+// BIMODAL: u2-pk-add-three=a
+// BIMODAL: u2-pk-sub-line=a
+// BIMODAL: u2-pk-addsub-large=a
+// BIMODAL: u2-pk-order-line=a
+// BIMODAL: u2-pk-order-missing=a
+// BIMODAL: u2-pk-order-below=a
+// BIMODAL: u7-pk-order-line=a
+// BIMODAL: u7-pk-order-below=a
+// BIMODAL: u1-pk-multiples-first=a
+// BIMODAL: u1-pk-multiples-problem=a
+// BIMODAL: u1-pk-ooo-basic=a
+// BIMODAL: u1-pk-ooo-brackets=a
+// BIMODAL: u1-pk-ooo-chain=a
+// BIMODAL: u1-pk-ooo-division=a
+// BIMODAL: u1-pk-ooo-why=a
+// BIMODAL: u2-pk-below-temp=a
+// BIMODAL: u2-pk-below-debt=a
+// BIMODAL: u2-pk-below-line=a
+// BIMODAL: u7-pk-average-whole=a
+// BIMODAL: u7-pk-average-set=a
+// BIMODAL: u7-pk-average-money=a
+// BIMODAL: u7-pk-average-decimals=a
+// BIMODAL: u7-pk-average-small=a
+// BIMODAL: u4-pk-rect-area=a
+// BIMODAL: u4-pk-rect-area-context=a
+// BIMODAL: u4-pk-rect-square=a
+// BIMODAL: u4-pk-rect-missing-side=a
+// BIMODAL: u4-pk-rect-decimals=a
+// BIMODAL: u4-pk-rect-square-decimal=a
+// BIMODAL: u4-pk-perim-rect=a
+// BIMODAL: u4-pk-perim-square=a
+// BIMODAL: u4-pk-perim-pentagon=a
+// BIMODAL: u4-pk-perim-missing-side=a
+// BIMODAL: u4-pk-perim-missing-polygon=a
+// BIMODAL: u4-pk-ruler-cm=a
+// BIMODAL: u4-pk-ruler-mm=a
+// BIMODAL: u4-pk-ruler-cm-decimal=a
+// BIMODAL: u4-pk-ruler-half=a
+// BIMODAL: u4-pk-ruler-unit-choice=a
+// BIMODAL: u4-pk-ruler-difference=a
+// BIMODAL: u4-pk-circle-radius=a
+// BIMODAL: u4-pk-circle-diameter=a
+// BIMODAL: u4-pk-circle-centre=a
+// BIMODAL: u4-pk-circle-pick=a
+// BIMODAL: u4-pk-dec-mult-whole=a
+// BIMODAL: u4-pk-dec-mult-near3=a
+// BIMODAL: u4-pk-dec-square-whole=a
+// BIMODAL: u4-pk-dec-square-decimal=a
+// BIMODAL: u1-pk-sort-venn-read=a
+// BIMODAL: u1-pk-sort-venn-place=a
+// BIMODAL: u1-pk-sort-carroll-read=a
+// BIMODAL: u1-pk-sort-carroll-total=a
+// BIMODAL: u1-pk-pattern-rule=a
+// BIMODAL: u1-pk-pattern-missing=a
+// BIMODAL: u1-pk-fq-read=a
+// BIMODAL: u1-pk-fq-which=a
+// BIMODAL: u1-pk-fq-coord=a
+// BIMODAL: u1-pk-fq-move=a
+// BIMODAL: u1-pk-fq-between=a
+// BIMODAL: u1-pk-tg-table=a
+// BIMODAL: u1-pk-tg-picto=a
+// BIMODAL: u1-pk-tg-bar=a
+// BIMODAL: u1-pk-tg-line=a
+// BIMODAL: u1-pk-tg-compare=a
+// BIMODAL: u6-pk-balance-value=a
+// BIMODAL: u6-pk-balance-change=a
+// BIMODAL: u6-pk-subst-simple=a
+// BIMODAL: u6-pk-subst-brackets=a
+// BIMODAL: u6-pk-subst-table=a
+// BIMODAL: u3-pk-fracrep-bar=a
+// BIMODAL: u3-pk-fracrep-circle=a
+// BIMODAL: u3-pk-fracrep-set=a
+// BIMODAL: u3-pk-fracrep-pick=a
+// BIMODAL: u3-pk-fracrep-line=a
+// BIMODAL: u3-pk-equiv-target=a
+// BIMODAL: u3-pk-equiv-divide=a
+// BIMODAL: u3-pk-equiv-missing=a
+// BIMODAL: u3-pk-dpv-digit-value=a
+// BIMODAL: u3-pk-dpv-expanded=a
+// BIMODAL: u3-pk-dpv-round-tenth=a
+// BIMODAL: u3-pk-dpv-round-hundredth=a
+// BIMODAL: u3-pk-dpv-place-name=a
+// BIMODAL: u3-pk-fad-to-decimal=a
+// BIMODAL: u3-pk-fad-to-fraction=a
+// BIMODAL: u3-pk-fad-line=a
+// BIMODAL: u3-pk-est-add=a
+// BIMODAL: u3-pk-est-product=a
+// BIMODAL: u3-pk-est-difference=a
+// BIMODAL: u3-pk-est-money=a
+// BIMODAL: u3-pk-pct-grid=a
+// BIMODAL: u3-pk-pct-pick=a
+// BIMODAL: u3-pk-pct-fraction=a
+// BIMODAL: u3-pk-pct-decimal=a
+// BIMODAL: u4-pk-protractor-acute=a
+// BIMODAL: u4-pk-protractor-obtuse=a
+// BIMODAL: u4-pk-protractor-five=a
+// BIMODAL: u4-pk-protractor-left=a
+// BIMODAL: u4-pk-protractor-supplement=a
+// BIMODAL: u4-pk-angle-full-turn=a
+// BIMODAL: u4-pk-angle-right-count=a
+// BIMODAL: u5-pk-mixed-from-improper=a
+// BIMODAL: u5-pk-mixed-to-improper=a
+// BIMODAL: u5-pk-mixed-slices=a
+// BIMODAL: u5-pk-mixed-which=a
+// BIMODAL: u5-pk-equiv-target=a
+// BIMODAL: u5-pk-equiv-divide=a
+// BIMODAL: u7-pk-prob-bag=a
+// BIMODAL: u7-pk-prob-percent-bag=a
+// BIMODAL: u7-pk-prob-words=a
+// BIMODAL: u7-pk-prob-spinner=a
+// BIMODAL: u7-pk-prob-die=a
+// BIMODAL: u7-pk-list-count=a
+// BIMODAL: u7-pk-list-missing=a
+// BIMODAL: u7-pk-list-outfits=a
+// BIMODAL: u7-pk-tg-table=a
+// BIMODAL: u7-pk-tg-bar=a
+// BIMODAL: u7-pk-tg-line=a
+// BIMODAL: u8-pk-angle-classify=a
+// BIMODAL: u8-pk-angle-benchmark=a
+// BIMODAL: u8-pk-angle-supplementary=a
+// BIMODAL: u8-pk-angle-complementary=a
+// BIMODAL: u8-pk-protractor-acute=a
+// BIMODAL: u8-pk-protractor-obtuse=a
+// BIMODAL: u8-pk-protractor-five=a
+// BIMODAL: u8-pk-axes-origin-point=a
+// BIMODAL: u8-pk-axes-name=a
+// BIMODAL: u8-pk-axes-on-axis=a
+// BIMODAL: u8-pk-trans-identify-slide=a
+// BIMODAL: u8-pk-trans-identify-flip=a
+// BIMODAL: u8-pk-trans-describe=a
+// BIMODAL: u8-pk-trans-identify-turn=a
+// BIMODAL: u8-pk-fq-read=a
+// BIMODAL: u8-pk-fq-which=a
+// BIMODAL: u8-pk-fq-coord=a
+// BIMODAL: u8-pk-fq-move=a
 /* Mathematics 7 prior knowledge, Band 3 Piece 1: the fluency strand
    core (November 16, 2026), per Math-7-PK-Band-3-Specification-2026-11-16.md
    Sections 3 and 10. All 43 entries in this file are authored new;
@@ -8487,10 +9053,10 @@ BANK.forEach(function (e) {
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-evaluate-cr":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-solve-812-cr":3,"u1-table-value-cr":3,"u2-add-cr":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-order-ops-cr":3,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-numberline-cr":3,"u2-problem-cr":3,"u2-sub-cr":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-gap-compare-difference-cr":3,"u3-gap-decimal-fraction-cr":3,"u3-gap-discount-total-cr":2,"u3-gap-tickets-left-cr":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u5-gap-frac-of-frac-cr":3,"u5-gap-grams-cr":3,"u5-gap-recipe-total-cr":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-simplify-solution":3,"u5-three-fractions":3,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-model-solve-cr":3,"u6-one-step-problem-cr":3,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u7-central-problem-cr":3,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-two-event-pct-cr":2,"u8-bisector-cr":3,"u8-distance-cr":3,"u8-gap-angle-chain-cr":2,"u8-gap-grid-area-cr":3,"u8-gap-parallel-angle-cr":3,"u8-gap-pythagoras-cr":2,"u8-gap-rotate-cr":3,"u8-successive-cr":2,"u8-transform-cr":3,"u8-translate-cr":3};
+window.__BANK_CRMARKS={"u1-carroll-cell":2,"u1-describe-graph":3,"u1-divisibility-why":2,"u1-environment-pattern":3,"u1-evaluate-cr":2,"u1-evaluate-expression":2,"u1-factor-list":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-graph-conclusion":3,"u1-graph-relation":3,"u1-identify-parts":2,"u1-match-graph-panel":2,"u1-parts-in-equation":2,"u1-pattern-equation":3,"u1-pattern-expression":3,"u1-pk-div-2digit":2,"u1-pk-div-exact":2,"u1-pk-div-related":2,"u1-pk-div-remainder":2,"u1-pk-div-zeros":2,"u1-pk-fact-division":2,"u1-pk-fact-halving":2,"u1-pk-fact-onemore":2,"u1-pk-fact-recall":2,"u1-pk-fact-skip":2,"u1-pk-fq-between":2,"u1-pk-fq-coord":2,"u1-pk-fq-move":2,"u1-pk-fq-read":2,"u1-pk-fq-which":2,"u1-pk-mult-2by1":2,"u1-pk-mult-2by2":2,"u1-pk-mult-3by1":2,"u1-pk-mult-3by2":2,"u1-pk-mult-zeros":2,"u1-pk-multiples-first":2,"u1-pk-multiples-problem":2,"u1-pk-ooo-basic":2,"u1-pk-ooo-brackets":2,"u1-pk-ooo-chain":2,"u1-pk-ooo-division":2,"u1-pk-ooo-why":2,"u1-pk-pattern-missing":2,"u1-pk-pattern-rule":2,"u1-pk-sort-carroll-read":2,"u1-pk-sort-carroll-total":2,"u1-pk-sort-venn-place":2,"u1-pk-sort-venn-read":2,"u1-pk-tg-bar":2,"u1-pk-tg-compare":2,"u1-pk-tg-line":2,"u1-pk-tg-picto":2,"u1-pk-tg-table":2,"u1-relation-context":3,"u1-solve-812-cr":3,"u1-table-missing":2,"u1-table-value-cr":3,"u1-venn-overlap":2,"u2-add-basic":2,"u2-add-context":2,"u2-add-cr":3,"u2-add-numberline":2,"u2-error-spot":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-order-ops-cr":3,"u2-gap-order-ops-sr":2,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-mixed-chain":2,"u2-numberline-cr":3,"u2-opposites-zero":2,"u2-pk-add-regroup":2,"u2-pk-add-three":2,"u2-pk-addsub-large":2,"u2-pk-below-debt":2,"u2-pk-below-line":2,"u2-pk-below-temp":2,"u2-pk-order-below":2,"u2-pk-order-line":2,"u2-pk-order-missing":2,"u2-pk-sub-line":2,"u2-pk-sub-regroup":2,"u2-problem-cr":3,"u2-problem-two-step":2,"u2-sub-basic":2,"u2-sub-cr":2,"u2-sub-numberline":2,"u2-subtract-negative":2,"u3-add-sub-decimals":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-decimal-to-fraction":2,"u3-div-decimals":2,"u3-frac-to-decimal":2,"u3-frontend-prod-quot":2,"u3-frontend-sum":2,"u3-gap-compare-difference-cr":3,"u3-gap-decimal-fraction-cr":3,"u3-gap-discount-total-cr":2,"u3-gap-tickets-left-cr":2,"u3-misplaced":2,"u3-mult-decimals":2,"u3-numberline-mixed":2,"u3-numberline-place":2,"u3-order-mixed":2,"u3-order-ops-dec":3,"u3-percent-convert":2,"u3-percent-of":2,"u3-pk-dpv-digit-value":2,"u3-pk-dpv-expanded":2,"u3-pk-dpv-place-name":2,"u3-pk-dpv-round-hundredth":2,"u3-pk-dpv-round-tenth":2,"u3-pk-equiv-divide":2,"u3-pk-equiv-missing":2,"u3-pk-equiv-target":2,"u3-pk-est-add":2,"u3-pk-est-difference":2,"u3-pk-est-money":2,"u3-pk-est-product":2,"u3-pk-fad-line":2,"u3-pk-fad-to-decimal":2,"u3-pk-fad-to-fraction":2,"u3-pk-fracrep-bar":2,"u3-pk-fracrep-circle":2,"u3-pk-fracrep-line":2,"u3-pk-fracrep-pick":2,"u3-pk-fracrep-set":2,"u3-pk-pct-decimal":2,"u3-pk-pct-fraction":2,"u3-pk-pct-grid":2,"u3-pk-pct-pick":2,"u3-reasonableness":2,"u3-repeating-predict":2,"u3-repeating-to-fraction":3,"u3-tax-total":3,"u3-tech-multdiv":3,"u4-area-circle":2,"u4-area-parallelogram":2,"u4-area-triangle":2,"u4-central-angles":2,"u4-circ-approx":2,"u4-circle-context":3,"u4-circumference":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-draw-circle":2,"u4-estimate-circle-area":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u4-graph-attributes":2,"u4-graph-create":3,"u4-graph-media":3,"u4-graph-quantities":2,"u4-graph-read":2,"u4-para-from-rect":2,"u4-pi-ratio":2,"u4-pk-angle-full-turn":2,"u4-pk-angle-right-count":2,"u4-pk-circle-centre":2,"u4-pk-circle-diameter":2,"u4-pk-circle-pick":2,"u4-pk-circle-radius":2,"u4-pk-dec-mult-near3":2,"u4-pk-dec-mult-whole":2,"u4-pk-dec-square-decimal":2,"u4-pk-dec-square-whole":2,"u4-pk-perim-missing-polygon":2,"u4-pk-perim-missing-side":2,"u4-pk-perim-pentagon":2,"u4-pk-perim-rect":2,"u4-pk-perim-square":2,"u4-pk-protractor-acute":2,"u4-pk-protractor-five":2,"u4-pk-protractor-left":2,"u4-pk-protractor-obtuse":2,"u4-pk-protractor-supplement":2,"u4-pk-rect-area":2,"u4-pk-rect-area-context":2,"u4-pk-rect-decimals":2,"u4-pk-rect-missing-side":2,"u4-pk-rect-square":2,"u4-pk-rect-square-decimal":2,"u4-pk-ruler-cm":2,"u4-pk-ruler-cm-decimal":2,"u4-pk-ruler-difference":2,"u4-pk-ruler-half":2,"u4-pk-ruler-mm":2,"u4-pk-ruler-unit-choice":2,"u4-radius-diameter":2,"u4-triangle-from":2,"u5-add-like":2,"u5-add-mixed":2,"u5-add-model-total":2,"u5-add-unlike":2,"u5-common-denominator":2,"u5-gap-frac-of-frac-cr":3,"u5-gap-grams-cr":3,"u5-gap-recipe-total-cr":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-model-add-figure":2,"u5-model-sub-equation":2,"u5-model-sub-figure":2,"u5-pk-equiv-divide":2,"u5-pk-equiv-target":2,"u5-pk-mixed-from-improper":2,"u5-pk-mixed-slices":2,"u5-pk-mixed-to-improper":2,"u5-pk-mixed-which":2,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-simplify-fraction":2,"u5-simplify-solution":3,"u5-sub-like":2,"u5-sub-mixed":2,"u5-sub-mixed-borrow":3,"u5-sub-unlike":2,"u5-sub-write-equation":2,"u5-three-fractions":3,"u6-balance-figure":2,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-inspection-trial":2,"u6-model-problem":3,"u6-model-solve-cr":3,"u6-one-step-balance":2,"u6-one-step-problem":2,"u6-one-step-problem-cr":3,"u6-pk-balance-change":2,"u6-pk-balance-value":2,"u6-pk-subst-brackets":2,"u6-pk-subst-simple":2,"u6-pk-subst-table":2,"u6-preservation-next":2,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u6-solve-other-forms":2,"u6-solve-two-step-plus":2,"u6-substitute-check":2,"u6-two-step-context":3,"u6-verify-error":3,"u6-verify-one-step":3,"u6-verify-two-step":3,"u6-visual-steps":2,"u7-bar-graph":2,"u7-central-problem-cr":3,"u7-choose-measure":2,"u7-circle-graph":2,"u7-exp-vs-theor":2,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-line-graph":2,"u7-mean-basic":2,"u7-median-mode":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-outlier-find":2,"u7-outlier-judge":3,"u7-outlier-measure-choice":3,"u7-pk-average-decimals":2,"u7-pk-average-money":2,"u7-pk-average-set":2,"u7-pk-average-small":2,"u7-pk-average-whole":2,"u7-pk-list-count":2,"u7-pk-list-missing":2,"u7-pk-list-outfits":2,"u7-pk-order-below":2,"u7-pk-order-line":2,"u7-pk-prob-bag":2,"u7-pk-prob-die":2,"u7-pk-prob-percent-bag":2,"u7-pk-prob-spinner":2,"u7-pk-prob-words":2,"u7-pk-tg-bar":2,"u7-pk-tg-line":2,"u7-pk-tg-table":2,"u7-prob-basic":2,"u7-range-basic":2,"u7-sample-space":2,"u7-two-event-pct-cr":2,"u7-two-events-prob":2,"u8-axes-origin":2,"u8-bisector-cr":3,"u8-bisector-env":2,"u8-bisector-reason":2,"u8-complete-shape":2,"u8-construct-verify":3,"u8-distance-cr":3,"u8-draw-reason":2,"u8-gap-angle-chain-cr":2,"u8-gap-grid-area-cr":3,"u8-gap-parallel-angle-cr":3,"u8-gap-pythagoras-cr":2,"u8-gap-rotate-cr":3,"u8-grid-scale":2,"u8-move-describe":2,"u8-parallel-perp-id":2,"u8-pk-angle-benchmark":2,"u8-pk-angle-classify":2,"u8-pk-angle-complementary":2,"u8-pk-angle-supplementary":2,"u8-pk-axes-name":2,"u8-pk-axes-on-axis":2,"u8-pk-axes-origin-point":2,"u8-pk-fq-coord":2,"u8-pk-fq-move":2,"u8-pk-fq-read":2,"u8-pk-fq-which":2,"u8-pk-protractor-acute":2,"u8-pk-protractor-five":2,"u8-pk-protractor-obtuse":2,"u8-pk-trans-describe":2,"u8-pk-trans-identify-flip":2,"u8-pk-trans-identify-slide":2,"u8-pk-trans-identify-turn":2,"u8-plot-point":2,"u8-read-point":2,"u8-reflect-point":2,"u8-shape-vertices":2,"u8-successive-cr":2,"u8-transform-cr":3,"u8-transform-describe":2,"u8-transform-image":3,"u8-translate-cr":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={};
+window.__BANK_BIMODAL={"u1-carroll-cell":"a","u1-describe-graph":"b","u1-divisibility-why":"b","u1-environment-pattern":"b","u1-evaluate-expression":"a","u1-factor-list":"a","u1-graph-conclusion":"a","u1-graph-relation":"b","u1-identify-parts":"a","u1-match-graph-panel":"a","u1-parts-in-equation":"a","u1-pattern-equation":"b","u1-pattern-expression":"b","u1-pk-div-2digit":"a","u1-pk-div-exact":"a","u1-pk-div-related":"a","u1-pk-div-remainder":"a","u1-pk-div-zeros":"a","u1-pk-fact-division":"a","u1-pk-fact-halving":"a","u1-pk-fact-onemore":"a","u1-pk-fact-recall":"a","u1-pk-fact-skip":"a","u1-pk-fq-between":"a","u1-pk-fq-coord":"a","u1-pk-fq-move":"a","u1-pk-fq-read":"a","u1-pk-fq-which":"a","u1-pk-mult-2by1":"a","u1-pk-mult-2by2":"a","u1-pk-mult-3by1":"a","u1-pk-mult-3by2":"a","u1-pk-mult-zeros":"a","u1-pk-multiples-first":"a","u1-pk-multiples-problem":"a","u1-pk-ooo-basic":"a","u1-pk-ooo-brackets":"a","u1-pk-ooo-chain":"a","u1-pk-ooo-division":"a","u1-pk-ooo-why":"a","u1-pk-pattern-missing":"a","u1-pk-pattern-rule":"a","u1-pk-sort-carroll-read":"a","u1-pk-sort-carroll-total":"a","u1-pk-sort-venn-place":"a","u1-pk-sort-venn-read":"a","u1-pk-tg-bar":"a","u1-pk-tg-compare":"a","u1-pk-tg-line":"a","u1-pk-tg-picto":"a","u1-pk-tg-table":"a","u1-relation-context":"b","u1-table-missing":"a","u1-venn-overlap":"a","u2-add-basic":"a","u2-add-context":"a","u2-add-numberline":"a","u2-error-spot":"a","u2-gap-order-ops-sr":"a","u2-mixed-chain":"a","u2-opposites-zero":"b","u2-pk-add-regroup":"a","u2-pk-add-three":"a","u2-pk-addsub-large":"a","u2-pk-below-debt":"a","u2-pk-below-line":"a","u2-pk-below-temp":"a","u2-pk-order-below":"a","u2-pk-order-line":"a","u2-pk-order-missing":"a","u2-pk-sub-line":"a","u2-pk-sub-regroup":"a","u2-problem-two-step":"a","u2-sub-basic":"a","u2-sub-numberline":"a","u2-subtract-negative":"a","u3-add-sub-decimals":"a","u3-decimal-to-fraction":"a","u3-div-decimals":"a","u3-frac-to-decimal":"a","u3-frontend-prod-quot":"a","u3-frontend-sum":"a","u3-misplaced":"a","u3-mult-decimals":"a","u3-numberline-mixed":"a","u3-numberline-place":"a","u3-order-mixed":"a","u3-order-ops-dec":"a","u3-percent-convert":"a","u3-percent-of":"a","u3-pk-dpv-digit-value":"a","u3-pk-dpv-expanded":"a","u3-pk-dpv-place-name":"a","u3-pk-dpv-round-hundredth":"a","u3-pk-dpv-round-tenth":"a","u3-pk-equiv-divide":"a","u3-pk-equiv-missing":"a","u3-pk-equiv-target":"a","u3-pk-est-add":"a","u3-pk-est-difference":"a","u3-pk-est-money":"a","u3-pk-est-product":"a","u3-pk-fad-line":"a","u3-pk-fad-to-decimal":"a","u3-pk-fad-to-fraction":"a","u3-pk-fracrep-bar":"a","u3-pk-fracrep-circle":"a","u3-pk-fracrep-line":"a","u3-pk-fracrep-pick":"a","u3-pk-fracrep-set":"a","u3-pk-pct-decimal":"a","u3-pk-pct-fraction":"a","u3-pk-pct-grid":"a","u3-pk-pct-pick":"a","u3-reasonableness":"b","u3-repeating-predict":"a","u3-repeating-to-fraction":"a","u3-tax-total":"a","u3-tech-multdiv":"a","u4-area-circle":"a","u4-area-parallelogram":"a","u4-area-triangle":"a","u4-central-angles":"a","u4-circ-approx":"a","u4-circle-context":"a","u4-circumference":"a","u4-draw-circle":"b","u4-estimate-circle-area":"a","u4-graph-attributes":"a","u4-graph-create":"a","u4-graph-media":"b","u4-graph-quantities":"a","u4-graph-read":"a","u4-para-from-rect":"b","u4-pi-ratio":"a","u4-pk-angle-full-turn":"a","u4-pk-angle-right-count":"a","u4-pk-circle-centre":"a","u4-pk-circle-diameter":"a","u4-pk-circle-pick":"a","u4-pk-circle-radius":"a","u4-pk-dec-mult-near3":"a","u4-pk-dec-mult-whole":"a","u4-pk-dec-square-decimal":"a","u4-pk-dec-square-whole":"a","u4-pk-perim-missing-polygon":"a","u4-pk-perim-missing-side":"a","u4-pk-perim-pentagon":"a","u4-pk-perim-rect":"a","u4-pk-perim-square":"a","u4-pk-protractor-acute":"a","u4-pk-protractor-five":"a","u4-pk-protractor-left":"a","u4-pk-protractor-obtuse":"a","u4-pk-protractor-supplement":"a","u4-pk-rect-area":"a","u4-pk-rect-area-context":"a","u4-pk-rect-decimals":"a","u4-pk-rect-missing-side":"a","u4-pk-rect-square":"a","u4-pk-rect-square-decimal":"a","u4-pk-ruler-cm":"a","u4-pk-ruler-cm-decimal":"a","u4-pk-ruler-difference":"a","u4-pk-ruler-half":"a","u4-pk-ruler-mm":"a","u4-pk-ruler-unit-choice":"a","u4-radius-diameter":"a","u4-triangle-from":"b","u5-add-like":"a","u5-add-mixed":"a","u5-add-model-total":"a","u5-add-unlike":"a","u5-common-denominator":"a","u5-model-add-figure":"a","u5-model-sub-equation":"a","u5-model-sub-figure":"a","u5-pk-equiv-divide":"a","u5-pk-equiv-target":"a","u5-pk-mixed-from-improper":"a","u5-pk-mixed-slices":"a","u5-pk-mixed-to-improper":"a","u5-pk-mixed-which":"a","u5-simplify-fraction":"a","u5-sub-like":"a","u5-sub-mixed":"a","u5-sub-mixed-borrow":"a","u5-sub-unlike":"a","u5-sub-write-equation":"a","u6-balance-figure":"b","u6-inspection-trial":"a","u6-model-problem":"b","u6-one-step-balance":"a","u6-one-step-problem":"a","u6-pk-balance-change":"a","u6-pk-balance-value":"a","u6-pk-subst-brackets":"a","u6-pk-subst-simple":"a","u6-pk-subst-table":"a","u6-preservation-next":"a","u6-solve-other-forms":"a","u6-solve-two-step-plus":"a","u6-substitute-check":"a","u6-two-step-context":"a","u6-verify-error":"a","u6-verify-one-step":"b","u6-verify-two-step":"b","u6-visual-steps":"b","u7-bar-graph":"a","u7-choose-measure":"a","u7-circle-graph":"a","u7-exp-vs-theor":"a","u7-line-graph":"a","u7-mean-basic":"a","u7-median-mode":"a","u7-outlier-find":"a","u7-outlier-judge":"b","u7-outlier-measure-choice":"b","u7-pk-average-decimals":"a","u7-pk-average-money":"a","u7-pk-average-set":"a","u7-pk-average-small":"a","u7-pk-average-whole":"a","u7-pk-list-count":"a","u7-pk-list-missing":"a","u7-pk-list-outfits":"a","u7-pk-order-below":"a","u7-pk-order-line":"a","u7-pk-prob-bag":"a","u7-pk-prob-die":"a","u7-pk-prob-percent-bag":"a","u7-pk-prob-spinner":"a","u7-pk-prob-words":"a","u7-pk-tg-bar":"a","u7-pk-tg-line":"a","u7-pk-tg-table":"a","u7-prob-basic":"a","u7-range-basic":"a","u7-sample-space":"a","u7-two-events-prob":"a","u8-axes-origin":"a","u8-bisector-env":"b","u8-bisector-reason":"a","u8-complete-shape":"a","u8-construct-verify":"b","u8-draw-reason":"b","u8-grid-scale":"a","u8-move-describe":"a","u8-parallel-perp-id":"a","u8-pk-angle-benchmark":"a","u8-pk-angle-classify":"a","u8-pk-angle-complementary":"a","u8-pk-angle-supplementary":"a","u8-pk-axes-name":"a","u8-pk-axes-on-axis":"a","u8-pk-axes-origin-point":"a","u8-pk-fq-coord":"a","u8-pk-fq-move":"a","u8-pk-fq-read":"a","u8-pk-fq-which":"a","u8-pk-protractor-acute":"a","u8-pk-protractor-five":"a","u8-pk-protractor-obtuse":"a","u8-pk-trans-describe":"a","u8-pk-trans-identify-flip":"a","u8-pk-trans-identify-slide":"a","u8-pk-trans-identify-turn":"a","u8-plot-point":"a","u8-read-point":"a","u8-reflect-point":"a","u8-shape-vertices":"a","u8-transform-describe":"a","u8-transform-image":"a"};
