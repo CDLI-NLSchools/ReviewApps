@@ -805,6 +805,44 @@ function u7TriLabels(P, letters, angs, sides) {
 // CRMARKS: u1-sphere=3
 // CRMARKS: u1-composite=3
 // CRMARKS: u1-composite-sa=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-convert-si=2
+// CRMARKS: u1-convert-between=2
+// CRMARKS: u1-unit-analysis=2
+// CRMARKS: u1-reasonable=3
+// CRMARKS: u1-referent=2
+// CRMARKS: u1-estimate=2
+// CRMARKS: u1-justify-unit=3
+// CRMARKS: u1-linear-problem=2
+// CRMARKS: u1-strategy=3
+// CRMARKS: u1-vol-relation=2
+// CRMARKS: u1-read-instrument=2
+// CRMARKS: u1-pk-sa-from-net=2
+// CRMARKS: u1-pk-vol-rect-prism=2
+// CRMARKS: u1-pk-area-circle=2
+// CRMARKS: u1-pk-circumference=2
+// CRMARKS: u1-pk-pythag-model=2
+// CRMARKS: u1-pk-estimate-count=2
+// CRMARKS: u1-pk-estimate-reasonable=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-convert-si=a
+// BIMODAL: u1-convert-between=a
+// BIMODAL: u1-unit-analysis=b
+// BIMODAL: u1-reasonable=b
+// BIMODAL: u1-referent=a
+// BIMODAL: u1-estimate=a
+// BIMODAL: u1-justify-unit=b
+// BIMODAL: u1-linear-problem=a
+// BIMODAL: u1-strategy=b
+// BIMODAL: u1-vol-relation=a
+// BIMODAL: u1-read-instrument=a
+// BIMODAL: u1-pk-sa-from-net=a
+// BIMODAL: u1-pk-vol-rect-prism=a
+// BIMODAL: u1-pk-area-circle=a
+// BIMODAL: u1-pk-circumference=a
+// BIMODAL: u1-pk-pythag-model=b
+// BIMODAL: u1-pk-estimate-count=a
+// BIMODAL: u1-pk-estimate-reasonable=a
 // Figures (Nov 2026): the shape, solid and instrument entries carry
 // inline SVG diagrams drawn from each generator's own values, with
 // the helpers in bank-helpers.js. Conversion, referent, estimation,
@@ -1869,8 +1907,56 @@ BANK.forEach(function(e){var t=PKT_U1[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u2-laws-rational=2
 // CRMARKS: u2-evaluate-exp=2
 // CRMARKS: u2-problem=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-prime-factor=2
+// CRMARKS: u2-zero-one=2
+// CRMARKS: u2-perfect=2
+// CRMARKS: u2-index=2
+// CRMARKS: u2-radical-entire=2
+// CRMARKS: u2-rational-exp=2
+// CRMARKS: u2-rational-pattern=2
+// CRMARKS: u2-sort-numbers=2
+// CRMARKS: u2-order-irrational=3
+// CRMARKS: u2-pk-sqrt-perfect=2
+// CRMARKS: u2-pk-factors-root=2
+// CRMARKS: u2-pk-square-of-number=2
+// CRMARKS: u2-pk-estimate-between=2
+// CRMARKS: u2-pk-root-between=2
+// CRMARKS: u2-pk-factor-list=2
+// CRMARKS: u2-pk-divisible-by=2
+// CRMARKS: u2-pk-repeated-mult=2
+// CRMARKS: u2-pk-parentheses-sign=2
+// CRMARKS: u2-pk-product-law=2
+// CRMARKS: u2-pk-order-four=2
+// CRMARKS: u2-pk-between-two=2
+// CRMARKS: u2-pk-frac-to-decimal=2
+// CRMARKS: u2-pk-decimal-to-fraction=2
 // BIMODAL: u2-laws-rational=b
 // BIMODAL: u2-laws-integral=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-prime-factor=a
+// BIMODAL: u2-zero-one=b
+// BIMODAL: u2-perfect=a
+// BIMODAL: u2-index=b
+// BIMODAL: u2-radical-entire=a
+// BIMODAL: u2-rational-exp=a
+// BIMODAL: u2-rational-pattern=b
+// BIMODAL: u2-sort-numbers=a
+// BIMODAL: u2-order-irrational=b
+// BIMODAL: u2-pk-sqrt-perfect=a
+// BIMODAL: u2-pk-factors-root=a
+// BIMODAL: u2-pk-square-of-number=a
+// BIMODAL: u2-pk-estimate-between=a
+// BIMODAL: u2-pk-root-between=a
+// BIMODAL: u2-pk-factor-list=b
+// BIMODAL: u2-pk-divisible-by=a
+// BIMODAL: u2-pk-repeated-mult=a
+// BIMODAL: u2-pk-parentheses-sign=a
+// BIMODAL: u2-pk-product-law=a
+// BIMODAL: u2-pk-order-four=a
+// BIMODAL: u2-pk-between-two=a
+// BIMODAL: u2-pk-frac-to-decimal=a
+// BIMODAL: u2-pk-decimal-to-fraction=a
 /* Math 1201 Review, Unit 2: Roots and Powers (tranche 1).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u2. Every entry returns the same question type on every draw. */
@@ -3039,6 +3125,19 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u3-mult-error=2
 // CRMARKS: u3-factor-error=3
 // CRMARKS: u3-factorable-k=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-monomial-expand=2
+// CRMARKS: u3-mult-factor-rel=2
+// CRMARKS: u3-two-digit=2
+// CRMARKS: u3-area-model=2
+// CRMARKS: u3-strategy=3
+// CRMARKS: u3-pk-degree=2
+// CRMARKS: u3-pk-parts=2
+// CRMARKS: u3-pk-add=2
+// CRMARKS: u3-pk-subtract=3
+// CRMARKS: u3-pk-addsub-xy=3
+// CRMARKS: u3-pk-multiply-monomial=2
+// CRMARKS: u3-pk-divide-monomial=2
 // BIMODAL: u3-mult-error=b
 // BIMODAL: u3-gcf=b
 // BIMODAL: u3-factorable-k=a
@@ -3048,6 +3147,19 @@ BANK.forEach(function(e){var t=PKT_U2[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // BIMODAL: u3-factor-error=b
 // BIMODAL: u3-binomial-expand=b
 // BIMODAL: u3-binom-tri-expand=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-monomial-expand=b
+// BIMODAL: u3-mult-factor-rel=b
+// BIMODAL: u3-two-digit=b
+// BIMODAL: u3-area-model=b
+// BIMODAL: u3-strategy=b
+// BIMODAL: u3-pk-degree=a
+// BIMODAL: u3-pk-parts=a
+// BIMODAL: u3-pk-add=b
+// BIMODAL: u3-pk-subtract=b
+// BIMODAL: u3-pk-addsub-xy=b
+// BIMODAL: u3-pk-multiply-monomial=b
+// BIMODAL: u3-pk-divide-monomial=b
 /* Math 1201 Review, Unit 3 (Factors and Products) bank entries.
    Authored November 2026 from the tranche 1 briefs. All scenarios and
    values are original. Polynomials are rendered by the u3 helpers below:
@@ -4064,6 +4176,46 @@ BANK.forEach(function(e){var t=PKT_U3[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u4-eval-function=2
 // CRMARKS: u4-solve-input=2
 // CRMARKS: u4-wcr-context-domain=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-situation-graph=2
+// CRMARKS: u4-sketch-situation=2
+// CRMARKS: u4-connect-points=3
+// CRMARKS: u4-represent=2
+// CRMARKS: u4-sort-graphs=2
+// CRMARKS: u4-graph-data=2
+// CRMARKS: u4-indep-dep=2
+// CRMARKS: u4-dr-linear=2
+// CRMARKS: u4-intercept-count=2
+// CRMARKS: u4-match-slope-intercept=2
+// CRMARKS: u4-match-representations=3
+// CRMARKS: u4-fn-notation=2
+// CRMARKS: u4-fn-convert=2
+// CRMARKS: u4-sketch-fn=2
+// CRMARKS: u4-pk-pattern-figure=2
+// CRMARKS: u4-pk-table-equation=2
+// CRMARKS: u4-pk-point-on-graph=2
+// CRMARKS: u4-pk-graph-describe=3
+// CRMARKS: u4-pk-evaluate-expression=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-situation-graph=b
+// BIMODAL: u4-sketch-situation=b
+// BIMODAL: u4-connect-points=b
+// BIMODAL: u4-represent=b
+// BIMODAL: u4-sort-graphs=a
+// BIMODAL: u4-graph-data=a
+// BIMODAL: u4-indep-dep=a
+// BIMODAL: u4-dr-linear=a
+// BIMODAL: u4-intercept-count=b
+// BIMODAL: u4-match-slope-intercept=b
+// BIMODAL: u4-match-representations=b
+// BIMODAL: u4-fn-notation=b
+// BIMODAL: u4-fn-convert=b
+// BIMODAL: u4-sketch-fn=b
+// BIMODAL: u4-pk-pattern-figure=a
+// BIMODAL: u4-pk-table-equation=a
+// BIMODAL: u4-pk-point-on-graph=a
+// BIMODAL: u4-pk-graph-describe=b
+// BIMODAL: u4-pk-evaluate-expression=a
 /* Math 1201 Review, Unit 4: Relations and Functions (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u4. Every entry returns the same question type on every draw. */
@@ -5250,9 +5402,45 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u5-eq-two-points=3
 // CRMARKS: u5-eq-parallel-perp=2
 // CRMARKS: u5-slope-error=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-slope-rise-run=2
+// CRMARKS: u5-slope-any-two=3
+// CRMARKS: u5-slope-sign=2
+// CRMARKS: u5-slope-hv=2
+// CRMARKS: u5-draw-line=2
+// CRMARKS: u5-another-point=2
+// CRMARKS: u5-match-graphs=2
+// CRMARKS: u5-graph-strategy=2
+// CRMARKS: u5-graph-form=2
+// CRMARKS: u5-compare-forms=3
+// CRMARKS: u5-equivalent=3
+// CRMARKS: u5-identify-form=2
+// CRMARKS: u5-pk-express-rate=2
+// CRMARKS: u5-pk-two-term-ratio=2
+// CRMARKS: u5-pk-which-is-solution=2
+// CRMARKS: u5-pk-graph-equation=2
+// CRMARKS: u5-pk-construct-graph=2
 // BIMODAL: u5-rewrite-form=b
 // BIMODAL: u5-eq-two-points=b
 // BIMODAL: u5-eq-parallel-perp=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-slope-rise-run=a
+// BIMODAL: u5-slope-any-two=b
+// BIMODAL: u5-slope-sign=b
+// BIMODAL: u5-slope-hv=b
+// BIMODAL: u5-draw-line=b
+// BIMODAL: u5-another-point=a
+// BIMODAL: u5-match-graphs=b
+// BIMODAL: u5-graph-strategy=b
+// BIMODAL: u5-graph-form=a
+// BIMODAL: u5-compare-forms=b
+// BIMODAL: u5-equivalent=b
+// BIMODAL: u5-identify-form=a
+// BIMODAL: u5-pk-express-rate=a
+// BIMODAL: u5-pk-two-term-ratio=a
+// BIMODAL: u5-pk-which-is-solution=a
+// BIMODAL: u5-pk-graph-equation=a
+// BIMODAL: u5-pk-construct-graph=a
 /* Math 1201 Review, Unit 5: Linear Functions (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u5. Every entry returns the same question type on every draw.
@@ -6089,8 +6277,34 @@ BANK.forEach(function(e){var t=PKT_U5[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u6-word-problem=2
 // CRMARKS: u6-mixture=2
 // CRMARKS: u6-travel=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-model=3
+// CRMARKS: u6-relate=2
+// CRMARKS: u6-intersection=2
+// CRMARKS: u6-strategy=2
+// CRMARKS: u6-verify=2
+// CRMARKS: u6-pk-context-equation=2
+// CRMARKS: u6-pk-balance-model=2
+// CRMARKS: u6-pk-which-is-solution=2
+// CRMARKS: u6-pk-table-equation=2
+// CRMARKS: u6-add-term-meaning=3
+// CRMARKS: u6-add-strategy-choice=3
+// CRMARKS: u6-add-count-standard=2
 // BIMODAL: u6-word-problem=a
 // BIMODAL: u6-solution-count=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-model=b
+// BIMODAL: u6-relate=b
+// BIMODAL: u6-intersection=b
+// BIMODAL: u6-strategy=b
+// BIMODAL: u6-verify=b
+// BIMODAL: u6-pk-context-equation=a
+// BIMODAL: u6-pk-balance-model=a
+// BIMODAL: u6-pk-which-is-solution=a
+// BIMODAL: u6-pk-table-equation=a
+// BIMODAL: u6-add-term-meaning=b
+// BIMODAL: u6-add-strategy-choice=b
+// BIMODAL: u6-add-count-standard=a
 /* Math 1201 Review, Unit 6: Systems of Linear Equations (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u6. Every entry returns the same question type on every draw.
@@ -6896,6 +7110,26 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-ramp-run=3
 // CRMARKS: u7-brace-leftover=2
 // CRMARKS: u7-wcr-two-observation-height=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-label-sides=2
+// CRMARKS: u7-ratio-similar=2
+// CRMARKS: u7-ratio-def=2
+// CRMARKS: u7-choose-ratio=2
+// CRMARKS: u7-pk-is-right=2
+// CRMARKS: u7-add-identify-side=2
+// CRMARKS: u7-add-solve-hypotenuse=2
+// CRMARKS: u7-add-ramp-angle=2
+// CRMARKS: u7-add-ratio-345=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-label-sides=a
+// BIMODAL: u7-ratio-similar=b
+// BIMODAL: u7-ratio-def=a
+// BIMODAL: u7-choose-ratio=a
+// BIMODAL: u7-pk-is-right=a
+// BIMODAL: u7-add-identify-side=a
+// BIMODAL: u7-add-solve-hypotenuse=a
+// BIMODAL: u7-add-ramp-angle=a
+// BIMODAL: u7-add-ratio-345=a
 /* Math 1201 Review, Unit 7: Trigonometry (tranche 2).
    All scenarios and numbers are original to this bank; sources gave types only.
    Helper prefix: u7. Degrees only. Every entry returns the same question
@@ -8110,6 +8344,14 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u5-point-from-slope-cr=3
 // CRMARKS: u5-slope-from-form-cr=2
 // CRMARKS: u5-line-point-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-convert-choice=2
+// CRMARKS: u1-sa-choice=2
+// CRMARKS: u1-vol-choice=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-convert-choice=a
+// BIMODAL: u1-sa-choice=a
+// BIMODAL: u1-vol-choice=a
 /* Unit test pool fix additions, November 9, 2026 (additions only).
    Unit 1: three Level 2 multiple choice generators (the unit's Level 2
    entries were all numeric, so Section A had no Level 2 pool).
@@ -8371,10 +8613,10 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-multistep":2,"u1-sa-basic":3,"u1-sa-unknown":2,"u1-sphere":3,"u1-vol-basic":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-laws-integral":3,"u2-laws-rational":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-mixed":2,"u2-square-diagonal":3,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-mult-error":2,"u3-special-products":2,"u3-verify-sub":1,"u4-domain-range":3,"u4-eval-function":2,"u4-graph-read-cr":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-pair-intercept-cr":2,"u4-rate-of-change":3,"u4-solve-input":2,"u4-table-extend-cr":3,"u4-wcr-context-domain":3,"u5-context-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-line-point-cr":2,"u5-parallel-perp":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-rate":3,"u6-break-even":2,"u6-mixture":2,"u6-problem":3,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-travel":2,"u6-word-problem":2,"u7-brace-leftover":2,"u7-clinometer":3,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-pythagoras":2,"u7-ramp-run":3,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2,"u7-wcr-two-observation-height":5};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-between":2,"u1-convert-choice":2,"u1-convert-multistep":2,"u1-convert-si":2,"u1-estimate":2,"u1-justify-unit":3,"u1-linear-problem":2,"u1-pk-area-circle":2,"u1-pk-circumference":2,"u1-pk-estimate-count":2,"u1-pk-estimate-reasonable":2,"u1-pk-pythag-model":2,"u1-pk-sa-from-net":2,"u1-pk-vol-rect-prism":2,"u1-read-instrument":2,"u1-reasonable":3,"u1-referent":2,"u1-sa-basic":3,"u1-sa-choice":2,"u1-sa-unknown":2,"u1-sphere":3,"u1-strategy":3,"u1-unit-analysis":2,"u1-vol-basic":2,"u1-vol-choice":2,"u1-vol-relation":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-index":2,"u2-laws-integral":3,"u2-laws-rational":2,"u2-order-irrational":3,"u2-perfect":2,"u2-pk-between-two":2,"u2-pk-decimal-to-fraction":2,"u2-pk-divisible-by":2,"u2-pk-estimate-between":2,"u2-pk-factor-list":2,"u2-pk-factors-root":2,"u2-pk-frac-to-decimal":2,"u2-pk-order-four":2,"u2-pk-parentheses-sign":2,"u2-pk-product-law":2,"u2-pk-repeated-mult":2,"u2-pk-root-between":2,"u2-pk-sqrt-perfect":2,"u2-pk-square-of-number":2,"u2-prime-factor":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-entire":2,"u2-radical-mixed":2,"u2-rational-exp":2,"u2-rational-pattern":2,"u2-sort-numbers":2,"u2-square-diagonal":3,"u2-zero-one":2,"u3-area-model":2,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-monomial-expand":2,"u3-mult-error":2,"u3-mult-factor-rel":2,"u3-pk-add":2,"u3-pk-addsub-xy":3,"u3-pk-degree":2,"u3-pk-divide-monomial":2,"u3-pk-multiply-monomial":2,"u3-pk-parts":2,"u3-pk-subtract":3,"u3-special-products":2,"u3-strategy":3,"u3-two-digit":2,"u3-verify-sub":1,"u4-connect-points":3,"u4-domain-range":3,"u4-dr-linear":2,"u4-eval-function":2,"u4-fn-convert":2,"u4-fn-notation":2,"u4-graph-data":2,"u4-graph-read-cr":2,"u4-indep-dep":2,"u4-intercept-count":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-match-representations":3,"u4-match-slope-intercept":2,"u4-pair-intercept-cr":2,"u4-pk-evaluate-expression":2,"u4-pk-graph-describe":3,"u4-pk-pattern-figure":2,"u4-pk-point-on-graph":2,"u4-pk-table-equation":2,"u4-rate-of-change":3,"u4-represent":2,"u4-situation-graph":2,"u4-sketch-fn":2,"u4-sketch-situation":2,"u4-solve-input":2,"u4-sort-graphs":2,"u4-table-extend-cr":3,"u4-wcr-context-domain":3,"u5-another-point":2,"u5-compare-forms":3,"u5-context-line":2,"u5-draw-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-equivalent":3,"u5-graph-form":2,"u5-graph-strategy":2,"u5-identify-form":2,"u5-line-point-cr":2,"u5-match-graphs":2,"u5-parallel-perp":2,"u5-pk-construct-graph":2,"u5-pk-express-rate":2,"u5-pk-graph-equation":2,"u5-pk-two-term-ratio":2,"u5-pk-which-is-solution":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-any-two":3,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-hv":2,"u5-slope-rate":3,"u5-slope-rise-run":2,"u5-slope-sign":2,"u6-add-count-standard":2,"u6-add-strategy-choice":3,"u6-add-term-meaning":3,"u6-break-even":2,"u6-intersection":2,"u6-mixture":2,"u6-model":3,"u6-pk-balance-model":2,"u6-pk-context-equation":2,"u6-pk-table-equation":2,"u6-pk-which-is-solution":2,"u6-problem":3,"u6-relate":2,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-strategy":2,"u6-travel":2,"u6-verify":2,"u6-word-problem":2,"u7-add-identify-side":2,"u7-add-ramp-angle":2,"u7-add-ratio-345":2,"u7-add-solve-hypotenuse":2,"u7-brace-leftover":2,"u7-choose-ratio":2,"u7-clinometer":3,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-label-sides":2,"u7-pk-is-right":2,"u7-pythagoras":2,"u7-ramp-run":3,"u7-ratio-def":2,"u7-ratio-similar":2,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2,"u7-wcr-two-observation-height":5};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u2-laws-integral":"b","u2-laws-rational":"b","u3-binom-tri-expand":"b","u3-binomial-expand":"b","u3-factor-error":"b","u3-factor-gcf-first":"b","u3-factor-hard":"b","u3-factor-product":"b","u3-factorable-k":"a","u3-gcf":"b","u3-mult-error":"b","u5-eq-parallel-perp":"b","u5-eq-two-points":"b","u5-rewrite-form":"b","u6-solution-count":"a","u6-word-problem":"a"};
+window.__BANK_BIMODAL={"u1-convert-between":"a","u1-convert-choice":"a","u1-convert-si":"a","u1-estimate":"a","u1-justify-unit":"b","u1-linear-problem":"a","u1-pk-area-circle":"a","u1-pk-circumference":"a","u1-pk-estimate-count":"a","u1-pk-estimate-reasonable":"a","u1-pk-pythag-model":"b","u1-pk-sa-from-net":"a","u1-pk-vol-rect-prism":"a","u1-read-instrument":"a","u1-reasonable":"b","u1-referent":"a","u1-sa-choice":"a","u1-strategy":"b","u1-unit-analysis":"b","u1-vol-choice":"a","u1-vol-relation":"a","u2-index":"b","u2-laws-integral":"b","u2-laws-rational":"b","u2-order-irrational":"b","u2-perfect":"a","u2-pk-between-two":"a","u2-pk-decimal-to-fraction":"a","u2-pk-divisible-by":"a","u2-pk-estimate-between":"a","u2-pk-factor-list":"b","u2-pk-factors-root":"a","u2-pk-frac-to-decimal":"a","u2-pk-order-four":"a","u2-pk-parentheses-sign":"a","u2-pk-product-law":"a","u2-pk-repeated-mult":"a","u2-pk-root-between":"a","u2-pk-sqrt-perfect":"a","u2-pk-square-of-number":"a","u2-prime-factor":"a","u2-radical-entire":"a","u2-rational-exp":"a","u2-rational-pattern":"b","u2-sort-numbers":"a","u2-zero-one":"b","u3-area-model":"b","u3-binom-tri-expand":"b","u3-binomial-expand":"b","u3-factor-error":"b","u3-factor-gcf-first":"b","u3-factor-hard":"b","u3-factor-product":"b","u3-factorable-k":"a","u3-gcf":"b","u3-monomial-expand":"b","u3-mult-error":"b","u3-mult-factor-rel":"b","u3-pk-add":"b","u3-pk-addsub-xy":"b","u3-pk-degree":"a","u3-pk-divide-monomial":"b","u3-pk-multiply-monomial":"b","u3-pk-parts":"a","u3-pk-subtract":"b","u3-strategy":"b","u3-two-digit":"b","u4-connect-points":"b","u4-dr-linear":"a","u4-fn-convert":"b","u4-fn-notation":"b","u4-graph-data":"a","u4-indep-dep":"a","u4-intercept-count":"b","u4-match-representations":"b","u4-match-slope-intercept":"b","u4-pk-evaluate-expression":"a","u4-pk-graph-describe":"b","u4-pk-pattern-figure":"a","u4-pk-point-on-graph":"a","u4-pk-table-equation":"a","u4-represent":"b","u4-situation-graph":"b","u4-sketch-fn":"b","u4-sketch-situation":"b","u4-sort-graphs":"a","u5-another-point":"a","u5-compare-forms":"b","u5-draw-line":"b","u5-eq-parallel-perp":"b","u5-eq-two-points":"b","u5-equivalent":"b","u5-graph-form":"a","u5-graph-strategy":"b","u5-identify-form":"a","u5-match-graphs":"b","u5-pk-construct-graph":"a","u5-pk-express-rate":"a","u5-pk-graph-equation":"a","u5-pk-two-term-ratio":"a","u5-pk-which-is-solution":"a","u5-rewrite-form":"b","u5-slope-any-two":"b","u5-slope-hv":"b","u5-slope-rise-run":"a","u5-slope-sign":"b","u6-add-count-standard":"a","u6-add-strategy-choice":"b","u6-add-term-meaning":"b","u6-intersection":"b","u6-model":"b","u6-pk-balance-model":"a","u6-pk-context-equation":"a","u6-pk-table-equation":"a","u6-pk-which-is-solution":"a","u6-relate":"b","u6-solution-count":"a","u6-strategy":"b","u6-verify":"b","u6-word-problem":"a","u7-add-identify-side":"a","u7-add-ramp-angle":"a","u7-add-ratio-345":"a","u7-add-solve-hypotenuse":"a","u7-choose-ratio":"a","u7-label-sides":"a","u7-pk-is-right":"a","u7-ratio-def":"a","u7-ratio-similar":"b"};
