@@ -3935,7 +3935,7 @@ function renderExample(i,exq){
   box._exq=exq;
   var h='<b>'+L9("Worked example","Exemple travaillé")+'</b> '+L9("(same skill, different numbers; not scored)","(même habileté, nombres différents; non noté)")+'<div class="prompt">'+stepHTML(exq.prompt)+"</div>";
   if(exq.figure)h+='<div class="fig">'+exq.figure+"</div>";
-  if(exq.type==="mc"){h+='<div class="opts">'+exq.options.map(function(o,j){return "<label>\u25CB "+o+(j===exq.correct?" <b>\u2713 "+L9("correct","bonne réponse")+"</b>":"")+"</label>";}).join("")+"</div>";}
+  if(exq.type==="mc"){h+='<div class="opts">'+exq.options.map(function(o,j){return "<label><b>"+"ABCD"[j]+".</b> "+o+(j===exq.correct?" <b>\u2713 "+L9("correct","bonne réponse")+"</b>":"")+"</label>";}).join("")+"</div>";}
   else if(exq.type==="num"){h+="<p>"+L9("Answer: ","Réponse : ")+"<b>"+fmtAns(exq.answer)+"</b></p>";}
   else{h+="<p>"+L9("Answer: ","Réponse : ")+"<b>"+esc(exq.answers[0])+"</b></p>";}
   h+='<div class="sol show"><b>'+L9("Worked Example Solution:","Solution de l'exemple travaillé :")+'</b> '+stepHTML(exq.solution)+"</div>";
@@ -5341,7 +5341,7 @@ function tQStatus(key,msg){var s=document.querySelector('[data-tqstatus="'+key+'
 function tQPromptHtml(q){
   var h='<div class="tqprompt"><div class="prompt">'+stepHTML(q.prompt)+'</div>';
   if(q.figure)h+='<div class="fig">'+q.figure+'</div>';
-  if(q.type==="mc"&&q.options)h+='<div class="opts">'+q.options.map(function(o){return '<div>\u25CB '+(typeof o==="string"?o:o.t)+'</div>';}).join("")+'</div>';
+  if(q.type==="mc"&&q.options)h+='<div class="opts">'+q.options.map(function(o,oi){return '<div><b>'+"ABCD"[oi]+'.</b> '+(typeof o==="string"?o:o.t)+'</div>';}).join("")+'</div>';
   return h+'</div>';
 }
 function tctlHtml(i){
@@ -5667,7 +5667,7 @@ function renderOnline(scroll){
     html+='<div class="q" id="q'+i+'"><div class="qhead"><b>Question '+(i+1)+'</b> '+tags(q)+'</div><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
     if(q.type==="mc"){
-      html+='<div class="opts">'+q.options.map(function(o,j){return '<label><input type="radio" name="opt'+i+'" value="'+j+'"> <span>'+o+'</span></label>';}).join("")+'</div>';
+      html+='<div class="opts">'+q.options.map(function(o,j){return '<label><input type="radio" name="opt'+i+'" value="'+j+'"> <b>'+"ABCD"[j]+'.</b> <span>'+o+'</span></label>';}).join("")+'</div>';
     }else if(q.type==="text"){
       html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<textarea class="ans" id="ans'+i+'" rows="4" autocomplete="off"></textarea></p>';
     }else{
@@ -6776,7 +6776,7 @@ function renderSheet(){
     var h=Math.round((q._entry.level===3?170:(q.type==="mc"?120:150))*((q.type==="mc")?wsMcF:wsCrF));
     html+='<div class="pq"><div class="qline"><b>'+(i+1)+'.</b> <span style="font-size:.8rem;color:#555;">('+L9("Unit ","Unité ")+q._entry.unit+' \u00B7 '+L9("Level ","Niveau ")+q._entry.level+')</span> <span class="prompt">'+stepHTML(q.prompt)+'</span></div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
-    if(q.type==="mc"){html+='<div class="opts">'+q.options.map(function(o){return '<label style="display:block;margin:4px 0;">\u25CB '+o+'</label>';}).join("")+'</div>';}
+    if(q.type==="mc"){html+='<div class="opts">'+q.options.map(function(o,oi){return '<label style="display:block;margin:4px 0;"><b>'+"ABCD"[oi]+'.</b> '+o+'</label>';}).join("")+'</div>';}
     html+=wsBox(h);
     html+='</div>';
   });
@@ -6785,7 +6785,7 @@ function renderSheet(){
   html+='<div class="keybreak"><h1 style="font-size:1.3rem;">'+L9("Answer Key, with worked solutions","Corrigé, avec solutions détaillées")+'</h1>';
   res.items.forEach(function(q,i){
     var ans=q.answerText?esc(q.answerText):(q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0])));
-    html+='<div class="solp"><p><b>'+(i+1)+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+ans+'</b></p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';
+    html+='<div class="solp"><p><b>'+(i+1)+'.</b> '+L9("Answer: ","Réponse : ")+'<b>'+(q.type==="mc"&&typeof q.correct==="number"?"("+"ABCD"[q.correct]+") ":"")+ans+'</b></p><div style="line-height:1.5;font-size:.92rem;">'+stepHTML(q.solution)+'</div></div>';
   });
   html+='</div>';
   }
