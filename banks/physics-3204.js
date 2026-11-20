@@ -789,6 +789,36 @@ function p32figTwoWires(I1,I2,d,midway,x){
 // CRMARKS: u1-54-hit-or-miss-cr=4
 // CRMARKS: u1-55-stick-2d-cr=5
 // CRMARKS: u1-55-third-piece-cr=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-51-components=2
+// CRMARKS: u1-51-direction-from-components=2
+// CRMARKS: u1-51-avg-vel-vs-speed=3
+// CRMARKS: u1-51-claims=4
+// CRMARKS: u1-52-largest-speed=2
+// CRMARKS: u1-52-invariants=2
+// CRMARKS: u1-52-two-frames=3
+// CRMARKS: u1-52-who-is-right=4
+// CRMARKS: u1-53-river-resultant=3
+// CRMARKS: u1-53-aircraft-ground=3
+// CRMARKS: u1-54-angled-components=2
+// CRMARKS: u1-54-launch-speed=3
+// CRMARKS: u1-55-perp-direction=3
+// CRMARKS: u1-55-rebound=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-51-components=a
+// BIMODAL: u1-51-direction-from-components=a
+// BIMODAL: u1-51-avg-vel-vs-speed=a
+// BIMODAL: u1-51-claims=b
+// BIMODAL: u1-52-largest-speed=a
+// BIMODAL: u1-52-invariants=a
+// BIMODAL: u1-52-two-frames=a
+// BIMODAL: u1-52-who-is-right=b
+// BIMODAL: u1-53-river-resultant=a
+// BIMODAL: u1-53-aircraft-ground=a
+// BIMODAL: u1-54-angled-components=a
+// BIMODAL: u1-54-launch-speed=a
+// BIMODAL: u1-55-perp-direction=a
+// BIMODAL: u1-55-rebound=a
 
 /* Units and significant figures discipline: givens are fixed at 3 sf and
    printed with gF(); intermediates are chained at 4 sf with iF() so every
@@ -1201,6 +1231,38 @@ E("u1-55-third-piece-cr",1,["PH12.5.5"],3,"gen",function(){
 // CRMARKS: u2-64-beam-cr=4
 // CRMARKS: u2-64-ladder-cr=4
 // CRMARKS: u2-64-wires-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-61-period-frequency=2
+// CRMARKS: u2-61-direction=2
+// CRMARKS: u2-61-scaling-concept=2
+// CRMARKS: u2-61-centripetal-accel-mc=3
+// CRMARKS: u2-61-claim-judge=4
+// CRMARKS: u2-62-tension-horizontal=3
+// CRMARKS: u2-62-loop-bottom=3
+// CRMARKS: u2-62-effective-weight=2
+// CRMARKS: u2-62-claim-judge=4
+// CRMARKS: u2-63-components-mc=2
+// CRMARKS: u2-63-slip-angle=3
+// CRMARKS: u2-63-pulley-tension-mc=3
+// CRMARKS: u2-63-judge=4
+// CRMARKS: u2-64-metre-stick=3
+// CRMARKS: u2-64-bridge-mc=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-61-period-frequency=a
+// BIMODAL: u2-61-direction=a
+// BIMODAL: u2-61-scaling-concept=a
+// BIMODAL: u2-61-centripetal-accel-mc=a
+// BIMODAL: u2-61-claim-judge=b
+// BIMODAL: u2-62-tension-horizontal=a
+// BIMODAL: u2-62-loop-bottom=a
+// BIMODAL: u2-62-effective-weight=b
+// BIMODAL: u2-62-claim-judge=b
+// BIMODAL: u2-63-components-mc=a
+// BIMODAL: u2-63-slip-angle=a
+// BIMODAL: u2-63-pulley-tension-mc=a
+// BIMODAL: u2-63-judge=b
+// BIMODAL: u2-64-metre-stick=a
+// BIMODAL: u2-64-bridge-mc=a
 
 /* ============ Units and significant figures discipline (Nov 2026) ============
    Givens are fixed at 3 significant figures and printed with gF().
@@ -1853,6 +1915,74 @@ E("u2-64-ladder-cr",2,["PH12.6.4"],3,"gen",function(){
 // CRMARKS: u3-78-field-from-orbit=3
 // CRMARKS: u3-79-transformer=3
 // CRMARKS: u3-710-lift-motor=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-71-field-equation=2
+// CRMARKS: u3-71-field-altitude=3
+// CRMARKS: u3-71-weight-moon=3
+// CRMARKS: u3-72-scaling-mass=2
+// CRMARKS: u3-72-force-ratio-distance=3
+// CRMARKS: u3-72-force-altitude-ratio=3
+// CRMARKS: u3-72-compare-fields=4
+// CRMARKS: u3-73-net-field-midway=3
+// CRMARKS: u3-73-field-triangle=3
+// CRMARKS: u3-74-scaling=2
+// CRMARKS: u3-74-net-force-triangle=3
+// CRMARKS: u3-74-attract-repel=2
+// CRMARKS: u3-74-force-ratio-distance=3
+// CRMARKS: u3-75-kirchhoff-junction=2
+// CRMARKS: u3-75-kirchhoff-loop=3
+// CRMARKS: u3-76-field-lines-magnet=2
+// CRMARKS: u3-76-field-wire-lines=2
+// CRMARKS: u3-76-compass-wire=3
+// CRMARKS: u3-76-domains=2
+// CRMARKS: u3-76-field-direction=3
+// CRMARKS: u3-77-field-scaling=3
+// CRMARKS: u3-77-compass-solenoid=2
+// CRMARKS: u3-77-hand-rule=2
+// CRMARKS: u3-78-force-direction=3
+// CRMARKS: u3-78-particle-id=4
+// CRMARKS: u3-78-parallel-wires=3
+// CRMARKS: u3-79-lenz-direction=3
+// CRMARKS: u3-79-coil-polarity=3
+// CRMARKS: u3-79-eddy-braking=3
+// CRMARKS: u3-79-transmission=4
+// CRMARKS: u3-710-device-job=3
+// CRMARKS: u3-710-armature=3
+// CRMARKS: u3-710-commutator=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-71-field-equation=b
+// BIMODAL: u3-71-field-altitude=a
+// BIMODAL: u3-71-weight-moon=a
+// BIMODAL: u3-72-scaling-mass=a
+// BIMODAL: u3-72-force-ratio-distance=a
+// BIMODAL: u3-72-force-altitude-ratio=a
+// BIMODAL: u3-72-compare-fields=a
+// BIMODAL: u3-73-net-field-midway=a
+// BIMODAL: u3-73-field-triangle=a
+// BIMODAL: u3-74-scaling=a
+// BIMODAL: u3-74-net-force-triangle=a
+// BIMODAL: u3-74-attract-repel=b
+// BIMODAL: u3-74-force-ratio-distance=a
+// BIMODAL: u3-75-kirchhoff-junction=a
+// BIMODAL: u3-75-kirchhoff-loop=a
+// BIMODAL: u3-76-field-lines-magnet=b
+// BIMODAL: u3-76-field-wire-lines=b
+// BIMODAL: u3-76-compass-wire=b
+// BIMODAL: u3-76-domains=b
+// BIMODAL: u3-76-field-direction=b
+// BIMODAL: u3-77-field-scaling=a
+// BIMODAL: u3-77-compass-solenoid=a
+// BIMODAL: u3-77-hand-rule=a
+// BIMODAL: u3-78-force-direction=a
+// BIMODAL: u3-78-particle-id=a
+// BIMODAL: u3-78-parallel-wires=a
+// BIMODAL: u3-79-lenz-direction=b
+// BIMODAL: u3-79-coil-polarity=b
+// BIMODAL: u3-79-eddy-braking=b
+// BIMODAL: u3-79-transmission=b
+// BIMODAL: u3-710-device-job=b
+// BIMODAL: u3-710-armature=b
+// BIMODAL: u3-710-commutator=b
 
 var MU0 = 4 * Math.PI * 1e-7;   // T m/A, permeability of free space
 
@@ -3333,6 +3463,48 @@ E("u3-710-lift-motor", 3, ["PH12.7.10"], 3, "gen", function(){
 // CRMARKS: u4-85-absorption-cr=2
 // CRMARKS: u4-88-accelerating-cr=3
 // CRMARKS: u4-83-compton-cr=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-81-energy-from-wavelength=3
+// CRMARKS: u4-81-order-photons=2
+// CRMARKS: u4-81-joules-to-ev=2
+// CRMARKS: u4-82-max-ke=3
+// CRMARKS: u4-82-intensity-frequency=3
+// CRMARKS: u4-83-what-it-showed=2
+// CRMARKS: u4-84-model-descriptions=2
+// CRMARKS: u4-84-shell-capacity=2
+// CRMARKS: u4-84-bohr-accounts=3
+// CRMARKS: u4-84-debroglie-orbits=3
+// CRMARKS: u4-86-fluor-phos=3
+// CRMARKS: u4-86-glow-applications=3
+// CRMARKS: u4-86-identify-phenomenon=2
+// CRMARKS: u4-86-energy-account=4
+// CRMARKS: u4-87-wave-model-fails=3
+// CRMARKS: u4-87-match-model=2
+// CRMARKS: u4-87-single-photon-doubleslit=4
+// CRMARKS: u4-87-duality-judgement=4
+// CRMARKS: u4-88-proton-wavelength=3
+// CRMARKS: u4-88-compare-particles=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-81-energy-from-wavelength=a
+// BIMODAL: u4-81-order-photons=a
+// BIMODAL: u4-81-joules-to-ev=a
+// BIMODAL: u4-82-max-ke=a
+// BIMODAL: u4-82-intensity-frequency=b
+// BIMODAL: u4-83-what-it-showed=b
+// BIMODAL: u4-84-model-descriptions=a
+// BIMODAL: u4-84-shell-capacity=a
+// BIMODAL: u4-84-bohr-accounts=b
+// BIMODAL: u4-84-debroglie-orbits=b
+// BIMODAL: u4-86-fluor-phos=b
+// BIMODAL: u4-86-glow-applications=b
+// BIMODAL: u4-86-identify-phenomenon=a
+// BIMODAL: u4-86-energy-account=a
+// BIMODAL: u4-87-wave-model-fails=b
+// BIMODAL: u4-87-match-model=a
+// BIMODAL: u4-87-single-photon-doubleslit=b
+// BIMODAL: u4-87-duality-judgement=b
+// BIMODAL: u4-88-proton-wavelength=a
+// BIMODAL: u4-88-compare-particles=b
 
 /* ============ Units and significant figures discipline (Nov 2026) ============
    Givens are fixed at 3 significant figures and printed with gF(). Answers
@@ -4146,4 +4318,10 @@ E("u4-83-compton-cr",4,["PH12.8.3"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-51-resultant-cr":3,"u1-53-aircraft-heading-cr":4,"u1-53-drift-cr":3,"u1-53-heading-cr":3,"u1-54-cliff-height-cr":3,"u1-54-hit-or-miss-cr":4,"u1-55-stick-2d-cr":5,"u1-55-third-piece-cr":4,"u2-61-scaling-cr":2,"u2-61-speed-accel-cr":3,"u2-62-banked-cr":4,"u2-62-dip-cr":4,"u2-62-minspeed-cr":3,"u2-63-incline-friction-cr":4,"u2-63-pulley-cr":5,"u2-64-beam-cr":4,"u2-64-ladder-cr":4,"u2-64-wires-cr":2,"u3-71-field-radii":3,"u3-710-lift-motor":3,"u3-72-orbit-period":3,"u3-72-planet-mass-moon":4,"u3-72-separation-from-force":3,"u3-73-field-two-charges-point":3,"u3-74-charge-from-force":3,"u3-74-net-force-collinear":4,"u3-74-separation-from-force":3,"u3-75-circuit-table":4,"u3-75-combination-circuit":4,"u3-75-energy-cost":3,"u3-75-parallel-branches":3,"u3-77-current-from-field":3,"u3-78-circular-speed":4,"u3-78-field-from-orbit":3,"u3-78-force-angle":3,"u3-79-transformer":3,"u4-82-photoelectric-cr":4,"u4-82-threshold-cr":3,"u4-83-compton-cr":3,"u4-85-absorption-cr":2,"u4-85-transition-cr":5,"u4-88-accelerating-cr":3};
+window.__BANK_CRMARKS={"u1-51-avg-vel-vs-speed":3,"u1-51-claims":4,"u1-51-components":2,"u1-51-direction-from-components":2,"u1-51-resultant-cr":3,"u1-52-invariants":2,"u1-52-largest-speed":2,"u1-52-two-frames":3,"u1-52-who-is-right":4,"u1-53-aircraft-ground":3,"u1-53-aircraft-heading-cr":4,"u1-53-drift-cr":3,"u1-53-heading-cr":3,"u1-53-river-resultant":3,"u1-54-angled-components":2,"u1-54-cliff-height-cr":3,"u1-54-hit-or-miss-cr":4,"u1-54-launch-speed":3,"u1-55-perp-direction":3,"u1-55-rebound":3,"u1-55-stick-2d-cr":5,"u1-55-third-piece-cr":4,"u2-61-centripetal-accel-mc":3,"u2-61-claim-judge":4,"u2-61-direction":2,"u2-61-period-frequency":2,"u2-61-scaling-concept":2,"u2-61-scaling-cr":2,"u2-61-speed-accel-cr":3,"u2-62-banked-cr":4,"u2-62-claim-judge":4,"u2-62-dip-cr":4,"u2-62-effective-weight":2,"u2-62-loop-bottom":3,"u2-62-minspeed-cr":3,"u2-62-tension-horizontal":3,"u2-63-components-mc":2,"u2-63-incline-friction-cr":4,"u2-63-judge":4,"u2-63-pulley-cr":5,"u2-63-pulley-tension-mc":3,"u2-63-slip-angle":3,"u2-64-beam-cr":4,"u2-64-bridge-mc":3,"u2-64-ladder-cr":4,"u2-64-metre-stick":3,"u2-64-wires-cr":2,"u3-71-field-altitude":3,"u3-71-field-equation":2,"u3-71-field-radii":3,"u3-71-weight-moon":3,"u3-710-armature":3,"u3-710-commutator":3,"u3-710-device-job":3,"u3-710-lift-motor":3,"u3-72-compare-fields":4,"u3-72-force-altitude-ratio":3,"u3-72-force-ratio-distance":3,"u3-72-orbit-period":3,"u3-72-planet-mass-moon":4,"u3-72-scaling-mass":2,"u3-72-separation-from-force":3,"u3-73-field-triangle":3,"u3-73-field-two-charges-point":3,"u3-73-net-field-midway":3,"u3-74-attract-repel":2,"u3-74-charge-from-force":3,"u3-74-force-ratio-distance":3,"u3-74-net-force-collinear":4,"u3-74-net-force-triangle":3,"u3-74-scaling":2,"u3-74-separation-from-force":3,"u3-75-circuit-table":4,"u3-75-combination-circuit":4,"u3-75-energy-cost":3,"u3-75-kirchhoff-junction":2,"u3-75-kirchhoff-loop":3,"u3-75-parallel-branches":3,"u3-76-compass-wire":3,"u3-76-domains":2,"u3-76-field-direction":3,"u3-76-field-lines-magnet":2,"u3-76-field-wire-lines":2,"u3-77-compass-solenoid":2,"u3-77-current-from-field":3,"u3-77-field-scaling":3,"u3-77-hand-rule":2,"u3-78-circular-speed":4,"u3-78-field-from-orbit":3,"u3-78-force-angle":3,"u3-78-force-direction":3,"u3-78-parallel-wires":3,"u3-78-particle-id":4,"u3-79-coil-polarity":3,"u3-79-eddy-braking":3,"u3-79-lenz-direction":3,"u3-79-transformer":3,"u3-79-transmission":4,"u4-81-energy-from-wavelength":3,"u4-81-joules-to-ev":2,"u4-81-order-photons":2,"u4-82-intensity-frequency":3,"u4-82-max-ke":3,"u4-82-photoelectric-cr":4,"u4-82-threshold-cr":3,"u4-83-compton-cr":3,"u4-83-what-it-showed":2,"u4-84-bohr-accounts":3,"u4-84-debroglie-orbits":3,"u4-84-model-descriptions":2,"u4-84-shell-capacity":2,"u4-85-absorption-cr":2,"u4-85-transition-cr":5,"u4-86-energy-account":4,"u4-86-fluor-phos":3,"u4-86-glow-applications":3,"u4-86-identify-phenomenon":2,"u4-87-duality-judgement":4,"u4-87-match-model":2,"u4-87-single-photon-doubleslit":4,"u4-87-wave-model-fails":3,"u4-88-accelerating-cr":3,"u4-88-compare-particles":4,"u4-88-proton-wavelength":3};
+/* ============ Bimodal entries (generated) ============ */
+/* Built by assemble-bank.py from the BIMODAL manifests in the unit
+   files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
+   multiple-choice questions may be stripped to constructed
+   response, class a (online-checkable) or b (print/self-check). */
+window.__BANK_BIMODAL={"u1-51-avg-vel-vs-speed":"a","u1-51-claims":"b","u1-51-components":"a","u1-51-direction-from-components":"a","u1-52-invariants":"a","u1-52-largest-speed":"a","u1-52-two-frames":"a","u1-52-who-is-right":"b","u1-53-aircraft-ground":"a","u1-53-river-resultant":"a","u1-54-angled-components":"a","u1-54-launch-speed":"a","u1-55-perp-direction":"a","u1-55-rebound":"a","u2-61-centripetal-accel-mc":"a","u2-61-claim-judge":"b","u2-61-direction":"a","u2-61-period-frequency":"a","u2-61-scaling-concept":"a","u2-62-claim-judge":"b","u2-62-effective-weight":"b","u2-62-loop-bottom":"a","u2-62-tension-horizontal":"a","u2-63-components-mc":"a","u2-63-judge":"b","u2-63-pulley-tension-mc":"a","u2-63-slip-angle":"a","u2-64-bridge-mc":"a","u2-64-metre-stick":"a","u3-71-field-altitude":"a","u3-71-field-equation":"b","u3-71-weight-moon":"a","u3-710-armature":"b","u3-710-commutator":"b","u3-710-device-job":"b","u3-72-compare-fields":"a","u3-72-force-altitude-ratio":"a","u3-72-force-ratio-distance":"a","u3-72-scaling-mass":"a","u3-73-field-triangle":"a","u3-73-net-field-midway":"a","u3-74-attract-repel":"b","u3-74-force-ratio-distance":"a","u3-74-net-force-triangle":"a","u3-74-scaling":"a","u3-75-kirchhoff-junction":"a","u3-75-kirchhoff-loop":"a","u3-76-compass-wire":"b","u3-76-domains":"b","u3-76-field-direction":"b","u3-76-field-lines-magnet":"b","u3-76-field-wire-lines":"b","u3-77-compass-solenoid":"a","u3-77-field-scaling":"a","u3-77-hand-rule":"a","u3-78-force-direction":"a","u3-78-parallel-wires":"a","u3-78-particle-id":"a","u3-79-coil-polarity":"b","u3-79-eddy-braking":"b","u3-79-lenz-direction":"b","u3-79-transmission":"b","u4-81-energy-from-wavelength":"a","u4-81-joules-to-ev":"a","u4-81-order-photons":"a","u4-82-intensity-frequency":"b","u4-82-max-ke":"a","u4-83-what-it-showed":"b","u4-84-bohr-accounts":"b","u4-84-debroglie-orbits":"b","u4-84-model-descriptions":"a","u4-84-shell-capacity":"a","u4-86-energy-account":"a","u4-86-fluor-phos":"b","u4-86-glow-applications":"b","u4-86-identify-phenomenon":"a","u4-87-duality-judgement":"b","u4-87-match-model":"a","u4-87-single-photon-doubleslit":"b","u4-87-wave-model-fails":"b","u4-88-compare-particles":"b","u4-88-proton-wavelength":"a"};
