@@ -244,11 +244,25 @@ function treeSVG(stages,o){
 // CRMARKS: u1-tableau-step-cr=2
 // CRMARKS: u1-which-factor=2
 // CRMARKS: u1-zeros-from-factors=1
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-identify-polynomial=2
+// CRMARKS: u1-synthetic-relation=2
+// CRMARKS: u1-zeros-roots-intercepts=2
+// CRMARKS: u1-constant-leading=2
+// CRMARKS: u1-sketch-features=2
+// CRMARKS: u1-multiplicity-statements=3
 // BIMODAL: u1-which-factor=b
 // BIMODAL: u1-error-synthetic=a
 // BIMODAL: u1-equation-from-graph=b
 // BIMODAL: u1-divide-result=b
 // BIMODAL: u1-divide-quotient=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-identify-polynomial=b
+// BIMODAL: u1-synthetic-relation=b
+// BIMODAL: u1-zeros-roots-intercepts=a
+// BIMODAL: u1-constant-leading=b
+// BIMODAL: u1-sketch-features=b
+// BIMODAL: u1-multiplicity-statements=b
 /* ================= Unit 1: Polynomial Functions ================= */
 /* ================= Unit 1: Polynomial Functions (MA3200.3.1 to 3.13) =================
    Tranche 1, mid scope. All stems, contexts and values are original.
@@ -812,11 +826,17 @@ E("u1-tableau-step-cr",1,["3.1"],2,"gen",function(){
 // CRMARKS: u2-trans-equation=2
 // CRMARKS: u2-trans-point=1
 // CRMARKS: u2-trans-zeros=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u2-inv-which=2
+// CRMARKS: u2-refl-yx=3
 // BIMODAL: u2-trans-zeros=a
 // BIMODAL: u2-reflection-equation-cr=b
 // BIMODAL: u2-inv-restrict=a
 // BIMODAL: u2-inv-equation=b
 // BIMODAL: u2-full-equation=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u2-inv-which=a
+// BIMODAL: u2-refl-yx=b
 /* ================= Unit 2: Function Transformations ================= */
 /* ================= Unit 2: Function Transformations =================
    Bank source chunk for the Math 3200 Review app. Helpers are prefixed u2.
@@ -1441,8 +1461,20 @@ E("u2-reflection-equation-cr",2,["4.43","4.44"],2,"var",varset([
 // CRMARKS: u3-transform-domain-range=2
 // CRMARKS: u3-sqrtf-multistep-cr=5
 // CRMARKS: u3-radical-equation-critique-cr=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u3-compare-domains=2
+// CRMARKS: u3-two-methods=3
+// CRMARKS: u3-intercept-statement=2
+// CRMARKS: u3-add-sqrtx-point-sets=2
+// CRMARKS: u3-add-graphical-solve-mc=2
 // BIMODAL: u3-recover-f-value=a
 // BIMODAL: u3-domain-from-quadratic-cr=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u3-compare-domains=a
+// BIMODAL: u3-two-methods=b
+// BIMODAL: u3-intercept-statement=b
+// BIMODAL: u3-add-sqrtx-point-sets=a
+// BIMODAL: u3-add-graphical-solve-mc=a
 /* ================= Unit 3: Radical Functions ================= */
 /* ================= Unit 3: Radical Functions ================= */
 /* Indicators: 4.9, 4.10, 4.11, 4.12, 4.25, 4.26. Types follow the Mauger
@@ -1859,12 +1891,16 @@ E("u3-radical-equation-critique-cr",3,["4.26"],3,"var",varset([
 // CRMARKS: u4-sketch-standard-position=1
 // CRMARKS: u4-solve-equation-approx=2
 // CRMARKS: u4-solve-equation-exact=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u4-error-analysis=3
 // BIMODAL: u4-solve-equation-exact=a
 // BIMODAL: u4-repair-solution-cr=a
 // BIMODAL: u4-point-ratios-angle=a
 // BIMODAL: u4-other-ratios=a
 // BIMODAL: u4-circle-point-reasoning=a
 // BIMODAL: u4-arc-compare=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u4-error-analysis=b
 /* ================= Unit 4: Trigonometry and the Unit Circle ================= */
 /* ================= Unit 4: Trigonometry and the Unit Circle =================
    Helpers are prefixed u4; the only other top-level statements are E(...) calls.
@@ -2780,9 +2816,15 @@ E("u4-nr-exact-code", 4, ["7.14"], 2, "gen", function () {
 // CRMARKS: u5-tan-asymptote-cr=2
 // CRMARKS: u5-tan-features=1
 // CRMARKS: u5-which-solution=1
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u5-eq-from-graph=2
+// CRMARKS: u5-tan-graph=2
 // BIMODAL: u5-solve-set=a
 // BIMODAL: u5-model-conditions=b
 // BIMODAL: u5-general-solution=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u5-eq-from-graph=a
+// BIMODAL: u5-tan-graph=a
 /* ================= Unit 5: Trigonometric Functions and Graphs ================= */
 /* ================= Unit 5: Trigonometric Functions and Graphs ================= */
 /* Helpers are prefixed u5. Angles are in degrees unless a question says radians. */
@@ -3359,6 +3401,11 @@ E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
 // CRMARKS: u6-solve-identity-sub=3
 // CRMARKS: u6-solve-quadratic=2
 // CRMARKS: u6-verify-solution=1
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u6-identity-or-equation=2
+// CRMARKS: u6-graphical-validity=2
+// CRMARKS: u6-proof-next-step=2
+// CRMARKS: u6-error-analysis=3
 // BIMODAL: u6-solve-quadratic=a
 // BIMODAL: u6-solve-identity-sub=a
 // BIMODAL: u6-solve-double-angle=a
@@ -3367,6 +3414,11 @@ E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
 // BIMODAL: u6-lost-solutions-cr=a
 // BIMODAL: u6-exact-values=a
 // BIMODAL: u6-coincidence-check-cr=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u6-identity-or-equation=a
+// BIMODAL: u6-graphical-validity=b
+// BIMODAL: u6-proof-next-step=b
+// BIMODAL: u6-error-analysis=b
 /* ================= Unit 6: Trigonometric Identities ================= */
 /* ================= Unit 6: Trigonometric Identities =================
    Helpers are prefixed u6; the only other top-level statements are E(...) calls.
@@ -4983,12 +5035,18 @@ E("u6-nr-exact-code", 6, ["7.45"], 2, "gen", function () {
 // CRMARKS: u7-traits-match-cr=2
 // CRMARKS: u7-transformed-graph=2
 // CRMARKS: u7-wcr-log-time=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u7-identify-growth-decay=2
+// CRMARKS: u7-characteristics=2
 // BIMODAL: u7-transformed-graph=b
 // BIMODAL: u7-traits-match-cr=b
 // BIMODAL: u7-solve-nocommon-base=a
 // BIMODAL: u7-compare-models=a
 // BIMODAL: u7-common-base-radical=a
 // BIMODAL: u7-common-base-linear=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u7-identify-growth-decay=b
+// BIMODAL: u7-characteristics=b
 /* ================= Unit 7: Exponential Functions ================= */
 /* ================= Unit 7: Exponential Functions ================= */
 /* Helpers are prefixed u7. Every LaTeX fragment built by a helper is only
@@ -5720,9 +5778,17 @@ E("u7-wcr-log-time",7,["4.28"],2,"gen",function(){
 // CRMARKS: u8-transformed-log-features=1
 // CRMARKS: u8-wcr-log-difference=5
 // CRMARKS: u8-wcr-laws-evaluate=5
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-laws-illustrate=2
+// CRMARKS: u8-laws-error=3
+// CRMARKS: u8-add-exact-log-value=2
 // BIMODAL: u8-model-log=b
 // BIMODAL: u8-laws-equivalent=b
 // BIMODAL: u8-extraneous=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-laws-illustrate=b
+// BIMODAL: u8-laws-error=b
+// BIMODAL: u8-add-exact-log-value=a
 /* ================= Unit 8: Logarithmic Functions ================= */
 /* Unit 8: Logarithmic Functions. All helpers are u8-prefixed. */
 function u8L(b, arg){ return "\\log_{" + b + "} " + arg; }
@@ -6449,9 +6515,15 @@ E("u8-add-exact-log-value",8,["1.3"],2,"gen",function(){
 // CRMARKS: u9-perm-solve=2
 // CRMARKS: u9-two-group-cr=3
 // CRMARKS: u9-word-arrange-mc=1
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u9-why-multiply=3
+// CRMARKS: u9-why-n-ge-r=3
 // BIMODAL: u9-perm-solve=a
 // BIMODAL: u9-perm-or-comb=a
 // BIMODAL: u9-binomial-expand=b
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u9-why-multiply=b
+// BIMODAL: u9-why-n-ge-r=b
 /* ================= Unit 9: Permutations, Combinations, and the Binomial Theorem ================= */
 /* ================= Unit 9: Permutations, Combinations, and the Binomial Theorem =================
    Tranche 2, final scope. Indicators MA3200.3.14 to 3.19 and MA3200.9.1 to 9.15.
@@ -7388,6 +7460,86 @@ E("u9-pathways-context",9,["9.12"],3,"gen",function(){
 });
 
 /* ----- bank-pk.js ----- */
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u1-pk-factor-common=2
+// CRMARKS: u1-pk-factor-trinomial=2
+// CRMARKS: u1-pk-factor-nonmonic=2
+// CRMARKS: u1-pk-factor-test=2
+// CRMARKS: u1-pk-solve-strategies=2
+// CRMARKS: u2-pk-vertex-read=2
+// CRMARKS: u2-pk-vertex-standard=2
+// CRMARKS: u2-pk-complete-square=2
+// CRMARKS: u2-pk-npv-basic=2
+// CRMARKS: u2-pk-npv-quadratic=2
+// CRMARKS: u3-pk-defined-values=2
+// CRMARKS: u3-pk-extraneous-why=3
+// CRMARKS: u3-pk-which-is-solution=2
+// CRMARKS: u4-pk-read-sketch=2
+// CRMARKS: u4-pk-same-reference=2
+// CRMARKS: u4-pk-point-ratios=2
+// CRMARKS: u4-pk-exact-values=2
+// CRMARKS: u4-pk-solve-equation=2
+// CRMARKS: u5-pk-effect-of-a=2
+// CRMARKS: u5-pk-translations=2
+// CRMARKS: u5-pk-simplify-basic=2
+// CRMARKS: u5-pk-lcd-choose=2
+// CRMARKS: u5-pk-complex-fraction=2
+// CRMARKS: u6-pk-simplify-trinomial=2
+// CRMARKS: u6-pk-multiply=2
+// CRMARKS: u6-pk-divide=2
+// CRMARKS: u6-pk-add-subtract=2
+// CRMARKS: u6-pk-sign-statements=2
+// CRMARKS: u7-pk-laws-integral=2
+// CRMARKS: u7-pk-laws-rational=2
+// CRMARKS: u7-pk-recip-features=2
+// CRMARKS: u7-pk-reciprocal-values=2
+// CRMARKS: u8-pk-rational-exp=2
+// CRMARKS: u8-pk-product-law=2
+// CRMARKS: u8-pk-sqrt-eval=2
+// CRMARKS: u9-pk-binom-expand=2
+// CRMARKS: u9-pk-monomial-expand=2
+// CRMARKS: u9-pk-binomial-expand=2
+// CRMARKS: u9-bridge-tree=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u1-pk-factor-common=b
+// BIMODAL: u1-pk-factor-trinomial=b
+// BIMODAL: u1-pk-factor-nonmonic=b
+// BIMODAL: u1-pk-factor-test=b
+// BIMODAL: u1-pk-solve-strategies=b
+// BIMODAL: u2-pk-vertex-read=a
+// BIMODAL: u2-pk-vertex-standard=a
+// BIMODAL: u2-pk-complete-square=a
+// BIMODAL: u2-pk-npv-basic=b
+// BIMODAL: u2-pk-npv-quadratic=a
+// BIMODAL: u3-pk-defined-values=b
+// BIMODAL: u3-pk-extraneous-why=b
+// BIMODAL: u3-pk-which-is-solution=a
+// BIMODAL: u4-pk-read-sketch=a
+// BIMODAL: u4-pk-same-reference=a
+// BIMODAL: u4-pk-point-ratios=a
+// BIMODAL: u4-pk-exact-values=a
+// BIMODAL: u4-pk-solve-equation=b
+// BIMODAL: u5-pk-effect-of-a=b
+// BIMODAL: u5-pk-translations=b
+// BIMODAL: u5-pk-simplify-basic=b
+// BIMODAL: u5-pk-lcd-choose=b
+// BIMODAL: u5-pk-complex-fraction=b
+// BIMODAL: u6-pk-simplify-trinomial=b
+// BIMODAL: u6-pk-multiply=b
+// BIMODAL: u6-pk-divide=b
+// BIMODAL: u6-pk-add-subtract=b
+// BIMODAL: u6-pk-sign-statements=a
+// BIMODAL: u7-pk-laws-integral=b
+// BIMODAL: u7-pk-laws-rational=b
+// BIMODAL: u7-pk-recip-features=b
+// BIMODAL: u7-pk-reciprocal-values=a
+// BIMODAL: u8-pk-rational-exp=a
+// BIMODAL: u8-pk-product-law=a
+// BIMODAL: u8-pk-sqrt-eval=a
+// BIMODAL: u9-pk-binom-expand=b
+// BIMODAL: u9-pk-monomial-expand=b
+// BIMODAL: u9-pk-binomial-expand=b
+// BIMODAL: u9-bridge-tree=a
 /* Math 3200 PK tranche (November 16, 2026). Prior knowledge check entries
    for all nine units, per Math-3200-PK-Tranche-Spec-2026-11-16.md. Borrowed
    generators are verbatim copies from the Mathematics 2200 and Mathematics
@@ -9405,10 +9557,10 @@ BANK.forEach(function(e){var t=PKT3200[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-largest-zero-cr":3,"u1-multiplicity-graph":1,"u1-remainder-point":1,"u1-remainder-value":1,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inverse-points-cr":3,"u2-refl-equation":1,"u2-refl-point":1,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-radical-equation-critique-cr":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-multistep-cr":5,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-exact-values":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-proof-direct":3,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-model-equation":2,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u7-wcr-log-time":4,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-log-scales":2,"u8-model-log":3,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u8-wcr-laws-evaluate":5,"u8-wcr-log-difference":5,"u9-binomial-expand":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-pathways":2,"u9-pathways-context":3,"u9-perm-basic":2,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-two-group-cr":3,"u9-word-arrange-mc":1};
+window.__BANK_CRMARKS={"u1-constant-leading":2,"u1-divide-quotient":2,"u1-divide-result":2,"u1-end-behaviour":1,"u1-equation-from-graph":3,"u1-error-synthetic":2,"u1-find-coefficient":2,"u1-identify-polynomial":2,"u1-largest-zero-cr":3,"u1-multiplicity-graph":1,"u1-multiplicity-statements":3,"u1-pk-factor-common":2,"u1-pk-factor-nonmonic":2,"u1-pk-factor-test":2,"u1-pk-factor-trinomial":2,"u1-pk-solve-strategies":2,"u1-remainder-point":1,"u1-remainder-value":1,"u1-sketch-features":2,"u1-synthetic-relation":2,"u1-tableau-step-cr":2,"u1-which-factor":2,"u1-zeros-from-factors":1,"u1-zeros-roots-intercepts":2,"u2-find-stretch-cr":3,"u2-full-equation":2,"u2-inv-domran":1,"u2-inv-equation":2,"u2-inv-figure":1,"u2-inv-restrict":2,"u2-inv-which":2,"u2-inverse-points-cr":3,"u2-pk-complete-square":2,"u2-pk-npv-basic":2,"u2-pk-npv-quadratic":2,"u2-pk-vertex-read":2,"u2-pk-vertex-standard":2,"u2-refl-equation":1,"u2-refl-point":1,"u2-refl-yx":3,"u2-reflection-equation-cr":2,"u2-stretch-equation":2,"u2-stretch-identify":1,"u2-stretch-point":2,"u2-trans-describe":1,"u2-trans-equation":2,"u2-trans-point":1,"u2-trans-zeros":3,"u3-add-graphical-solve-mc":2,"u3-add-sqrtx-point-sets":2,"u3-compare-domains":2,"u3-domain-from-quadratic-cr":2,"u3-evaluate-transformed-cr":3,"u3-graphical-solve":1,"u3-intercept-solution":2,"u3-intercept-statement":2,"u3-pk-defined-values":2,"u3-pk-extraneous-why":3,"u3-pk-which-is-solution":2,"u3-radical-equation-critique-cr":2,"u3-recover-coefficient-cr":3,"u3-recover-f-value":3,"u3-shift-from-intercept-cr":2,"u3-sqrtf-multistep-cr":5,"u3-sqrtx-table":1,"u3-start-point":1,"u3-transform-domain-range":2,"u3-two-methods":3,"u4-angle-from-ratio":2,"u4-angle-measures-cr":3,"u4-approx-ratio":1,"u4-arc-compare":2,"u4-arc-length":2,"u4-circle-equation":1,"u4-circle-point-reasoning":3,"u4-coterminal":1,"u4-deg-to-rad":1,"u4-error-analysis":3,"u4-exact-special":1,"u4-one-radian":1,"u4-other-ratios":2,"u4-pk-exact-values":2,"u4-pk-point-ratios":2,"u4-pk-read-sketch":2,"u4-pk-same-reference":2,"u4-pk-solve-equation":2,"u4-point-ratios-angle":2,"u4-rad-to-deg":1,"u4-repair-solution-cr":3,"u4-sketch-standard-position":1,"u4-solve-equation-approx":2,"u4-solve-equation-exact":2,"u5-amplitude-a":1,"u5-base-graph":1,"u5-characteristics":1,"u5-eq-from-graph":2,"u5-equation-evaluate-cr":3,"u5-first-maximum-cr":2,"u5-general-solution":2,"u5-graph-problem":2,"u5-key-points":2,"u5-model-conditions":3,"u5-period-b":1,"u5-phase-h":1,"u5-pk-complex-fraction":2,"u5-pk-effect-of-a":2,"u5-pk-lcd-choose":2,"u5-pk-simplify-basic":2,"u5-pk-translations":2,"u5-shift-k":1,"u5-solve-set":2,"u5-tan-asymptote-cr":2,"u5-tan-features":1,"u5-tan-graph":2,"u5-which-solution":1,"u6-approx-solutions":2,"u6-coincidence-check-cr":2,"u6-error-analysis":3,"u6-exact-values":2,"u6-graphical-validity":2,"u6-identity-or-equation":2,"u6-lost-solutions-cr":3,"u6-nonpermissible-basic":2,"u6-nonpermissible-identity":2,"u6-numeric-verify":1,"u6-pk-add-subtract":2,"u6-pk-divide":2,"u6-pk-multiply":2,"u6-pk-sign-statements":2,"u6-pk-simplify-trinomial":2,"u6-proof-direct":3,"u6-proof-next-step":2,"u6-proof-strategy":3,"u6-simplify-expression":2,"u6-solve-double-angle":2,"u6-solve-identity-sub":3,"u6-solve-quadratic":2,"u6-verify-solution":1,"u7-characteristics":2,"u7-common-base-linear":2,"u7-common-base-radical":2,"u7-compare-models":3,"u7-compound-amount":2,"u7-compound-setup":1,"u7-graph-point-value-cr":3,"u7-growth-decay-amount":1,"u7-growth-decay-time":2,"u7-identify-growth-decay":2,"u7-model-equation":2,"u7-pk-laws-integral":2,"u7-pk-laws-rational":2,"u7-pk-recip-features":2,"u7-pk-reciprocal-values":2,"u7-sketch-key-points":1,"u7-solve-nocommon-base":2,"u7-traits-match-cr":2,"u7-transformed-graph":2,"u7-wcr-log-time":4,"u8-add-exact-log-value":2,"u8-convert-form":1,"u8-estimate-approx":1,"u8-exact-value":1,"u8-extraneous":3,"u8-finance-periods":2,"u8-growth-time":2,"u8-inverse-graph":1,"u8-laws-equivalent":2,"u8-laws-error":3,"u8-laws-illustrate":2,"u8-log-scales":2,"u8-model-log":3,"u8-pk-product-law":2,"u8-pk-rational-exp":2,"u8-pk-sqrt-eval":2,"u8-sketch-log":1,"u8-solve-exp-logs":2,"u8-solve-log-eq":2,"u8-transformed-log":1,"u8-transformed-log-features":1,"u8-wcr-laws-evaluate":5,"u8-wcr-log-difference":5,"u9-binomial-expand":2,"u9-bridge-tree":2,"u9-counting-organizers":1,"u9-factorial-notation":1,"u9-fcp-apply":1,"u9-fcp-meal-mc":1,"u9-identical-elements":2,"u9-not-adjacent-cr":3,"u9-pascal-next-row":1,"u9-pathways":2,"u9-pathways-context":3,"u9-perm-basic":2,"u9-perm-or-comb":2,"u9-perm-solve":2,"u9-pk-binom-expand":2,"u9-pk-binomial-expand":2,"u9-pk-monomial-expand":2,"u9-two-group-cr":3,"u9-why-multiply":3,"u9-why-n-ge-r":3,"u9-word-arrange-mc":1};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-divide-quotient":"b","u1-divide-result":"b","u1-equation-from-graph":"b","u1-error-synthetic":"a","u1-which-factor":"b","u2-full-equation":"b","u2-inv-equation":"b","u2-inv-restrict":"a","u2-reflection-equation-cr":"b","u2-trans-zeros":"a","u3-domain-from-quadratic-cr":"b","u3-recover-f-value":"a","u4-arc-compare":"b","u4-circle-point-reasoning":"a","u4-other-ratios":"a","u4-point-ratios-angle":"a","u4-repair-solution-cr":"a","u4-solve-equation-exact":"a","u5-general-solution":"b","u5-model-conditions":"b","u5-solve-set":"a","u6-coincidence-check-cr":"b","u6-exact-values":"a","u6-lost-solutions-cr":"a","u6-nonpermissible-identity":"a","u6-simplify-expression":"b","u6-solve-double-angle":"a","u6-solve-identity-sub":"a","u6-solve-quadratic":"a","u7-common-base-linear":"a","u7-common-base-radical":"a","u7-compare-models":"a","u7-solve-nocommon-base":"a","u7-traits-match-cr":"b","u7-transformed-graph":"b","u8-extraneous":"b","u8-laws-equivalent":"b","u8-model-log":"b","u9-binomial-expand":"b","u9-perm-or-comb":"a","u9-perm-solve":"a"};
+window.__BANK_BIMODAL={"u1-constant-leading":"b","u1-divide-quotient":"b","u1-divide-result":"b","u1-equation-from-graph":"b","u1-error-synthetic":"a","u1-identify-polynomial":"b","u1-multiplicity-statements":"b","u1-pk-factor-common":"b","u1-pk-factor-nonmonic":"b","u1-pk-factor-test":"b","u1-pk-factor-trinomial":"b","u1-pk-solve-strategies":"b","u1-sketch-features":"b","u1-synthetic-relation":"b","u1-which-factor":"b","u1-zeros-roots-intercepts":"a","u2-full-equation":"b","u2-inv-equation":"b","u2-inv-restrict":"a","u2-inv-which":"a","u2-pk-complete-square":"a","u2-pk-npv-basic":"b","u2-pk-npv-quadratic":"a","u2-pk-vertex-read":"a","u2-pk-vertex-standard":"a","u2-refl-yx":"b","u2-reflection-equation-cr":"b","u2-trans-zeros":"a","u3-add-graphical-solve-mc":"a","u3-add-sqrtx-point-sets":"a","u3-compare-domains":"a","u3-domain-from-quadratic-cr":"b","u3-intercept-statement":"b","u3-pk-defined-values":"b","u3-pk-extraneous-why":"b","u3-pk-which-is-solution":"a","u3-recover-f-value":"a","u3-two-methods":"b","u4-arc-compare":"b","u4-circle-point-reasoning":"a","u4-error-analysis":"b","u4-other-ratios":"a","u4-pk-exact-values":"a","u4-pk-point-ratios":"a","u4-pk-read-sketch":"a","u4-pk-same-reference":"a","u4-pk-solve-equation":"b","u4-point-ratios-angle":"a","u4-repair-solution-cr":"a","u4-solve-equation-exact":"a","u5-eq-from-graph":"a","u5-general-solution":"b","u5-model-conditions":"b","u5-pk-complex-fraction":"b","u5-pk-effect-of-a":"b","u5-pk-lcd-choose":"b","u5-pk-simplify-basic":"b","u5-pk-translations":"b","u5-solve-set":"a","u5-tan-graph":"a","u6-coincidence-check-cr":"b","u6-error-analysis":"b","u6-exact-values":"a","u6-graphical-validity":"b","u6-identity-or-equation":"a","u6-lost-solutions-cr":"a","u6-nonpermissible-identity":"a","u6-pk-add-subtract":"b","u6-pk-divide":"b","u6-pk-multiply":"b","u6-pk-sign-statements":"a","u6-pk-simplify-trinomial":"b","u6-proof-next-step":"b","u6-simplify-expression":"b","u6-solve-double-angle":"a","u6-solve-identity-sub":"a","u6-solve-quadratic":"a","u7-characteristics":"b","u7-common-base-linear":"a","u7-common-base-radical":"a","u7-compare-models":"a","u7-identify-growth-decay":"b","u7-pk-laws-integral":"b","u7-pk-laws-rational":"b","u7-pk-recip-features":"b","u7-pk-reciprocal-values":"a","u7-solve-nocommon-base":"a","u7-traits-match-cr":"b","u7-transformed-graph":"b","u8-add-exact-log-value":"a","u8-extraneous":"b","u8-laws-equivalent":"b","u8-laws-error":"b","u8-laws-illustrate":"b","u8-model-log":"b","u8-pk-product-law":"a","u8-pk-rational-exp":"a","u8-pk-sqrt-eval":"a","u9-binomial-expand":"b","u9-bridge-tree":"a","u9-perm-or-comb":"a","u9-perm-solve":"a","u9-pk-binom-expand":"b","u9-pk-binomial-expand":"b","u9-pk-monomial-expand":"b","u9-why-multiply":"b","u9-why-n-ge-r":"b"};
