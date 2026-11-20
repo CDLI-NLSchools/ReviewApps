@@ -1153,6 +1153,8 @@ BANK.forEach(function(e){if(["u2-repeating-decimal"].indexOf(e.id)>=0)e.pkFlag=t
 // CRMARKS: u3-sketch-features=3
 // CRMARKS: u3-build-from-features=2
 // CRMARKS: u3-inequality-integers=2
+// CRMARKS: u3-behaviour-written-cr=5
+// CRMARKS: u3-rational-application-cr=5
 // BIMODAL: u3-hole-coordinates=a
 // BIMODAL: u3-asymptote-set=a
 /* ================= Unit 3: Rational Functions (MA3208.1.8 to 1.10) =================
@@ -1661,6 +1663,82 @@ E("u3-add-double-factor-classify",3,["1.9"],2,"gen",function(){
   var sol="Cancel one copy of the common factor and inspect what remains: \\[ \\begin{aligned} f(x) &= "+FR(numS,denS)+" \\\\ &= "+red+", \\quad x \\ne "+h+", "+c+" \\end{aligned} \\] In the reduced form the denominator is still zero at \\(x = "+h+"\\) and at \\(x = "+c+"\\), while the numerator is not zero at either value, so the function values grow without bound near both. The correct statement is <b>"+key+"</b>.";
   return mcq("Consider \\(f(x) = "+FR(numS,denS)+"\\) What does the graph of \\(f\\) have at \\(x = "+h+"\\) and at \\(x = "+c+"\\)?",key,ds,sol,{h:h,b:b,c:c,k:k});
 });
+
+/* Phase B tranche, November 20, 2026: two written (constructed
+   response) entries that backfill the Math 3208 Unit 3 constructed
+   response pool for the compose gate's pooled Units 2+3 paper. The
+   earlier removal of u3-behaviour-analysis from the written pool
+   left that paper short of its 50 marks; these two 5-mark entries
+   close the gap, the first as the genuine written counterpart of
+   the behaviour analysis theme and the second as a rational model
+   in context. This tranche is SME-flagged for the specialist pass. */
+
+/* ---------- u3-behaviour-written-cr (1.8, 1.9, Level 2, var text, CR 5) ----------
+   A rational function whose numerator and denominator share exactly
+   one factor, giving a hole, and whose denominator has one further
+   non-cancelling factor, giving a vertical asymptote. The written
+   work classifies both non-permissible values from the factors,
+   states the limit at the hole, and describes the one-sided
+   behaviour at the vertical asymptote. */
+function u3BehavWrittenQ(h,s,a,k){
+  var numS=(k>1?""+k:"")+u3FacS(h)+u3FacS(s), denS=u3FacS(h)+u3FacS(a);
+  var fS=FR(numS,denS);
+  var Ln=k*(h-s), Ld=h-a, L=u3FracS(Ln,Ld);
+  var ln=Ln, ld=Ld; if(ld<0){ ln=-ln; ld=-ld; }
+  var g=u3Gcd(ln,ld); ln/=g; ld/=g;
+  var Lp=(ld===1?""+ln:ln+"/"+ld);
+  var rs=(k*(a-s)>0)?1:-1, ls=-rs;
+  var leftW=(ls>0?"+\\infty":"-\\infty"), rightW=(rs>0?"+\\infty":"-\\infty");
+  var prompt="Consider \\(f(x) = "+fS+"\\). (a) State both non-permissible values of \\(f\\), and classify each one as a hole or a vertical asymptote. Give the reason for each classification in terms of the factors of the numerator and the denominator. (2 marks) (b) State \\(\\lim_{x \\to "+h+"} f(x)\\). (1 mark) (c) Describe the behaviour of \\(f(x)\\) as \\(x\\) approaches \\("+a+"\\) from the left and as \\(x\\) approaches \\("+a+"\\) from the right. (2 marks)";
+  var sol="(a) (2 marks) The denominator is zero at \\(x = "+h+"\\) and at \\(x = "+a+"\\), so these are the two non-permissible values. The factor "+u3FacS(h)+" appears in both the numerator and the denominator and cancels, so \\(x = "+h+"\\) is a hole. The factor "+u3FacS(a)+" appears only in the denominator and does not cancel, so \\(x = "+a+"\\) is a vertical asymptote. One mark is for the hole with its cancelling reason, and one mark is for the vertical asymptote with its non-cancelling reason. "
+    +"(b) (1 mark) The limit at the hole is the value of the reduced function there, since the limit depends on the values near \\(x = "+h+"\\) rather than on the value at \\(x = "+h+"\\) itself: \\[ \\begin{aligned} \\lim_{x \\to "+h+"} f(x) &= "+(k>1?"\\frac{"+k+"("+h+" - ("+s+"))}{"+h+" - ("+a+")":"\\frac{"+h+" - ("+s+")}{"+h+" - ("+a+")")+"} \\\\ &= "+L+" \\end{aligned} \\] "
+    +"(c) (2 marks) Near \\(x = "+a+"\\), the reduced function \\(f(x) = "+FR((k>1?""+k:"")+u3FacS(s), u3FacS(a))+"\\) has a numerator close to \\("+(k*(a-s))+"\\) while its denominator is close to \\(0\\), so the function values grow without bound. The denominator is negative just to the left of \\(x = "+a+"\\) and positive just to the right, which fixes the two signs. One mark is for each side: \\(f(x) \\to "+leftW+"\\) as \\(x \\to "+a+"^-\\), and \\(f(x) \\to "+rightW+"\\) as \\(x \\to "+a+"^+\\). "
+    +"The answers are <b>\\(x = "+h+"\\) is a hole and \\(x = "+a+"\\) is a vertical asymptote; \\(\\lim_{x \\to "+h+"} f(x) = "+L+"\\); as \\(x \\to "+a+"^-\\), \\(f(x) \\to "+leftW+"\\), and as \\(x \\to "+a+"^+\\), \\(f(x) \\to "+rightW+"\\)</b>.";
+  var ans="x = "+h+" hole, x = "+a+" vertical asymptote, limit "+Lp+", left "+(ls>0?"+":"-")+"infinity, right "+(rs>0?"+":"-")+"infinity";
+  return textq(prompt, [ans], sol, {h:h, s:s, a:a, k:k, limit:Lp, ls:ls, rs:rs});
+}
+E("u3-behaviour-written-cr",3,["1.8","1.9"],2,"var",varset([
+  function(){ return u3BehavWrittenQ(2,-1,5,1); },
+  function(){ return u3BehavWrittenQ(-3,1,2,2); },
+  function(){ return u3BehavWrittenQ(4,0,-2,1); },
+  function(){ return u3BehavWrittenQ(-1,3,-4,1); }
+]));
+
+/* ---------- u3-rational-application-cr (1.10, Level 2, var text, CR 5) ----------
+   A rational model in context, in three settings: an average cost,
+   a concentration under flushing, and an average score. Each variant
+   evaluates the model at a given input, solves the rational equation
+   for a stated target value, and states and interprets the
+   horizontal asymptote. */
+E("u3-rational-application-cr",3,["1.10"],2,"var",varset([
+  function(){
+    var fS=FR(u3PS([15,2400]),"x");
+    var prompt="A workshop makes wooden stools. The total cost of making \\(x\\) stools is \\((15x + 2400)\\) dollars, so the average cost per stool, in dollars, is \\(A(x) = "+fS+"\\), where \\(x > 0\\). (a) Find the average cost per stool when \\(100\\) stools are made. (1 mark) (b) How many stools must be made for the average cost per stool to be \\(19\\) dollars? (2 marks) (c) State the horizontal asymptote of the graph of \\(A\\) and interpret it in this context. (2 marks)";
+    var sol="(a) (1 mark) Substitute \\(x = 100\\) into the model: \\[ \\begin{aligned} A(100) &= \\frac{15(100) + 2400}{100} \\\\ &= \\frac{3900}{100} \\\\ &= 39 \\end{aligned} \\] The average cost is \\(39\\) dollars per stool. "
+      +"(b) (2 marks) Set the average cost equal to \\(19\\) and solve the rational equation. One mark is for clearing the fraction correctly, and one mark is for the correct number of stools: \\[ \\begin{aligned} \\frac{15x + 2400}{x} &= 19 \\\\ 15x + 2400 &= 19x \\\\ 2400 &= 4x \\\\ x &= 600 \\end{aligned} \\] So \\(600\\) stools must be made. "
+      +"(c) (2 marks) The numerator and the denominator have the same degree, so the horizontal asymptote is the ratio of the leading coefficients, \\(y = 15\\) (1 mark). In this context, as more and more stools are made, the fixed cost of \\(2400\\) dollars is spread over more stools, so the average cost per stool falls toward \\(15\\) dollars, the cost in materials and labour for each additional stool. The average cost approaches this floor as production grows, but stays above it (1 mark). "
+      +"The answers are <b>\\(A(100) = 39\\) dollars per stool, \\(x = 600\\) stools, and the horizontal asymptote \\(y = 15\\)</b>.";
+    return textq(prompt, ["a(100) = 39 dollars per stool, x = 600 stools, horizontal asymptote y = 15"], sol, {ctx:"cost", x0:100, val:39, target:19, xt:600, ha:15});
+  },
+  function(){
+    var fS=FR("8t + 120","t + 10");
+    var prompt="A tank of nutrient solution is flushed with a weaker solution whose concentration is \\(8\\) milligrams per litre. The concentration in the tank, in milligrams per litre, \\(t\\) hours after flushing begins is \\(C(t) = "+fS+"\\), where \\(t \\ge 0\\). (a) Find the concentration in the tank after \\(10\\) hours. (1 mark) (b) After how many hours will the concentration in the tank be \\(9\\) milligrams per litre? (2 marks) (c) State the horizontal asymptote of the graph of \\(C\\) and interpret it in this context. (2 marks)";
+    var sol="(a) (1 mark) Substitute \\(t = 10\\) into the model: \\[ \\begin{aligned} C(10) &= \\frac{8(10) + 120}{10 + 10} \\\\ &= \\frac{200}{20} \\\\ &= 10 \\end{aligned} \\] The concentration is \\(10\\) milligrams per litre. "
+      +"(b) (2 marks) Set the concentration equal to \\(9\\) and solve the rational equation. One mark is for clearing the fraction correctly, and one mark is for the correct time: \\[ \\begin{aligned} \\frac{8t + 120}{t + 10} &= 9 \\\\ 8t + 120 &= 9t + 90 \\\\ 30 &= t \\end{aligned} \\] So the concentration reaches \\(9\\) milligrams per litre after \\(30\\) hours. "
+      +"(c) (2 marks) The numerator and the denominator have the same degree, so the horizontal asymptote is the ratio of the leading coefficients, \\(y = 8\\) (1 mark). In this context, as flushing continues over a long time, the concentration in the tank falls toward \\(8\\) milligrams per litre, the concentration of the solution flowing in. The concentration approaches this level but stays above it (1 mark). "
+      +"The answers are <b>\\(C(10) = 10\\) milligrams per litre, \\(t = 30\\) hours, and the horizontal asymptote \\(y = 8\\)</b>.";
+    return textq(prompt, ["c(10) = 10 milligrams per litre, t = 30 hours, horizontal asymptote y = 8"], sol, {ctx:"concentration", x0:10, val:10, target:9, xt:30, ha:8});
+  },
+  function(){
+    var fS=FR(u3PS([90,320]),u3PS([1,4]));
+    var prompt="A student has written \\(4\\) quizzes so far, with a total score of \\(320\\). The student scores \\(90\\) on each further quiz. After \\(x\\) further quizzes, the student's average score is \\(A(x) = "+fS+"\\). (a) Find the average score after \\(6\\) further quizzes. (1 mark) (b) How many further quizzes are needed for the average score to reach \\(88\\)? (2 marks) (c) State the horizontal asymptote of the graph of \\(A\\) and interpret it in this context. (2 marks)";
+    var sol="(a) (1 mark) Substitute \\(x = 6\\) into the model: \\[ \\begin{aligned} A(6) &= \\frac{90(6) + 320}{6 + 4} \\\\ &= \\frac{860}{10} \\\\ &= 86 \\end{aligned} \\] The average score is \\(86\\). "
+      +"(b) (2 marks) Set the average score equal to \\(88\\) and solve the rational equation. One mark is for clearing the fraction correctly, and one mark is for the correct number of quizzes: \\[ \\begin{aligned} \\frac{90x + 320}{x + 4} &= 88 \\\\ 90x + 320 &= 88x + 352 \\\\ 2x &= 32 \\\\ x &= 16 \\end{aligned} \\] So \\(16\\) further quizzes are needed. "
+      +"(c) (2 marks) The numerator and the denominator have the same degree, so the horizontal asymptote is the ratio of the leading coefficients, \\(y = 90\\) (1 mark). In this context, as the student writes more and more quizzes, the average score rises toward \\(90\\), the score earned on each new quiz. The average approaches \\(90\\) but stays below it, since the earlier lower scores always count in the total (1 mark). "
+      +"The answers are <b>\\(A(6) = 86\\), \\(x = 16\\) further quizzes, and the horizontal asymptote \\(y = 90\\)</b>.";
+    return textq(prompt, ["a(6) = 86, x = 16 further quizzes, horizontal asymptote y = 90"], sol, {ctx:"average score", x0:6, val:86, target:88, xt:16, ha:90});
+  }
+]));
 
 /* ----- bank-u4.js ----- */
 // Math 3208 Unit 4 Derivatives question bank
@@ -6929,7 +7007,7 @@ BANK.forEach(function(e){var t=PKT3208[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-zero-points":1,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
+window.__BANK_CRMARKS={"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-continuity-definition":3,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-written-cr":5,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-rational-application-cr":5,"u3-rational-equation-cr":2,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-zero-points":1,"u4-first-principles":2,"u4-higher-derivatives":2,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-motion":2,"u4-product-quotient":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-invderiv":2,"u6-limit-param":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-particular-solution":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
