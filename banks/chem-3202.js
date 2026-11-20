@@ -4,6 +4,7 @@
    the shell's E(id, unit, indicators, level, kind, gen). */
 
 /* ----- bank-u1.js ----- */
+// CRMARKS: u1-57-cr-shift-explain=2
 // Chemistry 3202 Unit 1 From Kinetics to Equilibrium question bank
 // Phase C diagram figures (Nov 2026): original SVG figures generated from
 // each question's own values were added to the 5.3 potential energy diagram
@@ -1208,6 +1209,39 @@ E("u1-wcr-factor-changes-explain",1,["5.2"],3,"var",varset([
     return textq("Hydrogen peroxide solution decomposes slowly at "+t1+" °C. The experiment is repeated with two changes made together: a manganese(IV) oxide catalyst is added, and the solution is warmed to "+t2+" °C. Explain, using collision theory, how each change affects the rate of reaction, and state the combined effect on the rate. Write your answer in full sentences.",
       [model],
       "Marking points (4): 1 mark for stating that the catalyst increases the rate; 1 mark for explaining that it lowers the activation energy, so a larger fraction of collisions succeed without the collision rate changing much; 1 mark for stating that warming increases the rate; 1 mark for explaining that a larger fraction of collisions reach the activation energy, so successful collisions happen more often each second. Model answer: "+model+" The combined effect is <b>a faster rate, because both changes increase the number of successful collisions per second</b>.",{t1:t1,t2:t2});
+  }
+]));
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: u1-57-cr-shift-explain closes Unit 1 Test
+   2 (2 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("u1-57-cr-shift-explain", 1, ["5.7"], 2, "var", varset([
+  function () {
+    var model = "Increasing the pressure by compression shifts the equilibrium to the right, toward NH\u2083: the forward side has 2 mol of gas while the reactant side has 4 mol of gas (1 mol of N\u2082 and 3 mol of H\u2082), so forming NH\u2083 reduces the number of gas molecules and partly relieves the added pressure. Increasing the temperature shifts the equilibrium to the left, toward N\u2082 and H\u2082: the forward reaction is exothermic (\u0394H = \u221292 kJ), so the reverse reaction absorbs heat and partly counteracts the temperature rise.";
+    return textq("The equilibrium N\u2082(g) + 3 H\u2082(g) \u21CC 2 NH\u2083(g), \u0394H = \u221292 kJ, is established in a sealed container. Two changes are made, one at a time.\n(a) The pressure is increased by compressing the mixture into a smaller volume. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)\n(b) The temperature is increased. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)",
+      [model],
+      "Marking points (2): (a) 1 mark for a shift to the right, explained by the mole count: compression favours the side with fewer gas molecules, 2 mol of products against 4 mol of reactants, so making NH\u2083 partly relieves the pressure increase. (b) 1 mark for a shift to the left, explained by the enthalpy sign: the forward reaction is exothermic, so the endothermic reverse reaction absorbs the added heat and partly counteracts the temperature increase. Model answer: " + model + " In short, <b>compression shifts the equilibrium right, and heating shifts it left</b>.", {});
+  },
+  function () {
+    var model = "Removing HI shifts the equilibrium to the right, toward HI: the system partly replaces what was taken away by converting more H\u2082 and I\u2082 into HI, counteracting the removal. Decreasing the volume causes no shift: both sides of the equation have 2 mol of gas (1 mol of H\u2082 and 1 mol of I\u2082 on the left, 2 mol of HI on the right), so compression raises every concentration in the same proportion and neither side is favoured.";
+    return textq("The equilibrium H\u2082(g) + I\u2082(g) \u21CC 2 HI(g), \u0394H = \u221213 kJ, is established in a sealed container. Two changes are made, one at a time.\n(a) Some HI(g) is removed from the container. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)\n(b) The volume of the container is decreased, raising the pressure. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)",
+      [model],
+      "Marking points (2): (a) 1 mark for a shift to the right, explained as the system replacing the removed product: more H\u2082 and I\u2082 react to restore some of the HI that was taken out. (b) 1 mark for no shift, explained by the equal mole counts: 2 mol of gas on each side, so a volume change raises all concentrations equally and favours neither side, even though the pressure rises. Model answer: " + model + " In short, <b>removing HI shifts the equilibrium right, and decreasing the volume causes no shift</b>.", {});
+  },
+  function () {
+    var model = "Pumping in CO\u2082 shifts the equilibrium to the left, toward CaCO\u2083: the system uses up some of the added CO\u2082 by combining it with CaO to form more CaCO\u2083, partly counteracting the addition. Raising the temperature shifts the equilibrium to the right, toward CaO and CO\u2082: the forward reaction is endothermic (\u0394H = +178 kJ), so decomposing more CaCO\u2083 absorbs heat and partly counteracts the temperature rise.";
+    return textq("The equilibrium CaCO\u2083(s) \u21CC CaO(s) + CO\u2082(g), \u0394H = +178 kJ, is established in a sealed container. Two changes are made, one at a time.\n(a) Additional CO\u2082(g) is pumped into the container. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)\n(b) The temperature is raised. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)",
+      [model],
+      "Marking points (2): (a) 1 mark for a shift to the left, explained as the system consuming the added product gas: CO\u2082 reacts with CaO to form CaCO\u2083, partly removing the added CO\u2082. The solids do not affect the position directly; the gas concentration is what changes. (b) 1 mark for a shift to the right, explained by the enthalpy sign: the forward reaction is endothermic, so it absorbs the added heat as more CaCO\u2083 decomposes. Model answer: " + model + " In short, <b>adding CO\u2082 shifts the equilibrium left, and heating shifts it right</b>.", {});
+  },
+  function () {
+    var model = "Adding Cl\u2082 shifts the equilibrium to the left, toward PCl\u2085: the system uses up some of the added Cl\u2082 by combining it with PCl\u2083 to form more PCl\u2085, partly counteracting the addition. Increasing the volume (lowering the pressure) shifts the equilibrium to the right, toward PCl\u2083 and Cl\u2082: the product side has 2 mol of gas against 1 mol on the reactant side, so forming more gas molecules partly fills the larger volume and counteracts the pressure drop.";
+    return textq("The equilibrium PCl\u2085(g) \u21CC PCl\u2083(g) + Cl\u2082(g), \u0394H = +92 kJ, is established in a sealed container. Two changes are made, one at a time.\n(a) Additional Cl\u2082(g) is added to the container. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)\n(b) The volume of the container is increased, lowering the pressure. State the direction of the shift, if any, and explain it in terms of the system counteracting the change. (1)",
+      [model],
+      "Marking points (2): (a) 1 mark for a shift to the left, explained as the system consuming the added product: Cl\u2082 reacts with PCl\u2083 to form PCl\u2085, partly removing the added Cl\u2082. (b) 1 mark for a shift to the right, explained by the mole count: expansion favours the side with more gas molecules, 2 mol of products against 1 mol of reactant, so dissociation partly counteracts the pressure drop. Model answer: " + model + " In short, <b>adding Cl\u2082 shifts the equilibrium left, and increasing the volume shifts it right</b>.", {});
   }
 ]));
 
@@ -6633,7 +6667,7 @@ E("br-b4-equilibrium-basics",5,["B.4"],1,"var",varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-53-ea-reverse":3,"u1-54-mechanism-analysis":4,"u1-56-ice-k":4,"u1-56-k-calc":3,"u1-57-shift-predict":2,"u1-wcr-factor-changes-explain":4,"u2-63-net-equation":3,"u2-63-write-molecular":3,"u2-63-write-net":4,"u2-64-dilution-ph":3,"u2-64-mix-stoich-ph":4,"u2-64-ph-from-h":2,"u2-65-ka-from-ph":3,"u2-65-kb-calc":2,"u2-65-weak-acid-ph":4,"u2-65-weak-base-ph":4,"u2-68-aliquot-concentration":4,"u2-68-average-titre":3,"u2-68-titration-calc":3,"u2-68-titration-diprotic":4,"u3-710-calorimetry-molar":4,"u3-710-compare-per-gram":3,"u3-710-mass-for-energy":3,"u3-710-molar-combustion":4,"u3-711-write-thermochem":3,"u3-712-bond-energy":3,"u3-712-formation":3,"u3-712-formation-solve":4,"u3-712-hess":5,"u3-74-cup-heat":3,"u3-74-find-delta-t":2,"u3-74-mixture-temp":4,"u3-74-q-temp":3,"u3-77-full-range":5,"u3-77-q-combined":4,"u3-77-q-phase":3,"u3-77-q-release":3,"u3-78-deltah-from-q":3,"u3-78-limiting":3,"u4-83-balance-acidic":5,"u4-83-half-reaction-write":3,"u4-83-net-reaction":4,"u4-86-predict-spontaneous":3,"u4-87-cell-voltage":4,"u4-87-find-e-half":3,"u4-88-faraday-mass":4,"u4-88-faraday-time":4,"u4-wcr-fuel-cell-response":3};
+window.__BANK_CRMARKS={"u1-53-ea-reverse":3,"u1-54-mechanism-analysis":4,"u1-56-ice-k":4,"u1-56-k-calc":3,"u1-57-cr-shift-explain":2,"u1-57-shift-predict":2,"u1-wcr-factor-changes-explain":4,"u2-63-net-equation":3,"u2-63-write-molecular":3,"u2-63-write-net":4,"u2-64-dilution-ph":3,"u2-64-mix-stoich-ph":4,"u2-64-ph-from-h":2,"u2-65-ka-from-ph":3,"u2-65-kb-calc":2,"u2-65-weak-acid-ph":4,"u2-65-weak-base-ph":4,"u2-68-aliquot-concentration":4,"u2-68-average-titre":3,"u2-68-titration-calc":3,"u2-68-titration-diprotic":4,"u3-710-calorimetry-molar":4,"u3-710-compare-per-gram":3,"u3-710-mass-for-energy":3,"u3-710-molar-combustion":4,"u3-711-write-thermochem":3,"u3-712-bond-energy":3,"u3-712-formation":3,"u3-712-formation-solve":4,"u3-712-hess":5,"u3-74-cup-heat":3,"u3-74-find-delta-t":2,"u3-74-mixture-temp":4,"u3-74-q-temp":3,"u3-77-full-range":5,"u3-77-q-combined":4,"u3-77-q-phase":3,"u3-77-q-release":3,"u3-78-deltah-from-q":3,"u3-78-limiting":3,"u4-83-balance-acidic":5,"u4-83-half-reaction-write":3,"u4-83-net-reaction":4,"u4-86-predict-spontaneous":3,"u4-87-cell-voltage":4,"u4-87-find-e-half":3,"u4-88-faraday-mass":4,"u4-88-faraday-time":4,"u4-wcr-fuel-cell-response":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose

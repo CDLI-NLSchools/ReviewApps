@@ -2593,6 +2593,7 @@ E("sci-u1-cr-airmass", 1, ["SC10.6.4"], 3, "var", varset([
 // CRMARKS: sci-u2-cr-rates=3
 // CRMARKS: sci-u2-cr-nomenclature=2
 // CRMARKS: sci-u2-cr-neutral=4
+// CRMARKS: sci-u2-cr-identify-solutions=4
 // Science 1206 Unit 2 bank: Chemical Reactions (SC10.8.1 to 8.6, plus
 // the SC10.7.1 to 7.3 STSE tranche added Nov 19, 2026 at the end of
 // this file).
@@ -4101,11 +4102,37 @@ E("sci-u2-stse-antacid-equation", 2, ["SC10.7.3"], 3, "var", varset([
   }
 ]), ["Read the equation as the mechanism: the carbonate takes the acid's hydrogen ions, and a gas leaves."]);
 
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: sci-u2-cr-identify-solutions closes Unit 2 Test
+   2 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("sci-u2-cr-identify-solutions", 2, ["SC10.8.4"], 2, "var", varset([
+  function () {
+    return textq("Identifying three unlabelled solutions (4 marks)\nThree unlabelled solutions are tested and the results are recorded. Solution A: blue litmus paper turns red; pH 2; magnesium ribbon fizzes steadily; the solution conducts electricity well. Solution B: red litmus paper turns blue; pH 12; magnesium ribbon does not fizz; the solution conducts electricity well. Solution C: neither litmus paper changes colour; pH 7; magnesium ribbon does not fizz; the solution does not conduct electricity.\n(a) Identify each solution as an acid, a base or a neutral solution. (3)\n(b) Choose one solution and justify its identification using two pieces of evidence from the results. (1)",
+      ["A is an acid, B is a base and C is a neutral solution."],
+      "Marking points (4): 1 mark for A identified as an acid; 1 mark for B identified as a base; 1 mark for C identified as a neutral solution; 1 mark for a justification of one identification that uses two pieces of evidence from the table and links both to the correct class. Model answer: (a) A is an acid, B is a base and C is a neutral solution. (b) For example, solution A is an acid because it turns blue litmus red and has a pH of 2, well below 7; its fizzing with magnesium and its conductivity agree. In full, <b>A is an acid, B is a base and C is a neutral solution</b>.", {});
+  },
+  function () {
+    return textq("Identifying three unlabelled solutions (4 marks)\nThree unlabelled solutions are tested and the results are recorded. Solution A: neither litmus paper changes colour; pH 7; magnesium ribbon does not fizz; the solution conducts electricity well. Solution B: blue litmus paper turns red; pH 3; magnesium ribbon fizzes slowly; the solution conducts electricity. Solution C: red litmus paper turns blue; pH 11; magnesium ribbon does not fizz; the solution conducts electricity well.\n(a) Identify each solution as an acid, a base or a neutral solution. (3)\n(b) Choose one solution and justify its identification using two pieces of evidence from the results. (1)",
+      ["A is a neutral solution, B is an acid and C is a base."],
+      "Marking points (4): 1 mark for A identified as a neutral solution; 1 mark for B identified as an acid; 1 mark for C identified as a base; 1 mark for a justification of one identification that uses two pieces of evidence from the table and links both to the correct class. Model answer: (a) A is a neutral solution, B is an acid and C is a base. (b) For example, solution A is neutral because its pH is 7 and it changes neither litmus paper; it still conducts because it contains dissolved ions, as a salt solution does, so conductivity alone does not make it an acid or a base. In full, <b>A is a neutral solution, B is an acid and C is a base</b>.", {});
+  },
+  function () {
+    return textq("Identifying three unlabelled solutions (4 marks)\nThree unlabelled solutions are tested and the results are recorded. Solution A: red litmus paper turns blue; pH 9; magnesium ribbon does not fizz; the solution conducts electricity. Solution B: neither litmus paper changes colour; pH 7; magnesium ribbon does not fizz; the solution does not conduct electricity. Solution C: blue litmus paper turns red; pH 2; magnesium ribbon fizzes steadily; the solution conducts electricity.\n(a) Identify each solution as an acid, a base or a neutral solution. (3)\n(b) Choose one solution and justify its identification using two pieces of evidence from the results. (1)",
+      ["A is a base, B is a neutral solution and C is an acid."],
+      "Marking points (4): 1 mark for A identified as a base; 1 mark for B identified as a neutral solution; 1 mark for C identified as an acid; 1 mark for a justification of one identification that uses two pieces of evidence from the table and links both to the correct class. Model answer: (a) A is a base, B is a neutral solution and C is an acid. (b) For example, solution C is an acid because it turns blue litmus red and fizzes with magnesium ribbon as hydrogen gas forms; its pH of 2 agrees. In full, <b>A is a base, B is a neutral solution and C is an acid</b>.", {});
+  }
+]), ["Acids turn blue litmus red and sit below pH 7; bases turn red litmus blue and sit above pH 7.", "Conductivity alone does not decide the class: salt solutions conduct and stay neutral, while pure water does not conduct."]);
+
 /* ----- bank-u3.js ----- */
 // CRMARKS: sci-u3-cr-delivery-trip=3
 // CRMARKS: sci-u3-cr-trip=4
 // CRMARKS: sci-u3-cr-dtgraph=3
 // CRMARKS: sci-u3-cr-vtgraph=3
+// CRMARKS: sci-u3-cr-two-leg-journey=4
+// CRMARKS: sci-u3-cr-vt-deceleration=4
 /* Science 1206 Unit 3: Motion (SC10.8.7 to 8.12). */
 /* Appendix A significant figures are enforced: calculation answers carry the fewest sig figs of the measurements used. */
 
@@ -4954,6 +4981,49 @@ E("sci-u3-cr-delivery-trip", 3, ["SC10.8.11", "SC10.8.12"], 2, "var", varset([
   }
 ]), ["Work segment by segment: each straight piece of the graph is one steady motion.", "Area under a velocity-time segment gives that segment's displacement; add the areas."]);
 
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: sci-u3-cr-two-leg-journey closes Unit 3 Test
+   1 (4 marks, Level 3) and sci-u3-cr-vt-deceleration closes Unit 3 Test
+   2 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("sci-u3-cr-two-leg-journey", 3, ["SC10.8.8", "SC10.8.10"], 3, "var", varset([
+  function () {
+    return textq("A two-leg cycling trip (4 marks)\nA cyclist rides 300 m east in 60 s, turns, and then rides 400 m north in 90 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the magnitude of the cyclist's displacement for the whole trip. (1)\n(c) Calculate the cyclist's average speed for the whole trip. (1)\n(d) Calculate the magnitude of the cyclist's average velocity, and state how its direction is set. (1)",
+      ["(a) 700 m. (b) 500 m. (c) 4.67 m/s. (d) 3.33 m/s."],
+      "Marking points (4): (a) 1 mark for the total distance 300 + 400 = 700 m. (b) 1 mark for the displacement by Pythagoras: the square root of (300 squared + 400 squared) = the square root of 250 000 = 500 m. (c) 1 mark for the average speed: total time 60 + 90 = 150 s, so 700 m / 150 s = 4.67 m/s. (d) 1 mark for the average velocity magnitude 500 m / 150 s = 3.33 m/s, with the direction stated as the direction of the displacement, northeast from the start, not east or north alone. Model answer: (a) 700 m. (b) 500 m. (c) 4.67 m/s. (d) <b>3.33 m/s in the direction of the displacement, northeast from the start</b>.", {});
+  },
+  function () {
+    return textq("A two-leg drone flight (4 marks)\nA delivery drone flies 600 m north in 120 s, turns, and then flies 800 m east in 100 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the magnitude of the drone's displacement for the whole flight. (1)\n(c) Calculate the drone's average speed for the whole flight. (1)\n(d) Calculate the magnitude of the drone's average velocity, and state how its direction is set. (1)",
+      ["(a) 1400 m. (b) 1000 m. (c) 6.36 m/s. (d) 4.55 m/s."],
+      "Marking points (4): (a) 1 mark for the total distance 600 + 800 = 1400 m. (b) 1 mark for the displacement by Pythagoras: the square root of (600 squared + 800 squared) = the square root of 1 000 000 = 1000 m. (c) 1 mark for the average speed: total time 120 + 100 = 220 s, so 1400 m / 220 s = 6.36 m/s. (d) 1 mark for the average velocity magnitude 1000 m / 220 s = 4.55 m/s, with the direction stated as the direction of the displacement, northeast from the launch point, not north or east alone. Model answer: (a) 1400 m. (b) 1000 m. (c) 6.36 m/s. (d) <b>4.55 m/s in the direction of the displacement, northeast from the launch point</b>.", {});
+  },
+  function () {
+    return textq("A two-leg swim (4 marks)\nA swimmer swims 120 m south along a lake shore in 60 s, turns, and then swims 160 m west in 80 s.\n(a) Calculate the total distance travelled. (1)\n(b) Calculate the magnitude of the swimmer's displacement for the whole swim. (1)\n(c) Calculate the swimmer's average speed for the whole swim. (1)\n(d) Calculate the magnitude of the swimmer's average velocity, and state how its direction is set. (1)",
+      ["(a) 280 m. (b) 200 m. (c) 2.00 m/s. (d) 1.43 m/s."],
+      "Marking points (4): (a) 1 mark for the total distance 120 + 160 = 280 m. (b) 1 mark for the displacement by Pythagoras: the square root of (120 squared + 160 squared) = the square root of 40 000 = 200 m. (c) 1 mark for the average speed: total time 60 + 80 = 140 s, so 280 m / 140 s = 2.00 m/s. (d) 1 mark for the average velocity magnitude 200 m / 140 s = 1.43 m/s, with the direction stated as the direction of the displacement, southwest from the start, not south or west alone. Model answer: (a) 280 m. (b) 200 m. (c) 2.00 m/s. (d) <b>1.43 m/s in the direction of the displacement, southwest from the start</b>.", {});
+  }
+]), ["Distance adds the legs; displacement joins the start to the finish with one straight line.", "Average speed divides total distance by total time; average velocity divides displacement by the same total time."]);
+
+E("sci-u3-cr-vt-deceleration", 3, ["SC10.8.11", "SC10.8.12"], 2, "var", varset([
+  function () {
+    return textq("A snowmobile velocity-time graph (4 marks)\nA snowmobile's velocity-time graph rises in a straight line from 0 m/s to 20 m/s over the first 10 s, stays at 20 m/s until 30 s, then falls in a straight line to 0 m/s at 40 s.\n(a) Calculate the acceleration on the speeding-up segment. (1)\n(b) Calculate the acceleration on the slowing-down segment, and state what its sign means. (1)\n(c) Calculate the total displacement of the snowmobile over the 40 s. (2)",
+      ["(a) 2.0 m/s\u00B2. (b) \u22122.0 m/s\u00B2. (c) 600 m."],
+      "Marking points (4): (a) 1 mark for the slope (20 \u2212 0) / 10 = 2.0 m/s\u00B2. (b) 1 mark for the slope (0 \u2212 20) / 10 = \u22122.0 m/s\u00B2 and the meaning: the negative sign shows the acceleration points opposite to the motion, so the snowmobile slows down (it decelerates). (c) 1 mark for the area method and 1 mark for the value: triangle 0.5 \u00D7 10 \u00D7 20 = 100 m, plus rectangle 20 \u00D7 20 = 400 m, plus triangle 0.5 \u00D7 10 \u00D7 20 = 100 m, total 600 m. Model answer: (a) 2.0 m/s\u00B2. (b) \u22122.0 m/s\u00B2, opposite to the motion. (c) <b>600 m, from the total area under the graph</b>.", {});
+  },
+  function () {
+    return textq("A subway train velocity-time graph (4 marks)\nA subway train's velocity-time graph rises in a straight line from 0 m/s to 15 m/s over the first 10 s, stays at 15 m/s until 40 s, then falls in a straight line to 0 m/s at 55 s as it enters the next station.\n(a) Calculate the acceleration on the speeding-up segment. (1)\n(b) Calculate the acceleration on the slowing-down segment, and state what its sign means. (1)\n(c) Calculate the total displacement of the train over the 55 s. (2)",
+      ["(a) 1.5 m/s\u00B2. (b) \u22121.0 m/s\u00B2. (c) 638 m."],
+      "Marking points (4): (a) 1 mark for the slope (15 \u2212 0) / 10 = 1.5 m/s\u00B2. (b) 1 mark for the slope (0 \u2212 15) / 15 = \u22121.0 m/s\u00B2 and the meaning: the negative sign shows the acceleration points opposite to the motion, so the train slows down (it decelerates) even though it is still moving forward. (c) 1 mark for the area method and 1 mark for the value: triangle 0.5 \u00D7 10 \u00D7 15 = 75 m, plus rectangle 30 \u00D7 15 = 450 m, plus triangle 0.5 \u00D7 15 \u00D7 15 = 112.5 m, total 637.5 m, about 638 m. Model answer: (a) 1.5 m/s\u00B2. (b) \u22121.0 m/s\u00B2, opposite to the motion. (c) <b>About 638 m, from the total area under the graph</b>.", {});
+  },
+  function () {
+    return textq("A cyclist velocity-time graph (4 marks)\nA cyclist's velocity-time graph rises in a straight line from 4 m/s to 16 m/s over the first 6 s, stays at 16 m/s until 16 s, then falls in a straight line to 0 m/s at 24 s as the cyclist approaches a stop sign.\n(a) Calculate the acceleration on the speeding-up segment. (1)\n(b) Calculate the acceleration on the slowing-down segment, and state what its sign means. (1)\n(c) Calculate the total displacement of the cyclist over the 24 s. (2)",
+      ["(a) 2.0 m/s\u00B2. (b) \u22122.0 m/s\u00B2. (c) 284 m."],
+      "Marking points (4): (a) 1 mark for the slope (16 \u2212 4) / 6 = 2.0 m/s\u00B2. (b) 1 mark for the slope (0 \u2212 16) / 8 = \u22122.0 m/s\u00B2 and the meaning: the negative sign shows the acceleration points opposite to the motion, so the cyclist slows down (decelerates) toward the stop. (c) 1 mark for the area method and 1 mark for the value: trapezoid (4 + 16) / 2 \u00D7 6 = 60 m, plus rectangle 10 \u00D7 16 = 160 m, plus triangle 0.5 \u00D7 8 \u00D7 16 = 64 m, total 284 m. Model answer: (a) 2.0 m/s\u00B2. (b) \u22122.0 m/s\u00B2, opposite to the motion. (c) <b>284 m, from the total area under the graph</b>.", {});
+  }
+]), ["Slope for acceleration, area for displacement: state which reading you are using before you compute.", "A falling segment has a negative slope: the sign tells you the acceleration opposes the motion."]);
+
 /* ----- bank-u4.js ----- */
 // CRMARKS: sci-u4-cr-pesticide-chain=2
 // CRMARKS: sci-u4-cr-cycle=4
@@ -4961,6 +5031,8 @@ E("sci-u3-cr-delivery-trip", 3, ["SC10.8.11", "SC10.8.12"], 2, "var", varset([
 // CRMARKS: sci-u4-cr-scene=3
 // CRMARKS: sci-u4-cr-soil=2
 // CRMARKS: sci-u4-cr-biodiv=2
+// CRMARKS: sci-u4-cr-energy-transfer=2
+// CRMARKS: sci-u4-cr-fragmentation=3
 /* Science 1206 Unit 4: Sustainability of Ecosystems (SC10.10.1 to 10.8). */
 
 /* ---------- SC10.10.1 Ecological organization, biotic and abiotic ---------- */
@@ -5670,10 +5742,53 @@ E("sci-u4-cr-pesticide-chain", 4, ["SC10.10.5"], 2, "var", varset([
   }
 ]), ["Follow the chemical: it concentrates as it moves up the food chain.", "The top predator gets the largest dose per meal because it eats many contaminated prey."]);
 
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: sci-u4-cr-energy-transfer closes Unit 4 Test
+   1 (2 marks, Level 3) and sci-u4-cr-fragmentation closes Unit 4 Test
+   2 (3 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("sci-u4-cr-energy-transfer", 4, ["SC10.10.2"], 3, "var", varset([
+  function () {
+    return textq("Energy reaching the third trophic level (2 marks)\nIn a grassland food chain, the producers capture 50 000 kJ of energy. Grasshoppers (first trophic level consumers, the second trophic level) feed on the producers, and shrews (the third trophic level) feed on the grasshoppers.\n(a) Using the ten percent law, calculate the energy that reaches the third trophic level. Show your steps. (1)\n(b) Explain where the rest of the energy goes, and why this limits the size of top-consumer populations. (1)",
+      ["(a) 500 kJ reaches the third trophic level."],
+      "Marking points (2): (a) 1 mark for two ten percent steps: 10 percent of 50 000 kJ = 5 000 kJ reaches the second trophic level, and 10 percent of 5 000 kJ = 500 kJ reaches the third trophic level. (b) 1 mark for explaining that most of the energy at each level is used in life processes (movement, body heat and other respiration losses) and lost as heat, with more passed to decomposers in waste and uneaten parts, so only a small share remains to support the next level; with so little energy left at the top, the habitat can feed only a small top-consumer population. Model answer: (a) 500 kJ. (b) The rest is spent on living and lost as heat, or passed to decomposers in waste and uneaten remains, so <b>only 500 kJ reaches the third trophic level, and top consumers stay few because so little energy is left to support them</b>.", {});
+  },
+  function () {
+    return textq("Energy reaching the third trophic level (2 marks)\nIn a pond food chain, the algae (producers) capture 8 000 kJ of energy. Zooplankton (the second trophic level) feed on the algae, and small fish (the third trophic level) feed on the zooplankton.\n(a) Using the ten percent law, calculate the energy that reaches the third trophic level. Show your steps. (1)\n(b) Explain where the rest of the energy goes, and why this limits the size of top-consumer populations. (1)",
+      ["(a) 80 kJ reaches the third trophic level."],
+      "Marking points (2): (a) 1 mark for two ten percent steps: 10 percent of 8 000 kJ = 800 kJ reaches the second trophic level, and 10 percent of 800 kJ = 80 kJ reaches the third trophic level. (b) 1 mark for explaining that most of the energy at each level is used in life processes (movement, body heat and other respiration losses) and lost as heat, with more passed to decomposers in waste and uneaten parts, so only a small share remains to support the next level; a heron or large fish at the top is fed by what little remains, so top-consumer populations stay small. Model answer: (a) 80 kJ. (b) The rest is spent on living and lost as heat, or passed to decomposers in waste and uneaten remains, so <b>only 80 kJ reaches the third trophic level, and top consumers stay few because so little energy is left to support them</b>.", {});
+  },
+  function () {
+    return textq("Energy reaching the third trophic level (2 marks)\nIn a forest food chain, the trees and shrubs (producers) capture 60 000 kJ of energy. Deer mice (the second trophic level) feed on seeds and leaves, and weasels (the third trophic level) feed on the deer mice.\n(a) Using the ten percent law, calculate the energy that reaches the third trophic level. Show your steps. (1)\n(b) Explain where the rest of the energy goes, and why this limits the size of top-consumer populations. (1)",
+      ["(a) 600 kJ reaches the third trophic level."],
+      "Marking points (2): (a) 1 mark for two ten percent steps: 10 percent of 60 000 kJ = 6 000 kJ reaches the second trophic level, and 10 percent of 6 000 kJ = 600 kJ reaches the third trophic level. (b) 1 mark for explaining that most of the energy at each level is used in life processes (movement, body heat and other respiration losses) and lost as heat, with more passed to decomposers in waste and uneaten parts, so only a small share remains to support the next level; top consumers higher in the chain live on the small remainder, so their populations stay small. Model answer: (a) 600 kJ. (b) The rest is spent on living and lost as heat, or passed to decomposers in waste and uneaten remains, so <b>only 600 kJ reaches the third trophic level, and top consumers stay few because so little energy is left to support them</b>.", {});
+  }
+]), ["Apply the ten percent law once for each step up the chain: producers to level two is one step, level two to level three is the second.", "Energy is spent, not destroyed: name the life processes and the heat loss before drawing the population conclusion."]);
+
+E("sci-u4-cr-fragmentation", 4, ["SC10.10.6"], 2, "var", varset([
+  function () {
+    return textq("A highway through a forest (3 marks)\nA new highway and subdivision split a large forest into two smaller patches. Ground-nesting birds that once nested throughout the forest decline sharply in the smaller patch within a few years.\n(a) Explain two distinct effects of the development on the species of the forest ecosystem. (2)\n(b) Propose one mitigation that addresses one effect you named, and say how it works. (1)",
+      ["(a) Any two distinct effects, for example smaller patches and greater edge exposure."],
+      "Marking points (3): 1 mark for each of two distinct effects, to a maximum of 2: the habitat is cut into smaller patches, so each patch supports fewer individuals and a population can fall below a viable size; edge effects grow, because nests near the new edges are exposed to predators, wind and disturbance, so ground-nesting birds lose young; the highway blocks movement, so birds cannot reach mates, food or nesting areas in the other patch and the two groups are isolated; traffic kills animals that try to cross. (b) 1 mark for a mitigation tied to a named effect with its mechanism, for example a wide, forested wildlife overpass or corridor joining the patches, which restores movement between them so the two groups function as one population again; or fenced crossing points that keep birds and other animals off the roadway. Model answer: The development shrinks and isolates the habitat: the small patch holds too few birds to stay viable and its nests suffer heavy edge predation, while the highway cuts the population in two. A forested corridor or overpass addresses the isolation, because <b>reconnecting the patches lets the separated groups mix, mate and use the whole forest again</b>.", {});
+  },
+  function () {
+    return textq("A canal through a marsh (3 marks)\nA straight canal is dug through a marsh to drain land for development. The marsh is divided into two sections, the water level in one section drops, and frogs and other wetland amphibians decline.\n(a) Explain two distinct effects of the development on the species of the marsh ecosystem. (2)\n(b) Propose one mitigation that addresses one effect you named, and say how it works. (1)",
+      ["(a) Any two distinct effects, for example habitat division and lowered water levels."],
+      "Marking points (3): 1 mark for each of two distinct effects, to a maximum of 2: the canal fragments the marsh, so amphibians are cut off from breeding pools or feeding areas in the other section; draining lowers the water level, so shallow breeding pools dry up before tadpoles can mature; the canal edges and drained ground expose amphibians to predators and drying out; isolated small groups cannot find enough mates and lose genetic variety. (b) 1 mark for a mitigation tied to a named effect with its mechanism, for example wide, gently sloped culverts or a vegetated crossing kept wet under the canal works, which lets amphibians move between the sections so the population stays connected; or water control structures that hold the marsh at its natural level so breeding pools last the season. Model answer: The canal divides the marsh and drains part of it: frogs lose access to breeding pools and some pools dry before tadpoles finish developing. Keeping a wet, vegetated crossing between the sections addresses the division, because <b>amphibians can still move between breeding and feeding areas, so the marsh works as one habitat</b>.", {});
+  },
+  function () {
+    return textq("A ski hill through old growth forest (3 marks)\nA ski hill development clears wide runs and a road through an old growth forest. Woodland caribou that fed on lichens in the mature forest and moved seasonally through the area decline after the clearing.\n(a) Explain two distinct effects of the development on the species of the forest ecosystem. (2)\n(b) Propose one mitigation that addresses one effect you named, and say how it works. (1)",
+      ["(a) Any two distinct effects, for example loss of lichen feeding areas and blocked seasonal movement."],
+      "Marking points (3): 1 mark for each of two distinct effects, to a maximum of 2: clearing removes mature trees and the lichens caribou depend on in winter, so feeding habitat is lost; the runs and road fragment the forest, blocking or discouraging the seasonal movement caribou use to reach food and calving areas; cleared corridors and packed trails give predators such as wolves easier access to caribou; smaller, isolated groups find fewer mates and become more vulnerable to a single bad year or disease. (b) 1 mark for a mitigation tied to a named effect with its mechanism, for example leaving a wide corridor of uncut mature forest linking the two sides, which keeps a lichen-bearing route open so caribou can still move and feed across the whole area; or closing the access road outside the ski season to limit predator and human access. Model answer: The clearing removes lichen-rich feeding grounds and cuts the forest into pieces that block caribou movement and let predators in along the corridors. An uncut mature forest corridor addresses the fragmentation, because <b>caribou keep a connected route with winter food, so the herd can still use the full habitat</b>.", {});
+  }
+]), ["Name the effect on the species, not just the change to the land: smaller patches, more edge, blocked movement.", "A mitigation earns its mark only when it is tied to one named effect and its working is explained."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"sci-u1-cr-airmass":3,"sci-u1-cr-climate":4,"sci-u1-cr-forecast":3,"sci-u1-cr-frontpass":3,"sci-u1-cr-mapdescribe":4,"sci-u2-cr-balance":3,"sci-u2-cr-naming":4,"sci-u2-cr-neutral":4,"sci-u2-cr-nomenclature":2,"sci-u2-cr-rates":3,"sci-u3-cr-delivery-trip":3,"sci-u3-cr-dtgraph":3,"sci-u3-cr-trip":4,"sci-u3-cr-vtgraph":3,"sci-u4-cr-bioaccum":3,"sci-u4-cr-biodiv":2,"sci-u4-cr-cycle":4,"sci-u4-cr-pesticide-chain":2,"sci-u4-cr-scene":3,"sci-u4-cr-soil":2};
+window.__BANK_CRMARKS={"sci-u1-cr-airmass":3,"sci-u1-cr-climate":4,"sci-u1-cr-forecast":3,"sci-u1-cr-frontpass":3,"sci-u1-cr-mapdescribe":4,"sci-u2-cr-balance":3,"sci-u2-cr-identify-solutions":4,"sci-u2-cr-naming":4,"sci-u2-cr-neutral":4,"sci-u2-cr-nomenclature":2,"sci-u2-cr-rates":3,"sci-u3-cr-delivery-trip":3,"sci-u3-cr-dtgraph":3,"sci-u3-cr-trip":4,"sci-u3-cr-two-leg-journey":4,"sci-u3-cr-vt-deceleration":4,"sci-u3-cr-vtgraph":3,"sci-u4-cr-bioaccum":3,"sci-u4-cr-biodiv":2,"sci-u4-cr-cycle":4,"sci-u4-cr-energy-transfer":2,"sci-u4-cr-fragmentation":3,"sci-u4-cr-pesticide-chain":2,"sci-u4-cr-scene":3,"sci-u4-cr-soil":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose

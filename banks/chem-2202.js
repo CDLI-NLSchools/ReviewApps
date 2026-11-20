@@ -3887,6 +3887,7 @@ E("u2-611-mc-mass-dissolved",2,["6.11"],2,"gen",function(){
 });
 
 /* ----- bank-u3.js ----- */
+// CRMARKS: u3-76-cr-family-identify=2
 // Chemistry 2202 Review, Unit 3: Organic Chemistry. Fragment file: E(...) registrations only.
 // Tranche 7 (Nov 2026): condensed structure figures (chemCondensedFigure and
 // chemPairFigure in bank-helpers.js) attach to entries whose stem already
@@ -4836,6 +4837,35 @@ E("u3-73-mc-name-unsaturated-branch",3,["7.3"],2,"gen",function(){
     "The name "+it[1]+" fixes the parent chain, the position of the multiple bond and the position of each branch; only one structure matches all three. The matching structure is <b>"+it[0]+"</b>.",{name:it[1]});
 });
 
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: u3-76-cr-family-identify closes Unit 3 Test
+   2 (2 marks, Level 3). SME-flagged for the
+   specialist pass. */
+
+E("u3-76-cr-family-identify", 3, ["7.6"], 3, "var", varset([
+  function () {
+    return textq("A compound has the condensed structure CH\u2083COOCH\u2083.\n(a) Name the derivative family this compound belongs to. (1)\n(b) Name the functional group that identifies the family, and give the compound's molecular formula, counting every atom. Write the formula without subscripts, in the order C, then H, then other elements, for example C3H6O2. (1)",
+      ["ester; ester group (-COO-); C3H6O2"],
+      "The structure contains a -COO- linkage: a carbonyl carbon bonded to an oxygen that joins a second carbon group, which is the ester group. Count the atoms group by group: CH\u2083 has 1 carbon and 3 hydrogens, the COO unit adds 1 carbon and 2 oxygens, and the final CH\u2083 adds 1 carbon and 3 hydrogens, for 3 carbons, 6 hydrogens and 2 oxygens in total. The compound is an ester; its functional group is the ester group (-COO-); its molecular formula is C3H6O2.", {});
+  },
+  function () {
+    return textq("A compound has the condensed structure CH\u2083CH\u2082CH\u2082COOH.\n(a) Name the derivative family this compound belongs to. (1)\n(b) Name the functional group that identifies the family, and give the compound's molecular formula, counting every atom. Write the formula without subscripts, in the order C, then H, then other elements, for example C3H6O2. (1)",
+      ["carboxylic acid; carboxyl group (-COOH); C4H8O2"],
+      "The structure ends in a -COOH unit, the carboxyl group: a carbonyl carbon that also carries an -OH. That group identifies the carboxylic acids. Count the atoms group by group: CH\u2083 (1 C, 3 H), CH\u2082 (1 C, 2 H), CH\u2082 (1 C, 2 H) and COOH (1 C, 1 H, 2 O), for 4 carbons, 8 hydrogens and 2 oxygens in total. The compound is a carboxylic acid; its functional group is the carboxyl group (-COOH); its molecular formula is C4H8O2.", {});
+  },
+  function () {
+    return textq("A compound has the condensed structure CH\u2083COCH\u2083.\n(a) Name the derivative family this compound belongs to. (1)\n(b) Name the functional group that identifies the family, and give the compound's molecular formula, counting every atom. Write the formula without subscripts, in the order C, then H, then other elements, for example C3H6O2. (1)",
+      ["ketone; carbonyl group (C=O); C3H6O"],
+      "The structure has a C=O unit whose carbon is bonded to two other carbon atoms and sits inside the chain, which is the carbonyl group of a ketone. (An aldehyde would have the carbonyl carbon at the end of the chain, bonded to a hydrogen.) Count the atoms group by group: CH\u2083 (1 C, 3 H), CO (1 C, 1 O) and CH\u2083 (1 C, 3 H), for 3 carbons, 6 hydrogens and 1 oxygen in total. The compound is a ketone; its functional group is the carbonyl group (C=O); its molecular formula is C3H6O.", {});
+  },
+  function () {
+    return textq("A compound has the condensed structure CH\u2083CH\u2082NH\u2082.\n(a) Name the derivative family this compound belongs to. (1)\n(b) Name the functional group that identifies the family, and give the compound's molecular formula, counting every atom. Write the formula without subscripts, in the order C, then H, then other elements, for example C3H6O2. (1)",
+      ["amine; amine group (-NH\u2082); C2H7N"],
+      "The structure carries an -NH\u2082 unit bonded to a carbon chain, the amine (amino) group, which identifies the amines. Count the atoms group by group: CH\u2083 (1 C, 3 H), CH\u2082 (1 C, 2 H) and NH\u2082 (1 N, 2 H), for 2 carbons, 7 hydrogens and 1 nitrogen in total. The compound is an amine; its functional group is the amine group (-NH\u2082); its molecular formula is C2H7N.", {});
+  }
+]));
+
 /* ----- bank-br.js ----- */
 // Bridging bank: Science 1206 prior-learning review for Chemistry 2202.
 // Unit 4 in the app, labelled as prior-learning review. These entries are
@@ -5118,7 +5148,7 @@ E("br-b3-molecular-poly", 4, ["B.3"], 2, "gen", function () {
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-acid-formula":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-510-limestone-lime":3,"u1-510-peroxide-oxygen":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-actual-from-percent":2,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
+window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-neutrons":2,"br-b2-avg-mass":2,"u1-51-write-acid-formula":2,"u1-51-write-formula":2,"u1-51-write-name":2,"u1-510-airbag-and-fertilizer":3,"u1-510-antacid-calculation":3,"u1-510-limestone-lime":3,"u1-510-peroxide-oxygen":3,"u1-52-mass-to-moles":2,"u1-52-mass-to-particles":3,"u1-52-mass-to-volume-stp":3,"u1-52-molar-mass":2,"u1-52-moles-to-mass":2,"u1-52-particles-to-moles":2,"u1-53-predict-state":2,"u1-54-rate-comparison":2,"u1-55-temperature-prediction":2,"u1-56-precipitate-formula":3,"u1-56-precipitate-formula-advanced":3,"u1-57-moles-direct":2,"u1-57-moles-reverse":2,"u1-57-particles-ratio":3,"u1-58-concentration":2,"u1-58-dilution":2,"u1-58-excess-remaining":4,"u1-58-limiting-theoretical-yield":4,"u1-58-mass-to-gas-volume":3,"u1-58-mass-to-mass":3,"u1-59-actual-from-percent":2,"u1-59-percent-yield-direct":2,"u1-59-percent-yield-from-reaction":3,"u2-02":2,"u2-03":3,"u2-07":2,"u2-08":2,"u2-23":2,"u2-26":3,"u2-27":2,"u2-29":2,"u2-51":2,"u2-52":2,"u2-53":3,"u2-72":2,"u2-73":2,"u2-74":2,"u3-73-formula-branch":3,"u3-73-formula-from-name":2,"u3-73-name-hard":2,"u3-74-isomer-count":2,"u3-74-shared-formula":2,"u3-75-aromatic-formula":3,"u3-76-cr-family-identify":2,"u3-76-deriv-formula":2,"u3-76-formula-from-structure":2,"u3-77-combustion-coeff":3,"u3-78-monomer-name":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
