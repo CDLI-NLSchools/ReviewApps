@@ -41,7 +41,8 @@ const ev = (dom, code) => dom.window.eval(code);
   ok(d.querySelector("#app h1").textContent === "Physics 3204 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off");
   ok(ev(r.dom, "BANK.length") === 185, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 42, "course: CR_MARKS wired from the bank module");
+  /* Pin update, November 20, 2026 (reverse bimodal registration): CR_MARKS count updated to 124 after the registration of the 82 strippable entries (52 class a, 30 class b) per Bimodal-Classification-SR-Pools-Science-2026-11-20.md (Physics 3204: CR manifest 124 entries, 42 pre-existing plus 82 registered); verified from the assembled bank the same day. */
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 124, "course: CR_MARKS wired from the bank module");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 4, "course: four unit checkboxes, saw " + labels.length);
   ["Motion", "Forces", "Fields", "Introduction to Quantum Physics"].forEach(n =>
