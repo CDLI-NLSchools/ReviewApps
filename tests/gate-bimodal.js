@@ -2,7 +2,7 @@
 /* Gate (bimodal questions), November 19, 2026
    (Spec-Bimodal-Questions-2026-11-19.md). Proves, over draws:
      1. registration: every classified strippable entry carries a
-        BIMODAL manifest entry with its class (4,698 in all: the 243 of
+        BIMODAL manifest entry with its class (5,110 in all: the 243 of
         November 19, 2026, per the two classification reports plus the
         three prior-knowledge extensions named in the spec, the
         608 Biology registrations of November 20, 2026, per
@@ -16,10 +16,9 @@
         Mathematics 1201, and 909 across the Grade 9, 8 and 7
         courses, English and French, and 158 in Mathematics 1202,
         landed November 20, 2026 once the shell composer's
-        cross-section defect was fixed; Earth Systems 3209's 412 registrations are
-        assembled locally and held from
-        landing pending a ruling (its unit compose gates'
-        pre-bimodal pool census), every
+        cross-section defect was fixed, and 412 in Earth Systems
+        3209, landed November 20, 2026 once its unit compose gates
+        were reworked to a bimodal aware pool census), every
         bimodal entry keeps
         its CR marks, and the 68 entries that left the CR pools
         (not-strippable, dual-mode, Chemistry 3202's mixed entry)
@@ -81,6 +80,15 @@ function ok(c, m) { if (c) pass++; else { fail++; if (fails.length < 40) fails.p
    entry below (115 class a, 43 class b, verified against the
    assembled bank's BIMODAL map). Earth Systems 3209 remains held
    and entry-less. */
+/* Amendment, November 20, 2026 (landing): the owner ruled the
+   Earth Systems 3209 unit compose gates be reworked to a bimodal
+   aware pool census (SR pool: entries carrying no CR marks plus
+   the registered bimodal entries; CR pool: every entry carrying
+   CR marks, bimodal entries among them at their marks), the five
+   reworked gates pass in full, and Earth Systems 3209 has landed
+   unchanged, so it carries an EXPECT entry below (388 class a,
+   24 class b, verified against the assembled bank's BIMODAL
+   map). No course remains held. */
 const EXPECT_BIMODAL = { /* course: [class a count, class b count] */
   "math-9": [126, 39], "math-9-fr": [69, 40], "math-1201": [69, 60], "math-1202": [115, 43],
   "math-8": [136, 19], "math-8-fr": [64, 34],
@@ -92,7 +100,7 @@ const EXPECT_BIMODAL = { /* course: [class a count, class b count] */
   "sci-7-fr": [21, 196], "sci-9": [53, 168], "sci-9-fr": [78, 152],
   "math-3202": [125, 37],
   "physics-3204": [52, 30], "math-2202": [114, 45], "physics-2204": [56, 39],
-  "chem-2202": [87, 31], "sci-1206": [55, 123]
+  "chem-2202": [87, 31], "sci-1206": [55, 123], "earth-3209": [388, 24]
 };
 const REMOVED = ["math-9:u1-ooo-first-error","math-9:u3-find-the-error","math-9:u9-generalization-critique","math-9-fr:u1-ooo-first-error","math-9-fr:u3-find-the-error","math-9-fr:u9-generalization-critique","math-1201:u2-error","math-1201:u4-context-problem","math-1201:u4-domain-decision","math-1201:u4-function-repair","math-1201:u7-elevation-decision","math-2200:u1-law-proof-steps","math-2200:u2-evaluate-claim","math-2200:u2-why-quadratic","math-2200:u3-derive-discriminant-origin","math-2200:u3-discriminant-statements","math-2200:u3-error-analysis","math-2200:u3-error-cts-nonmonic","math-2200:u3-error-discriminant","math-2200:u3-error-graph-read","math-2200:u3-error-reduce","math-2200:u3-factor-test-explain","math-2200:u3-factor-test-which","math-2200:u3-method-compare","math-2200:u3-method-flawed-why","math-2200:u3-method-graph-approx","math-2200:u3-verify-methods","math-2200:u4-identity-truth","math-2200:u9-derive-formulas","math-2201:u3-formula-exact-roots","math-2201:u5-outlier-range","math-2201:u5-poll-position","math-2201:u5-sd-compare","math-3200:u6-proof-invalid-step","math-3201:u2-correct-the-claim-cr","math-3201:u8-reverse-count","math-3208:u3-behaviour-analysis","math-3208:u5-given-deriv","math-3208:u5-rat-arc","math-3208:u5-rat-second","math-2200:u5-solve-extraneous","math-3200:u1-modelling","math-3200:u3-sqrtf-evaluate","math-3200:u4-ratio-problem","math-3200:u5-model-build","math-3200:u7-model-from-data","math-3200:u9-patterns-coefficients","math-3200:u9-binomial-term","math-3200:u9-perm-constraints","math-3200:u9-comb-basic","math-3200:u9-comb-symmetry-solve","math-3201:u2-interpret-model","math-3201:u6-compare-frequency","math-3201:u6-deferred-offer","math-3201:u8-factorial-fraction","math-3208:u4-implicit","math-3208:u5-poly-critical","math-3208:u5-poly-second","math-3208:u5-rat-critical","math-3208:u6-tangent-trig","math-3208:u6-extrema-trig","math-3208:u7-tangent-extremum","math-3208:u7-log-diff-compute","chem-3202:u1-51-rate-explain","chem-3202:u1-52-rate-scenario","chem-3202:u3-79-calorimetry-error","chem-3202:u4-84-label-scenario","chem-3202:u4-84-build-cell"];
 
