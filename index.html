@@ -4145,6 +4145,34 @@ function tFreezeSlot(e,wantType,avoid,salt){
   nq._tuid="u"+(++_tUid);nq._ts={n:0,i:0,t:nq.type,raw:tRawQ(nq)};return nq;
 }
 function tStripSlot(q){if(!q||q.type!=="mc"||!bimodalClass(q._entry))return q;var s2=stripQ(q);if(s2._ts)s2._ts={n:s2._ts.n,i:s2._ts.i,t:s2.type,raw:s2._ts.raw?tRawQ(s2):null};return s2;}
+/* Per-question dual-form flip (Nov 20, 2026): see tFlipDir. */
+function tFlipStandsDown(){
+  if(typeof examState==="undefined"||!examState)return true;
+  if(examState.testScope||examState.single)return true;
+  if(typeof T!=="undefined"&&T&&T.scope&&T.scope.test)return true;
+  return false;
+}
+function tFlipDir(section,it){
+  var q=it&&it.q,e=q&&q._entry;
+  if(!e||!bimodalClass(e)||tFlipStandsDown())return null;
+  if(section==="sr")return q.type==="mc"?"off":null;
+  return q.type==="mc"?null:"on";
+}
+function tFlipHtml(section,it,i){
+  var d=tFlipDir(section,it);if(!d)return "";
+  return '<button type="button" class="alt" data-tflip="'+section+":"+i+'">'+(d==="off"?"Choices off":"Choices on")+"</button>";
+}
+function tUnstripSlot(q){
+  if(!q||q.type==="mc"||!bimodalClass(q._entry))return null;
+  var e=q._entry,ts=q._ts;
+  if(ts&&!ts.raw&&typeof T!=="undefined"&&T){
+    var cand=tStreamDraw(e,ts.n||0,ts.i||0,T.salt);
+    if(cand&&cand.type==="mc"){cand._tuid="u"+(++_tUid);cand._ts={n:ts.n||0,i:ts.i||0,t:"mc",raw:null};return cand;}
+  }
+  if(typeof T==="undefined"||!T||typeof examState==="undefined"||!examState)return null;
+  var fq=tFreezeSlot(e,"mc",tAvoidAll(tExamAllQ()),T.salt);
+  return (fq&&fq.type==="mc")?fq:null;
+}
 function tTypeOk(q,wantType){
   if(!q)return false;
   if(!wantType)return true;
@@ -5460,7 +5488,7 @@ function tExamPanelHtml(){
   var ex=examState.ex;
   function row(section,it,i){
     var q=it.q,e=q._entry;
-    return '<li><b>'+(section==="sr"?"A":"B")+(i+1)+".</b> Unit "+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(section==="cr"?(" \u00B7 "+it.marks+" marks"):"")+' <span class="tid">'+e.id+'</span> <button type="button" class="alt" data-tnew="'+section+":"+i+'">New numbers</button><button type="button" class="alt" data-tswap="'+section+":"+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+section+":"+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+section+":"+i+'">Remove</button>'+tMoveHtml(section+":"+i,i,section==="sr"?ex.srItems.length:ex.crItems.length)+tQPromptHtml(q)+'<span class="hint tqstatus" data-tqstatus="'+section+":"+i+'" role="status"></span></li>';
+    return '<li><b>'+(section==="sr"?"A":"B")+(i+1)+".</b> Unit "+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(section==="cr"?(" \u00B7 "+it.marks+" marks"):"")+' <span class="tid">'+e.id+'</span> <button type="button" class="alt" data-tnew="'+section+":"+i+'">New numbers</button><button type="button" class="alt" data-tswap="'+section+":"+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+section+":"+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+section+":"+i+'">Remove</button>'+tFlipHtml(section,it,i)+tMoveHtml(section+":"+i,i,section==="sr"?ex.srItems.length:ex.crItems.length)+tQPromptHtml(q)+'<span class="hint tqstatus" data-tqstatus="'+section+":"+i+'" role="status"></span></li>';
   }
   return '<div class="tpanel" id="tExamPanel"><b>Teacher tools: edit this paper</b>'
    +'<p class="hint">Changes update the paper, the answer key and the totals at once. These controls and the free text editor (Edit the exam) are alternatives: once free text editing is on, the question controls, set links and the Brightspace download pause for this paper, because they work from the question set rather than edited text. Print, Word and Copy below always use the paper exactly as shown.</p>'
@@ -5484,6 +5512,7 @@ function tWireExam(){
   wire("data-tnew",function(sec,i){tOpExam(sec,"new",i);});
   wire("data-tswap",function(sec,i){tOpExam(sec,"swap",i);});
   wire("data-trem",function(sec,i){tOpExam(sec,"remove",i);});
+  wire("data-tflip",function(sec,i){tOpExam(sec,"flip",i);});
   wire("data-tpick",function(sec,i){tPickExam(sec,i);});
   wire("data-tup",function(sec,i){tOpExam(sec,"up",i);});
   wire("data-tdown",function(sec,i){tOpExam(sec,"down",i);});
@@ -5509,6 +5538,19 @@ function tOpExam(section,op,i,entryId,pickedQ){
     var j=op==="up"?i-1:op==="down"?i+1:op==="top"?0:items.length-1;
     if(j===i||j<0||j>=items.length)return;
     var mv=items.splice(i,1)[0];items.splice(j,0,mv);
+    T.edited=true;renderExam();return;
+  }
+  if(op==="flip"){
+    var dir=tFlipDir(section,it);if(!dir)return;
+    if(dir==="off"){
+      var sq=tStripSlot(it.q);if(sq===it.q)return;
+      ex.srItems.splice(i,1);
+      ex.crItems.push({q:sq,marks:(typeof CR_MARKS!=="undefined"&&CR_MARKS[it.q._entry.id])||2});
+    }else{
+      var mq=tUnstripSlot(it.q);if(!mq)return;
+      ex.crItems.splice(i,1);
+      ex.srItems.push({q:mq,marks:1});
+    }
     T.edited=true;renderExam();return;
   }
   var avoid=tAvoidAll(tExamAllQ());
