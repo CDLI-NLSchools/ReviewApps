@@ -5330,6 +5330,7 @@ function u4dis(correct,cands,n){
 function u4wrap(s){return "\\("+s+"\\)";}
 
 /* ---------- 1.1 + 1.2: convert between entire and mixed radicals, numerical (L1) ---------- */
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u4-convert-numeric",4,["1.1","1.2"],1,"gen",function(){
   var shape=pick(["toMixed","toMixed","toEntire"]);
   if(shape==="toMixed"){
@@ -5343,7 +5344,7 @@ E("u4-convert-numeric",4,["1.1","1.2"],1,"gen",function(){
       if(a%2===0)cands.push(u4mixS(a/2,4*b,2));
       return mcq("Express \\(\\sqrt{"+N+"}\\) as a mixed radical in simplest form.",
         u4wrap(cor),u4dis(cor,cands,3).map(u4wrap),
-        "The largest perfect square that divides \\("+N+"\\) is \\("+a+"^2 = "+(a*a)+"\\), and \\("+N+" = "+(a*a)+" \\times "+b+"\\): \\[ \\begin{aligned} \\sqrt{"+N+"} &= \\sqrt{"+(a*a)+" \\times "+b+"} \\\\ &= \\sqrt{"+(a*a)+"} \\times \\sqrt{"+b+"} \\\\ &= "+cor+" \\end{aligned} \\] So \\(\\sqrt{"+N+"} = <b>"+cor+"</b>\\).",
+        "The largest perfect square that divides \\("+N+"\\) is \\("+a+"^2 = "+(a*a)+"\\), and \\("+N+" = "+(a*a)+" \\times "+b+"\\): \\[ \\begin{aligned} \\sqrt{"+N+"} &= \\sqrt{"+(a*a)+" \\times "+b+"} \\\\ &= \\sqrt{"+(a*a)+"} \\times \\sqrt{"+b+"} \\\\ &= "+cor+" \\end{aligned} \\] So \\(\\sqrt{"+N+"} = \\)<b>\\("+cor+"\\)</b>.",
         {a:a,b:b,idx:idx,shape:shape});
     }
     var a3=ri(2,5),b3=2,sm3,tries=0;
@@ -5355,7 +5356,7 @@ E("u4-convert-numeric",4,["1.1","1.2"],1,"gen",function(){
     if(a3>2)cands3.push(u4mixS(a3-1,b3,3));
     return mcq("Express \\(\\sqrt[3]{"+N3+"}\\) as a mixed radical in simplest form.",
       u4wrap(cor3),u4dis(cor3,cands3,3).map(u4wrap),
-      "The largest perfect cube that divides \\("+N3+"\\) is \\("+a3+"^3 = "+(a3*a3*a3)+"\\), and \\("+N3+" = "+(a3*a3*a3)+" \\times "+b3+"\\): \\[ \\begin{aligned} \\sqrt[3]{"+N3+"} &= \\sqrt[3]{"+(a3*a3*a3)+" \\times "+b3+"} \\\\ &= \\sqrt[3]{"+(a3*a3*a3)+"} \\times \\sqrt[3]{"+b3+"} \\\\ &= "+cor3+" \\end{aligned} \\] So \\(\\sqrt[3]{"+N3+"} = <b>"+cor3+"</b>\\).",
+      "The largest perfect cube that divides \\("+N3+"\\) is \\("+a3+"^3 = "+(a3*a3*a3)+"\\), and \\("+N3+" = "+(a3*a3*a3)+" \\times "+b3+"\\): \\[ \\begin{aligned} \\sqrt[3]{"+N3+"} &= \\sqrt[3]{"+(a3*a3*a3)+" \\times "+b3+"} \\\\ &= \\sqrt[3]{"+(a3*a3*a3)+"} \\times \\sqrt[3]{"+b3+"} \\\\ &= "+cor3+" \\end{aligned} \\] So \\(\\sqrt[3]{"+N3+"} = \\)<b>\\("+cor3+"\\)</b>.",
       {a:a3,b:b3,idx:3,shape:shape});
   }
   var idx2=pick([2,2,3]);
@@ -5365,7 +5366,7 @@ E("u4-convert-numeric",4,["1.1","1.2"],1,"gen",function(){
     var candR=u4dis(""+R,[p*q,p*q*q,p*p+q,(p+1)*(p+1)*q,p*p*q+q],3);
     return mcq("Express \\("+p+"\\sqrt{"+q+"}\\) as an entire radical.",
       "\\(\\sqrt{"+R+"}\\)",candR.map(function(z){return "\\(\\sqrt{"+z+"}\\)";}),
-      "The coefficient moves inside the radical as its square: \\[ \\begin{aligned} "+p+"\\sqrt{"+q+"} &= \\sqrt{"+(p*p)+"} \\times \\sqrt{"+q+"} \\\\ &= \\sqrt{"+(p*p)+" \\times "+q+"} \\\\ &= \\sqrt{"+R+"} \\end{aligned} \\] So \\("+p+"\\sqrt{"+q+"} = <b>\\sqrt{"+R+"}</b>\\).",
+      "The coefficient moves inside the radical as its square: \\[ \\begin{aligned} "+p+"\\sqrt{"+q+"} &= \\sqrt{"+(p*p)+"} \\times \\sqrt{"+q+"} \\\\ &= \\sqrt{"+(p*p)+" \\times "+q+"} \\\\ &= \\sqrt{"+R+"} \\end{aligned} \\] So \\("+p+"\\sqrt{"+q+"} = \\)<b>\\(\\sqrt{"+R+"}\\)</b>.",
       {p:p,q:q,idx:idx2,shape:shape});
   }
   var p3=ri(2,5),q3=pick([2,3,4,5,6,7,9,10,11,13,14,15].filter(function(z){return z!==p3;}));
@@ -5373,7 +5374,7 @@ E("u4-convert-numeric",4,["1.1","1.2"],1,"gen",function(){
   var candR3=u4dis(""+R3,[p3*q3,p3*q3*q3*q3,p3*p3*p3+q3,(p3+1)*(p3+1)*(p3+1)*q3,p3*p3*q3],3);
   return mcq("Express \\("+p3+"\\sqrt[3]{"+q3+"}\\) as an entire radical.",
     "\\(\\sqrt[3]{"+R3+"}\\)",candR3.map(function(z){return "\\(\\sqrt[3]{"+z+"}\\)";}),
-    "The coefficient moves inside the radical as its cube: \\[ \\begin{aligned} "+p3+"\\sqrt[3]{"+q3+"} &= \\sqrt[3]{"+(p3*p3*p3)+"} \\times \\sqrt[3]{"+q3+"} \\\\ &= \\sqrt[3]{"+(p3*p3*p3)+" \\times "+q3+"} \\\\ &= \\sqrt[3]{"+R3+"} \\end{aligned} \\] So \\("+p3+"\\sqrt[3]{"+q3+"} = <b>\\sqrt[3]{"+R3+"}</b>\\).",
+    "The coefficient moves inside the radical as its cube: \\[ \\begin{aligned} "+p3+"\\sqrt[3]{"+q3+"} &= \\sqrt[3]{"+(p3*p3*p3)+"} \\times \\sqrt[3]{"+q3+"} \\\\ &= \\sqrt[3]{"+(p3*p3*p3)+" \\times "+q3+"} \\\\ &= \\sqrt[3]{"+R3+"} \\end{aligned} \\] So \\("+p3+"\\sqrt[3]{"+q3+"} = \\)<b>\\(\\sqrt[3]{"+R3+"}\\)</b>.",
     {p:p3,q:q3,idx:idx2,shape:shape});
 });
 
@@ -5534,7 +5535,7 @@ E("u4-identity-truth",4,["1.11"],2,"gen",function(){
     return mcq("What is \\(\\sqrt{("+v5+" - "+h+")^2}\\) in simplest form?",
       "\\(|"+v5+" - "+h+"|\\)",
       ["\\("+v5+" - "+h+"\\)","\\("+h+" - "+v5+"\\)","\\(\\pm ("+v5+" - "+h+")\\)"],
-      "The square root of a square is the absolute value of the expression inside, because that expression can be positive or negative depending on \\("+v5+"\\). So \\(\\sqrt{("+v5+" - "+h+")^2} = <b>|"+v5+" - "+h+"|</b>\\).",
+      "The square root of a square is the absolute value of the expression inside, because that expression can be positive or negative depending on \\("+v5+"\\). So \\(\\sqrt{("+v5+" - "+h+")^2} = \\)<b>|"+v5+" - "+h+"|</b>.",
       {v:v5,h:h,shape:shape});
   }
   var k6=ri(3,12);

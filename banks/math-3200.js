@@ -69,15 +69,53 @@ function clipCurveSVG(fn,X,Y,x0,x1,y0,y1){
   }
   return out;
 }
+/* fnPathD (domain endpoints, Nov 21, 2026): a run of samples that
+   ends or begins at an undefined sample ends or begins at a domain
+   boundary, and the path now reaches the boundary point itself:
+   the abscissa where the function stops being defined is located
+   by bisection between the last defined and first undefined
+   sample, and that point is appended or prepended when it lies in
+   the window and continues the run (the standing jump guard).
+   Before, a radical curve stopped at the nearest defined sample
+   (the sqrt(x^2-49) branches ended near (plus/minus 7.02, 0.53)
+   instead of (plus/minus 7, 0)). Window exits are unchanged, a
+   fully defined function produces the same path as before, and
+   the large-jump break still fires on finite jumps, so no path
+   is ever connected across an asymptote or a discontinuity. */
 function fnPathD(fn,X,Y,x0,x1,y0,y1,N){
   N=N||240;var d="",pen=false,py=0,i,x,y;
+  var px=0,pUndef=false;
+  function boundary(ua,da){ /* ua: fn undefined there; da: fn
+     defined there. Bisect to the defined abscissa nearest the
+     boundary and return it with its value. */
+    var lo=ua,hi=da,mid,my,k;
+    for(k=0;k<60;k++){mid=(lo+hi)/2;try{my=fn(mid);}catch(e){my=NaN;}
+      if(typeof my==="number"&&isFinite(my))hi=mid;else lo=mid;}
+    try{my=fn(hi);}catch(e){my=NaN;}
+    return [hi,my];
+  }
   for(i=0;i<=N;i++){
     x=x0+(x1-x0)*i/N;
     try{y=fn(x);}catch(e){y=NaN;}
-    if(typeof y!=="number"||!isFinite(y)||y<y0||y>y1){pen=false;continue;}
+    if(typeof y!=="number"||!isFinite(y)){
+      if(pen){
+        var be=boundary(x,px);
+        if(be[1]>=y0&&be[1]<=y1&&Math.abs(be[1]-py)<=0.75*(y1-y0))d+="L "+fmt(X(be[0]),1)+" "+fmt(Y(be[1]),1)+" ";
+      }
+      pen=false;px=x;pUndef=true;continue;
+    }
+    if(y<y0||y>y1){pen=false;px=x;pUndef=false;continue;}
     if(pen&&Math.abs(y-py)>0.75*(y1-y0)){pen=false;}
+    if(!pen&&pUndef&&i>0){
+      var bs=boundary(px,x);
+      if(bs[1]>=y0&&bs[1]<=y1&&Math.abs(y-bs[1])<=0.75*(y1-y0)){
+        d+="M "+fmt(X(bs[0]),1)+" "+fmt(Y(bs[1]),1)+" ";
+        d+="L "+fmt(X(x),1)+" "+fmt(Y(y),1)+" ";
+        pen=true;py=y;px=x;pUndef=false;continue;
+      }
+    }
     d+=(pen?"L ":"M ")+fmt(X(x),1)+" "+fmt(Y(y),1)+" ";
-    pen=true;py=y;
+    pen=true;py=y;px=x;pUndef=false;
   }
   return d;
 }
@@ -797,13 +835,14 @@ E("u1-largest-zero-cr",1,["3.4","3.9"],2,"gen",function(){
     "The quotient is \\("+u1PolyS(q)+"\\), which factors as \\("+u1FacS(roots[1])+u1FacS(roots[2])+"\\). So the zeros of \\(P\\) are "+sorted[0]+", "+sorted[1]+" and "+sorted[2]+", and the greatest zero is <b>"+ans+"</b>.",
     {roots:roots});
 });
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u1-tableau-step-cr",1,["3.1"],2,"gen",function(){
   var cf=[1,ri(-6,6),ri(-9,9),ri(-9,9)], a=pick([-4,-3,-2,-1,1,2,3,4]);
   var b1=cf[1]+a*cf[0], b2=cf[2]+a*b1;
   return numq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\) using synthetic division, the bottom row of the tableau starts \\("+cf[0]+", "+b1+", \\ldots\\) What is the <b>next entry</b> in the bottom row?",
     b2,0.001,
     "In synthetic division, each bottom-row entry is multiplied by \\("+a+"\\) and added to the next coefficient. The full tableau is:"+u1Tableau(cf,a)+
-    "The second entry is \\("+cf[1]+" + ("+a+")("+cf[0]+") = "+b1+"\\). Multiplying it by \\("+a+"\\) and adding the next coefficient gives \\("+cf[2]+" + ("+a+")("+b1+") = <b>"+b2+"</b>\\).",
+    "The second entry is \\("+cf[1]+" + ("+a+")("+cf[0]+") = "+b1+"\\). Multiplying it by \\("+a+"\\) and adding the next coefficient gives \\("+cf[2]+" + ("+a+")("+b1+") = \\)<b>"+b2+"</b>.",
     {cf:cf,a:a});
 });
 
@@ -1393,13 +1432,14 @@ E("u2-refl-yx",2,["4.46","4.47"],3,"var",varset([
 ]));
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and two Level 2 CR entries (3 and 2 marks). ---------- */
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u2-find-stretch-cr",2,["4.17","4.24"],3,"gen",function(){
   var h=pick([-3,-2,-1,1,2,3]), u=ri(-4,4), v=pick([-6,-5,-4,-3,-2,2,3,4,5,6]), a=pick([-3,-2,2,3]), k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
   var X=u+h, Y=a*v+k;
   var hs=h>0?"x - "+h:"x + "+(-h), ks=k>0?" + "+k:" - "+(-k);
   return numq("The point \\(("+X+", "+Y+")\\) lies on the graph of \\(y = a f("+hs+")"+ks+"\\), and \\(f("+u+") = "+v+"\\). Determine the value of \\(a\\).",
     a,0.001,
-    "At this point the input to \\(f\\) is \\(("+X+") - ("+h+") = "+u+"\\), and \\(f("+u+") = "+v+"\\). On the transformed graph, that output is multiplied by \\(a\\) and then shifted by \\(("+k+")\\): \\[ a("+v+") + ("+k+") = "+Y+" \\] So \\(a("+v+") = "+(Y-k)+"\\), and \\(a = "+(Y-k)+" \\div "+v+" = <b>"+a+"</b>\\).",
+    "At this point the input to \\(f\\) is \\(("+X+") - ("+h+") = "+u+"\\), and \\(f("+u+") = "+v+"\\). On the transformed graph, that output is multiplied by \\(a\\) and then shifted by \\(("+k+")\\): \\[ a("+v+") + ("+k+") = "+Y+" \\] So \\(a("+v+") = "+(Y-k)+"\\), and \\(a = "+(Y-k)+" \\div "+v+" = \\)<b>"+a+"</b>.",
     {h:h,u:u,v:v,k:k});
 });
 E("u2-inverse-points-cr",2,["4.2","4.4"],2,"gen",function(){
@@ -1599,6 +1639,7 @@ E("u3-transform-domain-range",3,["4.11"],1,"gen",function(){
     {a:a,b:b,h:h,k:k,shape:shape});q.figure=u3figT(a,b,h,k);return q;
 });
 
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u3-sqrtf-evaluate",3,["4.12"],2,"gen",function(){
   var c=0,t=0;
   while(c===0&&t<40){c=ri(-9,9);t++;}
@@ -1607,7 +1648,7 @@ E("u3-sqrtf-evaluate",3,["4.12"],2,"gen",function(){
     var tv=m*m-c;
     return numq("Let \\("+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). What is \\(g("+tv+")\\)?",
       m,0.01,
-      "\\[ \\begin{aligned} g("+tv+") &= \\sqrt{f("+tv+")} \\\\ &= \\sqrt{"+tv+u3sgn(c)+"} \\\\ &= \\sqrt{"+(m*m)+"} \\\\ &= "+m+" \\end{aligned} \\] So \\(g("+tv+") = <b>"+m+"</b>\\).",
+      "\\[ \\begin{aligned} g("+tv+") &= \\sqrt{f("+tv+")} \\\\ &= \\sqrt{"+tv+u3sgn(c)+"} \\\\ &= \\sqrt{"+(m*m)+"} \\\\ &= "+m+" \\end{aligned} \\] So \\(g("+tv+") = \\)<b>"+m+"</b>.",
       {c:c,m:m,shape:shape});
   }
   var vals=[],tries=0;
@@ -1627,18 +1668,18 @@ E("u3-compare-domains",3,["4.9"],2,"gen",function(){
   var lo=h-r,hi=h+r,shape=pick(["domain","range"]);
   if(shape==="domain"){
     var q=mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>domains</b> of the two functions?",
-      "The domain of f is all real numbers, but the domain of g is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
-      ["The domain of f is all real numbers, but the domain of g is \\(x \\geq "+hi+"\\)",
-       "The domain of g is all real numbers, but the domain of f is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
+      "The domain of \\(f\\) is all real numbers, but the domain of \\(g\\) is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
+      ["The domain of \\(f\\) is all real numbers, but the domain of \\(g\\) is \\(x \\geq "+hi+"\\)",
+       "The domain of \\(g\\) is all real numbers, but the domain of \\(f\\) is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\)",
        "The domains are the same, because taking a square root does not restrict where a function is defined"],
       "A polynomial such as \\(f\\) is defined for every real value of \\(x\\). For \\(g\\), the radicand must be non-negative: \\("+fstr+" \\geq 0\\) holds exactly where the parabola is on or above the x-axis, which is \\(x \\leq "+lo+"\\) or \\(x \\geq "+hi+"\\). So building \\(g\\) from the square root of \\(f\\) restricts the domain to where \\(f(x) \\geq 0\\).",
       {r:r,h:h,shape:shape});q.figure=u3figCompare(r,h,n,lo,hi);return q;
   }
   var q=mcq("Let \\(f(x) = "+fstr+"\\) and \\(g(x) = \\sqrt{f(x)}\\). Which statement correctly compares the <b>ranges</b> of the two functions?",
-    "The range of f is \\(y \\geq "+(-n)+"\\), but the range of g is \\(y \\geq 0\\)",
-    ["The range of f is \\(y \\geq 0\\), but the range of g is \\(y \\geq "+(-n)+"\\)",
-     "The range of f is \\(y \\geq "+(-n)+"\\), and the range of g is \\(y \\geq "+(-n)+"\\) as well",
-     "The range of f is \\(y \\geq "+n+"\\), but the range of g is \\(y \\geq 0\\)"],
+    "The range of \\(f\\) is \\(y \\geq "+(-n)+"\\), but the range of \\(g\\) is \\(y \\geq 0\\)",
+    ["The range of \\(f\\) is \\(y \\geq 0\\), but the range of \\(g\\) is \\(y \\geq "+(-n)+"\\)",
+     "The range of \\(f\\) is \\(y \\geq "+(-n)+"\\), and the range of \\(g\\) is \\(y \\geq "+(-n)+"\\) as well",
+     "The range of \\(f\\) is \\(y \\geq "+n+"\\), but the range of \\(g\\) is \\(y \\geq 0\\)"],
     "The parabola \\(f\\) opens upward with minimum value \\(-"+n+"\\) at its vertex, so the range of \\(f\\) is \\(y \\geq "+(-n)+"\\). A square root never gives a negative output, and as \\(f(x)\\) grows, \\(\\sqrt{f(x)}\\) takes every value from \\(0\\) upward, so the range of \\(g\\) is \\(y \\geq 0\\). The square root discards the negative part of the range of \\(f\\).",
     {r:r,h:h,shape:shape});q.figure=u3figCompare(r,h,n,lo,hi);return q;
 });
@@ -1691,7 +1732,7 @@ E("u3-recover-f-value",3,["4.12"],3,"gen",function(){
   return mcq("For a certain function \\(f\\), the graph of \\(g(x) = \\sqrt{f(x)}\\) is defined for \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\), and \\(g("+tv+") = "+m+"\\). What is the value of \\(f("+tv+")\\)?",
     ""+(m*m),
     [""+m,""+(2*m),""+(m*m+m)],
-    "Because \\(g(x) = \\sqrt{f(x)}\\), the statement \\(g("+tv+") = "+m+"\\) means \\(\\sqrt{f("+tv+")} = "+m+"\\). Squaring both sides undoes the square root: \\[ \\begin{aligned} \\sqrt{f("+tv+")} &= "+m+" \\\\ f("+tv+") &= "+m+"^2 \\\\ &= "+(m*m)+" \\end{aligned} \\] So \\(f("+tv+") = <b>"+(m*m)+"</b>\\). The domain information confirms that \\(g\\) is defined at \\(x = "+tv+"\\); the value itself comes from squaring.",
+    "Because \\(g(x) = \\sqrt{f(x)}\\), the statement \\(g("+tv+") = "+m+"\\) means \\(\\sqrt{f("+tv+")} = "+m+"\\). Squaring both sides undoes the square root: \\[ \\begin{aligned} \\sqrt{f("+tv+")} &= "+m+" \\\\ f("+tv+") &= "+m+"^2 \\\\ &= "+(m*m)+" \\end{aligned} \\] So \\(f("+tv+") = \\)<b>"+(m*m)+"</b>. The domain information confirms that \\(g\\) is defined at \\(x = "+tv+"\\); the value itself comes from squaring.",
     {p:p,q:q,tv:tv,m:m});
 });
 
@@ -1735,7 +1776,7 @@ E("u3-recover-coefficient-cr",3,["4.12"],3,"gen",function(){
   var fv=(t-p)*(t-q);
   return numq("The function \\(g(x) = \\sqrt{f(x)}\\), where \\(f\\) is a quadratic function with leading coefficient 1, has domain \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\). Determine the value of \\(f("+t+")\\).",
     fv,0.001,
-    "The endpoints of the domain are the zeros of \\(f\\), so \\(f(x) = "+u3facS(p)+u3facS(q)+"\\). Evaluating at \\(x = "+t+"\\): \\(f("+t+") = ("+t+" "+(p>=0?"- "+p:"+ "+(-p))+")("+t+" "+(q>=0?"- "+q:"+ "+(-q))+") = "+(t-p)+" \\times "+(t-q)+" = <b>"+fv+"</b>\\).",
+    "The endpoints of the domain are the zeros of \\(f\\), so \\(f(x) = "+u3facS(p)+u3facS(q)+"\\). Evaluating at \\(x = "+t+"\\): \\(f("+t+") = ("+t+" "+(p>=0?"- "+p:"+ "+(-p))+")("+t+" "+(q>=0?"- "+q:"+ "+(-q))+") = "+(t-p)+" \\times "+(t-q)+" = \\)<b>"+fv+"</b>.",
     {p:p,q:q,t:t});
 });
 E("u3-evaluate-transformed-cr",3,["4.11"],2,"gen",function(){
@@ -1746,7 +1787,7 @@ E("u3-evaluate-transformed-cr",3,["4.11"],2,"gen",function(){
   var ks=k>0?"+ "+k:"- "+(-k);
   return numq("Given \\(g(x) = "+a+"\\sqrt{"+inside+"} "+(k>0?"+":"-")+" "+Math.abs(k)+"\\), determine the value of \\(g("+t+")\\).",
     ans,0.001,
-    "At \\(x = "+t+"\\), the radicand is \\("+b+" \\times "+(t-h)+" = "+(s*s)+"\\), and \\(\\sqrt{"+(s*s)+"} = "+s+"\\). \\[ \\begin{aligned} g("+t+") &= "+a+"("+s+") "+ks+" \\\\ &= "+(a*s)+" "+ks+" \\\\ &= <b>"+ans+"</b> \\end{aligned} \\]",
+    "At \\(x = "+t+"\\), the radicand is \\("+b+" \\times "+(t-h)+" = "+(s*s)+"\\), and \\(\\sqrt{"+(s*s)+"} = "+s+"\\). \\[ \\begin{aligned} g("+t+") &= "+a+"("+s+") "+ks+" \\\\ &= "+(a*s)+" "+ks+" \\\\ &= "+ans+" \\end{aligned} \\] So \\(g("+t+") = \\)<b>"+ans+"</b>.",
     {b:b,s:s,a:a,h:h,k:k});
 });
 E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
@@ -1754,7 +1795,7 @@ E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
   var c=b*b-i;
   return numq("The graph of \\(y = \\sqrt{x + c} - "+b+"\\) has x-intercept "+i+". Determine the value of \\(c\\).",
     c,0.001,
-    "At the x-intercept, \\(y = 0\\): \\[ \\begin{aligned} 0 &= \\sqrt{"+i+" + c} - "+b+" \\\\ \\sqrt{"+i+" + c} &= "+b+" \\\\ "+i+" + c &= "+(b*b)+" \\\\ c &= <b>"+c+"</b> \\end{aligned} \\]",
+    "At the x-intercept, \\(y = 0\\): \\[ \\begin{aligned} 0 &= \\sqrt{"+i+" + c} - "+b+" \\\\ \\sqrt{"+i+" + c} &= "+b+" \\\\ "+i+" + c &= "+(b*b)+" \\\\ c &= "+c+" \\end{aligned} \\] So \\(c = \\)<b>"+c+"</b>.",
     {b:b,i:i});
 });
 
@@ -2680,47 +2721,48 @@ E("u4-repair-solution-cr",4,["7.37"],3,"var",varset([
       {sc:"tan-one"});
   }
 ]));
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u4-angle-measures-cr",4,["7.16"],2,"var",varset([
   function(){
     var ref=Math.asin(3/5), ans=Math.PI+ref;
     return numq("The angle \\(\\theta\\) satisfies \\(\\sin\\theta = -\\frac{3}{5}\\) and \\(\\pi \\leq \\theta \\leq \\frac{3\\pi}{2}\\). Determine \\(\\theta\\), in radians, to two decimal places.",
       Math.round(ans*100)/100,0.01,
-      "The reference angle is \\(\\alpha = \\sin^{-1}\\left(\\frac{3}{5}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      "The reference angle is \\(\\alpha = \\sin^{-1}\\left(\\frac{3}{5}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = \\)<b>"+fmt(ans,2)+"</b>.",
       {sc:"sin35-q3"});
   },
   function(){
     var ref=Math.asin(5/13), ans=2*Math.PI-ref;
     return numq("The angle \\(\\theta\\) satisfies \\(\\sin\\theta = -\\frac{5}{13}\\) and \\(\\frac{3\\pi}{2} \\leq \\theta \\leq 2\\pi\\). Determine \\(\\theta\\), in radians, to two decimal places.",
       Math.round(ans*100)/100,0.01,
-      "The reference angle is \\(\\alpha = \\sin^{-1}\\left(\\frac{5}{13}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant IV, \\(\\theta = 2\\pi - \\alpha \\approx 6.2832 - "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      "The reference angle is \\(\\alpha = \\sin^{-1}\\left(\\frac{5}{13}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant IV, \\(\\theta = 2\\pi - \\alpha \\approx 6.2832 - "+fmt(ref,4)+" = \\)<b>"+fmt(ans,2)+"</b>.",
       {sc:"sin513-q4"});
   },
   function(){
     var ref=Math.acos(7/25), ans=Math.PI-ref;
     return numq("The angle \\(\\theta\\) satisfies \\(\\cos\\theta = -\\frac{7}{25}\\) and \\(\\frac{\\pi}{2} \\leq \\theta \\leq \\pi\\). Determine \\(\\theta\\), in radians, to two decimal places.",
       Math.round(ans*100)/100,0.01,
-      "The reference angle is \\(\\alpha = \\cos^{-1}\\left(\\frac{7}{25}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant II, \\(\\theta = \\pi - \\alpha \\approx 3.1416 - "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      "The reference angle is \\(\\alpha = \\cos^{-1}\\left(\\frac{7}{25}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant II, \\(\\theta = \\pi - \\alpha \\approx 3.1416 - "+fmt(ref,4)+" = \\)<b>"+fmt(ans,2)+"</b>.",
       {sc:"cos725-q2"});
   },
   function(){
     var ref=Math.acos(8/17), ans=Math.PI+ref;
     return numq("The angle \\(\\theta\\) satisfies \\(\\cos\\theta = -\\frac{8}{17}\\) and \\(\\pi \\leq \\theta \\leq \\frac{3\\pi}{2}\\). Determine \\(\\theta\\), in radians, to two decimal places.",
       Math.round(ans*100)/100,0.01,
-      "The reference angle is \\(\\alpha = \\cos^{-1}\\left(\\frac{8}{17}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      "The reference angle is \\(\\alpha = \\cos^{-1}\\left(\\frac{8}{17}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = \\)<b>"+fmt(ans,2)+"</b>.",
       {sc:"cos817-q3"});
   },
   function(){
     var ref=Math.atan(3/4), ans=Math.PI+ref;
     return numq("The angle \\(\\theta\\) satisfies \\(\\tan\\theta = \\frac{3}{4}\\) and \\(\\pi \\leq \\theta \\leq \\frac{3\\pi}{2}\\). Determine \\(\\theta\\), in radians, to two decimal places.",
       Math.round(ans*100)/100,0.01,
-      "The reference angle is \\(\\alpha = \\tan^{-1}\\left(\\frac{3}{4}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      "The reference angle is \\(\\alpha = \\tan^{-1}\\left(\\frac{3}{4}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant III, \\(\\theta = \\pi + \\alpha \\approx 3.1416 + "+fmt(ref,4)+" = \\)<b>"+fmt(ans,2)+"</b>.",
       {sc:"tan34-q3"});
   },
   function(){
     var ref=Math.atan(5/12), ans=2*Math.PI-ref;
     return numq("The angle \\(\\theta\\) satisfies \\(\\tan\\theta = -\\frac{5}{12}\\) and \\(\\frac{3\\pi}{2} \\leq \\theta \\leq 2\\pi\\). Determine \\(\\theta\\), in radians, to two decimal places.",
       Math.round(ans*100)/100,0.01,
-      "The reference angle is \\(\\alpha = \\tan^{-1}\\left(\\frac{5}{12}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant IV, \\(\\theta = 2\\pi - \\alpha \\approx 6.2832 - "+fmt(ref,4)+" = <b>"+fmt(ans,2)+"</b>\\).",
+      "The reference angle is \\(\\alpha = \\tan^{-1}\\left(\\frac{5}{12}\\right) \\approx "+fmt(ref,4)+"\\). In quadrant IV, \\(\\theta = 2\\pi - \\alpha \\approx 6.2832 - "+fmt(ref,4)+" = \\)<b>"+fmt(ans,2)+"</b>.",
       {sc:"tan512-q4"});
   }
 ]));
@@ -3352,6 +3394,7 @@ E("u5-tan-graph",5,["7.32"],2,"var",varset([
 ]));
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: three Level 2 CR entries (3, 2 and 2 marks). The Level 2 CR pool held only two 2-mark entries, so no remainder behind any Level 3 pick could form. ---------- */
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u5-equation-evaluate-cr",5,["7.28","7.26"],2,"gen",function(){
   var P=pick([12,24,8]), A=pick([2,3,4,5]), h=pick([0,1,2,3]), k=pick([-3,-2,-1,1,2,3]);
   var phis;
@@ -3363,7 +3406,7 @@ E("u5-equation-evaluate-cr",5,["7.28","7.26"],2,"gen",function(){
   var shift=h===0?"no phase shift":"a phase shift of "+h+" units to the right";
   return numq("A sinusoidal function has amplitude "+A+", period "+P+", "+shift+", and midline \\(y = "+k+"\\). It is a sine function whose cycle starts at the midline and rises from there. Determine the value of the function at \\(x = "+t+"\\).",
     ans,0.01,
-    "The equation is \\(y = "+A+"\\sin "+bstr+arg+" "+ks+"\\), since \\(b = \\frac{2\\pi}{"+P+"} = "+bstr+"\\). At \\(x = "+t+"\\), the argument is \\("+bstr+" \\times "+(t-h)+" = "+ph[1]+"\\), and \\(\\sin "+ph[1]+" = "+ph[2]+"\\). So the value is \\("+A+" \\times "+ph[2]+" "+ks+" = <b>"+fmt(ans,2)+"</b>\\).",
+    "The equation is \\(y = "+A+"\\sin "+bstr+arg+" "+ks+"\\), since \\(b = \\frac{2\\pi}{"+P+"} = "+bstr+"\\). At \\(x = "+t+"\\), the argument is \\("+bstr+" \\times "+(t-h)+" = "+ph[1]+"\\), and \\(\\sin "+ph[1]+" = "+ph[2]+"\\). So the value is \\("+A+" \\times "+ph[2]+" "+ks+" = \\)<b>"+fmt(ans,2)+"</b>.",
     {P:P,A:A,h:h,k:k,t:t});
 });
 E("u5-first-maximum-cr",5,["7.29"],2,"gen",function(){
@@ -3373,7 +3416,7 @@ E("u5-first-maximum-cr",5,["7.29"],2,"gen",function(){
   var arg=h===0?"t":"(t - "+h+")";
   return numq("The height, in metres, of a rider on a Ferris wheel is modelled by \\(H(t) = "+A+"\\sin "+bstr+arg+" + "+k+"\\), where \\(t\\) is the time in minutes since the ride started. Determine the <b>first</b> time, in minutes, at which the rider reaches the maximum height.",
     t,0.01,
-    "The height is greatest when the sine factor equals 1, which first happens when its argument equals \\(\\frac{\\pi}{2}\\). The argument "+bstr+arg+" increases from 0, and it reaches \\(\\frac{\\pi}{2}\\) after one quarter of the period. The period is "+P+" minutes, so the first maximum occurs at \\(t = "+h+" + \\frac{"+P+"}{4} = <b>"+fmt(t,2)+"</b>\\) minutes.",
+    "The height is greatest when the sine factor equals 1, which first happens when its argument equals \\(\\frac{\\pi}{2}\\). The argument "+bstr+arg+" increases from 0, and it reaches \\(\\frac{\\pi}{2}\\) after one quarter of the period. The period is "+P+" minutes, so the first maximum occurs at \\(t = "+h+" + \\frac{"+P+"}{4} = \\)<b>"+fmt(t,2)+"</b> minutes.",
     {P:P,h:h});
 });
 E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
@@ -7320,6 +7363,7 @@ E("u9-why-n-ge-r",9,["9.7","9.13"],3,"var",varset([
    entry is selected-response only in exam mode. Worksheet mode uses these plus
    all numeric-answer entries. */
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 1 MC generators (the unit's two mixed-mode generators could not reliably field four distinct Level 1 MC questions), one Level 2 CR entry (3 marks) and one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry). ---------- */
+/* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
 E("u9-fcp-meal-mc",9,["9.3"],1,"gen",function(){
   var CTX=[
     "A cafeteria offers %a soups, %b main dishes and %c drinks. How many different meals, each consisting of one soup, one main dish and one drink, are possible?",
@@ -7333,7 +7377,7 @@ E("u9-fcp-meal-mc",9,["9.3"],1,"gen",function(){
   return mcq(stem,
     ""+key,
     [""+d1,""+d2,""+d3],
-    "Each stage is an independent choice, so the Fundamental Counting Principle says to multiply: \\("+a+" \\times "+b+" \\times "+c+" = <b>"+key+"</b>\\).",
+    "Each stage is an independent choice, so the Fundamental Counting Principle says to multiply: \\("+a+" \\times "+b+" \\times "+c+" = \\)<b>"+key+"</b>.",
     {a:a,b:b,c:c});
 });
 E("u9-word-arrange-mc",9,["9.5"],1,"gen",function(){
@@ -7342,7 +7386,7 @@ E("u9-word-arrange-mc",9,["9.5"],1,"gen",function(){
   return mcq("In how many different ways can the letters of the word "+w+" be arranged?",
     ""+u9big(key),
     [""+u9big(u9fact(n-1)),""+u9big(u9fact(n+1)),""+u9big(n*n)],
-    "The word "+w+" has "+n+" letters, all different, so the arrangements are the permutations of "+n+" objects: \\("+n+"! = <b>"+u9big(key)+"</b>\\).",
+    "The word "+w+" has "+n+" letters, all different, so the arrangements are the permutations of "+n+" objects: \\("+n+"! = \\)<b>"+u9big(key)+"</b>.",
     {w:w});
 });
 E("u9-two-group-cr",9,["9.12"],2,"gen",function(){
@@ -7355,7 +7399,7 @@ E("u9-two-group-cr",9,["9.12"],2,"gen",function(){
   var c1=u9comb(n1,a), c2=u9comb(n2,b), ans=c1*c2;
   return numq(pick(CTX)(n1,a,n2,b),
     ans,0.001,
-    "The two choices are independent, so multiply the two combination counts: \\[ \\binom{"+n1+"}{"+a+"} \\times \\binom{"+n2+"}{"+b+"} = "+c1+" \\times "+c2+" = <b>"+u9big(ans)+"</b> \\]",
+    "The two choices are independent, so multiply the two combination counts: \\[ \\binom{"+n1+"}{"+a+"} \\times \\binom{"+n2+"}{"+b+"} = "+c1+" \\times "+c2+" = "+u9big(ans)+" \\] So the count is <b>"+u9big(ans)+"</b>.",
     {n1:n1,a:a,n2:n2,b:b});
 });
 E("u9-not-adjacent-cr",9,["9.10"],3,"gen",function(){
@@ -7367,7 +7411,7 @@ E("u9-not-adjacent-cr",9,["9.10"],3,"gen",function(){
   var n=pick([5,6,7]), total=u9fact(n), together=2*u9fact(n-1), ans=total-together;
   return numq(pick(CTX)(n),
     ans,0.001,
-    "Count every arrangement, then subtract the arrangements where the two are together. There are \\("+n+"! = "+u9big(total)+"\\) arrangements in total. Treating the pair as a single block gives "+(n-1)+" objects, which can be arranged in \\("+(n-1)+"! = "+u9big(u9fact(n-1))+"\\) ways, and the pair itself can be ordered in 2 ways, so the number with the two together is \\(2 \\times "+(n-1)+"! = "+u9big(together)+"\\). The number with the two apart is \\("+u9big(total)+" - "+u9big(together)+" = <b>"+u9big(ans)+"</b>\\).",
+    "Count every arrangement, then subtract the arrangements where the two are together. There are \\("+n+"! = "+u9big(total)+"\\) arrangements in total. Treating the pair as a single block gives "+(n-1)+" objects, which can be arranged in \\("+(n-1)+"! = "+u9big(u9fact(n-1))+"\\) ways, and the pair itself can be ordered in 2 ways, so the number with the two together is \\(2 \\times "+(n-1)+"! = "+u9big(together)+"\\). The number with the two apart is \\("+u9big(total)+" - "+u9big(together)+" = \\)<b>"+u9big(ans)+"</b>.",
     {n:n});
 });
 
