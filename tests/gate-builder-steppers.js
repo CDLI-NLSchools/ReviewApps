@@ -2,17 +2,35 @@
 /* Gate (jsdom) for the builder UI pass (Nov 20, 2026): prominent
    counts, test preset summary and steppers:
      NODE_PATH=$HOME/workspace/physics-2204-review/node_modules node tests/gate-builder-steppers.js
-   - the Multiple choice and Constructed Response count controls
-     and the Dual-form questions select sit under the scope
-     selection (after the indicator box, before the "Print a sheet
-     or exam" panel), and the print panel keeps only its
-     print-only choices;
+   - the builder is mode-first (restructure of Nov 20, 2026,
+     Spec-Builder-Restructure-2026-11-20.md): Practice online,
+     Build a Practice Test and Build a Practice Sheet sections in
+     that order; the test selector and the exam button sit inside
+     the test section; the sheet counts, the print-only choices
+     and the sheet button sit inside the sheet section; and the
+     Dual-form questions select sits at the bottom door, after
+     the sections, as a select all over the exam editor's
+     per-question flips;
    - the counts behave as before: settings() and the settings URL
      carry them, a sheet composes to the counts set, and an exam
      still composes;
-   - in student mode all four composition controls (the two
-     counts and the two steppers) are removed by the teacher gate,
-     as the counts were before the move;
+   - in student mode the composition controls (the two sheet
+     counts, the two steppers and the dual-form select) are
+     removed by the teacher gate, while the online section's own
+     two counts remain;
+   - the online composer deals multiple choice and fill-in to two
+     counts (default 7 and 3); a link carrying omc/ofi engages
+     the split, a link carrying only the legacy count keeps the
+     legacy single-count draw, and seeded links deal identical
+     questions in both modes;
+   - the online test selector scopes an online set to a mapped
+     test's indicators without touching the shared scope, and a
+     pool that cannot fill its fill-in count surfaces the
+     shortfall in a note instead of substituting multiple choice;
+   - a math course (no test map) offers a unit-only test row that
+     drives the shared scope and composes the single-unit paper;
+   - the dual-form select all moves a composed paper's dual-form
+     questions between sections wholesale, both ways;
    - selecting a mapped Chemistry 2202 test shows the preset
      summary, and its figures match the live plan (testPlanFor):
      selected response count, constructed response marks and the
@@ -90,22 +108,27 @@ function settleSet(dom) {
   await waitBank(r.dom);
   const mc = d.getElementById("mcCountIn"), nc = d.getElementById("ncCountIn"), bm = d.getElementById("bmIn");
   ok(!!mc && !!nc && !!bm, "counts: the two count controls and the dual-form select render");
-  const indBox = d.getElementById("indBox");
   const FOLLOWING = 4; // Node.DOCUMENT_POSITION_FOLLOWING
-  ok(!!indBox && (indBox.compareDocumentPosition(mc) & FOLLOWING) !== 0, "counts: Multiple choice sits under the scope selection (after the indicator box)");
   const h3s = Array.prototype.slice.call(d.querySelectorAll("h3"));
-  const printH3 = h3s.find(h => h.textContent.trim() === "Print a sheet or exam");
-  ok(!!printH3, "counts: the print panel heading is present");
-  if (printH3) {
-    ok((mc.compareDocumentPosition(printH3) & FOLLOWING) !== 0, "counts: Multiple choice now sits before the print panel");
-    ok((nc.compareDocumentPosition(printH3) & FOLLOWING) !== 0, "counts: Constructed Response now sits before the print panel");
-    ok((bm.compareDocumentPosition(printH3) & FOLLOWING) !== 0, "counts: Dual-form questions moved with the counts");
-    const key = d.getElementById("keyChk"), ws = d.getElementById("wsMcIn"), wsc = d.getElementById("wsCrIn"), code = d.getElementById("codeChk");
-    ok(!!key && (printH3.compareDocumentPosition(key) & FOLLOWING) !== 0, "counts: answer key stays in the print panel");
-    ok(!!code && (printH3.compareDocumentPosition(code) & FOLLOWING) !== 0, "counts: set code stays in the print panel");
-    ok(!!ws && (printH3.compareDocumentPosition(ws) & FOLLOWING) !== 0, "counts: multiple choice working space stays in the print panel");
-    ok(!!wsc && (printH3.compareDocumentPosition(wsc) & FOLLOWING) !== 0, "counts: constructed response working space stays in the print panel");
+  const h3ByText = t => h3s.find(h => h.textContent.trim() === t);
+  const onlineH3 = h3ByText("Practice online"), testH3 = h3ByText("Build a Practice Test"), sheetH3 = h3ByText("Build a Practice Sheet");
+  ok(!!onlineH3 && !!testH3 && !!sheetH3, "layout: the three builder sections render (Practice online, Build a Practice Test, Build a Practice Sheet)");
+  if (onlineH3 && testH3 && sheetH3) {
+    ok((onlineH3.compareDocumentPosition(testH3) & FOLLOWING) !== 0 && (testH3.compareDocumentPosition(sheetH3) & FOLLOWING) !== 0, "layout: the sections run in order, the sheet section last");
+    const tsr = d.getElementById("testScopeRow");
+    ok((testH3.compareDocumentPosition(tsr) & FOLLOWING) !== 0 && (tsr.compareDocumentPosition(sheetH3) & FOLLOWING) !== 0, "layout: the test selector sits inside the test section");
+    const ge = d.getElementById("goExam");
+    ok((testH3.compareDocumentPosition(ge) & FOLLOWING) !== 0 && (ge.compareDocumentPosition(sheetH3) & FOLLOWING) !== 0, "layout: the exam button sits inside the test section");
+    ok((sheetH3.compareDocumentPosition(mc) & FOLLOWING) !== 0 && (sheetH3.compareDocumentPosition(nc) & FOLLOWING) !== 0, "layout: the sheet counts sit inside the sheet section");
+    const key = d.getElementById("keyChk"), ws = d.getElementById("wsMcIn"), wsc = d.getElementById("wsCrIn"), code = d.getElementById("codeChk"), gs = d.getElementById("goSheet");
+    ok(!!key && (sheetH3.compareDocumentPosition(key) & FOLLOWING) !== 0, "layout: answer key stays with the sheet choices");
+    ok(!!code && (sheetH3.compareDocumentPosition(code) & FOLLOWING) !== 0, "layout: set code stays with the sheet choices");
+    ok(!!ws && (sheetH3.compareDocumentPosition(ws) & FOLLOWING) !== 0, "layout: multiple choice working space stays with the sheet choices");
+    ok(!!wsc && (sheetH3.compareDocumentPosition(wsc) & FOLLOWING) !== 0, "layout: constructed response working space stays with the sheet choices");
+    ok(!!gs && (gs.compareDocumentPosition(bm) & FOLLOWING) !== 0, "layout: the dual-form select all sits at the bottom door, after the sections");
   }
+  ok(!!d.getElementById("oMcIn") && !!d.getElementById("oFiIn"), "layout: the online section carries its two counts");
+  ok(d.getElementById("countIn") && d.getElementById("countIn").type === "hidden", "layout: the legacy online count input is kept, hidden");
   d.querySelector('.unitChk[value="1"]').click();
   mc.value = "7"; nc.value = "3";
   ok(ev(r.dom, "settings().mcCount") === 7 && ev(r.dom, "settings().ncCount") === 3, "counts: settings() reads the moved controls");
@@ -126,6 +149,8 @@ function settleSet(dom) {
   let ds0 = rs0.dom.window.document;
   ok(ds0.getElementById("mcCountIn") === null && ds0.getElementById("ncCountIn") === null, "student: count controls removed by the teacher gate");
   ok(ds0.getElementById("testXMcIn") === null && ds0.getElementById("testXCrIn") === null, "student: stepper controls removed by the teacher gate");
+  ok(ds0.getElementById("bmIn") === null, "student: the dual-form select all is removed by the teacher gate");
+  ok(!!ds0.getElementById("oMcIn") && !!ds0.getElementById("oFiIn"), "student: the online counts remain");
   ok(!!ds0.getElementById("testPlanNote"), "student: the preset summary element remains in the test row");
   rs0.dom.window.close();
 
@@ -199,12 +224,132 @@ function settleSet(dom) {
   }
   rt.dom.window.close();
 
+  /* ---------- online practice: two-count dealing and link routing ----------
+     jsdom runs the boot dispatch before the document.write bank
+     lands, so link boots re-run the dispatch pair (applyURL, then
+     startOnline) once the bank is in: exactly the order a real
+     browser's parse runs them in. */
+  let ro = await boot("course=chem-2202");
+  let doo = ro.dom.window.document;
+  await waitBank(ro.dom);
+  doo.querySelector('.unitChk[value="1"]').click();
+  let defOk = false;
+  for (let k = 0; k < 5 && !defOk; k++) {
+    doo.getElementById("goOnline").click();
+    defOk = ev(ro.dom, "(function(){if(typeof current==='undefined'||!current)return false;var m=current.filter(function(q){return q.type==='mc';}).length;return current.length===10&&m===7;})()");
+  }
+  ok(defOk, "online: the default draw deals 7 multiple choice and 3 fill-in of 10");
+  ok(ev(ro.dom, "settingsToURL().includes('omc=7') && settingsToURL().includes('ofi=3')"), "online: the settings URL carries the two counts");
+  ro.dom.window.close();
+
+  let rl2 = await boot("course=chem-2202&unit=1&omc=6&ofi=4");
+  await waitBank(rl2.dom);
+  ev(rl2.dom, "applyURL(new URLSearchParams('course=chem-2202&unit=1&omc=6&ofi=4'));startOnline(false);");
+  ok(ev(rl2.dom, "settings().oSplit") === true, "online link: a link carrying omc/ofi engages the split");
+  ok(ev(rl2.dom, "(function(){if(typeof current==='undefined'||!current)return false;var m=current.filter(function(q){return q.type==='mc';}).length;return current.length===10&&m===6;})()"), "online link: the split link deals 6 multiple choice and 4 fill-in");
+  rl2.dom.window.close();
+
+  let rg2 = await boot("course=chem-2202&unit=1&count=12");
+  await waitBank(rg2.dom);
+  ev(rg2.dom, "applyURL(new URLSearchParams('course=chem-2202&unit=1&count=12'));startOnline(false);");
+  ok(ev(rg2.dom, "settings().oSplit") === false, "online link: a link carrying only the legacy count keeps the legacy draw");
+  ok(ev(rg2.dom, "typeof current!=='undefined'&&current&&current.length===12"), "online link: the legacy link deals its 12 questions");
+  rg2.dom.window.close();
+
+  async function seededSeq(qs) {
+    let rb = await boot(qs);
+    await waitBank(rb.dom);
+    ev(rb.dom, "applyURL(new URLSearchParams(" + JSON.stringify(qs) + "));startOnline(false);");
+    const s = ev(rb.dom, "(function(){return (typeof current!=='undefined'&&current)?current.map(function(q){return canonQ(q);}).join('|'):'';})()");
+    rb.dom.window.close();
+    return s;
+  }
+  const seedA = await seededSeq("course=chem-2202&unit=1&count=10&seed=otter-42");
+  const seedB = await seededSeq("course=chem-2202&unit=1&count=10&seed=otter-42");
+  ok(seedA.length > 0 && seedA === seedB, "online link: a seeded legacy link deals identical questions on two opens");
+  const seedC = await seededSeq("course=chem-2202&unit=1&omc=6&ofi=4&seed=otter-42");
+  const seedD = await seededSeq("course=chem-2202&unit=1&omc=6&ofi=4&seed=otter-42");
+  ok(seedC.length > 0 && seedC === seedD, "online link: a seeded split link deals identical questions on two opens");
+
+  /* ---------- online test selector: scoped locally, scope untouched ---------- */
+  let rsel = await boot("course=chem-2202");
+  let dsel = rsel.dom.window.document;
+  await waitBank(rsel.dom);
+  const pickT = JSON.parse(ev(rsel.dom, "(function(){var C=window.__COURSE;var us=Object.keys(C.testMap).sort(function(a,b){return a-b;});for(var i=0;i<us.length;i++){var u=+us[i],l=C.testMap[u];for(var j=0;j<l.length;j++){var e=l[j];var pool=poolFor([u],e.inds,false);var mc=pool.filter(function(x){return probeType(x)==='mc';}).length;var fi=pool.filter(function(x){return probeType(x)!=='mc'||!!bimodalClass(x);}).length;if(mc>=6&&fi>=3)return JSON.stringify({unit:u,test:e.test,inds:e.inds});}}return 'null';})()"));
+  ok(!!pickT, "online selector: Chemistry 2202 has a mapped test with a deep enough pool");
+  if (pickT) {
+    const scopeBefore = ev(rsel.dom, "JSON.stringify({u:state.units,i:state.inds})");
+    const usel = dsel.getElementById("oTestUnitSel"); usel.value = "unit:" + pickT.unit; usel.dispatchEvent(new rsel.dom.window.Event("change"));
+    const nsel = dsel.getElementById("oTestNumSel"); nsel.value = String(pickT.test); nsel.dispatchEvent(new rsel.dom.window.Event("change"));
+    ok(ev(rsel.dom, "!!(oTestSel&&oTestSel.kind==='test'&&oTestSel.test===" + pickT.test + ")"), "online selector: the choice registers as a test tailoring");
+    ok(ev(rsel.dom, "JSON.stringify({u:state.units,i:state.inds})") === scopeBefore, "online selector: the shared scope is untouched");
+    ok(dsel.getElementById("oTestNote").textContent.includes("Practice set for"), "online selector: the note names the tailored set (saw: " + dsel.getElementById("oTestNote").textContent + ")");
+    const omcI = dsel.getElementById("oMcIn"), ofiI = dsel.getElementById("oFiIn");
+    omcI.value = "4"; omcI.dispatchEvent(new rsel.dom.window.Event("input"));
+    ofiI.value = "2"; ofiI.dispatchEvent(new rsel.dom.window.Event("input"));
+    let selOk = false;
+    for (let k = 0; k < 5 && !selOk; k++) {
+      dsel.getElementById("goOnline").click();
+      selOk = ev(rsel.dom, "(function(){if(typeof current==='undefined'||!current||current.length!==6)return false;var m=current.filter(function(q){return q.type==='mc';}).length;if(m!==4)return false;var inds=" + JSON.stringify(pickT.inds) + ";return current.every(function(q){var e=q._entry;return e.unit===" + pickT.unit + "&&e.indicators.some(function(c){return inds.indexOf(c)>=0;});});})()");
+    }
+    ok(selOk, "online selector: the tailored set deals 4 multiple choice and 2 fill-in from the test's indicators only");
+  }
+  rsel.dom.window.close();
+
+  /* ---------- dry pool: the shortfall surfaces, nothing substitutes ---------- */
+  let rd = await boot("course=chem-2202");
+  let dd = rd.dom.window.document;
+  await waitBank(rd.dom);
+  dd.querySelector('.unitChk[value="4"]').click();
+  const dOmc = dd.getElementById("oMcIn"), dOfi = dd.getElementById("oFiIn");
+  dOmc.value = "0"; dOmc.dispatchEvent(new rd.dom.window.Event("input"));
+  dOfi.value = "20"; dOfi.dispatchEvent(new rd.dom.window.Event("input"));
+  dd.getElementById("goOnline").click();
+  ok(ev(rd.dom, "typeof onlineNote!=='undefined'&&!!onlineNote&&onlineNote.indexOf('fill-in')>=0"), "dry pool: the shortfall note names the fill-in count (saw: " + ev(rd.dom, "String(onlineNote)") + ")");
+  ok(ev(rd.dom, "(function(){return typeof current!=='undefined'&&current&&current.length>0&&current.every(function(q){return q.type!=='mc';});})()"), "dry pool: no multiple choice questions were substituted in");
+  rd.dom.window.close();
+
+  /* ---------- math: unit-only test row ---------- */
+  let rm2 = await boot("course=math-2201");
+  let dm2 = rm2.dom.window.document;
+  await waitBank(rm2.dom);
+  ok(dm2.getElementById("mathTestRow").hidden === false, "math: the unit test row shows on a course with no test map");
+  ok(dm2.getElementById("testScopeRow").hidden === true, "math: the mapped test row stays hidden");
+  const msel2 = dm2.getElementById("mathUnitSel"); msel2.value = "3"; msel2.dispatchEvent(new rm2.dom.window.Event("change"));
+  ok(ev(rm2.dom, "state.units.join()") === "3", "math: choosing a unit sets the shared scope to it");
+  dm2.getElementById("goExam").click();
+  ok(ev(rm2.dom, "!!(typeof examState!=='undefined'&&examState&&examState.single)"), "math: the exam button composes the single-unit practice test");
+  rm2.dom.window.close();
+
+  /* ---------- dual-form select all on a composed paper ---------- */
+  let rx2 = await boot("course=chem-2202&teacher=1");
+  let dx2 = rx2.dom.window.document;
+  await waitBank(rx2.dom);
+  dx2.querySelectorAll(".unitChk").forEach(cb => { if (!cb.checked) cb.click(); });
+  let hasDual = false;
+  for (let k = 0; k < 6 && !hasDual; k++) {
+    dx2.getElementById("goExam").click();
+    hasDual = ev(rx2.dom, "(function(){if(typeof examState==='undefined'||!examState)return false;return examState.ex.srItems.some(function(it){return !!bimodalClass(it.q._entry);});})()");
+  }
+  ok(hasDual, "select all: the composed paper holds dual-form questions in Section A");
+  if (hasDual) {
+    const bmX = dx2.getElementById("bmIn"); bmX.value = "off"; bmX.dispatchEvent(new rx2.dom.window.Event("change"));
+    ok(ev(rx2.dom, "(function(){return examState.ex.srItems.every(function(it){return !bimodalClass(it.q._entry);})&&examState.ex.crItems.some(function(it){return !!bimodalClass(it.q._entry);});})()"), "select all: choices off moves every dual-form question into Section B");
+    bmX.value = "on"; bmX.dispatchEvent(new rx2.dom.window.Event("change"));
+    ok(ev(rx2.dom, "(function(){return examState.ex.srItems.some(function(it){return !!bimodalClass(it.q._entry);});})()"), "select all: choices on returns dual-form questions to Section A");
+  }
+  rx2.dom.window.close();
+
   /* ---------- French statics and summary ---------- */
   let rf = await boot("course=sci-7-fr&teacher=1");
   let df = rf.dom.window.document;
   await waitBank(rf.dom);
   const labOf = id => { const el = df.getElementById(id); const lab = el && el.closest ? el.closest("label") : null; return lab ? lab.textContent : ""; };
   ok(labOf("mcCountIn").includes("Choix multiple"), "french: the moved count label translates (saw: " + labOf("mcCountIn").trim() + ")");
+  const fh3s = Array.prototype.slice.call(df.querySelectorAll("h3")).map(h => h.textContent.trim());
+  ok(fh3s.indexOf("Créer un test de pratique") >= 0 && fh3s.indexOf("Créer une feuille d'entraînement") >= 0, "french: the section headings translate (saw: " + fh3s.join(" | ") + ")");
+  ok(labOf("oFiIn").includes("Réponse courte"), "french: the fill-in label translates (saw: " + labOf("oFiIn").trim() + ")");
+  ok(df.getElementById("oTestLab").textContent.includes("Pratiquer pour un test"), "french: the online test selector label translates (saw: " + df.getElementById("oTestLab").textContent.trim() + ")");
   ok(labOf("testXMcIn").includes("Plus de choix multiples"), "french: the multiple choice stepper label translates (saw: " + labOf("testXMcIn").trim() + ")");
   ok(labOf("testXCrIn").includes("Plus de réponses écrites"), "french: the written stepper label translates (saw: " + labOf("testXCrIn").trim() + ")");
   const tmF = JSON.parse(ev(rf.dom, "(function(){var C=window.__COURSE;if(!C.testMap)return 'null';var u=+Object.keys(C.testMap).sort(function(a,b){return a-b;})[0];return JSON.stringify({unit:u,test:C.testMap[u][0].test});})()"));
