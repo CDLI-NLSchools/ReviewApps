@@ -1,3 +1,4 @@
+// CRMARKS: s8f-u4-cr-besoins-experience=3
 // CRMARKS: s8f-u4-cr-living=3
 // CRMARKS: s8f-u4-cr-cell-division=3
 // CRMARKS: s8f-u4-cr-levels=3
@@ -12,6 +13,134 @@
 // CRMARKS: s8f-u4-cr-microscope=3
 // CRMARKS: s8f-u4-cr-model-eval=3
 // CRMARKS: s8f-u4-cr-design-rates=4
+// CRMARKS: s8f-u4-cr-cellule-comparer=2
+// CRMARKS: s8f-u4-cr-niveaux-appliquer=4
+// CRMARKS: s8f-u4-cr-systemes-reponse=4
+// CRMARKS: s8f-u4-cr-cellule-vivante=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s8f-u4-living-chars=2
+// CRMARKS: s8f-u4-nonliving=2
+// CRMARKS: s8f-u4-differences=2
+// CRMARKS: s8f-u4-cell-figure=2
+// CRMARKS: s8f-u4-vacuole-compare=3
+// CRMARKS: s8f-u4-regular-shape=2
+// CRMARKS: s8f-u4-identical=2
+// CRMARKS: s8f-u4-division-count=2
+// CRMARKS: s8f-u4-order=2
+// CRMARKS: s8f-u4-example-level=2
+// CRMARKS: s8f-u4-analogy=2
+// CRMARKS: s8f-u4-needs=2
+// CRMARKS: s8f-u4-needs-apply=3
+// CRMARKS: s8f-u4-needs-system=3
+// CRMARKS: s8f-u4-factor-positive=2
+// CRMARKS: s8f-u4-factor-effect=3
+// CRMARKS: s8f-u4-sedentary=3
+// CRMARKS: s8f-u4-pair-circ-resp=2
+// CRMARKS: s8f-u4-pair-dig-circ=2
+// CRMARKS: s8f-u4-pair-nerv-musc=3
+// CRMARKS: s8f-u4-interdependence-why=4
+// CRMARKS: s8f-u4-early-modern=3
+// CRMARKS: s8f-u4-dynamic=3
+// CRMARKS: s8f-u4-micro-development=2
+// CRMARKS: s8f-u4-micro-parts=2
+// CRMARKS: s8f-u4-organelle-figure=2
+// CRMARKS: s8f-u4-organelle-function=2
+// CRMARKS: s8f-u4-organelle-match=2
+// CRMARKS: s8f-u4-organelle-plant=2
+// CRMARKS: s8f-u4-tech-examples=2
+// CRMARKS: s8f-u4-tech-match=2
+// CRMARKS: s8f-u4-knowledge-tech2=3
+// CRMARKS: s8f-u4-community-need=3
+// CRMARKS: s8f-u4-decision-sr=3
+// CRMARKS: s8f-u4-propose-sr=3
+// CRMARKS: s8f-u4-personal-decision=3
+// CRMARKS: s8f-u4-careers=2
+// CRMARKS: s8f-u4-careers-match=2
+// CRMARKS: s8f-u4-focus-sequence=2
+// CRMARKS: s8f-u4-parts-action=2
+// CRMARKS: s8f-u4-care=2
+// CRMARKS: s8f-u4-care-error=3
+// CRMARKS: s8f-u4-estimate-gen=2
+// CRMARKS: s8f-u4-estimate-compare=2
+// CRMARKS: s8f-u4-estimate-scenario=2
+// CRMARKS: s8f-u4-model-accuracy=3
+// CRMARKS: s8f-u4-variables=3
+// CRMARKS: s8f-u4-protocol=2
+// CRMARKS: s8f-u4-testable=3
+// CRMARKS: s8f-u4-testable2=2
+// CRMARKS: s8f-u4-hypothesis=3
+// CRMARKS: s8f-u4-hypothesis-basis=2
+// CRMARKS: s8f-u4-control=3
+// CRMARKS: s8f-u4-control-error=3
+// CRMARKS: s8f-u4-graph-choice=3
+// CRMARKS: s8f-u4-rates-figure=2
+// CRMARKS: s8f-u4-recovery-figure=3
+// CRMARKS: s8f-u4-organize=2
+// CRMARKS: s8f-u4-organize-avg=3
+// CRMARKS: s8f-u4-niveaux-identifier=2
+// CRMARKS: s8f-u4-besoins-appliques=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s8f-u4-living-chars=a
+// BIMODAL: s8f-u4-nonliving=b
+// BIMODAL: s8f-u4-differences=a
+// BIMODAL: s8f-u4-cell-figure=a
+// BIMODAL: s8f-u4-vacuole-compare=b
+// BIMODAL: s8f-u4-regular-shape=a
+// BIMODAL: s8f-u4-identical=a
+// BIMODAL: s8f-u4-division-count=a
+// BIMODAL: s8f-u4-order=a
+// BIMODAL: s8f-u4-example-level=a
+// BIMODAL: s8f-u4-analogy=a
+// BIMODAL: s8f-u4-needs=a
+// BIMODAL: s8f-u4-needs-apply=b
+// BIMODAL: s8f-u4-needs-system=b
+// BIMODAL: s8f-u4-factor-positive=a
+// BIMODAL: s8f-u4-factor-effect=b
+// BIMODAL: s8f-u4-sedentary=b
+// BIMODAL: s8f-u4-pair-circ-resp=b
+// BIMODAL: s8f-u4-pair-dig-circ=a
+// BIMODAL: s8f-u4-pair-nerv-musc=b
+// BIMODAL: s8f-u4-interdependence-why=b
+// BIMODAL: s8f-u4-early-modern=b
+// BIMODAL: s8f-u4-dynamic=b
+// BIMODAL: s8f-u4-micro-development=b
+// BIMODAL: s8f-u4-micro-parts=a
+// BIMODAL: s8f-u4-organelle-figure=a
+// BIMODAL: s8f-u4-organelle-function=b
+// BIMODAL: s8f-u4-organelle-match=a
+// BIMODAL: s8f-u4-organelle-plant=a
+// BIMODAL: s8f-u4-tech-examples=a
+// BIMODAL: s8f-u4-tech-match=b
+// BIMODAL: s8f-u4-knowledge-tech2=b
+// BIMODAL: s8f-u4-community-need=b
+// BIMODAL: s8f-u4-decision-sr=b
+// BIMODAL: s8f-u4-propose-sr=b
+// BIMODAL: s8f-u4-personal-decision=b
+// BIMODAL: s8f-u4-careers=a
+// BIMODAL: s8f-u4-careers-match=b
+// BIMODAL: s8f-u4-focus-sequence=b
+// BIMODAL: s8f-u4-parts-action=b
+// BIMODAL: s8f-u4-care=b
+// BIMODAL: s8f-u4-care-error=b
+// BIMODAL: s8f-u4-estimate-gen=a
+// BIMODAL: s8f-u4-estimate-compare=b
+// BIMODAL: s8f-u4-estimate-scenario=a
+// BIMODAL: s8f-u4-model-accuracy=b
+// BIMODAL: s8f-u4-variables=b
+// BIMODAL: s8f-u4-protocol=b
+// BIMODAL: s8f-u4-testable=b
+// BIMODAL: s8f-u4-testable2=b
+// BIMODAL: s8f-u4-hypothesis=b
+// BIMODAL: s8f-u4-hypothesis-basis=a
+// BIMODAL: s8f-u4-control=b
+// BIMODAL: s8f-u4-control-error=b
+// BIMODAL: s8f-u4-graph-choice=b
+// BIMODAL: s8f-u4-rates-figure=a
+// BIMODAL: s8f-u4-recovery-figure=a
+// BIMODAL: s8f-u4-organize=b
+// BIMODAL: s8f-u4-organize-avg=b
+// BIMODAL: s8f-u4-niveaux-identifier=a
+// BIMODAL: s8f-u4-besoins-appliques=a
 /* ============================================================
    Sciences 8 (FR) — Unité 4 : Les cellules, les tissus, les
    organes et les systèmes
@@ -730,3 +859,340 @@ var NO_COMPOSE_U4 = {
   "s8f-u4-cr-design-rates": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
+
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s8f-u4-theorie-cellulaire", 4, ["SC8.10.1"], 1, "var", varset([
+  function () {
+    return mcq("Lequel des énoncés fait partie de la théorie cellulaire?",
+      "Toutes les cellules proviennent de cellules déjà existantes, par division",
+      ["Les cellules peuvent apparaître spontanément à partir de matière non vivante", "Un organisme peut être vivant sans contenir aucune cellule en son corps", "Toutes les cellules d'un organisme ont exactement la même forme et la même tâche"],
+      "La théorie cellulaire affirme que les êtres vivants sont faits de cellules, que la cellule est l'unité de base du vivant et que les cellules viennent de cellules. <b>Toutes les cellules proviennent de cellules déjà existantes</b>.", {});
+  },
+  function () {
+    return mcq("Un élève observe une goutte d'eau d'étang au microscope et y découvre un organisme formé d'une seule cellule qui se déplace et se nourrit. Qu'est-ce que cette observation illustre de la théorie cellulaire?",
+      "La cellule est l'unité de base de la vie : un organisme entier peut tenir en une seule cellule",
+      ["Les organismes unicellulaires ne sont pas vraiment vivants, faute d'organes complets", "Toutes les cellules doivent faire partie d'un organisme formé de milliards de cellules", "Un organisme unicellulaire est une cellule défectueuse qui a quitté un plus gros organisme"],
+      "Un organisme complet fait d'une seule cellule montre que la cellule suffit comme unité de base du vivant. <b>La cellule est l'unité de base de la vie</b>.", {});
+  },
+  function () {
+    return mcq("Une égratignure sur la peau guérit en quelques jours parce que les cellules autour se divisent et produisent de nouvelles cellules de peau. Quel principe de la théorie cellulaire cette guérison illustre-t-elle?",
+      "Les nouvelles cellules proviennent de cellules existantes, par division cellulaire",
+      ["Les nouvelles cellules apparaissent spontanément dans le sang qui couvre la plaie", "Le corps fabrique des cellules à partir des aliments sans utiliser de cellules existantes", "Les cellules de peau voisines se transforment en plaie puis redeviennent normales"],
+      "La guérison par division des cellules voisines illustre que toute cellule vient d'une cellule. <b>Les nouvelles cellules proviennent de cellules existantes</b>.", {});
+  },
+  function () {
+    return mcq("Lequel des énoncés contredit la théorie cellulaire?",
+      "Un morceau de liège sans aucune cellule peut être considéré comme un être vivant complet",
+      ["Une bactérie, formée d'une seule cellule, est un être vivant à part entière", "Les plantes et les animaux sont tous formés d'une ou de plusieurs cellules", "Une cellule de feuille et une cellule de racine viennent toutes deux de divisions cellulaires"],
+      "La théorie cellulaire exige que tout être vivant soit fait de cellules; un être « vivant » sans cellules la contredirait. <b>Un morceau de liège sans aucune cellule peut être considéré comme un être vivant complet</b>.", {});
+  }
+]), ["Rappelle les trois énoncés de la théorie cellulaire avant de juger.", "Des cellules nées de matière non vivante contrediraient la théorie."]);
+
+
+E("s8f-u4-niveaux-identifier", 4, ["SC8.10.4"], 1, "var", varset([
+  function () {
+    return mcq("Le cœur humain pompe le sang et il est formé de tissu musculaire, de tissu nerveux et de tissu conjonctif qui travaillent ensemble. À quel niveau d'organisation appartient le cœur?",
+      "Un organe : il combine plusieurs tissus différents qui accomplissent ensemble une fonction",
+      ["Un tissu du corps : il n'est formé que d'un seul et unique genre de cellules, toutes parfaitement identiques entre elles et accomplissant la même tâche", "Un système complet du corps : il comprend plusieurs organes différents répartis dans tout le corps humain et reliés entre eux par de longs vaisseaux", "Un organisme : il accomplit à lui seul toutes les fonctions de la vie humaine"],
+      "Plusieurs tissus différents réunis pour une fonction : c'est la définition d'un organe. <b>Un organe</b>.", {});
+  },
+  function () {
+    return mcq("Dans une feuille, des cellules semblables alignées en couche mince protègent la surface et limitent la perte d'eau. À quel niveau d'organisation appartient cette couche?",
+      "Un tissu : un ensemble de cellules semblables qui accomplissent ensemble la même fonction",
+      ["Un organe complet de la plante : elle combine plusieurs genres de tissus différents qui travaillent ensemble pour accomplir une fonction commune de protection", "Une cellule unique et géante : elle n'est formée que d'une seule unité vivante microscopique qui recouvre toute la surface extérieure de la feuille entière", "Un système : elle relie plusieurs organes de la plante entre eux pour la protéger"],
+      "Des cellules semblables qui travaillent ensemble forment un tissu. <b>Un tissu</b>.", {});
+  },
+  function () {
+    return mcq("La bouche, l'estomac, le foie et les intestins travaillent ensemble à digérer les aliments. À quel niveau d'organisation appartient cet ensemble?",
+      "Un système : plusieurs organes coopèrent pour accomplir une grande fonction du corps",
+      ["Un organe unique et très étendu : c'est un seul et même organe continu qui traverse tout le corps humain de la bouche jusqu'à la fin du tube digestif", "Un tissu spécialisé du corps : c'est un ensemble de cellules toutes semblables entre elles qui digèrent directement les aliments dans tout le corps humain", "Une cellule géante : l'ensemble fonctionne comme une seule unité microscopique"],
+      "Plusieurs organes qui coopèrent pour une fonction forment un système (ici, le système digestif). <b>Un système</b>.", {});
+  },
+  function () {
+    return mcq("Une paramécie est un être vivant microscopique formé d'une seule cellule qui se nourrit, se déplace et se reproduit. À quel niveau d'organisation se situe-t-elle?",
+      "À la fois une cellule et un organisme complet : sa seule cellule accomplit toutes les fonctions de la vie",
+      ["Un tissu microscopique : une seule cellule isolée ne peut jamais, en aucun cas, former à elle seule un organisme vivant complet et indépendant", "Un organe microscopique : sa cellule unique combine plusieurs genres de tissus différents entassés ensemble dans un très petit espace sous le microscope", "Aucun niveau : les êtres microscopiques ne font pas partie de l'organisation du vivant"],
+      "Chez les unicellulaires, la cellule unique est aussi l'organisme entier. <b>À la fois une cellule et un organisme complet</b>.", {});
+  }
+]), ["Compte l'organisation : une cellule, des cellules semblables, plusieurs tissus, plusieurs organes.", "Cellule, tissu, organe, système, organisme."]);
+
+
+E("s8f-u4-besoins-appliques", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("Une culture de levures dans un bocal fermé cesse de produire des bulles après deux jours, bien qu'il reste du liquide. On ajoute un peu de sucre et les bulles repartent. Qu'est-ce qui limitait les levures?",
+      "La nourriture : les levures avaient épuisé le sucre, leur source d'énergie, et la fermentation s'était arrêtée",
+      ["L'espace disponible dans le bocal : le bocal fermé était devenu beaucoup trop petit pour que les levures puissent respirer et continuer leur fermentation normale", "La lumière du jour : les levures cultivées ont absolument besoin de lumière directe pour produire les bulles de gaz carbonique observées au début de la culture", "La température : le liquide du bocal avait gelé complètement pendant les deux jours"],
+      "Le redémarrage dès l'ajout de sucre désigne la nourriture comme le besoin limitant. <b>La nourriture : les levures avaient épuisé le sucre</b>.", {});
+  },
+  function () {
+    return mcq("Des semis poussent bien dans une serre, sauf ceux d'un coin où l'air est stagnant et où ils jaunissent malgré un bon arrosage et une bonne lumière. Quel besoin des cellules est le plus probablement insuffisant dans ce coin?",
+      "Les échanges gazeux : l'air stagnant renouvelle mal l'oxygène et le dioxyde de carbone autour des feuilles",
+      ["L'eau d'arrosage : les semis du coin stagnant reçoivent nettement moins d'eau à chaque arrosage que tous les autres semis de la serre, qui sont bien arrosés", "La nourriture minérale du sol : le sol du coin stagnant de la serre contient beaucoup moins d'engrais et de minéraux dissous que le sol de toutes les autres sections", "L'espace : les semis du coin sont plantés beaucoup plus serrés que partout ailleurs"],
+      "Eau et lumière étant suffisantes, c'est le renouvellement de l'air (échanges gazeux) qui fait défaut dans le coin stagnant. <b>Les échanges gazeux : l'air stagnant renouvelle mal les gaz autour des feuilles</b>.", {});
+  },
+  function () {
+    return mcq("Un aquarium dont le filtre tombe en panne voit ses poissons venir respirer à la surface après quelques heures. Quel besoin cellulaire explique ce comportement?",
+      "L'oxygène dissous : sans circulation ni aération, l'eau s'appauvrit en oxygène et les poissons cherchent l'air à la surface",
+      ["La nourriture des poissons : les poissons de l'aquarium montent vers la surface parce que la nourriture en flocons flotte toujours à la surface de l'eau de l'aquarium", "L'espace au fond de l'aquarium : les poissons montent vers la surface parce que le fond de l'aquarium est devenu beaucoup trop petit et trop encombré pour eux", "L'élimination des déchets : les poissons montent pour rejeter leurs déchets hors de l'eau"],
+      "Le comportement de respiration à la surface signale un manque d'oxygène dissous. <b>L'oxygène dissous : l'eau s'appauvrit en oxygène sans aération</b>.", {});
+  },
+  function () {
+    return mcq("Des bactéries cultivées dans un tube produisent un déchet qui s'accumule; au bout d'un jour, elles cessent de se diviser même s'il reste de la nourriture. Quel besoin n'est plus satisfait?",
+      "L'élimination des déchets : leurs propres déchets accumulés empoisonnent le milieu et arrêtent la division",
+      ["La nourriture du milieu de culture : il reste encore de la nourriture dans le tube, mais elle est devenue complètement invisible et inaccessible aux bactéries cultivées", "L'espace et la chaleur du tube : le petit tube de culture est devenu beaucoup trop chaud pendant la journée pour que les bactéries puissent continuer à y vivre", "L'eau : toute l'eau du tube s'est évaporée pendant la journée de culture entière"],
+      "Nourriture présente, division arrêtée : c'est l'accumulation des déchets qui limite la population. <b>L'élimination des déchets : leurs déchets accumulés empoisonnent le milieu</b>.", {});
+  }
+]), ["Éprouve chaque besoin contre le récit : qu'est-ce qui a manqué ou s'est accumulé?", "Le besoin dont l'apport a changé explique le résultat observé."]);
+
+
+E("s8f-u4-cr-besoins-experience", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return textq("Une élève fait germer des graines de haricot dans quatre plats : (1) humide et à la lumière, (2) humide et dans le noir, (3) sec et à la lumière, (4) sec et dans le noir. Après une semaine, les plats 1 et 2 ont germé, les plats 3 et 4 non. Explique ce que cette expérience démontre : quels besoins la germination exige-t-elle selon les résultats, et pourquoi le plat 2 a-t-il germé malgré l'obscurité? (3 points)",
+      ["Les plats humides ont germé, que la lumière soit présente ou non."],
+      "Points de notation (3) : 1 point pour la comparaison correcte (les deux plats humides germent, les deux plats secs non : la variable qui décide est l'eau). 1 point pour la conclusion sur les besoins (l'eau est nécessaire à la germination; la lumière ne l'est pas à ce stade). 1 point pour expliquer le plat 2 (la graine contient des réserves de nourriture qui alimentent la germination jusqu'à ce que les premières feuilles fassent la photosynthèse). Réponse modèle : Seuls les plats avec de l'eau ont germé : l'eau est donc le besoin décisif, et la lumière n'est pas requise pour germer. <b>Le plat 2 a germé dans le noir parce que la graine vit sur ses réserves jusqu'à l'apparition des feuilles</b>.", {});
+  },
+  function () {
+    return textq("Un élève compare deux aquariums identiques de plantes aquatiques : le premier reçoit un engrais complet, le second aucun engrais; les deux ont la même lumière et la même eau. Après un mois, les plantes du premier sont grandes et vertes, celles du second petites et jaunâtres. Explique ce que démontre cette expérience : quel besoin était limitant, et pourquoi peut-on être sûr que c'est ce besoin-là et pas un autre? (3 points)",
+      ["Les deux aquariums ne diffèrent que par la présence ou l'absence d'engrais."],
+      "Points de notation (3) : 1 point pour identifier le besoin limitant (les nutriments minéraux, la « nourriture » des plantes, fournis par l'engrais). 1 point pour la justification expérimentale (tout le reste — lumière, eau, plantes, contenants — est gardé identique, donc la seule cause possible de l'écart est l'engrais). 1 point pour relier les signes aux besoins cellulaires (le jaunissement et la petite taille montrent des cellules qui ne peuvent ni construire leurs protéines ni se diviser normalement sans minéraux). Réponse modèle : Avec tout le reste identique, seuls les minéraux de l'engrais expliquent l'écart de croissance. <b>Les plantes sans engrais manquaient de nutriments pour fabriquer leurs protéines et leurs nouvelles cellules</b>.", {});
+  },
+  function () {
+    return textq("Une classe cultive des moisissures sur du pain dans trois sacs : pain sec au garde-manger, pain humide au garde-manger, pain humide au réfrigérateur. La moisissure apparaît vite sur le pain humide du garde-manger, lentement sur le pain humide froid, et pas du tout sur le pain sec. Explique ces résultats : nomme DEUX conditions qui influencent la croissance des moisissures et dis le rôle de chacune. (3 points)",
+      ["La moisissure pousse le plus vite sur le pain humide gardé à la température ambiante."],
+      "Points de notation (3) : 1 point pour la première condition (l'eau : le pain sec ne permet aucune croissance, car les cellules des moisissures ont besoin d'eau pour leurs activités). 1 point pour la deuxième condition (la température : le froid du réfrigérateur ralentit les activités cellulaires et la croissance, sans les arrêter complètement). 1 point pour la synthèse (le pain humide et tiède réunit les deux conditions favorables, d'où la croissance la plus rapide). Réponse modèle : Sans eau, aucune croissance; au froid, une croissance lente; humide et tiède, la croissance est rapide. <b>L'eau est indispensable aux moisissures et la chaleur accélère leurs activités cellulaires</b>.", {});
+  }
+]), ["Compare les montages deux à deux : quelle condition diffère?", "La condition qui suit la différence de résultat est celle que l'expérience éprouve."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s8f-u4-cr-cellule-comparer
+   closes Unit 4 Test 1 (2 marks, Level 3); s8f-u4-cr-niveaux-appliquer
+   closes Unit 4 Test 2 (4 marks, Level 3); s8f-u4-cr-systemes-reponse
+   closes Unit 4 Test 3 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("s8f-u4-cr-cellule-comparer", 4, ["SC8.10.2"], 3, "var", varset([
+  function () {
+    return textq("Un élève affirme qu'une cellule de feuille et une cellule de joue sont pareilles parce que ce sont toutes deux des cellules. Évalue cette affirmation : nomme deux différences structurales entre la cellule de feuille (végétale) et la cellule de joue (animale) (1 point), et relie chacune des deux différences au travail que la cellule accomplit (1 point). (2 points)",
+      ["la cellule de feuille a des chloroplastes, la cellule de joue n'en a pas", "la cellule de feuille a une paroi cellulaire, la cellule de joue n'en a pas", "les chloroplastes font la photosynthèse, le travail de fabrication de nourriture de la feuille", "la paroi donne à la cellule végétale soutien et forme régulière"],
+      "<b>Réponse modèle :</b> L'affirmation est fausse : être des cellules donne aux deux les mêmes structures de base, comme une membrane cellulaire, un cytoplasme et un noyau, mais leurs autres structures diffèrent selon leur travail. Première différence : la cellule de feuille contient des chloroplastes et la cellule de joue n'en contient pas. Les chloroplastes font la photosynthèse, ce qui est le travail de fabrication de nourriture de la feuille; la cellule de joue, qui ne reçoit pas de lumière utile et ne fabrique pas de nourriture, n'en a pas besoin. Deuxième différence : la cellule de feuille a une paroi cellulaire à l'extérieur de sa membrane, et la cellule de joue n'en a pas. La paroi soutient la cellule végétale et lui donne une forme régulière, ce qui aide la feuille à garder sa forme étalée vers la lumière, tandis que la cellule de joue, sans paroi, garde une forme souple qui convient aux tissus mous de la bouche. (La grande vacuole de la cellule végétale, qui emmagasine l'eau et soutient la cellule, est une autre différence valide.)<br><br><b>Points d'attribution :</b> 1 point pour deux différences structurales correctes (par exemple les chloroplastes et la paroi cellulaire, présents dans la cellule de feuille et absents dans la cellule de joue). 1 point pour relier chacune des deux différences au travail de la cellule (la photosynthèse pour les chloroplastes; le soutien et la forme pour la paroi).",
+      {});
+  },
+  function () {
+    return textq("Un élève affirme qu'une cellule de racine et une cellule de muscle sont pareilles parce que ce sont toutes deux des cellules. Évalue cette affirmation : nomme deux différences structurales entre la cellule de racine (végétale) et la cellule de muscle (animale) (1 point), et relie chacune des deux différences au travail que la cellule accomplit (1 point). (2 points)",
+      ["la cellule de racine a une paroi cellulaire, la cellule de muscle n'en a pas", "la cellule de racine a une grande vacuole, la cellule de muscle n'a que de petites vacuoles", "la paroi soutient la cellule de racine dans le sol", "l'absence de paroi laisse la cellule de muscle changer de forme pour se contracter"],
+      "<b>Réponse modèle :</b> L'affirmation est fausse : être des cellules donne aux deux les mêmes structures de base, comme une membrane cellulaire, un cytoplasme et un noyau, mais leurs autres structures diffèrent selon leur travail. Première différence : la cellule de racine a une paroi cellulaire à l'extérieur de sa membrane, et la cellule de muscle n'en a pas. La paroi soutient la cellule de racine et protège sa forme pendant qu'elle pousse entre les particules du sol, tandis que la cellule de muscle doit raccourcir et changer de forme pour se contracter, ce qu'une paroi rigide empêcherait. Deuxième différence : la cellule de racine a une grande vacuole, et la cellule de muscle n'a que de petites vacuoles. La grande vacuole emmagasine l'eau que la racine absorbe et aide à garder la cellule ferme, au service de son travail d'absorption. On remarque aussi que la cellule de racine n'a pas de chloroplastes, car elle vit sous terre, sans lumière pour faire la photosynthèse.<br><br><b>Points d'attribution :</b> 1 point pour deux différences structurales correctes (par exemple la paroi cellulaire et la grande vacuole, présentes dans la cellule de racine et absentes ou petites dans la cellule de muscle). 1 point pour relier chacune des deux différences au travail de la cellule (le soutien et la protection dans le sol pour la paroi, et l'absence de paroi qui permet la contraction; l'emmagasinage de l'eau absorbée pour la grande vacuole).",
+      {});
+  },
+  function () {
+    return textq("Un élève affirme qu'une cellule d'épiderme d'oignon et un globule rouge sont pareils parce que ce sont tous deux des cellules. Évalue cette affirmation : nomme deux différences structurales entre la cellule d'épiderme d'oignon (végétale) et le globule rouge (animal) (1 point), et relie chacune des deux différences au travail que la cellule accomplit (1 point). (2 points)",
+      ["la cellule d'oignon a une paroi cellulaire, le globule rouge n'en a pas", "la cellule d'oignon a un noyau, le globule rouge mature n'en a pas", "la paroi soutient la cellule d'oignon et lui donne une forme régulière", "sans noyau, le globule rouge a plus de place pour transporter l'oxygène"],
+      "<b>Réponse modèle :</b> L'affirmation est fausse : être des cellules donne aux deux une membrane cellulaire et un cytoplasme, mais leurs autres structures diffèrent selon leur travail. Première différence : la cellule d'épiderme d'oignon a une paroi cellulaire à l'extérieur de sa membrane, et le globule rouge n'en a pas. La paroi soutient la cellule d'oignon et lui donne une forme régulière, ce qui convient à une couche protectrice de l'oignon, tandis que le globule rouge, sans paroi, reste souple pour se glisser dans les plus petits vaisseaux sanguins. Deuxième différence : la cellule d'oignon a un noyau qui contient son matériel génétique et contrôle ses activités, et le globule rouge mature n'a pas de noyau. Cette absence laisse plus de place dans le globule rouge pour son travail, qui est de transporter l'oxygène dans tout le corps. (La grande vacuole de la cellule d'oignon, qui emmagasine l'eau, est une autre différence valide.)<br><br><b>Points d'attribution :</b> 1 point pour deux différences structurales correctes (par exemple la paroi cellulaire, présente dans la cellule d'oignon et absente dans le globule rouge, et le noyau, présent dans la cellule d'oignon et absent dans le globule rouge mature). 1 point pour relier chacune des deux différences au travail de la cellule (le soutien et la forme pour la paroi, et la souplesse dans les vaisseaux; le contrôle des activités pour le noyau, et la place laissée au transport de l'oxygène dans le globule rouge).",
+      {});
+  }
+]), ["Les deux cellules partagent les structures de base; cherche ce qu'une seule des deux possède.", "Une différence ne suffit pas : il faut la relier au travail de la cellule."]);
+
+E("s8f-u4-cr-niveaux-appliquer", 4, ["SC8.10.4", "SC8.10.5"], 3, "var", varset([
+  function () {
+    return textq("Voici cinq structures dans le désordre : système circulatoire, cellule du muscle cardiaque, humain, cœur, tissu cardiaque. (a) Range ces cinq structures selon les niveaux d'organisation, du plus petit au plus grand, en nommant le niveau de chacune. (2 points) (b) Une cellule du muscle cardiaque a besoin d'oxygène pour vivre. Explique comment ce besoin est satisfait grâce à la coopération de deux niveaux d'organisation au-dessus de la cellule, en utilisant les structures de la liste. (2 points) (4 points)",
+      ["cellule du muscle cardiaque, tissu cardiaque, cœur, système circulatoire, humain", "les niveaux sont cellule, tissu, organe, système et organisme", "le cœur, un organe, pompe le sang", "le système circulatoire transporte l'oxygène jusqu'à la cellule"],
+      "<b>Réponse modèle :</b> (a) Du plus petit au plus grand : la cellule du muscle cardiaque (niveau de la cellule), le tissu cardiaque (niveau du tissu), le cœur (niveau de l'organe), le système circulatoire (niveau du système) et l'humain (niveau de l'organisme). (b) Le cœur est l'organe qui pompe le sang dans tout le corps, y compris dans son propre tissu. Le système circulatoire, formé du cœur et des vaisseaux sanguins, transporte le sang riche en oxygène des poumons jusqu'à chaque cellule, y compris les cellules du muscle cardiaque. L'organe fournit la pompe et le système fournit le transport : ensemble, ils livrent l'oxygène dont la cellule a besoin.<br><br><b>Points d'attribution :</b> 1 point pour les cinq structures rangées dans l'ordre correct. 1 point pour le nom correct du niveau de chaque structure (cellule, tissu, organe, système, organisme). 1 point pour le rôle d'un premier niveau au-dessus de la cellule (le cœur, organe, pompe le sang). 1 point pour le rôle d'un deuxième niveau (le système circulatoire transporte et livre l'oxygène à la cellule).",
+      {});
+  },
+  function () {
+    return textq("Voici cinq structures dans le désordre : feuille, plante, cellule de feuille, système de pousses, tissu photosynthétique. (a) Range ces cinq structures selon les niveaux d'organisation, du plus petit au plus grand, en nommant le niveau de chacune. (2 points) (b) Une cellule de feuille doit éliminer l'eau en excès qu'elle contient. Explique comment ce besoin est satisfait grâce à la coopération de deux niveaux d'organisation au-dessus de la cellule, en utilisant les structures de la liste. (2 points) (4 points)",
+      ["cellule de feuille, tissu photosynthétique, feuille, système de pousses, plante", "les niveaux sont cellule, tissu, organe, système et organisme", "la feuille, un organe, laisse l'eau s'évaporer à sa surface", "le système de pousses conduit l'eau dans la plante et entretient ce mouvement"],
+      "<b>Réponse modèle :</b> (a) Du plus petit au plus grand : la cellule de feuille (niveau de la cellule), le tissu photosynthétique (niveau du tissu), la feuille (niveau de l'organe), le système de pousses (niveau du système) et la plante (niveau de l'organisme). (b) La feuille est l'organe où l'eau en excès quitte la plante : l'eau s'évapore à la surface de la feuille, ce qui retire l'eau des cellules de la feuille. Le système de pousses, qui comprend la tige et les feuilles, entretient ce mouvement : l'évaporation à la feuille tire l'eau vers le haut dans les vaisseaux de la tige, donc l'eau continue de circuler et de quitter les cellules au lieu de s'y accumuler. L'organe fournit la surface d'évaporation et le système entretient le courant qui emporte l'eau.<br><br><b>Points d'attribution :</b> 1 point pour les cinq structures rangées dans l'ordre correct. 1 point pour le nom correct du niveau de chaque structure (cellule, tissu, organe, système, organisme). 1 point pour le rôle d'un premier niveau au-dessus de la cellule (la feuille, organe, laisse l'eau s'évaporer à sa surface). 1 point pour le rôle d'un deuxième niveau (le système de pousses entretient le mouvement de l'eau qui emporte l'excès).",
+      {});
+  },
+  function () {
+    return textq("Voici cinq structures dans le désordre : cerveau, humain, cellule nerveuse, système nerveux, tissu nerveux. (a) Range ces cinq structures selon les niveaux d'organisation, du plus petit au plus grand, en nommant le niveau de chacune. (2 points) (b) Une cellule nerveuse a besoin de glucose pour vivre. Explique comment ce besoin est satisfait grâce à la coopération de deux niveaux d'organisation au-dessus de la cellule, en utilisant les structures de la liste. (2 points) (4 points)",
+      ["cellule nerveuse, tissu nerveux, cerveau, système nerveux, humain", "les niveaux sont cellule, tissu, organe, système et organisme", "le système nerveux détecte une baisse de glucose et produit la sensation de faim", "le cerveau, un organe, coordonne cette réponse qui pousse l'humain à manger"],
+      "<b>Réponse modèle :</b> (a) Du plus petit au plus grand : la cellule nerveuse (niveau de la cellule), le tissu nerveux (niveau du tissu), le cerveau (niveau de l'organe), le système nerveux (niveau du système) et l'humain (niveau de l'organisme). (b) Le système nerveux surveille l'état du corps : quand le glucose disponible baisse, ses signaux produisent la sensation de faim. Le cerveau, l'organe qui reçoit et coordonne ces signaux, organise la réponse de l'organisme, qui cherche de la nourriture et mange. Le glucose des aliments digérés passe ensuite dans le sang et atteint toutes les cellules, y compris la cellule nerveuse. Le système détecte le manque et l'organe coordonne la réponse : ensemble, ils gardent l'approvisionnement en glucose de la cellule.<br><br><b>Points d'attribution :</b> 1 point pour les cinq structures rangées dans l'ordre correct. 1 point pour le nom correct du niveau de chaque structure (cellule, tissu, organe, système, organisme). 1 point pour le rôle d'un premier niveau au-dessus de la cellule (le système nerveux détecte la baisse de glucose et signale la faim). 1 point pour le rôle d'un deuxième niveau (le cerveau, organe, coordonne la réponse qui amène l'organisme à manger, donc le glucose atteint la cellule).",
+      {});
+  },
+  function () {
+    return textq("Voici cinq structures dans le désordre : racine, plante, cellule de poil racinaire, système racinaire, tissu racinaire. (a) Range ces cinq structures selon les niveaux d'organisation, du plus petit au plus grand, en nommant le niveau de chacune. (2 points) (b) Une cellule de poil racinaire a besoin d'oxygène pour vivre. Explique comment ce besoin est satisfait grâce à la coopération de deux niveaux d'organisation au-dessus de la cellule, en utilisant les structures de la liste. (2 points) (4 points)",
+      ["cellule de poil racinaire, tissu racinaire, racine, système racinaire, plante", "les niveaux sont cellule, tissu, organe, système et organisme", "la racine, un organe, expose une grande surface de poils racinaires à l'air du sol", "le système racinaire étale les racines dans tout le volume de sol aéré"],
+      "<b>Réponse modèle :</b> (a) Du plus petit au plus grand : la cellule de poil racinaire (niveau de la cellule), le tissu racinaire (niveau du tissu), la racine (niveau de l'organe), le système racinaire (niveau du système) et la plante (niveau de l'organisme). (b) Les cellules des racines respirent avec l'oxygène de l'air qui se trouve entre les particules du sol. La racine, en tant qu'organe, porte des milliers de poils racinaires qui offrent une très grande surface de contact avec cet air du sol, donc l'oxygène peut atteindre chaque cellule. Le système racinaire entier étale les racines dans tout le volume du sol autour de la plante, ce qui multiplie les endroits où l'oxygène du sol est accessible. L'organe fournit la surface d'échange et le système étend cette surface à tout le sol exploré.<br><br><b>Points d'attribution :</b> 1 point pour les cinq structures rangées dans l'ordre correct. 1 point pour le nom correct du niveau de chaque structure (cellule, tissu, organe, système, organisme). 1 point pour le rôle d'un premier niveau au-dessus de la cellule (la racine, organe, expose une grande surface de poils racinaires à l'air du sol). 1 point pour le rôle d'un deuxième niveau (le système racinaire étale les racines dans le sol aéré, multipliant l'accès à l'oxygène).",
+      {});
+  }
+]), ["Pour la partie (a), commence par la structure qui est une seule cellule et monte d'un niveau à la fois.", "Pour la partie (b), choisis deux niveaux au-dessus de la cellule et donne à chacun un travail précis dans la réponse au besoin."]);
+
+E("s8f-u4-cr-systemes-reponse", 4, ["SC8.10.6", "SC8.10.7"], 2, "var", varset([
+  function () {
+    return textq("Juste après le dîner, un élève monte des escaliers en courant. Explique le rôle coordonné de chacun de ces trois systèmes dans cet épisode : le système digestif, le système circulatoire et le système respiratoire (1 point par système). Puis explique ce qui irait mal si l'un de ces systèmes ne répondait pas. (1 point) (4 points)",
+      ["le système digestif décompose le repas et absorbe le glucose", "le système circulatoire transporte le glucose et l'oxygène aux muscles des jambes", "le système respiratoire augmente l'apport d'oxygène et élimine le dioxyde de carbone produit en plus", "si le système respiratoire ne suivait pas, le dioxyde de carbone s'accumulerait et les muscles se fatigueraient vite"],
+      "<b>Réponse modèle :</b> Le système digestif décompose le repas qui vient d'être mangé et absorbe les nutriments, dont le glucose, dans le sang. Le système circulatoire transporte ce glucose, avec l'oxygène, jusqu'aux muscles des jambes qui travaillent fort dans les escaliers, et il emporte leurs déchets. Le système respiratoire augmente le rythme et la profondeur de la respiration : il fait entrer l'oxygène supplémentaire dont les muscles ont besoin et élimine le dioxyde de carbone qu'ils produisent en plus grande quantité. Si le système respiratoire ne répondait pas, l'oxygène manquerait aux muscles pendant que le dioxyde de carbone s'accumulerait : l'élève serait vite essoufflé, ses muscles se fatigueraient et il devrait s'arrêter, même si les deux autres systèmes travaillaient bien.<br><br><b>Points d'attribution :</b> 1 point pour le rôle du système digestif (décomposer le repas et absorber les nutriments comme le glucose). 1 point pour le rôle du système circulatoire (transporter le glucose et l'oxygène aux muscles et emporter les déchets). 1 point pour le rôle du système respiratoire (augmenter l'apport d'oxygène et l'élimination du dioxyde de carbone). 1 point pour une conséquence correcte si un système nommé ne répond pas (par exemple un manque d'oxygène et une fatigue rapide si le système respiratoire ne suit pas).",
+      {});
+  },
+  function () {
+    return textq("Un élève touche une poêle chaude et retire sa main aussitôt. Explique le rôle coordonné de chacun de ces trois systèmes dans cet épisode : le système nerveux, le système musculaire et le système circulatoire (1 point par système). Puis explique ce qui irait mal si l'un de ces systèmes ne répondait pas. (1 point) (4 points)",
+      ["le système nerveux détecte la chaleur et envoie le signal de retirer la main", "le système musculaire contracte les muscles du bras et retire la main", "le système circulatoire apporte le sang au tissu touché pour amorcer la réparation", "si le système nerveux ne répondait pas, la main resterait sur la poêle et la brûlure serait grave"],
+      "<b>Réponse modèle :</b> Le système nerveux détecte la chaleur excessive par les récepteurs de la peau et envoie aussitôt des signaux aux muscles du bras, avant même que l'élève décide de bouger. Le système musculaire répond à ces signaux : les muscles du bras se contractent et retirent la main de la poêle en une fraction de seconde. Le système circulatoire augmente l'apport de sang au tissu touché, ce qui amène l'oxygène et les nutriments nécessaires au début de la réparation et contribue au rougissement de la peau. Si le système nerveux ne répondait pas, aucun signal n'ordonnerait le retrait : la main resterait sur la poêle plus longtemps et la brûlure serait beaucoup plus grave.<br><br><b>Points d'attribution :</b> 1 point pour le rôle du système nerveux (détecter la chaleur et signaler aux muscles). 1 point pour le rôle du système musculaire (contracter les muscles qui retirent la main). 1 point pour le rôle du système circulatoire (augmenter l'apport de sang au tissu touché pour la réparation). 1 point pour une conséquence correcte si un système nommé ne répond pas (par exemple une brûlure plus grave si le système nerveux ne signale pas le retrait).",
+      {});
+  },
+  function () {
+    return textq("Une joueuse dispute un match de soccer complet sous une forte chaleur. Explique le rôle coordonné de chacun de ces trois systèmes dans cet épisode : le système musculaire, le système circulatoire et le système respiratoire (1 point par système). Puis explique ce qui irait mal si l'un de ces systèmes ne répondait pas. (1 point) (4 points)",
+      ["le système musculaire produit le mouvement de la course et produit aussi de la chaleur", "le système circulatoire transporte l'oxygène aux muscles et dirige le sang vers la peau pour libérer la chaleur", "le système respiratoire augmente l'apport d'oxygène et élimine le dioxyde de carbone", "si le système circulatoire ne pouvait pas refroidir le corps, la température interne monterait dangereusement"],
+      "<b>Réponse modèle :</b> Le système musculaire produit les mouvements de la course pendant tout le match, et ce travail produit aussi beaucoup de chaleur dans le corps. Le système circulatoire transporte l'oxygène et le glucose aux muscles qui travaillent, et il dirige en même temps plus de sang vers la peau pour y libérer la chaleur produite. Le système respiratoire augmente le rythme de la respiration : il fait entrer l'oxygène supplémentaire que les muscles demandent et élimine le dioxyde de carbone produit en plus grande quantité. Si le système circulatoire ne répondait pas assez, le sang ne pourrait ni nourrir les muscles ni évacuer la chaleur vers la peau : la température interne de la joueuse monterait dangereusement, jusqu'au coup de chaleur, même si elle continuait de respirer fort.<br><br><b>Points d'attribution :</b> 1 point pour le rôle du système musculaire (produire le mouvement de la course et la chaleur qui l'accompagne). 1 point pour le rôle du système circulatoire (transporter l'oxygène et le glucose aux muscles et diriger le sang vers la peau pour libérer la chaleur). 1 point pour le rôle du système respiratoire (augmenter l'apport d'oxygène et l'élimination du dioxyde de carbone). 1 point pour une conséquence correcte si un système nommé ne répond pas (par exemple une température interne qui monte dangereusement si le système circulatoire ne refroidit pas le corps).",
+      {});
+  },
+  function () {
+    return textq("Un élève se remet d'une maladie d'estomac qui l'a empêché de garder la nourriture et l'eau pendant deux jours. Explique le rôle coordonné de chacun de ces trois systèmes dans sa récupération : le système digestif, le système circulatoire et le système nerveux (1 point par système). Puis explique ce qui irait mal si l'un de ces systèmes ne répondait pas. (1 point) (4 points)",
+      ["le système digestif recommence à décomposer les aliments et à absorber l'eau et les nutriments", "le système circulatoire distribue l'eau et les nutriments récupérés à toutes les cellules", "le système nerveux coordonne la faim et la soif qui poussent l'élève à manger et à boire", "si le système digestif n'absorbait pas l'eau de nouveau, la déshydratation continuerait"],
+      "<b>Réponse modèle :</b> Le système digestif recommence son travail normal : il décompose les aliments et, surtout après cette maladie, il absorbe de nouveau l'eau et les nutriments au lieu de les perdre. Le système circulatoire distribue cette eau et ces nutriments à toutes les cellules du corps, qui en ont manqué pendant deux jours, et il transporte les déchets vers les organes qui les éliminent. Le système nerveux coordonne la récupération : il produit les sensations de faim et de soif qui poussent l'élève à manger et à boire, et il surveille l'état du corps pendant que les réserves se refont. Si le système digestif ne répondait pas et n'absorbait pas l'eau de nouveau, l'élève continuerait de se déshydrater malgré ce qu'il boit, et la récupération serait impossible.<br><br><b>Points d'attribution :</b> 1 point pour le rôle du système digestif (décomposer les aliments et absorber de nouveau l'eau et les nutriments). 1 point pour le rôle du système circulatoire (distribuer l'eau et les nutriments aux cellules et transporter les déchets). 1 point pour le rôle du système nerveux (coordonner la faim et la soif et surveiller la récupération). 1 point pour une conséquence correcte si un système nommé ne répond pas (par exemple une déshydratation qui continue si le système digestif n'absorbe pas l'eau).",
+      {});
+  }
+]), ["Traite les trois systèmes un par un, avec le travail précis de chacun dans cet épisode.", "Pour le dernier point, choisis un système et suis la conséquence de son silence jusqu'au bout."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+
+/* ---------- SC8.10.1, SC8.10.5 et SC8.10.6 : cellule vivante, besoins et facteurs ---------- */
+
+E("s8f-u4-cr-cellule-vivante", 4, ["SC8.10.1"], 2, "var", varset([
+  function () {
+    return textq("Une amibe est un organisme formé d'une seule cellule, qui vit librement dans l'eau d'un étang : elle se déplace vers sa nourriture, la capture, grandit, puis se divise en deux amibes. Explique comment cette unique cellule montre qu'elle est un système vivant complet, qui affiche les caractéristiques de la vie. (2 points)",
+      ["l'amibe se déplace et répond à la présence de nourriture dans son milieu", "elle prend des nutriments et élimine ses déchets par sa membrane", "elle croît et se reproduit en se divisant en deux cellules", "elle accomplit seule toutes ces activités, sans faire partie d'un plus grand organisme"],
+      "<b>Réponse modèle:</b> L'amibe n'est pas un fragment d'être vivant : sa seule cellule accomplit tout ce qui définit la vie. Elle se déplace vers sa nourriture et y répond, ce qui montre le mouvement et la réponse aux stimuli. Elle prend des nutriments et de l'oxygène et élimine ses déchets à travers sa membrane, donc elle satisfait seule les besoins de base d'une cellule. Elle grandit, puis se divise en deux amibes, ce qui est la reproduction. Comme elle affiche les caractéristiques de la vie par elle-même, cette cellule unique est un organisme vivant complet.<br><br><b>Points d'attribution:</b> 1 point pour au moins trois caractéristiques de la vie correctement appliquées à l'amibe (par exemple le mouvement et la réponse vers la nourriture, la croissance, et la reproduction par division). 1 point pour la conclusion complète (la cellule satisfait seule ses besoins de base, nutriments et élimination des déchets, et forme à elle seule un système vivant, pas seulement une partie d'un organisme).",
+      {});
+  },
+  function () {
+    return textq("Une cellule de levure placée dans une pâte sucrée se nourrit du sucre, dégage des bulles de gaz, grandit et produit de nouvelles cellules par bourgeonnement, jusqu'à faire lever toute la pâte. Explique comment cette unique cellule montre qu'elle est un système vivant complet, qui affiche les caractéristiques de la vie. (2 points)",
+      ["la levure prend le sucre comme nutriment et dégage des déchets gazeux", "elle croît dans la pâte tiède et humide", "elle se reproduit en produisant de nouvelles cellules par bourgeonnement", "elle accomplit seule toutes ces activités, sans faire partie d'un plus grand organisme"],
+      "<b>Réponse modèle:</b> La cellule de levure accomplit à elle seule les activités d'un être vivant. Elle prend des nutriments, le sucre de la pâte, et élimine des déchets, le gaz qui forme les bulles : elle satisfait donc seule les besoins de base d'une cellule. Elle grandit dans la pâte, ce qui est la croissance, et elle produit de nouvelles cellules par bourgeonnement, ce qui est la reproduction; elle répond aussi à son milieu, car elle cesse ces activités dans une pâte froide ou sans sucre. Cette cellule unique est donc un système vivant complet, un organisme à part entière, et non la simple partie d'un organisme plus grand.<br><br><b>Points d'attribution:</b> 1 point pour au moins trois caractéristiques ou activités de la vie correctement appliquées à la levure (par exemple se nourrir du sucre et dégager des déchets, croître, et se reproduire par bourgeonnement). 1 point pour la conclusion complète (la cellule satisfait seule ses besoins de base et forme à elle seule un système vivant, pas seulement une partie d'un organisme).",
+      {});
+  },
+  function () {
+    return textq("Dans une goutte d'eau de mare, une algue microscopique formée d'une seule cellule capte la lumière, fabrique sa nourriture, se déplace vers la lumière et, après avoir grandi, se divise en deux algues. Explique comment cette unique cellule montre qu'elle est un système vivant complet, qui affiche les caractéristiques de la vie. (2 points)",
+      ["l'algue se déplace vers la lumière et y répond", "elle fabrique sa nourriture et satisfait seule ses besoins de base", "elle croît puis se divise en deux cellules, ce qui est la reproduction", "elle accomplit seule toutes ces activités, sans faire partie d'un plus grand organisme"],
+      "<b>Réponse modèle:</b> Cette algue d'une seule cellule affiche les caractéristiques de la vie sans l'aide d'aucune autre cellule. Elle se déplace vers la lumière et y répond, ce qui montre le mouvement et la réponse aux stimuli. Elle fabrique sa nourriture à la lumière et échange ce dont elle a besoin avec l'eau de la goutte, nutriments contre déchets, donc elle satisfait seule les besoins de base d'une cellule. Elle grandit, puis se divise en deux algues, ce qui est la reproduction. Sa seule cellule est donc un système vivant complet : un organisme entier tient dans cette unique cellule.<br><br><b>Points d'attribution:</b> 1 point pour au moins trois caractéristiques de la vie correctement appliquées à l'algue (par exemple le mouvement et la réponse vers la lumière, la croissance, et la reproduction par division). 1 point pour la conclusion complète (la cellule satisfait seule ses besoins de base, nourriture, échanges et élimination des déchets, et forme à elle seule un système vivant, pas seulement une partie d'un organisme).",
+      {});
+  }
+]), ["Une seule cellule suffit-elle à la vie? Cherche les caractéristiques une à une.", "Nomme les caractéristiques, puis montre que la cellule satisfait seule ses besoins de base."]);
+
+E("s8f-u4-besoins-cellules", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("Après un repas, une cellule du cerveau reçoit du glucose qui ne se trouvait pas dans le cerveau une heure plus tôt. Quel énoncé explique le mieux le lien entre le besoin de cette cellule et le fonctionnement de l'organisme entier?",
+      "La cellule partage les besoins de l'organisme entier : le système digestif a décomposé les aliments du repas, et le système circulatoire a transporté le glucose absorbé jusqu'à cette cellule du cerveau",
+      ["La cellule produit ses besoins elle-même, indépendamment de l'organisme : elle a fabriqué son glucose sur place à partir de l'air respiré, et le repas mangé une heure plus tôt n'a joué aucun rôle pour elle",
+       "La cellule reçoit ses besoins directement du milieu extérieur : le glucose du repas est passé de la bouche au cerveau par les nerfs, sans que le sang ni la digestion aient eu à intervenir dans ce trajet",
+       "La cellule attend que l'organisme entier ait fini de digérer : le glucose reste emmagasiné dans l'estomac pendant des heures, puis il est libéré d'un seul coup vers toutes les cellules en même temps le soir"],
+      "Les besoins d'une cellule et ceux de l'organisme sont les mêmes, à deux échelles. La cellule du cerveau a besoin de nutriments comme tout l'organisme; elle ne peut pas les obtenir seule, donc les systèmes de l'organisme travaillent pour elle : le digestif décompose et absorbe, le circulatoire transporte et livre jusqu'à la cellule.",
+      {});
+  },
+  function () {
+    return mcq("Par une journée chaude, un coureur qui n'a presque rien bu sent la soif, sa bouche devient sèche et tout son corps se fatigue. Quel énoncé explique le mieux le lien entre cette sensation et les besoins de ses cellules?",
+      "Chaque cellule du coureur a besoin d'eau comme l'organisme entier : quand l'eau manque, les cellules fonctionnent moins bien partout, et la soif est le signal de l'organisme qui pousse à rétablir l'apport d'eau",
+      ["Seules les cellules de la bouche ont besoin d'eau dans le corps : quand elles s'assèchent, elles envoient la sensation de soif, tandis que les autres cellules du coureur continuent sans eau indéfiniment",
+       "La soif vient uniquement de la chaleur sur la peau du coureur : ses cellules contiennent encore toute leur eau, mais la peau chaude trompe le cerveau, qui produit une sensation de soif sans aucun manque réel",
+       "Les cellules du coureur fabriquent leur propre eau quand il court : la fatigue vient seulement de la chaleur accumulée, et boire ne sert qu'à rafraîchir la bouche sans rien changer au travail des cellules"],
+      "L'eau est un besoin de base de chaque cellule, pas seulement de l'organisme vu de l'extérieur. Quand l'apport d'eau baisse, c'est le fonctionnement des cellules partout dans le corps qui ralentit, d'où la fatigue générale. La soif est la réponse de l'organisme entier au manque ressenti à l'échelle de ses cellules.",
+      {});
+  },
+  function () {
+    return mcq("Les cellules des reins filtrent le sang jour et nuit et en retirent les déchets, que l'organisme élimine ensuite dans l'urine. Quel énoncé décrit le mieux le lien entre le travail de ces cellules et l'organisme entier?",
+      "Le besoin d'élimination des déchets appartient à chaque cellule : les cellules des reins accomplissent ce travail pour toutes les autres cellules, dont les déchets, transportés par le sang, seraient sinon restés dans tout le corps",
+      ["Le besoin d'élimination des déchets appartient seulement aux reins : les autres cellules du corps ne produisent aucun déchet, donc le travail des cellules des reins ne concerne que les reins eux-mêmes et leur propre survie",
+       "Chaque cellule élimine ses déchets directement vers l'extérieur du corps : les cellules des reins ne font que surveiller ce travail, et le sang ne transporte jamais de déchets d'une partie du corps vers une autre partie",
+       "Les déchets des cellules sont emmagasinés pour toujours dans le sang : les cellules des reins se contentent de les compter, et l'urine produite par l'organisme ne contient que l'eau bue en trop pendant la journée entière"],
+      "L'élimination des déchets est un des besoins de base partagés par les cellules et l'organisme. Chaque cellule produit des déchets, le sang les transporte, et les cellules spécialisées des reins font pour l'organisme entier le travail d'élimination : si elles s'arrêtaient, les déchets de toutes les cellules s'accumuleraient partout.",
+      {});
+  },
+  function () {
+    return mcq("Pendant un entraînement intense, les cellules musculaires d'une joueuse consomment beaucoup plus d'oxygène et de nutriments qu'au repos, et produisent beaucoup plus de déchets. Quel énoncé explique le mieux la réponse de son organisme entier?",
+      "L'organisme entier répond aux besoins accrus de ces cellules : la respiration et le battement du coeur accélèrent pour livrer davantage d'oxygène et de nutriments aux muscles et en emporter les déchets plus vite qu'au repos",
+      ["L'organisme entier ignore les besoins changeants de ses cellules : la respiration et le battement du coeur restent exactement au rythme du repos, et les cellules musculaires se débrouillent seules avec leurs réserves locales",
+       "Les cellules musculaires répondent seules à leurs besoins accrus : elles ouvrent des passages directs vers l'air extérieur à travers la peau, ce qui leur apporte l'oxygène sans que les poumons ni le coeur participent davantage",
+       "L'organisme entier répond en arrêtant les autres cellules du corps : le cerveau, les reins et l'intestin cessent tout travail pendant l'entraînement, afin que toute l'énergie économisée passe aux seuls muscles des jambes"],
+      "Les besoins des cellules commandent le fonctionnement de l'organisme. Quand les cellules musculaires demandent plus, les systèmes respiratoire et circulatoire de l'organisme entier augmentent leur travail pour livrer l'oxygène et les nutriments et emporter les déchets : le lien entre l'échelle de la cellule et celle de l'organisme est direct.",
+      {});
+  }
+]), ["Les besoins sont les mêmes aux deux échelles : oxygène, nutriments, eau, élimination des déchets.", "Cherche quel système de l'organisme fait, pour la cellule, ce qu'elle ne peut pas faire seule."]);
+
+E("s8f-u4-systemes-facteurs", 4, ["SC8.10.6"], 2, "var", varset([
+  function () {
+    return mcq("Un élève dort à peine cinq heures par nuit pendant une semaine. En classe, sa concentration baisse et ses temps de réaction aux consignes ralentissent nettement. Quel système est le plus directement touché par ce facteur, et comment?",
+      "Le système nerveux : le manque de sommeil réduit l'efficacité du cerveau, qui traite l'information et coordonne les réponses plus lentement et avec plus d'erreurs qu'après un sommeil suffisant",
+      ["Le système digestif : le manque de sommeil empêche l'estomac de décomposer les aliments du déjeuner, donc aucun nutriment n'atteint le cerveau de l'élève pendant toute la semaine de classe observée",
+       "Le système circulatoire : le manque de sommeil arrête presque la circulation du sang vers le cerveau, donc les cellules du cerveau cessent complètement de recevoir de l'oxygène pendant la journée",
+       "Le système musculaire : le manque de sommeil dissout peu à peu les muscles des yeux de l'élève, donc ses yeux ne peuvent plus suivre les consignes écrites au tableau pendant les cours de la semaine"],
+      "Le sommeil est un facteur fondamental pour le système nerveux. Sans sommeil suffisant, le cerveau, qui coordonne la concentration, la mémoire et les réactions, fonctionne moins efficacement : l'information est traitée plus lentement et les erreurs augmentent, sans que les autres systèmes soient la cause première.",
+      {});
+  },
+  function () {
+    return mcq("Un randonneur boit très peu pendant une longue marche au soleil. Son sang devient plus épais, son coeur bat plus vite au moindre effort et il se sent étourdi. Quel système est le plus directement touché par ce facteur, et comment?",
+      "Le système circulatoire : avec moins d'eau dans le sang, le volume à transporter diminue et le sang s'épaissit, donc le coeur doit travailler plus fort pour livrer l'oxygène aux cellules au même rythme",
+      ["Le système respiratoire : avec moins d'eau bue pendant la marche, les poumons du randonneur cessent d'échanger l'oxygène et le dioxyde de carbone, donc l'air inspiré ressort sans aucun échange gazeux",
+       "Le système nerveux : avec moins d'eau dans le corps du randonneur, les nerfs cessent de transmettre tout signal entre le cerveau et les muscles, donc ses jambes ne reçoivent plus aucun ordre de marche",
+       "Le système digestif : avec moins d'eau bue pendant la marche, l'estomac du randonneur transforme les aliments en pierres, donc aucun nutriment ne peut plus être absorbé par son intestin pendant des jours"],
+      "L'eau fait partie du sang : la déshydratation réduit le volume sanguin et épaissit le sang. Le système circulatoire devient moins efficace, le coeur compense en battant plus vite, et la livraison d'oxygène aux cellules souffre, d'où les étourdissements à l'effort.",
+      {});
+  },
+  function () {
+    return mcq("Une personne mange rarement des légumes, des fruits ou des grains entiers, donc très peu de fibres. Avec le temps, son transit intestinal ralentit et elle souffre souvent de constipation. Quel système est le plus directement touché par ce facteur, et comment?",
+      "Le système digestif : les fibres aident les aliments à progresser dans l'intestin; sans elles, le travail de l'intestin ralentit et l'élimination des résidus devient difficile et moins régulière qu'avant",
+      ["Le système excréteur : les fibres sont le seul carburant des reins, donc sans elles les reins cessent de filtrer le sang et les déchets s'accumulent dans tout le corps de la personne en quelques jours seulement",
+       "Le système circulatoire : les fibres servent à construire les globules rouges du sang, donc sans elles le sang ne transporte plus d'oxygène du tout et la personne s'évanouit chaque fois qu'elle se lève le matin",
+       "Le système respiratoire : les fibres absorbent l'air dans les poumons pendant la digestion, donc sans elles les poumons reçoivent moins d'air et la personne respire de plus en plus difficilement avec le temps"],
+      "L'alimentation est un facteur fondamental du système digestif. Les fibres donnent du volume au contenu de l'intestin et favorisent sa progression; une alimentation pauvre en fibres rend le système digestif moins efficace, avec un transit ralenti et une élimination irrégulière.",
+      {});
+  },
+  function () {
+    return mcq("Chez une personne asthmatique, la poussière et le pollen peuvent faire se resserrer les petites voies respiratoires des poumons pendant quelques heures. Comment ce facteur touche-t-il son système respiratoire?",
+      "Les voies resserrées laissent passer moins d'air à chaque respiration, donc les échanges d'oxygène et de dioxyde de carbone deviennent moins efficaces et l'effort physique devient vite essoufflant",
+      ["Les voies resserrées laissent passer plus d'air à chaque respiration, donc les échanges gazeux deviennent plus efficaces qu'à l'habitude et la personne peut courir plus longtemps sans aucun essoufflement",
+       "Les voies resserrées transforment les poumons en organes de filtration du sang, donc le système respiratoire remplace les reins pendant quelques heures et élimine les déchets par l'air expiré à chaque souffle",
+       "Les voies resserrées n'ont aucun effet sur les échanges gazeux des poumons, donc la personne asthmatique respire exactement comme d'habitude et seul son sens de l'odorat est touché pendant ces quelques heures"],
+      "L'efficacité du système respiratoire dépend du passage de l'air jusqu'aux surfaces d'échange. Des voies respiratoires resserrées par un facteur comme la poussière ou le pollen réduisent le débit d'air : moins d'oxygène entre et moins de dioxyde de carbone sort par unité de temps, d'où l'essoufflement à l'effort.",
+      {});
+  },
+  function () {
+    return mcq("Une nageuse s'entraîne régulièrement plusieurs fois par semaine pendant une saison entière. À la fin de la saison, elle récupère beaucoup plus vite après un effort intense. Quel système a gagné en efficacité, et comment?",
+      "Le système respiratoire : l'entraînement régulier renforce les muscles de la respiration et améliore les échanges gazeux, donc l'oxygène entre et le dioxyde de carbone sort plus efficacement pendant et après l'effort",
+      ["Le système respiratoire : l'entraînement régulier remplace peu à peu les poumons par des muscles plus forts, donc la nageuse respire directement avec sa cage thoracique sans que ses poumons participent aux échanges",
+       "Le système digestif : l'entraînement régulier de la natation accélère la digestion des repas, donc la nageuse récupère plus vite parce que ses aliments se transforment instantanément en énergie dès qu'elle les avale",
+       "Le système excréteur : l'entraînement régulier rend la peau capable d'éliminer tout le dioxyde de carbone du corps, donc les poumons de la nageuse n'ont presque plus aucun échange gazeux à faire après la saison"],
+      "Les facteurs peuvent aussi améliorer un système. L'exercice régulier renforce les muscles respiratoires et rend les échanges gazeux plus efficaces : le système respiratoire répond plus vite à la demande d'oxygène de l'effort et rétablit plus vite l'équilibre après l'effort, d'où la récupération raccourcie.",
+      {});
+  }
+]), ["Nomme le système sur lequel le facteur agit d'abord, avant de juger les autres.", "Efficacité veut dire : le système accomplit son travail mieux, moins bien, ou au prix d'un effort accru."]);
+
+E("s8f-u4-systemes-efficacite", 4, ["SC8.10.6"], 3, "var", varset([
+  function () {
+    return mcq("Après une maladie, le coeur d'une personne pompe le sang moins efficacement qu'avant : à chaque battement, il en envoie moins dans le corps. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Tout le corps en souffre : les muscles et le cerveau reçoivent moins d'oxygène et de nutriments par minute, donc la fatigue et l'essoufflement arrivent vite à l'effort, même si les poumons et les muscles eux-mêmes sont sains",
+      ["Seul le coeur en souffre : les muscles et le cerveau reçoivent exactement autant d'oxygène et de nutriments qu'avant, parce que le sang restant dans les vaisseaux se déplace tout seul sans avoir besoin d'être pompé",
+       "Tout le corps en profite : les muscles et le cerveau reçoivent le sang plus lentement, ce qui leur laisse plus de temps pour en extraire l'oxygène, donc l'endurance de la personne augmente nettement après sa maladie",
+       "Rien ne change pour le corps : les poumons ajoutent tellement d'oxygène supplémentaire au sang que la quantité livrée aux cellules reste identique, quelle que soit la force avec laquelle le coeur pompe le sang"],
+      "Le système circulatoire est le transporteur de tous les autres systèmes. S'il perd en efficacité, chaque cellule reçoit moins d'oxygène et de nutriments et se débarrasse plus lentement de ses déchets : l'effet est donc pour le corps entier, fatigue et essoufflement à l'effort, même avec des poumons et des muscles en bon état.",
+      {});
+  },
+  function () {
+    return mcq("Une infection laisse les voies respiratoires d'un élève enflées pendant des semaines, et ses échanges gazeux sont nettement moins efficaces qu'avant. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Le sang transporte moins d'oxygène vers toutes les cellules, donc l'élève se fatigue vite en éducation physique et peut même peiner à se concentrer en classe, bien que son coeur et ses muscles soient en bon état",
+      ["Seuls les poumons en souffrent : le sang transporte exactement autant d'oxygène qu'avant vers les cellules, parce que le coeur pompe plus fort et fabrique lui-même l'oxygène qui manque aux échanges gazeux affaiblis",
+       "Le corps entier en profite : avec moins d'oxygène chargé dans les poumons, les cellules ralentissent leur travail et économisent leur énergie, donc l'élève devient plus endurant qu'avant son infection des voies respiratoires",
+       "Rien ne change pour le corps : le système digestif absorbe l'oxygène des aliments à la place des poumons pendant ces semaines, donc les cellules reçoivent leur oxygène habituel par la nourriture comme toujours"],
+      "Les systèmes sont interdépendants : le circulatoire ne peut livrer que l'oxygène que le respiratoire a chargé. Des échanges gazeux moins efficaces signifient un sang moins oxygéné pour toutes les cellules, d'où une fatigue rapide à l'effort et une concentration réduite, malgré un coeur et des muscles sains.",
+      {});
+  },
+  function () {
+    return mcq("Un trouble intestinal réduit fortement la capacité d'une personne à absorber les nutriments de ses aliments, même si elle mange des repas complets et équilibrés. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Toutes les cellules reçoivent moins de nutriments que les repas devraient fournir, donc l'énergie baisse, la croissance et la réparation des tissus ralentissent, et la personne perd du poids malgré une alimentation suffisante",
+      ["Seul l'intestin en souffre : les cellules du reste du corps reçoivent exactement les nutriments des repas, parce que les aliments traversent la paroi intestinale d'eux-mêmes sans qu'aucune absorption organisée soit nécessaire",
+       "Le corps entier en profite : les nutriments non absorbés restent plus longtemps dans l'intestin, qui les distribue ensuite lentement aux cellules pendant des semaines, ce qui rend la personne plus énergique qu'avant son trouble",
+       "Rien ne change pour le corps : les poumons absorbent les nutriments manquants à partir de l'air respiré, donc les cellules reçoivent par la respiration tout ce que l'intestin affaibli ne réussit plus à absorber des aliments"],
+      "Manger ne suffit pas : encore faut-il absorber. Si le système digestif perd en efficacité, le sang a moins de nutriments à livrer, et chaque cellule du corps en reçoit moins. L'effet dépasse donc largement l'intestin : énergie, croissance, réparation et poids en témoignent, malgré des repas complets.",
+      {});
+  },
+  function () {
+    return mcq("Les reins d'une personne âgée filtrent le sang de moins en moins efficacement, et les déchets que ses cellules produisent s'éliminent de plus en plus lentement. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Les déchets s'accumulent peu à peu dans le sang et atteignent toutes les cellules, donc la personne se sent fatiguée et malade dans tout son corps, bien que le problème de départ se limite à un seul système d'élimination",
+      ["Seuls les reins en souffrent : les déchets produits par les autres cellules restent enfermés dans les reins eux-mêmes, donc le reste du corps continue de fonctionner exactement comme avant, sans fatigue ni malaise général",
+       "Le corps entier en profite : les déchets accumulés dans le sang servent de réserve de matériaux pour les cellules, qui les réutilisent pour construire de nouvelles structures, ce qui rend la personne plus forte avec le temps",
+       "Rien ne change pour le corps : la peau et les poumons éliminent instantanément tous les déchets que les reins affaiblis laissent passer, donc le sang reste toujours aussi propre qu'avec des reins en parfait état de marche"],
+      "Le système excréteur sert toutes les cellules : leurs déchets voyagent par le sang jusqu'aux reins. Si la filtration perd en efficacité, ces déchets restent dans le sang et rejoignent chaque cellule du corps. Un seul système affaibli produit donc un malaise général, preuve que l'efficacité d'un système soutient celle de l'organisme entier.",
+      {});
+  }
+]), ["Suis ce que le système affaibli livre ou retire : qui d'autre en dépend?", "Un système moins efficace ne reste presque jamais un problème local : le sang relie toutes les cellules."]);

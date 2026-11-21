@@ -1,3 +1,4 @@
+// CRMARKS: s8f-u3-cr-refraction-expliquer=3
 // CRMARKS: s8f-u3-cr-properties=3
 // CRMARKS: s8f-u3-cr-em=3
 // CRMARKS: s8f-u3-cr-reflection=3
@@ -13,6 +14,104 @@
 // CRMARKS: s8f-u3-cr-estimate=3
 // CRMARKS: s8f-u3-cr-predict=3
 // CRMARKS: s8f-u3-cr-identify-medium=3
+// CRMARKS: s8f-u3-cr-em-usages=4
+// CRMARKS: s8f-u3-cr-image-miroir=4
+// CRMARKS: s8f-u3-cr-refraction-bol=4
+// CRMARKS: s8f-u3-cr-reflexion-quotidien=2
+// CRMARKS: s8f-u3-cr-refraction-paille=3
+// CRMARKS: s8f-u3-cr-refraction-lumiere=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s8f-u3-properties=2
+// CRMARKS: s8f-u3-materials=2
+// CRMARKS: s8f-u3-spectrum-order=2
+// CRMARKS: s8f-u3-vacuum=2
+// CRMARKS: s8f-u3-colour-seen=3
+// CRMARKS: s8f-u3-em-order=2
+// CRMARKS: s8f-u3-em-compare=3
+// CRMARKS: s8f-u3-em-energy=2
+// CRMARKS: s8f-u3-em-detection=3
+// CRMARKS: s8f-u3-law=2
+// CRMARKS: s8f-u3-angle-calc=2
+// CRMARKS: s8f-u3-mirror-types=2
+// CRMARKS: s8f-u3-plane-spot=2
+// CRMARKS: s8f-u3-lateral=3
+// CRMARKS: s8f-u3-vision=2
+// CRMARKS: s8f-u3-history=2
+// CRMARKS: s8f-u3-early-tech=2
+// CRMARKS: s8f-u3-freq-relation=3
+// CRMARKS: s8f-u3-harm-energy=2
+// CRMARKS: s8f-u3-personal-optics=2
+// CRMARKS: s8f-u3-individual-group=2
+// CRMARKS: s8f-u3-corning-siemens=3
+// CRMARKS: s8f-u3-applications-question=3
+// CRMARKS: s8f-u3-definitions=2
+// CRMARKS: s8f-u3-definitions-figure=3
+// CRMARKS: s8f-u3-concave-spot=2
+// CRMARKS: s8f-u3-convex-spot=2
+// CRMARKS: s8f-u3-real-virtual=2
+// CRMARKS: s8f-u3-delimit=3
+// CRMARKS: s8f-u3-estimate-reflect=2
+// CRMARKS: s8f-u3-estimate-incidence=2
+// CRMARKS: s8f-u3-mirror-key=2
+// CRMARKS: s8f-u3-mirror-key-apply=3
+// CRMARKS: s8f-u3-protractor=2
+// CRMARKS: s8f-u3-safety=2
+// CRMARKS: s8f-u3-fish-question=3
+// CRMARKS: s8f-u3-coin-question=2
+// CRMARKS: s8f-u3-estimate-bend=2
+// CRMARKS: s8f-u3-estimate-compare=3
+// CRMARKS: s8f-u3-predict-media=3
+// CRMARKS: s8f-u3-lens-key=2
+// CRMARKS: s8f-u3-lens-key-apply=3
+// CRMARKS: s8f-u3-lens-key-evidence=4
+// CRMARKS: s8f-u3-focal-procedure=3
+// CRMARKS: s8f-u3-focal-judge=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s8f-u3-properties=a
+// BIMODAL: s8f-u3-materials=a
+// BIMODAL: s8f-u3-spectrum-order=a
+// BIMODAL: s8f-u3-vacuum=b
+// BIMODAL: s8f-u3-colour-seen=b
+// BIMODAL: s8f-u3-em-order=a
+// BIMODAL: s8f-u3-em-compare=a
+// BIMODAL: s8f-u3-em-energy=a
+// BIMODAL: s8f-u3-em-detection=b
+// BIMODAL: s8f-u3-law=b
+// BIMODAL: s8f-u3-angle-calc=a
+// BIMODAL: s8f-u3-mirror-types=b
+// BIMODAL: s8f-u3-plane-spot=a
+// BIMODAL: s8f-u3-lateral=b
+// BIMODAL: s8f-u3-vision=a
+// BIMODAL: s8f-u3-history=b
+// BIMODAL: s8f-u3-early-tech=b
+// BIMODAL: s8f-u3-freq-relation=b
+// BIMODAL: s8f-u3-harm-energy=a
+// BIMODAL: s8f-u3-personal-optics=b
+// BIMODAL: s8f-u3-individual-group=b
+// BIMODAL: s8f-u3-corning-siemens=b
+// BIMODAL: s8f-u3-applications-question=b
+// BIMODAL: s8f-u3-definitions=a
+// BIMODAL: s8f-u3-definitions-figure=b
+// BIMODAL: s8f-u3-concave-spot=a
+// BIMODAL: s8f-u3-convex-spot=a
+// BIMODAL: s8f-u3-real-virtual=b
+// BIMODAL: s8f-u3-delimit=b
+// BIMODAL: s8f-u3-estimate-reflect=a
+// BIMODAL: s8f-u3-estimate-incidence=a
+// BIMODAL: s8f-u3-mirror-key=b
+// BIMODAL: s8f-u3-mirror-key-apply=b
+// BIMODAL: s8f-u3-protractor=b
+// BIMODAL: s8f-u3-safety=b
+// BIMODAL: s8f-u3-fish-question=b
+// BIMODAL: s8f-u3-coin-question=b
+// BIMODAL: s8f-u3-estimate-bend=a
+// BIMODAL: s8f-u3-estimate-compare=b
+// BIMODAL: s8f-u3-predict-media=b
+// BIMODAL: s8f-u3-lens-key=b
+// BIMODAL: s8f-u3-lens-key-apply=b
+// BIMODAL: s8f-u3-lens-key-evidence=b
+// BIMODAL: s8f-u3-focal-procedure=b
+// BIMODAL: s8f-u3-focal-judge=b
 /* ============================================================
    Sciences 8 (FR) — Unité 3 : L'optique
    Banque construite le Nov 16, 2026. Indicateurs SC8.7.1 à
@@ -1146,3 +1245,480 @@ var NO_COMPOSE_U3 = {
   "s8f-u3-cr-design-refraction": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
+
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s8f-u3-cr-refraction-expliquer", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("Une paille plongée dans un verre d'eau semble brisée à la surface : la partie immergée paraît déplacée par rapport à la partie hors de l'eau. Explique cette apparence à l'aide de la réfraction : dis ce qui arrive à la lumière à la surface, pourquoi l'œil est trompé, et ce qui se passerait si le verre contenait de l'huile végétale, plus réfringente que l'eau. (3 points)",
+      ["La lumière ralentit en passant de l'eau à l'air et change de direction à la surface."],
+      "Points de notation (3) : 1 point pour le mécanisme (la lumière qui sort de l'eau change de vitesse et de direction à la surface : c'est la réfraction; en entrant dans l'air, elle s'écarte de la normale). 1 point pour l'illusion (l'œil suppose que la lumière voyage en ligne droite, donc il prolonge les rayons en ligne droite et voit la partie immergée à une position déplacée et moins profonde). 1 point pour la prédiction (dans l'huile, plus réfringente, la déviation serait plus forte et la paille paraîtrait encore plus déplacée). Réponse modèle : Les rayons venant de la paille immergée se réfractent à la surface; l'œil les prolonge tout droit et voit la paille ailleurs qu'elle n'est. <b>Dans l'huile, la réfraction plus forte accentuerait encore le déplacement apparent</b>.", {});
+  },
+  function () {
+    return textq("Un poisson vu du quai semble toujours plus près de la surface qu'il ne l'est vraiment, et les pêcheurs à la lance visent plus bas que le poisson aperçu. Explique les deux faits à l'aide de la réfraction : dis ce qui arrive à la lumière à la surface et pourquoi la position apparente diffère de la position réelle. (3 points)",
+      ["La lumière venant du poisson change de direction en passant de l'eau à l'air."],
+      "Points de notation (3) : 1 point pour le mécanisme (la lumière venant du poisson s'écarte de la normale en sortant de l'eau, car elle accélère dans l'air). 1 point pour la position apparente (l'œil prolonge les rayons en ligne droite, donc il place le poisson plus haut, c'est-à-dire moins profond, qu'il ne l'est). 1 point pour le conseil de visée (il faut viser sous le poisson aperçu, là où il se trouve réellement). Réponse modèle : Les rayons réfractés à la surface font paraître le poisson moins profond qu'en réalité. <b>Viser plus bas que l'image aperçue compense exactement ce déplacement apparent</b>.", {});
+  },
+  function () {
+    return textq("Le fond d'une piscine semble moins profond vu du bord qu'il ne l'est en réalité, et les lignes peintes au fond paraissent onduler quand l'eau bouge. Explique les deux apparences à l'aide de la réfraction. (3 points)",
+      ["La lumière venant du fond change de direction à la surface de l'eau."],
+      "Points de notation (3) : 1 point pour le mécanisme (la lumière venant du fond s'écarte de la normale en passant de l'eau à l'air). 1 point pour la profondeur apparente (l'œil prolonge les rayons en ligne droite et reconstruit le fond plus près de la surface qu'il ne l'est). 1 point pour les lignes qui ondulent (la surface agitée change sans cesse l'angle des rayons réfractés, donc la position apparente des lignes bouge sans arrêt). Réponse modèle : Le fond paraît relevé parce que les rayons réfractés sont prolongés tout droit par l'œil. <b>Quand la surface bouge, la réfraction change d'un instant à l'autre et les lignes semblent onduler</b>.", {});
+  }
+]), ["La lumière change de vitesse à la surface, et ce changement la dévie.", "L'œil prolonge les rayons en ligne droite et reconstruit l'objet au mauvais endroit."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s8f-u3-cr-em-usages
+   closes Unit 3 Test 1 (4 marks, Level 2); s8f-u3-cr-image-miroir
+   closes Unit 3 Test 2 (4 marks, Level 2); s8f-u3-cr-refraction-bol
+   closes Unit 3 Test 3 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("s8f-u3-cr-em-usages", 3, ["SC8.7.2"], 2, "var", varset([
+  function () {
+    return textq("Trois technologies sont utilisées dans une maison : une télécommande de télévision, un appareil de radiographie à l'hôpital et un poste qui reçoit la radiodiffusion. Pour chacune des trois, nomme le type de rayonnement électromagnétique utilisé et la propriété qui rend ce type approprié à cet usage. (3 points) Ensuite, classe les types utilisés par la télécommande et par l'appareil de radiographie selon leur fréquence, de la plus basse à la plus haute. (1 point) (4 points)",
+      ["la télécommande utilise l'infrarouge, invisible et facile à diriger sur de courtes distances", "la radiographie utilise les rayons X, qui traversent les tissus mous mais sont absorbés davantage par les os", "la radiodiffusion utilise les ondes radio, qui voyagent sur de longues distances", "l'infrarouge a une fréquence plus basse que les rayons X"],
+      "<b>Réponse modèle :</b> La télécommande utilise le rayonnement infrarouge : il est invisible, donc il ne dérange pas, et il se dirige facilement en faisceau sur la courte distance entre la télécommande et le téléviseur pour transporter le signal. L'appareil de radiographie utilise les rayons X : leur grande énergie leur permet de traverser les tissus mous du corps, mais les os les absorbent davantage, ce qui produit une image contrastée des os. La radiodiffusion utilise les ondes radio : leurs grandes longueurs d'onde voyagent sur de longues distances et contournent les obstacles, ce qui permet de transporter l'information jusqu'à de nombreux récepteurs. Pour le classement demandé, l'infrarouge a une fréquence plus basse que les rayons X, qui ont une fréquence beaucoup plus haute.<br><br><b>Points d'attribution :</b> 1 point pour la télécommande (l'infrarouge, avec une propriété appropriée comme son invisibilité ou son faisceau dirigeable sur de courtes distances). 1 point pour la radiographie (les rayons X, qui traversent les tissus mous et sont absorbés davantage par les os). 1 point pour la radiodiffusion (les ondes radio, qui voyagent sur de longues distances). 1 point pour le classement par fréquence (l'infrarouge plus bas que les rayons X).",
+      {});
+  },
+  function () {
+    return textq("Trois technologies sont utilisées dans une école : un four à micro-ondes à la cafétéria, une lampe ultraviolette qui stérilise du matériel de laboratoire et un réseau de fibres optiques qui transporte l'Internet. Pour chacune des trois, nomme le type de rayonnement électromagnétique utilisé et la propriété qui rend ce type approprié à cet usage. (3 points) Ensuite, classe les types utilisés par le four et par la lampe selon leur longueur d'onde, de la plus grande à la plus courte. (1 point) (4 points)",
+      ["le four utilise les micro-ondes, absorbées par l'eau et les graisses des aliments, dont l'énergie devient de la chaleur", "la lampe utilise l'ultraviolet, assez énergétique pour tuer les microorganismes", "les fibres optiques utilisent la lumière visible, guidée le long de la fibre par réflexion totale interne", "les micro-ondes ont une plus grande longueur d'onde que l'ultraviolet"],
+      "<b>Réponse modèle :</b> Le four à micro-ondes utilise les micro-ondes : elles sont absorbées par l'eau, les graisses et les sucres des aliments, et leur énergie se transforme en chaleur qui cuit les aliments. La lampe de stérilisation utilise le rayonnement ultraviolet : il transporte assez d'énergie pour endommager et tuer les microorganismes sur le matériel, ce qui le stérilise sans chaleur. Le réseau de fibres optiques utilise la lumière visible : elle peut être guidée le long de la fibre par réflexion totale interne, ce qui transporte l'information rapidement et avec très peu de perte. Pour le classement demandé, les micro-ondes ont une plus grande longueur d'onde que l'ultraviolet.<br><br><b>Points d'attribution :</b> 1 point pour le four (les micro-ondes, absorbées par l'eau et les graisses des aliments et transformées en chaleur). 1 point pour la lampe (l'ultraviolet, assez énergétique pour tuer les microorganismes). 1 point pour les fibres optiques (la lumière visible, guidée par réflexion totale interne avec peu de perte). 1 point pour le classement par longueur d'onde (les micro-ondes plus grandes que l'ultraviolet).",
+      {});
+  },
+  function () {
+    return textq("Trois technologies sont utilisées dans une ville : un traitement de radiothérapie contre le cancer, une télécommande qui ouvre une porte de garage et un émetteur de radiodiffusion. Pour chacune des trois, nomme le type de rayonnement électromagnétique utilisé et la propriété qui rend ce type approprié à cet usage. (3 points) Ensuite, classe les types utilisés par la radiothérapie et par la télécommande selon leur fréquence, de la plus basse à la plus haute. (1 point) (4 points)",
+      ["la radiothérapie utilise les rayons gamma, très énergétiques et pénétrants, qui détruisent les cellules cancéreuses", "la télécommande utilise l'infrarouge, invisible et facile à diriger sur de courtes distances", "la radiodiffusion utilise les ondes radio, qui voyagent sur de longues distances", "l'infrarouge a une fréquence plus basse que les rayons gamma"],
+      "<b>Réponse modèle :</b> La radiothérapie utilise les rayons gamma : ils sont les plus énergétiques du spectre et très pénétrants, donc ils atteignent une tumeur à l'intérieur du corps et détruisent les cellules cancéreuses. La télécommande utilise le rayonnement infrarouge : il est invisible, donc il ne dérange pas, et il se dirige facilement en faisceau sur la courte distance jusqu'au récepteur de la porte. L'émetteur de radiodiffusion utilise les ondes radio : leurs grandes longueurs d'onde voyagent sur de longues distances et contournent les obstacles, ce qui permet de transporter l'information jusqu'à de nombreux récepteurs. Pour le classement demandé, l'infrarouge a une fréquence plus basse que les rayons gamma, qui ont la fréquence la plus haute du spectre.<br><br><b>Points d'attribution :</b> 1 point pour la radiothérapie (les rayons gamma, très énergétiques et pénétrants, qui détruisent les cellules cancéreuses). 1 point pour la télécommande (l'infrarouge, avec une propriété appropriée comme son invisibilité ou son faisceau dirigeable sur de courtes distances). 1 point pour la radiodiffusion (les ondes radio, qui voyagent sur de longues distances). 1 point pour le classement par fréquence (l'infrarouge plus bas que les rayons gamma).",
+      {});
+  },
+  function () {
+    return textq("Trois technologies sont utilisées dans une clinique : un appareil de radiographie, un four à micro-ondes dans la salle du personnel et une lampe ultraviolette qui stérilise des instruments. Pour chacune des trois, nomme le type de rayonnement électromagnétique utilisé et la propriété qui rend ce type approprié à cet usage. (3 points) Ensuite, classe les types utilisés par l'appareil de radiographie et par la lampe selon leur longueur d'onde, de la plus courte à la plus grande. (1 point) (4 points)",
+      ["la radiographie utilise les rayons X, qui traversent les tissus mous mais sont absorbés davantage par les os", "le four utilise les micro-ondes, absorbées par l'eau et les graisses des aliments, dont l'énergie devient de la chaleur", "la lampe utilise l'ultraviolet, assez énergétique pour tuer les microorganismes", "les rayons X ont une longueur d'onde plus courte que l'ultraviolet"],
+      "<b>Réponse modèle :</b> L'appareil de radiographie utilise les rayons X : leur grande énergie leur permet de traverser les tissus mous du corps, mais les os les absorbent davantage, ce qui produit une image contrastée des os. Le four à micro-ondes utilise les micro-ondes : elles sont absorbées par l'eau, les graisses et les sucres des aliments, et leur énergie se transforme en chaleur qui cuit les aliments. La lampe de stérilisation utilise le rayonnement ultraviolet : il transporte assez d'énergie pour endommager et tuer les microorganismes sur les instruments, ce qui les stérilise sans chaleur. Pour le classement demandé, les rayons X ont une longueur d'onde plus courte que l'ultraviolet.<br><br><b>Points d'attribution :</b> 1 point pour la radiographie (les rayons X, qui traversent les tissus mous et sont absorbés davantage par les os). 1 point pour le four (les micro-ondes, absorbées par l'eau et les graisses des aliments et transformées en chaleur). 1 point pour la lampe (l'ultraviolet, assez énergétique pour tuer les microorganismes). 1 point pour le classement par longueur d'onde (les rayons X plus courts que l'ultraviolet).",
+      {});
+  }
+]), ["Travaille technologie par technologie : le type d'abord, puis la propriété qui le rend utile.", "Pour le classement, replace les deux types sur le spectre complet avant de répondre."]);
+
+E("s8f-u3-cr-image-miroir", 3, ["SC8.7.3"], 2, "var", varset([
+  function () {
+    return textq("Un rayon de lumière frappe un miroir plan avec un angle d'incidence de 25 degrés, mesuré à partir de la normale. (a) Énonce l'angle de réflexion et la règle qui le donne. (1 point) (b) Décris le trajet du rayon réfléchi par rapport à la normale. (1 point) (c) Une flèche se tient devant le même miroir. Décris deux caractéristiques de l'image de la flèche formée par le miroir. (2 points) (4 points)",
+      ["l'angle de réflexion est 25 degrés, selon la loi de la réflexion", "le rayon réfléchi repart de l'autre côté de la normale, au même angle de 25 degrés", "l'image de la flèche a la même taille que la flèche", "l'image se trouve aussi loin derrière le miroir que la flèche est devant"],
+      "<b>Réponse modèle :</b> (a) L'angle de réflexion est 25 degrés. La règle est la loi de la réflexion : l'angle d'incidence est égal à l'angle de réflexion, les deux mesurés à partir de la normale. (b) Le rayon réfléchi repart du côté opposé de la normale par rapport au rayon incident, en faisant le même angle de 25 degrés avec la normale : son trajet est le symétrique du trajet incident par rapport à la normale, et il s'éloigne de la surface du miroir. (c) L'image de la flèche a la même taille que la flèche elle-même. Elle se trouve aussi loin derrière le miroir que la flèche se trouve devant lui. (Une image virtuelle ou une inversion latérale, correctement décrite, vaut aussi un des deux points de cette partie.)<br><br><b>Points d'attribution :</b> 1 point pour l'angle de réflexion (25 degrés) avec la loi de la réflexion énoncée. 1 point pour le trajet réfléchi décrit (de l'autre côté de la normale, au même angle, en s'éloignant du miroir). 1 point pour une première caractéristique correcte de l'image (la même taille que l'objet). 1 point pour une deuxième caractéristique correcte (aussi loin derrière le miroir que l'objet est devant; une image virtuelle ou inversée latéralement est aussi acceptée).",
+      {});
+  },
+  function () {
+    return textq("Un rayon de lumière frappe un miroir plan avec un angle d'incidence de 40 degrés, mesuré à partir de la normale. (a) Énonce l'angle de réflexion et la règle qui le donne. (1 point) (b) Décris le trajet du rayon réfléchi par rapport à la normale. (1 point) (c) Une lettre majuscule se tient devant le même miroir. Décris deux caractéristiques de l'image de la lettre formée par le miroir. (2 points) (4 points)",
+      ["l'angle de réflexion est 40 degrés, selon la loi de la réflexion", "le rayon réfléchi repart de l'autre côté de la normale, au même angle de 40 degrés", "l'image de la lettre est inversée latéralement", "l'image de la lettre est virtuelle, derrière le miroir"],
+      "<b>Réponse modèle :</b> (a) L'angle de réflexion est 40 degrés. La règle est la loi de la réflexion : l'angle d'incidence est égal à l'angle de réflexion, les deux mesurés à partir de la normale. (b) Le rayon réfléchi repart du côté opposé de la normale par rapport au rayon incident, en faisant le même angle de 40 degrés avec la normale : son trajet est le symétrique du trajet incident par rapport à la normale, et il s'éloigne de la surface du miroir. (c) L'image de la lettre est inversée latéralement : sa gauche et sa droite sont échangées, donc la lettre semble renversée de gauche à droite. L'image est aussi virtuelle : elle semble se trouver derrière le miroir, là où les rayons réfléchis semblent se rencontrer, et aucune lumière ne s'y trouve réellement. (La même taille que l'objet ou la même distance derrière le miroir vaut aussi un des deux points de cette partie.)<br><br><b>Points d'attribution :</b> 1 point pour l'angle de réflexion (40 degrés) avec la loi de la réflexion énoncée. 1 point pour le trajet réfléchi décrit (de l'autre côté de la normale, au même angle, en s'éloignant du miroir). 1 point pour une première caractéristique correcte de l'image (inversée latéralement). 1 point pour une deuxième caractéristique correcte (virtuelle; la même taille ou la même distance derrière le miroir est aussi acceptée).",
+      {});
+  },
+  function () {
+    return textq("Un rayon de lumière frappe un miroir plan avec un angle d'incidence de 55 degrés, mesuré à partir de la normale. (a) Énonce l'angle de réflexion et la règle qui le donne. (1 point) (b) Décris le trajet du rayon réfléchi par rapport à la normale. (1 point) (c) Une chandelle allumée se tient devant le même miroir. Décris deux caractéristiques de l'image de la chandelle formée par le miroir. (2 points) (4 points)",
+      ["l'angle de réflexion est 55 degrés, selon la loi de la réflexion", "le rayon réfléchi repart de l'autre côté de la normale, au même angle de 55 degrés", "l'image de la chandelle est virtuelle, derrière le miroir", "l'image de la chandelle a la même taille que la chandelle"],
+      "<b>Réponse modèle :</b> (a) L'angle de réflexion est 55 degrés. La règle est la loi de la réflexion : l'angle d'incidence est égal à l'angle de réflexion, les deux mesurés à partir de la normale. (b) Le rayon réfléchi repart du côté opposé de la normale par rapport au rayon incident, en faisant le même angle de 55 degrés avec la normale : son trajet est le symétrique du trajet incident par rapport à la normale, et il s'éloigne de la surface du miroir. (c) L'image de la chandelle est virtuelle : elle semble se trouver derrière le miroir, là où les rayons réfléchis semblent se rencontrer, sans qu'aucune lumière s'y trouve réellement. L'image a aussi la même taille que la chandelle elle-même. (La même distance derrière le miroir que l'objet devant, ou une inversion latérale, vaut aussi un des deux points de cette partie.)<br><br><b>Points d'attribution :</b> 1 point pour l'angle de réflexion (55 degrés) avec la loi de la réflexion énoncée. 1 point pour le trajet réfléchi décrit (de l'autre côté de la normale, au même angle, en s'éloignant du miroir). 1 point pour une première caractéristique correcte de l'image (virtuelle). 1 point pour une deuxième caractéristique correcte (la même taille que l'objet; la même distance derrière le miroir ou une inversion latérale est aussi acceptée).",
+      {});
+  }
+]), ["Les deux angles se mesurent à partir de la normale, jamais à partir de la surface du miroir.", "Pour l'image, pense aux quatre caractéristiques des miroirs plans et choisis-en deux à décrire."]);
+
+E("s8f-u3-cr-refraction-bol", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("Une pièce de monnaie repose au fond d'un bol opaque vide. En reculant lentement, tu arrives juste au point où le rebord du bol cache la pièce. Sans bouger la tête, un camarade verse lentement de l'eau dans le bol, et la pièce devient visible, comme si elle s'était relevée dans le bol. (a) Que se passe-t-il à la lumière venant de la pièce quand elle atteint la surface de l'eau? (1 point) (b) Dans quel sens cette lumière se courbe-t-elle, et pourquoi? (2 points) (c) Pourquoi la pièce semble-t-elle relevée? (1 point) (4 points)",
+      ["la lumière se réfracte à la surface, en passant de l'eau à l'air", "elle s'éloigne de la normale", "elle accélère en quittant l'eau pour l'air, un milieu moins dense", "l'œil prolonge les rayons en ligne droite, donc la pièce est reconstruite plus près de la surface"],
+      "<b>Réponse modèle :</b> (a) La lumière venant de la pièce se réfracte à la surface de l'eau : elle change de direction en passant de l'eau à l'air. Sans eau, le rebord du bol bloquait cette lumière; avec l'eau, la courbure la dirige par-dessus le rebord jusqu'à l'œil. (b) La lumière s'éloigne de la normale. En quittant l'eau pour l'air, elle entre dans un milieu moins dense et accélère, et un rayon qui accélère à une frontière s'écarte de la normale. (c) L'œil suppose que la lumière a voyagé en ligne droite et prolonge les rayons courbés tout droit vers l'arrière. Ces prolongements placent la pièce plus près de la surface qu'elle ne l'est réellement, donc la pièce semble relevée dans le bol.<br><br><b>Points d'attribution :</b> 1 point pour la réfraction nommée (la lumière change de direction en passant de l'eau à l'air). 1 point pour la direction de la courbure (s'éloigner de la normale). 1 point pour la raison (la lumière accélère en quittant l'eau pour l'air, un milieu moins dense). 1 point pour la pièce relevée expliquée (l'œil prolonge les rayons en ligne droite et reconstruit la pièce plus près de la surface).",
+      {});
+  },
+  function () {
+    return textq("Une marque est dessinée au fond d'une tasse opaque vide. En reculant lentement la tête, tu arrives juste au point où le rebord de la tasse cache la marque. Sans bouger la tête, un camarade verse lentement de l'eau dans la tasse, et la marque devient visible, comme si le fond de la tasse s'était relevé. (a) Que se passe-t-il à la lumière venant de la marque quand elle atteint la surface de l'eau? (1 point) (b) Dans quel sens cette lumière se courbe-t-elle, et pourquoi? (2 points) (c) Pourquoi la marque semble-t-elle relevée? (1 point) (4 points)",
+      ["la lumière se réfracte à la surface, en passant de l'eau à l'air", "elle s'éloigne de la normale", "elle accélère en quittant l'eau pour l'air, un milieu moins dense", "l'œil prolonge les rayons en ligne droite, donc la marque est reconstruite plus près de la surface"],
+      "<b>Réponse modèle :</b> (a) La lumière venant de la marque se réfracte à la surface de l'eau : elle change de direction en passant de l'eau à l'air. Sans eau, le rebord de la tasse bloquait cette lumière; avec l'eau, la courbure la dirige par-dessus le rebord jusqu'à l'œil. (b) La lumière s'éloigne de la normale. En quittant l'eau pour l'air, elle entre dans un milieu moins dense et accélère, et un rayon qui accélère à une frontière s'écarte de la normale. (c) L'œil suppose que la lumière a voyagé en ligne droite et prolonge les rayons courbés tout droit vers l'arrière. Ces prolongements placent la marque plus près de la surface qu'elle ne l'est réellement, donc le fond de la tasse semble relevé et la marque entre dans le champ de vision.<br><br><b>Points d'attribution :</b> 1 point pour la réfraction nommée (la lumière change de direction en passant de l'eau à l'air). 1 point pour la direction de la courbure (s'éloigner de la normale). 1 point pour la raison (la lumière accélère en quittant l'eau pour l'air, un milieu moins dense). 1 point pour la marque relevée expliquée (l'œil prolonge les rayons en ligne droite et reconstruit la marque plus près de la surface).",
+      {});
+  },
+  function () {
+    return textq("Un caillou repose au fond d'un bac transparent rempli d'une eau peu profonde. Vu de côté et d'un peu plus haut, le caillou semble plus près de la surface qu'il ne l'est en réalité, comme s'il flottait relevé au-dessus du fond du bac. (a) Que se passe-t-il à la lumière venant du caillou quand elle atteint la surface de l'eau? (1 point) (b) Dans quel sens cette lumière se courbe-t-elle, et pourquoi? (2 points) (c) Pourquoi le caillou semble-t-il relevé? (1 point) (4 points)",
+      ["la lumière se réfracte à la surface, en passant de l'eau à l'air", "elle s'éloigne de la normale", "elle accélère en quittant l'eau pour l'air, un milieu moins dense", "l'œil prolonge les rayons en ligne droite, donc le caillou est reconstruit plus près de la surface"],
+      "<b>Réponse modèle :</b> (a) La lumière venant du caillou se réfracte à la surface de l'eau : elle change de direction en passant de l'eau à l'air, sur son trajet vers l'œil. (b) La lumière s'éloigne de la normale. En quittant l'eau pour l'air, elle entre dans un milieu moins dense et accélère, et un rayon qui accélère à une frontière s'écarte de la normale. (c) L'œil suppose que la lumière a voyagé en ligne droite et prolonge les rayons courbés tout droit vers l'arrière. Ces prolongements se rencontrent en un point plus près de la surface que le vrai caillou, donc le caillou semble relevé au-dessus de sa vraie position au fond du bac.<br><br><b>Points d'attribution :</b> 1 point pour la réfraction nommée (la lumière change de direction en passant de l'eau à l'air). 1 point pour la direction de la courbure (s'éloigner de la normale). 1 point pour la raison (la lumière accélère en quittant l'eau pour l'air, un milieu moins dense). 1 point pour le caillou relevé expliqué (l'œil prolonge les rayons en ligne droite et reconstruit le caillou plus près de la surface).",
+      {});
+  }
+]), ["Suis un seul rayon, du fond jusqu'à l'œil, et marque ce qu'il fait à la surface.", "En sortant de l'eau, la lumière accélère : retiens le sens de la courbure qui va avec."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+
+/* ---------- SC8.7.3 Réflexion : termes, mesures et usages ---------- */
+
+E("s8f-u3-reflexion-termes", 3, ["SC8.7.3"], 1, "var", varset([
+  function () {
+    return mcq("Dans un diagramme de réflexion, qu'est-ce que la normale?",
+      "La ligne perpendiculaire à la surface du miroir, tracée au point précis où le rayon la frappe",
+      ["La ligne parallèle à la surface du miroir, tracée au point précis où le rayon la frappe",
+       "Le rayon de lumière qui repart de la surface du miroir après y avoir rebondi en un point",
+       "Le rayon de lumière qui arrive sur la surface du miroir avant d'y rebondir en un point"],
+      "La normale est une ligne de référence imaginaire : elle se dresse perpendiculairement à la surface, exactement au point où le rayon la frappe. C'est à partir d'elle, et non à partir de la surface, que les angles d'incidence et de réflexion se mesurent.",
+      {});
+  },
+  function () {
+    return mcq("Dans un diagramme de réflexion, qu'est-ce que le rayon incident?",
+      "Le rayon de lumière qui arrive sur une surface, juste avant de rebondir sur cette surface",
+      ["Le rayon de lumière qui repart d'une surface, juste après avoir rebondi sur cette surface",
+       "La ligne droite imaginaire qui se dresse perpendiculairement à une surface, en un point donné",
+       "Le rayon de lumière qui traverse une surface, en changeant de milieu et de direction ensuite"],
+      "Le rayon incident est le rayon qui arrive : il voyage vers la surface et la frappe en un point. Le rayon qui repart après le rebond est le rayon réfléchi, et la ligne perpendiculaire à la surface en ce point est la normale.",
+      {});
+  },
+  function () {
+    return mcq("Dans un diagramme de réflexion, qu'est-ce que le rayon réfléchi?",
+      "Le rayon de lumière qui repart d'une surface, juste après avoir rebondi sur cette surface",
+      ["Le rayon de lumière qui arrive sur une surface, juste avant de rebondir sur cette surface",
+       "La ligne droite imaginaire qui se dresse perpendiculairement à une surface, en un point donné",
+       "Le rayon de lumière qui traverse une surface, en changeant de milieu et de direction ensuite"],
+      "Le rayon réfléchi est le rayon qui repart : il quitte la surface après le rebond, du même côté de la normale que son trajet symétrique. Le rayon qui arrive est le rayon incident, et un rayon qui traverse la surface en changeant de milieu relève de la réfraction, pas de la réflexion.",
+      {});
+  },
+  function () {
+    return mcq("Comment l'angle d'incidence se définit-il dans un diagramme de réflexion?",
+      "L'angle formé par le rayon incident et la normale, au point où le rayon frappe la surface",
+      ["L'angle formé par le rayon réfléchi et la normale, au point où le rayon quitte la surface",
+       "L'angle formé par le rayon incident et la surface, au point où le rayon frappe la surface",
+       "L'angle formé par le rayon réfléchi et la surface, au point où le rayon quitte la surface"],
+      "L'angle d'incidence se mesure entre le rayon incident et la normale, au point de contact. L'angle entre le rayon réfléchi et la normale est l'angle de réflexion. Les angles mesurés à partir de la surface ne sont ni l'un ni l'autre : ils valent 90 degrés moins l'angle cherché.",
+      {});
+  },
+  function () {
+    return mcq("Deux élèves mesurent les angles d'un rayon sur un miroir, chacun par rapport à la normale. Qu'est-ce que la loi de la réflexion prédit pour leurs mesures?",
+      "L'angle de réflexion mesuré sera égal à l'angle d'incidence, pour chaque rayon étudié",
+      ["L'angle de réflexion mesuré sera le double de l'angle d'incidence, pour chaque rayon",
+       "L'angle de réflexion mesuré sera la moitié de l'angle d'incidence, pour chaque rayon",
+       "La somme des deux angles mesurés donnera toujours 90 degrés, pour chaque rayon étudié"],
+      "La loi de la réflexion énonce que l'angle d'incidence est égal à l'angle de réflexion, les deux mesurés par rapport à la normale. Elle vaut pour chaque rayon et pour chaque surface réfléchissante, lisse ou non.",
+      {});
+  }
+]), ["Chaque terme nomme une seule partie du diagramme : le rayon qui arrive, celui qui repart, ou la ligne de référence.", "Tous les angles de ce chapitre se mesurent à partir de la normale."]);
+
+E("s8f-u3-angle-mesure", 3, ["SC8.7.3"], 2, "gen", function () {
+  var base = pick([12, 18, 24, 28, 32, 38, 42, 48, 52, 58, 62, 68, 72, 78]);
+  var mode = pick(["refl", "surf-inc", "surf-refl", "refl-surf"]);
+  var ans, q, sol;
+  if (mode === "refl") {
+    ans = base;
+    q = "Un rayon frappe un miroir plan avec un angle d'incidence de " + base + " degrés, mesuré par rapport à la normale. Quel est l'angle de réflexion?";
+    sol = "Selon la loi de la réflexion, l'angle de réflexion est égal à l'angle d'incidence : " + base + " degrés, les deux mesurés par rapport à la normale.";
+  } else if (mode === "surf-inc") {
+    ans = 90 - base;
+    q = "Un rayon frappe un miroir plan de sorte qu'il fait un angle de " + base + " degrés avec la surface du miroir. Quel est son angle d'incidence, mesuré par rapport à la normale?";
+    sol = "L'angle donné est mesuré à partir de la surface. La normale est à 90 degrés de la surface, donc l'angle d'incidence vaut 90 - " + base + " = " + ans + " degrés.";
+  } else if (mode === "surf-refl") {
+    ans = 90 - base;
+    q = "Un rayon frappe un miroir plan de sorte qu'il fait un angle de " + base + " degrés avec la surface du miroir. Quel est l'angle de réflexion du rayon, mesuré par rapport à la normale?";
+    sol = "L'angle d'incidence se mesure à partir de la normale : il vaut 90 - " + base + " = " + ans + " degrés. Selon la loi de la réflexion, l'angle de réflexion lui est égal : " + ans + " degrés.";
+  } else {
+    ans = 90 - base;
+    q = "Un rayon frappe un miroir plan avec un angle d'incidence de " + base + " degrés, mesuré par rapport à la normale. Quel angle le rayon réfléchi fait-il avec la surface du miroir?";
+    sol = "L'angle de réflexion vaut " + base + " degrés par rapport à la normale, comme l'angle d'incidence. La normale est à 90 degrés de la surface, donc le rayon réfléchi fait 90 - " + base + " = " + ans + " degrés avec la surface.";
+  }
+  var cand = [ans - 12, ans - 10, ans - 5, ans + 5, ans + 10, ans + 12, 90 - ans];
+  var dis = [];
+  for (var i = 0; i < cand.length && dis.length < 3; i++) {
+    if (cand[i] !== ans && cand[i] > 0 && cand[i] < 90 && dis.indexOf(cand[i]) < 0) dis.push(cand[i]);
+  }
+  dis.sort(function (a, b) { return a - b; });
+  return mcq(q, ans + " degrés", dis.map(function (d) { return d + " degrés"; }), sol, {});
+}, ["Repère d'abord à partir de quoi l'angle donné est mesuré : la normale ou la surface.", "Un angle pris à partir de la surface se convertit en soustrayant de 90 degrés."]);
+
+E("s8f-u3-reflexion-conception", 3, ["SC8.7.3"], 3, "var", varset([
+  function () {
+    return mcq("Dans un périscope simple, chaque miroir plan est incliné à 45 degrés par rapport au tube vertical. Quelle justification de ce choix repose correctement sur la loi de la réflexion?",
+      "À 45 degrés, le rayon horizontal arrive à 45 degrés de la normale, donc il se réfléchit à 45 degrés de la normale et tourne exactement à angle droit, vers le bas du tube",
+      ["À 45 degrés, le miroir absorbe la moitié de la lumière horizontale, donc le rayon restant tombe naturellement vers le bas du tube, sans qu'aucun angle précis soit nécessaire",
+       "À 45 degrés, la surface du miroir devient parallèle à la normale, donc le rayon horizontal glisse le long du miroir et descend ensuite tout droit dans le tube du périscope",
+       "À 45 degrés, l'image du premier miroir se renverse de haut en bas, donc elle arrive à l'oeil déjà redressée, quelle que soit la direction du rayon lumineux qui la transporte"],
+      "Le choix de 45 degrés est un calcul d'angles. Le rayon horizontal rencontre la normale du miroir incliné à 45 degrés, donc son angle d'incidence vaut 45 degrés. La loi de la réflexion lui donne un angle de réflexion égal, de l'autre côté de la normale : le rayon repart à 90 degrés de sa direction d'arrivée, exactement le long du tube.",
+      {});
+  },
+  function () {
+    return mcq("Un miroir plan est fixé en angle au-dessus d'un tournant de corridor d'école, pour qu'on voie qui arrive de l'autre côté avant de tourner. Pourquoi ce placement fonctionne-t-il?",
+      "La lumière venant de l'autre côté frappe le miroir et se réfléchit vers l'observateur avec un angle de réflexion égal à son angle d'incidence, ce qui déplace sa ligne de visée autour du tournant",
+      ["La lumière venant de l'autre côté se réfracte en traversant le miroir et se courbe autour du tournant du corridor, ce qui amène l'image des passants jusqu'à l'observateur placé avant le tournant",
+       "La lumière venant de l'autre côté est absorbée par le miroir puis réémise dans toutes les directions du corridor, ce qui rend les passants visibles de partout, même sans ligne de visée directe",
+       "La lumière venant de l'autre côté rebondit sur le mur du fond et le miroir ne sert qu'à grossir cette lumière déjà réfléchie, ce qui agrandit l'image des passants aperçus au tournant du corridor"],
+      "Le miroir ne laisse pas voir à travers le mur : il redirige la lumière. Les rayons des passants frappent le miroir incliné et repartent vers l'observateur selon la loi de la réflexion, angles égaux par rapport à la normale. La ligne de visée de l'observateur est donc rabattue autour du tournant, comme dans un périscope à un seul miroir.",
+      {});
+  },
+  function () {
+    return mcq("Un dentiste tient un petit miroir incliné contre une dent pour examiner la face arrière de cette dent, qu'aucun regard direct ne peut atteindre. Qu'est-ce qui rend cette observation possible?",
+      "La lumière éclaire la face arrière de la dent, frappe le miroir et se réfléchit vers l'oeil du dentiste selon des angles égaux par rapport à la normale, en y formant une image de cette face cachée",
+      ["La lumière traverse la dent de part en part et le petit miroir la recueille de l'autre côté, ce qui montre au dentiste la face arrière de la dent comme si la dent elle-même était devenue transparente",
+       "La lumière contourne la dent par réfraction dans l'air de la bouche et le miroir grossit ensuite cette lumière courbée, ce qui agrandit la face arrière de la dent jusqu'à la rendre facile à examiner",
+       "La lumière rebondit entre la dent et le miroir un grand nombre de fois et finit par peindre sur le miroir une image permanente de la dent, que le dentiste peut ensuite examiner à loisir dans sa main"],
+      "Le miroir de dentiste est un problème de trajet de lumière. La lampe éclaire la face arrière de la dent; les rayons qui en viennent frappent le miroir incliné et se réfléchissent vers l'oeil, avec un angle de réflexion égal à l'angle d'incidence à chaque rayon. Le dentiste voit donc une image virtuelle de la face cachée, formée derrière le miroir.",
+      {});
+  },
+  function () {
+    return mcq("À la sortie d'un garage qui donne directement sur un trottoir, on installe un miroir plan incliné au-dessus de la porte pour que le conducteur voie les piétons avant de sortir. Quelle justification de ce montage est correcte?",
+      "Les rayons venant des piétons frappent le miroir incliné et se réfléchissent vers le conducteur selon la loi de la réflexion, donc sa ligne de visée se rabat vers le trottoir qu'il ne voit pas directement",
+      ["Les rayons venant des piétons traversent le mur du garage puis le miroir les rassemble en une image, donc le conducteur voit le trottoir à travers le mur comme il verrait à travers une fenêtre bien placée",
+       "Les rayons venant des piétons sont absorbés par le miroir incliné, qui les renvoie ensuite également dans toutes les directions, donc chaque piéton du trottoir devient visible de n'importe quel siège",
+       "Les rayons venant des piétons se courbent en passant près du bord du miroir incliné et contournent la porte du garage, donc le conducteur reçoit une image du trottoir sans qu'aucun rebond soit nécessaire"],
+      "C'est le même montage que le miroir de corridor : un seul rebond bien placé. L'inclinaison du miroir est choisie pour que les rayons des piétons, réfléchis avec un angle de réflexion égal à leur angle d'incidence, atteignent l'oeil du conducteur. Sans le miroir, ces rayons continueraient tout droit et le trottoir resterait hors de sa vue.",
+      {});
+  }
+]), ["Pour chaque montage, suis un rayon : d'où il vient, où il rebondit, où il doit arriver.", "Un miroir ne crée pas de lumière et ne voit pas à travers les murs : il redirige des rayons selon des angles égaux."]);
+
+E("s8f-u3-reflexion-usage", 3, ["SC8.7.3"], 3, "var", varset([
+  function () {
+    return mcq("Pour une salle de classe, on choisit un écran de projection mat plutôt qu'une surface brillante comme un miroir. Quelle justification de ce choix est correcte?",
+      "La surface mate réfléchit la lumière du projecteur de façon diffuse, dans plusieurs directions, donc chaque élève reçoit une partie de l'image et la voit à peu près également bien de sa place",
+      ["La surface mate réfléchit la lumière du projecteur de façon spéculaire, dans une seule direction, donc chaque élève reçoit toute l'image à la fois et la voit aussi nettement que dans un miroir poli",
+       "La surface mate absorbe la lumière du projecteur presque entièrement, donc l'image se forme dans l'épaisseur même de l'écran et reste visible également bien de toutes les places de la classe entière",
+       "La surface mate réfracte la lumière du projecteur en la traversant de part en part, donc l'image ressort de l'autre côté de l'écran et chaque élève la reçoit directement, sans aucun rebond nécessaire"],
+      "Un écran doit servir toute la salle, pas une seule place. Sa surface mate, rugueuse à petite échelle, produit une réflexion diffuse : les rayons de chaque point de l'image se dispersent dans plusieurs directions, donc des yeux placés partout dans la salle en reçoivent. Une surface spéculaire enverrait l'image dans une seule direction, avec un éblouissement pour quelques-uns et rien pour les autres.",
+      {});
+  },
+  function () {
+    return mcq("La nuit, une route mouillée paraît presque noire sous les phares d'une voiture, sauf une bande brillante qui s'étend devant le véhicule. Quelle explication de ce contraste est correcte?",
+      "L'eau rend la route lisse, donc elle réfléchit les phares de façon spéculaire, surtout vers l'avant, loin des yeux du conducteur; il ne revient presque rien vers lui, sauf dans la bande alignée avec les phares",
+      ["L'eau rend la route rugueuse, donc elle réfléchit les phares de façon diffuse, également dans toutes les directions; il revient alors autant de lumière au conducteur que sur une route sèche bien éclairée",
+       "L'eau absorbe les phares complètement dès qu'elle recouvre la route, donc aucune lumière ne peut plus se réfléchir du tout sur une route mouillée, et la bande brillante vient des lampadaires du quartier",
+       "L'eau réfracte les phares à travers la route jusqu'au sol en dessous, donc la route elle-même reste noire et la bande brillante est la lumière qui ressort du sol de l'autre côté de la chaussée mouillée"],
+      "La route sèche est rugueuse : elle réfléchit les phares de façon diffuse, et une partie revient toujours vers le conducteur, ce qui rend la chaussée visible. Mouillée, l'eau la recouvre d'une surface lisse : la réflexion devient spéculaire, les rayons repartent surtout vers l'avant, loin des yeux, et la route semble noire. La bande brillante est la zone où la géométrie spéculaire renvoie justement la lumière vers le conducteur, le même effet qui éblouit face aux phares des voitures venant en sens inverse.",
+      {});
+  },
+  function () {
+    return mcq("Un tableau blanc très lustré rend le texte illisible depuis les places situées sur les côtés de la classe, alors qu'il se lit bien de face. Quelle explication est correcte?",
+      "La surface lustrée réfléchit de façon spéculaire : la lumière des fenêtres et des lampes repart dans une direction précise, qui éblouit les places de côté, tandis que le texte ne se diffuse presque pas vers elles",
+      ["La surface lustrée réfléchit de façon diffuse : la lumière des fenêtres et des lampes se disperse également partout dans la classe, donc les places de côté reçoivent trop de lumière mélangée pour distinguer le texte",
+       "La surface lustrée absorbe la lumière des fenêtres et des lampes presque entièrement, donc le tableau devient trop sombre pour les places de côté, qui ne reçoivent plus assez de lumière pour lire le texte écrit",
+       "La surface lustrée réfracte la lumière des fenêtres et des lampes à travers le tableau, donc le texte semble se déplacer pour les places de côté, qui le voient alors décalé et impossible à suivre correctement"],
+      "Le lustre est une surface lisse : sa réflexion est spéculaire. Depuis les côtés, l'oeil se place justement dans la direction où la lumière des lampes se réfléchit, d'où l'éblouissement qui noie le texte. De face, cette direction est évitée et le texte se lit. Un tableau mat, à réflexion diffuse, éviterait le problème en dispersant la lumière des lampes au lieu de la concentrer dans une direction.",
+      {});
+  },
+  function () {
+    return mcq("Après une douche chaude, le miroir de la salle de bain ne montre plus qu'une image floue et laiteuse, alors qu'il était net quelques minutes plus tôt. Quelle explication relie correctement ce changement à la réflexion?",
+      "Les gouttelettes d'eau condensées rendent la surface irrégulière : la réflexion y devient diffuse, les rayons repartent dans plusieurs directions et l'ordre qui formait l'image nette est perdu",
+      ["Les gouttelettes d'eau condensées rendent la surface plus lisse : la réflexion y devient spéculaire, les rayons repartent dans une seule direction et l'image devient alors trop concentrée pour être nette",
+       "Les gouttelettes d'eau condensées absorbent toute la lumière qui frappe le miroir : aucune réflexion ne s'y produit plus du tout, et l'image floue aperçue vient en réalité de la vitre de la fenêtre voisine",
+       "Les gouttelettes d'eau condensées réfractent la lumière à travers le miroir jusqu'au mur derrière lui : l'image se forme alors dans le mur, et le flou aperçu n'est que l'ombre de cette image déplacée"],
+      "Le miroir lui-même n'a pas changé; sa surface, si. Le film de gouttelettes la rend irrégulière à petite échelle, donc chaque rayon se réfléchit toujours selon la loi, mais par rapport à des normales qui pointent dans plusieurs directions : c'est la réflexion diffuse. Les rayons dispersés ne conservent plus l'ordre d'une image, d'où le flou laiteux, jusqu'à ce que la surface redevienne lisse et spéculaire.",
+      {});
+  }
+]), ["Demande-toi d'abord si la surface envoie la lumière dans une direction ou dans plusieurs.", "Spéculaire : une direction, image ou éblouissement. Diffuse : plusieurs directions, visibilité partagée mais pas d'image."]);
+
+E("s8f-u3-cr-reflexion-quotidien", 3, ["SC8.7.3"], 2, "var", varset([
+  function () {
+    return textq("Un miroir plan est installé en angle au-dessus du tournant d'un corridor d'école, là où des élèves se sont déjà heurtés en tournant sans voir qui arrivait. Explique, à l'aide de la loi de la réflexion, comment ce miroir permet à un élève de voir un élève qui arrive de l'autre côté du tournant avant de s'y engager. (2 points)",
+      ["la lumière de l'élève qui arrive frappe le miroir et se réfléchit vers l'oeil de l'autre élève", "l'angle de réflexion est égal à l'angle d'incidence par rapport à la normale du miroir incliné", "la ligne de visée est ainsi rabattue autour du tournant, sans voir à travers le mur"],
+      "<b>Réponse modèle:</b> La lumière qui vient de l'élève arrivant de l'autre côté du tournant voyage en ligne droite jusqu'au miroir incliné. Là, elle se réfléchit selon la loi de la réflexion : son angle de réflexion, mesuré par rapport à la normale au miroir, est égal à son angle d'incidence. Avec l'inclinaison choisie, ces rayons réfléchis atteignent l'oeil de l'élève placé avant le tournant. Sa ligne de visée est donc rabattue autour du coin par le miroir : il voit l'autre élève dans le miroir, sans que ni l'un ni l'autre ait à franchir le tournant.<br><br><b>Points d'attribution:</b> 1 point pour la loi de la réflexion appliquée au miroir (angle de réflexion égal à l'angle d'incidence, mesurés par rapport à la normale). 1 point pour le résultat expliqué (les rayons réfléchis atteignent l'oeil avant le tournant, donc la zone cachée devient visible dans le miroir).",
+      {});
+  },
+  function () {
+    return textq("Un dentiste examine la face arrière d'une dent à l'aide d'un petit miroir incliné tenu juste derrière la dent. Explique, à l'aide de la loi de la réflexion, comment ce miroir permet au dentiste de voir une face de la dent qu'aucun regard direct ne peut atteindre. (2 points)",
+      ["la lumière éclaire la face arrière de la dent et ses rayons frappent le miroir incliné", "chaque rayon se réfléchit avec un angle de réflexion égal à son angle d'incidence par rapport à la normale", "les rayons réfléchis atteignent l'oeil du dentiste, qui y voit une image de la face cachée"],
+      "<b>Réponse modèle:</b> La lampe du dentiste éclaire la face arrière de la dent. Les rayons qui partent de cette face frappent le petit miroir incliné placé derrière la dent et s'y réfléchissent selon la loi de la réflexion : pour chaque rayon, l'angle de réflexion, mesuré par rapport à la normale au miroir, est égal à l'angle d'incidence. L'inclinaison du miroir envoie ces rayons réfléchis vers l'oeil du dentiste, qui voit donc, dans le miroir, une image de la face arrière de la dent, bien qu'elle soit tournée à l'opposé de lui.<br><br><b>Points d'attribution:</b> 1 point pour la loi de la réflexion appliquée au miroir (angle de réflexion égal à l'angle d'incidence, mesurés par rapport à la normale). 1 point pour le résultat expliqué (les rayons réfléchis atteignent l'oeil du dentiste, qui voit une image de la face cachée).",
+      {});
+  },
+  function () {
+    return textq("Un miroir plan incliné est fixé au-dessus de la porte d'un garage qui s'ouvre directement sur un trottoir, pour que le conducteur voie les piétons avant de sortir. Explique, à l'aide de la loi de la réflexion, comment ce miroir permet au conducteur de voir un piéton qui se trouve encore hors de sa vue directe. (2 points)",
+      ["les rayons venant du piéton frappent le miroir incliné au-dessus de la porte", "chaque rayon se réfléchit avec un angle de réflexion égal à son angle d'incidence par rapport à la normale", "les rayons réfléchis atteignent l'oeil du conducteur, dont la ligne de visée se rabat vers le trottoir"],
+      "<b>Réponse modèle:</b> Les rayons de lumière qui viennent du piéton sur le trottoir voyagent en ligne droite jusqu'au miroir incliné au-dessus de la porte. Ils s'y réfléchissent selon la loi de la réflexion : pour chaque rayon, l'angle de réflexion, mesuré par rapport à la normale au miroir, est égal à l'angle d'incidence. L'inclinaison du miroir est choisie pour que ces rayons réfléchis descendent jusqu'à l'oeil du conducteur assis dans la voiture. Sa ligne de visée est ainsi rabattue par le miroir vers le trottoir, et il aperçoit le piéton avant d'engager la voiture.<br><br><b>Points d'attribution:</b> 1 point pour la loi de la réflexion appliquée au miroir (angle de réflexion égal à l'angle d'incidence, mesurés par rapport à la normale). 1 point pour le résultat expliqué (les rayons réfléchis atteignent l'oeil du conducteur, qui voit le piéton hors de sa vue directe).",
+      {});
+  }
+]), ["Suis un rayon précis : du sujet caché, au miroir, puis à l'oeil.", "La loi doit être énoncée avec ses angles par rapport à la normale, pas seulement nommée."]);
+
+/* ---------- SC8.7.4 Réfraction : exemples, déviation et explications ---------- */
+
+E("s8f-u3-refraction-exemples", 3, ["SC8.7.4"], 1, "var", varset([
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Le fond d'une piscine qui semble moins profond qu'il ne l'est vraiment",
+      ["L'image d'un visage qui apparaît dans un miroir bien poli de salle de bain",
+       "L'ombre nette d'un poteau qui s'étend sur le sol par un jour ensoleillé",
+       "Le reflet du Soleil qui éblouit à la surface calme d'un lac le matin"],
+      "Le fond de la piscine semble relevé parce que la lumière qui en vient se réfracte en passant de l'eau à l'air, et l'oeil la prolonge en ligne droite. Le miroir et le reflet sur le lac sont des réflexions, et l'ombre nette vient du voyage en ligne droite de la lumière.",
+      {});
+  },
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Une loupe qui fait paraître les lettres d'une page plus grandes qu'elles sont",
+      ["Un rétroviseur qui montre les voitures qui suivent derrière le conducteur",
+       "Une ombre qui grandit quand une main s'approche d'une lampe dans une pièce",
+       "Un éblouissement qui apparaît sur une photographie prise face à une fenêtre"],
+      "La loupe est une lentille : elle réfracte la lumière qui la traverse et fait paraître les lettres plus grandes. Le rétroviseur et l'éblouissement sont des réflexions, et l'ombre qui grandit vient des trajets droits de la lumière bloqués par la main.",
+      {});
+  },
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Un poisson qui semble plus près de la surface qu'il ne l'est en réalité",
+      ["Un drapeau qui se reflète à la surface d'une flaque d'eau après la pluie",
+       "Une silhouette qui se découpe en ombre chinoise derrière un écran éclairé",
+       "Une enseigne qui se répète dans la vitrine d'un magasin pendant la soirée"],
+      "Le poisson semble relevé parce que la lumière qui en vient change de direction en sortant de l'eau vers l'air : c'est la réfraction, et l'oeil reconstruit le poisson trop haut. Le drapeau et l'enseigne sont des réflexions sur des surfaces, et l'ombre chinoise vient de la lumière bloquée.",
+      {});
+  },
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Les étoiles qui semblent scintiller et trembler dans le ciel de la nuit",
+      ["La Lune qui se reflète en une traînée brillante sur un lac par temps calme",
+       "Un faisceau de projecteur qui dessine un cône bien droit dans une salle sombre",
+       "Un visage qui apparaît à l'envers dans le dos poli d'une cuillère en métal"],
+      "L'air au-dessus du sol n'a pas partout la même densité : la lumière des étoiles se réfracte un peu différemment d'un instant à l'autre en le traversant, ce qui fait trembler leur position apparente. La traînée sur le lac et le visage dans la cuillère sont des réflexions; le cône droit montre la propagation rectiligne.",
+      {});
+  },
+  function () {
+    return mcq("Un élève observe deux effets dans un aquarium : le reflet de la lampe à la surface de l'eau, et une plante dont la tige semble décalée là où elle entre dans l'eau. Lequel de ces effets est la réfraction?",
+      "La tige qui semble décalée là où elle entre dans l'eau de l'aquarium",
+      ["Le reflet de la lampe qui brille à la surface de l'eau de l'aquarium",
+       "La bulle d'air qui monte en ligne droite dans l'eau de l'aquarium",
+       "L'ombre de la plante qui se dessine au fond sablonneux de l'aquarium"],
+      "La tige semble décalée parce que la lumière de sa partie immergée se réfracte à la surface avant d'atteindre l'oeil : réfraction. Le reflet de la lampe est une réflexion à la surface, la bulle montre un trajet droit, et l'ombre vient de la lumière bloquée par la plante.",
+      {});
+  }
+]), ["La réfraction exige un changement de milieu : la lumière traverse une frontière et change de direction.", "Miroirs, reflets et éblouissements sont des réflexions; les ombres viennent des trajets droits."]);
+
+E("s8f-u3-deviation-prevoir", 3, ["SC8.7.4"], 2, "gen", function () {
+  var paires = [
+    { de: "l'air", vers: "l'eau", vitesse: "plus lentement", sens: "vers" },
+    { de: "l'eau", vers: "l'air", vitesse: "plus vite", sens: "loin" },
+    { de: "l'air", vers: "le verre", vitesse: "plus lentement", sens: "vers" },
+    { de: "le verre", vers: "l'air", vitesse: "plus vite", sens: "loin" },
+    { de: "l'air", vers: "l'huile végétale", vitesse: "plus lentement", sens: "vers" },
+    { de: "l'huile végétale", vers: "l'air", vitesse: "plus vite", sens: "loin" },
+    { de: "l'eau", vers: "le verre", vitesse: "plus lentement", sens: "vers" },
+    { de: "le verre", vers: "l'eau", vitesse: "plus vite", sens: "loin" },
+    { de: "l'air", vers: "le plexiglas", vitesse: "plus lentement", sens: "vers" },
+    { de: "le plexiglas", vers: "l'air", vitesse: "plus vite", sens: "loin" }
+  ];
+  var contextes = [
+    "lors d'une activité de laboratoire",
+    "dans un montage avec une boîte à rayons",
+    "pendant une démonstration en classe",
+    "dans un bac transparent rempli à moitié",
+    "sur la paillasse, devant un écran blanc",
+    "au cours d'une mesure d'angles soignée"
+  ];
+  var p = pick(paires);
+  var ctx = pick(contextes);
+  var key, autres;
+  if (p.sens === "vers") {
+    key = "Il se dévie vers la normale à la frontière";
+    autres = ["Il se dévie en s'éloignant de la normale", "Il traverse la frontière sans se dévier du tout", "Il se réfléchit entièrement à la frontière"];
+  } else {
+    key = "Il se dévie en s'éloignant de la normale";
+    autres = ["Il se dévie vers la normale à la frontière", "Il traverse la frontière sans se dévier du tout", "Il se réfléchit entièrement à la frontière"];
+  }
+  var sol = "La règle de la réfraction relie le changement de vitesse au sens de la déviation. Ici, la lumière passe de " + p.de + " à " + p.vers + " et y voyage " + p.vitesse + " : " + (p.sens === "vers" ? "un rayon qui ralentit se dévie vers la normale." : "un rayon qui accélère se dévie en s'éloignant de la normale.");
+  return mcq("Un rayon de lumière arrive en oblique à une frontière, " + ctx + " : il passe de " + p.de + " à " + p.vers + ", où la lumière voyage " + p.vitesse + " que dans le premier milieu. Comment le rayon se dévie-t-il à la frontière?",
+    key, autres, sol, {});
+}, ["Le changement de vitesse décide du sens : ralentir rapproche de la normale, accélérer en éloigne.", "Lis le trajet dans l'ordre : le premier milieu, le second milieu, puis la vitesse dans le second."]);
+
+E("s8f-u3-refraction-nouveau", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return mcq("Un faisceau de lumière blanche traverse un prisme de verre dans une pièce sombre et frappe un écran. Quelle prédiction décrit correctement ce qu'on observera sur l'écran, et pourquoi?",
+      "Le faisceau s'étale en une bande de couleurs, parce que le verre réfracte chaque couleur d'une quantité légèrement différente : la réfraction sépare les couleurs déjà présentes dans la lumière blanche",
+      ["Le faisceau reste un seul point blanc, parce que le verre réfracte toutes les couleurs exactement de la même quantité : la réfraction courbe le faisceau entier sans jamais séparer ce qui le compose",
+       "Le faisceau devient une seule couleur pure, parce que le verre absorbe toutes les couleurs sauf une en le traversant : la réfraction choisit la couleur la plus forte et élimine toutes les autres couleurs",
+       "Le faisceau s'étale en une bande de couleurs, parce que le verre ajoute ses propres pigments à la lumière en la traversant : la réfraction colore le faisceau au passage et fabrique les couleurs observées"],
+      "Le prisme ne fabrique rien : la lumière blanche contient déjà toutes les couleurs. À chaque surface du prisme, la réfraction dévie le faisceau, et la déviation n'est pas tout à fait la même pour chaque couleur. Le violet se dévie le plus et le rouge le moins, donc les couleurs s'étalent en spectre sur l'écran.",
+      {});
+  },
+  function () {
+    return mcq("Par un après-midi très chaud, une route d'asphalte semble couverte de flaques brillantes au loin, qui disparaissent quand on s'en approche. Quelle explication de ce mirage est correcte?",
+      "L'air juste au-dessus de l'asphalte chaud est moins dense : la lumière du ciel s'y réfracte peu à peu en s'en approchant et finit par remonter vers l'oeil, qui la lit comme le reflet du ciel sur de l'eau",
+      ["Une mince couche d'eau réelle recouvre toujours l'asphalte les jours de chaleur : elle s'évapore dès qu'on s'en approche et se reforme plus loin, ce qui fait reculer les flaques brillantes devant le marcheur",
+       "La chaleur fait fondre une fine couche de l'asphalte lui-même, qui devient lisse et réfléchit le ciel comme un miroir : les flaques brillantes sont la réflexion du ciel sur cette couche fondue de la route",
+       "La lumière du ciel rebondit sur les grains de sable de l'accotement et se disperse au-dessus de la route : les flaques brillantes sont cette lumière dispersée, que l'oeil rassemble en une image de surface liquide"],
+      "Le mirage est une réfraction, pas une réflexion sur de l'eau. Près de l'asphalte surchauffé, l'air est moins dense; la lumière du ciel qui descend vers la route change peu à peu de vitesse et se courbe dans cet air inégal, jusqu'à remonter vers l'oeil. L'oeil la prolonge en ligne droite et la place au niveau du sol : le cerveau y reconnaît le reflet du ciel sur une surface d'eau, alors qu'il n'y a que de l'air et de la réfraction.",
+      {});
+  },
+  function () {
+    return mcq("Une piscine a une partie profonde de 2 mètres, mais un nouvel élève sauveteur, la regardant du bord, jurerait qu'elle est beaucoup moins profonde. Quelle prédiction et quelle précaution sont correctes?",
+      "Le fond semble relevé : la lumière du fond se réfracte en sortant de l'eau et l'oeil le reconstruit trop près de la surface, donc il ne faut jamais juger la profondeur d'une piscine à l'oeil avant d'y plonger",
+      ["Le fond semble abaissé : la lumière du fond se réfracte en sortant de l'eau et l'oeil le reconstruit plus loin de la surface, donc la piscine est toujours moins profonde en réalité que ce qu'elle paraît du bord",
+       "Le fond semble à sa vraie place : la lumière du fond voyage en ligne droite de l'eau jusqu'à l'oeil sans changer de direction, donc un regard exercé peut mesurer la profondeur exacte d'une piscine depuis son bord",
+       "Le fond semble relevé : l'eau soulève réellement le fond de la piscine pendant le jour sous l'effet de la chaleur du Soleil, donc il faut attendre la soirée pour que le fond reprenne sa profondeur véritable"],
+      "C'est la profondeur apparente. La lumière du fond se réfracte en passant de l'eau à l'air, en s'éloignant de la normale, et l'oeil, qui prolonge les rayons en ligne droite, reconstruit le fond plus près de la surface qu'il ne l'est. Le fond d'une piscine paraît donc toujours moins profond que sa profondeur réelle : juger à l'oeil avant de plonger est dangereux.",
+      {});
+  },
+  function () {
+    return mcq("Une goutte d'eau presque sphérique repose sur une page imprimée, et les lettres sous la goutte paraissent nettement plus grandes que les autres. Quelle explication est correcte?",
+      "La goutte bombée réfracte la lumière comme une petite lentille convergente : ses surfaces courbes dévient les rayons des lettres de façon à les faire paraître agrandies quand on les regarde à travers elle",
+      ["La goutte bombée réfléchit la lumière comme un petit miroir convergent : ses surfaces courbes renvoient les rayons des lettres vers l'oeil en une image agrandie, sans que la lumière traverse jamais la goutte",
+       "La goutte bombée étire physiquement l'encre des lettres en gonflant le papier sous elle : les lettres paraissent plus grandes parce qu'elles le sont devenues pendant que la goutte repose sur la page imprimée",
+       "La goutte bombée absorbe la lumière autour des lettres et ne laisse passer que celle des lettres elles-mêmes : le contraste ainsi augmenté donne seulement l'impression que les lettres sont devenues plus grandes"],
+      "Une goutte bombée est une lentille en miniature. La lumière des lettres se réfracte en entrant dans l'eau de la goutte et encore en en sortant; la forme bombée dévie les rayons comme une lentille convergente, et l'oeil reçoit une image agrandie des lettres. Retire la goutte et l'effet disparaît avec la lentille : ni l'encre ni le papier n'ont changé.",
+      {});
+  }
+]), ["Ces montages sont nouveaux, mais la règle ne change pas : vitesse, déviation par rapport à la normale, oeil qui prolonge tout droit.", "Cherche ce qui est traversé, et dans quel sens la lumière peut y changer de vitesse."]);
+
+E("s8f-u3-refraction-affirmation", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return mcq("Un élève affirme : « Le prisme fabrique les couleurs, parce qu'il ajoute ses propres pigments à la lumière blanche qui le traverse. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : les couleurs sont déjà présentes dans la lumière blanche, et le prisme les sépare seulement, parce que sa réfraction dévie chaque couleur d'une quantité légèrement différente des autres",
+      ["Elle est juste : les couleurs apparaissent seulement à l'intérieur du verre du prisme, dont les pigments se mélangent à la lumière blanche pendant la traversée et peignent le faisceau de toutes ces couleurs",
+       "Elle est fausse : les couleurs viennent de l'écran sur lequel le faisceau tombe, dont la peinture réagit à la lumière blanche et se sépare en bandes colorées quand le faisceau du prisme la frappe assez fort",
+       "Elle est juste en partie : le prisme fabrique les couleurs chaudes, comme le rouge et l'orange, mais les couleurs froides, comme le bleu et le violet, étaient déjà présentes dans la lumière blanche au départ"],
+      "L'affirmation donne au prisme un travail qu'il ne fait pas. La lumière blanche est un mélange de couleurs; le prisme ne fait que réfracter, et sa réfraction varie légèrement selon la couleur, le violet étant le plus dévié et le rouge le moins. Les couleurs sortent séparées parce qu'elles y étaient déjà, chacune prenant un trajet un peu différent.",
+      {});
+  },
+  function () {
+    return mcq("Un élève affirme : « Le fond de la piscine remonte vraiment pendant le jour, soulevé par l'eau chaude, et il redescend le soir. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : le fond ne bouge pas; la lumière qui en vient se réfracte en sortant de l'eau, et l'oeil, qui prolonge les rayons en ligne droite, reconstruit le fond plus près de la surface qu'il ne l'est",
+      ["Elle est juste : la chaleur du jour dilate l'eau de la piscine, qui pousse le fond vers le haut de quelques centimètres, et le refroidissement du soir laisse le fond redescendre exactement à sa place habituelle",
+       "Elle est fausse : le fond ne bouge pas; c'est la surface de l'eau qui descend pendant le jour à cause de l'évaporation, ce qui rapproche vraiment le fond de l'oeil et le fait paraître plus haut qu'il ne l'est",
+       "Elle est juste en partie : le fond remonte seulement dans la partie peu profonde de la piscine, où l'eau chaude peut le soulever, tandis que le fond de la partie profonde reste toujours exactement à sa place"],
+      "Le fond est en béton : il ne remonte ni ne redescend. L'effet est entièrement dans le trajet de la lumière. Les rayons du fond se réfractent en quittant l'eau pour l'air, et l'oeil les prolonge en ligne droite, ce qui place le fond apparent plus haut que le fond réel, à toute heure du jour, dès qu'on le regarde à travers la surface.",
+      {});
+  },
+  function () {
+    return mcq("Un élève affirme : « La loupe étire les lettres elles-mêmes : son verre tire sur l'encre et agrandit l'impression pendant qu'on la regarde. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : les lettres ne changent pas; la loupe réfracte la lumière qui vient d'elles, et l'oeil reçoit des rayons déviés qui lui font reconstruire une image des lettres plus grande que les lettres réelles",
+      ["Elle est juste : le verre d'une loupe est légèrement élastique et il étire, en se bombant, l'image imprimée sur la page, de sorte que les lettres grandissent réellement pendant tout le temps qu'on les regarde",
+       "Elle est fausse : les lettres ne changent pas; la loupe réfléchit la lumière qui vient d'elles sur ses deux surfaces polies, et l'oeil rassemble ces réflexions en une image des lettres plus grande que les lettres",
+       "Elle est juste en partie : la loupe étire les lettres qui se trouvent exactement sous son centre, mais les lettres près de ses bords gardent leur vraie taille, parce que le verre n'y est pas assez bombé pour tirer"],
+      "Rien n'arrive à l'encre : éloigne la loupe et les lettres reprennent leur taille, intactes. La loupe est une lentille convergente; elle réfracte les rayons venant des lettres à ses deux surfaces, et l'oeil, prolongeant ces rayons déviés en ligne droite, reconstruit une image agrandie. L'agrandissement est dans le trajet de la lumière, pas dans la page.",
+      {});
+  },
+  function () {
+    return mcq("Un élève affirme : « Dans l'aquarium, le faisceau de la lampe se plie parce que l'eau le pousse de côté, comme un courant pousse un bâton flottant. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : rien ne pousse le faisceau; il se dévie à la surface parce que la lumière change de vitesse en passant de l'air à l'eau, et ce changement de vitesse à la frontière est la réfraction elle-même",
+      ["Elle est juste : l'eau de l'aquarium exerce une pression latérale sur tout ce qui la traverse, y compris la lumière, et cette poussée explique pourquoi le faisceau se plie davantage quand l'eau est plus profonde",
+       "Elle est fausse : rien ne pousse le faisceau; il se dévie à la surface parce que l'eau absorbe sa partie centrale et ne laisse passer que ses bords, ce qui donne seulement l'impression d'un faisceau plié en deux",
+       "Elle est juste en partie : un courant réel dans l'aquarium peut pousser légèrement le faisceau, mais un faisceau dans une eau parfaitement immobile resterait toujours parfaitement droit de la surface au fond"],
+      "La comparaison avec le bâton est séduisante mais fausse : la lumière n'est pas un objet flottant et l'eau immobile dévie le faisceau tout autant. La déviation se produit à la frontière, au moment où la lumière change de milieu et donc de vitesse : entrant dans l'eau, plus dense, elle ralentit et se dévie vers la normale. C'est ce changement de vitesse, et non une poussée, qui plie le faisceau.",
+      {});
+  }
+]), ["Juge l'affirmation, pas seulement le phénomène : le mécanisme proposé est-il le bon?", "Les bonnes évaluations gardent le phénomène et remplacent la cause par la réfraction."]);
+
+E("s8f-u3-cr-refraction-paille", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("Une paille droite est plongée dans un grand verre d'eau claire. Vue de côté, elle semble pliée exactement à la surface de l'eau : la partie immergée ne semble pas alignée avec la partie hors de l'eau. Explique cette apparence en détail : ce qui arrive à la lumière de la partie immergée à la surface, pourquoi l'oeil est trompé, et pourquoi l'effet se produit précisément à la surface. (3 points)",
+      ["la lumière de la partie immergée se réfracte à la surface en passant de l'eau à l'air", "elle accélère en entrant dans l'air et se dévie en s'éloignant de la normale", "l'oeil prolonge les rayons en ligne droite et reconstruit la partie immergée déplacée", "seule la partie immergée envoie sa lumière à travers la surface, donc seule elle est déplacée"],
+      "<b>Réponse modèle:</b> La lumière qui vient de la partie immergée de la paille doit traverser la surface pour atteindre l'oeil. À cette frontière, elle passe de l'eau, plus dense, à l'air, moins dense : elle accélère et se réfracte, en se déviant en s'éloignant de la normale. L'oeil et le cerveau supposent que la lumière a voyagé en ligne droite : ils prolongent les rayons déviés tout droit vers l'arrière et reconstruisent la partie immergée à une position déplacée, plus relevée que sa position réelle. La partie hors de l'eau envoie sa lumière directement à l'oeil, sans traverser de surface, donc elle paraît à sa vraie place. Les deux parties semblent donc désalignées exactement à la surface, là où la réfraction se produit, et la paille paraît pliée.<br><br><b>Points d'attribution:</b> 1 point pour la réfraction à la surface (la lumière de la partie immergée change de direction en passant de l'eau à l'air, en s'éloignant de la normale à mesure qu'elle accélère). 1 point pour l'oeil trompé (il prolonge les rayons en ligne droite et reconstruit la partie immergée à une position déplacée et relevée). 1 point pour le pli situé à la surface (seule la lumière de la partie immergée traverse la frontière, donc seule cette partie paraît déplacée).",
+      {});
+  },
+  function () {
+    return textq("Une paille semble pliée dans un verre d'eau, mais dès qu'on la retire du verre, elle est parfaitement droite, et elle le redevient chaque fois. Un élève conclut que l'eau plie la paille seulement pendant qu'elle est immergée. Réfute sa conclusion et explique la vraie cause de l'apparence, en précisant ce qui arrive à la lumière à la surface et pourquoi l'oeil place mal la partie immergée. (3 points)",
+      ["la paille ne change jamais; seule la lumière qui en vient change de direction", "à la surface, la lumière sortant de l'eau accélère et se dévie en s'éloignant de la normale", "l'oeil prolonge les rayons en ligne droite et voit la partie immergée relevée et décalée", "retirée de l'eau, la paille n'envoie plus de lumière à travers une surface, donc l'effet disparaît"],
+      "<b>Réponse modèle:</b> La conclusion de l'élève est fausse : la paille ne se plie à aucun moment, ce que prouve son état intact dès qu'on la retire, et une pression d'eau ordinaire ne plierait pas une paille rigide pour la redresser ensuite sans trace. La vraie cause est dans le trajet de la lumière. Les rayons de la partie immergée traversent la surface de l'eau pour atteindre l'oeil; en passant de l'eau à l'air, ils accélèrent et se réfractent en s'éloignant de la normale. L'oeil prolonge ces rayons déviés en ligne droite et reconstruit donc la partie immergée plus relevée et décalée qu'elle ne l'est, d'où le pli apparent à la surface. Une fois la paille retirée, aucun rayon ne traverse plus de frontière avant l'oeil, et la paille paraît simplement droite, comme elle l'a toujours été.<br><br><b>Points d'attribution:</b> 1 point pour la réfutation (la paille ne change jamais; l'effet disparaît dès le retrait, donc il est dans la lumière, pas dans la paille). 1 point pour la réfraction à la surface (la lumière sortant de l'eau accélère et se dévie en s'éloignant de la normale). 1 point pour l'oeil trompé (il prolonge les rayons en ligne droite et reconstruit la partie immergée relevée et décalée, d'où le pli à la surface).",
+      {});
+  }
+]), ["La paille est droite; tout se joue dans le trajet de sa lumière.", "Trois maillons : la surface, le changement de vitesse et de direction, puis l'oeil qui prolonge tout droit."]);
+
+E("s8f-u3-cr-refraction-lumiere", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return textq("Un faisceau étroit d'une boîte à rayons entre en oblique dans un bac d'eau claire, de l'air vers l'eau. Décris le trajet complet du faisceau : ce qui arrive à sa vitesse à la surface, dans quel sens il se dévie par rapport à la normale, et une conséquence que les élèves peuvent observer dans le bac. (3 points)",
+      ["la lumière ralentit en passant de l'air à l'eau, un milieu plus dense", "elle se dévie vers la normale à la surface", "le faisceau change visiblement de direction à la surface et frappe le fond décalé par rapport à son prolongement droit"],
+      "<b>Réponse modèle:</b> Le faisceau voyage d'abord en ligne droite dans l'air. À la surface de l'eau, il entre dans un milieu plus dense : sa vitesse diminue, et ce ralentissement le dévie vers la normale, donc il poursuit dans l'eau selon un angle plus petit par rapport à la normale que son angle d'arrivée. Conséquence observable : le faisceau présente un coude net à la surface, et il frappe le fond du bac plus près de la verticale, décalé par rapport à l'endroit où son prolongement en ligne droite l'aurait envoyé; un objet placé au fond semble, vu de l'air, relevé par le même effet.<br><br><b>Points d'attribution:</b> 1 point pour le changement de vitesse correct (la lumière ralentit en passant de l'air à l'eau). 1 point pour le sens de la déviation correct (vers la normale). 1 point pour une conséquence observable valide (le coude du faisceau à la surface, le point d'impact décalé au fond, ou un objet du fond qui semble relevé).",
+      {});
+  },
+  function () {
+    return textq("Un faisceau étroit voyage à l'intérieur d'un bloc de verre semi-circulaire et en sort en oblique, du verre vers l'air. Décris le trajet complet du faisceau : ce qui arrive à sa vitesse à la surface de sortie, dans quel sens il se dévie par rapport à la normale, et une conséquence que les élèves peuvent observer sur l'écran placé derrière le bloc. (3 points)",
+      ["la lumière accélère en passant du verre à l'air, un milieu moins dense", "elle se dévie en s'éloignant de la normale à la surface de sortie", "le point lumineux sur l'écran est décalé par rapport à la position qu'un trajet tout droit aurait donnée"],
+      "<b>Réponse modèle:</b> À l'intérieur du verre, le faisceau voyage en ligne droite, plus lentement que dans l'air. À la surface de sortie, il entre dans un milieu moins dense : sa vitesse augmente, et cette accélération le dévie en s'éloignant de la normale, donc il repart dans l'air selon un angle plus grand par rapport à la normale que son angle d'arrivée à la surface. Conséquence observable : le point lumineux sur l'écran derrière le bloc est décalé par rapport à l'endroit où il tomberait si le faisceau avait continué tout droit à travers le bloc; en traçant les deux trajets, les élèves voient le coude du faisceau à la surface de sortie.<br><br><b>Points d'attribution:</b> 1 point pour le changement de vitesse correct (la lumière accélère en passant du verre à l'air). 1 point pour le sens de la déviation correct (en s'éloignant de la normale). 1 point pour une conséquence observable valide (le point lumineux décalé sur l'écran, ou le coude visible du faisceau à la surface de sortie).",
+      {});
+  },
+  function () {
+    return textq("La lumière d'une petite lampe placée sous l'eau d'un aquarium remonte en oblique et sort dans l'air avant d'atteindre l'oeil d'un observateur. Décris le trajet complet de cette lumière : ce qui arrive à sa vitesse à la surface, dans quel sens elle se dévie par rapport à la normale, et une conséquence que l'observateur peut constater en regardant la lampe. (3 points)",
+      ["la lumière accélère en passant de l'eau à l'air, un milieu moins dense", "elle se dévie en s'éloignant de la normale à la surface", "la lampe semble plus près de la surface qu'elle ne l'est réellement, car l'oeil prolonge les rayons en ligne droite"],
+      "<b>Réponse modèle:</b> La lumière de la lampe voyage en ligne droite dans l'eau, plus lentement que dans l'air. À la surface, elle entre dans un milieu moins dense : sa vitesse augmente, et cette accélération la dévie en s'éloignant de la normale, donc elle atteint l'oeil selon un angle plus ouvert que son trajet dans l'eau. Conséquence observable : l'oeil prolonge les rayons reçus en ligne droite et reconstruit la lampe plus près de la surface qu'elle ne l'est réellement; la lampe paraît relevée dans l'aquarium, et viser sa position apparente avec une pince la manquerait par en dessous.<br><br><b>Points d'attribution:</b> 1 point pour le changement de vitesse correct (la lumière accélère en passant de l'eau à l'air). 1 point pour le sens de la déviation correct (en s'éloignant de la normale). 1 point pour une conséquence observable valide (la lampe semble relevée, plus près de la surface, ou toute visée sur sa position apparente la manque).",
+      {});
+  }
+]), ["Décris le trajet en trois temps : avant la frontière, à la frontière, après la frontière.", "Le sens de la déviation suit le changement de vitesse : ralentir rapproche de la normale, accélérer en éloigne."]);
