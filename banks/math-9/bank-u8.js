@@ -8,6 +8,19 @@
 // CRMARKS: u8-same-arc-angles=2
 // CRMARKS: u8-chord-two-step=3
 // CRMARKS: u8-tangent-central-inscribed=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: u8-tangent-right-angle=2
+// CRMARKS: u8-chord-perp-bisects=2
+// CRMARKS: u8-add-semicircle-right-angle=2
+// CRMARKS: u8-add-same-arc-name=2
+// CRMARKS: u8-add-chord-length-mc=2
+// BIMODAL: u8-tangent-central-inscribed=a
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: u8-tangent-right-angle=a
+// BIMODAL: u8-chord-perp-bisects=a
+// BIMODAL: u8-add-semicircle-right-angle=a
+// BIMODAL: u8-add-same-arc-name=a
+// BIMODAL: u8-add-chord-length-mc=a
 E("u8-tangent-right-angle", 8, ["9.4"], 1, "gen", function () {
   var tAng = pick([160, 175, 190, 205, 220, 235, 250, 265, 280, 295, 310, 325, 340, 355, 10, 25]);
   var r = pick([4, 5, 6, 7, 8, 9, 10, 12]);
@@ -256,6 +269,106 @@ E("u8-tangent-central-inscribed", 8, ["9.5"], 3, "gen", function () {
   q.figure = fig;
   return q;
 }, ["Combine two properties: the radius to a tangent makes a right angle, and an inscribed angle is half the central angle on the same arc.", "First use the angle sum in right triangle OTP to find the central angle TOD."]);
+
+/* Bimodal build additions (Nov 19, 2026): three selected-response entries on the unit's thinnest circle-geometry indicators, 9.8 (angle in a semicircle), 9.9 (inscribed angles on the same arc) and 9.6 (chord length from the perpendicular from the centre). SME-flagged for the specialist pass. */
+
+// B1. 9.8 L2 MC: the angle in a semicircle, asked at C with no right-angle mark given away.
+E("u8-add-semicircle-right-angle", 8, ["9.8"], 2, "gen", function () {
+  var gam = 2 * ri(18, 72);
+  /* Guard (Ruling 7, Nov 21, 2026): at gam = 90 the given angle is 45 degrees, where the
+     "given" distractor and the "90 - given" distractor coincide and the draw deals only
+     three distinct options; redraw gam so 45 degrees is never the given angle. */
+  while (gam === 90) gam = 2 * ri(18, 72);
+  var rot = pick([0, 14, -14, 28]);
+  var atA = Math.random() < 0.5;
+  var A = u8Rot([-1, 0], rot), B = u8Rot([1, 0], rot), C = u8Rot(u8P(gam), rot);
+  var angA = gam / 2, angB = 90 - angA;
+  var given = atA ? angA : angB;
+  var gv = atA ? "A" : "B", other = atA ? "B" : "A";
+  function pt(n) { return n === "A" ? A : (n === "B" ? B : C); }
+  var fig = u8Fig({
+    pts: { A: A, B: B, C: C }, segs: [["A", "B"], ["A", "C"], ["B", "C"]],
+    angles: [{ v: gv, a1: u8Dir(pt(gv), C), a2: u8Dir(pt(gv), pt(other)), r: 0.3, lr: 0.55, label: fmt(given) + "°" }]
+  });
+  var prompt = "In the diagram, AB is a diameter of the circle with centre O, and C is a point on the circle. Angle " + (atA ? "CAB" : "CBA") + " measures \\(" + fmt(given) + "^{\\circ}\\). What is the measure of angle ACB?";
+  var solution = "AB is a diameter, so angle ACB is an angle inscribed in a semicircle. Every angle inscribed in a semicircle is a right angle, whatever the size of the other angles in the triangle. So angle ACB is <b>\\(90^{\\circ}\\)</b>.";
+  var q = mcq(prompt,
+    { t: "\\(90^{\\circ}\\)", fb: "Correct. An angle inscribed in a semicircle is a right angle." },
+    [
+      { t: "\\(" + fmt(given) + "^{\\circ}\\)", fb: "That copies the given angle. Angle ACB is the angle in the semicircle, and it has its own fixed measure." },
+      { t: "\\(" + fmt(90 - given) + "^{\\circ}\\)", fb: "That is the measure of the other acute angle of the triangle, at " + other + ". The question asks for the angle at C." },
+      { t: "\\(" + fmt(180 - given) + "^{\\circ}\\)", fb: "That is the supplement of the given angle. Angle ACB is not supplementary to the given angle." }
+    ],
+    solution, { mode: "semicircle-right-angle", gam: gam, rot: rot, gv: gv });
+  q.figure = fig;
+  return q;
+}, ["AB is a diameter, so the angle at C is an angle in a semicircle.", "The angle in a semicircle has the same measure for every position of C on the circle."]);
+
+// B2. 9.9 L2 MC: name the angle that must equal a given inscribed angle on the same arc.
+E("u8-add-same-arc-name", 8, ["9.9"], 2, "gen", function () {
+  var v = ri(18, 75);
+  var rot = pick([0, 18, 36, 54, 72, 90]);
+  var A = u8P(200 + rot), B = u8P(340 + rot), C = u8P(80 + rot), D = u8P(135 + rot);
+  var fig = u8Fig({
+    pts: { A: A, B: B, C: C, D: D }, segs: [["C", "A"], ["C", "B"], ["D", "A"], ["D", "B"]],
+    angles: [{ v: "C", a1: u8Dir(C, A), a2: u8Dir(C, B), r: 0.3, lr: 0.55, label: fmt(v) + "°" }]
+  });
+  var prompt = "In the diagram, A, B, C and D are points on a circle with centre O. Points C and D are on the same side of chord AB, and angle ACB measures \\(" + fmt(v) + "^{\\circ}\\). Which angle must have the same measure as angle ACB?";
+  var solution = "Angles ACB and ADB are both inscribed angles standing on the same arc AB, with their vertices on the same side of chord AB. Inscribed angles subtending the same arc are equal. So the angle with the same measure is <b>Angle ADB</b>.";
+  var q = mcq(prompt,
+    { t: "Angle ADB", fb: "Correct. Angle ADB is an inscribed angle on the same arc AB." },
+    [
+      { t: "Angle AOB", fb: "Angle AOB is the central angle on arc AB. A central angle is twice the inscribed angle on the same arc, not equal to it." },
+      { t: "Angle OAB", fb: "Angle OAB sits inside triangle OAB, at the end of a radius. It is not an inscribed angle standing on arc AB." },
+      { t: "Angle ABO", fb: "Angle ABO also sits inside triangle OAB, at the end of a radius. It is not an inscribed angle standing on arc AB." }
+    ],
+    solution, { mode: "same-arc-name", v: v, rot: rot });
+  q.figure = fig;
+  return q;
+}, ["Look for another angle whose vertex is on the circle and whose sides pass through A and B.", "Angles at the centre and angles inside triangle OAB follow different rules."]);
+
+// B3. 9.6 L2 MC: chord length, or half-chord length, from the radius and the distance from the centre, with the doubling and addition errors offered.
+E("u8-add-chord-length-mc", 8, ["9.6"], 2, "gen", function () {
+  var tr = pick([[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41], [12, 35, 37], [28, 45, 53]]), k = pick([1, 2]);
+  var d = tr[0] * k, half = tr[1] * k, r = tr[2] * k;
+  if (Math.random() < 0.5) { var tmp = d; d = half; half = tmp; }
+  var askAB = Math.random() < 0.5;
+  var tilt = pick([0, 15, -15, 30, -30]);
+  var A = u8Rot([-half / r, d / r], tilt), B = u8Rot([half / r, d / r], tilt);
+  var fig = u8Fig({
+    pts: { A: A, B: B }, segs: [["A", "B"], ["O", "A"]], perp: ["A", "B"],
+    sideLabs: [{ a: "O", b: "A", text: fmt(r) + " cm", off: 15 }, { a: "O", b: "M", text: fmt(d) + " cm", off: 15 }]
+  });
+  var steps = "The perpendicular from the centre bisects the chord, so \\(AM = MB\\). Triangle OMA is right-angled at M: \\[ \\begin{aligned} AM^{2} &= OA^{2} - OM^{2} \\\\ &= " + fmt(r) + "^{2} - " + fmt(d) + "^{2} = " + fmt(r * r - d * d) + " \\\\ AM &= " + fmt(half) + " \\end{aligned} \\]";
+  var prompt, solution, keyT, keyFb, ds;
+  if (askAB) {
+    prompt = "In the diagram, AB is a chord of a circle with centre O and radius \\(" + fmt(r) + "\\) cm. The perpendicular from O meets AB at M, and \\(OM = " + fmt(d) + "\\) cm. What is the length of the chord AB, in centimetres?";
+    solution = steps + " The chord is twice AM: \\[ \\begin{aligned} AB &= 2 \\times " + fmt(half) + " = " + fmt(2 * half) + " \\end{aligned} \\] So the chord length is <b>" + fmt(2 * half) + " cm</b>.";
+    keyT = fmt(2 * half);
+    keyFb = "Correct. AM is " + fmt(half) + " cm and the chord is twice AM.";
+    ds = [
+      { t: fmt(half), fb: "That is only half of the chord, the length AM. The perpendicular from the centre bisects the chord, so AM still has to be doubled." },
+      { t: fmt(d + half), fb: "That adds OM and AM together. The chord is twice AM, not OM plus AM." },
+      { t: fmt(r + half), fb: "That adds the radius to AM. The radius was already used to find AM; the chord is twice AM." }
+    ];
+  } else {
+    prompt = "In the diagram, AB is a chord of a circle with centre O and radius \\(" + fmt(r) + "\\) cm. The perpendicular from O meets AB at M, and \\(OM = " + fmt(d) + "\\) cm. What is the length of AM, in centimetres?";
+    solution = steps + " So the length of AM is <b>" + fmt(half) + " cm</b>.";
+    keyT = fmt(half);
+    keyFb = "Correct. Pythagoras in triangle OMA gives AM directly.";
+    ds = [
+      { t: fmt(2 * half), fb: "That is the full chord AB. The question asks for AM, which is half of the chord." },
+      { t: fmt(r - d), fb: "That subtracts OM from the radius. AM comes from Pythagoras in triangle OMA, not from subtracting the two given lengths." },
+      { t: fmt(d + half), fb: "That adds OM to the value of AM. The two lengths are not added anywhere in this calculation." }
+    ];
+  }
+  var q = mcq(prompt,
+    { t: keyT, fb: keyFb },
+    ds,
+    solution, { mode: askAB ? "chord-length-mc" : "half-chord-mc", r: r, d: d, half: half, tilt: tilt });
+  q.figure = fig;
+  return q;
+}, ["The perpendicular from the centre to a chord bisects the chord, and it makes a right triangle with a radius.", "Find AM with Pythagoras in triangle OMA, and check whether the question asks for AM or for the whole chord."]);
 
 // Unit 9: Probability and Statistics (Math 9, NL). Entries only; helpers prefixed u9.
 
