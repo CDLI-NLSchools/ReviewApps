@@ -12,6 +12,109 @@
 // CRMARKS: s9-u1-cr-data=3
 // CRMARKS: s9-u1-cr-design-mission=4
 // CRMARKS: s9-u1-cr-process=3
+// CRMARKS: s9-u1-cr-model-evidence=4
+// CRMARKS: s9-u1-cr-nebular=2
+// CRMARKS: s9-u1-cr-expansion-evidence=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s9-u1-constellation-figure=2
+// CRMARKS: s9-u1-orbit-meaning=2
+// CRMARKS: s9-u1-moon-motion=4
+// CRMARKS: s9-u1-motion-cause=2
+// CRMARKS: s9-u1-wander=3
+// CRMARKS: s9-u1-geo-helio=2
+// CRMARKS: s9-u1-kepler-galileo=3
+// CRMARKS: s9-u1-models-judgement=4
+// CRMARKS: s9-u1-sun-makeup=2
+// CRMARKS: s9-u1-planet-table-figure=2
+// CRMARKS: s9-u1-dwarf-pluto=2
+// CRMARKS: s9-u1-comet-tail=3
+// CRMARKS: s9-u1-small-bodies=4
+// CRMARKS: s9-u1-comet-period=4
+// CRMARKS: s9-u1-classify-gen=3
+// CRMARKS: s9-u1-solar-wind=2
+// CRMARKS: s9-u1-aurora=3
+// CRMARKS: s9-u1-comms-effect=4
+// CRMARKS: s9-u1-oscillating=3
+// CRMARKS: s9-u1-expansion-evidence=4
+// CRMARKS: s9-u1-nebula=2
+// CRMARKS: s9-u1-quasar=3
+// CRMARKS: s9-u1-star-life=4
+// CRMARKS: s9-u1-star-mass-gen=3
+// CRMARKS: s9-u1-nav-personal=2
+// CRMARKS: s9-u1-endeavour-link=3
+// CRMARKS: s9-u1-propulsion-science=4
+// CRMARKS: s9-u1-canadarm=2
+// CRMARKS: s9-u1-astronauts=3
+// CRMARKS: s9-u1-suit=3
+// CRMARKS: s9-u1-rover-probe-gen=2
+// CRMARKS: s9-u1-remote-data=2
+// CRMARKS: s9-u1-distance-chart-figure=4
+// CRMARKS: s9-u1-unit-choice-gen=2
+// CRMARKS: s9-u1-au-ly-gen=3
+// CRMARKS: s9-u1-career-path=3
+// CRMARKS: s9-u1-stakeholder=3
+// CRMARKS: s9-u1-scale-method=2
+// CRMARKS: s9-u1-instrument-use=2
+// CRMARKS: s9-u1-scale-read-gen=3
+// CRMARKS: s9-u1-data-format=2
+// CRMARKS: s9-u1-planet-data-gen=3
+// CRMARKS: s9-u1-prototype=2
+// CRMARKS: s9-u1-design-judge=4
+// CRMARKS: s9-u1-materials-gen=3
+// CRMARKS: s9-u1-act-on-idea=3
+// CRMARKS: s9-u1-alternatives=2
+// CRMARKS: s9-u1-plan-steps=3
+// CRMARKS: s9-u1-process-eval=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s9-u1-constellation-figure=a
+// BIMODAL: s9-u1-orbit-meaning=b
+// BIMODAL: s9-u1-moon-motion=b
+// BIMODAL: s9-u1-motion-cause=b
+// BIMODAL: s9-u1-wander=b
+// BIMODAL: s9-u1-geo-helio=b
+// BIMODAL: s9-u1-kepler-galileo=b
+// BIMODAL: s9-u1-models-judgement=b
+// BIMODAL: s9-u1-sun-makeup=b
+// BIMODAL: s9-u1-planet-table-figure=b
+// BIMODAL: s9-u1-dwarf-pluto=b
+// BIMODAL: s9-u1-comet-tail=b
+// BIMODAL: s9-u1-small-bodies=b
+// BIMODAL: s9-u1-comet-period=b
+// BIMODAL: s9-u1-classify-gen=b
+// BIMODAL: s9-u1-solar-wind=b
+// BIMODAL: s9-u1-aurora=b
+// BIMODAL: s9-u1-comms-effect=b
+// BIMODAL: s9-u1-oscillating=b
+// BIMODAL: s9-u1-expansion-evidence=b
+// BIMODAL: s9-u1-nebula=b
+// BIMODAL: s9-u1-quasar=a
+// BIMODAL: s9-u1-star-life=b
+// BIMODAL: s9-u1-star-mass-gen=b
+// BIMODAL: s9-u1-nav-personal=b
+// BIMODAL: s9-u1-endeavour-link=b
+// BIMODAL: s9-u1-propulsion-science=b
+// BIMODAL: s9-u1-canadarm=b
+// BIMODAL: s9-u1-astronauts=b
+// BIMODAL: s9-u1-suit=b
+// BIMODAL: s9-u1-rover-probe-gen=a
+// BIMODAL: s9-u1-remote-data=b
+// BIMODAL: s9-u1-distance-chart-figure=b
+// BIMODAL: s9-u1-unit-choice-gen=b
+// BIMODAL: s9-u1-au-ly-gen=a
+// BIMODAL: s9-u1-career-path=b
+// BIMODAL: s9-u1-stakeholder=b
+// BIMODAL: s9-u1-scale-method=b
+// BIMODAL: s9-u1-instrument-use=b
+// BIMODAL: s9-u1-scale-read-gen=a
+// BIMODAL: s9-u1-data-format=b
+// BIMODAL: s9-u1-planet-data-gen=a
+// BIMODAL: s9-u1-prototype=b
+// BIMODAL: s9-u1-design-judge=b
+// BIMODAL: s9-u1-materials-gen=b
+// BIMODAL: s9-u1-act-on-idea=b
+// BIMODAL: s9-u1-alternatives=b
+// BIMODAL: s9-u1-plan-steps=b
+// BIMODAL: s9-u1-process-eval=b
 // Science 9 Unit 1 bank: Space (SC9.1.1 to SC9.3.8), built Nov 15, 2026
 // to the Space authoring spec. All entries are original and were
 // written new for this app. Existing tests and question banks,
@@ -889,3 +992,209 @@ var NO_COMPOSE_U1 = {
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
 
+
+
+
+/* Lengthening tranche addition (Nov 20, 2026): one SR entry on
+   SC9.1.5 priced in Science-Test-Lengthening-Feasibility-2026-11-20.md,
+   Section 6. SME-flagged. */
+
+E("s9-u1-theory-evidence-match", 1, ["SC9.1.5"], 2, "var", varset([
+  function () {
+    return mcq("Astronomers observe that light from distant galaxies is shifted toward the red end of the spectrum, and the shift is larger for galaxies that are farther away. Which theory of the universe does this evidence support?",
+      "The Big Bang theory: the universe is expanding from an extremely hot, dense beginning",
+      ["The steady state theory: the universe has always existed in much the same form and is not expanding or changing at all", "The oscillating theory in its contracting phase: the universe is shrinking back to a point", "The static theory: the universe is unchanging, and the shift is an error in the instruments"],
+      "Red shift increasing with distance is the signature of expansion, the central prediction of the Big Bang theory. <b>The Big Bang theory: the universe is expanding from an extremely hot, dense beginning</b>.", {});
+  },
+  function () {
+    return mcq("In 1965, scientists detected faint microwave radiation arriving from every direction in space, at a temperature of about 3 K. Which theory does this cosmic background radiation support?",
+      "The Big Bang theory: it is the cooled leftover heat of the hot early universe",
+      ["The steady state theory: it is heat given off by the stars scattered throughout an eternal, unchanging universe", "The oscillating theory: it is radiation released by the previous universe collapsing", "No theory: the radiation is interference produced inside the detecting instruments"],
+      "A hot beginning predicts leftover heat radiation everywhere, cooled by expansion to a few kelvin: exactly what was found. <b>The Big Bang theory: it is the cooled leftover heat of the hot early universe</b>.", {});
+  },
+  function () {
+    return mcq("Which statement correctly describes the oscillating (cyclic) theory of the universe?",
+      "The universe expands, then gravity pulls it back into a collapse, and the cycle may repeat",
+      ["The universe expands forever into the future at a steady rate and its overall density never changes in any way", "The universe began once in an explosion and will expand forever without any change", "The universe has no beginning and no expansion; it simply exists as it is forever"],
+      "The oscillating theory cycles between expansion (a Big Bang) and contraction (a Big Crunch). <b>The universe expands, then gravity pulls it back into a collapse, and the cycle may repeat</b>.", {});
+  },
+  function () {
+    return mcq("The steady state theory was largely abandoned by most astronomers mainly because",
+      "observations (red shift and background radiation) showed the universe changes over time, which the theory denies",
+      ["it predicted that galaxies exist, and telescopes later showed that they do not", "it required the universe to be expanding, and expansion was disproved by red shift", "it was proposed too recently for astronomers to have tested any of its predictions"],
+      "Steady state requires an unchanging universe; evidence of expansion and a hot past contradicts it. <b>Observations showed the universe changes over time, which the theory denies</b>.", {});
+  },
+  function () {
+    return mcq("Measurements show the universe is made of roughly three quarters hydrogen and one quarter helium (by mass), almost everywhere. Why does this support the Big Bang theory?",
+      "A hot, dense beginning would fuse hydrogen into helium in about those proportions everywhere",
+      ["Stars make helium in exactly those proportions inside themselves and spread it evenly through all of space within a year", "Hydrogen and helium are the only elements that can exist, so any theory predicts the same ratio", "The proportions were measured only near Earth, so they say nothing about the early universe"],
+      "The Big Bang theory predicts the hydrogen-helium ratio from the conditions of the first minutes, and it matches everywhere. <b>A hot, dense beginning would fuse hydrogen into helium in about those proportions everywhere</b>.", {});
+  }
+]), ["Match the observation to the theory that predicts it, not just mentions it.", "A steady, unchanging universe cannot explain a leftover glow from a hot beginning."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s9-u1-cr-model-evidence closes Unit 1 Test
+   1 (4 marks, Level 3); s9-u1-cr-nebular closes Unit 1 Test
+   2 (2 marks, Level 3); s9-u1-cr-expansion-evidence closes Unit 1 Test
+   3 (4 marks, Level 3). SME-flagged for the
+   specialist pass. */
+
+E("s9-u1-cr-model-evidence", 1, ["SC9.1.1", "SC9.1.2"], 3, "var", varset([
+  function () {
+    return textq("Two observations are used to judge the geocentric (Earth centred) and heliocentric (Sun centred) accounts of the solar system. Observation 1: through a telescope, Venus is seen to go through a full set of phases, from a thin crescent to a full disc, and it looks much larger when it is a crescent. Observation 2: over several months, Mars moves eastward against the stars, then appears to loop westward for a few weeks, then resumes its eastward motion. (a) Explain how observation 1 supports the heliocentric account. (1) (b) Explain how observation 2 supports the heliocentric account. (1) (c) Explain why the geocentric account struggles to explain observation 1 naturally. (1) (d) The westward loop of Mars is an apparent motion. State what is really happening to produce it. (1) (4 marks)",
+      ["Venus shows a full set of phases and changes size because it orbits the Sun and is sometimes on the far side of the Sun and sometimes between Earth and the Sun", "Mars appears to loop because Earth, on its faster inner orbit, overtakes Mars, so the line of sight to Mars shifts backward against the stars", "in the geocentric account Venus stays between Earth and the Sun, so it could never show a full phase or the observed size change", "the loop is apparent motion: Mars keeps moving forward in its orbit the whole time, and only its direction as seen from the moving Earth changes"],
+      "<b>Model answer:</b> (a) In the heliocentric account Venus orbits the Sun. When Venus is on the far side of the Sun we see its lit face fully, and when it passes between Earth and the Sun it is closer, looks larger, and shows only a crescent of light. The full set of phases together with the size change fits an orbit around the Sun. (b) Mars orbits the Sun more slowly than Earth. As Earth catches up and passes Mars, Mars appears to move backward against the distant stars, then forward again once Earth has moved past. The loop is a natural result of two planets orbiting the Sun at different speeds. (c) In the geocentric account Venus circles Earth on a path that keeps it always between Earth and the Sun, so observers should only ever see crescent phases, never a full Venus. The observed full phase cannot be fitted in without straining the account. (d) The loop is apparent motion. Mars never reverses in its orbit; it is the changing viewpoint from Earth as Earth overtakes Mars that makes Mars look as if it moves backward.<br><br><b>Marking points:</b> 1 mark for observation 1 explained by Venus orbiting the Sun, with the near and far positions tied to phase and size. 1 mark for observation 2 explained by Earth overtaking the slower Mars in its orbit. 1 mark for the geocentric difficulty: Venus held between Earth and the Sun could show only crescents, not a full phase. 1 mark for the loop identified as apparent motion caused by the moving viewpoint, with Mars itself moving steadily forward.",
+      {});
+  },
+  function () {
+    return textq("Two observations are used to judge the geocentric (Earth centred) and heliocentric (Sun centred) accounts of the solar system. Observation 1: through a telescope, four small points of light are seen near Jupiter. Night after night they change places, passing in front of and behind Jupiter, but they always stay close to it. Observation 2: over several months, Mars moves eastward against the stars, then appears to loop westward for a few weeks, then resumes its eastward motion. (a) Explain how observation 1 supports the heliocentric account. (1) (b) Explain how observation 2 supports the heliocentric account. (1) (c) Explain why the geocentric account struggles to explain observation 1 naturally. (1) (d) The westward loop of Mars is an apparent motion. State what is really happening to produce it. (1) (4 marks)",
+      ["the points of light are moons orbiting Jupiter, so not every body in the sky orbits Earth", "Mars appears to loop because Earth, on its faster inner orbit, overtakes Mars, so the line of sight to Mars shifts backward against the stars", "in the geocentric account everything must circle Earth, so moons circling Jupiter have no natural place in it", "the loop is apparent motion: Mars keeps moving forward in its orbit the whole time, and only its direction as seen from the moving Earth changes"],
+      "<b>Model answer:</b> (a) The four points of light are moons in orbit around Jupiter. Their steady circling of Jupiter shows a centre of motion other than Earth, which the heliocentric account allows without difficulty, since in that account planets and their moons travel around the Sun together. (b) Mars orbits the Sun more slowly than Earth. As Earth catches up and passes Mars, Mars appears to move backward against the distant stars, then forward again once Earth has moved past. The loop follows naturally from two planets orbiting the Sun at different speeds. (c) The geocentric account holds that every heavenly body moves around Earth. Moons that plainly circle Jupiter, night after night, do not fit that rule, and the account can only keep them by adding special exceptions. (d) The loop is apparent motion. Mars never reverses in its orbit; it is the changing viewpoint from Earth as Earth overtakes Mars that makes Mars look as if it moves backward.<br><br><b>Marking points:</b> 1 mark for observation 1 explained as moons orbiting Jupiter, a centre of motion other than Earth. 1 mark for observation 2 explained by Earth overtaking the slower Mars in its orbit. 1 mark for the geocentric difficulty: its rule that all bodies circle Earth cannot naturally hold moons circling Jupiter. 1 mark for the loop identified as apparent motion caused by the moving viewpoint, with Mars itself moving steadily forward.",
+      {});
+  },
+  function () {
+    return textq("Two observations are used to judge the geocentric (Earth centred) and heliocentric (Sun centred) accounts of the solar system. Observation 1: through a telescope, Venus is seen to go through a full set of phases, from a thin crescent to a full disc, and it looks much larger when it is a crescent. Observation 2: through a telescope, four small points of light are seen near Jupiter. Night after night they change places, passing in front of and behind Jupiter, but they always stay close to it, and the whole group rises in the east and sets in the west each night. (a) Explain how observation 1 supports the heliocentric account. (1) (b) Explain how observation 2 supports the heliocentric account. (1) (c) Explain why the geocentric account struggles to explain observation 2 naturally. (1) (d) The nightly rising and setting of Jupiter and its moons is an apparent motion. State what is really happening to produce it. (1) (4 marks)",
+      ["Venus shows a full set of phases and changes size because it orbits the Sun and is sometimes on the far side of the Sun and sometimes between Earth and the Sun", "the points of light are moons orbiting Jupiter, so not every body in the sky orbits Earth", "in the geocentric account everything must circle Earth, so moons circling Jupiter have no natural place in it", "the nightly rising and setting is apparent motion caused by Earth rotating on its axis; Jupiter and its moons are not circling Earth once a day"],
+      "<b>Model answer:</b> (a) In the heliocentric account Venus orbits the Sun. When Venus is on the far side of the Sun we see its lit face fully, and when it passes between Earth and the Sun it is closer, looks larger, and shows only a crescent of light. The full set of phases together with the size change fits an orbit around the Sun. (b) The four points of light are moons in orbit around Jupiter. Their steady circling of Jupiter shows a centre of motion other than Earth, which the heliocentric account allows without difficulty, since in that account planets and their moons travel around the Sun together. (c) The geocentric account holds that every heavenly body moves around Earth. Moons that plainly circle Jupiter, night after night, do not fit that rule, and the account can only keep them by adding special exceptions. (d) The rising and setting is apparent motion. Earth rotates on its axis from west to east, carrying the observer around, so Jupiter and everything else in the sky appears to cross from east to west each night. Jupiter is not travelling around Earth once a day.<br><br><b>Marking points:</b> 1 mark for observation 1 explained by Venus orbiting the Sun, with the near and far positions tied to phase and size. 1 mark for observation 2 explained as moons orbiting Jupiter, a centre of motion other than Earth. 1 mark for the geocentric difficulty: its rule that all bodies circle Earth cannot naturally hold moons circling Jupiter. 1 mark for the nightly motion identified as apparent, caused by Earth rotating on its axis.",
+      {});
+  },
+  function () {
+    return textq("Two observations are used to judge the geocentric (Earth centred) and heliocentric (Sun centred) accounts of the solar system. Observation 1: through a telescope, Venus looks much larger and shows only a thin crescent at some times of year, and much smaller and nearly full at other times. Observation 2: even with careful naked eye observing over a whole year, the stars show no yearly shift in position against each other (no visible stellar parallax), and opponents of the heliocentric account once used this against it. (a) Explain how observation 1 supports the heliocentric account. (1) (b) Explain why observation 2 does not disprove the heliocentric account, even though Earth moves in that account. (1) (c) Explain why the geocentric account struggles to explain observation 1 naturally. (1) (d) The Sun appears to travel across the sky each day. State what this apparent motion really is. (1) (4 marks)",
+      ["Venus changes size and phase because it orbits the Sun, coming between Earth and the Sun when it is large and crescent, and going to the far side of the Sun when it is small and full", "the stars are so far away that the shift caused by Earth moving from one side of its orbit to the other is far too small to see without a telescope", "in the geocentric account Venus stays between Earth and the Sun at a nearly steady distance, so it could never look full or change size as observed", "the Sun's daily travel is apparent motion caused by Earth rotating on its axis, carrying the observer around"],
+      "<b>Model answer:</b> (a) In the heliocentric account Venus orbits the Sun. When Venus passes between Earth and the Sun it is close to Earth, so it looks large, and we see only a crescent of its lit side. When it is on the far side of the Sun it is much farther away, looks smaller, and shows a nearly full face. The linked change in size and phase fits an orbit around the Sun. (b) If Earth moves around the Sun, nearby stars should shift slightly against farther stars over the year. The heliocentric account survives the missing shift because the stars are enormously far away: the shift is real but far too small for the naked eye, and it was only measured much later with telescopes. Absence of a visible shift sets a great distance, not a stationary Earth. (c) In the geocentric account Venus circles Earth on a path that keeps it always between Earth and the Sun at much the same distance, so observers should only ever see crescent phases at about the same size. The observed full phase and large size change cannot be fitted in naturally. (d) The Sun's daily crossing of the sky is apparent motion. Earth rotates on its axis from west to east, carrying the observer around, so the Sun appears to rise in the east and set in the west; the Sun is not circling Earth once a day.<br><br><b>Marking points:</b> 1 mark for observation 1 explained by Venus orbiting the Sun, with distance tied to size and phase together. 1 mark for observation 2 explained by the stars being so distant that parallax is too small to see without telescopes. 1 mark for the geocentric difficulty: Venus held between Earth and the Sun could show only crescents at a steady size. 1 mark for the Sun's daily motion identified as apparent, caused by Earth rotating on its axis.",
+      {});
+  }
+]), ["Give each observation its own explanation before judging the older account.", "Full phases and extra centres of motion are the hard cases for an Earth centred account."]);
+
+E("s9-u1-cr-nebular", 1, ["SC9.1.6"], 3, "var", varset([
+  function () {
+    return textq("Observation: all eight planets revolve around the Sun in the same direction, and their orbits lie in nearly the same flat plane. (a) Explain how the Nebular Hypothesis accounts for this observation. (1) (b) Explain why the Stellar Collision Theory accounts for it poorly, or state what it would predict instead. (1) (2 marks)",
+      ["the planets formed from one rotating cloud that flattened into a disc, so they inherited the disc's single direction of spin and its flat shape", "a chance near collision with a passing star would scatter material in no single ordered pattern, so planets in assorted directions and tilted planes would be expected instead"],
+      "<b>Model answer:</b> (a) In the Nebular Hypothesis the solar system formed from one great cloud of gas and dust that contracted under gravity, spun faster as it shrank, and flattened into a disc. The Sun formed at the centre and the planets formed from the disc material, so every planet inherited the same direction of revolution and nearly the same plane: the disc's own motion and shape. (b) In the Stellar Collision Theory a passing star drew material out of the Sun in a chance encounter. A single pulled out stream from a random encounter gives no reason for eight planets to share one direction and one plane; scattered directions and tilted orbits would be at least as likely, so the orderly pattern is unexplained.<br><br><b>Marking points:</b> 1 mark for the Nebular Hypothesis accounting for the pattern through one spinning cloud flattened into a disc whose motion the planets inherited. 1 mark for the Stellar Collision Theory failing to predict the shared direction and plane, or predicting scattered directions and planes instead.",
+      {});
+  },
+  function () {
+    return textq("Observation: the four inner planets are small and rocky, while the four outer planets are large and made mostly of gas, and this arrangement holds in order with distance from the Sun. (a) Explain how the Nebular Hypothesis accounts for this observation. (1) (b) Explain why the Stellar Collision Theory accounts for it poorly, or state what it would predict instead. (1) (2 marks)",
+      ["in the disc left by the contracting cloud, the inner region near the young Sun was hot, so only rock and metal could settle and build planets there, while in the cold outer region gases and ices could gather into large planets", "material pulled out of the Sun would be Sun material, mostly hydrogen gas throughout, so it gives no reason for rocky planets inside and gassy planets outside in a distance order"],
+      "<b>Model answer:</b> (a) In the Nebular Hypothesis the planets formed from one rotating disc of gas and dust around the young Sun. Close to the Sun the disc was hot, so light gases could not settle there and only rocky and metallic material built planets: small, rocky inner planets. Farther out the disc was cold, so planets could gather and hold large amounts of gas and ice: large, gassy outer planets. One disc with a temperature falling with distance produces the observed order. (b) In the Stellar Collision Theory the planets formed from material drawn out of the Sun itself. Sun material is mostly hydrogen and helium everywhere in the stream, so the theory gives no reason for a distance ordered split into rocky inner planets and gassy outer planets; a similar gassy makeup for all the planets would be the plainer prediction.<br><br><b>Marking points:</b> 1 mark for the Nebular Hypothesis accounting for the gradient through one disc that was hot near the Sun (rock and metal only) and cold farther out (gas and ice gathered). 1 mark for the Stellar Collision Theory failing because Sun drawn material has one makeup throughout, or predicting planets of similar gassy composition instead.",
+      {});
+  },
+  function () {
+    return textq("Observation: the Sun rotates on its axis in the same direction that the planets revolve around it, and the planets revolve in nearly the same flat plane. (a) Explain how the Nebular Hypothesis accounts for this observation. (1) (b) Explain why the Stellar Collision Theory accounts for it poorly, or state what it would predict instead. (1) (2 marks)",
+      ["the Sun and the planets formed from the same rotating cloud, so the Sun kept the cloud's spin and the planets kept the flattened disc's motion, all in one shared direction", "the passing star in the collision account arrives from a random direction, so its pulled out material has no reason to share the Sun's own direction of spin or one flat plane"],
+      "<b>Model answer:</b> (a) In the Nebular Hypothesis one cloud of gas and dust contracted under gravity and spun faster as it shrank. Most of the cloud formed the Sun, which still rotates in the cloud's original direction, and the rest flattened into a disc that formed the planets. Because Sun and planets share one origin, the Sun's rotation, the planets' revolution and the flatness of the system all point the same way. (b) In the Stellar Collision Theory a star passed or collided from some chance direction and drew material out of the Sun. The direction of that encounter is unrelated to the Sun's own rotation, so the theory gives no reason for the planets to revolve in the Sun's spin direction or in one shared plane; a mismatch would be unsurprising, which makes the observed match unexplained.<br><br><b>Marking points:</b> 1 mark for the Nebular Hypothesis accounting for the shared direction through one rotating cloud forming both the Sun and the disc of planets. 1 mark for the Stellar Collision Theory failing because the chance encounter direction is unrelated to the Sun's spin, or predicting no shared direction or plane instead.",
+      {});
+  },
+  function () {
+    return textq("Observation: the planets are not scattered at random around the Sun. They sit in a flattened system, like a disc seen edge on, and travel the same way around it. (a) Explain how the Nebular Hypothesis accounts for this observation. (1) (b) Explain why the Stellar Collision Theory accounts for it poorly, or state what it would predict instead. (1) (2 marks)",
+      ["a contracting cloud spins faster and flattens into a disc as it shrinks, and the planets formed inside that disc, so the finished system keeps the disc's flat shape and single direction of travel", "a stream of material torn from the Sun by a passing star would follow the path of that one encounter, so a flattened system of planets all travelling one way is not a natural prediction"],
+      "<b>Model answer:</b> (a) In the Nebular Hypothesis the solar system began as a great cloud of gas and dust. As gravity contracted the cloud it spun faster, and the spinning flattened it into a disc with the Sun forming at the centre. The planets formed from the disc material, so the finished system is flat and every planet travels in the disc's single direction of rotation. The shape of the system is the shape of its origin. (b) In the Stellar Collision Theory the planet material is a stream pulled out of the Sun by a passing star. That stream follows the geometry of one chance pass, and nothing in the encounter flattens material into a lasting disc or sets many separate planets travelling one way around the Sun. A flattened, one direction system is therefore not what the theory leads us to expect.<br><br><b>Marking points:</b> 1 mark for the Nebular Hypothesis accounting for the flat, one direction system through a contracting, spinning cloud flattened into a disc. 1 mark for the Stellar Collision Theory failing to produce a flattened disc system, or predicting an arrangement set by the single encounter instead.",
+      {});
+  }
+]), ["One cloud explains an orderly system; a chance encounter must explain the same order.", "Ask of the collision account: what pattern would it actually leave behind?"]);
+
+E("s9-u1-cr-expansion-evidence", 1, ["SC9.1.5", "SC9.1.7"], 3, "var", varset([
+  function () {
+    return textq("Astronomers find that light from a very distant galaxy is redshifted, and a school text mentions the Orion Nebula as an example of a component of the universe. (a) State what redshift is. (1) (b) State what the redshift of the distant galaxy shows about that galaxy's motion relative to Earth. (1) (c) Explain how redshifted light from distant galaxies supports the Big Bang picture of a hot, dense beginning. (1) (d) State what a nebula is and its place in the scale of the universe. (1) (4 marks)",
+      ["redshift is the stretching of light from an object moving away, shifting its light toward the red end of the spectrum", "the galaxy is moving away from Earth, and distant galaxies in general are receding from one another", "if galaxies are moving apart now, they were closer together in the past, which fits a universe that began as a hot, dense mass about 13.7 billion years ago and has expanded since", "a nebula is a cloud of dust, hydrogen gas and plasma from which stars form; it sits inside a galaxy and is far smaller than a galaxy, let alone the universe of billions of galaxies"],
+      "<b>Model answer:</b> (a) Redshift is the shift of light toward the red, longer wavelength end of the spectrum, produced when the source of the light is moving away from the observer. (b) The galaxy's redshift shows that the galaxy is receding, moving away from Earth. Distant galaxies show redshift in every direction, so galaxies are moving apart from one another as space expands. (c) Motion apart today means the galaxies were closer together in the past. Running that motion backward leads to a time when all the matter of the universe was compressed into a hot, dense mass, about 13.7 billion years ago, which then began expanding: the Big Bang picture, with the expansion still continuing. (d) A nebula is a cloud of dust, hydrogen gas and plasma from which stars generally form. In scale it is one cloud inside a single galaxy, and that galaxy is only one of billions of galaxies in the universe.<br><br><b>Marking points:</b> 1 mark for redshift defined as light shifted toward the red end because the source is moving away. 1 mark for the galaxy shown to be receding, with galaxies generally moving apart. 1 mark for the support: present separation traced back to a hot, dense beginning about 13.7 billion years ago, still expanding. 1 mark for a nebula correctly described as a star forming cloud and placed inside a galaxy, far below the scale of the universe.",
+      {});
+  },
+  function () {
+    return textq("Astronomers find that light from a very distant spiral galaxy is redshifted, and a school text describes our own Milky Way as one component of the universe. (a) State what redshift is. (1) (b) State what the redshift of the distant galaxy shows about that galaxy's motion relative to Earth. (1) (c) Explain how redshifted light from distant galaxies supports the Big Bang picture of a hot, dense beginning. (1) (d) State what a galaxy is and its place in the scale of the universe. (1) (4 marks)",
+      ["redshift is the stretching of light from an object moving away, shifting its light toward the red end of the spectrum", "the galaxy is moving away from Earth, and distant galaxies in general are receding from one another", "if galaxies are moving apart now, they were closer together in the past, which fits a universe that began as a hot, dense mass about 13.7 billion years ago and has expanded since", "a galaxy is a massive collection of stars, gas and dust held together by gravity; the Milky Way is one galaxy among billions in the universe"],
+      "<b>Model answer:</b> (a) Redshift is the shift of light toward the red, longer wavelength end of the spectrum, produced when the source of the light is moving away from the observer. (b) The galaxy's redshift shows that the galaxy is receding, moving away from Earth. Distant galaxies show redshift in every direction, so galaxies are moving apart from one another as space expands. (c) Motion apart today means the galaxies were closer together in the past. Running that motion backward leads to a time when all the matter of the universe was compressed into a hot, dense mass, about 13.7 billion years ago, which then began expanding: the Big Bang picture, with the expansion still continuing. (d) A galaxy is a massive collection of stars, gas and dust held together by gravity. The Milky Way, our own spiral galaxy, is a single galaxy; the universe holds billions of galaxies, so one galaxy is a large component but only a small part of the whole.<br><br><b>Marking points:</b> 1 mark for redshift defined as light shifted toward the red end because the source is moving away. 1 mark for the galaxy shown to be receding, with galaxies generally moving apart. 1 mark for the support: present separation traced back to a hot, dense beginning about 13.7 billion years ago, still expanding. 1 mark for a galaxy correctly described as a great collection of stars, gas and dust, and placed as one among billions in the universe.",
+      {});
+  },
+  function () {
+    return textq("Astronomers find that light from a very distant elliptical galaxy is redshifted, and a school text lists low mass stars among the components of the universe. (a) State what redshift is. (1) (b) State what the redshift of the distant galaxy shows about that galaxy's motion relative to Earth. (1) (c) Explain how redshifted light from distant galaxies supports the Big Bang picture of a hot, dense beginning. (1) (d) State what a low mass star is and its place in the scale of the universe. (1) (4 marks)",
+      ["redshift is the stretching of light from an object moving away, shifting its light toward the red end of the spectrum", "the galaxy is moving away from Earth, and distant galaxies in general are receding from one another", "if galaxies are moving apart now, they were closer together in the past, which fits a universe that began as a hot, dense mass about 13.7 billion years ago and has expanded since", "a low mass star is a star smaller than the Sun that burns its fuel very slowly and lives for billions of years; a single star is one member of the billions of stars inside one galaxy"],
+      "<b>Model answer:</b> (a) Redshift is the shift of light toward the red, longer wavelength end of the spectrum, produced when the source of the light is moving away from the observer. (b) The galaxy's redshift shows that the galaxy is receding, moving away from Earth. Distant galaxies show redshift in every direction, so galaxies are moving apart from one another as space expands. (c) Motion apart today means the galaxies were closer together in the past. Running that motion backward leads to a time when all the matter of the universe was compressed into a hot, dense mass, about 13.7 billion years ago, which then began expanding: the Big Bang picture, with the expansion still continuing. (d) A low mass star is a star of less mass than the Sun; it burns its fuel very slowly and can live for billions of years, ending quietly. In scale, one star is a single member of a galaxy that holds billions of stars, and that galaxy is one of billions in the universe.<br><br><b>Marking points:</b> 1 mark for redshift defined as light shifted toward the red end because the source is moving away. 1 mark for the galaxy shown to be receding, with galaxies generally moving apart. 1 mark for the support: present separation traced back to a hot, dense beginning about 13.7 billion years ago, still expanding. 1 mark for a low mass star correctly described (slow burning, very long lived) and placed as one star among billions inside one galaxy.",
+      {});
+  },
+  function () {
+    return textq("Astronomers find that light from a distant galaxy is strongly redshifted, the more distant galaxies showing the greater redshift, and a school text mentions a nebula where new stars are forming. (a) State what redshift is. (1) (b) State what the redshift of the distant galaxies shows about their motion relative to Earth. (1) (c) Explain how redshifted light from distant galaxies supports the Big Bang picture of a hot, dense beginning. (1) (d) State what a nebula is and its place in the scale of the universe. (1) (4 marks)",
+      ["redshift is the stretching of light from an object moving away, shifting its light toward the red end of the spectrum", "the galaxies are moving away from Earth, the more distant ones receding faster, so galaxies are separating from one another in an expanding universe", "if galaxies are moving apart now, they were closer together in the past, which fits a universe that began as a hot, dense mass about 13.7 billion years ago and has expanded since", "a nebula is a cloud of dust, hydrogen gas and plasma from which stars form; it sits inside a galaxy and is far smaller than a galaxy, let alone the universe of billions of galaxies"],
+      "<b>Model answer:</b> (a) Redshift is the shift of light toward the red, longer wavelength end of the spectrum, produced when the source of the light is moving away from the observer; a greater redshift means a faster recession. (b) The redshifts show that distant galaxies are moving away from Earth, and that the more distant a galaxy is, the faster it recedes. Galaxies are separating from one another in every direction, which is the pattern of an expanding universe rather than of galaxies flying out from one centre. (c) Motion apart today means the galaxies were closer together in the past. Running that motion backward leads to a time when all the matter of the universe was compressed into a hot, dense mass, about 13.7 billion years ago, which then began expanding: the Big Bang picture, with the expansion still continuing. (d) A nebula is a cloud of dust, hydrogen gas and plasma from which stars generally form. In scale it is one cloud inside a single galaxy, and that galaxy is only one of billions of galaxies in the universe.<br><br><b>Marking points:</b> 1 mark for redshift defined as light shifted toward the red end because the source is moving away. 1 mark for the galaxies shown to be receding, with galaxies generally moving apart (faster when more distant accepted). 1 mark for the support: present separation traced back to a hot, dense beginning about 13.7 billion years ago, still expanding. 1 mark for a nebula correctly described as a star forming cloud and placed inside a galaxy, far below the scale of the universe.",
+      {});
+  }
+]), ["Keep the chain in order: shift, motion, past, beginning.", "Part (d) asks for one component and where it sits in scale."]);
+
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s9-u1-solar-formation", 1, ["SC9.1.2"], 2, "var", varset([
+  function () {
+    return mcq("A class simulation of the Nebular Hypothesis begins with a huge, slowly rotating cloud of gas and dust. The stages of the simulation are shown out of order: (i) planets build up as solid material collides and sticks together; (ii) the cloud contracts under gravity and spins faster, flattening into a disk; (iii) the centre of the disk grows hot and dense enough to form the young Sun; (iv) leftover disk material keeps circling the young Sun. Which order of stages matches the hypothesis?",
+      "Cloud contracts and flattens into a spinning disk, the young Sun forms at the hot centre, then solid material in the disk collides and sticks together, building the planets",
+      ["The young Sun forms first on its own, then a cloud of gas and dust gathers around it, flattens into a disk, and solid material in the disk sticks together as planets", "Solid material sticks together and builds the planets first, then the leftover gas contracts into a cloud, flattens into a disk, and the young Sun forms at its centre", "The cloud flattens into a disk, the planets stick together in the cold outer disk at once, and the young Sun forms last from gas left over after the planets are built"],
+      "The Nebular Hypothesis runs in one direction. A nebula contracts under gravity, and as it shrinks it spins faster and flattens into a disk. Most of the material collects at the hot, dense centre and becomes the Sun. The material left circling in the disk then builds the planets by accretion, as grains and larger pieces collide and stick together.",
+      {});
+  },
+  function () {
+    return mcq("In a computer model of the early solar system, dust grains circling a young star bump into each other and stick, forming pebbles. The pebbles collide and grow into kilometre sized bodies, and those bodies keep colliding and growing until a few planet sized bodies remain. Which process is the model showing, and in which theory does it belong?",
+      "Accretion: small pieces in the disk of the Nebular Hypothesis gradually collide and stick together, growing into planets",
+      ["Stellar collision: a passing star pulls material out of the young star, and the pulled out material cools into planets", "Contraction: the whole cloud of gas and dust shrinks under gravity at once, and each planet is squeezed out of it whole", "Capture: fully formed planets wander in from deep space and are caught one by one into orbit around the young star"],
+      "Building planets piece by piece is accretion, and it is the planet building step of the Nebular Hypothesis: in the disk left around the young Sun, grains stuck together into pebbles, pebbles into larger bodies, and those bodies into planets. No passing star and no wandering planets are involved.",
+      {});
+  },
+  function () {
+    return mcq("A figure skater spins slowly with her arms stretched out, then pulls her arms in and spins much faster. A teacher uses the skater as a model for one stage in the formation of the solar system. Which stage is being modelled, and why does it happen?",
+      "The contracting cloud stage of the Nebular Hypothesis: as the gas and dust cloud shrank under gravity, it spun faster, just as the skater spins faster when she pulls in",
+      ["The accretion stage of the Nebular Hypothesis: as solid pieces stuck together in the disk, they dragged the whole cloud around faster with each collision they made", "The stellar collision stage: as a passing star brushed the young Sun, its gravity wound the Sun up and set it spinning faster than it had spun before the encounter", "The cooling stage of the Nebular Hypothesis: as the young Sun cooled and shrank in size, the planets around it had to circle it faster to stay in their own orbits"],
+      "A shrinking spinning body spins faster, whether it is a skater pulling in her arms or a cloud contracting under gravity. In the Nebular Hypothesis that faster spin is what flattened the contracting cloud into the disk from which the Sun and planets formed.",
+      {});
+  },
+  function () {
+    return mcq("Astronomers photograph a very young star in a distant nebula and find it surrounded by a flat, rotating disk of gas and dust, with a dense clump forming partway out in the disk. Why does this observation support the Nebular Hypothesis?",
+      "It shows the same stage the hypothesis describes for our own system: a young star with a disk of leftover material around it, in which planets can build up by accretion",
+      ["It shows a passing star pulling material out of the young star, which is the stage the Nebular Hypothesis describes for the making of the planets in our own system", "It shows that disks of gas and dust are only found around young stars that have no planets, so our solar system cannot have formed in the way the hypothesis describes", "It shows the young star capturing fully formed planets from the nebula around it, which is the stage the Nebular Hypothesis describes for our own system's planets"],
+      "The Nebular Hypothesis says the Sun and planets formed together from one contracting, flattening cloud, leaving planets to build up by accretion in the disk around the young Sun. Seeing other young stars at exactly that stage, disk and forming clump included, is the kind of present day evidence the hypothesis predicts.",
+      {});
+  },
+  function () {
+    return mcq("In a description of the early solar system, material keeps falling toward the centre of a flattened, spinning disk. The centre grows denser and hotter until it begins to give off light and heat of its own, while the rest of the disk is still a swarm of dust and small solid pieces. Which statement correctly identifies what is happening at the centre and what happens next in the disk?",
+      "The young Sun is forming at the centre; the dust and solid pieces left in the disk will collide and stick together, building the planets by accretion",
+      ["A large planet is forming at the centre; the dust and solid pieces left in the disk will be pulled into it one by one until no material is left in the disk", "The young Sun is forming at the centre; the dust and solid pieces left in the disk will be blown away by its light, and the planets will arrive later from outside", "A passing star is heating the centre as it collides with the disk; the dust and solid pieces will cool into planets once the star has moved away from the disk"],
+      "In the Nebular Hypothesis most of the contracting cloud collects at the centre, where it grows hot and dense enough to shine as the young Sun. The planets come afterward and out of what is left: the dust and solid pieces in the disk collide and stick together, growing by accretion into planets.",
+      {});
+  }
+]), ["Follow the cloud in order: contraction and spin come before any planets.", "The disk is where the planets are built, piece by piece."]);
+
+E("s9-u1-universe-origin", 1, ["SC9.1.5"], 2, "var", varset([
+  function () {
+    return mcq("A teacher bakes a loaf of raisin bread as a model. Before baking, the raisins are close together; as the dough rises, every raisin moves farther from every other raisin, and no raisin sits at a centre from which the others spread. What does the model show about the universe, and which theory does it support?",
+      "It models an expanding universe in which galaxies move apart from one another with no centre, supporting the Big Bang theory of a hot, dense beginning",
+      ["It models an expanding universe in which all galaxies spread outward from Earth at the centre, supporting the Big Bang theory of a hot, dense beginning", "It models a steady, unchanging universe in which galaxies hold fixed distances from one another, supporting the Big Bang theory of a hot, dense beginning", "It models a contracting universe in which galaxies draw closer together toward one centre, supporting the oscillating theory of cycles of expansion and collapse"],
+      "In the model the dough is space itself: as it expands, every raisin moves away from every other, and none is the centre. That is the Big Bang picture of the universe: galaxies separating in every direction as space expands, which traced backward leads to a hot, dense beginning about 13.7 billion years ago.",
+      {});
+  },
+  function () {
+    return mcq("An astronomer compares the light of two galaxies. The light of Galaxy A, the nearer one, is shifted slightly toward the red end of the spectrum. The light of Galaxy B, much farther away, is shifted much more toward the red. Which conclusion do these observations support?",
+      "Galaxy B is moving away faster than Galaxy A, and galaxies generally are moving apart, which supports the Big Bang theory of an expanding universe",
+      ["Galaxy B is moving toward Earth faster than Galaxy A, and galaxies generally are falling together, which supports the Big Bang theory of an expanding universe", "Galaxy B is hotter than Galaxy A, and its colour alone shows the universe is shrinking, which supports the oscillating theory in its contracting phase today", "Galaxy B is older than Galaxy A, and its colour alone shows the universe never changes, which supports the steady state theory of an unchanging universe"],
+      "Light from a source moving away is shifted toward the red, and a larger red shift means faster movement away. The farther galaxy receding faster is the pattern of an expanding universe: galaxies moving apart from one another, the central evidence for the Big Bang theory.",
+      {});
+  },
+  function () {
+    return mcq("A satellite measures a faint glow of microwave radiation arriving evenly from every direction in space, corresponding to a temperature of about 3 K, far too uniform to come from any group of stars. Which explanation of this cosmic microwave background radiation supports the Big Bang theory?",
+      "It is leftover heat radiation from the hot early universe, cooled to a few degrees as the universe has expanded since its hot, dense beginning",
+      ["It is heat given off by all the stars in the universe added together, which has spread out evenly through space over the history of the universe", "It is radiation released as the universe contracts toward its next collapse, heated again by gravity as galaxies fall back together toward a centre", "It is interference produced by the satellite's own instruments, and once it is removed there is no background radiation left for any theory to explain"],
+      "A universe that began hot and dense should still hold the heat of that beginning, spread everywhere and cooled by billions of years of expansion to just a few degrees. The uniform microwave glow at about 3 K is that leftover heat: the cosmic microwave background radiation predicted by the Big Bang theory.",
+      {});
+  },
+  function () {
+    return mcq("According to the Big Bang theory, the early universe was so hot and dense that not even whole atoms could exist. As the universe expanded, it cooled: first the simplest nuclei could form, then whole atoms, and much later stars and galaxies. Which observation fits this cooling history?",
+      "The universe still holds a faint background of heat radiation everywhere, now cooled to about 3 K, left over from the time when the hot universe first cooled enough for atoms to form",
+      ["The universe still holds a faint background of heat radiation everywhere, now heated to about 3 K, produced fresh each day by the stars that formed once the universe had cooled fully", "Distant galaxies are moving toward one another in every direction, showing that the universe has been cooling and shrinking steadily since atoms first formed in the hot early universe", "The oldest stars are found at the centre of the universe, showing that stars formed first at one point and only later spread outward as the universe cooled and expanded around them"],
+      "The Big Bang theory describes an evolving universe: expansion cools it, so its history runs from a hot, dense state through the forming of nuclei and atoms to stars and galaxies. A faint heat background everywhere, cooled to about 3 K, is the present day trace of the hot stage, exactly as the cooling history requires.",
+      {});
+  },
+  function () {
+    return mcq("A student says: 'Galaxies are moving away from Earth, so Earth must be the centre of the universe, and the galaxies exploded outward from beside us.' Which response corrects the student using the evidence for the Big Bang theory?",
+      "Every galaxy is moving away from every other galaxy as space itself expands, so the same pattern is seen from any galaxy; traced backward, all matter was once together in a hot, dense state",
+      ["Earth is the centre of the universe, but the galaxies were not beside us at the start; they formed at the edge of the universe and have been falling inward toward Earth ever since that time", "Galaxies only appear to move away because their light tires as it travels; in fact the universe is steady and unchanging, and it has no centre and no beginning at any point in its history", "Every galaxy is moving away from Earth alone, because Earth sits at the one centre of expansion; traced backward, all matter was once together in a hot, dense state at Earth's own position"],
+      "Red shift observations show galaxies receding from one another in every direction, not flying out from Earth: an observer in any galaxy would see the same pattern, because space itself is expanding and has no centre. Running the expansion backward, all the matter of the universe was once compressed together in the hot, dense beginning of the Big Bang theory.",
+      {});
+  }
+]), ["Red shift and the background glow are the two evidence anchors.", "Expansion has no centre: every galaxy sees the others recede."]);

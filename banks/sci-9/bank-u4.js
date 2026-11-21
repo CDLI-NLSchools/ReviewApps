@@ -1,3 +1,4 @@
+// CRMARKS: s9-u4-cr-mutagen-explain=3
 // CRMARKS: s9-u4-cr-mutation=3
 // CRMARKS: s9-u4-cr-mitosis-stages=3
 // CRMARKS: s9-u4-cr-methods=3
@@ -12,6 +13,103 @@
 // CRMARKS: s9-u4-cr-communicate=3
 // CRMARKS: s9-u4-cr-evaluate=3
 // CRMARKS: s9-u4-cr-meiosis-explain=3
+// CRMARKS: s9-u4-cr-genetic-info=4
+// CRMARKS: s9-u4-cr-cuttings=4
+// CRMARKS: s9-u4-cr-mitosis-meiosis=3
+// CRMARKS: s9-u4-cr-nucleus-info=2
+// CRMARKS: s9-u4-cr-reproduction-compare=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s9-u4-nucleus-role=2
+// CRMARKS: s9-u4-nucleus-division=2
+// CRMARKS: s9-u4-mutagen-define=2
+// CRMARKS: s9-u4-mutation-define=2
+// CRMARKS: s9-u4-cell-cycle=2
+// CRMARKS: s9-u4-mitosis-result=2
+// CRMARKS: s9-u4-metaphase=2
+// CRMARKS: s9-u4-cytokinesis=2
+// CRMARKS: s9-u4-asex-define=2
+// CRMARKS: s9-u4-vegetative=2
+// CRMARKS: s9-u4-moss-water=2
+// CRMARKS: s9-u4-metamorphosis=2
+// CRMARKS: s9-u4-gamete-define=2
+// CRMARKS: s9-u4-meiosis-result=2
+// CRMARKS: s9-u4-diploid-haploid=2
+// CRMARKS: s9-u4-interkinesis=2
+// CRMARKS: s9-u4-variation-compare=2
+// CRMARKS: s9-u4-asex-advantage=2
+// CRMARKS: s9-u4-gene-chromosome=2
+// CRMARKS: s9-u4-levels-order=2
+// CRMARKS: s9-u4-gene-protein=2
+// CRMARKS: s9-u4-tech-medicine=3
+// CRMARKS: s9-u4-allderdice=4
+// CRMARKS: s9-u4-mendel-shift=4
+// CRMARKS: s9-u4-hgp-shift=4
+// CRMARKS: s9-u4-canadian-apple=3
+// CRMARKS: s9-u4-source-select=3
+// CRMARKS: s9-u4-chromosome-visible=3
+// CRMARKS: s9-u4-yeast-safety=3
+// CRMARKS: s9-u4-communicate-result=3
+// CRMARKS: s9-u4-organize-choice=3
+// CRMARKS: s9-u4-team-idea=3
+// CRMARKS: s9-u4-evaluate-claim=3
+// CRMARKS: s9-u4-evaluate-sources=3
+// CRMARKS: s9-u4-gen-division-count=3
+// CRMARKS: s9-u4-gen-gamete-number=3
+// CRMARKS: s9-u4-gen-population=3
+// CRMARKS: s9-u4-gen-population-graph=3
+// CRMARKS: s9-u4-gen-yeast-graph=3
+// CRMARKS: s9-u4-gen-conditions-chart=3
+// CRMARKS: s9-u4-display-line=3
+// CRMARKS: s9-u4-display-diagram=3
+// CRMARKS: s9-u4-trend-reading=3
+// CRMARKS: s9-u4-graph-purpose=3
+// CRMARKS: s9-u4-reproduction-tradeoff=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s9-u4-nucleus-role=b
+// BIMODAL: s9-u4-nucleus-division=a
+// BIMODAL: s9-u4-mutagen-define=b
+// BIMODAL: s9-u4-mutation-define=b
+// BIMODAL: s9-u4-cell-cycle=b
+// BIMODAL: s9-u4-mitosis-result=b
+// BIMODAL: s9-u4-metaphase=a
+// BIMODAL: s9-u4-cytokinesis=b
+// BIMODAL: s9-u4-asex-define=b
+// BIMODAL: s9-u4-vegetative=a
+// BIMODAL: s9-u4-moss-water=b
+// BIMODAL: s9-u4-metamorphosis=b
+// BIMODAL: s9-u4-gamete-define=b
+// BIMODAL: s9-u4-meiosis-result=b
+// BIMODAL: s9-u4-diploid-haploid=a
+// BIMODAL: s9-u4-interkinesis=b
+// BIMODAL: s9-u4-variation-compare=a
+// BIMODAL: s9-u4-asex-advantage=b
+// BIMODAL: s9-u4-gene-chromosome=b
+// BIMODAL: s9-u4-levels-order=b
+// BIMODAL: s9-u4-gene-protein=b
+// BIMODAL: s9-u4-tech-medicine=a
+// BIMODAL: s9-u4-allderdice=b
+// BIMODAL: s9-u4-mendel-shift=b
+// BIMODAL: s9-u4-hgp-shift=b
+// BIMODAL: s9-u4-canadian-apple=a
+// BIMODAL: s9-u4-source-select=b
+// BIMODAL: s9-u4-chromosome-visible=a
+// BIMODAL: s9-u4-yeast-safety=b
+// BIMODAL: s9-u4-communicate-result=b
+// BIMODAL: s9-u4-organize-choice=b
+// BIMODAL: s9-u4-team-idea=b
+// BIMODAL: s9-u4-evaluate-claim=b
+// BIMODAL: s9-u4-evaluate-sources=b
+// BIMODAL: s9-u4-gen-division-count=a
+// BIMODAL: s9-u4-gen-gamete-number=a
+// BIMODAL: s9-u4-gen-population=a
+// BIMODAL: s9-u4-gen-population-graph=a
+// BIMODAL: s9-u4-gen-yeast-graph=a
+// BIMODAL: s9-u4-gen-conditions-chart=a
+// BIMODAL: s9-u4-display-line=a
+// BIMODAL: s9-u4-display-diagram=a
+// BIMODAL: s9-u4-trend-reading=b
+// BIMODAL: s9-u4-graph-purpose=b
+// BIMODAL: s9-u4-reproduction-tradeoff=b
 // Science 9 Unit 4 bank: Reproduction (SC9.10.1 to SC9.12.10),
 // built Nov 15, 2026 to the Reproduction authoring spec. Sources
 // reviewed: the current Science 9 guide sections for the strand,
@@ -473,3 +571,254 @@ var NO_COMPOSE_U4 = {
   "s9-u4-cr-design-yeast": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): SR entries on
+   SC9.10.2 and SC9.10.6 and one 3-mark Level 2 CR entry on SC9.10.2
+   closing Unit 4 Test 1's CR gap, priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7.
+   SME-flagged. */
+
+E("s9-u4-mutagen-scenario", 4, ["SC9.10.2"], 2, "var", varset([
+  function () {
+    return mcq("A sunbather spends years tanning without protection and develops skin cancer in middle age. Which factor most likely changed the genetic information in the skin cells?",
+      "Ultraviolet radiation from the sun damaged the DNA in the skin cells (a physical mutagen)",
+      ["The heat of the sun on the skin cooked the skin cells until their chromosomes softened and melted together inside them", "Sweat washed the protective DNA out of the skin cells over the years of tanning", "The skin cells ran out of DNA because they divided too many times in the sunlight"],
+      "UV radiation is a physical mutagen: it damages DNA, and unrepaired damage can become a mutation leading to cancer. <b>Ultraviolet radiation from the sun damaged the DNA in the skin cells (a physical mutagen)</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is a CHEMICAL mutagen, a substance that can change a cell's genetic information?",
+      "Components of cigarette smoke that bind to DNA and alter its code",
+      ["X-rays passing through the tissues of the body during a medical scan carried out at a hospital clinic", "Ultraviolet light reaching the skin on a bright day at the beach", "A virus inserting its genes into a host cell's chromosomes"],
+      "Cigarette smoke contains chemicals that react with DNA: chemical mutagens. X-rays and UV are physical; a virus is a biological agent. <b>Components of cigarette smoke that bind to DNA and alter its code</b>.", {});
+  },
+  function () {
+    return mcq("A worker in a nuclear facility is exposed to a burst of radiation. Years later, a cell in their body begins dividing uncontrollably. Which sequence best explains the connection?",
+      "The radiation mutated a gene that controls cell division, and the changed cell passed the mutation to its descendants",
+      ["The radiation from the burst is still stored inside the cell and directly forces it to keep dividing every single day", "The radiation killed the neighbouring cells, so this cell divided to fill the space forever", "The radiation added new chromosomes to the cell, and extra chromosomes always cause division"],
+      "A mutation in a growth-control gene, inherited by the cell's descendants, can lead to uncontrolled division (cancer). <b>The radiation mutated a gene that controls cell division, and the changed cell passed the mutation to its descendants</b>.", {});
+  },
+  function () {
+    return mcq("Most mutations that occur in body (somatic) cells are NOT passed to a person's children. Why not?",
+      "Only mutations in the sex cells (eggs or sperm) can be inherited by the next generation",
+      ["Body cells always repair every one of their mutations completely before the person has any children of their own", "Children receive a fresh copy of DNA made entirely from the mother's cells", "Mutations in body cells are always too small to be copied into new cells"],
+      "Inheritance runs through the gametes; a mutation in a skin or liver cell stays in that person's body. <b>Only mutations in the sex cells (eggs or sperm) can be inherited by the next generation</b>.", {});
+  },
+  function () {
+    return mcq("Which change would count as a change to a cell's genetic information?",
+      "A base in the DNA sequence is replaced by a different base during copying",
+      ["A cell produces many more copies of one of its proteins than usual and keeps doing so for a few hours", "A chromosome is pulled to the wrong side of the cell during division once", "A cell grows larger than normal because it stores extra water and food"],
+      "Genetic information is the DNA sequence itself; changing a base changes the information. The others change amounts or positions, not the code. <b>A base in the DNA sequence is replaced by a different base during copying</b>.", {});
+  }
+]), ["A mutagen changes DNA: think chemicals, radiation, copying errors or viruses.", "Ordinary heat, effort and noise do not rewrite genetic information."]);
+
+E("s9-u4-reproduction-tradeoff", 4, ["SC9.10.6"], 2, "var", varset([
+  function () {
+    return mcq("A bacterial colony reproduces asexually, making exact copies of itself. A new antibiotic is introduced into its environment. What is the colony's greatest weakness?",
+      "All the bacteria are genetically identical, so a drug that kills one can kill them all",
+      ["Asexual reproduction happens far too slowly in bacteria, so the colony cannot replace any of its losses in time", "The bacteria cannot reproduce at all without a mate, so the colony stops growing", "Identical bacteria compete so fiercely that they destroy each other without help"],
+      "No variation means no resistant individuals to survive and rebuild the population. <b>All the bacteria are genetically identical, so a drug that kills one can kill them all</b>.", {});
+  },
+  function () {
+    return mcq("A gardener grows a prizewinning strawberry plant and wants many more plants exactly like it. Which method should the gardener use, and why?",
+      "Take runners (asexual reproduction): the new plants are clones with the same prized traits",
+      ["Plant the seeds it produces (sexual reproduction): every seedling that grows will match the parent plant exactly", "Cross it with a wild strawberry: the offspring will keep only the prized traits", "Graft it onto another species: grafting copies the plant's genes into the host"],
+      "Asexual reproduction (runners) produces clones, preserving the exact combination of traits; seeds would shuffle them. <b>Take runners (asexual reproduction): the new plants are clones with the same prized traits</b>.", {});
+  },
+  function () {
+    return mcq("Which is an advantage of SEXUAL reproduction for a species living in a changing environment?",
+      "Offspring vary genetically, so some may survive new diseases or conditions that kill others",
+      ["It is much faster than asexual reproduction is and needs far less energy and effort from both of the parents", "It guarantees every offspring is identical to the parent that was best adapted", "It allows a single individual to found a new population entirely on its own"],
+      "Variation is the raw material for adaptation; sexual reproduction generates it every generation. <b>Offspring vary genetically, so some may survive new diseases or conditions that kill others</b>.", {});
+  },
+  function () {
+    return mcq("A single aphid arrives on a rose bush in spring and, within weeks, there are thousands of aphids. Which feature of asexual reproduction makes this possible?",
+      "No mate is needed and reproduction is fast, so one individual can start a population explosion",
+      ["Each aphid produces offspring carrying brand-new gene combinations that always grow faster than the parent aphid did", "Asexual offspring are always larger and stronger than sexually produced offspring are", "Aphids lay thousands of eggs at once, which only asexual reproducers are able to do"],
+      "Asexual reproduction needs one parent and is rapid: ideal for exploiting a sudden food supply. <b>No mate is needed and reproduction is fast, so one individual can start a population explosion</b>.", {});
+  },
+  function () {
+    return mcq("Which is a DISADVANTAGE of sexual reproduction compared with asexual reproduction?",
+      "It requires finding a mate and invests energy in structures such as flowers, eggs or courtship",
+      ["It produces offspring that have no genetic variation at all between them, which steadily weakens the whole species", "It can only happen in water, so land organisms cannot reproduce sexually at all", "It always produces very few offspring, never more than two per pair of parents"],
+      "Sexual reproduction costs time, energy and the risk of not finding a mate; its payoff is variation. <b>It requires finding a mate and invests energy in structures such as flowers, eggs or courtship</b>.", {});
+  }
+]), ["Asexual is fast and uniform; sexual is slower and produces variation.", "Uniformity is the risk: one threat can strike every identical descendant."]);
+
+E("s9-u4-cr-mutagen-explain", 4, ["SC9.10.2"], 2, "var", varset([
+  function () {
+    return textq("Explaining a genetic change (3 marks)\nA dermatologist tells a patient that years of sunbathing without protection have damaged the DNA in some of their skin cells. (a) Name the type of agent the sun's ultraviolet rays are, and state what such agents are called in general. (1) (b) Explain how damaged DNA in a skin cell can lead to skin cancer. (1) (c) The patient asks whether their children will inherit the damaged DNA. Answer them, with a reason. (1)",
+      ["(a) Ultraviolet radiation is a physical mutagen; agents that change DNA are called mutagens."],
+      "Marking points (3): (a) 1 mark for physical mutagen / mutagen. (b) 1 mark for the chain: a mutation in a gene controlling cell division, copied into daughter cells, can produce uncontrolled growth (a tumour). (c) 1 mark for no, with the reason that the mutation is in body (somatic) cells, and only mutations in sex cells (gametes) are passed to children. Model answer: The children will not inherit it, because <b>only mutations in the cells that form eggs or sperm can pass to the next generation</b>.", {});
+  },
+  function () {
+    return textq("Explaining a genetic change (3 marks)\nA sign in a hospital X-ray department says the machines are shielded and staff wear protective aprons, even though each X-ray is brief. (a) State why X-rays are a risk to genetic information. (1) (b) Explain why the staff, who are present for hundreds of X-rays a week, are protected more carefully than a patient who has one X-ray a year. (1) (c) State one other source of DNA damage, not from radiation, that people commonly meet. (1)",
+      ["(a) X-rays are ionizing radiation, a physical mutagen that can break or alter DNA in the cells it passes through."],
+      "Marking points (3): (a) 1 mark for X-rays as a mutagen damaging DNA. (b) 1 mark for cumulative exposure: each exposure adds a small chance of a mutation, so repeated exposure multiplies the risk, and shielding lowers the dose. (c) 1 mark for a valid chemical or other mutagen (cigarette smoke chemicals, certain industrial chemicals, some viruses, UV from the sun). Model answer: Protection matters most for staff because <b>mutation risk grows with the total dose of the mutagen over time</b>.", {});
+  },
+  function () {
+    return textq("Explaining a genetic change (3 marks)\nA farmer reads that a weed killer used on the farm is a suspected mutagen. (a) State what it means to call a chemical a mutagen. (1) (b) Explain how a mutagen acting on a weed could, rarely, make the weed problem worse instead of better. (1) (c) Explain why the farmer should still be careful about their own exposure even though most mutations are harmless or repaired. (1)",
+      ["(a) A mutagen is an agent that changes the DNA (genetic information) of cells."],
+      "Marking points (3): (a) 1 mark for the definition. (b) 1 mark for a resistance mutation: a rare mutation could make a weed resistant to the chemical, and that weed's descendants inherit the resistance and spread. (c) 1 mark for the accumulation argument: most mutations are repaired or harmless, but some affect growth-control genes, and repeated exposure raises the chance of a harmful one, including in cells that could become cancerous. Model answer: Care is still needed because <b>a single unrepaired mutation in the wrong gene can be copied into every descendant of that cell</b>.", {});
+  }
+]), ["A cancer starts when mutations switch off a cell's division controls.", "One mutation is rarely enough, and undamaged or repaired cells explain different outcomes."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s9-u4-cr-genetic-info closes Unit 4 Test
+   1 (4 marks, Level 3); s9-u4-cr-cuttings closes Unit 4 Test
+   2 (4 marks, Level 3); s9-u4-cr-mitosis-meiosis closes Unit 4 Test
+   3 (3 marks, Level 3). SME-flagged for the
+   specialist pass. */
+
+E("s9-u4-cr-genetic-info", 4, ["SC9.10.1", "SC9.10.2"], 3, "var", varset([
+  function () {
+    return textq("After many summers of sunbathing without protection, a person develops a growth on one patch of skin. A doctor explains that ultraviolet light has changed the genetic information in some skin cells there, and that the changed cells have multiplied into the growth. (a) State where a cell keeps its genetic information and in what molecule. (1) (b) Explain what a mutation is at that level. (1) (c) Explain how the change in one skin cell can be passed to many cells of the person's body, yet cannot be passed to the person's children. (1) (d) State what would have to be true of a change like this for it to be inherited by the person's children. (1) (4 marks)",
+      ["the genetic information is kept in the nucleus of the cell, in the molecule DNA", "a mutation is a change in the genetic information itself: a change in the order of chemicals that make up a portion of a gene in the DNA", "when the changed skin cell divides by mitosis, it copies its changed information into both daughter cells, so every descendant of that cell carries the change, building the growth; but the change is in a body (skin) cell, not in the cells that form eggs or sperm, so children do not receive it", "the change would have to occur in a sex cell, an egg or a sperm, or in the cells that produce them, so that it is present in the fertilized egg the child develops from"],
+      "<b>Model answer:</b> (a) A cell keeps its genetic information in its nucleus, stored in the molecule DNA. (b) A mutation is a change in that stored information: specifically, a change in the order of chemicals that make up a portion of a gene. Ultraviolet light is a mutagen, a factor that can cause such a change. (c) The skin cell divides by mitosis, and mitosis copies the full set of genetic information, change included, into each daughter cell. Repeated division passes the change to a large population of the body's cells, which is the growth. Children, however, are formed only from egg and sperm cells. The change sits in skin cells, which play no part in forming a child, so it is not passed on. (d) For a change to be inherited, it would have to be present in a sex cell, an egg or a sperm, so that it passes through fertilization into the child.<br><br><b>Marking points:</b> 1 mark for the nucleus named as the store, with DNA as the molecule. 1 mark for a mutation explained as a change in the genetic information, the order of chemicals in a portion of a gene. 1 mark for mitosis copying the change into daughter cells within the body, tied to the change being in body cells only, not in eggs or sperm. 1 mark for the inheritance condition: the change present in an egg or a sperm (or the cells producing them).",
+      {});
+  },
+  function () {
+    return textq("A person who has smoked for many years is told that chemicals in cigarette smoke have changed the genetic information in some cells lining their lungs, and that the changed cells have multiplied into a growth. (a) State where a cell keeps its genetic information and in what molecule. (1) (b) Explain what a mutation is at that level. (1) (c) Explain how the change in one lung cell can be passed to many cells of the person's body, yet cannot be passed to the person's children. (1) (d) State what would have to be true of a change like this for it to be inherited by the person's children. (1) (4 marks)",
+      ["the genetic information is kept in the nucleus of the cell, in the molecule DNA", "a mutation is a change in the genetic information itself: a change in the order of chemicals that make up a portion of a gene in the DNA", "when the changed lung cell divides by mitosis, it copies its changed information into both daughter cells, so every descendant of that cell carries the change, building the growth; but the change is in a body (lung) cell, not in the cells that form eggs or sperm, so children do not receive it", "the change would have to occur in a sex cell, an egg or a sperm, or in the cells that produce them, so that it is present in the fertilized egg the child develops from"],
+      "<b>Model answer:</b> (a) A cell keeps its genetic information in its nucleus, stored in the molecule DNA. (b) A mutation is a change in that stored information: specifically, a change in the order of chemicals that make up a portion of a gene. The chemicals in cigarette smoke act as mutagens, factors that can cause such a change. (c) The lung cell divides by mitosis, and mitosis copies the full set of genetic information, change included, into each daughter cell. Repeated division passes the change to a large population of the body's cells, which is the growth. Children, however, are formed only from egg and sperm cells. The change sits in lung cells, which play no part in forming a child, so it is not passed on. (d) For a change to be inherited, it would have to be present in a sex cell, an egg or a sperm, so that it passes through fertilization into the child.<br><br><b>Marking points:</b> 1 mark for the nucleus named as the store, with DNA as the molecule. 1 mark for a mutation explained as a change in the genetic information, the order of chemicals in a portion of a gene. 1 mark for mitosis copying the change into daughter cells within the body, tied to the change being in body cells only, not in eggs or sperm. 1 mark for the inheritance condition: the change present in an egg or a sperm (or the cells producing them).",
+      {});
+  },
+  function () {
+    return textq("During cell division in a person's bone marrow, a copying error changes the genetic information in one cell. That cell goes on dividing, and over time a large population of the person's blood forming cells carries the same change. (a) State where a cell keeps its genetic information and in what molecule. (1) (b) Explain what a mutation is at that level. (1) (c) Explain how the copying error in one bone marrow cell can be passed to many cells of the person's body, yet cannot be passed to the person's children. (1) (d) State what would have to be true of a change like this for it to be inherited by the person's children. (1) (4 marks)",
+      ["the genetic information is kept in the nucleus of the cell, in the molecule DNA", "a mutation is a change in the genetic information itself: here, a copying error that changes the order of chemicals in a portion of a gene in the DNA", "when the changed bone marrow cell divides by mitosis, it copies its changed information into both daughter cells, so every descendant of that cell carries the change; but the change is in a body (bone marrow) cell, not in the cells that form eggs or sperm, so children do not receive it", "the change would have to occur in a sex cell, an egg or a sperm, or in the cells that produce them, so that it is present in the fertilized egg the child develops from"],
+      "<b>Model answer:</b> (a) A cell keeps its genetic information in its nucleus, stored in the molecule DNA. (b) A mutation is a change in that stored information: specifically, a change in the order of chemicals that make up a portion of a gene. Here no outside mutagen is needed; the change arose as an error when the DNA was copied for division. (c) The bone marrow cell divides by mitosis, and mitosis copies the full set of genetic information, error included, into each daughter cell. Repeated division passes the change to a large population of the body's cells. Children, however, are formed only from egg and sperm cells. The change sits in bone marrow cells, which play no part in forming a child, so it is not passed on. (d) For a change to be inherited, it would have to be present in a sex cell, an egg or a sperm, so that it passes through fertilization into the child.<br><br><b>Marking points:</b> 1 mark for the nucleus named as the store, with DNA as the molecule. 1 mark for a mutation explained as a change in the genetic information, the order of chemicals in a portion of a gene (a copying error accepted as the cause here). 1 mark for mitosis copying the change into daughter cells within the body, tied to the change being in body cells only, not in eggs or sperm. 1 mark for the inheritance condition: the change present in an egg or a sperm (or the cells producing them).",
+      {});
+  },
+  function () {
+    return textq("A worker exposed to radiation in an accident is told that the radiation has changed the genetic information in some cells of their body, and that changed cells in one tissue have multiplied over the years that followed. (a) State where a cell keeps its genetic information and in what molecule. (1) (b) Explain what a mutation is at that level. (1) (c) Explain how the change in one body cell can be passed to many cells of the person's body, yet cannot be passed to the person's children. (1) (d) State what would have to be true of a change like this for it to be inherited by the person's children. (1) (4 marks)",
+      ["the genetic information is kept in the nucleus of the cell, in the molecule DNA", "a mutation is a change in the genetic information itself: a change in the order of chemicals that make up a portion of a gene in the DNA", "when the changed body cell divides by mitosis, it copies its changed information into both daughter cells, so every descendant of that cell carries the change; but the change is in a body cell, not in the cells that form eggs or sperm, so children do not receive it", "the change would have to occur in a sex cell, an egg or a sperm, or in the cells that produce them, so that it is present in the fertilized egg the child develops from"],
+      "<b>Model answer:</b> (a) A cell keeps its genetic information in its nucleus, stored in the molecule DNA. (b) A mutation is a change in that stored information: specifically, a change in the order of chemicals that make up a portion of a gene. Radiation is a mutagen, a factor that can cause such a change. (c) The changed cell divides by mitosis, and mitosis copies the full set of genetic information, change included, into each daughter cell. Repeated division passes the change to a large population of the body's cells in that tissue. Children, however, are formed only from egg and sperm cells. The change sits in ordinary body cells, which play no part in forming a child, so it is not passed on. (d) For a change to be inherited, it would have to be present in a sex cell, an egg or a sperm, so that it passes through fertilization into the child.<br><br><b>Marking points:</b> 1 mark for the nucleus named as the store, with DNA as the molecule. 1 mark for a mutation explained as a change in the genetic information, the order of chemicals in a portion of a gene. 1 mark for mitosis copying the change into daughter cells within the body, tied to the change being in body cells only, not in eggs or sperm. 1 mark for the inheritance condition: the change present in an egg or a sperm (or the cells producing them).",
+      {});
+  }
+]), ["Store, change, spread, inheritance: four separate steps.", "Ask which cells actually form a child before answering part (d)."]);
+
+E("s9-u4-cr-cuttings", 4, ["SC9.10.3", "SC9.10.4"], 3, "var", varset([
+  function () {
+    return textq("A strawberry grower plants runners from one prizewinning plant and also sows seeds from the same plant's fruit. The runner plants all match the parent exactly, while the seed grown plants differ from one another. (a) Explain, through mitosis, why the plants grown from runners are genetically identical to the parent plant. (2) (b) Explain why the seed grown plants vary, naming the kind of reproduction involved. (2) (4 marks)",
+      ["a runner is part of the parent plant itself, and it grows into a new plant by mitosis, which copies the parent cell's full set of genetic information exactly into every daughter cell, so the new plant carries the parent's genetic information unchanged, from one parent only", "seeds are produced by sexual reproduction: genetic information from two parents is joined at fertilization, one set through the pollen and one set in the egg, so each seed carries a new combination and the plants vary"],
+      "<b>Model answer:</b> (a) A runner is a stem of the parent plant that roots and grows into a new plant. That growth happens by mitosis: the parent cell's nucleus divides so that each daughter cell receives a full set of genetic information identical to the parent cell's. Every cell of the runner plant is a mitotic descendant of the parent's cells, and only one parent is involved, so the runner plant is genetically identical to the parent. (b) Seeds form by sexual reproduction. At fertilization, genetic information from two parents is joined: the pollen contributes one set and the egg contributes another. Each seed therefore carries a new combination of the two parents' information, different from each parent and from its sibling seeds, so the seed grown plants vary.<br><br><b>Marking points:</b> 1 mark for mitosis stated to copy the full set of genetic information identically into daughter cells. 1 mark for the runner growing by mitosis from the one parent's own cells, so the new plant carries that same information. 1 mark for sexual reproduction named as the process behind the seeds. 1 mark for the joining of genetic information from two parents at fertilization producing new combinations and variation.",
+      {});
+  },
+  function () {
+    return textq("A gardener snips a stem cutting from a pothos houseplant, roots it in water, and pots it up. She also grows pothos plants from seed collected after the plant flowered and was pollinated. The cutting plant matches the parent exactly, while the seed grown plants differ from one another. (a) Explain, through mitosis, why the plant grown from the cutting is genetically identical to the parent plant. (2) (b) Explain why the seed grown plants vary, naming the kind of reproduction involved. (2) (4 marks)",
+      ["the cutting is a piece of the parent plant, and it grows roots and new leaves by mitosis, which copies the parent cell's full set of genetic information exactly into every daughter cell, so the new plant carries the parent's genetic information unchanged, from one parent only", "seeds are produced by sexual reproduction: genetic information from two parents is joined at fertilization, one set through the pollen and one set in the egg, so each seed carries a new combination and the plants vary"],
+      "<b>Model answer:</b> (a) The cutting is living tissue cut from the parent plant. It produces roots and new growth by mitosis: the parent cell's nucleus divides so that each daughter cell receives a full set of genetic information identical to the parent cell's. Every cell of the new plant is a mitotic descendant of the parent's cells, and only one parent is involved, so the new plant is genetically identical to the parent. (b) Seeds form by sexual reproduction. At fertilization, genetic information from two parents is joined: the pollen contributes one set and the egg contributes another. Each seed therefore carries a new combination of the two parents' information, different from each parent and from its sibling seeds, so the seed grown plants vary.<br><br><b>Marking points:</b> 1 mark for mitosis stated to copy the full set of genetic information identically into daughter cells. 1 mark for the cutting growing by mitosis from the one parent's own cells, so the new plant carries that same information. 1 mark for sexual reproduction named as the process behind the seeds. 1 mark for the joining of genetic information from two parents at fertilization producing new combinations and variation.",
+      {});
+  },
+  function () {
+    return textq("A farmer plants potato tubers, using the eyes of tubers saved from one prizewinning plant, and also grows potatoes from true seed produced after the plants flowered. The tuber grown plants all match the parent exactly, while the seed grown plants differ from one another. (a) Explain, through mitosis, why the plants grown from tubers are genetically identical to the parent plant. (2) (b) Explain why the seed grown plants vary, naming the kind of reproduction involved. (2) (4 marks)",
+      ["a tuber is part of the parent plant, and each eye grows into a new plant by mitosis, which copies the parent cell's full set of genetic information exactly into every daughter cell, so the new plant carries the parent's genetic information unchanged, from one parent only", "true seed is produced by sexual reproduction: genetic information from two parents is joined at fertilization, one set through the pollen and one set in the egg, so each seed carries a new combination and the plants vary"],
+      "<b>Model answer:</b> (a) A tuber is a swollen stem of the parent plant, and each eye is a bud of the parent's own tissue. The eye grows into a new plant by mitosis: the parent cell's nucleus divides so that each daughter cell receives a full set of genetic information identical to the parent cell's. Every cell of the tuber grown plant is a mitotic descendant of the parent's cells, and only one parent is involved, so the new plant is genetically identical to the parent. (b) True seed forms by sexual reproduction. At fertilization, genetic information from two parents is joined: the pollen contributes one set and the egg contributes another. Each seed therefore carries a new combination of the two parents' information, different from each parent and from its sibling seeds, so the seed grown plants vary.<br><br><b>Marking points:</b> 1 mark for mitosis stated to copy the full set of genetic information identically into daughter cells. 1 mark for the tuber growing by mitosis from the one parent's own cells (the eye), so the new plant carries that same information. 1 mark for sexual reproduction named as the process behind the seeds. 1 mark for the joining of genetic information from two parents at fertilization producing new combinations and variation.",
+      {});
+  },
+  function () {
+    return textq("A gardener pushes a cut willow branch into damp soil, where it roots and grows into a new tree. In another bed she sows seeds collected from the same willow after its flowers were pollinated. The branch grown tree matches the parent exactly, while the seed grown trees differ from one another. (a) Explain, through mitosis, why the tree grown from the branch is genetically identical to the parent tree. (2) (b) Explain why the seed grown trees vary, naming the kind of reproduction involved. (2) (4 marks)",
+      ["the branch is part of the parent tree, and it grows roots and shoots by mitosis, which copies the parent cell's full set of genetic information exactly into every daughter cell, so the new tree carries the parent's genetic information unchanged, from one parent only", "seeds are produced by sexual reproduction: genetic information from two parents is joined at fertilization, one set through the pollen and one set in the egg, so each seed carries a new combination and the trees vary"],
+      "<b>Model answer:</b> (a) The branch is living tissue of the parent tree. Once planted, it produces roots and new shoots by mitosis: the parent cell's nucleus divides so that each daughter cell receives a full set of genetic information identical to the parent cell's. Every cell of the new tree is a mitotic descendant of the parent's cells, and only one parent is involved, so the new tree is genetically identical to the parent. (b) Seeds form by sexual reproduction. At fertilization, genetic information from two parents is joined: the pollen contributes one set and the egg contributes another. Each seed therefore carries a new combination of the two parents' information, different from each parent and from its sibling seeds, so the seed grown trees vary.<br><br><b>Marking points:</b> 1 mark for mitosis stated to copy the full set of genetic information identically into daughter cells. 1 mark for the branch growing by mitosis from the one parent's own cells, so the new tree carries that same information. 1 mark for sexual reproduction named as the process behind the seeds. 1 mark for the joining of genetic information from two parents at fertilization producing new combinations and variation.",
+      {});
+  }
+]), ["One parent plus copying gives identical plants; two parents plus joining gives variety.", "Name the division process in part (a) and the reproduction kind in part (b)."]);
+
+E("s9-u4-cr-mitosis-meiosis", 4, ["SC9.10.5", "SC9.10.6"], 3, "var", varset([
+  function () {
+    return textq("A body cell of a horse contains 64 chromosomes. (a) State the chromosome number in a new body cell produced by mitosis from this cell, and in a gamete produced by meiosis. (1) (b) State whether the products of each process are genetically identical to the parent cell, and give the reason in each case. (1) (c) State one place or role in the horse's life cycle where mitosis is required, and one where meiosis is required. (1) (3 marks)",
+      ["mitosis produces a body cell with 64 chromosomes; meiosis produces a gamete with 32 chromosomes", "the mitosis product is genetically identical to the parent cell because mitosis copies the full set of chromosomes into each daughter cell; the gamete is not identical because it carries only half the set, one chromosome from each pair, so it holds a selection of the parent's information rather than a copy", "mitosis is required for growth and repair in the horse's body, such as producing new skin and muscle cells; meiosis is required in the ovaries or testes to produce the eggs or sperm used in reproduction"],
+      "<b>Model answer:</b> (a) Mitosis gives a new body cell with the full 64 chromosomes. Meiosis gives a gamete with half that number, 32 chromosomes. (b) The cell produced by mitosis is genetically identical to the parent cell, because mitosis copies the complete set of chromosomes into each daughter cell. The gamete produced by meiosis is not identical to the parent cell: it receives only one chromosome from each pair, half the parent's set, so its genetic information is a selection, not a copy, and it will be combined with another parent's gamete at fertilization. (c) Mitosis is required throughout the body for growth and for replacing worn out or damaged cells, for example in skin and muscle. Meiosis is required in the reproductive organs, the ovaries in a mare and the testes in a stallion, where it produces the gametes needed for sexual reproduction.<br><br><b>Marking points:</b> 1 mark for both numbers correct: 64 after mitosis and 32 in a gamete. 1 mark for identity correctly stated for both processes with reasons (full copy in mitosis; half set, one from each pair, in meiosis). 1 mark for one valid role for each process (mitosis for growth or repair in the body; meiosis in the ovaries or testes to produce gametes).",
+      {});
+  },
+  function () {
+    return textq("A body cell of a cat contains 38 chromosomes. (a) State the chromosome number in a new body cell produced by mitosis from this cell, and in a gamete produced by meiosis. (1) (b) State whether the products of each process are genetically identical to the parent cell, and give the reason in each case. (1) (c) State one place or role in the cat's life cycle where mitosis is required, and one where meiosis is required. (1) (3 marks)",
+      ["mitosis produces a body cell with 38 chromosomes; meiosis produces a gamete with 19 chromosomes", "the mitosis product is genetically identical to the parent cell because mitosis copies the full set of chromosomes into each daughter cell; the gamete is not identical because it carries only half the set, one chromosome from each pair, so it holds a selection of the parent's information rather than a copy", "mitosis is required for growth and repair in the cat's body, such as healing a cut; meiosis is required in the ovaries or testes to produce the eggs or sperm used in reproduction"],
+      "<b>Model answer:</b> (a) Mitosis gives a new body cell with the full 38 chromosomes. Meiosis gives a gamete with half that number, 19 chromosomes. (b) The cell produced by mitosis is genetically identical to the parent cell, because mitosis copies the complete set of chromosomes into each daughter cell. The gamete produced by meiosis is not identical to the parent cell: it receives only one chromosome from each pair, half the parent's set, so its genetic information is a selection, not a copy, and it will be combined with another parent's gamete at fertilization. (c) Mitosis is required throughout the body for growth and for replacing worn out or damaged cells, for example healing a cut in the skin. Meiosis is required in the reproductive organs, the ovaries in a female cat and the testes in a male, where it produces the gametes needed for sexual reproduction.<br><br><b>Marking points:</b> 1 mark for both numbers correct: 38 after mitosis and 19 in a gamete. 1 mark for identity correctly stated for both processes with reasons (full copy in mitosis; half set, one from each pair, in meiosis). 1 mark for one valid role for each process (mitosis for growth or repair in the body; meiosis in the ovaries or testes to produce gametes).",
+      {});
+  },
+  function () {
+    return textq("A body cell of a fruit fly contains 8 chromosomes. (a) State the chromosome number in a new body cell produced by mitosis from this cell, and in a gamete produced by meiosis. (1) (b) State whether the products of each process are genetically identical to the parent cell, and give the reason in each case. (1) (c) State one place or role in the fruit fly's life cycle where mitosis is required, and one where meiosis is required. (1) (3 marks)",
+      ["mitosis produces a body cell with 8 chromosomes; meiosis produces a gamete with 4 chromosomes", "the mitosis product is genetically identical to the parent cell because mitosis copies the full set of chromosomes into each daughter cell; the gamete is not identical because it carries only half the set, one chromosome from each pair, so it holds a selection of the parent's information rather than a copy", "mitosis is required for the fly's growth as its body develops and for replacing cells; meiosis is required in the ovaries or testes to produce the eggs or sperm used in reproduction"],
+      "<b>Model answer:</b> (a) Mitosis gives a new body cell with the full 8 chromosomes. Meiosis gives a gamete with half that number, 4 chromosomes. (b) The cell produced by mitosis is genetically identical to the parent cell, because mitosis copies the complete set of chromosomes into each daughter cell. The gamete produced by meiosis is not identical to the parent cell: it receives only one chromosome from each pair, half the parent's set, so its genetic information is a selection, not a copy, and it will be combined with another parent's gamete at fertilization. (c) Mitosis is required as the young fly grows and develops, producing the new cells of its body, and for replacing damaged cells. Meiosis is required in the reproductive organs, the ovaries in a female fly and the testes in a male, where it produces the gametes needed for sexual reproduction.<br><br><b>Marking points:</b> 1 mark for both numbers correct: 8 after mitosis and 4 in a gamete. 1 mark for identity correctly stated for both processes with reasons (full copy in mitosis; half set, one from each pair, in meiosis). 1 mark for one valid role for each process (mitosis for growth or replacement in the body; meiosis in the ovaries or testes to produce gametes).",
+      {});
+  },
+  function () {
+    return textq("A body cell of a human contains 46 chromosomes. (a) State the chromosome number in a new body cell produced by mitosis from this cell, and in a gamete produced by meiosis. (1) (b) State whether the products of each process are genetically identical to the parent cell, and give the reason in each case. (1) (c) State one place or role in the human life cycle where mitosis is required, and one where meiosis is required. (1) (3 marks)",
+      ["mitosis produces a body cell with 46 chromosomes; meiosis produces a gamete with 23 chromosomes", "the mitosis product is genetically identical to the parent cell because mitosis copies the full set of chromosomes into each daughter cell; the gamete is not identical because it carries only half the set, one chromosome from each pair, so it holds a selection of the parent's information rather than a copy", "mitosis is required for growth and repair in the body, such as producing new skin cells or healing a wound; meiosis is required in the ovaries or testes to produce the eggs or sperm used in reproduction"],
+      "<b>Model answer:</b> (a) Mitosis gives a new body cell with the full 46 chromosomes. Meiosis gives a gamete with half that number, 23 chromosomes. (b) The cell produced by mitosis is genetically identical to the parent cell, because mitosis copies the complete set of chromosomes into each daughter cell. The gamete produced by meiosis is not identical to the parent cell: it receives only one chromosome from each pair, half the parent's set, so its genetic information is a selection, not a copy, and it will be combined with another parent's gamete at fertilization. (c) Mitosis is required throughout the body for growth and for replacing worn out or damaged cells, for example producing new skin cells and healing wounds. Meiosis is required in the reproductive organs, the ovaries in a female and the testes in a male, where it produces the gametes needed for sexual reproduction.<br><br><b>Marking points:</b> 1 mark for both numbers correct: 46 after mitosis and 23 in a gamete. 1 mark for identity correctly stated for both processes with reasons (full copy in mitosis; half set, one from each pair, in meiosis). 1 mark for one valid role for each process (mitosis for growth or repair in the body; meiosis in the ovaries or testes to produce gametes).",
+      {});
+  }
+]), ["Mitosis keeps the number; meiosis halves it.", "For part (c), think body growth versus making sex cells."]);
+
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s9-u4-cr-nucleus-info", 4, ["SC9.10.1"], 2, "var", varset([
+  function () { return textq("A cell in the pancreas produces the protein insulin, which the body uses to control blood sugar. Explain how the nucleus of the pancreas cell controls this process through its genetic information. (2 marks)",
+    ["the nucleus contains the genetic information (DNA), including the gene carrying the instructions for making insulin", "the cell follows the instructions in that gene to produce insulin, so the nucleus directs which protein the cell makes"],
+    "<b>Model answer:</b> The nucleus of the pancreas cell contains the cell's genetic information, stored in DNA. That information includes the gene carrying the instructions for making the protein insulin. The cell uses those instructions to produce insulin, which is then released to do its work in the body. The nucleus therefore controls the process: it holds the instructions that decide which protein the cell makes and when the cell makes it.<br><br><b>Marking points:</b> 1 mark for the nucleus holding the genetic information, including the gene with the instructions for insulin. 1 mark for the cell following those instructions to produce insulin, so the nucleus directs the process.", {}); },
+  function () { return textq("A cell in the bone marrow produces haemoglobin, the protein that lets red blood cells carry oxygen. Explain how the nucleus of the bone marrow cell controls this process through its genetic information. (2 marks)",
+    ["the nucleus contains the genetic information (DNA), including the gene carrying the instructions for making haemoglobin", "the cell follows the instructions in that gene to produce haemoglobin, so the nucleus directs which protein the cell makes"],
+    "<b>Model answer:</b> The nucleus of the bone marrow cell contains the cell's genetic information, stored in DNA. That information includes the gene carrying the instructions for making the protein haemoglobin. The cell uses those instructions to produce haemoglobin as the red blood cell develops, and the haemoglobin then carries oxygen in the blood. The nucleus therefore controls the process: it holds the instructions that decide which protein the cell makes.<br><br><b>Marking points:</b> 1 mark for the nucleus holding the genetic information, including the gene with the instructions for haemoglobin. 1 mark for the cell following those instructions to produce haemoglobin, so the nucleus directs the process.", {}); },
+  function () { return textq("A cell in a salivary gland produces amylase, an enzyme that begins the digestion of starch in the mouth. Explain how the nucleus of the salivary gland cell controls this process through its genetic information. (2 marks)",
+    ["the nucleus contains the genetic information (DNA), including the gene carrying the instructions for making amylase", "the cell follows the instructions in that gene to produce the amylase enzyme, so the nucleus directs the process"],
+    "<b>Model answer:</b> The nucleus of the salivary gland cell contains the cell's genetic information, stored in DNA. That information includes the gene carrying the instructions for making amylase, which is a protein that works as an enzyme. The cell uses those instructions to produce amylase, and the amylase is released into the saliva to begin digesting starch. The nucleus therefore controls the process: it holds the instructions that decide which protein the cell makes.<br><br><b>Marking points:</b> 1 mark for the nucleus holding the genetic information, including the gene with the instructions for amylase. 1 mark for the cell following those instructions to produce amylase, so the nucleus directs the process.", {}); },
+  function () { return textq("A skin cell at the edge of a small cut divides to produce new skin cells, and the new cells gradually close the wound. Explain how the nucleus of the skin cell controls this process through its genetic information. (2 marks)",
+    ["the nucleus contains the cell's full set of genetic information and directs the cell to divide by mitosis", "mitosis copies the full set of genetic information into each new cell, so the new skin cells carry the same instructions and can do the work of skin cells as the wound closes"],
+    "<b>Model answer:</b> The nucleus of the skin cell contains the cell's full set of genetic information, stored in DNA, and it directs the cellular process of division. When the cell divides by mitosis, that full set of information is copied into each new cell, so every new skin cell carries the same instructions as the original cell. Those new cells can therefore carry out the processes of skin cells, and together they replace the damaged tissue and close the wound.<br><br><b>Marking points:</b> 1 mark for the nucleus holding the full set of genetic information and directing the cell's division. 1 mark for mitosis copying the full set into each new cell, so the new cells carry the same instructions and can replace the damaged tissue.", {}); }
+]), ["Name what the nucleus holds first, then what the cell does with it.", "Gene, instruction, protein (or division): keep the chain in order."]);
+
+E("s9-u4-cr-reproduction-compare", 4, ["SC9.10.4"], 2, "var", varset([
+  function () { return textq("A hydra reproduces by growing a bud that enlarges and separates into a new hydra. A frog reproduces when a male's sperm fertilizes a female's eggs, and tadpoles develop from the fertilized eggs. Compare the two kinds of reproduction, stating for each the number of parents and whether the offspring are genetically identical to a parent or varied. (2 marks)",
+    ["hydra: asexual reproduction with one parent; the bud grows from the parent's own cells, so the offspring is genetically identical to the parent", "frog: sexual reproduction with two parents; sperm and egg fuse at fertilization, combining genetic information, so the offspring are varied and not identical to either parent"],
+    "<b>Model answer:</b> The hydra reproduces asexually. It has one parent, and the bud is an outgrowth of that parent's own cells, so the new hydra is genetically identical to the parent. The frog reproduces sexually. It has two parents: a sperm from the male and eggs from the female fuse at fertilization, combining the genetic information of both parents, so each tadpole is genetically varied and identical to neither parent.<br><br><b>Marking points:</b> 1 mark for the hydra correctly compared: asexual, one parent, no gametes or fertilization, offspring genetically identical to the parent. 1 mark for the frog correctly compared: sexual, two parents, gametes fuse at fertilization, offspring varied.", {}); },
+  function () { return textq("A potato plant reproduces when an eye of one of its tubers sprouts and grows into a new plant. A salmon reproduces when a female's eggs are fertilized by a male's sperm in the water, and young salmon develop from the fertilized eggs. Compare the two kinds of reproduction, stating for each the number of parents and whether the offspring are genetically identical to a parent or varied. (2 marks)",
+    ["potato: asexual reproduction with one parent; the tuber is part of the parent plant, so the new plant is genetically identical to the parent", "salmon: sexual reproduction with two parents; sperm and egg fuse at fertilization, combining genetic information, so the offspring are varied and not identical to either parent"],
+    "<b>Model answer:</b> The potato reproduces asexually. The tuber is a part of one parent plant, and the new plant grows from the tuber's own cells, so it is genetically identical to the parent. The salmon reproduces sexually. It has two parents: the male's sperm fertilizes the female's eggs, combining the genetic information of both parents at fertilization, so each young salmon is genetically varied and identical to neither parent.<br><br><b>Marking points:</b> 1 mark for the potato correctly compared: asexual, one parent, no gametes or fertilization, offspring genetically identical to the parent. 1 mark for the salmon correctly compared: sexual, two parents, gametes fuse at fertilization, offspring varied.", {}); },
+  function () { return textq("A yeast cell reproduces by forming a small bud that grows and breaks away as a new yeast cell. A butterfly reproduces when a male's sperm fertilizes a female's eggs, and caterpillars hatch from the fertilized eggs. Compare the two kinds of reproduction, stating for each the number of parents and whether the offspring are genetically identical to a parent or varied. (2 marks)",
+    ["yeast: asexual reproduction with one parent; the bud grows from the parent cell, so the new cell is genetically identical to the parent", "butterfly: sexual reproduction with two parents; sperm and egg fuse at fertilization, combining genetic information, so the offspring are varied and not identical to either parent"],
+    "<b>Model answer:</b> The yeast reproduces asexually. It has one parent cell, and the bud grows out of that cell and separates, so the new yeast cell is genetically identical to the parent. The butterfly reproduces sexually. It has two parents: the male's sperm fertilizes the female's eggs, combining the genetic information of both parents at fertilization, so each caterpillar is genetically varied and identical to neither parent.<br><br><b>Marking points:</b> 1 mark for the yeast correctly compared: asexual, one parent, no gametes or fertilization, offspring genetically identical to the parent. 1 mark for the butterfly correctly compared: sexual, two parents, gametes fuse at fertilization, offspring varied.", {}); },
+  function () { return textq("A spider plant reproduces when a plantlet growing at the end of one of its stems roots in soil and becomes a new plant. A robin reproduces when a male's sperm fertilizes a female's eggs inside her body, and chicks hatch from the eggs she lays. Compare the two kinds of reproduction, stating for each the number of parents and whether the offspring are genetically identical to a parent or varied. (2 marks)",
+    ["spider plant: asexual reproduction with one parent; the plantlet is part of the parent plant, so the new plant is genetically identical to the parent", "robin: sexual reproduction with two parents; sperm and egg fuse at fertilization, combining genetic information, so the offspring are varied and not identical to either parent"],
+    "<b>Model answer:</b> The spider plant reproduces asexually. The plantlet is a part of one parent plant, and it grows into a new plant from the parent's own cells, so it is genetically identical to the parent. The robin reproduces sexually. It has two parents: the male's sperm fertilizes the female's eggs, combining the genetic information of both parents at fertilization, so each chick is genetically varied and identical to neither parent.<br><br><b>Marking points:</b> 1 mark for the spider plant correctly compared: asexual, one parent, no gametes or fertilization, offspring genetically identical to the parent. 1 mark for the robin correctly compared: sexual, two parents, gametes fuse at fertilization, offspring varied.", {}); }
+]), ["Give each organism its own half of the comparison.", "Parents first, then identical or varied."]);
+
+E("s9-u4-reproduction-balance", 4, ["SC9.10.6"], 2, "var", varset([
+  function () {
+    return mcq("Two fields of potatoes are planted in the same spring. Field A is grown from tubers saved from a single plant, so all its plants are genetically identical. Field B is grown from true seed, so its plants are genetically varied. A new fungal disease reaches the area. Which outcome is most likely, and why?",
+      "Field A is at greater risk: its plants are genetically identical, so a fungus that infects one can infect them all; Field B's varied plants include some that may resist it",
+      ["Field B is at greater risk: its plants are genetically varied, so a fungus that infects one can infect them all; Field A's identical plants include some that may resist it", "Both fields face exactly the same risk, because the way a plant was produced has no effect on how a disease spreads through a population of plants in a field", "Field A is at greater risk because tuber grown plants reproduce more slowly than seed grown plants, so Field A cannot replace any plants the fungus kills in time"],
+      "A disease is a change in the environment, and variety is the protection against change. Field A's plants share one set of genetic information, so whatever the fungus can do to one plant it can do to every plant. Field B's varied plants differ, so some are likely to resist the fungus and survive to reproduce.",
+      {});
+  },
+  function () {
+    return mcq("A single plant that can reproduce asexually by runners is washed onto a bare island where no other plant of its kind lives. Within a few years it has covered a large patch of ground. Which statement best explains this success and its hidden risk?",
+      "Asexual reproduction needs no mate, so one plant can multiply quickly and colonize the island; the risk is that all the plants are identical, so a change in conditions could destroy them all",
+      ["Sexual reproduction needs no mate, so one plant can multiply quickly and colonize the island; the risk is that all the plants are varied, so a change in conditions could destroy them all", "Asexual reproduction needs no mate, so one plant can multiply quickly and colonize the island; there is no hidden risk, because identical plants are protected against every change in conditions", "The plant succeeded because it found mates quickly on the island, and its varied offspring were guaranteed to suit the island; identical offspring would have failed to grow there at all"],
+      "Colonizing an empty place rewards speed and independence: asexual reproduction needs only one parent and little energy, so a lone plant can multiply fast. The hidden cost is uniformity: every plant is a copy of the first, so a disease or a change in conditions that defeats one plant can defeat the whole patch.",
+      {});
+  },
+  function () {
+    return mcq("A grape grower propagates vines by cuttings, and the vines have produced excellent fruit in the same vineyard, under the same conditions, for many seasons. The grower keeps using cuttings instead of sowing seed. Which weighing of the two modes best supports the grower's choice?",
+      "In unchanging conditions the asexual mode wins: cuttings copy the proven vine exactly with one parent and little energy, and the lack of variety costs nothing while conditions stay the same",
+      ["In unchanging conditions the sexual mode wins: seed copies the proven vine exactly with one parent and little energy, and its variety is what keeps the fruit excellent season after season", "In unchanging conditions the asexual mode wins because cuttings produce the greatest possible variety of offspring, and variety is what keeps the proven vine's fruit excellent in the vineyard", "The choice makes no difference in any environment, because asexual and sexual reproduction always give the same speed, the same energy cost and the same amount of variety in the offspring"],
+      "The grower's environment is stable, so the sexual mode's great advantage, variety, buys nothing, while its costs, two parents and more energy, remain. Cuttings copy a vine already proven in those exact conditions, quickly and from one parent. The asexual mode's weakness, no variety, only matters when conditions change.",
+      {});
+  },
+  function () {
+    return mcq("Water fleas in a pond reproduce asexually while conditions are good, but as the pond begins to dry and cool in autumn they switch to sexual reproduction. Which statement best explains the advantage of switching?",
+      "Sexual reproduction combines genetic information from two parents, producing varied offspring; in worsening conditions, some varied offspring are more likely to carry traits that let them survive",
+      ["Sexual reproduction copies the genetic information of one parent exactly, producing identical offspring; in worsening conditions, identical offspring are more likely to survive than varied ones", "Asexual reproduction combines genetic information from two parents, producing varied offspring; switching to it in autumn is what gives the water fleas their variety for the hard season ahead", "Sexual reproduction is faster and needs less energy than asexual reproduction, so switching lets the water fleas multiply quickly and outnumber the hard conditions of the autumn pond"],
+      "The switch trades speed for variety at exactly the moment variety matters. While conditions are good, identical copies of a successful water flea are an advantage. As conditions worsen, varied offspring give the population raw material: some carry traits that fit the new conditions, so the population can survive the change.",
+      {});
+  },
+  function () {
+    return mcq("A gardener can fill a new bed in one spring either with cuttings from a single healthy plant or with seedlings grown from that plant's seeds. The cuttings would fill the bed sooner, but the gardener chooses the seedlings because the bed's soil and exposure are unlike anywhere the parent grew. Which reasoning is sound?",
+      "The seedlings vary genetically, so some are more likely to suit the new soil and exposure, even though they take longer; the cuttings would all share the parent's fit, good or bad, in the new bed",
+      ["The seedlings are genetically identical to the parent, so all of them are guaranteed to suit the new soil and exposure; the cuttings would vary and most of them would fail in the new bed", "The cuttings vary genetically, so some are more likely to suit the new soil and exposure, even though they take longer; the seedlings would all share the parent's fit in the new bed", "Speed is the only difference between the two choices, because cuttings and seedlings always carry the same genetic information and differ only in how fast they fill a garden bed"],
+      "The gardener is weighing speed against variety in a new environment. Cuttings are faster but copy the parent exactly: if the parent's combination suits the new bed, all succeed, and if it does not, all fail. Seedlings are slower, but their varied combinations mean some are likely to fit the new soil and exposure.",
+      {});
+  }
+]), ["Weigh both sides: what does each mode gain, and what does it give up?", "Variety pays when conditions change; copying pays when they do not."]);

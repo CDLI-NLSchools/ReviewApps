@@ -1,3 +1,5 @@
+// CRMARKS: s9-u3-cr-charge-properties=3
+// CRMARKS: s9-u3-cr-circuit-language=3
 // CRMARKS: s9-u3-cr-flow-language=3
 // CRMARKS: s9-u3-cr-series-parallel-data=3
 // CRMARKS: s9-u3-cr-bulb-removed=3
@@ -16,6 +18,162 @@
 // CRMARKS: s9-u3-cr-design-circuit=4
 // CRMARKS: s9-u3-cr-applications=3
 // CRMARKS: s9-u3-cr-charge-explain=3
+// CRMARKS: s9-u3-cr-static-current=2
+// CRMARKS: s9-u3-cr-series-current=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s9-u3-static-def=2
+// CRMARKS: s9-u3-friction-transfer=2
+// CRMARKS: s9-u3-charge-states=2
+// CRMARKS: s9-u3-electroscope-detect=4
+// CRMARKS: s9-u3-discharge=3
+// CRMARKS: s9-u3-pith-balls=2
+// CRMARKS: s9-u3-balloon-wall=2
+// CRMARKS: s9-u3-attract-repel-test=3
+// CRMARKS: s9-u3-charge-interactions=4
+// CRMARKS: s9-u3-static-not-harnessed=2
+// CRMARKS: s9-u3-circuit-parts=2
+// CRMARKS: s9-u3-cell-how=3
+// CRMARKS: s9-u3-coulomb=3
+// CRMARKS: s9-u3-series-identify=2
+// CRMARKS: s9-u3-parallel-identify=2
+// CRMARKS: s9-u3-series-current-rule=2
+// CRMARKS: s9-u3-gen-series-voltage=3
+// CRMARKS: s9-u3-gen-parallel-current=3
+// CRMARKS: s9-u3-total-resistance=3
+// CRMARKS: s9-u3-parallel-voltage-rule=4
+// CRMARKS: s9-u3-energy-def=2
+// CRMARKS: s9-u3-cost-factors=2
+// CRMARKS: s9-u3-power-meaning=3
+// CRMARKS: s9-u3-gen-power-vi=3
+// CRMARKS: s9-u3-gen-energy-kwh=2
+// CRMARKS: s9-u3-gen-cost=3
+// CRMARKS: s9-u3-energuide=3
+// CRMARKS: s9-u3-gen-efficiency=2
+// CRMARKS: s9-u3-efficiency-meaning=3
+// CRMARKS: s9-u3-efficiency-heat-loss=3
+// CRMARKS: s9-u3-transmission=3
+// CRMARKS: s9-u3-lightning-rod=2
+// CRMARKS: s9-u3-photocopier=3
+// CRMARKS: s9-u3-careers-range=4
+// CRMARKS: s9-u3-lights-uses=2
+// CRMARKS: s9-u3-parallel-use-case=3
+// CRMARKS: s9-u3-cells-flashlight=2
+// CRMARKS: s9-u3-cells-lighthouse=3
+// CRMARKS: s9-u3-fuse-breaker=2
+// CRMARKS: s9-u3-grounding-prong=3
+// CRMARKS: s9-u3-gen-cells-voltage=2
+// CRMARKS: s9-u3-cells-tradeoff=3
+// CRMARKS: s9-u3-lighting-evaluate=2
+// CRMARKS: s9-u3-efficiency-design=3
+// CRMARKS: s9-u3-energuide-purpose=3
+// CRMARKS: s9-u3-bill-compare=3
+// CRMARKS: s9-u3-approaches=4
+// CRMARKS: s9-u3-approach-fit=3
+// CRMARKS: s9-u3-criteria-analysis=2
+// CRMARKS: s9-u3-criteria-apply=4
+// CRMARKS: s9-u3-decision-balance=2
+// CRMARKS: s9-u3-decision-evidence=3
+// CRMARKS: s9-u3-alternative-sources=2
+// CRMARKS: s9-u3-source-region=3
+// CRMARKS: s9-u3-constraints=2
+// CRMARKS: s9-u3-constraint-case=3
+// CRMARKS: s9-u3-constraint-evaluate=4
+// CRMARKS: s9-u3-symbols=2
+// CRMARKS: s9-u3-resistance-factors=3
+// CRMARKS: s9-u3-gen-ohm-resistance=3
+// CRMARKS: s9-u3-gen-ohm-current=3
+// CRMARKS: s9-u3-gen-ohm-voltage=3
+// CRMARKS: s9-u3-meter-placement=2
+// CRMARKS: s9-u3-gen-meter-read=3
+// CRMARKS: s9-u3-error-sources=2
+// CRMARKS: s9-u3-error-meters-change=4
+// CRMARKS: s9-u3-discrepancy-cause=4
+// CRMARKS: s9-u3-gen-graph-resistance=3
+// CRMARKS: s9-u3-best-fit=2
+// CRMARKS: s9-u3-variables=2
+// CRMARKS: s9-u3-instrument-use=3
+// CRMARKS: s9-u3-testable-judge=3
+// CRMARKS: s9-u3-applications=4
+// CRMARKS: s9-u3-env-criteria=2
+// CRMARKS: s9-u3-env-apply=3
+// CRMARKS: s9-u3-circuits-behaviour=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s9-u3-static-def=b
+// BIMODAL: s9-u3-friction-transfer=b
+// BIMODAL: s9-u3-charge-states=b
+// BIMODAL: s9-u3-electroscope-detect=b
+// BIMODAL: s9-u3-discharge=b
+// BIMODAL: s9-u3-pith-balls=b
+// BIMODAL: s9-u3-balloon-wall=a
+// BIMODAL: s9-u3-attract-repel-test=b
+// BIMODAL: s9-u3-charge-interactions=b
+// BIMODAL: s9-u3-static-not-harnessed=b
+// BIMODAL: s9-u3-circuit-parts=b
+// BIMODAL: s9-u3-cell-how=b
+// BIMODAL: s9-u3-coulomb=a
+// BIMODAL: s9-u3-series-identify=b
+// BIMODAL: s9-u3-parallel-identify=b
+// BIMODAL: s9-u3-series-current-rule=b
+// BIMODAL: s9-u3-gen-series-voltage=a
+// BIMODAL: s9-u3-gen-parallel-current=a
+// BIMODAL: s9-u3-total-resistance=b
+// BIMODAL: s9-u3-parallel-voltage-rule=b
+// BIMODAL: s9-u3-energy-def=b
+// BIMODAL: s9-u3-cost-factors=b
+// BIMODAL: s9-u3-power-meaning=b
+// BIMODAL: s9-u3-gen-power-vi=a
+// BIMODAL: s9-u3-gen-energy-kwh=a
+// BIMODAL: s9-u3-gen-cost=a
+// BIMODAL: s9-u3-energuide=a
+// BIMODAL: s9-u3-gen-efficiency=a
+// BIMODAL: s9-u3-efficiency-meaning=b
+// BIMODAL: s9-u3-efficiency-heat-loss=b
+// BIMODAL: s9-u3-transmission=a
+// BIMODAL: s9-u3-lightning-rod=b
+// BIMODAL: s9-u3-photocopier=b
+// BIMODAL: s9-u3-careers-range=b
+// BIMODAL: s9-u3-lights-uses=b
+// BIMODAL: s9-u3-parallel-use-case=b
+// BIMODAL: s9-u3-cells-flashlight=b
+// BIMODAL: s9-u3-cells-lighthouse=b
+// BIMODAL: s9-u3-fuse-breaker=b
+// BIMODAL: s9-u3-grounding-prong=b
+// BIMODAL: s9-u3-gen-cells-voltage=a
+// BIMODAL: s9-u3-cells-tradeoff=b
+// BIMODAL: s9-u3-lighting-evaluate=b
+// BIMODAL: s9-u3-efficiency-design=b
+// BIMODAL: s9-u3-energuide-purpose=b
+// BIMODAL: s9-u3-bill-compare=b
+// BIMODAL: s9-u3-approaches=b
+// BIMODAL: s9-u3-approach-fit=b
+// BIMODAL: s9-u3-criteria-analysis=b
+// BIMODAL: s9-u3-criteria-apply=b
+// BIMODAL: s9-u3-decision-balance=b
+// BIMODAL: s9-u3-decision-evidence=b
+// BIMODAL: s9-u3-alternative-sources=b
+// BIMODAL: s9-u3-source-region=b
+// BIMODAL: s9-u3-constraints=b
+// BIMODAL: s9-u3-constraint-case=a
+// BIMODAL: s9-u3-constraint-evaluate=b
+// BIMODAL: s9-u3-symbols=b
+// BIMODAL: s9-u3-resistance-factors=a
+// BIMODAL: s9-u3-gen-ohm-resistance=a
+// BIMODAL: s9-u3-gen-ohm-current=a
+// BIMODAL: s9-u3-gen-ohm-voltage=a
+// BIMODAL: s9-u3-meter-placement=b
+// BIMODAL: s9-u3-gen-meter-read=a
+// BIMODAL: s9-u3-error-sources=b
+// BIMODAL: s9-u3-error-meters-change=b
+// BIMODAL: s9-u3-discrepancy-cause=b
+// BIMODAL: s9-u3-gen-graph-resistance=a
+// BIMODAL: s9-u3-best-fit=b
+// BIMODAL: s9-u3-variables=b
+// BIMODAL: s9-u3-instrument-use=b
+// BIMODAL: s9-u3-testable-judge=b
+// BIMODAL: s9-u3-applications=b
+// BIMODAL: s9-u3-env-criteria=b
+// BIMODAL: s9-u3-env-apply=b
+// BIMODAL: s9-u3-circuits-behaviour=a
 // Science 9 Unit 3 bank: Electricity (SC9.7.1 to SC9.9.14, 37
 // indicators), built Nov 15, 2026 to the Electricity authoring
 // spec. All entries are original and were written new for this
@@ -1293,3 +1451,178 @@ var TOPIC_U3 = {
 };
 BANK.forEach(function (e) { if (TOPIC_U3[e.id]) { e.topic = TOPIC_U3[e.id]; } });
 
+
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): SR depth on
+   SC9.7.5 in the "circuits" topic slice and CR entries closing
+   Unit 3 Test 1 (SC9.7.2) and Unit 3 Test 2 (SC9.7.4), priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7.
+   SME-flagged. */
+
+E("s9-u3-circuits-behaviour", 3, ["SC9.7.5"], 2, "gen", function () {
+  var V = pick([6, 9, 12, 24]), n = pick([2, 3, 4]), mode = ri(0, 2);
+  var who = pick(["identical bulbs", "identical lamps", "identical resistors"]);
+  if (mode === 0) {
+    return mcq(n + " " + who + " are connected in SERIES across a " + V + " V source. What is the voltage across each one?",
+      (V / n) + " V",
+      [V + " V", (V * n) + " V", (V - n) + " V"],
+      "In series, the source voltage is shared equally among identical components: " + V + " V / " + n + " = <b>" + (V / n) + " V</b> across each.", { V: V, n: n });
+  }
+  if (mode === 1) {
+    return mcq(n + " " + who + " are connected in PARALLEL across a " + V + " V source. What is the voltage across each branch?",
+      V + " V",
+      [(V / n) + " V", (V * n) + " V", (V - n) + " V"],
+      "In parallel, every branch is connected directly across the source, so each branch gets the full source voltage: <b>" + V + " V</b>.", { V: V, n: n });
+  }
+  var series = ri(0, 1) === 0;
+  if (series) {
+    return mcq("One bulb in a SERIES string of " + n + " bulbs (on a " + V + " V source) burns out, leaving an open gap. What happens to the other bulbs?",
+      "They all go out, because the single path for charge is broken",
+      ["They glow more brightly than before, because the remaining bulbs now share the full source voltage between them", "They stay exactly as bright as they were, because each bulb is said to have its own separate path", "Only the bulb immediately next to the burnt-out one goes out along with it, and the rest stay lit"],
+      "A series circuit has only one path; a break anywhere stops the charge flow everywhere. <b>They all go out, because the single path for charge is broken</b>.", { V: V, n: n });
+  }
+  return mcq("One bulb in a PARALLEL set of " + n + " bulbs (on a " + V + " V source) burns out. What happens to the other bulbs?",
+    "They stay lit at the same brightness, because each branch has its own complete path",
+    ["They all go out at the same moment, because the whole circuit is treated as broken everywhere at once", "They glow noticeably more dimly than before, because the source voltage is now shared among the remaining bulbs", "They each glow brighter than before, because the full current from the source now passes through each remaining one"],
+    "Each parallel branch is its own complete circuit across the source, so the other branches are unaffected. <b>They stay lit at the same brightness, because each branch has its own complete path</b>.", { V: V, n: n });
+}, ["Series shares voltage; parallel gives every branch the full voltage.", "A break stops a series circuit everywhere but only its own branch in parallel."]);
+BANK.forEach(function (e) { if (e.id === "s9-u3-circuits-behaviour") { e.topic = "circuits"; } });
+
+E("s9-u3-cr-charge-properties", 3, ["SC9.7.2"], 2, "var", varset([
+  function () {
+    return textq("Properties of static charge (3 marks)\nA student rubs a balloon on a wool sweater and holds it near a wall. The balloon sticks to the wall. (a) State what kind of charge the balloon gained and how rubbing produced it. (1) (b) Explain why the balloon is attracted to the wall even though the wall is neutral overall. (1) (c) On a humid day the same trick fails: the balloon will not stick. Explain why. (1)",
+      ["(a) The balloon gained a negative charge: electrons were transferred from the sweater to the balloon by friction."],
+      "Marking points (3): (a) 1 mark for electrons moving from the sweater to the balloon, leaving the balloon negatively charged (accept the sweater positive). (b) 1 mark for the wall's charges shifting: the balloon's negative charge repels electrons in the wall's surface, leaving the near surface positive, and opposite charges attract. (c) 1 mark for charge leaking away: humid air and moisture conduct the charge off the balloon before it can build up. Model answer: The balloon sticks because <b>its transferred charge pulls the wall's opposite charges closer, and unlike charges attract</b>.", {});
+  },
+  function () {
+    return textq("Properties of static charge (3 marks)\nTwo identical pith balls hang from threads. Both are touched with the same charged rod, and afterwards the balls swing apart and stay separated. (a) Explain why the balls repel each other. (1) (b) A third, neutral pith ball is brought near one of them and is attracted to it. Explain why a charged ball attracts a neutral one. (1) (c) State what would happen to the separation of the first two balls if they were charged twice as strongly. (1)",
+      ["(a) Both balls received the same kind of charge from the rod, and like charges repel."],
+      "Marking points (3): (a) 1 mark for like charges repelling. (b) 1 mark for the neutral ball's charges separating (the near side gains the opposite charge), so attraction to the near side beats repulsion from the far side. (c) 1 mark for a greater separation: stronger like charges repel with a stronger force. Model answer: The balls separate because <b>objects carrying the same kind of charge repel each other</b>.", {});
+  },
+  function () {
+    return textq("Properties of static charge (3 marks)\nA photocopier uses static electricity to place toner (a fine black powder) on paper exactly where the image should be. (a) The drum inside is given a charge in the pattern of the page. Explain how charged toner ends up only on the image areas. (1) (b) State the rule of charges your explanation uses. (1) (c) Explain why the toner does not simply fall off the drum under gravity before the paper arrives. (1)",
+      ["(a) The toner particles are given the opposite charge to the charged image areas on the drum, so they are attracted to those areas only."],
+      "Marking points (3): (a) 1 mark for opposite charging of toner and image areas with attraction between them. (b) 1 mark for the rule: unlike (opposite) charges attract, like charges repel. (c) 1 mark for the electrostatic attraction on the tiny, light toner particles being stronger than gravity's pull on them. Model answer: The toner stays where it belongs because <b>opposite charges attract, and for such light particles that attraction beats gravity</b>.", {});
+  }
+]), ["Only electrons move; like charges repel and opposite charges attract.", "Trace the charge: where it came from, where it sits, and what force follows."]);
+
+E("s9-u3-cr-circuit-language", 3, ["SC9.7.4"], 2, "var", varset([
+  function () {
+    return textq("Describing charge flow precisely (3 marks)\nA student writes: \"The bulb uses up the electricity, so less current comes back to the battery than went out.\" Rewrite the student's idea in scientifically precise language. Your answer must state what actually happens to the charge flowing in the circuit, what the bulb does transform, and why the current is the same all around a series circuit. (3)",
+      ["Charge is not used up: the same amount of charge flows out of the bulb as flows into it, every second."],
+      "Marking points (3): 1 mark for charge conservation (charge is not consumed; current is the same at every point in a series loop). 1 mark for what the bulb transforms: electrical energy into light and heat energy. 1 mark for precise language (current is the rate of flow of charge; the battery supplies energy to the charges, it does not supply the charges themselves). Model answer: The bulb transforms electrical energy, not charge: <b>the current is the same all around the loop because charge is conserved</b>.", {});
+  },
+  function () {
+    return textq("Describing charge flow precisely (3 marks)\nA student writes: \"The battery runs out of electricity because it gives its current to the first bulb, and only a little is left for the second bulb in series.\" Correct this account in scientifically precise language. Your answer must explain what the battery supplies, how the two bulbs share what the battery provides, and what happens to the current at each bulb. (3)",
+      ["The battery supplies energy to the charges in the circuit; it does not parcel out current to the bulbs one at a time."],
+      "Marking points (3): 1 mark for the battery supplying energy (voltage), not a ration of current. 1 mark for the sharing: in series the voltage is shared between the bulbs, which is why each glows dimmer than a single bulb would. 1 mark for the current being the same through both bulbs, since there is one path and charge is conserved. Model answer: Both bulbs carry the same current; what they share is the battery's voltage, because <b>in series the energy per charge is divided among the components</b>.", {});
+  },
+  function () {
+    return textq("Describing charge flow precisely (3 marks)\nA student writes: \"When the switch is opened, the electricity that was on its way to the bulb is stuck in the wire.\" Correct this account in scientifically precise language. Your answer must state what the charges in the wire do when the circuit is broken, and why the bulb goes out everywhere at once rather than gradually. (3)",
+      ["The charges are always present throughout the wire; opening the switch stops their flow everywhere in the loop at the same time."],
+      "Marking points (3): 1 mark for charges existing all through the conductor before the switch is closed (the battery does not send them out one by one). 1 mark for the break stopping the drift of charge around the whole loop. 1 mark for the bulb going out because energy transfer stops when charge flow stops, not because charge 'runs out' or is stranded. Model answer: Nothing is stuck: <b>the charges stop drifting everywhere in the loop the moment the path is broken</b>.", {});
+  }
+]), ["Voltage is energy per charge (volts), current is charge flow (amperes), resistance opposes it (ohms).", "Check the statement against V = IR when numbers are given."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s9-u3-cr-static-current closes Unit 3 Test
+   1 (2 marks, Level 3); s9-u3-cr-series-current closes Unit 3 Test
+   2 (4 marks, Level 3). SME-flagged for the
+   specialist pass. */
+
+E("s9-u3-cr-static-current", 3, ["SC9.7.3"], 3, "var", varset([
+  function () {
+    return textq("A student claims: 'Static electricity and electric current are the same thing. Both are just electric charge, so there is no real difference between them.' Evaluate this claim. Give two correct differences between static electricity and electric current, and tie each difference to an example. (2 marks)",
+      ["static electricity is charge built up at rest in one place and released in one brief discharge, such as the shock from a doorknob, while electric current is charge flowing steadily through a circuit, such as the flow through a lamp for as long as its switch is closed", "the static discharge cannot be controlled or sustained, so it cannot power a device, while current from a source can be switched on and off and harnessed to run devices"],
+      "<b>Model answer:</b> The claim is wrong: sharing the word charge does not make the two the same. First difference: in static electricity, charge builds up and stays at rest on a surface until it escapes in a single sudden discharge, as in the spark and shock felt at a doorknob after walking on carpet. In electric current, charge flows continuously around a circuit, as it does through a lamp for as long as the switch stays closed. Second difference: the static discharge is over almost instantly and cannot be controlled or sustained, so it cannot be harnessed to run a device. Current from a battery or other source keeps flowing on demand and can be switched on and off, which is why it can power devices such as a flashlight.<br><br><b>Marking points:</b> 1 mark for one correct difference tied to an example (charge at rest and discharged in a burst, versus charge flowing steadily in a circuit). 1 mark for a second correct difference tied to an example (brief and uncontrollable, so not harnessable, versus sustained from a source and able to power devices).",
+      {});
+  },
+  function () {
+    return textq("A student claims: 'Lightning and the electricity in a house circuit are exactly the same thing, because both are electric charge on the move.' Evaluate this claim. Give two correct differences between static electricity and electric current, and tie each difference to an example. (2 marks)",
+      ["lightning is static electricity: a huge build up of charge in a cloud released in one brief, uncontrolled discharge, while house circuit electricity is electric current flowing steadily through conductors from a source", "lightning cannot be switched on, controlled or used steadily to power anything, while circuit current can be controlled by switches and harnessed to run lights and appliances for as long as needed"],
+      "<b>Model answer:</b> The claim is wrong: lightning and circuit electricity differ in kind, not just in size. First difference: lightning is static electricity, charge that has built up in a cloud and stays in place until it is released in one sudden discharge. House circuit electricity is electric current, charge flowing steadily and continuously through wires in a circuit supplied by a source. Second difference: the lightning discharge lasts a fraction of a second and cannot be controlled or harnessed steadily. Circuit current can be switched on and off, kept flowing for hours, and used to power devices such as lamps and appliances.<br><br><b>Marking points:</b> 1 mark for one correct difference tied to an example (charge built up at rest and discharged at once, as in lightning, versus charge flowing steadily in a circuit). 1 mark for a second correct difference tied to an example (brief and uncontrolled, so not harnessable, versus sustained, switchable flow from a source that powers devices).",
+      {});
+  },
+  function () {
+    return textq("A student claims: 'A balloon rubbed on hair and a flashlight both run on electricity, so static electricity and electric current must be the same thing.' Evaluate this claim. Give two correct differences between static electricity and electric current, and tie each difference to an example. (2 marks)",
+      ["on the balloon, charge sits at rest on the surface and stays there or leaves in one small discharge, while in the flashlight charge flows around a complete circuit from the cells through the bulb", "the balloon's charge cannot be made to flow steadily to do useful work, while the flashlight's current is sustained by its cells and can be turned on and off with a switch to give light for as long as needed"],
+      "<b>Model answer:</b> The claim is wrong: the balloon and the flashlight show the two different kinds of electricity. First difference: rubbing transfers charge onto the balloon, where it stays at rest on the surface, which is why the balloon can cling to a wall; any release is a single small discharge. In the flashlight, charge does not sit in one place: it flows continuously around the circuit from the cells through the bulb and back. Second difference: the balloon's static charge cannot be controlled or sustained, so it cannot power anything steadily. The flashlight's current is sustained by its source and controlled by its switch, so it can be harnessed to give light for as long as the circuit stays closed.<br><br><b>Marking points:</b> 1 mark for one correct difference tied to an example (charge at rest on a surface, as on the balloon, versus charge flowing steadily around a circuit, as in the flashlight). 1 mark for a second correct difference tied to an example (static charge brief or held in place and not harnessable, versus sustained, switchable current from a source powering a device).",
+      {});
+  },
+  function () {
+    return textq("A student claims: 'The shock you get from a car door handle on a dry day proves static electricity could run a motor if we collected enough of it, since it is the same electricity as current.' Evaluate this claim. Give two correct differences between static electricity and electric current, and tie each difference to an example. (2 marks)",
+      ["the car door shock is charge that built up at rest and escaped in one discharge lasting a moment, while the current that runs a motor flows steadily through a circuit the whole time the motor is on", "collecting more static charge only makes a bigger single discharge, still over in an instant and uncontrolled, while a motor needs a sustained, controlled flow from a source, which current provides"],
+      "<b>Model answer:</b> The claim is wrong, and collecting more charge does not fix the problem. First difference: the door handle shock is static electricity: charge built up at rest on the car and your body, then released in one discharge that is over almost instantly. The electricity that runs a motor is electric current: charge flowing steadily through a circuit for as long as the motor is switched on. Second difference: a static discharge cannot be controlled or sustained, however large it is; a bigger build up only makes a bigger spark. Current from a source can be kept flowing, switched and regulated, which is what harnessing electricity to power a device requires.<br><br><b>Marking points:</b> 1 mark for one correct difference tied to an example (charge at rest released in one brief discharge, as in the door shock, versus charge flowing steadily in a circuit, as in a running motor). 1 mark for a second correct difference tied to an example (static discharge uncontrolled and unsustained even when large, versus sustained, controlled current from a source that can power devices).",
+      {});
+  }
+]), ["Separate the two kinds by behaviour: resting and discharged, or flowing and sustained?", "Every difference needs its example attached to it."]);
+
+E("s9-u3-cr-series-current", 3, ["SC9.7.4"], 3, "var", varset([
+  function () {
+    return textq("A series circuit has a 6 V battery and two lamps connected one after the other in a single loop. (a) State the current at a point just after the battery and at a point just after the second lamp, and explain why the two currents compare that way. (2) (b) Explain what the battery's 6 V means in terms of the energy given to each unit of charge, and state where that energy goes as the charge passes through the lamps. (2) (4 marks)",
+      ["the current is the same at both points, because there is a single path and charge is not used up or stored anywhere in the loop, so the same charge per second passes every point", "6 V means each unit of charge (each coulomb) is given 6 joules of electrical potential energy by the battery, and that energy is transferred in the lamps, converted to light and heat, with the voltage drops across the two lamps adding to 6 V"],
+      "<b>Model answer:</b> (a) The current just after the second lamp is the same as the current just after the battery. A series circuit has only one path, and charge cannot pile up or disappear anywhere in the loop, so the same amount of charge passes every point each second. The lamps convert energy; they do not use up current. (b) A voltage of 6 V means the battery gives each unit of charge, each coulomb, 6 joules of electrical potential energy. As the charge passes through the lamps it gives up that energy: the lamps convert the electrical energy into light energy and heat energy. The voltage drops across the two lamps add up to the full 6 V, so all the energy given per unit charge is transferred by the time the charge returns to the battery.<br><br><b>Marking points:</b> 1 mark for stating the current is the same at both points in the series loop. 1 mark for the explanation: one path only, and charge is conserved, not used up by the lamps. 1 mark for 6 V stated as energy given to each unit of charge (6 joules per coulomb) by the battery. 1 mark for the energy's destination: transferred in the lamps to light and heat, with the drops across the lamps adding to 6 V.",
+      {});
+  },
+  function () {
+    return textq("A series circuit has a 9 V battery and three lamps connected one after the other in a single loop. (a) State the current at a point between the first and second lamps and at a point between the third lamp and the battery, and explain why the two currents compare that way. (2) (b) Explain what the battery's 9 V means in terms of the energy given to each unit of charge, and state where that energy goes as the charge passes through the lamps. (2) (4 marks)",
+      ["the current is the same at both points, because there is a single path and charge is not used up or stored anywhere in the loop, so the same charge per second passes every point", "9 V means each unit of charge (each coulomb) is given 9 joules of electrical potential energy by the battery, and that energy is transferred in the three lamps, converted to light and heat, with the voltage drops across the lamps adding to 9 V"],
+      "<b>Model answer:</b> (a) The current between the third lamp and the battery is the same as the current between the first and second lamps. A series circuit has only one path, and charge cannot pile up or disappear anywhere in the loop, so the same amount of charge passes every point each second, before, between and after the lamps. The lamps convert energy; they do not use up current. (b) A voltage of 9 V means the battery gives each unit of charge, each coulomb, 9 joules of electrical potential energy. As the charge passes through the three lamps it gives up that energy in stages: each lamp converts part of the electrical energy into light energy and heat energy. The voltage drops across the three lamps add up to the full 9 V.<br><br><b>Marking points:</b> 1 mark for stating the current is the same at both points in the series loop. 1 mark for the explanation: one path only, and charge is conserved, not used up by the lamps. 1 mark for 9 V stated as energy given to each unit of charge (9 joules per coulomb) by the battery. 1 mark for the energy's destination: transferred in the lamps to light and heat, with the drops across the three lamps adding to 9 V.",
+      {});
+  },
+  function () {
+    return textq("A series circuit has a 12 V battery and two lamps connected one after the other in a single loop. (a) State the current at a point just before the first lamp and at a point just before the charge returns to the battery, and explain why the two currents compare that way. (2) (b) Explain what the battery's 12 V means in terms of the energy given to each unit of charge, and state where that energy goes as the charge passes through the lamps. (2) (4 marks)",
+      ["the current is the same at both points, because there is a single path and charge is not used up or stored anywhere in the loop, so the same charge per second passes every point, including on the return to the battery", "12 V means each unit of charge (each coulomb) is given 12 joules of electrical potential energy by the battery, and that energy is transferred in the lamps, converted to light and heat, with the voltage drops across the two lamps adding to 12 V"],
+      "<b>Model answer:</b> (a) The current just before the charge returns to the battery is the same as the current just before the first lamp. A series circuit has only one path, and charge cannot pile up or disappear anywhere in the loop, so the same amount of charge passes every point each second, on the way out and on the way back. The lamps convert energy; they do not use up current, so no current is missing on the return side. (b) A voltage of 12 V means the battery gives each unit of charge, each coulomb, 12 joules of electrical potential energy. As the charge passes through the lamps it gives up that energy: the lamps convert the electrical energy into light energy and heat energy. The voltage drops across the two lamps add up to the full 12 V, so the charge returns to the battery having transferred all the energy it was given.<br><br><b>Marking points:</b> 1 mark for stating the current is the same at both points in the series loop. 1 mark for the explanation: one path only, and charge is conserved, not used up by the lamps. 1 mark for 12 V stated as energy given to each unit of charge (12 joules per coulomb) by the battery. 1 mark for the energy's destination: transferred in the lamps to light and heat, with the drops across the lamps adding to 12 V.",
+      {});
+  },
+  function () {
+    return textq("A series circuit has two 6 V batteries connected in the same direction in a single loop with three lamps, giving a total supply of 12 V. (a) State the current at a point just after the batteries and at a point just after the last lamp, and explain why the two currents compare that way. (2) (b) Explain what the total 12 V means in terms of the energy given to each unit of charge, and state where that energy goes as the charge passes through the lamps. (2) (4 marks)",
+      ["the current is the same at both points, because there is a single path and charge is not used up or stored anywhere in the loop, so the same charge per second passes every point", "the two batteries together give each unit of charge (each coulomb) 12 joules of electrical potential energy, 6 joules from each battery, and that energy is transferred in the three lamps, converted to light and heat, with the voltage drops across the lamps adding to 12 V"],
+      "<b>Model answer:</b> (a) The current just after the last lamp is the same as the current just after the batteries. Adding a second battery does not change the series rule: the circuit still has only one path, and charge cannot pile up or disappear anywhere in the loop, so the same amount of charge passes every point each second. The lamps convert energy; they do not use up current. (b) Connected in the same direction, the two 6 V batteries act together as a 12 V supply: each battery gives each unit of charge, each coulomb, 6 joules of electrical potential energy, so each coulomb leaves the pair carrying 12 joules. As the charge passes through the three lamps it gives up that energy in stages, each lamp converting electrical energy into light energy and heat energy. The voltage drops across the three lamps add up to the full 12 V.<br><br><b>Marking points:</b> 1 mark for stating the current is the same at both points in the series loop. 1 mark for the explanation: one path only, and charge is conserved, not used up by the lamps. 1 mark for the total 12 V stated as energy given to each unit of charge (12 joules per coulomb, built from 6 V per battery). 1 mark for the energy's destination: transferred in the lamps to light and heat, with the drops across the three lamps adding to 12 V.",
+      {});
+  }
+]), ["Current first: one path decides it. Then follow one unit of charge and its energy.", "Voltage is energy per unit charge. Where does that energy end up?"]);
+
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s9-u3-static-current", 3, ["SC9.7.3"], 2, "var", varset([
+  function () {
+    return mcq("When a load of synthetic clothes is taken out of a dryer, the items cling together and tiny crackles are heard as they are pulled apart. In the same laundry room, an electric iron plugged into an outlet heats steadily for as long as it is switched on. Which comparison of the two events is correct?",
+      "The clinging and crackling are static electricity: charge built up on the clothes in one place and discharged in small bursts; the iron uses electric current: charge flowing steadily through a circuit",
+      ["The clinging and crackling are electric current: charge flowing steadily through the clothes; the iron uses static electricity: charge built up in one place and discharged in small bursts as it heats", "Both events are static electricity: charge builds up on the clothes and inside the iron, and each is released in one sudden discharge that does the work of the event in the laundry room that day", "Both events are electric current: charge flows steadily through the clothes as they tumble and through the iron as it heats, and neither event involves any charge building up in one place at all"],
+      "Tumbling rubs the clothes against each other, so charge builds up on them in one place: that is static electricity, and the crackles are its small discharges as the charge escapes. The iron does useful work for as long as it is switched on, which needs electric current, charge flowing steadily through a circuit from a source.",
+      {});
+  },
+  function () {
+    return mcq("The plastic screen of an older television slowly collects dust, even in a clean room, because the screen carries a charge that stays on its surface. A fan in the same room runs at a steady speed for hours while its switch is on. What does the screen show about static electricity that the fan's running does not?",
+      "Static charge can stay in place on a surface and attract light objects such as dust, but it does not flow steadily enough to run a device the way the fan's current does",
+      ["Static charge flows steadily through the screen for hours and powers the dust collecting, just as the fan's current flows steadily through its motor for hours", "Static charge on the screen is not electricity at all, while the fan's current is; the dust is held to the screen by glue left from the factory that made it", "Static charge can run the fan for hours if enough dust collects on the screen, because a large enough build up becomes the same as a steady current in a circuit"],
+      "The screen's charge sits at rest on its surface, which is static electricity: it can attract light neutral objects such as dust, but it stays in place and cannot be made to flow on demand. The fan runs for hours because its circuit carries electric current, a sustained flow of charge from a source.",
+      {});
+  },
+  function () {
+    return mcq("At a fuel station, a spark is sometimes seen when a fuel nozzle first touches a vehicle's tank opening, and stations warn about static discharge near fuel. The vehicle's headlights, by contrast, stay lit the whole time the engine is running. Which statement correctly uses both facts?",
+      "The spark is a static discharge: built up charge escaping all at once, briefly and out of control; the headlights use electric current, a sustained flow that a source can keep supplying",
+      ["The spark is electric current supplied by the tank, flowing steadily until the tank is full; the headlights use static electricity, lit by one discharge at a time from the engine", "The spark could power the headlights if it were collected, because a static discharge and a sustained current differ only in how much charge they carry in total", "The spark is a static discharge that can be switched on and off like the headlights, and both events show charge flowing steadily for as long as they are needed"],
+      "The spark is static electricity doing the only thing it can do: charge that built up in one place escapes in a single brief discharge that nobody switches or controls, which is why it is a hazard near fuel. The headlights stay lit because a source keeps charge flowing through their circuit: electric current, sustained for as long as it is needed.",
+      {});
+  },
+  function () {
+    return mcq("A plastic ruler rubbed on a sleeve picks up small bits of paper and holds its charge until it is touched, when the charge leaves in a moment. A doorbell rings continuously for as long as its button is held down. Which pairing of kind and behaviour is correct?",
+      "Ruler: static electricity, charge held in place on a surface and then discharged at once. Doorbell: electric current, charge flowing around a circuit while the path is complete",
+      ["Ruler: electric current, charge flowing steadily around a circuit while it is rubbed. Doorbell: static electricity, charge held in place and discharged once each time it rings", "Ruler: static electricity, charge flowing steadily through the paper bits for minutes. Doorbell: electric current, charge held in place on the button and never moving at all", "Both are electric current, because any movement of charge, held or flowing, brief or steady, counts as a current that a circuit can use to do work for as long as it is needed"],
+      "The ruler's charge stays where rubbing put it, on the surface, and leaves in one moment when it is touched: static electricity, held in place and then discharged. The doorbell rings for as long as the button completes its circuit, because charge keeps flowing around that circuit: electric current.",
+      {});
+  },
+  function () {
+    return mcq("A student lists four events: (1) socks sticking together when they come out of the dryer, (2) a kettle boiling water while it is plugged in, (3) a crackle heard as a sweater is pulled off, and (4) a battery powered clock ticking steadily all day. Which sorting of the list is correct?",
+      "Static: the dryer socks and the sweater crackle, where charge builds up and discharges. Current: the kettle and the clock, where charge flows steadily in a circuit",
+      ["Static: the kettle and the clock, where charge flows steadily in a circuit. Current: the dryer socks and the sweater crackle, where charge builds up and discharges", "Static: all four events, because charge is involved in each of them and every kind of electricity is static while it is being used by a device in the home", "Current: all four events, because charge moves in each of them, and any movement of charge, even a single crackle, is a current that flows like the kettle's"],
+      "The socks and the crackle are static events: friction built charge up on the clothing, and the crackle is that charge discharging. The kettle and the clock run steadily from a source, mains or battery, with charge flowing continuously through a circuit: electric current. Charge being involved is not enough to make an event a current; the flow must be sustained.",
+      {});
+  }
+]), ["Ask of each event: does the charge stay in place, or does it keep flowing?", "Only the flowing kind can be switched on and kept going."]);

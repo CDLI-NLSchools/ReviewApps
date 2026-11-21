@@ -13,6 +13,111 @@
 // CRMARKS: s9-u2-cr-conclusion=3
 // CRMARKS: s9-u2-cr-trends=3
 // CRMARKS: s9-u2-cr-classify-change=3
+// CRMARKS: s9-u2-cr-change-evidence=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s9-u2-chem-property=2
+// CRMARKS: s9-u2-glove-choice=3
+// CRMARKS: s9-u2-property-cases=3
+// CRMARKS: s9-u2-counts-gen=3
+// CRMARKS: s9-u2-atom-figure=3
+// CRMARKS: s9-u2-symbol-gen=2
+// CRMARKS: s9-u2-name-gen=2
+// CRMARKS: s9-u2-case-rule=2
+// CRMARKS: s9-u2-latin-symbols=3
+// CRMARKS: s9-u2-period-family=2
+// CRMARKS: s9-u2-locate-gen=3
+// CRMARKS: s9-u2-metalloid=3
+// CRMARKS: s9-u2-family-props=3
+// CRMARKS: s9-u2-valence-gen=2
+// CRMARKS: s9-u2-noble-full=3
+// CRMARKS: s9-u2-same-family-why=4
+// CRMARKS: s9-u2-atoms-in-formula=2
+// CRMARKS: s9-u2-compound-name-gen=3
+// CRMARKS: s9-u2-evidence-change=3
+// CRMARKS: s9-u2-new-substance=4
+// CRMARKS: s9-u2-particle-view=3
+// CRMARKS: s9-u2-earlier-ideas=4
+// CRMARKS: s9-u2-confidence=3
+// CRMARKS: s9-u2-model-order=2
+// CRMARKS: s9-u2-model-change-why=4
+// CRMARKS: s9-u2-foil-result=2
+// CRMARKS: s9-u2-foil-inference=3
+// CRMARKS: s9-u2-precise-word=2
+// CRMARKS: s9-u2-element-def=2
+// CRMARKS: s9-u2-mendeleev=3
+// CRMARKS: s9-u2-gaps=4
+// CRMARKS: s9-u2-household-chem=3
+// CRMARKS: s9-u2-need-drives=3
+// CRMARKS: s9-u2-tech-analysis=2
+// CRMARKS: s9-u2-design-impact=3
+// CRMARKS: s9-u2-function-basis=4
+// CRMARKS: s9-u2-decision-balance=3
+// CRMARKS: s9-u2-whmis-action=2
+// CRMARKS: s9-u2-msds-use=2
+// CRMARKS: s9-u2-hypothesis-form=2
+// CRMARKS: s9-u2-data-table-fig=2
+// CRMARKS: s9-u2-display-choice=2
+// CRMARKS: s9-u2-organize-format=2
+// CRMARKS: s9-u2-units-heading=2
+// CRMARKS: s9-u2-conclusion-match=2
+// CRMARKS: s9-u2-trend-graph=2
+// CRMARKS: s9-u2-valence-trend=3
+// CRMARKS: s9-u2-flame-safety=2
+// CRMARKS: s9-u2-flame-table=2
+// CRMARKS: s9-u2-foil-scenario=3
+// CRMARKS: s9-u2-periodic-evidence=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s9-u2-chem-property=b
+// BIMODAL: s9-u2-glove-choice=b
+// BIMODAL: s9-u2-property-cases=a
+// BIMODAL: s9-u2-counts-gen=a
+// BIMODAL: s9-u2-atom-figure=a
+// BIMODAL: s9-u2-symbol-gen=a
+// BIMODAL: s9-u2-name-gen=a
+// BIMODAL: s9-u2-case-rule=b
+// BIMODAL: s9-u2-latin-symbols=b
+// BIMODAL: s9-u2-period-family=a
+// BIMODAL: s9-u2-locate-gen=a
+// BIMODAL: s9-u2-metalloid=b
+// BIMODAL: s9-u2-family-props=a
+// BIMODAL: s9-u2-valence-gen=a
+// BIMODAL: s9-u2-noble-full=b
+// BIMODAL: s9-u2-same-family-why=b
+// BIMODAL: s9-u2-atoms-in-formula=a
+// BIMODAL: s9-u2-compound-name-gen=a
+// BIMODAL: s9-u2-evidence-change=b
+// BIMODAL: s9-u2-new-substance=b
+// BIMODAL: s9-u2-particle-view=b
+// BIMODAL: s9-u2-earlier-ideas=b
+// BIMODAL: s9-u2-confidence=b
+// BIMODAL: s9-u2-model-order=b
+// BIMODAL: s9-u2-model-change-why=b
+// BIMODAL: s9-u2-foil-result=b
+// BIMODAL: s9-u2-foil-inference=b
+// BIMODAL: s9-u2-precise-word=b
+// BIMODAL: s9-u2-element-def=b
+// BIMODAL: s9-u2-mendeleev=b
+// BIMODAL: s9-u2-gaps=b
+// BIMODAL: s9-u2-household-chem=b
+// BIMODAL: s9-u2-need-drives=b
+// BIMODAL: s9-u2-tech-analysis=b
+// BIMODAL: s9-u2-design-impact=b
+// BIMODAL: s9-u2-function-basis=b
+// BIMODAL: s9-u2-decision-balance=b
+// BIMODAL: s9-u2-whmis-action=b
+// BIMODAL: s9-u2-msds-use=b
+// BIMODAL: s9-u2-hypothesis-form=b
+// BIMODAL: s9-u2-data-table-fig=b
+// BIMODAL: s9-u2-display-choice=b
+// BIMODAL: s9-u2-organize-format=b
+// BIMODAL: s9-u2-units-heading=b
+// BIMODAL: s9-u2-conclusion-match=b
+// BIMODAL: s9-u2-trend-graph=b
+// BIMODAL: s9-u2-valence-trend=b
+// BIMODAL: s9-u2-flame-safety=b
+// BIMODAL: s9-u2-flame-table=a
+// BIMODAL: s9-u2-foil-scenario=b
+// BIMODAL: s9-u2-periodic-evidence=b
 // Science 9 Unit 2 bank: Atoms, Elements, and Compounds
 // (SC9.4.1 to SC9.6.10), built Nov 15, 2026 to the Atoms
 // authoring spec. All entries are original and were written
@@ -1086,3 +1191,249 @@ var NO_COMPOSE_U2 = {
   "s9-u2-cr-design-change": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): SR entries on
+   SC9.4.7, SC9.5.2, SC9.5.4, SC9.5.6 and SC9.5.7, priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6.
+   SME-flagged. */
+
+E("s9-u2-change-evidence", 2, ["SC9.4.7"], 2, "var", varset([
+  function () {
+    return mcq("An iron nail left in damp air forms an orange-brown coating that flakes off. Which observation is the strongest evidence that a chemical change (a new substance) occurred?",
+      "A new substance with different properties (rust) formed, and the change cannot be undone by drying",
+      ["The nail changed colour over the weeks, and any colour change at all always proves that a chemical change happened", "The nail became heavier, and a change in mass always proves a new substance formed", "The nail's surface became rough, and roughness is the defining sign of a chemical change"],
+      "Chemical change means new substances with new properties; rust is a new substance and the change is not reversible by simple means. <b>A new substance with different properties (rust) formed, and the change cannot be undone by drying</b>.", {});
+  },
+  function () {
+    return mcq("When vinegar is poured on baking soda, the mixture fizzes violently and the container feels colder. Which two observations are evidence of a chemical change?",
+      "Gas was produced and there was a temperature change, both signs that a new substance formed",
+      ["The mixture changed in colour and in volume, which are the only two observations accepted as signs of a change", "The baking soda disappeared, and disappearing always means a substance was destroyed", "The mixture made a sound, and sound is the most reliable sign of a chemical reaction"],
+      "Producing a gas and absorbing or releasing energy are classic evidence that bonds were rearranged into new substances. <b>Gas was produced and there was a temperature change, both signs that a new substance formed</b>.", {});
+  },
+  function () {
+    return mcq("A student heats a white powder. It turns black and gives off a gas that turns limewater cloudy. The student concludes a chemical change occurred. Which part of the evidence is weakest?",
+      "None of it is weak: a colour change to a new substance plus a gas produced is strong evidence",
+      ["The colour change is the weakest part: powders always turn black when they are heated, whether or not they react", "The gas: gases given off on heating are always just the powder evaporating away", "The limewater test: limewater turns cloudy whenever any gas at all is bubbled through"],
+      "Both a new coloured substance and a gas (identified as carbon dioxide by limewater) point to new substances forming. <b>None of it is weak: a colour change to a new substance plus a gas produced is strong evidence</b>.", {});
+  },
+  function () {
+    return mcq("Magnesium ribbon burns in air with a bright white flame, leaving a white ash that is a different substance from the metal. Which property change best shows the ash is a new substance?",
+      "The ash is a brittle white powder that does not conduct electricity, unlike the shiny flexible metal",
+      ["The ash weighs a little more than the ribbon did, and a heavier product is always a brand-new substance", "The ash is white, and any change of colour by itself proves a new substance has formed", "The ash takes up less space than the ribbon did, and smaller volume means a new substance"],
+      "A new substance shows new characteristic properties: the ash's brittleness, appearance and non-conduction differ from the metal's. <b>The ash is a brittle white powder that does not conduct electricity, unlike the shiny flexible metal</b>.", {});
+  },
+  function () {
+    return mcq("Which of these changes is a PHYSICAL change, even though it may look dramatic?",
+      "Dry ice (solid carbon dioxide) turning directly into carbon dioxide gas on a stage",
+      ["A sparkler burning down to a short stub, leaving grey ash behind and giving off sparks, light and heat as it burns", "An antacid tablet fizzing in water and settling a stomach's excess acid", "Iron wool burning in oxygen and forming a black, crumbly solid product"],
+      "Dry ice subliming changes only the state: the substance is carbon dioxide before and after. The others form new substances. <b>Dry ice (solid carbon dioxide) turning directly into carbon dioxide gas on a stage</b>.", {});
+  }
+]), ["A chemical change makes a new substance; look for evidence of new properties.", "Colour or bubbles alone can mislead; a new substance with new properties is decisive."]);
+
+E("s9-u2-law-theory-judge", 2, ["SC9.5.2"], 1, "var", varset([
+  function () {
+    return mcq("Which statement correctly describes a scientific LAW?",
+      "A law describes a pattern in nature (often mathematically) without explaining why it happens",
+      ["A law is a theory that has been tested until it was proven completely true, after which it can never be changed again", "A law explains why a phenomenon happens, using a mechanism supported by experiments", "A law is a guess made before any observations or experiments have been carried out"],
+      "Laws describe what happens (patterns, often as equations); theories explain why. A law is not a proven theory. <b>A law describes a pattern in nature (often mathematically) without explaining why it happens</b>.", {});
+  },
+  function () {
+    return mcq("Which statement correctly describes a scientific THEORY?",
+      "A theory is a well-supported explanation of why a phenomenon happens, built from much evidence",
+      ["A theory is an untested early guess that a scientist makes in the hope of turning it into a law one day in the future", "A theory becomes a law once enough scientists vote that they believe it is true", "A theory describes a mathematical pattern but deliberately avoids explaining anything"],
+      "Theories are explanations with deep evidential support; they do not graduate into laws. <b>A theory is a well-supported explanation of why a phenomenon happens, built from much evidence</b>.", {});
+  },
+  function () {
+    return mcq("A student says: \"The theory of evolution will become a law once it is proven.\" What is wrong with this statement?",
+      "Theories and laws are different kinds of knowledge; a theory never turns into a law",
+      ["Nothing at all is wrong with it: every law in science began its life as a theory that was later proven by experiment", "The only error is the word proven; theories become laws once they are tested twice", "The statement is wrong because evolution is a law already, not a theory at all"],
+      "Laws describe patterns; theories explain. One does not become the other, however strong the evidence grows. <b>Theories and laws are different kinds of knowledge; a theory never turns into a law</b>.", {});
+  },
+  function () {
+    return mcq("\"Objects attract each other with a force that depends on their masses and the distance between them, F = Gm\u2081m\u2082/d\u00B2.\" This statement is best classified as",
+      "a law, because it states a mathematical pattern in nature without explaining its cause",
+      ["a theory, because it is written as an equation and equations are always theories", "a hypothesis, because it has not yet been tested by any experiment in space", "an observation, because it was made by watching objects fall to the ground"],
+      "A mathematical description of a pattern is a law (the law of universal gravitation); the explanation of gravity is a separate theory. <b>A law, because it states a mathematical pattern in nature without explaining its cause</b>.", {});
+  }
+]), ["A law describes a pattern; a theory explains it. They are different jobs.", "Theories never graduate into laws, no matter how much evidence they gather."]);
+
+E("s9-u2-foil-scenario", 2, ["SC9.5.4"], 2, "var", varset([
+  function () {
+    return mcq("In Rutherford's gold foil experiment, most alpha particles passed straight through the foil, but a few bounced back at large angles. What did the bounce-back particles show?",
+      "The atom's positive charge and most of its mass are concentrated in a tiny central nucleus",
+      ["The atom is a solid ball of positively charged material with electrons embedded all the way through it, like fruit in a pudding", "Alpha particles are sometimes reflected by the electrons spread through the atom", "The foil was too thick in places, and the particles simply hit the surface and rebounded"],
+      "Only a tiny, dense, positively charged centre could repel an alpha particle backwards. <b>The atom's positive charge and most of its mass are concentrated in a tiny central nucleus</b>.", {});
+  },
+  function () {
+    return mcq("Thomson's model described the atom as a positively charged 'pudding' with electrons embedded in it. What did that model predict for Rutherford's alpha particles?",
+      "All of the particles would pass through with, at most, very small deflections",
+      ["Most of the particles would bounce straight back off the surface of the gold foil as soon as they reached it", "Half of the particles would be absorbed by the pudding and never come out", "The particles would split the atoms apart and release their electrons as sparks"],
+      "In Thomson's model the charge is spread out and weak everywhere, so no strong repulsion could turn a particle around. <b>All of the particles would pass through with, at most, very small deflections</b>.", {});
+  },
+  function () {
+    return mcq("Rutherford concluded that the atom is mostly empty space. Which observation led him to that conclusion?",
+      "The great majority of alpha particles passed through the foil without being deflected at all",
+      ["A few of the alpha particles bounced back from the foil, showing that the atom is completely solid in its middle", "The foil glowed where the particles struck it, showing energy stored in the space", "The particles slowed down in the foil, showing they were pushing through material"],
+      "If atoms were solid throughout, few particles could pass undeflected; nearly all did, so atoms are mostly empty. <b>The great majority of alpha particles passed through the foil without being deflected at all</b>.", {});
+  },
+  function () {
+    return mcq("Why did Rutherford's experiment count as a TEST of Thomson's model rather than just a new observation?",
+      "It checked a specific prediction of the model (no large deflections), and the result contradicted it",
+      ["It used much newer and more powerful equipment than Thomson had used, and newer equipment always replaces older scientific models", "It was performed by a more famous scientist, so its conclusions replaced Thomson's at once", "It produced photographs of atoms, and a photograph is always stronger than a model"],
+      "A test compares a model's prediction with an outcome; the large deflections falsified Thomson's prediction. <b>It checked a specific prediction of the model (no large deflections), and the result contradicted it</b>.", {});
+  }
+]), ["Most particles passed straight through: what does that say about the atom's insides?", "A few bounced back hard: something small, dense and positive must be in the way."]);
+
+E("s9-u2-precise-term", 2, ["SC9.5.6"], 1, "var", varset([
+  function () {
+    return mcq("Which term is used correctly in this sentence? \"Table salt is a ______ made of sodium and chlorine chemically combined.\"",
+      "compound",
+      ["element, because it is a pure substance that can be found in every kitchen and is used every day in cooking", "mixture, because two different substances were combined to make it", "atom, because it is the smallest possible piece of a substance"],
+      "A compound is a pure substance made of two or more elements chemically combined in a fixed ratio. <b>Compound</b>.", {});
+  },
+  function () {
+    return mcq("A student writes: \"Oxygen is an element, and a breath of air is an element too.\" Which correction is scientifically precise?",
+      "Air is a mixture, not an element: it contains several elements and compounds not chemically combined",
+      ["Air is a compound, because all of its gases were chemically combined together by the atmosphere long ago", "Oxygen is a mixture, because each breath contains many oxygen molecules together", "The sentence is already precise, because everything in nature is an element"],
+      "Air's components are physically mixed, not chemically combined, so air is a mixture. <b>Air is a mixture, not an element: it contains several elements and compounds not chemically combined</b>.", {});
+  },
+  function () {
+    return mcq("Which sentence uses the word MOLECULE correctly?",
+      "A molecule of water is made of two hydrogen atoms joined to one oxygen atom",
+      ["A molecule of sodium is the smallest possible piece of the metal that can be found inside a salt crystal", "A molecule is any single atom, whatever element it belongs to in a sample", "A molecule of air contains nitrogen, oxygen and other gases mixed together"],
+      "A molecule is a group of atoms chemically joined; water's is H\u2082O. Single atoms and mixtures are not molecules. <b>A molecule of water is made of two hydrogen atoms joined to one oxygen atom</b>.", {});
+  },
+  function () {
+    return mcq("In a lab report, which phrase is the most scientifically appropriate way to describe what happened when magnesium burned?",
+      "The magnesium reacted with oxygen to form magnesium oxide, a new substance",
+      ["The magnesium in the ribbon disappeared completely into the flame and was turned into bright white light", "The magnesium melted away and its atoms were destroyed by the heat", "The magnesium became ash because burning removes the element from it"],
+      "Precise language names the substances and the change: a reaction forming a new substance, with nothing destroyed. <b>The magnesium reacted with oxygen to form magnesium oxide, a new substance</b>.", {});
+  },
+  function () {
+    return mcq("Which term correctly completes this sentence? \"A ______ is a substance that cannot be broken down into simpler substances by chemical means.\"",
+      "element",
+      ["compound, because compounds are the very simplest substances that exist anywhere in nature and cannot be divided", "mixture, because mixtures keep the properties of everything mixed in them", "solution, because solutions cannot be separated once they have been made"],
+      "By definition, an element cannot be broken down chemically into simpler substances. <b>Element</b>.", {});
+  }
+]), ["Check the definition: one kind of atom is an element; chemically combined elements form a compound.", "Mixed but not chemically combined is a mixture or a solution."]);
+
+E("s9-u2-periodic-evidence", 2, ["SC9.5.7"], 2, "var", varset([
+  function () {
+    return mcq("Mendeleev left gaps in his periodic table for elements that had not yet been discovered. Why was this strong evidence for his table?",
+      "He predicted the missing elements' properties in detail, and the discovered elements matched the predictions",
+      ["The empty gaps made the printed table look neat and balanced, and a balanced-looking table is easier for students to memorize", "Other scientists had also left gaps in their tables, so the practice was already well accepted", "The gaps proved that only a fixed number of elements could ever exist in the universe"],
+      "Successful detailed predictions are powerful evidence that a classification captures a real pattern. <b>He predicted the missing elements' properties in detail, and the discovered elements matched the predictions</b>.", {});
+  },
+  function () {
+    return mcq("When Mendeleev placed elements in order of atomic mass, a few pairs (such as tellurium and iodine) came out in the 'wrong' order for their chemical properties. What did he do, and what did it show?",
+      "He placed them by their properties instead, trusting the pattern of properties over the mass order",
+      ["He removed both of the elements from the table completely until their atomic masses could be measured again more carefully", "He concluded that chemical properties were unimportant and ordered strictly by mass", "He declared the two elements to be the same element with two different names"],
+      "Mendeleev's choice showed he believed the repeating pattern of properties was the deeper organizing principle (later explained by atomic number). <b>He placed them by their properties instead, trusting the pattern of properties over the mass order</b>.", {});
+  },
+  function () {
+    return mcq("Gallium was discovered in 1875, six years after Mendeleev predicted an element he called eka-aluminum. Which match between prediction and discovery most strengthened confidence in the table?",
+      "Gallium's measured density and melting point came out very close to Mendeleev's predicted values",
+      ["Gallium was found in the very country where Mendeleev lived and worked, which confirmed his detailed knowledge of its minerals", "Gallium's name begins with the same letter as the gap it filled in the printed table", "Gallium turned out to be the most abundant element in Earth's crust, as he had suggested"],
+      "Quantitative predictions (density, melting point, oxide formula) matching measurement is the strongest kind of confirmation. <b>Gallium's measured density and melting point came out very close to Mendeleev's predicted values</b>.", {});
+  },
+  function () {
+    return mcq("Elements in the same column of the modern periodic table share similar chemical properties. What is the modern explanation of that relationship?",
+      "Their atoms have the same number of electrons in their outer shell, so they react in similar ways",
+      ["Their atoms all have exactly the same total mass as each other, so they behave identically in every chemical reaction they take part in", "They were discovered in the same decade, and discoverers grouped their own finds together", "They have the same number of neutrons, which is what controls all chemical behaviour"],
+      "Outer-shell electron count governs chemical behaviour, and it repeats down a column. <b>Their atoms have the same number of electrons in their outer shell, so they react in similar ways</b>.", {});
+  }
+]), ["Mendeleev's table is judged by its predictions: gaps and swapped pairs.", "A predicted element found with the predicted properties is strong evidence."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s9-u2-cr-change-evidence closes Unit 2 Test
+   3 (4 marks, Level 3). SME-flagged for the
+   specialist pass. */
+
+E("s9-u2-cr-change-evidence", 2, ["SC9.4.6", "SC9.4.7"], 3, "var", varset([
+  function () {
+    return textq("Three events are observed in a lab. Event 1: a magnesium ribbon is held in a flame. It burns with a bright white light and leaves a white ash, magnesium oxide, MgO. Event 2: a piece of dry ice left in a warm room gets smaller and smaller until it is gone, and no liquid is left behind. Event 3: iron nails left in a damp jar develop an orange brown coating that flakes off. (a) Classify event 1 as a physical or chemical change and give the evidence that decides it. (1) (b) Classify event 2 as a physical or chemical change and give the evidence that decides it. (1) (c) Classify event 3 as a physical or chemical change and give the evidence that decides it. (1) (d) State how many atoms of each element one unit of MgO contains. (1) (4 marks)",
+      ["event 1 is a chemical change: a new substance, the white ash MgO, forms, and light and heat are given off", "event 2 is a physical change: solid carbon dioxide changes directly to carbon dioxide gas (sublimation), the same substance in a new state", "event 3 is a chemical change: rust is a new substance with different properties from iron, and the change cannot be undone by drying", "MgO contains 1 magnesium atom and 1 oxygen atom"],
+      "<b>Model answer:</b> (a) Event 1 is a chemical change. The ribbon is consumed and a new substance, magnesium oxide, is left as a white ash, and the bright light and heat released are further evidence that a new substance has formed. (b) Event 2 is a physical change. The dry ice sublimes: solid carbon dioxide changes directly into carbon dioxide gas. The substance is carbon dioxide before and after; only its state has changed, which is why nothing is left behind. (c) Event 3 is a chemical change. The orange brown coating is rust, a new substance with properties different from iron, formed by the iron reacting in the damp conditions; it cannot be turned back into iron by drying or wiping. (d) MgO contains 1 magnesium atom and 1 oxygen atom. Neither symbol carries a subscript, and a missing subscript means exactly one atom.<br><br><b>Marking points:</b> 1 mark for event 1 classified as chemical with new substance evidence (ash formed, or light and heat released). 1 mark for event 2 classified as physical with the same substance evidence (carbon dioxide changing state by sublimation). 1 mark for event 3 classified as chemical with new substance evidence (rust formed with different properties). 1 mark for the atom count in MgO: 1 magnesium and 1 oxygen.",
+      {});
+  },
+  function () {
+    return textq("Three events are observed in a lab. Event 1: a piece of zinc is dropped into dilute acid. It fizzes steadily, and the gas produced gives a pop when a lit splint is held at the mouth of the tube; the gas is hydrogen, H₂. Event 2: a blue copper sulfate solution is left in an open dish for several days. The water level falls and blue crystals are left behind. Event 3: a block of wax in a warm pan softens and melts into a clear liquid, which hardens again when the pan cools. (a) Classify event 1 as a physical or chemical change and give the evidence that decides it. (1) (b) Classify event 2 as a physical or chemical change and give the evidence that decides it. (1) (c) Classify event 3 as a physical or chemical change and give the evidence that decides it. (1) (d) State how many atoms of each element one molecule of H₂ contains. (1) (4 marks)",
+      ["event 1 is a chemical change: a new substance, hydrogen gas, is produced, shown by the fizzing and the pop test", "event 2 is a physical change: the water evaporates and the same copper sulfate is recovered as crystals, with no new substance formed", "event 3 is a physical change: the wax is the same substance as a liquid as it was as a solid, and the change reverses on cooling", "H₂ contains 2 hydrogen atoms"],
+      "<b>Model answer:</b> (a) Event 1 is a chemical change. The fizzing is a gas being produced, and the pop with a lit splint identifies the gas as hydrogen, a new substance that was not in the tube before; gas production is recognized evidence of chemical change. (b) Event 2 is a physical change. The water evaporates, which is a change of state, and the copper sulfate left behind as crystals is the same substance that was dissolved; no new substance forms. (c) Event 3 is a physical change. Melting changes the wax from solid to liquid, but liquid wax is the same substance as solid wax, and it hardens back into wax on cooling. (d) H₂ contains 2 hydrogen atoms. The subscript 2 applies to the element just before it.<br><br><b>Marking points:</b> 1 mark for event 1 classified as chemical with new substance evidence (gas produced, identified as hydrogen). 1 mark for event 2 classified as physical with the same substance evidence (water evaporated, copper sulfate recovered as crystals). 1 mark for event 3 classified as physical with the same substance evidence (wax unchanged by melting, change reversible). 1 mark for the atom count in H₂: 2 hydrogen atoms.",
+      {});
+  },
+  function () {
+    return textq("Three events are observed in a lab. Event 1: a candle burns steadily. The wick blackens and is used up, and the gases given off include carbon dioxide, CO₂. Event 2: iron nails left in a damp jar develop an orange brown coating that flakes off. Event 3: a piece of dry ice left in a warm room gets smaller and smaller until it is gone, and no liquid is left behind. (a) Classify event 1 as a physical or chemical change and give the evidence that decides it. (1) (b) Classify event 2 as a physical or chemical change and give the evidence that decides it. (1) (c) Classify event 3 as a physical or chemical change and give the evidence that decides it. (1) (d) State how many atoms of each element one molecule of CO₂ contains. (1) (4 marks)",
+      ["event 1 is a chemical change: the wick is consumed and new substances, including carbon dioxide, form, with heat and light given off", "event 2 is a chemical change: rust is a new substance with different properties from iron, and the change cannot be undone by drying", "event 3 is a physical change: solid carbon dioxide changes directly to carbon dioxide gas (sublimation), the same substance in a new state", "CO₂ contains 1 carbon atom and 2 oxygen atoms"],
+      "<b>Model answer:</b> (a) Event 1 is a chemical change. Burning consumes the wick and produces new substances, including carbon dioxide and water vapour, and the heat and light released are further evidence of chemical change. The melting of wax near the flame, if mentioned, is a separate physical change and does not change this classification of the burning itself. (b) Event 2 is a chemical change. The orange brown coating is rust, a new substance with properties different from iron, formed by the iron reacting in the damp conditions; it cannot be turned back into iron by drying or wiping. (c) Event 3 is a physical change. The dry ice sublimes: solid carbon dioxide changes directly into carbon dioxide gas. The substance is carbon dioxide before and after; only its state has changed, which is why nothing is left behind. (d) CO₂ contains 1 carbon atom and 2 oxygen atoms. Carbon carries no subscript, meaning one atom, and the subscript 2 gives two oxygen atoms.<br><br><b>Marking points:</b> 1 mark for event 1 classified as chemical with new substance evidence (wick consumed, gases such as carbon dioxide formed, or heat and light released). 1 mark for event 2 classified as chemical with new substance evidence (rust formed with different properties). 1 mark for event 3 classified as physical with the same substance evidence (carbon dioxide changing state by sublimation). 1 mark for the atom count in CO₂: 1 carbon and 2 oxygen.",
+      {});
+  },
+  function () {
+    return textq("Three events are observed in a lab. Event 1: a magnesium ribbon is held in a flame. It burns with a bright white light and leaves a white ash. Event 2: a blue copper sulfate solution is left in an open dish for several days. The water level falls and blue crystals are left behind. Event 3: a candle burns in air. The wick blackens and is used up, and one of the products formed is water, H₂O, seen as mist on a cold surface held above the flame. (a) Classify event 1 as a physical or chemical change and give the evidence that decides it. (1) (b) Classify event 2 as a physical or chemical change and give the evidence that decides it. (1) (c) Classify event 3 as a physical or chemical change and give the evidence that decides it. (1) (d) State how many atoms of each element one molecule of H₂O contains. (1) (4 marks)",
+      ["event 1 is a chemical change: a new substance, the white ash, forms, and light and heat are given off", "event 2 is a physical change: the water evaporates and the same copper sulfate is recovered as crystals, with no new substance formed", "event 3 is a chemical change: the wick is consumed and new substances, including water, form, with heat and light given off", "H₂O contains 2 hydrogen atoms and 1 oxygen atom"],
+      "<b>Model answer:</b> (a) Event 1 is a chemical change. The ribbon is consumed and a new substance is left as a white ash, and the bright light and heat released are further evidence that a new substance has formed. (b) Event 2 is a physical change. The water evaporates, which is a change of state, and the copper sulfate left behind as crystals is the same substance that was dissolved; no new substance forms. (c) Event 3 is a chemical change. Burning consumes the wick and produces new substances, including the water collected as mist, and the heat and light released are further evidence of chemical change. (d) H₂O contains 2 hydrogen atoms and 1 oxygen atom. The subscript 2 gives two hydrogen atoms, and oxygen carries no subscript, meaning one atom.<br><br><b>Marking points:</b> 1 mark for event 1 classified as chemical with new substance evidence (ash formed, or light and heat released). 1 mark for event 2 classified as physical with the same substance evidence (water evaporated, copper sulfate recovered as crystals). 1 mark for event 3 classified as chemical with new substance evidence (wick consumed, new substances such as water formed, or heat and light released). 1 mark for the atom count in H₂O: 2 hydrogen and 1 oxygen.",
+      {});
+  }
+]), ["Use one test for every event: is a new substance there at the end?", "A missing subscript still counts: it means exactly one atom."]);
+
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s9-u2-formula-match", 2, ["SC9.4.6"], 2, "gen", function () {
+  var comps = [
+    { n: "water", f: "H2O", a: "two hydrogen atoms and one oxygen atom", wf: ["HO2", "H3O", "O2H", "OH2", "H2S"], wn: null },
+    { n: "carbon dioxide", f: "CO2", a: "one carbon atom and two oxygen atoms", wf: ["C2O", "CO3", "O2C", "CS2", "SO2"], wn: ["Sulfuric acid", "Copper sulfate", "Carbon monoxide", "Sodium chloride", "Sodium hydroxide"] },
+    { n: "sodium chloride", f: "NaCl", a: "one sodium atom and one chlorine atom", wf: ["ClNa", "NaBr", "CaCl", "NaLi", "NaF2"], wn: ["Carbon dioxide", "Copper sulfate", "Sodium hydroxide", "Calcium carbonate", "Hydrogen peroxide"] },
+    { n: "calcium carbonate", f: "CaCO3", a: "one calcium atom, one carbon atom and three oxygen atoms", wf: ["CaCO2", "CaCO4", "Ca2CO", "CaC2O", "CaCO5"], wn: ["Sodium chloride", "Carbon monoxide", "Sodium hydroxide", "Hydrogen peroxide"] },
+    { n: "methane", f: "CH4", a: "one carbon atom and four hydrogen atoms", wf: ["C4H", "CH3", "CH5", "CH2", "C3H"], wn: ["Propane", "Pentane", "Heptane"] },
+    { n: "ammonia", f: "NH3", a: "one nitrogen atom and three hydrogen atoms", wf: ["N3H", "NH4", "H3N", "NH2", "N2H"], wn: ["Methane", "Nitrogen", "Hydrogen", "Propane"] },
+    { n: "sulfuric acid", f: "H2SO4", a: "two hydrogen atoms, one sulfur atom and four oxygen atoms", wf: ["H2SO3", "H2SO5", "H3SO4", "H2S2O", "H2SO2"], wn: ["Carbon dioxide", "Copper sulfate", "Carbon monoxide", "Sodium chloride"] },
+    { n: "glucose", f: "C6H12O6", a: "six carbon atoms, twelve hydrogen atoms and six oxygen atoms", wf: ["C6H12O5", "C5H12O6", "C6H10O6", "C6H12O7", "C7H12O6"], wn: ["Sucrose", "Fructose", "Lactose", "Maltose"] },
+    { n: "copper sulfate", f: "CuSO4", a: "one copper atom, one sulfur atom and four oxygen atoms", wf: ["CuSO3", "CuSO5", "Cu2SO", "CuS2O", "CuSO2"], wn: ["Sulfuric acid", "Carbon dioxide", "Carbon monoxide", "Sodium chloride"] },
+    { n: "sodium hydroxide", f: "NaOH", a: "one sodium atom, one oxygen atom and one hydrogen atom", wf: ["NaHO", "NaO2", "Na2O", "NaH2", "CaOH"], wn: ["Carbon dioxide", "Copper sulfate", "Sodium chloride", "Calcium carbonate", "Hydrogen peroxide"] },
+    { n: "carbon monoxide", f: "CO", a: "one carbon atom and one oxygen atom", wf: ["Co", "O2", "C2", "OC", "Cl"], wn: ["Carbon dioxide", "Copper sulfate", "Sodium chloride", "Sodium hydroxide", "Calcium carbonate"] },
+    { n: "hydrogen peroxide", f: "H2O2", a: "two hydrogen atoms and two oxygen atoms", wf: ["H2O3", "H3O2", "O2H2", "H4O2", "H2O4"], wn: ["Sodium chloride", "Carbon monoxide", "Sodium hydroxide", "Calcium carbonate"] }
+  ];
+  function take3(pool) {
+    var copy = pool.slice(); var out = [];
+    while (out.length < 3) { out.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]); }
+    return out;
+  }
+  function near3(pool, target) {
+    /* The three strings closest in length to the target, so a
+       description key never sits alone at a different length
+       register from its distractors (the 15 percent rule). */
+    var copy = shuffle(pool.slice());
+    copy.sort(function (x, y) { return Math.abs(x.length - target.length) - Math.abs(y.length - target.length); });
+    return copy.slice(0, 3);
+  }
+  var allA = comps.map(function (x) { return x.a; });
+  var c = pick(comps);
+  var r = Math.random();
+  if (r < 0.30) {
+    return mcq("What is the chemical formula of the common compound " + c.n + "?",
+      c.f, take3(c.wf),
+      "The chemical formula for " + c.n + " is " + c.f + ": the symbols give the elements and each subscript gives the number of atoms of the element written just before it, so one unit contains " + c.a + ". Each wrong formula changes a subscript, swaps the elements or changes one element.", {});
+  }
+  if (r < 0.52 && c.wn) {
+    var capName = c.n.charAt(0).toUpperCase() + c.n.slice(1);
+    return mcq("What is the common name of the compound with the chemical formula " + c.f + "?",
+      capName, take3(c.wn),
+      c.f + " is the formula for " + c.n + ". One unit of it contains " + c.a + ". The other names belong to different compounds, with different elements or different numbers of atoms in their formulas.", {});
+  }
+  if (r < 0.68) {
+    return mcq("A unit of a common compound contains " + c.a + ". What is its chemical formula?",
+      c.f, take3(c.wf),
+      "The unit described contains " + c.a + ", which is the makeup of " + c.n + ", formula " + c.f + ". Each wrong formula gives a different set of elements or different atom counts.", {});
+  }
+  if (r < 0.84) {
+    return mcq("One unit of the compound " + c.f + " contains",
+      c.a, near3(allA.filter(function (x) { return x !== c.a; }), c.a),
+      c.f + " is " + c.n + ": reading the subscripts in order, one unit contains " + c.a + ". Each other description counts different elements or different numbers of atoms.", {});
+  }
+  return mcq("One unit of " + c.n + " contains",
+    c.a, near3(allA.filter(function (x) { return x !== c.a; }), c.a),
+    c.n.charAt(0).toUpperCase() + c.n.slice(1) + " has the formula " + c.f + ", and reading its subscripts in order, one unit contains " + c.a + ". Each other description counts different elements or different numbers of atoms.", {});
+}, ["Read the subscripts: each one counts the element written just before it.", "A formula must give the right elements in the right numbers."]);
