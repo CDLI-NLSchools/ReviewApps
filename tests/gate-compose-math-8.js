@@ -46,7 +46,7 @@ function extractFn(src, name) {
   }
   throw new Error("unbalanced " + name);
 }
-for (const n of ["poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "isPK", "composeExam"]) eval(extractFn(html, n));
+for (const n of ["poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "isPK", "bimodalClass", "stripQ", "composeExam"]) eval(extractFn(html, n));
 
 function stats(res) {
   const s = { total: res.total, sr: res.srMarks, cr: res.crMarks, short: res.short, levels: [0, 0, 0], crL3: 0 };
@@ -60,20 +60,22 @@ function stats(res) {
 const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 let allOk = true;
 
-function runPooled(name, units, trials) {
-  let exact = 0, inWindow = 0; const bad = [];
+function runPooled(name, units, trials, driftMax) {
+  let exact = 0, within = 0, inWindow = 0; const bad = [];
   for (let t = 0; t < trials; t++) {
     const res = composeExam(units, []);
     if (!res) { bad.push("null"); continue; }
     const s = stats(res);
-    if (!s.short && s.total === 35 && s.sr === 18 && s.cr === 17 && eq(s.levels, [7, 21, 7])) {
-      exact++;
+    const drift = s.levels.reduce((a, v, i) => a + Math.abs(v - [7, 21, 7][i]), 0);
+    if (!s.short && s.total === 35 && s.sr === 18 && s.cr === 17 && (driftMax ? drift <= driftMax : drift === 0)) {
+      within++;
+      if (drift === 0) exact++;
       if (s.crL3 === 6 || s.crL3 === 5 || s.crL3 === 7) inWindow++;
     } else if (bad.length < 3) bad.push(JSON.stringify({ total: s.total, sr: s.sr, cr: s.cr, short: s.short, levels: s.levels, crL3: s.crL3 }));
   }
-  console.log(name + ": exact " + exact + "/" + trials + " (Section B Level 3 in the {6, 5, 7} tried set in " + inWindow + " of the exact papers)" + (bad.length ? " | sample misses: " + bad.join(" ;; ") : ""));
-  if (exact < 190) allOk = false;
-  if (exact > 0 && inWindow / exact < 0.95) allOk = false;
+  console.log(name + ": exact " + exact + "/" + trials + (driftMax ? " (within drift " + driftMax + ": " + within + "/" + trials + ")" : "") + " (Section B Level 3 in the {6, 5, 7} tried set in " + inWindow + " of the counted papers)" + (bad.length ? " | sample misses: " + bad.join(" ;; ") : ""));
+  if ((driftMax ? within : exact) < 190) allOk = false;
+  if (within > 0 && inWindow / within < 0.95) allOk = false;
   return exact;
 }
 
@@ -92,7 +94,15 @@ function runUnit(u, trials) {
 
 runPooled("mid [1,2,3,4]", [1, 2, 3, 4], 200);
 runPooled("final [5,6,7,8]", [5, 6, 7, 8], 200);
-runPooled("custom [2,3]", [2, 3], 200);
+/* Ruling 12 drift allowance (November 21, 2026): units 2 and 3
+   carry 11 outcomes whose selected-response entries sit only
+   at Level 1, against a Level 1 selected-response plan room of
+   at most 7; the written set carries some of them, and the
+   rest force the covering paper off the exact level shape, as
+   the adopted floor requires (observed drift up to 6). The row
+   bars on totals with drift allowance 6; the strict exact
+   count is still printed. */
+runPooled("custom [2,3]", [2, 3], 200, 6);
 runPooled("all [1..8]", [1, 2, 3, 4, 5, 6, 7, 8], 200);
 for (const u of [1, 2, 3, 4, 5, 6, 7, 8]) runUnit(u, 200);
 

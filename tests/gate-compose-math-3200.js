@@ -36,7 +36,7 @@ function extractFn(src, name) {
   }
   throw new Error("unbalanced " + name);
 }
-for (const n of ["isPK", "poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "composeExam"]) eval(extractFn(html, n)); /* isPK extracted since the PK tranche (Nov 16, 2026) set pkPracticeOnly: poolFor now references it */
+for (const n of ["isPK", "poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "bimodalClass", "stripQ", "composeExam"]) eval(extractFn(html, n)); /* isPK extracted since the PK tranche (Nov 16, 2026) set pkPracticeOnly: poolFor now references it */
 
 function stats(res) {
   const s = { total: res.total, sr: res.srMarks, cr: res.crMarks, short: res.short, levels: [0, 0, 0], crL3: 0 };
@@ -50,20 +50,22 @@ function stats(res) {
 const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 let allOk = true;
 
-function runPooled(name, units, trials) {
-  let exact = 0, inWindow = 0; const bad = [];
+function runPooled(name, units, trials, driftMax) {
+  let exact = 0, within = 0, inWindow = 0; const bad = [];
   for (let t = 0; t < trials; t++) {
     const res = composeExam(units, []);
     if (!res) { bad.push("null"); continue; }
     const s = stats(res);
-    if (!s.short && s.total === 50 && s.sr === 27 && s.cr === 23 && eq(s.levels, [10, 31, 9])) {
-      exact++;
+    const drift = s.levels.reduce((a, v, i) => a + Math.abs(v - [10, 31, 9][i]), 0);
+    if (!s.short && s.total === 50 && s.sr === 27 && s.cr === 23 && (driftMax ? drift <= driftMax : drift === 0)) {
+      within++;
+      if (drift === 0) exact++;
       if (s.crL3 >= 7 && s.crL3 <= 9) inWindow++;
     } else if (bad.length < 3) bad.push(JSON.stringify({ total: s.total, sr: s.sr, cr: s.cr, short: s.short, levels: s.levels, crL3: s.crL3 }));
   }
-  console.log(name + ": exact " + exact + "/" + trials + " (Section B Level 3 in the 7 to 9 window in " + inWindow + " of the exact papers)" + (bad.length ? " | sample misses: " + bad.join(" ;; ") : ""));
-  if (exact < 190) allOk = false;
-  if (exact > 0 && inWindow / exact < 0.95) allOk = false;
+  console.log(name + ": exact " + exact + "/" + trials + (driftMax ? " (within drift " + driftMax + ": " + within + "/" + trials + ")" : "") + " (Section B Level 3 in the 7 to 9 window in " + inWindow + " of the counted papers)" + (bad.length ? " | sample misses: " + bad.join(" ;; ") : ""));
+  if ((driftMax ? within : exact) < 190) allOk = false;
+  if (within > 0 && inWindow / within < 0.95) allOk = false;
   return exact;
 }
 
@@ -82,7 +84,14 @@ function runUnit(u, trials) {
 
 runPooled("mid [1,2,3,4,5]", [1, 2, 3, 4, 5], 200);
 runPooled("final [6,7,8,9]", [6, 7, 8, 9], 200);
-runPooled("custom [2,3]", [2, 3], 200);
+/* Ruling 12 drift allowance (November 21, 2026): units 2 and 3
+   carry 34 blueprinted outcomes, 16 of them reachable only at
+   Level 1, against a Level 1 paper budget of 10 marks in total,
+   so full coverage within the exact level shape is
+   arithmetically impossible and the floor, as adopted, takes
+   precedence (observed drift 2). The row bars on totals with
+   drift allowance 4; the strict exact count is still printed. */
+runPooled("custom [2,3]", [2, 3], 200, 4);
 runPooled("all [1..9]", [1, 2, 3, 4, 5, 6, 7, 8, 9], 200);
 for (const u of [1, 2, 3, 4, 5, 6, 7, 8, 9]) runUnit(u, 200);
 
