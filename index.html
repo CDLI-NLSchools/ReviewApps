@@ -2721,10 +2721,31 @@ var qrcode = function() {
         <select id="testNumSel"></select>
       </label>
       <span class="hint" id="testScopeNote"></span>
+      <span class="hint" id="testPlanNote"></span>
+      <label>More multiple choice
+        <input type="number" id="testXMcIn" min="0" max="30" value="0">
+      </label>
+      <label>More written
+        <input type="number" id="testXCrIn" min="0" max="20" value="0">
+      </label>
     </div>
     <div class="grid" id="unitGrid"></div>
     <p class="hint" style="margin:10px 0 4px;">By indicator (optional, leave all unchecked to use every indicator in the units you picked):</p>
     <div class="indbox" id="indBox"></div>
+    <div class="adv">
+      <label>Multiple choice
+        <input type="number" id="mcCountIn" min="0" max="60" value="10">
+      </label>
+      <label>Constructed Response
+        <input type="number" id="ncCountIn" min="0" max="60" value="5">
+      </label>
+      <label>Dual-form questions
+        <select id="bmIn">
+          <option value="on" selected>Answer choices on</option>
+          <option value="off">Answer choices off</option>
+        </select>
+      </label>
+    </div>
     <div class="adv" id="pkInRow" hidden>
       <label class="chk"><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>
     </div>
@@ -2767,18 +2788,6 @@ var qrcode = function() {
     <div class="group">
       <h3>Print a sheet or exam</h3>
       <div class="adv">
-        <label>Multiple choice
-          <input type="number" id="mcCountIn" min="0" max="60" value="10">
-        </label>
-        <label>Constructed Response
-          <input type="number" id="ncCountIn" min="0" max="60" value="5">
-        </label>
-        <label>Dual-form questions
-          <select id="bmIn">
-            <option value="on" selected>Answer choices on</option>
-            <option value="off">Answer choices off</option>
-          </select>
-        </label>
         <label><input type="checkbox" id="keyChk" checked> Include answer key</label>
         <label><input type="checkbox" id="codeChk" checked> Include set code and QR</label>
         <label>Working space for multiple choice
@@ -3810,11 +3819,11 @@ function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();
    identical set for a student. The prior knowledge switch left
    this group on Nov 18, 2026: it renders in the main builder for
    everyone (see refreshPkToggle), and its stash default is off. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on"};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0};
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
-  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn");
+  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn");
   if(mc)hidCtl.mc=mc.value;
   if(nc)hidCtl.nc=nc.value;
   if(l1&&l2&&l3)hidCtl.mix=[l1.value,l2.value,l3.value];
@@ -3822,8 +3831,10 @@ function tGateStudentUI(){
   if(en)hidCtl.enr=!!en.checked;
   if(pi)hidCtl.pkIn=!!pi.checked;
   if(bm)hidCtl.bm=bm.value;
+  if(xm)hidCtl.txmc=xm.value;
+  if(xc)hidCtl.txcr=xc.value;
   if(TEACHER)return;
-  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn"].forEach(function(id){
+  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn","testXMcIn","testXCrIn"].forEach(function(id){
     var el=$(id);if(!el)return;
     var lab=(el.closest?el.closest("label"):null)||el;
     if(lab.parentNode)lab.parentNode.removeChild(lab);
@@ -3835,6 +3846,8 @@ function settings(){
     count:Math.max(1,Math.min(60,+$("countIn").value||10)),
     mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),
     ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),
+    testXMc:Math.max(0,Math.min(30,+tCtlVal("testXMcIn",hidCtl.txmc)||0)),
+    testXCr:Math.max(0,Math.min(20,+tCtlVal("testXCrIn",hidCtl.txcr)||0)),
     bimodal:tCtlVal("bmIn",hidCtl.bm)!=="off",
     wantKey:!($("keyChk")&&$("keyChk").checked===false),
     wantCode:!($("codeChk")&&$("codeChk").checked===false),
@@ -6688,6 +6701,88 @@ function testSelActive(s){
   if(want!==got)return null;
   return {unit:s.testSel.unit,test:s.testSel.test,inds:e.inds.slice(),topics:e.topics||null};
 }
+function testPlanSummary(sel){
+  /* What the mapped test composes, read from the live plan
+     and a trial composition at sync time (Nov 20, 2026): the
+     dealt counts of an actual composeExam paper for the
+     test, falling back to the plan targets when no paper can
+     be dealt yet (the bank still loading, an empty pool).
+     Nothing here is a constant: when the test plan changes,
+     the summary follows it. */
+  var C=window.__COURSE,plan=testPlanFor(C,sel.unit,sel.test);
+  if(!plan)return "";
+  var sr=plan.sr,crM=plan.cr,crN=null,tot=plan.sr+plan.cr;
+  var act=testSelActive({units:state.units,inds:state.inds,testSel:sel});
+  if(act){
+    try{
+      var ex=composeExam([sel.unit],act.inds,tPkOn(),plan);
+      if(ex&&(ex.srItems.length||ex.crItems.length)){sr=ex.srItems.length;crN=ex.crItems.length;crM=ex.crMarks;tot=ex.total;}
+    }catch(e){}
+  }
+  var out=L9("Test plan: ","Plan du test : ")+sr+L9(" selected response, "," réponses choisies, ")+(crN===null?"":crN+" ")+L9("constructed response (","réponses construites (")+crM+L9(" marks), "," points), ")+tot+L9(" marks in total."," points au total.");
+  var xm=Math.max(0,Math.min(30,+tCtlVal("testXMcIn",hidCtl.txmc)||0)),xc=Math.max(0,Math.min(20,+tCtlVal("testXCrIn",hidCtl.txcr)||0));
+  if(xm>0||xc>0){
+    var adds=[];
+    if(xm>0)adds.push(xm+L9(" more multiple choice"," choix multiples de plus"));
+    if(xc>0)adds.push(xc+L9(" more written"," réponses écrites de plus"));
+    out+=L9(" Plus your additions: "," Plus tes ajouts : ")+adds.join(", ")+".";
+  }
+  return out;
+}
+function extendTestPaper(ex,s,plan){
+  /* Teacher steppers on a mapped test (Nov 20, 2026): extend
+     the composed blueprint paper with extra questions drawn
+     from the same pool the composer built for the test, the
+     composer filters mirrored (scope cap, prior
+     knowledge practice rule, enrichment and noCompose out,
+     the plans topic slices). Selected response extras are
+     single marks; written extras are whole items at their
+     CR_MARKS value, bimodal entries stripped, exactly as
+     the test-scope draw deals them. An entry the
+     paper already deals is not dealt again while undealt
+     entries remain, and no entry lands in both sections.
+     The blueprint is untouched: at zero the paper is the
+     blueprint paper exactly, and a shortfall against a
+     stepper flags the paper short rather than inventing
+     questions. */
+  var xMc=s.testXMc||0,xCr=s.testXCr||0;
+  if(xMc<=0&&xCr<=0)return;
+  var C=window.__COURSE||{};
+  var pool=poolFor(s.units,s.inds,scopeCap(s.units));
+  if(C.pkPracticeOnly&&!tPkOn())pool=pool.filter(function(e){return !isPK(e);});
+  pool=pool.filter(function(e){return !e.enrich&&!e.noCompose;});
+  if(plan&&plan.topics)pool=pool.filter(function(e){return e.indicators.every(function(c){var t=plan.topics[c];return !t||e.topic===t;});});
+  var seen={},used={};
+  ex.srItems.concat(ex.crItems).forEach(function(it){seen[canonQ(it.q)]=1;used[it.q._entry.id]=1;});
+  function genFrom(e){var q=e.gen();q._entry=e;return q;}
+  var gotMc=0;
+  if(xMc>0){
+    var srC=shuffle(pool.filter(function(e){return probeType(e)==="mc"&&!used[e.id];}));
+    for(var i=0;i<srC.length&&gotMc<xMc;i++){
+      var q=null,c=null,tries=0;
+      do{q=genFrom(srC[i]);c=canonQ(q);tries++;}while((q.type!=="mc"||seen[c])&&tries<25);
+      if(q.type!=="mc"||seen[c])continue;
+      seen[c]=1;used[srC[i].id]=1;ex.srItems.push({q:q,marks:1});gotMc++;
+    }
+  }
+  var gotCr=0;
+  if(xCr>0){
+    var crC=shuffle(pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2&&!used[e.id];}));
+    for(var j=0;j<crC.length&&gotCr<xCr;j++){
+      var cq=null,cc=null,t2=0;
+      do{cq=genFrom(crC[j]);if(bimodalClass(crC[j]))cq=stripQ(cq);cc=canonQ(cq);t2++;}while(seen[cc]&&t2<25);
+      if(seen[cc])continue;
+      seen[cc]=1;used[crC[j].id]=1;ex.crItems.push({q:cq,marks:CR_MARKS[crC[j].id]});gotCr++;
+    }
+  }
+  var byUL=function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;};
+  ex.srItems.sort(byUL);ex.crItems.sort(byUL);
+  ex.srMarks=ex.srItems.length;
+  ex.crMarks=ex.crItems.reduce(function(a,it){return a+it.marks;},0);
+  ex.l3Marks=ex.crItems.filter(function(it){return it.q._entry.level===3;}).reduce(function(a,it){return a+it.marks;},0);
+  ex.total=ex.srMarks+ex.crMarks;
+  if(gotMc<xMc||gotCr<xCr)ex.short=true;
+}
 function recGrid(items,withKey){
   var n=items.length,cols=n<=11?2:3,per=Math.ceil(n/cols);
   var h='<table class="recGrid"><tbody>';
@@ -6708,7 +6803,7 @@ function startExam(){
   var _ts=testSelActive(s);var _plan=_ts?testPlanFor(window.__COURSE,_ts.unit,_ts.test):null;
   if(window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.singleOnly&&s.units.length!==1){$("session").innerHTML='<div class="card"><p>'+(s.units.length?"Practice tests are built one unit at a time, like the unit tests in the course. Choose exactly one unit above, then make the practice test again. To practise across several units, make a practice sheet instead.":"Choose one unit above, then make the practice test.")+'</p></div>';return;}
   BIMODAL_OFF=!s.bimodal;
-  var ex=withSeed(_sd,function(){return _plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);});
+  var ex=withSeed(_sd,function(){var e0=_plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);if(e0&&_plan&&(s.testXMc>0||s.testXCr>0))extendTestPaper(e0,s,_plan);return e0;});
   if(!ex||(!ex.srItems.length&&!ex.crItems.length)){$("session").innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
   countEvent("exam_compose",[analyticsCourse(),examPresetName(s.units)]);
   countEvent("sheet_generate",[analyticsCourse(),"test"]);
@@ -7953,6 +8048,8 @@ function settingsToURL(){
   p.set("count",s.count);p.set("order",s.order);
   if(s.mcCount!==10)p.set("mc",s.mcCount);
   if(s.ncCount!==5)p.set("nc",s.ncCount);
+  if(s.testXMc)p.set("txmc",s.testXMc);
+  if(s.testXCr)p.set("txcr",s.testXCr);
   if(!s.bimodal)p.set("bm","0");
   if(!s.wantKey)p.set("key","0");
   if(!s.wantCode)p.set("scode","0");
@@ -7977,6 +8074,8 @@ function applyURL(){
   if(p.get("count"))$("countIn").value=p.get("count");
   if(p.get("mc")!==null)$("mcCountIn").value=p.get("mc");
   if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");
+  if(p.get("txmc")!==null&&$("testXMcIn"))$("testXMcIn").value=p.get("txmc");
+  if(p.get("txcr")!==null&&$("testXCrIn"))$("testXCrIn").value=p.get("txcr");
   if(p.get("bm")==="0"){hidCtl.bm="off";if($("bmIn"))$("bmIn").value="off";}
   if(p.get("key")==="0")$("keyChk").checked=false;
   if(p.get("scode")==="0"&&$("codeChk"))$("codeChk").checked=false;
@@ -8041,6 +8140,8 @@ if(window.__COURSE&&window.__COURSE.language==="fr"){
     "Multiple choice":"Choix multiple",
     "Constructed Response":"Réponse construite",
     "Dual-form questions":"Questions à double forme",
+    "More multiple choice":"Plus de choix multiples",
+    "More written":"Plus de réponses écrites",
     "Answer choices on":"Avec les choix de réponses",
     "Answer choices off":"Sans les choix de réponses",
     "Include answer key":"Inclure le corrigé",
@@ -8121,6 +8222,7 @@ function tTestSelSync(){
     ts.value=sel?String(sel.test):"";
   }
   if(note)note.textContent=sel?L9("Practice set for "+testScopeLabel(sel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(sel)+", construite à partir des mêmes notions que couvre ce test."):"";
+  var pn=$("testPlanNote");if(pn)pn.textContent=sel?testPlanSummary(sel):"";
 }
 (function(){
   var row=$("testScopeRow");if(!row)return;
@@ -8137,6 +8239,7 @@ function tTestSelSync(){
     state.testSel={unit:u,test:n};
     unitCheckboxes();renderIndicators();tTestSelSync();updatePoolInfo();
   });
+  ["testXMcIn","testXCrIn"].forEach(function(id){var el=$(id);if(el)el.addEventListener("change",function(){tTestSelSync();});});
   tTestSelSync();
 })();
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;return;}startOnline();});
