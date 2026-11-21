@@ -4350,6 +4350,22 @@ rep('      var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}',
     '      var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}',
     count=1)  # composeExam drawAll: the per-part reservation ahead of the band draw
 
+# ---------- Online Test field hidden guard (owner report, November 21, 2026) ----------
+# In Practice online, the Test dropdown's label (#oTestNumWrap)
+# carries the hidden attribute, and oTestSync sets wrap.hidden
+# correctly: the row shows only when the chosen unit has a testMap
+# entry. But the label is an .adv label, and the author rule
+# .adv label{display:flex} overrides the UA stylesheet's
+# [hidden]{display:none}, so the row rendered on every course with
+# no test map, its dropdown empty (seen live in Math 3200, Nov 21,
+# 2026). Restore the attribute's force for this row, following the
+# #pkInRow[hidden] and .presetrow[hidden] guards above.
+rep('  .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}\n'
+    '  .adv label.chk{flex-direction:row;align-items:center;gap:6px;}',
+    '  .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}\n'
+    '  .adv label.chk{flex-direction:row;align-items:center;gap:6px;}\n'
+    '  #oTestNumWrap[hidden]{display:none;}', count=1)  # Test row hidden guard
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,

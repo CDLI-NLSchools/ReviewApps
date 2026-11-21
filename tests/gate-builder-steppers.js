@@ -47,7 +47,13 @@
      instance behaviour; the extension never does, and the
      cross-section line is absolute.);
    - the French statics translate the moved and new labels, and a
-     French mapped test shows its summary in French. */
+     French mapped test shows its summary in French.
+   Amendment, November 21, 2026: the online Test row (#oTestNumWrap)
+   carries the [hidden] CSS guard in the built shell, starts hidden,
+   shows on a mapped course once a test unit is chosen, and on a
+   math course starts hidden, computes to display none and stays
+   hidden after a unit is chosen (the empty-dropdown defect the
+   owner saw in Math 3200). */
 const fs = require("fs");
 const { JSDOM } = require("jsdom");
 const FILE = process.env.HOME + "/workspace/review-app-unified/index.html";
@@ -102,6 +108,10 @@ function settleSet(dom) {
 }
 
 (async () => {
+  /* ---------- online Test field: hidden unless a test map offers tests (Nov 21, 2026) ---------- */
+  ok(html.includes("#oTestNumWrap[hidden]{display:none;}"), "test field: the built shell carries the #oTestNumWrap[hidden] guard rule");
+  ok(/<label id="oTestNumWrap" hidden>/.test(html), "test field: the Test row starts hidden in the markup");
+
   /* ---------- counts: position and behaviour ---------- */
   let r = await boot("course=chem-2202&teacher=1");
   let d = r.dom.window.document;
@@ -291,6 +301,7 @@ function settleSet(dom) {
     const scopeBefore = ev(rsel.dom, "JSON.stringify({u:state.units,i:state.inds})");
     const usel = dsel.getElementById("oTestUnitSel"); usel.value = "unit:" + pickT.unit; usel.dispatchEvent(new rsel.dom.window.Event("change"));
     const nsel = dsel.getElementById("oTestNumSel"); nsel.value = String(pickT.test); nsel.dispatchEvent(new rsel.dom.window.Event("change"));
+    ok(dsel.getElementById("oTestNumWrap").hidden === false, "online selector: the Test row shows once a unit with a test map is chosen");
     ok(ev(rsel.dom, "!!(oTestSel&&oTestSel.kind==='test'&&oTestSel.test===" + pickT.test + ")"), "online selector: the choice registers as a test tailoring");
     ok(ev(rsel.dom, "JSON.stringify({u:state.units,i:state.inds})") === scopeBefore, "online selector: the shared scope is untouched");
     ok(dsel.getElementById("oTestNote").textContent.includes("Practice set for"), "online selector: the note names the tailored set (saw: " + dsel.getElementById("oTestNote").textContent + ")");
@@ -325,6 +336,10 @@ function settleSet(dom) {
   await waitBank(rm2.dom);
   ok(dm2.getElementById("mathTestRow").hidden === false, "math: the unit test row shows on a course with no test map");
   ok(dm2.getElementById("testScopeRow").hidden === true, "math: the mapped test row stays hidden");
+  ok(dm2.getElementById("oTestNumWrap").hidden === true, "math: the online Test row starts hidden on a course with no test map");
+  ok(rm2.dom.window.getComputedStyle(dm2.getElementById("oTestNumWrap")).display === "none", "math: the hidden online Test row computes to display none");
+  const musel = dm2.getElementById("oTestUnitSel"); musel.value = "unit:3"; musel.dispatchEvent(new rm2.dom.window.Event("change"));
+  ok(dm2.getElementById("oTestNumWrap").hidden === true, "math: the online Test row stays hidden after a unit is chosen");
   const msel2 = dm2.getElementById("mathUnitSel"); msel2.value = "3"; msel2.dispatchEvent(new rm2.dom.window.Event("change"));
   ok(ev(rm2.dom, "state.units.join()") === "3", "math: choosing a unit sets the shared scope to it");
   dm2.getElementById("goExam").click();
