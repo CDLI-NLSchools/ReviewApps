@@ -76,8 +76,9 @@ function findFbQuestion(dom) {
   ok((d.querySelector("#app .sub").textContent || "").includes("Des questions d'entraînement nouvelles pour Mathématiques 9"), "course: subtitle is the fork's French paragraph");
   ok(d.getElementById("appSubName") === null, "course: no English subtitle span survives the French static pass");
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off");
-  ok(ev(r.dom, "BANK.length") === 221, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 109, "course: CR_MARKS wired from the bank module");
+  ok(ev(r.dom, "BANK.length") === 230, "course: bank loaded via the loader, BANK.length = " + ev(r.dom, "BANK.length"));
+/* Pin update, November 20, 2026 (reverse bimodal registration, Grade 9): census pins updated to the bank after the registration of the 100 strippable entries (65 class a, 35 class b, 223 marks) per Bimodal-Classification-SR-Pools-Math-2026-11-20.md (Mathématiques 9: CR manifest 206 entries); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 206, "course: CR_MARKS wired from the bank module");
   ok(ev(r.dom, "BANK.every(function(e){return !!e.hint1 && !!e.hint2;})") === true, "course: every bank entry carries both hint stages");
   ok(ev(r.dom, "FR9") === true, "course: the French layer is active (FR9)");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent.trim());
@@ -92,18 +93,18 @@ function findFbQuestion(dom) {
   ok(d.getElementById("presetMid").textContent === "Révision de mi-parcours (unités 1 à 4)", "course: Mid preset label in French, saw " + d.getElementById("presetMid").textContent);
   ok(d.getElementById("presetFinal").textContent === "Révision finale (unités 5 à 9)", "course: Final preset label in French, saw " + d.getElementById("presetFinal").textContent);
   ev(r.dom, "document.getElementById('presetMid').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("105 modèles de questions"), "course: pool after Mid preset is 105, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("107 modèles de questions"), "course: pool after Mid preset is 107, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok((d.getElementById("poolInfo").textContent || "").startsWith("Banque de questions pour cette sélection : "), "course: the pool line is French");
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "Révision de mi-parcours : unités 1 à 4", "course: face scope for the mid selection, saw: " + d.getElementById("faceScope").textContent);
   ok(d.getElementById("faceDesc").textContent.includes("un indice, un exemple travaillé et une solution détaillée complète pour chaque question"), "course: face card promises the hint in French, saw: " + d.getElementById("faceDesc").textContent);
   ok(!d.getElementById("faceDesc").textContent.includes("You will get"), "course: no English face text leaks through the layer");
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("116 modèles de questions"), "course: pool after Final preset is 116");
+  ok((d.getElementById("poolInfo").textContent || "").includes("120 modèles de questions"), "course: pool after Final preset is 120");
   ev(r.dom, "refreshFace()");
   ok(d.getElementById("faceScope").textContent === "Révision de fin de cours : unités 5 à 9", "course: face scope for the final selection, saw: " + d.getElementById("faceScope").textContent);
   ev(r.dom, "document.getElementById('presetAll').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("221 modèles de questions"), "course: pool after All preset is the whole bank");
+  ok((d.getElementById("poolInfo").textContent || "").includes("227 modèles de questions"), "course: pool after All preset is the whole bank");
   ok(ev(r.dom, "refPanelsHtml([1])").includes("Formules et notions pour l'unité 1 : Les nombres rationnels"), "course: the Unit 1 panel heads in French");
   ok(ev(r.dom, "frParseNum('7,2')") === 7.2, "parse: the decimal comma parses (7,2 -> 7.2)");
   ok(ev(r.dom, "frParseNum('1 234,5')") === 1234.5, "parse: spaced thousands with a decimal comma parse (1 234,5 -> 1234.5)");
@@ -138,7 +139,11 @@ function findFbQuestion(dom) {
   // --- a practice set: French hints, solution flip, comma grading, feedback ---
   r = await boot("course=math-9-fr&unit=2&nostart=1");
   d = r.dom.window.document;
-  ev(r.dom, "document.getElementById('countIn').value='30'");
+  /* Builder restructure (Nov 20, 2026): the online set is sized by
+     its two counts; 15 and 15 deals the 30 questions this part has
+     always exercised, grouped by unit so question 0 is a multiple
+     choice question as before. */
+  ev(r.dom, "document.getElementById('oMcIn').value='15';document.getElementById('oMcIn').dispatchEvent(new Event('input'));document.getElementById('oFiIn').value='15';document.getElementById('oFiIn').dispatchEvent(new Event('input'));document.getElementById('orderIn').value='unit'");
   ev(r.dom, "startOnline()");
   const nQ = ev(r.dom, "current.length");
   const hintBtns = d.querySelectorAll("[data-hint]");
