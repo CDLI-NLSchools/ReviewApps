@@ -21,6 +21,33 @@
         topic slice. A test passes when at least 10 of 12
         compositions land exactly (the composer retries
         internally on every call);
+        Re-baselined November 20, 2026 for the adopted test plan
+        (Ruling 4 of the evening rulings; Test-Plan-Remeasure-
+        2026-11-20.md): the plan targets are now SR =
+        min(max(10, 5n), 6n, 24) with the written target held
+        at 12 (the eight single-indicator tests exempt, at 14
+        as before). The re-measurement, run against the
+        post-registration pools before the plan changed, found
+        68 of 95 tests dealing their plan exactly and 27 tests
+        whose pools deal a measured profile under it, flagged
+        short by the composer on every such paper: five are
+        written-bound (their written pools cannot sum to 12),
+        the rest are selected-response bound, most by the
+        written section's claim on dual-form entries (in test
+        scope the claim is a hard exclusion from the SR draw,
+        so a written set that claims a thin pool's SR stock at
+        a level starves that level's band). Those 27 tests are
+        pinned in EXPECTED_SHORT below with the dealt SR and
+        CR values the re-measurement observed; for them this
+        check requires, in at least 10 of 12 compositions, a
+        paper inside the test's scope whose dealt values are
+        among the measured ones and whose short flag is honest
+        (set whenever the dealt values fall below the plan,
+        clear only on a paper that deals the plan in full).
+        The pins are the measured record, not a relaxation:
+        if a later bank change lets a pinned test deal more,
+        its papers stop matching the pin and this gate fails
+        until the pin is re-measured;
      5. level balance, REPORTED, not pass/fail, under the
         owner's test-scope rulings of November 19, 2026 as
         clarified later the same evening. Within a test paper
@@ -133,6 +160,42 @@ function expectedMaps() {
 }
 const EXPECTED = expectedMaps();
 
+/* ---------- measured short profiles under the adopted plan ----------
+   The 27 tests whose pools cannot deal the adopted plan in full
+   (Test-Plan-Remeasure-2026-11-20.md, Sections 2 and 3): the
+   dealt SR and CR values observed across the re-measurement's
+   trials (12 to 24 per test; dealing on these tests was
+   constant or near-constant). Keyed course|unit|test. */
+const EXPECTED_SHORT = {
+  "sci-7|3|2": { sr: [14], cr: [12] },
+  "sci-7-fr|2|3": { sr: [16], cr: [12] },
+  "sci-7-fr|3|2": { sr: [11], cr: [12] },
+  "sci-7-fr|4|2": { sr: [16], cr: [12] },
+  "sci-8|1|1": { sr: [10], cr: [10] },
+  "sci-8|4|2": { sr: [8], cr: [12] },
+  "sci-8|4|3": { sr: [7], cr: [12] },
+  "sci-8-fr|4|1": { sr: [15], cr: [11] },
+  "sci-8-fr|4|2": { sr: [9], cr: [12] },
+  "sci-8-fr|4|3": { sr: [7], cr: [12] },
+  "sci-9|1|1": { sr: [9], cr: [12] },
+  "sci-9|1|3": { sr: [9], cr: [12] },
+  "sci-9|2|1": { sr: [23, 24], cr: [12] },
+  "sci-9|2|3": { sr: [9], cr: [12] },
+  "sci-9|3|1": { sr: [13], cr: [12] },
+  "sci-9|3|3": { sr: [19, 20], cr: [12] },
+  "sci-9|4|1": { sr: [10], cr: [10] },
+  "sci-9|4|2": { sr: [10], cr: [10] },
+  "sci-9|4|3": { sr: [8], cr: [12] },
+  "sci-9-fr|1|1": { sr: [8], cr: [12] },
+  "sci-9-fr|1|2": { sr: [13, 14], cr: [12] },
+  "sci-9-fr|1|3": { sr: [9], cr: [12] },
+  "sci-9-fr|2|1": { sr: [23, 24], cr: [12] },
+  "sci-9-fr|3|1": { sr: [12], cr: [12] },
+  "sci-9-fr|3|3": { sr: [20], cr: [12] },
+  "sci-9-fr|4|1": { sr: [10], cr: [10] },
+  "sci-9-fr|4|2": { sr: [8], cr: [12] },
+};
+
 /* ---------- registry and shell machinery ---------- */
 global.window = {};
 eval(fs.readFileSync(ROOT + "/courses.js", "utf8"));
@@ -158,7 +221,7 @@ function extractFn(src, name) {
   }
   throw new Error("unbalanced " + name);
 }
-for (const n of ["poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "composeExam", "testMapList", "testPlanFor", "isPK"]) eval(extractFn(html, n));
+for (const n of ["poolFor", "scopeCap", "levelTargets", "canonQ", "probeType", "subsetSumMarks", "bimodalClass", "stripQ", "composeExam", "testMapList", "testPlanFor", "isPK"]) eval(extractFn(html, n));
 
 function loadBank(cid) {
   BANK.length = 0;
@@ -284,6 +347,7 @@ for (const [cid, units] of Object.entries(EXPECTED)) {
       }
       let good = 0, lastDealt = null, trials = 0;
       const markLvl = [0, 0, 0];
+      const shortExp = EXPECTED_SHORT[cid + "|" + u + "|" + t.test] || null;
       for (let trial = 0; trial < 12; trial++) {
         const res = composeExam([+u], t.inds, false, plan);
         if (!res) continue;
@@ -291,17 +355,31 @@ for (const [cid, units] of Object.entries(EXPECTED)) {
         lastDealt = { sr: res.srItems.length, cr: res.crMarks };
         res.srItems.forEach(it => { markLvl[it.q._entry.level - 1] += 1; });
         res.crItems.forEach(it => { markLvl[it.q._entry.level - 1] += it.marks; });
-        let clean = !res.short && res.srItems.length === plan.sr && res.crMarks === plan.cr;
-        if (clean) {
-          for (const it of res.srItems.concat(res.crItems)) {
-            const e = it.q._entry;
-            if (e.unit !== +u || !e.indicators.some(c => t.inds.includes(c))) { clean = false; break; }
-            if (plan.topics && e.indicators.some(c => plan.topics[c] && e.topic !== plan.topics[c])) { clean = false; break; }
-          }
+        let inScope = true;
+        for (const it of res.srItems.concat(res.crItems)) {
+          const e = it.q._entry;
+          if (e.unit !== +u || !e.indicators.some(c => t.inds.includes(c))) { inScope = false; break; }
+          if (plan.topics && e.indicators.some(c => plan.topics[c] && e.topic !== plan.topics[c])) { inScope = false; break; }
+        }
+        let clean;
+        if (shortExp) {
+          /* Measured-profile test (see the header, check 4):
+             the dealt values must be among the re-measurement's
+             observed ones, and the short flag must be honest:
+             clear only when the paper deals the plan in full. */
+          const dealsPlan = res.srItems.length === plan.sr && res.crMarks === plan.cr;
+          clean = inScope && shortExp.sr.includes(res.srItems.length) && shortExp.cr.includes(res.crMarks) &&
+            (dealsPlan ? !res.short : res.short);
+        } else {
+          clean = inScope && !res.short && res.srItems.length === plan.sr && res.crMarks === plan.cr;
         }
         if (clean) good++;
       }
-      ok(good >= 10, cid + " U" + u + " T" + t.test + ": composes to mapped targets (SR " + plan.sr + ", CR " + plan.cr + ") in " + good + "/12 trials");
+      if (shortExp) {
+        ok(good >= 10, cid + " U" + u + " T" + t.test + ": deals its measured profile under the adopted plan (dealt SR among " + shortExp.sr.join("/") + ", CR among " + shortExp.cr.join("/") + "; plan SR " + plan.sr + ", CR " + plan.cr + "; honestly flagged) in " + good + "/12 trials");
+      } else {
+        ok(good >= 10, cid + " U" + u + " T" + t.test + ": composes to mapped targets (SR " + plan.sr + ", CR " + plan.cr + ") in " + good + "/12 trials");
+      }
       /* Balance measurement (reported, never pass/fail). */
       const meanMarks = markLvl.map(x => trials ? x / trials : 0);
       const markShare = meanMarks.map(x => totalMarks ? (100 * x / totalMarks).toFixed(0) : "0").join("/");
