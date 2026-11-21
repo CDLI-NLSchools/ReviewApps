@@ -102,6 +102,16 @@ function answerAll(w) {
     }
     const b = d.querySelector('[data-check="' + i + '"]');
     if (b) b.click();
+    /* Prose questions (a dual-form question dealt stripped into an
+       online set's fill-in count since the builder restructure of
+       Nov 20, 2026) finish through the self-rating row the check
+       reveals: rate this one "part", which counts as not correct,
+       so the set can finish and the missed set is never empty. */
+    const sr = d.getElementById("sr" + i);
+    if (sr && !sr.hidden) {
+      const rb = sr.querySelector('[data-rate="part"]');
+      if (rb) rb.click();
+    }
   });
 }
 
