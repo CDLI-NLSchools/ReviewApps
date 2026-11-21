@@ -6659,31 +6659,38 @@ function testMapList(C,unit,test){
 }
 function testPlanFor(C,unit,test){
   /* Composition targets for one mapped test, re-baselined
-     November 20, 2026 (Science-Test-Lengthening-Feasibility-
-     2026-11-20.md, Section 7; amends Spec-Test-Shaped-Practice-
-     2026-11-19.md Section 3 decision D1): the mapped tests as
-     first shipped were too short to read as real tests, so the
-     target is now set by the number of blueprinted indicators
-     on the test, not by the test's share of the unit test.
-     SR = min(max(10, 3n), 4n, 18), where n is the number of
-     indicators on the test (a topic-split indicator counts
-     once on each test that takes a slice of it): about three
-     selected-response items per indicator, floored at 10,
-     capped by what four per indicator gives and by 18 overall.
-     CR follows its band schedule: 10 marks when SR is 8 or
-     fewer, 8 marks when SR is 9 to 14, 6 marks when SR is 15
-     or more. A single-indicator test therefore deals to its
-     14-mark ceiling (SR 4, CR 10); the owner's decision of
-     November 20, 2026 leaves those tests at the ceiling, with
-     no folding, merging or whole-unit option. Returns null
-     when the course maps no such test. */
+     November 20, 2026 under Ruling 4 of the evening rulings
+     (Test-Plan-Remeasure-2026-11-20.md; the plan-capped
+     combined rule of Test-Value-Target-Audit-2026-11-20.md,
+     with the written item cap at the owner amendment of 8):
+     for a test blueprinting n indicators with n at least 2,
+     SR = min(max(10, 5n), 6n, 24), dealt at per-entry
+     instance cap 2, and the written target is held at 12
+     marks with no step-down band. The written set is at
+     most 8 items per paper: written denominations are 2
+     marks or more, so a 12-mark target can never need more
+     than 6 items, and the re-measurement dealt at most 6
+     on every test. The eight single-indicator tests are
+     exempt and keep the earlier plan exactly (the branch
+     below): SR = min(max(10, 3n), 4n, 18) with the band
+     schedule (10 marks when SR is 8 or fewer, 8 when SR is
+     9 to 14, 6 when SR is 15 or more), which for n = 1
+     deals SR 4 and CR 10, the 14-mark ceiling the owner
+     decision of November 20, 2026 leaves those tests at,
+     with no folding, merging or whole-unit option. A
+     topic-split indicator counts once on each test that
+     takes a slice of it. Returns null when the course
+     maps no such test. */
   var e=testMapList(C,unit,test);
   if(!e)return null;
   var n=e.inds.length;
   if(!n)return null;
-  var sr=Math.min(Math.max(10,3*n),4*n,18);
-  var cr=sr<=8?10:(sr>=15?6:8);
-  return {sr:sr,cr:cr,topics:e.topics||null};
+  if(n===1){
+    var sr1=Math.min(Math.max(10,3*n),4*n,18);
+    return {sr:sr1,cr:sr1<=8?10:(sr1>=15?6:8),topics:e.topics||null};
+  }
+  var sr=Math.min(Math.max(10,5*n),6*n,24);
+  return {sr:sr,cr:12,topics:e.topics||null};
 }
 function testSelActive(s){
   /* The builder's single-test scope, validated against the live
