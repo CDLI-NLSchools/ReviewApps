@@ -6789,37 +6789,39 @@ function testMapList(C,unit,test){
 }
 function testPlanFor(C,unit,test){
   /* Composition targets for one mapped test, re-baselined
-     November 20, 2026 under Ruling 4 of the evening rulings
-     (Test-Plan-Remeasure-2026-11-20.md; the plan-capped
-     combined rule of Test-Value-Target-Audit-2026-11-20.md,
-     with the written item cap at the owner amendment of 8):
-     for a test blueprinting n indicators with n at least 2,
-     SR = min(max(10, 5n), 6n, 24), dealt at per-entry
-     instance cap 2, and the written target is held at 12
-     marks with no step-down band. The written set is at
-     most 8 items per paper: written denominations are 2
-     marks or more, so a 12-mark target can never need more
-     than 6 items, and the re-measurement dealt at most 6
-     on every test. The eight single-indicator tests are
-     exempt and keep the earlier plan exactly (the branch
-     below): SR = min(max(10, 3n), 4n, 18) with the band
-     schedule (10 marks when SR is 8 or fewer, 8 when SR is
-     9 to 14, 6 when SR is 15 or more), which for n = 1
-     deals SR 4 and CR 10, the 14-mark ceiling the owner
-     decision of November 20, 2026 leaves those tests at,
-     with no folding, merging or whole-unit option. A
-     topic-split indicator counts once on each test that
-     takes a slice of it. Returns null when the course
-     maps no such test. */
+     November 21, 2026 under Rulings 10 and 11 of the
+     November 20, 2026 evening rulings: the selected
+     response cap comes down from 24 to 18, so the tests
+     model what can reasonably be completed in a class
+     (a teacher who wants more coverage can add items in
+     the paper editor), and the eight single-indicator
+     tests leave their 14-mark exemption. For a test
+     blueprinting n indicators with n at least 2,
+     SR = min(max(10, 5n), 6n, 18), dealt at per-entry
+     instance cap 2, and the written target is held at
+     12 marks with no step-down band; plan totals run
+     22 (n = 2), 27 (n = 3) and 30 (n = 4 and wider),
+     nothing above 30. The written set is at most 8
+     items per paper: written denominations are 2 marks
+     or more, so a 12-mark target can never need more
+     than 6 items. A single-indicator test (the branch
+     below) takes the same shape as a two-indicator
+     test, SR 10 and CR 12 for 22 marks: a teacher
+     testing one outcome would not make the test worth
+     14 points, and both pools on those eight outcomes
+     were deepened with slack in the same build so the
+     plan deals with room to spare. A topic-split
+     indicator counts once on each test that takes a
+     slice of it. Returns null when the course maps no
+     such test. */
   var e=testMapList(C,unit,test);
   if(!e)return null;
   var n=e.inds.length;
   if(!n)return null;
   if(n===1){
-    var sr1=Math.min(Math.max(10,3*n),4*n,18);
-    return {sr:sr1,cr:sr1<=8?10:(sr1>=15?6:8),topics:e.topics||null};
+    return {sr:10,cr:12,topics:e.topics||null};
   }
-  var sr=Math.min(Math.max(10,5*n),6*n,24);
+  var sr=Math.min(Math.max(10,5*n),6*n,18);
   return {sr:sr,cr:12,topics:e.topics||null};
 }
 function testSelActive(s){
