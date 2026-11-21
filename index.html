@@ -3478,7 +3478,7 @@ function canonQ(q){ // canonical form of a generated question: normalized prompt
   else a="TXT:"+q.answers.slice().sort().join("|");
   return norm(q.prompt)+" || "+a;
 }
-function drawSet(units,inds,n,mix,orderMode,cap,pred){
+function drawSet(units,inds,n,mix,orderMode,cap,pred,floorCodes){
   if(typeof PKONLY_DRAW!=="undefined"&&PKONLY_DRAW&&!pred){
     /* Prerequisite check draw (Nov 15, 2026): the pool is the
        selected units' prior knowledge entries only, taken with no
@@ -3593,6 +3593,60 @@ function drawSet(units,inds,n,mix,orderMode,cap,pred){
   if(typeof pkIncluded==="function"&&!pkIncluded())pool=pool.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
   if(!pool.length||n<1)return{items:[],short:0,pool:0,thin:false};
   var targets=levelTargets(n,mix);var chosen=[],used={};
+  /* At-least-once indicator floor (Ruling 12, November 21, 2026).
+     Before the level bands fill the set, one slot is reserved
+     for every selected indicator that has at least one entry in
+     this draw pool: an indicator with no entry in the active
+     pool is excepted silently, so the floor follows the pool
+     and the current settings (a prior knowledge code is floored
+     only when the prior knowledge switch lets its entries into
+     the pool). A reservation is a real entry in the set: it
+     occupies its slot in the count and counts toward its level
+     band share, the band targets being reduced by what the
+     reservations dealt, so the set still deals exactly n. The
+     order is the caller list when one is passed (the split
+     draws coordinate their two parts that way); otherwise the
+     selection, or the units registered indicators when no
+     selection is given (falling back to every indicator the
+     pool carries), in seeded shuffle order. A reservation
+     prefers the entry covering the most still-uncovered floor
+     indicators, and among those the entry whose level band
+     still owes the most of its target, so reservations sit in
+     the bands that can absorb them; one multi-indicator entry
+     can satisfy several reservations at once. */
+  var floorWant;
+  if(floorCodes)floorWant=floorCodes.slice();
+  else if(inds&&inds.length)floorWant=inds.slice();
+  else{floorWant=[];var regDW=(typeof window!=="undefined"&&window.__COURSE&&window.__COURSE.unitInd)||null;
+    if(regDW)units.forEach(function(u){(regDW[u]||[]).forEach(function(c){if(floorWant.indexOf(c)<0)floorWant.push(c);});});
+    if(!floorWant.length){var seenFW={};pool.forEach(function(e){e.indicators.forEach(function(c){if(!seenFW[c]){seenFW[c]=1;floorWant.push(c);}});});}}
+  var inPoolF={};pool.forEach(function(e){e.indicators.forEach(function(c){inPoolF[c]=1;});});
+  floorWant=floorWant.filter(function(c){return inPoolF[c];});
+  var orderF=floorCodes?floorWant:shuffle(floorWant);
+  var coveredF={};
+  var resByLF=[0,0,0];
+  for(var fi2=0;fi2<orderF.length&&chosen.length<n;fi2++){
+    var codeF=orderF[fi2];
+    if(coveredF[codeF])continue;
+    var bestCovF=-1,bestRoomF=-999,topF=[];
+    pool.forEach(function(e){
+      if(used[e.id]||e.indicators.indexOf(codeF)<0)return;
+      var kF=0;e.indicators.forEach(function(c){if(!coveredF[c]&&floorWant.indexOf(c)>=0)kF++;});
+      var roomF=targets[e.level-1]-resByLF[e.level-1];
+      if(kF>bestCovF||(kF===bestCovF&&roomF>bestRoomF)){bestCovF=kF;bestRoomF=roomF;topF=[e];}
+      else if(kF===bestCovF&&roomF===bestRoomF)topF.push(e);
+    });
+    if(!topF.length)continue;
+    var pickFE=pick(topF);
+    chosen.push(pickFE);used[pickFE.id]=1;resByLF[pickFE.level-1]++;
+    pickFE.indicators.forEach(function(c){coveredF[c]=1;});
+  }
+  if(chosen.length){
+    for(var rLF=0;rLF<3;rLF++)targets[rLF]=Math.max(0,targets[rLF]-resByLF[rLF]);
+    var tSumF=targets[0]+targets[1]+targets[2],tWantF=n-chosen.length;
+    while(tSumF>tWantF){var bigLF=0;for(var bLF=1;bLF<3;bLF++)if(targets[bLF]>targets[bigLF])bigLF=bLF;if(targets[bigLF]<=0)break;targets[bigLF]--;tSumF--;}
+    while(tSumF<tWantF){targets[1]++;tSumF++;}
+  }
   function take(level,count){
     var cands=shuffle(pool.filter(function(e){return e.level===level&&!used[e.id];}));
     var i=0;while(count>0&&i<cands.length){chosen.push(cands[i]);used[cands[i].id]=1;i++;count--;}
@@ -5776,9 +5830,35 @@ var lastSettings=null,onlineThin=false,onlineNote=null,onlineEffUnits=null;
    short-flag pattern: the other part is never topped up to
    hide it. */
 function drawOnlineSet(s,units,inds,cap){
-  var mc=drawSet(units,inds,s.oMc,s.mix,s.order,cap,function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);});
+  /* Floor coordination for the two-count split (Ruling 12,
+     November 21, 2026): the set floor is the selected
+     indicators with entries in the union of the two parts
+     pools under the current settings. The multiple choice part
+     is offered the indicators only it can cover first, then
+     the rest; the fill-in part is offered whatever the first
+     part left uncovered. Each part reserves inside its own
+     count, so both counts stand exactly. */
+  var mcPredS=function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);};
+  var fiBaseS=function(e){return probeType(e)!=="mc"||!!bimodalClass(e);};
+  var uPoolS=poolFor(units,inds,cap);
+  if(typeof pkIncluded==="function"&&!pkIncluded())uPoolS=uPoolS.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
+  var allowS=null;
+  if(!inds||!inds.length){var regOS=(typeof window!=="undefined"&&window.__COURSE&&window.__COURSE.unitInd)||null;
+    if(regOS){allowS={};units.forEach(function(u){(regOS[u]||[]).forEach(function(c){allowS[c]=1;});});}}
+  var fCodesS=[],fSeenS={};
+  uPoolS.forEach(function(e){e.indicators.forEach(function(c){if(!fSeenS[c]&&(!allowS||allowS[c])&&(!inds||!inds.length||inds.indexOf(c)>=0)){fSeenS[c]=1;fCodesS.push(c);}});});
+  var mcOnlyS=[],restS=[];
+  fCodesS.forEach(function(c){
+    var inMcS=uPoolS.some(function(e){return e.indicators.indexOf(c)>=0&&mcPredS(e);});
+    var inFiS=uPoolS.some(function(e){return e.indicators.indexOf(c)>=0&&fiBaseS(e);});
+    if(inMcS&&!inFiS)mcOnlyS.push(c);else if(inMcS||inFiS)restS.push(c);
+  });
+  var mcFloorS=shuffle(mcOnlyS).concat(shuffle(restS));
+  var mc=drawSet(units,inds,s.oMc,s.mix,s.order,cap,mcPredS,mcFloorS);
   var usedMc={};mc.items.forEach(function(q){usedMc[q._entry.id]=1;});
-  var fi=drawSet(units,inds,s.oFi,s.mix,s.order,cap,function(e){return !usedMc[e.id]&&(probeType(e)!=="mc"||!!bimodalClass(e));});
+  var covMcS={};mc.items.forEach(function(q){q._entry.indicators.forEach(function(c){covMcS[c]=1;});});
+  var fiFloorS=fCodesS.filter(function(c){return !covMcS[c];});
+  var fi=drawSet(units,inds,s.oFi,s.mix,s.order,cap,function(e){return !usedMc[e.id]&&fiBaseS(e);},fiFloorS);
   function fixMc(q){var tries=0;while(q.type!=="mc"&&tries<40){var nq=q._entry.gen();nq._entry=q._entry;q=nq;tries++;}return q;}
   function fixFi(q){
     if(q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);
@@ -6034,8 +6114,33 @@ function probeType(e){if(_probeCache[e.id])return _probeCache[e.id];var t="mc",s
    no-choices questions (numerical and text answers print identically, so
    they share one count), each part honouring the level mix on its own pool. */
 function drawSheetSet(s){
-  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);});
-  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)!=="mc"||(!s.bimodal&&!!bimodalClass(e));});
+  /* Floor coordination for the sheet two parts (Ruling 12,
+     November 21, 2026): as in the online split, the multiple
+     choice part is offered the indicators only it can cover
+     first, and the written part is offered whatever the first
+     part left uncovered, each part reserving inside its own
+     count. */
+  var capSh=s.finalCap?"final":s.midCap;
+  var mcPredH=function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);};
+  var ncBaseH=function(e){return probeType(e)!=="mc"||(!s.bimodal&&!!bimodalClass(e));};
+  var uPoolH=poolFor(s.units,s.inds,capSh);
+  if(typeof pkIncluded==="function"&&!pkIncluded())uPoolH=uPoolH.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
+  var allowH=null;
+  if(!s.inds||!s.inds.length){var regOH=(typeof window!=="undefined"&&window.__COURSE&&window.__COURSE.unitInd)||null;
+    if(regOH){allowH={};s.units.forEach(function(u){(regOH[u]||[]).forEach(function(c){allowH[c]=1;});});}}
+  var fCodesH=[],fSeenH={};
+  uPoolH.forEach(function(e){e.indicators.forEach(function(c){if(!fSeenH[c]&&(!allowH||allowH[c])&&(!s.inds||!s.inds.length||s.inds.indexOf(c)>=0)){fSeenH[c]=1;fCodesH.push(c);}});});
+  var mcOnlyH=[],restH=[];
+  fCodesH.forEach(function(c){
+    var inMcH=uPoolH.some(function(e){return e.indicators.indexOf(c)>=0&&mcPredH(e);});
+    var inNcH=uPoolH.some(function(e){return e.indicators.indexOf(c)>=0&&ncBaseH(e);});
+    if(inMcH&&!inNcH)mcOnlyH.push(c);else if(inMcH||inNcH)restH.push(c);
+  });
+  var mcFloorH=shuffle(mcOnlyH).concat(shuffle(restH));
+  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,capSh,mcPredH,mcFloorH);
+  var covMcH={};mc.items.forEach(function(q){q._entry.indicators.forEach(function(c){covMcH[c]=1;});});
+  var ncFloorH=fCodesH.filter(function(c){return !covMcH[c];});
+  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,capSh,ncBaseH,ncFloorH);
   /* A few entries generate more than one answer type, and the probe that
      sorts them into a part catches only one of the types. Enforce each
      part's type on the generated questions themselves: an off-type
@@ -6631,6 +6736,36 @@ function composeExam(units,inds,includePK,plan){
     parts.forEach(function(p,i){if(p.crPref&&opts[i]&&marksKey(opts[i].items)!==prefKey(p.crPref))dev+=40;});
     return {plans:plans,dev:dev,scopeDev:scopeDev};
   }
+  /* Floor reachability per part (Ruling 12, November 21, 2026):
+     for every blueprinted outcome with entries in the part
+     pool, the selected-response entries that could carry it.
+     The blueprint is the caller indicator list, or, with no
+     list, the part units registered outcomes, falling back to
+     every code the pool carries: a code an entry happens to
+     carry outside the registry does not consume reservations.
+     An outcome with no entry in the pool is excepted silently.
+     chooseCombo nets the written set claims out of this list
+     per combo: an outcome the selected-response section cannot
+     reach, because the written set claimed every entry that
+     carries it or because it has no selected-response entry at
+     all, must be carried by the written set itself. */
+  var bmOffFl=!testScope&&(typeof BIMODAL_OFF!=="undefined"&&!!BIMODAL_OFF);
+  var floorReach=parts.map(function(part){
+    var ppoolF=pool.filter(function(e){return part.units.indexOf(e.unit)>=0;});
+    var poolCodesF={};ppoolF.forEach(function(e){e.indicators.forEach(function(c){poolCodesF[c]=1;});});
+    var wantFl=(inds&&inds.length)?inds.slice():[];
+    if(!wantFl.length){var regCF=(typeof window!=="undefined"&&window.__COURSE&&window.__COURSE.unitInd)||null;
+      if(regCF)part.units.forEach(function(u){(regCF[u]||[]).forEach(function(c){if(wantFl.indexOf(c)<0)wantFl.push(c);});});
+      if(!wantFl.length)wantFl=Object.keys(poolCodesF);}
+    var reachF={};
+    wantFl.forEach(function(c){
+      if(!poolCodesF[c]||reachF[c])return;
+      reachF[c]=ppoolF.filter(function(e){return e.indicators.indexOf(c)>=0&&probeType(e)==="mc"&&(!bmOffFl||!bimodalClass(e));}).map(function(e){return e.id;});
+    });
+    return reachF;
+  });
+  var idLevelOfFl={};
+  pool.forEach(function(e){idLevelOfFl[e.id]=e.level;});
   function chooseCombo(){
     var optLists=parts.map(crOptions);
     var combos=[[]];
@@ -6642,7 +6777,44 @@ function composeExam(units,inds,includePK,plan){
     var bestC=null;
     combos.forEach(function(opts){
       var pl=planFor(opts);
-      if(!bestC||pl.dev<bestC.dev)bestC={opts:opts,plans:pl.plans,dev:pl.dev,scopeDev:pl.scopeDev};
+      var dev=pl.dev;
+      /* Floor steering: a combo whose written set leaves a
+         written-only outcome uncovered scores 1000 per such
+         outcome, so a covering combo wins whenever the option
+         lists hold one. When no combo covers, the penalty is
+         uniform across combos and the level plan decides. */
+      opts.forEach(function(o,pi){
+        var reachF=floorReach[pi];
+        var claimedF={},covF={};
+        o.items.forEach(function(x){claimedF[x.e.id]=1;x.e.indicators.forEach(function(c){covF[c]=1;});});
+        Object.keys(reachF).forEach(function(c){
+          if(covF[c])return;
+          var idsF=reachF[c];
+          for(var iF=0;iF<idsF.length;iF++)if(!claimedF[idsF[iF]])return;
+          dev+=1000;
+        });
+        /* Level-fit steering: an outcome the written set
+           does not cover whose reachable selected-response
+           entries sit at a single level forces a reservation
+           at that level. Where the count of such forced
+           outcomes at a level exceeds the part plan room
+           there, the overflow displaces the plan by about a
+           mark per outcome, so the combo scores 3 per
+           overflow outcome and a combo whose plan leaves
+           room at the forced levels wins when one exists.
+           Where every combo overflows, the term is uniform
+           and the level plan decides as before. */
+        var forcedF=[0,0,0];
+        Object.keys(reachF).forEach(function(c){
+          if(covF[c])return;
+          var lvF={};
+          reachF[c].forEach(function(id){if(!claimedF[id]&&idLevelOfFl[id])lvF[idLevelOfFl[id]]=1;});
+          var ksF=Object.keys(lvF);
+          if(ksF.length===1)forcedF[+ksF[0]-1]++;
+        });
+        for(var lF=0;lF<3;lF++){var overF=forcedF[lF]-(pl.plans[pi][lF]||0);if(overF>0)dev+=3*overF;}
+      });
+      if(!bestC||dev<bestC.dev)bestC={opts:opts,plans:pl.plans,dev:dev,scopeDev:pl.scopeDev};
     });
     return bestC;
   }
@@ -6700,6 +6872,88 @@ function composeExam(units,inds,includePK,plan){
           if(q.type!=="mc"||seen[c])continue;seen[c]=1;srItems.push({q:q,marks:1});indTake(eSR);noteDealt(eSR);count--;
         }
         return count;
+      }
+      /* Floor reservations (Ruling 12, November 21, 2026): one
+         selected-response item for every floored outcome of
+         this part that the chosen written set does not already
+         address and the selected-response pool can still serve,
+         most constrained outcome first in a part that can
+         cover its outcomes (fewest level options, then
+         scarcest; in a part that cannot, seeded shuffle
+         order; see the bound-part note below). Among an
+         outcome
+         entries, the reservation prefers the level band that
+         still owes the most of its plan share. Reservations
+         deal in two passes, plan-fitting first and then a
+         coverage pass where the part can cover its outcomes;
+         the note at the reservation loop gives the full rule.
+         A reservation deals under the same discipline as the
+         band draw (a fresh canonical
+         question, the per-indicator cap, the test-scope claim
+         exclusion) and counts toward its level band share: the
+         band plan is reduced by what the reservations dealt, so
+         the part still deals exactly its selected-response
+         count. Outcomes the written set addresses need no
+         reservation; outcomes with no reachable entry are left
+         to the written set, which chooseCombo steered to carry
+         them. */
+      var coveredFl={};
+      combo.opts[pi].items.forEach(function(x){x.e.indicators.forEach(function(c){coveredFl[c]=1;});});
+      var floorListFl=Object.keys(floorReach[pi]).filter(function(c){return !coveredFl[c];}).map(function(c){
+        var lvFl={};ppool.forEach(function(e){if(e.indicators.indexOf(c)>=0&&probeType(e)==="mc")lvFl[e.level]=1;});
+        return {c:c,k:floorReach[pi][c].filter(function(id){return !claimedCR[id];}).length,lv:Object.keys(lvFl).length};
+      }).filter(function(o){return o.k>0;}).sort(function(a,b){return a.lv-b.lv||a.k-b.k||(a.c<b.c?-1:1);});
+      var resByLFl=[0,0,0],resTotFl=0;
+      /* Reservations deal in two passes. The first pass is
+         plan-fitting: a reservation is dealt only at a level
+         whose band plan still has room, so the part keeps its
+         planned level shape and the band adjustment below
+         stays a pure subtraction. The second pass runs only
+         in a part that can cover its outcomes (its floored
+         outcomes do not outnumber its selected-response
+         slots): outcomes the first pass could not fit, because
+         their entries sit at levels the plan had already
+         filled, are dealt at any level, so coverage is not
+         traded away for shape where coverage is achievable.
+         In a part that cannot cover its outcomes, the band
+         draw, not an off-plan reservation, fills the slots
+         the first pass leaves, and the outcomes are taken in
+         seeded shuffle order rather than most constrained
+         first, so
+         the slots the part does have sample the whole
+         blueprint instead of clustering on its scarcest
+         outcomes. In a part that can cover its outcomes, the
+         order is most constrained first in both passes
+         (fewest level options, then scarcest). */
+      var boundFl=floorListFl.length>part.sr;
+      if(boundFl)floorListFl=shuffle(floorListFl);
+      function reserveSRFl(code,fitOnly){
+        var cands=ppool.filter(function(e){return e.indicators.indexOf(code)>=0&&probeType(e)==="mc"&&(!bmSRoff||!bimodalClass(e))&&(!testScope||!claimedCR[e.id])&&indRoom(part,e)&&(!fitOnly||resByLFl[e.level-1]<plan[e.level-1]);});
+        var tried={},guard=0;
+        while(guard++<600&&cands.length){
+          cands=cands.filter(function(e){return indRoom(part,e);});
+          if(!cands.length)return false;
+          var bestRoomR=null;
+          for(var rI=0;rI<cands.length;rI++){var rmR=plan[cands[rI].level-1]-resByLFl[cands[rI].level-1];if(bestRoomR===null||rmR>bestRoomR)bestRoomR=rmR;}
+          var tierR=cands.filter(function(e){return plan[e.level-1]-resByLFl[e.level-1]===bestRoomR;});
+          var eR=pickFresh(tierR,tried);tried[eR.id]=(tried[eR.id]||0)+1;
+          var q=genFrom(eR);var cn=canonQ(q);
+          if(q.type!=="mc"||seen[cn])continue;
+          seen[cn]=1;srItems.push({q:q,marks:1});indTake(eR);noteDealt(eR);
+          eR.indicators.forEach(function(cc){coveredFl[cc]=1;});
+          resByLFl[eR.level-1]++;resTotFl++;
+          return true;
+        }
+        return false;
+      }
+      for(var fi4=0;fi4<floorListFl.length&&resTotFl<part.sr;fi4++){if(!coveredFl[floorListFl[fi4].c])reserveSRFl(floorListFl[fi4].c,true);}
+      if(!boundFl)for(var fi5=0;fi5<floorListFl.length&&resTotFl<part.sr;fi5++){if(!coveredFl[floorListFl[fi5].c])reserveSRFl(floorListFl[fi5].c,false);}
+      if(resTotFl){
+        plan=plan.slice();
+        for(var pLF=0;pLF<3;pLF++)plan[pLF]=Math.max(0,plan[pLF]-resByLFl[pLF]);
+        var pSumFl=plan[0]+plan[1]+plan[2],pWantFl=part.sr-resTotFl;
+        while(pSumFl>pWantFl){var bLF2=0;for(var bF2=1;bF2<3;bF2++)if(plan[bF2]>plan[bLF2])bLF2=bF2;if(plan[bLF2]<=0)break;plan[bLF2]--;pSumFl--;}
+        while(pSumFl<pWantFl){plan[1]++;pSumFl++;}
       }
       var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}
       if(miss>0){
