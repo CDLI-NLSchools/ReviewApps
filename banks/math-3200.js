@@ -412,7 +412,7 @@ E("u1-divide-quotient",1,["3.2"],2,"gen",function(){
   dis=dis.slice(0,3).map(function(s){ return "\\("+s+"\\)"; });
   return mcq("Using synthetic division to divide \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) gives which <b>quotient</b>?",
     "\\("+key+"\\)", dis,
-    "Synthetic division by \\("+u1FacS(a)+"\\) uses \\("+a+"\\) in the tableau:"+
+    "Synthetic division by \\("+u1FacS(a)+"\\) is set up with \\("+a+"\\) at the left:"+
     u1Tableau(cf,a)+
     "The bottom row, before the remainder, gives the quotient coefficients \\("+q.join(", ")+"\\), one degree lower than \\(P(x)\\). So the quotient is \\("+key+"\\) and the remainder is \\("+R+"\\).",
     {a:a, R:R});
@@ -491,15 +491,15 @@ E("u1-synthetic-relation",1,["3.1"],1,"var",varset([
       "The other numbers in the bottom row are the coefficients of the quotient, and the last number is the remainder.",
       ["The numbers in the bottom row are the zeros of the polynomial function being divided by the given divisor.",
        "Synthetic division gives the same result as long division for any divisor, including divisors that are quadratic.",
-       "The value placed at the left of the tableau is always the value of \\("+(-a)+"\\) itself, not \\(" + a + "\\)."],
+       "The value placed at the left in synthetic division is always the value of \\("+(-a)+"\\) itself, not \\(" + a + "\\)."],
       "Synthetic division is a shortcut for long division by a divisor of the form \\((x - a)\\): the value used is \\("+a+"\\) itself. Each bottom-row entry, except the last, is a coefficient of the quotient, and the last entry is the remainder, exactly as long division would give.",
       {a:a});
   },
   function(){
     var b=ri(2,5);
-    return mcq("To divide a polynomial by \\((x + "+b+")\\) using synthetic division, what value is placed at the <b>left of the tableau</b>?",
+    return mcq("To divide a polynomial by \\((x + "+b+")\\) using synthetic division, what value is placed at the <b>left in synthetic division</b>?",
       ""+(-b), [""+b, "\\(\\frac{1}{"+b+"}\\)", "0"],
-      "The divisor \\((x + "+b+")\\) has the form \\((x - a)\\) with \\(a = "+(-b)+"\\), and it is that value, \\("+(-b)+"\\), that goes at the left of the tableau.",
+      "The divisor \\((x + "+b+")\\) has the form \\((x - a)\\) with \\(a = "+(-b)+"\\), and it is that value, \\("+(-b)+"\\), that goes at the left in the setup.",
       {b:b});
   },
   function(){
@@ -528,7 +528,7 @@ E("u1-synthetic-relation",1,["3.1"],1,"var",varset([
       ["The remainder is \\("+sy.q[2]+"\\), the last coefficient of the quotient.",
        "\\(P("+(-a)+") = "+sy.r+"\\).",
        "The quotient is \\("+u1PolyS(u1Synth(cf,-a).q)+"\\)."],
-      "The bottom row of the tableau reads off the quotient coefficients \\("+sy.q.join(", ")+"\\) followed by the remainder \\("+sy.r+"\\). By the remainder theorem, that remainder is the value of the function at the value used in the tableau: \\(P("+a+") = "+sy.r+"\\).",
+      "The bottom row of the setup reads off the quotient coefficients \\("+sy.q.join(", ")+"\\) followed by the remainder \\("+sy.r+"\\). By the remainder theorem, that remainder is the value of the function at the value used in the setup: \\(P("+a+") = "+sy.r+"\\).",
       {a:a, R:sy.r});
   }
 ]));
@@ -552,7 +552,7 @@ E("u1-divide-result",1,["3.2"],2,"gen",function(){
             u1PolyS([q[0],q[1],q[2],q[3]+R]) ];
   return mcq("Dividing \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) gives which <b>result</b>?",
     "\\("+key+"\\)", dis.map(function(s){ return "\\("+s+"\\)"; }),
-    "Synthetic division by \\("+u1FacS(a)+"\\) uses \\("+a+"\\) in the tableau:"+
+    "Synthetic division by \\("+u1FacS(a)+"\\) is set up with \\("+a+"\\) at the left:"+
     u1Tableau(cf,a)+
     "The quotient is \\("+u1PolyS(q)+"\\) with remainder \\("+R+"\\), so the result is written as quotient plus remainder over divisor: \\("+key+"\\).",
     {a:a, R:R});
@@ -755,9 +755,9 @@ E("u1-error-synthetic",1,["3.2","3.3"],3,"gen",function(){
     if(R!==0 && uniq.length===4) break;
   }
   if(!(R!==0 && [R,SR,-R,c0].filter(function(v,i,arr){ return arr.indexOf(v)===i; }).length===4)){ cf=[1,-2,-5,6]; a=2; R=u1EvalC(cf,a); SR=u1EvalC(cf,-a); c0=cf[3]; }
-  return mcq("A student divided \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) using synthetic division, but placed \\("+(-a)+"\\) at the left of the tableau instead of \\("+a+"\\). The student reported a remainder of \\("+SR+"\\). What is the <b>correct remainder</b>?",
+  return mcq("A student divided \\(P(x) = "+u1PolyS(cf)+"\\) by \\("+u1FacS(a)+"\\) using synthetic division, but placed \\("+(-a)+"\\) at the left in the setup instead of \\("+a+"\\). The student reported a remainder of \\("+SR+"\\). What is the <b>correct remainder</b>?",
     ""+R, [""+SR, ""+(-R), ""+c0],
-    "Placing \\("+(-a)+"\\) in the tableau divides by \\((x - ("+(-a)+")) = (x + "+Math.abs(a)+")\\) instead, so the student's remainder is \\(P("+(-a)+") = "+SR+"\\), the remainder for the wrong divisor. The correct remainder is \\(P("+a+")\\), by the remainder theorem:"+
+    "Placing \\("+(-a)+"\\) at the left divides by \\((x - ("+(-a)+")) = (x + "+Math.abs(a)+")\\) instead, so the student's remainder is \\(P("+(-a)+") = "+SR+"\\), the remainder for the wrong divisor. The correct remainder is \\(P("+a+")\\), by the remainder theorem:"+
     u1EvalBlock(cf,a,"P")+
     "So the correct remainder is <b>"+R+"</b>.",
     {a:a, R:R, SR:SR});
@@ -839,9 +839,9 @@ E("u1-largest-zero-cr",1,["3.4","3.9"],2,"gen",function(){
 E("u1-tableau-step-cr",1,["3.1"],2,"gen",function(){
   var cf=[1,ri(-6,6),ri(-9,9),ri(-9,9)], a=pick([-4,-3,-2,-1,1,2,3,4]);
   var b1=cf[1]+a*cf[0], b2=cf[2]+a*b1;
-  return numq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\) using synthetic division, the bottom row of the tableau starts \\("+cf[0]+", "+b1+", \\ldots\\) What is the <b>next entry</b> in the bottom row?",
+  return numq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\) using synthetic division, the bottom row of the setup starts \\("+cf[0]+", "+b1+", \\ldots\\) What is the <b>next entry</b> in the bottom row?",
     b2,0.001,
-    "In synthetic division, each bottom-row entry is multiplied by \\("+a+"\\) and added to the next coefficient. The full tableau is:"+u1Tableau(cf,a)+
+    "In synthetic division, each bottom-row entry is multiplied by \\("+a+"\\) and added to the next coefficient. The full setup is:"+u1Tableau(cf,a)+
     "The second entry is \\("+cf[1]+" + ("+a+")("+cf[0]+") = "+b1+"\\). Multiplying it by \\("+a+"\\) and adding the next coefficient gives \\("+cf[2]+" + ("+a+")("+b1+") = \\)<b>"+b2+"</b>.",
     {cf:cf,a:a});
 });
