@@ -723,7 +723,7 @@ E("u1-sketch-features",1,["3.11"],2,"gen",function(){
   var q=mcq("The graph of a polynomial function is shown. Which list of features matches the graph?",
     feat(roots, y0, clause),
     [feat(roots, -y0, clause), feat(roots, y0, wclause), feat(flipped, y0, clause)],
-    "Reading the graph: it crosses the x-axis at "+roots.join(", ")+", so those are the x-intercepts. It crosses the y-axis at \\("+y0+"\\) (the value of the function at \\(x = 0\\)). The function is a cubic with a "+(a>0?"positive":"negative")+" leading coefficient, so "+clause+".",
+    "Reading the graph: it crosses the x-axis at "+roots.join(", ")+", so those are the x-intercepts. It crosses the y-axis at \\("+y0+"\\) (the value of the function at \\(x = 0\\)). For the end behaviour, look at the ends of the graph itself: "+clause+".",
     {roots:roots, y0:y0});
   q.figure=u1Plot(fn, roots[0]-3, roots[2]+3, {points:[[0,y0]]});
   return q;
