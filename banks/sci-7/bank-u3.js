@@ -1,3 +1,6 @@
+// CRMARKS: s7-u3-cr-classify-explain=2
+// CRMARKS: s7-u3-cr-particle-classify=3
+// CRMARKS: s7-u3-cr-separation-plan=4
 /* Science 7, Unit 3: Mixtures and Solutions (SC7.7.1 to SC7.9.8, 21
    indicators, 60 entries). Sources: the current English guide (Focus
    for Learning for all 21 indicators; terminology governs; particle,
@@ -25,6 +28,102 @@
 // CRMARKS: s7-u3-cr-best-fit=3
 // CRMARKS: s7-u3-cr-design-solubility=4
 // CRMARKS: s7-u3-cr-new-question=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s7-u3-classify-pure=2
+// CRMARKS: s7-u3-particle-pure=2
+// CRMARKS: s7-u3-classify-mixtures=2
+// CRMARKS: s7-u3-light-test=3
+// CRMARKS: s7-u3-combination=3
+// CRMARKS: s7-u3-solute-solvent=2
+// CRMARKS: s7-u3-dissolving-particles=2
+// CRMARKS: s7-u3-solution-states=3
+// CRMARKS: s7-u3-conc-compare=3
+// CRMARKS: s7-u3-conc-change=3
+// CRMARKS: s7-u3-solubility-temp=2
+// CRMARKS: s7-u3-method-match=2
+// CRMARKS: s7-u3-method-property=3
+// CRMARKS: s7-u3-home-techniques=2
+// CRMARKS: s7-u3-choose-technique=3
+// CRMARKS: s7-u3-distill-parts=2
+// CRMARKS: s7-u3-distill-vs-evap=3
+// CRMARKS: s7-u3-fractional=2
+// CRMARKS: s7-u3-lives-effects=2
+// CRMARKS: s7-u3-salt-positive=2
+// CRMARKS: s7-u3-salt-negative=3
+// CRMARKS: s7-u3-salt-classify-effects=3
+// CRMARKS: s7-u3-deicer-compare=3
+// CRMARKS: s7-u3-deicing-improve=2
+// CRMARKS: s7-u3-salt-science=4
+// CRMARKS: s7-u3-hypothesis-pattern=2
+// CRMARKS: s7-u3-hypothesis-background=3
+// CRMARKS: s7-u3-delimit=2
+// CRMARKS: s7-u3-delimit-plan=4
+// CRMARKS: s7-u3-best-fit=2
+// CRMARKS: s7-u3-interpolate=3
+// CRMARKS: s7-u3-extrapolate=4
+// CRMARKS: s7-u3-hypothesis-temp=2
+// CRMARKS: s7-u3-variables-solubility=3
+// CRMARKS: s7-u3-controls=2
+// CRMARKS: s7-u3-controls-judge=4
+// CRMARKS: s7-u3-procedure-order=3
+// CRMARKS: s7-u3-procedure-problem=2
+// CRMARKS: s7-u3-tools-safety=2
+// CRMARKS: s7-u3-tools-accurate=3
+// CRMARKS: s7-u3-particle-diagram-judge=3
+// CRMARKS: s7-u3-mixture-classify-more=3
+// CRMARKS: s7-u3-dissolving-identify=3
+// CRMARKS: s7-u3-separation-plan=3
+// CRMARKS: s7-u3-separation-property=4
+// CRMARKS: s7-u3-daily-technique-id=2
+// CRMARKS: s7-u3-daily-technique-choose=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s7-u3-classify-pure=a
+// BIMODAL: s7-u3-particle-pure=b
+// BIMODAL: s7-u3-classify-mixtures=a
+// BIMODAL: s7-u3-light-test=b
+// BIMODAL: s7-u3-combination=b
+// BIMODAL: s7-u3-solute-solvent=a
+// BIMODAL: s7-u3-dissolving-particles=b
+// BIMODAL: s7-u3-solution-states=b
+// BIMODAL: s7-u3-conc-compare=a
+// BIMODAL: s7-u3-conc-change=b
+// BIMODAL: s7-u3-solubility-temp=b
+// BIMODAL: s7-u3-method-match=a
+// BIMODAL: s7-u3-method-property=b
+// BIMODAL: s7-u3-home-techniques=a
+// BIMODAL: s7-u3-choose-technique=b
+// BIMODAL: s7-u3-distill-parts=b
+// BIMODAL: s7-u3-distill-vs-evap=b
+// BIMODAL: s7-u3-fractional=b
+// BIMODAL: s7-u3-lives-effects=b
+// BIMODAL: s7-u3-salt-positive=b
+// BIMODAL: s7-u3-salt-negative=b
+// BIMODAL: s7-u3-salt-classify-effects=b
+// BIMODAL: s7-u3-deicer-compare=b
+// BIMODAL: s7-u3-deicing-improve=b
+// BIMODAL: s7-u3-salt-science=b
+// BIMODAL: s7-u3-hypothesis-pattern=b
+// BIMODAL: s7-u3-hypothesis-background=b
+// BIMODAL: s7-u3-delimit=b
+// BIMODAL: s7-u3-delimit-plan=b
+// BIMODAL: s7-u3-best-fit=b
+// BIMODAL: s7-u3-interpolate=a
+// BIMODAL: s7-u3-extrapolate=a
+// BIMODAL: s7-u3-hypothesis-temp=b
+// BIMODAL: s7-u3-variables-solubility=b
+// BIMODAL: s7-u3-controls=b
+// BIMODAL: s7-u3-controls-judge=b
+// BIMODAL: s7-u3-procedure-order=b
+// BIMODAL: s7-u3-procedure-problem=b
+// BIMODAL: s7-u3-tools-safety=b
+// BIMODAL: s7-u3-tools-accurate=b
+// BIMODAL: s7-u3-particle-diagram-judge=b
+// BIMODAL: s7-u3-mixture-classify-more=b
+// BIMODAL: s7-u3-dissolving-identify=a
+// BIMODAL: s7-u3-separation-plan=b
+// BIMODAL: s7-u3-separation-property=b
+// BIMODAL: s7-u3-daily-technique-id=a
+// BIMODAL: s7-u3-daily-technique-choose=b
 
 /* ---------- SC7.7.1 Pure substances and mixtures ---------- */
 E("s7-u3-classify-pure", 3, ["SC7.7.1"], 1, "gen", function () {
@@ -899,3 +998,256 @@ var NO_COMPOSE_U3 = {
   "s7-u3-cr-design-solubility": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
+
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC7.7.1, SC7.7.2, SC7.7.3, SC7.7.5, SC7.7.6 x2, SC7.7.7 x2,
+   and one 2-mark Level 2 CR entry closing Unit 3 Test 1's CR gap.
+   Case-table entries are registered as varsets. SME-flagged. */
+
+E("s7-u3-particle-diagram-judge", 3, ["SC7.7.1"], 2, "var", varset([
+  { s: "every particle in the diagram is the same single atom, shown separate from the others", key: "A pure substance: an element", d: ["A pure substance: a compound", "A mixture of two elements", "A mixture of an element and a compound"] },
+  { s: "every particle is the same molecule, each made of two different atoms joined together", key: "A pure substance: a compound", d: ["A pure substance: an element", "A mixture of two elements", "A mixture of two compounds"] },
+  { s: "two kinds of single atoms are mixed together, none of them joined to any other", key: "A mixture of two elements", d: ["A pure substance: a compound", "A pure substance: an element", "A mixture of an element and a compound"] },
+  { s: "one kind of molecule (two atoms joined) is mixed with single atoms of another kind", key: "A mixture of an element and a compound", d: ["A pure substance: a compound", "A pure substance: an element", "A mixture of two compounds"] },
+  { s: "two different kinds of molecules are mixed, each kind made of atoms joined in the same way within its kind", key: "A mixture of two compounds", d: ["A pure substance: a compound", "A mixture of two elements", "A pure substance: an element"] },
+  { s: "every particle is the same molecule, each made of three atoms of one kind joined together", key: "A pure substance: an element (its particles are molecules of one atom type)", d: ["A pure substance: a compound made of three elements", "A mixture of two elements shown as molecules", "A mixture of an element and a compound"] }
+].map(function (c) {
+  return function () {
+    return mcq("A particle diagram shows this: " + c.s + ". What does the diagram represent?",
+      c.key, c.d,
+      "A pure substance has only one kind of particle throughout; a mixture has more than one kind. Atoms joined from different elements make a compound. <b>" + c.key + "</b>.", {});
+  };
+})), ["Spacing and movement give the state away: far apart and free means gas.", "Close but sliding means liquid; fixed positions in rows means solid."]);
+
+E("s7-u3-mixture-classify-more", 3, ["SC7.7.2"], 2, "var", varset([
+  { s: "brass, a blend of copper and zinc melted together", key: "Homogeneous: it looks the same throughout and its parts cannot be seen or picked out", d: ["Heterogeneous: its parts can be picked out and separated by hand, one metal at a time, like the parts of a salad", "A pure substance, because it is a metal and metals are always pure substances", "Neither kind: metals cannot be mixtures of any kind under any circumstances"] },
+  { s: "a bowl of trail mix with nuts, raisins and seeds", key: "Heterogeneous: its different parts can be seen and picked out one kind at a time", d: ["Homogeneous: it looks exactly the same throughout in every spoonful once it has been poured into the bowl", "A pure substance, because everything in it is food and food is pure", "Neither kind: mixtures of solids do not count as mixtures at all"] },
+  { s: "salt water from the ocean, filtered to remove the sand", key: "Homogeneous: the dissolved salt is spread evenly through it and cannot be seen", d: ["Heterogeneous: the dissolved salt can still be picked out of it by hand, grain by grain, after filtering", "A pure substance, because it is a clear liquid and clear liquids are pure", "Neither kind: it is an element, because it came from the ocean"] },
+  { s: "granite rock with visible flecks of different minerals", key: "Heterogeneous: its different mineral parts can be seen scattered through the rock", d: ["Homogeneous: rock always looks exactly the same throughout every sample taken from it, wherever it is found", "A pure substance, because it is a single rock taken from one place", "Neither kind: rocks are never described as mixtures of any kind"] },
+  { s: "air in a classroom", key: "Homogeneous: its gases are mixed evenly and cannot be told apart by looking", d: ["Heterogeneous: each of its gases can be seen separately, floating in layers at different heights in the room", "A pure substance, because air is invisible and invisible things are pure", "Neither kind: gases are unable to mix with each other at all"] },
+  { s: "a Caesar salad with leaves, croutons and dressing", key: "Heterogeneous: its parts can be seen clearly and separated from each other", d: ["Homogeneous: it becomes one single uniform substance as soon as it is tossed together in the serving bowl", "A pure substance, because it is served to the table as a single dish", "Neither kind: it is a compound, because its parts are combined in a bowl"] },
+  { s: "milk, which looks uniform but is made of tiny fat droplets spread through water", key: "Heterogeneous at the particle level: the droplets are a separate phase spread through the water", d: ["A pure substance, because it is white all through and pours smoothly and evenly out of the carton every time", "Homogeneous at every level, because it looks the same and pours evenly", "Neither kind: liquids can never be heterogeneous mixtures in any way"] },
+  { s: "lemonade made by stirring lemon juice, sugar and water until it is clear", key: "Homogeneous: everything that dissolved is spread evenly throughout the drink", d: ["Heterogeneous: the sugar in it can still be picked out by hand after the stirring is finished and it clears", "A pure substance, because the finished drink is clear like pure water", "Neither kind: it is an element, because it is made in the kitchen"] }
+].map(function (c) {
+  return function () {
+    return mcq("Classify this mixture: " + c.s + ".",
+      c.key, c.d,
+      "A homogeneous mixture looks the same throughout, with its parts spread evenly and not visible; a heterogeneous mixture has parts that can be seen or separated. <b>" + c.key + "</b>.", {});
+  };
+})), ["Can you see separate parts, unevenly spread? That is a mechanical mixture.", "Uniform all the way through with nothing to distinguish means a solution."]);
+
+E("s7-u3-dissolving-identify", 3, ["SC7.7.3"], 2, "var", varset([
+  { s: "sugar stirred into a cup of tea until it disappears", sol: "the sugar", solv: "the tea (mostly water)" },
+  { s: "salt mixed into a pot of water for cooking pasta", sol: "the salt", solv: "the water" },
+  { s: "powdered drink mix stirred into a jug of water", sol: "the drink powder", solv: "the water" },
+  { s: "carbon dioxide gas pumped into water to make soda water", sol: "the carbon dioxide", solv: "the water" },
+  { s: "iodine dissolved in alcohol to make a tincture for cuts", sol: "the iodine", solv: "the alcohol" },
+  { s: "instant coffee granules stirred into hot water", sol: "the coffee granules", solv: "the hot water" }
+].reduce(function (acc, c) {
+  acc.push(function () {
+    return mcq("In this solution, " + c.s + ". What is the solute?",
+      c.sol, [c.solv + " (named as the solute)", "the container the solution is mixed in", "the part of the solution that evaporates first"],
+      "The solute is the substance that dissolves; the solvent is the substance it dissolves into, usually present in the greater amount. Here the solute is <b>" + c.sol + "</b> and the solvent is " + c.solv + ".", {});
+  });
+  acc.push(function () {
+    return mcq("In this solution, " + c.s + ". What is the solvent?",
+      c.solv, [c.sol + " (named as the solvent)", "the container the solution is mixed in", "the part of the solution that settles out"],
+      "The solvent is the substance that does the dissolving, usually present in the greater amount. Here the solvent is <b>" + c.solv + "</b> and the solute is " + c.sol + ".", {});
+  });
+  return acc;
+}, [])), ["The solute is the substance that gets dissolved; the solvent does the dissolving.", "In drinks, the smaller ingredient is usually the solute."]);
+
+E("s7-u3-solubility-change", 3, ["SC7.7.5"], 2, "var", varset([
+  { s: "A bottle of soda is opened and left uncapped overnight; by morning it tastes flat", key: "Gas escapes because the pressure above the liquid dropped, lowering the gas's solubility in the soda", d: ["The gas dissolved even more deeply as the pressure above it dropped, which is why the taste of the soda changed", "The soda absorbed extra gas from the air overnight, pushing the original gas out", "The temperature of the soda removed all of the dissolved gas by itself overnight"] },
+  { s: "Sugar dissolves faster and in greater amount in hot tea than in iced tea", key: "Raising the temperature increased the solid sugar's solubility in the liquid", d: ["Raising the temperature of the tea decreased the solid sugar's solubility in the liquid it was stirred into", "Temperature has no effect at all on how much of a solid dissolves in a liquid", "The sugar melted in the hot tea, and melting is exactly the same as dissolving"] },
+  { s: "A diver's blood can form dangerous bubbles if the diver surfaces too quickly", key: "Falling pressure lowers the solubility of the gases dissolved in the blood, so they come out as bubbles", d: ["Rising pressure in the blood forces more gas out of it and into bubbles as the diver rises toward the surface", "Pressure has no effect at all on how much gas can stay dissolved in a liquid", "The bubbles form only because the diver's blood gets colder during the ascent"] },
+  { s: "Warm lake water in summer holds less dissolved oxygen than the same water in spring", key: "Raising the temperature lowered the solubility of the oxygen gas in the lake water", d: ["Raising the temperature of the lake raised the solubility of the oxygen gas dissolved in its water in summer", "Oxygen behaves as a solid in water, so its solubility rose with the temperature", "The fish used up the oxygen, which is the only possible cause of the change"] },
+  { s: "A sealed bottle of pop fizzes strongly the moment it is opened", key: "The sudden pressure drop lets dissolved carbon dioxide come out of solution as bubbles", d: ["The pressure rise inside the bottle creates the carbon dioxide gas at the very moment the cap is twisted off", "Opening the bottle lowers its temperature enough to manufacture the gas", "The gas was never dissolved at all; it was trapped in the pop as a solid"] },
+  { s: "Salt keeps dissolving in a heated pan of water long after it stopped dissolving in cold water", key: "Heating the water raised the solubility of the solid salt in the water", d: ["Heating the pan of water lowered the solubility of the solid salt that was being dissolved into it", "The salt dissolved in the hot water only because it melted into it", "The solubility of solids in water never changes with temperature at all"] }
+].map(function (c) {
+  return function () {
+    return mcq(c.s + ". Which explanation is correct?",
+      c.key, c.d,
+      "For solids, solubility in a liquid usually rises with temperature. For gases, solubility falls as temperature rises and falls as pressure drops. <b>" + c.key + "</b>.", {});
+  };
+})), ["Check the factor being changed: temperature, pressure, stirring or particle size.", "Gases behave opposite to solids when temperature rises."]);
+
+E("s7-u3-separation-plan", 3, ["SC7.7.6"], 2, "var", varset([
+  { s: "a mixture of iron filings, sand and salt, when all three are needed separately", key: "Magnetism for the filings, then dissolve the salt in water, filter out the sand, and evaporate the water to recover the salt", d: ["Evaporate the whole dry mixture first in a pan, then try to filter the dry powders apart from each other afterwards", "Filter the dry mixture through paper first, then use a magnet on the liquid that passes through", "Distill the dry mixture until it boils, then screen out the salt from what remains behind"] },
+  { s: "a mixture of sand, small pebbles and water", key: "Screening to remove the pebbles, then filtration to separate the sand from the water", d: ["Evaporation of the whole mixture first in the sun, then magnetism to pull the sand grains out of the pebbles", "Distillation to remove the pebbles, then screening to separate the water from the sand", "Paper chromatography on the mixture, then flotation to lift the sand off the water"] },
+  { s: "muddy water containing dissolved salt", key: "Filtration to remove the mud, then evaporation to recover the salt from the clear water", d: ["Magnetism to remove the mud from the water first, then screening the clear water to catch the dissolved salt in it", "Screening to remove the dissolved salt first, then distillation of the mud that is left", "Flotation to skim the dissolved salt off the surface before filtering out the mud"] },
+  { s: "a mixture of rice grains and fine flour spilled together", key: "Screening: the fine flour passes through the screen while the rice grains stay on top of it", d: ["Filtration with water added to the mixture, then evaporation of all the water to get the rice grains back again", "Magnetism, because dry rice grains are attracted to magnets when mixed with flour", "Distillation, because flour boils at a lower temperature than rice grains do"] },
+  { s: "used cooking oil floating on dishwater in a sink", key: "Let it settle, then skim or pour off the oil layer from the top (flotation and decanting)", d: ["Evaporate the whole mixture in a heated pan and collect the used cooking oil from whatever is left behind in it", "Filter the mixture and expect the oil to stay dissolved evenly in the water", "Hold a magnet over the surface to pull the oil layer off the dishwater"] },
+  { s: "a mixture of salt and pepper shaken together in a jar", key: "Dissolve the salt in water, filter out the pepper, then evaporate the water to recover the salt", d: ["Use a strong magnet on the jar, because salt becomes magnetic whenever it is mixed together with ground pepper", "Screen the mixture, because salt grains are always larger than pepper grains are", "Distill the dry mixture, because the pepper in it boils away before the salt does"] }
+].map(function (c) {
+  return function () {
+    return mcq("A full separation is needed for " + c.s + ". Which plan works?",
+      c.key, c.d,
+      "Plan the steps in order: remove the component with the most distinctive property first (magnetism, particle size), and handle dissolved solids by dissolving, filtering and evaporating. The working plan is: <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Match the tool to the property that differs: magnetism, particle size, dissolving, density.", "Dissolved solids cannot be filtered out; they need evaporation."]);
+
+E("s7-u3-separation-property", 3, ["SC7.7.6"], 3, "var", varset([
+  { s: "separating the pulp from orange juice by pouring it through a strainer", key: "Particle size: the strainer's holes pass the juice but hold back the larger pulp pieces", d: ["Boiling point: the juice boils away completely before the pulp does while the mixture sits in the strainer", "Magnetism: the pulp is attracted to the metal of the strainer as it pours", "Solubility: the pulp dissolves in the juice and is left behind in solution"] },
+  { s: "recovering drinking water from seawater aboard a ship by distillation", key: "Boiling point: the water evaporates and condenses while the dissolved salts stay behind", d: ["Particle size: the particles of salt in the seawater are too large to evaporate along with the water vapour", "Density: the salt floats on top of the vapour as the water boils away", "Magnetism: the salt is drawn out of the vapour by the cold condenser"] },
+  { s: "separating the dyes in a felt-pen ink using a strip of wet filter paper", key: "How far each dye travels in the solvent: the dyes spread out along the paper at different rates", d: ["Particle size alone: the paper blocks the larger dye completely at the starting line and lets the smaller one pass", "Boiling point: each dye boils off the wet paper in turn as it warms up", "Density: the heaviest dye sinks off the bottom of the paper into the solvent"] },
+  { s: "removing steel screws spilled into a box of plastic beads with a magnet", key: "Magnetism: the steel is attracted to the magnet while the plastic beads are not", d: ["Particle size: the screws are larger than the plastic beads, so the magnet is able to sort the two apart by size", "Solubility: the plastic dissolves around the magnet and the steel does not", "Boiling point: the plastic melts away from the steel when the magnet warms it"] },
+  { s: "separating oil and vinegar salad dressing by letting it stand and pouring off the top layer", key: "Density and not mixing: the oil floats on the vinegar because the two liquids do not dissolve in each other", d: ["Boiling point: the oil evaporates slowly off the top of the dressing as it stands on the counter after mixing", "Magnetism: the vinegar is attracted away from the oil by the bottle's cap", "Particle size: the oil's particles are too big to sink through the vinegar"] },
+  { s: "getting salt back from salt water left in a shallow pan in the sun", key: "Evaporation: the water leaves as vapour because it evaporates far more readily than the salt does", d: ["Magnetism: the warmth of the sun in the shallow pan draws the salt out of the water and onto the pan's surface", "Particle size: the salt is filtered out of the water by the bottom of the pan", "Density: the salt sinks and sticks to the pan before any water can evaporate"] }
+].map(function (c) {
+  return function () {
+    return mcq("Which property difference makes this separation work: " + c.s + "?",
+      c.key, c.d,
+      "Every separation method exploits one property difference between the components. Here it is <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Name the property that makes the technique work on this pair of substances.", "If an magnet is used, the property is magnetism; if water is added, think solubility."]);
+
+E("s7-u3-daily-technique-id", 3, ["SC7.7.7"], 1, "var", varset([
+  { s: "a coffee maker drips water through ground coffee held in a paper filter", key: "Filtration", d: ["Distillation", "Magnetism", "Evaporation"] },
+  { s: "a washing machine spins the drum fast to push water out of wet clothes", key: "Centrifuging", d: ["Filtration", "Paper chromatography", "Flotation"] },
+  { s: "a cook pours boiled pasta into a colander to drain it", key: "Screening", d: ["Distillation", "Evaporation", "Magnetism"] },
+  { s: "cream is skimmed from the top of fresh whole milk that has stood overnight", key: "Flotation", d: ["Filtration", "Distillation", "Paper chromatography"] },
+  { s: "a tea bag steeps in hot water and is lifted out, leaving the leaves behind in the bag", key: "Filtration", d: ["Evaporation", "Magnetism", "Centrifuging"] },
+  { s: "a dryer screen catches the lint pulled from tumbling clothes", key: "Screening", d: ["Distillation", "Flotation", "Paper chromatography"] },
+  { s: "a gold panner swirls water in a pan so the lighter sand washes away and the heavy gold stays", key: "Panning (density separation)", d: ["Filtration", "Evaporation", "Magnetism"] },
+  { s: "a water treatment plant lets muddy water sit in settling tanks before further treatment", key: "Sedimentation", d: ["Paper chromatography", "Distillation", "Magnetism"] }
+].map(function (c) {
+  return function () {
+    return mcq("Which separation technique is at work here: " + c.s + "?",
+      c.key, c.d,
+      "Everyday devices use the same separation principles as the lab: filters and screens trap by size, spinning and settling separate by density, and floating components can be skimmed. This one is <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Ask what the device does: holds back a solid, lets a liquid evaporate, or pours a liquid off?", "Holding back solids while liquid passes is filtration."]);
+
+E("s7-u3-daily-technique-choose", 3, ["SC7.7.7"], 2, "var", varset([
+  { s: "a camper needs drinking water from a muddy stream and has a cloth and a pot", key: "Filter the water through the cloth to remove the mud, then boil it before drinking it", d: ["Distill the water by holding the pot lid in the steam over the fire and collecting every drop that condenses on it", "Hold a magnet in the stream water to pull all of the mud out of it at once", "Let the water evaporate completely in the sun and drink whatever is left behind"] },
+  { s: "a cook has oversalted a soup and wants to reduce the saltiness without throwing the soup away", key: "Add more water and ingredients to dilute it; the dissolved salt cannot be filtered out of the soup", d: ["Pour the whole soup through a coffee filter to catch all of the dissolved salt in it before serving it at the table", "Hold a strong magnet over the pot to draw the dissolved salt out of the soup", "Skim the dissolved salt off the surface of the soup with a spoon before serving"] },
+  { s: "a jeweller has spilled tiny steel pins into a tray of gold filings", key: "Pass a magnet over the tray to lift out the steel pins, leaving the gold filings behind", d: ["Wash the tray with water and filter the whole mixture through paper to separate out the gold filings from the pins", "Heat the tray until the steel pins evaporate away from the gold filings completely", "Shake the tray gently so the gold filings float to the top of the steel pins"] },
+  { s: "a homeowner finds sand mixed into a bag of grass seed before planting", key: "Use a screen with holes that pass the sand grains but hold back the larger grass seeds", d: ["Dissolve all of the sand in water in a bucket and then filter the mixture to get the grass seeds back out of it", "Pass a magnet through the bag to remove all of the sand grains from the seed", "Let the mixture settle in water so the grass seeds float off the sand by themselves"] },
+  { s: "a baker needs to remove the lumps from flour before mixing a cake", key: "Sift the flour through a sieve so the lumps are held back or broken up as it passes", d: ["Distill the flour in a sealed pot over heat to separate all of the lumps from the fine powder before baking", "Spin the flour in a bowl so the lumps evaporate out of it completely", "Float the flour on water and skim the lumps off the surface with a spoon"] },
+  { s: "a mechanic drains used engine oil that has fine metal grit suspended in it", key: "Pour the oil through a filter that traps the metal grit while the oil passes through it", d: ["Stir a strong magnet around in the oil to dissolve all of the fine metal grit into the oil completely and evenly", "Evaporate all of the oil away and keep the metal grit as the finished product", "Add water to the oil so the metal grit floats to the top where it can be skimmed"] }
+].map(function (c) {
+  return function () {
+    return mcq("Everyday problem: " + c.s + ". Which approach works?",
+      c.key, c.d,
+      "Match the technique to the property difference available: size for screens and filters, magnetism for steel, and dilution when a dissolved substance cannot be filtered. The working approach is: <b>" + c.key.toLowerCase() + "</b>.", {});
+  };
+})), ["Choose the technique that removes the unwanted part and keeps the wanted part.", "Suspended solids come out by filtration; settled solids by decanting."]);
+
+E("s7-u3-cr-classify-explain", 3, ["SC7.7.2"], 2, "var", varset([
+  function () {
+    return textq("Classifying and explaining mixtures (2 marks)\nA student stirs a spoon of sand into a glass of water and a spoon of salt into another glass of water. After stirring, the sand can still be seen settled at the bottom, but the salt cannot be seen at all. Classify EACH mixture as heterogeneous or homogeneous, and explain the difference using the particle theory. (2)",
+      ["The sand and water form a heterogeneous mixture: the sand particles stay in visible clumps and settle."],
+      "Marking points (2): 1 mark for both classifications (sand and water heterogeneous; salt and water homogeneous). 1 mark for the particle explanation: the salt's particles separate and spread evenly among the water particles so they cannot be seen, while the sand's particles stay together in grains that remain visible and settle. Model answer: Sand in water is heterogeneous and salt in water is homogeneous, because <b>the dissolved salt spreads evenly at the particle level while the sand stays in visible grains</b>.", {});
+  },
+  function () {
+    return textq("Classifying and explaining mixtures (2 marks)\nA jar of mixed nuts and a bottle of well-shaken salad dressing are both mixtures. The nuts can be picked out one kind at a time. The dressing looks the same throughout while it is freshly shaken, but separates into layers if it stands. Classify EACH mixture and explain your reasoning. (2)",
+      ["The mixed nuts are heterogeneous: each kind can be seen and picked out separately."],
+      "Marking points (2): 1 mark for both classifications (nuts heterogeneous; the freshly shaken dressing homogeneous in appearance, becoming heterogeneous as it separates). 1 mark for the reasoning: a mixture is homogeneous only while its parts are spread evenly and cannot be told apart; once the dressing's parts separate into layers they can be told apart, so it is heterogeneous. Model answer: The nuts are heterogeneous, and the dressing is homogeneous only while shaken, because <b>a mixture is homogeneous only as long as its parts stay evenly spread and indistinguishable</b>.", {});
+  },
+  function () {
+    return textq("Classifying and explaining mixtures (2 marks)\nFog and brass are both described as mixtures. Fog is made of tiny water droplets spread through air; brass is made of copper and zinc melted and solidified together. Classify EACH mixture as heterogeneous or homogeneous, and explain each classification. (2)",
+      ["Brass is homogeneous: the copper and zinc are mixed evenly at the particle level, so a sample looks and behaves the same throughout."],
+      "Marking points (2): 1 mark for brass as homogeneous with the particle-level reason. 1 mark for fog as heterogeneous: the droplets are a separate phase spread through the air, visible as cloudiness, and they can settle or evaporate separately. Model answer: Brass is homogeneous and fog is heterogeneous, because <b>brass is mixed evenly at the particle level while fog's droplets remain a separate, visible phase</b>.", {});
+  }
+]), ["Decide the class first, then hunt the description for two observations that prove it.", "Visible separate parts point one way; perfect uniformity points the other."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s7-u3-cr-particle-classify closes Unit 3 Test
+   1 (3 marks, Level 2); s7-u3-cr-separation-plan closes Unit 3 Test
+   3 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+E("s7-u3-cr-particle-classify", 3, ["SC7.7.1", "SC7.7.2"], 2, "var", varset([
+  function () {
+    return textq("Two samples are described at the particle level. Sample A: every particle in the sample is the same kind, throughout the whole sample. Sample B: two kinds of particle are present, spread evenly through each other so the sample looks the same in every part, with no clumps or layers. Sample A is distilled water and Sample B is seawater. (a) Classify Sample A as a pure substance, a homogeneous mixture, or a heterogeneous mixture. (1) (b) Classify Sample B in the same way. (1) (c) Justify ONE of your classifications using the particle description. (1) (3 marks)",
+      ["Sample A is a pure substance: it contains one kind of particle only. Sample B is a homogeneous mixture: it contains two kinds of particle (water particles and dissolved salt particles) mixed evenly throughout."],
+      "<b>Model answer:</b> (a) Sample A is a pure substance. (b) Sample B is a homogeneous mixture. (c) Justification for either sample earns the mark. For Sample A: a pure substance contains only one kind of particle, and the description gives one kind throughout, so distilled water is pure. For Sample B: seawater contains two kinds of particle, so it is a mixture, and because the two kinds are spread evenly with no clumps or layers, the mixture is homogeneous.<br><br><b>Marking points:</b> 1 mark for Sample A classified as a pure substance. 1 mark for Sample B classified as a homogeneous mixture. 1 mark for one classification justified from the particle description: one kind of particle for a pure substance, or two kinds evenly mixed for a homogeneous mixture.", {});
+  },
+  function () {
+    return textq("Two samples are described at the particle level. Sample A: every particle in the sample is the same kind, throughout the whole sample. Sample B: two kinds of particle are present in roughly even proportions in every part of the sample, spread evenly through each other. Sample A is oxygen gas and Sample B is air. (a) Classify Sample A as a pure substance, a homogeneous mixture, or a heterogeneous mixture. (1) (b) Classify Sample B in the same way. (1) (c) Justify ONE of your classifications using the particle description. (1) (3 marks)",
+      ["Sample A is a pure substance: one kind of particle only. Sample B is a homogeneous mixture: several kinds of gas particle (mainly nitrogen and oxygen particles) mixed evenly throughout, so air is the same in every part."],
+      "<b>Model answer:</b> (a) Sample A is a pure substance. (b) Sample B is a homogeneous mixture. (c) Justification for either sample earns the mark. For Sample A: oxygen gas contains only one kind of particle, which is the definition of a pure substance. For Sample B: air contains two or more kinds of particle, so it is a mixture, and because the kinds are spread evenly through each other with the same make-up in every part, it is a homogeneous mixture, even though it is a gas and nothing can be seen mixed in it.<br><br><b>Marking points:</b> 1 mark for Sample A classified as a pure substance. 1 mark for Sample B classified as a homogeneous mixture. 1 mark for one classification justified from the particle description: one kind of particle for a pure substance, or two or more kinds evenly mixed for a homogeneous mixture.", {});
+  },
+  function () {
+    return textq("Two samples are described at the particle level. Sample A: two kinds of particle are present, gathered in uneven patches and visible clumps, so one part of the sample looks different from another. Sample B: two kinds of particle are present, spread evenly through each other so the sample is the same in every part. Sample A is granite and Sample B is brass. (a) Classify Sample A as a pure substance, a homogeneous mixture, or a heterogeneous mixture. (1) (b) Classify Sample B in the same way. (1) (c) Justify ONE of your classifications using the particle description. (1) (3 marks)",
+      ["Sample A is a heterogeneous mixture: its two kinds of particle sit in uneven, visible clumps (the flecks of different minerals in granite). Sample B is a homogeneous mixture: its two kinds of metal particle are evenly mixed throughout the brass."],
+      "<b>Model answer:</b> (a) Sample A is a heterogeneous mixture. (b) Sample B is a homogeneous mixture. (c) Justification for either sample earns the mark. For Sample A: granite holds more than one kind of particle, so it is a mixture, and the particles are unevenly arranged in visible clumps and patches, which makes the mixture heterogeneous. For Sample B: brass holds two kinds of particle, so it is a mixture and not a pure substance, but the particles are spread evenly so the metal is the same throughout, which makes it homogeneous.<br><br><b>Marking points:</b> 1 mark for Sample A classified as a heterogeneous mixture. 1 mark for Sample B classified as a homogeneous mixture. 1 mark for one classification justified from the particle description: uneven clumps for heterogeneous, or two kinds evenly spread for homogeneous.", {});
+  },
+  function () {
+    return textq("Two samples are described at the particle level. Sample A: every particle in the sample is the same kind, throughout the whole sample. Sample B: two kinds of particle are present, mixed unevenly, with grains of one kind clustered together in some places and grains of the other kind clustered in other places. Sample A is sugar and Sample B is a mix of sugar and sand stirred together in a jar. (a) Classify Sample A as a pure substance, a homogeneous mixture, or a heterogeneous mixture. (1) (b) Classify Sample B in the same way. (1) (c) Justify ONE of your classifications using the particle description. (1) (3 marks)",
+      ["Sample A is a pure substance: one kind of particle only. Sample B is a heterogeneous mixture: two kinds of particle, unevenly mixed with visible clusters of each."],
+      "<b>Model answer:</b> (a) Sample A is a pure substance. (b) Sample B is a heterogeneous mixture. (c) Justification for either sample earns the mark. For Sample A: sugar contains only one kind of particle throughout, which makes it a pure substance (its particle is a compound particle, but every particle is the same kind). For Sample B: the jar holds two kinds of particle, so it is a mixture, and the kinds are mixed unevenly with clusters of each visible, which makes the mixture heterogeneous rather than homogeneous.<br><br><b>Marking points:</b> 1 mark for Sample A classified as a pure substance. 1 mark for Sample B classified as a heterogeneous mixture. 1 mark for one classification justified from the particle description: one kind of particle for a pure substance, or two kinds unevenly mixed with clumps for a heterogeneous mixture.", {});
+  }
+]), ["Count the kinds of particle first; that separates pure substances from mixtures.", "Then judge the mixing: even throughout means homogeneous, clumps or layers mean heterogeneous."]);
+
+E("s7-u3-cr-separation-plan", 3, ["SC7.7.6", "SC7.7.7"], 2, "var", varset([
+  function () {
+    return textq("A beaker holds a mixture of iron filings, sand, salt and water. The salt is dissolved in the water. (a) Give an ordered plan to recover the iron filings, the sand and the salt separately, naming the technique used at each step. (2) (b) State the property that EACH technique in your plan exploits. (1) (c) State how ONE recovered component would be dried or checked for purity, and why that step is needed. (1) (4 marks)",
+      ["Plan: pass a magnet through the mixture to lift out the iron filings; filter the rest to catch the sand; evaporate the filtrate to leave the salt. Properties: magnetism exploits the iron being magnetic while sand and salt are not; filtration exploits particle size, since undissolved sand grains are too large for the filter pores while the dissolved salt passes through; evaporation exploits the boiling point difference, since water evaporates and the dissolved salt does not. Drying: rinse and dry the sand on the filter paper so no salt solution clings to it, or dry the salt crystals fully so no water remains."],
+      "<b>Model answer:</b> (a) Step 1, magnetism: stir a magnet wrapped in plastic through the mixture and lift out the iron filings. Step 2, filtration: pour what remains through filter paper; the sand is caught and the salt water passes through as the filtrate. Step 3, evaporation: heat the filtrate or leave it in a warm place so the water evaporates and salt crystals remain. (b) Magnetism exploits magnetism: iron is magnetic and the other components are not. Filtration exploits particle size: undissolved sand grains are far too large to pass through the filter pores, while a dissolved substance passes through with the water. Evaporation exploits the difference in boiling behaviour: water turns to vapour and leaves, while the salt does not evaporate. (c) The sand should be rinsed on the paper with a little clean water and then dried, so that no salt solution is left clinging to it; otherwise the recovered sand would be contaminated with salt when the water dried.<br><br><b>Marking points:</b> 1 mark for the techniques correctly matched to the components (magnetism for the iron, filtration for the sand, evaporation for the salt). 1 mark for a workable order with the dissolved salt recovered last, after the solids are out. 1 mark for the property correctly stated for each technique (magnetism, particle size, boiling point difference). 1 mark for a drying or purity check for one component, with its reason.", {});
+  },
+  function () {
+    return textq("A beaker holds a mixture of chalk powder, sand, salt and water. The salt is dissolved in the water; the chalk and the sand do not dissolve. (a) Give an ordered plan to recover the chalk, the sand and the salt separately, naming the technique used at each step. (2) (b) State the property that EACH technique in your plan exploits. (1) (c) State how ONE recovered component would be dried or checked for purity, and why that step is needed. (1) (4 marks)",
+      ["Plan: filter the mixture to catch the chalk and sand together while the salt water passes through; evaporate the filtrate to recover the salt; dry the caught solids and separate the fine chalk powder from the coarser sand by screening through a fine sieve that the chalk passes and the sand does not. Properties: filtration exploits particle size for undissolved solids; evaporation exploits the boiling point difference between water and salt; screening exploits the particle size difference between chalk powder and sand grains. Drying: dry the chalk and sand fully before screening, because damp powder clumps and will not pass the sieve."],
+      "<b>Model answer:</b> (a) Step 1, filtration: pour the mixture through filter paper; the undissolved chalk and sand are caught together and the salt water passes through. Step 2, evaporation: heat the filtrate or leave it warm so the water evaporates and the salt remains. Step 3, screening: dry the caught solids, then shake them through a fine sieve; the fine chalk powder passes through and the coarser sand grains stay on the sieve. (b) Filtration exploits particle size: undissolved solid pieces are too large for the filter pores. Evaporation exploits the boiling point difference: water evaporates and dissolved salt does not. Screening exploits particle size again, this time between two dry solids: chalk particles are much smaller than sand grains. (c) The chalk and sand must be dried fully before screening, because damp chalk clumps together into lumps too large to pass the sieve, and the separation would fail.<br><br><b>Marking points:</b> 1 mark for the techniques correctly matched to the components (filtration for the undissolved solids, evaporation for the salt, screening for chalk against sand). 1 mark for a workable order, with the salt solution separated from the solids before evaporation. 1 mark for the property correctly stated for each technique. 1 mark for a drying or purity step for one component, with its reason, such as drying the solids so the screening works.", {});
+  },
+  function () {
+    return textq("A bucket holds a mixture of sawdust, gravel, salt and water. The salt is dissolved in the water; the sawdust floats and the gravel sinks. (a) Give an ordered plan to recover the sawdust, the gravel and the salt separately, naming the technique used at each step. (2) (b) State the property that EACH technique in your plan exploits. (1) (c) State how ONE recovered component would be dried or checked for purity, and why that step is needed. (1) (4 marks)",
+      ["Plan: skim or decant the floating sawdust off the surface (flotation and mechanical sorting); pour the rest through a coarse sieve or filter to catch the gravel; evaporate the salt water to recover the salt. Properties: flotation exploits density, since sawdust floats and gravel sinks; sieving or filtration exploits particle size; evaporation exploits the boiling point difference between water and the dissolved salt. Drying: spread the sawdust out to dry, or rinse and dry the gravel so no salt crust forms on it as leftover solution dries."],
+      "<b>Model answer:</b> (a) Step 1, flotation and skimming: lift the floating sawdust off the surface with a sieve or by carefully decanting it with the top layer of water. Step 2, screening or filtration: pour what remains through a coarse sieve; the gravel is caught and the salt water passes through. Step 3, evaporation: heat the salt water or leave it in a warm place so the water evaporates and salt crystals remain. (b) Flotation exploits density and floating behaviour: sawdust floats on water while gravel sinks. Screening exploits particle size: gravel pieces are too large to pass the sieve openings. Evaporation exploits the boiling point difference: water evaporates and the dissolved salt is left behind. (c) The gravel should be rinsed with clean water and dried after sieving, so that no salt solution dries on it and leaves a salt crust mixed with the recovered gravel.<br><br><b>Marking points:</b> 1 mark for the techniques correctly matched to the components (skimming or flotation for the sawdust, screening or filtration for the gravel, evaporation for the salt). 1 mark for a workable order, with the floating and sunken solids removed before the salt water is evaporated. 1 mark for the property correctly stated for each technique (density or floating, particle size, boiling point difference). 1 mark for a drying or purity step for one component, with its reason.", {});
+  },
+  function () {
+    return textq("A tray holds a mixture of gravel, sand, salt and water that was stirred together. The salt is dissolved in the water; the gravel pieces are much larger than the sand grains. (a) Give an ordered plan to recover the gravel, the sand and the salt separately, naming the technique used at each step. (2) (b) State the property that EACH technique in your plan exploits. (1) (c) State how ONE recovered component would be dried or checked for purity, and why that step is needed. (1) (4 marks)",
+      ["Plan: pour the mixture through a coarse sieve to catch the gravel while the sand and salt water pass through; filter the rest to catch the sand; evaporate the filtrate to recover the salt. Properties: screening exploits the large particle size of gravel; filtration exploits particle size for the undissolved sand; evaporation exploits the boiling point difference between water and salt. Drying: rinse the sand on the filter paper with clean water and dry it, so dissolved salt is washed off and does not crystallize into the sand."],
+      "<b>Model answer:</b> (a) Step 1, screening: pour the mixture through a coarse sieve; the large gravel pieces are caught and the sand and salt water pass through. Step 2, filtration: pour what passed through into filter paper; the sand is caught and the salt water runs through as the filtrate. Step 3, evaporation: heat the filtrate or leave it warm so the water evaporates and the salt remains as crystals. (b) Screening exploits particle size between two solids: gravel pieces are too large for the sieve openings and sand grains are not. Filtration exploits particle size between a solid and a liquid: undissolved sand cannot pass the filter pores, while the dissolved salt passes with the water. Evaporation exploits the boiling point difference: water evaporates and the salt does not. (c) The sand should be rinsed on the filter paper with a little clean water and then dried, because salt water clinging to the sand would otherwise leave salt crystals mixed through the recovered sand as it dried.<br><br><b>Marking points:</b> 1 mark for the techniques correctly matched to the components (screening for the gravel, filtration for the sand, evaporation for the salt). 1 mark for a workable order, largest solid out first and the dissolved salt recovered last. 1 mark for the property correctly stated for each technique. 1 mark for a drying or purity step for one component, with its reason.", {});
+  }
+]), ["Work through the mixture one component at a time, and keep the dissolved component for last.", "Every technique must be defended by a property: magnetism, particle size, density, or boiling point."]);
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s7-u3-solubility-gas-claim", 3, ["SC7.7.5"], 3, "var", varset([
+  function () {
+    return mcq("Two identical bottles of pop are opened at the same time. One is left in a warm kitchen and the other in a cold refrigerator. An hour later the warm pop has lost far more of its fizz. A student claims this shows that temperature does not affect how much gas water can hold. Which conclusion do the observations support?",
+      "The claim is wrong: warm water holds less dissolved gas, so more carbon dioxide escaped from it",
+      ["The claim is right: warm water holds less dissolved gas, so more carbon dioxide escaped from it",
+       "The claim is wrong: warm water holds more dissolved gas, so more carbon dioxide escaped from it",
+       "The claim is right: both bottles lost fizz at the same rate, so temperature changed nothing here"],
+      "The fizz is carbon dioxide dissolved in the pop. The warm bottle lost more of it in the same time, so warm water holds less dissolved gas than cold water: temperature does affect the solubility of a gas, in the direction opposite to the claim. Gases dissolve less as temperature rises.", {});
+  },
+  function () {
+    return mcq("During a heat wave, the water in a shallow pond warms up. Fish crowd into the small area where a cold spring flows in, and some fish elsewhere are seen gulping at the surface. A student claims the fish are crowding together to look for food near the spring. Which conclusion do the observations support?",
+      "The fish seek the cold inflow because warm water holds less dissolved oxygen than cold water does",
+      ["The fish seek the cold inflow because warm water holds more dissolved oxygen than cold water does",
+       "The fish crowd together because warming the water raises the amount of gas the water can dissolve",
+       "The fish are gulping at the surface because warm pond water holds all of its oxygen near the bottom"],
+      "Fish take in dissolved oxygen from the water. As the pond warms, the water holds less dissolved gas, so the oxygen level falls and the fish struggle. The cold spring inflow holds more dissolved oxygen than the warmed pond water, which is why the fish crowd into it. The observations are about oxygen, a gas solute, not about food.", {});
+  },
+  function () {
+    return mcq("A student stirs sugar into two cups of tea. In the cold cup, some sugar stays undissolved at the bottom no matter how long she stirs. In the hot cup, all of that sugar and more dissolves completely. A student then claims that heating water lowers the solubility of every solute. Which conclusion do the observations support?",
+      "The claim is wrong for solids: sugar's solubility in water rises as the temperature of the water rises",
+      ["The claim is right for solids: sugar's solubility in water falls as the temperature of the water rises",
+       "The claim is wrong for gases: sugar is a gas in the tea, and gases dissolve less in hotter water instead",
+       "The claim is right for solids: the extra sugar dissolved because stirring matters more than temperature"],
+      "Sugar is a solid solute, and more of it dissolved in the hot tea than in the cold tea, with stirring held the same in both cups. So for a solid, solubility generally rises as temperature rises, and the claim fails. The claim's direction is the one that holds for gases, not for solids like sugar.", {});
+  },
+  function () {
+    return mcq("Pop is bottled under high pressure. A sealed bottle stays fizzy for months. The same pop, once opened and poured into a glass, loses its fizz within hours even though it stays cold. A student claims pressure has no effect on how much gas a liquid can hold. Which conclusion do the observations support?",
+      "The claim is wrong: higher pressure holds more gas in solution, and opening the bottle drops it",
+      ["The claim is right: higher pressure holds more gas in solution, and opening the bottle drops it",
+       "The claim is wrong: lower pressure holds more gas in solution, and opening the bottle raises it",
+       "The claim is right: the sealed bottle stayed fizzy because cold liquids never release any gas"],
+      "The poured pop stayed cold, yet it still went flat, so temperature is not the difference here. Inside the sealed bottle, high pressure keeps extra carbon dioxide dissolved. Opening the bottle drops the pressure, the gas's solubility falls, and the gas escapes. Pressure does affect the solubility of a gas.", {});
+  },
+  function () {
+    return mcq("A glass of cold tap water is left on a counter. As the water slowly warms to room temperature, tiny bubbles form on the inside of the glass and rise. A student claims the bubbles show the water is beginning to boil. Which conclusion do the observations support?",
+      "The bubbles are dissolved gases escaping, because water holds less dissolved gas as it warms up",
+      ["The bubbles are steam forming early, because water begins to boil well below its boiling point",
+       "The bubbles are dissolved gases escaping, because water holds more dissolved gas as it warms up",
+       "The bubbles show gases dissolving faster, because warming water pulls extra air in from the room"],
+      "Cold tap water holds air dissolved in it. As the water warms toward room temperature, it can hold less dissolved gas, so some of the air comes out of solution as bubbles on the glass. The water is nowhere near its boiling point of 100 °C, so the bubbles cannot be steam.", {});
+  }
+]), ["Separate the two solute kinds: gases and solids answer temperature in opposite directions.", "For a gas, ask what pressure and temperature each do to how much can stay dissolved."]);

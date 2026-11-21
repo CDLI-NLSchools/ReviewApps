@@ -1,3 +1,4 @@
+// CRMARKS: s7-u1-cr-marsh-change=2
 // CRMARKS: s7-u1-cr-factor-effect=2
 // CRMARKS: s7-u1-cr-three-interactions=3
 // CRMARKS: s7-u1-cr-energy-flow=3
@@ -14,6 +15,109 @@
 // CRMARKS: s7-u1-cr-defend-position=3
 // CRMARKS: s7-u1-cr-succession-stages=2
 // CRMARKS: s7-u1-cr-niche-roles=2
+// CRMARKS: s7-u1-cr-effect-chain=3
+// CRMARKS: s7-u1-cr-succession-evidence=3
+// CRMARKS: s7-u1-cr-succession-change=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s7-u1-factor-classify=2
+// CRMARKS: s7-u1-tolerance-curve=3
+// CRMARKS: s7-u1-interaction-classify=2
+// CRMARKS: s7-u1-interaction-examples=2
+// CRMARKS: s7-u1-pond-interactions=3
+// CRMARKS: s7-u1-role-identify=2
+// CRMARKS: s7-u1-consumer-types=2
+// CRMARKS: s7-u1-niche-reason=3
+// CRMARKS: s7-u1-classify-set=2
+// CRMARKS: s7-u1-ecosystem-infer=3
+// CRMARKS: s7-u1-chain-order=2
+// CRMARKS: s7-u1-energy-transfer=3
+// CRMARKS: s7-u1-energy-loss=2
+// CRMARKS: s7-u1-web-readoff=3
+// CRMARKS: s7-u1-web-removal=4
+// CRMARKS: s7-u1-decomposer-role=2
+// CRMARKS: s7-u1-nutrient-cycle=2
+// CRMARKS: s7-u1-succession-identify=2
+// CRMARKS: s7-u1-succession-types=2
+// CRMARKS: s7-u1-succession-sequence=3
+// CRMARKS: s7-u1-organization-set=3
+// CRMARKS: s7-u1-web-roles=3
+// CRMARKS: s7-u1-web-chains=3
+// CRMARKS: s7-u1-web-predict=4
+// CRMARKS: s7-u1-harvest-effects=2
+// CRMARKS: s7-u1-boreal-practice=2
+// CRMARKS: s7-u1-boreal-effects=3
+// CRMARKS: s7-u1-career-match=2
+// CRMARKS: s7-u1-career-scenario=3
+// CRMARKS: s7-u1-groups-interest=3
+// CRMARKS: s7-u1-delimit-choose=2
+// CRMARKS: s7-u1-delimit-rewrite=3
+// CRMARKS: s7-u1-instrument-choose=2
+// CRMARKS: s7-u1-record-format=3
+// CRMARKS: s7-u1-record-plan=4
+// CRMARKS: s7-u1-communicate-format=2
+// CRMARKS: s7-u1-communicate-judge=3
+// CRMARKS: s7-u1-evaluate-next-step=4
+// CRMARKS: s7-u1-key-work=2
+// CRMARKS: s7-u1-key-work-2=3
+// CRMARKS: s7-u1-key-choose=3
+// CRMARKS: s7-u1-variables-identify=2
+// CRMARKS: s7-u1-design-controls=3
+// CRMARKS: s7-u1-design-flaw=4
+// CRMARKS: s7-u1-table-choose=2
+// CRMARKS: s7-u1-succession-order=2
+// CRMARKS: s7-u1-flowchart-complete=3
+// CRMARKS: s7-u1-recycling-scenario=3
+// CRMARKS: s7-u1-succession-next-stage=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s7-u1-factor-classify=a
+// BIMODAL: s7-u1-tolerance-curve=a
+// BIMODAL: s7-u1-interaction-classify=a
+// BIMODAL: s7-u1-interaction-examples=a
+// BIMODAL: s7-u1-pond-interactions=a
+// BIMODAL: s7-u1-role-identify=a
+// BIMODAL: s7-u1-consumer-types=a
+// BIMODAL: s7-u1-niche-reason=b
+// BIMODAL: s7-u1-classify-set=a
+// BIMODAL: s7-u1-ecosystem-infer=a
+// BIMODAL: s7-u1-chain-order=a
+// BIMODAL: s7-u1-energy-transfer=b
+// BIMODAL: s7-u1-energy-loss=b
+// BIMODAL: s7-u1-web-readoff=a
+// BIMODAL: s7-u1-web-removal=b
+// BIMODAL: s7-u1-decomposer-role=b
+// BIMODAL: s7-u1-nutrient-cycle=a
+// BIMODAL: s7-u1-succession-identify=a
+// BIMODAL: s7-u1-succession-types=a
+// BIMODAL: s7-u1-succession-sequence=a
+// BIMODAL: s7-u1-organization-set=a
+// BIMODAL: s7-u1-web-roles=b
+// BIMODAL: s7-u1-web-chains=a
+// BIMODAL: s7-u1-web-predict=b
+// BIMODAL: s7-u1-harvest-effects=b
+// BIMODAL: s7-u1-boreal-practice=b
+// BIMODAL: s7-u1-boreal-effects=b
+// BIMODAL: s7-u1-career-match=a
+// BIMODAL: s7-u1-career-scenario=a
+// BIMODAL: s7-u1-groups-interest=b
+// BIMODAL: s7-u1-delimit-choose=b
+// BIMODAL: s7-u1-delimit-rewrite=b
+// BIMODAL: s7-u1-instrument-choose=a
+// BIMODAL: s7-u1-record-format=b
+// BIMODAL: s7-u1-record-plan=b
+// BIMODAL: s7-u1-communicate-format=b
+// BIMODAL: s7-u1-communicate-judge=b
+// BIMODAL: s7-u1-evaluate-next-step=b
+// BIMODAL: s7-u1-key-work=a
+// BIMODAL: s7-u1-key-work-2=a
+// BIMODAL: s7-u1-key-choose=a
+// BIMODAL: s7-u1-variables-identify=a
+// BIMODAL: s7-u1-design-controls=b
+// BIMODAL: s7-u1-design-flaw=b
+// BIMODAL: s7-u1-table-choose=b
+// BIMODAL: s7-u1-succession-order=a
+// BIMODAL: s7-u1-flowchart-complete=a
+// BIMODAL: s7-u1-recycling-scenario=b
+// BIMODAL: s7-u1-succession-next-stage=b
 // Science 7 Unit 1 bank: Interactions Within Ecosystems (SC7.1.1 to
 // SC7.3.11), built Nov 15, 2026 to the Ecosystems authoring spec.
 // All entries are original and were written new for this app.
@@ -1369,3 +1473,450 @@ var NO_COMPOSE={
   "s7-u1-cr-design-experiment":true
 };
 BANK.forEach(function(e){ if(NO_COMPOSE[e.id]){ e.noCompose=true; } });
+
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC7.1.1, SC7.1.2, SC7.1.7, SC7.1.8 and one 2-mark Level 2 CR
+   entry closing Unit 1 Test 1's CR gap. Case-table entries are
+   registered as varsets, the junior banks' standing pattern.
+   SME-flagged. */
+
+E("s7-u1-factor-change-effect", 1, ["SC7.1.1"], 2, "var", varset([
+  function () {
+    return mcq("A dry summer lowers the water level in a pond. Which statement best describes the change itself?",
+      "Abiotic change: the amount of water available in the pond decreased over the summer",
+      ["Biotic change: a new predator species arrived in the pond area during the summer", "Biotic change: the population of one plant species grew larger around the pond", "No factor changed at all; only the behaviour of the pond animals changed"],
+      "The change is to a non-living part of the ecosystem: the amount of water decreased. Living populations respond afterwards, but the change itself is <b>abiotic: the amount of water available in the pond decreased over the summer</b>.", {});
+  },
+  function () {
+    return mcq("A dry summer lowers the water level in a pond. What is the most likely effect on the living community?",
+      "Shore plants die back in the dry zone, and the animals that sheltered in them lose habitat",
+      ["The pond's water becomes warmer in winter, and every fish species grows larger and more active than before", "New species appear from outside the ecosystem all at once in large numbers", "The soil around the pond slowly turns into solid rock over the season"],
+      "A change in an abiotic factor changes the conditions living things depend on, and populations shift in response. Here, <b>shore plants die back in the dry zone, and the animals that sheltered in them lose habitat</b>.", {});
+  },
+  function () {
+    return mcq("A factory warms the water of a river with its cooling outflow. Which statement best describes the change itself?",
+      "Abiotic change: the temperature of the river water increased below the outflow",
+      ["Biotic change: a new species of fish was introduced into the river by workers", "Biotic change: the population of algae in the river grew during the summer", "No factor changed at all; only the speed of the river's current changed"],
+      "The change is to a non-living part of the ecosystem: the water temperature increased. Living populations respond afterwards, but the change itself is <b>abiotic: the temperature of the river water increased below the outflow</b>.", {});
+  },
+  function () {
+    return mcq("A factory warms the water of a river with its cooling outflow. What is the most likely effect on the living community?",
+      "Cold-water fish move away or decline, while warm-water species increase in the warmed stretch",
+      ["The river begins to flow uphill past the factory, carrying all of its fish and plants along with it", "Every fish in the river grows larger within a single week of the change", "The river's banks slowly turn into sand dunes along the warmed stretch"],
+      "A change in an abiotic factor changes the conditions living things depend on. Here, <b>cold-water fish move away or decline, while warm-water species increase in the warmed stretch</b>.", {});
+  },
+  function () {
+    return mcq("Farm fertilizer washes into a lake after heavy rain. What is the most likely effect on the living community?",
+      "Algae multiply quickly in the nutrient-rich water, clouding it and shading the plants below",
+      ["The lake freezes earlier in the autumn than it used to, covering all of its plants in ice for much longer", "The fish stop needing oxygen from the water and breathe air at the surface instead", "The bottom of the lake rises to the surface as the nutrients pile up in it"],
+      "The fertilizer raises the nutrient level of the water, an abiotic change, and the community responds: <b>algae multiply quickly in the nutrient-rich water, clouding it and shading the plants below</b>.", {});
+  },
+  function () {
+    return mcq("A beaver dam floods a section of forest. What is the most likely effect on the living community?",
+      "Trees in the flooded area die, while pond plants and water insects spread into the new habitat",
+      ["The flooded trees grow faster than ever before now that their roots stand in water through the whole season", "Every insect leaves the flooded area for good and none ever returns to it", "The pond water turns to ice and stays frozen through the whole year"],
+      "The dam raises the standing water, an abiotic change, and the community responds: <b>trees in the flooded area die, while pond plants and water insects spread into the new habitat</b>.", {});
+  },
+  function () {
+    return mcq("Shade cloth is put over a school garden bed for the summer. Which statement best describes the change itself?",
+      "Abiotic change: the amount of sunlight reaching the garden plants decreased",
+      ["Biotic change: a new species of insect moved into the garden during the summer", "Biotic change: the population of weeds in the garden bed grew over the season", "No factor changed at all; only the colour of the garden bed's soil changed"],
+      "The change is to a non-living part of the ecosystem: the amount of sunlight decreased. The change itself is <b>abiotic: the amount of sunlight reaching the garden plants decreased</b>.", {});
+  },
+  function () {
+    return mcq("A long winter keeps snow on a meadow until late spring. What is the most likely effect on the living community?",
+      "Plants start growing later in the year, shortening the feeding season for the herbivores",
+      ["Herbivores grow much thicker coats during the summer that follows, in preparation for the next long winter", "The meadow's soil loses all of its nutrients before the plants can use them", "Predators stop hunting completely until the autumn of the following year"],
+      "The longer cold season is an abiotic change, and the community responds: <b>plants start growing later in the year, shortening the feeding season for the herbivores</b>.", {});
+  }
+]), ["Ask what the change does to the other side: more food, less food, more shelter, less shelter?", "Then check the direction: a change that removes food or habitat pushes numbers down."]);
+
+E("s7-u1-interaction-direction", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Earthworms tunnel through garden soil, opening spaces in it. Which statement best classifies this interaction?",
+      "A biotic factor, the worms, changes an abiotic factor, the soil's air and water spaces",
+      ["An abiotic factor changes a biotic factor, and nothing at all happens in return", "Two abiotic factors, the soil and the air, interact with each other in the garden", "Neither factor affects the other in any way at all during the whole gardening season or the seasons after it"],
+      "First decide which side is living (biotic) and which is non-living (abiotic), then follow the direction of the effect. <b>A biotic factor, the worms, changes an abiotic factor, the soil's air and water spaces</b>.", {});
+  },
+  function () {
+    return mcq("A heat wave dries out a shallow pond in July. Which statement best classifies this interaction?",
+      "An abiotic factor, the heat, changes a biotic factor, the pond life that can survive there",
+      ["A biotic factor changes an abiotic factor, and nothing at all happens in return", "Two biotic factors, the pond plants and animals, interact with each other in July", "Neither factor affects the other in any way at all during the whole summer season or the seasons after it"],
+      "First decide which side is living (biotic) and which is non-living (abiotic), then follow the direction of the effect. <b>An abiotic factor, the heat, changes a biotic factor, the pond life that can survive there</b>.", {});
+  },
+  function () {
+    return mcq("Tree roots crack a concrete sidewalk as they grow over the years. Which statement best classifies this interaction?",
+      "A biotic factor, the growing roots, changes an abiotic factor, the concrete surface",
+      ["An abiotic factor changes a biotic factor, and nothing at all happens in return", "Two abiotic factors, the concrete and the soil, interact with each other over time", "Neither factor affects the other in any way at all while the tree is growing there or in later years"],
+      "The roots are living and the concrete is not, and the effect runs from the living side to the non-living side. <b>A biotic factor, the growing roots, changes an abiotic factor, the concrete surface</b>.", {});
+  },
+  function () {
+    return mcq("Drought makes a farmer's crop wilt during a dry August. Which statement best classifies this interaction?",
+      "An abiotic factor, the lack of water, changes a biotic factor, the crop's growth",
+      ["A biotic factor changes an abiotic factor, and nothing at all happens in return", "Two biotic factors, the crop and the weeds, interact with each other in the field", "Neither factor affects the other in any way at all during the whole growing season or the seasons after it"],
+      "Water shortage is non-living and the crop is living, and the effect runs from the non-living side to the living side. <b>An abiotic factor, the lack of water, changes a biotic factor, the crop's growth</b>.", {});
+  },
+  function () {
+    return mcq("Beavers build a dam that raises the water level of a stream. Which statement best classifies this interaction?",
+      "A biotic factor, the beavers, changes an abiotic factor, the stream's water level",
+      ["An abiotic factor changes an abiotic factor only, with no living thing involved at all", "Two biotic factors, the beavers and the fish, interact with each other in the stream", "Neither factor affects the other in any way at all while the dam is standing there or in later years"],
+      "The beavers are living and the water level is not, and the effect runs from the living side to the non-living side. <b>A biotic factor, the beavers, changes an abiotic factor, the stream's water level</b>.", {});
+  },
+  function () {
+    return mcq("Strong sunlight makes the air inside a greenhouse warmer. Which statement best classifies this interaction?",
+      "An abiotic factor, the sunlight, changes an abiotic factor, the air temperature inside",
+      ["A biotic factor changes an abiotic factor, and nothing at all happens in return", "A biotic factor changes another biotic factor somewhere inside the greenhouse", "Neither factor affects the other in any way at all on a bright sunny day or on any other day of the year"],
+      "Both sides here are non-living: sunlight and air temperature are both abiotic factors. <b>An abiotic factor, the sunlight, changes an abiotic factor, the air temperature inside</b>.", {});
+  }
+]), ["Name both sides first: which is living (biotic) and which is not (abiotic)?", "The effect runs from the side that acts to the side that is changed."]);
+
+E("s7-u1-recycling-scenario", 1, ["SC7.1.7"], 2, "var", varset([
+  function () {
+    return mcq("A fallen spruce tree lies on the forest floor for years. How is the matter in it recycled?",
+      "Fungi and bacteria break the wood down, returning its nutrients to the soil for new plants",
+      ["The wood's nutrients vanish completely from the forest forever at the moment the tree dies on the forest floor", "The nutrients stay locked inside the wood forever and are never used by anything again", "Animals carry every bit of the wood's nutrients away from the forest for good"],
+      "Matter is not created or destroyed in an ecosystem; decomposers break dead material down and return its nutrients to the soil or water, where producers can use them again. <b>Fungi and bacteria break the wood down, returning its nutrients to the soil for new plants</b>.", {});
+  },
+  function () {
+    return mcq("Leaves pile up under a maple tree each autumn. How is the matter in them recycled?",
+      "Decomposers in the soil break the leaves down and release their nutrients for the tree's roots",
+      ["The leaves' nutrients are destroyed completely by the fall from the branches down to the ground below them", "The nutrients float away into the air as gases and never return to the soil at all", "The tree reabsorbs the whole leaves back through the bark of its trunk"],
+      "Decomposers break dead material down and return its nutrients to the soil, where producers can use them again. <b>Decomposers in the soil break the leaves down and release their nutrients for the tree's roots</b>.", {});
+  },
+  function () {
+    return mcq("A dead fish washes up on the shore of a lake. How is the matter in it recycled?",
+      "Scavengers and decomposers break the body down, returning nitrogen and other nutrients to the water and soil",
+      ["The fish's nutrients disappear from the ecosystem entirely within a few days of its death on the shore", "The nutrients in the body are converted directly into sunlight by the scavengers", "The body stays completely unchanged at the bottom of the lake forever afterwards"],
+      "Scavengers start the breakdown and decomposers finish it, returning nutrients to the water and soil for producers. <b>Scavengers and decomposers break the body down, returning nitrogen and other nutrients to the water and soil</b>.", {});
+  },
+  function () {
+    return mcq("A farmer spreads composted manure on a field before planting. How is the matter in it recycled?",
+      "Decomposers finish breaking the material down, releasing nutrients that the crop plants can absorb",
+      ["The manure's nutrients pass straight down through the soil and are never used by the crops planted in the field", "The nutrients in the manure turn directly back into fresh manure for the next year", "The crop plants absorb the manure whole through their leaves while it lies on the field"],
+      "Composting starts the breakdown, and soil decomposers finish it, releasing nutrients in a form roots can absorb. <b>Decomposers finish breaking the material down, releasing nutrients that the crop plants can absorb</b>.", {});
+  },
+  function () {
+    return mcq("Grass clippings are left on a lawn after mowing. How is the matter in them recycled?",
+      "Soil decomposers break the clippings down and return their nutrients to the soil for the grass",
+      ["The clippings' nutrients are lost to the ecosystem completely as soon as the grass on the lawn is cut", "The nutrients in the clippings evaporate completely into the air within a day", "The grass roots absorb the clippings whole from the surface of the lawn"],
+      "Decomposers in the soil break the clippings down and return their nutrients, which is why leaving clippings feeds the lawn. <b>Soil decomposers break the clippings down and return their nutrients to the soil for the grass</b>.", {});
+  },
+  function () {
+    return mcq("A whale's body sinks to the deep ocean floor after it dies. How is the matter in it recycled?",
+      "Scavengers and decomposers break the body down over years, recycling its nutrients into the ocean ecosystem",
+      ["The nutrients are removed from the ocean forever once the body reaches the deep ocean floor far below", "The body dissolves into pure water within a single day of sinking to the bottom", "The nutrients rise back to the surface unchanged, still in one solid piece"],
+      "Even in the deep ocean, scavengers and decomposers break the body down and return its nutrients to the ecosystem. <b>Scavengers and decomposers break the body down over years, recycling its nutrients into the ocean ecosystem</b>.", {});
+  }
+]), ["Matter is not created or destroyed in an ecosystem; it cycles.", "Decomposers are the recyclers: they return dead matter's nutrients to the soil."]);
+
+E("s7-u1-succession-next-stage", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return mcq("Succession begins at a new site: a bare rock surface left by a retreating glacier. What is the first stage?",
+      "Lichens and mosses colonize the bare rock and begin breaking its surface into soil",
+      ["Tall spruce trees grow directly on the bare rock within the first few years after the glacier retreats from it", "A mature forest community appears on the rock within a single year of the ice leaving", "Grasses cover the whole rock surface before any soil has formed on it at all"],
+      "Succession starts with pioneer species that can survive the site's harsh conditions and begin changing them; larger plants need the soil and shelter the pioneers create. The first stage is: <b>lichens and mosses colonize the bare rock and begin breaking its surface into soil</b>.", {});
+  },
+  function () {
+    return mcq("Succession begins at a new site: an abandoned farm field in its first year. What is the first stage?",
+      "Fast-growing weeds and grasses move in and cover the soil across the field",
+      ["Shrubs and trees move in and shade out everything else in the field immediately during that first year", "The field returns to a mature forest community within one growing season", "Lichens break the field's soil back down into bare rock over the winter"],
+      "The soil is already present, so the pioneers are fast-growing plants that cover it quickly. The first stage is: <b>fast-growing weeds and grasses move in and cover the soil across the field</b>.", {});
+  },
+  function () {
+    return mcq("Succession begins at a new site: a pond that is slowly filling with sediment and plant growth. What is the first stage?",
+      "Reeds and cattails spread in from the edges of the pond as the water shallows",
+      ["The pond deepens again over time and the large fish return to its open water in greater numbers than before", "A spruce forest grows directly in the open water at the centre of the pond", "The pond dries instantly into bare rock across its whole bottom in one season"],
+      "As sediment shallows the water, marsh plants advance from the edges. The first stage is: <b>reeds and cattails spread in from the edges of the pond as the water shallows</b>.", {});
+  },
+  function () {
+    return mcq("Succession begins at a new site: a new sand dune forming along a coast. What is the first stage?",
+      "Hardy dune grasses take root in the sand and trap still more sand around them",
+      ["Trees take root and anchor the new dune firmly in place within its first month of forming along the coast", "The dune turns into a pond ecosystem behind the beach within a year", "Shrubs cover the whole dune before any grass has grown on it at all"],
+      "Dune grasses tolerate the dry, shifting sand and stabilize it, letting later stages follow. The first stage is: <b>hardy dune grasses take root in the sand and trap still more sand around them</b>.", {});
+  },
+  function () {
+    return mcq("A site has reached the stage where shrubs and young trees dominate, after grasses covered it for years. The site is an abandoned farm field. What happens as succession continues, if the climate stays the same?",
+      "Taller trees gradually shade out the shrubs, and the community moves toward a stable forest",
+      ["The community returns to bare ground every year and starts the whole sequence of succession over again", "Grasses take over the site again and remove the trees that have grown there", "Succession stops permanently at the shrub stage and nothing changes after that"],
+      "Succession continues in a direction: each stage changes the conditions so the next, larger community can move in, until a stable community matching the climate is reached. <b>Taller trees gradually shade out the shrubs, and the community moves toward a stable forest</b>.", {});
+  },
+  function () {
+    return mcq("A forest clearing left after a fire still has its soil intact. What is the first stage of succession there?",
+      "Fireweed and other fast-growing plants colonize the ash-covered soil of the clearing",
+      ["Lichens must first break down bare rock into fresh soil before anything at all can grow in the clearing", "Mature trees regrow to their full height across the clearing in one season", "The clearing stays completely bare of plants for centuries after the fire"],
+      "Because the soil survived the fire, succession restarts with fast-growing plants rather than rock pioneers. The first stage is: <b>fireweed and other fast-growing plants colonize the ash-covered soil of the clearing</b>.", {});
+  }
+]), ["Succession runs in a rough order: pioneers, grasses, shrubs, then trees.", "Pick the stage that comes right after the one described, not the final forest."]);
+
+E("s7-u1-cr-marsh-change", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return textq("A marsh beside a school is drained in the spring so a sports field can be built. By the next year, the frogs that lived in the marsh are gone from the area. Explain TWO effects of draining the marsh: one effect on an abiotic factor and one effect on a biotic factor. (2 marks)",
+      ["Draining removes the standing water, an abiotic factor the marsh community depended on."],
+      "Marking points (2): 1 mark for an abiotic effect (the standing water is removed, so the soil dries out and the area warms and loses its shallow-water habitat). 1 mark for a biotic effect linked to it (frogs lose the water they need for breeding, so their population disappears from the area; marsh plants and the insects and birds depending on them also decline). Model answer: Draining removes the marsh's standing water, drying the soil. Without water to lay eggs in, <b>the frogs cannot reproduce, so the biotic community loses them</b>.", {});
+  },
+  function () {
+    return textq("A farmer plants a strip of trees along a windy field. After several years, the soil in the field stays moist longer after rain. Explain TWO effects of the tree strip: one effect on an abiotic factor and one effect on a biotic factor. (2 marks)",
+      ["The trees slow the wind at ground level, an abiotic factor affecting the field."],
+      "Marking points (2): 1 mark for an abiotic effect (the trees reduce wind speed over the field, so less water evaporates from the soil and the soil stays moist longer; shade also cools the soil surface). 1 mark for a biotic effect linked to it (crops grow better with the moisture, and birds and insects gain shelter and food in the strip). Model answer: The strip slows the wind, so the soil loses less water to evaporation. With moister soil, <b>the crop plants grow more strongly through dry spells</b>.", {});
+  },
+  function () {
+    return textq("Road salt used in winter washes into a small pond each spring. By summer, the pond's snails have mostly disappeared. Explain TWO effects of the salt: one effect on an abiotic factor and one effect on a biotic factor. (2 marks)",
+      ["The salt raises the salt concentration of the pond water, an abiotic factor."],
+      "Marking points (2): 1 mark for an abiotic effect (the dissolved salt changes the chemistry of the water, raising its salt concentration each spring). 1 mark for a biotic effect linked to it (snails and other freshwater organisms cannot tolerate the saltier water, so their populations fall, affecting the animals that feed on them). Model answer: The runoff makes the pond water saltier each spring. Freshwater snails cannot survive the changed water, so <b>their population collapses, and the birds and fish that ate them lose a food source</b>.", {});
+  }
+]), ["One effect must land on a non-living factor and one on a living factor.", "Connect them: the abiotic change is usually what drives the biotic one."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s7-u1-cr-effect-chain closes Unit 1 Test
+   1 (3 marks, Level 3); s7-u1-cr-succession-evidence closes Unit 1 Test
+   3 (3 marks, Level 2). SME-flagged for the
+   specialist pass. */
+E("s7-u1-cr-effect-chain", 1, ["SC7.1.1", "SC7.1.2"], 3, "var", varset([
+  function () {
+    return textq("A beaver pond sits behind a dam on a small stream. To build a road, workers drain the pond and remove the dam, so the stream runs in a narrow channel again and the pond bed dries out. (a) Name the abiotic change that starts the chain of effects. (1) (b) Predict one effect on an organism or population that lived in the pond, and justify your prediction. (1) (c) Describe a further knock-on effect on another organism. (1) (3 marks)",
+      ["Abiotic change: the standing water is removed and the pond bed dries (water amount falls). Pond organisms such as frogs or pondweed lose their habitat and decline. A knock-on effect follows for a predator or dependent organism, such as herons losing a food source."],
+      "<b>Model answer:</b> (a) The abiotic change is the loss of the standing water: the pond is drained and its bed dries out. (b) Frogs that bred in the pond lose the water their eggs and tadpoles need, so the frog population falls; pond plants such as pondweed also die back because the shallow water they grew in is gone. The justification is that these organisms depended on the pond water for habitat or reproduction. (c) A knock-on effect is that herons and other predators that fed on the frogs and pond fish lose a food source, so fewer herons hunt in the area and their numbers may fall as well.<br><br><b>Marking points:</b> 1 mark for naming the abiotic change (the pond water is drained away and the bed dries). 1 mark for a predicted effect on one pond organism or population, justified by what that organism needed from the pond. 1 mark for a further knock-on effect on a different organism, linked to the first effect.", {});
+  },
+  function () {
+    return textq("A late spring flood raises the water level of a marsh for several weeks. Areas of dry ground at the marsh edge stay under shallow water, and the marsh water spreads into the surrounding grassland. (a) Name the abiotic change that starts the chain of effects. (1) (b) Predict one effect on an organism or population in the marsh, and justify your prediction. (1) (c) Describe a further knock-on effect on another organism. (1) (3 marks)",
+      ["Abiotic change: the amount and depth of water rises and flooding lasts for weeks. Marsh organisms respond to the deeper, longer lasting water, for example ground nesting birds lose nests or cattails spread. A knock-on effect follows for a predator or competitor that depended on the first organism."],
+      "<b>Model answer:</b> (a) The abiotic change is the rise in water level: more water covers the marsh and it stays flooded for weeks. (b) Birds that nested on the dry ground at the marsh edge lose their nests to the flood water, so fewer young are raised that season; the justification is that their nesting habitat depended on that ground staying dry. Cattails and other marsh plants could also spread into the newly flooded grassland. (c) A knock-on effect is that predators such as foxes or hawks that hunted the nesting birds and their young find less food at the marsh edge, so they hunt elsewhere or their numbers fall.<br><br><b>Marking points:</b> 1 mark for naming the abiotic change (the water level rises and flooding covers more ground for longer). 1 mark for a predicted effect on one marsh organism or population, justified by what the flooding changed for it. 1 mark for a further knock-on effect on a different organism, linked to the first effect.", {});
+  },
+  function () {
+    return textq("Shade trees are planted along both banks of a salmon stream. After several summers the growing tree canopy shades the stream for most of the day, and the stream water stays noticeably cooler through the summer than it used to. (a) Name the abiotic change that starts the chain of effects. (1) (b) Predict one effect on an organism or population in the stream, and justify your prediction. (1) (c) Describe a further knock-on effect on another organism. (1) (3 marks)",
+      ["Abiotic change: the water temperature falls because the stream is shaded (less sunlight reaches the water). Cooler water holds more dissolved oxygen and suits salmon, so young salmon survive better. A knock-on effect follows for a predator such as herons or larger fish that gain more prey, or for warm water species that decline."],
+      "<b>Model answer:</b> (a) The abiotic change is the drop in water temperature: with less sunlight reaching the stream, the water stays cooler. (b) Young salmon do better in the cooler water, because cold water holds more dissolved oxygen and salmon are stressed by warm water, so more young salmon survive and the population can grow. (c) A knock-on effect is that herons and other predators that feed on young salmon gain a more reliable food source and may become more common along the stream; warm water insects or fish that preferred the old conditions could decline instead.<br><br><b>Marking points:</b> 1 mark for naming the abiotic change (the stream water becomes cooler as shade reduces the sunlight reaching it). 1 mark for a predicted effect on one stream organism or population, justified by the cooler water, such as its oxygen content or the organism temperature needs. 1 mark for a further knock-on effect on a different organism, linked to the first effect.", {});
+  },
+  function () {
+    return textq("Trucks and crushers at a gravel pit raise clouds of pale dust on dry, windy days. The dust settles on the leaves of the shrubs and small trees growing around the pit, coating many leaves in a thin grey layer week after week. (a) Name the abiotic change that starts the chain of effects. (1) (b) Predict one effect on an organism or population near the pit, and justify your prediction. (1) (c) Describe a further knock-on effect on another organism. (1) (3 marks)",
+      ["Abiotic change: a coating of dust settles on the leaves, reducing the sunlight the leaves receive (an abiotic coating on a living surface). Coated plants photosynthesize less and grow more slowly or produce fewer berries. A knock-on effect follows for insects or birds that fed on those plants."],
+      "<b>Model answer:</b> (a) The abiotic change is the layer of non-living dust coating the leaves, which cuts down the sunlight reaching the leaf surfaces. (b) The shrubs grow more slowly and produce fewer leaves and berries, because with less light reaching their leaves they can photosynthesize less and make less food. (c) A knock-on effect is that insects that fed on the shrubs, and birds that ate the berries or the insects, find less food near the pit, so their numbers there fall.<br><br><b>Marking points:</b> 1 mark for naming the abiotic change (dust coating the leaves and reducing the light they receive). 1 mark for a predicted effect on one plant population, justified by reduced photosynthesis. 1 mark for a further knock-on effect on a different organism, linked to the change in the plants.", {});
+  }
+]), ["Name the non-living change first; every later effect must follow from it.", "Build the chain in order: abiotic change, first organism affected and why, then who depends on that organism."]);
+
+E("s7-u1-cr-succession-evidence", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return textq("A class visits an abandoned gravel pit. Their field notes read: bare gravel still shows in patches; grasses and mosses cover most of the ground; young shrubs are scattered across the site; no trees are growing yet; the soil layer is thin. (a) State what stage of succession this site has reached. (1) (b) Cite TWO observations from the notes as evidence for your answer. (1) (c) Predict the next change at the site and explain why it will happen. (1) (3 marks)",
+      ["The site is in an early stage of succession, at the grass and shrub stage after the pioneer stage. Evidence: grasses and mosses cover most of the ground and young shrubs are scattered through it, while trees are absent and the soil is still thin. Next, shrubs will spread and young trees will move in as the soil deepens."],
+      "<b>Model answer:</b> (a) The site is in an early stage of succession: it has moved past the pioneer stage and is at the grass and shrub stage. (b) Evidence: grasses and mosses already cover most of the ground and young shrubs are scattered across the site, which shows succession is under way; at the same time no trees are growing yet and the soil is still thin, which shows the site has not reached a later, forest stage. (c) Next the shrubs will spread and thicken and young trees will begin to grow among them, because the grasses and shrubs are building and deepening the soil and sheltering the ground, creating the conditions tree seedlings need.<br><br><b>Marking points:</b> 1 mark for the stage correctly stated (an early stage, grass and shrub stage, past the pioneers but before trees). 1 mark for two observations from the notes cited as evidence. 1 mark for a sensible next change (shrubs spreading and young trees moving in) with a reason tied to the soil or shelter the present stage creates.", {});
+  },
+  function () {
+    return textq("Students survey a coastal sand dune. Their notes read: the front of the dune is bare sand; grasses are spreading across the middle of the dune and their roots hold the sand in place; low shrubs grow at the back of the dune where the sand no longer shifts; a thin layer of soil is forming under the shrubs. (a) State what stage of succession this site has reached. (1) (b) Cite TWO observations from the notes as evidence for your answer. (1) (c) Predict the next change at the site and explain why it will happen. (1) (3 marks)",
+      ["The dune is in an early stage of succession, at the grass stage with shrubs just becoming established at the back. Evidence: grasses are spreading and stabilizing the sand, and shrubs grow only where the sand has stopped shifting and soil is forming. Next, shrubs will spread forward as the grasses stabilize more sand and soil builds up."],
+      "<b>Model answer:</b> (a) The dune is in an early stage of succession: the grass stage, with the shrub stage just beginning at the back. (b) Evidence: grasses are spreading across the middle and holding the sand with their roots, which is the work of the early colonizing stage; and shrubs are growing only at the back, where the sand no longer shifts and a thin soil is forming, which shows later plants can survive only where the earlier stage has prepared the ground. (c) Next the shrubs will spread forward across more of the dune, because the grasses keep stabilizing the sand and decaying plant material keeps building soil, so ground that is now too loose and poor for shrubs will become suitable for them.<br><br><b>Marking points:</b> 1 mark for the stage correctly stated (an early stage, grasses established with shrubs just starting). 1 mark for two observations from the notes cited as evidence. 1 mark for a sensible next change (shrubs spreading, soil deepening) with a reason tied to the stabilization and soil building already under way.", {});
+  },
+  function () {
+    return textq("Five years after a wildfire burned a spruce forest, a class records these observations: charred spruce trunks still stand over the site; grasses and fireweed cover the ground; birch and spruce saplings about a metre tall are growing among the charred trunks; the soil that survived the fire is still in place. (a) State what stage of succession this site has reached. (1) (b) Cite TWO observations from the notes as evidence for your answer. (1) (c) Predict the next change at the site and explain why it will happen. (1) (3 marks)",
+      ["The site is in an early to middle stage of secondary succession: grasses and young trees are established, but the forest has not returned. Evidence: saplings are growing among the charred trunks and grasses and fireweed cover the ground, while mature trees are absent. Next, the saplings will grow taller and shade out the grasses and fireweed as a young forest closes in."],
+      "<b>Model answer:</b> (a) The site is in an early to middle stage of succession, the young tree or sapling stage of regrowth after the fire. (b) Evidence: grasses and fireweed, the fast first plants after a fire, still cover the ground, which shows regrowth is recent; and birch and spruce saplings are already growing among the charred trunks, which shows the site has moved beyond the first plant stage but is far from a mature forest. (c) Next the saplings will grow taller and their crowns will close together, shading out the grasses and fireweed below, because the young trees are now established in soil that survived the fire and will outgrow and outshade the smaller plants as the young forest develops.<br><br><b>Marking points:</b> 1 mark for the stage correctly stated (an early to middle regrowth stage, saplings established, forest not yet restored). 1 mark for two observations from the notes cited as evidence. 1 mark for a sensible next change (saplings growing into a young closed forest, shading out the ground plants) with a reason.", {});
+  },
+  function () {
+    return textq("A cleared lot was left alone for forty years. A survey records: dense shrubs cover much of the lot; young spruce trees now rise above the shrubs across the whole site; a deep layer of soil and leaf litter covers the ground; a few older shrubs are dying back in the shade of the spruce. (a) State what stage of succession this site has reached. (1) (b) Cite TWO observations from the notes as evidence for your answer. (1) (c) Predict the next change at the site and explain why it will happen. (1) (3 marks)",
+      ["The site is in a later stage of succession, moving from the shrub stage into a young forest stage. Evidence: young spruce overtop the shrubs across the site and older shrubs are dying back in their shade, while the soil and litter layer is deep. Next, the spruce will form a mature forest as they grow and the shrubs thin out."],
+      "<b>Model answer:</b> (a) The site is in a later stage of succession: it is passing from the shrub stage into the young forest stage. (b) Evidence: young spruce trees rise above the shrubs across the whole site, which shows trees are taking over from shrubs; and older shrubs are dying back in the spruce shade, which shows the change of community is actively happening, supported by the deep soil and litter layer that has built up over forty years. (c) Next the spruce will keep growing into a mature spruce forest and the shrubs will thin out further, because the taller trees capture the light the shrubs need, and the forest community will become stable if the site is left undisturbed.<br><br><b>Marking points:</b> 1 mark for the stage correctly stated (a later stage, shrubs giving way to young forest). 1 mark for two observations from the notes cited as evidence. 1 mark for a sensible next change (a mature spruce forest forming, shrubs thinning) with a reason tied to shading and competition for light.", {});
+  }
+]), ["Place the site on the sequence first: pioneers, grasses, shrubs, young trees, mature forest.", "Your evidence must come from the notes, and your prediction must be the stage that follows the evidence, not the final forest unless the notes support it."]);
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s7-u1-succession-sites", 1, ["SC7.1.8"], 1, "var", varset([
+  function () {
+    return mcq("Near Lumsden, grasses have taken root on a bare sand dune and trapped more sand around them. Low shrubs are now growing where only grasses grew a few years ago, and the plant cover keeps changing from year to year. The process described is",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "One community is gradually being replaced by another over time: the grasses changed the dune by holding the sand, and shrubs that could not survive on loose sand followed. That ordered replacement of communities is ecological succession. Competition and recycling happen within a community, and tolerance describes the range of conditions a species can survive.", {});
+  },
+  function () {
+    return mcq("A roadside ditch near Gander was dug through bare gravel twelve years ago. Mosses and grasses colonized it first, then shrubs moved in, and young alders now grow along its banks where no plants grew at first. This gradual change is an example of",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "The ditch's community has changed in an ordered sequence over twelve years, from mosses and grasses to shrubs and young trees. A community gradually replacing another community over time is ecological succession.", {});
+  },
+  function () {
+    return mcq("On a rocky outcrop above a harbour, lichens were the only living things on the bare rock twenty years ago. Mosses followed, then grasses rooted in the cracks, and now low shrubs grow in soil that has built up on the rock. The change over time is",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "Each group of organisms changed the site and made it possible for the next group to live there, so one community has replaced another in sequence over twenty years. That gradual, ordered change of communities is ecological succession.", {});
+  },
+  function () {
+    return mcq("An old quarry near Corner Brook was abandoned with bare rock faces and piles of gravel. Lichens and mosses appeared first, grasses and shrubs followed, and young birch trees now grow across the quarry floor. This ordered change is",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "The quarry shows the classic succession pattern: simple pioneer organisms first, then grasses, shrubs and trees in turn, each stage preparing the site for the next. The gradual replacement of one community by another over time is ecological succession.", {});
+  }
+]), ["Watch the time pattern: one community is replaced by another, stage by stage.", "Competition and recycling take place inside a community; this item describes the community itself changing."]);
+
+E("s7-u1-succession-forecast", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return mcq("Lichens and mosses have covered a bare rock surface for many years, and a thin layer of soil now fills the cracks. If the site is left undisturbed, what is most likely to happen next, and why?",
+      "Grasses will root in the thin soil, because the pioneers have built the soil grasses need to grow",
+      ["Trees will grow straight from the rock, because tree roots alone can split rock and make soil",
+       "A forest will form within one year, because the pioneer stage is always the last stage to change",
+       "The site will return to bare rock, because each stage of succession removes the soil before it"],
+      "Succession moves one stage at a time. Lichens and mosses break down the rock surface and start soil formation, and grasses are the next plants able to use that thin soil. Trees need deeper soil than the site has yet, and succession does not run backwards to bare rock on its own.", {});
+  },
+  function () {
+    return mcq("Grasses and wildflowers have covered an abandoned field near Clarenville for several years, and their roots and litter have deepened the soil. If the field is left alone, what is most likely to happen next, and why?",
+      "Shrubs will spread across the field, because the grasses have steadied and enriched the soil",
+      ["Mature trees will shade the field, because tree seedlings grow to full height in one season",
+       "Lichens will cover the field again, because succession restarts from bare rock at each stage",
+       "The field will stay grassy forever, because the grass stage is the final stage of succession"],
+      "In an old field the soil is already present, so grasses come first and shrubs follow once the grasses have stabilized and enriched the soil. Trees come later still, growing up through the shrubs. Succession does not restart from lichens where soil exists, and the grass stage is not the end point.", {});
+  },
+  function () {
+    return mcq("Shrubs cover an old pasture, and young spruce seedlings are growing up through the shrubs, sheltered from the wind. If the pasture is left alone, what is most likely to happen next, and why?",
+      "The spruce will overtop the shrubs, because the growing trees will shade out many of the shrubs",
+      ["The shrubs will overtop the spruce, because shrubs always grow taller than the trees among them",
+       "The pasture will return to grasses, because the shrub stage always gives way to the grass stage",
+       "Succession will stop at this stage, because a mixed stand of shrubs and trees cannot change again"],
+      "The seedlings are already established, and spruce grow taller than shrubs. As the trees rise above the shrubs they take the light, many shrubs die back, and a young forest forms. Succession continues forward while conditions keep changing; it does not return to grass or stop at a mixed stage.", {});
+  },
+  function () {
+    return mcq("Reeds and cattails grow around the edges of a shallow pond, and sediment and dead plant material build up beneath them year after year. If the pond is left alone, what is most likely to happen next, and why?",
+      "The edges will turn into wet meadow, because the building sediment keeps making the water shallower",
+      ["Open water will spread over the reeds, because the sediment pushes the shoreline outward each year",
+       "Trees will grow in the open water, because tree seedlings can root in deep water at the pond centre",
+       "The reeds will disappear in a year, because marsh plants are always the last stage around a pond"],
+      "Sediment and dead material fill the pond from the edges inward, so the shallow edges where the reeds grow become marsh and then wet meadow over time. Trees cannot root in open water, and the change runs from water toward land, not the reverse.", {});
+  }
+]), ["Name the stage the site is at now; the answer is the stage that follows it, with its reason.", "Each stage makes the next one possible: soil, shelter and shade are the usual reasons."]);
+
+E("s7-u1-succession-kind", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return mcq("Heavy rain triggers a landslide on a forested slope near Bonne Bay. The sliding material strips away the trees and all of the soil, leaving a scar of bare rock and gravel. Lichens are the first organisms seen on the scar. Which kind of succession follows, and why?",
+      "Primary succession, because no soil was present on the surface when the change began",
+      ["Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained",
+       "Secondary succession, because soil and seed sources from the old community remained"],
+      "The slide removed the soil along with the community, so the scar is a bare surface with no soil, and colonization starts again from pioneers such as lichens. Starting where no soil is present is primary succession; secondary succession is regrowth where soil remains after a disturbance.", {});
+  },
+  function () {
+    return mcq("A spruce stand is clear-cut for lumber. The soil, the roots and stumps, and seeds in the soil all remain on the site, and grasses and young trees begin growing the next summer. Which kind of succession follows, and why?",
+      "Secondary succession, because soil and seed sources from the old community remained",
+      ["Primary succession, because no soil was present on the surface when the change began",
+       "Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained"],
+      "Cutting removed the trees but left the soil and its seed sources in place, so the community regrows from an existing base. Regrowth after a disturbance where soil remains is secondary succession, not a start from a bare surface.", {});
+  },
+  function () {
+    return mcq("A beaver dam breaks and a pond drains away, leaving its bed of deep sediment exposed. The sediment holds seeds of marsh plants, and grasses sprout across the bed within one season. Which kind of succession follows, and why?",
+      "Secondary succession, because soil and seed sources from the old community remained",
+      ["Primary succession, because no soil was present on the surface when the change began",
+       "Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained"],
+      "The pond bed is not bare rock: it is deep sediment full of seeds, a soil-like base left behind by the old community. Plants sprout quickly from that base, which is secondary succession. Primary succession begins only where no soil is present at the start.", {});
+  },
+  function () {
+    return mcq("Spring floods build a new sandbar in the middle of a river where open water flowed before. The bar is clean sand with no soil and no plants. By the next summer, the first grasses are rooting in the sand. Which kind of succession follows, and why?",
+      "Primary succession, because no soil was present on the surface when the change began",
+      ["Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained",
+       "Secondary succession, because soil and seed sources from the old community remained"],
+      "The sandbar is a brand-new surface: no soil and no previous community existed there. The grasses are pioneers on a surface with no soil, so this is primary succession, even though it starts with grasses rather than lichens.", {});
+  },
+  function () {
+    return mcq("Workers blast a road cut through solid rock for a new highway. The cut face is bare rock with no soil in its cracks. After several years, lichens and then mosses appear on the rock face. Which kind of succession follows, and why?",
+      "Primary succession, because no soil was present on the surface when the change began",
+      ["Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained",
+       "Secondary succession, because soil and seed sources from the old community remained"],
+      "Blasting exposed fresh rock that had never supported a community, and no soil is present in its cracks. Lichens colonizing a bare, soilless surface are the first stage of primary succession.", {});
+  }
+]), ["Ask one question first: was soil present on the site when the change began?", "No soil at the start means primary; soil remaining after a disturbance means secondary."]);
+
+E("s7-u1-succession-claim", 1, ["SC7.1.8"], 3, "var", varset([
+  function () {
+    return mcq("A student claims: succession always ends with the same mature forest, wherever it happens. A class compares two undisturbed sites after many decades. On a sheltered inland site a spruce forest stands. On a windy coastal headland nearby, only low shrubs and grasses grow, though the headland has been undisturbed just as long. Which conclusion is best supported?",
+      "The claim is not supported, because the end community depends on local conditions such as wind exposure",
+      ["The claim is supported, because both sites have been undisturbed for exactly the same length of time",
+       "The claim is not supported, because succession never changes a community once shrubs have appeared",
+       "The claim is supported, because the headland shrubs will become a spruce forest within a few seasons"],
+      "Both sites had the same time undisturbed, yet they hold different communities, so time alone does not force one ending. The headland's wind exposure limits what can grow there. The evidence contradicts the claim: the stable community a site reaches depends on its local conditions.", {});
+  },
+  function () {
+    return mcq("A student claims: once shrubs are established on a site, succession stops and the community stays the same. Photographs of an abandoned pasture taken every five years for thirty years show grasses first, then shrubs spreading, and in the last photographs young spruce trees rising above the shrubs and shading many of them out. Which conclusion is best supported?",
+      "The claim is contradicted, because the photographs show shrubs later replaced by growing trees",
+      ["The claim is supported, because the photographs show shrubs spreading across the pasture early on",
+       "The claim is contradicted, because the photographs show the pasture returning to bare soil again",
+       "The claim is supported, because thirty years is long enough for succession to finish everywhere"],
+      "The photo record shows change continuing after the shrub stage: trees grew up through the shrubs and began shading them out. That directly contradicts the claim that succession stops once shrubs are established. The early spread of shrubs is real, but it was a stage, not the end.", {});
+  },
+  function () {
+    return mcq("A student claims: succession is a quick process that finishes within a single growing season. A research team photographs the same quarry floor every year for forty years. The photographs show lichens in the early years, grasses spreading slowly over two decades, the first shrubs at year thirty, and no trees yet at year forty. Which conclusion is best supported?",
+      "The claim is contradicted, because the record shows change still under way after forty years",
+      ["The claim is supported, because the photographs show lichens appearing within the first few years",
+       "The claim is contradicted, because the record shows the quarry floor returning to bare rock again",
+       "The claim is supported, because shrubs appeared on the site, which means succession has now finished"],
+      "After forty years the site has only reached the shrub stage and is still changing, so succession there is measured in decades, not in a single season. The appearance of lichens early on does not make the whole process quick, and nothing in the record shows a return to bare rock.", {});
+  },
+  function () {
+    return mcq("A student claims: a forest destroyed by fire can only come back if people replant it. After a wildfire in a spruce forest, no planting is done. Within three years grasses and fireweed cover the site, shrubs follow, and by year twenty young spruce trees are growing across the burn. Which conclusion is best supported?",
+      "The claim is contradicted, because the forest regrew on its own from the soil that survived the fire",
+      ["The claim is supported, because grasses and fireweed, not trees, were the first plants to return",
+       "The claim is contradicted, because the fire created a bare rock surface with no soil left at all",
+       "The claim is supported, because twenty years of regrowth means the site was replanted at some point"],
+      "No planting was done, yet the community returned in the usual order and young spruce are growing by year twenty. The regrowth was possible because the fire left the soil in place. The evidence contradicts the claim that replanting is the only way a burned forest can come back.", {});
+  }
+]), ["Compare the claim word by word with what the evidence actually shows.", "A conclusion can carry the right verdict but the wrong reason; check both parts."]);
+
+E("s7-u1-succession-data", 1, ["SC7.1.8"], 3, "var", varset([
+  function () {
+    return mcq("Students survey the same rocky site in three different years. Ground cover: in 2005, lichens and mosses 60 percent, grasses 30 percent, shrubs 10 percent, trees 0 percent. In 2015, lichens and mosses 20 percent, grasses 45 percent, shrubs 30 percent, trees 5 percent. In 2025, lichens and mosses 5 percent, grasses 25 percent, shrubs 40 percent, trees 30 percent. Which conclusion do the data support?",
+      "Succession is advancing: later stages are growing while the pioneer cover shrinks over time",
+      ["Succession is reversing: the site is returning step by step toward its bare rock starting point",
+       "The community is unchanged: each group covers the same share of the site in every survey year",
+       "Trees were the first colonists: the tree cover was highest before the shrubs and grasses spread"],
+      "Read the trend, not a single year. Pioneer cover (lichens and mosses) falls from 60 to 5 percent while shrubs rise from 10 to 40 percent and trees from 0 to 30 percent. Later stages are replacing earlier ones as conditions change, which is succession advancing, not reversing or standing still.", {});
+  },
+  function () {
+    return mcq("After a wildfire, a class counts plants in the same plots. One year after the fire: fireweed 240 plants, shrubs 0, spruce seedlings 0. Six years after: fireweed 90, shrubs 45, spruce seedlings 30. Sixteen years after: fireweed 15, shrubs 60, spruce seedlings 140. Which conclusion do the data support?",
+      "Regrowth follows the usual order: fast first plants fade as shrubs and then trees take over",
+      ["Regrowth has not started: the counts show no new plants growing on the site after the fire",
+       "Fireweed is the final stage: its count stays highest at every visit the class makes to the site",
+       "Trees returned before shrubs: spruce seedlings outnumbered shrubs at the first count after the fire"],
+      "Fireweed dominates the first count and then falls steadily, shrubs rise next, and spruce seedlings climb from none to the highest count. That is the expected order of regrowth after fire: fast colonizers first, then shrubs, then trees.", {});
+  },
+  function () {
+    return mcq("A pond is measured from aerial photographs. Open water area: 900 square metres in 2000, 700 square metres in 2010, and 450 square metres in 2020. Over the same years, the band of marsh plants around the pond's edge widened every time it was measured. Which conclusion do the data support?",
+      "The pond is filling in: marsh is replacing open water as sediment builds up around the edges",
+      ["The pond is deepening: open water is spreading outward over the marsh around the pond edges",
+       "The pond is unchanged: its open water area stayed the same size across all three measurements",
+       "The marsh is the first stage: marsh plants covered the whole pond before any open water formed"],
+      "Open water shrank by half over twenty years while the marsh band widened. Sediment and plant material are filling the pond from the edges, so marsh is replacing open water: succession is carrying the site from pond toward wet meadow.", {});
+  },
+  function () {
+    return mcq("On a coastal dune, students record soil depth and the number of plant species. In 2008: soil depth 1 centimetre, 6 plant species. In 2018: soil depth 4 centimetres, 14 plant species. In 2028: soil depth 9 centimetres, 23 plant species. Which conclusion do the data support?",
+      "As soil deepens, more species can grow: the dune community is developing as succession proceeds",
+      ["As soil deepens, fewer species can grow: the dune community is breaking down as the years pass",
+       "Soil depth makes no difference: the species count stayed the same at every visit to the dune",
+       "The deepest soil came first: the dune began with deep soil and many species and then lost both"],
+      "Both measures rise together across twenty years: deeper soil and more species at each visit. As the early plants build soil, conditions come to suit more kinds of plants, so the community develops. Nothing in the data shows a decline or a reversal.", {});
+  }
+]), ["Compare the first and last measurements first; the trend is the evidence.", "Check the direction of change for every group before choosing a conclusion."]);
+
+E("s7-u1-cr-succession-change", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return textq("A wildfire burns a spruce forest near Terra Nova, killing the trees but leaving the soil in place. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["fire kills the trees and opens the site, soil survives", "grasses and fireweed colonize first", "shrubs then young spruce forest develop"],
+      "<b>Model answer:</b> Immediately, the fire kills the spruce trees and the plants under them, leaving ash-covered ground open to light and rain, but the soil itself survives. The first living changes come from fast-growing plants: grasses and fireweed sprout from seeds and roots in the surviving soil and cover the site within a few seasons. Later, shrubs spread through the grasses, spruce seedlings grow up among the shrubs, and over decades a young spruce forest replaces the shrub community if the site is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (trees killed, site opened, soil left in place). 1 mark for the first living changes (fast colonizers such as grasses and fireweed returning first). 1 mark for the later community (shrubs, then young spruce trees developing toward a forest).", {});
+  },
+  function () {
+    return textq("Beavers build a dam across a stream running through a meadow, and the rising water floods the meadow behind the dam. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["dam floods the meadow, standing water covers the land", "meadow plants die, pond plants and animals colonize", "pond fills with sediment toward marsh and wet meadow"],
+      "<b>Model answer:</b> Immediately, the dam raises the water level and standing water covers the meadow, so the meadow grasses and other land plants, whose roots are drowned, die back. The first living changes follow from the new pond: pondweed and algae grow in the water, and water insects, frogs and fish move in, replacing the meadow community with a pond community. Later, sediment and dead plant material build up in the pond year after year, the water shallows, marsh plants spread from the edges, and the site moves toward marsh and wet meadow if it is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (the meadow flooded, land plants drowned or dying back). 1 mark for the first living changes (a pond community of water plants and animals replacing the meadow community). 1 mark for the later community (the pond filling with sediment and moving toward marsh or wet meadow).", {});
+  },
+  function () {
+    return textq("A severe windstorm blows down a stand of mature spruce trees, leaving fallen trunks across the forest floor. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["canopy removed, light reaches the forest floor", "shrubs, grasses and seedlings grow in the light", "young trees form a new forest stand"],
+      "<b>Model answer:</b> Immediately, the storm removes the canopy: mature trees lie on the ground, and sunlight that never reached the forest floor now floods in, while the fallen trunks begin to decay. The first living changes come from plants that use the new light: shrubs and grasses spread across the clearing and spruce seedlings, held back for years by shade, begin to grow quickly. Later, the fastest young trees close together into a young stand, shade returns to the forest floor, and the community develops back toward a spruce forest if the site is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (canopy gone, light reaching the floor, trunks fallen). 1 mark for the first living changes (light-loving shrubs and grasses spreading, seedlings released from shade). 1 mark for the later community (young trees closing into a new forest stand).", {});
+  },
+  function () {
+    return textq("A stand of spruce forest is clear-cut, and the site is then left to regrow on its own. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["trees removed, soil and roots remain on the site", "grasses and shrubs colonize the open site first", "young trees develop into a new forest over decades"],
+      "<b>Model answer:</b> Immediately, cutting removes the whole tree community at once, leaving the site open to sun and wind, but the soil, roots and seeds in the soil remain in place. The first living changes are fast growth on the open ground: grasses, fireweed and shrubs sprout from the surviving soil and spread across the site within a few years. Later, young spruce and birch trees grow up through the shrubs, shade many of them out, and over decades a young forest community replaces the shrub community if the site is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (trees removed, site opened, soil and seed sources remaining). 1 mark for the first living changes (grasses, fireweed and shrubs colonizing the open site). 1 mark for the later community (young trees overtopping the shrubs and developing toward a forest).", {});
+  }
+]), ["Work in time order: the disturbance itself, the first living changes, then the later community.", "Name real organisms for the place at each stage; general words earn fewer marks."]);
