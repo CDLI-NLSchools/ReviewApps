@@ -18,7 +18,18 @@
    entries. The bank now holds 338 entries (307 converted MC, 9 CR,
    22 gen), Unit 3 holds 89 entries, the CR marks manifest holds
    270 keys (9 native + 261 bimodal), and the final pool holds 134.
-   Figures verified against the assembled bank. */
+   Figures verified against the assembled bank.
+   Amendment, November 20, 2026 (Unit 2 molecular): three native
+   constructed response entries were authored into Unit 2's molecular
+   half (bio-u2-66-cr1, bio-u2-67-cr1, bio-u2-68-cr1; denominations
+   2, 3, 2), closing the final scope's Unit 2 part, whose only native
+   entries were the classical-half pair the final cap holds out. The
+   bank now holds 341 entries (307 converted MC, 12 CR, 22 gen),
+   Unit 2 holds 118 entries, the CR marks manifest holds 273 keys
+   (12 native + 261 bimodal), the postMid flag set holds 48 (the
+   authored three are flagged, holding them out of the mid scope),
+   and the final pool holds 137. Figures verified against the
+   assembled bank. */
 const fs = require("fs");
 const ROOT = "/home/hatch/workspace/review-app-unified";
 const BIO = "/home/hatch/workspace/goals/science-review-apps-for-physics-and-chemistry/hidden_files/bio-program";
@@ -51,14 +62,14 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 }
 eval(fs.readFileSync(ROOT + "/banks/bio-3201.js", "utf8"));
 
-ok(BANK.length === 338, "BANK has 338 entries (307 MC + 9 CR + 22 gen), saw " + BANK.length);
+ok(BANK.length === 341, "BANK has 341 entries (307 MC + 12 CR + 22 gen), saw " + BANK.length);
 const perUnit = { 1: 0, 2: 0, 3: 0 };
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-ok(perUnit[1] === 134 && perUnit[2] === 115 && perUnit[3] === 89, "per-unit entries 134/115/89, saw " + perUnit[1] + "/" + perUnit[2] + "/" + perUnit[3]);
+ok(perUnit[1] === 134 && perUnit[2] === 118 && perUnit[3] === 89, "per-unit entries 134/118/89, saw " + perUnit[1] + "/" + perUnit[2] + "/" + perUnit[3]);
 ok(new Set(BANK.map(e => e.id)).size === BANK.length, "entry ids are unique");
 
 const CRMARKS = window.__BANK_CRMARKS || {};
-const EXPECT_CR = { "bio-u1-cr-q01": 4, "bio-u1-cr-q02": 4, "bio-u1-cr-q03": 3, "bio-u2-62-cr1": 4, "bio-u2-64-cr2": 4, "bio-u3-71-cr1": 3, "bio-u3-75-cr1": 3, "bio-u3-77-cr1": 4, "bio-u3-78-cr1": 2 };
+const EXPECT_CR = { "bio-u1-cr-q01": 4, "bio-u1-cr-q02": 4, "bio-u1-cr-q03": 3, "bio-u2-62-cr1": 4, "bio-u2-64-cr2": 4, "bio-u2-66-cr1": 2, "bio-u2-67-cr1": 3, "bio-u2-68-cr1": 2, "bio-u3-71-cr1": 3, "bio-u3-75-cr1": 3, "bio-u3-77-cr1": 4, "bio-u3-78-cr1": 2 };
 Object.keys(EXPECT_CR).forEach(k => ok(CRMARKS[k] === EXPECT_CR[k], "CRMARKS " + k + " = " + EXPECT_CR[k] + ", saw " + CRMARKS[k]));
 /* Amendment, November 20, 2026: the course's 261 strippable selected
    response entries were registered bimodal, so the CR marks manifest
@@ -72,7 +83,12 @@ ok(Object.keys(BIMODAL3201).length === 261, "BIMODAL holds 261 registrations, sa
    bio-u3-77-cr1, bio-u3-78-cr1) join EXPECT_CR, so the manifest
    holds 270 keys: the 9 native entries plus the 261 bimodal
    registrations. */
-ok(Object.keys(CRMARKS).length === 270, "CRMARKS holds 270 keys (9 native CR + 261 bimodal), saw " + Object.keys(CRMARKS).length);
+/* Amendment, November 20, 2026 (Unit 2 molecular): the three
+   authored Unit 2 molecular native CR entries (bio-u2-66-cr1,
+   bio-u2-67-cr1, bio-u2-68-cr1) join EXPECT_CR, so the manifest
+   holds 273 keys: the 12 native entries plus the 261 bimodal
+   registrations. */
+ok(Object.keys(CRMARKS).length === 273, "CRMARKS holds 273 keys (12 native CR + 261 bimodal), saw " + Object.keys(CRMARKS).length);
 ok(Object.keys(BIMODAL3201).every(k => CRMARKS[k] >= 2), "every bimodal entry carries CR marks of 2 or more");
 ok(Object.keys(CRMARKS).every(k => EXPECT_CR[k] !== undefined || BIMODAL3201[k] !== undefined), "every CRMARKS key is a native CR entry or a bimodal registration");
 
@@ -149,7 +165,7 @@ for (const e of BANK) {
 ok(fixedSeen === 307, "307 fixed MC entries, saw " + fixedSeen);
 ok(genSeen === 22, "22 generator entries, saw " + genSeen);
 ok(figuredFixed === 45, "45 figured fixed entries (44 media + the cytochrome table), saw " + figuredFixed);
-ok(postMid === 45, "45 postMid entries (37 fixed + 8 sequence generators), saw " + postMid);
+ok(postMid === 48, "48 postMid entries (37 fixed + 3 authored CR + 8 sequence generators), saw " + postMid);
 ok(expectedPre.size === 70, "70 entries sit in the classical rule set, saw " + expectedPre.size);
 ok(flaggedPre.size === expectedPre.size && [...expectedPre].every(id => flaggedPre.has(id)), "preFinal flags match the classical rule set exactly");
 
@@ -162,7 +178,7 @@ ok(scopeCap([1, 2]) === true, "scopeCap resolves the mid units to the mid cap");
 ok(scopeCap([2, 3]) === "final", "scopeCap resolves the final units to the final cap");
 ok(scopeCap([1]) === false && scopeCap([2]) === false, "scopeCap leaves single-unit selections uncapped");
 const finalPool = poolFor([2, 3], [], "final");
-ok(finalPool.length === 134, "final pool holds 134 entries, saw " + finalPool.length);
+ok(finalPool.length === 137, "final pool holds 137 entries, saw " + finalPool.length);
 ok(finalPool.every(e => !(e.unit === 2 && e.indicators.some(c => CLASSICAL.includes(c)))), "final pool contains no classical-half Unit 2 entry");
 ok(BANK.filter(e => e.unit === 2 && e.indicators.some(c => ["6.5", "6.6", "6.7", "6.8", "6.9", "6.10"].includes(c))).every(e => finalPool.includes(e)), "final pool contains every molecular Unit 2 entry");
 const midPool = poolFor([1, 2], [], true);
